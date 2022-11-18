@@ -1,7 +1,22 @@
 #include "paint_canvas.h"
 
+#include "../actions/brighten_action.h"
+#include "../actions/brush_action.h"
+#include "../actions/bucket_action.h"
+#include "../actions/cut_action.h"
+#include "../actions/darken_action.h"
+#include "../actions/line_action.h"
+#include "../actions/multiline_action.h"
+#include "../actions/paint_action.h"
+#include "../actions/paste_cut_action.h"
+#include "../actions/pencil_action.h"
+#include "../actions/rainbow_action.h"
+#include "../actions/rect_action.h"
+#include "../bush_prefabs.h"
 #include "../paint_utilities.h"
 #include "core/io/image.h"
+#include "core/os/keyboard.h"
+#include "paint_project.h"
 #include "scene/resources/texture.h"
 
 bool PaintCanvas::get_symmetry_x() const {
@@ -322,6 +337,505 @@ Ref<ImageTexture> PaintCanvas::get_preview_image_texture() {
 	return _preview_image_texture;
 }
 
+void PaintCanvas::handle_draw(const Vector2 &local_position, const Ref<InputEvent> &event) {
+	PaintProject *proj = get_paint_project();
+
+	if (!proj) {
+		ERR_FAIL_COND(!proj);
+	}
+
+	set_pixel(local_position.x, local_position.y, proj->get_current_color());
+}
+
+Color PaintCanvas::get_current_color() {
+	PaintProject *proj = get_paint_project();
+
+	if (!proj) {
+		ERR_FAIL_COND_V(!proj, Color(1, 1, 1, 1));
+	}
+
+	return proj->get_current_color();
+}
+
+void PaintCanvas::update_mouse_position(const Vector2 &local_position, const Ref<InputEvent> &event) {
+	if (event->get_device() == -1) {
+		_mouse_position = get_global_mouse_position();
+		_cell_mouse_position = local_position;
+
+		_last_mouse_position = _mouse_position;
+		_last_cell_mouse_position = local_position;
+	}
+}
+
+void PaintCanvas::handle_left_mouse_button_down(const Vector2 &local_position, const Ref<InputEvent> &event) {
+	update_mouse_position(local_position, event);
+
+	switch (_current_tool) {
+		case TOOL_CUT: {
+			if (!event->is_pressed()) {
+				commit_action();
+			}
+
+		} break;
+		case TOOL_BUCKET: {
+			if (!_current_action.is_valid()) {
+				_current_action = get_action();
+			}
+
+			Array arr;
+			arr.push_back(_cell_mouse_position);
+			arr.push_back(_last_cell_mouse_position);
+			arr.push_back(get_current_color());
+
+			do_action(arr);
+			commit_action();
+		} break;
+		case TOOL_COLORPICKER: {
+			Color c = get_pixel(_cell_mouse_position.x, _cell_mouse_position.y);
+
+			if (c.a < 0.00001) {
+				return;
+			}
+
+			_picked_color = true;
+
+			PaintProject *project = get_paint_project();
+
+			if (project) {
+				project->set_current_color(c);
+			}
+		} break;
+		default:
+			break;
+	}
+
+	tool_process(local_position, event);
+}
+
+void PaintCanvas::handle_left_mouse_button_up(const Vector2 &local_position, const Ref<InputEvent> &event) {
+	update_mouse_position(local_position, event);
+
+	if (_current_tool == TOOL_COLORPICKER) {
+		if (_picked_color) {
+			set_current_tool(get_previous_tool());
+			_picked_color = false;
+		}
+	}
+
+	tool_process(local_position, event);
+}
+
+void PaintCanvas::handle_right_mouse_button_down(const Vector2 &local_position, const Ref<InputEvent> &event) {
+	update_mouse_position(local_position, event);
+
+	switch (_current_tool) {
+		case TOOL_CUT:
+			if (!event->is_pressed()) {
+				commit_action();
+			}
+			break;
+		case TOOL_COLORPICKER:
+			set_current_tool(get_previous_tool());
+			break;
+		case TOOL_PASTECUT:
+			commit_action();
+			set_current_tool(TOOL_PENCIL);
+			break;
+		case TOOL_BUCKET:
+			set_current_tool(get_previous_tool());
+			break;
+		default:
+			break;
+	}
+
+	tool_process(local_position, event);
+}
+
+void PaintCanvas::draw_brush_preview() {
+	clear_preview();
+
+	switch (_current_tool) {
+		case TOOL_PASTECUT: {
+			for (int idx = 0; idx < _selection_cells.size(); ++idx) {
+				Vector2i pixel = _selection_cells[idx];
+				Color color = _selection_colors[idx];
+				pixel -= _cut_pos + _cut_size / 2;
+				pixel.x += _cell_mouse_position.x;
+				pixel.y += _cell_mouse_position.y;
+				set_preview_pixel_v(pixel, color);
+			}
+
+			update_textures();
+		} break;
+		case TOOL_BRUSH: {
+			PoolVector2iArray pixels = BrushPrefabs::get_brush(static_cast<BrushPrefabs::Type>(_brush_prefab), _brush_size);
+			Color color = get_current_color();
+
+			PoolVector2iArray::Read r = pixels.read();
+
+			for (int i = 0; i < pixels.size(); ++i) {
+				Vector2i pixel = r[i];
+				set_preview_pixel(_cell_mouse_position.x + pixel.x, _cell_mouse_position.y + pixel.y, color);
+				//print_error("ad " + String::num(cell_mouse_position.x + pixel.x) + " " + String::num(cell_mouse_position.y + pixel.y));
+			}
+
+			r.release();
+
+			update_textures();
+		} break;
+		case TOOL_RAINBOW: {
+			set_preview_pixel(_cell_mouse_position.x, _cell_mouse_position.y, Color(0.46875, 0.446777, 0.446777, 0.3));
+			update_textures();
+		} break;
+		case TOOL_COLORPICKER: {
+			set_preview_pixel(_cell_mouse_position.x, _cell_mouse_position.y, Color(0.866667, 0.847059, 0.847059, 0.3));
+			update_textures();
+		} break;
+		default: {
+			set_preview_pixel(_cell_mouse_position.x, _cell_mouse_position.y, get_current_color());
+			update_textures();
+		} break;
+	}
+}
+
+void PaintCanvas::do_action(const Array &arr) {
+	if (!_current_action.is_valid()) {
+		return;
+	}
+
+	_current_action->do_action(arr);
+	update_textures();
+}
+
+void PaintCanvas::commit_action() {
+	if (!_current_action.is_valid()) {
+		return;
+	}
+
+	_current_action->commit_action();
+
+	_actions_history.push_back(_current_action);
+	_redo_history.clear();
+	update_textures();
+
+	if (_current_tool == TOOL_CUT) {
+		Ref<CutAction> ca = _current_action;
+
+		ERR_FAIL_COND(!ca.is_valid());
+
+		_cut_pos = ca->get_mouse_start_pos();
+		_cut_size = ca->get_mouse_end_pos() - ca->get_mouse_start_pos();
+
+		_selection_cells.clear();
+		_selection_colors.clear();
+
+		_selection_cells.append_array(ca->get_redo_cells());
+		_selection_colors.append_array(ca->get_redo_colors());
+
+		set_current_tool(TOOL_PASTECUT);
+	}
+
+	_current_action.unref();
+}
+
+void PaintCanvas::redo_action() {
+	if (_redo_history.empty()) {
+		//print("PaintCanvas: nothing to redo");
+		return;
+	}
+
+	Ref<PaintAction> action = _redo_history[_redo_history.size() - 1];
+	_redo_history.remove(_redo_history.size() - 1);
+
+	if (!action.is_valid()) {
+		return;
+	}
+
+	_actions_history.push_back(action);
+	action->redo_action();
+	update_textures();
+
+	//print("PaintCanvas: redo action");
+}
+
+void PaintCanvas::undo_action() {
+	if (_actions_history.empty()) {
+		//print("PaintCanvas: nothing to undo");
+		return;
+	}
+
+	Ref<PaintAction> action = _actions_history[_actions_history.size() - 1];
+	_actions_history.remove(_actions_history.size() - 1);
+
+	if (!action.is_valid()) {
+		return;
+	}
+
+	_redo_history.push_back(action);
+	action->undo_action();
+	update_textures();
+
+	//print("PaintCanvas: undo action")
+}
+
+bool PaintCanvas::has_point(const Vector2 &pos) {
+	Vector2i size = get_size();
+
+	if (pos.x < 0 || pos.y < 0 || pos.x > size.x || pos.y > size.y) {
+		return false;
+	}
+
+	return true;
+}
+
+Ref<PaintAction> PaintCanvas::get_action() {
+	Ref<PaintAction> action;
+
+	switch (_current_tool) {
+		case TOOL_PENCIL:
+			action = Ref<PaintAction>(memnew(PencilAction));
+			break;
+		case TOOL_BRUSH:
+			action = Ref<PaintAction>(memnew(BrushAction));
+			break;
+		case TOOL_LINE:
+			action = Ref<PaintAction>(memnew(LineAction));
+			break;
+		case TOOL_RAINBOW:
+			action = Ref<PaintAction>(memnew(RainbowAction));
+			break;
+		case TOOL_BUCKET:
+			action = Ref<PaintAction>(memnew(BucketAction));
+			break;
+		case TOOL_RECT:
+			action = Ref<PaintAction>(memnew(RectAction));
+			break;
+		case TOOL_DARKEN:
+			action = Ref<PaintAction>(memnew(DarkenAction));
+			break;
+		case TOOL_BRIGHTEN:
+			action = Ref<PaintAction>(memnew(BrightenAction));
+			break;
+		case TOOL_CUT:
+			action = Ref<PaintAction>(memnew(CutAction));
+			break;
+		case TOOL_PASTECUT:
+			action = Ref<PaintAction>(memnew(PasteCutAction));
+			break;
+		default:
+			break;
+	}
+
+	if (action.is_valid()) {
+		action->set_paint_canvas(this);
+	}
+
+	return action;
+}
+
+void PaintCanvas::_on_tool_changed() {
+	if (_current_tool == TOOL_COLORPICKER) {
+		if (_current_action.is_valid()) {
+			_current_action.unref();
+		}
+
+		return;
+	}
+
+	if (get_previous_tool() == TOOL_CUT) {
+		clear_preview();
+	}
+
+	_current_action = get_action();
+}
+
+void PaintCanvas::tool_process(const Vector2 &local_position, const Ref<InputEvent> &event) {
+	if (_current_tool == TOOL_COLORPICKER) {
+		return;
+	}
+
+	if (!_current_action.is_valid()) {
+		_current_action = get_action();
+	}
+
+	if (_current_tool == TOOL_PENCIL || _current_tool == TOOL_LINE || _current_tool == TOOL_RECT) {
+		Array arr;
+
+		arr.push_back(_cell_mouse_position);
+		arr.push_back(_last_cell_mouse_position);
+
+		if (_mouse_button_down == BUTTON_LEFT) {
+			arr.push_back(get_current_color());
+		} else if (_mouse_button_down == BUTTON_RIGHT) {
+			arr.push_back(Color(1, 1, 1, 0));
+		}
+
+		do_action(arr);
+	} else if (_current_tool == TOOL_DARKEN || _current_tool == TOOL_BRIGHTEN || _current_tool == TOOL_CUT) {
+		Array arr;
+
+		arr.push_back(_cell_mouse_position);
+		arr.push_back(_last_cell_mouse_position);
+		arr.push_back(get_current_color());
+
+		do_action(arr);
+	} else if (_current_tool == TOOL_BRUSH) {
+		Array arr;
+
+		arr.push_back(_cell_mouse_position);
+		arr.push_back(_last_cell_mouse_position);
+
+		if (_mouse_button_down == BUTTON_LEFT) {
+			arr.push_back(get_current_color());
+		} else if (_mouse_button_down == BUTTON_RIGHT) {
+			arr.push_back(Color(1, 1, 1, 0));
+		}
+
+		arr.push_back(_brush_prefab);
+		arr.push_back(_brush_size);
+
+		do_action(arr);
+	} else if (_current_tool == TOOL_COLORPICKER) {
+		// Nothing to do here
+	} else if (_current_tool == TOOL_PASTECUT) {
+		Array arr;
+
+		arr.append(_cell_mouse_position);
+		arr.append(_last_cell_mouse_position);
+		arr.append(_selection_cells);
+		arr.append(_selection_colors);
+		arr.append(_cut_pos);
+		arr.append(_cut_size);
+
+		do_action(arr);
+	} else if (_current_tool == TOOL_RAINBOW) {
+		Array arr;
+
+		arr.push_back(_cell_mouse_position);
+		arr.push_back(_last_cell_mouse_position);
+
+		do_action(arr);
+	}
+}
+
+bool PaintCanvas::_forward_canvas_gui_input(const Ref<InputEvent> &event) {
+	if (!is_visible_in_tree()) {
+		return false;
+	}
+
+	Ref<InputEventMouseButton> iemb = event;
+	if (iemb.is_valid()) {
+		if (_mouse_down && _mouse_button_down != iemb->get_button_index()) {
+			// Ignore it, but consume the event from the editor
+			return true;
+		}
+
+		if (iemb->get_button_index() != BUTTON_LEFT && iemb->get_button_index() != BUTTON_RIGHT) {
+			return false;
+		}
+
+		// This seems to be the easiest way to get local mouse position,
+		// even though the event is available
+		Vector2 local_position = get_local_mouse_position();
+
+		if (_mouse_down) {
+			if (!iemb->is_pressed()) {
+				_mouse_down = false;
+				_mouse_button_down = -1;
+
+				if (_mouse_button_down == BUTTON_LEFT) {
+					handle_left_mouse_button_up(local_position, iemb);
+				}
+
+				commit_action();
+			}
+		} else {
+			if (has_point(local_position)) {
+				_mouse_down = true;
+				_mouse_button_down = iemb->get_button_index();
+
+				clear_preview();
+
+				if (_mouse_button_down == BUTTON_LEFT) {
+					handle_left_mouse_button_down(local_position, iemb);
+				} else if (_mouse_button_down == BUTTON_RIGHT) {
+					handle_right_mouse_button_down(local_position, iemb);
+				}
+
+				return true;
+			}
+		}
+	}
+
+	Ref<InputEventMouseMotion> iemm = event;
+	if (iemm.is_valid()) {
+		Vector2 local_position = get_local_mouse_position();
+
+		_mouse_position = get_global_mouse_position();
+		_cell_mouse_position = local_position;
+
+		if (_mouse_down) {
+			if (has_point(local_position)) {
+				//handle_draw(local_position, event)
+				_cell_mouse_position = local_position;
+
+				tool_process(local_position, event);
+				update_textures();
+				update();
+
+				_last_mouse_position = _mouse_position;
+				_last_cell_mouse_position = local_position;
+
+				return true;
+			}
+		} else {
+			draw_brush_preview();
+		}
+
+		_last_mouse_position = _mouse_position;
+		_last_cell_mouse_position = local_position;
+	}
+
+	Ref<InputEventKey> iek = event;
+	if (iek.is_valid()) {
+		if (iek->is_echo() || !iek->is_pressed()) {
+			return false;
+		}
+
+		int scancode = iek->get_physical_scancode_with_modifiers();
+
+		bool undo = false;
+		if (scancode == (KEY_Z | KEY_MASK_CTRL)) {
+			undo = true;
+		}
+
+		bool redo = false;
+		if (scancode == (KEY_Z | KEY_MASK_CTRL | KEY_MASK_SHIFT)) {
+			redo = true;
+		}
+
+		if (!undo && !redo) {
+			return false;
+		}
+
+		Vector2 local_position = get_local_mouse_position();
+
+		if (has_point(local_position)) {
+			if (redo) {
+				redo_action();
+				return true;
+			}
+
+			if (undo) {
+				undo_action();
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 PaintCanvas::PaintCanvas() {
 	_symmetry_x = false;
 	_symmetry_y = false;
@@ -336,6 +850,10 @@ PaintCanvas::PaintCanvas() {
 
 	_image_texture.instance();
 	_preview_image_texture.instance();
+
+	_mouse_down = false;
+	_mouse_button_down = -1;
+	_picked_color = false;
 }
 
 PaintCanvas::~PaintCanvas() {
@@ -343,6 +861,17 @@ PaintCanvas::~PaintCanvas() {
 
 void PaintCanvas::_notification(int p_what) {
 	switch (p_what) {
+		case NOTIFICATION_READY: {
+			//temp
+			resize(1, 1);
+			resize(128, 128);
+
+			if (!is_connected("current_tool_changed", this, "_on_tool_changed")) {
+				connect("current_tool_changed", this, "_on_tool_changed");
+			}
+
+			_on_tool_changed();
+		} break;
 		case NOTIFICATION_DRAW: {
 			draw_texture(_image_texture, Point2());
 			draw_texture(_preview_image_texture, Point2());
@@ -414,6 +943,22 @@ void PaintCanvas::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_image_texture"), &PaintCanvas::get_image_texture);
 	ClassDB::bind_method(D_METHOD("get_preview_image_texture"), &PaintCanvas::get_preview_image_texture);
+
+	ClassDB::bind_method(D_METHOD("handle_draw", "local_position", "event"), &PaintCanvas::handle_draw);
+	ClassDB::bind_method(D_METHOD("get_current_color"), &PaintCanvas::get_current_color);
+
+	ClassDB::bind_method(D_METHOD("draw_brush_preview"), &PaintCanvas::draw_brush_preview);
+
+	ClassDB::bind_method(D_METHOD("do_action", "arr"), &PaintCanvas::do_action);
+	ClassDB::bind_method(D_METHOD("commit_action"), &PaintCanvas::commit_action);
+	ClassDB::bind_method(D_METHOD("redo_action"), &PaintCanvas::redo_action);
+	ClassDB::bind_method(D_METHOD("undo_action"), &PaintCanvas::undo_action);
+
+	ClassDB::bind_method(D_METHOD("has_point", "pos"), &PaintCanvas::has_point);
+
+	ClassDB::bind_method(D_METHOD("get_action"), &PaintCanvas::get_action);
+	ClassDB::bind_method(D_METHOD("_on_tool_changed"), &PaintCanvas::_on_tool_changed);
+	ClassDB::bind_method(D_METHOD("tool_process", "local_position", "event"), &PaintCanvas::tool_process);
 
 	BIND_ENUM_CONSTANT(TOOL_PENCIL);
 	BIND_ENUM_CONSTANT(TOOL_BRUSH);

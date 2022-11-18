@@ -7,6 +7,7 @@
 
 class Image;
 class ImageTexture;
+class PaintAction;
 
 class PaintCanvas : public PaintNode {
 	GDCLASS(PaintCanvas, PaintNode);
@@ -81,6 +82,26 @@ public:
 	Ref<ImageTexture> get_image_texture();
 	Ref<ImageTexture> get_preview_image_texture();
 
+	void handle_draw(const Vector2 &local_position, const Ref<InputEvent> &event);
+	Color get_current_color();
+	void update_mouse_position(const Vector2 &local_position, const Ref<InputEvent> &event);
+	void handle_left_mouse_button_down(const Vector2 &local_position, const Ref<InputEvent> &event);
+	void handle_left_mouse_button_up(const Vector2 &local_position, const Ref<InputEvent> &event);
+	void handle_right_mouse_button_down(const Vector2 &local_position, const Ref<InputEvent> &event);
+
+	void draw_brush_preview();
+	void do_action(const Array &arr);
+	void commit_action();
+	void redo_action();
+	void undo_action();
+
+	bool has_point(const Vector2 &pos);
+
+	Ref<PaintAction> get_action();
+	void _on_tool_changed();
+	void tool_process(const Vector2 &local_position, const Ref<InputEvent> &event);
+	bool _forward_canvas_gui_input(const Ref<InputEvent> &event);
+
 	PaintCanvas();
 	~PaintCanvas();
 
@@ -102,6 +123,29 @@ protected:
 
 	Ref<ImageTexture> _image_texture;
 	Ref<ImageTexture> _preview_image_texture;
+
+	bool _mouse_down;
+	int _mouse_button_down;
+
+	Vector<Ref<PaintAction>> _actions_history;
+	Vector<Ref<PaintAction>> _redo_history;
+	Ref<PaintAction> _current_action;
+
+	bool _picked_color;
+
+	PoolVector2iArray _selection_cells;
+	PoolColorArray _selection_colors;
+
+	Vector2i _cut_pos;
+	Vector2i _cut_size;
+
+	Vector2 _mouse_position;
+	Vector2 _canvas_mouse_position;
+	Vector2 _cell_mouse_position;
+
+	Vector2 _last_mouse_position;
+	Vector2 _last_canvas_mouse_position;
+	Vector2 _last_cell_mouse_position;
 };
 
 VARIANT_ENUM_CAST(PaintCanvas::Tools);
