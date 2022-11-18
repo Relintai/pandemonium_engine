@@ -146,6 +146,8 @@ protected:
 	Vector2 _last_mouse_position;
 	Vector2 _last_canvas_mouse_position;
 	Vector2 _last_cell_mouse_position;
+
+	bool _was_mouse_outside;
 };
 
 VARIANT_ENUM_CAST(PaintCanvas::Tools);

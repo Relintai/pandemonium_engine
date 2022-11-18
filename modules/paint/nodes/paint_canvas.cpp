@@ -774,8 +774,10 @@ bool PaintCanvas::_forward_canvas_gui_input(const Ref<InputEvent> &event) {
 		_mouse_position = get_global_mouse_position();
 		_cell_mouse_position = local_position;
 
-		if (_mouse_down) {
-			if (has_point(local_position)) {
+		if (has_point(local_position)) {
+			_was_mouse_outside = false;
+
+			if (_mouse_down) {
 				//handle_draw(local_position, event)
 				_cell_mouse_position = local_position;
 
@@ -787,9 +789,14 @@ bool PaintCanvas::_forward_canvas_gui_input(const Ref<InputEvent> &event) {
 				_last_cell_mouse_position = local_position;
 
 				return true;
+			} else {
+				draw_brush_preview();
 			}
 		} else {
-			draw_brush_preview();
+			if (!_was_mouse_outside) {
+				clear_preview();
+				_was_mouse_outside = true;
+			}
 		}
 
 		_last_mouse_position = _mouse_position;
@@ -844,6 +851,7 @@ PaintCanvas::PaintCanvas() {
 	_brush_size = 1;
 	_current_tool = 0;
 	_previous_tool = 0;
+	_was_mouse_outside = true;
 
 	_image.instance();
 	_preview_image.instance();
