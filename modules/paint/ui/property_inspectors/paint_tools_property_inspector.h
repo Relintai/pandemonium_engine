@@ -39,7 +39,8 @@ class PaintToolsPropertyInspector : public PaintCustomPropertyInspector {
 	GDCLASS(PaintToolsPropertyInspector, PaintCustomPropertyInspector);
 
 public:
-	void add_button(int id, const String &hint, const String &icon, const String &theme_type);
+	void add_tool_button(int id, const String &hint, const String &icon, const String &theme_type);
+	void add_action_button(const String &callback, const String &hint, const String &icon, const String &theme_type);
 	void add_brush_prefab(int id, const Ref<Texture> &normal_texture, const Ref<Texture> &hover_texture);
 
 	void _on_paint_node_selected(Node *paint_node);
@@ -53,6 +54,8 @@ protected:
 	void _on_brush_prefab_button_pressed(const int id);
 	void _on_brush_size_slider_value_changed(const float value);
 	void _on_brush_size_changed();
+	void _on_undo_pressed();
+	void _on_redo_pressed();
 
 	static void _bind_methods();
 

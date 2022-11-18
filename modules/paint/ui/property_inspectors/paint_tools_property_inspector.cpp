@@ -43,7 +43,7 @@ SOFTWARE.
 #include "editor/editor_node.h"
 #endif
 
-void PaintToolsPropertyInspector::add_button(int id, const String &hint, const String &icon, const String &theme_type) {
+void PaintToolsPropertyInspector::add_tool_button(int id, const String &hint, const String &icon, const String &theme_type) {
 	Button *button = memnew(Button);
 
 	Ref<Texture> icon_tex;
@@ -63,6 +63,27 @@ void PaintToolsPropertyInspector::add_button(int id, const String &hint, const S
 	button->set_button_group(_group);
 	button->set_meta("button_id", id);
 	button->connect("toggled", this, "_on_button_toggled", varray(id));
+
+	_grid->add_child(button);
+}
+
+void PaintToolsPropertyInspector::add_action_button(const String &callback, const String &hint, const String &icon, const String &theme_type) {
+	Button *button = memnew(Button);
+
+	Ref<Texture> icon_tex;
+
+#ifdef TOOLS_ENABLED
+	if (EditorNode::get_singleton() && Engine::get_singleton()->is_editor_hint()) {
+		icon_tex = EditorNode::get_singleton()->get_gui_base()->get_theme_icon(icon, theme_type);
+	} else
+#endif
+	{
+		icon_tex = get_theme_icon(icon, theme_type);
+	}
+
+	button->set_icon(icon_tex);
+	button->set_tooltip(hint);
+	button->connect("pressed", this, callback);
 
 	_grid->add_child(button);
 }
@@ -106,17 +127,19 @@ PaintToolsPropertyInspector::PaintToolsPropertyInspector() {
 	_grid->set_h_size_flags(SIZE_EXPAND_FILL);
 	_grid->set_v_size_flags(SIZE_EXPAND_FILL);
 
-	add_button(PaintCanvas::TOOL_PENCIL, "Pencil", "Edit", "EditorIcons");
-	add_button(PaintCanvas::TOOL_BRUSH, "Brush", "CanvasItem", "EditorIcons");
-	add_button(PaintCanvas::TOOL_BUCKET, "Bucket", "Bucket", "EditorIcons");
-	add_button(PaintCanvas::TOOL_RAINBOW, "Rainbow", "StyleBoxLine", "EditorIcons");
-	add_button(PaintCanvas::TOOL_LINE, "Line", "CurveLinear", "EditorIcons");
-	add_button(PaintCanvas::TOOL_RECT, "Rect", "Panels1", "EditorIcons");
-	add_button(PaintCanvas::TOOL_DARKEN, "Darken", "ArrowDown", "EditorIcons");
-	add_button(PaintCanvas::TOOL_BRIGHTEN, "Brighten", "ArrowUp", "EditorIcons");
-	add_button(PaintCanvas::TOOL_COLORPICKER, "Colorpicker", "ColorPick", "EditorIcons");
-	add_button(PaintCanvas::TOOL_CUT, "Cut", "ActionCut", "EditorIcons");
-	add_button(PaintCanvas::TOOL_PASTECUT, "Pastecut", "ActionCopy", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_PENCIL, "Pencil", "Edit", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_BRUSH, "Brush", "CanvasItem", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_BUCKET, "Bucket", "Bucket", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_RAINBOW, "Rainbow", "StyleBoxLine", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_LINE, "Line", "CurveLinear", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_RECT, "Rect", "Panels1", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_DARKEN, "Darken", "ArrowDown", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_BRIGHTEN, "Brighten", "ArrowUp", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_COLORPICKER, "Colorpicker", "ColorPick", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_CUT, "Cut", "ActionCut", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_PASTECUT, "Pastecut", "ActionCopy", "EditorIcons");
+	add_action_button("_on_undo_pressed", "Undo", "ArrowLeft", "EditorIcons");
+	add_action_button("_on_redo_pressed", "Redo", "ArrowRight", "EditorIcons");
 
 	_brush_prefabs = memnew(HFlowContainer);
 	box_container->add_child(_brush_prefabs);
@@ -216,10 +239,28 @@ void PaintToolsPropertyInspector::_on_brush_size_changed() {
 	_brush_size_label->set_text(itos(paint_canvas->get_brush_size()));
 }
 
+void PaintToolsPropertyInspector::_on_undo_pressed() {
+	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(ObjectDB::get_instance(_paint_canvas));
+
+	ERR_FAIL_COND(!paint_canvas);
+
+	//paint_canvas->undo_action();
+}
+void PaintToolsPropertyInspector::_on_redo_pressed() {
+	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(ObjectDB::get_instance(_paint_canvas));
+
+	ERR_FAIL_COND(!paint_canvas);
+
+	//paint_canvas->redo_action();
+}
+
 void PaintToolsPropertyInspector::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_button_toggled"), &PaintToolsPropertyInspector::_on_button_toggled);
 	ClassDB::bind_method(D_METHOD("_on_tool_changed"), &PaintToolsPropertyInspector::_on_tool_changed);
 	ClassDB::bind_method(D_METHOD("_on_brush_prefab_button_pressed"), &PaintToolsPropertyInspector::_on_brush_prefab_button_pressed);
 	ClassDB::bind_method(D_METHOD("_on_brush_size_slider_value_changed"), &PaintToolsPropertyInspector::_on_brush_size_slider_value_changed);
 	ClassDB::bind_method(D_METHOD("_on_brush_size_changed"), &PaintToolsPropertyInspector::_on_brush_size_changed);
+
+	ClassDB::bind_method(D_METHOD("_on_undo_pressed"), &PaintToolsPropertyInspector::_on_undo_pressed);
+	ClassDB::bind_method(D_METHOD("_on_redo_pressed"), &PaintToolsPropertyInspector::_on_redo_pressed);
 }
