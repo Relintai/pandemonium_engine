@@ -17,7 +17,6 @@ public:
 		NOTIFICATION_PAINT_PROJECT_POST_SAVE = 2502,
 	};
 
-
 	Vector2i get_size();
 	void set_size(const Vector2i &size);
 
