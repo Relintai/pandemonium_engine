@@ -61,7 +61,7 @@ PaintNode *PaintVisualGrid::get_paint_node() {
 void PaintVisualGrid::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
-		case PaintNode::NOTIFICATION_PAINT_NODE_RESIZED: {
+		case PaintNode::NOTIFICATION_PARENT_PAINT_NODE_RESIZED: {
 			PaintNode *pn = get_paint_node();
 
 			if (pn) {

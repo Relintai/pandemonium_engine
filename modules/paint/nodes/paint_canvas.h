@@ -69,8 +69,8 @@ public:
 	void clear_preview();
 	void update_textures();
 
-	void resize(const int width, const int height);
-	void resize_image(Ref<Image> image);
+	void resize_crop(const int width, const int height);
+	void resize_interpolate(const int width, const int height, Image::Interpolation p_interpolation = Image::INTERPOLATE_BILINEAR);
 
 	PoolVector2iArray select_color(const int p_x, const int p_y);
 	PoolVector2iArray select_same_color(const int p_x, const int p_y);
@@ -108,6 +108,8 @@ public:
 	~PaintCanvas();
 
 protected:
+	void _on_size_changed();
+
 	void _notification(int p_what);
 
 	static void _bind_methods();

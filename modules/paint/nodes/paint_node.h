@@ -12,7 +12,7 @@ class PaintNode : public Node2D {
 
 public:
 	enum {
-		NOTIFICATION_PAINT_NODE_RESIZED = 2500,
+		NOTIFICATION_PARENT_PAINT_NODE_RESIZED = 2500,
 		NOTIFICATION_PAINT_PROJECT_PRE_SAVE = 2501,
 		NOTIFICATION_PAINT_PROJECT_POST_SAVE = 2502,
 	};
@@ -43,10 +43,12 @@ public:
 	virtual bool _forward_canvas_gui_input(const Ref<InputEvent> &p_event);
 
 	PaintProject *get_paint_project();
+	PaintNode *get_parent_paint_node();
+	PaintNode *find_parent_paint_node();
 
 	String get_configuration_warning() const;
 
-	virtual void _propagate_notification_resized();
+	void _propagate_notification_resized();
 	void _propagate_notification_project_pre_save();
 	void _propagate_notification_project_post_save();
 

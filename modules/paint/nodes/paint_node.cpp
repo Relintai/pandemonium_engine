@@ -7,12 +7,15 @@ Vector2i PaintNode::get_size() {
 	return _size;
 }
 void PaintNode::set_size(const Vector2i &size) {
+	if (size == _size) {
+		return;
+	}
+
 	_size = size;
 
-	if (is_inside_tree()) {
-		_propagate_notification_resized();
-		update();
-	}
+	emit_signal("size_changed");
+	_propagate_notification_resized();
+	update();
 }
 
 bool PaintNode::get_draw_outline() {
@@ -21,9 +24,7 @@ bool PaintNode::get_draw_outline() {
 void PaintNode::set_draw_outline(const bool val) {
 	_draw_outline = val;
 
-	if (is_inside_tree()) {
-		update();
-	}
+	update();
 }
 
 void PaintNode::save_image() {
@@ -88,6 +89,26 @@ PaintProject *PaintNode::get_paint_project() {
 	return NULL;
 }
 
+PaintNode *PaintNode::get_parent_paint_node() {
+	return Object::cast_to<PaintNode>(get_parent());
+}
+
+PaintNode *PaintNode::find_parent_paint_node() {
+	Node *p = get_parent();
+
+	while (p) {
+		PaintNode *pn = Object::cast_to<PaintNode>(p);
+
+		if (pn) {
+			return pn;
+		}
+
+		p = Object::cast_to<PaintNode>(p->get_parent());
+	}
+
+	return NULL;
+}
+
 String PaintNode::get_configuration_warning() const {
 	const PaintNode *p = this;
 
@@ -105,13 +126,14 @@ String PaintNode::get_configuration_warning() const {
 }
 
 void PaintNode::_propagate_notification_resized() {
-	notification(NOTIFICATION_PAINT_NODE_RESIZED);
+	//Only send it to children
+	//So if they don't resize themselves, the notification stops
 
 	for (int i = 0; i < get_child_count(); ++i) {
 		PaintNode *pn = Object::cast_to<PaintNode>(get_child(i));
 
 		if (pn) {
-			pn->_propagate_notification_resized();
+			pn->notification(NOTIFICATION_PARENT_PAINT_NODE_RESIZED);
 		}
 	}
 }
@@ -148,6 +170,15 @@ PaintNode::~PaintNode() {
 
 void PaintNode::_notification(int p_what) {
 	switch (p_what) {
+		case NOTIFICATION_POST_ENTER_TREE: {
+			if (get_size() == Vector2i(0, 0)) {
+				PaintNode *pn = get_parent_paint_node();
+
+				if (pn) {
+					set_size(pn->get_size());
+				}
+			}
+		} break;
 		case NOTIFICATION_DRAW: {
 			if (_draw_outline) {
 				draw_line(Point2(0, 0), Point2(_size.x, 0), Color(0, 0, 0, 1));
@@ -162,6 +193,8 @@ void PaintNode::_notification(int p_what) {
 }
 
 void PaintNode::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("size_changed"));
+
 	ClassDB::bind_method(D_METHOD("get_size"), &PaintNode::get_size);
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &PaintNode::set_size);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "size"), "set_size", "get_size");
@@ -193,8 +226,10 @@ void PaintNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_forward_canvas_gui_input", "event"), &PaintNode::_forward_canvas_gui_input);
 
 	ClassDB::bind_method(D_METHOD("get_paint_project"), &PaintNode::get_paint_project);
+	ClassDB::bind_method(D_METHOD("get_parent_paint_node"), &PaintNode::get_parent_paint_node);
+	ClassDB::bind_method(D_METHOD("find_parent_paint_node"), &PaintNode::find_parent_paint_node);
 
-	BIND_CONSTANT(NOTIFICATION_PAINT_NODE_RESIZED);
+	BIND_CONSTANT(NOTIFICATION_PARENT_PAINT_NODE_RESIZED);
 	BIND_CONSTANT(NOTIFICATION_PAINT_PROJECT_PRE_SAVE);
 	BIND_CONSTANT(NOTIFICATION_PAINT_PROJECT_POST_SAVE);
 }

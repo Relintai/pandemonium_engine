@@ -92,9 +92,6 @@ void PaintProject::add_paint_visual_grid() {
 	}
 }
 
-void PaintProject::_propagate_notification_resized() {
-}
-
 PaintProject::PaintProject() {
 	_current_color = Color(1, 1, 1, 1);
 }

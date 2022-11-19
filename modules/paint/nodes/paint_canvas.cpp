@@ -176,70 +176,71 @@ void PaintCanvas::clear() {
 
 void PaintCanvas::clear_preview() {
 	_preview_image->fill(Color(1.00, 1.00, 1.00, 0.00));
-
 	_preview_image_texture->create_from_image(_preview_image, 0);
 }
 
 void PaintCanvas::update_textures() {
-	_image_texture->create_from_image(_image, 0);
-	_preview_image_texture->create_from_image(_preview_image, 0);
+	if (!_image->empty()) {
+		_image_texture->create_from_image(_image, 0);
+	}
+
+	if (!_preview_image->empty()) {
+		_preview_image_texture->create_from_image(_preview_image, 0);
+	}
 
 	update();
 }
 
-void PaintCanvas::resize(int width, int height) {
-	if (get_size().x == width && get_size().y == height) {
+void PaintCanvas::resize_crop(int width, int height) {
+	Vector2i size = get_size();
+
+	if (size.x == width && size.y == height) {
 		return;
 	}
 
-	if (width < 0) {
-		width = 1;
+	if (width <= 0 || height <= 0) {
+		_image->clear();
+		_preview_image->clear();
+
+		update_textures();
+
+		set_size(Vector2i(width, height));
+
+		return;
 	}
 
-	if (height < 0) {
-		height = 1;
-	}
-
-	set_size(Vector2i(width, height));
-
-	resize_image(_image);
-	resize_image(_preview_image);
+	_image->crop(width, height);
+	_preview_image->crop(width, height);
 
 	update_textures();
+
+	set_size(Vector2i(width, height));
 }
 
-void PaintCanvas::resize_image(Ref<Image> image) {
-	ERR_FAIL_COND(!image.is_valid());
+void PaintCanvas::resize_interpolate(const int width, const int height, Image::Interpolation p_interpolation) {
+	Vector2i size = get_size();
 
-	PoolColorArray pixel_colors;
-	int prev_width = image->get_size().x;
-	int prev_height = image->get_size().y;
-
-	if (prev_width != 0 && prev_height != 0) {
-		image->lock();
-		for (int y = 0; y < prev_height; ++y) {
-			for (int x = 0; x < prev_width; ++x) {
-				pixel_colors.append(image->get_pixel(x, y));
-			}
-		}
-		image->unlock();
+	if (size.x == width && size.y == height) {
+		return;
 	}
 
-	image->create(get_size().x, get_size().y, false, Image::FORMAT_RGBA8);
+	if (width <= 0 || height <= 0) {
+		_image->clear();
+		_preview_image->clear();
 
-	image->lock();
+		update_textures();
 
-	for (int x = 0; x < prev_width; ++x) {
-		for (int y = 0; y < prev_height; ++y) {
-			if (x >= get_size().x || y >= get_size().y) {
-				continue;
-			}
+		set_size(Vector2i(width, height));
 
-			image->set_pixel(x, y, pixel_colors[PaintUtilities::to_1D(x, y, prev_width)]);
-		}
+		return;
 	}
 
-	image->unlock();
+	_image->resize(width, height, p_interpolation);
+	_preview_image->resize(width, height, p_interpolation);
+
+	update_textures();
+
+	set_size(Vector2i(width, height));
 }
 
 PoolVector2iArray PaintCanvas::select_color(const int p_x, const int p_y) {
@@ -871,13 +872,39 @@ PaintCanvas::PaintCanvas() {
 PaintCanvas::~PaintCanvas() {
 }
 
+void PaintCanvas::_on_size_changed() {
+	Vector2i size = get_size();
+
+	if (size.x <= 0 || size.y <= 0) {
+		_image->clear();
+		_preview_image->clear();
+
+		update_textures();
+
+		return;
+	}
+
+	if (_image->empty()) {
+		_image->create(size.x, size.y, false, Image::FORMAT_RGBA8);
+	} else {
+		_image->crop(size.x, size.y);
+	}
+
+	if (_preview_image->empty()) {
+		_preview_image->create(size.x, size.y, false, Image::FORMAT_RGBA8);
+	} else {
+		_preview_image->crop(size.x, size.y);
+	}
+
+	update_textures();
+}
+
 void PaintCanvas::_notification(int p_what) {
 	switch (p_what) {
+		case NOTIFICATION_POSTINITIALIZE: {
+			connect("size_changed", this, "_on_size_changed");
+		} break;
 		case NOTIFICATION_READY: {
-			//temp
-			resize(1, 1);
-			resize(128, 128);
-
 			if (!is_connected("current_tool_changed", this, "_on_tool_changed")) {
 				connect("current_tool_changed", this, "_on_tool_changed");
 			}
@@ -885,8 +912,13 @@ void PaintCanvas::_notification(int p_what) {
 			_on_tool_changed();
 		} break;
 		case NOTIFICATION_DRAW: {
-			draw_texture(_image_texture, Point2());
-			draw_texture(_preview_image_texture, Point2());
+			if (!_image->empty()) {
+				draw_texture(_image_texture, Point2());
+			}
+
+			if (!_preview_image->empty()) {
+				draw_texture(_preview_image_texture, Point2());
+			}
 		} break;
 	}
 }
@@ -943,8 +975,8 @@ void PaintCanvas::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("clear_preview"), &PaintCanvas::clear_preview);
 	ClassDB::bind_method(D_METHOD("update_textures"), &PaintCanvas::update_textures);
 
-	ClassDB::bind_method(D_METHOD("resize", "width", "height"), &PaintCanvas::resize);
-	ClassDB::bind_method(D_METHOD("resize_image", "image"), &PaintCanvas::resize_image);
+	ClassDB::bind_method(D_METHOD("resize_crop", "width", "height"), &PaintCanvas::resize_crop);
+	ClassDB::bind_method(D_METHOD("resize_interpolate", "width", "height", "interpolation"), &PaintCanvas::resize_interpolate, Image::INTERPOLATE_BILINEAR);
 
 	ClassDB::bind_method(D_METHOD("select_color", "x", "y"), &PaintCanvas::select_color);
 	ClassDB::bind_method(D_METHOD("select_same_color", "x", "y"), &PaintCanvas::select_same_color);
@@ -971,6 +1003,8 @@ void PaintCanvas::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_action"), &PaintCanvas::get_action);
 	ClassDB::bind_method(D_METHOD("_on_tool_changed"), &PaintCanvas::_on_tool_changed);
 	ClassDB::bind_method(D_METHOD("tool_process", "local_position", "event"), &PaintCanvas::tool_process);
+
+	ClassDB::bind_method(D_METHOD("_on_size_changed"), &PaintCanvas::_on_size_changed);
 
 	BIND_ENUM_CONSTANT(TOOL_PENCIL);
 	BIND_ENUM_CONSTANT(TOOL_BRUSH);
