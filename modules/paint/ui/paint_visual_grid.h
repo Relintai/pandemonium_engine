@@ -31,21 +31,24 @@ class PaintVisualGrid : public Control {
 	GDCLASS(PaintVisualGrid, Control);
 
 public:
+	int get_grid_size();
 	void set_grid_size(const int gs);
+
+	Color get_grid_color();
+	void set_grid_color(const Color &val);
 
 	void _draw();
 
 	PaintVisualGrid();
 	~PaintVisualGrid();
 
-	Color color;
-	int size;
-	//float zoom;
-	//Vector2 offset;
-
 protected:
 	void _notification(int p_what);
+
 	static void _bind_methods();
+
+	Color _grid_color;
+	int _grid_size;
 };
 
 #endif

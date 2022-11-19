@@ -24,90 +24,59 @@ SOFTWARE.
 
 #include "paint_visual_grid.h"
 
+int PaintVisualGrid::get_grid_size() {
+	return _grid_size;
+}
 void PaintVisualGrid::set_grid_size(const int gs) {
-	size = gs;
+	_grid_size = gs;
+	update();
+}
+
+Color PaintVisualGrid::get_grid_color() {
+	return _grid_color;
+}
+void PaintVisualGrid::set_grid_color(const Color &val) {
+	_grid_color = val;
 	update();
 }
 
 void PaintVisualGrid::_draw() {
-	if (size == 0) {
-		size = 1;
-	}
-
-	Size2 rect_size = get_size();
-	int sx = rect_size.x;
-	int sy = rect_size.y;
-
-	for (int x = 0; x < sx; x += size) {
-		draw_line(Vector2(x, 0), Vector2(x, sy), color, 1);
-	}
-
-	for (int y = 0; y < sy; y += size) {
-		draw_line(Vector2(0, y), Vector2(sx, y), color, 1);
-	}
-
-	/*
-	  float temp_size = size + zoom;
-
-	  Vector2 wrap_offset = Vector2(Math::wrapf(offset.x, 0, temp_size), Math::wrapf(offset.y, 0, temp_size));
-
-	  Size2 rect_size = get_size();
-
-	  float ceil_x = Math::ceil(rect_size.x / temp_size);
-	  float ceil_y = Math::ceil(rect_size.y / temp_size);
-
-	  for (int i = 0; i < ceil_y; ++i) {
-		  Point2 start_x = Vector2(0, (i * temp_size) + wrap_offset.y);
-		  Point2 end_x = Vector2(rect_size.x, (i * temp_size) + wrap_offset.y);
-		  //var end_x = Vector2(int(rect_size.x) + size - int(rect_size.x) % size, (i * temp_size) + wrap_offset.y);
-		  draw_line(start_x, end_x, color, 1);
-	  }
-
-	  for (int i = 0; i < ceil_x; ++i) {
-		  Point2 start_y = Vector2((i * temp_size) + wrap_offset.x, 0);
-		  Point2 end_y = Vector2((i * temp_size) + (wrap_offset.x), rect_size.y);
-		  //var end_y = Vector2((i * temp_size) + (wrap_offset.x), int(rect_size.y) + size - int(rect_size.y) % size);
-		  draw_line(start_y, end_y, color, 1);
-	  }
-	*/
 }
 
 void PaintVisualGrid::_notification(int p_what) {
-	/*
-	func _enter_tree():
-	set_process(true)
-
-	func _process(delta):
-	if not is_visible_in_tree():
-		return
-	update()
-	*/
-
 	switch (p_what) {
-		/*
-		case NOTIFICATION_PROCESS: {
-			if (!is_visible_in_tree()) {
-				return;
+		case NOTIFICATION_DRAW: {
+			ERR_FAIL_COND(_grid_size <= 0);
+
+			Size2 rect_size = get_size();
+			int sx = rect_size.x;
+			int sy = rect_size.y;
+
+			for (int x = 0; x < sx; x += _grid_size) {
+				draw_line(Vector2(x, 0), Vector2(x, sy), _grid_color, 1);
 			}
 
-			update();
-		} break;
-		*/
-		case NOTIFICATION_DRAW: {
-			_draw();
+			for (int y = 0; y < sy; y += _grid_size) {
+				draw_line(Vector2(0, y), Vector2(sx, y), _grid_color, 1);
+			}
 		} break;
 	}
 }
 
 PaintVisualGrid::PaintVisualGrid() {
-	color = Color(1, 1, 1, 0.42);
-	size = 16;
-	//zoom = 0;
+	_grid_color = Color(1, 1, 1, 0.42);
+	_grid_size = 2;
 }
 
 PaintVisualGrid::~PaintVisualGrid() {
 }
 
 void PaintVisualGrid::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_grid_size"), &PaintVisualGrid::get_grid_size);
 	ClassDB::bind_method(D_METHOD("set_grid_size", "size"), &PaintVisualGrid::set_grid_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "grid_size"), "set_grid_size", "get_grid_size");
+
+	ClassDB::bind_method(D_METHOD("get_grid_color"), &PaintVisualGrid::get_grid_color);
+	ClassDB::bind_method(D_METHOD("set_grid_color", "color"), &PaintVisualGrid::set_grid_color);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "grid_color"), "set_grid_color", "get_grid_color");
 }
