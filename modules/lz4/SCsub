@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+Import("env")
+
+env_mlp = env.Clone()
+
+sources = [
+    "register_types.cpp",
+    "lz4_compressor.cpp",
+    "thirdparty/lz4/lz4.c",
+]
+
+env_mlp.add_source_files(env.modules_sources, sources)
