@@ -24,6 +24,8 @@ SOFTWARE.
 
 #include "paint_canvas_background.h"
 
+#include "../nodes/paint_node.h"
+
 int PaintCanvasBackground::get_grid_size() const {
 	return _grid_size;
 }
@@ -51,6 +53,22 @@ void PaintCanvasBackground::set_grid_white(const Color &val) {
 	update();
 }
 
+PaintNode *PaintCanvasBackground::get_paint_node() {
+	Node *p = this;
+
+	while (p) {
+		PaintNode *pn = Object::cast_to<PaintNode>(p);
+
+		if (pn) {
+			return pn;
+		}
+
+		p = p->get_parent();
+	}
+
+	return NULL;
+}
+
 PaintCanvasBackground::PaintCanvasBackground() {
 	_grid_size = 8;
 
@@ -63,6 +81,13 @@ PaintCanvasBackground::~PaintCanvasBackground() {
 
 void PaintCanvasBackground::_notification(int p_what) {
 	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE: {
+			PaintNode *pn = get_paint_node();
+
+			if (pn) {
+				set_size(pn->get_size());
+			}
+		} break;
 		case NOTIFICATION_DRAW: {
 			ERR_FAIL_COND(_grid_size <= 0);
 

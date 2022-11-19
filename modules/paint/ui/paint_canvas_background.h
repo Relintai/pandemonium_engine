@@ -32,6 +32,7 @@ SOFTWARE.
 class ShaderMaterial;
 class Shader;
 class Image;
+class PaintNode;
 
 class PaintCanvasBackground : public TextureRect {
 	GDCLASS(PaintCanvasBackground, TextureRect);
@@ -45,6 +46,8 @@ public:
 
 	Color get_grid_white() const;
 	void set_grid_white(const Color &val);
+
+	PaintNode *get_paint_node();
 
 	PaintCanvasBackground();
 	~PaintCanvasBackground();

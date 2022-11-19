@@ -27,6 +27,8 @@ SOFTWARE.
 
 #include "scene/gui/control.h"
 
+class PaintNode;
+
 class PaintVisualGrid : public Control {
 	GDCLASS(PaintVisualGrid, Control);
 
@@ -37,7 +39,7 @@ public:
 	Color get_grid_color();
 	void set_grid_color(const Color &val);
 
-	void _draw();
+	PaintNode *get_paint_node();
 
 	PaintVisualGrid();
 	~PaintVisualGrid();
