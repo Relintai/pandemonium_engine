@@ -23,6 +23,9 @@ public:
 
 	void set_colors_as_default();
 
+	void add_paint_canvas_backgorund();
+	void add_paint_visual_grid();
+
 	PaintProject();
 	~PaintProject();
 

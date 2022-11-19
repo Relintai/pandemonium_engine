@@ -1,6 +1,10 @@
 #include "paint_project.h"
 
 #include "core/config/project_settings.h"
+#include "../ui/paint_canvas_background.h"
+#include "../ui/paint_visual_grid.h"
+
+#include "core/config/engine.h"
 
 Color PaintProject::get_current_color() {
 	return _current_color;
@@ -54,6 +58,25 @@ void PaintProject::set_colors_as_default() {
 	}
 }
 
+void PaintProject::add_paint_canvas_backgorund() {
+	PaintCanvasBackground *bg = memnew(PaintCanvasBackground);
+	add_child(bg);
+	move_child(bg, 0);
+
+	if (Engine::get_singleton()->is_editor_hint()) {
+		bg->set_owner(get_tree()->get_edited_scene_root());
+	}
+}
+void PaintProject::add_paint_visual_grid() {
+	PaintVisualGrid *grid = memnew(PaintVisualGrid);
+	add_child(grid);
+	move_child(grid, 0);
+
+	if (Engine::get_singleton()->is_editor_hint()) {
+		grid->set_owner(get_tree()->get_edited_scene_root());
+	}
+}
+
 PaintProject::PaintProject() {
 	_current_color = Color(1, 1, 1, 1);
 }
@@ -90,5 +113,10 @@ void PaintProject::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_COLOR_ARRAY, "color_presets"), "set_color_presets", "get_color_presets");
 
 	ClassDB::bind_method(D_METHOD("set_colors_as_default"), &PaintProject::set_colors_as_default);
-	ADD_PROPERTY(PropertyInfo(Variant::NIL, "set_colors_as_default", PROPERTY_HINT_BUTTON, "set_colors_as_default"), "", "");
+	ADD_PROPERTY(PropertyInfo(Variant::NIL, "run_set_colors_as_default", PROPERTY_HINT_BUTTON, "set_colors_as_default"), "", "");
+
+	ClassDB::bind_method(D_METHOD("add_paint_canvas_backgorund"), &PaintProject::add_paint_canvas_backgorund);
+	ClassDB::bind_method(D_METHOD("add_paint_visual_grid"), &PaintProject::add_paint_visual_grid);
+	ADD_PROPERTY(PropertyInfo(Variant::NIL, "run_add_paint_visual_grid", PROPERTY_HINT_BUTTON, "add_paint_visual_grid"), "", "");
+	ADD_PROPERTY(PropertyInfo(Variant::NIL, "run_add_paint_canvas_backgorund", PROPERTY_HINT_BUTTON, "add_paint_canvas_backgorund"), "", "");
 }
