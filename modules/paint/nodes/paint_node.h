@@ -11,11 +11,21 @@ class PaintNode : public Node2D {
 	GDCLASS(PaintNode, Node2D);
 
 public:
+	enum {
+		NOTIFICATION_PAINT_NODE_RESIZED = 2500,
+		NOTIFICATION_PAINT_PROJECT_PRE_SAVE = 2501,
+		NOTIFICATION_PAINT_PROJECT_POST_SAVE = 2502,
+	};
+
+
 	Vector2i get_size();
 	void set_size(const Vector2i &size);
 
 	bool get_draw_outline();
 	void set_draw_outline(const bool val);
+
+	void save();
+	virtual void _save();
 
 	PoolVector2iArray util_get_pixels_in_line(const Vector2i &from, const Vector2i &to);
 
@@ -33,6 +43,8 @@ public:
 	PaintProject *get_paint_project();
 
 	String get_configuration_warning() const;
+
+	virtual void _propagate_notification_resized();
 
 	PaintNode();
 	~PaintNode();

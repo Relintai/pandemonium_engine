@@ -10,6 +10,7 @@ void PaintNode::set_size(const Vector2i &size) {
 	_size = size;
 
 	if (is_inside_tree()) {
+		_propagate_notification_resized();
 		update();
 	}
 }
@@ -23,6 +24,14 @@ void PaintNode::set_draw_outline(const bool val) {
 	if (is_inside_tree()) {
 		update();
 	}
+}
+
+void PaintNode::save() {
+	notification(NOTIFICATION_PAINT_PROJECT_PRE_SAVE);
+	call("_save");
+	notification(NOTIFICATION_PAINT_PROJECT_POST_SAVE);
+}
+void PaintNode::_save() {
 }
 
 PoolVector2iArray PaintNode::util_get_pixels_in_line(const Vector2i &from, const Vector2i &to) {
@@ -88,6 +97,18 @@ String PaintNode::get_configuration_warning() const {
 	return "This Node should be a child of a PaintProject!";
 }
 
+void PaintNode::_propagate_notification_resized() {
+	notification(NOTIFICATION_PAINT_NODE_RESIZED);
+
+	for (int i = 0; i < get_child_count(); ++i) {
+		PaintNode *pn = Object::cast_to<PaintNode>(get_child(i));
+
+		if (pn) {
+			pn->_propagate_notification_resized();
+		}
+	}
+}
+
 PaintNode::PaintNode() {
 	_draw_outline = true;
 }
@@ -119,6 +140,10 @@ void PaintNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_draw_outline", "val"), &PaintNode::set_draw_outline);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "draw_outline"), "set_draw_outline", "get_draw_outline");
 
+	BIND_VMETHOD(MethodInfo("_save"));
+	ClassDB::bind_method(D_METHOD("save"), &PaintNode::save);
+	ClassDB::bind_method(D_METHOD("_save"), &PaintNode::_save);
+
 	ClassDB::bind_method(D_METHOD("util_get_pixels_in_line", "from", "to"), &PaintNode::util_get_pixels_in_line);
 
 	ClassDB::bind_method(D_METHOD("util_to_1d_v", "p", "w"), &PaintNode::util_to_1d_v);
@@ -134,4 +159,8 @@ void PaintNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_forward_canvas_gui_input", "event"), &PaintNode::_forward_canvas_gui_input);
 
 	ClassDB::bind_method(D_METHOD("get_paint_project"), &PaintNode::get_paint_project);
+
+	BIND_CONSTANT(NOTIFICATION_PAINT_NODE_RESIZED);
+	BIND_CONSTANT(NOTIFICATION_PAINT_PROJECT_PRE_SAVE);
+	BIND_CONSTANT(NOTIFICATION_PAINT_PROJECT_POST_SAVE);
 }

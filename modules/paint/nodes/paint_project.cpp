@@ -1,8 +1,8 @@
 #include "paint_project.h"
 
-#include "core/config/project_settings.h"
 #include "../ui/paint_canvas_background.h"
 #include "../ui/paint_visual_grid.h"
+#include "core/config/project_settings.h"
 
 #include "core/config/engine.h"
 
@@ -75,6 +75,9 @@ void PaintProject::add_paint_visual_grid() {
 	if (Engine::get_singleton()->is_editor_hint()) {
 		grid->set_owner(get_tree()->get_edited_scene_root());
 	}
+}
+
+void PaintProject::_propagate_notification_resized() {
 }
 
 PaintProject::PaintProject() {

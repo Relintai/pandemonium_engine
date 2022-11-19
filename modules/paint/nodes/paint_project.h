@@ -26,6 +26,8 @@ public:
 	void add_paint_canvas_backgorund();
 	void add_paint_visual_grid();
 
+	void _propagate_notification_resized();
+
 	PaintProject();
 	~PaintProject();
 
