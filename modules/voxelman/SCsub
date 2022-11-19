@@ -57,8 +57,6 @@ sources = [
 
     "world/voxel_world_editor.cpp",
 
-    "thirdparty/lz4/lz4.c",
-
     "world/jobs/voxel_job.cpp",
     "world/jobs/voxel_terrain_job.cpp",
     "world/jobs/voxel_mesher_job_step.cpp",

@@ -43,8 +43,6 @@ sources = [
 
     "world/terrain_world_editor.cpp",
 
-    "thirdparty/lz4/lz4.c",
-
     "world/jobs/terrain_job.cpp",
     "world/jobs/terrain_terrain_job.cpp",
     "world/jobs/terrain_mesher_job_step.cpp",

@@ -47,8 +47,6 @@ sources = [
 
     "world/terrain_2d_world_editor.cpp",
 
-    "thirdparty/lz4/lz4.c",
-
     "world/jobs/terrain_2d_job.cpp",
     "world/jobs/terrain_2d_terrain_job.cpp",
     "world/jobs/terrain_2d_light_job.cpp",

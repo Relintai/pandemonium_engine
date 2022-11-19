@@ -24,8 +24,6 @@ SOFTWARE.
 
 #include "terrain_2d_world.h"
 
-#include "../thirdparty/lz4/lz4.h"
-
 #include "../defines.h"
 
 #include "core/object/message_queue.h"
@@ -35,6 +33,10 @@ SOFTWARE.
 #include "core/os/thread_pool.h"
 
 #include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_LZ4_ENABLED
+#include "modules/lz4/lz4_compressor.h"
+#endif
 
 _FORCE_INLINE_ bool Terrain2DChunk::get_process() const {
 	return _is_processing;
@@ -561,7 +563,7 @@ void Terrain2DChunk::channel_set_array(const int channel_index, const PoolByteAr
 
 PoolByteArray Terrain2DChunk::channel_get_compressed(const int channel_index) const {
 	PoolByteArray arr;
-
+#ifdef MODULE_LZ4_ENABLED
 	int size = _data_size_x * _data_size_y;
 
 	if (channel_index >= _channels.size())
@@ -572,20 +574,21 @@ PoolByteArray Terrain2DChunk::channel_get_compressed(const int channel_index) co
 	if (ch == NULL)
 		return arr;
 
-	int bound = LZ4_compressBound(size);
+	int bound = LZ4Compressor::LZ4_compressBound(size);
 	arr.resize(bound);
 
 	PoolByteArray::Write w = arr.write();
 
-	int ns = LZ4_compress_default(reinterpret_cast<char *>(ch), reinterpret_cast<char *>(w.ptr()), size, bound);
+	int ns = LZ4Compressor::LZ4_compress_default(reinterpret_cast<char *>(ch), reinterpret_cast<char *>(w.ptr()), size, bound);
 
 	w.release();
 
 	arr.resize(ns);
-
+#endif
 	return arr;
 }
 void Terrain2DChunk::channel_set_compressed(const int channel_index, const PoolByteArray &data) {
+#ifdef MODULE_LZ4_ENABLED
 	if (data.size() == 0)
 		return;
 
@@ -611,7 +614,8 @@ void Terrain2DChunk::channel_set_compressed(const int channel_index, const PoolB
 	//We are not going to write to it
 	uint8_t *data_arr = const_cast<uint8_t *>(r.ptr());
 
-	LZ4_decompress_safe(reinterpret_cast<char *>(data_arr), reinterpret_cast<char *>(ch), ds, size);
+	LZ4Compressor::LZ4_decompress_safe(reinterpret_cast<char *>(data_arr), reinterpret_cast<char *>(ch), ds, size);
+#endif
 }
 
 _FORCE_INLINE_ int Terrain2DChunk::get_index(const int x, const int y) const {

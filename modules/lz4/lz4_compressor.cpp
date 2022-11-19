@@ -42,7 +42,6 @@ PoolByteArray LZ4Compressor::decompress_data(const PoolByteArray &data) const {
 	PoolByteArray::Write w = arr.write();
 	uint8_t *wptr = w.ptr();
 
-
 	int ns = LZ4_decompress_safe(reinterpret_cast<const char *>(&ch[sizeof(int)]), reinterpret_cast<char *>(wptr), ds - sizeof(int), size);
 
 	if (ns != size) {
@@ -51,6 +50,16 @@ PoolByteArray LZ4Compressor::decompress_data(const PoolByteArray &data) const {
 	}
 
 	return arr;
+}
+
+int LZ4Compressor::LZ4_compressBound(int inputSize) {
+	return ::LZ4_compressBound(inputSize);
+}
+int LZ4Compressor::LZ4_compress_default(const char *src, char *dst, int srcSize, int dstCapacity) {
+	return ::LZ4_compress_default(src, dst, srcSize, dstCapacity);
+}
+int LZ4Compressor::LZ4_decompress_safe(const char *src, char *dst, int compressedSize, int dstCapacity) {
+	return ::LZ4_decompress_safe(src, dst, compressedSize, dstCapacity);
 }
 
 LZ4Compressor::LZ4Compressor() {
