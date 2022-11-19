@@ -84,6 +84,9 @@ public:
 
 	Ref<Image> _get_save_image();
 
+	PoolByteArray get_image_data_compressed();
+	void set_image_data_compressed(const PoolByteArray &arr);
+
 	void handle_draw(const Vector2 &local_position, const Ref<InputEvent> &event);
 	Color get_current_color();
 	void update_mouse_position(const Vector2 &local_position, const Ref<InputEvent> &event);

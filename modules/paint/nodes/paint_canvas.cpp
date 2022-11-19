@@ -19,6 +19,12 @@
 #include "paint_project.h"
 #include "scene/resources/texture.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_LZ4_ENABLED
+#include "modules/lz4/lz4_compressor.h"
+#endif
+
 bool PaintCanvas::get_symmetry_x() const {
 	return _symmetry_x;
 }
@@ -340,6 +346,75 @@ Ref<ImageTexture> PaintCanvas::get_preview_image_texture() {
 
 Ref<Image> PaintCanvas::_get_save_image() {
 	return _image;
+}
+
+PoolByteArray PaintCanvas::get_image_data_compressed() {
+	PoolByteArray arr;
+#ifdef MODULE_LZ4_ENABLED
+	if (_image->empty()) {
+		return arr;
+	}
+
+	PoolByteArray data = _image->get_data();
+
+	int size = data.size();
+	PoolByteArray::Read dr = data.read();
+	const uint8_t *ch = dr.ptr();
+
+	int bound = LZ4Compressor::LZ4_compressBound(size);
+	int additional_data_size = 3 * sizeof(int);
+	arr.resize(bound + additional_data_size);
+
+	PoolByteArray::Write w = arr.write();
+	uint8_t *wptr = w.ptr();
+	Vector2i node_size = get_size();
+	reinterpret_cast<int *>(wptr)[0] = node_size.x;
+	reinterpret_cast<int *>(wptr)[1] = node_size.y;
+	reinterpret_cast<int *>(wptr)[2] = data.size();
+
+	int ns = LZ4Compressor::LZ4_compress_default(reinterpret_cast<const char *>(ch), reinterpret_cast<char *>(&wptr[additional_data_size]), size, bound);
+
+	w.release();
+
+	arr.resize(ns + additional_data_size);
+#endif
+	return arr;
+}
+void PaintCanvas::set_image_data_compressed(const PoolByteArray &data) {
+#ifdef MODULE_LZ4_ENABLED
+	int additional_data_size = 3 * sizeof(int);
+	int ds = data.size();
+
+	if (ds <= additional_data_size) {
+		set_size(Vector2i());
+		return;
+	}
+
+	PoolByteArray::Read dr = data.read();
+	const uint8_t *ch = dr.ptr();
+
+	Vector2i node_size;
+	node_size.x = reinterpret_cast<const int *>(ch)[0];
+	node_size.y = reinterpret_cast<const int *>(ch)[1];
+	int size = reinterpret_cast<const int *>(ch)[2];
+
+	PoolByteArray arr;
+	arr.resize(size);
+	PoolByteArray::Write w = arr.write();
+	uint8_t *wptr = w.ptr();
+
+	int ns = LZ4Compressor::LZ4_decompress_safe(reinterpret_cast<const char *>(&ch[additional_data_size]), reinterpret_cast<char *>(wptr), ds - additional_data_size, size);
+
+	if (ns != size) {
+		arr.resize(ns);
+		ERR_PRINT("ns != size");
+		return;
+	}
+
+	set_size(node_size);
+	_image->create(node_size.x, node_size.y, false, Image::FORMAT_RGBA8, arr);
+	update_textures();
+#endif
 }
 
 void PaintCanvas::handle_draw(const Vector2 &local_position, const Ref<InputEvent> &event) {
@@ -953,6 +1028,10 @@ void PaintCanvas::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_tool"), "set_current_tool", "get_current_tool");
 
 	ClassDB::bind_method(D_METHOD("get_previous_tool"), &PaintCanvas::get_previous_tool);
+
+	ClassDB::bind_method(D_METHOD("get_image_data_compressed"), &PaintCanvas::get_image_data_compressed);
+	ClassDB::bind_method(D_METHOD("set_image_data_compressed", "val"), &PaintCanvas::set_image_data_compressed);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_BYTE_ARRAY, "image_data_compressed"), "set_image_data_compressed", "get_image_data_compressed");
 
 	ClassDB::bind_method(D_METHOD("is_inside_canvas", "x", "y"), &PaintCanvas::is_inside_canvas);
 	ClassDB::bind_method(D_METHOD("set_pixel_arr", "pixels", "color"), &PaintCanvas::set_pixel_arr);
