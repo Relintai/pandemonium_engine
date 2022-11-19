@@ -37,8 +37,14 @@ class PaintCanvasBackground : public TextureRect {
 	GDCLASS(PaintCanvasBackground, TextureRect);
 
 public:
-	float get_pixel_size() const;
-	void set_pixel_size(const float val);
+	int get_grid_size() const;
+	void set_grid_size(const int val);
+
+	Color get_grid_black() const;
+	void set_grid_black(const Color &val);
+
+	Color get_grid_white() const;
+	void set_grid_white(const Color &val);
 
 	PaintCanvasBackground();
 	~PaintCanvasBackground();
@@ -48,10 +54,10 @@ protected:
 
 	static void _bind_methods();
 
-	float _pixel_size;
+	int _grid_size;
 
-	Ref<ShaderMaterial> _material;
-	Ref<Shader> _shader;
+	Color _grid_black;
+	Color _grid_white;
 };
 
 #endif

@@ -24,31 +24,38 @@ SOFTWARE.
 
 #include "paint_canvas_background.h"
 
-#include "core/io/image.h"
-#include "scene/resources/material.h"
-#include "scene/resources/shader.h"
-#include "scene/resources/texture.h"
-
-#include "../shaders/shaders.h"
-
-#include "../paint_icons/icons.h"
-
-float PaintCanvasBackground::get_pixel_size() const {
-	return _pixel_size;
+int PaintCanvasBackground::get_grid_size() const {
+	return _grid_size;
 }
-void PaintCanvasBackground::set_pixel_size(const float val) {
-	_pixel_size = val;
+void PaintCanvasBackground::set_grid_size(const int val) {
+	_grid_size = val;
 
-	if (_material.is_valid()) {
-		_material->set_shader_param("pixel_size", _pixel_size);
-	}
+	update();
+}
+
+Color PaintCanvasBackground::get_grid_black() const {
+	return _grid_black;
+}
+void PaintCanvasBackground::set_grid_black(const Color &val) {
+	_grid_black = val;
+
+	update();
+}
+
+Color PaintCanvasBackground::get_grid_white() const {
+	return _grid_white;
+}
+void PaintCanvasBackground::set_grid_white(const Color &val) {
+	_grid_white = val;
+
+	update();
 }
 
 PaintCanvasBackground::PaintCanvasBackground() {
-	_pixel_size = 1;
+	_grid_size = 8;
 
-	set_expand(true);
-	set_stretch_mode(TextureRect::STRETCH_TILE);
+	_grid_black = Color(0.6, 0.6, 0.6, 1);
+	_grid_white = Color(0.79, 0.84, 0.96, 1);
 }
 
 PaintCanvasBackground::~PaintCanvasBackground() {
@@ -56,27 +63,50 @@ PaintCanvasBackground::~PaintCanvasBackground() {
 
 void PaintCanvasBackground::_notification(int p_what) {
 	switch (p_what) {
-		case NOTIFICATION_ENTER_TREE:
-			_shader.instance();
-			_shader->set_code(background_shader_shader_code);
+		case NOTIFICATION_DRAW: {
+			Size2 s = get_size();
+			int size_x = s.x;
+			int size_y = s.y;
 
-			_material.instance();
-			_material->set_shader(_shader);
-			_material->set_shader_param("pixel_size", _pixel_size);
+			bool x_black = false;
+			for (int x = 0; x < size_x; x += _grid_size) {
+				int cx = size_x - x;
+				if (cx > _grid_size) {
+					cx = _grid_size;
+				}
 
-			set_material(_material);
+				bool y_black = !x_black;
+				for (int y = 0; y < size_y; y += _grid_size) {
+					int cy = size_y - y;
+					if (cy > _grid_size) {
+						cy = _grid_size;
+					}
 
-			set_texture(PaintIcons::make_icon_grid_png());
-			break;
-		case NOTIFICATION_EXIT_TREE:
-			set_material(Ref<Material>());
-			_shader.unref();
-			_material.unref();
-			break;
+					if (y_black) {
+						draw_rect(Rect2(x, y, cx, cy), _grid_black);
+					} else {
+						draw_rect(Rect2(x, y, cx, cy), _grid_white);
+					}
+
+					y_black = !y_black;
+				}
+
+				x_black = !x_black;
+			}
+		} break;
 	}
 }
 
 void PaintCanvasBackground::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_pixel_size"), &PaintCanvasBackground::get_pixel_size);
-	ClassDB::bind_method(D_METHOD("set_pixel_size"), &PaintCanvasBackground::set_pixel_size);
+	ClassDB::bind_method(D_METHOD("get_grid_size"), &PaintCanvasBackground::get_grid_size);
+	ClassDB::bind_method(D_METHOD("set_grid_size", "size"), &PaintCanvasBackground::set_grid_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "grid_size"), "set_grid_size", "get_grid_size");
+
+	ClassDB::bind_method(D_METHOD("get_grid_black"), &PaintCanvasBackground::get_grid_black);
+	ClassDB::bind_method(D_METHOD("set_grid_size", "size"), &PaintCanvasBackground::set_grid_size);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "grid_black"), "set_grid_size", "get_grid_black");
+
+	ClassDB::bind_method(D_METHOD("get_grid_white"), &PaintCanvasBackground::get_grid_white);
+	ClassDB::bind_method(D_METHOD("set_grid_white", "size"), &PaintCanvasBackground::set_grid_white);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "grid_white"), "set_grid_white", "get_grid_white");
 }

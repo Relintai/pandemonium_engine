@@ -499,7 +499,7 @@ void PaintWindow::_handle_zoom(const Ref<InputEvent> &event) {
 
 			paint_canvas->set_pixel_size(px);
 
-			paint_canvas->canvas_background->set_pixel_size(8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
+			//paint_canvas->canvas_background->set_pixel_size(8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
 
 			Point2 pos = paint_canvas->get_position();
 			Size2 size = paint_canvas->get_size();
@@ -521,7 +521,7 @@ void PaintWindow::_handle_zoom(const Ref<InputEvent> &event) {
 
 			paint_canvas->set_pixel_size(px);
 
-			paint_canvas->canvas_background->set_pixel_size(8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
+			//paint_canvas->canvas_background->set_pixel_size(8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
 
 			Point2 pos = paint_canvas->get_position();
 			Size2 size = paint_canvas->get_size();
@@ -1235,7 +1235,7 @@ void PaintWindow::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_POSTINITIALIZE: {
 			connect("visibility_changed", this, "_on_Editor_visibility_changed");
-			paint_canvas->canvas_background->set_pixel_size(8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
+			//paint_canvas->canvas_background->set_pixel_size(8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
 		} break;
 		case NOTIFICATION_PROCESS: {
 			_process(get_process_delta_time());

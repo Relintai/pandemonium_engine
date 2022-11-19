@@ -581,6 +581,7 @@ PaintCanvasOld::PaintCanvasOld() {
 	mouse_on_top = false;
 
 	canvas_background = memnew(PaintCanvasBackground);
+	canvas_background->set_grid_size(32);
 	add_child(canvas_background);
 
 	canvas_layers = memnew(Control);
