@@ -68,7 +68,7 @@ void PaintProject::set_colors_as_default() {
 void PaintProject::save_image_to_file() {
 	ERR_FAIL_COND(_save_file_name.empty());
 
-	Ref<Image> img = save_image();
+	Ref<Image> img = render_image();
 
 	ERR_FAIL_COND(!img.is_valid());
 

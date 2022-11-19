@@ -13,8 +13,8 @@ class PaintNode : public Node2D {
 public:
 	enum {
 		NOTIFICATION_PARENT_PAINT_NODE_RESIZED = 2500,
-		NOTIFICATION_PAINT_PROJECT_PRE_SAVE = 2501,
-		NOTIFICATION_PAINT_PROJECT_POST_SAVE = 2502,
+		NOTIFICATION_PAINT_PROJECT_PRE_RENDER = 2501,
+		NOTIFICATION_PAINT_PROJECT_POST_RENDER = 2502,
 	};
 
 	Vector2i get_size();
@@ -23,15 +23,14 @@ public:
 	bool get_draw_outline();
 	void set_draw_outline(const bool val);
 
-	//TODO rename to render image, and get rendered image!
-	Ref<Image> save_image();
-	virtual Ref<Image> _save_image();
+	Ref<Image> render_image();
+	virtual Ref<Image> _render_image();
 
-	Ref<Image> get_save_image();
-	virtual Ref<Image> _get_save_image();
+	Ref<Image> get_rendered_image();
+	virtual Ref<Image> _get_rendered_image();
 
-	void save_evaluate_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image);
-	void save_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image);
+	void render_evaluate_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image);
+	void render_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image);
 
 	PoolVector2iArray util_get_pixels_in_line(const Vector2i &from, const Vector2i &to);
 
@@ -53,8 +52,8 @@ public:
 	String get_configuration_warning() const;
 
 	void _propagate_notification_resized();
-	void _propagate_notification_project_pre_save();
-	void _propagate_notification_project_post_save();
+	void _propagate_notification_project_pre_render();
+	void _propagate_notification_project_post_render();
 
 	PaintNode();
 	~PaintNode();

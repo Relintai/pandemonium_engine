@@ -27,14 +27,14 @@ void PaintNode::set_draw_outline(const bool val) {
 	update();
 }
 
-Ref<Image> PaintNode::save_image() {
-	_propagate_notification_project_pre_save();
-	Ref<Image> img = call("_save_image");
-	_propagate_notification_project_post_save();
+Ref<Image> PaintNode::render_image() {
+	_propagate_notification_project_pre_render();
+	Ref<Image> img = call("_render_image");
+	_propagate_notification_project_post_render();
 
 	return img;
 }
-Ref<Image> PaintNode::_save_image() {
+Ref<Image> PaintNode::_render_image() {
 	Ref<Image> image;
 	image.instance();
 
@@ -51,23 +51,23 @@ Ref<Image> PaintNode::_save_image() {
 
 		if (pn && pn->is_visible()) {
 			//dont apply own transform
-			save_evaluate_paint_node(pn, Transform2D(), image);
+			render_evaluate_paint_node(pn, Transform2D(), image);
 		}
 	}
 
-	save_paint_node(this, Transform2D(), image);
+	render_paint_node(this, Transform2D(), image);
 
 	return image;
 }
 
-Ref<Image> PaintNode::get_save_image() {
-	return call("_get_save_image");
+Ref<Image> PaintNode::get_rendered_image() {
+	return call("_get_rendered_image");
 }
-Ref<Image> PaintNode::_get_save_image() {
+Ref<Image> PaintNode::_get_rendered_image() {
 	return Ref<Image>();
 }
 
-void PaintNode::save_evaluate_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image) {
+void PaintNode::render_evaluate_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image) {
 	ERR_FAIL_COND(!node);
 	ERR_FAIL_COND(!image.is_valid());
 
@@ -77,18 +77,18 @@ void PaintNode::save_evaluate_paint_node(PaintNode *node, Transform2D transform,
 		PaintNode *pn = Object::cast_to<PaintNode>(node->get_child(i));
 
 		if (pn && pn->is_visible()) {
-			save_evaluate_paint_node(pn, currtf, image);
+			render_evaluate_paint_node(pn, currtf, image);
 		}
 	}
 
-	save_paint_node(node, currtf, image);
+	render_paint_node(node, currtf, image);
 }
 
-void PaintNode::save_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image) {
+void PaintNode::render_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image) {
 	ERR_FAIL_COND(!node);
 	ERR_FAIL_COND(!image.is_valid());
 
-	Ref<Image> save_image = node->get_save_image();
+	Ref<Image> save_image = node->get_rendered_image();
 
 	if (!save_image.is_valid() || save_image->empty()) {
 		return;
@@ -217,25 +217,25 @@ void PaintNode::_propagate_notification_resized() {
 	}
 }
 
-void PaintNode::_propagate_notification_project_pre_save() {
-	notification(NOTIFICATION_PAINT_PROJECT_PRE_SAVE);
+void PaintNode::_propagate_notification_project_pre_render() {
+	notification(NOTIFICATION_PAINT_PROJECT_PRE_RENDER);
 
 	for (int i = 0; i < get_child_count(); ++i) {
 		PaintNode *pn = Object::cast_to<PaintNode>(get_child(i));
 
 		if (pn) {
-			pn->_propagate_notification_project_pre_save();
+			pn->_propagate_notification_project_pre_render();
 		}
 	}
 }
-void PaintNode::_propagate_notification_project_post_save() {
-	notification(NOTIFICATION_PAINT_PROJECT_POST_SAVE);
+void PaintNode::_propagate_notification_project_post_render() {
+	notification(NOTIFICATION_PAINT_PROJECT_POST_RENDER);
 
 	for (int i = 0; i < get_child_count(); ++i) {
 		PaintNode *pn = Object::cast_to<PaintNode>(get_child(i));
 
 		if (pn) {
-			pn->_propagate_notification_project_post_save();
+			pn->_propagate_notification_project_post_render();
 		}
 	}
 }
@@ -282,13 +282,13 @@ void PaintNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_draw_outline", "val"), &PaintNode::set_draw_outline);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "draw_outline"), "set_draw_outline", "get_draw_outline");
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "r", PROPERTY_HINT_RESOURCE_TYPE, "Image"), "_save_image"));
-	ClassDB::bind_method(D_METHOD("save_image"), &PaintNode::save_image);
-	ClassDB::bind_method(D_METHOD("_save_image"), &PaintNode::_save_image);
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "r", PROPERTY_HINT_RESOURCE_TYPE, "Image"), "_render_image"));
+	ClassDB::bind_method(D_METHOD("render_image"), &PaintNode::render_image);
+	ClassDB::bind_method(D_METHOD("_render_image"), &PaintNode::_render_image);
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "r", PROPERTY_HINT_RESOURCE_TYPE, "Image"), "_get_save_image"));
-	ClassDB::bind_method(D_METHOD("get_save_image"), &PaintNode::get_save_image);
-	ClassDB::bind_method(D_METHOD("_get_save_image"), &PaintNode::_get_save_image);
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "r", PROPERTY_HINT_RESOURCE_TYPE, "Image"), "_get_rendered_image"));
+	ClassDB::bind_method(D_METHOD("get_rendered_image"), &PaintNode::get_rendered_image);
+	ClassDB::bind_method(D_METHOD("_get_rendered_image"), &PaintNode::_get_rendered_image);
 
 	ClassDB::bind_method(D_METHOD("util_get_pixels_in_line", "from", "to"), &PaintNode::util_get_pixels_in_line);
 
@@ -309,6 +309,6 @@ void PaintNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("find_parent_paint_node"), &PaintNode::find_parent_paint_node);
 
 	BIND_CONSTANT(NOTIFICATION_PARENT_PAINT_NODE_RESIZED);
-	BIND_CONSTANT(NOTIFICATION_PAINT_PROJECT_PRE_SAVE);
-	BIND_CONSTANT(NOTIFICATION_PAINT_PROJECT_POST_SAVE);
+	BIND_CONSTANT(NOTIFICATION_PAINT_PROJECT_PRE_RENDER);
+	BIND_CONSTANT(NOTIFICATION_PAINT_PROJECT_POST_RENDER);
 }

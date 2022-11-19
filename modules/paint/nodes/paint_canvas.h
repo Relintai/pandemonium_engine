@@ -82,7 +82,7 @@ public:
 	Ref<ImageTexture> get_image_texture();
 	Ref<ImageTexture> get_preview_image_texture();
 
-	Ref<Image> _get_save_image();
+	Ref<Image> _get_rendered_image();
 
 	PoolByteArray get_image_data_compressed();
 	void set_image_data_compressed(const PoolByteArray &arr);

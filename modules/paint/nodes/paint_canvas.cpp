@@ -344,7 +344,7 @@ Ref<ImageTexture> PaintCanvas::get_preview_image_texture() {
 	return _preview_image_texture;
 }
 
-Ref<Image> PaintCanvas::_get_save_image() {
+Ref<Image> PaintCanvas::_get_rendered_image() {
 	return _image;
 }
 
