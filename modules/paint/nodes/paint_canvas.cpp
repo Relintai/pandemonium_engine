@@ -337,6 +337,10 @@ Ref<ImageTexture> PaintCanvas::get_preview_image_texture() {
 	return _preview_image_texture;
 }
 
+Ref<Image> PaintCanvas::_get_save_image() {
+	return _image;
+}
+
 void PaintCanvas::handle_draw(const Vector2 &local_position, const Ref<InputEvent> &event) {
 	PaintProject *proj = get_paint_project();
 

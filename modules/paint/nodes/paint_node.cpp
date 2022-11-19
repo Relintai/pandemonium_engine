@@ -26,12 +26,19 @@ void PaintNode::set_draw_outline(const bool val) {
 	}
 }
 
-void PaintNode::save() {
-	notification(NOTIFICATION_PAINT_PROJECT_PRE_SAVE);
-	call("_save");
-	notification(NOTIFICATION_PAINT_PROJECT_POST_SAVE);
+void PaintNode::save_image() {
+	_propagate_notification_project_pre_save();
+	call("_save_image");
+	_propagate_notification_project_post_save();
 }
-void PaintNode::_save() {
+void PaintNode::_save_image() {
+}
+
+Ref<Image> PaintNode::get_save_image() {
+	return call("_get_save_image");
+}
+Ref<Image> PaintNode::_get_save_image() {
+	return Ref<Image>();
 }
 
 PoolVector2iArray PaintNode::util_get_pixels_in_line(const Vector2i &from, const Vector2i &to) {
@@ -109,6 +116,29 @@ void PaintNode::_propagate_notification_resized() {
 	}
 }
 
+void PaintNode::_propagate_notification_project_pre_save() {
+	notification(NOTIFICATION_PAINT_PROJECT_PRE_SAVE);
+
+	for (int i = 0; i < get_child_count(); ++i) {
+		PaintNode *pn = Object::cast_to<PaintNode>(get_child(i));
+
+		if (pn) {
+			pn->_propagate_notification_project_pre_save();
+		}
+	}
+}
+void PaintNode::_propagate_notification_project_post_save() {
+	notification(NOTIFICATION_PAINT_PROJECT_POST_SAVE);
+
+	for (int i = 0; i < get_child_count(); ++i) {
+		PaintNode *pn = Object::cast_to<PaintNode>(get_child(i));
+
+		if (pn) {
+			pn->_propagate_notification_project_post_save();
+		}
+	}
+}
+
 PaintNode::PaintNode() {
 	_draw_outline = true;
 }
@@ -140,9 +170,13 @@ void PaintNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_draw_outline", "val"), &PaintNode::set_draw_outline);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "draw_outline"), "set_draw_outline", "get_draw_outline");
 
-	BIND_VMETHOD(MethodInfo("_save"));
-	ClassDB::bind_method(D_METHOD("save"), &PaintNode::save);
-	ClassDB::bind_method(D_METHOD("_save"), &PaintNode::_save);
+	BIND_VMETHOD(MethodInfo("_save_image"));
+	ClassDB::bind_method(D_METHOD("save_image"), &PaintNode::save_image);
+	ClassDB::bind_method(D_METHOD("_save_image"), &PaintNode::_save_image);
+
+	BIND_VMETHOD(MethodInfo("_get_save_image"));
+	ClassDB::bind_method(D_METHOD("get_save_image"), &PaintNode::get_save_image);
+	ClassDB::bind_method(D_METHOD("_get_save_image"), &PaintNode::_get_save_image);
 
 	ClassDB::bind_method(D_METHOD("util_get_pixels_in_line", "from", "to"), &PaintNode::util_get_pixels_in_line);
 

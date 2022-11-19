@@ -23,8 +23,11 @@ public:
 	bool get_draw_outline();
 	void set_draw_outline(const bool val);
 
-	void save();
-	virtual void _save();
+	void save_image();
+	virtual void _save_image();
+
+	Ref<Image> get_save_image();
+	virtual Ref<Image> _get_save_image();
 
 	PoolVector2iArray util_get_pixels_in_line(const Vector2i &from, const Vector2i &to);
 
@@ -44,6 +47,8 @@ public:
 	String get_configuration_warning() const;
 
 	virtual void _propagate_notification_resized();
+	void _propagate_notification_project_pre_save();
+	void _propagate_notification_project_post_save();
 
 	PaintNode();
 	~PaintNode();

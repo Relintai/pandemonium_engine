@@ -9,6 +9,9 @@ class PaintProject : public PaintNode {
 	GDCLASS(PaintProject, PaintNode);
 
 public:
+	String get_save_file_name();
+	void set_save_file_name(const String &fn);
+
 	Color get_current_color();
 	void set_current_color(const Color &color);
 
@@ -23,6 +26,8 @@ public:
 
 	void set_colors_as_default();
 
+	void _save_image();
+
 	void add_paint_canvas_backgorund();
 	void add_paint_visual_grid();
 
@@ -36,6 +41,7 @@ protected:
 
 	static void _bind_methods();
 
+	String _save_file_name;
 	Color _current_color;
 	PoolColorArray _color_presets;
 };

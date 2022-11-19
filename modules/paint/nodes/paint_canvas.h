@@ -82,6 +82,8 @@ public:
 	Ref<ImageTexture> get_image_texture();
 	Ref<ImageTexture> get_preview_image_texture();
 
+	Ref<Image> _get_save_image();
+
 	void handle_draw(const Vector2 &local_position, const Ref<InputEvent> &event);
 	Color get_current_color();
 	void update_mouse_position(const Vector2 &local_position, const Ref<InputEvent> &event);

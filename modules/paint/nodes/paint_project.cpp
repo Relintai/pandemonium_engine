@@ -6,6 +6,13 @@
 
 #include "core/config/engine.h"
 
+String PaintProject::get_save_file_name() {
+	return _save_file_name;
+}
+void PaintProject::set_save_file_name(const String &fn) {
+	_save_file_name = fn;
+}
+
 Color PaintProject::get_current_color() {
 	return _current_color;
 }
@@ -58,6 +65,14 @@ void PaintProject::set_colors_as_default() {
 	}
 }
 
+void PaintProject::_save_image() {
+	ERR_FAIL_COND(_save_file_name.empty());
+
+	//create image
+	//collect and merge in all images returned by _get_save_image() in each PaintNode child
+	//save image
+}
+
 void PaintProject::add_paint_canvas_backgorund() {
 	PaintCanvasBackground *bg = memnew(PaintCanvasBackground);
 	add_child(bg);
@@ -100,6 +115,12 @@ void PaintProject::_notification(int p_what) {
 void PaintProject::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("current_color_changed", PropertyInfo(Variant::COLOR, "color")));
 	ADD_SIGNAL(MethodInfo("color_presets_changed"));
+
+	ClassDB::bind_method(D_METHOD("get_save_file_name"), &PaintProject::get_save_file_name);
+	ClassDB::bind_method(D_METHOD("set_save_file_name", "size"), &PaintProject::set_save_file_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "save_file_name"), "set_save_file_name", "get_save_file_name");
+
+	ADD_PROPERTY(PropertyInfo(Variant::NIL, "run_save_image", PROPERTY_HINT_BUTTON, "save_image"), "", "");
 
 	ClassDB::bind_method(D_METHOD("get_current_color"), &PaintProject::get_current_color);
 	ClassDB::bind_method(D_METHOD("set_current_color", "size"), &PaintProject::set_current_color);
