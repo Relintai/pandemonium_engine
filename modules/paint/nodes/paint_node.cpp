@@ -67,17 +67,26 @@ Ref<Image> PaintNode::_get_rendered_image() {
 	return Ref<Image>();
 }
 
+bool PaintNode::render_should_evaluate_children() {
+	return call("_render_should_evaluate_children");
+}
+bool PaintNode::_render_should_evaluate_children() {
+	return true;
+}
+
 void PaintNode::render_evaluate_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image) {
 	ERR_FAIL_COND(!node);
 	ERR_FAIL_COND(!image.is_valid());
 
 	Transform2D currtf = transform * node->get_transform();
 
-	for (int i = 0; i < node->get_child_count(); ++i) {
-		PaintNode *pn = Object::cast_to<PaintNode>(node->get_child(i));
+	if (node->render_should_evaluate_children()) {
+		for (int i = 0; i < node->get_child_count(); ++i) {
+			PaintNode *pn = Object::cast_to<PaintNode>(node->get_child(i));
 
-		if (pn && pn->is_visible()) {
-			render_evaluate_paint_node(pn, currtf, image);
+			if (pn && pn->is_visible()) {
+				render_evaluate_paint_node(pn, currtf, image);
+			}
 		}
 	}
 
@@ -289,6 +298,10 @@ void PaintNode::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "r", PROPERTY_HINT_RESOURCE_TYPE, "Image"), "_get_rendered_image"));
 	ClassDB::bind_method(D_METHOD("get_rendered_image"), &PaintNode::get_rendered_image);
 	ClassDB::bind_method(D_METHOD("_get_rendered_image"), &PaintNode::_get_rendered_image);
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "r"), "_render_should_evaluate_children"));
+	ClassDB::bind_method(D_METHOD("render_should_evaluate_children"), &PaintNode::render_should_evaluate_children);
+	ClassDB::bind_method(D_METHOD("_render_should_evaluate_children"), &PaintNode::_render_should_evaluate_children);
 
 	ClassDB::bind_method(D_METHOD("util_get_pixels_in_line", "from", "to"), &PaintNode::util_get_pixels_in_line);
 

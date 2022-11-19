@@ -94,6 +94,10 @@ void PaintProject::add_paint_visual_grid() {
 	}
 }
 
+bool PaintProject::_render_should_evaluate_children() {
+	return false;
+}
+
 PaintProject::PaintProject() {
 	_current_color = Color(1, 1, 1, 1);
 }

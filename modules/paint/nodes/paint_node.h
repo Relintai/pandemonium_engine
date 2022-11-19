@@ -29,6 +29,9 @@ public:
 	Ref<Image> get_rendered_image();
 	virtual Ref<Image> _get_rendered_image();
 
+	bool render_should_evaluate_children();
+	virtual bool _render_should_evaluate_children();
+
 	void render_evaluate_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image);
 	void render_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image);
 

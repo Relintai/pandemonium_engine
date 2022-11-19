@@ -31,6 +31,8 @@ public:
 	void add_paint_canvas_backgorund();
 	void add_paint_visual_grid();
 
+	bool _render_should_evaluate_children();
+
 	PaintProject();
 	~PaintProject();
 
