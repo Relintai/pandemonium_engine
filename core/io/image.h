@@ -259,6 +259,9 @@ public:
 	void create(int p_width, int p_height, bool p_use_mipmaps, Format p_format, const PoolVector<uint8_t> &p_data);
 
 	void create(const char **p_xpm);
+
+	void clear();
+
 	/**
 	 * returns true when the image is empty (0,0) in size
 	 */

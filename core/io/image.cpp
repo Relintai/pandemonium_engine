@@ -30,8 +30,8 @@
 
 #include "image.h"
 
-#include "core/error/error_macros.h"
 #include "core/containers/hash_map.h"
+#include "core/error/error_macros.h"
 #include "core/io/image_loader.h"
 #include "core/io/resource_loader.h"
 #include "core/math/math_funcs.h"
@@ -1724,6 +1724,12 @@ void Image::clear_mipmaps() {
 	mipmaps = false;
 }
 
+void Image::clear() {
+	width = 0;
+	height = 0;
+	data.resize(0);
+}
+
 bool Image::empty() const {
 	return (data.size() == 0);
 }
@@ -2923,6 +2929,7 @@ void Image::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("create", "width", "height", "use_mipmaps", "format"), &Image::_create_empty);
 	ClassDB::bind_method(D_METHOD("create_from_data", "width", "height", "use_mipmaps", "format", "data"), &Image::_create_from_data);
 
+	ClassDB::bind_method(D_METHOD("clear"), &Image::clear);
 	ClassDB::bind_method(D_METHOD("is_empty"), &Image::empty);
 
 	ClassDB::bind_method(D_METHOD("load", "path"), &Image::load);
