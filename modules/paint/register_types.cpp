@@ -46,6 +46,7 @@ SOFTWARE.
 #include "ui/property_inspectors/paint_color_grid.h"
 #include "ui/property_inspectors/paint_custom_property_inspector.h"
 #include "ui/property_inspectors/paint_project_property_inspector.h"
+#include "ui/property_inspectors/paint_project_tools_property_inspector.h"
 #include "ui/property_inspectors/paint_tools_property_inspector.h"
 
 #include "nodes/paint_canvas.h"
@@ -83,6 +84,7 @@ void register_paint_types() {
 	ClassDB::register_class<PaintCustomPropertyInspector>();
 	ClassDB::register_class<PaintToolsPropertyInspector>();
 	ClassDB::register_class<PaintProjectPropertyInspector>();
+	ClassDB::register_class<PaintProjectToolsPropertyInspector>();
 
 	ClassDB::register_class<PaintNode>();
 	ClassDB::register_class<PaintCanvas>();
