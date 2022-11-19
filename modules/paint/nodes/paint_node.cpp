@@ -8,6 +8,21 @@ Vector2i PaintNode::get_size() {
 }
 void PaintNode::set_size(const Vector2i &size) {
 	_size = size;
+
+	if (is_inside_tree()) {
+		update();
+	}
+}
+
+bool PaintNode::get_draw_outline() {
+	return _draw_outline;
+}
+void PaintNode::set_draw_outline(const bool val) {
+	_draw_outline = val;
+
+	if (is_inside_tree()) {
+		update();
+	}
 }
 
 PoolVector2iArray PaintNode::util_get_pixels_in_line(const Vector2i &from, const Vector2i &to) {
@@ -74,15 +89,35 @@ String PaintNode::get_configuration_warning() const {
 }
 
 PaintNode::PaintNode() {
+	_draw_outline = true;
 }
 
 PaintNode::~PaintNode() {
+}
+
+void PaintNode::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_DRAW: {
+			if (_draw_outline) {
+				draw_line(Point2(0, 0), Point2(_size.x, 0), Color(0, 0, 0, 1));
+				draw_line(Point2(0, _size.y), Point2(_size.x, _size.y), Color(0, 0, 0, 1));
+				draw_line(Point2(0, 0), Point2(0, _size.y), Color(0, 0, 0, 1));
+				draw_line(Point2(_size.x, 0), Point2(_size.x, _size.y), Color(0, 0, 0, 1));
+			}
+		} break;
+		default:
+			break;
+	}
 }
 
 void PaintNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_size"), &PaintNode::get_size);
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &PaintNode::set_size);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "size"), "set_size", "get_size");
+
+	ClassDB::bind_method(D_METHOD("get_draw_outline"), &PaintNode::get_draw_outline);
+	ClassDB::bind_method(D_METHOD("set_draw_outline", "val"), &PaintNode::set_draw_outline);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "draw_outline"), "set_draw_outline", "get_draw_outline");
 
 	ClassDB::bind_method(D_METHOD("util_get_pixels_in_line", "from", "to"), &PaintNode::util_get_pixels_in_line);
 

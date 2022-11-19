@@ -14,6 +14,9 @@ public:
 	Vector2i get_size();
 	void set_size(const Vector2i &size);
 
+	bool get_draw_outline();
+	void set_draw_outline(const bool val);
+
 	PoolVector2iArray util_get_pixels_in_line(const Vector2i &from, const Vector2i &to);
 
 	int util_to_1d_v(const Vector2i &p, int w);
@@ -35,9 +38,12 @@ public:
 	~PaintNode();
 
 protected:
+	void _notification(int p_what);
+
 	static void _bind_methods();
 
 	Vector2i _size;
+	bool _draw_outline;
 };
 
 #endif
