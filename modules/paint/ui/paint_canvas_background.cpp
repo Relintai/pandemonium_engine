@@ -64,6 +64,8 @@ PaintCanvasBackground::~PaintCanvasBackground() {
 void PaintCanvasBackground::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_DRAW: {
+			ERR_FAIL_COND(_grid_size <= 0);
+
 			Size2 s = get_size();
 			int size_x = s.x;
 			int size_y = s.y;
@@ -103,10 +105,10 @@ void PaintCanvasBackground::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "grid_size"), "set_grid_size", "get_grid_size");
 
 	ClassDB::bind_method(D_METHOD("get_grid_black"), &PaintCanvasBackground::get_grid_black);
-	ClassDB::bind_method(D_METHOD("set_grid_size", "size"), &PaintCanvasBackground::set_grid_size);
-	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "grid_black"), "set_grid_size", "get_grid_black");
+	ClassDB::bind_method(D_METHOD("set_grid_black", "color"), &PaintCanvasBackground::set_grid_black);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "grid_black"), "set_grid_black", "get_grid_black");
 
 	ClassDB::bind_method(D_METHOD("get_grid_white"), &PaintCanvasBackground::get_grid_white);
-	ClassDB::bind_method(D_METHOD("set_grid_white", "size"), &PaintCanvasBackground::set_grid_white);
+	ClassDB::bind_method(D_METHOD("set_grid_white", "color"), &PaintCanvasBackground::set_grid_white);
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "grid_white"), "set_grid_white", "get_grid_white");
 }
