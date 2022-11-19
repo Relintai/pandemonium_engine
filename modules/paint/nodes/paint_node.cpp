@@ -27,12 +27,37 @@ void PaintNode::set_draw_outline(const bool val) {
 	update();
 }
 
-void PaintNode::save_image() {
+Ref<Image> PaintNode::save_image() {
 	_propagate_notification_project_pre_save();
-	call("_save_image");
+	Ref<Image> img = call("_save_image");
 	_propagate_notification_project_post_save();
+
+	return img;
 }
-void PaintNode::_save_image() {
+Ref<Image> PaintNode::_save_image() {
+	Ref<Image> image;
+	image.instance();
+
+	Vector2i size = get_size();
+
+	if (size.x <= 0 || size.y <= 0) {
+		return image;
+	}
+
+	image->create(size.x, size.y, false, Image::FORMAT_RGBA8);
+
+	for (int i = 0; i < get_child_count(); ++i) {
+		PaintNode *pn = Object::cast_to<PaintNode>(get_child(i));
+
+		if (pn && pn->is_visible()) {
+			//dont apply own transform
+			save_evaluate_paint_node(pn, Transform2D(), image);
+		}
+	}
+
+	save_paint_node(this, Transform2D(), image);
+
+	return image;
 }
 
 Ref<Image> PaintNode::get_save_image() {
@@ -40,6 +65,60 @@ Ref<Image> PaintNode::get_save_image() {
 }
 Ref<Image> PaintNode::_get_save_image() {
 	return Ref<Image>();
+}
+
+void PaintNode::save_evaluate_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image) {
+	ERR_FAIL_COND(!node);
+	ERR_FAIL_COND(!image.is_valid());
+
+	Transform2D currtf = transform * node->get_transform();
+
+	for (int i = 0; i < node->get_child_count(); ++i) {
+		PaintNode *pn = Object::cast_to<PaintNode>(node->get_child(i));
+
+		if (pn && pn->is_visible()) {
+			save_evaluate_paint_node(pn, currtf, image);
+		}
+	}
+
+	save_paint_node(node, currtf, image);
+}
+
+void PaintNode::save_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image) {
+	ERR_FAIL_COND(!node);
+	ERR_FAIL_COND(!image.is_valid());
+
+	Ref<Image> save_image = node->get_save_image();
+
+	if (!save_image.is_valid() || save_image->empty()) {
+		return;
+	}
+
+	Vector2i save_image_size = save_image->get_size();
+	Vector2i image_size = image->get_size();
+
+	save_image->lock();
+	image->lock();
+
+	//should return early eventually via a simple overlap check here
+
+	for (int x = 0; x < save_image_size.x; ++x) {
+		for (int y = 0; y < save_image_size.y; ++y) {
+			Vector2i npos = transform.xform(Vector2(x, y));
+
+			if (npos.x < 0 || npos.y < 0 || npos.x >= image_size.x || npos.y >= image_size.y) {
+				continue;
+			}
+
+			Color sic = save_image->get_pixel(x, y);
+			Color oic = image->get_pixel(npos.x, npos.y);
+
+			image->set_pixel(npos.x, npos.y, oic.blend(sic));
+		}
+	}
+
+	image->unlock();
+	save_image->unlock();
 }
 
 PoolVector2iArray PaintNode::util_get_pixels_in_line(const Vector2i &from, const Vector2i &to) {
@@ -203,11 +282,11 @@ void PaintNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_draw_outline", "val"), &PaintNode::set_draw_outline);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "draw_outline"), "set_draw_outline", "get_draw_outline");
 
-	BIND_VMETHOD(MethodInfo("_save_image"));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "r", PROPERTY_HINT_RESOURCE_TYPE, "Image"), "_save_image"));
 	ClassDB::bind_method(D_METHOD("save_image"), &PaintNode::save_image);
 	ClassDB::bind_method(D_METHOD("_save_image"), &PaintNode::_save_image);
 
-	BIND_VMETHOD(MethodInfo("_get_save_image"));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "r", PROPERTY_HINT_RESOURCE_TYPE, "Image"), "_get_save_image"));
 	ClassDB::bind_method(D_METHOD("get_save_image"), &PaintNode::get_save_image);
 	ClassDB::bind_method(D_METHOD("_get_save_image"), &PaintNode::_get_save_image);
 

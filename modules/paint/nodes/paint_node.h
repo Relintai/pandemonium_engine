@@ -23,11 +23,15 @@ public:
 	bool get_draw_outline();
 	void set_draw_outline(const bool val);
 
-	void save_image();
-	virtual void _save_image();
+	//TODO rename to render image, and get rendered image!
+	Ref<Image> save_image();
+	virtual Ref<Image> _save_image();
 
 	Ref<Image> get_save_image();
 	virtual Ref<Image> _get_save_image();
+
+	void save_evaluate_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image);
+	void save_paint_node(PaintNode *node, Transform2D transform, Ref<Image> image);
 
 	PoolVector2iArray util_get_pixels_in_line(const Vector2i &from, const Vector2i &to);
 

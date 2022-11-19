@@ -26,7 +26,7 @@ public:
 
 	void set_colors_as_default();
 
-	void _save_image();
+	void save_image_to_file();
 
 	void add_paint_canvas_backgorund();
 	void add_paint_visual_grid();

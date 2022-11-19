@@ -65,12 +65,14 @@ void PaintProject::set_colors_as_default() {
 	}
 }
 
-void PaintProject::_save_image() {
+void PaintProject::save_image_to_file() {
 	ERR_FAIL_COND(_save_file_name.empty());
 
-	//create image
-	//collect and merge in all images returned by _get_save_image() in each PaintNode child
-	//save image
+	Ref<Image> img = save_image();
+
+	ERR_FAIL_COND(!img.is_valid());
+
+	img->save_png("res://" + _save_file_name);
 }
 
 void PaintProject::add_paint_canvas_backgorund() {
@@ -117,7 +119,8 @@ void PaintProject::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_save_file_name", "size"), &PaintProject::set_save_file_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "save_file_name"), "set_save_file_name", "get_save_file_name");
 
-	ADD_PROPERTY(PropertyInfo(Variant::NIL, "run_save_image", PROPERTY_HINT_BUTTON, "save_image"), "", "");
+	ClassDB::bind_method(D_METHOD("save_image_to_file"), &PaintProject::save_image_to_file);
+	ADD_PROPERTY(PropertyInfo(Variant::NIL, "run_save_image", PROPERTY_HINT_BUTTON, "save_image_to_file"), "", "");
 
 	ClassDB::bind_method(D_METHOD("get_current_color"), &PaintProject::get_current_color);
 	ClassDB::bind_method(D_METHOD("set_current_color", "size"), &PaintProject::set_current_color);
