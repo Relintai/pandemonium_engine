@@ -64,7 +64,7 @@ void PaintProjectPropertyInspector::clear_grid_buttons() {
 	}
 }
 
-void PaintProjectPropertyInspector::_on_paint_node_selected(Node *p_paint_node) {
+void PaintProjectPropertyInspector::_set_paint_node(Node *p_paint_node) {
 	PaintNode *paint_node = Object::cast_to<PaintNode>(p_paint_node);
 
 	_current_paint_node = 0;

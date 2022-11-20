@@ -35,18 +35,18 @@ void PaintInspectorPlugin::parse_begin(Object *p_object) {
 	PaintNode *paint_node = Object::cast_to<PaintNode>(p_object);
 
 	PaintProjectPropertyInspector *pc = memnew(PaintProjectPropertyInspector);
-	pc->on_paint_node_selected(paint_node);
+	pc->set_paint_node(paint_node);
 	add_custom_control(pc);
 
 	if (p_object->is_class("PaintCanvas")) {
 		PaintToolsPropertyInspector *ptool = memnew(PaintToolsPropertyInspector);
-		ptool->on_paint_node_selected(paint_node);
+		ptool->set_paint_node(paint_node);
 		add_custom_control(ptool);
 	}
 
 	if (p_object->is_class("PaintProject")) {
 		PaintProjectToolsPropertyInspector *pct = memnew(PaintProjectToolsPropertyInspector);
-		pct->on_paint_node_selected(paint_node);
+		pct->set_paint_node(paint_node);
 		add_custom_control(pct);
 	}
 }

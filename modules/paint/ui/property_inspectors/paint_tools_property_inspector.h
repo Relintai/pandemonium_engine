@@ -47,7 +47,7 @@ public:
 	void add_action_button(const String &callback, const String &hint, const String &icon, const String &theme_type);
 	void add_brush_prefab(int id, const Ref<Texture> &normal_texture, const Ref<Texture> &hover_texture);
 
-	void _on_paint_node_selected(Node *paint_node);
+	void _set_paint_node(Node *paint_node);
 
 	PaintToolsPropertyInspector();
 	~PaintToolsPropertyInspector();

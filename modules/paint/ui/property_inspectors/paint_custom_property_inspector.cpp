@@ -24,13 +24,13 @@ SOFTWARE.
 
 #include "../../nodes/paint_node.h"
 
-void PaintCustomPropertyInspector::on_paint_node_selected(PaintNode *paint_node) {
-	call("_on_paint_node_selected", paint_node);
+void PaintCustomPropertyInspector::set_paint_node(PaintNode *paint_node) {
+	call("_set_paint_node", paint_node);
 }
-void PaintCustomPropertyInspector::on_paint_node_selected_bind(Node *paint_node) {
-	call("_on_paint_node_selected", paint_node);
+void PaintCustomPropertyInspector::set_paint_node_bind(Node *paint_node) {
+	call("_set_paint_node", paint_node);
 }
-void PaintCustomPropertyInspector::_on_paint_node_selected(Node *paint_node) {
+void PaintCustomPropertyInspector::_set_paint_node(Node *paint_node) {
 }
 
 PaintCustomPropertyInspector::PaintCustomPropertyInspector() {
@@ -40,8 +40,8 @@ PaintCustomPropertyInspector::~PaintCustomPropertyInspector() {
 }
 
 void PaintCustomPropertyInspector::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_on_paint_node_selected", PropertyInfo(Variant::OBJECT, "paint_node", PROPERTY_HINT_RESOURCE_TYPE, "PaintNode")));
+	BIND_VMETHOD(MethodInfo("_set_paint_node", PropertyInfo(Variant::OBJECT, "paint_node", PROPERTY_HINT_RESOURCE_TYPE, "PaintNode")));
 
-	ClassDB::bind_method(D_METHOD("on_paint_node_selected", "paint_node"), &PaintCustomPropertyInspector::on_paint_node_selected_bind);
-	ClassDB::bind_method(D_METHOD("_on_paint_node_selected", "paint_node"), &PaintCustomPropertyInspector::_on_paint_node_selected);
+	ClassDB::bind_method(D_METHOD("set_paint_node", "paint_node"), &PaintCustomPropertyInspector::set_paint_node_bind);
+	ClassDB::bind_method(D_METHOD("_set_paint_node", "paint_node"), &PaintCustomPropertyInspector::_set_paint_node);
 }

@@ -42,7 +42,7 @@ public:
 	void create_grid_buttons();
 	void clear_grid_buttons();
 
-	void _on_paint_node_selected(Node *paint_node);
+	void _set_paint_node(Node *paint_node);
 
 	PaintProjectPropertyInspector();
 	~PaintProjectPropertyInspector();

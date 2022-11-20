@@ -60,7 +60,7 @@ void PaintProjectToolsPropertyInspector::add_action_button(const String &callbac
 	_button_contianer->add_child(button);
 }
 
-void PaintProjectToolsPropertyInspector::_on_paint_node_selected(Node *p_paint_node) {
+void PaintProjectToolsPropertyInspector::_set_paint_node(Node *p_paint_node) {
 	PaintNode *paint_node = Object::cast_to<PaintNode>(p_paint_node);
 
 	_current_paint_node = 0;

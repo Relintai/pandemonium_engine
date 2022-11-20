@@ -101,7 +101,7 @@ void PaintToolsPropertyInspector::add_brush_prefab(int id, const Ref<Texture> &n
 	_brush_prefabs->add_child(brush_button);
 }
 
-void PaintToolsPropertyInspector::_on_paint_node_selected(Node *p_paint_node) {
+void PaintToolsPropertyInspector::_set_paint_node(Node *p_paint_node) {
 	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(p_paint_node);
 
 	_paint_canvas = 0;

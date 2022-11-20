@@ -31,10 +31,10 @@ class PaintCustomPropertyInspector : public PanelContainer {
 	GDCLASS(PaintCustomPropertyInspector, PanelContainer);
 
 public:
-	void on_paint_node_selected(PaintNode *paint_node);
-	void on_paint_node_selected_bind(Node *paint_node);
+	void set_paint_node(PaintNode *paint_node);
+	void set_paint_node_bind(Node *paint_node);
 	
-	virtual void _on_paint_node_selected(Node *paint_node);
+	virtual void _set_paint_node(Node *paint_node);
 
 	PaintCustomPropertyInspector();
 	~PaintCustomPropertyInspector();

@@ -41,7 +41,7 @@ class PaintProjectToolsPropertyInspector : public PaintCustomPropertyInspector {
 public:
 	void add_action_button(const String &callback, const String &hint, const String &icon, const String &theme_type);
 
-	void _on_paint_node_selected(Node *paint_node);
+	void _set_paint_node(Node *paint_node);
 
 	PaintProjectToolsPropertyInspector();
 	~PaintProjectToolsPropertyInspector();
