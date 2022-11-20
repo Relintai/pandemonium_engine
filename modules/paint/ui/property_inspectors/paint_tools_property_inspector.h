@@ -35,6 +35,9 @@ class ButtonGroup;
 class HSlider;
 class Label;
 class FileDialog;
+class ConfirmationDialog;
+class SpinBox;
+class OptionButton;
 
 class PaintToolsPropertyInspector : public PaintCustomPropertyInspector {
 	GDCLASS(PaintToolsPropertyInspector, PaintCustomPropertyInspector);
@@ -61,11 +64,17 @@ protected:
 	void _on_export_pressed();
 	void _on_import_dialog_file_selected(const String &f);
 	void _on_export_dialog_file_selected(const String &f);
+	void _on_pixel_scale_canvas_pressed();
+	void _on_pixel_scale_canvas_confirmed();
 
 	static void _bind_methods();
 
 	FileDialog *_import_file_dialog;
 	FileDialog *_export_file_dialog;
+	ConfirmationDialog *_pixel_resize_canvas;
+	SpinBox *_pixel_resize_x_spinbox;
+	SpinBox *_pixel_resize_y_spinbox;
+	OptionButton *_pixel_resize_interpolation_option_button;
 
 	HFlowContainer *_grid;
 	HFlowContainer *_brush_prefabs;

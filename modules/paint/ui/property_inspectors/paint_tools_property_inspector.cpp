@@ -28,7 +28,9 @@ SOFTWARE.
 #include "scene/gui/file_dialog.h"
 #include "scene/gui/flow_container.h"
 #include "scene/gui/label.h"
+#include "scene/gui/option_button.h"
 #include "scene/gui/slider.h"
+#include "scene/gui/spin_box.h"
 #include "scene/gui/texture_button.h"
 
 #include "../../bush_prefabs.h"
@@ -148,6 +150,57 @@ PaintToolsPropertyInspector::PaintToolsPropertyInspector() {
 	_export_file_dialog->add_filter("*.png");
 	_export_file_dialog->connect("file_selected", this, "_on_export_dialog_file_selected");
 
+	// ------ Pixel Resize Dialog START
+
+	_pixel_resize_canvas = memnew(ConfirmationDialog);
+	popups->add_child(_pixel_resize_canvas);
+	_pixel_resize_canvas->set_title("Resize Canvas...");
+	_pixel_resize_canvas->connect("confirmed", this, "_on_pixel_scale_canvas_confirmed");
+
+	VBoxContainer *pixel_resize_canvas_main_vbox = memnew(VBoxContainer);
+	_pixel_resize_canvas->add_child(pixel_resize_canvas_main_vbox);
+
+	// size
+	HBoxContainer *pixel_resize_canvas_size_hbox = memnew(HBoxContainer);
+	pixel_resize_canvas_main_vbox->add_child(pixel_resize_canvas_size_hbox);
+
+	Label *size_label = memnew(Label);
+	pixel_resize_canvas_size_hbox->add_child(size_label);
+	size_label->set_text("Size (px)");
+	size_label->set_h_size_flags(SIZE_EXPAND_FILL);
+
+	_pixel_resize_x_spinbox = memnew(SpinBox);
+	pixel_resize_canvas_size_hbox->add_child(_pixel_resize_x_spinbox);
+	_pixel_resize_x_spinbox->set_min(1);
+	_pixel_resize_x_spinbox->set_max(64000);
+	_pixel_resize_x_spinbox->set_use_rounded_values(true);
+
+	_pixel_resize_y_spinbox = memnew(SpinBox);
+	pixel_resize_canvas_size_hbox->add_child(_pixel_resize_y_spinbox);
+	_pixel_resize_y_spinbox->set_min(1);
+	_pixel_resize_y_spinbox->set_max(64000);
+	_pixel_resize_y_spinbox->set_use_rounded_values(true);
+
+	// interpolation
+	HBoxContainer *pixel_resize_canvas_interpolation_hbox = memnew(HBoxContainer);
+	pixel_resize_canvas_main_vbox->add_child(pixel_resize_canvas_interpolation_hbox);
+
+	Label *interpolation_label = memnew(Label);
+	pixel_resize_canvas_interpolation_hbox->add_child(interpolation_label);
+	interpolation_label->set_text("Interpolation");
+
+	_pixel_resize_interpolation_option_button = memnew(OptionButton);
+	pixel_resize_canvas_interpolation_hbox->add_child(_pixel_resize_interpolation_option_button);
+	_pixel_resize_interpolation_option_button->set_h_size_flags(SIZE_EXPAND_FILL);
+
+	_pixel_resize_interpolation_option_button->add_item("Nearest", Image::INTERPOLATE_NEAREST);
+	_pixel_resize_interpolation_option_button->add_item("Bilinear", Image::INTERPOLATE_BILINEAR);
+	_pixel_resize_interpolation_option_button->add_item("Cubic", Image::INTERPOLATE_CUBIC);
+	_pixel_resize_interpolation_option_button->add_item("Trilinear", Image::INTERPOLATE_TRILINEAR);
+	_pixel_resize_interpolation_option_button->add_item("Lanczos", Image::INTERPOLATE_LANCZOS);
+
+	// ------ Pixel Resize Dialog END
+
 	VBoxContainer *box_container = memnew(VBoxContainer);
 	add_child(box_container);
 
@@ -171,6 +224,7 @@ PaintToolsPropertyInspector::PaintToolsPropertyInspector() {
 
 	add_action_button("_on_undo_pressed", "Undo", "ArrowLeft", "EditorIcons");
 	add_action_button("_on_redo_pressed", "Redo", "ArrowRight", "EditorIcons");
+	add_action_button("_on_pixel_scale_canvas_pressed", "Pixel Scale Canvas", "DistractionFree", "EditorIcons");
 	add_action_button("_on_import_pressed", "Import Image", "Load", "EditorIcons");
 	add_action_button("_on_export_pressed", "Export Image", "Save", "EditorIcons");
 
@@ -318,6 +372,31 @@ void PaintToolsPropertyInspector::_on_export_dialog_file_selected(const String &
 	paint_canvas->get_image()->save_png(f);
 }
 
+void PaintToolsPropertyInspector::_on_pixel_scale_canvas_pressed() {
+	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(ObjectDB::get_instance(_paint_canvas));
+
+	ERR_FAIL_COND(!paint_canvas);
+
+	Vector2i size = paint_canvas->get_size();
+
+	_pixel_resize_x_spinbox->set_value(size.x);
+	_pixel_resize_y_spinbox->set_value(size.y);
+
+	_pixel_resize_canvas->popup_centered();
+}
+
+void PaintToolsPropertyInspector::_on_pixel_scale_canvas_confirmed() {
+	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(ObjectDB::get_instance(_paint_canvas));
+
+	ERR_FAIL_COND(!paint_canvas);
+
+	int x = _pixel_resize_x_spinbox->get_value();
+	int y = _pixel_resize_y_spinbox->get_value();
+	Image::Interpolation interp = static_cast<Image::Interpolation>(_pixel_resize_interpolation_option_button->get_selected_id());
+
+	paint_canvas->resize_interpolate(x, y, interp);
+}
+
 void PaintToolsPropertyInspector::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_tool_button", "id", "hint", "icon", "theme_type"), &PaintToolsPropertyInspector::add_tool_button);
 	ClassDB::bind_method(D_METHOD("add_action_button", "callback", "hint", "icon", "theme_type"), &PaintToolsPropertyInspector::add_action_button);
@@ -337,4 +416,7 @@ void PaintToolsPropertyInspector::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_on_import_dialog_file_selected"), &PaintToolsPropertyInspector::_on_import_dialog_file_selected);
 	ClassDB::bind_method(D_METHOD("_on_export_dialog_file_selected"), &PaintToolsPropertyInspector::_on_export_dialog_file_selected);
+
+	ClassDB::bind_method(D_METHOD("_on_pixel_scale_canvas_pressed"), &PaintToolsPropertyInspector::_on_pixel_scale_canvas_pressed);
+	ClassDB::bind_method(D_METHOD("_on_pixel_scale_canvas_confirmed"), &PaintToolsPropertyInspector::_on_pixel_scale_canvas_confirmed);
 }
