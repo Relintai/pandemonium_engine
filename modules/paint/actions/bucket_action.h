@@ -27,14 +27,10 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-class PaintCanvasOld;
-
 class BucketAction : public PaintAction {
 	GDCLASS(BucketAction, PaintAction);
 
 public:
-	void do_action_old(PaintCanvasOld *canvas, const Array &data);
-
 	void _do_action(const Array &data);
 
 	BucketAction();

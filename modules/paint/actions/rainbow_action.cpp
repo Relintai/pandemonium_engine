@@ -24,54 +24,9 @@ SOFTWARE.
 
 #include "rainbow_action.h"
 
-#include "../deprecated/paint_canvas.h"
-#include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
 #include "../nodes/paint_canvas.h"
-
-void RainbowAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action_old(canvas, data);
-
-	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
-
-	for (int i = 0; i < pixels.size(); ++i) {
-		Vector2i pixel = pixels[i];
-
-		if (!canvas->validate_pixel_v(pixel)) {
-			continue;
-		}
-
-		Color col = canvas->get_pixel_v(pixel);
-
-		if (canvas->is_alpha_locked() && col.a < 0.0001) {
-			continue;
-		}
-
-		if (undo_cells.contains(pixel)) {
-			Color color = PaintUtilities::random_color();
-			canvas->set_pixel_v(pixel, color);
-
-			int idx = redo_cells.find(pixel);
-			redo_cells.remove(idx);
-			redo_colors.remove(idx);
-
-			redo_cells.append(pixel);
-			redo_colors.append(color);
-
-			continue;
-		}
-
-		undo_colors.append(col);
-		undo_cells.append(pixel);
-
-		Color color = PaintUtilities::random_color();
-		canvas->set_pixel_v(pixel, color);
-
-		redo_cells.append(pixel);
-		redo_colors.append(color);
-	}
-}
 
 void RainbowAction::_do_action(const Array &data) {
 	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);

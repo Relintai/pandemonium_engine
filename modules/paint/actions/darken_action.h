@@ -36,7 +36,6 @@ public:
 	float get_dark_factor();
 	void set_dark_factor(const float val);
 
-	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 	void _do_action(const Array &data);
 
 	DarkenAction();

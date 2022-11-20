@@ -36,8 +36,6 @@ SOFTWARE.
 #include "actions/rainbow_action.h"
 #include "actions/rect_action.h"
 
-#include "deprecated/paint_window.h"
-
 #include "ui/paint_canvas_background.h"
 #include "ui/paint_canvas_outline.h"
 #include "ui/paint_selection_box.h"
@@ -55,12 +53,9 @@ SOFTWARE.
 
 #ifdef TOOLS_ENABLED
 #include "paint_editor_plugin.h"
-#include "paint_editor_plugin_old.h"
 #endif
 
 void register_paint_types() {
-	ClassDB::register_class<PaintWindow>();
-
 	ClassDB::register_class<PaintAction>();
 
 	ClassDB::register_class<BrightenAction>();
@@ -92,7 +87,6 @@ void register_paint_types() {
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<PaintEditorPlugin>();
-	EditorPlugins::add_by_type<PaintEditorPluginOld>();
 #endif
 }
 

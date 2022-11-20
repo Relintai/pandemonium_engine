@@ -27,14 +27,10 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-class PaintCanvasOld;
-
 class BrushAction : public PaintAction {
 	GDCLASS(BrushAction, PaintAction);
 
 public:
-	void do_action_old(PaintCanvasOld *canvas, const Array &data);
-
 	void _do_action(const Array &data);
 
 	BrushAction();

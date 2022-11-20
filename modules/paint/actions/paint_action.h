@@ -27,15 +27,13 @@ SOFTWARE.
 
 #include "core/object/resource.h"
 
+#include "core/containers/pool_vector.h"
+#include "core/math/vector2i.h"
 #include "core/variant/array.h"
 #include "core/variant/dictionary.h"
-#include "core/math/vector2i.h"
-#include "core/containers/pool_vector.h"
 #include "core/variant/variant.h"
 
-class PaintCanvasOld;
 class PaintCanvas;
-class PaintCanvasLayer;
 class Node;
 
 class PaintAction : public Resource {
@@ -73,18 +71,8 @@ public:
 	PoolColorArray get_preview_colors();
 	void set_preview_colors(const PoolColorArray &val);
 
-	//deprecated
-	Ref<PaintCanvasLayer> get_layer();
-	void set_layer(const Ref<PaintCanvasLayer> &val);
-
 	Dictionary get_action_data();
 	void set_action_data(const Dictionary &val);
-
-	virtual void do_action_old(PaintCanvasOld *canvas, const Array &data);
-	virtual void commit_action_old(PaintCanvasOld *canvas);
-
-	virtual void undo_action_old(PaintCanvasOld *canvas);
-	virtual void redo_action_old(PaintCanvasOld *canvas);
 
 	void do_action(const Array &data);
 	void commit_action();
@@ -105,10 +93,8 @@ public:
 	PoolVector2iArray get_y_sym_points(const int canvas_height, const Vector2i &pixel);
 	PoolVector2iArray get_xy_sym_points(const int canvas_width, const int canvas_height, const Vector2i &pixel);
 	PoolVector2iArray get_points(const Vector2i &pixel);
-	PoolVector2iArray get_points_old(PaintCanvasOld *canvas, const Vector2i &pixel);
 
 	void draw_points(const PoolVector2iArray &point_arr, const PoolColorArray &color_arr);
-	void draw_points_old(PaintCanvasOld *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr);
 
 	PaintAction();
 	~PaintAction();
@@ -125,8 +111,6 @@ public:
 
 	PoolVector2iArray preview_cells;
 	PoolColorArray preview_colors;
-
-	Ref<PaintCanvasLayer> layer;
 
 	Dictionary action_data;
 

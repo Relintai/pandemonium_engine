@@ -27,8 +27,6 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-class PaintCanvasOld;
-
 class RectAction : public PaintAction {
 	GDCLASS(RectAction, PaintAction);
 
@@ -38,9 +36,6 @@ public:
 
 	bool get_mouse_start_pos_set();
 	void set_mouse_start_pos_set(const bool val);
-
-	void do_action_old(PaintCanvasOld *canvas, const Array &data);
-	void commit_action_old(PaintCanvasOld *canvas);
 
 	void _do_action(const Array &data);
 	void _commit_action();

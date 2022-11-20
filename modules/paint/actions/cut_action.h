@@ -27,8 +27,6 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-class PaintCanvasOld;
-
 class CutAction : public PaintAction {
 	GDCLASS(CutAction, PaintAction);
 
@@ -46,9 +44,6 @@ public:
 	void set_mouse_start_pos_set(const bool val);
 
 	bool _can_commit();
-
-	void do_action_old(PaintCanvasOld *canvas, const Array &data);
-	void commit_action_old(PaintCanvasOld *canvas);
 
 	void _do_action(const Array &data);
 	void _commit_action();

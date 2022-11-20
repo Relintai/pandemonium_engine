@@ -24,8 +24,6 @@ SOFTWARE.
 
 #include "brighten_action.h"
 
-#include "../deprecated/paint_canvas.h"
-#include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
 #include "../nodes/paint_canvas.h"
@@ -35,40 +33,6 @@ float BrightenAction::get_brighten_color() {
 }
 void BrightenAction::set_brighten_color(const float val) {
 	brighten_color = val;
-}
-
-void BrightenAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action_old(canvas, data);
-
-	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
-
-	for (int i = 0; i < pixels.size(); ++i) {
-		Vector2i pixel = pixels[i];
-
-		Color col = canvas->get_pixel_v(pixel);
-
-		if (canvas->is_alpha_locked() && col.a < 0.00001) {
-			continue;
-		}
-
-		Color brightened_color = col.lightened(brighten_color);
-
-		if (undo_cells.contains(pixel)) {
-			canvas->set_pixel_v(pixel, brightened_color);
-
-			redo_cells.append(pixel);
-			redo_colors.append(brightened_color);
-			continue;
-		}
-
-		undo_colors.append(col);
-		undo_cells.append(pixel);
-
-		canvas->set_pixel_v(pixel, brightened_color);
-
-		redo_cells.append(pixel);
-		redo_colors.append(brightened_color);
-	}
 }
 
 void BrightenAction::_do_action(const Array &data) {

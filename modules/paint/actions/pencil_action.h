@@ -27,15 +27,10 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-class PaintCanvasOld;
-
 class PencilAction : public PaintAction {
 	GDCLASS(PencilAction, PaintAction);
 
 public:
-	void do_action_old(PaintCanvasOld *canvas, const Array &data);
-	void _set_pixel_old(PaintCanvasOld *canvas, Vector2i pixel, Color color);
-
 	void _do_action(const Array &data);
 	void _set_pixel(Vector2i pixel, Color color);
 

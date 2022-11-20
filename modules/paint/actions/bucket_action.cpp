@@ -24,46 +24,9 @@ SOFTWARE.
 
 #include "bucket_action.h"
 
-#include "../deprecated/paint_canvas.h"
-#include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
 #include "../nodes/paint_canvas.h"
-
-void BucketAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action_old(canvas, data);
-
-	Vector2i pos = data[0];
-
-	Color col = canvas->get_pixel_v(pos);
-	Color col2 = data[2];
-
-	if (col == col2) {
-		return;
-	}
-
-	PoolVector2iArray pixels = canvas->select_same_color(pos.x, pos.y);
-
-	for (int i = 0; i < pixels.size(); ++i) {
-		Vector2i pixel = pixels[i];
-
-		if (undo_cells.contains(pixel)) {
-			continue;
-		}
-
-		if (canvas->is_alpha_locked() && col.a < 0.0001) {
-			continue;
-		}
-
-		undo_cells.append(pixel);
-		undo_colors.append(col);
-
-		canvas->set_pixel_v(pixel, col2);
-
-		redo_cells.append(pixel);
-		redo_colors.append(col2);
-	}
-}
 
 void BucketAction::_do_action(const Array &data) {
 	Vector2i pos = data[0];

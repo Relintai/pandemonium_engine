@@ -25,48 +25,9 @@ SOFTWARE.
 #include "brush_action.h"
 
 #include "../bush_prefabs.h"
-#include "../deprecated/paint_canvas.h"
-#include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
 #include "../nodes/paint_canvas.h"
-
-void BrushAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action_old(canvas, data);
-
-	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
-	int brush_type = data[3];
-	int brush_size = data[4];
-	PoolVector2iArray brush = BrushPrefabs::get_brush(static_cast<BrushPrefabs::Type>(brush_type), brush_size);
-	Color tcolor = data[2];
-
-	for (int i = 0; i < pixels.size(); ++i) {
-		Vector2i pixel = pixels[i];
-
-		for (int j = 0; j < brush.size(); ++j) {
-			Vector2i off = brush[j];
-			Vector2i p = pixel + off;
-
-			if (undo_cells.contains(p)) {
-				continue;
-			}
-
-			Color col = canvas->get_pixel_v(p);
-
-			if (canvas->is_alpha_locked() && col.a < 0.00001) {
-				continue;
-			}
-
-			undo_colors.append(col);
-			undo_cells.append(p);
-
-			canvas->set_pixel_v(p, tcolor);
-
-			redo_cells.append(p);
-			redo_colors.append(tcolor);
-		}
-	}
-}
 
 void BrushAction::_do_action(const Array &data) {
 	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);

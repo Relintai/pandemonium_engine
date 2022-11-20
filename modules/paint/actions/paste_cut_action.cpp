@@ -24,66 +24,9 @@ SOFTWARE.
 
 #include "paste_cut_action.h"
 
-#include "../deprecated/paint_canvas.h"
-#include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
 #include "../nodes/paint_canvas.h"
-
-//arr.append(cell_mouse_position);
-//arr.append(last_cell_mouse_position);
-//arr.append(_selection_cells);
-//arr.append(_selection_colors);
-//arr.append(_cut_pos);
-//arr.append(_cut_size);
-void PasteCutAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action_old(canvas, data);
-
-	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
-	Vector2i cut_pos = data[4];
-	Vector2i cut_size = data[5];
-
-	for (int i = 0; i < pixels.size(); ++i) {
-		Vector2i pixel_pos = pixels[i];
-
-		PoolVector2iArray cells = data[2];
-		PoolColorArray colors = data[3];
-
-		for (int idx = 0; idx < cells.size(); ++idx) {
-			Vector2i pixel = cells[idx];
-			Color color = colors[idx];
-			pixel -= cut_pos + cut_size / 2;
-			pixel += pixel_pos;
-
-			if (!canvas->validate_pixel_v(pixel)) {
-				continue;
-			}
-
-			Color col = canvas->get_pixel_v(pixel);
-
-			if (canvas->is_alpha_locked() && col.a < 0.0001) {
-				continue;
-			}
-
-			int found = redo_cells.find(pixel);
-			if (found == -1) {
-				redo_cells.push_back(pixel);
-				redo_colors.push_back(color);
-			} else {
-				redo_colors[found] = color;
-			}
-
-			found = undo_cells.find(pixel);
-
-			if (found == -1) {
-				undo_colors.append(col);
-				undo_cells.append(pixel);
-			}
-
-			canvas->set_pixel_v(pixel, color);
-		}
-	}
-}
 
 void PasteCutAction::_do_action(const Array &data) {
 	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);

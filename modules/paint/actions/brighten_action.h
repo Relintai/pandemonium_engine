@@ -27,16 +27,12 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-class PaintCanvasOld;
-
 class BrightenAction : public PaintAction {
 	GDCLASS(BrightenAction, PaintAction);
 
 public:
 	float get_brighten_color();
 	void set_brighten_color(const float val);
-
-	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 
 	void _do_action(const Array &data);
 

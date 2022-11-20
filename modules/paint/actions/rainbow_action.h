@@ -27,14 +27,10 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-class PaintCanvasOld;
-
 class RainbowAction : public PaintAction {
 	GDCLASS(RainbowAction, PaintAction);
 
 public:
-	void do_action_old(PaintCanvasOld *canvas, const Array &data);
-
 	void _do_action(const Array &data);
 
 	RainbowAction();

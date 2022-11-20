@@ -24,8 +24,6 @@ SOFTWARE.
 
 #include "cut_action.h"
 
-#include "../deprecated/paint_canvas.h"
-#include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
 #include "../nodes/paint_canvas.h"
@@ -60,81 +58,6 @@ void CutAction::set_mouse_start_pos_set(const bool val) {
 
 bool CutAction::_can_commit() {
 	return false; //ugly way of handling a cut
-}
-
-void CutAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action_old(canvas, data);
-
-	if (!mouse_start_pos_set) {
-		mouse_start_pos = data[0];
-		mouse_start_pos_set = true;
-	}
-
-	mouse_end_pos = data[0];
-
-	preview_cells.clear();
-	preview_colors.clear();
-	canvas->clear_preview_layer();
-
-	Vector2i p = mouse_start_pos;
-	Vector2i s = mouse_end_pos - mouse_start_pos;
-
-	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(p, p + Vector2i(s.x, 0));
-	pixels.append_array(PaintUtilities::get_pixels_in_line(p, p + Vector2i(0, s.y)));
-	pixels.append_array(PaintUtilities::get_pixels_in_line(p + s, p + s + Vector2i(0, -s.y)));
-	pixels.append_array(PaintUtilities::get_pixels_in_line(p + s, p + s + Vector2i(-s.x, 0)));
-
-	for (int i = 0; i < pixels.size(); ++i) {
-		Vector2i pixel = pixels[i];
-
-		canvas->set_preview_pixel_v(pixel, selection_color);
-		preview_cells.append(pixel);
-		preview_colors.append(selection_color);
-	}
-}
-
-void CutAction::commit_action_old(PaintCanvasOld *canvas) {
-	canvas->clear_preview_layer();
-	Vector2i p = mouse_start_pos;
-	Vector2i s = mouse_end_pos - mouse_start_pos;
-
-	int ex = ABS(s.x) + 1;
-	int ey = ABS(s.y) + 1;
-
-	for (int x = 0; x < ex; ++x) {
-		for (int y = 0; y < ey; ++y) {
-			int px = x;
-			int py = y;
-
-			if (s.x < 0) {
-				px *= -1;
-			}
-
-			if (s.y < 0) {
-				py *= -1;
-			}
-
-			Vector2i pos = p + Vector2i(px, py);
-
-			if (!canvas->validate_pixel_v(pos)) {
-				continue;
-			}
-
-			Color color = canvas->get_pixel_v(pos);
-
-			if (color.a < 0.0001) {
-				continue;
-			}
-
-			redo_cells.append(pos);
-			redo_colors.append(color);
-
-			canvas->set_pixel_v(pos, Color(1, 1, 1, 0));
-
-			undo_cells.append(pos);
-			undo_colors.append(Color(1, 1, 1, 0));
-		}
-	}
 }
 
 void CutAction::_do_action(const Array &data) {
