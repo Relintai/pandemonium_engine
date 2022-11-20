@@ -65,14 +65,9 @@ PaintProjectToolsPropertyInspector::PaintProjectToolsPropertyInspector() {
 	VBoxContainer *main_container = memnew(VBoxContainer);
 	add_child(main_container);
 
-	ScrollContainer *scroll_container = memnew(ScrollContainer);
-	scroll_container->set_custom_minimum_size(Size2(0, 145));
-	scroll_container->set_enable_h_scroll(false);
-	main_container->add_child(scroll_container);
-
 	_button_contianer = memnew(HFlowContainer);
-	scroll_container->add_child(_button_contianer);
-	_button_contianer->set_h_size_flags(SIZE_EXPAND_FILL);
+	main_container->add_child(_button_contianer);
+	//_button_contianer->set_h_size_flags(SIZE_EXPAND_FILL);
 	_button_contianer->set_v_size_flags(SIZE_EXPAND_FILL);
 
 	//Button *button = memnew(Button);
