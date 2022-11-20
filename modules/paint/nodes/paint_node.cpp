@@ -116,7 +116,7 @@ void PaintNode::render_paint_node(PaintNode *node, Transform2D transform, Ref<Im
 	bound.expand_to(p1);
 	bound.expand_to(p2);
 	bound.expand_to(p3);
-	bound.grow(1);
+	bound = bound.grow(1);
 
 	Transform2D inverse = transform.affine_inverse();
 
