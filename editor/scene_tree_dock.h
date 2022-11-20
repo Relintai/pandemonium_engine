@@ -35,13 +35,13 @@
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
-#include "core/string/node_path.h"
+#include "core/containers/set.h"
+#include "core/containers/vector.h"
 #include "core/object/object_id.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
-#include "core/containers/set.h"
+#include "core/string/node_path.h"
 #include "core/string/ustring.h"
-#include "core/containers/vector.h"
 
 #include "modules/modules_enabled.gen.h" // For regex.
 
@@ -117,6 +117,7 @@ class SceneTreeDock : public VBoxContainer {
 		TOOL_CREATE_2D_SCENE,
 		TOOL_CREATE_3D_SCENE,
 		TOOL_CREATE_USER_INTERFACE,
+		TOOL_CREATE_CUSTOM_ROOT_CLASS,
 		TOOL_CREATE_FAVORITE,
 	};
 
@@ -195,7 +196,7 @@ class SceneTreeDock : public VBoxContainer {
 	bool tree_clicked;
 
 	VBoxContainer *create_root_dialog;
-	String selected_favorite_root;
+	String selected_root;
 
 	void _add_children_to_popup(Object *p_obj, int p_depth);
 
@@ -271,6 +272,7 @@ class SceneTreeDock : public VBoxContainer {
 
 	void _update_create_root_dialog();
 	void _favorite_root_selected(const String &p_class);
+	void _custom_root_selected(const String &p_class);
 
 	void _clear_clipboard();
 	void _create_remap_for_node(Node *p_node, Map<RES, RES> &r_remap);
@@ -278,6 +280,14 @@ class SceneTreeDock : public VBoxContainer {
 
 	bool _update_node_path(Node *p_root_node, NodePath &r_node_path, Map<Node *, NodePath> *p_renames) const;
 	bool _check_node_path_recursive(Node *p_root_node, Variant &r_variant, Map<Node *, NodePath> *p_renames) const;
+
+	struct CustomSceneRootClassEntry {
+		int id;
+		String name;
+		String class_name;
+	};
+
+	Vector<CustomSceneRootClassEntry> _custom_scene_root_classes;
 
 protected:
 	void _notification(int p_what);
@@ -297,6 +307,7 @@ public:
 	void set_selected(Node *p_node, bool p_emit_selected = false);
 	void fill_path_renames(Node *p_node, Node *p_new_parent, Map<Node *, NodePath> *p_renames);
 	void perform_node_renames(Node *p_base, Map<Node *, NodePath> *p_renames, Map<Ref<Animation>, Set<int>> *r_rem_anims = nullptr);
+
 	SceneTreeEditor *get_tree_editor() {
 		return scene_tree;
 	}
@@ -321,6 +332,9 @@ public:
 	ScriptCreateDialog *get_script_create_dialog() {
 		return script_create_dialog;
 	}
+
+	int add_custom_scene_root_class(const String &p_name, const String &p_class_name);
+	void remove_custom_scene_root_class(const int id);
 
 	SceneTreeDock(EditorNode *p_editor, Node *p_scene_root, EditorSelection *p_editor_selection, EditorData &p_editor_data);
 	~SceneTreeDock();

@@ -1177,11 +1177,12 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 		case TOOL_CREATE_2D_SCENE:
 		case TOOL_CREATE_3D_SCENE:
 		case TOOL_CREATE_USER_INTERFACE:
+		case TOOL_CREATE_CUSTOM_ROOT_CLASS:
 		case TOOL_CREATE_FAVORITE: {
 			Node *new_node = nullptr;
 
 			if (TOOL_CREATE_FAVORITE == p_tool) {
-				String name = selected_favorite_root.get_slicec(' ', 0);
+				String name = selected_root.get_slicec(' ', 0);
 				if (ScriptServer::is_global_class(name)) {
 					new_node = Object::cast_to<Node>(ClassDB::instance(ScriptServer::get_global_class_native_base(name)));
 					Ref<Script> script = ResourceLoader::load(ScriptServer::get_global_class_path(name), "Script");
@@ -1190,12 +1191,19 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 						new_node->set_name(name);
 					}
 				} else {
-					new_node = Object::cast_to<Node>(ClassDB::instance(selected_favorite_root));
+					new_node = Object::cast_to<Node>(ClassDB::instance(selected_root));
 				}
 
 				if (!new_node) {
 					new_node = memnew(Node);
-					ERR_PRINT("Creating root from favorite '" + selected_favorite_root + "' failed. Creating 'Node' instead.");
+					ERR_PRINT("Creating root from favorite '" + selected_root + "' failed. Creating 'Node' instead.");
+				}
+			} else if (p_tool == TOOL_CREATE_CUSTOM_ROOT_CLASS) {
+				new_node = Object::cast_to<Node>(ClassDB::instance(selected_root));
+
+				if (!new_node) {
+					new_node = memnew(Node);
+					ERR_PRINT("Creating custom root '" + selected_root + "' failed. Creating 'Node' instead.");
 				}
 			} else {
 				switch (p_tool) {
@@ -3092,6 +3100,19 @@ void SceneTreeDock::_update_create_root_dialog() {
 		return;
 	}
 
+	if (beginner_nodes) {
+		for (int i = 0; i < _custom_scene_root_classes.size(); ++i) {
+			CustomSceneRootClassEntry e = _custom_scene_root_classes[i];
+
+			Button *button = memnew(Button);
+			beginner_nodes->add_child(button);
+			button->set_text(TTR(e.name));
+			button->set_clip_text(true);
+			button->set_icon(EditorNode::get_singleton()->get_class_icon(e.class_name));
+			button->connect("pressed", this, "_custom_root_selected", make_binds(e.class_name));
+		}
+	}
+
 	EditorSettings::get_singleton()->set_setting("_use_favorites_root_selection", toggle->is_pressed());
 	EditorSettings::get_singleton()->save();
 	if (toggle->is_pressed()) {
@@ -3135,8 +3156,13 @@ void SceneTreeDock::_update_create_root_dialog() {
 }
 
 void SceneTreeDock::_favorite_root_selected(const String &p_class) {
-	selected_favorite_root = p_class;
+	selected_root = p_class;
 	_tool_selected(TOOL_CREATE_FAVORITE, false);
+}
+
+void SceneTreeDock::_custom_root_selected(const String &p_class) {
+	selected_root = p_class;
+	_tool_selected(TOOL_CREATE_CUSTOM_ROOT_CLASS, false);
 }
 
 void SceneTreeDock::_clear_clipboard() {
@@ -3243,6 +3269,7 @@ void SceneTreeDock::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_local_tree_selected"), &SceneTreeDock::_local_tree_selected);
 	ClassDB::bind_method(D_METHOD("_update_script_button"), &SceneTreeDock::_update_script_button);
 	ClassDB::bind_method(D_METHOD("_favorite_root_selected"), &SceneTreeDock::_favorite_root_selected);
+	ClassDB::bind_method(D_METHOD("_custom_root_selected"), &SceneTreeDock::_custom_root_selected);
 	ClassDB::bind_method(D_METHOD("_update_create_root_dialog"), &SceneTreeDock::_update_create_root_dialog);
 
 	ClassDB::bind_method(D_METHOD("instance"), &SceneTreeDock::instance);
@@ -3252,6 +3279,37 @@ void SceneTreeDock::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("remote_tree_selected"));
 	ADD_SIGNAL(MethodInfo("add_node_used"));
 	ADD_SIGNAL(MethodInfo("node_created", PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_RESOURCE_TYPE, "Node")));
+}
+
+int SceneTreeDock::add_custom_scene_root_class(const String &p_name, const String &p_class_name) {
+	int next_id = 0;
+
+	for (int i = 0; i < _custom_scene_root_classes.size(); ++i) {
+		int cid = _custom_scene_root_classes[i].id;
+
+		if (cid > next_id) {
+			next_id = cid;
+		}
+	}
+
+	++next_id;
+
+	CustomSceneRootClassEntry e;
+	e.id = next_id;
+	e.name = p_name;
+	e.class_name = p_class_name;
+
+	_custom_scene_root_classes.push_back(e);
+
+	return next_id;
+}
+void SceneTreeDock::remove_custom_scene_root_class(const int id) {
+	for (int i = 0; i < _custom_scene_root_classes.size(); ++i) {
+		if (_custom_scene_root_classes[i].id == id) {
+			_custom_scene_root_classes.remove(i);
+			return;
+		}
+	}
 }
 
 SceneTreeDock::SceneTreeDock(EditorNode *p_editor, Node *p_scene_root, EditorSelection *p_editor_selection, EditorData &p_editor_data) {
