@@ -111,6 +111,8 @@ PaintProjectToolsPropertyInspector::PaintProjectToolsPropertyInspector() {
 	add_action_button("_on_export_pressed", "Export Image", "Save", "EditorIcons");
 	add_action_button("_on_export_as_pressed", "Export Image As", "Duplicate", "EditorIcons");
 	add_action_button("_on_set_colors_as_default_pressed", "Set Colors as Default", "Theme", "EditorIcons");
+	add_action_button("_on_add_paint_visual_grid_pressed", "Add Paint Visual Grid", "PaintVisualGrid", "EditorIcons");
+	add_action_button("_on_add_paint_canvas_background_pressed", "Add Paint Canvas Background", "PaintCanvasBackground", "EditorIcons");
 }
 
 PaintProjectToolsPropertyInspector::~PaintProjectToolsPropertyInspector() {
@@ -170,6 +172,21 @@ void PaintProjectToolsPropertyInspector::_on_set_colors_as_default_pressed() {
 	paint_project->set_colors_as_default();
 }
 
+void PaintProjectToolsPropertyInspector::_on_add_paint_visual_grid_pressed() {
+	PaintProject *paint_project = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
+
+	ERR_FAIL_COND(!paint_project);
+
+	paint_project->add_paint_visual_grid();
+}
+void PaintProjectToolsPropertyInspector::_on_add_paint_canvas_background_pressed() {
+	PaintProject *paint_project = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
+
+	ERR_FAIL_COND(!paint_project);
+
+	paint_project->add_paint_canvas_backgorund();
+}
+
 //void PaintProjectToolsPropertyInspector::_notification(int p_what) {
 //if (p_what == NOTIFICATION_THEME_CHANGED || p_what == NOTIFICATION_ENTER_TREE) {
 //_add_color_button->set_icon(get_theme_icon("Add", "EditorIcons"));
@@ -183,4 +200,6 @@ void PaintProjectToolsPropertyInspector::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_export_as_pressed"), &PaintProjectToolsPropertyInspector::_on_export_as_pressed);
 	ClassDB::bind_method(D_METHOD("_on_export_as_dialog_file_selected"), &PaintProjectToolsPropertyInspector::_on_export_as_dialog_file_selected);
 	ClassDB::bind_method(D_METHOD("_on_set_colors_as_default_pressed"), &PaintProjectToolsPropertyInspector::_on_set_colors_as_default_pressed);
+	ClassDB::bind_method(D_METHOD("_on_add_paint_visual_grid_pressed"), &PaintProjectToolsPropertyInspector::_on_add_paint_visual_grid_pressed);
+	ClassDB::bind_method(D_METHOD("_on_add_paint_canvas_background_pressed"), &PaintProjectToolsPropertyInspector::_on_add_paint_canvas_background_pressed);
 }
