@@ -137,7 +137,7 @@ PaintToolsPropertyInspector::PaintToolsPropertyInspector() {
 	add_tool_button(PaintCanvas::TOOL_BRIGHTEN, "Brighten", "ArrowUp", "EditorIcons");
 	add_tool_button(PaintCanvas::TOOL_COLORPICKER, "Colorpicker", "ColorPick", "EditorIcons");
 	add_tool_button(PaintCanvas::TOOL_CUT, "Cut", "ActionCut", "EditorIcons");
-	add_tool_button(PaintCanvas::TOOL_PASTECUT, "Pastecut", "ActionCopy", "EditorIcons");
+	add_tool_button(PaintCanvas::TOOL_PASTECUT, "Pastecut", "ActionPaste", "EditorIcons");
 	add_action_button("_on_undo_pressed", "Undo", "ArrowLeft", "EditorIcons");
 	add_action_button("_on_redo_pressed", "Redo", "ArrowRight", "EditorIcons");
 
