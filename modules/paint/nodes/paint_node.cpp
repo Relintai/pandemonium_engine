@@ -107,60 +107,41 @@ void PaintNode::render_paint_node(PaintNode *node, Transform2D transform, Ref<Im
 	Vector2i save_image_size = save_image->get_size();
 	Vector2i image_size = image->get_size();
 
-	// NOTE: this is EXTREMELY inefficient, and slow, however it does work for now.
-	// It will be rewritten soon.
-
 	Vector2 p0 = transform.xform(Vector2(0, 0));
 	Vector2 p1 = transform.xform(Vector2(0, save_image_size.y));
 	Vector2 p2 = transform.xform(Vector2(save_image_size.x, 0));
 	Vector2 p3 = transform.xform(Vector2(save_image_size.x, save_image_size.y));
 
-	Vector<Point2i> queued_points = Geometry::brenzenham_line(p0.x, p1.x, p0.y, p1.y);
-	queued_points.append_array(Geometry::brenzenham_line(p1.x, p3.x, p1.y, p3.y));
-	queued_points.append_array(Geometry::brenzenham_line(p2.x, p3.x, p2.y, p3.y));
-	queued_points.append_array(Geometry::brenzenham_line(p0.x, p2.x, p0.y, p2.y));
-
-	Vector<Point2i> points_to_check;
-
-	for (int i = 0; i < queued_points.size(); ++i) {
-		Point2i p = queued_points[i];
-
-		Vector<Point2i> points = Geometry::brenzenham_line(p0.x, p.x, p0.y, p.y);
-		points.append_array(Geometry::brenzenham_line(p3.x, p.x, p3.y, p.y));
-		points.append_array(Geometry::brenzenham_line(p2.x, p.x, p2.y, p.y));
-		points.append_array(Geometry::brenzenham_line(p1.x, p.x, p1.y, p.y));
-
-		for (int j = 0; j < points.size(); ++j) {
-			Point2i pc = points[j];
-
-			if (points_to_check.find(pc) == -1) {
-				points_to_check.push_back(pc);
-			}
-		}
-	}
+	Rect2i bound(p0, Vector2());
+	bound.expand_to(p1);
+	bound.expand_to(p2);
+	bound.expand_to(p3);
+	bound.grow(1);
 
 	Transform2D inverse = transform.affine_inverse();
 
 	save_image->lock();
 	image->lock();
 
-	for (int i = 0; i < points_to_check.size(); ++i) {
-		Point2i p = points_to_check[i];
+	for (int x = bound.position.x; x < bound.position.x + bound.size.x; ++x) {
+		for (int y = bound.position.y; y < bound.position.y + bound.size.y; ++y) {
+			Point2i p = Point2i(x, y);
 
-		if (p.x < 0 || p.y < 0 || p.x >= image_size.x || p.y >= image_size.y) {
-			continue;
+			if (p.x < 0 || p.y < 0 || p.x >= image_size.x || p.y >= image_size.y) {
+				continue;
+			}
+
+			Vector2 npos = inverse.xform(Vector2(p.x, p.y));
+
+			if (npos.x < 0 || npos.y < 0 || npos.x >= save_image_size.x || npos.y >= save_image_size.y) {
+				continue;
+			}
+
+			Color sic = save_image->get_pixel(npos.x, npos.y);
+			Color oic = image->get_pixel(p.x, p.y);
+
+			image->set_pixel(p.x, p.y, oic.blend(sic));
 		}
-
-		Vector2 npos = inverse.xform(Vector2(p.x, p.y));
-
-		if (npos.x < 0 || npos.y < 0 || npos.x >= save_image_size.x || npos.y >= save_image_size.y) {
-			continue;
-		}
-
-		Color sic = save_image->get_pixel(npos.x, npos.y);
-		Color oic = image->get_pixel(p.x, p.y);
-
-		image->set_pixel(p.x, p.y, oic.blend(sic));
 	}
 
 	image->unlock();
