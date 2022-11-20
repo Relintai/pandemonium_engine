@@ -142,6 +142,8 @@ WebNodeEditorPlugin::WebNodeEditorPlugin(EditorNode *p_node) {
 	_scene_has_webnode = false;
 
 	Engine::get_singleton()->add_global("WebNodeEditor", window);
+
+	editor->get_scene_tree_dock()->add_custom_scene_root_class("Web", "WebNode");
 }
 
 WebNodeEditorPlugin::~WebNodeEditorPlugin() {

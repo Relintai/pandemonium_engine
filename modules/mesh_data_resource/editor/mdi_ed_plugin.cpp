@@ -26,6 +26,7 @@ SOFTWARE.
 #include "mdi_ed.h"
 #include "mdi_gizmo.h"
 #include "mdi_gizmo_plugin.h"
+#include "editor/editor_node.h"
 
 bool MDIEdPlugin::handles(Object *object) const {
 	if (object->is_class("MeshDataInstance")) {
@@ -500,6 +501,8 @@ MDIEdPlugin::MDIEdPlugin(EditorNode *p_node) {
 	gizmo_plugin.instance();
 	gizmo_plugin->plugin = this;
 	add_spatial_gizmo_plugin(gizmo_plugin);
+
+	editor->get_scene_tree_dock()->add_custom_scene_root_class("Mesh", "MeshDataInstance");
 }
 
 MDIEdPlugin::~MDIEdPlugin() {
