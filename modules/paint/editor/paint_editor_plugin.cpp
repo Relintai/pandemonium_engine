@@ -76,7 +76,7 @@ PaintEditorPlugin::PaintEditorPlugin(EditorNode *p_node) {
 	_inspector_plugin = memnew(PaintInspectorPlugin);
 	add_inspector_plugin(_inspector_plugin);
 
-	editor->get_scene_tree_dock()->add_custom_scene_root_class("Paint", "PaintCanvas");
+	editor->get_scene_tree_dock()->add_custom_scene_root_class("Paint", "PaintProject");
 }
 
 PaintEditorPlugin::~PaintEditorPlugin() {
