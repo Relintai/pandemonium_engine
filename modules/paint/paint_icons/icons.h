@@ -32,68 +32,36 @@ public:
 		return texture;
 	}
 
-	static Ref<Texture> make_icon_arrow_down_png() {
-		return make_icon(arrow_down_png);
-	}
-
-	static Ref<Texture> make_icon_arrow_up_png()  {
-		return make_icon(arrow_up_png);
-	}
-
-	static Ref<Texture> make_icon_brush_circle_png()  {
+	static Ref<Texture> make_icon_brush_circle_png() {
 		return make_icon(brush_circle_png);
 	}
 
-	static Ref<Texture> make_icon_brush_circle_hovered_png()  {
+	static Ref<Texture> make_icon_brush_circle_hovered_png() {
 		return make_icon(brush_circle_hovered_png);
 	}
 
-	static Ref<Texture> make_icon_brush_h_line_png()  {
+	static Ref<Texture> make_icon_brush_h_line_png() {
 		return make_icon(brush_h_line_png);
 	}
 
-	static Ref<Texture> make_icon_brush_h_line_hovered_png()  {
+	static Ref<Texture> make_icon_brush_h_line_hovered_png() {
 		return make_icon(brush_h_line_hovered_png);
 	}
 
-	static Ref<Texture> make_icon_brush_rect_png()  {
+	static Ref<Texture> make_icon_brush_rect_png() {
 		return make_icon(brush_rect_png);
 	}
 
-	static Ref<Texture> make_icon_brush_rect_hovered_png()  {
+	static Ref<Texture> make_icon_brush_rect_hovered_png() {
 		return make_icon(brush_rect_hovered_png);
 	}
 
-	static Ref<Texture> make_icon_brush_v_line_png()  {
+	static Ref<Texture> make_icon_brush_v_line_png() {
 		return make_icon(brush_v_line_png);
 	}
 
-	static Ref<Texture> make_icon_brush_v_line_hovered_png()  {
+	static Ref<Texture> make_icon_brush_v_line_hovered_png() {
 		return make_icon(brush_v_line_hovered_png);
-	}
-
-	static Ref<Texture> make_icon_grid_png()  {
-		return make_icon(grid_png);
-	}
-
-	static Ref<Texture> make_icon_lock_layer_png()  {
-		return make_icon(lock_layer_png);
-	}
-
-	static Ref<Texture> make_icon_lock_layer_1_png()  {
-		return make_icon(lock_layer_1_png);
-	}
-
-	static Ref<Texture> make_icon_minidotta_png()  {
-		return make_icon(minidotta_png);
-	}
-
-	static Ref<Texture> make_icon_minidotta_invis_png()  {
-		return make_icon(minidotta_invis_png);
-	}
-
-    static Ref<Texture> make_icon_unlock_layer_png()  {
-		return make_icon(unlock_layer_png);
 	}
 };
 
