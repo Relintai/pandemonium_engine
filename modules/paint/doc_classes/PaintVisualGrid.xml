@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PaintVisualGrid" inherits="PaintNode" version="3.10">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="grid_color" type="Color" setter="set_grid_color" getter="get_grid_color" default="Color( 1, 1, 1, 0.42 )">
+		</member>
+		<member name="grid_size" type="int" setter="set_grid_size" getter="get_grid_size" default="2">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

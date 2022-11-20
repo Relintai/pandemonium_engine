@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PaintProjectToolsPropertyInspector" inherits="PaintCustomPropertyInspector" version="3.10">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_action_button">
+			<return type="void" />
+			<argument index="0" name="callback" type="String" />
+			<argument index="1" name="hint" type="String" />
+			<argument index="2" name="icon" type="String" />
+			<argument index="3" name="theme_type" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

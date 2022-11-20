@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ColorSelectorButton" inherits="Button" version="3.10">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_picker">
+			<return type="ColorPicker" />
+			<description>
+			</description>
+		</method>
+		<method name="get_popup">
+			<return type="PopupPanel" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="button_mask" type="int" setter="set_button_mask" getter="get_button_mask" overrides="BaseButton" default="3" />
+		<member name="color" type="Color" setter="set_pick_color" getter="get_pick_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="edit_alpha" type="bool" setter="set_edit_alpha" getter="is_editing_alpha" default="true">
+		</member>
+	</members>
+	<signals>
+		<signal name="color_changed">
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</signal>
+		<signal name="picker_created">
+			<description>
+			</description>
+		</signal>
+		<signal name="popup_closed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

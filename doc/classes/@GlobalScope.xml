@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="@GlobalScope" version="3.8">
+<class name="@GlobalScope" version="3.10">
 	<brief_description>
 		Global scope constants and variables.
 	</brief_description>
@@ -1547,8 +1547,8 @@
 		</constant>
 		<constant name="PROPERTY_HINT_SAVE_FILE" value="38" enum="PropertyHint">
 		</constant>
+		<constant name="PROPERTY_HINT_MAX" value="40" enum="PropertyHint">
 		</constant>
-		<constant name="PROPERTY_HINT_MAX" value="41" enum="PropertyHint">
 		<constant name="PROPERTY_USAGE_STORAGE" value="1" enum="PropertyUsageFlags">
 			The property is serialized and saved in the scene file (default).
 		</constant>

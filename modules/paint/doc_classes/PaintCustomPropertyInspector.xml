@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PaintCustomPropertyInspector" inherits="PanelContainer" version="3.10">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_set_paint_node" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="paint_node" type="PaintNode" />
+			<description>
+			</description>
+		</method>
+		<method name="set_paint_node">
+			<return type="void" />
+			<argument index="0" name="paint_node" type="Node" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

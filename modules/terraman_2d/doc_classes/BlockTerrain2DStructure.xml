@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="BlockTerrain2DStructure" inherits="Terrain2DStructure" version="3.8">
+<class name="BlockTerrain2DStructure" inherits="Terrain2DStructure" version="3.10">
 	<brief_description>
 	</brief_description>
 	<description>

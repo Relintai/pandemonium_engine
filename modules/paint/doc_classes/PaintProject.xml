@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PaintProject" inherits="PaintNode" version="3.10">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_paint_canvas_backgorund">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="add_paint_visual_grid">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="add_preset_color">
+			<return type="void" />
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="get_preset_color">
+			<return type="Color" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_preset_color_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_preset_color">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="save_image_to_file">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="set_colors_as_default">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="set_preset_color">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="color_presets" type="PoolColorArray" setter="set_color_presets" getter="get_color_presets" default="PoolColorArray(  )">
+		</member>
+		<member name="current_color" type="Color" setter="set_current_color" getter="get_current_color" default="Color( 1, 1, 1, 1 )">
+		</member>
+		<member name="save_file_name" type="String" setter="set_save_file_name" getter="get_save_file_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<signals>
+		<signal name="color_presets_changed">
+			<description>
+			</description>
+		</signal>
+		<signal name="current_color_changed">
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SkeletonModification2DFABRIK" inherits="SkeletonModification2D" version="3.8">
+<class name="SkeletonModification2DFABRIK" inherits="SkeletonModification2D" version="3.10">
 	<brief_description>
 		A modification that uses FABRIK to manipulate a series of [Bone2D] nodes to reach a target.
 	</brief_description>

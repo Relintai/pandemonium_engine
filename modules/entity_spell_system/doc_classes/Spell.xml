@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Spell" inherits="Resource" version="3.8">
+<class name="Spell" inherits="Resource" version="3.10">
 	<brief_description>
 		Base [Spell] class. Contains data, and callbacks for spell scripts. Inherit from this to create spells with different functionality.
 	</brief_description>

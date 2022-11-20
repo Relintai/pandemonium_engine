@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PaintCanvas" inherits="PaintNode" version="3.10">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_preview">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="commit_action">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="do_action">
+			<return type="void" />
+			<argument index="0" name="arr" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="draw_brush_preview">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_action">
+			<return type="PaintAction" />
+			<description>
+			</description>
+		</method>
+		<method name="get_current_color">
+			<return type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="get_image">
+			<return type="Image" />
+			<description>
+			</description>
+		</method>
+		<method name="get_image_texture">
+			<return type="ImageTexture" />
+			<description>
+			</description>
+		</method>
+		<method name="get_neighbouring_pixels">
+			<return type="PoolVector2iArray" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_pixel">
+			<return type="Color" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_pixel_v">
+			<return type="Color" />
+			<argument index="0" name="pos" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="get_preview_image">
+			<return type="Image" />
+			<description>
+			</description>
+		</method>
+		<method name="get_preview_image_texture">
+			<return type="ImageTexture" />
+			<description>
+			</description>
+		</method>
+		<method name="get_preview_pixel">
+			<return type="Color" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_preview_pixel_v">
+			<return type="Color" />
+			<argument index="0" name="pos" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="get_previous_tool" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="handle_draw">
+			<return type="void" />
+			<argument index="0" name="local_position" type="Vector2" />
+			<argument index="1" name="event" type="InputEvent" />
+			<description>
+			</description>
+		</method>
+		<method name="has_point">
+			<return type="bool" />
+			<argument index="0" name="pos" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="is_inside_canvas">
+			<return type="bool" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="load_image">
+			<return type="int" enum="Error" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="redo_action">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="resize_crop">
+			<return type="void" />
+			<argument index="0" name="width" type="int" />
+			<argument index="1" name="height" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="resize_interpolate">
+			<return type="void" />
+			<argument index="0" name="width" type="int" />
+			<argument index="1" name="height" type="int" />
+			<argument index="2" name="interpolation" type="int" enum="Image.Interpolation" default="1" />
+			<description>
+			</description>
+		</method>
+		<method name="select_color">
+			<return type="PoolVector2iArray" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="select_same_color">
+			<return type="PoolVector2iArray" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_pixel">
+			<return type="void" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<argument index="2" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="set_pixel_arr">
+			<return type="void" />
+			<argument index="0" name="pixels" type="PoolVector2iArray" />
+			<argument index="1" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="set_pixel_v">
+			<return type="void" />
+			<argument index="0" name="pos" type="Vector2i" />
+			<argument index="1" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="set_preview_pixel">
+			<return type="void" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<argument index="2" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="set_preview_pixel_v">
+			<return type="void" />
+			<argument index="0" name="pos" type="Vector2i" />
+			<argument index="1" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="tool_process">
+			<return type="void" />
+			<argument index="0" name="local_position" type="Vector2" />
+			<argument index="1" name="event" type="InputEvent" />
+			<description>
+			</description>
+		</method>
+		<method name="undo_action">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="update_textures">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="validate_pixel_v" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="pos" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="alpha_locked" type="bool" setter="set_alpha_locked" getter="get_alpha_locked" default="false">
+		</member>
+		<member name="brush_prefab" type="int" setter="set_brush_prefab" getter="get_brush_prefab" default="0">
+		</member>
+		<member name="brush_size" type="int" setter="set_brush_size" getter="get_brush_size" default="1">
+		</member>
+		<member name="current_tool" type="int" setter="set_current_tool" getter="get_current_tool" default="0">
+		</member>
+		<member name="image_data_compressed" type="PoolByteArray" setter="set_image_data_compressed" getter="get_image_data_compressed" default="PoolByteArray(  )">
+		</member>
+		<member name="symmetry_x" type="bool" setter="set_symmetry_x" getter="get_symmetry_x" default="false">
+		</member>
+		<member name="symmetry_y" type="bool" setter="set_symmetry_y" getter="get_symmetry_y" default="false">
+		</member>
+	</members>
+	<signals>
+		<signal name="brush_prefab_changed">
+			<description>
+			</description>
+		</signal>
+		<signal name="brush_size_changed">
+			<description>
+			</description>
+		</signal>
+		<signal name="current_tool_changed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="TOOL_PENCIL" value="0" enum="Tools">
+		</constant>
+		<constant name="TOOL_BRUSH" value="1" enum="Tools">
+		</constant>
+		<constant name="TOOL_BUCKET" value="2" enum="Tools">
+		</constant>
+		<constant name="TOOL_RAINBOW" value="3" enum="Tools">
+		</constant>
+		<constant name="TOOL_LINE" value="4" enum="Tools">
+		</constant>
+		<constant name="TOOL_RECT" value="5" enum="Tools">
+		</constant>
+		<constant name="TOOL_DARKEN" value="6" enum="Tools">
+		</constant>
+		<constant name="TOOL_BRIGHTEN" value="7" enum="Tools">
+		</constant>
+		<constant name="TOOL_COLORPICKER" value="8" enum="Tools">
+		</constant>
+		<constant name="TOOL_CUT" value="9" enum="Tools">
+		</constant>
+		<constant name="TOOL_PASTECUT" value="10" enum="Tools">
+		</constant>
+	</constants>
+</class>

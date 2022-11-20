@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PaintNode" inherits="Node2D" version="3.10">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_forward_canvas_gui_input" qualifiers="virtual">
+			<return type="bool" />
+			<argument index="0" name="event" type="InputEvent" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_rendered_image" qualifiers="virtual">
+			<return type="Image" />
+			<description>
+			</description>
+		</method>
+		<method name="_render_image" qualifiers="virtual">
+			<return type="Image" />
+			<description>
+			</description>
+		</method>
+		<method name="_render_should_evaluate_children" qualifiers="virtual">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="find_parent_paint_node">
+			<return type="PaintNode" />
+			<description>
+			</description>
+		</method>
+		<method name="forward_canvas_gui_input">
+			<return type="bool" />
+			<argument index="0" name="event" type="InputEvent" />
+			<description>
+			</description>
+		</method>
+		<method name="get_paint_project">
+			<return type="PaintProject" />
+			<description>
+			</description>
+		</method>
+		<method name="get_parent_paint_node">
+			<return type="PaintNode" />
+			<description>
+			</description>
+		</method>
+		<method name="get_rendered_image">
+			<return type="Image" />
+			<description>
+			</description>
+		</method>
+		<method name="render_image">
+			<return type="Image" />
+			<description>
+			</description>
+		</method>
+		<method name="render_should_evaluate_children">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="util_color_from_array">
+			<return type="Color" />
+			<argument index="0" name="color_array" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="util_get_pixels_in_line">
+			<return type="PoolVector2iArray" />
+			<argument index="0" name="from" type="Vector2i" />
+			<argument index="1" name="to" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="util_random_color">
+			<return type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="util_random_color_alt">
+			<return type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="util_to_1d">
+			<return type="int" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<argument index="2" name="w" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="util_to_1d_v">
+			<return type="int" />
+			<argument index="0" name="p" type="Vector2i" />
+			<argument index="1" name="w" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="util_to_2d">
+			<return type="Vector2i" />
+			<argument index="0" name="idx" type="int" />
+			<argument index="1" name="w" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="draw_outline" type="bool" setter="set_draw_outline" getter="get_draw_outline" default="true">
+		</member>
+		<member name="size" type="Vector2i" setter="set_size" getter="get_size" default="Vector2i( 0, 0 )">
+		</member>
+	</members>
+	<signals>
+		<signal name="size_changed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="NOTIFICATION_PARENT_PAINT_NODE_RESIZED" value="2500">
+		</constant>
+		<constant name="NOTIFICATION_PAINT_PROJECT_PRE_RENDER" value="2501">
+		</constant>
+		<constant name="NOTIFICATION_PAINT_PROJECT_POST_RENDER" value="2502">
+		</constant>
+	</constants>
+</class>

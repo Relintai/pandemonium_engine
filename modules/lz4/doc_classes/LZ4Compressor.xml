@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="LZ4Compressor" inherits="Reference" version="3.10">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="compress_data" qualifiers="const">
+			<return type="PoolByteArray" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+		<method name="decompress_data" qualifiers="const">
+			<return type="PoolByteArray" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

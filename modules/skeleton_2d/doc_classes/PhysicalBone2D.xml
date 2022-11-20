@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PhysicalBone2D" inherits="RigidBody2D" version="3.8">
+<class name="PhysicalBone2D" inherits="RigidBody2D" version="3.10">
 	<brief_description>
 		A 2D node that can be used for physically aware bones in 2D.
 	</brief_description>
