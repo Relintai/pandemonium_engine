@@ -37,7 +37,6 @@ SOFTWARE.
 #include "actions/rect_action.h"
 
 #include "ui/paint_canvas_background.h"
-#include "ui/paint_selection_box.h"
 #include "ui/paint_visual_grid.h"
 
 #include "ui/property_inspectors/paint_custom_property_inspector.h"
@@ -69,7 +68,6 @@ void register_paint_types() {
 	ClassDB::register_class<RectAction>();
 
 	ClassDB::register_class<PaintCanvasBackground>();
-	ClassDB::register_class<PaintSelectionBox>();
 	ClassDB::register_class<PaintVisualGrid>();
 
 	ClassDB::register_class<PaintCustomPropertyInspector>();
