@@ -1889,6 +1889,10 @@ int _Geometry::get_uv84_normal_bit(const Vector3 &p_vector) {
 	return Geometry::get_uv84_normal_bit(p_vector);
 }
 
+PoolVector2iArray _Geometry::brenzenham_line(int x0, int x1, int y0, int y1) {
+	return Geometry::brenzenham_line_pv(x0, x1, y0, y1);
+}
+
 void _Geometry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("build_box_planes", "extents"), &_Geometry::build_box_planes);
 	ClassDB::bind_method(D_METHOD("build_cylinder_planes", "radius", "height", "sides", "axis"), &_Geometry::build_cylinder_planes, DEFVAL(Vector3::AXIS_Z));
@@ -1935,6 +1939,8 @@ void _Geometry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("offset_polyline_2d", "polyline", "delta", "join_type", "end_type"), &_Geometry::offset_polyline_2d, DEFVAL(JOIN_SQUARE), DEFVAL(END_SQUARE));
 
 	ClassDB::bind_method(D_METHOD("make_atlas", "sizes"), &_Geometry::make_atlas);
+
+	ClassDB::bind_method(D_METHOD("brenzenham_line", "x0", "x1", "y0", "y1"), &_Geometry::brenzenham_line);
 
 	BIND_ENUM_CONSTANT(OPERATION_UNION);
 	BIND_ENUM_CONSTANT(OPERATION_DIFFERENCE);

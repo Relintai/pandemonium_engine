@@ -30,16 +30,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/pool_vector.h"
+#include "core/containers/vector.h"
 #include "core/math/delaunay.h"
 #include "core/math/face3.h"
 #include "core/math/rect2.h"
 #include "core/math/triangulate.h"
-#include "core/math/vector3.h"
 #include "core/math/vector2i.h"
+#include "core/math/vector3.h"
 #include "core/object/object.h"
-#include "core/containers/pool_vector.h"
 #include "core/string/print_string.h"
-#include "core/containers/vector.h"
 
 class Geometry {
 public:
@@ -1020,6 +1020,92 @@ public:
 	static Vector<Vector3> compute_convex_mesh_points(const Plane *p_planes, int p_plane_count, real_t p_epsilon = CMP_EPSILON);
 	static bool convex_hull_intersects_convex_hull(const Plane *p_planes_a, int p_plane_count_a, const Plane *p_planes_b, int p_plane_count_b);
 	static real_t calculate_convex_hull_volume(const Geometry::MeshData &p_md);
+
+	static _FORCE_INLINE_ Vector<Point2i> brenzenham_line(int x0, int x1, int y0, int y1) {
+		Vector<Point2i> points;
+
+		float dx = ABS(x1 - x0);
+		float dy = ABS(y1 - y0);
+
+		int x = x0;
+		int y = y0;
+
+		int sx = x0 > x1 ? -1 : 1;
+		int sy = y0 > y1 ? -1 : 1;
+
+		if (dx > dy) {
+			float err = dx / 2;
+
+			for (; x != x1; x += sx) {
+				points.push_back(Vector2(x, y));
+
+				err -= dy;
+				if (err < 0) {
+					y += sy;
+					err += dx;
+				}
+			}
+		} else {
+			float err = dy / 2;
+
+			for (; y != y1; y += sy) {
+				points.push_back(Vector2(x, y));
+
+				err -= dx;
+				if (err < 0) {
+					x += sx;
+					err += dy;
+				}
+			}
+		}
+
+		points.push_back(Vector2(x, y));
+
+		return points;
+	}
+
+	static _FORCE_INLINE_ PoolVector2iArray brenzenham_line_pv(int x0, int x1, int y0, int y1) {
+		PoolVector2iArray points;
+
+		float dx = ABS(x1 - x0);
+		float dy = ABS(y1 - y0);
+
+		int x = x0;
+		int y = y0;
+
+		int sx = x0 > x1 ? -1 : 1;
+		int sy = y0 > y1 ? -1 : 1;
+
+		if (dx > dy) {
+			float err = dx / 2;
+
+			for (; x != x1; x += sx) {
+				points.push_back(Vector2(x, y));
+
+				err -= dy;
+				if (err < 0) {
+					y += sy;
+					err += dx;
+				}
+			}
+		} else {
+			float err = dy / 2;
+
+			for (; y != y1; y += sy) {
+				points.push_back(Vector2(x, y));
+
+				err -= dx;
+				if (err < 0) {
+					x += sx;
+					err += dy;
+				}
+			}
+		}
+
+		points.push_back(Vector2(x, y));
+
+		return points;
+	}
 
 private:
 	static Vector<Vector<Point2>> _polypaths_do_operation(PolyBooleanOperation p_op, const Vector<Point2> &p_polypath_a, const Vector<Point2> &p_polypath_b, bool is_a_open = false);
