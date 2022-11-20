@@ -3101,6 +3101,14 @@ void SceneTreeDock::_update_create_root_dialog() {
 	}
 
 	if (beginner_nodes) {
+		for (int i = 0; i < beginner_nodes->get_child_count(); ++i) {
+			Button *button = Object::cast_to<Button>(beginner_nodes->get_child(i));
+
+			if (button && button->has_meta("custom_root_button")) {
+				button->queue_delete();
+			}
+		}
+
 		for (int i = 0; i < _custom_scene_root_classes.size(); ++i) {
 			CustomSceneRootClassEntry e = _custom_scene_root_classes[i];
 
@@ -3109,6 +3117,7 @@ void SceneTreeDock::_update_create_root_dialog() {
 			button->set_text(TTR(e.name));
 			button->set_clip_text(true);
 			button->set_icon(EditorNode::get_singleton()->get_class_icon(e.class_name));
+			button->set_meta("custom_root_button", true);
 			button->connect("pressed", this, "_custom_root_selected", make_binds(e.class_name));
 		}
 	}
