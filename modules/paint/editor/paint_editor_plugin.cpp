@@ -27,9 +27,9 @@ SOFTWARE.
 #include "editor/editor_settings.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
 
-#include "./editor/paint_inspector_plugin.h"
+#include "paint_inspector_plugin.h"
 
-#include "nodes/paint_node.h"
+#include "../nodes/paint_node.h"
 
 void PaintEditorPlugin::make_visible(const bool visible) {
 }

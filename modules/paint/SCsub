@@ -38,5 +38,5 @@ module_env.add_source_files(env.modules_sources,"nodes/paint_canvas.cpp")
 module_env.add_source_files(env.modules_sources,"nodes/paint_project.cpp")
 
 if 'TOOLS_ENABLED' in env["CPPDEFINES"]:
-    module_env.add_source_files(env.modules_sources,"paint_editor_plugin.cpp")
+    module_env.add_source_files(env.modules_sources,"editor/paint_editor_plugin.cpp")
     module_env.add_source_files(env.modules_sources,"editor/paint_inspector_plugin.cpp")

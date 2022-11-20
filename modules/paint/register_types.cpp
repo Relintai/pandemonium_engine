@@ -49,7 +49,7 @@ SOFTWARE.
 #include "nodes/paint_project.h"
 
 #ifdef TOOLS_ENABLED
-#include "paint_editor_plugin.h"
+#include "editor/paint_editor_plugin.h"
 #endif
 
 void register_paint_types() {
