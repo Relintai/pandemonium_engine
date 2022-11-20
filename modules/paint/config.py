@@ -23,14 +23,17 @@ def get_doc_classes():
       "RainbowAction",
       "RectAction",
 
-      "PaintWindow",
-
       "PaintNode",
       "PaintCanvas",
       "PaintProject", 
 
-      "PaintSidebar",
-      "PaintSidebarModule",
+      "PaintCanvasBackground",
+      "PaintVisualGrid",
+
+      "PaintCustomPropertyInspector",
+      "PaintProjectPropertyInspector",
+      "PaintProjectToolsPropertyInspector",
+      "PaintToolsPropertyInspector",
     ]
 
 def get_doc_path():
