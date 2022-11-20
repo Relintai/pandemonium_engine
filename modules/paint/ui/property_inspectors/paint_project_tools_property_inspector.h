@@ -33,11 +33,13 @@ class PaintProject;
 class HFlowContainer;
 class ColorSelectorButton;
 class Button;
+class FileDialog;
 
 class PaintProjectToolsPropertyInspector : public PaintCustomPropertyInspector {
 	GDCLASS(PaintProjectToolsPropertyInspector, PaintCustomPropertyInspector);
 
 public:
+	void add_action_button(const String &callback, const String &hint, const String &icon, const String &theme_type);
 
 	void _on_paint_node_selected(Node *paint_node);
 
@@ -45,10 +47,15 @@ public:
 	~PaintProjectToolsPropertyInspector();
 
 protected:
+	void _on_export_pressed();
+	void _on_export_as_pressed();
+	void _on_export_as_dialog_file_selected(const String &f);
 
-	void _notification(int p_what);
+	//void _notification(int p_what);
 
 	static void _bind_methods();
+
+	FileDialog *_export_as_file_dialog;
 
 	HFlowContainer *_button_contianer;
 
