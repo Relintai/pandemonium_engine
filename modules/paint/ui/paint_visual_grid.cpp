@@ -24,8 +24,6 @@ SOFTWARE.
 
 #include "paint_visual_grid.h"
 
-#include "../nodes/paint_node.h"
-
 int PaintVisualGrid::get_grid_size() {
 	return _grid_size;
 }
@@ -42,27 +40,11 @@ void PaintVisualGrid::set_grid_color(const Color &val) {
 	update();
 }
 
-PaintNode *PaintVisualGrid::get_paint_node() {
-	Node *p = this;
-
-	while (p) {
-		PaintNode *pn = Object::cast_to<PaintNode>(p);
-
-		if (pn) {
-			return pn;
-		}
-
-		p = p->get_parent();
-	}
-
-	return NULL;
-}
-
 void PaintVisualGrid::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case PaintNode::NOTIFICATION_PARENT_PAINT_NODE_RESIZED: {
-			PaintNode *pn = get_paint_node();
+			PaintNode *pn = get_parent_paint_node();
 
 			if (pn) {
 				set_size(pn->get_size());

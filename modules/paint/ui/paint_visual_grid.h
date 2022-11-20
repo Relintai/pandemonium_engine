@@ -25,12 +25,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "../nodes/paint_node.h"
 
-class PaintNode;
-
-class PaintVisualGrid : public Control {
-	GDCLASS(PaintVisualGrid, Control);
+class PaintVisualGrid : public PaintNode {
+	GDCLASS(PaintVisualGrid, PaintNode);
 
 public:
 	int get_grid_size();
@@ -38,8 +36,6 @@ public:
 
 	Color get_grid_color();
 	void set_grid_color(const Color &val);
-
-	PaintNode *get_paint_node();
 
 	PaintVisualGrid();
 	~PaintVisualGrid();

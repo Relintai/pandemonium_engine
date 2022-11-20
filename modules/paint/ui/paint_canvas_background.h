@@ -25,17 +25,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/texture_rect.h"
+#include "../nodes/paint_node.h"
 
-#include "core/object/reference.h"
-
-class ShaderMaterial;
-class Shader;
-class Image;
-class PaintNode;
-
-class PaintCanvasBackground : public TextureRect {
-	GDCLASS(PaintCanvasBackground, TextureRect);
+class PaintCanvasBackground : public PaintNode {
+	GDCLASS(PaintCanvasBackground, PaintNode);
 
 public:
 	int get_grid_size() const;
@@ -46,9 +39,7 @@ public:
 
 	Color get_grid_white() const;
 	void set_grid_white(const Color &val);
-
-	PaintNode *get_paint_node();
-
+	
 	PaintCanvasBackground();
 	~PaintCanvasBackground();
 
