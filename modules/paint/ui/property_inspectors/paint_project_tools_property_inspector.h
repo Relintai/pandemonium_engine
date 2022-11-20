@@ -50,6 +50,7 @@ protected:
 	void _on_export_pressed();
 	void _on_export_as_pressed();
 	void _on_export_as_dialog_file_selected(const String &f);
+	void _on_set_colors_as_default_pressed();
 
 	//void _notification(int p_what);
 

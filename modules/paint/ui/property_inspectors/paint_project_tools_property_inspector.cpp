@@ -78,9 +78,6 @@ void PaintProjectToolsPropertyInspector::_on_paint_node_selected(Node *p_paint_n
 		return;
 	}
 
-	proj->connect("current_color_changed", this, "_on_project_color_changed");
-	proj->connect("color_presets_changed", this, "_on_project_color_preset_changed");
-
 	_current_paint_project = proj->get_instance_id();
 }
 
@@ -113,6 +110,7 @@ PaintProjectToolsPropertyInspector::PaintProjectToolsPropertyInspector() {
 
 	add_action_button("_on_export_pressed", "Export Image", "Save", "EditorIcons");
 	add_action_button("_on_export_as_pressed", "Export Image As", "Duplicate", "EditorIcons");
+	add_action_button("_on_set_colors_as_default_pressed", "Set Colors as Default", "Theme", "EditorIcons");
 }
 
 PaintProjectToolsPropertyInspector::~PaintProjectToolsPropertyInspector() {
@@ -164,6 +162,14 @@ void PaintProjectToolsPropertyInspector::_on_export_as_dialog_file_selected(cons
 	}
 }
 
+void PaintProjectToolsPropertyInspector::_on_set_colors_as_default_pressed() {
+	PaintProject *paint_project = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
+
+	ERR_FAIL_COND(!paint_project);
+
+	paint_project->set_colors_as_default();
+}
+
 //void PaintProjectToolsPropertyInspector::_notification(int p_what) {
 //if (p_what == NOTIFICATION_THEME_CHANGED || p_what == NOTIFICATION_ENTER_TREE) {
 //_add_color_button->set_icon(get_theme_icon("Add", "EditorIcons"));
@@ -176,4 +182,5 @@ void PaintProjectToolsPropertyInspector::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_export_pressed"), &PaintProjectToolsPropertyInspector::_on_export_pressed);
 	ClassDB::bind_method(D_METHOD("_on_export_as_pressed"), &PaintProjectToolsPropertyInspector::_on_export_as_pressed);
 	ClassDB::bind_method(D_METHOD("_on_export_as_dialog_file_selected"), &PaintProjectToolsPropertyInspector::_on_export_as_dialog_file_selected);
+	ClassDB::bind_method(D_METHOD("_on_set_colors_as_default_pressed"), &PaintProjectToolsPropertyInspector::_on_set_colors_as_default_pressed);
 }
