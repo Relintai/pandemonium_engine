@@ -26,7 +26,6 @@ SOFTWARE.
 #include "editor/editor_settings.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
 
-#include "ui/property_inspectors/paint_color_grid.h"
 #include "./editor/paint_inspector_plugin.h"
 
 #include "nodes/paint_node.h"
