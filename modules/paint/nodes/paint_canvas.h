@@ -107,6 +107,8 @@ public:
 	void tool_process(const Vector2 &local_position, const Ref<InputEvent> &event);
 	bool _forward_canvas_gui_input(const Ref<InputEvent> &event);
 
+	Error load_image(const String &path);
+
 	PaintCanvas();
 	~PaintCanvas();
 

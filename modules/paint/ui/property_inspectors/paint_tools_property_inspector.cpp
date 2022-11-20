@@ -22,8 +22,10 @@ SOFTWARE.
 
 #include "paint_tools_property_inspector.h"
 
+#include "core/io/image_loader.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
+#include "scene/gui/file_dialog.h"
 #include "scene/gui/flow_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/slider.h"
@@ -118,6 +120,36 @@ PaintToolsPropertyInspector::PaintToolsPropertyInspector() {
 	_paint_canvas = 0;
 	_group.instance();
 
+	Control *popups = memnew(Control);
+	add_child(popups);
+	popups->set_mouse_filter(MOUSE_FILTER_IGNORE);
+
+	_import_file_dialog = memnew(FileDialog);
+	popups->add_child(_import_file_dialog);
+	_import_file_dialog->set_access(FileDialog::ACCESS_FILESYSTEM);
+	_import_file_dialog->set_resizable(true);
+	_import_file_dialog->set_mode(FileDialog::MODE_OPEN_FILE);
+	_import_file_dialog->set_title("Import image");
+	_import_file_dialog->connect("confirmed", this, "_on_import_dialog_confirmed");
+	_import_file_dialog->connect("file_selected", this, "_on_import_dialog_file_selected");
+
+	List<String> extensions;
+	ImageLoader::get_recognized_extensions(&extensions);
+
+	for (List<String>::Element *E = extensions.front(); E; E = E->next()) {
+		_import_file_dialog->add_filter("*." + E->get());
+	}
+
+	_export_file_dialog = memnew(FileDialog);
+	popups->add_child(_export_file_dialog);
+	_export_file_dialog->set_access(FileDialog::ACCESS_FILESYSTEM);
+	_export_file_dialog->set_resizable(true);
+	_export_file_dialog->set_mode(FileDialog::MODE_SAVE_FILE);
+	_export_file_dialog->set_title("Import image");
+	_export_file_dialog->add_filter("*.png");
+	_export_file_dialog->connect("confirmed", this, "_on_export_dialog_confirmed");
+	_export_file_dialog->connect("file_selected", this, "_on_export_dialog_file_selected");
+
 	VBoxContainer *box_container = memnew(VBoxContainer);
 	add_child(box_container);
 
@@ -138,8 +170,11 @@ PaintToolsPropertyInspector::PaintToolsPropertyInspector() {
 	add_tool_button(PaintCanvas::TOOL_COLORPICKER, "Colorpicker", "ColorPick", "EditorIcons");
 	add_tool_button(PaintCanvas::TOOL_CUT, "Cut", "ActionCut", "EditorIcons");
 	add_tool_button(PaintCanvas::TOOL_PASTECUT, "Pastecut", "ActionPaste", "EditorIcons");
+
 	add_action_button("_on_undo_pressed", "Undo", "ArrowLeft", "EditorIcons");
 	add_action_button("_on_redo_pressed", "Redo", "ArrowRight", "EditorIcons");
+	add_action_button("_on_import_pressed", "Import Image", "Load", "EditorIcons");
+	add_action_button("_on_export_pressed", "Export Image", "Save", "EditorIcons");
 
 	_brush_prefabs = memnew(HFlowContainer);
 	box_container->add_child(_brush_prefabs);
@@ -254,6 +289,44 @@ void PaintToolsPropertyInspector::_on_redo_pressed() {
 	paint_canvas->redo_action();
 }
 
+void PaintToolsPropertyInspector::_on_export_pressed() {
+	_export_file_dialog->popup_centered_ratio();
+}
+
+void PaintToolsPropertyInspector::_on_import_pressed() {
+	_import_file_dialog->popup_centered_ratio();
+}
+
+void PaintToolsPropertyInspector::_on_import_dialog_confirmed() {
+	_on_import_dialog_file_selected(_import_file_dialog->get_current_file());
+}
+void PaintToolsPropertyInspector::_on_import_dialog_file_selected(const String &f) {
+	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(ObjectDB::get_instance(_paint_canvas));
+
+	ERR_FAIL_COND(!paint_canvas);
+
+	if (f.empty()) {
+		return;
+	}
+
+	paint_canvas->load_image(f);
+}
+
+void PaintToolsPropertyInspector::_on_export_dialog_confirmed() {
+	_on_export_dialog_file_selected(_export_file_dialog->get_current_file());
+}
+void PaintToolsPropertyInspector::_on_export_dialog_file_selected(const String &f) {
+	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(ObjectDB::get_instance(_paint_canvas));
+
+	ERR_FAIL_COND(!paint_canvas);
+
+	if (f.empty()) {
+		return;
+	}
+
+	paint_canvas->get_image()->save_png(f);
+}
+
 void PaintToolsPropertyInspector::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_button_toggled"), &PaintToolsPropertyInspector::_on_button_toggled);
 	ClassDB::bind_method(D_METHOD("_on_tool_changed"), &PaintToolsPropertyInspector::_on_tool_changed);
@@ -263,4 +336,13 @@ void PaintToolsPropertyInspector::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_on_undo_pressed"), &PaintToolsPropertyInspector::_on_undo_pressed);
 	ClassDB::bind_method(D_METHOD("_on_redo_pressed"), &PaintToolsPropertyInspector::_on_redo_pressed);
+
+	ClassDB::bind_method(D_METHOD("_on_import_pressed"), &PaintToolsPropertyInspector::_on_import_pressed);
+	ClassDB::bind_method(D_METHOD("_on_export_pressed"), &PaintToolsPropertyInspector::_on_export_pressed);
+
+	ClassDB::bind_method(D_METHOD("_on_import_dialog_confirmed"), &PaintToolsPropertyInspector::_on_import_dialog_confirmed);
+	ClassDB::bind_method(D_METHOD("_on_import_dialog_file_selected"), &PaintToolsPropertyInspector::_on_import_dialog_file_selected);
+
+	ClassDB::bind_method(D_METHOD("_on_export_dialog_confirmed"), &PaintToolsPropertyInspector::_on_export_dialog_confirmed);
+	ClassDB::bind_method(D_METHOD("_on_export_dialog_file_selected"), &PaintToolsPropertyInspector::_on_export_dialog_file_selected);
 }

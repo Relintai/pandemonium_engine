@@ -15,6 +15,7 @@
 #include "../bush_prefabs.h"
 #include "../paint_utilities.h"
 #include "core/io/image.h"
+#include "core/io/image_loader.h"
 #include "core/os/keyboard.h"
 #include "paint_project.h"
 #include "scene/resources/texture.h"
@@ -923,6 +924,24 @@ bool PaintCanvas::_forward_canvas_gui_input(const Ref<InputEvent> &event) {
 	return false;
 }
 
+Error PaintCanvas::load_image(const String &path) {
+	if (path.empty()) {
+		return ERR_FILE_NOT_FOUND;
+	}
+
+	Error err = ImageLoader::load_image(path, _image);
+
+	if (err != OK) {
+		return err;
+	}
+
+	Vector2 size = _image->get_size();
+
+	set_size(size);
+
+	return OK;
+}
+
 PaintCanvas::PaintCanvas() {
 	_symmetry_x = false;
 	_symmetry_y = false;
@@ -1082,6 +1101,8 @@ void PaintCanvas::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_action"), &PaintCanvas::get_action);
 	ClassDB::bind_method(D_METHOD("_on_tool_changed"), &PaintCanvas::_on_tool_changed);
 	ClassDB::bind_method(D_METHOD("tool_process", "local_position", "event"), &PaintCanvas::tool_process);
+
+	ClassDB::bind_method(D_METHOD("load_image", "path"), &PaintCanvas::load_image);
 
 	ClassDB::bind_method(D_METHOD("_on_size_changed"), &PaintCanvas::_on_size_changed);
 

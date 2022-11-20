@@ -34,6 +34,7 @@ class PaintProject;
 class ButtonGroup;
 class HSlider;
 class Label;
+class FileDialog;
 
 class PaintToolsPropertyInspector : public PaintCustomPropertyInspector {
 	GDCLASS(PaintToolsPropertyInspector, PaintCustomPropertyInspector);
@@ -56,8 +57,17 @@ protected:
 	void _on_brush_size_changed();
 	void _on_undo_pressed();
 	void _on_redo_pressed();
+	void _on_import_pressed();
+	void _on_export_pressed();
+	void _on_import_dialog_confirmed();
+	void _on_import_dialog_file_selected(const String &f);
+	void _on_export_dialog_confirmed();
+	void _on_export_dialog_file_selected(const String &f);
 
 	static void _bind_methods();
+
+	FileDialog *_import_file_dialog;
+	FileDialog *_export_file_dialog;
 
 	HFlowContainer *_grid;
 	HFlowContainer *_brush_prefabs;
