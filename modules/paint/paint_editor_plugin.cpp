@@ -56,6 +56,10 @@ bool PaintEditorPlugin::forward_canvas_gui_input(const Ref<InputEvent> &p_event)
 		return false;
 	}
 
+	if (CanvasItemEditor::get_singleton() && CanvasItemEditor::get_singleton()->get_current_tool() != CanvasItemEditor::TOOL_SELECT) {
+		return false;
+	}
+
 	return _active_node->forward_canvas_gui_input(p_event);
 }
 void PaintEditorPlugin::forward_canvas_draw_over_viewport(Control *p_overlay) {
