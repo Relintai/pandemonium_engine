@@ -129,8 +129,7 @@ PaintToolsPropertyInspector::PaintToolsPropertyInspector() {
 	_import_file_dialog->set_access(FileDialog::ACCESS_FILESYSTEM);
 	_import_file_dialog->set_resizable(true);
 	_import_file_dialog->set_mode(FileDialog::MODE_OPEN_FILE);
-	_import_file_dialog->set_title("Import image");
-	_import_file_dialog->connect("confirmed", this, "_on_import_dialog_confirmed");
+	_import_file_dialog->set_title("Import Image");
 	_import_file_dialog->connect("file_selected", this, "_on_import_dialog_file_selected");
 
 	List<String> extensions;
@@ -145,9 +144,8 @@ PaintToolsPropertyInspector::PaintToolsPropertyInspector() {
 	_export_file_dialog->set_access(FileDialog::ACCESS_FILESYSTEM);
 	_export_file_dialog->set_resizable(true);
 	_export_file_dialog->set_mode(FileDialog::MODE_SAVE_FILE);
-	_export_file_dialog->set_title("Import image");
+	_export_file_dialog->set_title("Export Image");
 	_export_file_dialog->add_filter("*.png");
-	_export_file_dialog->connect("confirmed", this, "_on_export_dialog_confirmed");
 	_export_file_dialog->connect("file_selected", this, "_on_export_dialog_file_selected");
 
 	VBoxContainer *box_container = memnew(VBoxContainer);
@@ -297,9 +295,6 @@ void PaintToolsPropertyInspector::_on_import_pressed() {
 	_import_file_dialog->popup_centered_ratio();
 }
 
-void PaintToolsPropertyInspector::_on_import_dialog_confirmed() {
-	_on_import_dialog_file_selected(_import_file_dialog->get_current_file());
-}
 void PaintToolsPropertyInspector::_on_import_dialog_file_selected(const String &f) {
 	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(ObjectDB::get_instance(_paint_canvas));
 
@@ -310,10 +305,6 @@ void PaintToolsPropertyInspector::_on_import_dialog_file_selected(const String &
 	}
 
 	paint_canvas->load_image(f);
-}
-
-void PaintToolsPropertyInspector::_on_export_dialog_confirmed() {
-	_on_export_dialog_file_selected(_export_file_dialog->get_current_file());
 }
 void PaintToolsPropertyInspector::_on_export_dialog_file_selected(const String &f) {
 	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(ObjectDB::get_instance(_paint_canvas));
@@ -328,6 +319,10 @@ void PaintToolsPropertyInspector::_on_export_dialog_file_selected(const String &
 }
 
 void PaintToolsPropertyInspector::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("add_tool_button", "id", "hint", "icon", "theme_type"), &PaintToolsPropertyInspector::add_tool_button);
+	ClassDB::bind_method(D_METHOD("add_action_button", "callback", "hint", "icon", "theme_type"), &PaintToolsPropertyInspector::add_action_button);
+	ClassDB::bind_method(D_METHOD("add_brush_prefab", "id", "normal_texture", "hover_texture"), &PaintToolsPropertyInspector::add_brush_prefab);
+
 	ClassDB::bind_method(D_METHOD("_on_button_toggled"), &PaintToolsPropertyInspector::_on_button_toggled);
 	ClassDB::bind_method(D_METHOD("_on_tool_changed"), &PaintToolsPropertyInspector::_on_tool_changed);
 	ClassDB::bind_method(D_METHOD("_on_brush_prefab_button_pressed"), &PaintToolsPropertyInspector::_on_brush_prefab_button_pressed);
@@ -340,9 +335,6 @@ void PaintToolsPropertyInspector::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_import_pressed"), &PaintToolsPropertyInspector::_on_import_pressed);
 	ClassDB::bind_method(D_METHOD("_on_export_pressed"), &PaintToolsPropertyInspector::_on_export_pressed);
 
-	ClassDB::bind_method(D_METHOD("_on_import_dialog_confirmed"), &PaintToolsPropertyInspector::_on_import_dialog_confirmed);
 	ClassDB::bind_method(D_METHOD("_on_import_dialog_file_selected"), &PaintToolsPropertyInspector::_on_import_dialog_file_selected);
-
-	ClassDB::bind_method(D_METHOD("_on_export_dialog_confirmed"), &PaintToolsPropertyInspector::_on_export_dialog_confirmed);
 	ClassDB::bind_method(D_METHOD("_on_export_dialog_file_selected"), &PaintToolsPropertyInspector::_on_export_dialog_file_selected);
 }

@@ -59,9 +59,7 @@ protected:
 	void _on_redo_pressed();
 	void _on_import_pressed();
 	void _on_export_pressed();
-	void _on_import_dialog_confirmed();
 	void _on_import_dialog_file_selected(const String &f);
-	void _on_export_dialog_confirmed();
 	void _on_export_dialog_file_selected(const String &f);
 
 	static void _bind_methods();
