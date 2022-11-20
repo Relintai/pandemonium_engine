@@ -27,6 +27,7 @@ SOFTWARE.
 #include "editor/plugins/canvas_item_editor_plugin.h"
 
 #include "ui/property_inspectors/paint_color_grid.h"
+#include "./editor/paint_inspector_plugin.h"
 
 #include "nodes/paint_node.h"
 
@@ -71,6 +72,9 @@ PaintEditorPlugin::PaintEditorPlugin(EditorNode *p_node) {
 	_active_node = NULL;
 
 	editor = p_node;
+
+	_inspector_plugin = memnew(PaintInspectorPlugin);
+	add_inspector_plugin(_inspector_plugin);
 }
 
 PaintEditorPlugin::~PaintEditorPlugin() {
