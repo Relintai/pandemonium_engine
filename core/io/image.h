@@ -133,6 +133,7 @@ public:
 	static ImageMemLoadFunc _webp_mem_loader_func;
 	static ImageMemLoadFunc _tga_mem_loader_func;
 	static ImageMemLoadFunc _bmp_mem_loader_func;
+	static ImageMemLoadFunc _dds_mem_loader_func;
 
 	static void (*_image_compress_bc_func)(Image *, float, CompressSource p_source);
 	static void (*_image_compress_bptc_func)(Image *, float p_lossy_quality, CompressSource p_source);
@@ -345,6 +346,7 @@ public:
 	Error load_webp_from_buffer(const PoolVector<uint8_t> &p_array);
 	Error load_tga_from_buffer(const PoolVector<uint8_t> &p_array);
 	Error load_bmp_from_buffer(const PoolVector<uint8_t> &p_array);
+	Error load_dds_from_buffer(const PoolVector<uint8_t> &p_array);
 
 	void convert_rg_to_ra_rgba8();
 	void convert_ra_rgba8_to_rg();
