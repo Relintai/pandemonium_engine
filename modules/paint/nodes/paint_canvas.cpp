@@ -176,13 +176,13 @@ Color PaintCanvas::get_preview_pixel(const int x, const int y) {
 }
 
 void PaintCanvas::clear() {
-	_image->fill(Color(1.00, 1.00, 1.00, 0.00));
+	_image->fill(Color(0.00, 0.00, 0.00, 0.00));
 
 	_image_texture->create_from_image(_image, 0);
 }
 
 void PaintCanvas::clear_preview() {
-	_preview_image->fill(Color(1.00, 1.00, 1.00, 0.00));
+	_preview_image->fill(Color(0.00, 0.00, 0.00, 0.00));
 	_preview_image_texture->create_from_image(_preview_image, 0);
 }
 
@@ -748,7 +748,7 @@ void PaintCanvas::tool_process(const Vector2 &local_position, const Ref<InputEve
 		if (_mouse_button_down == BUTTON_LEFT) {
 			arr.push_back(get_current_color());
 		} else if (_mouse_button_down == BUTTON_RIGHT) {
-			arr.push_back(Color(1, 1, 1, 0));
+			arr.push_back(Color(0, 0, 0, 0));
 		}
 
 		do_action(arr);
@@ -769,7 +769,7 @@ void PaintCanvas::tool_process(const Vector2 &local_position, const Ref<InputEve
 		if (_mouse_button_down == BUTTON_LEFT) {
 			arr.push_back(get_current_color());
 		} else if (_mouse_button_down == BUTTON_RIGHT) {
-			arr.push_back(Color(1, 1, 1, 0));
+			arr.push_back(Color(0, 0, 0, 0));
 		}
 
 		arr.push_back(_brush_prefab);

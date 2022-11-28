@@ -125,10 +125,10 @@ void CutAction::_commit_action() {
 			redo_cells.append(pos);
 			redo_colors.append(color);
 
-			_paint_canvas->set_pixel_v(pos, Color(1, 1, 1, 0));
+			_paint_canvas->set_pixel_v(pos, Color(0, 0, 0, 0));
 
 			undo_cells.append(pos);
-			undo_colors.append(Color(1, 1, 1, 0));
+			undo_colors.append(Color(0, 0, 0, 0));
 		}
 	}
 }
