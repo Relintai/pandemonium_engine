@@ -149,7 +149,6 @@ void ProjectSettingsEditor::_notification(int p_what) {
 			search_box->set_clear_button_enabled(true);
 
 			action_add_error->add_theme_color_override("font_color", get_theme_color("error_color", "Editor"));
-
 			translation_list->connect("button_pressed", this, "_translation_delete");
 			_update_actions();
 
@@ -235,6 +234,16 @@ void ProjectSettingsEditor::_action_selected() {
 	edit_idx = -1;
 }
 
+String _check_new_action_name(const String &p_name) {
+	if (p_name.empty() || !_validate_action_name(p_name)) {
+		return TTR("Invalid action name. It cannot be empty nor contain '/', ':', '=', '\\' or '\"'.");
+	}
+	if (ProjectSettings::get_singleton()->has_setting("input/" + p_name)) {
+		return vformat(TTR("An action with the name '%s' already exists."), p_name);
+	}
+	return String();
+}
+
 void ProjectSettingsEditor::_action_edited() {
 	TreeItem *ti = input_editor->get_selected();
 	if (!ti) {
@@ -249,25 +258,17 @@ void ProjectSettingsEditor::_action_edited() {
 			return;
 		}
 
-		if (new_name == "" || !_validate_action_name(new_name)) {
+		const String error = _check_new_action_name(new_name);
+		if (!error.empty()) {
 			ti->set_text(0, old_name);
 			add_at = "input/" + old_name;
 
-			message->set_text(TTR("Invalid action name. It cannot be empty nor contain '/', ':', '=', '\\' or '\"'"));
+			message->set_text(error);
 			message->popup_centered(Size2(300, 100) * EDSCALE);
 			return;
 		}
 
 		String action_prop = "input/" + new_name;
-
-		if (ProjectSettings::get_singleton()->has_setting(action_prop)) {
-			ti->set_text(0, old_name);
-			add_at = "input/" + old_name;
-
-			message->set_text(vformat(TTR("An action with the name '%s' already exists."), new_name));
-			message->popup_centered(Size2(300, 100) * EDSCALE);
-			return;
-		}
 
 		int order = ProjectSettings::get_singleton()->get_order(add_at);
 		Dictionary action = ProjectSettings::get_singleton()->get(add_at);
@@ -781,6 +782,11 @@ void ProjectSettingsEditor::_update_actions() {
 			continue;
 		}
 
+		const bool is_builtin = ProjectSettings::get_singleton()->get_input_presets().find(pi.name) != nullptr;
+		if (is_builtin && !show_builtin_actions) {
+			continue;
+		}
+
 		Dictionary action = ProjectSettings::get_singleton()->get(pi.name);
 		Array events = action["events"];
 
@@ -798,7 +804,7 @@ void ProjectSettingsEditor::_update_actions() {
 		item->set_custom_bg_color(1, get_theme_color("prop_subsection", "Editor"));
 
 		item->add_button(2, get_theme_icon("Add", "EditorIcons"), 1, false, TTR("Add Event"));
-		if (!ProjectSettings::get_singleton()->get_input_presets().find(pi.name)) {
+		if (!is_builtin) {
 			item->add_button(2, get_theme_icon("Remove", "EditorIcons"), 2, false, TTR("Remove"));
 			item->set_editable(0, true);
 		}
@@ -995,26 +1001,9 @@ void ProjectSettingsEditor::_item_del() {
 }
 
 void ProjectSettingsEditor::_action_check(String p_action) {
-	if (p_action == "") {
-		action_add->set_disabled(true);
-	} else {
-		if (!_validate_action_name(p_action)) {
-			action_add_error->set_text(TTR("Invalid action name. It cannot be empty nor contain '/', ':', '=', '\\' or '\"'."));
-			action_add_error->show();
-			action_add->set_disabled(true);
-			return;
-		}
-		if (ProjectSettings::get_singleton()->has_setting("input/" + p_action)) {
-			action_add_error->set_text(vformat(TTR("An action with the name '%s' already exists."), p_action));
-			action_add_error->show();
-			action_add->set_disabled(true);
-			return;
-		}
-
-		action_add->set_disabled(false);
-	}
-
-	action_add_error->hide();
+	String error = _check_new_action_name(p_action);
+	action_add->set_tooltip(error);
+	action_add->set_disabled(!error.empty());
 }
 
 void ProjectSettingsEditor::_action_adds(String) {
@@ -1052,8 +1041,12 @@ void ProjectSettingsEditor::_action_add() {
 
 	r->select(0);
 	input_editor->ensure_cursor_is_visible();
-	action_add_error->hide();
 	action_name->clear();
+}
+
+void ProjectSettingsEditor::_set_show_builtin_actions(bool p_show) {
+	show_builtin_actions = p_show;
+	_update_actions();
 }
 
 void ProjectSettingsEditor::_item_checked(const String &p_item, bool p_check) {
@@ -1803,6 +1796,7 @@ void ProjectSettingsEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_action_edited"), &ProjectSettingsEditor::_action_edited);
 	ClassDB::bind_method(D_METHOD("_action_activated"), &ProjectSettingsEditor::_action_activated);
 	ClassDB::bind_method(D_METHOD("_action_button_pressed"), &ProjectSettingsEditor::_action_button_pressed);
+	ClassDB::bind_method(D_METHOD("_set_show_builtin_actions"), &ProjectSettingsEditor::_set_show_builtin_actions);
 	ClassDB::bind_method(D_METHOD("_update_actions"), &ProjectSettingsEditor::_update_actions);
 	ClassDB::bind_method(D_METHOD("_wait_for_key"), &ProjectSettingsEditor::_wait_for_key);
 	ClassDB::bind_method(D_METHOD("_add_item"), &ProjectSettingsEditor::_add_item, DEFVAL(Variant()));
@@ -1979,14 +1973,11 @@ ProjectSettingsEditor::ProjectSettingsEditor(EditorData *p_data) {
 	l->set_text(TTR("Action:"));
 
 	action_name = memnew(LineEdit);
+	action_name->set_clear_button_enabled(true);
 	action_name->set_h_size_flags(SIZE_EXPAND_FILL);
 	hbc->add_child(action_name);
 	action_name->connect("text_entered", this, "_action_adds");
 	action_name->connect("text_changed", this, "_action_check");
-
-	action_add_error = memnew(Label);
-	hbc->add_child(action_add_error);
-	action_add_error->hide();
 
 	add = memnew(Button);
 	hbc->add_child(add);
@@ -1994,6 +1985,12 @@ ProjectSettingsEditor::ProjectSettingsEditor(EditorData *p_data) {
 	add->set_disabled(true);
 	add->connect("pressed", this, "_action_add");
 	action_add = add;
+
+	show_builtin_actions_checkbutton = memnew(CheckButton);
+	hbc->add_child(show_builtin_actions_checkbutton);
+	show_builtin_actions_checkbutton->set_text(TTR("Show Built-in Actions"));
+	show_builtin_actions_checkbutton->set_pressed(false);
+	show_builtin_actions_checkbutton->connect("toggled", this, "_set_show_builtin_actions");
 
 	input_editor = memnew(Tree);
 	vbc->add_child(input_editor);
@@ -2204,4 +2201,5 @@ ProjectSettingsEditor::ProjectSettingsEditor(EditorData *p_data) {
 	add_child(timer);
 
 	updating_translations = false;
+	show_builtin_actions = false;
 }
