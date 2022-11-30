@@ -426,7 +426,7 @@ void SkeletonEditor::pose_to_rest(const bool p_all_bones) {
 void SkeletonEditor::create_physical_skeleton() {
 	UndoRedo *ur = EditorNode::get_singleton()->get_undo_redo();
 	ERR_FAIL_COND(!get_tree());
-	Node *owner = skeleton == get_tree()->get_edited_scene_root() ? skeleton : skeleton->get_owner();
+	Node *owner = get_tree()->get_edited_scene_root();
 
 	const int bc = skeleton->get_bone_count();
 
