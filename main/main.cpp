@@ -30,6 +30,7 @@
 
 #include "main.h"
 
+#include "core/config/project_settings.h"
 #include "core/crypto/crypto.h"
 #include "core/input/input_map.h"
 #include "core/io/file_access_network.h"
@@ -39,13 +40,12 @@
 #include "core/io/ip.h"
 #include "core/io/resource_loader.h"
 #include "core/object/message_queue.h"
+#include "core/object/script_debugger_local.h"
+#include "core/object/script_language.h"
 #include "core/os/dir_access.h"
 #include "core/os/os.h"
 #include "core/os/time.h"
-#include "core/config/project_settings.h"
 #include "core/register_core_types.h"
-#include "core/object/script_debugger_local.h"
-#include "core/object/script_language.h"
 #include "core/string/translation.h"
 #include "core/version.h"
 #include "drivers/register_driver_types.h"
@@ -2418,6 +2418,9 @@ void Main::cleanup(bool p_force) {
 
 	OS::get_singleton()->delete_main_loop();
 
+	// Storing it for use when restarting as it's being cleared right below.
+	const String execpath = OS::get_singleton()->get_executable_path();
+
 	OS::get_singleton()->_cmdline.clear();
 	OS::get_singleton()->_execpath = "";
 	OS::get_singleton()->_local_clipboard = "";
@@ -2478,10 +2481,9 @@ void Main::cleanup(bool p_force) {
 
 	if (OS::get_singleton()->is_restart_on_exit_set()) {
 		//attempt to restart with arguments
-		String exec = OS::get_singleton()->get_executable_path();
 		List<String> args = OS::get_singleton()->get_restart_on_exit_arguments();
 		OS::ProcessID pid = 0;
-		OS::get_singleton()->execute(exec, args, false, &pid);
+		OS::get_singleton()->execute(execpath, args, false, &pid);
 		OS::get_singleton()->set_restart_on_exit(false, List<String>()); //clear list (uses memory)
 	}
 

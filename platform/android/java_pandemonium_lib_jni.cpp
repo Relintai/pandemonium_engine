@@ -112,6 +112,40 @@ static void _initialize_java_modules() {
 	}
 }
 
+static void _terminate(JNIEnv *env, bool p_restart = false) {
+	step.set(-1); // Ensure no further steps are attempted and no further events are sent
+
+	// lets cleanup
+	if (java_class_wrapper) {
+		memdelete(java_class_wrapper);
+	}
+	if (input_handler) {
+		delete input_handler;
+	}
+	// Whether restarting is handled by 'Main::cleanup()'
+	bool restart_on_cleanup = false;
+	if (os_android) {
+		restart_on_cleanup = os_android->is_restart_on_exit_set();
+		os_android->main_loop_end();
+		Main::cleanup();
+		delete os_android;
+	}
+	if (pandemonium_io_java) {
+		delete pandemonium_io_java;
+	}
+	if (pandemonium_java) {
+		pandemonium_java->destroy_offscreen_gl(env);
+		if (!restart_on_cleanup) {
+			if (p_restart) {
+				pandemonium_java->restart(env);
+			} else {
+				pandemonium_java->force_quit(env);
+			}
+		}
+		delete pandemonium_java;
+	}
+}
+
 extern "C" {
 
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setVirtualKeyboardHeight(JNIEnv *env, jclass clazz, jint p_height) {
@@ -149,23 +183,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_ondestroy(JNIEnv *env, jclass clazz) {
-	// lets cleanup
-	if (java_class_wrapper) {
-		memdelete(java_class_wrapper);
-	}
-	if (pandemonium_io_java) {
-		delete pandemonium_io_java;
-	}
-	if (pandemonium_java) {
-		pandemonium_java->destroy_offscreen_gl(env);
-		delete pandemonium_java;
-	}
-	if (input_handler) {
-		delete input_handler;
-	}
-	if (os_android) {
-		delete os_android;
-	}
+	_terminate(env, false);
 }
 
 JNIEXPORT jboolean JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline) {
@@ -227,9 +245,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 			os_android->set_offscreen_gl_available(pandemonium_java->create_offscreen_gl(env));
 		} else {
 			// GL context recreated because it was lost; restart app to let it reload everything
-			step.set(-1); // Ensure no further steps are attempted and no further events are sent
-			os_android->main_loop_end();
-			pandemonium_java->restart(env);
+			_terminate(env, true);
 		}
 	}
 }
@@ -273,7 +289,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	os_android->process_gyroscope(gyroscope);
 
 	if (os_android->main_loop_iterate()) {
-		pandemonium_java->force_quit(env);
+		_terminate(env, false);
 	}
 }
 

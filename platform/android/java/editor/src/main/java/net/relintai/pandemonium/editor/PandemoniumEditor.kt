@@ -32,6 +32,7 @@ package net.relintai.pandemonium.editor
 
 import net.relintai.pandemonium.pandemonium.FullScreenPandemoniumApp
 import net.relintai.pandemonium.pandemonium.utils.PermissionsUtil
+import net.relintai.pandemonium.pandemonium.utils.ProcessPhoenix
 
 import android.Manifest
 import android.content.Intent
@@ -40,6 +41,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Debug
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 
 import androidx.window.layout.WindowMetricsCalculator;
@@ -58,11 +60,16 @@ import kotlin.math.min
  */
 open class PandemoniumEditor : FullScreenPandemoniumApp() {
  	companion object {
+		private val TAG = PandemoniumEditor::class.java.simpleName
+
 		private const val WAIT_FOR_DEBUGGER = false
 		private const val COMMAND_LINE_PARAMS = "command_line_params"
 
   		private const val EDITOR_ARG = "--editor"
+		private const val EDITOR_ARG_SHORT = "-e"
+
 		private const val PROJECT_MANAGER_ARG = "--project-manager"
+		private const val PROJECT_MANAGER_ARG_SHORT = "-p"
   	}
 
 	private val commandLineParams = ArrayList<String>()
@@ -106,13 +113,13 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		var launchAdjacent = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && (isInMultiWindowMode || isLargeScreen)
 
 		for (arg in args) {
-			if (EDITOR_ARG == arg) {
+			if (EDITOR_ARG == arg || EDITOR_ARG_SHORT == arg) {
 				targetClass = PandemoniumEditor::class.java
 				launchAdjacent = false
 				break
 			}
 
-			if (PROJECT_MANAGER_ARG == arg) {
+			if (PROJECT_MANAGER_ARG == arg || PROJECT_MANAGER_ARG_SHORT == arg) {
 				targetClass = PandemoniumProjectManager::class.java
 				launchAdjacent = false
 				break
@@ -126,7 +133,13 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 			newInstance.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT)
 		}
 
-		startActivity(newInstance)
+		if (targetClass == javaClass) {
+			Log.d(TAG, "Restarting $targetClass")
+			ProcessPhoenix.triggerRebirth(this, newInstance)
+		} else {
+			Log.d(TAG, "Starting $targetClass")
+			startActivity(newInstance)
+		}
 	}
 
   	// Get the screen's density scale
