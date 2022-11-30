@@ -1,7 +1,5 @@
-#ifndef GLTF_TEXTURE_H
-#define GLTF_TEXTURE_H
 /*************************************************************************/
-/*  gltf_texture.h                                                       */
+/*  gltf_template_convert.h                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,25 +28,67 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/object/resource.h"
+#ifndef GLTF_TEMPLATE_CONVERT_H
+#define GLTF_TEMPLATE_CONVERT_H
 
-#include "gltf_defines.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
+#include "core/containers/set.h"
 
-class GLTFTexture : public Resource {
-	GDCLASS(GLTFTexture, Resource);
+namespace GLTFTemplateConvert {
+template <class T>
+static Array to_array(const Vector<T> &p_inp) {
+	Array ret;
+	for (int i = 0; i < p_inp.size(); i++) {
+		ret.push_back(p_inp[i]);
+	}
+	return ret;
+}
 
-private:
-	GLTFImageIndex src_image = 0;
-	GLTFTextureSamplerIndex sampler = -1;
+template <class T>
+static Array to_array(const Set<T> &p_inp) {
+	Array ret;
+	typename Set<T>::Element *elem = p_inp.front();
+	while (elem) {
+		ret.push_back(elem->get());
+		elem = elem->next();
+	}
+	return ret;
+}
 
-protected:
-	static void _bind_methods();
+template <class T>
+static void set_from_array(Vector<T> &r_out, const Array &p_inp) {
+	r_out.clear();
+	for (int i = 0; i < p_inp.size(); i++) {
+		r_out.push_back(p_inp[i]);
+	}
+}
 
-public:
-	GLTFImageIndex get_src_image() const;
-	void set_src_image(GLTFImageIndex val);
-	GLTFTextureSamplerIndex get_sampler() const;
-	void set_sampler(GLTFTextureSamplerIndex val);
-};
+template <class T>
+static void set_from_array(Set<T> &r_out, const Array &p_inp) {
+	r_out.clear();
+	for (int i = 0; i < p_inp.size(); i++) {
+		r_out.insert(p_inp[i]);
+	}
+}
 
-#endif // GLTF_TEXTURE_H
+template <class K, class V>
+static Dictionary to_dict(const Map<K, V> &p_inp) {
+	Dictionary ret;
+	for (typename Map<K, V>::Element *E = p_inp.front(); E; E = E->next()) {
+		ret[E->key()] = E->value();
+	}
+	return ret;
+}
+
+template <class K, class V>
+static void set_from_dict(Map<K, V> &r_out, const Dictionary &p_inp) {
+	r_out.clear();
+	Array keys = p_inp.keys();
+	for (int i = 0; i < keys.size(); i++) {
+		r_out[keys[i]] = p_inp[keys[i]];
+	}
+}
+} //namespace GLTFTemplateConvert
+
+#endif // GLTF_TEMPLATE_CONVERT_H

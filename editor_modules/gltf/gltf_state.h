@@ -30,26 +30,18 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/map.h"
-#include "core/object/resource.h"
-#include "core/containers/vector.h"
-#include "scene/animation/animation_player.h"
-#include "scene/resources/texture.h"
-
 #include "gltf_accessor.h"
 #include "gltf_animation.h"
 #include "gltf_buffer_view.h"
 #include "gltf_camera.h"
-#include "gltf_document.h"
 #include "gltf_light.h"
 #include "gltf_mesh.h"
 #include "gltf_node.h"
 #include "gltf_skeleton.h"
 #include "gltf_skin.h"
+#include "gltf_template_convert.h"
 #include "gltf_texture.h"
 #include "gltf_texture_sampler.h"
-#include "scene/animation/animation_player.h"
-#include "scene/resources/texture.h"
 
 class GLTFState : public Resource {
 	GDCLASS(GLTFState, Resource);

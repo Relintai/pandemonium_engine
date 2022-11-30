@@ -32,13 +32,13 @@
 
 #include "core/object/resource.h"
 
-#include "gltf_document.h"
+#include "gltf_defines.h"
 
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_SKELETON_3D_ENABLED
-#include "modules/skeleton_3d/nodes/bone_attachment.h"
-#include "modules/skeleton_3d/nodes/skeleton.h"
+class Skeleton;
+class BoneAttachment;
 #endif
 
 class GLTFSkeleton : public Resource {
