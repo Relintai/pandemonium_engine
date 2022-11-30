@@ -33,6 +33,7 @@
 #include "core/io/resource_loader.h"
 #include "core/os/os.h"
 #include "editor/editor_settings.h"
+#include "editor/editor_scale.h"
 #include "scene/resources/bit_map.h"
 #include "scene/resources/dynamic_font.h"
 #include "scene/resources/material.h"
