@@ -388,7 +388,8 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 			for (PandemoniumPlugin plugin : pluginRegistry.getAllPlugins()) {
 				plugin.onRegisterPluginWithPandemoniumNative();
 			}
-			setKeepScreenOn("True".equals(PandemoniumLib.getGlobal("display/window/energy_saving/keep_screen_on")));
+			
+			setKeepScreenOn(Boolean.parseBoolean(PandemoniumLib.getGlobal("display/window/energy_saving/keep_screen_on")));
 
 			// The Pandemonium Android plugins are setup on completion of PandemoniumLib.setup
 			mainThreadHandler.post(() -> {
