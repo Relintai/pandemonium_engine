@@ -92,11 +92,9 @@ public class PandemoniumTextInputWrapper implements TextWatcher, OnEditorActionL
 
 	@Override
 	public void beforeTextChanged(final CharSequence pCharSequence, final int start, final int count, final int after) {
-		//Log.d(TAG, "beforeTextChanged(" + pCharSequence + ")start: " + start + ",count: " + count + ",after: " + after);
-
 		for (int i = 0; i < count; ++i) {
-			PandemoniumLib.key(KeyEvent.KEYCODE_DEL, KeyEvent.KEYCODE_DEL, 0, true);
-			PandemoniumLib.key(KeyEvent.KEYCODE_DEL, KeyEvent.KEYCODE_DEL, 0, false);
+			PandemoniumLib.key(0, KeyEvent.KEYCODE_DEL, 0, true);
+			PandemoniumLib.key(0, KeyEvent.KEYCODE_DEL, 0, false);
 
 			if (mHasSelection) {
 				mHasSelection = false;
@@ -107,8 +105,6 @@ public class PandemoniumTextInputWrapper implements TextWatcher, OnEditorActionL
 
 	@Override
 	public void onTextChanged(final CharSequence pCharSequence, final int start, final int before, final int count) {
-		//Log.d(TAG, "onTextChanged(" + pCharSequence + ")start: " + start + ",count: " + count + ",before: " + before);
-
 		final int[] newChars = new int[count];
 		for (int i = start; i < start + count; ++i) {
 			newChars[i - start] = pCharSequence.charAt(i);
@@ -119,8 +115,8 @@ public class PandemoniumTextInputWrapper implements TextWatcher, OnEditorActionL
 				// Return keys are handled through action events
 				continue;
 			}
-			PandemoniumLib.key(0, 0, key, true);
-			PandemoniumLib.key(0, 0, key, false);
+			PandemoniumLib.key(key, 0, key, true);
+			PandemoniumLib.key(key, 0, key, false);
 		}
 	}
 
@@ -131,16 +127,16 @@ public class PandemoniumTextInputWrapper implements TextWatcher, OnEditorActionL
 
 			for (int i = 0; i < characters.length(); i++) {
 				final int ch = characters.codePointAt(i);
-				PandemoniumLib.key(0, 0, ch, true);
-				PandemoniumLib.key(0, 0, ch, false);
+				PandemoniumLib.key(ch, 0, ch, true);
+				PandemoniumLib.key(ch, 0, ch, false);
 			}
 		}
 
 		if (pActionID == EditorInfo.IME_ACTION_DONE) {
 			// Enter key has been pressed
 			mView.queueEvent(() -> {
-				PandemoniumLib.key(KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_ENTER, 0, true);
-				PandemoniumLib.key(KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_ENTER, 0, false);
+				PandemoniumLib.key(0, KeyEvent.KEYCODE_ENTER, 0, true);
+				PandemoniumLib.key(0, KeyEvent.KEYCODE_ENTER, 0, false);
 			});
 			mView.requestFocus();
 			return true;
