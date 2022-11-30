@@ -61,6 +61,7 @@ class ToolButton;
 class Tree;
 class TreeItem;
 class UndoRedo;
+class CheckButton;
 
 class ProjectSettingsEditor : public AcceptDialog {
 	GDCLASS(ProjectSettingsEditor, AcceptDialog);

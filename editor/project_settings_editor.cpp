@@ -76,6 +76,7 @@
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "scene/gui/check_button.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
 
@@ -148,7 +149,6 @@ void ProjectSettingsEditor::_notification(int p_what) {
 			search_box->set_right_icon(get_theme_icon("Search", "EditorIcons"));
 			search_box->set_clear_button_enabled(true);
 
-			action_add_error->add_theme_color_override("font_color", get_theme_color("error_color", "Editor"));
 			translation_list->connect("button_pressed", this, "_translation_delete");
 			_update_actions();
 
@@ -198,7 +198,6 @@ void ProjectSettingsEditor::_notification(int p_what) {
 			search_button->set_icon(get_theme_icon("Search", "EditorIcons"));
 			search_box->set_right_icon(get_theme_icon("Search", "EditorIcons"));
 			search_box->set_clear_button_enabled(true);
-			action_add_error->add_theme_color_override("font_color", get_theme_color("error_color", "Editor"));
 			popup_add->set_item_icon(popup_add->get_item_index(INPUT_KEY_PHYSICAL), get_theme_icon("KeyboardPhysical", "EditorIcons"));
 			popup_add->set_item_icon(popup_add->get_item_index(INPUT_KEY), get_theme_icon("Keyboard", "EditorIcons"));
 			popup_add->set_item_icon(popup_add->get_item_index(INPUT_JOY_BUTTON), get_theme_icon("JoyButton", "EditorIcons"));
