@@ -30,7 +30,7 @@
 
 #include "android_keys_utils.h"
 
-unsigned int pandemoinum_code_from_android_code(unsigned int p_code) {
+unsigned int pandemonium_code_from_android_code(unsigned int p_code) {
 	for (int i = 0; android_pandemonium_code_pairs[i].android_code != AKEYCODE_MAX; i++) {
 		if (android_pandemonium_code_pairs[i].android_code == p_code) {
 			return android_pandemonium_code_pairs[i].pandemonium_code;
