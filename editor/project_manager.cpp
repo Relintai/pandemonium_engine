@@ -30,33 +30,33 @@
 
 #include "project_manager.h"
 
-#include "core/object/class_db.h"
-#include "core/math/color.h"
 #include "core/config/engine.h"
+#include "core/config/project_settings.h"
+#include "core/containers/pool_vector.h"
+#include "core/containers/set.h"
+#include "core/containers/sort_array.h"
+#include "core/containers/vector.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
-#include "core/io/image.h"
+#include "core/input/input_event.h"
 #include "core/io/config_file.h"
+#include "core/io/image.h"
 #include "core/io/resource_saver.h"
 #include "core/io/stream_peer_ssl.h"
 #include "core/io/zip_io.h"
+#include "core/math/color.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
+#include "core/object/class_db.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "core/input/input_event.h"
 #include "core/os/keyboard.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/containers/pool_vector.h"
 #include "core/string/print_string.h"
-#include "core/config/project_settings.h"
-#include "core/containers/set.h"
-#include "core/containers/sort_array.h"
 #include "core/string/translation.h"
 #include "core/typedefs.h"
-#include "core/containers/vector.h"
 #include "core/version.h"
 #include "core/version_generated.gen.h"
 #include "editor/editor_about.h"
@@ -463,17 +463,18 @@ private:
 				return;
 			}
 
-			ProjectSettings *current = memnew(ProjectSettings);
+			// Load project.pandemonium as ConfigFile to set the new name.
+			ConfigFile cfg;
+			String project_pandemonium = dir2.plus_file("project.pandemonium");
+			Error err = cfg.load(project_pandemonium);
 
-			int err = current->setup(dir2, "");
 			if (err != OK) {
-				set_message(vformat(TTR("Couldn't load project.pandemonium in project path (error %d). It may be missing or corrupted."), err), MESSAGE_ERROR);
+				set_message(vformat(TTR("Couldn't load project at '%s' (error %d). It may be missing or corrupted."), project_pandemonium, err), MESSAGE_ERROR);
 			} else {
-				ProjectSettings::CustomMap edited_settings;
-				edited_settings["application/config/name"] = project_name->get_text().strip_edges();
-
-				if (current->save_custom(dir2.plus_file("project.pandemonium"), edited_settings, Vector<String>(), true) != OK) {
-					set_message(TTR("Couldn't edit project.pandemonium in project path."), MESSAGE_ERROR);
+				cfg.set_value("application", "config/name", project_name->get_text().strip_edges());
+				err = cfg.save(project_pandemonium);
+				if (err != OK) {
+					set_message(vformat(TTR("Couldn't save project at '%s' (error %d)."), project_pandemonium, err), MESSAGE_ERROR);
 				}
 			}
 
@@ -720,18 +721,20 @@ public:
 			rasterizer_container->hide();
 			get_ok()->set_disabled(false);
 
-			ProjectSettings *current = memnew(ProjectSettings);
+			// Fetch current name from project.pandemonium to prefill the text input.
+			ConfigFile cfg;
+			String project_pandemonium = project_path->get_text().plus_file("project.pandemonium");
+			Error err = cfg.load(project_pandemonium);
 
-			int err = current->setup(project_path->get_text(), "");
 			if (err != OK) {
-				set_message(vformat(TTR("Couldn't load project.pandemonium in project path (error %d). It may be missing or corrupted."), err), MESSAGE_ERROR);
+				set_message(vformat(TTR("Couldn't load project at '%s' (error %d). It may be missing or corrupted."), project_pandemonium, err), MESSAGE_ERROR);
 				status_rect->show();
 				msg->show();
 				get_ok()->set_disabled(true);
-			} else if (current->has_setting("application/config/name")) {
-				String proj = current->get("application/config/name");
-				project_name->set_text(proj);
-				_text_changed(proj);
+			} else {
+				String cur_name = cfg.get_value("application", "config/name", "");
+				project_name->set_text(cur_name);
+				_text_changed(cur_name);
 			}
 
 			project_name->call_deferred("grab_focus");
