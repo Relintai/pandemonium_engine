@@ -61,10 +61,10 @@ void AndroidInputHandler::process_key_event(int p_scancode, int p_physical_scanc
 	Ref<InputEventKey> ev;
 	ev.instance();
 
-	unsigned int physical_scancode = godot_code_from_android_code(p_physical_scancode);
+	unsigned int physical_scancode = pandemonium_code_from_android_code(p_physical_scancode);
 	unsigned int scancode = physical_scancode;
 	if (p_scancode != 0) {
-		scancode = godot_code_from_unicode(p_scancode);
+		scancode = pandemonium_code_from_unicode(p_scancode);
 	}
 
 	switch (physical_scancode) {
