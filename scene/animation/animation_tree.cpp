@@ -828,7 +828,6 @@ void AnimationTree::_clear_caches() {
 		memdelete(track_cache[*K]);
 	}
 	playing_caches.clear();
-
 	track_cache.clear();
 	cache_valid = false;
 }
