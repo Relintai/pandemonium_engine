@@ -163,25 +163,6 @@ Files extracted from upstream source:
 - `LICENSE`
 
 
-## libsimplewebm
-
-- Upstream: https://github.com/zaps166/libsimplewebm
-- Version: git (fe57fd3cfe6c0af4c6af110b1f84a90cf191d943, 2019)
-- License: MIT (main), BSD-3-Clause (libwebm)
-
-This contains libwebm, but the version in use is updated from the one used by libsimplewebm,
-and may have *unmarked* alterations from that.
-
-Files extracted from upstream source:
-
-- all the .cpp, .hpp files in the main folder except `example.cpp`
-- LICENSE
-
-Important: Some files have Godot-made changes.
-They are marked with `// -- PANDEMONIUM start --` and `// -- PANDEMONIUM end --`
-comments.
-
-
 ## libtheora
 
 - Upstream: https://www.theora.org

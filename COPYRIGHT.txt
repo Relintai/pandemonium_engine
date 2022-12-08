@@ -212,16 +212,6 @@ Copyright: 1995-2019, The PNG Reference Library Authors.
  1995-1996, Guy Eric Schalnat, Group 42, Inc.
 License: Zlib
 
-Files: ./thirdparty/libsimplewebm/
-Comment: libsimplewebm
-Copyright: 2016, Błażej Szczygieł
-License: Expat
-
-Files: ./thirdparty/libsimplewebm/libwebm/
-Comment: The WebM Project
-Copyright: 2010, Google Inc.
-License: BSD-3-clause
-
 Files: ./thirdparty/libtheora/
 Comment: OggTheora
 Copyright: 2002-2009, Xiph.org Foundation
