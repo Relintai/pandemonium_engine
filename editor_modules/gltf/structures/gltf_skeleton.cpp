@@ -30,7 +30,7 @@
 
 #include "gltf_skeleton.h"
 
-#include "gltf_template_convert.h"
+#include "../gltf_template_convert.h"
 
 #ifdef MODULE_SKELETON_3D_ENABLED
 #include "modules/skeleton_3d/nodes/bone_attachment.h"

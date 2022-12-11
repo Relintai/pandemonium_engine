@@ -38,7 +38,7 @@
 #include "modules/skeleton_3d/resources/skin.h"
 #endif
 
-#include "gltf_spec_gloss.h"
+#include "extensions/gltf_spec_gloss.h"
 #include "gltf_state.h"
 
 #include "core/bind/core_bind.h" // FIXME: Shouldn't use _Directory but DirAccess.

@@ -39,8 +39,7 @@
 #include "scene/resources/texture.h"
 
 #include "gltf_defines.h"
-
-#include "gltf_animation.h"
+#include "structures/gltf_animation.h"
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap.
 

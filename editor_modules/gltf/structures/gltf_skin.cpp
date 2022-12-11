@@ -32,7 +32,7 @@
 
 #include "modules/modules_enabled.gen.h"
 
-#include "gltf_template_convert.h"
+#include "../gltf_template_convert.h"
 
 #ifdef MODULE_SKELETON_3D_ENABLED
 #include "modules/skeleton_3d/resources/skin.h"

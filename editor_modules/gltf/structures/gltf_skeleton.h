@@ -1,7 +1,7 @@
-#ifndef GLTF_BUFFER_VIEW_H
-#define GLTF_BUFFER_VIEW_H
+#ifndef GLTF_SKELETON_H
+#define GLTF_SKELETON_H
 /*************************************************************************/
-/*  gltf_buffer_view.h                                                   */
+/*  gltf_skeleton.h                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -32,38 +32,63 @@
 
 #include "core/object/resource.h"
 
-#include "gltf_defines.h"
+#include "../gltf_defines.h"
 
-class GLTFBufferView : public Resource {
-	GDCLASS(GLTFBufferView, Resource);
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+class Skeleton;
+class BoneAttachment;
+#endif
+
+class GLTFSkeleton : public Resource {
+	GDCLASS(GLTFSkeleton, Resource);
 	friend class GLTFDocument;
 
 private:
-	GLTFBufferIndex buffer = -1;
-	int byte_offset = 0;
-	int byte_length = 0;
-	int byte_stride = -1;
-	bool indices = false;
+	// The *synthesized* skeletons joints
+	PoolVector<GLTFNodeIndex> joints;
+
+	// The roots of the skeleton. If there are multiple, each root must have the
+	// same parent (ie roots are siblings)
+	PoolVector<GLTFNodeIndex> roots;
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+	// The created Skeleton for the scene
+	Skeleton *pandemonium_skeleton = nullptr;
+#endif
+
+	// Set of unique bone names for the skeleton
+	Set<String> unique_names;
+
+	Map<int32_t, GLTFNodeIndex> pandemonium_bone_node;
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+	PoolVector<BoneAttachment *> bone_attachments;
+#endif
 
 protected:
 	static void _bind_methods();
 
 public:
-	GLTFBufferIndex get_buffer();
-	void set_buffer(GLTFBufferIndex p_buffer);
+	PoolVector<GLTFNodeIndex> get_joints();
+	void set_joints(PoolVector<GLTFNodeIndex> p_joints);
 
-	int get_byte_offset();
-	void set_byte_offset(int p_byte_offset);
+	PoolVector<GLTFNodeIndex> get_roots();
+	void set_roots(PoolVector<GLTFNodeIndex> p_roots);
 
-	int get_byte_length();
-	void set_byte_length(int p_byte_length);
+#ifdef MODULE_SKELETON_3D_ENABLED
+	Skeleton *get_pandemonium_skeleton();
+	BoneAttachment *get_bone_attachment(int idx);
+#endif
 
-	int get_byte_stride();
-	void set_byte_stride(int p_byte_stride);
+	Array get_unique_names();
+	void set_unique_names(Array p_unique_names);
 
-	bool get_indices();
-	void set_indices(bool p_indices);
-	// matrices need to be transformed to this
+	Dictionary get_pandemonium_bone_node();
+	void set_pandemonium_bone_node(Dictionary p_indict);
+
+	int32_t get_bone_attachment_count();
 };
 
-#endif // GLTF_BUFFER_VIEW_H
+#endif // GLTF_SKELETON_H
