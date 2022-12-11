@@ -4573,7 +4573,7 @@ SpatialEditorViewport::SpatialEditorViewport(SpatialEditor *p_spatial_editor, Ed
 	top_right_vbox->set_anchors_and_margins_preset(PRESET_TOP_RIGHT, PRESET_MODE_MINSIZE, 2.0 * EDSCALE);
 	top_right_vbox->set_h_grow_direction(GROW_DIRECTION_BEGIN);
 
-	const int navigation_control_size = 200;
+	const int navigation_control_size = 150;
 
 	position_control = memnew(ViewportNavigationControl);
 	position_control->set_navigation_mode(SpatialEditorViewport::NAVIGATION_MOVE);
@@ -7661,6 +7661,9 @@ void ViewportNavigationControl::_notification(int p_what) {
 		if (!is_connected("mouse_exited", this, "_on_mouse_exited")) {
 			connect("mouse_exited", this, "_on_mouse_exited");
 		}
+		if (!is_connected("mouse_entered", this, "_on_mouse_entered")) {
+			connect("mouse_entered", this, "_on_mouse_entered");
+		}
 	}
 
 	if (p_what == NOTIFICATION_DRAW && viewport != nullptr) {
@@ -7678,7 +7681,7 @@ void ViewportNavigationControl::_draw() {
 	float radius = get_size().x / 2.0;
 
 	const bool focused = focused_index != -1;
-	draw_circle(center, radius, Color(0.5, 0.5, 0.5, focused ? 0.25 : 0.05));
+	draw_circle(center, radius, Color(0.5, 0.5, 0.5, focused || hovered ? 0.35 : 0.15));
 
 	const Color c = focused ? Color(0.9, 0.9, 0.9, 0.9) : Color(0.5, 0.5, 0.5, 0.25);
 
@@ -7689,6 +7692,9 @@ void ViewportNavigationControl::_draw() {
 }
 
 void ViewportNavigationControl::_process_click(int p_index, Vector2 p_position, bool p_pressed) {
+	hovered = false;
+	update();
+
 	if (focused_index != -1 && focused_index != p_index) {
 		return;
 	}
@@ -7799,7 +7805,13 @@ void ViewportNavigationControl::_update_navigation() {
 	}
 }
 
+void ViewportNavigationControl::_on_mouse_entered() {
+	hovered = true;
+	update();
+}
+
 void ViewportNavigationControl::_on_mouse_exited() {
+	hovered = false;
 	update();
 }
 
