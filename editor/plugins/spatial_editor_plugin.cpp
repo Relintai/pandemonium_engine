@@ -7826,4 +7826,5 @@ void ViewportNavigationControl::set_viewport(SpatialEditorViewport *p_viewport) 
 void ViewportNavigationControl::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_gui_input"), &ViewportNavigationControl::_gui_input);
 	ClassDB::bind_method(D_METHOD("_on_mouse_exited"), &ViewportNavigationControl::_on_mouse_exited);
+	ClassDB::bind_method(D_METHOD("_on_mouse_entered"), &ViewportNavigationControl::_on_mouse_entered);
 }
