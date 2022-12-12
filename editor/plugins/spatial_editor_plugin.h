@@ -872,14 +872,9 @@ public:
 class ViewportNavigationControl : public Control {
 	GDCLASS(ViewportNavigationControl, Control);
 
-	SpatialEditorViewport *viewport = nullptr;
-	Vector2i focused_mouse_start;
-	Vector2 focused_pos;
-	bool hovered = false;
-	int focused_index = -1;
-	SpatialEditorViewport::NavigationMode nav_mode = SpatialEditorViewport::NavigationMode::NAVIGATION_NONE;
-
-	const float AXIS_CIRCLE_RADIUS = 30.0f * EDSCALE;
+public:
+	void set_navigation_mode(SpatialEditorViewport::NavigationMode p_nav_mode);
+	void set_viewport(SpatialEditorViewport *p_viewport);
 
 protected:
 	static void _bind_methods();
@@ -892,9 +887,15 @@ protected:
 	void _process_drag(int p_index, Vector2 p_position, Vector2 p_relative_position);
 	void _update_navigation();
 
-public:
-	void set_navigation_mode(SpatialEditorViewport::NavigationMode p_nav_mode);
-	void set_viewport(SpatialEditorViewport *p_viewport);
+private:
+	SpatialEditorViewport *viewport = nullptr;
+	Vector2i focused_mouse_start;
+	Vector2 focused_pos;
+	bool hovered = false;
+	int focused_index = -1;
+	SpatialEditorViewport::NavigationMode nav_mode = SpatialEditorViewport::NavigationMode::NAVIGATION_NONE;
+
+	const float AXIS_CIRCLE_RADIUS = 30.0f * EDSCALE;
 };
 
 #endif
