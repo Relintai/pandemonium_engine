@@ -1275,6 +1275,7 @@ bool ItemList::get_allow_reselect() const {
 }
 
 void ItemList::set_icon_scale(real_t p_scale) {
+	ERR_FAIL_COND(Math::is_nan(p_scale) || Math::is_inf(p_scale));
 	icon_scale = p_scale;
 }
 
