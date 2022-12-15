@@ -301,10 +301,6 @@ bool OS::is_process_running(const ProcessID &p_pid) const {
 	return false;
 }
 
-void OS::vibrate_handheld(int p_duration_ms) {
-	WARN_PRINT("vibrate_handheld() only works with Android, iOS and HTML5");
-}
-
 bool OS::is_stdout_verbose() const {
 	return _verbose_stdout;
 }
