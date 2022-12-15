@@ -53,10 +53,6 @@ void VisibilityNotifier2D::_enter_world(World *p_world) {
 	ERR_FAIL_COND(worlds.has(p_world));
 	worlds.insert(p_world);
 
-	if (is_inside_tree() && Engine::get_singleton()->is_editor_hint()) {
-		return;
-	}
-
 	if (worlds.size() == 1) {
 		emit_signal(SceneStringNames::get_singleton()->screen_entered);
 
@@ -69,10 +65,6 @@ void VisibilityNotifier2D::_exit_world(World *p_world) {
 	ERR_FAIL_COND(!worlds.has(p_world));
 	worlds.erase(p_world);
 
-	if (is_inside_tree() && Engine::get_singleton()->is_editor_hint()) {
-		return;
-	}
-
 	emit_signal(SceneStringNames::get_singleton()->viewport_exited, p_world);
 	if (worlds.size() == 0) {
 		emit_signal(SceneStringNames::get_singleton()->screen_exited);
@@ -84,11 +76,16 @@ void VisibilityNotifier2D::_exit_world(World *p_world) {
 void VisibilityNotifier2D::set_rect(const Rect2 &p_rect) {
 	rect = p_rect;
 	if (is_inside_tree()) {
-		get_world_2d()->_update_notifier(this, get_global_transform().xform(rect));
+#ifdef TOOLS_ENABLED
 		if (Engine::get_singleton()->is_editor_hint()) {
 			update();
 			item_rect_changed();
+		} else {
+			get_world_2d()->_update_notifier(this, get_global_transform().xform(rect));
 		}
+#else
+		get_world_2d()->_update_notifier(this, get_global_transform().xform(rect));
+#endif
 	}
 
 	_change_notify("rect");
@@ -101,20 +98,38 @@ Rect2 VisibilityNotifier2D::get_rect() const {
 void VisibilityNotifier2D::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
-			//get_world_2d()->
+#ifdef TOOLS_ENABLED
+			if (!Engine::get_singleton()->is_editor_hint()) {
+				get_world_2d()->_register_notifier(this, get_global_transform().xform(rect));
+			}
+#else
 			get_world_2d()->_register_notifier(this, get_global_transform().xform(rect));
+#endif
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
-			//get_world_2d()->
+#ifdef TOOLS_ENABLED
+			if (!Engine::get_singleton()->is_editor_hint()) {
+				get_world_2d()->_update_notifier(this, get_global_transform().xform(rect));
+			}
+#else
 			get_world_2d()->_update_notifier(this, get_global_transform().xform(rect));
+#endif
 		} break;
+#ifdef TOOLS_ENABLED
 		case NOTIFICATION_DRAW: {
 			if (Engine::get_singleton()->is_editor_hint()) {
 				draw_rect(rect, Color(1, 0.5, 1, 0.2));
 			}
 		} break;
+#endif
 		case NOTIFICATION_EXIT_TREE: {
+#ifdef TOOLS_ENABLED
+			if (!Engine::get_singleton()->is_editor_hint()) {
+				get_world_2d()->_remove_notifier(this);
+			}
+#else
 			get_world_2d()->_remove_notifier(this);
+#endif
 		} break;
 	}
 }
@@ -217,9 +232,11 @@ void VisibilityEnabler2D::_find_nodes(Node *p_node) {
 
 void VisibilityEnabler2D::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE) {
+#ifdef TOOLS_ENABLED
 		if (Engine::get_singleton()->is_editor_hint()) {
 			return;
 		}
+#endif
 
 		Node *from = this;
 		//find where current scene starts
@@ -245,9 +262,11 @@ void VisibilityEnabler2D::_notification(int p_what) {
 	}
 
 	if (p_what == NOTIFICATION_EXIT_TREE) {
+#ifdef TOOLS_ENABLED
 		if (Engine::get_singleton()->is_editor_hint()) {
 			return;
 		}
+#endif
 
 		for (Map<Node *, Variant>::Element *E = nodes.front(); E; E = E->next()) {
 			if (!visible) {
