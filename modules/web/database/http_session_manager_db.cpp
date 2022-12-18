@@ -200,12 +200,20 @@ void HTTPSessionManagerDB::load_sessions() {
 	}
 }
 
-void HTTPSessionManagerDB::migrate() {
-	drop_table();
-	create_table();
+void HTTPSessionManagerDB::create_table() {
+	call("_create_table");
+}
+void HTTPSessionManagerDB::drop_table() {
+	call("_drop_table");
+}
+void HTTPSessionManagerDB::udpate_table(const int p_current_table_version) {
+	call("_udpate_table", p_current_table_version);
+}
+void HTTPSessionManagerDB::create_default_entries(const int p_seed) {
+	call("_create_default_entries", p_seed);
 }
 
-void HTTPSessionManagerDB::create_table() {
+void HTTPSessionManagerDB::_create_table() {
 	Ref<TableBuilder> tb = get_table_builder();
 
 	tb->create_table(_database_table_name);
@@ -228,11 +236,39 @@ void HTTPSessionManagerDB::create_table() {
 	// tb->print();
 	tb->run_query();
 }
-void HTTPSessionManagerDB::drop_table() {
+void HTTPSessionManagerDB::_drop_table() {
 	Ref<TableBuilder> tb = get_table_builder();
 
 	tb->drop_table_if_exists(_database_table_name)->run_query();
 	tb->drop_table_if_exists(_database_data_table_name)->run_query();
+}
+void HTTPSessionManagerDB::_udpate_table(const int p_current_table_version) {
+}
+void HTTPSessionManagerDB::_create_default_entries(const int p_seed) {
+}
+
+void HTTPSessionManagerDB::migrate(const bool p_clear, const bool p_should_seed, const int p_seed) {
+	call("_migrate", p_clear, p_should_seed, p_seed);
+}
+
+void HTTPSessionManagerDB::_migrate(const bool p_clear, const bool p_should_seed, const int p_seed) {
+	if (p_clear) {
+		drop_table();
+		create_table();
+	} else {
+#ifdef MODULE_DATABASE_ENABLED
+		Ref<DatabaseConnection> conn = get_database_connection();
+		ERR_FAIL_COND(!conn.is_valid());
+		int ver = conn->get_table_version(_database_table_name);
+		udpate_table(ver);
+#else
+		udpate_table(0);
+#endif
+	}
+
+	if (p_should_seed) {
+		create_default_entries(p_seed);
+	}
 }
 
 HTTPSessionManagerDB::HTTPSessionManagerDB() {
@@ -272,4 +308,23 @@ void HTTPSessionManagerDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_database_connection"), &HTTPSessionManagerDB::get_database_connection);
 	ClassDB::bind_method(D_METHOD("get_table_builder"), &HTTPSessionManagerDB::get_table_builder);
 	ClassDB::bind_method(D_METHOD("get_query_builder"), &HTTPSessionManagerDB::get_query_builder);
+
+	BIND_VMETHOD(MethodInfo("_create_table"));
+	BIND_VMETHOD(MethodInfo("_drop_table"));
+	BIND_VMETHOD(MethodInfo("_udpate_table", PropertyInfo(Variant::INT, "current_table_version")));
+	BIND_VMETHOD(MethodInfo("_create_default_entries", PropertyInfo(Variant::INT, "pseed")));
+
+	ClassDB::bind_method(D_METHOD("create_table"), &HTTPSessionManagerDB::create_table);
+	ClassDB::bind_method(D_METHOD("drop_table"), &HTTPSessionManagerDB::drop_table);
+	ClassDB::bind_method(D_METHOD("udpate_table", "current_table_version"), &HTTPSessionManagerDB::udpate_table);
+	ClassDB::bind_method(D_METHOD("create_default_entries", "pseed"), &HTTPSessionManagerDB::create_default_entries);
+
+	ClassDB::bind_method(D_METHOD("_create_table"), &HTTPSessionManagerDB::_create_table);
+	ClassDB::bind_method(D_METHOD("_drop_table"), &HTTPSessionManagerDB::_drop_table);
+	ClassDB::bind_method(D_METHOD("_udpate_table", "current_table_version"), &HTTPSessionManagerDB::_udpate_table);
+	ClassDB::bind_method(D_METHOD("_create_default_entries", "pseed"), &HTTPSessionManagerDB::_create_default_entries);
+
+	BIND_VMETHOD(MethodInfo("_migrate", PropertyInfo(Variant::BOOL, "clear"), PropertyInfo(Variant::BOOL, "should_seed"), PropertyInfo(Variant::INT, "pseed")));
+	ClassDB::bind_method(D_METHOD("migrate", "clear", "pseed"), &HTTPSessionManagerDB::migrate);
+	ClassDB::bind_method(D_METHOD("_migrate", "clear", "pseed"), &HTTPSessionManagerDB::_migrate);
 }
