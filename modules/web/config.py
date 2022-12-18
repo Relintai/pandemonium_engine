@@ -75,6 +75,8 @@ def get_doc_classes():
 
 	    "RedirectWebPage",
 	    "AliasWebPage",
+
+		"HTTPSessionManagerDB",
     ]
 
 

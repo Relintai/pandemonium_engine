@@ -63,6 +63,9 @@ if env["tools"]:
     sources.append("editor/web_node_editor_web_server.cpp")
     sources.append("editor/web_node_editor_web_server_request.cpp")
 
+if env['module_database_enabled']:
+    sources.append("database/http_session_manager_db.cpp")
+
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation
     module_env.Append(CCFLAGS=['-fPIC'])

@@ -65,6 +65,12 @@ SOFTWARE.
 #include "editor/web_node_editor_plugin.h"
 #endif
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_DATABASE_ENABLED
+#include "database/http_session_manager_db.h"
+#endif
+
 void register_web_types() {
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
@@ -128,6 +134,11 @@ void register_web_types() {
 
 	ClassDB::register_class<RedirectWebPage>();
 	ClassDB::register_class<AliasWebPage>();
+
+#ifdef MODULE_DATABASE_ENABLED
+	ClassDB::register_class<HTTPSessionManagerDB>();
+
+#endif
 
 #if TOOLS_ENABLED
 	EditorPlugins::add_by_type<WebNodeEditorPlugin>();
