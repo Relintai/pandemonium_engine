@@ -17,6 +17,8 @@
 void UserDeleteWebPage::handle_delete_request(Ref<User> &user, Ref<WebServerRequest> request) {
 	request->body += "handle_delete_request";
 
+	//emit_signal("user_deleted", request, user);
+
 	request->compile_and_send_body();
 }
 
@@ -24,4 +26,8 @@ UserDeleteWebPage::UserDeleteWebPage() {
 }
 
 UserDeleteWebPage::~UserDeleteWebPage() {
+}
+
+void UserDeleteWebPage::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("user_deleted", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User")));
 }

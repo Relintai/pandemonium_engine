@@ -61,6 +61,8 @@ void UserRegisterWebPage::_render_index(Ref<WebServerRequest> request) {
 			user->create_password(data.pass_val);
 			user->save();
 
+			emit_signal("user_registered", request, user);
+
 			render_register_success(request);
 			return;
 		}
@@ -170,6 +172,8 @@ UserRegisterWebPage::~UserRegisterWebPage() {
 }
 
 void UserRegisterWebPage::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("user_registered", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User")));
+
 	ClassDB::bind_method(D_METHOD("get_redirect_on_success_url"), &UserRegisterWebPage::get_redirect_on_success_url);
 	ClassDB::bind_method(D_METHOD("set_redirect_on_success_url", "val"), &UserRegisterWebPage::set_redirect_on_success_url);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "redirect_on_success_url"), "set_redirect_on_success_url", "get_redirect_on_success_url");

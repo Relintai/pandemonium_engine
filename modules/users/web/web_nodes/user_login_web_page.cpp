@@ -52,6 +52,8 @@ void UserLoginWebPage::_render_index(Ref<WebServerRequest> request) {
 				c->set_path("/");
 				request->response_add_cookie(c);
 
+				emit_signal("user_logged_in", request, user);
+
 				render_login_success(request);
 
 				return;
@@ -136,6 +138,8 @@ UserLoginWebPage::~UserLoginWebPage() {
 }
 
 void UserLoginWebPage::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("user_logged_in", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User")));
+
 	ClassDB::bind_method(D_METHOD("get_redirect_on_success_url"), &UserLoginWebPage::get_redirect_on_success_url);
 	ClassDB::bind_method(D_METHOD("set_redirect_on_success_url", "val"), &UserLoginWebPage::set_redirect_on_success_url);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "redirect_on_success_url"), "set_redirect_on_success_url", "get_redirect_on_success_url");

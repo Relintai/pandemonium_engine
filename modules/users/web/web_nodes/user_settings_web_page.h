@@ -1,9 +1,9 @@
 #ifndef USER_SETTINGS_WEB_PAGE_H
 #define USER_SETTINGS_WEB_PAGE_H
 
+#include "core/containers/vector.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
-#include "core/containers/vector.h"
 
 #include "user_web_page.h"
 
@@ -31,6 +31,8 @@ public:
 	~UserSettingsWebPage();
 
 protected:
+	static void _bind_methods();
+
 	Ref<FormValidator> _profile_validator;
 };
 

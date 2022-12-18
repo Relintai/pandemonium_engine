@@ -17,6 +17,8 @@
 void UserPasswordResetWebPage::handle_password_reset_request(Ref<User> &user, Ref<WebServerRequest> request) {
 	request->body += "handle_password_reset_request";
 
+	//emit_signal("user_password_reseted", request, user);
+
 	request->compile_and_send_body();
 }
 
@@ -24,4 +26,8 @@ UserPasswordResetWebPage::UserPasswordResetWebPage() {
 }
 
 UserPasswordResetWebPage::~UserPasswordResetWebPage() {
+}
+
+void UserPasswordResetWebPage::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("user_password_reseted", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User")));
 }

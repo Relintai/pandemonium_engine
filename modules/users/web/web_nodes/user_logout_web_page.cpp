@@ -27,6 +27,8 @@ void UserLogoutWebPage::_render_index(Ref<WebServerRequest> request) {
 	sess_man->delete_session(request->get_session()->get_session_id());
 	request->set_session(Ref<HTTPSession>());
 
+	emit_signal("user_logged_out", request, user);
+
 	HTMLBuilder b;
 	b.w("Logout successful!");
 	request->body += b.result;
@@ -38,4 +40,8 @@ UserLogoutWebPage::UserLogoutWebPage() {
 }
 
 UserLogoutWebPage::~UserLogoutWebPage() {
+}
+
+void UserLogoutWebPage::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("user_logged_out", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User")));
 }

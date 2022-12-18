@@ -79,6 +79,7 @@ void UserSettingsWebPage::_render_index(Ref<WebServerRequest> request) {
 
 			if (changed) {
 				user->save();
+				emit_signal("user_settings_changed", request, user);
 			}
 		}
 	}
@@ -160,4 +161,8 @@ UserSettingsWebPage::UserSettingsWebPage() {
 }
 
 UserSettingsWebPage::~UserSettingsWebPage() {
+}
+
+void UserSettingsWebPage::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("user_settings_changed", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User")));
 }

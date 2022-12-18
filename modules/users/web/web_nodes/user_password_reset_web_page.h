@@ -1,9 +1,9 @@
 #ifndef USER_PASSWORD_RESET_WEB_PAGE_H
 #define USER_PASSWORD_RESET_WEB_PAGE_H
 
+#include "core/containers/vector.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
-#include "core/containers/vector.h"
 
 #include "user_web_page.h"
 
@@ -21,6 +21,7 @@ public:
 	~UserPasswordResetWebPage();
 
 protected:
+	static void _bind_methods();
 };
 
 #endif
