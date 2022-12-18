@@ -1086,7 +1086,7 @@ void _HTMLTag::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("attrib", "attr", "val"), &_HTMLTag::attrib);
 
-	ClassDB::bind_method(D_METHOD("start", "new__tag", "simple"), &_HTMLTag::start, false);
+	ClassDB::bind_method(D_METHOD("start", "new_tag", "simple"), &_HTMLTag::start, false);
 
 	ClassDB::bind_method(D_METHOD("reset"), &_HTMLTag::reset);
 	ClassDB::bind_method(D_METHOD("close"), &_HTMLTag::close);
