@@ -98,7 +98,6 @@ Ref<HTTPSession> HTTPSessionManager::create_session() {
 }
 
 void HTTPSessionManager::load_sessions() {
-	clear();
 }
 
 void HTTPSessionManager::clear() {

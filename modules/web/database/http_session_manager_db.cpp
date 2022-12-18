@@ -125,11 +125,9 @@ void HTTPSessionManagerDB::save_session(Ref<HTTPSession> session) {
 	while ((k = m->next(k))) {
 		const Variant &val = m->get(*k);
 
-		Variant::Type t = val.get_type();
-
 		// Maybe it should be allowed?
 		// Or maybe when adding stuff to the sessions the method should have a store = true bool, if false skip saving
-		if (t == Variant::OBJECT) {
+		if (val.get_type() == Variant::OBJECT) {
 			continue;
 		}
 
@@ -145,6 +143,8 @@ void HTTPSessionManagerDB::load_sessions() {
 	clear();
 
 	Ref<QueryBuilder> b = get_query_builder();
+
+	ERR_FAIL_COND(!b.is_valid());
 
 	b->select("id, session_id");
 	b->from(_database_table_name);

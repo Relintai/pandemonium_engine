@@ -137,7 +137,6 @@ void register_web_types() {
 
 #ifdef MODULE_DATABASE_ENABLED
 	ClassDB::register_class<HTTPSessionManagerDB>();
-
 #endif
 
 #if TOOLS_ENABLED
