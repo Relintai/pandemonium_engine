@@ -185,7 +185,7 @@ Ref<User> UserManagerDB::_create_user() {
 	u.instance();
 
 	//save_user(u);
-	u->connect("changed", this, "_on_user_changed");
+	u->connect("changed", this, "_save_user", varray(u));
 
 	return u;
 }
