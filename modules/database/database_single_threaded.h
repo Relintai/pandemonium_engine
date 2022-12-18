@@ -14,9 +14,6 @@ class DatabaseSingleThreaded : public Database {
 	GDCLASS(DatabaseSingleThreaded, Database);
 
 public:
-	String get_connection_string();
-	void set_connection_string(const String &val);
-
 	Ref<DatabaseConnection> get_connection();
 
 	DatabaseSingleThreaded();
