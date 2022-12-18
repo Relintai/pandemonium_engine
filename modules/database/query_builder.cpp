@@ -162,10 +162,10 @@ QueryBuilder *QueryBuilder::nvalues(const String &params_str) {
 }
 
 QueryBuilder *QueryBuilder::nval(const String &param) {
-	return vals(escape(param));
+	return this;
 }
 QueryBuilder *QueryBuilder::nsetp(const String &col, const String &escape_param) {
-	return setps(col, escape(escape_param));
+	return this;
 }
 
 QueryBuilder *QueryBuilder::nwp(const String &col, const String &escape_param) {
