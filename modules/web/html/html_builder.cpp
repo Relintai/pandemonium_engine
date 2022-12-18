@@ -659,7 +659,7 @@ HTMLTag *HTMLTag::rel_search() {
 }
 
 HTMLTag *HTMLTag::rel_tag() {
-	attrib("rel", "tag");
+	attrib("rel", "_tag");
 
 	return this;
 }
@@ -882,7 +882,7 @@ HTMLBuilder *HTMLBuilder::comment(const String &val) {
 HTMLTag *HTMLBuilder::doctype() {
 	write_tag();
 
-	return tag.start("!DOCTYPE");
+	return _tag.start("!DOCTYPE");
 }
 
 HTMLBuilder *HTMLBuilder::doctype(const String &val) {
@@ -896,724 +896,724 @@ HTMLBuilder *HTMLBuilder::doctype(const String &val) {
 HTMLTag *HTMLBuilder::a() {
 	write_tag();
 
-	return tag.start("a");
+	return _tag.start("a");
 }
 HTMLTag *HTMLBuilder::abbr() {
 	write_tag();
 
-	return tag.start("abbr");
+	return _tag.start("abbr");
 }
 
 HTMLTag *HTMLBuilder::acronym() { // Not supported in HTML5. Use <abbr> instead. Defines an acronym
 	write_tag();
 
-	return tag.start("acronym");
+	return _tag.start("acronym");
 }
 
 HTMLTag *HTMLBuilder::address() {
 	write_tag();
 
-	return tag.start("address");
+	return _tag.start("address");
 }
 
 HTMLTag *HTMLBuilder::applet() { // Not supported in HTML5. Use <embed> or <object> instead. Defines an embedded applet
 	write_tag();
 
-	return tag.start("applet");
+	return _tag.start("applet");
 }
 
 HTMLTag *HTMLBuilder::area() {
 	write_tag();
 
-	return tag.start("area");
+	return _tag.start("area");
 }
 
 HTMLTag *HTMLBuilder::article() {
 	write_tag();
 
-	return tag.start("article");
+	return _tag.start("article");
 }
 
 HTMLTag *HTMLBuilder::aside() {
 	write_tag();
 
-	return tag.start("aside");
+	return _tag.start("aside");
 }
 
 HTMLTag *HTMLBuilder::audio() {
 	write_tag();
 
-	return tag.start("audio");
+	return _tag.start("audio");
 }
 
 HTMLTag *HTMLBuilder::b() {
 	write_tag();
 
-	return tag.start("b");
+	return _tag.start("b");
 }
 
 HTMLTag *HTMLBuilder::basefont() { // Not supported in HTML5. Use CSS instead. Specifies a default color, size, and font for all text in a document
 	write_tag();
 
-	return tag.start("basefont");
+	return _tag.start("basefont");
 }
 
 HTMLTag *HTMLBuilder::bdi() {
 	write_tag();
 
-	return tag.start("bdi");
+	return _tag.start("bdi");
 }
 
 HTMLTag *HTMLBuilder::bdo() {
 	write_tag();
 
-	return tag.start("bdo");
+	return _tag.start("bdo");
 }
 
 HTMLTag *HTMLBuilder::big() { // Not supported in HTML5. Use CSS instead. Defines big text
 	write_tag();
 
-	return tag.start("big");
+	return _tag.start("big");
 }
 
 HTMLTag *HTMLBuilder::blockquote() {
 	write_tag();
 
-	return tag.start("blockquote");
+	return _tag.start("blockquote");
 }
 
 HTMLTag *HTMLBuilder::body() {
 	write_tag();
 
-	return tag.start("body");
+	return _tag.start("body");
 }
 
 HTMLTag *HTMLBuilder::br() {
 	write_tag();
 
-	return tag.start("br", true);
+	return _tag.start("br", true);
 }
 
 HTMLTag *HTMLBuilder::button() {
 	write_tag();
 
-	return tag.start("button");
+	return _tag.start("button");
 }
 
 HTMLTag *HTMLBuilder::canvas() {
 	write_tag();
 
-	return tag.start("canvas");
+	return _tag.start("canvas");
 }
 
 HTMLTag *HTMLBuilder::caption() {
 	write_tag();
 
-	return tag.start("caption");
+	return _tag.start("caption");
 }
 
 HTMLTag *HTMLBuilder::center() { // Not supported in HTML5. Use CSS instead. Defines centered text
 	write_tag();
 
-	return tag.start("center");
+	return _tag.start("center");
 }
 
 HTMLTag *HTMLBuilder::cite() {
 	write_tag();
 
-	return tag.start("cite");
+	return _tag.start("cite");
 }
 
 HTMLTag *HTMLBuilder::code() {
 	write_tag();
 
-	return tag.start("code");
+	return _tag.start("code");
 }
 
 HTMLTag *HTMLBuilder::col() {
 	write_tag();
 
-	return tag.start("col");
+	return _tag.start("col");
 }
 
 HTMLTag *HTMLBuilder::colgroup() {
 	write_tag();
 
-	return tag.start("colgroup");
+	return _tag.start("colgroup");
 }
 
 HTMLTag *HTMLBuilder::data() {
 	write_tag();
 
-	return tag.start("cite");
+	return _tag.start("cite");
 }
 
 HTMLTag *HTMLBuilder::datalist() {
 	write_tag();
 
-	return tag.start("datalist");
+	return _tag.start("datalist");
 }
 
 HTMLTag *HTMLBuilder::dd() {
 	write_tag();
 
-	return tag.start("dd");
+	return _tag.start("dd");
 }
 
 HTMLTag *HTMLBuilder::del() {
 	write_tag();
 
-	return tag.start("del");
+	return _tag.start("del");
 }
 
 HTMLTag *HTMLBuilder::details() {
 	write_tag();
 
-	return tag.start("details");
+	return _tag.start("details");
 }
 
 HTMLTag *HTMLBuilder::dfn() {
 	write_tag();
 
-	return tag.start("dfn");
+	return _tag.start("dfn");
 }
 
 HTMLTag *HTMLBuilder::dialog() {
 	write_tag();
 
-	return tag.start("dialog");
+	return _tag.start("dialog");
 }
 
 HTMLTag *HTMLBuilder::dir() { // Not supported in HTML5. Use <ul> instead.
 	write_tag();
 
-	return tag.start("dir");
+	return _tag.start("dir");
 }
 
 HTMLTag *HTMLBuilder::div() {
 	write_tag();
 
-	return tag.start("div");
+	return _tag.start("div");
 }
 
 HTMLTag *HTMLBuilder::dl() {
 	write_tag();
 
-	return tag.start("dl");
+	return _tag.start("dl");
 }
 
 HTMLTag *HTMLBuilder::dt() {
 	write_tag();
 
-	return tag.start("dt");
+	return _tag.start("dt");
 }
 
 HTMLTag *HTMLBuilder::em() {
 	write_tag();
 
-	return tag.start("em");
+	return _tag.start("em");
 }
 
 HTMLTag *HTMLBuilder::embed() {
 	write_tag();
 
-	return tag.start("embed");
+	return _tag.start("embed");
 }
 
 HTMLTag *HTMLBuilder::fieldset() {
 	write_tag();
 
-	return tag.start("fieldset");
+	return _tag.start("fieldset");
 }
 HTMLTag *HTMLBuilder::figcaption() {
 	write_tag();
 
-	return tag.start("figcaption");
+	return _tag.start("figcaption");
 }
 
 HTMLTag *HTMLBuilder::figure() {
 	write_tag();
 
-	return tag.start("figure");
+	return _tag.start("figure");
 }
 
 HTMLTag *HTMLBuilder::font() { // Not supported in HTML5.
 	write_tag();
 
-	return tag.start("font");
+	return _tag.start("font");
 }
 
 HTMLTag *HTMLBuilder::footer() {
 	write_tag();
 
-	return tag.start("footer");
+	return _tag.start("footer");
 }
 
 HTMLTag *HTMLBuilder::form() {
 	write_tag();
 
-	return tag.start("form");
+	return _tag.start("form");
 }
 
 HTMLTag *HTMLBuilder::frame() { // Not supported in HTML5.
 	write_tag();
 
-	return tag.start("frame");
+	return _tag.start("frame");
 }
 
 HTMLTag *HTMLBuilder::frameset() { // Not supported in HTML5.
 	write_tag();
 
-	return tag.start("frameset");
+	return _tag.start("frameset");
 }
 
 HTMLTag *HTMLBuilder::h1() {
 	write_tag();
 
-	return tag.start("h1");
+	return _tag.start("h1");
 }
 
 HTMLTag *HTMLBuilder::h2() {
 	write_tag();
 
-	return tag.start("h2");
+	return _tag.start("h2");
 }
 
 HTMLTag *HTMLBuilder::h3() {
 	write_tag();
 
-	return tag.start("h3");
+	return _tag.start("h3");
 }
 
 HTMLTag *HTMLBuilder::h4() {
 	write_tag();
 
-	return tag.start("h4");
+	return _tag.start("h4");
 }
 
 HTMLTag *HTMLBuilder::h5() {
 	write_tag();
 
-	return tag.start("h5");
+	return _tag.start("h5");
 }
 
 HTMLTag *HTMLBuilder::h6() {
 	write_tag();
 
-	return tag.start("h6");
+	return _tag.start("h6");
 }
 
 HTMLTag *HTMLBuilder::head() {
 	write_tag();
 
-	return tag.start("head");
+	return _tag.start("head");
 }
 
 HTMLTag *HTMLBuilder::header() {
 	write_tag();
 
-	return tag.start("header");
+	return _tag.start("header");
 }
 
 HTMLTag *HTMLBuilder::hr() {
 	write_tag();
 
-	return tag.start("hr");
+	return _tag.start("hr");
 }
 
 HTMLTag *HTMLBuilder::html() {
 	write_tag();
 
-	return tag.start("html");
+	return _tag.start("html");
 }
 
 HTMLTag *HTMLBuilder::i() {
 	write_tag();
 
-	return tag.start("i");
+	return _tag.start("i");
 }
 
 HTMLTag *HTMLBuilder::iframe() {
 	write_tag();
 
-	return tag.start("iframe");
+	return _tag.start("iframe");
 }
 
 HTMLTag *HTMLBuilder::img() {
 	write_tag();
 
-	return tag.start("img");
+	return _tag.start("img");
 }
 
 HTMLTag *HTMLBuilder::input() {
 	write_tag();
 
-	return tag.start("input");
+	return _tag.start("input");
 }
 
 HTMLTag *HTMLBuilder::ins() {
 	write_tag();
 
-	return tag.start("ins");
+	return _tag.start("ins");
 }
 
 HTMLTag *HTMLBuilder::kbd() {
 	write_tag();
 
-	return tag.start("kbd");
+	return _tag.start("kbd");
 }
 
 HTMLTag *HTMLBuilder::label() {
 	write_tag();
 
-	return tag.start("label");
+	return _tag.start("label");
 }
 
 HTMLTag *HTMLBuilder::legend() {
 	write_tag();
 
-	return tag.start("legend");
+	return _tag.start("legend");
 }
 
 HTMLTag *HTMLBuilder::li() {
 	write_tag();
 
-	return tag.start("li");
+	return _tag.start("li");
 }
 
 HTMLTag *HTMLBuilder::link() {
 	write_tag();
 
-	return tag.start("link");
+	return _tag.start("link");
 }
 
 HTMLTag *HTMLBuilder::main() {
 	write_tag();
 
-	return tag.start("main");
+	return _tag.start("main");
 }
 
 HTMLTag *HTMLBuilder::map() {
 	write_tag();
 
-	return tag.start("map");
+	return _tag.start("map");
 }
 HTMLTag *HTMLBuilder::mark() {
 	write_tag();
 
-	return tag.start("mark");
+	return _tag.start("mark");
 }
 
 HTMLTag *HTMLBuilder::meta() {
 	write_tag();
 
-	return tag.start("meta");
+	return _tag.start("meta");
 }
 
 HTMLTag *HTMLBuilder::meter() {
 	write_tag();
 
-	return tag.start("meter");
+	return _tag.start("meter");
 }
 
 HTMLTag *HTMLBuilder::nav() {
 	write_tag();
 
-	return tag.start("nav");
+	return _tag.start("nav");
 }
 
 HTMLTag *HTMLBuilder::noframes() { // Not supported in HTML5.
 	write_tag();
 
-	return tag.start("noframes");
+	return _tag.start("noframes");
 }
 
 HTMLTag *HTMLBuilder::noscript() {
 	write_tag();
 
-	return tag.start("noscript");
+	return _tag.start("noscript");
 }
 
 HTMLTag *HTMLBuilder::object() {
 	write_tag();
 
-	return tag.start("object");
+	return _tag.start("object");
 }
 
 HTMLTag *HTMLBuilder::ol() {
 	write_tag();
 
-	return tag.start("ol");
+	return _tag.start("ol");
 }
 
 HTMLTag *HTMLBuilder::optgroup() {
 	write_tag();
 
-	return tag.start("optgroup");
+	return _tag.start("optgroup");
 }
 
 HTMLTag *HTMLBuilder::option() {
 	write_tag();
 
-	return tag.start("option");
+	return _tag.start("option");
 }
 
 HTMLTag *HTMLBuilder::output() {
 	write_tag();
 
-	return tag.start("output");
+	return _tag.start("output");
 }
 
 HTMLTag *HTMLBuilder::p() {
 	write_tag();
 
-	return tag.start("p");
+	return _tag.start("p");
 }
 
 HTMLTag *HTMLBuilder::param() {
 	write_tag();
 
-	return tag.start("param");
+	return _tag.start("param");
 }
 
 HTMLTag *HTMLBuilder::picture() {
 	write_tag();
 
-	return tag.start("picture");
+	return _tag.start("picture");
 }
 
 HTMLTag *HTMLBuilder::pre() {
 	write_tag();
 
-	return tag.start("pre");
+	return _tag.start("pre");
 }
 
 HTMLTag *HTMLBuilder::progress() {
 	write_tag();
 
-	return tag.start("progress");
+	return _tag.start("progress");
 }
 
 HTMLTag *HTMLBuilder::q() {
 	write_tag();
 
-	return tag.start("q");
+	return _tag.start("q");
 }
 
 HTMLTag *HTMLBuilder::rp() {
 	write_tag();
 
-	return tag.start("rp");
+	return _tag.start("rp");
 }
 
 HTMLTag *HTMLBuilder::rt() {
 	write_tag();
 
-	return tag.start("rt");
+	return _tag.start("rt");
 }
 
 HTMLTag *HTMLBuilder::ruby() {
 	write_tag();
 
-	return tag.start("ruby");
+	return _tag.start("ruby");
 }
 
 HTMLTag *HTMLBuilder::s() {
 	write_tag();
 
-	return tag.start("s");
+	return _tag.start("s");
 }
 
 HTMLTag *HTMLBuilder::samp() {
 	write_tag();
 
-	return tag.start("samp");
+	return _tag.start("samp");
 }
 
 HTMLTag *HTMLBuilder::script() {
 	write_tag();
 
-	return tag.start("script");
+	return _tag.start("script");
 }
 
 HTMLTag *HTMLBuilder::section() {
 	write_tag();
 
-	return tag.start("section");
+	return _tag.start("section");
 }
 
 HTMLTag *HTMLBuilder::select() {
 	write_tag();
 
-	return tag.start("select");
+	return _tag.start("select");
 }
 
 HTMLTag *HTMLBuilder::small() {
 	write_tag();
 
-	return tag.start("small");
+	return _tag.start("small");
 }
 
 HTMLTag *HTMLBuilder::source() {
 	write_tag();
 
-	return tag.start("source");
+	return _tag.start("source");
 }
 
 HTMLTag *HTMLBuilder::span() {
 	write_tag();
 
-	return tag.start("span");
+	return _tag.start("span");
 }
 
 HTMLTag *HTMLBuilder::strike() { // Not supported in HTML5
 	write_tag();
 
-	return tag.start("strike");
+	return _tag.start("strike");
 }
 
 HTMLTag *HTMLBuilder::strong() {
 	write_tag();
 
-	return tag.start("strong");
+	return _tag.start("strong");
 }
 
 HTMLTag *HTMLBuilder::style() {
 	write_tag();
 
-	return tag.start("style");
+	return _tag.start("style");
 }
 
 HTMLTag *HTMLBuilder::sub() {
 	write_tag();
 
-	return tag.start("sub");
+	return _tag.start("sub");
 }
 
 HTMLTag *HTMLBuilder::summary() {
 	write_tag();
 
-	return tag.start("summary");
+	return _tag.start("summary");
 }
 
 HTMLTag *HTMLBuilder::sup() {
 	write_tag();
 
-	return tag.start("sup");
+	return _tag.start("sup");
 }
 
 HTMLTag *HTMLBuilder::svg() {
 	write_tag();
 
-	return tag.start("svg");
+	return _tag.start("svg");
 }
 
 HTMLTag *HTMLBuilder::table() {
 	write_tag();
 
-	return tag.start("table");
+	return _tag.start("table");
 }
 
 HTMLTag *HTMLBuilder::tbody() {
 	write_tag();
 
-	return tag.start("tbody");
+	return _tag.start("tbody");
 }
 
 HTMLTag *HTMLBuilder::td() {
 	write_tag();
 
-	return tag.start("td");
+	return _tag.start("td");
 }
 
 HTMLTag *HTMLBuilder::templateh() {
 	write_tag();
 
-	return tag.start("template");
+	return _tag.start("template");
 }
 
 HTMLTag *HTMLBuilder::textarea() {
 	write_tag();
 
-	return tag.start("textarea");
+	return _tag.start("textarea");
 }
 
 HTMLTag *HTMLBuilder::tfoot() {
 	write_tag();
 
-	return tag.start("tfoot");
+	return _tag.start("tfoot");
 }
 
 HTMLTag *HTMLBuilder::th() {
 	write_tag();
 
-	return tag.start("th");
+	return _tag.start("th");
 }
 
 HTMLTag *HTMLBuilder::thead() {
 	write_tag();
 
-	return tag.start("thead");
+	return _tag.start("thead");
 }
 
 HTMLTag *HTMLBuilder::time() {
 	write_tag();
 
-	return tag.start("time");
+	return _tag.start("time");
 }
 
 HTMLTag *HTMLBuilder::title() {
 	write_tag();
 
-	return tag.start("title");
+	return _tag.start("title");
 }
 
 HTMLTag *HTMLBuilder::tr() {
 	write_tag();
 
-	return tag.start("tr");
+	return _tag.start("tr");
 }
 
 HTMLTag *HTMLBuilder::track() {
 	write_tag();
 
-	return tag.start("track");
+	return _tag.start("track");
 }
 
 HTMLTag *HTMLBuilder::tt() { // Not supported in HTML5.
 	write_tag();
 
-	return tag.start("tt");
+	return _tag.start("tt");
 }
 
 HTMLTag *HTMLBuilder::u() {
 	write_tag();
 
-	return tag.start("u");
+	return _tag.start("u");
 }
 
 HTMLTag *HTMLBuilder::ul() {
 	write_tag();
 
-	return tag.start("ul");
+	return _tag.start("ul");
 }
 
 HTMLTag *HTMLBuilder::var() {
 	write_tag();
 
-	return tag.start("var");
+	return _tag.start("var");
 }
 
 HTMLTag *HTMLBuilder::video() {
 	write_tag();
 
-	return tag.start("video");
+	return _tag.start("video");
 }
 
 HTMLTag *HTMLBuilder::wbr() {
 	write_tag();
 
-	return tag.start("wbr");
+	return _tag.start("wbr");
 }
 
 HTMLBuilder *HTMLBuilder::a(const String &href, const String &cls, const String &id) {
@@ -1716,7 +1716,7 @@ HTMLBuilder *HTMLBuilder::foption(const String &value, const String &body, const
 	return this;
 }
 
-// Closing tags
+// Closing _tags
 
 HTMLBuilder *HTMLBuilder::ca() {
 	write_tag();
@@ -2561,12 +2561,12 @@ HTMLBuilder *HTMLBuilder::cwbr() {
 HTMLTag *HTMLBuilder::form_get() {
 	write_tag();
 
-	return tag.start("form")->method_get();
+	return _tag.start("form")->method_get();
 }
 HTMLTag *HTMLBuilder::form_post() {
 	write_tag();
 
-	return tag.start("form")->method_post();
+	return _tag.start("form")->method_post();
 }
 HTMLBuilder *HTMLBuilder::form_get(const String &action, const String &cls, const String &id) {
 	HTMLTag *t = form_get();
@@ -2609,133 +2609,133 @@ HTMLBuilder *HTMLBuilder::form_postr(const String &action, Ref<WebServerRequest>
 HTMLTag *HTMLBuilder::input_button() {
 	write_tag();
 
-	return tag.start("input")->itbutton();
+	return _tag.start("input")->itbutton();
 }
 
 HTMLTag *HTMLBuilder::input_checkbox() {
 	write_tag();
 
-	return tag.start("input")->itcheckbox();
+	return _tag.start("input")->itcheckbox();
 }
 
 HTMLTag *HTMLBuilder::input_color() {
 	write_tag();
 
-	return tag.start("input")->itcolor();
+	return _tag.start("input")->itcolor();
 }
 
 HTMLTag *HTMLBuilder::input_date() {
 	write_tag();
 
-	return tag.start("input")->itdate();
+	return _tag.start("input")->itdate();
 }
 
 HTMLTag *HTMLBuilder::input_datetime_local() {
 	write_tag();
 
-	return tag.start("input")->itdatetime_local();
+	return _tag.start("input")->itdatetime_local();
 }
 
 HTMLTag *HTMLBuilder::input_email() {
 	write_tag();
 
-	return tag.start("input")->itemail();
+	return _tag.start("input")->itemail();
 }
 
 HTMLTag *HTMLBuilder::input_file() {
 	write_tag();
 
-	return tag.start("input")->itfile();
+	return _tag.start("input")->itfile();
 }
 
 HTMLTag *HTMLBuilder::input_hidden() {
 	write_tag();
 
-	return tag.start("input")->ithidden();
+	return _tag.start("input")->ithidden();
 }
 
 HTMLTag *HTMLBuilder::input_image() {
 	write_tag();
 
-	return tag.start("input")->itimage();
+	return _tag.start("input")->itimage();
 }
 
 HTMLTag *HTMLBuilder::input_month() {
 	write_tag();
 
-	return tag.start("input")->itmonth();
+	return _tag.start("input")->itmonth();
 }
 
 HTMLTag *HTMLBuilder::input_number() {
 	write_tag();
 
-	return tag.start("input")->itnumber();
+	return _tag.start("input")->itnumber();
 }
 
 HTMLTag *HTMLBuilder::input_password() {
 	write_tag();
 
-	return tag.start("input")->itpassword();
+	return _tag.start("input")->itpassword();
 }
 
 HTMLTag *HTMLBuilder::input_radio() {
 	write_tag();
 
-	return tag.start("input")->itradio();
+	return _tag.start("input")->itradio();
 }
 
 HTMLTag *HTMLBuilder::input_range() {
 	write_tag();
 
-	return tag.start("input")->itrange();
+	return _tag.start("input")->itrange();
 }
 
 HTMLTag *HTMLBuilder::input_reset() {
 	write_tag();
 
-	return tag.start("input")->itreset();
+	return _tag.start("input")->itreset();
 }
 
 HTMLTag *HTMLBuilder::input_search() {
 	write_tag();
 
-	return tag.start("input")->itsearch();
+	return _tag.start("input")->itsearch();
 }
 
 HTMLTag *HTMLBuilder::input_submit() {
 	write_tag();
 
-	return tag.start("input")->itsubmit();
+	return _tag.start("input")->itsubmit();
 }
 
 HTMLTag *HTMLBuilder::input_tel() {
 	write_tag();
 
-	return tag.start("input")->ittel();
+	return _tag.start("input")->ittel();
 }
 
 HTMLTag *HTMLBuilder::input_text() {
 	write_tag();
 
-	return tag.start("input")->ittext();
+	return _tag.start("input")->ittext();
 }
 
 HTMLTag *HTMLBuilder::input_time() {
 	write_tag();
 
-	return tag.start("input")->ittime();
+	return _tag.start("input")->ittime();
 }
 
 HTMLTag *HTMLBuilder::input_url() {
 	write_tag();
 
-	return tag.start("input")->iturl();
+	return _tag.start("input")->iturl();
 }
 
 HTMLTag *HTMLBuilder::input_week() {
 	write_tag();
 
-	return tag.start("input")->itweek();
+	return _tag.start("input")->itweek();
 }
 
 HTMLBuilder *HTMLBuilder::label(const String &pfor, const String &plabel, const String &cls, const String &id) {
@@ -3359,6 +3359,22 @@ void HTMLBuilder::f() {
 	write_tag();
 }
 
+HTMLTag *HTMLBuilder::tag(const String &p_tag, const bool p_simple) {
+	write_tag();
+
+	return _tag.start(p_tag, p_simple);
+}
+
+HTMLBuilder *HTMLBuilder::ctag(const String &p_tag) {
+	write_tag();
+
+	result += "</";
+	result += p_tag;
+	result += ">";
+
+	return this;
+}
+
 HTMLBuilder *HTMLBuilder::w(const String &val) {
 	write_tag();
 
@@ -3428,17 +3444,17 @@ HTMLBuilder *HTMLBuilder::we(const String &val) {
 }
 
 HTMLBuilder *HTMLBuilder::write_tag() {
-	if (tag.has_data()) {
-		tag.close();
-		result += tag.result;
-		tag.reset();
+	if (_tag.has_data()) {
+		_tag.close();
+		result += _tag.result;
+		_tag.reset();
 	}
 
 	return this;
 }
 
 HTMLBuilder::HTMLBuilder() {
-	tag.owner = this;
+	_tag.owner = this;
 }
 
 HTMLBuilder::~HTMLBuilder() {

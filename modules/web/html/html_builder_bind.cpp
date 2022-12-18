@@ -858,10 +858,10 @@ Ref<_HTMLTag> _HTMLTag::attrib(const String &attr, const String &val) {
 	return Ref<_HTMLTag>(this);
 }
 
-Ref<_HTMLTag> _HTMLTag::start(const String &p__tag, const bool p_simple) {
+Ref<_HTMLTag> _HTMLTag::start(const String &p_tag, const bool p_simple) {
 	simple = p_simple;
 
-	result = "<" + p__tag;
+	result = "<" + p_tag;
 
 	return Ref<_HTMLTag>(this);
 }
@@ -3519,16 +3519,16 @@ Ref<_HTMLBuilder> _HTMLBuilder::csrf_tokenr(Ref<WebServerRequest> request) {
 	return csrf_token(request->get_csrf_token());
 }
 
-Ref<_HTMLTag> _HTMLBuilder::tag(const String &p__tag, const bool p_simple) {
+Ref<_HTMLTag> _HTMLBuilder::tag(const String &p_tag, const bool p_simple) {
 	write_tag();
 
-	return _tag->start(p__tag, p_simple);
+	return _tag->start(p_tag, p_simple);
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::ctag(const String &p__tag) {
+Ref<_HTMLBuilder> _HTMLBuilder::ctag(const String &p_tag) {
 	write_tag();
 	result += "</";
-	result += p__tag;
+	result += p_tag;
 	result += ">";
 
 	return Ref<_HTMLBuilder>(this);

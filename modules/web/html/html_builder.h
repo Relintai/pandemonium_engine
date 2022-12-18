@@ -28,7 +28,7 @@ public:
 	HTMLTag *alt(const String &val);
 	HTMLTag *inputmode(const String &val);
 	HTMLTag *list(const String &val);
-	
+
 	HTMLTag *rows(const String &val);
 	HTMLTag *cols(const String &val);
 
@@ -532,6 +532,9 @@ public:
 	HTMLBuilder *csrf_token(const String &token);
 	HTMLBuilder *csrf_tokenr(Ref<WebServerRequest> request);
 
+	HTMLTag *tag(const String &p_tag, const bool p_simple = false);
+	HTMLBuilder *ctag(const String &p_tag);
+
 	void f();
 
 	// write
@@ -554,7 +557,7 @@ public:
 	virtual ~HTMLBuilder();
 
 protected:
-	HTMLTag tag;
+	HTMLTag _tag;
 };
 
 #endif
