@@ -2,9 +2,9 @@
 #define HTTP_SESSION_MANAGER_H
 
 #include "core/containers/hash_map.h"
+#include "core/containers/vector.h"
 #include "core/os/mutex.h"
 #include "core/string/ustring.h"
-#include "core/containers/vector.h"
 
 #include "core/object/reference.h"
 #include "scene/main/node.h"
@@ -18,34 +18,28 @@ class HTTPSessionManager : public Node {
 	GDCLASS(HTTPSessionManager, Node);
 
 public:
-	void add_session(Ref<HTTPSession> session);
-	void remove_session(Ref<HTTPSession> session);
-	void delete_session(const String &session_id);
-	void save_session(Ref<HTTPSession> session);
-	Ref<HTTPSession> get_session(const String &session_id);
-	Ref<HTTPSession> create_session();
+	virtual void add_session(Ref<HTTPSession> session);
+	virtual void remove_session(Ref<HTTPSession> session);
+	virtual Ref<HTTPSession> delete_session(const String &session_id);
+	virtual void save_session(Ref<HTTPSession> session);
+	virtual Ref<HTTPSession> get_session(const String &session_id);
+	virtual Ref<HTTPSession> create_session();
 
-	void load_sessions();
+	virtual void load_sessions();
 
-	void clear();
+	virtual void clear();
 
 	virtual String generate_session_id(const String &base = "");
-
-	virtual void migrate();
-	virtual void create_table();
-	virtual void drop_table();
 
 	HTTPSessionManager();
 	~HTTPSessionManager();
 
+protected:
+	static void _bind_methods();
+
 	HashMap<String, Ref<HTTPSession>> _sessions;
 	Vector<Ref<HTTPSession>> _sessions_vec;
 	Mutex _mutex;
-	String _table_name;
-	String _data_table_name;
-
-protected:
-	static void _bind_methods();
 };
 
 class SessionSetupWebServerMiddleware : public WebServerMiddleware {

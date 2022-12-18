@@ -79,66 +79,15 @@ Ref<QueryBuilder> HTTPSessionManagerDB::get_query_builder() {
 	return conn->get_query_builder();
 }
 
-void HTTPSessionManagerDB::add_session(Ref<HTTPSession> session) {
-	if (!session.is_valid()) {
-		printf("HTTPSessionManagerDB::add_session: ERROR, session is null!\n");
-		return;
-	}
-
-	_mutex.lock();
-
-	_sessions_vec.push_back(session);
-	_sessions[session->session_id] = session;
-
-	_mutex.unlock();
-}
-
-void HTTPSessionManagerDB::remove_session(Ref<HTTPSession> session) {
-	if (!session.is_valid()) {
-		printf("HTTPSessionManagerDB::remove_session: ERROR, session is null!\n");
-		return;
-	}
-
-	_mutex.lock();
-
-	_sessions.erase(session->session_id);
-
-	for (int i = 0; i < _sessions_vec.size(); ++i) {
-		if (_sessions_vec[i] == session) {
-			_sessions_vec.remove(i);
-			_mutex.unlock();
-			return;
-		}
-	}
-
-	_mutex.unlock();
-}
-
-void HTTPSessionManagerDB::delete_session(const String &session_id) {
-	_mutex.lock();
-
-	Ref<HTTPSession> s = _sessions[session_id];
-
-	_sessions.erase(session_id);
-
-	for (int i = 0; i < _sessions_vec.size(); ++i) {
-		Ref<HTTPSession> sess = _sessions_vec[i];
-
-		if (sess->session_id == session_id) {
-			_sessions_vec.remove(i);
-
-			break;
-		}
-	}
-
-	_mutex.unlock();
+Ref<HTTPSession> HTTPSessionManagerDB::delete_session(const String &session_id) {
+	Ref<HTTPSession> s = HTTPSessionManager::delete_session(session_id);
 
 	if (!s.is_valid()) {
-		return;
+		return s;
 	}
 
 	if (!s->id) {
-		return;
+		return s;
 	}
 
 	Ref<QueryBuilder> b = get_query_builder();
@@ -146,6 +95,8 @@ void HTTPSessionManagerDB::delete_session(const String &session_id) {
 	b->del(_database_data_table_name)->where()->wpi("session_db_id", s->id)->end_command();
 	b->del(_database_table_name)->where()->wpi("id", s->id)->end_command();
 	b->run_query();
+
+	return s;
 }
 
 void HTTPSessionManagerDB::save_session(Ref<HTTPSession> session) {
@@ -188,36 +139,6 @@ void HTTPSessionManagerDB::save_session(Ref<HTTPSession> session) {
 	}
 
 	b->run_query();
-}
-
-Ref<HTTPSession> HTTPSessionManagerDB::get_session(const String &session_id) {
-	return _sessions[session_id];
-}
-
-Ref<HTTPSession> HTTPSessionManagerDB::create_session() {
-	Ref<HTTPSession> session;
-	session.instance();
-
-	while (true) {
-		session->session_id = generate_session_id(session->session_id);
-
-		_mutex.lock();
-
-		if (_sessions[session->session_id] == nullptr) {
-			_sessions_vec.push_back(session);
-			_sessions[session->session_id] = session;
-
-			_mutex.unlock();
-
-			return session;
-		}
-
-		_mutex.unlock();
-	}
-
-	save_session(session);
-
-	return session;
 }
 
 void HTTPSessionManagerDB::load_sessions() {
@@ -279,25 +200,6 @@ void HTTPSessionManagerDB::load_sessions() {
 	}
 }
 
-void HTTPSessionManagerDB::clear() {
-	_mutex.lock();
-
-	_sessions.clear();
-	_sessions_vec.clear();
-
-	_mutex.unlock();
-}
-
-String HTTPSessionManagerDB::generate_session_id(const String &base) {
-	// todo make something simpler / better
-
-	String sid = base;
-
-	sid += itos(Math::rand());
-
-	return sid.sha256_text().substr(0, 20);
-}
-
 void HTTPSessionManagerDB::migrate() {
 	drop_table();
 	create_table();
@@ -334,12 +236,11 @@ void HTTPSessionManagerDB::drop_table() {
 }
 
 HTTPSessionManagerDB::HTTPSessionManagerDB() {
-	_database_table_name = "sessions";
-	_database_data_table_name = "session_data";
+	_database_table_name = "http_sessions";
+	_database_data_table_name = "http_session_data";
 }
 
 HTTPSessionManagerDB::~HTTPSessionManagerDB() {
-	clear();
 }
 
 void HTTPSessionManagerDB::_notification(const int what) {
@@ -371,15 +272,4 @@ void HTTPSessionManagerDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_database_connection"), &HTTPSessionManagerDB::get_database_connection);
 	ClassDB::bind_method(D_METHOD("get_table_builder"), &HTTPSessionManagerDB::get_table_builder);
 	ClassDB::bind_method(D_METHOD("get_query_builder"), &HTTPSessionManagerDB::get_query_builder);
-
-	ClassDB::bind_method(D_METHOD("add_session", "session"), &HTTPSessionManagerDB::add_session);
-	ClassDB::bind_method(D_METHOD("remove_session", "session"), &HTTPSessionManagerDB::remove_session);
-	ClassDB::bind_method(D_METHOD("delete_session", "session_id"), &HTTPSessionManagerDB::delete_session);
-	ClassDB::bind_method(D_METHOD("save_session", "session"), &HTTPSessionManagerDB::save_session);
-	ClassDB::bind_method(D_METHOD("get_session", "session_id"), &HTTPSessionManagerDB::get_session);
-	ClassDB::bind_method(D_METHOD("create_session"), &HTTPSessionManagerDB::create_session);
-
-	ClassDB::bind_method(D_METHOD("load_sessions"), &HTTPSessionManagerDB::load_sessions);
-	ClassDB::bind_method(D_METHOD("clear"), &HTTPSessionManagerDB::clear);
-	ClassDB::bind_method(D_METHOD("generate_session_id", "base"), &HTTPSessionManagerDB::generate_session_id, "");
 }

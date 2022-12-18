@@ -9,6 +9,8 @@
 #include "core/object/reference.h"
 #include "scene/main/node.h"
 
+#include "../http/http_session_manager.h"
+
 #include "../http/web_server_middleware.h"
 
 class HTTPSession;
@@ -18,8 +20,8 @@ class DatabaseConnection;
 class TableBuilder;
 class QueryBuilder;
 
-class HTTPSessionManagerDB : public Node {
-	GDCLASS(HTTPSessionManagerDB, Node);
+class HTTPSessionManagerDB : public HTTPSessionManager {
+	GDCLASS(HTTPSessionManagerDB, HTTPSessionManager);
 
 public:
 	String get_database_table_name();
@@ -35,18 +37,10 @@ public:
 	Ref<TableBuilder> get_table_builder();
 	Ref<QueryBuilder> get_query_builder();
 
-	void add_session(Ref<HTTPSession> session);
-	void remove_session(Ref<HTTPSession> session);
-	void delete_session(const String &session_id);
+	Ref<HTTPSession> delete_session(const String &session_id);
 	void save_session(Ref<HTTPSession> session);
-	Ref<HTTPSession> get_session(const String &session_id);
-	Ref<HTTPSession> create_session();
 
 	void load_sessions();
-
-	void clear();
-
-	virtual String generate_session_id(const String &base = "");
 
 	virtual void migrate();
 	virtual void create_table();
@@ -54,10 +48,6 @@ public:
 
 	HTTPSessionManagerDB();
 	~HTTPSessionManagerDB();
-
-	HashMap<String, Ref<HTTPSession>> _sessions;
-	Vector<Ref<HTTPSession>> _sessions_vec;
-	Mutex _mutex;
 
 protected:
 	void _notification(const int what);
