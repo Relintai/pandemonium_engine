@@ -67,7 +67,7 @@ Ref<QueryBuilder> UserManagerDB::get_query_builder() {
 }
 
 Ref<User> UserManagerDB::_get_user(const int id) {
-	if (id == 0) {
+	if (id <= 0) {
 		return Ref<User>();
 	}
 
