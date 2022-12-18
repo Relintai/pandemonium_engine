@@ -213,9 +213,10 @@ QueryBuilder *SQLite3QueryBuilder::cset() {
 	return this;
 }
 QueryBuilder *SQLite3QueryBuilder::nsetp(const String &col, const String &param) {
-	query_result += col + "='";
-	query_result += col + param;
-	query_result += col + "', ";
+	query_result += col;
+	query_result += "='";
+	query_result += param;
+	query_result += "', ";
 
 	return this;
 }
