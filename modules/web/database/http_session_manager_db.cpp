@@ -185,11 +185,7 @@ void HTTPSessionManagerDB::load_sessions() {
 			}
 		}
 
-		if (!s.is_valid()) {
-			printf("Error: HTTPSessionManagerDB::load_sessions(): %d sid doesn't exists!\n", session_db_id);
-
-			continue;
-		}
+		ERR_CONTINUE_MSG(!s.is_valid(), vformat("Error: HTTPSessionManagerDB::load_sessions(): %d sid doesn't exists!", session_db_id));
 
 		String key = r->get_cell(1);
 		String vb64 = r->get_cell(2);

@@ -14,10 +14,7 @@
 #include "web_server_request.h"
 
 void HTTPSessionManager::add_session(Ref<HTTPSession> session) {
-	if (!session.is_valid()) {
-		printf("HTTPSessionManager::add_session: ERROR, session is null!\n");
-		return;
-	}
+	ERR_FAIL_COND(!session.is_valid());
 
 	_mutex.lock();
 
@@ -28,10 +25,7 @@ void HTTPSessionManager::add_session(Ref<HTTPSession> session) {
 }
 
 void HTTPSessionManager::remove_session(Ref<HTTPSession> session) {
-	if (!session.is_valid()) {
-		printf("HTTPSessionManager::remove_session: ERROR, session is null!\n");
-		return;
-	}
+	ERR_FAIL_COND(!session.is_valid());
 
 	_mutex.lock();
 
