@@ -683,7 +683,7 @@ Ref<_HTMLTag> _HTMLTag::rel_search() {
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_tag() {
-	attrib("rel", "tag");
+	attrib("rel", "_tag");
 
 	return Ref<_HTMLTag>(this);
 }
@@ -858,10 +858,10 @@ Ref<_HTMLTag> _HTMLTag::attrib(const String &attr, const String &val) {
 	return Ref<_HTMLTag>(this);
 }
 
-Ref<_HTMLTag> _HTMLTag::start(const String &p_tag, const bool p_simple) {
+Ref<_HTMLTag> _HTMLTag::start(const String &p__tag, const bool p_simple) {
 	simple = p_simple;
 
-	result = "<" + p_tag;
+	result = "<" + p__tag;
 
 	return Ref<_HTMLTag>(this);
 }
@@ -1086,7 +1086,7 @@ void _HTMLTag::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("attrib", "attr", "val"), &_HTMLTag::attrib);
 
-	ClassDB::bind_method(D_METHOD("start", "new_tag", "simple"), &_HTMLTag::start, false);
+	ClassDB::bind_method(D_METHOD("start", "new__tag", "simple"), &_HTMLTag::start, false);
 
 	ClassDB::bind_method(D_METHOD("reset"), &_HTMLTag::reset);
 	ClassDB::bind_method(D_METHOD("close"), &_HTMLTag::close);
@@ -1114,27 +1114,27 @@ Ref<_HTMLBuilder> _HTMLBuilder::comment(const String &val) {
 Ref<_HTMLTag> _HTMLBuilder::doctype(const String &val) {
 	write_tag();
 
-	return tag->start("!DOCTYPE");
+	return _tag->start("!DOCTYPE");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::a(const String &href, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("a");
+	_tag->start("a");
 
 	if (href != "") {
-		tag->href(href);
+		_tag->href(href);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::fa(const String &href, const String &body, const String &cls, const String &id) {
@@ -1148,209 +1148,209 @@ Ref<_HTMLBuilder> _HTMLBuilder::fa(const String &href, const String &body, const
 Ref<_HTMLTag> _HTMLBuilder::abbr() {
 	write_tag();
 
-	return tag->start("abbr");
+	return _tag->start("abbr");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::acronym() { // Not supported in HTML5. Use <abbr> instead. Defines an acronym
 	write_tag();
 
-	return tag->start("acronym");
+	return _tag->start("acronym");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::address() {
 	write_tag();
 
-	return tag->start("address");
+	return _tag->start("address");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::applet() { // Not supported in HTML5. Use <embed> or <object> instead. Defines an embedded applet
 	write_tag();
 
-	return tag->start("applet");
+	return _tag->start("applet");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::area() {
 	write_tag();
 
-	return tag->start("area");
+	return _tag->start("area");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::article() {
 	write_tag();
 
-	return tag->start("article");
+	return _tag->start("article");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::aside() {
 	write_tag();
 
-	return tag->start("aside");
+	return _tag->start("aside");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::audio() {
 	write_tag();
 
-	return tag->start("audio");
+	return _tag->start("audio");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::b() {
 	write_tag();
 
-	return tag->start("b");
+	return _tag->start("b");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::basefont() { // Not supported in HTML5. Use CSS instead. Specifies a default color, size, and font for all text in a document
 	write_tag();
 
-	return tag->start("basefont");
+	return _tag->start("basefont");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::bdi() {
 	write_tag();
 
-	return tag->start("bdi");
+	return _tag->start("bdi");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::bdo() {
 	write_tag();
 
-	return tag->start("bdo");
+	return _tag->start("bdo");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::big() { // Not supported in HTML5. Use CSS instead. Defines big text
 	write_tag();
 
-	return tag->start("big");
+	return _tag->start("big");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::blockquote() {
 	write_tag();
 
-	return tag->start("blockquote");
+	return _tag->start("blockquote");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::body() {
 	write_tag();
 
-	return tag->start("body");
+	return _tag->start("body");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::br() {
 	write_tag();
 
-	return tag->start("br", true);
+	return _tag->start("br", true);
 }
 
 Ref<_HTMLTag> _HTMLBuilder::button() {
 	write_tag();
 
-	return tag->start("button");
+	return _tag->start("button");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::canvas() {
 	write_tag();
 
-	return tag->start("canvas");
+	return _tag->start("canvas");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::caption() {
 	write_tag();
 
-	return tag->start("caption");
+	return _tag->start("caption");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::center() { // Not supported in HTML5. Use CSS instead. Defines centered text
 	write_tag();
 
-	return tag->start("center");
+	return _tag->start("center");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::cite() {
 	write_tag();
 
-	return tag->start("cite");
+	return _tag->start("cite");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::code() {
 	write_tag();
 
-	return tag->start("code");
+	return _tag->start("code");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::col() {
 	write_tag();
 
-	return tag->start("col");
+	return _tag->start("col");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::colgroup() {
 	write_tag();
 
-	return tag->start("colgroup");
+	return _tag->start("colgroup");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::data() {
 	write_tag();
 
-	return tag->start("cite");
+	return _tag->start("cite");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::datalist() {
 	write_tag();
 
-	return tag->start("datalist");
+	return _tag->start("datalist");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::dd() {
 	write_tag();
 
-	return tag->start("dd");
+	return _tag->start("dd");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::del() {
 	write_tag();
 
-	return tag->start("del");
+	return _tag->start("del");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::details() {
 	write_tag();
 
-	return tag->start("details");
+	return _tag->start("details");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::dfn() {
 	write_tag();
 
-	return tag->start("dfn");
+	return _tag->start("dfn");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::dialog() {
 	write_tag();
 
-	return tag->start("dialog");
+	return _tag->start("dialog");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::dir() { // Not supported in HTML5. Use <ul> instead.
 	write_tag();
 
-	return tag->start("dir");
+	return _tag->start("dir");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::div(const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("div");
+	_tag->start("div");
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::fdiv(const String &body, const String &cls, const String &id) {
@@ -1364,269 +1364,269 @@ Ref<_HTMLBuilder> _HTMLBuilder::fdiv(const String &body, const String &cls, cons
 Ref<_HTMLTag> _HTMLBuilder::dl() {
 	write_tag();
 
-	return tag->start("dl");
+	return _tag->start("dl");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::dt() {
 	write_tag();
 
-	return tag->start("dt");
+	return _tag->start("dt");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::em() {
 	write_tag();
 
-	return tag->start("em");
+	return _tag->start("em");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::embed() {
 	write_tag();
 
-	return tag->start("embed");
+	return _tag->start("embed");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::fieldset() {
 	write_tag();
 
-	return tag->start("fieldset");
+	return _tag->start("fieldset");
 }
 Ref<_HTMLTag> _HTMLBuilder::figcaption() {
 	write_tag();
 
-	return tag->start("figcaption");
+	return _tag->start("figcaption");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::figure() {
 	write_tag();
 
-	return tag->start("figure");
+	return _tag->start("figure");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::font() { // Not supported in HTML5.
 	write_tag();
 
-	return tag->start("font");
+	return _tag->start("font");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::footer() {
 	write_tag();
 
-	return tag->start("footer");
+	return _tag->start("footer");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::form() {
 	write_tag();
 
-	return tag->start("form");
+	return _tag->start("form");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::frame() { // Not supported in HTML5.
 	write_tag();
 
-	return tag->start("frame");
+	return _tag->start("frame");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::frameset() { // Not supported in HTML5.
 	write_tag();
 
-	return tag->start("frameset");
+	return _tag->start("frameset");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::h1() {
 	write_tag();
 
-	return tag->start("h1");
+	return _tag->start("h1");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::h2() {
 	write_tag();
 
-	return tag->start("h2");
+	return _tag->start("h2");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::h3() {
 	write_tag();
 
-	return tag->start("h3");
+	return _tag->start("h3");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::h4() {
 	write_tag();
 
-	return tag->start("h4");
+	return _tag->start("h4");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::h5() {
 	write_tag();
 
-	return tag->start("h5");
+	return _tag->start("h5");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::h6() {
 	write_tag();
 
-	return tag->start("h6");
+	return _tag->start("h6");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::head() {
 	write_tag();
 
-	return tag->start("head");
+	return _tag->start("head");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::header() {
 	write_tag();
 
-	return tag->start("header");
+	return _tag->start("header");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::hr() {
 	write_tag();
 
-	return tag->start("hr");
+	return _tag->start("hr");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::html() {
 	write_tag();
 
-	return tag->start("html");
+	return _tag->start("html");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::i() {
 	write_tag();
 
-	return tag->start("i");
+	return _tag->start("i");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::iframe() {
 	write_tag();
 
-	return tag->start("iframe");
+	return _tag->start("iframe");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::img() {
 	write_tag();
 
-	return tag->start("img");
+	return _tag->start("img");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input() {
 	write_tag();
 
-	return tag->start("input");
+	return _tag->start("input");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::ins() {
 	write_tag();
 
-	return tag->start("ins");
+	return _tag->start("ins");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::kbd() {
 	write_tag();
 
-	return tag->start("kbd");
+	return _tag->start("kbd");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::label() {
 	write_tag();
 
-	return tag->start("label");
+	return _tag->start("label");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::legend() {
 	write_tag();
 
-	return tag->start("legend");
+	return _tag->start("legend");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::li() {
 	write_tag();
 
-	return tag->start("li");
+	return _tag->start("li");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::link() {
 	write_tag();
 
-	return tag->start("link");
+	return _tag->start("link");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::main() {
 	write_tag();
 
-	return tag->start("main");
+	return _tag->start("main");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::map() {
 	write_tag();
 
-	return tag->start("map");
+	return _tag->start("map");
 }
 Ref<_HTMLTag> _HTMLBuilder::mark() {
 	write_tag();
 
-	return tag->start("mark");
+	return _tag->start("mark");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::meta() {
 	write_tag();
 
-	return tag->start("meta");
+	return _tag->start("meta");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::meter() {
 	write_tag();
 
-	return tag->start("meter");
+	return _tag->start("meter");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::nav() {
 	write_tag();
 
-	return tag->start("nav");
+	return _tag->start("nav");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::noframes() { // Not supported in HTML5.
 	write_tag();
 
-	return tag->start("noframes");
+	return _tag->start("noframes");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::noscript() {
 	write_tag();
 
-	return tag->start("noscript");
+	return _tag->start("noscript");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::object() {
 	write_tag();
 
-	return tag->start("object");
+	return _tag->start("object");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::ol() {
 	write_tag();
 
-	return tag->start("ol");
+	return _tag->start("ol");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::optgroup() {
 	write_tag();
 
-	return tag->start("optgroup");
+	return _tag->start("optgroup");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::option(const String &value) {
 	write_tag();
 
-	tag->start("option");
+	_tag->start("option");
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
-	return tag;
+	return _tag;
 }
 Ref<_HTMLBuilder> _HTMLBuilder::foption(const String &value, const String &body, const bool selected) {
 	option(value)->selected(selected);
@@ -1639,209 +1639,209 @@ Ref<_HTMLBuilder> _HTMLBuilder::foption(const String &value, const String &body,
 Ref<_HTMLTag> _HTMLBuilder::output() {
 	write_tag();
 
-	return tag->start("output");
+	return _tag->start("output");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::p() {
 	write_tag();
 
-	return tag->start("p");
+	return _tag->start("p");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::param() {
 	write_tag();
 
-	return tag->start("param");
+	return _tag->start("param");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::picture() {
 	write_tag();
 
-	return tag->start("picture");
+	return _tag->start("picture");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::pre() {
 	write_tag();
 
-	return tag->start("pre");
+	return _tag->start("pre");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::progress() {
 	write_tag();
 
-	return tag->start("progress");
+	return _tag->start("progress");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::q() {
 	write_tag();
 
-	return tag->start("q");
+	return _tag->start("q");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::rp() {
 	write_tag();
 
-	return tag->start("rp");
+	return _tag->start("rp");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::rt() {
 	write_tag();
 
-	return tag->start("rt");
+	return _tag->start("rt");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::ruby() {
 	write_tag();
 
-	return tag->start("ruby");
+	return _tag->start("ruby");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::s() {
 	write_tag();
 
-	return tag->start("s");
+	return _tag->start("s");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::samp() {
 	write_tag();
 
-	return tag->start("samp");
+	return _tag->start("samp");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::script() {
 	write_tag();
 
-	return tag->start("script");
+	return _tag->start("script");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::section() {
 	write_tag();
 
-	return tag->start("section");
+	return _tag->start("section");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::select(const String &name, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("select");
+	_tag->start("select");
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::small() {
 	write_tag();
 
-	return tag->start("small");
+	return _tag->start("small");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::source() {
 	write_tag();
 
-	return tag->start("source");
+	return _tag->start("source");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::span() {
 	write_tag();
 
-	return tag->start("span");
+	return _tag->start("span");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::strike() { // Not supported in HTML5
 	write_tag();
 
-	return tag->start("strike");
+	return _tag->start("strike");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::strong() {
 	write_tag();
 
-	return tag->start("strong");
+	return _tag->start("strong");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::style() {
 	write_tag();
 
-	return tag->start("style");
+	return _tag->start("style");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::sub() {
 	write_tag();
 
-	return tag->start("sub");
+	return _tag->start("sub");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::summary() {
 	write_tag();
 
-	return tag->start("summary");
+	return _tag->start("summary");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::sup() {
 	write_tag();
 
-	return tag->start("sup");
+	return _tag->start("sup");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::svg() {
 	write_tag();
 
-	return tag->start("svg");
+	return _tag->start("svg");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::table() {
 	write_tag();
 
-	return tag->start("table");
+	return _tag->start("table");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::tbody() {
 	write_tag();
 
-	return tag->start("tbody");
+	return _tag->start("tbody");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::td() {
 	write_tag();
 
-	return tag->start("td");
+	return _tag->start("td");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::templateh() {
 	write_tag();
 
-	return tag->start("template");
+	return _tag->start("template");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::textarea(const String &name, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("textarea");
+	_tag->start("textarea");
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ftextarea(const String &name, const String &body, const String &cls, const String &id) {
@@ -1855,82 +1855,82 @@ Ref<_HTMLBuilder> _HTMLBuilder::ftextarea(const String &name, const String &body
 Ref<_HTMLTag> _HTMLBuilder::tfoot() {
 	write_tag();
 
-	return tag->start("tfoot");
+	return _tag->start("tfoot");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::th() {
 	write_tag();
 
-	return tag->start("th");
+	return _tag->start("th");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::thead() {
 	write_tag();
 
-	return tag->start("thead");
+	return _tag->start("thead");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::time() {
 	write_tag();
 
-	return tag->start("time");
+	return _tag->start("time");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::title() {
 	write_tag();
 
-	return tag->start("title");
+	return _tag->start("title");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::tr() {
 	write_tag();
 
-	return tag->start("tr");
+	return _tag->start("tr");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::track() {
 	write_tag();
 
-	return tag->start("track");
+	return _tag->start("track");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::tt() { // Not supported in HTML5.
 	write_tag();
 
-	return tag->start("tt");
+	return _tag->start("tt");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::u() {
 	write_tag();
 
-	return tag->start("u");
+	return _tag->start("u");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::ul() {
 	write_tag();
 
-	return tag->start("ul");
+	return _tag->start("ul");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::var() {
 	write_tag();
 
-	return tag->start("var");
+	return _tag->start("var");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::video() {
 	write_tag();
 
-	return tag->start("video");
+	return _tag->start("video");
 }
 
 Ref<_HTMLTag> _HTMLBuilder::wbr() {
 	write_tag();
 
-	return tag->start("wbr");
+	return _tag->start("wbr");
 }
 
-// Closing tags
+// Closing _tags
 
 Ref<_HTMLBuilder> _HTMLBuilder::ca() {
 	write_tag();
@@ -2775,37 +2775,37 @@ Ref<_HTMLBuilder> _HTMLBuilder::cwbr() {
 Ref<_HTMLTag> _HTMLBuilder::form_get(const String &action, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("form")->method_get();
+	_tag->start("form")->method_get();
 
-	tag->fora(action);
+	_tag->fora(action);
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::form_post(const String &action, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("form")->method_post();
+	_tag->start("form")->method_post();
 
-	tag->action(action);
+	_tag->action(action);
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::form_postr(const String &action, Ref<WebServerRequest> request, const String &cls, const String &id) {
@@ -2838,196 +2838,196 @@ Ref<_HTMLBuilder> _HTMLBuilder::flabel(const String &pfor, const String &plabel,
 Ref<_HTMLTag> _HTMLBuilder::input_button(const String &name, const String &value, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itbutton();
+	_tag->start("input")->itbutton();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_checkbox(const String &name, const String &value, const bool checked, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itcheckbox();
+	_tag->start("input")->itcheckbox();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	tag->checked(checked);
+	_tag->checked(checked);
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_color(const String &name, const String &value, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itcolor();
+	_tag->start("input")->itcolor();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_date(const String &name, const String &value, const String &cls, const String &id, const String &date_min, const String &date_max, const String &date_step) {
 	write_tag();
 
-	tag->start("input")->itdate();
+	_tag->start("input")->itdate();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (date_min != "") {
-		tag->min(date_min);
+		_tag->min(date_min);
 	}
 
 	if (date_max != "") {
-		tag->max(date_max);
+		_tag->max(date_max);
 	}
 
 	if (date_step != "") {
-		tag->step(date_step);
+		_tag->step(date_step);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_datetime_local(const String &name, const String &value, const String &cls, const String &id, const String &date_min, const String &date_max, const String &date_step) {
 	write_tag();
 
-	tag->start("input")->itdatetime_local();
+	_tag->start("input")->itdatetime_local();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (date_min != "") {
-		tag->min(date_min);
+		_tag->min(date_min);
 	}
 
 	if (date_max != "") {
-		tag->max(date_max);
+		_tag->max(date_max);
 	}
 
 	if (date_step != "") {
-		tag->step(date_step);
+		_tag->step(date_step);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_email(const String &name, const String &value, const String &placeholder, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itemail();
+	_tag->start("input")->itemail();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (placeholder != "") {
-		tag->placeholder(placeholder);
+		_tag->placeholder(placeholder);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_file(const String &name, const String &accept, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itfile();
+	_tag->start("input")->itfile();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (accept != "") {
-		tag->accept(accept);
+		_tag->accept(accept);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	return Ref<_HTMLBuilder>(this);
@@ -3036,182 +3036,182 @@ Ref<_HTMLTag> _HTMLBuilder::input_file(const String &name, const String &accept,
 Ref<_HTMLTag> _HTMLBuilder::input_image(const String &name, const String &src, const String &alt, const String &cls, const String &id, const int width, const int height) {
 	write_tag();
 
-	tag->start("input")->itimage();
+	_tag->start("input")->itimage();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (src != "") {
-		tag->src(src);
+		_tag->src(src);
 	}
 
 	if (alt != "") {
-		tag->alt(alt);
+		_tag->alt(alt);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (width != 0) {
-		tag->width(width);
+		_tag->width(width);
 	}
 
 	if (height != 0) {
-		tag->height(height);
+		_tag->height(height);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_month(const String &name, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itmonth();
+	_tag->start("input")->itmonth();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_number(const String &name, const String &vmin, const String &vmax, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itnumber();
+	_tag->start("input")->itnumber();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (vmin != "") {
-		tag->min(vmin);
+		_tag->min(vmin);
 	}
 
 	if (vmax != "") {
-		tag->max(vmax);
+		_tag->max(vmax);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_password(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
 	write_tag();
 
-	tag->start("input")->itpassword();
+	_tag->start("input")->itpassword();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (placeholder != "") {
-		tag->placeholder(placeholder);
+		_tag->placeholder(placeholder);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (minlength != "") {
-		tag->minlengths(minlength);
+		_tag->minlengths(minlength);
 	}
 
 	if (maxlength != "") {
-		tag->maxlengths(maxlength);
+		_tag->maxlengths(maxlength);
 	}
 
 	if (size != "") {
-		tag->sizes(size);
+		_tag->sizes(size);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_radio(const String &name, const String &value, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itradio();
+	_tag->start("input")->itradio();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_range(const String &name, const String &value, const String &vmin, const String &vmax, const String &vstep, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itrange();
+	_tag->start("input")->itrange();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (vmin != "") {
-		tag->min(vmin);
+		_tag->min(vmin);
 	}
 
 	if (vmax != "") {
-		tag->max(vmax);
+		_tag->max(vmax);
 	}
 
 	if (vstep != "") {
-		tag->step(vstep);
+		_tag->step(vstep);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	return Ref<_HTMLBuilder>(this);
@@ -3220,288 +3220,288 @@ Ref<_HTMLTag> _HTMLBuilder::input_range(const String &name, const String &value,
 Ref<_HTMLTag> _HTMLBuilder::input_reset(const String &name, const String &value, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itreset();
+	_tag->start("input")->itreset();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_search(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size, const String &pattern) {
 	write_tag();
 
-	tag->start("input")->itsearch();
+	_tag->start("input")->itsearch();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (placeholder != "") {
-		tag->placeholder(placeholder);
+		_tag->placeholder(placeholder);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (minlength != "") {
-		tag->minlengths(minlength);
+		_tag->minlengths(minlength);
 	}
 
 	if (maxlength != "") {
-		tag->maxlengths(maxlength);
+		_tag->maxlengths(maxlength);
 	}
 
 	if (size != "") {
-		tag->sizes(size);
+		_tag->sizes(size);
 	}
 
 	if (pattern != "") {
-		tag->pattern(pattern);
+		_tag->pattern(pattern);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_submit(const String &value, const String &cls, const String &id) {
 	write_tag();
 
-	tag->start("input")->itsubmit();
+	_tag->start("input")->itsubmit();
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_tel(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size, const String &pattern) {
 	write_tag();
 
-	tag->start("input")->ittel();
+	_tag->start("input")->ittel();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (placeholder != "") {
-		tag->placeholder(placeholder);
+		_tag->placeholder(placeholder);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (minlength != "") {
-		tag->minlengths(minlength);
+		_tag->minlengths(minlength);
 	}
 
 	if (maxlength != "") {
-		tag->maxlengths(maxlength);
+		_tag->maxlengths(maxlength);
 	}
 
 	if (size != "") {
-		tag->sizes(size);
+		_tag->sizes(size);
 	}
 
 	if (pattern != "") {
-		tag->pattern(pattern);
+		_tag->pattern(pattern);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_text(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
 	write_tag();
 
-	tag->start("input")->ittext();
+	_tag->start("input")->ittext();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (placeholder != "") {
-		tag->placeholder(placeholder);
+		_tag->placeholder(placeholder);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (minlength != "") {
-		tag->minlengths(minlength);
+		_tag->minlengths(minlength);
 	}
 
 	if (maxlength != "") {
-		tag->maxlengths(maxlength);
+		_tag->maxlengths(maxlength);
 	}
 
 	if (size != "") {
-		tag->sizes(size);
+		_tag->sizes(size);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_time(const String &name, const String &cls, const String &id, const String &vmin, const String &vmax, const String &vstep) {
 	write_tag();
 
-	tag->start("input")->ittime();
+	_tag->start("input")->ittime();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (vmin != "") {
-		tag->min(vmin);
+		_tag->min(vmin);
 	}
 
 	if (vmax != "") {
-		tag->max(vmax);
+		_tag->max(vmax);
 	}
 
 	if (vstep != "") {
-		tag->step(vstep);
+		_tag->step(vstep);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_url(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
 	write_tag();
 
-	tag->start("input")->iturl();
+	_tag->start("input")->iturl();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
 	if (placeholder != "") {
-		tag->placeholder(placeholder);
+		_tag->placeholder(placeholder);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (minlength != "") {
-		tag->minlengths(minlength);
+		_tag->minlengths(minlength);
 	}
 
 	if (maxlength != "") {
-		tag->maxlengths(maxlength);
+		_tag->maxlengths(maxlength);
 	}
 
 	if (size != "") {
-		tag->sizes(size);
+		_tag->sizes(size);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_week(const String &name, const String &cls, const String &id, const String &vmin, const String &vmax) {
 	write_tag();
-	return tag->start("input")->itweek();
+	return _tag->start("input")->itweek();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (cls != "") {
-		tag->cls(cls);
+		_tag->cls(cls);
 	}
 
 	if (id != "") {
-		tag->id(id);
+		_tag->id(id);
 	}
 
 	if (vmin != "") {
-		tag->min(vmin);
+		_tag->min(vmin);
 	}
 
 	if (vmax != "") {
-		tag->max(vmax);
+		_tag->max(vmax);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::input_hidden(const String &name, const String &value) {
 	write_tag();
 
-	tag->start("input")->ithidden();
+	_tag->start("input")->ithidden();
 
 	if (name != "") {
-		tag->name(name);
+		_tag->name(name);
 	}
 
 	if (value != "") {
-		tag->value(value);
+		_tag->value(value);
 	}
 
-	return tag;
+	return _tag;
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csrf_token(const String &token) {
@@ -3517,6 +3517,21 @@ Ref<_HTMLBuilder> _HTMLBuilder::csrf_token(const String &token) {
 
 Ref<_HTMLBuilder> _HTMLBuilder::csrf_tokenr(Ref<WebServerRequest> request) {
 	return csrf_token(request->get_csrf_token());
+}
+
+Ref<_HTMLTag> _HTMLBuilder::tag(const String &p__tag, const bool p_simple) {
+	write_tag();
+
+	return _tag->start(p__tag, p_simple);
+}
+
+Ref<_HTMLBuilder> _HTMLBuilder::ctag(const String &p__tag) {
+	write_tag();
+	result += "</";
+	result += p__tag;
+	result += ">";
+
+	return Ref<_HTMLBuilder>(this);
 }
 
 void _HTMLBuilder::f() {
@@ -3596,23 +3611,23 @@ Ref<_HTMLBuilder> _HTMLBuilder::we(const String &val) {
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::write_tag() {
-	if (tag->has_data()) {
-		tag->close();
-		result += tag->result;
-		tag->reset();
+	if (_tag->has_data()) {
+		_tag->close();
+		result += _tag->result;
+		_tag->reset();
 	}
 
 	return Ref<_HTMLBuilder>(this);
 }
 
 _HTMLBuilder::_HTMLBuilder() {
-	tag.instance();
-	tag->owner = this;
+	_tag.instance();
+	_tag->owner = this;
 }
 
 _HTMLBuilder::~_HTMLBuilder() {
-	tag->owner = nullptr;
-	tag.unref();
+	_tag->owner = nullptr;
+	_tag.unref();
 }
 
 void _HTMLBuilder::_bind_methods() {
@@ -3949,6 +3964,9 @@ void _HTMLBuilder::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("csrf_token", "token"), &_HTMLBuilder::csrf_token);
 	ClassDB::bind_method(D_METHOD("csrf_tokenr", "request"), &_HTMLBuilder::csrf_tokenr);
+
+	ClassDB::bind_method(D_METHOD("tag", "tag", "simple"), &_HTMLBuilder::tag, false);
+	ClassDB::bind_method(D_METHOD("ctag", "tag"), &_HTMLBuilder::ctag);
 
 	ClassDB::bind_method(D_METHOD("f"), &_HTMLBuilder::f);
 

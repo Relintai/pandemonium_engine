@@ -509,6 +509,9 @@ public:
 	Ref<_HTMLBuilder> csrf_token(const String &token);
 	Ref<_HTMLBuilder> csrf_tokenr(Ref<WebServerRequest> request);
 
+	Ref<_HTMLTag> tag(const String &p_tag, const bool p_simple = false);
+	Ref<_HTMLBuilder> ctag(const String &p_tag);
+
 	void f();
 
 	// write
@@ -535,7 +538,7 @@ public:
 protected:
 	static void _bind_methods();
 
-	Ref<_HTMLTag> tag;
+	Ref<_HTMLTag> _tag;
 };
 
 #endif
