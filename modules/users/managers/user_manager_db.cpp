@@ -139,7 +139,7 @@ Ref<User> UserManagerDB::_get_user_name(const String &user_name) {
 void UserManagerDB::_save_user(Ref<User> user) {
 	Ref<QueryBuilder> b = get_query_builder();
 
-	if (user->get_user_id() == 0) {
+	if (user->get_user_id() == -1) {
 		b->insert(_database_table_name, "username, email, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
 
 		b->values();
@@ -156,7 +156,7 @@ void UserManagerDB::_save_user(Ref<User> user) {
 
 		b->end_command();
 		b->select_last_insert_id();
-
+		
 		Ref<QueryResult> r = b->run();
 
 		user->set_user_id(r->get_last_insert_rowid());
