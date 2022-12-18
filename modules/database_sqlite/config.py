@@ -37,13 +37,10 @@ def configure(env):
 def _configure(env):
     #env.ParseConfig("pkg-config sqlite3 --cflags --libs")
 
-    env.Append(CPPDEFINES=["SQLITE_PRESENT"])
+    #env.Append(CPPDEFINES=[("SQLITE_THREADSAFE", 1)])
 
-    # Link those statically for portability
-    #if env["use_static_cpp"]:
-        #env.Append(LINKFLAGS=["-static-libgcc", "-static-libstdc++"])
-
-    env.Append(LINKFLAGS=["-ldl"])
+    #env.Append(LINKFLAGS=["-ldl"])
+    pass
 
         
 def get_doc_classes():
