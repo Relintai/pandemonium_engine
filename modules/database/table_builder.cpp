@@ -119,7 +119,8 @@ void TableBuilder::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("create_table", "value"), &TableBuilder::_create_table_bind);
 
-	ClassDB::bind_method(D_METHOD("integer", "name", "length"), &TableBuilder::_integer_bind);
+
+	ClassDB::bind_method(D_METHOD("integer", "name", "length"), &TableBuilder::_integer_bind, -1);
 	ClassDB::bind_method(D_METHOD("tiny_integer", "name", "length"), &TableBuilder::_tiny_integer_bind, -1);
 	ClassDB::bind_method(D_METHOD("small_integer", "name", "length"), &TableBuilder::_small_integer_bind, -1);
 	ClassDB::bind_method(D_METHOD("real_float", "name", "size", "d"), &TableBuilder::_real_float_bind, -1, -1);
