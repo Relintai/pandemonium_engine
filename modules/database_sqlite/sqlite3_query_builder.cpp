@@ -56,7 +56,7 @@ QueryBuilder *SQLite3QueryBuilder::cstr() {
 }
 
 QueryBuilder *SQLite3QueryBuilder::like(const String &str) {
-	if (str == "") {
+	if (str.empty()) {
 		query_result += "LIKE ";
 	} else {
 		nlike(escape(str));
@@ -152,14 +152,14 @@ QueryBuilder *SQLite3QueryBuilder::nval(const String &param) {
 
 QueryBuilder *SQLite3QueryBuilder::vals(const String &param) {
 	query_result += "'";
-	query_result += param;
+	query_result += escape(param);
 	query_result += "', ";
 
 	return this;
 }
 QueryBuilder *SQLite3QueryBuilder::vals(const char *param) {
 	query_result += "'";
-	query_result += String(param);
+	query_result += escape(String(param));
 	query_result += "', ";
 
 	return this;
@@ -223,7 +223,7 @@ QueryBuilder *SQLite3QueryBuilder::nsetp(const String &col, const String &param)
 QueryBuilder *SQLite3QueryBuilder::setps(const String &col, const char *param) {
 	query_result += col;
 	query_result += "='";
-	query_result += String(param);
+	query_result += escape(String(param));
 	query_result += "', ";
 
 	return this;
@@ -275,7 +275,7 @@ QueryBuilder *SQLite3QueryBuilder::nwp(const String &col, const String &param) {
 QueryBuilder *SQLite3QueryBuilder::wps(const String &col, const char *param) {
 	query_result += col;
 	query_result += "='";
-	query_result += String(param);
+	query_result += escape(String(param));
 	query_result += "' ";
 
 	return this;
@@ -334,11 +334,7 @@ QueryBuilder *SQLite3QueryBuilder::wildcard() {
 }
 
 String SQLite3QueryBuilder::escape(const String &params) {
-	if (!_connection.is_valid()) {
-		printf("SQLite3QueryBuilder::escape !db!\n");
-
-		return "";
-	}
+	ERR_FAIL_COND_V(!_connection.is_valid(), String());
 
 	return _connection->escape(params);
 }
