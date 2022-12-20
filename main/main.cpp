@@ -2450,9 +2450,9 @@ void Main::cleanup(bool p_force) {
 		memdelete(audio_server);
 	}
 
+	finalize_navigation_server();
 	OS::get_singleton()->finalize();
 	finalize_physics();
-	finalize_navigation_server();
 
 	if (packed_data) {
 		memdelete(packed_data);
