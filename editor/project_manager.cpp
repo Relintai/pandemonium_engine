@@ -562,7 +562,6 @@ private:
 
 					Vector<String> failed_files;
 
-					int idx = 0;
 					while (ret == UNZ_OK) {
 						//get filename
 						unz_file_info info;
@@ -602,7 +601,6 @@ private:
 							}
 						}
 
-						idx++;
 						ret = unzGoToNextFile(pkg);
 					}
 
