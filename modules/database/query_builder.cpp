@@ -201,7 +201,9 @@ QueryBuilder *QueryBuilder::order_by(const String &col) {
 }
 
 QueryBuilder *QueryBuilder::corder_by() {
-	query_result[query_result.size() - 2] = ' ';
+	ERR_FAIL_COND_V(query_result.length() <= 2, this);
+
+	query_result[query_result.length() - 2] = ' ';
 
 	return this;
 }
@@ -212,7 +214,7 @@ QueryBuilder *QueryBuilder::order_by_add_col(const String &col) {
 }
 QueryBuilder *QueryBuilder::asc(const String &col) {
 	if (col == "") {
-		query_result += "ASC,";
+		query_result += "ASC, ";
 	} else {
 		query_result += col + " ASC, ";
 	}

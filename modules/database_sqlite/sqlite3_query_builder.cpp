@@ -21,12 +21,16 @@ QueryBuilder *SQLite3QueryBuilder::del() {
 }
 
 QueryBuilder *SQLite3QueryBuilder::cvalues() {
+	ERR_FAIL_COND_V(query_result.length() <= 2, this);
+
 	query_result[query_result.length() - 2] = ' ';
 	query_result += ") ";
 
 	return this;
 }
 QueryBuilder *SQLite3QueryBuilder::next_value() {
+	ERR_FAIL_COND_V(query_result.length() <= 2, this);
+
 	query_result[query_result.length() - 2] = ' ';
 	query_result += "), (";
 
@@ -208,6 +212,8 @@ QueryBuilder *SQLite3QueryBuilder::sets() {
 	return this;
 }
 QueryBuilder *SQLite3QueryBuilder::cset() {
+	ERR_FAIL_COND_V(query_result.length() <= 2, this);
+	
 	query_result[query_result.length() - 2] = ' ';
 
 	return this;
