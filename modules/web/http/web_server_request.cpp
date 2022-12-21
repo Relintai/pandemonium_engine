@@ -285,14 +285,14 @@ void WebServerRequest::setup_url_stack() {
 	while ((pos = path.find("/")) != -1) {
 		st = path.substr(0, pos);
 
-		if (st.size() != 0) {
+		if (st.length() != 0) {
 			_path_stack.push_back(st);
 		}
 
 		path.erase(0, pos + 1);
 	}
 
-	if (path.size() != 0) {
+	if (path.length() != 0) {
 		_path_stack.push_back(path);
 	}
 }
