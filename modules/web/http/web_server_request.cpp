@@ -418,6 +418,10 @@ String WebServerRequest::get_url_root_current() const {
 String WebServerRequest::get_url_site() const {
 	String path = get_host();
 
+	if (path.length() == 0 || path[path.length() - 1] != '/') {
+		path += '/';
+	}
+
 	int s = MIN(_path_stack_pointer + 1, _path_stack.size());
 
 	for (int i = 0; i < s; ++i) {
