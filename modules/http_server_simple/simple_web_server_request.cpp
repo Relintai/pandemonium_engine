@@ -65,11 +65,25 @@ String SimpleWebServerRequest::get_file_data_str(const int index) const {
 }
 
 String SimpleWebServerRequest::get_parameter(const String &key) const {
-	if (!_parameters.has(key)) {
+	if (!_post_parameters.has(key)) {
+		return get_get_parameter(key);
+	}
+
+	return get_post_parameter(key);
+}
+String SimpleWebServerRequest::get_post_parameter(const String &key) const {
+	if (!_post_parameters.has(key)) {
 		return "";
 	}
 
-	return _parameters[key];
+	return _post_parameters[key];
+}
+String SimpleWebServerRequest::get_get_parameter(const String &key) const {
+	if (!_get_parameters.has(key)) {
+		return "";
+	}
+
+	return _get_parameters[key];
 }
 
 void SimpleWebServerRequest::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
@@ -107,12 +121,62 @@ String SimpleWebServerRequest::get_host() const {
 	return _host;
 }
 
-void SimpleWebServerRequest::add_parameter(const String &key, const String &value) {
-	_parameters[key] = value;
+void SimpleWebServerRequest::add_post_parameter(const String &key, const String &value) {
+	_post_parameters[key] = value;
+}
+
+void SimpleWebServerRequest::add_get_parameter(const String &key, const String &value) {
+	_get_parameters[key] = value;
 }
 
 void SimpleWebServerRequest::set_parser_path(const String &value) {
-	_parser_path = value;
+	//https://www.rfc-editor.org/rfc/rfc3986.txt
+	//3.4.  Query
+	//The query component is indicated by the first question mark ("?") ...
+	int qpos = value.find_char('?');
+
+	if (qpos == -1) {
+		_parser_path = value;
+		return;
+	}
+
+	_parser_path = value.substr_index(0, qpos);
+
+	//... and terminated by a number sign ("#") character or by the end of the URI.
+	int get_query_end = value.find_char('#', qpos);
+
+	// ...The characters slash ("/") and question mark ("?") may represent data within the query component.
+	//  "key=value" pairs and one frequently used value is a reference to another URI, it is sometimes
+	//  better for usability to avoid percent-encoding those characters.
+
+	if (get_query_end == -1) {
+		get_query_end = value.size() - 1;
+	}
+
+	String get_req_str = value.substr_index(qpos + 1, get_query_end);
+
+	Vector<String> get_req_params = get_req_str.split("&");
+
+	for (int i = 0; i < get_req_params.size(); ++i) {
+		String cp = get_req_params[i];
+
+		int eq = cp.find_char('=');
+
+		if (eq == -1) {
+			// skip if &param&
+			continue;
+		}
+
+		String key = cp.substr_index(0, eq);
+		String val = cp.substr_index(eq + 1, cp.size());
+
+		if (key.empty() || val.empty()) {
+			// &=v&  or  &p=&
+			continue;
+		}
+
+		add_get_parameter(key.percent_decode(), val.percent_decode());
+	}
 }
 
 void SimpleWebServerRequest::set_host(const String &value) {

@@ -179,7 +179,7 @@ void HTTPParser::process_urlenc_data() {
 		String key = p.get_slicec('=', 0).replace("+", " ").percent_decode();
 		String value = p.get_slicec('=', 1).replace("+", " ").percent_decode();
 
-		_request->add_parameter(key, value);
+		_request->add_post_parameter(key, value);
 	}
 }
 
@@ -280,7 +280,7 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 	ERR_PRINT("header_val " + s);
 #endif
 
-	_request->add_parameter(_queued_header_field, s);
+	_request->add_post_parameter(_queued_header_field, s);
 
 	if (_queued_header_field == "Host") {
 		_request->set_host(s);
@@ -566,7 +566,7 @@ int HTTPParser::on_multipart_part_data_end_cb() {
 		}
 	} else {
 		String s = _multipart_form_data.ptr();
-		_request->add_parameter(_multipart_form_name, s);
+		_request->add_post_parameter(_multipart_form_name, s);
 	}
 
 	_multipart_form_is_file = false;

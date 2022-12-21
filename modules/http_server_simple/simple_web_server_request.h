@@ -1,10 +1,10 @@
 #ifndef SIMPLE_WEB_SERVER_REQUEST_H
 #define SIMPLE_WEB_SERVER_REQUEST_H
 
-#include "core/variant/dictionary.h"
 #include "core/containers/hash_map.h"
-#include "core/string/ustring.h"
 #include "core/containers/vector.h"
+#include "core/string/ustring.h"
+#include "core/variant/dictionary.h"
 
 #include "modules/web/http/web_server_request.h"
 
@@ -35,6 +35,8 @@ public:
 	virtual String get_file_data_str(const int index) const;
 
 	virtual String get_parameter(const String &key) const;
+	virtual String get_post_parameter(const String &key) const;
+	virtual String get_get_parameter(const String &key) const;
 
 	virtual void send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code = HTTPServerEnums::HTTP_STATUS_CODE_302_FOUND);
 	virtual void send();
@@ -42,7 +44,8 @@ public:
 	virtual String parser_get_path();
 	virtual String get_host() const;
 
-	void add_parameter(const String &key, const String &value);
+	void add_post_parameter(const String &key, const String &value);
+	void add_get_parameter(const String &key, const String &value);
 	void set_parser_path(const String &value);
 	void set_host(const String &value);
 
@@ -63,7 +66,8 @@ public:
 protected:
 	static void _bind_methods();
 
-	HashMap<String, String> _parameters;
+	HashMap<String, String> _post_parameters;
+	HashMap<String, String> _get_parameters;
 	String _parser_path;
 	String _host;
 

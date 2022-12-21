@@ -78,6 +78,8 @@ public:
 	virtual String get_file_data_str(const int index) const;
 
 	virtual String get_parameter(const String &key) const;
+	virtual String get_post_parameter(const String &key) const;
+	virtual String get_get_parameter(const String &key) const;
 
 	HTTPServerEnums::HTTPStatusCode get_status_code() const;
 	void set_status_code(const HTTPServerEnums::HTTPStatusCode status_code);
