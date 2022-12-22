@@ -23,6 +23,15 @@ def shell_open(url):
         opener = "open" if sys.platform == "darwin" else "xdg-open"
         subprocess.call([opener, url])
 
+def serve(root, port, run_browser):
+    os.chdir(root)
+
+    if run_browser:
+        # Open the served page in the user's default browser.
+        print("Opening the served URL in the default browser (use `--no-browser` or `-n` to disable this).")
+        shell_open(f"http://127.0.0.1:{port}")
+
+    test(CORSRequestHandler, HTTPServer, port=port)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -41,12 +50,4 @@ if __name__ == "__main__":
     # so that the script can be run from any location.
     os.chdir(Path(__file__).resolve().parent)
 
-    if args.root:
-        os.chdir(args.root)
-
-    if args.browser:
-        # Open the served page in the user's default browser.
-        print("Opening the served URL in the default browser (use `--no-browser` or `-n` to disable this).")
-        shell_open(f"http://127.0.0.1:{args.port}")
-
-    test(CORSRequestHandler, HTTPServer, port=args.port)
+    serve(args.root, args.port, args.browser)
