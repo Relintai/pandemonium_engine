@@ -231,10 +231,6 @@ public:
 	}
 
 	_FORCE_INLINE_ const CharType &operator[](int p_index) const {
-		if (unlikely(p_index == _cowdata.size())) {
-			return _null;
-		}
-
 		return _cowdata.get(p_index);
 	}
 	_FORCE_INLINE_ CharProxy<CharType> operator[](int p_index) { return CharProxy<CharType>(p_index, _cowdata); }
