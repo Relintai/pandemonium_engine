@@ -5557,6 +5557,7 @@ bool CScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 					can_index = false;
 					tokenizer->advance();
 				} break;
+				case CScriptTokenizer::TK_CURSOR:
 				case CScriptTokenizer::TK_IDENTIFIER: {
 					if (can_index) {
 						_set_error("Unexpected identifier.");
