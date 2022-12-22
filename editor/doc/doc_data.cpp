@@ -328,6 +328,10 @@ void DocData::generate(bool p_basic_types) {
 				EO = EO->next();
 			}
 
+			if (E->get().hint == PROPERTY_HINT_BUTTON) {
+				continue;
+			}
+
 			if (E->get().usage & PROPERTY_USAGE_GROUP || E->get().usage & PROPERTY_USAGE_CATEGORY || E->get().usage & PROPERTY_USAGE_INTERNAL) {
 				continue;
 			}
