@@ -1547,7 +1547,10 @@
 		</constant>
 		<constant name="PROPERTY_HINT_SAVE_FILE" value="38" enum="PropertyHint">
 		</constant>
-		<constant name="PROPERTY_HINT_MAX" value="40" enum="PropertyHint">
+		<constant name="PROPERTY_HINT_LINK" value="40" enum="PropertyHint">
+			Hints that a vector property should allow linking values (e.g. to edit both [code]x[/code] and [code]y[/code] together).
+		</constant>
+		<constant name="PROPERTY_HINT_MAX" value="41" enum="PropertyHint">
 		</constant>
 		<constant name="PROPERTY_USAGE_STORAGE" value="1" enum="PropertyUsageFlags">
 			The property is serialized and saved in the scene file (default).

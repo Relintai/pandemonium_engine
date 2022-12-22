@@ -30,14 +30,14 @@
 
 #include "control.h"
 
+#include "core/config/project_settings.h"
+#include "core/input/shortcut.h"
 #include "core/object/message_queue.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
-#include "core/config/project_settings.h"
 #include "scene/gui/label.h"
 #include "scene/gui/panel.h"
-#include "core/input/shortcut.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
@@ -434,6 +434,10 @@ void Control::_validate_property(PropertyInfo &property) const {
 		}
 
 		property.hint_string = hint_string;
+	}
+
+	if (property.name == "rect_scale") {
+		property.hint = PROPERTY_HINT_LINK;
 	}
 }
 

@@ -65,6 +65,7 @@ class PropertySelector;
 class SceneTreeDialog;
 class TextEdit;
 class VBoxContainer;
+class TextureButton;
 
 class EditorPropertyNil : public EditorProperty {
 	GDCLASS(EditorPropertyNil, EditorProperty);
@@ -424,6 +425,10 @@ class EditorPropertyVector2 : public EditorProperty {
 	GDCLASS(EditorPropertyVector2, EditorProperty);
 	EditorSpinSlider *spin[2];
 	bool setting;
+	double ratio_xy = 1.0;
+	double ratio_yx = 1.0;
+	TextureButton *linked = nullptr;
+	void _update_ratio();
 	void _value_changed(double p_val, const String &p_name);
 
 protected:
@@ -432,7 +437,7 @@ protected:
 
 public:
 	virtual void update_property();
-	void setup(double p_min, double p_max, double p_step, bool p_no_slider);
+	void setup(double p_min, double p_max, double p_step, bool p_no_slider, bool p_link = false);
 	EditorPropertyVector2();
 };
 
@@ -440,6 +445,10 @@ class EditorPropertyVector2i : public EditorProperty {
 	GDCLASS(EditorPropertyVector2i, EditorProperty);
 	EditorSpinSlider *spin[2];
 	bool setting;
+	double ratio_xy = 1.0;
+	double ratio_yx = 1.0;
+	TextureButton *linked = nullptr;
+	void _update_ratio();
 	void _value_changed(double p_val, const String &p_name);
 
 protected:
@@ -448,7 +457,7 @@ protected:
 
 public:
 	virtual void update_property();
-	void setup(int p_min, int p_max, bool p_no_slider);
+	void setup(int p_min, int p_max, bool p_no_slider, bool p_link = false);
 	EditorPropertyVector2i();
 };
 
@@ -488,6 +497,14 @@ class EditorPropertyVector3 : public EditorProperty {
 	GDCLASS(EditorPropertyVector3, EditorProperty);
 	EditorSpinSlider *spin[3];
 	bool setting;
+	double ratio_yx = 1.0;
+	double ratio_zx = 1.0;
+	double ratio_xy = 1.0;
+	double ratio_zy = 1.0;
+	double ratio_xz = 1.0;
+	double ratio_yz = 1.0;
+	TextureButton *linked = nullptr;
+	void _update_ratio();
 	void _value_changed(double p_val, const String &p_name);
 
 protected:
@@ -498,7 +515,7 @@ public:
 	virtual void update_property();
 	virtual void update_using_vector(Vector3 p_vector);
 	virtual Vector3 get_vector();
-	void setup(double p_min, double p_max, double p_step, bool p_no_slider);
+	void setup(double p_min, double p_max, double p_step, bool p_no_slider, bool p_link = false);
 	EditorPropertyVector3();
 };
 
@@ -506,6 +523,14 @@ class EditorPropertyVector3i : public EditorProperty {
 	GDCLASS(EditorPropertyVector3i, EditorProperty);
 	EditorSpinSlider *spin[3];
 	bool setting;
+	double ratio_yx = 1.0;
+	double ratio_zx = 1.0;
+	double ratio_xy = 1.0;
+	double ratio_zy = 1.0;
+	double ratio_xz = 1.0;
+	double ratio_yz = 1.0;
+	TextureButton *linked = nullptr;
+	void _update_ratio();
 	void _value_changed(double p_val, const String &p_name);
 
 protected:
@@ -514,7 +539,7 @@ protected:
 
 public:
 	virtual void update_property();
-	void setup(int p_min, int p_max, bool p_no_slider);
+	void setup(int p_min, int p_max, bool p_no_slider, bool p_link = false);
 	EditorPropertyVector3i();
 };
 
