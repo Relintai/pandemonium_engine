@@ -205,11 +205,6 @@ int64_t OS::get_unix_time_from_datetime(const DateTime &datetime) const {
 	return epoch;
 }
 
-void OS::debug_break(){
-
-	// something
-};
-
 void OS::_set_logger(CompositeLogger *p_logger) {
 	if (_logger) {
 		memdelete(_logger);

@@ -95,7 +95,6 @@ public:
 
 	virtual int get_processor_count() const;
 
-	virtual void debug_break();
 	virtual void initialize_debugging();
 
 	virtual String get_executable_path() const;
