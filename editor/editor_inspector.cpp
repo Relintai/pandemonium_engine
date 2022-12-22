@@ -30,21 +30,21 @@
 
 #include "editor_inspector.h"
 
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/variant/dictionary.h"
-#include "core/error/error_macros.h"
 #include "core/containers/hash_map.h"
-#include "core/math/math_defs.h"
-#include "core/math/math_funcs.h"
+#include "core/error/error_macros.h"
 #include "core/input/input.h"
 #include "core/input/input_event.h"
+#include "core/math/math_defs.h"
+#include "core/math/math_funcs.h"
+#include "core/object/class_db.h"
+#include "core/object/script_language.h"
+#include "core/object/undo_redo.h"
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/object/script_language.h"
 #include "core/typedefs.h"
-#include "core/object/undo_redo.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 #include "editor/doc/doc_data.h"
 #include "editor/editor_data.h"
 #include "editor/editor_help.h"
@@ -1031,28 +1031,38 @@ void EditorInspectorSection::_test_unfold() {
 	}
 }
 
+Ref<Texture> EditorInspectorSection::_get_arrow() {
+	Ref<Texture> arrow;
+	if (foldable) {
+		if (object->editor_is_section_unfolded(section)) {
+			arrow = get_theme_icon("arrow", "Tree");
+		} else {
+			arrow = get_theme_icon("arrow_collapsed", "Tree");
+		}
+	}
+	return arrow;
+}
+
+int EditorInspectorSection::_get_header_height() {
+	Ref<Font> font = get_theme_font("font", "Tree");
+
+	int header_height = font->get_height();
+	Ref<Texture> arrow = _get_arrow();
+	if (arrow.is_valid()) {
+		header_height = MAX(header_height, arrow->get_height());
+	}
+	header_height += get_theme_constant("vseparation", "Tree");
+
+	return header_height;
+}
+
 void EditorInspectorSection::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_SORT_CHILDREN: {
-			Ref<Font> font = get_theme_font("font", "Tree");
-			Ref<Texture> arrow;
-
-			if (foldable) {
-				if (object->editor_is_section_unfolded(section)) {
-					arrow = get_theme_icon("arrow", "Tree");
-				} else {
-					arrow = get_theme_icon("arrow_collapsed", "Tree");
-				}
-			}
-
 			Size2 size = get_size();
 			Point2 offset;
-			offset.y = font->get_height();
-			if (arrow.is_valid()) {
-				offset.y = MAX(offset.y, arrow->get_height());
-			}
 
-			offset.y += get_theme_constant("vseparation", "Tree");
+			offset.y = _get_header_height();
 			offset.x += get_theme_constant("inspector_margin", "Editor");
 
 			Rect2 rect(offset, size - offset);
@@ -1077,23 +1087,7 @@ void EditorInspectorSection::_notification(int p_what) {
 		} break;
 
 		case NOTIFICATION_DRAW: {
-			Ref<Texture> arrow;
-
-			if (foldable) {
-				if (object->editor_is_section_unfolded(section)) {
-					arrow = get_theme_icon("arrow", "Tree");
-				} else {
-					arrow = get_theme_icon("arrow_collapsed", "Tree");
-				}
-			}
-
-			Ref<Font> font = get_theme_font("font", "Tree");
-
-			int h = font->get_height();
-			if (arrow.is_valid()) {
-				h = MAX(h, arrow->get_height());
-			}
-			h += get_theme_constant("vseparation", "Tree");
+			int h = _get_header_height();
 
 			Rect2 header_rect = Rect2(Vector2(), Vector2(get_size().width, h));
 			Color c = bg_color;
@@ -1104,9 +1098,11 @@ void EditorInspectorSection::_notification(int p_what) {
 			draw_rect(header_rect, c);
 
 			const int arrow_margin = 3;
+			Ref<Font> font = get_theme_font("font", "Tree");
 			Color color = get_theme_color("font_color", "Tree");
 			draw_string(font, Point2(Math::round((16 + arrow_margin) * EDSCALE), font->get_ascent() + (h - font->get_height()) / 2).floor(), label, color, get_size().width);
 
+			Ref<Texture> arrow = _get_arrow();
 			if (arrow.is_valid()) {
 				draw_texture(arrow, Point2(Math::round(arrow_margin * EDSCALE), (h - arrow->get_height()) / 2).floor());
 			}
@@ -1172,8 +1168,7 @@ void EditorInspectorSection::_gui_input(const Ref<InputEvent> &p_event) {
 
 	Ref<InputEventMouseButton> mb = p_event;
 	if (mb.is_valid() && mb->is_pressed() && mb->get_button_index() == BUTTON_LEFT) {
-		Ref<Font> font = get_theme_font("font", "Tree");
-		if (mb->get_position().y > font->get_height()) { //clicked outside
+		if (mb->get_position().y >= _get_header_height()) {
 			return;
 		}
 

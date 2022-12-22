@@ -31,24 +31,24 @@
 /*************************************************************************/
 
 #include "core/object/reference.h"
-#include "scene/gui/scroll_container.h"
 #include "scene/gui/container.h"
 #include "scene/gui/control.h"
+#include "scene/gui/scroll_container.h"
 
-#include "core/math/color.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
+#include "core/math/color.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/object_id.h"
 
-#include "core/object/resource.h"
 #include "core/containers/set.h"
+#include "core/containers/vector.h"
+#include "core/object/resource.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
 
 #include "scene/resources/texture.h"
 
@@ -259,6 +259,8 @@ class EditorInspectorSection : public Container {
 	bool foldable;
 
 	void _test_unfold();
+	int _get_header_height();
+	Ref<Texture> _get_arrow();
 
 protected:
 	void _notification(int p_what);
