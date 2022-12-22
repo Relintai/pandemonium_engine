@@ -473,7 +473,7 @@ void CanvasItem::_update_callback() {
 
 Transform2D CanvasItem::get_global_transform_with_canvas() const {
 	if (canvas_layer) {
-		return canvas_layer->get_transform() * get_global_transform();
+		return canvas_layer->get_final_transform() * get_global_transform();
 	} else if (is_inside_tree()) {
 		return get_world()->get_canvas_transform() * get_global_transform();
 	} else {
@@ -1230,9 +1230,9 @@ Transform2D CanvasItem::get_viewport_transform() const {
 
 	if (canvas_layer) {
 		if (get_world()) {
-			return get_world()->get_final_transform() * canvas_layer->get_transform();
+			return get_world()->get_final_transform() * canvas_layer->get_final_transform();
 		} else {
-			return canvas_layer->get_transform();
+			return canvas_layer->get_final_transform();
 		}
 
 	} else {
