@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="HTTPSessionManagerDB" inherits="HTTPSessionManager" version="3.10">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_create_default_entries" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_create_table" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_drop_table" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_migrate" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="clear" type="bool" />
+			<argument index="1" name="should_seed" type="bool" />
+			<argument index="2" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_udpate_table" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="current_table_version" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="create_default_entries">
+			<return type="void" />
+			<argument index="0" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="create_table">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="drop_table">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_database_connection">
+			<return type="DatabaseConnection" />
+			<description>
+			</description>
+		</method>
+		<method name="get_query_builder">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="get_table_builder">
+			<return type="TableBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="migrate">
+			<return type="void" />
+			<argument index="0" name="clear" type="bool" />
+			<argument index="1" name="pseed" type="bool" />
+			<argument index="2" name="arg2" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="udpate_table">
+			<return type="void" />
+			<argument index="0" name="current_table_version" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="database" type="Database" setter="set_database" getter="get_database">
+		</member>
+		<member name="database_data_table_name" type="String" setter="set_database_data_table_name" getter="get_database_data_table_name" default="&quot;http_session_data&quot;">
+		</member>
+		<member name="database_table_name" type="String" setter="set_database_table_name" getter="get_database_table_name" default="&quot;http_sessions&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

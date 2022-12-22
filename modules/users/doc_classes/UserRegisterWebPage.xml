@@ -14,6 +14,14 @@
 		<member name="redirect_on_success_url" type="String" setter="set_redirect_on_success_url" getter="get_redirect_on_success_url" default="&quot;&quot;">
 		</member>
 	</members>
+	<signals>
+		<signal name="user_registered">
+			<argument index="0" name="request" type="WebServerRequest" />
+			<argument index="1" name="user" type="User" />
+			<description>
+			</description>
+		</signal>
+	</signals>
 	<constants>
 	</constants>
 </class>

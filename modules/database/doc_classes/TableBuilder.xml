@@ -61,7 +61,7 @@
 		<method name="integer">
 			<return type="TableBuilder" />
 			<argument index="0" name="name" type="String" />
-			<argument index="1" name="length" type="int" />
+			<argument index="1" name="length" type="int" default="-1" />
 			<description>
 			</description>
 		</method>

@@ -679,6 +679,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="ctag">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="tag" type="String" />
+			<description>
+			</description>
+		</method>
 		<method name="ctbody">
 			<return type="_HTMLBuilder" />
 			<description>
@@ -1475,6 +1481,13 @@
 		</method>
 		<method name="table">
 			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="tag">
+			<return type="_HTMLTag" />
+			<argument index="0" name="tag" type="String" />
+			<argument index="1" name="simple" type="bool" default="false" />
 			<description>
 			</description>
 		</method>

@@ -115,6 +115,12 @@
 				Returns the file's length.
 			</description>
 		</method>
+		<method name="get_get_parameter" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
 		<method name="get_host" qualifiers="const">
 			<return type="String" />
 			<description>
@@ -171,6 +177,12 @@
 			<return type="int" />
 			<description>
 				Reutrns how many path segments a request has.
+			</description>
+		</method>
+		<method name="get_post_parameter" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="key" type="String" />
+			<description>
 			</description>
 		</method>
 		<method name="get_remaining_segment_count" qualifiers="const">

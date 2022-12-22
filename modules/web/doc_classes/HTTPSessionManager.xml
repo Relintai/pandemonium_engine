@@ -30,7 +30,7 @@
 			</description>
 		</method>
 		<method name="delete_session">
-			<return type="void" />
+			<return type="HTTPSession" />
 			<argument index="0" name="session_id" type="String" />
 			<description>
 			</description>
