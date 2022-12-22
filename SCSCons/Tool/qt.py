@@ -312,11 +312,11 @@ def generate(env):
                           '-o ${TARGETS[1]} $SOURCE'),
                     CLVar('$QT_MOC $QT_MOCFROMHFLAGS -o ${TARGETS[2]} ${TARGETS[0]}')],
                    # command to generate meta object information for a class
-                   # declarated in a header
+                   # declared in a header
                    QT_MOCFROMHCOM = (
                           '$QT_MOC $QT_MOCFROMHFLAGS -o ${TARGETS[0]} $SOURCE'),
                    # command to generate meta object information for a class
-                   # declarated in a cpp file
+                   # declared in a cpp file
                    QT_MOCFROMCXXCOM = [
                     CLVar('$QT_MOC $QT_MOCFROMCXXFLAGS -o ${TARGETS[0]} $SOURCE'),
                     Action(checkMocIncluded,None)])

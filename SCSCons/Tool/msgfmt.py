@@ -44,7 +44,7 @@ from SCons.Tool.GettextCommon import (
 class _MOFileBuilder(BuilderBase):
     """The builder class for `MO` files.
 
-    The reason for this builder to exists and its purpose is quite simillar
+    The reason for this builder to exists and its purpose is quite similar
     as for `_POFileBuilder`. This time, we extend list of sources, not targets,
     and call `BuilderBase._execute()` only once (as we assume single-target
     here).

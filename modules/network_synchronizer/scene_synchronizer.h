@@ -60,20 +60,20 @@ class NetworkedController;
 /// The clients receives the server snapshot, so it compares with the local
 /// snapshot and if it's necessary perform the recovery.
 ///
-/// ## Variable traking
+/// ## Variable tracking
 ///
 /// The `SceneSynchronizer` is able to track any node variable. It's possible to specify
 /// the variables to track using the function `register_variable`.
 ///
 /// ## NetworkedController
-/// The `NetworkedController` is able to aquire the `Player` input and perform
+/// The `NetworkedController` is able to acquire the `Player` input and perform
 /// operation in sync with other peers. When a discrepancy is found by the
 /// `SceneSynchronizer`, it will drive the `NetworkedController` so to recover that
 /// missalignment.
 ///
 ///
 /// ## Processing function
-/// Some objects, that are not direclty controlled by a `Player`, may need to be
+/// Some objects, that are not directly controlled by a `Player`, may need to be
 /// in sync between peers; since those are not controlled by a `Player` is
 /// not necessary use the `NetworkedController`.
 ///
@@ -149,7 +149,7 @@ private:
 	// Controller nodes.
 	LocalVector<NetUtility::NodeData *> node_data_controllers;
 
-	// Just used to detect when the peer change. TODO Remove this and use a singnal instead.
+	// Just used to detect when the peer change. TODO Remove this and use a signal instead.
 	void *peer_ptr = nullptr;
 
 	int event_flag;
@@ -211,7 +211,7 @@ public:
 	/// Add a dependency to a controller, so that the rewinding mechanism can
 	/// make sure to rewind that node when the controller is rewinded.
 	/// You can remove and add dependency at any time. This operation
-	/// don't need to be perfomed on server.
+	/// don't need to be performed on server.
 	void controller_add_dependency(Node *p_controller, Node *p_node);
 	void controller_remove_dependency(Node *p_controller, Node *p_node);
 	int controller_get_dependency_count(Node *p_controller) const;

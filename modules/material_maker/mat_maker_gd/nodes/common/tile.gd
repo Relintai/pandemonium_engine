@@ -80,7 +80,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 
 #----------------------
 #tiler.mmg
-#Tiles several occurences of an input image while adding randomness.
+#Tiles several occurrences of an input image while adding randomness.
 
 #vec4 $(name_uv)_rch = tiler_$(name)($uv, vec2($tx, $ty), int($overlap), vec2(float($seed)));
 
@@ -156,7 +156,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 
 #----------------------
 #tiler_advanced.mmg
-#Tiles several occurences of an input image while adding randomness.
+#Tiles several occurrences of an input image while adding randomness.
 
 #		"code": "vec4 $(name_uv)_rch = tiler_$(name)($uv, vec2($tx, $ty), int($overlap), float($seed));",
 #		"inputs": [
@@ -392,7 +392,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 
 #----------------------
 #tiler_advanced_color.mmg
-#Tiles several occurences of an input image while adding randomness.
+#Tiles several occurrences of an input image while adding randomness.
 
 #		"code": "vec2 $(name_uv)_mapuv;\nvec4 $(name_uv)_rch = tiler_$(name)($uv, vec2($tx, $ty), int($overlap), float($seed), $(name_uv)_mapuv);",
 #		"inputs": [
@@ -628,7 +628,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 
 #----------------------
 #tiler_color.mmg
-#Tiles several occurences of an input image while adding randomness.
+#Tiles several occurrences of an input image while adding randomness.
 
 #vec3 $(name_uv)_random_color;\n
 #vec4 $(name_uv)_tiled_output = tiler_$(name)($uv, vec2($tx, $ty), int($overlap), vec2(float($seed)), $(name_uv)_random_color);

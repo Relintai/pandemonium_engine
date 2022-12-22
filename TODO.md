@@ -3,7 +3,7 @@
 ## Core
 
 - Add a core binder class for Math. This would allow for simpler script to engine side code ports. Maybe it could also smplify scripting language code.
-- Maye threading could be de-modernized. So the implementation could use the old os level constructs. (like pthreads). An implementation that uses std::threads could be kept around though. (without it being compiled). -> Just add back and update the old os api implementations (pthreads etc), keep the core classes, and make every single class that uses std threads overrideable similarly to what can be done with thread now (mutexes etc).
+- Maye threading could be de-modernized. So the implementation could use the old os level constructs. (like pthreads). An implementation that uses std::threads could be kept around though. (without it being compiled). -> Just add back and update the old os api implementations (pthreads etc), keep the core classes, and make every single class that uses std threads overridable similarly to what can be done with thread now (mutexes etc).
 - Maybe use NULLs again instead of nullptrs? TODO check if there is an actual difference, other than requiring cpp11.
 - Add error macro like methods to global scope for scripting
 - Add containers that are a drop in replacement for stl containers.
@@ -18,8 +18,8 @@
 - There are probably a few lingering bugs, as some examples give bad results.
 - Need to make sure wave size, out size, and size related things are consistent, and intuitive, as right now they are neither.
 - The bindings will likely need more improvements.
-- Would be nice, if the algorithm could be parametrized from gdscript aswell.
-- Maybe addding Array2D, and Array3D like classes to the engine would be a good idea.
+- Would be nice, if the algorithm could be parametrized from gdscript as well.
+- Maybe adding Array2D, and Array3D like classes to the engine would be a good idea.
 - Replace std::vectors to engine vectors.
 
 ## Physics
@@ -48,7 +48,7 @@
 
 ## Editor
 
-- Add support for enabling / disabling editor plugins, and also add a gui for this. (Like how the gdscript addons can be enabled/disabled, but for built in c++ stuff.) It will need support for either exlusion, or dependencies. (Dependencies would be better.)
+- Add support for enabling / disabling editor plugins, and also add a gui for this. (Like how the gdscript addons can be enabled/disabled, but for built in c++ stuff.) It will need support for either exclusion, or dependencies. (Dependencies would be better.)
 - Modularize the editor.
 
 ## Engine
@@ -58,8 +58,8 @@
 - Add more hooks where needed, to let stuff register itself. Like visual server backends, so adding them is simple, as I think this is the best way forward, so you can just create your custom rendering backend, when needed. Like if you want lightmaps, add a module that has the tooling + visualserver that has it implemented.
 - Port the DisplayServer from Godot4, as I think having display and windowing in a DisplayServer singleton instead of in OS is better architecturally.
 - Port the capability to have more than one windows. Multi windowing however should be disabled by default, also I don't want to port the full multi windowing stuff for the editor, as it's a lot leaner the way it is. However multi windowing would be cool for creating tools. Would also make it easier to not have a window at all.
-- The DisplayServer at first could just use stuff in OS, so it doesn't have to be ported all at onece.
-- Should backport the tests and the test suite from Godot4 aswell.
+- The DisplayServer at first could just use stuff in OS, so it doesn't have to be ported all at once.
+- Should backport the tests and the test suite from Godot4 as well.
 - Backport optimizations to the hashmap (or maybe just add it as another option), and also replace usage where applicable (https://github.com/godotengine/godot/commit/8b7c7f5a753b43cec10f72b274bb1d70c253652b), and (https://github.com/godotengine/godot/commit/45af29da8095af16729955117a165d23e77cd740)
 - Make operator='s return void (https://github.com/godotengine/godot/commit/7da392bcc52366740394322728464e724cf20cdf).
 - Switch back to the old c++ version (pre c++11) for the codebase. I'm already targeting low end hardware, I think it will likely come in handy later.
@@ -76,7 +76,7 @@
 
 ## GUI
 
-- Rename the EditorZoomWidget to something like ZoomWidget, and make it available for the games aswell. Also I think I did smaller improvements to it in the world_generator addon. Also port those.
+- Rename the EditorZoomWidget to something like ZoomWidget, and make it available for the games as well. Also I think I did smaller improvements to it in the world_generator addon. Also port those.
 
 ## Graphics 
 
@@ -96,7 +96,7 @@
 - Support for adding graphics backends from modules. This will require platform specific creation funcs.
 - Could add an api to query gpus, and optionally to mess with them. Like you could use an off gpu to to do something, maybe like calculations, etc. (Needs more research, not even sure if this is possible or not, or how hard it would be.) 
 - Rename VisualServer to RenderingServer like on Godot 4. I think it's a better long term name for what it does.
-- Port the RenderingDevice API from Godot 4 alongside a RenderingServer implementation that uses it once it's stable. However keep the GLES backends around the same way as they are now, so RenderingServer would be Pluggable aswell: RenderingServer  <- RenderingSreverGLES2, RenderingServer  <- RenderingSreverGLES3 (eventually), RenderingServer  <- RenderingSreverRenderingDevice (This would then just use an available RenderingDevice).
+- Port the RenderingDevice API from Godot 4 alongside a RenderingServer implementation that uses it once it's stable. However keep the GLES backends around the same way as they are now, so RenderingServer would be Pluggable as well: RenderingServer  <- RenderingSreverGLES2, RenderingServer  <- RenderingSreverGLES3 (eventually), RenderingServer  <- RenderingSreverRenderingDevice (This would then just use an available RenderingDevice).
 - Port the newer godot rendering backends once they are stable enough. (With at least some of their features.)
 - Somehow make VisualServer's implementation more modular.
 - Add a scriptable VisualServer implementation. Similar idea as the scriptable networking api. Alongside with a similar interface for GLES. Would help with experimentation.
@@ -164,8 +164,8 @@
 
 ## Binaries, Containers, Releases
 
-- Set up containers and build scripts to autmatically build frt and frt_sdl binaries.
-- Set up automatically building ios binaries aswell.
+- Set up containers and build scripts to automatically build frt and frt_sdl binaries.
+- Set up automatically building ios binaries as well.
 - Try to set up godot's UWP platform again. Maybe.
 - Add all binaries to the project side export and release helper scripts.
 - Maybe split TPZ files, so you can install the export templates that you want.

@@ -379,13 +379,13 @@ public:
 	// Main simplification function
 	//
 	// target_count  : target nr. of triangles
-	// agressiveness : sharpness to increase the threshold.
+	// aggressiveness : sharpness to increase the threshold.
 	//                 5..8 are good numbers
 	//                 more iterations yield higher quality
 	//
 
-	void simplify_mesh(int target_count, double agressiveness = 7, bool verbose = false) {
-		ERR_FAIL_COND_MSG(_enable_smart_link, "FastQuadraticMeshSimplifier: enable_smart_link setting is not yet suppored!");
+	void simplify_mesh(int target_count, double aggressiveness = 7, bool verbose = false) {
+		ERR_FAIL_COND_MSG(_enable_smart_link, "FastQuadraticMeshSimplifier: enable_smart_link setting is not yet supported!");
 
 		// init
 		for (unsigned int i = 0; i < triangles.size(); ++i) {
@@ -417,7 +417,7 @@ public:
 			// The following numbers works well for most models.
 			// If it does not, try to adjust the 3 parameters
 			//
-			double threshold = 0.000000001 * pow(double(iteration + 3), agressiveness);
+			double threshold = 0.000000001 * pow(double(iteration + 3), aggressiveness);
 
 			// target number of triangles reached ? Then break
 			if ((verbose) && (iteration % 5 == 0)) {
@@ -508,7 +508,7 @@ public:
 	} //simplify_mesh()
 
 	void simplify_mesh_lossless(bool verbose = false) {
-		ERR_FAIL_COND_MSG(_enable_smart_link, "FastQuadraticMeshSimplifier: enable_smart_link setting is not yet suppored!");
+		ERR_FAIL_COND_MSG(_enable_smart_link, "FastQuadraticMeshSimplifier: enable_smart_link setting is not yet supported!");
 
 		// init
 		for (unsigned int i = 0; i < triangles.size(); ++i)

@@ -2687,7 +2687,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	//send it through the onbeforehit handler
 	notification_sdamage(SpellEnums::NOTIFICATION_DAMAGE_BEFORE_DAMAGE, info);
 
-	//send it throug the onhit pipeliine
+	//send it through the onhit pipeliine
 	notification_sdamage(SpellEnums::NOTIFICATION_DAMAGE_HIT, info);
 
 	notification_sdamage(SpellEnums::NOTIFICATION_DAMAGE_RECEIVE, info);

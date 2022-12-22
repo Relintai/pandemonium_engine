@@ -343,7 +343,7 @@ def is_host_target_supported(host_target, msvc_version):
     (host, target) pair, not that the toolchain is actually on the machine.
 
     Args:
-        host_target: canonalized host-target pair, e.g.
+        host_target: canonicalized host-target pair, e.g.
           ("x86", "amd64") for cross compilation from 32- to 64-bit Windows.
         msvc_version: Visual C++ version (major.minor), e.g. "10.0"
 

@@ -28,7 +28,7 @@ If you ever wondered why the official FRT binaries are compiled on a jessie
 debootstrap chroot, this driver is the reason.
 
 It is a pain to use because it only supports old versions of the Linux kernel,
-but it is full-featured. The Lima driver is already useable and it is the one
+but it is full-featured. The Lima driver is already usable and it is the one
 I would personally use, but for some use cases, the legacy driver is still the
 way to go.
 
@@ -37,6 +37,6 @@ I recommend that you use a X11-based image.
 In theory, you could start from a server image and compile a couple of
 libraries to go along with the proprietary blob, but you are basically on your
 own. FRT includes a fbdev video module, but it is more of starting point /
-proof of concept than an useable module. It works but it flickers badly, and I
+proof of concept than an usable module. It works but it flickers badly, and I
 no longer maintain it. Anyway, if you have one of these boards, and you are up
 for a challenge, patches are welcome.

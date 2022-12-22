@@ -166,7 +166,7 @@ Backported everything up to and including https://github.com/godotengine/godot/c
 - Fix requesting write locks in WebNodes. 
 - Fix default argument for the binding of WebServerRequest::send_redirect. 
 - Fix: WebPermission was meant to be a Resource.
-- Fix mimetype handling in the simle server. Also added a few misisng ones.
+- Fix mimetype handling in the simle server. Also added a few missing ones.
 - Fixed rendering the menu of the BrowsableFolderServeWebPage and StaticWebPage.
 
 #### Build System
@@ -413,7 +413,7 @@ Added an icon for UserModule.
 - [[Thread Pool]](https://github.com/Relintai/thread_pool) - A c++ Godot engine module which makes it easy to run methods in threads.
 - [[Texture Packer]](https://github.com/Relintai/texture_packer) - A c++ Godot engine module, to layer, pack, and merge textures at runtime.
 - [[Mesh Data Resource]](https://github.com/Relintai/mesh_data_resource) - A Godot c++ engine module. It adds a data-only mesh type with an importer.
-- [[Mesh Utils]](https://github.com/Relintai/mesh_utils) - A c++ Godot engine module containing utilites for working with mehses (Like simplification).
+- [[Mesh Utils]](https://github.com/Relintai/mesh_utils) - A c++ Godot engine module containing utilities for working with mehses (Like simplification).
 - [[Godot Fastnoise]](https://github.com/Relintai/godot_fastnoise) - Zylann's godot_fastnoise, but with compile fixes for 4.0, and a Resource class.
 - [[UI Extensions]](https://github.com/Relintai/ui_extensions) - Small extensions engine module for GODOT.
 - [[Skeleton Editor]](https://github.com/Relintai/skeleton_editor) - Godot engine module version of TokageItLab's skeleton editor pr, that got deprecated, but [[my godot fork]](https://github.com/Relintai/godot/tree/3.x) has it fully implemented.
@@ -490,7 +490,7 @@ Added an icon for UserModule.
 
 #### Platforms
 
-- UWP (I was never once able to succesfully set up the environment for it to compile during the last 3 years).
+- UWP (I was never once able to successfully set up the environment for it to compile during the last 3 years).
 
 #### Editor
 
@@ -512,11 +512,11 @@ Added an icon for UserModule.
 
 #### module: ui_extensions
 
-- Removed TMeshInstance, and changed the core MeshInstance to wrok the way I need it instead.
+- Removed TMeshInstance, and changed the core MeshInstance to work the way I need it instead.
 
 #### other
 
-- Removed the github issue tamplates.
+- Removed the github issue templates.
 
 ### Fixed
 
@@ -534,7 +534,7 @@ Added an icon for UserModule.
 
 #### Other
 
-- Github actions have been simplifed and fixed.
+- Github actions have been simplified and fixed.
 - Godot's regression test tool have been updated / fixed.
 - Fixed all crashed the regression test tool found by throwing invalid / unexpected arguments at methods.
 - Cleanups to the docs.

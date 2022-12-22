@@ -158,15 +158,15 @@ class _POFileBuilder(BuilderBase):
     This is multi-target single-source builder. In typical situation the source
     is single `POT` file, e.g. `messages.pot`, and there are multiple `PO`
     targets to be updated from this `POT`. We must run
-    `SCons.Builder.BuilderBase._execute()` separatelly for each target to track
-    dependencies separatelly for each target file.
+    `SCons.Builder.BuilderBase._execute()` separately for each target to track
+    dependencies separately for each target file.
 
     **NOTE**: if we call `SCons.Builder.BuilderBase._execute(.., target, ...)`
     with target being list of all targets, all targets would be rebuilt each time
     one of the targets from this list is missing. This would happen, for example,
     when new language `ll` enters `LINGUAS_FILE` (at this moment there is no
     `ll.po` file yet). To avoid this, we override
-    `SCons.Builder.BuilerBase._execute()` and call it separatelly for each
+    `SCons.Builder.BuilerBase._execute()` and call it separately for each
     target. Here we also append to the target list the languages read from
     `LINGUAS_FILE`.
     """
@@ -212,7 +212,7 @@ class _POFileBuilder(BuilderBase):
         """ Execute builder's actions.
 
         Here we append to `target` the languages read from `$LINGUAS_FILE` and
-        apply `SCons.Builder.BuilderBase._execute()` separatelly to each target.
+        apply `SCons.Builder.BuilderBase._execute()` separately to each target.
         The arguments and return value are same as for
         `SCons.Builder.BuilderBase._execute()`.
         """

@@ -15,7 +15,7 @@
 		-- page1.md
 		-- page2.md
 		-- summary.md[/code]
-		A [PagedArticleWebPage] is pointed to the [code]article[/code] folder, it's [code]serve_folder[/code] property is set to [code]article_files[/code], and is accesible at [code]http://127.0.0.1/test_article[/code]:
+		A [PagedArticleWebPage] is pointed to the [code]article[/code] folder, it's [code]serve_folder[/code] property is set to [code]article_files[/code], and is accessible at [code]http://127.0.0.1/test_article[/code]:
 		[code]Opening: http://127.0.0.1/test_article will send summary.md rendered as html.
 		Opening: http://127.0.0.1/test_article/page1.md will send page1.md rendered as html.
 		Opening: http://127.0.0.1/test_article/page2.md will send page2.md rendered as html.

@@ -55,7 +55,7 @@ struct NoNetController;
 ///
 /// The `NetworkedController` will sync inputs, based on those will perform
 /// operations.
-/// The result of these operations, are guaranteed to be the same accross the
+/// The result of these operations, are guaranteed to be the same across the
 /// peers, if we stay under the assumption that the initial state is the same.
 ///
 /// Is possible to use the `SceneSynchronizer` to keep the state in sync with the
@@ -149,13 +149,13 @@ private:
 	/// matched.
 	real_t tick_acceleration = 2.0;
 
-	/// Collect rate (in frames) used by the server to estabish when to collect
+	/// Collect rate (in frames) used by the server to establish when to collect
 	/// the state for a particular peer.
 	/// It's possible to scale down this rate, for a particular peer,
 	/// using the function: set_doll_collect_rate_factor(peer, factor);
 	/// Current default is 10Hz.
 	///
-	/// The collected state is not immediatelly sent to the clients, rather it's
+	/// The collected state is not immediately sent to the clients, rather it's
 	/// delayed so to be sent in batch. The states marked as important are
 	/// always collected.
 	int doll_epoch_collect_rate = 1;
@@ -204,7 +204,7 @@ private:
 	real_t doll_net_sensitivity = 0.2;
 
 	/// Just after a bad connection phase, may happen that all the sent epochs
-	/// are received at once. To make sure the actor is always the more uptodate
+	/// are received at once. To make sure the actor is always the more up-to-date
 	/// possible, the number of epochs the actor has to fetch is clamped.
 	/// When `doll_max_delay` is surpassed the doll is teleported forward the
 	/// timeline so to be the more update possible.

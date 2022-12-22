@@ -3228,13 +3228,13 @@ void register_variant_methods() {
 	ADDFUNC1R(TRANSFORM2D, REAL, Transform2D, tdoty, VECTOR2, "v", varray());
 	ADDFUNC1R(TRANSFORM2D, VECTOR2, Transform2D, get_axis, INT, "axis", varray());
 	ADDFUNC2(TRANSFORM2D, NIL, Transform2D, set_axis, INT, "axis", VECTOR2, "vec", varray());
-	ADDFUNC1R(TRANSFORM2D, VECTOR2, Transform2D, get_column, INT, "colum", varray());
-	ADDFUNC2(TRANSFORM2D, NIL, Transform2D, set_column, INT, "colum", VECTOR2, "vec", varray());
+	ADDFUNC1R(TRANSFORM2D, VECTOR2, Transform2D, get_column, INT, "column", varray());
+	ADDFUNC2(TRANSFORM2D, NIL, Transform2D, set_column, INT, "column", VECTOR2, "vec", varray());
 	ADDFUNC0(TRANSFORM2D, NIL, Transform2D, invert, varray());
 	ADDFUNC0(TRANSFORM2D, NIL, Transform2D, affine_invert, varray());
 	ADDFUNC0R(TRANSFORM2D, TRANSFORM2D, Transform2D, inverse, varray());
 	ADDFUNC0R(TRANSFORM2D, TRANSFORM2D, Transform2D, affine_inverse, varray());
-	ADDFUNC1(TRANSFORM2D, NIL, Transform2D, set_column, REAL, "colum", varray());
+	ADDFUNC1(TRANSFORM2D, NIL, Transform2D, set_column, REAL, "column", varray());
 	ADDFUNC0R(TRANSFORM2D, TRANSFORM2D, Transform2D, inverse, varray());
 	ADDFUNC0R(TRANSFORM2D, REAL, Transform2D, get_rotation, varray());
 	ADDFUNC0R(TRANSFORM2D, REAL, Transform2D, get_skew, varray());

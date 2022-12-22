@@ -1210,7 +1210,7 @@ void MDIGizmo::extrude() {
 				Vector3 v3 = new_verts[j + 3];
 
 				if (is_verts_equal(v0, v3)) {
-					// +2 offset to 2rd vert
+					// +2 offset to 2nd vert
 					found_verts.append(j + 2);
 				}
 			}
@@ -1243,7 +1243,7 @@ void MDIGizmo::extrude() {
 		add_mesh_change_undo_redo(orig_arr, arr, "Extrude");
 		enable_change_event();
 
-		// The selection alo will take care of the duplicates
+		// The selection also will take care of the duplicates
 		PoolVector3Array new_handle_points;
 		for (int i = original_size; i < new_verts.size(); i += 4) {
 			Vector3 vavg = new_verts[i + 1];

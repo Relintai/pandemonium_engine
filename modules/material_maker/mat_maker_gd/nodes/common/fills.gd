@@ -486,7 +486,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #			{
 #				"default": 0,
 #				"label": "",
-#				"longdesc": "The mode decides how the UVs are layed out on each bounding box:\n- Stretch mode where the UV layout is stretched to the bounding box. \n- Square mode where the UV layout is even and centerered based on the longest axis of the bounding box.",
+#				"longdesc": "The mode decides how the UVs are laid out on each bounding box:\n- Stretch mode where the UV layout is stretched to the bounding box. \n- Square mode where the UV layout is even and centerered based on the longest axis of the bounding box.",
 #				"name": "mode",
 #				"shortdesc": "Mode",
 #				"type": "enum",

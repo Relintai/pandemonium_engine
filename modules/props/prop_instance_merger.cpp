@@ -861,7 +861,7 @@ void PropInstanceMerger::_notification(int p_what) {
 								dst /= _lod_reduction_distance_squared;
 
 								int dstl = static_cast<int>(dst);
-								//the lod udpate method handles it if it's higher that the max generated lod level
+								//the lod update method handles it if it's higher that the max generated lod level
 								set_lod_level(dstl + 1);
 							}
 						}

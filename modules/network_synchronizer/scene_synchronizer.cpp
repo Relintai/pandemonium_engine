@@ -585,9 +585,9 @@ void SceneSynchronizer::controller_remove_dependency(Node *p_controller, Node *p
 		return;
 	}
 
-	// Instead to remove the dependency immeditaly we have to postpone it till
+	// Instead to remove the dependency immediately we have to postpone it till
 	// the server confirms the valitity via state.
-	// This operation is required otherwise the dependency is remvoved too early,
+	// This operation is required otherwise the dependency is removed too early,
 	// and an eventual rewind may miss it.
 	// The actual removal is performed at the end of the sync.
 	controller_nd->dependency_nodes_end[index] =
@@ -962,7 +962,7 @@ void SceneSynchronizer::clear() {
 }
 
 void SceneSynchronizer::_rpc_send_state(const Variant &p_snapshot) {
-	ERR_FAIL_COND_MSG(is_client() == false, "Only clients are suposed to receive the server snapshot.");
+	ERR_FAIL_COND_MSG(is_client() == false, "Only clients are supposed to receive the server snapshot.");
 	static_cast<ClientSynchronizer *>(synchronizer)->receive_snapshot(p_snapshot);
 }
 
@@ -1141,7 +1141,7 @@ void SceneSynchronizer::change_events_flush() {
 				vars[v] = listener.watching_vars[v].old_value;
 				listener.watching_vars[v].old_set = false;
 			} else {
-				// This value is not changed, so just retrive the current one.
+				// This value is not changed, so just retrieve the current one.
 				vars[v] = listener.watching_vars[v].node_data->vars[listener.watching_vars[v].var_id].var.value;
 			}
 			vars_ptr[v] = vars.ptr() + v;
@@ -1885,7 +1885,7 @@ void ServerSynchronizer::generate_snapshot_node_data(
 		const NetUtility::NodeData *p_node_data,
 		bool p_force_full_snapshot,
 		Vector<Variant> &r_snapshot_data) const {
-	// The packet data is an array that contains the informations to update the
+	// The packet data is an array that contains the information to update the
 	// client snapshot.
 	//
 	// It's composed as follows:
@@ -2015,7 +2015,7 @@ void ClientSynchronizer::process() {
 	PlayerController *player_controller = controller->get_player_controller();
 
 	// Reset this here, so even when `sub_ticks` is zero (and it's not
-	// updated due to process is not called), we can still have the corect
+	// updated due to process is not called), we can still have the correct
 	// data.
 	controller->player_set_has_new_input(false);
 
@@ -2296,7 +2296,7 @@ void ClientSynchronizer::process_controllers_recovery(real_t p_delta) {
 	CRASH_COND(server_snapshots.empty());
 	CRASH_COND(server_snapshots.front().input_id != checkable_input_id);
 
-	// This is unreachable, because we store all the client shapshots
+	// This is unreachable, because we store all the client snapshots
 	// each time a new input is processed. Since the `checkable_input_id`
 	// is taken by reading the processed doll inputs, it's guaranteed
 	// that here the snapshot exists.
@@ -2528,7 +2528,7 @@ void ClientSynchronizer::process_controllers_recovery(real_t p_delta) {
 				// Can we store the ID too, so to avoid this search????
 				const int rew_var_index = rew_node_data->vars.find(vars_ptr[v].name);
 				// Unreachable, because when the snapshot is received the
-				// algorithm make sure the `scene_synchronizer` is traking the
+				// algorithm make sure the `scene_synchronizer` is tracking the
 				// variable.
 				CRASH_COND(rew_var_index <= -1);
 
@@ -2624,7 +2624,7 @@ bool ClientSynchronizer::parse_sync_data(
 		void (*p_node_parse)(void *p_user_pointer, NetUtility::NodeData *p_node_data),
 		void (*p_controller_parse)(void *p_user_pointer, NetUtility::NodeData *p_node_data, uint32_t p_input_id),
 		void (*p_variable_parse)(void *p_user_pointer, NetUtility::NodeData *p_node_data, uint32_t p_var_id, const Variant &p_value)) {
-	// The sync data is an array that contains the scene informations.
+	// The sync data is an array that contains the scene information.
 	// It's used for several things, for this reason this function allows to
 	// customize the parsing.
 	//
@@ -2687,7 +2687,7 @@ bool ClientSynchronizer::parse_sync_data(
 					goto node_lookup_out;
 				}
 			} else {
-				// The arrived snapshot does't seems to be in the expected form.
+				// The arrived snapshot doesn't seems to be in the expected form.
 				ERR_FAIL_V_MSG(false, "This snapshot is corrupted. Now the node is expected, " + String(v) + " was submitted instead.");
 			}
 
@@ -2729,7 +2729,7 @@ bool ClientSynchronizer::parse_sync_data(
 
 		node_lookup_check:
 			if (skip_this_node || synchronizer_node_data == nullptr) {
-				// This node does't exist; skip it entirely.
+				// This node doesn't exist; skip it entirely.
 				for (snap_data_index += 1; snap_data_index < raw_snapshot.size(); snap_data_index += 1) {
 					if (raw_snapshot_ptr[snap_data_index].get_type() == Variant::NIL) {
 						break;
@@ -2956,10 +2956,10 @@ bool ClientSynchronizer::parse_snapshot(Variant p_snapshot) {
 		return false;
 	}
 
-	// We espect that the player_controller is updated by this new snapshot,
+	// We expect that the player_controller is updated by this new snapshot,
 	// so make sure it's done so.
 	if (unlikely(last_received_snapshot.input_id == UINT32_MAX)) {
-		NET_DEBUG_PRINT("Recovery aborted, the player controller (" + player_controller_node_data->node->get_path() + ") was not part of the received snapshot, probably the server doesn't have important informations for this peer. NetUtility::Snapshot:");
+		NET_DEBUG_PRINT("Recovery aborted, the player controller (" + player_controller_node_data->node->get_path() + ") was not part of the received snapshot, probably the server doesn't have important information for this peer. NetUtility::Snapshot:");
 		NET_DEBUG_PRINT(p_snapshot);
 		return false;
 	} else {

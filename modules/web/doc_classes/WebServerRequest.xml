@@ -157,7 +157,7 @@
 			<argument index="0" name="beginning_slash" type="bool" default="false" />
 			<argument index="1" name="end_slash " type="bool" default="true" />
 			<description>
-				Reutrns the path of the request, from the current path segment to the end. For example if you have [code]http://127.0.0.1/a/b/c[/code], and the current segment is [code]b[/code], this will return "b/c/" using the it's default arguments.
+				Returns the path of the request, from the current path segment to the end. For example if you have [code]http://127.0.0.1/a/b/c[/code], and the current segment is [code]b[/code], this will return "b/c/" using the it's default arguments.
 			</description>
 		</method>
 		<method name="get_path_full" qualifiers="const">
@@ -170,13 +170,13 @@
 			<return type="String" />
 			<argument index="0" name="i" type="int" />
 			<description>
-				Reutrns the i-th path segment.
+				Returns the i-th path segment.
 			</description>
 		</method>
 		<method name="get_path_segment_count" qualifiers="const">
 			<return type="int" />
 			<description>
-				Reutrns how many path segments a request has.
+				Returns how many path segments a request has.
 			</description>
 		</method>
 		<method name="get_post_parameter" qualifiers="const">
@@ -188,7 +188,7 @@
 		<method name="get_remaining_segment_count" qualifiers="const">
 			<return type="int" />
 			<description>
-				Reutrns how manny segments are remaining.
+				Returns how manny segments are remaining.
 			</description>
 		</method>
 		<method name="get_server">

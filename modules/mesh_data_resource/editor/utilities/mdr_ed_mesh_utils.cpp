@@ -355,7 +355,7 @@ void MDREDMeshUtils::add_triangulated_mesh_from_points(Ref<MeshDataResource> mdr
 	merge_in_surface_tool(mdr, st);
 }
 
-// Appends a triangle to the mesh. It's created from miroring v2 to the ev0, and ev1 edge
+// Appends a triangle to the mesh. It's created from mirroring v2 to the ev0, and ev1 edge
 void MDREDMeshUtils::append_triangle_to_tri_edge(Ref<MeshDataResource> mdr, const Vector3 &ev0, const Vector3 &ev1, const Vector3 &v2) {
 	Vector3 vref = reflect_vertex(ev0, ev1, v2);
 
@@ -1377,7 +1377,7 @@ Array MDREDMeshUtils::remove_vertices(Array arrays, const PoolIntArray &indices)
 		return arrays;
 	}
 
-	//udpate indices
+	//update indices
 	PoolIntArray arr_indices = arrays[ArrayMesh::ARRAY_INDEX];
 
 	int max_index = find_max(indices);

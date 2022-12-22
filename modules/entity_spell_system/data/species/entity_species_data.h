@@ -54,7 +54,7 @@ public:
 	int get_model_data_count() const;
 
 	Vector<Variant> get_model_datas();
-	void set_model_datas(const Vector<Variant> &datas);
+	void set_model_datas(const Vector<Variant> &data);
 
 	//Spells
 	Ref<Spell> get_spell(const int index) const;

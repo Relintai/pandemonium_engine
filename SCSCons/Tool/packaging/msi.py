@@ -272,7 +272,7 @@ def build_wxsfile_file_section(root, files, NAME, VERSION, VENDOR, filename_set,
     Files need to be specified in 8.3 format and in the long name format, long
     filenames will be converted automatically.
 
-    Features are specficied with the 'X_MSI_FEATURE' or 'DOC' FileTag.
+    Features are specified with the 'X_MSI_FEATURE' or 'DOC' FileTag.
     """
     root       = create_default_directory_layout( root, NAME, VERSION, VENDOR, filename_set )
     components = create_feature_dict( files )
@@ -363,7 +363,7 @@ def build_wxsfile_features_section(root, files, NAME, VERSION, SUMMARY, id_set):
 
     This is achieved by finding all <component>s and adding them to a default target.
 
-    It should be called after the tree has been built completly.  We assume
+    It should be called after the tree has been built completely.  We assume
     that a MY_DEFAULT_FOLDER Property is defined in the wxs file tree.
 
     Furthermore a top-level with the name and VERSION of the software will be created.

@@ -55,7 +55,7 @@ class dblite:
     that we'll use when our __del__() method calls our sync() method
     during shutdown.  We might get destroyed when Python is in the midst
     of tearing down the different modules we import in an essentially
-    arbitrary order, and some of the various modules's global attributes
+    arbitrary order, and some of the various modules' global attributes
     may already be wiped out from under us.
 
     See the discussion at:

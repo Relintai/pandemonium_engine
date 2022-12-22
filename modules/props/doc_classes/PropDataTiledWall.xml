@@ -13,7 +13,7 @@
 		</member>
 		<member name="data" type="TiledWallData" setter="set_data" getter="get_data">
 		</member>
-		<member name="heigth" type="int" setter="set_heigth" getter="get_heigth" default="1">
+		<member name="height" type="int" setter="set_heigth" getter="get_heigth" default="1">
 		</member>
 		<member name="width" type="int" setter="set_width" getter="get_width" default="1">
 		</member>

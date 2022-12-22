@@ -485,7 +485,7 @@ if selected_platform in platform_list:
             #not needed
             #env.Prepend(CXXFLAGS=["/EHr-"])
 
-            # Apparently disabling exeptions when you also need to have stl containers 
+            # Apparently disabling exceptions when you also need to have stl containers 
             # (Some of the 3rd party code needs them)
             # is not as simple with msvc as I originally thought.
             # So for now they are always enabled.
@@ -647,7 +647,7 @@ if selected_platform in platform_list:
         sys.path.remove(path)
         sys.modules.pop("config")
 
-    #TODO hack, the editor should be a module aswell
+    #TODO hack, the editor should be a module as well
     if env["tools"] and not env["module_freetype_enabled"]:
         print("The editor (tools=yes) can't be built if freetype is disabled! Stopping.")
         sys.exit(255)

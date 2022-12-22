@@ -78,7 +78,7 @@ public:
 	static bool add_triangulated_mesh_from_points_delaunay(Ref<MeshDataResource> mdr, const PoolVector3Array &selected_points, const Vector3 &last_known_camera_facing);
 	static void add_triangulated_mesh_from_points(Ref<MeshDataResource> mdr, const PoolVector3Array &selected_points, const Vector3 &last_known_camera_facing);
 
-	// Appends a triangle to the mesh. It's created from miroring v2 to the ev0, and ev1 edge
+	// Appends a triangle to the mesh. It's created from mirroring v2 to the ev0, and ev1 edge
 	static void append_triangle_to_tri_edge(Ref<MeshDataResource> mdr, const Vector3 &ev0, const Vector3 &ev1, const Vector3 &v2);
 
 	static void add_triangle_at(Ref<MeshDataResource> mdr, const Vector3 &v0, const Vector3 &v1, const Vector3 &v2, const bool flip = false);

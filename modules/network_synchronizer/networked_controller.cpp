@@ -788,7 +788,7 @@ bool ServerController::fetch_next_input() {
 				// the previous one and increase `ghost_inputs_count` to 1.
 				//
 				// The next iteration, if the packet is not yet arrived the
-				// server trys to take the next packet with the `id` less or
+				// server tries to take the next packet with the `id` less or
 				// equal to `next_packet_id + ghost_packet_id`.
 				//
 				// As you can see the server doesn't lose immediately the hope
@@ -1262,7 +1262,7 @@ void PlayerController::send_frame_input_buffer_to_server() {
 				} else if (frames_snapshot[i].similarity == previous_input_similarity) {
 					// This input is similar to the previous one, the thing is
 					// that the similarity check was done on an older input.
-					// Fortunatelly we are able to compare the similarity id
+					// Fortunately we are able to compare the similarity id
 					// and detect its similarity correctly.
 					is_similar = true;
 				} else {

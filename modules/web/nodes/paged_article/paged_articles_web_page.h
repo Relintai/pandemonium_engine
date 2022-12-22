@@ -7,7 +7,7 @@
 #include "../../http/web_node.h"
 
 // This class will load and process all md files from the folder set to it's folder property,
-// and generate one page from them. TThe files are processed in alphabetical order.
+// and generate one page from them. the files are processed in alphabetical order.
 
 // The generated HTML looks like:
 

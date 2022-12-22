@@ -348,7 +348,7 @@ class SubstitutionEnvironment:
         """
         if SCons.Debug.track_instances: logInstanceCreation(self, 'Environment.SubstitutionEnvironment')
         self.fs = SCons.Node.FS.get_default_fs()
-        self.ans = SCons.Node.Alias.default_ans
+        self.and = SCons.Node.Alias.default_ans
         self.lookup_list = SCons.Node.arg2nodes_lookups
         self._dict = kw.copy()
         self._init_special()
@@ -567,7 +567,7 @@ class SubstitutionEnvironment:
                'universal_newlines' : True,
              }
         # if the command is a list, assume it's been quoted
-        # othewise force a shell
+        # otherwise force a shell
         if not is_List(command): kw['shell'] = True
         # run constructed command
         p = SCons.Action._subproc(self, command, **kw)
@@ -818,7 +818,7 @@ class SubstitutionEnvironment:
     def MergeFlags(self, args, unique=True):
         """Merge flags into construction variables.
 
-        Merges the flags from ``args`` into this construction environent.
+        Merges the flags from ``args`` into this construction environment.
         If ``args`` is not a dict, it is first converted to a dictionary with
         flags distributed into appropriate construction variables.
         See :meth:`ParseFlags`.
@@ -865,12 +865,12 @@ class SubstitutionEnvironment:
                             add_to_orig(value)
             t = []
             if key[-4:] == 'PATH':
-                ### keep left-most occurence
+                ### keep left-most occurrence
                 for v in orig:
                     if v not in t:
                         t.append(v)
             else:
-                ### keep right-most occurence
+                ### keep right-most occurrence
                 for v in orig[::-1]:
                     if v not in t:
                         t.insert(0, v)
@@ -942,7 +942,7 @@ class Base(SubstitutionEnvironment):
         if SCons.Debug.track_instances: logInstanceCreation(self, 'Environment.Base')
         self._memo = {}
         self.fs = SCons.Node.FS.get_default_fs()
-        self.ans = SCons.Node.Alias.default_ans
+        self.and = SCons.Node.Alias.default_ans
         self.lookup_list = SCons.Node.arg2nodes_lookups
         self._dict = semi_deepcopy(SCons.Defaults.ConstructionEnvironment)
         self._init_special()
@@ -1941,7 +1941,7 @@ class Base(SubstitutionEnvironment):
         return nodes
 
     def Alias(self, target, source=[], action=None, **kw):
-        tlist = self.arg2nodes(target, self.ans.Alias)
+        tlist = self.arg2nodes(target, self.and.Alias)
         if not is_List(source):
             source = [source]
         source = [_f for _f in source if _f]
@@ -2088,7 +2088,7 @@ class Base(SubstitutionEnvironment):
         return bld(self, target, source, **kw)
 
     def Depends(self, target, dependency):
-        """Explicity specify that 'target's depend on 'dependency'."""
+        """Explicitly specify that 'target's depend on 'dependency'."""
         tlist = self.arg2nodes(target, self.fs.Entry)
         dlist = self.arg2nodes(dependency, self.fs.Entry)
         for t in tlist:

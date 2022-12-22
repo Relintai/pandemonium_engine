@@ -277,7 +277,7 @@ Vector<Variant> Interpolator::pop_epoch(uint32_t p_epoch, real_t p_fraction) {
 			}
 		}
 	} else {
-		// Enought data to do anything needed.
+		// Enough data to do anything needed.
 		data.resize(variables.size());
 		Variant *ptr = data.ptrw();
 		for (uint32_t i = 0; i < variables.size(); i += 1) {

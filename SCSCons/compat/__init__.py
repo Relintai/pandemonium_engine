@@ -87,7 +87,7 @@ PICKLE_PROTOCOL = 4
 
 
 class NoSlotsPyPy(type):
-    """ Metaclass for PyPy compatitbility.
+    """ Metaclass for PyPy compatibility.
 
     PyPy does not work well with __slots__ and __class__ assignment.
     """

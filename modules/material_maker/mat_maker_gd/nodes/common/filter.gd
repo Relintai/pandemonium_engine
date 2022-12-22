@@ -469,7 +469,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #							"widget": "param0"
 #						}
 #					],
-#					"longdesc": "Buffers are used to find the mininum and maximum values for the input image. If the input has small details a higher resolution buffer might be needed to capture precise min and max values.\n\nNote: The output itself will not be buffered.",
+#					"longdesc": "Buffers are used to find the minimum and maximum values for the input image. If the input has small details a higher resolution buffer might be needed to capture precise min and max values.\n\nNote: The output itself will not be buffered.",
 #					"name": "param0",
 #					"shortdesc": "Size",
 #					"type": "linked_control"
@@ -500,7 +500,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #in1, color, default vec4($uv.x, 1.0, 1.0, 1.0)
 #in2, color, default vec4($uv.x, 1.0, 1.0, 1.0)
 #blend_type, enum, default: 0, Normal,Dissolve,Multiply,Screen,Overlay,Hard Light,Soft Light,Burn,Dodge,Lighten,Darken,Difference
-#opactiy, float, min: 0, max: 1, default: 0.5, step: 0.01 (input float)
+#opacity, float, min: 0, max: 1, default: 0.5, step: 0.01 (input float)
 
 #----------------------
 #combine.mmg

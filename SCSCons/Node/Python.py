@@ -138,7 +138,7 @@ class Value(SCons.Node.Node):
         ###TODO: something reasonable about universal newlines
         contents = str(self.value)
         for kid in self.children(None):
-            # Get csig() value of child as this is more efficent
+            # Get csig() value of child as this is more efficient
             contents = contents + kid.get_csig()
         return contents
 

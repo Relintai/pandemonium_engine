@@ -5,7 +5,7 @@
 	</brief_description>
 	<description>
 		The [CSRFTokenWebServerMiddleware] is a [WebServerMiddleware] implementation that sets up, and if it's a post request, then also it validates CRSF tokens automatically. If a token fails to validate an error is sent back to the user.
-		They can be used to validate that a form was actually submitted by the user from a page rendered by the application's server itself, in order to mitigate [C]ross [S]ite [R]equest [F]orgery attacs (Imagine that a malicious site creates a form that points to your web application, and if the user has a session with your site, them clicking submit (there are methods that they don't even have to click) will cause unwanted side effects with your application (it could be avatar changes, pasword change, user deletion, etc).
+		They can be used to validate that a form was actually submitted by the user from a page rendered by the application's server itself, in order to mitigate [C]ross [S]ite [R]equest [F]orgery attacks (Imagine that a malicious site creates a form that points to your web application, and if the user has a session with your site, them clicking submit (there are methods that they don't even have to click) will cause unwanted side effects with your application (it could be avatar changes, password change, user deletion, etc).
 		It can be configured to ignore certain url-s. This is useful if an application only creates sessions when needed, and it has user registration and login support. In this case the registration and login urls need to be excluded from the CRSF token check, as a user don't yet have a session set up and thus has no CSRF token available before logging in.
 	</description>
 	<tutorials>
@@ -20,7 +20,7 @@
 	</methods>
 	<members>
 		<member name="ignored_urls" type="PoolStringArray" setter="set_ignored_urls" getter="get_ignored_urls" default="PoolStringArray(  )">
-			These urls will be excluded from the CSRF token check when receving a POST request.
+			These urls will be excluded from the CSRF token check when receiving a POST request.
 		</member>
 	</members>
 	<constants>

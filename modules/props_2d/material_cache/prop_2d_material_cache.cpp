@@ -234,7 +234,7 @@ void Prop2DMaterialCache::refresh_rects() {
 void Prop2DMaterialCache::initial_setup_default() {
 	//Note: call only on the main thread! Shader->duplicate() can crash if done from an another thread!
 	//Also shader duplication is synchronized with the main thread. So you can cause daedlocks if you hold up the main thread
-	//Somwhere else.
+	//Somewhere else.
 
 	Prop2DCache *pc = Prop2DCache::get_singleton();
 

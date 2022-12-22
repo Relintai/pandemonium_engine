@@ -150,7 +150,7 @@ class Jobs:
             pass
         if (self.old_sigint is None) or (self.old_sigterm is None) or \
                 (hasattr(self, "old_sighup") and self.old_sighup is None):
-            msg = "Overwritting previous signal handler which was not installed from Python. " + \
+            msg = "Overwriting previous signal handler which was not installed from Python. " + \
                 "Will not be able to reinstate and so will return to default handler."
             SCons.Warnings.warn(SCons.Warnings.SConsWarning, msg)
 

@@ -539,7 +539,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #		}
 #	],
 #	"label": "Gaussian Blur",
-#	"longdesc": "Applys a gaussian blur on its input",
+#	"longdesc": "Applies a gaussian blur on its input",
 #	"name": "gaussian_blur",
 #	"node_position": {
 #		"x": 0,
@@ -973,7 +973,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #		}
 #	],
 #	"label": "Slope Blur",
-#	"longdesc": "Applys a blur effect on its input, following slopes of an input height map",
+#	"longdesc": "Applies a blur effect on its input, following slopes of an input height map",
 #	"name": "slope_blur",
 #	"node_position": {
 #		"x": 0,

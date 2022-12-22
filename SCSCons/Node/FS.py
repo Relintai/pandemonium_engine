@@ -228,7 +228,7 @@ needs_normpath_match = needs_normpath_check.match
 # For Now disable hard & softlinks for win32
 # PY3 supports them, but the rest of SCons is not ready for this
 # in some cases user permissions may be required.
-# TODO: See if theres a reasonable way to enable using links on win32/64
+# TODO: See if there's a reasonable way to enable using links on win32/64
 
 if hasattr(os, 'link') and sys.platform != 'win32':
     def _hardlink_func(fs, src, dst):

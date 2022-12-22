@@ -638,7 +638,7 @@ Vector3 MMAlgos::fill_to_uv_square(const Vector2 &coord, const Color &bb, const 
 //in1, color, default vec4($uv.x, 1.0, 1.0, 1.0);
 //in2, color, default vec4($uv.x, 1.0, 1.0, 1.0);
 //blend_type, enum, default: 0, Normal,Dissolve,Multiply,Screen,Overlay,Hard Light,Soft Light,Burn,Dodge,Lighten,Darken,Difference;
-//opactiy, float, min: 0, max: 1, default: 0.5, step: 0.01 (input float);
+//opacity, float, min: 0, max: 1, default: 0.5, step: 0.01 (input float);
 //----------------------;
 //combine.mmg;
 //----------------------;
@@ -5066,7 +5066,7 @@ float MMAlgos::shape_rays(const Vector2 &uuv, const float sides, const float siz
 //tile2x2_variations.mmg;
 //----------------------;
 //tiler.mmg;
-//Tiles several occurences of an input image while adding randomness.;
+//Tiles several occurrences of an input image while adding randomness.;
 //vec4 $(name_uv)_rch = tiler_$(name)($uv, vec2($tx, $ty), int($overlap), vec2(float($seed)));
 //instance;
 //vec4 tiler_$(name)(vec2 uv, vec2 tile, int overlap, vec2 _seed) {\n\t;
@@ -5137,7 +5137,7 @@ float MMAlgos::shape_rays(const Vector2 &uuv, const float sides, const float siz
 //tiler_advanced_color.mmg;
 //----------------------;
 //tiler_color.mmg;
-//Tiles several occurences of an input image while adding randomness.;
+//Tiles several occurrences of an input image while adding randomness.;
 //vec3 $(name_uv)_random_color;\n;
 //vec4 $(name_uv)_tiled_output = tiler_$(name)($uv, vec2($tx, $ty), int($overlap), vec2(float($seed)), $(name_uv)_random_color);
 //vec4 tiler_$(name)(vec2 uv, vec2 tile, int overlap, vec2 _seed, out vec3 random_color) {\n\t;
@@ -5233,7 +5233,7 @@ float MMAlgos::shape_rays(const Vector2 &uuv, const float sides, const float siz
 //custom_uv.mmg;
 //----------------------;
 //splatter.mmg;
-//Spreads several occurences of an input image randomly.;
+//Spreads several occurrences of an input image randomly.;
 //vec4 $(name_uv)_rch = splatter_$(name)($uv, int($count), vec2(float($seed)));
 //vec4 splatter_$(name)(vec2 uv, int count, vec2 seed) {\n\t;
 //	float c = 0.0;\n\t;
@@ -5285,7 +5285,7 @@ float MMAlgos::shape_rays(const Vector2 &uuv, const float sides, const float siz
 //4, "pv = CLAMP(0.5*(pv+floor(rand2(seed)*2.0)), vec2(0.0), vec2(1.0));";
 //16, "pv = CLAMP(0.25*(pv+floor(rand2(seed)*4.0)), vec2(0.0), vec2(1.0));";
 //Parameters:;
-//count, int, default 25, min 1, max 100, - The number of occurences of the input image;
+//count, int, default 25, min 1, max 100, - The number of occurrences of the input image;
 //select_inputs (Inputs), enum, default 0, values 1, 4, 16;
 //tile, Vector2, default 4, min:1, max:64, step:1 - The number of columns of the tiles pattern;
 //overlap, float, default 1, min 0, max 5, step 1 - The number of neighbour tiles an instance of the input image can overlap. Set this parameter to the lowest value that generates the expected result (where all instances are fully visible) to improve performance.;
@@ -5295,7 +5295,7 @@ float MMAlgos::shape_rays(const Vector2 &uuv, const float sides, const float siz
 //value (rnd_value), float, default 0, min 0, max 1, step 0.01;
 //----------------------;
 //splatter_color.mmg;
-//preads several occurences of an input image randomly.;
+//preads several occurrences of an input image randomly.;
 //vec4 splatter_$(name)(vec2 uv, int count, vec2 seed) {\n\t;
 //	vec4 c = vec4(0.0);\n\t;
 //;
@@ -5341,7 +5341,7 @@ float MMAlgos::shape_rays(const Vector2 &uuv, const float sides, const float siz
 //4, "pv = CLAMP(0.5*(pv+floor(rand2(seed)*2.0)), vec2(0.0), vec2(1.0));";
 //16, "pv = CLAMP(0.25*(pv+floor(rand2(seed)*4.0)), vec2(0.0), vec2(1.0));";
 //Parameters:;
-//count, int, default 25, min 1, max 100, - The number of occurences of the input image;
+//count, int, default 25, min 1, max 100, - The number of occurrences of the input image;
 //select_inputs (Inputs), enum, default 0, values 1, 4, 16;
 //tile, Vector2, default 4, min:1, max:64, step:1 - The number of columns of the tiles pattern;
 //overlap, float, default 1, min 0, max 5, step 1 - The number of neighbour tiles an instance of the input image can overlap. Set this parameter to the lowest value that generates the expected result (where all instances are fully visible) to improve performance.;
@@ -5352,7 +5352,7 @@ float MMAlgos::shape_rays(const Vector2 &uuv, const float sides, const float siz
 //variations bool;
 //----------------------;
 //circle_splatter.mmg;
-//Spreads several occurences of an input image in a circle or spiral pattern.;
+//Spreads several occurrences of an input image in a circle or spiral pattern.;
 //vec4 $(name_uv)_rch = splatter_$(name)($uv, int($count), int($rings), vec2(float($seed)));
 //vec4 splatter_$(name)(vec2 uv, int count, int rings, vec2 seed) {\n\t;
 //	float c = 0.0;\n\t;
@@ -5404,8 +5404,8 @@ float MMAlgos::shape_rays(const Vector2 &uuv, const float sides, const float siz
 //4, "pv = CLAMP(0.5*(pv+floor(rand2(seed)*2.0)), vec2(0.0), vec2(1.0));";
 //16, "pv = CLAMP(0.25*(pv+floor(rand2(seed)*4.0)), vec2(0.0), vec2(1.0));";
 //Parameters:;
-//count, int, default 10, min 1, max 256, - The number of occurences of the input image;
-//rings, int, default 1, min 1, max 16, - The number of occurences of the input image;
+//count, int, default 10, min 1, max 256, - The number of occurrences of the input image;
+//rings, int, default 1, min 1, max 16, - The number of occurrences of the input image;
 //select_inputs (Inputs), enum, default 0, values 1, 4, 16;
 //scale, Vector2, default 1, min:0, max:2, step:0.01 - "The scale of input images on the X axis;
 //radius, float, default 0.4, min 0, max 0.5, step 0.01;

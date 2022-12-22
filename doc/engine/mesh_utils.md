@@ -30,7 +30,7 @@ For future reference it's based on e8ff4e8862735197c3308cfe926eeba68e0d2edb.
 Porting is mostly done, but it does needs some debugging (it has a crash if smart linking is enabled).
 
 I might just return to using the original FQMS. As if meshes are merged together using `MeshUtils.merge_mesh_array`, or
-`bake_mesh_array_uv` the original algortithm will work fine. Still on the fence about it.
+`bake_mesh_array_uv` the original algorithm will work fine. Still on the fence about it.
 
 # Building
 

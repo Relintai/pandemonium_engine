@@ -88,7 +88,7 @@ void MMSdOpBool::_register_methods(MMGraphNode *mm_graph_node) {
 
 	Array arr;
 	arr.push_back("Union");
-	arr.push_back("Substraction");
+	arr.push_back("Subtraction");
 	arr.push_back("Intersection");
 
 	mm_graph_node->add_slot_enum("get_operation", "set_operation", "Operation", arr);

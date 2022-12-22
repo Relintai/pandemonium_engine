@@ -218,7 +218,7 @@ void PropUtils::generate_room_points(Room *room) {
 
 	/*
 	//It will probably have a few unnecessary vertices still
-	//let's try to get rid of those aswell
+	//let's try to get rid of those as well
 	PoolVector<int> remove_indices;
 	int vssize = vs.size();
 	for (int i = 0; i < vssize - 2; ++i) {

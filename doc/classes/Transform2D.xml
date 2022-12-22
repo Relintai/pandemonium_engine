@@ -83,7 +83,7 @@
 		</method>
 		<method name="get_column">
 			<return type="Vector2" />
-			<argument index="0" name="colum" type="int" />
+			<argument index="0" name="column" type="int" />
 			<description>
 			</description>
 		</method>
@@ -213,7 +213,7 @@
 			</description>
 		</method>
 		<method name="set_column">
-			<argument index="0" name="colum" type="float" />
+			<argument index="0" name="column" type="float" />
 			<description>
 			</description>
 		</method>

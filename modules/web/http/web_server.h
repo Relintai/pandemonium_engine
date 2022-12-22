@@ -29,7 +29,7 @@ public:
 	// The server is expected to be running in a heavily multi threaded setting,
 	// if you want to safely change to root, or to heavily change the tree
 	// you need to lock the tree, however triggering a change like this using a web interface
-	// from withing a server would cause a deadlock, so if you want to do something like this
+	// from within a server would cause a deadlock, so if you want to do something like this
 	// you can call request_write_lock() while handling a request, then
 	// do the desired change when your node receives NOTIFICATION_WEB_SERVER_WRITE_LOCK_ACQUIRED
 	// Also note that every WebNode has a lock similar to this for the same reason,

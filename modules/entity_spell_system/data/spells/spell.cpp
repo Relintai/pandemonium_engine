@@ -778,7 +778,7 @@ void Spell::aura_heal_set(const int min, const int max, const bool can_crit) {
 	aura_heal_set_can_crit(can_crit);
 }
 
-//Dispell
+//Dispel
 bool Spell::aura_dispell_get_enabled() const {
 	return _aura_dispell_enabled;
 }
@@ -2719,7 +2719,7 @@ void Spell::_bind_methods() {
 
 	ADD_GROUP("Spells Cast", "spells_cast_");
 
-	//ADD_GROUP("Caster Aura Applys", "caster_aura_applys");
+	//ADD_GROUP("Caster Aura Applies", "caster_aura_applys");
 	ClassDB::bind_method(D_METHOD("spells_cast_on_caster_num_get"), &Spell::spells_cast_on_caster_num_get);
 	ClassDB::bind_method(D_METHOD("spells_cast_on_caster_num_set", "value"), &Spell::spells_cast_on_caster_num_set);
 
@@ -2867,7 +2867,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("heal_set_scale_coeff", "value"), &Spell::heal_set_scale_coeff);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "heal_scale_coeff"), "heal_set_scale_coeff", "heal_get_scale_coeff");
 
-	ADD_GROUP("Dispell", "dispell");
+	ADD_GROUP("Dispel", "dispel");
 	ClassDB::bind_method(D_METHOD("dispell_get_enabled"), &Spell::dispell_get_enabled);
 	ClassDB::bind_method(D_METHOD("dispell_set_enabled", "value"), &Spell::dispell_set_enabled);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dispell_enabled"), "dispell_set_enabled", "dispell_get_enabled");
@@ -3084,7 +3084,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("aura_heal_set_scaling_curve", "curve"), &Spell::aura_heal_set_scaling_curve);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_heal_scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "aura_heal_set_scaling_curve", "aura_heal_get_scaling_curve");
 
-	ADD_GROUP("Aura Dispell", "aura_dispell");
+	ADD_GROUP("Aura Dispel", "aura_dispell");
 	ClassDB::bind_method(D_METHOD("aura_dispell_get_enabled"), &Spell::aura_dispell_get_enabled);
 	ClassDB::bind_method(D_METHOD("aura_dispell_set_enabled", "value"), &Spell::aura_dispell_set_enabled);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "aura_dispell_enabled"), "aura_dispell_set_enabled", "aura_dispell_get_enabled");

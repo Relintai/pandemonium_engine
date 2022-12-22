@@ -155,7 +155,7 @@ class ConfigureDryRunError(SConfError):
         SConfError.__init__(self,msg)
 
 class ConfigureCacheError(SConfError):
-    """Raised when a use explicitely requested the cache feature, but the test
+    """Raised when a use explicitly requested the cache feature, but the test
     is run the first time."""
     def __init__(self,target):
         SConfError.__init__(self, '"%s" is not yet built and cache is forced.' % str(target))
@@ -264,15 +264,15 @@ class SConfBuildTask(SCons.Taskmaster.AlwaysTask):
         return SCons.Taskmaster.Task.failed(self)
 
     def collect_node_states(self):
-        # returns (is_up_to_date, cached_error, cachable)
+        # returns (is_up_to_date, cached_error, cacheable)
         # where is_up_to_date is 1, if the node(s) are up_to_date
         #       cached_error  is 1, if the node(s) are up_to_date, but the
         #                           build will fail
-        #       cachable      is 0, if some nodes are not in our cache
+        #       cacheable      is 0, if some nodes are not in our cache
         T = 0
         changed = False
         cached_error = False
-        cachable = True
+        cacheable = True
         for t in self.targets:
             if T: Trace('%s' % t)
             bi = t.get_stored_info().binfo
@@ -292,11 +292,11 @@ class SConfBuildTask(SCons.Taskmaster.AlwaysTask):
                 if T: Trace(': else')
                 # the node hasn't been built in a SConf context or doesn't
                 # exist
-                cachable = False
+                cacheable = False
                 changed = ( t.get_state() != SCons.Node.up_to_date )
                 if T: Trace(': changed %s' % changed)
         if T: Trace('\n')
-        return (not changed, cached_error, cachable)
+        return (not changed, cached_error, cacheable)
 
     def execute(self):
         if not self.targets[0].has_builder():
@@ -304,9 +304,9 @@ class SConfBuildTask(SCons.Taskmaster.AlwaysTask):
 
         sconf = sconf_global
 
-        is_up_to_date, cached_error, cachable = self.collect_node_states()
+        is_up_to_date, cached_error, cacheable = self.collect_node_states()
 
-        if cache_mode == CACHE and not cachable:
+        if cache_mode == CACHE and not cacheable:
             raise ConfigureCacheError(self.targets[0])
         elif cache_mode == FORCE:
             is_up_to_date = 0

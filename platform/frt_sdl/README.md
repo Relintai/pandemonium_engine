@@ -60,7 +60,7 @@ is compiled for a 64-bit distro.
 The arm32v6 ones are there mainly to support older Pis.
 
 My policy is to publish binaries for the latest release from upstream
-plus 2.1.6 and the ones that were/are in debian stable (currenty 3.0.6
+plus 2.1.6 and the ones that were/are in debian stable (currently 3.0.6
 and 3.2.3). You are encouraged to compile any version you need yourself.
 See [Compile](doc/Compile.md) for more info.
 

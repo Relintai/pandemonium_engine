@@ -113,7 +113,7 @@ CraftRecipe::CraftRecipe() {
 }
 
 CraftRecipe::~CraftRecipe() {
-	//TODO check if the array destrutors actually unref the objects.
+	//TODO check if the array destructors actually unref the objects.
 
 	//_item = Ref<CraftRecipeHelper>(NULL);
 }

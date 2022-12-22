@@ -21,7 +21,7 @@
 		<method name="simplify_mesh">
 			<return type="void" />
 			<argument index="0" name="target_count" type="int" />
-			<argument index="1" name="agressiveness" type="float" default="7" />
+			<argument index="1" name="aggressiveness" type="float" default="7" />
 			<argument index="2" name="verbose" type="bool" default="false" />
 			<description>
 			</description>

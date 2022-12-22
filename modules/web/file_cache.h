@@ -22,7 +22,7 @@ public:
 	int get_cache_invalidation_time();
 	void set_cache_invalidation_time(const int &val);
 
-	//Note: file path should be the url you want to access the file with, inculding lead slash
+	//Note: file path should be the url you want to access the file with, including lead slash
 	//e.g. http://127.0.0.1/a/b/d.jpg -> /a/b/d.jpg
 	void wwwroot_register_file(const String &file_path);
 	void wwwroot_deregister_file(const String &file_path);

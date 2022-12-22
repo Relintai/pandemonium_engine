@@ -15,7 +15,7 @@ enum BlendType {
 	DODGE,
 	LIGHTEN,
 	DARKEN,
-	DIFFRENCE
+	DIFFERENCE
 }
 
 export(Resource) var image : Resource
@@ -111,7 +111,7 @@ func get_value_for(uv : Vector2, pseed : int) -> Color:
 		b = Filter.blend_lighten(uv, Vector3(s1.r, s1.g, s1.b), Vector3(s2.r, s2.g, s2.b), a * s1.a)
 	elif blend_type == BlendType.DARKEN:
 		b = Filter.blend_darken(uv, Vector3(s1.r, s1.g, s1.b), Vector3(s2.r, s2.g, s2.b), a * s1.a)
-	elif blend_type == BlendType.DIFFRENCE:
+	elif blend_type == BlendType.DIFFERENCE:
 		b = Filter.blend_difference(uv, Vector3(s1.r, s1.g, s1.b), Vector3(s2.r, s2.g, s2.b), a * s1.a)
 
 	return Color(b.x, b.y, b.z, min(1, s2.a + a * s1.a))

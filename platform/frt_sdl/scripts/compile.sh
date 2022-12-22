@@ -41,7 +41,7 @@ case "$arch" in
 		cross_opts=""
 		;;
 	*)
-		echo "compile.sh: unknwon <arch>: $arch"
+		echo "compile.sh: unknown <arch>: $arch"
 		usage
 		;;
 esac
@@ -68,7 +68,7 @@ case "$preset" in
 		  $cross_opts $*
 		;;
 	*)
-		echo "compile.sh: unknwon <preset>: $preset"
+		echo "compile.sh: unknown <preset>: $preset"
 		usage
 		;;
 esac

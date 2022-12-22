@@ -35,7 +35,7 @@ protected:
 	Ref<MMNodeUniversalProperty> input1;
 	Ref<MMNodeUniversalProperty> input2;
 	Ref<MMNodeUniversalProperty> output;
-	//export(int, "Union,Substraction,Intersection")
+	//export(int, "Union,Subtraction,Intersection")
 	int operation;
 };
 

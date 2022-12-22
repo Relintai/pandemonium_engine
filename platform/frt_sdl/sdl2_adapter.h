@@ -16,7 +16,7 @@
   and passed to Godot only when a translation is received.
   This is incomplete and likely to be a source of bugs. Ctrl+... combinations
   for example don't seem to generate a translation. Multiple keypresses
-  are also going to have a wrong unicode traslation.
+  are also going to have a wrong unicode translation.
   Still, this implementation seems a good compromise: simple enough,
   yet functional enough.
   The 2D platformer feels responsive (even when adding WASD input mappings

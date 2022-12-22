@@ -204,7 +204,7 @@ func set_variations(val : bool) -> void:
 
 #----------------------
 #color_tiler.mmg
-#Tiles several occurences of an input image while adding randomness.
+#Tiles several occurrences of an input image while adding randomness.
 
 #vec4 tiler_$(name)(vec2 uv, vec2 tile, int overlap, vec2 _seed, out vec3 random_color) {
 #	vec4 c = vec4(0.0);

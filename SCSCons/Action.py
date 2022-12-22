@@ -330,7 +330,7 @@ def _function_contents(func):
 
 def _object_instance_content(obj):
     """
-    Returns consistant content for a action class or an instance thereof
+    Returns consistent content for a action class or an instance thereof
 
     :Parameters:
       - `obj` Should be either and action class or an instance thereof

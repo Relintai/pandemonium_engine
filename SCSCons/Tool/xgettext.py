@@ -113,7 +113,7 @@ def _update_pot_file(target, source, env):
     # Revert working dirs to previous state.
     env.fs.chdir(save_cwd, 0)
     os.chdir(save_os_cwd)
-    # If the command was not successfull, return error code.
+    # If the command was not successful, return error code.
     if status: return status
 
     new_content = cmd.out

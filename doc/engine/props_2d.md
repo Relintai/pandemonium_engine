@@ -19,7 +19,7 @@ repo, should you want to. It contains all my modules.
 
 # Prop2DData
 
-Prop2Ds are basicly 3D scenes in a simple format, so other things can easily process them without instancing.
+Prop2Ds are basically 3D scenes in a simple format, so other things can easily process them without instancing.
 
 For example if you create a building from MeshDataInstances, and then convert that scene to a prop, Voxelman
 can spawn it, merge it's meshes, and create lods without any scene instancing.
@@ -36,7 +36,7 @@ They contain 4 methods for scene->prop conversion, namely:
 //Whether or not this Prop2DDataEntry can process the given Node.
 virtual bool _processor_handles(Node *node);
 
-//Save the given Node into the given prop_data any way you like, at tranform.
+//Save the given Node into the given prop_data any way you like, at transform.
 virtual void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform &transform);
 
 //Turn Prop2DDataEntry back into a Node

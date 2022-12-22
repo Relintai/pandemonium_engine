@@ -3,7 +3,7 @@
 
 #include "database/database.h"
 
-//Brynet has it aswell, and because of using namespace it is defined here aswell
+//Brynet has it as well, and because of using namespace it is defined here as well
 //later this will be fixed better
 //#ifdef IS_NUM
 //#undef IS_NUM

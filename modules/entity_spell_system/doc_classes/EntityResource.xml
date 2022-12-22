@@ -39,14 +39,14 @@
 		<method name="_notification_cstat_changed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="statid" type="int" />
-			<argument index="1" name="curent" type="float" />
+			<argument index="1" name="current" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="_notification_sstat_changed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="statid" type="int" />
-			<argument index="1" name="curent" type="float" />
+			<argument index="1" name="current" type="float" />
 			<description>
 			</description>
 		</method>

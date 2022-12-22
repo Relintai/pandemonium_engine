@@ -237,7 +237,7 @@ public:
 	real_t read_unit_real(CompressionLevel p_compression_level);
 
 	/// Add a vector2 into the buffer.
-	/// Note: This kind of vector occupies more space than the normalized verison.
+	/// Note: This kind of vector occupies more space than the normalized version.
 	/// Consider use a normalized vector to save bandwidth if possible.
 	///
 	/// Returns the decompressed vector so both the client and the peers can use
@@ -259,7 +259,7 @@ public:
 	Vector2 read_normalized_vector2(CompressionLevel p_compression_level);
 
 	/// Add a vector3 into the buffer.
-	/// Note: This kind of vector occupies more space than the normalized verison.
+	/// Note: This kind of vector occupies more space than the normalized version.
 	/// Consider use a normalized vector to save bandwidth if possible.
 	///
 	/// Returns the decompressed vector so both the client and the peers can use

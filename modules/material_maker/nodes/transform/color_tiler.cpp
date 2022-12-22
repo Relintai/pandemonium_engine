@@ -231,7 +231,7 @@ Color MMColorTiler::_get_value_for(const Vector2 &uv, const int pseed) {
 
 //----------------------;
 //color_tiler.mmg;
-//Tiles several occurences of an input image while adding randomness.;
+//Tiles several occurrences of an input image while adding randomness.;
 //vec4 tiler_$(name)(vec2 uv, vec2 tile, int overlap, vec2 _seed, out vec3 random_color) {;
 //	vec4 c = vec4(0.0);
 //	vec3 rc = vec3(0.0);

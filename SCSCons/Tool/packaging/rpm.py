@@ -303,7 +303,7 @@ def build_specfile_filesection(spec, files):
 class SimpleTagCompiler:
     """ Compile RPM tags by doing simple string substitution.
 
-    The replacement specfication is stored in the *tagset* dictionary,
+    The replacement specification is stored in the *tagset* dictionary,
     something like::
 
       {"abc" : "cdef %s ", "abc_": "cdef %s %s"}

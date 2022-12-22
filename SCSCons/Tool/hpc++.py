@@ -34,7 +34,7 @@ selection method.
 __revision__ = "__FILE__ __REVISION__ __DATE__ __DEVELOPER__"
 
 
-#forward proxy to the preffered cxx version
+#forward proxy to the preferred cxx version
 from SCons.Tool.hpcxx import *
 
 

@@ -114,13 +114,13 @@
 		<method name="get_string_from_utf16">
 			<return type="String" />
 			<description>
-				Converts UTF-16 encoded array to [String]. If the BOM is missing, system endianness is assumed. Returns empty string if source array is not vaild UTF-16 string.
+				Converts UTF-16 encoded array to [String]. If the BOM is missing, system endianness is assumed. Returns empty string if source array is not valid UTF-16 string.
 			</description>
 		</method>
 		<method name="get_string_from_utf32">
 			<return type="String" />
 			<description>
-				Converts UTF-8 encoded array to [String]. Slower than [method get_string_from_ascii] but supports UTF-8 encoded data. Use this function if you are unsure about the source of the data. For user input this function should always be preferred. Returns empty string if source array is not vaild UTF-8 string.
+				Converts UTF-8 encoded array to [String]. Slower than [method get_string_from_ascii] but supports UTF-8 encoded data. Use this function if you are unsure about the source of the data. For user input this function should always be preferred. Returns empty string if source array is not valid UTF-8 string.
 			</description>
 		</method>
 		<method name="get_string_from_utf8">

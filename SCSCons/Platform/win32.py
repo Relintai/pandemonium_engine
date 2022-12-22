@@ -76,19 +76,19 @@ try:
     import threading
     spawn_lock = threading.Lock()
 
-    # This locked version of spawnve works around a Windows
-    # MSVCRT bug, because its spawnve is not thread-safe.
+    # This locked version of spawn works around a Windows
+    # MSVCRT bug, because its spawn is not thread-safe.
     # Without this, python can randomly crash while using -jN.
     # See the python bug at http://bugs.python.org/issue6476
     # and SCons issue at
     # https://github.com/SCons/scons/issues/2449
-    def spawnve(mode, file, args, env):
+    def spawn(mode, file, args, env):
         spawn_lock.acquire()
         try:
             if mode == os.P_WAIT:
-                ret = os.spawnve(os.P_NOWAIT, file, args, env)
+                ret = os.spawn(os.P_NOWAIT, file, args, env)
             else:
-                ret = os.spawnve(mode, file, args, env)
+                ret = os.spawn(mode, file, args, env)
         finally:
             spawn_lock.release()
         if mode == os.P_WAIT:
@@ -96,14 +96,14 @@ try:
             ret = status >> 8
         return ret
 except ImportError:
-    # Use the unsafe method of spawnve.
+    # Use the unsafe method of spawn.
     # Please, don't try to optimize this try-except block
     # away by assuming that the threading module is always present.
     # In the test test/option-j.py we intentionally call SCons with
     # a fake threading.py that raises an import exception right away,
     # simulating a non-existent package.
-    def spawnve(mode, file, args, env):
-        return os.spawnve(mode, file, args, env)
+    def spawn(mode, file, args, env):
+        return os.spawn(mode, file, args, env)
 
 # The upshot of all this is that, if you are using Python 1.5.2,
 # you had better have cmd or command.com in your PATH when you run
@@ -150,7 +150,7 @@ def piped_spawn(sh, escape, cmd, args, env, stdout, stderr):
     # actually do the spawn
     try:
         args = [sh, '/C', escape(' '.join(args))]
-        ret = spawnve(os.P_WAIT, sh, args, env)
+        ret = spawn(os.P_WAIT, sh, args, env)
     except OSError as e:
         # catch any error
         try:
@@ -183,7 +183,7 @@ def piped_spawn(sh, escape, cmd, args, env, stdout, stderr):
 
 def exec_spawn(l, env):
     try:
-        result = spawnve(os.P_WAIT, l[0], l, env)
+        result = spawn(os.P_WAIT, l[0], l, env)
     except (OSError, EnvironmentError) as e:
         try:
             result = exitvalmap[e.errno]
@@ -226,7 +226,7 @@ def get_system_root():
     if _system_root is not None:
         return _system_root
 
-    # A resonable default if we can't read the registry
+    # A reasonable default if we can't read the registry
     val = os.environ.get('SystemRoot', "C:\\WINDOWS")
 
     if SCons.Util.can_read_reg:

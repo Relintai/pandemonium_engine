@@ -152,7 +152,7 @@ PoolStringArray FormAlphaFieldEntry::_validate(Ref<WebServerRequest> request, co
 }
 
 FormAlphaFieldEntry::FormAlphaFieldEntry() {
-	_not_alpha_error = " needs to only contain caharcters.";
+	_not_alpha_error = " needs to only contain characters.";
 }
 FormAlphaFieldEntry::~FormAlphaFieldEntry() {
 }

@@ -200,7 +200,7 @@ entities for every model/body you have.
 
 Bodies are stored at `EntityData->EntitySpeciesData->ModelDatas (SpeciesModelData)->Body`
 
-When an `Entity` gets initialized, it will instance it's body automatically, but if you want to intance it yourself,
+When an `Entity` gets initialized, it will instance it's body automatically, but if you want to do it yourself,
 you can call `void instance_body(entity_data: EntityData, model_index: int)` on an `Entity`.
 
 The `model_index` property tell the `Entity` which one it should use.
@@ -360,7 +360,7 @@ The standard speed resource implementation.
 
 #### EntityResourceCostData
 
-This is the class taht lets you implement resource costs. For example mana cost for a spell.
+This is the class that lets you implement resource costs. For example mana cost for a spell.
 
 ##### EntityResourceCostDataResource
 
@@ -481,9 +481,9 @@ func sapply_aura() -> void:
 
 #### UI
 
-[Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player)
+[Complete UI Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player)
 
-[Player UI Core Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/player_ui)
+[Player UI Core Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/player_ui)
 
 [Aura Frame Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/auraframe) \
 [Castbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/castbar) \
@@ -495,7 +495,7 @@ func sapply_aura() -> void:
 [Inventory Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/bags) \
 [Crafting Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/crafting) \
 [Loot Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/loot_window) \
-[Talent Window Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/talents) \
+[Talent Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/talents) \
 [Spellbook Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/spellbook)  \
 [Vendor Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/vendor_window) \
 [Trainer Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/trainer)
@@ -550,7 +550,7 @@ And an example ui implementation [here](https://github.com/Relintai/broken_seals
 
 You can set all the xp values for your levels in `ProjectSettings->Ess->xp`.
 
-Now you can start distributing xp, for whatever you'd like to Entities, using `Entity.xp_adds(vlaue : int)`
+Now you can start distributing xp, for whatever you'd like to Entities, using `Entity.xp_adds(value : int)`
 
 ## Examples
 

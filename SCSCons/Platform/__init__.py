@@ -301,7 +301,7 @@ class TempFileMunge:
         # to avoid creating two temporary files one for print and one for execute.
         if node is not None:
             try:
-                # Storing in tempfile_cmdlist by self.cmd provided when intializing
+                # Storing in tempfile_cmdlist by self.cmd provided when initializing
                 # $TEMPFILE{} fixes issue raised in PR #3140 and #3553
                 node.attributes.tempfile_cmdlist[cmdlist_key] = cmdlist
             except AttributeError:

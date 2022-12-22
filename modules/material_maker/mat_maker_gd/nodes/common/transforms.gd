@@ -433,7 +433,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #				"control": "P1.y",
 #				"default": 0,
 #				"label": "Center Y:",
-#				"longdesc": "The poisition of the scale center",
+#				"longdesc": "The position of the scale center",
 #				"max": 1,
 #				"min": -1,
 #				"name": "cy",
@@ -938,7 +938,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 
 #----------------------
 #splatter.mmg
-#Spreads several occurences of an input image randomly.
+#Spreads several occurrences of an input image randomly.
 
 #vec4 $(name_uv)_rch = splatter_$(name)($uv, int($count), vec2(float($seed)));
 
@@ -998,7 +998,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #16, "pv = clamp(0.25*(pv+floor(rand2(seed)*4.0)), vec2(0.0), vec2(1.0));"
 
 #Parameters:
-#count, int, default 25, min 1, max 100, - The number of occurences of the input image
+#count, int, default 25, min 1, max 100, - The number of occurrences of the input image
 #select_inputs (Inputs), enum, default 0, values 1, 4, 16
 #tile, Vector2, default 4, min:1, max:64, step:1 - The number of columns of the tiles pattern
 #overlap, float, default 1, min 0, max 5, step 1 - The number of neighbour tiles an instance of the input image can overlap. Set this parameter to the lowest value that generates the expected result (where all instances are fully visible) to improve performance.
@@ -1009,7 +1009,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 
 #----------------------
 #splatter_color.mmg
-#preads several occurences of an input image randomly.
+#preads several occurrences of an input image randomly.
 
 #vec4 splatter_$(name)(vec2 uv, int count, vec2 seed) {\n\t
 #	vec4 c = vec4(0.0);\n\t
@@ -1061,7 +1061,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #16, "pv = clamp(0.25*(pv+floor(rand2(seed)*4.0)), vec2(0.0), vec2(1.0));"
 
 #Parameters:
-#count, int, default 25, min 1, max 100, - The number of occurences of the input image
+#count, int, default 25, min 1, max 100, - The number of occurrences of the input image
 #select_inputs (Inputs), enum, default 0, values 1, 4, 16
 #tile, Vector2, default 4, min:1, max:64, step:1 - The number of columns of the tiles pattern
 #overlap, float, default 1, min 0, max 5, step 1 - The number of neighbour tiles an instance of the input image can overlap. Set this parameter to the lowest value that generates the expected result (where all instances are fully visible) to improve performance.
@@ -1073,7 +1073,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 
 #----------------------
 #circle_splatter.mmg
-#Spreads several occurences of an input image in a circle or spiral pattern.
+#Spreads several occurrences of an input image in a circle or spiral pattern.
 
 #vec4 $(name_uv)_rch = splatter_$(name)($uv, int($count), int($rings), vec2(float($seed)));
 
@@ -1133,8 +1133,8 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #16, "pv = clamp(0.25*(pv+floor(rand2(seed)*4.0)), vec2(0.0), vec2(1.0));"
 
 #Parameters:
-#count, int, default 10, min 1, max 256, - The number of occurences of the input image
-#rings, int, default 1, min 1, max 16, - The number of occurences of the input image
+#count, int, default 10, min 1, max 256, - The number of occurrences of the input image
+#rings, int, default 1, min 1, max 16, - The number of occurrences of the input image
 #select_inputs (Inputs), enum, default 0, values 1, 4, 16
 #scale, Vector2, default 1, min:0, max:2, step:0.01 - "The scale of input images on the X axis
 #radius, float, default 0.4, min 0, max 0.5, step 0.01

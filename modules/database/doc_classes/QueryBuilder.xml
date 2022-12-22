@@ -81,7 +81,7 @@
 		<method name="insert">
 			<return type="QueryBuilder" />
 			<argument index="0" name="table_name" type="String" default="&quot;&quot;" />
-			<argument index="1" name="colums" type="String" default="&quot;&quot;" />
+			<argument index="1" name="columns" type="String" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>

@@ -1435,7 +1435,7 @@ class UniqueList(UserList):
     """A list which maintains uniqueness.
 
     Uniquing is lazy: rather than being assured on list changes, it is fixed
-    up on access by those methods which need to act on a uniqe list to be
+    up on access by those methods which need to act on a unique list to be
     correct. That means things like "in" don't have to eat the uniquing time.
     """
     def __init__(self, initlist=None):

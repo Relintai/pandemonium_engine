@@ -20,7 +20,7 @@ Contains a job that can run on different threads.
 A job is only considered finished, if you set the 'complete' property to 'true'. If multiple threads are available,
 the system will not check for this though, because there is no need.
 
-If you want to support envioronments that doesn't have threading, you can use:
+If you want to support environments that doesn't have threading, you can use:
 
 ```
 bool should_do(const bool just_check = false);
@@ -31,7 +31,7 @@ For example:
 
 ```
 func _execute():
-    # On the first run this will return true, on subsequest runs it will return false
+    # On the first run this will return true, on subsequent runs it will return false
     if should_do():
         thing1()
 
@@ -85,7 +85,7 @@ func _execute():
 
 ```
 
-This class will need litle tweaks, hopefully I can get to is soon.
+This class will need little tweaks, hopefully I can get to is soon.
 
 # ThreadPoolExecuteJob
 
@@ -100,7 +100,7 @@ ThreadPool.create_execute_job(self, "method", arg1, arg2, ...)
 ThreadPool.create_execute_job_simple(self, "method")
 ```
 
-This class will need litle tweaks, hopefully I can get to is soon.
+This class will need little tweaks, hopefully I can get to is soon.
 
 # ThreadPool singleton
 

@@ -448,8 +448,8 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #				"type": "enum",
 #				"values": [
 #					{
-#						"name": "Euclidian",
-#						"value": "euclidian"
+#						"name": "Euclidean",
+#						"value": "euclidean"
 #					},
 #					{
 #						"name": "Manhattan",

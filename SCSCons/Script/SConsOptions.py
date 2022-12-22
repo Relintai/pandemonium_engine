@@ -277,7 +277,7 @@ class SConsOptionGroup(optparse.OptionGroup):
     def format_help(self, formatter):
         """ Format an option group's help text.
 
-        The title is dedented so it's flush with the "SCons Options"
+        The title is indented so it's flush with the "SCons Options"
         title we print at the top.
         """
         formatter.dedent()

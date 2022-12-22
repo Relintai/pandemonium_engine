@@ -116,7 +116,7 @@ void Prop2DDataTiledWall2D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_heigth"), &Prop2DDataTiledWall2D::get_heigth);
 	ClassDB::bind_method(D_METHOD("set_heigth", "value"), &Prop2DDataTiledWall2D::set_heigth);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heigth"), "set_heigth", "get_heigth");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "height"), "set_heigth", "get_heigth");
 
 	ClassDB::bind_method(D_METHOD("get_data"), &Prop2DDataTiledWall2D::get_data);
 	ClassDB::bind_method(D_METHOD("set_data", "value"), &Prop2DDataTiledWall2D::set_data);

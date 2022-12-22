@@ -870,7 +870,7 @@ def scons_subst(strSubst, env, mode=SUBST_RAW, target=None, source=None, gvars={
 
         # Now replace escaped $'s currently "$$"
         # This is needed because we now retain $$ instead of
-        # replacing them during substition to avoid
+        # replacing them during substitution to avoid
         # improperly trying to escape "$$(" as being "$("
         result = result.replace('$$','$')
     elif is_Sequence(result):

@@ -47,7 +47,7 @@ def package(env, target, source, PACKAGEROOT, NAME, VERSION, DESCRIPTION,
     target, source = stripinstallbuilder(target, source, env)
     target, source = putintopackageroot(target, source, env, PACKAGEROOT)
 
-    # This should be overrideable from the construction environment,
+    # This should be overridable from the construction environment,
     # which it is by using ARCHITECTURE=.
     # Guessing based on what os.uname() returns at least allows it
     # to work for both i386 and x86_64 Linux systems.

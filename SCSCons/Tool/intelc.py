@@ -516,7 +516,7 @@ def generate(env, version=None, abi=None, topdir=None, verbose=0):
                    ('LIB'    , 'LibDir',     'Lib'),
                    ('PATH'   , 'BinDir',     'Bin'))
             # We are supposed to ignore version if topdir is set, so set
-            # it to the emptry string if it's not already set.
+            # it to the empty string if it's not already set.
             if version is None:
                 version = ''
             # Each path has a registry entry, use that or default to subdir

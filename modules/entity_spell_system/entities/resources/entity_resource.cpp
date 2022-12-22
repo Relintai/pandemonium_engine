@@ -431,8 +431,8 @@ void EntityResource::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("mods_changed"), &EntityResource::mods_changed);
 
-	BIND_VMETHOD(MethodInfo("_notification_sstat_changed", PropertyInfo(Variant::INT, "statid"), PropertyInfo(Variant::REAL, "curent")));
-	BIND_VMETHOD(MethodInfo("_notification_cstat_changed", PropertyInfo(Variant::INT, "statid"), PropertyInfo(Variant::REAL, "curent")));
+	BIND_VMETHOD(MethodInfo("_notification_sstat_changed", PropertyInfo(Variant::INT, "statid"), PropertyInfo(Variant::REAL, "current")));
+	BIND_VMETHOD(MethodInfo("_notification_cstat_changed", PropertyInfo(Variant::INT, "statid"), PropertyInfo(Variant::REAL, "current")));
 
 	BIND_VMETHOD(MethodInfo("_ons_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_onc_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));

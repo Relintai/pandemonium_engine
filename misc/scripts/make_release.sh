@@ -3,7 +3,7 @@ set -e
 
 # Run this script form it's own folder
 
-# Before using this sript, I recommend using:
+# Before using this script, I recommend using:
 # pre_release_check_files_present.sh
 # strip_all.sh
 

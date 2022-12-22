@@ -1168,7 +1168,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #			"ports": [
 #				{
 #					"group_size": 0,
-#					"longdesc": "The genrated distance field",
+#					"longdesc": "The generated distance field",
 #					"name": "sdf",
 #					"shortdesc": "Output",
 #					"type": "sdf2d"
@@ -1240,7 +1240,7 @@ const Commons = preload("res://addons/mat_maker_gd/nodes/common/commons.gd")
 #							"widget": "tiled"
 #						}
 #					],
-#					"longdesc": "Controls whether the resulting ditance field will be tiled. Useful for patterns that extend over the texture bounds",
+#					"longdesc": "Controls whether the resulting distance field will be tiled. Useful for patterns that extend over the texture bounds",
 #					"name": "param2",
 #					"shortdesc": "Tiled",
 #					"type": "linked_control"

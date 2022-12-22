@@ -7,7 +7,7 @@ var SDF2D = preload("res://addons/mat_maker_gd/nodes/common/sdf2d.gd")
 export(Resource) var input1 : Resource
 export(Resource) var input2 : Resource
 export(Resource) var output : Resource
-export(int, "Union,Substraction,Intersection") var operation : int = 0
+export(int, "Union,Subtraction,Intersection") var operation : int = 0
 export(float) var smoothness : float = 0.15
 
 func _init_properties():
@@ -50,7 +50,7 @@ func _register_methods(mm_graph_node) -> void:
 	mm_graph_node.add_slot_label_universal(input2)
 	mm_graph_node.add_slot_label_universal(output)
 
-	mm_graph_node.add_slot_enum("get_operation", "set_operation", "Operation", [ "Union", "Substraction", "Intersection" ])
+	mm_graph_node.add_slot_enum("get_operation", "set_operation", "Operation", [ "Union", "Subtraction", "Intersection" ])
 	mm_graph_node.add_slot_float("get_smoothness", "set_smoothness", "Smoothness", 0.01)
 
 func get_property_value(uv : Vector2) -> float:

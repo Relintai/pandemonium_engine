@@ -260,7 +260,7 @@
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
-				Call this method on a [WebNode] to render a menu into the given [WebServerRequest]. When your [WebNode] wants to render a menu, call this method. The default implementaion will call render_main_menu() on the [WebServer]'s root [WebNode], so that's where you should create your site wide menu rendering logic.
+				Call this method on a [WebNode] to render a menu into the given [WebServerRequest]. When your [WebNode] wants to render a menu, call this method. The default implementation will call render_main_menu() on the [WebServer]'s root [WebNode], so that's where you should create your site wide menu rendering logic.
 				If you want more control over menu rendering for some of your [WebNode]s, like they need to render a custom menu, that's when you override this method.
 			</description>
 		</method>

@@ -85,7 +85,7 @@ A marching cubes based Voxel World. Actually it uses a modified version of the T
 
 ### VoxelWorldCubic
 
-This is my own meshing algorithm, it's basicly a Minecraft style mesher that can take isolevel into account.
+This is my own meshing algorithm, it's basically a Minecraft style mesher that can take isolevel into account.
 
 It's kind of a pain to use, it might get removed.
 
@@ -102,7 +102,7 @@ You can write your own algorithm by implementing the ``` void _generate_chunk(ch
 Producing just a terrain mesh for a chunk is not that hard by itself. However when you start adding layers/features
 like lod generation, collision meshes (especially since manipulating the physics server is not threadsafe),
 vertex lights, props, snapping props, props with vertex lights, etc
-chunk mesh generation can quicly become a serious mess.
+chunk mesh generation can quickly become a serious mess.
 
 VoxelJobs are meant to solve the issue with less complexity.
 
@@ -185,7 +185,7 @@ When it starts building meshes it will start submitting jobs to thread_pool one 
 If you want to implement your own meshing algorithm you can do so by overriding ``` void _add_chunk(chunk: VoxelChunk) virtual ```.
 
 VoxelMesher works similarly to SurfaceTool, so first you need to set colors, uvs, etc and then call add_vertex.
-They won't get reset, so for exaple if you want all your vertices to have a certain color, you can get away with setting it only once.
+They won't get reset, so for example if you want all your vertices to have a certain color, you can get away with setting it only once.
 
 ## Compiling
 
@@ -211,7 +211,7 @@ If you want Godot 4.0:
 
 (the folder needs to be named voxelman!)
 
-4. If you want the optional dependencies run these commands aswell:
+4. If you want the optional dependencies run these commands as well:
 
 ```git clone https://github.com/Relintai/texture_packer.git texture_packer``` \
 ```git clone https://github.com/Relintai/mesh_data_resource.git mesh_data_resource```

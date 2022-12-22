@@ -50,7 +50,7 @@ public:
 	// pc's CanvasItem will use the canvas in w1, and will likely call gui_reset_canvas_sort_index() in w1 at least some point.
 	// What we want, is to defer this call to the root viewport, as that is the class that is able to deal with it.
 	// This is what makes overrides transparent to nodes like the Camera, as they can just use the world that they are a child of
-	// and overrides can be handled for them in the backgorund.
+	// and overrides can be handled for them in the background.
 
 	virtual void gui_reset_canvas_sort_index();
 	virtual int gui_get_canvas_sort_index();

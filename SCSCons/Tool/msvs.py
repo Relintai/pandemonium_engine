@@ -768,15 +768,15 @@ class _GenerateV6DSP(_DSPGenerator):
 
         # read to get configs
         line = dspfile.readline()
-        datas = line
+        data = line
         while line and line != '\n':
             line = dspfile.readline()
-            datas = datas + line
+            data = data + line
 
         # OK, we've found our little pickled cache of data.
         try:
-            datas = base64.decodestring(datas)
-            data = pickle.loads(datas)
+            data = base64.decodestring(data)
+            data = pickle.loads(data)
         except KeyboardInterrupt:
             raise
         except Exception:
@@ -787,17 +787,17 @@ class _GenerateV6DSP(_DSPGenerator):
         # keep reading to get sources
         data = None
         line = dspfile.readline()
-        datas = line
+        data = line
         while line and line != '\n':
             line = dspfile.readline()
-            datas = datas + line
+            data = data + line
         dspfile.close()
 
         # OK, we've found our little pickled cache of data.
         # it has a "# " in front of it, so we strip that.
         try:
-            datas = base64.decodestring(datas)
-            data = pickle.loads(datas)
+            data = base64.decodestring(data)
+            data = pickle.loads(data)
         except KeyboardInterrupt:
             raise
         except:
@@ -1086,15 +1086,15 @@ class _GenerateV7DSP(_DSPGenerator, _GenerateV7User):
 
         # read to get configs
         line = dspfile.readline()
-        datas = line
+        data = line
         while line and line != '\n':
             line = dspfile.readline()
-            datas = datas + line
+            data = data + line
 
         # OK, we've found our little pickled cache of data.
         try:
-            datas = base64.decodestring(datas)
-            data = pickle.loads(datas)
+            data = base64.decodestring(data)
+            data = pickle.loads(data)
         except KeyboardInterrupt:
             raise
         except:
@@ -1105,16 +1105,16 @@ class _GenerateV7DSP(_DSPGenerator, _GenerateV7User):
         # keep reading to get sources
         data = None
         line = dspfile.readline()
-        datas = line
+        data = line
         while line and line != '\n':
             line = dspfile.readline()
-            datas = datas + line
+            data = data + line
         dspfile.close()
 
         # OK, we've found our little pickled cache of data.
         try:
-            datas = base64.decodestring(datas)
-            data = pickle.loads(datas)
+            data = base64.decodestring(data)
+            data = pickle.loads(data)
         except KeyboardInterrupt:
             raise
         except:
@@ -1582,16 +1582,16 @@ class _GenerateV7DSW(_DSWGenerator):
             line = dswfile.readline()
 
         line = dswfile.readline()
-        datas = line
+        data = line
         while line:
             line = dswfile.readline()
-            datas = datas + line
+            data = data + line
         dswfile.close()
 
         # OK, we've found our little pickled cache of data.
         try:
-            datas = base64.decodestring(datas)
-            data = pickle.loads(datas)
+            data = base64.decodestring(data)
+            data = pickle.loads(data)
         except KeyboardInterrupt:
             raise
         except:

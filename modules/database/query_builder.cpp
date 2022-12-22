@@ -322,7 +322,7 @@ void QueryBuilder::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("where", "params"), &QueryBuilder::_where_bind, "");
 	ClassDB::bind_method(D_METHOD("from", "params"), &QueryBuilder::_from_bind, "");
-	ClassDB::bind_method(D_METHOD("insert", "table_name", "colums"), &QueryBuilder::_insert_bind, "", "");
+	ClassDB::bind_method(D_METHOD("insert", "table_name", "columns"), &QueryBuilder::_insert_bind, "", "");
 	ClassDB::bind_method(D_METHOD("values", "params_str"), &QueryBuilder::_values_bind, "");
 	ClassDB::bind_method(D_METHOD("val"), &QueryBuilder::_val_bind);
 	ClassDB::bind_method(D_METHOD("vals", "param"), &QueryBuilder::_vals_bind);

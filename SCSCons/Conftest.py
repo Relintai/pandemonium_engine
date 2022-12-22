@@ -501,7 +501,7 @@ int main(void) {
             size = int(out)
         except ValueError:
             # If cannot convert output of test prog to an integer (the size),
-            # something went wront, so just fail
+            # something went wrong, so just fail
             st = 1
             size = 0
 
