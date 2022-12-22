@@ -30,14 +30,14 @@
 
 #include "object.h"
 
-#include "core/object/class_db.h"
 #include "core/core_string_names.h"
+#include "core/object/class_db.h"
 #include "core/object/message_queue.h"
 #include "core/object/object_rc.h"
-#include "core/os/os.h"
-#include "core/string/print_string.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"
+#include "core/os/os.h"
+#include "core/string/print_string.h"
 #include "core/string/translation.h"
 
 #ifdef DEBUG_ENABLED
@@ -1063,11 +1063,7 @@ void Object::set_meta(const String &p_name, const Variant &p_value) {
 
 Variant Object::get_meta(const String &p_name, const Variant &p_default) const {
 	if (!metadata.has(p_name)) {
-		if (p_default != Variant()) {
-			return p_default;
-		} else {
-			ERR_FAIL_V_MSG(Variant(), "The object does not have any 'meta' values with the key '" + p_name + "'.");
-		}
+		return p_default;
 	}
 	return metadata[p_name];
 }
