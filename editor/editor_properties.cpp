@@ -1560,7 +1560,7 @@ void EditorPropertyVector2::_value_changed(double val, const String &p_name) {
 	Vector2 v2;
 	v2.x = spin[0]->get_value();
 	v2.y = spin[1]->get_value();
-	emit_changed(get_edited_property(), v2, p_name);
+	emit_changed(get_edited_property(), v2, linked->is_pressed() ? "" : p_name);
 }
 
 void EditorPropertyVector2::update_property() {
@@ -1703,7 +1703,7 @@ void EditorPropertyVector2i::_value_changed(double val, const String &p_name) {
 	Vector2i v2;
 	v2.x = spin[0]->get_value();
 	v2.y = spin[1]->get_value();
-	emit_changed(get_edited_property(), v2, p_name);
+	emit_changed(get_edited_property(), v2, linked->is_pressed() ? "" : p_name);
 }
 
 void EditorPropertyVector2i::update_property() {
@@ -2009,7 +2009,7 @@ void EditorPropertyVector3::_value_changed(double val, const String &p_name) {
 	v3.x = spin[0]->get_value();
 	v3.y = spin[1]->get_value();
 	v3.z = spin[2]->get_value();
-	emit_changed(get_edited_property(), v3, p_name);
+	emit_changed(get_edited_property(), v3, linked->is_pressed() ? "" : p_name);
 }
 
 void EditorPropertyVector3::update_property() {
@@ -2172,7 +2172,7 @@ void EditorPropertyVector3i::_value_changed(double val, const String &p_name) {
 	v3.x = spin[0]->get_value();
 	v3.y = spin[1]->get_value();
 	v3.z = spin[2]->get_value();
-	emit_changed(get_edited_property(), v3, p_name);
+	emit_changed(get_edited_property(), v3, linked->is_pressed() ? "" : p_name);
 }
 
 void EditorPropertyVector3i::update_property() {
