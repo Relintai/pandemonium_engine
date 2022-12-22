@@ -1179,6 +1179,7 @@ void ResourceImporterScene::_replace_owner(Node *p_node, Node *p_scene, Node *p_
 }
 
 void ResourceImporterScene::_add_shapes(Node *p_node, const List<Ref<Shape>> &p_shapes) {
+	int idx = 0;
 	for (const List<Ref<Shape>>::Element *E = p_shapes.front(); E; E = E->next()) {
 		CollisionShape *cshape = memnew(CollisionShape);
 		cshape->set_shape(E->get());
@@ -1186,6 +1187,7 @@ void ResourceImporterScene::_add_shapes(Node *p_node, const List<Ref<Shape>> &p_
 
 		cshape->set_name("shape" + itos(idx));
 		cshape->set_owner(p_node->get_owner());
+		++idx;
 	}
 }
 
