@@ -19,6 +19,15 @@
 			<description>
 			</description>
 		</method>
+		<method name="_render_user_page" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<argument index="1" name="data" type="Dictionary" />
+			<description>
+				Implementing this method will make the system call it instead of the normal built in html rendering methods on the engine side.
+				This is when you want to only customize the rendered html. If you need to change backend logic, look at the other available virtuals.
+			</description>
+		</method>
 		<method name="handle_logged_in">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />

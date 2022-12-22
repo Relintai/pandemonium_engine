@@ -84,7 +84,20 @@ void UserSettingsWebPage::_render_index(Ref<WebServerRequest> request) {
 		}
 	}
 
-	render_settings_request(user, request, &data);
+	if (has_method("_render_user_page")) {
+		Dictionary d;
+
+		d["user"] = user;
+		d["error_str"] = data.error_str;
+		d["uname_val"] = data.uname_val;
+		d["email_val"] = data.email_val;
+		d["pass_val"] = data.pass_val;
+		d["pass_check_val"] = data.pass_check_val;
+
+		call("_render_user_page", request, d);
+	} else {
+		render_settings_request(user, request, &data);
+	}
 }
 
 void UserSettingsWebPage::render_settings_request(Ref<User> &user, Ref<WebServerRequest> request, SettingsRequestData *data) {

@@ -54,7 +54,16 @@ void UserLoginWebPage::_render_index(Ref<WebServerRequest> request) {
 
 				emit_signal("user_logged_in", request, user);
 
-				render_login_success(request);
+				if (has_method("_render_user_page")) {
+					Dictionary d;
+
+					d["type"] = "render_login_success";
+					d["user"] = user;
+
+					call("_render_user_page", request, d);
+				} else {
+					render_login_success(request);
+				}
 
 				return;
 			}
@@ -63,7 +72,18 @@ void UserLoginWebPage::_render_index(Ref<WebServerRequest> request) {
 		}
 	}
 
-	render_login_request_default(request, &data);
+	if (has_method("_render_user_page")) {
+		Dictionary d;
+
+		d["type"] = "render_login_request_default";
+		d["error_str"] = data.error_str;
+		d["uname_val"] = data.uname_val;
+		d["pass_val"] = data.pass_val;
+
+		call("_render_user_page", request, d);
+	} else {
+		render_login_request_default(request, &data);
+	}
 }
 
 void UserLoginWebPage::render_login_request_default(Ref<WebServerRequest> request, LoginRequestData *data) {

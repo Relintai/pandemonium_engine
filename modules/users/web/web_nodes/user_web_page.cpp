@@ -137,6 +137,8 @@ UserWebPage::~UserWebPage() {
 }
 
 void UserWebPage::_bind_methods() {
+	BIND_VMETHOD(MethodInfo("_render_user_page", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::DICTIONARY, "data")));
+
 	ClassDB::bind_method(D_METHOD("get_logged_out_render_type"), &UserWebPage::get_logged_out_render_type);
 	ClassDB::bind_method(D_METHOD("set_logged_out_render_type", "val"), &UserWebPage::set_logged_out_render_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "logged_out_render_type", PROPERTY_HINT_ENUM, "Render,Redirect,Error"), "set_logged_out_render_type", "get_logged_out_render_type");

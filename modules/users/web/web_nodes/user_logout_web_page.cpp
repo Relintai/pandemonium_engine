@@ -29,11 +29,19 @@ void UserLogoutWebPage::_render_index(Ref<WebServerRequest> request) {
 
 	emit_signal("user_logged_out", request, user);
 
-	HTMLBuilder b;
-	b.w("Logout successful!");
-	request->body += b.result;
+	if (has_method("_render_user_page")) {
+		Dictionary d;
 
-	request->compile_and_send_body();
+		d["user"] = user;
+
+		call("_render_user_page", request, d);
+	} else {
+		HTMLBuilder b;
+		b.w("Logout successful!");
+		request->body += b.result;
+
+		request->compile_and_send_body();
+	}
 }
 
 UserLogoutWebPage::UserLogoutWebPage() {

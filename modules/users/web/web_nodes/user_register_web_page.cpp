@@ -63,12 +63,35 @@ void UserRegisterWebPage::_render_index(Ref<WebServerRequest> request) {
 
 			emit_signal("user_registered", request, user);
 
-			render_register_success(request);
+			if (has_method("_render_user_page")) {
+				Dictionary d;
+
+				d["type"] = "render_register_success";
+				d["user"] = user;
+
+				call("_render_user_page", request, d);
+			} else {
+				render_register_success(request);
+			}
+
 			return;
 		}
 	}
 
-	render_register_request_default(request, &data);
+	if (has_method("_render_user_page")) {
+		Dictionary d;
+
+		d["type"] = "render_register_request_default";
+		d["error_str"] = data.error_str;
+		d["uname_val"] = data.uname_val;
+		d["email_val"] = data.email_val;
+		d["pass_val"] = data.pass_val;
+		d["pass_check_val"] = data.pass_check_val;
+
+		call("_render_user_page", request, d);
+	} else {
+		render_register_request_default(request, &data);
+	}
 }
 
 void UserRegisterWebPage::render_register_success(Ref<WebServerRequest> request) {
