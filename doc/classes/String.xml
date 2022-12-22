@@ -711,6 +711,7 @@
 			<return type="int" />
 			<description>
 				Returns the string's amount of characters.
+				This does not include the null terminator (\0), use [method size] if you need that in your calculations aswell.
 			</description>
 		</method>
 		<method name="lpad">
@@ -898,6 +899,8 @@
 			<return type="int" />
 			<argument index="0" name="size" type="int" />
 			<description>
+				Resizes a string to the given size. Normally you should use [method set_length].
+				This includes the null terminator, which means the last character ([code]size - 1[/code]) will be set to null (\0).
 			</description>
 		</method>
 		<method name="rfind">
@@ -958,6 +961,14 @@
 				[b]Note:[/b] The [code]chars[/code] is not a suffix. See [method trim_suffix] method that will remove a single suffix string rather than a set of characters.
 			</description>
 		</method>
+		<method name="set_length">
+			<return type="int" />
+			<argument index="0" name="length" type="int" />
+			<description>
+				Sets how many characters a string will be able to store.
+				The null terminator (/0) will be automatically added as the [code]length + 1[/code]-th character. Use [method resize] if want to calculate with the null terminator directly.
+			</description>
+		</method>
 		<method name="sha1_buffer">
 			<return type="PoolByteArray" />
 			<description>
@@ -1004,6 +1015,8 @@
 		<method name="size">
 			<return type="int" />
 			<description>
+				Returns the String's size. Note that size includes the null terminator!
+				Normally [method length] is the method you want use.
 			</description>
 		</method>
 		<method name="split">

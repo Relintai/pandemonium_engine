@@ -229,6 +229,7 @@ public:
 
 		return err;
 	}
+	_FORCE_INLINE_ Error set_length(int p_length) { return resize(p_length + 1); }
 
 	_FORCE_INLINE_ const CharType &operator[](int p_index) const {
 		return _cowdata.get(p_index);

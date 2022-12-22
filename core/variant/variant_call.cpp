@@ -297,6 +297,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM0(String, clear);
 	VCALL_LOCALMEM0R(String, size);
 	VCALL_LOCALMEM1R(String, resize);
+	VCALL_LOCALMEM1R(String, set_length);
 	VCALL_LOCALMEM1R(String, casecmp_to);
 	VCALL_LOCALMEM1R(String, nocasecmp_to);
 	VCALL_LOCALMEM1R(String, naturalnocasecmp_to);
@@ -2452,6 +2453,7 @@ void register_variant_methods() {
 	ADDFUNC0(STRING, NIL, String, clear, varray());
 	ADDFUNC0R(STRING, INT, String, size, varray());
 	ADDFUNC1R(STRING, INT, String, resize, INT, "size", varray());
+	ADDFUNC1R(STRING, INT, String, set_length, INT, "length", varray());
 	ADDFUNC1R(STRING, INT, String, casecmp_to, STRING, "to", varray());
 	ADDFUNC1R(STRING, INT, String, nocasecmp_to, STRING, "to", varray());
 	ADDFUNC1R(STRING, INT, String, naturalnocasecmp_to, STRING, "to", varray());
