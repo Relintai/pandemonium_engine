@@ -34,7 +34,7 @@
 
 #include "upnp_device.h"
 
-#include <miniupnpc/miniupnpc.h>
+#include <miniupnpc.h>
 
 class UPNP : public Reference {
 	GDCLASS(UPNP, Reference);

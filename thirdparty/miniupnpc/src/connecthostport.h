@@ -1,5 +1,3 @@
-#ifndef CONNECTHOSTPORT_H_INCLUDED
-#define CONNECTHOSTPORT_H_INCLUDED
 /* $Id: connecthostport.h,v 1.2 2012/06/23 22:32:33 nanard Exp $ */
 /* Project: miniupnp
  * http://miniupnp.free.fr/
@@ -7,8 +5,8 @@
  * Copyright (c) 2010-2018 Thomas Bernard
  * This software is subjects to the conditions detailed
  * in the LICENCE file provided within this distribution */
-
-
+#ifndef CONNECTHOSTPORT_H_INCLUDED
+#define CONNECTHOSTPORT_H_INCLUDED
 
 #include "miniupnpc_socketdef.h"
 

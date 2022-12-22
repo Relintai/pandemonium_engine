@@ -1,13 +1,11 @@
-#ifndef CODELENGTH_H_INCLUDED
-#define CODELENGTH_H_INCLUDED
 /* $Id: codelength.h,v 1.3 2011/07/30 13:10:05 nanard Exp $ */
 /* Project : miniupnp
  * Author : Thomas BERNARD
  * copyright (c) 2005-2015 Thomas Bernard
  * This software is subjet to the conditions detailed in the
  * provided LICENCE file. */
-
-
+#ifndef CODELENGTH_H_INCLUDED
+#define CODELENGTH_H_INCLUDED
 
 /* Encode length by using 7bit per Byte :
  * Most significant bit of each byte specifies that the

@@ -1,5 +1,3 @@
-#ifndef MINISSDPC_H_INCLUDED
-#define MINISSDPC_H_INCLUDED
 /* $Id: minissdpc.h,v 1.6 2015/09/18 12:45:16 nanard Exp $ */
 /* Project: miniupnp
  * http://miniupnp.free.fr/ or http://miniupnp.tuxfamily.org/
@@ -7,8 +5,8 @@
  * Copyright (c) 2005-2015 Thomas Bernard
  * This software is subjects to the conditions detailed
  * in the LICENCE file provided within this distribution */
-
-
+#ifndef MINISSDPC_H_INCLUDED
+#define MINISSDPC_H_INCLUDED
 
 #include "miniupnpc_declspec.h"
 #include "upnpdev.h"

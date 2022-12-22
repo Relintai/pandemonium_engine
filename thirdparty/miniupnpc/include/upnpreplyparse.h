@@ -1,5 +1,3 @@
-#ifndef UPNPREPLYPARSE_H_INCLUDED
-#define UPNPREPLYPARSE_H_INCLUDED
 /* $Id: upnpreplyparse.h,v 1.19 2014/10/27 16:33:19 nanard Exp $ */
 /* MiniUPnP project
  * http://miniupnp.free.fr/ or http://miniupnp.tuxfamily.org/
@@ -7,8 +5,8 @@
  * This software is subject to the conditions detailed
  * in the LICENCE file provided within the distribution */
 
-
-
+#ifndef UPNPREPLYPARSE_H_INCLUDED
+#define UPNPREPLYPARSE_H_INCLUDED
 
 #ifdef __cplusplus
 extern "C" {
