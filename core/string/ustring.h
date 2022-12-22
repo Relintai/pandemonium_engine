@@ -219,7 +219,7 @@ public:
 	_FORCE_INLINE_ CharType get(int p_index) const { return _cowdata.get(p_index); }
 	_FORCE_INLINE_ void set(int p_index, const CharType &p_elem) { _cowdata.set(p_index, p_elem); }
 	_FORCE_INLINE_ int size() const { return _cowdata.size(); }
-	Error resize(int p_size) {
+	_FORCE_INLINE_ Error resize(int p_size) {
 		Error err = _cowdata.resize(p_size);
 
 		//Ensure null terminator
