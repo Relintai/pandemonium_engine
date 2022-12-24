@@ -25,6 +25,7 @@ public:
 	Vector<Ref<Database>> get_databases();
 	Vector<Variant> get_databases_bind();
 
+	void initialized();
 	void load();
 
 	void migrate(const bool p_clear, const bool p_should_seed, const int p_seed);

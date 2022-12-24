@@ -56,6 +56,10 @@ Vector<Variant> DatabaseManager::get_databases_bind() {
 	return r;
 }
 
+void DatabaseManager::initialized() {
+	emit_signal("initialized");
+}
+
 void DatabaseManager::load() {
 	//go thourgh settings, and create all the defined db backends
 	//add them to ProjectSettings
@@ -78,6 +82,7 @@ DatabaseManager::~DatabaseManager() {
 }
 
 void DatabaseManager::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("initialized"));
 	ADD_SIGNAL(MethodInfo("migration", PropertyInfo(Variant::BOOL, "clear"), PropertyInfo(Variant::BOOL, "should_seed"), PropertyInfo(Variant::INT, "pseed")));
 
 	ADD_SIGNAL(MethodInfo("default_database_changed", PropertyInfo(Variant::OBJECT, "db", PROPERTY_HINT_RESOURCE_TYPE, "Database")));
@@ -95,6 +100,7 @@ void DatabaseManager::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_databases"), &DatabaseManager::get_databases_bind);
 
+	ClassDB::bind_method(D_METHOD("initialized"), &DatabaseManager::initialized);
 	ClassDB::bind_method(D_METHOD("load"), &DatabaseManager::load);
 
 	ClassDB::bind_method(D_METHOD("migrate", "clear", "should_seed", "pseed"), &DatabaseManager::migrate);
