@@ -30,6 +30,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="initialized">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 		<method name="load">
 			<return type="void" />
 			<description>
@@ -68,6 +73,10 @@
 		</signal>
 		<signal name="default_database_changed">
 			<argument index="0" name="db" type="Database" />
+			<description>
+			</description>
+		</signal>
+		<signal name="initialized">
 			<description>
 			</description>
 		</signal>
