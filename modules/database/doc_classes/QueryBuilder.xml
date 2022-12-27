@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="QueryBuilder" inherits="Reference" version="3.10">
 	<brief_description>
+		A class that helps you with building and running database backend specific sql safely.
 	</brief_description>
 	<description>
+		A class that helps you with building and running database backend specific sql safely.
+		Methods by default use escape on their parameters that can normally contain user input. For performance reasons other variants that don't do this also exist. These are prefixed with 'n'. For example [method select] vs [method nselect]. Don't use these with raw user input, as it will make your application vulnerable to sql injection attacks.
+		It contains helper methods that lets you run the finished query directly See [method run] and [method run_query].
+		You should not allocate this directly, instead get it from you active database connection, like:
+		[codeblock]
+		var conn : DatabaseConnection = DatabaseManager.ddb.get_connection()
+		var qb : QueryBuilder = conn.get_query_builder()
+		[/codeblock]
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,71 +20,116 @@
 			<return type="QueryBuilder" />
 			<argument index="0" name="col" type="String" default="&quot;&quot;" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				if (col.empty()):
+				    result += "ASC, "
+				else:
+				    result += col + " ASC, "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="begin_transaction">
 			<return type="QueryBuilder" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				result += "BEGIN TRANSACTION;"
+				[/codeblock]
 			</description>
 		</method>
 		<method name="commit">
 			<return type="QueryBuilder" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				result += "COMMIT;"
+				[/codeblock]
 			</description>
 		</method>
 		<method name="corder_by">
 			<return type="QueryBuilder" />
 			<description>
+				Closes the current [code]ORDER BY[/code] statement. (Usually by removing the last [code],[/code]).
 			</description>
 		</method>
 		<method name="cset">
 			<return type="QueryBuilder" />
 			<description>
+				Closes the current [code]SET[/code] statement. (Usually by removing the last [code],[/code]).
 			</description>
 		</method>
 		<method name="cstr">
 			<return type="QueryBuilder" />
 			<description>
+				Closes the current string. (Usually by adding a [code]'[/code]).
 			</description>
 		</method>
 		<method name="cvalues">
 			<return type="QueryBuilder" />
 			<description>
+				Closes the current [code]VALUES[/code] statement. (Usually by replacing the last [code],[/code] with a [code])[/code]).
 			</description>
 		</method>
 		<method name="del">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params" type="String" default="&quot;&quot;" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				result += "DELETE FROM " + escape(params) + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="desc">
 			<return type="QueryBuilder" />
 			<argument index="0" name="col" type="String" default="&quot;&quot;" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				if (col.empty()):
+				    result += "DESC, "
+				else:
+				    result += col + " DESC, "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="end_command">
 			<return type="QueryBuilder" />
 			<description>
+				Closes the current sql command. (Usually by adding a [code];[/code]).
 			</description>
 		</method>
 		<method name="escape">
 			<return type="String" />
 			<argument index="0" name="param" type="String" />
 			<description>
+				Escapes the given string and returns it. (Using the database connector's escape method.)
 			</description>
 		</method>
 		<method name="ew">
 			<return type="QueryBuilder" />
 			<argument index="0" name="str" type="String" />
 			<description>
+				(ew = escape write)
+				Equivalent to:
+				[codeblock]
+				result += escape(str)
+				[/codeblock]
 			</description>
 		</method>
 		<method name="from">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params" type="String" default="&quot;&quot;" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				result += "FROM "
+
+				if (!params.empty()):
+				    result += escape(params)
+				    result += " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="insert">
@@ -83,62 +137,117 @@
 			<argument index="0" name="table_name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="columns" type="String" default="&quot;&quot;" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				result += "INSERT INTO ";
+
+				if (!table_name.empty()):
+				    result += table_name
+				    result += " "
+
+				if (!columns.empty()):
+				    result += "("
+				    result += columns
+				    result += ") "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="land">
 			<return type="QueryBuilder" />
 			<description>
+				(land = logical and)
+				Equivalent to:
+				[codeblock]
+				result += "AND "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="like">
 			<return type="QueryBuilder" />
 			<argument index="0" name="str" type="String" default="&quot;&quot;" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				if (str.empty()):
+				    result += "LIKE "
+				else:
+				    result += "LIKE '" + escape(str) + "' "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="limit">
 			<return type="QueryBuilder" />
 			<argument index="0" name="num" type="int" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				result += "LIMIT " + itos(num) + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="lor">
 			<return type="QueryBuilder" />
 			<description>
+				(lor = logical or)
+				Equivalent to:
+				[codeblock]
+				result += "OR "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="ndel">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params" type="String" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				result += "DELETE FROM " + params + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="next_value">
 			<return type="QueryBuilder" />
 			<description>
+				Closes the current [code]VALUES[/code] statement, and then open an another one. (Usually by replacing the last [code],[/code] with [code]"), ("[/code]).
 			</description>
 		</method>
 		<method name="nfrom">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params" type="String" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				result += "FROM "
+
+				if (!params.empty()):
+				    result += params + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="nl">
 			<return type="QueryBuilder" />
 			<description>
+				Adds a newline. This can help when debugging sql statements. (Usually [code]\n[/code]).
 			</description>
 		</method>
 		<method name="nlike">
 			<return type="QueryBuilder" />
 			<argument index="0" name="str" type="String" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				result += "LIKE '" + str + "' "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="nselect">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params" type="String" />
 			<description>
+				Equivalent to:
+				[codeblock]
+				result += "SELECT " + params + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="nsetp">
@@ -146,30 +255,61 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="escape_param" type="String" />
 			<description>
+				Add parameters to [code]UPDATE[/code] statements.
+				Equivalent to:
+				[codeblock]
+				result += col + "='" + params + "', "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="nupdate">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params" type="String" />
 			<description>
+				Start an [code]UPDATE[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "UPDATE " + params + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="nval">
 			<return type="QueryBuilder" />
 			<argument index="0" name="param" type="String" />
 			<description>
+				Add parameters to [code]INSERT INTO[/code] statements.
+				Equivalent to:
+				[codeblock]
+				result += "'" + param + "', "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="nvalues">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params_str" type="String" />
 			<description>
+				Adds an unescaped [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "VALUES("
+
+				if (!params_str.empty()):
+				    result += params_str + ") "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="nwhere">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params" type="String" />
 			<description>
+				Adds an unescaped [code]WHERE[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "WHERE "
+
+				if (!params.empty()):
+				    result += params + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="nwp">
@@ -177,67 +317,112 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="escape_param" type="String" />
 			<description>
+				Add an unescaped parameter to [code]WHERE[/code] statements.
+				Equivalent to:
+				[codeblock]
+				result += col + "='" + params + "' "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="offset">
 			<return type="QueryBuilder" />
 			<argument index="0" name="num" type="int" />
 			<description>
+				Adds an [code]OFFSET[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "OFFSET " + str(num) + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="order_by">
 			<return type="QueryBuilder" />
 			<argument index="0" name="col" type="String" />
 			<description>
+				Adds an [code]ORDER BY[/code] statement.
+				Equivalent to:
+				[codeblock]
+				if (col.empty()):
+				    result += "ORDER BY "
+				else:
+				    result += "ORDER BY " + col + ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="order_by_add_col">
 			<return type="QueryBuilder" />
 			<argument index="0" name="col" type="String" />
 			<description>
+				Adds a column to an [code]ORDER BY[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += col + ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="order_by_asc">
 			<return type="QueryBuilder" />
 			<argument index="0" name="col" type="String" />
 			<description>
+				Adds an [code]ORDER BY ASC[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "ORDER BY " + col + " ASC, ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="order_by_desc">
 			<return type="QueryBuilder" />
 			<argument index="0" name="col" type="String" />
 			<description>
+				Adds an [code]ORDER BY DESC[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "ORDER BY " + col + " DESC, ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="prepare">
 			<return type="QueryBuilder" />
 			<description>
+				Part of the unfinished prepared statement api.
 			</description>
 		</method>
 		<method name="reset">
 			<return type="QueryBuilder" />
 			<description>
+				Resets the QueryBuilder.
 			</description>
 		</method>
 		<method name="run">
 			<return type="QueryResult" />
 			<description>
+				Run the query currently stored in the result property.
+				Use this if your query returns values from the database (an you want to read them).
 			</description>
 		</method>
 		<method name="run_query">
 			<return type="void" />
 			<description>
+				Run the query currently stored in the result property.
+				Use this if your query doesn't return values from the database (or you don't want to read them if it does).
 			</description>
 		</method>
 		<method name="select">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params" type="String" default="&quot;&quot;" />
 			<description>
+				Adds a [code]SELECT[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += SELECT " + escape(params) + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="select_last_insert_id">
 			<return type="QueryBuilder" />
 			<description>
+				Adds a statement to select and return the last inserted row's id.
 			</description>
 		</method>
 		<method name="set_paramf">
@@ -245,6 +430,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Part of the unfinished prepared statement api.
 			</description>
 		</method>
 		<method name="set_parami">
@@ -252,6 +438,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Part of the unfinished prepared statement api.
 			</description>
 		</method>
 		<method name="set_params">
@@ -259,6 +446,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="String" />
 			<description>
+				Part of the unfinished prepared statement api.
 			</description>
 		</method>
 		<method name="setpb">
@@ -266,6 +454,14 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="param" type="bool" />
 			<description>
+				Add a bool parameter to [code]UPDATE[/code] statements.
+				Equivalent to:
+				[codeblock]
+				if (param):
+				    result += col + "=1, "
+				else:
+				    result += col + "=0, "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="setpd">
@@ -273,6 +469,11 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="param" type="float" />
 			<description>
+				Add a double parameter to [code]UPDATE[/code] statements.
+				Equivalent to:
+				[codeblock]
+				result += col + "=" + str(param) + ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="setpf">
@@ -280,6 +481,11 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="param" type="float" />
 			<description>
+				Add a float parameter to [code]UPDATE[/code] statements.
+				Equivalent to:
+				[codeblock]
+				result += col + "=" + str(param) + ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="setpi">
@@ -287,6 +493,11 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="param" type="int" />
 			<description>
+				Add an int parameter to [code]UPDATE[/code] statements.
+				Equivalent to:
+				[codeblock]
+				result += col + "=" + str(param) + ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="setps">
@@ -294,80 +505,151 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="param" type="String" />
 			<description>
+				Add an escaped string parameter to [code]UPDATE[/code] statements.
+				Equivalent to:
+				[codeblock]
+				result += col + "=" + escape(param) + ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="sets">
 			<return type="QueryBuilder" />
 			<description>
+				Starts a [code]SET[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "SET "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="str">
 			<return type="QueryBuilder" />
 			<description>
+				Starts a string. (Usually by adding a [code]'[/code]).
 			</description>
 		</method>
 		<method name="update">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params" type="String" default="&quot;&quot;" />
 			<description>
+				Starts an [code]UPDATE[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "UPDATE " + escape(params) + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="val">
 			<return type="QueryBuilder" />
 			<description>
+				Adds [code]DEFAULT[/code] to a [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "DEFAULT, "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="valb">
 			<return type="QueryBuilder" />
 			<argument index="0" name="param" type="bool" />
 			<description>
+				Add a bool parameter to a [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				if (param):
+				    result += "1, "
+				else:
+				    result += "0, "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="vald">
 			<return type="QueryBuilder" />
 			<argument index="0" name="param" type="float" />
 			<description>
+				Add a double parameter to a [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += str(param) + ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="valf">
 			<return type="QueryBuilder" />
 			<argument index="0" name="param" type="float" />
 			<description>
+				Add a float parameter to a [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += str(param) + ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="vali">
 			<return type="QueryBuilder" />
 			<argument index="0" name="param" type="int" />
 			<description>
+				Add an int parameter to a [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += str(param) + ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="vals">
 			<return type="QueryBuilder" />
 			<argument index="0" name="param" type="String" />
 			<description>
+				Add an escaped string parameter to a [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += escape(param) + ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="values">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params_str" type="String" default="&quot;&quot;" />
 			<description>
+				Adds an escaped [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "VALUES("
+
+				if (!params_str.empty()):
+				    result += escape(params_str) + ") "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="w">
 			<return type="QueryBuilder" />
 			<argument index="0" name="str" type="String" />
 			<description>
+				(w = write)
+				Equivalent to:
+				[codeblock]
+				result += str
+				[/codeblock]
 			</description>
 		</method>
 		<method name="where">
 			<return type="QueryBuilder" />
 			<argument index="0" name="params" type="String" default="&quot;&quot;" />
 			<description>
+				Adds an escaped [code]WHERE[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "WHERE "
+
+				if (!params.empty()):
+				    result += escape(params) + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="wildcard">
 			<return type="QueryBuilder" />
 			<description>
+				Gets the wildcard character for the given database backend. (Usually [code]%[/code].)
 			</description>
 		</method>
 		<method name="wpb">
@@ -375,6 +657,14 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="param" type="bool" />
 			<description>
+				Add a bool parameter to a [code]WHERE[/code] statement. (wpb = where param bool)
+				Equivalent to:
+				[codeblock]
+				if (param):
+				    result += col + "=1 "
+				else:
+				    result += col + "=0 "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="wpi">
@@ -382,6 +672,11 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="param" type="int" />
 			<description>
+				Add an int parameter to a [code]WHERE[/code] statement. (wpi = where param int)
+				Equivalent to:
+				[codeblock]
+				result += col + "=" + str(param) + " "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="wps">
@@ -389,11 +684,17 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="param" type="String" />
 			<description>
+				Add an escaped string parameter to a [code]WHERE[/code] statement. (wps = where param string)
+				Equivalent to:
+				[codeblock]
+				result += col + "='" + escape(param) + "' "
+				[/codeblock]
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="result" type="String" setter="set_result" getter="get_result" default="&quot;&quot;">
+			The current (resulting) sql statement.
 		</member>
 	</members>
 	<constants>
