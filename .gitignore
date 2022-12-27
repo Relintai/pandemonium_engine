@@ -107,8 +107,10 @@ logs/
 [Rr]elease/
 x64/
 build/
-# Not build results, this is Theora source code.
-!thirdparty/libtheora/x86/
+
+# Do not ignore x86 folders anywhere under thirdparty libraries
+!thirdparty/**/x86/
+
 bld/
 [Bb]in/
 [Oo]bj/
