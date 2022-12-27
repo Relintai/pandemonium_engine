@@ -191,7 +191,7 @@ QueryBuilder *QueryBuilder::order_by_desc(const String &col) {
 	return this;
 }
 QueryBuilder *QueryBuilder::order_by(const String &col) {
-	if (col == "") {
+	if (col.empty()) {
 		query_result += "ORDER BY ";
 	} else {
 		query_result += "ORDER BY " + col + ", ";
@@ -213,7 +213,7 @@ QueryBuilder *QueryBuilder::order_by_add_col(const String &col) {
 	return this;
 }
 QueryBuilder *QueryBuilder::asc(const String &col) {
-	if (col == "") {
+	if (col.empty()) {
 		query_result += "ASC, ";
 	} else {
 		query_result += col + " ASC, ";
@@ -222,7 +222,7 @@ QueryBuilder *QueryBuilder::asc(const String &col) {
 	return this;
 }
 QueryBuilder *QueryBuilder::desc(const String &col) {
-	if (col == "") {
+	if (col.empty()) {
 		query_result += "DESC, ";
 	} else {
 		query_result += col + " DESC, ";

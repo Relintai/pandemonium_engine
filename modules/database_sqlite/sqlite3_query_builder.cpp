@@ -94,7 +94,7 @@ QueryBuilder *SQLite3QueryBuilder::ndel(const String &params) {
 QueryBuilder *SQLite3QueryBuilder::nwhere(const String &params) {
 	query_result += "WHERE ";
 
-	if (params != "") {
+	if (!params.empty()) {
 		query_result += params;
 		query_result += " ";
 	}
@@ -105,7 +105,7 @@ QueryBuilder *SQLite3QueryBuilder::nwhere(const String &params) {
 QueryBuilder *SQLite3QueryBuilder::nfrom(const String &params) {
 	query_result += "FROM ";
 
-	if (params != "") {
+	if (!params.empty()) {
 		query_result += params;
 		query_result += " ";
 	}
@@ -116,12 +116,12 @@ QueryBuilder *SQLite3QueryBuilder::nfrom(const String &params) {
 QueryBuilder *SQLite3QueryBuilder::insert(const String &table_name, const String &columns) {
 	query_result += "INSERT INTO ";
 
-	if (table_name != "") {
+	if (!table_name.empty()) {
 		query_result += table_name;
 		query_result += " ";
 	}
 
-	if (columns != "") {
+	if (!columns.empty()) {
 		query_result += "(";
 		query_result += columns;
 		query_result += ") ";
@@ -132,7 +132,7 @@ QueryBuilder *SQLite3QueryBuilder::insert(const String &table_name, const String
 QueryBuilder *SQLite3QueryBuilder::nvalues(const String &params_str) {
 	query_result += "VALUES(";
 
-	if (params_str != "") {
+	if (!params_str.empty()) {
 		query_result += params_str;
 		query_result += ") ";
 	}
