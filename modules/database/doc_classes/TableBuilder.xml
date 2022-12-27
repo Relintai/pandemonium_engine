@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TableBuilder" inherits="Reference" version="3.10">
 	<brief_description>
+		A class that helps you with building and running database backend specific sql for creating / altering / deleting tables.
 	</brief_description>
 	<description>
+		A class that helps you with building and running database backend specific sql for creating / altering / deleting tables.
+		It contains helper methods that lets you run the finished query directly See [method run] and [method run_query].
+		You should not allocate this directly, instead get it from you active database connection, like:
+		[codeblock]
+		var conn : DatabaseConnection = DatabaseManager.ddb.get_connection()
+		var tb : TableBuilder = conn.get_table_builder()
+		[/codeblock]
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,52 +18,97 @@
 		<method name="auto_increment">
 			<return type="TableBuilder" />
 			<description>
+				Adds an [code]AUTO_INCREMENT[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "AUTO_INCREMENT "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="ccreate_table">
 			<return type="TableBuilder" />
 			<description>
+				Closes a [code]CREATE TABLE[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += ");"
+				[/codeblock]
 			</description>
 		</method>
 		<method name="cdrop_table">
 			<return type="TableBuilder" />
 			<description>
+				Closes a [code]DROP TABLE[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += ";"
+				[/codeblock]
 			</description>
 		</method>
 		<method name="create_table">
 			<return type="TableBuilder" />
 			<argument index="0" name="value" type="String" />
 			<description>
+				Adds a [code]CREATE TABLE[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "CREATE TABLE " + name + " ( "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="date">
 			<return type="TableBuilder" />
 			<argument index="0" name="name" type="String" />
 			<description>
+				Adds a [code]DATE[/code] field statement.
+				Equivalent to:
+				[codeblock]
+				result += name + " DATE "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="defval">
 			<return type="TableBuilder" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				Adds a [code]DEFAULT[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "DEFAULT '" + val + "'"
+				[/codeblock]
 			</description>
 		</method>
 		<method name="drop_table">
 			<return type="TableBuilder" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Adds a [code]DROP TABLE[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "DROP TABLE "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="drop_table_if_exists">
 			<return type="TableBuilder" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Adds a [code]DROP TABLE IF EXISTS[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "DROP TABLE IF EXISTS "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="foreign_key">
 			<return type="TableBuilder" />
 			<argument index="0" name="name" type="String" />
 			<description>
+				Adds a [code]FOREIGN KEY[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "FOREIGN KEY (" + name + ") "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="integer">
@@ -63,27 +116,55 @@
 			<argument index="0" name="name" type="String" />
 			<argument index="1" name="length" type="int" default="-1" />
 			<description>
+				Adds an [code]INTEGER[/code] field statement.
+				Equivalent to:
+				[codeblock]
+				result += name + " INTEGER ";
+
+				if (length != -1):
+				    result += "(" + str(length) + ") "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="next_row">
 			<return type="TableBuilder" />
 			<description>
+				Go the the next row (field) in the current sql statement.
+				Equivalent to:
+				[codeblock]
+				result += ", "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="not_null">
 			<return type="TableBuilder" />
 			<description>
+				Adds a [code]NOT NULL[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "NOT NULL "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="null">
 			<return type="TableBuilder" />
 			<description>
+				Adds a [code]NULL[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "NULL "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="primary_key">
 			<return type="TableBuilder" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Adds a [code]PRIMARY KEY[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "PRIMARY KEY (" + name + ") "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="real_double">
@@ -92,6 +173,11 @@
 			<argument index="1" name="size" type="int" default="-1" />
 			<argument index="2" name="d" type="int" default="-1" />
 			<description>
+				Adds an [code]DOUBLE[/code] field statement.
+				Equivalent to:
+				[codeblock]
+				result += name + " DOUBLE "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="real_float">
@@ -100,6 +186,11 @@
 			<argument index="1" name="size" type="int" default="-1" />
 			<argument index="2" name="d" type="int" default="-1" />
 			<description>
+				Adds an [code]FLOAT[/code] field statement.
+				Equivalent to:
+				[codeblock]
+				result += name + " FLOAT "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="references">
@@ -107,16 +198,21 @@
 			<argument index="0" name="table" type="String" />
 			<argument index="1" name="name" type="String" />
 			<description>
+			result += "REFERENCES " + table + " (" + name + ") ";
 			</description>
 		</method>
 		<method name="run">
 			<return type="QueryResult" />
 			<description>
+				Run the query currently stored in the result property.
+				Use this if your query returns values from the database (an you want to read them).
 			</description>
 		</method>
 		<method name="run_query">
 			<return type="void" />
 			<description>
+				Run the query currently stored in the result property.
+				Use this if your query doesn't return values from the database (or you don't want to read them if it does).
 			</description>
 		</method>
 		<method name="small_integer">
@@ -124,12 +220,29 @@
 			<argument index="0" name="name" type="String" />
 			<argument index="1" name="length" type="int" default="-1" />
 			<description>
+				Adds a [code]SMALL INTEGER[/code] field statement.
+				Equivalent to:
+				[codeblock]
+				result += name + " INTEGER("
+
+				if (length == -1):
+				    result += "6"
+				else:
+				    result += itos(length)
+				
+				result += ") "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="text">
 			<return type="TableBuilder" />
 			<argument index="0" name="name" type="String" />
 			<description>
+				Adds a [code]TEXT[/code] field statement.
+				Equivalent to:
+				[codeblock]
+				result += name + " TEXT "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="tiny_integer">
@@ -137,6 +250,18 @@
 			<argument index="0" name="name" type="String" />
 			<argument index="1" name="length" type="int" default="-1" />
 			<description>
+				Adds a [code]TINY INTEGER[/code] field statement.
+				Equivalent to:
+				[codeblock]
+				result += name + " INTEGER("
+
+				if (length == -1):
+				    result += "4"
+				else:
+				    result += itos(length)
+
+				result += ") "
+				[/codeblock]
 			</description>
 		</method>
 		<method name="varchar">
@@ -144,11 +269,20 @@
 			<argument index="0" name="name" type="String" />
 			<argument index="1" name="length" type="int" default="-1" />
 			<description>
+				Adds a [code]VARCHAR[/code] field statement.
+				Equivalent to:
+				[codeblock]
+				result += name + " VARCHAR ";
+
+				if (length != -1):
+				    result += "(" + str(length) + ") "
+				[/codeblock]
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="result" type="String" setter="set_result" getter="get_result" default="&quot;&quot;">
+			The current (resulting) sql statement.
 		</member>
 	</members>
 	<constants>
