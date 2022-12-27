@@ -1,5 +1,3 @@
-#ifndef PNGINFO_H
-#define PNGINFO_H
 
 /* pnginfo.h - header file for PNG reference library
  *
@@ -51,8 +49,8 @@
  * itxt_ptr structure argument, and the png_set_rows and png_set_unknowns
  * functions do not make their own copies.
  */
-
-
+#ifndef PNGINFO_H
+#define PNGINFO_H
 
 struct png_info_def
 {

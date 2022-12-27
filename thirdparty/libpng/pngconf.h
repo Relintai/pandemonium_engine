@@ -1,9 +1,7 @@
-#ifndef PNGCONF_H
-#define PNGCONF_H
 
 /* pngconf.h - machine-configurable file for libpng
  *
- * libpng version 1.6.38
+ * libpng version 1.6.39
  *
  * Copyright (c) 2018-2022 Cosmin Truta
  * Copyright (c) 1998-2002,2004,2006-2016,2018 Glenn Randers-Pehrson
@@ -20,8 +18,8 @@
  * and png_info.
  */
 
-
-
+#ifndef PNGCONF_H
+#define PNGCONF_H
 
 #ifndef PNG_BUILDING_SYMBOL_TABLE /* else includes may cause problems */
 

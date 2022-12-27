@@ -1,8 +1,6 @@
-#ifndef PNGLCONF_H
-#define PNGLCONF_H
 /* pnglibconf.h - library build configuration */
 
-/* libpng version 1.6.38 */
+/* libpng version 1.6.39 */
 
 /* Copyright (c) 2018-2022 Cosmin Truta */
 /* Copyright (c) 1998-2002,2004,2006-2018 Glenn Randers-Pehrson */
@@ -14,8 +12,8 @@
 /* pnglibconf.h */
 /* Machine generated file: DO NOT EDIT */
 /* Derived from: scripts/pnglibconf.dfa */
-
-
+#ifndef PNGLCONF_H
+#define PNGLCONF_H
 /* options */
 #define PNG_16BIT_SUPPORTED
 #define PNG_ALIGNED_MEMORY_SUPPORTED

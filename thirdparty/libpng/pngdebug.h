@@ -1,5 +1,3 @@
-#ifndef PNGDEBUG_H
-#define PNGDEBUG_H
 
 /* pngdebug.h - Debugging macros for libpng, also used in pngtest.c
  *
@@ -33,8 +31,8 @@
  *            to the message.
  *   arg: 0 to 2 arguments for printf(3) style substitution in message.
  */
-
-
+#ifndef PNGDEBUG_H
+#define PNGDEBUG_H
 /* These settings control the formatting of messages in png.c and pngerror.c */
 /* Moved to pngdebug.h at 1.5.0 */
 #  ifndef PNG_LITERAL_SHARP
