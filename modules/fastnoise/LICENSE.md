@@ -1,7 +1,8 @@
 MIT License (MIT)
 =======================
 
-Copyright © 2016 Marc Gilleron <moc.liamg@norellig.cram> (reverse email)
+Copyright © 2016 Marc Gilleron <moc.liamg@norellig.cram> (reverse email).
+Copyright (c) 2019-2023 Péter Magyar.
 
 FastNoise C++ library license: [lib/LICENSE](lib/LICENSE)
 
