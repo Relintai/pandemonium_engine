@@ -38,7 +38,7 @@
 
 Files: modules/mesh_utils/*
 Comment: MeshUtils Module
-Copyright: 2029-2023 Péter Magyar.
+Copyright: 2019-2023 Péter Magyar.
 License: Expat
 
 Files: modules/mesh_utils/xatlas/*
