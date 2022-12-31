@@ -10,9 +10,14 @@
 // License : MIT
 // http://opensource.org/licenses/MIT
 //
-//https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification
+// https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification
 //
 // 5/2016: Chris Rorden created minimal version for OSX/Linux/Windows compile
+
+// Contains some improvements from https://github.com/Whinarn/MeshDecimator
+// Copyright (c) 2017-2018 Mattias Edlund
+
+// (C) by Péter Magyar in 2020
 
 #include "core/variant/array.h"
 #include "core/string/ustring.h"
