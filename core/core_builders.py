@@ -148,8 +148,7 @@ def make_donors_header(target, source, env):
 
 
 def make_license_header(target, source, env):
-    src_copyright = source[0]
-    src_license = source[1]
+    src_license = source[0]
     dst = target[0]
 
     class LicenseReader:
@@ -181,24 +180,27 @@ def make_license_header(target, source, env):
     projects = OrderedDict()
     license_list = []
 
-    with open_utf8(src_copyright, "r") as copyright_file:
-        reader = LicenseReader(copyright_file)
-        part = {}
-        while reader.current:
-            tag, content = reader.next_tag()
-            if tag in ("Files", "Copyright", "License"):
-                part[tag] = content[:]
-            elif tag == "Comment":
-                # attach part to named project
-                projects[content[0]] = projects.get(content[0], []) + [part]
+    for i in range(1, len(source)):
+        src_copyright = source[i]
+    
+        with open_utf8(src_copyright, "r") as copyright_file:
+            reader = LicenseReader(copyright_file)
+            part = {}
+            while reader.current:
+                tag, content = reader.next_tag()
+                if tag in ("Files", "Copyright", "License"):
+                    part[tag] = content[:]
+                elif tag == "Comment":
+                    # attach part to named project
+                    projects[content[0]] = projects.get(content[0], []) + [part]
 
-            if not tag or not reader.current:
-                # end of a paragraph start a new part
-                if "License" in part and not "Files" in part:
-                    # no Files tag in this one, so assume standalone license
-                    license_list.append(part["License"])
-                part = {}
-                reader.next_line()
+                if not tag or not reader.current:
+                    # end of a paragraph start a new part
+                    if "License" in part and not "Files" in part:
+                        # no Files tag in this one, so assume standalone license
+                        license_list.append(part["License"])
+                    part = {}
+                    reader.next_line()
 
     data_list = []
     for project in itervalues(projects):

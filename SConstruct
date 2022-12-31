@@ -610,11 +610,13 @@ if selected_platform in platform_list:
     modules_enabled = OrderedDict()
     env.module_dependencies = {}
     env.module_icons_paths = []
+    env.module_license_files = []
     env.doc_class_path = {}
 
     for name, path in modules_detected.items():
         if not env["module_" + name + "_enabled"]:
             continue
+
         sys.path.insert(0, path)
         env.current_module = name
         import config
@@ -625,6 +627,7 @@ if selected_platform in platform_list:
                 continue
 
             config.configure(env)
+
             # Get doc classes paths (if present)
             try:
                 doc_classes = config.get_doc_classes()
@@ -633,6 +636,7 @@ if selected_platform in platform_list:
                     env.doc_class_path[c] = path + "/" + doc_path
             except Exception:
                 pass
+
             # Get icon paths (if present)
             try:
                 icons_path = config.get_icons_path()
@@ -640,6 +644,14 @@ if selected_platform in platform_list:
             except Exception:
                 # Default path for module icons
                 env.module_icons_paths.append(path + "/" + "icons")
+
+            # Get license path (if present)
+            try:
+                license_file = config.get_license_file()
+                env.module_license_files.append("#" + path + "/" + license_file)
+            except Exception:
+                pass
+
             modules_enabled[name] = path
         else:
             env["module_" + name + "_enabled"] = False

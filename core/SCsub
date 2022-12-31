@@ -177,10 +177,13 @@ env.CommandNoCache("#core/authors.gen.h", "../AUTHORS.md", run_in_subprocess(cor
 env.Depends("#core/donors.gen.h", "../DONORS.md")
 env.CommandNoCache("#core/donors.gen.h", "../DONORS.md", run_in_subprocess(core_builders.make_donors_header))
 
+license_files = [ "../LICENSE.txt", "../COPYRIGHT.txt" ]
+license_files.extend(env.module_license_files)
+
 # License
-env.Depends("#core/license.gen.h", ["../COPYRIGHT.txt", "../LICENSE.txt"])
+env.Depends("#core/license.gen.h", license_files)
 env.CommandNoCache(
-    "#core/license.gen.h", ["../COPYRIGHT.txt", "../LICENSE.txt"], run_in_subprocess(core_builders.make_license_header)
+    "#core/license.gen.h", license_files, run_in_subprocess(core_builders.make_license_header)
 )
 
 # Chain load SCsubs
