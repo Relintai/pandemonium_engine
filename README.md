@@ -54,7 +54,7 @@ You can also look at the official 3.x Godot documentation, it will work mostly (
 
 The class docs are accessible from the editor.
 
-You can also look at the official pandemonium demos in their own [GitHub repository](https://github.com/Relintai/pandemonium-demo-projects).
+You can also look at the official pandemonium demos in their own [GitHub repository](https://github.com/Relintai/pandemonium_demo_projects).
 
 It's also worth looking at official godot 3.x resources, like this [awesome Godot list](https://github.com/godotengine/awesome-godot), and there are also a number of other [godot learning resources](https://docs.godotengine.org/en/latest/community/tutorials.html)
 provided by the community, such as text and video tutorials, demos, etc.
