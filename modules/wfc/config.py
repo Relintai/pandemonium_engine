@@ -21,3 +21,6 @@ def get_doc_path():
 
 def is_enabled():
     return True
+
+def get_license_file():
+  return "COPYRIGHT.txt"
