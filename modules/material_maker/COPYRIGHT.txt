@@ -1,0 +1,43 @@
+# Exhaustive licensing information for files in the Godot Engine repository
+# =========================================================================
+#
+# This file aims at documenting the copyright and license for every source
+# file in the Godot Engine repository, and especially outline the files
+# whose license differs from the MIT/Expat license used by Godot Engine.
+#
+# It is written as a machine-readable format following the debian/copyright
+# specification. Globbing patterns (e.g. "Files: *") mean that they affect
+# all corresponding files (also recursively in subfolders), apart from those
+# with a more explicit copyright statement.
+#
+# Licenses are given with their debian/copyright short name (or SPDX identifier
+# if no standard short name exists) and are all included in plain text at the
+# end of this file (in alphabetical order).
+#
+# Disclaimer for thirdparty libraries:
+# ------------------------------------
+#
+# Licensing details for thirdparty libraries in the 'thirdparty/' directory
+# are given in summarized form, i.e. with only the "main" license described
+# in the library's license statement. Different licenses of single files or
+# code snippets in thirdparty libraries are not documented here.
+# For example:
+#   Files: ./thirdparty/zlib/
+#   Copyright: 1995-2017, Jean-loup Gailly and Mark Adler
+#   License: Zlib
+# The exact copyright for each file in that library *may* differ, and some
+# files or code snippets might be distributed under other compatible licenses
+# (e.g. a public domain dedication), but as far as Godot Engine is concerned
+# the library is considered as a whole under the Zlib license.
+#
+# Nota: When linking dynamically against thirdparty libraries instead of
+# building them into the Godot binary, you may remove the corresponding
+# license details from this file.
+
+-----------------------------------------------------------------------
+
+Files: modules/material_maker/*
+Comment: MaterialMaker Module
+Copyright: 2018-2020 Rodolphe Suescun and contributors.
+ 2020-2023 Péter Magyar.
+License: Expat
