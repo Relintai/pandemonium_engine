@@ -43,7 +43,7 @@ License: Expat
 
 Files: modules/web/html/libs/hoedown/*
 Comment: Hoedown (Web Module)
-Copyright: 2008 Natacha Porté
- 2011 Vicent Martí
- 2014 Xavier Mendez, Devin Torres and the Hoedown authors
+Copyright: 2008 Natacha Porté.
+ 2011 Vicent Martí.
+ 2014 Xavier Mendez, Devin Torres and the Hoedown authors.
 License: Expat
