@@ -5,20 +5,6 @@ respective folder names. Use two empty lines to separate categories for
 readability.
 
 
-## bullet
-
-- Upstream: https://github.com/bulletphysics/bullet3
-- Version: 3.21 (6a59241074720e9df119f2f86bc01765917feb1e, 2021)
-- License: zlib
-
-Files extracted from upstream source:
-
-- `src/*` apart from CMakeLists.txt and premake4.lua files
-- `LICENSE.txt`, and `VERSION` as `VERSION.txt`
-
-Includes some patches in the `patches` folder which have been sent upstream.
-
-
 ## certs
 
 - Upstream: Mozilla, via https://github.com/bagder/ca-bundle
@@ -323,37 +309,6 @@ Files extracted from the upstream source:
 
 `nanosvg.cc` is a custom file added to configure the build of the header only
 library.
-
-
-## oidn
-
-- Upstream: https://github.com/OpenImageDenoise/oidn
-- Version: 1.1.0 (c58c5216db05ceef4cde5a096862f2eeffd14c06, 2019)
-- License: Apache 2.0
-
-Files extracted from upstream source:
-
-common/* (except tasking.* and CMakeLists.txt)
-core/*
-include/OpenImageDenoise/* (except version.h.in)
-LICENSE.txt
-mkl-dnn/include/*
-mkl-dnn/src/* (except CMakeLists.txt)
-weights/rtlightmap_hdr.tza
-scripts/resource_to_cpp.py
-
-Modified files:
-Modifications are marked with `// -- PANDEMONIUM start --` and `// -- PANDEMONIUM end --`.
-Patch files are provided in `oidn/patches/`.
-
-core/autoencoder.cpp
-core/autoencoder.h
-core/common.h
-core/device.cpp
-core/device.h
-core/transfer_function.cpp
-
-scripts/resource_to_cpp.py (used in modules/denoise/resource_to_cpp.py)
 
 
 ## opus

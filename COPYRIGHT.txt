@@ -43,17 +43,18 @@ Source: https://github.com/godotengine/godot
 
 Files: *
 Comment: Pandemonium Engine
-Copyright: Copyright (c) 2022 Péter Magyar.
- 2007-2022, Juan Linietsky, Ariel Manzur.
+Copyright: 2007-2022, Juan Linietsky, Ariel Manzur.
  2014-2022, Godot Engine contributors.
+ 2022-2023, Péter Magyar.
 License: Expat
 
 Files: ./icon.png
  ./icon.svg
  ./logo.png
  ./logo.svg
-Comment: Godot Engine logo
-Copyright: 2017, Andrea Calabró
+Comment: Pandemonium Engine logo
+Copyright: 2017, Andrea Calabró.
+ 2022, Péter Magyar.
 License: CC-BY-4.0
 
 Files: ./core/math/convex_hull.cpp
@@ -63,13 +64,6 @@ Copyright: 2011, Ole Kniemeyer, MAXON, www.maxon.net
  2007-2022, Juan Linietsky, Ariel Manzur.
  2014-2022, Godot Engine contributors.
 License: Expat and Zlib
-
-Files: ./modules/fbx/fbx_parser/
-Comment: Open Asset Import Library (FBX parser)
-Copyright: 2006-2020, assimp team
- 2007-2022, Juan Linietsky, Ariel Manzur.
- 2014-2022, Godot Engine contributors.
-License: BSD-3-clause
 
 Files: ./platform/android/java/lib/aidl/com/android/vending/licensing/
  ./platform/android/java/lib/res/layout/status_bar_ongoing_event_progress_bar.xml
@@ -139,11 +133,6 @@ Copyright: 2007, Starbreeze Studios
  2007-2022, Juan Linietsky, Ariel Manzur.
  2014-2022, Godot Engine contributors.
 License: Expat and Zlib
-
-Files: ./thirdparty/bullet/
-Comment: Bullet Continuous Collision Detection and Physics Library
-Copyright: 2003-2013, Erwin Coumans
-License: Zlib
 
 Files: ./thirdparty/certs/ca-certificates.crt
 Comment: CA certificates
