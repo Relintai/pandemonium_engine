@@ -4,7 +4,121 @@ All notable changes to this project will be documented in this file.
 
 ## [Master] 
 
-Backported everything up to and including https://github.com/godotengine/godot/commit/0f10eafb38bd54e59fa7fd079ceafd2c07e8be2a 
+Nothing yet.
+
+## [3.10.0] 
+
+### Added
+
+#### Core
+
+- Added support for specifying a COPYRIGHT.txt file for modules.
+
+- Never print an error message in Object::get_meta(). 
+
+- Remove now superfluos check from String's operator[]. 
+- Add _FORCE_INLINE_ to String's resize(). 
+- Added set_length helper method to String.
+
+#### Platforms
+
+##### Android
+
+- Now the desired android arches can be easily specified for the android build when using to the app build script.
+
+#### Modules
+
+##### User
+
+- Added signals for user actions into the user web nodes.
+- Added a simple page rendering customization api for UserWebPages.
+
+##### Database 
+
+- Added initialized signal and helper method to the DataBaseManager. It can be used to let automally allocated classes (singletons, main scene classes) in heavily database driven applications know when it's safe to use the db.
+- Added docs for the QueryBuilder. 
+- Added docs for the TableBuilder. 
+
+##### Web
+
+- Added HTTPSessionManagerDB using the disabled code in HTTPSessionManager, and cleaned up it's (and HTTPSessionManager's) logic.
+- Added new tag() and ctag() universal tag helpers to the HTMLBuilder binder class.
+- Also added tag() and ctag() helpers to the c++ side HTMLBuilder, and smaller cleanups.
+- Added get request parameter support for WebServerRequest. 
+
+#### Backports
+
+- Backported everything up to and including https://github.com/godotengine/godot/commit/0f10eafb38bd54e59fa7fd079ceafd2c07e8be2a 
+
+### Fixed
+
+- Fixed lots typos with codespell. 
+
+#### Editor
+
+- Removed unused variables from the SceneTreeDock.
+- Now the Access as Unique Name option is in the right place when right clicking the scene tree.
+- Fix regression, and an another issue with touch gui input handling. 
+
+#### Platforms
+
+##### Android
+
+- Don't enable remote debugging in the android editor for now. This fixes black screen when a project encounters a script error.
+
+#### Modules
+
+##### Props
+
+- Fixed a typo in one of TiledWallData's properties. renamed 'heigth' to 'height'.
+
+##### User
+
+- Fix connecting a signal to a non existent method in UserManagerDB.
+- Update logic in UserManagerDB, as the default user id is -1 now.
+
+##### Database
+
+- QueryBuilder - Fix potential infinite recursion. 
+- QueryBuilder  various small fixes
+- TableBuilder - Fix missing default parameter. 
+- Use String length() instead of size() in QueryBuilder, also guard against overindexing.
+
+##### Database SQLite
+
+- QueryBuilder, sql3QueryBuilder  various small fixes
+- Set sqlite to serialized mode. 
+- Make sure escape is used in SQLite3QueryBuilder wherever it's expected. 
+
+##### Web
+
+- Use String.length() instead of String.size() in WebServerRequest::setup_url_stack().
+- Ensure a '/' in between the host, and the url in WebServerRequest::get_url_site().
+
+### Changed
+
+- Added custom_modules folder to the .gitignore.
+
+#### Modules
+
+##### Paint
+
+- Full overhaul of the paint module.
+
+### Removed
+
+- Removed the unused libsimplewebm.
+
+#### Modules
+
+##### Database
+
+- Removed a few unimplemented methods.
+
+##### Web
+
+- Removed old unneeded c++ files.
+
 
 ## [3.9.0] 
 
