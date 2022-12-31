@@ -1,7 +1,7 @@
 # Pandemonium Engine
 
 <p align="center">
-  <a href="https://godotengine.org">
+  <a href="https://github.com/Relintai/pandemonium_engine">
     <img src="logo_outlined.svg" width="400" alt="Pandemonium Engine logo">
   </a>
 </p>
@@ -23,7 +23,7 @@ Windows), mobile platforms (Android, iOS), as well as Web-based platforms
 
 ## Free, open source and community-driven
 
-Godot is completely free and open source under the very permissive [MIT license](https://godotengine.org/license).
+Pandemonium is completely free and open source under the very permissive [MIT license](https://godotengine.org/license).
 No strings attached, no royalties, nothing. The users' games are theirs, down
 to the last line of engine code. Godot's development is fully independent and
 community-driven, empowering users to help shape their engine to match their
@@ -39,7 +39,7 @@ years as an in-house engine, used to publish several work-for-hire titles.
 
 ### Binary downloads
 
-I don't have anything (lik an official webpage) set up at the moment, but temporarily you can download binaries from the github actions tab [[here]](https://github.com/Relintai/pandemonium_engine).
+I don't have anything (lik an official webpage) set up at the moment, but temporarily you can download binaries from the github actions tab [[here]](https://github.com/Relintai/pandemonium_engine), or the releases tab [[here]](https://github.com/Relintai/pandemonium_engine/releases).
 
 ### Compiling from source
 
@@ -48,16 +48,13 @@ for compilation instructions for every supported platform.
 
 ## Documentation and demos
 
-The documentation is available in this repo under the doc/engine folder. [[Here]](https://github.com/Relintai/pandemonium_engine/tree/master/doc/engine).
+Some of the documentation is available in this repo under the doc/engine folder. [[Here]](https://github.com/Relintai/pandemonium_engine/tree/master/doc/engine).
 
-You can also look at the official Godot documentation. It is hosted on [ReadTheDocs](https://docs.godotengine.org), and
-is maintained by the Godot community in its own [GitHub repository](https://github.com/godotengine/godot-docs).
+You can also look at the official 3.x Godot documentation, it will work mostly (sometimes with trivial modifications). It is hosted on [ReadTheDocs](https://docs.godotengine.org), and is maintained by the Godot community in its own [GitHub repository](https://github.com/godotengine/godot-docs).
 
 The class docs are accessible from the editor.
 
-You can also look at the official godot demos in their own [GitHub repository](https://github.com/godotengine/godot-demo-projects)
-as well as a list of [awesome Godot community resources](https://github.com/godotengine/awesome-godot).
+You can also look at the official pandemonium demos in their own [GitHub repository](https://github.com/Relintai/pandemonium-demo-projects).
 
-There are also a number of other
-[learning resources](https://docs.godotengine.org/en/latest/community/tutorials.html)
+It's also worth looking at official godot 3.x resources, like this [awesome Godot list](https://github.com/godotengine/awesome-godot), and there are also a number of other [godot learning resources](https://docs.godotengine.org/en/latest/community/tutorials.html)
 provided by the community, such as text and video tutorials, demos, etc.
