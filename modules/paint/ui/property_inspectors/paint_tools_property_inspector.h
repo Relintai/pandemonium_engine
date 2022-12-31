@@ -2,7 +2,7 @@
 #define PAINT_TOOLS_PROPERTY_INSPECTOR_H
 
 /*
-Copyright (c) 2022 Péter Magyar
+Copyright (c) 2022-2023 Péter Magyar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
