@@ -1,7 +1,7 @@
 #ifndef MESH_DATA_REOURCE_COLLECTION_H
 #define MESH_DATA_REOURCE_COLLECTION_H
 /*
-Copyright (c) 2019-2022 Péter Magyar
+Copyright (c) 2019-2023 Péter Magyar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
