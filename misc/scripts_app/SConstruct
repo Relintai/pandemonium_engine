@@ -496,12 +496,53 @@ if len(sys.argv) > 1:
 
             build_string = get_exports_for('android') + get_additional_commands_for('android') + build_string
 
-            print('Running command: ' + build_string + ' android_arch=armv7')
-            subprocess.call(build_string + ' android_arch=armv7', shell=True)
-            print('Running command: ' + build_string + ' android_arch=arm64v8')
-            subprocess.call(build_string + ' android_arch=arm64v8', shell=True)
-            print('Running command: ' + build_string + ' android_arch=x86')
-            subprocess.call(build_string + ' android_arch=x86', shell=True)
+            build_armv7 = False
+            build_armv8 = False
+            build_x86 = False
+
+            if 'av7' in arg_split:
+                build_armv7 = True
+
+            if 'av8' in arg_split:
+                build_armv8 = True
+
+            if 'x86' in arg_split:
+                build_x86 = True
+
+            if not build_armv7 and not build_armv8 and not build_x86:
+                build_armv7 = True
+                build_armv8 = True
+                build_x86 = True
+
+            log_str = "Building for Android"
+
+            if 'e' in arg:
+                log_str += " (Editor)"
+
+            log_str += ". arch: "
+
+            if build_armv7:
+                log_str += "armv7 "
+
+            if build_armv8:
+                log_str += "arm64v8 "
+
+            if build_x86:
+                log_str += "x86 "
+
+            print(log_str)
+
+            if build_armv7:
+                print('Running command: ' + build_string + ' android_arch=armv7')
+                subprocess.call(build_string + ' android_arch=armv7', shell=True)
+
+            if build_armv8:
+                print('Running command: ' + build_string + ' android_arch=arm64v8')
+                subprocess.call(build_string + ' android_arch=arm64v8', shell=True)
+
+            if build_x86:
+                print('Running command: ' + build_string + ' android_arch=x86')
+                subprocess.call(build_string + ' android_arch=x86', shell=True)
 
             os.chdir(full_path + 'platform/android/java/')
 
