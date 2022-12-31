@@ -61,6 +61,7 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 		args.push_back(resource_path.replace(" ", "%20"));
 	}
 
+#ifndef ANDROID_ENABLED
 	args.push_back("--remote-debug");
 
 	const String conn_string = ScriptEditor::get_singleton()->get_debugger()->get_connection_string();
@@ -71,6 +72,8 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 		const int remote_port = (int)EditorSettings::get_singleton()->get("network/debug/remote_port");
 		args.push_back(remote_host + ":" + String::num(remote_port));
 	}
+#endif
+
 	args.push_back("--allow_focus_steal_pid");
 	args.push_back(itos(OS::get_singleton()->get_process_id()));
 
