@@ -244,6 +244,8 @@ void FileCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_wwwroot", "val"), &FileCache::set_wwwroot);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "wwwroot"), "set_wwwroot", "get_wwwroot");
 
+	ClassDB::bind_method(D_METHOD("get_wwwroot_abs"), &FileCache::get_wwwroot_abs);
+
 	ClassDB::bind_method(D_METHOD("get_cache_invalidation_time"), &FileCache::get_cache_invalidation_time);
 	ClassDB::bind_method(D_METHOD("set_cache_invalidation_time", "val"), &FileCache::set_cache_invalidation_time);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cache_invalidation_time"), "set_cache_invalidation_time", "get_cache_invalidation_time");
@@ -251,6 +253,9 @@ void FileCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("wwwroot_register_file", "file_path"), &FileCache::wwwroot_register_file);
 	ClassDB::bind_method(D_METHOD("wwwroot_deregister_file", "file_path"), &FileCache::wwwroot_deregister_file);
 	ClassDB::bind_method(D_METHOD("wwwroot_has_file", "file_path"), &FileCache::wwwroot_has_file);
+	ClassDB::bind_method(D_METHOD("wwwroot_get_file_index", "file_path"), &FileCache::wwwroot_get_file_index);
+	ClassDB::bind_method(D_METHOD("wwwroot_get_file_orig_path", "index"), &FileCache::wwwroot_get_file_orig_path);
+	ClassDB::bind_method(D_METHOD("wwwroot_get_file_orig_path_abs", "index"), &FileCache::wwwroot_get_file_orig_path_abs);
 	ClassDB::bind_method(D_METHOD("wwwroot_refresh_cache"), &FileCache::wwwroot_refresh_cache);
 	ClassDB::bind_method(D_METHOD("wwwroot_evaluate_dir", "file_path", "should_exist "), &FileCache::wwwroot_evaluate_dir, true);
 
@@ -260,3 +265,4 @@ void FileCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("clear"), &FileCache::clear);
 }
+
