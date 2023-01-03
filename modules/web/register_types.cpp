@@ -44,6 +44,7 @@ SOFTWARE.
 #include "http/web_server_cookie.h"
 #include "http/web_server_middleware.h"
 #include "http/web_server_request.h"
+#include "http/web_server_request_scriptable.h"
 
 #include "nodes/static_pages/static_web_page.h"
 #include "nodes/static_pages/static_web_page_file.h"
@@ -118,6 +119,7 @@ void register_web_types() {
 	ClassDB::register_class<WebServerCookie>();
 	ClassDB::register_class<WebServerMiddleware>();
 	ClassDB::register_class<WebServerRequest>();
+	ClassDB::register_class<WebServerRequestScriptable>();
 
 	ClassDB::register_class<StaticWebPage>();
 	ClassDB::register_class<StaticWebPageFile>();
