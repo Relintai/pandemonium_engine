@@ -119,6 +119,7 @@ public:
 	bool check_size_force_redraw();
 	bool pwa_needs_update() const { return pwa_is_waiting; }
 	Error pwa_update();
+	void force_fs_sync();
 
 	// Override return type to make writing static callbacks less tedious.
 	static OS_JavaScript *get_singleton();
