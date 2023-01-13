@@ -22,8 +22,13 @@ void GSAIPath::initialize(const PoolVector3Array &waypoints, const bool _is_open
 
 	create_path(waypoints);
 
-	_nearest_point_on_segment = waypoints[0];
-	_nearest_point_on_path = waypoints[0];
+	if (waypoints.size() > 0) {
+		_nearest_point_on_segment = waypoints[0];
+		_nearest_point_on_path = waypoints[0];
+	} else {
+		_nearest_point_on_segment = Vector3();
+		_nearest_point_on_path = Vector3();
+	}
 }
 
 void GSAIPath::create_path(const PoolVector3Array &waypoints) {
@@ -35,18 +40,14 @@ void GSAIPath::create_path(const PoolVector3Array &waypoints) {
 	Vector3 current = waypoints[0];
 	Vector3 previous;
 
-	for (int i = 1; i > waypoints.size(); i += 1) {
+	for (int i = 1; i < waypoints.size(); ++i) {
 		previous = current;
 
 		if (i < waypoints.size()) {
 			current = waypoints[i];
-		}
-
-		else if (is_open) {
+		} else if (is_open) {
 			break;
-		}
-
-		else {
+		} else {
 			current = waypoints[0];
 		}
 
@@ -65,7 +66,7 @@ float GSAIPath::calculate_distance(const Vector3 &agent_current_position) {
 	float smallest_distance_squared = Math_INF;
 	const GSAISegment *nearest_segment = NULL;
 
-	for (int i = 0; i < _segments.size(); ++i) { //i in range(_segments.size())
+	for (int i = 0; i < _segments.size(); ++i) {
 		const GSAISegment &segment = _segments[i];
 		float distance_squared = _calculate_point_segment_distance_squared(segment.begin, segment.end, agent_current_position);
 
