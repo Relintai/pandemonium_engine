@@ -16,8 +16,11 @@ public:
 	Ref<GSAISteeringAgent> get_agent();
 	void set_agent(const Ref<GSAISteeringAgent> &val);
 
-	Vector<Variant> get_agents();
-	void set_agents(const Vector<Variant> &arr);
+	Vector<Ref<GSAISteeringAgent>> get_agents();
+	void set_agents(const Vector<Ref<GSAISteeringAgent>> &arr);
+
+	Array get_agents_arr();
+	void set_agents_arr(const Array &arr);
 
 	int find_neighbors(const Ref<FuncRef> &callback);
 	int _find_neighbors(Ref<FuncRef> callback);
