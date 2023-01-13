@@ -86,7 +86,7 @@ void GSAIKinematicBody2DAgent::_apply_sliding_steering(const Vector3 &accel, con
 		return;
 	}
 
-	Vector2 velocity = GSAIUtils.to_vector2(linear_velocity + accel * delta).clamped(linear_speed_max);
+	Vector2 velocity = GSAIUtils.to_vector2(linear_velocity + accel * delta).limit_length(linear_speed_max);
 
 	if (apply_linear_drag) {
 		velocity = velocity.linear_interpolate(Vector2.ZERO, linear_drag_percentage);
