@@ -15,6 +15,9 @@ def get_doc_classes():
         "GSAIGroupBehavior",
         "GSAIAgentLocation",
         "GSAIProximity",
+
+        "GSAIRadiusProximity",
+        "GSAIInfiniteProximity",
     ]
 
 def get_doc_path():

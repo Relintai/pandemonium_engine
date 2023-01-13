@@ -1,6 +1,9 @@
 
 #include "gsai_radius_proximity.h"
 
+#include "../gsai_steering_agent.h"
+#include "scene/main/scene_tree.h"
+
 float GSAIRadiusProximity::get_radius() const {
 	return radius;
 }
@@ -9,84 +12,62 @@ void GSAIRadiusProximity::set_radius(const float val) {
 	radius = val;
 }
 
-int GSAIRadiusProximity::get__last_frame() const {
-	return _last_frame;
-}
+int GSAIRadiusProximity::_find_neighbors(Ref<FuncRef> callback) {
+	ERR_FAIL_COND_V(!agent.is_valid(), 0);
 
-void GSAIRadiusProximity::set__last_frame(const int val) {
-	_last_frame = val;
-}
-
-SceneTree GSAIRadiusProximity::get_ *_scene_tree() {
-	return *_scene_tree;
-}
-
-void GSAIRadiusProximity::set_ *_scene_tree(const SceneTree &val) {
-	*_scene_tree = val;
-}
-
-// Determines any agent that is in the specified list as being neighbors with the owner agent if;
-// they lie within the specified radius.;
-// @category - Proximities;
-// The radius around the owning agent to find neighbors in;
-float radius = 0.0;
-int _last_frame = 0;
-SceneTree *_scene_tree;
-
-void GSAIRadiusProximity::_init() {
-	_scene_tree = Engine.get_main_loop();
-}
-
-// Returns a number of neighbors based on a `callback` function.;
-//;
-// `_find_neighbors` calls `callback` for each agent in the `agents` array that lie within;
-// the radius around the owning agent and adds one to the count if its `callback` returns true.;
-// @tags - virtual;
-
-int GSAIRadiusProximity::_find_neighbors(const FuncRef &callback) {
 	int agent_count = agents.size();
 	int neighbor_count = 0;
-	int current_frame = ;
+	int current_frame;
+	Variant arg;
+	const Variant *argptr[1];
+	argptr[0] = &arg;
+	Variant::CallError err;
 
-	if (_scene_tree) {
-		current_frame = _scene_tree.get_frame();
-	}
+	SceneTree *scene_tree = SceneTree::get_singleton();
 
-	else {
+	if (scene_tree) {
+		current_frame = scene_tree->get_frame();
+	} else {
 		current_frame = -_last_frame;
 	}
 
 	if (current_frame != _last_frame) {
 		_last_frame = current_frame;
-		Vector3 owner_position = agent.position;
+		Vector3 owner_position = agent->get_position();
 
-		for (int i = 0; i < agent_count; ++i) { //i in range(agent_count)
-			GSAISteeringAgent *current_agent = agents[i] as GSAISteeringAgent;
+		for (int i = 0; i < agent_count; ++i) {
+			Ref<GSAISteeringAgent> current_agent = agents[i];
+
+			ERR_CONTINUE(!current_agent.is_valid());
 
 			if (current_agent != agent) {
-				float distance_squared = owner_position.distance_squared_to(current_agent.position);
-				float range_to = radius + current_agent.bounding_radius;
+				float distance_squared = owner_position.distance_squared_to(current_agent->get_position());
+				float range_to = radius + current_agent->get_bounding_radius();
+
+				arg = current_agent.get_ref_ptr();
 
 				if (distance_squared < range_to * range_to) {
-					if (callback.call_func(current_agent)) {
-						current_agent.is_tagged = true;
+					if (callback->call_func(argptr, 1, err)) {
+						current_agent->set_is_tagged(true);
 						neighbor_count += 1;
 						continue;
 					}
 				}
 			}
 
-			current_agent.is_tagged = false;
+			current_agent->set_is_tagged(false);
 		}
 
-	}
+	} else {
+		for (int i = 0; i < agent_count; ++i) {
+			Ref<GSAISteeringAgent> current_agent = agents[i];
 
-	else {
-		for (int i = 0; i < agent_count; ++i) { //i in range(agent_count)
-			GSAISteeringAgent *current_agent = agents[i] as GSAISteeringAgent;
+			ERR_CONTINUE(!current_agent.is_valid());
 
-			if (current_agent != agent && current_agent.is_tagged) {
-				if (callback.call_func(current_agent)) {
+			if (current_agent != agent && current_agent->get_is_tagged()) {
+				arg = current_agent.get_ref_ptr();
+
+				if (callback->call_func(argptr, 1, err)) {
 					neighbor_count += 1;
 				}
 			}
@@ -95,30 +76,17 @@ int GSAIRadiusProximity::_find_neighbors(const FuncRef &callback) {
 
 	return neighbor_count;
 }
-}
 
 GSAIRadiusProximity::GSAIRadiusProximity() {
 	radius = 0.0;
 	_last_frame = 0;
-	*_scene_tree;
 }
 
 GSAIRadiusProximity::~GSAIRadiusProximity() {
 }
 
-static void GSAIRadiusProximity::_bind_methods() {
+void GSAIRadiusProximity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_radius"), &GSAIRadiusProximity::get_radius);
 	ClassDB::bind_method(D_METHOD("set_radius", "value"), &GSAIRadiusProximity::set_radius);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "radius"), "set_radius", "get_radius");
-
-	ClassDB::bind_method(D_METHOD("get__last_frame"), &GSAIRadiusProximity::get__last_frame);
-	ClassDB::bind_method(D_METHOD("set__last_frame", "value"), &GSAIRadiusProximity::set__last_frame);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "_last_frame"), "set__last_frame", "get__last_frame");
-
-	ClassDB::bind_method(D_METHOD("get_*_scene_tree"), &GSAIRadiusProximity::get_ * _scene_tree);
-	ClassDB::bind_method(D_METHOD("set_*_scene_tree", "value"), &GSAIRadiusProximity::set_ * _scene_tree);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_scene_tree", PROPERTY_HINT_RESOURCE_TYPE, "SceneTree"), "set_*_scene_tree", "get_*_scene_tree");
-
-	ClassDB::bind_method(D_METHOD("_init"), &GSAIRadiusProximity::_init);
-	ClassDB::bind_method(D_METHOD("_find_neighbors", "callback"), &GSAIRadiusProximity::_find_neighbors);
 }

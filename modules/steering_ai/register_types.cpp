@@ -35,6 +35,9 @@ SOFTWARE.
 #include "gsai_target_acceleration.h"
 #include "proximities/gsai_proximity.h"
 
+#include "proximities/gsai_radius_proximity.h"
+#include "proximities/gsai_infinite_proximity.h"
+
 static GSAIUtils *gs_ai_utils = NULL;
 
 void register_steering_ai_types() {
@@ -49,6 +52,9 @@ void register_steering_ai_types() {
 	ClassDB::register_class<GSAIGroupBehavior>();
 	ClassDB::register_class<GSAIAgentLocation>();
 	ClassDB::register_class<GSAIProximity>();
+
+	ClassDB::register_class<GSAIRadiusProximity>();
+	ClassDB::register_class<GSAIInfiniteProximity>();
 }
 
 void unregister_steering_ai_types() {

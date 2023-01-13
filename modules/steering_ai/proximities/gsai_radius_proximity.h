@@ -1,6 +1,13 @@
 #ifndef GSAI_RADIUS_PROXIMITY_H
 #define GSAI_RADIUS_PROXIMITY_H
 
+#include "core/object/func_ref.h"
+#include "core/object/reference.h"
+
+#include "gsai_proximity.h"
+
+class SceneTree;
+
 class GSAIRadiusProximity : public GSAIProximity {
 	GDCLASS(GSAIRadiusProximity, GSAIProximity);
 
@@ -8,14 +15,7 @@ public:
 	float get_radius() const;
 	void set_radius(const float val);
 
-	int get__last_frame() const;
-	void set__last_frame(const int val);
-
-	SceneTree get_ *_scene_tree();
-	void set_ *_scene_tree(const SceneTree &val);
-
-	void _init();
-	int _find_neighbors(const FuncRef &callback);
+	int _find_neighbors(Ref<FuncRef> callback);
 
 	GSAIRadiusProximity();
 	~GSAIRadiusProximity();
@@ -27,9 +27,8 @@ protected:
 	// they lie within the specified radius.
 	// @category - Proximities
 	// The radius around the owning agent to find neighbors in
-	float radius = 0.0;
-	int _last_frame = 0;
-	SceneTree *_scene_tree;
+	float radius;
+	int _last_frame;
 	// Returns a number of neighbors based on a `callback` function.
 	//
 	// `_find_neighbors` calls `callback` for each agent in the `agents` array that lie within
