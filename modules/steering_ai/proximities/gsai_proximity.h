@@ -23,7 +23,7 @@ public:
 	void set_agents_arr(const Array &arr);
 
 	int find_neighbors(const Ref<FuncRef> &callback);
-	int _find_neighbors(Ref<FuncRef> callback);
+	virtual int _find_neighbors(Ref<FuncRef> callback);
 
 	GSAIProximity();
 	~GSAIProximity();

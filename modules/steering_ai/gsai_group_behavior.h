@@ -21,7 +21,7 @@ public:
 	Ref<FuncRef> get_callback();
 	void set_callback(const Ref<FuncRef> &val);
 
-	bool _report_neighbor(const Ref<GSAISteeringAgent> &neighbor);
+	virtual bool _report_neighbor(const Ref<GSAISteeringAgent> &neighbor);
 
 	GSAIGroupBehavior();
 	~GSAIGroupBehavior();

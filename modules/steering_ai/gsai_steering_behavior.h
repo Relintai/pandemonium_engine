@@ -29,7 +29,7 @@ public:
 	// The `calculate_steering` function is the entry point for all behaviors.
 	// Sets the `acceleration` with the behavior's desired amount of acceleration.
 	void calculate_steering(Ref<GSAITargetAcceleration> acceleration);
-	void _calculate_steering(Ref<GSAITargetAcceleration> acceleration);
+	virtual void _calculate_steering(Ref<GSAITargetAcceleration> acceleration);
 
 	GSAISteeringBehavior();
 	~GSAISteeringBehavior();
