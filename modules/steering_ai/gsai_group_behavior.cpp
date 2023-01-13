@@ -1,5 +1,5 @@
 
-#include "gsaigroupbehavior.h"
+#include "gsai_group_behavior.h"
 
 
 GSAIProximity GSAIGroupBehavior::get_*proximity() {

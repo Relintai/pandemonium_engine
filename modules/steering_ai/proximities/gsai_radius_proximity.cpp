@@ -1,5 +1,5 @@
 
-#include "gsairadiusproximity.h"
+#include "gsai_radius_proximity.h"
 
 
 float GSAIRadiusProximity::get_radius() const {

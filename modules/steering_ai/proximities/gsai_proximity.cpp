@@ -1,5 +1,5 @@
 
-#include "gsaiproximity.h"
+#include "gsai_proximity.h"
 
 
 GSAISteeringAgent GSAIProximity::get_*agent() {

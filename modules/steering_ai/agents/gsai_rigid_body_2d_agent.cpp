@@ -1,5 +1,5 @@
 
-#include "gsairigidbody2dagent.h"
+#include "gsai_rigid_body_2d_agent.h"
 
 
 RigidBody2D GSAIRigidBody2DAgent::get_*body() {

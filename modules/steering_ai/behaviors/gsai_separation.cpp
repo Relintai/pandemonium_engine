@@ -1,5 +1,5 @@
 
-#include "gsaiseparation.h"
+#include "gsai_separation.h"
 
 
 float GSAISeparation::get_decay_coefficient() const {

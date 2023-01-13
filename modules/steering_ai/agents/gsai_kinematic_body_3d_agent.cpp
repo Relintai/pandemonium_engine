@@ -1,5 +1,5 @@
 
-#include "gsaikinematicbody3dagent.h"
+#include "gsai_kinematic_body_3d_agent.h"
 
 
 KinematicBody GSAIKinematicBody3DAgent::get_*body() {

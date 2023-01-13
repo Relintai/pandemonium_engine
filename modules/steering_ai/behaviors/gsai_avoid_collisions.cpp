@@ -1,5 +1,5 @@
 
-#include "gsaiavoidcollisions.h"
+#include "gsai_avoid_collisions.h"
 
 
 GSAISteeringAgent GSAIAvoidCollisions::get_*_first_neighbor() {
