@@ -23,10 +23,20 @@ SOFTWARE.
 
 #include "register_types.h"
 
+#include "core/config/engine.h"
+
+#include "gsai_utils.h"
+
+static GSAIUtils *gs_ai_utils = NULL;
 
 void register_steering_ai_types() {
-	//ClassDB::register_class<TexturePacker>();
+	gs_ai_utils = memnew(GSAIUtils);
+	ClassDB::register_class<GSAIUtils>();
+	Engine::get_singleton()->add_singleton(Engine::Singleton("GSAIUtils", GSAIUtils::get_singleton()));
 }
 
 void unregister_steering_ai_types() {
+	if (gs_ai_utils) {
+		memdelete(gs_ai_utils);
+	}
 }

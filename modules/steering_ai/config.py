@@ -6,7 +6,7 @@ def configure(env):
 
 def get_doc_classes():
     return [
-        #"",
+        "GSAIUtils",
     ]
 
 def get_doc_path():

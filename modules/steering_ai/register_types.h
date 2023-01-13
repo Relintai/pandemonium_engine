@@ -1,3 +1,7 @@
+
+#ifndef REGSITER_STEERING_AI_TYPES
+#define REGSITER_STEERING_AI_TYPES
+
 /*
 Copyright (c) 2023-present Péter Magyar
 Copyright (c) 2020-2023 GDQuest
@@ -23,3 +27,5 @@ SOFTWARE.
 
 void register_steering_ai_types();
 void unregister_steering_ai_types();
+
+#endif

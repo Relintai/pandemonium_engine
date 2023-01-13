@@ -6,6 +6,8 @@ module_env = env.Clone()
 
 sources = [
     "register_types.cpp",
+
+    "gsai_utils.cpp",
 ]
 
 
