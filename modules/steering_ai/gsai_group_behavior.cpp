@@ -42,6 +42,6 @@ void GSAIGroupBehavior::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_callback", "value"), &GSAIGroupBehavior::set_callback);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "_callback", PROPERTY_HINT_RESOURCE_TYPE, "FuncRef"), "set_callback", "get_callback");
 
-	BIND_VMETHOD(MethodInfo("_report_neighbor", PropertyInfo(Variant::OBJECT, "neighbor", PROPERTY_HINT_RESOURCE_TYPE, "GSAISteeringAgent")));
+	BIND_VMETHOD(MethodInfo(Variant::BOOL, "_report_neighbor", PropertyInfo(Variant::OBJECT, "neighbor", PROPERTY_HINT_RESOURCE_TYPE, "GSAISteeringAgent")));
 	ClassDB::bind_method(D_METHOD("_report_neighbor", "neighbor"), &GSAIGroupBehavior::_report_neighbor);
 }
