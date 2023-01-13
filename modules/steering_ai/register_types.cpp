@@ -27,12 +27,28 @@ SOFTWARE.
 
 #include "gsai_utils.h"
 
+#include "gsai_agent_location.h"
+#include "gsai_group_behavior.h"
+#include "gsai_path.h"
+#include "gsai_steering_agent.h"
+#include "gsai_steering_behavior.h"
+#include "gsai_target_acceleration.h"
+#include "proximities/gsai_proximity.h"
+
 static GSAIUtils *gs_ai_utils = NULL;
 
 void register_steering_ai_types() {
 	gs_ai_utils = memnew(GSAIUtils);
 	ClassDB::register_class<GSAIUtils>();
 	Engine::get_singleton()->add_singleton(Engine::Singleton("GSAIUtils", GSAIUtils::get_singleton()));
+
+	ClassDB::register_class<GSAITargetAcceleration>();
+	ClassDB::register_class<GSAISteeringBehavior>();
+	ClassDB::register_class<GSAISteeringAgent>();
+	ClassDB::register_class<GSAIPath>();
+	ClassDB::register_class<GSAIGroupBehavior>();
+	ClassDB::register_class<GSAIAgentLocation>();
+	ClassDB::register_class<GSAIProximity>();
 }
 
 void unregister_steering_ai_types() {

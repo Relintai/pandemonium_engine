@@ -1,18 +1,26 @@
 #ifndef GSAI_PROXIMITY_H
 #define GSAI_PROXIMITY_H
 
+#include "core/int_types.h"
+#include "core/math/vector3.h"
+
+#include "core/object/func_ref.h"
+#include "core/object/reference.h"
+
+class GSAISteeringAgent;
+
 class GSAIProximity : public Reference {
 	GDCLASS(GSAIProximity, Reference);
 
 public:
-	GSAISteeringAgent get_ *agent();
-	void set_ *agent(const GSAISteeringAgent &val);
+	Ref<GSAISteeringAgent> get_agent();
+	void set_agent(const Ref<GSAISteeringAgent> &val);
 
-	Array get_agents();
-	void set_agents(const Array &val);
+	Vector<Variant> get_agents();
+	void set_agents(const Vector<Variant> &arr);
 
-	int find_neighbors(const FuncRef &_callback);
-	int _find_neighbors(const FuncRef &_callback);
+	int find_neighbors(const Ref<FuncRef> &callback);
+	int _find_neighbors(Ref<FuncRef> callback);
 
 	GSAIProximity();
 	~GSAIProximity();
@@ -24,9 +32,9 @@ protected:
 	// @category - Proximities
 	// @tags - abstract
 	// The owning agent whose neighbors are found in the group
-	GSAISteeringAgent *agent;
+	Ref<GSAISteeringAgent> agent;
 	// The agents who are part of this group and could be potential neighbors
-	Array agents = Array();
+	Vector<Ref<GSAISteeringAgent>> agents;
 	// Returns a number of neighbors based on a `callback` function.
 	//
 	// `_find_neighbors` calls `callback` for each agent in the `agents` array and

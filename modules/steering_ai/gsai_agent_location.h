@@ -1,6 +1,10 @@
 #ifndef GSAI_AGENT_LOCATION_H
 #define GSAI_AGENT_LOCATION_H
 
+#include "core/int_types.h"
+#include "core/math/vector3.h"
+#include "core/object/reference.h"
+
 class GSAIAgentLocation : public Reference {
 	GDCLASS(GSAIAgentLocation, Reference);
 
@@ -20,9 +24,9 @@ protected:
 	// Represents an agent with only a location and an orientation.
 	// @category - Base types
 	// The agent's position in space.
-	Vector3 position = Vector3.ZERO;
+	Vector3 position;
 	// The agent's orientation on its Y axis rotation.
-	float orientation = 0.0;
+	float orientation;
 };
 
 #endif

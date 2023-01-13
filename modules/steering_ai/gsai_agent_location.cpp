@@ -17,23 +17,14 @@ void GSAIAgentLocation::set_orientation(const float val) {
 	orientation = val;
 }
 
-// Represents an agent with only a location and an orientation.;
-// @category - Base types;
-// The agent's position in space.;
-Vector3 position = Vector3.ZERO;
-// The agent's orientation on its Y axis rotation.;
-float orientation = 0.0;
-}
-
 GSAIAgentLocation::GSAIAgentLocation() {
-	position = Vector3.ZERO;
 	orientation = 0.0;
 }
 
 GSAIAgentLocation::~GSAIAgentLocation() {
 }
 
-static void GSAIAgentLocation::_bind_methods() {
+void GSAIAgentLocation::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_position"), &GSAIAgentLocation::get_position);
 	ClassDB::bind_method(D_METHOD("set_position", "value"), &GSAIAgentLocation::set_position);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "position"), "set_position", "get_position");

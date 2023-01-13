@@ -8,6 +8,14 @@ sources = [
     "register_types.cpp",
 
     "gsai_utils.cpp",
+
+    "gsai_target_acceleration.cpp",
+    "gsai_steering_behavior.cpp",
+    "gsai_steering_agent.cpp",
+    "gsai_path.cpp",
+    "gsai_group_behavior.cpp",
+    "gsai_agent_location.cpp",
+    "proximities/gsai_proximity.cpp",
 ]
 
 

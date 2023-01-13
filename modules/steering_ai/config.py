@@ -7,6 +7,14 @@ def configure(env):
 def get_doc_classes():
     return [
         "GSAIUtils",
+
+        "GSAITargetAcceleration",
+        "GSAISteeringBehavior",
+        "GSAISteeringAgent",
+        "GSAIPath",
+        "GSAIGroupBehavior",
+        "GSAIAgentLocation",
+        "GSAIProximity",
     ]
 
 def get_doc_path():

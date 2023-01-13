@@ -1,6 +1,10 @@
 
 #include "gsai_target_acceleration.h"
 
+#include "core/math/math_funcs.h"
+
+#include "gsai_steering_agent.h"
+
 Vector3 GSAITargetAcceleration::get_linear() {
 	return linear;
 }
@@ -17,15 +21,6 @@ void GSAITargetAcceleration::set_angular(const float val) {
 	angular = val;
 }
 
-// A desired linear and angular amount of acceleration requested by the steering;
-// system.;
-// @category - Base types;
-// Linear acceleration;
-Vector3 linear = Vector3.ZERO;
-// Angular acceleration;
-float angular = 0.0;
-// Sets the linear and angular components to 0.;
-
 void GSAITargetAcceleration::set_zero() {
 	linear.x = 0.0;
 	linear.y = 0.0;
@@ -33,35 +28,27 @@ void GSAITargetAcceleration::set_zero() {
 	angular = 0.0;
 }
 
-// Adds `accel`'s components, multiplied by `scalar`, to this one.;
-
-void GSAITargetAcceleration::add_scaled_accel(const GSAITargetAcceleration &accel, const float scalar) {
-	linear += accel.linear * scalar;
-	angular += accel.angular * scalar;
+void GSAITargetAcceleration::add_scaled_accel(const Ref<GSAITargetAcceleration> &accel, const float scalar) {
+	linear += accel->linear * scalar;
+	angular += accel->angular * scalar;
 }
-
-// Returns the squared magnitude of the linear and angular components.;
 
 float GSAITargetAcceleration::get_magnitude_squared() {
 	return linear.length_squared() + angular * angular;
 }
 
-// Returns the magnitude of the linear and angular components.;
-
 float GSAITargetAcceleration::get_magnitude() {
-	return sqrt(get_magnitude_squared());
-}
+	return Math::sqrt(get_magnitude_squared());
 }
 
 GSAITargetAcceleration::GSAITargetAcceleration() {
-	linear = Vector3.ZERO;
 	angular = 0.0;
 }
 
 GSAITargetAcceleration::~GSAITargetAcceleration() {
 }
 
-static void GSAITargetAcceleration::_bind_methods() {
+void GSAITargetAcceleration::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_linear"), &GSAITargetAcceleration::get_linear);
 	ClassDB::bind_method(D_METHOD("set_linear", "value"), &GSAITargetAcceleration::set_linear);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "linear"), "set_linear", "get_linear");

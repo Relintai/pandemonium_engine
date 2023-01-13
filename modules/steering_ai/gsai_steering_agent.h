@@ -1,6 +1,13 @@
 #ifndef GSAI_STEERING_AGENT_H
 #define GSAI_STEERING_AGENT_H
 
+#include "core/int_types.h"
+#include "core/math/vector3.h"
+
+#include "core/object/reference.h"
+
+#include "gsai_agent_location.h"
+
 class GSAISteeringAgent : public GSAIAgentLocation {
 	GDCLASS(GSAISteeringAgent, GSAIAgentLocation);
 
@@ -44,25 +51,25 @@ protected:
 	// the steering toolkit to work correctly.
 	// @category - Base types
 	// The amount of velocity to be considered effectively not moving.
-	float zero_linear_speed_threshold = 0.01;
+	float zero_linear_speed_threshold;
 	// The maximum speed at which the agent can move.
-	float linear_speed_max = 0.0;
+	float linear_speed_max;
 	// The maximum amount of acceleration that any behavior can apply to the agent.
-	float linear_acceleration_max = 0.0;
+	float linear_acceleration_max;
 	// The maximum amount of angular speed at which the agent can rotate.
-	float angular_speed_max = 0.0;
+	float angular_speed_max;
 	// The maximum amount of angular acceleration that any behavior can apply to an
 	// agent.
-	float angular_acceleration_max = 0.0;
+	float angular_acceleration_max;
 	// Current velocity of the agent.
-	Vector3 linear_velocity = Vector3.ZERO;
+	Vector3 linear_velocity;
 	// Current angular velocity of the agent.
-	float angular_velocity = 0.0;
+	float angular_velocity;
 	// The radius of the sphere that approximates the agent's size in space.
-	float bounding_radius = 0.0;
+	float bounding_radius;
 	// Used internally by group behaviors and proximities to mark the agent as already
 	// considered.
-	bool is_tagged = false;
+	bool is_tagged;
 };
 
 #endif
