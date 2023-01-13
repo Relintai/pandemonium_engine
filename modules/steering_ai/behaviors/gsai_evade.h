@@ -1,5 +1,5 @@
-#ifndef GSAIEVADE_H
-#define GSAIEVADE_H
+#ifndef GSAI_EVADE_H
+#define GSAI_EVADE_H
 
 class GSAIEvade : public GSAIPursue {
 	GDCLASS(GSAIEvade, GSAIPursue);

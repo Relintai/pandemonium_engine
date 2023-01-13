@@ -1,5 +1,5 @@
-#ifndef GSAIAVOIDCOLLISIONS_H
-#define GSAIAVOIDCOLLISIONS_H
+#ifndef GSAI_AVOID_COLLISIONS_H
+#define GSAI_AVOID_COLLISIONS_H
 
 class GSAIAvoidCollisions : public GSAIGroupBehavior {
 	GDCLASS(GSAIAvoidCollisions, GSAIGroupBehavior);

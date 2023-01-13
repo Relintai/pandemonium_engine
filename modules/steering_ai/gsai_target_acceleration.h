@@ -1,5 +1,13 @@
-#ifndef GSAITARGETACCELERATION_H
-#define GSAITARGETACCELERATION_H
+#ifndef GSAI_TARGET_ACCELERATION_H
+#define GSAI_TARGET_ACCELERATION_H
+
+#include "core/int_types.h"
+#include "core/math/vector3.h"
+#include "core/object/reference.h"
+
+// A desired linear and angular amount of acceleration requested by the steering
+// system.
+//Base type
 
 class GSAITargetAcceleration : public Reference {
 	GDCLASS(GSAITargetAcceleration, Reference);
@@ -22,9 +30,6 @@ public:
 protected:
 	static void _bind_methods();
 
-	// A desired linear and angular amount of acceleration requested by the steering
-	// system.
-	// @category - Base types
 	// Linear acceleration
 	Vector3 linear = Vector3.ZERO;
 	// Angular acceleration

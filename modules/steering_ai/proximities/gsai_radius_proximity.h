@@ -1,5 +1,5 @@
-#ifndef GSAIRADIUSPROXIMITY_H
-#define GSAIRADIUSPROXIMITY_H
+#ifndef GSAI_RADIUS_PROXIMITY_H
+#define GSAI_RADIUS_PROXIMITY_H
 
 class GSAIRadiusProximity : public GSAIProximity {
 	GDCLASS(GSAIRadiusProximity, GSAIProximity);

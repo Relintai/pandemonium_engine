@@ -1,5 +1,5 @@
-#ifndef GSAISTEERINGAGENT_H
-#define GSAISTEERINGAGENT_H
+#ifndef GSAI_STEERING_AGENT_H
+#define GSAI_STEERING_AGENT_H
 
 class GSAISteeringAgent : public GSAIAgentLocation {
 	GDCLASS(GSAISteeringAgent, GSAIAgentLocation);

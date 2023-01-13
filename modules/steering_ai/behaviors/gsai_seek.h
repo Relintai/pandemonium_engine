@@ -1,5 +1,5 @@
-#ifndef GSAISEEK_H
-#define GSAISEEK_H
+#ifndef GSAI_SEEK_H
+#define GSAI_SEEK_H
 
 class GSAISeek : public GSAISteeringBehavior {
 	GDCLASS(GSAISeek, GSAISteeringBehavior);

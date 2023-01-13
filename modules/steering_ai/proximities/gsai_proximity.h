@@ -1,5 +1,5 @@
-#ifndef GSAIPROXIMITY_H
-#define GSAIPROXIMITY_H
+#ifndef GSAI_PROXIMITY_H
+#define GSAI_PROXIMITY_H
 
 class GSAIProximity : public Reference {
 	GDCLASS(GSAIProximity, Reference);

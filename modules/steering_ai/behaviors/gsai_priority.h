@@ -1,5 +1,5 @@
-#ifndef GSAIPRIORITY_H
-#define GSAIPRIORITY_H
+#ifndef GSAI_PRIORITY_H
+#define GSAI_PRIORITY_H
 
 class GSAIPriority : public GSAISteeringBehavior {
 	GDCLASS(GSAIPriority, GSAISteeringBehavior);

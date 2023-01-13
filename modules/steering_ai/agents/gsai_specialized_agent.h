@@ -1,5 +1,5 @@
-#ifndef GSAISPECIALIZEDAGENT_H
-#define GSAISPECIALIZEDAGENT_H
+#ifndef GSAI_SPECIALIZED_AGENT_H
+#define GSAI_SPECIALIZED_AGENT_H
 
 class GSAISpecializedAgent : public GSAISteeringAgent {
 	GDCLASS(GSAISpecializedAgent, GSAISteeringAgent);

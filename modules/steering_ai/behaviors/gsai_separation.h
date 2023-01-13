@@ -1,5 +1,5 @@
-#ifndef GSAISEPARATION_H
-#define GSAISEPARATION_H
+#ifndef GSAI_SEPARATION_H
+#define GSAI_SEPARATION_H
 
 class GSAISeparation : public GSAIGroupBehavior {
 	GDCLASS(GSAISeparation, GSAIGroupBehavior);

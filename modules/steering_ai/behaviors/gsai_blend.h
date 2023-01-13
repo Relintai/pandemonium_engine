@@ -1,5 +1,5 @@
-#ifndef GSAIBLEND_H
-#define GSAIBLEND_H
+#ifndef GSAI_BLEND_H
+#define GSAI_BLEND_H
 
 class GSAIBlend : public GSAISteeringBehavior {
 	GDCLASS(GSAIBlend, GSAISteeringBehavior);

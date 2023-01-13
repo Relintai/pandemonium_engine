@@ -1,5 +1,5 @@
-#ifndef GSAIPATH_H
-#define GSAIPATH_H
+#ifndef GSAI_PATH_H
+#define GSAI_PATH_H
 
 class GSAIPath : public Reference {
 	GDCLASS(GSAIPath, Reference);

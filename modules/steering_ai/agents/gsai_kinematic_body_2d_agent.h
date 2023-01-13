@@ -1,5 +1,5 @@
-#ifndef GSAIKINEMATICBODY2DAGENT_H
-#define GSAIKINEMATICBODY2DAGENT_H
+#ifndef GSAI_KINEMATIC_BODY_2D_AGENT_H
+#define GSAI_KINEMATIC_BODY_2D_AGENT_H
 
 class GSAIKinematicBody2DAgent : public GSAISpecializedAgent {
 	GDCLASS(GSAIKinematicBody2DAgent, GSAISpecializedAgent);

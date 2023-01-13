@@ -1,5 +1,5 @@
-#ifndef GSAIPURSUE_H
-#define GSAIPURSUE_H
+#ifndef GSAI_PURSUE_H
+#define GSAI_PURSUE_H
 
 class GSAIPursue : public GSAISteeringBehavior {
 	GDCLASS(GSAIPursue, GSAISteeringBehavior);

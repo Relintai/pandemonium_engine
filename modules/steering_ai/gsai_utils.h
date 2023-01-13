@@ -1,5 +1,5 @@
-#ifndef GSAIUTILS_H
-#define GSAIUTILS_H
+#ifndef GSAI_UTILS_H
+#define GSAI_UTILS_H
 
 #include "core/int_types.h"
 #include "core/math/math_funcs.h"

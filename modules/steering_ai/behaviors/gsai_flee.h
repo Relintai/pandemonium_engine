@@ -1,5 +1,5 @@
-#ifndef GSAIFLEE_H
-#define GSAIFLEE_H
+#ifndef GSAI_FLEE_H
+#define GSAI_FLEE_H
 
 class GSAIFlee : public GSAISeek {
 	GDCLASS(GSAIFlee, GSAISeek);

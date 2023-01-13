@@ -1,5 +1,5 @@
-#ifndef GSAISTEERINGBEHAVIOR_H
-#define GSAISTEERINGBEHAVIOR_H
+#ifndef GSAI_STEERING_BEHAVIOR_H
+#define GSAI_STEERING_BEHAVIOR_H
 
 class GSAISteeringBehavior : public Reference {
 	GDCLASS(GSAISteeringBehavior, Reference);

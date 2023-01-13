@@ -1,5 +1,5 @@
-#ifndef GSAIGROUPBEHAVIOR_H
-#define GSAIGROUPBEHAVIOR_H
+#ifndef GSAI_GROUP_BEHAVIOR_H
+#define GSAI_GROUP_BEHAVIOR_H
 
 class GSAIGroupBehavior : public GSAISteeringBehavior {
 	GDCLASS(GSAIGroupBehavior, GSAISteeringBehavior);

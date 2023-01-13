@@ -1,5 +1,5 @@
-#ifndef GSAIAGENTLOCATION_H
-#define GSAIAGENTLOCATION_H
+#ifndef GSAI_AGENT_LOCATION_H
+#define GSAI_AGENT_LOCATION_H
 
 class GSAIAgentLocation : public Reference {
 	GDCLASS(GSAIAgentLocation, Reference);

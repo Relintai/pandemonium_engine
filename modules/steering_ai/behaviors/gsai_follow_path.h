@@ -1,5 +1,5 @@
-#ifndef GSAIFOLLOWPATH_H
-#define GSAIFOLLOWPATH_H
+#ifndef GSAI_FOLLOW_PATH_H
+#define GSAI_FOLLOW_PATH_H
 
 class GSAIFollowPath : public GSAIArrive {
 	GDCLASS(GSAIFollowPath, GSAIArrive);

@@ -1,5 +1,5 @@
-#ifndef GSAILOOKWHEREYOUGO_H
-#define GSAILOOKWHEREYOUGO_H
+#ifndef GSAI_LOOK_WHERE_YOU_GO_H
+#define GSAI_LOOK_WHERE_YOU_GO_H
 
 class GSAILookWhereYouGo : public GSAIMatchOrientation {
 	GDCLASS(GSAILookWhereYouGo, GSAIMatchOrientation);

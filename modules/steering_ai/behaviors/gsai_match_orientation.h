@@ -1,5 +1,5 @@
-#ifndef GSAIMATCHORIENTATION_H
-#define GSAIMATCHORIENTATION_H
+#ifndef GSAI_MATCH_ORIENTATION_H
+#define GSAI_MATCH_ORIENTATION_H
 
 class GSAIMatchOrientation : public GSAISteeringBehavior {
 	GDCLASS(GSAIMatchOrientation, GSAISteeringBehavior);

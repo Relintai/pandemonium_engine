@@ -1,5 +1,5 @@
-#ifndef GSAIARRIVE_H
-#define GSAIARRIVE_H
+#ifndef GSAI_ARRIVE_H
+#define GSAI_ARRIVE_H
 
 class GSAIArrive : public GSAISteeringBehavior {
 	GDCLASS(GSAIArrive, GSAISteeringBehavior);

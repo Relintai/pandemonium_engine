@@ -1,5 +1,5 @@
-#ifndef GSAICOHESION_H
-#define GSAICOHESION_H
+#ifndef GSAI_COHESION_H
+#define GSAI_COHESION_H
 
 class GSAICohesion : public GSAIGroupBehavior {
 	GDCLASS(GSAICohesion, GSAIGroupBehavior);

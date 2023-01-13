@@ -1,5 +1,5 @@
-#ifndef GSAIINFINITEPROXIMITY_H
-#define GSAIINFINITEPROXIMITY_H
+#ifndef GSAI_INFINITE_PROXIMITY_H
+#define GSAI_INFINITE_PROXIMITY_H
 
 class GSAIInfiniteProximity : public GSAIProximity {
 	GDCLASS(GSAIInfiniteProximity, GSAIProximity);

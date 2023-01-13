@@ -1,5 +1,5 @@
-#ifndef GSAIFACE_H
-#define GSAIFACE_H
+#ifndef GSAI_FACE_H
+#define GSAI_FACE_H
 
 class GSAIFace : public GSAIMatchOrientation {
 	GDCLASS(GSAIFace, GSAIMatchOrientation);
