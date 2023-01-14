@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="BBCodeParserAttribute" inherits="Reference" version="3.10">
+<class name="BBCodeParserAttribute" inherits="Reference" version="3.11">
 	<brief_description>
 		[BBCodeParser] stores bbcode attributes using this class.
 	</brief_description>

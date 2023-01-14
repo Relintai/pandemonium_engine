@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAISeparation" inherits="GSAIGroupBehavior" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="_callback" type="FuncRef" setter="set_callback" getter="get_callback" overrides="GSAIGroupBehavior" />
+		<member name="acceleration" type="GSAITargetAcceleration" setter="set_acceleration" getter="get_acceleration">
+		</member>
+		<member name="decay_coefficient" type="float" setter="set_decay_coefficient" getter="get_decay_coefficient" default="1.0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

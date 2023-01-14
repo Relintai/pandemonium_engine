@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIArrive" inherits="GSAISteeringBehavior" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_arrive" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
+			<argument index="1" name="target_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="arrive">
+			<return type="void" />
+			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
+			<argument index="1" name="target_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="arrival_tolerance" type="float" setter="set_arrival_tolerance" getter="get_arrival_tolerance" default="0.0">
+		</member>
+		<member name="deceleration_radius" type="float" setter="set_deceleration_radius" getter="get_deceleration_radius" default="0.0">
+		</member>
+		<member name="target" type="GSAIAgentLocation" setter="set_target" getter="get_target">
+		</member>
+		<member name="time_to_reach" type="float" setter="set_time_to_reach" getter="get_time_to_reach" default="0.1">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

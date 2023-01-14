@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="WebServerRequestScriptable" inherits="WebServerRequest" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_compile_and_send_body" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_compile_body" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_cookie" qualifiers="virtual">
+			<return type="String" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_file_count" qualifiers="virtual">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_file_data" qualifiers="virtual">
+			<return type="PoolByteArray" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_file_data_str" qualifiers="virtual">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_file_file_name" qualifiers="virtual">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_file_key" qualifiers="virtual">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_file_length" qualifiers="virtual">
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_get_parameter" qualifiers="virtual">
+			<return type="String" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_host" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_method" qualifiers="virtual">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_parameter" qualifiers="virtual">
+			<return type="String" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_path_full" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_post_parameter" qualifiers="virtual">
+			<return type="String" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_parse_files" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_parser_get_path" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_send" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_send_error" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="error_code" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_send_file" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="p_file_path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_send_redirect" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="location" type="String" />
+			<argument index="1" name="status_code" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_update" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

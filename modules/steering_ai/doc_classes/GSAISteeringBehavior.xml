@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAISteeringBehavior" inherits="Reference" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_calculate_steering" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
+			<description>
+			</description>
+		</method>
+		<method name="calculate_steering">
+			<return type="void" />
+			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="agent" type="GSAISteeringAgent" setter="set_agent" getter="get_agent">
+		</member>
+		<member name="is_enabled" type="bool" setter="set_is_enabled" getter="get_is_enabled" default="true">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

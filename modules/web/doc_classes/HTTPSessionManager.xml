@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="HTTPSessionManager" inherits="Node" version="3.10">
+<class name="HTTPSessionManager" inherits="Node" version="3.11">
 	<brief_description>
 		The [HTTPSessionManager] class stores active sessions on a server.
 	</brief_description>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="HTTPServerEnums" inherits="Object" version="3.10">
+<class name="HTTPServerEnums" inherits="Object" version="3.11">
 	<brief_description>
 		Contains Enums used by the web module.
 	</brief_description>

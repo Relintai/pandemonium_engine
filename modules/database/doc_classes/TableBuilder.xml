@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TableBuilder" inherits="Reference" version="3.10">
+<class name="TableBuilder" inherits="Reference" version="3.11">
 	<brief_description>
 		A class that helps you with building and running database backend specific sql for creating / altering / deleting tables.
 	</brief_description>
@@ -198,7 +198,7 @@
 			<argument index="0" name="table" type="String" />
 			<argument index="1" name="name" type="String" />
 			<description>
-			result += "REFERENCES " + table + " (" + name + ") ";
+				result += "REFERENCES " + table + " (" + name + ") ";
 			</description>
 		</method>
 		<method name="run">
@@ -229,7 +229,7 @@
 				    result += "6"
 				else:
 				    result += itos(length)
-				
+
 				result += ") "
 				[/codeblock]
 			</description>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIGroupBehavior" inherits="GSAISteeringBehavior" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_report_neighbor" qualifiers="virtual">
+			<return type="bool" />
+			<argument index="0" name="neighbor" type="GSAISteeringAgent" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="_callback" type="FuncRef" setter="set_callback" getter="get_callback">
+		</member>
+		<member name="proximity" type="GSAIProximity" setter="set_proximity" getter="get_proximity">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

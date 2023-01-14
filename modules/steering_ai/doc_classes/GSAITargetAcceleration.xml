@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAITargetAcceleration" inherits="Reference" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_scaled_accel">
+			<return type="void" />
+			<argument index="0" name="accel" type="GSAITargetAcceleration" />
+			<argument index="1" name="scalar" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_magnitude">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_magnitude_squared">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_zero">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="angular" type="float" setter="set_angular" getter="get_angular" default="0.0">
+		</member>
+		<member name="linear" type="Vector3" setter="set_linear" getter="get_linear" default="Vector3( 0, 0, 0 )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

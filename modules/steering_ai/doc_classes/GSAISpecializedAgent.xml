@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAISpecializedAgent" inherits="GSAISteeringAgent" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_apply_steering" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
+			<argument index="1" name="delta" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="apply_steering">
+			<return type="void" />
+			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
+			<argument index="1" name="delta" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="angular_drag_percentage" type="float" setter="set_angular_drag_percentage" getter="get_angular_drag_percentage" default="0.0">
+		</member>
+		<member name="applied_steering" type="bool" setter="set_applied_steering" getter="get_applied_steering" default="false">
+		</member>
+		<member name="apply_angular_drag" type="bool" setter="set_apply_angular_drag" getter="get_apply_angular_drag" default="true">
+		</member>
+		<member name="apply_linear_drag" type="bool" setter="set_apply_linear_drag" getter="get_apply_linear_drag" default="true">
+		</member>
+		<member name="calculate_velocities" type="bool" setter="set_calculate_velocities" getter="get_calculate_velocities" default="true">
+		</member>
+		<member name="last_orientation" type="float" setter="set_last_orientation" getter="get_last_orientation" default="0.0">
+		</member>
+		<member name="linear_drag_percentage" type="float" setter="set_linear_drag_percentage" getter="get_linear_drag_percentage" default="0.0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

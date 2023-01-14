@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIRigidBody3DAgent" inherits="GSAISpecializedAgent" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="body" type="RigidBody" setter="set_body" getter="get_body">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

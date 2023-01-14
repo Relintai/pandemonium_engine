@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIMatchOrientation" inherits="GSAISteeringBehavior" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_match_orientation" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
+			<argument index="1" name="desired_orientation" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="match_orientation">
+			<return type="void" />
+			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
+			<argument index="1" name="desired_orientation" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="alignment_tolerance" type="float" setter="set_alignment_tolerance" getter="get_alignment_tolerance" default="0.0">
+		</member>
+		<member name="deceleration_radius" type="float" setter="set_deceleration_radius" getter="get_deceleration_radius" default="0.0">
+		</member>
+		<member name="target" type="GSAIAgentLocation" setter="set_target" getter="get_target">
+		</member>
+		<member name="time_to_reach" type="float" setter="set_time_to_reach" getter="get_time_to_reach" default="0.1">
+		</member>
+		<member name="use_z" type="bool" setter="set_use_z" getter="get_use_z" default="false">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIPursue" inherits="GSAISteeringBehavior" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_get_modified_acceleration" qualifiers="virtual">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_modified_acceleration">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="predict_time_max" type="float" setter="set_predict_time_max" getter="get_predict_time_max" default="1.0">
+		</member>
+		<member name="target" type="GSAISteeringAgent" setter="set_target" getter="get_target">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

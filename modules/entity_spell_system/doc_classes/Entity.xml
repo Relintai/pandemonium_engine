@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Entity" inherits="Node" version="3.10">
+<class name="Entity" inherits="Node" version="3.11">
 	<brief_description>
 		Represents an [Entity] inside the world. Entities can be players, mobs, chests, or any kind of interactable things.
 	</brief_description>

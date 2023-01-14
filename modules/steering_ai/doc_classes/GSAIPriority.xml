@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIPriority" inherits="GSAISteeringBehavior" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_behavior">
+			<return type="void" />
+			<argument index="0" name="behavior" type="GSAISteeringBehavior" />
+			<description>
+			</description>
+		</method>
+		<method name="get_behavior">
+			<return type="GSAISteeringBehavior" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_behaviour_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_behavior">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="zero_threshold" type="float" setter="set_zero_threshold" getter="get_zero_threshold" default="0.0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

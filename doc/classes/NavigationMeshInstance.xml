@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationMeshInstance" inherits="Spatial" version="3.10">
+<class name="NavigationMeshInstance" inherits="Spatial" version="3.11">
 	<brief_description>
 		An instance of a [NavigationMesh]. It tells the [Navigation] node what can be navigated and what cannot, based on the [NavigationMesh] resource.
 		By default this node will register to the default [World3D] navigation map. If this node is a child of a [Navigation] node it will register to the navigation map of the navigation node.

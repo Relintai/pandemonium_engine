@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityCreateInfo" inherits="Reference" version="3.10">
+<class name="EntityCreateInfo" inherits="Reference" version="3.11">
 	<brief_description>
 		Helper class used for [Entity] creation, and setup.
 	</brief_description>

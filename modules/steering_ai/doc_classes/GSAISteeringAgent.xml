@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAISteeringAgent" inherits="GSAIAgentLocation" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="angular_acceleration_max" type="float" setter="set_angular_acceleration_max" getter="get_angular_acceleration_max" default="0.0">
+		</member>
+		<member name="angular_speed_max" type="float" setter="set_angular_speed_max" getter="get_angular_speed_max" default="0.0">
+		</member>
+		<member name="angular_velocity" type="float" setter="set_angular_velocity" getter="get_angular_velocity" default="0.0">
+		</member>
+		<member name="bounding_radius" type="float" setter="set_bounding_radius" getter="get_bounding_radius" default="0.0">
+		</member>
+		<member name="is_tagged" type="bool" setter="set_is_tagged" getter="get_is_tagged" default="false">
+		</member>
+		<member name="linear_acceleration_max" type="float" setter="set_linear_acceleration_max" getter="get_linear_acceleration_max" default="0.0">
+		</member>
+		<member name="linear_speed_max" type="float" setter="set_linear_speed_max" getter="get_linear_speed_max" default="0.0">
+		</member>
+		<member name="linear_velocity" type="Vector3" setter="set_linear_velocity" getter="get_linear_velocity" default="Vector3( 0, 0, 0 )">
+		</member>
+		<member name="zero_linear_speed_threshold" type="float" setter="set_zero_linear_speed_threshold" getter="get_zero_linear_speed_threshold" default="0.01">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

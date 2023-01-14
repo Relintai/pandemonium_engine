@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIProximity" inherits="Reference" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_find_neighbors" qualifiers="virtual">
+			<return type="int" />
+			<argument index="0" name="callback" type="FuncRef" />
+			<description>
+			</description>
+		</method>
+		<method name="find_neighbors">
+			<return type="int" />
+			<argument index="0" name="callback" type="FuncRef" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="agent" type="GSAISteeringAgent" setter="set_agent" getter="get_agent">
+		</member>
+		<member name="agents" type="Array" setter="set_agents" getter="get_agents" default="[  ]">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

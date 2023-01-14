@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIFollowPath" inherits="GSAIArrive" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="is_arrive_enabled" type="bool" setter="set_is_arrive_enabled" getter="get_is_arrive_enabled" default="true">
+		</member>
+		<member name="path" type="GSAIPath" setter="set_path" getter="get_path">
+		</member>
+		<member name="path_offset" type="float" setter="set_path_offset" getter="get_path_offset" default="0.0">
+		</member>
+		<member name="prediction_time" type="float" setter="set_prediction_time" getter="get_prediction_time" default="0.0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

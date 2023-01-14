@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIBlend" inherits="GSAISteeringBehavior" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_behavior">
+			<return type="void" />
+			<argument index="0" name="behavior" type="GSAISteeringBehavior" />
+			<argument index="1" name="weight" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_accel">
+			<return type="GSAITargetAcceleration" />
+			<description>
+			</description>
+		</method>
+		<method name="get_behavior">
+			<return type="GSAISteeringBehavior" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_behaviour_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_behavior">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TextureLayerMerger" inherits="Reference" version="3.10">
+<class name="TextureLayerMerger" inherits="Reference" version="3.11">
 	<brief_description>
 		A class, that can merge textures as layers together.
 	</brief_description>

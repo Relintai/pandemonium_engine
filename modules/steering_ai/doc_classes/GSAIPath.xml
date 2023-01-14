@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIPath" inherits="Reference" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="calculate_distance">
+			<return type="float" />
+			<argument index="0" name="agent_current_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="calculate_target_position">
+			<return type="Vector3" />
+			<argument index="0" name="target_distance" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="create_path">
+			<return type="void" />
+			<argument index="0" name="waypoints" type="PoolVector3Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_end_point">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_start_point">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="initialize">
+			<return type="void" />
+			<argument index="0" name="waypoints" type="PoolVector3Array" />
+			<argument index="1" name="is_open" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="is_open" type="bool" setter="set_is_open" getter="get_is_open" default="false">
+		</member>
+		<member name="length" type="float" setter="set_length" getter="get_length" default="0.0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

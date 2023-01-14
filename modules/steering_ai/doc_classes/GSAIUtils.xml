@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GSAIUtils" inherits="Object" version="3.11">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="angle_to_vector2">
+			<return type="Vector2" />
+			<argument index="0" name="angle" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="clampedv3">
+			<return type="Vector3" />
+			<argument index="0" name="vector" type="Vector3" />
+			<argument index="1" name="limit" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="to_vector2">
+			<return type="Vector2" />
+			<argument index="0" name="vector" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="to_vector3">
+			<return type="Vector3" />
+			<argument index="0" name="vector" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="vector2_to_angle">
+			<return type="float" />
+			<argument index="0" name="vector" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="vector3_to_angle">
+			<return type="float" />
+			<argument index="0" name="vector" type="Vector3" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>
