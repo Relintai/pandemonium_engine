@@ -22,6 +22,7 @@ void GSAIAvoidCollisions::_calculate_steering(Ref<GSAITargetAcceleration> accele
 
 	if (neighbor_count == 0 || !_first_neighbor.is_valid()) {
 		acceleration->set_zero();
+		linear = Vector3();
 	} else {
 		if ((_first_minimum_separation <= 0 || _first_distance < agent->get_bounding_radius() + _first_neighbor->get_bounding_radius())) {
 			linear = _first_neighbor->get_position() - agent->get_position();

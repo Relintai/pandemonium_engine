@@ -37,8 +37,7 @@ void GSAIPriority::_calculate_steering(Ref<GSAITargetAcceleration> accel) {
 	int size = _behaviors.size();
 
 	if (size > 0) {
-		for (int i = 0; i < size; ++i) { //i in range(size)
-
+		for (int i = 0; i < size; ++i) {
 			Ref<GSAISteeringBehavior> behavior = _behaviors[i];
 
 			ERR_CONTINUE(!behavior.is_valid());
@@ -58,7 +57,7 @@ void GSAIPriority::_calculate_steering(Ref<GSAITargetAcceleration> accel) {
 
 GSAIPriority::GSAIPriority() {
 	zero_threshold = 0.0;
-	_last_selected_index = 0;
+	_last_selected_index = -1;
 }
 
 GSAIPriority::~GSAIPriority() {
