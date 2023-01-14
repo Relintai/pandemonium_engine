@@ -12,7 +12,7 @@ class GSAIFace : public GSAIMatchOrientation {
 
 public:
 	void face(const Ref<GSAITargetAcceleration> &acceleration, const Vector3 &target_position);
-	void _face(Ref<GSAITargetAcceleration> acceleration, Vector3 target_position);
+	virtual void _face(Ref<GSAITargetAcceleration> acceleration, Vector3 target_position);
 
 	void _calculate_steering(Ref<GSAITargetAcceleration> acceleration);
 

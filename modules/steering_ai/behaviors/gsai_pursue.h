@@ -19,6 +19,7 @@ public:
 	void set_predict_time_max(const float val);
 
 	void _calculate_steering(Ref<GSAITargetAcceleration> acceleration);
+	
 	float get_modified_acceleration();
 	virtual float _get_modified_acceleration();
 

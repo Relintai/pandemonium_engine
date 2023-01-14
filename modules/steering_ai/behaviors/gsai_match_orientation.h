@@ -28,7 +28,7 @@ public:
 	void set_use_z(const bool val);
 
 	void match_orientation(const Ref<GSAITargetAcceleration> &acceleration, const float desired_orientation);
-	void _match_orientation(Ref<GSAITargetAcceleration> acceleration, float desired_orientation);
+	virtual void _match_orientation(Ref<GSAITargetAcceleration> acceleration, float desired_orientation);
 	
 	void _calculate_steering(Ref<GSAITargetAcceleration> acceleration);
 
