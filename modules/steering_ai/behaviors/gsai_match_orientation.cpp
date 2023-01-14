@@ -1,12 +1,18 @@
 
 #include "gsai_match_orientation.h"
 
-GSAIAgentLocation GSAIMatchOrientation::get_ *target() {
-	return *target;
+#include "core/math/math_funcs.h"
+
+#include "../gsai_agent_location.h"
+#include "../gsai_steering_agent.h"
+#include "../gsai_target_acceleration.h"
+
+Ref<GSAIAgentLocation> GSAIMatchOrientation::get_target() {
+	return target;
 }
 
-void GSAIMatchOrientation::set_ *target(const GSAIAgentLocation &val) {
-	*target = val;
+void GSAIMatchOrientation::set_target(const Ref<GSAIAgentLocation> &val) {
+	target = val;
 }
 
 float GSAIMatchOrientation::get_alignment_tolerance() const {
@@ -41,61 +47,48 @@ void GSAIMatchOrientation::set_use_z(const bool val) {
 	use_z = val;
 }
 
-// Calculates an angular acceleration to match an agent's orientation to that of;
-// its target. Attempts to make the agent arrive with zero remaining angular;
-// velocity.;
-// @category - Individual behaviors;
-// The target orientation for the behavior to try and match rotations to.;
-GSAIAgentLocation *target;
-// The amount of distance in radians for the behavior to consider itself close;
-// enough to be matching the target agent's rotation.;
-float alignment_tolerance = 0.0;
-// The amount of distance in radians from the goal to start slowing down.;
-float deceleration_radius = 0.0;
-// The amount of time to reach the target velocity;
-float time_to_reach = 0.1;
-// Whether to use the X and Z components instead of X and Y components when;
-// determining angles. X and Z should be used in 3D.;
-bool use_z = false;
-
-void GSAIMatchOrientation::match_orientation(const GSAITargetAcceleration &acceleration, const float desired_orientation) {
+void GSAIMatchOrientation::match_orientation(const Ref<GSAITargetAcceleration> &acceleration, const float desired_orientation) {
 	call("_match_orientation", acceleration, desired_orientation);
 }
 
-void GSAIMatchOrientation::_match_orientation(const GSAITargetAcceleration &acceleration, const float desired_orientation) {
-	float rotation = wrapf(desired_orientation - agent.orientation, -PI, PI);
+void GSAIMatchOrientation::_match_orientation(Ref<GSAITargetAcceleration> acceleration, float desired_orientation) {
+	ERR_FAIL_COND(!agent.is_valid());
+
+	float rotation = Math::wrapf(static_cast<double>(desired_orientation - agent->get_orientation()), -Math_PI, Math_PI);
 	float rotation_size = abs(rotation);
 
 	if (rotation_size <= alignment_tolerance) {
-		acceleration.set_zero();
-	}
-
-	else {
-		float desired_rotation = agent.angular_speed_max;
+		acceleration->set_zero();
+	} else {
+		float desired_rotation = agent->get_angular_speed_max();
 
 		if (rotation_size <= deceleration_radius) {
 			desired_rotation *= rotation_size / deceleration_radius;
 		}
 
 		desired_rotation *= rotation / rotation_size;
-		acceleration.angular = ((desired_rotation - agent.angular_velocity) / time_to_reach);
-		float limited_acceleration = abs(acceleration.angular);
+		float angular = ((desired_rotation - agent->get_angular_velocity()) / time_to_reach);
+		float limited_acceleration = abs(angular);
 
-		if (limited_acceleration > agent.angular_acceleration_max) {
-			acceleration.angular *= (agent.angular_acceleration_max / limited_acceleration);
+		float angular_acceleration_max = agent->get_angular_acceleration_max();
+
+		if (limited_acceleration > angular_acceleration_max) {
+			angular *= (angular_acceleration_max / limited_acceleration);
 		}
+
+		acceleration->set_angular(angular);
 	}
 
-	acceleration.linear = Vector3.ZERO;
+	acceleration->set_linear(Vector3());
 }
 
-void GSAIMatchOrientation::_calculate_steering(const GSAITargetAcceleration &acceleration) {
-	match_orientation(acceleration, target.orientation);
-}
+void GSAIMatchOrientation::_calculate_steering(Ref<GSAITargetAcceleration> acceleration) {
+	ERR_FAIL_COND(!target.is_valid());
+
+	match_orientation(acceleration, target->get_orientation());
 }
 
 GSAIMatchOrientation::GSAIMatchOrientation() {
-	*target;
 	alignment_tolerance = 0.0;
 	deceleration_radius = 0.0;
 	time_to_reach = 0.1;
@@ -105,10 +98,10 @@ GSAIMatchOrientation::GSAIMatchOrientation() {
 GSAIMatchOrientation::~GSAIMatchOrientation() {
 }
 
-static void GSAIMatchOrientation::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_*target"), &GSAIMatchOrientation::get_ * target);
-	ClassDB::bind_method(D_METHOD("set_*target", "value"), &GSAIMatchOrientation::set_ * target);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*target", PROPERTY_HINT_RESOURCE_TYPE, "GSAIAgentLocation"), "set_*target", "get_*target");
+void GSAIMatchOrientation::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_target"), &GSAIMatchOrientation::get_target);
+	ClassDB::bind_method(D_METHOD("set_target", "value"), &GSAIMatchOrientation::set_target);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "GSAIAgentLocation"), "set_target", "get_target");
 
 	ClassDB::bind_method(D_METHOD("get_alignment_tolerance"), &GSAIMatchOrientation::get_alignment_tolerance);
 	ClassDB::bind_method(D_METHOD("set_alignment_tolerance", "value"), &GSAIMatchOrientation::set_alignment_tolerance);
@@ -126,7 +119,7 @@ static void GSAIMatchOrientation::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_use_z", "value"), &GSAIMatchOrientation::set_use_z);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_z"), "set_use_z", "get_use_z");
 
+	BIND_VMETHOD(MethodInfo("_match_orientation", PropertyInfo(Variant::OBJECT, "acceleration", PROPERTY_HINT_RESOURCE_TYPE, "GSAITargetAcceleration"), PropertyInfo(Variant::REAL, "desired_orientation")));
 	ClassDB::bind_method(D_METHOD("match_orientation", "acceleration", "desired_orientation"), &GSAIMatchOrientation::match_orientation);
 	ClassDB::bind_method(D_METHOD("_match_orientation", "acceleration", "desired_orientation"), &GSAIMatchOrientation::_match_orientation);
-	ClassDB::bind_method(D_METHOD("_calculate_steering", "acceleration"), &GSAIMatchOrientation::_calculate_steering);
 }

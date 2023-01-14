@@ -20,7 +20,7 @@ void GSAIGroupBehavior::set_callback(const Ref<FuncRef> &val) {
 	_callback = val;
 }
 
-bool GSAIGroupBehavior::_report_neighbor(const Ref<GSAISteeringAgent> &neighbor) {
+bool GSAIGroupBehavior::_report_neighbor(Ref<GSAISteeringAgent> neighbor) {
 	return false;
 }
 

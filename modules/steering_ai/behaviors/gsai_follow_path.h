@@ -5,8 +5,8 @@ class GSAIFollowPath : public GSAIArrive {
 	GDCLASS(GSAIFollowPath, GSAIArrive);
 
 public:
-	GSAIPath get_ *path();
-	void set_ *path(const GSAIPath &val);
+	GSAIPath get_path();
+	void set_path(const GSAIPath &val);
 
 	float get_path_offset() const;
 	void set_path_offset(const float val);

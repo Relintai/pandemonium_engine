@@ -1,12 +1,19 @@
 #ifndef GSAI_MATCH_ORIENTATION_H
 #define GSAI_MATCH_ORIENTATION_H
 
+#include "core/object/reference.h"
+
+#include "../gsai_steering_behavior.h"
+
+class GSAIAgentLocation;
+class GSAITargetAcceleration;
+
 class GSAIMatchOrientation : public GSAISteeringBehavior {
 	GDCLASS(GSAIMatchOrientation, GSAISteeringBehavior);
 
 public:
-	GSAIAgentLocation get_ *target();
-	void set_ *target(const GSAIAgentLocation &val);
+	Ref<GSAIAgentLocation> get_target();
+	void set_target(const Ref<GSAIAgentLocation> &val);
 
 	float get_alignment_tolerance() const;
 	void set_alignment_tolerance(const float val);
@@ -20,9 +27,10 @@ public:
 	bool get_use_z() const;
 	void set_use_z(const bool val);
 
-	void match_orientation(const GSAITargetAcceleration &acceleration, const float desired_orientation);
-	void _match_orientation(const GSAITargetAcceleration &acceleration, const float desired_orientation);
-	void _calculate_steering(const GSAITargetAcceleration &acceleration);
+	void match_orientation(const Ref<GSAITargetAcceleration> &acceleration, const float desired_orientation);
+	void _match_orientation(Ref<GSAITargetAcceleration> acceleration, float desired_orientation);
+	
+	void _calculate_steering(Ref<GSAITargetAcceleration> acceleration);
 
 	GSAIMatchOrientation();
 	~GSAIMatchOrientation();
@@ -35,17 +43,17 @@ protected:
 	// velocity.
 	// @category - Individual behaviors
 	// The target orientation for the behavior to try and match rotations to.
-	GSAIAgentLocation *target;
+	Ref<GSAIAgentLocation> target;
 	// The amount of distance in radians for the behavior to consider itself close
 	// enough to be matching the target agent's rotation.
-	float alignment_tolerance = 0.0;
+	float alignment_tolerance;
 	// The amount of distance in radians from the goal to start slowing down.
-	float deceleration_radius = 0.0;
+	float deceleration_radius;
 	// The amount of time to reach the target velocity
-	float time_to_reach = 0.1;
+	float time_to_reach;
 	// Whether to use the X and Z components instead of X and Y components when
 	// determining angles. X and Z should be used in 3D.
-	bool use_z = false;
+	bool use_z;
 };
 
 #endif

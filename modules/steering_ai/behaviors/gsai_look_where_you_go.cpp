@@ -1,29 +1,26 @@
 
 #include "gsai_look_where_you_go.h"
 
-// Calculates an angular acceleration to match an agent's orientation to its;
-// direction of travel.;
-// @category - Individual behaviors;
+#include "../gsai_steering_agent.h"
+#include "../gsai_target_acceleration.h"
+#include "../gsai_utils.h"
 
-void GSAILookWhereYouGo::_calculate_steering(const GSAITargetAcceleration &accel) {
-	if (agent.linear_velocity.length_squared() < agent.zero_linear_speed_threshold) {
-		accel.set_zero();
-	}
+void GSAILookWhereYouGo::_calculate_steering(Ref<GSAITargetAcceleration> accel) {
+	ERR_FAIL_COND(!agent.is_valid());
 
-	else {
-		float orientation = ;
+	if (agent->get_linear_velocity().length_squared() < agent->get_zero_linear_speed_threshold()) {
+		accel->set_zero();
+	} else {
+		float orientation;
 
 		if (use_z) {
-			orientation = GSAIUtils.vector3_to_angle(agent.linear_velocity);
-		}
-
-		else {
-			orientation = GSAIUtils.vector2_to_angle(GSAIUtils.to_vector2(agent.linear_velocity));
+			orientation = GSAIUtils::vector3_to_angle(agent->get_linear_velocity());
+		} else {
+			orientation = GSAIUtils::vector2_to_angle(GSAIUtils::to_vector2(agent->get_linear_velocity()));
 		}
 
 		match_orientation(accel, orientation);
 	}
-}
 }
 
 GSAILookWhereYouGo::GSAILookWhereYouGo() {
@@ -32,6 +29,5 @@ GSAILookWhereYouGo::GSAILookWhereYouGo() {
 GSAILookWhereYouGo::~GSAILookWhereYouGo() {
 }
 
-static void GSAILookWhereYouGo::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_calculate_steering", "accel"), &GSAILookWhereYouGo::_calculate_steering);
+void GSAILookWhereYouGo::_bind_methods() {
 }

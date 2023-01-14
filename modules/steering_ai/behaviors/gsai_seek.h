@@ -1,14 +1,21 @@
 #ifndef GSAI_SEEK_H
 #define GSAI_SEEK_H
 
+#include "core/object/reference.h"
+
+#include "../gsai_steering_behavior.h"
+
+class GSAITargetAcceleration;
+class GSAIAgentLocation;
+
 class GSAISeek : public GSAISteeringBehavior {
 	GDCLASS(GSAISeek, GSAISteeringBehavior);
 
 public:
-	GSAIAgentLocation get_ *target();
-	void set_ *target(const GSAIAgentLocation &val);
+	Ref<GSAIAgentLocation> get_target();
+	void set_target(const Ref<GSAIAgentLocation> &val);
 
-	void _calculate_steering(const GSAITargetAcceleration &acceleration);
+	void _calculate_steering(Ref<GSAITargetAcceleration> acceleration);
 
 	GSAISeek();
 	~GSAISeek();
@@ -20,7 +27,7 @@ protected:
 	// directly.
 	// @category - Individual behaviors
 	// The target that the behavior aims to move the agent to.
-	GSAIAgentLocation *target;
+	Ref<GSAIAgentLocation> target;
 };
 
 #endif
