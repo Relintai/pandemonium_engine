@@ -46,4 +46,6 @@ protected:
 	ObjectID _body_ref;
 };
 
+VARIANT_ENUM_CAST(GSAIKinematicBody2DAgent::MovementType);
+
 #endif

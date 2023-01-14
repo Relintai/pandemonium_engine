@@ -219,4 +219,8 @@ void GSAIKinematicBody2DAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_physics_process_disconnect"), &GSAIKinematicBody2DAgent::_physics_process_disconnect);
 
 	ClassDB::bind_method(D_METHOD("_on_SceneTree_physics_frame"), &GSAIKinematicBody2DAgent::_on_SceneTree_physics_frame);
+
+	BIND_ENUM_CONSTANT(SLIDE);
+	BIND_ENUM_CONSTANT(COLLIDE);
+	BIND_ENUM_CONSTANT(POSITION);
 }
