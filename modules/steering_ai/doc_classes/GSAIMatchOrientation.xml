@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIMatchOrientation" inherits="GSAISteeringBehavior" version="3.11">
 	<brief_description>
+		Calculates an angular acceleration to match an agent's orientation to that of its target. Attempts to make the agent arrive with zero remaining angular velocity.
 	</brief_description>
 	<description>
+		Calculates an angular acceleration to match an agent's orientation to that of its target. Attempts to make the agent arrive with zero remaining angular velocity.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -24,14 +26,19 @@
 	</methods>
 	<members>
 		<member name="alignment_tolerance" type="float" setter="set_alignment_tolerance" getter="get_alignment_tolerance" default="0.0">
+			The amount of distance in radians for the behavior to consider itself close enough to be matching the target agent's rotation.
 		</member>
 		<member name="deceleration_radius" type="float" setter="set_deceleration_radius" getter="get_deceleration_radius" default="0.0">
+			The amount of distance in radians from the goal to start slowing down.
 		</member>
 		<member name="target" type="GSAIAgentLocation" setter="set_target" getter="get_target">
+			The target orientation for the behavior to try and match rotations to.
 		</member>
 		<member name="time_to_reach" type="float" setter="set_time_to_reach" getter="get_time_to_reach" default="0.1">
+			The amount of time to reach the target velocity
 		</member>
 		<member name="use_z" type="bool" setter="set_use_z" getter="get_use_z" default="false">
+			Whether to use the X and Z components instead of X and Y components when determining angles. X and Z should be used in 3D.
 		</member>
 	</members>
 	<constants>

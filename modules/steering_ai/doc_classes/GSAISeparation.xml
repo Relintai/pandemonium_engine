@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAISeparation" inherits="GSAIGroupBehavior" version="3.11">
 	<brief_description>
+		Calculates an acceleration that repels the agent from its neighbors in the given GSAIProximity.
 	</brief_description>
 	<description>
+		Calculates an acceleration that repels the agent from its neighbors in the given GSAIProximity.
+		_callback is the callback for the proximity to call when finding neighbors. Determines the amount of acceleration that neighbor imposes based on its distance from the owner agent.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,8 +14,10 @@
 	<members>
 		<member name="_callback" type="FuncRef" setter="set_callback" getter="get_callback" overrides="GSAIGroupBehavior" />
 		<member name="acceleration" type="GSAITargetAcceleration" setter="set_acceleration" getter="get_acceleration">
+			The acceleration is an average based on all neighbors, multiplied by a strength decreasing by the inverse square law in relation to distance, and it accumulates.
 		</member>
 		<member name="decay_coefficient" type="float" setter="set_decay_coefficient" getter="get_decay_coefficient" default="1.0">
+			The coefficient to calculate how fast the separation strength decays with distance.
 		</member>
 	</members>
 	<constants>

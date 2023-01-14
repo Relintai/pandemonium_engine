@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIRadiusProximity" inherits="GSAIProximity" version="3.11">
 	<brief_description>
+		Determines any agent that is in the specified list as being neighbors with the owner agent if they lie within the specified radius.
 	</brief_description>
 	<description>
+		Determines any agent that is in the specified list as being neighbors with the owner agent if they lie within the specified radius.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +12,7 @@
 	</methods>
 	<members>
 		<member name="radius" type="float" setter="set_radius" getter="get_radius" default="0.0">
+			The radius around the owning agent to find neighbors in
 		</member>
 	</members>
 	<constants>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIBlend" inherits="GSAISteeringBehavior" version="3.11">
 	<brief_description>
+		Blends multiple steering behaviors into one, and returns a weighted acceleration from their calculations.
 	</brief_description>
 	<description>
+		Blends multiple steering behaviors into one, and returns a weighted acceleration from their calculations.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,28 +14,40 @@
 			<argument index="0" name="behavior" type="GSAISteeringBehavior" />
 			<argument index="1" name="weight" type="float" />
 			<description>
+				Appends a behavior to the internal array along with its weight.
 			</description>
 		</method>
 		<method name="get_accel">
 			<return type="GSAITargetAcceleration" />
 			<description>
+				Returns the internal GSAITargetAcceleration.
 			</description>
 		</method>
 		<method name="get_behavior">
 			<return type="GSAISteeringBehavior" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the behavior at the specified index, or null if none was found.
+			</description>
+		</method>
+		<method name="get_behavior_weight">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+				Returns the behavior's weight at the specified index, or null if none was found.
 			</description>
 		</method>
 		<method name="get_behaviour_count">
 			<return type="int" />
 			<description>
+				Returns how many behaviors are added.
 			</description>
 		</method>
 		<method name="remove_behavior">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removed the behavior at the specified index.
 			</description>
 		</method>
 	</methods>

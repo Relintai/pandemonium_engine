@@ -27,15 +27,8 @@ public:
 protected:
 	static void _bind_methods();
 
-	// A specialized steering agent that updates itself every frame so the user does
-	// not have to using a RigidBody
-	// @category - Specialized agents
-	// The RigidBody to keep track of
-	// setget _set_body
 	Vector3 _last_position;
 	ObjectID _body_ref;
-	// Moves the agent's `body` by target `acceleration`.
-	// @tags - virtual
 };
 
 #endif

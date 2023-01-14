@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIInfiniteProximity" inherits="GSAIProximity" version="3.11">
 	<brief_description>
+		Determines any agent that is in the specified list as being neighbors with the owner agent, regardless of distance.
 	</brief_description>
 	<description>
+		Determines any agent that is in the specified list as being neighbors with the owner agent, regardless of distance.
 	</description>
 	<tutorials>
 	</tutorials>

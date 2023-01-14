@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIUtils" inherits="Object" version="3.11">
 	<brief_description>
+		Math and vector utility functions.
 	</brief_description>
 	<description>
+		Math and vector utility functions.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,6 +13,7 @@
 			<return type="Vector2" />
 			<argument index="0" name="angle" type="float" />
 			<description>
+				Returns a directional vector from the given orientation angle. This assumes orientation for 2D agents or 3D agents that are upright and rotate around the Y axis.
 			</description>
 		</method>
 		<method name="clampedv3">
@@ -18,30 +21,35 @@
 			<argument index="0" name="vector" type="Vector3" />
 			<argument index="1" name="limit" type="float" />
 			<description>
+				Returns the vector with its length capped to limit.
 			</description>
 		</method>
 		<method name="to_vector2">
 			<return type="Vector2" />
 			<argument index="0" name="vector" type="Vector3" />
 			<description>
+				Returns a vector2 with vector's x and y components.
 			</description>
 		</method>
 		<method name="to_vector3">
 			<return type="Vector3" />
 			<argument index="0" name="vector" type="Vector2" />
 			<description>
+				Returns a vector3 with vector's x and y components and 0 in z.
 			</description>
 		</method>
 		<method name="vector2_to_angle">
 			<return type="float" />
 			<argument index="0" name="vector" type="Vector2" />
 			<description>
+				Returns an angle in radians between the positive X axis and the vector.
 			</description>
 		</method>
 		<method name="vector3_to_angle">
 			<return type="float" />
 			<argument index="0" name="vector" type="Vector3" />
 			<description>
+				Returns an angle in radians between the positive X axis and the vector. This assumes orientation for 3D agents that are upright and rotate around the Y axis.
 			</description>
 		</method>
 	</methods>

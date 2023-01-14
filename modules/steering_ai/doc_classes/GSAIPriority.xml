@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIPriority" inherits="GSAISteeringBehavior" version="3.11">
 	<brief_description>
+		Container for multiple behaviors that returns the result of the first child behavior with non-zero acceleration.
 	</brief_description>
 	<description>
+		Container for multiple behaviors that returns the result of the first child behavior with non-zero acceleration.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,28 +13,33 @@
 			<return type="void" />
 			<argument index="0" name="behavior" type="GSAISteeringBehavior" />
 			<description>
+				Appends a steering behavior as a child of this container.
 			</description>
 		</method>
 		<method name="get_behavior">
 			<return type="GSAISteeringBehavior" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the behavior at the position in the pool referred to by index, or null if no behavior was found.
 			</description>
 		</method>
 		<method name="get_behaviour_count">
 			<return type="int" />
 			<description>
+				Returns how many behaviors are added.
 			</description>
 		</method>
 		<method name="remove_behavior">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removed the behavior at the position in the pool referred to by index.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="zero_threshold" type="float" setter="set_zero_threshold" getter="get_zero_threshold" default="0.0">
+			If a behavior's acceleration is lower than this threshold, the container considers it has an acceleration of zero.
 		</member>
 	</members>
 	<constants>

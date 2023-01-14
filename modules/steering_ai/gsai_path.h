@@ -54,23 +54,13 @@ protected:
 protected:
 	static void _bind_methods();
 
-	// Represents a path made up of Vector3 waypoints, split into segments path
-	// follow behaviors can use.
-	// @category - Base types
-	// If `false`, the path loops.
 	bool is_open;
-	// Total length of the path.
 	float length;
 
 	Vector<GSAISegment> _segments;
 
 	Vector3 _nearest_point_on_segment;
 	Vector3 _nearest_point_on_path;
-	// Creates a path from a list of waypoints.
-	// Calculates a target position from the path's starting point based on the `target_distance`.
-	// Returns the position of the first point on the path.
-	// Returns the position of the last point on the path.
-	// not exposed helper struct
 };
 
 #endif

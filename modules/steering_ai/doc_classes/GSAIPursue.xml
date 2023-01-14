@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIPursue" inherits="GSAISteeringBehavior" version="3.11">
 	<brief_description>
+		Calculates an acceleration to make an agent intercept another based on the target agent's movement.
 	</brief_description>
 	<description>
+		Calculates an acceleration to make an agent intercept another based on the target agent's movement.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -20,8 +22,10 @@
 	</methods>
 	<members>
 		<member name="predict_time_max" type="float" setter="set_predict_time_max" getter="get_predict_time_max" default="1.0">
+			The maximum amount of time in the future the behavior predicts the target's location.
 		</member>
 		<member name="target" type="GSAISteeringAgent" setter="set_target" getter="get_target">
+			The target agent that the behavior is trying to intercept.
 		</member>
 	</members>
 	<constants>

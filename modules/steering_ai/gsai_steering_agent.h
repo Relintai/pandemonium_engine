@@ -45,30 +45,14 @@ public:
 protected:
 	static void _bind_methods();
 
-	// Adds velocity, speed, and size data to `GSAIAgentLocation`.
-	//
-	// It is the character's responsibility to keep this information up to date for
-	// the steering toolkit to work correctly.
-	// @category - Base types
-	// The amount of velocity to be considered effectively not moving.
 	float zero_linear_speed_threshold;
-	// The maximum speed at which the agent can move.
 	float linear_speed_max;
-	// The maximum amount of acceleration that any behavior can apply to the agent.
 	float linear_acceleration_max;
-	// The maximum amount of angular speed at which the agent can rotate.
 	float angular_speed_max;
-	// The maximum amount of angular acceleration that any behavior can apply to an
-	// agent.
 	float angular_acceleration_max;
-	// Current velocity of the agent.
 	Vector3 linear_velocity;
-	// Current angular velocity of the agent.
 	float angular_velocity;
-	// The radius of the sphere that approximates the agent's size in space.
 	float bounding_radius;
-	// Used internally by group behaviors and proximities to mark the agent as already
-	// considered.
 	bool is_tagged;
 };
 

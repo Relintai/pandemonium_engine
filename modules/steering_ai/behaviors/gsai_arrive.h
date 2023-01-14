@@ -34,17 +34,9 @@ public:
 protected:
 	static void _bind_methods();
 
-	// Calculates acceleration to take an agent to its target's location. The
-	// calculation attempts to arrive with zero remaining velocity.
-	// @category - Individual behaviors
-	// Target agent to arrive to.
 	Ref<GSAIAgentLocation> target;
-	// Distance from the target for the agent to be considered successfully
-	// arrived.
 	float arrival_tolerance;
-	// Distance from the target for the agent to begin slowing down.
 	float deceleration_radius;
-	// Represents the time it takes to change acceleration.
 	float time_to_reach;
 };
 

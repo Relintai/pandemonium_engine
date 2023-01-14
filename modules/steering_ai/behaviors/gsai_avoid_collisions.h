@@ -21,9 +21,6 @@ public:
 protected:
 	static void _bind_methods();
 
-	// Steers the agent to avoid obstacles in its path. Approximates obstacles as
-	// spheres.
-	// @category - Group behaviors
 	Ref<GSAISteeringAgent> _first_neighbor;
 	float _shortest_time;
 	float _first_minimum_separation;

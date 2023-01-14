@@ -23,10 +23,6 @@ public:
 protected:
 	static void _bind_methods();
 
-	// Calculates an acceleration to take an agent to a target agent's position
-	// directly.
-	// @category - Individual behaviors
-	// The target that the behavior aims to move the agent to.
 	Ref<GSAIAgentLocation> target;
 };
 

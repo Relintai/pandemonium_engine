@@ -21,11 +21,7 @@ public:
 protected:
 	static void _bind_methods();
 
-	// Represents an agent with only a location and an orientation.
-	// @category - Base types
-	// The agent's position in space.
 	Vector3 position;
-	// The agent's orientation on its Y axis rotation.
 	float orientation;
 };
 

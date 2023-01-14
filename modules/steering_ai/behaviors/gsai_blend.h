@@ -34,14 +34,8 @@ protected:
 protected:
 	static void _bind_methods();
 
-	// Blends multiple steering behaviors into one, and returns a weighted
-	// acceleration from their calculations.
-	// @category - Combination behaviors
 	Vector<GSAIBlendBehaviorEntry> _behaviors;
 	Ref<GSAITargetAcceleration> _accel;
-	// Appends a behavior to the internal array along with its `weight`.
-	// Returns the behavior at the specified `index`, or an empty `Dictionary` if
-	// none was found.
 };
 
 #endif

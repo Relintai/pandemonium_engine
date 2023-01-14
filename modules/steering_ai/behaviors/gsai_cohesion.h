@@ -21,9 +21,6 @@ public:
 protected:
 	static void _bind_methods();
 
-	// Calculates an acceleration that attempts to move the agent towards the center
-	// of mass of the agents in the area defined by the `GSAIProximity`.
-	// @category - Group behaviors
 	Vector3 _center_of_mass;
 };
 

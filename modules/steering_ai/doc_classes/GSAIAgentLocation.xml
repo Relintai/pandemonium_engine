@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIAgentLocation" inherits="Reference" version="3.11">
 	<brief_description>
+		Represents an agent with only a location and an orientation.
 	</brief_description>
 	<description>
+		Represents an agent with only a location and an orientation.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,8 +12,10 @@
 	</methods>
 	<members>
 		<member name="orientation" type="float" setter="set_orientation" getter="get_orientation" default="0.0">
+			The agent's orientation on its Y axis rotation.
 		</member>
 		<member name="position" type="Vector3" setter="set_position" getter="get_position" default="Vector3( 0, 0, 0 )">
+			The agent's position in space.
 		</member>
 	</members>
 	<constants>

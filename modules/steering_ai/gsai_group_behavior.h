@@ -29,14 +29,8 @@ public:
 protected:
 	static void _bind_methods();
 
-	// Base type for group-based steering behaviors.
-	// @category - Base types
-	// Container to find neighbors of the agent and calculate group behavior.
 	Ref<GSAIProximity> proximity;
 	Ref<FuncRef> _callback;
-	// Internal callback for the behavior to define whether or not a member is
-	// relevant
-	// @tags - virtual
 };
 
 #endif

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAITargetAcceleration" inherits="Reference" version="3.11">
 	<brief_description>
+		A desired linear and angular amount of acceleration requested by the steering system.
 	</brief_description>
 	<description>
+		A desired linear and angular amount of acceleration requested by the steering system.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,28 +14,34 @@
 			<argument index="0" name="accel" type="GSAITargetAcceleration" />
 			<argument index="1" name="scalar" type="float" />
 			<description>
+				Adds accel's components, multiplied by scalar, to this one.
 			</description>
 		</method>
 		<method name="get_magnitude">
 			<return type="float" />
 			<description>
+				Returns the squared magnitude of the linear and angular components.
 			</description>
 		</method>
 		<method name="get_magnitude_squared">
 			<return type="float" />
 			<description>
+				Returns the squared magnitude of the linear and angular components.
 			</description>
 		</method>
 		<method name="set_zero">
 			<return type="void" />
 			<description>
+				Sets the linear and angular components to 0.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="angular" type="float" setter="set_angular" getter="get_angular" default="0.0">
+			Angular acceleration
 		</member>
 		<member name="linear" type="Vector3" setter="set_linear" getter="get_linear" default="Vector3( 0, 0, 0 )">
+			Linear acceleration
 		</member>
 	</members>
 	<constants>

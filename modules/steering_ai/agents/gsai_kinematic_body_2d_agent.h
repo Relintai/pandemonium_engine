@@ -25,7 +25,7 @@ public:
 
 	void _physics_process_connect();
 	void _physics_process_disconnect();
-	
+
 	void _apply_steering(Ref<GSAITargetAcceleration> acceleration, float delta);
 
 	void _apply_sliding_steering(KinematicBody2D *body, const Vector3 &accel, const float delta);
@@ -41,21 +41,9 @@ public:
 protected:
 	static void _bind_methods();
 
-	// A specialized steering agent that updates itself every frame so the user does
-	// not have to using a KinematicBody2D
-	// @category - Specialized agents
-	// SLIDE uses `move_and_slide`
-	// COLLIDE uses `move_and_collide`
-	// POSITION changes the `global_position` directly
-
-	// The KinematicBody2D to keep track of
-	// setget _set_body
-	// The type of movement the body executes
 	int movement_type;
 	Vector2 _last_position;
 	ObjectID _body_ref;
-	// Moves the agent's `body` by target `acceleration`.
-	// @tags - virtual
 };
 
 #endif

@@ -67,6 +67,7 @@ GSAIBlend::~GSAIBlend() {
 void GSAIBlend::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_behavior", "behavior", "weight"), &GSAIBlend::add_behavior);
 	ClassDB::bind_method(D_METHOD("get_behavior", "index"), &GSAIBlend::get_behavior);
+	ClassDB::bind_method(D_METHOD("get_behavior_weight", "index"), &GSAIBlend::get_behavior_weight);
 	ClassDB::bind_method(D_METHOD("remove_behavior", "index"), &GSAIBlend::remove_behavior);
 	ClassDB::bind_method(D_METHOD("get_behaviour_count"), &GSAIBlend::get_behaviour_count);
 	ClassDB::bind_method(D_METHOD("get_accel"), &GSAIBlend::get_accel);

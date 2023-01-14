@@ -16,10 +16,6 @@ public:
 
 protected:
 	static void _bind_methods();
-
-	// Calculates acceleration to take an agent away from where a target agent is
-	// moving.
-	// @category - Individual behaviors
 };
 
 #endif

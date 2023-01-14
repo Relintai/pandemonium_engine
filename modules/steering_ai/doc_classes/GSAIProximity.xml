@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIProximity" inherits="Reference" version="3.11">
 	<brief_description>
+		Base container type that stores data to find the neighbors of an agent.
 	</brief_description>
 	<description>
+		Base container type that stores data to find the neighbors of an agent.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,19 +13,25 @@
 			<return type="int" />
 			<argument index="0" name="callback" type="FuncRef" />
 			<description>
+				Returns a number of neighbors based on a `callback` function.
+				_find_neighbors calls callback for each agent in the agents array and adds one to the count if its callback returns true.
 			</description>
 		</method>
 		<method name="find_neighbors">
 			<return type="int" />
 			<argument index="0" name="callback" type="FuncRef" />
 			<description>
+				Returns a number of neighbors based on a `callback` function.
+				_find_neighbors calls callback for each agent in the agents array and adds one to the count if its callback returns true.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="agent" type="GSAISteeringAgent" setter="set_agent" getter="get_agent">
+			The owning agent whose neighbors are found in the group
 		</member>
 		<member name="agents" type="Array" setter="set_agents" getter="get_agents" default="[  ]">
+			The agents who are part of this group and could be potential neighbors
 		</member>
 	</members>
 	<constants>

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAISteeringBehavior" inherits="Reference" version="3.11">
 	<brief_description>
+		Base class for all steering behaviors.
 	</brief_description>
 	<description>
+		Base class for all steering behaviors.
+		Steering behaviors calculate the linear and the angular acceleration to be to the agent that owns them.
+		Individual steering behaviors encapsulate the steering logic.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,19 +15,23 @@
 			<return type="void" />
 			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
 			<description>
+				The calculate_steering function is the entry point for all behaviors. Sets the acceleration with the behavior's desired amount of acceleration.
 			</description>
 		</method>
 		<method name="calculate_steering">
 			<return type="void" />
 			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
+				The calculate_steering function is the entry point for all behaviors. Sets the acceleration with the behavior's desired amount of acceleration.
 			<description>
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="agent" type="GSAISteeringAgent" setter="set_agent" getter="get_agent">
+			The AI agent on which the steering behavior bases its calculations.
 		</member>
 		<member name="is_enabled" type="bool" setter="set_is_enabled" getter="get_is_enabled" default="true">
+			If false, all calculations return zero amounts of acceleration.
 		</member>
 	</members>
 	<constants>

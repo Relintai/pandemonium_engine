@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIFollowPath" inherits="GSAIArrive" version="3.11">
 	<brief_description>
+		Produces a linear acceleration that moves the agent along the specified path.
 	</brief_description>
 	<description>
+		Produces a linear acceleration that moves the agent along the specified path.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,12 +12,16 @@
 	</methods>
 	<members>
 		<member name="is_arrive_enabled" type="bool" setter="set_is_arrive_enabled" getter="get_is_arrive_enabled" default="true">
+			Whether to use GSAIArrive behavior on an open path.
 		</member>
 		<member name="path" type="GSAIPath" setter="set_path" getter="get_path">
+			The path to follow and travel along.
 		</member>
 		<member name="path_offset" type="float" setter="set_path_offset" getter="get_path_offset" default="0.0">
+			The distance along the path to generate the next target position.
 		</member>
 		<member name="prediction_time" type="float" setter="set_prediction_time" getter="get_prediction_time" default="0.0">
+			The amount of time in the future to predict the owning agent's position along the path. Setting it to 0.0 will force non-predictive path following.
 		</member>
 	</members>
 	<constants>

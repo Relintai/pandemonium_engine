@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIGroupBehavior" inherits="GSAISteeringBehavior" version="3.11">
 	<brief_description>
+		Base type for group-based steering behaviors.
 	</brief_description>
 	<description>
+		Base type for group-based steering behaviors.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -16,8 +18,10 @@
 	</methods>
 	<members>
 		<member name="_callback" type="FuncRef" setter="set_callback" getter="get_callback">
+			Internal callback for the behavior to define whether or not a member is relevant
 		</member>
 		<member name="proximity" type="GSAIProximity" setter="set_proximity" getter="get_proximity">
+			Container to find neighbors of the agent and calculate group behavior.
 		</member>
 	</members>
 	<constants>

@@ -21,10 +21,6 @@ public:
 
 protected:
 	static void _bind_methods();
-
-	// Calculates angular acceleration to rotate a target to face its target's
-	// position. The behavior attemps to arrive with zero remaining angular velocity.
-	// @category - Individual behaviors
 };
 
 #endif

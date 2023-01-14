@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAIFlee" inherits="GSAISeek" version="3.11">
 	<brief_description>
+		Calculates acceleration to take an agent directly away from a target agent.
 	</brief_description>
 	<description>
+		Calculates acceleration to take an agent directly away from a target agent.
 	</description>
 	<tutorials>
 	</tutorials>

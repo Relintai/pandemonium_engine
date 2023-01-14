@@ -28,18 +28,9 @@ public:
 protected:
 	static void _bind_methods();
 
-	// Container for multiple behaviors that returns the result of the first child
-	// behavior with non-zero acceleration.
-	// @category - Combination behaviors
-	// If a behavior's acceleration is lower than this threshold, the container
-	// considers it has an acceleration of zero.
 	float zero_threshold;
-	// The index of the last behavior the container prioritized.
 	int _last_selected_index;
 	Vector<Ref<GSAISteeringBehavior>> _behaviors;
-	// Appends a steering behavior as a child of this container.
-	// Returns the behavior at the position in the pool referred to by `index`, or
-	// `null` if no behavior was found.
 };
 
 #endif

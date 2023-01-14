@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAILookWhereYouGo" inherits="GSAIMatchOrientation" version="3.11">
 	<brief_description>
+		Calculates an angular acceleration to match an agent's orientation to its direction of travel.
 	</brief_description>
 	<description>
+		Calculates an angular acceleration to match an agent's orientation to its direction of travel.
 	</description>
 	<tutorials>
 	</tutorials>

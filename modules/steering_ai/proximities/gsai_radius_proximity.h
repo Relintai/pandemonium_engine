@@ -23,17 +23,8 @@ public:
 protected:
 	static void _bind_methods();
 
-	// Determines any agent that is in the specified list as being neighbors with the owner agent if
-	// they lie within the specified radius.
-	// @category - Proximities
-	// The radius around the owning agent to find neighbors in
 	float radius;
 	int _last_frame;
-	// Returns a number of neighbors based on a `callback` function.
-	//
-	// `_find_neighbors` calls `callback` for each agent in the `agents` array that lie within
-	// the radius around the owning agent and adds one to the count if its `callback` returns true.
-	// @tags - virtual
 };
 
 #endif

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GSAISteeringAgent" inherits="GSAIAgentLocation" version="3.11">
 	<brief_description>
+		Adds velocity, speed, and size data to GSAIAgentLocation.
 	</brief_description>
 	<description>
+		Adds velocity, speed, and size data to GSAIAgentLocation.
+		It is the character's responsibility to keep this information up to date for the steering toolkit to work correctly.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,22 +13,31 @@
 	</methods>
 	<members>
 		<member name="angular_acceleration_max" type="float" setter="set_angular_acceleration_max" getter="get_angular_acceleration_max" default="0.0">
+			The maximum amount of angular acceleration that any behavior can apply to an agent.
 		</member>
 		<member name="angular_speed_max" type="float" setter="set_angular_speed_max" getter="get_angular_speed_max" default="0.0">
+			The maximum amount of angular speed at which the agent can rotate.
 		</member>
 		<member name="angular_velocity" type="float" setter="set_angular_velocity" getter="get_angular_velocity" default="0.0">
+			Current angular velocity of the agent.
 		</member>
 		<member name="bounding_radius" type="float" setter="set_bounding_radius" getter="get_bounding_radius" default="0.0">
+			The radius of the sphere that approximates the agent's size in space.
 		</member>
 		<member name="is_tagged" type="bool" setter="set_is_tagged" getter="get_is_tagged" default="false">
+			Used internally by group behaviors and proximities to mark the agent as already considered.
 		</member>
 		<member name="linear_acceleration_max" type="float" setter="set_linear_acceleration_max" getter="get_linear_acceleration_max" default="0.0">
+			The maximum amount of acceleration that any behavior can apply to the agent.
 		</member>
 		<member name="linear_speed_max" type="float" setter="set_linear_speed_max" getter="get_linear_speed_max" default="0.0">
+			The maximum speed at which the agent can move.
 		</member>
 		<member name="linear_velocity" type="Vector3" setter="set_linear_velocity" getter="get_linear_velocity" default="Vector3( 0, 0, 0 )">
+			Current velocity of the agent.
 		</member>
 		<member name="zero_linear_speed_threshold" type="float" setter="set_zero_linear_speed_threshold" getter="get_zero_linear_speed_threshold" default="0.01">
+			The amount of velocity to be considered effectively not moving.
 		</member>
 	</members>
 	<constants>
