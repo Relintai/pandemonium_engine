@@ -53,6 +53,12 @@ SOFTWARE.
 #include "behaviors/gsai_seek.cpp"
 #include "behaviors/gsai_separation.cpp"
 
+#include "agents/gsai_kinematic_body_2d_agent.cpp"
+#include "agents/gsai_kinematic_body_3d_agent.cpp"
+#include "agents/gsai_rigid_body_2d_agent.cpp"
+#include "agents/gsai_rigid_body_3d_agent.cpp"
+#include "agents/gsai_specialized_agent.cpp"
+
 static GSAIUtils *gs_ai_utils = NULL;
 
 void register_steering_ai_types() {
@@ -85,6 +91,12 @@ void register_steering_ai_types() {
 	ClassDB::register_class<GSAIPursue>();
 	ClassDB::register_class<GSAISeek>();
 	ClassDB::register_class<GSAISeparation>();
+
+	ClassDB::register_class<GSAIKinematicBody2DAgent>();
+	ClassDB::register_class<GSAIKinematicBody3DAgent>();
+	ClassDB::register_class<GSAIRigidBody2DAgent>();
+	ClassDB::register_class<GSAIRigidBody3DAgent>();
+	ClassDB::register_class<GSAISpecializedAgent>();
 }
 
 void unregister_steering_ai_types() {

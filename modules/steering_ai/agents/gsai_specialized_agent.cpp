@@ -1,5 +1,7 @@
 
-#include "gsai_specialize_dagent.h"
+#include "gsai_specialized_agent.h"
+
+#include "../gsai_target_acceleration.h"
 
 bool GSAISpecializedAgent::get_calculate_velocities() const {
 	return calculate_velocities;
@@ -57,42 +59,11 @@ void GSAISpecializedAgent::set_applied_steering(const bool val) {
 	applied_steering = val;
 }
 
-// A base class for a specialized steering agent that updates itself every frame;
-// so the user does not have to. All other specialized agents derive from this.;
-// @category - Specialized agents;
-// @tags - abstract;
-// If `true`, calculates linear and angular velocities based on the previous;
-// frame. When `false`, the user must keep those values updated.;
-bool calculate_velocities = true;
-// If `true`, interpolates the current linear velocity towards 0 by the;
-// `linear_drag_percentage` value.;
-// Does not apply to `RigidBody` and `RigidBody2D` nodes.;
-bool apply_linear_drag = true;
-// If `true`, interpolates the current angular velocity towards 0 by the;
-// `angular_drag_percentage` value.;
-// Does not apply to `RigidBody` and `RigidBody2D` nodes.;
-bool apply_angular_drag = true;
-// The percentage between the current linear velocity and 0 to interpolate by if;
-// `apply_linear_drag` is true.;
-// Does not apply to `RigidBody` and `RigidBody2D` nodes.;
-float linear_drag_percentage = 0.0;
-// The percentage between the current angular velocity and 0 to interpolate by if;
-// `apply_angular_drag` is true.;
-// Does not apply to `RigidBody` and `RigidBody2D` nodes.;
-float angular_drag_percentage = 0.0;
-float last_orientation = 0.0;
-bool applied_steering = false;
-
-void GSAISpecializedAgent::apply_steering(const GSAITargetAcceleration &_acceleration, const float _delta) {
-	call("_apply_steering", _acceleration, _delta);
+void GSAISpecializedAgent::apply_steering(const Ref<GSAITargetAcceleration> &acceleration, const float delta) {
+	call("_apply_steering", acceleration, delta);
 }
 
-// Moves the agent's body by target `acceleration`.;
-// @tags - virtual;
-
-void GSAISpecializedAgent::_apply_steering(const GSAITargetAcceleration &_acceleration, const float _delta) {
-	pass;
-}
+void GSAISpecializedAgent::_apply_steering(Ref<GSAITargetAcceleration> acceleration, float delta) {
 }
 
 GSAISpecializedAgent::GSAISpecializedAgent() {
@@ -108,7 +79,7 @@ GSAISpecializedAgent::GSAISpecializedAgent() {
 GSAISpecializedAgent::~GSAISpecializedAgent() {
 }
 
-static void GSAISpecializedAgent::_bind_methods() {
+void GSAISpecializedAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_calculate_velocities"), &GSAISpecializedAgent::get_calculate_velocities);
 	ClassDB::bind_method(D_METHOD("set_calculate_velocities", "value"), &GSAISpecializedAgent::set_calculate_velocities);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "calculate_velocities"), "set_calculate_velocities", "get_calculate_velocities");
@@ -137,6 +108,7 @@ static void GSAISpecializedAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_applied_steering", "value"), &GSAISpecializedAgent::set_applied_steering);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "applied_steering"), "set_applied_steering", "get_applied_steering");
 
-	ClassDB::bind_method(D_METHOD("apply_steering", "_acceleration", "_delta"), &GSAISpecializedAgent::apply_steering);
-	ClassDB::bind_method(D_METHOD("_apply_steering", "_acceleration", "_delta"), &GSAISpecializedAgent::_apply_steering);
+	BIND_VMETHOD(MethodInfo("_apply_steering", PropertyInfo(Variant::OBJECT, "acceleration", PROPERTY_HINT_RESOURCE_TYPE, "GSAITargetAcceleration"), PropertyInfo(Variant::REAL, "delta")));
+	ClassDB::bind_method(D_METHOD("apply_steering", "acceleration", "delta"), &GSAISpecializedAgent::apply_steering);
+	ClassDB::bind_method(D_METHOD("_apply_steering", "acceleration", "delta"), &GSAISpecializedAgent::_apply_steering);
 }

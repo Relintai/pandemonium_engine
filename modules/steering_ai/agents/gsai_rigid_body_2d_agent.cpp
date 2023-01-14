@@ -1,142 +1,123 @@
 
 #include "gsai_rigid_body_2d_agent.h"
 
-RigidBody2D GSAIRigidBody2DAgent::get_ *body() {
-	return *body;
+#include "scene/2d/physics_body_2d.h"
+
+#include "../gsai_target_acceleration.h"
+#include "../gsai_utils.h"
+
+RigidBody2D *GSAIRigidBody2DAgent::get_body() {
+	return Object::cast_to<RigidBody2D>(ObjectDB::get_instance(_body_ref));
 }
 
-void GSAIRigidBody2DAgent::set_ *body(const RigidBody2D &val) {
-	*body = val;
+void GSAIRigidBody2DAgent::set_body(RigidBody2D *value) {
+	if (!value) {
+		_body_ref = 0;
+		_physics_process_disconnect();
+		return;
+	}
+
+	_body_ref = value->get_instance_id();
+	_last_position = value->get_global_position();
+	last_orientation = value->get_rotation();
+	position = GSAIUtils::to_vector3(_last_position);
+	orientation = last_orientation;
+
+	if (!value->is_inside_tree()) {
+		value->connect("ready", this, "_physics_process_connect", varray(), CONNECT_ONESHOT);
+	} else {
+		_physics_process_connect();
+	}
 }
 
-Vector2 GSAIRigidBody2DAgent::get__last_position() {
-	return _last_position;
+void GSAIRigidBody2DAgent::set_body_bind(Node *p_body) {
+	set_body(Object::cast_to<RigidBody2D>(p_body));
 }
 
-void GSAIRigidBody2DAgent::set__last_position(const Vector2 &val) {
-	_last_position = val;
+void GSAIRigidBody2DAgent::_physics_process_connect() {
+	SceneTree *st = SceneTree::get_singleton();
+
+	if (st) {
+		if (!st->is_connected("physics_frame", this, "_on_SceneTree_physics_frame")) {
+			st->connect("physics_frame", this, "_on_SceneTree_physics_frame");
+		}
+	}
 }
 
-Ref<WeakRef> GSAIRigidBody2DAgent::get__body_ref() {
-	return _body_ref;
+void GSAIRigidBody2DAgent::_physics_process_disconnect() {
+	SceneTree *st = SceneTree::get_singleton();
+
+	if (st) {
+		if (st->is_connected("physics_frame", this, "_on_SceneTree_physics_frame")) {
+			st->disconnect("physics_frame", this, "_on_SceneTree_physics_frame");
+		}
+	}
 }
 
-void GSAIRigidBody2DAgent::set__body_ref(const Ref<WeakRef> &val) {
-	_body_ref = val;
-}
+void GSAIRigidBody2DAgent::_apply_steering(Ref<GSAITargetAcceleration> acceleration, float delta) {
+	RigidBody2D *body = get_body();
 
-// A specialized steering agent that updates itself every frame so the user does;
-// not have to using a RigidBody2D;
-// @category - Specialized agents;
-// The RigidBody2D to keep track of;
-// setget _set_body;
-RigidBody2D *body;
-Vector2 _last_position = ;
-Ref<WeakRef> _body_ref;
-
-void GSAIRigidBody2DAgent::_body_ready() {
-	// warning-ignore:return_value_discarded;
-	body.get_tree().connect("physics_frame", self, "_on_SceneTree_frame");
-}
-
-// Moves the agent's `body` by target `acceleration`.;
-// @tags - virtual;
-
-void GSAIRigidBody2DAgent::_apply_steering(const GSAITargetAcceleration &acceleration, const float _delta) {
-	RigidBody2D *_body = _body_ref.get_ref();
-
-	if (not _body) {
+	if (!body) {
 		return;
 	}
 
 	applied_steering = true;
-	_body.apply_central_impulse(GSAIUtils.to_vector2(acceleration.linear));
-	_body.apply_torque_impulse(acceleration.angular);
+	body->apply_central_impulse(GSAIUtils::to_vector2(acceleration->get_linear()));
+	body->apply_torque_impulse(acceleration->get_angular());
 
 	if (calculate_velocities) {
-		linear_velocity = GSAIUtils.to_vector3(_body.linear_velocity);
-		angular_velocity = _body.angular_velocity;
-	}
-}
-
-void GSAIRigidBody2DAgent::_set_body(const RigidBody2D &value) {
-	bool had_body = false;
-
-	if (body) {
-		had_body = true;
-	}
-
-	body = value;
-	_body_ref = weakref(value);
-	_last_position = value.global_position;
-	last_orientation = value.rotation;
-	position = GSAIUtils.to_vector3(_last_position);
-	orientation = last_orientation;
-
-	if (!had_body) {
-		if (!body.is_inside_tree()) {
-			body.connect("ready", self, "_body_ready");
-		}
-
-		else {
-			_body_ready();
-		}
+		linear_velocity = GSAIUtils::to_vector3(body->get_linear_velocity());
+		angular_velocity = body->get_angular_velocity();
 	}
 }
 
 void GSAIRigidBody2DAgent::_on_SceneTree_frame() {
-	RigidBody2D *_body = _body_ref.get_ref();
+	RigidBody2D *body = get_body();
 
-	if (!_body) {
+	if (!body) {
+		call_deferred("_physics_process_disconnect");
 		return;
 	}
 
-	if (!_body.is_inside_tree() || _body.get_tree().paused) {
+	if (!body->is_inside_tree()) {
 		return;
 	}
 
-	Vector2 current_position = _body.global_position;
-	float current_orientation = _body.rotation;
-	position = GSAIUtils.to_vector3(current_position);
+	SceneTree *st = SceneTree::get_singleton();
+
+	if (st && st->is_paused()) {
+		return;
+	}
+
+	Vector2 current_position = body->get_global_position();
+	float current_orientation = body->get_rotation();
+	position = GSAIUtils::to_vector3(current_position);
 	orientation = current_orientation;
 
 	if (calculate_velocities) {
 		if (applied_steering) {
 			applied_steering = false;
-		}
-
-		else {
-			linear_velocity = GSAIUtils.to_vector3(_body.linear_velocity);
-			angular_velocity = _body.angular_velocity;
+		} else {
+			linear_velocity = GSAIUtils::to_vector3(body->get_linear_velocity());
+			angular_velocity = body->get_angular_velocity();
 		}
 	}
 }
-}
 
 GSAIRigidBody2DAgent::GSAIRigidBody2DAgent() {
-	*body;
-	_last_position = ;
-	_body_ref;
+	_body_ref = 0;
 }
 
 GSAIRigidBody2DAgent::~GSAIRigidBody2DAgent() {
 }
 
-static void GSAIRigidBody2DAgent::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_*body"), &GSAIRigidBody2DAgent::get_ * body);
-	ClassDB::bind_method(D_METHOD("set_*body", "value"), &GSAIRigidBody2DAgent::set_ * body);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*body", PROPERTY_HINT_RESOURCE_TYPE, "RigidBody2D"), "set_*body", "get_*body");
+void GSAIRigidBody2DAgent::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_body"), &GSAIRigidBody2DAgent::get_body);
+	ClassDB::bind_method(D_METHOD("set_body", "value"), &GSAIRigidBody2DAgent::set_body_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "body", PROPERTY_HINT_RESOURCE_TYPE, "RigidBody2D"), "set_body", "get_body");
 
-	ClassDB::bind_method(D_METHOD("get__last_position"), &GSAIRigidBody2DAgent::get__last_position);
-	ClassDB::bind_method(D_METHOD("set__last_position", "value"), &GSAIRigidBody2DAgent::set__last_position);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "_last_position"), "set__last_position", "get__last_position");
+	ClassDB::bind_method(D_METHOD("_physics_process_connect"), &GSAIRigidBody2DAgent::_physics_process_connect);
+	ClassDB::bind_method(D_METHOD("_physics_process_disconnect"), &GSAIRigidBody2DAgent::_physics_process_disconnect);
 
-	ClassDB::bind_method(D_METHOD("get__body_ref"), &GSAIRigidBody2DAgent::get__body_ref);
-	ClassDB::bind_method(D_METHOD("set__body_ref", "value"), &GSAIRigidBody2DAgent::set__body_ref);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "_body_ref", PROPERTY_HINT_RESOURCE_TYPE, "Ref<WeakRef>"), "set__body_ref", "get__body_ref");
-
-	ClassDB::bind_method(D_METHOD("_body_ready"), &GSAIRigidBody2DAgent::_body_ready);
-	ClassDB::bind_method(D_METHOD("_apply_steering", "acceleration", "_delta"), &GSAIRigidBody2DAgent::_apply_steering);
-	ClassDB::bind_method(D_METHOD("_set_body", "value"), &GSAIRigidBody2DAgent::_set_body);
 	ClassDB::bind_method(D_METHOD("_on_SceneTree_frame"), &GSAIRigidBody2DAgent::_on_SceneTree_frame);
 }

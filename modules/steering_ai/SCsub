@@ -34,6 +34,12 @@ sources = [
     "behaviors/gsai_pursue.cpp",
     "behaviors/gsai_seek.cpp",
     "behaviors/gsai_separation.cpp",
+
+    "agents/gsai_kinematic_body_2d_agent.cpp",
+    "agents/gsai_kinematic_body_3d_agent.cpp",
+    "agents/gsai_rigid_body_2d_agent.cpp",
+    "agents/gsai_rigid_body_3d_agent.cpp",
+    "agents/gsai_specialized_agent.cpp",
 ]
 
 

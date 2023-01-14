@@ -33,6 +33,12 @@ def get_doc_classes():
         "GSAIPursue",
         "GSAISeek",
         "GSAISeparation",
+
+        "GSAIKinematicBody2DAgent",
+        "GSAIKinematicBody3DAgent",
+        "GSAIRigidBody2DAgent",
+        "GSAIRigidBody3DAgent",
+        "GSAISpecializedAgent",
     ]
 
 def get_doc_path():
