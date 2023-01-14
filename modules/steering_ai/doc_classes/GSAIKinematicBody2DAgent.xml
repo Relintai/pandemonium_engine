@@ -21,5 +21,11 @@
 		</member>
 	</members>
 	<constants>
+		<constant name="SLIDE" value="0" enum="MovementType">
+		</constant>
+		<constant name="COLLIDE" value="1" enum="MovementType">
+		</constant>
+		<constant name="POSITION" value="2" enum="MovementType">
+		</constant>
 	</constants>
 </class>

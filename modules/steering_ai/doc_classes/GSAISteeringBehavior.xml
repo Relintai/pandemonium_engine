@@ -21,8 +21,8 @@
 		<method name="calculate_steering">
 			<return type="void" />
 			<argument index="0" name="acceleration" type="GSAITargetAcceleration" />
-				The calculate_steering function is the entry point for all behaviors. Sets the acceleration with the behavior's desired amount of acceleration.
 			<description>
+				The calculate_steering function is the entry point for all behaviors. Sets the acceleration with the behavior's desired amount of acceleration.
 			</description>
 		</method>
 	</methods>
