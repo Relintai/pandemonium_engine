@@ -18,6 +18,21 @@ def get_doc_classes():
 
         "GSAIRadiusProximity",
         "GSAIInfiniteProximity",
+
+        "GSAIArrive",
+        "GSAIAvoidCollisions",
+        "GSAIBlend",
+        "GSAICohesion",
+        "GSAIEvade",
+        "GSAIFace",
+        "GSAIFlee",
+        "GSAIFollowPath",
+        "GSAILookWhereYouGo",
+        "GSAIMatchOrientation",
+        "GSAIPriority",
+        "GSAIPursue",
+        "GSAISeek",
+        "GSAISeparation",
     ]
 
 def get_doc_path():

@@ -35,8 +35,23 @@ SOFTWARE.
 #include "gsai_target_acceleration.h"
 #include "proximities/gsai_proximity.h"
 
-#include "proximities/gsai_radius_proximity.h"
 #include "proximities/gsai_infinite_proximity.h"
+#include "proximities/gsai_radius_proximity.h"
+
+#include "behaviors/gsai_arrive.cpp"
+#include "behaviors/gsai_avoid_collisions.cpp"
+#include "behaviors/gsai_blend.cpp"
+#include "behaviors/gsai_cohesion.cpp"
+#include "behaviors/gsai_evade.cpp"
+#include "behaviors/gsai_face.cpp"
+#include "behaviors/gsai_flee.cpp"
+#include "behaviors/gsai_follow_path.cpp"
+#include "behaviors/gsai_look_where_you_go.cpp"
+#include "behaviors/gsai_match_orientation.cpp"
+#include "behaviors/gsai_priority.cpp"
+#include "behaviors/gsai_pursue.cpp"
+#include "behaviors/gsai_seek.cpp"
+#include "behaviors/gsai_separation.cpp"
 
 static GSAIUtils *gs_ai_utils = NULL;
 
@@ -55,6 +70,21 @@ void register_steering_ai_types() {
 
 	ClassDB::register_class<GSAIRadiusProximity>();
 	ClassDB::register_class<GSAIInfiniteProximity>();
+
+	ClassDB::register_class<GSAIArrive>();
+	ClassDB::register_class<GSAIAvoidCollisions>();
+	ClassDB::register_class<GSAIBlend>();
+	ClassDB::register_class<GSAICohesion>();
+	ClassDB::register_class<GSAIEvade>();
+	ClassDB::register_class<GSAIFace>();
+	ClassDB::register_class<GSAIFlee>();
+	ClassDB::register_class<GSAIFollowPath>();
+	ClassDB::register_class<GSAILookWhereYouGo>();
+	ClassDB::register_class<GSAIMatchOrientation>();
+	ClassDB::register_class<GSAIPriority>();
+	ClassDB::register_class<GSAIPursue>();
+	ClassDB::register_class<GSAISeek>();
+	ClassDB::register_class<GSAISeparation>();
 }
 
 void unregister_steering_ai_types() {

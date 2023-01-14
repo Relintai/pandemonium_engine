@@ -44,9 +44,7 @@ bool GSAIAvoidCollisions::_report_neighbor(Ref<GSAISteeringAgent> neighbor) {
 
 	if (relative_speed_squared == 0) {
 		return false;
-	}
-
-	else {
+	} else {
 		float time_to_collision = -relative_position.dot(relative_velocity) / relative_speed_squared;
 
 		if (time_to_collision <= 0 || time_to_collision >= _shortest_time) {

@@ -19,6 +19,21 @@ sources = [
 
     "proximities/gsai_radius_proximity.cpp",
     "proximities/gsai_infinite_proximity.cpp",
+
+    "behaviors/gsai_arrive.cpp",
+    "behaviors/gsai_avoid_collisions.cpp",
+    "behaviors/gsai_blend.cpp",
+    "behaviors/gsai_cohesion.cpp",
+    "behaviors/gsai_evade.cpp",
+    "behaviors/gsai_face.cpp",
+    "behaviors/gsai_flee.cpp",
+    "behaviors/gsai_follow_path.cpp",
+    "behaviors/gsai_look_where_you_go.cpp",
+    "behaviors/gsai_match_orientation.cpp",
+    "behaviors/gsai_priority.cpp",
+    "behaviors/gsai_pursue.cpp",
+    "behaviors/gsai_seek.cpp",
+    "behaviors/gsai_separation.cpp",
 ]
 
 
