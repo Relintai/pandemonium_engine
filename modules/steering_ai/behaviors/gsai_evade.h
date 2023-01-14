@@ -1,6 +1,10 @@
 #ifndef GSAI_EVADE_H
 #define GSAI_EVADE_H
 
+#include "core/object/reference.h"
+
+#include "gsai_pursue.h"
+
 class GSAIEvade : public GSAIPursue {
 	GDCLASS(GSAIEvade, GSAIPursue);
 

@@ -1,108 +1,73 @@
 
 #include "gsai_blend.h"
 
-Array GSAIBlend::get__behaviors() {
-	return _behaviors;
+#include "../gsai_steering_agent.h"
+#include "../gsai_target_acceleration.h"
+#include "../gsai_utils.h"
+
+void GSAIBlend::add_behavior(const Ref<GSAISteeringBehavior> &behavior, const float weight) {
+	ERR_FAIL_COND(!behavior.is_valid());
+
+	GSAIBlendBehaviorEntry e;
+	e.behavior = behavior;
+	e.weight = weight;
+	_behaviors.push_back(e);
 }
 
-void GSAIBlend::set__behaviors(const Array &val) {
-	_behaviors = val;
+Ref<GSAISteeringBehavior> GSAIBlend::get_behavior(const int index) {
+	ERR_FAIL_INDEX_V(index, _behaviors.size(), Ref<GSAISteeringBehavior>());
+
+	return _behaviors[index].behavior;
 }
 
-GSAITargetAcceleration GSAIBlend::get_ *_accel() {
-	return *_accel;
-}
+float GSAIBlend::get_behavior_weight(const int index) {
+	ERR_FAIL_INDEX_V(index, _behaviors.size(), 0);
 
-void GSAIBlend::set_ *_accel(const GSAITargetAcceleration &val) {
-	*_accel = val;
-}
-
-// Blends multiple steering behaviors into one, and returns a weighted;
-// acceleration from their calculations.;
-//;
-// Stores the behaviors internally as dictionaries of the form;
-// {;
-// 	behavior : GSAISteeringBehavior,;
-// 	weight : float;
-// };
-// @category - Combination behaviors;
-Array _behaviors = Array();
-GSAITargetAcceleration *_accel = GSAITargetAcceleration.new();
-// Appends a behavior to the internal array along with its `weight`.;
-
-void GSAIBlend::add_behavior(const GSAISteeringBehavior &behavior, const float weight) {
-	behavior.agent = agent;
-	Dictionary dict = Dictionary();
-	dict["behavior"] = behavior;
-	dict["weight"] = weight;
-	_behaviors.append(dict);
-}
-
-// Returns the behavior at the specified `index`, or an empty `Dictionary` if;
-// none was found.;
-
-Dictionary GSAIBlend::get_behavior(const int index) {
-	if (_behaviors.size() > index) {
-		return _behaviors[index];
-	}
-
-	printerr("Tried to get index " + str(index) + " in array of size " + str(_behaviors.size()));
-	return Dictionary();
+	return _behaviors[index].weight;
 }
 
 void GSAIBlend::remove_behavior(const int index) {
-	if (_behaviors.size() > index) {
-		_behaviors.remove(index);
-		return;
-	}
+	ERR_FAIL_INDEX(index, _behaviors.size());
 
-	printerr("Tried to get index " + str(index) + " in array of size " + str(_behaviors.size()));
-	return;
+	_behaviors.remove(index);
 }
 
 int GSAIBlend::get_behaviour_count() {
 	return _behaviors.size();
 }
 
-GSAITargetAcceleration GSAIBlend::get_accel() {
+Ref<GSAITargetAcceleration> GSAIBlend::get_accel() {
 	return _accel;
 }
 
-void GSAIBlend::_calculate_steering(const GSAITargetAcceleration &blended_accel) {
-	blended_accel.set_zero();
+void GSAIBlend::_calculate_steering(Ref<GSAITargetAcceleration> blended_accel) {
+	ERR_FAIL_COND(!agent.is_valid());
+
+	blended_accel->set_zero();
 
 	for (int i = 0; i < _behaviors.size(); ++i) { //i in range(_behaviors.size())
-		Dictionary bw = _behaviors[i];
-		bw.behavior.calculate_steering(_accel);
-		blended_accel.add_scaled_accel(_accel, bw.weight);
+		GSAIBlendBehaviorEntry bw = _behaviors[i];
+
+		bw.behavior->calculate_steering(_accel);
+		blended_accel->add_scaled_accel(_accel, bw.weight);
 	}
 
-	blended_accel.linear = GSAIUtils.clampedv3(blended_accel.linear, agent.linear_acceleration_max);
-	blended_accel.angular = clamp(blended_accel.angular, -agent.angular_acceleration_max, agent.angular_acceleration_max);
-}
+	blended_accel->set_linear(GSAIUtils::clampedv3(blended_accel->get_linear(), agent->get_linear_acceleration_max()));
+	float angular_acceleration_max = agent->get_angular_acceleration_max();
+	blended_accel->set_angular(CLAMP(blended_accel->get_angular(), -angular_acceleration_max, angular_acceleration_max));
 }
 
 GSAIBlend::GSAIBlend() {
-	_behaviors = Array();
-	*_accel = GSAITargetAcceleration.new();
+	_accel.instance();
 }
 
 GSAIBlend::~GSAIBlend() {
 }
 
-static void GSAIBlend::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get__behaviors"), &GSAIBlend::get__behaviors);
-	ClassDB::bind_method(D_METHOD("set__behaviors", "value"), &GSAIBlend::set__behaviors);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "_behaviors"), "set__behaviors", "get__behaviors");
-
-	ClassDB::bind_method(D_METHOD("get_*_accel"), &GSAIBlend::get_ * _accel);
-	ClassDB::bind_method(D_METHOD("set_*_accel", "value"), &GSAIBlend::set_ * _accel);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_accel", PROPERTY_HINT_RESOURCE_TYPE, "GSAITargetAcceleration"), "set_*_accel", "get_*_accel");
-
+void GSAIBlend::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_behavior", "behavior", "weight"), &GSAIBlend::add_behavior);
 	ClassDB::bind_method(D_METHOD("get_behavior", "index"), &GSAIBlend::get_behavior);
 	ClassDB::bind_method(D_METHOD("remove_behavior", "index"), &GSAIBlend::remove_behavior);
 	ClassDB::bind_method(D_METHOD("get_behaviour_count"), &GSAIBlend::get_behaviour_count);
 	ClassDB::bind_method(D_METHOD("get_accel"), &GSAIBlend::get_accel);
-	ClassDB::bind_method(D_METHOD("_calculate_steering", "blended_accel"), &GSAIBlend::_calculate_steering);
 }

@@ -19,6 +19,7 @@ public:
 
 	void arrive(const GSAITargetAcceleration &acceleration, const Vector3 &target_position);
 	void _arrive(const GSAITargetAcceleration &acceleration, const Vector3 &target_position);
+	
 	void _calculate_steering(const GSAITargetAcceleration &acceleration);
 
 	GSAIArrive();

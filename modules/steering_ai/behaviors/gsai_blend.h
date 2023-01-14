@@ -1,40 +1,44 @@
 #ifndef GSAI_BLEND_H
 #define GSAI_BLEND_H
 
+#include "core/object/reference.h"
+
+#include "../gsai_steering_behavior.h"
+
+class GSAISteeringBehavior;
+class GSAITargetAcceleration;
+
 class GSAIBlend : public GSAISteeringBehavior {
 	GDCLASS(GSAIBlend, GSAISteeringBehavior);
 
 public:
-	Array get__behaviors();
-	void set__behaviors(const Array &val);
-
-	GSAITargetAcceleration get_ *_accel();
-	void set_ *_accel(const GSAITargetAcceleration &val);
-
-	void add_behavior(const GSAISteeringBehavior &behavior, const float weight);
-	Dictionary get_behavior(const int index);
+	void add_behavior(const Ref<GSAISteeringBehavior> &behavior, const float weight);
+	Ref<GSAISteeringBehavior> get_behavior(const int index);
+	float get_behavior_weight(const int index);
 	void remove_behavior(const int index);
 	int get_behaviour_count();
-	GSAITargetAcceleration get_accel();
-	void _calculate_steering(const GSAITargetAcceleration &blended_accel);
+
+	Ref<GSAITargetAcceleration> get_accel();
+
+	void _calculate_steering(Ref<GSAITargetAcceleration> blended_accel);
 
 	GSAIBlend();
 	~GSAIBlend();
+
+protected:
+	struct GSAIBlendBehaviorEntry {
+		Ref<GSAISteeringBehavior> behavior;
+		float weight;
+	};
 
 protected:
 	static void _bind_methods();
 
 	// Blends multiple steering behaviors into one, and returns a weighted
 	// acceleration from their calculations.
-	//
-	// Stores the behaviors internally as dictionaries of the form
-	// {
-	// 	behavior : GSAISteeringBehavior,
-	// 	weight : float
-	// }
 	// @category - Combination behaviors
-	Array _behaviors = Array();
-	GSAITargetAcceleration *_accel = GSAITargetAcceleration.new();
+	Vector<GSAIBlendBehaviorEntry> _behaviors;
+	Ref<GSAITargetAcceleration> _accel;
 	// Appends a behavior to the internal array along with its `weight`.
 	// Returns the behavior at the specified `index`, or an empty `Dictionary` if
 	// none was found.
