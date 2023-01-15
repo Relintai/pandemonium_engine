@@ -20,5 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_texture_packer_types();
-void unregister_texture_packer_types();
+#include "modules/register_module_types.h"
+
+void register_texture_packer_types(ModuleRegistrationLevel p_level);
+void unregister_texture_packer_types(ModuleRegistrationLevel p_level);

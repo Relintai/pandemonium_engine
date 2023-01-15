@@ -78,10 +78,10 @@ static Vector<PoolVector<Vector3>> convex_decompose(const real_t *p_vertices, in
 	return ret;
 }
 
-void register_vhacd_types() {
+void register_vhacd_types(ModuleRegistrationLevel p_level) {
 	Mesh::convex_decomposition_function = convex_decompose;
 }
 
-void unregister_vhacd_types() {
+void unregister_vhacd_types(ModuleRegistrationLevel p_level) {
 	Mesh::convex_decomposition_function = nullptr;
 }

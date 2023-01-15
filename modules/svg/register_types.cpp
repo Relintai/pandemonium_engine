@@ -34,11 +34,11 @@
 
 static ImageLoaderSVG *image_loader_svg = nullptr;
 
-void register_svg_types() {
+void register_svg_types(ModuleRegistrationLevel p_level) {
 	image_loader_svg = memnew(ImageLoaderSVG);
 	ImageLoader::add_image_format_loader(image_loader_svg);
 }
 
-void unregister_svg_types() {
+void unregister_svg_types(ModuleRegistrationLevel p_level) {
 	memdelete(image_loader_svg);
 }

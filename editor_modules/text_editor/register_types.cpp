@@ -32,7 +32,7 @@ SOFTWARE.
 
 Ref<TextEditorTextLoader> text_editor_text_resource_loader;
 
-void register_text_editor_types() {
+void register_text_editor_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<TextEditorFile>();
 
 	text_editor_text_resource_loader.instance();
@@ -43,7 +43,7 @@ void register_text_editor_types() {
 #endif
 }
 
-void unregister_text_editor_types() {
+void unregister_text_editor_types(ModuleRegistrationLevel p_level) {
 	ResourceLoader::remove_resource_format_loader(text_editor_text_resource_loader);
 	text_editor_text_resource_loader.unref();
 }

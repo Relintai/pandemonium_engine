@@ -30,7 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_squish_types();
-void unregister_squish_types();
+#include "modules/register_module_types.h"
+
+void register_squish_types(ModuleRegistrationLevel p_level);
+void unregister_squish_types(ModuleRegistrationLevel p_level);
 
 #endif // SQUISH_REGISTER_TYPES_H

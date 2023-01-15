@@ -37,7 +37,7 @@
 #include "resource_importer_mp3.h"
 #endif
 
-void register_minimp3_types() {
+void register_minimp3_types(ModuleRegistrationLevel p_level) {
 #ifdef TOOLS_ENABLED
 	if (Engine::get_singleton()->is_editor_hint()) {
 		Ref<ResourceImporterMP3> mp3_import;
@@ -48,5 +48,5 @@ void register_minimp3_types() {
 	ClassDB::register_class<AudioStreamMP3>();
 }
 
-void unregister_minimp3_types() {
+void unregister_minimp3_types(ModuleRegistrationLevel p_level) {
 }

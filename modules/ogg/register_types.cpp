@@ -32,6 +32,6 @@
 
 // Dummy module as libogg is needed by other modules (vorbis, theora, opus, ...)
 
-void register_ogg_types() {}
+void register_ogg_types(ModuleRegistrationLevel p_level) {}
 
-void unregister_ogg_types() {}
+void unregister_ogg_types(ModuleRegistrationLevel p_level) {}

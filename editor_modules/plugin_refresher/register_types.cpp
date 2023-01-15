@@ -26,11 +26,11 @@ SOFTWARE.
 #include "plugin_refresher_editor_plugin.h"
 #endif
 
-void register_plugin_refresher_types() {
+void register_plugin_refresher_types(ModuleRegistrationLevel p_level) {
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<PluginRefresherEditorPlugin>();
 #endif
 }
 
-void unregister_plugin_refresher_types() {
+void unregister_plugin_refresher_types(ModuleRegistrationLevel p_level) {
 }

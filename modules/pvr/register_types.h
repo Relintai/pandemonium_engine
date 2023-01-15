@@ -30,7 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_pvr_types();
-void unregister_pvr_types();
+#include "modules/register_module_types.h"
+
+void register_pvr_types(ModuleRegistrationLevel p_level);
+void unregister_pvr_types(ModuleRegistrationLevel p_level);
 
 #endif // PVR_REGISTER_TYPES_H

@@ -136,7 +136,7 @@ static void _editor_init() {
 
 #endif // TOOLS_ENABLED
 
-void register_gdscript_types() {
+void register_gdscript_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<GDScript>();
 	ClassDB::register_virtual_class<GDScriptFunctionState>();
 
@@ -155,7 +155,7 @@ void register_gdscript_types() {
 #endif // TOOLS_ENABLED
 }
 
-void unregister_gdscript_types() {
+void unregister_gdscript_types(ModuleRegistrationLevel p_level) {
 	ScriptServer::unregister_language(script_language_gd);
 
 	if (script_language_gd) {

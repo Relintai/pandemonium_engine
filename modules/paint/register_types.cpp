@@ -52,7 +52,7 @@ SOFTWARE.
 #include "editor/paint_editor_plugin.h"
 #endif
 
-void register_paint_types() {
+void register_paint_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<PaintAction>();
 
 	ClassDB::register_class<BrightenAction>();
@@ -84,5 +84,5 @@ void register_paint_types() {
 #endif
 }
 
-void unregister_paint_types() {
+void unregister_paint_types(ModuleRegistrationLevel p_level) {
 }

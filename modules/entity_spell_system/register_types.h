@@ -20,5 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_entity_spell_system_types();
-void unregister_entity_spell_system_types();
+#include "modules/register_module_types.h"
+
+void register_entity_spell_system_types(ModuleRegistrationLevel p_level);
+void unregister_entity_spell_system_types(ModuleRegistrationLevel p_level);

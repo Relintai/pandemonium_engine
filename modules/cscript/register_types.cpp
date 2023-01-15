@@ -136,7 +136,7 @@ static void _editor_init() {
 
 #endif // TOOLS_ENABLED
 
-void register_cscript_types() {
+void register_cscript_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<CScript>();
 
 	script_language_cscript = memnew(CScriptLanguage);
@@ -154,7 +154,7 @@ void register_cscript_types() {
 #endif // TOOLS_ENABLED
 }
 
-void unregister_cscript_types() {
+void unregister_cscript_types(ModuleRegistrationLevel p_level) {
 	ScriptServer::unregister_language(script_language_cscript);
 
 	if (script_language_cscript) {

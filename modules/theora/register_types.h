@@ -30,7 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_theora_types();
-void unregister_theora_types();
+#include "modules/register_module_types.h"
+
+void register_theora_types(ModuleRegistrationLevel p_level);
+void unregister_theora_types(ModuleRegistrationLevel p_level);
 
 #endif // THEORA_REGISTER_TYPES_H

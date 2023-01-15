@@ -30,7 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_regex_types();
-void unregister_regex_types();
+#include "modules/register_module_types.h"
+
+void register_regex_types(ModuleRegistrationLevel p_level);
+void unregister_regex_types(ModuleRegistrationLevel p_level);
 
 #endif // REGEX_REGISTER_TYPES_H

@@ -61,7 +61,7 @@ SOFTWARE.
 
 static GSAIUtils *gs_ai_utils = NULL;
 
-void register_steering_ai_types() {
+void register_steering_ai_types(ModuleRegistrationLevel p_level) {
 	gs_ai_utils = memnew(GSAIUtils);
 	ClassDB::register_class<GSAIUtils>();
 	Engine::get_singleton()->add_singleton(Engine::Singleton("GSAIUtils", GSAIUtils::get_singleton()));
@@ -99,7 +99,7 @@ void register_steering_ai_types() {
 	ClassDB::register_class<GSAISpecializedAgent>();
 }
 
-void unregister_steering_ai_types() {
+void unregister_steering_ai_types(ModuleRegistrationLevel p_level) {
 	if (gs_ai_utils) {
 		memdelete(gs_ai_utils);
 	}

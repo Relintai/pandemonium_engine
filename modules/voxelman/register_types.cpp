@@ -83,7 +83,7 @@ SOFTWARE.
 #include "world/jobs/voxel_prop_job.h"
 #include "world/jobs/voxel_terrain_job.h"
 
-void register_voxelman_types() {
+void register_voxelman_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<VoxelMesher>();
 	ClassDB::register_class<VoxelMesherDefault>();
 
@@ -147,5 +147,5 @@ void register_voxelman_types() {
 #endif
 }
 
-void unregister_voxelman_types() {
+void unregister_voxelman_types(ModuleRegistrationLevel p_level) {
 }

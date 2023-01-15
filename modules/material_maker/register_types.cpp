@@ -155,7 +155,7 @@ SOFTWARE.
 
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
-void register_material_maker_types() {
+void register_material_maker_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<_MMAlgos>();
 
 	ClassDB::register_class<MMNodeUniversalProperty>();
@@ -379,7 +379,7 @@ void register_material_maker_types() {
 #endif
 }
 
-void unregister_material_maker_types() {
+void unregister_material_maker_types(ModuleRegistrationLevel p_level) {
 	if (_mm_algos_singleton) {
 		memdelete(_mm_algos_singleton);
 	}

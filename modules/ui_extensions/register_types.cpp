@@ -27,11 +27,11 @@ SOFTWARE.
 #include "core/input/shortcut.h"
 #include "touch_button.h"
 
-void register_ui_extensions_types() {
+void register_ui_extensions_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<TouchButton>();
 	ClassDB::register_class<BSInputEventKey>();
 	ClassDB::register_class<InputMapEditor>();
 }
 
-void unregister_ui_extensions_types() {
+void unregister_ui_extensions_types(ModuleRegistrationLevel p_level) {
 }

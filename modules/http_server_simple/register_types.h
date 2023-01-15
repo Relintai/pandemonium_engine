@@ -22,7 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_http_server_simple_types();
-void unregister_http_server_simple_types();
+#include "modules/register_module_types.h"
+
+void register_http_server_simple_types(ModuleRegistrationLevel p_level);
+void unregister_http_server_simple_types(ModuleRegistrationLevel p_level);
 
 #endif

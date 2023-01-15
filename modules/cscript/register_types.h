@@ -30,7 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_cscript_types();
-void unregister_cscript_types();
+#include "modules/register_module_types.h"
+
+void register_cscript_types(ModuleRegistrationLevel p_level);
+void unregister_cscript_types(ModuleRegistrationLevel p_level);
 
 #endif // CSCRIPT_REGISTER_TYPES_H

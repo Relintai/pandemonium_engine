@@ -20,5 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_plugin_refresher_types();
-void unregister_plugin_refresher_types();
+#include "modules/register_module_types.h"
+
+void register_plugin_refresher_types(ModuleRegistrationLevel p_level);
+void unregister_plugin_refresher_types(ModuleRegistrationLevel p_level);

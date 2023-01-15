@@ -72,7 +72,7 @@ SOFTWARE.
 #include "world/jobs/terrain_2d_prop_job.h"
 #include "world/jobs/terrain_2d_terrain_job.h"
 
-void register_terraman_2d_types() {
+void register_terraman_2d_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<Terrain2DMesher>();
 	ClassDB::register_class<Terrain2DMesherDefault>();
 
@@ -126,5 +126,5 @@ void register_terraman_2d_types() {
 #endif
 }
 
-void unregister_terraman_2d_types() {
+void unregister_terraman_2d_types(ModuleRegistrationLevel p_level) {
 }

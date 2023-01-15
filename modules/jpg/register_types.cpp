@@ -34,11 +34,11 @@
 
 static ImageLoaderJPG *image_loader_jpg = nullptr;
 
-void register_jpg_types() {
+void register_jpg_types(ModuleRegistrationLevel p_level) {
 	image_loader_jpg = memnew(ImageLoaderJPG);
 	ImageLoader::add_image_format_loader(image_loader_jpg);
 }
 
-void unregister_jpg_types() {
+void unregister_jpg_types(ModuleRegistrationLevel p_level) {
 	memdelete(image_loader_jpg);
 }

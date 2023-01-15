@@ -30,7 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_freetype_types();
-void unregister_freetype_types();
+#include "modules/register_module_types.h"
+
+void register_freetype_types(ModuleRegistrationLevel p_level);
+void unregister_freetype_types(ModuleRegistrationLevel p_level);
 
 #endif // FREETYPE_REGISTER_TYPES_H

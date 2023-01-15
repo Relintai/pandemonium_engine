@@ -37,7 +37,7 @@
 #include "resource_importer_ogg_vorbis.h"
 #endif
 
-void register_stb_vorbis_types() {
+void register_stb_vorbis_types(ModuleRegistrationLevel p_level) {
 #ifdef TOOLS_ENABLED
 	if (Engine::get_singleton()->is_editor_hint()) {
 		Ref<ResourceImporterOGGVorbis> ogg_import;
@@ -48,5 +48,5 @@ void register_stb_vorbis_types() {
 	ClassDB::register_class<AudioStreamOGGVorbis>();
 }
 
-void unregister_stb_vorbis_types() {
+void unregister_stb_vorbis_types(ModuleRegistrationLevel p_level) {
 }

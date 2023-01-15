@@ -30,7 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_opensimplex_types();
-void unregister_opensimplex_types();
+#include "modules/register_module_types.h"
+
+void register_opensimplex_types(ModuleRegistrationLevel p_level);
+void unregister_opensimplex_types(ModuleRegistrationLevel p_level);
 
 #endif // OPENSIMPLEX_REGISTER_TYPES_H

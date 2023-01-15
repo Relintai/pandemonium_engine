@@ -25,9 +25,9 @@ SOFTWARE.
 #include "web_server_simple.h"
 
 
-void register_http_server_simple_types() {
+void register_http_server_simple_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<WebServerSimple>();
 }
 
-void unregister_http_server_simple_types() {
+void unregister_http_server_simple_types(ModuleRegistrationLevel p_level) {
 }

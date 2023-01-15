@@ -34,11 +34,11 @@
 
 static ImageLoaderBMP *image_loader_bmp = nullptr;
 
-void register_bmp_types() {
+void register_bmp_types(ModuleRegistrationLevel p_level) {
 	image_loader_bmp = memnew(ImageLoaderBMP);
 	ImageLoader::add_image_format_loader(image_loader_bmp);
 }
 
-void unregister_bmp_types() {
+void unregister_bmp_types(ModuleRegistrationLevel p_level) {
 	memdelete(image_loader_bmp);
 }

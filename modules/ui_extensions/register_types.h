@@ -20,5 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_ui_extensions_types();
-void unregister_ui_extensions_types();
+#include "modules/register_module_types.h"
+
+void register_ui_extensions_types(ModuleRegistrationLevel p_level);
+void unregister_ui_extensions_types(ModuleRegistrationLevel p_level);

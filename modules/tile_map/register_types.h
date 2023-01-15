@@ -20,5 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_tile_map_types();
-void unregister_tile_map_types();
+#include "modules/register_module_types.h"
+
+void register_tile_map_types(ModuleRegistrationLevel p_level);
+void unregister_tile_map_types(ModuleRegistrationLevel p_level);

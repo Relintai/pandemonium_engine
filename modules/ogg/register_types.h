@@ -30,7 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_ogg_types();
-void unregister_ogg_types();
+#include "modules/register_module_types.h"
+
+void register_ogg_types(ModuleRegistrationLevel p_level);
+void unregister_ogg_types(ModuleRegistrationLevel p_level);
 
 #endif // OGG_REGISTER_TYPES_H

@@ -40,7 +40,7 @@
 #endif
 #endif
 
-void register_gridmap_types() {
+void register_gridmap_types(ModuleRegistrationLevel p_level) {
 #ifndef _3D_DISABLED
 	ClassDB::register_class<GridMap>();
 	ClassDB::register_class<MeshLibrary>();
@@ -51,5 +51,5 @@ void register_gridmap_types() {
 #endif
 }
 
-void unregister_gridmap_types() {
+void unregister_gridmap_types(ModuleRegistrationLevel p_level) {
 }

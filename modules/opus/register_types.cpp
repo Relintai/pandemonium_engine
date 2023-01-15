@@ -32,6 +32,6 @@
 
 // Dummy module as libvorbis is needed by other modules (theora ...)
 
-void register_opus_types() {}
+void register_opus_types(ModuleRegistrationLevel p_level) {}
 
-void unregister_opus_types() {}
+void unregister_opus_types(ModuleRegistrationLevel p_level) {}

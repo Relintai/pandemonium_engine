@@ -34,7 +34,7 @@
 
 static bool enet_ok = false;
 
-void register_enet_types() {
+void register_enet_types(ModuleRegistrationLevel p_level) {
 	if (enet_initialize() != 0) {
 		ERR_PRINT("ENet initialization failure");
 	} else {
@@ -44,7 +44,7 @@ void register_enet_types() {
 	ClassDB::register_class<NetworkedMultiplayerENet>();
 }
 
-void unregister_enet_types() {
+void unregister_enet_types(ModuleRegistrationLevel p_level) {
 	if (enet_ok) {
 		enet_deinitialize();
 	}

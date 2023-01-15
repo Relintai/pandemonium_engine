@@ -32,10 +32,10 @@
 #include "core/object/class_db.h"
 #include "regex.h"
 
-void register_regex_types() {
+void register_regex_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<RegExMatch>();
 	ClassDB::register_class<RegEx>();
 }
 
-void unregister_regex_types() {
+void unregister_regex_types(ModuleRegistrationLevel p_level) {
 }

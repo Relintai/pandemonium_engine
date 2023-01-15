@@ -71,7 +71,7 @@ SOFTWARE.
 static PropUtils *prop_utils = NULL;
 static PropCache *prop_texture_cache = NULL;
 
-void register_props_types() {
+void register_props_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<TiledWall>();
 	ClassDB::register_class<TiledWallData>();
 
@@ -138,7 +138,7 @@ void register_props_types() {
 #endif
 }
 
-void unregister_props_types() {
+void unregister_props_types(ModuleRegistrationLevel p_level) {
 	if (prop_utils) {
 		memdelete(prop_utils);
 	}

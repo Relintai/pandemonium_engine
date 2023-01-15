@@ -42,7 +42,7 @@
 #include "core/config/project_settings.h"
 
 
-void register_network_synchronizer_types() {
+void register_network_synchronizer_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<DataBuffer>();
 	ClassDB::register_class<SceneDiff>();
 	ClassDB::register_class<Interpolator>();
@@ -53,5 +53,5 @@ void register_network_synchronizer_types() {
 	GLOBAL_DEF("NetworkSynchronizer/debug_doll_speedup", false);
 }
 
-void unregister_network_synchronizer_types() {
+void unregister_network_synchronizer_types(ModuleRegistrationLevel p_level) {
 }

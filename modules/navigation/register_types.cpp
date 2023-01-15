@@ -50,7 +50,7 @@ NavigationServer *new_server() {
 	return memnew(PandemoniumNavigationServer);
 }
 
-void register_navigation_types() {
+void register_navigation_types(ModuleRegistrationLevel p_level) {
 	NavigationServerManager::set_default_server(new_server);
 
 #ifndef _3D_DISABLED
@@ -64,7 +64,7 @@ void register_navigation_types() {
 #endif
 }
 
-void unregister_navigation_types() {
+void unregister_navigation_types(ModuleRegistrationLevel p_level) {
 #ifndef _3D_DISABLED
 	if (_nav_mesh_generator) {
 		memdelete(_nav_mesh_generator);

@@ -34,14 +34,14 @@
 
 static Ref<ResourceFormatLoaderTheora> resource_loader_theora;
 
-void register_theora_types() {
+void register_theora_types(ModuleRegistrationLevel p_level) {
 	resource_loader_theora.instance();
 	ResourceLoader::add_resource_format_loader(resource_loader_theora, true);
 
 	ClassDB::register_class<VideoStreamTheora>();
 }
 
-void unregister_theora_types() {
+void unregister_theora_types(ModuleRegistrationLevel p_level) {
 	ResourceLoader::remove_resource_format_loader(resource_loader_theora);
 	resource_loader_theora.unref();
 }

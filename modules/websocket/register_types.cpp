@@ -41,7 +41,7 @@
 #include "wsl_server.h"
 #endif
 
-void register_websocket_types() {
+void register_websocket_types(ModuleRegistrationLevel p_level) {
 #define _SET_HINT(NAME, _VAL_, _MAX_) \
 	GLOBAL_DEF(NAME, _VAL_);          \
 	ProjectSettings::get_singleton()->set_custom_property_info(NAME, PropertyInfo(Variant::INT, NAME, PROPERTY_HINT_RANGE, "2," #_MAX_ ",1,or_greater"));
@@ -74,4 +74,4 @@ void register_websocket_types() {
 	ClassDB::register_custom_instance_class<WebSocketPeer>();
 }
 
-void unregister_websocket_types() {}
+void unregister_websocket_types(ModuleRegistrationLevel p_level) {}

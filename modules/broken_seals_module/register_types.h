@@ -26,7 +26,9 @@ SOFTWARE.
 
 */
 
-void register_broken_seals_module_types();
-void unregister_broken_seals_module_types();
+#include "modules/register_module_types.h"
+
+void register_broken_seals_module_types(ModuleRegistrationLevel p_level);
+void unregister_broken_seals_module_types(ModuleRegistrationLevel p_level);
 
 #endif

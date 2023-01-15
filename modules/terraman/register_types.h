@@ -22,7 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_terraman_types();
-void unregister_terraman_types();
+#include "modules/register_module_types.h"
+
+void register_terraman_types(ModuleRegistrationLevel p_level);
+void unregister_terraman_types(ModuleRegistrationLevel p_level);
 
 #endif

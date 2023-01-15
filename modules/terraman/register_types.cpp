@@ -70,7 +70,7 @@ SOFTWARE.
 #include "world/jobs/terrain_prop_job.h"
 #include "world/jobs/terrain_terrain_job.h"
 
-void register_terraman_types() {
+void register_terraman_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<TerrainMesher>();
 	ClassDB::register_class<TerrainMesherDefault>();
 
@@ -121,5 +121,5 @@ void register_terraman_types() {
 #endif
 }
 
-void unregister_terraman_types() {
+void unregister_terraman_types(ModuleRegistrationLevel p_level) {
 }

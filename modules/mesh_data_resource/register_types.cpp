@@ -52,7 +52,7 @@ SOFTWARE.
 #include "props_2d/prop_2d_data_mesh_data.h"
 #endif
 
-void register_mesh_data_resource_types() {
+void register_mesh_data_resource_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<MeshDataResource>();
 	ClassDB::register_class<MeshDataResourceCollection>();
 
@@ -84,5 +84,5 @@ void register_mesh_data_resource_types() {
 #endif
 }
 
-void unregister_mesh_data_resource_types() {
+void unregister_mesh_data_resource_types(ModuleRegistrationLevel p_level) {
 }

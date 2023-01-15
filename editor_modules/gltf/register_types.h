@@ -32,8 +32,10 @@
 
 #ifndef _3D_DISABLED
 
-void register_gltf_types();
-void unregister_gltf_types();
+#include "modules/register_module_types.h"
+
+void register_gltf_types(ModuleRegistrationLevel p_level);
+void unregister_gltf_types(ModuleRegistrationLevel p_level);
 
 #endif // _3D_DISABLED
 

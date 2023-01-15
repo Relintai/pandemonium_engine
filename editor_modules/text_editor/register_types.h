@@ -20,5 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_text_editor_types();
-void unregister_text_editor_types();
+#include "modules/register_module_types.h"
+
+void register_text_editor_types(ModuleRegistrationLevel p_level);
+void unregister_text_editor_types(ModuleRegistrationLevel p_level);

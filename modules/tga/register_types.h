@@ -30,7 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_tga_types();
-void unregister_tga_types();
+#include "modules/register_module_types.h"
+
+void register_tga_types(ModuleRegistrationLevel p_level);
+void unregister_tga_types(ModuleRegistrationLevel p_level);
 
 #endif // TGA_REGISTER_TYPES_H

@@ -24,9 +24,9 @@ SOFTWARE.
 
 #include "sqlite3_database.h"
 
-void register_database_sqlite_types() {
+void register_database_sqlite_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<SQLite3Database>();
 }
 
-void unregister_database_sqlite_types() {
+void unregister_database_sqlite_types(ModuleRegistrationLevel p_level) {
 }

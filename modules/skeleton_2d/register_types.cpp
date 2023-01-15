@@ -18,7 +18,7 @@
 #include "editor/skeleton_2d_editor_plugin.h"
 #endif
 
-void register_skeleton_2d_types() {
+void register_skeleton_2d_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<Skeleton2D>();
 	ClassDB::register_class<Bone2D>();
 	ClassDB::register_class<PhysicalBone2D>();
@@ -40,5 +40,5 @@ void register_skeleton_2d_types() {
 #endif
 }
 
-void unregister_skeleton_2d_types() {
+void unregister_skeleton_2d_types(ModuleRegistrationLevel p_level) {
 }

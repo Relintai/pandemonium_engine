@@ -54,7 +54,7 @@ SOFTWARE.
 
 UserDB *_user_db = nullptr;
 
-void register_users_types() {
+void register_users_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<User>();
 	ClassDB::register_class<UserModule>();
 
@@ -85,7 +85,7 @@ void register_users_types() {
 #endif
 }
 
-void unregister_users_types() {
+void unregister_users_types(ModuleRegistrationLevel p_level) {
 	if (_user_db) {
 		memdelete(_user_db);
 	}

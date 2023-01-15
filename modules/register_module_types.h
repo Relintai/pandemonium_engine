@@ -30,7 +30,17 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_module_types();
-void unregister_module_types();
+enum ModuleRegistrationLevel {
+	MODULE_REGISTRATION_LEVEL_CORE = 0,
+    MODULE_REGISTRATION_LEVEL_DRIVER,
+	MODULE_REGISTRATION_LEVEL_PLATFORM,
+	MODULE_REGISTRATION_LEVEL_SERVER,
+	MODULE_REGISTRATION_LEVEL_SCENE,
+	MODULE_REGISTRATION_LEVEL_EDITOR,
+    MODULE_REGISTRATION_LEVEL_TEST,
+};
+
+void register_module_types(ModuleRegistrationLevel p_level);
+void unregister_module_types(ModuleRegistrationLevel p_level);
 
 #endif // REGISTER_MODULE_TYPES_H

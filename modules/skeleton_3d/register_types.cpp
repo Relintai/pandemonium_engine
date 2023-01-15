@@ -24,7 +24,7 @@
 #include "editor/physical_bone_plugin.h"
 #endif
 
-void register_skeleton_3d_types() {
+void register_skeleton_3d_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<Skeleton>();
 	ClassDB::register_class<Skin>();
 	ClassDB::register_class<SkinReference>();
@@ -51,5 +51,5 @@ void register_skeleton_3d_types() {
 #endif
 }
 
-void unregister_skeleton_3d_types() {
+void unregister_skeleton_3d_types(ModuleRegistrationLevel p_level) {
 }

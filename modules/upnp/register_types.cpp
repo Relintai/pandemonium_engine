@@ -35,10 +35,10 @@
 #include "upnp.h"
 #include "upnp_device.h"
 
-void register_upnp_types() {
+void register_upnp_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<UPNP>();
 	ClassDB::register_class<UPNPDevice>();
 }
 
-void unregister_upnp_types() {
+void unregister_upnp_types(ModuleRegistrationLevel p_level) {
 }

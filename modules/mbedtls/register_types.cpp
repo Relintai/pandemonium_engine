@@ -35,14 +35,14 @@
 #include "packet_peer_mbed_dtls.h"
 #include "stream_peer_mbedtls.h"
 
-void register_mbedtls_types() {
+void register_mbedtls_types(ModuleRegistrationLevel p_level) {
 	CryptoMbedTLS::initialize_crypto();
 	StreamPeerMbedTLS::initialize_ssl();
 	PacketPeerMbedDTLS::initialize_dtls();
 	DTLSServerMbedTLS::initialize();
 }
 
-void unregister_mbedtls_types() {
+void unregister_mbedtls_types(ModuleRegistrationLevel p_level) {
 	DTLSServerMbedTLS::finalize();
 	PacketPeerMbedDTLS::finalize_dtls();
 	StreamPeerMbedTLS::finalize_ssl();

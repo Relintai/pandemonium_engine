@@ -1520,7 +1520,7 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	MAIN_PRINT("Main: Load Modules, Physics, Drivers, Scripts");
 
 	register_platform_apis();
-	register_module_types();
+	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_CORE);
 
 	// Theme needs modules to be initialized so that sub-resources can be loaded.
 	initialize_theme();
@@ -2440,7 +2440,7 @@ void Main::cleanup(bool p_force) {
 	ImageLoader::cleanup();
 
 	unregister_driver_types();
-	unregister_module_types();
+	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_CORE);
 	unregister_platform_apis();
 	unregister_scene_types();
 	unregister_server_types();

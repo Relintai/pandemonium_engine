@@ -35,7 +35,7 @@ SOFTWARE.
 
 DatabaseManager *_database_manager = nullptr;
 
-void register_database_types() {
+void register_database_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<Database>();
 	ClassDB::register_class<DatabaseConnection>();
 	ClassDB::register_class<DatabaseManager>();
@@ -49,7 +49,7 @@ void register_database_types() {
 	Engine::get_singleton()->add_singleton(Engine::Singleton("DatabaseManager", DatabaseManager::get_singleton()));
 }
 
-void unregister_database_types() {
+void unregister_database_types(ModuleRegistrationLevel p_level) {
 	if (_database_manager) {
 		memdelete(_database_manager);
 	}

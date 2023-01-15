@@ -20,5 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_mesh_data_resource_types();
-void unregister_mesh_data_resource_types();
+#include "modules/register_module_types.h"
+
+void register_mesh_data_resource_types(ModuleRegistrationLevel p_level);
+void unregister_mesh_data_resource_types(ModuleRegistrationLevel p_level);

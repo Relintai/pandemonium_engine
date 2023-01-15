@@ -72,7 +72,7 @@ SOFTWARE.
 #include "database/http_session_manager_db.h"
 #endif
 
-void register_web_types() {
+void register_web_types(ModuleRegistrationLevel p_level) {
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
 
@@ -146,5 +146,5 @@ void register_web_types() {
 #endif
 }
 
-void unregister_web_types() {
+void unregister_web_types(ModuleRegistrationLevel p_level) {
 }

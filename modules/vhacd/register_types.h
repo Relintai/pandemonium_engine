@@ -30,7 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_vhacd_types();
-void unregister_vhacd_types();
+#include "modules/register_module_types.h"
+
+void register_vhacd_types(ModuleRegistrationLevel p_level);
+void unregister_vhacd_types(ModuleRegistrationLevel p_level);
 
 #endif // VHACD_REGISTER_TYPES_H
