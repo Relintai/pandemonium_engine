@@ -36,13 +36,17 @@
 static Ref<ResourceFormatPVR> resource_loader_pvr;
 
 void register_pvr_types(ModuleRegistrationLevel p_level) {
-	resource_loader_pvr.instance();
-	ResourceLoader::add_resource_format_loader(resource_loader_pvr);
+	if (p_level == MODULE_REGISTRATION_LEVEL_CORE) {
+		resource_loader_pvr.instance();
+		ResourceLoader::add_resource_format_loader(resource_loader_pvr);
 
-	_register_pvrtc_compress_func();
+		_register_pvrtc_compress_func();
+	}
 }
 
 void unregister_pvr_types(ModuleRegistrationLevel p_level) {
-	ResourceLoader::remove_resource_format_loader(resource_loader_pvr);
-	resource_loader_pvr.unref();
+	if (p_level == MODULE_REGISTRATION_LEVEL_CORE) {
+		ResourceLoader::remove_resource_format_loader(resource_loader_pvr);
+		resource_loader_pvr.unref();
+	}
 }

@@ -36,15 +36,19 @@ SOFTWARE.
 #endif
 
 void register_texture_packer_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<TexturePacker>();
-	ClassDB::register_class<TextureMerger>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<TexturePacker>();
+		ClassDB::register_class<TextureMerger>();
 
-	ClassDB::register_class<PackerImageResource>();
+		ClassDB::register_class<PackerImageResource>();
 
-	ClassDB::register_class<TextureLayerMerger>();
+		ClassDB::register_class<TextureLayerMerger>();
+	}
 
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<EditorPluginPackerImageResource>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<EditorPluginPackerImageResource>();
+	}
 #endif
 }
 

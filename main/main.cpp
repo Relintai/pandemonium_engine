@@ -1520,7 +1520,17 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	MAIN_PRINT("Main: Load Modules, Physics, Drivers, Scripts");
 
 	register_platform_apis();
+	
+	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_START);
+	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SINGLETON);
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_CORE);
+	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_DRIVER);
+	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_PLATFORM);
+	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SERVER);
+	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SCENE);
+	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_EDITOR);
+	//register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_TEST);
+	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_FINALIZE);
 
 	// Theme needs modules to be initialized so that sub-resources can be loaded.
 	initialize_theme();
@@ -2440,7 +2450,18 @@ void Main::cleanup(bool p_force) {
 	ImageLoader::cleanup();
 
 	unregister_driver_types();
+
+	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_START);
+	//unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_TEST);
+	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_EDITOR);
+	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SCENE);
+	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SERVER);
+	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_PLATFORM);
+	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_DRIVER);
 	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_CORE);
+	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SINGLETON);
+	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_FINALIZE);
+
 	unregister_platform_apis();
 	unregister_scene_types();
 	unregister_server_types();

@@ -55,38 +55,43 @@ SOFTWARE.
 UserDB *_user_db = nullptr;
 
 void register_users_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<User>();
-	ClassDB::register_class<UserModule>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
+		_user_db = memnew(UserDB);
+		ClassDB::register_class<UserDB>();
+		Engine::get_singleton()->add_singleton(Engine::Singleton("UserDB", UserDB::get_singleton()));
+	}
 
-	ClassDB::register_class<UserManager>();
-	ClassDB::register_class<UserManagerStatic>();
-	ClassDB::register_class<UserManagerFile>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<User>();
+		ClassDB::register_class<UserModule>();
 
-	ClassDB::register_class<UserDB>();
-
-	_user_db = memnew(UserDB);
-	Engine::get_singleton()->add_singleton(Engine::Singleton("UserDB", UserDB::get_singleton()));
+		ClassDB::register_class<UserManager>();
+		ClassDB::register_class<UserManagerStatic>();
+		ClassDB::register_class<UserManagerFile>();
 
 #ifdef MODULE_WEB_ENABLED
-	ClassDB::register_class<UserSessionSetupWebServerMiddleware>();
+		ClassDB::register_class<UserSessionSetupWebServerMiddleware>();
 
-	ClassDB::register_class<UserWebPage>();
-	ClassDB::register_class<UserDeleteWebPage>();
-	ClassDB::register_class<UserLoginWebPage>();
-	ClassDB::register_class<UserLogoutWebPage>();
-	ClassDB::register_class<UserPasswordResetWebPage>();
-	ClassDB::register_class<UserRegisterWebPage>();
-	ClassDB::register_class<UserSettingsWebPage>();
-	ClassDB::register_class<UserStatsWebPage>();
+		ClassDB::register_class<UserWebPage>();
+		ClassDB::register_class<UserDeleteWebPage>();
+		ClassDB::register_class<UserLoginWebPage>();
+		ClassDB::register_class<UserLogoutWebPage>();
+		ClassDB::register_class<UserPasswordResetWebPage>();
+		ClassDB::register_class<UserRegisterWebPage>();
+		ClassDB::register_class<UserSettingsWebPage>();
+		ClassDB::register_class<UserStatsWebPage>();
 #endif
 
 #ifdef MODULE_DATABASE_ENABLED
-	ClassDB::register_class<UserManagerDB>();
+		ClassDB::register_class<UserManagerDB>();
 #endif
+	}
 }
 
 void unregister_users_types(ModuleRegistrationLevel p_level) {
-	if (_user_db) {
-		memdelete(_user_db);
+	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
+		if (_user_db) {
+			memdelete(_user_db);
+		}
 	}
 }

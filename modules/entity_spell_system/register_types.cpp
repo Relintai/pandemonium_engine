@@ -146,154 +146,162 @@ static ESS *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;
 
 void register_entity_spell_system_types(ModuleRegistrationLevel p_level) {
+	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
+		entity_data_manager = memnew(ESS);
+		ClassDB::register_class<ESS>();
+		Engine::get_singleton()->add_singleton(Engine::Singleton("ESS", ESS::get_singleton()));
+
+		profile_manager = memnew(ProfileManager);
+		ClassDB::register_class<ProfileManager>();
+		Engine::get_singleton()->add_singleton(Engine::Singleton("ProfileManager", ProfileManager::get_singleton()));
+	}
+
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::register_class<PropDataEntity>();
+		ClassDB::register_class<PropDataEntity>();
 #endif
 
-	ClassDB::register_class<SpellEnums>();
+		ClassDB::register_class<SpellEnums>();
 
-	//data
-	ClassDB::register_class<CraftRecipeHelper>();
-	ClassDB::register_class<CraftRecipe>();
+		//data
+		ClassDB::register_class<CraftRecipeHelper>();
+		ClassDB::register_class<CraftRecipe>();
 
-	ClassDB::register_class<Spell>();
-	ClassDB::register_class<AuraGroup>();
+		ClassDB::register_class<Spell>();
+		ClassDB::register_class<AuraGroup>();
 
-	ClassDB::register_class<EntityData>();
-	ClassDB::register_class<EntityClassData>();
-	ClassDB::register_class<VendorItemData>();
-	ClassDB::register_class<VendorItemDataEntry>();
+		ClassDB::register_class<EntityData>();
+		ClassDB::register_class<EntityClassData>();
+		ClassDB::register_class<VendorItemData>();
+		ClassDB::register_class<VendorItemDataEntry>();
 
-	ClassDB::register_class<EntityDataContainer>();
+		ClassDB::register_class<EntityDataContainer>();
 
-	ClassDB::register_class<ItemContainerData>();
-	ClassDB::register_class<ItemContainerDataEntry>();
+		ClassDB::register_class<ItemContainerData>();
+		ClassDB::register_class<ItemContainerDataEntry>();
 
-	ClassDB::register_class<ItemEnums>();
-	ClassDB::register_class<ItemTemplate>();
-	ClassDB::register_class<ItemInstance>();
-	ClassDB::register_class<SpellCooldownManipulationData>();
+		ClassDB::register_class<ItemEnums>();
+		ClassDB::register_class<ItemTemplate>();
+		ClassDB::register_class<ItemInstance>();
+		ClassDB::register_class<SpellCooldownManipulationData>();
 
-	ClassDB::register_class<EquipmentData>();
+		ClassDB::register_class<EquipmentData>();
 
-	ClassDB::register_class<EntitySkill>();
-	ClassDB::register_class<EntitySkillData>();
+		ClassDB::register_class<EntitySkill>();
+		ClassDB::register_class<EntitySkillData>();
 
-	ClassDB::register_class<ModelVisual>();
-	ClassDB::register_class<ModelVisualEntry>();
+		ClassDB::register_class<ModelVisual>();
+		ClassDB::register_class<ModelVisualEntry>();
 
-	ClassDB::register_class<CharacterAtlas>();
-	ClassDB::register_class<CharacterAtlasEntry>();
+		ClassDB::register_class<CharacterAtlas>();
+		ClassDB::register_class<CharacterAtlasEntry>();
 
-	ClassDB::register_class<CharacterBones>();
+		ClassDB::register_class<CharacterBones>();
 
-	//entity data
-	ClassDB::register_class<EntityEnums>();
+		//entity data
+		ClassDB::register_class<EntityEnums>();
 
-	ClassDB::register_class<StatData>();
+		ClassDB::register_class<StatData>();
 
-	ClassDB::register_class<LevelStatData>();
-	ClassDB::register_class<SimpleLevelStatData>();
-	ClassDB::register_class<ComplexLevelStatData>();
+		ClassDB::register_class<LevelStatData>();
+		ClassDB::register_class<SimpleLevelStatData>();
+		ClassDB::register_class<ComplexLevelStatData>();
 
-	ClassDB::register_class<CharacterSpec>();
+		ClassDB::register_class<CharacterSpec>();
 
-	ClassDB::register_class<Bag>();
+		ClassDB::register_class<Bag>();
 
-	ClassDB::register_class<SpellDamageInfo>();
-	ClassDB::register_class<SpellHealInfo>();
-	ClassDB::register_class<AuraData>();
+		ClassDB::register_class<SpellDamageInfo>();
+		ClassDB::register_class<SpellHealInfo>();
+		ClassDB::register_class<AuraData>();
 
-	ClassDB::register_class<EntityResourceCostData>();
-	ClassDB::register_class<EntityResourceCostDataHealth>();
-	ClassDB::register_class<EntityResourceCostDataResource>();
-	ClassDB::register_class<EntityResource>();
-	ClassDB::register_class<EntityResourceHealth>();
-	ClassDB::register_class<EntityResourceSpeed>();
+		ClassDB::register_class<EntityResourceCostData>();
+		ClassDB::register_class<EntityResourceCostDataHealth>();
+		ClassDB::register_class<EntityResourceCostDataResource>();
+		ClassDB::register_class<EntityResource>();
+		ClassDB::register_class<EntityResourceHealth>();
+		ClassDB::register_class<EntityResourceSpeed>();
 
-	//entities
-	ClassDB::register_class<EntityCreateInfo>();
-	ClassDB::register_class<Entity>();
+		//entities
+		ClassDB::register_class<EntityCreateInfo>();
+		ClassDB::register_class<Entity>();
 
-	//spellinfos
-	ClassDB::register_class<SpellCastInfo>();
+		//spellinfos
+		ClassDB::register_class<SpellCastInfo>();
 
-	//aurainfos
-	ClassDB::register_class<AuraApplyInfo>();
+		//aurainfos
+		ClassDB::register_class<AuraApplyInfo>();
 
-	//UI
-	ClassDB::register_class<ESDragAndDrop>();
+		//UI
+		ClassDB::register_class<ESDragAndDrop>();
 
-	//Skeleton
-	ClassDB::register_class<CharacterSkeleton2D>();
-	ClassDB::register_class<CharacterSkeleton3D>();
+		//Skeleton
+		ClassDB::register_class<CharacterSkeleton2D>();
+		ClassDB::register_class<CharacterSkeleton3D>();
 
-	ClassDB::register_class<EntitySpeciesData>();
-	ClassDB::register_class<SpeciesModelData>();
-	ClassDB::register_class<SpeciesInstance>();
+		ClassDB::register_class<EntitySpeciesData>();
+		ClassDB::register_class<SpeciesModelData>();
+		ClassDB::register_class<SpeciesInstance>();
 
-	ClassDB::register_class<SkeletonModelEntry>();
+		ClassDB::register_class<SkeletonModelEntry>();
 
-	ClassDB::register_class<LootDataBase>();
+		ClassDB::register_class<LootDataBase>();
 
-	ClassDB::register_class<SpellEffectVisual>();
-	ClassDB::register_class<SpellEffectVisualSimple>();
+		ClassDB::register_class<SpellEffectVisual>();
+		ClassDB::register_class<SpellEffectVisualSimple>();
 
-	//Projectiles
-	ClassDB::register_class<SpellFollowProjectile3D>();
+		//Projectiles
+		ClassDB::register_class<SpellFollowProjectile3D>();
 
-	//AI
-	ClassDB::register_class<EntityAI>();
+		//AI
+		ClassDB::register_class<EntityAI>();
 
-	ClassDB::register_class<AIFormation>();
+		ClassDB::register_class<AIFormation>();
 
-	//Resources
-	ClassDB::register_virtual_class<ESSResourceDB>();
-	ClassDB::register_class<ESSResourceDBStatic>();
-	ClassDB::register_class<ESSResourceDBFolders>();
-	ClassDB::register_class<ESSResourceDBMap>();
+		//Resources
+		ClassDB::register_virtual_class<ESSResourceDB>();
+		ClassDB::register_class<ESSResourceDBStatic>();
+		ClassDB::register_class<ESSResourceDBFolders>();
+		ClassDB::register_class<ESSResourceDBMap>();
 
-	//ProfileManager
-	ClassDB::register_class<InputProfileModifier>();
-	ClassDB::register_class<InputProfileModifierEntry>();
-	ClassDB::register_class<InputProfile>();
+		//ProfileManager
+		ClassDB::register_class<InputProfileModifier>();
+		ClassDB::register_class<InputProfileModifierEntry>();
+		ClassDB::register_class<InputProfile>();
 
-	ClassDB::register_class<ActionBarButtonEntry>();
-	ClassDB::register_class<ActionBarEntry>();
-	ClassDB::register_class<ActionBarProfile>();
+		ClassDB::register_class<ActionBarButtonEntry>();
+		ClassDB::register_class<ActionBarEntry>();
+		ClassDB::register_class<ActionBarProfile>();
 
-	ClassDB::register_class<ClassProfile>();
-	ClassDB::register_class<PlayerProfile>();
+		ClassDB::register_class<ClassProfile>();
+		ClassDB::register_class<PlayerProfile>();
 
-	ClassDB::register_class<ProfileManager>();
+		ClassDB::register_class<ProfileManager>();
 
-	ClassDB::register_class<ESSEntitySpawner>();
+		ClassDB::register_class<ESSEntitySpawner>();
 
-	ClassDB::register_class<ESSMaterialCache>();
+		ClassDB::register_class<ESSMaterialCache>();
 
 #ifdef MODULE_TEXTURE_PACKER_ENABLED
-	ClassDB::register_class<ESSMaterialCachePCM>();
+		ClassDB::register_class<ESSMaterialCachePCM>();
 #endif
-
-	entity_data_manager = memnew(ESS);
-	ClassDB::register_class<ESS>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("ESS", ESS::get_singleton()));
-
-	profile_manager = memnew(ProfileManager);
-	ClassDB::register_class<ProfileManager>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("ProfileManager", ProfileManager::get_singleton()));
+	}
 
 #ifdef TOOLS_ENABLED
+	//if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
 	//EditorPlugins::add_by_type<ESSEditorPlugin>();
+	//}
 #endif
 }
 
 void unregister_entity_spell_system_types(ModuleRegistrationLevel p_level) {
-	if (entity_data_manager) {
-		memdelete(entity_data_manager);
-	}
+	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
+		if (entity_data_manager) {
+			memdelete(entity_data_manager);
+		}
 
-	if (profile_manager) {
-		memdelete(profile_manager);
+		if (profile_manager) {
+			memdelete(profile_manager);
+		}
 	}
 }

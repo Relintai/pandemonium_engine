@@ -38,14 +38,19 @@
 #endif
 
 void register_stb_vorbis_types(ModuleRegistrationLevel p_level) {
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<AudioStreamOGGVorbis>();
+	}
+
 #ifdef TOOLS_ENABLED
-	if (Engine::get_singleton()->is_editor_hint()) {
-		Ref<ResourceImporterOGGVorbis> ogg_import;
-		ogg_import.instance();
-		ResourceFormatImporter::get_singleton()->add_importer(ogg_import);
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		if (Engine::get_singleton()->is_editor_hint()) {
+			Ref<ResourceImporterOGGVorbis> ogg_import;
+			ogg_import.instance();
+			ResourceFormatImporter::get_singleton()->add_importer(ogg_import);
+		}
 	}
 #endif
-	ClassDB::register_class<AudioStreamOGGVorbis>();
 }
 
 void unregister_stb_vorbis_types(ModuleRegistrationLevel p_level) {

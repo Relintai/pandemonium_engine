@@ -53,34 +53,38 @@ SOFTWARE.
 #endif
 
 void register_paint_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<PaintAction>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<PaintAction>();
 
-	ClassDB::register_class<BrightenAction>();
-	ClassDB::register_class<BrushAction>();
-	ClassDB::register_class<BucketAction>();
-	ClassDB::register_class<CutAction>();
-	ClassDB::register_class<DarkenAction>();
-	ClassDB::register_class<LineAction>();
-	ClassDB::register_class<MultiLineAction>();
-	ClassDB::register_class<PasteCutAction>();
-	ClassDB::register_class<PencilAction>();
-	ClassDB::register_class<RainbowAction>();
-	ClassDB::register_class<RectAction>();
+		ClassDB::register_class<BrightenAction>();
+		ClassDB::register_class<BrushAction>();
+		ClassDB::register_class<BucketAction>();
+		ClassDB::register_class<CutAction>();
+		ClassDB::register_class<DarkenAction>();
+		ClassDB::register_class<LineAction>();
+		ClassDB::register_class<MultiLineAction>();
+		ClassDB::register_class<PasteCutAction>();
+		ClassDB::register_class<PencilAction>();
+		ClassDB::register_class<RainbowAction>();
+		ClassDB::register_class<RectAction>();
 
-	ClassDB::register_class<PaintCanvasBackground>();
-	ClassDB::register_class<PaintVisualGrid>();
+		ClassDB::register_class<PaintCanvasBackground>();
+		ClassDB::register_class<PaintVisualGrid>();
 
-	ClassDB::register_class<PaintCustomPropertyInspector>();
-	ClassDB::register_class<PaintToolsPropertyInspector>();
-	ClassDB::register_class<PaintProjectPropertyInspector>();
-	ClassDB::register_class<PaintProjectToolsPropertyInspector>();
+		ClassDB::register_class<PaintCustomPropertyInspector>();
+		ClassDB::register_class<PaintToolsPropertyInspector>();
+		ClassDB::register_class<PaintProjectPropertyInspector>();
+		ClassDB::register_class<PaintProjectToolsPropertyInspector>();
 
-	ClassDB::register_class<PaintNode>();
-	ClassDB::register_class<PaintCanvas>();
-	ClassDB::register_class<PaintProject>();
+		ClassDB::register_class<PaintNode>();
+		ClassDB::register_class<PaintCanvas>();
+		ClassDB::register_class<PaintProject>();
+	}
 
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<PaintEditorPlugin>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<PaintEditorPlugin>();
+	}
 #endif
 }
 

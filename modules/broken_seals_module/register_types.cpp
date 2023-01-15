@@ -27,7 +27,9 @@ SOFTWARE.
 #include "biome_terrain_generator.h"
 
 void register_broken_seals_module_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<BiomeTerrainGenerator>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<BiomeTerrainGenerator>();
+	}
 }
 
 void unregister_broken_seals_module_types(ModuleRegistrationLevel p_level) {

@@ -72,81 +72,89 @@ static Prop2DUtils *prop_utils = NULL;
 static Prop2DCache *prop_texture_cache = NULL;
 
 void register_props_2d_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<TiledWall2D>();
-	ClassDB::register_class<TiledWall2DData>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
+		prop_utils = memnew(Prop2DUtils);
+		ClassDB::register_class<Prop2DUtils>();
+		Engine::get_singleton()->add_singleton(Engine::Singleton("Prop2DUtils", Prop2DUtils::get_singleton()));
 
-	ClassDB::register_class<Prop2DLight>();
+		prop_texture_cache = memnew(Prop2DCache);
+		ClassDB::register_class<Prop2DCache>();
+		Engine::get_singleton()->add_singleton(Engine::Singleton("Prop2DCache", Prop2DCache::get_singleton()));
+	}
 
-	ClassDB::register_class<Prop2DData>();
-	ClassDB::register_class<Prop2DDataEntry>();
-	ClassDB::register_class<Prop2DDataScene>();
-	ClassDB::register_class<Prop2DDataLight>();
-	ClassDB::register_class<Prop2DDataProp2D>();
-	ClassDB::register_class<Prop2DDataTiledWall2D>();
-	ClassDB::register_class<Prop2DDataSprite>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<TiledWall2D>();
+		ClassDB::register_class<TiledWall2DData>();
 
-	ClassDB::register_class<Prop2DDataPortal>();
+		ClassDB::register_class<Prop2DLight>();
 
-	ClassDB::register_class<GroundClutter2D>();
-	ClassDB::register_class<GroundClutter2DFoliage>();
+		ClassDB::register_class<Prop2DData>();
+		ClassDB::register_class<Prop2DDataEntry>();
+		ClassDB::register_class<Prop2DDataScene>();
+		ClassDB::register_class<Prop2DDataLight>();
+		ClassDB::register_class<Prop2DDataProp2D>();
+		ClassDB::register_class<Prop2DDataTiledWall2D>();
+		ClassDB::register_class<Prop2DDataSprite>();
 
-	ClassDB::register_class<Prop2DMesher>();
+		ClassDB::register_class<Prop2DDataPortal>();
 
-	ClassDB::register_class<Prop2DInstance>();
-	ClassDB::register_class<Prop2DInstanceMerger>();
+		ClassDB::register_class<GroundClutter2D>();
+		ClassDB::register_class<GroundClutter2DFoliage>();
 
-	ClassDB::register_class<Prop2DESSEntity>();
+		ClassDB::register_class<Prop2DMesher>();
 
-	ClassDB::register_class<Prop2DInstanceJob>();
-	ClassDB::register_class<Prop2DInstanceProp2DJob>();
+		ClassDB::register_class<Prop2DInstance>();
+		ClassDB::register_class<Prop2DInstanceMerger>();
 
-	ClassDB::register_class<Prop2DTextureJob>();
+		ClassDB::register_class<Prop2DESSEntity>();
 
-	ClassDB::register_class<Prop2DSceneInstance>();
+		ClassDB::register_class<Prop2DInstanceJob>();
+		ClassDB::register_class<Prop2DInstanceProp2DJob>();
 
-	ClassDB::register_class<Prop2DMaterialCache>();
+		ClassDB::register_class<Prop2DTextureJob>();
+
+		ClassDB::register_class<Prop2DSceneInstance>();
+
+		ClassDB::register_class<Prop2DMaterialCache>();
 
 #ifdef MODULE_TEXTURE_PACKER_ENABLED
-	ClassDB::register_class<Prop2DMaterialCachePCM>();
+		ClassDB::register_class<Prop2DMaterialCachePCM>();
 #endif
 
-	prop_utils = memnew(Prop2DUtils);
-	ClassDB::register_class<Prop2DUtils>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("Prop2DUtils", Prop2DUtils::get_singleton()));
+		Ref<Prop2DDataLight> light_processor = Ref<Prop2DDataLight>(memnew(Prop2DDataLight));
+		Prop2DUtils::add_processor(light_processor);
 
-	prop_texture_cache = memnew(Prop2DCache);
-	ClassDB::register_class<Prop2DCache>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("Prop2DCache", Prop2DCache::get_singleton()));
+		Ref<Prop2DDataProp2D> prop_processor = Ref<Prop2DDataProp2D>(memnew(Prop2DDataProp2D));
+		Prop2DUtils::add_processor(prop_processor);
 
-	Ref<Prop2DDataLight> light_processor = Ref<Prop2DDataLight>(memnew(Prop2DDataLight));
-	Prop2DUtils::add_processor(light_processor);
+		Ref<Prop2DDataScene> scene_processor = Ref<Prop2DDataScene>(memnew(Prop2DDataScene));
+		Prop2DUtils::add_processor(scene_processor);
 
-	Ref<Prop2DDataProp2D> prop_processor = Ref<Prop2DDataProp2D>(memnew(Prop2DDataProp2D));
-	Prop2DUtils::add_processor(prop_processor);
+		Ref<Prop2DDataPortal> portal_processor = Ref<Prop2DDataPortal>(memnew(Prop2DDataPortal));
+		Prop2DUtils::add_processor(portal_processor);
 
-	Ref<Prop2DDataScene> scene_processor = Ref<Prop2DDataScene>(memnew(Prop2DDataScene));
-	Prop2DUtils::add_processor(scene_processor);
+		Ref<Prop2DDataTiledWall2D> tiled_wall_processor = Ref<Prop2DDataTiledWall2D>(memnew(Prop2DDataTiledWall2D));
+		Prop2DUtils::add_processor(tiled_wall_processor);
 
-	Ref<Prop2DDataPortal> portal_processor = Ref<Prop2DDataPortal>(memnew(Prop2DDataPortal));
-	Prop2DUtils::add_processor(portal_processor);
-
-	Ref<Prop2DDataTiledWall2D> tiled_wall_processor = Ref<Prop2DDataTiledWall2D>(memnew(Prop2DDataTiledWall2D));
-	Prop2DUtils::add_processor(tiled_wall_processor);
-
-	Ref<Prop2DDataSprite> sprite_processor = Ref<Prop2DDataSprite>(memnew(Prop2DDataSprite));
-	Prop2DUtils::add_processor(sprite_processor);
+		Ref<Prop2DDataSprite> sprite_processor = Ref<Prop2DDataSprite>(memnew(Prop2DDataSprite));
+		Prop2DUtils::add_processor(sprite_processor);
+	}
 
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<Prop2DEditorPlugin>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<Prop2DEditorPlugin>();
+	}
 #endif
 }
 
 void unregister_props_2d_types(ModuleRegistrationLevel p_level) {
-	if (prop_utils) {
-		memdelete(prop_utils);
-	}
+	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
+		if (prop_utils) {
+			memdelete(prop_utils);
+		}
 
-	if (prop_texture_cache) {
-		memdelete(prop_texture_cache);
+		if (prop_texture_cache) {
+			memdelete(prop_texture_cache);
+		}
 	}
 }

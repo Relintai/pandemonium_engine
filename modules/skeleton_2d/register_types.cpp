@@ -19,24 +19,28 @@
 #endif
 
 void register_skeleton_2d_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<Skeleton2D>();
-	ClassDB::register_class<Bone2D>();
-	ClassDB::register_class<PhysicalBone2D>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<Skeleton2D>();
+		ClassDB::register_class<Bone2D>();
+		ClassDB::register_class<PhysicalBone2D>();
 
-	ClassDB::register_class<SkeletonModificationStack2D>();
-	ClassDB::register_class<SkeletonModification2D>();
-	ClassDB::register_class<SkeletonModification2DLookAt>();
-	ClassDB::register_class<SkeletonModification2DCCDIK>();
-	ClassDB::register_class<SkeletonModification2DFABRIK>();
-	ClassDB::register_class<SkeletonModification2DJiggle>();
-	ClassDB::register_class<SkeletonModification2DTwoBoneIK>();
-	ClassDB::register_class<SkeletonModification2DStackHolder>();
+		ClassDB::register_class<SkeletonModificationStack2D>();
+		ClassDB::register_class<SkeletonModification2D>();
+		ClassDB::register_class<SkeletonModification2DLookAt>();
+		ClassDB::register_class<SkeletonModification2DCCDIK>();
+		ClassDB::register_class<SkeletonModification2DFABRIK>();
+		ClassDB::register_class<SkeletonModification2DJiggle>();
+		ClassDB::register_class<SkeletonModification2DTwoBoneIK>();
+		ClassDB::register_class<SkeletonModification2DStackHolder>();
 
-	ClassDB::register_class<PhysicalBone2D>();
-	ClassDB::register_class<SkeletonModification2DPhysicalBones>();
+		ClassDB::register_class<PhysicalBone2D>();
+		ClassDB::register_class<SkeletonModification2DPhysicalBones>();
+	}
 
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<Skeleton2DEditorPlugin>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<Skeleton2DEditorPlugin>();
+	}
 #endif
 }
 

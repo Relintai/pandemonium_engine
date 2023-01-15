@@ -35,18 +35,23 @@
 #include "mesh_library.h"
 
 #ifdef TOOLS_ENABLED
-#include "mesh_library_editor_plugin.h"
 #include "grid_map_editor_plugin.h"
+#include "mesh_library_editor_plugin.h"
 #endif
 #endif
 
 void register_gridmap_types(ModuleRegistrationLevel p_level) {
 #ifndef _3D_DISABLED
-	ClassDB::register_class<GridMap>();
-	ClassDB::register_class<MeshLibrary>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<GridMap>();
+		ClassDB::register_class<MeshLibrary>();
+	}
+
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<GridMapEditorPlugin>();
-	EditorPlugins::add_by_type<MeshLibraryEditorPlugin>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<GridMapEditorPlugin>();
+		EditorPlugins::add_by_type<MeshLibraryEditorPlugin>();
+	}
 #endif
 #endif
 }

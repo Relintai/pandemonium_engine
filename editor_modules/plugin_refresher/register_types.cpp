@@ -28,7 +28,9 @@ SOFTWARE.
 
 void register_plugin_refresher_types(ModuleRegistrationLevel p_level) {
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<PluginRefresherEditorPlugin>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<PluginRefresherEditorPlugin>();
+	}
 #endif
 }
 

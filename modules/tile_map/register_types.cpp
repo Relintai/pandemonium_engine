@@ -31,13 +31,17 @@ SOFTWARE.
 #endif
 
 void register_tile_map_types(ModuleRegistrationLevel p_level) {
-#ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<TileMapEditorPlugin>();
-	EditorPlugins::add_by_type<TileSetEditorPlugin>();
-#endif
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<TileMap>();
+		ClassDB::register_class<TileSet>();
+	}
 
-	ClassDB::register_class<TileMap>();
-	ClassDB::register_class<TileSet>();
+#ifdef TOOLS_ENABLED
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<TileMapEditorPlugin>();
+		EditorPlugins::add_by_type<TileSetEditorPlugin>();
+	}
+#endif
 }
 
 void unregister_tile_map_types(ModuleRegistrationLevel p_level) {

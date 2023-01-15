@@ -62,45 +62,51 @@ SOFTWARE.
 static GSAIUtils *gs_ai_utils = NULL;
 
 void register_steering_ai_types(ModuleRegistrationLevel p_level) {
-	gs_ai_utils = memnew(GSAIUtils);
-	ClassDB::register_class<GSAIUtils>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("GSAIUtils", GSAIUtils::get_singleton()));
+	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
+		gs_ai_utils = memnew(GSAIUtils);
+		ClassDB::register_class<GSAIUtils>();
+		Engine::get_singleton()->add_singleton(Engine::Singleton("GSAIUtils", GSAIUtils::get_singleton()));
+	}
 
-	ClassDB::register_class<GSAITargetAcceleration>();
-	ClassDB::register_class<GSAISteeringBehavior>();
-	ClassDB::register_class<GSAISteeringAgent>();
-	ClassDB::register_class<GSAIPath>();
-	ClassDB::register_class<GSAIGroupBehavior>();
-	ClassDB::register_class<GSAIAgentLocation>();
-	ClassDB::register_class<GSAIProximity>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<GSAITargetAcceleration>();
+		ClassDB::register_class<GSAISteeringBehavior>();
+		ClassDB::register_class<GSAISteeringAgent>();
+		ClassDB::register_class<GSAIPath>();
+		ClassDB::register_class<GSAIGroupBehavior>();
+		ClassDB::register_class<GSAIAgentLocation>();
+		ClassDB::register_class<GSAIProximity>();
 
-	ClassDB::register_class<GSAIRadiusProximity>();
-	ClassDB::register_class<GSAIInfiniteProximity>();
+		ClassDB::register_class<GSAIRadiusProximity>();
+		ClassDB::register_class<GSAIInfiniteProximity>();
 
-	ClassDB::register_class<GSAIArrive>();
-	ClassDB::register_class<GSAIAvoidCollisions>();
-	ClassDB::register_class<GSAIBlend>();
-	ClassDB::register_class<GSAICohesion>();
-	ClassDB::register_class<GSAIEvade>();
-	ClassDB::register_class<GSAIFace>();
-	ClassDB::register_class<GSAIFlee>();
-	ClassDB::register_class<GSAIFollowPath>();
-	ClassDB::register_class<GSAILookWhereYouGo>();
-	ClassDB::register_class<GSAIMatchOrientation>();
-	ClassDB::register_class<GSAIPriority>();
-	ClassDB::register_class<GSAIPursue>();
-	ClassDB::register_class<GSAISeek>();
-	ClassDB::register_class<GSAISeparation>();
+		ClassDB::register_class<GSAIArrive>();
+		ClassDB::register_class<GSAIAvoidCollisions>();
+		ClassDB::register_class<GSAIBlend>();
+		ClassDB::register_class<GSAICohesion>();
+		ClassDB::register_class<GSAIEvade>();
+		ClassDB::register_class<GSAIFace>();
+		ClassDB::register_class<GSAIFlee>();
+		ClassDB::register_class<GSAIFollowPath>();
+		ClassDB::register_class<GSAILookWhereYouGo>();
+		ClassDB::register_class<GSAIMatchOrientation>();
+		ClassDB::register_class<GSAIPriority>();
+		ClassDB::register_class<GSAIPursue>();
+		ClassDB::register_class<GSAISeek>();
+		ClassDB::register_class<GSAISeparation>();
 
-	ClassDB::register_class<GSAIKinematicBody2DAgent>();
-	ClassDB::register_class<GSAIKinematicBody3DAgent>();
-	ClassDB::register_class<GSAIRigidBody2DAgent>();
-	ClassDB::register_class<GSAIRigidBody3DAgent>();
-	ClassDB::register_class<GSAISpecializedAgent>();
+		ClassDB::register_class<GSAIKinematicBody2DAgent>();
+		ClassDB::register_class<GSAIKinematicBody3DAgent>();
+		ClassDB::register_class<GSAIRigidBody2DAgent>();
+		ClassDB::register_class<GSAIRigidBody3DAgent>();
+		ClassDB::register_class<GSAISpecializedAgent>();
+	}
 }
 
 void unregister_steering_ai_types(ModuleRegistrationLevel p_level) {
-	if (gs_ai_utils) {
-		memdelete(gs_ai_utils);
+	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
+		if (gs_ai_utils) {
+			memdelete(gs_ai_utils);
+		}
 	}
 }

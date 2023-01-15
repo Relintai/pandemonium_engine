@@ -35,10 +35,14 @@
 static ImageLoaderHDR *image_loader_hdr = nullptr;
 
 void register_hdr_types(ModuleRegistrationLevel p_level) {
-	image_loader_hdr = memnew(ImageLoaderHDR);
-	ImageLoader::add_image_format_loader(image_loader_hdr);
+	if (p_level == MODULE_REGISTRATION_LEVEL_CORE) {
+		image_loader_hdr = memnew(ImageLoaderHDR);
+		ImageLoader::add_image_format_loader(image_loader_hdr);
+	}
 }
 
 void unregister_hdr_types(ModuleRegistrationLevel p_level) {
-	memdelete(image_loader_hdr);
+	if (p_level == MODULE_REGISTRATION_LEVEL_CORE) {
+		memdelete(image_loader_hdr);
+	}
 }

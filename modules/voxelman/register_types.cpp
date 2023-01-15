@@ -84,66 +84,70 @@ SOFTWARE.
 #include "world/jobs/voxel_terrain_job.h"
 
 void register_voxelman_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<VoxelMesher>();
-	ClassDB::register_class<VoxelMesherDefault>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<VoxelMesher>();
+		ClassDB::register_class<VoxelMesherDefault>();
 
-	ClassDB::register_class<VoxelMesherMarchingCubes>();
-	ClassDB::register_class<MarchingCubesCellData>();
+		ClassDB::register_class<VoxelMesherMarchingCubes>();
+		ClassDB::register_class<MarchingCubesCellData>();
 
-	ClassDB::register_class<VoxelSurface>();
-	ClassDB::register_class<VoxelSurfaceSimple>();
+		ClassDB::register_class<VoxelSurface>();
+		ClassDB::register_class<VoxelSurfaceSimple>();
 
-	ClassDB::register_class<VoxelLibrary>();
-	ClassDB::register_class<VoxelLibrarySimple>();
+		ClassDB::register_class<VoxelLibrary>();
+		ClassDB::register_class<VoxelLibrarySimple>();
 
-	ClassDB::register_class<VoxelMaterialCache>();
+		ClassDB::register_class<VoxelMaterialCache>();
 
 #ifdef MODULE_TEXTURE_PACKER_ENABLED
-	ClassDB::register_class<VoxelSurfaceMerger>();
-	ClassDB::register_class<VoxelLibraryMerger>();
-	ClassDB::register_class<VoxelLibraryMergerPCM>();
-	ClassDB::register_class<VoxelMaterialCachePCM>();
+		ClassDB::register_class<VoxelSurfaceMerger>();
+		ClassDB::register_class<VoxelLibraryMerger>();
+		ClassDB::register_class<VoxelLibraryMergerPCM>();
+		ClassDB::register_class<VoxelMaterialCachePCM>();
 #endif
 
-	ClassDB::register_class<VoxelLight>();
-	ClassDB::register_class<VoxelLightNode>();
+		ClassDB::register_class<VoxelLight>();
+		ClassDB::register_class<VoxelLightNode>();
 
-	ClassDB::register_class<VoxelWorld>();
-	ClassDB::register_class<VoxelChunk>();
-	ClassDB::register_class<VoxelStructure>();
-	ClassDB::register_class<BlockVoxelStructure>();
-	ClassDB::register_class<EnvironmentData>();
+		ClassDB::register_class<VoxelWorld>();
+		ClassDB::register_class<VoxelChunk>();
+		ClassDB::register_class<VoxelStructure>();
+		ClassDB::register_class<BlockVoxelStructure>();
+		ClassDB::register_class<EnvironmentData>();
 
-	ClassDB::register_class<VoxelChunkDefault>();
-	ClassDB::register_class<VoxelWorldDefault>();
+		ClassDB::register_class<VoxelChunkDefault>();
+		ClassDB::register_class<VoxelWorldDefault>();
 
-	ClassDB::register_class<VoxelMesherCubic>();
-	ClassDB::register_class<VoxelCubePoints>();
+		ClassDB::register_class<VoxelMesherCubic>();
+		ClassDB::register_class<VoxelCubePoints>();
 
-	ClassDB::register_class<VoxelMesherBlocky>();
-	ClassDB::register_class<VoxelWorldBlocky>();
-	ClassDB::register_class<VoxelChunkBlocky>();
-	ClassDB::register_class<VoxelMesherLiquidBlocky>();
+		ClassDB::register_class<VoxelMesherBlocky>();
+		ClassDB::register_class<VoxelWorldBlocky>();
+		ClassDB::register_class<VoxelChunkBlocky>();
+		ClassDB::register_class<VoxelMesherLiquidBlocky>();
 
-	ClassDB::register_class<VoxelWorldMarchingCubes>();
-	ClassDB::register_class<VoxelChunkMarchingCubes>();
+		ClassDB::register_class<VoxelWorldMarchingCubes>();
+		ClassDB::register_class<VoxelChunkMarchingCubes>();
 
-	ClassDB::register_class<VoxelWorldCubic>();
-	ClassDB::register_class<VoxelChunkCubic>();
+		ClassDB::register_class<VoxelWorldCubic>();
+		ClassDB::register_class<VoxelChunkCubic>();
 
-	ClassDB::register_class<VoxelLevelGenerator>();
-	ClassDB::register_class<VoxelLevelGeneratorFlat>();
+		ClassDB::register_class<VoxelLevelGenerator>();
+		ClassDB::register_class<VoxelLevelGeneratorFlat>();
 
-	ClassDB::register_class<WorldArea>();
+		ClassDB::register_class<WorldArea>();
 
-	ClassDB::register_class<VoxelJob>();
-	ClassDB::register_class<VoxelTerrainJob>();
-	ClassDB::register_class<VoxelMesherJobStep>();
-	ClassDB::register_class<VoxelLightJob>();
-	ClassDB::register_class<VoxelPropJob>();
+		ClassDB::register_class<VoxelJob>();
+		ClassDB::register_class<VoxelTerrainJob>();
+		ClassDB::register_class<VoxelMesherJobStep>();
+		ClassDB::register_class<VoxelLightJob>();
+		ClassDB::register_class<VoxelPropJob>();
+	}
 
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<VoxelWorldEditorPlugin>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<VoxelWorldEditorPlugin>();
+	}
 #endif
 }
 

@@ -33,8 +33,10 @@
 #include "regex.h"
 
 void register_regex_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<RegExMatch>();
-	ClassDB::register_class<RegEx>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<RegExMatch>();
+		ClassDB::register_class<RegEx>();
+	}
 }
 
 void unregister_regex_types(ModuleRegistrationLevel p_level) {

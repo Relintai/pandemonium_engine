@@ -35,10 +35,14 @@
 static ImageLoaderTGA *image_loader_tga = nullptr;
 
 void register_tga_types(ModuleRegistrationLevel p_level) {
-	image_loader_tga = memnew(ImageLoaderTGA);
-	ImageLoader::add_image_format_loader(image_loader_tga);
+	if (p_level == MODULE_REGISTRATION_LEVEL_CORE) {
+		image_loader_tga = memnew(ImageLoaderTGA);
+		ImageLoader::add_image_format_loader(image_loader_tga);
+	}
 }
 
 void unregister_tga_types(ModuleRegistrationLevel p_level) {
-	memdelete(image_loader_tga);
+	if (p_level == MODULE_REGISTRATION_LEVEL_CORE) {
+		memdelete(image_loader_tga);
+	}
 }

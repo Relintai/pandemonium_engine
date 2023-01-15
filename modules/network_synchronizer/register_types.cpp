@@ -34,23 +34,24 @@
 
 #include "register_types.h"
 
+#include "core/config/project_settings.h"
 #include "data_buffer.h"
 #include "interpolator.h"
 #include "networked_controller.h"
 #include "scene_diff.h"
 #include "scene_synchronizer.h"
-#include "core/config/project_settings.h"
-
 
 void register_network_synchronizer_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<DataBuffer>();
-	ClassDB::register_class<SceneDiff>();
-	ClassDB::register_class<Interpolator>();
-	ClassDB::register_class<NetworkedController>();
-	ClassDB::register_class<SceneSynchronizer>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<DataBuffer>();
+		ClassDB::register_class<SceneDiff>();
+		ClassDB::register_class<Interpolator>();
+		ClassDB::register_class<NetworkedController>();
+		ClassDB::register_class<SceneSynchronizer>();
 
-	GLOBAL_DEF("NetworkSynchronizer/debug_server_speedup", false);
-	GLOBAL_DEF("NetworkSynchronizer/debug_doll_speedup", false);
+		GLOBAL_DEF("NetworkSynchronizer/debug_server_speedup", false);
+		GLOBAL_DEF("NetworkSynchronizer/debug_doll_speedup", false);
+	}
 }
 
 void unregister_network_synchronizer_types(ModuleRegistrationLevel p_level) {

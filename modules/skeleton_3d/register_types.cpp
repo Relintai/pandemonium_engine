@@ -19,35 +19,39 @@
 #include "resources/skeleton_modification_stack_3d.h"
 
 #ifdef TOOLS_ENABLED
+#include "editor/physical_bone_plugin.h"
 #include "editor/skeleton_editor_plugin.h"
 #include "editor/skeleton_ik_editor_plugin.h"
-#include "editor/physical_bone_plugin.h"
 #endif
 
 void register_skeleton_3d_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<Skeleton>();
-	ClassDB::register_class<Skin>();
-	ClassDB::register_class<SkinReference>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<Skeleton>();
+		ClassDB::register_class<Skin>();
+		ClassDB::register_class<SkinReference>();
 
-	ClassDB::register_class<BoneAttachment>();
+		ClassDB::register_class<BoneAttachment>();
 
-	ClassDB::register_class<SkeletonIK>();
+		ClassDB::register_class<SkeletonIK>();
 
-	ClassDB::register_class<PhysicalBone>();
+		ClassDB::register_class<PhysicalBone>();
 
-	ClassDB::register_class<SkeletonModificationStack3D>();
-	ClassDB::register_class<SkeletonModification3D>();
-	ClassDB::register_class<SkeletonModification3DLookAt>();
-	ClassDB::register_class<SkeletonModification3DCCDIK>();
-	ClassDB::register_class<SkeletonModification3DFABRIK>();
-	ClassDB::register_class<SkeletonModification3DJiggle>();
-	ClassDB::register_class<SkeletonModification3DTwoBoneIK>();
-	ClassDB::register_class<SkeletonModification3DStackHolder>();
+		ClassDB::register_class<SkeletonModificationStack3D>();
+		ClassDB::register_class<SkeletonModification3D>();
+		ClassDB::register_class<SkeletonModification3DLookAt>();
+		ClassDB::register_class<SkeletonModification3DCCDIK>();
+		ClassDB::register_class<SkeletonModification3DFABRIK>();
+		ClassDB::register_class<SkeletonModification3DJiggle>();
+		ClassDB::register_class<SkeletonModification3DTwoBoneIK>();
+		ClassDB::register_class<SkeletonModification3DStackHolder>();
+	}
 
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<SkeletonEditorPlugin>();
-	EditorPlugins::add_by_type<SkeletonIKEditorPlugin>();
-	EditorPlugins::add_by_type<PhysicalBonePlugin>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<SkeletonEditorPlugin>();
+		EditorPlugins::add_by_type<SkeletonIKEditorPlugin>();
+		EditorPlugins::add_by_type<PhysicalBonePlugin>();
+	}
 #endif
 }
 

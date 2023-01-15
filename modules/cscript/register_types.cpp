@@ -137,33 +137,41 @@ static void _editor_init() {
 #endif // TOOLS_ENABLED
 
 void register_cscript_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<CScript>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_CORE) {
+		script_language_cscript = memnew(CScriptLanguage);
+		ScriptServer::register_language(script_language_cscript);
 
-	script_language_cscript = memnew(CScriptLanguage);
-	ScriptServer::register_language(script_language_cscript);
+		resource_loader_cscript.instance();
+		ResourceLoader::add_resource_format_loader(resource_loader_cscript);
 
-	resource_loader_cscript.instance();
-	ResourceLoader::add_resource_format_loader(resource_loader_cscript);
+		resource_saver_cscript.instance();
+		ResourceSaver::add_resource_format_saver(resource_saver_cscript);
+	}
 
-	resource_saver_cscript.instance();
-	ResourceSaver::add_resource_format_saver(resource_saver_cscript);
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<CScript>();
+	}
 
 #ifdef TOOLS_ENABLED
-	ScriptEditor::register_create_syntax_highlighter_function(CScriptSyntaxHighlighter::create);
-	EditorNode::add_init_callback(_editor_init);
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		ScriptEditor::register_create_syntax_highlighter_function(CScriptSyntaxHighlighter::create);
+		EditorNode::add_init_callback(_editor_init);
+	}
 #endif // TOOLS_ENABLED
 }
 
 void unregister_cscript_types(ModuleRegistrationLevel p_level) {
-	ScriptServer::unregister_language(script_language_cscript);
+	if (p_level == MODULE_REGISTRATION_LEVEL_CORE) {
+		ScriptServer::unregister_language(script_language_cscript);
 
-	if (script_language_cscript) {
-		memdelete(script_language_cscript);
+		if (script_language_cscript) {
+			memdelete(script_language_cscript);
+		}
+
+		ResourceLoader::remove_resource_format_loader(resource_loader_cscript);
+		resource_loader_cscript.unref();
+
+		ResourceSaver::remove_resource_format_saver(resource_saver_cscript);
+		resource_saver_cscript.unref();
 	}
-
-	ResourceLoader::remove_resource_format_loader(resource_loader_cscript);
-	resource_loader_cscript.unref();
-
-	ResourceSaver::remove_resource_format_saver(resource_saver_cscript);
-	resource_saver_cscript.unref();
 }

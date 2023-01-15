@@ -36,8 +36,10 @@
 #include "upnp_device.h"
 
 void register_upnp_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<UPNP>();
-	ClassDB::register_class<UPNPDevice>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<UPNP>();
+		ClassDB::register_class<UPNPDevice>();
+	}
 }
 
 void unregister_upnp_types(ModuleRegistrationLevel p_level) {

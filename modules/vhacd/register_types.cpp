@@ -79,9 +79,13 @@ static Vector<PoolVector<Vector3>> convex_decompose(const real_t *p_vertices, in
 }
 
 void register_vhacd_types(ModuleRegistrationLevel p_level) {
-	Mesh::convex_decomposition_function = convex_decompose;
+	if (p_level == MODULE_REGISTRATION_LEVEL_DRIVER) {
+		Mesh::convex_decomposition_function = convex_decompose;
+	}
 }
 
 void unregister_vhacd_types(ModuleRegistrationLevel p_level) {
-	Mesh::convex_decomposition_function = nullptr;
+	if (p_level == MODULE_REGISTRATION_LEVEL_DRIVER) {
+		Mesh::convex_decomposition_function = nullptr;
+	}
 }

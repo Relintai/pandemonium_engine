@@ -73,76 +73,80 @@ SOFTWARE.
 #endif
 
 void register_web_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<_HTMLBuilder>();
-	ClassDB::register_class<_HTMLTag>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<_HTMLBuilder>();
+		ClassDB::register_class<_HTMLTag>();
 
-	ClassDB::register_class<HTMLPaginator>();
+		ClassDB::register_class<HTMLPaginator>();
 
-	ClassDB::register_class<FormFieldEntry>();
-	ClassDB::register_class<FormExistsFieldEntry>();
-	ClassDB::register_class<FormIntFieldEntry>();
-	ClassDB::register_class<FormFloatFieldEntry>();
-	ClassDB::register_class<FormAlphaFieldEntry>();
-	ClassDB::register_class<FormAlphaNumericFieldEntry>();
-	ClassDB::register_class<FormNeedsLowercaseCharacterFieldEntry>();
-	ClassDB::register_class<FormNeedsUppercaseCharacterFieldEntry>();
-	ClassDB::register_class<FormNeedsOtherCharacterFieldEntry>();
-	ClassDB::register_class<FormMinimumLengthFieldEntry>();
-	ClassDB::register_class<FormMaximumLengthFieldEntry>();
-	ClassDB::register_class<FormEmailFieldEntry>();
-	ClassDB::register_class<FormNeedToMatchOtherFieldEntry>();
-	ClassDB::register_class<FormField>();
-	ClassDB::register_class<FormValidator>();
+		ClassDB::register_class<FormFieldEntry>();
+		ClassDB::register_class<FormExistsFieldEntry>();
+		ClassDB::register_class<FormIntFieldEntry>();
+		ClassDB::register_class<FormFloatFieldEntry>();
+		ClassDB::register_class<FormAlphaFieldEntry>();
+		ClassDB::register_class<FormAlphaNumericFieldEntry>();
+		ClassDB::register_class<FormNeedsLowercaseCharacterFieldEntry>();
+		ClassDB::register_class<FormNeedsUppercaseCharacterFieldEntry>();
+		ClassDB::register_class<FormNeedsOtherCharacterFieldEntry>();
+		ClassDB::register_class<FormMinimumLengthFieldEntry>();
+		ClassDB::register_class<FormMaximumLengthFieldEntry>();
+		ClassDB::register_class<FormEmailFieldEntry>();
+		ClassDB::register_class<FormNeedToMatchOtherFieldEntry>();
+		ClassDB::register_class<FormField>();
+		ClassDB::register_class<FormValidator>();
 
-	ClassDB::register_class<HTMLParserAttribute>();
-	ClassDB::register_class<HTMLParserTag>();
-	ClassDB::register_class<HTMLParser>();
+		ClassDB::register_class<HTMLParserAttribute>();
+		ClassDB::register_class<HTMLParserTag>();
+		ClassDB::register_class<HTMLParser>();
 
-	ClassDB::register_class<BBCodeParserAttribute>();
-	ClassDB::register_class<BBCodeParserTag>();
-	ClassDB::register_class<BBCodeParser>();
+		ClassDB::register_class<BBCodeParserAttribute>();
+		ClassDB::register_class<BBCodeParserTag>();
+		ClassDB::register_class<BBCodeParser>();
 
-	ClassDB::register_class<MarkdownRenderer>();
+		ClassDB::register_class<MarkdownRenderer>();
 
-	ClassDB::register_class<FileCache>();
+		ClassDB::register_class<FileCache>();
 
-	ClassDB::register_class<HTTPServerEnums>();
+		ClassDB::register_class<HTTPServerEnums>();
 
-	ClassDB::register_class<CSRFTokenWebServerMiddleware>();
-	ClassDB::register_class<HTTPSession>();
-	ClassDB::register_class<HTTPSessionManager>();
-	ClassDB::register_class<SessionSetupWebServerMiddleware>();
-	ClassDB::register_class<WebNode>();
-	ClassDB::register_class<WebPermission>();
-	ClassDB::register_class<WebRoot>();
-	ClassDB::register_class<WebServer>();
-	ClassDB::register_class<WebServerCookie>();
-	ClassDB::register_class<WebServerMiddleware>();
-	ClassDB::register_class<WebServerRequest>();
-	ClassDB::register_class<WebServerRequestScriptable>();
+		ClassDB::register_class<CSRFTokenWebServerMiddleware>();
+		ClassDB::register_class<HTTPSession>();
+		ClassDB::register_class<HTTPSessionManager>();
+		ClassDB::register_class<SessionSetupWebServerMiddleware>();
+		ClassDB::register_class<WebNode>();
+		ClassDB::register_class<WebPermission>();
+		ClassDB::register_class<WebRoot>();
+		ClassDB::register_class<WebServer>();
+		ClassDB::register_class<WebServerCookie>();
+		ClassDB::register_class<WebServerMiddleware>();
+		ClassDB::register_class<WebServerRequest>();
+		ClassDB::register_class<WebServerRequestScriptable>();
 
-	ClassDB::register_class<StaticWebPage>();
-	ClassDB::register_class<StaticWebPageFile>();
-	ClassDB::register_class<StaticWebPageFolderFiles>();
+		ClassDB::register_class<StaticWebPage>();
+		ClassDB::register_class<StaticWebPageFile>();
+		ClassDB::register_class<StaticWebPageFolderFiles>();
 
-	ClassDB::register_class<FolderServeWebPage>();
-	ClassDB::register_class<BrowsableFolderServeWebPage>();
+		ClassDB::register_class<FolderServeWebPage>();
+		ClassDB::register_class<BrowsableFolderServeWebPage>();
 
-	ClassDB::register_class<ListWebPage>();
+		ClassDB::register_class<ListWebPage>();
 
-	ClassDB::register_class<PagedArticleWebPage>();
-	ClassDB::register_class<PagedArticlesWebPage>();
-	//ClassDB::register_class<PagedArticlesWebPageMDIndex>();
+		ClassDB::register_class<PagedArticleWebPage>();
+		ClassDB::register_class<PagedArticlesWebPage>();
+		//ClassDB::register_class<PagedArticlesWebPageMDIndex>();
 
-	ClassDB::register_class<RedirectWebPage>();
-	ClassDB::register_class<AliasWebPage>();
+		ClassDB::register_class<RedirectWebPage>();
+		ClassDB::register_class<AliasWebPage>();
 
 #ifdef MODULE_DATABASE_ENABLED
-	ClassDB::register_class<HTTPSessionManagerDB>();
+		ClassDB::register_class<HTTPSessionManagerDB>();
 #endif
+	}
 
 #if TOOLS_ENABLED
-	EditorPlugins::add_by_type<WebNodeEditorPlugin>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<WebNodeEditorPlugin>();
+	}
 #endif
 }
 

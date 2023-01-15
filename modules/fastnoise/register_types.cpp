@@ -6,8 +6,10 @@
 #include "noise.h"
 
 void register_fastnoise_types(ModuleRegistrationLevel p_level) {
-	ClassDB::register_class<FastNoise>();
-	ClassDB::register_class<FastnoiseNoiseParams>();
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<FastNoise>();
+		ClassDB::register_class<FastnoiseNoiseParams>();
+	}
 }
 
 void unregister_fastnoise_types(ModuleRegistrationLevel p_level) {
