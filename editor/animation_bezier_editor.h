@@ -32,7 +32,7 @@
 
 #include "scene/gui/control.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
@@ -89,7 +89,7 @@ class AnimationBezierTrackEdit : public Control {
 
 	Rect2 close_icon_rect;
 
-	Map<int, Rect2> subtracks;
+	RBMap<int, Rect2> subtracks;
 
 	float v_scroll;
 	float v_zoom;

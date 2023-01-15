@@ -46,7 +46,7 @@
 #include "core/error/error_macros.h"
 #include "core/io/resource_loader.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/math_defs.h"
 #include "core/math/rect2.h"
 #include "core/os/memory.h"
@@ -755,7 +755,7 @@ void ProjectSettingsEditor::_update_actions() {
 		return;
 	}
 
-	Map<String, bool> collapsed;
+	RBMap<String, bool> collapsed;
 
 	if (input_editor->get_root() && input_editor->get_root()->get_children()) {
 		for (TreeItem *item = input_editor->get_root()->get_children(); item; item = item->get_next()) {

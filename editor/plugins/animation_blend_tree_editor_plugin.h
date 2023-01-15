@@ -33,7 +33,7 @@
 #include "editor/plugins/animation_tree_editor_plugin.h"
 
 #include "core/variant/array.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
@@ -76,7 +76,7 @@ class AnimationNodeBlendTreeEditor : public AnimationTreeNodeEditorPlugin {
 	Tree *filters;
 	CheckBox *filter_enabled;
 
-	Map<StringName, ProgressBar *> animations;
+	RBMap<StringName, ProgressBar *> animations;
 	Vector<EditorProperty *> visible_properties;
 
 	String to_node = "";

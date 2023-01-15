@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/vector.h"
 
 /**
@@ -46,7 +46,7 @@ class DisjointSet {
 		int rank = 0;
 	};
 
-	typedef Map<T, Element *, C, AL> MapT;
+	typedef RBMap<T, Element *, C, AL> MapT;
 
 	MapT elements;
 

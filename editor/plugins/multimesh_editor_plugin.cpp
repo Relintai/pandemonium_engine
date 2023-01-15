@@ -36,7 +36,7 @@
 #include "spatial_editor_plugin.h"
 #include "core/object/class_db.h"
 #include "core/error/error_macros.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/basis.h"
 #include "core/math/face3.h"
 #include "core/math/math_defs.h"
@@ -171,7 +171,7 @@ void MultiMeshEditor::_populate() {
 	PoolVector<Face3>::Read r = faces.read();
 
 	float area_accum = 0;
-	Map<float, int> triangle_area_map;
+	RBMap<float, int> triangle_area_map;
 	for (int i = 0; i < facecount; i++) {
 		float area = r[i].get_area();
 		if (area < CMP_EPSILON) {
@@ -218,7 +218,7 @@ void MultiMeshEditor::_populate() {
 	for (int i = 0; i < instance_count; i++) {
 		float areapos = Math::random(0.0f, area_accum);
 
-		Map<float, int>::Element *E = triangle_area_map.find_closest(areapos);
+		RBMap<float, int>::Element *E = triangle_area_map.find_closest(areapos);
 		ERR_FAIL_COND(!E);
 		int index = E->get();
 		ERR_FAIL_INDEX(index, facecount);

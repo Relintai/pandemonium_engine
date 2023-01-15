@@ -68,11 +68,11 @@ void MDRImportPluginBase::get_import_options(List<ImportOption> *r_options, int 
 	r_options->push_back(ImportOption(PropertyInfo(Variant::BOOL, "save_copy_as_resource"), false));
 }
 
-bool MDRImportPluginBase::get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const {
+bool MDRImportPluginBase::get_option_visibility(const String &p_option, const RBMap<StringName, Variant> &p_options) const {
 	return true;
 }
 
-Error MDRImportPluginBase::process_node(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error MDRImportPluginBase::process_node(Node *n, const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 	MDRImportPluginBase::MDRImportType type = static_cast<MDRImportPluginBase::MDRImportType>(static_cast<int>(p_options["import_type"]));
 
 	switch (type) {
@@ -129,7 +129,7 @@ int MDRImportPluginBase::get_mesh_count(Node *n) {
 	return count;
 }
 
-Error MDRImportPluginBase::process_node_single(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error MDRImportPluginBase::process_node_single(Node *n, const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 #ifdef MODULE_MESH_UTILS_ENABLED
 	MDRImportPluginBase::MDROptimizationType optimization_type = static_cast<MDRImportPluginBase::MDROptimizationType>(static_cast<int>(p_options["optimization_type"]));
 #endif
@@ -189,7 +189,7 @@ Error MDRImportPluginBase::process_node_single(Node *n, const String &p_source_f
 	return Error::ERR_PARSE_ERROR;
 }
 
-Error MDRImportPluginBase::process_node_single_separated_bones(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error MDRImportPluginBase::process_node_single_separated_bones(Node *n, const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 #ifdef MODULE_MESH_UTILS_ENABLED
 	MDRImportPluginBase::MDROptimizationType optimization_type = static_cast<MDRImportPluginBase::MDROptimizationType>(static_cast<int>(p_options["optimization_type"]));
 #endif
@@ -274,7 +274,7 @@ Error MDRImportPluginBase::process_node_single_separated_bones(Node *n, const St
 	return Error::ERR_PARSE_ERROR;
 }
 
-Error MDRImportPluginBase::process_node_multi(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata, Ref<MeshDataResourceCollection> coll, Ref<MeshDataResourceCollection> copy_coll, int node_count) {
+Error MDRImportPluginBase::process_node_multi(Node *n, const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata, Ref<MeshDataResourceCollection> coll, Ref<MeshDataResourceCollection> copy_coll, int node_count) {
 #ifdef MODULE_MESH_UTILS_ENABLED
 	MDRImportPluginBase::MDROptimizationType optimization_type = static_cast<MDRImportPluginBase::MDROptimizationType>(static_cast<int>(p_options["optimization_type"]));
 #endif
@@ -363,7 +363,7 @@ Error MDRImportPluginBase::process_node_multi(Node *n, const String &p_source_fi
 	return Error::OK;
 }
 
-Vector<Ref<MeshDataResource>> MDRImportPluginBase::get_meshes(MeshInstance *mi, const Map<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale) {
+Vector<Ref<MeshDataResource>> MDRImportPluginBase::get_meshes(MeshInstance *mi, const RBMap<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale) {
 	MDRImportPluginBase::MDRSurfaceHandlingType surface_handling = static_cast<MDRImportPluginBase::MDRSurfaceHandlingType>(static_cast<int>(p_options["surface_handling"]));
 
 	Vector<Ref<MeshDataResource>> ret;
@@ -413,7 +413,7 @@ Vector<Ref<MeshDataResource>> MDRImportPluginBase::get_meshes(MeshInstance *mi, 
 	return ret;
 }
 
-Ref<MeshDataResource> MDRImportPluginBase::get_mesh_arrays(Array &arrs, const Map<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale) {
+Ref<MeshDataResource> MDRImportPluginBase::get_mesh_arrays(Array &arrs, const RBMap<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale) {
 	ERR_FAIL_COND_V(arrs.size() < RS::ARRAY_MAX, Ref<MeshDataResource>());
 
 	Ref<ArrayMesh> mesh;
@@ -433,7 +433,7 @@ Ref<MeshDataResource> MDRImportPluginBase::get_mesh_arrays(Array &arrs, const Ma
 	return mdr;
 }
 
-void MDRImportPluginBase::add_colliders(Ref<MeshDataResource> mdr, Ref<ArrayMesh> mesh, const Map<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale) {
+void MDRImportPluginBase::add_colliders(Ref<MeshDataResource> mdr, Ref<ArrayMesh> mesh, const RBMap<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale) {
 	if (collider_type == MeshDataResource::COLLIDER_TYPE_TRIMESH_COLLISION_SHAPE) {
 		Ref<ArrayMesh> m;
 		m.instance();
@@ -719,7 +719,7 @@ Array MDRImportPluginBase::slice_mesh_bone(const Array &arr, int bone_idx) {
 	return resarrs;
 }
 
-Array MDRImportPluginBase::apply_transforms(Array &array, const Map<StringName, Variant> &p_options) {
+Array MDRImportPluginBase::apply_transforms(Array &array, const RBMap<StringName, Variant> &p_options) {
 	Vector3 offset = p_options["offset"];
 	Vector3 rotation = p_options["rotation"];
 	Vector3 scale = p_options["scale"];

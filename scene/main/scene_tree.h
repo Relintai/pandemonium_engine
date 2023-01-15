@@ -122,7 +122,7 @@ private:
 	bool pause;
 	int root_lock;
 
-	Map<StringName, Group> group_map;
+	RBMap<StringName, Group> group_map;
 	bool _quit;
 	bool initialized;
 	bool input_handled;
@@ -163,7 +163,7 @@ private:
 
 	List<ObjectID> delete_queue;
 
-	Map<UGCall, Vector<Variant>> unique_group_calls;
+	RBMap<UGCall, Vector<Variant>> unique_group_calls;
 	bool ugc_locked;
 	void _flush_ugc();
 
@@ -233,14 +233,14 @@ private:
 
 #ifdef DEBUG_ENABLED
 
-	Map<int, NodePath> live_edit_node_path_cache;
-	Map<int, String> live_edit_resource_cache;
+	RBMap<int, NodePath> live_edit_node_path_cache;
+	RBMap<int, String> live_edit_resource_cache;
 
 	NodePath live_edit_root;
 	String live_edit_scene;
 
-	Map<String, Set<Node *>> live_scene_edit_cache;
-	Map<Node *, Map<ObjectID, Node *>> live_edit_remove_list;
+	RBMap<String, Set<Node *>> live_scene_edit_cache;
+	RBMap<Node *, RBMap<ObjectID, Node *>> live_edit_remove_list;
 
 	void _debugger_request_tree();
 

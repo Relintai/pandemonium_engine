@@ -39,7 +39,7 @@
 #include "scene/gui/box_container.h"
 
 #include "core/object/undo_redo.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/string/node_path.h"
 #include "core/object/object.h"
 #include "core/string/string_name.h"
@@ -153,7 +153,7 @@ class ConnectionsDock : public VBoxContainer {
 	UndoRedo *undo_redo;
 	LineEdit *search_box;
 
-	Map<StringName, Map<StringName, String>> descr_cache;
+	RBMap<StringName, RBMap<StringName, String>> descr_cache;
 
 	void _filter_changed(const String &p_text);
 

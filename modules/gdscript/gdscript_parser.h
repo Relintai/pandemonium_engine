@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/object/script_language.h"
 #include "gdscript_functions.h"
@@ -181,7 +181,7 @@ public:
 
 		Vector<ClassNode *> subclasses;
 		Vector<Member> variables;
-		Map<StringName, Constant> constant_expressions;
+		RBMap<StringName, Constant> constant_expressions;
 		Vector<FunctionNode *> functions;
 		Vector<FunctionNode *> static_functions;
 		Vector<Signal> _signals;
@@ -231,7 +231,7 @@ public:
 		ClassNode *parent_class;
 		BlockNode *parent_block;
 		Vector<Node *> statements;
-		Map<StringName, LocalVarNode *> variables;
+		RBMap<StringName, LocalVarNode *> variables;
 		bool has_return = false;
 		bool can_break = false;
 		bool can_continue = false;
@@ -408,7 +408,7 @@ public:
 
 		Node *constant;
 		StringName bind;
-		Map<ConstantNode *, PatternNode *> dictionary;
+		RBMap<ConstantNode *, PatternNode *> dictionary;
 		Vector<PatternNode *> array;
 	};
 
@@ -602,7 +602,7 @@ private:
 	PatternNode *_parse_pattern(bool p_static);
 	void _parse_pattern_block(BlockNode *p_block, Vector<PatternBranchNode *> &p_branches, bool p_static);
 	void _transform_match_statment(MatchNode *p_match_statement);
-	void _generate_pattern(PatternNode *p_pattern, Node *p_node_to_match, Node *&p_resulting_node, Map<StringName, Node *> &p_bindings);
+	void _generate_pattern(PatternNode *p_pattern, Node *p_node_to_match, Node *&p_resulting_node, RBMap<StringName, Node *> &p_bindings);
 
 	void _parse_block(BlockNode *p_block, bool p_static);
 	void _parse_extends(ClassNode *p_class);

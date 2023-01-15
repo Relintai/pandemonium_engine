@@ -34,7 +34,7 @@
 
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/set.h"
 #include "core/containers/vector.h"
 #include "core/object/object_id.h"
@@ -164,7 +164,7 @@ class SceneTreeDock : public VBoxContainer {
 
 	List<Node *> node_clipboard;
 	String clipboard_source_scene;
-	HashMap<String, Map<RES, RES>> clipboard_resource_remap;
+	HashMap<String, RBMap<RES, RES>> clipboard_resource_remap;
 
 	ScriptCreateDialog *script_create_dialog;
 	AcceptDialog *accept;
@@ -251,7 +251,7 @@ class SceneTreeDock : public VBoxContainer {
 	void _update_script_button();
 	Node *_get_selection_group_tail(Node *p_node, List<Node *> p_list);
 
-	void _fill_path_renames(Vector<StringName> base_path, Vector<StringName> new_base_path, Node *p_node, Map<Node *, NodePath> *p_renames);
+	void _fill_path_renames(Vector<StringName> base_path, Vector<StringName> new_base_path, Node *p_node, RBMap<Node *, NodePath> *p_renames);
 
 	void _normalize_drop(Node *&to_node, int &to_pos, int p_type);
 
@@ -275,11 +275,11 @@ class SceneTreeDock : public VBoxContainer {
 	void _custom_root_selected(const String &p_class);
 
 	void _clear_clipboard();
-	void _create_remap_for_node(Node *p_node, Map<RES, RES> &r_remap);
-	void _create_remap_for_resource(RES p_resource, Map<RES, RES> &r_remap);
+	void _create_remap_for_node(Node *p_node, RBMap<RES, RES> &r_remap);
+	void _create_remap_for_resource(RES p_resource, RBMap<RES, RES> &r_remap);
 
-	bool _update_node_path(Node *p_root_node, NodePath &r_node_path, Map<Node *, NodePath> *p_renames) const;
-	bool _check_node_path_recursive(Node *p_root_node, Variant &r_variant, Map<Node *, NodePath> *p_renames) const;
+	bool _update_node_path(Node *p_root_node, NodePath &r_node_path, RBMap<Node *, NodePath> *p_renames) const;
+	bool _check_node_path_recursive(Node *p_root_node, Variant &r_variant, RBMap<Node *, NodePath> *p_renames) const;
 
 	struct CustomSceneRootClassEntry {
 		int id;
@@ -305,8 +305,8 @@ public:
 	void instance(const String &p_file);
 	void instance_scenes(const Vector<String> &p_files, Node *p_parent = nullptr);
 	void set_selected(Node *p_node, bool p_emit_selected = false);
-	void fill_path_renames(Node *p_node, Node *p_new_parent, Map<Node *, NodePath> *p_renames);
-	void perform_node_renames(Node *p_base, Map<Node *, NodePath> *p_renames, Map<Ref<Animation>, Set<int>> *r_rem_anims = nullptr);
+	void fill_path_renames(Node *p_node, Node *p_new_parent, RBMap<Node *, NodePath> *p_renames);
+	void perform_node_renames(Node *p_base, RBMap<Node *, NodePath> *p_renames, RBMap<Ref<Animation>, Set<int>> *r_rem_anims = nullptr);
 
 	SceneTreeEditor *get_tree_editor() {
 		return scene_tree;

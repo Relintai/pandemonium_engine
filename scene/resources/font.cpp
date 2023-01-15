@@ -175,7 +175,7 @@ void BitmapFont::_set_kernings(const PoolVector<int> &p_kernings) {
 PoolVector<int> BitmapFont::_get_kernings() const {
 	PoolVector<int> kernings;
 
-	for (Map<KerningPairKey, int>::Element *E = kerning_map.front(); E; E = E->next()) {
+	for (RBMap<KerningPairKey, int>::Element *E = kerning_map.front(); E; E = E->next()) {
 		kernings.push_back(E->key().A);
 		kernings.push_back(E->key().B);
 		kernings.push_back(E->get());
@@ -217,7 +217,7 @@ Error BitmapFont::create_from_fnt(const String &p_file) {
 		int delimiter = line.find(" ");
 		String type = line.substr(0, delimiter);
 		int pos = delimiter + 1;
-		Map<String, String> keys;
+		RBMap<String, String> keys;
 
 		while (pos < line.size() && line[pos] == ' ') {
 			pos++;
@@ -439,7 +439,7 @@ Vector<BitmapFont::KerningPairKey> BitmapFont::get_kerning_pair_keys() const {
 	ret.resize(kerning_map.size());
 	int i = 0;
 
-	for (Map<KerningPairKey, int>::Element *E = kerning_map.front(); E; E = E->next()) {
+	for (RBMap<KerningPairKey, int>::Element *E = kerning_map.front(); E; E = E->next()) {
 		ret.write[i++] = E->key();
 	}
 
@@ -451,7 +451,7 @@ int BitmapFont::get_kerning_pair(int32_t p_A, int32_t p_B) const {
 	kpk.A = p_A;
 	kpk.B = p_B;
 
-	const Map<KerningPairKey, int>::Element *E = kerning_map.find(kpk);
+	const RBMap<KerningPairKey, int>::Element *E = kerning_map.find(kpk);
 	if (E) {
 		return E->get();
 	}
@@ -740,7 +740,7 @@ Size2 BitmapFont::get_char_size(CharType p_char, CharType p_next) const {
 			kpk.A = p_char;
 			kpk.B = p_next;
 
-			const Map<KerningPairKey, int>::Element *E = kerning_map.find(kpk);
+			const RBMap<KerningPairKey, int>::Element *E = kerning_map.find(kpk);
 			if (E) {
 				ret.width -= E->get();
 			}

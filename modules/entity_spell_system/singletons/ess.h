@@ -276,7 +276,7 @@ private:
 
 	Mutex _material_cache_mutex;
 
-	Map<uint64_t, Ref<ESSMaterialCache>> _material_cache;
+	RBMap<uint64_t, Ref<ESSMaterialCache>> _material_cache;
 
 #ifdef MODULE_TEXTURE_PACKER_ENABLED
 	int _texture_flags;

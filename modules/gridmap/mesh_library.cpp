@@ -100,7 +100,7 @@ bool MeshLibrary::_get(const StringName &p_name, Variant &r_ret) const {
 }
 
 void MeshLibrary::_get_property_list(List<PropertyInfo> *p_list) const {
-	for (Map<int, Item>::Element *E = item_map.front(); E; E = E->next()) {
+	for (RBMap<int, Item>::Element *E = item_map.front(); E; E = E->next()) {
 		String name = vformat("%s/%d/", "item", E->key());
 		p_list->push_back(PropertyInfo(Variant::STRING, name + ("name")));
 		p_list->push_back(PropertyInfo(Variant::OBJECT, name + ("mesh"), PROPERTY_HINT_RESOURCE_TYPE, "Mesh"));
@@ -232,7 +232,7 @@ Vector<int> MeshLibrary::get_item_list() const {
 	Vector<int> ret;
 	ret.resize(item_map.size());
 	int idx = 0;
-	for (Map<int, Item>::Element *E = item_map.front(); E; E = E->next()) {
+	for (RBMap<int, Item>::Element *E = item_map.front(); E; E = E->next()) {
 		ret.write[idx++] = E->key();
 	}
 
@@ -240,7 +240,7 @@ Vector<int> MeshLibrary::get_item_list() const {
 }
 
 int MeshLibrary::find_item_by_name(const String &p_name) const {
-	for (Map<int, Item>::Element *E = item_map.front(); E; E = E->next()) {
+	for (RBMap<int, Item>::Element *E = item_map.front(); E; E = E->next()) {
 		if (E->get().name == p_name) {
 			return E->key();
 		}

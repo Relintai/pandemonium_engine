@@ -30,7 +30,7 @@
 
 #include "quick_hull.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 
 uint32_t QuickHull::debug_stop_after = 0xFFFFFFFF;
 bool QuickHull::_flag_warnings = true;
@@ -232,7 +232,7 @@ Error QuickHull::build(const Vector<Vector3> &p_points, Geometry::MeshData &r_me
 		//find lit faces and lit edges
 		List<List<Face>::Element *> lit_faces; //lit face is a death sentence
 
-		Map<Edge, FaceConnect> lit_edges; //create this on the flight, should not be that bad for performance and simplifies code a lot
+		RBMap<Edge, FaceConnect> lit_edges; //create this on the flight, should not be that bad for performance and simplifies code a lot
 
 		for (List<Face>::Element *E = faces.front(); E; E = E->next()) {
 			if (E->get().plane.distance_to(v) > 0) {
@@ -243,7 +243,7 @@ Error QuickHull::build(const Vector<Vector3> &p_points, Geometry::MeshData &r_me
 					uint32_t b = E->get().vertices[(i + 1) % 3];
 					Edge e(a, b);
 
-					Map<Edge, FaceConnect>::Element *F = lit_edges.find(e);
+					RBMap<Edge, FaceConnect>::Element *F = lit_edges.find(e);
 					if (!F) {
 						F = lit_edges.insert(e, FaceConnect());
 					}
@@ -260,7 +260,7 @@ Error QuickHull::build(const Vector<Vector3> &p_points, Geometry::MeshData &r_me
 		//create new faces from horizon edges
 		List<List<Face>::Element *> new_faces; //new faces
 
-		for (Map<Edge, FaceConnect>::Element *E = lit_edges.front(); E; E = E->next()) {
+		for (RBMap<Edge, FaceConnect>::Element *E = lit_edges.front(); E; E = E->next()) {
 			FaceConnect &fc = E->get();
 			if (fc.left && fc.right) {
 				continue; //edge is uninteresting, not on horizont
@@ -328,7 +328,7 @@ Error QuickHull::build(const Vector<Vector3> &p_points, Geometry::MeshData &r_me
 	/* CREATE MESHDATA */
 
 	//make a map of edges again
-	Map<Edge, RetFaceConnect> ret_edges;
+	RBMap<Edge, RetFaceConnect> ret_edges;
 	List<Geometry::MeshData::Face> ret_faces;
 
 	for (List<Face>::Element *E = faces.front(); E; E = E->next()) {
@@ -346,7 +346,7 @@ Error QuickHull::build(const Vector<Vector3> &p_points, Geometry::MeshData &r_me
 			uint32_t b = E->get().vertices[(i + 1) % 3];
 			Edge e(a, b);
 
-			Map<Edge, RetFaceConnect>::Element *G = ret_edges.find(e);
+			RBMap<Edge, RetFaceConnect>::Element *G = ret_edges.find(e);
 			if (!G) {
 				G = ret_edges.insert(e, RetFaceConnect());
 			}
@@ -374,7 +374,7 @@ Error QuickHull::build(const Vector<Vector3> &p_points, Geometry::MeshData &r_me
 			int b = E->get().indices[(i + 1) % f.indices.size()];
 			Edge e(a, b);
 
-			Map<Edge, RetFaceConnect>::Element *F = ret_edges.find(e);
+			RBMap<Edge, RetFaceConnect>::Element *F = ret_edges.find(e);
 
 			if (unlikely(!F)) {
 				warning_f = true;
@@ -411,7 +411,7 @@ Error QuickHull::build(const Vector<Vector3> &p_points, Geometry::MeshData &r_me
 							}
 							Edge e2(idx, idxn);
 
-							Map<Edge, RetFaceConnect>::Element *F2 = ret_edges.find(e2);
+							RBMap<Edge, RetFaceConnect>::Element *F2 = ret_edges.find(e2);
 
 							if (unlikely(!F2)) {
 								warning_not_f2 = true;
@@ -431,7 +431,7 @@ Error QuickHull::build(const Vector<Vector3> &p_points, Geometry::MeshData &r_me
 				}
 
 				// remove all edge connections to this face
-				for (Map<Edge, RetFaceConnect>::Element *G = ret_edges.front(); G; G = G->next()) {
+				for (RBMap<Edge, RetFaceConnect>::Element *G = ret_edges.front(); G; G = G->next()) {
 					if (G->get().left == O) {
 						G->get().left = nullptr;
 					}
@@ -472,7 +472,7 @@ Error QuickHull::build(const Vector<Vector3> &p_points, Geometry::MeshData &r_me
 	}
 	r_mesh.edges.resize(ret_edges.size());
 	idx = 0;
-	for (Map<Edge, RetFaceConnect>::Element *E = ret_edges.front(); E; E = E->next()) {
+	for (RBMap<Edge, RetFaceConnect>::Element *E = ret_edges.front(); E; E = E->next()) {
 		Geometry::MeshData::Edge e;
 		e.a = E->key().vertices[0];
 		e.b = E->key().vertices[1];

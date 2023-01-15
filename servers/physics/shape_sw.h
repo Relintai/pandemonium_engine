@@ -62,7 +62,7 @@ class ShapeSW : public RID_Data {
 	bool configured;
 	real_t custom_bias;
 
-	Map<ShapeOwnerSW *, int> owners;
+	RBMap<ShapeOwnerSW *, int> owners;
 
 protected:
 	void configure(const AABB &p_aabb);
@@ -104,7 +104,7 @@ public:
 	void add_owner(ShapeOwnerSW *p_owner);
 	void remove_owner(ShapeOwnerSW *p_owner);
 	bool is_owner(ShapeOwnerSW *p_owner) const;
-	const Map<ShapeOwnerSW *, int> &get_owners() const;
+	const RBMap<ShapeOwnerSW *, int> &get_owners() const;
 
 	ShapeSW();
 	virtual ~ShapeSW();

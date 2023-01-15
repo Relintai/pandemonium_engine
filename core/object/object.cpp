@@ -1518,7 +1518,7 @@ bool Object::is_connected(const StringName &p_signal, Object *p_to_object, const
 	Signal::Target target(p_to_object->get_instance_id(), p_to_method);
 
 	return s->slot_map.has(target);
-	//const Map<Signal::Target,Signal::Slot>::Element *E = s->slot_map.find(target);
+	//const RBMap<Signal::Target,Signal::Slot>::Element *E = s->slot_map.find(target);
 	//return (E!=NULL);
 }
 

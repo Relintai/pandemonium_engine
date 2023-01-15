@@ -61,7 +61,7 @@ private:
 	// Set of unique bone names for the skeleton
 	Set<String> unique_names;
 
-	Map<int32_t, GLTFNodeIndex> pandemonium_bone_node;
+	RBMap<int32_t, GLTFNodeIndex> pandemonium_bone_node;
 
 #ifdef MODULE_SKELETON_3D_ENABLED
 	PoolVector<BoneAttachment *> bone_attachments;

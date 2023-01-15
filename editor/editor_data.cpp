@@ -492,7 +492,7 @@ Variant EditorData::instance_custom_type(const String &p_type, const String &p_i
 }
 
 void EditorData::remove_custom_type(const String &p_type) {
-	for (Map<String, Vector<CustomType>>::Element *E = custom_types.front(); E; E = E->next()) {
+	for (RBMap<String, Vector<CustomType>>::Element *E = custom_types.front(); E; E = E->next()) {
 		for (int i = 0; i < E->get().size(); i++) {
 			if (E->get()[i].name == p_type) {
 				E->get().remove(i);
@@ -1104,7 +1104,7 @@ Array EditorSelection::_get_transformable_selected_nodes() {
 Array EditorSelection::get_selected_nodes() {
 	Array ret;
 
-	for (Map<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
+	for (RBMap<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
 		ret.push_back(E->key());
 	}
 
@@ -1133,7 +1133,7 @@ void EditorSelection::_update_nl() {
 
 	selected_node_list.clear();
 
-	for (Map<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
+	for (RBMap<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
 		Node *parent = E->key();
 		parent = parent->get_parent();
 		bool skip = false;
@@ -1183,7 +1183,7 @@ List<Node *> &EditorSelection::get_selected_node_list() {
 
 List<Node *> EditorSelection::get_full_selected_node_list() {
 	List<Node *> node_list;
-	for (Map<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
+	for (RBMap<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
 		node_list.push_back(E->key());
 	}
 

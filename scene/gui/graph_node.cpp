@@ -137,7 +137,7 @@ void GraphNode::_resort() {
 	int stretch_min = 0;
 	int stretch_avail = 0;
 	float stretch_ratio_total = 0;
-	Map<Control *, _MinSizeCache> min_size_cache;
+	RBMap<Control *, _MinSizeCache> min_size_cache;
 
 	for (int i = 0; i < get_child_count(); i++) {
 		Control *c = Object::cast_to<Control>(get_child(i));
@@ -348,7 +348,7 @@ void GraphNode::_notification(int p_what) {
 				close_rect = Rect2();
 			}
 
-			for (Map<int, Slot>::Element *E = slot_info.front(); E; E = E->next()) {
+			for (RBMap<int, Slot>::Element *E = slot_info.front(); E; E = E->next()) {
 				if (E->key() < 0 || E->key() >= cache_y.size()) {
 					continue;
 				}

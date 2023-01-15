@@ -564,7 +564,7 @@ void Body2DSW::integrate_velocities(real_t p_step) {
 }
 
 void Body2DSW::wakeup_neighbours() {
-	for (Map<Constraint2DSW *, int>::Element *E = constraint_map.front(); E; E = E->next()) {
+	for (RBMap<Constraint2DSW *, int>::Element *E = constraint_map.front(); E; E = E->next()) {
 		const Constraint2DSW *c = E->key();
 		Body2DSW **n = c->get_body_ptr();
 		int bc = c->get_body_count();

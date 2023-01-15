@@ -274,7 +274,7 @@ void NetworkedMultiplayerENet::poll() {
 					}
 
 					// Someone connected, notify all the peers available
-					for (Map<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
+					for (RBMap<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
 						if (E->key() == *new_id) {
 							continue;
 						}
@@ -314,7 +314,7 @@ void NetworkedMultiplayerENet::poll() {
 					return;
 				} else if (server_relay) {
 					// Server just received a client disconnect and is in relay mode, notify everyone else.
-					for (Map<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
+					for (RBMap<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
 						if (E->key() == *id) {
 							continue;
 						}
@@ -388,7 +388,7 @@ void NetworkedMultiplayerENet::poll() {
 
 							incoming_packets.push_back(packet);
 							// And make copies for sending
-							for (Map<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
+							for (RBMap<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
 								if (uint32_t(E->key()) == source) { // Do not resend to self
 									continue;
 								}
@@ -402,7 +402,7 @@ void NetworkedMultiplayerENet::poll() {
 							// To all but one
 
 							// And make copies for sending
-							for (Map<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
+							for (RBMap<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
 								if (uint32_t(E->key()) == source || E->key() == -target) { // Do not resend to self, also do not send to excluded
 									continue;
 								}
@@ -456,7 +456,7 @@ void NetworkedMultiplayerENet::close_connection(uint32_t wait_usec) {
 	_pop_current_packet();
 
 	bool peers_disconnected = false;
-	for (Map<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
+	for (RBMap<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
 		if (E->get()) {
 			enet_peer_disconnect_now(E->get(), unique_id);
 			int *id = (int *)(E->get()->data);
@@ -493,7 +493,7 @@ void NetworkedMultiplayerENet::disconnect_peer(int p_peer, bool now) {
 		// enet_peer_disconnect_now doesn't generate ENET_EVENT_TYPE_DISCONNECT,
 		// notify everyone else, send disconnect signal & remove from peer_map like in poll()
 		if (server_relay) {
-			for (Map<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
+			for (RBMap<int, ENetPeer *>::Element *E = peer_map.front(); E; E = E->next()) {
 				if (E->key() == p_peer) {
 					continue;
 				}
@@ -571,7 +571,7 @@ Error NetworkedMultiplayerENet::put_packet(const uint8_t *p_buffer, int p_buffer
 	}
 #endif
 
-	Map<int, ENetPeer *>::Element *E = nullptr;
+	RBMap<int, ENetPeer *>::Element *E = nullptr;
 
 	if (target_peer != 0) {
 		E = peer_map.find(ABS(target_peer));
@@ -592,7 +592,7 @@ Error NetworkedMultiplayerENet::put_packet(const uint8_t *p_buffer, int p_buffer
 
 			int exclude = -target_peer;
 
-			for (Map<int, ENetPeer *>::Element *F = peer_map.front(); F; F = F->next()) {
+			for (RBMap<int, ENetPeer *>::Element *F = peer_map.front(); F; F = F->next()) {
 				if (F->key() == exclude) { // Exclude packet
 					continue;
 				}

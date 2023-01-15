@@ -30,7 +30,7 @@
 
 #include "test_physics.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/convex_hull.h"
 #include "core/math/math_funcs.h"
 #include "core/os/main_loop.h"
@@ -63,8 +63,8 @@ class TestPhysicsMainLoop : public MainLoop {
 	Point2 joy_direction;
 
 	List<RID> bodies;
-	Map<PhysicsServer::ShapeType, RID> type_shape_map;
-	Map<PhysicsServer::ShapeType, RID> type_mesh_map;
+	RBMap<PhysicsServer::ShapeType, RID> type_shape_map;
+	RBMap<PhysicsServer::ShapeType, RID> type_mesh_map;
 
 	void body_changed_transform(Object *p_state, RID p_visual_instance) {
 		PhysicsDirectBodyState *state = (PhysicsDirectBodyState *)p_state;

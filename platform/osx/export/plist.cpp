@@ -140,7 +140,7 @@ size_t PListNode::get_asn1_size(uint8_t p_len_octets) const {
 		} break;
 		case PList::PLNodeType::PL_NODE_TYPE_DICT: {
 			size_t size = 0;
-			for (const Map<String, Ref<PListNode>>::Element *it = data_dict.front(); it; it = it->next()) {
+			for (const RBMap<String, Ref<PListNode>>::Element *it = data_dict.front(); it; it = it->next()) {
 				size += 1 + _asn1_size_len(p_len_octets); // Sequence.
 				size += 1 + _asn1_size_len(p_len_octets) + it->key().utf8().length(); //Key.
 				size += 1 + _asn1_size_len(p_len_octets) + it->value()->get_asn1_size(p_len_octets); // Value.
@@ -225,7 +225,7 @@ bool PListNode::store_asn1(PoolByteArray &p_stream, uint8_t p_len_octets) const 
 		case PList::PLNodeType::PL_NODE_TYPE_DICT: {
 			p_stream.push_back(0x31); // Set.
 			store_asn1_size(p_stream, p_len_octets);
-			for (const Map<String, Ref<PListNode>>::Element *it = data_dict.front(); it; it = it->next()) {
+			for (const RBMap<String, Ref<PListNode>>::Element *it = data_dict.front(); it; it = it->next()) {
 				CharString cs = it->key().utf8();
 				uint32_t size = cs.length();
 
@@ -317,7 +317,7 @@ void PListNode::store_text(String &p_stream, uint8_t p_indent) const {
 		case PList::PLNodeType::PL_NODE_TYPE_DICT: {
 			p_stream += String("\t").repeat(p_indent);
 			p_stream += "<dict>\n";
-			for (const Map<String, Ref<PListNode>>::Element *it = data_dict.front(); it; it = it->next()) {
+			for (const RBMap<String, Ref<PListNode>>::Element *it = data_dict.front(); it; it = it->next()) {
 				p_stream += String("\t").repeat(p_indent + 1);
 				p_stream += "<key>";
 				p_stream += it->key();

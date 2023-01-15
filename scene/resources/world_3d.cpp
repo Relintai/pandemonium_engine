@@ -46,12 +46,12 @@ struct SpatialIndexer {
 		OctreeElementID id;
 	};
 
-	Map<VisibilityNotifier *, NotifierData> notifiers;
+	RBMap<VisibilityNotifier *, NotifierData> notifiers;
 	struct CameraData {
-		Map<VisibilityNotifier *, uint64_t> notifiers;
+		RBMap<VisibilityNotifier *, uint64_t> notifiers;
 	};
 
-	Map<Camera *, CameraData> cameras;
+	RBMap<Camera *, CameraData> cameras;
 
 	enum {
 		VISIBILITY_CULL_MAX = 32768
@@ -71,7 +71,7 @@ struct SpatialIndexer {
 	}
 
 	void _notifier_update(VisibilityNotifier *p_notifier, const AABB &p_rect) {
-		Map<VisibilityNotifier *, NotifierData>::Element *E = notifiers.find(p_notifier);
+		RBMap<VisibilityNotifier *, NotifierData>::Element *E = notifiers.find(p_notifier);
 		ERR_FAIL_COND(!E);
 		if (E->get().aabb == p_rect) {
 			return;
@@ -83,15 +83,15 @@ struct SpatialIndexer {
 	}
 
 	void _notifier_remove(VisibilityNotifier *p_notifier) {
-		Map<VisibilityNotifier *, NotifierData>::Element *E = notifiers.find(p_notifier);
+		RBMap<VisibilityNotifier *, NotifierData>::Element *E = notifiers.find(p_notifier);
 		ERR_FAIL_COND(!E);
 
 		octree.erase(E->get().id);
 		notifiers.erase(p_notifier);
 
 		List<Camera *> removed;
-		for (Map<Camera *, CameraData>::Element *F = cameras.front(); F; F = F->next()) {
-			Map<VisibilityNotifier *, uint64_t>::Element *G = F->get().notifiers.find(p_notifier);
+		for (RBMap<Camera *, CameraData>::Element *F = cameras.front(); F; F = F->next()) {
+			RBMap<VisibilityNotifier *, uint64_t>::Element *G = F->get().notifiers.find(p_notifier);
 
 			if (G) {
 				F->get().notifiers.erase(G);
@@ -115,7 +115,7 @@ struct SpatialIndexer {
 	}
 
 	void _update_camera(Camera *p_camera) {
-		Map<Camera *, CameraData>::Element *E = cameras.find(p_camera);
+		RBMap<Camera *, CameraData>::Element *E = cameras.find(p_camera);
 		ERR_FAIL_COND(!E);
 		changed = true;
 	}
@@ -123,7 +123,7 @@ struct SpatialIndexer {
 	void _remove_camera(Camera *p_camera) {
 		ERR_FAIL_COND(!cameras.has(p_camera));
 		List<VisibilityNotifier *> removed;
-		for (Map<VisibilityNotifier *, uint64_t>::Element *E = cameras[p_camera].notifiers.front(); E; E = E->next()) {
+		for (RBMap<VisibilityNotifier *, uint64_t>::Element *E = cameras[p_camera].notifiers.front(); E; E = E->next()) {
 			removed.push_back(E->key());
 		}
 
@@ -145,7 +145,7 @@ struct SpatialIndexer {
 			return;
 		}
 
-		for (Map<Camera *, CameraData>::Element *E = cameras.front(); E; E = E->next()) {
+		for (RBMap<Camera *, CameraData>::Element *E = cameras.front(); E; E = E->next()) {
 			pass++;
 
 			// prepare camera info
@@ -177,7 +177,7 @@ struct SpatialIndexer {
 					}
 				}
 
-				Map<VisibilityNotifier *, uint64_t>::Element *H = E->get().notifiers.find(ptr[i]);
+				RBMap<VisibilityNotifier *, uint64_t>::Element *H = E->get().notifiers.find(ptr[i]);
 				if (!H) {
 					E->get().notifiers.insert(ptr[i], pass);
 					added.push_back(ptr[i]);
@@ -186,7 +186,7 @@ struct SpatialIndexer {
 				}
 			}
 
-			for (Map<VisibilityNotifier *, uint64_t>::Element *F = E->get().notifiers.front(); F; F = F->next()) {
+			for (RBMap<VisibilityNotifier *, uint64_t>::Element *F = E->get().notifiers.front(); F; F = F->next()) {
 				if (F->get() != pass) {
 					removed.push_back(F->key());
 				}
@@ -309,7 +309,7 @@ PhysicsDirectSpaceState *World3D::get_direct_space_state() {
 }
 
 void World3D::get_camera_list(List<Camera *> *r_cameras) {
-	for (Map<Camera *, SpatialIndexer::CameraData>::Element *E = indexer->cameras.front(); E; E = E->next()) {
+	for (RBMap<Camera *, SpatialIndexer::CameraData>::Element *E = indexer->cameras.front(); E; E = E->next()) {
 		r_cameras->push_back(E->key());
 	}
 }

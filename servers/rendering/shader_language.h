@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/ordered_hash_map.h"
 #include "core/object/script_language.h"
 #include "core/string/string_name.h"
@@ -504,7 +504,7 @@ public:
 			bool is_const;
 		};
 
-		Map<StringName, Variable> variables;
+		RBMap<StringName, Variable> variables;
 		List<Node *> statements;
 		bool single_statement;
 
@@ -669,10 +669,10 @@ public:
 			}
 		};
 
-		Map<StringName, Constant> constants;
+		RBMap<StringName, Constant> constants;
 		OrderedHashMap<StringName, Varying> varyings;
 		OrderedHashMap<StringName, Uniform> uniforms;
-		Map<StringName, Struct> structs;
+		RBMap<StringName, Struct> structs;
 		Vector<StringName> render_modes;
 
 		Vector<Function> functions;
@@ -761,7 +761,7 @@ public:
 	};
 
 	struct FunctionInfo {
-		Map<StringName, BuiltInInfo> built_ins;
+		RBMap<StringName, BuiltInInfo> built_ins;
 		bool can_discard;
 		bool main_function;
 
@@ -769,7 +769,7 @@ public:
 				can_discard(false), main_function(false) {
 		}
 	};
-	static bool has_builtin(const Map<StringName, ShaderLanguage::FunctionInfo> &p_functions, const StringName &p_name);
+	static bool has_builtin(const RBMap<StringName, ShaderLanguage::FunctionInfo> &p_functions, const StringName &p_name);
 
 private:
 	struct KeyWord {
@@ -831,9 +831,9 @@ private:
 		IDENTIFIER_CONSTANT,
 	};
 
-	bool _find_identifier(const BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types, const StringName &p_identifier, DataType *r_data_type = nullptr, IdentifierType *r_type = nullptr, bool *r_is_const = nullptr, int *r_array_size = nullptr, StringName *r_struct_name = nullptr, ConstantNode::Value *r_constant_value = nullptr);
+	bool _find_identifier(const BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types, const StringName &p_identifier, DataType *r_data_type = nullptr, IdentifierType *r_type = nullptr, bool *r_is_const = nullptr, int *r_array_size = nullptr, StringName *r_struct_name = nullptr, ConstantNode::Value *r_constant_value = nullptr);
 	bool _is_operator_assign(Operator p_op) const;
-	bool _validate_assign(Node *p_node, const Map<StringName, BuiltInInfo> &p_builtin_types, String *r_message = nullptr);
+	bool _validate_assign(Node *p_node, const RBMap<StringName, BuiltInInfo> &p_builtin_types, String *r_message = nullptr);
 	bool _validate_operator(OperatorNode *p_op, DataType *r_ret_type = nullptr);
 
 	struct BuiltinFuncDef {
@@ -869,20 +869,20 @@ private:
 	bool _compare_datatypes_in_nodes(Node *a, Node *b) const;
 
 	bool _validate_function_call(BlockNode *p_block, OperatorNode *p_func, DataType *r_ret_type, StringName *r_ret_type_str);
-	bool _parse_function_arguments(BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types, OperatorNode *p_func, int *r_complete_arg = nullptr);
+	bool _parse_function_arguments(BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types, OperatorNode *p_func, int *r_complete_arg = nullptr);
 	bool _validate_varying_assign(ShaderNode::Varying &p_varying, String *r_message);
 
-	Node *_parse_expression(BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types);
+	Node *_parse_expression(BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types);
 	Error _parse_array_size(BlockNode *p_block, int *r_array_size);
-	Node *_parse_array_constructor(BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types, DataType p_type, const StringName &p_struct_name, int p_array_size);
+	Node *_parse_array_constructor(BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types, DataType p_type, const StringName &p_struct_name, int p_array_size);
 	ShaderLanguage::Node *_reduce_expression(BlockNode *p_block, ShaderLanguage::Node *p_node);
 
-	Node *_parse_and_reduce_expression(BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types);
-	Error _parse_block(BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types, bool p_just_one = false, bool p_can_break = false, bool p_can_continue = false);
+	Node *_parse_and_reduce_expression(BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types);
+	Error _parse_block(BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types, bool p_just_one = false, bool p_can_break = false, bool p_can_continue = false);
 	String _get_shader_type_list(const Set<String> &p_shader_types) const;
 	String _get_qualifier_str(ArgumentQualifier p_qualifier) const;
 
-	Error _parse_shader(const Map<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types);
+	Error _parse_shader(const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types);
 
 	Error _find_last_flow_op_in_block(BlockNode *p_block, FlowOperation p_op);
 	Error _find_last_flow_op_in_op(ControlFlowNode *p_flow, FlowOperation p_op);
@@ -893,8 +893,8 @@ public:
 	void clear();
 
 	static String get_shader_type(const String &p_code);
-	Error compile(const String &p_code, const Map<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types);
-	Error complete(const String &p_code, const Map<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types, List<ScriptCodeCompletionOption> *r_options, String &r_call_hint);
+	Error compile(const String &p_code, const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types);
+	Error complete(const String &p_code, const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types, List<ScriptCodeCompletionOption> *r_options, String &r_call_hint);
 
 	String get_error_text();
 	int get_error_line();

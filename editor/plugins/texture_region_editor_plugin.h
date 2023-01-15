@@ -38,7 +38,7 @@
 
 #include "core/variant/dictionary.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
@@ -114,7 +114,7 @@ class TextureRegionEditor : public VBoxContainer {
 	Rect2 rect_prev;
 	float prev_margin;
 	int edited_margin;
-	Map<RID, List<Rect2>> cache_map;
+	RBMap<RID, List<Rect2>> cache_map;
 	List<Rect2> autoslice_cache;
 	bool autoslice_is_dirty;
 

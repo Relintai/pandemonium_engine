@@ -49,7 +49,7 @@ public:
 private:
 	//path sent caches
 	struct PathSentCache {
-		Map<int, bool> confirmed_peers;
+		RBMap<int, bool> confirmed_peers;
 		int id;
 	};
 
@@ -60,7 +60,7 @@ private:
 			ObjectID instance;
 		};
 
-		Map<int, NodeInfo> nodes;
+		RBMap<int, NodeInfo> nodes;
 	};
 
 #ifdef DEBUG_ENABLED
@@ -73,7 +73,7 @@ private:
 	Vector<BandwidthFrame> bandwidth_incoming_data;
 	int bandwidth_outgoing_pointer;
 	Vector<BandwidthFrame> bandwidth_outgoing_data;
-	Map<ObjectID, ProfilingInfo> profiler_frame_data;
+	RBMap<ObjectID, ProfilingInfo> profiler_frame_data;
 	bool profiling;
 
 	void _init_node_profile(ObjectID p_node);
@@ -84,7 +84,7 @@ private:
 	int rpc_sender_id;
 	Set<int> connected_peers;
 	HashMap<NodePath, PathSentCache> path_send_cache;
-	Map<int, PathGetCache> path_get_cache;
+	RBMap<int, PathGetCache> path_get_cache;
 	int last_send_cache_id;
 	Vector<uint8_t> packet_cache;
 	Node *root_node;

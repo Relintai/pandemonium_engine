@@ -51,7 +51,7 @@ public:
 	virtual Error modify_template(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags);
 	virtual Error fixup_embedded_pck(const String &p_path, int64_t p_embedded_start, int64_t p_embedded_size);
 	virtual void get_export_options(List<ExportOption> *r_options);
-	virtual bool get_option_visibility(const EditorExportPreset *p_preset, const String &p_option, const Map<StringName, Variant> &p_options) const;
+	virtual bool get_option_visibility(const EditorExportPreset *p_preset, const String &p_option, const RBMap<StringName, Variant> &p_options) const;
 	virtual bool has_valid_export_configuration(const Ref<EditorExportPreset> &p_preset, String &r_error, bool &r_missing_templates) const;
 	virtual bool has_valid_project_configuration(const Ref<EditorExportPreset> &p_preset, String &r_error) const;
 };
@@ -218,7 +218,7 @@ Error EditorExportPlatformWindows::export_project(const Ref<EditorExportPreset> 
 	return err;
 }
 
-bool EditorExportPlatformWindows::get_option_visibility(const EditorExportPreset *p_preset, const String &p_option, const Map<StringName, Variant> &p_options) const {
+bool EditorExportPlatformWindows::get_option_visibility(const EditorExportPreset *p_preset, const String &p_option, const RBMap<StringName, Variant> &p_options) const {
 	// This option is not supported by "osslsigncode", used on non-Windows host.
 	if (!OS::get_singleton()->has_feature("Windows") && p_option == "codesign/identity_type") {
 		return false;

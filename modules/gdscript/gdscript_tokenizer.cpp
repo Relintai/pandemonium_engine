@@ -31,7 +31,7 @@
 #include "gdscript_tokenizer.h"
 
 #include "core/io/marshalls.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/string/print_string.h"
 #include "gdscript_functions.h"
 
@@ -1248,9 +1248,9 @@ Error GDScriptTokenizerBuffer::set_code_buffer(const Vector<uint8_t> &p_buffer) 
 Vector<uint8_t> GDScriptTokenizerBuffer::parse_code_string(const String &p_code) {
 	Vector<uint8_t> buf;
 
-	Map<StringName, int> identifier_map;
+	RBMap<StringName, int> identifier_map;
 	HashMap<Variant, int, VariantHasher, VariantComparator> constant_map;
-	Map<uint32_t, int> line_map;
+	RBMap<uint32_t, int> line_map;
 	Vector<uint32_t> token_array;
 
 	GDScriptTokenizerText tt;
@@ -1308,19 +1308,19 @@ Vector<uint8_t> GDScriptTokenizerBuffer::parse_code_string(const String &p_code)
 
 	//reverse maps
 
-	Map<int, StringName> rev_identifier_map;
-	for (Map<StringName, int>::Element *E = identifier_map.front(); E; E = E->next()) {
+	RBMap<int, StringName> rev_identifier_map;
+	for (RBMap<StringName, int>::Element *E = identifier_map.front(); E; E = E->next()) {
 		rev_identifier_map[E->get()] = E->key();
 	}
 
-	Map<int, Variant> rev_constant_map;
+	RBMap<int, Variant> rev_constant_map;
 	const Variant *K = nullptr;
 	while ((K = constant_map.next(K))) {
 		rev_constant_map[constant_map[*K]] = *K;
 	}
 
-	Map<int, uint32_t> rev_line_map;
-	for (Map<uint32_t, int>::Element *E = line_map.front(); E; E = E->next()) {
+	RBMap<int, uint32_t> rev_line_map;
+	for (RBMap<uint32_t, int>::Element *E = line_map.front(); E; E = E->next()) {
 		rev_line_map[E->get()] = E->key();
 	}
 
@@ -1338,7 +1338,7 @@ Vector<uint8_t> GDScriptTokenizerBuffer::parse_code_string(const String &p_code)
 
 	//save identifiers
 
-	for (Map<int, StringName>::Element *E = rev_identifier_map.front(); E; E = E->next()) {
+	for (RBMap<int, StringName>::Element *E = rev_identifier_map.front(); E; E = E->next()) {
 		CharString cs = String(E->get()).utf8();
 		int len = cs.length() + 1;
 		int extra = 4 - (len % 4);
@@ -1359,7 +1359,7 @@ Vector<uint8_t> GDScriptTokenizerBuffer::parse_code_string(const String &p_code)
 		}
 	}
 
-	for (Map<int, Variant>::Element *E = rev_constant_map.front(); E; E = E->next()) {
+	for (RBMap<int, Variant>::Element *E = rev_constant_map.front(); E; E = E->next()) {
 		int len;
 		// Objects cannot be constant, never encode objects
 		Error err = encode_variant(E->get(), nullptr, len, false);
@@ -1369,7 +1369,7 @@ Vector<uint8_t> GDScriptTokenizerBuffer::parse_code_string(const String &p_code)
 		encode_variant(E->get(), &buf.write[pos], len, false);
 	}
 
-	for (Map<int, uint32_t>::Element *E = rev_line_map.front(); E; E = E->next()) {
+	for (RBMap<int, uint32_t>::Element *E = rev_line_map.front(); E; E = E->next()) {
 		uint8_t ibuf[8];
 		encode_uint32(E->key(), &ibuf[0]);
 		encode_uint32(E->get(), &ibuf[4]);

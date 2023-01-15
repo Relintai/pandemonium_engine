@@ -81,7 +81,7 @@ public:
 			bool safe : 1;
 			bool has_info : 1;
 			int wrap_amount_cache : 24;
-			Map<int, ColorRegionInfo> region_info;
+			RBMap<int, ColorRegionInfo> region_info;
 			Ref<Texture> info_icon;
 			String info;
 			String data;
@@ -115,7 +115,7 @@ public:
 		int get_char_width(CharType c, CharType next_c, int px) const;
 		void set_line_wrap_amount(int p_line, int p_wrap_amount) const;
 		int get_line_wrap_amount(int p_line) const;
-		const Map<int, ColorRegionInfo> &get_color_region_info(int p_line) const;
+		const RBMap<int, ColorRegionInfo> &get_color_region_info(int p_line) const;
 
 		void set(int p_line, const String &p_text);
 		void set_marked(int p_line, bool p_marked) { text.write[p_line].marked = p_marked; }
@@ -272,8 +272,8 @@ private:
 		}
 	} cache;
 
-	Map<int, int> color_region_cache;
-	Map<int, Map<int, HighlighterInfo>> syntax_highlighting_cache;
+	RBMap<int, int> color_region_cache;
+	RBMap<int, RBMap<int, HighlighterInfo>> syntax_highlighting_cache;
 
 	struct TextOperation {
 		enum Type {
@@ -320,7 +320,7 @@ private:
 	HashMap<String, Color> keywords;
 	HashMap<String, Color> member_keywords;
 
-	Map<int, HighlighterInfo> _get_line_syntax_highlighting(int p_line);
+	RBMap<int, HighlighterInfo> _get_line_syntax_highlighting(int p_line);
 
 	Vector<ColorRegion> color_regions;
 
@@ -527,7 +527,7 @@ private:
 		Vector<int> last_visible_char;
 	};
 
-	Map<int, LineDrawingCache> line_drawing_cache;
+	RBMap<int, LineDrawingCache> line_drawing_cache;
 
 	/* super internal api, undo/redo builds on it */
 
@@ -570,7 +570,7 @@ public:
 
 	int _is_line_in_region(int p_line);
 	ColorRegion _get_color_region(int p_region) const;
-	Map<int, Text::ColorRegionInfo> _get_line_color_region_info(int p_line) const;
+	RBMap<int, Text::ColorRegionInfo> _get_line_color_region_info(int p_line) const;
 
 	enum MenuItems {
 		MENU_CUT,
@@ -891,7 +891,7 @@ protected:
 public:
 	virtual ~SyntaxHighlighter() {}
 	virtual void _update_cache() = 0;
-	virtual Map<int, TextEdit::HighlighterInfo> _get_line_syntax_highlighting(int p_line) = 0;
+	virtual RBMap<int, TextEdit::HighlighterInfo> _get_line_syntax_highlighting(int p_line) = 0;
 
 	virtual String get_name() const = 0;
 	virtual List<String> get_supported_languages() = 0;

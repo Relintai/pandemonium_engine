@@ -211,12 +211,12 @@ void EditorProfiler::_update_plot() {
 		}
 
 		for (Set<StringName>::Element *E = plot_sigs.front(); E; E = E->next()) {
-			const Map<StringName, Metric::Category *>::Element *F = m.category_ptrs.find(E->get());
+			const RBMap<StringName, Metric::Category *>::Element *F = m.category_ptrs.find(E->get());
 			if (F) {
 				highest = MAX(F->get()->total_time, highest);
 			}
 
-			const Map<StringName, Metric::Category::Item *>::Element *G = m.item_ptrs.find(E->get());
+			const RBMap<StringName, Metric::Category::Item *>::Element *G = m.item_ptrs.find(E->get());
 			if (G) {
 				if (use_self) {
 					highest = MAX(G->get()->self, highest);
@@ -237,7 +237,7 @@ void EditorProfiler::_update_plot() {
 
 		int *column = columnv.ptrw();
 
-		Map<StringName, int> plot_prev;
+		RBMap<StringName, int> plot_prev;
 		//Map<StringName,int> plot_max;
 
 		for (int i = 0; i < w; i++) {
@@ -272,12 +272,12 @@ void EditorProfiler::_update_plot() {
 
 					float value = 0;
 
-					const Map<StringName, Metric::Category *>::Element *F = m.category_ptrs.find(E->get());
+					const RBMap<StringName, Metric::Category *>::Element *F = m.category_ptrs.find(E->get());
 					if (F) {
 						value = F->get()->total_time;
 					}
 
-					const Map<StringName, Metric::Category::Item *>::Element *G = m.item_ptrs.find(E->get());
+					const RBMap<StringName, Metric::Category::Item *>::Element *G = m.item_ptrs.find(E->get());
 					if (G) {
 						if (use_self) {
 							value = G->get()->self;
@@ -290,7 +290,7 @@ void EditorProfiler::_update_plot() {
 				}
 
 				int prev_plot = plot_pos;
-				Map<StringName, int>::Element *H = plot_prev.find(E->get());
+				RBMap<StringName, int>::Element *H = plot_prev.find(E->get());
 				if (H) {
 					prev_plot = H->get();
 					H->get() = plot_pos;
@@ -637,16 +637,16 @@ Vector<Vector<String>> EditorProfiler::get_data_as_csv() const {
 		if (!m.valid) {
 			continue;
 		}
-		for (Map<StringName, Metric::Category *>::Element *E = m.category_ptrs.front(); E; E = E->next()) {
+		for (RBMap<StringName, Metric::Category *>::Element *E = m.category_ptrs.front(); E; E = E->next()) {
 			possible_signatures.insert(E->key());
 		}
-		for (Map<StringName, Metric::Category::Item *>::Element *E = m.item_ptrs.front(); E; E = E->next()) {
+		for (RBMap<StringName, Metric::Category::Item *>::Element *E = m.item_ptrs.front(); E; E = E->next()) {
 			possible_signatures.insert(E->key());
 		}
 	}
 
 	// Generate CSV header and cache indices.
-	Map<StringName, int> sig_map;
+	RBMap<StringName, int> sig_map;
 	Vector<String> signatures;
 	signatures.resize(possible_signatures.size());
 	int sig_index = 0;
@@ -679,10 +679,10 @@ Vector<Vector<String>> EditorProfiler::get_data_as_csv() const {
 		values.clear();
 		values.resize(possible_signatures.size());
 
-		for (Map<StringName, Metric::Category *>::Element *E = m.category_ptrs.front(); E; E = E->next()) {
+		for (RBMap<StringName, Metric::Category *>::Element *E = m.category_ptrs.front(); E; E = E->next()) {
 			values.write[sig_map[E->key()]] = String::num_real(E->value()->total_time);
 		}
-		for (Map<StringName, Metric::Category::Item *>::Element *E = m.item_ptrs.front(); E; E = E->next()) {
+		for (RBMap<StringName, Metric::Category::Item *>::Element *E = m.item_ptrs.front(); E; E = E->next()) {
 			values.write[sig_map[E->key()]] = String::num_real(E->value()->total);
 		}
 

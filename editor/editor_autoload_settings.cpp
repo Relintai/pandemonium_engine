@@ -42,7 +42,7 @@
 #include "core/variant/dictionary.h"
 #include "core/error/error_macros.h"
 #include "core/io/resource_loader.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/math_funcs.h"
 #include "core/os/file_access.h"
 #include "core/os/memory.h"
@@ -408,7 +408,7 @@ void EditorAutoloadSettings::update_autoload() {
 
 	updating_autoload = true;
 
-	Map<String, AutoLoadInfo> to_remove;
+	RBMap<String, AutoLoadInfo> to_remove;
 	List<AutoLoadInfo *> to_add;
 
 	for (List<AutoLoadInfo>::Element *E = autoload_cache.front(); E; E = E->next()) {
@@ -493,7 +493,7 @@ void EditorAutoloadSettings::update_autoload() {
 	}
 
 	// Remove deleted/changed autoloads
-	for (Map<String, AutoLoadInfo>::Element *E = to_remove.front(); E; E = E->next()) {
+	for (RBMap<String, AutoLoadInfo>::Element *E = to_remove.front(); E; E = E->next()) {
 		AutoLoadInfo &info = E->get();
 		if (info.is_singleton) {
 			for (int i = 0; i < ScriptServer::get_language_count(); i++) {

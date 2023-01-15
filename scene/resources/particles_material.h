@@ -100,7 +100,7 @@ private:
 		int users;
 	};
 
-	static Map<MaterialKey, ShaderData> shader_map;
+	static RBMap<MaterialKey, ShaderData> shader_map;
 
 	MaterialKey current_key;
 

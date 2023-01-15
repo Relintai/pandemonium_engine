@@ -34,7 +34,7 @@ public class URIQueryDecoder {
      * @param results a map containing all query parameters. Query parameters that do not have a
      *            value will map to a null string
      */
-    static public void DecodeQuery(URI encodedURI, Map<String, String> results) {
+    static public void DecodeQuery(URI encodedURI, RBMap<String, String> results) {
         Scanner scanner = new Scanner(encodedURI.getRawQuery());
         scanner.useDelimiter("&");
         try {

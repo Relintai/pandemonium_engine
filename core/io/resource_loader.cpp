@@ -219,10 +219,10 @@ void ResourceFormatLoader::get_dependencies(const String &p_path, List<String> *
 	}
 }
 
-Error ResourceFormatLoader::rename_dependencies(const String &p_path, const Map<String, String> &p_map) {
+Error ResourceFormatLoader::rename_dependencies(const String &p_path, const RBMap<String, String> &p_map) {
 	if (get_script_instance() && get_script_instance()->has_method("rename_dependencies")) {
 		Dictionary deps_dict;
-		for (Map<String, String>::Element *E = p_map.front(); E; E = E->next()) {
+		for (RBMap<String, String>::Element *E = p_map.front(); E; E = E->next()) {
 			deps_dict[E->key()] = E->value();
 		}
 
@@ -668,7 +668,7 @@ void ResourceLoader::get_dependencies(const String &p_path, List<String> *p_depe
 	}
 }
 
-Error ResourceLoader::rename_dependencies(const String &p_path, const Map<String, String> &p_map) {
+Error ResourceLoader::rename_dependencies(const String &p_path, const RBMap<String, String> &p_map) {
 	String path = _path_remap(p_path);
 
 	String local_path;

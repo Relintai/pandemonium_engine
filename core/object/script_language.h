@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/io/multiplayer_api.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/pair.h"
 #include "core/object/resource.h"
 
@@ -149,7 +149,7 @@ public:
 
 	virtual int get_member_line(const StringName &p_member) const { return -1; }
 
-	virtual void get_constants(Map<StringName, Variant> *p_constants) {}
+	virtual void get_constants(RBMap<StringName, Variant> *p_constants) {}
 	virtual void get_members(Set<StringName> *p_constants) {}
 
 	virtual bool is_placeholder_fallback_enabled() const { return false; }
@@ -372,8 +372,8 @@ extern uint8_t script_encryption_key[32];
 class PlaceHolderScriptInstance : public ScriptInstance {
 	Object *owner;
 	List<PropertyInfo> properties;
-	Map<StringName, Variant> values;
-	Map<StringName, Variant> constants;
+	RBMap<StringName, Variant> values;
+	RBMap<StringName, Variant> constants;
 	ScriptLanguage *language;
 	Ref<Script> script;
 
@@ -400,7 +400,7 @@ public:
 
 	Object *get_owner() { return owner; }
 
-	void update(const List<PropertyInfo> &p_properties, const Map<StringName, Variant> &p_values); //likely changed in editor
+	void update(const List<PropertyInfo> &p_properties, const RBMap<StringName, Variant> &p_values); //likely changed in editor
 
 	virtual bool is_placeholder() const { return true; }
 
@@ -416,7 +416,7 @@ class ScriptDebugger {
 	int depth;
 
 	static ScriptDebugger *singleton;
-	Map<int, Set<StringName>> breakpoints;
+	RBMap<int, Set<StringName>> breakpoints;
 
 	ScriptLanguage *break_lang;
 
@@ -434,7 +434,7 @@ public:
 	bool is_breakpoint(int p_line, const StringName &p_source) const;
 	bool is_breakpoint_line(int p_line) const;
 	void clear_breakpoints();
-	const Map<int, Set<StringName>> &get_breakpoints() const { return breakpoints; }
+	const RBMap<int, Set<StringName>> &get_breakpoints() const { return breakpoints; }
 
 	virtual void debug(ScriptLanguage *p_script, bool p_can_continue = true, bool p_is_error_breakpoint = false) = 0;
 	virtual void idle_poll();

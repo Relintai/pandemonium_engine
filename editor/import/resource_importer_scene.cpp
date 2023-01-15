@@ -174,7 +174,7 @@ String ResourceImporterScene::get_resource_type() const {
 	return "PackedScene";
 }
 
-bool ResourceImporterScene::get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const {
+bool ResourceImporterScene::get_option_visibility(const String &p_option, const RBMap<StringName, Variant> &p_options) const {
 	if (p_option.begins_with("animation/")) {
 		if (p_option != "animation/import" && !bool(p_options["animation/import"])) {
 			return false;
@@ -290,7 +290,7 @@ static void _gen_shape_list(const Ref<Mesh> &mesh, List<Ref<Shape>> &r_shape_lis
 	}
 }
 
-Node *ResourceImporterScene::_fix_node(Node *p_node, Node *p_root, Map<Ref<Mesh>, List<Ref<Shape>>> &collision_map, List<Pair<NodePath, Node *>> &r_node_renames) {
+Node *ResourceImporterScene::_fix_node(Node *p_node, Node *p_root, RBMap<Ref<Mesh>, List<Ref<Shape>>> &collision_map, List<Pair<NodePath, Node *>> &r_node_renames) {
 	// Children first.
 	for (int i = 0; i < p_node->get_child_count(); i++) {
 		Node *r = _fix_node(p_node->get_child(i), p_root, collision_map, r_node_renames);
@@ -923,7 +923,7 @@ static String _make_extname(const String &p_str) {
 	return ext_name;
 }
 
-void ResourceImporterScene::_find_meshes(Node *p_node, Map<Ref<ArrayMesh>, Transform> &meshes) {
+void ResourceImporterScene::_find_meshes(Node *p_node, RBMap<Ref<ArrayMesh>, Transform> &meshes) {
 	MeshInstance *mi = Object::cast_to<MeshInstance>(p_node);
 
 	if (mi) {
@@ -945,7 +945,7 @@ void ResourceImporterScene::_find_meshes(Node *p_node, Map<Ref<ArrayMesh>, Trans
 	}
 }
 
-void ResourceImporterScene::_make_external_resources(Node *p_node, const String &p_base_path, bool p_make_animations, bool p_animations_as_text, bool p_keep_animations, bool p_make_materials, bool p_materials_as_text, bool p_keep_materials, bool p_make_meshes, bool p_meshes_as_text, Map<Ref<Animation>, Ref<Animation>> &p_animations, Map<Ref<Material>, Ref<Material>> &p_materials, Map<Ref<ArrayMesh>, Ref<ArrayMesh>> &p_meshes) {
+void ResourceImporterScene::_make_external_resources(Node *p_node, const String &p_base_path, bool p_make_animations, bool p_animations_as_text, bool p_keep_animations, bool p_make_materials, bool p_materials_as_text, bool p_keep_materials, bool p_make_meshes, bool p_meshes_as_text, RBMap<Ref<Animation>, Ref<Animation>> &p_animations, RBMap<Ref<Material>, Ref<Material>> &p_materials, RBMap<Ref<ArrayMesh>, Ref<ArrayMesh>> &p_meshes) {
 	List<PropertyInfo> pi;
 
 	if (p_make_animations) {
@@ -1249,7 +1249,7 @@ Ref<Animation> ResourceImporterScene::import_animation_from_other_importer(Edito
 	return importer->import_animation(p_path, p_flags, p_bake_fps);
 }
 
-Error ResourceImporterScene::import(const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error ResourceImporterScene::import(const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 	const String &src_path = p_source_file;
 
 	Ref<EditorSceneImporter> importer;
@@ -1357,7 +1357,7 @@ Error ResourceImporterScene::import(const String &p_source_file, const String &p
 	float anim_optimizer_angerr = p_options["animation/optimizer/max_angular_error"];
 	float anim_optimizer_maxang = p_options["animation/optimizer/max_angle"];
 
-	Map<Ref<Mesh>, List<Ref<Shape>>> collision_map;
+	RBMap<Ref<Mesh>, List<Ref<Shape>>> collision_map;
 	List<Pair<NodePath, Node *>> node_renames;
 	scene = _fix_node(scene, scene, collision_map, node_renames);
 
@@ -1412,9 +1412,9 @@ Error ResourceImporterScene::import(const String &p_source_file, const String &p
 	}
 
 	if (external_animations || external_materials || external_meshes) {
-		Map<Ref<Animation>, Ref<Animation>> anim_map;
-		Map<Ref<Material>, Ref<Material>> mat_map;
-		Map<Ref<ArrayMesh>, Ref<ArrayMesh>> mesh_map;
+		RBMap<Ref<Animation>, Ref<Animation>> anim_map;
+		RBMap<Ref<Material>, Ref<Material>> mat_map;
+		RBMap<Ref<ArrayMesh>, Ref<ArrayMesh>> mesh_map;
 
 		bool keep_materials = bool(p_options["materials/keep_on_reimport"]);
 

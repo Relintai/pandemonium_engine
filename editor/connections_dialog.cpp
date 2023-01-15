@@ -1025,9 +1025,9 @@ void ConnectionsDock::update_tree() {
 				String descr;
 				bool found = false;
 
-				Map<StringName, Map<StringName, String>>::Element *G = descr_cache.find(base);
+				RBMap<StringName, RBMap<StringName, String>>::Element *G = descr_cache.find(base);
 				if (G) {
-					Map<StringName, String>::Element *F = G->get().find(signal_name);
+					RBMap<StringName, String>::Element *F = G->get().find(signal_name);
 					if (F) {
 						found = true;
 						descr = F->get();
@@ -1036,7 +1036,7 @@ void ConnectionsDock::update_tree() {
 
 				if (!found) {
 					DocData *dd = EditorHelp::get_doc_data();
-					Map<String, DocData::ClassDoc>::Element *F = dd->class_list.find(base);
+					RBMap<String, DocData::ClassDoc>::Element *F = dd->class_list.find(base);
 					while (F && descr == String()) {
 						for (int i = 0; i < F->get().signals.size(); i++) {
 							if (F->get().signals[i].name == signal_name.operator String()) {

@@ -42,7 +42,7 @@
 #include "scene/gui/split_container.h"
 
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/set.h"
 #include "core/containers/vector.h"
 #include "core/error/error_list.h"
@@ -822,12 +822,12 @@ private:
 	Set<FileDialog *> file_dialogs;
 	Set<EditorFileDialog *> editor_file_dialogs;
 
-	Map<String, Ref<Texture>> icon_type_cache;
-	Map<Ref<Script>, Ref<Texture>> script_icon_cache;
+	RBMap<String, Ref<Texture>> icon_type_cache;
+	RBMap<Ref<Script>, Ref<Texture>> script_icon_cache;
 	void _build_icon_type_cache();
 
 	bool _initializing_addons;
-	Map<String, EditorPlugin *> plugin_addons;
+	RBMap<String, EditorPlugin *> plugin_addons;
 
 	static Ref<Texture> _file_dialog_get_icon(const String &p_path);
 	static void _file_dialog_register(FileDialog *p_dialog);
@@ -837,15 +837,15 @@ private:
 
 	void _remove_edited_scene(bool p_change_tab = true);
 	void _remove_scene(int index, bool p_change_tab = true);
-	bool _find_and_save_resource(RES p_res, Map<RES, bool> &processed, int32_t flags);
-	bool _find_and_save_edited_subresources(Object *obj, Map<RES, bool> &processed, int32_t flags);
-	void _save_edited_subresources(Node *scene, Map<RES, bool> &processed, int32_t flags);
+	bool _find_and_save_resource(RES p_res, RBMap<RES, bool> &processed, int32_t flags);
+	bool _find_and_save_edited_subresources(Object *obj, RBMap<RES, bool> &processed, int32_t flags);
+	void _save_edited_subresources(Node *scene, RBMap<RES, bool> &processed, int32_t flags);
 	void _mark_unsaved_scenes();
 
 	void _find_node_types(Node *p_node, int &count_2d, int &count_3d);
 	void _save_scene_with_preview(String p_file, int p_idx = -1);
 
-	Map<String, Set<String>> dependency_errors;
+	RBMap<String, Set<String>> dependency_errors;
 
 	static void _dependency_error_report(void *ud, const String &p_path, const String &p_dep, const String &p_type) {
 		EditorNode *en = (EditorNode *)ud;

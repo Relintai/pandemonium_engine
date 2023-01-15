@@ -239,9 +239,9 @@ _FORCE_INLINE_ Error NetSocketPosix::_change_multicast_group(IP_Address p_ip, St
 
 	IP_Address if_ip;
 	uint32_t if_v6id = 0;
-	Map<String, IP::Interface_Info> if_info;
+	RBMap<String, IP::Interface_Info> if_info;
 	IP::get_singleton()->get_local_interfaces(&if_info);
-	for (Map<String, IP::Interface_Info>::Element *E = if_info.front(); E; E = E->next()) {
+	for (RBMap<String, IP::Interface_Info>::Element *E = if_info.front(); E; E = E->next()) {
 		IP::Interface_Info &c = E->get();
 		if (c.name != p_if_name) {
 			continue;

@@ -485,7 +485,7 @@ public:
 	RID sbox_instance_xray;
 	RID sbox_instance_xray_offset;
 	Ref<EditorSpatialGizmo> gizmo;
-	Map<int, Transform> subgizmos; // map ID -> initial transform
+	RBMap<int, Transform> subgizmos; // map ID -> initial transform
 
 	SpatialEditorSelectedItem() {
 		sp = nullptr;

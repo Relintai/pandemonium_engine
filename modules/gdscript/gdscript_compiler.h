@@ -45,12 +45,12 @@ class GDScriptCompiler {
 		const GDScriptParser::FunctionNode *function_node;
 		bool debug_stack;
 
-		List<Map<StringName, int>> stack_id_stack;
-		Map<StringName, int> stack_identifiers;
+		List<RBMap<StringName, int>> stack_id_stack;
+		RBMap<StringName, int> stack_identifiers;
 
 		List<GDScriptFunction::StackDebug> stack_debug;
-		List<Map<StringName, int>> block_identifier_stack;
-		Map<StringName, int> block_identifiers;
+		List<RBMap<StringName, int>> block_identifier_stack;
+		RBMap<StringName, int> block_identifiers;
 
 		void add_stack_identifier(const StringName &p_id, int p_stackpos) {
 			stack_identifiers[p_id] = p_stackpos;
@@ -78,7 +78,7 @@ class GDScriptCompiler {
 			stack_id_stack.pop_back();
 
 			if (debug_stack) {
-				for (Map<StringName, int>::Element *E = block_identifiers.front(); E; E = E->next()) {
+				for (RBMap<StringName, int>::Element *E = block_identifiers.front(); E; E = E->next()) {
 					GDScriptFunction::StackDebug sd;
 					sd.added = false;
 					sd.identifier = E->key();
@@ -92,7 +92,7 @@ class GDScriptCompiler {
 		}
 
 		HashMap<Variant, int, VariantHasher, VariantComparator> constant_map;
-		Map<StringName, int> name_map;
+		RBMap<StringName, int> name_map;
 #ifdef TOOLS_ENABLED
 		Vector<StringName> named_globals;
 #endif

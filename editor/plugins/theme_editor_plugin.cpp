@@ -446,7 +446,7 @@ void ThemeItemImportTree::_update_total_selected(Theme::DataType p_data_type) {
 	}
 
 	int count = 0;
-	for (Map<ThemeItem, ItemCheckedState>::Element *E = selected_items.front(); E; E = E->next()) {
+	for (RBMap<ThemeItem, ItemCheckedState>::Element *E = selected_items.front(); E; E = E->next()) {
 		ThemeItem ti = E->key();
 		if (ti.data_type == p_data_type) {
 			count++;
@@ -756,7 +756,7 @@ void ThemeItemImportTree::_import_selected() {
 	ProgressDialog::get_singleton()->add_task("import_theme_items", TTR("Importing Theme Items"), selected_items.size() + 2);
 
 	int idx = 0;
-	for (Map<ThemeItem, ItemCheckedState>::Element *E = selected_items.front(); E; E = E->next()) {
+	for (RBMap<ThemeItem, ItemCheckedState>::Element *E = selected_items.front(); E; E = E->next()) {
 		// Arbitrary number of items to skip from reporting.
 		// Reduces the number of UI updates that this causes when copying large themes.
 		if (idx % 10 == 0) {

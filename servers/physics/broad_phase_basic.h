@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "broad_phase_sw.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 
 class BroadPhaseBasic : public BroadPhaseSW {
 	struct Element {
@@ -41,7 +41,7 @@ class BroadPhaseBasic : public BroadPhaseSW {
 		int subindex;
 	};
 
-	Map<ID, Element> element_map;
+	RBMap<ID, Element> element_map;
 
 	ID current;
 
@@ -70,7 +70,7 @@ class BroadPhaseBasic : public BroadPhaseSW {
 		}
 	};
 
-	Map<PairKey, void *> pair_map;
+	RBMap<PairKey, void *> pair_map;
 
 	PairCallback pair_callback;
 	void *pair_userdata;

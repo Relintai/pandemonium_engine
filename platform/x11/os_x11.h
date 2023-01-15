@@ -128,14 +128,14 @@ class OS_X11 : public OS_Unix {
 	struct {
 		int opcode;
 		Vector<int> touch_devices;
-		Map<int, Vector2> absolute_devices;
-		Map<int, Vector2> pen_pressure_range;
-		Map<int, Vector2> pen_tilt_x_range;
-		Map<int, Vector2> pen_tilt_y_range;
-		Map<int, bool> pen_inverted_devices;
+		RBMap<int, Vector2> absolute_devices;
+		RBMap<int, Vector2> pen_pressure_range;
+		RBMap<int, Vector2> pen_tilt_x_range;
+		RBMap<int, Vector2> pen_tilt_y_range;
+		RBMap<int, bool> pen_inverted_devices;
 		XIEventMask all_event_mask;
 		XIEventMask all_master_event_mask;
-		Map<int, Vector2> state;
+		RBMap<int, Vector2> state;
 		double pressure;
 		bool pressure_supported;
 		bool pen_inverted;
@@ -193,7 +193,7 @@ class OS_X11 : public OS_Unix {
 	Cursor cursors[CURSOR_MAX];
 	Cursor null_cursor;
 	CursorShape current_cursor;
-	Map<CursorShape, Vector<Variant>> cursors_cache;
+	RBMap<CursorShape, Vector<Variant>> cursors_cache;
 
 	InputDefault *input;
 

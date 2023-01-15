@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/resource.h"
 
 #include "terrain_library.h"
@@ -117,9 +117,9 @@ protected:
 
 	static void _bind_methods();
 
-	Map<int, Ref<TerrainMaterialCachePCM>> _material_cache;
-	Map<int, Ref<TerrainMaterialCachePCM>> _liquid_material_cache;
-	Map<int, Ref<TerrainMaterialCachePCM>> _prop_material_cache;
+	RBMap<int, Ref<TerrainMaterialCachePCM>> _material_cache;
+	RBMap<int, Ref<TerrainMaterialCachePCM>> _liquid_material_cache;
+	RBMap<int, Ref<TerrainMaterialCachePCM>> _prop_material_cache;
 
 	Vector<Ref<TerrainSurfaceMerger>> _terra_surfaces;
 #ifdef MODULE_PROPS_ENABLED

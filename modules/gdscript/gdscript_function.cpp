@@ -72,7 +72,7 @@ Variant *GDScriptFunction::_get_variant(int p_address, GDScriptInstance *p_insta
 			while (s) {
 				GDScript *o = s;
 				while (o) {
-					Map<StringName, Variant>::Element *E = o->constants.find(*sn);
+					RBMap<StringName, Variant>::Element *E = o->constants.find(*sn);
 					if (E) {
 						return &E->get();
 					}
@@ -1163,7 +1163,7 @@ Variant GDScriptFunction::call(GDScriptInstance *p_instance, const Variant **p_a
 
 				const GDScript *gds = _script;
 
-				const Map<StringName, GDScriptFunction *>::Element *E = nullptr;
+				const RBMap<StringName, GDScriptFunction *>::Element *E = nullptr;
 				while (gds->base.ptr()) {
 					gds = gds->base.ptr();
 					E = gds->member_functions.find(*methodname);
@@ -1649,7 +1649,7 @@ struct _GDFKCS {
 
 void GDScriptFunction::debug_get_stack_member_state(int p_line, List<Pair<StringName, int>> *r_stackvars) const {
 	int oc = 0;
-	Map<StringName, _GDFKC> sdmap;
+	RBMap<StringName, _GDFKC> sdmap;
 	for (const List<StackDebug>::Element *E = stack_debug.front(); E; E = E->next()) {
 		const StackDebug &sd = E->get();
 		if (sd.line > p_line) {
@@ -1677,7 +1677,7 @@ void GDScriptFunction::debug_get_stack_member_state(int p_line, List<Pair<String
 	}
 
 	List<_GDFKCS> stackpositions;
-	for (Map<StringName, _GDFKC>::Element *E = sdmap.front(); E; E = E->next()) {
+	for (RBMap<StringName, _GDFKC>::Element *E = sdmap.front(); E; E = E->next()) {
 		_GDFKCS spp;
 		spp.id = E->key();
 		spp.order = E->get().order;

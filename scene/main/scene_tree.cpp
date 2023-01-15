@@ -156,7 +156,7 @@ void SceneTree::node_renamed(Node *p_node) {
 }
 
 SceneTree::Group *SceneTree::add_to_group(const StringName &p_group, Node *p_node) {
-	Map<StringName, Group>::Element *E = group_map.find(p_group);
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
 	if (!E) {
 		E = group_map.insert(p_group, Group());
 	}
@@ -169,7 +169,7 @@ SceneTree::Group *SceneTree::add_to_group(const StringName &p_group, Node *p_nod
 }
 
 void SceneTree::remove_from_group(const StringName &p_group, Node *p_node) {
-	Map<StringName, Group>::Element *E = group_map.find(p_group);
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
 	ERR_FAIL_COND(!E);
 
 	E->get().nodes.erase(p_node);
@@ -179,7 +179,7 @@ void SceneTree::remove_from_group(const StringName &p_group, Node *p_node) {
 }
 
 void SceneTree::make_group_changed(const StringName &p_group) {
-	Map<StringName, Group>::Element *E = group_map.find(p_group);
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
 	if (E) {
 		E->get().changed = true;
 	}
@@ -200,7 +200,7 @@ void SceneTree::_flush_ugc() {
 	ugc_locked = true;
 
 	while (unique_group_calls.size()) {
-		Map<UGCall, Vector<Variant>>::Element *E = unique_group_calls.front();
+		RBMap<UGCall, Vector<Variant>>::Element *E = unique_group_calls.front();
 
 		Variant v[VARIANT_ARG_MAX];
 		for (int i = 0; i < E->get().size(); i++) {
@@ -238,7 +238,7 @@ void SceneTree::_update_group_order(Group &g, bool p_use_priority) {
 }
 
 void SceneTree::call_group_flags(uint32_t p_call_flags, const StringName &p_group, const StringName &p_function, VARIANT_ARG_DECLARE) {
-	Map<StringName, Group>::Element *E = group_map.find(p_group);
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
 	if (!E) {
 		return;
 	}
@@ -322,7 +322,7 @@ void SceneTree::call_group_flags(uint32_t p_call_flags, const StringName &p_grou
 }
 
 void SceneTree::notify_group_flags(uint32_t p_call_flags, const StringName &p_group, int p_notification) {
-	Map<StringName, Group>::Element *E = group_map.find(p_group);
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
 	if (!E) {
 		return;
 	}
@@ -373,7 +373,7 @@ void SceneTree::notify_group_flags(uint32_t p_call_flags, const StringName &p_gr
 }
 
 void SceneTree::set_group_flags(uint32_t p_call_flags, const StringName &p_group, const String &p_name, const Variant &p_value) {
-	Map<StringName, Group>::Element *E = group_map.find(p_group);
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
 	if (!E) {
 		return;
 	}
@@ -1073,7 +1073,7 @@ bool SceneTree::is_paused() const {
 }
 
 void SceneTree::_call_input_pause(const StringName &p_group, const StringName &p_method, const Ref<InputEvent> &p_input) {
-	Map<StringName, Group>::Element *E = group_map.find(p_group);
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
 	if (!E) {
 		return;
 	}
@@ -1121,7 +1121,7 @@ void SceneTree::_call_input_pause(const StringName &p_group, const StringName &p
 }
 
 void SceneTree::_notify_group_pause(const StringName &p_group, int p_notification) {
-	Map<StringName, Group>::Element *E = group_map.find(p_group);
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
 	if (!E) {
 		return;
 	}
@@ -1225,7 +1225,7 @@ int64_t SceneTree::get_event_count() const {
 
 Array SceneTree::_get_nodes_in_group(const StringName &p_group) {
 	Array ret;
-	Map<StringName, Group>::Element *E = group_map.find(p_group);
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
 	if (!E) {
 		return ret;
 	}
@@ -1250,7 +1250,7 @@ bool SceneTree::has_group(const StringName &p_identifier) const {
 	return group_map.has(p_identifier);
 }
 void SceneTree::get_nodes_in_group(const StringName &p_group, List<Node *> *p_list) {
-	Map<StringName, Group>::Element *E = group_map.find(p_group);
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
 	if (!E) {
 		return;
 	}
@@ -1507,7 +1507,7 @@ void SceneTree::_live_edit_node_set_func(int p_id, const StringName &p_prop, con
 		base = root->get_node(live_edit_root);
 	}
 
-	Map<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
@@ -1546,7 +1546,7 @@ void SceneTree::_live_edit_node_call_func(int p_id, const StringName &p_method, 
 		base = root->get_node(live_edit_root);
 	}
 
-	Map<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
@@ -1621,7 +1621,7 @@ void SceneTree::_live_edit_create_node_func(const NodePath &p_parent, const Stri
 		base = root->get_node(live_edit_root);
 	}
 
-	Map<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
@@ -1659,7 +1659,7 @@ void SceneTree::_live_edit_instance_node_func(const NodePath &p_parent, const St
 		base = root->get_node(live_edit_root);
 	}
 
-	Map<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
@@ -1691,7 +1691,7 @@ void SceneTree::_live_edit_remove_node_func(const NodePath &p_at) {
 		base = root->get_node(live_edit_root);
 	}
 
-	Map<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
@@ -1721,7 +1721,7 @@ void SceneTree::_live_edit_remove_and_keep_node_func(const NodePath &p_at, Objec
 		base = root->get_node(live_edit_root);
 	}
 
-	Map<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
@@ -1754,7 +1754,7 @@ void SceneTree::_live_edit_restore_node_func(ObjectID p_id, const NodePath &p_at
 		base = root->get_node(live_edit_root);
 	}
 
-	Map<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
@@ -1773,13 +1773,13 @@ void SceneTree::_live_edit_restore_node_func(ObjectID p_id, const NodePath &p_at
 		}
 		Node *n2 = n->get_node(p_at);
 
-		Map<Node *, Map<ObjectID, Node *>>::Element *EN = live_edit_remove_list.find(n);
+		RBMap<Node *, RBMap<ObjectID, Node *>>::Element *EN = live_edit_remove_list.find(n);
 
 		if (!EN) {
 			continue;
 		}
 
-		Map<ObjectID, Node *>::Element *FN = EN->get().find(p_id);
+		RBMap<ObjectID, Node *>::Element *FN = EN->get().find(p_id);
 
 		if (!FN) {
 			continue;
@@ -1801,7 +1801,7 @@ void SceneTree::_live_edit_duplicate_node_func(const NodePath &p_at, const Strin
 		base = root->get_node(live_edit_root);
 	}
 
-	Map<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
@@ -1834,7 +1834,7 @@ void SceneTree::_live_edit_reparent_node_func(const NodePath &p_at, const NodePa
 		base = root->get_node(live_edit_root);
 	}
 
-	Map<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}

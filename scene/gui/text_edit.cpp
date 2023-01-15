@@ -220,8 +220,8 @@ void TextEdit::Text::_update_line_cache(int p_line) const {
 	}
 }
 
-const Map<int, TextEdit::Text::ColorRegionInfo> &TextEdit::Text::get_color_region_info(int p_line) const {
-	static Map<int, ColorRegionInfo> cri;
+const RBMap<int, TextEdit::Text::ColorRegionInfo> &TextEdit::Text::get_color_region_info(int p_line) const {
+	static RBMap<int, ColorRegionInfo> cri;
 	ERR_FAIL_INDEX_V(p_line, text.size(), cri);
 
 	if (text[p_line].width_cache == -1) {
@@ -985,7 +985,7 @@ void TextEdit::_notification(int p_what) {
 						break;
 					}
 
-					Map<int, HighlighterInfo> color_map;
+					RBMap<int, HighlighterInfo> color_map;
 					if (syntax_coloring) {
 						color_map = _get_line_syntax_highlighting(minimap_line);
 					}
@@ -1125,7 +1125,7 @@ void TextEdit::_notification(int p_what) {
 				const String &fullstr = text[line];
 				LineDrawingCache cache_entry;
 
-				Map<int, HighlighterInfo> color_map;
+				RBMap<int, HighlighterInfo> color_map;
 				if (syntax_coloring) {
 					color_map = _get_line_syntax_highlighting(line);
 				}
@@ -3096,7 +3096,7 @@ void TextEdit::_gui_input(const Ref<InputEvent> &p_gui_input) {
 					// Indent once again if previous line will end with ':','{','[','(' and the line is not a comment
 					// (i.e. colon/brace precedes current cursor position).
 					if (cursor.column > 0) {
-						const Map<int, Text::ColorRegionInfo> &cri_map = text.get_color_region_info(cursor.line);
+						const RBMap<int, Text::ColorRegionInfo> &cri_map = text.get_color_region_info(cursor.line);
 						bool indent_char_found = false;
 						bool should_indent = false;
 						char indent_char = ':';
@@ -5467,8 +5467,8 @@ int TextEdit::_is_line_in_region(int p_line) {
 		in_region = -1;
 	}
 	for (int i = previous_line; i < p_line; i++) {
-		const Map<int, Text::ColorRegionInfo> &cri_map = _get_line_color_region_info(i);
-		for (const Map<int, Text::ColorRegionInfo>::Element *E = cri_map.front(); E; E = E->next()) {
+		const RBMap<int, Text::ColorRegionInfo> &cri_map = _get_line_color_region_info(i);
+		for (const RBMap<int, Text::ColorRegionInfo>::Element *E = cri_map.front(); E; E = E->next()) {
 			const Text::ColorRegionInfo &cri = E->get();
 			if (in_region == -1) {
 				if (!cri.end) {
@@ -5497,9 +5497,9 @@ TextEdit::ColorRegion TextEdit::_get_color_region(int p_region) const {
 	return color_regions[p_region];
 }
 
-Map<int, TextEdit::Text::ColorRegionInfo> TextEdit::_get_line_color_region_info(int p_line) const {
+RBMap<int, TextEdit::Text::ColorRegionInfo> TextEdit::_get_line_color_region_info(int p_line) const {
 	if (p_line < 0 || p_line > text.size() - 1) {
-		return Map<int, Text::ColorRegionInfo>();
+		return RBMap<int, Text::ColorRegionInfo>();
 	}
 	return text.get_color_region_info(p_line);
 }
@@ -6233,7 +6233,7 @@ bool TextEdit::is_line_comment(int p_line) const {
 	// Checks to see if this line is the start of a comment.
 	ERR_FAIL_INDEX_V(p_line, text.size(), false);
 
-	const Map<int, Text::ColorRegionInfo> &cri_map = text.get_color_region_info(p_line);
+	const RBMap<int, Text::ColorRegionInfo> &cri_map = text.get_color_region_info(p_line);
 
 	int line_length = text[p_line].size();
 	for (int i = 0; i < line_length - 1; i++) {
@@ -7761,18 +7761,18 @@ TextEdit::~TextEdit() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-Map<int, TextEdit::HighlighterInfo> TextEdit::_get_line_syntax_highlighting(int p_line) {
+RBMap<int, TextEdit::HighlighterInfo> TextEdit::_get_line_syntax_highlighting(int p_line) {
 	if (syntax_highlighting_cache.has(p_line)) {
 		return syntax_highlighting_cache[p_line];
 	}
 
 	if (syntax_highlighter != nullptr) {
-		Map<int, HighlighterInfo> color_map = syntax_highlighter->_get_line_syntax_highlighting(p_line);
+		RBMap<int, HighlighterInfo> color_map = syntax_highlighter->_get_line_syntax_highlighting(p_line);
 		syntax_highlighting_cache[p_line] = color_map;
 		return color_map;
 	}
 
-	Map<int, HighlighterInfo> color_map;
+	RBMap<int, HighlighterInfo> color_map;
 
 	bool prev_is_char = false;
 	bool prev_is_number = false;
@@ -7787,7 +7787,7 @@ Map<int, TextEdit::HighlighterInfo> TextEdit::_get_line_syntax_highlighting(int 
 	int in_region = _is_line_in_region(p_line);
 	int deregion = 0;
 
-	const Map<int, TextEdit::Text::ColorRegionInfo> cri_map = text.get_color_region_info(p_line);
+	const RBMap<int, TextEdit::Text::ColorRegionInfo> cri_map = text.get_color_region_info(p_line);
 	const String &str = text[p_line];
 	Color prev_color;
 	for (int j = 0; j < str.length(); j++) {

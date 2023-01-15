@@ -33,7 +33,7 @@
 #include "core/math/math_funcs.h"
 
 void ProximityGroup::_clear_groups() {
-	Map<StringName, uint32_t>::Element *E;
+	RBMap<StringName, uint32_t>::Element *E;
 	const int size = 16;
 
 	do {
@@ -93,7 +93,7 @@ void ProximityGroup::_add_groups(int *p_cell, String p_base, int p_depth) {
 }
 
 void ProximityGroup::_new_group(StringName p_name) {
-	const Map<StringName, uint32_t>::Element *E = groups.find(p_name);
+	const RBMap<StringName, uint32_t>::Element *E = groups.find(p_name);
 	if (!E) {
 		add_to_group(p_name);
 	}
@@ -114,7 +114,7 @@ void ProximityGroup::_notification(int p_what) {
 }
 
 void ProximityGroup::broadcast(String p_method, Variant p_parameters) {
-	Map<StringName, uint32_t>::Element *E;
+	RBMap<StringName, uint32_t>::Element *E;
 	E = groups.front();
 	while (E) {
 		get_tree()->call_group_flags(SceneTree::GROUP_CALL_DEFAULT, E->key(), "_proximity_group_broadcast", p_method, p_parameters);

@@ -680,7 +680,7 @@ void BodySW::simulate_motion(const Transform& p_xform,real_t p_step) {
 */
 
 void BodySW::wakeup_neighbours() {
-	for (Map<ConstraintSW *, int>::Element *E = constraint_map.front(); E; E = E->next()) {
+	for (RBMap<ConstraintSW *, int>::Element *E = constraint_map.front(); E; E = E->next()) {
 		const ConstraintSW *c = E->key();
 		BodySW **n = c->get_body_ptr();
 		int bc = c->get_body_count();

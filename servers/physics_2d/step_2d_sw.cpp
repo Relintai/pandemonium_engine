@@ -36,7 +36,7 @@ void Step2DSW::_populate_island(Body2DSW *p_body, Body2DSW **p_island, Constrain
 	p_body->set_island_next(*p_island);
 	*p_island = p_body;
 
-	for (Map<Constraint2DSW *, int>::Element *E = p_body->get_constraint_map().front(); E; E = E->next()) {
+	for (RBMap<Constraint2DSW *, int>::Element *E = p_body->get_constraint_map().front(); E; E = E->next()) {
 		Constraint2DSW *c = (Constraint2DSW *)E->key();
 		if (c->get_island_step() == _step) {
 			continue; //already processed

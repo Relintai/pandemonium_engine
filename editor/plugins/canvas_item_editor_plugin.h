@@ -35,7 +35,7 @@
 #include "scene/gui/control.h"
 
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/vector.h"
 #include "core/math/math_defs.h"
 #include "core/math/rect2.h"
@@ -270,7 +270,7 @@ private:
 	ToolButton *zoom_reset;
 	ToolButton *zoom_plus;
 
-	Map<Control *, Timer *> popup_temporarily_timers;
+	RBMap<Control *, Timer *> popup_temporarily_timers;
 
 	Label *warning_child_of_container;
 	VBoxContainer *info_overlay;
@@ -364,7 +364,7 @@ private:
 		}
 	};
 
-	Map<BoneKey, BoneList> bone_list;
+	RBMap<BoneKey, BoneList> bone_list;
 
 	struct PoseClipboard {
 		Vector2 pos;

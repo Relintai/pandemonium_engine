@@ -107,7 +107,7 @@ class EditorExportPlatformOSX : public EditorExportPlatform {
 protected:
 	virtual void get_preset_features(const Ref<EditorExportPreset> &p_preset, List<String> *r_features);
 	virtual void get_export_options(List<ExportOption> *r_options);
-	virtual bool get_option_visibility(const EditorExportPreset *p_preset, const String &p_option, const Map<StringName, Variant> &p_options) const;
+	virtual bool get_option_visibility(const EditorExportPreset *p_preset, const String &p_option, const RBMap<StringName, Variant> &p_options) const;
 
 public:
 	virtual String get_name() const {
@@ -161,7 +161,7 @@ void EditorExportPlatformOSX::get_preset_features(const Ref<EditorExportPreset> 
 	r_features->push_back("64");
 }
 
-bool EditorExportPlatformOSX::get_option_visibility(const EditorExportPreset *p_preset, const String &p_option, const Map<StringName, Variant> &p_options) const {
+bool EditorExportPlatformOSX::get_option_visibility(const EditorExportPreset *p_preset, const String &p_option, const RBMap<StringName, Variant> &p_options) const {
 	// Hide irrelevant code signing options.
 	if (p_preset) {
 		int codesign_tool = p_preset->get("codesign/codesign");

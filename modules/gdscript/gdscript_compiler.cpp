@@ -722,7 +722,7 @@ int GDScriptCompiler::_parse_expression(CodeGen &codegen, const GDScriptParser::
 					} else if (named) {
 						if (on->arguments[0]->type == GDScriptParser::Node::TYPE_SELF && codegen.script && codegen.function_node && !codegen.function_node->_static) {
 							GDScriptParser::IdentifierNode *identifier = static_cast<GDScriptParser::IdentifierNode *>(on->arguments[1]);
-							const Map<StringName, GDScript::MemberInfo>::Element *MI = codegen.script->member_indices.find(identifier->name);
+							const RBMap<StringName, GDScript::MemberInfo>::Element *MI = codegen.script->member_indices.find(identifier->name);
 
 #ifdef DEBUG_ENABLED
 							if (MI && MI->get().getter == codegen.function_node->name) {
@@ -1007,7 +1007,7 @@ int GDScriptCompiler::_parse_expression(CodeGen &codegen, const GDScriptParser::
 							const GDScriptParser::OperatorNode *inon = static_cast<GDScriptParser::OperatorNode *>(on->arguments[0]);
 
 							if (inon->arguments[0]->type == GDScriptParser::Node::TYPE_SELF && codegen.script && codegen.function_node && !codegen.function_node->_static) {
-								const Map<StringName, GDScript::MemberInfo>::Element *MI = codegen.script->member_indices.find(static_cast<GDScriptParser::IdentifierNode *>(inon->arguments[1])->name);
+								const RBMap<StringName, GDScript::MemberInfo>::Element *MI = codegen.script->member_indices.find(static_cast<GDScriptParser::IdentifierNode *>(inon->arguments[1])->name);
 								if (MI && MI->get().setter == codegen.function_node->name) {
 									String n = static_cast<GDScriptParser::IdentifierNode *>(inon->arguments[1])->name;
 									_set_error("Must use '" + n + "' instead of 'self." + n + "' in setter.", inon);
@@ -1760,7 +1760,7 @@ Error GDScriptCompiler::_parse_function(GDScript *p_script, const GDScriptParser
 	if (codegen.name_map.size()) {
 		gdfunc->global_names.resize(codegen.name_map.size());
 		gdfunc->_global_names_ptr = &gdfunc->global_names[0];
-		for (Map<StringName, int>::Element *E = codegen.name_map.front(); E; E = E->next()) {
+		for (RBMap<StringName, int>::Element *E = codegen.name_map.front(); E; E = E->next()) {
 			gdfunc->global_names.write[E->get()] = E->key();
 		}
 		gdfunc->_global_names_count = gdfunc->global_names.size();
@@ -1884,7 +1884,7 @@ Error GDScriptCompiler::_parse_class_level(GDScript *p_script, const GDScriptPar
 	p_script->_base = nullptr;
 	p_script->members.clear();
 	p_script->constants.clear();
-	for (Map<StringName, GDScriptFunction *>::Element *E = p_script->member_functions.front(); E; E = E->next()) {
+	for (RBMap<StringName, GDScriptFunction *>::Element *E = p_script->member_functions.front(); E; E = E->next()) {
 		memdelete(E->get());
 	}
 	p_script->member_functions.clear();
@@ -1971,7 +1971,7 @@ Error GDScriptCompiler::_parse_class_level(GDScript *p_script, const GDScriptPar
 #endif
 	}
 
-	for (Map<StringName, GDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
+	for (RBMap<StringName, GDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
 		StringName name = E->key();
 
 		ERR_CONTINUE(E->get().expression->type != GDScriptParser::Node::TYPE_CONSTANT);
@@ -2110,7 +2110,7 @@ Error GDScriptCompiler::_parse_class_blocks(GDScript *p_script, const GDScriptPa
 					instance->owner = E->get();
 
 					//needed for hot reloading
-					for (Map<StringName, GDScript::MemberInfo>::Element *F = p_script->member_indices.front(); F; F = F->next()) {
+					for (RBMap<StringName, GDScript::MemberInfo>::Element *F = p_script->member_indices.front(); F; F = F->next()) {
 						instance->member_indices_cache[F->key()] = F->get().index;
 					}
 					instance->owner->set_script_instance(instance);
@@ -2150,7 +2150,7 @@ Error GDScriptCompiler::_parse_class_blocks(GDScript *p_script, const GDScriptPa
 }
 
 void GDScriptCompiler::_make_scripts(GDScript *p_script, const GDScriptParser::ClassNode *p_class, bool p_keep_state) {
-	Map<StringName, Ref<GDScript>> old_subclasses;
+	RBMap<StringName, Ref<GDScript>> old_subclasses;
 
 	if (p_keep_state) {
 		old_subclasses = p_script->subclasses;

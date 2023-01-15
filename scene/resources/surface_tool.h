@@ -75,7 +75,7 @@ private:
 	//arrays
 	List<Vertex> vertex_array;
 	List<int> index_array;
-	Map<int, bool> smooth_groups;
+	RBMap<int, bool> smooth_groups;
 
 	//memory
 	Color last_color;

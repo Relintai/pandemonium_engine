@@ -56,7 +56,7 @@ String ResourceImporterWAV::get_resource_type() const {
 	return "AudioStreamSample";
 }
 
-bool ResourceImporterWAV::get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const {
+bool ResourceImporterWAV::get_option_visibility(const String &p_option, const RBMap<StringName, Variant> &p_options) const {
 	if (p_option == "force/max_rate_hz" && !bool(p_options["force/max_rate"])) {
 		return false;
 	}
@@ -90,7 +90,7 @@ void ResourceImporterWAV::get_import_options(List<ImportOption> *r_options, int 
 	r_options->push_back(ImportOption(PropertyInfo(Variant::INT, "compress/mode", PROPERTY_HINT_ENUM, "Disabled,RAM (Ima-ADPCM)"), 0));
 }
 
-Error ResourceImporterWAV::import(const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error ResourceImporterWAV::import(const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 	/* STEP 1, READ WAVE FILE */
 
 	Error err;

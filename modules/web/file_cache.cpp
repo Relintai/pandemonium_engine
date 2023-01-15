@@ -218,7 +218,7 @@ void FileCache::clear() {
 
 	_registered_files.clear();
 
-	for (Map<String, CacheEntry *>::Element *E = cache_map.front(); E; E++) {
+	for (RBMap<String, CacheEntry *>::Element *E = cache_map.front(); E; E++) {
 		CacheEntry *ce = E->get();
 
 		if (ce) {

@@ -2553,7 +2553,7 @@ void OS_X11::process_xevents() {
 						}
 
 						if (XIMaskIsSet(raw_event->valuators.mask, VALUATOR_PRESSURE)) {
-							Map<int, Vector2>::Element *pen_pressure = xi.pen_pressure_range.find(device_id);
+							RBMap<int, Vector2>::Element *pen_pressure = xi.pen_pressure_range.find(device_id);
 							if (pen_pressure) {
 								Vector2 pen_pressure_range = pen_pressure->value();
 								if (pen_pressure_range != Vector2()) {
@@ -2567,7 +2567,7 @@ void OS_X11::process_xevents() {
 						}
 
 						if (XIMaskIsSet(raw_event->valuators.mask, VALUATOR_TILTX)) {
-							Map<int, Vector2>::Element *pen_tilt_x = xi.pen_tilt_x_range.find(device_id);
+							RBMap<int, Vector2>::Element *pen_tilt_x = xi.pen_tilt_x_range.find(device_id);
 							if (pen_tilt_x) {
 								Vector2 pen_tilt_x_range = pen_tilt_x->value();
 								if (pen_tilt_x_range[0] != 0 && *values < 0) {
@@ -2581,7 +2581,7 @@ void OS_X11::process_xevents() {
 						}
 
 						if (XIMaskIsSet(raw_event->valuators.mask, VALUATOR_TILTY)) {
-							Map<int, Vector2>::Element *pen_tilt_y = xi.pen_tilt_y_range.find(device_id);
+							RBMap<int, Vector2>::Element *pen_tilt_y = xi.pen_tilt_y_range.find(device_id);
 							if (pen_tilt_y) {
 								Vector2 pen_tilt_y_range = pen_tilt_y->value();
 								if (pen_tilt_y_range[0] != 0 && *values < 0) {
@@ -2594,7 +2594,7 @@ void OS_X11::process_xevents() {
 							values++;
 						}
 
-						Map<int, bool>::Element *pen_inverted = xi.pen_inverted_devices.find(device_id);
+						RBMap<int, bool>::Element *pen_inverted = xi.pen_inverted_devices.find(device_id);
 						if (pen_inverted) {
 							xi.pen_inverted = pen_inverted->value();
 						}
@@ -2610,7 +2610,7 @@ void OS_X11::process_xevents() {
 						xi.raw_pos.x = rel_x;
 						xi.raw_pos.y = rel_y;
 
-						Map<int, Vector2>::Element *abs_info = xi.absolute_devices.find(device_id);
+						RBMap<int, Vector2>::Element *abs_info = xi.absolute_devices.find(device_id);
 
 						if (abs_info) {
 							// Absolute mode device
@@ -2658,7 +2658,7 @@ void OS_X11::process_xevents() {
 					} break;
 
 					case XI_TouchUpdate: {
-						Map<int, Vector2>::Element *curr_pos_elem = xi.state.find(index);
+						RBMap<int, Vector2>::Element *curr_pos_elem = xi.state.find(index);
 						if (!curr_pos_elem) { // Defensive
 							break;
 						}
@@ -2776,7 +2776,7 @@ void OS_X11::process_xevents() {
 				}*/
 
 				// Release every pointer to avoid sticky points
-				for (Map<int, Vector2>::Element *E = xi.state.front(); E; E = E->next()) {
+				for (RBMap<int, Vector2>::Element *E = xi.state.front(); E; E = E->next()) {
 					Ref<InputEventScreenTouch> st;
 					st.instance();
 					st->set_index(E->key());
@@ -3617,7 +3617,7 @@ OS::CursorShape OS_X11::get_cursor_shape() const {
 
 void OS_X11::set_custom_mouse_cursor(const RES &p_cursor, CursorShape p_shape, const Vector2 &p_hotspot) {
 	if (p_cursor.is_valid()) {
-		Map<CursorShape, Vector<Variant>>::Element *cursor_c = cursors_cache.find(p_shape);
+		RBMap<CursorShape, Vector<Variant>>::Element *cursor_c = cursors_cache.find(p_shape);
 
 		if (cursor_c) {
 			if (cursor_c->get()[0] == p_cursor && cursor_c->get()[1] == p_hotspot) {

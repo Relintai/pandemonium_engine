@@ -34,7 +34,7 @@
 #include "core/object/class_db.h"
 #include "core/error/error_macros.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/aabb.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
@@ -63,7 +63,7 @@ bool ParticlesEditorBase::_generate(PoolVector<Vector3> &points, PoolVector<Vect
 
 	if (emission_fill->get_selected() < 2) {
 		float area_accum = 0;
-		Map<float, int> triangle_area_map;
+		RBMap<float, int> triangle_area_map;
 
 		for (int i = 0; i < geometry.size(); i++) {
 			float area = geometry[i].get_area();
@@ -84,7 +84,7 @@ bool ParticlesEditorBase::_generate(PoolVector<Vector3> &points, PoolVector<Vect
 		for (int i = 0; i < emissor_count; i++) {
 			float areapos = Math::random(0.0f, area_accum);
 
-			Map<float, int>::Element *E = triangle_area_map.find_closest(areapos);
+			RBMap<float, int>::Element *E = triangle_area_map.find_closest(areapos);
 			ERR_FAIL_COND_V(!E, false);
 			int index = E->get();
 			ERR_FAIL_INDEX_V(index, geometry.size(), false);

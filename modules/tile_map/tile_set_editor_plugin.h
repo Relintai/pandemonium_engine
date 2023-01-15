@@ -125,7 +125,7 @@ class TileSetEditor : public HSplitContainer {
 	int option;
 	ToolButton *tileset_toolbar_buttons[TOOL_TILESET_MAX];
 	MenuButton *tileset_toolbar_tools;
-	Map<String, Ref<Texture>> texture_map;
+	RBMap<String, Ref<Texture>> texture_map;
 
 	bool creating_shape;
 	int dragging_point;
@@ -135,8 +135,8 @@ class TileSetEditor : public HSplitContainer {
 	bool draw_edited_region;
 	Vector2 edited_shape_coord;
 	PoolVector2Array current_shape;
-	Map<Vector2i, SubtileData> current_tile_data;
-	Map<Vector2, uint32_t> bitmask_map_copy;
+	RBMap<Vector2i, SubtileData> current_tile_data;
+	RBMap<Vector2, uint32_t> bitmask_map_copy;
 
 	Vector2 snap_step;
 	Vector2 snap_offset;

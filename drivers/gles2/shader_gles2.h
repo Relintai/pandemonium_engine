@@ -39,7 +39,7 @@
 #endif
 
 #include "core/containers/hash_map.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/projection.h"
 #include "core/containers/pair.h"
 #include "core/variant/variant.h"
@@ -107,7 +107,7 @@ private:
 		GLuint frag_id;
 		GLint *uniform_location;
 		Vector<GLint> texture_uniform_locations;
-		Map<StringName, GLint> custom_uniform_locations;
+		RBMap<StringName, GLint> custom_uniform_locations;
 		uint32_t code_version;
 		bool ok;
 		Version() {
@@ -170,7 +170,7 @@ private:
 
 	int max_image_units;
 
-	Map<StringName, Pair<ShaderLanguage::DataType, Vector<ShaderLanguage::ConstantNode::Value>>> uniform_values;
+	RBMap<StringName, Pair<ShaderLanguage::DataType, Vector<ShaderLanguage::ConstantNode::Value>>> uniform_values;
 
 protected:
 	_FORCE_INLINE_ int _get_uniform(int p_which) const;

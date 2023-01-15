@@ -57,7 +57,7 @@ Array ResourcePreloader::_get_resources() const {
 
 	Set<String> sorted_names;
 
-	for (Map<StringName, RES>::Element *E = resources.front(); E; E = E->next()) {
+	for (RBMap<StringName, RES>::Element *E = resources.front(); E; E = E->next()) {
 		sorted_names.insert(E->key());
 	}
 
@@ -121,7 +121,7 @@ PoolVector<String> ResourcePreloader::_get_resource_list() const {
 	PoolVector<String> res;
 	res.resize(resources.size());
 	int i = 0;
-	for (Map<StringName, RES>::Element *E = resources.front(); E; E = E->next(), i++) {
+	for (RBMap<StringName, RES>::Element *E = resources.front(); E; E = E->next(), i++) {
 		res.set(i, E->key());
 	}
 
@@ -129,7 +129,7 @@ PoolVector<String> ResourcePreloader::_get_resource_list() const {
 }
 
 void ResourcePreloader::get_resource_list(List<StringName> *p_list) {
-	for (Map<StringName, RES>::Element *E = resources.front(); E; E = E->next()) {
+	for (RBMap<StringName, RES>::Element *E = resources.front(); E; E = E->next()) {
 		p_list->push_back(E->key());
 	}
 }

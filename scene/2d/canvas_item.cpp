@@ -51,7 +51,7 @@
 
 Mutex CanvasItemMaterial::material_mutex;
 SelfList<CanvasItemMaterial>::List *CanvasItemMaterial::dirty_materials = nullptr;
-Map<CanvasItemMaterial::MaterialKey, CanvasItemMaterial::ShaderData> CanvasItemMaterial::shader_map;
+RBMap<CanvasItemMaterial::MaterialKey, CanvasItemMaterial::ShaderData> CanvasItemMaterial::shader_map;
 CanvasItemMaterial::ShaderNames *CanvasItemMaterial::shader_names = nullptr;
 
 void CanvasItemMaterial::init_shaders() {

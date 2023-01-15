@@ -338,7 +338,7 @@ class AnimationNodeBlendTree : public AnimationRootNode {
 		Vector<StringName> connections;
 	};
 
-	Map<StringName, Node> nodes;
+	RBMap<StringName, Node> nodes;
 
 	Vector2 graph_offset;
 

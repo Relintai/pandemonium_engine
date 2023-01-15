@@ -96,7 +96,7 @@ public:
 
 	WebServerSimple *_web_server;
 
-	Map<String, String> mimes;
+	RBMap<String, String> mimes;
 
 	Ref<X509Certificate> cert;
 

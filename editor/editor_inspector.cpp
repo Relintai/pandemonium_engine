@@ -1420,7 +1420,7 @@ void EditorInspector::update_tree() {
 	object->get_property_list(&plist, true);
 
 	HashMap<String, VBoxContainer *> item_path;
-	Map<VBoxContainer *, EditorInspectorSection *> section_map;
+	RBMap<VBoxContainer *, EditorInspectorSection *> section_map;
 
 	item_path[""] = main_vbox;
 
@@ -1482,7 +1482,7 @@ void EditorInspector::update_tree() {
 				if (!class_descr_cache.has(type2)) {
 					String descr;
 					DocData *dd = EditorHelp::get_doc_data();
-					Map<String, DocData::ClassDoc>::Element *E = dd->class_list.find(type2);
+					RBMap<String, DocData::ClassDoc>::Element *E = dd->class_list.find(type2);
 					if (E) {
 						descr = DTR(E->get().brief_description);
 					}
@@ -1631,9 +1631,9 @@ void EditorInspector::update_tree() {
 			String descr;
 			bool found = false;
 
-			Map<StringName, Map<StringName, String>>::Element *E = descr_cache.find(classname);
+			RBMap<StringName, RBMap<StringName, String>>::Element *E = descr_cache.find(classname);
 			if (E) {
-				Map<StringName, String>::Element *F = E->get().find(propname);
+				RBMap<StringName, String>::Element *F = E->get().find(propname);
 				if (F) {
 					found = true;
 					descr = F->get();
@@ -1642,7 +1642,7 @@ void EditorInspector::update_tree() {
 
 			if (!found) {
 				DocData *dd = EditorHelp::get_doc_data();
-				Map<String, DocData::ClassDoc>::Element *F = dd->class_list.find(classname);
+				RBMap<String, DocData::ClassDoc>::Element *F = dd->class_list.find(classname);
 				while (F && descr == String()) {
 					for (int i = 0; i < F->get().properties.size(); i++) {
 						if (F->get().properties[i].name == propname.operator String()) {
@@ -1887,7 +1887,7 @@ void EditorInspector::collapse_all_folding() {
 		E->get()->fold();
 	}
 
-	for (Map<StringName, List<EditorProperty *>>::Element *F = editor_property_map.front(); F; F = F->next()) {
+	for (RBMap<StringName, List<EditorProperty *>>::Element *F = editor_property_map.front(); F; F = F->next()) {
 		for (List<EditorProperty *>::Element *E = F->get().front(); E; E = E->next()) {
 			E->get()->collapse_all_folding();
 		}
@@ -1898,7 +1898,7 @@ void EditorInspector::expand_all_folding() {
 	for (List<EditorInspectorSection *>::Element *E = sections.front(); E; E = E->next()) {
 		E->get()->unfold();
 	}
-	for (Map<StringName, List<EditorProperty *>>::Element *F = editor_property_map.front(); F; F = F->next()) {
+	for (RBMap<StringName, List<EditorProperty *>>::Element *F = editor_property_map.front(); F; F = F->next()) {
 		for (List<EditorProperty *>::Element *E = F->get().front(); E; E = E->next()) {
 			E->get()->expand_all_folding();
 		}
@@ -2152,7 +2152,7 @@ void EditorInspector::_property_selected(const String &p_path, int p_focusable) 
 	property_selected = p_path;
 	property_focusable = p_focusable;
 	//deselect the others
-	for (Map<StringName, List<EditorProperty *>>::Element *F = editor_property_map.front(); F; F = F->next()) {
+	for (RBMap<StringName, List<EditorProperty *>>::Element *F = editor_property_map.front(); F; F = F->next()) {
 		if (F->key() == property_selected) {
 			continue;
 		}
@@ -2208,7 +2208,7 @@ void EditorInspector::_notification(int p_what) {
 		if (refresh_countdown > 0) {
 			refresh_countdown -= get_process_delta_time();
 			if (refresh_countdown <= 0) {
-				for (Map<StringName, List<EditorProperty *>>::Element *F = editor_property_map.front(); F; F = F->next()) {
+				for (RBMap<StringName, List<EditorProperty *>>::Element *F = editor_property_map.front(); F; F = F->next()) {
 					for (List<EditorProperty *>::Element *E = F->get().front(); E; E = E->next()) {
 						E->get()->update_property();
 						E->get()->update_revert_and_pin_status();

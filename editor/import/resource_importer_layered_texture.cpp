@@ -57,7 +57,7 @@ String ResourceImporterLayeredTexture::get_resource_type() const {
 	return is_3d ? "Texture3D" : "TextureArray";
 }
 
-bool ResourceImporterLayeredTexture::get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const {
+bool ResourceImporterLayeredTexture::get_option_visibility(const String &p_option, const RBMap<StringName, Variant> &p_options) const {
 	return true;
 }
 
@@ -183,7 +183,7 @@ void ResourceImporterLayeredTexture::_save_tex(const Vector<Ref<Image>> &p_image
 	memdelete(f);
 }
 
-Error ResourceImporterLayeredTexture::import(const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error ResourceImporterLayeredTexture::import(const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 	int compress_mode = p_options["compress/mode"];
 	int no_bptc_if_rgb = p_options["compress/no_bptc_if_rgb"];
 	int repeat = p_options["flags/repeat"];

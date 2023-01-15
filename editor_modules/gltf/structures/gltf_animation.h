@@ -63,12 +63,12 @@ public:
 public:
 	bool get_loop() const;
 	void set_loop(bool p_val);
-	Map<int, GLTFAnimation::Track> &get_tracks();
+	RBMap<int, GLTFAnimation::Track> &get_tracks();
 	GLTFAnimation();
 
 private:
 	bool loop = false;
-	Map<int, Track> tracks;
+	RBMap<int, Track> tracks;
 };
 
 #endif // GLTF_ANIMATION_H

@@ -83,7 +83,7 @@ void MeshLibraryEditor::_import_scene(Node *p_scene, Ref<MeshLibrary> p_library,
 		p_library->clear();
 	}
 
-	Map<int, MeshInstance *> mesh_instances;
+	RBMap<int, MeshInstance *> mesh_instances;
 
 	for (int i = 0; i < p_scene->get_child_count(); i++) {
 		Node *child = p_scene->get_child(i);

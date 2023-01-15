@@ -430,7 +430,7 @@ static void _parser_show_class(const GDScriptParser::ClassNode *p_class, int p_i
 		print_line("\n");
 	}
 
-	for (Map<StringName, GDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
+	for (RBMap<StringName, GDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
 		const GDScriptParser::ClassNode::Constant &constant = E->get();
 		_print_indent(p_indent, "const " + String(E->key()) + "=" + _parser_expr(constant.expression));
 	}
@@ -504,9 +504,9 @@ static String _disassemble_addr(const Ref<GDScript> &p_script, const GDScriptFun
 }
 
 static void _disassemble_class(const Ref<GDScript> &p_class, const Vector<String> &p_code) {
-	const Map<StringName, GDScriptFunction *> &mf = p_class->debug_get_member_functions();
+	const RBMap<StringName, GDScriptFunction *> &mf = p_class->debug_get_member_functions();
 
-	for (const Map<StringName, GDScriptFunction *>::Element *E = mf.front(); E; E = E->next()) {
+	for (const RBMap<StringName, GDScriptFunction *>::Element *E = mf.front(); E; E = E->next()) {
 		const GDScriptFunction &func = *E->get();
 		const int *code = func.get_code();
 		int codelen = func.get_code_size();

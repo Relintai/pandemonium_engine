@@ -365,11 +365,11 @@ class OS_Windows : public OS {
 
 	HCURSOR cursors[CURSOR_MAX] = { NULL };
 	CursorShape cursor_shape;
-	Map<CursorShape, Vector<Variant>> cursors_cache;
+	RBMap<CursorShape, Vector<Variant>> cursors_cache;
 
 	InputDefault *input;
 	JoypadWindows *joypad;
-	Map<int, Vector2> touch_state;
+	RBMap<int, Vector2> touch_state;
 
 	PowerWindows *power_manager;
 
@@ -419,7 +419,7 @@ protected:
 		STARTUPINFO si;
 		PROCESS_INFORMATION pi;
 	};
-	Map<ProcessID, ProcessInfo> *process_map;
+	RBMap<ProcessID, ProcessInfo> *process_map;
 
 	bool pre_fs_valid;
 	RECT pre_fs_rect;

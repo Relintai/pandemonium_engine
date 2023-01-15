@@ -250,7 +250,7 @@ VisibilityNotifier::~VisibilityNotifier() {
 //////////////////////////////////////
 
 void VisibilityEnabler::_screen_enter() {
-	for (Map<Node *, Variant>::Element *E = nodes.front(); E; E = E->next()) {
+	for (RBMap<Node *, Variant>::Element *E = nodes.front(); E; E = E->next()) {
 		_change_node_state(E->key(), true);
 	}
 
@@ -258,7 +258,7 @@ void VisibilityEnabler::_screen_enter() {
 }
 
 void VisibilityEnabler::_screen_exit() {
-	for (Map<Node *, Variant>::Element *E = nodes.front(); E; E = E->next()) {
+	for (RBMap<Node *, Variant>::Element *E = nodes.front(); E; E = E->next()) {
 		_change_node_state(E->key(), false);
 	}
 
@@ -328,7 +328,7 @@ void VisibilityEnabler::_notification(int p_what) {
 		}
 #endif
 
-		for (Map<Node *, Variant>::Element *E = nodes.front(); E; E = E->next()) {
+		for (RBMap<Node *, Variant>::Element *E = nodes.front(); E; E = E->next()) {
 			if (!visible) {
 				_change_node_state(E->key(), true);
 			}

@@ -49,7 +49,7 @@ void FlowContainer::_resort() {
 	int separation_horizontal = get_theme_constant("hseparation");
 	int separation_vertical = get_theme_constant("vseparation");
 
-	Map<Control *, Size2i> children_minsize_cache;
+	RBMap<Control *, Size2i> children_minsize_cache;
 
 	Vector<_LineData> lines_data;
 

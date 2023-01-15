@@ -9,7 +9,7 @@ Ref<DatabaseConnection> DatabaseMultiThreaded::get_connection() {
 	_connection_map_lock.read_lock();
 
 	Thread::ID tid = Thread::get_caller_id();
-	Map<Thread::ID, Ref<DatabaseConnection>>::Element *e;
+	RBMap<Thread::ID, Ref<DatabaseConnection>>::Element *e;
 	e = _connections.find(tid);
 
 	if (!e) {
@@ -43,7 +43,7 @@ DatabaseMultiThreaded::DatabaseMultiThreaded() {
 DatabaseMultiThreaded::~DatabaseMultiThreaded() {
 	_connection_map_lock.write_lock();
 
-	for (Map<Thread::ID, Ref<DatabaseConnection>>::Element *e = _connections.front(); e; e = e->next()) {
+	for (RBMap<Thread::ID, Ref<DatabaseConnection>>::Element *e = _connections.front(); e; e = e->next()) {
 		Ref<DatabaseConnection> dbc = e->get();
 
 		if (dbc.is_valid()) {

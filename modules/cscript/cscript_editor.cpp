@@ -142,7 +142,7 @@ bool CScriptLanguage::validate(const String &p_script, int &r_line_error, int &r
 		ERR_FAIL_COND_V(root->type != CScriptParser::Node::TYPE_CLASS, false);
 
 		const CScriptParser::ClassNode *cl = static_cast<const CScriptParser::ClassNode *>(root);
-		Map<int, String> funcs;
+		RBMap<int, String> funcs;
 		for (int i = 0; i < cl->functions.size(); i++) {
 			funcs[cl->functions[i]->line] = cl->functions[i]->name;
 		}
@@ -160,7 +160,7 @@ bool CScriptLanguage::validate(const String &p_script, int &r_line_error, int &r
 			}
 		}
 
-		for (Map<int, String>::Element *E = funcs.front(); E; E = E->next()) {
+		for (RBMap<int, String>::Element *E = funcs.front(); E; E = E->next()) {
 			r_functions->push_back(E->get() + ":" + itos(E->key()));
 		}
 	}
@@ -303,9 +303,9 @@ void CScriptLanguage::debug_get_stack_level_members(int p_level, List<String> *p
 	Ref<CScript> script = instance->get_script();
 	ERR_FAIL_COND(script.is_null());
 
-	const Map<StringName, CScript::MemberInfo> &mi = script->debug_get_member_indices();
+	const RBMap<StringName, CScript::MemberInfo> &mi = script->debug_get_member_indices();
 
-	for (const Map<StringName, CScript::MemberInfo>::Element *E = mi.front(); E; E = E->next()) {
+	for (const RBMap<StringName, CScript::MemberInfo>::Element *E = mi.front(); E; E = E->next()) {
 		p_members->push_back(E->key());
 		p_values->push_back(instance->debug_get_member_by_index(E->get().index));
 	}
@@ -325,13 +325,13 @@ ScriptInstance *CScriptLanguage::debug_get_stack_level_instance(int p_level) {
 }
 
 void CScriptLanguage::debug_get_globals(List<String> *p_globals, List<Variant> *p_values, int p_max_subitems, int p_max_depth) {
-	const Map<StringName, int> &name_idx = CScriptLanguage::get_singleton()->get_global_map();
+	const RBMap<StringName, int> &name_idx = CScriptLanguage::get_singleton()->get_global_map();
 	const Variant *globals = CScriptLanguage::get_singleton()->get_global_array();
 
 	List<Pair<String, Variant>> cinfo;
 	get_public_constants(&cinfo);
 
-	for (const Map<StringName, int>::Element *E = name_idx.front(); E; E = E->next()) {
+	for (const RBMap<StringName, int>::Element *E = name_idx.front(); E; E = E->next()) {
 		if (ClassDB::class_exists(E->key()) || Engine::get_singleton()->has_singleton(E->key())) {
 			continue;
 		}
@@ -483,7 +483,7 @@ struct CScriptCompletionIdentifier {
 			assigned_expression(nullptr) {}
 };
 
-static void _get_directory_contents(EditorFileSystemDirectory *p_dir, Map<String, ScriptCodeCompletionOption> &r_list, String p_ends_with = "") {
+static void _get_directory_contents(EditorFileSystemDirectory *p_dir, RBMap<String, ScriptCodeCompletionOption> &r_list, String p_ends_with = "") {
 	const String quote_style = EDITOR_DEF("text_editor/completion/use_single_quotes", false) ? "'" : "\"";
 
 	for (int i = 0; i < p_dir->get_file_count(); i++) {
@@ -1367,7 +1367,7 @@ static bool _guess_identifier_type(CScriptCompletionContext &p_context, const St
 				r_type.value = Engine::get_singleton()->get_singleton_object(target_id);
 			} else {
 				r_type.type.is_meta_type = true;
-				const Map<StringName, int>::Element *target_elem = CScriptLanguage::get_singleton()->get_global_map().find(target_id);
+				const RBMap<StringName, int>::Element *target_elem = CScriptLanguage::get_singleton()->get_global_map().find(target_id);
 				// Check because classes like EditorNode are in ClassDB by now, but unknown to CScript
 				if (!target_elem) {
 					return false;
@@ -1458,7 +1458,7 @@ static bool _guess_identifier_type_from_base(CScriptCompletionContext &p_context
 			case CScriptParser::DataType::SCRIPT: {
 				Ref<Script> scr = base_type.script_type;
 				if (scr.is_valid()) {
-					Map<StringName, Variant> constants;
+					RBMap<StringName, Variant> constants;
 					scr->get_constants(&constants);
 					if (constants.has(p_identifier)) {
 						r_type = _type_from_variant(constants[p_identifier]);
@@ -1807,7 +1807,7 @@ static String _make_arguments_hint(const CScriptParser::FunctionNode *p_function
 	return arghint;
 }
 
-static void _find_enumeration_candidates(const String p_enum_hint, Map<String, ScriptCodeCompletionOption> &r_result) {
+static void _find_enumeration_candidates(const String p_enum_hint, RBMap<String, ScriptCodeCompletionOption> &r_result) {
 	if (p_enum_hint.find(".") == -1) {
 		// Global constant
 		StringName current_enum = p_enum_hint;
@@ -1838,8 +1838,8 @@ static void _find_enumeration_candidates(const String p_enum_hint, Map<String, S
 	}
 }
 
-static void _find_identifiers_in_block(const CScriptCompletionContext &p_context, Map<String, ScriptCodeCompletionOption> &r_result) {
-	for (Map<StringName, CScriptParser::LocalVarNode *>::Element *E = p_context.block->variables.front(); E; E = E->next()) {
+static void _find_identifiers_in_block(const CScriptCompletionContext &p_context, RBMap<String, ScriptCodeCompletionOption> &r_result) {
+	for (RBMap<StringName, CScriptParser::LocalVarNode *>::Element *E = p_context.block->variables.front(); E; E = E->next()) {
 		if (E->get()->line < p_context.line) {
 			ScriptCodeCompletionOption option(E->key().operator String(), ScriptCodeCompletionOption::KIND_VARIABLE);
 			r_result.insert(option.display, option);
@@ -1852,9 +1852,9 @@ static void _find_identifiers_in_block(const CScriptCompletionContext &p_context
 	}
 }
 
-static void _find_identifiers_in_base(const CScriptCompletionContext &p_context, const CScriptCompletionIdentifier &p_base, bool p_only_functions, Map<String, ScriptCodeCompletionOption> &r_result);
+static void _find_identifiers_in_base(const CScriptCompletionContext &p_context, const CScriptCompletionIdentifier &p_base, bool p_only_functions, RBMap<String, ScriptCodeCompletionOption> &r_result);
 
-static void _find_identifiers_in_class(const CScriptCompletionContext &p_context, bool p_static, bool p_only_functions, bool p_parent_only, Map<String, ScriptCodeCompletionOption> &r_result) {
+static void _find_identifiers_in_class(const CScriptCompletionContext &p_context, bool p_static, bool p_only_functions, bool p_parent_only, RBMap<String, ScriptCodeCompletionOption> &r_result) {
 	if (!p_parent_only) {
 		if (!p_static && !p_only_functions) {
 			for (int i = 0; i < p_context._class->variables.size(); i++) {
@@ -1864,7 +1864,7 @@ static void _find_identifiers_in_class(const CScriptCompletionContext &p_context
 		}
 
 		if (!p_only_functions) {
-			for (Map<StringName, CScriptParser::ClassNode::Constant>::Element *E = p_context._class->constant_expressions.front(); E; E = E->next()) {
+			for (RBMap<StringName, CScriptParser::ClassNode::Constant>::Element *E = p_context._class->constant_expressions.front(); E; E = E->next()) {
 				ScriptCodeCompletionOption option(E->key(), ScriptCodeCompletionOption::KIND_CONSTANT);
 				if (E->get().expression && E->get().expression->type == CScriptParser::Node::TYPE_CONSTANT) {
 					CScriptParser::ConstantNode *cnode = (CScriptParser::ConstantNode *)E->get().expression;
@@ -1916,7 +1916,7 @@ static void _find_identifiers_in_class(const CScriptCompletionContext &p_context
 	_find_identifiers_in_base(c, base_type, p_only_functions, r_result);
 }
 
-static void _find_identifiers_in_base(const CScriptCompletionContext &p_context, const CScriptCompletionIdentifier &p_base, bool p_only_functions, Map<String, ScriptCodeCompletionOption> &r_result) {
+static void _find_identifiers_in_base(const CScriptCompletionContext &p_context, const CScriptCompletionIdentifier &p_base, bool p_only_functions, RBMap<String, ScriptCodeCompletionOption> &r_result) {
 	CScriptParser::DataType base_type = p_base.type;
 	bool _static = base_type.is_meta_type;
 
@@ -1954,12 +1954,12 @@ static void _find_identifiers_in_base(const CScriptCompletionContext &p_context,
 						}
 					}
 					if (!p_only_functions) {
-						for (const Map<StringName, Variant>::Element *E = script->get_constants().front(); E; E = E->next()) {
+						for (const RBMap<StringName, Variant>::Element *E = script->get_constants().front(); E; E = E->next()) {
 							ScriptCodeCompletionOption option(E->key().operator String(), ScriptCodeCompletionOption::KIND_CONSTANT);
 							r_result.insert(option.display, option);
 						}
 					}
-					for (const Map<StringName, CScriptFunction *>::Element *E = script->get_member_functions().front(); E; E = E->next()) {
+					for (const RBMap<StringName, CScriptFunction *>::Element *E = script->get_member_functions().front(); E; E = E->next()) {
 						if (!_static || E->get()->is_static()) {
 							ScriptCodeCompletionOption option(E->key().operator String(), ScriptCodeCompletionOption::KIND_FUNCTION);
 							if (E->get()->get_argument_count()) {
@@ -1971,7 +1971,7 @@ static void _find_identifiers_in_base(const CScriptCompletionContext &p_context,
 						}
 					}
 					if (!p_only_functions) {
-						for (const Map<StringName, Ref<CScript>>::Element *E = script->get_subclasses().front(); E; E = E->next()) {
+						for (const RBMap<StringName, Ref<CScript>>::Element *E = script->get_subclasses().front(); E; E = E->next()) {
 							ScriptCodeCompletionOption option(E->key().operator String(), ScriptCodeCompletionOption::KIND_CLASS);
 							r_result.insert(option.display, option);
 						}
@@ -2002,9 +2002,9 @@ static void _find_identifiers_in_base(const CScriptCompletionContext &p_context,
 						}
 					}
 					if (!p_only_functions) {
-						Map<StringName, Variant> constants;
+						RBMap<StringName, Variant> constants;
 						scr->get_constants(&constants);
-						for (Map<StringName, Variant>::Element *E = constants.front(); E; E = E->next()) {
+						for (RBMap<StringName, Variant>::Element *E = constants.front(); E; E = E->next()) {
 							ScriptCodeCompletionOption option(E->key().operator String(), ScriptCodeCompletionOption::KIND_CONSTANT);
 							r_result.insert(option.display, option);
 						}
@@ -2130,7 +2130,7 @@ static void _find_identifiers_in_base(const CScriptCompletionContext &p_context,
 	}
 }
 
-static void _find_identifiers(const CScriptCompletionContext &p_context, bool p_only_functions, Map<String, ScriptCodeCompletionOption> &r_result) {
+static void _find_identifiers(const CScriptCompletionContext &p_context, bool p_only_functions, RBMap<String, ScriptCodeCompletionOption> &r_result) {
 	const CScriptParser::BlockNode *block = p_context.block;
 
 	if (p_context.function) {
@@ -2224,13 +2224,13 @@ static void _find_identifiers(const CScriptCompletionContext &p_context, bool p_
 	}
 
 	// Native classes
-	for (const Map<StringName, int>::Element *E = CScriptLanguage::get_singleton()->get_global_map().front(); E; E = E->next()) {
+	for (const RBMap<StringName, int>::Element *E = CScriptLanguage::get_singleton()->get_global_map().front(); E; E = E->next()) {
 		ScriptCodeCompletionOption option(E->key().operator String(), ScriptCodeCompletionOption::KIND_CLASS);
 		r_result.insert(option.display, option);
 	}
 }
 
-static void _find_call_arguments(const CScriptCompletionContext &p_context, const CScriptCompletionIdentifier &p_base, const StringName &p_method, int p_argidx, bool p_static, Map<String, ScriptCodeCompletionOption> &r_result, String &r_arghint) {
+static void _find_call_arguments(const CScriptCompletionContext &p_context, const CScriptCompletionIdentifier &p_base, const StringName &p_method, int p_argidx, bool p_static, RBMap<String, ScriptCodeCompletionOption> &r_result, String &r_arghint) {
 	Variant base = p_base.value;
 	CScriptParser::DataType base_type = p_base.type;
 
@@ -2402,7 +2402,7 @@ static void _find_call_arguments(const CScriptCompletionContext &p_context, cons
 	}
 }
 
-static void _find_call_arguments(CScriptCompletionContext &p_context, const CScriptParser::Node *p_node, int p_argidx, Map<String, ScriptCodeCompletionOption> &r_result, bool &r_forced, String &r_arghint) {
+static void _find_call_arguments(CScriptCompletionContext &p_context, const CScriptParser::Node *p_node, int p_argidx, RBMap<String, ScriptCodeCompletionOption> &r_result, bool &r_forced, String &r_arghint) {
 	const String quote_style = EDITOR_DEF("text_editor/completion/use_single_quotes", false) ? "'" : "\"";
 
 	if (!p_node || p_node->type != CScriptParser::Node::TYPE_OPERATOR) {
@@ -2518,9 +2518,9 @@ static void _find_call_arguments(CScriptCompletionContext &p_context, const CScr
 	_find_call_arguments(p_context, ci, function, p_argidx, _static, r_result, r_arghint);
 
 	if (function == "connect" && p_argidx == 2) {
-		Map<String, ScriptCodeCompletionOption> methods;
+		RBMap<String, ScriptCodeCompletionOption> methods;
 		_find_identifiers_in_base(p_context, connect_base, true, methods);
-		for (Map<String, ScriptCodeCompletionOption>::Element *E = methods.front(); E; E = E->next()) {
+		for (RBMap<String, ScriptCodeCompletionOption>::Element *E = methods.front(); E; E = E->next()) {
 			ScriptCodeCompletionOption &option = E->value();
 			option.insert_text = quote_style + option.display + quote_style;
 			r_result.insert(option.display, option);
@@ -2537,7 +2537,7 @@ Error CScriptLanguage::complete_code(const String &p_code, const String &p_path,
 
 	parser.parse(p_code, p_path.get_base_dir(), false, p_path, true);
 	r_forced = false;
-	Map<String, ScriptCodeCompletionOption> options;
+	RBMap<String, ScriptCodeCompletionOption> options;
 	CScriptCompletionContext context;
 	context._class = parser.get_completion_class();
 	context.block = parser.get_completion_block();
@@ -2785,7 +2785,7 @@ Error CScriptLanguage::complete_code(const String &p_code, const String &p_path,
 		case CScriptParser::COMPLETION_TYPE_HINT: {
 			const CScriptParser::ClassNode *clss = context._class;
 			while (clss) {
-				for (Map<StringName, CScriptParser::ClassNode::Constant>::Element *E = clss->constant_expressions.front(); E; E = E->next()) {
+				for (RBMap<StringName, CScriptParser::ClassNode::Constant>::Element *E = clss->constant_expressions.front(); E; E = E->next()) {
 					CScriptCompletionIdentifier constant;
 					CScriptCompletionContext c = context;
 					c.function = nullptr;
@@ -2883,7 +2883,7 @@ Error CScriptLanguage::complete_code(const String &p_code, const String &p_path,
 				switch (base_type.kind) {
 					case CScriptParser::DataType::CLASS: {
 						if (base_type.class_type) {
-							for (Map<StringName, CScriptParser::ClassNode::Constant>::Element *E = base_type.class_type->constant_expressions.front(); E; E = E->next()) {
+							for (RBMap<StringName, CScriptParser::ClassNode::Constant>::Element *E = base_type.class_type->constant_expressions.front(); E; E = E->next()) {
 								CScriptCompletionIdentifier constant;
 								CScriptCompletionContext c2 = context;
 								c2._class = base_type.class_type;
@@ -2913,7 +2913,7 @@ Error CScriptLanguage::complete_code(const String &p_code, const String &p_path,
 					case CScriptParser::DataType::CSCRIPT: {
 						Ref<CScript> scr = base_type.script_type;
 						if (scr.is_valid()) {
-							for (const Map<StringName, Ref<CScript>>::Element *E = scr->get_subclasses().front(); E; E = E->next()) {
+							for (const RBMap<StringName, Ref<CScript>>::Element *E = scr->get_subclasses().front(); E; E = E->next()) {
 								ScriptCodeCompletionOption option(E->key().operator String(), ScriptCodeCompletionOption::KIND_CLASS);
 								options.insert(option.display, option);
 							}
@@ -2923,9 +2923,9 @@ Error CScriptLanguage::complete_code(const String &p_code, const String &p_path,
 					case CScriptParser::DataType::SCRIPT: {
 						Ref<Script> scr = base_type.script_type;
 						if (scr.is_valid()) {
-							Map<StringName, Variant> constants;
+							RBMap<StringName, Variant> constants;
 							scr->get_constants(&constants);
-							for (Map<StringName, Variant>::Element *E = constants.front(); E; E = E->next()) {
+							for (RBMap<StringName, Variant>::Element *E = constants.front(); E; E = E->next()) {
 								Ref<Script> const_scr = E->value();
 								if (const_scr.is_valid()) {
 									ScriptCodeCompletionOption option(E->key().operator String(), ScriptCodeCompletionOption::KIND_CLASS);
@@ -2951,7 +2951,7 @@ Error CScriptLanguage::complete_code(const String &p_code, const String &p_path,
 		} break;
 	}
 
-	for (Map<String, ScriptCodeCompletionOption>::Element *E = options.front(); E; E = E->next()) {
+	for (RBMap<String, ScriptCodeCompletionOption>::Element *E = options.front(); E; E = E->next()) {
 		r_options->push_back(E->get());
 	}
 
@@ -3388,7 +3388,7 @@ Error CScriptLanguage::lookup_code(const String &p_code, const String &p_symbol,
 				}
 
 				// Global
-				Map<StringName, int> classes = CScriptLanguage::get_singleton()->get_global_map();
+				RBMap<StringName, int> classes = CScriptLanguage::get_singleton()->get_global_map();
 				if (classes.has(p_symbol)) {
 					Variant value = CScriptLanguage::get_singleton()->get_global_array()[classes[p_symbol]];
 					if (value.get_type() == Variant::OBJECT) {

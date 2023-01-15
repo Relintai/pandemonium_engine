@@ -73,8 +73,8 @@ private:
 
 	// A mapping from the joint indices (in the order of joints_original) to the
 	// Pandemonium Skeleton's bone_indices
-	Map<int, int> joint_i_to_bone_i;
-	Map<int, StringName> joint_i_to_name;
+	RBMap<int, int> joint_i_to_bone_i;
+	RBMap<int, StringName> joint_i_to_name;
 
 #ifdef MODULE_SKELETON_3D_ENABLED
 	// The Actual Skin that will be created as a mapping between the IBM's of

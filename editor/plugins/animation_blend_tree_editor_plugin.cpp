@@ -631,7 +631,7 @@ bool AnimationNodeBlendTreeEditor::_update_filters(const Ref<AnimationNode> &ano
 	filters->clear();
 	TreeItem *root = filters->create_item();
 
-	Map<String, TreeItem *> parenthood;
+	RBMap<String, TreeItem *> parenthood;
 
 	for (Set<String>::Element *E = paths.front(); E; E = E->next()) {
 		NodePath path = E->get();
@@ -818,7 +818,7 @@ void AnimationNodeBlendTreeEditor::_notification(int p_what) {
 		}
 
 		if (player) {
-			for (Map<StringName, ProgressBar *>::Element *E = animations.front(); E; E = E->next()) {
+			for (RBMap<StringName, ProgressBar *>::Element *E = animations.front(); E; E = E->next()) {
 				Ref<AnimationNodeAnimation> an = blend_tree->get_node(E->key());
 				if (an.is_valid()) {
 					if (player->has_animation(an->get_animation())) {
@@ -948,7 +948,7 @@ void AnimationNodeBlendTreeEditor::_node_renamed(const String &p_text, Ref<Anima
 	}
 
 	//update animations
-	for (Map<StringName, ProgressBar *>::Element *E = animations.front(); E; E = E->next()) {
+	for (RBMap<StringName, ProgressBar *>::Element *E = animations.front(); E; E = E->next()) {
 		if (E->key() == prev_name) {
 			animations[new_name] = animations[prev_name];
 			animations.erase(prev_name);

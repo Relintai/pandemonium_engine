@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/resource.h"
 
 #include "voxel_library.h"
@@ -115,8 +115,8 @@ protected:
 
 	static void _bind_methods();
 
-	Map<int, Ref<VoxelMaterialCachePCM>> _material_cache;
-	Map<int, Ref<VoxelMaterialCachePCM>> _prop_material_cache;
+	RBMap<int, Ref<VoxelMaterialCachePCM>> _material_cache;
+	RBMap<int, Ref<VoxelMaterialCachePCM>> _prop_material_cache;
 
 	Vector<Ref<VoxelSurfaceMerger>> _voxel_surfaces;
 #ifdef MODULE_PROPS_ENABLED

@@ -36,11 +36,11 @@
 
 class ShaderTypes {
 	struct Type {
-		Map<StringName, ShaderLanguage::FunctionInfo> functions;
+		RBMap<StringName, ShaderLanguage::FunctionInfo> functions;
 		Vector<StringName> modes;
 	};
 
-	Map<RS::ShaderMode, Type> shader_modes;
+	RBMap<RS::ShaderMode, Type> shader_modes;
 
 	static ShaderTypes *singleton;
 
@@ -49,7 +49,7 @@ class ShaderTypes {
 public:
 	static ShaderTypes *get_singleton() { return singleton; }
 
-	const Map<StringName, ShaderLanguage::FunctionInfo> &get_functions(RS::ShaderMode p_mode);
+	const RBMap<StringName, ShaderLanguage::FunctionInfo> &get_functions(RS::ShaderMode p_mode);
 	const Vector<StringName> &get_modes(RS::ShaderMode p_mode);
 	const Set<String> &get_types();
 

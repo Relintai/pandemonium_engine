@@ -96,11 +96,11 @@ public:
 		Size2 size;
 		int spacing;
 		Vector2 icon_coord;
-		Map<Vector2, uint32_t> flags;
-		Map<Vector2, Ref<OccluderPolygon2D>> occluder_map;
-		Map<Vector2, Ref<NavigationPolygon>> navpoly_map;
-		Map<Vector2, int> priority_map;
-		Map<Vector2, int> z_index_map;
+		RBMap<Vector2, uint32_t> flags;
+		RBMap<Vector2, Ref<OccluderPolygon2D>> occluder_map;
+		RBMap<Vector2, Ref<NavigationPolygon>> navpoly_map;
+		RBMap<Vector2, int> priority_map;
+		RBMap<Vector2, int> z_index_map;
 
 		// Default size to prevent invalid value
 		explicit AutotileData() :
@@ -135,7 +135,7 @@ private:
 				z_index(0) {}
 	};
 
-	Map<int, TileData> tile_map;
+	RBMap<int, TileData> tile_map;
 
 	Ref<FastnoiseNoiseParams> _noise_params;
 
@@ -186,15 +186,15 @@ public:
 	void autotile_clear_bitmask_map(int p_id);
 	void autotile_set_subtile_priority(int p_id, const Vector2 &p_coord, int p_priority);
 	int autotile_get_subtile_priority(int p_id, const Vector2 &p_coord);
-	const Map<Vector2, int> &autotile_get_priority_map(int p_id) const;
+	const RBMap<Vector2, int> &autotile_get_priority_map(int p_id) const;
 
 	void autotile_set_z_index(int p_id, const Vector2 &p_coord, int p_z_index);
 	int autotile_get_z_index(int p_id, const Vector2 &p_coord);
-	const Map<Vector2, int> &autotile_get_z_index_map(int p_id) const;
+	const RBMap<Vector2, int> &autotile_get_z_index_map(int p_id) const;
 
 	void autotile_set_bitmask(int p_id, const Vector2 &p_coord, uint32_t p_flag);
 	uint32_t autotile_get_bitmask(int p_id, const Vector2 &p_coord);
-	const Map<Vector2, uint32_t> &autotile_get_bitmask_map(int p_id);
+	const RBMap<Vector2, uint32_t> &autotile_get_bitmask_map(int p_id);
 	Vector2 autotile_get_subtile_for_bitmask(int p_id, uint16_t p_bitmask, const Node *p_tilemap_node = nullptr, const Vector2 &p_tile_location = Vector2());
 	Vector2 atlastile_get_subtile_by_priority(int p_id, const Node *p_tilemap_node = nullptr, const Vector2 &p_tile_location = Vector2());
 
@@ -234,7 +234,7 @@ public:
 
 	void autotile_set_light_occluder(int p_id, const Ref<OccluderPolygon2D> &p_light_occluder, const Vector2 &p_coord);
 	Ref<OccluderPolygon2D> autotile_get_light_occluder(int p_id, const Vector2 &p_coord) const;
-	const Map<Vector2, Ref<OccluderPolygon2D>> &autotile_get_light_oclusion_map(int p_id) const;
+	const RBMap<Vector2, Ref<OccluderPolygon2D>> &autotile_get_light_oclusion_map(int p_id) const;
 
 	void tile_set_navigation_polygon_offset(int p_id, const Vector2 &p_offset);
 	Vector2 tile_get_navigation_polygon_offset(int p_id) const;
@@ -244,7 +244,7 @@ public:
 
 	void autotile_set_navigation_polygon(int p_id, const Ref<NavigationPolygon> &p_navigation_polygon, const Vector2 &p_coord);
 	Ref<NavigationPolygon> autotile_get_navigation_polygon(int p_id, const Vector2 &p_coord) const;
-	const Map<Vector2, Ref<NavigationPolygon>> &autotile_get_navigation_map(int p_id) const;
+	const RBMap<Vector2, Ref<NavigationPolygon>> &autotile_get_navigation_map(int p_id) const;
 
 	void tile_set_z_index(int p_id, int p_z_index);
 	int tile_get_z_index(int p_id) const;

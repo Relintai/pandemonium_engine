@@ -40,7 +40,7 @@ String EditorPropertyNameProcessor::_capitalize_name(const String &p_name) const
 	String capitalized_string = p_name.capitalize();
 
 	// Fix the casing of a few strings commonly found in editor property/setting names.
-	for (Map<String, String>::Element *E = capitalize_string_remaps.front(); E; E = E->next()) {
+	for (RBMap<String, String>::Element *E = capitalize_string_remaps.front(); E; E = E->next()) {
 		capitalized_string = capitalized_string.replace(E->key(), E->value());
 	}
 

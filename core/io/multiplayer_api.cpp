@@ -246,10 +246,10 @@ Node *MultiplayerAPI::_process_get_node(int p_from, const uint8_t *p_packet, int
 		// Use cached path.
 		int id = target;
 
-		Map<int, PathGetCache>::Element *E = path_get_cache.find(p_from);
+		RBMap<int, PathGetCache>::Element *E = path_get_cache.find(p_from);
 		ERR_FAIL_COND_V_MSG(!E, nullptr, "Invalid packet received. Requests invalid peer cache.");
 
-		Map<int, PathGetCache::NodeInfo>::Element *F = E->get().nodes.find(id);
+		RBMap<int, PathGetCache::NodeInfo>::Element *F = E->get().nodes.find(id);
 		ERR_FAIL_COND_V_MSG(!F, nullptr, "Invalid packet received. Unabled to find requested cached node.");
 
 		PathGetCache::NodeInfo *ni = &F->get();
@@ -267,7 +267,7 @@ void MultiplayerAPI::_process_rpc(Node *p_node, const StringName &p_name, int p_
 
 	// Check that remote can call the RPC on this node.
 	RPCMode rpc_mode = RPC_MODE_DISABLED;
-	const Map<StringName, RPCMode>::Element *E = p_node->get_node_rpc_mode(p_name);
+	const RBMap<StringName, RPCMode>::Element *E = p_node->get_node_rpc_mode(p_name);
 	if (E) {
 		rpc_mode = E->get();
 	}
@@ -357,7 +357,7 @@ void MultiplayerAPI::_process_confirm_path(int p_from, const uint8_t *p_packet, 
 	PathSentCache *psc = path_send_cache.getptr(path);
 	ERR_FAIL_COND_MSG(!psc, "Invalid packet received. Tries to confirm a path which was not found in cache.");
 
-	Map<int, bool>::Element *E = psc->confirmed_peers.find(p_from);
+	RBMap<int, bool>::Element *E = psc->confirmed_peers.find(p_from);
 	ERR_FAIL_COND_MSG(!E, "Invalid packet received. Source peer was not found in cache for the given path.");
 	E->get() = true;
 }
@@ -375,7 +375,7 @@ bool MultiplayerAPI::_send_confirm_path(NodePath p_path, PathSentCache *psc, int
 			continue; // Continue, not for this peer.
 		}
 
-		Map<int, bool>::Element *F = psc->confirmed_peers.find(E->get());
+		RBMap<int, bool>::Element *F = psc->confirmed_peers.find(E->get());
 
 		if (!F || !F->get()) {
 			// Path was not cached, or was cached but is unconfirmed.
@@ -512,7 +512,7 @@ void MultiplayerAPI::_send_rpc(Node *p_from, int p_to, bool p_unreliable, const 
 				continue; // Continue, not for this peer.
 			}
 
-			Map<int, bool>::Element *F = psc->confirmed_peers.find(E->get());
+			RBMap<int, bool>::Element *F = psc->confirmed_peers.find(E->get());
 			ERR_CONTINUE(!F); // Should never happen.
 
 			network_peer->set_target_peer(E->get()); // To this one specifically.
@@ -576,7 +576,7 @@ void MultiplayerAPI::rpcp(Node *p_node, int p_peer_id, bool p_unreliable, const 
 	if (p_peer_id == 0 || p_peer_id == node_id || (p_peer_id < 0 && p_peer_id != -node_id)) {
 		// Check that send mode can use local call.
 
-		const Map<StringName, RPCMode>::Element *E = p_node->get_node_rpc_mode(p_method);
+		const RBMap<StringName, RPCMode>::Element *E = p_node->get_node_rpc_mode(p_method);
 		if (E) {
 			call_local = _should_call_local(E->get(), is_master, skip_rpc);
 		}
@@ -708,7 +708,7 @@ void MultiplayerAPI::profiling_end() {
 int MultiplayerAPI::get_profiling_frame(ProfilingInfo *r_info) {
 	int i = 0;
 #ifdef DEBUG_ENABLED
-	for (Map<ObjectID, ProfilingInfo>::Element *E = profiler_frame_data.front(); E; E = E->next()) {
+	for (RBMap<ObjectID, ProfilingInfo>::Element *E = profiler_frame_data.front(); E; E = E->next()) {
 		r_info[i] = E->get();
 		++i;
 	}

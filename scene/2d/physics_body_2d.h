@@ -159,7 +159,7 @@ private:
 
 	struct ContactMonitor {
 		bool locked;
-		Map<ObjectID, BodyState> body_map;
+		RBMap<ObjectID, BodyState> body_map;
 	};
 
 	ContactMonitor *contact_monitor;

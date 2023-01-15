@@ -39,7 +39,7 @@
 
 #include "core/variant/dictionary.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/string/node_path.h"
@@ -431,7 +431,7 @@ class AnimationTrackEditor : public VBoxContainer {
 		float pos;
 	};
 
-	Map<SelectedKey, KeyInfo> selection;
+	RBMap<SelectedKey, KeyInfo> selection;
 
 	void _key_selected(int p_key, bool p_single, int p_track);
 	void _key_deselected(int p_key, int p_track);

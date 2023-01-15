@@ -98,7 +98,7 @@ GDScriptInstance *GDScript::_create_instance(const Variant **p_args, int p_argco
 	instance->owner = p_owner;
 #ifdef DEBUG_ENABLED
 	//needed for hot reloading
-	for (Map<StringName, MemberInfo>::Element *E = member_indices.front(); E; E = E->next()) {
+	for (RBMap<StringName, MemberInfo>::Element *E = member_indices.front(); E; E = E->next()) {
 		instance->member_indices_cache[E->key()] = E->get().index;
 	}
 #endif
@@ -217,7 +217,7 @@ void GDScript::_placeholder_erased(PlaceHolderScriptInstance *p_placeholder) {
 void GDScript::get_script_method_list(List<MethodInfo> *p_list) const {
 	const GDScript *current = this;
 	while (current) {
-		for (const Map<StringName, GDScriptFunction *>::Element *E = current->member_functions.front(); E; E = E->next()) {
+		for (const RBMap<StringName, GDScriptFunction *>::Element *E = current->member_functions.front(); E; E = E->next()) {
 			GDScriptFunction *func = E->get();
 			MethodInfo mi;
 			mi.name = E->key();
@@ -239,7 +239,7 @@ void GDScript::get_script_property_list(List<PropertyInfo> *p_list) const {
 
 	while (sptr) {
 		Vector<_GDScriptMemberSort> msort;
-		for (Map<StringName, PropertyInfo>::Element *E = sptr->member_info.front(); E; E = E->next()) {
+		for (RBMap<StringName, PropertyInfo>::Element *E = sptr->member_info.front(); E; E = E->next()) {
 			_GDScriptMemberSort ms;
 			ERR_CONTINUE(!sptr->member_indices.has(E->key()));
 			ms.index = sptr->member_indices[E->key()].index;
@@ -266,7 +266,7 @@ bool GDScript::has_method(const StringName &p_method) const {
 }
 
 MethodInfo GDScript::get_method_info(const StringName &p_method) const {
-	const Map<StringName, GDScriptFunction *>::Element *E = member_functions.find(p_method);
+	const RBMap<StringName, GDScriptFunction *>::Element *E = member_functions.find(p_method);
 	if (!E) {
 		return MethodInfo();
 	}
@@ -285,7 +285,7 @@ MethodInfo GDScript::get_method_info(const StringName &p_method) const {
 bool GDScript::get_property_default_value(const StringName &p_property, Variant &r_value) const {
 #ifdef TOOLS_ENABLED
 
-	const Map<StringName, Variant>::Element *E = member_default_values_cache.find(p_property);
+	const RBMap<StringName, Variant>::Element *E = member_default_values_cache.find(p_property);
 	if (E) {
 		r_value = E->get();
 		return true;
@@ -353,12 +353,12 @@ void GDScript::set_source_code(const String &p_code) {
 }
 
 #ifdef TOOLS_ENABLED
-void GDScript::_update_exports_values(Map<StringName, Variant> &values, List<PropertyInfo> &propnames) {
+void GDScript::_update_exports_values(RBMap<StringName, Variant> &values, List<PropertyInfo> &propnames) {
 	if (base_cache.is_valid()) {
 		base_cache->_update_exports_values(values, propnames);
 	}
 
-	for (Map<StringName, Variant>::Element *E = member_default_values_cache.front(); E; E = E->next()) {
+	for (RBMap<StringName, Variant>::Element *E = member_default_values_cache.front(); E; E = E->next()) {
 		values[E->key()] = E->get();
 	}
 
@@ -506,7 +506,7 @@ bool GDScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderSc
 	if ((changed || p_instance_to_update) && placeholders.size()) { //hm :(
 
 		// update placeholders if any
-		Map<StringName, Variant> values;
+		RBMap<StringName, Variant> values;
 		List<PropertyInfo> propnames;
 		_update_exports_values(values, propnames);
 
@@ -551,7 +551,7 @@ void GDScript::update_exports() {
 
 void GDScript::_set_subclass_path(Ref<GDScript> &p_sc, const String &p_path) {
 	p_sc->path = p_path;
-	for (Map<StringName, Ref<GDScript>>::Element *E = p_sc->subclasses.front(); E; E = E->next()) {
+	for (RBMap<StringName, Ref<GDScript>>::Element *E = p_sc->subclasses.front(); E; E = E->next()) {
 		_set_subclass_path(E->get(), p_path);
 	}
 }
@@ -625,7 +625,7 @@ Error GDScript::reload(bool p_keep_state) {
 
 	valid = true;
 
-	for (Map<StringName, Ref<GDScript>>::Element *E = subclasses.front(); E; E = E->next()) {
+	for (RBMap<StringName, Ref<GDScript>>::Element *E = subclasses.front(); E; E = E->next()) {
 		_set_subclass_path(E->get(), path);
 	}
 	_clear_pending_func_states();
@@ -637,9 +637,9 @@ ScriptLanguage *GDScript::get_language() const {
 	return GDScriptLanguage::get_singleton();
 }
 
-void GDScript::get_constants(Map<StringName, Variant> *p_constants) {
+void GDScript::get_constants(RBMap<StringName, Variant> *p_constants) {
 	if (p_constants) {
-		for (Map<StringName, Variant>::Element *E = constants.front(); E; E = E->next()) {
+		for (RBMap<StringName, Variant>::Element *E = constants.front(); E; E = E->next()) {
 			(*p_constants)[E->key()] = E->value();
 		}
 	}
@@ -656,7 +656,7 @@ void GDScript::get_members(Set<StringName> *p_members) {
 Variant GDScript::call(const StringName &p_method, const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
 	GDScript *top = this;
 	while (top) {
-		Map<StringName, GDScriptFunction *>::Element *E = top->member_functions.find(p_method);
+		RBMap<StringName, GDScriptFunction *>::Element *E = top->member_functions.find(p_method);
 		if (E) {
 			ERR_FAIL_COND_V_MSG(!E->get()->is_static(), Variant(), "Can't call non-static function '" + String(p_method) + "' in script.");
 
@@ -675,7 +675,7 @@ bool GDScript::_get(const StringName &p_name, Variant &r_ret) const {
 		const GDScript *top = this;
 		while (top) {
 			{
-				const Map<StringName, Variant>::Element *E = top->constants.find(p_name);
+				const RBMap<StringName, Variant>::Element *E = top->constants.find(p_name);
 				if (E) {
 					r_ret = E->get();
 					return true;
@@ -683,7 +683,7 @@ bool GDScript::_get(const StringName &p_name, Variant &r_ret) const {
 			}
 
 			{
-				const Map<StringName, Ref<GDScript>>::Element *E = subclasses.find(p_name);
+				const RBMap<StringName, Ref<GDScript>>::Element *E = subclasses.find(p_name);
 				if (E) {
 					r_ret = E->get();
 					return true;
@@ -792,7 +792,7 @@ Error GDScript::load_byte_code(const String &p_path) {
 
 	valid = true;
 
-	for (Map<StringName, Ref<GDScript>>::Element *E = subclasses.front(); E; E = E->next()) {
+	for (RBMap<StringName, Ref<GDScript>>::Element *E = subclasses.front(); E; E = E->next()) {
 		_set_subclass_path(E->get(), path);
 	}
 
@@ -829,12 +829,12 @@ Error GDScript::load_source_code(const String &p_path) {
 	return OK;
 }
 
-const Map<StringName, GDScriptFunction *> &GDScript::debug_get_member_functions() const {
+const RBMap<StringName, GDScriptFunction *> &GDScript::debug_get_member_functions() const {
 	return member_functions;
 }
 
 StringName GDScript::debug_get_member_by_index(int p_idx) const {
-	for (const Map<StringName, MemberInfo>::Element *E = member_indices.front(); E; E = E->next()) {
+	for (const RBMap<StringName, MemberInfo>::Element *E = member_indices.front(); E; E = E->next()) {
 		if (E->get().index == p_idx) {
 			return E->key();
 		}
@@ -880,7 +880,7 @@ bool GDScript::has_script_signal(const StringName &p_signal) const {
 	return false;
 }
 void GDScript::get_script_signal_list(List<MethodInfo> *r_signals) const {
-	for (const Map<StringName, Vector<StringName>>::Element *E = _signals.front(); E; E = E->next()) {
+	for (const RBMap<StringName, Vector<StringName>>::Element *E = _signals.front(); E; E = E->next()) {
 		MethodInfo mi;
 		mi.name = E->key();
 		for (int i = 0; i < E->get().size(); i++) {
@@ -929,7 +929,7 @@ void GDScript::_save_orphaned_subclasses() {
 	};
 	Vector<ClassRefWithName> weak_subclasses;
 	// collect subclasses ObjectID and name
-	for (Map<StringName, Ref<GDScript>>::Element *E = subclasses.front(); E; E = E->next()) {
+	for (RBMap<StringName, Ref<GDScript>>::Element *E = subclasses.front(); E; E = E->next()) {
 		E->get()->_owner = nullptr; //bye, you are no longer owned cause I died
 		ClassRefWithName subclass;
 		subclass.id = E->get()->get_instance_id();
@@ -957,7 +957,7 @@ void GDScript::_save_orphaned_subclasses() {
 GDScript::~GDScript() {
 	_clear_pending_func_states();
 
-	for (Map<StringName, GDScriptFunction *>::Element *E = member_functions.front(); E; E = E->next()) {
+	for (RBMap<StringName, GDScriptFunction *>::Element *E = member_functions.front(); E; E = E->next()) {
 		memdelete(E->get());
 	}
 
@@ -977,7 +977,7 @@ GDScript::~GDScript() {
 bool GDScriptInstance::set(const StringName &p_name, const Variant &p_value) {
 	//member
 	{
-		const Map<StringName, GDScript::MemberInfo>::Element *E = script->member_indices.find(p_name);
+		const RBMap<StringName, GDScript::MemberInfo>::Element *E = script->member_indices.find(p_name);
 		if (E) {
 			const GDScript::MemberInfo *member = &E->get();
 			if (member->setter) {
@@ -1011,7 +1011,7 @@ bool GDScriptInstance::set(const StringName &p_name, const Variant &p_value) {
 
 	GDScript *sptr = script.ptr();
 	while (sptr) {
-		Map<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(GDScriptLanguage::get_singleton()->strings._set);
+		RBMap<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(GDScriptLanguage::get_singleton()->strings._set);
 		if (E) {
 			Variant name = p_name;
 			const Variant *args[2] = { &name, &p_value };
@@ -1032,7 +1032,7 @@ bool GDScriptInstance::get(const StringName &p_name, Variant &r_ret) const {
 	const GDScript *sptr = script.ptr();
 	while (sptr) {
 		{
-			const Map<StringName, GDScript::MemberInfo>::Element *E = script->member_indices.find(p_name);
+			const RBMap<StringName, GDScript::MemberInfo>::Element *E = script->member_indices.find(p_name);
 			if (E) {
 				if (E->get().getter) {
 					Variant::CallError err;
@@ -1049,7 +1049,7 @@ bool GDScriptInstance::get(const StringName &p_name, Variant &r_ret) const {
 		{
 			const GDScript *sl = sptr;
 			while (sl) {
-				const Map<StringName, Variant>::Element *E = sl->constants.find(p_name);
+				const RBMap<StringName, Variant>::Element *E = sl->constants.find(p_name);
 				if (E) {
 					r_ret = E->get();
 					return true; //index found
@@ -1059,7 +1059,7 @@ bool GDScriptInstance::get(const StringName &p_name, Variant &r_ret) const {
 		}
 
 		{
-			const Map<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(GDScriptLanguage::get_singleton()->strings._get);
+			const RBMap<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(GDScriptLanguage::get_singleton()->strings._get);
 			if (E) {
 				Variant name = p_name;
 				const Variant *args[1] = { &name };
@@ -1103,7 +1103,7 @@ void GDScriptInstance::get_property_list(List<PropertyInfo> *p_properties) const
 	List<PropertyInfo> props;
 
 	while (sptr) {
-		const Map<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(GDScriptLanguage::get_singleton()->strings._get_property_list);
+		const RBMap<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(GDScriptLanguage::get_singleton()->strings._get_property_list);
 		if (E) {
 			Variant::CallError err;
 			Variant ret = const_cast<GDScriptFunction *>(E->get())->call(const_cast<GDScriptInstance *>(this), nullptr, 0, err);
@@ -1138,7 +1138,7 @@ void GDScriptInstance::get_property_list(List<PropertyInfo> *p_properties) const
 		//instance a fake script for editing the values
 
 		Vector<_GDScriptMemberSort> msort;
-		for (Map<StringName, PropertyInfo>::Element *F = sptr->member_info.front(); F; F = F->next()) {
+		for (RBMap<StringName, PropertyInfo>::Element *F = sptr->member_info.front(); F; F = F->next()) {
 			_GDScriptMemberSort ms;
 			ERR_CONTINUE(!sptr->member_indices.has(F->key()));
 			ms.index = sptr->member_indices[F->key()].index;
@@ -1163,7 +1163,7 @@ void GDScriptInstance::get_property_list(List<PropertyInfo> *p_properties) const
 void GDScriptInstance::get_method_list(List<MethodInfo> *p_list) const {
 	const GDScript *sptr = script.ptr();
 	while (sptr) {
-		for (Map<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.front(); E; E = E->next()) {
+		for (RBMap<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.front(); E; E = E->next()) {
 			MethodInfo mi;
 			mi.name = E->key();
 			mi.flags |= METHOD_FLAG_FROM_SCRIPT;
@@ -1179,7 +1179,7 @@ void GDScriptInstance::get_method_list(List<MethodInfo> *p_list) const {
 bool GDScriptInstance::has_method(const StringName &p_method) const {
 	const GDScript *sptr = script.ptr();
 	while (sptr) {
-		const Map<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
+		const RBMap<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
 		if (E) {
 			return true;
 		}
@@ -1191,7 +1191,7 @@ bool GDScriptInstance::has_method(const StringName &p_method) const {
 Variant GDScriptInstance::call(const StringName &p_method, const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
 	GDScript *sptr = script.ptr();
 	while (sptr) {
-		Map<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
+		RBMap<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
 		if (E) {
 			return E->get()->call(this, p_args, p_argcount, r_error);
 		}
@@ -1206,7 +1206,7 @@ void GDScriptInstance::call_multilevel(const StringName &p_method, const Variant
 	Variant::CallError ce;
 
 	while (sptr) {
-		Map<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
+		RBMap<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
 		if (E) {
 			E->get()->call(this, p_args, p_argcount, ce);
 		}
@@ -1221,7 +1221,7 @@ void GDScriptInstance::_ml_call_reversed(GDScript *sptr, const StringName &p_met
 
 	Variant::CallError ce;
 
-	Map<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
+	RBMap<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
 	if (E) {
 		E->get()->call(this, p_args, p_argcount, ce);
 	}
@@ -1240,7 +1240,7 @@ void GDScriptInstance::notification(int p_notification) {
 
 	GDScript *sptr = script.ptr();
 	while (sptr) {
-		Map<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(GDScriptLanguage::get_singleton()->strings._notification);
+		RBMap<StringName, GDScriptFunction *>::Element *E = sptr->member_functions.find(GDScriptLanguage::get_singleton()->strings._notification);
 		if (E) {
 			Variant::CallError err;
 			E->get()->call(this, args, 1, err);
@@ -1292,7 +1292,7 @@ void GDScriptInstance::reload_members() {
 	new_members.resize(script->member_indices.size());
 
 	//pass the values to the new indices
-	for (Map<StringName, GDScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
+	for (RBMap<StringName, GDScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
 		if (member_indices_cache.has(E->key())) {
 			Variant value = members[member_indices_cache[E->key()]];
 			new_members.write[E->get().index] = value;
@@ -1304,7 +1304,7 @@ void GDScriptInstance::reload_members() {
 
 	//pass the values to the new indices
 	member_indices_cache.clear();
-	for (Map<StringName, GDScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
+	for (RBMap<StringName, GDScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
 		member_indices_cache[E->key()] = E->get().index;
 	}
 
@@ -1570,7 +1570,7 @@ void GDScriptLanguage::reload_tool_script(const Ref<Script> &p_script, bool p_so
 
 	//when someone asks you why dynamically typed languages are easier to write....
 
-	Map<Ref<GDScript>, Map<ObjectID, List<Pair<StringName, Variant>>>> to_reload;
+	RBMap<Ref<GDScript>, RBMap<ObjectID, List<Pair<StringName, Variant>>>> to_reload;
 
 	//as scripts are going to be reloaded, must proceed without locking here
 
@@ -1583,11 +1583,11 @@ void GDScriptLanguage::reload_tool_script(const Ref<Script> &p_script, bool p_so
 			continue;
 		}
 
-		to_reload.insert(E->get(), Map<ObjectID, List<Pair<StringName, Variant>>>());
+		to_reload.insert(E->get(), RBMap<ObjectID, List<Pair<StringName, Variant>>>());
 
 		if (!p_soft_reload) {
 			//save state and remove script from instances
-			Map<ObjectID, List<Pair<StringName, Variant>>> &map = to_reload[E->get()];
+			RBMap<ObjectID, List<Pair<StringName, Variant>>> &map = to_reload[E->get()];
 
 			while (E->get()->instances.front()) {
 				Object *obj = E->get()->instances.front()->get();
@@ -1620,18 +1620,18 @@ void GDScriptLanguage::reload_tool_script(const Ref<Script> &p_script, bool p_so
 
 #endif
 
-			for (Map<ObjectID, List<Pair<StringName, Variant>>>::Element *F = E->get()->pending_reload_state.front(); F; F = F->next()) {
+			for (RBMap<ObjectID, List<Pair<StringName, Variant>>>::Element *F = E->get()->pending_reload_state.front(); F; F = F->next()) {
 				map[F->key()] = F->get(); //pending to reload, use this one instead
 			}
 		}
 	}
 
-	for (Map<Ref<GDScript>, Map<ObjectID, List<Pair<StringName, Variant>>>>::Element *E = to_reload.front(); E; E = E->next()) {
+	for (RBMap<Ref<GDScript>, RBMap<ObjectID, List<Pair<StringName, Variant>>>>::Element *E = to_reload.front(); E; E = E->next()) {
 		Ref<GDScript> scr = E->key();
 		scr->reload(p_soft_reload);
 
 		//restore state if saved
-		for (Map<ObjectID, List<Pair<StringName, Variant>>>::Element *F = E->get().front(); F; F = F->next()) {
+		for (RBMap<ObjectID, List<Pair<StringName, Variant>>>::Element *F = E->get().front(); F; F = F->next()) {
 			List<Pair<StringName, Variant>> &saved_state = F->get();
 
 			Object *obj = ObjectDB::get_instance(F->key());
@@ -2111,14 +2111,14 @@ GDScriptLanguage::~GDScriptLanguage() {
 		// is not the same as before).
 		script->reference();
 
-		for (Map<StringName, GDScriptFunction *>::Element *E = script->member_functions.front(); E; E = E->next()) {
+		for (RBMap<StringName, GDScriptFunction *>::Element *E = script->member_functions.front(); E; E = E->next()) {
 			GDScriptFunction *func = E->get();
 			for (int i = 0; i < func->argument_types.size(); i++) {
 				func->argument_types.write[i].script_type_ref = Ref<Script>();
 			}
 			func->return_type.script_type_ref = Ref<Script>();
 		}
-		for (Map<StringName, GDScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
+		for (RBMap<StringName, GDScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
 			E->get().data_type.script_type_ref = Ref<Script>();
 		}
 
@@ -2134,7 +2134,7 @@ void GDScriptLanguage::add_orphan_subclass(const String &p_qualified_name, const
 }
 
 Ref<GDScript> GDScriptLanguage::get_orphan_subclass(const String &p_qualified_name) {
-	Map<String, ObjectID>::Element *orphan_subclass_element = orphan_subclasses.find(p_qualified_name);
+	RBMap<String, ObjectID>::Element *orphan_subclass_element = orphan_subclasses.find(p_qualified_name);
 	if (!orphan_subclass_element) {
 		return Ref<GDScript>();
 	}

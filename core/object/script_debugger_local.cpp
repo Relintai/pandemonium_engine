@@ -83,7 +83,7 @@ void ScriptDebuggerLocal::debug(ScriptLanguage *p_script, bool p_can_continue, b
 
 		} else if (line.begins_with("set")) {
 			if (line.get_slice_count(" ") == 1) {
-				for (Map<String, String>::Element *E = options.front(); E; E = E->next()) {
+				for (RBMap<String, String>::Element *E = options.front(); E; E = E->next()) {
 					print_line("\t" + E->key() + "=" + E->value());
 				}
 
@@ -159,14 +159,14 @@ void ScriptDebuggerLocal::debug(ScriptLanguage *p_script, bool p_can_continue, b
 
 		} else if (line.begins_with("br") || line.begins_with("break")) {
 			if (line.get_slice_count(" ") <= 1) {
-				const Map<int, Set<StringName>> &breakpoints = get_breakpoints();
+				const RBMap<int, Set<StringName>> &breakpoints = get_breakpoints();
 				if (breakpoints.size() == 0) {
 					print_line("No Breakpoints.");
 					continue;
 				}
 
 				print_line("Breakpoint(s): " + itos(breakpoints.size()));
-				for (Map<int, Set<StringName>>::Element *E = breakpoints.front(); E; E = E->next()) {
+				for (RBMap<int, Set<StringName>>::Element *E = breakpoints.front(); E; E = E->next()) {
 					print_line("\t" + String(E->value().front()->get()) + ":" + itos(E->key()));
 				}
 

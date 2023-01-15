@@ -252,7 +252,7 @@ void RigidBody::_body_enter_tree(ObjectID p_id) {
 	ERR_FAIL_COND(!node);
 
 	ERR_FAIL_COND(!contact_monitor);
-	Map<ObjectID, BodyState>::Element *E = contact_monitor->body_map.find(p_id);
+	RBMap<ObjectID, BodyState>::Element *E = contact_monitor->body_map.find(p_id);
 	ERR_FAIL_COND(!E);
 	ERR_FAIL_COND(E->get().in_tree);
 
@@ -274,7 +274,7 @@ void RigidBody::_body_exit_tree(ObjectID p_id) {
 	Node *node = Object::cast_to<Node>(obj);
 	ERR_FAIL_COND(!node);
 	ERR_FAIL_COND(!contact_monitor);
-	Map<ObjectID, BodyState>::Element *E = contact_monitor->body_map.find(p_id);
+	RBMap<ObjectID, BodyState>::Element *E = contact_monitor->body_map.find(p_id);
 	ERR_FAIL_COND(!E);
 	ERR_FAIL_COND(!E->get().in_tree);
 	E->get().in_tree = false;
@@ -298,7 +298,7 @@ void RigidBody::_body_inout(int p_status, const RID &p_body, ObjectID p_instance
 	Node *node = Object::cast_to<Node>(obj);
 
 	ERR_FAIL_COND(!contact_monitor);
-	Map<ObjectID, BodyState>::Element *E = contact_monitor->body_map.find(objid);
+	RBMap<ObjectID, BodyState>::Element *E = contact_monitor->body_map.find(objid);
 
 	ERR_FAIL_COND(!body_in && !E);
 
@@ -382,7 +382,7 @@ void RigidBody::_direct_state_changed(Object *p_state) {
 
 		//untag all
 		int rc = 0;
-		for (Map<ObjectID, BodyState>::Element *E = contact_monitor->body_map.front(); E; E = E->next()) {
+		for (RBMap<ObjectID, BodyState>::Element *E = contact_monitor->body_map.front(); E; E = E->next()) {
 			for (int i = 0; i < E->get().shapes.size(); i++) {
 				E->get().shapes[i].tagged = false;
 				rc++;
@@ -404,7 +404,7 @@ void RigidBody::_direct_state_changed(Object *p_state) {
 
 			//bool found=false;
 
-			Map<ObjectID, BodyState>::Element *E = contact_monitor->body_map.find(obj);
+			RBMap<ObjectID, BodyState>::Element *E = contact_monitor->body_map.find(obj);
 			if (!E) {
 				toadd[toadd_count].rid = rid;
 				toadd[toadd_count].local_shape = local_shape;
@@ -430,7 +430,7 @@ void RigidBody::_direct_state_changed(Object *p_state) {
 
 		//put the ones to remove
 
-		for (Map<ObjectID, BodyState>::Element *E = contact_monitor->body_map.front(); E; E = E->next()) {
+		for (RBMap<ObjectID, BodyState>::Element *E = contact_monitor->body_map.front(); E; E = E->next()) {
 			for (int i = 0; i < E->get().shapes.size(); i++) {
 				if (!E->get().shapes[i].tagged) {
 					toremove[toremove_count].rid = E->get().rid;
@@ -737,7 +737,7 @@ void RigidBody::set_contact_monitor(bool p_enabled) {
 	if (!p_enabled) {
 		ERR_FAIL_COND_MSG(contact_monitor->locked, "Can't disable contact monitoring during in/out callback. Use call_deferred(\"set_contact_monitor\", false) instead.");
 
-		for (Map<ObjectID, BodyState>::Element *E = contact_monitor->body_map.front(); E; E = E->next()) {
+		for (RBMap<ObjectID, BodyState>::Element *E = contact_monitor->body_map.front(); E; E = E->next()) {
 			//clean up mess
 			Object *obj = ObjectDB::get_instance(E->key());
 			Node *node = Object::cast_to<Node>(obj);
@@ -774,7 +774,7 @@ Array RigidBody::get_colliding_bodies() const {
 	Array ret;
 	ret.resize(contact_monitor->body_map.size());
 	int idx = 0;
-	for (const Map<ObjectID, BodyState>::Element *E = contact_monitor->body_map.front(); E; E = E->next()) {
+	for (const RBMap<ObjectID, BodyState>::Element *E = contact_monitor->body_map.front(); E; E = E->next()) {
 		Object *obj = ObjectDB::get_instance(E->key());
 		if (!obj) {
 			ret.resize(ret.size() - 1); //ops

@@ -156,9 +156,9 @@ Error MessageQueue::push_set(Object *p_object, const StringName &p_prop, const V
 }
 
 void MessageQueue::statistics() {
-	Map<StringName, int> set_count;
-	Map<int, int> notify_count;
-	Map<StringName, int> call_count;
+	RBMap<StringName, int> set_count;
+	RBMap<int, int> notify_count;
+	RBMap<StringName, int> call_count;
 	int null_count = 0;
 
 	uint32_t read_pos = 0;
@@ -211,15 +211,15 @@ void MessageQueue::statistics() {
 	print_line("TOTAL BYTES: " + itos(buffer_end));
 	print_line("NULL count: " + itos(null_count));
 
-	for (Map<StringName, int>::Element *E = set_count.front(); E; E = E->next()) {
+	for (RBMap<StringName, int>::Element *E = set_count.front(); E; E = E->next()) {
 		print_line("SET " + E->key() + ": " + itos(E->get()));
 	}
 
-	for (Map<StringName, int>::Element *E = call_count.front(); E; E = E->next()) {
+	for (RBMap<StringName, int>::Element *E = call_count.front(); E; E = E->next()) {
 		print_line("CALL " + E->key() + ": " + itos(E->get()));
 	}
 
-	for (Map<int, int>::Element *E = notify_count.front(); E; E = E->next()) {
+	for (RBMap<int, int>::Element *E = notify_count.front(); E; E = E->next()) {
 		print_line("NOTIFY " + itos(E->key()) + ": " + itos(E->get()));
 	}
 }

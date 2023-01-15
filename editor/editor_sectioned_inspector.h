@@ -32,7 +32,7 @@
 
 #include "scene/gui/split_container.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/object/object_id.h"
 #include "core/string/ustring.h"
@@ -51,7 +51,7 @@ class SectionedInspector : public HSplitContainer {
 	Tree *sections;
 	SectionedInspectorFilter *filter;
 
-	Map<String, TreeItem *> section_map;
+	RBMap<String, TreeItem *> section_map;
 	EditorInspector *inspector;
 	LineEdit *search_box;
 

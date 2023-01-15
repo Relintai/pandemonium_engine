@@ -33,7 +33,7 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/popup.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/os/thread_safe.h"
 #include "core/string/ustring.h"
 
@@ -51,8 +51,8 @@ class BackgroundProgress : public HBoxContainer {
 		ProgressBar *progress;
 	};
 
-	Map<String, Task> tasks;
-	Map<String, int> updates;
+	RBMap<String, Task> tasks;
+	RBMap<String, int> updates;
 	void _update();
 
 protected:
@@ -82,7 +82,7 @@ class ProgressDialog : public Popup {
 	HBoxContainer *cancel_hb;
 	Button *cancel;
 
-	Map<String, Task> tasks;
+	RBMap<String, Task> tasks;
 	VBoxContainer *main;
 
 	static ProgressDialog *singleton;

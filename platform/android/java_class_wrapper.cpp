@@ -33,7 +33,7 @@
 #include "thread_jandroid.h"
 
 bool JavaClass::_call_method(JavaObject *p_instance, const StringName &p_method, const Variant **p_args, int p_argcount, Variant::CallError &r_error, Variant &ret) {
-	Map<StringName, List<MethodInfo>>::Element *M = methods.find(p_method);
+	RBMap<StringName, List<MethodInfo>>::Element *M = methods.find(p_method);
 	if (!M)
 		return false;
 

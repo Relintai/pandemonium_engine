@@ -32,7 +32,7 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"
@@ -105,7 +105,7 @@ class ScriptCreateDialog : public ConfirmationDialog {
 
 	String script_template;
 	Vector<ScriptTemplateInfo> template_list;
-	Map<String, Vector<int>> template_overrides; // name : indices
+	RBMap<String, Vector<int>> template_overrides; // name : indices
 
 	void _update_script_templates(const String &p_extension);
 

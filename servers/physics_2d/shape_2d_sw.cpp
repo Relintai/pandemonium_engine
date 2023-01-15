@@ -36,7 +36,7 @@
 void Shape2DSW::configure(const Rect2 &p_aabb) {
 	aabb = p_aabb;
 	configured = true;
-	for (Map<ShapeOwner2DSW *, int>::Element *E = owners.front(); E; E = E->next()) {
+	for (RBMap<ShapeOwner2DSW *, int>::Element *E = owners.front(); E; E = E->next()) {
 		ShapeOwner2DSW *co = (ShapeOwner2DSW *)E->key();
 		co->_shape_changed();
 	}
@@ -50,7 +50,7 @@ Vector2 Shape2DSW::get_support(const Vector2 &p_normal) const {
 }
 
 void Shape2DSW::add_owner(ShapeOwner2DSW *p_owner) {
-	Map<ShapeOwner2DSW *, int>::Element *E = owners.find(p_owner);
+	RBMap<ShapeOwner2DSW *, int>::Element *E = owners.find(p_owner);
 	if (E) {
 		E->get()++;
 	} else {
@@ -59,7 +59,7 @@ void Shape2DSW::add_owner(ShapeOwner2DSW *p_owner) {
 }
 
 void Shape2DSW::remove_owner(ShapeOwner2DSW *p_owner) {
-	Map<ShapeOwner2DSW *, int>::Element *E = owners.find(p_owner);
+	RBMap<ShapeOwner2DSW *, int>::Element *E = owners.find(p_owner);
 	ERR_FAIL_COND(!E);
 	E->get()--;
 	if (E->get() == 0) {
@@ -71,7 +71,7 @@ bool Shape2DSW::is_owner(ShapeOwner2DSW *p_owner) const {
 	return owners.has(p_owner);
 }
 
-const Map<ShapeOwner2DSW *, int> &Shape2DSW::get_owners() const {
+const RBMap<ShapeOwner2DSW *, int> &Shape2DSW::get_owners() const {
 	return owners;
 }
 
@@ -856,7 +856,7 @@ void ConcavePolygonShape2DSW::set_data(const Variant &p_data) {
 
 		PoolVector<Vector2>::Read arr = p2arr.read();
 
-		Map<Point2, int> pointmap;
+		RBMap<Point2, int> pointmap;
 		for (int i = 0; i < len; i += 2) {
 			Point2 p1 = arr[i];
 			Point2 p2 = arr[i + 1];
@@ -884,7 +884,7 @@ void ConcavePolygonShape2DSW::set_data(const Variant &p_data) {
 
 		points.resize(pointmap.size());
 		aabb.position = pointmap.front()->key();
-		for (Map<Point2, int>::Element *E = pointmap.front(); E; E = E->next()) {
+		for (RBMap<Point2, int>::Element *E = pointmap.front(); E; E = E->next()) {
 			aabb.expand_to(E->key());
 			points.write[E->get()] = E->key();
 		}

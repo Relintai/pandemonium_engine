@@ -101,7 +101,7 @@ public:
 
 		Transform2D global_transform;
 
-		Map<RID, CanvasData> canvas_map;
+		RBMap<RID, CanvasData> canvas_map;
 
 		Viewport() {
 			update_mode = RS::VIEWPORT_UPDATE_WHEN_VISIBLE;

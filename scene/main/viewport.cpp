@@ -554,7 +554,7 @@ void Viewport::_process_picking(bool p_ignore_paused) {
 						if (co && (!p_ignore_paused || co->can_process())) {
 							bool send_event = true;
 							if (is_mouse) {
-								Map<ObjectID, uint64_t>::Element *F = physics_2d_mouseover.find(res[i].collider_id);
+								RBMap<ObjectID, uint64_t>::Element *F = physics_2d_mouseover.find(res[i].collider_id);
 
 								if (!F) {
 									physics_2d_mouseover.insert(res[i].collider_id, frame);
@@ -577,9 +577,9 @@ void Viewport::_process_picking(bool p_ignore_paused) {
 			}
 
 			if (is_mouse) {
-				List<Map<ObjectID, uint64_t>::Element *> to_erase;
+				List<RBMap<ObjectID, uint64_t>::Element *> to_erase;
 
-				for (Map<ObjectID, uint64_t>::Element *E = physics_2d_mouseover.front(); E; E = E->next()) {
+				for (RBMap<ObjectID, uint64_t>::Element *E = physics_2d_mouseover.front(); E; E = E->next()) {
 					if (E->get() != frame) {
 						Object *o = ObjectDB::get_instance(E->key());
 						if (o) {
@@ -2658,9 +2658,9 @@ void Viewport::_drop_mouse_focus() {
 void Viewport::_drop_physics_mouseover(bool p_paused_only) {
 	physics_has_last_mousepos = false;
 
-	List<Map<ObjectID, uint64_t>::Element *> to_erase;
+	List<RBMap<ObjectID, uint64_t>::Element *> to_erase;
 
-	for (Map<ObjectID, uint64_t>::Element *E = physics_2d_mouseover.front(); E; E = E->next()) {
+	for (RBMap<ObjectID, uint64_t>::Element *E = physics_2d_mouseover.front(); E; E = E->next()) {
 		Object *o = ObjectDB::get_instance(E->key());
 		if (o) {
 			CollisionObject2D *co = Object::cast_to<CollisionObject2D>(o);

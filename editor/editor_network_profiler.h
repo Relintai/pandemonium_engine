@@ -33,7 +33,7 @@
 #include "scene/gui/box_container.h"
 
 #include "core/io/multiplayer_api.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/object/object_id.h"
 
@@ -54,7 +54,7 @@ private:
 
 	Timer *frame_delay;
 
-	Map<ObjectID, MultiplayerAPI::ProfilingInfo> nodes_data;
+	RBMap<ObjectID, MultiplayerAPI::ProfilingInfo> nodes_data;
 
 	void _update_frame();
 

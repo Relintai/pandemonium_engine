@@ -31,7 +31,7 @@
 #include "color.h"
 
 #include "core/math/color_names.inc"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/math_funcs.h"
 #include "core/string/print_string.h"
 
@@ -412,7 +412,7 @@ Color Color::named(const String &p_name) {
 	name = name.replace(".", "");
 	name = name.to_lower();
 
-	const Map<String, Color>::Element *color = _named_colors.find(name);
+	const RBMap<String, Color>::Element *color = _named_colors.find(name);
 	ERR_FAIL_NULL_V_MSG(color, Color(), "Invalid color name: " + p_name + ".");
 	return color->value();
 }

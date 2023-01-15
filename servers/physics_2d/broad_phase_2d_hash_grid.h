@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "broad_phase_2d_sw.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 
 class BroadPhase2DHashGrid : public BroadPhase2DSW {
 	struct PairData {
@@ -55,7 +55,7 @@ class BroadPhase2DHashGrid : public BroadPhase2DSW {
 		uint32_t collision_layer;
 		int subindex;
 		uint64_t pass;
-		Map<Element *, PairData *> paired;
+		RBMap<Element *, PairData *> paired;
 	};
 
 	struct RC {
@@ -75,8 +75,8 @@ class BroadPhase2DHashGrid : public BroadPhase2DSW {
 		}
 	};
 
-	Map<ID, Element> element_map;
-	Map<Element *, RC> large_elements;
+	RBMap<ID, Element> element_map;
+	RBMap<Element *, RC> large_elements;
 
 	ID current;
 
@@ -107,7 +107,7 @@ class BroadPhase2DHashGrid : public BroadPhase2DSW {
 		}
 	};
 
-	Map<PairKey, PairData> pair_map;
+	RBMap<PairKey, PairData> pair_map;
 
 	int cell_size;
 	int large_object_min_surface;
@@ -154,8 +154,8 @@ class BroadPhase2DHashGrid : public BroadPhase2DSW {
 
 	struct PosBin {
 		PosKey key;
-		Map<Element *, RC> object_set;
-		Map<Element *, RC> static_object_set;
+		RBMap<Element *, RC> object_set;
+		RBMap<Element *, RC> static_object_set;
 		PosBin *next;
 	};
 

@@ -140,7 +140,7 @@ public class APKExpansionPolicy implements Policy {
         }
 
         // Update server policy data
-        Map<String, String> extras = decodeExtras(rawData);
+        RBMap<String, String> extras = decodeExtras(rawData);
         if (response == Policy.LICENSED) {
             mLastResponse = response;
             // Reset the licensing URL since it is only applicable for NOT_LICENSED responses.
@@ -395,9 +395,9 @@ public class APKExpansionPolicy implements Policy {
         return false;
     }
 
-    private Map<String, String> decodeExtras(
+    private RBMap<String, String> decodeExtras(
         com.google.android.vending.licensing.ResponseData rawData) {
-        Map<String, String> results = new HashMap<String, String>();
+        RBMap<String, String> results = new HashMap<String, String>();
         if (rawData == null) {
             return results;
         }

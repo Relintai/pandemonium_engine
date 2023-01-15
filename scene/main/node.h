@@ -32,7 +32,7 @@
 
 #include "core/object/object.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/string/node_path.h"
 #include "scene/main/scene_tree.h"
 
@@ -114,7 +114,7 @@ private:
 		Viewport *viewport;
 		World *world;
 
-		Map<StringName, GroupData> grouped;
+		RBMap<StringName, GroupData> grouped;
 		List<Node *>::Element *OW; // owned element
 		List<Node *> owned;
 
@@ -122,7 +122,7 @@ private:
 
 		// Networking
 		int network_master;
-		Map<StringName, MultiplayerAPI::RPCMode> rpc_methods;
+		RBMap<StringName, MultiplayerAPI::RPCMode> rpc_methods;
 		//Used by vrpc
 		Vector<Node *> _sees;
 		Vector<Node *> _seen_by;
@@ -206,8 +206,8 @@ private:
 	Array _get_node_and_resource(const NodePath &p_path);
 
 	void _duplicate_signals(const Node *p_original, Node *p_copy) const;
-	void _duplicate_and_reown(Node *p_new_parent, const Map<Node *, Node *> &p_reown_map) const;
-	Node *_duplicate(int p_flags, Map<const Node *, Node *> *r_duplimap = nullptr) const;
+	void _duplicate_and_reown(Node *p_new_parent, const RBMap<Node *, Node *> &p_reown_map) const;
+	Node *_duplicate(int p_flags, RBMap<const Node *, Node *> *r_duplimap = nullptr) const;
 
 	Array _get_children() const;
 	Array _get_groups() const;
@@ -439,12 +439,12 @@ public:
 	int get_position_in_parent() const;
 
 	Node *duplicate(int p_flags = DUPLICATE_GROUPS | DUPLICATE_SIGNALS | DUPLICATE_SCRIPTS) const;
-	Node *duplicate_and_reown(const Map<Node *, Node *> &p_reown_map) const;
+	Node *duplicate_and_reown(const RBMap<Node *, Node *> &p_reown_map) const;
 #ifdef TOOLS_ENABLED
-	Node *duplicate_from_editor(Map<const Node *, Node *> &r_duplimap) const;
-	Node *duplicate_from_editor(Map<const Node *, Node *> &r_duplimap, const Map<RES, RES> &p_resource_remap) const;
-	void remap_node_resources(Node *p_node, const Map<RES, RES> &p_resource_remap) const;
-	void remap_nested_resources(RES p_resource, const Map<RES, RES> &p_resource_remap) const;
+	Node *duplicate_from_editor(RBMap<const Node *, Node *> &r_duplimap) const;
+	Node *duplicate_from_editor(RBMap<const Node *, Node *> &r_duplimap, const RBMap<RES, RES> &p_resource_remap) const;
+	void remap_node_resources(Node *p_node, const RBMap<RES, RES> &p_resource_remap) const;
+	void remap_nested_resources(RES p_resource, const RBMap<RES, RES> &p_resource_remap) const;
 #endif
 
 	// used by editors, to save what has changed only
@@ -558,7 +558,7 @@ public:
 	Ref<MultiplayerAPI> get_multiplayer() const;
 	Ref<MultiplayerAPI> get_custom_multiplayer() const;
 	void set_custom_multiplayer(Ref<MultiplayerAPI> p_multiplayer);
-	const Map<StringName, MultiplayerAPI::RPCMode>::Element *get_node_rpc_mode(const StringName &p_method);
+	const RBMap<StringName, MultiplayerAPI::RPCMode>::Element *get_node_rpc_mode(const StringName &p_method);
 
 	Node();
 	~Node();

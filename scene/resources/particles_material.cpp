@@ -34,7 +34,7 @@
 
 Mutex ParticlesMaterial::material_mutex;
 SelfList<ParticlesMaterial>::List *ParticlesMaterial::dirty_materials = nullptr;
-Map<ParticlesMaterial::MaterialKey, ParticlesMaterial::ShaderData> ParticlesMaterial::shader_map;
+RBMap<ParticlesMaterial::MaterialKey, ParticlesMaterial::ShaderData> ParticlesMaterial::shader_map;
 ParticlesMaterial::ShaderNames *ParticlesMaterial::shader_names = nullptr;
 
 void ParticlesMaterial::init_shaders() {

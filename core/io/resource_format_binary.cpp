@@ -1093,7 +1093,7 @@ void ResourceFormatLoaderBinary::get_dependencies(const String &p_path, List<Str
 	ria->get_dependencies(f, p_dependencies, p_add_types);
 }
 
-Error ResourceFormatLoaderBinary::rename_dependencies(const String &p_path, const Map<String, String> &p_map) {
+Error ResourceFormatLoaderBinary::rename_dependencies(const String &p_path, const RBMap<String, String> &p_map) {
 	//Error error=OK;
 
 	FileAccess *f = FileAccess::open(p_path, FileAccess::READ);
@@ -1325,7 +1325,7 @@ void ResourceFormatSaverBinaryInstance::_write_variant(const Variant &p_property
 	write_variant(f, p_property, resource_set, external_resources, string_map, p_hint);
 }
 
-void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Variant &p_property, Set<RES> &resource_set, Map<RES, int> &external_resources, Map<StringName, int> &string_map, const PropertyInfo &p_hint) {
+void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Variant &p_property, Set<RES> &resource_set, RBMap<RES, int> &external_resources, RBMap<StringName, int> &string_map, const PropertyInfo &p_hint) {
 	switch (p_property.get_type()) {
 		case Variant::NIL: {
 			f->store_32(VARIANT_NIL);
@@ -1986,7 +1986,7 @@ Error ResourceFormatSaverBinaryInstance::save(const String &p_path, const RES &p
 	Vector<RES> save_order;
 	save_order.resize(external_resources.size());
 
-	for (Map<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
+	for (RBMap<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
 		save_order.write[E->get()] = E->key();
 	}
 

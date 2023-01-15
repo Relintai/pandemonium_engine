@@ -122,7 +122,7 @@ void TriangleMesh::create(const PoolVector<Vector3> &p_faces) {
 
 		PoolVector<Vector3>::Read r = p_faces.read();
 		PoolVector<Triangle>::Write w = triangles.write();
-		Map<Vector3, int> db;
+		RBMap<Vector3, int> db;
 
 		for (int i = 0; i < fc; i++) {
 			Triangle &f = w[i];
@@ -131,7 +131,7 @@ void TriangleMesh::create(const PoolVector<Vector3> &p_faces) {
 			for (int j = 0; j < 3; j++) {
 				int vidx = -1;
 				Vector3 vs = v[j].snapped(Vector3(0.0001, 0.0001, 0.0001));
-				Map<Vector3, int>::Element *E = db.find(vs);
+				RBMap<Vector3, int>::Element *E = db.find(vs);
 				if (E) {
 					vidx = E->get();
 				} else {
@@ -157,7 +157,7 @@ void TriangleMesh::create(const PoolVector<Vector3> &p_faces) {
 
 		vertices.resize(db.size());
 		PoolVector<Vector3>::Write vw = vertices.write();
-		for (Map<Vector3, int>::Element *E = db.front(); E; E = E->next()) {
+		for (RBMap<Vector3, int>::Element *E = db.front(); E; E = E->next()) {
 			vw[E->get()] = E->key();
 		}
 	}

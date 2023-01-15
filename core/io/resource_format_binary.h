@@ -49,7 +49,7 @@ class ResourceInteractiveLoaderBinary : public ResourceInteractiveLoader {
 	Vector<char> str_buf;
 	List<RES> resource_cache;
 
-	//Map<int,StringName> string_map;
+	//RBMap<int,StringName> string_map;
 	Vector<StringName> string_map;
 
 	StringName _get_string();
@@ -71,7 +71,7 @@ class ResourceInteractiveLoaderBinary : public ResourceInteractiveLoader {
 	String get_unicode_string();
 	void _advance_padding(uint32_t p_len);
 
-	Map<String, String> remaps;
+	RBMap<String, String> remaps;
 	Error error;
 
 	int stage;
@@ -88,7 +88,7 @@ public:
 	virtual int get_stage_count() const;
 	virtual void set_translation_remapped(bool p_remapped);
 
-	void set_remaps(const Map<String, String> &p_remaps) { remaps = p_remaps; }
+	void set_remaps(const RBMap<String, String> &p_remaps) { remaps = p_remaps; }
 	void open(FileAccess *p_f);
 	String recognize(FileAccess *p_f);
 	void get_dependencies(FileAccess *p_f, List<String> *p_dependencies, bool p_add_types);
@@ -105,7 +105,7 @@ public:
 	virtual bool handles_type(const String &p_type) const;
 	virtual String get_resource_type(const String &p_path) const;
 	virtual void get_dependencies(const String &p_path, List<String> *p_dependencies, bool p_add_types = false);
-	virtual Error rename_dependencies(const String &p_path, const Map<String, String> &p_map);
+	virtual Error rename_dependencies(const String &p_path, const RBMap<String, String> &p_map);
 };
 
 class ResourceFormatSaverBinaryInstance {
@@ -127,11 +127,11 @@ class ResourceFormatSaverBinaryInstance {
 		bool operator<(const NonPersistentKey &p_key) const { return base == p_key.base ? property < p_key.property : base < p_key.base; }
 	};
 
-	Map<NonPersistentKey, RES> non_persistent_map;
-	Map<StringName, int> string_map;
+	RBMap<NonPersistentKey, RES> non_persistent_map;
+	RBMap<StringName, int> string_map;
 	Vector<StringName> strings;
 
-	Map<RES, int> external_resources;
+	RBMap<RES, int> external_resources;
 	List<RES> saved_resources;
 
 	struct Property {
@@ -153,7 +153,7 @@ class ResourceFormatSaverBinaryInstance {
 
 public:
 	Error save(const String &p_path, const RES &p_resource, uint32_t p_flags = 0);
-	static void write_variant(FileAccess *f, const Variant &p_property, Set<RES> &resource_set, Map<RES, int> &external_resources, Map<StringName, int> &string_map, const PropertyInfo &p_hint = PropertyInfo());
+	static void write_variant(FileAccess *f, const Variant &p_property, Set<RES> &resource_set, RBMap<RES, int> &external_resources, RBMap<StringName, int> &string_map, const PropertyInfo &p_hint = PropertyInfo());
 };
 
 class ResourceFormatSaverBinary : public ResourceFormatSaver {

@@ -76,7 +76,7 @@ void BackgroundProgress::_add_task(const String &p_task, const String &p_label, 
 void BackgroundProgress::_update() {
 	_THREAD_SAFE_METHOD_
 
-	for (Map<String, int>::Element *E = updates.front(); E; E = E->next()) {
+	for (RBMap<String, int>::Element *E = updates.front(); E; E = E->next()) {
 		if (tasks.has(E->key())) {
 			_task_step(E->key(), E->get());
 		}

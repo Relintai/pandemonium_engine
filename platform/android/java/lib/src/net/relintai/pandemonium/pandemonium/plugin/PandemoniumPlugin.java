@@ -129,7 +129,7 @@ public abstract class PandemoniumPlugin {
 		pluginInfoProvider.onPluginRegistered();
 	}
 
-	private static Map<String, SignalInfo> registerPluginWithPandemoniumNative(Object pluginObject,
+	private static RBMap<String, SignalInfo> registerPluginWithPandemoniumNative(Object pluginObject,
 			String pluginName, List<String> pluginMethods, Set<SignalInfo> pluginSignals,
 			Set<String> pluginGDNativeLibrariesPaths) {
 		nativeRegisterSingleton(pluginName, pluginObject);
@@ -168,7 +168,7 @@ public abstract class PandemoniumPlugin {
 		}
 
 		// Register the signals for this plugin.
-		Map<String, SignalInfo> registeredSignals = new HashMap<>();
+		RBMap<String, SignalInfo> registeredSignals = new HashMap<>();
 		for (SignalInfo signalInfo : pluginSignals) {
 			String signalName = signalInfo.getName();
 			nativeRegisterSignal(pluginName, signalName, signalInfo.getParamTypesNames());

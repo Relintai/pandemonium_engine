@@ -38,7 +38,7 @@
 
 #include "core/math/color.h"
 #include "core/error/error_list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
@@ -116,13 +116,13 @@ class EditorHelp : public VBoxContainer {
 	String edited_class;
 
 	Vector<Pair<String, int>> section_line;
-	Map<String, int> method_line;
-	Map<String, int> signal_line;
-	Map<String, int> property_line;
-	Map<String, int> theme_property_line;
-	Map<String, int> constant_line;
-	Map<String, int> enum_line;
-	Map<String, Map<String, int>> enum_values_line;
+	RBMap<String, int> method_line;
+	RBMap<String, int> signal_line;
+	RBMap<String, int> property_line;
+	RBMap<String, int> theme_property_line;
+	RBMap<String, int> constant_line;
+	RBMap<String, int> enum_line;
+	RBMap<String, RBMap<String, int>> enum_values_line;
 	int description_line;
 
 	RichTextLabel *class_desc;

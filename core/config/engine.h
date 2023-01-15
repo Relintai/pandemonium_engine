@@ -137,7 +137,7 @@ private:
 	bool _in_physics;
 
 	List<Singleton> singletons;
-	Map<StringName, Object *> singleton_ptrs;
+	RBMap<StringName, Object *> singleton_ptrs;
 
 	bool editor_hint;
 

@@ -34,7 +34,7 @@
 #include "core/error/error_macros.h"
 #include "core/io/resource_loader.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/method_bind.h"
 #include "core/object/object_id.h"
 #include "core/os/memory.h"
@@ -117,7 +117,7 @@ void InspectorDock::_menu_option(int p_option) {
 			if (current) {
 				List<PropertyInfo> props;
 				current->get_property_list(&props);
-				Map<RES, RES> duplicates;
+				RBMap<RES, RES> duplicates;
 				for (List<PropertyInfo>::Element *E = props.front(); E; E = E->next()) {
 					if (!(E->get().usage & PROPERTY_USAGE_STORAGE)) {
 						continue;

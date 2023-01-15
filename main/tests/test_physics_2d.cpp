@@ -30,7 +30,7 @@
 
 #include "test_physics_2d.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/os/main_loop.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"

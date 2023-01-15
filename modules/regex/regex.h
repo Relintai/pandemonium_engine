@@ -32,7 +32,7 @@
 
 #include "core/variant/array.h"
 #include "core/variant/dictionary.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"
@@ -47,7 +47,7 @@ class RegExMatch : public Reference {
 
 	String subject;
 	Vector<Range> data;
-	Map<String, int> names;
+	RBMap<String, int> names;
 
 	friend class RegEx;
 

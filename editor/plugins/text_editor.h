@@ -34,7 +34,7 @@
 
 #include "core/math/color.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
@@ -125,7 +125,7 @@ protected:
 	void _text_edit_gui_input(const Ref<InputEvent> &ev);
 	void _prepare_edit_menu();
 
-	Map<String, SyntaxHighlighter *> highlighters;
+	RBMap<String, SyntaxHighlighter *> highlighters;
 	void _change_syntax_highlighter(int p_idx);
 	void _load_theme_settings();
 

@@ -960,7 +960,7 @@ void ShaderLanguage::clear() {
 	}
 }
 
-bool ShaderLanguage::_find_identifier(const BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types, const StringName &p_identifier, DataType *r_data_type, IdentifierType *r_type, bool *r_is_const, int *r_array_size, StringName *r_struct_name, ConstantNode::Value *r_constant_value) {
+bool ShaderLanguage::_find_identifier(const BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types, const StringName &p_identifier, DataType *r_data_type, IdentifierType *r_type, bool *r_is_const, int *r_array_size, StringName *r_struct_name, ConstantNode::Value *r_constant_value) {
 	if (p_builtin_types.has(p_identifier)) {
 		if (r_data_type) {
 			*r_data_type = p_builtin_types[p_identifier].type;
@@ -2446,7 +2446,7 @@ bool ShaderLanguage::_compare_datatypes_in_nodes(Node *a, Node *b) const {
 	return true;
 }
 
-bool ShaderLanguage::_parse_function_arguments(BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types, OperatorNode *p_func, int *r_complete_arg) {
+bool ShaderLanguage::_parse_function_arguments(BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types, OperatorNode *p_func, int *r_complete_arg) {
 	TkPos pos = _get_tkpos();
 	Token tk = _get_token();
 
@@ -2934,7 +2934,7 @@ bool ShaderLanguage::_validate_varying_assign(ShaderNode::Varying &p_varying, St
 	return true;
 }
 
-bool ShaderLanguage::_validate_assign(Node *p_node, const Map<StringName, BuiltInInfo> &p_builtin_types, String *r_message) {
+bool ShaderLanguage::_validate_assign(Node *p_node, const RBMap<StringName, BuiltInInfo> &p_builtin_types, String *r_message) {
 	if (p_node->type == Node::TYPE_OPERATOR) {
 		OperatorNode *op = static_cast<OperatorNode *>(p_node);
 
@@ -3007,7 +3007,7 @@ Error ShaderLanguage::_parse_array_size(BlockNode *p_block, int *r_array_size) {
 
 	if (!tk.is_integer_constant() || ((int)tk.constant) <= 0) {
 		_set_tkpos(pos);
-		Node *n = _parse_and_reduce_expression(p_block, Map<StringName, BuiltInInfo>());
+		Node *n = _parse_and_reduce_expression(p_block, RBMap<StringName, BuiltInInfo>());
 		if (n) {
 			if (n->type == Node::TYPE_VARIABLE) {
 				VariableNode *vn = static_cast<VariableNode *>(n);
@@ -3016,7 +3016,7 @@ Error ShaderLanguage::_parse_array_size(BlockNode *p_block, int *r_array_size) {
 					DataType data_type;
 					bool is_const = false;
 
-					_find_identifier(p_block, Map<StringName, BuiltInInfo>(), vn->name, &data_type, nullptr, &is_const, nullptr, nullptr, &v);
+					_find_identifier(p_block, RBMap<StringName, BuiltInInfo>(), vn->name, &data_type, nullptr, &is_const, nullptr, nullptr, &v);
 
 					if (is_const) {
 						if (data_type == TYPE_INT) {
@@ -3058,7 +3058,7 @@ Error ShaderLanguage::_parse_array_size(BlockNode *p_block, int *r_array_size) {
 	return OK;
 }
 
-ShaderLanguage::Node *ShaderLanguage::_parse_array_constructor(BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types, DataType p_type, const StringName &p_struct_name, int p_array_size) {
+ShaderLanguage::Node *ShaderLanguage::_parse_array_constructor(BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types, DataType p_type, const StringName &p_struct_name, int p_array_size) {
 	DataType type = TYPE_VOID;
 	String struct_name = "";
 	int array_size = 0;
@@ -3189,7 +3189,7 @@ ShaderLanguage::Node *ShaderLanguage::_parse_array_constructor(BlockNode *p_bloc
 	return an;
 }
 
-ShaderLanguage::Node *ShaderLanguage::_parse_expression(BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types) {
+ShaderLanguage::Node *ShaderLanguage::_parse_expression(BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types) {
 	Vector<Expression> expression;
 
 	//Vector<TokenType> operators;
@@ -4669,7 +4669,7 @@ ShaderLanguage::Node *ShaderLanguage::_reduce_expression(BlockNode *p_block, Sha
 	return p_node;
 }
 
-ShaderLanguage::Node *ShaderLanguage::_parse_and_reduce_expression(BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types) {
+ShaderLanguage::Node *ShaderLanguage::_parse_and_reduce_expression(BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types) {
 	ShaderLanguage::Node *expr = _parse_expression(p_block, p_builtin_types);
 	if (!expr) { //errored
 		return nullptr;
@@ -4680,7 +4680,7 @@ ShaderLanguage::Node *ShaderLanguage::_parse_and_reduce_expression(BlockNode *p_
 	return expr;
 }
 
-Error ShaderLanguage::_parse_block(BlockNode *p_block, const Map<StringName, BuiltInInfo> &p_builtin_types, bool p_just_one, bool p_can_break, bool p_can_continue) {
+Error ShaderLanguage::_parse_block(BlockNode *p_block, const RBMap<StringName, BuiltInInfo> &p_builtin_types, bool p_just_one, bool p_can_break, bool p_can_continue) {
 	while (true) {
 		TkPos pos = _get_tkpos();
 
@@ -5667,7 +5667,7 @@ Error ShaderLanguage::_validate_datatype(DataType p_type) {
 	return OK;
 }
 
-Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types) {
+Error ShaderLanguage::_parse_shader(const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types) {
 	Token tk = _get_token();
 
 	if (tk.type != TK_SHADER_TYPE) {
@@ -5953,7 +5953,7 @@ Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_funct
 				TkPos name_pos = _get_tkpos();
 				name = tk.text;
 
-				if (_find_identifier(nullptr, Map<StringName, BuiltInInfo>(), name)) {
+				if (_find_identifier(nullptr, RBMap<StringName, BuiltInInfo>(), name)) {
 					_set_error("Redefinition of '" + String(name) + "'");
 					return ERR_PARSE_ERROR;
 				}
@@ -6104,7 +6104,7 @@ Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_funct
 					}
 
 					if (tk.type == TK_OP_ASSIGN) {
-						Node *expr = _parse_and_reduce_expression(nullptr, Map<StringName, BuiltInInfo>());
+						Node *expr = _parse_and_reduce_expression(nullptr, RBMap<StringName, BuiltInInfo>());
 						if (!expr) {
 							return ERR_PARSE_ERROR;
 						}
@@ -6239,7 +6239,7 @@ Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_funct
 					return ERR_PARSE_ERROR;
 				}
 
-				if (_find_identifier(nullptr, Map<StringName, BuiltInInfo>(), name)) {
+				if (_find_identifier(nullptr, RBMap<StringName, BuiltInInfo>(), name)) {
 					_set_error("Redefinition of '" + String(name) + "'");
 					return ERR_PARSE_ERROR;
 				}
@@ -6350,7 +6350,7 @@ Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_funct
 										} else {
 											_set_tkpos(pos2);
 
-											Node *n = _parse_and_reduce_expression(NULL, Map<StringName, BuiltInInfo>());
+											Node *n = _parse_and_reduce_expression(NULL, RBMap<StringName, BuiltInInfo>());
 											if (!n || n->type != Node::TYPE_CONSTANT || n->get_datatype() != TYPE_INT) {
 												_set_error("Expected single integer constant > 0");
 												return ERR_PARSE_ERROR;
@@ -6430,7 +6430,7 @@ Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_funct
 
 								if (tk.type == TK_PARENTHESIS_OPEN || curly) { // initialization
 									while (true) {
-										Node *n = _parse_and_reduce_expression(NULL, Map<StringName, BuiltInInfo>());
+										Node *n = _parse_and_reduce_expression(NULL, RBMap<StringName, BuiltInInfo>());
 										if (!n) {
 											return ERR_PARSE_ERROR;
 										}
@@ -6484,7 +6484,7 @@ Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_funct
 								constant.initializer = static_cast<ConstantNode *>(expr);
 							} else {
 								//variable created with assignment! must parse an expression
-								Node *expr = _parse_and_reduce_expression(NULL, Map<StringName, BuiltInInfo>());
+								Node *expr = _parse_and_reduce_expression(NULL, RBMap<StringName, BuiltInInfo>());
 								if (!expr)
 									return ERR_PARSE_ERROR;
 								if (expr->type == Node::TYPE_OPERATOR && ((OperatorNode *)expr)->op == OP_CALL) {
@@ -6521,7 +6521,7 @@ Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_funct
 							}
 
 							name = tk.text;
-							if (_find_identifier(nullptr, Map<StringName, BuiltInInfo>(), name)) {
+							if (_find_identifier(nullptr, RBMap<StringName, BuiltInInfo>(), name)) {
 								_set_error("Redefinition of '" + String(name) + "'");
 								return ERR_PARSE_ERROR;
 							}
@@ -6544,13 +6544,13 @@ Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_funct
 					break;
 				}
 
-				Map<StringName, BuiltInInfo> builtin_types;
+				RBMap<StringName, BuiltInInfo> builtin_types;
 				if (p_functions.has(name)) {
 					builtin_types = p_functions[name].built_ins;
 				}
 
 				if (p_functions.has("global")) { // Adds global variables: 'TIME'
-					for (Map<StringName, BuiltInInfo>::Element *E = p_functions["global"].built_ins.front(); E; E = E->next()) {
+					for (RBMap<StringName, BuiltInInfo>::Element *E = p_functions["global"].built_ins.front(); E; E = E->next()) {
 						builtin_types.insert(E->key(), E->value());
 					}
 				}
@@ -6754,7 +6754,7 @@ Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_funct
 	return OK;
 }
 
-bool ShaderLanguage::has_builtin(const Map<StringName, ShaderLanguage::FunctionInfo> &p_functions, const StringName &p_name) {
+bool ShaderLanguage::has_builtin(const RBMap<StringName, ShaderLanguage::FunctionInfo> &p_functions, const StringName &p_name) {
 	if (p_functions.has("vertex")) {
 		if (p_functions["vertex"].built_ins.has(p_name)) {
 			return true;
@@ -6903,7 +6903,7 @@ String ShaderLanguage::get_shader_type(const String &p_code) {
 	return String();
 }
 
-Error ShaderLanguage::compile(const String &p_code, const Map<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types) {
+Error ShaderLanguage::compile(const String &p_code, const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types) {
 	clear();
 
 	code = p_code;
@@ -6919,7 +6919,7 @@ Error ShaderLanguage::compile(const String &p_code, const Map<StringName, Functi
 	return OK;
 }
 
-Error ShaderLanguage::complete(const String &p_code, const Map<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types, List<ScriptCodeCompletionOption> *r_options, String &r_call_hint) {
+Error ShaderLanguage::complete(const String &p_code, const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types, List<ScriptCodeCompletionOption> *r_options, String &r_call_hint) {
 	clear();
 
 	code = p_code;
@@ -6962,7 +6962,7 @@ Error ShaderLanguage::complete(const String &p_code, const Map<StringName, Funct
 			return OK;
 		} break;
 		case COMPLETION_MAIN_FUNCTION: {
-			for (const Map<StringName, FunctionInfo>::Element *E = p_functions.front(); E; E = E->next()) {
+			for (const RBMap<StringName, FunctionInfo>::Element *E = p_functions.front(); E; E = E->next()) {
 				if (!E->get().main_function) {
 					continue;
 				}
@@ -6985,14 +6985,14 @@ Error ShaderLanguage::complete(const String &p_code, const Map<StringName, Funct
 		case COMPLETION_IDENTIFIER:
 		case COMPLETION_FUNCTION_CALL: {
 			bool comp_ident = completion_type == COMPLETION_IDENTIFIER;
-			Map<String, ScriptCodeCompletionOption::Kind> matches;
+			RBMap<String, ScriptCodeCompletionOption::Kind> matches;
 			StringName skip_function;
 			BlockNode *block = completion_block;
 
 			if (completion_class == TAG_GLOBAL) {
 				while (block) {
 					if (comp_ident) {
-						for (const Map<StringName, BlockNode::Variable>::Element *E = block->variables.front(); E; E = E->next()) {
+						for (const RBMap<StringName, BlockNode::Variable>::Element *E = block->variables.front(); E; E = E->next()) {
 							if (E->get().line < completion_line) {
 								matches.insert(E->key(), ScriptCodeCompletionOption::KIND_VARIABLE);
 							}
@@ -7012,7 +7012,7 @@ Error ShaderLanguage::complete(const String &p_code, const Map<StringName, Funct
 
 				if (comp_ident) {
 					if (p_functions.has("global")) {
-						for (Map<StringName, BuiltInInfo>::Element *E = p_functions["global"].built_ins.front(); E; E = E->next()) {
+						for (RBMap<StringName, BuiltInInfo>::Element *E = p_functions["global"].built_ins.front(); E; E = E->next()) {
 							ScriptCodeCompletionOption::Kind kind = ScriptCodeCompletionOption::KIND_MEMBER;
 							if (E->get().constant) {
 								kind = ScriptCodeCompletionOption::KIND_CONSTANT;
@@ -7022,7 +7022,7 @@ Error ShaderLanguage::complete(const String &p_code, const Map<StringName, Funct
 					}
 
 					if (skip_function != StringName() && p_functions.has(skip_function)) {
-						for (Map<StringName, BuiltInInfo>::Element *E = p_functions[skip_function].built_ins.front(); E; E = E->next()) {
+						for (RBMap<StringName, BuiltInInfo>::Element *E = p_functions[skip_function].built_ins.front(); E; E = E->next()) {
 							ScriptCodeCompletionOption::Kind kind = ScriptCodeCompletionOption::KIND_MEMBER;
 							if (E->get().constant) {
 								kind = ScriptCodeCompletionOption::KIND_CONSTANT;
@@ -7030,7 +7030,7 @@ Error ShaderLanguage::complete(const String &p_code, const Map<StringName, Funct
 							matches.insert(E->key(), kind);
 						}
 					}
-					for (Map<StringName, ShaderNode::Constant>::Element *E = shader->constants.front(); E; E = E->next()) {
+					for (RBMap<StringName, ShaderNode::Constant>::Element *E = shader->constants.front(); E; E = E->next()) {
 						matches.insert(E->key(), ScriptCodeCompletionOption::KIND_CONSTANT);
 					}
 					for (OrderedHashMap<StringName, ShaderNode::Varying>::Element E = shader->varyings.front(); E; E = E.next()) {
@@ -7076,7 +7076,7 @@ Error ShaderLanguage::complete(const String &p_code, const Map<StringName, Funct
 				}
 			}
 
-			for (Map<String, ScriptCodeCompletionOption::Kind>::Element *E = matches.front(); E; E = E->next()) {
+			for (RBMap<String, ScriptCodeCompletionOption::Kind>::Element *E = matches.front(); E; E = E->next()) {
 				ScriptCodeCompletionOption option(E->key(), E->value());
 				if (E->value() == ScriptCodeCompletionOption::KIND_FUNCTION) {
 					option.insert_text += "(";

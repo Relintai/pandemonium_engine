@@ -54,7 +54,7 @@ bool WSLServer::PendingPeer::_parse_request(const Vector<String> p_protocols) {
 	// Wrong protocol
 	ERR_FAIL_COND_V_MSG(req[0] != "GET" || req[2] != "HTTP/1.1", false, "Invalid method or HTTP version.");
 
-	Map<String, String> headers;
+	RBMap<String, String> headers;
 	for (int i = 1; i < len; i++) {
 		Vector<String> header = psa[i].split(":", false, 1);
 		ERR_FAIL_COND_V_MSG(header.size() != 2, false, "Invalid header -> " + psa[i]);
@@ -197,7 +197,7 @@ Error WSLServer::listen(int p_port, const Vector<String> p_protocols, bool gd_mp
 
 void WSLServer::poll() {
 	List<int> remove_ids;
-	for (Map<int, Ref<WebSocketPeer>>::Element *E = _peer_map.front(); E; E = E->next()) {
+	for (RBMap<int, Ref<WebSocketPeer>>::Element *E = _peer_map.front(); E; E = E->next()) {
 		Ref<WSLPeer> peer = (WSLPeer *)E->get().ptr();
 		peer->poll();
 		if (!peer->is_connected_to_host()) {
@@ -279,7 +279,7 @@ int WSLServer::get_max_packet_size() const {
 
 void WSLServer::stop() {
 	_server->stop();
-	for (Map<int, Ref<WebSocketPeer>>::Element *E = _peer_map.front(); E; E = E->next()) {
+	for (RBMap<int, Ref<WebSocketPeer>>::Element *E = _peer_map.front(); E; E = E->next()) {
 		Ref<WSLPeer> peer = (WSLPeer *)E->get().ptr();
 		peer->close_now();
 	}

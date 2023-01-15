@@ -34,7 +34,7 @@
 #include "core/variant/dictionary.h"
 #include "core/io/resource_importer.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/os/memory.h"
 #include "core/config/project_settings.h"
 #include "core/object/reference.h"
@@ -54,8 +54,8 @@ class ImportDefaultsEditorSettings : public Object {
 	GDCLASS(ImportDefaultsEditorSettings, Object)
 	friend class ImportDefaultsEditor;
 	List<PropertyInfo> properties;
-	Map<StringName, Variant> values;
-	Map<StringName, Variant> default_values;
+	RBMap<StringName, Variant> values;
+	RBMap<StringName, Variant> default_values;
 
 	Ref<ResourceImporter> importer;
 
@@ -110,7 +110,7 @@ void ImportDefaultsEditor::_save() {
 	if (settings->importer.is_valid()) {
 		Dictionary modified;
 
-		for (Map<StringName, Variant>::Element *E = settings->values.front(); E; E = E->next()) {
+		for (RBMap<StringName, Variant>::Element *E = settings->values.front(); E; E = E->next()) {
 			if (E->get() != settings->default_values[E->key()]) {
 				modified[E->key()] = E->get();
 			}

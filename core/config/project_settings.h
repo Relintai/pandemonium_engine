@@ -66,7 +66,7 @@ class ProjectSettings : public Object {
 	int _dirty_this_frame = 2;
 
 public:
-	typedef Map<String, Variant> CustomMap;
+	typedef RBMap<String, Variant> CustomMap;
 	static const String PROJECT_DATA_DIR_NAME_SUFFIX;
 
 	enum {
@@ -108,9 +108,9 @@ protected:
 	int last_order;
 	int last_builtin_order;
 	uint64_t last_save_time = 0;
-	Map<StringName, VariantContainer> props;
+	RBMap<StringName, VariantContainer> props;
 	String resource_path;
-	Map<StringName, PropertyInfo> custom_prop_info;
+	RBMap<StringName, PropertyInfo> custom_prop_info;
 	bool using_datapack;
 	List<String> input_presets;
 
@@ -128,8 +128,8 @@ protected:
 	Error _load_settings_binary(const String &p_path);
 	Error _load_settings_text_or_binary(const String &p_text_path, const String &p_bin_path);
 
-	Error _save_settings_text(const String &p_file, const Map<String, List<String>> &props, const CustomMap &p_custom = CustomMap(), const String &p_custom_features = String());
-	Error _save_settings_binary(const String &p_file, const Map<String, List<String>> &props, const CustomMap &p_custom = CustomMap(), const String &p_custom_features = String());
+	Error _save_settings_text(const String &p_file, const RBMap<String, List<String>> &props, const CustomMap &p_custom = CustomMap(), const String &p_custom_features = String());
+	Error _save_settings_binary(const String &p_file, const RBMap<String, List<String>> &props, const CustomMap &p_custom = CustomMap(), const String &p_custom_features = String());
 
 	Error _save_custom_bnd(const String &p_file);
 
@@ -177,7 +177,7 @@ public:
 	Error save_custom(const String &p_path = "", const CustomMap &p_custom = CustomMap(), const Vector<String> &p_custom_features = Vector<String>(), bool p_merge_with_current = true);
 	Error save();
 	void set_custom_property_info(const String &p_prop, const PropertyInfo &p_info);
-	const Map<StringName, PropertyInfo> &get_custom_property_info() const;
+	const RBMap<StringName, PropertyInfo> &get_custom_property_info() const;
 	uint64_t get_last_saved_time() { return last_save_time; }
 
 	Vector<String> get_optimizer_presets() const;

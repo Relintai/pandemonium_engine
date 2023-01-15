@@ -41,7 +41,7 @@
 #include "core/variant/array.h"
 #include "core/variant/dictionary.h"
 #include "core/containers/hash_map.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/string/node_path.h"
 #include "core/object/object_id.h"
 #include "core/object/reference.h"
@@ -149,7 +149,7 @@ private:
 		String name;
 		Variant value;
 	};
-	Map<String, Vector<CustomType>> custom_types;
+	RBMap<String, Vector<CustomType>> custom_types;
 
 	List<PropertyData> clipboard;
 	UndoRedo undo_redo;
@@ -193,7 +193,7 @@ public:
 	void add_custom_type(const String &p_type, const String &p_inherits, const Ref<Script> &p_script, const Ref<Texture> &p_icon);
 	Variant instance_custom_type(const String &p_type, const String &p_inherits);
 	void remove_custom_type(const String &p_type);
-	const Map<String, Vector<CustomType>> &get_custom_types() const { return custom_types; }
+	const RBMap<String, Vector<CustomType>> &get_custom_types() const { return custom_types; }
 
 	int add_edited_scene(int p_at_pos);
 	void move_edited_scene_index(int p_idx, int p_to_idx);
@@ -251,7 +251,7 @@ class EditorSelection : public Object {
 	GDCLASS(EditorSelection, Object);
 
 private:
-	Map<Node *, Object *> selection;
+	RBMap<Node *, Object *> selection;
 
 	bool emitted;
 	bool changed;
@@ -290,7 +290,7 @@ public:
 
 	List<Node *> &get_selected_node_list();
 	List<Node *> get_full_selected_node_list();
-	Map<Node *, Object *> &get_selection() { return selection; }
+	RBMap<Node *, Object *> &get_selection() { return selection; }
 
 	EditorSelection();
 	~EditorSelection();

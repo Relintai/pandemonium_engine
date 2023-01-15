@@ -406,7 +406,7 @@ private:
 	bool handle_input_locally;
 	bool local_input_handled;
 
-	Map<ObjectID, uint64_t> physics_2d_mouseover;
+	RBMap<ObjectID, uint64_t> physics_2d_mouseover;
 
 	StringName input_group;
 	StringName gui_input_group;
@@ -448,7 +448,7 @@ private:
 		// info used when this is a window
 
 		bool key_event_accepted;
-		Map<int, ObjectID> touch_focus;
+		RBMap<int, ObjectID> touch_focus;
 		Control *mouse_focus;
 		Control *last_mouse_focus;
 		Control *mouse_click_grabber;

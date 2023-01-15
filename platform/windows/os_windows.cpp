@@ -207,7 +207,7 @@ void OS_Windows::initialize_core() {
 	//  long as the windows scheduler resolution (~16-30ms) even for calls like Sleep(1)
 	timeBeginPeriod(1);
 
-	process_map = memnew((Map<ProcessID, ProcessInfo>));
+	process_map = memnew((RBMap<ProcessID, ProcessInfo>));
 
 	// Add current Pandemonium PID to the list of known PIDs
 	ProcessInfo current_pi = {};
@@ -256,7 +256,7 @@ void OS_Windows::_touch_event(bool p_pressed, float p_x, float p_y, int idx) {
 };
 
 void OS_Windows::_drag_event(float p_x, float p_y, int idx) {
-	Map<int, Vector2>::Element *curr = touch_state.find(idx);
+	RBMap<int, Vector2>::Element *curr = touch_state.find(idx);
 	// Defensive
 	if (!curr)
 		return;
@@ -302,7 +302,7 @@ LRESULT OS_Windows::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			ReleaseCapture();
 
 			// Release every touch to avoid sticky points
-			for (Map<int, Vector2>::Element *E = touch_state.front(); E; E = E->next()) {
+			for (RBMap<int, Vector2>::Element *E = touch_state.front(); E; E = E->next()) {
 				_touch_event(false, E->get().x, E->get().y, E->key());
 			}
 			touch_state.clear();
@@ -2614,7 +2614,7 @@ OS::CursorShape OS_Windows::get_cursor_shape() const {
 
 void OS_Windows::set_custom_mouse_cursor(const RES &p_cursor, CursorShape p_shape, const Vector2 &p_hotspot) {
 	if (p_cursor.is_valid()) {
-		Map<CursorShape, Vector<Variant>>::Element *cursor_c = cursors_cache.find(p_shape);
+		RBMap<CursorShape, Vector<Variant>>::Element *cursor_c = cursors_cache.find(p_shape);
 
 		if (cursor_c) {
 			if (cursor_c->get()[0] == p_cursor && cursor_c->get()[1] == p_hotspot) {

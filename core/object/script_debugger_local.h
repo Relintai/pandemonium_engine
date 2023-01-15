@@ -38,7 +38,7 @@ class ScriptDebuggerLocal : public ScriptDebugger {
 	float frame_time, process_time, physics_time, physics_frame_time;
 	uint64_t idle_accum;
 	String target_function;
-	Map<String, String> options;
+	RBMap<String, String> options;
 
 	Vector<ScriptLanguage::ProfilingInfo> pinfo;
 

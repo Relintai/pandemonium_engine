@@ -59,11 +59,11 @@ void PackerImageResourceImporter::get_import_options(List<ImportOption> *r_optio
 	r_options->push_back(ImportOption(PropertyInfo(Variant::REAL, "scale"), 1.0));
 }
 
-bool PackerImageResourceImporter::get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const {
+bool PackerImageResourceImporter::get_option_visibility(const String &p_option, const RBMap<StringName, Variant> &p_options) const {
 	return true;
 }
 
-Error PackerImageResourceImporter::import(const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error PackerImageResourceImporter::import(const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 	bool hdr_as_srgb = p_options["hdr_as_srgb"];
 	float scale = p_options["scale"];
 

@@ -34,7 +34,7 @@
 #include "scene/gui/dialogs.h"
 
 #include "core/math/color.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"
@@ -132,11 +132,11 @@ class EditorHelpSearch::Runner : public Reference {
 	Ref<Texture> empty_icon;
 	Color disabled_color;
 
-	Map<String, DocData::ClassDoc>::Element *iterator_doc;
-	Map<String, ClassMatch> matches;
-	Map<String, ClassMatch>::Element *iterator_match;
+	RBMap<String, DocData::ClassDoc>::Element *iterator_doc;
+	RBMap<String, ClassMatch> matches;
+	RBMap<String, ClassMatch>::Element *iterator_match;
 	TreeItem *root_item;
-	Map<String, TreeItem *> class_items;
+	RBMap<String, TreeItem *> class_items;
 	TreeItem *matched_item;
 	float match_highest_score = 0;
 

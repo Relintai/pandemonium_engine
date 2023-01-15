@@ -33,7 +33,7 @@
 #include "scene/gui/box_container.h"
 
 #include "core/math/color.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/reference.h"
@@ -87,8 +87,8 @@ public:
 
 		Vector<Category> categories;
 
-		Map<StringName, Category *> category_ptrs;
-		Map<StringName, Category::Item *> item_ptrs;
+		RBMap<StringName, Category *> category_ptrs;
+		RBMap<StringName, Category::Item *> item_ptrs;
 
 		Metric() {
 			valid = false;

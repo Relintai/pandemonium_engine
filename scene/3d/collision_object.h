@@ -64,7 +64,7 @@ class CollisionObject : public Spatial {
 
 	int total_subshapes;
 
-	Map<uint32_t, ShapeData> shapes;
+	RBMap<uint32_t, ShapeData> shapes;
 	bool only_update_transform_changes = false; //this is used for sync physics in KinematicBody
 
 	bool capture_input_on_drag;

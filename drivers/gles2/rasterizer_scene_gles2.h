@@ -264,7 +264,7 @@ public:
 		GLuint depth;
 		GLuint color;
 
-		Map<RID, uint32_t> shadow_owners;
+		RBMap<RID, uint32_t> shadow_owners;
 	};
 
 	struct ShadowCubeMap {

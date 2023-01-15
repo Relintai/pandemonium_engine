@@ -32,7 +32,7 @@
 
 #include "scene/gui/box_container.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 
 class MenuButton;
@@ -45,7 +45,7 @@ class EditorRunNative : public HBoxContainer {
 	RichTextLabel *result_dialog_log;
 	AcceptDialog *result_dialog;
 
-	Map<int, MenuButton *> menus;
+	RBMap<int, MenuButton *> menus;
 	bool first;
 	bool deploy_dumb;
 	bool deploy_debug_remote;

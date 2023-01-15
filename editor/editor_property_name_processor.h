@@ -32,7 +32,7 @@
 
 #include "scene/main/node.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/string/ustring.h"
 
@@ -41,7 +41,7 @@ class EditorPropertyNameProcessor : public Node {
 
 	static EditorPropertyNameProcessor *singleton;
 
-	Map<String, String> capitalize_string_remaps;
+	RBMap<String, String> capitalize_string_remaps;
 
 	String _capitalize_name(const String &p_name) const;
 

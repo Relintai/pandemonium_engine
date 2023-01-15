@@ -650,7 +650,7 @@ void SkeletonEditor::update_joint_tree() {
 
 	TreeItem *root = joint_tree->create_item();
 
-	Map<int, TreeItem *> items;
+	RBMap<int, TreeItem *> items;
 
 	items.insert(-1, root);
 

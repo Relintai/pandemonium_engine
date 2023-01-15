@@ -59,8 +59,8 @@ class ResourceInteractiveLoaderText : public ResourceInteractiveLoader {
 
 	//Map<String,String> remaps;
 
-	Map<int, ExtResource> ext_resources;
-	Map<int, RES> int_resources;
+	RBMap<int, ExtResource> ext_resources;
+	RBMap<int, RES> int_resources;
 
 	int resources_total;
 	int resource_current;
@@ -70,7 +70,7 @@ class ResourceInteractiveLoaderText : public ResourceInteractiveLoader {
 
 	mutable int lines;
 
-	Map<String, String> remaps;
+	RBMap<String, String> remaps;
 	//void _printerr();
 
 	static Error _parse_sub_resources(void *p_self, VariantParser::Stream *p_stream, Ref<Resource> &r_res, int &line, String &r_err_str) { return reinterpret_cast<ResourceInteractiveLoaderText *>(p_self)->_parse_sub_resource(p_stream, r_res, line, r_err_str); }
@@ -85,10 +85,10 @@ class ResourceInteractiveLoaderText : public ResourceInteractiveLoader {
 	};
 
 	struct DummyReadData {
-		Map<RES, int> external_resources;
-		Map<int, RES> rev_external_resources;
+		RBMap<RES, int> external_resources;
+		RBMap<int, RES> rev_external_resources;
 		Set<RES> resource_set;
-		Map<int, RES> resource_map;
+		RBMap<int, RES> resource_map;
 	};
 
 	static Error _parse_sub_resource_dummys(void *p_self, VariantParser::Stream *p_stream, Ref<Resource> &r_res, int &line, String &r_err_str) { return _parse_sub_resource_dummy((DummyReadData *)(p_self), p_stream, r_res, line, r_err_str); }
@@ -118,7 +118,7 @@ public:
 	void open(FileAccess *p_f, bool p_skip_first_tag = false);
 	String recognize(FileAccess *p_f);
 	void get_dependencies(FileAccess *p_f, List<String> *p_dependencies, bool p_add_types);
-	Error rename_dependencies(FileAccess *p_f, const String &p_path, const Map<String, String> &p_map);
+	Error rename_dependencies(FileAccess *p_f, const String &p_path, const RBMap<String, String> &p_map);
 
 	Error save_as_binary(FileAccess *p_f, const String &p_path);
 	ResourceInteractiveLoaderText();
@@ -134,7 +134,7 @@ public:
 	virtual bool handles_type(const String &p_type) const;
 	virtual String get_resource_type(const String &p_path) const;
 	virtual void get_dependencies(const String &p_path, List<String> *p_dependencies, bool p_add_types = false);
-	virtual Error rename_dependencies(const String &p_path, const Map<String, String> &p_map);
+	virtual Error rename_dependencies(const String &p_path, const RBMap<String, String> &p_map);
 
 	static Error convert_file_to_binary(const String &p_src_path, const String &p_dst_path);
 
@@ -158,12 +158,12 @@ class ResourceFormatSaverTextInstance {
 		bool operator<(const NonPersistentKey &p_key) const { return base == p_key.base ? property < p_key.property : base < p_key.base; }
 	};
 
-	Map<NonPersistentKey, RES> non_persistent_map;
+	RBMap<NonPersistentKey, RES> non_persistent_map;
 
 	Set<RES> resource_set;
 	List<RES> saved_resources;
-	Map<RES, int> external_resources;
-	Map<RES, int> internal_resources;
+	RBMap<RES, int> external_resources;
+	RBMap<RES, int> internal_resources;
 
 	struct ResourceSort {
 		RES resource;

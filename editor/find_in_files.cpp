@@ -726,7 +726,7 @@ void FindInFilesPanel::_notification(int p_what) {
 
 void FindInFilesPanel::_on_result_found(String fpath, int line_number, int begin, int end, String text) {
 	TreeItem *file_item;
-	Map<String, TreeItem *>::Element *E = _file_items.find(fpath);
+	RBMap<String, TreeItem *>::Element *E = _file_items.find(fpath);
 
 	if (E == nullptr) {
 		file_item = _results_display->create_item();
@@ -779,7 +779,7 @@ void FindInFilesPanel::draw_result_text(Object *item_obj, Rect2 rect) {
 		return;
 	}
 
-	Map<TreeItem *, Result>::Element *E = _result_items.find(item);
+	RBMap<TreeItem *, Result>::Element *E = _result_items.find(item);
 	if (!E) {
 		return;
 	}
@@ -843,7 +843,7 @@ void FindInFilesPanel::_on_cancel_button_clicked() {
 
 void FindInFilesPanel::_on_result_selected() {
 	TreeItem *item = _results_display->get_selected();
-	Map<TreeItem *, Result>::Element *E = _result_items.find(item);
+	RBMap<TreeItem *, Result>::Element *E = _result_items.find(item);
 
 	if (E == nullptr) {
 		return;
@@ -865,7 +865,7 @@ void FindInFilesPanel::_on_replace_all_clicked() {
 
 	PoolStringArray modified_files;
 
-	for (Map<String, TreeItem *>::Element *E = _file_items.front(); E; E = E->next()) {
+	for (RBMap<String, TreeItem *>::Element *E = _file_items.front(); E; E = E->next()) {
 		TreeItem *file_item = E->value();
 		String fpath = file_item->get_metadata(0);
 
@@ -875,7 +875,7 @@ void FindInFilesPanel::_on_replace_all_clicked() {
 				continue;
 			}
 
-			Map<TreeItem *, Result>::Element *F = _result_items.find(item);
+			RBMap<TreeItem *, Result>::Element *F = _result_items.find(item);
 			ERR_FAIL_COND(F == nullptr);
 			locations.push_back(F->value());
 		}

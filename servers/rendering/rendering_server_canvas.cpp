@@ -1278,7 +1278,7 @@ bool RenderingServerCanvas::free(RID p_rid) {
 			RenderingServerViewport::Viewport *vp = RSG::viewport->viewport_owner.get(canvas->viewports.front()->get());
 			ERR_FAIL_COND_V(!vp, true);
 
-			Map<RID, RenderingServerViewport::Viewport::CanvasData>::Element *E = vp->canvas_map.find(p_rid);
+			RBMap<RID, RenderingServerViewport::Viewport::CanvasData>::Element *E = vp->canvas_map.find(p_rid);
 			ERR_FAIL_COND_V(!E, true);
 			vp->canvas_map.erase(p_rid);
 

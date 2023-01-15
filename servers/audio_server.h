@@ -221,7 +221,7 @@ private:
 
 	Vector<Vector<AudioFrame>> temp_buffer; //temp_buffer for each level
 	Vector<Bus *> buses;
-	Map<StringName, Bus *> bus_map;
+	RBMap<StringName, Bus *> bus_map;
 
 	void _update_bus_effects(int p_bus);
 
@@ -229,7 +229,7 @@ private:
 
 	// TODO create an audiodata pool to optimize memory
 
-	Map<void *, uint32_t> audio_data;
+	RBMap<void *, uint32_t> audio_data;
 	size_t audio_data_total_mem;
 	size_t audio_data_max_mem;
 

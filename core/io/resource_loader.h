@@ -71,7 +71,7 @@ public:
 	virtual bool handles_type(const String &p_type) const;
 	virtual String get_resource_type(const String &p_path) const;
 	virtual void get_dependencies(const String &p_path, List<String> *p_dependencies, bool p_add_types = false);
-	virtual Error rename_dependencies(const String &p_path, const Map<String, String> &p_map);
+	virtual Error rename_dependencies(const String &p_path, const RBMap<String, String> &p_map);
 	virtual bool is_import_valid(const String &p_path) const { return true; }
 	virtual bool is_imported(const String &p_path) const { return false; }
 	virtual int get_import_order(const String &p_path) const { return 0; }
@@ -146,7 +146,7 @@ public:
 	static void remove_resource_format_loader(Ref<ResourceFormatLoader> p_format_loader);
 	static String get_resource_type(const String &p_path);
 	static void get_dependencies(const String &p_path, List<String> *p_dependencies, bool p_add_types = false);
-	static Error rename_dependencies(const String &p_path, const Map<String, String> &p_map);
+	static Error rename_dependencies(const String &p_path, const RBMap<String, String> &p_map);
 	static bool is_import_valid(const String &p_path);
 	static String get_import_group_file(const String &p_path);
 	static bool is_imported(const String &p_path);

@@ -51,7 +51,7 @@ public:
 private:
 	static InputMap *singleton;
 
-	mutable Map<StringName, Action> input_map;
+	mutable RBMap<StringName, Action> input_map;
 
 	List<Ref<InputEvent>>::Element *_find_event(Action &p_action, const Ref<InputEvent> &p_event, bool p_exact_match = false, bool *p_pressed = nullptr, float *p_strength = nullptr, float *p_raw_strength = nullptr) const;
 
@@ -80,7 +80,7 @@ public:
 	bool event_is_action(const Ref<InputEvent> &p_event, const StringName &p_action, bool p_exact_match = false) const;
 	bool event_get_action_status(const Ref<InputEvent> &p_event, const StringName &p_action, bool p_exact_match = false, bool *p_pressed = nullptr, float *p_strength = nullptr, float *p_raw_strength = nullptr) const;
 
-	const Map<StringName, Action> &get_action_map() const;
+	const RBMap<StringName, Action> &get_action_map() const;
 	void load_from_globals();
 	void load_default();
 

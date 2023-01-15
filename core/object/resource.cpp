@@ -142,7 +142,7 @@ void Resource::reload_from_file() {
 	}
 }
 
-Ref<Resource> Resource::duplicate_for_local_scene(Node *p_for_scene, Map<Ref<Resource>, Ref<Resource>> &remap_cache) {
+Ref<Resource> Resource::duplicate_for_local_scene(Node *p_for_scene, RBMap<Ref<Resource>, Ref<Resource>> &remap_cache) {
 	List<PropertyInfo> plist;
 	get_property_list(&plist);
 
@@ -177,7 +177,7 @@ Ref<Resource> Resource::duplicate_for_local_scene(Node *p_for_scene, Map<Ref<Res
 	return r;
 }
 
-void Resource::configure_for_local_scene(Node *p_for_scene, Map<Ref<Resource>, Ref<Resource>> &remap_cache) {
+void Resource::configure_for_local_scene(Node *p_for_scene, RBMap<Ref<Resource>, Ref<Resource>> &remap_cache) {
 	List<PropertyInfo> plist;
 	get_property_list(&plist);
 
@@ -473,7 +473,7 @@ void ResourceCache::dump(const char *p_file, bool p_short) {
 #ifdef DEBUG_ENABLED
 	lock.read_lock();
 
-	Map<String, int> type_count;
+	RBMap<String, int> type_count;
 
 	FileAccess *f = nullptr;
 	if (p_file) {
@@ -498,7 +498,7 @@ void ResourceCache::dump(const char *p_file, bool p_short) {
 		}
 	}
 
-	for (Map<String, int>::Element *E = type_count.front(); E; E = E->next()) {
+	for (RBMap<String, int>::Element *E = type_count.front(); E; E = E->next()) {
 		if (f) {
 			f->store_line(E->key() + " count: " + itos(E->get()));
 		}

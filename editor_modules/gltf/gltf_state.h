@@ -68,7 +68,7 @@ class GLTFState : public Resource {
 	Vector<Ref<GLTFMesh>> meshes; // meshes are loaded directly, no reason not to.
 
 	Vector<AnimationPlayer *> animation_players;
-	Map<Ref<Material>, GLTFMaterialIndex> material_cache;
+	RBMap<Ref<Material>, GLTFMaterialIndex> material_cache;
 	Vector<Ref<Material>> materials;
 
 	String scene_name;
@@ -77,7 +77,7 @@ class GLTFState : public Resource {
 	Vector<Ref<GLTFTextureSampler>> texture_samplers;
 	Ref<GLTFTextureSampler> default_texture_sampler;
 	Vector<Ref<Image>> images;
-	Map<GLTFTextureIndex, Ref<Texture>> texture_cache;
+	RBMap<GLTFTextureIndex, Ref<Texture>> texture_cache;
 	Vector<String> extensions_used;
 	Vector<String> extensions_required;
 
@@ -88,12 +88,12 @@ class GLTFState : public Resource {
 	Set<String> unique_animation_names;
 
 	Vector<Ref<GLTFSkeleton>> skeletons;
-	Map<GLTFSkeletonIndex, GLTFNodeIndex> skeleton_to_node;
+	RBMap<GLTFSkeletonIndex, GLTFNodeIndex> skeleton_to_node;
 	Vector<Ref<GLTFAnimation>> animations;
-	Map<GLTFNodeIndex, Node *> scene_nodes;
+	RBMap<GLTFNodeIndex, Node *> scene_nodes;
 
-	Map<ObjectID, GLTFSkeletonIndex> skeleton3d_to_gltf_skeleton;
-	Map<ObjectID, Map<ObjectID, GLTFSkinIndex>> skin_and_skeleton3d_to_gltf_skin;
+	RBMap<ObjectID, GLTFSkeletonIndex> skeleton3d_to_gltf_skeleton;
+	RBMap<ObjectID, RBMap<ObjectID, GLTFSkinIndex>> skin_and_skeleton3d_to_gltf_skin;
 	Dictionary additional_data;
 
 protected:

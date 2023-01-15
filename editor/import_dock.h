@@ -34,7 +34,7 @@
 
 #include "core/io/config_file.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
 #include "core/string/string_name.h"
@@ -59,7 +59,7 @@ class ImportDock : public VBoxContainer {
 	EditorInspector *import_opts;
 
 	List<PropertyInfo> properties;
-	Map<StringName, Variant> property_values;
+	RBMap<StringName, Variant> property_values;
 
 	ConfirmationDialog *reimport_confirm;
 	Label *label_warning;

@@ -36,7 +36,7 @@
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
 #include "core/io/resource_loader.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/aabb.h"
 #include "core/math/basis.h"
 #include "core/math/expression.h"

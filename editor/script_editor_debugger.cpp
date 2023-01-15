@@ -96,7 +96,7 @@ class ScriptEditorDebuggerVariables : public Object {
 	GDCLASS(ScriptEditorDebuggerVariables, Object);
 
 	List<PropertyInfo> props;
-	Map<StringName, Variant> values;
+	RBMap<StringName, Variant> values;
 
 protected:
 	bool _set(const StringName &p_name, const Variant &p_value) {
@@ -123,7 +123,7 @@ public:
 	}
 
 	String get_var_value(const String &p_var) const {
-		for (Map<StringName, Variant>::Element *E = values.front(); E; E = E->next()) {
+		for (RBMap<StringName, Variant>::Element *E = values.front(); E; E = E->next()) {
 			String v = E->key().operator String().get_slice("/", 1);
 			if (v == p_var) {
 				return E->get();
@@ -200,7 +200,7 @@ public:
 	String type_name;
 	ObjectID remote_object_id;
 	List<PropertyInfo> prop_list;
-	Map<StringName, Variant> prop_values;
+	RBMap<StringName, Variant> prop_values;
 
 	ObjectID get_remote_object_id() {
 		return remote_object_id;
@@ -615,7 +615,7 @@ void ScriptEditorDebugger::_parse_message(const String &p_msg, const Array &p_da
 
 	} else if (p_msg == "message:scene_tree") {
 		inspect_scene_tree->clear();
-		Map<int, TreeItem *> lv;
+		RBMap<int, TreeItem *> lv;
 
 		updating_scene_tree = true;
 
@@ -1806,7 +1806,7 @@ int ScriptEditorDebugger::_get_node_path_cache(const NodePath &p_path) {
 }
 
 int ScriptEditorDebugger::_get_res_path_cache(const String &p_path) {
-	Map<String, int>::Element *E = res_path_cache.find(p_path);
+	RBMap<String, int>::Element *E = res_path_cache.find(p_path);
 
 	if (E) {
 		return E->get();
@@ -2221,7 +2221,7 @@ void ScriptEditorDebugger::_set_remote_object(ObjectID p_id, ScriptEditorDebugge
 }
 
 void ScriptEditorDebugger::_clear_remote_objects() {
-	for (Map<ObjectID, ScriptEditorDebuggerInspectedObject *>::Element *E = remote_objects.front(); E; E = E->next()) {
+	for (RBMap<ObjectID, ScriptEditorDebuggerInspectedObject *>::Element *E = remote_objects.front(); E; E = E->next()) {
 		if (editor->get_editor_history()->get_current() == E->value()->get_instance_id()) {
 			editor->push_item(nullptr);
 		}
@@ -2658,7 +2658,7 @@ ScriptEditorDebugger::ScriptEditorDebugger(EditorNode *p_editor) {
 		tabs->add_child(hsp);
 		perf_max.resize(Performance::MONITOR_MAX);
 
-		Map<String, TreeItem *> bases;
+		RBMap<String, TreeItem *> bases;
 		TreeItem *root = perf_monitors->create_item();
 		perf_monitors->set_hide_root(true);
 		for (int i = 0; i < Performance::MONITOR_MAX; i++) {

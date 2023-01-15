@@ -47,13 +47,13 @@ class JNISingleton : public Object {
 	};
 
 	jobject instance;
-	Map<StringName, MethodData> method_map;
+	RBMap<StringName, MethodData> method_map;
 #endif
 
 public:
 	virtual Variant call(const StringName &p_method, const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
 #ifdef ANDROID_ENABLED
-		Map<StringName, MethodData>::Element *E = method_map.find(p_method);
+		RBMap<StringName, MethodData>::Element *E = method_map.find(p_method);
 
 		// Check the method we're looking for is in the JNISingleton map and that
 		// the arguments match.

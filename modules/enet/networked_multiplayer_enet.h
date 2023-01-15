@@ -81,7 +81,7 @@ private:
 
 	ConnectionStatus connection_status;
 
-	Map<int, ENetPeer *> peer_map;
+	RBMap<int, ENetPeer *> peer_map;
 
 	struct Packet {
 		ENetPacket *packet;

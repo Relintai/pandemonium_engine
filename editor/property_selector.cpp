@@ -34,7 +34,7 @@
 #include "core/math/color.h"
 #include "core/error/error_macros.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/method_bind.h"
 #include "core/input/input_event.h"
 #include "core/os/keyboard.h"
@@ -385,7 +385,7 @@ void PropertySelector::_item_selected() {
 	String text;
 	if (properties) {
 		while (class_type != String()) {
-			Map<String, DocData::ClassDoc>::Element *E = dd->class_list.find(class_type);
+			RBMap<String, DocData::ClassDoc>::Element *E = dd->class_list.find(class_type);
 			if (E) {
 				for (int i = 0; i < E->get().properties.size(); i++) {
 					if (E->get().properties[i].name == name) {
@@ -404,7 +404,7 @@ void PropertySelector::_item_selected() {
 		}
 	} else {
 		while (class_type != String()) {
-			Map<String, DocData::ClassDoc>::Element *E = dd->class_list.find(class_type);
+			RBMap<String, DocData::ClassDoc>::Element *E = dd->class_list.find(class_type);
 			if (E) {
 				for (int i = 0; i < E->get().methods.size(); i++) {
 					if (E->get().methods[i].name == name) {

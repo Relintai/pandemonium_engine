@@ -61,7 +61,7 @@ class ImportDockParameters : public Object {
 	GDCLASS(ImportDockParameters, Object);
 
 public:
-	Map<StringName, Variant> values;
+	RBMap<StringName, Variant> values;
 	List<PropertyInfo> properties;
 	Ref<ResourceImporter> importer;
 	Vector<String> paths;
@@ -202,7 +202,7 @@ void ImportDock::set_edit_multiple_paths(const Vector<String> &p_paths) {
 	clear();
 
 	// Use the value that is repeated the most.
-	Map<String, Dictionary> value_frequency;
+	RBMap<String, Dictionary> value_frequency;
 
 	for (int i = 0; i < p_paths.size(); i++) {
 		Ref<ConfigFile> config;

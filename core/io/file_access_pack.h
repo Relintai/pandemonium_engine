@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/string/print_string.h"
@@ -63,7 +63,7 @@ private:
 	struct PackedDir {
 		PackedDir *parent;
 		String name;
-		Map<String, PackedDir *> subdirs;
+		RBMap<String, PackedDir *> subdirs;
 		Set<String> files;
 	};
 
@@ -97,7 +97,7 @@ private:
 		};
 	};
 
-	Map<PathMD5, PackedFile> files;
+	RBMap<PathMD5, PackedFile> files;
 
 	Vector<PackSource *> sources;
 
@@ -185,7 +185,7 @@ public:
 
 FileAccess *PackedData::try_open_path(const String &p_path) {
 	PathMD5 pmd5(p_path.md5_buffer());
-	Map<PathMD5, PackedFile>::Element *E = files.find(pmd5);
+	RBMap<PathMD5, PackedFile>::Element *E = files.find(pmd5);
 	if (!E) {
 		return nullptr; //not found
 	}

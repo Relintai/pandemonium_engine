@@ -235,7 +235,7 @@ void ProjectSettings::_get_property_list(List<PropertyInfo> *p_list) const {
 
 	Set<_VCSort> vclist;
 
-	for (Map<StringName, VariantContainer>::Element *E = props.front(); E; E = E->next()) {
+	for (RBMap<StringName, VariantContainer>::Element *E = props.front(); E; E = E->next()) {
 		const VariantContainer *v = &E->get();
 
 		if (v->hide_from_editor) {
@@ -297,7 +297,7 @@ bool ProjectSettings::_load_resource_pack(const String &p_pack, bool p_replace_f
 void ProjectSettings::_convert_to_last_version(int p_from_version) {
 	if (p_from_version <= 3) {
 		// Converts the actions from array to dictionary (array of events to dictionary with deadzone + events)
-		for (Map<StringName, ProjectSettings::VariantContainer>::Element *E = props.front(); E; E = E->next()) {
+		for (RBMap<StringName, ProjectSettings::VariantContainer>::Element *E = props.front(); E; E = E->next()) {
 			Variant value = E->get().variant;
 			if (String(E->key()).begins_with("input/") && value.get_type() == Variant::ARRAY) {
 				Array array = value;
@@ -670,7 +670,7 @@ Error ProjectSettings::save() {
 	return error;
 }
 
-Error ProjectSettings::_save_settings_binary(const String &p_file, const Map<String, List<String>> &props, const CustomMap &p_custom, const String &p_custom_features) {
+Error ProjectSettings::_save_settings_binary(const String &p_file, const RBMap<String, List<String>> &props, const CustomMap &p_custom, const String &p_custom_features) {
 	Error err;
 	FileAccess *file = FileAccess::open(p_file, FileAccess::WRITE, &err);
 	ERR_FAIL_COND_V_MSG(err != OK, err, "Couldn't save project.binary at " + p_file + ".");
@@ -680,7 +680,7 @@ Error ProjectSettings::_save_settings_binary(const String &p_file, const Map<Str
 
 	int count = 0;
 
-	for (Map<String, List<String>>::Element *E = props.front(); E; E = E->next()) {
+	for (RBMap<String, List<String>>::Element *E = props.front(); E; E = E->next()) {
 		for (List<String>::Element *F = E->get().front(); F; F = F->next()) {
 			count++;
 		}
@@ -714,7 +714,7 @@ Error ProjectSettings::_save_settings_binary(const String &p_file, const Map<Str
 		file->store_32(count); //store how many properties are saved
 	}
 
-	for (Map<String, List<String>>::Element *E = props.front(); E; E = E->next()) {
+	for (RBMap<String, List<String>>::Element *E = props.front(); E; E = E->next()) {
 		for (List<String>::Element *F = E->get().front(); F; F = F->next()) {
 			String key = F->get();
 			if (E->key() != "") {
@@ -755,7 +755,7 @@ Error ProjectSettings::_save_settings_binary(const String &p_file, const Map<Str
 	return OK;
 }
 
-Error ProjectSettings::_save_settings_text(const String &p_file, const Map<String, List<String>> &props, const CustomMap &p_custom, const String &p_custom_features) {
+Error ProjectSettings::_save_settings_text(const String &p_file, const RBMap<String, List<String>> &props, const CustomMap &p_custom, const String &p_custom_features) {
 	Error err;
 	FileAccess *file = FileAccess::open(p_file, FileAccess::WRITE, &err);
 
@@ -776,7 +776,7 @@ Error ProjectSettings::_save_settings_text(const String &p_file, const Map<Strin
 	}
 	file->store_string("\n");
 
-	for (Map<String, List<String>>::Element *E = props.front(); E; E = E->next()) {
+	for (RBMap<String, List<String>>::Element *E = props.front(); E; E = E->next()) {
 		if (E != props.front()) {
 			file->store_string("\n");
 		}
@@ -819,7 +819,7 @@ Error ProjectSettings::save_custom(const String &p_path, const CustomMap &p_cust
 	Set<_VCSort> vclist;
 
 	if (p_merge_with_current) {
-		for (Map<StringName, VariantContainer>::Element *G = props.front(); G; G = G->next()) {
+		for (RBMap<StringName, VariantContainer>::Element *G = props.front(); G; G = G->next()) {
 			const VariantContainer *v = &G->get();
 
 			if (v->hide_from_editor) {
@@ -843,9 +843,9 @@ Error ProjectSettings::save_custom(const String &p_path, const CustomMap &p_cust
 		}
 	}
 
-	for (const Map<String, Variant>::Element *E = p_custom.front(); E; E = E->next()) {
+	for (const RBMap<String, Variant>::Element *E = p_custom.front(); E; E = E->next()) {
 		// Lookup global prop to store in the same order
-		Map<StringName, VariantContainer>::Element *global_prop = props.find(E->key());
+		RBMap<StringName, VariantContainer>::Element *global_prop = props.find(E->key());
 
 		_VCSort vc;
 		vc.name = E->key();
@@ -855,7 +855,7 @@ Error ProjectSettings::save_custom(const String &p_path, const CustomMap &p_cust
 		vclist.insert(vc);
 	}
 
-	Map<String, List<String>> props;
+	RBMap<String, List<String>> props;
 
 	for (Set<_VCSort>::Element *E = vclist.front(); E; E = E->next()) {
 		String category = E->get().name;
@@ -962,7 +962,7 @@ void ProjectSettings::set_custom_property_info(const String &p_prop, const Prope
 	custom_prop_info[p_prop].name = p_prop;
 }
 
-const Map<StringName, PropertyInfo> &ProjectSettings::get_custom_property_info() const {
+const RBMap<StringName, PropertyInfo> &ProjectSettings::get_custom_property_info() const {
 	return custom_prop_info;
 }
 

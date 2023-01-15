@@ -31,7 +31,7 @@
 #include "spatial_editor_gizmos.h"
 
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/pool_vector.h"
 #include "core/containers/rid.h"
 #include "core/error/error_list.h"
@@ -3593,7 +3593,7 @@ void NavigationMeshSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 		return;
 	}
 
-	Map<_EdgeKey, bool> edge_map;
+	RBMap<_EdgeKey, bool> edge_map;
 	PoolVector<Vector3> tmeshfaces;
 	tmeshfaces.resize(faces.size() * 3);
 
@@ -3613,7 +3613,7 @@ void NavigationMeshSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 					SWAP(ek.from, ek.to);
 				}
 
-				Map<_EdgeKey, bool>::Element *F = edge_map.find(ek);
+				RBMap<_EdgeKey, bool>::Element *F = edge_map.find(ek);
 
 				if (F) {
 					F->get() = false;
@@ -3626,7 +3626,7 @@ void NavigationMeshSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	}
 	Vector<Vector3> lines;
 
-	for (Map<_EdgeKey, bool>::Element *E = edge_map.front(); E; E = E->next()) {
+	for (RBMap<_EdgeKey, bool>::Element *E = edge_map.front(); E; E = E->next()) {
 		if (E->get()) {
 			lines.push_back(E->key().from);
 			lines.push_back(E->key().to);

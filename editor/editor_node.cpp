@@ -204,7 +204,7 @@ void EditorNode::disambiguate_filenames(const Vector<String> p_full_paths, Vecto
 	// Keep track of a list of "index sets," i.e. sets of indices
 	// within disambiguated_scene_names which contain the same name.
 	Vector<Set<int>> index_sets;
-	Map<String, int> scene_name_to_set_index;
+	RBMap<String, int> scene_name_to_set_index;
 	for (int i = 0; i < r_filenames.size(); i++) {
 		String scene_name = r_filenames[i];
 		if (!scene_name_to_set_index.has(scene_name)) {
@@ -1288,7 +1288,7 @@ void EditorNode::_set_scene_metadata(const String &p_file, int p_idx) {
 	ERR_FAIL_COND_MSG(err != OK, "Cannot save config file to '" + path + "'.");
 }
 
-bool EditorNode::_find_and_save_resource(RES p_res, Map<RES, bool> &processed, int32_t flags) {
+bool EditorNode::_find_and_save_resource(RES p_res, RBMap<RES, bool> &processed, int32_t flags) {
 	if (p_res.is_null()) {
 		return false;
 	}
@@ -1315,7 +1315,7 @@ bool EditorNode::_find_and_save_resource(RES p_res, Map<RES, bool> &processed, i
 	}
 }
 
-bool EditorNode::_find_and_save_edited_subresources(Object *obj, Map<RES, bool> &processed, int32_t flags) {
+bool EditorNode::_find_and_save_edited_subresources(Object *obj, RBMap<RES, bool> &processed, int32_t flags) {
 	bool ret_changed = false;
 	List<PropertyInfo> pi;
 	obj->get_property_list(&pi);
@@ -1365,7 +1365,7 @@ bool EditorNode::_find_and_save_edited_subresources(Object *obj, Map<RES, bool> 
 	return ret_changed;
 }
 
-void EditorNode::_save_edited_subresources(Node *scene, Map<RES, bool> &processed, int32_t flags) {
+void EditorNode::_save_edited_subresources(Node *scene, RBMap<RES, bool> &processed, int32_t flags) {
 	_find_and_save_edited_subresources(scene, processed, flags);
 
 	for (int i = 0; i < scene->get_child_count(); i++) {
@@ -1941,7 +1941,7 @@ void EditorNode::_save_default_environment() {
 	Ref<Environment3D> fallback = get_tree()->get_root()->get_world_3d()->get_fallback_environment();
 
 	if (fallback.is_valid() && fallback->get_path().is_resource_file()) {
-		Map<RES, bool> processed;
+		RBMap<RES, bool> processed;
 		_find_and_save_edited_subresources(fallback.ptr(), processed, 0);
 		save_resource_in_path(fallback, fallback->get_path());
 	}
@@ -3220,7 +3220,7 @@ void EditorNode::_update_addon_config() {
 
 	Vector<String> enabled_addons;
 
-	for (Map<String, EditorPlugin *>::Element *E = plugin_addons.front(); E; E = E->next()) {
+	for (RBMap<String, EditorPlugin *>::Element *E = plugin_addons.front(); E; E = E->next()) {
 		enabled_addons.push_back(E->key());
 	}
 
@@ -3614,7 +3614,7 @@ Error EditorNode::load_scene(const String &p_scene, bool p_ignore_broken_deps, b
 
 	dependency_errors.erase(lpath); //at least not self path
 
-	for (Map<String, Set<String>>::Element *E = dependency_errors.front(); E; E = E->next()) {
+	for (RBMap<String, Set<String>>::Element *E = dependency_errors.front(); E; E = E->next()) {
 		String txt = vformat(TTR("Scene '%s' has broken dependencies:"), E->key()) + "\n";
 		for (Set<String>::Element *F = E->get().front(); F; F = F->next()) {
 			txt += "\t" + F->get() + "\n";
@@ -4074,8 +4074,8 @@ Ref<Texture> EditorNode::get_class_icon(const String &p_class, const String &p_f
 		}
 	}
 
-	const Map<String, Vector<EditorData::CustomType>> &p_map = EditorNode::get_editor_data().get_custom_types();
-	for (const Map<String, Vector<EditorData::CustomType>>::Element *E = p_map.front(); E; E = E->next()) {
+	const RBMap<String, Vector<EditorData::CustomType>> &p_map = EditorNode::get_editor_data().get_custom_types();
+	for (const RBMap<String, Vector<EditorData::CustomType>>::Element *E = p_map.front(); E; E = E->next()) {
 		const Vector<EditorData::CustomType> &ct = E->value();
 		for (int i = 0; i < ct.size(); ++i) {
 			if (ct[i].name == p_class) {

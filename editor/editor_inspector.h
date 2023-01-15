@@ -36,7 +36,7 @@
 #include "scene/gui/scroll_container.h"
 
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/color.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
@@ -292,7 +292,7 @@ class EditorInspector : public ScrollContainer {
 	VBoxContainer *main_vbox;
 
 	//map use to cache the instanced editors
-	Map<StringName, List<EditorProperty *>> editor_property_map;
+	RBMap<StringName, List<EditorProperty *>> editor_property_map;
 	List<EditorInspectorSection *> sections;
 	Set<StringName> pending;
 
@@ -322,11 +322,11 @@ class EditorInspector : public ScrollContainer {
 	int property_focusable;
 	int update_scroll_request;
 
-	Map<StringName, Map<StringName, String>> descr_cache;
-	Map<StringName, String> class_descr_cache;
+	RBMap<StringName, RBMap<StringName, String>> descr_cache;
+	RBMap<StringName, String> class_descr_cache;
 	Set<StringName> restart_request_props;
 
-	Map<ObjectID, int> scroll_cache;
+	RBMap<ObjectID, int> scroll_cache;
 
 	String property_prefix; //used for sectioned inspector
 	String object_class;

@@ -38,7 +38,7 @@ class Translation : public Resource {
 	RES_BASE_EXTENSION("translation");
 
 	String locale;
-	Map<StringName, StringName> translation_map;
+	RBMap<StringName, StringName> translation_map;
 
 	PoolVector<String> _get_message_list() const;
 
@@ -72,7 +72,7 @@ class TranslationServer : public Object {
 	Ref<Translation> tool_translation;
 	Ref<Translation> doc_translation;
 
-	Map<String, String> locale_name_map;
+	RBMap<String, String> locale_name_map;
 
 	bool enabled;
 

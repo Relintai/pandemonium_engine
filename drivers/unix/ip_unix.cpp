@@ -128,7 +128,7 @@ void IP_Unix::_resolve_hostname(List<IP_Address> &r_addresses, const String &p_h
 
 #if defined(UWP_ENABLED)
 
-void IP_Unix::get_local_interfaces(Map<String, Interface_Info> *r_interfaces) const {
+void IP_Unix::get_local_interfaces(RBMap<String, Interface_Info> *r_interfaces) const {
 	using namespace Windows::Networking;
 	using namespace Windows::Networking::Connectivity;
 
@@ -142,7 +142,7 @@ void IP_Unix::get_local_interfaces(Map<String, Interface_Info> *r_interfaces) co
 			continue;
 
 		String name = hostname->RawName->Data();
-		Map<String, Interface_Info>::Element *E = r_interfaces->find(name);
+		RBMap<String, Interface_Info>::Element *E = r_interfaces->find(name);
 		if (!E) {
 			Interface_Info info;
 			info.name = name;
@@ -161,7 +161,7 @@ void IP_Unix::get_local_interfaces(Map<String, Interface_Info> *r_interfaces) co
 
 #else
 
-void IP_Unix::get_local_interfaces(Map<String, Interface_Info> *r_interfaces) const {
+void IP_Unix::get_local_interfaces(RBMap<String, Interface_Info> *r_interfaces) const {
 	ULONG buf_size = 1024;
 	IP_ADAPTER_ADDRESSES *addrs;
 
@@ -209,7 +209,7 @@ void IP_Unix::get_local_interfaces(Map<String, Interface_Info> *r_interfaces) co
 
 #else // UNIX
 
-void IP_Unix::get_local_interfaces(Map<String, Interface_Info> *r_interfaces) const {
+void IP_Unix::get_local_interfaces(RBMap<String, Interface_Info> *r_interfaces) const {
 	struct ifaddrs *ifAddrStruct = nullptr;
 	struct ifaddrs *ifa = nullptr;
 	int family;
@@ -227,7 +227,7 @@ void IP_Unix::get_local_interfaces(Map<String, Interface_Info> *r_interfaces) co
 			continue;
 		}
 
-		Map<String, Interface_Info>::Element *E = r_interfaces->find(ifa->ifa_name);
+		RBMap<String, Interface_Info>::Element *E = r_interfaces->find(ifa->ifa_name);
 		if (!E) {
 			Interface_Info info;
 			info.name = ifa->ifa_name;

@@ -237,7 +237,7 @@ class ENetDTLSServer : public ENetPandemoniumSocket {
 
 	Ref<DTLSServer> server;
 	Ref<UDPServer> udp_server;
-	Map<String, Ref<PacketPeerDTLS> > peers;
+	RBMap<String, Ref<PacketPeerDTLS> > peers;
 	int last_service;
 
 public:
@@ -297,7 +297,7 @@ public:
 		List<String> remove;
 		Error err = ERR_BUSY;
 		// TODO this needs to be fair!
-		for (Map<String, Ref<PacketPeerDTLS> >::Element *E = peers.front(); E; E = E->next()) {
+		for (RBMap<String, Ref<PacketPeerDTLS> >::Element *E = peers.front(); E; E = E->next()) {
 			Ref<PacketPeerDTLS> peer = E->get();
 			peer->poll();
 
@@ -342,7 +342,7 @@ public:
 	}
 
 	void close() {
-		for (Map<String, Ref<PacketPeerDTLS> >::Element *E = peers.front(); E; E = E->next()) {
+		for (RBMap<String, Ref<PacketPeerDTLS> >::Element *E = peers.front(); E; E = E->next()) {
 			E->get()->disconnect_from_peer();
 		}
 		peers.clear();

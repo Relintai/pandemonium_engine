@@ -37,7 +37,7 @@
 #include "core/os/thread.h"
 #include "core/os/safe_refcount.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/object_id.h"
@@ -98,7 +98,7 @@ class EditorResourcePreview : public Node {
 
 	int order;
 
-	Map<String, Item> cache;
+	RBMap<String, Item> cache;
 
 	void _preview_ready(const String &p_str, const Ref<Texture> &p_texture, const Ref<Texture> &p_small_texture, ObjectID id, const StringName &p_func, const Variant &p_ud);
 	void _generate_preview(Ref<ImageTexture> &r_texture, Ref<ImageTexture> &r_small_texture, const QueueItem &p_item, const String &cache_base);

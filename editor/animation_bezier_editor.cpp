@@ -81,7 +81,7 @@ void AnimationBezierTrackEdit::_draw_track(int p_track, const Color &p_color) {
 	int right_limit = get_size().width - timeline->get_buttons_width();
 
 	//selection may have altered the order of keys
-	Map<float, int> key_order;
+	RBMap<float, int> key_order;
 
 	for (int i = 0; i < animation->track_get_key_count(p_track); i++) {
 		float ofs = animation->track_get_key_time(p_track, i);
@@ -92,7 +92,7 @@ void AnimationBezierTrackEdit::_draw_track(int p_track, const Color &p_color) {
 		key_order[ofs] = i;
 	}
 
-	for (Map<float, int>::Element *E = key_order.front(); E; E = E->next()) {
+	for (RBMap<float, int>::Element *E = key_order.front(); E; E = E->next()) {
 		int i = E->get();
 
 		if (!E->next()) {
@@ -337,7 +337,7 @@ void AnimationBezierTrackEdit::_notification(int p_what) {
 
 		// RELATED TRACKS TITLES
 
-		Map<int, Color> subtrack_colors;
+		RBMap<int, Color> subtrack_colors;
 		subtracks.clear();
 
 		for (int i = 0; i < animation->get_track_count(); i++) {
@@ -418,7 +418,7 @@ void AnimationBezierTrackEdit::_notification(int p_what) {
 
 			float scale = timeline->get_zoom_scale();
 			Ref<Texture> point = get_theme_icon("KeyValue", "EditorIcons");
-			for (Map<int, Color>::Element *E = subtrack_colors.front(); E; E = E->next()) {
+			for (RBMap<int, Color>::Element *E = subtrack_colors.front(); E; E = E->next()) {
 				_draw_track(E->key(), E->get());
 
 				for (int i = 0; i < animation->track_get_key_count(E->key()); i++) {
@@ -698,7 +698,7 @@ void AnimationBezierTrackEdit::_gui_input(const Ref<InputEvent> &p_event) {
 			emit_signal("close_request");
 			return;
 		}
-		for (Map<int, Rect2>::Element *E = subtracks.front(); E; E = E->next()) {
+		for (RBMap<int, Rect2>::Element *E = subtracks.front(); E; E = E->next()) {
 			if (E->get().has_point(mb->get_position())) {
 				set_animation_and_track(animation, E->key());
 				_clear_selection();

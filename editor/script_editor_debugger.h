@@ -35,7 +35,7 @@
 #include "core/variant/array.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/vector2.h"
 #include "core/string/node_path.h"
 #include "core/object/object.h"
@@ -119,7 +119,7 @@ private:
 	ObjectID inspected_object_id;
 	String last_filter;
 	ScriptEditorDebuggerVariables *variables;
-	Map<ObjectID, ScriptEditorDebuggerInspectedObject *> remote_objects;
+	RBMap<ObjectID, ScriptEditorDebuggerInspectedObject *> remote_objects;
 	Set<RES> remote_dependencies;
 	Set<ObjectID> unfold_cache;
 
@@ -166,7 +166,7 @@ private:
 	Vector<float> perf_max;
 	Vector<TreeItem *> perf_items;
 
-	Map<int, String> profiler_signature;
+	RBMap<int, String> profiler_signature;
 
 	Tree *perf_monitors;
 	Control *perf_draw;
@@ -191,7 +191,7 @@ private:
 
 	HashMap<NodePath, int> node_path_cache;
 	int last_path_id;
-	Map<String, int> res_path_cache;
+	RBMap<String, int> res_path_cache;
 
 	EditorProfiler *profiler;
 	EditorNetworkProfiler *network_profiler;

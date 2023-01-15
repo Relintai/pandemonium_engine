@@ -73,16 +73,16 @@ static void set_from_array(Set<T> &r_out, const Array &p_inp) {
 }
 
 template <class K, class V>
-static Dictionary to_dict(const Map<K, V> &p_inp) {
+static Dictionary to_dict(const RBMap<K, V> &p_inp) {
 	Dictionary ret;
-	for (typename Map<K, V>::Element *E = p_inp.front(); E; E = E->next()) {
+	for (typename RBMap<K, V>::Element *E = p_inp.front(); E; E = E->next()) {
 		ret[E->key()] = E->value();
 	}
 	return ret;
 }
 
 template <class K, class V>
-static void set_from_dict(Map<K, V> &r_out, const Dictionary &p_inp) {
+static void set_from_dict(RBMap<K, V> &r_out, const Dictionary &p_inp) {
 	r_out.clear();
 	Array keys = p_inp.keys();
 	for (int i = 0; i < keys.size(); i++) {

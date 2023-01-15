@@ -1556,7 +1556,7 @@ void EditorExport::load_config() {
 }
 
 void EditorExport::update_export_presets() {
-	Map<StringName, List<EditorExportPlatform::ExportOption>> platform_options;
+	RBMap<StringName, List<EditorExportPlatform::ExportOption>> platform_options;
 
 	for (int i = 0; i < export_platforms.size(); i++) {
 		Ref<EditorExportPlatform> platform = export_platforms[i];
@@ -1578,7 +1578,7 @@ void EditorExport::update_export_presets() {
 			List<EditorExportPlatform::ExportOption> options = platform_options[preset->get_platform()->get_name()];
 
 			// Copy the previous preset values
-			Map<StringName, Variant> previous_values = preset->values;
+			RBMap<StringName, Variant> previous_values = preset->values;
 
 			// Clear the preset properties and values prior to reloading
 			preset->properties.clear();
@@ -1734,7 +1734,7 @@ bool EditorExportPlatform::can_export(const Ref<EditorExportPreset> &p_preset, S
 
 List<String> EditorExportPlatformPC::get_binary_extensions(const Ref<EditorExportPreset> &p_preset) const {
 	List<String> list;
-	for (Map<String, String>::Element *E = extensions.front(); E; E = E->next()) {
+	for (RBMap<String, String>::Element *E = extensions.front(); E; E = E->next()) {
 		if (p_preset->get(E->key())) {
 			list.push_back(extensions[E->key()]);
 			return list;

@@ -107,7 +107,7 @@ bool GridMap::_get(const StringName &p_name, Variant &r_ret) const {
 		{
 			PoolVector<int>::Write w = cells.write();
 			int i = 0;
-			for (Map<IndexKey, Cell>::Element *E = cell_map.front(); E; E = E->next(), i++) {
+			for (RBMap<IndexKey, Cell>::Element *E = cell_map.front(); E; E = E->next(), i++) {
 				encode_uint64(E->key().key, (uint8_t *)&w[i * 3]);
 				encode_uint32(E->get().cell, (uint8_t *)&w[i * 3 + 2]);
 			}
@@ -200,7 +200,7 @@ Ref<PhysicsMaterial> GridMap::get_physics_material() const {
 
 Array GridMap::get_collision_shapes() const {
 	Array shapes;
-	for (Map<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
+	for (RBMap<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
 		Octant *g = E->get();
 		RID body = g->static_body;
 		Transform body_xform = PhysicsServer::get_singleton()->body_get_state(body, PhysicsServer::BODY_STATE_TRANSFORM);
@@ -444,7 +444,7 @@ void GridMap::_octant_transform(const OctantKey &p_key) {
 
 	// update transform for NavigationServer regions and navigation debugmesh instances
 	if (bake_navigation) {
-		for (Map<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+		for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
 			if (E->get().region.is_valid()) {
 				NavigationServer::get_singleton()->region_set_transform(E->get().region, get_global_transform() * E->get().xform);
 			}
@@ -475,7 +475,7 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 	}
 
 	//erase navigation
-	for (Map<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
 		NavigationServer::get_singleton()->free(E->get().region);
 		if (E->get().navmesh_debug_instance.is_valid()) {
 			RS::get_singleton()->free(E->get().navmesh_debug_instance);
@@ -509,7 +509,7 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 	 * and set said multimesh bounding box to one containing all cells which have this item
 	 */
 
-	Map<int, List<Pair<Transform, IndexKey>>> multimesh_items;
+	RBMap<int, List<Pair<Transform, IndexKey>>> multimesh_items;
 
 	for (Set<IndexKey>::Element *E = g.cells.front(); E; E = E->next()) {
 		ERR_CONTINUE(!cell_map.has(E->get()));
@@ -594,7 +594,7 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 
 	//update multimeshes, only if not baked
 	if (baked_meshes.size() == 0) {
-		for (Map<int, List<Pair<Transform, IndexKey>>>::Element *E = multimesh_items.front(); E; E = E->next()) {
+		for (RBMap<int, List<Pair<Transform, IndexKey>>>::Element *E = multimesh_items.front(); E; E = E->next()) {
 			Octant::MultimeshInstance mmi;
 
 			RID mm = RID_PRIME(RS::get_singleton()->multimesh_create());
@@ -650,7 +650,7 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 }
 
 void GridMap::_reset_physic_bodies_collision_filters() {
-	for (Map<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
+	for (RBMap<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
 		PhysicsServer::get_singleton()->body_set_collision_layer(E->get()->static_body, collision_layer);
 		PhysicsServer::get_singleton()->body_set_collision_mask(E->get()->static_body, collision_mask);
 	}
@@ -673,7 +673,7 @@ void GridMap::_octant_enter_world(const OctantKey &p_key) {
 	}
 
 	if (bake_navigation && mesh_library.is_valid()) {
-		for (Map<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+		for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
 			if (cell_map.has(E->key()) && E->get().region.is_valid() == false) {
 				Ref<NavigationMesh> nm = mesh_library->get_item_navmesh(cell_map[E->key()].item);
 				if (nm.is_valid()) {
@@ -707,7 +707,7 @@ void GridMap::_octant_exit_world(const OctantKey &p_key) {
 		RS::get_singleton()->instance_set_scenario(g.multimesh_instances[i].instance, RID());
 	}
 
-	for (Map<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
 		if (E->get().region.is_valid()) {
 			NavigationServer::get_singleton()->free(E->get().region);
 			E->get().region = RID();
@@ -739,7 +739,7 @@ void GridMap::_octant_clean_up(const OctantKey &p_key) {
 	}
 
 	// Erase navigation
-	for (Map<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
 		if (E->get().region.is_valid()) {
 			NavigationServer::get_singleton()->free(E->get().region);
 		}
@@ -777,7 +777,7 @@ void GridMap::_notification(int p_what) {
 
 			last_transform = get_global_transform();
 
-			for (Map<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
+			for (RBMap<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
 				_octant_enter_world(E->key());
 			}
 
@@ -793,7 +793,7 @@ void GridMap::_notification(int p_what) {
 				break;
 			}
 			//update run
-			for (Map<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
+			for (RBMap<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
 				_octant_transform(E->key());
 			}
 
@@ -805,7 +805,7 @@ void GridMap::_notification(int p_what) {
 
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
-			for (Map<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
+			for (RBMap<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
 				_octant_exit_world(E->key());
 			}
 
@@ -832,7 +832,7 @@ void GridMap::_update_visibility() {
 
 	_change_notify("visible");
 
-	for (Map<OctantKey, Octant *>::Element *e = octant_map.front(); e; e = e->next()) {
+	for (RBMap<OctantKey, Octant *>::Element *e = octant_map.front(); e; e = e->next()) {
 		Octant *octant = e->value();
 		for (int i = 0; i < octant->multimesh_instances.size(); i++) {
 			const Octant::MultimeshInstance &mi = octant->multimesh_instances[i];
@@ -856,16 +856,16 @@ void GridMap::_queue_octants_dirty() {
 
 void GridMap::_recreate_octant_data() {
 	recreating_octants = true;
-	Map<IndexKey, Cell> cell_copy = cell_map;
+	RBMap<IndexKey, Cell> cell_copy = cell_map;
 	_clear_internal();
-	for (Map<IndexKey, Cell>::Element *E = cell_copy.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Cell>::Element *E = cell_copy.front(); E; E = E->next()) {
 		set_cell_item(E->key().x, E->key().y, E->key().z, E->get().item, E->get().rot);
 	}
 	recreating_octants = false;
 }
 
 void GridMap::_clear_internal() {
-	for (Map<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
+	for (RBMap<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
 		if (is_inside_world()) {
 			_octant_exit_world(E->key());
 		}
@@ -893,7 +893,7 @@ void GridMap::_update_octants_callback() {
 	}
 
 	List<OctantKey> to_delete;
-	for (Map<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
+	for (RBMap<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
 		if (_octant_update(E->key())) {
 			to_delete.push_back(E->key());
 		}
@@ -1012,7 +1012,7 @@ void GridMap::set_clip(bool p_enabled, bool p_clip_above, int p_floor, Vector3::
 	clip_above = p_clip_above;
 
 	//make it all update
-	for (Map<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
+	for (RBMap<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
 		Octant *g = E->get();
 		g->dirty = true;
 	}
@@ -1033,7 +1033,7 @@ Array GridMap::get_used_cells() const {
 	Array a;
 	a.resize(cell_map.size());
 	int i = 0;
-	for (Map<IndexKey, Cell>::Element *E = cell_map.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Cell>::Element *E = cell_map.front(); E; E = E->next()) {
 		Vector3 p(E->key().x, E->key().y, E->key().z);
 		a[i++] = p;
 	}
@@ -1043,7 +1043,7 @@ Array GridMap::get_used_cells() const {
 
 Array GridMap::get_used_cells_by_item(int p_item) const {
 	Array a;
-	for (Map<IndexKey, Cell>::Element *E = cell_map.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Cell>::Element *E = cell_map.front(); E; E = E->next()) {
 		if (E->value().item == p_item) {
 			Vector3 p(E->key().x, E->key().y, E->key().z);
 			a.push_back(p);
@@ -1061,7 +1061,7 @@ Array GridMap::get_meshes() const {
 	Vector3 ofs = _get_offset();
 	Array meshes;
 
-	for (Map<IndexKey, Cell>::Element *E = cell_map.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Cell>::Element *E = cell_map.front(); E; E = E->next()) {
 		int id = E->get().item;
 		if (!mesh_library->has_item(id)) {
 			continue;
@@ -1113,9 +1113,9 @@ void GridMap::make_baked_meshes(bool p_gen_lightmap_uv, float p_lightmap_uv_texe
 	}
 
 	//generate
-	Map<OctantKey, Map<Ref<Material>, Ref<SurfaceTool>>> surface_map;
+	RBMap<OctantKey, RBMap<Ref<Material>, Ref<SurfaceTool>>> surface_map;
 
-	for (Map<IndexKey, Cell>::Element *E = cell_map.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Cell>::Element *E = cell_map.front(); E; E = E->next()) {
 		IndexKey key = E->key();
 
 		int item = E->get().item;
@@ -1143,10 +1143,10 @@ void GridMap::make_baked_meshes(bool p_gen_lightmap_uv, float p_lightmap_uv_texe
 		ok.z = key.z / octant_size;
 
 		if (!surface_map.has(ok)) {
-			surface_map[ok] = Map<Ref<Material>, Ref<SurfaceTool>>();
+			surface_map[ok] = RBMap<Ref<Material>, Ref<SurfaceTool>>();
 		}
 
-		Map<Ref<Material>, Ref<SurfaceTool>> &mat_map = surface_map[ok];
+		RBMap<Ref<Material>, Ref<SurfaceTool>> &mat_map = surface_map[ok];
 
 		for (int i = 0; i < mesh->get_surface_count(); i++) {
 			if (mesh->surface_get_primitive_type(i) != Mesh::PRIMITIVE_TRIANGLES) {
@@ -1166,10 +1166,10 @@ void GridMap::make_baked_meshes(bool p_gen_lightmap_uv, float p_lightmap_uv_texe
 		}
 	}
 
-	for (Map<OctantKey, Map<Ref<Material>, Ref<SurfaceTool>>>::Element *E = surface_map.front(); E; E = E->next()) {
+	for (RBMap<OctantKey, RBMap<Ref<Material>, Ref<SurfaceTool>>>::Element *E = surface_map.front(); E; E = E->next()) {
 		Ref<ArrayMesh> mesh;
 		mesh.instance();
-		for (Map<Ref<Material>, Ref<SurfaceTool>>::Element *F = E->get().front(); F; F = F->next()) {
+		for (RBMap<Ref<Material>, Ref<SurfaceTool>>::Element *F = E->get().front(); F; F = F->next()) {
 			F->get()->commit(mesh);
 		}
 

@@ -563,7 +563,7 @@ void NavMap::sync() {
 		}
 
 		// Group all edges per key.
-		Map<gd::EdgeKey, Vector<gd::Edge::Connection>> connections;
+		RBMap<gd::EdgeKey, Vector<gd::Edge::Connection>> connections;
 
 		for (uint32_t poly_id = 0; poly_id < polygons.size(); poly_id++) {
 			gd::Polygon &poly(polygons[poly_id]);
@@ -572,7 +572,7 @@ void NavMap::sync() {
 				int next_point = (p + 1) % poly.points.size();
 				gd::EdgeKey ek(poly.points[p].key, poly.points[next_point].key);
 
-				Map<gd::EdgeKey, Vector<gd::Edge::Connection>>::Element *connection = connections.find(ek);
+				RBMap<gd::EdgeKey, Vector<gd::Edge::Connection>>::Element *connection = connections.find(ek);
 
 				if (!connection) {
 					connections[ek] = Vector<gd::Edge::Connection>();
@@ -594,7 +594,7 @@ void NavMap::sync() {
 		}
 
 		Vector<gd::Edge::Connection> free_edges;
-		for (Map<gd::EdgeKey, Vector<gd::Edge::Connection>>::Element *E = connections.front(); E; E = E->next()) {
+		for (RBMap<gd::EdgeKey, Vector<gd::Edge::Connection>>::Element *E = connections.front(); E; E = E->next()) {
 			if (E->get().size() == 2) {
 				// Connect edge that are shared in different polygons.
 				gd::Edge::Connection &c1 = E->get().write[0];

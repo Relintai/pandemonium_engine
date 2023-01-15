@@ -129,7 +129,7 @@ void EditorHelp::_class_desc_select(const String &p_select) {
 		String link = p_select.substr(tag_end + 1, p_select.length()).lstrip(" ");
 
 		String topic;
-		Map<String, int> *table = nullptr;
+		RBMap<String, int> *table = nullptr;
 
 		if (tag == "method") {
 			topic = "class_method";
@@ -454,7 +454,7 @@ void EditorHelp::_update_doc() {
 		bool prev = false;
 
 		class_desc->push_font(doc_font);
-		for (Map<String, DocData::ClassDoc>::Element *E = doc->class_list.front(); E; E = E->next()) {
+		for (RBMap<String, DocData::ClassDoc>::Element *E = doc->class_list.front(); E; E = E->next()) {
 			if (E->get().inherits == cd.name) {
 				if (!found) {
 					class_desc->push_color(title_color);
@@ -770,7 +770,7 @@ void EditorHelp::_update_doc() {
 		class_desc->push_indent(1);
 
 		String theme_data_type;
-		Map<String, String> data_type_names;
+		RBMap<String, String> data_type_names;
 		data_type_names["color"] = TTR("Colors");
 		data_type_names["constant"] = TTR("Constants");
 		data_type_names["font"] = TTR("Fonts");
@@ -915,7 +915,7 @@ void EditorHelp::_update_doc() {
 
 	// Constants and enums
 	if (cd.constants.size()) {
-		Map<String, Vector<DocData::ConstantDoc>> enums;
+		RBMap<String, Vector<DocData::ConstantDoc>> enums;
 		Vector<DocData::ConstantDoc> constants;
 
 		for (int i = 0; i < cd.constants.size(); i++) {
@@ -942,7 +942,7 @@ void EditorHelp::_update_doc() {
 
 			class_desc->add_newline();
 
-			for (Map<String, Vector<DocData::ConstantDoc>>::Element *E = enums.front(); E; E = E->next()) {
+			for (RBMap<String, Vector<DocData::ConstantDoc>>::Element *E = enums.front(); E; E = E->next()) {
 				enum_line[E->key()] = class_desc->get_line_count() - 2;
 
 				class_desc->push_font(doc_code_font);
@@ -968,7 +968,7 @@ void EditorHelp::_update_doc() {
 				class_desc->push_indent(1);
 				Vector<DocData::ConstantDoc> enum_list = E->get();
 
-				Map<String, int> enumValuesContainer;
+				RBMap<String, int> enumValuesContainer;
 				int enumStartingLine = enum_line[E->key()];
 
 				for (int i = 0; i < enum_list.size(); i++) {
@@ -1136,7 +1136,7 @@ void EditorHelp::_update_doc() {
 			class_desc->pop(); // font
 			class_desc->pop(); // cell
 
-			Map<String, DocData::MethodDoc> method_map;
+			RBMap<String, DocData::MethodDoc> method_map;
 			for (int j = 0; j < methods.size(); j++) {
 				method_map[methods[j].name] = methods[j];
 			}
@@ -1320,7 +1320,7 @@ void EditorHelp::_help_callback(const String &p_topic) {
 		if (constant_line.has(name)) {
 			line = constant_line[name];
 		} else {
-			Map<String, Map<String, int>>::Element *iter = enum_values_line.front();
+			RBMap<String, RBMap<String, int>>::Element *iter = enum_values_line.front();
 			while (true) {
 				if (iter->value().has(name)) {
 					line = iter->value()[name];

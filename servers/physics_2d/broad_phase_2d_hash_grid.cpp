@@ -41,7 +41,7 @@ void BroadPhase2DHashGrid::_pair_attempt(Element *p_elem, Element *p_with) {
 	if (!_test_collision_mask(p_elem->collision_mask, p_elem->collision_layer, p_with->collision_mask, p_with->collision_layer)) {
 		return;
 	}
-	Map<Element *, PairData *>::Element *E = p_elem->paired.find(p_with);
+	RBMap<Element *, PairData *>::Element *E = p_elem->paired.find(p_with);
 
 	ERR_FAIL_COND(p_elem->_static && p_with->_static);
 
@@ -61,7 +61,7 @@ void BroadPhase2DHashGrid::_unpair_attempt(Element *p_elem, Element *p_with) {
 	if (!_test_collision_mask(p_elem->collision_mask, p_elem->collision_layer, p_with->collision_mask, p_with->collision_layer)) {
 		return;
 	}
-	Map<Element *, PairData *>::Element *E = p_elem->paired.find(p_with);
+	RBMap<Element *, PairData *>::Element *E = p_elem->paired.find(p_with);
 
 	ERR_FAIL_COND(!E); //this should really be paired..
 
@@ -82,7 +82,7 @@ void BroadPhase2DHashGrid::_unpair_attempt(Element *p_elem, Element *p_with) {
 }
 
 void BroadPhase2DHashGrid::_check_motion(Element *p_elem) {
-	for (Map<Element *, PairData *>::Element *E = p_elem->paired.front(); E; E = E->next()) {
+	for (RBMap<Element *, PairData *>::Element *E = p_elem->paired.front(); E; E = E->next()) {
 		bool physical_collision = p_elem->aabb.intersects(E->key()->aabb);
 		bool logical_collision = p_elem->owner->test_collision_mask(E->key()->owner);
 
@@ -105,7 +105,7 @@ void BroadPhase2DHashGrid::_enter_grid(Element *p_elem, const Rect2 &p_rect, boo
 	Vector2 sz = (p_rect.size / cell_size * LARGE_ELEMENT_FI); //use magic number to avoid floating point issues
 	if (sz.width * sz.height > large_object_min_surface) {
 		//large object, do not use grid, must check against all elements
-		for (Map<ID, Element>::Element *E = element_map.front(); E; E = E->next()) {
+		for (RBMap<ID, Element>::Element *E = element_map.front(); E; E = E->next()) {
 			if (E->key() == p_elem->self) {
 				continue; // do not pair against itself
 			}
@@ -160,12 +160,12 @@ void BroadPhase2DHashGrid::_enter_grid(Element *p_elem, const Rect2 &p_rect, boo
 			}
 
 			if (entered) {
-				for (Map<Element *, RC>::Element *E = pb->object_set.front(); E; E = E->next()) {
+				for (RBMap<Element *, RC>::Element *E = pb->object_set.front(); E; E = E->next()) {
 					_pair_attempt(p_elem, E->key());
 				}
 
 				if (!p_static) {
-					for (Map<Element *, RC>::Element *E = pb->static_object_set.front(); E; E = E->next()) {
+					for (RBMap<Element *, RC>::Element *E = pb->static_object_set.front(); E; E = E->next()) {
 						_pair_attempt(p_elem, E->key());
 					}
 				}
@@ -175,7 +175,7 @@ void BroadPhase2DHashGrid::_enter_grid(Element *p_elem, const Rect2 &p_rect, boo
 
 	//pair separatedly with large elements
 
-	for (Map<Element *, RC>::Element *E = large_elements.front(); E; E = E->next()) {
+	for (RBMap<Element *, RC>::Element *E = large_elements.front(); E; E = E->next()) {
 		if (E->key() == p_elem) {
 			continue; // do not pair against itself
 		}
@@ -190,9 +190,9 @@ void BroadPhase2DHashGrid::_exit_grid(Element *p_elem, const Rect2 &p_rect, bool
 	Vector2 sz = (p_rect.size / cell_size * LARGE_ELEMENT_FI);
 	if (sz.width * sz.height > large_object_min_surface) {
 		//unpair all elements, instead of checking all, just check what is already paired, so we at least save from checking static vs static
-		Map<Element *, PairData *>::Element *E = p_elem->paired.front();
+		RBMap<Element *, PairData *>::Element *E = p_elem->paired.front();
 		while (E) {
-			Map<Element *, PairData *>::Element *next = E->next();
+			RBMap<Element *, PairData *>::Element *next = E->next();
 			_unpair_attempt(p_elem, E->key());
 			E = next;
 		}
@@ -240,12 +240,12 @@ void BroadPhase2DHashGrid::_exit_grid(Element *p_elem, const Rect2 &p_rect, bool
 			}
 
 			if (exited) {
-				for (Map<Element *, RC>::Element *E = pb->object_set.front(); E; E = E->next()) {
+				for (RBMap<Element *, RC>::Element *E = pb->object_set.front(); E; E = E->next()) {
 					_unpair_attempt(p_elem, E->key());
 				}
 
 				if (!p_static) {
-					for (Map<Element *, RC>::Element *E = pb->static_object_set.front(); E; E = E->next()) {
+					for (RBMap<Element *, RC>::Element *E = pb->static_object_set.front(); E; E = E->next()) {
 						_unpair_attempt(p_elem, E->key());
 					}
 				}
@@ -274,7 +274,7 @@ void BroadPhase2DHashGrid::_exit_grid(Element *p_elem, const Rect2 &p_rect, bool
 		}
 	}
 
-	for (Map<Element *, RC>::Element *E = large_elements.front(); E; E = E->next()) {
+	for (RBMap<Element *, RC>::Element *E = large_elements.front(); E; E = E->next()) {
 		if (E->key() == p_elem) {
 			continue; // do not pair against itself
 		}
@@ -303,7 +303,7 @@ BroadPhase2DHashGrid::ID BroadPhase2DHashGrid::create(CollisionObject2DSW *p_obj
 }
 
 void BroadPhase2DHashGrid::move(ID p_id, const Rect2 &p_aabb) {
-	Map<ID, Element>::Element *E = element_map.find(p_id);
+	RBMap<ID, Element>::Element *E = element_map.find(p_id);
 	ERR_FAIL_COND(!E);
 
 	Element &e = E->get();
@@ -337,7 +337,7 @@ void BroadPhase2DHashGrid::move(ID p_id, const Rect2 &p_aabb) {
 }
 
 void BroadPhase2DHashGrid::recheck_pairs(ID p_id) {
-	Map<ID, Element>::Element *E = element_map.find(p_id);
+	RBMap<ID, Element>::Element *E = element_map.find(p_id);
 	ERR_FAIL_COND(!E);
 
 	Element &e = E->get();
@@ -345,7 +345,7 @@ void BroadPhase2DHashGrid::recheck_pairs(ID p_id) {
 }
 
 void BroadPhase2DHashGrid::set_static(ID p_id, bool p_static) {
-	Map<ID, Element>::Element *E = element_map.find(p_id);
+	RBMap<ID, Element>::Element *E = element_map.find(p_id);
 	ERR_FAIL_COND(!E);
 
 	Element &e = E->get();
@@ -366,7 +366,7 @@ void BroadPhase2DHashGrid::set_static(ID p_id, bool p_static) {
 	}
 }
 void BroadPhase2DHashGrid::remove(ID p_id) {
-	Map<ID, Element>::Element *E = element_map.find(p_id);
+	RBMap<ID, Element>::Element *E = element_map.find(p_id);
 	ERR_FAIL_COND(!E);
 
 	Element &e = E->get();
@@ -379,17 +379,17 @@ void BroadPhase2DHashGrid::remove(ID p_id) {
 }
 
 CollisionObject2DSW *BroadPhase2DHashGrid::get_object(ID p_id) const {
-	const Map<ID, Element>::Element *E = element_map.find(p_id);
+	const RBMap<ID, Element>::Element *E = element_map.find(p_id);
 	ERR_FAIL_COND_V(!E, nullptr);
 	return E->get().owner;
 }
 bool BroadPhase2DHashGrid::is_static(ID p_id) const {
-	const Map<ID, Element>::Element *E = element_map.find(p_id);
+	const RBMap<ID, Element>::Element *E = element_map.find(p_id);
 	ERR_FAIL_COND_V(!E, false);
 	return E->get()._static;
 }
 int BroadPhase2DHashGrid::get_subindex(ID p_id) const {
-	const Map<ID, Element>::Element *E = element_map.find(p_id);
+	const RBMap<ID, Element>::Element *E = element_map.find(p_id);
 	ERR_FAIL_COND_V(!E, -1);
 	return E->get().subindex;
 }
@@ -415,7 +415,7 @@ void BroadPhase2DHashGrid::_cull(const Point2i p_cell, const Rect2 &p_aabb, cons
 		return;
 	}
 
-	for (Map<Element *, RC>::Element *E = pb->object_set.front(); E; E = E->next()) {
+	for (RBMap<Element *, RC>::Element *E = pb->object_set.front(); E; E = E->next()) {
 		if (index >= p_max_results) {
 			break;
 		}
@@ -438,7 +438,7 @@ void BroadPhase2DHashGrid::_cull(const Point2i p_cell, const Rect2 &p_aabb, cons
 		index++;
 	}
 
-	for (Map<Element *, RC>::Element *E = pb->static_object_set.front(); E; E = E->next()) {
+	for (RBMap<Element *, RC>::Element *E = pb->static_object_set.front(); E; E = E->next()) {
 		if (index >= p_max_results) {
 			break;
 		}
@@ -538,7 +538,7 @@ int BroadPhase2DHashGrid::cull_segment(const Vector2 &p_from, const Vector2 &p_t
 		}
 	}
 
-	for (Map<Element *, RC>::Element *E = large_elements.front(); E; E = E->next()) {
+	for (RBMap<Element *, RC>::Element *E = large_elements.front(); E; E = E->next()) {
 		if (cullcount >= p_max_results) {
 			break;
 		}
@@ -578,7 +578,7 @@ int BroadPhase2DHashGrid::cull_aabb(const Rect2 &p_aabb, CollisionObject2DSW **p
 		}
 	}
 
-	for (Map<Element *, RC>::Element *E = large_elements.front(); E; E = E->next()) {
+	for (RBMap<Element *, RC>::Element *E = large_elements.front(); E; E = E->next()) {
 		if (cullcount >= p_max_results) {
 			break;
 		}

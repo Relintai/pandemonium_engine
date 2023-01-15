@@ -404,7 +404,7 @@ public:
 		String code;
 		SelfList<Material>::List materials;
 
-		Map<StringName, ShaderLanguage::ShaderNode::Uniform> uniforms;
+		RBMap<StringName, ShaderLanguage::ShaderNode::Uniform> uniforms;
 
 		uint32_t texture_count;
 
@@ -413,7 +413,7 @@ public:
 
 		SelfList<Shader> dirty_list;
 
-		Map<StringName, RID> default_textures;
+		RBMap<StringName, RID> default_textures;
 
 		Vector<ShaderLanguage::ShaderNode::Uniform::Hint> texture_hints;
 
@@ -553,7 +553,7 @@ public:
 
 	struct Material : public RID_Data {
 		Shader *shader;
-		Map<StringName, Variant> params;
+		RBMap<StringName, Variant> params;
 		SelfList<Material> list;
 		SelfList<Material> dirty_list;
 		Vector<Pair<StringName, RID>> textures;
@@ -565,8 +565,8 @@ public:
 		uint32_t index;
 		uint64_t last_pass;
 
-		Map<Geometry *, int> geometry_owners;
-		Map<RasterizerScene::InstanceBase *, int> instance_owners;
+		RBMap<Geometry *, int> geometry_owners;
+		RBMap<RasterizerScene::InstanceBase *, int> instance_owners;
 
 		bool can_cast_shadow_cache;
 		bool is_animated_cache;

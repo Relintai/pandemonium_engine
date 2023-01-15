@@ -83,7 +83,7 @@ class Body2DSW : public CollisionObject2DSW {
 	virtual void _shapes_changed();
 	Transform2D new_transform;
 
-	Map<Constraint2DSW *, int> constraint_map;
+	RBMap<Constraint2DSW *, int> constraint_map;
 
 	struct AreaCMP {
 		Area2DSW *area;
@@ -182,7 +182,7 @@ public:
 
 	_FORCE_INLINE_ void add_constraint(Constraint2DSW *p_constraint, int p_pos) { constraint_map[p_constraint] = p_pos; }
 	_FORCE_INLINE_ void remove_constraint(Constraint2DSW *p_constraint) { constraint_map.erase(p_constraint); }
-	const Map<Constraint2DSW *, int> &get_constraint_map() const { return constraint_map; }
+	const RBMap<Constraint2DSW *, int> &get_constraint_map() const { return constraint_map; }
 	_FORCE_INLINE_ void clear_constraint_map() { constraint_map.clear(); }
 
 	_FORCE_INLINE_ void set_omit_force_integration(bool p_omit_force_integration) { omit_force_integration = p_omit_force_integration; }

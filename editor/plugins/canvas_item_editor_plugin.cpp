@@ -784,7 +784,7 @@ bool CanvasItemEditor::_select_click_on_item(CanvasItem *item, Point2 p_click_po
 
 List<CanvasItem *> CanvasItemEditor::_get_edited_canvas_items(bool retreive_locked, bool remove_canvas_item_if_parent_in_selection) {
 	List<CanvasItem *> selection;
-	for (Map<Node *, Object *>::Element *E = editor_selection->get_selection().front(); E; E = E->next()) {
+	for (RBMap<Node *, Object *>::Element *E = editor_selection->get_selection().front(); E; E = E->next()) {
 		CanvasItem *canvas_item = Object::cast_to<CanvasItem>(E->key());
 		if (canvas_item && canvas_item->is_visible_in_tree() && canvas_item->get_viewport() == EditorNode::get_singleton()->get_scene_root() && (retreive_locked || !_is_node_locked(canvas_item))) {
 			CanvasItemEditorSelectedItem *se = editor_selection->get_node_editor_data<CanvasItemEditorSelectedItem>(canvas_item);
@@ -3757,7 +3757,7 @@ void CanvasItemEditor::_notification(int p_what) {
 
 #ifdef MODULE_SKELETON_2D_ENABLED
 		// Update the viewport if bones changes
-		for (Map<BoneKey, BoneList>::Element *E = bone_list.front(); E; E = E->next()) {
+		for (RBMap<BoneKey, BoneList>::Element *E = bone_list.front(); E; E = E->next()) {
 			Object *b = ObjectDB::get_instance(E->key().from);
 			if (!b) {
 				viewport->update();
@@ -4339,9 +4339,9 @@ void CanvasItemEditor::_button_tool_select(int p_index) {
 }
 
 void CanvasItemEditor::_insert_animation_keys(bool p_location, bool p_rotation, bool p_scale, bool p_on_existing) {
-	Map<Node *, Object *> &selection = editor_selection->get_selection();
+	RBMap<Node *, Object *> &selection = editor_selection->get_selection();
 
-	for (Map<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
+	for (RBMap<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
 		CanvasItem *canvas_item = Object::cast_to<CanvasItem>(E->key());
 		if (!canvas_item || !canvas_item->is_visible_in_tree()) {
 			continue;
@@ -4771,9 +4771,9 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 		case ANIM_COPY_POSE: {
 			pose_clipboard.clear();
 
-			Map<Node *, Object *> &selection = editor_selection->get_selection();
+			RBMap<Node *, Object *> &selection = editor_selection->get_selection();
 
-			for (Map<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
+			for (RBMap<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
 				CanvasItem *canvas_item = Object::cast_to<CanvasItem>(E->key());
 				if (!canvas_item || !canvas_item->is_visible_in_tree()) {
 					continue;
@@ -4817,9 +4817,9 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 
 		} break;
 		case ANIM_CLEAR_POSE: {
-			Map<Node *, Object *> &selection = editor_selection->get_selection();
+			RBMap<Node *, Object *> &selection = editor_selection->get_selection();
 
-			for (Map<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
+			for (RBMap<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
 				CanvasItem *canvas_item = Object::cast_to<CanvasItem>(E->key());
 				if (!canvas_item || !canvas_item->is_visible_in_tree()) {
 					continue;
@@ -4887,11 +4887,11 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 		} break;
 		case SKELETON_MAKE_BONES: {
 #ifdef MODULE_SKELETON_2D_ENABLED
-			Map<Node *, Object *> &selection = editor_selection->get_selection();
+			RBMap<Node *, Object *> &selection = editor_selection->get_selection();
 			Node *editor_root = EditorNode::get_singleton()->get_edited_scene()->get_tree()->get_edited_scene_root();
 
 			undo_redo->create_action(TTR("Create Custom Bone2D(s) from Node(s)"));
-			for (Map<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
+			for (RBMap<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
 				Node2D *n2d = Object::cast_to<Node2D>(E->key());
 
 				Bone2D *new_bone = memnew(Bone2D);
@@ -4936,8 +4936,8 @@ void CanvasItemEditor::_focus_selection(int p_op) {
 	Rect2 rect;
 	int count = 0;
 
-	Map<Node *, Object *> &selection = editor_selection->get_selection();
-	for (Map<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
+	RBMap<Node *, Object *> &selection = editor_selection->get_selection();
+	for (RBMap<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
 		CanvasItem *canvas_item = Object::cast_to<CanvasItem>(E->key());
 		if (!canvas_item) {
 			continue;

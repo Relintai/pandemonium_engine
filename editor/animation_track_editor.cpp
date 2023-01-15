@@ -784,7 +784,7 @@ public:
 			return;
 		}
 
-		for (Map<int, List<float>>::Element *E = key_ofs_map.front(); E; E = E->next()) {
+		for (RBMap<int, List<float>>::Element *E = key_ofs_map.front(); E; E = E->next()) {
 			int key = 0;
 			for (List<float>::Element *F = E->value().front(); F; F = F->next()) {
 				float key_ofs = F->get();
@@ -810,7 +810,7 @@ public:
 	bool _set(const StringName &p_name, const Variant &p_value) {
 		bool update_obj = false;
 		bool change_notify_deserved = false;
-		for (Map<int, List<float>>::Element *E = key_ofs_map.front(); E; E = E->next()) {
+		for (RBMap<int, List<float>>::Element *E = key_ofs_map.front(); E; E = E->next()) {
 			int track = E->key();
 			for (List<float>::Element *F = E->value().front(); F; F = F->next()) {
 				float key_ofs = F->get();
@@ -1082,7 +1082,7 @@ public:
 	}
 
 	bool _get(const StringName &p_name, Variant &r_ret) const {
-		for (Map<int, List<float>>::Element *E = key_ofs_map.front(); E; E = E->next()) {
+		for (RBMap<int, List<float>>::Element *E = key_ofs_map.front(); E; E = E->next()) {
 			int track = E->key();
 			for (List<float>::Element *F = E->value().front(); F; F = F->next()) {
 				float key_ofs = F->get();
@@ -1219,7 +1219,7 @@ public:
 		bool show_time = true;
 		bool same_track_type = true;
 		bool same_key_type = true;
-		for (Map<int, List<float>>::Element *E = key_ofs_map.front(); E; E = E->next()) {
+		for (RBMap<int, List<float>>::Element *E = key_ofs_map.front(); E; E = E->next()) {
 			int track = E->key();
 			ERR_FAIL_INDEX(track, animation->get_track_count());
 
@@ -1368,8 +1368,8 @@ public:
 
 	Ref<Animation> animation;
 
-	Map<int, List<float>> key_ofs_map;
-	Map<int, NodePath> base_map;
+	RBMap<int, List<float>> key_ofs_map;
+	RBMap<int, NodePath> base_map;
 	PropertyInfo hint;
 
 	Node *root_path;
@@ -4236,7 +4236,7 @@ void AnimationTrackEditor::_update_tracks() {
 		return;
 	}
 
-	Map<String, VBoxContainer *> group_sort;
+	RBMap<String, VBoxContainer *> group_sort;
 
 	bool use_grouping = !view_group->is_pressed();
 	bool use_filter = selected_filter->is_pressed();
@@ -5030,10 +5030,10 @@ void AnimationTrackEditor::_update_key_edit() {
 		multi_key_edit = memnew(AnimationMultiTrackKeyEdit);
 		multi_key_edit->animation = animation;
 
-		Map<int, List<float>> key_ofs_map;
-		Map<int, NodePath> base_map;
+		RBMap<int, List<float>> key_ofs_map;
+		RBMap<int, NodePath> base_map;
 		int first_track = -1;
-		for (Map<SelectedKey, KeyInfo>::Element *E = selection.front(); E; E = E->next()) {
+		for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.front(); E; E = E->next()) {
 			int track = E->key().track;
 			if (first_track < 0) {
 				first_track = track;
@@ -5092,11 +5092,11 @@ void AnimationTrackEditor::_move_selection_commit() {
 
 	float motion = moving_selection_offset;
 	// 1 - remove the keys
-	for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+	for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 		undo_redo->add_do_method(animation.ptr(), "track_remove_key", E->key().track, E->key().key);
 	}
 	// 2 - remove overlapped keys
-	for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+	for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 		float newtime = snap_time(E->get().pos + motion);
 		int idx = animation->track_find_key(E->key().track, newtime, true);
 		if (idx == -1) {
@@ -5121,19 +5121,19 @@ void AnimationTrackEditor::_move_selection_commit() {
 	}
 
 	// 3 - move the keys (re insert them)
-	for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+	for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 		float newpos = snap_time(E->get().pos + motion);
 		undo_redo->add_do_method(animation.ptr(), "track_insert_key", E->key().track, newpos, animation->track_get_key_value(E->key().track, E->key().key), animation->track_get_key_transition(E->key().track, E->key().key));
 	}
 
 	// 4 - (undo) remove inserted keys
-	for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+	for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 		float newpos = snap_time(E->get().pos + motion);
 		undo_redo->add_undo_method(animation.ptr(), "track_remove_key_at_position", E->key().track, newpos);
 	}
 
 	// 5 - (undo) reinsert keys
-	for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+	for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 		undo_redo->add_undo_method(animation.ptr(), "track_insert_key", E->key().track, E->get().pos, animation->track_get_key_value(E->key().track, E->key().key), animation->track_get_key_transition(E->key().track, E->key().key));
 	}
 
@@ -5147,7 +5147,7 @@ void AnimationTrackEditor::_move_selection_commit() {
 	undo_redo->add_undo_method(this, "_clear_selection_for_anim", animation);
 
 	// 7 - reselect
-	for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+	for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 		float oldpos = E->get().pos;
 		float newpos = snap_time(oldpos + motion);
 
@@ -5304,7 +5304,7 @@ void AnimationTrackEditor::_anim_duplicate_keys(bool transpose) {
 	if (selection.size() && animation.is_valid() && (!transpose || (_get_track_selected() >= 0 && _get_track_selected() < animation->get_track_count()))) {
 		int top_track = 0x7FFFFFFF;
 		float top_time = 1e10;
-		for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+		for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 			const SelectedKey &sk = E->key();
 
 			float t = animation->track_get_key_time(sk.track, sk.key);
@@ -5325,7 +5325,7 @@ void AnimationTrackEditor::_anim_duplicate_keys(bool transpose) {
 
 		List<Pair<int, float>> new_selection_values;
 
-		for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+		for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 			const SelectedKey &sk = E->key();
 
 			float t = animation->track_get_key_time(sk.track, sk.key);
@@ -5360,7 +5360,7 @@ void AnimationTrackEditor::_anim_duplicate_keys(bool transpose) {
 
 		//reselect duplicated
 
-		Map<SelectedKey, KeyInfo> new_selection;
+		RBMap<SelectedKey, KeyInfo> new_selection;
 		for (List<Pair<int, float>>::Element *E = new_selection_values.front(); E; E = E->next()) {
 			int track = E->get().first;
 			float time = E->get().second;
@@ -5607,7 +5607,7 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 			float len = -1e20;
 			float pivot = 0;
 
-			for (Map<SelectedKey, KeyInfo>::Element *E = selection.front(); E; E = E->next()) {
+			for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.front(); E; E = E->next()) {
 				float t = animation->track_get_key_time(E->key().track, E->key().key);
 				if (t < from_t) {
 					from_t = t;
@@ -5635,11 +5635,11 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 			List<_AnimMoveRestore> to_restore;
 
 			// 1-remove the keys
-			for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 				undo_redo->add_do_method(animation.ptr(), "track_remove_key", E->key().track, E->key().key);
 			}
 			// 2- remove overlapped keys
-			for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 				float newtime = (E->get().pos - from_t) * s + from_t;
 				int idx = animation->track_find_key(E->key().track, newtime, true);
 				if (idx == -1) {
@@ -5665,19 +5665,19 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 
 #define _NEW_POS(m_ofs) (((s > 0) ? m_ofs : from_t + (len - (m_ofs - from_t))) - pivot) * ABS(s) + from_t
 			// 3-move the keys (re insert them)
-			for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 				float newpos = _NEW_POS(E->get().pos);
 				undo_redo->add_do_method(animation.ptr(), "track_insert_key", E->key().track, newpos, animation->track_get_key_value(E->key().track, E->key().key), animation->track_get_key_transition(E->key().track, E->key().key));
 			}
 
 			// 4-(undo) remove inserted keys
-			for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 				float newpos = _NEW_POS(E->get().pos);
 				undo_redo->add_undo_method(animation.ptr(), "track_remove_key_at_position", E->key().track, newpos);
 			}
 
 			// 5-(undo) reinsert keys
-			for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 				undo_redo->add_undo_method(animation.ptr(), "track_insert_key", E->key().track, E->get().pos, animation->track_get_key_value(E->key().track, E->key().key), animation->track_get_key_transition(E->key().track, E->key().key));
 			}
 
@@ -5691,7 +5691,7 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 			undo_redo->add_undo_method(this, "_clear_selection_for_anim", animation);
 
 			// 7-reselect
-			for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 				float oldpos = E->get().pos;
 				float newpos = _NEW_POS(oldpos);
 				if (newpos >= 0) {
@@ -5722,7 +5722,7 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 			int reset_tracks = reset->get_track_count();
 			Set<int> tracks_added;
 
-			for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 				const SelectedKey &sk = E->key();
 
 				// Only add one key per track.
@@ -5774,7 +5774,7 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 			if (selection.size()) {
 				undo_redo->create_action(TTR("Anim Delete Keys"));
 
-				for (Map<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
+				for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 					undo_redo->add_do_method(animation.ptr(), "track_remove_key", E->key().track, E->key().key);
 					undo_redo->add_undo_method(animation.ptr(), "track_insert_key", E->key().track, E->get().pos, animation->track_get_key_value(E->key().track, E->key().key), animation->track_get_key_transition(E->key().track, E->key().key));
 				}

@@ -118,10 +118,10 @@ void EditorImportPlugin::get_import_options(List<ResourceImporter::ImportOption>
 	}
 }
 
-bool EditorImportPlugin::get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const {
+bool EditorImportPlugin::get_option_visibility(const String &p_option, const RBMap<StringName, Variant> &p_options) const {
 	ERR_FAIL_COND_V(!(get_script_instance() && get_script_instance()->has_method("get_option_visibility")), true);
 	Dictionary d;
-	Map<StringName, Variant>::Element *E = p_options.front();
+	RBMap<StringName, Variant>::Element *E = p_options.front();
 	while (E) {
 		d[E->key()] = E->get();
 		E = E->next();
@@ -129,12 +129,12 @@ bool EditorImportPlugin::get_option_visibility(const String &p_option, const Map
 	return get_script_instance()->call("get_option_visibility", p_option, d);
 }
 
-Error EditorImportPlugin::import(const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error EditorImportPlugin::import(const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 	ERR_FAIL_COND_V(!(get_script_instance() && get_script_instance()->has_method("import")), ERR_UNAVAILABLE);
 	Dictionary options;
 	Array platform_variants, gen_files;
 
-	Map<StringName, Variant>::Element *E = p_options.front();
+	RBMap<StringName, Variant>::Element *E = p_options.front();
 	while (E) {
 		options[E->key()] = E->get();
 		E = E->next();

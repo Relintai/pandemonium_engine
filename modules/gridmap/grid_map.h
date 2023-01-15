@@ -112,7 +112,7 @@ class GridMap : public Spatial {
 
 		bool dirty;
 		RID static_body;
-		Map<IndexKey, NavMesh> navmesh_ids;
+		RBMap<IndexKey, NavMesh> navmesh_ids;
 	};
 
 	union OctantKey {
@@ -159,8 +159,8 @@ class GridMap : public Spatial {
 	Ref<MeshLibrary> mesh_library;
 	bool use_in_baked_light;
 
-	Map<OctantKey, Octant *> octant_map;
-	Map<IndexKey, Cell> cell_map;
+	RBMap<OctantKey, Octant *> octant_map;
+	RBMap<IndexKey, Cell> cell_map;
 
 	void _recreate_octant_data();
 

@@ -143,7 +143,7 @@ private:
 		Vector2 position;
 	};
 
-	Map<StringName, State> states;
+	RBMap<StringName, State> states;
 
 	struct Transition {
 		StringName from;

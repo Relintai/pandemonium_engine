@@ -305,14 +305,14 @@ void NavigationPolygon::make_polygons_from_outlines() {
 	polygons.clear();
 	vertices.resize(0);
 
-	Map<Vector2, int> points;
+	RBMap<Vector2, int> points;
 	for (List<TriangulatorPoly>::Element *I = out_poly.front(); I; I = I->next()) {
 		TriangulatorPoly &tp = I->get();
 
 		struct Polygon p;
 
 		for (int64_t i = 0; i < tp.GetNumPoints(); i++) {
-			Map<Vector2, int>::Element *E = points.find(tp[i]);
+			RBMap<Vector2, int>::Element *E = points.find(tp[i]);
 			if (!E) {
 				E = points.insert(tp[i], vertices.size());
 				vertices.push_back(tp[i]);

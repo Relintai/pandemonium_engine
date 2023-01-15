@@ -79,7 +79,7 @@ void TextEditor::set_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
 }
 
 void TextEditor::_change_syntax_highlighter(int p_idx) {
-	Map<String, SyntaxHighlighter *>::Element *el = highlighters.front();
+	RBMap<String, SyntaxHighlighter *>::Element *el = highlighters.front();
 	while (el != nullptr) {
 		highlighter_menu->set_item_checked(highlighter_menu->get_item_idx_from_text(el->key()), false);
 		el = el->next();
@@ -719,7 +719,7 @@ TextEditor::TextEditor() {
 }
 
 TextEditor::~TextEditor() {
-	for (const Map<String, SyntaxHighlighter *>::Element *E = highlighters.front(); E; E = E->next()) {
+	for (const RBMap<String, SyntaxHighlighter *>::Element *E = highlighters.front(); E; E = E->next()) {
 		if (E->get() != NULL) {
 			memdelete(E->get());
 		}

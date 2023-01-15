@@ -1697,7 +1697,7 @@ bool Main::start() {
 		doc.generate(doc_base);
 
 		DocData docsrc;
-		Map<String, String> doc_data_classes;
+		RBMap<String, String> doc_data_classes;
 		Set<String> checked_paths;
 		print_line("Loading docs...");
 

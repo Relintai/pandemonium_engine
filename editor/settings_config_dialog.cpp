@@ -41,7 +41,7 @@
 #include "core/math/color.h"
 #include "core/error/error_macros.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/math_defs.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
@@ -212,7 +212,7 @@ void EditorSettingsDialog::_update_icons() {
 }
 
 void EditorSettingsDialog::_update_shortcuts() {
-	Map<String, bool> collapsed;
+	RBMap<String, bool> collapsed;
 
 	if (shortcuts->get_root() && shortcuts->get_root()->get_children()) {
 		for (TreeItem *item = shortcuts->get_root()->get_children(); item; item = item->get_next()) {
@@ -226,7 +226,7 @@ void EditorSettingsDialog::_update_shortcuts() {
 	EditorSettings::get_singleton()->get_shortcut_list(&slist);
 	TreeItem *root = shortcuts->create_item();
 
-	Map<String, TreeItem *> sections;
+	RBMap<String, TreeItem *> sections;
 
 	for (List<String>::Element *E = slist.front(); E; E = E->next()) {
 		Ref<ShortCut> sc = EditorSettings::get_singleton()->get_shortcut(E->get());
@@ -283,7 +283,7 @@ void EditorSettingsDialog::_update_shortcuts() {
 	}
 
 	// remove sections with no shortcuts
-	for (Map<String, TreeItem *>::Element *E = sections.front(); E; E = E->next()) {
+	for (RBMap<String, TreeItem *>::Element *E = sections.front(); E; E = E->next()) {
 		TreeItem *section = E->get();
 		if (section->get_children() == nullptr) {
 			root->remove_child(section);

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/variant/variant.h"
 #include "core/object/reference.h"
 #include "core/error/error_list.h"
@@ -121,7 +121,7 @@ public:
 
 	String version;
 
-	Map<String, ClassDoc> class_list;
+	RBMap<String, ClassDoc> class_list;
 	Error _load(Ref<XMLParser> parser);
 
 public:
@@ -130,7 +130,7 @@ public:
 	void generate(bool p_basic_types = false);
 	Error load_classes(const String &p_dir);
 	static Error erase_classes(const String &p_dir);
-	Error save_classes(const String &p_default_path, const Map<String, String> &p_class_path);
+	Error save_classes(const String &p_default_path, const RBMap<String, String> &p_class_path);
 
 	Error load_compressed(const uint8_t *p_data, int p_compressed_size, int p_uncompressed_size);
 };

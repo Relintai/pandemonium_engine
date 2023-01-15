@@ -126,7 +126,7 @@ struct _VariantCall {
 	};
 
 	struct TypeFunc {
-		Map<StringName, FuncData> functions;
+		RBMap<StringName, FuncData> functions;
 	};
 
 	static TypeFunc *type_funcs;
@@ -1879,11 +1879,11 @@ struct _VariantCall {
 	}
 
 	struct ConstantData {
-		Map<StringName, int> value;
+		RBMap<StringName, int> value;
 #ifdef DEBUG_ENABLED
 		List<StringName> value_ordered;
 #endif
-		Map<StringName, Variant> variant_value;
+		RBMap<StringName, Variant> variant_value;
 #ifdef DEBUG_ENABLED
 		List<StringName> variant_value_ordered;
 #endif
@@ -1939,7 +1939,7 @@ void Variant::call_ptr(const StringName &p_method, const Variant **p_args, int p
 	} else {
 		r_error.error = Variant::CallError::CALL_OK;
 
-		Map<StringName, _VariantCall::FuncData>::Element *E = _VariantCall::type_funcs[type].functions.find(p_method);
+		RBMap<StringName, _VariantCall::FuncData>::Element *E = _VariantCall::type_funcs[type].functions.find(p_method);
 #ifdef DEBUG_ENABLED
 		if (!E) {
 			r_error.error = Variant::CallError::CALL_ERROR_INVALID_METHOD;
@@ -2201,7 +2201,7 @@ Vector<Variant::Type> Variant::get_method_argument_types(Variant::Type p_type, c
 	ERR_FAIL_INDEX_V(p_type, Variant::VARIANT_MAX, Vector<Variant::Type>());
 	const _VariantCall::TypeFunc &tf = _VariantCall::type_funcs[p_type];
 
-	const Map<StringName, _VariantCall::FuncData>::Element *E = tf.functions.find(p_method);
+	const RBMap<StringName, _VariantCall::FuncData>::Element *E = tf.functions.find(p_method);
 	if (!E) {
 		return Vector<Variant::Type>();
 	}
@@ -2213,7 +2213,7 @@ bool Variant::is_method_const(Variant::Type p_type, const StringName &p_method) 
 	ERR_FAIL_INDEX_V(p_type, Variant::VARIANT_MAX, false);
 	const _VariantCall::TypeFunc &tf = _VariantCall::type_funcs[p_type];
 
-	const Map<StringName, _VariantCall::FuncData>::Element *E = tf.functions.find(p_method);
+	const RBMap<StringName, _VariantCall::FuncData>::Element *E = tf.functions.find(p_method);
 	if (!E) {
 		return false;
 	}
@@ -2225,7 +2225,7 @@ Vector<StringName> Variant::get_method_argument_names(Variant::Type p_type, cons
 	ERR_FAIL_INDEX_V(p_type, Variant::VARIANT_MAX, Vector<StringName>());
 	const _VariantCall::TypeFunc &tf = _VariantCall::type_funcs[p_type];
 
-	const Map<StringName, _VariantCall::FuncData>::Element *E = tf.functions.find(p_method);
+	const RBMap<StringName, _VariantCall::FuncData>::Element *E = tf.functions.find(p_method);
 	if (!E) {
 		return Vector<StringName>();
 	}
@@ -2237,7 +2237,7 @@ Variant::Type Variant::get_method_return_type(Variant::Type p_type, const String
 	ERR_FAIL_INDEX_V(p_type, Variant::VARIANT_MAX, Variant::NIL);
 	const _VariantCall::TypeFunc &tf = _VariantCall::type_funcs[p_type];
 
-	const Map<StringName, _VariantCall::FuncData>::Element *E = tf.functions.find(p_method);
+	const RBMap<StringName, _VariantCall::FuncData>::Element *E = tf.functions.find(p_method);
 	if (!E) {
 		return Variant::NIL;
 	}
@@ -2253,7 +2253,7 @@ Vector<Variant> Variant::get_method_default_arguments(Variant::Type p_type, cons
 	ERR_FAIL_INDEX_V(p_type, Variant::VARIANT_MAX, Vector<Variant>());
 	const _VariantCall::TypeFunc &tf = _VariantCall::type_funcs[p_type];
 
-	const Map<StringName, _VariantCall::FuncData>::Element *E = tf.functions.find(p_method);
+	const RBMap<StringName, _VariantCall::FuncData>::Element *E = tf.functions.find(p_method);
 	ERR_FAIL_COND_V(!E, Vector<Variant>());
 
 	return E->get().default_args;
@@ -2262,7 +2262,7 @@ Vector<Variant> Variant::get_method_default_arguments(Variant::Type p_type, cons
 void Variant::get_method_list(List<MethodInfo> *p_list) const {
 	const _VariantCall::TypeFunc &tf = _VariantCall::type_funcs[type];
 
-	for (const Map<StringName, _VariantCall::FuncData>::Element *E = tf.functions.front(); E; E = E->next()) {
+	for (const RBMap<StringName, _VariantCall::FuncData>::Element *E = tf.functions.front(); E; E = E->next()) {
 		const _VariantCall::FuncData &fd = E->get();
 
 		MethodInfo mi;
@@ -2341,7 +2341,7 @@ void Variant::get_constants_for_type(Variant::Type p_type, List<StringName> *p_c
 	for (List<StringName>::Element *E = cd.value_ordered.front(); E; E = E->next()) {
 		p_constants->push_back(E->get());
 #else
-	for (Map<StringName, int>::Element *E = cd.value.front(); E; E = E->next()) {
+	for (RBMap<StringName, int>::Element *E = cd.value.front(); E; E = E->next()) {
 		p_constants->push_back(E->key());
 #endif
 	}
@@ -2350,7 +2350,7 @@ void Variant::get_constants_for_type(Variant::Type p_type, List<StringName> *p_c
 	for (List<StringName>::Element *E = cd.variant_value_ordered.front(); E; E = E->next()) {
 		p_constants->push_back(E->get());
 #else
-	for (Map<StringName, Variant>::Element *E = cd.variant_value.front(); E; E = E->next()) {
+	for (RBMap<StringName, Variant>::Element *E = cd.variant_value.front(); E; E = E->next()) {
 		p_constants->push_back(E->key());
 #endif
 	}
@@ -2370,9 +2370,9 @@ Variant Variant::get_constant_value(Variant::Type p_type, const StringName &p_va
 	ERR_FAIL_INDEX_V(p_type, Variant::VARIANT_MAX, 0);
 	_VariantCall::ConstantData &cd = _VariantCall::constant_data[p_type];
 
-	Map<StringName, int>::Element *E = cd.value.find(p_value);
+	RBMap<StringName, int>::Element *E = cd.value.find(p_value);
 	if (!E) {
-		Map<StringName, Variant>::Element *F = cd.variant_value.find(p_value);
+		RBMap<StringName, Variant>::Element *F = cd.variant_value.find(p_value);
 		if (F) {
 			if (r_valid) {
 				*r_valid = true;
@@ -3463,7 +3463,7 @@ void register_variant_methods() {
 	/* REGISTER CONSTANTS */
 
 	_populate_named_colors();
-	for (Map<String, Color>::Element *color = _named_colors.front(); color; color = color->next()) {
+	for (RBMap<String, Color>::Element *color = _named_colors.front(); color; color = color->next()) {
 		_VariantCall::add_variant_constant(Variant::COLOR, color->key(), color->value());
 	}
 

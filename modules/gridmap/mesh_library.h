@@ -31,7 +31,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/resource.h"
 #include "scene/resources/mesh.h"
 #include "scene/3d/navigation_mesh_instance.h"
@@ -58,7 +58,7 @@ public:
 		Ref<NavigationMesh> navmesh;
 	};
 
-	Map<int, Item> item_map;
+	RBMap<int, Item> item_map;
 
 	void _set_item_shapes(int p_item, const Array &p_shapes);
 	Array _get_item_shapes(int p_item) const;

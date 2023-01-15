@@ -33,7 +33,7 @@
 
 #include "nav_rid.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/math_defs.h"
 #include "core/os/thread_work_pool.h"
 #include "nav_utils.h"

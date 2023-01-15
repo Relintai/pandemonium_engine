@@ -1,7 +1,7 @@
 #ifndef DATABASE_MULTI_THREADED_H
 #define DATABASE_MULTI_THREADED_H
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/os/rw_lock.h"
 #include "core/os/thread.h"
 
@@ -27,7 +27,7 @@ protected:
 	static void _bind_methods();
 
 	RWLock _connection_map_lock;
-	Map<Thread::ID, Ref<DatabaseConnection>> _connections;
+	RBMap<Thread::ID, Ref<DatabaseConnection>> _connections;
 };
 
 #endif

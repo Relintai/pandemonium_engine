@@ -820,7 +820,7 @@ PoolVector<String> Translation::_get_messages() const {
 	PoolVector<String> msgs;
 	msgs.resize(translation_map.size() * 2);
 	int idx = 0;
-	for (const Map<StringName, StringName>::Element *E = translation_map.front(); E; E = E->next()) {
+	for (const RBMap<StringName, StringName>::Element *E = translation_map.front(); E; E = E->next()) {
 		msgs.set(idx + 0, E->key());
 		msgs.set(idx + 1, E->get());
 		idx += 2;
@@ -833,7 +833,7 @@ PoolVector<String> Translation::_get_message_list() const {
 	PoolVector<String> msgs;
 	msgs.resize(translation_map.size());
 	int idx = 0;
-	for (const Map<StringName, StringName>::Element *E = translation_map.front(); E; E = E->next()) {
+	for (const RBMap<StringName, StringName>::Element *E = translation_map.front(); E; E = E->next()) {
 		msgs.set(idx, E->key());
 		idx += 1;
 	}
@@ -878,7 +878,7 @@ StringName Translation::get_message(const StringName &p_src_text) const {
 		return get_script_instance()->call("_get_message", p_src_text);
 	}
 
-	const Map<StringName, StringName>::Element *E = translation_map.find(p_src_text);
+	const RBMap<StringName, StringName>::Element *E = translation_map.find(p_src_text);
 	if (!E) {
 		return StringName();
 	}
@@ -891,7 +891,7 @@ void Translation::erase_message(const StringName &p_src_text) {
 }
 
 void Translation::get_message_list(List<StringName> *r_messages) const {
-	for (const Map<StringName, StringName>::Element *E = translation_map.front(); E; E = E->next()) {
+	for (const RBMap<StringName, StringName>::Element *E = translation_map.front(); E; E = E->next()) {
 		r_messages->push_back(E->key());
 	}
 }

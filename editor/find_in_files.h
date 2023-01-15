@@ -35,7 +35,7 @@
 #include "scene/main/node.h"
 
 #include "core/containers/hash_map.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/containers/set.h"
 #include "core/string/ustring.h"
@@ -221,8 +221,8 @@ private:
 	Button *_refresh_button;
 	Button *_cancel_button;
 	ProgressBar *_progress_bar;
-	Map<String, TreeItem *> _file_items;
-	Map<TreeItem *, Result> _result_items;
+	RBMap<String, TreeItem *> _file_items;
+	RBMap<TreeItem *, Result> _result_items;
 	bool _with_replace;
 
 	HBoxContainer *_replace_container;

@@ -1058,7 +1058,7 @@ void TileSetEditor::_on_workspace_draw() {
 				uint32_t mask = tileset->autotile_get_bitmask(get_current_tile(), edited_shape_coord);
 				Vector<Vector2> queue_others;
 				int total = 0;
-				for (Map<Vector2, uint32_t>::Element *E = tileset->autotile_get_bitmask_map(get_current_tile()).front(); E; E = E->next()) {
+				for (RBMap<Vector2, uint32_t>::Element *E = tileset->autotile_get_bitmask_map(get_current_tile()).front(); E; E = E->next()) {
 					if (E->value() == mask) {
 						total += tileset->autotile_get_subtile_priority(get_current_tile(), E->key());
 						if (E->key() != edited_shape_coord) {
@@ -1802,10 +1802,10 @@ void TileSetEditor::_on_tool_clicked(int p_tool) {
 		undo_redo->create_action(TTR("Paste Tile Bitmask"));
 		undo_redo->add_do_method(tileset.ptr(), "autotile_clear_bitmask_map", get_current_tile());
 		undo_redo->add_undo_method(tileset.ptr(), "autotile_clear_bitmask_map", get_current_tile());
-		for (Map<Vector2, uint32_t>::Element *E = bitmask_map_copy.front(); E; E = E->next()) {
+		for (RBMap<Vector2, uint32_t>::Element *E = bitmask_map_copy.front(); E; E = E->next()) {
 			undo_redo->add_do_method(tileset.ptr(), "autotile_set_bitmask", get_current_tile(), E->key(), E->value());
 		}
-		for (Map<Vector2, uint32_t>::Element *E = tileset->autotile_get_bitmask_map(get_current_tile()).front(); E; E = E->next()) {
+		for (RBMap<Vector2, uint32_t>::Element *E = tileset->autotile_get_bitmask_map(get_current_tile()).front(); E; E = E->next()) {
 			undo_redo->add_undo_method(tileset.ptr(), "autotile_set_bitmask", get_current_tile(), E->key(), E->value());
 		}
 		undo_redo->add_do_method(workspace, "update");
@@ -1814,7 +1814,7 @@ void TileSetEditor::_on_tool_clicked(int p_tool) {
 	} else if (p_tool == BITMASK_CLEAR) {
 		undo_redo->create_action(TTR("Clear Tile Bitmask"));
 		undo_redo->add_do_method(tileset.ptr(), "autotile_clear_bitmask_map", get_current_tile());
-		for (Map<Vector2, uint32_t>::Element *E = tileset->autotile_get_bitmask_map(get_current_tile()).front(); E; E = E->next()) {
+		for (RBMap<Vector2, uint32_t>::Element *E = tileset->autotile_get_bitmask_map(get_current_tile()).front(); E; E = E->next()) {
 			undo_redo->add_undo_method(tileset.ptr(), "autotile_set_bitmask", get_current_tile(), E->key(), E->value());
 		}
 		undo_redo->add_do_method(workspace, "update");
@@ -2409,25 +2409,25 @@ void TileSetEditor::_undo_tile_removal(int p_id) {
 		undo_redo->add_undo_method(tileset.ptr(), "tile_set_light_occluder", p_id, tileset->tile_get_light_occluder(p_id));
 		undo_redo->add_undo_method(tileset.ptr(), "tile_set_navigation_polygon", p_id, tileset->tile_get_navigation_polygon(p_id));
 	} else {
-		Map<Vector2, Ref<OccluderPolygon2D>> oclusion_map = tileset->autotile_get_light_oclusion_map(p_id);
-		for (Map<Vector2, Ref<OccluderPolygon2D>>::Element *E = oclusion_map.front(); E; E = E->next()) {
+		RBMap<Vector2, Ref<OccluderPolygon2D>> oclusion_map = tileset->autotile_get_light_oclusion_map(p_id);
+		for (RBMap<Vector2, Ref<OccluderPolygon2D>>::Element *E = oclusion_map.front(); E; E = E->next()) {
 			undo_redo->add_undo_method(tileset.ptr(), "autotile_set_light_occluder", p_id, E->value(), E->key());
 		}
-		Map<Vector2, Ref<NavigationPolygon>> navigation_map = tileset->autotile_get_navigation_map(p_id);
-		for (Map<Vector2, Ref<NavigationPolygon>>::Element *E = navigation_map.front(); E; E = E->next()) {
+		RBMap<Vector2, Ref<NavigationPolygon>> navigation_map = tileset->autotile_get_navigation_map(p_id);
+		for (RBMap<Vector2, Ref<NavigationPolygon>>::Element *E = navigation_map.front(); E; E = E->next()) {
 			undo_redo->add_undo_method(tileset.ptr(), "autotile_set_navigation_polygon", p_id, E->value(), E->key());
 		}
-		Map<Vector2, uint32_t> bitmask_map = tileset->autotile_get_bitmask_map(p_id);
-		for (Map<Vector2, uint32_t>::Element *E = bitmask_map.front(); E; E = E->next()) {
+		RBMap<Vector2, uint32_t> bitmask_map = tileset->autotile_get_bitmask_map(p_id);
+		for (RBMap<Vector2, uint32_t>::Element *E = bitmask_map.front(); E; E = E->next()) {
 			undo_redo->add_undo_method(tileset.ptr(), "autotile_set_bitmask", p_id, E->key(), E->value());
 		}
-		Map<Vector2, int> priority_map = tileset->autotile_get_priority_map(p_id);
-		for (Map<Vector2, int>::Element *E = priority_map.front(); E; E = E->next()) {
+		RBMap<Vector2, int> priority_map = tileset->autotile_get_priority_map(p_id);
+		for (RBMap<Vector2, int>::Element *E = priority_map.front(); E; E = E->next()) {
 			undo_redo->add_undo_method(tileset.ptr(), "autotile_set_subtile_priority", p_id, E->key(), E->value());
 		}
 		undo_redo->add_undo_method(tileset.ptr(), "autotile_set_icon_coordinate", p_id, tileset->autotile_get_icon_coordinate(p_id));
-		Map<Vector2, int> z_map = tileset->autotile_get_z_index_map(p_id);
-		for (Map<Vector2, int>::Element *E = z_map.front(); E; E = E->next()) {
+		RBMap<Vector2, int> z_map = tileset->autotile_get_z_index_map(p_id);
+		for (RBMap<Vector2, int>::Element *E = z_map.front(); E; E = E->next()) {
 			undo_redo->add_undo_method(tileset.ptr(), "autotile_set_z_index", p_id, E->key(), E->value());
 		}
 		undo_redo->add_undo_method(tileset.ptr(), "tile_set_tile_mode", p_id, tileset->tile_get_tile_mode(p_id));
@@ -2757,8 +2757,8 @@ void TileSetEditor::draw_polygon_shapes() {
 					}
 				}
 			} else {
-				Map<Vector2, Ref<OccluderPolygon2D>> map = tileset->autotile_get_light_oclusion_map(t_id);
-				for (Map<Vector2, Ref<OccluderPolygon2D>>::Element *E = map.front(); E; E = E->next()) {
+				RBMap<Vector2, Ref<OccluderPolygon2D>> map = tileset->autotile_get_light_oclusion_map(t_id);
+				for (RBMap<Vector2, Ref<OccluderPolygon2D>>::Element *E = map.front(); E; E = E->next()) {
 					Vector2 coord = E->key();
 					Vector2 anchor = tileset->autotile_get_size(t_id);
 					anchor.x += tileset->autotile_get_spacing(t_id);
@@ -2848,8 +2848,8 @@ void TileSetEditor::draw_polygon_shapes() {
 					}
 				}
 			} else {
-				Map<Vector2, Ref<NavigationPolygon>> map = tileset->autotile_get_navigation_map(t_id);
-				for (Map<Vector2, Ref<NavigationPolygon>>::Element *E = map.front(); E; E = E->next()) {
+				RBMap<Vector2, Ref<NavigationPolygon>> map = tileset->autotile_get_navigation_map(t_id);
+				for (RBMap<Vector2, Ref<NavigationPolygon>>::Element *E = map.front(); E; E = E->next()) {
 					Vector2 coord = E->key();
 					Vector2 anchor = tileset->autotile_get_size(t_id);
 					anchor.x += tileset->autotile_get_spacing(t_id);

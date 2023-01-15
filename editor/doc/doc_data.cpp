@@ -85,7 +85,7 @@ static String _translate_doc_string(const String &p_text) {
 }
 
 void DocData::merge_from(const DocData &p_data) {
-	for (Map<String, ClassDoc>::Element *E = class_list.front(); E; E = E->next()) {
+	for (RBMap<String, ClassDoc>::Element *E = class_list.front(); E; E = E->next()) {
 		ClassDoc &c = E->get();
 
 		if (!p_data.class_list.has(c.name)) {
@@ -202,7 +202,7 @@ void DocData::merge_from(const DocData &p_data) {
 }
 
 void DocData::remove_from(const DocData &p_data) {
-	for (Map<String, ClassDoc>::Element *E = p_data.class_list.front(); E; E = E->next()) {
+	for (RBMap<String, ClassDoc>::Element *E = p_data.class_list.front(); E; E = E->next()) {
 		if (class_list.has(E->key())) {
 			class_list.erase(E->key());
 		}
@@ -1091,8 +1091,8 @@ static void _write_string(FileAccess *f, int p_tablevel, const String &p_string)
 	f->store_string(tab + p_string + "\n");
 }
 
-Error DocData::save_classes(const String &p_default_path, const Map<String, String> &p_class_path) {
-	for (Map<String, ClassDoc>::Element *E = class_list.front(); E; E = E->next()) {
+Error DocData::save_classes(const String &p_default_path, const RBMap<String, String> &p_class_path) {
+	for (RBMap<String, ClassDoc>::Element *E = class_list.front(); E; E = E->next()) {
 		ClassDoc &c = E->get();
 
 		String save_path;

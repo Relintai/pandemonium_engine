@@ -665,19 +665,19 @@ void ShaderGLES2::use_material(void *p_material) {
 	Version *v = version_map.getptr(conditional_version);
 
 	// bind uniforms
-	for (Map<StringName, ShaderLanguage::ShaderNode::Uniform>::Element *E = material->shader->uniforms.front(); E; E = E->next()) {
+	for (RBMap<StringName, ShaderLanguage::ShaderNode::Uniform>::Element *E = material->shader->uniforms.front(); E; E = E->next()) {
 		if (E->get().texture_order >= 0) {
 			continue; // this is a texture, doesn't go here
 		}
 
-		Map<StringName, GLint>::Element *L = v->custom_uniform_locations.find(E->key());
+		RBMap<StringName, GLint>::Element *L = v->custom_uniform_locations.find(E->key());
 		if (!L || L->get() < 0) {
 			continue; //uniform not valid
 		}
 
 		GLuint location = L->get();
 
-		Map<StringName, Variant>::Element *V = material->params.find(E->key());
+		RBMap<StringName, Variant>::Element *V = material->params.find(E->key());
 
 		if (V) {
 			switch (E->get().type) {

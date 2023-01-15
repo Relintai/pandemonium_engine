@@ -40,7 +40,7 @@
 #include "core/string/translation.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/reference.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
@@ -103,7 +103,7 @@ private:
 	int last_order;
 
 	Ref<Resource> clipboard;
-	Map<String, Ref<ShortCut>> shortcuts;
+	RBMap<String, Ref<ShortCut>> shortcuts;
 
 	String resource_path;
 	String settings_dir;

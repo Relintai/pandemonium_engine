@@ -54,7 +54,7 @@ bool MeshInstance::_set(const StringName &p_name, const Variant &p_value) {
 		return false;
 	}
 
-	Map<StringName, BlendShapeTrack>::Element *E = blend_shape_tracks.find(p_name);
+	RBMap<StringName, BlendShapeTrack>::Element *E = blend_shape_tracks.find(p_name);
 	if (E) {
 		E->get().value = p_value;
 		RenderingServer::get_singleton()->instance_set_blend_shape_weight(get_instance(), E->get().idx, E->get().value);
@@ -79,7 +79,7 @@ bool MeshInstance::_get(const StringName &p_name, Variant &r_ret) const {
 		return false;
 	}
 
-	const Map<StringName, BlendShapeTrack>::Element *E = blend_shape_tracks.find(p_name);
+	const RBMap<StringName, BlendShapeTrack>::Element *E = blend_shape_tracks.find(p_name);
 	if (E) {
 		r_ret = E->get().value;
 		return true;
@@ -98,7 +98,7 @@ bool MeshInstance::_get(const StringName &p_name, Variant &r_ret) const {
 
 void MeshInstance::_get_property_list(List<PropertyInfo> *p_list) const {
 	List<String> ls;
-	for (const Map<StringName, BlendShapeTrack>::Element *E = blend_shape_tracks.front(); E; E = E->next()) {
+	for (const RBMap<StringName, BlendShapeTrack>::Element *E = blend_shape_tracks.front(); E; E = E->next()) {
 		ls.push_back(E->key());
 	}
 

@@ -71,7 +71,7 @@ void EditorNetworkProfiler::_update_frame() {
 
 	TreeItem *root = counters_display->create_item();
 
-	for (Map<ObjectID, MultiplayerAPI::ProfilingInfo>::Element *E = nodes_data.front(); E; E = E->next()) {
+	for (RBMap<ObjectID, MultiplayerAPI::ProfilingInfo>::Element *E = nodes_data.front(); E; E = E->next()) {
 		TreeItem *node = counters_display->create_item(root);
 
 		for (int j = 0; j < counters_display->get_columns(); ++j) {

@@ -107,7 +107,7 @@ bool InputDefault::is_action_pressed(const StringName &p_action, bool p_exact) c
 
 bool InputDefault::is_action_just_pressed(const StringName &p_action, bool p_exact) const {
 	ERR_FAIL_COND_V_MSG(!InputMap::get_singleton()->has_action(p_action), false, InputMap::get_singleton()->suggest_actions(p_action));
-	const Map<StringName, Action>::Element *E = action_state.find(p_action);
+	const RBMap<StringName, Action>::Element *E = action_state.find(p_action);
 	if (!E) {
 		return false;
 	}
@@ -125,7 +125,7 @@ bool InputDefault::is_action_just_pressed(const StringName &p_action, bool p_exa
 
 bool InputDefault::is_action_just_released(const StringName &p_action, bool p_exact) const {
 	ERR_FAIL_COND_V_MSG(!InputMap::get_singleton()->has_action(p_action), false, InputMap::get_singleton()->suggest_actions(p_action));
-	const Map<StringName, Action>::Element *E = action_state.find(p_action);
+	const RBMap<StringName, Action>::Element *E = action_state.find(p_action);
 	if (!E) {
 		return false;
 	}
@@ -143,7 +143,7 @@ bool InputDefault::is_action_just_released(const StringName &p_action, bool p_ex
 
 float InputDefault::get_action_strength(const StringName &p_action, bool p_exact) const {
 	ERR_FAIL_COND_V_MSG(!InputMap::get_singleton()->has_action(p_action), 0.0, InputMap::get_singleton()->suggest_actions(p_action));
-	const Map<StringName, Action>::Element *E = action_state.find(p_action);
+	const RBMap<StringName, Action>::Element *E = action_state.find(p_action);
 	if (!E) {
 		return 0.0f;
 	}
@@ -157,7 +157,7 @@ float InputDefault::get_action_strength(const StringName &p_action, bool p_exact
 
 float InputDefault::get_action_raw_strength(const StringName &p_action, bool p_exact) const {
 	ERR_FAIL_COND_V_MSG(!InputMap::get_singleton()->has_action(p_action), 0.0, InputMap::get_singleton()->suggest_actions(p_action));
-	const Map<StringName, Action>::Element *E = action_state.find(p_action);
+	const RBMap<StringName, Action>::Element *E = action_state.find(p_action);
 	if (!E) {
 		return 0.0f;
 	}
@@ -477,7 +477,7 @@ void InputDefault::_parse_input_event_impl(const Ref<InputEvent> &p_event, bool 
 		}
 	}
 
-	for (const Map<StringName, InputMap::Action>::Element *E = InputMap::get_singleton()->get_action_map().front(); E; E = E->next()) {
+	for (const RBMap<StringName, InputMap::Action>::Element *E = InputMap::get_singleton()->get_action_map().front(); E; E = E->next()) {
 		if (InputMap::get_singleton()->event_is_action(p_event, E->key())) {
 			// If not echo and action pressed state has changed
 			if (!p_event->is_echo() && is_action_pressed(E->key(), false) != p_event->is_action_pressed(E->key())) {
@@ -752,7 +752,7 @@ void InputDefault::release_pressed_events() {
 	joy_buttons_pressed.clear();
 	_joy_axis.clear();
 
-	for (Map<StringName, InputDefault::Action>::Element *E = action_state.front(); E; E = E->next()) {
+	for (RBMap<StringName, InputDefault::Action>::Element *E = action_state.front(); E; E = E->next()) {
 		if (E->get().pressed) {
 			action_release(E->key());
 		}
@@ -1240,7 +1240,7 @@ void InputDefault::add_joy_mapping(String p_mapping, bool p_update_existing) {
 	if (p_update_existing) {
 		Vector<String> entry = p_mapping.split(",");
 		String uid = entry[0];
-		for (Map<int, Joypad>::Element *E = joy_names.front(); E; E = E->next()) {
+		for (RBMap<int, Joypad>::Element *E = joy_names.front(); E; E = E->next()) {
 			Joypad &joy = E->get();
 			if (joy.uid == uid) {
 				joy.mapping = map_db.size() - 1;
@@ -1255,7 +1255,7 @@ void InputDefault::remove_joy_mapping(String p_guid) {
 			map_db.remove(i);
 		}
 	}
-	for (Map<int, Joypad>::Element *E = joy_names.front(); E; E = E->next()) {
+	for (RBMap<int, Joypad>::Element *E = joy_names.front(); E; E = E->next()) {
 		Joypad &joy = E->get();
 		if (joy.uid == p_guid) {
 			joy.mapping = -1;
@@ -1299,7 +1299,7 @@ String InputDefault::get_joy_guid_remapped(int p_device) const {
 
 Array InputDefault::get_connected_joypads() {
 	Array ret;
-	Map<int, Joypad>::Element *elem = joy_names.front();
+	RBMap<int, Joypad>::Element *elem = joy_names.front();
 	while (elem) {
 		if (elem->get().connected) {
 			ret.push_back(elem->key());

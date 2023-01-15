@@ -147,7 +147,7 @@ private:
 			}
 		};
 
-		Map<StringName, PropertyAnim> property_anim;
+		RBMap<StringName, PropertyAnim> property_anim;
 
 		struct BezierAnim {
 			Vector<StringName> bezier_property;
@@ -163,7 +163,7 @@ private:
 					accum_pass(0) {}
 		};
 
-		Map<StringName, BezierAnim> bezier_anim;
+		RBMap<StringName, BezierAnim> bezier_anim;
 
 		uint32_t last_setup_pass;
 
@@ -206,7 +206,7 @@ private:
 		}
 	};
 
-	Map<TrackNodeCacheKey, TrackNodeCache> node_cache_map;
+	RBMap<TrackNodeCacheKey, TrackNodeCache> node_cache_map;
 
 	TrackNodeCache *cache_update[NODE_CACHE_UPDATE_MAX];
 	int cache_update_size;
@@ -227,14 +227,14 @@ private:
 		Ref<Animation> animation;
 	};
 
-	Map<StringName, AnimationData> animation_set;
+	RBMap<StringName, AnimationData> animation_set;
 	struct BlendKey {
 		StringName from;
 		StringName to;
 		bool operator<(const BlendKey &bk) const { return from == bk.from ? String(to) < String(bk.to) : String(from) < String(bk.from); }
 	};
 
-	Map<BlendKey, float> blend_times;
+	RBMap<BlendKey, float> blend_times;
 
 	struct PlaybackData {
 		AnimationData *from;

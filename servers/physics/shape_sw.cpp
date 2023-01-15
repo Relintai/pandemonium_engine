@@ -61,7 +61,7 @@ subject to the following restrictions:
 void ShapeSW::configure(const AABB &p_aabb) {
 	aabb = p_aabb;
 	configured = true;
-	for (Map<ShapeOwnerSW *, int>::Element *E = owners.front(); E; E = E->next()) {
+	for (RBMap<ShapeOwnerSW *, int>::Element *E = owners.front(); E; E = E->next()) {
 		ShapeOwnerSW *co = (ShapeOwnerSW *)E->key();
 		co->_shape_changed();
 	}
@@ -76,7 +76,7 @@ Vector3 ShapeSW::get_support(const Vector3 &p_normal) const {
 }
 
 void ShapeSW::add_owner(ShapeOwnerSW *p_owner) {
-	Map<ShapeOwnerSW *, int>::Element *E = owners.find(p_owner);
+	RBMap<ShapeOwnerSW *, int>::Element *E = owners.find(p_owner);
 	if (E) {
 		E->get()++;
 	} else {
@@ -85,7 +85,7 @@ void ShapeSW::add_owner(ShapeOwnerSW *p_owner) {
 }
 
 void ShapeSW::remove_owner(ShapeOwnerSW *p_owner) {
-	Map<ShapeOwnerSW *, int>::Element *E = owners.find(p_owner);
+	RBMap<ShapeOwnerSW *, int>::Element *E = owners.find(p_owner);
 	ERR_FAIL_COND(!E);
 	E->get()--;
 	if (E->get() == 0) {
@@ -97,7 +97,7 @@ bool ShapeSW::is_owner(ShapeOwnerSW *p_owner) const {
 	return owners.has(p_owner);
 }
 
-const Map<ShapeOwnerSW *, int> &ShapeSW::get_owners() const {
+const RBMap<ShapeOwnerSW *, int> &ShapeSW::get_owners() const {
 	return owners;
 }
 

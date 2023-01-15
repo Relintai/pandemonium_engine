@@ -36,7 +36,7 @@
 #include "scene/main/node.h"
 #include "servers/audio/audio_stream.h"
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/object/object_id.h"
 #include "core/object/reference.h"
@@ -85,7 +85,7 @@ class AudioStreamPreviewGenerator : public Node {
 		}
 	};
 
-	Map<ObjectID, Preview> previews;
+	RBMap<ObjectID, Preview> previews;
 
 	static void _preview_thread(void *p_preview);
 

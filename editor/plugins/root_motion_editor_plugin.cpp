@@ -31,7 +31,7 @@
 #include "root_motion_editor_plugin.h"
 
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/set.h"
 #include "core/error/error_macros.h"
 #include "core/object/class_db.h"
@@ -108,7 +108,7 @@ void EditorPropertyRootMotion::_node_assign() {
 	filters->clear();
 	TreeItem *root = filters->create_item();
 
-	Map<String, TreeItem *> parenthood;
+	RBMap<String, TreeItem *> parenthood;
 
 	for (Set<String>::Element *E = paths.front(); E; E = E->next()) {
 		NodePath path = E->get();

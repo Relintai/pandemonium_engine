@@ -146,7 +146,7 @@ bool AnimationPlayer::_get(const StringName &p_name, Variant &r_ret) const {
 
 	} else if (name == "blend_times") {
 		Vector<BlendKey> keys;
-		for (Map<BlendKey, float>::Element *E = blend_times.front(); E; E = E->next()) {
+		for (RBMap<BlendKey, float>::Element *E = blend_times.front(); E; E = E->next()) {
 			keys.ordered_insert(E->key());
 		}
 
@@ -169,7 +169,7 @@ void AnimationPlayer::_validate_property(PropertyInfo &property) const {
 	if (property.name == "current_animation") {
 		List<String> names;
 
-		for (Map<StringName, AnimationData>::Element *E = animation_set.front(); E; E = E->next()) {
+		for (RBMap<StringName, AnimationData>::Element *E = animation_set.front(); E; E = E->next()) {
 			names.push_back(E->key());
 		}
 		names.sort();
@@ -189,7 +189,7 @@ void AnimationPlayer::_validate_property(PropertyInfo &property) const {
 void AnimationPlayer::_get_property_list(List<PropertyInfo> *p_list) const {
 	List<PropertyInfo> anim_names;
 
-	for (Map<StringName, AnimationData>::Element *E = animation_set.front(); E; E = E->next()) {
+	for (RBMap<StringName, AnimationData>::Element *E = animation_set.front(); E; E = E->next()) {
 		anim_names.push_back(PropertyInfo(Variant::OBJECT, "anims/" + String(E->key()), PROPERTY_HINT_RESOURCE_TYPE, "Animation", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE));
 		if (E->get().next != StringName()) {
 			anim_names.push_back(PropertyInfo(Variant::STRING, "next/" + String(E->key()), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
@@ -520,7 +520,7 @@ void AnimationPlayer::_animation_process_animation(AnimationData *p_anim, float 
 
 				//StringName property=a->track_get_path(i).get_property();
 
-				Map<StringName, TrackNodeCache::PropertyAnim>::Element *E = nc->property_anim.find(a->track_get_path(i).get_concatenated_subnames());
+				RBMap<StringName, TrackNodeCache::PropertyAnim>::Element *E = nc->property_anim.find(a->track_get_path(i).get_concatenated_subnames());
 				ERR_CONTINUE(!E); //should it continue, or create a new one?
 
 				TrackNodeCache::PropertyAnim *pa = &E->get();
@@ -703,7 +703,7 @@ void AnimationPlayer::_animation_process_animation(AnimationData *p_anim, float 
 					continue;
 				}
 
-				Map<StringName, TrackNodeCache::BezierAnim>::Element *E = nc->bezier_anim.find(a->track_get_path(i).get_concatenated_subnames());
+				RBMap<StringName, TrackNodeCache::BezierAnim>::Element *E = nc->bezier_anim.find(a->track_get_path(i).get_concatenated_subnames());
 				ERR_CONTINUE(!E); //should it continue, or create a new one?
 
 				TrackNodeCache::BezierAnim *ba = &E->get();
@@ -1147,8 +1147,8 @@ void AnimationPlayer::rename_animation(const StringName &p_name, const StringNam
 	animation_set[p_new_name] = ad;
 
 	List<BlendKey> to_erase;
-	Map<BlendKey, float> to_insert;
-	for (Map<BlendKey, float>::Element *E = blend_times.front(); E; E = E->next()) {
+	RBMap<BlendKey, float> to_insert;
+	for (RBMap<BlendKey, float>::Element *E = blend_times.front(); E; E = E->next()) {
 		BlendKey bk = E->key();
 		BlendKey new_bk = bk;
 		bool erase = false;
@@ -1198,7 +1198,7 @@ Ref<Animation> AnimationPlayer::get_animation(const StringName &p_name) const {
 void AnimationPlayer::get_animation_list(List<StringName> *p_animations) const {
 	List<String> anims;
 
-	for (Map<StringName, AnimationData>::Element *E = animation_set.front(); E; E = E->next()) {
+	for (RBMap<StringName, AnimationData>::Element *E = animation_set.front(); E; E = E->next()) {
 		anims.push_back(E->key());
 	}
 
@@ -1502,7 +1502,7 @@ void AnimationPlayer::clear_caches() {
 
 	node_cache_map.clear();
 
-	for (Map<StringName, AnimationData>::Element *E = animation_set.front(); E; E = E->next()) {
+	for (RBMap<StringName, AnimationData>::Element *E = animation_set.front(); E; E = E->next()) {
 		E->get().node_cache.clear();
 	}
 
@@ -1527,7 +1527,7 @@ bool AnimationPlayer::is_active() const {
 }
 
 StringName AnimationPlayer::find_animation(const Ref<Animation> &p_animation) const {
-	for (Map<StringName, AnimationData>::Element *E = animation_set.front(); E; E = E->next()) {
+	for (RBMap<StringName, AnimationData>::Element *E = animation_set.front(); E; E = E->next()) {
 		if (E->get().animation == p_animation) {
 			return E->key();
 		}
@@ -1691,7 +1691,7 @@ Ref<AnimatedValuesBackup> AnimationPlayer::backup_animated_values(Node *p_root_o
 				entry.bone_idx = -1;
 				backup->entries.push_back(entry);
 			} else {
-				for (Map<StringName, TrackNodeCache::PropertyAnim>::Element *E = nc->property_anim.front(); E; E = E->next()) {
+				for (RBMap<StringName, TrackNodeCache::PropertyAnim>::Element *E = nc->property_anim.front(); E; E = E->next()) {
 					AnimatedValuesBackup::Entry entry;
 					entry.object = E->value().object;
 					entry.subpath = E->value().subpath;

@@ -267,9 +267,9 @@ Array IP::_get_local_addresses() const {
 
 Array IP::_get_local_interfaces() const {
 	Array results;
-	Map<String, Interface_Info> interfaces;
+	RBMap<String, Interface_Info> interfaces;
 	get_local_interfaces(&interfaces);
-	for (Map<String, Interface_Info>::Element *E = interfaces.front(); E; E = E->next()) {
+	for (RBMap<String, Interface_Info>::Element *E = interfaces.front(); E; E = E->next()) {
 		Interface_Info &c = E->get();
 		Dictionary rc;
 		rc["name"] = c.name;
@@ -289,9 +289,9 @@ Array IP::_get_local_interfaces() const {
 }
 
 void IP::get_local_addresses(List<IP_Address> *r_addresses) const {
-	Map<String, Interface_Info> interfaces;
+	RBMap<String, Interface_Info> interfaces;
 	get_local_interfaces(&interfaces);
-	for (Map<String, Interface_Info>::Element *E = interfaces.front(); E; E = E->next()) {
+	for (RBMap<String, Interface_Info>::Element *E = interfaces.front(); E; E = E->next()) {
 		for (const List<IP_Address>::Element *F = E->get().ip_addresses.front(); F; F = F->next()) {
 			r_addresses->push_front(F->get());
 		}

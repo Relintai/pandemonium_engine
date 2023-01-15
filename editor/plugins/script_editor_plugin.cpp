@@ -55,7 +55,7 @@
 #include "core/error/error_macros.h"
 #include "core/io/config_file.h"
 #include "core/io/resource_saver.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/math_funcs.h"
 #include "core/math/transform_2d.h"
 #include "core/input/input_event.h"
@@ -123,16 +123,16 @@ class EditorScriptCodeCompletionCache : public ScriptCodeCompletionCache {
 		}
 	};
 
-	Map<String, Cache> cached;
+	RBMap<String, Cache> cached;
 
 public:
 	uint64_t max_time_cache;
 	int max_cache_size;
 
 	void cleanup() {
-		List<Map<String, Cache>::Element *> to_clean;
+		List<RBMap<String, Cache>::Element *> to_clean;
 
-		Map<String, Cache>::Element *I = cached.front();
+		RBMap<String, Cache>::Element *I = cached.front();
 		while (I) {
 			if ((OS::get_singleton()->get_ticks_msec() - I->get().time_loaded) > max_time_cache) {
 				to_clean.push_back(I);
@@ -147,7 +147,7 @@ public:
 	}
 
 	virtual RES get_cached_resource(const String &p_path) {
-		Map<String, Cache>::Element *E = cached.find(p_path);
+		RBMap<String, Cache>::Element *E = cached.find(p_path);
 		if (!E) {
 			Cache c;
 			c.cache = ResourceLoader::load(p_path);
@@ -158,9 +158,9 @@ public:
 
 		if (cached.size() > max_cache_size) {
 			uint64_t older;
-			Map<String, Cache>::Element *O = cached.front();
+			RBMap<String, Cache>::Element *O = cached.front();
 			older = O->get().time_loaded;
-			Map<String, Cache>::Element *I = O;
+			RBMap<String, Cache>::Element *I = O;
 			while (I) {
 				if (I->get().time_loaded < older) {
 					older = I->get().time_loaded;

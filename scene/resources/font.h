@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/io/resource_loader.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/resource.h"
 
 class Texture;
@@ -155,7 +155,7 @@ public:
 
 private:
 	HashMap<int32_t, Character> char_map;
-	Map<KerningPairKey, int> kerning_map;
+	RBMap<KerningPairKey, int> kerning_map;
 
 	float height;
 	float ascent;

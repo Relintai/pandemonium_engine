@@ -1084,7 +1084,7 @@ void CScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_c
 					d["@subpath"] = cp;
 					d["@path"] = p->get_path();
 
-					for (Map<StringName, CScript::MemberInfo>::Element *E = base->member_indices.front(); E; E = E->next()) {
+					for (RBMap<StringName, CScript::MemberInfo>::Element *E = base->member_indices.front(); E; E = E->next()) {
 						if (!d.has(E->key())) {
 							d[E->key()] = ins->members[E->get().index];
 						}
@@ -1164,7 +1164,7 @@ void CScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_c
 			CScriptInstance *ins = static_cast<CScriptInstance *>(static_cast<Object *>(r_ret)->get_script_instance());
 			Ref<CScript> gd_ref = ins->get_script();
 
-			for (Map<StringName, CScript::MemberInfo>::Element *E = gd_ref->member_indices.front(); E; E = E->next()) {
+			for (RBMap<StringName, CScript::MemberInfo>::Element *E = gd_ref->member_indices.front(); E; E = E->next()) {
 				if (d.has(E->key())) {
 					ins->members.write[E->get().index] = d[E->key()];
 				}

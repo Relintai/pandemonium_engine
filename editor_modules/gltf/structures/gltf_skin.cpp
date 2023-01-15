@@ -71,8 +71,8 @@ void GLTFSkin::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "non_joints"), "set_non_joints", "get_non_joints"); // Vector<GLTFNodeIndex>
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "roots"), "set_roots", "get_roots"); // Vector<GLTFNodeIndex>
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "skeleton"), "set_skeleton", "get_skeleton"); // int
-	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "joint_i_to_bone_i", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL), "set_joint_i_to_bone_i", "get_joint_i_to_bone_i"); // Map<int,
-	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "joint_i_to_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL), "set_joint_i_to_name", "get_joint_i_to_name"); // Map<int,
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "joint_i_to_bone_i", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL), "set_joint_i_to_bone_i", "get_joint_i_to_bone_i"); // RBMap<int,
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "joint_i_to_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL), "set_joint_i_to_name", "get_joint_i_to_name"); // RBMap<int,
 }
 
 GLTFNodeIndex GLTFSkin::get_skin_root() {
@@ -141,7 +141,7 @@ void GLTFSkin::set_joint_i_to_bone_i(Dictionary p_joint_i_to_bone_i) {
 
 Dictionary GLTFSkin::get_joint_i_to_name() {
 	Dictionary ret;
-	Map<int, StringName>::Element *elem = joint_i_to_name.front();
+	RBMap<int, StringName>::Element *elem = joint_i_to_name.front();
 	while (elem) {
 		ret[elem->key()] = String(elem->value());
 		elem = elem->next();
@@ -150,7 +150,7 @@ Dictionary GLTFSkin::get_joint_i_to_name() {
 }
 
 void GLTFSkin::set_joint_i_to_name(Dictionary p_joint_i_to_name) {
-	joint_i_to_name = Map<int, StringName>();
+	joint_i_to_name = RBMap<int, StringName>();
 	Array keys = p_joint_i_to_name.keys();
 	for (int i = 0; i < keys.size(); i++) {
 		joint_i_to_name[keys[i]] = p_joint_i_to_name[keys[i]];

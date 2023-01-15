@@ -297,7 +297,7 @@ void TileMapEditor::_start_undo(const String &p_action) {
 
 void TileMapEditor::_finish_undo() {
 	if (undo_data.size()) {
-		for (Map<Point2i, CellOp>::Element *E = undo_data.front(); E; E = E->next()) {
+		for (RBMap<Point2i, CellOp>::Element *E = undo_data.front(); E; E = E->next()) {
 			_create_set_cell_undo_redo(E->key(), E->get(), _get_op_from_cell(E->key()));
 		}
 
@@ -544,10 +544,10 @@ void TileMapEditor::_update_palette() {
 	}
 
 	if (sel_tile != TileMap::INVALID_CELL && tileset->has_tile(sel_tile) && ((manual_autotile && tileset->tile_get_tile_mode(sel_tile) == TileSet::AUTO_TILE) || (!priority_atlastile && tileset->tile_get_tile_mode(sel_tile) == TileSet::ATLAS_TILE))) {
-		const Map<Vector2, uint32_t> &tiles2 = tileset->autotile_get_bitmask_map(sel_tile);
+		const RBMap<Vector2, uint32_t> &tiles2 = tileset->autotile_get_bitmask_map(sel_tile);
 
 		Vector<Vector2> entries2;
-		for (const Map<Vector2, uint32_t>::Element *E = tiles2.front(); E; E = E->next()) {
+		for (const RBMap<Vector2, uint32_t>::Element *E = tiles2.front(); E; E = E->next()) {
 			entries2.push_back(E->key());
 		}
 		// Sort tiles in row-major order.
@@ -1101,7 +1101,7 @@ bool TileMapEditor::forward_gui_input(const Ref<InputEvent> &p_event) {
 
 						if (ids.size() > 0 && ids[0] != TileMap::INVALID_CELL) {
 							_start_undo(TTR("Line Draw"));
-							for (Map<Point2i, CellOp>::Element *E = paint_undo.front(); E; E = E->next()) {
+							for (RBMap<Point2i, CellOp>::Element *E = paint_undo.front(); E; E = E->next()) {
 								_set_cell(E->key(), ids, flip_h, flip_v, transpose);
 							}
 							_finish_undo();
@@ -1333,7 +1333,7 @@ bool TileMapEditor::forward_gui_input(const Ref<InputEvent> &p_event) {
 
 			tmp_cell.push_back(0);
 			if (erasing && paint_undo.size()) {
-				for (Map<Point2i, CellOp>::Element *E = paint_undo.front(); E; E = E->next()) {
+				for (RBMap<Point2i, CellOp>::Element *E = paint_undo.front(); E; E = E->next()) {
 					tmp_cell.write[0] = E->get().idx;
 					_set_cell(E->key(), tmp_cell, E->get().xf, E->get().yf, E->get().tr);
 				}
@@ -1365,7 +1365,7 @@ bool TileMapEditor::forward_gui_input(const Ref<InputEvent> &p_event) {
 
 			if (tool == TOOL_RECTANGLE_ERASE) {
 				if (paint_undo.size()) {
-					for (Map<Point2i, CellOp>::Element *E = paint_undo.front(); E; E = E->next()) {
+					for (RBMap<Point2i, CellOp>::Element *E = paint_undo.front(); E; E = E->next()) {
 						tmp_cell.write[0] = E->get().idx;
 						_set_cell(E->key(), tmp_cell, E->get().xf, E->get().yf, E->get().tr);
 					}
@@ -1700,7 +1700,7 @@ void TileMapEditor::forward_canvas_draw_over_viewport(Control *p_overlay) {
 				return;
 			}
 
-			for (Map<Point2i, CellOp>::Element *E = paint_undo.front(); E; E = E->next()) {
+			for (RBMap<Point2i, CellOp>::Element *E = paint_undo.front(); E; E = E->next()) {
 				_draw_cell(p_overlay, ids[0], E->key(), flip_h, flip_v, transpose, autotile_coord, xform);
 			}
 

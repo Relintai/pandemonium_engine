@@ -634,7 +634,7 @@ Vector2 Curve2D::interpolatef(real_t p_findex) const {
 	return interpolate((int)p_findex, Math::fmod(p_findex, (real_t)1.0));
 }
 
-void Curve2D::_bake_segment2d(Map<float, Vector2> &r_bake, float p_begin, float p_end, const Vector2 &p_a, const Vector2 &p_out, const Vector2 &p_b, const Vector2 &p_in, int p_depth, int p_max_depth, float p_tol) const {
+void Curve2D::_bake_segment2d(RBMap<float, Vector2> &r_bake, float p_begin, float p_end, const Vector2 &p_a, const Vector2 &p_out, const Vector2 &p_b, const Vector2 &p_in, int p_depth, int p_max_depth, float p_tol) const {
 	float mp = p_begin + (p_end - p_begin) * 0.5;
 	Vector2 beg = _bezier_interp(p_begin, p_a, p_a + p_out, p_b + p_in, p_b);
 	Vector2 mid = _bezier_interp(mp, p_a, p_a + p_out, p_b + p_in, p_b);
@@ -929,7 +929,7 @@ PoolVector2Array Curve2D::tessellate(int p_max_stages, float p_tolerance) const 
 	if (points.size() == 0) {
 		return tess;
 	}
-	Vector<Map<float, Vector2>> midpoints;
+	Vector<RBMap<float, Vector2>> midpoints;
 
 	midpoints.resize(points.size() - 1);
 
@@ -946,7 +946,7 @@ PoolVector2Array Curve2D::tessellate(int p_max_stages, float p_tolerance) const 
 	int pidx = 0;
 
 	for (int i = 0; i < points.size() - 1; i++) {
-		for (Map<float, Vector2>::Element *E = midpoints[i].front(); E; E = E->next()) {
+		for (RBMap<float, Vector2>::Element *E = midpoints[i].front(); E; E = E->next()) {
 			pidx++;
 			bpw[pidx] = E->get();
 		}
@@ -1116,7 +1116,7 @@ Vector3 Curve3D::interpolatef(real_t p_findex) const {
 	return interpolate((int)p_findex, Math::fmod(p_findex, (real_t)1.0));
 }
 
-void Curve3D::_bake_segment3d(Map<float, Vector3> &r_bake, float p_begin, float p_end, const Vector3 &p_a, const Vector3 &p_out, const Vector3 &p_b, const Vector3 &p_in, int p_depth, int p_max_depth, float p_tol) const {
+void Curve3D::_bake_segment3d(RBMap<float, Vector3> &r_bake, float p_begin, float p_end, const Vector3 &p_a, const Vector3 &p_out, const Vector3 &p_b, const Vector3 &p_in, int p_depth, int p_max_depth, float p_tol) const {
 	float mp = p_begin + (p_end - p_begin) * 0.5;
 	Vector3 beg = _bezier_interp(p_begin, p_a, p_a + p_out, p_b + p_in, p_b);
 	Vector3 mid = _bezier_interp(mp, p_a, p_a + p_out, p_b + p_in, p_b);
@@ -1593,7 +1593,7 @@ PoolVector3Array Curve3D::tessellate(int p_max_stages, float p_tolerance) const 
 	if (points.size() == 0) {
 		return tess;
 	}
-	Vector<Map<float, Vector3>> midpoints;
+	Vector<RBMap<float, Vector3>> midpoints;
 
 	midpoints.resize(points.size() - 1);
 
@@ -1610,7 +1610,7 @@ PoolVector3Array Curve3D::tessellate(int p_max_stages, float p_tolerance) const 
 	int pidx = 0;
 
 	for (int i = 0; i < points.size() - 1; i++) {
-		for (Map<float, Vector3>::Element *E = midpoints[i].front(); E; E = E->next()) {
+		for (RBMap<float, Vector3>::Element *E = midpoints[i].front(); E; E = E->next()) {
 			pidx++;
 			bpw[pidx] = E->get();
 		}

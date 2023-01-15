@@ -1557,9 +1557,9 @@ void RasterizerStorageGLES2::shader_get_param_list(RID p_shader, List<PropertyIn
 		_update_shader(shader);
 	}
 
-	Map<int, StringName> order;
+	RBMap<int, StringName> order;
 
-	for (Map<StringName, ShaderLanguage::ShaderNode::Uniform>::Element *E = shader->uniforms.front(); E; E = E->next()) {
+	for (RBMap<StringName, ShaderLanguage::ShaderNode::Uniform>::Element *E = shader->uniforms.front(); E; E = E->next()) {
 		if (E->get().texture_order >= 0) {
 			order[E->get().texture_order + 100000] = E->key();
 		} else {
@@ -1567,7 +1567,7 @@ void RasterizerStorageGLES2::shader_get_param_list(RID p_shader, List<PropertyIn
 		}
 	}
 
-	for (Map<int, StringName>::Element *E = order.front(); E; E = E->next()) {
+	for (RBMap<int, StringName>::Element *E = order.front(); E; E = E->next()) {
 		PropertyInfo pi;
 		ShaderLanguage::ShaderNode::Uniform &u = shader->uniforms[E->get()];
 
@@ -1707,7 +1707,7 @@ RID RasterizerStorageGLES2::shader_get_default_texture_param(RID p_shader, const
 	const Shader *shader = shader_owner.get(p_shader);
 	ERR_FAIL_COND_V(!shader, RID());
 
-	const Map<StringName, RID>::Element *E = shader->default_textures.find(p_name);
+	const RBMap<StringName, RID>::Element *E = shader->default_textures.find(p_name);
 
 	if (!E) {
 		return RID();
@@ -1904,7 +1904,7 @@ void RasterizerStorageGLES2::material_add_instance_owner(RID p_material, Rasteri
 	Material *material = material_owner.getornull(p_material);
 	ERR_FAIL_COND(!material);
 
-	Map<RasterizerScene::InstanceBase *, int>::Element *E = material->instance_owners.find(p_instance);
+	RBMap<RasterizerScene::InstanceBase *, int>::Element *E = material->instance_owners.find(p_instance);
 	if (E) {
 		E->get()++;
 	} else {
@@ -1916,7 +1916,7 @@ void RasterizerStorageGLES2::material_remove_instance_owner(RID p_material, Rast
 	Material *material = material_owner.getornull(p_material);
 	ERR_FAIL_COND(!material);
 
-	Map<RasterizerScene::InstanceBase *, int>::Element *E = material->instance_owners.find(p_instance);
+	RBMap<RasterizerScene::InstanceBase *, int>::Element *E = material->instance_owners.find(p_instance);
 	ERR_FAIL_COND(!E);
 
 	E->get()--;
@@ -1971,11 +1971,11 @@ void RasterizerStorageGLES2::_update_material(Material *p_material) {
 				p_material->can_cast_shadow_cache = can_cast_shadow;
 				p_material->is_animated_cache = is_animated;
 
-				for (Map<Geometry *, int>::Element *E = p_material->geometry_owners.front(); E; E = E->next()) {
+				for (RBMap<Geometry *, int>::Element *E = p_material->geometry_owners.front(); E; E = E->next()) {
 					E->key()->material_changed_notify();
 				}
 
-				for (Map<RasterizerScene::InstanceBase *, int>::Element *E = p_material->instance_owners.front(); E; E = E->next()) {
+				for (RBMap<RasterizerScene::InstanceBase *, int>::Element *E = p_material->instance_owners.front(); E; E = E->next()) {
 					E->key()->base_changed(false, true);
 				}
 			}
@@ -1987,21 +1987,21 @@ void RasterizerStorageGLES2::_update_material(Material *p_material) {
 	if (p_material->shader && p_material->shader->texture_count > 0) {
 		p_material->textures.resize(p_material->shader->texture_count);
 
-		for (Map<StringName, ShaderLanguage::ShaderNode::Uniform>::Element *E = p_material->shader->uniforms.front(); E; E = E->next()) {
+		for (RBMap<StringName, ShaderLanguage::ShaderNode::Uniform>::Element *E = p_material->shader->uniforms.front(); E; E = E->next()) {
 			if (E->get().texture_order < 0) {
 				continue; // not a texture, does not go here
 			}
 
 			RID texture;
 
-			Map<StringName, Variant>::Element *V = p_material->params.find(E->key());
+			RBMap<StringName, Variant>::Element *V = p_material->params.find(E->key());
 
 			if (V) {
 				texture = V->get();
 			}
 
 			if (!texture.is_valid()) {
-				Map<StringName, RID>::Element *W = p_material->shader->default_textures.find(E->key());
+				RBMap<StringName, RID>::Element *W = p_material->shader->default_textures.find(E->key());
 
 				if (W) {
 					texture = W->get();
@@ -2019,7 +2019,7 @@ void RasterizerStorageGLES2::_material_add_geometry(RID p_material, Geometry *p_
 	Material *material = material_owner.getornull(p_material);
 	ERR_FAIL_COND(!material);
 
-	Map<Geometry *, int>::Element *I = material->geometry_owners.find(p_geometry);
+	RBMap<Geometry *, int>::Element *I = material->geometry_owners.find(p_geometry);
 
 	if (I) {
 		I->get()++;
@@ -2032,7 +2032,7 @@ void RasterizerStorageGLES2::_material_remove_geometry(RID p_material, Geometry 
 	Material *material = material_owner.getornull(p_material);
 	ERR_FAIL_COND(!material);
 
-	Map<Geometry *, int>::Element *I = material->geometry_owners.find(p_geometry);
+	RBMap<Geometry *, int>::Element *I = material->geometry_owners.find(p_geometry);
 	ERR_FAIL_COND(!I);
 
 	I->get()--;
@@ -5587,12 +5587,12 @@ bool RasterizerStorageGLES2::free(RID p_rid) {
 			m->shader->materials.remove(&m->list);
 		}
 
-		for (Map<Geometry *, int>::Element *E = m->geometry_owners.front(); E; E = E->next()) {
+		for (RBMap<Geometry *, int>::Element *E = m->geometry_owners.front(); E; E = E->next()) {
 			Geometry *g = E->key();
 			g->material = RID();
 		}
 
-		for (Map<RasterizerScene::InstanceBase *, int>::Element *E = m->instance_owners.front(); E; E = E->next()) {
+		for (RBMap<RasterizerScene::InstanceBase *, int>::Element *E = m->instance_owners.front(); E; E = E->next()) {
 			RasterizerScene::InstanceBase *ins = E->key();
 
 			if (ins->material_override == p_rid) {

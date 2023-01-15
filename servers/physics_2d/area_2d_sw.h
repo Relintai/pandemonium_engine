@@ -90,8 +90,8 @@ class Area2DSW : public CollisionObject2DSW {
 		_FORCE_INLINE_ BodyState() { state = 0; }
 	};
 
-	Map<BodyKey, BodyState> monitored_bodies;
-	Map<BodyKey, BodyState> monitored_areas;
+	RBMap<BodyKey, BodyState> monitored_bodies;
+	RBMap<BodyKey, BodyState> monitored_areas;
 
 	//virtual void shape_changed_notify(Shape2DSW *p_shape);
 	//virtual void shape_deleted_notify(Shape2DSW *p_shape);

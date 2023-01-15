@@ -207,7 +207,7 @@ Variant PackedDataContainer::_key_at_ofs(uint32_t p_ofs, const Variant &p_key, b
 	}
 }
 
-uint32_t PackedDataContainer::_pack(const Variant &p_data, Vector<uint8_t> &tmpdata, Map<String, uint32_t> &string_cache) {
+uint32_t PackedDataContainer::_pack(const Variant &p_data, Vector<uint8_t> &tmpdata, RBMap<String, uint32_t> &string_cache) {
 	switch (p_data.get_type()) {
 		case Variant::STRING: {
 			String s = p_data;
@@ -316,7 +316,7 @@ uint32_t PackedDataContainer::_pack(const Variant &p_data, Vector<uint8_t> &tmpd
 
 Error PackedDataContainer::pack(const Variant &p_data) {
 	Vector<uint8_t> tmpdata;
-	Map<String, uint32_t> string_cache;
+	RBMap<String, uint32_t> string_cache;
 	_pack(p_data, tmpdata, string_cache);
 	datalen = tmpdata.size();
 	data.resize(tmpdata.size());

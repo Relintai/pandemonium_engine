@@ -57,8 +57,8 @@ static bool _is_bin_symbol(CharType c) {
 	return (c == '0' || c == '1');
 }
 
-Map<int, TextEdit::HighlighterInfo> GDScriptSyntaxHighlighter::_get_line_syntax_highlighting(int p_line) {
-	Map<int, TextEdit::HighlighterInfo> color_map;
+RBMap<int, TextEdit::HighlighterInfo> GDScriptSyntaxHighlighter::_get_line_syntax_highlighting(int p_line) {
+	RBMap<int, TextEdit::HighlighterInfo> color_map;
 
 	Type next_type = NONE;
 	Type current_type = NONE;
@@ -85,7 +85,7 @@ Map<int, TextEdit::HighlighterInfo> GDScriptSyntaxHighlighter::_get_line_syntax_
 	int in_region = text_editor->_is_line_in_region(p_line);
 	int deregion = 0;
 
-	const Map<int, TextEdit::Text::ColorRegionInfo> cri_map = text_editor->_get_line_color_region_info(p_line);
+	const RBMap<int, TextEdit::Text::ColorRegionInfo> cri_map = text_editor->_get_line_color_region_info(p_line);
 	const String &str = text_editor->get_line(p_line);
 	Color prev_color;
 	for (int j = 0; j < str.length(); j++) {

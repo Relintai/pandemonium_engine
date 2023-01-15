@@ -224,7 +224,7 @@ AudioStreamPreviewGenerator *AudioStreamPreviewGenerator::singleton = nullptr;
 void AudioStreamPreviewGenerator::_notification(int p_what) {
 	if (p_what == NOTIFICATION_PROCESS) {
 		List<ObjectID> to_erase;
-		for (Map<ObjectID, Preview>::Element *E = previews.front(); E; E = E->next()) {
+		for (RBMap<ObjectID, Preview>::Element *E = previews.front(); E; E = E->next()) {
 			if (!E->get().generating.is_set()) {
 				if (E->get().thread) {
 					E->get().thread->wait_to_finish();

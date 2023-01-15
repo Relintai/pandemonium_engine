@@ -41,7 +41,7 @@ class InputDefault : public Input {
 	Set<int> physical_keys_pressed;
 	Set<int> keys_pressed;
 	Set<int> joy_buttons_pressed;
-	Map<int, float> _joy_axis;
+	RBMap<int, float> _joy_axis;
 	//Map<StringName,int> custom_action_press;
 	Vector3 gravity;
 	Vector3 accelerometer;
@@ -59,7 +59,7 @@ class InputDefault : public Input {
 		float raw_strength;
 	};
 
-	Map<StringName, Action> action_state;
+	RBMap<StringName, Action> action_state;
 
 	bool emulate_touch_from_mouse;
 	bool emulate_mouse_from_touch;
@@ -104,8 +104,8 @@ class InputDefault : public Input {
 	};
 
 	SpeedTrack mouse_speed_track;
-	Map<int, SpeedTrack> touch_speed_track;
-	Map<int, Joypad> joy_names;
+	RBMap<int, SpeedTrack> touch_speed_track;
+	RBMap<int, Joypad> joy_names;
 	int fallback_mapping;
 
 	CursorShape default_shape;
@@ -211,7 +211,7 @@ protected:
 		uint64_t timestamp;
 	};
 
-	Map<int, VibrationInfo> joy_vibration;
+	RBMap<int, VibrationInfo> joy_vibration;
 
 public:
 	virtual bool is_key_pressed(int p_scancode) const;

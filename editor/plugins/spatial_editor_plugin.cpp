@@ -32,7 +32,7 @@
 
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/pool_vector.h"
 #include "core/containers/rid_handle.h"
 #include "core/containers/set.h"
@@ -449,11 +449,11 @@ Transform SpatialEditorViewport::to_camera_transform(const Cursor &p_cursor) con
 }
 
 int SpatialEditorViewport::get_selected_count() const {
-	Map<Node *, Object *> &selection = editor_selection->get_selection();
+	RBMap<Node *, Object *> &selection = editor_selection->get_selection();
 
 	int count = 0;
 
-	for (Map<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
+	for (RBMap<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
 		Spatial *sp = Object::cast_to<Spatial>(E->key());
 		if (!sp) {
 			continue;
@@ -959,7 +959,7 @@ void SpatialEditorViewport::_compute_edit(const Point2 &p_point) {
 	SpatialEditorSelectedItem *se = selected ? editor_selection->get_node_editor_data<SpatialEditorSelectedItem>(selected) : nullptr;
 
 	if (se && se->gizmo.is_valid()) {
-		for (Map<int, Transform>::Element *E = se->subgizmos.front(); E; E = E->next()) {
+		for (RBMap<int, Transform>::Element *E = se->subgizmos.front(); E; E = E->next()) {
 			int subgizmo_id = E->key();
 			se->subgizmos[subgizmo_id] = se->gizmo->get_subgizmo_transform(subgizmo_id);
 		}
@@ -1501,7 +1501,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 							Vector<int> ids;
 							Vector<Transform> restore;
 
-							for (Map<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
+							for (RBMap<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
 								ids.push_back(GE->key());
 								restore.push_back(GE->value());
 							}
@@ -1752,7 +1752,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 							Vector<int> ids;
 							Vector<Transform> restore;
 
-							for (Map<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
+							for (RBMap<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
 								ids.push_back(GE->key());
 								restore.push_back(GE->value());
 							}
@@ -1989,7 +1989,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 							}
 
 							if (se->gizmo.is_valid()) {
-								for (Map<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
+								for (RBMap<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
 									Transform xform = GE->get();
 									Transform new_xform = _compute_transform(TRANSFORM_SCALE, se->original * xform, xform, motion, snap, local_coords);
 									if (!local_coords) {
@@ -2088,7 +2088,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 							}
 
 							if (se->gizmo.is_valid()) {
-								for (Map<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
+								for (RBMap<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
 									Transform xform = GE->get();
 									Transform new_xform = _compute_transform(TRANSFORM_TRANSLATE, se->original * xform, xform, motion, snap, local_coords);
 									new_xform = se->original.affine_inverse() * new_xform;
@@ -2175,7 +2175,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 
 							Vector3 compute_axis = local_coords ? axis : plane.normal;
 							if (se->gizmo.is_valid()) {
-								for (Map<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
+								for (RBMap<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
 									Transform xform = GE->get();
 
 									Transform new_xform = _compute_transform(TRANSFORM_ROTATE, se->original * xform, xform, compute_axis, angle, local_coords);
@@ -2866,12 +2866,12 @@ void SpatialEditorViewport::_notification(int p_what) {
 
 		_update_camera(delta);
 
-		Map<Node *, Object *> &selection = editor_selection->get_selection();
+		RBMap<Node *, Object *> &selection = editor_selection->get_selection();
 
 		bool changed = false;
 		bool exist = false;
 
-		for (Map<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
+		for (RBMap<Node *, Object *>::Element *E = selection.front(); E; E = E->next()) {
 			Spatial *sp = Object::cast_to<Spatial>(E->key());
 			if (!sp) {
 				continue;
@@ -3961,7 +3961,7 @@ void SpatialEditorViewport::focus_selection() {
 		}
 
 		if (se->gizmo.is_valid()) {
-			for (Map<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
+			for (RBMap<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
 				center += se->gizmo->get_subgizmo_transform(GE->key()).origin;
 				count++;
 			}
@@ -5045,7 +5045,7 @@ void SpatialEditor::update_transform_gizmo() {
 	SpatialEditorSelectedItem *se = selected ? editor_selection->get_node_editor_data<SpatialEditorSelectedItem>(selected) : nullptr;
 
 	if (se && se->gizmo.is_valid()) {
-		for (Map<int, Transform>::Element *E = se->subgizmos.front(); E; E = E->next()) {
+		for (RBMap<int, Transform>::Element *E = se->subgizmos.front(); E; E = E->next()) {
 			Transform xf = se->sp->get_global_transform() * se->gizmo->get_subgizmo_transform(E->key());
 			gizmo_center += xf.origin;
 			if (count == 0 && local_gizmo_coords) {
@@ -6810,7 +6810,7 @@ Vector<int> SpatialEditor::get_subgizmo_selection() {
 
 	Vector<int> ret;
 	if (se) {
-		for (Map<int, Transform>::Element *E = se->subgizmos.front(); E; E = E->next()) {
+		for (RBMap<int, Transform>::Element *E = se->subgizmos.front(); E; E = E->next()) {
 			ret.push_back(E->key());
 		}
 	}

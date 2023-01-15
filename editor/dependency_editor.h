@@ -34,7 +34,7 @@
 
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"
@@ -62,7 +62,7 @@ class DependencyEditor : public AcceptDialog {
 	String editing;
 	List<String> missing;
 
-	void _fix_and_find(EditorFileSystemDirectory *efsd, Map<String, Map<String, String>> &candidates);
+	void _fix_and_find(EditorFileSystemDirectory *efsd, RBMap<String, RBMap<String, String>> &candidates);
 
 	void _searched(const String &p_path);
 	void _load_pressed(Object *p_item, int p_cell, int p_button);
@@ -110,7 +110,7 @@ class DependencyRemoveDialog : public ConfirmationDialog {
 	Label *text;
 	Tree *owners;
 
-	Map<String, String> all_remove_files;
+	RBMap<String, String> all_remove_files;
 	Vector<String> dirs_to_delete;
 	Vector<String> files_to_delete;
 

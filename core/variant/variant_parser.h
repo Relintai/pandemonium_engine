@@ -139,7 +139,7 @@ public:
 
 	struct Tag {
 		String name;
-		Map<String, Variant> fields;
+		RBMap<String, Variant> fields;
 	};
 
 private:

@@ -2,7 +2,7 @@
 #define FILE_CACHE_H
 
 #include "core/containers/hash_map.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/os/os.h"
 #include "core/os/rw_lock.h"
 #include "core/string/ustring.h"
@@ -59,7 +59,7 @@ protected:
 	};
 
 	RWLock _lock;
-	Map<String, CacheEntry *> cache_map;
+	RBMap<String, CacheEntry *> cache_map;
 
 	String _wwwroot_orig;
 	String _wwwroot;

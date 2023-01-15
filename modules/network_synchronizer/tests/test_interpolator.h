@@ -60,14 +60,14 @@ TEST_CASE_TEMPLATE("[Modules][Interpolator] Interpolation", T, int, real_t, Vect
 	fractions.push_back(0.25);
 	fractions.push_back(0.75);
 
-	Map<real_t, real_t> values;
+	RBMap<real_t, real_t> values;
 	values.insert(0.0, 1.0);
 	values.insert(-1.0, 1.0);
 	values.insert(0.0, -1.0);
 	values.insert(10, 15);
 
 	Interpolator interpolator;
-	for (const Map<real_t, real_t>::Element *E = values.front(); E; E = E->next()) {
+	for (const RBMap<real_t, real_t>::Element *E = values.front(); E; E = E->next()) {
 		for (uint32_t j = 0; j < fractions.size(); ++j) {
 			// Skip custom interpolator for now
 			for (int k = Interpolator::FALLBACK_INTERPOLATE; k < Interpolator::FALLBACK_CUSTOM_INTERPOLATOR; ++k) {

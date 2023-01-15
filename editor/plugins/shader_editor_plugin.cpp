@@ -37,7 +37,7 @@
 #include "core/error/error_macros.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/transform_2d.h"
 #include "core/os/file_access.h"
 #include "core/input/input_event.h"
@@ -187,8 +187,8 @@ void ShaderTextEditor::_load_theme_settings() {
 
 	List<String> built_ins;
 	if (shader.is_valid()) {
-		for (const Map<StringName, ShaderLanguage::FunctionInfo>::Element *E = ShaderTypes::get_singleton()->get_functions(RenderingServer::ShaderMode(shader->get_mode())).front(); E; E = E->next()) {
-			for (const Map<StringName, ShaderLanguage::BuiltInInfo>::Element *F = E->get().built_ins.front(); F; F = F->next()) {
+		for (const RBMap<StringName, ShaderLanguage::FunctionInfo>::Element *E = ShaderTypes::get_singleton()->get_functions(RenderingServer::ShaderMode(shader->get_mode())).front(); E; E = E->next()) {
+			for (const RBMap<StringName, ShaderLanguage::BuiltInInfo>::Element *F = E->get().built_ins.front(); F; F = F->next()) {
 				built_ins.push_back(F->key());
 			}
 		}

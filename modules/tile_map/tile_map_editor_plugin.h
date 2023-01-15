@@ -144,7 +144,7 @@ class TileMapEditor : public VBoxContainer {
 				tr(false) {}
 	};
 
-	Map<Point2i, CellOp> paint_undo;
+	RBMap<Point2i, CellOp> paint_undo;
 
 	struct TileData {
 		Point2i pos;
@@ -163,7 +163,7 @@ class TileMapEditor : public VBoxContainer {
 
 	List<TileData> copydata;
 
-	Map<Point2i, CellOp> undo_data;
+	RBMap<Point2i, CellOp> undo_data;
 	Vector<int> invalid_cell;
 
 	void _pick_tile(const Point2 &p_pos);

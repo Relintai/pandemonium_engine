@@ -38,7 +38,7 @@
 
 #include "core/math/color.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/resource.h"
@@ -195,7 +195,7 @@ protected:
 
 	static void _bind_methods();
 
-	Map<String, SyntaxHighlighter *> highlighters;
+	RBMap<String, SyntaxHighlighter *> highlighters;
 	void _change_syntax_highlighter(int p_idx);
 
 	void _edit_option(int p_op);

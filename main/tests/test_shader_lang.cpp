@@ -185,7 +185,7 @@ static String dump_node_code(SL::Node *p_node, int p_level) {
 
 			//variables
 			code += _mktab(p_level - 1) + "{\n";
-			for (Map<StringName, SL::BlockNode::Variable>::Element *E = bnode->variables.front(); E; E = E->next()) {
+			for (RBMap<StringName, SL::BlockNode::Variable>::Element *E = bnode->variables.front(); E; E = E->next()) {
 				code += _mktab(p_level) + _prestr(E->get().precision) + _typestr(E->get().type) + " " + E->key() + ";\n";
 			}
 
@@ -317,7 +317,7 @@ MainLoop *test() {
 	}
 
 	List<String> code_list;
-	List<Map<StringName, SL::FunctionInfo>> dt_list;
+	List<RBMap<StringName, SL::FunctionInfo>> dt_list;
 	List<Vector<StringName>> rm_list;
 	List<Set<String>> types_list;
 	int test_count = 0;
@@ -340,7 +340,7 @@ MainLoop *test() {
 			rm.push_back("test_rm");
 			rm_list.push_back(rm);
 
-			Map<StringName, SL::FunctionInfo> dt;
+			RBMap<StringName, SL::FunctionInfo> dt;
 			dt["fragment"].built_ins["COLOR"] = SL::TYPE_VEC4;
 			dt["fragment"].can_discard = true;
 			dt_list.push_back(dt);
@@ -368,7 +368,7 @@ MainLoop *test() {
 			rm.push_back("test_rm");
 			rm_list.push_back(rm);
 
-			Map<StringName, SL::FunctionInfo> dt;
+			RBMap<StringName, SL::FunctionInfo> dt;
 			dt["fragment"].built_ins["ALBEDO"] = SL::TYPE_VEC3;
 			dt["fragment"].can_discard = true;
 			dt_list.push_back(dt);
@@ -413,7 +413,7 @@ MainLoop *test() {
 
 	for (int i = 0; i < test_count; i++) {
 		String code = code_list[i];
-		Map<StringName, SL::FunctionInfo> dt = dt_list[i];
+		RBMap<StringName, SL::FunctionInfo> dt = dt_list[i];
 		Vector<StringName> rm = rm_list[i];
 		Set<String> types = types_list[i];
 

@@ -1,5 +1,8 @@
+#ifndef RB_MAP_H
+#define RB_MAP_H
+
 /*************************************************************************/
-/*  rb_map.h                                                             */
+/*  map.h                                                                */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,15 +31,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RB_MAP_H
-#define RB_MAP_H
-
 #include "core/error/error_macros.h"
 #include "core/os/memory.h"
-#include "core/containers/pair.h"
 
 // based on the very nice implementation of rb-trees by:
-// https://web.archive.org/web/20120507164830/https://web.mit.edu/~emin/www/source_code/red_black_tree/index.html
+// https://web.archive.org/web/20120507164830/http://web.mit.edu/~emin/www/source_code/red_black_tree/index.html
 
 template <class K, class V, class C = Comparator<K>, class A = DefaultAllocator>
 class RBMap {
@@ -50,18 +49,17 @@ public:
 	class Element {
 	private:
 		friend class RBMap<K, V, C, A>;
-		int color = RED;
-		Element *right = nullptr;
-		Element *left = nullptr;
-		Element *parent = nullptr;
-		Element *_next = nullptr;
-		Element *_prev = nullptr;
-		KeyValue<K, V> _data;
+		int color;
+		Element *right;
+		Element *left;
+		Element *parent;
+		Element *_next;
+		Element *_prev;
+		K _key;
+		V _value;
+		//_Data *data;
 
 	public:
-		KeyValue<K, V> &key_value() { return _data; }
-		const KeyValue<K, V> &key_value() const { return _data; }
-
 		const Element *next() const {
 			return _next;
 		}
@@ -75,115 +73,35 @@ public:
 			return _prev;
 		}
 		const K &key() const {
-			return _data.key;
-		}
+			return _key;
+		};
 		V &value() {
-			return _data.value;
-		}
+			return _value;
+		};
 		const V &value() const {
-			return _data.value;
-		}
+			return _value;
+		};
 		V &get() {
-			return _data.value;
-		}
+			return _value;
+		};
 		const V &get() const {
-			return _data.value;
-		}
-		Element(const KeyValue<K, V> &p_data) :
-				_data(p_data) {}
+			return _value;
+		};
+		Element() {
+			color = RED;
+			right = nullptr;
+			left = nullptr;
+			parent = nullptr;
+			_next = nullptr;
+			_prev = nullptr;
+		};
 	};
 
-	typedef KeyValue<K, V> ValueType;
-
-	struct Iterator {
-		_FORCE_INLINE_ KeyValue<K, V> &operator*() const {
-			return E->key_value();
-		}
-		_FORCE_INLINE_ KeyValue<K, V> *operator->() const { return &E->key_value(); }
-		_FORCE_INLINE_ Iterator &operator++() {
-			E = E->next();
-			return *this;
-		}
-		_FORCE_INLINE_ Iterator &operator--() {
-			E = E->prev();
-			return *this;
-		}
-
-		_FORCE_INLINE_ bool operator==(const Iterator &b) const { return E == b.E; }
-		_FORCE_INLINE_ bool operator!=(const Iterator &b) const { return E != b.E; }
-		explicit operator bool() const {
-			return E != nullptr;
-		}
-		Iterator(Element *p_E) { E = p_E; }
-		Iterator() {}
-		Iterator(const Iterator &p_it) { E = p_it.E; }
-
-	private:
-		Element *E = nullptr;
-	};
-
-	struct ConstIterator {
-		_FORCE_INLINE_ const KeyValue<K, V> &operator*() const {
-			return E->key_value();
-		}
-		_FORCE_INLINE_ const KeyValue<K, V> *operator->() const { return &E->key_value(); }
-		_FORCE_INLINE_ ConstIterator &operator++() {
-			E = E->next();
-			return *this;
-		}
-		_FORCE_INLINE_ ConstIterator &operator--() {
-			E = E->prev();
-			return *this;
-		}
-
-		_FORCE_INLINE_ bool operator==(const ConstIterator &b) const { return E == b.E; }
-		_FORCE_INLINE_ bool operator!=(const ConstIterator &b) const { return E != b.E; }
-		explicit operator bool() const {
-			return E != nullptr;
-		}
-		ConstIterator(const Element *p_E) { E = p_E; }
-		ConstIterator() {}
-		ConstIterator(const ConstIterator &p_it) { E = p_it.E; }
-
-	private:
-		const Element *E = nullptr;
-	};
-
-	_FORCE_INLINE_ Iterator begin() {
-		return Iterator(front());
-	}
-	_FORCE_INLINE_ Iterator end() {
-		return Iterator(nullptr);
-	}
-
-#if 0
-	//to use when replacing find()
-	_FORCE_INLINE_ Iterator find(const K &p_key) {
-		return Iterator(find(p_key));
-	}
-#endif
-	_FORCE_INLINE_ void remove(const Iterator &p_iter) {
-		return erase(p_iter.E);
-	}
-
-	_FORCE_INLINE_ ConstIterator begin() const {
-		return ConstIterator(front());
-	}
-	_FORCE_INLINE_ ConstIterator end() const {
-		return ConstIterator(nullptr);
-	}
-
-#if 0
-	//to use when replacing find()
-	_FORCE_INLINE_ ConstIterator find(const K &p_key) const {
-		return ConstIterator(find(p_key));
-	}
-#endif
 private:
 	struct _Data {
-		Element *_root = nullptr;
-		Element *_nil = nullptr;
-		int size_cache = 0;
+		Element *_root;
+		Element *_nil;
+		int size_cache;
 
 		_FORCE_INLINE_ _Data() {
 #ifdef GLOBALNIL_DISABLED
@@ -193,10 +111,12 @@ private:
 #else
 			_nil = (Element *)&_GlobalNilClass::_nil;
 #endif
+			_root = nullptr;
+			size_cache = 0;
 		}
 
 		void _create_root() {
-			_root = memnew_allocator(Element(KeyValue<K, V>(K(), V())), A);
+			_root = memnew_allocator(Element, A);
 			_root->parent = _root->left = _root->right = _nil;
 			_root->color = BLACK;
 		}
@@ -305,9 +225,9 @@ private:
 		C less;
 
 		while (node != _data._nil) {
-			if (less(p_key, node->_data.key)) {
+			if (less(p_key, node->_key)) {
 				node = node->left;
-			} else if (less(node->_data.key, p_key)) {
+			} else if (less(node->_key, p_key)) {
 				node = node->right;
 			} else {
 				return node; // found
@@ -325,9 +245,9 @@ private:
 		while (node != _data._nil) {
 			prev = node;
 
-			if (less(p_key, node->_data.key)) {
+			if (less(p_key, node->_key)) {
 				node = node->left;
-			} else if (less(node->_data.key, p_key)) {
+			} else if (less(node->_key, p_key)) {
 				node = node->right;
 			} else {
 				return node; // found
@@ -338,7 +258,7 @@ private:
 			return nullptr; // tree empty
 		}
 
-		if (less(p_key, prev->_data.key)) {
+		if (less(p_key, prev->_key)) {
 			prev = prev->_prev;
 		}
 
@@ -348,7 +268,7 @@ private:
 	void _insert_rb_fix(Element *p_new_node) {
 		Element *node = p_new_node;
 		Element *nparent = node->parent;
-		Element *ngrand_parent = nullptr;
+		Element *ngrand_parent;
 
 		while (nparent->color == RED) {
 			ngrand_parent = nparent->parent;
@@ -401,25 +321,25 @@ private:
 		while (node != _data._nil) {
 			new_parent = node;
 
-			if (less(p_key, node->_data.key)) {
+			if (less(p_key, node->_key)) {
 				node = node->left;
-			} else if (less(node->_data.key, p_key)) {
+			} else if (less(node->_key, p_key)) {
 				node = node->right;
 			} else {
-				node->_data.value = p_value;
+				node->_value = p_value;
 				return node; // Return existing node with new value
 			}
 		}
 
-		typedef KeyValue<K, V> KV;
-		Element *new_node = memnew_allocator(Element(KV(p_key, p_value)), A);
+		Element *new_node = memnew_allocator(Element, A);
 		new_node->parent = new_parent;
 		new_node->right = _data._nil;
 		new_node->left = _data._nil;
-
+		new_node->_key = p_key;
+		new_node->_value = p_value;
 		//new_node->data=_data;
 
-		if (new_parent == _data._root || less(p_key, new_parent->_data.key)) {
+		if (new_parent == _data._root || less(p_key, new_parent->_key)) {
 			new_parent->left = new_node;
 		} else {
 			new_parent->right = new_node;
@@ -504,7 +424,7 @@ private:
 		Element *rp = ((p_node->left == _data._nil) || (p_node->right == _data._nil)) ? p_node : p_node->_next;
 		Element *node = (rp->left == _data._nil) ? rp->right : rp->left;
 
-		Element *sibling = nullptr;
+		Element *sibling;
 		if (rp == rp->parent->left) {
 			rp->parent->left = node;
 			sibling = rp->parent->right;
@@ -605,7 +525,7 @@ public:
 
 	const Element *find_closest(const K &p_key) const {
 		if (!_data._root) {
-			return nullptr;
+			return NULL;
 		}
 
 		const Element *res = _find_closest(p_key);
@@ -664,7 +584,7 @@ public:
 		CRASH_COND(!_data._root);
 		const Element *e = find(p_key);
 		CRASH_COND(!e);
-		return e->_data.value;
+		return e->_value;
 	}
 
 	V &operator[](const K &p_key) {
@@ -677,7 +597,7 @@ public:
 			e = insert(p_key, V());
 		}
 
-		return e->_data.value;
+		return e->_value;
 	}
 
 	Element *front() const {
@@ -714,12 +634,8 @@ public:
 		return e;
 	}
 
-	inline bool is_empty() const {
-		return _data.size_cache == 0;
-	}
-	inline int size() const {
-		return _data.size_cache;
-	}
+	inline bool empty() const { return _data.size_cache == 0; }
+	inline int size() const { return _data.size_cache; }
 
 	int calculate_depth() const {
 		// used for debug mostly
@@ -751,11 +667,12 @@ public:
 		_copy_from(p_map);
 	}
 
-	_FORCE_INLINE_ RBMap() {}
+	_FORCE_INLINE_ RBMap() {
+	}
 
 	~RBMap() {
 		clear();
 	}
 };
 
-#endif // RB_MAP_H
+#endif

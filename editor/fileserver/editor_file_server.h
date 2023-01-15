@@ -48,7 +48,7 @@ class EditorFileServer : public Object {
 	struct ClientData {
 		Thread *thread;
 		Ref<StreamPeerTCP> connection;
-		Map<int, FileAccess *> files;
+		RBMap<int, FileAccess *> files;
 		EditorFileServer *efs;
 		bool quit;
 	};

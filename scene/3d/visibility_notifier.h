@@ -111,7 +111,7 @@ protected:
 
 	void _find_nodes(Node *p_node);
 
-	Map<Node *, Variant> nodes;
+	RBMap<Node *, Variant> nodes;
 	void _node_removed(Node *p_node);
 	bool enabler[ENABLER_MAX];
 

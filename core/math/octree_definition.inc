@@ -33,7 +33,7 @@
 
 #include "core/containers/list.h"
 #include "core/containers/local_vector.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/math/aabb.h"
 #include "core/math/geometry.h"
 #include "core/math/vector3.h"
@@ -258,8 +258,8 @@ private:
 		typename List<PairData *, AL>::Element *eA, *eB;
 	};
 
-	typedef Map<OctreeElementID, Element, Comparator<OctreeElementID>, AL> ElementMap;
-	typedef Map<PairKey, PairData, Comparator<PairKey>, AL> PairMap;
+	typedef RBMap<OctreeElementID, Element, Comparator<OctreeElementID>, AL> ElementMap;
+	typedef RBMap<PairKey, PairData, Comparator<PairKey>, AL> PairMap;
 	ElementMap element_map;
 	PairMap pair_map;
 

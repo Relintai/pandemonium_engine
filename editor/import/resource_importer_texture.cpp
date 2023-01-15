@@ -88,7 +88,7 @@ void ResourceImporterTexture::update_imports() {
 	}
 
 	Vector<String> to_reimport;
-	for (Map<StringName, int>::Element *E = make_flags.front(); E; E = E->next()) {
+	for (RBMap<StringName, int>::Element *E = make_flags.front(); E; E = E->next()) {
 		Ref<ConfigFile> cf;
 		cf.instance();
 		String src_path = String(E->key()) + ".import";
@@ -151,7 +151,7 @@ String ResourceImporterTexture::get_resource_type() const {
 	return "StreamTexture";
 }
 
-bool ResourceImporterTexture::get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const {
+bool ResourceImporterTexture::get_option_visibility(const String &p_option, const RBMap<StringName, Variant> &p_options) const {
 	if (p_option == "compress/lossy_quality") {
 		int compress_mode = int(p_options["compress/mode"]);
 		if (compress_mode != COMPRESS_LOSSY && compress_mode != COMPRESS_VIDEO_RAM) {
@@ -384,7 +384,7 @@ void ResourceImporterTexture::_save_stex(const Ref<Image> &p_image, const String
 	memdelete(f);
 }
 
-Error ResourceImporterTexture::import(const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error ResourceImporterTexture::import(const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 	int compress_mode = p_options["compress/mode"];
 	float lossy = p_options["compress/lossy_quality"];
 	int repeat = p_options["flags/repeat"];

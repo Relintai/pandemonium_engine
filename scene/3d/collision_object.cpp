@@ -42,7 +42,7 @@ void CollisionObject::_notification(int p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			if (_are_collision_shapes_visible()) {
 				debug_shape_old_transform = get_global_transform();
-				for (Map<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
+				for (RBMap<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
 					debug_shapes_to_update.insert(E->key());
 				}
 				_update_debug_shapes();
@@ -213,7 +213,7 @@ void CollisionObject::_update_shape_data(uint32_t p_owner) {
 }
 
 void CollisionObject::_shape_changed(const Ref<Shape> &p_shape) {
-	for (Map<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
+	for (RBMap<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
 		ShapeData &shapedata = E->get();
 		ShapeData::ShapeBase *shapes = shapedata.shapes.ptrw();
 		for (int i = 0; i < shapedata.shapes.size(); i++) {
@@ -267,7 +267,7 @@ void CollisionObject::_update_debug_shapes() {
 }
 
 void CollisionObject::_clear_debug_shapes() {
-	for (Map<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
+	for (RBMap<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
 		ShapeData &shapedata = E->get();
 		ShapeData::ShapeBase *shapes = shapedata.shapes.ptrw();
 		for (int i = 0; i < shapedata.shapes.size(); i++) {
@@ -288,7 +288,7 @@ void CollisionObject::_clear_debug_shapes() {
 void CollisionObject::_on_transform_changed() {
 	if (debug_shapes_count > 0 && !debug_shape_old_transform.is_equal_approx(get_global_transform())) {
 		debug_shape_old_transform = get_global_transform();
-		for (Map<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
+		for (RBMap<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
 			ShapeData &shapedata = E->get();
 			const ShapeData::ShapeBase *shapes = shapedata.shapes.ptr();
 			for (int i = 0; i < shapedata.shapes.size(); i++) {
@@ -406,14 +406,14 @@ bool CollisionObject::is_shape_owner_disabled(uint32_t p_owner) const {
 }
 
 void CollisionObject::get_shape_owners(List<uint32_t> *r_owners) {
-	for (Map<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
+	for (RBMap<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
 		r_owners->push_back(E->key());
 	}
 }
 
 Array CollisionObject::_get_shape_owners() {
 	Array ret;
-	for (Map<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
+	for (RBMap<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
 		ret.push_back(E->key());
 	}
 
@@ -508,7 +508,7 @@ void CollisionObject::shape_owner_remove_shape(uint32_t p_owner, int p_shape) {
 
 	shapes[p_owner].shapes.remove(p_shape);
 
-	for (Map<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
+	for (RBMap<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
 		for (int i = 0; i < E->get().shapes.size(); i++) {
 			if (E->get().shapes[i].index > index_to_remove) {
 				E->get().shapes.write[i].index -= 1;
@@ -530,7 +530,7 @@ void CollisionObject::shape_owner_clear_shapes(uint32_t p_owner) {
 uint32_t CollisionObject::shape_find_owner(int p_shape_index) const {
 	ERR_FAIL_INDEX_V(p_shape_index, total_subshapes, UINT32_MAX);
 
-	for (const Map<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
+	for (const RBMap<uint32_t, ShapeData>::Element *E = shapes.front(); E; E = E->next()) {
 		for (int i = 0; i < E->get().shapes.size(); i++) {
 			if (E->get().shapes[i].index == p_shape_index) {
 				return E->key();

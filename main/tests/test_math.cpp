@@ -279,7 +279,7 @@ public:
 		bool use_next_class = false;
 		Token tk = get_token();
 
-		Map<int, String> namespace_stack;
+		RBMap<int, String> namespace_stack;
 		int curly_stack = 0;
 
 		while (!error || tk != TK_EOF) {
@@ -295,7 +295,7 @@ public:
 				if (tk == TK_IDENTIFIER) {
 					String name = value;
 					if (use_next_class || p_known_class_name == name) {
-						for (Map<int, String>::Element *E = namespace_stack.front(); E; E = E->next()) {
+						for (RBMap<int, String>::Element *E = namespace_stack.front(); E; E = E->next()) {
 							class_name += E->get() + ".";
 						}
 						class_name += String(value);

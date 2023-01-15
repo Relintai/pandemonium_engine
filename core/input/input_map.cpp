@@ -118,7 +118,7 @@ List<StringName> InputMap::get_actions() const {
 		return actions;
 	}
 
-	for (Map<StringName, Action>::Element *E = input_map.front(); E; E = E->next()) {
+	for (RBMap<StringName, Action>::Element *E = input_map.front(); E; E = E->next()) {
 		actions.push_back(E->key());
 	}
 
@@ -209,7 +209,7 @@ Array InputMap::_get_action_list(const StringName &p_action) {
 }
 
 const List<Ref<InputEvent>> *InputMap::get_action_list(const StringName &p_action) {
-	const Map<StringName, Action>::Element *E = input_map.find(p_action);
+	const RBMap<StringName, Action>::Element *E = input_map.find(p_action);
 	if (!E) {
 		return nullptr;
 	}
@@ -222,7 +222,7 @@ bool InputMap::event_is_action(const Ref<InputEvent> &p_event, const StringName 
 }
 
 bool InputMap::event_get_action_status(const Ref<InputEvent> &p_event, const StringName &p_action, bool p_exact_match, bool *p_pressed, float *p_strength, float *p_raw_strength) const {
-	Map<StringName, Action>::Element *E = input_map.find(p_action);
+	RBMap<StringName, Action>::Element *E = input_map.find(p_action);
 	ERR_FAIL_COND_V_MSG(!E, false, suggest_actions(p_action));
 
 	Ref<InputEventAction> input_event_action = p_event;
@@ -257,7 +257,7 @@ bool InputMap::event_get_action_status(const Ref<InputEvent> &p_event, const Str
 	}
 }
 
-const Map<StringName, InputMap::Action> &InputMap::get_action_map() const {
+const RBMap<StringName, InputMap::Action> &InputMap::get_action_map() const {
 	return input_map;
 }
 

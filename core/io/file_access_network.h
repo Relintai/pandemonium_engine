@@ -51,7 +51,7 @@ class FileAccessNetworkClient {
 	bool quit;
 	Mutex mutex;
 	Mutex blockrequest_mutex;
-	Map<int, FileAccessNetwork *> accesses;
+	RBMap<int, FileAccessNetwork *> accesses;
 	Ref<StreamPeerTCP> client;
 	int32_t last_id;
 

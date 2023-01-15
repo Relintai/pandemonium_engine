@@ -54,7 +54,7 @@ class ScriptDebuggerRemote : public ScriptDebugger {
 	Vector<ScriptLanguage::ProfilingInfo *> profile_info_ptrs;
 	Vector<MultiplayerAPI::ProfilingInfo> network_profile_info;
 
-	Map<StringName, int> profiler_function_signature_map;
+	RBMap<StringName, int> profiler_function_signature_map;
 	float frame_time, process_time, physics_time, physics_frame_time;
 
 	bool profiling;

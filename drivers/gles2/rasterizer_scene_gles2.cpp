@@ -167,7 +167,7 @@ void RasterizerSceneGLES2::shadow_atlas_set_size(RID p_atlas, int p_size) {
 	}
 
 	// erase shadow atlast references from lights
-	for (Map<RID, uint32_t>::Element *E = shadow_atlas->shadow_owners.front(); E; E = E->next()) {
+	for (RBMap<RID, uint32_t>::Element *E = shadow_atlas->shadow_owners.front(); E; E = E->next()) {
 		LightInstance *li = light_instance_owner.getornull(E->key());
 		ERR_CONTINUE(!li);
 		li->shadow_atlases.erase(p_atlas);

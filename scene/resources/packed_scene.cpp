@@ -109,7 +109,7 @@ Node *SceneState::instance(GenEditState p_edit_state) const {
 
 	bool gen_node_path_cache = p_edit_state != GEN_EDIT_STATE_DISABLED && node_path_cache.empty();
 
-	Map<Ref<Resource>, Ref<Resource>> resources_local_to_scene;
+	RBMap<Ref<Resource>, Ref<Resource>> resources_local_to_scene;
 
 	for (int i = 0; i < nc; i++) {
 		const NodeData &n = nd[i];
@@ -246,7 +246,7 @@ Node *SceneState::instance(GenEditState p_edit_state) const {
 							Ref<Resource> res = value;
 							if (res.is_valid()) {
 								if (res->is_local_to_scene()) {
-									Map<Ref<Resource>, Ref<Resource>>::Element *E = resources_local_to_scene.find(res);
+									RBMap<Ref<Resource>, Ref<Resource>>::Element *E = resources_local_to_scene.find(res);
 
 									if (E) {
 										value = E->get();
@@ -339,7 +339,7 @@ Node *SceneState::instance(GenEditState p_edit_state) const {
 		}
 	}
 
-	for (Map<Ref<Resource>, Ref<Resource>>::Element *E = resources_local_to_scene.front(); E; E = E->next()) {
+	for (RBMap<Ref<Resource>, Ref<Resource>>::Element *E = resources_local_to_scene.front(); E; E = E->next()) {
 		E->get()->setup_local_to_scene();
 	}
 
@@ -389,7 +389,7 @@ Node *SceneState::instance(GenEditState p_edit_state) const {
 	return ret_nodes[0];
 }
 
-static int _nm_get_string(const String &p_string, Map<StringName, int> &name_map) {
+static int _nm_get_string(const String &p_string, RBMap<StringName, int> &name_map) {
 	if (name_map.has(p_string)) {
 		return name_map[p_string];
 	}
@@ -409,7 +409,7 @@ static int _vm_get_variant(const Variant &p_variant, HashMap<Variant, int, Varia
 	return idx;
 }
 
-Error SceneState::_parse_node(Node *p_owner, Node *p_node, int p_parent_idx, Map<StringName, int> &name_map, HashMap<Variant, int, VariantHasher, VariantComparator> &variant_map, Map<Node *, int> &node_map, Map<Node *, int> &nodepath_map) {
+Error SceneState::_parse_node(Node *p_owner, Node *p_node, int p_parent_idx, RBMap<StringName, int> &name_map, HashMap<Variant, int, VariantHasher, VariantComparator> &variant_map, RBMap<Node *, int> &node_map, RBMap<Node *, int> &nodepath_map) {
 	// this function handles all the work related to properly packing scenes, be it
 	// instanced or inherited.
 	// given the complexity of this process, an attempt will be made to properly
@@ -628,7 +628,7 @@ Error SceneState::_parse_node(Node *p_owner, Node *p_node, int p_parent_idx, Map
 	return OK;
 }
 
-Error SceneState::_parse_connections(Node *p_owner, Node *p_node, Map<StringName, int> &name_map, HashMap<Variant, int, VariantHasher, VariantComparator> &variant_map, Map<Node *, int> &node_map, Map<Node *, int> &nodepath_map) {
+Error SceneState::_parse_connections(Node *p_owner, Node *p_node, RBMap<StringName, int> &name_map, HashMap<Variant, int, VariantHasher, VariantComparator> &variant_map, RBMap<Node *, int> &node_map, RBMap<Node *, int> &nodepath_map) {
 	if (p_node != p_owner && p_node->get_owner() && p_node->get_owner() != p_owner && !p_owner->is_editable_instance(p_node->get_owner())) {
 		return OK;
 	}
@@ -811,10 +811,10 @@ Error SceneState::pack(Node *p_scene) {
 
 	Node *scene = p_scene;
 
-	Map<StringName, int> name_map;
+	RBMap<StringName, int> name_map;
 	HashMap<Variant, int, VariantHasher, VariantComparator> variant_map;
-	Map<Node *, int> node_map;
-	Map<Node *, int> nodepath_map;
+	RBMap<Node *, int> node_map;
+	RBMap<Node *, int> nodepath_map;
 
 	// If using scene inheritance, pack the scene it inherits from.
 	if (scene->get_scene_inherited_state().is_valid()) {
@@ -840,7 +840,7 @@ Error SceneState::pack(Node *p_scene) {
 
 	names.resize(name_map.size());
 
-	for (Map<StringName, int>::Element *E = name_map.front(); E; E = E->next()) {
+	for (RBMap<StringName, int>::Element *E = name_map.front(); E; E = E->next()) {
 		names.write[E->get()] = E->key();
 	}
 
@@ -852,13 +852,13 @@ Error SceneState::pack(Node *p_scene) {
 	}
 
 	node_paths.resize(nodepath_map.size());
-	for (Map<Node *, int>::Element *E = nodepath_map.front(); E; E = E->next()) {
+	for (RBMap<Node *, int>::Element *E = nodepath_map.front(); E; E = E->next()) {
 		node_paths.write[E->get()] = scene->get_path_to(E->key());
 	}
 
 	if (Engine::get_singleton()->is_editor_hint()) {
 		// Build node path cache
-		for (Map<Node *, int>::Element *E = node_map.front(); E; E = E->next()) {
+		for (RBMap<Node *, int>::Element *E = node_map.front(); E; E = E->next()) {
 			node_path_cache[scene->get_path_to(E->key())] = E->get();
 		}
 	}
@@ -930,7 +930,7 @@ int SceneState::find_node_by_path(const NodePath &p_node) const {
 }
 
 int SceneState::_find_base_scene_node_remap_key(int p_idx) const {
-	for (Map<int, int>::Element *E = base_scene_node_remap.front(); E; E = E->next()) {
+	for (RBMap<int, int>::Element *E = base_scene_node_remap.front(); E; E = E->next()) {
 		if (E->value() == p_idx) {
 			return E->key();
 		}

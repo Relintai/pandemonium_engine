@@ -1524,8 +1524,8 @@ Set<String> EditorFileSystem::get_valid_extensions() const {
 Error EditorFileSystem::_reimport_group(const String &p_group_file, const Vector<String> &p_files) {
 	String importer_name;
 
-	Map<String, Map<StringName, Variant>> source_file_options;
-	Map<String, String> base_paths;
+	RBMap<String, RBMap<StringName, Variant>> source_file_options;
+	RBMap<String, String> base_paths;
 	for (int i = 0; i < p_files.size(); i++) {
 		Ref<ConfigFile> config;
 		config.instance();
@@ -1541,7 +1541,7 @@ Error EditorFileSystem::_reimport_group(const String &p_group_file, const Vector
 			ERR_FAIL_V(ERR_FILE_CORRUPT);
 		}
 
-		source_file_options[p_files[i]] = Map<StringName, Variant>();
+		source_file_options[p_files[i]] = RBMap<StringName, Variant>();
 		importer_name = file_importer_name;
 
 		if (importer_name == "keep") {
@@ -1582,7 +1582,7 @@ Error EditorFileSystem::_reimport_group(const String &p_group_file, const Vector
 	Error err = importer->import_group_file(p_group_file, source_file_options, base_paths);
 
 	//all went well, overwrite config files with proper remaps and md5s
-	for (Map<String, Map<StringName, Variant>>::Element *E = source_file_options.front(); E; E = E->next()) {
+	for (RBMap<String, RBMap<StringName, Variant>>::Element *E = source_file_options.front(); E; E = E->next()) {
 		const String &file = E->key();
 		String base_path = ResourceFormatImporter::get_singleton()->get_import_base_path(file);
 		FileAccessRef f = FileAccess::open(file + ".import", FileAccess::WRITE);
@@ -1692,7 +1692,7 @@ void EditorFileSystem::_reimport_file(const String &p_file) {
 
 	//try to obtain existing params
 
-	Map<StringName, Variant> params;
+	RBMap<StringName, Variant> params;
 	String importer_name;
 
 	if (FileAccess::exists(p_file + ".import")) {
@@ -1893,7 +1893,7 @@ void EditorFileSystem::_reimport_file(const String &p_file) {
 	EditorResourcePreview::get_singleton()->check_for_invalidation(p_file);
 }
 
-void EditorFileSystem::_find_group_files(EditorFileSystemDirectory *efd, Map<String, Vector<String>> &group_files, Set<String> &groups_to_reimport) {
+void EditorFileSystem::_find_group_files(EditorFileSystemDirectory *efd, RBMap<String, Vector<String>> &group_files, Set<String> &groups_to_reimport) {
 	int fc = efd->files.size();
 	const EditorFileSystemDirectory::FileInfo *const *files = efd->files.ptr();
 	for (int i = 0; i < fc; i++) {
@@ -1983,9 +1983,9 @@ void EditorFileSystem::reimport_files(const Vector<String> &p_files) {
 	//reimport groups
 
 	if (groups_to_reimport.size()) {
-		Map<String, Vector<String>> group_files;
+		RBMap<String, Vector<String>> group_files;
 		_find_group_files(filesystem, group_files, groups_to_reimport);
-		for (Map<String, Vector<String>>::Element *E = group_files.front(); E; E = E->next()) {
+		for (RBMap<String, Vector<String>>::Element *E = group_files.front(); E; E = E->next()) {
 			Error err = _reimport_group(E->key(), E->get());
 			if (err == OK) {
 				_reimport_file(E->key());

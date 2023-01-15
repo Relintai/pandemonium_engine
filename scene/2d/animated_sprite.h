@@ -50,7 +50,7 @@ class SpriteFrames : public Resource {
 		StringName normal_name;
 	};
 
-	Map<StringName, Anim> animations;
+	RBMap<StringName, Anim> animations;
 
 	Array _get_frames() const;
 	void _set_frames(const Array &p_frames);
@@ -79,7 +79,7 @@ public:
 	void add_frame(const StringName &p_anim, const Ref<Texture> &p_frame, int p_at_pos = -1);
 	int get_frame_count(const StringName &p_anim) const;
 	_FORCE_INLINE_ Ref<Texture> get_frame(const StringName &p_anim, int p_idx) const {
-		const Map<StringName, Anim>::Element *E = animations.find(p_anim);
+		const RBMap<StringName, Anim>::Element *E = animations.find(p_anim);
 		ERR_FAIL_COND_V_MSG(!E, Ref<Texture>(), "Animation '" + String(p_anim) + "' doesn't exist.");
 		ERR_FAIL_COND_V(p_idx < 0, Ref<Texture>());
 		if (p_idx >= E->get().frames.size()) {
@@ -90,11 +90,11 @@ public:
 	}
 
 	_FORCE_INLINE_ Ref<Texture> get_normal_frame(const StringName &p_anim, int p_idx) const {
-		const Map<StringName, Anim>::Element *E = animations.find(p_anim);
+		const RBMap<StringName, Anim>::Element *E = animations.find(p_anim);
 		ERR_FAIL_COND_V_MSG(!E, Ref<Texture>(), "Animation '" + String(p_anim) + "' doesn't exist.");
 		ERR_FAIL_COND_V(p_idx < 0, Ref<Texture>());
 
-		const Map<StringName, Anim>::Element *EN = animations.find(E->get().normal_name);
+		const RBMap<StringName, Anim>::Element *EN = animations.find(E->get().normal_name);
 
 		if (!EN || p_idx >= EN->get().frames.size()) {
 			return Ref<Texture>();
@@ -104,7 +104,7 @@ public:
 	}
 
 	void set_frame(const StringName &p_anim, int p_idx, const Ref<Texture> &p_frame) {
-		Map<StringName, Anim>::Element *E = animations.find(p_anim);
+		RBMap<StringName, Anim>::Element *E = animations.find(p_anim);
 		ERR_FAIL_COND_MSG(!E, "Animation '" + String(p_anim) + "' doesn't exist.");
 		ERR_FAIL_COND(p_idx < 0);
 		if (p_idx >= E->get().frames.size()) {

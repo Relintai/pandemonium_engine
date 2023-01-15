@@ -73,20 +73,20 @@ struct SpatialIndexer2D {
 	};
 
 	struct CellData {
-		Map<VisibilityNotifier2D *, CellRef> notifiers;
+		RBMap<VisibilityNotifier2D *, CellRef> notifiers;
 	};
 
-	Map<CellKey, CellData> cells;
+	RBMap<CellKey, CellData> cells;
 	int cell_size;
 
-	Map<VisibilityNotifier2D *, Rect2> notifiers;
+	RBMap<VisibilityNotifier2D *, Rect2> notifiers;
 
 	struct WorldData {
-		Map<VisibilityNotifier2D *, uint64_t> notifiers;
+		RBMap<VisibilityNotifier2D *, uint64_t> notifiers;
 		Rect2 rect;
 	};
 
-	Map<World *, WorldData> worlds;
+	RBMap<World *, WorldData> worlds;
 
 	bool changed;
 
@@ -102,7 +102,7 @@ struct SpatialIndexer2D {
 				CellKey ck;
 				ck.x = i;
 				ck.y = j;
-				Map<CellKey, CellData>::Element *E = cells.find(ck);
+				RBMap<CellKey, CellData>::Element *E = cells.find(ck);
 
 				if (p_add) {
 					if (!E) {
@@ -130,7 +130,7 @@ struct SpatialIndexer2D {
 	}
 
 	void _notifier_update(VisibilityNotifier2D *p_notifier, const Rect2 &p_rect) {
-		Map<VisibilityNotifier2D *, Rect2>::Element *E = notifiers.find(p_notifier);
+		RBMap<VisibilityNotifier2D *, Rect2>::Element *E = notifiers.find(p_notifier);
 		ERR_FAIL_COND(!E);
 		if (E->get() == p_rect) {
 			return;
@@ -143,14 +143,14 @@ struct SpatialIndexer2D {
 	}
 
 	void _notifier_remove(VisibilityNotifier2D *p_notifier) {
-		Map<VisibilityNotifier2D *, Rect2>::Element *E = notifiers.find(p_notifier);
+		RBMap<VisibilityNotifier2D *, Rect2>::Element *E = notifiers.find(p_notifier);
 		ERR_FAIL_COND(!E);
 		_notifier_update_cells(p_notifier, E->get(), false);
 		notifiers.erase(p_notifier);
 
 		List<World *> removed;
-		for (Map<World *, WorldData>::Element *F = worlds.front(); F; F = F->next()) {
-			Map<VisibilityNotifier2D *, uint64_t>::Element *G = F->get().notifiers.find(p_notifier);
+		for (RBMap<World *, WorldData>::Element *F = worlds.front(); F; F = F->next()) {
+			RBMap<VisibilityNotifier2D *, uint64_t>::Element *G = F->get().notifiers.find(p_notifier);
 
 			if (G) {
 				F->get().notifiers.erase(G);
@@ -175,7 +175,7 @@ struct SpatialIndexer2D {
 	}
 
 	void _update_world(World *p_world, const Rect2 &p_rect) {
-		Map<World *, WorldData>::Element *E = worlds.find(p_world);
+		RBMap<World *, WorldData>::Element *E = worlds.find(p_world);
 		ERR_FAIL_COND(!E);
 		if (E->get().rect == p_rect) {
 			return;
@@ -187,7 +187,7 @@ struct SpatialIndexer2D {
 	void _remove_world(World *p_world) {
 		ERR_FAIL_COND(!worlds.has(p_world));
 		List<VisibilityNotifier2D *> removed;
-		for (Map<VisibilityNotifier2D *, uint64_t>::Element *E = worlds[p_world].notifiers.front(); E; E = E->next()) {
+		for (RBMap<VisibilityNotifier2D *, uint64_t>::Element *E = worlds[p_world].notifiers.front(); E; E = E->next()) {
 			removed.push_back(E->key());
 		}
 
@@ -204,7 +204,7 @@ struct SpatialIndexer2D {
 			return;
 		}
 
-		for (Map<World *, WorldData>::Element *E = worlds.front(); E; E = E->next()) {
+		for (RBMap<World *, WorldData>::Element *E = worlds.front(); E; E = E->next()) {
 			Point2i begin = E->get().rect.position;
 			begin /= cell_size;
 			Point2i end = E->get().rect.position + E->get().rect.size;
@@ -218,7 +218,7 @@ struct SpatialIndexer2D {
 			if (visible_cells > 10000) {
 				//well you zoomed out a lot, it's your problem. To avoid freezing in the for loops below, we'll manually check cell by cell
 
-				for (Map<CellKey, CellData>::Element *F = cells.front(); F; F = F->next()) {
+				for (RBMap<CellKey, CellData>::Element *F = cells.front(); F; F = F->next()) {
 					const CellKey &ck = F->key();
 
 					if (ck.x < begin.x || ck.x > end.x) {
@@ -229,8 +229,8 @@ struct SpatialIndexer2D {
 					}
 
 					//notifiers in cell
-					for (Map<VisibilityNotifier2D *, CellRef>::Element *G = F->get().notifiers.front(); G; G = G->next()) {
-						Map<VisibilityNotifier2D *, uint64_t>::Element *H = E->get().notifiers.find(G->key());
+					for (RBMap<VisibilityNotifier2D *, CellRef>::Element *G = F->get().notifiers.front(); G; G = G->next()) {
+						RBMap<VisibilityNotifier2D *, uint64_t>::Element *H = E->get().notifiers.find(G->key());
 						if (!H) {
 							H = E->get().notifiers.insert(G->key(), pass);
 							added.push_back(G->key());
@@ -248,14 +248,14 @@ struct SpatialIndexer2D {
 						ck.x = i;
 						ck.y = j;
 
-						Map<CellKey, CellData>::Element *F = cells.find(ck);
+						RBMap<CellKey, CellData>::Element *F = cells.find(ck);
 						if (!F) {
 							continue;
 						}
 
 						//notifiers in cell
-						for (Map<VisibilityNotifier2D *, CellRef>::Element *G = F->get().notifiers.front(); G; G = G->next()) {
-							Map<VisibilityNotifier2D *, uint64_t>::Element *H = E->get().notifiers.find(G->key());
+						for (RBMap<VisibilityNotifier2D *, CellRef>::Element *G = F->get().notifiers.front(); G; G = G->next()) {
+							RBMap<VisibilityNotifier2D *, uint64_t>::Element *H = E->get().notifiers.find(G->key());
 							if (!H) {
 								H = E->get().notifiers.insert(G->key(), pass);
 								added.push_back(G->key());
@@ -267,7 +267,7 @@ struct SpatialIndexer2D {
 				}
 			}
 
-			for (Map<VisibilityNotifier2D *, uint64_t>::Element *F = E->get().notifiers.front(); F; F = F->next()) {
+			for (RBMap<VisibilityNotifier2D *, uint64_t>::Element *F = E->get().notifiers.front(); F; F = F->next()) {
 				if (F->get() != pass) {
 					removed.push_back(F->key());
 				}
@@ -333,13 +333,13 @@ RID World2D::get_navigation_map() const {
 }
 
 void World2D::get_world_list(List<World *> *r_worlds) {
-	for (Map<World *, SpatialIndexer2D::WorldData>::Element *E = indexer->worlds.front(); E; E = E->next()) {
+	for (RBMap<World *, SpatialIndexer2D::WorldData>::Element *E = indexer->worlds.front(); E; E = E->next()) {
 		r_worlds->push_back(E->key());
 	}
 }
 
 void World2D::get_viewport_list(List<Viewport *> *r_viewports) {
-	for (Map<World *, SpatialIndexer2D::WorldData>::Element *E = indexer->worlds.front(); E; E = E->next()) {
+	for (RBMap<World *, SpatialIndexer2D::WorldData>::Element *E = indexer->worlds.front(); E; E = E->next()) {
 		Viewport *w = Object::cast_to<Viewport>(E->key());
 
 		if (w) {

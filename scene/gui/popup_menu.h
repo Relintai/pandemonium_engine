@@ -94,7 +94,7 @@ class PopupMenu : public Popup {
 	Array _get_items() const;
 	void _set_items(const Array &p_items);
 
-	Map<Ref<ShortCut>, int> shortcut_refcount;
+	RBMap<Ref<ShortCut>, int> shortcut_refcount;
 
 	void _ref_shortcut(Ref<ShortCut> p_sc);
 	void _unref_shortcut(Ref<ShortCut> p_sc);

@@ -102,9 +102,9 @@ protected:
 
 	StringName _default_prop_material_cache_class;
 
-	Map<uint64_t, Ref<Prop2DMaterialCache>> _material_cache;
-	Map<uint64_t, Ref<Prop2DMaterialCache>> _tiled_wall_material_cache;
-	Map<uint64_t, Ref<Prop2DMaterialCache>> _custom_keyed_material_cache;
+	RBMap<uint64_t, Ref<Prop2DMaterialCache>> _material_cache;
+	RBMap<uint64_t, Ref<Prop2DMaterialCache>> _tiled_wall_material_cache;
+	RBMap<uint64_t, Ref<Prop2DMaterialCache>> _custom_keyed_material_cache;
 
 	Mutex _material_cache_mutex;
 	Mutex _tiled_wall_material_cache_mutex;

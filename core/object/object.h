@@ -32,7 +32,7 @@
 
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object_id.h"
 #include "core/os/rw_lock.h"
 #include "core/os/safe_refcount.h"

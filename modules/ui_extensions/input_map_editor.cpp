@@ -578,7 +578,7 @@ void InputMapEditor::_update_actions() {
 	if (setting)
 		return;
 
-	Map<String, bool> collapsed;
+	RBMap<String, bool> collapsed;
 
 	if (input_editor->get_root() && input_editor->get_root()->get_children()) {
 		for (TreeItem *item = input_editor->get_root()->get_children(); item; item = item->get_next()) {

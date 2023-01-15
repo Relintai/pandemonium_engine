@@ -157,7 +157,7 @@ void Geometry::MeshData::clear() {
 }
 
 void Geometry::MeshData::optimize_vertices() {
-	Map<int, int> vtx_remap;
+	RBMap<int, int> vtx_remap;
 
 	for (int i = 0; i < faces.size(); i++) {
 		for (int j = 0; j < faces[i].indices.size(); j++) {

@@ -39,7 +39,7 @@
 #include "scene/resources/theme.h"
 
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/containers/ordered_hash_map.h"
 #include "core/object/reference.h"
@@ -98,7 +98,7 @@ class ThemeItemImportTree : public VBoxContainer {
 		SELECT_IMPORT_FULL,
 	};
 
-	Map<ThemeItem, ItemCheckedState> selected_items;
+	RBMap<ThemeItem, ItemCheckedState> selected_items;
 
 	LineEdit *import_items_filter;
 

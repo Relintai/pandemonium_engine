@@ -98,7 +98,7 @@ void RenderingServerViewport::_draw_viewport(Viewport *p_viewport) {
 	}
 
 	if (!p_viewport->hide_canvas) {
-		Map<Viewport::CanvasKey, Viewport::CanvasData *> canvas_map;
+		RBMap<Viewport::CanvasKey, Viewport::CanvasData *> canvas_map;
 
 		Rect2 clip_rect(0, 0, p_viewport->size.x, p_viewport->size.y);
 		RasterizerCanvas::Light *lights = nullptr;
@@ -106,7 +106,7 @@ void RenderingServerViewport::_draw_viewport(Viewport *p_viewport) {
 		RasterizerCanvas::Light *lights_with_mask = nullptr;
 		Rect2 shadow_rect;
 
-		for (Map<RID, Viewport::CanvasData>::Element *E = p_viewport->canvas_map.front(); E; E = E->next()) {
+		for (RBMap<RID, Viewport::CanvasData>::Element *E = p_viewport->canvas_map.front(); E; E = E->next()) {
 			RenderingServerCanvas::Canvas *canvas = static_cast<RenderingServerCanvas::Canvas *>(E->get().canvas);
 
 			Transform2D xf = _canvas_get_transform(p_viewport, canvas, &E->get(), clip_rect.size);
@@ -166,7 +166,7 @@ void RenderingServerViewport::_draw_viewport(Viewport *p_viewport) {
 			RasterizerCanvas::LightOccluderInstance *occluders = nullptr;
 
 			//make list of occluders
-			for (Map<RID, Viewport::CanvasData>::Element *E = p_viewport->canvas_map.front(); E; E = E->next()) {
+			for (RBMap<RID, Viewport::CanvasData>::Element *E = p_viewport->canvas_map.front(); E; E = E->next()) {
 				RenderingServerCanvas::Canvas *canvas = static_cast<RenderingServerCanvas::Canvas *>(E->get().canvas);
 				Transform2D xf = _canvas_get_transform(p_viewport, canvas, &E->get(), clip_rect.size);
 
@@ -202,7 +202,7 @@ void RenderingServerViewport::_draw_viewport(Viewport *p_viewport) {
 			scenario_draw_canvas_bg = false;
 		}
 
-		for (Map<Viewport::CanvasKey, Viewport::CanvasData *>::Element *E = canvas_map.front(); E; E = E->next()) {
+		for (RBMap<Viewport::CanvasKey, Viewport::CanvasData *>::Element *E = canvas_map.front(); E; E = E->next()) {
 			RenderingServerCanvas::Canvas *canvas = static_cast<RenderingServerCanvas::Canvas *>(E->get()->canvas);
 
 			Transform2D xform = _canvas_get_transform(p_viewport, canvas, E->get(), clip_rect.size);

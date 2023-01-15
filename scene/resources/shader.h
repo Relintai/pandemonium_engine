@@ -57,8 +57,8 @@ private:
 	// shaders keep a list of ShaderMaterial -> RenderingServer name translations, to make
 	// conversion fast and save memory.
 	mutable bool params_cache_dirty;
-	mutable Map<StringName, StringName> params_cache; //map a shader param to a material param..
-	Map<StringName, Ref<Texture>> default_textures;
+	mutable RBMap<StringName, StringName> params_cache; //map a shader param to a material param..
+	RBMap<StringName, Ref<Texture>> default_textures;
 
 	virtual void _update_shader() const; //used for visual shader
 protected:
@@ -88,7 +88,7 @@ public:
 			get_param_list(nullptr);
 		}
 
-		const Map<StringName, StringName>::Element *E = params_cache.find(p_param);
+		const RBMap<StringName, StringName>::Element *E = params_cache.find(p_param);
 		if (E) {
 			return E->get();
 		}

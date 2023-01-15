@@ -273,7 +273,7 @@ void Node::_propagate_enter_tree() {
 
 	data.inside_tree = true;
 
-	for (Map<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
+	for (RBMap<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
 		E->get().group = data.tree->add_to_group(E->key(), this);
 	}
 
@@ -356,7 +356,7 @@ void Node::_propagate_exit_tree() {
 
 	if (ScriptDebugger::get_singleton() && data.filename != String()) {
 		//used for live edit
-		Map<String, Set<Node *>>::Element *E = data.tree->live_scene_edit_cache.find(data.filename);
+		RBMap<String, Set<Node *>>::Element *E = data.tree->live_scene_edit_cache.find(data.filename);
 		if (E) {
 			E->get().erase(this);
 			if (E->get().size() == 0) {
@@ -364,9 +364,9 @@ void Node::_propagate_exit_tree() {
 			}
 		}
 
-		Map<Node *, Map<ObjectID, Node *>>::Element *F = data.tree->live_edit_remove_list.find(this);
+		RBMap<Node *, RBMap<ObjectID, Node *>>::Element *F = data.tree->live_edit_remove_list.find(this);
 		if (F) {
-			for (Map<ObjectID, Node *>::Element *G = F->get().front(); G; G = G->next()) {
+			for (RBMap<ObjectID, Node *>::Element *G = F->get().front(); G; G = G->next()) {
 				memdelete(G->get());
 			}
 			data.tree->live_edit_remove_list.erase(F);
@@ -399,7 +399,7 @@ void Node::_propagate_exit_tree() {
 
 	// exit groups
 
-	for (Map<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
+	for (RBMap<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
 		data.tree->remove_from_group(E->key(), this);
 		E->get().group = nullptr;
 	}
@@ -566,7 +566,7 @@ void Node::_propagate_pause_owner(Node *p_owner) {
 }
 
 void Node::_propagate_groups_dirty() {
-	for (const Map<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
+	for (const RBMap<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
 		if (E->get().group) {
 			E->get().group->changed = true;
 		}
@@ -1009,7 +1009,7 @@ void Node::set_custom_multiplayer(Ref<MultiplayerAPI> p_multiplayer) {
 	multiplayer = p_multiplayer;
 }
 
-const Map<StringName, MultiplayerAPI::RPCMode>::Element *Node::get_node_rpc_mode(const StringName &p_method) {
+const RBMap<StringName, MultiplayerAPI::RPCMode>::Element *Node::get_node_rpc_mode(const StringName &p_method) {
 	return data.rpc_methods.find(p_method);
 }
 
@@ -2053,7 +2053,7 @@ void Node::add_to_group(const StringName &p_identifier, bool p_persistent) {
 void Node::remove_from_group(const StringName &p_identifier) {
 	ERR_FAIL_COND(!data.grouped.has(p_identifier));
 
-	Map<StringName, GroupData>::Element *E = data.grouped.find(p_identifier);
+	RBMap<StringName, GroupData>::Element *E = data.grouped.find(p_identifier);
 
 	ERR_FAIL_COND(!E);
 
@@ -2076,7 +2076,7 @@ Array Node::_get_groups() const {
 }
 
 void Node::get_groups(List<GroupInfo> *p_groups) const {
-	for (const Map<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
+	for (const RBMap<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
 		GroupInfo gi;
 		gi.name = E->key();
 		gi.persistent = E->get().persistent;
@@ -2087,7 +2087,7 @@ void Node::get_groups(List<GroupInfo> *p_groups) const {
 int Node::get_persistent_group_count() const {
 	int count = 0;
 
-	for (const Map<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
+	for (const RBMap<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
 		if (E->get().persistent) {
 			count += 1;
 		}
@@ -2386,7 +2386,7 @@ int Node::get_position_in_parent() const {
 	return data.pos;
 }
 
-Node *Node::_duplicate(int p_flags, Map<const Node *, Node *> *r_duplimap) const {
+Node *Node::_duplicate(int p_flags, RBMap<const Node *, Node *> *r_duplimap) const {
 	Node *node = nullptr;
 
 	bool instanced = false;
@@ -2578,11 +2578,11 @@ Node *Node::duplicate(int p_flags) const {
 }
 
 #ifdef TOOLS_ENABLED
-Node *Node::duplicate_from_editor(Map<const Node *, Node *> &r_duplimap) const {
-	return duplicate_from_editor(r_duplimap, Map<RES, RES>());
+Node *Node::duplicate_from_editor(RBMap<const Node *, Node *> &r_duplimap) const {
+	return duplicate_from_editor(r_duplimap, RBMap<RES, RES>());
 }
 
-Node *Node::duplicate_from_editor(Map<const Node *, Node *> &r_duplimap, const Map<RES, RES> &p_resource_remap) const {
+Node *Node::duplicate_from_editor(RBMap<const Node *, Node *> &r_duplimap, const RBMap<RES, RES> &p_resource_remap) const {
 	Node *dupe = _duplicate(DUPLICATE_SIGNALS | DUPLICATE_GROUPS | DUPLICATE_SCRIPTS | DUPLICATE_USE_INSTANCING | DUPLICATE_FROM_EDITOR, &r_duplimap);
 
 	// This is used by SceneTreeDock's paste functionality. When pasting to foreign scene, resources are duplicated.
@@ -2598,7 +2598,7 @@ Node *Node::duplicate_from_editor(Map<const Node *, Node *> &r_duplimap, const M
 	return dupe;
 }
 
-void Node::remap_node_resources(Node *p_node, const Map<RES, RES> &p_resource_remap) const {
+void Node::remap_node_resources(Node *p_node, const RBMap<RES, RES> &p_resource_remap) const {
 	List<PropertyInfo> props;
 	p_node->get_property_list(&props);
 
@@ -2624,7 +2624,7 @@ void Node::remap_node_resources(Node *p_node, const Map<RES, RES> &p_resource_re
 	}
 }
 
-void Node::remap_nested_resources(RES p_resource, const Map<RES, RES> &p_resource_remap) const {
+void Node::remap_nested_resources(RES p_resource, const RBMap<RES, RES> &p_resource_remap) const {
 	List<PropertyInfo> props;
 	p_resource->get_property_list(&props);
 
@@ -2647,7 +2647,7 @@ void Node::remap_nested_resources(RES p_resource, const Map<RES, RES> &p_resourc
 }
 #endif
 
-void Node::_duplicate_and_reown(Node *p_new_parent, const Map<Node *, Node *> &p_reown_map) const {
+void Node::_duplicate_and_reown(Node *p_new_parent, const RBMap<Node *, Node *> &p_reown_map) const {
 	if (get_owner() != get_parent()->get_owner()) {
 		return;
 	}
@@ -2766,7 +2766,7 @@ void Node::_duplicate_signals(const Node *p_original, Node *p_copy) const {
 	}
 }
 
-Node *Node::duplicate_and_reown(const Map<Node *, Node *> &p_reown_map) const {
+Node *Node::duplicate_and_reown(const RBMap<Node *, Node *> &p_reown_map) const {
 	ERR_FAIL_COND_V(get_filename() != "", nullptr);
 
 	Object *obj = ClassDB::instance(get_class());

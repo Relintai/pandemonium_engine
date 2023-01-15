@@ -683,7 +683,7 @@ void ResourceInteractiveLoaderText::get_dependencies(FileAccess *p_f, List<Strin
 	}
 }
 
-Error ResourceInteractiveLoaderText::rename_dependencies(FileAccess *p_f, const String &p_path, const Map<String, String> &p_map) {
+Error ResourceInteractiveLoaderText::rename_dependencies(FileAccess *p_f, const String &p_path, const RBMap<String, String> &p_map) {
 	open(p_f, true);
 	ERR_FAIL_COND_V(error != OK, error);
 	ignore_resource_parsing = true;
@@ -1028,7 +1028,7 @@ Error ResourceInteractiveLoaderText::save_as_binary(FileAccess *p_f, const Strin
 			}
 
 			if (assign != String()) {
-				Map<StringName, int> empty_string_map; //unused
+				RBMap<StringName, int> empty_string_map; //unused
 				bs_save_unicode_string(wf2, assign, true);
 				ResourceFormatSaverBinaryInstance::write_variant(wf2, value, dummy_read.resource_set, dummy_read.external_resources, empty_string_map);
 				prop_count++;
@@ -1089,7 +1089,7 @@ Error ResourceInteractiveLoaderText::save_as_binary(FileAccess *p_f, const Strin
 			String name = E->get().name;
 			Variant value = packed_scene->get(name);
 
-			Map<StringName, int> empty_string_map; //unused
+			RBMap<StringName, int> empty_string_map; //unused
 			bs_save_unicode_string(wf2, name, true);
 			ResourceFormatSaverBinaryInstance::write_variant(wf2, value, dummy_read.resource_set, dummy_read.external_resources, empty_string_map);
 			prop_count++;
@@ -1253,7 +1253,7 @@ void ResourceFormatLoaderText::get_dependencies(const String &p_path, List<Strin
 	ria->get_dependencies(f, p_dependencies, p_add_types);
 }
 
-Error ResourceFormatLoaderText::rename_dependencies(const String &p_path, const Map<String, String> &p_map) {
+Error ResourceFormatLoaderText::rename_dependencies(const String &p_path, const RBMap<String, String> &p_map) {
 	FileAccess *f = FileAccess::open(p_path, FileAccess::READ);
 	if (!f) {
 		ERR_FAIL_V(ERR_CANT_OPEN);
@@ -1463,7 +1463,7 @@ Error ResourceFormatSaverTextInstance::save(const String &p_path, const RES &p_r
 #ifdef TOOLS_ENABLED
 	//keep order from cached ids
 	Set<int> cached_ids_found;
-	for (Map<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
+	for (RBMap<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
 		int cached_id = E->key()->get_id_for_path(local_path);
 		if (cached_id < 0 || cached_ids_found.has(cached_id)) {
 			E->get() = -1; //reset
@@ -1473,7 +1473,7 @@ Error ResourceFormatSaverTextInstance::save(const String &p_path, const RES &p_r
 		}
 	}
 	//create IDs for non cached resources
-	for (Map<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
+	for (RBMap<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
 		if (cached_ids_found.has(E->get())) { //already cached, go on
 			continue;
 		}
@@ -1491,14 +1491,14 @@ Error ResourceFormatSaverTextInstance::save(const String &p_path, const RES &p_r
 	}
 #else
 	//make sure to start from one, as it makes format more readable
-	for (Map<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
+	for (RBMap<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
 		E->get() = E->get() + 1;
 	}
 #endif
 
 	Vector<ResourceSort> sorted_er;
 
-	for (Map<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
+	for (RBMap<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
 		ResourceSort rs;
 		rs.resource = E->key();
 		rs.index = E->get();

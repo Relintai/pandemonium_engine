@@ -567,15 +567,15 @@ void ScriptDebuggerRemote::_send_object_id(ObjectID p_id) {
 
 	if (ScriptInstance *si = obj->get_script_instance()) {
 		if (!si->get_script().is_null()) {
-			typedef Map<const Script *, Set<StringName>> ScriptMemberMap;
-			typedef Map<const Script *, Map<StringName, Variant>> ScriptConstantsMap;
+			typedef RBMap<const Script *, Set<StringName>> ScriptMemberMap;
+			typedef RBMap<const Script *, RBMap<StringName, Variant>> ScriptConstantsMap;
 
 			ScriptMemberMap members;
 			members[si->get_script().ptr()] = Set<StringName>();
 			si->get_script()->get_members(&(members[si->get_script().ptr()]));
 
 			ScriptConstantsMap constants;
-			constants[si->get_script().ptr()] = Map<StringName, Variant>();
+			constants[si->get_script().ptr()] = RBMap<StringName, Variant>();
 			si->get_script()->get_constants(&(constants[si->get_script().ptr()]));
 
 			Ref<Script> base = si->get_script()->get_base_script();
@@ -583,7 +583,7 @@ void ScriptDebuggerRemote::_send_object_id(ObjectID p_id) {
 				members[base.ptr()] = Set<StringName>();
 				base->get_members(&(members[base.ptr()]));
 
-				constants[base.ptr()] = Map<StringName, Variant>();
+				constants[base.ptr()] = RBMap<StringName, Variant>();
 				base->get_constants(&(constants[base.ptr()]));
 
 				base = base->get_base_script();
@@ -601,7 +601,7 @@ void ScriptDebuggerRemote::_send_object_id(ObjectID p_id) {
 			}
 
 			for (ScriptConstantsMap::Element *sc = constants.front(); sc; sc = sc->next()) {
-				for (Map<StringName, Variant>::Element *E = sc->get().front(); E; E = E->next()) {
+				for (RBMap<StringName, Variant>::Element *E = sc->get().front(); E; E = E->next()) {
 					String script_path = sc->key() == si->get_script().ptr() ? "" : sc->key()->get_path().get_file() + "/";
 					if (E->value().get_type() == Variant::OBJECT) {
 						Variant id = ((Object *)E->value())->get_instance_id();
@@ -630,9 +630,9 @@ void ScriptDebuggerRemote::_send_object_id(ObjectID p_id) {
 
 	} else if (Resource *res = Object::cast_to<Resource>(obj)) {
 		if (Script *s = Object::cast_to<Script>(res)) {
-			Map<StringName, Variant> constants;
+			RBMap<StringName, Variant> constants;
 			s->get_constants(&constants);
-			for (Map<StringName, Variant>::Element *E = constants.front(); E; E = E->next()) {
+			for (RBMap<StringName, Variant>::Element *E = constants.front(); E; E = E->next()) {
 				if (E->value().get_type() == Variant::OBJECT) {
 					Variant id = ((Object *)E->value())->get_instance_id();
 					PropertyInfo pi(id.get_type(), "Constants/" + E->key(), PROPERTY_HINT_OBJECT_ID, "Object");

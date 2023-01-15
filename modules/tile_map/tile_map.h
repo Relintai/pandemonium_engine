@@ -135,7 +135,7 @@ private:
 		}
 	};
 
-	Map<PosKey, Cell> tile_map;
+	RBMap<PosKey, Cell> tile_map;
 	List<PosKey> dirty_bitmask;
 
 	struct Quadrant {
@@ -156,8 +156,8 @@ private:
 			Transform2D xform;
 		};
 
-		Map<PosKey, NavPoly> navpoly_ids;
-		Map<PosKey, Occluder> occluder_instances;
+		RBMap<PosKey, NavPoly> navpoly_ids;
+		RBMap<PosKey, Occluder> occluder_instances;
 
 		VSet<PosKey> cells;
 
@@ -186,7 +186,7 @@ private:
 				dirty_list(this) {}
 	};
 
-	Map<PosKey, Quadrant> quadrant_map;
+	RBMap<PosKey, Quadrant> quadrant_map;
 
 	SelfList<Quadrant>::List dirty_quadrant_list;
 
@@ -216,9 +216,9 @@ private:
 
 	void _add_shape(int &shape_idx, const Quadrant &p_q, const Ref<Shape2D> &p_shape, const TileSet::ShapeData &p_shape_data, const Transform2D &p_xform, const Vector2 &p_metadata);
 
-	Map<PosKey, Quadrant>::Element *_create_quadrant(const PosKey &p_qk);
-	void _erase_quadrant(Map<PosKey, Quadrant>::Element *Q);
-	void _make_quadrant_dirty(Map<PosKey, Quadrant>::Element *Q, bool update = true);
+	RBMap<PosKey, Quadrant>::Element *_create_quadrant(const PosKey &p_qk);
+	void _erase_quadrant(RBMap<PosKey, Quadrant>::Element *Q);
+	void _make_quadrant_dirty(RBMap<PosKey, Quadrant>::Element *Q, bool update = true);
 	void _recreate_quadrants();
 	void _clear_quadrants();
 	void _update_quadrant_space(const RID &p_space);

@@ -38,7 +38,7 @@
 #include "scene/resources/texture.h"
 
 #include "core/containers/list.h"
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/pool_vector.h"
 #include "core/containers/set.h"
 #include "core/containers/vector.h"
@@ -89,8 +89,8 @@ private:
 	friend class EditorExportPlatform;
 
 	List<PropertyInfo> properties;
-	Map<StringName, Variant> values;
-	Map<StringName, bool> update_visibility;
+	RBMap<StringName, Variant> values;
+	RBMap<StringName, bool> update_visibility;
 
 	String name;
 
@@ -297,7 +297,7 @@ public:
 
 	virtual void get_export_options(List<ExportOption> *r_options) = 0;
 	virtual bool should_update_export_options() { return false; }
-	virtual bool get_option_visibility(const EditorExportPreset *p_preset, const String &p_option, const Map<StringName, Variant> &p_options) const { return true; }
+	virtual bool get_option_visibility(const EditorExportPreset *p_preset, const String &p_option, const RBMap<StringName, Variant> &p_options) const { return true; }
 
 	virtual String get_os_name() const = 0;
 	virtual String get_name() const = 0;
@@ -481,7 +481,7 @@ private:
 	Ref<ImageTexture> logo;
 	String name;
 	String os_name;
-	Map<String, String> extensions;
+	RBMap<String, String> extensions;
 
 	String release_file_32;
 	String release_file_64;

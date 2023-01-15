@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/map.h"
+#include "core/containers/rb_map.h"
 #include "space_2d_sw.h"
 class BroadPhase2DBasic : public BroadPhase2DSW {
 	struct Element {
@@ -40,7 +40,7 @@ class BroadPhase2DBasic : public BroadPhase2DSW {
 		int subindex;
 	};
 
-	Map<ID, Element> element_map;
+	RBMap<ID, Element> element_map;
 
 	ID current;
 
@@ -69,7 +69,7 @@ class BroadPhase2DBasic : public BroadPhase2DSW {
 		}
 	};
 
-	Map<PairKey, void *> pair_map;
+	RBMap<PairKey, void *> pair_map;
 
 	PairCallback pair_callback;
 	void *pair_userdata;

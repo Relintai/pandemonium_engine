@@ -63,7 +63,7 @@
 #include "scene/resources/texture.h"
 
 void DependencyEditor::_searched(const String &p_path) {
-	Map<String, String> dep_rename;
+	RBMap<String, String> dep_rename;
 	dep_rename[replacing] = p_path;
 
 	ResourceLoader::rename_dependencies(editing, dep_rename);
@@ -90,7 +90,7 @@ void DependencyEditor::_load_pressed(Object *p_item, int p_cell, int p_button) {
 	search->popup_centered_ratio(0.65); // So it doesn't completely cover the dialog below it.
 }
 
-void DependencyEditor::_fix_and_find(EditorFileSystemDirectory *efsd, Map<String, Map<String, String>> &candidates) {
+void DependencyEditor::_fix_and_find(EditorFileSystemDirectory *efsd, RBMap<String, RBMap<String, String>> &candidates) {
 	for (int i = 0; i < efsd->get_subdir_count(); i++) {
 		_fix_and_find(efsd->get_subdir(i), candidates);
 	}
@@ -103,7 +103,7 @@ void DependencyEditor::_fix_and_find(EditorFileSystemDirectory *efsd, Map<String
 
 		String path = efsd->get_file_path(i);
 
-		for (Map<String, String>::Element *E = candidates[file].front(); E; E = E->next()) {
+		for (RBMap<String, String>::Element *E = candidates[file].front(); E; E = E->next()) {
 			if (E->get() == String()) {
 				E->get() = path;
 				continue;
@@ -147,12 +147,12 @@ void DependencyEditor::_fix_all() {
 		return;
 	}
 
-	Map<String, Map<String, String>> candidates;
+	RBMap<String, RBMap<String, String>> candidates;
 
 	for (List<String>::Element *E = missing.front(); E; E = E->next()) {
 		String base = E->get().get_file();
 		if (!candidates.has(base)) {
-			candidates[base] = Map<String, String>();
+			candidates[base] = RBMap<String, String>();
 		}
 
 		candidates[base][E->get()] = "";
@@ -160,10 +160,10 @@ void DependencyEditor::_fix_all() {
 
 	_fix_and_find(EditorFileSystem::get_singleton()->get_filesystem(), candidates);
 
-	Map<String, String> remaps;
+	RBMap<String, String> remaps;
 
-	for (Map<String, Map<String, String>>::Element *E = candidates.front(); E; E = E->next()) {
-		for (Map<String, String>::Element *F = E->get().front(); F; F = F->next()) {
+	for (RBMap<String, RBMap<String, String>>::Element *E = candidates.front(); E; E = E->next()) {
+		for (RBMap<String, String>::Element *F = E->get().front(); F; F = F->next()) {
 			if (F->get() != String()) {
 				remaps[F->key()] = F->get();
 			}
@@ -430,7 +430,7 @@ void DependencyRemoveDialog::_build_removed_dependency_tree(const Vector<Removed
 	owners->clear();
 	owners->create_item(); // root
 
-	Map<String, TreeItem *> tree_items;
+	RBMap<String, TreeItem *> tree_items;
 	for (int i = 0; i < p_removed.size(); i++) {
 		RemovedDependency rd = p_removed[i];
 

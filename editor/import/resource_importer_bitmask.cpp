@@ -56,7 +56,7 @@ String ResourceImporterBitMap::get_resource_type() const {
 	return "BitMap";
 }
 
-bool ResourceImporterBitMap::get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const {
+bool ResourceImporterBitMap::get_option_visibility(const String &p_option, const RBMap<StringName, Variant> &p_options) const {
 	return true;
 }
 
@@ -72,7 +72,7 @@ void ResourceImporterBitMap::get_import_options(List<ImportOption> *r_options, i
 	r_options->push_back(ImportOption(PropertyInfo(Variant::REAL, "threshold", PROPERTY_HINT_RANGE, "0,1,0.01"), 0.5));
 }
 
-Error ResourceImporterBitMap::import(const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error ResourceImporterBitMap::import(const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 	int create_from = p_options["create_from"];
 	float threshold = p_options["threshold"];
 	Ref<Image> image;

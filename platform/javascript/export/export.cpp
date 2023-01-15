@@ -47,7 +47,7 @@
 class EditorHTTPServer : public Reference {
 private:
 	Ref<TCP_Server> server;
-	Map<String, String> mimes;
+	RBMap<String, String> mimes;
 	Ref<StreamPeerTCP> tcp;
 	Ref<StreamPeerSSL> ssl;
 	Ref<StreamPeer> peer;
@@ -317,7 +317,7 @@ class EditorExportPlatformJavaScript : public EditorExportPlatform {
 	}
 
 	Error _extract_template(const String &p_template, const String &p_dir, const String &p_name, bool pwa);
-	void _replace_strings(Map<String, String> p_replaces, Vector<uint8_t> &r_template);
+	void _replace_strings(RBMap<String, String> p_replaces, Vector<uint8_t> &r_template);
 	void _fix_html(Vector<uint8_t> &p_html, const Ref<EditorExportPreset> &p_preset, const String &p_name, bool p_debug, int p_flags, const Vector<SharedObject> p_shared_objects, const Dictionary &p_file_sizes);
 	Error _add_manifest_icon(const String &p_path, const String &p_icon, int p_size, Array &r_arr);
 	Error _build_pwa(const Ref<EditorExportPreset> &p_preset, const String p_path, const Vector<SharedObject> &p_shared_objects);
@@ -427,13 +427,13 @@ Error EditorExportPlatformJavaScript::_write_or_error(const uint8_t *p_content, 
 	return OK;
 }
 
-void EditorExportPlatformJavaScript::_replace_strings(Map<String, String> p_replaces, Vector<uint8_t> &r_template) {
+void EditorExportPlatformJavaScript::_replace_strings(RBMap<String, String> p_replaces, Vector<uint8_t> &r_template) {
 	String str_template = String::utf8(reinterpret_cast<const char *>(r_template.ptr()), r_template.size());
 	String out;
 	Vector<String> lines = str_template.split("\n");
 	for (int i = 0; i < lines.size(); i++) {
 		String current_line = lines[i];
-		for (Map<String, String>::Element *E = p_replaces.front(); E; E = E->next()) {
+		for (RBMap<String, String>::Element *E = p_replaces.front(); E; E = E->next()) {
 			current_line = current_line.replace(E->key(), E->get());
 		}
 		out += current_line + "\n";
@@ -479,7 +479,7 @@ void EditorExportPlatformJavaScript::_fix_html(Vector<uint8_t> &p_html, const Re
 	// Replaces HTML string
 	const String str_config = JSON::print(config);
 	const String custom_head_include = p_preset->get("html/head_include");
-	Map<String, String> replaces;
+	RBMap<String, String> replaces;
 	replaces["$PANDEMONIUM_URL"] = p_name + ".js";
 	replaces["$PANDEMONIUM_PROJECT_NAME"] = ProjectSettings::get_singleton()->get_setting("application/config/name");
 	replaces["$PANDEMONIUM_HEAD_INCLUDE"] = head_include + custom_head_include;
@@ -530,7 +530,7 @@ Error EditorExportPlatformJavaScript::_build_pwa(const Ref<EditorExportPreset> &
 	const String dir = p_path.get_base_dir();
 	const String name = p_path.get_file().get_basename();
 	const ExportMode mode = (ExportMode)(int)p_preset->get("variant/export_type");
-	Map<String, String> replaces;
+	RBMap<String, String> replaces;
 	replaces["@PANDEMONIUM_VERSION@"] = String::num_int64(OS::get_singleton()->get_unix_time()) + "|" + String::num_int64(OS::get_singleton()->get_ticks_usec());
 	replaces["@PANDEMONIUM_NAME@"] = proj_name.substr(0, 16);
 	replaces["@PANDEMONIUM_OFFLINE_PAGE@"] = name + ".offline.html";

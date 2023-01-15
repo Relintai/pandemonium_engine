@@ -42,7 +42,7 @@ public:
 	};
 
 private:
-	Map<StringName, uint32_t> groups;
+	RBMap<StringName, uint32_t> groups;
 
 	String group_name;
 	DispatchMode dispatch_mode;

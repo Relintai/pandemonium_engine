@@ -381,7 +381,7 @@ Ref<Mesh> Mesh::create_outline(float p_margin) const {
 			has_indices = true;
 		}
 
-		Map<Vector3, Vector3> normal_accum;
+		RBMap<Vector3, Vector3> normal_accum;
 
 		//fill normals with triangle normals
 		for (int i = 0; i < vc; i += 3) {
@@ -400,7 +400,7 @@ Ref<Mesh> Mesh::create_outline(float p_margin) const {
 			Vector3 n = Plane(t[0], t[1], t[2]).normal;
 
 			for (int j = 0; j < 3; j++) {
-				Map<Vector3, Vector3>::Element *E = normal_accum.find(t[j]);
+				RBMap<Vector3, Vector3>::Element *E = normal_accum.find(t[j]);
 				if (!E) {
 					normal_accum[t[j]] = n;
 				} else {
@@ -415,7 +415,7 @@ Ref<Mesh> Mesh::create_outline(float p_margin) const {
 
 		//normalize
 
-		for (Map<Vector3, Vector3>::Element *E = normal_accum.front(); E; E = E->next()) {
+		for (RBMap<Vector3, Vector3>::Element *E = normal_accum.front(); E; E = E->next()) {
 			E->get().normalize();
 		}
 
@@ -425,7 +425,7 @@ Ref<Mesh> Mesh::create_outline(float p_margin) const {
 		for (int i = 0; i < vc2; i++) {
 			Vector3 t = r[i];
 
-			Map<Vector3, Vector3>::Element *E = normal_accum.find(t);
+			RBMap<Vector3, Vector3>::Element *E = normal_accum.find(t);
 			ERR_CONTINUE(!E);
 
 			t += E->get() * p_margin;

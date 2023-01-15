@@ -72,21 +72,21 @@ public:
 
 public:
 	virtual void get_import_options(List<ImportOption> *r_options, int p_preset = 0) const;
-	virtual bool get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const;
+	virtual bool get_option_visibility(const String &p_option, const RBMap<StringName, Variant> &p_options) const;
 
-	Error process_node(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files = NULL, Variant *r_metadata = NULL);
+	Error process_node(Node *n, const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files = NULL, Variant *r_metadata = NULL);
 
 	int get_mesh_count(Node *n);
-	Error process_node_single(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata);
-	Error process_node_single_separated_bones(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata);
-	Error process_node_multi(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata, Ref<MeshDataResourceCollection> coll, Ref<MeshDataResourceCollection> copy_coll, int node_count = 0);
-	Vector<Ref<MeshDataResource>> get_meshes(MeshInstance *mi, const Map<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale);
-	Ref<MeshDataResource> get_mesh_arrays(Array &arrs, const Map<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale);
-	void add_colliders(Ref<MeshDataResource> mdr, Ref<ArrayMesh> mesh, const Map<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale);
+	Error process_node_single(Node *n, const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata);
+	Error process_node_single_separated_bones(Node *n, const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata);
+	Error process_node_multi(Node *n, const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata, Ref<MeshDataResourceCollection> coll, Ref<MeshDataResourceCollection> copy_coll, int node_count = 0);
+	Vector<Ref<MeshDataResource>> get_meshes(MeshInstance *mi, const RBMap<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale);
+	Ref<MeshDataResource> get_mesh_arrays(Array &arrs, const RBMap<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale);
+	void add_colliders(Ref<MeshDataResource> mdr, Ref<ArrayMesh> mesh, const RBMap<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale);
 
 	Vector<Array> split_mesh_bones(Ref<ArrayMesh> mesh);
 	Array slice_mesh_bone(const Array &array, int bone_idx);
-	Array apply_transforms(Array &array, const Map<StringName, Variant> &p_options);
+	Array apply_transforms(Array &array, const RBMap<StringName, Variant> &p_options);
 	Ref<Shape> scale_shape(Ref<Shape> shape, const Vector3 &scale);
 
 	void save_mdr_copy_as_tres(const String &p_source_file, const Ref<MeshDataResource> &res, bool indexed = false, int index = 0);
