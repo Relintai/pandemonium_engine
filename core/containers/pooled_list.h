@@ -1,3 +1,7 @@
+
+#ifndef POOLED_LIST_H
+#define POOLED_LIST_H
+
 /*************************************************************************/
 /*  pooled_list.h                                                        */
 /*************************************************************************/
@@ -27,8 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#pragma once
 
 // Simple template to provide a pool with O(1) allocate and free.
 // The freelist could alternatively be a linked list placed within the unused elements
@@ -206,3 +208,5 @@ private:
 	LocalVector<U, U> _active_map;
 	LocalVector<U, U> _active_list;
 };
+
+#endif

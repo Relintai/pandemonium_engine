@@ -34,8 +34,6 @@
 #include "core/os/spin_lock.h"
 #include "core/typedefs.h"
 
-#include <type_traits>
-
 template <class T, bool thread_safe = false>
 class PagedAllocator {
 	T **page_pool = nullptr;
@@ -91,7 +89,7 @@ public:
 	}
 
 	void reset(bool p_allow_unfreed = false) {
-		if (!p_allow_unfreed || !std::is_trivially_destructible<T>::value) {
+		if (!p_allow_unfreed || !__has_trivial_destructor(T)) {
 			ERR_FAIL_COND(allocs_available < pages_allocated * page_size);
 		}
 		if (pages_allocated) {
@@ -119,7 +117,9 @@ public:
 		page_shift = get_shift_from_power_of_2(page_size);
 	}
 
-	PagedAllocator(uint32_t p_page_size = 4096) { // power of 2 recommended because of alignment with OS page sizes. Even if element is bigger, its still a multiple and get rounded amount of pages
+	// Power of 2 recommended because of alignment with OS page sizes. 
+	// Even if element is bigger, its still a multiple and get rounded amount of pages
+	PagedAllocator(uint32_t p_page_size = 4096) { 
 		configure(p_page_size);
 	}
 
