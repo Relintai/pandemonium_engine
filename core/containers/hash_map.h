@@ -63,6 +63,26 @@ public:
 		Element *next = nullptr;
 		Element *prev = nullptr;
 		KeyValue<TKey, TValue> data;
+
+		const TKey &key() const {
+			return data.key;
+		}
+
+		TValue &value() {
+			return data.value;
+		}
+
+		const TValue &value() const {
+			return data.value;
+		}
+
+		TValue &get() {
+			return data.value;
+		};
+		const TValue &get() const {
+			return data.value;
+		};
+
 		Element() {}
 		Element(const TKey &p_key, const TValue &p_value) :
 				data(p_key, p_value) {}
@@ -152,6 +172,14 @@ public:
 		}
 
 		return NULL;
+	}
+
+	_FORCE_INLINE_ const Element *find(const TKey &p_key) const {
+		return get_element(p_key);
+	}
+
+	_FORCE_INLINE_ Element *find(const TKey &p_key) {
+		return get_element(p_key);
 	}
 
 	/**
