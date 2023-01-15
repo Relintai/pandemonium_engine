@@ -38,11 +38,6 @@ void register_tile_map_types(ModuleRegistrationLevel p_level) {
 
 	ClassDB::register_class<TileMap>();
 	ClassDB::register_class<TileSet>();
-
-#ifndef DISABLE_DEPRECATED
-	ClassDB::add_compatibility_class("RTileMap", "TileMap");
-	ClassDB::add_compatibility_class("RTileSet", "TileSet");
-#endif
 }
 
 void unregister_tile_map_types(ModuleRegistrationLevel p_level) {
