@@ -1,3 +1,6 @@
+#ifndef TEXTURE_PACKER_REGISTER_TYPES_H
+#define TEXTURE_PACKER_REGISTER_TYPES_H
+
 /*
 Copyright (c) 2019-2023 Péter Magyar
 
@@ -24,3 +27,5 @@ SOFTWARE.
 
 void register_texture_packer_types(ModuleRegistrationLevel p_level);
 void unregister_texture_packer_types(ModuleRegistrationLevel p_level);
+
+#endif

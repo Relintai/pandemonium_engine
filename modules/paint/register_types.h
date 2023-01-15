@@ -1,3 +1,6 @@
+#ifndef PAINT_REGISTER_TYPES_H
+#define PAINT_REGISTER_TYPES_H
+
 /*
 Copyright (c) 2019-2023 Péter Magyar
 
@@ -24,3 +27,5 @@ SOFTWARE.
 
 void register_paint_types(ModuleRegistrationLevel p_level);
 void unregister_paint_types(ModuleRegistrationLevel p_level);
+
+#endif

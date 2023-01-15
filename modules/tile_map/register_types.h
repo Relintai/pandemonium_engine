@@ -1,3 +1,6 @@
+#ifndef TILE_MAP_REGISTER_TYPES_H
+#define TILE_MAP_REGISTER_TYPES_H
+
 /*
 Copyright (c) 2021 Péter Magyar
 
@@ -24,3 +27,5 @@ SOFTWARE.
 
 void register_tile_map_types(ModuleRegistrationLevel p_level);
 void unregister_tile_map_types(ModuleRegistrationLevel p_level);
+
+#endif

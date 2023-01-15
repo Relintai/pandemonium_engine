@@ -1,3 +1,6 @@
+#ifndef ENTITY_SPELL_SYSTEM_REGISTER_TYPES_H
+#define ENTITY_SPELL_SYSTEM_REGISTER_TYPES_H
+
 /*
 Copyright (c) 2019-2023 Péter Magyar
 
@@ -24,3 +27,5 @@ SOFTWARE.
 
 void register_entity_spell_system_types(ModuleRegistrationLevel p_level);
 void unregister_entity_spell_system_types(ModuleRegistrationLevel p_level);
+
+#endif

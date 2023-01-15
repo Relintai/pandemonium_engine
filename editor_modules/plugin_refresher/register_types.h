@@ -1,3 +1,6 @@
+#ifndef PLUGIN_REFRESHER_REGISTER_TYPES_H
+#define PLUGIN_REFRESHER_REGISTER_TYPES_H
+
 /*
 Copyright (c) 2022-2023 Péter Magyar
 
@@ -24,3 +27,5 @@ SOFTWARE.
 
 void register_plugin_refresher_types(ModuleRegistrationLevel p_level);
 void unregister_plugin_refresher_types(ModuleRegistrationLevel p_level);
+
+#endif

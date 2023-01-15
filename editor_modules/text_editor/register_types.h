@@ -1,3 +1,6 @@
+#ifndef TEXT_EDITOR_REGISTER_TYPES_H
+#define TEXT_EDITOR_REGISTER_TYPES_H
+
 /*
 Copyright (c) 2019-2023 Péter Magyar
 
@@ -24,3 +27,5 @@ SOFTWARE.
 
 void register_text_editor_types(ModuleRegistrationLevel p_level);
 void unregister_text_editor_types(ModuleRegistrationLevel p_level);
+
+#endif

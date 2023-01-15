@@ -1,3 +1,6 @@
+#ifndef MESH_DATA_RESOURCE_REGISTER_TYPES_H
+#define MESH_DATA_RESOURCE_REGISTER_TYPES_H
+
 /*
 Copyright (c) 2019-2023 Péter Magyar
 
@@ -24,3 +27,5 @@ SOFTWARE.
 
 void register_mesh_data_resource_types(ModuleRegistrationLevel p_level);
 void unregister_mesh_data_resource_types(ModuleRegistrationLevel p_level);
+
+#endif

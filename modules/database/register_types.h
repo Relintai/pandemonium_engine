@@ -1,3 +1,6 @@
+#ifndef DATABASE_REGISTER_TYPES_H
+#define DATABASE_REGISTER_TYPES_H
+
 /*
 Copyright (c) 2022-2023 Péter Magyar
 
@@ -24,3 +27,5 @@ SOFTWARE.
 
 void register_database_types(ModuleRegistrationLevel p_level);
 void unregister_database_types(ModuleRegistrationLevel p_level);
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef NAVIGATION_REGISTER_TYPES_H
+#define NAVIGATION_REGISTER_TYPES_H
+
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -32,3 +35,5 @@
 
 void register_navigation_types(ModuleRegistrationLevel p_level);
 void unregister_navigation_types(ModuleRegistrationLevel p_level);
+
+#endif

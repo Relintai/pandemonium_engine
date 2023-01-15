@@ -1,3 +1,6 @@
+#ifndef UI_EXTENSIONS_REGISTER_TYPES_H
+#define UI_EXTENSIONS_REGISTER_TYPES_H
+
 /*
 Copyright (c) 2019-2023 Péter Magyar
 
@@ -24,3 +27,5 @@ SOFTWARE.
 
 void register_ui_extensions_types(ModuleRegistrationLevel p_level);
 void unregister_ui_extensions_types(ModuleRegistrationLevel p_level);
+
+#endif

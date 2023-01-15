@@ -1,3 +1,6 @@
+#ifndef MATERIAL_MAKER_REGISTER_TYPES_H
+#define MATERIAL_MAKER_REGISTER_TYPES_H
+
 /*
 Copyright (c) 2022-2023 Péter Magyar
 
@@ -24,3 +27,5 @@ SOFTWARE.
 
 void register_material_maker_types(ModuleRegistrationLevel p_level);
 void unregister_material_maker_types(ModuleRegistrationLevel p_level);
+
+#endif

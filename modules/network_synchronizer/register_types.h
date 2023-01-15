@@ -1,3 +1,6 @@
+#ifndef NETWORK_SYNCHRONIZER_REGISTER_TYPES_H
+#define NETWORK_SYNCHRONIZER_REGISTER_TYPES_H
+
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -36,3 +39,5 @@
 
 void register_network_synchronizer_types(ModuleRegistrationLevel p_level);
 void unregister_network_synchronizer_types(ModuleRegistrationLevel p_level);
+
+#endif
