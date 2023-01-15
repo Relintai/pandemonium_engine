@@ -1,44 +1,46 @@
-#ifndef LOCAL_VECTOR_H
-#define LOCAL_VECTOR_H
-/*************************************************************************/
-/*  local_vector.h                                                       */
-/*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
-/*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
-/*                                                                       */
-/* Permission is hereby granted, free of charge, to any person obtaining */
-/* a copy of this software and associated documentation files (the       */
-/* "Software"), to deal in the Software without restriction, including   */
-/* without limitation the rights to use, copy, modify, merge, publish,   */
-/* distribute, sublicense, and/or sell copies of the Software, and to    */
-/* permit persons to whom the Software is furnished to do so, subject to */
-/* the following conditions:                                             */
-/*                                                                       */
-/* The above copyright notice and this permission notice shall be        */
-/* included in all copies or substantial portions of the Software.       */
-/*                                                                       */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
-/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
-/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
-/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
-/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
-/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
-/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
-/*************************************************************************/
+/**************************************************************************/
+/*  local_vector.h                                                        */
+/**************************************************************************/
+/*                         This file is part of:                          */
+/*                             GODOT ENGINE                               */
+/*                        https://godotengine.org                         */
+/**************************************************************************/
+/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
+/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
+/*                                                                        */
+/* Permission is hereby granted, free of charge, to any person obtaining  */
+/* a copy of this software and associated documentation files (the        */
+/* "Software"), to deal in the Software without restriction, including    */
+/* without limitation the rights to use, copy, modify, merge, publish,    */
+/* distribute, sublicense, and/or sell copies of the Software, and to     */
+/* permit persons to whom the Software is furnished to do so, subject to  */
+/* the following conditions:                                              */
+/*                                                                        */
+/* The above copyright notice and this permission notice shall be         */
+/* included in all copies or substantial portions of the Software.        */
+/*                                                                        */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
+/**************************************************************************/
 
-#include "core/error/error_macros.h"
-#include "core/os/memory.h"
+#ifndef TIGHT_LOCAL_VECTOR_H
+#define TIGHT_LOCAL_VECTOR_H
+
 #include "core/containers/pool_vector.h"
 #include "core/containers/sort_array.h"
 #include "core/containers/vector.h"
+#include "core/error/error_macros.h"
+#include "core/os/memory.h"
 
+// It grows strictly as much as needed. (The vanilla LocalVector is what you want in most cases).
 template <class T, class U = uint32_t, bool force_trivial = false>
-class LocalVector {
-protected:
+class TightLocalVector {
+private:
 	U count = 0;
 	U capacity = 0;
 	T *data = nullptr;
@@ -63,7 +65,7 @@ public:
 			CRASH_COND_MSG(!data, "Out of memory");
 		}
 
-		if (!__has_trivial_constructor(T) && !force_trivial) {
+		if constexpr (!__has_trivial_constructor(T) && !force_trivial) {
 			memnew_placement(&data[count++], T(p_elem));
 		} else {
 			data[count++] = p_elem;
@@ -76,20 +78,20 @@ public:
 		for (U i = p_index; i < count; i++) {
 			data[i] = data[i + 1];
 		}
-		if (!__has_trivial_destructor(T) && !force_trivial) {
+		if constexpr (!__has_trivial_destructor(T) && !force_trivial) {
 			data[count].~T();
 		}
 	}
 
-	// Removes the item copying the last value into the position of the one to
-	// remove. It's generally faster than `remove`.
+	/// Removes the item copying the last value into the position of the one to
+	/// remove. It's generally faster than `remove`.
 	void remove_unordered(U p_index) {
 		ERR_FAIL_INDEX(p_index, count);
 		count--;
 		if (count > p_index) {
 			data[p_index] = data[count];
 		}
-		if (!__has_trivial_destructor(T) && !force_trivial) {
+		if constexpr (!__has_trivial_destructor(T) && !force_trivial) {
 			data[count].~T();
 		}
 	}
@@ -135,7 +137,6 @@ public:
 	_FORCE_INLINE_ bool empty() const { return count == 0; }
 	_FORCE_INLINE_ U get_capacity() const { return capacity; }
 	_FORCE_INLINE_ void reserve(U p_size) {
-		p_size = nearest_power_of_2_templated(p_size);
 		if (p_size > capacity) {
 			capacity = p_size;
 			data = (T *)memrealloc(data, capacity * sizeof(T));
@@ -260,42 +261,40 @@ public:
 		return ret;
 	}
 
-	_FORCE_INLINE_ LocalVector() {}
-	_FORCE_INLINE_ LocalVector(const LocalVector &p_from) {
+	_FORCE_INLINE_ TightLocalVector() {}
+	_FORCE_INLINE_ TightLocalVector(const TightLocalVector &p_from) {
 		resize(p_from.size());
 		for (U i = 0; i < p_from.count; i++) {
 			data[i] = p_from.data[i];
 		}
 	}
-	LocalVector(const Vector<T> &p_from) {
+	TightLocalVector(const Vector<T> &p_from) {
 		resize(p_from.size());
 		for (U i = 0; i < count; i++) {
 			data[i] = p_from[i];
 		}
 	}
-	LocalVector(const PoolVector<T> &p_from) {
+	TightLocalVector(const PoolVector<T> &p_from) {
 		resize(p_from.size());
 		typename PoolVector<T>::Read r = p_from.read();
 		for (U i = 0; i < count; i++) {
 			data[i] = r[i];
 		}
 	}
-	
-	inline LocalVector &operator=(const LocalVector &p_from) {
+
+	inline void operator=(const TightLocalVector &p_from) {
 		resize(p_from.size());
 		for (U i = 0; i < p_from.count; i++) {
 			data[i] = p_from.data[i];
 		}
-		return *this;
 	}
-	inline LocalVector &operator=(const Vector<T> &p_from) {
+	inline void operator=(const Vector<T> &p_from) {
 		resize(p_from.size());
 		for (U i = 0; i < count; i++) {
 			data[i] = p_from[i];
 		}
-		return *this;
 	}
-	inline LocalVector &operator=(const PoolVector<T> &p_from) {
+	inline TightLocalVector &operator=(const PoolVector<T> &p_from) {
 		resize(p_from.size());
 		typename PoolVector<T>::Read r = p_from.read();
 		for (U i = 0; i < count; i++) {
@@ -304,7 +303,7 @@ public:
 		return *this;
 	}
 
-	_FORCE_INLINE_ ~LocalVector() {
+	_FORCE_INLINE_ ~TightLocalVector() {
 		if (data) {
 			reset();
 		}
@@ -313,7 +312,7 @@ public:
 
 // Integer default version
 template <class T, class I = int32_t, bool force_trivial = false>
-class LocalVectori : public LocalVector<T, I, force_trivial> {
+class TightLocalVectori : public TightLocalVector<T, I, force_trivial> {
 };
 
-#endif // LOCAL_VECTOR_H
+#endif // TIGHT_LOCAL_VECTOR_H
