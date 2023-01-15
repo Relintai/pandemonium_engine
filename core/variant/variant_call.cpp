@@ -534,7 +534,6 @@ struct _VariantCall {
 	VCALL_LOCALMEM1R(Vector2, posmodv);
 	VCALL_LOCALMEM1R(Vector2, project);
 	VCALL_LOCALMEM2R(Vector2, plane_project);
-	VCALL_LOCALMEM1R(Vector2, clamped);
 	VCALL_LOCALMEM2R(Vector2, linear_interpolate);
 	VCALL_LOCALMEM2R(Vector2, slerp);
 	VCALL_LOCALMEM4R(Vector2, cubic_interpolate);
@@ -2636,7 +2635,6 @@ void register_variant_methods() {
 	ADDFUNC1R(VECTOR2, VECTOR2, Vector2, posmodv, VECTOR2, "modv", varray());
 	ADDFUNC1R(VECTOR2, VECTOR2, Vector2, project, VECTOR2, "b", varray());
 	ADDFUNC2R(VECTOR2, VECTOR2, Vector2, plane_project, REAL, "d", VECTOR2, "vec", varray());
-	ADDFUNC1R(VECTOR2, VECTOR2, Vector2, clamped, REAL, "length", varray());
 	ADDFUNC2R(VECTOR2, VECTOR2, Vector2, linear_interpolate, VECTOR2, "to", REAL, "weight", varray());
 	ADDFUNC2R(VECTOR2, VECTOR2, Vector2, slerp, VECTOR2, "to", REAL, "weight", varray());
 	ADDFUNC4R(VECTOR2, VECTOR2, Vector2, cubic_interpolate, VECTOR2, "b", VECTOR2, "pre_a", VECTOR2, "post_b", REAL, "weight", varray());

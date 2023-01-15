@@ -111,8 +111,6 @@ struct _NO_DISCARD_CLASS_ Vector2 {
 
 	Vector2 plane_project(real_t p_d, const Vector2 &p_vec) const;
 
-	Vector2 clamped(real_t p_len) const;
-
 	_FORCE_INLINE_ static Vector2 linear_interpolate(const Vector2 &p_a, const Vector2 &p_b, real_t p_weight);
 	_FORCE_INLINE_ Vector2 linear_interpolate(const Vector2 &p_to, real_t p_weight) const;
 	_FORCE_INLINE_ Vector2 slerp(const Vector2 &p_to, real_t p_weight) const;
