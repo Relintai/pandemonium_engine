@@ -1520,7 +1520,7 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	MAIN_PRINT("Main: Load Modules, Physics, Drivers, Scripts");
 
 	register_platform_apis();
-	
+
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_START);
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SINGLETON);
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_CORE);
@@ -1528,7 +1528,9 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_PLATFORM);
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SERVER);
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SCENE);
-	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_EDITOR);
+	if (Engine::get_singleton()->is_editor_hint()) {
+		register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_EDITOR);
+	}
 	//register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_TEST);
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_FINALIZE);
 
@@ -2453,7 +2455,9 @@ void Main::cleanup(bool p_force) {
 
 	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_START);
 	//unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_TEST);
-	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_EDITOR);
+	if (Engine::get_singleton()->is_editor_hint()) {
+		unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_EDITOR);
+	}
 	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SCENE);
 	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SERVER);
 	unregister_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_PLATFORM);
