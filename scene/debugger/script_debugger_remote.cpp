@@ -567,11 +567,11 @@ void ScriptDebuggerRemote::_send_object_id(ObjectID p_id) {
 
 	if (ScriptInstance *si = obj->get_script_instance()) {
 		if (!si->get_script().is_null()) {
-			typedef RBMap<const Script *, Set<StringName>> ScriptMemberMap;
+			typedef RBMap<const Script *, RBSet<StringName>> ScriptMemberMap;
 			typedef RBMap<const Script *, RBMap<StringName, Variant>> ScriptConstantsMap;
 
 			ScriptMemberMap members;
-			members[si->get_script().ptr()] = Set<StringName>();
+			members[si->get_script().ptr()] = RBSet<StringName>();
 			si->get_script()->get_members(&(members[si->get_script().ptr()]));
 
 			ScriptConstantsMap constants;
@@ -580,7 +580,7 @@ void ScriptDebuggerRemote::_send_object_id(ObjectID p_id) {
 
 			Ref<Script> base = si->get_script()->get_base_script();
 			while (base.is_valid()) {
-				members[base.ptr()] = Set<StringName>();
+				members[base.ptr()] = RBSet<StringName>();
 				base->get_members(&(members[base.ptr()]));
 
 				constants[base.ptr()] = RBMap<StringName, Variant>();
@@ -590,7 +590,7 @@ void ScriptDebuggerRemote::_send_object_id(ObjectID p_id) {
 			}
 
 			for (ScriptMemberMap::Element *sm = members.front(); sm; sm = sm->next()) {
-				for (Set<StringName>::Element *E = sm->get().front(); E; E = E->next()) {
+				for (RBSet<StringName>::Element *E = sm->get().front(); E; E = E->next()) {
 					Variant m;
 					if (si->get(E->get(), m)) {
 						String script_path = sm->key() == si->get_script().ptr() ? "" : sm->key()->get_path().get_file() + "/";

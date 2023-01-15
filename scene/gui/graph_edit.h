@@ -214,9 +214,9 @@ private:
 		}
 	};
 
-	Set<ConnType> valid_connection_types;
-	Set<int> valid_left_disconnect_types;
-	Set<int> valid_right_disconnect_types;
+	RBSet<ConnType> valid_connection_types;
+	RBSet<int> valid_left_disconnect_types;
+	RBSet<int> valid_right_disconnect_types;
 
 	HBoxContainer *zoom_hb;
 

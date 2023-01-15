@@ -36,7 +36,7 @@
 #include "core/object/object_id.h"
 #include "core/os/rw_lock.h"
 #include "core/os/safe_refcount.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/variant/variant.h"
 #include "core/containers/vmap.h"
 
@@ -487,7 +487,7 @@ private:
 #endif
 	bool _block_signals;
 	int _predelete_ok;
-	Set<Object *> change_receptors;
+	RBSet<Object *> change_receptors;
 	ObjectID _instance_id;
 	std::atomic<ObjectRC *> _rc;
 	bool _predelete();
@@ -497,7 +497,7 @@ private:
 #ifdef TOOLS_ENABLED
 	bool _edited;
 	uint32_t _edited_version;
-	Set<String> editor_section_folding;
+	RBSet<String> editor_section_folding;
 #endif
 	ScriptInstance *script_instance;
 	RefPtr script;
@@ -601,7 +601,7 @@ public:
 #ifdef TOOLS_ENABLED
 	_FORCE_INLINE_ void _change_notify(const char *p_property = "") {
 		_edited = true;
-		for (Set<Object *>::Element *E = change_receptors.front(); E; E = E->next()) {
+		for (RBSet<Object *>::Element *E = change_receptors.front(); E; E = E->next()) {
 			((Object *)(E->get()))->_changed_callback(this, p_property);
 		}
 	}
@@ -792,7 +792,7 @@ public:
 #ifdef TOOLS_ENABLED
 	void editor_set_section_unfold(const String &p_section, bool p_unfolded);
 	bool editor_is_section_unfolded(const String &p_section);
-	const Set<String> &editor_get_section_folding() const {
+	const RBSet<String> &editor_get_section_folding() const {
 		return editor_section_folding;
 	}
 	void editor_clear_section_folding() {

@@ -115,7 +115,7 @@ void GDScriptLanguage::make_template(const String &p_class_name, const String &p
 	p_script->set_source_code(_template);
 }
 
-bool GDScriptLanguage::validate(const String &p_script, int &r_line_error, int &r_col_error, String &r_test_error, const String &p_path, List<String> *r_functions, List<ScriptLanguage::Warning> *r_warnings, Set<int> *r_safe_lines) const {
+bool GDScriptLanguage::validate(const String &p_script, int &r_line_error, int &r_col_error, String &r_test_error, const String &p_path, List<String> *r_functions, List<ScriptLanguage::Warning> *r_warnings, RBSet<int> *r_safe_lines) const {
 	GDScriptParser parser;
 
 	Error err = parser.parse(p_script, p_path.get_base_dir(), true, p_path, false, r_safe_lines);
@@ -1448,7 +1448,7 @@ static bool _guess_identifier_type_from_base(GDScriptCompletionContext &p_contex
 						return true;
 					}
 					if (!_static) {
-						const Set<StringName>::Element *m = gds->get_members().find(p_identifier);
+						const RBSet<StringName>::Element *m = gds->get_members().find(p_identifier);
 						if (m) {
 							r_type = _type_from_gdtype(gds->get_member_type(p_identifier));
 							return true;
@@ -1958,7 +1958,7 @@ static void _find_identifiers_in_base(const GDScriptCompletionContext &p_context
 								r_result.insert(option.display, option);
 							}
 						}
-						for (const Set<StringName>::Element *E = script->get_members().front(); E; E = E->next()) {
+						for (const RBSet<StringName>::Element *E = script->get_members().front(); E; E = E->next()) {
 							ScriptCodeCompletionOption option(E->get().operator String(), ScriptCodeCompletionOption::KIND_MEMBER);
 							r_result.insert(option.display, option);
 						}

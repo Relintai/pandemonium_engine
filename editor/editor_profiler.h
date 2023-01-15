@@ -37,7 +37,7 @@
 #include "core/object/object.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/reference.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/string/ustring.h"
@@ -117,7 +117,7 @@ private:
 	Tree *variables;
 	HSplitContainer *h_split;
 
-	Set<StringName> plot_sigs;
+	RBSet<StringName> plot_sigs;
 
 	OptionButton *display_mode;
 	OptionButton *display_time;

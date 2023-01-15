@@ -34,7 +34,7 @@
 
 #include "core/os/dir_access.h"
 #include "core/object/object.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/ustring.h"
 
 class Button;
@@ -51,7 +51,7 @@ class EditorDirDialog : public ConfirmationDialog {
 	AcceptDialog *mkdirerr;
 
 	Button *makedir;
-	Set<String> opened_paths;
+	RBSet<String> opened_paths;
 
 	Tree *tree;
 	bool updating;

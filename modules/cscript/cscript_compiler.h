@@ -30,14 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "cscript.h"
 #include "cscript_parser.h"
 
 class CScriptCompiler {
 	const CScriptParser *parser;
-	Set<CScript *> parsed_classes;
-	Set<CScript *> parsing_classes;
+	RBSet<CScript *> parsed_classes;
+	RBSet<CScript *> parsing_classes;
 	CScript *main_script;
 	struct CodeGen {
 		CScript *script;

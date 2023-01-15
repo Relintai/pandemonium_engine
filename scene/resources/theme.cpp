@@ -1159,7 +1159,7 @@ void Theme::remove_type(const StringName &p_theme_type) {
 void Theme::get_type_list(List<StringName> *p_list) const {
 	ERR_FAIL_NULL(p_list);
 
-	Set<StringName> types;
+	RBSet<StringName> types;
 	const StringName *key = nullptr;
 
 	while ((key = icon_map.next(key))) {
@@ -1190,7 +1190,7 @@ void Theme::get_type_list(List<StringName> *p_list) const {
 		types.insert(*key);
 	}
 
-	for (Set<StringName>::Element *E = types.front(); E; E = E->next()) {
+	for (RBSet<StringName>::Element *E = types.front(); E; E = E->next()) {
 		p_list->push_back(E->get());
 	}
 }

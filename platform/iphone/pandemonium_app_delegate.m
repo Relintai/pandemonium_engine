@@ -118,7 +118,7 @@ static NSMutableArray<ApplicationDelegateService *> *services = nil;
 
 - (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {}
 
-- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {}
+- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSRBSet<UISceneSession *> *)sceneSessions {}
 
 */
 

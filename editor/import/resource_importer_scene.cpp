@@ -161,7 +161,7 @@ String ResourceImporterScene::get_visible_name() const {
 }
 
 void ResourceImporterScene::get_recognized_extensions(List<String> *p_extensions) const {
-	for (Set<Ref<EditorSceneImporter>>::Element *E = importers.front(); E; E = E->next()) {
+	for (RBSet<Ref<EditorSceneImporter>>::Element *E = importers.front(); E; E = E->next()) {
 		E->get()->get_extensions(p_extensions);
 	}
 }
@@ -770,7 +770,7 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 	anim->remove_animation("default"); //remove default (no longer needed)
 }
 
-void ResourceImporterScene::_filter_anim_tracks(Ref<Animation> anim, Set<String> &keep) {
+void ResourceImporterScene::_filter_anim_tracks(Ref<Animation> anim, RBSet<String> &keep) {
 	Ref<Animation> a = anim;
 	ERR_FAIL_COND(!a.is_valid());
 
@@ -805,13 +805,13 @@ void ResourceImporterScene::_filter_tracks(Node *scene, const String &p_text) {
 		bool valid_for_this = false;
 		bool valid = false;
 
-		Set<String> keep;
-		Set<String> keep_local;
+		RBSet<String> keep;
+		RBSet<String> keep_local;
 
 		for (int i = 0; i < strings.size(); i++) {
 			if (strings[i].begins_with("@")) {
 				valid_for_this = false;
-				for (Set<String>::Element *F = keep_local.front(); F; F = F->next()) {
+				for (RBSet<String>::Element *F = keep_local.front(); F; F = F->next()) {
 					keep.insert(F->get());
 				}
 				keep_local.clear();
@@ -883,7 +883,7 @@ void ResourceImporterScene::_filter_tracks(Node *scene, const String &p_text) {
 		}
 
 		if (valid) {
-			for (Set<String>::Element *F = keep_local.front(); F; F = F->next()) {
+			for (RBSet<String>::Element *F = keep_local.front(); F; F = F->next()) {
 				keep.insert(F->get());
 			}
 			_filter_anim_tracks(anim->get_animation(name), keep);
@@ -1195,7 +1195,7 @@ Node *ResourceImporterScene::import_scene_from_other_importer(EditorSceneImporte
 	Ref<EditorSceneImporter> importer;
 	String ext = p_path.get_extension().to_lower();
 
-	for (Set<Ref<EditorSceneImporter>>::Element *E = importers.front(); E; E = E->next()) {
+	for (RBSet<Ref<EditorSceneImporter>>::Element *E = importers.front(); E; E = E->next()) {
 		if (E->get().ptr() == p_exception) {
 			continue;
 		}
@@ -1225,7 +1225,7 @@ Ref<Animation> ResourceImporterScene::import_animation_from_other_importer(Edito
 	Ref<EditorSceneImporter> importer;
 	String ext = p_path.get_extension().to_lower();
 
-	for (Set<Ref<EditorSceneImporter>>::Element *E = importers.front(); E; E = E->next()) {
+	for (RBSet<Ref<EditorSceneImporter>>::Element *E = importers.front(); E; E = E->next()) {
 		if (E->get().ptr() == p_exception) {
 			continue;
 		}
@@ -1258,7 +1258,7 @@ Error ResourceImporterScene::import(const String &p_source_file, const String &p
 	EditorProgress progress("import", TTR("Import Scene"), 104);
 	progress.step(TTR("Importing Scene..."), 0);
 
-	for (Set<Ref<EditorSceneImporter>>::Element *E = importers.front(); E; E = E->next()) {
+	for (RBSet<Ref<EditorSceneImporter>>::Element *E = importers.front(); E; E = E->next()) {
 		List<String> extensions;
 		E->get()->get_extensions(&extensions);
 

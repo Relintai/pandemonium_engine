@@ -40,7 +40,7 @@
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
 #include "core/containers/pool_vector.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/containers/vector.h"
 #include "core/error/error_list.h"
 #include "core/object/object.h"
@@ -82,7 +82,7 @@ private:
 	String export_path;
 
 	String exporter;
-	Set<String> selected_files;
+	RBSet<String> selected_files;
 	bool runnable;
 
 	friend class EditorExport;
@@ -206,21 +206,21 @@ private:
 	};
 
 	struct FeatureContainers {
-		Set<String> features;
+		RBSet<String> features;
 		PoolVector<String> features_pv;
 	};
 
 	Vector<ExportMessage> messages;
 
-	void _export_find_resources(EditorFileSystemDirectory *p_dir, Set<String> &p_paths);
-	void _export_find_dependencies(const String &p_path, Set<String> &p_paths);
+	void _export_find_resources(EditorFileSystemDirectory *p_dir, RBSet<String> &p_paths);
+	void _export_find_dependencies(const String &p_path, RBSet<String> &p_paths);
 
 	void gen_debug_flags(Vector<String> &r_flags, int p_flags);
 	static Error _save_pack_file(void *p_userdata, const String &p_path, const Vector<uint8_t> &p_data, int p_file, int p_total);
 	static Error _save_zip_file(void *p_userdata, const String &p_path, const Vector<uint8_t> &p_data, int p_file, int p_total);
 
-	void _edit_files_with_filter(DirAccess *da, const Vector<String> &p_filters, Set<String> &r_list, bool exclude);
-	void _edit_filter_list(Set<String> &r_list, const String &p_filter, bool exclude);
+	void _edit_files_with_filter(DirAccess *da, const Vector<String> &p_filters, RBSet<String> &r_list, bool exclude);
+	void _edit_filter_list(RBSet<String> &r_list, const String &p_filter, bool exclude);
 
 	static Error _add_shared_object(void *p_userdata, const SharedObject &p_so);
 
@@ -338,7 +338,7 @@ public:
 	virtual Error export_pack(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags = 0);
 	virtual Error export_zip(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags = 0);
 	virtual void get_platform_features(List<String> *r_features) = 0;
-	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) = 0;
+	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, RBSet<String> &p_features) = 0;
 
 	EditorExportPlatform();
 };
@@ -408,8 +408,8 @@ protected:
 
 	void skip();
 
-	virtual void _export_file(const String &p_path, const String &p_type, const Set<String> &p_features);
-	virtual void _export_begin(const Set<String> &p_features, bool p_debug, const String &p_path, int p_flags);
+	virtual void _export_file(const String &p_path, const String &p_type, const RBSet<String> &p_features);
+	virtual void _export_begin(const RBSet<String> &p_features, bool p_debug, const String &p_path, int p_flags);
 
 	static void _bind_methods();
 
@@ -488,7 +488,7 @@ private:
 	String debug_file_32;
 	String debug_file_64;
 
-	Set<String> extra_features;
+	RBSet<String> extra_features;
 
 	int chmod_flags;
 
@@ -525,7 +525,7 @@ public:
 
 	void add_platform_feature(const String &p_feature);
 	virtual void get_platform_features(List<String> *r_features);
-	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features);
+	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, RBSet<String> &p_features);
 
 	int get_chmod_flags() const;
 	void set_chmod_flags(int p_flags);
@@ -537,7 +537,7 @@ class EditorExportTextSceneToBinaryPlugin : public EditorExportPlugin {
 	GDCLASS(EditorExportTextSceneToBinaryPlugin, EditorExportPlugin);
 
 public:
-	virtual void _export_file(const String &p_path, const String &p_type, const Set<String> &p_features);
+	virtual void _export_file(const String &p_path, const String &p_type, const RBSet<String> &p_features);
 	EditorExportTextSceneToBinaryPlugin();
 };
 

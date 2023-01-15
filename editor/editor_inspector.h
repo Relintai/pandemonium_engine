@@ -43,7 +43,7 @@
 #include "core/object/object.h"
 #include "core/object/object_id.h"
 
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/containers/vector.h"
 #include "core/object/resource.h"
 #include "core/string/string_name.h"
@@ -294,7 +294,7 @@ class EditorInspector : public ScrollContainer {
 	//map use to cache the instanced editors
 	RBMap<StringName, List<EditorProperty *>> editor_property_map;
 	List<EditorInspectorSection *> sections;
-	Set<StringName> pending;
+	RBSet<StringName> pending;
 
 	void _clear();
 	Object *object;
@@ -324,7 +324,7 @@ class EditorInspector : public ScrollContainer {
 
 	RBMap<StringName, RBMap<StringName, String>> descr_cache;
 	RBMap<StringName, String> class_descr_cache;
-	Set<StringName> restart_request_props;
+	RBSet<StringName> restart_request_props;
 
 	RBMap<ObjectID, int> scroll_cache;
 

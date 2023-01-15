@@ -233,7 +233,7 @@ struct _VCSort {
 void ProjectSettings::_get_property_list(List<PropertyInfo> *p_list) const {
 	_THREAD_SAFE_METHOD_
 
-	Set<_VCSort> vclist;
+	RBSet<_VCSort> vclist;
 
 	for (RBMap<StringName, VariantContainer>::Element *E = props.front(); E; E = E->next()) {
 		const VariantContainer *v = &E->get();
@@ -258,7 +258,7 @@ void ProjectSettings::_get_property_list(List<PropertyInfo> *p_list) const {
 		vclist.insert(vc);
 	}
 
-	for (Set<_VCSort>::Element *E = vclist.front(); E; E = E->next()) {
+	for (RBSet<_VCSort>::Element *E = vclist.front(); E; E = E->next()) {
 		String prop_info_name = E->get().name;
 		int dot = prop_info_name.find(".");
 		if (dot != -1) {
@@ -816,7 +816,7 @@ Error ProjectSettings::_save_custom_bnd(const String &p_file) { // add other par
 Error ProjectSettings::save_custom(const String &p_path, const CustomMap &p_custom, const Vector<String> &p_custom_features, bool p_merge_with_current) {
 	ERR_FAIL_COND_V_MSG(p_path == "", ERR_INVALID_PARAMETER, "Project settings save path cannot be empty.");
 
-	Set<_VCSort> vclist;
+	RBSet<_VCSort> vclist;
 
 	if (p_merge_with_current) {
 		for (RBMap<StringName, VariantContainer>::Element *G = props.front(); G; G = G->next()) {
@@ -857,7 +857,7 @@ Error ProjectSettings::save_custom(const String &p_path, const CustomMap &p_cust
 
 	RBMap<String, List<String>> props;
 
-	for (Set<_VCSort>::Element *E = vclist.front(); E; E = E->next()) {
+	for (RBSet<_VCSort>::Element *E = vclist.front(); E; E = E->next()) {
 		String category = E->get().name;
 		String name = E->get().name;
 

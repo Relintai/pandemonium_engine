@@ -356,7 +356,7 @@ void Node::_propagate_exit_tree() {
 
 	if (ScriptDebugger::get_singleton() && data.filename != String()) {
 		//used for live edit
-		RBMap<String, Set<Node *>>::Element *E = data.tree->live_scene_edit_cache.find(data.filename);
+		RBMap<String, RBSet<Node *>>::Element *E = data.tree->live_scene_edit_cache.find(data.filename);
 		if (E) {
 			E->get().erase(this);
 			if (E->get().size() == 0) {
@@ -1927,7 +1927,7 @@ Node *Node::find_common_parent_with(const Node *p_node) const {
 		return const_cast<Node *>(p_node);
 	}
 
-	Set<const Node *> visited;
+	RBSet<const Node *> visited;
 
 	const Node *n = this;
 
@@ -1959,7 +1959,7 @@ NodePath Node::get_path_to(const Node *p_node) const {
 		return NodePath(".");
 	}
 
-	Set<const Node *> visited;
+	RBSet<const Node *> visited;
 
 	const Node *n = this;
 
@@ -2334,7 +2334,7 @@ StringName Node::get_property_store_alias(const StringName &p_property) const {
 }
 #endif
 
-void Node::get_storable_properties(Set<StringName> &r_storable_properties) const {
+void Node::get_storable_properties(RBSet<StringName> &r_storable_properties) const {
 	List<PropertyInfo> pi;
 	get_property_list(&pi);
 	for (List<PropertyInfo>::Element *E = pi.front(); E; E = E->next()) {

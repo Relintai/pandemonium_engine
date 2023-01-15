@@ -47,7 +47,7 @@
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/reference.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/object/undo_redo.h"
 #include "core/variant/variant.h"
 #include "editor/editor_data.h"
@@ -332,7 +332,7 @@ void MeshInstanceEditor::_create_uv_lines(int p_layer) {
 	Ref<Mesh> mesh = node->get_mesh();
 	ERR_FAIL_COND(!mesh.is_valid());
 
-	Set<MeshInstanceEditorEdgeSort> edges;
+	RBSet<MeshInstanceEditorEdgeSort> edges;
 	uv_lines.clear();
 	for (int i = 0; i < mesh->get_surface_count(); i++) {
 		if (mesh->surface_get_primitive_type(i) != Mesh::PRIMITIVE_TRIANGLES) {

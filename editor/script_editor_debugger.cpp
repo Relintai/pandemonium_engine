@@ -646,7 +646,7 @@ void ScriptEditorDebugger::_parse_message(const String &p_msg, const Array &p_da
 
 		debug_obj->prop_list.clear();
 		int new_props_added = 0;
-		Set<String> changed;
+		RBSet<String> changed;
 		for (int i = 0; i < properties.size(); i++) {
 			Array prop = properties[i];
 			if (prop.size() != 6) {
@@ -718,7 +718,7 @@ void ScriptEditorDebugger::_parse_message(const String &p_msg, const Array &p_da
 		} else {
 			if (old_prop_size == debug_obj->prop_list.size() && new_props_added == 0) {
 				//only some may have changed, if so, then update those, if exist
-				for (Set<String>::Element *E = changed.front(); E; E = E->next()) {
+				for (RBSet<String>::Element *E = changed.front(); E; E = E->next()) {
 					EditorNode::get_singleton()->get_inspector()->update_property(E->get());
 				}
 			} else {

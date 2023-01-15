@@ -51,7 +51,7 @@
 #include "core/math/rect2.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/typedefs.h"
 #include "core/object/undo_redo.h"
 #include "editor/editor_autoload_settings.h"
@@ -1071,7 +1071,7 @@ void ProjectSettingsEditor::queue_save() {
 }
 
 void ProjectSettingsEditor::_copy_to_platform_about_to_show() {
-	Set<String> presets;
+	RBSet<String> presets;
 
 	presets.insert("bptc");
 	presets.insert("s3tc");
@@ -1114,7 +1114,7 @@ void ProjectSettingsEditor::_copy_to_platform_about_to_show() {
 
 	popup_copy_to_feature->get_popup()->clear();
 	int id = 0;
-	for (Set<String>::Element *E = presets.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = presets.front(); E; E = E->next()) {
 		popup_copy_to_feature->get_popup()->add_item(E->get(), id++);
 	}
 }

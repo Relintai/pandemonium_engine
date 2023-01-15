@@ -32,7 +32,7 @@
 
 #include "core/config/project_settings.h"
 #include "core/containers/list.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/containers/vector.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
@@ -337,7 +337,7 @@ void ProjectExportDialog::_update_feature_list() {
 	Ref<EditorExportPreset> current = get_current_preset();
 	ERR_FAIL_COND(current.is_null());
 
-	Set<String> fset;
+	RBSet<String> fset;
 	List<String> features;
 
 	current->get_platform()->get_platform_features(&features);
@@ -357,7 +357,7 @@ void ProjectExportDialog::_update_feature_list() {
 	}
 
 	custom_feature_display->clear();
-	for (Set<String>::Element *E = fset.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = fset.front(); E; E = E->next()) {
 		String f = E->get();
 		if (E->next()) {
 			f += ", ";

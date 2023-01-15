@@ -25,7 +25,7 @@
 
 #include "core/containers/list.h"
 #include "core/math/vector2.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 
 //2D point structure
 
@@ -181,8 +181,8 @@ protected:
 	//helper functions for MonotonePartition
 	bool Below(Vector2 &p1, Vector2 &p2);
 	void AddDiagonal(MonotoneVertex *vertices, long *numvertices, long index1, long index2,
-			 char *vertextypes, Set<ScanLineEdge>::Element **edgeTreeIterators,
-			 Set<ScanLineEdge> *edgeTree, long *helpers);
+			 char *vertextypes, RBSet<ScanLineEdge>::Element **edgeTreeIterators,
+			 RBSet<ScanLineEdge> *edgeTree, long *helpers);
 
 	//triangulates a monotone polygon, used in Triangulate_MONO
 	int TriangulateMonotone(TriangulatorPoly *inPoly, List<TriangulatorPoly> *triangles);

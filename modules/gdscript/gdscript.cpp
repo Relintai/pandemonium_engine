@@ -511,7 +511,7 @@ bool GDScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderSc
 		_update_exports_values(values, propnames);
 
 		if (changed) {
-			for (Set<PlaceHolderScriptInstance *>::Element *E = placeholders.front(); E; E = E->next()) {
+			for (RBSet<PlaceHolderScriptInstance *>::Element *E = placeholders.front(); E; E = E->next()) {
 				E->get()->update(propnames, values);
 			}
 		} else {
@@ -535,9 +535,9 @@ void GDScript::update_exports() {
 		return;
 	}
 
-	Set<ObjectID> copy = inheriters_cache; //might get modified
+	RBSet<ObjectID> copy = inheriters_cache; //might get modified
 
-	for (Set<ObjectID>::Element *E = copy.front(); E; E = E->next()) {
+	for (RBSet<ObjectID>::Element *E = copy.front(); E; E = E->next()) {
 		Object *id = ObjectDB::get_instance(E->get());
 		GDScript *s = Object::cast_to<GDScript>(id);
 		if (!s) {
@@ -645,9 +645,9 @@ void GDScript::get_constants(RBMap<StringName, Variant> *p_constants) {
 	}
 }
 
-void GDScript::get_members(Set<StringName> *p_members) {
+void GDScript::get_members(RBSet<StringName> *p_members) {
 	if (p_members) {
-		for (Set<StringName>::Element *E = members.front(); E; E = E->next()) {
+		for (RBSet<StringName>::Element *E = members.front(); E; E = E->next()) {
 			p_members->insert(E->get());
 		}
 	}

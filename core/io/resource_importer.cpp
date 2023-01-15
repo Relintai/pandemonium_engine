@@ -141,7 +141,7 @@ RES ResourceFormatImporter::load(const String &p_path, const String &p_original_
 }
 
 void ResourceFormatImporter::get_recognized_extensions(List<String> *p_extensions) const {
-	Set<String> found;
+	RBSet<String> found;
 
 	for (int i = 0; i < importers.size(); i++) {
 		List<String> local_exts;
@@ -161,7 +161,7 @@ void ResourceFormatImporter::get_recognized_extensions_for_type(const String &p_
 		return;
 	}
 
-	Set<String> found;
+	RBSet<String> found;
 
 	for (int i = 0; i < importers.size(); i++) {
 		String res_type = importers[i]->get_resource_type();

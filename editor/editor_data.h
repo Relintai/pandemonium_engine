@@ -46,7 +46,7 @@
 #include "core/object/object_id.h"
 #include "core/object/reference.h"
 #include "core/object/script_language.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/string/ustring.h"
@@ -157,7 +157,7 @@ private:
 	Vector<EditedScene> edited_scene;
 	int current_edited_scene;
 
-	bool _find_updated_instances(Node *p_root, Node *p_node, Set<String> &checked_paths);
+	bool _find_updated_instances(Node *p_root, Node *p_node, RBSet<String> &checked_paths);
 
 	HashMap<StringName, String> _script_class_icon_paths;
 	HashMap<String, StringName> _script_class_file_to_path;

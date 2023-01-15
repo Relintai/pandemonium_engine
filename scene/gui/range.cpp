@@ -51,7 +51,7 @@ void Range::_value_changed_notify() {
 }
 
 void Range::Shared::emit_value_changed() {
-	for (Set<Range *>::Element *E = owners.front(); E; E = E->next()) {
+	for (RBSet<Range *>::Element *E = owners.front(); E; E = E->next()) {
 		Range *r = E->get();
 		if (!r->is_inside_tree()) {
 			continue;
@@ -67,7 +67,7 @@ void Range::_changed_notify(const char *p_what) {
 }
 
 void Range::Shared::emit_changed(const char *p_what) {
-	for (Set<Range *>::Element *E = owners.front(); E; E = E->next()) {
+	for (RBSet<Range *>::Element *E = owners.front(); E; E = E->next()) {
 		Range *r = E->get();
 		if (!r->is_inside_tree()) {
 			continue;

@@ -39,7 +39,7 @@ class VisibilityNotifier : public CullInstance {
 	GDCLASS(VisibilityNotifier, CullInstance);
 
 	Ref<World3D> world;
-	Set<Camera *> cameras;
+	RBSet<Camera *> cameras;
 
 	AABB aabb;
 	Vector3 _world_aabb_center;

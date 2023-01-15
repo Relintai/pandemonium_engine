@@ -150,7 +150,7 @@ public:
 	virtual int get_member_line(const StringName &p_member) const { return -1; }
 
 	virtual void get_constants(RBMap<StringName, Variant> *p_constants) {}
-	virtual void get_members(Set<StringName> *p_constants) {}
+	virtual void get_members(RBSet<StringName> *p_constants) {}
 
 	virtual bool is_placeholder_fallback_enabled() const { return false; }
 
@@ -269,7 +269,7 @@ public:
 	virtual Ref<Script> get_template(const String &p_class_name, const String &p_base_class_name) const = 0;
 	virtual void make_template(const String &p_class_name, const String &p_base_class_name, Ref<Script> &p_script) {}
 	virtual bool is_using_templates() { return false; }
-	virtual bool validate(const String &p_script, int &r_line_error, int &r_col_error, String &r_test_error, const String &p_path = "", List<String> *r_functions = nullptr, List<Warning> *r_warnings = nullptr, Set<int> *r_safe_lines = nullptr) const = 0;
+	virtual bool validate(const String &p_script, int &r_line_error, int &r_col_error, String &r_test_error, const String &p_path = "", List<String> *r_functions = nullptr, List<Warning> *r_warnings = nullptr, RBSet<int> *r_safe_lines = nullptr) const = 0;
 	virtual String validate_path(const String &p_path) const { return ""; }
 	virtual Script *create_script() const = 0;
 	virtual bool has_named_classes() const = 0;
@@ -416,7 +416,7 @@ class ScriptDebugger {
 	int depth;
 
 	static ScriptDebugger *singleton;
-	RBMap<int, Set<StringName>> breakpoints;
+	RBMap<int, RBSet<StringName>> breakpoints;
 
 	ScriptLanguage *break_lang;
 
@@ -434,7 +434,7 @@ public:
 	bool is_breakpoint(int p_line, const StringName &p_source) const;
 	bool is_breakpoint_line(int p_line) const;
 	void clear_breakpoints();
-	const RBMap<int, Set<StringName>> &get_breakpoints() const { return breakpoints; }
+	const RBMap<int, RBSet<StringName>> &get_breakpoints() const { return breakpoints; }
 
 	virtual void debug(ScriptLanguage *p_script, bool p_can_continue = true, bool p_is_error_breakpoint = false) = 0;
 	virtual void idle_poll();

@@ -37,7 +37,7 @@
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
@@ -148,7 +148,7 @@ class AnimationBezierTrackEdit : public Control {
 
 	Vector<EditPoint> edit_points;
 
-	Set<int> selection;
+	RBSet<int> selection;
 
 	bool panning_timeline;
 	float panning_timeline_from;

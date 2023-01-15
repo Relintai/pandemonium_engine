@@ -4112,7 +4112,7 @@ void RasterizerStorageGLES2::update_dirty_skeletons() {
 			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, skeleton->size * (skeleton->use_2d ? 2 : 3), 1, GL_RGBA, GL_FLOAT, skeleton->bone_data.ptr());
 		}
 
-		for (Set<RasterizerScene::InstanceBase *>::Element *E = skeleton->instances.front(); E; E = E->next()) {
+		for (RBSet<RasterizerScene::InstanceBase *>::Element *E = skeleton->instances.front(); E; E = E->next()) {
 			E->get()->base_changed(true, false);
 		}
 
@@ -5621,7 +5621,7 @@ bool RasterizerStorageGLES2::free(RID p_rid) {
 			skeleton_update_list.remove(&s->update_list);
 		}
 
-		for (Set<RasterizerScene::InstanceBase *>::Element *E = s->instances.front(); E; E = E->next()) {
+		for (RBSet<RasterizerScene::InstanceBase *>::Element *E = s->instances.front(); E; E = E->next()) {
 			E->get()->skeleton = RID();
 		}
 

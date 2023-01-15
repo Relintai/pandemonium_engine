@@ -52,7 +52,7 @@ class EditorExportCScript : public EditorExportPlugin {
 	GDCLASS(EditorExportCScript, EditorExportPlugin);
 
 public:
-	virtual void _export_file(const String &p_path, const String &p_type, const Set<String> &p_features) {
+	virtual void _export_file(const String &p_path, const String &p_type, const RBSet<String> &p_features) {
 		int script_mode = EditorExportPreset::MODE_SCRIPT_COMPILED;
 		String script_key;
 

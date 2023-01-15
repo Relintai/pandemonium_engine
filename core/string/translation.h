@@ -68,7 +68,7 @@ class TranslationServer : public Object {
 	String locale;
 	String fallback;
 
-	Set<Ref<Translation>> translations;
+	RBSet<Ref<Translation>> translations;
 	Ref<Translation> tool_translation;
 	Ref<Translation> doc_translation;
 

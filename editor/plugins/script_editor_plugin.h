@@ -45,7 +45,7 @@
 #include "core/object/object.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/typedefs.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
@@ -386,7 +386,7 @@ class ScriptEditor : public PanelContainer {
 	void _update_help_overview();
 	void _help_overview_selected(int p_idx);
 
-	void _find_scripts(Node *p_base, Node *p_current, Set<Ref<Script>> &used);
+	void _find_scripts(Node *p_base, Node *p_current, RBSet<Ref<Script>> &used);
 
 	void _tree_changed();
 

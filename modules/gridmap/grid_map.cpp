@@ -511,7 +511,7 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 
 	RBMap<int, List<Pair<Transform, IndexKey>>> multimesh_items;
 
-	for (Set<IndexKey>::Element *E = g.cells.front(); E; E = E->next()) {
+	for (RBSet<IndexKey>::Element *E = g.cells.front(); E; E = E->next()) {
 		ERR_CONTINUE(!cell_map.has(E->get()));
 		const Cell &c = cell_map[E->get()];
 

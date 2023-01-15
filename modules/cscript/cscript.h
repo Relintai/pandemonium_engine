@@ -74,7 +74,7 @@ class CScript : public Script {
 	CScript *_base; //fast pointer access
 	CScript *_owner; //for subclasses
 
-	Set<StringName> members; //members are just indices to the instanced script.
+	RBSet<StringName> members; //members are just indices to the instanced script.
 	RBMap<StringName, Variant> constants;
 	RBMap<StringName, CScriptFunction *> member_functions;
 	RBMap<StringName, MemberInfo> member_indices; //members are just indices to the instanced script.
@@ -90,7 +90,7 @@ class CScript : public Script {
 	List<PropertyInfo> members_cache;
 	RBMap<StringName, Variant> member_default_values_cache;
 	Ref<CScript> base_cache;
-	Set<ObjectID> inheriters_cache;
+	RBSet<ObjectID> inheriters_cache;
 	bool source_changed_cache;
 	bool placeholder_fallback_enabled;
 	void _update_exports_values(RBMap<StringName, Variant> &values, List<PropertyInfo> &propnames);
@@ -101,7 +101,7 @@ class CScript : public Script {
 	CScriptFunction *initializer; //direct pointer to _init , faster to locate
 
 	int subclass_count;
-	Set<Object *> instances;
+	RBSet<Object *> instances;
 	//exported members
 	String source;
 	String path;
@@ -115,7 +115,7 @@ class CScript : public Script {
 	String _get_debug_path() const;
 
 #ifdef TOOLS_ENABLED
-	Set<PlaceHolderScriptInstance *> placeholders;
+	RBSet<PlaceHolderScriptInstance *> placeholders;
 	//void _update_placeholder(PlaceHolderScriptInstance *p_placeholder);
 	virtual void _placeholder_erased(PlaceHolderScriptInstance *p_placeholder);
 #endif
@@ -153,7 +153,7 @@ public:
 	const RBMap<StringName, Variant> &get_constants() const {
 		return constants;
 	}
-	const Set<StringName> &get_members() const {
+	const RBSet<StringName> &get_members() const {
 		return members;
 	}
 	const CScriptDataType &get_member_type(const StringName &p_member) const {
@@ -229,7 +229,7 @@ public:
 	}
 
 	virtual void get_constants(RBMap<StringName, Variant> *p_constants);
-	virtual void get_members(Set<StringName> *p_members);
+	virtual void get_members(RBSet<StringName> *p_members);
 
 #ifdef TOOLS_ENABLED
 	virtual bool is_placeholder_fallback_enabled() const {
@@ -476,7 +476,7 @@ public:
 	virtual Ref<Script> get_template(const String &p_class_name, const String &p_base_class_name) const;
 	virtual bool is_using_templates();
 	virtual void make_template(const String &p_class_name, const String &p_base_class_name, Ref<Script> &p_script);
-	virtual bool validate(const String &p_script, int &r_line_error, int &r_col_error, String &r_test_error, const String &p_path = "", List<String> *r_functions = nullptr, List<ScriptLanguage::Warning> *r_warnings = nullptr, Set<int> *r_safe_lines = nullptr) const;
+	virtual bool validate(const String &p_script, int &r_line_error, int &r_col_error, String &r_test_error, const String &p_path = "", List<String> *r_functions = nullptr, List<ScriptLanguage::Warning> *r_warnings = nullptr, RBSet<int> *r_safe_lines = nullptr) const;
 	virtual Script *create_script() const;
 	virtual bool has_named_classes() const;
 	virtual bool supports_builtin_mode() const;

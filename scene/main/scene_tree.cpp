@@ -1507,12 +1507,12 @@ void SceneTree::_live_edit_node_set_func(int p_id, const StringName &p_prop, con
 		base = root->get_node(live_edit_root);
 	}
 
-	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, RBSet<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
 
-	for (Set<Node *>::Element *F = E->get().front(); F; F = F->next()) {
+	for (RBSet<Node *>::Element *F = E->get().front(); F; F = F->next()) {
 		Node *n = F->get();
 
 		if (base && !base->is_a_parent_of(n)) {
@@ -1546,12 +1546,12 @@ void SceneTree::_live_edit_node_call_func(int p_id, const StringName &p_method, 
 		base = root->get_node(live_edit_root);
 	}
 
-	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, RBSet<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
 
-	for (Set<Node *>::Element *F = E->get().front(); F; F = F->next()) {
+	for (RBSet<Node *>::Element *F = E->get().front(); F; F = F->next()) {
 		Node *n = F->get();
 
 		if (base && !base->is_a_parent_of(n)) {
@@ -1621,12 +1621,12 @@ void SceneTree::_live_edit_create_node_func(const NodePath &p_parent, const Stri
 		base = root->get_node(live_edit_root);
 	}
 
-	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, RBSet<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
 
-	for (Set<Node *>::Element *F = E->get().front(); F; F = F->next()) {
+	for (RBSet<Node *>::Element *F = E->get().front(); F; F = F->next()) {
 		Node *n = F->get();
 
 		if (base && !base->is_a_parent_of(n)) {
@@ -1659,12 +1659,12 @@ void SceneTree::_live_edit_instance_node_func(const NodePath &p_parent, const St
 		base = root->get_node(live_edit_root);
 	}
 
-	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, RBSet<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
 
-	for (Set<Node *>::Element *F = E->get().front(); F; F = F->next()) {
+	for (RBSet<Node *>::Element *F = E->get().front(); F; F = F->next()) {
 		Node *n = F->get();
 
 		if (base && !base->is_a_parent_of(n)) {
@@ -1691,13 +1691,13 @@ void SceneTree::_live_edit_remove_node_func(const NodePath &p_at) {
 		base = root->get_node(live_edit_root);
 	}
 
-	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, RBSet<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
 
-	for (Set<Node *>::Element *F = E->get().front(); F;) {
-		Set<Node *>::Element *N = F->next();
+	for (RBSet<Node *>::Element *F = E->get().front(); F;) {
+		RBSet<Node *>::Element *N = F->next();
 
 		Node *n = F->get();
 
@@ -1721,13 +1721,13 @@ void SceneTree::_live_edit_remove_and_keep_node_func(const NodePath &p_at, Objec
 		base = root->get_node(live_edit_root);
 	}
 
-	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, RBSet<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
 
-	for (Set<Node *>::Element *F = E->get().front(); F;) {
-		Set<Node *>::Element *N = F->next();
+	for (RBSet<Node *>::Element *F = E->get().front(); F;) {
+		RBSet<Node *>::Element *N = F->next();
 
 		Node *n = F->get();
 
@@ -1754,13 +1754,13 @@ void SceneTree::_live_edit_restore_node_func(ObjectID p_id, const NodePath &p_at
 		base = root->get_node(live_edit_root);
 	}
 
-	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, RBSet<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
 
-	for (Set<Node *>::Element *F = E->get().front(); F;) {
-		Set<Node *>::Element *N = F->next();
+	for (RBSet<Node *>::Element *F = E->get().front(); F;) {
+		RBSet<Node *>::Element *N = F->next();
 
 		Node *n = F->get();
 
@@ -1801,12 +1801,12 @@ void SceneTree::_live_edit_duplicate_node_func(const NodePath &p_at, const Strin
 		base = root->get_node(live_edit_root);
 	}
 
-	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, RBSet<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
 
-	for (Set<Node *>::Element *F = E->get().front(); F; F = F->next()) {
+	for (RBSet<Node *>::Element *F = E->get().front(); F; F = F->next()) {
 		Node *n = F->get();
 
 		if (base && !base->is_a_parent_of(n)) {
@@ -1834,12 +1834,12 @@ void SceneTree::_live_edit_reparent_node_func(const NodePath &p_at, const NodePa
 		base = root->get_node(live_edit_root);
 	}
 
-	RBMap<String, Set<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
+	RBMap<String, RBSet<Node *>>::Element *E = live_scene_edit_cache.find(live_edit_scene);
 	if (!E) {
 		return; //scene not editable
 	}
 
-	for (Set<Node *>::Element *F = E->get().front(); F; F = F->next()) {
+	for (RBSet<Node *>::Element *F = E->get().front(); F; F = F->next()) {
 		Node *n = F->get();
 
 		if (base && !base->is_a_parent_of(n)) {

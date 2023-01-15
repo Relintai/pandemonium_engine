@@ -144,7 +144,7 @@ void RotatedFileLogger::clear_old_backups() {
 
 	da->list_dir_begin();
 	String f = da->get_next();
-	Set<String> backups;
+	RBSet<String> backups;
 	while (f != String()) {
 		if (!da->current_is_dir() && f.begins_with(basename) && f.get_extension() == extension && f != base_path.get_file()) {
 			backups.insert(f);
@@ -157,7 +157,7 @@ void RotatedFileLogger::clear_old_backups() {
 		// since backups are appended with timestamp and Set iterates them in sorted order,
 		// first backups are the oldest
 		int to_delete = backups.size() - max_backups;
-		for (Set<String>::Element *E = backups.front(); E && to_delete > 0; E = E->next(), --to_delete) {
+		for (RBSet<String>::Element *E = backups.front(); E && to_delete > 0; E = E->next(), --to_delete) {
 			da->remove(E->get());
 		}
 	}

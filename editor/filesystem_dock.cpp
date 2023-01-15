@@ -699,7 +699,7 @@ void FileSystemDock::_sort_file_info_list(List<FileSystemDock::FileInfo> &r_file
 
 void FileSystemDock::_update_file_list(bool p_keep_selection) {
 	// Register the previously selected items.
-	Set<String> cselection;
+	RBSet<String> cselection;
 	if (p_keep_selection) {
 		for (int i = 0; i < files->get_item_count(); i++) {
 			if (files->is_selected(i)) {

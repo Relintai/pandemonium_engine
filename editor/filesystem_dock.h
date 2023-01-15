@@ -36,7 +36,7 @@
 
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/containers/vector.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
@@ -128,7 +128,7 @@ private:
 	VBoxContainer *file_list_vb;
 
 	EditorNode *editor;
-	Set<String> favorites;
+	RBSet<String> favorites;
 
 	Button *button_toggle_display_mode;
 	Button *button_reload;

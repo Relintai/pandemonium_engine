@@ -67,7 +67,7 @@ public:
 		// TODO implement wireframe in GLES2
 		// bool generate_wireframes;
 
-		Set<String> extensions;
+		RBSet<String> extensions;
 
 		bool float_texture_supported;
 		bool s3tc_supported;
@@ -241,7 +241,7 @@ public:
 
 	struct Texture : RID_Data {
 		Texture *proxy;
-		Set<Texture *> proxy_owners;
+		RBSet<Texture *> proxy_owners;
 
 		String path;
 		uint32_t flags;
@@ -329,7 +329,7 @@ public:
 				glDeleteTextures(1, &tex_id);
 			}
 
-			for (Set<Texture *>::Element *E = proxy_owners.front(); E; E = E->next()) {
+			for (RBSet<Texture *>::Element *E = proxy_owners.front(); E; E = E->next()) {
 				E->get()->proxy = nullptr;
 			}
 
@@ -898,7 +898,7 @@ public:
 		GLuint tex_id;
 
 		SelfList<Skeleton> update_list;
-		Set<RasterizerScene::InstanceBase *> instances;
+		RBSet<RasterizerScene::InstanceBase *> instances;
 
 		Transform2D base_transform_2d;
 

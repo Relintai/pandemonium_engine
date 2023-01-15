@@ -49,7 +49,7 @@ class Resource : public Reference {
 	OBJ_CATEGORY("Resources");
 	RES_BASE_EXTENSION("res");
 
-	Set<ObjectID> owners;
+	RBSet<ObjectID> owners;
 
 	friend class ResBase;
 	friend class ResourceCache;

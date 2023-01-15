@@ -38,9 +38,9 @@ class InputDefault : public Input {
 
 	int mouse_button_mask;
 
-	Set<int> physical_keys_pressed;
-	Set<int> keys_pressed;
-	Set<int> joy_buttons_pressed;
+	RBSet<int> physical_keys_pressed;
+	RBSet<int> keys_pressed;
+	RBSet<int> joy_buttons_pressed;
 	RBMap<int, float> _joy_axis;
 	//Map<StringName,int> custom_action_press;
 	Vector3 gravity;

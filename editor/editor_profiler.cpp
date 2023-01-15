@@ -210,7 +210,7 @@ void EditorProfiler::_update_plot() {
 			continue;
 		}
 
-		for (Set<StringName>::Element *E = plot_sigs.front(); E; E = E->next()) {
+		for (RBSet<StringName>::Element *E = plot_sigs.front(); E; E = E->next()) {
 			const RBMap<StringName, Metric::Category *>::Element *F = m.category_ptrs.find(E->get());
 			if (F) {
 				highest = MAX(F->get()->total_time, highest);
@@ -254,7 +254,7 @@ void EditorProfiler::_update_plot() {
 				next = current + 1; //just because for loop must work
 			}
 
-			for (Set<StringName>::Element *E = plot_sigs.front(); E; E = E->next()) {
+			for (RBSet<StringName>::Element *E = plot_sigs.front(); E; E = E->next()) {
 				int plot_pos = -1;
 
 				for (int j = current; j < next; j++) {
@@ -631,7 +631,7 @@ Vector<Vector<String>> EditorProfiler::get_data_as_csv() const {
 	}
 
 	// Different metrics may contain different number of categories.
-	Set<StringName> possible_signatures;
+	RBSet<StringName> possible_signatures;
 	for (int i = 0; i < frame_metrics.size(); i++) {
 		const Metric &m = frame_metrics[i];
 		if (!m.valid) {
@@ -650,7 +650,7 @@ Vector<Vector<String>> EditorProfiler::get_data_as_csv() const {
 	Vector<String> signatures;
 	signatures.resize(possible_signatures.size());
 	int sig_index = 0;
-	for (const Set<StringName>::Element *E = possible_signatures.front(); E; E = E->next()) {
+	for (const RBSet<StringName>::Element *E = possible_signatures.front(); E; E = E->next()) {
 		signatures.write[sig_index] = E->get();
 		sig_map[E->get()] = sig_index;
 		sig_index++;

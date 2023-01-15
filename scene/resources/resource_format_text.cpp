@@ -1462,7 +1462,7 @@ Error ResourceFormatSaverTextInstance::save(const String &p_path, const RES &p_r
 
 #ifdef TOOLS_ENABLED
 	//keep order from cached ids
-	Set<int> cached_ids_found;
+	RBSet<int> cached_ids_found;
 	for (RBMap<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
 		int cached_id = E->key()->get_id_for_path(local_path);
 		if (cached_id < 0 || cached_ids_found.has(cached_id)) {
@@ -1517,7 +1517,7 @@ Error ResourceFormatSaverTextInstance::save(const String &p_path, const RES &p_r
 		f->store_line(String()); //separate
 	}
 
-	Set<int> used_indices;
+	RBSet<int> used_indices;
 
 	for (List<RES>::Element *E = saved_resources.front(); E; E = E->next()) {
 		RES res = E->get();

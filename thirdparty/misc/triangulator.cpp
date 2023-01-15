@@ -1123,12 +1123,12 @@ int TriangulatorPartition::MonotonePartition(List<TriangulatorPoly> *inpolys, Li
 	//binary search tree that holds edges intersecting the scanline
 	//note that while set doesn't actually have to be implemented as a tree
 	//complexity requirements for operations are the same as for the balanced binary search tree
-	Set<ScanLineEdge> edgeTree;
+	RBSet<ScanLineEdge> edgeTree;
 	//store iterators to the edge tree elements
 	//this makes deleting existing edges much faster
-	Set<ScanLineEdge>::Element **edgeTreeIterators,*edgeIter;
-	edgeTreeIterators = new Set<ScanLineEdge>::Element*[maxnumvertices];
-	//Pair<Set<ScanLineEdge>::Element*,bool> edgeTreeRet;
+	RBSet<ScanLineEdge>::Element **edgeTreeIterators,*edgeIter;
+	edgeTreeIterators = new RBSet<ScanLineEdge>::Element*[maxnumvertices];
+	//Pair<RBSet<ScanLineEdge>::Element*,bool> edgeTreeRet;
 	for(i = 0; i<numvertices; i++) edgeTreeIterators[i] = NULL;
 
 	//for each vertex
@@ -1311,8 +1311,8 @@ int TriangulatorPartition::MonotonePartition(List<TriangulatorPoly> *inpolys, Li
 
 //adds a diagonal to the doubly-connected list of vertices
 void TriangulatorPartition::AddDiagonal(MonotoneVertex *vertices, long *numvertices, long index1, long index2,
-					char *vertextypes, Set<ScanLineEdge>::Element **edgeTreeIterators,
-					Set<ScanLineEdge> *edgeTree, long *helpers)
+					char *vertextypes, RBSet<ScanLineEdge>::Element **edgeTreeIterators,
+					RBSet<ScanLineEdge> *edgeTree, long *helpers)
 {
 	long newindex1,newindex2;
 

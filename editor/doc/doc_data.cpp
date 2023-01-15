@@ -50,7 +50,7 @@
 #include "core/os/memory.h"
 #include "core/containers/pair.h"
 #include "core/string/print_string.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/variant/variant.h"
@@ -283,7 +283,7 @@ void DocData::generate(bool p_basic_types) {
 	bool skip_setter_getter_methods = true;
 
 	while (classes.size()) {
-		Set<StringName> setters_getters;
+		RBSet<StringName> setters_getters;
 
 		String name = classes.front()->get();
 		if (!ClassDB::is_class_exposed(name)) {

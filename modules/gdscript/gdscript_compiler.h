@@ -30,14 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "gdscript.h"
 #include "gdscript_parser.h"
 
 class GDScriptCompiler {
 	const GDScriptParser *parser;
-	Set<GDScript *> parsed_classes;
-	Set<GDScript *> parsing_classes;
+	RBSet<GDScript *> parsed_classes;
+	RBSet<GDScript *> parsing_classes;
 	GDScript *main_script;
 	struct CodeGen {
 		GDScript *script;

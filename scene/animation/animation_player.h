@@ -214,7 +214,7 @@ private:
 	int cache_update_prop_size;
 	TrackNodeCache::BezierAnim *cache_update_bezier[NODE_CACHE_UPDATE_MAX];
 	int cache_update_bezier_size;
-	Set<TrackNodeCache *> playing_caches;
+	RBSet<TrackNodeCache *> playing_caches;
 
 	uint64_t accum_pass;
 	float speed_scale;

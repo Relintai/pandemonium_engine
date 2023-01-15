@@ -338,7 +338,7 @@ void CreateDialog::_update_search() {
 		if (cpp_type) {
 			bool skip = false;
 
-			for (Set<StringName>::Element *E = type_blacklist.front(); E && !skip; E = E->next()) {
+			for (RBSet<StringName>::Element *E = type_blacklist.front(); E && !skip; E = E->next()) {
 				if (ClassDB::is_parent_class(type, E->get())) {
 					skip = true;
 				}

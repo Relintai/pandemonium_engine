@@ -39,7 +39,7 @@ class SpringArm : public Spatial {
 	GDCLASS(SpringArm, Spatial);
 
 	Ref<Shape> shape;
-	Set<RID> excluded_objects;
+	RBSet<RID> excluded_objects;
 	float spring_length;
 	float current_spring_length;
 	bool keep_child_basis;

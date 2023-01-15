@@ -49,7 +49,7 @@
 #include "core/containers/pair.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/object/undo_redo.h"
@@ -5720,7 +5720,7 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 			undo_redo->create_action(TTR("Anim Add RESET Keys"));
 			Ref<Animation> reset = _create_and_get_reset_animation();
 			int reset_tracks = reset->get_track_count();
-			Set<int> tracks_added;
+			RBSet<int> tracks_added;
 
 			for (RBMap<SelectedKey, KeyInfo>::Element *E = selection.back(); E; E = E->prev()) {
 				const SelectedKey &sk = E->key();

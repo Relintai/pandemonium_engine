@@ -161,7 +161,7 @@ class VehicleBody : public RigidBody {
 	real_t m_steeringValue;
 	real_t m_currentVehicleSpeedKmHour;
 
-	Set<RID> exclude;
+	RBSet<RID> exclude;
 
 	Vector<Vector3> m_forwardWS;
 	Vector<Vector3> m_axle;

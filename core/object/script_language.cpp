@@ -378,7 +378,7 @@ int ScriptDebugger::get_depth() const {
 
 void ScriptDebugger::insert_breakpoint(int p_line, const StringName &p_source) {
 	if (!breakpoints.has(p_line)) {
-		breakpoints[p_line] = Set<StringName>();
+		breakpoints[p_line] = RBSet<StringName>();
 	}
 	breakpoints[p_line].insert(p_source);
 }
@@ -539,7 +539,7 @@ bool PlaceHolderScriptInstance::has_method(const StringName &p_method) const {
 }
 
 void PlaceHolderScriptInstance::update(const List<PropertyInfo> &p_properties, const RBMap<StringName, Variant> &p_values) {
-	Set<StringName> new_values;
+	RBSet<StringName> new_values;
 	for (const List<PropertyInfo>::Element *E = p_properties.front(); E; E = E->next()) {
 		StringName n = E->get().name;
 		new_values.insert(n);

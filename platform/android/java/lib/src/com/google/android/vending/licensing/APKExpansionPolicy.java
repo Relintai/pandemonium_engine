@@ -146,7 +146,7 @@ public class APKExpansionPolicy implements Policy {
             // Reset the licensing URL since it is only applicable for NOT_LICENSED responses.
             setLicensingUrl(null);
             setValidityTimestamp(Long.toString(System.currentTimeMillis() + MILLIS_PER_MINUTE));
-            Set<String> keys = extras.keySet();
+            RBSet<String> keys = extras.keySet();
             for (String key : keys) {
                 if (key.equals("VT")) {
                     setValidityTimestamp(extras.get(key));

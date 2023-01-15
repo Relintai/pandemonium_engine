@@ -106,7 +106,7 @@ Ref<EditorExportPlatform> EditorExportPreset::get_platform() const {
 
 void EditorExportPreset::update_files_to_export() {
 	Vector<String> to_remove;
-	for (Set<String>::Element *E = selected_files.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = selected_files.front(); E; E = E->next()) {
 		if (!FileAccess::exists(E->get())) {
 			to_remove.push_back(E->get());
 		}
@@ -118,7 +118,7 @@ void EditorExportPreset::update_files_to_export() {
 
 Vector<String> EditorExportPreset::get_files_to_export() const {
 	Vector<String> files;
-	for (Set<String>::Element *E = selected_files.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = selected_files.front(); E; E = E->next()) {
 		files.push_back(E->get());
 	}
 	return files;
@@ -470,7 +470,7 @@ Ref<EditorExportPreset> EditorExportPlatform::create_preset() {
 	return preset;
 }
 
-void EditorExportPlatform::_export_find_resources(EditorFileSystemDirectory *p_dir, Set<String> &p_paths) {
+void EditorExportPlatform::_export_find_resources(EditorFileSystemDirectory *p_dir, RBSet<String> &p_paths) {
 	for (int i = 0; i < p_dir->get_subdir_count(); i++) {
 		_export_find_resources(p_dir->get_subdir(i), p_paths);
 	}
@@ -480,7 +480,7 @@ void EditorExportPlatform::_export_find_resources(EditorFileSystemDirectory *p_d
 	}
 }
 
-void EditorExportPlatform::_export_find_dependencies(const String &p_path, Set<String> &p_paths) {
+void EditorExportPlatform::_export_find_dependencies(const String &p_path, RBSet<String> &p_paths) {
 	if (p_paths.has(p_path)) {
 		return;
 	}
@@ -501,7 +501,7 @@ void EditorExportPlatform::_export_find_dependencies(const String &p_path, Set<S
 	}
 }
 
-void EditorExportPlatform::_edit_files_with_filter(DirAccess *da, const Vector<String> &p_filters, Set<String> &r_list, bool exclude) {
+void EditorExportPlatform::_edit_files_with_filter(DirAccess *da, const Vector<String> &p_filters, RBSet<String> &r_list, bool exclude) {
 	da->list_dir_begin();
 	String cur_dir = da->get_current_dir().replace("\\", "/");
 	if (!cur_dir.ends_with("/")) {
@@ -549,7 +549,7 @@ void EditorExportPlatform::_edit_files_with_filter(DirAccess *da, const Vector<S
 	}
 }
 
-void EditorExportPlatform::_edit_filter_list(Set<String> &r_list, const String &p_filter, bool exclude) {
+void EditorExportPlatform::_edit_filter_list(RBSet<String> &r_list, const String &p_filter, bool exclude) {
 	if (p_filter == "") {
 		return;
 	}
@@ -676,10 +676,10 @@ void EditorExportPlugin::_export_end_script() {
 	}
 }
 
-void EditorExportPlugin::_export_file(const String &p_path, const String &p_type, const Set<String> &p_features) {
+void EditorExportPlugin::_export_file(const String &p_path, const String &p_type, const RBSet<String> &p_features) {
 }
 
-void EditorExportPlugin::_export_begin(const Set<String> &p_features, bool p_debug, const String &p_path, int p_flags) {
+void EditorExportPlugin::_export_begin(const RBSet<String> &p_features, bool p_debug, const String &p_path, int p_flags) {
 }
 
 void EditorExportPlugin::skip() {
@@ -760,7 +760,7 @@ EditorExportPlatform::ExportNotifier::~ExportNotifier() {
 
 Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &p_preset, EditorExportSaveFunction p_func, void *p_udata, EditorExportSaveSharedObject p_so_func) {
 	//figure out paths of files that will be exported
-	Set<String> paths;
+	RBSet<String> paths;
 	Vector<String> path_remaps;
 
 	if (p_preset->get_export_filter() == EditorExportPreset::EXPORT_ALL_RESOURCES) {
@@ -834,14 +834,14 @@ Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &
 	}
 
 	FeatureContainers feature_containers = get_feature_containers(p_preset);
-	Set<String> &features = feature_containers.features;
+	RBSet<String> &features = feature_containers.features;
 	PoolVector<String> &features_pv = feature_containers.features_pv;
 
 	//store everything in the export medium
 	int idx = 0;
 	int total = paths.size();
 
-	for (Set<String>::Element *E = paths.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = paths.front(); E; E = E->next()) {
 		String path = E->get();
 		String type = ResourceLoader::get_resource_type(path);
 
@@ -872,7 +872,7 @@ Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &
 			List<String> remaps;
 			config->get_section_keys("remap", &remaps);
 
-			Set<String> remap_features;
+			RBSet<String> remap_features;
 
 			for (List<String>::Element *F = remaps.front(); F; F = F->next()) {
 				String remap = F->get();
@@ -1886,12 +1886,12 @@ void EditorExportPlatformPC::get_platform_features(List<String> *r_features) {
 	r_features->push_back("pc"); //all pcs support "pc"
 	r_features->push_back("s3tc"); //all pcs support "s3tc" compression
 	r_features->push_back(get_os_name()); //OS name is a feature
-	for (Set<String>::Element *E = extra_features.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = extra_features.front(); E; E = E->next()) {
 		r_features->push_back(E->get());
 	}
 }
 
-void EditorExportPlatformPC::resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) {
+void EditorExportPlatformPC::resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, RBSet<String> &p_features) {
 	if (p_features.has("bptc")) {
 		if (p_preset->has("texture_format/no_bptc_fallbacks")) {
 			p_features.erase("s3tc");
@@ -1913,7 +1913,7 @@ EditorExportPlatformPC::EditorExportPlatformPC() {
 
 ///////////////////////
 
-void EditorExportTextSceneToBinaryPlugin::_export_file(const String &p_path, const String &p_type, const Set<String> &p_features) {
+void EditorExportTextSceneToBinaryPlugin::_export_file(const String &p_path, const String &p_type, const RBSet<String> &p_features) {
 	String extension = p_path.get_extension().to_lower();
 	if (extension != "tres" && extension != "tscn") {
 		return;

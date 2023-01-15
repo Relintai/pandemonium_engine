@@ -49,7 +49,7 @@ class ShapeCast : public Spatial {
 	RID shape_rid;
 	Vector3 target_position = Vector3(0, -1, 0);
 
-	Set<RID> exclude;
+	RBSet<RID> exclude;
 	real_t margin = 0.0;
 	uint32_t collision_mask = 1;
 	bool exclude_parent_body = true;

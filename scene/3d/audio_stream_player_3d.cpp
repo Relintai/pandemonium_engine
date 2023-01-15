@@ -391,7 +391,7 @@ void AudioStreamPlayer3D::_notification(int p_what) {
 
 			PhysicsDirectSpaceState::ShapeResult sr[MAX_INTERSECT_AREAS];
 
-			int areas = space_state->intersect_point(global_pos, sr, MAX_INTERSECT_AREAS, Set<RID>(), area_mask, false, true);
+			int areas = space_state->intersect_point(global_pos, sr, MAX_INTERSECT_AREAS, RBSet<RID>(), area_mask, false, true);
 			Area *area = nullptr;
 
 			for (int i = 0; i < areas; i++) {

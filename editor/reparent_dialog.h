@@ -32,7 +32,7 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 
 class CheckBox;
 class Node;
@@ -55,7 +55,7 @@ protected:
 	static void _bind_methods();
 
 public:
-	void set_current(const Set<Node *> &p_selection);
+	void set_current(const RBSet<Node *> &p_selection);
 
 	ReparentDialog();
 	~ReparentDialog();

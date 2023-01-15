@@ -2712,7 +2712,7 @@ Variant ShaderLanguage::constant_value_to_variant(const Vector<ShaderLanguage::C
 }
 
 void ShaderLanguage::get_keyword_list(List<String> *r_keywords) {
-	Set<String> kws;
+	RBSet<String> kws;
 
 	int idx = 0;
 
@@ -2729,7 +2729,7 @@ void ShaderLanguage::get_keyword_list(List<String> *r_keywords) {
 		idx++;
 	}
 
-	for (Set<String>::Element *E = kws.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = kws.front(); E; E = E->next()) {
 		r_keywords->push_back(E->get());
 	}
 }
@@ -2749,7 +2749,7 @@ bool ShaderLanguage::is_control_flow_keyword(String p_keyword) {
 }
 
 void ShaderLanguage::get_builtin_funcs(List<String> *r_keywords) {
-	Set<String> kws;
+	RBSet<String> kws;
 
 	int idx = 0;
 
@@ -2759,7 +2759,7 @@ void ShaderLanguage::get_builtin_funcs(List<String> *r_keywords) {
 		idx++;
 	}
 
-	for (Set<String>::Element *E = kws.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = kws.front(); E; E = E->next()) {
 		r_keywords->push_back(E->get());
 	}
 }
@@ -5204,7 +5204,7 @@ Error ShaderLanguage::_parse_block(BlockNode *p_block, const RBMap<StringName, B
 					_set_tkpos(pos);
 					continue;
 				} else {
-					Set<int> constants;
+					RBSet<int> constants;
 					for (int i = 0; i < switch_block->statements.size(); i++) { // Checks for duplicates.
 						ControlFlowNode *flow = (ControlFlowNode *)switch_block->statements[i];
 						if (flow) {
@@ -5610,10 +5610,10 @@ Error ShaderLanguage::_parse_block(BlockNode *p_block, const RBMap<StringName, B
 	return OK;
 }
 
-String ShaderLanguage::_get_shader_type_list(const Set<String> &p_shader_types) const {
+String ShaderLanguage::_get_shader_type_list(const RBSet<String> &p_shader_types) const {
 	// Return a list of shader types as an human-readable string
 	String valid_types;
-	for (const Set<String>::Element *E = p_shader_types.front(); E; E = E->next()) {
+	for (const RBSet<String>::Element *E = p_shader_types.front(); E; E = E->next()) {
 		if (valid_types != String()) {
 			valid_types += ", ";
 		}
@@ -5667,7 +5667,7 @@ Error ShaderLanguage::_validate_datatype(DataType p_type) {
 	return OK;
 }
 
-Error ShaderLanguage::_parse_shader(const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types) {
+Error ShaderLanguage::_parse_shader(const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const RBSet<String> &p_shader_types) {
 	Token tk = _get_token();
 
 	if (tk.type != TK_SHADER_TYPE) {
@@ -5758,7 +5758,7 @@ Error ShaderLanguage::_parse_shader(const RBMap<StringName, FunctionInfo> &p_fun
 				st.shader_struct = st_node;
 
 				int member_count = 0;
-				Set<String> member_names;
+				RBSet<String> member_names;
 				while (true) { // variables list
 					tk = _get_token();
 					if (tk.type == TK_CURLY_BRACKET_CLOSE) {
@@ -6903,7 +6903,7 @@ String ShaderLanguage::get_shader_type(const String &p_code) {
 	return String();
 }
 
-Error ShaderLanguage::compile(const String &p_code, const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types) {
+Error ShaderLanguage::compile(const String &p_code, const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const RBSet<String> &p_shader_types) {
 	clear();
 
 	code = p_code;
@@ -6919,7 +6919,7 @@ Error ShaderLanguage::compile(const String &p_code, const RBMap<StringName, Func
 	return OK;
 }
 
-Error ShaderLanguage::complete(const String &p_code, const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const Set<String> &p_shader_types, List<ScriptCodeCompletionOption> *r_options, String &r_call_hint) {
+Error ShaderLanguage::complete(const String &p_code, const RBMap<StringName, FunctionInfo> &p_functions, const Vector<StringName> &p_render_modes, const RBSet<String> &p_shader_types, List<ScriptCodeCompletionOption> *r_options, String &r_call_hint) {
 	clear();
 
 	code = p_code;
@@ -6935,7 +6935,7 @@ Error ShaderLanguage::complete(const String &p_code, const RBMap<StringName, Fun
 			return OK;
 		} break;
 		case COMPLETION_SHADER_TYPE: {
-			for (const Set<String>::Element *E = p_shader_types.front(); E; E = E->next()) {
+			for (const RBSet<String>::Element *E = p_shader_types.front(); E; E = E->next()) {
 				ScriptCodeCompletionOption option(E->get(), ScriptCodeCompletionOption::KIND_PLAIN_TEXT);
 				r_options->push_back(option);
 			}

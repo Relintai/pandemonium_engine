@@ -1356,7 +1356,7 @@ void EditorFileSystem::_save_late_updated_files() {
 	String fscache = EditorSettings::get_singleton()->get_project_settings_dir().plus_file("filesystem_update4");
 	FileAccessRef f = FileAccess::open(fscache, FileAccess::WRITE);
 	ERR_FAIL_COND_MSG(!f, "Cannot create file '" + fscache + "'. Check user write permissions.");
-	for (Set<String>::Element *E = late_update_files.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = late_update_files.front(); E; E = E->next()) {
 		f->store_line(E->get());
 	}
 }
@@ -1517,7 +1517,7 @@ void EditorFileSystem::update_file(const String &p_file) {
 	_queue_update_script_classes();
 }
 
-Set<String> EditorFileSystem::get_valid_extensions() const {
+RBSet<String> EditorFileSystem::get_valid_extensions() const {
 	return valid_extensions;
 }
 
@@ -1893,7 +1893,7 @@ void EditorFileSystem::_reimport_file(const String &p_file) {
 	EditorResourcePreview::get_singleton()->check_for_invalidation(p_file);
 }
 
-void EditorFileSystem::_find_group_files(EditorFileSystemDirectory *efd, RBMap<String, Vector<String>> &group_files, Set<String> &groups_to_reimport) {
+void EditorFileSystem::_find_group_files(EditorFileSystemDirectory *efd, RBMap<String, Vector<String>> &group_files, RBSet<String> &groups_to_reimport) {
 	int fc = efd->files.size();
 	const EditorFileSystemDirectory::FileInfo *const *files = efd->files.ptr();
 	for (int i = 0; i < fc; i++) {
@@ -1944,7 +1944,7 @@ void EditorFileSystem::reimport_files(const Vector<String> &p_files) {
 	EditorProgress pr("reimport", TTR("(Re)Importing Assets"), p_files.size());
 
 	Vector<ImportFile> files;
-	Set<String> groups_to_reimport;
+	RBSet<String> groups_to_reimport;
 
 	for (int i = 0; i < p_files.size(); i++) {
 		String group_file = ResourceFormatImporter::get_singleton()->get_import_group_file(p_files[i]);

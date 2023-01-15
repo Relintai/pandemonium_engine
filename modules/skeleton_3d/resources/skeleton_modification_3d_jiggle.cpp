@@ -208,7 +208,7 @@ void SkeletonModification3DJiggle::_execute_jiggle_joint(int p_joint_idx, Spatia
 			Transform new_bone_trans_world = stack->skeleton->global_pose_to_world_transform(new_bone_trans);
 			Transform dynamic_position_world = stack->skeleton->global_pose_to_world_transform(Transform(Basis(), jiggle_data_chain[p_joint_idx].dynamic_position));
 
-			bool ray_hit = space_state->intersect_ray(new_bone_trans_world.origin, dynamic_position_world.get_origin(), ray_result, Set<RID>(), collision_mask);
+			bool ray_hit = space_state->intersect_ray(new_bone_trans_world.origin, dynamic_position_world.get_origin(), ray_result, RBSet<RID>(), collision_mask);
 
 			if (ray_hit) {
 				jiggle_data_chain[p_joint_idx].dynamic_position = jiggle_data_chain[p_joint_idx].last_noncollision_position;

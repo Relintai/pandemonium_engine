@@ -32,7 +32,7 @@
 
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/error/error_macros.h"
 #include "core/object/class_db.h"
 #include "core/object/reference.h"
@@ -92,7 +92,7 @@ void EditorPropertyRootMotion::_node_assign() {
 		return;
 	}
 
-	Set<String> paths;
+	RBSet<String> paths;
 	{
 		List<StringName> animations;
 		player->get_animation_list(&animations);
@@ -110,7 +110,7 @@ void EditorPropertyRootMotion::_node_assign() {
 
 	RBMap<String, TreeItem *> parenthood;
 
-	for (Set<String>::Element *E = paths.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = paths.front(); E; E = E->next()) {
 		NodePath path = E->get();
 		TreeItem *ti = nullptr;
 		String accum;

@@ -32,7 +32,7 @@
 
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/error/error_macros.h"
 #include "core/io/resource_loader.h"
 #include "core/math/color.h"
@@ -593,8 +593,8 @@ bool AnimationNodeBlendTreeEditor::_update_filters(const Ref<AnimationNode> &ano
 
 	updating = true;
 
-	Set<String> paths;
-	HashMap<String, Set<String>> types;
+	RBSet<String> paths;
+	HashMap<String, RBSet<String>> types;
 	{
 		List<StringName> animations;
 		player->get_animation_list(&animations);
@@ -633,7 +633,7 @@ bool AnimationNodeBlendTreeEditor::_update_filters(const Ref<AnimationNode> &ano
 
 	RBMap<String, TreeItem *> parenthood;
 
-	for (Set<String>::Element *E = paths.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = paths.front(); E; E = E->next()) {
 		NodePath path = E->get();
 		TreeItem *ti = nullptr;
 		String accum;
@@ -730,7 +730,7 @@ bool AnimationNodeBlendTreeEditor::_update_filters(const Ref<AnimationNode> &ano
 				//just a node, not a property track
 				String types_text = "[";
 				if (types.has(path)) {
-					Set<String>::Element *F = types[path].front();
+					RBSet<String>::Element *F = types[path].front();
 					types_text += F->get();
 					while (F->next()) {
 						F = F->next();

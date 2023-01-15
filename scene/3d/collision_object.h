@@ -70,7 +70,7 @@ class CollisionObject : public Spatial {
 	bool capture_input_on_drag;
 	bool ray_pickable;
 
-	Set<uint32_t> debug_shapes_to_update;
+	RBSet<uint32_t> debug_shapes_to_update;
 	int debug_shapes_count = 0;
 	Transform debug_shape_old_transform;
 

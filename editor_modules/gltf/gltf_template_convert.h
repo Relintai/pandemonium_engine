@@ -33,7 +33,7 @@
 
 #include "core/variant/array.h"
 #include "core/variant/dictionary.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 
 namespace GLTFTemplateConvert {
 template <class T>
@@ -46,9 +46,9 @@ static Array to_array(const Vector<T> &p_inp) {
 }
 
 template <class T>
-static Array to_array(const Set<T> &p_inp) {
+static Array to_array(const RBSet<T> &p_inp) {
 	Array ret;
-	typename Set<T>::Element *elem = p_inp.front();
+	typename RBSet<T>::Element *elem = p_inp.front();
 	while (elem) {
 		ret.push_back(elem->get());
 		elem = elem->next();
@@ -65,7 +65,7 @@ static void set_from_array(Vector<T> &r_out, const Array &p_inp) {
 }
 
 template <class T>
-static void set_from_array(Set<T> &r_out, const Array &p_inp) {
+static void set_from_array(RBSet<T> &r_out, const Array &p_inp) {
 	r_out.clear();
 	for (int i = 0; i < p_inp.size(); i++) {
 		r_out.insert(p_inp[i]);

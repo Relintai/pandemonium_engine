@@ -2065,8 +2065,8 @@ Error CScriptCompiler::_parse_class_blocks(CScript *p_script, const CScriptParse
 	//validate instances if keeping state
 
 	if (p_keep_state) {
-		for (Set<Object *>::Element *E = p_script->instances.front(); E;) {
-			Set<Object *>::Element *N = E->next();
+		for (RBSet<Object *>::Element *E = p_script->instances.front(); E;) {
+			RBSet<Object *>::Element *N = E->next();
 
 			ScriptInstance *si = E->get()->get_script_instance();
 			if (si->is_placeholder()) {

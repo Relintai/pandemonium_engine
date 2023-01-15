@@ -407,7 +407,7 @@ void ShapeCast::_update_shapecast_state() {
 	// Regardless of whether the shape is stuck or it's moved along
 	// the motion vector, we'll only consider static collisions from now on.
 	bool intersected = true;
-	Set<RID> intersected_objects = exclude;
+	RBSet<RID> intersected_objects = exclude;
 	while (intersected && result.size() < max_results) {
 		PhysicsDirectSpaceState::ShapeRestInfo info;
 		intersected = dss->rest_info(shape_rid, gt, margin, &info, intersected_objects, collision_mask, collide_with_bodies, collide_with_areas);

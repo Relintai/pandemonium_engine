@@ -50,7 +50,7 @@
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/containers/pair.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/typedefs.h"
 #include "core/variant/variant.h"
 #include "scene/2d/canvas_item.h"
@@ -553,7 +553,7 @@ void EditorHelp::_update_doc() {
 	}
 
 	// Properties overview
-	Set<String> skip_methods;
+	RBSet<String> skip_methods;
 	bool property_descr = false;
 
 	if (cd.properties.size()) {

@@ -399,7 +399,7 @@ public:
 	bool is_property_pinned(const StringName &p_property) const;
 	virtual StringName get_property_store_alias(const StringName &p_property) const;
 #endif
-	void get_storable_properties(Set<StringName> &r_storable_properties) const;
+	void get_storable_properties(RBSet<StringName> &r_storable_properties) const;
 
 	virtual String to_string();
 
@@ -566,6 +566,6 @@ public:
 
 VARIANT_ENUM_CAST(Node::DuplicateFlags);
 
-typedef Set<Node *, Node::Comparator> NodeSet;
+typedef RBSet<Node *, Node::Comparator> NodeSet;
 
 #endif

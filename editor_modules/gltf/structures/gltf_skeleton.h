@@ -59,7 +59,7 @@ private:
 #endif
 
 	// Set of unique bone names for the skeleton
-	Set<String> unique_names;
+	RBSet<String> unique_names;
 
 	RBMap<int32_t, GLTFNodeIndex> pandemonium_bone_node;
 

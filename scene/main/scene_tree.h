@@ -151,7 +151,7 @@ private:
 
 	//safety for when a node is deleted while a group is being called
 	int call_lock;
-	Set<Node *> call_skip; //skip erased nodes
+	RBSet<Node *> call_skip; //skip erased nodes
 
 	StretchMode stretch_mode;
 	StretchAspect stretch_aspect;
@@ -239,7 +239,7 @@ private:
 	NodePath live_edit_root;
 	String live_edit_scene;
 
-	RBMap<String, Set<Node *>> live_scene_edit_cache;
+	RBMap<String, RBSet<Node *>> live_scene_edit_cache;
 	RBMap<Node *, RBMap<ObjectID, Node *>> live_edit_remove_list;
 
 	void _debugger_request_tree();

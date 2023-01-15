@@ -39,7 +39,7 @@ public class Dictionary extends HashMap<String, Object> {
 	public String[] get_keys() {
 		String[] ret = new String[size()];
 		int i = 0;
-		Set<String> keys = keySet();
+		RBSet<String> keys = keySet();
 		for (String key : keys) {
 			ret[i] = key;
 			i++;
@@ -51,7 +51,7 @@ public class Dictionary extends HashMap<String, Object> {
 	public Object[] get_values() {
 		Object[] ret = new Object[size()];
 		int i = 0;
-		Set<String> keys = keySet();
+		RBSet<String> keys = keySet();
 		for (String key : keys) {
 			ret[i] = get(key);
 			i++;

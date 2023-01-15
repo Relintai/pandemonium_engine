@@ -119,7 +119,7 @@ class ResourceFormatSaverBinaryInstance {
 	bool takeover_paths;
 	FileAccess *f;
 	String magic;
-	Set<RES> resource_set;
+	RBSet<RES> resource_set;
 
 	struct NonPersistentKey { //for resource properties generated on the fly
 		RES base;
@@ -153,7 +153,7 @@ class ResourceFormatSaverBinaryInstance {
 
 public:
 	Error save(const String &p_path, const RES &p_resource, uint32_t p_flags = 0);
-	static void write_variant(FileAccess *f, const Variant &p_property, Set<RES> &resource_set, RBMap<RES, int> &external_resources, RBMap<StringName, int> &string_map, const PropertyInfo &p_hint = PropertyInfo());
+	static void write_variant(FileAccess *f, const Variant &p_property, RBSet<RES> &resource_set, RBMap<RES, int> &external_resources, RBMap<StringName, int> &string_map, const PropertyInfo &p_hint = PropertyInfo());
 };
 
 class ResourceFormatSaverBinary : public ResourceFormatSaver {

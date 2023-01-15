@@ -54,7 +54,7 @@ class EditorFileServer : public Object {
 	};
 
 	Ref<TCP_Server> server;
-	Set<Thread *> to_wait;
+	RBSet<Thread *> to_wait;
 
 	static void _close_client(ClientData *cd);
 	static void _subthread_start(void *s);

@@ -140,7 +140,7 @@ public:
 		r_features->push_back("OSX");
 	}
 
-	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) {
+	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, RBSet<String> &p_features) {
 	}
 
 	EditorExportPlatformOSX();
@@ -1088,14 +1088,14 @@ Error EditorExportPlatformOSX::export_project(const Ref<EditorExportPreset> &p_p
 			f->store_line("CFBundleDisplayName = \"" + ProjectSettings::get_singleton()->get("application/config/name").operator String() + "\";");
 		}
 
-		Set<String> languages;
+		RBSet<String> languages;
 		for (int j = 0; j < translations.size(); j++) {
 			Ref<Translation> tr = ResourceLoader::load(translations[j]);
 			if (tr.is_valid() && tr->get_locale() != "en") {
 				languages.insert(tr->get_locale());
 			}
 		}
-		for (const Set<String>::Element *E = languages.front(); E; E = E->next()) {
+		for (const RBSet<String>::Element *E = languages.front(); E; E = E->next()) {
 			String fname = tmp_app_path_name + "/Contents/Resources/" + E->get() + ".lproj";
 			tmp_app_dir->make_dir_recursive(fname);
 			FileAccessRef f = FileAccess::open(fname + "/InfoPlist.strings", FileAccess::WRITE);

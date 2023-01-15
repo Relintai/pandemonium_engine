@@ -35,8 +35,8 @@ void GridContainer::_notification(int p_what) {
 		case NOTIFICATION_SORT_CHILDREN: {
 			RBMap<int, int> col_minw; // Max of min_width of all controls in each col (indexed by col).
 			RBMap<int, int> row_minh; // Max of min_height of all controls in each row (indexed by row).
-			Set<int> col_expanded; // Columns which have the SIZE_EXPAND flag set.
-			Set<int> row_expanded; // Rows which have the SIZE_EXPAND flag set.
+			RBSet<int> col_expanded; // Columns which have the SIZE_EXPAND flag set.
+			RBSet<int> row_expanded; // Rows which have the SIZE_EXPAND flag set.
 
 			int hsep = get_theme_constant("hseparation");
 			int vsep = get_theme_constant("vseparation");
@@ -104,7 +104,7 @@ void GridContainer::_notification(int p_what) {
 				// Check if all minwidth constraints are OK if we use the remaining space.
 				can_fit = true;
 				int max_index = col_expanded.front()->get();
-				for (Set<int>::Element *E = col_expanded.front(); E; E = E->next()) {
+				for (RBSet<int>::Element *E = col_expanded.front(); E; E = E->next()) {
 					if (col_minw[E->get()] > col_minw[max_index]) {
 						max_index = E->get();
 					}
@@ -125,7 +125,7 @@ void GridContainer::_notification(int p_what) {
 				// Check if all minheight constraints are OK if we use the remaining space.
 				can_fit = true;
 				int max_index = row_expanded.front()->get();
-				for (Set<int>::Element *E = row_expanded.front(); E; E = E->next()) {
+				for (RBSet<int>::Element *E = row_expanded.front(); E; E = E->next()) {
 					if (row_minh[E->get()] > row_minh[max_index]) {
 						max_index = E->get();
 					}

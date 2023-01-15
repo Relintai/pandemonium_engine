@@ -217,7 +217,7 @@ static String get_constant_text(SL::DataType p_type, const Vector<SL::ConstantNo
 	}
 }
 
-void ShaderCompilerGLES2::_dump_function_deps(const SL::ShaderNode *p_node, const StringName &p_for_func, const RBMap<StringName, String> &p_func_code, StringBuilder &r_to_add, Set<StringName> &r_added) {
+void ShaderCompilerGLES2::_dump_function_deps(const SL::ShaderNode *p_node, const StringName &p_for_func, const RBMap<StringName, String> &p_func_code, StringBuilder &r_to_add, RBSet<StringName> &r_added) {
 	int fidx = -1;
 
 	for (int i = 0; i < p_node->functions.size(); i++) {
@@ -229,7 +229,7 @@ void ShaderCompilerGLES2::_dump_function_deps(const SL::ShaderNode *p_node, cons
 
 	ERR_FAIL_COND(fidx == -1);
 
-	for (Set<StringName>::Element *E = p_node->functions[fidx].uses_function.front(); E; E = E->next()) {
+	for (RBSet<StringName>::Element *E = p_node->functions[fidx].uses_function.front(); E; E = E->next()) {
 		if (r_added.has(E->get())) {
 			continue;
 		}
@@ -461,8 +461,8 @@ String ShaderCompilerGLES2::_dump_node_code(const SL::Node *p_node, int p_level,
 				function = nullptr;
 			}
 
-			Set<StringName> added_vertex;
-			Set<StringName> added_fragment;
+			RBSet<StringName> added_vertex;
+			RBSet<StringName> added_fragment;
 
 			for (int i = 0; i < snode->functions.size(); i++) {
 				SL::FunctionNode *fnode = snode->functions[i].function;

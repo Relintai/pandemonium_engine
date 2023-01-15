@@ -55,7 +55,7 @@ static String _make_indent(const String &p_indent, int p_size) {
 	return indent_text;
 }
 
-String JSON::_print_var(const Variant &p_var, const String &p_indent, int p_cur_indent, bool p_sort_keys, Set<const void *> &p_markers) {
+String JSON::_print_var(const Variant &p_var, const String &p_indent, int p_cur_indent, bool p_sort_keys, RBSet<const void *> &p_markers) {
 	String colon = ":";
 	String end_statement = "";
 
@@ -130,7 +130,7 @@ String JSON::_print_var(const Variant &p_var, const String &p_indent, int p_cur_
 }
 
 String JSON::print(const Variant &p_var, const String &p_indent, bool p_sort_keys) {
-	Set<const void *> markers;
+	RBSet<const void *> markers;
 	return _print_var(p_var, p_indent, 0, p_sort_keys, markers);
 }
 

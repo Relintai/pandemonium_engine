@@ -54,7 +54,7 @@ class Physics2DServerSW : public Physics2DServer {
 	bool flushing_queries;
 
 	Step2DSW *stepper;
-	Set<const Space2DSW *> active_spaces;
+	RBSet<const Space2DSW *> active_spaces;
 
 	mutable RID_Owner<Shape2DSW> shape_owner;
 	mutable RID_Owner<Space2DSW> space_owner;
@@ -242,7 +242,7 @@ public:
 
 	virtual void body_set_pickable(RID p_body, bool p_pickable);
 
-	virtual bool body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, bool p_infinite_inertia, real_t p_margin = 0.08, MotionResult *r_result = nullptr, bool p_exclude_raycast_shapes = true, const Set<RID> &p_exclude = Set<RID>());
+	virtual bool body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, bool p_infinite_inertia, real_t p_margin = 0.08, MotionResult *r_result = nullptr, bool p_exclude_raycast_shapes = true, const RBSet<RID> &p_exclude = RBSet<RID>());
 	virtual int body_test_ray_separation(RID p_body, const Transform2D &p_transform, bool p_infinite_inertia, Vector2 &r_recover_motion, SeparationResult *r_results, int p_result_max, float p_margin = 0.08);
 
 	// this function only works on physics process, errors and returns null otherwise

@@ -858,7 +858,7 @@ bool PhysicsServerSW::body_is_ray_pickable(RID p_body) const {
 	return body->is_ray_pickable();
 }
 
-bool PhysicsServerSW::body_test_motion(RID p_body, const Transform &p_from, const Vector3 &p_motion, bool p_infinite_inertia, MotionResult *r_result, bool p_exclude_raycast_shapes, const Set<RID> &p_exclude) {
+bool PhysicsServerSW::body_test_motion(RID p_body, const Transform &p_from, const Vector3 &p_motion, bool p_infinite_inertia, MotionResult *r_result, bool p_exclude_raycast_shapes, const RBSet<RID> &p_exclude) {
 	BodySW *body = body_owner.get(p_body);
 	ERR_FAIL_COND_V(!body, false);
 	ERR_FAIL_COND_V(!body->get_space(), false);
@@ -1305,7 +1305,7 @@ void PhysicsServerSW::step(real_t p_step) {
 	island_count = 0;
 	active_objects = 0;
 	collision_pairs = 0;
-	for (Set<const SpaceSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
+	for (RBSet<const SpaceSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
 		stepper->step((SpaceSW *)E->get(), p_step, iterations);
 		island_count += E->get()->get_island_count();
 		active_objects += E->get()->get_active_objects();
@@ -1325,7 +1325,7 @@ void PhysicsServerSW::flush_queries() {
 
 	uint64_t time_beg = OS::get_singleton()->get_ticks_usec();
 
-	for (Set<const SpaceSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
+	for (RBSet<const SpaceSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
 		SpaceSW *space = (SpaceSW *)E->get();
 		space->call_queries();
 	}
@@ -1346,7 +1346,7 @@ void PhysicsServerSW::flush_queries() {
 			total_time[i] = 0;
 		}
 
-		for (Set<const SpaceSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
+		for (RBSet<const SpaceSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
 			for (int i = 0; i < SpaceSW::ELAPSED_TIME_MAX; i++) {
 				total_time[i] += E->get()->get_elapsed_time(SpaceSW::ElapsedTime(i));
 			}

@@ -634,7 +634,7 @@ void ShaderGLES2::free_custom_shader(uint32_t p_code_id) {
 
 	VersionKey key;
 	key.code_version = p_code_id;
-	for (Set<uint64_t>::Element *E = custom_code_map[p_code_id].versions.front(); E; E = E->next()) {
+	for (RBSet<uint64_t>::Element *E = custom_code_map[p_code_id].versions.front(); E; E = E->next()) {
 		key.version = E->get();
 		ERR_CONTINUE(!version_map.has(key));
 		Version &v = version_map[key];

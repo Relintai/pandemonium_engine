@@ -38,7 +38,7 @@
 #include "core/object/method_bind.h"
 #include "core/object/object_id.h"
 #include "core/os/memory.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/object/undo_redo.h"
@@ -254,7 +254,7 @@ void InspectorDock::_prepare_history() {
 	history_menu->get_popup()->clear();
 
 	Ref<Texture> base_icon = get_theme_icon("Object", "EditorIcons");
-	Set<ObjectID> already;
+	RBSet<ObjectID> already;
 	for (int i = editor_history->get_history_len() - 1; i >= history_to; i--) {
 		ObjectID id = editor_history->get_history_obj(i);
 		Object *obj = ObjectDB::get_instance(id);

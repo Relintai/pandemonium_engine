@@ -36,7 +36,7 @@ class Viewport;
 class VisibilityNotifier2D : public Node2D {
 	GDCLASS(VisibilityNotifier2D, Node2D);
 
-	Set<World *> worlds;
+	RBSet<World *> worlds;
 
 	Rect2 rect;
 

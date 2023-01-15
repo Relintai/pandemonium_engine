@@ -298,7 +298,7 @@ void Viewport::_notification(int p_what) {
 #ifndef _3D_DISABLED
 			if (listeners.size() && !listener) {
 				Listener *first = nullptr;
-				for (Set<Listener *>::Element *E = listeners.front(); E; E = E->next()) {
+				for (RBSet<Listener *>::Element *E = listeners.front(); E; E = E->next()) {
 					if (first == nullptr || first->is_greater_than(E->get())) {
 						first = E->get();
 					}
@@ -312,7 +312,7 @@ void Viewport::_notification(int p_what) {
 			if (cameras.size() && !camera) {
 				//there are cameras but no current camera, pick first in tree and make it current
 				Camera *first = nullptr;
-				for (Set<Camera *>::Element *E = cameras.front(); E; E = E->next()) {
+				for (RBSet<Camera *>::Element *E = cameras.front(); E; E = E->next()) {
 					if (first == nullptr || first->is_greater_than(E->get())) {
 						first = E->get();
 					}
@@ -532,7 +532,7 @@ void Viewport::_process_picking(bool p_ignore_paused) {
 			uint64_t frame = get_tree()->get_frame();
 
 			Physics2DDirectSpaceState::ShapeResult res[64];
-			for (Set<CanvasLayer *>::Element *E = canvas_layers.front(); E; E = E->next()) {
+			for (RBSet<CanvasLayer *>::Element *E = canvas_layers.front(); E; E = E->next()) {
 				Transform2D canvas_transform;
 				ObjectID canvas_layer_id;
 				if (E->get()) {
@@ -547,7 +547,7 @@ void Viewport::_process_picking(bool p_ignore_paused) {
 
 				Vector2 point = canvas_transform.affine_inverse().xform(pos);
 
-				int rc = ss2d->intersect_point_on_canvas(point, canvas_layer_id, res, 64, Set<RID>(), 0xFFFFFFFF, true, true, true);
+				int rc = ss2d->intersect_point_on_canvas(point, canvas_layer_id, res, 64, RBSet<RID>(), 0xFFFFFFFF, true, true, true);
 				for (int i = 0; i < rc; i++) {
 					if (res[i].collider_id && res[i].collider) {
 						CollisionObject2D *co = Object::cast_to<CollisionObject2D>(res[i].collider);
@@ -636,7 +636,7 @@ void Viewport::_process_picking(bool p_ignore_paused) {
 
 				PhysicsDirectSpaceState *space = PhysicsServer::get_singleton()->space_get_direct_state(find_world_3d()->get_space());
 				if (space) {
-					bool col = space->intersect_ray(from, from + dir * far, result, Set<RID>(), 0xFFFFFFFF, true, true, true);
+					bool col = space->intersect_ray(from, from + dir * far, result, RBSet<RID>(), 0xFFFFFFFF, true, true, true);
 					ObjectID new_collider = 0;
 					if (col) {
 						CollisionObject *co = Object::cast_to<CollisionObject>(result.collider);
@@ -708,7 +708,7 @@ void Viewport::set_size(const Size2 &p_size) {
 	_update_stretch_transform();
 	update_configuration_warning();
 
-	for (Set<ViewportTexture *>::Element *E = viewport_textures.front(); E; E = E->next()) {
+	for (RBSet<ViewportTexture *>::Element *E = viewport_textures.front(); E; E = E->next()) {
 		E->get()->emit_changed();
 	}
 
@@ -971,7 +971,7 @@ void Viewport::_listener_remove(Listener *p_listener) {
 #ifndef _3D_DISABLED
 void Viewport::_listener_make_next_current(Listener *p_exclude) {
 	if (listeners.size() > 0) {
-		for (Set<Listener *>::Element *E = listeners.front(); E; E = E->next()) {
+		for (RBSet<Listener *>::Element *E = listeners.front(); E; E = E->next()) {
 			if (p_exclude == E->get()) {
 				continue;
 			}
@@ -3375,7 +3375,7 @@ Viewport::Viewport() {
 
 Viewport::~Viewport() {
 	//erase itself from viewport textures
-	for (Set<ViewportTexture *>::Element *E = viewport_textures.front(); E; E = E->next()) {
+	for (RBSet<ViewportTexture *>::Element *E = viewport_textures.front(); E; E = E->next()) {
 		E->get()->vp = nullptr;
 	}
 	RenderingServer::get_singleton()->free(viewport);

@@ -204,7 +204,7 @@ void StepSW::step(SpaceSW *p_space, real_t p_delta, int p_iterations) {
 	const SelfList<AreaSW>::List &aml = p_space->get_moved_area_list();
 
 	while (aml.first()) {
-		for (const Set<ConstraintSW *>::Element *E = aml.first()->self()->get_constraints().front(); E; E = E->next()) {
+		for (const RBSet<ConstraintSW *>::Element *E = aml.first()->self()->get_constraints().front(); E; E = E->next()) {
 			ConstraintSW *c = E->get();
 			if (c->get_island_step() == _step) {
 				continue;

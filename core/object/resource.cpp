@@ -251,7 +251,7 @@ void Resource::unregister_owner(Object *p_owner) {
 }
 
 void Resource::notify_change_to_owners() {
-	for (Set<ObjectID>::Element *E = owners.front(); E; E = E->next()) {
+	for (RBSet<ObjectID>::Element *E = owners.front(); E; E = E->next()) {
 		Object *obj = ObjectDB::get_instance(E->get());
 		ERR_CONTINUE_MSG(!obj, "Object was deleted, while still owning a resource."); //wtf
 		//TODO store string

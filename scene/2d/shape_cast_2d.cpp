@@ -299,7 +299,7 @@ void ShapeCast2D::_update_shapecast_state() {
 
 	// Regardless of whether the shape is stuck or it's moved along
 	// the motion vector, we'll only consider static collisions from now on.
-	Set<RID> intersected_objects = exclude;
+	RBSet<RID> intersected_objects = exclude;
 	bool intersected = true;
 	while (intersected && result.size() < max_results) {
 		Physics2DDirectSpaceState::ShapeRestInfo info;

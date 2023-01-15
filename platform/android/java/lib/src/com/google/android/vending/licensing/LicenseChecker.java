@@ -80,7 +80,7 @@ public class LicenseChecker implements ServiceConnection {
     private Handler mHandler;
     private final String mPackageName;
     private final String mVersionCode;
-    private final Set<LicenseValidator> mChecksInProgress = new HashSet<LicenseValidator>();
+    private final RBSet<LicenseValidator> mChecksInProgress = new HashRBSet<LicenseValidator>();
     private final Queue<LicenseValidator> mPendingChecks = new LinkedList<LicenseValidator>();
 
     /**

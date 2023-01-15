@@ -150,7 +150,7 @@ ext.getExportEnabledABIs = { ->
     if (enabledABIs == null || enabledABIs.isEmpty()) {
         enabledABIs = "armeabi-v7a|arm64-v8a|x86|x86_64|"
     }
-    Set<String> exportAbiFilter = [];
+    RBSet<String> exportAbiFilter = [];
     for (String abi_name : enabledABIs.split(VALUE_SEPARATOR_REGEX)) {
         if (!abi_name.trim().isEmpty()){
             exportAbiFilter.add(abi_name);
@@ -180,7 +180,7 @@ ext.getExportFilename = {
  * of maven repos.
  */
 ext.getPandemoniumPluginsMavenRepos = { ->
-    Set<String> mavenRepos = []
+    RBSet<String> mavenRepos = []
 
     // Retrieve the list of maven repos.
     if (project.hasProperty("plugins_maven_repos")) {
@@ -200,7 +200,7 @@ ext.getPandemoniumPluginsMavenRepos = { ->
  * it for inclusion in the build dependencies.
  */
 ext.getPandemoniumPluginsRemoteBinaries = { ->
-    Set<String> remoteDeps = []
+    RBSet<String> remoteDeps = []
 
     // Retrieve the list of remote plugins binaries.
     if (project.hasProperty("plugins_remote_binaries")) {
@@ -219,7 +219,7 @@ ext.getPandemoniumPluginsRemoteBinaries = { ->
  * their binaries for inclusion in the build dependencies.
  */
 ext.getPandemoniumPluginsLocalBinaries = { ->
-    Set<String> binDeps = []
+    RBSet<String> binDeps = []
 
     // Retrieve the list of local plugins binaries.
     if (project.hasProperty("plugins_local_binaries")) {

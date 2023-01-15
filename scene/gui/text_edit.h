@@ -324,7 +324,7 @@ private:
 
 	Vector<ColorRegion> color_regions;
 
-	Set<String> completion_prefixes;
+	RBSet<String> completion_prefixes;
 	bool completion_enabled;
 	List<ScriptCodeCompletionOption> completion_sources;
 	Vector<ScriptCodeCompletionOption> completion_options;

@@ -115,7 +115,7 @@ class AStar : public Reference {
 	uint64_t pass;
 
 	OAHashMap<int, Point *> points;
-	Set<Segment> segments;
+	RBSet<Segment> segments;
 
 	bool _solve(Point *begin_point, Point *end_point);
 

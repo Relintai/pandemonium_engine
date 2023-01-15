@@ -515,7 +515,7 @@ MainLoop *test() {
 		for (int i = nearest_shift(hashes.size()); i < 20; i++) {
 			bool success = true;
 			for (int s = 0; s < 10000; s++) {
-				Set<uint32_t> existing;
+				RBSet<uint32_t> existing;
 				success = true;
 
 				for (int j = 0; j < hashes.size(); j++) {

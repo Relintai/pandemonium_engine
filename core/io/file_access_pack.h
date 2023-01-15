@@ -35,7 +35,7 @@
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/string/print_string.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/containers/hashfuncs.h"
 
 // Pandemonium's packed file magic header ("GDPC" in ASCII).
@@ -64,7 +64,7 @@ private:
 		PackedDir *parent;
 		String name;
 		RBMap<String, PackedDir *> subdirs;
-		Set<String> files;
+		RBSet<String> files;
 	};
 
 	struct PathMD5 {

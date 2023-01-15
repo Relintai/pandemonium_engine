@@ -38,7 +38,7 @@
 #include "core/object/object.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
@@ -69,7 +69,7 @@ class CreateDialog : public ConfirmationDialog {
 	String preferred_search_result_type;
 	EditorHelpBit *help_bit;
 	List<StringName> type_list;
-	Set<StringName> type_blacklist;
+	RBSet<StringName> type_blacklist;
 
 	void _item_selected();
 

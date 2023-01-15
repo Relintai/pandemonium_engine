@@ -33,7 +33,7 @@
 #include "core/containers/list.h"
 #include "core/math/aabb.h"
 #include "core/math/geometry.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 
 class QuickHull {
 public:

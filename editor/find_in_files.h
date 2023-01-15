@@ -37,7 +37,7 @@
 #include "core/containers/hash_map.h"
 #include "core/containers/rb_map.h"
 #include "core/object/object.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
@@ -60,7 +60,7 @@ public:
 	void set_whole_words(bool p_whole_word);
 	void set_match_case(bool p_match_case);
 	void set_folder(String folder);
-	void set_filter(const Set<String> &exts);
+	void set_filter(const RBSet<String> &exts);
 
 	String get_search_text() const { return _pattern; }
 
@@ -86,7 +86,7 @@ private:
 
 	// Config
 	String _pattern;
-	Set<String> _extension_filter;
+	RBSet<String> _extension_filter;
 	String _root_dir;
 	bool _whole_words;
 	bool _match_case;
@@ -129,7 +129,7 @@ public:
 	bool is_match_case() const;
 	bool is_whole_words() const;
 	String get_folder() const;
-	Set<String> get_filter() const;
+	RBSet<String> get_filter() const;
 
 protected:
 	static void _bind_methods();

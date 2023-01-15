@@ -490,7 +490,7 @@ void World::_camera_remove(Camera *p_camera) {
 
 #ifndef _3D_DISABLED
 void World::_camera_make_next_current(Camera *p_exclude) {
-	for (Set<Camera *>::Element *E = cameras.front(); E; E = E->next()) {
+	for (RBSet<Camera *>::Element *E = cameras.front(); E; E = E->next()) {
 		if (p_exclude == E->get()) {
 			continue;
 		}

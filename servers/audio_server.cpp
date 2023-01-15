@@ -333,7 +333,7 @@ void AudioServer::_mix_step() {
 	}
 
 	//make callbacks for mixing the audio
-	for (Set<CallbackItem>::Element *E = callbacks.front(); E; E = E->next()) {
+	for (RBSet<CallbackItem>::Element *E = callbacks.front(); E; E = E->next()) {
 		E->get().callback(E->get().userdata);
 	}
 
@@ -1023,7 +1023,7 @@ void AudioServer::update() {
 	prof_time = 0;
 #endif
 
-	for (Set<CallbackItem>::Element *E = update_callbacks.front(); E; E = E->next()) {
+	for (RBSet<CallbackItem>::Element *E = update_callbacks.front(); E; E = E->next()) {
 		E->get().callback(E->get().userdata);
 	}
 }

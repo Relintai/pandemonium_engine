@@ -42,7 +42,7 @@
 #include "core/object/object_id.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
@@ -120,8 +120,8 @@ private:
 	String last_filter;
 	ScriptEditorDebuggerVariables *variables;
 	RBMap<ObjectID, ScriptEditorDebuggerInspectedObject *> remote_objects;
-	Set<RES> remote_dependencies;
-	Set<ObjectID> unfold_cache;
+	RBSet<RES> remote_dependencies;
+	RBSet<ObjectID> unfold_cache;
 
 	VBoxContainer *errors_tab;
 	Tree *error_tree;

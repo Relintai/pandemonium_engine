@@ -192,7 +192,7 @@ void AudioStreamPlayer2D::_notification(int p_what) {
 
 			Physics2DDirectSpaceState::ShapeResult sr[MAX_INTERSECT_AREAS];
 
-			int areas = space_state->intersect_point(global_pos, sr, MAX_INTERSECT_AREAS, Set<RID>(), area_mask, false, true);
+			int areas = space_state->intersect_point(global_pos, sr, MAX_INTERSECT_AREAS, RBSet<RID>(), area_mask, false, true);
 
 			for (int i = 0; i < areas; i++) {
 				Area2D *area2d = Object::cast_to<Area2D>(sr[i].collider);

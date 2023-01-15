@@ -529,7 +529,7 @@ private:
 	bool dependencies_only;
 	List<String> dependencies;
 #ifdef DEBUG_ENABLED
-	Set<int> *safe_lines;
+	RBSet<int> *safe_lines;
 #endif // DEBUG_ENABLED
 
 #ifdef DEBUG_ENABLED
@@ -655,7 +655,7 @@ public:
 #ifdef DEBUG_ENABLED
 	const List<GDScriptWarning> &get_warnings() const { return warnings; }
 #endif // DEBUG_ENABLED
-	Error parse(const String &p_code, const String &p_base_path = "", bool p_just_validate = false, const String &p_self_path = "", bool p_for_completion = false, Set<int> *r_safe_lines = nullptr, bool p_dependencies_only = false);
+	Error parse(const String &p_code, const String &p_base_path = "", bool p_just_validate = false, const String &p_self_path = "", bool p_for_completion = false, RBSet<int> *r_safe_lines = nullptr, bool p_dependencies_only = false);
 	Error parse_bytecode(const Vector<uint8_t> &p_bytecode, const String &p_base_path = "", const String &p_self_path = "");
 
 	bool is_tool_script() const;

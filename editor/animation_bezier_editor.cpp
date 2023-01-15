@@ -860,11 +860,11 @@ void AnimationBezierTrackEdit::_gui_input(const Ref<InputEvent> &p_event) {
 
 			List<AnimMoveRestore> to_restore;
 			// 1-remove the keys
-			for (Set<int>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBSet<int>::Element *E = selection.back(); E; E = E->prev()) {
 				undo_redo->add_do_method(animation.ptr(), "track_remove_key", track, E->get());
 			}
 			// 2- remove overlapped keys
-			for (Set<int>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBSet<int>::Element *E = selection.back(); E; E = E->prev()) {
 				float newtime = editor->snap_time(animation->track_get_key_time(track, E->get()) + moving_selection_offset.x);
 
 				int idx = animation->track_find_key(track, newtime, true);
@@ -887,7 +887,7 @@ void AnimationBezierTrackEdit::_gui_input(const Ref<InputEvent> &p_event) {
 			}
 
 			// 3-move the keys (re insert them)
-			for (Set<int>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBSet<int>::Element *E = selection.back(); E; E = E->prev()) {
 				float newpos = editor->snap_time(animation->track_get_key_time(track, E->get()) + moving_selection_offset.x);
 				/*
 				if (newpos<0)
@@ -901,7 +901,7 @@ void AnimationBezierTrackEdit::_gui_input(const Ref<InputEvent> &p_event) {
 			}
 
 			// 4-(undo) remove inserted keys
-			for (Set<int>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBSet<int>::Element *E = selection.back(); E; E = E->prev()) {
 				float newpos = editor->snap_time(animation->track_get_key_time(track, E->get()) + moving_selection_offset.x);
 				/*
 				if (newpos<0)
@@ -911,7 +911,7 @@ void AnimationBezierTrackEdit::_gui_input(const Ref<InputEvent> &p_event) {
 			}
 
 			// 5-(undo) reinsert keys
-			for (Set<int>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBSet<int>::Element *E = selection.back(); E; E = E->prev()) {
 				float oldpos = animation->track_get_key_time(track, E->get());
 				undo_redo->add_undo_method(animation.ptr(), "track_insert_key", track, oldpos, animation->track_get_key_value(track, E->get()), 1);
 			}
@@ -927,7 +927,7 @@ void AnimationBezierTrackEdit::_gui_input(const Ref<InputEvent> &p_event) {
 
 			// 7-reselect
 
-			for (Set<int>::Element *E = selection.back(); E; E = E->prev()) {
+			for (RBSet<int>::Element *E = selection.back(); E; E = E->prev()) {
 				float oldpos = animation->track_get_key_time(track, E->get());
 				float newpos = editor->snap_time(oldpos + moving_selection_offset.x);
 
@@ -1076,7 +1076,7 @@ void AnimationBezierTrackEdit::duplicate_selection() {
 	}
 
 	float top_time = 1e10;
-	for (Set<int>::Element *E = selection.back(); E; E = E->prev()) {
+	for (RBSet<int>::Element *E = selection.back(); E; E = E->prev()) {
 		float t = animation->track_get_key_time(track, E->get());
 		if (t < top_time) {
 			top_time = t;
@@ -1087,7 +1087,7 @@ void AnimationBezierTrackEdit::duplicate_selection() {
 
 	List<Pair<int, float>> new_selection_values;
 
-	for (Set<int>::Element *E = selection.back(); E; E = E->prev()) {
+	for (RBSet<int>::Element *E = selection.back(); E; E = E->prev()) {
 		float t = animation->track_get_key_time(track, E->get());
 		float dst_time = t + (timeline->get_play_position() - top_time);
 		int existing_idx = animation->track_find_key(track, dst_time, true);
@@ -1130,7 +1130,7 @@ void AnimationBezierTrackEdit::delete_selection() {
 	if (selection.size()) {
 		undo_redo->create_action(TTR("Anim Delete Keys"));
 
-		for (Set<int>::Element *E = selection.back(); E; E = E->prev()) {
+		for (RBSet<int>::Element *E = selection.back(); E; E = E->prev()) {
 			undo_redo->add_do_method(animation.ptr(), "track_remove_key", track, E->get());
 			undo_redo->add_undo_method(animation.ptr(), "track_insert_key", track, animation->track_get_key_time(track, E->get()), animation->track_get_key_value(track, E->get()), 1);
 		}

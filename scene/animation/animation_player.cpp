@@ -1477,7 +1477,7 @@ void AnimationPlayer::_animation_changed() {
 }
 
 void AnimationPlayer::_stop_playing_caches() {
-	for (Set<TrackNodeCache *>::Element *E = playing_caches.front(); E; E = E->next()) {
+	for (RBSet<TrackNodeCache *>::Element *E = playing_caches.front(); E; E = E->next()) {
 		if (E->get()->node && E->get()->audio_playing) {
 			E->get()->node->call("stop");
 		}

@@ -47,7 +47,7 @@
 #include "core/os/memory.h"
 #include "core/config/project_settings.h"
 #include "core/object/script_language.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "editor/editor_node.h"
@@ -593,7 +593,7 @@ void ScriptTextEditor::_validate_script() {
 
 	String text = te->get_text();
 	List<String> fnc;
-	Set<int> safe_lines;
+	RBSet<int> safe_lines;
 	List<ScriptLanguage::Warning> warnings;
 
 	if (!script->get_language()->validate(text, line, col, errortxt, script->get_path(), &fnc, &warnings, &safe_lines)) {
@@ -780,7 +780,7 @@ static Node *_find_node_for_script(Node *p_base, Node *p_current, const Ref<Scri
 	return nullptr;
 }
 
-static void _find_changed_scripts_for_external_editor(Node *p_base, Node *p_current, Set<Ref<Script>> &r_scripts) {
+static void _find_changed_scripts_for_external_editor(Node *p_base, Node *p_current, RBSet<Ref<Script>> &r_scripts) {
 	if (p_current->get_owner() != p_base && p_base != p_current) {
 		return;
 	}
@@ -802,14 +802,14 @@ void ScriptEditor::_update_modified_scripts_for_external_editor(Ref<Script> p_fo
 
 	ERR_FAIL_COND(!get_tree());
 
-	Set<Ref<Script>> scripts;
+	RBSet<Ref<Script>> scripts;
 
 	Node *base = get_tree()->get_edited_scene_root();
 	if (base) {
 		_find_changed_scripts_for_external_editor(base, base, scripts);
 	}
 
-	for (Set<Ref<Script>>::Element *E = scripts.front(); E; E = E->next()) {
+	for (RBSet<Ref<Script>>::Element *E = scripts.front(); E; E = E->next()) {
 		Ref<Script> script = E->get();
 
 		if (p_for_script.is_valid() && p_for_script != script) {
@@ -1040,7 +1040,7 @@ void ScriptTextEditor::_update_connected_methods() {
 	}
 
 	Vector<Node *> nodes = _find_all_node_for_script(base, base, script);
-	Set<StringName> methods_found;
+	RBSet<StringName> methods_found;
 	for (int i = 0; i < nodes.size(); i++) {
 		List<Connection> connections;
 		nodes[i]->get_signals_connected_to_this(&connections);

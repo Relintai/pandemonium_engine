@@ -352,7 +352,7 @@ public:
 		r_features->push_back(get_os_name());
 	}
 
-	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) {
+	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, RBSet<String> &p_features) {
 	}
 
 	EditorExportPlatformJavaScript();

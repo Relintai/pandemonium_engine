@@ -912,7 +912,7 @@ CScriptParser::Node *CScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			};
 
 			Node *key = nullptr;
-			Set<Variant> keys;
+			RBSet<Variant> keys;
 
 			DictExpect expecting = DICT_EXPECT_KEY;
 
@@ -8620,7 +8620,7 @@ Error CScriptParser::parse_bytecode(const Vector<uint8_t> &p_bytecode, const Str
 	return ret;
 }
 
-Error CScriptParser::parse(const String &p_code, const String &p_base_path, bool p_just_validate, const String &p_self_path, bool p_for_completion, Set<int> *r_safe_lines, bool p_dependencies_only) {
+Error CScriptParser::parse(const String &p_code, const String &p_base_path, bool p_just_validate, const String &p_self_path, bool p_for_completion, RBSet<int> *r_safe_lines, bool p_dependencies_only) {
 	clear();
 
 	self_path = p_self_path;

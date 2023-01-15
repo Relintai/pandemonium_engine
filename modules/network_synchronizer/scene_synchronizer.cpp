@@ -2059,7 +2059,7 @@ void ClientSynchronizer::process() {
 
 	// Now trigger the END_SYNC event.
 	scene_synchronizer->change_events_begin(NetEventFlag::END_SYNC);
-	for (const Set<EndSyncEvent>::Element *e = sync_end_events.front();
+	for (const RBSet<EndSyncEvent>::Element *e = sync_end_events.front();
 			e != nullptr;
 			e = e->next()) {
 		// Check if the values between the variables before the sync and the

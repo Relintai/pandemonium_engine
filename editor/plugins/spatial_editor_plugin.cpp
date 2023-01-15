@@ -35,7 +35,7 @@
 #include "core/containers/rb_map.h"
 #include "core/containers/pool_vector.h"
 #include "core/containers/rid_handle.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/input/input.h"
 #include "core/input/input_event.h"
 #include "core/input/shortcut.h"
@@ -572,7 +572,7 @@ ObjectID SpatialEditorViewport::_select_ray(const Point2 &p_pos) {
 	Vector2 shrinked_pos = p_pos / viewport_container->get_stretch_shrink();
 
 	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_ray(pos, ray, get_tree()->get_root()->get_world_3d()->get_scenario());
-	Set<Ref<EditorSpatialGizmo>> found_gizmos;
+	RBSet<Ref<EditorSpatialGizmo>> found_gizmos;
 
 	Node *edited_scene = get_tree()->get_edited_scene_root();
 	ObjectID closest;
@@ -635,7 +635,7 @@ void SpatialEditorViewport::_find_items_at_pos(const Point2 &p_pos, Vector<_RayR
 	Vector3 pos = _get_ray_pos(p_pos);
 
 	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_ray(pos, ray, get_tree()->get_root()->get_world_3d()->get_scenario());
-	Set<Spatial *> found_nodes;
+	RBSet<Spatial *> found_nodes;
 
 	for (int i = 0; i < instances.size(); i++) {
 		Spatial *spat = Object::cast_to<Spatial>(ObjectDB::get_instance(instances[i]));
@@ -816,7 +816,7 @@ void SpatialEditorViewport::_select_region() {
 	}
 
 	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_convex(frustum, get_tree()->get_root()->get_world_3d()->get_scenario());
-	Set<Spatial *> found_nodes;
+	RBSet<Spatial *> found_nodes;
 	Vector<Node *> selected;
 
 	Node *edited_scene = get_tree()->get_edited_scene_root();
@@ -4013,7 +4013,7 @@ Vector3 SpatialEditorViewport::_get_instance_position(const Point2 &p_pos) const
 	Vector3 world_pos = _get_ray_pos(p_pos);
 
 	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_ray(world_pos, world_ray, get_tree()->get_root()->get_world_3d()->get_scenario());
-	Set<Ref<EditorSpatialGizmo>> found_gizmos;
+	RBSet<Ref<EditorSpatialGizmo>> found_gizmos;
 
 	float closest_dist = MAX_DISTANCE;
 
@@ -6552,8 +6552,8 @@ void SpatialEditor::_refresh_menu_icons() {
 }
 
 template <typename T>
-Set<T *> _get_child_nodes(Node *parent_node) {
-	Set<T *> nodes = Set<T *>();
+RBSet<T *> _get_child_nodes(Node *parent_node) {
+	RBSet<T *> nodes = RBSet<T *>();
 	T *node = Node::cast_to<T>(parent_node);
 	if (node) {
 		nodes.insert(node);
@@ -6561,8 +6561,8 @@ Set<T *> _get_child_nodes(Node *parent_node) {
 
 	for (int i = 0; i < parent_node->get_child_count(); i++) {
 		Node *child_node = parent_node->get_child(i);
-		Set<T *> child_nodes = _get_child_nodes<T>(child_node);
-		for (typename Set<T *>::Element *I = child_nodes.front(); I; I = I->next()) {
+		RBSet<T *> child_nodes = _get_child_nodes<T>(child_node);
+		for (typename RBSet<T *>::Element *I = child_nodes.front(); I; I = I->next()) {
 			nodes.insert(I->get());
 		}
 	}
@@ -6570,14 +6570,14 @@ Set<T *> _get_child_nodes(Node *parent_node) {
 	return nodes;
 }
 
-Set<RID> _get_physics_bodies_rid(Node *node) {
-	Set<RID> rids = Set<RID>();
+RBSet<RID> _get_physics_bodies_rid(Node *node) {
+	RBSet<RID> rids = RBSet<RID>();
 	PhysicsBody *pb = Node::cast_to<PhysicsBody>(node);
 	if (pb) {
 		rids.insert(pb->get_rid());
 	}
-	Set<PhysicsBody *> child_nodes = _get_child_nodes<PhysicsBody>(node);
-	for (Set<PhysicsBody *>::Element *I = child_nodes.front(); I; I = I->next()) {
+	RBSet<PhysicsBody *> child_nodes = _get_child_nodes<PhysicsBody>(node);
+	for (RBSet<PhysicsBody *>::Element *I = child_nodes.front(); I; I = I->next()) {
 		rids.insert(I->get()->get_rid());
 	}
 
@@ -6595,13 +6595,13 @@ void SpatialEditor::snap_selected_nodes_to_floor() {
 			Vector3 position_offset = Vector3();
 
 			// Priorities for snapping to floor are CollisionShapes, VisualInstances and then origin
-			Set<VisualInstance *> vi = _get_child_nodes<VisualInstance>(sp);
-			Set<CollisionShape *> cs = _get_child_nodes<CollisionShape>(sp);
+			RBSet<VisualInstance *> vi = _get_child_nodes<VisualInstance>(sp);
+			RBSet<CollisionShape *> cs = _get_child_nodes<CollisionShape>(sp);
 			bool found_valid_shape = false;
 
 			if (cs.size()) {
 				AABB aabb;
-				Set<CollisionShape *>::Element *I = cs.front();
+				RBSet<CollisionShape *>::Element *I = cs.front();
 				if (I->get()->get_shape().is_valid()) {
 					CollisionShape *collision_shape = cs.front()->get();
 					aabb = collision_shape->get_global_transform().xform(collision_shape->get_shape()->get_debug_mesh()->get_aabb());
@@ -6622,7 +6622,7 @@ void SpatialEditor::snap_selected_nodes_to_floor() {
 			}
 			if (!found_valid_shape && vi.size()) {
 				AABB aabb = vi.front()->get()->get_transformed_aabb();
-				for (Set<VisualInstance *>::Element *I = vi.front(); I; I = I->next()) {
+				for (RBSet<VisualInstance *>::Element *I = vi.front(); I; I = I->next()) {
 					aabb.merge_with(I->get()->get_transformed_aabb());
 				}
 				Vector3 size = aabb.size * Vector3(0.5, 0.0, 0.5);
@@ -6665,7 +6665,7 @@ void SpatialEditor::snap_selected_nodes_to_floor() {
 			Dictionary d = snap_data[node];
 			Vector3 from = d["from"];
 			Vector3 to = from - Vector3(0.0, max_snap_height, 0.0);
-			Set<RID> excluded = _get_physics_bodies_rid(sp);
+			RBSet<RID> excluded = _get_physics_bodies_rid(sp);
 
 			if (ss->intersect_ray(from, to, result, excluded)) {
 				snapped_to_floor = true;
@@ -6682,7 +6682,7 @@ void SpatialEditor::snap_selected_nodes_to_floor() {
 				Dictionary d = snap_data[node];
 				Vector3 from = d["from"];
 				Vector3 to = from - Vector3(0.0, max_snap_height, 0.0);
-				Set<RID> excluded = _get_physics_bodies_rid(sp);
+				RBSet<RID> excluded = _get_physics_bodies_rid(sp);
 
 				if (ss->intersect_ray(from, to, result, excluded)) {
 					Vector3 position_offset = d["position_offset"];

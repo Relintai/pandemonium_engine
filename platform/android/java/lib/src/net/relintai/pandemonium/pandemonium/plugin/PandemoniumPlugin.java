@@ -130,11 +130,11 @@ public abstract class PandemoniumPlugin {
 	}
 
 	private static RBMap<String, SignalInfo> registerPluginWithPandemoniumNative(Object pluginObject,
-			String pluginName, List<String> pluginMethods, Set<SignalInfo> pluginSignals,
-			Set<String> pluginGDNativeLibrariesPaths) {
+			String pluginName, List<String> pluginMethods, RBSet<SignalInfo> pluginSignals,
+			RBSet<String> pluginGDNativeLibrariesPaths) {
 		nativeRegisterSingleton(pluginName, pluginObject);
 
-		Set<Method> filteredMethods = new HashSet<>();
+		RBSet<Method> filteredMethods = new HashRBSet<>();
 		Class<?> clazz = pluginObject.getClass();
 
 		Method[] methods = clazz.getDeclaredMethods();
@@ -282,7 +282,7 @@ public abstract class PandemoniumPlugin {
 	 * Returns the list of signals to be exposed to Pandemonium.
 	 */
 	@NonNull
-	public Set<SignalInfo> getPluginSignals() {
+	public RBSet<SignalInfo> getPluginSignals() {
 		return Collections.emptySet();
 	}
 
@@ -292,7 +292,7 @@ public abstract class PandemoniumPlugin {
 	 * The paths must be relative to the 'assets' directory and point to a '*.gdnlib' file.
 	 */
 	@NonNull
-	protected Set<String> getPluginGDNativeLibrariesPaths() {
+	protected RBSet<String> getPluginGDNativeLibrariesPaths() {
 		return Collections.emptySet();
 	}
 

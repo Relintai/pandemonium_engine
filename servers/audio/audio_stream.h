@@ -98,7 +98,7 @@ class AudioStreamMicrophone : public AudioStream {
 	GDCLASS(AudioStreamMicrophone, AudioStream);
 	friend class AudioStreamPlaybackMicrophone;
 
-	Set<AudioStreamPlaybackMicrophone *> playbacks;
+	RBSet<AudioStreamPlaybackMicrophone *> playbacks;
 
 protected:
 	static void _bind_methods();
@@ -149,7 +149,7 @@ class AudioStreamRandomPitch : public AudioStream {
 	GDCLASS(AudioStreamRandomPitch, AudioStream);
 	friend class AudioStreamPlaybackRandomPitch;
 
-	Set<AudioStreamPlaybackRandomPitch *> playbacks;
+	RBSet<AudioStreamPlaybackRandomPitch *> playbacks;
 	Ref<AudioStream> audio_stream;
 	float random_pitch;
 

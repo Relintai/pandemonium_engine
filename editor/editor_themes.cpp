@@ -46,7 +46,7 @@
 #include "core/math/math_funcs.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/string/ustring.h"
@@ -159,7 +159,7 @@ void editor_register_and_generate_icons(Ref<Theme> p_theme, bool p_dark_theme = 
 
 	// The names of the icons to never convert, even if one of their colors
 	// are contained in the dictionary above.
-	Set<StringName> exceptions;
+	RBSet<StringName> exceptions;
 
 	if (!p_dark_theme) {
 		// convert color:                             FROM       TO

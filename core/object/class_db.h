@@ -119,7 +119,7 @@ public:
 #ifdef DEBUG_METHODS_ENABLED
 		List<StringName> constant_order;
 		List<StringName> method_order;
-		Set<StringName> methods_in_properties;
+		RBSet<StringName> methods_in_properties;
 		List<MethodInfo> virtual_methods;
 		StringName category;
 #endif
@@ -155,7 +155,7 @@ public:
 	static void _add_class2(const StringName &p_class, const StringName &p_inherits);
 
 	static HashMap<StringName, HashMap<StringName, Variant>> default_values;
-	static Set<StringName> default_values_cached;
+	static RBSet<StringName> default_values_cached;
 
 private:
 	// Non-locking variants of get_parent_class and is_parent_class.

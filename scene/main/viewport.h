@@ -319,7 +319,7 @@ private:
 	Viewport *parent;
 
 	Listener *listener;
-	Set<Listener *> listeners;
+	RBSet<Listener *> listeners;
 
 	bool arvr;
 
@@ -343,7 +343,7 @@ private:
 
 	Camera2D *camera_2d;
 	Listener2D *listener_2d = nullptr;
-	Set<CanvasLayer *> canvas_layers;
+	RBSet<CanvasLayer *> canvas_layers;
 
 	RID viewport;
 	RID current_canvas;
@@ -442,7 +442,7 @@ private:
 	bool use_32_bpc_depth;
 
 	Ref<ViewportTexture> default_texture;
-	Set<ViewportTexture *> viewport_textures;
+	RBSet<ViewportTexture *> viewport_textures;
 
 	struct GUI {
 		// info used when this is a window

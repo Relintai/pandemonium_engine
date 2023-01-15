@@ -34,7 +34,7 @@
 #include "core/os/memory.h"
 #include "core/containers/rid_handle.h"
 #include "core/os/safe_refcount.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/typedefs.h"
 
 #ifndef RID_HANDLES_ENABLED
@@ -120,7 +120,7 @@ template <class T>
 class RID_Owner : public RID_OwnerBase {
 public:
 #ifdef DEBUG_ENABLED
-	mutable Set<RID_Data *> id_map;
+	mutable RBSet<RID_Data *> id_map;
 #endif
 public:
 	_FORCE_INLINE_ RID make_rid(T *p_data) {
@@ -179,7 +179,7 @@ public:
 	void get_owned_list(List<RID> *p_owned) {
 #ifdef DEBUG_ENABLED
 
-		for (typename Set<RID_Data *>::Element *E = id_map.front(); E; E = E->next()) {
+		for (typename RBSet<RID_Data *>::Element *E = id_map.front(); E; E = E->next()) {
 			RID r;
 			_set_data(r, static_cast<T *>(E->get()));
 			p_owned->push_back(r);

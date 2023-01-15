@@ -985,7 +985,7 @@ GDScriptParser::Node *GDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			};
 
 			Node *key = nullptr;
-			Set<Variant> keys;
+			RBSet<Variant> keys;
 
 			DictExpect expecting = DICT_EXPECT_KEY;
 
@@ -8735,7 +8735,7 @@ Error GDScriptParser::parse_bytecode(const Vector<uint8_t> &p_bytecode, const St
 	return ret;
 }
 
-Error GDScriptParser::parse(const String &p_code, const String &p_base_path, bool p_just_validate, const String &p_self_path, bool p_for_completion, Set<int> *r_safe_lines, bool p_dependencies_only) {
+Error GDScriptParser::parse(const String &p_code, const String &p_base_path, bool p_just_validate, const String &p_self_path, bool p_for_completion, RBSet<int> *r_safe_lines, bool p_dependencies_only) {
 	clear();
 
 	self_path = p_self_path;

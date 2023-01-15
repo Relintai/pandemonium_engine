@@ -43,7 +43,7 @@
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/containers/pool_vector.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/containers/vector.h"
 #include "core/version.h"
 #include "core/version_generated.gen.h"
@@ -77,7 +77,7 @@ void ExportTemplateManager::_update_template_status() {
 	Error err = da->change_dir(templates_dir);
 	ERR_FAIL_COND_MSG(err != OK, "Could not access templates directory at '" + templates_dir + "'.");
 
-	Set<String> templates;
+	RBSet<String> templates;
 	da->list_dir_begin();
 	if (err == OK) {
 		String c = da->get_next();
@@ -119,7 +119,7 @@ void ExportTemplateManager::_update_template_status() {
 	installed_table->clear();
 	TreeItem *installed_root = installed_table->create_item();
 
-	for (Set<String>::Element *E = templates.back(); E; E = E->prev()) {
+	for (RBSet<String>::Element *E = templates.back(); E; E = E->prev()) {
 		String version_string = E->get();
 		if (version_string == current_version) {
 			continue;
@@ -418,7 +418,7 @@ Error ExportTemplateManager::install_android_template_from_file(const String &p_
 
 	ProgressDialog::get_singleton()->add_task("uncompress_src", TTR("Uncompressing Android Build Sources"), total_files);
 
-	Set<String> dirs_tested;
+	RBSet<String> dirs_tested;
 	int idx = 0;
 	while (ret == UNZ_OK) {
 		// Get file path.

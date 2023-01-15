@@ -37,7 +37,7 @@
 #include "core/object/object.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/reference.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
@@ -119,8 +119,8 @@ class SpriteFramesEditor : public HSplitContainer {
 	ToolButton *split_sheet_zoom_reset;
 	ToolButton *split_sheet_zoom_in;
 	EditorFileDialog *file_split_sheet;
-	Set<int> frames_selected;
-	Set<int> frames_toggled_by_mouse_hover;
+	RBSet<int> frames_selected;
+	RBSet<int> frames_toggled_by_mouse_hover;
 	int last_frame_selected;
 
 	float scale_ratio;

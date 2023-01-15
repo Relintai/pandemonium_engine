@@ -44,14 +44,14 @@ class ShaderTypes {
 
 	static ShaderTypes *singleton;
 
-	Set<String> shader_types;
+	RBSet<String> shader_types;
 
 public:
 	static ShaderTypes *get_singleton() { return singleton; }
 
 	const RBMap<StringName, ShaderLanguage::FunctionInfo> &get_functions(RS::ShaderMode p_mode);
 	const Vector<StringName> &get_modes(RS::ShaderMode p_mode);
-	const Set<String> &get_types();
+	const RBSet<String> &get_types();
 
 	ShaderTypes();
 };

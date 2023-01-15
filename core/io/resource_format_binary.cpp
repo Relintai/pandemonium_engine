@@ -1325,7 +1325,7 @@ void ResourceFormatSaverBinaryInstance::_write_variant(const Variant &p_property
 	write_variant(f, p_property, resource_set, external_resources, string_map, p_hint);
 }
 
-void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Variant &p_property, Set<RES> &resource_set, RBMap<RES, int> &external_resources, RBMap<StringName, int> &string_map, const PropertyInfo &p_hint) {
+void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Variant &p_property, RBSet<RES> &resource_set, RBMap<RES, int> &external_resources, RBMap<StringName, int> &string_map, const PropertyInfo &p_hint) {
 	switch (p_property.get_type()) {
 		case Variant::NIL: {
 			f->store_32(VARIANT_NIL);
@@ -1999,7 +1999,7 @@ Error ResourceFormatSaverBinaryInstance::save(const String &p_path, const RES &p
 	// save internal resource table
 	f->store_32(saved_resources.size()); //amount of internal resources
 	Vector<uint64_t> ofs_pos;
-	Set<int> used_indices;
+	RBSet<int> used_indices;
 
 	for (List<RES>::Element *E = saved_resources.front(); E; E = E->next()) {
 		RES r = E->get();

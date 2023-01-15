@@ -534,7 +534,7 @@ public:
 		// used for sorting lights for a consistent render
 		uint32_t light_counter;
 
-		Set<RID> shadow_atlases; // atlases where this light is registered
+		RBSet<RID> shadow_atlases; // atlases where this light is registered
 	};
 
 	mutable RID_Owner<LightInstance> light_instance_owner;

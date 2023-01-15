@@ -72,7 +72,7 @@ private:
 		RBMap<StringName, String> usage_defines;
 	};
 
-	void _dump_function_deps(const ShaderLanguage::ShaderNode *p_node, const StringName &p_for_func, const RBMap<StringName, String> &p_func_code, StringBuilder &r_to_add, Set<StringName> &r_added);
+	void _dump_function_deps(const ShaderLanguage::ShaderNode *p_node, const StringName &p_for_func, const RBMap<StringName, String> &p_func_code, StringBuilder &r_to_add, RBSet<StringName> &r_added);
 	String _dump_node_code(const ShaderLanguage::Node *p_node, int p_level, GeneratedCode &r_gen_code, IdentifierActions &p_actions, const DefaultIdentifierActions &p_default_actions, bool p_assigning, bool p_use_scope = true);
 
 	const ShaderLanguage::ShaderNode *shader;
@@ -83,11 +83,11 @@ private:
 	StringName light_name;
 	StringName time_name;
 
-	Set<StringName> used_name_defines;
-	Set<StringName> used_flag_pointers;
-	Set<StringName> used_rmode_defines;
-	Set<StringName> internal_functions;
-	Set<StringName> fragment_varyings;
+	RBSet<StringName> used_name_defines;
+	RBSet<StringName> used_flag_pointers;
+	RBSet<StringName> used_rmode_defines;
+	RBSet<StringName> internal_functions;
+	RBSet<StringName> fragment_varyings;
 
 	DefaultIdentifierActions actions[RS::SHADER_MAX];
 

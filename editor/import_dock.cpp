@@ -42,7 +42,7 @@
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "core/containers/pair.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/typedefs.h"
 #include "core/containers/vector.h"
 #include "editor/editor_file_system.h"
@@ -65,7 +65,7 @@ public:
 	List<PropertyInfo> properties;
 	Ref<ResourceImporter> importer;
 	Vector<String> paths;
-	Set<StringName> checked;
+	RBSet<StringName> checked;
 	bool checking;
 
 	bool _set(const StringName &p_name, const Variant &p_value) {

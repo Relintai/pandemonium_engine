@@ -319,7 +319,7 @@ MainLoop *test() {
 	List<String> code_list;
 	List<RBMap<StringName, SL::FunctionInfo>> dt_list;
 	List<Vector<StringName>> rm_list;
-	List<Set<String>> types_list;
+	List<RBSet<String>> types_list;
 	int test_count = 0;
 
 	SL sl;
@@ -345,7 +345,7 @@ MainLoop *test() {
 			dt["fragment"].can_discard = true;
 			dt_list.push_back(dt);
 
-			Set<String> types;
+			RBSet<String> types;
 			types.insert("canvas_item");
 			types_list.push_back(types);
 
@@ -373,7 +373,7 @@ MainLoop *test() {
 			dt["fragment"].can_discard = true;
 			dt_list.push_back(dt);
 
-			Set<String> types;
+			RBSet<String> types;
 			types.insert("spatial");
 			types_list.push_back(types);
 
@@ -415,7 +415,7 @@ MainLoop *test() {
 		String code = code_list[i];
 		RBMap<StringName, SL::FunctionInfo> dt = dt_list[i];
 		Vector<StringName> rm = rm_list[i];
-		Set<String> types = types_list[i];
+		RBSet<String> types = types_list[i];
 
 		print_line("tokens:\n\n" + sl.token_debug(code));
 		Error err = sl.compile(code, dt, rm, types);

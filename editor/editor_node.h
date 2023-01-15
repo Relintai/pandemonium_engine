@@ -43,7 +43,7 @@
 
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/containers/vector.h"
 #include "core/error/error_list.h"
 #include "core/math/rect2.h"
@@ -819,8 +819,8 @@ private:
 
 	String import_reload_fn;
 
-	Set<FileDialog *> file_dialogs;
-	Set<EditorFileDialog *> editor_file_dialogs;
+	RBSet<FileDialog *> file_dialogs;
+	RBSet<EditorFileDialog *> editor_file_dialogs;
 
 	RBMap<String, Ref<Texture>> icon_type_cache;
 	RBMap<Ref<Script>, Ref<Texture>> script_icon_cache;
@@ -845,12 +845,12 @@ private:
 	void _find_node_types(Node *p_node, int &count_2d, int &count_3d);
 	void _save_scene_with_preview(String p_file, int p_idx = -1);
 
-	RBMap<String, Set<String>> dependency_errors;
+	RBMap<String, RBSet<String>> dependency_errors;
 
 	static void _dependency_error_report(void *ud, const String &p_path, const String &p_dep, const String &p_type) {
 		EditorNode *en = (EditorNode *)ud;
 		if (!en->dependency_errors.has(p_path)) {
-			en->dependency_errors[p_path] = Set<String>();
+			en->dependency_errors[p_path] = RBSet<String>();
 		}
 		en->dependency_errors[p_path].insert(p_dep + "::" + p_type);
 	}

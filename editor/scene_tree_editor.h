@@ -37,7 +37,7 @@
 #include "core/math/vector2.h"
 #include "core/string/node_path.h"
 #include "core/object/object_id.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
@@ -110,7 +110,7 @@ class SceneTreeEditor : public Control {
 	void _renamed();
 	UndoRedo *undo_redo;
 
-	Set<Node *> marked;
+	RBSet<Node *> marked;
 	bool marked_selectable;
 	bool marked_children_selectable;
 	bool display_foreign;
@@ -152,7 +152,7 @@ public:
 	void set_display_foreign_nodes(bool p_display);
 	bool get_display_foreign_nodes() const;
 
-	void set_marked(const Set<Node *> &p_marked, bool p_selectable = false, bool p_children_selectable = true);
+	void set_marked(const RBSet<Node *> &p_marked, bool p_selectable = false, bool p_children_selectable = true);
 	void set_marked(Node *p_marked, bool p_selectable = false, bool p_children_selectable = true);
 	void set_selected(Node *p_node, bool p_emit_selected = true);
 	Node *get_selected();

@@ -106,7 +106,7 @@ class GridMap : public Spatial {
 		};
 
 		Vector<MultimeshInstance> multimesh_instances;
-		Set<IndexKey> cells;
+		RBSet<IndexKey> cells;
 		RID collision_debug;
 		RID collision_debug_instance;
 

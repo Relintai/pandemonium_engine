@@ -35,7 +35,7 @@
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/containers/vector.h"
 #include "core/object/object_id.h"
 #include "core/object/reference.h"
@@ -306,7 +306,7 @@ public:
 	void instance_scenes(const Vector<String> &p_files, Node *p_parent = nullptr);
 	void set_selected(Node *p_node, bool p_emit_selected = false);
 	void fill_path_renames(Node *p_node, Node *p_new_parent, RBMap<Node *, NodePath> *p_renames);
-	void perform_node_renames(Node *p_base, RBMap<Node *, NodePath> *p_renames, RBMap<Ref<Animation>, Set<int>> *r_rem_anims = nullptr);
+	void perform_node_renames(Node *p_base, RBMap<Node *, NodePath> *p_renames, RBMap<Ref<Animation>, RBSet<int>> *r_rem_anims = nullptr);
 
 	SceneTreeEditor *get_tree_editor() {
 		return scene_tree;

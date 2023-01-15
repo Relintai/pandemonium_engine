@@ -248,8 +248,8 @@ private:
 		}
 	};
 
-	Set<CallbackItem> callbacks;
-	Set<CallbackItem> update_callbacks;
+	RBSet<CallbackItem> callbacks;
+	RBSet<CallbackItem> update_callbacks;
 
 	friend class AudioDriver;
 	void _driver_process(int p_frames, int32_t *p_buffer);

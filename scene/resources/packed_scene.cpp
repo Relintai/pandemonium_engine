@@ -56,7 +56,7 @@ static Array _sanitize_node_pinned_properties(Node *p_node) {
 	if (pinned.empty()) {
 		return Array();
 	}
-	Set<StringName> storable_properties;
+	RBSet<StringName> storable_properties;
 	p_node->get_storable_properties(storable_properties);
 	int i = 0;
 	do {

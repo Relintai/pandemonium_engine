@@ -268,7 +268,7 @@ void EditorResourcePicker::_edit_menu_cbk(int p_which) {
 				ResourceLoader::get_recognized_extensions_for_type(base, &extensions);
 			}
 
-			Set<String> valid_extensions;
+			RBSet<String> valid_extensions;
 			for (List<String>::Element *E = extensions.front(); E; E = E->next()) {
 				valid_extensions.insert(E->get());
 			}
@@ -281,7 +281,7 @@ void EditorResourcePicker::_edit_menu_cbk(int p_which) {
 			}
 
 			file_dialog->clear_filters();
-			for (Set<String>::Element *E = valid_extensions.front(); E; E = E->next()) {
+			for (RBSet<String>::Element *E = valid_extensions.front(); E; E = E->next()) {
 				file_dialog->add_filter("*." + E->get() + " ; " + E->get().to_upper());
 			}
 
@@ -430,7 +430,7 @@ void EditorResourcePicker::set_create_options(Object *p_menu_node) {
 	if (base_type != "") {
 		int idx = 0;
 
-		Set<String> allowed_types;
+		RBSet<String> allowed_types;
 		_get_allowed_types(false, &allowed_types);
 
 		Vector<EditorData::CustomType> custom_resources;
@@ -438,7 +438,7 @@ void EditorResourcePicker::set_create_options(Object *p_menu_node) {
 			custom_resources = EditorNode::get_editor_data().get_custom_types()["Resource"];
 		}
 
-		for (Set<String>::Element *E = allowed_types.front(); E; E = E->next()) {
+		for (RBSet<String>::Element *E = allowed_types.front(); E; E = E->next()) {
 			const String &t = E->get();
 
 			bool is_custom_resource = false;
@@ -511,7 +511,7 @@ void EditorResourcePicker::_button_input(const Ref<InputEvent> &p_event) {
 	}
 }
 
-void EditorResourcePicker::_get_allowed_types(bool p_with_convert, Set<String> *p_vector) const {
+void EditorResourcePicker::_get_allowed_types(bool p_with_convert, RBSet<String> *p_vector) const {
 	Vector<String> allowed_types = base_type.split(",");
 	int size = allowed_types.size();
 
@@ -586,7 +586,7 @@ bool EditorResourcePicker::_is_drop_valid(const Dictionary &p_drag_data) const {
 		res = drag_data["resource"];
 	}
 
-	Set<String> allowed_types;
+	RBSet<String> allowed_types;
 	_get_allowed_types(true, &allowed_types);
 
 	if (res.is_valid() && _is_type_valid(res->get_class(), allowed_types)) {
@@ -617,8 +617,8 @@ bool EditorResourcePicker::_is_drop_valid(const Dictionary &p_drag_data) const {
 	return false;
 }
 
-bool EditorResourcePicker::_is_type_valid(const String p_type_name, Set<String> p_allowed_types) const {
-	for (Set<String>::Element *E = p_allowed_types.front(); E; E = E->next()) {
+bool EditorResourcePicker::_is_type_valid(const String p_type_name, RBSet<String> p_allowed_types) const {
+	for (RBSet<String>::Element *E = p_allowed_types.front(); E; E = E->next()) {
 		String at = E->get().strip_edges();
 		if (p_type_name == at || (ClassDB::class_exists(p_type_name) && ClassDB::is_parent_class(p_type_name, at)) || EditorNode::get_editor_data().script_class_is_parent(p_type_name, at)) {
 			return true;
@@ -665,12 +665,12 @@ void EditorResourcePicker::drop_data_fw(const Point2 &p_point, const Variant &p_
 	}
 
 	if (dropped_resource.is_valid()) {
-		Set<String> allowed_types;
+		RBSet<String> allowed_types;
 		_get_allowed_types(false, &allowed_types);
 
 		// If the accepted dropped resource is from the extended list, it requires conversion.
 		if (!_is_type_valid(dropped_resource->get_class(), allowed_types)) {
-			for (Set<String>::Element *E = allowed_types.front(); E; E = E->next()) {
+			for (RBSet<String>::Element *E = allowed_types.front(); E; E = E->next()) {
 				String at = E->get().strip_edges();
 
 				if (at == "SpatialMaterial" && ClassDB::is_parent_class(dropped_resource->get_class(), "Texture")) {
@@ -787,7 +787,7 @@ void EditorResourcePicker::set_base_type(const String &p_base_type) {
 	// There is a possibility that the new base type is conflicting with the existing value.
 	// Keep the value, but warn the user that there is a potential mistake.
 	if (!base_type.empty() && edited_resource.is_valid()) {
-		Set<String> allowed_types;
+		RBSet<String> allowed_types;
 		_get_allowed_types(true, &allowed_types);
 
 		StringName custom_class;
@@ -804,7 +804,7 @@ void EditorResourcePicker::set_base_type(const String &p_base_type) {
 		}
 	} else {
 		// Call the method to build the cache immediately.
-		Set<String> allowed_types;
+		RBSet<String> allowed_types;
 		_get_allowed_types(false, &allowed_types);
 	}
 }
@@ -814,7 +814,7 @@ String EditorResourcePicker::get_base_type() const {
 }
 
 Vector<String> EditorResourcePicker::get_allowed_types() const {
-	Set<String> allowed_types;
+	RBSet<String> allowed_types;
 	_get_allowed_types(false, &allowed_types);
 
 	Vector<String> types;
@@ -822,7 +822,7 @@ Vector<String> EditorResourcePicker::get_allowed_types() const {
 
 	int i = 0;
 	String *w = types.ptrw();
-	for (Set<String>::Element *E = allowed_types.front(); E; E = E->next(), i++) {
+	for (RBSet<String>::Element *E = allowed_types.front(); E; E = E->next(), i++) {
 		w[i] = E->get();
 	}
 
@@ -837,7 +837,7 @@ void EditorResourcePicker::set_edited_resource(RES p_resource) {
 	}
 
 	if (!base_type.empty()) {
-		Set<String> allowed_types;
+		RBSet<String> allowed_types;
 		_get_allowed_types(true, &allowed_types);
 
 		StringName custom_class;

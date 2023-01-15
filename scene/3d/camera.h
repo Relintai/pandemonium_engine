@@ -198,7 +198,7 @@ private:
 	bool clip_to_areas;
 	bool clip_to_bodies;
 
-	Set<RID> exclude;
+	RBSet<RID> exclude;
 
 	Vector<Vector3> points;
 

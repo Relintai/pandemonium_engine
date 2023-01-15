@@ -221,7 +221,7 @@ public:
 		r_features->push_back("iOS");
 	}
 
-	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) {
+	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, RBSet<String> &p_features) {
 	}
 
 	EditorExportPlatformIOS();
@@ -386,7 +386,7 @@ void EditorExportPlatformIOS::get_export_options(List<ExportOption> *r_options) 
 		r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "plugins/" + found_plugins[i].name), false));
 	}
 
-	Set<String> plist_keys;
+	RBSet<String> plist_keys;
 
 	for (int i = 0; i < found_plugins.size(); i++) {
 		// Editable plugin plist values
@@ -674,7 +674,7 @@ void EditorExportPlatformIOS::_fix_config_file(const Ref<EditorExportPreset> &p_
 			String locale_files;
 			Vector<String> translations = ProjectSettings::get_singleton()->get("locale/translations");
 			if (translations.size() > 0) {
-				Set<String> languages;
+				RBSet<String> languages;
 				for (int j = 0; j < translations.size(); j++) {
 					Ref<Translation> tr = ResourceLoader::load(translations[j]);
 					if (tr.is_valid() && tr->get_locale() != "en") {
@@ -682,7 +682,7 @@ void EditorExportPlatformIOS::_fix_config_file(const Ref<EditorExportPreset> &p_
 					}
 				}
 				int index = 0;
-				for (const Set<String>::Element *E = languages.front(); E; E = E->next()) {
+				for (const RBSet<String>::Element *E = languages.front(); E; E = E->next()) {
 					const String &lang = E->get();
 					locale_files += "D0BCFE4518AEBDA2004A" + itos(index).pad_zeros(4) + " /* " + lang + " */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = " + lang + "; path = " + lang + ".lproj/InfoPlist.strings; sourceTree = \"<group>\"; };\n";
 					index++;
@@ -693,7 +693,7 @@ void EditorExportPlatformIOS::_fix_config_file(const Ref<EditorExportPreset> &p_
 			String locale_files;
 			Vector<String> translations = ProjectSettings::get_singleton()->get("locale/translations");
 			if (translations.size() > 0) {
-				Set<String> languages;
+				RBSet<String> languages;
 				for (int j = 0; j < translations.size(); j++) {
 					Ref<Translation> tr = ResourceLoader::load(translations[j]);
 					if (tr.is_valid() && tr->get_locale() != "en") {
@@ -701,7 +701,7 @@ void EditorExportPlatformIOS::_fix_config_file(const Ref<EditorExportPreset> &p_
 					}
 				}
 				int index = 0;
-				for (const Set<String>::Element *E = languages.front(); E; E = E->next()) {
+				for (const RBSet<String>::Element *E = languages.front(); E; E = E->next()) {
 					locale_files += "D0BCFE4518AEBDA2004A" + itos(index).pad_zeros(4) + " /* " + E->get() + " */,\n";
 					index++;
 				}
@@ -1514,7 +1514,7 @@ Error EditorExportPlatformIOS::_export_ios_plugins(const Ref<EditorExportPreset>
 	Vector<String> added_embedded_dependenciy_names;
 	HashMap<String, String> plist_values;
 
-	Set<String> plugin_linker_flags;
+	RBSet<String> plugin_linker_flags;
 
 	Error err;
 
@@ -1688,7 +1688,7 @@ Error EditorExportPlatformIOS::_export_ios_plugins(const Ref<EditorExportPreset>
 	// Update Linker Flag Values
 	{
 		String result_linker_flags = " ";
-		for (Set<String>::Element *E = plugin_linker_flags.front(); E; E = E->next()) {
+		for (RBSet<String>::Element *E = plugin_linker_flags.front(); E; E = E->next()) {
 			const String &flag = E->get();
 
 			if (flag.length() == 0) {
@@ -1793,7 +1793,7 @@ Error EditorExportPlatformIOS::export_project(const Ref<EditorExportPreset> &p_p
 	bool found_library = false;
 
 	const String project_file = "pandemonium_ios.xcodeproj/project.pbxproj";
-	Set<String> files_to_parse;
+	RBSet<String> files_to_parse;
 	files_to_parse.insert("pandemonium_ios/pandemonium_ios-Info.plist");
 	files_to_parse.insert(project_file);
 	files_to_parse.insert("pandemonium_ios/export_options.plist");
@@ -1944,14 +1944,14 @@ Error EditorExportPlatformIOS::export_project(const Ref<EditorExportPreset> &p_p
 			f->store_line("CFBundleDisplayName = \"" + ProjectSettings::get_singleton()->get("application/config/name").operator String() + "\";");
 		}
 
-		Set<String> languages;
+		RBSet<String> languages;
 		for (int j = 0; j < translations.size(); j++) {
 			Ref<Translation> tr = ResourceLoader::load(translations[j]);
 			if (tr.is_valid() && tr->get_locale() != "en") {
 				languages.insert(tr->get_locale());
 			}
 		}
-		for (const Set<String>::Element *E = languages.front(); E; E = E->next()) {
+		for (const RBSet<String>::Element *E = languages.front(); E; E = E->next()) {
 			String fname = dest_dir + binary_name + "/" + E->get() + ".lproj";
 			tmp_app_path->make_dir_recursive(fname);
 			FileAccessRef f = FileAccess::open(fname + "/InfoPlist.strings", FileAccess::WRITE);

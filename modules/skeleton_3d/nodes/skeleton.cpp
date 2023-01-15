@@ -273,7 +273,7 @@ void Skeleton::_notification(int p_what) {
 			dirty = false;
 
 			//update skins
-			for (Set<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
+			for (RBSet<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
 				const Skin *skin = E->get()->skin.operator->();
 				RID skeleton = E->get()->skeleton;
 				uint32_t bind_count = skin->get_bind_count();
@@ -1053,7 +1053,7 @@ Ref<Skin> Skeleton::create_skin_from_rest_transforms() {
 Ref<SkinReference> Skeleton::register_skin(const Ref<Skin> &p_skin) {
 	ERR_FAIL_COND_V(p_skin.is_null(), Ref<SkinReference>());
 
-	for (Set<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
+	for (RBSet<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
 		if (E->get()->skin == p_skin) {
 			return Ref<SkinReference>(E->get());
 		}
@@ -1373,7 +1373,7 @@ Skeleton::Skeleton() {
 
 Skeleton::~Skeleton() {
 	//some skins may remain bound
-	for (Set<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
+	for (RBSet<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
 		E->get()->skeleton_node = nullptr;
 	}
 }
@@ -1420,7 +1420,7 @@ void Skeleton::remove_bone(const int p_bone_idx) {
 	const Bone *bonesptr = bones.ptr();
 	int len = bones.size();
 
-	for (Set<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
+	for (RBSet<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
 		Ref<SkinReference> sr = E->get();
 		Ref<Skin> skin = sr->skin;
 

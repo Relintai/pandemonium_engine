@@ -34,7 +34,7 @@
 
 #include "core/containers/pool_vector.h"
 #include "core/object/resource.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/ustring.h"
 
 class Array;
@@ -45,10 +45,10 @@ class EditorFolding {
 	PoolVector<String> _get_unfolds(const Object *p_object);
 	void _set_unfolds(Object *p_object, const PoolVector<String> &p_unfolds);
 
-	void _fill_folds(const Node *p_root, const Node *p_node, Array &p_folds, Array &resource_folds, Array &nodes_folded, Set<RES> &resources);
+	void _fill_folds(const Node *p_root, const Node *p_node, Array &p_folds, Array &resource_folds, Array &nodes_folded, RBSet<RES> &resources);
 
-	void _do_object_unfolds(Object *p_object, Set<RES> &resources);
-	void _do_node_unfolds(Node *p_root, Node *p_node, Set<RES> &resources);
+	void _do_object_unfolds(Object *p_object, RBSet<RES> &resources);
+	void _do_node_unfolds(Node *p_root, Node *p_node, RBSet<RES> &resources);
 
 public:
 	void save_resource_folding(const RES &p_resource, const String &p_path);

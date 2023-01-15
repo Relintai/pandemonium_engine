@@ -163,7 +163,7 @@ public:
 	virtual void advance(int p_amount = 1) = 0;
 #ifdef DEBUG_ENABLED
 	virtual const Vector<Pair<int, String>> &get_warning_skips() const = 0;
-	virtual const Set<String> &get_warning_global_skips() const = 0;
+	virtual const RBSet<String> &get_warning_global_skips() const = 0;
 	virtual bool is_ignoring_warnings() const = 0;
 #endif // DEBUG_ENABLED
 
@@ -215,7 +215,7 @@ class CScriptTokenizerText : public CScriptTokenizer {
 
 #ifdef DEBUG_ENABLED
 	Vector<Pair<int, String>> warning_skips;
-	Set<String> warning_global_skips;
+	RBSet<String> warning_global_skips;
 	bool ignore_warnings;
 #endif // DEBUG_ENABLED
 
@@ -238,7 +238,7 @@ public:
 	virtual const Vector<Pair<int, String>> &get_warning_skips() const {
 		return warning_skips;
 	}
-	virtual const Set<String> &get_warning_global_skips() const {
+	virtual const RBSet<String> &get_warning_global_skips() const {
 		return warning_global_skips;
 	}
 	virtual bool is_ignoring_warnings() const {
@@ -283,8 +283,8 @@ public:
 		static Vector<Pair<int, String>> v;
 		return v;
 	}
-	virtual const Set<String> &get_warning_global_skips() const {
-		static Set<String> s;
+	virtual const RBSet<String> &get_warning_global_skips() const {
+		static RBSet<String> s;
 		return s;
 	}
 	virtual bool is_ignoring_warnings() const {

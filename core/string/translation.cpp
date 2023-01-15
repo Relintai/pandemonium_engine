@@ -1006,7 +1006,7 @@ String TranslationServer::get_locale_name(const String &p_locale) const {
 
 Array TranslationServer::get_loaded_locales() const {
 	Array locales;
-	for (const Set<Ref<Translation>>::Element *E = translations.front(); E; E = E->next()) {
+	for (const RBSet<Ref<Translation>>::Element *E = translations.front(); E; E = E->next()) {
 		const Ref<Translation> &t = E->get();
 		ERR_FAIL_COND_V(t.is_null(), Array());
 		String l = t->get_locale();
@@ -1080,7 +1080,7 @@ StringName TranslationServer::translate(const StringName &p_message) const {
 	String lang = get_language_code(locale);
 	bool near_match = false;
 
-	for (const Set<Ref<Translation>>::Element *E = translations.front(); E; E = E->next()) {
+	for (const RBSet<Ref<Translation>>::Element *E = translations.front(); E; E = E->next()) {
 		const Ref<Translation> &t = E->get();
 		ERR_FAIL_COND_V(t.is_null(), p_message);
 		String l = t->get_locale();
@@ -1113,7 +1113,7 @@ StringName TranslationServer::translate(const StringName &p_message) const {
 		String fallback_lang = get_language_code(fallback);
 		near_match = false;
 
-		for (const Set<Ref<Translation>>::Element *E = translations.front(); E; E = E->next()) {
+		for (const RBSet<Ref<Translation>>::Element *E = translations.front(); E; E = E->next()) {
 			const Ref<Translation> &t = E->get();
 			ERR_FAIL_COND_V(t.is_null(), p_message);
 			String l = t->get_locale();

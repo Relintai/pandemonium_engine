@@ -187,7 +187,7 @@ Vector<RID> Physics2DShapeQueryParameters::get_exclude() const {
 	Vector<RID> ret;
 	ret.resize(exclude.size());
 	int idx = 0;
-	for (Set<RID>::Element *E = exclude.front(); E; E = E->next()) {
+	for (RBSet<RID>::Element *E = exclude.front(); E; E = E->next()) {
 		ret.write[idx++] = E->get();
 	}
 	return ret;
@@ -255,7 +255,7 @@ Physics2DShapeQueryParameters::Physics2DShapeQueryParameters() {
 
 Dictionary Physics2DDirectSpaceState::_intersect_ray(const Vector2 &p_from, const Vector2 &p_to, const Vector<RID> &p_exclude, uint32_t p_layers, bool p_collide_with_bodies, bool p_collide_with_areas) {
 	RayResult inters;
-	Set<RID> exclude;
+	RBSet<RID> exclude;
 	for (int i = 0; i < p_exclude.size(); i++) {
 		exclude.insert(p_exclude[i]);
 	}
@@ -315,7 +315,7 @@ Array Physics2DDirectSpaceState::_cast_motion(const Ref<Physics2DShapeQueryParam
 }
 
 Array Physics2DDirectSpaceState::_intersect_point_impl(const Vector2 &p_point, int p_max_results, const Vector<RID> &p_exclude, uint32_t p_layers, bool p_collide_with_bodies, bool p_collide_with_areas, bool p_filter_by_canvas, ObjectID p_canvas_instance_id) {
-	Set<RID> exclude;
+	RBSet<RID> exclude;
 	for (int i = 0; i < p_exclude.size(); i++) {
 		exclude.insert(p_exclude[i]);
 	}
@@ -493,7 +493,7 @@ bool Physics2DServer::_body_test_motion(RID p_body, const Transform2D &p_from, c
 	if (p_result.is_valid()) {
 		r = p_result->get_result_ptr();
 	}
-	Set<RID> exclude;
+	RBSet<RID> exclude;
 	for (int i = 0; i < p_exclude.size(); i++) {
 		exclude.insert(p_exclude[i]);
 	}

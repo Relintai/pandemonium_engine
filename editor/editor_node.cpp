@@ -203,12 +203,12 @@ static const String META_TEXT_TO_COPY = "text_to_copy";
 void EditorNode::disambiguate_filenames(const Vector<String> p_full_paths, Vector<String> &r_filenames) {
 	// Keep track of a list of "index sets," i.e. sets of indices
 	// within disambiguated_scene_names which contain the same name.
-	Vector<Set<int>> index_sets;
+	Vector<RBSet<int>> index_sets;
 	RBMap<String, int> scene_name_to_set_index;
 	for (int i = 0; i < r_filenames.size(); i++) {
 		String scene_name = r_filenames[i];
 		if (!scene_name_to_set_index.has(scene_name)) {
-			index_sets.push_back(Set<int>());
+			index_sets.push_back(RBSet<int>());
 			scene_name_to_set_index.insert(r_filenames[i], index_sets.size() - 1);
 		}
 		index_sets.write[scene_name_to_set_index[scene_name]].insert(i);
@@ -216,10 +216,10 @@ void EditorNode::disambiguate_filenames(const Vector<String> p_full_paths, Vecto
 
 	// For each index set with a size > 1, we need to disambiguate
 	for (int i = 0; i < index_sets.size(); i++) {
-		Set<int> iset = index_sets[i];
+		RBSet<int> iset = index_sets[i];
 		while (iset.size() > 1) {
 			// Append the parent folder to each scene name
-			for (Set<int>::Element *E = iset.front(); E; E = E->next()) {
+			for (RBSet<int>::Element *E = iset.front(); E; E = E->next()) {
 				int set_idx = E->get();
 				String scene_name = r_filenames[set_idx];
 				String full_path = p_full_paths[set_idx];
@@ -254,11 +254,11 @@ void EditorNode::disambiguate_filenames(const Vector<String> p_full_paths, Vecto
 
 			// Loop back through scene names and remove non-ambiguous names
 			bool can_proceed = false;
-			Set<int>::Element *E = iset.front();
+			RBSet<int>::Element *E = iset.front();
 			while (E) {
 				String scene_name = r_filenames[E->get()];
 				bool duplicate_found = false;
-				for (Set<int>::Element *F = iset.front(); F; F = F->next()) {
+				for (RBSet<int>::Element *F = iset.front(); F; F = F->next()) {
 					if (E->get() == F->get()) {
 						continue;
 					}
@@ -269,7 +269,7 @@ void EditorNode::disambiguate_filenames(const Vector<String> p_full_paths, Vecto
 					}
 				}
 
-				Set<int>::Element *to_erase = duplicate_found ? nullptr : E;
+				RBSet<int>::Element *to_erase = duplicate_found ? nullptr : E;
 
 				// We need to check that we could actually append anymore names
 				// if we wanted to for disambiguation. If we can't, then we have
@@ -736,11 +736,11 @@ void EditorNode::_resources_changed(const PoolVector<String> &p_resources) {
 }
 
 void EditorNode::_fs_changed() {
-	for (Set<FileDialog *>::Element *E = file_dialogs.front(); E; E = E->next()) {
+	for (RBSet<FileDialog *>::Element *E = file_dialogs.front(); E; E = E->next()) {
 		E->get()->invalidate();
 	}
 
-	for (Set<EditorFileDialog *>::Element *E = editor_file_dialogs.front(); E; E = E->next()) {
+	for (RBSet<EditorFileDialog *>::Element *E = editor_file_dialogs.front(); E; E = E->next()) {
 		E->get()->invalidate();
 	}
 
@@ -1056,7 +1056,7 @@ Error EditorNode::load_resource(const String &p_resource, bool p_ignore_broken_d
 	if (!p_ignore_broken_deps && dependency_errors.has(p_resource)) {
 		//current_option = -1;
 		Vector<String> errors;
-		for (Set<String>::Element *E = dependency_errors[p_resource].front(); E; E = E->next()) {
+		for (RBSet<String>::Element *E = dependency_errors[p_resource].front(); E; E = E->next()) {
 			errors.push_back(E->get());
 		}
 		dependency_error->show(DependencyErrorDialog::MODE_RESOURCE, p_resource, errors);
@@ -1503,7 +1503,7 @@ int EditorNode::_save_external_resources() {
 	}
 	flg |= ResourceSaver::FLAG_REPLACE_SUBRESOURCE_PATHS;
 
-	Set<String> edited_resources;
+	RBSet<String> edited_resources;
 	int saved = 0;
 	List<Ref<Resource>> cached;
 	ResourceCache::get_cached_resources(&cached);
@@ -1527,7 +1527,7 @@ int EditorNode::_save_external_resources() {
 		res->set_edited(false);
 	}
 
-	for (Set<String>::Element *E = edited_resources.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = edited_resources.front(); E; E = E->next()) {
 		Ref<Resource> res = Ref<Resource>(ResourceCache::get(E->get()));
 		if (!res.is_valid()) {
 			continue; // Maybe it was erased in a thread, who knows.
@@ -3599,7 +3599,7 @@ Error EditorNode::load_scene(const String &p_scene, bool p_ignore_broken_deps, b
 	if (!p_ignore_broken_deps && dependency_errors.has(lpath)) {
 		current_option = -1;
 		Vector<String> errors;
-		for (Set<String>::Element *E = dependency_errors[lpath].front(); E; E = E->next()) {
+		for (RBSet<String>::Element *E = dependency_errors[lpath].front(); E; E = E->next()) {
 			errors.push_back(E->get());
 		}
 		dependency_error->show(DependencyErrorDialog::MODE_SCENE, lpath, errors);
@@ -3614,9 +3614,9 @@ Error EditorNode::load_scene(const String &p_scene, bool p_ignore_broken_deps, b
 
 	dependency_errors.erase(lpath); //at least not self path
 
-	for (RBMap<String, Set<String>>::Element *E = dependency_errors.front(); E; E = E->next()) {
+	for (RBMap<String, RBSet<String>>::Element *E = dependency_errors.front(); E; E = E->next()) {
 		String txt = vformat(TTR("Scene '%s' has broken dependencies:"), E->key()) + "\n";
-		for (Set<String>::Element *F = E->get().front(); F; F = F->next()) {
+		for (RBSet<String>::Element *F = E->get().front(); F; F = F->next()) {
 			txt += "\t" + F->get() + "\n";
 		}
 		add_io_error(txt);

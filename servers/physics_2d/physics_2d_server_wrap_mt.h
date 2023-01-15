@@ -248,7 +248,7 @@ public:
 
 	FUNC2(body_set_pickable, RID, bool);
 
-	FUNC8R(bool, body_test_motion, RID, const Transform2D &, const Vector2 &, bool, real_t, MotionResult *, bool, const Set<RID> &);
+	FUNC8R(bool, body_test_motion, RID, const Transform2D &, const Vector2 &, bool, real_t, MotionResult *, bool, const RBSet<RID> &);
 	FUNC7R(int, body_test_ray_separation, RID, const Transform2D &, bool, Vector2 &, SeparationResult *, int, float);
 
 	// this function only works on physics process, errors and returns null otherwise

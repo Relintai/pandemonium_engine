@@ -59,7 +59,7 @@
 #include "core/containers/pool_vector.h"
 #include "core/containers/rid_handle.h"
 #include "core/object/script_language.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/typedefs.h"
 #include "core/containers/vector.h"
 #include "scene/resources/font.h"
@@ -517,8 +517,8 @@ Ref<Texture> EditorScriptPreviewPlugin::generate(const RES &p_from, const Size2 
 	List<String> kwors;
 	scr->get_language()->get_reserved_words(&kwors);
 
-	Set<String> control_flow_keywords;
-	Set<String> keywords;
+	RBSet<String> control_flow_keywords;
+	RBSet<String> keywords;
 
 	for (List<String>::Element *E = kwors.front(); E; E = E->next()) {
 		if (scr->get_language()->is_control_flow_keyword(E->get())) {

@@ -933,7 +933,7 @@ void Physics2DServerSW::body_set_pickable(RID p_body, bool p_pickable) {
 	body->set_pickable(p_pickable);
 }
 
-bool Physics2DServerSW::body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, bool p_infinite_inertia, real_t p_margin, MotionResult *r_result, bool p_exclude_raycast_shapes, const Set<RID> &p_exclude) {
+bool Physics2DServerSW::body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, bool p_infinite_inertia, real_t p_margin, MotionResult *r_result, bool p_exclude_raycast_shapes, const RBSet<RID> &p_exclude) {
 	Body2DSW *body = body_owner.get(p_body);
 	ERR_FAIL_COND_V(!body, false);
 	ERR_FAIL_COND_V(!body->get_space(), false);
@@ -1221,7 +1221,7 @@ void Physics2DServerSW::step(real_t p_step) {
 	island_count = 0;
 	active_objects = 0;
 	collision_pairs = 0;
-	for (Set<const Space2DSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
+	for (RBSet<const Space2DSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
 		stepper->step((Space2DSW *)E->get(), p_step, iterations);
 		island_count += E->get()->get_island_count();
 		active_objects += E->get()->get_active_objects();
@@ -1242,7 +1242,7 @@ void Physics2DServerSW::flush_queries() {
 
 	uint64_t time_beg = OS::get_singleton()->get_ticks_usec();
 
-	for (Set<const Space2DSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
+	for (RBSet<const Space2DSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
 		Space2DSW *space = (Space2DSW *)E->get();
 		space->call_queries();
 	}
@@ -1263,7 +1263,7 @@ void Physics2DServerSW::flush_queries() {
 			total_time[i] = 0;
 		}
 
-		for (Set<const Space2DSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
+		for (RBSet<const Space2DSW *>::Element *E = active_spaces.front(); E; E = E->next()) {
 			for (int i = 0; i < Space2DSW::ELAPSED_TIME_MAX; i++) {
 				total_time[i] += E->get()->get_elapsed_time(Space2DSW::ElapsedTime(i));
 			}

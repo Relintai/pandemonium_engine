@@ -53,7 +53,7 @@
 #include "core/os/os.h"
 #include "core/string/print_string.h"
 #include "core/config/project_settings.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/string/translation.h"
 #include "core/typedefs.h"
 #include "core/version_generated.gen.h"
@@ -181,7 +181,7 @@ void EditorSettings::_get_property_list(List<PropertyInfo> *p_list) const {
 	_THREAD_SAFE_METHOD_
 
 	const String *k = nullptr;
-	Set<_EVCSort> vclist;
+	RBSet<_EVCSort> vclist;
 
 	while ((k = props.next(k))) {
 		const VariantContainer *v = props.getptr(*k);
@@ -205,7 +205,7 @@ void EditorSettings::_get_property_list(List<PropertyInfo> *p_list) const {
 		vclist.insert(vc);
 	}
 
-	for (Set<_EVCSort>::Element *E = vclist.front(); E; E = E->next()) {
+	for (RBSet<_EVCSort>::Element *E = vclist.front(); E; E = E->next()) {
 		int pinfo = 0;
 		if (E->get().save || !optimize_save) {
 			pinfo |= PROPERTY_USAGE_STORAGE;

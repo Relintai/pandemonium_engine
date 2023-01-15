@@ -113,7 +113,7 @@ void RenderingServerViewport::_draw_viewport(Viewport *p_viewport) {
 
 			//find lights in canvas
 
-			for (Set<RasterizerCanvas::Light *>::Element *F = canvas->lights.front(); F; F = F->next()) {
+			for (RBSet<RasterizerCanvas::Light *>::Element *F = canvas->lights.front(); F; F = F->next()) {
 				RasterizerCanvas::Light *cl = F->get();
 				if (cl->enabled && cl->texture.is_valid()) {
 					//not super efficient..
@@ -170,7 +170,7 @@ void RenderingServerViewport::_draw_viewport(Viewport *p_viewport) {
 				RenderingServerCanvas::Canvas *canvas = static_cast<RenderingServerCanvas::Canvas *>(E->get().canvas);
 				Transform2D xf = _canvas_get_transform(p_viewport, canvas, &E->get(), clip_rect.size);
 
-				for (Set<RasterizerCanvas::LightOccluderInstance *>::Element *F = canvas->occluders.front(); F; F = F->next()) {
+				for (RBSet<RasterizerCanvas::LightOccluderInstance *>::Element *F = canvas->occluders.front(); F; F = F->next()) {
 					if (!F->get()->enabled) {
 						continue;
 					}

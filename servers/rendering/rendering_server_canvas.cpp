@@ -1255,7 +1255,7 @@ void RenderingServerCanvas::canvas_occluder_polygon_set_shape_as_lines(RID p_occ
 	}
 
 	RSG::storage->canvas_light_occluder_set_polylines(occluder_poly->occluder, p_shape);
-	for (Set<RasterizerCanvas::LightOccluderInstance *>::Element *E = occluder_poly->owners.front(); E; E = E->next()) {
+	for (RBSet<RasterizerCanvas::LightOccluderInstance *>::Element *E = occluder_poly->owners.front(); E; E = E->next()) {
 		E->get()->aabb_cache = occluder_poly->aabb;
 	}
 }
@@ -1264,7 +1264,7 @@ void RenderingServerCanvas::canvas_occluder_polygon_set_cull_mode(RID p_occluder
 	LightOccluderPolygon *occluder_poly = canvas_light_occluder_polygon_owner.get(p_occluder_polygon);
 	ERR_FAIL_COND(!occluder_poly);
 	occluder_poly->cull_mode = p_mode;
-	for (Set<RasterizerCanvas::LightOccluderInstance *>::Element *E = occluder_poly->owners.front(); E; E = E->next()) {
+	for (RBSet<RasterizerCanvas::LightOccluderInstance *>::Element *E = occluder_poly->owners.front(); E; E = E->next()) {
 		E->get()->cull_cache = p_mode;
 	}
 }
@@ -1289,11 +1289,11 @@ bool RenderingServerCanvas::free(RID p_rid) {
 			canvas->child_items[i].item->parent = RID();
 		}
 
-		for (Set<RasterizerCanvas::Light *>::Element *E = canvas->lights.front(); E; E = E->next()) {
+		for (RBSet<RasterizerCanvas::Light *>::Element *E = canvas->lights.front(); E; E = E->next()) {
 			E->get()->canvas = RID();
 		}
 
-		for (Set<RasterizerCanvas::LightOccluderInstance *>::Element *E = canvas->occluders.front(); E; E = E->next()) {
+		for (RBSet<RasterizerCanvas::LightOccluderInstance *>::Element *E = canvas->occluders.front(); E; E = E->next()) {
 			E->get()->canvas = RID();
 		}
 

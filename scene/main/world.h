@@ -127,7 +127,7 @@ protected:
 	World *_overriding_world;
 
 	Camera *camera;
-	Set<Camera *> cameras;
+	RBSet<Camera *> cameras;
 	Camera *_own_active_camera;
 	Vector<Camera *> _override_cameras;
 

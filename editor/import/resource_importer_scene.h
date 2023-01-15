@@ -102,7 +102,7 @@ public:
 class ResourceImporterScene : public ResourceImporter {
 	GDCLASS(ResourceImporterScene, ResourceImporter);
 
-	Set<Ref<EditorSceneImporter>> importers;
+	RBSet<Ref<EditorSceneImporter>> importers;
 
 	static ResourceImporterScene *singleton;
 
@@ -129,7 +129,7 @@ class ResourceImporterScene : public ResourceImporter {
 public:
 	static ResourceImporterScene *get_singleton() { return singleton; }
 
-	const Set<Ref<EditorSceneImporter>> &get_importers() const { return importers; }
+	const RBSet<Ref<EditorSceneImporter>> &get_importers() const { return importers; }
 
 	void add_importer(Ref<EditorSceneImporter> p_importer) { importers.insert(p_importer); }
 	void remove_importer(Ref<EditorSceneImporter> p_importer) { importers.erase(p_importer); }
@@ -155,7 +155,7 @@ public:
 	Node *_fix_node(Node *p_node, Node *p_root, RBMap<Ref<Mesh>, List<Ref<Shape>>> &collision_map, List<Pair<NodePath, Node *>> &r_node_renames);
 
 	void _create_clips(Node *scene, const Array &p_clips, bool p_bake_all);
-	void _filter_anim_tracks(Ref<Animation> anim, Set<String> &keep);
+	void _filter_anim_tracks(Ref<Animation> anim, RBSet<String> &keep);
 	void _filter_tracks(Node *scene, const String &p_text);
 	void _optimize_animations(Node *scene, float p_max_lin_error, float p_max_ang_error, float p_max_angle);
 

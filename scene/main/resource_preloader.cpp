@@ -55,14 +55,14 @@ Array ResourcePreloader::_get_resources() const {
 	arr.resize(resources.size());
 	names.resize(resources.size());
 
-	Set<String> sorted_names;
+	RBSet<String> sorted_names;
 
 	for (RBMap<StringName, RES>::Element *E = resources.front(); E; E = E->next()) {
 		sorted_names.insert(E->key());
 	}
 
 	int i = 0;
-	for (Set<String>::Element *E = sorted_names.front(); E; E = E->next()) {
+	for (RBSet<String>::Element *E = sorted_names.front(); E; E = E->next()) {
 		names.set(i, E->get());
 		arr[i] = resources[E->get()];
 		i++;

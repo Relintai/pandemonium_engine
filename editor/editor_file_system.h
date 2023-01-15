@@ -37,7 +37,7 @@
 #include "core/os/thread.h"
 #include "core/os/thread_safe.h"
 #include "core/os/safe_refcount.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 #include "core/error/error_list.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
@@ -163,8 +163,8 @@ class EditorFileSystem : public Node {
 
 	void _scan_filesystem();
 
-	Set<String> late_added_files; //keep track of files that were added, these will be re-scanned
-	Set<String> late_update_files;
+	RBSet<String> late_added_files; //keep track of files that were added, these will be re-scanned
+	RBSet<String> late_update_files;
 
 	void _save_late_updated_files();
 
@@ -205,8 +205,8 @@ class EditorFileSystem : public Node {
 	void _create_project_data_dir_if_necessary();
 	void _delete_internal_files(String p_file);
 
-	Set<String> valid_extensions;
-	Set<String> import_extensions;
+	RBSet<String> valid_extensions;
+	RBSet<String> import_extensions;
 
 	void _scan_new_dir(EditorFileSystemDirectory *p_dir, DirAccess *da, const ScanProgress &p_progress);
 
@@ -250,11 +250,11 @@ class EditorFileSystem : public Node {
 
 	bool using_fat32_or_exfat; // Workaround for projects in FAT32 or exFAT filesystem (pendrives, most of the time)
 
-	void _find_group_files(EditorFileSystemDirectory *efd, RBMap<String, Vector<String>> &group_files, Set<String> &groups_to_reimport);
+	void _find_group_files(EditorFileSystemDirectory *efd, RBMap<String, Vector<String>> &group_files, RBSet<String> &groups_to_reimport);
 
 	void _move_group_files(EditorFileSystemDirectory *efd, const String &p_group_file, const String &p_new_location);
 
-	Set<String> group_file_cache;
+	RBSet<String> group_file_cache;
 
 protected:
 	void _notification(int p_what);
@@ -271,7 +271,7 @@ public:
 	void scan_changes();
 	void get_changed_sources(List<String> *r_changed);
 	void update_file(const String &p_file);
-	Set<String> get_valid_extensions() const;
+	RBSet<String> get_valid_extensions() const;
 
 	EditorFileSystemDirectory *get_filesystem_path(const String &p_path);
 	String get_file_type(const String &p_file) const;

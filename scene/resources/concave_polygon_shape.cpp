@@ -33,7 +33,7 @@
 #include "servers/physics_server.h"
 
 Vector<Vector3> ConcavePolygonShape::get_debug_mesh_lines() {
-	Set<DrawEdge> edges;
+	RBSet<DrawEdge> edges;
 
 	PoolVector<Vector3> data = get_faces();
 	int datalen = data.size();
@@ -51,7 +51,7 @@ Vector<Vector3> ConcavePolygonShape::get_debug_mesh_lines() {
 	Vector<Vector3> points;
 	points.resize(edges.size() * 2);
 	int idx = 0;
-	for (Set<DrawEdge>::Element *E = edges.front(); E; E = E->next()) {
+	for (RBSet<DrawEdge>::Element *E = edges.front(); E; E = E->next()) {
 		points.write[idx + 0] = E->get().a;
 		points.write[idx + 1] = E->get().b;
 		idx += 2;

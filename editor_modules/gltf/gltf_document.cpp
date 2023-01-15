@@ -7033,7 +7033,7 @@ Error GLTFDocument::_parse_gltf_extensions(Ref<GLTFState> p_state) {
 		p_state->extensions_required = ext_array;
 	}
 
-	Set<String> supported_extensions;
+	RBSet<String> supported_extensions;
 	supported_extensions.insert("KHR_lights_punctual");
 	supported_extensions.insert("KHR_materials_pbrSpecularGlossiness");
 	supported_extensions.insert("KHR_texture_transform");

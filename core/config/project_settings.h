@@ -32,7 +32,7 @@
 
 #include "core/object/object.h"
 #include "core/os/thread_safe.h"
-#include "core/containers/set.h"
+#include "core/containers/rb_set.h"
 
 // Querying ProjectSettings is usually done at startup.
 // Additionally, in order to keep track of changes to ProjectSettings,
@@ -114,7 +114,7 @@ protected:
 	bool using_datapack;
 	List<String> input_presets;
 
-	Set<String> custom_features;
+	RBSet<String> custom_features;
 
 	String project_data_dir_name;
 

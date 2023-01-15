@@ -87,7 +87,7 @@ class ResourceInteractiveLoaderText : public ResourceInteractiveLoader {
 	struct DummyReadData {
 		RBMap<RES, int> external_resources;
 		RBMap<int, RES> rev_external_resources;
-		Set<RES> resource_set;
+		RBSet<RES> resource_set;
 		RBMap<int, RES> resource_map;
 	};
 
@@ -160,7 +160,7 @@ class ResourceFormatSaverTextInstance {
 
 	RBMap<NonPersistentKey, RES> non_persistent_map;
 
-	Set<RES> resource_set;
+	RBSet<RES> resource_set;
 	List<RES> saved_resources;
 	RBMap<RES, int> external_resources;
 	RBMap<RES, int> internal_resources;
