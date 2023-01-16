@@ -31,8 +31,8 @@
 #ifndef BIN_SORTED_ARRAY_H
 #define BIN_SORTED_ARRAY_H
 
-#include "core/templates/local_vector.h"
-#include "core/templates/paged_array.h"
+#include "core/containers/local_vector.h"
+#include "core/containers/paged_array.h"
 
 template <class T>
 class BinSortedArray {

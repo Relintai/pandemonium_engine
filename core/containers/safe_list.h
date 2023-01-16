@@ -57,33 +57,41 @@ class SafeList {
 		// to the previous list item in time that was also logically deleted.
 		std::atomic<SafeListNode *> graveyard_next = nullptr;
 
-		std::function<void(T)> deletion_fn = [](T t) { return; };
+		void (*deletion_fn)(T t);
 
 		T val;
+
+		static void default_deletion_fn(T) {}
+
+		SafeListNode() {
+			next = NULL;
+			graveyard_next = NULL;
+			deletion_fn = default_deletion_fn;
+		}
 	};
 
-	static_assert(std::atomic<T>::is_always_lock_free);
+	std::atomic<SafeListNode *> head;
+	std::atomic<SafeListNode *> graveyard_head;
 
-	std::atomic<SafeListNode *> head = nullptr;
-	std::atomic<SafeListNode *> graveyard_head = nullptr;
-
-	std::atomic_uint active_iterator_count = 0;
+	std::atomic<uint32_t> active_iterator_count;
 
 public:
 	class Iterator {
 		friend class SafeList;
 
-		SafeListNode *cursor = nullptr;
-		SafeList *list = nullptr;
+		SafeListNode *cursor;
+		SafeList *list;
 
-		Iterator(SafeListNode *p_cursor, SafeList *p_list) :
-				cursor(p_cursor), list(p_list) {
+		Iterator(SafeListNode *p_cursor, SafeList *p_list) {
+			cursor = p_cursor;
+			list = p_list;
 			list->active_iterator_count++;
 		}
 
 	public:
-		Iterator(const Iterator &p_other) :
-				cursor(p_other.cursor), list(p_other.list) {
+		Iterator(const Iterator &p_other) {
+			cursor = p_other.cursor;
+			list = p_other.list;
 			list->active_iterator_count++;
 		}
 
@@ -197,13 +205,14 @@ public:
 	}
 
 	Iterator end() {
-		return Iterator(nullptr, this);
+		return Iterator(NULL, this);
 	}
 
 	// Calling this will cause zero to many deallocations.
 	bool maybe_cleanup() {
-		SafeListNode *cursor = nullptr;
-		SafeListNode *new_graveyard_head = nullptr;
+		SafeListNode *cursor = NULL;
+		SafeListNode *new_graveyard_head = NULL;
+
 		do {
 			// The access order here is theoretically important.
 			cursor = graveyard_head.load();
@@ -215,6 +224,7 @@ public:
 			// Any iterator created after this point will never point to a deleted node.
 			// Swap it out with the current graveyard head.
 		} while (!graveyard_head.compare_exchange_strong(/* expected= */ cursor, /* new= */ new_graveyard_head));
+
 		// Our graveyard list is now unreachable by any active iterators,
 		// detached from the main graveyard head and ready for deletion.
 		while (cursor) {
@@ -223,7 +233,15 @@ public:
 			tmp->deletion_fn(tmp->val);
 			memdelete_allocator<SafeListNode, A>(tmp);
 		}
+
 		return true;
+	}
+
+	SafeList() {
+		head = NULL;
+		graveyard_head = NULL;
+
+		active_iterator_count = 0;
 	}
 
 	~SafeList() {
