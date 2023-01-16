@@ -306,7 +306,7 @@ public class PandemoniumInputHandler implements InputManager.InputDeviceListener
 		//Helps with creating new joypad mappings.
 		Log.i(TAG, "=== New Input Device: " + joystick.name);
 
-		RBSet<Integer> already = new HashRBSet<>();
+		Set<Integer> already = new HashSet<>();
 		for (InputDevice.MotionRange range : device.getMotionRanges()) {
 			boolean isJoystick = range.isFromSource(InputDevice.SOURCE_JOYSTICK);
 			boolean isGamepad = range.isFromSource(InputDevice.SOURCE_GAMEPAD);

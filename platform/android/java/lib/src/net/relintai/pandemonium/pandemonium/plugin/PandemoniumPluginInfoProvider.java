@@ -49,7 +49,7 @@ public interface PandemoniumPluginInfoProvider {
 	 * Returns the list of signals to be exposed to Pandemonium.
 	 */
 	@NonNull
-	default RBSet<SignalInfo> getPluginSignals() {
+	default Set<SignalInfo> getPluginSignals() {
 		return Collections.emptySet();
 	}
 
@@ -59,7 +59,7 @@ public interface PandemoniumPluginInfoProvider {
 	 * The paths must be relative to the 'assets' directory and point to a '*.gdnlib' file.
 	 */
 	@NonNull
-	default RBSet<String> getPluginGDNativeLibrariesPaths() {
+	default Set<String> getPluginGDNativeLibrariesPaths() {
 		return Collections.emptySet();
 	}
 
