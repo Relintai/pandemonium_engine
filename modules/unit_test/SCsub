@@ -1,0 +1,16 @@
+import os
+import version
+
+Import('env')
+
+module_env = env.Clone()
+
+sources = [
+    "register_types.cpp",
+    "unit_test.cpp",
+    "unit_test_db.cpp",
+    "unit_test_runner.cpp",
+]
+
+module_env.add_source_files(env.modules_sources, sources)
+
