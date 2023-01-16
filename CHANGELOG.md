@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Master] 
 
-Nothing yet.
+#### Backports
+
+- Backported everything up to and including https://github.com/godotengine/godot/commit/a93d651293f7f36309c640ec54de45f02a4ca4a7 Merge commit: https://github.com/godotengine/godot/commit/7d6db300d221d41937d1b2f1312e421ae749e232 
 
 ## [3.10.0] 
 
