@@ -3577,49 +3577,49 @@ uint32_t Variant::hash() const {
 }
 
 #define hash_compare_scalar(p_lhs, p_rhs) \
-	((p_lhs) == (p_rhs)) || (Math::is_nan(p_lhs) && Math::is_nan(p_rhs))
+	(((p_lhs) == (p_rhs)) || (Math::is_nan(p_lhs) && Math::is_nan(p_rhs)))
 
 #define hash_compare_vector2(p_lhs, p_rhs)         \
-	(hash_compare_scalar((p_lhs).x, (p_rhs).x)) && \
-			(hash_compare_scalar((p_lhs).y, (p_rhs).y))
+	(hash_compare_scalar((p_lhs).x, (p_rhs).x) && \
+			hash_compare_scalar((p_lhs).y, (p_rhs).y))
 
 #define hash_compare_vector2i(p_lhs, p_rhs) \
-	(((p_lhs).x == (p_rhs).x)) &&           \
-			(((p_lhs).y == (p_rhs).y))
+	(((p_lhs).x == (p_rhs).x) &&           \
+			((p_lhs).y == (p_rhs).y))
 
 #define hash_compare_vector3(p_lhs, p_rhs)                 \
-	(hash_compare_scalar((p_lhs).x, (p_rhs).x)) &&         \
-			(hash_compare_scalar((p_lhs).y, (p_rhs).y)) && \
-			(hash_compare_scalar((p_lhs).z, (p_rhs).z))
+	(hash_compare_scalar((p_lhs).x, (p_rhs).x) &&         \
+			hash_compare_scalar((p_lhs).y, (p_rhs).y) && \
+			hash_compare_scalar((p_lhs).z, (p_rhs).z))
 
 #define hash_compare_vector3i(p_lhs, p_rhs) \
-	(((p_lhs).x == (p_rhs).x)) &&           \
-			(((p_lhs).y == (p_rhs).y)) &&   \
-			(((p_lhs).z == (p_rhs).z))
+	(((p_lhs).x == (p_rhs).x) &&           \
+			((p_lhs).y == (p_rhs).y) &&   \
+			((p_lhs).z == (p_rhs).z))
 
 #define hash_compare_vector4(p_lhs, p_rhs)                 \
-	(hash_compare_scalar((p_lhs).x, (p_rhs).x)) &&         \
-			(hash_compare_scalar((p_lhs).y, (p_rhs).y)) && \
-			(hash_compare_scalar((p_lhs).z, (p_rhs).z)) && \
-			(hash_compare_scalar((p_lhs).w, (p_rhs).w))
+	(hash_compare_scalar((p_lhs).x, (p_rhs).x) &&         \
+			hash_compare_scalar((p_lhs).y, (p_rhs).y) && \
+			hash_compare_scalar((p_lhs).z, (p_rhs).z) && \
+			hash_compare_scalar((p_lhs).w, (p_rhs).w))
 
 #define hash_compare_vector4i(p_lhs, p_rhs) \
-	(((p_lhs).x == (p_rhs).x)) &&           \
-			(((p_lhs).y == (p_rhs).y)) &&   \
-			(((p_lhs).z == (p_rhs).z)) &&   \
-			(((p_lhs).w == (p_rhs).w))
+	(((p_lhs).x == (p_rhs).x) &&           \
+			((p_lhs).y == (p_rhs).y) &&   \
+			((p_lhs).z == (p_rhs).z) &&   \
+			((p_lhs).w == (p_rhs).w))
 
 #define hash_compare_quat(p_lhs, p_rhs)                    \
-	(hash_compare_scalar((p_lhs).x, (p_rhs).x)) &&         \
-			(hash_compare_scalar((p_lhs).y, (p_rhs).y)) && \
-			(hash_compare_scalar((p_lhs).z, (p_rhs).z)) && \
-			(hash_compare_scalar((p_lhs).w, (p_rhs).w))
+	(hash_compare_scalar((p_lhs).x, (p_rhs).x) &&         \
+			hash_compare_scalar((p_lhs).y, (p_rhs).y) && \
+			hash_compare_scalar((p_lhs).z, (p_rhs).z) && \
+			hash_compare_scalar((p_lhs).w, (p_rhs).w))
 
 #define hash_compare_color(p_lhs, p_rhs)                   \
-	(hash_compare_scalar((p_lhs).r, (p_rhs).r)) &&         \
-			(hash_compare_scalar((p_lhs).g, (p_rhs).g)) && \
-			(hash_compare_scalar((p_lhs).b, (p_rhs).b)) && \
-			(hash_compare_scalar((p_lhs).a, (p_rhs).a))
+	(hash_compare_scalar((p_lhs).r, (p_rhs).r) &&         \
+			hash_compare_scalar((p_lhs).g, (p_rhs).g) && \
+			hash_compare_scalar((p_lhs).b, (p_rhs).b) && \
+			hash_compare_scalar((p_lhs).a, (p_rhs).a))
 
 #define hash_compare_pool_array(p_lhs, p_rhs, p_type, p_compare_func)                   \
 	const PoolVector<p_type> &l = *reinterpret_cast<const PoolVector<p_type> *>(p_lhs); \
@@ -3659,15 +3659,15 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 			const Rect2 *l = reinterpret_cast<const Rect2 *>(_data._mem);
 			const Rect2 *r = reinterpret_cast<const Rect2 *>(p_variant._data._mem);
 
-			return (hash_compare_vector2(l->position, r->position)) &&
-					(hash_compare_vector2(l->size, r->size));
+			return hash_compare_vector2(l->position, r->position) &&
+					hash_compare_vector2(l->size, r->size);
 		} break;
 		case RECT2I: {
 			const Rect2i *l = reinterpret_cast<const Rect2i *>(_data._mem);
 			const Rect2i *r = reinterpret_cast<const Rect2i *>(p_variant._data._mem);
 
-			return (hash_compare_vector2i(l->position, r->position)) &&
-					(hash_compare_vector2i(l->size, r->size));
+			return hash_compare_vector2i(l->position, r->position) &&
+					hash_compare_vector2i(l->size, r->size);
 		} break;
 		case VECTOR2: {
 			const Vector2 *l = reinterpret_cast<const Vector2 *>(_data._mem);
@@ -3710,8 +3710,8 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 			const Plane *l = reinterpret_cast<const Plane *>(_data._mem);
 			const Plane *r = reinterpret_cast<const Plane *>(p_variant._data._mem);
 
-			return (hash_compare_vector3(l->normal, r->normal)) &&
-					(hash_compare_scalar(l->d, r->d));
+			return hash_compare_vector3(l->normal, r->normal) &&
+					hash_compare_scalar(l->d, r->d);
 		} break;
 		case QUATERNION: {
 			const Quaternion *l = reinterpret_cast<const Quaternion *>(_data._mem);
@@ -3723,8 +3723,8 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 			const ::AABB *l = _data._aabb;
 			const ::AABB *r = p_variant._data._aabb;
 
-			return (hash_compare_vector3(l->position, r->position) &&
-					(hash_compare_vector3(l->size, r->size)));
+			return hash_compare_vector3(l->position, r->position) &&
+					hash_compare_vector3(l->size, r->size);
 
 		} break;
 		case BASIS: {
@@ -3732,7 +3732,7 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 			const Basis *r = p_variant._data._basis;
 
 			for (int i = 0; i < 3; i++) {
-				if (!(hash_compare_vector3(l->rows[i], r->rows[i]))) {
+				if (!hash_compare_vector3(l->rows[i], r->rows[i])) {
 					return false;
 				}
 			}
@@ -3744,7 +3744,7 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 			const Transform *r = p_variant._data._transform;
 
 			for (int i = 0; i < 3; i++) {
-				if (!(hash_compare_vector3(l->basis.rows[i], r->basis.rows[i]))) {
+				if (!hash_compare_vector3(l->basis.rows[i], r->basis.rows[i])) {
 					return false;
 				}
 			}
@@ -3756,7 +3756,7 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 			Transform2D *r = p_variant._data._transform2d;
 
 			for (int i = 0; i < 3; i++) {
-				if (!(hash_compare_vector2(l->columns[i], r->columns[i]))) {
+				if (!hash_compare_vector2(l->columns[i], r->columns[i])) {
 					return false;
 				}
 			}
@@ -3768,7 +3768,7 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 			const Projection *r = p_variant._data._projection;
 
 			for (int i = 0; i < 4; i++) {
-				if (!(hash_compare_vector4(l->matrix[i], r->matrix[i]))) {
+				if (!hash_compare_vector4(l->matrix[i], r->matrix[i])) {
 					return false;
 				}
 			}
