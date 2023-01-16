@@ -112,7 +112,7 @@ public class ServerManagedPolicy implements Policy {
         }
 
         // Update server policy data
-        RBMap<String, String> extras = decodeExtras(rawData);
+        Map<String, String> extras = decodeExtras(rawData);
         if (response == Policy.LICENSED) {
             mLastResponse = response;
             // Reset the licensing URL since it is only applicable for NOT_LICENSED responses.
@@ -281,9 +281,9 @@ public class ServerManagedPolicy implements Policy {
         return false;
     }
 
-    private RBMap<String, String> decodeExtras(
+    private Map<String, String> decodeExtras(
         com.google.android.vending.licensing.ResponseData rawData) {
-        RBMap<String, String> results = new HashMap<String, String>();
+        Map<String, String> results = new HashMap<String, String>();
         if (rawData == null) {
             return results;
         }

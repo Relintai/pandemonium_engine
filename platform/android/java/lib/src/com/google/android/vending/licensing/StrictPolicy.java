@@ -62,7 +62,7 @@ public class StrictPolicy implements Policy {
         mLastResponse = response;
 
         if (response == Policy.NOT_LICENSED) {
-            RBMap<String, String> extras = decodeExtras(rawData);
+            Map<String, String> extras = decodeExtras(rawData);
             mLicensingUrl = extras.get("LU");
         }
     }
@@ -81,9 +81,9 @@ public class StrictPolicy implements Policy {
         return mLicensingUrl;
     }
 
-    private RBMap<String, String> decodeExtras(
+    private Map<String, String> decodeExtras(
         com.google.android.vending.licensing.ResponseData rawData) {
-        RBMap<String, String> results = new HashMap<String, String>();
+        Map<String, String> results = new HashMap<String, String>();
         if (rawData == null) {
             return results;
         }
