@@ -648,7 +648,12 @@ if selected_platform in platform_list:
             # Get license path (if present)
             try:
                 license_file = config.get_license_file()
-                env.module_license_files.append("#" + path + "/" + license_file)
+
+                if not os.path.isabs(path):
+                    env.module_license_files.append("#" + path + "/" + license_file)
+                else:
+                     env.module_license_files.append(path + "/" + license_file)
+                     
             except Exception:
                 pass
 
