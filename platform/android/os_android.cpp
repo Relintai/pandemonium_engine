@@ -30,8 +30,8 @@
 
 #include "os_android.h"
 
-#include "core/variant/array.h"
 #include "core/config/project_settings.h"
+#include "core/variant/array.h"
 #include "drivers/gles2/rasterizer_gles2.h"
 #include "drivers/unix/dir_access_unix.h"
 #include "drivers/unix/file_access_unix.h"
@@ -53,6 +53,8 @@
 #include "java_pandemonium_wrapper.h"
 
 const char *OS_Android::ANDROID_EXEC_PATH = "apk";
+static const int DEFAULT_WINDOW_WIDTH = 800;
+static const int DEFAULT_WINDOW_HEIGHT = 600;
 
 String _remove_symlink(const String &dir) {
 	// Workaround for Android 6.0+ using a symlink.
@@ -497,7 +499,18 @@ int OS_Android::get_screen_dpi(int p_screen) const {
 }
 
 float OS_Android::get_screen_scale(int p_screen) const {
-	return pandemonium_io_java->get_scaled_density();
+	float screen_scale = pandemonium_io_java->get_scaled_density();
+
+	// Update the scale to avoid cropping.
+	Vector2 screen_size = get_window_size();
+	if (screen_size != Vector2()) {
+		float width_scale = screen_size.width / (float)DEFAULT_WINDOW_WIDTH;
+		float height_scale = screen_size.height / (float)DEFAULT_WINDOW_HEIGHT;
+		screen_scale = MIN(screen_scale, MIN(width_scale, height_scale));
+	}
+
+	print_line("Selected screen scale: " + rtos(screen_scale));
+	return screen_scale;
 }
 
 float OS_Android::get_screen_max_scale() const {
@@ -646,8 +659,8 @@ bool OS_Android::_check_internal_feature_support(const String &p_feature) {
 
 OS_Android::OS_Android(PandemoniumJavaWrapper *p_pandemonium_java, PandemoniumIOJavaWrapper *p_pandemonium_io_java, bool p_use_apk_expansion) {
 	use_apk_expansion = p_use_apk_expansion;
-	default_videomode.width = 800;
-	default_videomode.height = 600;
+	default_videomode.width = DEFAULT_WINDOW_WIDTH;
+	default_videomode.height = DEFAULT_WINDOW_HEIGHT;
 	default_videomode.fullscreen = true;
 	default_videomode.resizable = false;
 

@@ -150,7 +150,7 @@ public class PandemoniumIO {
 		} else {
 			selectedScaledDensity = 0.75f;
 		}
-		Log.d(TAG, "Selected scaled density: " + selectedScaledDensity);
+
 		return selectedScaledDensity;
 	}
 
