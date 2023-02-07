@@ -225,6 +225,8 @@ bool PandemoniumJavaWrapper::force_quit(JNIEnv *p_env, int p_instance_id) {
 
 		return p_env->CallBooleanMethod(pandemonium_instance, _finish, p_instance_id);
 	}
+
+	return false;
 }
 
 void PandemoniumJavaWrapper::set_keep_screen_on(bool p_enabled) {

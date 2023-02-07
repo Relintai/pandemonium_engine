@@ -3164,7 +3164,7 @@ bool OS_Windows::set_environment(const String &p_var, const String &p_value) con
 	return (bool)SetEnvironmentVariableW((LPCWSTR)(p_var.utf16().get_data()), (LPCWSTR)(p_value.utf16().get_data()));
 }
 
-String OS_Windows::get_stdin_string(bool p_block) {
+String OS_Windows::get_stdin_string() {
 	char buff[1024];
 	return fgets(buff, 1024, stdin);
 }
