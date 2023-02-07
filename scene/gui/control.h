@@ -30,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/math/transform_2d.h"
 #include "core/containers/rid.h"
+#include "core/math/transform_2d.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/resources/theme.h"
 
@@ -206,6 +206,12 @@ private:
 		HashMap<StringName, Color> color_override;
 		HashMap<StringName, int> constant_override;
 
+		mutable HashMap<StringName, HashMap<StringName, Ref<Texture>>> theme_icon_cache;
+		mutable HashMap<StringName, HashMap<StringName, Ref<StyleBox>>> theme_style_cache;
+		mutable HashMap<StringName, HashMap<StringName, Ref<Font>>> theme_font_cache;
+		mutable HashMap<StringName, HashMap<StringName, Color>> theme_color_cache;
+		mutable HashMap<StringName, HashMap<StringName, int>> theme_constant_cache;
+
 	} data;
 
 	void _window_find_focus_neighbour(const Vector2 &p_dir, Node *p_at, const Point2 *p_points, float p_min, float &r_closest_dist, Control **r_closest);
@@ -218,6 +224,7 @@ private:
 
 	void _propagate_theme_changed(CanvasItem *p_at, Control *p_owner, bool p_assign = true);
 	void _theme_changed();
+	void _invalidate_theme_cache();
 
 	void _change_notify_margins();
 	void _update_minimum_size();
