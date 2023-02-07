@@ -467,11 +467,9 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
     }
 
 	public void restart() {
-		runOnUiThread(() -> {
-			if (pandemoniumHost != null) {
-				pandemoniumHost.onPandemoniumRestartRequested(this);
-			}
-		});
+		if (pandemoniumHost != null) {
+			pandemoniumHost.onPandemoniumRestartRequested(this);
+		}
 	}
 
 	public void alert(final String message, final String title) {
@@ -1029,11 +1027,20 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	private void forceQuit() {
 		// TODO: This is a temp solution. The proper fix will involve tracking down and properly shutting down each
 		// native Pandemonium components that is started in Pandemonium#onVideoInit.
-		runOnUiThread(() -> {
-			if (pandemoniumHost != null) {
-				pandemoniumHost.onPandemoniumForceQuit(this);
-			}
-		});
+		forceQuit(0);
+	}
+
+	@Keep
+	private boolean forceQuit(int instanceId) {
+		if (pandemoniumHost == null) {
+			return false;
+		}
+		if (instanceId == 0) {
+			pandemoniumHost.onPandemoniumForceQuit(this);
+			return true;
+		} else {
+			return pandemoniumHost.onPandemoniumForceQuit(instanceId);
+		}
 	}
 
 	private boolean obbIsCorrupted(String f, String main_pack_md5) {
@@ -1189,10 +1196,10 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 
 	@Keep
 	private void createNewPandemoniumInstance(String[] args) {
-		runOnUiThread(() -> {
-			if (pandemoniumHost != null) {
-				pandemoniumHost.onNewPandemoniumInstanceRequested(args);
-			}
-		});
+		if (pandemoniumHost != null) {
+			pandemoniumHost.onNewPandemoniumInstanceRequested(args);
+		}
+		
+		return 0;
 	}
 }

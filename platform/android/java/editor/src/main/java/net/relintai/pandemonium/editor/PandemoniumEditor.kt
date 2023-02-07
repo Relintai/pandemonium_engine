@@ -35,12 +35,10 @@ import net.relintai.pandemonium.pandemonium.utils.PermissionsUtil
 import net.relintai.pandemonium.pandemonium.utils.ProcessPhoenix
 
 import android.Manifest
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
-import android.os.Bundle
-import android.os.Debug
-import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 
@@ -65,11 +63,18 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		private const val WAIT_FOR_DEBUGGER = false
 		private const val COMMAND_LINE_PARAMS = "command_line_params"
 
+		private const val EDITOR_ID = 777
   		private const val EDITOR_ARG = "--editor"
 		private const val EDITOR_ARG_SHORT = "-e"
+		private const val EDITOR_PROCESS_NAME_SUFFIX = ":PandemoniumEditor"
 
+		private const val GAME_ID = 667
+		private const val GAME_PROCESS_NAME_SUFFIX = ":PandemoniumGame"
+
+		private const val PROJECT_MANAGER_ID = 555
 		private const val PROJECT_MANAGER_ARG = "--project-manager"
 		private const val PROJECT_MANAGER_ARG_SHORT = "-p"
+		private const val PROJECT_MANAGER_PROCESS_NAME_SUFFIX = ":PandemoniumProjectManager"
   	}
 
 	private val commandLineParams = ArrayList<String>()
@@ -104,9 +109,10 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 
 	override fun getCommandLine() = commandLineParams
 
-  	override fun onNewPandemoniumInstanceRequested(args: Array<String>) {
+  	override fun onNewPandemoniumInstanceRequested(args: Array<String>): Int {
 		// Parse the arguments to figure out which activity to start.
 		var targetClass: Class<*> = PandemoniumGame::class.java
+		var instanceId = GAME_ID
 
 		// Whether we should launch the new godot instance in an adjacent window
 		// https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_LAUNCH_ADJACENT
@@ -116,12 +122,14 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 			if (EDITOR_ARG == arg || EDITOR_ARG_SHORT == arg) {
 				targetClass = PandemoniumEditor::class.java
 				launchAdjacent = false
+				instanceId = EDITOR_ID
 				break
 			}
 
 			if (PROJECT_MANAGER_ARG == arg || PROJECT_MANAGER_ARG_SHORT == arg) {
 				targetClass = PandemoniumProjectManager::class.java
 				launchAdjacent = false
+				instanceId = PROJECT_MANAGER_ID
 				break
 			}
 		}
@@ -140,6 +148,39 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 			Log.d(TAG, "Starting $targetClass")
 			startActivity(newInstance)
 		}
+
+		return instanceId
+	}
+
+	override fun onPandemoniumForceQuit(pandemoniumInstanceId: Int): Boolean {
+		val processNameSuffix = when (pandemoniumInstanceId) {
+			GAME_ID -> {
+				GAME_PROCESS_NAME_SUFFIX
+			}
+			EDITOR_ID -> {
+				EDITOR_PROCESS_NAME_SUFFIX
+			}
+			PROJECT_MANAGER_ID -> {
+				PROJECT_MANAGER_PROCESS_NAME_SUFFIX
+			}
+			else -> ""
+		}
+		
+		if (processNameSuffix.isBlank()) {
+			return false
+		}
+
+		val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+		val runningProcesses = activityManager.runningAppProcesses
+		for (runningProcess in runningProcesses) {
+			if (runningProcess.processName.endsWith(processNameSuffix)) {
+				Log.v(TAG, "Killing Pandemonium process ${runningProcess.processName}")
+				Process.killProcess(runningProcess.pid)
+				return true
+			}
+		}
+
+		return false
 	}
 
   	// Get the screen's density scale

@@ -63,7 +63,7 @@ PandemoniumJavaWrapper::PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity
 	_destroy_offscreen_gl = p_env->GetMethodID(pandemonium_class, "destroyOffscreenGL", "()V");
 	_set_offscreen_gl_current = p_env->GetMethodID(pandemonium_class, "setOffscreenGLCurrent", "(Z)V");
 	_restart = p_env->GetMethodID(pandemonium_class, "restart", "()V");
-	_finish = p_env->GetMethodID(pandemonium_class, "forceQuit", "()V");
+	_finish = p_env->GetMethodID(pandemonium_class, "forceQuit", "(I)Z");
 	_set_keep_screen_on = p_env->GetMethodID(pandemonium_class, "setKeepScreenOn", "(Z)V");
 	_alert = p_env->GetMethodID(pandemonium_class, "alert", "(Ljava/lang/String;Ljava/lang/String;)V");
 	_get_GLES_version_code = p_env->GetMethodID(pandemonium_class, "getGLESVersionCode", "()I");
@@ -80,7 +80,7 @@ PandemoniumJavaWrapper::PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity
 	_get_input_fallback_mapping = p_env->GetMethodID(pandemonium_class, "getInputFallbackMapping", "()Ljava/lang/String;");
 	_on_pandemonium_setup_completed = p_env->GetMethodID(pandemonium_class, "onPandemoniumSetupCompleted", "()V");
 	_on_pandemonium_main_loop_started = p_env->GetMethodID(pandemonium_class, "onPandemoniumMainLoopStarted", "()V");
-	_create_new_pandemonium_instance = p_env->GetMethodID(pandemonium_class, "createNewPandemoniumInstance", "([Ljava/lang/String;)V");
+	_create_new_pandemonium_instance = p_env->GetMethodID(pandemonium_class, "createNewPandemoniumInstance", "([Ljava/lang/String;)I");
 	_request_framebuffer_swap = p_env->GetMethodID(pandemonium_class, "requestFramebufferSwap", "()V");
 	_get_render_view = p_env->GetMethodID(pandemonium_class, "getRenderView", "()Lnet/relintai/pandemonium/pandemonium/PandemoniumView;");
 
@@ -215,13 +215,15 @@ void PandemoniumJavaWrapper::restart(JNIEnv *p_env) {
 	}
 }
 
-void PandemoniumJavaWrapper::force_quit(JNIEnv *p_env) {
+bool PandemoniumJavaWrapper::force_quit(JNIEnv *p_env, int p_instance_id) {
 	if (_finish) {
-		if (p_env == NULL)
+		if (p_env == NULL) {
 			p_env = get_jni_env();
-		ERR_FAIL_COND(p_env == nullptr);
+		}
 
-		p_env->CallVoidMethod(pandemonium_instance, _finish);
+		ERR_FAIL_NULL_V(p_env, false);
+
+		return p_env->CallBooleanMethod(pandemonium_instance, _finish, p_instance_id);
 	}
 }
 
@@ -397,16 +399,20 @@ void PandemoniumJavaWrapper::vibrate(int p_duration_ms) {
 	}
 }
 
-void PandemoniumJavaWrapper::create_new_pandemonium_instance(List<String> args) {
+int PandemoniumJavaWrapper::create_new_pandemonium_instance(List<String> args) {
 	if (_create_new_pandemonium_instance) {
 		JNIEnv *env = get_jni_env();
-		ERR_FAIL_COND(env == nullptr);
+
+		ERR_FAIL_NULL_V(env, 0);
 
 		jobjectArray jargs = env->NewObjectArray(args.size(), env->FindClass("java/lang/String"), env->NewStringUTF(""));
 		for (int i = 0; i < args.size(); i++) {
 			env->SetObjectArrayElement(jargs, i, env->NewStringUTF(args[i].utf8().get_data()));
 		}
-		env->CallVoidMethod(pandemonium_instance, _create_new_pandemonium_instance, jargs);
+
+		return env->CallIntMethod(pandemonium_instance, _create_new_pandemonium_instance, jargs);
+	} else {
+		return 0;
 	}
 }
 

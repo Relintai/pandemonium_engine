@@ -692,8 +692,21 @@ void OS_Android::swap_buffers() {
 }
 
 Error OS_Android::create_instance(const List<String> &p_arguments, ProcessID *r_child_id) {
-	pandemonium_java->create_new_pandemonium_instance(p_arguments);
+	int instance_id = pandemonium_java->create_new_pandemonium_instance(p_arguments);
+
+	if (r_child_id) {
+		*r_child_id = instance_id;
+	}
+
 	return OK;
+}
+
+Error OS_Android::kill(const ProcessID &p_pid) {
+	if (pandemonium_java->force_quit(NULL, p_pid)) {
+		return OK;
+	}
+
+	return OS_Unix::kill(p_pid);
 }
 
 OS_Android::~OS_Android() {

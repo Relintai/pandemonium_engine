@@ -74,28 +74,36 @@ public abstract class FullScreenPandemoniumApp extends FragmentActivity implemen
 	public void onDestroy() {
 		Log.v(TAG, "Destroying Pandemonium app...");
 		super.onDestroy();
-		onPandemoniumForceQuit(pandemoniumFragment);
+		terminatePandemoniumInstance(pandemoniumFragment);
 	}
 
 	@Override
 	public final void onPandemoniumForceQuit(Pandemonium instance) {
+		runOnUiThread(() -> {
+			terminatePandemoniumInstance(instance);
+		});
+	}
+
+	private void terminatePandemoniumInstance(Pandemonium instance) {
 		if (instance == pandemoniumFragment) {
 			Log.v(TAG, "Force quitting Pandemonium instance");
-			ProcessPhoenix.forceQuit(this);
+			ProcessPhoenix.forceQuit(FullScreenPandemoniumApp.this);
 		}
 	}
 
 	@Override
 	public final void onPandemoniumRestartRequested(Pandemonium instance) {
-		if (instance == pandemoniumFragment) {
-			// It's very hard to properly de-initialize Pandemonium on Android to restart the game
-			// from scratch. Therefore, we need to kill the whole app process and relaunch it.
-			//
-			// Restarting only the activity, wouldn't be enough unless it did proper cleanup (including
-			// releasing and reloading native libs or resetting their state somehow and clearing statics).
-			Log.v(TAG, "Restarting Pandemonium instance...");
-			ProcessPhoenix.triggerRebirth(this);
-		}
+		runOnUiThread(() -> {
+			if (instance == pandemoniumFragment) {
+				// It's very hard to properly de-initialize Pandemonium on Android to restart the game
+				// from scratch. Therefore, we need to kill the whole app process and relaunch it.
+				//
+				// Restarting only the activity, wouldn't be enough unless it did proper cleanup (including
+				// releasing and reloading native libs or resetting their state somehow and clearing statics).
+				Log.v(TAG, "Restarting Pandemonium instance...");
+				ProcessPhoenix.triggerRebirth(FullScreenPandemoniumApp.this);
+			}
+		});
 	}
 
 	@Override

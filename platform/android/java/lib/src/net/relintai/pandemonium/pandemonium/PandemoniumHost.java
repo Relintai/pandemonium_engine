@@ -55,21 +55,35 @@ public interface PandemoniumHost {
 	default void onPandemoniumMainLoopStarted() {}
 
 	/**
-	 * Invoked on the UI thread as the last step of the Pandemonium instance clean up phase.
+	 * Invoked on the render thread to terminate the given Pandemonium instance.
 	 */
 	default void onPandemoniumForceQuit(Pandemonium instance) {}
 
 	/**
-	 * Invoked on the UI thread when the Pandemonium instance wants to be restarted. It's up to the host
+ * Invoked on the render thread to terminate the Pandemonium instance with the given id.
+	 * @param pandemoniumInstanceId id of the Pandemonium instance to terminate. See {@code onNewPandemoniumInstanceRequested}
+	 *
+	 * @return true if successful, false otherwise.
+	 */
+	default boolean onPandemoniumForceQuit(int pandemoniumInstanceId) {
+		return false;
+	}
+
+	/**
+	 * Invoked on the render thread when the Pandemonium instance wants to be restarted. It's up to the host
 	 * to perform the appropriate action(s).
 	 */
 	default void onPandemoniumRestartRequested(Pandemonium instance) {}
 
 	/**
-	 * Invoked on the UI thread when a new Pandemonium instance is requested. It's up to the host to
+	 * Invoked on the render thread when a new Pandemonium instance is requested. It's up to the host to
 	 * perform the appropriate action(s).
 	 *
 	 * @param args Arguments used to initialize the new instance.
+	 *
+	 * @return the id of the new instance. See {@code onPandemoniumForceQuit}
 	 */
-	default void onNewPandemoniumInstanceRequested(String[] args) {}
+	default void onNewPandemoniumInstanceRequested(String[] args) {
+		return 0;
+	}
 }
