@@ -33,6 +33,8 @@
 #include "scene/gui/popup.h"
 
 class ShortCut;
+class MarginContainer;
+class ScrollContainer;
 
 class PopupMenu : public Popup {
 	GDCLASS(PopupMenu, Popup);
@@ -57,10 +59,16 @@ class PopupMenu : public Popup {
 		String tooltip;
 		uint32_t accel;
 		int _ofs_cache;
+		int _height_cache;
 		int h_ofs;
 		Ref<ShortCut> shortcut;
 		bool shortcut_is_global;
 		bool shortcut_is_disabled;
+
+		// Returns (0,0) if icon is null.
+		Size2 get_icon_size() const {
+			return icon.is_null() ? Size2() : icon->get_size();
+		}
 
 		Item();
 		~Item();
@@ -79,7 +87,10 @@ class PopupMenu : public Popup {
 	String _get_accel_text(int p_item) const;
 	int _get_mouse_over(const Point2 &p_over) const;
 	virtual Size2 get_minimum_size() const;
-	void _scroll(float p_factor, const Point2 &p_over);
+
+	int _get_items_total_height() const;
+	void _scroll_to_item(int p_item);
+
 	void _gui_input(const Ref<InputEvent> &p_event);
 	void _activate_submenu(int over, bool p_by_keyboard = false);
 	void _submenu_timeout();
@@ -102,6 +113,14 @@ class PopupMenu : public Popup {
 	bool allow_search;
 	uint64_t search_time_msec;
 	String search_string;
+
+	MarginContainer *margin_container;
+	ScrollContainer *scroll_container;
+	Control *control;
+	real_t max_height;
+
+	void _draw_items();
+	void _draw_background();
 
 protected:
 	virtual bool has_point(const Point2 &p_point) const;
@@ -204,6 +223,9 @@ public:
 
 	void set_allow_search(bool p_allow);
 	bool get_allow_search() const;
+
+	void set_max_height(real_t p_max_height);
+	real_t get_max_height() const;
 
 	virtual void popup(const Rect2 &p_bounds = Rect2());
 
