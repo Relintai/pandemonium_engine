@@ -83,7 +83,7 @@ public interface PandemoniumHost {
 	 *
 	 * @return the id of the new instance. See {@code onPandemoniumForceQuit}
 	 */
-	default void onNewPandemoniumInstanceRequested(String[] args) {
+	default int onNewPandemoniumInstanceRequested(String[] args) {
 		return 0;
 	}
 }
