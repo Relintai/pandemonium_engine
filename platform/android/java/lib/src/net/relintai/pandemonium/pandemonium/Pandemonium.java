@@ -1195,7 +1195,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	}
 
 	@Keep
-	private void createNewPandemoniumInstance(String[] args) {
+	private int createNewPandemoniumInstance(String[] args) {
 		if (pandemoniumHost != null) {
 			pandemoniumHost.onNewPandemoniumInstanceRequested(args);
 		}
