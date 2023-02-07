@@ -18,4 +18,4 @@ target_include_directories(${PROJECT_NAME}
         ${PANDEMONIUM_ROOT_DIR}
         ${PANDEMONIUM_ROOT_DIR}/modules/gdnative/include)
 
-add_definitions(-DUNIX_ENABLED -DTOOLS_ENABLED)
+add_definitions(-DUNIX_ENABLED -DANDROID_ENABLED -DTOOLS_ENABLED)
