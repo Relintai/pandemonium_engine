@@ -30,32 +30,32 @@
 
 #include "editor_settings.h"
 
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/variant/dictionary.h"
+#include "core/config/project_settings.h"
+#include "core/containers/rb_set.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
+#include "core/input/input_event.h"
 #include "core/io/certs_compressed.gen.h"
 #include "core/io/config_file.h"
 #include "core/io/ip.h"
 #include "core/io/ip_address.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
+#include "core/math/color.h"
 #include "core/math/math_funcs.h"
 #include "core/math/vector2.h"
+#include "core/object/class_db.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "core/input/input_event.h"
 #include "core/os/keyboard.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
-#include "core/config/project_settings.h"
-#include "core/containers/rb_set.h"
 #include "core/string/translation.h"
 #include "core/typedefs.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 #include "core/version_generated.gen.h"
 #include "editor/editor_translation.h"
 #include "scene/main/node.h"
@@ -642,6 +642,9 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("run/window_placement/rect_custom_position", Vector2());
 	_initial_set("run/window_placement/screen", 0);
 	hints["run/window_placement/screen"] = PropertyInfo(Variant::INT, "run/window_placement/screen", PROPERTY_HINT_ENUM, screen_hints);
+#ifdef ANDROID_ENABLED
+	_initial_set("run/window_placement/android_force_launch_adjacent", 0);
+#endif
 
 	// Auto save
 	_initial_set("run/auto_save/save_before_running", true);

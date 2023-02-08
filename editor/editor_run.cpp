@@ -32,16 +32,16 @@
 
 #include <stdio.h>
 
-#include "plugins/script_editor_plugin.h"
-#include "script_editor_debugger.h"
 #include "core/config/project_settings.h"
-#include "editor_settings.h"
+#include "core/containers/vector.h"
 #include "core/error/error_macros.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
+#include "editor_settings.h"
+#include "plugins/script_editor_plugin.h"
+#include "script_editor_debugger.h"
 
 EditorRun::Status EditorRun::get_status() const {
 	return status;
@@ -71,6 +71,14 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 		const String remote_host = EditorSettings::get_singleton()->get("network/debug/remote_host");
 		const int remote_port = (int)EditorSettings::get_singleton()->get("network/debug/remote_port");
 		args.push_back(remote_host + ":" + String::num(remote_port));
+	}
+#endif
+
+#ifdef ANDROID_ENABLED
+	const bool android_force_side_by_side_window = EditorSettings::get_singleton()->get("run/window_placement/android_force_launch_adjacent");
+
+	if (android_force_side_by_side_window) {
+		args.push_back("--android-force-launch-adjacent");
 	}
 #endif
 

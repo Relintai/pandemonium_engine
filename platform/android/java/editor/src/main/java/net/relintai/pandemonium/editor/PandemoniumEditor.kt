@@ -76,6 +76,8 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		private const val PROJECT_MANAGER_ARG = "--project-manager"
 		private const val PROJECT_MANAGER_ARG_SHORT = "-p"
 		private const val PROJECT_MANAGER_PROCESS_NAME_SUFFIX = ":PandemoniumProjectManager"
+
+		private const val FORCE_LAUNCH_ADJACENT_ARG = "--android-force-launch-adjacent"
   	}
 
 	private val commandLineParams = ArrayList<String>()
@@ -131,6 +133,13 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 				targetClass = PandemoniumProjectManager::class.java
 				launchAdjacent = false
 				instanceId = PROJECT_MANAGER_ID
+				break
+			}
+		}
+
+		for (arg in args) {
+			if (FORCE_LAUNCH_ADJACENT_ARG == arg) {
+				launchAdjacent = true
 				break
 			}
 		}
