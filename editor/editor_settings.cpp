@@ -643,7 +643,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("run/window_placement/screen", 0);
 	hints["run/window_placement/screen"] = PropertyInfo(Variant::INT, "run/window_placement/screen", PROPERTY_HINT_ENUM, screen_hints);
 #ifdef ANDROID_ENABLED
-	_initial_set("run/window_placement/android_force_launch_adjacent", 0);
+	_initial_set("run/window_placement/android_force_launch_adjacent", false);
 #endif
 
 	// Auto save
