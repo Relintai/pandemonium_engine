@@ -2066,7 +2066,10 @@ bool Main::start() {
 					if (serr != OK)
 						ERR_PRINT("Failed to load scene");
 				}
+
 				OS::get_singleton()->set_context(OS::CONTEXT_EDITOR);
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
 				// Start debug server.
 				if (!debug_server_uri.empty()) {
 					int idx = debug_server_uri.rfind(":");
@@ -2074,6 +2077,7 @@ bool Main::start() {
 					int port = debug_server_uri.substr(idx + 1).to_int();
 					ScriptEditor::get_singleton()->get_debugger()->start(port, addr);
 				}
+#endif
 			}
 #endif
 			if (!editor) {

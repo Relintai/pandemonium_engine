@@ -211,7 +211,9 @@ void EditorInterface::edit_node(Node *p_node) {
 }
 
 void EditorInterface::edit_script(const Ref<Script> &p_script, int p_line, int p_col, bool p_grab_focus) {
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	ScriptEditor::get_singleton()->edit(p_script, p_line, p_col, p_grab_focus);
+#endif
 }
 
 void EditorInterface::open_scene_from_path(const String &scene_path) {
@@ -272,9 +274,11 @@ Array EditorInterface::get_open_scenes() const {
 	return ret;
 }
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
 ScriptEditor *EditorInterface::get_script_editor() {
 	return ScriptEditor::get_singleton();
 }
+#endif
 
 void EditorInterface::select_file(const String &p_file) {
 	EditorNode::get_singleton()->get_filesystem_dock()->select_file(p_file);
@@ -362,7 +366,9 @@ void EditorInterface::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("inspect_object", "object", "for_property", "inspector_only"), &EditorInterface::inspect_object, DEFVAL(String()), DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("get_selection"), &EditorInterface::get_selection);
 	ClassDB::bind_method(D_METHOD("get_editor_settings"), &EditorInterface::get_editor_settings);
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	ClassDB::bind_method(D_METHOD("get_script_editor"), &EditorInterface::get_script_editor);
+#endif
 	ClassDB::bind_method(D_METHOD("get_base_control"), &EditorInterface::get_base_control);
 	ClassDB::bind_method(D_METHOD("get_editor_scale"), &EditorInterface::get_editor_scale);
 	ClassDB::bind_method(D_METHOD("edit_resource", "resource"), &EditorInterface::edit_resource);
@@ -883,11 +889,11 @@ void EditorPlugin::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_control_to_container", "container", "control"), &EditorPlugin::add_control_to_container);
 	ClassDB::bind_method(D_METHOD("add_control_to_bottom_panel", "control", "title"), &EditorPlugin::add_control_to_bottom_panel);
 	ClassDB::bind_method(D_METHOD("add_control_to_dock", "slot", "control"), &EditorPlugin::add_control_to_dock);
-	
+
 	ClassDB::bind_method(D_METHOD("remove_control_from_docks", "control"), &EditorPlugin::remove_control_from_docks);
 	ClassDB::bind_method(D_METHOD("remove_control_from_bottom_panel", "control"), &EditorPlugin::remove_control_from_bottom_panel);
 	ClassDB::bind_method(D_METHOD("remove_control_from_container", "container", "control"), &EditorPlugin::remove_control_from_container);
-	
+
 	ClassDB::bind_method(D_METHOD("add_tool_menu_item", "name", "handler", "callback", "ud"), &EditorPlugin::add_tool_menu_item, DEFVAL(Variant()));
 	ClassDB::bind_method(D_METHOD("add_tool_submenu_item", "name", "submenu"), &EditorPlugin::add_tool_submenu_item);
 	ClassDB::bind_method(D_METHOD("remove_tool_menu_item", "name"), &EditorPlugin::remove_tool_menu_item);
@@ -895,7 +901,7 @@ void EditorPlugin::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_convert_menu_item", "name", "handler", "callback", "ud"), &EditorPlugin::add_convert_menu_item, DEFVAL(Variant()));
 	ClassDB::bind_method(D_METHOD("add_convert_submenu_item", "name", "submenu"), &EditorPlugin::add_convert_submenu_item);
 	ClassDB::bind_method(D_METHOD("remove_convert_menu_item", "name"), &EditorPlugin::remove_convert_menu_item);
-	
+
 	ClassDB::bind_method(D_METHOD("add_custom_type", "type", "base", "script", "icon"), &EditorPlugin::add_custom_type);
 	ClassDB::bind_method(D_METHOD("remove_custom_type", "type"), &EditorPlugin::remove_custom_type);
 

@@ -30,33 +30,32 @@
 
 #include "editor_resource_picker.h"
 
+#include "core/containers/pair.h"
+#include "core/containers/rb_map.h"
+#include "core/error/error_macros.h"
+#include "core/input/input_event.h"
+#include "core/io/resource_loader.h"
+#include "core/math/color.h"
+#include "core/math/math_defs.h"
+#include "core/math/rect2.h"
+#include "core/object/class_db.h"
+#include "core/object/ref_ptr.h"
+#include "core/object/script_language.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/typedefs.h"
+#include "core/variant/dictionary.h"
+#include "editor/editor_data.h"
+#include "editor/editor_file_dialog.h"
+#include "editor/editor_file_system.h"
 #include "editor/editor_resource_preview.h"
+#include "editor/property_editor.h"
+#include "editor/quick_open.h"
+#include "editor/scene_tree_dock.h"
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
 #include "filesystem_dock.h"
-#include "scene/main/viewport.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/variant/dictionary.h"
-#include "core/error/error_macros.h"
-#include "core/io/resource_loader.h"
-#include "core/containers/rb_map.h"
-#include "core/math/math_defs.h"
-#include "core/math/rect2.h"
-#include "core/input/input_event.h"
-#include "core/os/memory.h"
-#include "core/containers/pair.h"
-#include "core/object/ref_ptr.h"
-#include "core/object/script_language.h"
-#include "core/string/string_name.h"
-#include "core/typedefs.h"
-#include "editor/editor_data.h"
-#include "editor/editor_file_dialog.h"
-#include "editor/editor_file_system.h"
-#include "editor/property_editor.h"
-#include "editor/quick_open.h"
-#include "editor/scene_tree_dock.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
@@ -64,6 +63,7 @@
 #include "scene/gui/tab_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/main/node.h"
+#include "scene/main/viewport.h"
 #include "scene/resources/material.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/style_box.h"
@@ -583,10 +583,12 @@ bool EditorResourcePicker::_is_drop_valid(const Dictionary &p_drag_data) const {
 
 	Ref<Resource> res;
 	if (drag_data.has("type") && String(drag_data["type"]) == "script_list_element") {
+#ifdef MODULE_CODE_EDITOR_ENABLED
 		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(drag_data["script_list_element"]);
 		if (se) {
 			res = se->get_edited_resource();
 		}
+#endif
 	} else if (drag_data.has("type") && String(drag_data["type"]) == "resource") {
 		res = drag_data["resource"];
 	}
@@ -652,10 +654,12 @@ void EditorResourcePicker::drop_data_fw(const Point2 &p_point, const Variant &p_
 
 	Ref<Resource> dropped_resource;
 	if (drag_data.has("type") && String(drag_data["type"]) == "script_list_element") {
+#ifdef MODULE_CODE_EDITOR_ENABLED
 		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(drag_data["script_list_element"]);
 		if (se) {
 			dropped_resource = se->get_edited_resource();
 		}
+#endif
 	} else if (drag_data.has("type") && String(drag_data["type"]) == "resource") {
 		dropped_resource = drag_data["resource"];
 	}

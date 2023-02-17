@@ -37,6 +37,8 @@
 #include "cscript.h"
 #include "cscript_tokenizer.h"
 
+#include "modules/modules_enabled.gen.h"
+
 CScriptLanguage *script_language_cscript = nullptr;
 Ref<ResourceFormatLoaderCScript> resource_loader_cscript;
 Ref<ResourceFormatSaverCScript> resource_saver_cscript;
@@ -154,7 +156,9 @@ void register_cscript_types(ModuleRegistrationLevel p_level) {
 
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+#ifdef MODULE_CODE_EDITOR_ENABLED
 		ScriptEditor::register_create_syntax_highlighter_function(CScriptSyntaxHighlighter::create);
+#endif
 		EditorNode::add_init_callback(_editor_init);
 	}
 #endif // TOOLS_ENABLED

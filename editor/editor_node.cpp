@@ -100,6 +100,7 @@
 #include "editor/import/resource_importer_texture_atlas.h"
 #include "editor/import/resource_importer_wav.h"
 #include "editor/import_dock.h"
+#include "editor/inspector_dock.h"
 #include "editor/multi_node_edit.h"
 #include "editor/node_dock.h"
 #include "editor/plugin_config_dialog.h"
@@ -588,10 +589,12 @@ void EditorNode::_notification(int p_what) {
 
 			recent_scenes->set_as_minsize();
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
 			// debugger area
 			if (ScriptEditor::get_singleton()->get_debugger()->is_visible()) {
 				bottom_panel->add_theme_style_override("panel", gui_base->get_theme_stylebox("BottomPanelDebuggerOverride", "EditorStyles"));
 			}
+#endif
 
 			// update_icons
 			for (int i = 0; i < singleton->main_editor_buttons.size(); i++) {
@@ -2009,7 +2012,9 @@ void EditorNode::_edit_current(bool p_skip_foreign) {
 	Object *prev_inspected_object = get_inspector()->get_edited_object();
 
 	bool disable_folding = bool(EDITOR_GET("interface/inspector/disable_folding"));
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	bool stay_in_script_editor_on_node_selected = bool(EDITOR_GET("text_editor/navigation/stay_in_script_editor_on_node_selected"));
+#endif
 	bool is_resource = current_obj->is_class("Resource");
 	bool is_node = current_obj->is_class("Node");
 
@@ -2048,9 +2053,11 @@ void EditorNode::_edit_current(bool p_skip_foreign) {
 			node_dock->set_node(current_node);
 			scene_tree_dock->set_selected(current_node);
 			inspector_dock->update(current_node);
+#ifdef MODULE_CODE_EDITOR_ENABLED
 			if (!inspector_only) {
 				inspector_only = stay_in_script_editor_on_node_selected && ScriptEditor::get_singleton()->is_visible_in_tree();
 			}
+#endif
 		} else {
 			node_dock->set_node(nullptr);
 			scene_tree_dock->set_selected(nullptr);
@@ -2128,12 +2135,12 @@ void EditorNode::_edit_current(bool p_skip_foreign) {
 				if (!changing_scene) {
 					main_plugin->edit(current_obj);
 				}
-			}
-
-			else if (main_plugin != editor_plugin_screen && (!ScriptEditor::get_singleton() || !ScriptEditor::get_singleton()->is_visible_in_tree() || ScriptEditor::get_singleton()->can_take_away_focus())) {
+#ifdef MODULE_CODE_EDITOR_ENABLED
+			} else if (main_plugin != editor_plugin_screen && (!ScriptEditor::get_singleton() || !ScriptEditor::get_singleton()->is_visible_in_tree() || ScriptEditor::get_singleton()->can_take_away_focus())) {
 				// update screen main_plugin
 				_editor_select(plugin_index);
 				main_plugin->edit(current_obj);
+#endif
 			} else {
 				editor_plugin_screen->edit(current_obj);
 			}
@@ -2233,7 +2240,10 @@ void EditorNode::_run(bool p_current, const String &p_custom) {
 	editor_data.get_editor_breakpoints(&breakpoints);
 
 	args = ProjectSettings::get_singleton()->get("editor/main_run_args");
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	skip_breakpoints = ScriptEditor::get_singleton()->get_debugger()->is_skip_breakpoints();
+#endif
 	emit_signal("play_pressed");
 
 	Error error = editor_run.run(run_filename, args, breakpoints, skip_breakpoints);
@@ -2400,9 +2410,11 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 
 			if (!scene) {
 				if (p_option == FILE_SAVE_SCENE) {
+#ifdef MODULE_CODE_EDITOR_ENABLED
 					// Pressing Ctrl + S saves the current script if a scene is currently open, but it won't if the scene has no root node.
 					// Work around this by explicitly saving the script in this case (similar to pressing Ctrl + Alt + S).
 					ScriptEditor::get_singleton()->save_current_script();
+#endif
 				}
 
 				const int saved = _save_external_resources();
@@ -2719,7 +2731,9 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 			bool ischecked = debug_menu->get_popup()->is_item_checked(debug_menu->get_popup()->get_item_index(RUN_LIVE_DEBUG));
 
 			debug_menu->get_popup()->set_item_checked(debug_menu->get_popup()->get_item_index(RUN_LIVE_DEBUG), !ischecked);
+#ifdef MODULE_CODE_EDITOR_ENABLED
 			ScriptEditor::get_singleton()->get_debugger()->set_live_debugging(!ischecked);
+#endif
 			EditorSettings::get_singleton()->set_project_metadata("debug_options", "run_live_debug", !ischecked);
 
 		} break;
@@ -2757,7 +2771,9 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 			bool ischecked = debug_menu->get_popup()->is_item_checked(debug_menu->get_popup()->get_item_index(RUN_RELOAD_SCRIPTS));
 			debug_menu->get_popup()->set_item_checked(debug_menu->get_popup()->get_item_index(RUN_RELOAD_SCRIPTS), !ischecked);
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
 			ScriptEditor::get_singleton()->set_live_auto_reload_running_scripts(!ischecked);
+#endif
 			EditorSettings::get_singleton()->set_project_metadata("debug_options", "run_reload_scripts", !ischecked);
 
 		} break;
@@ -3449,8 +3465,10 @@ void EditorNode::_set_main_scene_state(Dictionary p_state, Node *p_for_scene) {
 
 	//this should only happen at the very end
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	ScriptEditor::get_singleton()->get_debugger()->update_live_edit_root();
 	ScriptEditor::get_singleton()->set_scene_root_script(editor_data.get_scene_root_script(editor_data.get_edited_scene()));
+#endif
 	editor_data.notify_edited_scene_changed();
 }
 
@@ -3681,7 +3699,9 @@ Error EditorNode::load_scene(const String &p_scene, bool p_ignore_broken_deps, b
 	opening_prev = false;
 	scene_tree_dock->set_selected(new_scene);
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	ScriptEditor::get_singleton()->get_debugger()->update_live_edit_root();
+#endif
 
 	push_item(new_scene);
 
@@ -3865,7 +3885,6 @@ void EditorNode::register_editor_types() {
 	ClassDB::register_class<EditorResourcePreviewGenerator>();
 	ClassDB::register_virtual_class<EditorFileSystem>();
 	ClassDB::register_class<EditorFileSystemDirectory>();
-	ClassDB::register_virtual_class<ScriptEditor>();
 	ClassDB::register_virtual_class<EditorInterface>();
 	ClassDB::register_class<EditorExportPlugin>();
 	ClassDB::register_class<EditorResourceConversionPlugin>();
@@ -5110,11 +5129,15 @@ void EditorNode::_bottom_panel_switch(bool p_enable, int p_idx) {
 			bottom_panel_items[i].button->set_pressed(i == p_idx);
 			bottom_panel_items[i].control->set_visible(i == p_idx);
 		}
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
 		if (ScriptEditor::get_singleton()->get_debugger() == bottom_panel_items[p_idx].control) { // this is the debug panel which uses tabs, so the top section should be smaller
 			bottom_panel->add_theme_style_override("panel", gui_base->get_theme_stylebox("BottomPanelDebuggerOverride", "EditorStyles"));
 		} else {
 			bottom_panel->add_theme_style_override("panel", gui_base->get_theme_stylebox("panel", "TabContainer"));
 		}
+#endif
+
 		center_split->set_dragger_visibility(SplitContainer::DRAGGER_VISIBLE);
 		center_split->set_collapsed(false);
 		if (bottom_panel_raise->is_pressed()) {

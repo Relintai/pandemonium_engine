@@ -30,25 +30,25 @@
 
 #include "connections_dialog.h"
 
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/variant/dictionary.h"
-#include "core/error/error_macros.h"
 #include "core/containers/list.h"
+#include "core/error/error_macros.h"
 #include "core/math/aabb.h"
 #include "core/math/basis.h"
+#include "core/math/color.h"
 #include "core/math/plane.h"
 #include "core/math/quaternion.h"
 #include "core/math/rect2.h"
 #include "core/math/transform.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "core/os/memory.h"
+#include "core/object/class_db.h"
 #include "core/object/ref_ptr.h"
 #include "core/object/reference.h"
 #include "core/object/script_language.h"
-#include "core/typedefs.h"
 #include "core/object/undo_redo.h"
+#include "core/os/memory.h"
+#include "core/typedefs.h"
+#include "core/variant/dictionary.h"
 #include "core/variant/variant.h"
 #include "editor/doc/doc_data.h"
 #include "editor/editor_help.h"
@@ -816,9 +816,11 @@ void ConnectionsDock::_go_to_script(TreeItem &item) {
 		return;
 	}
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	if (script.is_valid() && ScriptEditor::get_singleton()->script_goto_method(script, c.method)) {
 		editor->call("_editor_select", EditorNode::EDITOR_SCRIPT);
 	}
+#endif
 }
 
 void ConnectionsDock::_handle_signal_menu_option(int option) {

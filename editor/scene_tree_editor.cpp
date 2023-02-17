@@ -30,21 +30,21 @@
 
 #include "scene_tree_editor.h"
 
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/variant/dictionary.h"
-#include "core/error/error_macros.h"
 #include "core/containers/hashfuncs.h"
+#include "core/error/error_macros.h"
+#include "core/math/color.h"
 #include "core/math/math_defs.h"
 #include "core/math/transform_2d.h"
+#include "core/object/class_db.h"
 #include "core/object/message_queue.h"
-#include "core/os/memory.h"
 #include "core/object/ref_ptr.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"
 #include "core/object/undo_redo.h"
+#include "core/os/memory.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 #include "editor/editor_data.h"
 #include "editor/editor_file_system.h"
 #include "editor/editor_node.h"
@@ -1130,6 +1130,7 @@ bool SceneTreeEditor::can_drop_data_fw(const Point2 &p_point, const Variant &p_d
 	}
 
 	if (String(d["type"]) == "script_list_element") {
+#ifdef MODULE_CODE_EDITOR_ENABLED
 		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(d["script_list_element"]);
 		if (se) {
 			String sp = se->get_edited_resource()->get_path();
@@ -1138,6 +1139,7 @@ bool SceneTreeEditor::can_drop_data_fw(const Point2 &p_point, const Variant &p_d
 				return true;
 			}
 		}
+#endif
 	}
 
 	return String(d["type"]) == "nodes" && filter == String();
@@ -1181,6 +1183,7 @@ void SceneTreeEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data,
 	}
 
 	if (String(d["type"]) == "script_list_element") {
+#ifdef MODULE_CODE_EDITOR_ENABLED
 		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(d["script_list_element"]);
 		if (se) {
 			String sp = se->get_edited_resource()->get_path();
@@ -1188,6 +1191,7 @@ void SceneTreeEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data,
 				emit_signal("script_dropped", sp, np);
 			}
 		}
+#endif
 	}
 }
 

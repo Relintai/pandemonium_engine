@@ -32,10 +32,10 @@
 
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
-#include "core/containers/rb_map.h"
 #include "core/containers/pool_vector.h"
-#include "core/containers/rid_handle.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/rb_set.h"
+#include "core/containers/rid_handle.h"
 #include "core/input/input.h"
 #include "core/input/input_event.h"
 #include "core/input/shortcut.h"
@@ -4238,10 +4238,12 @@ bool SpatialEditorViewport::_create_instance(Node *parent, String &path, const P
 	editor_data->get_undo_redo().add_do_reference(instanced_scene);
 	editor_data->get_undo_redo().add_undo_method(parent, "remove_child", instanced_scene);
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	String new_name = parent->validate_child_name(instanced_scene);
 	ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
 	editor_data->get_undo_redo().add_do_method(sed, "live_debug_instance_node", editor->get_edited_scene()->get_path_to(parent), path, new_name);
 	editor_data->get_undo_redo().add_undo_method(sed, "live_debug_remove_node", NodePath(String(editor->get_edited_scene()->get_path_to(parent)) + "/" + new_name));
+#endif
 
 	Spatial *spatial = Object::cast_to<Spatial>(instanced_scene);
 	if (spatial) {
@@ -5477,6 +5479,7 @@ void SpatialEditor::_menu_item_toggled(bool pressed, int p_option) {
 		} break;
 
 		case MENU_TOOL_OVERRIDE_CAMERA: {
+#ifdef MODULE_CODE_EDITOR_ENABLED
 			ScriptEditorDebugger *const debugger = ScriptEditor::get_singleton()->get_debugger();
 
 			if (pressed) {
@@ -5486,7 +5489,7 @@ void SpatialEditor::_menu_item_toggled(bool pressed, int p_option) {
 			} else {
 				debugger->set_camera_override(ScriptEditorDebugger::OVERRIDE_NONE);
 			}
-
+#endif
 		} break;
 	}
 }
@@ -5534,6 +5537,7 @@ void SpatialEditor::_update_camera_override_viewport(Object *p_viewport) {
 		return;
 	}
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	ScriptEditorDebugger *const debugger = ScriptEditor::get_singleton()->get_debugger();
 
 	camera_override_viewport_id = current_viewport->index;
@@ -5542,6 +5546,7 @@ void SpatialEditor::_update_camera_override_viewport(Object *p_viewport) {
 
 		debugger->set_camera_override((Override)(Override::OVERRIDE_3D_1 + camera_override_viewport_id));
 	}
+#endif
 }
 
 void SpatialEditor::_menu_item_pressed(int p_option) {
@@ -6786,9 +6791,11 @@ void SpatialEditor::_notification(int p_what) {
 		_init_grid();
 	} else if (p_what == NOTIFICATION_VISIBILITY_CHANGED) {
 		if (!is_visible() && tool_option_button[TOOL_OPT_OVERRIDE_CAMERA]->is_pressed()) {
+#ifdef MODULE_CODE_EDITOR_ENABLED
 			ScriptEditorDebugger *debugger = ScriptEditor::get_singleton()->get_debugger();
 
 			debugger->set_camera_override(ScriptEditorDebugger::OVERRIDE_NONE);
+#endif
 			tool_option_button[TOOL_OPT_OVERRIDE_CAMERA]->set_pressed(false);
 		}
 	}

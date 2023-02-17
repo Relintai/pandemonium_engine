@@ -25,6 +25,8 @@ SOFTWARE.
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 
+#include "scene/gui/panel_container.h"
+
 class TerrainWorld;
 class SpatialEditorPlugin;
 class HSlider;

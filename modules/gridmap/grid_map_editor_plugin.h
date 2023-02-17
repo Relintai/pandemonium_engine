@@ -35,6 +35,8 @@
 #include "editor/editor_plugin.h"
 #include "scene/gui/box_container.h"
 
+#include "scene/gui/item_list.h"
+
 #include "editor/pane_drag.h"
 #include "grid_map.h"
 

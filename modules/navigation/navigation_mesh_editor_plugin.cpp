@@ -40,6 +40,8 @@
 #include "scene/resources/navigation_mesh.h"
 #include "scene/gui/label.h"
 
+#include "scene/gui/dialogs.h"
+
 void NavigationMeshEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {
 		node = nullptr;

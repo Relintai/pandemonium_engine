@@ -68,6 +68,7 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 
 	args.push_back("--remote-debug");
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	const String conn_string = ScriptEditor::get_singleton()->get_debugger()->get_connection_string();
 	if (!conn_string.empty()) {
 		args.push_back(ScriptEditor::get_singleton()->get_debugger()->get_connection_string());
@@ -76,6 +77,7 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 		const int remote_port = (int)EditorSettings::get_singleton()->get("network/debug/remote_port");
 		args.push_back(remote_host + ":" + String::num(remote_port));
 	}
+#endif
 
 #ifdef ANDROID_ENABLED
 	const bool android_force_side_by_side_window = EditorSettings::get_singleton()->get("run/window_placement/android_force_launch_adjacent");

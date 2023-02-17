@@ -30,33 +30,33 @@
 
 #include "editor_help.h"
 
+#include "core/containers/list.h"
+#include "core/containers/pair.h"
+#include "core/containers/rb_set.h"
 #include "core/input/input.h"
+#include "core/input/input_event.h"
+#include "core/io/resource_loader.h"
+#include "core/math/math_defs.h"
+#include "core/math/math_funcs.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/object/class_db.h"
 #include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/os/os.h"
+#include "core/typedefs.h"
+#include "core/variant/variant.h"
 #include "core/version_generated.gen.h"
 #include "doc_data_compressed.gen.h"
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
-#include "scene/gui/texture_button.h"
-#include "core/object/class_db.h"
-#include "core/io/resource_loader.h"
-#include "core/containers/list.h"
-#include "core/math/math_defs.h"
-#include "core/math/math_funcs.h"
-#include "core/math/rect2.h"
-#include "core/math/vector2.h"
-#include "core/input/input_event.h"
-#include "core/os/memory.h"
-#include "core/os/os.h"
-#include "core/containers/pair.h"
-#include "core/containers/rb_set.h"
-#include "core/typedefs.h"
-#include "core/variant/variant.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/scroll_bar.h"
+#include "scene/gui/texture_button.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
 #include "scene/resources/font.h"
@@ -1703,7 +1703,9 @@ EditorHelp::~EditorHelp() {
 
 void EditorHelpBit::_go_to_help(String p_what) {
 	EditorNode::get_singleton()->set_visible_editor(EditorNode::EDITOR_SCRIPT);
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	ScriptEditor::get_singleton()->goto_help(p_what);
+#endif
 	emit_signal("request_hide");
 }
 

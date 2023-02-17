@@ -317,7 +317,6 @@ bool EditorExportPlatform::fill_log_messages(RichTextLabel *p_log, Error p_err) 
 
 void EditorExportPlatform::gen_debug_flags(Vector<String> &r_flags, int p_flags) {
 	String host = EditorSettings::get_singleton()->get("network/debug/remote_host");
-	int remote_port = (int)EditorSettings::get_singleton()->get("network/debug/remote_port");
 
 	if (p_flags & DEBUG_FLAG_REMOTE_DEBUG_LOCALHOST) {
 		host = "localhost";
@@ -333,6 +332,9 @@ void EditorExportPlatform::gen_debug_flags(Vector<String> &r_flags, int p_flags)
 			r_flags.push_back(passwd);
 		}
 	}
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+	int remote_port = (int)EditorSettings::get_singleton()->get("network/debug/remote_port");
 
 	if (p_flags & DEBUG_FLAG_REMOTE_DEBUG) {
 		r_flags.push_back("--remote-debug");
@@ -355,6 +357,7 @@ void EditorExportPlatform::gen_debug_flags(Vector<String> &r_flags, int p_flags)
 			r_flags.push_back(bpoints);
 		}
 	}
+#endif
 
 	if (p_flags & DEBUG_FLAG_VIEW_COLLISONS) {
 		r_flags.push_back("--debug-collisions");
@@ -1241,7 +1244,6 @@ Error EditorExportPlatform::export_zip(const Ref<EditorExportPreset> &p_preset, 
 
 void EditorExportPlatform::gen_export_flags(Vector<String> &r_flags, int p_flags) {
 	String host = EditorSettings::get_singleton()->get("network/debug/remote_host");
-	int remote_port = (int)EditorSettings::get_singleton()->get("network/debug/remote_port");
 
 	if (p_flags & DEBUG_FLAG_REMOTE_DEBUG_LOCALHOST) {
 		host = "localhost";
@@ -1257,6 +1259,9 @@ void EditorExportPlatform::gen_export_flags(Vector<String> &r_flags, int p_flags
 			r_flags.push_back(passwd);
 		}
 	}
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+	int remote_port = (int)EditorSettings::get_singleton()->get("network/debug/remote_port");
 
 	if (p_flags & DEBUG_FLAG_REMOTE_DEBUG) {
 		r_flags.push_back("--remote-debug");
@@ -1279,6 +1284,7 @@ void EditorExportPlatform::gen_export_flags(Vector<String> &r_flags, int p_flags
 			r_flags.push_back(bpoints);
 		}
 	}
+#endif
 
 	if (p_flags & DEBUG_FLAG_VIEW_COLLISONS) {
 		r_flags.push_back("--debug-collisions");

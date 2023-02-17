@@ -30,28 +30,28 @@
 
 #include "settings_config_dialog.h"
 
+#include "core/containers/list.h"
+#include "core/containers/rb_map.h"
+#include "core/error/error_macros.h"
+#include "core/input/input_event.h"
+#include "core/input/shortcut.h"
+#include "core/math/color.h"
+#include "core/math/math_defs.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/object/class_db.h"
+#include "core/object/undo_redo.h"
 #include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/typedefs.h"
+#include "core/variant/variant.h"
+#include "editor/editor_inspector.h"
+#include "editor/editor_sectioned_inspector.h"
 #include "editor_log.h"
 #include "editor_node.h"
 #include "editor_property_name_processor.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
-#include "script_editor_debugger.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/error/error_macros.h"
-#include "core/containers/list.h"
-#include "core/containers/rb_map.h"
-#include "core/math/math_defs.h"
-#include "core/math/rect2.h"
-#include "core/math/vector2.h"
-#include "core/input/input_event.h"
-#include "core/os/memory.h"
-#include "core/typedefs.h"
-#include "core/object/undo_redo.h"
-#include "core/variant/variant.h"
-#include "editor/editor_inspector.h"
-#include "editor/editor_sectioned_inspector.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
@@ -59,13 +59,13 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/panel_container.h"
 #include "scene/gui/popup.h"
-#include "core/input/shortcut.h"
 #include "scene/gui/tab_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
+#include "script_editor_debugger.h"
 
 #include "modules/modules_enabled.gen.h"
 
@@ -148,10 +148,12 @@ void EditorSettingsDialog::_undo_redo_callback(void *p_self, const String &p_nam
 void EditorSettingsDialog::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_READY: {
+#ifdef MODULE_CODE_EDITOR_ENABLED
 			ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
 			undo_redo->set_method_notify_callback(sed->_method_changeds, sed);
 			undo_redo->set_property_notify_callback(sed->_property_changeds, sed);
 			undo_redo->set_commit_notify_callback(_undo_redo_callback, this);
+#endif
 		} break;
 		case NOTIFICATION_ENTER_TREE: {
 			_update_icons();

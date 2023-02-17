@@ -30,14 +30,14 @@
 
 #include "editor_data.h"
 
-#include "core/object/class_db.h"
+#include "core/config/project_settings.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
 #include "core/io/config_file.h"
 #include "core/io/resource_loader.h"
+#include "core/object/class_db.h"
 #include "core/os/file_access.h"
 #include "core/os/memory.h"
-#include "core/config/project_settings.h"
 #include "editor/editor_plugin.h"
 #include "editor_node.h"
 #include "scene/main/node.h"
@@ -557,9 +557,11 @@ void EditorData::remove_scene(int p_idx) {
 		current_edited_scene--;
 	}
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	if (edited_scene[p_idx].path != String()) {
 		ScriptEditor::get_singleton()->close_builtin_scripts_from_scene(edited_scene[p_idx].path);
 	}
+#endif
 
 	edited_scene.remove(p_idx);
 }

@@ -38,6 +38,8 @@
 #include "editor/inspector_dock.h"
 #include "editor/scene_tree_dock.h"
 
+#include "editor_plugin.h"
+
 #include "scene/gui/menu_button.h"
 #include "scene/gui/split_container.h"
 

@@ -10,6 +10,7 @@
 void register_code_editor_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 		//ClassDB::register_class<>();
+		ClassDB::register_virtual_class<ScriptEditor>();
 	}
 
 #ifdef TOOLS_ENABLED

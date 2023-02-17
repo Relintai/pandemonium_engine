@@ -51,6 +51,8 @@
 #include "core/variant/dictionary.h"
 #include "core/variant/variant.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class EditorNode;
 class Spatial;
 class Camera;
@@ -108,7 +110,9 @@ public:
 
 	Node *get_edited_scene_root();
 	Array get_open_scenes() const;
+#ifdef MODULE_CODE_EDITOR_ENABLED
 	ScriptEditor *get_script_editor();
+#endif
 
 	void select_file(const String &p_file);
 	String get_selected_path() const;
