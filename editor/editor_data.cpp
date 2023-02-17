@@ -39,10 +39,15 @@
 #include "core/os/memory.h"
 #include "core/config/project_settings.h"
 #include "editor/editor_plugin.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "editor_node.h"
 #include "scene/main/node.h"
 #include "scene/resources/packed_scene.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 class Resource;
 

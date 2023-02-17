@@ -42,7 +42,6 @@
 #include "core/os/memory.h"
 #include "core/typedefs.h"
 #include "editor/editor_settings.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/control.h"
 #include "scene/gui/menu_button.h"

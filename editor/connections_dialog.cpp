@@ -58,7 +58,6 @@
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
-#include "plugins/script_editor_plugin.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
 #include "scene/gui/check_button.h"
@@ -72,6 +71,12 @@
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/resources/texture.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 static Node *_find_first_script(Node *p_root, Node *p_node) {
 	if (p_node != p_root && p_node->get_owner() != p_root) {

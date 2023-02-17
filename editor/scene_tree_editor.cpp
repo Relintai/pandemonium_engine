@@ -51,7 +51,6 @@
 #include "editor/node_dock.h"
 #include "editor/plugins/animation_player_editor_plugin.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/box_container.h"
@@ -64,6 +63,12 @@
 #include "scene/main/timer.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 Node *SceneTreeEditor::get_scene_node() {
 	ERR_FAIL_COND_V(!is_inside_tree(), nullptr);

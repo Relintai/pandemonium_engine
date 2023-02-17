@@ -32,7 +32,6 @@
 
 #include "core/object/object.h"
 
-#include "editor/plugins/script_editor_plugin.h"
 #include "scene/resources/texture.h"
 
 #include "core/containers/list.h"
@@ -52,6 +51,12 @@
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 class ConfigFile;
 class EditorPlugin;

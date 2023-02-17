@@ -40,8 +40,13 @@
 #include "core/math/vector2.h"
 #include "core/variant/variant.h"
 #include "editor_settings.h"
-#include "plugins/script_editor_plugin.h"
 #include "script_editor_debugger.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 EditorRun::Status EditorRun::get_status() const {
 	return status;

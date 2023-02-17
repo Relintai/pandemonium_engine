@@ -66,7 +66,6 @@
 #include "editor/multi_node_edit.h"
 #include "editor/plugins/animation_player_editor_plugin.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "editor/quick_open.h"
 #include "editor/rename_dialog.h"
@@ -96,6 +95,12 @@
 #include "scene/resources/animation.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 void SceneTreeDock::_nodes_drag_begin() {
 	pending_click_select = nullptr;

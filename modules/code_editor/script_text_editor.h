@@ -44,7 +44,7 @@
 #include "core/object/resource.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
-#include "editor/code_editor.h"
+#include "code_editor.h"
 
 class ColorPicker;
 class Control;

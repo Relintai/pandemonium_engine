@@ -52,7 +52,6 @@
 #include "core/variant/variant.h"
 #include "editor/editor_inspector.h"
 #include "editor/editor_sectioned_inspector.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
@@ -67,6 +66,12 @@
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 void EditorSettingsDialog::ok_pressed() {
 	if (!EditorSettings::get_singleton()) {

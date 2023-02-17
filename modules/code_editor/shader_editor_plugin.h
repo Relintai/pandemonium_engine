@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/code_editor.h"
+#include "code_editor.h"
 #include "editor/editor_plugin.h"
 #include "scene/gui/margin_container.h"
 

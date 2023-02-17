@@ -41,7 +41,7 @@
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
-#include "editor/code_editor.h"
+#include "code_editor.h"
 
 class Control;
 class HBoxContainer;

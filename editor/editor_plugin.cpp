@@ -57,7 +57,6 @@
 #include "editor/filesystem_dock.h"
 #include "editor/import/editor_import_plugin.h"
 #include "editor/import/resource_importer_scene.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "editor/project_settings_editor.h"
 #include "editor/script_create_dialog.h"
 #include "editor_resource_preview.h"
@@ -74,6 +73,12 @@
 #include "scene/resources/mesh.h"
 #include "scene/resources/texture.h"
 #include "servers/rendering_server.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 class ConfigFile;
 class ScriptCreateDialog;

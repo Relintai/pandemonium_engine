@@ -14,7 +14,7 @@
 #include "scene/gui/text_edit.h"
 #include "scene/gui/texture_rect.h"
 
-#include "editor/code_editor.h"
+#include "modules/code_editor/code_editor.h"
 
 #include "scene/resources/dynamic_font.h"
 

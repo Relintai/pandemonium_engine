@@ -62,7 +62,6 @@
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "editor/plugins/animation_player_editor_plugin.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "editor/scene_tree_dock.h"
 #include "editor/script_editor_debugger.h"
 #include "scene/2d/light_2d.h"
@@ -100,6 +99,12 @@
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/theme.h"
 #include "servers/rendering_server.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 // Min and Max are power of two in order to play nicely with successive increment.
 // That way, we can naturally reach a 100% zoom from boundaries.

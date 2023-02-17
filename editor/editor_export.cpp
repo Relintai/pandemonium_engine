@@ -46,7 +46,6 @@
 #include "core/version.h"
 #include "core/version_generated.gen.h"
 #include "editor/editor_file_system.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
@@ -57,6 +56,12 @@
 #include "thirdparty/minizip/ioapi.h"
 #include "thirdparty/minizip/zip.h"
 #include "zlib.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 static int _get_pad(int p_alignment, int p_n) {
 	int rest = p_n % p_alignment;

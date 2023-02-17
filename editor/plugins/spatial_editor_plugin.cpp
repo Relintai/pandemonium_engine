@@ -62,7 +62,6 @@
 #include "editor/editor_settings.h"
 #include "editor/inspector_dock.h"
 #include "editor/plugins/animation_player_editor_plugin.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "editor/scene_tree_dock.h"
 #include "editor/scene_tree_editor.h"
 #include "editor/script_editor_debugger.h"
@@ -99,6 +98,12 @@
 #include "scene/resources/surface_tool.h"
 #include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 #define DISTANCE_DEFAULT 4
 

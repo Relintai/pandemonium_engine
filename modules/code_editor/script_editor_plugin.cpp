@@ -43,7 +43,7 @@
 #include "editor/filesystem_dock.h"
 #include "editor/find_in_files.h"
 #include "editor/node_dock.h"
-#include "editor/plugins/shader_editor_plugin.h"
+#include "shader_editor_plugin.h"
 #include "editor/script_editor_debugger.h"
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"

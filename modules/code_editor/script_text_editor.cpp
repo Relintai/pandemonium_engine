@@ -53,7 +53,7 @@
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
-#include "editor/plugins/script_editor_plugin.h"
+#include "script_editor_plugin.h"
 #include "editor/script_editor_debugger.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/color_picker.h"

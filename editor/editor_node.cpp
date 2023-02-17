@@ -134,14 +134,10 @@
 #include "editor/plugins/resource_preloader_editor_plugin.h"
 #include "editor/plugins/room_manager_editor_plugin.h"
 #include "editor/plugins/root_motion_editor_plugin.h"
-#include "editor/plugins/script_editor_plugin.h"
-#include "editor/plugins/script_text_editor.h"
-#include "editor/plugins/shader_editor_plugin.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "editor/plugins/sprite_editor_plugin.h"
 #include "editor/plugins/sprite_frames_editor_plugin.h"
 #include "editor/plugins/style_box_editor_plugin.h"
-#include "editor/plugins/text_editor.h"
 #include "editor/plugins/texture_editor_plugin.h"
 #include "editor/plugins/texture_region_editor_plugin.h"
 #include "editor/plugins/theme_editor_plugin.h"
@@ -192,6 +188,15 @@
 #include "servers/physics_2d_server.h"
 #include "servers/physics_server.h"
 #include "servers/rendering_server.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_text_editor.h"
+#include "modules/code_editor/shader_editor_plugin.h"
+#include "modules/code_editor/text_editor.h"
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 class Camera;
 

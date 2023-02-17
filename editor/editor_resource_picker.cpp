@@ -54,7 +54,6 @@
 #include "editor/editor_data.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_file_system.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "editor/property_editor.h"
 #include "editor/quick_open.h"
 #include "editor/scene_tree_dock.h"
@@ -69,6 +68,12 @@
 #include "scene/resources/shader.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
+#endif
 
 HashMap<StringName, List<StringName>> EditorResourcePicker::allowed_types_cache;
 
