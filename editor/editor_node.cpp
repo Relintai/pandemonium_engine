@@ -192,10 +192,10 @@
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor_plugin.h"
 #include "modules/code_editor/script_text_editor.h"
 #include "modules/code_editor/shader_editor_plugin.h"
 #include "modules/code_editor/text_editor.h"
-#include "modules/code_editor/script_editor_plugin.h"
 #endif
 
 class Camera;
@@ -6913,12 +6913,8 @@ EditorNode::EditorNode() {
 	add_editor_plugin(memnew(AnimationPlayerEditorPlugin(this)));
 	add_editor_plugin(memnew(CanvasItemEditorPlugin(this)));
 	add_editor_plugin(memnew(SpatialEditorPlugin(this)));
-	add_editor_plugin(memnew(ScriptEditorPlugin(this)));
 
 	EditorAudioBuses *audio_bus_editor = EditorAudioBuses::register_editor();
-
-	ScriptTextEditor::register_editor(); //register one for text scripts
-	TextEditor::register_editor();
 
 	//add interface before adding plugins
 
@@ -6928,8 +6924,6 @@ EditorNode::EditorNode() {
 
 	//more visually meaningful to have this later
 	raise_bottom_panel_item(AnimationPlayerEditor::get_singleton());
-
-	add_editor_plugin(memnew(ShaderEditorPlugin(this)));
 
 	add_editor_plugin(memnew(CameraEditorPlugin(this)));
 	add_editor_plugin(memnew(ThemeEditorPlugin(this)));
