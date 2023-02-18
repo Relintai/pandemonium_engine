@@ -63,20 +63,7 @@ class Texture;
 class Tree;
 struct ScriptCodeCompletionOption;
 class ScriptEditorQuickOpen;
-
-class ConnectionInfoDialog : public AcceptDialog {
-	GDCLASS(ConnectionInfoDialog, AcceptDialog);
-
-	Label *method;
-	Tree *tree;
-
-	virtual void ok_pressed();
-
-public:
-	void popup_connections(String p_method, Vector<Node *> p_nodes);
-
-	ConnectionInfoDialog();
-};
+class ConnectionInfoDialog;
 
 class ScriptTextEditor : public ScriptEditorBase {
 	GDCLASS(ScriptTextEditor, ScriptEditorBase);
