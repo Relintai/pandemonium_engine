@@ -195,7 +195,6 @@
 #ifdef MODULE_CODE_EDITOR_ENABLED
 #include "modules/code_editor/script_editor_plugin.h"
 #include "modules/code_editor/script_text_editor.h"
-#include "modules/code_editor/shader_editor_plugin.h"
 #include "modules/code_editor/text_editor.h"
 #endif
 

@@ -90,8 +90,13 @@
 #include "scene/resources/texture.h"
 #include "scene/scene_string_names.h"
 #include "script_text_editor.h"
-#include "shader_editor_plugin.h"
 #include "text_editor.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SHADER_EDITOR_ENABLED
+#include "shader_editor/shader_editor_plugin.h"
+#endif
 
 /*** SCRIPT EDITOR ****/
 
@@ -3140,6 +3145,7 @@ void ScriptEditor::_on_find_in_files_result_selected(String fpath, int line_numb
 	if (ResourceLoader::exists(fpath)) {
 		RES res = ResourceLoader::load(fpath);
 
+#ifdef MODULE_SHADER_EDITOR_ENABLED
 		if (fpath.get_extension() == "gdshader" || fpath.get_extension() == "shader") {
 			ShaderEditorPlugin *shader_editor = Object::cast_to<ShaderEditorPlugin>(EditorNode::get_singleton()->get_editor_data().get_editor("Shader"));
 			shader_editor->edit(res.ptr());
@@ -3147,6 +3153,9 @@ void ScriptEditor::_on_find_in_files_result_selected(String fpath, int line_numb
 			shader_editor->get_shader_editor()->goto_line_selection(line_number - 1, begin, end);
 			return;
 		} else if (fpath.get_extension() == "tscn") {
+#else
+		if (fpath.get_extension() == "tscn") {
+#endif
 			editor->load_scene(fpath);
 			return;
 		} else {
