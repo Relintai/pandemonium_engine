@@ -37,7 +37,7 @@
 #include "core/containers/vector.h"
 #include "core/object/reference.h"
 
-#include "code_editor.h"
+#include "code_text_editor.h"
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
 #include "core/math/color.h"

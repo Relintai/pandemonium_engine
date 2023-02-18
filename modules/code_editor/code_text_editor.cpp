@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "code_editor.h"
+#include "code_text_editor.h"
 
 #include "core/containers/vector.h"
 #include "core/input/input.h"
@@ -68,8 +68,6 @@
 #include "goto_line_dialog.h"
 
 #include "editor/script_editor.h"
-
-/*** CODE EDITOR ****/
 
 // This function should be used to handle shortcuts that could otherwise
 // be handled too late if they weren't handled here.
