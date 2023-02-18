@@ -51,6 +51,7 @@
 #include "scene/resources/texture.h"
 
 #include "script_editor.h"
+#include "goto_line_dialog.h"
 
 void TextEditor::add_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
 	highlighters[p_highlighter->get_name()] = p_highlighter;

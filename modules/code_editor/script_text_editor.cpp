@@ -73,6 +73,7 @@
 
 #include "connection_info_dialog.h"
 #include "script_editor.h"
+#include "goto_line_dialog.h"
 
 Vector<String> ScriptTextEditor::get_functions() {
 	String errortxt;

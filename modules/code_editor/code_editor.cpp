@@ -65,51 +65,8 @@
 #include "scene/resources/font.h"
 #include "scene/resources/texture.h"
 
+#include "goto_line_dialog.h"
 #include "script_editor.h"
-
-void GotoLineDialog::popup_find_line(TextEdit *p_edit) {
-	text_editor = p_edit;
-
-	line->set_text(itos(text_editor->cursor_get_line()));
-	line->select_all();
-	popup_centered(Size2(180, 80) * EDSCALE);
-	line->grab_focus();
-}
-
-int GotoLineDialog::get_line() const {
-	return line->get_text().to_int();
-}
-
-void GotoLineDialog::ok_pressed() {
-	if (get_line() < 1 || get_line() > text_editor->get_line_count()) {
-		return;
-	}
-	text_editor->unfold_line(get_line() - 1);
-	text_editor->cursor_set_line(get_line() - 1);
-	hide();
-}
-
-GotoLineDialog::GotoLineDialog() {
-	set_title(TTR("Go to Line"));
-
-	VBoxContainer *vbc = memnew(VBoxContainer);
-	vbc->set_anchor_and_margin(MARGIN_LEFT, ANCHOR_BEGIN, 8 * EDSCALE);
-	vbc->set_anchor_and_margin(MARGIN_TOP, ANCHOR_BEGIN, 8 * EDSCALE);
-	vbc->set_anchor_and_margin(MARGIN_RIGHT, ANCHOR_END, -8 * EDSCALE);
-	vbc->set_anchor_and_margin(MARGIN_BOTTOM, ANCHOR_END, -8 * EDSCALE);
-	add_child(vbc);
-
-	Label *l = memnew(Label);
-	l->set_text(TTR("Line Number:"));
-	vbc->add_child(l);
-
-	line = memnew(LineEdit);
-	vbc->add_child(line);
-	register_text_enter(line);
-	text_editor = nullptr;
-
-	set_hide_on_ok(false);
-}
 
 void FindReplaceBar::_notification(int p_what) {
 	if (p_what == NOTIFICATION_READY) {

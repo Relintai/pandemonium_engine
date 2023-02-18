@@ -65,6 +65,8 @@
 #include "servers/rendering/shader_types.h"
 #include "servers/rendering_server.h"
 
+#include "modules/code_editor/goto_line_dialog.h"
+
 struct ScriptCodeCompletionOption;
 
 /*** SHADER SCRIPT EDITOR ****/

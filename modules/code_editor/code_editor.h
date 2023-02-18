@@ -51,23 +51,7 @@ class TextureButton;
 class Timer;
 class ToolButton;
 struct ScriptCodeCompletionOption;
-
-class GotoLineDialog : public ConfirmationDialog {
-	GDCLASS(GotoLineDialog, ConfirmationDialog);
-
-	Label *line_label;
-	LineEdit *line;
-
-	TextEdit *text_editor;
-
-	virtual void ok_pressed();
-
-public:
-	void popup_find_line(TextEdit *p_edit);
-	int get_line() const;
-
-	GotoLineDialog();
-};
+class GotoLineDialog;
 
 class FindReplaceBar : public HBoxContainer {
 	GDCLASS(FindReplaceBar, HBoxContainer);
