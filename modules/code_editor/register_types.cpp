@@ -6,6 +6,7 @@
 #include "script_text_editor.h"
 #include "text_editor.h"
 #include "script_editor_base.h"
+#include "script_editor.h"
 
 void register_code_editor_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {

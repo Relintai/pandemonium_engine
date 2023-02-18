@@ -50,6 +50,8 @@
 #include "scene/resources/text_file.h"
 #include "scene/resources/texture.h"
 
+#include "script_editor.h"
+
 void TextEditor::add_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
 	highlighters[p_highlighter->get_name()] = p_highlighter;
 	highlighter_menu->add_radio_check_item(p_highlighter->get_name());

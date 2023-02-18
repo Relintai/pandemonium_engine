@@ -71,6 +71,8 @@
 #include "script_editor_plugin.h"
 #include "script_editor_quick_open.h"
 
+#include "script_editor.h"
+
 void ConnectionInfoDialog::ok_pressed() {
 }
 

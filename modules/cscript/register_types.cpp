@@ -50,6 +50,10 @@ Ref<ResourceFormatSaverCScript> resource_saver_cscript;
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
 
+#ifdef MODULE_CODE_EDITOR_ENABLED
+#include "modules/code_editor/script_editor.h"
+#endif
+
 class EditorExportCScript : public EditorExportPlugin {
 	GDCLASS(EditorExportCScript, EditorExportPlugin);
 

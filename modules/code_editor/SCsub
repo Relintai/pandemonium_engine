@@ -12,6 +12,7 @@ sources = [
     "text_editor.cpp",
     "script_editor_quick_open.cpp",
     "script_editor_base.cpp",
+    "script_editor.cpp",
 ]
 
 env_mlp.add_source_files(env.modules_sources, sources)

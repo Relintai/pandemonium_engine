@@ -31,20 +31,21 @@
 /*************************************************************************/
 
 #include "scene/gui/dialogs.h"
-#include "script_editor_plugin.h"
 
-#include "core/object/reference.h"
+#include "script_editor_base.h"
+
 #include "core/containers/vector.h"
+#include "core/object/reference.h"
 
-#include "core/math/color.h"
+#include "code_editor.h"
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
+#include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/resource.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
-#include "code_editor.h"
 
 class ColorPicker;
 class Control;
@@ -61,6 +62,7 @@ class SyntaxHighlighter;
 class Texture;
 class Tree;
 struct ScriptCodeCompletionOption;
+class ScriptEditorQuickOpen;
 
 class ConnectionInfoDialog : public AcceptDialog {
 	GDCLASS(ConnectionInfoDialog, AcceptDialog);

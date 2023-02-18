@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "script_editor_plugin.h"
+#include "script_editor_base.h"
 
 #include "core/math/color.h"
 #include "core/containers/list.h"

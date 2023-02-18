@@ -72,7 +72,8 @@
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor_plugin.h"
+#include "modules/code_editor/script_editor.h"
+#include "modules/code_editor/script_editor_base.h"
 #endif
 
 HashMap<StringName, List<StringName>> EditorResourcePicker::allowed_types_cache;

@@ -103,7 +103,7 @@
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor_plugin.h"
+#include "modules/code_editor/script_editor.h"
 #endif
 
 // Min and Max are power of two in order to play nicely with successive increment.

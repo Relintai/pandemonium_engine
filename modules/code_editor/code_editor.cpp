@@ -65,6 +65,8 @@
 #include "scene/resources/font.h"
 #include "scene/resources/texture.h"
 
+#include "script_editor.h"
+
 void GotoLineDialog::popup_find_line(TextEdit *p_edit) {
 	text_editor = p_edit;
 
