@@ -110,7 +110,7 @@ public:
 
 	Node *get_edited_scene_root();
 	Array get_open_scenes() const;
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	ScriptEditor *get_script_editor();
 #endif
 

@@ -50,8 +50,8 @@ Ref<ResourceFormatSaverGDScript> resource_saver_gd;
 #include "editor/editor_settings.h"
 #include "editor/gdscript_highlighter.h"
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor.h"
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+#include "modules/editor_code_editor/script_editor.h"
 #endif
 
 class EditorExportGDScript : public EditorExportPlugin {
@@ -161,7 +161,7 @@ void register_gdscript_types(ModuleRegistrationLevel p_level) {
 
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 		ScriptEditor::register_create_syntax_highlighter_function(GDScriptSyntaxHighlighter::create);
 #endif
 		EditorNode::add_init_callback(_editor_init);

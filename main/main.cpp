@@ -85,8 +85,8 @@
 #endif
 
 #include "modules/modules_enabled.gen.h"
-#ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor.h"
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+#include "modules/editor_code_editor/script_editor.h"
 #endif
 
 /* Static members */
@@ -2074,7 +2074,7 @@ bool Main::start() {
 
 				OS::get_singleton()->set_context(OS::CONTEXT_EDITOR);
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 				// Start debug server.
 				if (!debug_server_uri.empty()) {
 					int idx = debug_server_uri.rfind(":");

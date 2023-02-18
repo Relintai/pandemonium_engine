@@ -76,8 +76,8 @@
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor.h"
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+#include "modules/editor_code_editor/script_editor.h"
 #endif
 
 class ConfigFile;
@@ -211,7 +211,7 @@ void EditorInterface::edit_node(Node *p_node) {
 }
 
 void EditorInterface::edit_script(const Ref<Script> &p_script, int p_line, int p_col, bool p_grab_focus) {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	ScriptEditor::get_singleton()->edit(p_script, p_line, p_col, p_grab_focus);
 #endif
 }
@@ -274,7 +274,7 @@ Array EditorInterface::get_open_scenes() const {
 	return ret;
 }
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 ScriptEditor *EditorInterface::get_script_editor() {
 	return ScriptEditor::get_singleton();
 }
@@ -366,7 +366,7 @@ void EditorInterface::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("inspect_object", "object", "for_property", "inspector_only"), &EditorInterface::inspect_object, DEFVAL(String()), DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("get_selection"), &EditorInterface::get_selection);
 	ClassDB::bind_method(D_METHOD("get_editor_settings"), &EditorInterface::get_editor_settings);
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	ClassDB::bind_method(D_METHOD("get_script_editor"), &EditorInterface::get_script_editor);
 #endif
 	ClassDB::bind_method(D_METHOD("get_base_control"), &EditorInterface::get_base_control);

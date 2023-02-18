@@ -101,8 +101,8 @@
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor.h"
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+#include "modules/editor_code_editor/script_editor.h"
 #endif
 
 #define DISTANCE_DEFAULT 4
@@ -4238,7 +4238,7 @@ bool SpatialEditorViewport::_create_instance(Node *parent, String &path, const P
 	editor_data->get_undo_redo().add_do_reference(instanced_scene);
 	editor_data->get_undo_redo().add_undo_method(parent, "remove_child", instanced_scene);
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	String new_name = parent->validate_child_name(instanced_scene);
 	ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
 	editor_data->get_undo_redo().add_do_method(sed, "live_debug_instance_node", editor->get_edited_scene()->get_path_to(parent), path, new_name);
@@ -5479,7 +5479,7 @@ void SpatialEditor::_menu_item_toggled(bool pressed, int p_option) {
 		} break;
 
 		case MENU_TOOL_OVERRIDE_CAMERA: {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 			ScriptEditorDebugger *const debugger = ScriptEditor::get_singleton()->get_debugger();
 
 			if (pressed) {
@@ -5537,7 +5537,7 @@ void SpatialEditor::_update_camera_override_viewport(Object *p_viewport) {
 		return;
 	}
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	ScriptEditorDebugger *const debugger = ScriptEditor::get_singleton()->get_debugger();
 
 	camera_override_viewport_id = current_viewport->index;
@@ -6791,7 +6791,7 @@ void SpatialEditor::_notification(int p_what) {
 		_init_grid();
 	} else if (p_what == NOTIFICATION_VISIBILITY_CHANGED) {
 		if (!is_visible() && tool_option_button[TOOL_OPT_OVERRIDE_CAMERA]->is_pressed()) {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 			ScriptEditorDebugger *debugger = ScriptEditor::get_singleton()->get_debugger();
 
 			debugger->set_camera_override(ScriptEditorDebugger::OVERRIDE_NONE);

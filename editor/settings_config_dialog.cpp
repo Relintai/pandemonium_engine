@@ -69,8 +69,8 @@
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor.h"
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+#include "modules/editor_code_editor/script_editor.h"
 #endif
 
 void EditorSettingsDialog::ok_pressed() {
@@ -148,7 +148,7 @@ void EditorSettingsDialog::_undo_redo_callback(void *p_self, const String &p_nam
 void EditorSettingsDialog::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_READY: {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 			ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
 			undo_redo->set_method_notify_callback(sed->_method_changeds, sed);
 			undo_redo->set_property_notify_callback(sed->_property_changeds, sed);

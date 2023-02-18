@@ -4,7 +4,7 @@ def can_build(env, platform):
   if not env["tools"]:
     return False
 
-  env.module_add_dependencies("shader_editor", ["code_editor"], False)
+  env.module_add_dependencies("shader_editor", ["editor_code_editor"], False)
 
   return True
 

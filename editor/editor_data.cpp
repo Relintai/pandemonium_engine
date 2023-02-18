@@ -45,8 +45,8 @@
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor.h"
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+#include "modules/editor_code_editor/script_editor.h"
 #endif
 
 class Resource;
@@ -557,7 +557,7 @@ void EditorData::remove_scene(int p_idx) {
 		current_edited_scene--;
 	}
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	if (edited_scene[p_idx].path != String()) {
 		ScriptEditor::get_singleton()->close_builtin_scripts_from_scene(edited_scene[p_idx].path);
 	}

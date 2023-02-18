@@ -102,8 +102,8 @@
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor.h"
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+#include "modules/editor_code_editor/script_editor.h"
 #endif
 
 // Min and Max are power of two in order to play nicely with successive increment.
@@ -3909,7 +3909,7 @@ void CanvasItemEditor::_notification(int p_what) {
 
 	if (p_what == NOTIFICATION_VISIBILITY_CHANGED) {
 		if (!is_visible() && override_camera_button->is_pressed()) {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 			ScriptEditorDebugger *debugger = ScriptEditor::get_singleton()->get_debugger();
 
 			debugger->set_camera_override(ScriptEditorDebugger::OVERRIDE_NONE);
@@ -4326,7 +4326,7 @@ void CanvasItemEditor::_button_toggle_grid_snap(bool p_status) {
 	viewport->update();
 }
 void CanvasItemEditor::_button_override_camera(bool p_pressed) {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	ScriptEditorDebugger *debugger = ScriptEditor::get_singleton()->get_debugger();
 
 	if (p_pressed) {
@@ -5969,7 +5969,7 @@ void CanvasItemEditorViewport::_create_nodes(Node *parent, Node *child, String &
 	}
 
 	if (parent) {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 		String new_name = parent->validate_child_name(child);
 		ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
 		editor_data->get_undo_redo().add_do_method(sed, "live_debug_create_node", editor->get_edited_scene()->get_path_to(parent), child->get_class(), new_name);
@@ -6041,7 +6041,7 @@ bool CanvasItemEditorViewport::_create_instance(Node *parent, String &path, cons
 	editor_data->get_undo_redo().add_do_reference(instanced_scene);
 	editor_data->get_undo_redo().add_undo_method(parent, "remove_child", instanced_scene);
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	String new_name = parent->validate_child_name(instanced_scene);
 	ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
 	editor_data->get_undo_redo().add_do_method(sed, "live_debug_instance_node", editor->get_edited_scene()->get_path_to(parent), path, new_name);

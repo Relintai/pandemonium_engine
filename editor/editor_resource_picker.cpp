@@ -71,9 +71,9 @@
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor.h"
-#include "modules/code_editor/script_editor_base.h"
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+#include "modules/editor_code_editor/script_editor.h"
+#include "modules/editor_code_editor/script_editor_base.h"
 #endif
 
 HashMap<StringName, List<StringName>> EditorResourcePicker::allowed_types_cache;
@@ -584,7 +584,7 @@ bool EditorResourcePicker::_is_drop_valid(const Dictionary &p_drag_data) const {
 
 	Ref<Resource> res;
 	if (drag_data.has("type") && String(drag_data["type"]) == "script_list_element") {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(drag_data["script_list_element"]);
 		if (se) {
 			res = se->get_edited_resource();
@@ -655,7 +655,7 @@ void EditorResourcePicker::drop_data_fw(const Point2 &p_point, const Variant &p_
 
 	Ref<Resource> dropped_resource;
 	if (drag_data.has("type") && String(drag_data["type"]) == "script_list_element") {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(drag_data["script_list_element"]);
 		if (se) {
 			dropped_resource = se->get_edited_resource();

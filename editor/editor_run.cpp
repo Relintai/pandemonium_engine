@@ -44,8 +44,8 @@
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor.h"
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+#include "modules/editor_code_editor/script_editor.h"
 #endif
 
 EditorRun::Status EditorRun::get_status() const {
@@ -68,7 +68,7 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 
 	args.push_back("--remote-debug");
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	const String conn_string = ScriptEditor::get_singleton()->get_debugger()->get_connection_string();
 	if (!conn_string.empty()) {
 		args.push_back(ScriptEditor::get_singleton()->get_debugger()->get_connection_string());

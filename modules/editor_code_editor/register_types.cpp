@@ -9,7 +9,7 @@
 //#include "text_editor.h"
 //#include "code_text_editor.h"
 
-void register_code_editor_types(ModuleRegistrationLevel p_level) {
+void register_editor_code_editor_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 		//ClassDB::register_class<>();
 		ClassDB::register_virtual_class<ScriptEditor>();
@@ -28,5 +28,5 @@ void register_code_editor_types(ModuleRegistrationLevel p_level) {
 #endif
 }
 
-void unregister_code_editor_types(ModuleRegistrationLevel p_level) {
+void unregister_editor_code_editor_types(ModuleRegistrationLevel p_level) {
 }

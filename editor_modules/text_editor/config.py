@@ -5,7 +5,7 @@ def can_build(env, platform):
     return False
 
   env.module_add_dependencies("text_editor", ["freetype"], True)
-  env.module_add_dependencies("text_editor", ["code_editor"], False)
+  env.module_add_dependencies("text_editor", ["editor_code_editor"], False)
 
   return True
 

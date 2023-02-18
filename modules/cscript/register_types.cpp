@@ -50,8 +50,8 @@ Ref<ResourceFormatSaverCScript> resource_saver_cscript;
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
 
-#ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/script_editor.h"
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+#include "modules/editor_code_editor/script_editor.h"
 #endif
 
 class EditorExportCScript : public EditorExportPlugin {
@@ -160,7 +160,7 @@ void register_cscript_types(ModuleRegistrationLevel p_level) {
 
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
-#ifdef MODULE_CODE_EDITOR_ENABLED
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 		ScriptEditor::register_create_syntax_highlighter_function(CScriptSyntaxHighlighter::create);
 #endif
 		EditorNode::add_init_callback(_editor_init);
