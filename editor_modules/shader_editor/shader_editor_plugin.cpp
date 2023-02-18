@@ -65,8 +65,8 @@
 #include "servers/rendering/shader_types.h"
 #include "servers/rendering_server.h"
 
-#include "editor_code_editor/goto_line_dialog.h"
-#include "editor_code_editor/find_replace_bar.h"
+#include "editor_code_editor/editor_goto_line_dialog.h"
+#include "editor_code_editor/editor_find_replace_bar.h"
 
 struct ScriptCodeCompletionOption;
 

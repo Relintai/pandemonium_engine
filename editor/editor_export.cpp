@@ -60,7 +60,7 @@
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-#include "editor_code_editor/script_editor.h"
+#include "editor_code_editor/editor_script_editor.h"
 #endif
 
 static int _get_pad(int p_alignment, int p_n) {

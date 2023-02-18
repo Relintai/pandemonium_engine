@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "find_replace_bar.h"
+#include "editor_find_replace_bar.h"
 
 #include "core/input/input.h"
 #include "core/input/input_event.h"

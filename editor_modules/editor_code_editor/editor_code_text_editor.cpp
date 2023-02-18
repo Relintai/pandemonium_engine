@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "code_text_editor.h"
+#include "editor_code_text_editor.h"
 
 #include "core/containers/vector.h"
 #include "core/input/input.h"
@@ -64,10 +64,10 @@
 #include "scene/resources/font.h"
 #include "scene/resources/texture.h"
 
-#include "find_replace_bar.h"
-#include "goto_line_dialog.h"
+#include "editor_find_replace_bar.h"
+#include "editor_goto_line_dialog.h"
 
-#include "script_editor.h"
+#include "editor_script_editor.h"
 
 // This function should be used to handle shortcuts that could otherwise
 // be handled too late if they weren't handled here.

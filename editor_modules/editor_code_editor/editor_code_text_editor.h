@@ -1,5 +1,5 @@
-#ifndef CODE_EDITOR_H
-#define CODE_EDITOR_H
+#ifndef EDITOR_CODE_EDITOR_H
+#define EDITOR_CODE_EDITOR_H
 
 /*************************************************************************/
 /*  code_editor.h                                                        */

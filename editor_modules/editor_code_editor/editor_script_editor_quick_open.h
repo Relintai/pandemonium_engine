@@ -1,5 +1,8 @@
+#ifndef EDITOR_SCRIPT_EDITOR_QUICK_OPEN_H
+#define EDITOR_SCRIPT_EDITOR_QUICK_OPEN_H
+
 /*************************************************************************/
-/*  script_editor_plugin.cpp                                             */
+/*  script_editor_plugin.h                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,16 +31,36 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "script_editor_base.h"
+#include "scene/gui/dialogs.h"
 
-void ScriptEditorBase::_bind_methods() {
-	ADD_SIGNAL(MethodInfo("name_changed"));
-	ADD_SIGNAL(MethodInfo("edited_script_changed"));
-	ADD_SIGNAL(MethodInfo("request_help", PropertyInfo(Variant::STRING, "topic")));
-	ADD_SIGNAL(MethodInfo("request_open_script_at_line", PropertyInfo(Variant::OBJECT, "script"), PropertyInfo(Variant::INT, "line")));
-	ADD_SIGNAL(MethodInfo("request_save_history"));
-	ADD_SIGNAL(MethodInfo("go_to_help", PropertyInfo(Variant::STRING, "what")));
-	// TODO: This signal is no use for VisualScript.
-	ADD_SIGNAL(MethodInfo("search_in_files_requested", PropertyInfo(Variant::STRING, "text")));
-	ADD_SIGNAL(MethodInfo("replace_in_files_requested", PropertyInfo(Variant::STRING, "text")));
-}
+#include "core/containers/vector.h"
+#include "core/string/ustring.h"
+
+class LineEdit;
+class Tree;
+
+class ScriptEditorQuickOpen : public ConfirmationDialog {
+	GDCLASS(ScriptEditorQuickOpen, ConfirmationDialog);
+
+	LineEdit *search_box;
+	Tree *search_options;
+	String function;
+
+	void _update_search();
+
+	void _sbox_input(const Ref<InputEvent> &p_ie);
+	Vector<String> functions;
+
+	void _confirmed();
+	void _text_changed(const String &p_newtext);
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
+
+public:
+	void popup_dialog(const Vector<String> &p_functions, bool p_dontclear = false);
+	ScriptEditorQuickOpen();
+};
+
+#endif // SCRIPT_EDITOR_PLUGIN_H

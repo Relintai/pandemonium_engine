@@ -90,11 +90,11 @@
 #include "scene/resources/texture.h"
 #include "scene/scene_string_names.h"
 
-#include "script_editor_quick_open.h"
-#include "script_text_editor.h"
-#include "text_editor.h"
+#include "editor_script_editor_quick_open.h"
+#include "editor_script_text_editor.h"
+#include "editor_text_editor.h"
 
-#include "script_editor.h"
+#include "editor_script_editor.h"
 
 static bool _is_built_in_script(Script *p_script) {
 	String path = p_script->get_path();

@@ -1,5 +1,5 @@
-#ifndef SCRIPT_EDITOR_QUICK_OPEN_H
-#define SCRIPT_EDITOR_QUICK_OPEN_H
+#ifndef EDITOR_SCRIPT_EDITOR_BASE_H
+#define EDITOR_SCRIPT_EDITOR_BASE_H
 
 /*************************************************************************/
 /*  script_editor_plugin.h                                               */
@@ -31,36 +31,57 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/dialogs.h"
+#include "scene/gui/box_container.h"
 
-#include "core/containers/vector.h"
-#include "core/string/ustring.h"
+class SyntaxHighlighter;
+class Texture;
 
-class LineEdit;
-class Tree;
-
-class ScriptEditorQuickOpen : public ConfirmationDialog {
-	GDCLASS(ScriptEditorQuickOpen, ConfirmationDialog);
-
-	LineEdit *search_box;
-	Tree *search_options;
-	String function;
-
-	void _update_search();
-
-	void _sbox_input(const Ref<InputEvent> &p_ie);
-	Vector<String> functions;
-
-	void _confirmed();
-	void _text_changed(const String &p_newtext);
+class ScriptEditorBase : public VBoxContainer {
+	GDCLASS(ScriptEditorBase, VBoxContainer);
 
 protected:
-	void _notification(int p_what);
 	static void _bind_methods();
 
 public:
-	void popup_dialog(const Vector<String> &p_functions, bool p_dontclear = false);
-	ScriptEditorQuickOpen();
+	virtual void add_syntax_highlighter(SyntaxHighlighter *p_highlighter) = 0;
+	virtual void set_syntax_highlighter(SyntaxHighlighter *p_highlighter) = 0;
+
+	virtual void apply_code() = 0;
+	virtual RES get_edited_resource() const = 0;
+	virtual Vector<String> get_functions() = 0;
+	virtual void set_edited_resource(const RES &p_res) = 0;
+	virtual void enable_editor() = 0;
+	virtual void reload_text() = 0;
+	virtual String get_name() = 0;
+	virtual Ref<Texture> get_icon() = 0;
+	virtual bool is_unsaved() = 0;
+	virtual Variant get_edit_state() = 0;
+	virtual void set_edit_state(const Variant &p_state) = 0;
+	virtual void goto_line(int p_line, bool p_with_error = false) = 0;
+	virtual void set_executing_line(int p_line) = 0;
+	virtual void clear_executing_line() = 0;
+	virtual void trim_trailing_whitespace() = 0;
+	virtual void insert_final_newline() = 0;
+	virtual void convert_indent_to_spaces() = 0;
+	virtual void convert_indent_to_tabs() = 0;
+	virtual void ensure_focus() = 0;
+	virtual void tag_saved_version() = 0;
+	virtual void reload(bool p_soft) {}
+	virtual void get_breakpoints(List<int> *p_breakpoints) = 0;
+	virtual void add_callback(const String &p_function, PoolStringArray p_args) = 0;
+	virtual void update_settings() = 0;
+	virtual void set_debugger_active(bool p_active) = 0;
+	virtual bool can_lose_focus_on_node_selection() { return true; }
+
+	virtual bool show_members_overview() = 0;
+
+	virtual void set_tooltip_request_func(String p_method, Object *p_obj) = 0;
+	virtual Control *get_edit_menu() = 0;
+	virtual void clear_edit_menu() = 0;
+
+	virtual void validate() = 0;
+
+	ScriptEditorBase() {}
 };
 
 #endif // SCRIPT_EDITOR_PLUGIN_H

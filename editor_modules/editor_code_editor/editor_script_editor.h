@@ -1,5 +1,5 @@
-#ifndef SCRIPT_EDITOR_H
-#define SCRIPT_EDITOR_H
+#ifndef EDITOR_SCRIPT_EDITOR_H
+#define EDITOR_SCRIPT_EDITOR_H
 
 /*************************************************************************/
 /*  script_editor_plugin.h                                               */
@@ -52,7 +52,7 @@
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
-#include "script_editor_base.h"
+#include "editor_script_editor_base.h"
 
 class Button;
 class ConfigFile;

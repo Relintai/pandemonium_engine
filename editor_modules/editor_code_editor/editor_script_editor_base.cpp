@@ -1,8 +1,5 @@
-#ifndef CONNECTION_INFO_DIALOG_H
-#define CONNECTION_INFO_DIALOG_H
-
 /*************************************************************************/
-/*  script_text_editor.h                                                 */
+/*  script_editor_plugin.cpp                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -31,24 +28,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/dialogs.h"
+#include "editor_script_editor_base.h"
 
-class Label;
-class Node;
-class Tree;
-
-class ConnectionInfoDialog : public AcceptDialog {
-	GDCLASS(ConnectionInfoDialog, AcceptDialog);
-
-	Label *method;
-	Tree *tree;
-
-	virtual void ok_pressed();
-
-public:
-	void popup_connections(String p_method, Vector<Node *> p_nodes);
-
-	ConnectionInfoDialog();
-};
-
-#endif // SCRIPT_TEXT_EDITOR_H
+void ScriptEditorBase::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("name_changed"));
+	ADD_SIGNAL(MethodInfo("edited_script_changed"));
+	ADD_SIGNAL(MethodInfo("request_help", PropertyInfo(Variant::STRING, "topic")));
+	ADD_SIGNAL(MethodInfo("request_open_script_at_line", PropertyInfo(Variant::OBJECT, "script"), PropertyInfo(Variant::INT, "line")));
+	ADD_SIGNAL(MethodInfo("request_save_history"));
+	ADD_SIGNAL(MethodInfo("go_to_help", PropertyInfo(Variant::STRING, "what")));
+	// TODO: This signal is no use for VisualScript.
+	ADD_SIGNAL(MethodInfo("search_in_files_requested", PropertyInfo(Variant::STRING, "text")));
+	ADD_SIGNAL(MethodInfo("replace_in_files_requested", PropertyInfo(Variant::STRING, "text")));
+}

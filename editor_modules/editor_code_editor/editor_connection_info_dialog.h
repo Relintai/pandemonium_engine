@@ -1,5 +1,8 @@
+#ifndef EDITOR_CONNECTION_INFO_DIALOG_H
+#define EDITOR_CONNECTION_INFO_DIALOG_H
+
 /*************************************************************************/
-/*  code_editor.cpp                                                      */
+/*  script_text_editor.h                                                 */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,55 +31,24 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "goto_line_dialog.h"
+#include "scene/gui/dialogs.h"
 
-#include "scene/gui/line_edit.h"
-#include "scene/gui/text_edit.h"
-#include "scene/gui/box_container.h"
-#include "scene/gui/label.h"
+class Label;
+class Node;
+class Tree;
 
-#include "editor/editor_scale.h"
+class ConnectionInfoDialog : public AcceptDialog {
+	GDCLASS(ConnectionInfoDialog, AcceptDialog);
 
-void GotoLineDialog::popup_find_line(TextEdit *p_edit) {
-	text_editor = p_edit;
+	Label *method;
+	Tree *tree;
 
-	line->set_text(itos(text_editor->cursor_get_line()));
-	line->select_all();
-	popup_centered(Size2(180, 80) * EDSCALE);
-	line->grab_focus();
-}
+	virtual void ok_pressed();
 
-int GotoLineDialog::get_line() const {
-	return line->get_text().to_int();
-}
+public:
+	void popup_connections(String p_method, Vector<Node *> p_nodes);
 
-void GotoLineDialog::ok_pressed() {
-	if (get_line() < 1 || get_line() > text_editor->get_line_count()) {
-		return;
-	}
-	text_editor->unfold_line(get_line() - 1);
-	text_editor->cursor_set_line(get_line() - 1);
-	hide();
-}
+	ConnectionInfoDialog();
+};
 
-GotoLineDialog::GotoLineDialog() {
-	set_title(TTR("Go to Line"));
-
-	VBoxContainer *vbc = memnew(VBoxContainer);
-	vbc->set_anchor_and_margin(MARGIN_LEFT, ANCHOR_BEGIN, 8 * EDSCALE);
-	vbc->set_anchor_and_margin(MARGIN_TOP, ANCHOR_BEGIN, 8 * EDSCALE);
-	vbc->set_anchor_and_margin(MARGIN_RIGHT, ANCHOR_END, -8 * EDSCALE);
-	vbc->set_anchor_and_margin(MARGIN_BOTTOM, ANCHOR_END, -8 * EDSCALE);
-	add_child(vbc);
-
-	Label *l = memnew(Label);
-	l->set_text(TTR("Line Number:"));
-	vbc->add_child(l);
-
-	line = memnew(LineEdit);
-	vbc->add_child(line);
-	register_text_enter(line);
-	text_editor = nullptr;
-
-	set_hide_on_ok(false);
-}
+#endif // SCRIPT_TEXT_EDITOR_H

@@ -1,10 +1,10 @@
 
 #include "register_types.h"
 
-#include "script_editor.h"
+#include "editor_script_editor.h"
 #include "script_editor_plugin.h"
 
-#include "script_editor_base.h"
+#include "editor_script_editor_base.h"
 //#include "script_text_editor.h"
 //#include "text_editor.h"
 //#include "code_text_editor.h"

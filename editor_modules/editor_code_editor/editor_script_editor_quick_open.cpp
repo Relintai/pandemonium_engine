@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "script_editor_quick_open.h"
+#include "editor_script_editor_quick_open.h"
 
 #include "core/os/keyboard.h"
 

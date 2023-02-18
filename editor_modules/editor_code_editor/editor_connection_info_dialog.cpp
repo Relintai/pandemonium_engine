@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "connection_info_dialog.h"
+#include "editor_connection_info_dialog.h"
 
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"

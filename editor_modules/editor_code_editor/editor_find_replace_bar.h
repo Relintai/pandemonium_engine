@@ -1,8 +1,8 @@
-#ifndef SCRIPT_EDITOR_BASE_H
-#define SCRIPT_EDITOR_BASE_H
+#ifndef EDITOR_FIND_REPLACE_BAR_H
+#define EDITOR_FIND_REPLACE_BAR_H
 
 /*************************************************************************/
-/*  script_editor_plugin.h                                               */
+/*  code_editor.h                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -31,57 +31,98 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/dialogs.h"
 #include "scene/gui/box_container.h"
 
-class SyntaxHighlighter;
-class Texture;
+#include "core/containers/list.h"
+#include "core/math/math_defs.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
+#include "core/string/ustring.h"
+#include "core/variant/variant.h"
 
-class ScriptEditorBase : public VBoxContainer {
-	GDCLASS(ScriptEditorBase, VBoxContainer);
+class Button;
+class CheckBox;
+class InputEvent;
+class Label;
+class LineEdit;
+class TextEdit;
+class Texture;
+class TextureButton;
+class ToolButton;
+
+class FindReplaceBar : public HBoxContainer {
+	GDCLASS(FindReplaceBar, HBoxContainer);
+
+	LineEdit *search_text;
+	Label *matches_label;
+	ToolButton *find_prev;
+	ToolButton *find_next;
+	CheckBox *case_sensitive;
+	CheckBox *whole_words;
+	TextureButton *hide_button;
+
+	LineEdit *replace_text;
+	Button *replace;
+	Button *replace_all;
+	CheckBox *selection_only;
+
+	VBoxContainer *vbc_lineedit;
+	HBoxContainer *hbc_button_replace;
+	HBoxContainer *hbc_option_replace;
+
+	TextEdit *text_edit;
+
+	int result_line;
+	int result_col;
+	int results_count;
+
+	bool replace_all_mode;
+	bool preserve_cursor;
+
+	void _get_search_from(int &r_line, int &r_col);
+	void _update_results_count();
+	void _update_matches_label();
+
+	void _show_search(bool p_focus_replace = false, bool p_show_only = false);
+	void _hide_bar();
+
+	void _editor_text_changed();
+	void _search_options_changed(bool p_pressed);
+	void _search_text_changed(const String &p_text);
+	void _search_text_entered(const String &p_text);
+	void _replace_text_entered(const String &p_text);
 
 protected:
+	void _notification(int p_what);
+	void _unhandled_input(const Ref<InputEvent> &p_event);
+
+	bool _search(uint32_t p_flags, int p_from_line, int p_from_col);
+
+	void _replace();
+	void _replace_all();
+
 	static void _bind_methods();
 
 public:
-	virtual void add_syntax_highlighter(SyntaxHighlighter *p_highlighter) = 0;
-	virtual void set_syntax_highlighter(SyntaxHighlighter *p_highlighter) = 0;
+	String get_search_text() const;
+	String get_replace_text() const;
 
-	virtual void apply_code() = 0;
-	virtual RES get_edited_resource() const = 0;
-	virtual Vector<String> get_functions() = 0;
-	virtual void set_edited_resource(const RES &p_res) = 0;
-	virtual void enable_editor() = 0;
-	virtual void reload_text() = 0;
-	virtual String get_name() = 0;
-	virtual Ref<Texture> get_icon() = 0;
-	virtual bool is_unsaved() = 0;
-	virtual Variant get_edit_state() = 0;
-	virtual void set_edit_state(const Variant &p_state) = 0;
-	virtual void goto_line(int p_line, bool p_with_error = false) = 0;
-	virtual void set_executing_line(int p_line) = 0;
-	virtual void clear_executing_line() = 0;
-	virtual void trim_trailing_whitespace() = 0;
-	virtual void insert_final_newline() = 0;
-	virtual void convert_indent_to_spaces() = 0;
-	virtual void convert_indent_to_tabs() = 0;
-	virtual void ensure_focus() = 0;
-	virtual void tag_saved_version() = 0;
-	virtual void reload(bool p_soft) {}
-	virtual void get_breakpoints(List<int> *p_breakpoints) = 0;
-	virtual void add_callback(const String &p_function, PoolStringArray p_args) = 0;
-	virtual void update_settings() = 0;
-	virtual void set_debugger_active(bool p_active) = 0;
-	virtual bool can_lose_focus_on_node_selection() { return true; }
+	bool is_case_sensitive() const;
+	bool is_whole_words() const;
+	bool is_selection_only() const;
+	void set_error(const String &p_label);
 
-	virtual bool show_members_overview() = 0;
+	void set_text_edit(TextEdit *p_text_edit);
 
-	virtual void set_tooltip_request_func(String p_method, Object *p_obj) = 0;
-	virtual Control *get_edit_menu() = 0;
-	virtual void clear_edit_menu() = 0;
+	void popup_search(bool p_show_only = false);
+	void popup_replace();
 
-	virtual void validate() = 0;
+	bool search_current();
+	bool search_prev();
+	bool search_next();
 
-	ScriptEditorBase() {}
+	FindReplaceBar();
 };
 
-#endif // SCRIPT_EDITOR_PLUGIN_H
+#endif // CODE_EDITOR_H

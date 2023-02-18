@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "script_editor.h"
+#include "editor_script_editor.h"
 
 #include "core/config/project_settings.h"
 #include "core/containers/pair.h"
@@ -91,9 +91,9 @@
 #include "scene/resources/texture.h"
 #include "scene/scene_string_names.h"
 
-#include "script_editor_quick_open.h"
-#include "script_text_editor.h"
-#include "text_editor.h"
+#include "editor_script_editor_quick_open.h"
+#include "editor_script_text_editor.h"
+#include "editor_text_editor.h"
 
 #include "modules/modules_enabled.gen.h"
 

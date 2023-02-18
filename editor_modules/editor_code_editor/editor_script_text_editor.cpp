@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "script_text_editor.h"
+#include "editor_script_text_editor.h"
 
 #include "core/config/project_settings.h"
 #include "core/containers/rb_set.h"
@@ -68,12 +68,13 @@
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/resources/texture.h"
-#include "script_editor_quick_open.h"
 
-#include "connection_info_dialog.h"
-#include "script_editor.h"
-#include "goto_line_dialog.h"
-#include "find_replace_bar.h"
+#include "editor_script_editor_quick_open.h"
+
+#include "editor_connection_info_dialog.h"
+#include "editor_script_editor.h"
+#include "editor_goto_line_dialog.h"
+#include "editor_find_replace_bar.h"
 
 Vector<String> ScriptTextEditor::get_functions() {
 	String errortxt;
