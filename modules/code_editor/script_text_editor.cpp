@@ -74,6 +74,7 @@
 #include "connection_info_dialog.h"
 #include "script_editor.h"
 #include "goto_line_dialog.h"
+#include "find_replace_bar.h"
 
 Vector<String> ScriptTextEditor::get_functions() {
 	String errortxt;

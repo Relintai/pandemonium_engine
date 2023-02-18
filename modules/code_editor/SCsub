@@ -15,6 +15,7 @@ sources = [
     "script_editor.cpp",
     "connection_info_dialog.cpp",
     "goto_line_dialog.cpp",
+    "find_replace_bar.cpp",
 ]
 
 env_mlp.add_source_files(env.modules_sources, sources)

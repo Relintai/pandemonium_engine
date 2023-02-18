@@ -66,6 +66,7 @@
 #include "servers/rendering_server.h"
 
 #include "modules/code_editor/goto_line_dialog.h"
+#include "modules/code_editor/find_replace_bar.h"
 
 struct ScriptCodeCompletionOption;
 

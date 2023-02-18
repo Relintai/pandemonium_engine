@@ -15,6 +15,7 @@
 #include "scene/gui/texture_rect.h"
 
 #include "modules/code_editor/code_editor.h"
+#include "modules/code_editor/find_replace_bar.h"
 
 #include "scene/resources/dynamic_font.h"
 
