@@ -6,7 +6,7 @@ env_mlp = env.Clone()
 
 sources = [
     "register_types.cpp",
-    
+
     "code_text_editor.cpp",
     "script_text_editor.cpp",
     "text_editor.cpp",
@@ -16,8 +16,8 @@ sources = [
     "find_replace_bar.cpp",
     "script_editor_quick_open.cpp",
 
-    "editor/script_editor_plugin.cpp",
-    "editor/script_editor.cpp",
+    "script_editor_plugin.cpp",
+    "script_editor.cpp",
 ]
 
 env_mlp.add_source_files(env.modules_sources, sources)

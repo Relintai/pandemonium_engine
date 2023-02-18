@@ -67,7 +67,7 @@
 #include "find_replace_bar.h"
 #include "goto_line_dialog.h"
 
-#include "editor/script_editor.h"
+#include "script_editor.h"
 
 // This function should be used to handle shortcuts that could otherwise
 // be handled too late if they weren't handled here.

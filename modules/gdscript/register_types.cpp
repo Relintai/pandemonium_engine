@@ -51,7 +51,7 @@ Ref<ResourceFormatSaverGDScript> resource_saver_gd;
 #include "editor/gdscript_highlighter.h"
 
 #ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/editor/script_editor.h"
+#include "modules/code_editor/script_editor.h"
 #endif
 
 class EditorExportGDScript : public EditorExportPlugin {

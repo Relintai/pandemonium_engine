@@ -91,9 +91,9 @@
 #include "scene/resources/texture.h"
 #include "scene/scene_string_names.h"
 
-#include "../script_editor_quick_open.h"
-#include "../script_text_editor.h"
-#include "../text_editor.h"
+#include "script_editor_quick_open.h"
+#include "script_text_editor.h"
+#include "text_editor.h"
 
 #include "modules/modules_enabled.gen.h"
 

@@ -77,7 +77,7 @@
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/editor/script_editor.h"
+#include "modules/code_editor/script_editor.h"
 #endif
 
 class ConfigFile;

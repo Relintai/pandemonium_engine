@@ -75,7 +75,7 @@
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_CODE_EDITOR_ENABLED
-#include "modules/code_editor/editor/script_editor.h"
+#include "modules/code_editor/script_editor.h"
 #endif
 
 static Node *_find_first_script(Node *p_root, Node *p_node) {

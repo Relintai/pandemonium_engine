@@ -71,7 +71,7 @@
 #include "script_editor_quick_open.h"
 
 #include "connection_info_dialog.h"
-#include "editor/script_editor.h"
+#include "script_editor.h"
 #include "goto_line_dialog.h"
 #include "find_replace_bar.h"
 
