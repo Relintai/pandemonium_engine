@@ -75,31 +75,7 @@ class Timer;
 class ToolButton;
 class Tree;
 class VSplitContainer;
-
-class ScriptEditorQuickOpen : public ConfirmationDialog {
-	GDCLASS(ScriptEditorQuickOpen, ConfirmationDialog);
-
-	LineEdit *search_box;
-	Tree *search_options;
-	String function;
-
-	void _update_search();
-
-	void _sbox_input(const Ref<InputEvent> &p_ie);
-	Vector<String> functions;
-
-	void _confirmed();
-	void _text_changed(const String &p_newtext);
-
-protected:
-	void _notification(int p_what);
-	static void _bind_methods();
-
-public:
-	void popup_dialog(const Vector<String> &p_functions, bool p_dontclear = false);
-	ScriptEditorQuickOpen();
-};
-
+class ScriptEditorQuickOpen;
 class ScriptEditorDebugger;
 
 class ScriptEditorBase : public VBoxContainer {
