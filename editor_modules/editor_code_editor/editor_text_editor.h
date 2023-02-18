@@ -55,8 +55,8 @@ class TextFile;
 class Texture;
 struct Vector2;
 
-class TextEditor : public EditorScriptEditorBase {
-	GDCLASS(TextEditor, EditorScriptEditorBase);
+class EditorTextEditor : public EditorScriptEditorBase {
+	GDCLASS(EditorTextEditor, EditorScriptEditorBase);
 
 private:
 	EditorCodeTextEditor *code_editor;
@@ -178,8 +178,8 @@ public:
 
 	static void register_editor();
 
-	TextEditor();
-	~TextEditor();
+	EditorTextEditor();
+	~EditorTextEditor();
 };
 
 #endif // TEXT_EDITOR_H

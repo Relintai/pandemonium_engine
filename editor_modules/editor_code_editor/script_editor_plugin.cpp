@@ -182,7 +182,7 @@ void EditorScriptEditorPlugin::edited_scene_changed() {
 
 EditorScriptEditorPlugin::EditorScriptEditorPlugin(EditorNode *p_node) {
 	EditorScriptTextEditor::register_editor(); //register one for text scripts
-	TextEditor::register_editor();
+	EditorTextEditor::register_editor();
 
 	editor = p_node;
 	script_editor = memnew(EditorScriptEditor(p_node));

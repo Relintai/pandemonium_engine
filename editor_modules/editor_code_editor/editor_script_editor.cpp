@@ -3069,7 +3069,7 @@ void EditorScriptEditor::_on_find_in_files_result_selected(String fpath, int lin
 	if (text_file.is_valid()) {
 		edit(text_file);
 
-		TextEditor *te = Object::cast_to<TextEditor>(_get_current_editor());
+		EditorTextEditor *te = Object::cast_to<EditorTextEditor>(_get_current_editor());
 		if (te) {
 			te->goto_line_selection(line_number - 1, begin, end);
 		}
