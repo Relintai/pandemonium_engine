@@ -609,8 +609,8 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 	theme->set_stylebox("CanvasItemInfoOverlay", "EditorStyles", style_canvas_editor_info);
 
 	// Script Editor
-	theme->set_stylebox("ScriptEditorPanel", "EditorStyles", make_empty_stylebox(default_margin_size, 0, default_margin_size, default_margin_size));
-	theme->set_stylebox("ScriptEditor", "EditorStyles", make_empty_stylebox(0, 0, 0, 0));
+	theme->set_stylebox("EditorScriptEditorPanel", "EditorStyles", make_empty_stylebox(default_margin_size, 0, default_margin_size, default_margin_size));
+	theme->set_stylebox("EditorScriptEditor", "EditorStyles", make_empty_stylebox(0, 0, 0, 0));
 
 	// Play button group
 	theme->set_stylebox("PlayButtonPanel", "EditorStyles", style_empty);

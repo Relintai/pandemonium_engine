@@ -702,7 +702,7 @@ ShaderEditor::ShaderEditor(EditorNode *p_node) {
 	hbc->add_child(edit_menu);
 	hbc->add_child(goto_menu);
 	hbc->add_child(help_menu);
-	hbc->add_theme_style_override("panel", p_node->get_gui_base()->get_theme_stylebox("ScriptEditorPanel", "EditorStyles"));
+	hbc->add_theme_style_override("panel", p_node->get_gui_base()->get_theme_stylebox("EditorScriptEditorPanel", "EditorStyles"));
 	main_container->add_child(shader_editor);
 
 	goto_line_dialog = memnew(EditorGotoLineDialog);

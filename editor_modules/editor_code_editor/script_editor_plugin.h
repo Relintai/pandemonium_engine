@@ -33,12 +33,12 @@
 
 #include "editor/editor_plugin.h"
 
-class ScriptEditor;
+class EditorScriptEditor;
 
-class ScriptEditorPlugin : public EditorPlugin {
-	GDCLASS(ScriptEditorPlugin, EditorPlugin);
+class EditorScriptEditorPlugin : public EditorPlugin {
+	GDCLASS(EditorScriptEditorPlugin, EditorPlugin);
 
-	ScriptEditor *script_editor;
+	EditorScriptEditor *script_editor;
 	EditorNode *editor;
 
 public:
@@ -62,8 +62,8 @@ public:
 
 	virtual void edited_scene_changed();
 
-	ScriptEditorPlugin(EditorNode *p_node);
-	~ScriptEditorPlugin();
+	EditorScriptEditorPlugin(EditorNode *p_node);
+	~EditorScriptEditorPlugin();
 };
 
 #endif // SCRIPT_EDITOR_PLUGIN_H

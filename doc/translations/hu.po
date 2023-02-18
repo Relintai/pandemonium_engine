@@ -1557,7 +1557,7 @@ msgid "The [TranslationServer] singleton."
 msgstr ""
 
 #: doc/classes/@GlobalScope.xml
-msgid "The [VisualScriptEditor] singleton."
+msgid "The [VisualEditorScriptEditor] singleton."
 msgstr ""
 
 #: doc/classes/@GlobalScope.xml
@@ -21001,7 +21001,7 @@ msgid ""
 "customizing the window, saving and (re-)loading scenes, rendering mesh "
 "previews, inspecting and editing resources and objects, and provides access "
 "to [EditorSettings], [EditorFileSystem], [EditorResourcePreview], "
-"[ScriptEditor], the editor viewport, and information about scenes.\n"
+"[EditorScriptEditor], the editor viewport, and information about scenes.\n"
 "[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access "
 "the singleton using [method EditorPlugin.get_editor_interface]."
 msgstr ""
@@ -21099,7 +21099,7 @@ msgstr ""
 
 #: doc/classes/EditorInterface.xml
 msgid ""
-"Returns the editor's [ScriptEditor] instance.\n"
+"Returns the editor's [EditorScriptEditor] instance.\n"
 "[b]Warning:[/b] Removing and freeing this node will render a part of the "
 "editor useless and may cause a crash."
 msgstr ""
@@ -54947,50 +54947,50 @@ msgstr ""
 msgid "Emitted when the user clicks the OK button."
 msgstr ""
 
-#: doc/classes/ScriptEditor.xml
+#: doc/classes/EditorScriptEditor.xml
 msgid "Godot editor's script editor."
 msgstr ""
 
-#: doc/classes/ScriptEditor.xml
+#: doc/classes/EditorScriptEditor.xml
 msgid ""
 "[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access "
 "the singleton using [method EditorInterface.get_script_editor]."
 msgstr ""
 
-#: doc/classes/ScriptEditor.xml
+#: doc/classes/EditorScriptEditor.xml
 msgid "Returns a [Script] that is currently active in editor."
 msgstr ""
 
-#: doc/classes/ScriptEditor.xml
+#: doc/classes/EditorScriptEditor.xml
 msgid ""
 "Returns an array with all [Script] objects which are currently open in "
 "editor."
 msgstr ""
 
-#: doc/classes/ScriptEditor.xml
+#: doc/classes/EditorScriptEditor.xml
 msgid "Goes to the specified line in the current script."
 msgstr ""
 
-#: doc/classes/ScriptEditor.xml
+#: doc/classes/EditorScriptEditor.xml
 msgid ""
 "Opens the script create dialog. The script will extend [code]base_name[/"
 "code]. The file extension can be omitted from [code]base_path[/code]. It "
 "will be added based on the selected scripting language."
 msgstr ""
 
-#: doc/classes/ScriptEditor.xml
+#: doc/classes/EditorScriptEditor.xml
 msgid ""
 "Reload all currently opened scripts from disk in case the file contents are "
 "newer."
 msgstr ""
 
-#: doc/classes/ScriptEditor.xml
+#: doc/classes/EditorScriptEditor.xml
 msgid ""
 "Emitted when user changed active script. Argument is a freshly activated "
 "[Script]."
 msgstr ""
 
-#: doc/classes/ScriptEditor.xml
+#: doc/classes/EditorScriptEditor.xml
 msgid ""
 "Emitted when editor is about to close the active script. Argument is a "
 "[Script] that is going to be closed."
@@ -68338,19 +68338,19 @@ msgstr ""
 msgid "The type to deconstruct."
 msgstr ""
 
-#: modules/visual_script/doc_classes/VisualScriptEditor.xml
+#: modules/visual_script/doc_classes/VisualEditorScriptEditor.xml
 msgid ""
 "Add a custom Visual Script node to the editor. It'll be placed under "
 "\"Custom Nodes\" with the [code]category[/code] as the parameter."
 msgstr ""
 
-#: modules/visual_script/doc_classes/VisualScriptEditor.xml
+#: modules/visual_script/doc_classes/VisualEditorScriptEditor.xml
 msgid ""
 "Remove a custom Visual Script node from the editor. Custom nodes already "
 "placed on scripts won't be removed."
 msgstr ""
 
-#: modules/visual_script/doc_classes/VisualScriptEditor.xml
+#: modules/visual_script/doc_classes/VisualEditorScriptEditor.xml
 msgid "Emitted when a custom Visual Script node is added or removed."
 msgstr ""
 

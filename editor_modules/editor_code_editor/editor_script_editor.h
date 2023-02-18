@@ -79,17 +79,17 @@ class ToolButton;
 class Tree;
 class VSplitContainer;
 class EditorScriptEditorQuickOpen;
-class ScriptEditorDebugger;
+class EditorScriptEditorDebugger;
 
 typedef SyntaxHighlighter *(*CreateSyntaxHighlighterFunc)();
-typedef EditorScriptEditorBase *(*CreateScriptEditorFunc)(const RES &p_resource);
+typedef EditorScriptEditorBase *(*CreateEditorScriptEditorFunc)(const RES &p_resource);
 
 class EditorScriptCodeCompletionCache;
 class FindInFilesDialog;
 class FindInFilesPanel;
 
-class ScriptEditor : public PanelContainer {
-	GDCLASS(ScriptEditor, PanelContainer);
+class EditorScriptEditor : public PanelContainer {
+	GDCLASS(EditorScriptEditor, PanelContainer);
 
 	EditorNode *editor;
 	enum {
@@ -185,7 +185,7 @@ class ScriptEditor : public PanelContainer {
 	AcceptDialog *error_dialog;
 	ConfirmationDialog *erase_tab_confirm;
 	ScriptCreateDialog *script_create_dialog;
-	ScriptEditorDebugger *debugger;
+	EditorScriptEditorDebugger *debugger;
 	ToolButton *scripts_visible;
 
 	String current_theme;
@@ -206,7 +206,7 @@ class ScriptEditor : public PanelContainer {
 	};
 
 	static int script_editor_func_count;
-	static CreateScriptEditorFunc script_editor_funcs[SCRIPT_EDITOR_FUNC_MAX];
+	static CreateEditorScriptEditorFunc script_editor_funcs[SCRIPT_EDITOR_FUNC_MAX];
 
 	static int syntax_highlighters_func_count;
 	static CreateSyntaxHighlighterFunc syntax_highlighters_funcs[SYNTAX_HIGHLIGHTER_FUNC_MAX];
@@ -367,14 +367,14 @@ class ScriptEditor : public PanelContainer {
 
 	static void _open_script_request(const String &p_path);
 
-	static ScriptEditor *script_editor;
+	static EditorScriptEditor *script_editor;
 
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
 
 public:
-	static ScriptEditor *get_singleton() { return script_editor; }
+	static EditorScriptEditor *get_singleton() { return script_editor; }
 
 	bool toggle_scripts_panel();
 	bool is_scripts_panel_toggled();
@@ -414,14 +414,14 @@ public:
 
 	VSplitContainer *get_left_list_split() { return list_split; }
 
-	ScriptEditorDebugger *get_debugger() { return debugger; }
+	EditorScriptEditorDebugger *get_debugger() { return debugger; }
 	void set_live_auto_reload_running_scripts(bool p_enabled);
 
 	static void register_create_syntax_highlighter_function(CreateSyntaxHighlighterFunc p_func);
-	static void register_create_script_editor_function(CreateScriptEditorFunc p_func);
+	static void register_create_script_editor_function(CreateEditorScriptEditorFunc p_func);
 
-	ScriptEditor(EditorNode *p_editor);
-	~ScriptEditor();
+	EditorScriptEditor(EditorNode *p_editor);
+	~EditorScriptEditor();
 };
 
 #endif // SCRIPT_EDITOR_PLUGIN_H

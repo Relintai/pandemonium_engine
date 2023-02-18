@@ -2080,7 +2080,7 @@ bool Main::start() {
 					int idx = debug_server_uri.rfind(":");
 					IP_Address addr = debug_server_uri.substr(0, idx);
 					int port = debug_server_uri.substr(idx + 1).to_int();
-					ScriptEditor::get_singleton()->get_debugger()->start(port, addr);
+					EditorScriptEditor::get_singleton()->get_debugger()->start(port, addr);
 				}
 #endif
 			}

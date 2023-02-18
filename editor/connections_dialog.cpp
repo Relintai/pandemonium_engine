@@ -817,7 +817,7 @@ void ConnectionsDock::_go_to_script(TreeItem &item) {
 	}
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-	if (script.is_valid() && ScriptEditor::get_singleton()->script_goto_method(script, c.method)) {
+	if (script.is_valid() && EditorScriptEditor::get_singleton()->script_goto_method(script, c.method)) {
 		editor->call("_editor_select", EditorNode::EDITOR_SCRIPT);
 	}
 #endif

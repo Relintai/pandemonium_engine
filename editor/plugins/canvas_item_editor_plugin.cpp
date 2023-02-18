@@ -3910,9 +3910,9 @@ void CanvasItemEditor::_notification(int p_what) {
 	if (p_what == NOTIFICATION_VISIBILITY_CHANGED) {
 		if (!is_visible() && override_camera_button->is_pressed()) {
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-			ScriptEditorDebugger *debugger = ScriptEditor::get_singleton()->get_debugger();
+			EditorScriptEditorDebugger *debugger = EditorScriptEditor::get_singleton()->get_debugger();
 
-			debugger->set_camera_override(ScriptEditorDebugger::OVERRIDE_NONE);
+			debugger->set_camera_override(EditorScriptEditorDebugger::OVERRIDE_NONE);
 #endif
 			override_camera_button->set_pressed(false);
 		}
@@ -4327,12 +4327,12 @@ void CanvasItemEditor::_button_toggle_grid_snap(bool p_status) {
 }
 void CanvasItemEditor::_button_override_camera(bool p_pressed) {
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-	ScriptEditorDebugger *debugger = ScriptEditor::get_singleton()->get_debugger();
+	EditorScriptEditorDebugger *debugger = EditorScriptEditor::get_singleton()->get_debugger();
 
 	if (p_pressed) {
-		debugger->set_camera_override(ScriptEditorDebugger::OVERRIDE_2D);
+		debugger->set_camera_override(EditorScriptEditorDebugger::OVERRIDE_2D);
 	} else {
-		debugger->set_camera_override(ScriptEditorDebugger::OVERRIDE_NONE);
+		debugger->set_camera_override(EditorScriptEditorDebugger::OVERRIDE_NONE);
 	}
 #endif
 }
@@ -5971,7 +5971,7 @@ void CanvasItemEditorViewport::_create_nodes(Node *parent, Node *child, String &
 	if (parent) {
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 		String new_name = parent->validate_child_name(child);
-		ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
+		EditorScriptEditorDebugger *sed = EditorScriptEditor::get_singleton()->get_debugger();
 		editor_data->get_undo_redo().add_do_method(sed, "live_debug_create_node", editor->get_edited_scene()->get_path_to(parent), child->get_class(), new_name);
 		editor_data->get_undo_redo().add_undo_method(sed, "live_debug_remove_node", NodePath(String(editor->get_edited_scene()->get_path_to(parent)) + "/" + new_name));
 #endif
@@ -6043,7 +6043,7 @@ bool CanvasItemEditorViewport::_create_instance(Node *parent, String &path, cons
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	String new_name = parent->validate_child_name(instanced_scene);
-	ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
+	EditorScriptEditorDebugger *sed = EditorScriptEditor::get_singleton()->get_debugger();
 	editor_data->get_undo_redo().add_do_method(sed, "live_debug_instance_node", editor->get_edited_scene()->get_path_to(parent), path, new_name);
 	editor_data->get_undo_redo().add_undo_method(sed, "live_debug_remove_node", NodePath(String(editor->get_edited_scene()->get_path_to(parent)) + "/" + new_name));
 #endif

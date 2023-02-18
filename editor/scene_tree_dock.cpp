@@ -283,7 +283,7 @@ void SceneTreeDock::_perform_instance_scenes(const Vector<String> &p_files, Node
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 		String new_name = parent->validate_child_name(instanced_scene);
-		ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
+		EditorScriptEditorDebugger *sed = EditorScriptEditor::get_singleton()->get_debugger();
 		editor_data->get_undo_redo().add_do_method(sed, "live_debug_instance_node", edited_scene->get_path_to(parent), p_files[i], new_name);
 		editor_data->get_undo_redo().add_undo_method(sed, "live_debug_remove_node", NodePath(String(edited_scene->get_path_to(parent)).plus_file(new_name)));
 #endif
@@ -771,7 +771,7 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 				editor_data->get_undo_redo().add_do_reference(dup);
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-				ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
+				EditorScriptEditorDebugger *sed = EditorScriptEditor::get_singleton()->get_debugger();
 				editor_data->get_undo_redo().add_do_method(sed, "live_debug_duplicate_node", edited_scene->get_path_to(node), dup->get_name());
 				editor_data->get_undo_redo().add_undo_method(sed, "live_debug_remove_node", NodePath(String(edited_scene->get_path_to(parent)).plus_file(dup->get_name())));
 #endif
@@ -1006,7 +1006,7 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 			List<Node *> selection = editor_selection->get_selected_node_list();
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 			for (int i = 0; i < selection.size(); i++) {
-				ScriptEditor::get_singleton()->goto_help("class_name:" + selection[i]->get_class());
+				EditorScriptEditor::get_singleton()->goto_help("class_name:" + selection[i]->get_class());
 			}
 #endif
 			EditorNode::get_singleton()->set_visible_editor(EditorNode::EDITOR_SCRIPT);
@@ -1899,7 +1899,7 @@ void SceneTreeDock::_do_reparent(Node *p_new_parent, int p_position_in_parent, V
 		}
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-		ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
+		EditorScriptEditorDebugger *sed = EditorScriptEditor::get_singleton()->get_debugger();
 #endif
 		String old_name = former_names[ni];
 		String new_name = new_parent->validate_child_name(node);
@@ -2180,7 +2180,7 @@ void SceneTreeDock::_delete_confirm(bool p_cut) {
 			editor_data->get_undo_redo().add_undo_reference(n);
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-			ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
+			EditorScriptEditorDebugger *sed = EditorScriptEditor::get_singleton()->get_debugger();
 			editor_data->get_undo_redo().add_do_method(sed, "live_debug_remove_and_keep_node", edited_scene->get_path_to(n), n->get_instance_id());
 			editor_data->get_undo_redo().add_undo_method(sed, "live_debug_restore_node", n->get_instance_id(), edited_scene->get_path_to(n->get_parent()), n->get_index());
 #endif
@@ -2278,7 +2278,7 @@ void SceneTreeDock::_do_create(Node *p_parent) {
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 		String new_name = p_parent->validate_child_name(child);
-		ScriptEditorDebugger *sed = ScriptEditor::get_singleton()->get_debugger();
+		EditorScriptEditorDebugger *sed = EditorScriptEditor::get_singleton()->get_debugger();
 		editor_data->get_undo_redo().add_do_method(sed, "live_debug_create_node", edited_scene->get_path_to(p_parent), child->get_class(), new_name);
 		editor_data->get_undo_redo().add_undo_method(sed, "live_debug_remove_node", NodePath(String(edited_scene->get_path_to(p_parent)).plus_file(new_name)));
 #endif

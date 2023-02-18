@@ -212,7 +212,7 @@ void EditorInterface::edit_node(Node *p_node) {
 
 void EditorInterface::edit_script(const Ref<Script> &p_script, int p_line, int p_col, bool p_grab_focus) {
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-	ScriptEditor::get_singleton()->edit(p_script, p_line, p_col, p_grab_focus);
+	EditorScriptEditor::get_singleton()->edit(p_script, p_line, p_col, p_grab_focus);
 #endif
 }
 
@@ -275,8 +275,8 @@ Array EditorInterface::get_open_scenes() const {
 }
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-ScriptEditor *EditorInterface::get_script_editor() {
-	return ScriptEditor::get_singleton();
+EditorScriptEditor *EditorInterface::get_script_editor() {
+	return EditorScriptEditor::get_singleton();
 }
 #endif
 

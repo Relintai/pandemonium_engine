@@ -162,7 +162,7 @@ void register_gdscript_types(ModuleRegistrationLevel p_level) {
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-		ScriptEditor::register_create_syntax_highlighter_function(GDScriptSyntaxHighlighter::create);
+		EditorScriptEditor::register_create_syntax_highlighter_function(GDScriptSyntaxHighlighter::create);
 #endif
 		EditorNode::add_init_callback(_editor_init);
 	}

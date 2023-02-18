@@ -731,7 +731,7 @@ static void _find_changed_scripts_for_external_editor(Node *p_base, Node *p_curr
 	}
 }
 
-void ScriptEditor::_update_modified_scripts_for_external_editor(Ref<Script> p_for_script) {
+void EditorScriptEditor::_update_modified_scripts_for_external_editor(Ref<Script> p_for_script) {
 	if (!bool(EditorSettings::get_singleton()->get("text_editor/external/use_external_editor"))) {
 		return;
 	}
@@ -832,7 +832,7 @@ void EditorScriptTextEditor::_breakpoint_item_pressed(int p_idx) {
 }
 
 void EditorScriptTextEditor::_breakpoint_toggled(int p_row) {
-	ScriptEditor::get_singleton()->get_debugger()->set_breakpoint(script->get_path(), p_row + 1, code_editor->get_text_edit()->is_line_set_as_breakpoint(p_row));
+	EditorScriptEditor::get_singleton()->get_debugger()->set_breakpoint(script->get_path(), p_row + 1, code_editor->get_text_edit()->is_line_set_as_breakpoint(p_row));
 }
 
 void EditorScriptTextEditor::_lookup_symbol(const String &p_symbol, int p_row, int p_column) {
@@ -1208,7 +1208,7 @@ void EditorScriptTextEditor::_edit_option(int p_op) {
 			String selected_text = code_editor->get_text_edit()->get_selection_text();
 
 			// Yep, because it doesn't make sense to instance this dialog for every single script open...
-			// So this will be delegated to the ScriptEditor.
+			// So this will be delegated to the EditorScriptEditor.
 			emit_signal("search_in_files_requested", selected_text);
 		} break;
 		case REPLACE_IN_FILES: {
@@ -1239,7 +1239,7 @@ void EditorScriptTextEditor::_edit_option(int p_op) {
 			int line = tx->cursor_get_line();
 			bool dobreak = !tx->is_line_set_as_breakpoint(line);
 			tx->set_line_as_breakpoint(line, dobreak);
-			ScriptEditor::get_singleton()->get_debugger()->set_breakpoint(script->get_path(), line + 1, dobreak);
+			EditorScriptEditor::get_singleton()->get_debugger()->set_breakpoint(script->get_path(), line + 1, dobreak);
 		} break;
 		case DEBUG_REMOVE_ALL_BREAKPOINTS: {
 			List<int> bpoints;
@@ -1249,7 +1249,7 @@ void EditorScriptTextEditor::_edit_option(int p_op) {
 				int line = E->get();
 				bool dobreak = !tx->is_line_set_as_breakpoint(line);
 				tx->set_line_as_breakpoint(line, dobreak);
-				ScriptEditor::get_singleton()->get_debugger()->set_breakpoint(script->get_path(), line + 1, dobreak);
+				EditorScriptEditor::get_singleton()->get_debugger()->set_breakpoint(script->get_path(), line + 1, dobreak);
 			}
 		} break;
 		case DEBUG_GOTO_NEXT_BREAKPOINT: {
@@ -2038,7 +2038,7 @@ void EditorScriptTextEditor::register_editor() {
 	ED_SHORTCUT("script_text_editor/goto_next_breakpoint", TTR("Go to Next Breakpoint"), KEY_MASK_CMD | KEY_PERIOD);
 	ED_SHORTCUT("script_text_editor/goto_previous_breakpoint", TTR("Go to Previous Breakpoint"), KEY_MASK_CMD | KEY_COMMA);
 
-	ScriptEditor::register_create_script_editor_function(create_editor);
+	EditorScriptEditor::register_create_script_editor_function(create_editor);
 }
 
 void EditorScriptTextEditor::validate() {

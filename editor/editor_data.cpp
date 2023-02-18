@@ -559,7 +559,7 @@ void EditorData::remove_scene(int p_idx) {
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	if (edited_scene[p_idx].path != String()) {
-		ScriptEditor::get_singleton()->close_builtin_scripts_from_scene(edited_scene[p_idx].path);
+		EditorScriptEditor::get_singleton()->close_builtin_scripts_from_scene(edited_scene[p_idx].path);
 	}
 #endif
 

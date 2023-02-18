@@ -474,7 +474,7 @@ void TextEditor::_edit_option(int p_op) {
 			String selected_text = code_editor->get_text_edit()->get_selection_text();
 
 			// Yep, because it doesn't make sense to instance this dialog for every single script open...
-			// So this will be delegated to the ScriptEditor.
+			// So this will be delegated to the EditorScriptEditor.
 			emit_signal("search_in_files_requested", selected_text);
 		} break;
 		case REPLACE_IN_FILES: {
@@ -523,7 +523,7 @@ static EditorScriptEditorBase *create_editor(const RES &p_resource) {
 }
 
 void TextEditor::register_editor() {
-	ScriptEditor::register_create_script_editor_function(create_editor);
+	EditorScriptEditor::register_create_script_editor_function(create_editor);
 }
 
 void TextEditor::_text_edit_gui_input(const Ref<InputEvent> &ev) {

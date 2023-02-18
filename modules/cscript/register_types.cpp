@@ -161,7 +161,7 @@ void register_cscript_types(ModuleRegistrationLevel p_level) {
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-		ScriptEditor::register_create_syntax_highlighter_function(CScriptSyntaxHighlighter::create);
+		EditorScriptEditor::register_create_syntax_highlighter_function(CScriptSyntaxHighlighter::create);
 #endif
 		EditorNode::add_init_callback(_editor_init);
 	}

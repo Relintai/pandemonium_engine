@@ -50,7 +50,7 @@
 
 class Tree;
 class EditorNode;
-class ScriptEditorDebuggerVariables;
+class EditorScriptEditorDebuggerVariables;
 class LineEdit;
 class TabContainer;
 class RichTextLabel;
@@ -61,7 +61,7 @@ class HSplitContainer;
 class ItemList;
 class EditorProfiler;
 class EditorNetworkProfiler;
-class ScriptEditorDebuggerInspectedObject;
+class EditorScriptEditorDebuggerInspectedObject;
 class Button;
 class Control;
 class EditorFileDialog;
@@ -74,8 +74,8 @@ class StreamPeerTCP;
 class TCP_Server;
 class VBoxContainer;
 
-class ScriptEditorDebugger : public MarginContainer {
-	GDCLASS(ScriptEditorDebugger, MarginContainer);
+class EditorScriptEditorDebugger : public MarginContainer {
+	GDCLASS(EditorScriptEditorDebugger, MarginContainer);
 
 public:
 	enum CameraOverride {
@@ -118,8 +118,8 @@ private:
 	bool auto_switch_remote_scene_tree;
 	ObjectID inspected_object_id;
 	String last_filter;
-	ScriptEditorDebuggerVariables *variables;
-	RBMap<ObjectID, ScriptEditorDebuggerInspectedObject *> remote_objects;
+	EditorScriptEditorDebuggerVariables *variables;
+	RBMap<ObjectID, EditorScriptEditorDebuggerInspectedObject *> remote_objects;
 	RBSet<RES> remote_dependencies;
 	RBSet<ObjectID> unfold_cache;
 
@@ -246,7 +246,7 @@ private:
 
 	void _paused();
 
-	void _set_remote_object(ObjectID p_id, ScriptEditorDebuggerInspectedObject *p_obj);
+	void _set_remote_object(ObjectID p_id, EditorScriptEditorDebuggerInspectedObject *p_obj);
 	void _clear_remote_objects();
 	void _clear_errors_list();
 
@@ -313,8 +313,8 @@ public:
 	bool is_skip_breakpoints();
 
 	virtual Size2 get_minimum_size() const;
-	ScriptEditorDebugger(EditorNode *p_editor = nullptr);
-	~ScriptEditorDebugger();
+	EditorScriptEditorDebugger(EditorNode *p_editor = nullptr);
+	~EditorScriptEditorDebugger();
 };
 
 #endif // SCRIPT_EDITOR_DEBUGGER_H

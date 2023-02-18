@@ -342,7 +342,7 @@ void EditorExportPlatform::gen_debug_flags(Vector<String> &r_flags, int p_flags)
 		r_flags.push_back(host + ":" + String::num(remote_port));
 
 		List<String> breakpoints;
-		ScriptEditor::get_singleton()->get_breakpoints(&breakpoints);
+		EditorScriptEditor::get_singleton()->get_breakpoints(&breakpoints);
 
 		if (breakpoints.size()) {
 			r_flags.push_back("--breakpoints");
@@ -1269,7 +1269,7 @@ void EditorExportPlatform::gen_export_flags(Vector<String> &r_flags, int p_flags
 		r_flags.push_back(host + ":" + String::num(remote_port));
 
 		List<String> breakpoints;
-		ScriptEditor::get_singleton()->get_breakpoints(&breakpoints);
+		EditorScriptEditor::get_singleton()->get_breakpoints(&breakpoints);
 
 		if (breakpoints.size()) {
 			r_flags.push_back("--breakpoints");

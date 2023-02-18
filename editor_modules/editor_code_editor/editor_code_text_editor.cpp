@@ -926,7 +926,7 @@ void EditorCodeTextEditor::_set_show_warnings_panel(bool p_show) {
 }
 
 void EditorCodeTextEditor::_toggle_scripts_pressed() {
-	toggle_scripts_button->set_icon(ScriptEditor::get_singleton()->toggle_scripts_panel() ? get_theme_icon("Back", "EditorIcons") : get_theme_icon("Forward", "EditorIcons"));
+	toggle_scripts_button->set_icon(EditorScriptEditor::get_singleton()->toggle_scripts_panel() ? get_theme_icon("Back", "EditorIcons") : get_theme_icon("Forward", "EditorIcons"));
 }
 
 void EditorCodeTextEditor::_error_pressed(const Ref<InputEvent> &p_event) {
@@ -1066,7 +1066,7 @@ void EditorCodeTextEditor::show_toggle_scripts_button() {
 }
 
 void EditorCodeTextEditor::update_toggle_scripts_button() {
-	toggle_scripts_button->set_icon(ScriptEditor::get_singleton()->is_scripts_panel_toggled() ? get_theme_icon("Back", "EditorIcons") : get_theme_icon("Forward", "EditorIcons"));
+	toggle_scripts_button->set_icon(EditorScriptEditor::get_singleton()->is_scripts_panel_toggled() ? get_theme_icon("Back", "EditorIcons") : get_theme_icon("Forward", "EditorIcons"));
 	toggle_scripts_button->set_tooltip(TTR("Toggle Scripts Panel") + " (" + ED_GET_SHORTCUT("script_editor/toggle_scripts_panel")->get_as_text() + ")");
 }
 

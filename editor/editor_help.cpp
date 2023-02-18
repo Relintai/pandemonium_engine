@@ -1704,7 +1704,7 @@ EditorHelp::~EditorHelp() {
 void EditorHelpBit::_go_to_help(String p_what) {
 	EditorNode::get_singleton()->set_visible_editor(EditorNode::EDITOR_SCRIPT);
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-	ScriptEditor::get_singleton()->goto_help(p_what);
+	EditorScriptEditor::get_singleton()->goto_help(p_what);
 #endif
 	emit_signal("request_hide");
 }

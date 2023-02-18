@@ -69,9 +69,9 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 	args.push_back("--remote-debug");
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-	const String conn_string = ScriptEditor::get_singleton()->get_debugger()->get_connection_string();
+	const String conn_string = EditorScriptEditor::get_singleton()->get_debugger()->get_connection_string();
 	if (!conn_string.empty()) {
-		args.push_back(ScriptEditor::get_singleton()->get_debugger()->get_connection_string());
+		args.push_back(EditorScriptEditor::get_singleton()->get_debugger()->get_connection_string());
 	} else { // Try anyway with default settings
 		const String remote_host = EditorSettings::get_singleton()->get("network/debug/remote_host");
 		const int remote_port = (int)EditorSettings::get_singleton()->get("network/debug/remote_port");

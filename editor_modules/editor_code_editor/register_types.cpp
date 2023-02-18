@@ -12,7 +12,7 @@
 void register_editor_code_editor_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 		//ClassDB::register_class<>();
-		ClassDB::register_virtual_class<ScriptEditor>();
+		ClassDB::register_virtual_class<EditorScriptEditor>();
 
 		ClassDB::register_virtual_class<EditorScriptEditorBase>();
 
@@ -23,7 +23,7 @@ void register_editor_code_editor_types(ModuleRegistrationLevel p_level) {
 
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
-		EditorPlugins::add_by_type<ScriptEditorPlugin>();
+		EditorPlugins::add_by_type<EditorScriptEditorPlugin>();
 	}
 #endif
 }

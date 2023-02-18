@@ -66,7 +66,7 @@ class EditorResourcePreview;
 class EditorFileSystem;
 class EditorToolAddons;
 class FileSystemDock;
-class ScriptEditor;
+class EditorScriptEditor;
 class ConfigFile;
 class Control;
 class EditorInspector;
@@ -111,7 +111,7 @@ public:
 	Node *get_edited_scene_root();
 	Array get_open_scenes() const;
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-	ScriptEditor *get_script_editor();
+	EditorScriptEditor *get_script_editor();
 #endif
 
 	void select_file(const String &p_file);

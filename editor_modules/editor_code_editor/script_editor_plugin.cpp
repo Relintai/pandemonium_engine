@@ -102,7 +102,7 @@ static bool _is_built_in_script(Script *p_script) {
 	return path.find("::") != -1;
 }
 
-void ScriptEditorPlugin::edit(Object *p_object) {
+void EditorScriptEditorPlugin::edit(Object *p_object) {
 	if (Object::cast_to<Script>(p_object)) {
 		Script *p_script = Object::cast_to<Script>(p_object);
 		String res_path = p_script->get_path().get_slice("::", 0);
@@ -122,7 +122,7 @@ void ScriptEditorPlugin::edit(Object *p_object) {
 	}
 }
 
-bool ScriptEditorPlugin::handles(Object *p_object) const {
+bool EditorScriptEditorPlugin::handles(Object *p_object) const {
 	if (Object::cast_to<TextFile>(p_object)) {
 		return true;
 	}
@@ -135,7 +135,7 @@ bool ScriptEditorPlugin::handles(Object *p_object) const {
 	return p_object->is_class("Script");
 }
 
-void ScriptEditorPlugin::make_visible(bool p_visible) {
+void EditorScriptEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
 		script_editor->show();
 		script_editor->set_process(true);
@@ -146,46 +146,46 @@ void ScriptEditorPlugin::make_visible(bool p_visible) {
 	}
 }
 
-void ScriptEditorPlugin::selected_notify() {
+void EditorScriptEditorPlugin::selected_notify() {
 	script_editor->ensure_select_current();
 }
 
-void ScriptEditorPlugin::save_external_data() {
+void EditorScriptEditorPlugin::save_external_data() {
 	script_editor->save_all_scripts();
 }
 
-void ScriptEditorPlugin::apply_changes() {
+void EditorScriptEditorPlugin::apply_changes() {
 	script_editor->apply_scripts();
 }
 
-void ScriptEditorPlugin::restore_global_state() {
+void EditorScriptEditorPlugin::restore_global_state() {
 }
 
-void ScriptEditorPlugin::save_global_state() {
+void EditorScriptEditorPlugin::save_global_state() {
 }
 
-void ScriptEditorPlugin::set_window_layout(Ref<ConfigFile> p_layout) {
+void EditorScriptEditorPlugin::set_window_layout(Ref<ConfigFile> p_layout) {
 	script_editor->set_window_layout(p_layout);
 }
 
-void ScriptEditorPlugin::get_window_layout(Ref<ConfigFile> p_layout) {
+void EditorScriptEditorPlugin::get_window_layout(Ref<ConfigFile> p_layout) {
 	script_editor->get_window_layout(p_layout);
 }
 
-void ScriptEditorPlugin::get_breakpoints(List<String> *p_breakpoints) {
+void EditorScriptEditorPlugin::get_breakpoints(List<String> *p_breakpoints) {
 	script_editor->get_breakpoints(p_breakpoints);
 }
 
-void ScriptEditorPlugin::edited_scene_changed() {
+void EditorScriptEditorPlugin::edited_scene_changed() {
 	script_editor->edited_scene_changed();
 }
 
-ScriptEditorPlugin::ScriptEditorPlugin(EditorNode *p_node) {
+EditorScriptEditorPlugin::EditorScriptEditorPlugin(EditorNode *p_node) {
 	EditorScriptTextEditor::register_editor(); //register one for text scripts
 	TextEditor::register_editor();
 
 	editor = p_node;
-	script_editor = memnew(ScriptEditor(p_node));
+	script_editor = memnew(EditorScriptEditor(p_node));
 	editor->get_viewport()->add_child(script_editor);
 	script_editor->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 
@@ -213,5 +213,5 @@ ScriptEditorPlugin::ScriptEditorPlugin(EditorNode *p_node) {
 	ED_SHORTCUT("script_editor/clear_recent", TTR("Clear Recent Scripts"));
 }
 
-ScriptEditorPlugin::~ScriptEditorPlugin() {
+EditorScriptEditorPlugin::~EditorScriptEditorPlugin() {
 }
