@@ -1,7 +1,12 @@
 
 
 def can_build(env, platform):
-  return env["tools"]
+  if not env["tools"]:
+    return False
+      
+  env.module_add_dependencies("editor_code_editor", ["freetype"], True)
+
+  return True
 
 def configure(env):
 	pass

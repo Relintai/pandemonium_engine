@@ -193,9 +193,9 @@
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-#include "modules/editor_code_editor/script_editor.h"
-#include "modules/editor_code_editor/script_text_editor.h"
-#include "modules/editor_code_editor/text_editor.h"
+#include "editor_code_editor/script_editor.h"
+#include "editor_code_editor/script_text_editor.h"
+#include "editor_code_editor/text_editor.h"
 #endif
 
 class Camera;
