@@ -89,9 +89,10 @@
 #include "scene/resources/text_file.h"
 #include "scene/resources/texture.h"
 #include "scene/scene_string_names.h"
-#include "script_editor_quick_open.h"
-#include "script_text_editor.h"
-#include "text_editor.h"
+
+#include "../script_editor_quick_open.h"
+#include "../script_text_editor.h"
+#include "../text_editor.h"
 
 #include "script_editor.h"
 

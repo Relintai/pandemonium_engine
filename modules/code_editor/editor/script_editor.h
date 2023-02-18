@@ -52,7 +52,7 @@
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
-#include "script_editor_base.h"
+#include "../script_editor_base.h"
 
 class Button;
 class ConfigFile;

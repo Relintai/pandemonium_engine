@@ -63,11 +63,11 @@
 #include "scene/resources/dynamic_font.h"
 #include "scene/resources/font.h"
 #include "scene/resources/texture.h"
-#include "script_editor_plugin.h"
 
 #include "find_replace_bar.h"
 #include "goto_line_dialog.h"
-#include "script_editor.h"
+
+#include "editor/script_editor.h"
 
 /*** CODE EDITOR ****/
 

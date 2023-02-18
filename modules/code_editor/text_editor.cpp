@@ -50,7 +50,7 @@
 #include "scene/resources/text_file.h"
 #include "scene/resources/texture.h"
 
-#include "script_editor.h"
+#include "editor/script_editor.h"
 #include "goto_line_dialog.h"
 #include "find_replace_bar.h"
 

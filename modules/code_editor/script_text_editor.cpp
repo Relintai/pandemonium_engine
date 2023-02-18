@@ -68,11 +68,10 @@
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/resources/texture.h"
-#include "script_editor_plugin.h"
 #include "script_editor_quick_open.h"
 
 #include "connection_info_dialog.h"
-#include "script_editor.h"
+#include "editor/script_editor.h"
 #include "goto_line_dialog.h"
 #include "find_replace_bar.h"
 
