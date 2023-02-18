@@ -234,7 +234,7 @@ TextEditorVanillaEditor::TextEditorVanillaEditor() {
 	text_editor->set("custom_constants/completion_max_width", 20);
 	text_editor->set("custom_constants/completion_scroll_width", 20);
 
-	_find_replace_bar = memnew(FindReplaceBar);
+	_find_replace_bar = memnew(EditorFindReplaceBar);
 	_find_replace_bar->set_text_edit(text_editor);
 	add_child(_find_replace_bar);
 	_find_replace_bar->hide();

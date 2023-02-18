@@ -37,8 +37,8 @@ class Label;
 class LineEdit;
 class TextEdit;
 
-class GotoLineDialog : public ConfirmationDialog {
-	GDCLASS(GotoLineDialog, ConfirmationDialog);
+class EditorGotoLineDialog : public ConfirmationDialog {
+	GDCLASS(EditorGotoLineDialog, ConfirmationDialog);
 
 	Label *line_label;
 	LineEdit *line;
@@ -51,7 +51,7 @@ public:
 	void popup_find_line(TextEdit *p_edit);
 	int get_line() const;
 
-	GotoLineDialog();
+	EditorGotoLineDialog();
 };
 
 #endif // CODE_EDITOR_H

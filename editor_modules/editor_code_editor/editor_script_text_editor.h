@@ -64,13 +64,13 @@ class SyntaxHighlighter;
 class Texture;
 class Tree;
 struct ScriptCodeCompletionOption;
-class ScriptEditorQuickOpen;
-class ConnectionInfoDialog;
+class EditorScriptEditorQuickOpen;
+class EditorConnectionInfoDialog;
 
-class ScriptTextEditor : public ScriptEditorBase {
-	GDCLASS(ScriptTextEditor, ScriptEditorBase);
+class EditorScriptTextEditor : public EditorScriptEditorBase {
+	GDCLASS(EditorScriptTextEditor, EditorScriptEditorBase);
 
-	CodeTextEditor *code_editor;
+	EditorCodeTextEditor *code_editor;
 	RichTextLabel *warnings_panel;
 
 	Ref<Script> script;
@@ -94,9 +94,9 @@ class ScriptTextEditor : public ScriptEditorBase {
 	PopupMenu *context_menu;
 	PopupMenu *convert_case;
 
-	GotoLineDialog *goto_line_dialog;
-	ScriptEditorQuickOpen *quick_open;
-	ConnectionInfoDialog *connection_info_dialog;
+	EditorGotoLineDialog *goto_line_dialog;
+	EditorScriptEditorQuickOpen *quick_open;
+	EditorConnectionInfoDialog *connection_info_dialog;
 
 	PopupPanel *color_panel;
 	ColorPicker *color_picker;
@@ -201,7 +201,7 @@ protected:
 
 	void _lookup_connections(int p_row, String p_method);
 
-	void _convert_case(CodeTextEditor::CaseStyle p_case);
+	void _convert_case(EditorCodeTextEditor::CaseStyle p_case);
 
 	Variant get_drag_data_fw(const Point2 &p_point, Control *p_from);
 	bool can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const;
@@ -258,8 +258,8 @@ public:
 
 	virtual void validate();
 
-	ScriptTextEditor();
-	~ScriptTextEditor();
+	EditorScriptTextEditor();
+	~EditorScriptTextEditor();
 };
 
 #endif // SCRIPT_TEXT_EDITOR_H

@@ -37,7 +37,7 @@
 #include "scene/gui/tree.h"
 #include "scene/gui/box_container.h"
 
-void ScriptEditorQuickOpen::popup_dialog(const Vector<String> &p_functions, bool p_dontclear) {
+void EditorScriptEditorQuickOpen::popup_dialog(const Vector<String> &p_functions, bool p_dontclear) {
 	popup_centered_ratio(0.6);
 	if (p_dontclear) {
 		search_box->select_all();
@@ -49,11 +49,11 @@ void ScriptEditorQuickOpen::popup_dialog(const Vector<String> &p_functions, bool
 	_update_search();
 }
 
-void ScriptEditorQuickOpen::_text_changed(const String &p_newtext) {
+void EditorScriptEditorQuickOpen::_text_changed(const String &p_newtext) {
 	_update_search();
 }
 
-void ScriptEditorQuickOpen::_sbox_input(const Ref<InputEvent> &p_ie) {
+void EditorScriptEditorQuickOpen::_sbox_input(const Ref<InputEvent> &p_ie) {
 	Ref<InputEventKey> k = p_ie;
 
 	if (k.is_valid() && (k->get_scancode() == KEY_UP || k->get_scancode() == KEY_DOWN || k->get_scancode() == KEY_PAGEUP || k->get_scancode() == KEY_PAGEDOWN)) {
@@ -62,7 +62,7 @@ void ScriptEditorQuickOpen::_sbox_input(const Ref<InputEvent> &p_ie) {
 	}
 }
 
-void ScriptEditorQuickOpen::_update_search() {
+void EditorScriptEditorQuickOpen::_update_search() {
 	search_options->clear();
 	TreeItem *root = search_options->create_item();
 
@@ -80,7 +80,7 @@ void ScriptEditorQuickOpen::_update_search() {
 	get_ok()->set_disabled(root->get_children() == nullptr);
 }
 
-void ScriptEditorQuickOpen::_confirmed() {
+void EditorScriptEditorQuickOpen::_confirmed() {
 	TreeItem *ti = search_options->get_selected();
 	if (!ti) {
 		return;
@@ -91,7 +91,7 @@ void ScriptEditorQuickOpen::_confirmed() {
 	hide();
 }
 
-void ScriptEditorQuickOpen::_notification(int p_what) {
+void EditorScriptEditorQuickOpen::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			connect("confirmed", this, "_confirmed");
@@ -108,15 +108,15 @@ void ScriptEditorQuickOpen::_notification(int p_what) {
 	}
 }
 
-void ScriptEditorQuickOpen::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_text_changed"), &ScriptEditorQuickOpen::_text_changed);
-	ClassDB::bind_method(D_METHOD("_confirmed"), &ScriptEditorQuickOpen::_confirmed);
-	ClassDB::bind_method(D_METHOD("_sbox_input"), &ScriptEditorQuickOpen::_sbox_input);
+void EditorScriptEditorQuickOpen::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_text_changed"), &EditorScriptEditorQuickOpen::_text_changed);
+	ClassDB::bind_method(D_METHOD("_confirmed"), &EditorScriptEditorQuickOpen::_confirmed);
+	ClassDB::bind_method(D_METHOD("_sbox_input"), &EditorScriptEditorQuickOpen::_sbox_input);
 
 	ADD_SIGNAL(MethodInfo("goto_line", PropertyInfo(Variant::INT, "line")));
 }
 
-ScriptEditorQuickOpen::ScriptEditorQuickOpen() {
+EditorScriptEditorQuickOpen::EditorScriptEditorQuickOpen() {
 	VBoxContainer *vbc = memnew(VBoxContainer);
 	add_child(vbc);
 	search_box = memnew(LineEdit);

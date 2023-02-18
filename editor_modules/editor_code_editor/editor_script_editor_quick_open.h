@@ -39,8 +39,8 @@
 class LineEdit;
 class Tree;
 
-class ScriptEditorQuickOpen : public ConfirmationDialog {
-	GDCLASS(ScriptEditorQuickOpen, ConfirmationDialog);
+class EditorScriptEditorQuickOpen : public ConfirmationDialog {
+	GDCLASS(EditorScriptEditorQuickOpen, ConfirmationDialog);
 
 	LineEdit *search_box;
 	Tree *search_options;
@@ -60,7 +60,7 @@ protected:
 
 public:
 	void popup_dialog(const Vector<String> &p_functions, bool p_dontclear = false);
-	ScriptEditorQuickOpen();
+	EditorScriptEditorQuickOpen();
 };
 
 #endif // SCRIPT_EDITOR_PLUGIN_H

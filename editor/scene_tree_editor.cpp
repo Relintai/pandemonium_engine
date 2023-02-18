@@ -1132,7 +1132,7 @@ bool SceneTreeEditor::can_drop_data_fw(const Point2 &p_point, const Variant &p_d
 
 	if (String(d["type"]) == "script_list_element") {
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(d["script_list_element"]);
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(d["script_list_element"]);
 		if (se) {
 			String sp = se->get_edited_resource()->get_path();
 			if (_is_script_type(EditorFileSystem::get_singleton()->get_file_type(sp))) {
@@ -1185,7 +1185,7 @@ void SceneTreeEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data,
 
 	if (String(d["type"]) == "script_list_element") {
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(d["script_list_element"]);
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(d["script_list_element"]);
 		if (se) {
 			String sp = se->get_edited_resource()->get_path();
 			if (_is_script_type(EditorFileSystem::get_singleton()->get_file_type(sp))) {

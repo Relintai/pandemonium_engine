@@ -52,16 +52,16 @@ class TextureButton;
 class Timer;
 class ToolButton;
 struct ScriptCodeCompletionOption;
-class GotoLineDialog;
-class FindReplaceBar;
+class EditorGotoLineDialog;
+class EditorFindReplaceBar;
 
-typedef void (*CodeTextEditorCodeCompleteFunc)(void *p_ud, const String &p_code, List<ScriptCodeCompletionOption> *r_options, bool &r_forced);
+typedef void (*EditorCodeTextEditorCodeCompleteFunc)(void *p_ud, const String &p_code, List<ScriptCodeCompletionOption> *r_options, bool &r_forced);
 
-class CodeTextEditor : public VBoxContainer {
-	GDCLASS(CodeTextEditor, VBoxContainer);
+class EditorCodeTextEditor : public VBoxContainer {
+	GDCLASS(EditorCodeTextEditor, VBoxContainer);
 
 	TextEdit *text_editor;
-	FindReplaceBar *find_replace_bar;
+	EditorFindReplaceBar *find_replace_bar;
 	HBoxContainer *status_bar;
 
 	ToolButton *toggle_scripts_button;
@@ -97,7 +97,7 @@ class CodeTextEditor : public VBoxContainer {
 	void _zoom_changed();
 	void _reset_zoom();
 
-	CodeTextEditorCodeCompleteFunc code_complete_func;
+	EditorCodeTextEditorCodeCompleteFunc code_complete_func;
 	void *code_complete_ud;
 
 	void _warning_label_gui_input(const Ref<InputEvent> &p_event);
@@ -161,7 +161,7 @@ public:
 	void set_error_pos(int p_line, int p_column);
 	void update_line_and_column() { _line_col_changed(); }
 	TextEdit *get_text_edit() { return text_editor; }
-	FindReplaceBar *get_find_replace_bar() { return find_replace_bar; }
+	EditorFindReplaceBar *get_find_replace_bar() { return find_replace_bar; }
 	virtual void apply_code() {}
 	void goto_error();
 
@@ -170,14 +170,14 @@ public:
 	void goto_prev_bookmark();
 	void remove_all_bookmarks();
 
-	void set_code_complete_func(CodeTextEditorCodeCompleteFunc p_code_complete_func, void *p_ud);
+	void set_code_complete_func(EditorCodeTextEditorCodeCompleteFunc p_code_complete_func, void *p_ud);
 
 	void validate_script();
 
 	void show_toggle_scripts_button();
 	void update_toggle_scripts_button();
 
-	CodeTextEditor();
+	EditorCodeTextEditor();
 };
 
 #endif // CODE_EDITOR_H

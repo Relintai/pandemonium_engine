@@ -50,8 +50,8 @@ class MenuButton;
 class PopupMenu;
 struct ScriptCodeCompletionOption;
 
-class ShaderTextEditor : public CodeTextEditor {
-	GDCLASS(ShaderTextEditor, CodeTextEditor);
+class ShaderTextEditor : public EditorCodeTextEditor {
+	GDCLASS(ShaderTextEditor, EditorCodeTextEditor);
 
 	Ref<Shader> shader;
 
@@ -111,7 +111,7 @@ class ShaderEditor : public MarginContainer {
 	PopupMenu *context_menu;
 	uint64_t idle;
 
-	GotoLineDialog *goto_line_dialog;
+	EditorGotoLineDialog *goto_line_dialog;
 	ConfirmationDialog *erase_tab_confirm;
 	ConfirmationDialog *disk_changed;
 

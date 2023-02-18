@@ -30,7 +30,7 @@
 
 #include "editor_script_editor_base.h"
 
-void ScriptEditorBase::_bind_methods() {
+void EditorScriptEditorBase::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("name_changed"));
 	ADD_SIGNAL(MethodInfo("edited_script_changed"));
 	ADD_SIGNAL(MethodInfo("request_help", PropertyInfo(Variant::STRING, "topic")));

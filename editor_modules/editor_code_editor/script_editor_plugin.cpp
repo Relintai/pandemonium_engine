@@ -181,7 +181,7 @@ void ScriptEditorPlugin::edited_scene_changed() {
 }
 
 ScriptEditorPlugin::ScriptEditorPlugin(EditorNode *p_node) {
-	ScriptTextEditor::register_editor(); //register one for text scripts
+	EditorScriptTextEditor::register_editor(); //register one for text scripts
 	TextEditor::register_editor();
 
 	editor = p_node;

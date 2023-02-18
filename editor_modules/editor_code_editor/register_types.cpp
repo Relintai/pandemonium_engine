@@ -14,11 +14,11 @@ void register_editor_code_editor_types(ModuleRegistrationLevel p_level) {
 		//ClassDB::register_class<>();
 		ClassDB::register_virtual_class<ScriptEditor>();
 
-		ClassDB::register_virtual_class<ScriptEditorBase>();
+		ClassDB::register_virtual_class<EditorScriptEditorBase>();
 
 		//ClassDB::register_class<TextEditor>();
-		//ClassDB::register_class<ScriptTextEditor>();
-		//ClassDB::register_class<CodeTextEditor>();
+		//ClassDB::register_class<EditorScriptTextEditor>();
+		//ClassDB::register_class<EditorCodeTextEditor>();
 	}
 
 #ifdef TOOLS_ENABLED

@@ -37,10 +37,10 @@
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 
-void ConnectionInfoDialog::ok_pressed() {
+void EditorConnectionInfoDialog::ok_pressed() {
 }
 
-void ConnectionInfoDialog::popup_connections(String p_method, Vector<Node *> p_nodes) {
+void EditorConnectionInfoDialog::popup_connections(String p_method, Vector<Node *> p_nodes) {
 	method->set_text(p_method);
 
 	tree->clear();
@@ -79,7 +79,7 @@ void ConnectionInfoDialog::popup_connections(String p_method, Vector<Node *> p_n
 	popup_centered(Size2(600, 300) * EDSCALE);
 }
 
-ConnectionInfoDialog::ConnectionInfoDialog() {
+EditorConnectionInfoDialog::EditorConnectionInfoDialog() {
 	set_title(TTR("Connections to method:"));
 
 	VBoxContainer *vbc = memnew(VBoxContainer);

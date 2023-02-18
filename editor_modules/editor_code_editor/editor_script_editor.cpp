@@ -205,7 +205,7 @@ void ScriptEditor::_breaked(bool p_breaked, bool p_can_debug) {
 	debug_menu->get_popup()->set_item_disabled(debug_menu->get_popup()->get_item_index(DEBUG_CONTINUE), !p_breaked);
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -222,7 +222,7 @@ void ScriptEditor::_script_created(Ref<Script> p_script) {
 }
 
 void ScriptEditor::_goto_script_line2(int p_line) {
-	ScriptEditorBase *current = _get_current_editor();
+	EditorScriptEditorBase *current = _get_current_editor();
 	if (current) {
 		current->goto_line(p_line);
 	}
@@ -234,8 +234,8 @@ void ScriptEditor::_goto_script_line(REF p_script, int p_line) {
 		if (edit(p_script, p_line, 0)) {
 			editor->push_item(p_script.ptr());
 
-			ScriptEditorBase *current = _get_current_editor();
-			if (ScriptTextEditor *script_text_editor = Object::cast_to<ScriptTextEditor>(current)) {
+			EditorScriptEditorBase *current = _get_current_editor();
+			if (EditorScriptTextEditor *script_text_editor = Object::cast_to<EditorScriptTextEditor>(current)) {
 				script_text_editor->goto_line_centered(p_line);
 			} else if (current) {
 				current->goto_line(p_line, true);
@@ -248,7 +248,7 @@ void ScriptEditor::_set_execution(REF p_script, int p_line) {
 	Ref<Script> script = Object::cast_to<Script>(*p_script);
 	if (script.is_valid() && (script->has_source_code() || script->get_path().is_resource_file())) {
 		for (int i = 0; i < tab_container->get_child_count(); i++) {
-			ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+			EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 			if (!se) {
 				continue;
 			}
@@ -264,7 +264,7 @@ void ScriptEditor::_clear_execution(REF p_script) {
 	Ref<Script> script = Object::cast_to<Script>(*p_script);
 	if (script.is_valid() && (script->has_source_code() || script->get_path().is_resource_file())) {
 		for (int i = 0; i < tab_container->get_child_count(); i++) {
-			ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+			EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 			if (!se) {
 				continue;
 			}
@@ -276,13 +276,13 @@ void ScriptEditor::_clear_execution(REF p_script) {
 	}
 }
 
-ScriptEditorBase *ScriptEditor::_get_current_editor() const {
+EditorScriptEditorBase *ScriptEditor::_get_current_editor() const {
 	int selected = tab_container->get_current_tab();
 	if (selected < 0 || selected >= tab_container->get_child_count()) {
 		return nullptr;
 	}
 
-	return Object::cast_to<ScriptEditorBase>(tab_container->get_child(selected));
+	return Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(selected));
 }
 
 void ScriptEditor::_update_history_arrows() {
@@ -294,8 +294,8 @@ void ScriptEditor::_save_history() {
 	if (history_pos >= 0 && history_pos < history.size() && history[history_pos].control == tab_container->get_current_tab_control()) {
 		Node *n = tab_container->get_current_tab_control();
 
-		if (Object::cast_to<ScriptEditorBase>(n)) {
-			history.write[history_pos].state = Object::cast_to<ScriptEditorBase>(n)->get_edit_state();
+		if (Object::cast_to<EditorScriptEditorBase>(n)) {
+			history.write[history_pos].state = Object::cast_to<EditorScriptEditorBase>(n)->get_edit_state();
 		}
 		if (Object::cast_to<EditorHelp>(n)) {
 			history.write[history_pos].state = Object::cast_to<EditorHelp>(n)->get_scroll();
@@ -314,7 +314,7 @@ void ScriptEditor::_save_history() {
 }
 
 void ScriptEditor::_go_to_tab(int p_idx) {
-	ScriptEditorBase *current = _get_current_editor();
+	EditorScriptEditorBase *current = _get_current_editor();
 	if (current) {
 		if (current->is_unsaved()) {
 			current->apply_code();
@@ -329,8 +329,8 @@ void ScriptEditor::_go_to_tab(int p_idx) {
 	if (history_pos >= 0 && history_pos < history.size() && history[history_pos].control == tab_container->get_current_tab_control()) {
 		Node *n = tab_container->get_current_tab_control();
 
-		if (Object::cast_to<ScriptEditorBase>(n)) {
-			history.write[history_pos].state = Object::cast_to<ScriptEditorBase>(n)->get_edit_state();
+		if (Object::cast_to<EditorScriptEditorBase>(n)) {
+			history.write[history_pos].state = Object::cast_to<EditorScriptEditorBase>(n)->get_edit_state();
 		}
 		if (Object::cast_to<EditorHelp>(n)) {
 			history.write[history_pos].state = Object::cast_to<EditorHelp>(n)->get_scroll();
@@ -349,19 +349,19 @@ void ScriptEditor::_go_to_tab(int p_idx) {
 
 	c = tab_container->get_current_tab_control();
 
-	if (Object::cast_to<ScriptEditorBase>(c)) {
-		script_name_label->set_text(Object::cast_to<ScriptEditorBase>(c)->get_name());
-		script_icon->set_texture(Object::cast_to<ScriptEditorBase>(c)->get_icon());
+	if (Object::cast_to<EditorScriptEditorBase>(c)) {
+		script_name_label->set_text(Object::cast_to<EditorScriptEditorBase>(c)->get_name());
+		script_icon->set_texture(Object::cast_to<EditorScriptEditorBase>(c)->get_icon());
 		if (is_visible_in_tree()) {
-			Object::cast_to<ScriptEditorBase>(c)->ensure_focus();
+			Object::cast_to<EditorScriptEditorBase>(c)->ensure_focus();
 		}
 
-		Ref<Script> script = Object::cast_to<ScriptEditorBase>(c)->get_edited_resource();
+		Ref<Script> script = Object::cast_to<EditorScriptEditorBase>(c)->get_edited_resource();
 		if (script != nullptr) {
 			notify_script_changed(script);
 		}
 
-		Object::cast_to<ScriptEditorBase>(c)->validate();
+		Object::cast_to<EditorScriptEditorBase>(c)->validate();
 	}
 	if (Object::cast_to<EditorHelp>(c)) {
 		script_name_label->set_text(Object::cast_to<EditorHelp>(c)->get_class());
@@ -487,7 +487,7 @@ void ScriptEditor::_close_tab(int p_idx, bool p_save, bool p_history_back) {
 
 	Node *tselected = tab_container->get_child(selected);
 
-	ScriptEditorBase *current = Object::cast_to<ScriptEditorBase>(tselected);
+	EditorScriptEditorBase *current = Object::cast_to<EditorScriptEditorBase>(tselected);
 	if (current) {
 		Ref<Script> script = current->get_edited_resource();
 		if (p_save) {
@@ -569,7 +569,7 @@ void ScriptEditor::_close_docs_tab() {
 }
 
 void ScriptEditor::_copy_script_path() {
-	ScriptEditorBase *se = _get_current_editor();
+	EditorScriptEditorBase *se = _get_current_editor();
 	if (se) {
 		RES script = se->get_edited_resource();
 		OS::get_singleton()->set_clipboard(script->get_path());
@@ -599,7 +599,7 @@ void ScriptEditor::_queue_close_tabs() {
 		script_close_queue.pop_front();
 
 		tab_container->set_current_tab(idx);
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(idx));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(idx));
 		if (se) {
 			// Maybe there are unsaved changes.
 			if (se->is_unsaved()) {
@@ -613,7 +613,7 @@ void ScriptEditor::_queue_close_tabs() {
 	}
 }
 
-void ScriptEditor::_ask_close_current_unsaved_tab(ScriptEditorBase *current) {
+void ScriptEditor::_ask_close_current_unsaved_tab(EditorScriptEditorBase *current) {
 	erase_tab_confirm->set_text(TTR("Close and save changes?") + "\n\"" + current->get_name() + "\"");
 	erase_tab_confirm->popup_centered_minsize();
 }
@@ -622,7 +622,7 @@ void ScriptEditor::_resave_scripts(const String &p_str) {
 	apply_scripts();
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -663,7 +663,7 @@ void ScriptEditor::_resave_scripts(const String &p_str) {
 
 void ScriptEditor::reload_scripts() {
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -707,7 +707,7 @@ void ScriptEditor::reload_scripts() {
 
 void ScriptEditor::_res_saved_callback(const Ref<Resource> &p_res) {
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -726,7 +726,7 @@ void ScriptEditor::_res_saved_callback(const Ref<Resource> &p_res) {
 void ScriptEditor::_scene_saved_callback(const String &p_path) {
 	// If scene was saved, mark all built-in scripts from that scene as saved.
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -770,7 +770,7 @@ bool ScriptEditor::_test_script_times_on_disk(RES p_for_script) {
 	bool use_autoreload = bool(EDITOR_DEF("text_editor/files/auto_reload_scripts_on_external_change", false));
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (se) {
 			RES edited_res = se->get_edited_resource();
 			if (p_for_script.is_valid() && edited_res.is_valid() && p_for_script != edited_res) {
@@ -850,7 +850,7 @@ void ScriptEditor::_file_dialog_action(String p_file) {
 			}
 		} break;
 		case FILE_SAVE_AS: {
-			ScriptEditorBase *current = _get_current_editor();
+			EditorScriptEditorBase *current = _get_current_editor();
 			if (current) {
 				RES resource = current->get_edited_resource();
 				String path = ProjectSettings::get_singleton()->localize_path(p_file);
@@ -880,7 +880,7 @@ void ScriptEditor::_file_dialog_action(String p_file) {
 }
 
 Ref<Script> ScriptEditor::_get_current_script() {
-	ScriptEditorBase *current = _get_current_editor();
+	EditorScriptEditorBase *current = _get_current_editor();
 
 	if (current) {
 		Ref<Script> script = current->get_edited_resource();
@@ -911,7 +911,7 @@ bool ScriptEditor::is_scripts_panel_toggled() {
 }
 
 void ScriptEditor::_menu_option(int p_option) {
-	ScriptEditorBase *current = _get_current_editor();
+	EditorScriptEditorBase *current = _get_current_editor();
 	switch (p_option) {
 		case FILE_NEW: {
 			script_create_dialog->config("Node", "new_script", false, false);
@@ -1037,7 +1037,7 @@ void ScriptEditor::_menu_option(int p_option) {
 		} break;
 		case TOGGLE_SCRIPTS_PANEL: {
 			if (current) {
-				ScriptTextEditor *editor = Object::cast_to<ScriptTextEditor>(current);
+				EditorScriptTextEditor *editor = Object::cast_to<EditorScriptTextEditor>(current);
 				toggle_scripts_panel();
 				if (editor) {
 					editor->update_toggle_scripts_button();
@@ -1312,7 +1312,7 @@ bool ScriptEditor::_has_docs_tab() const {
 bool ScriptEditor::_has_script_tab() const {
 	const int child_count = tab_container->get_child_count();
 	for (int i = 0; i < child_count; i++) {
-		if (Object::cast_to<ScriptEditorBase>(tab_container->get_child(i))) {
+		if (Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i))) {
 			return true;
 		}
 	}
@@ -1419,7 +1419,7 @@ void ScriptEditor::_notification(int p_what) {
 }
 
 bool ScriptEditor::can_take_away_focus() const {
-	ScriptEditorBase *current = _get_current_editor();
+	EditorScriptEditorBase *current = _get_current_editor();
 	if (current) {
 		return current->can_lose_focus_on_node_selection();
 	} else {
@@ -1429,7 +1429,7 @@ bool ScriptEditor::can_take_away_focus() const {
 
 void ScriptEditor::close_builtin_scripts_from_scene(const String &p_scene) {
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 
 		if (se) {
 			Ref<Script> script = se->get_edited_resource();
@@ -1459,7 +1459,7 @@ void ScriptEditor::notify_script_changed(const Ref<Script> &p_script) {
 
 void ScriptEditor::get_breakpoints(List<String> *p_breakpoints) {
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -1487,14 +1487,14 @@ void ScriptEditor::ensure_focus_current() {
 		return;
 	}
 
-	ScriptEditorBase *current = _get_current_editor();
+	EditorScriptEditorBase *current = _get_current_editor();
 	if (current) {
 		current->ensure_focus();
 	}
 }
 
 void ScriptEditor::_members_overview_selected(int p_idx) {
-	ScriptEditorBase *se = _get_current_editor();
+	EditorScriptEditorBase *se = _get_current_editor();
 	if (!se) {
 		return;
 	}
@@ -1525,7 +1525,7 @@ void ScriptEditor::_script_selected(int p_idx) {
 
 void ScriptEditor::ensure_select_current() {
 	if (tab_container->get_child_count() && tab_container->get_current_tab() >= 0) {
-		ScriptEditorBase *se = _get_current_editor();
+		EditorScriptEditorBase *se = _get_current_editor();
 		if (se) {
 			se->enable_editor();
 
@@ -1579,7 +1579,7 @@ struct _ScriptEditorItemData {
 };
 
 void ScriptEditor::_update_members_overview_visibility() {
-	ScriptEditorBase *se = _get_current_editor();
+	EditorScriptEditorBase *se = _get_current_editor();
 	if (!se) {
 		members_overview_alphabeta_sort_button->set_visible(false);
 		members_overview->set_visible(false);
@@ -1606,7 +1606,7 @@ void ScriptEditor::_toggle_members_overview_alpha_sort(bool p_alphabetic_sort) {
 void ScriptEditor::_update_members_overview() {
 	members_overview->clear();
 
-	ScriptEditorBase *se = _get_current_editor();
+	EditorScriptEditorBase *se = _get_current_editor();
 	if (!se) {
 		return;
 	}
@@ -1735,7 +1735,7 @@ void ScriptEditor::_update_script_names() {
 	Vector<_ScriptEditorItemData> sedata;
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (se) {
 			Ref<Texture> icon = se->get_icon();
 			String path = se->get_edited_resource()->get_path();
@@ -1877,7 +1877,7 @@ void ScriptEditor::_update_script_names() {
 			script_list->select(index);
 			script_name_label->set_text(sedata_filtered[i].name);
 			script_icon->set_texture(sedata_filtered[i].icon);
-			ScriptEditorBase *se = _get_current_editor();
+			EditorScriptEditorBase *se = _get_current_editor();
 			if (se) {
 				se->enable_editor();
 				_update_selected_editor_menu();
@@ -1898,7 +1898,7 @@ void ScriptEditor::_update_script_names() {
 
 void ScriptEditor::_update_script_connections() {
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptTextEditor *ste = Object::cast_to<ScriptTextEditor>(tab_container->get_child(i));
+		EditorScriptTextEditor *ste = Object::cast_to<EditorScriptTextEditor>(tab_container->get_child(i));
 		if (!ste) {
 			continue;
 		}
@@ -2047,7 +2047,7 @@ bool ScriptEditor::edit(const RES &p_resource, int p_line, int p_col, bool p_gra
 	}
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -2076,7 +2076,7 @@ bool ScriptEditor::edit(const RES &p_resource, int p_line, int p_col, bool p_gra
 
 	// doesn't have it, make a new one
 
-	ScriptEditorBase *se = nullptr;
+	EditorScriptEditorBase *se = nullptr;
 
 	for (int i = script_editor_func_count - 1; i >= 0; i--) {
 		se = script_editor_funcs[i](p_resource);
@@ -2148,7 +2148,7 @@ bool ScriptEditor::edit(const RES &p_resource, int p_line, int p_col, bool p_gra
 }
 
 void ScriptEditor::save_current_script() {
-	ScriptEditorBase *current = _get_current_editor();
+	EditorScriptEditorBase *current = _get_current_editor();
 	if (!current || _test_script_times_on_disk()) {
 		return;
 	}
@@ -2193,7 +2193,7 @@ void ScriptEditor::save_all_scripts() {
 	Vector<String> scenes_to_save;
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -2247,7 +2247,7 @@ void ScriptEditor::save_all_scripts() {
 
 void ScriptEditor::apply_scripts() const {
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -2279,7 +2279,7 @@ void ScriptEditor::_editor_stop() {
 	debug_menu->get_popup()->set_item_disabled(debug_menu->get_popup()->get_item_index(DEBUG_CONTINUE), true);
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -2296,7 +2296,7 @@ void ScriptEditor::_add_callback(Object *p_obj, const String &p_function, const 
 	editor->push_item(script.ptr());
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -2347,7 +2347,7 @@ void ScriptEditor::_editor_settings_changed() {
 	}
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -2403,7 +2403,7 @@ Variant ScriptEditor::get_drag_data_fw(const Point2 &p_point, Control *p_from) {
 	String preview_name = "";
 	Ref<Texture> preview_icon;
 
-	ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(cur_node);
+	EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(cur_node);
 	if (se) {
 		preview_name = se->get_name();
 		preview_icon = se->get_icon();
@@ -2439,7 +2439,7 @@ bool ScriptEditor::can_drop_data_fw(const Point2 &p_point, const Variant &p_data
 	if (String(d["type"]) == "script_list_element") {
 		Node *node = d["script_list_element"];
 
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(node);
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(node);
 		if (se) {
 			return true;
 		}
@@ -2456,7 +2456,7 @@ bool ScriptEditor::can_drop_data_fw(const Point2 &p_point, const Variant &p_data
 		}
 		Node *node = get_node((nodes[0]));
 
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(node);
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(node);
 		if (se) {
 			return true;
 		}
@@ -2502,7 +2502,7 @@ void ScriptEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data, Co
 	if (String(d["type"]) == "script_list_element") {
 		Node *node = d["script_list_element"];
 
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(node);
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(node);
 		EditorHelp *eh = Object::cast_to<EditorHelp>(node);
 		if (se || eh) {
 			int new_index = 0;
@@ -2522,7 +2522,7 @@ void ScriptEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data, Co
 		}
 		Node *node = get_node(nodes[0]);
 
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(node);
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(node);
 		EditorHelp *eh = Object::cast_to<EditorHelp>(node);
 		if (se || eh) {
 			int new_index = 0;
@@ -2647,7 +2647,7 @@ void ScriptEditor::_make_script_list_context_menu() {
 		return;
 	}
 
-	ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(selected));
+	EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(selected));
 	if (se) {
 		context_menu->add_shortcut(ED_GET_SHORTCUT("script_editor/save"), FILE_SAVE);
 		context_menu->add_shortcut(ED_GET_SHORTCUT("script_editor/save_as"), FILE_SAVE_AS);
@@ -2738,7 +2738,7 @@ void ScriptEditor::set_window_layout(Ref<ConfigFile> p_layout) {
 		}
 
 		if (!script_info.empty()) {
-			ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(tab_container->get_tab_count() - 1));
+			EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(tab_container->get_tab_count() - 1));
 			if (se) {
 				se->set_edit_state(script_info["state"]);
 			}
@@ -2771,7 +2771,7 @@ void ScriptEditor::get_window_layout(Ref<ConfigFile> p_layout) {
 	Array helps;
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (se) {
 			String path = se->get_edited_resource()->get_path();
 			if (!path.is_resource_file()) {
@@ -2856,7 +2856,7 @@ void ScriptEditor::_update_selected_editor_menu() {
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
 		bool current = tab_container->get_current_tab() == i;
 
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (se && se->get_edit_menu()) {
 			if (current) {
 				se->get_edit_menu()->show();
@@ -2890,8 +2890,8 @@ void ScriptEditor::_update_selected_editor_menu() {
 void ScriptEditor::_update_history_pos(int p_new_pos) {
 	Node *n = tab_container->get_current_tab_control();
 
-	if (Object::cast_to<ScriptEditorBase>(n)) {
-		history.write[history_pos].state = Object::cast_to<ScriptEditorBase>(n)->get_edit_state();
+	if (Object::cast_to<EditorScriptEditorBase>(n)) {
+		history.write[history_pos].state = Object::cast_to<EditorScriptEditorBase>(n)->get_edit_state();
 	}
 	if (Object::cast_to<EditorHelp>(n)) {
 		history.write[history_pos].state = Object::cast_to<EditorHelp>(n)->get_scroll();
@@ -2902,11 +2902,11 @@ void ScriptEditor::_update_history_pos(int p_new_pos) {
 
 	n = history[history_pos].control;
 
-	if (Object::cast_to<ScriptEditorBase>(n)) {
-		Object::cast_to<ScriptEditorBase>(n)->set_edit_state(history[history_pos].state);
-		Object::cast_to<ScriptEditorBase>(n)->ensure_focus();
+	if (Object::cast_to<EditorScriptEditorBase>(n)) {
+		Object::cast_to<EditorScriptEditorBase>(n)->set_edit_state(history[history_pos].state);
+		Object::cast_to<EditorScriptEditorBase>(n)->ensure_focus();
 
-		Ref<Script> script = Object::cast_to<ScriptEditorBase>(n)->get_edited_resource();
+		Ref<Script> script = Object::cast_to<EditorScriptEditorBase>(n)->get_edited_resource();
 		if (script != nullptr) {
 			notify_script_changed(script);
 		}
@@ -2939,7 +2939,7 @@ Vector<Ref<Script>> ScriptEditor::get_open_scripts() const {
 	Vector<Ref<Script>> out_scripts = Vector<Ref<Script>>();
 
 	for (int i = 0; i < tab_container->get_child_count(); i++) {
-		ScriptEditorBase *se = Object::cast_to<ScriptEditorBase>(tab_container->get_child(i));
+		EditorScriptEditorBase *se = Object::cast_to<EditorScriptEditorBase>(tab_container->get_child(i));
 		if (!se) {
 			continue;
 		}
@@ -3054,7 +3054,7 @@ void ScriptEditor::_on_find_in_files_result_selected(String fpath, int line_numb
 			if (script.is_valid()) {
 				edit(script);
 
-				ScriptTextEditor *ste = Object::cast_to<ScriptTextEditor>(_get_current_editor());
+				EditorScriptTextEditor *ste = Object::cast_to<EditorScriptTextEditor>(_get_current_editor());
 				if (ste) {
 					ste->goto_line_selection(line_number - 1, begin, end);
 				}

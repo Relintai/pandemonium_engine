@@ -37,7 +37,7 @@
 
 #include "editor/editor_scale.h"
 
-void GotoLineDialog::popup_find_line(TextEdit *p_edit) {
+void EditorGotoLineDialog::popup_find_line(TextEdit *p_edit) {
 	text_editor = p_edit;
 
 	line->set_text(itos(text_editor->cursor_get_line()));
@@ -46,11 +46,11 @@ void GotoLineDialog::popup_find_line(TextEdit *p_edit) {
 	line->grab_focus();
 }
 
-int GotoLineDialog::get_line() const {
+int EditorGotoLineDialog::get_line() const {
 	return line->get_text().to_int();
 }
 
-void GotoLineDialog::ok_pressed() {
+void EditorGotoLineDialog::ok_pressed() {
 	if (get_line() < 1 || get_line() > text_editor->get_line_count()) {
 		return;
 	}
@@ -59,7 +59,7 @@ void GotoLineDialog::ok_pressed() {
 	hide();
 }
 
-GotoLineDialog::GotoLineDialog() {
+EditorGotoLineDialog::EditorGotoLineDialog() {
 	set_title(TTR("Go to Line"));
 
 	VBoxContainer *vbc = memnew(VBoxContainer);

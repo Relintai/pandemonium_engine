@@ -37,8 +37,8 @@ class Label;
 class Node;
 class Tree;
 
-class ConnectionInfoDialog : public AcceptDialog {
-	GDCLASS(ConnectionInfoDialog, AcceptDialog);
+class EditorConnectionInfoDialog : public AcceptDialog {
+	GDCLASS(EditorConnectionInfoDialog, AcceptDialog);
 
 	Label *method;
 	Tree *tree;
@@ -48,7 +48,7 @@ class ConnectionInfoDialog : public AcceptDialog {
 public:
 	void popup_connections(String p_method, Vector<Node *> p_nodes);
 
-	ConnectionInfoDialog();
+	EditorConnectionInfoDialog();
 };
 
 #endif // SCRIPT_TEXT_EDITOR_H

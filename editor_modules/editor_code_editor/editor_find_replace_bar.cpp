@@ -49,7 +49,7 @@
 #include "scene/resources/font.h"
 #include "scene/resources/texture.h"
 
-void FindReplaceBar::_notification(int p_what) {
+void EditorFindReplaceBar::_notification(int p_what) {
 	if (p_what == NOTIFICATION_READY) {
 		find_prev->set_icon(get_theme_icon("MoveUp", "EditorIcons"));
 		find_next->set_icon(get_theme_icon("MoveDown", "EditorIcons"));
@@ -71,7 +71,7 @@ void FindReplaceBar::_notification(int p_what) {
 	}
 }
 
-void FindReplaceBar::_unhandled_input(const Ref<InputEvent> &p_event) {
+void EditorFindReplaceBar::_unhandled_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventKey> k = p_event;
 	if (!k.is_valid() || !k->is_pressed()) {
 		return;
@@ -96,7 +96,7 @@ void FindReplaceBar::_unhandled_input(const Ref<InputEvent> &p_event) {
 	}
 }
 
-bool FindReplaceBar::_search(uint32_t p_flags, int p_from_line, int p_from_col) {
+bool EditorFindReplaceBar::_search(uint32_t p_flags, int p_from_line, int p_from_col) {
 	int line, col;
 	String text = get_search_text();
 
@@ -133,7 +133,7 @@ bool FindReplaceBar::_search(uint32_t p_flags, int p_from_line, int p_from_col) 
 	return found;
 }
 
-void FindReplaceBar::_replace() {
+void EditorFindReplaceBar::_replace() {
 	bool selection_enabled = text_edit->is_selection_active();
 	Point2i selection_begin, selection_end;
 	if (selection_enabled) {
@@ -178,7 +178,7 @@ void FindReplaceBar::_replace() {
 	}
 }
 
-void FindReplaceBar::_replace_all() {
+void EditorFindReplaceBar::_replace_all() {
 	text_edit->disconnect("text_changed", this, "_editor_text_changed");
 	// Line as x so it gets priority in comparison, column as y.
 	Point2i orig_cursor(text_edit->cursor_get_line(), text_edit->cursor_get_column());
@@ -267,7 +267,7 @@ void FindReplaceBar::_replace_all() {
 	results_count = -1;
 }
 
-void FindReplaceBar::_get_search_from(int &r_line, int &r_col) {
+void EditorFindReplaceBar::_get_search_from(int &r_line, int &r_col) {
 	r_line = text_edit->cursor_get_line();
 	r_col = text_edit->cursor_get_column();
 
@@ -280,7 +280,7 @@ void FindReplaceBar::_get_search_from(int &r_line, int &r_col) {
 	}
 }
 
-void FindReplaceBar::_update_results_count() {
+void EditorFindReplaceBar::_update_results_count() {
 	if (results_count != -1) {
 		return;
 	}
@@ -318,7 +318,7 @@ void FindReplaceBar::_update_results_count() {
 	}
 }
 
-void FindReplaceBar::_update_matches_label() {
+void EditorFindReplaceBar::_update_matches_label() {
 	if (search_text->get_text().empty() || results_count == -1) {
 		matches_label->hide();
 	} else {
@@ -329,7 +329,7 @@ void FindReplaceBar::_update_matches_label() {
 	}
 }
 
-bool FindReplaceBar::search_current() {
+bool EditorFindReplaceBar::search_current() {
 	uint32_t flags = 0;
 
 	if (is_whole_words()) {
@@ -345,7 +345,7 @@ bool FindReplaceBar::search_current() {
 	return _search(flags, line, col);
 }
 
-bool FindReplaceBar::search_prev() {
+bool EditorFindReplaceBar::search_prev() {
 	if (!is_visible()) {
 		popup_search(true);
 	}
@@ -380,7 +380,7 @@ bool FindReplaceBar::search_prev() {
 	return _search(flags, line, col);
 }
 
-bool FindReplaceBar::search_next() {
+bool EditorFindReplaceBar::search_next() {
 	if (!is_visible()) {
 		popup_search(true);
 	}
@@ -417,7 +417,7 @@ bool FindReplaceBar::search_next() {
 	return _search(flags, line, col);
 }
 
-void FindReplaceBar::_hide_bar() {
+void EditorFindReplaceBar::_hide_bar() {
 	if (replace_text->has_focus() || search_text->has_focus()) {
 		text_edit->grab_focus();
 	}
@@ -428,7 +428,7 @@ void FindReplaceBar::_hide_bar() {
 	hide();
 }
 
-void FindReplaceBar::_show_search(bool p_focus_replace, bool p_show_only) {
+void EditorFindReplaceBar::_show_search(bool p_focus_replace, bool p_show_only) {
 	show();
 	if (p_show_only) {
 		return;
@@ -461,7 +461,7 @@ void FindReplaceBar::_show_search(bool p_focus_replace, bool p_show_only) {
 	}
 }
 
-void FindReplaceBar::popup_search(bool p_show_only) {
+void EditorFindReplaceBar::popup_search(bool p_show_only) {
 	replace_text->hide();
 	hbc_button_replace->hide();
 	hbc_option_replace->hide();
@@ -469,7 +469,7 @@ void FindReplaceBar::popup_search(bool p_show_only) {
 	_show_search(false, p_show_only);
 }
 
-void FindReplaceBar::popup_replace() {
+void EditorFindReplaceBar::popup_replace() {
 	if (!replace_text->is_visible_in_tree()) {
 		replace_text->show();
 		hbc_button_replace->show();
@@ -481,12 +481,12 @@ void FindReplaceBar::popup_replace() {
 	_show_search(is_visible() || text_edit->is_selection_active());
 }
 
-void FindReplaceBar::_search_options_changed(bool p_pressed) {
+void EditorFindReplaceBar::_search_options_changed(bool p_pressed) {
 	results_count = -1;
 	search_current();
 }
 
-void FindReplaceBar::_editor_text_changed() {
+void EditorFindReplaceBar::_editor_text_changed() {
 	results_count = -1;
 	if (is_visible_in_tree()) {
 		preserve_cursor = true;
@@ -495,12 +495,12 @@ void FindReplaceBar::_editor_text_changed() {
 	}
 }
 
-void FindReplaceBar::_search_text_changed(const String &p_text) {
+void EditorFindReplaceBar::_search_text_changed(const String &p_text) {
 	results_count = -1;
 	search_current();
 }
 
-void FindReplaceBar::_search_text_entered(const String &p_text) {
+void EditorFindReplaceBar::_search_text_entered(const String &p_text) {
 	if (Input::get_singleton()->is_key_pressed(KEY_SHIFT)) {
 		search_prev();
 	} else {
@@ -508,63 +508,63 @@ void FindReplaceBar::_search_text_entered(const String &p_text) {
 	}
 }
 
-void FindReplaceBar::_replace_text_entered(const String &p_text) {
+void EditorFindReplaceBar::_replace_text_entered(const String &p_text) {
 	if (selection_only->is_pressed() && text_edit->is_selection_active()) {
 		_replace_all();
 		_hide_bar();
 	}
 }
 
-String FindReplaceBar::get_search_text() const {
+String EditorFindReplaceBar::get_search_text() const {
 	return search_text->get_text();
 }
 
-String FindReplaceBar::get_replace_text() const {
+String EditorFindReplaceBar::get_replace_text() const {
 	return replace_text->get_text();
 }
 
-bool FindReplaceBar::is_case_sensitive() const {
+bool EditorFindReplaceBar::is_case_sensitive() const {
 	return case_sensitive->is_pressed();
 }
 
-bool FindReplaceBar::is_whole_words() const {
+bool EditorFindReplaceBar::is_whole_words() const {
 	return whole_words->is_pressed();
 }
 
-bool FindReplaceBar::is_selection_only() const {
+bool EditorFindReplaceBar::is_selection_only() const {
 	return selection_only->is_pressed();
 }
 
-void FindReplaceBar::set_error(const String &p_label) {
+void EditorFindReplaceBar::set_error(const String &p_label) {
 	emit_signal("error", p_label);
 }
 
-void FindReplaceBar::set_text_edit(TextEdit *p_text_edit) {
+void EditorFindReplaceBar::set_text_edit(TextEdit *p_text_edit) {
 	results_count = -1;
 	text_edit = p_text_edit;
 	text_edit->connect("text_changed", this, "_editor_text_changed");
 }
 
-void FindReplaceBar::_bind_methods() {
-	ClassDB::bind_method("_unhandled_input", &FindReplaceBar::_unhandled_input);
+void EditorFindReplaceBar::_bind_methods() {
+	ClassDB::bind_method("_unhandled_input", &EditorFindReplaceBar::_unhandled_input);
 
-	ClassDB::bind_method("_editor_text_changed", &FindReplaceBar::_editor_text_changed);
-	ClassDB::bind_method("_search_text_changed", &FindReplaceBar::_search_text_changed);
-	ClassDB::bind_method("_search_text_entered", &FindReplaceBar::_search_text_entered);
-	ClassDB::bind_method("_replace_text_entered", &FindReplaceBar::_replace_text_entered);
-	ClassDB::bind_method("_search_current", &FindReplaceBar::search_current);
-	ClassDB::bind_method("_search_next", &FindReplaceBar::search_next);
-	ClassDB::bind_method("_search_prev", &FindReplaceBar::search_prev);
-	ClassDB::bind_method("_replace_pressed", &FindReplaceBar::_replace);
-	ClassDB::bind_method("_replace_all_pressed", &FindReplaceBar::_replace_all);
-	ClassDB::bind_method("_search_options_changed", &FindReplaceBar::_search_options_changed);
-	ClassDB::bind_method("_hide_pressed", &FindReplaceBar::_hide_bar);
+	ClassDB::bind_method("_editor_text_changed", &EditorFindReplaceBar::_editor_text_changed);
+	ClassDB::bind_method("_search_text_changed", &EditorFindReplaceBar::_search_text_changed);
+	ClassDB::bind_method("_search_text_entered", &EditorFindReplaceBar::_search_text_entered);
+	ClassDB::bind_method("_replace_text_entered", &EditorFindReplaceBar::_replace_text_entered);
+	ClassDB::bind_method("_search_current", &EditorFindReplaceBar::search_current);
+	ClassDB::bind_method("_search_next", &EditorFindReplaceBar::search_next);
+	ClassDB::bind_method("_search_prev", &EditorFindReplaceBar::search_prev);
+	ClassDB::bind_method("_replace_pressed", &EditorFindReplaceBar::_replace);
+	ClassDB::bind_method("_replace_all_pressed", &EditorFindReplaceBar::_replace_all);
+	ClassDB::bind_method("_search_options_changed", &EditorFindReplaceBar::_search_options_changed);
+	ClassDB::bind_method("_hide_pressed", &EditorFindReplaceBar::_hide_bar);
 
 	ADD_SIGNAL(MethodInfo("search"));
 	ADD_SIGNAL(MethodInfo("error"));
 }
 
-FindReplaceBar::FindReplaceBar() {
+EditorFindReplaceBar::EditorFindReplaceBar() {
 	results_count = -1;
 	replace_all_mode = false;
 	preserve_cursor = false;

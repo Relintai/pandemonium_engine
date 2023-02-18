@@ -705,7 +705,7 @@ ShaderEditor::ShaderEditor(EditorNode *p_node) {
 	hbc->add_theme_style_override("panel", p_node->get_gui_base()->get_theme_stylebox("ScriptEditorPanel", "EditorStyles"));
 	main_container->add_child(shader_editor);
 
-	goto_line_dialog = memnew(GotoLineDialog);
+	goto_line_dialog = memnew(EditorGotoLineDialog);
 	add_child(goto_line_dialog);
 
 	disk_changed = memnew(ConfirmationDialog);

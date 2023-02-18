@@ -71,7 +71,7 @@
 
 // This function should be used to handle shortcuts that could otherwise
 // be handled too late if they weren't handled here.
-void CodeTextEditor::_input(const Ref<InputEvent> &event) {
+void EditorCodeTextEditor::_input(const Ref<InputEvent> &event) {
 	const Ref<InputEventKey> key_event = event;
 	if (!key_event.is_valid() || !key_event->is_pressed()) {
 		return;
@@ -99,7 +99,7 @@ void CodeTextEditor::_input(const Ref<InputEvent> &event) {
 	}
 }
 
-void CodeTextEditor::_text_editor_gui_input(const Ref<InputEvent> &p_event) {
+void EditorCodeTextEditor::_text_editor_gui_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventMouseButton> mb = p_event;
 
 	if (mb.is_valid()) {
@@ -145,23 +145,23 @@ void CodeTextEditor::_text_editor_gui_input(const Ref<InputEvent> &p_event) {
 	}
 }
 
-void CodeTextEditor::_zoom_in() {
+void EditorCodeTextEditor::_zoom_in() {
 	font_resize_val += MAX(EDSCALE, 1.0f);
 	_zoom_changed();
 }
 
-void CodeTextEditor::_zoom_out() {
+void EditorCodeTextEditor::_zoom_out() {
 	font_resize_val -= MAX(EDSCALE, 1.0f);
 	_zoom_changed();
 }
 
-void CodeTextEditor::_zoom_changed() {
+void EditorCodeTextEditor::_zoom_changed() {
 	if (font_resize_timer->get_time_left() == 0) {
 		font_resize_timer->start();
 	}
 }
 
-void CodeTextEditor::_reset_zoom() {
+void EditorCodeTextEditor::_reset_zoom() {
 	Ref<DynamicFont> font = text_editor->get_theme_font("font"); // Reset source font size to default.
 
 	if (font.is_valid()) {
@@ -170,7 +170,7 @@ void CodeTextEditor::_reset_zoom() {
 	}
 }
 
-void CodeTextEditor::_line_col_changed() {
+void EditorCodeTextEditor::_line_col_changed() {
 	String line = text_editor->get_line(text_editor->cursor_get_line());
 
 	int positional_column = 0;
@@ -190,7 +190,7 @@ void CodeTextEditor::_line_col_changed() {
 	line_and_col_txt->set_text(sb.as_string());
 }
 
-void CodeTextEditor::_text_changed() {
+void EditorCodeTextEditor::_text_changed() {
 	if (text_editor->is_insert_text_operation()) {
 		code_complete_timer->start();
 	}
@@ -198,14 +198,14 @@ void CodeTextEditor::_text_changed() {
 	idle->start();
 }
 
-void CodeTextEditor::_code_complete_timer_timeout() {
+void EditorCodeTextEditor::_code_complete_timer_timeout() {
 	if (!is_visible_in_tree()) {
 		return;
 	}
 	text_editor->query_code_comple();
 }
 
-void CodeTextEditor::_complete_request() {
+void EditorCodeTextEditor::_complete_request() {
 	List<ScriptCodeCompletionOption> entries;
 	String ctext = text_editor->get_text_for_completion();
 	_code_complete_script(ctext, &entries);
@@ -223,7 +223,7 @@ void CodeTextEditor::_complete_request() {
 	text_editor->code_complete(entries, forced);
 }
 
-Ref<Texture> CodeTextEditor::_get_completion_icon(const ScriptCodeCompletionOption &p_option) {
+Ref<Texture> EditorCodeTextEditor::_get_completion_icon(const ScriptCodeCompletionOption &p_option) {
 	Ref<Texture> tex;
 	switch (p_option.kind) {
 		case ScriptCodeCompletionOption::KIND_CLASS: {
@@ -267,13 +267,13 @@ Ref<Texture> CodeTextEditor::_get_completion_icon(const ScriptCodeCompletionOpti
 	return tex;
 }
 
-void CodeTextEditor::_font_resize_timeout() {
+void EditorCodeTextEditor::_font_resize_timeout() {
 	if (_add_font_size(font_resize_val)) {
 		font_resize_val = 0;
 	}
 }
 
-bool CodeTextEditor::_add_font_size(int p_delta) {
+bool EditorCodeTextEditor::_add_font_size(int p_delta) {
 	Ref<DynamicFont> font = text_editor->get_theme_font("font");
 
 	if (font.is_valid()) {
@@ -290,7 +290,7 @@ bool CodeTextEditor::_add_font_size(int p_delta) {
 	}
 }
 
-void CodeTextEditor::update_editor_settings() {
+void EditorCodeTextEditor::update_editor_settings() {
 	text_editor->set_syntax_coloring(EditorSettings::get_singleton()->get("text_editor/highlighting/syntax_highlighting"));
 	text_editor->set_highlight_all_occurrences(EditorSettings::get_singleton()->get("text_editor/highlighting/highlight_all_occurrences"));
 	text_editor->set_highlight_current_line(EditorSettings::get_singleton()->get("text_editor/highlighting/highlight_current_line"));
@@ -322,7 +322,7 @@ void CodeTextEditor::update_editor_settings() {
 	text_editor->set_auto_brace_completion(EditorSettings::get_singleton()->get("text_editor/completion/auto_brace_complete"));
 }
 
-void CodeTextEditor::trim_trailing_whitespace() {
+void EditorCodeTextEditor::trim_trailing_whitespace() {
 	bool trimed_whitespace = false;
 	for (int i = 0; i < text_editor->get_line_count(); i++) {
 		String line = text_editor->get_line(i);
@@ -349,7 +349,7 @@ void CodeTextEditor::trim_trailing_whitespace() {
 	}
 }
 
-void CodeTextEditor::insert_final_newline() {
+void EditorCodeTextEditor::insert_final_newline() {
 	int final_line = text_editor->get_line_count() - 1;
 
 	String line = text_editor->get_line(final_line);
@@ -367,7 +367,7 @@ void CodeTextEditor::insert_final_newline() {
 	}
 }
 
-void CodeTextEditor::convert_indent_to_spaces() {
+void EditorCodeTextEditor::convert_indent_to_spaces() {
 	int indent_size = EditorSettings::get_singleton()->get("text_editor/indent/size");
 	String indent = "";
 
@@ -411,7 +411,7 @@ void CodeTextEditor::convert_indent_to_spaces() {
 	}
 }
 
-void CodeTextEditor::convert_indent_to_tabs() {
+void EditorCodeTextEditor::convert_indent_to_tabs() {
 	int indent_size = EditorSettings::get_singleton()->get("text_editor/indent/size");
 	indent_size -= 1;
 
@@ -460,7 +460,7 @@ void CodeTextEditor::convert_indent_to_tabs() {
 	}
 }
 
-void CodeTextEditor::convert_case(CaseStyle p_case) {
+void EditorCodeTextEditor::convert_case(CaseStyle p_case) {
 	if (!text_editor->is_selection_active()) {
 		return;
 	}
@@ -505,7 +505,7 @@ void CodeTextEditor::convert_case(CaseStyle p_case) {
 	text_editor->end_complex_operation();
 }
 
-void CodeTextEditor::move_lines_up() {
+void EditorCodeTextEditor::move_lines_up() {
 	text_editor->begin_complex_operation();
 	if (text_editor->is_selection_active()) {
 		int from_line = text_editor->get_selection_from_line();
@@ -551,7 +551,7 @@ void CodeTextEditor::move_lines_up() {
 	text_editor->update();
 }
 
-void CodeTextEditor::move_lines_down() {
+void EditorCodeTextEditor::move_lines_down() {
 	text_editor->begin_complex_operation();
 	if (text_editor->is_selection_active()) {
 		int from_line = text_editor->get_selection_from_line();
@@ -597,7 +597,7 @@ void CodeTextEditor::move_lines_down() {
 	text_editor->update();
 }
 
-void CodeTextEditor::_delete_line(int p_line) {
+void EditorCodeTextEditor::_delete_line(int p_line) {
 	// this is currently intended to be called within delete_lines()
 	// so `begin_complex_operation` is omitted here
 	text_editor->set_line(p_line, "");
@@ -612,7 +612,7 @@ void CodeTextEditor::_delete_line(int p_line) {
 	text_editor->cursor_set_line(p_line);
 }
 
-void CodeTextEditor::delete_lines() {
+void EditorCodeTextEditor::delete_lines() {
 	text_editor->begin_complex_operation();
 	if (text_editor->is_selection_active()) {
 		int to_line = text_editor->get_selection_to_line();
@@ -630,7 +630,7 @@ void CodeTextEditor::delete_lines() {
 	text_editor->end_complex_operation();
 }
 
-void CodeTextEditor::duplicate_selection() {
+void EditorCodeTextEditor::duplicate_selection() {
 	const int cursor_column = text_editor->cursor_get_column();
 	int from_line = text_editor->cursor_get_line();
 	int to_line = text_editor->cursor_get_line();
@@ -674,7 +674,7 @@ void CodeTextEditor::duplicate_selection() {
 	text_editor->update();
 }
 
-void CodeTextEditor::toggle_inline_comment(const String &delimiter) {
+void EditorCodeTextEditor::toggle_inline_comment(const String &delimiter) {
 	text_editor->begin_complex_operation();
 	if (text_editor->is_selection_active()) {
 		int begin = text_editor->get_selection_from_line();
@@ -751,33 +751,33 @@ void CodeTextEditor::toggle_inline_comment(const String &delimiter) {
 	text_editor->update();
 }
 
-void CodeTextEditor::goto_line(int p_line) {
+void EditorCodeTextEditor::goto_line(int p_line) {
 	text_editor->deselect();
 	text_editor->unfold_line(p_line);
 	text_editor->call_deferred("cursor_set_line", p_line);
 }
 
-void CodeTextEditor::goto_line_selection(int p_line, int p_begin, int p_end) {
+void EditorCodeTextEditor::goto_line_selection(int p_line, int p_begin, int p_end) {
 	text_editor->unfold_line(p_line);
 	text_editor->call_deferred("cursor_set_line", p_line);
 	text_editor->call_deferred("cursor_set_column", p_begin);
 	text_editor->select(p_line, p_begin, p_line, p_end);
 }
 
-void CodeTextEditor::goto_line_centered(int p_line) {
+void EditorCodeTextEditor::goto_line_centered(int p_line) {
 	goto_line(p_line);
 	text_editor->call_deferred("center_viewport_to_cursor");
 }
 
-void CodeTextEditor::set_executing_line(int p_line) {
+void EditorCodeTextEditor::set_executing_line(int p_line) {
 	text_editor->set_executing_line(p_line);
 }
 
-void CodeTextEditor::clear_executing_line() {
+void EditorCodeTextEditor::clear_executing_line() {
 	text_editor->clear_executing_line();
 }
 
-Variant CodeTextEditor::get_edit_state() {
+Variant EditorCodeTextEditor::get_edit_state() {
 	Dictionary state;
 
 	state["scroll_position"] = text_editor->get_v_scroll();
@@ -806,7 +806,7 @@ Variant CodeTextEditor::get_edit_state() {
 	return state;
 }
 
-void CodeTextEditor::set_edit_state(const Variant &p_state) {
+void EditorCodeTextEditor::set_edit_state(const Variant &p_state) {
 	Dictionary state = p_state;
 
 	/* update the row first as it sets the column to 0 */
@@ -841,7 +841,7 @@ void CodeTextEditor::set_edit_state(const Variant &p_state) {
 	}
 }
 
-void CodeTextEditor::set_error(const String &p_error) {
+void EditorCodeTextEditor::set_error(const String &p_error) {
 	error->set_text(p_error);
 	if (p_error != "") {
 		error->set_default_cursor_shape(CURSOR_POINTING_HAND);
@@ -850,12 +850,12 @@ void CodeTextEditor::set_error(const String &p_error) {
 	}
 }
 
-void CodeTextEditor::set_error_pos(int p_line, int p_column) {
+void EditorCodeTextEditor::set_error_pos(int p_line, int p_column) {
 	error_line = p_line;
 	error_column = p_column;
 }
 
-void CodeTextEditor::goto_error() {
+void EditorCodeTextEditor::goto_error() {
 	if (error->get_text() != "") {
 		text_editor->cursor_set_line(error_line);
 		text_editor->cursor_set_column(error_column);
@@ -863,7 +863,7 @@ void CodeTextEditor::goto_error() {
 	}
 }
 
-void CodeTextEditor::_update_font() {
+void EditorCodeTextEditor::_update_font() {
 	text_editor->add_theme_font_override("font", get_theme_font("source", "EditorFonts"));
 
 	error->add_theme_font_override("font", get_theme_font("status_source", "EditorFonts"));
@@ -880,7 +880,7 @@ void CodeTextEditor::_update_font() {
 	}
 }
 
-void CodeTextEditor::_on_settings_change() {
+void EditorCodeTextEditor::_on_settings_change() {
 	_update_font();
 
 	font_size = EditorSettings::get_singleton()->get("interface/editor/code_font_size");
@@ -900,43 +900,43 @@ void CodeTextEditor::_on_settings_change() {
 	idle->set_wait_time(EDITOR_GET("text_editor/completion/idle_parse_delay"));
 }
 
-void CodeTextEditor::_text_changed_idle_timeout() {
+void EditorCodeTextEditor::_text_changed_idle_timeout() {
 	_validate_script();
 	emit_signal("validate_script");
 }
 
-void CodeTextEditor::validate_script() {
+void EditorCodeTextEditor::validate_script() {
 	idle->start();
 }
 
-void CodeTextEditor::_warning_label_gui_input(const Ref<InputEvent> &p_event) {
+void EditorCodeTextEditor::_warning_label_gui_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventMouseButton> mb = p_event;
 	if (mb.is_valid() && mb->is_pressed() && mb->get_button_index() == BUTTON_LEFT) {
 		_warning_button_pressed();
 	}
 }
 
-void CodeTextEditor::_warning_button_pressed() {
+void EditorCodeTextEditor::_warning_button_pressed() {
 	_set_show_warnings_panel(!is_warnings_panel_opened);
 }
 
-void CodeTextEditor::_set_show_warnings_panel(bool p_show) {
+void EditorCodeTextEditor::_set_show_warnings_panel(bool p_show) {
 	is_warnings_panel_opened = p_show;
 	emit_signal("show_warnings_panel", p_show);
 }
 
-void CodeTextEditor::_toggle_scripts_pressed() {
+void EditorCodeTextEditor::_toggle_scripts_pressed() {
 	toggle_scripts_button->set_icon(ScriptEditor::get_singleton()->toggle_scripts_panel() ? get_theme_icon("Back", "EditorIcons") : get_theme_icon("Forward", "EditorIcons"));
 }
 
-void CodeTextEditor::_error_pressed(const Ref<InputEvent> &p_event) {
+void EditorCodeTextEditor::_error_pressed(const Ref<InputEvent> &p_event) {
 	Ref<InputEventMouseButton> mb = p_event;
 	if (mb.is_valid() && mb->is_pressed() && mb->get_button_index() == BUTTON_LEFT) {
 		goto_error();
 	}
 }
 
-void CodeTextEditor::_notification(int p_what) {
+void EditorCodeTextEditor::_notification(int p_what) {
 	switch (p_what) {
 		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
 			_load_theme_settings();
@@ -963,7 +963,7 @@ void CodeTextEditor::_notification(int p_what) {
 	}
 }
 
-void CodeTextEditor::set_warning_nb(int p_warning_nb) {
+void EditorCodeTextEditor::set_warning_nb(int p_warning_nb) {
 	warning_count_label->set_text(itos(p_warning_nb));
 	warning_count_label->set_visible(p_warning_nb > 0);
 	warning_button->set_visible(p_warning_nb > 0);
@@ -972,12 +972,12 @@ void CodeTextEditor::set_warning_nb(int p_warning_nb) {
 	}
 }
 
-void CodeTextEditor::toggle_bookmark() {
+void EditorCodeTextEditor::toggle_bookmark() {
 	int line = text_editor->cursor_get_line();
 	text_editor->set_line_as_bookmark(line, !text_editor->is_line_set_as_bookmark(line));
 }
 
-void CodeTextEditor::goto_next_bookmark() {
+void EditorCodeTextEditor::goto_next_bookmark() {
 	List<int> bmarks;
 	text_editor->get_bookmarks(&bmarks);
 	if (bmarks.size() <= 0) {
@@ -1002,7 +1002,7 @@ void CodeTextEditor::goto_next_bookmark() {
 	}
 }
 
-void CodeTextEditor::goto_prev_bookmark() {
+void EditorCodeTextEditor::goto_prev_bookmark() {
 	List<int> bmarks;
 	text_editor->get_bookmarks(&bmarks);
 	if (bmarks.size() <= 0) {
@@ -1027,7 +1027,7 @@ void CodeTextEditor::goto_prev_bookmark() {
 	}
 }
 
-void CodeTextEditor::remove_all_bookmarks() {
+void EditorCodeTextEditor::remove_all_bookmarks() {
 	List<int> bmarks;
 	text_editor->get_bookmarks(&bmarks);
 
@@ -1036,41 +1036,41 @@ void CodeTextEditor::remove_all_bookmarks() {
 	}
 }
 
-void CodeTextEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_input"), &CodeTextEditor::_input);
-	ClassDB::bind_method("_text_editor_gui_input", &CodeTextEditor::_text_editor_gui_input);
-	ClassDB::bind_method("_line_col_changed", &CodeTextEditor::_line_col_changed);
-	ClassDB::bind_method("_text_changed", &CodeTextEditor::_text_changed);
-	ClassDB::bind_method("_on_settings_change", &CodeTextEditor::_on_settings_change);
-	ClassDB::bind_method("_text_changed_idle_timeout", &CodeTextEditor::_text_changed_idle_timeout);
-	ClassDB::bind_method("_code_complete_timer_timeout", &CodeTextEditor::_code_complete_timer_timeout);
-	ClassDB::bind_method("_complete_request", &CodeTextEditor::_complete_request);
-	ClassDB::bind_method("_font_resize_timeout", &CodeTextEditor::_font_resize_timeout);
-	ClassDB::bind_method("_error_pressed", &CodeTextEditor::_error_pressed);
-	ClassDB::bind_method("_toggle_scripts_pressed", &CodeTextEditor::_toggle_scripts_pressed);
-	ClassDB::bind_method("_warning_button_pressed", &CodeTextEditor::_warning_button_pressed);
-	ClassDB::bind_method("_warning_label_gui_input", &CodeTextEditor::_warning_label_gui_input);
+void EditorCodeTextEditor::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_input"), &EditorCodeTextEditor::_input);
+	ClassDB::bind_method("_text_editor_gui_input", &EditorCodeTextEditor::_text_editor_gui_input);
+	ClassDB::bind_method("_line_col_changed", &EditorCodeTextEditor::_line_col_changed);
+	ClassDB::bind_method("_text_changed", &EditorCodeTextEditor::_text_changed);
+	ClassDB::bind_method("_on_settings_change", &EditorCodeTextEditor::_on_settings_change);
+	ClassDB::bind_method("_text_changed_idle_timeout", &EditorCodeTextEditor::_text_changed_idle_timeout);
+	ClassDB::bind_method("_code_complete_timer_timeout", &EditorCodeTextEditor::_code_complete_timer_timeout);
+	ClassDB::bind_method("_complete_request", &EditorCodeTextEditor::_complete_request);
+	ClassDB::bind_method("_font_resize_timeout", &EditorCodeTextEditor::_font_resize_timeout);
+	ClassDB::bind_method("_error_pressed", &EditorCodeTextEditor::_error_pressed);
+	ClassDB::bind_method("_toggle_scripts_pressed", &EditorCodeTextEditor::_toggle_scripts_pressed);
+	ClassDB::bind_method("_warning_button_pressed", &EditorCodeTextEditor::_warning_button_pressed);
+	ClassDB::bind_method("_warning_label_gui_input", &EditorCodeTextEditor::_warning_label_gui_input);
 
 	ADD_SIGNAL(MethodInfo("validate_script"));
 	ADD_SIGNAL(MethodInfo("load_theme_settings"));
 	ADD_SIGNAL(MethodInfo("show_warnings_panel"));
 }
 
-void CodeTextEditor::set_code_complete_func(CodeTextEditorCodeCompleteFunc p_code_complete_func, void *p_ud) {
+void EditorCodeTextEditor::set_code_complete_func(EditorCodeTextEditorCodeCompleteFunc p_code_complete_func, void *p_ud) {
 	code_complete_func = p_code_complete_func;
 	code_complete_ud = p_ud;
 }
 
-void CodeTextEditor::show_toggle_scripts_button() {
+void EditorCodeTextEditor::show_toggle_scripts_button() {
 	toggle_scripts_button->show();
 }
 
-void CodeTextEditor::update_toggle_scripts_button() {
+void EditorCodeTextEditor::update_toggle_scripts_button() {
 	toggle_scripts_button->set_icon(ScriptEditor::get_singleton()->is_scripts_panel_toggled() ? get_theme_icon("Back", "EditorIcons") : get_theme_icon("Forward", "EditorIcons"));
 	toggle_scripts_button->set_tooltip(TTR("Toggle Scripts Panel") + " (" + ED_GET_SHORTCUT("script_editor/toggle_scripts_panel")->get_as_text() + ")");
 }
 
-CodeTextEditor::CodeTextEditor() {
+EditorCodeTextEditor::EditorCodeTextEditor() {
 	code_complete_func = nullptr;
 	ED_SHORTCUT("script_editor/zoom_in", TTR("Zoom In"), KEY_MASK_CMD | KEY_EQUAL);
 	ED_SHORTCUT("script_editor/zoom_out", TTR("Zoom Out"), KEY_MASK_CMD | KEY_MINUS);
@@ -1081,7 +1081,7 @@ CodeTextEditor::CodeTextEditor() {
 	text_editor->set_v_size_flags(SIZE_EXPAND_FILL);
 
 	// Added second so it opens at the bottom, so it won't shift the entire text editor when opening.
-	find_replace_bar = memnew(FindReplaceBar);
+	find_replace_bar = memnew(EditorFindReplaceBar);
 	add_child(find_replace_bar);
 	find_replace_bar->set_h_size_flags(SIZE_EXPAND_FILL);
 	find_replace_bar->hide();

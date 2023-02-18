@@ -55,11 +55,11 @@ class TextFile;
 class Texture;
 struct Vector2;
 
-class TextEditor : public ScriptEditorBase {
-	GDCLASS(TextEditor, ScriptEditorBase);
+class TextEditor : public EditorScriptEditorBase {
+	GDCLASS(TextEditor, EditorScriptEditorBase);
 
 private:
-	CodeTextEditor *code_editor;
+	EditorCodeTextEditor *code_editor;
 
 	Ref<TextFile> text_file;
 	bool editor_enabled;
@@ -71,7 +71,7 @@ private:
 	PopupMenu *bookmarks_menu;
 	PopupMenu *context_menu;
 
-	GotoLineDialog *goto_line_dialog;
+	EditorGotoLineDialog *goto_line_dialog;
 
 	struct ColorsCache {
 		Color font_color;
@@ -131,7 +131,7 @@ protected:
 	void _change_syntax_highlighter(int p_idx);
 	void _load_theme_settings();
 
-	void _convert_case(CodeTextEditor::CaseStyle p_case);
+	void _convert_case(EditorCodeTextEditor::CaseStyle p_case);
 
 	void _validate_script();
 

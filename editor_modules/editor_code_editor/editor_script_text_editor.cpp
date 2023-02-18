@@ -76,7 +76,7 @@
 #include "editor_goto_line_dialog.h"
 #include "editor_find_replace_bar.h"
 
-Vector<String> ScriptTextEditor::get_functions() {
+Vector<String> EditorScriptTextEditor::get_functions() {
 	String errortxt;
 	int line = -1, col;
 	TextEdit *te = code_editor->get_text_edit();
@@ -94,7 +94,7 @@ Vector<String> ScriptTextEditor::get_functions() {
 	return functions;
 }
 
-void ScriptTextEditor::apply_code() {
+void EditorScriptTextEditor::apply_code() {
 	if (script.is_null()) {
 		return;
 	}
@@ -103,11 +103,11 @@ void ScriptTextEditor::apply_code() {
 	_update_member_keywords();
 }
 
-RES ScriptTextEditor::get_edited_resource() const {
+RES EditorScriptTextEditor::get_edited_resource() const {
 	return script;
 }
 
-void ScriptTextEditor::set_edited_resource(const RES &p_res) {
+void EditorScriptTextEditor::set_edited_resource(const RES &p_res) {
 	ERR_FAIL_COND(script.is_valid());
 	ERR_FAIL_COND(p_res.is_null());
 
@@ -121,7 +121,7 @@ void ScriptTextEditor::set_edited_resource(const RES &p_res) {
 	code_editor->update_line_and_column();
 }
 
-void ScriptTextEditor::enable_editor() {
+void EditorScriptTextEditor::enable_editor() {
 	if (editor_enabled) {
 		return;
 	}
@@ -134,7 +134,7 @@ void ScriptTextEditor::enable_editor() {
 	_validate_script();
 }
 
-void ScriptTextEditor::_update_member_keywords() {
+void EditorScriptTextEditor::_update_member_keywords() {
 	member_keywords.clear();
 	code_editor->get_text_edit()->clear_member_keywords();
 	Color member_variable_color = EDITOR_GET("text_editor/highlighting/member_variable_color");
@@ -167,7 +167,7 @@ void ScriptTextEditor::_update_member_keywords() {
 	}
 }
 
-void ScriptTextEditor::_load_theme_settings() {
+void EditorScriptTextEditor::_load_theme_settings() {
 	TextEdit *text_edit = code_editor->get_text_edit();
 
 	text_edit->clear_colors();
@@ -254,7 +254,7 @@ void ScriptTextEditor::_load_theme_settings() {
 	}
 }
 
-void ScriptTextEditor::_set_theme_for_script() {
+void EditorScriptTextEditor::_set_theme_for_script() {
 	if (!theme_loaded) {
 		return;
 	}
@@ -358,11 +358,11 @@ void ScriptTextEditor::_set_theme_for_script() {
 	}
 }
 
-void ScriptTextEditor::_show_warnings_panel(bool p_show) {
+void EditorScriptTextEditor::_show_warnings_panel(bool p_show) {
 	warnings_panel->set_visible(p_show);
 }
 
-void ScriptTextEditor::_warning_clicked(Variant p_line) {
+void EditorScriptTextEditor::_warning_clicked(Variant p_line) {
 	if (p_line.get_type() == Variant::INT) {
 		goto_line_centered(p_line.operator int64_t());
 	} else if (p_line.get_type() == Variant::DICTIONARY) {
@@ -372,7 +372,7 @@ void ScriptTextEditor::_warning_clicked(Variant p_line) {
 	}
 }
 
-void ScriptTextEditor::reload_text() {
+void EditorScriptTextEditor::reload_text() {
 	ERR_FAIL_COND(script.is_null());
 
 	TextEdit *te = code_editor->get_text_edit();
@@ -392,7 +392,7 @@ void ScriptTextEditor::reload_text() {
 	code_editor->update_line_and_column();
 }
 
-void ScriptTextEditor::add_callback(const String &p_function, PoolStringArray p_args) {
+void EditorScriptTextEditor::add_callback(const String &p_function, PoolStringArray p_args) {
 	String code = code_editor->get_text_edit()->get_text();
 	int pos = script->get_language()->find_function(p_function, code);
 	if (pos == -1) {
@@ -409,23 +409,23 @@ void ScriptTextEditor::add_callback(const String &p_function, PoolStringArray p_
 	code_editor->get_text_edit()->cursor_set_column(1);
 }
 
-bool ScriptTextEditor::show_members_overview() {
+bool EditorScriptTextEditor::show_members_overview() {
 	return true;
 }
 
-void ScriptTextEditor::update_settings() {
+void EditorScriptTextEditor::update_settings() {
 	code_editor->update_editor_settings();
 }
 
-bool ScriptTextEditor::is_unsaved() {
+bool EditorScriptTextEditor::is_unsaved() {
 	return code_editor->get_text_edit()->get_version() != code_editor->get_text_edit()->get_saved_version();
 }
 
-Variant ScriptTextEditor::get_edit_state() {
+Variant EditorScriptTextEditor::get_edit_state() {
 	return code_editor->get_edit_state();
 }
 
-void ScriptTextEditor::set_edit_state(const Variant &p_state) {
+void EditorScriptTextEditor::set_edit_state(const Variant &p_state) {
 	code_editor->set_edit_state(p_state);
 
 	Dictionary state = p_state;
@@ -443,55 +443,55 @@ void ScriptTextEditor::set_edit_state(const Variant &p_state) {
 	}
 }
 
-void ScriptTextEditor::_convert_case(CodeTextEditor::CaseStyle p_case) {
+void EditorScriptTextEditor::_convert_case(EditorCodeTextEditor::CaseStyle p_case) {
 	code_editor->convert_case(p_case);
 }
 
-void ScriptTextEditor::trim_trailing_whitespace() {
+void EditorScriptTextEditor::trim_trailing_whitespace() {
 	code_editor->trim_trailing_whitespace();
 }
 
-void ScriptTextEditor::insert_final_newline() {
+void EditorScriptTextEditor::insert_final_newline() {
 	code_editor->insert_final_newline();
 }
 
-void ScriptTextEditor::convert_indent_to_spaces() {
+void EditorScriptTextEditor::convert_indent_to_spaces() {
 	code_editor->convert_indent_to_spaces();
 }
 
-void ScriptTextEditor::convert_indent_to_tabs() {
+void EditorScriptTextEditor::convert_indent_to_tabs() {
 	code_editor->convert_indent_to_tabs();
 }
 
-void ScriptTextEditor::tag_saved_version() {
+void EditorScriptTextEditor::tag_saved_version() {
 	code_editor->get_text_edit()->tag_saved_version();
 }
 
-void ScriptTextEditor::goto_line(int p_line, bool p_with_error) {
+void EditorScriptTextEditor::goto_line(int p_line, bool p_with_error) {
 	code_editor->goto_line(p_line);
 }
 
-void ScriptTextEditor::goto_line_selection(int p_line, int p_begin, int p_end) {
+void EditorScriptTextEditor::goto_line_selection(int p_line, int p_begin, int p_end) {
 	code_editor->goto_line_selection(p_line, p_begin, p_end);
 }
 
-void ScriptTextEditor::goto_line_centered(int p_line) {
+void EditorScriptTextEditor::goto_line_centered(int p_line) {
 	code_editor->goto_line_centered(p_line);
 }
 
-void ScriptTextEditor::set_executing_line(int p_line) {
+void EditorScriptTextEditor::set_executing_line(int p_line) {
 	code_editor->set_executing_line(p_line);
 }
 
-void ScriptTextEditor::clear_executing_line() {
+void EditorScriptTextEditor::clear_executing_line() {
 	code_editor->clear_executing_line();
 }
 
-void ScriptTextEditor::ensure_focus() {
+void EditorScriptTextEditor::ensure_focus() {
 	code_editor->get_text_edit()->grab_focus();
 }
 
-String ScriptTextEditor::get_name() {
+String EditorScriptTextEditor::get_name() {
 	String name;
 
 	name = script->get_path().get_file();
@@ -514,7 +514,7 @@ String ScriptTextEditor::get_name() {
 	return name;
 }
 
-Ref<Texture> ScriptTextEditor::get_icon() {
+Ref<Texture> EditorScriptTextEditor::get_icon() {
 	if (get_parent_control() && get_parent_control()->has_theme_icon(script->get_class(), "EditorIcons")) {
 		return get_parent_control()->get_theme_icon(script->get_class(), "EditorIcons");
 	}
@@ -522,7 +522,7 @@ Ref<Texture> ScriptTextEditor::get_icon() {
 	return Ref<Texture>();
 }
 
-void ScriptTextEditor::_validate_script() {
+void EditorScriptTextEditor::_validate_script() {
 	String errortxt;
 	int line = -1, col;
 	TextEdit *te = code_editor->get_text_edit();
@@ -639,7 +639,7 @@ void ScriptTextEditor::_validate_script() {
 	emit_signal("edited_script_changed");
 }
 
-void ScriptTextEditor::_update_bookmark_list() {
+void EditorScriptTextEditor::_update_bookmark_list() {
 	bookmarks_menu->clear();
 	bookmarks_menu->set_size(Size2(1, 1));
 
@@ -670,7 +670,7 @@ void ScriptTextEditor::_update_bookmark_list() {
 	}
 }
 
-void ScriptTextEditor::_bookmark_item_pressed(int p_idx) {
+void EditorScriptTextEditor::_bookmark_item_pressed(int p_idx) {
 	if (p_idx < 4) { // Any item before the separator.
 		_edit_option(bookmarks_menu->get_item_id(p_idx));
 	} else {
@@ -771,12 +771,12 @@ void ScriptEditor::_update_modified_scripts_for_external_editor(Ref<Script> p_fo
 	}
 }
 
-void ScriptTextEditor::_code_complete_scripts(void *p_ud, const String &p_code, List<ScriptCodeCompletionOption> *r_options, bool &r_force) {
-	ScriptTextEditor *ste = (ScriptTextEditor *)p_ud;
+void EditorScriptTextEditor::_code_complete_scripts(void *p_ud, const String &p_code, List<ScriptCodeCompletionOption> *r_options, bool &r_force) {
+	EditorScriptTextEditor *ste = (EditorScriptTextEditor *)p_ud;
 	ste->_code_complete_script(p_code, r_options, r_force);
 }
 
-void ScriptTextEditor::_code_complete_script(const String &p_code, List<ScriptCodeCompletionOption> *r_options, bool &r_force) {
+void EditorScriptTextEditor::_code_complete_script(const String &p_code, List<ScriptCodeCompletionOption> *r_options, bool &r_force) {
 	if (color_panel->is_visible_in_tree()) {
 		return;
 	}
@@ -791,7 +791,7 @@ void ScriptTextEditor::_code_complete_script(const String &p_code, List<ScriptCo
 	}
 }
 
-void ScriptTextEditor::_update_breakpoint_list() {
+void EditorScriptTextEditor::_update_breakpoint_list() {
 	breakpoints_menu->clear();
 	breakpoints_menu->set_size(Size2(1, 1));
 
@@ -822,7 +822,7 @@ void ScriptTextEditor::_update_breakpoint_list() {
 	}
 }
 
-void ScriptTextEditor::_breakpoint_item_pressed(int p_idx) {
+void EditorScriptTextEditor::_breakpoint_item_pressed(int p_idx) {
 	if (p_idx < 4) { // Any item before the separator.
 		_edit_option(breakpoints_menu->get_item_id(p_idx));
 	} else {
@@ -831,11 +831,11 @@ void ScriptTextEditor::_breakpoint_item_pressed(int p_idx) {
 	}
 }
 
-void ScriptTextEditor::_breakpoint_toggled(int p_row) {
+void EditorScriptTextEditor::_breakpoint_toggled(int p_row) {
 	ScriptEditor::get_singleton()->get_debugger()->set_breakpoint(script->get_path(), p_row + 1, code_editor->get_text_edit()->is_line_set_as_breakpoint(p_row));
 }
 
-void ScriptTextEditor::_lookup_symbol(const String &p_symbol, int p_row, int p_column) {
+void EditorScriptTextEditor::_lookup_symbol(const String &p_symbol, int p_row, int p_column) {
 	Node *base = get_tree()->get_edited_scene_root();
 	if (base) {
 		base = _find_node_for_script(base, base, script);
@@ -949,19 +949,19 @@ void ScriptTextEditor::_lookup_symbol(const String &p_symbol, int p_row, int p_c
 	}
 }
 
-String ScriptTextEditor::_get_absolute_path(const String &rel_path) {
+String EditorScriptTextEditor::_get_absolute_path(const String &rel_path) {
 	String base_path = script->get_path().get_base_dir();
 	String path = base_path.plus_file(rel_path);
 	return path.replace("///", "//").simplify_path();
 }
 
-void ScriptTextEditor::update_toggle_scripts_button() {
+void EditorScriptTextEditor::update_toggle_scripts_button() {
 	if (code_editor != nullptr) {
 		code_editor->update_toggle_scripts_button();
 	}
 }
 
-void ScriptTextEditor::_update_connected_methods() {
+void EditorScriptTextEditor::_update_connected_methods() {
 	TextEdit *text_edit = code_editor->get_text_edit();
 	text_edit->clear_info_icons();
 	missing_connections.clear();
@@ -1034,7 +1034,7 @@ void ScriptTextEditor::_update_connected_methods() {
 	}
 }
 
-void ScriptTextEditor::_lookup_connections(int p_row, String p_method) {
+void EditorScriptTextEditor::_lookup_connections(int p_row, String p_method) {
 	Node *base = get_tree()->get_edited_scene_root();
 	if (!base) {
 		return;
@@ -1044,7 +1044,7 @@ void ScriptTextEditor::_lookup_connections(int p_row, String p_method) {
 	connection_info_dialog->popup_connections(p_method, nodes);
 }
 
-void ScriptTextEditor::_edit_option(int p_op) {
+void EditorScriptTextEditor::_edit_option(int p_op) {
 	TextEdit *tx = code_editor->get_text_edit();
 
 	switch (p_op) {
@@ -1159,13 +1159,13 @@ void ScriptTextEditor::_edit_option(int p_op) {
 			color_panel->popup();
 		} break;
 		case EDIT_TO_UPPERCASE: {
-			_convert_case(CodeTextEditor::UPPER);
+			_convert_case(EditorCodeTextEditor::UPPER);
 		} break;
 		case EDIT_TO_LOWERCASE: {
-			_convert_case(CodeTextEditor::LOWER);
+			_convert_case(EditorCodeTextEditor::LOWER);
 		} break;
 		case EDIT_CAPITALIZE: {
-			_convert_case(CodeTextEditor::CAPITALIZE);
+			_convert_case(EditorCodeTextEditor::CAPITALIZE);
 		} break;
 		case EDIT_EVALUATE: {
 			Expression expression;
@@ -1326,7 +1326,7 @@ void ScriptTextEditor::_edit_option(int p_op) {
 	}
 }
 
-void ScriptTextEditor::_edit_option_toggle_inline_comment() {
+void EditorScriptTextEditor::_edit_option_toggle_inline_comment() {
 	if (script.is_null()) {
 		return;
 	}
@@ -1346,12 +1346,12 @@ void ScriptTextEditor::_edit_option_toggle_inline_comment() {
 	code_editor->toggle_inline_comment(delimiter);
 }
 
-void ScriptTextEditor::add_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
+void EditorScriptTextEditor::add_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
 	highlighters[p_highlighter->get_name()] = p_highlighter;
 	highlighter_menu->add_radio_check_item(p_highlighter->get_name());
 }
 
-void ScriptTextEditor::set_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
+void EditorScriptTextEditor::set_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
 	TextEdit *te = code_editor->get_text_edit();
 	te->_set_syntax_highlighting(p_highlighter);
 	if (p_highlighter != nullptr) {
@@ -1361,7 +1361,7 @@ void ScriptTextEditor::set_syntax_highlighter(SyntaxHighlighter *p_highlighter) 
 	}
 }
 
-void ScriptTextEditor::_change_syntax_highlighter(int p_idx) {
+void EditorScriptTextEditor::_change_syntax_highlighter(int p_idx) {
 	RBMap<String, SyntaxHighlighter *>::Element *el = highlighters.front();
 	while (el != nullptr) {
 		highlighter_menu->set_item_checked(highlighter_menu->get_item_idx_from_text(el->key()), false);
@@ -1371,40 +1371,40 @@ void ScriptTextEditor::_change_syntax_highlighter(int p_idx) {
 	set_syntax_highlighter(highlighters[highlighter_menu->get_item_text(p_idx)]);
 }
 
-void ScriptTextEditor::_bind_methods() {
-	ClassDB::bind_method("_validate_script", &ScriptTextEditor::_validate_script);
-	ClassDB::bind_method("_update_bookmark_list", &ScriptTextEditor::_update_bookmark_list);
-	ClassDB::bind_method("_bookmark_item_pressed", &ScriptTextEditor::_bookmark_item_pressed);
-	ClassDB::bind_method("_load_theme_settings", &ScriptTextEditor::_load_theme_settings);
-	ClassDB::bind_method("_update_breakpoint_list", &ScriptTextEditor::_update_breakpoint_list);
-	ClassDB::bind_method("_breakpoint_item_pressed", &ScriptTextEditor::_breakpoint_item_pressed);
-	ClassDB::bind_method("_breakpoint_toggled", &ScriptTextEditor::_breakpoint_toggled);
-	ClassDB::bind_method("_lookup_connections", &ScriptTextEditor::_lookup_connections);
-	ClassDB::bind_method("_update_connected_methods", &ScriptTextEditor::_update_connected_methods);
-	ClassDB::bind_method("_change_syntax_highlighter", &ScriptTextEditor::_change_syntax_highlighter);
-	ClassDB::bind_method("_edit_option", &ScriptTextEditor::_edit_option);
-	ClassDB::bind_method("_goto_line", &ScriptTextEditor::_goto_line);
-	ClassDB::bind_method("_lookup_symbol", &ScriptTextEditor::_lookup_symbol);
-	ClassDB::bind_method("_text_edit_gui_input", &ScriptTextEditor::_text_edit_gui_input);
-	ClassDB::bind_method("_show_warnings_panel", &ScriptTextEditor::_show_warnings_panel);
-	ClassDB::bind_method("_warning_clicked", &ScriptTextEditor::_warning_clicked);
-	ClassDB::bind_method("_color_changed", &ScriptTextEditor::_color_changed);
-	ClassDB::bind_method("_prepare_edit_menu", &ScriptTextEditor::_prepare_edit_menu);
+void EditorScriptTextEditor::_bind_methods() {
+	ClassDB::bind_method("_validate_script", &EditorScriptTextEditor::_validate_script);
+	ClassDB::bind_method("_update_bookmark_list", &EditorScriptTextEditor::_update_bookmark_list);
+	ClassDB::bind_method("_bookmark_item_pressed", &EditorScriptTextEditor::_bookmark_item_pressed);
+	ClassDB::bind_method("_load_theme_settings", &EditorScriptTextEditor::_load_theme_settings);
+	ClassDB::bind_method("_update_breakpoint_list", &EditorScriptTextEditor::_update_breakpoint_list);
+	ClassDB::bind_method("_breakpoint_item_pressed", &EditorScriptTextEditor::_breakpoint_item_pressed);
+	ClassDB::bind_method("_breakpoint_toggled", &EditorScriptTextEditor::_breakpoint_toggled);
+	ClassDB::bind_method("_lookup_connections", &EditorScriptTextEditor::_lookup_connections);
+	ClassDB::bind_method("_update_connected_methods", &EditorScriptTextEditor::_update_connected_methods);
+	ClassDB::bind_method("_change_syntax_highlighter", &EditorScriptTextEditor::_change_syntax_highlighter);
+	ClassDB::bind_method("_edit_option", &EditorScriptTextEditor::_edit_option);
+	ClassDB::bind_method("_goto_line", &EditorScriptTextEditor::_goto_line);
+	ClassDB::bind_method("_lookup_symbol", &EditorScriptTextEditor::_lookup_symbol);
+	ClassDB::bind_method("_text_edit_gui_input", &EditorScriptTextEditor::_text_edit_gui_input);
+	ClassDB::bind_method("_show_warnings_panel", &EditorScriptTextEditor::_show_warnings_panel);
+	ClassDB::bind_method("_warning_clicked", &EditorScriptTextEditor::_warning_clicked);
+	ClassDB::bind_method("_color_changed", &EditorScriptTextEditor::_color_changed);
+	ClassDB::bind_method("_prepare_edit_menu", &EditorScriptTextEditor::_prepare_edit_menu);
 
-	ClassDB::bind_method("get_drag_data_fw", &ScriptTextEditor::get_drag_data_fw);
-	ClassDB::bind_method("can_drop_data_fw", &ScriptTextEditor::can_drop_data_fw);
-	ClassDB::bind_method("drop_data_fw", &ScriptTextEditor::drop_data_fw);
+	ClassDB::bind_method("get_drag_data_fw", &EditorScriptTextEditor::get_drag_data_fw);
+	ClassDB::bind_method("can_drop_data_fw", &EditorScriptTextEditor::can_drop_data_fw);
+	ClassDB::bind_method("drop_data_fw", &EditorScriptTextEditor::drop_data_fw);
 }
 
-Control *ScriptTextEditor::get_edit_menu() {
+Control *EditorScriptTextEditor::get_edit_menu() {
 	return edit_hb;
 }
 
-void ScriptTextEditor::clear_edit_menu() {
+void EditorScriptTextEditor::clear_edit_menu() {
 	memdelete(edit_hb);
 }
 
-void ScriptTextEditor::reload(bool p_soft) {
+void EditorScriptTextEditor::reload(bool p_soft) {
 	TextEdit *te = code_editor->get_text_edit();
 	Ref<Script> scr = script;
 	if (scr.is_null()) {
@@ -1416,22 +1416,22 @@ void ScriptTextEditor::reload(bool p_soft) {
 	scr->get_language()->reload_tool_script(scr, soft);
 }
 
-void ScriptTextEditor::get_breakpoints(List<int> *p_breakpoints) {
+void EditorScriptTextEditor::get_breakpoints(List<int> *p_breakpoints) {
 	code_editor->get_text_edit()->get_breakpoints(p_breakpoints);
 }
 
-void ScriptTextEditor::set_tooltip_request_func(String p_method, Object *p_obj) {
+void EditorScriptTextEditor::set_tooltip_request_func(String p_method, Object *p_obj) {
 	code_editor->get_text_edit()->set_tooltip_request_func(p_obj, p_method, this);
 }
 
-void ScriptTextEditor::set_debugger_active(bool p_active) {
+void EditorScriptTextEditor::set_debugger_active(bool p_active) {
 }
 
-Variant ScriptTextEditor::get_drag_data_fw(const Point2 &p_point, Control *p_from) {
+Variant EditorScriptTextEditor::get_drag_data_fw(const Point2 &p_point, Control *p_from) {
 	return Variant();
 }
 
-bool ScriptTextEditor::can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
+bool EditorScriptTextEditor::can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
 	Dictionary d = p_data;
 	if (d.has("type") &&
 			(String(d["type"]) == "resource" ||
@@ -1467,7 +1467,7 @@ static Node *_find_script_node(Node *p_edited_scene, Node *p_current_node, const
 	return nullptr;
 }
 
-void ScriptTextEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
+void EditorScriptTextEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
 	Dictionary d = p_data;
 
 	TextEdit *te = code_editor->get_text_edit();
@@ -1559,7 +1559,7 @@ void ScriptTextEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data
 	}
 }
 
-void ScriptTextEditor::_text_edit_gui_input(const Ref<InputEvent> &ev) {
+void EditorScriptTextEditor::_text_edit_gui_input(const Ref<InputEvent> &ev) {
 	Ref<InputEventMouseButton> mb = ev;
 	Ref<InputEventKey> k = ev;
 	Point2 local_pos;
@@ -1658,7 +1658,7 @@ void ScriptTextEditor::_text_edit_gui_input(const Ref<InputEvent> &ev) {
 	}
 }
 
-void ScriptTextEditor::_color_changed(const Color &p_color) {
+void EditorScriptTextEditor::_color_changed(const Color &p_color) {
 	String new_args;
 	if (p_color.a == 1.0f) {
 		new_args = String("(" + rtos(p_color.r) + ", " + rtos(p_color.g) + ", " + rtos(p_color.b) + ")");
@@ -1679,14 +1679,14 @@ void ScriptTextEditor::_color_changed(const Color &p_color) {
 	code_editor->get_text_edit()->update();
 }
 
-void ScriptTextEditor::_prepare_edit_menu() {
+void EditorScriptTextEditor::_prepare_edit_menu() {
 	const TextEdit *tx = code_editor->get_text_edit();
 	PopupMenu *popup = edit_menu->get_popup();
 	popup->set_item_disabled(popup->get_item_index(EDIT_UNDO), !tx->has_undo());
 	popup->set_item_disabled(popup->get_item_index(EDIT_REDO), !tx->has_redo());
 }
 
-void ScriptTextEditor::_make_context_menu(bool p_selection, bool p_color, bool p_foldable, bool p_open_docs, bool p_goto_definition, Vector2 p_pos) {
+void EditorScriptTextEditor::_make_context_menu(bool p_selection, bool p_color, bool p_foldable, bool p_open_docs, bool p_goto_definition, Vector2 p_pos) {
 	context_menu->clear();
 	context_menu->add_shortcut(ED_GET_SHORTCUT("script_text_editor/undo"), EDIT_UNDO);
 	context_menu->add_shortcut(ED_GET_SHORTCUT("script_text_editor/redo"), EDIT_REDO);
@@ -1734,7 +1734,7 @@ void ScriptTextEditor::_make_context_menu(bool p_selection, bool p_color, bool p
 	context_menu->popup();
 }
 
-void ScriptTextEditor::_enable_code_editor() {
+void EditorScriptTextEditor::_enable_code_editor() {
 	ERR_FAIL_COND(code_editor->get_parent());
 
 	VSplitContainer *editor_box = memnew(VSplitContainer);
@@ -1777,11 +1777,11 @@ void ScriptTextEditor::_enable_code_editor() {
 		color_picker->set_raw_mode(true);
 	}
 
-	quick_open = memnew(ScriptEditorQuickOpen);
+	quick_open = memnew(EditorScriptEditorQuickOpen);
 	quick_open->connect("goto_line", this, "_goto_line");
 	add_child(quick_open);
 
-	goto_line_dialog = memnew(GotoLineDialog);
+	goto_line_dialog = memnew(EditorGotoLineDialog);
 	add_child(goto_line_dialog);
 
 	add_child(connection_info_dialog);
@@ -1861,12 +1861,12 @@ void ScriptTextEditor::_enable_code_editor() {
 	goto_menu->get_popup()->connect("id_pressed", this, "_edit_option");
 }
 
-ScriptTextEditor::ScriptTextEditor() {
+EditorScriptTextEditor::EditorScriptTextEditor() {
 	theme_loaded = false;
 	script_is_valid = false;
 	editor_enabled = false;
 
-	code_editor = memnew(CodeTextEditor);
+	code_editor = memnew(EditorCodeTextEditor);
 	code_editor->add_theme_constant_override("separation", 2);
 	code_editor->set_anchors_and_margins_preset(Control::PRESET_WIDE);
 	code_editor->set_code_complete_func(_code_complete_scripts, this);
@@ -1927,12 +1927,12 @@ ScriptTextEditor::ScriptTextEditor() {
 	quick_open = nullptr;
 	goto_line_dialog = nullptr;
 
-	connection_info_dialog = memnew(ConnectionInfoDialog);
+	connection_info_dialog = memnew(EditorConnectionInfoDialog);
 
 	code_editor->get_text_edit()->set_drag_forwarding(this);
 }
 
-ScriptTextEditor::~ScriptTextEditor() {
+EditorScriptTextEditor::~EditorScriptTextEditor() {
 	for (const RBMap<String, SyntaxHighlighter *>::Element *E = highlighters.front(); E; E = E->next()) {
 		if (E->get() != NULL) {
 			memdelete(E->get());
@@ -1957,14 +1957,14 @@ ScriptTextEditor::~ScriptTextEditor() {
 	}
 }
 
-static ScriptEditorBase *create_editor(const RES &p_resource) {
+static EditorScriptEditorBase *create_editor(const RES &p_resource) {
 	if (Object::cast_to<Script>(*p_resource)) {
-		return memnew(ScriptTextEditor);
+		return memnew(EditorScriptTextEditor);
 	}
 	return nullptr;
 }
 
-void ScriptTextEditor::register_editor() {
+void EditorScriptTextEditor::register_editor() {
 	ED_SHORTCUT("script_text_editor/undo", TTR("Undo"), KEY_MASK_CMD | KEY_Z);
 	ED_SHORTCUT("script_text_editor/redo", TTR("Redo"), KEY_MASK_CMD | KEY_Y);
 	ED_SHORTCUT("script_text_editor/cut", TTR("Cut"), KEY_MASK_CMD | KEY_X);
@@ -2041,6 +2041,6 @@ void ScriptTextEditor::register_editor() {
 	ScriptEditor::register_create_script_editor_function(create_editor);
 }
 
-void ScriptTextEditor::validate() {
+void EditorScriptTextEditor::validate() {
 	this->code_editor->validate_script();
 }

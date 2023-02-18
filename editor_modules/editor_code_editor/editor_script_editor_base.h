@@ -36,8 +36,8 @@
 class SyntaxHighlighter;
 class Texture;
 
-class ScriptEditorBase : public VBoxContainer {
-	GDCLASS(ScriptEditorBase, VBoxContainer);
+class EditorScriptEditorBase : public VBoxContainer {
+	GDCLASS(EditorScriptEditorBase, VBoxContainer);
 
 protected:
 	static void _bind_methods();
@@ -81,7 +81,7 @@ public:
 
 	virtual void validate() = 0;
 
-	ScriptEditorBase() {}
+	EditorScriptEditorBase() {}
 };
 
 #endif // SCRIPT_EDITOR_PLUGIN_H

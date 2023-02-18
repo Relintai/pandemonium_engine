@@ -78,11 +78,11 @@ class Timer;
 class ToolButton;
 class Tree;
 class VSplitContainer;
-class ScriptEditorQuickOpen;
+class EditorScriptEditorQuickOpen;
 class ScriptEditorDebugger;
 
 typedef SyntaxHighlighter *(*CreateSyntaxHighlighterFunc)();
-typedef ScriptEditorBase *(*CreateScriptEditorFunc)(const RES &p_resource);
+typedef EditorScriptEditorBase *(*CreateScriptEditorFunc)(const RES &p_resource);
 
 class EditorScriptCodeCompletionCache;
 class FindInFilesDialog;
@@ -259,7 +259,7 @@ class ScriptEditor : public PanelContainer {
 
 	void _copy_script_path();
 
-	void _ask_close_current_unsaved_tab(ScriptEditorBase *current);
+	void _ask_close_current_unsaved_tab(EditorScriptEditorBase *current);
 
 	bool grab_focus_block;
 
@@ -294,7 +294,7 @@ class ScriptEditor : public PanelContainer {
 	void _show_debugger(bool p_show);
 	void _script_created(Ref<Script> p_script);
 
-	ScriptEditorBase *_get_current_editor() const;
+	EditorScriptEditorBase *_get_current_editor() const;
 
 	void _save_layout();
 	void _editor_settings_changed();

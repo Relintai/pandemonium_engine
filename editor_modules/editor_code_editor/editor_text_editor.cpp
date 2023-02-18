@@ -450,13 +450,13 @@ void TextEditor::_edit_option(int p_op) {
 			convert_indent_to_tabs();
 		} break;
 		case EDIT_TO_UPPERCASE: {
-			_convert_case(CodeTextEditor::UPPER);
+			_convert_case(EditorCodeTextEditor::UPPER);
 		} break;
 		case EDIT_TO_LOWERCASE: {
-			_convert_case(CodeTextEditor::LOWER);
+			_convert_case(EditorCodeTextEditor::LOWER);
 		} break;
 		case EDIT_CAPITALIZE: {
-			_convert_case(CodeTextEditor::CAPITALIZE);
+			_convert_case(EditorCodeTextEditor::CAPITALIZE);
 		} break;
 		case SEARCH_FIND: {
 			code_editor->get_find_replace_bar()->popup_search();
@@ -500,7 +500,7 @@ void TextEditor::_edit_option(int p_op) {
 	}
 }
 
-void TextEditor::_convert_case(CodeTextEditor::CaseStyle p_case) {
+void TextEditor::_convert_case(EditorCodeTextEditor::CaseStyle p_case) {
 	code_editor->convert_case(p_case);
 }
 
@@ -515,7 +515,7 @@ void TextEditor::_bind_methods() {
 	ClassDB::bind_method("_prepare_edit_menu", &TextEditor::_prepare_edit_menu);
 }
 
-static ScriptEditorBase *create_editor(const RES &p_resource) {
+static EditorScriptEditorBase *create_editor(const RES &p_resource) {
 	if (Object::cast_to<TextFile>(*p_resource)) {
 		return memnew(TextEditor);
 	}
@@ -617,7 +617,7 @@ void TextEditor::_make_context_menu(bool p_selection, bool p_can_fold, bool p_is
 TextEditor::TextEditor() {
 	editor_enabled = false;
 
-	code_editor = memnew(CodeTextEditor);
+	code_editor = memnew(EditorCodeTextEditor);
 	add_child(code_editor);
 	code_editor->add_theme_constant_override("separation", 0);
 	code_editor->connect("load_theme_settings", this, "_load_theme_settings");
@@ -715,7 +715,7 @@ TextEditor::TextEditor() {
 	bookmarks_menu->connect("about_to_show", this, "_update_bookmark_list");
 	bookmarks_menu->connect("index_pressed", this, "_bookmark_item_pressed");
 
-	goto_line_dialog = memnew(GotoLineDialog);
+	goto_line_dialog = memnew(EditorGotoLineDialog);
 	add_child(goto_line_dialog);
 
 	code_editor->get_text_edit()->set_drag_forwarding(this);

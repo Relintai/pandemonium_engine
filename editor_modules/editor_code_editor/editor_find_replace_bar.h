@@ -51,8 +51,8 @@ class Texture;
 class TextureButton;
 class ToolButton;
 
-class FindReplaceBar : public HBoxContainer {
-	GDCLASS(FindReplaceBar, HBoxContainer);
+class EditorFindReplaceBar : public HBoxContainer {
+	GDCLASS(EditorFindReplaceBar, HBoxContainer);
 
 	LineEdit *search_text;
 	Label *matches_label;
@@ -122,7 +122,7 @@ public:
 	bool search_prev();
 	bool search_next();
 
-	FindReplaceBar();
+	EditorFindReplaceBar();
 };
 
 #endif // CODE_EDITOR_H
