@@ -2,10 +2,13 @@
 
 #include "./http_parser/http_parser.h"
 #include "./multipart_parser_c/multipart_parser.h"
+#include "core/log/logger.h"
 
 #include "modules/web/http/web_server_request.h"
 
 #include "simple_web_server_request.h"
+
+#define PROTOCOL_ERROR_LOGGING_ENABLED 0
 
 Ref<SimpleWebServerRequest> HTTPParser::get_next_request() {
 	ERR_FAIL_COND_V(_requests.size() == 0, Ref<SimpleWebServerRequest>());
@@ -234,6 +237,9 @@ int HTTPParser::on_message_begin() {
 		default:
 			_request->set_method(HTTPServerEnums::HTTP_METHOD_INVALID);
 			_error = true;
+#if PROTOCOL_ERROR_LOGGING_ENABLED
+			PLOG_ERR("Unimplemented / invalid method!");
+#endif
 			break;
 	}
 
@@ -307,6 +313,9 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 			if (bs == -1) {
 				//Error! boundary must exist
 				_error = true;
+#if PROTOCOL_ERROR_LOGGING_ENABLED
+				PLOG_ERR("Boundary must exist!");
+#endif
 				return 0;
 			}
 
@@ -321,7 +330,9 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 			//The CRLF preceeding could also be appended for simpler logic
 
 			if (_multipart_boundary.empty()) {
-				//Error!
+#if PROTOCOL_ERROR_LOGGING_ENABLED
+				PLOG_ERR("Empty boundary!");
+#endif
 				_error = true;
 			}
 
@@ -345,8 +356,6 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 			_request->add_cookie_data(key, val);
 		}
 	}
-
-	_error = true;
 
 	return 0;
 }
