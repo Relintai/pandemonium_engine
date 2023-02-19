@@ -163,6 +163,7 @@ void WebServerSimple::_start() {
 	ERR_FAIL_COND_MSG(err != OK, "Error starting HTTP server:\n" + itos(err));
 
 	_running = true;
+	_server_quit = false;
 
 	if (!_use_poll_thread || !OS::get_singleton()->can_use_threads()) {
 		set_process_internal(true);
@@ -182,6 +183,7 @@ void WebServerSimple::_stop() {
 	WebServer::_stop();
 
 	_server_lock.lock();
+	_server_quit = true;
 
 	_server->stop();
 
