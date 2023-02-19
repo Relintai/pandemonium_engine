@@ -435,11 +435,9 @@ void HTTPServerSimple::_stop_workers() {
 }
 
 void HTTPServerSimple::_set_internal_certs(Ref<Crypto> p_crypto) {
-	//const String cache_path = EditorSettings::get_singleton()->get_cache_dir();
-	//TODO
-	const String cache_path = "./cache/web/";
-	const String key_path = cache_path.plus_file("html5_server.key");
-	const String crt_path = cache_path.plus_file("html5_server.crt");
+	const String cache_path = "user://cache/web/";
+	const String key_path = cache_path.plus_file("http_server_simple_cert.key");
+	const String crt_path = cache_path.plus_file("http_server_simple_cert.crt");
 	bool regen = !FileAccess::exists(key_path) || !FileAccess::exists(crt_path);
 
 	if (!regen) {
