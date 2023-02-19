@@ -61,6 +61,8 @@ public:
 	void close();
 	bool closed();
 
+	bool has_more_messages();
+
 	HTTPServerConnection();
 	~HTTPServerConnection();
 

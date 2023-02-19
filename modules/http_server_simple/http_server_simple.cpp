@@ -37,6 +37,9 @@
 #include "simple_web_server_request.h"
 #include "web_server_simple.h"
 
+#define CONNECTION_OPEN_CLOSE_DEBUG 0
+#define CONNECTION_RESPOSE_DEBUG 0
+
 void HTTPServerConnection::update() {
 	ERR_FAIL_COND(closed());
 
@@ -59,11 +62,14 @@ void HTTPServerConnection::update() {
 				return;
 			}
 		}
+
 		ssl->poll();
+
 		if (ssl->get_status() == StreamPeerSSL::STATUS_HANDSHAKING) {
 			// Still handshaking, keep waiting.
 			return;
 		}
+
 		if (ssl->get_status() != StreamPeerSSL::STATUS_CONNECTED) {
 			close();
 			return;
@@ -119,7 +125,12 @@ void HTTPServerConnection::send_redirect(Ref<WebServerRequest> request, const St
 	//String s = "HTTP/1.1 " + itos(static_cast<int>(status_code)) + " Found\r\n";
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(status_code) + "\r\n";
 	s += "Location: " + location + "\r\n";
-	s += "Connection: Close\r\n";
+
+	if (has_more_messages()) {
+		s += "Connection: keep-alive\r\n";
+	} else {
+		s += "Connection: close\r\n";
+	}
 
 	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
 		Ref<WebServerCookie> cookie = request->response_get_cookie(i);
@@ -134,6 +145,11 @@ void HTTPServerConnection::send_redirect(Ref<WebServerRequest> request, const St
 	}
 
 	s += "\r\n";
+
+#if CONNECTION_RESPOSE_DEBUG
+	ERR_PRINT(s);
+#endif
+
 	CharString cs = s.utf8();
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 }
@@ -144,7 +160,12 @@ void HTTPServerConnection::send(Ref<WebServerRequest> request) {
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
 	s += "Content-Length: " + itos(body.size()) + "\r\n";
 	s += "Content-type: text/html\r\n";
-	s += "Connection: Close\r\n";
+
+	if (has_more_messages()) {
+		s += "Connection: keep-alive\r\n";
+	} else {
+		s += "Connection: close\r\n";
+	}
 
 	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
 		Ref<WebServerCookie> cookie = request->response_get_cookie(i);
@@ -161,13 +182,22 @@ void HTTPServerConnection::send(Ref<WebServerRequest> request) {
 	s += "\r\n";
 	s += body;
 
+#if CONNECTION_RESPOSE_DEBUG
+	ERR_PRINT(s);
+#endif
+
 	CharString cs = s.utf8();
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 }
 void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String &p_file_path) {
 	if (!FileAccess::exists(p_file_path)) {
 		String s = "HTTP/1.1 404 Not Found\r\n";
-		s += "Connection: Close\r\n";
+
+		if (has_more_messages()) {
+			s += "Connection: keep-alive\r\n";
+		} else {
+			s += "Connection: close\r\n";
+		}
 
 		for (int i = 0; i < request->response_get_cookie_count(); ++i) {
 			Ref<WebServerCookie> cookie = request->response_get_cookie(i);
@@ -182,6 +212,11 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 		}
 
 		s += "\r\n";
+
+#if CONNECTION_RESPOSE_DEBUG
+		ERR_PRINT(s);
+#endif
+
 		CharString cs = s.utf8();
 		peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 		return;
@@ -199,7 +234,13 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 	FileAccess *f = FileAccess::open(p_file_path, FileAccess::READ);
 	ERR_FAIL_COND(!f);
 	String s = "HTTP/1.1 200 OK\r\n";
-	s += "Connection: Close\r\n";
+
+	if (has_more_messages()) {
+		s += "Connection: keep-alive\r\n";
+	} else {
+		s += "Connection: close\r\n";
+	}
+
 	s += "Content-Type: " + ctype + "\r\n";
 
 	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
@@ -219,6 +260,11 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 	s += "Cross-Origin-Embedder-Policy: require-corp\r\n";
 	s += "Cache-Control: no-store, max-age=0\r\n";
 	s += "\r\n";
+
+#if CONNECTION_RESPOSE_DEBUG
+	ERR_PRINT(s);
+#endif
+
 	CharString cs = s.utf8();
 
 	Error err = peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
@@ -244,6 +290,10 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 }
 
 void HTTPServerConnection::close() {
+#if CONNECTION_OPEN_CLOSE_DEBUG
+	ERR_PRINT("CONN CLOSE");
+#endif
+
 	tcp.unref();
 	ssl.unref();
 	peer.unref();
@@ -252,6 +302,22 @@ void HTTPServerConnection::close() {
 }
 bool HTTPServerConnection::closed() {
 	return _closed;
+}
+
+bool HTTPServerConnection::has_more_messages() {
+	if (_closed) {
+		return false;
+	}
+
+	if (_http_parser->has_error()) {
+		return false;
+	}
+
+	if (_http_parser->get_request_count() == 0 && _http_parser->is_finished()) {
+		return false;
+	}
+
+	return true;
 }
 
 HTTPServerConnection::HTTPServerConnection() {
@@ -334,6 +400,10 @@ void HTTPServerSimple::poll() {
 		Ref<StreamPeerTCP> tcp = server->take_connection();
 
 		ERR_CONTINUE(!tcp.is_valid());
+
+#if CONNECTION_OPEN_CLOSE_DEBUG
+		ERR_PRINT("NEW CONN");
+#endif
 
 		Ref<HTTPServerConnection> connection;
 		connection.instance();
