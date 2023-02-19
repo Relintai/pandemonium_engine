@@ -30,6 +30,8 @@
 
 #include "http_server_simple.h"
 
+#include "core/os/dir_access.h"
+
 #include "http_parser.h"
 #include "modules/web/http/web_server_cookie.h"
 #include "simple_web_server_request.h"
@@ -436,6 +438,12 @@ void HTTPServerSimple::_stop_workers() {
 
 void HTTPServerSimple::_set_internal_certs(Ref<Crypto> p_crypto) {
 	const String cache_path = "user://cache/web/";
+
+	DirAccess *dir = DirAccess::create(DirAccess::ACCESS_USERDATA);
+	ERR_FAIL_COND(!dir);
+	dir->make_dir_recursive(cache_path);
+	memdelete(dir);
+
 	const String key_path = cache_path.plus_file("http_server_simple_cert.key");
 	const String crt_path = cache_path.plus_file("http_server_simple_cert.crt");
 	bool regen = !FileAccess::exists(key_path) || !FileAccess::exists(crt_path);
