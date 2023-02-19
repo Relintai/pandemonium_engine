@@ -29,15 +29,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/list.h"
+#include "core/containers/vector.h"
 #include "core/io/image_loader.h"
 #include "core/io/json.h"
 #include "core/io/stream_peer_ssl.h"
 #include "core/io/tcp_server.h"
 #include "core/io/zip_io.h"
-#include "core/containers/list.h"
 #include "core/os/rw_lock.h"
 #include "core/os/semaphore.h"
-#include "core/containers/vector.h"
 
 #include "core/config/project_settings.h"
 
@@ -104,6 +104,9 @@ public:
 
 	bool _use_worker_threads;
 	int _thread_count;
+
+	String _ssl_key_file;
+	String _ssl_cert_file;
 
 private:
 	Ref<TCP_Server> server;

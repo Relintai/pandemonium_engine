@@ -57,7 +57,22 @@ void HTTPServerConnection::update() {
 			ssl = Ref<StreamPeerSSL>(StreamPeerSSL::create());
 			peer = ssl;
 			ssl->set_blocking_handshake_enabled(false);
-			if (ssl->accept_stream(tcp, key, _http_server->cert) != OK) {
+
+			Ref<CryptoKey> key = Ref<CryptoKey>(CryptoKey::create());
+			Error err = key->load(_http_server->_ssl_key_file);
+			if (err != OK) {
+				close();
+				ERR_FAIL_COND(err != OK);
+			}
+
+			Ref<X509Certificate> cert = Ref<X509Certificate>(X509Certificate::create());
+			err = cert->load(_http_server->_ssl_cert_file);
+			if (err != OK) {
+				close();
+				ERR_FAIL_COND(err != OK);
+			}
+
+			if (ssl->accept_stream(tcp, key, cert) != OK) {
 				close();
 				return;
 			}
@@ -342,6 +357,8 @@ void HTTPServerSimple::stop() {
 
 Error HTTPServerSimple::listen(int p_port, IP_Address p_address, bool p_use_ssl, String p_ssl_key, String p_ssl_cert) {
 	use_ssl = p_use_ssl;
+	_ssl_key_file = p_ssl_key;
+	_ssl_cert_file = p_ssl_cert;
 
 	if (use_ssl) {
 		Ref<Crypto> crypto = Crypto::create();
@@ -532,6 +549,9 @@ void HTTPServerSimple::_set_internal_certs(Ref<Crypto> p_crypto) {
 		cert = p_crypto->generate_self_signed_certificate(key, "CN=pandemonium-debug.local,O=A Game Dev,C=XXA", "20140101000000", "20340101000000");
 		cert->save(crt_path);
 	}
+
+	_ssl_key_file = key_path;
+	_ssl_cert_file = crt_path;
 }
 
 void HTTPServerSimple::_wake_workers() {
