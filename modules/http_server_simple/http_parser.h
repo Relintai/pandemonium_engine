@@ -1,8 +1,8 @@
 #ifndef HTTP_PARSER_H
 #define HTTP_PARSER_H
 
-#include "core/string/ustring.h"
 #include "core/containers/vector.h"
+#include "core/string/ustring.h"
 
 #include "core/object/reference.h"
 
@@ -22,12 +22,12 @@ public:
 		REQUEST_CONTENT_TEXT_PLAIN,
 	};
 
-	Ref<SimpleWebServerRequest>
-	get_next_request();
+	Ref<SimpleWebServerRequest> get_next_request();
 	int get_request_count() const;
 
 	bool is_ready() const;
 	bool is_finished() const;
+	bool has_error() const;
 
 	void reset();
 
@@ -61,6 +61,8 @@ protected:
 	String _multipart_form_content_type;
 	bool _multipart_form_is_file;
 	Vector<char> _multipart_form_data;
+
+	bool _error;
 
 private:
 	String chr_len_to_str(const char *at, size_t length);

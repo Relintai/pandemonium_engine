@@ -29,10 +29,17 @@ bool HTTPParser::is_finished() const {
 	return !_request.is_valid();
 }
 
+bool HTTPParser::has_error() const {
+	return _error;
+}
+
 void HTTPParser::reset() {
 	_partial_data = "";
 	_is_ready = false;
 	_content_type = REQUEST_CONTENT_URLENCODED;
+	_error = false;
+	_request.unref();
+	_requests.clear();
 }
 
 //returns the index where processing was ended -> start of the next query if != data_length
@@ -78,6 +85,8 @@ HTTPParser::HTTPParser() {
 	_multipart_parser_settings->on_body_end = _on_multipart_body_end_cb;
 
 	_multipart_parser = NULL;
+
+	_error = false;
 }
 
 HTTPParser::~HTTPParser() {
@@ -223,8 +232,8 @@ int HTTPParser::on_message_begin() {
 			_request->set_method(HTTPServerEnums::HTTP_METHOD_PATCH);
 			break;
 		default:
-			//TODO close the connection
 			_request->set_method(HTTPServerEnums::HTTP_METHOD_INVALID);
+			_error = true;
 			break;
 	}
 
@@ -296,7 +305,8 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 			int bs = s.find("boundary=");
 
 			if (bs == -1) {
-				//Error! boundary must exist TODO set an error variable and close the connection
+				//Error! boundary must exist
+				_error = true;
 				return 0;
 			}
 
@@ -311,7 +321,8 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 			//The CRLF preceeding could also be appended for simpler logic
 
 			if (_multipart_boundary.empty()) {
-				//Error!  TODO set an error variable and close the connection
+				//Error!
+				_error = true;
 			}
 
 		} else if (s.begins_with("text/plain")) {
@@ -335,7 +346,7 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 		}
 	}
 
-	//TODO close connection on chunked connection (for now)
+	_error = true;
 
 	return 0;
 }
@@ -413,7 +424,10 @@ int HTTPParser::on_message_complete() {
 		process_urlenc_data();
 	}
 
-	_requests.push_back(_request);
+	if (!_error) {
+		_requests.push_back(_request);
+	}
+
 	_request.unref();
 
 	if (_multipart_parser) {

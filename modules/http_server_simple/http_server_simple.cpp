@@ -30,8 +30,8 @@
 
 #include "http_server_simple.h"
 
-#include "modules/web/http/web_server_cookie.h"
 #include "http_parser.h"
+#include "modules/web/http/web_server_cookie.h"
 #include "simple_web_server_request.h"
 #include "web_server_simple.h"
 
@@ -86,6 +86,11 @@ void HTTPServerConnection::update() {
 			if (buffer_start_index >= read) {
 				break;
 			}
+
+			// Stop processing if a protocol error happened
+			if (_http_parser->has_error()) {
+				break;
+			}
 		}
 	}
 
@@ -101,6 +106,10 @@ void HTTPServerConnection::update() {
 		if (_http_parser->get_request_count() == 0 && _http_parser->is_finished()) {
 			close();
 		}
+	}
+
+	if (_http_parser->has_error()) {
+		close();
 	}
 }
 
