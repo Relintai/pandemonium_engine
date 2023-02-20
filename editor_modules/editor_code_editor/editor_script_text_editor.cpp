@@ -72,9 +72,9 @@
 #include "editor_script_editor_quick_open.h"
 
 #include "editor_connection_info_dialog.h"
-#include "editor_script_editor.h"
-#include "editor_goto_line_dialog.h"
 #include "editor_find_replace_bar.h"
+#include "editor_goto_line_dialog.h"
+#include "editor_script_editor.h"
 
 Vector<String> EditorScriptTextEditor::get_functions() {
 	String errortxt;
@@ -1346,28 +1346,27 @@ void EditorScriptTextEditor::_edit_option_toggle_inline_comment() {
 	code_editor->toggle_inline_comment(delimiter);
 }
 
-void EditorScriptTextEditor::add_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
-	highlighters[p_highlighter->get_name()] = p_highlighter;
-	highlighter_menu->add_radio_check_item(p_highlighter->get_name());
+void EditorScriptTextEditor::add_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter) {
+	highlighters[p_highlighter->_get_name()] = p_highlighter;
+	highlighter_menu->add_radio_check_item(p_highlighter->_get_name());
 }
 
-void EditorScriptTextEditor::set_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
+void EditorScriptTextEditor::set_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter) {
 	TextEdit *te = code_editor->get_text_edit();
-	te->_set_syntax_highlighting(p_highlighter);
-	if (p_highlighter != nullptr) {
-		highlighter_menu->set_item_checked(highlighter_menu->get_item_idx_from_text(p_highlighter->get_name()), true);
+	te->set_syntax_highlighting(p_highlighter);
+	if (p_highlighter.is_valid()) {
+		highlighter_menu->set_item_checked(highlighter_menu->get_item_idx_from_text(p_highlighter->_get_name()), true);
 	} else {
 		highlighter_menu->set_item_checked(highlighter_menu->get_item_idx_from_text(TTR("Standard")), true);
 	}
 }
 
 void EditorScriptTextEditor::_change_syntax_highlighter(int p_idx) {
-	RBMap<String, SyntaxHighlighter *>::Element *el = highlighters.front();
+	RBMap<String, Ref<SyntaxHighlighter> >::Element *el = highlighters.front();
 	while (el != nullptr) {
 		highlighter_menu->set_item_checked(highlighter_menu->get_item_idx_from_text(el->key()), false);
 		el = el->next();
 	}
-	// highlighter_menu->set_item_checked(p_idx, true);
 	set_syntax_highlighter(highlighters[highlighter_menu->get_item_text(p_idx)]);
 }
 
@@ -1904,7 +1903,7 @@ EditorScriptTextEditor::EditorScriptTextEditor() {
 	convert_case = memnew(PopupMenu);
 	convert_case->set_name("convert_case");
 
-	highlighters[TTR("Standard")] = NULL;
+	highlighters[TTR("Standard")] = Ref<SyntaxHighlighter>();
 	highlighter_menu = memnew(PopupMenu);
 	highlighter_menu->set_name("highlighter_menu");
 	highlighter_menu->add_radio_check_item(TTR("Standard"));
@@ -1933,11 +1932,6 @@ EditorScriptTextEditor::EditorScriptTextEditor() {
 }
 
 EditorScriptTextEditor::~EditorScriptTextEditor() {
-	for (const RBMap<String, SyntaxHighlighter *>::Element *E = highlighters.front(); E; E = E->next()) {
-		if (E->get() != NULL) {
-			memdelete(E->get());
-		}
-	}
 	highlighters.clear();
 
 	if (!editor_enabled) {

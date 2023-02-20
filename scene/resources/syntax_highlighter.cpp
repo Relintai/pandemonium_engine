@@ -1,14 +1,12 @@
-#ifndef GDSCRIPT_HIGHLIGHTER_H
-#define GDSCRIPT_HIGHLIGHTER_H
 /*************************************************************************/
-/*  gdscript_highlighter.h                                               */
+/*  syntax_highlighter.cpp                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,42 +28,50 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "syntax_highlighter.h"
+
+#include "core/object/script_language.h"
 #include "scene/gui/text_edit.h"
 
-class GDScriptSyntaxHighlighter : public SyntaxHighlighter {
-private:
-	enum Type {
-		NONE,
-		REGION,
-		NODE_PATH,
-		SYMBOL,
-		NUMBER,
-		FUNCTION,
-		KEYWORD,
-		MEMBER,
-		IDENTIFIER,
-		TYPE,
-	};
+Dictionary SyntaxHighlighter::get_line_syntax_highlighting(int p_line) {
+	return call("_get_line_syntax_highlighting", p_line);
+}
 
-	// colours
-	Color font_color;
-	Color symbol_color;
-	Color function_color;
-	Color function_definition_color;
-	Color built_in_type_color;
-	Color number_color;
-	Color member_color;
-	Color node_path_color;
-	Color type_color;
+void SyntaxHighlighter::update_cache() {
+	call("_update_cache");
+}
 
-public:
-	static SyntaxHighlighter *create();
+String SyntaxHighlighter::_get_name() const {
+	ScriptInstance *si = get_script_instance();
+	if (si && si->has_method("_get_name")) {
+		return si->call("_get_name");
+	}
+	return "Unamed";
+}
 
-	virtual void _update_cache();
-	virtual Dictionary _get_line_syntax_highlighting(int p_line);
+Array SyntaxHighlighter::_get_supported_languages() const {
+	ScriptInstance *si = get_script_instance();
+	if (si && si->has_method("_get_supported_languages")) {
+		return si->call("_get_supported_languages");
+	}
+	return Array();
+}
 
-	virtual String _get_name() const;
-	virtual Array _get_supported_languages() const;
-};
+void SyntaxHighlighter::set_text_edit(TextEdit *p_text_edit) {
+	text_edit = p_text_edit;
+}
 
-#endif // GDSCRIPT_HIGHLIGHTER_H
+TextEdit *SyntaxHighlighter::get_text_edit() {
+	return text_edit;
+}
+
+void SyntaxHighlighter::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_get_line_syntax_highlighting", "p_line"), &SyntaxHighlighter::_get_line_syntax_highlighting);
+	ClassDB::bind_method(D_METHOD("_update_cache"), &SyntaxHighlighter::_update_cache);
+	ClassDB::bind_method(D_METHOD("get_text_edit"), &SyntaxHighlighter::get_text_edit);
+
+	BIND_VMETHOD(MethodInfo(Variant::STRING, "_get_name"));
+	BIND_VMETHOD(MethodInfo(Variant::ARRAY, "_get_supported_languages"));
+	BIND_VMETHOD(MethodInfo(Variant::DICTIONARY, "_get_line_syntax_highlighting", PropertyInfo(Variant::INT, "p_line")));
+	BIND_VMETHOD(MethodInfo("_update_cache"));
+}

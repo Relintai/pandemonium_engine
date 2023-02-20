@@ -62,10 +62,10 @@ public:
 	static SyntaxHighlighter *create();
 
 	virtual void _update_cache();
-	virtual RBMap<int, TextEdit::HighlighterInfo> _get_line_syntax_highlighting(int p_line);
+	virtual Dictionary _get_line_syntax_highlighting(int p_line);
 
-	virtual String get_name() const;
-	virtual List<String> get_supported_languages();
+	virtual String _get_name() const;
+	virtual Array _get_supported_languages() const;
 };
 
 #endif // CSCRIPT_HIGHLIGHTER_H

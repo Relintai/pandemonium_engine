@@ -186,7 +186,7 @@ protected:
 
 	static void _bind_methods();
 
-	RBMap<String, SyntaxHighlighter *> highlighters;
+	RBMap<String, Ref<SyntaxHighlighter>> highlighters;
 	void _change_syntax_highlighter(int p_idx);
 
 	void _edit_option(int p_op);
@@ -212,8 +212,8 @@ protected:
 public:
 	void _update_connected_methods();
 
-	virtual void add_syntax_highlighter(SyntaxHighlighter *p_highlighter);
-	virtual void set_syntax_highlighter(SyntaxHighlighter *p_highlighter);
+	virtual void add_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter);
+	virtual void set_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter);
 	void update_toggle_scripts_button();
 
 	virtual void apply_code();

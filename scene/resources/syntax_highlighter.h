@@ -1,14 +1,12 @@
-#ifndef GDSCRIPT_HIGHLIGHTER_H
-#define GDSCRIPT_HIGHLIGHTER_H
 /*************************************************************************/
-/*  gdscript_highlighter.h                                               */
+/*  syntax_highlighter.h                                                 */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,42 +28,36 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/text_edit.h"
+#ifndef SYNTAX_HIGHLIGHTER_H
+#define SYNTAX_HIGHLIGHTER_H
 
-class GDScriptSyntaxHighlighter : public SyntaxHighlighter {
-private:
-	enum Type {
-		NONE,
-		REGION,
-		NODE_PATH,
-		SYMBOL,
-		NUMBER,
-		FUNCTION,
-		KEYWORD,
-		MEMBER,
-		IDENTIFIER,
-		TYPE,
-	};
+#include "core/object/resource.h"
 
-	// colours
-	Color font_color;
-	Color symbol_color;
-	Color function_color;
-	Color function_definition_color;
-	Color built_in_type_color;
-	Color number_color;
-	Color member_color;
-	Color node_path_color;
-	Color type_color;
+class TextEdit;
+
+class SyntaxHighlighter : public Resource {
+	GDCLASS(SyntaxHighlighter, Resource)
+
+protected:
+	TextEdit *text_edit;
+
+	static void _bind_methods();
 
 public:
-	static SyntaxHighlighter *create();
+	Dictionary get_line_syntax_highlighting(int p_line);
+	virtual Dictionary _get_line_syntax_highlighting(int p_line) { return Dictionary(); }
 
-	virtual void _update_cache();
-	virtual Dictionary _get_line_syntax_highlighting(int p_line);
+	void update_cache();
+	virtual void _update_cache() {}
 
 	virtual String _get_name() const;
 	virtual Array _get_supported_languages() const;
+
+	void set_text_edit(TextEdit *p_text_edit);
+	TextEdit *get_text_edit();
+
+	SyntaxHighlighter() {}
+	virtual ~SyntaxHighlighter() {}
 };
 
-#endif // GDSCRIPT_HIGHLIGHTER_H
+#endif

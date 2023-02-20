@@ -127,7 +127,7 @@ protected:
 	void _text_edit_gui_input(const Ref<InputEvent> &ev);
 	void _prepare_edit_menu();
 
-	RBMap<String, SyntaxHighlighter *> highlighters;
+	RBMap<String, Ref<SyntaxHighlighter> > highlighters;
 	void _change_syntax_highlighter(int p_idx);
 	void _load_theme_settings();
 
@@ -139,8 +139,8 @@ protected:
 	void _bookmark_item_pressed(int p_idx);
 
 public:
-	virtual void add_syntax_highlighter(SyntaxHighlighter *p_highlighter);
-	virtual void set_syntax_highlighter(SyntaxHighlighter *p_highlighter);
+	virtual void add_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter);
+	virtual void set_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter);
 
 	virtual String get_name();
 	virtual Ref<Texture> get_icon();

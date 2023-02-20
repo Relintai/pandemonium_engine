@@ -30,16 +30,16 @@
 
 #include "text_edit.h"
 
-#include "core/object/message_queue.h"
+#include "core/config/project_settings.h"
 #include "core/input/input.h"
+#include "core/input/shortcut.h"
+#include "core/object/message_queue.h"
+#include "core/object/script_language.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
-#include "core/object/script_language.h"
 #include "label.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/scroll_bar.h"
-#include "core/input/shortcut.h"
 #include "scene/main/timer.h"
 #include "scene/main/viewport.h"
 
@@ -985,7 +985,7 @@ void TextEdit::_notification(int p_what) {
 						break;
 					}
 
-					RBMap<int, HighlighterInfo> color_map;
+					Dictionary color_map;
 					if (syntax_coloring) {
 						color_map = _get_line_syntax_highlighting(minimap_line);
 					}
@@ -1028,7 +1028,7 @@ void TextEdit::_notification(int p_what) {
 						for (int j = 0; j < str.length(); j++) {
 							if (syntax_coloring) {
 								if (color_map.has(last_wrap_column + j)) {
-									current_color = color_map[last_wrap_column + j].color;
+									current_color = color_map[last_wrap_column + j].get("color");
 									if (readonly) {
 										current_color.a = cache.font_color_readonly.a;
 									}
@@ -1125,7 +1125,7 @@ void TextEdit::_notification(int p_what) {
 				const String &fullstr = text[line];
 				LineDrawingCache cache_entry;
 
-				RBMap<int, HighlighterInfo> color_map;
+				Dictionary color_map;
 				if (syntax_coloring) {
 					color_map = _get_line_syntax_highlighting(line);
 				}
@@ -1342,7 +1342,7 @@ void TextEdit::_notification(int p_what) {
 					for (; j < str.length(); j++) {
 						if (syntax_coloring) {
 							if (color_map.has(last_wrap_column + j)) {
-								current_color = color_map[last_wrap_column + j].color;
+								current_color = color_map[last_wrap_column + j].get("color");
 								if (readonly && current_color.a > cache.font_color_readonly.a) {
 									current_color.a = cache.font_color_readonly.a;
 								}
@@ -4590,7 +4590,7 @@ void TextEdit::update_cursor_wrap_offset() {
 }
 
 bool TextEdit::line_wraps(int line) const {
-	ERR_FAIL_INDEX_V(line, text.size(), 0);
+	ERR_FAIL_INDEX_V(line, text.size(), false);
 	if (!is_wrap_enabled()) {
 		return false;
 	}
@@ -5428,20 +5428,20 @@ void TextEdit::_update_caches() {
 	cache.executing_icon = get_theme_icon("TextEditorPlay", "EditorIcons");
 	text.set_font(cache.font);
 
-	if (syntax_highlighter) {
-		syntax_highlighter->_update_cache();
+	if (syntax_highlighter.is_valid()) {
+		syntax_highlighter->update_cache();
 	}
 }
 
-SyntaxHighlighter *TextEdit::_get_syntax_highlighting() {
+Ref<SyntaxHighlighter> TextEdit::get_syntax_highlighting() {
 	return syntax_highlighter;
 }
 
-void TextEdit::_set_syntax_highlighting(SyntaxHighlighter *p_syntax_highlighter) {
+void TextEdit::set_syntax_highlighting(Ref<SyntaxHighlighter> p_syntax_highlighter) {
 	syntax_highlighter = p_syntax_highlighter;
-	if (syntax_highlighter) {
-		syntax_highlighter->set_text_editor(this);
-		syntax_highlighter->_update_cache();
+	if (syntax_highlighter.is_valid()) {
+		syntax_highlighter->set_text_edit(this);
+		syntax_highlighter->update_cache();
 	}
 	syntax_highlighting_cache.clear();
 	update();
@@ -7527,6 +7527,9 @@ void TextEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_syntax_coloring", "enable"), &TextEdit::set_syntax_coloring);
 	ClassDB::bind_method(D_METHOD("is_syntax_coloring_enabled"), &TextEdit::is_syntax_coloring_enabled);
 
+	ClassDB::bind_method(D_METHOD("set_syntax_highlighting", "syntax_highlighter"), &TextEdit::set_syntax_highlighting);
+	ClassDB::bind_method(D_METHOD("get_syntax_highlighting"), &TextEdit::get_syntax_highlighting);
+
 	ClassDB::bind_method(D_METHOD("set_highlight_current_line", "enabled"), &TextEdit::set_highlight_current_line);
 	ClassDB::bind_method(D_METHOD("is_highlight_current_line_enabled"), &TextEdit::is_highlight_current_line_enabled);
 
@@ -7559,6 +7562,7 @@ void TextEdit::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "readonly"), "set_readonly", "is_readonly");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "highlight_current_line"), "set_highlight_current_line", "is_highlight_current_line_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "syntax_highlighting"), "set_syntax_coloring", "is_syntax_coloring_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "syntax_highlighter", PROPERTY_HINT_RESOURCE_TYPE, "SyntaxHighlighter"), "set_syntax_highlighting", "get_syntax_highlighting");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "show_line_numbers"), "set_show_line_numbers", "is_show_line_numbers_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "draw_tabs"), "set_draw_tabs", "is_drawing_tabs");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "draw_spaces"), "set_draw_spaces", "is_drawing_spaces");
@@ -7623,7 +7627,6 @@ TextEdit::TextEdit() {
 	wrap_at = 0;
 	wrap_right_offset = 10;
 	set_focus_mode(FOCUS_ALL);
-	syntax_highlighter = nullptr;
 	_update_caches();
 	cache.row_height = 1;
 	cache.line_spacing = 1;
@@ -7761,18 +7764,18 @@ TextEdit::~TextEdit() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-RBMap<int, TextEdit::HighlighterInfo> TextEdit::_get_line_syntax_highlighting(int p_line) {
+Dictionary TextEdit::_get_line_syntax_highlighting(int p_line) {
 	if (syntax_highlighting_cache.has(p_line)) {
 		return syntax_highlighting_cache[p_line];
 	}
 
-	if (syntax_highlighter != nullptr) {
-		RBMap<int, HighlighterInfo> color_map = syntax_highlighter->_get_line_syntax_highlighting(p_line);
+	if (syntax_highlighter.is_valid()) {
+		Dictionary color_map = syntax_highlighter->get_line_syntax_highlighting(p_line);
 		syntax_highlighting_cache[p_line] = color_map;
 		return color_map;
 	}
 
-	RBMap<int, HighlighterInfo> color_map;
+	Dictionary color_map;
 
 	bool prev_is_char = false;
 	bool prev_is_number = false;
@@ -7791,7 +7794,7 @@ RBMap<int, TextEdit::HighlighterInfo> TextEdit::_get_line_syntax_highlighting(in
 	const String &str = text[p_line];
 	Color prev_color;
 	for (int j = 0; j < str.length(); j++) {
-		HighlighterInfo highlighter_info;
+		Dictionary highlighter_info;
 
 		if (deregion > 0) {
 			deregion--;
@@ -7803,7 +7806,7 @@ RBMap<int, TextEdit::HighlighterInfo> TextEdit::_get_line_syntax_highlighting(in
 		if (deregion != 0) {
 			if (color != prev_color) {
 				prev_color = color;
-				highlighter_info.color = color;
+				highlighter_info["color"] = color;
 				color_map[j] = highlighter_info;
 			}
 			continue;
@@ -7946,19 +7949,11 @@ RBMap<int, TextEdit::HighlighterInfo> TextEdit::_get_line_syntax_highlighting(in
 
 		if (color != prev_color) {
 			prev_color = color;
-			highlighter_info.color = color;
+			highlighter_info["color"] = color;
 			color_map[j] = highlighter_info;
 		}
 	}
 
 	syntax_highlighting_cache[p_line] = color_map;
 	return color_map;
-}
-
-void SyntaxHighlighter::set_text_editor(TextEdit *p_text_editor) {
-	text_editor = p_text_editor;
-}
-
-TextEdit *SyntaxHighlighter::get_text_editor() {
-	return text_editor;
 }
