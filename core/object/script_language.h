@@ -213,9 +213,11 @@ struct ScriptCodeCompletionOption {
 		KIND_FILE_PATH,
 		KIND_PLAIN_TEXT,
 	};
+
 	Kind kind;
 	String display;
 	String insert_text;
+	Color font_color;
 	RES icon;
 	Variant default_value;
 
@@ -263,6 +265,7 @@ public:
 	};
 
 	virtual void get_reserved_words(List<String> *p_words) const = 0;
+	virtual void get_core_type_words(List<String> *p_words) const;
 	virtual bool is_control_flow_keyword(String p_string) const = 0;
 	virtual void get_comment_delimiters(List<String> *p_delimiters) const = 0;
 	virtual void get_string_delimiters(List<String> *p_delimiters) const = 0;

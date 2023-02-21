@@ -66,6 +66,7 @@ class Tree;
 struct ScriptCodeCompletionOption;
 class EditorScriptEditorQuickOpen;
 class EditorConnectionInfoDialog;
+class EditorSyntaxHighlighter;
 
 class EditorScriptTextEditor : public EditorScriptEditorBase {
 	GDCLASS(EditorScriptTextEditor, EditorScriptEditorBase);
@@ -102,19 +103,6 @@ class EditorScriptTextEditor : public EditorScriptEditorBase {
 	ColorPicker *color_picker;
 	Vector2 color_position;
 	String color_args;
-
-	void _update_member_keywords();
-
-	struct ColorsCache {
-		Color symbol_color;
-		Color keyword_color;
-		Color control_flow_keyword_color;
-		Color basetype_color;
-		Color type_color;
-		Color usertype_color;
-		Color comment_color;
-		Color string_color;
-	} colors_cache;
 
 	bool theme_loaded;
 
@@ -186,7 +174,7 @@ protected:
 
 	static void _bind_methods();
 
-	RBMap<String, Ref<SyntaxHighlighter>> highlighters;
+	RBMap<String, Ref<EditorSyntaxHighlighter>> highlighters;
 	void _change_syntax_highlighter(int p_idx);
 
 	void _edit_option(int p_op);
@@ -212,8 +200,8 @@ protected:
 public:
 	void _update_connected_methods();
 
-	virtual void add_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter);
-	virtual void set_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter);
+	virtual void add_syntax_highlighter(Ref<EditorSyntaxHighlighter> p_highlighter);
+	virtual void set_syntax_highlighter(Ref<EditorSyntaxHighlighter> p_highlighter);
 	void update_toggle_scripts_button();
 
 	virtual void apply_code();

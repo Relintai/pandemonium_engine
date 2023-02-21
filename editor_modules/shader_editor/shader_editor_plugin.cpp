@@ -30,24 +30,24 @@
 
 #include "shader_editor_plugin.h"
 
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
+#include "core/containers/rb_map.h"
+#include "core/containers/vector.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
+#include "core/input/input_event.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
-#include "core/containers/rb_map.h"
+#include "core/math/color.h"
 #include "core/math/transform_2d.h"
+#include "core/object/class_db.h"
 #include "core/os/file_access.h"
-#include "core/input/input_event.h"
 #include "core/os/keyboard.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/string/string_name.h"
+#include "core/variant/array.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
 #include "core/version_generated.gen.h"
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"
@@ -61,12 +61,13 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/text_edit.h"
 #include "scene/gui/tool_button.h"
+#include "scene/resources/syntax_highlighter.h"
 #include "servers/rendering/shader_language.h"
 #include "servers/rendering/shader_types.h"
 #include "servers/rendering_server.h"
 
-#include "editor_code_editor/editor_goto_line_dialog.h"
 #include "editor_code_editor/editor_find_replace_bar.h"
+#include "editor_code_editor/editor_goto_line_dialog.h"
 
 struct ScriptCodeCompletionOption;
 
@@ -113,8 +114,6 @@ void ShaderTextEditor::reload_text() {
 }
 
 void ShaderTextEditor::_load_theme_settings() {
-	get_text_edit()->clear_colors();
-
 	Color background_color = EDITOR_GET("text_editor/highlighting/background_color");
 	Color completion_background_color = EDITOR_GET("text_editor/highlighting/completion_background_color");
 	Color completion_selected_color = EDITOR_GET("text_editor/highlighting/completion_selected_color");
@@ -131,9 +130,6 @@ void ShaderTextEditor::_load_theme_settings() {
 	Color current_line_color = EDITOR_GET("text_editor/highlighting/current_line_color");
 	Color line_length_guideline_color = EDITOR_GET("text_editor/highlighting/line_length_guideline_color");
 	Color word_highlighted_color = EDITOR_GET("text_editor/highlighting/word_highlighted_color");
-	Color number_color = EDITOR_GET("text_editor/highlighting/number_color");
-	Color function_color = EDITOR_GET("text_editor/highlighting/function_color");
-	Color member_variable_color = EDITOR_GET("text_editor/highlighting/member_variable_color");
 	Color mark_color = EDITOR_GET("text_editor/highlighting/mark_color");
 	Color bookmark_color = EDITOR_GET("text_editor/highlighting/bookmark_color");
 	Color breakpoint_color = EDITOR_GET("text_editor/highlighting/breakpoint_color");
@@ -141,10 +137,6 @@ void ShaderTextEditor::_load_theme_settings() {
 	Color code_folding_color = EDITOR_GET("text_editor/highlighting/code_folding_color");
 	Color search_result_color = EDITOR_GET("text_editor/highlighting/search_result_color");
 	Color search_result_border_color = EDITOR_GET("text_editor/highlighting/search_result_border_color");
-	Color symbol_color = EDITOR_GET("text_editor/highlighting/symbol_color");
-	Color keyword_color = EDITOR_GET("text_editor/highlighting/keyword_color");
-	Color control_flow_keyword_color = EDITOR_GET("text_editor/highlighting/control_flow_keyword_color");
-	Color comment_color = EDITOR_GET("text_editor/highlighting/comment_color");
 
 	get_text_edit()->add_theme_color_override("background_color", background_color);
 	get_text_edit()->add_theme_color_override("completion_background_color", completion_background_color);
@@ -162,9 +154,6 @@ void ShaderTextEditor::_load_theme_settings() {
 	get_text_edit()->add_theme_color_override("current_line_color", current_line_color);
 	get_text_edit()->add_theme_color_override("line_length_guideline_color", line_length_guideline_color);
 	get_text_edit()->add_theme_color_override("word_highlighted_color", word_highlighted_color);
-	get_text_edit()->add_theme_color_override("number_color", number_color);
-	get_text_edit()->add_theme_color_override("function_color", function_color);
-	get_text_edit()->add_theme_color_override("member_variable_color", member_variable_color);
 	get_text_edit()->add_theme_color_override("mark_color", mark_color);
 	get_text_edit()->add_theme_color_override("bookmark_color", bookmark_color);
 	get_text_edit()->add_theme_color_override("breakpoint_color", breakpoint_color);
@@ -172,17 +161,19 @@ void ShaderTextEditor::_load_theme_settings() {
 	get_text_edit()->add_theme_color_override("code_folding_color", code_folding_color);
 	get_text_edit()->add_theme_color_override("search_result_color", search_result_color);
 	get_text_edit()->add_theme_color_override("search_result_border_color", search_result_border_color);
-	get_text_edit()->add_theme_color_override("symbol_color", symbol_color);
+
+	syntax_highlighter->set_number_color(EDITOR_GET("text_editor/highlighting/number_color"));
+	syntax_highlighter->set_symbol_color(EDITOR_GET("text_editor/highlighting/symbol_color"));
+	syntax_highlighter->set_function_color(EDITOR_GET("text_editor/highlighting/function_color"));
+	syntax_highlighter->set_member_variable_color(EDITOR_GET("text_editor/highlighting/member_variable_color"));
+
+	const Color keyword_color = EDITOR_GET("text_editor/highlighting/keyword_color");
 
 	List<String> keywords;
 	ShaderLanguage::get_keyword_list(&keywords);
 
 	for (List<String>::Element *E = keywords.front(); E; E = E->next()) {
-		if (ShaderLanguage::is_control_flow_keyword(E->get())) {
-			get_text_edit()->add_keyword_color(E->get(), control_flow_keyword_color);
-		} else {
-			get_text_edit()->add_keyword_color(E->get(), keyword_color);
-		}
+		syntax_highlighter->add_keyword_color(E->get(), keyword_color);
 	}
 
 	// Colorize built-ins like `COLOR` differently to make them easier
@@ -204,12 +195,14 @@ void ShaderTextEditor::_load_theme_settings() {
 	const Color user_type_color = EDITOR_GET("text_editor/highlighting/user_type_color");
 
 	for (List<String>::Element *E = built_ins.front(); E; E = E->next()) {
-		get_text_edit()->add_keyword_color(E->get(), user_type_color);
+		syntax_highlighter->add_keyword_color(E->get(), user_type_color);
 	}
 
 	// Colorize comments.
-	get_text_edit()->add_color_region("/*", "*/", comment_color, false);
-	get_text_edit()->add_color_region("//", "", comment_color, false);
+	const Color comment_color = EDITOR_GET("text_editor/highlighting/comment_color");
+	syntax_highlighter->clear_color_regions();
+	syntax_highlighter->add_color_region("/*", "*/", comment_color, false);
+	syntax_highlighter->add_color_region("//", "", comment_color, false);
 }
 
 void ShaderTextEditor::_check_shader_mode() {
@@ -276,6 +269,8 @@ void ShaderTextEditor::_bind_methods() {
 }
 
 ShaderTextEditor::ShaderTextEditor() {
+	syntax_highlighter.instance();
+	get_text_edit()->set_syntax_highlighter(syntax_highlighter);
 }
 
 /*** SCRIPT EDITOR ******/
@@ -396,7 +391,6 @@ void ShaderEditor::_editor_settings_changed() {
 	shader_editor->get_text_edit()->set_draw_tabs(EditorSettings::get_singleton()->get("text_editor/indent/draw_tabs"));
 	shader_editor->get_text_edit()->set_draw_spaces(EditorSettings::get_singleton()->get("text_editor/indent/draw_spaces"));
 	shader_editor->get_text_edit()->set_show_line_numbers(EditorSettings::get_singleton()->get("text_editor/appearance/show_line_numbers"));
-	shader_editor->get_text_edit()->set_syntax_coloring(EditorSettings::get_singleton()->get("text_editor/highlighting/syntax_highlighting"));
 	shader_editor->get_text_edit()->set_highlight_all_occurrences(EditorSettings::get_singleton()->get("text_editor/highlighting/highlight_all_occurrences"));
 	shader_editor->get_text_edit()->set_highlight_current_line(EditorSettings::get_singleton()->get("text_editor/highlighting/highlight_current_line"));
 	shader_editor->get_text_edit()->cursor_set_blink_enabled(EditorSettings::get_singleton()->is_caret_blink_active());

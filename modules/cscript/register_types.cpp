@@ -138,6 +138,12 @@ static void _editor_init() {
 	Ref<EditorExportCScript> gd_export;
 	gd_export.instance();
 	EditorExport::get_singleton()->add_export_plugin(gd_export);
+
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+	Ref<CScriptSyntaxHighlighter> cscript_syntax_highlighter;
+	cscript_syntax_highlighter.instance();
+	EditorScriptEditor::get_singleton()->register_syntax_highlighter(cscript_syntax_highlighter);
+#endif
 }
 
 #endif // TOOLS_ENABLED
@@ -160,9 +166,6 @@ void register_cscript_types(ModuleRegistrationLevel p_level) {
 
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
-#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-		EditorScriptEditor::register_create_syntax_highlighter_function(CScriptSyntaxHighlighter::create);
-#endif
 		EditorNode::add_init_callback(_editor_init);
 	}
 #endif // TOOLS_ENABLED

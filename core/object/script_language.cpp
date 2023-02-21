@@ -30,8 +30,8 @@
 
 #include "script_language.h"
 
-#include "core/core_string_names.h"
 #include "core/config/project_settings.h"
+#include "core/core_string_names.h"
 
 ScriptLanguage *ScriptServer::_languages[MAX_LANGUAGES];
 int ScriptServer::_language_count = 0;
@@ -353,6 +353,56 @@ ScriptInstance::~ScriptInstance() {
 ScriptCodeCompletionCache *ScriptCodeCompletionCache::singleton = nullptr;
 ScriptCodeCompletionCache::ScriptCodeCompletionCache() {
 	singleton = this;
+}
+
+void ScriptLanguage::get_core_type_words(List<String> *p_words) const {
+	static const char *_core_type_words[] = {
+		"bool",
+		"int",
+		"float",
+		"String",
+		"Rect2",
+		"Rect2i",
+		"Vector2",
+		"Vector2i",
+		"Vector3",
+		"Vector3i",
+		"Vector4",
+		"Vector4i",
+		"Plane",
+		"Quaternion",
+		"AABB",
+		"Basis",
+		"Transform",
+		"Transform2D",
+		"Projection",
+		"Color",
+		"NodePath",
+		"RID",
+		"Object",
+		"StringName",
+		"Dictionary",
+		"Array",
+		"PoolByteArray",
+		"PoolIntArray",
+		"PoolRealArray",
+		"PoolStringArray",
+		"PoolVector2Array",
+		"PoolVector2iArray",
+		"PoolVector3Array",
+		"PoolVector3iArray",
+		"PoolVector4Array",
+		"PoolVector4iArray",
+		"PoolColorArray",
+		nullptr
+	};
+
+	const char **w = _core_type_words;
+
+	while (*w) {
+		p_words->push_back(*w);
+		w++;
+	}
 }
 
 void ScriptLanguage::frame() {

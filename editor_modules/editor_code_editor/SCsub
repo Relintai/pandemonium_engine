@@ -15,6 +15,7 @@ sources = [
     "editor_goto_line_dialog.cpp",
     "editor_find_replace_bar.cpp",
     "editor_script_editor_quick_open.cpp",
+    "editor_syntax_highlighter.cpp",
 
     "script_editor_plugin.cpp",
     "editor_script_editor.cpp",

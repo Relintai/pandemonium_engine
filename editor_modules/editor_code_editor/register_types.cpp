@@ -16,6 +16,8 @@ void register_editor_code_editor_types(ModuleRegistrationLevel p_level) {
 
 		ClassDB::register_virtual_class<EditorScriptEditorBase>();
 
+		ClassDB::register_class<EditorSyntaxHighlighter>();
+
 		//ClassDB::register_class<TextEditor>();
 		//ClassDB::register_class<EditorScriptTextEditor>();
 		//ClassDB::register_class<EditorCodeTextEditor>();

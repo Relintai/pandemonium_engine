@@ -1,5 +1,8 @@
+#ifndef EDITOR_SYNTAX_HIGHLIGHTER_H
+#define EDITOR_SYNTAX_HIGHLIGHTER_H
+
 /*************************************************************************/
-/*  script_editor_plugin.cpp                                             */
+/*  script_editor_plugin.h                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,18 +31,66 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor_script_editor_base.h"
+#include "editor/editor_plugin.h"
 
-#include "editor_syntax_highlighter.h"
+#include "scene/resources/syntax_highlighter.h"
 
-void EditorScriptEditorBase::_bind_methods() {
-	ADD_SIGNAL(MethodInfo("name_changed"));
-	ADD_SIGNAL(MethodInfo("edited_script_changed"));
-	ADD_SIGNAL(MethodInfo("request_help", PropertyInfo(Variant::STRING, "topic")));
-	ADD_SIGNAL(MethodInfo("request_open_script_at_line", PropertyInfo(Variant::OBJECT, "script"), PropertyInfo(Variant::INT, "line")));
-	ADD_SIGNAL(MethodInfo("request_save_history"));
-	ADD_SIGNAL(MethodInfo("go_to_help", PropertyInfo(Variant::STRING, "what")));
-	// TODO: This signal is no use for VisualScript.
-	ADD_SIGNAL(MethodInfo("search_in_files_requested", PropertyInfo(Variant::STRING, "text")));
-	ADD_SIGNAL(MethodInfo("replace_in_files_requested", PropertyInfo(Variant::STRING, "text")));
-}
+class EditorSyntaxHighlighter : public SyntaxHighlighter {
+	GDCLASS(EditorSyntaxHighlighter, SyntaxHighlighter)
+
+public:
+	virtual String _get_name() const;
+	virtual Array _get_supported_languages() const;
+
+	void _set_edited_resource(const RES &p_res) { edited_resourse = p_res; }
+	REF _get_edited_resource() { return edited_resourse; }
+
+	virtual Ref<EditorSyntaxHighlighter> _create() const;
+
+	EditorSyntaxHighlighter();
+	~EditorSyntaxHighlighter();
+
+protected:
+	static void _bind_methods();
+
+private:
+	REF edited_resourse;
+};
+
+class EditorStandardSyntaxHighlighter : public EditorSyntaxHighlighter {
+	GDCLASS(EditorStandardSyntaxHighlighter, EditorSyntaxHighlighter)
+
+public:
+	virtual void _update_cache();
+	virtual Dictionary _get_line_syntax_highlighting(int p_line) override { return highlighter->get_line_syntax_highlighting(p_line); }
+
+	virtual String _get_name() const { return TTR("Standard"); }
+
+	virtual Ref<EditorSyntaxHighlighter> _create() const;
+
+	EditorStandardSyntaxHighlighter();
+	~EditorStandardSyntaxHighlighter();
+
+protected:
+	static void _bind_methods();
+
+private:
+	Ref<CodeHighlighter> highlighter;
+};
+
+class EditorPlainTextSyntaxHighlighter : public EditorSyntaxHighlighter {
+	GDCLASS(EditorPlainTextSyntaxHighlighter, EditorSyntaxHighlighter)
+
+public:
+	virtual String _get_name() const { return TTR("Plain Text"); }
+
+	virtual Ref<EditorSyntaxHighlighter> _create() const;
+
+	EditorPlainTextSyntaxHighlighter();
+	~EditorPlainTextSyntaxHighlighter();
+
+protected:
+	static void _bind_methods();
+};
+
+#endif // SCRIPT_EDITOR_PLUGIN_H

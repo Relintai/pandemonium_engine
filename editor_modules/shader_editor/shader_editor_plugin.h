@@ -30,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor_code_editor/editor_code_text_editor.h"
 #include "editor/editor_plugin.h"
+#include "editor_code_editor/editor_code_text_editor.h"
 #include "scene/gui/margin_container.h"
 
 #include "scene/resources/shader.h"
@@ -49,10 +49,12 @@ class InputEvent;
 class MenuButton;
 class PopupMenu;
 struct ScriptCodeCompletionOption;
+class CodeHighlighter;
 
 class ShaderTextEditor : public EditorCodeTextEditor {
 	GDCLASS(ShaderTextEditor, EditorCodeTextEditor);
 
+	Ref<CodeHighlighter> syntax_highlighter;
 	Ref<Shader> shader;
 
 	void _check_shader_mode();

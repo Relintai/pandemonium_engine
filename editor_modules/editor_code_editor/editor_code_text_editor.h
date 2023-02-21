@@ -31,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/dialogs.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/dialogs.h"
 
 #include "core/containers/list.h"
 #include "core/math/math_defs.h"
@@ -97,6 +97,9 @@ class EditorCodeTextEditor : public VBoxContainer {
 	void _zoom_changed();
 	void _reset_zoom();
 
+	Color completion_font_color;
+	Color completion_string_color;
+	Color completion_comment_color;
 	EditorCodeTextEditorCodeCompleteFunc code_complete_func;
 	void *code_complete_ud;
 

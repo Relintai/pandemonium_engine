@@ -265,7 +265,6 @@ WebNodeEditor::WebNodeEditor() {
 	_results_label->set_v_size_flags(SIZE_EXPAND_FILL);
 	_results_label->set_readonly(true);
 	_results_label->set_highlight_current_line(true);
-	_results_label->set_syntax_coloring(true);
 	_results_label->set_show_line_length_guidelines(true);
 	_results_label->set_draw_fold_gutter(true);
 	_results_label->set_highlight_all_occurrences(true);
@@ -273,16 +272,21 @@ WebNodeEditor::WebNodeEditor() {
 	_results_label->set_right_click_moves_caret(false);
 	_html_previewer->add_child(_results_label);
 
+	Ref<CodeHighlighter> code_highlighter;
+	code_highlighter.instance();
+
 	//todo add all
-	_results_label->add_color_region("<b>", "</b>", Color::color8(153, 153, 255, 255), false);
-	_results_label->add_color_region("<i>", "</i>", Color::color8(153, 255, 153, 255), false);
-	_results_label->add_color_region("<del>", "</del>", Color::color8(255, 153, 153, 255), false);
-	_results_label->add_color_region("<ins>", "</ins>", Color::color8(255, 255, 102, 255), false);
-	_results_label->add_color_region("<a", "</a>", Color::color8(153, 204, 255, 255), false);
-	_results_label->add_color_region("<img", "/>", Color::color8(255, 204, 153, 255), true);
-	_results_label->add_color_region("<pre>", "</pre>", Color::color8(192, 192, 192, 255), false);
-	_results_label->add_color_region("<center>", "</center>", Color::color8(175, 238, 238, 255), false);
-	_results_label->add_color_region("<right>", "</right>", Color::color8(135, 206, 235, 255), false);
+	code_highlighter->add_color_region("<b>", "</b>", Color::color8(153, 153, 255, 255), false);
+	code_highlighter->add_color_region("<i>", "</i>", Color::color8(153, 255, 153, 255), false);
+	code_highlighter->add_color_region("<del>", "</del>", Color::color8(255, 153, 153, 255), false);
+	code_highlighter->add_color_region("<ins>", "</ins>", Color::color8(255, 255, 102, 255), false);
+	code_highlighter->add_color_region("<a", "</a>", Color::color8(153, 204, 255, 255), false);
+	code_highlighter->add_color_region("<img", "/>", Color::color8(255, 204, 153, 255), true);
+	code_highlighter->add_color_region("<pre>", "</pre>", Color::color8(192, 192, 192, 255), false);
+	code_highlighter->add_color_region("<center>", "</center>", Color::color8(175, 238, 238, 255), false);
+	code_highlighter->add_color_region("<right>", "</right>", Color::color8(135, 206, 235, 255), false);
+
+	_results_label->set_syntax_highlighter(code_highlighter);
 
 	_main_button_group.instance();
 

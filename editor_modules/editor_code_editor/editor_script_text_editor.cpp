@@ -76,6 +76,8 @@
 #include "editor_goto_line_dialog.h"
 #include "editor_script_editor.h"
 
+#include "editor_syntax_highlighter.h"
+
 Vector<String> EditorScriptTextEditor::get_functions() {
 	String errortxt;
 	int line = -1, col;
@@ -100,7 +102,7 @@ void EditorScriptTextEditor::apply_code() {
 	}
 	script->set_source_code(code_editor->get_text_edit()->get_text());
 	script->update_exports();
-	_update_member_keywords();
+	code_editor->get_text_edit()->get_syntax_highlighter()->update_cache();
 }
 
 RES EditorScriptTextEditor::get_edited_resource() const {
@@ -134,43 +136,10 @@ void EditorScriptTextEditor::enable_editor() {
 	_validate_script();
 }
 
-void EditorScriptTextEditor::_update_member_keywords() {
-	member_keywords.clear();
-	code_editor->get_text_edit()->clear_member_keywords();
-	Color member_variable_color = EDITOR_GET("text_editor/highlighting/member_variable_color");
-
-	StringName instance_base = script->get_instance_base_type();
-
-	if (instance_base == StringName()) {
-		return;
-	}
-	List<PropertyInfo> plist;
-	ClassDB::get_property_list(instance_base, &plist);
-
-	for (List<PropertyInfo>::Element *E = plist.front(); E; E = E->next()) {
-		String name = E->get().name;
-		if (E->get().usage & PROPERTY_USAGE_CATEGORY || E->get().usage & PROPERTY_USAGE_GROUP) {
-			continue;
-		}
-		if (name.find("/") != -1) {
-			continue;
-		}
-
-		code_editor->get_text_edit()->add_member_keyword(name, member_variable_color);
-	}
-
-	List<String> clist;
-	ClassDB::get_integer_constant_list(instance_base, &clist);
-
-	for (List<String>::Element *E = clist.front(); E; E = E->next()) {
-		code_editor->get_text_edit()->add_member_keyword(E->get(), member_variable_color);
-	}
-}
-
 void EditorScriptTextEditor::_load_theme_settings() {
 	TextEdit *text_edit = code_editor->get_text_edit();
 
-	text_edit->clear_colors();
+	text_edit->clear_keywords();
 
 	Color background_color = EDITOR_GET("text_editor/highlighting/background_color");
 	Color completion_background_color = EDITOR_GET("text_editor/highlighting/completion_background_color");
@@ -189,9 +158,6 @@ void EditorScriptTextEditor::_load_theme_settings() {
 	Color current_line_color = EDITOR_GET("text_editor/highlighting/current_line_color");
 	Color line_length_guideline_color = EDITOR_GET("text_editor/highlighting/line_length_guideline_color");
 	Color word_highlighted_color = EDITOR_GET("text_editor/highlighting/word_highlighted_color");
-	Color number_color = EDITOR_GET("text_editor/highlighting/number_color");
-	Color function_color = EDITOR_GET("text_editor/highlighting/function_color");
-	Color member_variable_color = EDITOR_GET("text_editor/highlighting/member_variable_color");
 	Color mark_color = EDITOR_GET("text_editor/highlighting/mark_color");
 	Color bookmark_color = EDITOR_GET("text_editor/highlighting/bookmark_color");
 	Color breakpoint_color = EDITOR_GET("text_editor/highlighting/breakpoint_color");
@@ -199,14 +165,6 @@ void EditorScriptTextEditor::_load_theme_settings() {
 	Color code_folding_color = EDITOR_GET("text_editor/highlighting/code_folding_color");
 	Color search_result_color = EDITOR_GET("text_editor/highlighting/search_result_color");
 	Color search_result_border_color = EDITOR_GET("text_editor/highlighting/search_result_border_color");
-	Color symbol_color = EDITOR_GET("text_editor/highlighting/symbol_color");
-	Color keyword_color = EDITOR_GET("text_editor/highlighting/keyword_color");
-	Color control_flow_keyword_color = EDITOR_GET("text_editor/highlighting/control_flow_keyword_color");
-	Color basetype_color = EDITOR_GET("text_editor/highlighting/base_type_color");
-	Color type_color = EDITOR_GET("text_editor/highlighting/engine_type_color");
-	Color usertype_color = EDITOR_GET("text_editor/highlighting/user_type_color");
-	Color comment_color = EDITOR_GET("text_editor/highlighting/comment_color");
-	Color string_color = EDITOR_GET("text_editor/highlighting/string_color");
 
 	text_edit->add_theme_color_override("background_color", background_color);
 	text_edit->add_theme_color_override("completion_background_color", completion_background_color);
@@ -225,9 +183,6 @@ void EditorScriptTextEditor::_load_theme_settings() {
 	text_edit->add_theme_color_override("current_line_color", current_line_color);
 	text_edit->add_theme_color_override("line_length_guideline_color", line_length_guideline_color);
 	text_edit->add_theme_color_override("word_highlighted_color", word_highlighted_color);
-	text_edit->add_theme_color_override("number_color", number_color);
-	text_edit->add_theme_color_override("function_color", function_color);
-	text_edit->add_theme_color_override("member_variable_color", member_variable_color);
 	text_edit->add_theme_color_override("bookmark_color", bookmark_color);
 	text_edit->add_theme_color_override("breakpoint_color", breakpoint_color);
 	text_edit->add_theme_color_override("executing_line_color", executing_line_color);
@@ -235,18 +190,8 @@ void EditorScriptTextEditor::_load_theme_settings() {
 	text_edit->add_theme_color_override("code_folding_color", code_folding_color);
 	text_edit->add_theme_color_override("search_result_color", search_result_color);
 	text_edit->add_theme_color_override("search_result_border_color", search_result_border_color);
-	text_edit->add_theme_color_override("symbol_color", symbol_color);
 
 	text_edit->add_theme_constant_override("line_spacing", EDITOR_DEF("text_editor/theme/line_spacing", 6));
-
-	colors_cache.symbol_color = symbol_color;
-	colors_cache.keyword_color = keyword_color;
-	colors_cache.control_flow_keyword_color = control_flow_keyword_color;
-	colors_cache.basetype_color = basetype_color;
-	colors_cache.type_color = type_color;
-	colors_cache.usertype_color = usertype_color;
-	colors_cache.comment_color = comment_color;
-	colors_cache.string_color = string_color;
 
 	theme_loaded = true;
 	if (!script.is_null()) {
@@ -260,46 +205,11 @@ void EditorScriptTextEditor::_set_theme_for_script() {
 	}
 
 	TextEdit *text_edit = code_editor->get_text_edit();
+	text_edit->get_syntax_highlighter()->update_cache();
 
-	List<String> keywords;
-	script->get_language()->get_reserved_words(&keywords);
+	/* add keywords for auto completion */
 
-	for (List<String>::Element *E = keywords.front(); E; E = E->next()) {
-		if (script->get_language()->is_control_flow_keyword(E->get())) {
-			// Use a different color for control flow keywords to make them easier to distinguish.
-			text_edit->add_keyword_color(E->get(), colors_cache.control_flow_keyword_color);
-		} else {
-			text_edit->add_keyword_color(E->get(), colors_cache.keyword_color);
-		}
-	}
-
-	//colorize core types
-	const Color basetype_color = colors_cache.basetype_color;
-	text_edit->add_keyword_color("String", basetype_color);
-	text_edit->add_keyword_color("Vector2", basetype_color);
-	text_edit->add_keyword_color("Rect2", basetype_color);
-	text_edit->add_keyword_color("Transform2D", basetype_color);
-	text_edit->add_keyword_color("Vector3", basetype_color);
-	text_edit->add_keyword_color("AABB", basetype_color);
-	text_edit->add_keyword_color("Basis", basetype_color);
-	text_edit->add_keyword_color("Plane", basetype_color);
-	text_edit->add_keyword_color("Transform", basetype_color);
-	text_edit->add_keyword_color("Quaternion", basetype_color);
-	text_edit->add_keyword_color("Color", basetype_color);
-	text_edit->add_keyword_color("Object", basetype_color);
-	text_edit->add_keyword_color("NodePath", basetype_color);
-	text_edit->add_keyword_color("RID", basetype_color);
-	text_edit->add_keyword_color("Dictionary", basetype_color);
-	text_edit->add_keyword_color("Array", basetype_color);
-	text_edit->add_keyword_color("PoolByteArray", basetype_color);
-	text_edit->add_keyword_color("PoolIntArray", basetype_color);
-	text_edit->add_keyword_color("PoolRealArray", basetype_color);
-	text_edit->add_keyword_color("PoolStringArray", basetype_color);
-	text_edit->add_keyword_color("PoolVector2Array", basetype_color);
-	text_edit->add_keyword_color("PoolVector3Array", basetype_color);
-	text_edit->add_keyword_color("PoolColorArray", basetype_color);
-
-	//colorize engine types
+	// engine types
 	List<StringName> types;
 	ClassDB::get_class_list(&types);
 
@@ -309,16 +219,15 @@ void EditorScriptTextEditor::_set_theme_for_script() {
 			n = n.substr(1, n.length());
 		}
 
-		text_edit->add_keyword_color(n, colors_cache.type_color);
+		text_edit->add_keyword(E->get());
 	}
-	_update_member_keywords();
 
 	//colorize user types
 	List<StringName> global_classes;
 	ScriptServer::get_global_class_list(&global_classes);
 
 	for (List<StringName>::Element *E = global_classes.front(); E; E = E->next()) {
-		text_edit->add_keyword_color(E->get(), colors_cache.usertype_color);
+		text_edit->add_keyword(E->get());
 	}
 
 	//colorize singleton autoloads (as types, just as engine singletons are)
@@ -331,30 +240,8 @@ void EditorScriptTextEditor::_set_theme_for_script() {
 		}
 		String path = ProjectSettings::get_singleton()->get(s);
 		if (path.begins_with("*")) {
-			text_edit->add_keyword_color(s.get_slice("/", 1), colors_cache.usertype_color);
+			text_edit->add_keyword(s.get_slice("/", 1));
 		}
-	}
-
-	//colorize comments
-	List<String> comments;
-	script->get_language()->get_comment_delimiters(&comments);
-
-	for (List<String>::Element *E = comments.front(); E; E = E->next()) {
-		String comment = E->get();
-		String beg = comment.get_slice(" ", 0);
-		String end = comment.get_slice_count(" ") > 1 ? comment.get_slice(" ", 1) : String();
-
-		text_edit->add_color_region(beg, end, colors_cache.comment_color, end == "");
-	}
-
-	//colorize strings
-	List<String> strings;
-	script->get_language()->get_string_delimiters(&strings);
-	for (List<String>::Element *E = strings.front(); E; E = E->next()) {
-		String string = E->get();
-		String beg = string.get_slice(" ", 0);
-		String end = string.get_slice_count(" ") > 1 ? string.get_slice(" ", 1) : String();
-		text_edit->add_color_region(beg, end, colors_cache.string_color, end == "");
 	}
 }
 
@@ -543,7 +430,7 @@ void EditorScriptTextEditor::_validate_script() {
 		if (!script->is_tool()) {
 			script->set_source_code(text);
 			script->update_exports();
-			_update_member_keywords();
+			te->get_syntax_highlighter()->update_cache();
 		}
 
 		functions.clear();
@@ -1346,23 +1233,20 @@ void EditorScriptTextEditor::_edit_option_toggle_inline_comment() {
 	code_editor->toggle_inline_comment(delimiter);
 }
 
-void EditorScriptTextEditor::add_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter) {
+void EditorScriptTextEditor::add_syntax_highlighter(Ref<EditorSyntaxHighlighter> p_highlighter) {
 	highlighters[p_highlighter->_get_name()] = p_highlighter;
 	highlighter_menu->add_radio_check_item(p_highlighter->_get_name());
 }
 
-void EditorScriptTextEditor::set_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter) {
+void EditorScriptTextEditor::set_syntax_highlighter(Ref<EditorSyntaxHighlighter> p_highlighter) {
 	TextEdit *te = code_editor->get_text_edit();
-	te->set_syntax_highlighting(p_highlighter);
-	if (p_highlighter.is_valid()) {
-		highlighter_menu->set_item_checked(highlighter_menu->get_item_idx_from_text(p_highlighter->_get_name()), true);
-	} else {
-		highlighter_menu->set_item_checked(highlighter_menu->get_item_idx_from_text(TTR("Standard")), true);
-	}
+	p_highlighter->_set_edited_resource(script);
+	te->set_syntax_highlighter(p_highlighter);
+	highlighter_menu->set_item_checked(highlighter_menu->get_item_idx_from_text(p_highlighter->_get_name()), true);
 }
 
 void EditorScriptTextEditor::_change_syntax_highlighter(int p_idx) {
-	RBMap<String, Ref<SyntaxHighlighter> >::Element *el = highlighters.front();
+	RBMap<String, Ref<EditorSyntaxHighlighter>>::Element *el = highlighters.front();
 	while (el != nullptr) {
 		highlighter_menu->set_item_checked(highlighter_menu->get_item_idx_from_text(el->key()), false);
 		el = el->next();
@@ -1903,10 +1787,17 @@ EditorScriptTextEditor::EditorScriptTextEditor() {
 	convert_case = memnew(PopupMenu);
 	convert_case->set_name("convert_case");
 
-	highlighters[TTR("Standard")] = Ref<SyntaxHighlighter>();
 	highlighter_menu = memnew(PopupMenu);
 	highlighter_menu->set_name("highlighter_menu");
-	highlighter_menu->add_radio_check_item(TTR("Standard"));
+
+	Ref<EditorPlainTextSyntaxHighlighter> plain_highlighter;
+	plain_highlighter.instance();
+	add_syntax_highlighter(plain_highlighter);
+
+	Ref<EditorStandardSyntaxHighlighter> highlighter;
+	highlighter.instance();
+	add_syntax_highlighter(highlighter);
+	set_syntax_highlighter(highlighter);
 
 	search_menu = memnew(MenuButton);
 	search_menu->set_text(TTR("Search"));

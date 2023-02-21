@@ -13,6 +13,7 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/text_edit.h"
 #include "scene/gui/texture_rect.h"
+#include "scene/resources/syntax_highlighter.h"
 
 #include "editor_code_editor/editor_code_text_editor.h"
 #include "editor_code_editor/editor_find_replace_bar.h"
@@ -75,51 +76,76 @@ void TextEditorVanillaEditor::draw_minimap(const bool value) {
 
 void TextEditorVanillaEditor::color_region(const String &fileextension) {
 	if (fileextension == "bbs") {
-		text_editor->add_color_region("[b]", "[/b]", Color::color8(153, 153, 255, 255), false);
-		text_editor->add_color_region("[i]", "[/i]", Color::color8(153, 255, 153, 255), false);
-		text_editor->add_color_region("[s]", "[/s]", Color::color8(255, 153, 153, 255), false);
-		text_editor->add_color_region("[u]", "[/u]", Color::color8(255, 255, 102, 255), false);
-		text_editor->add_color_region("[url", "[/url]", Color::color8(153, 204, 255, 255), false);
-		text_editor->add_color_region("[code]", "[/code]", Color::color8(192, 192, 192, 255), false);
-		text_editor->add_color_region("[img]", "[/img]", Color::color8(255, 204, 153, 255), false);
-		text_editor->add_color_region("[center]", "[/center]", Color::color8(175, 238, 238, 255), false);
-		text_editor->add_color_region("[right]", "[/right]", Color::color8(135, 206, 235, 255), false);
+		Ref<CodeHighlighter> highlighter;
+		highlighter.instance();
+
+		highlighter->add_color_region("[b]", "[/b]", Color::color8(153, 153, 255, 255), false);
+		highlighter->add_color_region("[i]", "[/i]", Color::color8(153, 255, 153, 255), false);
+		highlighter->add_color_region("[s]", "[/s]", Color::color8(255, 153, 153, 255), false);
+		highlighter->add_color_region("[u]", "[/u]", Color::color8(255, 255, 102, 255), false);
+		highlighter->add_color_region("[url", "[/url]", Color::color8(153, 204, 255, 255), false);
+		highlighter->add_color_region("[code]", "[/code]", Color::color8(192, 192, 192, 255), false);
+		highlighter->add_color_region("[img]", "[/img]", Color::color8(255, 204, 153, 255), false);
+		highlighter->add_color_region("[center]", "[/center]", Color::color8(175, 238, 238, 255), false);
+		highlighter->add_color_region("[right]", "[/right]", Color::color8(135, 206, 235, 255), false);
+
+		text_editor->set_syntax_highlighter(highlighter);
 	} else if (fileextension == "html") {
-		text_editor->add_color_region("<b>", "</b>", Color::color8(153, 153, 255, 255), false);
-		text_editor->add_color_region("<i>", "</i>", Color::color8(153, 255, 153, 255), false);
-		text_editor->add_color_region("<del>", "</del>", Color::color8(255, 153, 153, 255), false);
-		text_editor->add_color_region("<ins>", "</ins>", Color::color8(255, 255, 102, 255), false);
-		text_editor->add_color_region("<a", "</a>", Color::color8(153, 204, 255, 255), false);
-		text_editor->add_color_region("<img", "/>", Color::color8(255, 204, 153, 255), true);
-		text_editor->add_color_region("<pre>", "</pre>", Color::color8(192, 192, 192, 255), false);
-		text_editor->add_color_region("<center>", "</center>", Color::color8(175, 238, 238, 255), false);
-		text_editor->add_color_region("<right>", "</right>", Color::color8(135, 206, 235, 255), false);
+		Ref<CodeHighlighter> highlighter;
+		highlighter.instance();
+
+		highlighter->add_color_region("<b>", "</b>", Color::color8(153, 153, 255, 255), false);
+		highlighter->add_color_region("<i>", "</i>", Color::color8(153, 255, 153, 255), false);
+		highlighter->add_color_region("<del>", "</del>", Color::color8(255, 153, 153, 255), false);
+		highlighter->add_color_region("<ins>", "</ins>", Color::color8(255, 255, 102, 255), false);
+		highlighter->add_color_region("<a", "</a>", Color::color8(153, 204, 255, 255), false);
+		highlighter->add_color_region("<img", "/>", Color::color8(255, 204, 153, 255), true);
+		highlighter->add_color_region("<pre>", "</pre>", Color::color8(192, 192, 192, 255), false);
+		highlighter->add_color_region("<center>", "</center>", Color::color8(175, 238, 238, 255), false);
+		highlighter->add_color_region("<right>", "</right>", Color::color8(135, 206, 235, 255), false);
+
+		text_editor->set_syntax_highlighter(highlighter);
 	} else if (fileextension == "md") {
-		text_editor->add_color_region("***", "***", Color::color8(126, 186, 181, 255), false);
-		text_editor->add_color_region("**", "**", Color::color8(153, 153, 255, 255), false);
-		text_editor->add_color_region("*", "*", Color::color8(153, 255, 153, 255), false);
-		text_editor->add_color_region("+ ", "", Color::color8(255, 178, 102, 255), false);
-		text_editor->add_color_region("- ", "", Color::color8(255, 178, 102, 255), false);
-		text_editor->add_color_region("~~", "~~", Color::color8(255, 153, 153, 255), false);
-		text_editor->add_color_region("__", "__", Color::color8(255, 255, 102, 255), false);
-		text_editor->add_color_region("[", ")", Color::color8(153, 204, 255, 255), false);
-		text_editor->add_color_region("`", "`", Color::color8(192, 192, 192, 255), false);
-		text_editor->add_color_region("\"*.", "\"", Color::color8(255, 255, 255, 255), true);
-		text_editor->add_color_region("# ", "", Color::color8(105, 105, 105, 255), true);
-		text_editor->add_color_region("## ", "", Color::color8(128, 128, 128, 255), true);
-		text_editor->add_color_region("### ", "", Color::color8(169, 169, 169, 255), true);
-		text_editor->add_color_region("#### ", "", Color::color8(192, 192, 192, 255), true);
-		text_editor->add_color_region("##### ", "", Color::color8(211, 211, 211, 255), true);
-		text_editor->add_color_region("###### ", "", Color::color8(255, 255, 255, 255), true);
-		text_editor->add_color_region("> ", "", Color::color8(172, 138, 79, 255), true);
+		Ref<CodeHighlighter> highlighter;
+		highlighter.instance();
+
+		highlighter->add_color_region("***", "***", Color::color8(126, 186, 181, 255), false);
+		highlighter->add_color_region("**", "**", Color::color8(153, 153, 255, 255), false);
+		highlighter->add_color_region("*", "*", Color::color8(153, 255, 153, 255), false);
+		highlighter->add_color_region("+ ", "", Color::color8(255, 178, 102, 255), false);
+		highlighter->add_color_region("- ", "", Color::color8(255, 178, 102, 255), false);
+		highlighter->add_color_region("~~", "~~", Color::color8(255, 153, 153, 255), false);
+		highlighter->add_color_region("__", "__", Color::color8(255, 255, 102, 255), false);
+		highlighter->add_color_region("[", ")", Color::color8(153, 204, 255, 255), false);
+		highlighter->add_color_region("`", "`", Color::color8(192, 192, 192, 255), false);
+		highlighter->add_color_region("\"*.", "\"", Color::color8(255, 255, 255, 255), true);
+		highlighter->add_color_region("# ", "", Color::color8(105, 105, 105, 255), true);
+		highlighter->add_color_region("## ", "", Color::color8(128, 128, 128, 255), true);
+		highlighter->add_color_region("### ", "", Color::color8(169, 169, 169, 255), true);
+		highlighter->add_color_region("#### ", "", Color::color8(192, 192, 192, 255), true);
+		highlighter->add_color_region("##### ", "", Color::color8(211, 211, 211, 255), true);
+		highlighter->add_color_region("###### ", "", Color::color8(255, 255, 255, 255), true);
+		highlighter->add_color_region("> ", "", Color::color8(172, 138, 79, 255), true);
+
+		text_editor->set_syntax_highlighter(highlighter);
 	} else if (fileextension == "cfg") {
-		text_editor->add_color_region("[", "]", Color::color8(153, 204, 255, 255), false);
-		text_editor->add_color_region("\"", "\"", Color::color8(255, 255, 102, 255), false);
-		text_editor->add_color_region(";", "", Color::color8(128, 128, 128, 255), true);
+		Ref<CodeHighlighter> highlighter;
+		highlighter.instance();
+
+		highlighter->add_color_region("[", "]", Color::color8(153, 204, 255, 255), false);
+		highlighter->add_color_region("\"", "\"", Color::color8(255, 255, 102, 255), false);
+		highlighter->add_color_region(";", "", Color::color8(128, 128, 128, 255), true);
+
+		text_editor->set_syntax_highlighter(highlighter);
 	} else if (fileextension == "ini") {
-		text_editor->add_color_region("[", "]", Color::color8(153, 204, 255, 255), false);
-		text_editor->add_color_region("\"", "\"", Color::color8(255, 255, 102, 255), false);
-		text_editor->add_color_region(";", "", Color::color8(128, 128, 128, 255), true);
+		Ref<CodeHighlighter> highlighter;
+		highlighter.instance();
+
+		highlighter->add_color_region("[", "]", Color::color8(153, 204, 255, 255), false);
+		highlighter->add_color_region("\"", "\"", Color::color8(255, 255, 102, 255), false);
+		highlighter->add_color_region(";", "", Color::color8(128, 128, 128, 255), true);
+
+		text_editor->set_syntax_highlighter(highlighter);
 	}
 }
 
@@ -195,7 +221,6 @@ TextEditorVanillaEditor::TextEditorVanillaEditor() {
 	text_editor = memnew(TextEdit);
 	add_child(text_editor);
 	text_editor->set_highlight_current_line(true);
-	text_editor->set_syntax_coloring(true);
 	text_editor->set_show_line_numbers(true);
 	text_editor->set_breakpoint_gutter_enabled(true);
 	text_editor->set_highlight_all_occurrences(true);

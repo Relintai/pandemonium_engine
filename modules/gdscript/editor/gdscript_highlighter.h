@@ -30,10 +30,25 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "editor_modules/editor_code_editor/editor_syntax_highlighter.h"
 #include "scene/gui/text_edit.h"
 
-class GDScriptSyntaxHighlighter : public SyntaxHighlighter {
+class GDScriptSyntaxHighlighter : public EditorSyntaxHighlighter {
+	GDCLASS(GDScriptSyntaxHighlighter, EditorSyntaxHighlighter);
+
 private:
+	struct ColorRegion {
+		Color color;
+		String start_key;
+		String end_key;
+		bool line_only;
+	};
+	Vector<ColorRegion> color_regions;
+	RBMap<int, int> color_region_cache;
+
+	Dictionary keywords;
+	Dictionary member_keywords;
+
 	enum Type {
 		NONE,
 		REGION,
@@ -58,8 +73,10 @@ private:
 	Color node_path_color;
 	Color type_color;
 
+	void add_color_region(const String &p_start_key, const String &p_end_key, const Color &p_color, bool p_line_only = false);
+
 public:
-	static SyntaxHighlighter *create();
+	virtual Ref<EditorSyntaxHighlighter> _create() const;
 
 	virtual void _update_cache();
 	virtual Dictionary _get_line_syntax_highlighting(int p_line);

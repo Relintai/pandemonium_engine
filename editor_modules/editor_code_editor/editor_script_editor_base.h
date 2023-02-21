@@ -33,7 +33,7 @@
 
 #include "scene/gui/box_container.h"
 
-class SyntaxHighlighter;
+class EditorSyntaxHighlighter;
 class Texture;
 
 class EditorScriptEditorBase : public VBoxContainer {
@@ -43,8 +43,8 @@ protected:
 	static void _bind_methods();
 
 public:
-	virtual void add_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter) = 0;
-	virtual void set_syntax_highlighter(Ref<SyntaxHighlighter> p_highlighter) = 0;
+	virtual void add_syntax_highlighter(Ref<EditorSyntaxHighlighter> p_highlighter) = 0;
+	virtual void set_syntax_highlighter(Ref<EditorSyntaxHighlighter> p_highlighter) = 0;
 
 	virtual void apply_code() = 0;
 	virtual RES get_edited_resource() const = 0;

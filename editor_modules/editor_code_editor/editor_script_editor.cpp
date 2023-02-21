@@ -2090,8 +2090,8 @@ bool EditorScriptEditor::edit(const RES &p_resource, int p_line, int p_col, bool
 
 	if (p_resource->get_class_name() != StringName("VisualScript")) {
 		bool highlighter_set = false;
-		for (int i = 0; i < syntax_highlighters_func_count; i++) {
-			SyntaxHighlighter *highlighter = syntax_highlighters_funcs[i]();
+		for (int i = 0; i < syntax_highlighters.size(); i++) {
+			Ref<EditorSyntaxHighlighter> highlighter = syntax_highlighters[i]->_create();
 			se->add_syntax_highlighter(highlighter);
 
 			if (script != nullptr && !highlighter_set) {
@@ -2999,12 +2999,18 @@ void EditorScriptEditor::_open_script_request(const String &p_path) {
 	}
 }
 
-int EditorScriptEditor::syntax_highlighters_func_count = 0;
-CreateSyntaxHighlighterFunc EditorScriptEditor::syntax_highlighters_funcs[EditorScriptEditor::SYNTAX_HIGHLIGHTER_FUNC_MAX];
+void EditorScriptEditor::register_syntax_highlighter(const Ref<EditorSyntaxHighlighter> &p_syntax_highlighter) {
+	ERR_FAIL_COND(p_syntax_highlighter.is_null());
 
-void EditorScriptEditor::register_create_syntax_highlighter_function(CreateSyntaxHighlighterFunc p_func) {
-	ERR_FAIL_COND(syntax_highlighters_func_count == SYNTAX_HIGHLIGHTER_FUNC_MAX);
-	syntax_highlighters_funcs[syntax_highlighters_func_count++] = p_func;
+	if (syntax_highlighters.find(p_syntax_highlighter) == -1) {
+		syntax_highlighters.push_back(p_syntax_highlighter);
+	}
+}
+
+void EditorScriptEditor::unregister_syntax_highlighter(const Ref<EditorSyntaxHighlighter> &p_syntax_highlighter) {
+	ERR_FAIL_COND(p_syntax_highlighter.is_null());
+
+	syntax_highlighters.erase(p_syntax_highlighter);
 }
 
 int EditorScriptEditor::script_editor_func_count = 0;

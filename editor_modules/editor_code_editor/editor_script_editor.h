@@ -38,21 +38,22 @@
 
 #include "scene/resources/text_file.h"
 
-#include "core/object/script_language.h"
-#include "core/variant/array.h"
-#include "core/error/error_list.h"
 #include "core/containers/list.h"
+#include "core/containers/rb_set.h"
+#include "core/containers/vector.h"
+#include "core/error/error_list.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
-#include "core/containers/rb_set.h"
-#include "core/typedefs.h"
+#include "core/object/script_language.h"
 #include "core/string/ustring.h"
+#include "core/typedefs.h"
+#include "core/variant/array.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
 
 #include "editor_script_editor_base.h"
+#include "editor_syntax_highlighter.h"
 
 class Button;
 class ConfigFile;
@@ -81,7 +82,6 @@ class VSplitContainer;
 class EditorScriptEditorQuickOpen;
 class EditorScriptEditorDebugger;
 
-typedef SyntaxHighlighter *(*CreateSyntaxHighlighterFunc)();
 typedef EditorScriptEditorBase *(*CreateEditorScriptEditorFunc)(const RES &p_resource);
 
 class EditorScriptCodeCompletionCache;
@@ -208,8 +208,7 @@ class EditorScriptEditor : public PanelContainer {
 	static int script_editor_func_count;
 	static CreateEditorScriptEditorFunc script_editor_funcs[SCRIPT_EDITOR_FUNC_MAX];
 
-	static int syntax_highlighters_func_count;
-	static CreateSyntaxHighlighterFunc syntax_highlighters_funcs[SYNTAX_HIGHLIGHTER_FUNC_MAX];
+	Vector<Ref<EditorSyntaxHighlighter>> syntax_highlighters;
 
 	struct ScriptHistory {
 		Control *control;
@@ -417,7 +416,9 @@ public:
 	EditorScriptEditorDebugger *get_debugger() { return debugger; }
 	void set_live_auto_reload_running_scripts(bool p_enabled);
 
-	static void register_create_syntax_highlighter_function(CreateSyntaxHighlighterFunc p_func);
+	void register_syntax_highlighter(const Ref<EditorSyntaxHighlighter> &p_syntax_highlighter);
+	void unregister_syntax_highlighter(const Ref<EditorSyntaxHighlighter> &p_syntax_highlighter);
+
 	static void register_create_script_editor_function(CreateEditorScriptEditorFunc p_func);
 
 	EditorScriptEditor(EditorNode *p_editor);
