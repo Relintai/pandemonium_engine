@@ -62,7 +62,7 @@ protected:
 
 private:
 	RBMap<int, Dictionary> highlighting_cache;
-	void _line_edited_from(int p_line);
+	void _lines_edited_from(int p_from_line, int p_to_line);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

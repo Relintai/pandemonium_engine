@@ -53,13 +53,13 @@ Dictionary SyntaxHighlighter::get_line_syntax_highlighting(int p_line) {
 	return color_map;
 }
 
-void SyntaxHighlighter::_line_edited_from(int p_line) {
+void SyntaxHighlighter::_lines_edited_from(int p_from_line, int p_to_line) {
 	if (highlighting_cache.size() < 1) {
 		return;
 	}
 
 	int cache_size = highlighting_cache.back()->key();
-	for (int i = p_line - 1; i <= cache_size; i++) {
+	for (int i = MIN(p_from_line, p_to_line) - 1; i <= cache_size; i++) {
 		if (highlighting_cache.has(i)) {
 			highlighting_cache.erase(i);
 		}
@@ -97,7 +97,7 @@ void SyntaxHighlighter::update_cache() {
 
 void SyntaxHighlighter::set_text_edit(TextEdit *p_text_edit) {
 	if (text_edit && ObjectDB::get_instance(text_edit_instance_id)) {
-		text_edit->disconnect("line_edited_from", this, "_line_edited_from");
+		text_edit->disconnect("lines_edited_from", this, "_lines_edited_from");
 	}
 
 	text_edit = p_text_edit;
@@ -105,7 +105,7 @@ void SyntaxHighlighter::set_text_edit(TextEdit *p_text_edit) {
 		return;
 	}
 	text_edit_instance_id = text_edit->get_instance_id();
-	text_edit->connect("line_edited_from", this, "_line_edited_from");
+	text_edit->connect("lines_edited_from", this, "_lines_edited_from");
 	update_cache();
 }
 
@@ -128,7 +128,7 @@ void SyntaxHighlighter::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_update_cache"), &SyntaxHighlighter::_update_cache);
 	ClassDB::bind_method(D_METHOD("_clear_highlighting_cache"), &SyntaxHighlighter::_clear_highlighting_cache);
 
-	ClassDB::bind_method(D_METHOD("_line_edited_from"), &SyntaxHighlighter::_line_edited_from);
+	ClassDB::bind_method(D_METHOD("_lines_edited_from"), &SyntaxHighlighter::_lines_edited_from);
 
 	BIND_VMETHOD(MethodInfo(Variant::DICTIONARY, "_get_line_syntax_highlighting", PropertyInfo(Variant::INT, "p_line")));
 	BIND_VMETHOD(MethodInfo("_update_cache"));
