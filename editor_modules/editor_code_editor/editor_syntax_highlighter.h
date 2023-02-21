@@ -62,7 +62,7 @@ class EditorStandardSyntaxHighlighter : public EditorSyntaxHighlighter {
 
 public:
 	virtual void _update_cache();
-	virtual Dictionary _get_line_syntax_highlighting(int p_line) override { return highlighter->get_line_syntax_highlighting(p_line); }
+	virtual Dictionary _get_line_syntax_highlighting(int p_line) { return highlighter->get_line_syntax_highlighting(p_line); }
 
 	virtual String _get_name() const { return TTR("Standard"); }
 
