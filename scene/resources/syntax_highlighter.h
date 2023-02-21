@@ -71,10 +71,10 @@ class CodeHighlighter : public SyntaxHighlighter {
 	GDCLASS(CodeHighlighter, SyntaxHighlighter)
 
 public:
-	virtual Dictionary _get_line_syntax_highlighting(int p_line) override;
+	virtual Dictionary _get_line_syntax_highlighting(int p_line);
 
-	virtual void _clear_highlighting_cache() override;
-	virtual void _update_cache() override;
+	virtual void _clear_highlighting_cache();
+	virtual void _update_cache();
 
 	void add_keyword_color(const String &p_keyword, const Color &p_color);
 	void remove_keyword_color(const String &p_keyword);
