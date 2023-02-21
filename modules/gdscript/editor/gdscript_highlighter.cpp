@@ -34,9 +34,6 @@
 #include "core/config/project_settings.h"
 #include "editor/editor_settings.h"
 
-static bool _is_char(CharType c) {
-	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
-}
 
 static bool _is_hex_symbol(CharType c) {
 	return ((c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'));
@@ -246,7 +243,7 @@ Dictionary GDScriptSyntaxHighlighter::_get_line_syntax_highlighting(int p_line) 
 			}
 		}
 
-		if (!in_word && _is_char(str[j]) && !is_number) {
+		if (!in_word && is_unicode_identifier_start(str[j]) && !is_number) {
 			in_word = true;
 		}
 
