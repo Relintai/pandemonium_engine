@@ -31,8 +31,8 @@
 #include "cscript_highlighter.h"
 #include "../cscript.h"
 #include "../cscript_tokenizer.h"
-#include "editor/editor_settings.h"
 #include "core/config/project_settings.h"
+#include "editor/editor_settings.h"
 
 static bool _is_char(CharType c) {
 	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
@@ -412,7 +412,6 @@ Dictionary CScriptSyntaxHighlighter::_get_line_syntax_highlighting(int p_line) {
 	return color_map;
 }
 
-
 String CScriptSyntaxHighlighter::_get_name() const {
 	return "CScript";
 }
@@ -492,10 +491,15 @@ void CScriptSyntaxHighlighter::_update_cache() {
 
 	/* Reserved words. */
 	const Color keyword_color = EDITOR_GET("text_editor/highlighting/keyword_color");
+	const Color control_flow_keyword_color = EDITOR_GET("text_editor/highlighting/control_flow_keyword_color");
 	List<String> keyword_list;
 	cscript->get_reserved_words(&keyword_list);
 	for (List<String>::Element *E = keyword_list.front(); E; E = E->next()) {
-		keywords[E->get()] = keyword_color;
+		if (cscript->is_control_flow_keyword(E->get())) {
+			keywords[E->get()] = control_flow_keyword_color;
+		} else {
+			keywords[E->get()] = keyword_color;
+		}
 	}
 
 	/* Comments */
