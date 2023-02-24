@@ -224,15 +224,15 @@ class Entity : public Node {
 public:
 	////    Base    ////
 
-	NodePath get_body_path();
-	void set_body_path(NodePath value);
-	Node *get_body();
-	Spatial *get_body_3d();
-	Node2D *get_body_2d();
-	void set_body(Node *body);
+	NodePath body_get_path();
+	void body_set_path(NodePath value);
+	Node *body_get();
+	Spatial *body_get_3d();
+	Node2D *body_get_2d();
+	void body_set(Node *body);
 
-	void instance_body(const Ref<EntityData> &data, const int model_index);
-	void on_body_changed();
+	void body_instance(const Ref<EntityData> &data, const int model_index);
+	void body_on_changed();
 
 	NodePath get_character_skeleton_path();
 	void set_character_skeleton_path(NodePath value);

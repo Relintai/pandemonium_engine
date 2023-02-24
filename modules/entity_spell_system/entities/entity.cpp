@@ -169,52 +169,52 @@ SOFTWARE.
                                                          \
 	emit_signal(signal, what, __VA_ARGS__);
 
-NodePath Entity::get_body_path() {
+NodePath Entity::body_get_path() {
 	return _body_path;
 }
-void Entity::set_body_path(NodePath value) {
+void Entity::body_set_path(NodePath value) {
 	_body_path = value;
 
-	set_body(get_node_or_null(_body_path));
+	body_set(get_node_or_null(_body_path));
 
 	if (ObjectDB::instance_validate(_body)) {
 		_body->set_owner(this);
 	}
 }
-Node *Entity::get_body() {
+Node *Entity::body_get() {
 	return _body;
 }
-Spatial *Entity::get_body_3d() {
+Spatial *Entity::body_get_3d() {
 	return _body_3d;
 }
-Node2D *Entity::get_body_2d() {
+Node2D *Entity::body_get_2d() {
 	return _body_2d;
 }
-void Entity::set_body(Node *body) {
+void Entity::body_set(Node *body) {
 	_body = body;
 	_body_2d = Object::cast_to<Node2D>(body);
 	_body_3d = Object::cast_to<Spatial>(body);
 }
 
-void Entity::instance_body(const Ref<EntityData> &data, const int model_index) {
+void Entity::body_instance(const Ref<EntityData> &data, const int model_index) {
 	if (is_queued_for_deletion()) {
 		return;
 	}
 
-	if (get_body() == NULL && data.is_valid() && data->get_entity_species_data().is_valid() &&
+	if (body_get() == NULL && data.is_valid() && data->get_entity_species_data().is_valid() &&
 			data->get_entity_species_data()->get_model_data_count() > model_index &&
 			data->get_entity_species_data()->get_model_data(model_index).is_valid() &&
 			data->get_entity_species_data()->get_model_data(model_index)->get_body().is_valid()) {
 		Node *node = data->get_entity_species_data()->get_model_data(model_index)->get_body()->instance();
 
 		add_child(node);
-		set_body(node);
+		body_set(node);
 
-		on_body_changed();
+		body_on_changed();
 	}
 }
 
-void Entity::on_body_changed() {
+void Entity::body_on_changed() {
 	if (has_method("_body_changed")) {
 		call("_body_changed");
 	}
@@ -563,7 +563,7 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 
 	//setup();
 
-	instance_body(value, _s_model_index);
+	body_instance(value, _s_model_index);
 
 	emit_signal("sentity_data_changed", value);
 
@@ -577,7 +577,7 @@ Ref<EntityData> Entity::getc_entity_data() {
 void Entity::setc_entity_data(Ref<EntityData> value) {
 	_c_entity_data = value;
 
-	instance_body(value, _c_model_index);
+	body_instance(value, _c_model_index);
 
 	emit_signal("centity_data_changed", value);
 }
@@ -2923,10 +2923,10 @@ bool Entity::_iss_target_in_interact_range() {
 		return false;
 	}
 
-	Node2D *b2d = get_body_2d();
+	Node2D *b2d = body_get_2d();
 
 	if (b2d) {
-		Node2D *tb = t->get_body_2d();
+		Node2D *tb = t->body_get_2d();
 
 		if (!tb) {
 			return false;
@@ -2935,10 +2935,10 @@ bool Entity::_iss_target_in_interact_range() {
 		return (b2d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() <= EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
 	}
 
-	Spatial *b3d = get_body_3d();
+	Spatial *b3d = body_get_3d();
 
 	if (b3d) {
-		Spatial *tb = t->get_body_3d();
+		Spatial *tb = t->body_get_3d();
 
 		if (!tb) {
 			return false;
@@ -2956,10 +2956,10 @@ bool Entity::_isc_target_in_interact_range() {
 		return false;
 	}
 
-	Node2D *b2d = get_body_2d();
+	Node2D *b2d = body_get_2d();
 
 	if (b2d) {
-		Node2D *tb = t->get_body_2d();
+		Node2D *tb = t->body_get_2d();
 
 		if (!tb) {
 			return false;
@@ -2968,10 +2968,10 @@ bool Entity::_isc_target_in_interact_range() {
 		return (b2d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() <= EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
 	}
 
-	Spatial *b3d = get_body_3d();
+	Spatial *b3d = body_get_3d();
 
 	if (b3d) {
-		Spatial *tb = t->get_body_3d();
+		Spatial *tb = t->body_get_3d();
 
 		if (!tb) {
 			return false;
@@ -6508,7 +6508,7 @@ void Entity::_notification(int p_what) {
 			call("_initialize");
 		} break;
 		case NOTIFICATION_INSTANCED: {
-			set_body(get_node_or_null(_body_path));
+			body_set(get_node_or_null(_body_path));
 
 			if (ObjectDB::instance_validate(_body)) {
 				_body->set_owner(this);
@@ -6528,7 +6528,7 @@ void Entity::_notification(int p_what) {
 			}
 
 			if (!_body) {
-				set_body(get_node_or_null(_body_path));
+				body_set(get_node_or_null(_body_path));
 
 				if (ObjectDB::instance_validate(_body)) {
 					_body->set_owner(this);
@@ -7103,9 +7103,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_cuntargeted"), &Entity::notification_cuntargeted);
 
 	//Properties
-	ClassDB::bind_method(D_METHOD("get_body_path"), &Entity::get_body_path);
-	ClassDB::bind_method(D_METHOD("set_body_path", "value"), &Entity::set_body_path);
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "body_path"), "set_body_path", "get_body_path");
+	ClassDB::bind_method(D_METHOD("body_get_path"), &Entity::body_get_path);
+	ClassDB::bind_method(D_METHOD("body_set_path", "value"), &Entity::body_set_path);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "body_path"), "body_set_path", "body_get_path");
 
 	ClassDB::bind_method(D_METHOD("get_character_skeleton_path"), &Entity::get_character_skeleton_path);
 	ClassDB::bind_method(D_METHOD("set_character_skeleton_path", "value"), &Entity::set_character_skeleton_path);
@@ -7561,15 +7561,16 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sskills", PROPERTY_HINT_NONE, "23/19:EntitySkill", PROPERTY_USAGE_ENTITY_HIDDEN, "EntitySkill"), "sskills_set", "sskills_get");
 
 	//skeleton
-	ClassDB::bind_method(D_METHOD("get_body"), &Entity::get_body);
-	ClassDB::bind_method(D_METHOD("get_body_3d"), &Entity::get_body_3d);
-	ClassDB::bind_method(D_METHOD("get_body_2d"), &Entity::get_body_2d);
-	ClassDB::bind_method(D_METHOD("set_body", "body"), &Entity::set_body);
+	ClassDB::bind_method(D_METHOD("body_get"), &Entity::body_get);
+	ClassDB::bind_method(D_METHOD("body_get_3d"), &Entity::body_get_3d);
+	ClassDB::bind_method(D_METHOD("body_get_2d"), &Entity::body_get_2d);
+	ClassDB::bind_method(D_METHOD("body_set", "body"), &Entity::body_set);
+
 	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
 	ClassDB::bind_method(D_METHOD("set_character_skeleton", "skeleton"), &Entity::set_character_skeleton);
 
-	ClassDB::bind_method(D_METHOD("instance_body"), &Entity::instance_body);
-	ClassDB::bind_method(D_METHOD("on_body_changed"), &Entity::on_body_changed);
+	ClassDB::bind_method(D_METHOD("body_instance"), &Entity::body_instance);
+	ClassDB::bind_method(D_METHOD("body_on_changed"), &Entity::body_on_changed);
 
 	BIND_VMETHOD(MethodInfo("_body_changed"));
 	ADD_SIGNAL(MethodInfo("body_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
