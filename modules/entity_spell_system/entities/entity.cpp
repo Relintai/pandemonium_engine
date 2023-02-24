@@ -7571,7 +7571,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("body_instance", "data", "model_index"), &Entity::body_instance);
 	ClassDB::bind_method(D_METHOD("body_on_changed"), &Entity::body_on_changed);
-w
+
 	BIND_VMETHOD(MethodInfo("_body_changed"));
 	ADD_SIGNAL(MethodInfo("body_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
