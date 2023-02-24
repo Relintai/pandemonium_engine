@@ -177,8 +177,9 @@ void Entity::set_body_path(NodePath value) {
 
 	set_body(get_node_or_null(_body_path));
 
-	if (ObjectDB::instance_validate(_body))
+	if (ObjectDB::instance_validate(_body)) {
 		_body->set_owner(this);
+	}
 }
 Node *Entity::get_body() {
 	return _body;
@@ -196,8 +197,9 @@ void Entity::set_body(Node *body) {
 }
 
 void Entity::instance_body(const Ref<EntityData> &data, const int model_index) {
-	if (is_queued_for_deletion())
+	if (is_queued_for_deletion()) {
 		return;
+	}
 
 	if (get_body() == NULL && data.is_valid() && data->get_entity_species_data().is_valid() &&
 			data->get_entity_species_data()->get_model_data_count() > model_index &&
@@ -213,8 +215,9 @@ void Entity::instance_body(const Ref<EntityData> &data, const int model_index) {
 }
 
 void Entity::on_body_changed() {
-	if (has_method("_body_changed"))
+	if (has_method("_body_changed")) {
 		call("_body_changed");
+	}
 
 	emit_signal("body_changed", this);
 }
@@ -350,8 +353,9 @@ EntityEnums::EntityRelationType Entity::gets_relation_to(Entity *to) {
 }
 
 EntityEnums::EntityRelationType Entity::_gets_relation_to(Node *to) {
-	if (to == this)
+	if (to == this) {
 		return EntityEnums::ENTITY_RELATION_TYPE_FRIENDLY;
+	}
 
 	return EntityEnums::ENTITY_RELATION_TYPE_HOSTILE;
 }
@@ -370,8 +374,9 @@ EntityEnums::EntityRelationType Entity::getc_relation_to(Entity *to) {
 }
 
 EntityEnums::EntityRelationType Entity::_getc_relation_to(Node *to) {
-	if (to == this)
+	if (to == this) {
 		return EntityEnums::ENTITY_RELATION_TYPE_FRIENDLY;
+	}
 
 	return EntityEnums::ENTITY_RELATION_TYPE_HOSTILE;
 }
@@ -630,8 +635,9 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 
 	sets_entity_player_type(info->get_entity_player_type());
 
-	if (info->get_network_owner() != 0)
+	if (info->get_network_owner() != 0) {
 		set_network_master(info->get_network_owner());
+	}
 
 	sets_original_entity_controller(info->get_entity_controller());
 	sets_entity_controller(info->get_entity_controller());
@@ -658,8 +664,9 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 void Entity::_setup() {
 	ERR_FAIL_COND(!ESS::get_singleton());
 
-	if (!_s_entity_data.is_valid())
+	if (!_s_entity_data.is_valid()) {
 		return;
+	}
 
 	if (_deserialized) {
 		Ref<EntityClassData> cc = gets_entity_data()->get_entity_class_data();
@@ -825,8 +832,9 @@ void Entity::_setup() {
 }
 
 void Entity::setup_actionbars() {
-	if (!gets_entity_data().is_valid())
+	if (!gets_entity_data().is_valid()) {
 		return;
+	}
 
 	if (is_deserialized()) {
 		return;
@@ -1296,8 +1304,9 @@ Dictionary Entity::_to_dict() {
 
 	////    Known Spells    ////
 
-	if (ESS::get_singleton() && ESS::get_singleton()->get_use_spell_points())
+	if (ESS::get_singleton() && ESS::get_singleton()->get_use_spell_points()) {
 		dict["free_spell_points"] = _s_free_spell_points;
+	}
 
 	Dictionary known_spells;
 
@@ -1830,8 +1839,9 @@ bool Entity::craft_hass_recipe_id(int id) {
 void Entity::craft_adds_recipe(Ref<CraftRecipe> craft_recipe) {
 	ERR_FAIL_COND(!craft_recipe.is_valid());
 
-	if (craft_hass_recipe(craft_recipe))
+	if (craft_hass_recipe(craft_recipe)) {
 		return;
+	}
 
 	_s_craft_recipes.push_back(craft_recipe);
 
@@ -1842,8 +1852,9 @@ void Entity::craft_adds_recipe(Ref<CraftRecipe> craft_recipe) {
 void Entity::craft_adds_recipe_id(int id) {
 	ERR_FAIL_COND(!ESS::get_singleton());
 
-	if (craft_hass_recipe_id(id))
+	if (craft_hass_recipe_id(id)) {
 		return;
+	}
 
 	Ref<CraftRecipe> craft_recipe = ESS::get_singleton()->get_resource_db()->get_craft_recipe(id);
 
@@ -1952,8 +1963,9 @@ bool Entity::craft_hasc_recipe_id(int id) {
 	return false;
 }
 void Entity::craft_addc_recipe(Ref<CraftRecipe> craft_recipe) {
-	if (craft_hasc_recipe(craft_recipe))
+	if (craft_hasc_recipe(craft_recipe)) {
 		return;
+	}
 
 	_c_craft_recipes.push_back(craft_recipe);
 
@@ -1962,8 +1974,9 @@ void Entity::craft_addc_recipe(Ref<CraftRecipe> craft_recipe) {
 void Entity::craft_addc_recipe_id(int id) {
 	ERR_FAIL_COND(!ESS::get_singleton());
 
-	if (craft_hasc_recipe_id(id))
+	if (craft_hasc_recipe_id(id)) {
 		return;
+	}
 
 	Ref<CraftRecipe> craft_recipe = ESS::get_singleton()->get_resource_db()->get_craft_recipe(id);
 
@@ -2199,20 +2212,24 @@ void Entity::creceive_stat(int id, int ccurrent) {
 
 bool Entity::equip_should_deny(int equip_slot, Ref<ItemInstance> item) {
 	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) {
-		if (_s_ai->equip_should_deny(this, equip_slot, item))
+		if (_s_ai->equip_should_deny(this, equip_slot, item)) {
 			return true;
+		}
 	}
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		if (ad->get_aura()->equip_should_deny(ad, equip_slot, item))
+		if (ad->get_aura()->equip_should_deny(ad, equip_slot, item)) {
 			return true;
+		}
 	}
 
-	if (has_method("_equip_should_deny"))
-		if (call("_equip_should_deny", equip_slot, item))
+	if (has_method("_equip_should_deny")) {
+		if (call("_equip_should_deny", equip_slot, item)) {
 			return true;
+		}
+	}
 
 	return false;
 }
@@ -2228,8 +2245,9 @@ void Entity::equip_son_success(int equip_slot, Ref<ItemInstance> item, Ref<ItemI
 		ad->get_aura()->equip_son_success(ad, equip_slot, item, old_item, bag_slot);
 	}
 
-	if (has_method("_equip_son_success"))
+	if (has_method("_equip_son_success")) {
 		call("_equip_son_success", equip_slot, item, old_item, bag_slot);
+	}
 
 	emit_signal("equip_son_success", this, equip_slot, item, old_item, bag_slot);
 }
@@ -2245,8 +2263,9 @@ void Entity::equip_son_fail(int equip_slot, Ref<ItemInstance> item, Ref<ItemInst
 		ad->get_aura()->equip_son_fail(ad, equip_slot, item, old_item, bag_slot);
 	}
 
-	if (has_method("_equip_son_fail"))
+	if (has_method("_equip_son_fail")) {
 		call("_equip_son_fail", equip_slot, item, old_item, bag_slot);
+	}
 
 	emit_signal("equip_son_fail", this, equip_slot, item, old_item, bag_slot);
 }
@@ -2262,8 +2281,9 @@ void Entity::equip_con_success(int equip_slot, Ref<ItemInstance> item, Ref<ItemI
 		ad->get_aura()->equip_con_success(ad, equip_slot, item, old_item, bag_slot);
 	}
 
-	if (has_method("_equip_con_success"))
+	if (has_method("_equip_con_success")) {
 		call("_equip_con_success", equip_slot, item, old_item, bag_slot);
+	}
 
 	emit_signal("equip_con_success", this, equip_slot, item, old_item, bag_slot);
 }
@@ -2279,8 +2299,9 @@ void Entity::equip_con_fail(int equip_slot, Ref<ItemInstance> item, Ref<ItemInst
 		ad->get_aura()->equip_con_fail(ad, equip_slot, item, old_item, bag_slot);
 	}
 
-	if (has_method("_equip_con_fail"))
+	if (has_method("_equip_con_fail")) {
 		call("_equip_con_fail", equip_slot, item, old_item, bag_slot);
+	}
 
 	emit_signal("equip_con_fail", this, equip_slot, item, old_item, bag_slot);
 }
@@ -2377,8 +2398,9 @@ bool Entity::equip_can_equip_item(int equip_slot, Ref<ItemInstance> item) {
 }
 bool Entity::_equip_can_equip_item(int equip_slot, Ref<ItemInstance> item) {
 	//deequip
-	if (!item.is_valid())
+	if (!item.is_valid()) {
 		return true;
+	}
 
 	Ref<ItemTemplate> it = item->get_item_template();
 
@@ -2976,13 +2998,15 @@ void Entity::xp_addc(int value) {
 }
 
 void Entity::levelups(int value) {
-	if (value <= 0)
+	if (value <= 0) {
 		return;
+	}
 
 	ERR_FAIL_COND(!ESS::get_singleton());
 
-	if (_s_level == ESS::get_singleton()->get_max_character_level())
+	if (_s_level == ESS::get_singleton()->get_max_character_level()) {
 		return;
+	}
 
 	_s_level += value;
 
@@ -3041,11 +3065,13 @@ void Entity::_item_uses(int item_id) {
 	if (type == ItemEnums::ITEM_TYPE_EQUIPMENT) {
 		Ref<ItemInstance> ii = equip_gets_slot(it->get_equip_slot());
 
-		if (!ii.is_valid())
+		if (!ii.is_valid()) {
 			return;
+		}
 
-		if (ii->get_item_template() != it)
+		if (ii->get_item_template() != it) {
 			return;
+		}
 
 		Ref<SpellCastInfo> info;
 		info.instance();
@@ -3063,8 +3089,9 @@ void Entity::_item_uses(int item_id) {
 
 		sp->cast_starts(info);
 	} else {
-		if (!gets_bag()->has_item(it, 1))
+		if (!gets_bag()->has_item(it, 1)) {
 			return;
+		}
 
 		Ref<SpellCastInfo> info;
 		info.instance();
@@ -3138,8 +3165,9 @@ void Entity::notification_saura(int what, Ref<AuraData> data) {
 		_s_ai->notification_saura(what, data);
 	}
 
-	if (has_method("_notification_saura"))
+	if (has_method("_notification_saura")) {
 		call("_notification_saura", what, data);
+	}
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
@@ -3159,8 +3187,9 @@ void Entity::notification_sheal(int what, Ref<SpellHealInfo> info) {
 		_s_ai->notification_sheal(what, info);
 	}
 
-	if (has_method("_notification_sheal"))
+	if (has_method("_notification_sheal")) {
 		call("_notification_sheal", what, info);
+	}
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
@@ -3183,8 +3212,9 @@ void Entity::notification_sdamage(int what, Ref<SpellDamageInfo> info) {
 		_s_ai->notification_sdamage(what, info);
 	}
 
-	if (has_method("_notification_sdamage"))
+	if (has_method("_notification_sdamage")) {
 		call("_notification_sdamage", what, info);
+	}
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
@@ -3210,8 +3240,9 @@ void Entity::notification_sdeath() {
 		ad->get_aura()->notification_sdeath(ad);
 	}
 
-	if (has_method("_notification_sdeath"))
+	if (has_method("_notification_sdeath")) {
 		call("_notification_sdeath");
+	}
 }
 
 void Entity::notification_scooldown_added(int id, float value) {
@@ -3624,32 +3655,37 @@ void Entity::sauras_set(const Vector<Variant> &data) {
 }
 
 void Entity::moved() {
-	if (has_method("_moved"))
+	if (has_method("_moved")) {
 		call("_moved");
+	}
 }
 
 void Entity::notification_cmouse_enter() {
-	if (has_method("_notification_cmouse_enter"))
+	if (has_method("_notification_cmouse_enter")) {
 		call("_notification_cmouse_enter");
+	}
 
 	emit_signal("notification_cmouse_entered");
 }
 void Entity::notification_cmouse_exit() {
-	if (has_method("_notification_cmouse_exit"))
+	if (has_method("_notification_cmouse_exit")) {
 		call("_notification_cmouse_exit");
+	}
 
 	emit_signal("notification_cmouse_exited");
 }
 
 void Entity::notification_ctargeted() {
-	if (has_method("_notification_ctargeted"))
+	if (has_method("_notification_ctargeted")) {
 		call("_notification_ctargeted");
+	}
 
 	emit_signal("notification_ctargeted");
 }
 void Entity::notification_cuntargeted() {
-	if (has_method("_notification_cuntargeted"))
+	if (has_method("_notification_cuntargeted")) {
 		call("_notification_cuntargeted");
+	}
 
 	emit_signal("notification_cuntargeted");
 }
@@ -3667,8 +3703,9 @@ void Entity::notification_caura(int what, Ref<AuraData> data) {
 		ad->get_aura()->notification_caura(what, data);
 	}
 
-	if (has_method("_notification_caura"))
+	if (has_method("_notification_caura")) {
 		call("_notification_caura", what, data);
+	}
 
 	emit_signal("notification_caura", what, data);
 }
@@ -3683,8 +3720,9 @@ void Entity::notification_cheal(int what, Ref<SpellHealInfo> info) {
 		ad->get_aura()->notification_cheal(what, ad, info);
 	}
 
-	if (has_method("_notification_cheal"))
+	if (has_method("_notification_cheal")) {
 		call("_notification_cheal", info);
+	}
 
 	//the current c health should probably be set here.
 	emit_signal("notification_cheal", this, what, info);
@@ -3703,8 +3741,9 @@ void Entity::notification_ccast(int what, Ref<SpellCastInfo> info) {
 		ad->get_aura()->notification_aura_ccast(what, ad, info);
 	}
 
-	if (has_method("_notification_ccast"))
+	if (has_method("_notification_ccast")) {
 		call("_notification_ccast", what, info);
+	}
 
 	emit_signal("notification_ccast", what, info);
 }
@@ -3719,8 +3758,9 @@ void Entity::notification_cdamage(int what, Ref<SpellDamageInfo> info) {
 		ad->get_aura()->notification_cdamage(what, ad, info);
 	}
 
-	if (has_method("_notification_cdamage"))
+	if (has_method("_notification_cdamage")) {
 		call("_notification_cdamage", what, info);
+	}
 
 	//the current c health should probably be set here.
 	emit_signal("notification_cdamage", this, what, info);
@@ -4081,8 +4121,9 @@ void Entity::category_cooldown_removes(int category_id) {
 		}
 	}
 
-	if (!found)
+	if (!found) {
 		return;
+	}
 
 	_s_active_category_cooldowns ^= category_id;
 
@@ -4149,8 +4190,9 @@ void Entity::category_cooldown_removec(int category_id) {
 		}
 	}
 
-	if (!found)
+	if (!found) {
 		return;
+	}
 
 	_c_active_category_cooldowns ^= category_id;
 
@@ -4262,8 +4304,9 @@ bool Entity::spell_hass_id(int id) {
 void Entity::spell_adds(Ref<Spell> spell) {
 	ERR_FAIL_COND(!ESS::get_singleton());
 
-	if (spell_hass(spell))
+	if (spell_hass(spell)) {
 		return;
+	}
 
 	//int id = spell->get_id();
 
@@ -4354,8 +4397,9 @@ bool Entity::spell_hasc_id(int id) {
 	return false;
 }
 void Entity::spell_addc(Ref<Spell> spell) {
-	if (spell_hasc(spell))
+	if (spell_hasc(spell)) {
 		return;
+	}
 
 	_c_spells.push_back(spell);
 
@@ -4422,8 +4466,9 @@ bool Entity::skill_hass(Ref<EntitySkill> skill) {
 	return false;
 }
 void Entity::skill_adds(Ref<EntitySkill> skill) {
-	if (skill_hass(skill))
+	if (skill_hass(skill)) {
 		return;
+	}
 
 	skill->connect("current_changed", this, "skill_scurrent_changed");
 	skill->connect("max_changed", this, "skill_smax_changed");
@@ -4478,8 +4523,9 @@ bool Entity::skill_hasc(Ref<EntitySkill> skill) {
 	return false;
 }
 void Entity::skill_addc(Ref<EntitySkill> skill) {
-	if (skill_hasc(skill))
+	if (skill_hasc(skill)) {
 		return;
+	}
 
 	_c_skills.push_back(skill);
 
@@ -4628,8 +4674,9 @@ void Entity::target_crequest_change(NodePath path) {
 }
 
 void Entity::target_net_sets(NodePath path) {
-	if (!ISSERVER())
+	if (!ISSERVER()) {
 		return;
+	}
 
 	Node *p_target = get_node_or_null(path);
 
@@ -4775,8 +4822,9 @@ void Entity::class_talent_sreceive_learn_request(int spec_index, int class_talen
 }
 
 void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_talent_row, int class_talent_culomn) {
-	if (gets_free_class_talent_points() <= 0)
+	if (gets_free_class_talent_points() <= 0) {
 		return;
+	}
 
 	ERR_FAIL_COND(!_s_entity_data.is_valid());
 
@@ -4791,13 +4839,15 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 	for (int i = 0; i < spec->get_num_ranks(class_talent_row, class_talent_culomn); ++i) {
 		Ref<Spell> class_talent = spec->get_talent(class_talent_row, class_talent_culomn, i);
 
-		if (!class_talent.is_valid())
+		if (!class_talent.is_valid()) {
 			return;
+		}
 
 		int class_talent_id = class_talent->get_id();
 
-		if (class_talent_hass(class_talent_id))
+		if (class_talent_hass(class_talent_id)) {
 			continue;
+		}
 
 		if (class_talent->aura_get_talent_required_talent().is_valid()) {
 			if (!class_talent_hass(class_talent->aura_get_talent_required_talent()->get_id())) {
@@ -4856,8 +4906,9 @@ void Entity::_class_talent_sreceive_reset_request() {
 void Entity::class_talent_sreset() {
 	_s_class_talents.clear();
 
-	if (has_method("_son_class_talent_reset"))
+	if (has_method("_son_class_talent_reset")) {
 		call("_son_class_talent_reset", this);
+	}
 
 	emit_signal("sclass_talent_reset", this);
 
@@ -4866,20 +4917,23 @@ void Entity::class_talent_sreset() {
 void Entity::class_talent_creset() {
 	_c_class_talents.clear();
 
-	if (has_method("_con_class_talent_reset"))
+	if (has_method("_con_class_talent_reset")) {
 		call("_con_class_talent_reset", this);
+	}
 
 	emit_signal("cclass_talent_reset", this);
 }
 
 void Entity::class_talent_adds(int class_talent) {
-	if (class_talent_hass(class_talent))
+	if (class_talent_hass(class_talent)) {
 		return;
+	}
 
 	_s_class_talents.push_back(class_talent);
 
-	if (has_method("_son_class_talent_learned"))
+	if (has_method("_son_class_talent_learned")) {
 		call("_son_class_talent_learned", class_talent);
+	}
 
 	emit_signal("sclass_talent_learned", this, class_talent);
 
@@ -4930,13 +4984,15 @@ void Entity::class_talents_sclear() {
 }
 
 void Entity::class_talent_addc(int class_talent) {
-	if (class_talent_hasc(class_talent))
+	if (class_talent_hasc(class_talent)) {
 		return;
+	}
 
 	_c_class_talents.push_back(class_talent);
 
-	if (has_method("_con_class_talent_learned"))
+	if (has_method("_con_class_talent_learned")) {
 		call("_con_class_talent_learned", class_talent);
+	}
 
 	emit_signal("cclass_talent_learned", this, class_talent);
 }
@@ -5016,8 +5072,9 @@ void Entity::character_talent_sreceive_learn_request(int spec_index, int charact
 }
 
 void Entity::_character_talent_sreceive_learn_request(int spec_index, int character_talent_row, int character_talent_culomn) {
-	if (gets_free_character_talent_points() <= 0)
+	if (gets_free_character_talent_points() <= 0) {
 		return;
+	}
 
 	ERR_FAIL_COND(!_s_entity_data.is_valid());
 
@@ -5032,13 +5089,15 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 	for (int i = 0; i < spec->get_num_ranks(character_talent_row, character_talent_culomn); ++i) {
 		Ref<Spell> character_talent = spec->get_talent(character_talent_row, character_talent_culomn, i);
 
-		if (!character_talent.is_valid())
+		if (!character_talent.is_valid()) {
 			return;
+		}
 
 		int character_talent_id = character_talent->get_id();
 
-		if (character_talent_hass(character_talent_id))
+		if (character_talent_hass(character_talent_id)) {
 			continue;
+		}
 
 		if (character_talent->aura_get_talent_required_talent().is_valid()) {
 			if (!character_talent_hass(character_talent->aura_get_talent_required_talent()->get_id())) {
@@ -5097,8 +5156,9 @@ void Entity::_character_talent_sreceive_reset_request() {
 void Entity::character_talent_sreset() {
 	_s_character_talents.clear();
 
-	if (has_method("_son_character_talent_reset"))
+	if (has_method("_son_character_talent_reset")) {
 		call("_son_character_talent_reset", this);
+	}
 
 	emit_signal("scharacter_talent_reset", this);
 
@@ -5107,20 +5167,23 @@ void Entity::character_talent_sreset() {
 void Entity::character_talent_creset() {
 	_c_character_talents.clear();
 
-	if (has_method("_con_character_talent_reset"))
+	if (has_method("_con_character_talent_reset")) {
 		call("_con_character_talent_reset", this);
+	}
 
 	emit_signal("ccharacter_talent_reset", this);
 }
 
 void Entity::character_talent_adds(int character_talent) {
-	if (character_talent_hass(character_talent))
+	if (character_talent_hass(character_talent)) {
 		return;
+	}
 
 	_s_character_talents.push_back(character_talent);
 
-	if (has_method("_son_character_talent_learned"))
+	if (has_method("_son_character_talent_learned")) {
 		call("_son_character_talent_learned", character_talent);
+	}
 
 	emit_signal("scharacter_talent_learned", this, character_talent);
 
@@ -5171,13 +5234,15 @@ void Entity::character_talents_sclear() {
 }
 
 void Entity::character_talent_addc(int character_talent) {
-	if (character_talent_hasc(character_talent))
+	if (character_talent_hasc(character_talent)) {
 		return;
+	}
 
 	_c_character_talents.push_back(character_talent);
 
-	if (has_method("_con_character_talent_learned"))
+	if (has_method("_con_character_talent_learned")) {
 		call("_con_character_talent_learned", character_talent);
+	}
 
 	emit_signal("ccharacter_talent_learned", this, character_talent);
 }
@@ -6068,32 +6133,38 @@ Entity::~Entity() {
 }
 
 void Entity::_crafts(int id) {
-	if (!craft_hass_recipe_id(id))
+	if (!craft_hass_recipe_id(id)) {
 		return;
+	}
 
 	Ref<CraftRecipe> recipe = craft_gets_recipe_id(id);
 
-	if (!recipe.is_valid())
+	if (!recipe.is_valid()) {
 		return;
+	}
 
 	for (int i = 0; i < recipe->get_required_tools_count(); ++i) {
 		Ref<CraftRecipeHelper> mat = recipe->get_required_tool(i);
 
-		if (!mat.is_valid())
+		if (!mat.is_valid()) {
 			continue;
+		}
 
-		if (!gets_bag()->has_item(mat->get_item(), mat->get_count()))
+		if (!gets_bag()->has_item(mat->get_item(), mat->get_count())) {
 			return;
+		}
 	}
 
 	for (int i = 0; i < recipe->get_required_materials_count(); ++i) {
 		Ref<CraftRecipeHelper> mat = recipe->get_required_material(i);
 
-		if (!mat.is_valid())
+		if (!mat.is_valid()) {
 			continue;
+		}
 
-		if (!gets_bag()->has_item(mat->get_item(), mat->get_count()))
+		if (!gets_bag()->has_item(mat->get_item(), mat->get_count())) {
 			return;
+		}
 	}
 
 	//ok, player has everything
@@ -6101,8 +6172,9 @@ void Entity::_crafts(int id) {
 	for (int i = 0; i < recipe->get_required_materials_count(); ++i) {
 		Ref<CraftRecipeHelper> mat = recipe->get_required_material(i);
 
-		if (!mat.is_valid())
+		if (!mat.is_valid()) {
 			continue;
+		}
 
 		gets_bag()->remove_items(mat->get_item(), mat->get_count());
 	}
@@ -6141,13 +6213,15 @@ void Entity::_notification_sxp_gained(int value) {
 void Entity::_notification_slevel_up(int level) {
 	ERR_FAIL_COND(!ESS::get_singleton());
 
-	if (!gets_entity_data().is_valid())
+	if (!gets_entity_data().is_valid()) {
 		return;
+	}
 
 	Ref<EntityClassData> ecd = gets_entity_data()->get_entity_class_data();
 
-	if (!ecd.is_valid())
+	if (!ecd.is_valid()) {
 		return;
+	}
 
 	for (int i = 0; i < ESS::get_singleton()->stat_get_main_stat_count(); ++i) {
 		int st = ecd->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_level() - level, gets_level());
@@ -6156,14 +6230,16 @@ void Entity::_notification_slevel_up(int level) {
 	}
 
 	if (!ESS::get_singleton()->get_use_class_xp()) {
-		if (ESS::get_singleton()->get_use_spell_points())
+		if (ESS::get_singleton()->get_use_spell_points()) {
 			sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
+		}
 
 		sets_free_character_talent_points(gets_free_character_talent_points() + level);
 	}
 
-	if (ESS::get_singleton()->get_use_spell_points())
+	if (ESS::get_singleton()->get_use_spell_points()) {
 		sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
+	}
 
 	sets_free_class_talent_points(gets_free_class_talent_points() + level);
 
@@ -6171,8 +6247,9 @@ void Entity::_notification_slevel_up(int level) {
 		for (int i = 0; i < ecd->get_num_spells(); ++i) {
 			Ref<Spell> sp = ecd->get_spell(i);
 
-			if (!sp.is_valid())
+			if (!sp.is_valid()) {
 				continue;
+			}
 
 			if (sp->get_level() <= gets_level() && !spell_hass(sp)) {
 				Ref<Spell> rs = sp->get_training_required_spell();
@@ -6188,22 +6265,25 @@ void Entity::_notification_slevel_up(int level) {
 }
 
 void Entity::_moved() {
-	if (cast_is_castings())
+	if (cast_is_castings()) {
 		cast_fails();
+	}
 }
 
 void Entity::_con_target_changed(Node *p_entity, Node *p_old_target) {
 	//Entity *entity = Object::cast_to<Entity>(p_entity);
 	Entity *old_target = Object::cast_to<Entity>(p_old_target);
 
-	if (ObjectDB::instance_validate(old_target))
+	if (ObjectDB::instance_validate(old_target)) {
 		old_target->notification_cuntargeted();
+	}
 
 	if (ObjectDB::instance_validate(getc_target())) {
 		getc_target()->notification_ctargeted();
 
-		if (canc_interact())
+		if (canc_interact()) {
 			crequest_interact();
+		}
 	}
 }
 
@@ -6263,8 +6343,9 @@ void Entity::_spell_learns(int id) {
 	for (int i = 0; i < cd->get_num_spells(); ++i) {
 		Ref<Spell> sp = cd->get_spell(i);
 
-		if (!sp.is_valid())
+		if (!sp.is_valid()) {
 			continue;
+		}
 
 		if (sp->get_id() == id) {
 			int req_level = sp->get_level();
@@ -6289,8 +6370,9 @@ void Entity::_spell_learns(int id) {
 
 			spell_adds(sp);
 
-			if (ESS::get_singleton()->get_use_spell_points())
+			if (ESS::get_singleton()->get_use_spell_points()) {
 				sets_free_spell_points(_s_free_spell_points - 1);
+			}
 
 			return;
 		}
@@ -6298,13 +6380,15 @@ void Entity::_spell_learns(int id) {
 }
 
 void Entity::_vendor_item_sbuy(const int index, const int count) {
-	if (count <= 0)
+	if (count <= 0) {
 		return;
+	}
 
 	Entity *e = gets_target();
 
-	if (!e)
+	if (!e) {
 		return;
+	}
 
 	if (!iss_target_in_interact_range()) {
 		return;
@@ -6312,18 +6396,21 @@ void Entity::_vendor_item_sbuy(const int index, const int count) {
 
 	Ref<EntityData> ed = e->gets_entity_data();
 
-	if (!ed.is_valid())
+	if (!ed.is_valid()) {
 		return;
+	}
 
 	Ref<EntityClassData> ecd = ed->get_entity_class_data();
 
-	if (!ecd.is_valid())
+	if (!ecd.is_valid()) {
 		return;
+	}
 
 	Ref<VendorItemData> vid = ecd->get_vendor_item_data();
 
-	if (!vid.is_valid())
+	if (!vid.is_valid()) {
 		return;
+	}
 
 	if (vid->get_num_vendor_datas() <= index) {
 		return;
@@ -6331,24 +6418,28 @@ void Entity::_vendor_item_sbuy(const int index, const int count) {
 
 	Ref<VendorItemDataEntry> vide = vid->get_vendor_data(index);
 
-	if (!vide.is_valid())
+	if (!vide.is_valid()) {
 		return;
+	}
 
 	Ref<ItemTemplate> t = vide->get_item();
 
-	if (!t.is_valid())
+	if (!t.is_valid()) {
 		return;
+	}
 
 	int price = vide->get_price();
 
-	if (gets_money() < price)
+	if (gets_money() < price) {
 		return;
+	}
 
 	Ref<Bag> sbag = gets_bag();
 
 	int s = count;
-	if (t->get_stack_size() < s)
+	if (t->get_stack_size() < s) {
 		s = t->get_stack_size();
+	}
 
 	Ref<ItemInstance> ii = t->create_item_instance();
 	ii->set_stack_size(s);
@@ -6364,8 +6455,9 @@ void Entity::_vendor_item_sbuy(const int index, const int count) {
 void Entity::_vendor_item_ssell(const int slot_id) {
 	Entity *e = gets_target();
 
-	if (!e)
+	if (!e) {
 		return;
+	}
 
 	if (!iss_target_in_interact_range()) {
 		return;
@@ -6373,32 +6465,37 @@ void Entity::_vendor_item_ssell(const int slot_id) {
 
 	Ref<EntityData> ed = e->gets_entity_data();
 
-	if (!ed.is_valid())
+	if (!ed.is_valid()) {
 		return;
+	}
 
 	Ref<EntityClassData> ecd = ed->get_entity_class_data();
 
-	if (!ecd.is_valid())
+	if (!ecd.is_valid()) {
 		return;
+	}
 
 	Ref<VendorItemData> vid = ecd->get_vendor_item_data();
 
-	if (!vid.is_valid())
+	if (!vid.is_valid()) {
 		return;
+	}
 
 	Ref<Bag> bag = gets_bag();
 
 	Ref<ItemInstance> ii = bag->get_item(slot_id);
 
-	if (!ii.is_valid())
+	if (!ii.is_valid()) {
 		return;
+	}
 
 	Ref<ItemTemplate> it = ii->get_item_template();
 
 	int price = it->get_price();
 
-	if (price == 0)
+	if (price == 0) {
 		return;
+	}
 
 	sets_money(gets_money() + price);
 
@@ -6413,39 +6510,45 @@ void Entity::_notification(int p_what) {
 		case NOTIFICATION_INSTANCED: {
 			set_body(get_node_or_null(_body_path));
 
-			if (ObjectDB::instance_validate(_body))
+			if (ObjectDB::instance_validate(_body)) {
 				_body->set_owner(this);
+			}
 
 			_character_skeleton = get_node_or_null(_character_skeleton_path);
 
 			if (_character_skeleton != NULL) {
-				if (_character_skeleton->has_method("set_model_index"))
+				if (_character_skeleton->has_method("set_model_index")) {
 					_character_skeleton->call("set_model_index", _c_model_index);
+				}
 			}
 		} break;
 		case NOTIFICATION_ENTER_TREE: {
-			if (!Engine::get_singleton()->is_editor_hint())
+			if (!Engine::get_singleton()->is_editor_hint()) {
 				set_process(true);
+			}
 
 			if (!_body) {
 				set_body(get_node_or_null(_body_path));
 
-				if (ObjectDB::instance_validate(_body))
+				if (ObjectDB::instance_validate(_body)) {
 					_body->set_owner(this);
+				}
 			}
 
 			if (!_character_skeleton) {
 				_character_skeleton = get_node_or_null(_character_skeleton_path);
 
 				if (_character_skeleton != NULL) {
-					if (_character_skeleton->has_method("set_model_index"))
+					if (_character_skeleton->has_method("set_model_index")) {
 						_character_skeleton->call("set_model_index", _c_model_index);
+					}
 				}
 			}
 		} break;
 		case NOTIFICATION_PROCESS: {
-			if (!_maunal_process)
+			if (!_maunal_process) {
 				update(get_process_delta_time());
+			}
 		} break;
 		case NOTIFICATION_PHYSICS_PROCESS: {
 			son_physics_process(get_physics_process_delta_time());
