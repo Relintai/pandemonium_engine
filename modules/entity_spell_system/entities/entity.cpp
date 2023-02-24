@@ -197,6 +197,10 @@ void Entity::body_set(Node *body) {
 }
 
 void Entity::body_instance(const Ref<EntityData> &data, const int model_index) {
+	call("_body_instance", data, model_index);
+}
+
+void Entity::_body_instance(const Ref<EntityData> &data, const int model_index) {
 	if (is_queued_for_deletion()) {
 		return;
 	}
@@ -7569,7 +7573,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
 	ClassDB::bind_method(D_METHOD("set_character_skeleton", "skeleton"), &Entity::set_character_skeleton);
 
+	BIND_VMETHOD(MethodInfo("_body_instance", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), PropertyInfo(Variant::INT, "model_index")));
 	ClassDB::bind_method(D_METHOD("body_instance", "data", "model_index"), &Entity::body_instance);
+	ClassDB::bind_method(D_METHOD("_body_instance", "data", "model_index"), &Entity::_body_instance);
+
 	ClassDB::bind_method(D_METHOD("body_on_changed"), &Entity::body_on_changed);
 
 	BIND_VMETHOD(MethodInfo("_body_changed"));
