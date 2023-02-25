@@ -51,6 +51,10 @@ void PropDataLight::_processor_process(Ref<PropData> prop_data, Node *node, cons
 
 	ERR_FAIL_COND(!i);
 
+	if (i->is_editor_only()) {
+		return;
+	}
+
 	Ref<PropDataLight> l;
 	l.instance();
 	l->set_light_color(i->get_color());
