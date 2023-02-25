@@ -707,28 +707,13 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 	}
 
 	if (twd->get_offset_noise_skip_edges()) {
-		//Vector3 vert_min = Vector3(Math_INF, Math_INF, Math_INF);
-		//Vector3 vert_max = Vector3(-Math_INF, -Math_INF, -Math_INF);
-
 		Vector3 vert_min = transform.xform(Vector3(0, 0, 0));
 		Vector3 vert_max = transform.xform(Vector3(width, cys, 0));
 
 		int vs = _vertices.size();
 		PoolVector<Vertex>::Write w = _vertices.write();
 		Vertex *wptr = w.ptr();
-/*
-		for (int i = tiled_wall_vertex_start_index; i < vs; ++i) {
-			Vertex v = wptr[i];
 
-			if (v.vertex < vert_min) {
-				vert_min = v.vertex;
-			}
-
-			if (v.vertex > vert_max) {
-				vert_max = v.vertex;
-			}
-		}
-*/
 		for (int i = tiled_wall_vertex_start_index; i < vs; ++i) {
 			Vertex v = wptr[i];
 
