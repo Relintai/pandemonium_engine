@@ -44,6 +44,9 @@ class PropMesher;
 #ifdef MODULE_ENTITY_SPELL_SYSTEM_ENABLED
 class ESSMaterialCache;
 #endif
+#ifdef MODULE_FASTNOISE_ENABLED
+class FastnoiseNoiseParams;
+#endif
 
 class TiledWallData : public Resource {
 	GDCLASS(TiledWallData, Resource);
@@ -140,6 +143,20 @@ public:
 	float get_flavour_tile_chance() const;
 	void set_flavour_tile_chance(const float value);
 
+#ifdef MODULE_FASTNOISE_ENABLED
+	Ref<FastnoiseNoiseParams> get_offset_noise();
+	void set_offset_noise(const Ref<FastnoiseNoiseParams> &val);
+
+	float get_offset_noise_strength() const;
+	void set_offset_noise_strength(const float val);
+
+	bool get_offset_noise_randomize_seed() const;
+	void set_offset_noise_randomize_seed(const bool val);
+
+	bool get_offset_noise_skip_edges() const;
+	void set_offset_noise_skip_edges(const bool val);
+#endif
+
 	//materials
 	void material_add(const Ref<Material> &value);
 	void material_set(const int index, const Ref<Material> &value);
@@ -184,6 +201,13 @@ private:
 	Vector<TextureEntry> _tiles;
 	Vector<TextureEntry> _flavour_tiles;
 	float _flavour_chance;
+
+#ifdef MODULE_FASTNOISE_ENABLED
+	Ref<FastnoiseNoiseParams> _offset_noise;
+	float _offset_noise_strength;
+	bool _offset_noise_randomize_seed;
+	bool _offset_noise_skip_edges;
+#endif
 
 	Vector<Ref<Material>> _materials;
 };

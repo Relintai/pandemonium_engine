@@ -42,6 +42,10 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
+#ifdef MODULE_FASTNOISE_ENABLED
+#include "../../fastnoise/fastnoise_noise_params.h"
+#endif
+
 #ifdef MODULE_ENTITY_SPELL_SYSTEM_ENABLED
 #include "modules/entity_spell_system/material_cache/ess_material_cache.h"
 #endif
@@ -235,6 +239,44 @@ void TiledWallData::set_flavour_tile_chance(const float value) {
 	_flavour_chance = value;
 }
 
+#ifdef MODULE_FASTNOISE_ENABLED
+Ref<FastnoiseNoiseParams> TiledWallData::get_offset_noise() {
+	return _offset_noise;
+}
+void TiledWallData::set_offset_noise(const Ref<FastnoiseNoiseParams> &val) {
+	_offset_noise = val;
+
+	emit_changed();
+}
+
+float TiledWallData::get_offset_noise_strength() const {
+	return _offset_noise_strength;
+}
+void TiledWallData::set_offset_noise_strength(const float val) {
+	_offset_noise_strength = val;
+
+	emit_changed();
+}
+
+bool TiledWallData::get_offset_noise_randomize_seed() const {
+	return _offset_noise_randomize_seed;
+}
+void TiledWallData::set_offset_noise_randomize_seed(const bool val) {
+	_offset_noise_randomize_seed = val;
+
+	emit_changed();
+}
+
+bool TiledWallData::get_offset_noise_skip_edges() const {
+	return _offset_noise_skip_edges;
+}
+void TiledWallData::set_offset_noise_skip_edges(const bool val) {
+	_offset_noise_skip_edges = val;
+
+	emit_changed();
+}
+#endif
+
 //materials
 void TiledWallData::material_add(const Ref<Material> &value) {
 	ERR_FAIL_COND(!value.is_valid());
@@ -399,6 +441,11 @@ TiledWallData::TiledWallData() {
 	_collider_type = TILED_WALL_COLLIDER_TYPE_PLANE;
 	_flavour_chance = 0.15;
 	_collider_z_offset = 0;
+#ifdef MODULE_FASTNOISE_ENABLED
+	_offset_noise_strength = 0;
+	_offset_noise_randomize_seed = true;
+	_offset_noise_skip_edges = true;
+#endif
 }
 TiledWallData::~TiledWallData() {
 	_tiles.clear();
@@ -598,6 +645,24 @@ void TiledWallData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_flavour_tile_chance"), &TiledWallData::get_flavour_tile_chance);
 	ClassDB::bind_method(D_METHOD("set_flavour_tile_chance", "texture"), &TiledWallData::set_flavour_tile_chance);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "flavour_tile_chance"), "set_flavour_tile_chance", "get_flavour_tile_chance");
+
+#ifdef MODULE_FASTNOISE_ENABLED
+	ClassDB::bind_method(D_METHOD("get_offset_noise"), &TiledWallData::get_offset_noise);
+	ClassDB::bind_method(D_METHOD("set_offset_noise", "texture"), &TiledWallData::set_offset_noise);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "offset_noise", PROPERTY_HINT_RESOURCE_TYPE, "FastnoiseNoiseParams"), "set_offset_noise", "get_offset_noise");
+
+	ClassDB::bind_method(D_METHOD("get_offset_noise_strength"), &TiledWallData::get_offset_noise_strength);
+	ClassDB::bind_method(D_METHOD("set_offset_noise_strength", "texture"), &TiledWallData::set_offset_noise_strength);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "offset_noise_strength"), "set_offset_noise_strength", "get_offset_noise_strength");
+
+	ClassDB::bind_method(D_METHOD("get_offset_noise_randomize_seed"), &TiledWallData::get_offset_noise_randomize_seed);
+	ClassDB::bind_method(D_METHOD("set_offset_noise_randomize_seed", "texture"), &TiledWallData::set_offset_noise_randomize_seed);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "offset_noise_randomize_seed"), "set_offset_noise_randomize_seed", "get_offset_noise_randomize_seed");
+
+	ClassDB::bind_method(D_METHOD("get_offset_noise_skip_edges"), &TiledWallData::get_offset_noise_skip_edges);
+	ClassDB::bind_method(D_METHOD("set_offset_noise_skip_edges", "texture"), &TiledWallData::set_offset_noise_skip_edges);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "offset_noise_skip_edges"), "set_offset_noise_skip_edges", "get_offset_noise_skip_edges");
+#endif
 
 	//materials
 	ClassDB::bind_method(D_METHOD("material_add", "value"), &TiledWallData::material_add);
