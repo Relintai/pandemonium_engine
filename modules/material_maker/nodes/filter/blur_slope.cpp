@@ -123,6 +123,7 @@ Color MMBlurSlope::slope_blur(const Vector2 &uv, const float psize) {
 	float v = sigma->get_value(uv);
 	float sx = sigma->get_value(uv + Vector2(dx, 0.0));
 	float sy = sigma->get_value(uv + Vector2(0.0, dx));
+	float sigma_orig = sigma->get_default_float();
 
 	Vector2 slope = Vector2(sx - v, sy - v);
 	float slope_strength = slope.length() * psize;
@@ -130,7 +131,7 @@ Color MMBlurSlope::slope_blur(const Vector2 &uv, const float psize) {
 	Vector2 e = dx * norm_slope;
 	Color rv = Color();
 	float sum = 0.0;
-	float sigma = MAX(v * slope_strength, 0.0001);
+	float sigma = MAX(sigma_orig * slope_strength, 0.0001);
 
 	for (float i = 0.0; i <= 50.0; i += 1.0) {
 		float coef = exp(-0.5 * (pow(i / sigma, 2.0))) / (6.28318530718 * sigma * sigma);
