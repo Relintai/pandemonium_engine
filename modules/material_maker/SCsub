@@ -156,6 +156,7 @@ sources = [
     "nodes/filter/colorize.cpp",
     "nodes/filter/brightness_contrast.cpp",
     "nodes/filter/blur_gaussian.cpp",
+    "nodes/filter/blur_slope.cpp",
     "nodes/filter/blend.cpp",
     "nodes/filter/adjust_hsv.cpp",
 ]

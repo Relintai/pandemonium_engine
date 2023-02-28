@@ -133,6 +133,7 @@ SOFTWARE.
 #include "nodes/filter/adjust_hsv.h"
 #include "nodes/filter/blend.h"
 #include "nodes/filter/blur_gaussian.h"
+#include "nodes/filter/blur_slope.h"
 #include "nodes/filter/brightness_contrast.h"
 #include "nodes/filter/colorize.h"
 #include "nodes/filter/combine.h"
@@ -371,6 +372,8 @@ void register_material_maker_types(ModuleRegistrationLevel p_level) {
 		MMAlgos::register_node_class("Filter", "MMBrightnessContrast");
 		ClassDB::register_class<MMBlurGaussian>();
 		MMAlgos::register_node_class("Filter", "MMBlurGaussian");
+		ClassDB::register_class<MMBlurSlope>();
+		MMAlgos::register_node_class("Filter", "MMBlurSlope");
 		ClassDB::register_class<MMBlend>();
 		MMAlgos::register_node_class("Filter", "MMBlend");
 		ClassDB::register_class<MMAdjustHsv>();
