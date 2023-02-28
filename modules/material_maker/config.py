@@ -130,6 +130,7 @@ def get_doc_classes():
         "MMBlurSlope",
         "MMBlend",
         "MMAdjustHsv",
+        "MMTonesStep",
     ]
 
 def get_doc_path():

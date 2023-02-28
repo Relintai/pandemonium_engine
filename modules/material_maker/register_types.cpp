@@ -153,6 +153,7 @@ SOFTWARE.
 #include "nodes/filter/quantize.h"
 #include "nodes/filter/swap_channels.h"
 #include "nodes/filter/tonality.h"
+#include "nodes/filter/tones_step.h"
 
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
@@ -378,6 +379,8 @@ void register_material_maker_types(ModuleRegistrationLevel p_level) {
 		MMAlgos::register_node_class("Filter", "MMBlend");
 		ClassDB::register_class<MMAdjustHsv>();
 		MMAlgos::register_node_class("Filter", "MMAdjustHsv");
+		ClassDB::register_class<MMTonesStep>();
+		MMAlgos::register_node_class("Filter", "MMTonesStep");
 	}
 
 #if TOOLS_ENABLED
