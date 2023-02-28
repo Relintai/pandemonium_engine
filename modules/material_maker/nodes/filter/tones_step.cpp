@@ -70,8 +70,8 @@ void MMTonesStep::_init_properties() {
 void MMTonesStep::_register_methods(MMGraphNode *mm_graph_node) {
 	mm_graph_node->add_slot_label_universal(input);
 	mm_graph_node->add_slot_texture_universal(image);
-	mm_graph_node->add_slot_float("get_value", "set_value", "Value", 0.001, Vector2(0, 1));
-	mm_graph_node->add_slot_float("get_width", "set_width", "Width", 0.001, Vector2(0, 1));
+	mm_graph_node->add_slot_float("get_value", "set_value", "Value", 0.0001, Vector2(0, 1));
+	mm_graph_node->add_slot_float("get_width", "set_width", "Width", 0.0001, Vector2(0, 1));
 	mm_graph_node->add_slot_bool("get_invert", "set_invert", "Invert");
 }
 
