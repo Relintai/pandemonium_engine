@@ -64,6 +64,7 @@ sources = [
     "nodes/transform/kaleidoscope.cpp",
     "nodes/transform/color_tiler.cpp",
     "nodes/transform/circle_map.cpp",
+    "nodes/transform/warp.cpp",
 
     "nodes/simple/shape.cpp",
     "nodes/simple/image.cpp",

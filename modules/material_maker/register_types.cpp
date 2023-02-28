@@ -56,6 +56,7 @@ SOFTWARE.
 #include "nodes/transform/tiler.h"
 #include "nodes/transform/transform.h"
 #include "nodes/transform/translate.h"
+#include "nodes/transform/warp.h"
 
 #include "nodes/simple/curve.h"
 #include "nodes/simple/image.h"
@@ -203,6 +204,8 @@ void register_material_maker_types(ModuleRegistrationLevel p_level) {
 		MMAlgos::register_node_class("Transform", "MMColorTiler");
 		ClassDB::register_class<MMCircleMap>();
 		MMAlgos::register_node_class("Transform", "MMCircleMap");
+		ClassDB::register_class<MMWarp>();
+		MMAlgos::register_node_class("Transform", "MMWarp");
 
 		ClassDB::register_class<MMShape>();
 		MMAlgos::register_node_class("Simple", "MMShape");
