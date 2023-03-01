@@ -282,6 +282,14 @@ int MMGraphNode::add_slot_bool(const String &getter, const String &setter, const
 	return slot_idx;
 }
 
+int MMGraphNode::add_slot_button(const String &method, const String &slot_name) {
+	Button *button = memnew(Button);
+	button->set_text(slot_name);
+	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", button);
+	button->connect("pressed", *_node, method);
+	return slot_idx;
+}
+
 int MMGraphNode::add_slot_label_universal(const Ref<MMNodeUniversalProperty> &property) {
 	Label *l = memnew(Label);
 	l->set_text(property->get_slot_name());
@@ -920,6 +928,7 @@ void MMGraphNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_slot_enum", "getter", "setter", "slot_name", "values"), &MMGraphNode::add_slot_enum);
 	ClassDB::bind_method(D_METHOD("add_slot_int", "getter", "setter", "slot_name", "prange"), &MMGraphNode::add_slot_int, Vector2(-1000, 1000));
 	ClassDB::bind_method(D_METHOD("add_slot_bool", "getter", "setter", "slot_name"), &MMGraphNode::add_slot_bool);
+	ClassDB::bind_method(D_METHOD("add_slot_button", "method", "slot_name"), &MMGraphNode::add_slot_button);
 	ClassDB::bind_method(D_METHOD("add_slot_label_universal", "property"), &MMGraphNode::add_slot_label_universal);
 	ClassDB::bind_method(D_METHOD("add_slot_int_universal", "property"), &MMGraphNode::add_slot_int_universal);
 	ClassDB::bind_method(D_METHOD("add_slot_float", "getter", "setter", "slot_name", "step", "prange"), &MMGraphNode::add_slot_float, 0.1, Vector2(-1000, 1000));

@@ -60,6 +60,7 @@ public:
 	int add_slot_enum(const String &getter, const String &setter, const String &slot_name, const Array &values);
 	int add_slot_int(const String &getter, const String &setter, const String &slot_name, const Vector2 &prange = Vector2(-1000, 1000));
 	int add_slot_bool(const String &getter, const String &setter, const String &slot_name);
+	int add_slot_button(const String &method, const String &slot_name);
 	int add_slot_label_universal(const Ref<MMNodeUniversalProperty> &property);
 	int add_slot_int_universal(const Ref<MMNodeUniversalProperty> &property);
 	int add_slot_float(const String &getter, const String &setter, const String &slot_name, const float step = 0.1, const Vector2 &prange = Vector2(-1000, 1000));
