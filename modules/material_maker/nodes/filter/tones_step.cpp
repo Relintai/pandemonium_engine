@@ -97,7 +97,7 @@ Color MMTonesStep::_get_value_for(const Vector2 &uv, const int pseed) {
 
 	value_false /= mvv3;
 	value_false += Vector3(0.5, 0.5, 0.5);
-	value_false.clamp(Vector3(), Vector3(1, 1, 1));
+	value_false = value_false.clamp(Vector3(), Vector3(1, 1, 1));
 
 	if (_invert) {
 		value_false = Vector3(1, 1, 1) - value_false;
