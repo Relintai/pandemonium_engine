@@ -59,6 +59,7 @@ def get_doc_classes():
         "MMSdf3dOpRevolution",
         "MMSdf3dOpRepeat",
         "MMSdf3dOpMorph",
+        "MMSdf3dOpExtrusion",
         "MMSdf3dOpElongation",
         "MMSdf3dOpCircleRepeat",
         "MMSdf3dOpBool",

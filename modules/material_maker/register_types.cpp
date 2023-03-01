@@ -80,6 +80,7 @@ SOFTWARE.
 #include "nodes/sdf3d/sdf3d_op_circle_repeat.h"
 #include "nodes/sdf3d/sdf3d_op_elongation.h"
 #include "nodes/sdf3d/sdf3d_op_morph.h"
+#include "nodes/sdf3d/sdf3d_op_extrusion.h"
 #include "nodes/sdf3d/sdf3d_op_repeat.h"
 #include "nodes/sdf3d/sdf3d_op_revolution.h"
 #include "nodes/sdf3d/sdf3d_op_rounded.h"
@@ -250,6 +251,8 @@ void register_material_maker_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<MMSdf3dOpMorph>();
 		MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpMorph");
 		ClassDB::register_class<MMSdf3dOpElongation>();
+		MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpExtrusion");
+		ClassDB::register_class<MMSdf3dOpExtrusion>();
 		MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpElongation");
 		ClassDB::register_class<MMSdf3dOpCircleRepeat>();
 		MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpCircleRepeat");

@@ -90,6 +90,7 @@ sources = [
     "nodes/sdf3d/sdf3d_op_repeat.cpp",
     "nodes/sdf3d/sdf3d_op_morph.cpp",
     "nodes/sdf3d/sdf3d_op_elongation.cpp",
+    "nodes/sdf3d/sdf3d_op_extrusion.cpp",
     "nodes/sdf3d/sdf3d_op_circle_repeat.cpp",
     "nodes/sdf3d/sdf3d_op_bool.cpp",
 

@@ -4,8 +4,8 @@
 #include "../mm_node.h"
 #include "../mm_node_universal_property.h"
 
-class Sdf3dOpExtrusion : public MMNode {
-	GDCLASS(Sdf3dOpExtrusion, MMNode);
+class MMSdf3dOpExtrusion : public MMNode {
+	GDCLASS(MMSdf3dOpExtrusion, MMNode);
 
 public:
 	Ref<MMNodeUniversalProperty> get_input();
@@ -23,8 +23,8 @@ public:
 
 	void on_input_changed();
 
-	Sdf3dOpExtrusion();
-	~Sdf3dOpExtrusion();
+	MMSdf3dOpExtrusion();
+	~MMSdf3dOpExtrusion();
 
 protected:
 	static void _bind_methods();

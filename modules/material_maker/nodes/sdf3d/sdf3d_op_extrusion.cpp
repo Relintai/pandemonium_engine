@@ -5,33 +5,33 @@
 #include "../../editor/mm_graph_node.h"
 #include "../mm_material.h"
 
-Ref<MMNodeUniversalProperty> Sdf3dOpExtrusion::get_input() {
+Ref<MMNodeUniversalProperty> MMSdf3dOpExtrusion::get_input() {
 	return input;
 }
 
-void Sdf3dOpExtrusion::set_input(const Ref<MMNodeUniversalProperty> &val) {
+void MMSdf3dOpExtrusion::set_input(const Ref<MMNodeUniversalProperty> &val) {
 	input = val;
 }
 
-Ref<MMNodeUniversalProperty> Sdf3dOpExtrusion::get_output() {
+Ref<MMNodeUniversalProperty> MMSdf3dOpExtrusion::get_output() {
 	return output;
 }
 
-void Sdf3dOpExtrusion::set_output(const Ref<MMNodeUniversalProperty> &val) {
+void MMSdf3dOpExtrusion::set_output(const Ref<MMNodeUniversalProperty> &val) {
 	output = val;
 }
 
-float Sdf3dOpExtrusion::get_length() const {
+float MMSdf3dOpExtrusion::get_length() const {
 	return length;
 }
 
-void Sdf3dOpExtrusion::set_length(const float val) {
+void MMSdf3dOpExtrusion::set_length(const float val) {
 	length = val;
 	emit_changed();
 	output->do_emit_changed();
 }
 
-void Sdf3dOpExtrusion::_init_properties() {
+void MMSdf3dOpExtrusion::_init_properties() {
 	if (!input.is_valid()) {
 		input.instance();
 		input->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_FLOAT);
@@ -58,13 +58,13 @@ void Sdf3dOpExtrusion::_init_properties() {
 	register_output_property(output);
 }
 
-void Sdf3dOpExtrusion::_register_methods(MMGraphNode *mm_graph_node) {
+void MMSdf3dOpExtrusion::_register_methods(MMGraphNode *mm_graph_node) {
 	mm_graph_node->add_slot_label_universal(input);
 	mm_graph_node->add_slot_label_universal(output);
 	mm_graph_node->add_slot_float("get_length", "set_length", "Length", 0.01);
 }
 
-Vector2 Sdf3dOpExtrusion::_get_property_value_sdf3d(const Vector3 &uv3) {
+Vector2 MMSdf3dOpExtrusion::_get_property_value_sdf3d(const Vector3 &uv3) {
 	//vec2 $(name_uv)_w = vec2($in($uv.xz+vec2(0.5)),abs($uv.y)-$d);
 	//ret min(max($(name_uv)_w.x,$(name_uv)_w.y),0.0)+length(max($(name_uv)_w,0.0));
 	float f = input->get_value(Vector2(uv3.x, uv3.z) + Vector2(0.5, 0.5));
@@ -73,30 +73,30 @@ Vector2 Sdf3dOpExtrusion::_get_property_value_sdf3d(const Vector3 &uv3) {
 	return Vector2(ff, 0);
 }
 
-void Sdf3dOpExtrusion::on_input_changed() {
+void MMSdf3dOpExtrusion::on_input_changed() {
 	emit_changed();
 	output->do_emit_changed();
 }
 
-Sdf3dOpExtrusion::Sdf3dOpExtrusion() {
+MMSdf3dOpExtrusion::MMSdf3dOpExtrusion() {
 	length = 0.25;
 }
 
-Sdf3dOpExtrusion::~Sdf3dOpExtrusion() {
+MMSdf3dOpExtrusion::~MMSdf3dOpExtrusion() {
 }
 
-void Sdf3dOpExtrusion::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_input"), &Sdf3dOpExtrusion::get_input);
-	ClassDB::bind_method(D_METHOD("set_input", "value"), &Sdf3dOpExtrusion::set_input);
+void MMSdf3dOpExtrusion::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_input"), &MMSdf3dOpExtrusion::get_input);
+	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMSdf3dOpExtrusion::set_input);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
-	ClassDB::bind_method(D_METHOD("get_output"), &Sdf3dOpExtrusion::get_output);
-	ClassDB::bind_method(D_METHOD("set_output", "value"), &Sdf3dOpExtrusion::set_output);
+	ClassDB::bind_method(D_METHOD("get_output"), &MMSdf3dOpExtrusion::get_output);
+	ClassDB::bind_method(D_METHOD("set_output", "value"), &MMSdf3dOpExtrusion::set_output);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "output", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_output", "get_output");
 
-	ClassDB::bind_method(D_METHOD("get_length"), &Sdf3dOpExtrusion::get_length);
-	ClassDB::bind_method(D_METHOD("set_length", "value"), &Sdf3dOpExtrusion::set_length);
+	ClassDB::bind_method(D_METHOD("get_length"), &MMSdf3dOpExtrusion::get_length);
+	ClassDB::bind_method(D_METHOD("set_length", "value"), &MMSdf3dOpExtrusion::set_length);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "length"), "set_length", "get_length");
 
-	ClassDB::bind_method(D_METHOD("on_input_changed"), &Sdf3dOpExtrusion::on_input_changed);
+	ClassDB::bind_method(D_METHOD("on_input_changed"), &MMSdf3dOpExtrusion::on_input_changed);
 }
