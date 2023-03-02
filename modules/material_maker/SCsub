@@ -162,6 +162,7 @@ sources = [
     "nodes/filter/blend.cpp",
     "nodes/filter/adjust_hsv.cpp",
     "nodes/filter/tones_step.cpp",
+    "nodes/filter/tones_map.cpp",
 ]
 
 if env["tools"]:

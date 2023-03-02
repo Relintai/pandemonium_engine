@@ -133,6 +133,7 @@ def get_doc_classes():
         "MMBlend",
         "MMAdjustHsv",
         "MMTonesStep",
+        "MMTonesMap",
     ]
 
 def get_doc_path():

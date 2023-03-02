@@ -79,8 +79,8 @@ SOFTWARE.
 #include "nodes/sdf3d/sdf3d_op_bool.h"
 #include "nodes/sdf3d/sdf3d_op_circle_repeat.h"
 #include "nodes/sdf3d/sdf3d_op_elongation.h"
-#include "nodes/sdf3d/sdf3d_op_morph.h"
 #include "nodes/sdf3d/sdf3d_op_extrusion.h"
+#include "nodes/sdf3d/sdf3d_op_morph.h"
 #include "nodes/sdf3d/sdf3d_op_repeat.h"
 #include "nodes/sdf3d/sdf3d_op_revolution.h"
 #include "nodes/sdf3d/sdf3d_op_rounded.h"
@@ -155,6 +155,7 @@ SOFTWARE.
 #include "nodes/filter/quantize.h"
 #include "nodes/filter/swap_channels.h"
 #include "nodes/filter/tonality.h"
+#include "nodes/filter/tones_map.h"
 #include "nodes/filter/tones_step.h"
 
 static _MMAlgos *_mm_algos_singleton = nullptr;
@@ -387,6 +388,8 @@ void register_material_maker_types(ModuleRegistrationLevel p_level) {
 		MMAlgos::register_node_class("Filter", "MMAdjustHsv");
 		ClassDB::register_class<MMTonesStep>();
 		MMAlgos::register_node_class("Filter", "MMTonesStep");
+		ClassDB::register_class<MMTonesMap>();
+		MMAlgos::register_node_class("Filter", "MMTonesMap");
 	}
 
 #if TOOLS_ENABLED
