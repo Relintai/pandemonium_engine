@@ -155,6 +155,7 @@ SOFTWARE.
 #include "nodes/filter/quantize.h"
 #include "nodes/filter/swap_channels.h"
 #include "nodes/filter/tonality.h"
+#include "nodes/filter/tones.h"
 #include "nodes/filter/tones_map.h"
 #include "nodes/filter/tones_step.h"
 
@@ -390,6 +391,8 @@ void register_material_maker_types(ModuleRegistrationLevel p_level) {
 		MMAlgos::register_node_class("Filter", "MMTonesStep");
 		ClassDB::register_class<MMTonesMap>();
 		MMAlgos::register_node_class("Filter", "MMTonesMap");
+		ClassDB::register_class<MMTones>();
+		MMAlgos::register_node_class("Filter", "MMTones");
 	}
 
 #if TOOLS_ENABLED

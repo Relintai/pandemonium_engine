@@ -134,6 +134,7 @@ def get_doc_classes():
         "MMAdjustHsv",
         "MMTonesStep",
         "MMTonesMap",
+        "MMTones",
     ]
 
 def get_doc_path():

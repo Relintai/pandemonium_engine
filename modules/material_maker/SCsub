@@ -50,6 +50,9 @@ sources = [
     "editor/widgets/polygon_edit/polygon_editor.cpp",
     "editor/widgets/polygon_edit/polygon_view.cpp",
 
+    "editor/widgets/tones_editor/tones_editor.cpp",
+    "editor/widgets/tones_editor/tones_editor_cursor.cpp",
+
     "nodes/uniform/uniform.cpp",
     "nodes/uniform/greyscale_uniform.cpp",
 
@@ -163,6 +166,7 @@ sources = [
     "nodes/filter/adjust_hsv.cpp",
     "nodes/filter/tones_step.cpp",
     "nodes/filter/tones_map.cpp",
+    "nodes/filter/tones.cpp",
 ]
 
 if env["tools"]:

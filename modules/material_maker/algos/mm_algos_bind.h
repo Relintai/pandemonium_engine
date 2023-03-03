@@ -1,10 +1,11 @@
 #ifndef MM_ALGOS_BIND_H
 #define MM_ALGOS_BIND_H
 
+#include "core/containers/pool_vector.h"
+#include "core/io/image.h"
 #include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "core/containers/pool_vector.h"
 #include "core/variant/variant.h"
 
 #include "core/object/object.h"
@@ -39,6 +40,8 @@ public:
 	Vector3 rand3(const Vector2 &x);
 	float step(const float edge, const float x);
 	Vector2 stepv2(const Vector2 &edge, const Vector2 &x);
+	Color stepc(const Color &edge, const Color &x);
+	Color mixc(const Color &a, const Color &b, const Color &t);
 	Vector2 signv2(const Vector2 &x);
 	Vector2 transform(const Vector2 &uv, const Vector2 &translate, const float rotate, const Vector2 &scale, const bool repeat);
 	float fractf(const float x);
@@ -63,6 +66,7 @@ public:
 	Vector3 rgb_to_hsv(const Vector3 &c);
 	Vector3 hsv_to_rgb(const Vector3 &c);
 	Color adjust_hsv(const Color &color, const float hue, const float saturation, const float value);
+	Color adjust_levels(const Color &color, const Color &in_min, const Color &in_mid, const Color &in_max, const Color &out_min, const Color &out_max);
 	Color brightness_contrast(const Color &color, const float brightness, const float contrast);
 	float grayscale_min(const Vector3 &c);
 	float grayscale_max(const Vector3 &c);
@@ -265,6 +269,8 @@ public:
 	Vector2 kal_rotate(const Vector2 &uv, const float count, const float offset);
 	Vector2 get_from_tileset(const float count, const float pseed, const Vector2 &uv);
 	Vector2 custom_uv_transform(const Vector2 &uv, const Vector2 &cst_scale, const float rnd_rotate, const float rnd_scale, const Vector2 &pseed);
+
+	Ref<Image> generate_histogram(const Ref<Image> &input, const int texture_size = 256);
 
 	void register_node_class(const String &category, const String &cls);
 	void unregister_node_class(const String &category, const String &cls);

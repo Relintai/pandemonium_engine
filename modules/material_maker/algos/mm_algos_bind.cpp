@@ -108,6 +108,13 @@ Vector2 _MMAlgos::stepv2(const Vector2 &edge, const Vector2 &x) {
 	return MMAlgos::stepv2(edge, x);
 }
 
+Color _MMAlgos::stepc(const Color &edge, const Color &x) {
+	return MMAlgos::stepc(edge, x);
+}
+Color _MMAlgos::mixc(const Color &a, const Color &b, const Color &t) {
+	return MMAlgos::mixc(a, b, t);
+}
+
 Vector2 _MMAlgos::signv2(const Vector2 &x) {
 	return MMAlgos::signv2(x);
 }
@@ -202,6 +209,10 @@ Vector3 _MMAlgos::hsv_to_rgb(const Vector3 &c) {
 
 Color _MMAlgos::adjust_hsv(const Color &color, const float hue, const float saturation, const float value) {
 	return MMAlgos::adjust_hsv(color, hue, saturation, value);
+}
+
+Color _MMAlgos::adjust_levels(const Color &color, const Color &in_min, const Color &in_mid, const Color &in_max, const Color &out_min, const Color &out_max) {
+	return MMAlgos::adjust_levels(color, in_min, in_mid, in_max, out_min, out_max);
 }
 
 Color _MMAlgos::brightness_contrast(const Color &color, const float brightness, const float contrast) {
@@ -1012,6 +1023,10 @@ Vector2 _MMAlgos::custom_uv_transform(const Vector2 &uv, const Vector2 &cst_scal
 	return MMAlgos::custom_uv_transform(uv, cst_scale, rnd_rotate, rnd_scale, pseed);
 }
 
+Ref<Image> _MMAlgos::generate_histogram(const Ref<Image> &input, const int texture_size) {
+	return MMAlgos::generate_histogram(input, texture_size);
+}
+
 void _MMAlgos::register_node_class(const String &category, const String &cls) {
 	MMAlgos::register_node_class(category, cls);
 }
@@ -1065,6 +1080,8 @@ void _MMAlgos::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("rand3", "x"), &_MMAlgos::rand3);
 	ClassDB::bind_method(D_METHOD("step", "edge", "x"), &_MMAlgos::step);
 	ClassDB::bind_method(D_METHOD("stepv2", "edge", "x"), &_MMAlgos::stepv2);
+	ClassDB::bind_method(D_METHOD("stepc", "edge", "x"), &_MMAlgos::stepc);
+	ClassDB::bind_method(D_METHOD("mixc", "a", "b", "c"), &_MMAlgos::mixc);
 	ClassDB::bind_method(D_METHOD("signv2", "x"), &_MMAlgos::signv2);
 	ClassDB::bind_method(D_METHOD("transform", "uv", "translate", "rotate", "scale", "repeat"), &_MMAlgos::transform);
 	ClassDB::bind_method(D_METHOD("fractf", "x"), &_MMAlgos::fractf);
@@ -1089,6 +1106,7 @@ void _MMAlgos::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("rgb_to_hsv", "c"), &_MMAlgos::rgb_to_hsv);
 	ClassDB::bind_method(D_METHOD("hsv_to_rgb", "c"), &_MMAlgos::hsv_to_rgb);
 	ClassDB::bind_method(D_METHOD("adjust_hsv", "color", "hue", "saturation", "value"), &_MMAlgos::adjust_hsv);
+	ClassDB::bind_method(D_METHOD("adjust_levels", "color", "in_min", "in_mid", "in_max", "out_min", "out_max"), &_MMAlgos::adjust_levels);
 	ClassDB::bind_method(D_METHOD("brightness_contrast", "color", "brightness", "contrast"), &_MMAlgos::brightness_contrast);
 	ClassDB::bind_method(D_METHOD("grayscale_min", "c"), &_MMAlgos::grayscale_min);
 	ClassDB::bind_method(D_METHOD("grayscale_max", "c"), &_MMAlgos::grayscale_max);
@@ -1291,6 +1309,8 @@ void _MMAlgos::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("kal_rotate", "uv", "count", "offset"), &_MMAlgos::kal_rotate);
 	ClassDB::bind_method(D_METHOD("get_from_tileset", "count", "pseed", "uv"), &_MMAlgos::get_from_tileset);
 	ClassDB::bind_method(D_METHOD("custom_uv_transform", "uv", "cst_scale", "rnd_rotate", "rnd_scale", "pseed"), &_MMAlgos::custom_uv_transform);
+
+	ClassDB::bind_method(D_METHOD("generate_histogram", "input", "texture_size"), &_MMAlgos::generate_histogram, 256);
 
 	ClassDB::bind_method(D_METHOD("register_node_class", "category", "cls"), &_MMAlgos::register_node_class);
 	ClassDB::bind_method(D_METHOD("unregister_node_class", "category", "cls"), &_MMAlgos::unregister_node_class);

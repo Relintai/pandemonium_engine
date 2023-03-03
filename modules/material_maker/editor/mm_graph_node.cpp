@@ -22,6 +22,9 @@
 #include "widgets/gradient_editor/gradient_editor.h"
 #include "widgets/image_picker_button/image_picker_button.h"
 #include "widgets/polygon_edit/polygon_edit.h"
+#include "widgets/tones_editor/tones_editor.h"
+
+#include "../nodes/filter/tones.h"
 
 Ref<PackedScene> MMGraphNode::get_gradient_editor_scene() {
 	return gradient_editor_scene;
@@ -182,6 +185,17 @@ int MMGraphNode::add_slot_curve() {
 	CurveEdit *ce = memnew(CurveEdit);
 	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ce);
 	ce->set_value(_node);
+	//ge.texture = _node.call(getter, _material, slot_idx);
+	//properties[slot_idx].append(ge.texture);
+	return slot_idx;
+}
+
+int MMGraphNode::add_slot_tones() {
+	ERR_FAIL_COND_V(!_node->is_class("MMTones"), 0);
+
+	MMTonesEditor *te = memnew(MMTonesEditor);
+	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", te);
+	te->set_value(_node);
 	//ge.texture = _node.call(getter, _material, slot_idx);
 	//properties[slot_idx].append(ge.texture);
 	return slot_idx;

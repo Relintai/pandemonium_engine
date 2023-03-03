@@ -53,6 +53,7 @@ public:
 	int add_slot_gradient();
 	int add_slot_polygon();
 	int add_slot_curve();
+	int add_slot_tones();
 	int add_slot_color(const String &getter, const String &setter);
 	int add_slot_color_universal(const Ref<MMNodeUniversalProperty> &property);
 	int add_slot_label(const String &getter, const String &setter, const String &slot_name);

@@ -2,6 +2,7 @@
 #include "mm_algos.h"
 
 #include "core/math/math_funcs.h"
+#include "core/math/vector4.h"
 
 //pattern.mmg;
 //----------------------;
@@ -255,6 +256,26 @@ Vector2 MMAlgos::stepv2(const Vector2 &edge, const Vector2 &x) {
 	Vector2 ret;
 	ret.x = step(edge.x, x.x);
 	ret.y = step(edge.y, x.y);
+	return ret;
+}
+
+Color MMAlgos::stepc(const Color &edge, const Color &x) {
+	Color ret;
+	ret.r = step(edge.r, x.r);
+	ret.g = step(edge.g, x.g);
+	ret.b = step(edge.b, x.b);
+	ret.a = step(edge.a, x.a);
+	return ret;
+}
+
+Color MMAlgos::mixc(const Color &a, const Color &b, const Color &t) {
+	Color ret;
+
+	ret.r = Math::lerp(a.r, b.r, t.r);
+	ret.g = Math::lerp(a.g, b.g, t.g);
+	ret.b = Math::lerp(a.b, b.b, t.b);
+	ret.a = Math::lerp(a.a, b.a, t.a);
+
 	return ret;
 }
 
@@ -796,6 +817,23 @@ Color MMAlgos::adjust_hsv(const Color &color, const float hue, const float satur
 	return Color(h.x, h.y, h.z, color.a);
 }
 
+//tones.mmg;
+//vec4 adjust_levels(vec4 input, vec4 in_min, vec4 in_mid, vec4 in_max, vec4 out_min, vec4 out_max) {
+//	input = clamp((input-in_min)/(in_max-in_min), 0.0, 1.0);
+//	in_mid = (in_mid-in_min)/(in_max-in_min);
+//	vec4 dark = step(in_mid, input);
+//	input = 0.5*mix(input/(in_mid), 1.0+(input-in_mid)/(1.0-in_mid), dark);
+//	return out_min+input*(out_max-out_min);
+//}
+
+Color MMAlgos::adjust_levels(const Color &p_input, const Color &p_in_min, const Color &p_in_mid, const Color &p_in_max, const Color &p_out_min, const Color &p_out_max) {
+	Color input = (p_input - p_in_min) / (p_in_max - p_in_min).clamp();
+	Color in_mid = (p_in_mid - p_in_min) / (p_in_max - p_in_min);
+	Color dark = stepc(in_mid, p_input);
+	input = Color(0.5, 0.5, 0.5, 0.5) * mixc(input / (in_mid), Color(1, 1, 1, 1) + (input - in_mid) / (Color(1, 1, 1, 1) - in_mid), dark);
+	return p_out_min + input * (p_out_max - p_out_min);
+}
+
 //brightness, min: -1, max: 1, step: 0.01, default: 0;
 //contrast, min: -1, max: 1, step: 0.01, default: 1;
 //input: default: vec4(0.5 ,0.5, 0.5, 1.0) -> img;
@@ -1011,14 +1049,6 @@ Vector3 MMAlgos::blend_difference(const Vector2 &uv, const Vector3 &c1, const Ve
 	return opacity * clampv3(c2 - c1, Vector3(), Vector3(1, 1, 1)) + (1.0 - opacity) * c2;
 }
 
-//vec4 adjust_levels(vec4 input, vec4 in_min, vec4 in_mid, vec4 in_max, vec4 out_min, vec4 out_max) {\n\t;
-//	input = CLAMP((input-in_min)/(in_max-in_min), 0.0, 1.0);\n\t;
-//	in_mid = (in_mid-in_min)/(in_max-in_min);\n\t;
-//	vec4 dark = step(in_mid, input);\n\t;
-//;
-//	input = 0.5*mix(input/(in_mid), 1.0+(input-in_mid)/(1.0-in_mid), dark);\n\t;
-//	return out_min+input*(out_max-out_min);\n;
-//};
 // === GRADIENTS.GD =====;
 //note: data : PoolRealArray -> pos, r, g, b, a, pos, r, g, b, a ....;
 //gradient.mmg;
@@ -5594,6 +5624,215 @@ Vector2 MMAlgos::custom_uv_transform(const Vector2 &uuv, const Vector2 &cst_scal
 	uv /= cst_scale;
 	uv += Vector2(0.5, 0.5);
 	return uv;
+}
+
+Ref<Image> MMAlgos::generate_histogram(const Ref<Image> &input, const int texture_size) {
+	ERR_FAIL_COND_V(!input.is_valid(), Ref<Image>());
+
+	Ref<Image> scaled_input;
+	scaled_input.instance();
+	scaled_input->copy_internals_from(input);
+	scaled_input->resize(texture_size, texture_size);
+
+	Ref<Image> step_1;
+	step_1.instance();
+	step_1->copy_internals_from(scaled_input);
+
+	scaled_input->lock();
+	step_1->lock();
+
+	// texture_size, texture_size
+	//step 1
+	/*
+	shader_type canvas_item;
+	render_mode blend_disabled;
+
+	uniform sampler2D tex;
+	uniform float size = 256;
+
+	void fragment() {
+		float e = 1.0 / size;
+		vec4 sum = vec4(0.0);
+		for (float y = 0.5 * e; y < 1.0; y += e) {
+			sum += max(vec4(0.0), vec4(1.0) - 16.0 * abs(texture(tex, vec2(UV.x, y)) - UV.y));
+		}
+		COLOR = sum / size;
+	}
+	*/
+
+	Vector2i size = step_1->get_size();
+
+	for (int x = 0; x < size.x; ++x) {
+		for (int y = 0; y < size.y; ++y) {
+			float e = 1.0 / size.y;
+
+			Color sum = Color();
+
+			for (float yy = 0.5 * e; yy < 1.0; yy += e) {
+				Color sic = scaled_input->get_pixel(x, yy * size.y);
+				sic -= Color(e, e, e, e);
+
+				sic.r = MAX(0, 1.0 - 16.0 * ABS(sic.r));
+				sic.g = MAX(0, 1.0 - 16.0 * ABS(sic.g));
+				sic.b = MAX(0, 1.0 - 16.0 * ABS(sic.b));
+				sic.a = MAX(0, 1.0 - 16.0 * ABS(sic.a));
+
+				sum += sic;
+			}
+
+			sum.r /= size.y;
+			sum.g /= size.y;
+			sum.b /= size.y;
+			sum.a /= size.y;
+
+			step_1->set_pixel(x, y, sum);
+		}
+	}
+
+	step_1->unlock();
+	scaled_input->unlock();
+
+	//texture_size, 2
+	//step 2
+	/*
+	shader_type canvas_item;
+	render_mode blend_disabled;
+
+	uniform sampler2D tex;
+	uniform float size = 256;
+
+	void fragment() {
+		float e = 1.0 / size;
+		vec4 sum = vec4(0.0);
+		for (float y = 0.5 * e; y < 1.0; y += e) {
+			sum += texture(tex, vec2(y, UV.x));
+		}
+		COLOR = sum / size;
+	}
+	*/
+
+	Ref<Image> step_2;
+	step_2.instance();
+	step_2->copy_internals_from(step_1);
+	step_2->resize(texture_size, 2);
+
+	scaled_input->lock();
+	step_2->lock();
+
+	size = step_2->get_size();
+
+	for (int x = 0; x < size.x; ++x) {
+		for (int y = 0; y < size.y; ++y) {
+			float e = 1.0 / size.y;
+			Color sum = Color();
+
+			for (float yy = 0.5 * e; yy < 1.0; yy += e) {
+				Color sic = scaled_input->get_pixel(yy * size.y, x);
+
+				sum += sic;
+			}
+
+			sum.r /= size.y;
+			sum.g /= size.y;
+			sum.b /= size.y;
+			sum.a /= size.y;
+
+			step_2->set_pixel(x, y, sum);
+		}
+	}
+
+	step_2->unlock();
+	scaled_input->unlock();
+
+	//step 3
+
+	//texture_size, texture_size
+
+	/*
+	shader_type canvas_item;
+	render_mode blend_disabled;
+
+	uniform sampler2D tex;
+	uniform float gradient_width = 0.1;
+
+	void fragment() {
+		if (abs(fract(UV.y + gradient_width)) < 2.0 * gradient_width) {
+			COLOR = vec4(vec3(UV.x), 1.0);
+		} else {
+			float e = 1.0 / 256.0;
+			vec4 highest = vec4(0.0);
+			for (float x = 0.5 * e; x < 1.0; x += e) {
+				highest = max(highest, texture(tex, vec2(x, 0.0)));
+			}
+			vec4 raw_value = texture(tex, vec2(UV.x, 0.0));
+			vec4 value = step(vec4(1.0 - gradient_width - UV.y) * highest / (1.0 - 2.0 * gradient_width), raw_value);
+			float alpha = step(2.0 * gradient_width, dot(value, vec4(1.0)));
+			COLOR = vec4(mix(value.rgb, vec3(0.5), 0.3 * value.a), alpha);
+		}
+	}
+	*/
+
+	Ref<Image> result;
+	result.instance();
+	result->copy_internals_from(input);
+	result->resize(texture_size, texture_size);
+
+	result->lock();
+	step_2->lock();
+
+	size = result->get_size();
+
+	float gradient_width = 0.1;
+
+	for (int x = 0; x < size.x; ++x) {
+		float uv_1_x = (1.0 / size.x);
+		float uv_x = uv_1_x * x;
+
+		for (int y = 0; y < size.y; ++y) {
+			float e = 1.0 / size.y;
+			float uv_y = e * y;
+
+			if (ABS(MMAlgos::fractf(uv_y + gradient_width)) < 2.0 * gradient_width) {
+				result->set_pixel(x, y, Color(uv_x, uv_x, uv_x, 1));
+			} else {
+				Color highest = Color(0, 0, 0, 0);
+
+				for (float xx = 0.5 * uv_1_x; xx < 1.0; xx += uv_1_x) {
+					Color sic = step_2->get_pixel(xx * uv_1_x, 0);
+
+					highest.r = MAX(highest.r, sic.r);
+					highest.g = MAX(highest.g, sic.g);
+					highest.b = MAX(highest.b, sic.b);
+					highest.a = MAX(highest.a, sic.a);
+				}
+
+				Color raw_value = step_2->get_pixel(x * uv_1_x, 0);
+
+				Vector4 highest_v4 = Vector4(highest.r, highest.g, highest.b, highest.a);
+				float gv = 1.0 - gradient_width - uv_y;
+				Vector4 value = Vector4(gv, gv, gv, gv) * highest_v4 / (1.0 - 2.0 * gradient_width);
+
+				value.x = step(value.x, raw_value.r);
+				value.y = step(value.y, raw_value.g);
+				value.z = step(value.z, raw_value.b);
+				value.w = step(value.w, raw_value.a);
+
+				float alpha = step(2.0 * gradient_width, value.dot(Vector4(1, 1, 1, 1)));
+
+				Vector3 val3 = Vector3(value.x, value.y, value.z);
+				val3 = val3.linear_interpolate(Vector3(0.5, 0.5, 0.5), 0.3 * value.w);
+
+				Color f = Color(val3.x, val3.y, val3.z, alpha);
+
+				result->set_pixel(x, y, f);
+			}
+		}
+	}
+
+	step_2->unlock();
+	result->unlock();
+
+	return result;
 }
 
 void MMAlgos::register_node_class(const String &category, const String &cls) {

@@ -6,6 +6,7 @@
 #include "core/math/vector3.h"
 #include "core/containers/pool_vector.h"
 #include "core/variant/variant.h"
+#include "core/io/image.h"
 
 #include "core/object/reference.h"
 
@@ -39,6 +40,8 @@ public:
 	static Vector3 rand3(const Vector2 &x);
 	static float step(const float edge, const float x);
 	static Vector2 stepv2(const Vector2 &edge, const Vector2 &x);
+	static Color stepc(const Color &edge, const Color &x);
+	static Color mixc(const Color &a, const Color &b, const Color &t);
 	static Vector2 signv2(const Vector2 &x);
 	static Vector2 transform(const Vector2 &uv, const Vector2 &translate, const float rotate, const Vector2 &scale, const bool repeat);
 	static float fractf(const float x);
@@ -63,6 +66,7 @@ public:
 	static Vector3 rgb_to_hsv(const Vector3 &c);
 	static Vector3 hsv_to_rgb(const Vector3 &c);
 	static Color adjust_hsv(const Color &color, const float hue, const float saturation, const float value);
+	static Color adjust_levels(const Color &color, const Color &in_min, const Color &in_mid, const Color &in_max, const Color &out_min, const Color &out_max);
 	static Color brightness_contrast(const Color &color, const float brightness, const float contrast);
 	static float grayscale_min(const Vector3 &c);
 	static float grayscale_max(const Vector3 &c);
@@ -284,6 +288,8 @@ public:
 	static Vector2 kal_rotate(const Vector2 &uv, const float count, const float offset);
 	static Vector2 get_from_tileset(const float count, const float pseed, const Vector2 &uv);
 	static Vector2 custom_uv_transform(const Vector2 &uv, const Vector2 &cst_scale, const float rnd_rotate, const float rnd_scale, const Vector2 &pseed);
+
+	static Ref<Image> generate_histogram(const Ref<Image> &input, const int texture_size = 256);
 
 	static void register_node_class(const String &category, const String &cls);
 	static void unregister_node_class(const String &category, const String &cls);
