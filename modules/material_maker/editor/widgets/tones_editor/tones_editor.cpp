@@ -94,7 +94,6 @@ MMTonesEditor::~MMTonesEditor() {
 void MMTonesEditor::on_input_property_changed() {
 	if (!_node.is_valid()) {
 		_histogram_tr->set_texture(make_default_histogram());
-		ERR_PRINT("asdasd");
 		return;
 	}
 
@@ -102,11 +101,8 @@ void MMTonesEditor::on_input_property_changed() {
 
 	if (!img.is_valid()) {
 		_histogram_tr->set_texture(make_default_histogram());
-		ERR_PRINT("asdasd2");
 		return;
 	}
-
-	ERR_PRINT("asdasd3");
 
 	_histogram_tr->set_texture(make_histogram(img));
 }
