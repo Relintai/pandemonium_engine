@@ -10,6 +10,7 @@ class OptionButton;
 class TextureRect;
 class ImageTexture;
 class MMTonesEditorCursor;
+class MMMaterial;
 
 class MMTonesEditor : public VBoxContainer {
 	GDCLASS(MMTonesEditor, VBoxContainer);
@@ -27,7 +28,7 @@ public:
 		HISTOGRAM_IMAGE_SIZE = 128,
 	};
 
-	void set_value(const Ref<MMTones> &v);
+	void set_value(const Ref<MMMaterial> &material, const Ref<MMTones> &v);
 
 	enum ParameterTypes {
 		PARAMETER_TYPE_IN_MIN = 0,
@@ -61,6 +62,7 @@ protected:
 
 	static void _bind_methods();
 
+	Ref<MMMaterial> _material;
 	Ref<MMTones> _node;
 
 	Modes _current_mode;

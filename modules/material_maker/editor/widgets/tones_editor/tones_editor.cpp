@@ -4,6 +4,7 @@
 #include "scene/resources/texture.h"
 
 #include "../../../nodes/filter/tones.h"
+#include "../../../nodes/mm_material.h"
 
 #include "scene/gui/button.h"
 #include "scene/gui/option_button.h"
@@ -13,7 +14,9 @@
 
 #include "tones_editor_cursor.h"
 
-void MMTonesEditor::set_value(const Ref<MMTones> &v) {
+void MMTonesEditor::set_value(const Ref<MMMaterial> &material, const Ref<MMTones> &v) {
+	_material = material;
+
 	if (_node == v) {
 		return;
 	}
@@ -254,11 +257,12 @@ MMTonesEditor::~MMTonesEditor() {
 }
 
 void MMTonesEditor::on_input_property_changed() {
-	if (!_node.is_valid()) {
+	if (!_node.is_valid() || !_material.is_valid()) {
 		_histogram_tr->set_texture(make_default_histogram());
 		return;
 	}
 
+	//Ref<Image> img = _node->render_original_image(_material);
 	Ref<Image> img = _node->get_image()->get_active_image();
 
 	if (!img.is_valid()) {

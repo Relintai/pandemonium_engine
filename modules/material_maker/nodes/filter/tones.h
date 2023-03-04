@@ -4,6 +4,9 @@
 #include "../mm_node.h"
 #include "../mm_node_universal_property.h"
 
+class MMMaterial;
+class Image;
+
 class MMTones : public MMNode {
 	GDCLASS(MMTones, MMNode);
 
@@ -37,6 +40,8 @@ public:
 	void _register_methods(MMGraphNode *mm_graph_node);
 	void _render(const Ref<MMMaterial> &material);
 	Color _get_value_for(const Vector2 &uv, const int pseed);
+
+	Ref<Image> render_original_image(const Ref<MMMaterial> &material);
 
 	MMTones();
 	~MMTones();

@@ -3,6 +3,7 @@
 
 #include "../../algos/mm_algos.h"
 #include "../../editor/mm_graph_node.h"
+#include "core/io/image.h"
 #include "../mm_material.h"
 
 Ref<MMNodeUniversalProperty> MMTones::get_input() {
@@ -112,6 +113,29 @@ void MMTones::_render(const Ref<MMMaterial> &material) {
 Color MMTones::_get_value_for(const Vector2 &uv, const int pseed) {
 	Color c = input->get_value(uv);
 	return MMAlgos::adjust_levels(c, _in_min, _in_mid, _in_max, _out_min, _out_max);
+}
+
+Ref<Image> MMTones::render_original_image(const Ref<MMMaterial> &material) {
+	Ref<Image> image;
+	image.instance();
+
+	image->create(material->image_size.x, material->image_size.y, false, Image::FORMAT_RGBA8);
+	image->lock();
+
+	float w = image->get_width();
+	float h = image->get_height();
+
+	for (int x = 0; x < image->get_width(); ++x) { //x in range(image.get_width())
+
+		for (int y = 0; y < image->get_height(); ++y) { //y in range(image.get_height())
+			Vector2 v = Vector2(x / w, y / h);
+			Color col = input->get_value(v);
+			image->set_pixel(x, y, col);
+		}
+	}
+
+	image->unlock();
+	return image;
 }
 
 MMTones::MMTones() {

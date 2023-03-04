@@ -5664,13 +5664,13 @@ Ref<Image> MMAlgos::generate_histogram(const Ref<Image> &input, const int textur
 
 	for (int x = 0; x < size.x; ++x) {
 		for (int y = 0; y < size.y; ++y) {
-			float e = 1.0 / size.y;
+			float uv_y = 1.0 / size.y * y;
 
 			Color sum = Color();
 
-			for (float yy = 0.5 * e; yy < 1.0; yy += e) {
-				Color sic = scaled_input->get_pixel(x, yy * size.y);
-				sic -= Color(e, e, e, e);
+			for (int yy = 0; yy < size.y; ++yy) {
+				Color sic = scaled_input->get_pixel(x, yy);
+				sic -= Color(uv_y, uv_y, uv_y, uv_y);
 
 				sic.r = MAX(0, 1.0 - 16.0 * ABS(sic.r));
 				sic.g = MAX(0, 1.0 - 16.0 * ABS(sic.g));
@@ -5714,7 +5714,7 @@ Ref<Image> MMAlgos::generate_histogram(const Ref<Image> &input, const int textur
 	Ref<Image> step_2;
 	step_2.instance();
 	step_2->copy_internals_from(step_1);
-	step_2->resize(texture_size, 2);
+	step_2->resize(texture_size, 1);
 
 	scaled_input->lock();
 	step_2->lock();
@@ -5723,11 +5723,10 @@ Ref<Image> MMAlgos::generate_histogram(const Ref<Image> &input, const int textur
 
 	for (int x = 0; x < size.x; ++x) {
 		for (int y = 0; y < size.y; ++y) {
-			float e = 1.0 / size.y;
 			Color sum = Color();
 
-			for (float yy = 0.5 * e; yy < 1.0; yy += e) {
-				Color sic = scaled_input->get_pixel(yy * size.y, x);
+			for (int yy = 0; yy < size.y; ++yy) {
+				Color sic = scaled_input->get_pixel(yy, x);
 
 				sum += sic;
 			}
@@ -5790,35 +5789,40 @@ Ref<Image> MMAlgos::generate_histogram(const Ref<Image> &input, const int textur
 
 		for (int y = 0; y < size.y; ++y) {
 			float e = 1.0 / size.y;
-			float uv_y = e * y;
+			float uv_y = e * static_cast<float>(y);
 
 			if (ABS(MMAlgos::fractf(uv_y + gradient_width)) < 2.0 * gradient_width) {
 				result->set_pixel(x, y, Color(uv_x, uv_x, uv_x, 1));
 			} else {
 				Color highest = Color(0, 0, 0, 0);
 
-				for (float xx = 0.5 * uv_1_x; xx < 1.0; xx += uv_1_x) {
-					Color sic = step_2->get_pixel(xx * uv_1_x, 0);
+				for (int xx = 0; xx < size.x; ++xx) {
+					Color sic = step_2->get_pixel(xx, 0);
 
-					highest.r = MAX(highest.r, sic.r);
-					highest.g = MAX(highest.g, sic.g);
-					highest.b = MAX(highest.b, sic.b);
-					highest.a = MAX(highest.a, sic.a);
+					if (highest < sic) {
+						highest = sic;
+					}
 				}
 
-				Color raw_value = step_2->get_pixel(x * uv_1_x, 0);
+				Color raw_value = step_2->get_pixel(x, 0);
 
+				//vec4 value = step(vec4(1.0 - gradient_width - UV.y) * highest / (1.0 - 2.0 * gradient_width), raw_value);
 				Vector4 highest_v4 = Vector4(highest.r, highest.g, highest.b, highest.a);
-				float gv = 1.0 - gradient_width - uv_y;
-				Vector4 value = Vector4(gv, gv, gv, gv) * highest_v4 / (1.0 - 2.0 * gradient_width);
+
+				//-- [1.0 - gradient_width - UV.y]
+				float gvu = 1.0 - gradient_width - uv_y;
+				float gv = 1.0 - 2.0 * gradient_width;
+				Vector4 value = Vector4(gvu, gvu, gvu, gvu) * highest_v4 / Vector4(gv, gv, gv, gv);
 
 				value.x = step(value.x, raw_value.r);
 				value.y = step(value.y, raw_value.g);
 				value.z = step(value.z, raw_value.b);
 				value.w = step(value.w, raw_value.a);
 
+				//float alpha = step(2.0 * gradient_width, dot(value, vec4(1.0)));
 				float alpha = step(2.0 * gradient_width, value.dot(Vector4(1, 1, 1, 1)));
 
+				//COLOR = vec4(mix(value.rgb, vec3(0.5), 0.3 * value.a), alpha);
 				Vector3 val3 = Vector3(value.x, value.y, value.z);
 				val3 = val3.linear_interpolate(Vector3(0.5, 0.5, 0.5), 0.3 * value.w);
 

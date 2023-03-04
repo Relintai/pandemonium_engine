@@ -195,7 +195,7 @@ int MMGraphNode::add_slot_tones() {
 
 	MMTonesEditor *te = memnew(MMTonesEditor);
 	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", te);
-	te->set_value(_node);
+	te->set_value(_material, _node);
 	//ge.texture = _node.call(getter, _material, slot_idx);
 	//properties[slot_idx].append(ge.texture);
 	return slot_idx;
