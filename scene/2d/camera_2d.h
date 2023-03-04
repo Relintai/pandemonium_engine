@@ -64,7 +64,7 @@ protected:
 	Vector2 zoom;
 	AnchorMode anchor_mode;
 	bool rotating;
-	bool current;
+	bool enabled;
 	float smoothing;
 	bool smoothing_enabled;
 	bool smoothing_active; // smoothing can be enabled but not active in the editor
@@ -86,7 +86,6 @@ protected:
 	void _setup_viewport();
 
 	void _make_current(Object *p_which);
-	void set_current(bool p_current);
 
 	bool screen_drawing_enabled;
 	bool limit_drawing_enabled;
@@ -138,6 +137,9 @@ public:
 
 	void set_process_mode(Camera2DProcessMode p_mode);
 	Camera2DProcessMode get_process_mode() const;
+
+	void set_enabled(bool p_enabled);
+	bool is_enabled() const;
 
 	void make_current();
 	void clear_current();

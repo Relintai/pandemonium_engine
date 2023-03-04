@@ -193,6 +193,7 @@ public:
 	Transform2D get_global_canvas_transform() const;
 
 	Transform2D get_final_transform() const;
+	void assign_next_enabled_camera_2d(const StringName &p_camera_group);
 
 	void set_transparent_background(bool p_enable);
 	bool has_transparent_background() const;

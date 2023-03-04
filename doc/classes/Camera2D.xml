@@ -54,6 +54,18 @@
 				Returns the specified camera limit. See also [member limit_bottom], [member limit_top], [member limit_left], and [member limit_right].
 			</description>
 		</method>
+		<method name="is_current" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns [code]true[/code] if this [Camera2D] is the active camera (see [method Viewport.get_camera_2d]).
+			</description>
+		</method>
+		<method name="make_current">
+			<return type="void" />
+			<description>
+				Forces this [Camera2D] to become the current active one. [member enabled] must be [code]true[/code].
+			</description>
+		</method>
 		<method name="reset_smoothing">
 			<return type="void" />
 			<description>
@@ -82,9 +94,6 @@
 		<member name="anchor_mode" type="int" setter="set_anchor_mode" getter="get_anchor_mode" enum="Camera2D.AnchorMode" default="1">
 			The Camera2D's anchor point. See [enum AnchorMode] constants.
 		</member>
-		<member name="current" type="bool" setter="set_current" getter="is_current" default="false">
-			If [code]true[/code], the camera is the active camera for the current scene. Only one camera can be current, so setting a different camera [code]current[/code] will disable this one.
-		</member>
 		<member name="custom_viewport" type="Node" setter="set_custom_viewport" getter="get_custom_viewport">
 			The custom [Viewport] node attached to the [Camera2D]. If [code]null[/code] or not a [Viewport], uses the default viewport instead.
 		</member>
@@ -105,6 +114,10 @@
 		</member>
 		<member name="drag_margin_v_enabled" type="bool" setter="set_v_drag_enabled" getter="is_v_drag_enabled" default="false">
 			If [code]true[/code], the camera only moves when reaching the vertical drag margins. If [code]false[/code], the camera moves vertically regardless of margins.
+		</member>
+		<member name="enabled" type="bool" setter="set_enabled" getter="is_enabled" default="true">
+			Controls whether the camera can be active or not. If [code]true[/code], the [Camera2D] will become the main camera when it enters the scene tree and there is no active camera currently (see [method Viewport.get_camera_2d]).
+			When the camera is currently active and [member enabled] is set to [code]false[/code], the next enabled [Camera2D] in the scene tree will become active.
 		</member>
 		<member name="editor_draw_drag_margin" type="bool" setter="set_margin_drawing_enabled" getter="is_margin_drawing_enabled" default="false">
 			If [code]true[/code], draws the camera's drag margin rectangle in the editor.

@@ -50,7 +50,7 @@ void Camera2D::_update_scroll() {
 		return;
 	}
 
-	if (current) {
+	if (is_current()) {
 		ERR_FAIL_COND(custom_viewport && !ObjectDB::get_instance(custom_viewport_id));
 
 		Transform2D xform = get_camera_transform();
@@ -252,32 +252,25 @@ void Camera2D::_notification(int p_what) {
 			_setup_viewport();
 			_update_process_mode();
 
-			if (is_current()) {
-				// if a camera enters the tree that is set to current,
-				// it should take over as the current camera, and mark
-				// all other cameras as non current
-				if (viewport->get_camera_2d() == NULL) {
-					first = true;
-					viewport->_camera_2d_set(this);
-				} else {
-					first = false;
-					make_current();
-				}
+			if (!Engine::get_singleton()->is_editor_hint() && enabled && !viewport->get_camera_2d()) {
+				make_current();
 			}
+
+			first = true;
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
-			const bool viewport_valid = !custom_viewport || ObjectDB::get_instance(custom_viewport_id);
+			remove_from_group(group_name);
+			remove_from_group(canvas_group_name);
+
 			if (is_current()) {
-				if (viewport && viewport_valid) {
-					viewport->set_canvas_transform(Transform2D());
-					clear_current();
-				}
+				clear_current();
 			}
+
+			const bool viewport_valid = !custom_viewport || ObjectDB::get_instance(custom_viewport_id);
 			if (viewport && viewport_valid) {
 				viewport->disconnect("size_changed", this, "_update_scroll");
 			}
-			remove_from_group(group_name);
-			remove_from_group(canvas_group_name);
+
 			viewport = nullptr;
 
 		} break;
@@ -404,11 +397,26 @@ Camera2D::Camera2DProcessMode Camera2D::get_process_mode() const {
 	return process_mode;
 }
 
+void Camera2D::set_enabled(bool p_enabled) {
+	enabled = p_enabled;
+
+	if (enabled && is_inside_tree() && !viewport->get_camera_2d()) {
+		make_current();
+	} else if (!enabled && is_current()) {
+		clear_current();
+	}
+}
+
+bool Camera2D::is_enabled() const {
+	return enabled;
+}
+
 void Camera2D::_make_current(Object *p_which) {
 	if (p_which == this) {
 		if (is_inside_tree()) {
 			get_viewport()->_camera_2d_set(this);
 			update();
+			_update_scroll();
 		}
 	} else {
 		if (is_inside_tree()) {
@@ -420,40 +428,24 @@ void Camera2D::_make_current(Object *p_which) {
 	}
 }
 
-void Camera2D::set_current(bool p_current) {
-	current = p_current;
-
-	if (is_inside_tree()) {
-		if (p_current) {
-			make_current();
-		} else {
-			if (get_viewport()->get_camera_2d() == this) {
-				clear_current();
-			}
-		}
-	}
-}
-
-bool Camera2D::is_current() const {
-	if (is_inside_tree()) {
-		return (get_viewport()->get_camera_2d() == this);
-	}
-
-	return current;
-}
-
 void Camera2D::make_current() {
-	if (is_inside_tree()) {
-		get_tree()->call_group_flags(SceneTree::GROUP_CALL_REALTIME, group_name, "_make_current", this);
-	}
-
+	ERR_FAIL_COND(!enabled || !is_inside_tree());
+	get_tree()->call_group(group_name, "_make_current", this);
 	_update_scroll();
 }
 
 void Camera2D::clear_current() {
-	if (is_inside_tree()) {
-		get_tree()->call_group_flags(SceneTree::GROUP_CALL_REALTIME, group_name, "_make_current", (Object *)nullptr);
+	ERR_FAIL_COND(!is_current());
+	if (viewport && !(custom_viewport && !ObjectDB::get_instance(custom_viewport_id))) {
+		viewport->assign_next_enabled_camera_2d(group_name);
 	}
+}
+
+bool Camera2D::is_current() const {
+	if (viewport && !(custom_viewport && !ObjectDB::get_instance(custom_viewport_id))) {
+		return viewport->get_camera_2d() == this;
+	}
+	return false;
 }
 
 void Camera2D::set_limit(Margin p_margin, int p_limit) {
@@ -676,7 +668,10 @@ void Camera2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_process_mode", "mode"), &Camera2D::set_process_mode);
 	ClassDB::bind_method(D_METHOD("get_process_mode"), &Camera2D::get_process_mode);
 
-	ClassDB::bind_method(D_METHOD("set_current", "current"), &Camera2D::set_current);
+	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &Camera2D::set_enabled);
+	ClassDB::bind_method(D_METHOD("is_enabled"), &Camera2D::is_enabled);
+
+	ClassDB::bind_method(D_METHOD("make_current"), &Camera2D::make_current);
 	ClassDB::bind_method(D_METHOD("is_current"), &Camera2D::is_current);
 	ClassDB::bind_method(D_METHOD("_make_current"), &Camera2D::_make_current);
 
@@ -732,7 +727,7 @@ void Camera2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "offset"), "set_offset", "get_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "anchor_mode", PROPERTY_HINT_ENUM, "Fixed TopLeft,Drag Center"), "set_anchor_mode", "get_anchor_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "rotating"), "set_rotating", "is_rotating");
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "current"), "set_current", "is_current");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "is_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "zoom", PROPERTY_HINT_LINK), "set_zoom", "get_zoom");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "custom_viewport", PROPERTY_HINT_RESOURCE_TYPE, "Viewport", 0), "set_custom_viewport", "get_custom_viewport");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "process_mode", PROPERTY_HINT_ENUM, "Physics,Idle"), "set_process_mode", "get_process_mode");
@@ -776,7 +771,7 @@ void Camera2D::_bind_methods() {
 Camera2D::Camera2D() {
 	anchor_mode = ANCHOR_MODE_DRAG_CENTER;
 	rotating = false;
-	current = false;
+	enabled = true;
 	limit[MARGIN_LEFT] = -10000000;
 	limit[MARGIN_TOP] = -10000000;
 	limit[MARGIN_RIGHT] = 10000000;

@@ -1159,6 +1159,28 @@ Transform2D Viewport::get_final_transform() const {
 	return stretch_transform * global_canvas_transform;
 }
 
+void Viewport::assign_next_enabled_camera_2d(const StringName &p_camera_group) {
+	List<Node *> camera_list;
+	get_tree()->get_nodes_in_group(p_camera_group, &camera_list);
+
+	Camera2D *new_camera = nullptr;
+	for (List<Node *>::Element *E = camera_list.front(); E; E = E->next()) {
+		Camera2D *cam = Object::cast_to<Camera2D>(E->get());
+		if (cam->is_enabled()) {
+			new_camera = cam;
+			break;
+		}
+	}
+
+	camera_2d = NULL;
+
+	if (!new_camera) {
+		set_canvas_transform(Transform2D());
+	} else {
+		new_camera->make_current();
+	}
+}
+
 void Viewport::_update_canvas_items(Node *p_node) {
 	if (p_node != this) {
 		Viewport *vp = Object::cast_to<Viewport>(p_node);
@@ -2255,7 +2277,7 @@ void Viewport::_gui_input_event(Ref<InputEvent> p_event) {
 				_gui_call_input(over, touch_event);
 				set_input_as_handled();
 			}
-			
+
 			gui.touch_focus.erase(touch_index);
 			return;
 		}
