@@ -48,10 +48,26 @@ void MMTonesEditorCursor::resize() {
 }
 
 void MMTonesEditorCursor::_gui_input(const Ref<InputEvent> &p_event) {
-	Ref<InputEventMouseMotion> iemm = p_event;
+	Ref<InputEventMouseButton> iemb = p_event;
 
-	if (iemm.is_valid()) {
-		if (((iemm->get_button_mask() & 1) != 0)) {
+	if (iemb.is_valid()) {
+		if (iemb->is_pressed()) {
+			if (_pointer_index != -1) {
+				return;
+			}
+
+			if (iemb->get_button_index() != BUTTON_LEFT) {
+				return;
+			}
+
+			_pointer_index = 1;
+		} else {
+			if (_pointer_index != 1) {
+				return;
+			}
+
+			_pointer_index = -1;
+
 			Control *parent = get_parent_control();
 
 			if (!parent) {
@@ -62,15 +78,39 @@ void MMTonesEditorCursor::_gui_input(const Ref<InputEvent> &p_event) {
 
 			Vector2 pos = get_position();
 
-			pos.x += iemm->get_relative().x;
-			pos.x = MIN(MAX(-0.5 * CURSOR_WIDTH, pos.x), parent_size.x - 0.5 * CURSOR_WIDTH);
-
-			update_value((pos.x + 0.5 * CURSOR_WIDTH) / parent_size.x);
+			update_value(pos.x / parent_size.x);
 		}
+
+		return;
+	}
+
+	if (_pointer_index != 1) {
+		return;
+	}
+
+	Ref<InputEventMouseMotion> iemm = p_event;
+
+	if (iemm.is_valid()) {
+		Control *parent = get_parent_control();
+
+		if (!parent) {
+			return;
+		}
+
+		Vector2 parent_size = parent->get_size();
+
+		Vector2 pos = get_position();
+
+		pos.x += iemm->get_relative().x;
+		pos.x = MIN(MAX(-0.5 * CURSOR_WIDTH, pos.x), parent_size.x - 0.5 * CURSOR_WIDTH);
+
+		set_value((pos.x + 0.5 * CURSOR_WIDTH) / parent_size.x);
 	}
 }
 
 MMTonesEditorCursor::MMTonesEditorCursor() {
+	_pointer_index = -1;
+	set_mouse_filter(MOUSE_FILTER_STOP);
 }
 
 MMTonesEditorCursor::~MMTonesEditorCursor() {

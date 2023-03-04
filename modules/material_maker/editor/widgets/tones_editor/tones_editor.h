@@ -37,6 +37,8 @@ public:
 		PARAMETER_TYPE_OUT_MAX,
 	};
 
+	void set_mode(Modes mode);
+
 	Color get_parameter(ParameterTypes type);
 	float get_parameter_current_mode(ParameterTypes type);
 

@@ -29,6 +29,10 @@ public:
 	Color get_out_min() const;
 	void set_out_min(const Color &val);
 
+	// For the editor
+	int get_current_mode();
+	void set_current_mode(int val);
+
 	void _init_properties();
 	void _register_methods(MMGraphNode *mm_graph_node);
 	void _render(const Ref<MMMaterial> &material);
@@ -48,6 +52,8 @@ protected:
 	Color _in_min;
 	Color _out_max;
 	Color _out_min;
+
+	int _current_mode;
 };
 
 #endif

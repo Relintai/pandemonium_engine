@@ -61,6 +61,13 @@ void MMTones::set_out_min(const Color &val) {
 	set_dirty(true);
 }
 
+int MMTones::get_current_mode() {
+	return _current_mode;
+}
+void MMTones::set_current_mode(int val) {
+	_current_mode = val;
+}
+
 void MMTones::_init_properties() {
 	if (!input.is_valid()) {
 		input.instance();
@@ -113,6 +120,8 @@ MMTones::MMTones() {
 	_in_min = Color(0, 0, 0, 0);
 	_out_max = Color(1, 1, 1, 1);
 	_out_min = Color(0, 0, 0, 0);
+
+	_current_mode = 0;
 }
 
 MMTones::~MMTones() {

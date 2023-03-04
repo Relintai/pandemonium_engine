@@ -26,6 +26,8 @@ void MMTonesEditor::set_value(const Ref<MMTones> &v) {
 
 	if (_node.is_valid()) {
 		_node->get_image()->connect("changed", this, "on_input_property_changed");
+
+		set_mode(static_cast<Modes>(_node->get_current_mode()));
 	}
 
 	on_input_property_changed();
@@ -38,6 +40,17 @@ enum ParameterTypes {
 	PARAMETER_TYPE_OUT_MIN,
 	PARAMETER_TYPE_OUT_MAX,
 };
+
+void MMTonesEditor::set_mode(Modes mode) {
+	_current_mode = mode;
+
+	_mode_ob->select(static_cast<int>(mode));
+	_cursor_in_min->set_value(get_parameter_current_mode(PARAMETER_TYPE_IN_MIN));
+	_cursor_in_mid->set_value(get_parameter_current_mode(PARAMETER_TYPE_IN_MID));
+	_cursor_in_max->set_value(get_parameter_current_mode(PARAMETER_TYPE_IN_MAX));
+	_cursor_out_min->set_value(get_parameter_current_mode(PARAMETER_TYPE_OUT_MIN));
+	_cursor_out_max->set_value(get_parameter_current_mode(PARAMETER_TYPE_OUT_MAX));
+}
 
 Color MMTonesEditor::get_parameter(ParameterTypes type) {
 	if (!_node.is_valid()) {
@@ -195,9 +208,11 @@ MMTonesEditor::MMTonesEditor() {
 	auto_button->set_tooltip("Set levels automatically");
 	auto_button->set_v_size_flags(Control::SIZE_SHRINK_CENTER);
 
+	/*
 	Control *spacer = memnew(Control);
 	spacer->set_custom_minimum_size(Vector2(0, 4));
 	add_child(spacer);
+	*/
 
 	_histogram_tr = memnew(TextureRect);
 	_histogram_tr->set_custom_minimum_size(Vector2(0, 100));
@@ -228,11 +243,11 @@ MMTonesEditor::MMTonesEditor() {
 	_cursor_out_min->connect("cursor_value_changed", this, "on_cursor_value_changed");
 	_cursor_out_max->connect("cursor_value_changed", this, "on_cursor_value_changed");
 
+	/*
 	spacer = memnew(Control);
 	spacer->set_custom_minimum_size(Vector2(0, 4));
 	add_child(spacer);
-
-	on_mode_item_selected(MODE_LUMINANCE);
+	*/
 }
 
 MMTonesEditor::~MMTonesEditor() {
@@ -293,13 +308,8 @@ void MMTonesEditor::on_auto_levels_pressed() {
 }
 
 void MMTonesEditor::on_mode_item_selected(int id) {
-	_current_mode = static_cast<Modes>(id);
-
-	_cursor_in_min->set_value(get_parameter_current_mode(PARAMETER_TYPE_IN_MIN));
-	_cursor_in_mid->set_value(get_parameter_current_mode(PARAMETER_TYPE_IN_MID));
-	_cursor_in_max->set_value(get_parameter_current_mode(PARAMETER_TYPE_IN_MAX));
-	_cursor_out_min->set_value(get_parameter_current_mode(PARAMETER_TYPE_OUT_MIN));
-	_cursor_out_max->set_value(get_parameter_current_mode(PARAMETER_TYPE_OUT_MAX));
+	_node->set_current_mode(id);
+	set_mode(static_cast<Modes>(id));
 }
 
 void MMTonesEditor::on_cursor_value_changed(Control *cursor, float position) {

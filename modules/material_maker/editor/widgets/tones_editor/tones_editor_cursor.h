@@ -31,6 +31,8 @@ protected:
 	Color _color;
 	float _position;
 	bool _top;
+
+	int _pointer_index;
 };
 
 #endif
