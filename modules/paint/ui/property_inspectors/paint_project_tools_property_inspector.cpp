@@ -114,7 +114,7 @@ PaintProjectToolsPropertyInspector::PaintProjectToolsPropertyInspector() {
 	add_action_button("_on_set_colors_as_default_pressed", "Set Colors as Default", "Theme", "EditorIcons");
 	add_action_button("_on_add_paint_visual_grid_pressed", "Add Paint Visual Grid", "PaintVisualGrid", "EditorIcons");
 	add_action_button("_on_add_paint_canvas_background_pressed", "Add Paint Canvas Background", "PaintCanvasBackground", "EditorIcons");
-	add_action_button("_on_add_paint_canvas_pressed", "Add Paint Canvas Background", "PaintCanvas", "EditorIcons");
+	add_action_button("_on_add_paint_canvas_pressed", "Add Paint Canvas", "PaintCanvas", "EditorIcons");
 }
 
 PaintProjectToolsPropertyInspector::~PaintProjectToolsPropertyInspector() {
