@@ -215,7 +215,7 @@ MMTonesEditor::MMTonesEditor() {
 	*/
 
 	_histogram_tr = memnew(TextureRect);
-	_histogram_tr->set_custom_minimum_size(Vector2(0, 100));
+	_histogram_tr->set_custom_minimum_size(Vector2(128, 128));
 	_histogram_tr->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	add_child(_histogram_tr);
 

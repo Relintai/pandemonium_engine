@@ -24,7 +24,7 @@ public:
 	};
 
 	enum {
-		HISTOGRAM_IMAGE_SIZE = 256,
+		HISTOGRAM_IMAGE_SIZE = 128,
 	};
 
 	void set_value(const Ref<MMTones> &v);
