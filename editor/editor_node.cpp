@@ -6015,9 +6015,16 @@ EditorNode::EditorNode() {
 	EDITOR_DEF("interface/editor/save_on_focus_loss", false);
 	EDITOR_DEF_RST("interface/editor/save_each_scene_on_quit", true);
 	EDITOR_DEF("interface/editor/quit_confirmation", true);
-	EDITOR_DEF("interface/editor/show_update_spinner", false);
 	EDITOR_DEF("interface/editor/update_continuously", false);
+
+#if defined(ANDROID_ENABLED) || defined(JAVASCRIPT_ENABLED)
+	EDITOR_DEF("interface/editor/show_update_spinner", true);
+	EDITOR_DEF("interface/editor/update_vital_only", true);
+#else
+	EDITOR_DEF("interface/editor/show_update_spinner", false);
 	EDITOR_DEF("interface/editor/update_vital_only", false);
+#endif
+
 	EDITOR_DEF("interface/editor/translate_properties", true);
 	int file_changed_action = EDITOR_DEF("interface/editor/file_changed_action", 0);
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "interface/editor/file_changed_action", PROPERTY_HINT_ENUM, "Ask,Always Reload,Always Save,Always Reload (For This Session),Always Save (For This Session)", PROPERTY_USAGE_DEFAULT));
