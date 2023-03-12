@@ -30,5 +30,5 @@
 
 ## Bronze donors
 
-    Thisisnottea 
+    None currently. Become one: <https://www.patreon.com/relintai>
 
