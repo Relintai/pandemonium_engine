@@ -65,9 +65,4 @@ class String;
 
 @property(nonatomic, assign) BOOL useCADisplayLink;
 
-- (void)pandemoniumTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
-- (void)pandemoniumTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
-- (void)pandemoniumTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
-- (void)pandemoniumTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
-
 @end

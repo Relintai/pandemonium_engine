@@ -14,7 +14,6 @@ iphone_lib = [
     "display_layer.mm",
     "pandemonium_app_delegate.m",
     "pandemonium_view_renderer.mm",
-    "pandemonium_view_gesture_recognizer.mm",
     "device_metrics.m",
     "keyboard_input_view.mm",
     "native_video_view.m",
