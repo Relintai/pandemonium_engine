@@ -2053,6 +2053,8 @@ GDScriptWarning::Code GDScriptWarning::get_code_from_name(const String &p_name) 
 #endif // DEBUG_ENABLED
 
 GDScriptLanguage::GDScriptLanguage() {
+	GDScriptTokenizer::initialize();
+
 	calls = 0;
 	ERR_FAIL_COND(singleton);
 	singleton = this;
@@ -2097,6 +2099,8 @@ GDScriptLanguage::GDScriptLanguage() {
 }
 
 GDScriptLanguage::~GDScriptLanguage() {
+	GDScriptTokenizer::terminate();
+
 	if (_call_stack) {
 		memdelete_arr(_call_stack);
 	}

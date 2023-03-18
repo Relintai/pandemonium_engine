@@ -30,13 +30,13 @@
 
 #include "cscript.h"
 
-#include "core/core_string_names.h"
 #include "core/config/engine.h"
+#include "core/config/project_settings.h"
+#include "core/core_string_names.h"
 #include "core/global_constants.h"
 #include "core/io/file_access_encrypted.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
 #include "cscript_compiler.h"
 
 ///////////////////////////
@@ -2026,6 +2026,8 @@ CScriptWarning::Code CScriptWarning::get_code_from_name(const String &p_name) {
 #endif // DEBUG_ENABLED
 
 CScriptLanguage::CScriptLanguage() {
+	CScriptTokenizer::initialize();
+
 	calls = 0;
 	ERR_FAIL_COND(singleton);
 	singleton = this;
@@ -2070,6 +2072,8 @@ CScriptLanguage::CScriptLanguage() {
 }
 
 CScriptLanguage::~CScriptLanguage() {
+	CScriptTokenizer::terminate();
+
 	if (_call_stack) {
 		memdelete_arr(_call_stack);
 	}
