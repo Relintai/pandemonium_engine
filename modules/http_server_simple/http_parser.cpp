@@ -51,10 +51,23 @@ int HTTPParser::read_from_buffer(const char *p_buffer, const int p_data_length) 
 
 	parsed_bytes = static_cast<int>(http_parser_execute(parser, settings, p_buffer, p_data_length));
 
+	_current_request_size += parsed_bytes;
+
+	if (_current_request_size >= max_request_size) {
+		_error = true;
+#if PROTOCOL_ERROR_LOGGING_ENABLED
+		PLOG_ERR("_current_request_size >= max_request_size");
+#endif
+	}
+
 	return parsed_bytes;
 }
 
 HTTPParser::HTTPParser() {
+	// Should always get set from the outside, if it remains 0 it's a bug.
+	max_request_size = 0;
+	_current_request_size = 0;
+
 	_is_ready = false;
 	_content_type = REQUEST_CONTENT_URLENCODED;
 	_multipart_form_is_file = false;
@@ -205,6 +218,8 @@ int HTTPParser::on_message_begin() {
 	if (_request.is_valid()) {
 		ERR_PRINT("Request was valid!");
 	}
+
+	_current_request_size = 0;
 
 	_in_header = true;
 	_content_type = REQUEST_CONTENT_URLENCODED;

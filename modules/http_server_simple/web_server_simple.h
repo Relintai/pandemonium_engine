@@ -47,6 +47,13 @@ class WebServerSimple : public WebServer {
 	GDCLASS(WebServerSimple, WebServer);
 
 public:
+	enum MaxRequestSizeTypes {
+		MAX_REQUEST_SIZE_TYPE_BYTE = 0,
+		MAX_REQUEST_SIZE_TYPE_KILO_BYTE = 1,
+		MAX_REQUEST_SIZE_TYPE_MEGA_BYTE = 2,
+		MAX_REQUEST_SIZE_TYPE_GIGA_BYTE = 3,
+	};
+
 	int get_bind_port();
 	void set_bind_port(const int val);
 
@@ -71,6 +78,18 @@ public:
 	int get_worker_thread_count();
 	void set_worker_thread_count(const int val);
 
+	MaxRequestSizeTypes get_max_request_size_type();
+	void set_max_request_size_type(const MaxRequestSizeTypes val);
+
+	// Note, that the implementation is extremely simple for now.
+	// This includes the entire request header, including file uploads,
+	// as right now uploaded files are stored in memory,
+	// so this will not change until temp files are implemented.
+	// (A big file upload / request can eat all the ram in a server!)
+	// Also 0 means 0, not unlimited -> This should NOT change (Reason: line above).
+	int get_max_request_size();
+	void set_max_request_size(const int val);
+
 	void add_mime_type(const String &file_extension, const String &mime_type);
 	void remove_mime_type(const String &file_extension);
 
@@ -83,6 +102,8 @@ public:
 	~WebServerSimple();
 
 protected:
+	void _apply_max_request_size_type();
+
 	void _notification(int p_what);
 
 	static void _bind_methods();
@@ -101,6 +122,9 @@ protected:
 
 	bool _single_threaded_poll;
 
+	MaxRequestSizeTypes _max_request_size_type;
+	int _max_request_size;
+
 	Ref<HTTPServerSimple> _server;
 	bool _server_quit;
 	Mutex _server_lock;
@@ -109,5 +133,7 @@ protected:
 
 	static void _server_thread_poll(void *data);
 };
+
+VARIANT_ENUM_CAST(WebServerSimple::MaxRequestSizeTypes);
 
 #endif

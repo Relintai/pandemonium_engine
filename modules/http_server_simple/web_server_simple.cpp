@@ -105,6 +105,22 @@ void WebServerSimple::set_worker_thread_count(const int val) {
 	_worker_thread_count = val;
 }
 
+WebServerSimple::MaxRequestSizeTypes WebServerSimple::get_max_request_size_type() {
+	return _max_request_size_type;
+}
+void WebServerSimple::set_max_request_size_type(const MaxRequestSizeTypes val) {
+	_max_request_size_type = val;
+	_apply_max_request_size_type();
+}
+
+int WebServerSimple::get_max_request_size() {
+	return _max_request_size;
+}
+void WebServerSimple::set_max_request_size(const int val) {
+	_max_request_size = val;
+	_apply_max_request_size_type();
+}
+
 void WebServerSimple::add_mime_type(const String &file_extension, const String &mime_type) {
 	_server->mimes[file_extension] = mime_type;
 }
@@ -200,6 +216,9 @@ void WebServerSimple::_stop() {
 }
 
 WebServerSimple::WebServerSimple() {
+	_max_request_size_type = MAX_REQUEST_SIZE_TYPE_MEGA_BYTE;
+	_max_request_size = 3;
+
 	_bind_port = 8080;
 	_bind_host = "127.0.0.1";
 
@@ -216,6 +235,8 @@ WebServerSimple::WebServerSimple() {
 
 	_server.instance();
 	_server->_web_server = this;
+
+	_apply_max_request_size_type();
 }
 
 WebServerSimple::~WebServerSimple() {
@@ -226,6 +247,10 @@ WebServerSimple::~WebServerSimple() {
 		_poll_thread->wait_to_finish();
 		memdelete(_poll_thread);
 	}
+}
+
+void WebServerSimple::_apply_max_request_size_type() {
+	_server->max_request_size = (static_cast<uint64_t>(1) << (10 * static_cast<uint64_t>(_max_request_size_type))) * static_cast<uint64_t>(_max_request_size);
 }
 
 void WebServerSimple::_notification(int p_what) {
@@ -271,10 +296,23 @@ void WebServerSimple::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_worker_thread_count", "val"), &WebServerSimple::set_worker_thread_count);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "worker_thread_count"), "set_worker_thread_count", "get_worker_thread_count");
 
+	ClassDB::bind_method(D_METHOD("get_max_request_size_type"), &WebServerSimple::get_max_request_size_type);
+	ClassDB::bind_method(D_METHOD("set_max_request_size_type", "val"), &WebServerSimple::set_max_request_size_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_request_size_type", PROPERTY_HINT_ENUM, "B,KB,MB,GB"), "set_max_request_size_type", "get_max_request_size_type");
+
+	ClassDB::bind_method(D_METHOD("get_max_request_size"), &WebServerSimple::get_max_request_size);
+	ClassDB::bind_method(D_METHOD("set_max_request_size", "val"), &WebServerSimple::set_max_request_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_request_size"), "set_max_request_size", "get_max_request_size");
+
 	ClassDB::bind_method(D_METHOD("add_mime_type", "file_extension", "mime_type"), &WebServerSimple::add_mime_type);
 	ClassDB::bind_method(D_METHOD("remove_mime_type", "file_extension"), &WebServerSimple::remove_mime_type);
 
 	ClassDB::bind_method(D_METHOD("is_running"), &WebServerSimple::is_running);
+
+	BIND_ENUM_CONSTANT(MAX_REQUEST_SIZE_TYPE_BYTE);
+	BIND_ENUM_CONSTANT(MAX_REQUEST_SIZE_TYPE_KILO_BYTE);
+	BIND_ENUM_CONSTANT(MAX_REQUEST_SIZE_TYPE_MEGA_BYTE);
+	BIND_ENUM_CONSTANT(MAX_REQUEST_SIZE_TYPE_GIGA_BYTE);
 }
 
 void WebServerSimple::_server_thread_poll(void *data) {

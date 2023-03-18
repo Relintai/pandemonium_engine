@@ -22,6 +22,8 @@ public:
 		REQUEST_CONTENT_TEXT_PLAIN,
 	};
 
+	uint64_t max_request_size;
+
 	Ref<SimpleWebServerRequest> get_next_request();
 	int get_request_count() const;
 
@@ -41,6 +43,8 @@ protected:
 	static void _bind_methods();
 
 	String _partial_data;
+
+	uint64_t _current_request_size;
 
 	Ref<SimpleWebServerRequest> _request;
 	Vector<Ref<SimpleWebServerRequest>> _requests;

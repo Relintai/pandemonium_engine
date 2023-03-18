@@ -69,6 +69,8 @@ public:
 	WebServerSimple *_web_server;
 	HTTPServerSimple *_http_server;
 
+	uint64_t max_request_size;
+
 	bool use_ssl = false;
 	Ref<CryptoKey> key;
 
@@ -97,6 +99,8 @@ public:
 	~HTTPServerSimple();
 
 	WebServerSimple *_web_server;
+
+	uint64_t max_request_size;
 
 	RBMap<String, String> mimes;
 
