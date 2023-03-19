@@ -93,7 +93,7 @@ void InspectorDock::_menu_option(int p_option) {
 
 		case OBJECT_REQUEST_HELP: {
 			if (current) {
-				editor->set_visible_editor(EditorNode::EDITOR_SCRIPT);
+				editor->select_editor_by_name("Script");
 				emit_signal("request_help", current->get_class());
 			}
 		} break;

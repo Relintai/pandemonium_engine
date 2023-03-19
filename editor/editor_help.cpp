@@ -1278,7 +1278,7 @@ void EditorHelp::_update_doc() {
 void EditorHelp::_request_help(const String &p_string) {
 	Error err = _goto_desc(p_string);
 	if (err == OK) {
-		EditorNode::get_singleton()->set_visible_editor(EditorNode::EDITOR_SCRIPT);
+		EditorNode::get_singleton()->select_editor_by_name("Script");
 	}
 	// 100 palabras
 }
@@ -1702,7 +1702,7 @@ EditorHelp::~EditorHelp() {
 }
 
 void EditorHelpBit::_go_to_help(String p_what) {
-	EditorNode::get_singleton()->set_visible_editor(EditorNode::EDITOR_SCRIPT);
+	EditorNode::get_singleton()->select_editor_by_name("Script");
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 	EditorScriptEditor::get_singleton()->goto_help(p_what);
 #endif

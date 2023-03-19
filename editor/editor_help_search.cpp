@@ -112,7 +112,7 @@ void EditorHelpSearch::_confirmed() {
 	}
 
 	// Activate the script editor and emit the signal with the documentation link to display.
-	EditorNode::get_singleton()->set_visible_editor(EditorNode::EDITOR_SCRIPT);
+	EditorNode::get_singleton()->select_editor_by_name("Script");
 
 	emit_signal("go_to_help", item->get_metadata(0));
 

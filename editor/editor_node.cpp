@@ -416,7 +416,7 @@ void EditorNode::_unhandled_input(const Ref<InputEvent> &p_event) {
 		} else if (ED_IS_SHORTCUT("editor/editor_3d", p_event)) {
 			_editor_select(EDITOR_3D);
 		} else if (ED_IS_SHORTCUT("editor/editor_script", p_event)) {
-			_editor_select(EDITOR_SCRIPT);
+			select_editor_by_name("Script");
 		} else if (ED_IS_SHORTCUT("editor/editor_help", p_event)) {
 			emit_signal("request_help_search", "");
 		} else if (ED_IS_SHORTCUT("editor/editor_next", p_event)) {
@@ -3141,7 +3141,7 @@ void EditorNode::_editor_select(int p_which) {
 	}
 
 	if (EditorSettings::get_singleton()->get("interface/editor/separate_distraction_mode")) {
-		if (p_which == EDITOR_SCRIPT) {
+		if (editor_table[p_which]->get_name() == "Script") {
 			set_distraction_free_mode(script_distraction);
 		} else {
 			set_distraction_free_mode(scene_distraction);
@@ -3209,7 +3209,7 @@ void EditorNode::remove_editor_plugin(EditorPlugin *p_editor, bool p_config_chan
 		for (int i = 0; i < singleton->main_editor_buttons.size(); i++) {
 			if (p_editor->get_name() == singleton->main_editor_buttons[i]->get_text()) {
 				if (singleton->main_editor_buttons[i]->is_pressed()) {
-					singleton->_editor_select(EDITOR_SCRIPT);
+					singleton->select_editor_by_name("Script");
 				}
 
 				memdelete(singleton->main_editor_buttons[i]);
@@ -5176,7 +5176,7 @@ void EditorNode::_toggle_distraction_free_mode() {
 			}
 		}
 
-		if (screen == EDITOR_SCRIPT) {
+		if (editor_table[screen]->get_name() == "Script") {
 			script_distraction = !script_distraction;
 			set_distraction_free_mode(script_distraction);
 		} else {

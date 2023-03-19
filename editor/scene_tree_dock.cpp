@@ -1009,7 +1009,7 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 				EditorScriptEditor::get_singleton()->goto_help("class_name:" + selection[i]->get_class());
 			}
 #endif
-			EditorNode::get_singleton()->set_visible_editor(EditorNode::EDITOR_SCRIPT);
+			EditorNode::get_singleton()->select_editor_by_name("Script");
 		} break;
 		case TOOL_SCENE_EDITABLE_CHILDREN: {
 			List<Node *> selection = editor_selection->get_selected_node_list();
