@@ -330,6 +330,19 @@ public:
 		ERR_FAIL_COND(creation_func_count >= MAX_CREATE_FUNCS);
 		creation_funcs[creation_func_count++] = p_func;
 	}
+
+	template <class T>
+	static void add_by_type_front() {
+		ERR_FAIL_COND(creation_func_count >= MAX_CREATE_FUNCS);
+
+		for (int i = creation_func_count - 1; i >= 0; --i) {
+			creation_funcs[i + 1] = creation_funcs[i];
+		}
+
+		++creation_func_count;
+
+		creation_funcs[0] = creator<T>;
+	}
 };
 
 #endif

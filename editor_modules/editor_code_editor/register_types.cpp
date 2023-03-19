@@ -25,7 +25,7 @@ void register_editor_code_editor_types(ModuleRegistrationLevel p_level) {
 
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
-		EditorPlugins::add_by_type<EditorScriptEditorPlugin>();
+		EditorPlugins::add_by_type_front<EditorScriptEditorPlugin>();
 	}
 #endif
 }
