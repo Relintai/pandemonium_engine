@@ -172,8 +172,10 @@ void HTTPServerConnection::send_redirect(Ref<WebServerRequest> request, const St
 void HTTPServerConnection::send(Ref<WebServerRequest> request) {
 	String body = request->get_compiled_body();
 
+	CharString body_cs = body.utf8();
+
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
-	s += "Content-Length: " + itos(body.size()) + "\r\n";
+	s += "Content-Length: " + itos(body_cs.length()) + "\r\n";
 	s += "Content-type: text/html\r\n";
 
 	if (has_more_messages()) {
