@@ -30,14 +30,14 @@
 
 #include "variant.h"
 
-#include "core/math/color_names.inc"
 #include "core/core_string_names.h"
 #include "core/crypto/crypto_core.h"
 #include "core/io/compression.h"
+#include "core/math/color_names.inc"
 #include "core/object/object.h"
 #include "core/object/object_rc.h"
-#include "core/os/os.h"
 #include "core/object/script_language.h"
+#include "core/os/os.h"
 
 typedef void (*VariantFunc)(Variant &r_ret, Variant &p_self, const Variant **p_args);
 typedef void (*VariantConstructFunc)(Variant &r_ret, const Variant **p_args);
@@ -377,6 +377,8 @@ struct _VariantCall {
 	VCALL_LOCALMEM1R(String, unicode_at);
 	VCALL_LOCALMEM1R(String, ord_at);
 	VCALL_LOCALMEM2(String, erase);
+	VCALL_LOCALMEM0R(String, utf8_length);
+	VCALL_LOCALMEM0R(String, utf16_length);
 	VCALL_LOCALMEM0R(String, hash);
 	VCALL_LOCALMEM0R(String, md5_text);
 	VCALL_LOCALMEM0R(String, sha1_text);
@@ -1650,7 +1652,7 @@ struct _VariantCall {
 	VCALL_PTR1(Projection, adjust_perspective_znear);
 	VCALL_PTR1R(Projection, perspective_znear_adjusted);
 	static void _call_Projection_get_projection_plane(Variant &r_ret, Variant &p_self, const Variant **p_args) {
-		r_ret = reinterpret_cast<Projection *>(p_self._data._ptr)->get_projection_plane((Projection::Planes)(p_args[0]->operator int()));     
+		r_ret = reinterpret_cast<Projection *>(p_self._data._ptr)->get_projection_plane((Projection::Planes)(p_args[0]->operator int()));
 	}
 	VCALL_PTR0R(Projection, flipped_y);
 	VCALL_PTR1R(Projection, jitter_offseted);
@@ -2552,6 +2554,9 @@ void register_variant_methods() {
 	ADDFUNC1R(STRING, INT, String, ord_at, INT, "at", varray());
 
 	ADDFUNC2(STRING, NIL, String, erase, INT, "position", INT, "chars", varray());
+
+	ADDFUNC0R(STRING, INT, String, utf8_length, varray());
+	ADDFUNC0R(STRING, INT, String, utf16_length, varray());
 
 	ADDFUNC0R(STRING, INT, String, hash, varray());
 	ADDFUNC0R(STRING, STRING, String, md5_text, varray());

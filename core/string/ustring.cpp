@@ -3381,6 +3381,39 @@ CharString String::utf8() const {
 	return utf8s;
 }
 
+int String::utf8_length() const {
+	int l = length();
+	if (!l) {
+		return 0;
+	}
+
+	const CharType *d = &operator[](0);
+	int fl = 0;
+	for (int i = 0; i < l; i++) {
+		uint32_t c = d[i];
+		if (c <= 0x7f) { // 7 bits.
+			fl += 1;
+		} else if (c <= 0x7ff) { // 11 bits
+			fl += 2;
+		} else if (c <= 0xffff) { // 16 bits
+			fl += 3;
+		} else if (c <= 0x001fffff) { // 21 bits
+			fl += 4;
+		} else if (c <= 0x03ffffff) { // 26 bits
+			fl += 5;
+			print_unicode_error(vformat("Invalid unicode codepoint (%x)", c));
+		} else if (c <= 0x7fffffff) { // 31 bits
+			fl += 6;
+			print_unicode_error(vformat("Invalid unicode codepoint (%x)", c));
+		} else {
+			fl += 1;
+			print_unicode_error(vformat("Invalid unicode codepoint (%x), cannot represent as UTF-8", c), true);
+		}
+	}
+
+	return fl;
+}
+
 String String::utf16(const char16_t *p_utf16, int p_len) {
 	String ret;
 	ret.parse_utf16(p_utf16, p_len);
@@ -3552,6 +3585,32 @@ Char16String String::utf16() const {
 	*cdst = 0; //trailing zero
 
 	return utf16s;
+}
+
+int String::utf16_length() const {
+	int l = length();
+	if (!l) {
+		return 0;
+	}
+
+	const CharType *d = &operator[](0);
+	int fl = 0;
+	for (int i = 0; i < l; i++) {
+		uint32_t c = d[i];
+		if (c <= 0xffff) { // 16 bits.
+			fl += 1;
+			if ((c & 0xfffff800) == 0xd800) {
+				print_unicode_error(vformat("Unpaired surrogate (%x)", c));
+			}
+		} else if (c <= 0x10ffff) { // 32 bits.
+			fl += 2;
+		} else {
+			print_unicode_error(vformat("Invalid unicode codepoint (%x), cannot represent as UTF-16", c), true);
+			fl += 1;
+		}
+	}
+
+	return fl;
 }
 
 uint32_t String::hash(const char *p_cstr) {

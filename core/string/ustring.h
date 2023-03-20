@@ -436,10 +436,12 @@ public:
 	CharString utf8() const;
 	Error parse_utf8(const char *p_utf8, int p_len = -1, bool p_skip_cr = false); //return true on error
 	static String utf8(const char *p_utf8, int p_len = -1);
+	int utf8_length() const;
 
 	Char16String utf16() const;
 	Error parse_utf16(const char16_t *p_utf16, int p_len = -1);
 	static String utf16(const char16_t *p_utf16, int p_len = -1);
+	int utf16_length() const;
 
 	static uint32_t hash(const char *p_cstr); /* hash the string */
 	static uint32_t hash(const char *p_cstr, int p_len); /* hash the string */
