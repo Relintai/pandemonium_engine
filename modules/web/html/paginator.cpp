@@ -131,7 +131,7 @@ String HTMLPaginator::_render_indexed(Ref<HTMLPaginator> target, const int page_
 	}
 
 	String s = target->base_url;
-	if (s.size() > 0 && s[s.size() - 1] != '/') {
+	if (s.length() > 0 && s[s.length() - 1] != '/') {
 		s += '/';
 	}
 
@@ -221,7 +221,7 @@ String HTMLPaginator::_render_links(Ref<HTMLPaginator> target, const int page_in
 	}
 
 	String s = target->base_url;
-	if (s.size() > 0 && s[s.size() - 1] != '/') {
+	if (s.length() > 0 && s[s.length() - 1] != '/') {
 		s += '/';
 	}
 
@@ -301,7 +301,7 @@ String HTMLPaginator::_render_links(Ref<HTMLPaginator> target, const int page_in
 
 String HTMLPaginator::get_pagination_old(const String &base_url, const int max, const int current_index, const int max_visible_links) {
 	String s = base_url;
-	if (s.size() > 0 && s[s.size() - 1] != '/') {
+	if (s.length() > 0 && s[s.length() - 1] != '/') {
 		s += '/';
 	}
 
@@ -379,7 +379,7 @@ String HTMLPaginator::get_pagination_old(const String &base_url, const int max, 
 
 String HTMLPaginator::get_pagination_links_old(const String &base_url, const Vector<String> &links, const int current_index, const int max_visible_links) {
 	String s = base_url;
-	if (s.size() > 0 && s[s.size() - 1] != '/') {
+	if (s.length() > 0 && s[s.length() - 1] != '/') {
 		s += '/';
 	}
 

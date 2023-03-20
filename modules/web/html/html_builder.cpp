@@ -863,7 +863,7 @@ HTMLBuilder *HTMLTag::f() {
 }
 
 bool HTMLTag::has_data() {
-	return result.size() > 0;
+	return result.length() > 0;
 }
 
 HTMLTag::HTMLTag() {

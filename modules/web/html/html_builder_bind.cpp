@@ -887,7 +887,7 @@ Ref<_HTMLBuilder> _HTMLTag::f() {
 }
 
 bool _HTMLTag::has_data() {
-	return result.size() > 0;
+	return result.length() > 0;
 }
 
 _HTMLTag::_HTMLTag() {
