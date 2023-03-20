@@ -461,12 +461,12 @@ String &String::operator+=(const String &p_str) {
 		return *this;
 	}
 
-	resize(lhs_len + rhs_len + 1);
+	set_length(lhs_len + rhs_len);
 
 	const CharType *src = p_str.get_data();
 	CharType *dst = ptrw() + lhs_len;
 
-	memcpy(dst, src, (rhs_len + 1) * sizeof(CharType));
+	memcpy(dst, src, rhs_len * sizeof(CharType));
 
 	return *this;
 }
@@ -484,10 +484,9 @@ String &String::operator+=(CharType p_char) {
 	}
 
 	const int lhs_len = length();
-	resize(lhs_len + 2);
+	set_length(lhs_len + 1);
 	CharType *dst = ptrw();
 	dst[lhs_len] = p_char;
-	dst[lhs_len + 1] = 0;
 
 	return *this;
 }
@@ -500,7 +499,7 @@ String &String::operator+=(const char *p_str) {
 	const int lhs_len = length();
 	const size_t rhs_len = strlen(p_str);
 
-	resize(lhs_len + rhs_len + 1);
+	set_length(lhs_len + rhs_len);
 
 	CharType *dst = ptrw() + lhs_len;
 
