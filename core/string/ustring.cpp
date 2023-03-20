@@ -3381,7 +3381,7 @@ CharString String::utf8() const {
 	return utf8s;
 }
 
-int String::utf8_length() const {
+int String::utf8_byte_length() const {
 	int l = length();
 	if (!l) {
 		return 0;
@@ -3587,7 +3587,7 @@ Char16String String::utf16() const {
 	return utf16s;
 }
 
-int String::utf16_length() const {
+int String::utf16_byte_length() const {
 	int l = length();
 	if (!l) {
 		return 0;
