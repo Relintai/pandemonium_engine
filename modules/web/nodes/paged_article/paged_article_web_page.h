@@ -1,9 +1,9 @@
 #ifndef PAGED_ARTICLE_WEB_PAGE_H
 #define PAGED_ARTICLE_WEB_PAGE_H
 
+#include "core/containers/vector.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
-#include "core/containers/vector.h"
 
 #include "../../http/web_node.h"
 
@@ -30,17 +30,29 @@ public:
 	String get_serve_folder();
 	void set_serve_folder(const String &val);
 
+	int get_max_pagination_links();
+	void set_max_pagination_links(const int val);
+
+	String get_summary();
+	void set_summary(const String &val);
+
+	void page_set(const String &url, const String &data);
+	String page_get(const String &url);
+	void page_remove(const String &url);
+
+	Dictionary get_pages();
+	void set_pages(const Dictionary &data);
+
 	void _handle_request_main(Ref<WebServerRequest> request);
 
 	void _render_index(Ref<WebServerRequest> request);
 	void _render_preview(Ref<WebServerRequest> request);
 
 	void load();
-	void load_folder(const String &folder, const String &path);
-	String get_index_page();
-	String get_summary();
+	virtual void _load();
 
-	virtual void generate_summary();
+	void generate_summary();
+	virtual void _generate_summary();
 
 	PagedArticleWebPage();
 	~PagedArticleWebPage();
@@ -54,15 +66,11 @@ protected:
 	bool serve_folder_relative;
 	String serve_folder;
 
-	String index_page;
+	int _max_pagination_links;
+
 	String summary;
 
-	struct PAEntry {
-		String url;
-		String data;
-	};
-
-	Vector<PAEntry> pages;
+	HashMap<String, String> pages;
 	Ref<FileCache> file_cache;
 };
 

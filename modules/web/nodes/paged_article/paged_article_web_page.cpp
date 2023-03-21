@@ -1,8 +1,8 @@
 #include "paged_article_web_page.h"
 
+#include "core/config/project_settings.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "core/config/project_settings.h"
 
 #include "../../file_cache.h"
 #include "../../html/markdown_renderer.h"
@@ -30,6 +30,57 @@ String PagedArticleWebPage::get_serve_folder() {
 }
 void PagedArticleWebPage::set_serve_folder(const String &val) {
 	serve_folder = val;
+}
+
+int PagedArticleWebPage::get_max_pagination_links() {
+	return _max_pagination_links;
+}
+void PagedArticleWebPage::set_max_pagination_links(const int val) {
+	_max_pagination_links = val;
+}
+
+String PagedArticleWebPage::get_summary() {
+	return summary;
+}
+void PagedArticleWebPage::set_summary(const String &val) {
+	summary = val;
+}
+
+void PagedArticleWebPage::page_set(const String &url, const String &data) {
+	pages[url] = data;
+}
+String PagedArticleWebPage::page_get(const String &url) {
+	if (pages.has(url)) {
+		return pages[url];
+	}
+
+	ERR_FAIL_V("");
+}
+void PagedArticleWebPage::page_remove(const String &url) {
+	if (pages.has(url)) {
+		pages.erase(url);
+	}
+}
+
+Dictionary PagedArticleWebPage::get_pages() {
+	Dictionary d;
+
+	for (HashMap<String, String>::Element *E = pages.front(); E; E = E->next) {
+		d[E->key()] = E->value();
+	}
+
+	return d;
+}
+void PagedArticleWebPage::set_pages(const Dictionary &data) {
+	List<Variant> keys;
+
+	data.get_key_list(&keys);
+
+	pages.clear();
+
+	for (List<Variant>::Element *E = keys.front(); E; E = E->next()) {
+		pages[E->get()] = data[E->get()];
+	}
 }
 
 void PagedArticleWebPage::_handle_request_main(Ref<WebServerRequest> request) {
@@ -62,14 +113,11 @@ void PagedArticleWebPage::_handle_request_main(Ref<WebServerRequest> request) {
 		return;
 	}
 
-	for (int i = 0; i < pages.size(); ++i) {
-		const PAEntry &e = pages[i];
-
-		if (e.url == rp) {
-			render_menu(request);
-			request->body += e.data;
-			request->compile_and_send_body();
-		}
+	if (pages.has(rp)) {
+		render_menu(request);
+		request->body += pages[rp];
+		request->compile_and_send_body();
+		return;
 	}
 
 	request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
@@ -77,13 +125,17 @@ void PagedArticleWebPage::_handle_request_main(Ref<WebServerRequest> request) {
 
 void PagedArticleWebPage::_render_index(Ref<WebServerRequest> request) {
 	// summary page
-	request->body += index_page;
+	request->body += summary;
 }
 
 void PagedArticleWebPage::_render_preview(Ref<WebServerRequest> request) {
 }
 
 void PagedArticleWebPage::load() {
+	call("_load");
+}
+
+void PagedArticleWebPage::_load() {
 	ERR_FAIL_COND_MSG(articles_folder == "", "Error: PagedArticleWebPage::load called, but a articles_folder is not set!");
 
 	_articles_folder_abs = DirAccess::get_filesystem_abspath_for(articles_folder);
@@ -99,7 +151,7 @@ void PagedArticleWebPage::load() {
 
 	String file = dir->get_next();
 
-	while (file != "") {
+	while (!file.empty()) {
 		if (!dir->current_is_dir()) {
 			files.push_back(file);
 		}
@@ -146,7 +198,7 @@ void PagedArticleWebPage::load() {
 
 		String pagination;
 
-		pagination = HTMLPaginator::get_pagination_links_old(get_full_uri(false), files, i);
+		pagination = HTMLPaginator::get_pagination_links_old(get_full_uri(false), files, i, _max_pagination_links);
 
 		String finals;
 
@@ -154,15 +206,7 @@ void PagedArticleWebPage::load() {
 		finals += fd;
 		finals += pagination;
 
-		PAEntry e;
-		e.url = files[i];
-		e.data = finals;
-
-		pages.push_back(e);
-
-		if (i == 0) {
-			index_page = finals;
-		}
+		pages[files[i]] = finals;
 	}
 
 	file_cache->clear();
@@ -177,20 +221,17 @@ void PagedArticleWebPage::load() {
 		file_cache->wwwroot_refresh_cache();
 	}
 
-	if (summary == "") {
+	if (summary.empty()) {
 		generate_summary();
 	}
 }
 
-String PagedArticleWebPage::get_index_page() {
-	return index_page;
-}
-
-String PagedArticleWebPage::get_summary() {
-	return summary;
-}
-
 void PagedArticleWebPage::generate_summary() {
+	call("_generate_summary");
+}
+
+void PagedArticleWebPage::_generate_summary() {
+	// TODO generate a page with links
 	summary = get_uri_segment();
 }
 
@@ -206,6 +247,8 @@ void PagedArticleWebPage::_notification(const int what) {
 
 PagedArticleWebPage::PagedArticleWebPage() {
 	file_cache.instance();
+
+	_max_pagination_links = 10;
 
 	serve_folder_relative = true;
 	serve_folder = "files";
@@ -228,8 +271,29 @@ void PagedArticleWebPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_serve_folder", "val"), &PagedArticleWebPage::set_serve_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "serve_folder"), "set_serve_folder", "get_serve_folder");
 
-	ClassDB::bind_method(D_METHOD("load"), &PagedArticleWebPage::load);
-	ClassDB::bind_method(D_METHOD("get_index_page"), &PagedArticleWebPage::get_index_page);
+	ClassDB::bind_method(D_METHOD("get_max_pagination_links"), &PagedArticleWebPage::get_max_pagination_links);
+	ClassDB::bind_method(D_METHOD("set_max_pagination_links", "val"), &PagedArticleWebPage::set_max_pagination_links);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_pagination_links"), "set_max_pagination_links", "get_max_pagination_links");
+
 	ClassDB::bind_method(D_METHOD("get_summary"), &PagedArticleWebPage::get_summary);
+	ClassDB::bind_method(D_METHOD("set_summary", "val"), &PagedArticleWebPage::set_summary);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "summary", PROPERTY_HINT_NONE, "", 0), "set_summary", "get_summary");
+
+	ClassDB::bind_method(D_METHOD("page_set", "url", "data"), &PagedArticleWebPage::page_set);
+	ClassDB::bind_method(D_METHOD("page_get", "url"), &PagedArticleWebPage::page_get);
+	ClassDB::bind_method(D_METHOD("page_remove", "url"), &PagedArticleWebPage::page_remove);
+
+	ClassDB::bind_method(D_METHOD("get_pages"), &PagedArticleWebPage::get_pages);
+	ClassDB::bind_method(D_METHOD("set_pages", "val"), &PagedArticleWebPage::set_pages);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "pages", PROPERTY_HINT_NONE, "", 0), "set_pages", "get_pages");
+
+	BIND_VMETHOD(MethodInfo("_load"));
+
+	ClassDB::bind_method(D_METHOD("load"), &PagedArticleWebPage::load);
+	ClassDB::bind_method(D_METHOD("_load"), &PagedArticleWebPage::_load);
+
+	BIND_VMETHOD(MethodInfo("_generate_summary"));
+
 	ClassDB::bind_method(D_METHOD("generate_summary"), &PagedArticleWebPage::generate_summary);
+	ClassDB::bind_method(D_METHOD("_generate_summary"), &PagedArticleWebPage::_generate_summary);
 }
