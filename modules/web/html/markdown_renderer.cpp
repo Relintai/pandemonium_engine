@@ -111,20 +111,21 @@ String MarkdownRenderer::render_to_html(const String &markdown) {
 
 	hoedown_document *document = hoedown_document_new(renderer, static_cast<hoedown_extensions>(hoedown_ext_flags), _max_nesting);
 
-	hoedown_buffer *html = hoedown_buffer_new(16);
+	//#define DEF_IUNIT 1024
+	hoedown_buffer *html = hoedown_buffer_new(1024);
 
 	CharString csmd = markdown.utf8();
 
 	hoedown_document_render(document, html, reinterpret_cast<const uint8_t *>(csmd.get_data()), csmd.length());
 
-	String html_str = reinterpret_cast<const char *>(html->data);
+	String html_str = String::utf8(reinterpret_cast<const char *>(html->data));
 
 	if (_use_smartypants) {
 		CharString cshtml = html_str.utf8();
 
 		hoedown_html_smartypants(html, reinterpret_cast<const uint8_t *>(cshtml.get_data()), cshtml.length());
 
-		html_str = reinterpret_cast<const char *>(html->data);
+		html_str = String::utf8(reinterpret_cast<const char *>(html->data));
 	}
 
 	hoedown_buffer_free(html);
