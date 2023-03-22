@@ -85,7 +85,7 @@ void FileCache::wwwroot_refresh_cache() {
 	_registered_files.clear();
 
 	if (_wwwroot_orig != "") {
-		_wwwroot = DirAccess::get_filesystem_abspath_for(_wwwroot_orig);
+		_wwwroot = _wwwroot_orig;//DirAccess::get_filesystem_abspath_for(_wwwroot_orig);
 		_wwwroot = _wwwroot.path_clean_end_slash();
 
 		wwwroot_evaluate_dir(_wwwroot);

@@ -138,7 +138,7 @@ void PagedArticleWebPage::load() {
 void PagedArticleWebPage::_load() {
 	ERR_FAIL_COND_MSG(articles_folder == "", "Error: PagedArticleWebPage::load called, but a articles_folder is not set!");
 
-	_articles_folder_abs = DirAccess::get_filesystem_abspath_for(articles_folder);
+	_articles_folder_abs = articles_folder;//DirAccess::get_filesystem_abspath_for(articles_folder);
 	_articles_folder_abs = _articles_folder_abs.path_ensure_end_slash();
 
 	DirAccess *dir = DirAccess::open(_articles_folder_abs);
