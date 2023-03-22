@@ -213,6 +213,11 @@ String WebServerRequest::get_get_parameter(const String &key) const {
 	return "";
 }
 
+void WebServerRequest::set_post_parameter(const String &key, const String &value) {
+}
+void WebServerRequest::set_get_parameter(const String &key, const String &value) {
+}
+
 HTTPServerEnums::HTTPStatusCode WebServerRequest::get_status_code() const {
 	return _status_code;
 }
@@ -555,6 +560,9 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_parameter", "key"), &WebServerRequest::get_parameter);
 	ClassDB::bind_method(D_METHOD("get_post_parameter", "key"), &WebServerRequest::get_post_parameter);
 	ClassDB::bind_method(D_METHOD("get_get_parameter", "key"), &WebServerRequest::get_get_parameter);
+
+	ClassDB::bind_method(D_METHOD("set_post_parameter", "key", "value"), &WebServerRequest::set_post_parameter);
+	ClassDB::bind_method(D_METHOD("set_get_parameter", "key", "value"), &WebServerRequest::set_get_parameter);
 
 	ClassDB::bind_method(D_METHOD("get_status_code"), &WebServerRequest::get_status_code);
 	ClassDB::bind_method(D_METHOD("set_status_code", "val"), &WebServerRequest::set_status_code);

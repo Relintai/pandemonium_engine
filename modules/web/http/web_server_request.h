@@ -81,6 +81,9 @@ public:
 	virtual String get_post_parameter(const String &key) const;
 	virtual String get_get_parameter(const String &key) const;
 
+	virtual void set_post_parameter(const String &key, const String &value);
+	virtual void set_get_parameter(const String &key, const String &value);
+
 	HTTPServerEnums::HTTPStatusCode get_status_code() const;
 	void set_status_code(const HTTPServerEnums::HTTPStatusCode status_code);
 

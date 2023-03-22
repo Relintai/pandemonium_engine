@@ -86,6 +86,13 @@ String SimpleWebServerRequest::get_get_parameter(const String &key) const {
 	return _get_parameters[key];
 }
 
+void SimpleWebServerRequest::set_post_parameter(const String &key, const String &value) {
+	_post_parameters[key] = value;
+}
+void SimpleWebServerRequest::set_get_parameter(const String &key, const String &value) {
+	_get_parameters[key] = value;
+}
+
 void SimpleWebServerRequest::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
 	ERR_FAIL_COND(!_server);
 

@@ -1,7 +1,7 @@
 #include "web_server_request_scriptable.h"
 
-#include "web_server.h"
 #include "web_node.h"
+#include "web_server.h"
 
 String WebServerRequestScriptable::get_cookie(const String &key) {
 	return call("_get_cookie", key);
@@ -45,6 +45,13 @@ String WebServerRequestScriptable::get_post_parameter(const String &key) const {
 
 String WebServerRequestScriptable::get_get_parameter(const String &key) const {
 	return const_cast<WebServerRequestScriptable *>(this)->call("_get_get_parameter", key);
+}
+
+void WebServerRequestScriptable::set_post_parameter(const String &key, const String &value) {
+	call("_set_post_parameter", key, value);
+}
+void WebServerRequestScriptable::set_get_parameter(const String &key, const String &value) {
+	call("_set_get_parameter", key, value);
 }
 
 void WebServerRequestScriptable::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
@@ -128,6 +135,11 @@ String WebServerRequestScriptable::_get_post_parameter(const String &key) const 
 
 String WebServerRequestScriptable::_get_get_parameter(const String &key) const {
 	return "";
+}
+
+void WebServerRequestScriptable::_set_post_parameter(const String &key, const String &value) {
+}
+void WebServerRequestScriptable::_set_get_parameter(const String &key, const String &value) {
 }
 
 void WebServerRequestScriptable::_send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
@@ -225,6 +237,9 @@ void WebServerRequestScriptable::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_get_post_parameter", PropertyInfo(Variant::STRING, "key")));
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_get_get_parameter", PropertyInfo(Variant::STRING, "key")));
 
+	BIND_VMETHOD(MethodInfo("_set_post_parameter", PropertyInfo(Variant::STRING, "key"), PropertyInfo(Variant::STRING, "value")));
+	BIND_VMETHOD(MethodInfo("_set_get_parameter", PropertyInfo(Variant::STRING, "key"), PropertyInfo(Variant::STRING, "value")));
+
 	BIND_VMETHOD(MethodInfo("_send_redirect", PropertyInfo(Variant::STRING, "location"), PropertyInfo(Variant::INT, "status_code")));
 
 	BIND_VMETHOD(MethodInfo("_compile_body"));
@@ -254,6 +269,9 @@ void WebServerRequestScriptable::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_get_parameter", "key"), &WebServerRequestScriptable::_get_parameter);
 	ClassDB::bind_method(D_METHOD("_get_post_parameter", "key"), &WebServerRequestScriptable::_get_post_parameter);
 	ClassDB::bind_method(D_METHOD("_get_get_parameter", "key"), &WebServerRequestScriptable::_get_get_parameter);
+
+	ClassDB::bind_method(D_METHOD("_set_post_parameter", "key", "value"), &WebServerRequestScriptable::_set_post_parameter);
+	ClassDB::bind_method(D_METHOD("_set_get_parameter", "key", "value"), &WebServerRequestScriptable::_set_get_parameter);
 
 	ClassDB::bind_method(D_METHOD("_send_redirect", "location", "status_code"), &WebServerRequestScriptable::_send_redirect);
 

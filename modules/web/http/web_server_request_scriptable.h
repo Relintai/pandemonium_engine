@@ -38,6 +38,9 @@ public:
 	virtual String get_post_parameter(const String &key) const;
 	virtual String get_get_parameter(const String &key) const;
 
+	virtual void set_post_parameter(const String &key, const String &value);
+	virtual void set_get_parameter(const String &key, const String &value);
+
 	virtual void send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code = HTTPServerEnums::HTTP_STATUS_CODE_302_FOUND);
 	virtual void compile_body();
 	virtual void compile_and_send_body();
@@ -52,21 +55,24 @@ public:
 	virtual void update();
 
 	// script virtuals
-	String _get_cookie(const String &key);
+	virtual String _get_cookie(const String &key);
 
-	HTTPServerEnums::HTTPMethod _get_method() const;
+	virtual HTTPServerEnums::HTTPMethod _get_method() const;
 
-	void _parse_files();
-	int _get_file_count() const;
-	String _get_file_file_name(const int index) const;
-	String _get_file_key(const int index) const;
-	int _get_file_length(const int index) const;
-	PoolByteArray _get_file_data(const int index) const;
-	String _get_file_data_str(const int index) const;
+	virtual void _parse_files();
+	virtual int _get_file_count() const;
+	virtual String _get_file_file_name(const int index) const;
+	virtual String _get_file_key(const int index) const;
+	virtual int _get_file_length(const int index) const;
+	virtual PoolByteArray _get_file_data(const int index) const;
+	virtual String _get_file_data_str(const int index) const;
 
-	String _get_parameter(const String &key) const;
-	String _get_post_parameter(const String &key) const;
-	String _get_get_parameter(const String &key) const;
+	virtual String _get_parameter(const String &key) const;
+	virtual String _get_post_parameter(const String &key) const;
+	virtual String _get_get_parameter(const String &key) const;
+
+	virtual void _set_post_parameter(const String &key, const String &value);
+	virtual void _set_get_parameter(const String &key, const String &value);
 
 	void _send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
 	void _compile_body();

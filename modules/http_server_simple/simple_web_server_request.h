@@ -38,6 +38,9 @@ public:
 	virtual String get_post_parameter(const String &key) const;
 	virtual String get_get_parameter(const String &key) const;
 
+	virtual void set_post_parameter(const String &key, const String &value);
+	virtual void set_get_parameter(const String &key, const String &value);
+
 	virtual void send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code = HTTPServerEnums::HTTP_STATUS_CODE_302_FOUND);
 	virtual void send();
 	virtual void send_file(const String &p_file_path);
