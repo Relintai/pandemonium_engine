@@ -267,7 +267,7 @@ int HTTPParser::on_message_begin() {
 int HTTPParser::on_url(const char *at, size_t length) {
 	ERR_FAIL_COND_V(!_request.is_valid(), 0);
 
-	String s = chr_len_to_str(at, length);
+	String s = chr_len_to_str(at, length).uri_decode().strip_edges();
 
 #if MESSAGE_DEBUG
 	ERR_PRINT("url " + s);
