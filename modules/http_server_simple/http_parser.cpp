@@ -297,7 +297,7 @@ int HTTPParser::on_header_field(const char *at, size_t length) {
 	ERR_PRINT("header_field " + s);
 #endif
 
-	_queued_header_field = s;
+	_queued_header_field = s.to_lower();
 
 	return 0;
 }
@@ -312,9 +312,9 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 
 	_request->add_post_parameter(_queued_header_field, s);
 
-	if (_queued_header_field == "Host") {
+	if (_queued_header_field == "host") {
 		_request->set_host(s);
-	} else if (_queued_header_field == "Content-Type") {
+	} else if (_queued_header_field == "content-type") {
 		// It can be:
 		// application/x-www-form-urlencoded (default) -> ignore, as its the default
 		// text/plain -> useful only for debugging "They are not reliably interpretable by computer"
@@ -355,7 +355,7 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 			_content_type = REQUEST_CONTENT_TEXT_PLAIN;
 			//maybe just close the connection?
 		}
-	} else if (_queued_header_field == "Cookie") {
+	} else if (_queued_header_field == "cookie") {
 		Vector<String> cookies = s.split(";");
 
 		for (int i = 0; i < cookies.size(); ++i) {
