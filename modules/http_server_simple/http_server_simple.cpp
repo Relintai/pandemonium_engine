@@ -491,6 +491,12 @@ HTTPServerSimple::HTTPServerSimple() {
 	mimes["jpeg"] = "image/jpeg";
 	mimes["wasm"] = "application/wasm";
 	mimes["css"] = "text/css";
+	mimes["pdf"] = "application/pdf";
+	mimes["mp4"] = "video/mp4";
+	mimes["zip"] = "application/zip";
+	mimes["rar"] = "application/vnd.rar";
+	mimes["txt"] = "text/plain";
+	mimes["md"] = "text/markdown";
 
 	server.instance();
 	stop();
