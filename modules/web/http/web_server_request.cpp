@@ -443,6 +443,9 @@ String WebServerRequest::get_url_root_parent_add(const String &add) const {
 String WebServerRequest::get_url_root_add(const String &add) const {
 	return get_url_root() + add;
 }
+String WebServerRequest::get_url_root_current_add(const String &add) const {
+	return get_url_root_current() + add;
+}
 String WebServerRequest::get_url_site_add(const String &add) const {
 	return get_url_site() + add;
 }
@@ -597,6 +600,7 @@ void WebServerRequest::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_url_root_parent_add", "add"), &WebServerRequest::get_url_root_parent_add);
 	ClassDB::bind_method(D_METHOD("get_url_root_add", "add"), &WebServerRequest::get_url_root_add);
+	ClassDB::bind_method(D_METHOD("get_url_root_current_add", "add"), &WebServerRequest::get_url_root_current_add);
 	ClassDB::bind_method(D_METHOD("get_url_site_add", "add"), &WebServerRequest::get_url_site_add);
 
 	ClassDB::bind_method(D_METHOD("get_server"), &WebServerRequest::get_server);

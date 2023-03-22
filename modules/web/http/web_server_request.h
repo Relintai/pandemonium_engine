@@ -115,6 +115,7 @@ public:
 
 	String get_url_root_parent_add(const String &add) const;
 	String get_url_root_add(const String &add) const;
+	String get_url_root_current_add(const String &add) const;
 	String get_url_site_add(const String &add) const;
 
 	virtual void update();
