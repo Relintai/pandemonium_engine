@@ -192,6 +192,10 @@ void WebRoot::_notification(int p_what) {
 
 			r->update();
 		}
+	} else if (p_what == NOTIFICATION_READY) {
+		if (!_www_root_path.empty()) {
+			_www_root_file_cache->wwwroot_refresh_cache();
+		}
 	}
 }
 
