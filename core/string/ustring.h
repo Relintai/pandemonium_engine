@@ -387,6 +387,8 @@ public:
 	static double to_double(const wchar_t *p_str, const wchar_t **r_end = nullptr);
 	static double to_double(const CharType *p_str, const CharType **r_end = nullptr);
 
+	static uint32_t num_characters(int64_t p_int);
+
 	String capitalize() const;
 	String camelcase_to_underscore(bool lowercase = true) const;
 
@@ -500,7 +502,7 @@ public:
 	String property_name_encode() const;
 
 	// node functions
-	static const String invalid_node_name_characters;
+	static String get_invalid_node_name_characters();
 	String validate_node_name() const;
 	String validate_identifier() const;
 
