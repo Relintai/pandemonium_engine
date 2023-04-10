@@ -195,6 +195,8 @@ public:
 	Transform2D get_final_transform() const;
 	void assign_next_enabled_camera_2d(const StringName &p_camera_group);
 
+	void gui_set_root_order_dirty();
+
 	void set_transparent_background(bool p_enable);
 	bool has_transparent_background() const;
 
@@ -510,7 +512,6 @@ private:
 	List<Control *>::Element *_gui_add_subwindow_control(Control *p_control);
 
 	void _gui_set_subwindow_order_dirty();
-	void _gui_set_root_order_dirty();
 
 	void _gui_remove_modal_control(List<Control *>::Element *MI);
 	void _gui_remove_from_modal_stack(List<Control *>::Element *MI, ObjectID p_prev_focus_owner);

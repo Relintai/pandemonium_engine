@@ -2480,7 +2480,7 @@ void Viewport::_gui_set_subwindow_order_dirty() {
 	gui.subwindow_order_dirty = true;
 }
 
-void Viewport::_gui_set_root_order_dirty() {
+void Viewport::gui_set_root_order_dirty() {
 	gui.roots_order_dirty = true;
 }
 

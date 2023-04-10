@@ -608,7 +608,7 @@ void Control::_notification(int p_notification) {
 				get_viewport()->_gui_set_subwindow_order_dirty();
 			}
 			if (data.RI) {
-				get_viewport()->_gui_set_root_order_dirty();
+				get_viewport()->gui_set_root_order_dirty();
 			}
 
 		} break;

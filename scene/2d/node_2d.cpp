@@ -377,6 +377,16 @@ Point2 Node2D::to_global(Point2 p_local) const {
 	return get_global_transform().xform(p_local);
 }
 
+void Node2D::_notification(int p_notification) {
+	switch (p_notification) {
+		case NOTIFICATION_MOVED_IN_PARENT: {
+			if (get_viewport()) {
+				get_viewport()->gui_set_root_order_dirty();
+			}
+		} break;
+	}
+}
+
 void Node2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_position", "position"), &Node2D::set_position);
 	ClassDB::bind_method(D_METHOD("set_rotation", "radians"), &Node2D::set_rotation);
