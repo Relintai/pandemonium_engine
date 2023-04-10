@@ -30,8 +30,8 @@
 
 #include "audio_driver_dummy.h"
 
-#include "core/os/os.h"
 #include "core/config/project_settings.h"
+#include "core/os/os.h"
 
 Error AudioDriverDummy::init() {
 	active.clear();
@@ -98,6 +98,7 @@ void AudioDriverDummy::finish() {
 
 	if (samples_in) {
 		memdelete_arr(samples_in);
+		samples_in = nullptr;
 	};
 };
 

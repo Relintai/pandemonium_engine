@@ -30,6 +30,7 @@
 
 #include "scene_tree.h"
 
+#include "core/input/shortcut.h"
 #include "core/io/marshalls.h"
 #include "core/io/resource_loader.h"
 #include "core/object/message_queue.h"
@@ -44,12 +45,12 @@
 #include "scene/3d/spatial.h"
 #include "scene/animation/scene_tree_tween.h"
 #include "scene/debugger/script_debugger_remote.h"
-#include "core/input/shortcut.h"
 #include "scene/resources/dynamic_font.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/scene_string_names.h"
+#include "servers/audio_server.h"
 #include "servers/navigation_server.h"
 #include "servers/physics_2d_server.h"
 #include "servers/physics_server.h"
@@ -57,8 +58,8 @@
 
 #include "modules/modules_enabled.gen.h" // For freetype.
 #include "scene/resources/mesh.h"
-#include "scene/resources/world_3d.h"
 #include "scene/resources/world_2d.h"
+#include "scene/resources/world_3d.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -638,7 +639,7 @@ bool SceneTree::idle(float p_time) {
 	if (multiplayer_poll) {
 		multiplayer->poll();
 	}
-	
+
 	ThreadPool::get_singleton()->update();
 
 	emit_signal("idle_frame");
@@ -837,11 +838,28 @@ void SceneTree::_notification(int p_notification) {
 		} break;
 
 		case NOTIFICATION_WM_FOCUS_IN: {
+			AudioDriverManager::set_mute_flag(AudioDriverManager::MUTE_FLAG_FOCUS_LOSS, false);
+
 			InputDefault *id = Object::cast_to<InputDefault>(Input::get_singleton());
 			if (id) {
 				id->ensure_touch_mouse_raised();
 			}
 
+			get_root()->propagate_notification(p_notification);
+		} break;
+
+		case NOTIFICATION_WM_FOCUS_OUT: {
+			AudioDriverManager::set_mute_flag(AudioDriverManager::MUTE_FLAG_FOCUS_LOSS, true);
+			get_root()->propagate_notification(p_notification);
+		} break;
+
+		case NOTIFICATION_APP_PAUSED: {
+			AudioDriverManager::set_mute_flag(AudioDriverManager::MUTE_FLAG_PAUSED, true);
+			get_root()->propagate_notification(p_notification);
+		} break;
+
+		case NOTIFICATION_APP_RESUMED: {
+			AudioDriverManager::set_mute_flag(AudioDriverManager::MUTE_FLAG_PAUSED, false);
 			get_root()->propagate_notification(p_notification);
 		} break;
 
@@ -862,11 +880,8 @@ void SceneTree::_notification(int p_notification) {
 		case NOTIFICATION_OS_IME_UPDATE:
 		case NOTIFICATION_WM_MOUSE_ENTER:
 		case NOTIFICATION_WM_MOUSE_EXIT:
-		case NOTIFICATION_WM_FOCUS_OUT:
 		case NOTIFICATION_WM_ABOUT:
-		case NOTIFICATION_CRASH:
-		case NOTIFICATION_APP_RESUMED:
-		case NOTIFICATION_APP_PAUSED: {
+		case NOTIFICATION_CRASH: {
 			get_root()->propagate_notification(p_notification);
 		} break;
 
