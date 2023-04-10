@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 #### Backports
 
-- Backported everything up to and including https://github.com/godotengine/godot/commit/19f2006ec073f42d1b2dc480ac4103ac24b0b59a Merge commit: https://github.com/godotengine/godot/commit/26a584179c108f8d550f18126200bf0c81f7d673
+- Backported everything up to and including https://github.com/godotengine/godot/commit/befdafdbf67d832e5d9295a2d0b954c85ca6e891 Merge commit: https://github.com/godotengine/godot/commit/b0c399ec8c9f5f71c64656e8463907153f8459ff
 
 ## [3.10.0] 
 
