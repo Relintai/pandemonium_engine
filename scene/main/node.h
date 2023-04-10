@@ -279,7 +279,7 @@ public:
 		// you can make your own, but don't use the same numbers as other notifications in other nodes
 		NOTIFICATION_ENTER_TREE = 10,
 		NOTIFICATION_EXIT_TREE = 11,
-		NOTIFICATION_MOVED_IN_PARENT = 12,
+		NOTIFICATION_CHILD_ORDER_CHANGED = 12,
 		NOTIFICATION_READY = 13,
 		NOTIFICATION_PAUSED = 14,
 		NOTIFICATION_UNPAUSED = 15,

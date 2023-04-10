@@ -38,8 +38,8 @@
 #include "scene/animation/scene_tree_tween.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/scene_string_names.h"
-#include "world.h"
 #include "viewport.h"
+#include "world.h"
 
 #include "core/config/project_settings.h"
 #include "core/object/class_db.h"
@@ -450,9 +450,8 @@ void Node::move_child(Node *p_child, int p_pos) {
 	}
 	// notification second
 	move_child_notify(p_child);
-	for (int i = motion_from; i <= motion_to; i++) {
-		data.children[i]->notification(NOTIFICATION_MOVED_IN_PARENT);
-	}
+	notification(NOTIFICATION_CHILD_ORDER_CHANGED);
+	emit_signal(SceneStringNames::get_singleton()->child_order_changed);
 
 	p_child->_propagate_groups_dirty();
 
@@ -1484,6 +1483,8 @@ void Node::_add_child_nocheck(Node *p_child, const StringName &p_name) {
 	//recognize children created in this node constructor
 	p_child->data.parent_owned = data.in_constructor;
 	add_child_notify(p_child);
+	notification(NOTIFICATION_CHILD_ORDER_CHANGED);
+	emit_signal(SceneStringNames::get_singleton()->child_order_changed);
 
 	// Allow physics interpolated nodes to automatically reset when added to the tree
 	// (this is to save the user doing this manually each time)
@@ -1562,8 +1563,10 @@ void Node::remove_child(Node *p_child) {
 
 	for (int i = idx; i < child_count; i++) {
 		children[i]->data.pos = i;
-		children[i]->notification(NOTIFICATION_MOVED_IN_PARENT);
 	}
+
+	notification(NOTIFICATION_CHILD_ORDER_CHANGED);
+	emit_signal(SceneStringNames::get_singleton()->child_order_changed);
 
 	p_child->data.parent = nullptr;
 	p_child->data.pos = -1;
@@ -3363,7 +3366,7 @@ void Node::_bind_methods() {
 
 	BIND_CONSTANT(NOTIFICATION_ENTER_TREE);
 	BIND_CONSTANT(NOTIFICATION_EXIT_TREE);
-	BIND_CONSTANT(NOTIFICATION_MOVED_IN_PARENT);
+	BIND_CONSTANT(NOTIFICATION_CHILD_ORDER_CHANGED);
 	BIND_CONSTANT(NOTIFICATION_READY);
 	BIND_CONSTANT(NOTIFICATION_PAUSED);
 	BIND_CONSTANT(NOTIFICATION_UNPAUSED);
@@ -3418,6 +3421,7 @@ void Node::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("tree_exited"));
 	ADD_SIGNAL(MethodInfo("child_entered_tree", PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT, "Node")));
 	ADD_SIGNAL(MethodInfo("child_exiting_tree", PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT, "Node")));
+	ADD_SIGNAL(MethodInfo("child_order_changed"));
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "pause_mode", PROPERTY_HINT_ENUM, "Inherit,Stop,Process"), "set_pause_mode", "get_pause_mode");
 

@@ -33,11 +33,12 @@
 #include "../resources/skeleton_modification_2d.h"
 #include "../resources/skeleton_modification_stack_2d.h"
 #include "core/config/engine.h"
+#include "scene/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
+#include "editor/editor_data.h"
 #include "editor/editor_settings.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
-#include "editor/editor_data.h"
 #endif //TOOLS_ENABLED
 
 bool Bone2D::_set(const StringName &p_path, const Variant &p_value) {
@@ -118,6 +119,7 @@ void Bone2D::_notification(int p_what) {
 			bone.bone = this;
 			skeleton->bones.push_back(bone);
 			skeleton->_make_bone_setup_dirty();
+			get_parent()->connect(SceneStringNames::get_singleton()->child_order_changed, skeleton, "_make_bone_setup_dirty", varray(), CONNECT_REFERENCE_COUNTED);
 		}
 
 		cache_transform = get_transform();
@@ -154,14 +156,6 @@ void Bone2D::_notification(int p_what) {
 			}
 		}
 #endif // TOOLS_ENABLED
-	} else if (p_what == NOTIFICATION_MOVED_IN_PARENT) {
-		if (skeleton) {
-			skeleton->_make_bone_setup_dirty();
-		}
-
-		if (copy_transform_to_cache) {
-			cache_transform = get_transform();
-		}
 	} else if (p_what == NOTIFICATION_EXIT_TREE) {
 		if (skeleton) {
 			for (int i = 0; i < skeleton->bones.size(); i++) {
@@ -171,6 +165,7 @@ void Bone2D::_notification(int p_what) {
 				}
 			}
 			skeleton->_make_bone_setup_dirty();
+			get_parent()->disconnect(SceneStringNames::get_singleton()->child_order_changed, skeleton, "_make_bone_setup_dirty");
 			skeleton = nullptr;
 		}
 		parent_bone = nullptr;
@@ -800,6 +795,8 @@ void Skeleton2D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_bone_local_pose_override", "bone_idx", "override_pose", "strength", "persistent"), &Skeleton2D::set_bone_local_pose_override);
 	ClassDB::bind_method(D_METHOD("get_bone_local_pose_override", "bone_idx"), &Skeleton2D::get_bone_local_pose_override);
+
+	ClassDB::bind_method(D_METHOD("_make_bone_setup_dirty"), &Skeleton2D::_make_bone_setup_dirty);
 
 	ADD_SIGNAL(MethodInfo("bone_setup_changed"));
 }

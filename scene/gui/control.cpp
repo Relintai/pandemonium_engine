@@ -546,6 +546,8 @@ void Control::_notification(int p_notification) {
 					Viewport *viewport = get_viewport();
 					ERR_FAIL_COND(!viewport);
 					data.RI = viewport->_gui_add_root_control(this);
+
+					get_parent()->connect(SceneStringNames::get_singleton()->child_order_changed, get_viewport(), SceneStringNames::get_singleton()->gui_set_root_order_dirty, varray(), CONNECT_REFERENCE_COUNTED);
 				}
 
 				data.parent_canvas_item = get_parent_item();
@@ -584,6 +586,7 @@ void Control::_notification(int p_notification) {
 			if (data.RI) {
 				get_viewport()->_gui_remove_root_control(data.RI);
 				data.RI = nullptr;
+				get_parent()->disconnect(SceneStringNames::get_singleton()->child_order_changed, get_viewport(), SceneStringNames::get_singleton()->gui_set_root_order_dirty);
 			}
 
 			data.parent = nullptr;
@@ -596,19 +599,13 @@ void Control::_notification(int p_notification) {
 			*/
 
 		} break;
-		case NOTIFICATION_MOVED_IN_PARENT: {
+		case NOTIFICATION_CHILD_ORDER_CHANGED: {
 			// some parents need to know the order of the children to draw (like TabContainer)
 			// update if necessary
-			if (data.parent) {
-				data.parent->update();
-			}
 			update();
 
-			if (data.SI) {
+			if (data.SI && get_viewport()) {
 				get_viewport()->_gui_set_subwindow_order_dirty();
-			}
-			if (data.RI) {
-				get_viewport()->gui_set_root_order_dirty();
 			}
 
 		} break;

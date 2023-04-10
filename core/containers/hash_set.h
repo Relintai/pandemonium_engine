@@ -31,10 +31,10 @@
 #ifndef HASH_SET_H
 #define HASH_SET_H
 
-#include "core/math/math_funcs.h"
-#include "core/os/memory.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/hashfuncs.h"
+#include "core/math/math_funcs.h"
+#include "core/os/memory.h"
 
 /**
  * Implementation of Set using a bidi indexed hash map.
@@ -341,6 +341,36 @@ public:
 				num_keys = 0;
 			}
 			return *this;
+		}
+
+		_FORCE_INLINE_ const TKey &key() const {
+			return keys[index];
+		}
+		_FORCE_INLINE_ const TKey *key_ptr() const {
+			return &keys[index];
+		}
+
+		_FORCE_INLINE_ Iterator &next() {
+			index++;
+			if (index >= (int32_t)num_keys) {
+				index = -1;
+				keys = nullptr;
+				num_keys = 0;
+			}
+			return *this;
+		}
+		_FORCE_INLINE_ Iterator &prev() {
+			index--;
+			if (index < 0) {
+				index = -1;
+				keys = nullptr;
+				num_keys = 0;
+			}
+			return *this;
+		}
+
+		_FORCE_INLINE_ bool valid() const {
+			return keys != nullptr;
 		}
 
 		_FORCE_INLINE_ bool operator==(const Iterator &b) const { return keys == b.keys && index == b.index; }

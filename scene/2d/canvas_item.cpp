@@ -29,17 +29,17 @@
 /*************************************************************************/
 
 #include "canvas_item.h"
+#include "core/input/input.h"
 #include "core/object/message_queue.h"
 #include "core/object/method_bind_ext.gen.inc"
-#include "core/input/input.h"
 #include "core/version.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/font.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
-#include "scene/resources/world_3d.h"
 #include "scene/resources/world_2d.h"
+#include "scene/resources/world_3d.h"
 #include "scene/scene_string_names.h"
 #include "servers/rendering/rendering_server_raster.h"
 #include "servers/rendering_server.h"
@@ -509,6 +509,10 @@ void CanvasItem::_toplevel_raise_self() {
 }
 
 void CanvasItem::_enter_canvas() {
+	if (get_parent()) {
+		get_viewport()->canvas_parent_mark_dirty(get_parent());
+	}
+
 	if ((!Object::cast_to<CanvasItem>(get_parent())) || toplevel) {
 		Node *n = this;
 
@@ -543,13 +547,10 @@ void CanvasItem::_enter_canvas() {
 			get_world()->gui_reset_canvas_sort_index();
 		}
 
-		get_tree()->call_group_flags(SceneTree::GROUP_CALL_UNIQUE, canvas_group, "_toplevel_raise_self");
-
 	} else {
 		CanvasItem *parent = get_parent_item();
 		canvas_layer = parent->canvas_layer;
 		RenderingServer::get_singleton()->canvas_item_set_parent(canvas_item, parent->get_canvas_item());
-		RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_index());
 	}
 
 	pending_update = false;
@@ -585,20 +586,10 @@ void CanvasItem::_notification(int p_what) {
 			if (!block_transform_notify && !xform_change.in_list()) {
 				get_tree()->xform_change_list.add(&xform_change);
 			}
-		} break;
-		case NOTIFICATION_MOVED_IN_PARENT: {
-			if (!is_inside_tree()) {
-				break;
-			}
 
-			if (canvas_group != "") {
-				get_tree()->call_group_flags(SceneTree::GROUP_CALL_UNIQUE, canvas_group, "_toplevel_raise_self");
-			} else {
-				CanvasItem *p = get_parent_item();
-				ERR_FAIL_COND(!p);
-				RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_index());
+			if (get_viewport()) {
+				get_parent()->connect(SceneStringNames::get_singleton()->child_order_changed, get_viewport(), SceneStringNames::get_singleton()->canvas_parent_mark_dirty, varray(get_parent()), CONNECT_REFERENCE_COUNTED);
 			}
-
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			if (xform_change.in_list()) {
@@ -610,6 +601,10 @@ void CanvasItem::_notification(int p_what) {
 				C = nullptr;
 			}
 			global_invalid = true;
+
+			if (get_viewport()) {
+				get_parent()->disconnect(SceneStringNames::get_singleton()->child_order_changed, get_viewport(), SceneStringNames::get_singleton()->canvas_parent_mark_dirty);
+			}
 		} break;
 		case NOTIFICATION_DRAW:
 		case NOTIFICATION_TRANSFORM_CHANGED: {
@@ -617,6 +612,20 @@ void CanvasItem::_notification(int p_what) {
 		case NOTIFICATION_VISIBILITY_CHANGED: {
 			emit_signal(SceneStringNames::get_singleton()->visibility_changed);
 		} break;
+	}
+}
+
+void CanvasItem::update_draw_order() {
+	if (!is_inside_tree()) {
+		return;
+	}
+
+	if (!canvas_group.empty()) {
+		get_tree()->call_group_flags(SceneTree::GROUP_CALL_UNIQUE, canvas_group, "_toplevel_raise_self");
+	} else {
+		CanvasItem *p = get_parent_item();
+		ERR_FAIL_COND(!p);
+		RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_index());
 	}
 }
 

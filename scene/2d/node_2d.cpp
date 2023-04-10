@@ -33,6 +33,7 @@
 #include "core/object/message_queue.h"
 #include "scene/gui/control.h"
 #include "scene/main/viewport.h"
+#include "scene/scene_string_names.h"
 #include "servers/rendering_server.h"
 
 #ifdef TOOLS_ENABLED
@@ -379,9 +380,14 @@ Point2 Node2D::to_global(Point2 p_local) const {
 
 void Node2D::_notification(int p_notification) {
 	switch (p_notification) {
-		case NOTIFICATION_MOVED_IN_PARENT: {
+		case NOTIFICATION_ENTER_TREE: {
 			if (get_viewport()) {
-				get_viewport()->gui_set_root_order_dirty();
+				get_parent()->connect(SceneStringNames::get_singleton()->child_order_changed, get_viewport(), SceneStringNames::get_singleton()->gui_set_root_order_dirty, varray(), CONNECT_REFERENCE_COUNTED);
+			}
+		} break;
+		case NOTIFICATION_EXIT_TREE: {
+			if (get_viewport()) {
+				get_parent()->disconnect(SceneStringNames::get_singleton()->child_order_changed, get_viewport(), SceneStringNames::get_singleton()->gui_set_root_order_dirty);
 			}
 		} break;
 	}

@@ -79,6 +79,10 @@ public:
 	StringName iteration;
 	StringName update;
 	StringName updated;
+	StringName child_order_changed;
+	StringName canvas_parent_mark_dirty;
+	StringName gui_set_root_order_dirty;
+	StringName _process_dirty_canvas_parent_orders;
 
 	StringName line_separation;
 

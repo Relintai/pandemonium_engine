@@ -31,6 +31,7 @@
 #include "canvas_layer.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/resources/world_2d.h"
+#include "scene/scene_string_names.h"
 #include "viewport.h"
 
 void CanvasLayer::set_layer(int p_xform) {
@@ -184,13 +185,19 @@ void CanvasLayer::_notification(int p_what) {
 			viewport = vp->get_viewport_rid();
 
 			RenderingServer::get_singleton()->viewport_attach_canvas(viewport, canvas);
-			RenderingServer::get_singleton()->viewport_set_canvas_stacking(viewport, canvas, layer, get_position_in_parent());
 			RenderingServer::get_singleton()->viewport_set_canvas_transform(viewport, canvas, transform);
 			_update_follow_viewport();
+
+			if (vp) {
+				get_parent()->connect(SceneStringNames::get_singleton()->child_order_changed, vp, SceneStringNames::get_singleton()->canvas_parent_mark_dirty, varray(get_parent()), CONNECT_REFERENCE_COUNTED);
+				vp->canvas_parent_mark_dirty(get_parent());
+			}
 
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			ERR_FAIL_NULL_MSG(vp, "Viewport is not initialized.");
+
+			get_parent()->disconnect(SceneStringNames::get_singleton()->child_order_changed, vp, SceneStringNames::get_singleton()->canvas_parent_mark_dirty);
 
 			vp->_canvas_layer_remove(this);
 			RenderingServer::get_singleton()->viewport_remove_canvas(viewport, canvas);
@@ -198,12 +205,12 @@ void CanvasLayer::_notification(int p_what) {
 			_update_follow_viewport(false);
 
 		} break;
-		case NOTIFICATION_MOVED_IN_PARENT: {
-			if (is_inside_tree()) {
-				RenderingServer::get_singleton()->viewport_set_canvas_stacking(viewport, canvas, layer, get_position_in_parent());
-			}
+	}
+}
 
-		} break;
+void CanvasLayer::update_draw_order() {
+	if (is_inside_tree()) {
+		RenderingServer::get_singleton()->viewport_set_canvas_stacking(viewport, canvas, layer, get_index());
 	}
 }
 

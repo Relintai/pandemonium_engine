@@ -31,6 +31,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/hash_set.h"
 #include "core/math/transform_2d.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
@@ -297,6 +298,8 @@ public:
 	bool gui_is_dragging() const;
 	bool gui_is_drag_successful() const;
 
+	void canvas_parent_mark_dirty(Node *p_node);
+
 	Viewport();
 	~Viewport();
 
@@ -477,6 +480,7 @@ private:
 		List<Control *> all_known_subwindows;
 		bool roots_order_dirty;
 		List<Control *> roots;
+		HashSet<ObjectID> canvas_parents_with_dirty_order;
 		int canvas_sort_index; //for sorting items with canvas as root
 		bool dragging;
 		bool drag_successful;
@@ -568,6 +572,8 @@ private:
 	void _drop_physics_mouseover(bool p_paused_only = false);
 
 	void _update_canvas_items(Node *p_node);
+
+	void _process_dirty_canvas_parent_orders();
 };
 
 VARIANT_ENUM_CAST(Viewport::UpdateMode);

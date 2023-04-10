@@ -34,6 +34,7 @@
 #include "core/core_string_names.h"
 #include "core/input/input.h"
 #include "core/input/shortcut.h"
+#include "core/object/message_queue.h"
 #include "core/os/os.h"
 #include "scene/2d/camera_2d.h"
 #include "scene/2d/collision_object_2d.h"
@@ -733,6 +734,14 @@ Rect2 Viewport::get_visible_rect() const {
 	}
 
 	return r;
+}
+
+void Viewport::canvas_parent_mark_dirty(Node *p_node) {
+	bool request_update = gui.canvas_parents_with_dirty_order.is_empty();
+	gui.canvas_parents_with_dirty_order.insert(p_node->get_instance_id());
+	if (request_update) {
+		MessageQueue::get_singleton()->push_call(this, SceneStringNames::get_singleton()->_process_dirty_canvas_parent_orders);
+	}
 }
 
 Size2 Viewport::get_size() const {
@@ -3207,9 +3216,14 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_handle_input_locally", "enable"), &Viewport::set_handle_input_locally);
 	ClassDB::bind_method(D_METHOD("is_handling_input_locally"), &Viewport::is_handling_input_locally);
 
+	ClassDB::bind_method(D_METHOD("gui_set_root_order_dirty"), &Viewport::gui_set_root_order_dirty);
+	ClassDB::bind_method(D_METHOD("canvas_parent_mark_dirty", "node"), &Viewport::canvas_parent_mark_dirty);
+
 	ClassDB::bind_method(D_METHOD("_subwindow_visibility_changed"), &Viewport::_subwindow_visibility_changed);
 
 	ClassDB::bind_method(D_METHOD("_process_picking", "ignore_paused"), &Viewport::_process_picking);
+
+	ClassDB::bind_method(D_METHOD("_process_dirty_canvas_parent_orders"), &Viewport::_process_dirty_canvas_parent_orders);
 
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "size"), "set_size", "get_size");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "size_override_stretch"), "set_size_override_stretch", "is_size_override_stretch_enabled");
@@ -3299,6 +3313,33 @@ void Viewport::_subwindow_visibility_changed() {
 	// unfortunately, we don't know the sender, i.e. which subwindow changed;
 	// so we have to check them all.
 	gui.subwindow_visibility_dirty = true;
+}
+
+void Viewport::_process_dirty_canvas_parent_orders() {
+	for (HashSet<ObjectID>::Iterator iter = gui.canvas_parents_with_dirty_order.begin(); iter.valid(); iter.next()) {
+		const ObjectID &id = iter.key();
+
+		Object *obj = ObjectDB::get_instance(id);
+		if (!obj) {
+			continue; // May have been deleted.
+		}
+
+		Node *n = Object::cast_to<Node>(obj);
+		for (int i = 0; i < n->get_child_count(); i++) {
+			Node *c = n->get_child(i);
+			CanvasItem *ci = Object::cast_to<CanvasItem>(c);
+			if (ci) {
+				ci->update_draw_order();
+				continue;
+			}
+			CanvasLayer *cl = Object::cast_to<CanvasLayer>(c);
+			if (cl) {
+				cl->update_draw_order();
+			}
+		}
+	}
+
+	gui.canvas_parents_with_dirty_order.clear();
 }
 
 Viewport::Viewport() {

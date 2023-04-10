@@ -94,6 +94,10 @@ SceneStringNames::SceneStringNames() {
 	iteration = StaticCString::create("iteration");
 	update = StaticCString::create("update");
 	updated = StaticCString::create("updated");
+	child_order_changed = StaticCString::create("child_order_changed");
+	canvas_parent_mark_dirty = StaticCString::create("canvas_parent_mark_dirty");
+	gui_set_root_order_dirty = StaticCString::create("gui_set_root_order_dirty");
+	_process_dirty_canvas_parent_orders = StaticCString::create("_process_dirty_canvas_parent_orders");
 
 	_physics_process = StaticCString::create("_physics_process");
 	_process = StaticCString::create("_process");

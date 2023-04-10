@@ -826,6 +826,11 @@
 				When this signal is received, the child [code]node[/code] is still in the tree and valid. This signal is emitted [i]after[/i] the child node's own [signal tree_exiting] and [constant NOTIFICATION_EXIT_TREE].
 			</description>
 		</signal>
+		<signal name="child_order_changed">
+			<description>
+				Emitted when the list of children is changed. This happens when child nodes are added, moved or removed.
+			</description>
+		</signal>
 		<signal name="ready">
 			<description>
 				Emitted when the node is ready.
@@ -863,8 +868,8 @@
 			Notification received when the node is about to exit a [SceneTree].
 			This notification is emitted [i]after[/i] the related [signal tree_exiting].
 		</constant>
-		<constant name="NOTIFICATION_MOVED_IN_PARENT" value="12">
-			Notification received when the node is moved in the parent.
+		<constant name="NOTIFICATION_CHILD_ORDER_CHANGED" value="12">
+			Notification received when the list of children is changed. This happens when child nodes are added, moved or removed.
 		</constant>
 		<constant name="NOTIFICATION_READY" value="13">
 			Notification received when the node is ready. See [method _ready].
