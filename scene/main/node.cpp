@@ -185,7 +185,7 @@ void Node::_notification(int p_notification) {
 
 			// kill children as cleanly as possible
 			while (data.children.size()) {
-				Node *child = data.children[data.children.size() - 1]; //begin from the end because its faster and more consistent with creation
+				Node *child = data.children.back()->value(); // begin from the end because its faster and more consistent with creation
 				memdelete(child);
 			}
 		} break;
@@ -195,9 +195,11 @@ void Node::_notification(int p_notification) {
 void Node::_propagate_ready() {
 	data.ready_notified = true;
 	data.blocked++;
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->_propagate_ready();
+
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_ready();
 	}
+
 	data.blocked--;
 
 	notification(NOTIFICATION_POST_ENTER_TREE);
@@ -233,8 +235,8 @@ void Node::_propagate_physics_interpolated(bool p_interpolated) {
 	_physics_interpolated_changed();
 
 	data.blocked++;
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->_propagate_physics_interpolated(p_interpolated);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_physics_interpolated(p_interpolated);
 	}
 	data.blocked--;
 }
@@ -245,8 +247,8 @@ void Node::_propagate_physics_interpolation_reset_requested() {
 	}
 
 	data.blocked++;
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->_propagate_physics_interpolation_reset_requested();
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_physics_interpolation_reset_requested();
 	}
 	data.blocked--;
 }
@@ -296,9 +298,9 @@ void Node::_propagate_enter_tree() {
 	data.blocked++;
 	//block while adding children
 
-	for (int i = 0; i < data.children.size(); i++) {
-		if (!data.children[i]->is_inside_tree()) { // could have been added in enter_tree
-			data.children[i]->_propagate_enter_tree();
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		if (!E->value()->is_inside_tree()) { // could have been added in enter_tree
+			E->value()->_propagate_enter_tree();
 		}
 	}
 
@@ -339,8 +341,8 @@ void Node::_propagate_after_exit_branch(bool p_exiting_tree) {
 	}
 
 	data.blocked++;
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->_propagate_after_exit_branch(p_exiting_tree);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_after_exit_branch(p_exiting_tree);
 	}
 	data.blocked--;
 
@@ -375,8 +377,8 @@ void Node::_propagate_exit_tree() {
 #endif
 	data.blocked++;
 
-	for (int i = data.children.size() - 1; i >= 0; i--) {
-		data.children[i]->_propagate_exit_tree();
+	for (HashMap<StringName, Node *>::Element *E = data.children.back(); E; E = E->prev) {
+		E->value()->_propagate_exit_tree();
 	}
 
 	data.blocked--;
@@ -419,13 +421,15 @@ void Node::_propagate_exit_tree() {
 
 void Node::move_child(Node *p_child, int p_pos) {
 	ERR_FAIL_NULL(p_child);
-	ERR_FAIL_INDEX_MSG(p_pos, data.children.size() + 1, vformat("Invalid new child position: %d.", p_pos));
+	ERR_FAIL_INDEX_MSG(static_cast<uint32_t>(p_pos), data.children.size() + 1, vformat("Invalid new child position: %d.", p_pos));
 	ERR_FAIL_COND_MSG(p_child->data.parent != this, "Child is not a child of this node.");
 	ERR_FAIL_COND_MSG(data.blocked > 0, "Parent node is busy setting up children, move_child() failed. Consider using call_deferred(\"move_child\") instead (or \"popup\" if this is from a popup).");
 
+	_update_children_cache();
+
 	// Specifying one place beyond the end
 	// means the same as moving to the last position
-	if (p_pos == data.children.size()) {
+	if (static_cast<uint32_t>(p_pos) == data.children.size()) {
 		p_pos--;
 	}
 
@@ -436,8 +440,8 @@ void Node::move_child(Node *p_child, int p_pos) {
 	int motion_from = MIN(p_pos, p_child->data.pos);
 	int motion_to = MAX(p_pos, p_child->data.pos);
 
-	data.children.remove(p_child->data.pos);
-	data.children.insert(p_pos, p_child);
+	data.children_cache.remove(p_child->data.pos);
+	data.children_cache.insert(p_pos, p_child);
 
 	if (data.tree) {
 		data.tree->tree_changed();
@@ -446,7 +450,7 @@ void Node::move_child(Node *p_child, int p_pos) {
 	data.blocked++;
 	//new pos first
 	for (int i = motion_from; i <= motion_to; i++) {
-		data.children[i]->data.pos = i;
+		data.children_cache[i]->data.pos = i;
 	}
 	// notification second
 	move_child_notify(p_child);
@@ -559,8 +563,8 @@ void Node::_propagate_pause_owner(Node *p_owner) {
 		return;
 	}
 	data.pause_owner = p_owner;
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->_propagate_pause_owner(p_owner);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_pause_owner(p_owner);
 	}
 }
 
@@ -571,8 +575,8 @@ void Node::_propagate_groups_dirty() {
 		}
 	}
 
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->_propagate_groups_dirty();
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_groups_dirty();
 	}
 }
 
@@ -611,8 +615,9 @@ void Node::sees_add(Node *p_node) {
 	p_node->seen_by_add(this);
 
 	for (int i = 0; i < data._sees.size(); ++i) {
-		if (data._sees.get(i) == p_node)
+		if (data._sees.get(i) == p_node) {
 			return;
+		}
 	}
 
 	data._sees.push_back(p_node);
@@ -638,8 +643,9 @@ void Node::seen_by_add(Node *p_node) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(p_node));
 
 	for (int i = 0; i < data._seen_by.size(); ++i) {
-		if (data._seen_by.get(i) == p_node)
+		if (data._seen_by.get(i) == p_node) {
 			return;
+		}
 	}
 
 	data._seen_by.push_back(p_node);
@@ -652,8 +658,8 @@ void Node::set_network_master(int p_peer_id, bool p_recursive) {
 	data.network_master = p_peer_id;
 
 	if (p_recursive) {
-		for (int i = 0; i < data.children.size(); i++) {
-			data.children[i]->set_network_master(p_peer_id, true);
+		for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+			E->value()->set_network_master(p_peer_id, true);
 		}
 	}
 }
@@ -741,8 +747,10 @@ void Node::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
 
 	int argc = 0;
 	for (int i = 0; i < VARIANT_ARG_MAX; i++) {
-		if (argptr[i]->get_type() == Variant::NIL)
+		if (argptr[i]->get_type() == Variant::NIL) {
 			break;
+		}
+
 		argc++;
 	}
 
@@ -772,8 +780,10 @@ void Node::vrpc_unreliable(const StringName &p_method, VARIANT_ARG_DECLARE) {
 
 	int argc = 0;
 	for (int i = 0; i < VARIANT_ARG_MAX; i++) {
-		if (argptr[i]->get_type() == Variant::NIL)
+		if (argptr[i]->get_type() == Variant::NIL) {
 			break;
+		}
+
 		argc++;
 	}
 
@@ -1268,10 +1278,13 @@ void Node::set_name(const String &p_name) {
 		_release_unique_name_in_owner();
 	}
 
+	String old_name = data.name;
 	data.name = name;
 
 	if (data.parent) {
+		data.parent->data.children.erase(old_name);
 		data.parent->_validate_child_name(this);
+		data.parent->data.children.insert(data.name, this);
 	}
 
 	if (data.unique_name_in_owner && data.owner) {
@@ -1327,19 +1340,8 @@ void Node::_validate_child_name(Node *p_child, bool p_force_human_readable) {
 			//new unique name must be assigned
 			unique = false;
 		} else {
-			//check if exists
-			Node **children = data.children.ptrw();
-			int cc = data.children.size();
-
-			for (int i = 0; i < cc; i++) {
-				if (children[i] == p_child) {
-					continue;
-				}
-				if (children[i]->data.name == p_child->data.name) {
-					unique = false;
-					break;
-				}
-			}
+			const Node *const *existing = data.children.getptr(p_child->data.name);
+			unique = !existing || *existing == p_child;
 		}
 
 		if (!unique) {
@@ -1395,25 +1397,9 @@ void Node::_generate_serial_child_name(const Node *p_child, StringName &name) co
 		}
 	}
 
-	//quickly test if proposed name exists
-	int cc = data.children.size(); //children count
-	const Node *const *children_ptr = data.children.ptr();
-
-	{
-		bool exists = false;
-
-		for (int i = 0; i < cc; i++) {
-			if (children_ptr[i] == p_child) { //exclude self in renaming if its already a child
-				continue;
-			}
-			if (children_ptr[i]->data.name == name) {
-				exists = true;
-			}
-		}
-
-		if (!exists) {
-			return; //if it does not exist, it does not need validation
-		}
+	const Node *const *existing = data.children.getptr(name);
+	if (!existing || *existing == p_child) { // Unused, or is current node.
+		return;
 	}
 
 	// Extract trailing number
@@ -1440,16 +1426,9 @@ void Node::_generate_serial_child_name(const Node *p_child, StringName &name) co
 
 	for (;;) {
 		StringName attempt = name_string + nums;
-		bool exists = false;
 
-		for (int i = 0; i < cc; i++) {
-			if (children_ptr[i] == p_child) {
-				continue;
-			}
-			if (children_ptr[i]->data.name == attempt) {
-				exists = true;
-			}
-		}
+		existing = data.children.getptr(attempt);
+		bool exists = existing != nullptr && *existing != p_child;
 
 		if (!exists) {
 			name = attempt;
@@ -1471,8 +1450,16 @@ void Node::_add_child_nocheck(Node *p_child, const StringName &p_name) {
 
 	p_child->data.name = p_name;
 	p_child->data.pos = data.children.size();
-	data.children.push_back(p_child);
+	data.children.insert(p_name, p_child);
 	p_child->data.parent = this;
+
+	if (!data.children_cache_dirty) {
+		// Special case, also add to the cached children array since its cheap.
+		data.children_cache.push_back(p_child);
+	} else {
+		data.children_cache_dirty = true;
+	}
+
 	p_child->notification(NOTIFICATION_PARENTED);
 
 	if (data.tree) {
@@ -1525,45 +1512,30 @@ void Node::remove_child(Node *p_child) {
 	ERR_FAIL_NULL(p_child);
 	ERR_FAIL_COND_MSG(data.blocked > 0, "Parent node is busy setting up children, remove_node() failed. Consider using call_deferred(\"remove_child\", child) instead.");
 
-	int child_count = data.children.size();
-	Node **children = data.children.ptrw();
-	int idx = -1;
+	ERR_FAIL_COND(p_child->data.parent != this);
 
-	if (p_child->data.pos >= 0 && p_child->data.pos < child_count) {
-		if (children[p_child->data.pos] == p_child) {
-			idx = p_child->data.pos;
-		}
-	}
+	/**
+	 *  Do not change the data.internal_children*cache counters here.
+	 *  Because if nodes are re-added, the indices can remain
+	 *  greater-than-everything indices and children added remain
+	 *  properly ordered.
+	 *
+	 *  All children indices and counters will be updated next time the
+	 *  cache is re-generated.
+	 */
 
-	if (idx == -1) { //maybe removed while unparenting or something and index was not updated, so just in case the above fails, try this.
-		for (int i = 0; i < child_count; i++) {
-			if (children[i] == p_child) {
-				idx = i;
-				break;
-			}
-		}
-	}
-
-	ERR_FAIL_COND_MSG(idx == -1, vformat("Cannot remove child node '%s' as it is not a child of this node.", p_child->get_name()));
-	//ERR_FAIL_COND( p_child->data.blocked > 0 );
-
-	//if (data.scene) { does not matter
+	data.blocked++;
 
 	p_child->_set_tree(nullptr);
-	//}
 
 	remove_child_notify(p_child);
 	p_child->notification(NOTIFICATION_UNPARENTED);
 
-	data.children.remove(idx);
+	data.blocked--;
 
-	//update pointer and size
-	child_count = data.children.size();
-	children = data.children.ptrw();
-
-	for (int i = idx; i < child_count; i++) {
-		children[i]->data.pos = i;
-	}
+	data.children_cache_dirty = true;
+	bool success = data.children.erase(p_child->data.name);
+	ERR_FAIL_COND_MSG(!success, "Children name does not match parent name in hashtable, this is a bug.");
 
 	notification(NOTIFICATION_CHILD_ORDER_CHANGED);
 	emit_signal(SceneStringNames::get_singleton()->child_order_changed);
@@ -1574,26 +1546,45 @@ void Node::remove_child(Node *p_child) {
 	p_child->_propagate_after_exit_branch(data.inside_tree);
 }
 
+void Node::_update_children_cache_impl() const {
+	// Assign children
+	data.children_cache.resize(data.children.size());
+
+	int idx = 0;
+	for (const HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		data.children_cache[idx] = E->value();
+		idx++;
+	}
+
+	// Sort them
+	data.children_cache.sort_custom<ComparatorByIndex>();
+
+	// Update indices
+	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
+		data.children_cache[i]->data.pos = i;
+	}
+
+	data.children_cache_dirty = false;
+}
+
 int Node::get_child_count() const {
 	return data.children.size();
 }
 Node *Node::get_child(int p_index) const {
-	ERR_FAIL_INDEX_V(p_index, data.children.size(), nullptr);
+	ERR_FAIL_INDEX_V(static_cast<uint32_t>(p_index), data.children.size(), nullptr);
 
-	return data.children[p_index];
+	_update_children_cache();
+
+	return data.children_cache[p_index];
 }
 
 Node *Node::_get_child_by_name(const StringName &p_name) const {
-	int cc = data.children.size();
-	Node *const *cd = data.children.ptr();
-
-	for (int i = 0; i < cc; i++) {
-		if (cd[i]->data.name == p_name) {
-			return cd[i];
-		}
+	const Node *const *node = data.children.getptr(p_name);
+	if (node) {
+		return const_cast<Node *>(*node);
+	} else {
+		return nullptr;
 	}
-
-	return nullptr;
 }
 
 Node *Node::get_node_or_null(const NodePath &p_path) const {
@@ -1656,17 +1647,12 @@ Node *Node::get_node_or_null(const NodePath &p_path) const {
 		} else {
 			next = nullptr;
 
-			for (int j = 0; j < current->data.children.size(); j++) {
-				Node *child = current->data.children[j];
-
-				if (child->data.name == name) {
-					next = child;
-					break;
-				}
-			}
-			if (next == nullptr) {
+			const Node *const *node = current->data.children.getptr(name);
+			if (node) {
+				next = const_cast<Node *>(*node);
+			} else {
 				return nullptr;
-			};
+			}
 		}
 		current = next;
 	}
@@ -1705,8 +1691,12 @@ bool Node::has_node(const NodePath &p_path) const {
 }
 
 Node *Node::find_node(const String &p_mask, bool p_recursive, bool p_owned) const {
-	Node *const *cptr = data.children.ptr();
-	int ccount = data.children.size();
+	ERR_FAIL_COND_V(p_mask.empty(), NULL);
+
+	_update_children_cache();
+
+	Node *const *cptr = data.children_cache.ptr();
+	int ccount = data.children_cache.size();
 	for (int i = 0; i < ccount; i++) {
 		if (p_owned && !cptr[i]->data.owner) {
 			continue;
@@ -1763,6 +1753,9 @@ bool Node::is_greater_than(const Node *p_node) const {
 
 	ERR_FAIL_COND_V(data.depth < 0, false);
 	ERR_FAIL_COND_V(p_node->data.depth < 0, false);
+
+	_update_children_cache();
+
 #ifdef NO_ALLOCA
 
 	Vector<int> this_stack;
@@ -1782,7 +1775,7 @@ bool Node::is_greater_than(const Node *p_node) const {
 	int idx = data.depth - 1;
 	while (n) {
 		ERR_FAIL_INDEX_V(idx, data.depth, false);
-		this_stack[idx--] = n->data.pos;
+		this_stack[idx--] = n->get_index();
 		n = n->data.parent;
 	}
 	ERR_FAIL_COND_V(idx != -1, false);
@@ -1790,7 +1783,7 @@ bool Node::is_greater_than(const Node *p_node) const {
 	idx = p_node->data.depth - 1;
 	while (n) {
 		ERR_FAIL_INDEX_V(idx, p_node->data.depth, false);
-		that_stack[idx--] = n->data.pos;
+		that_stack[idx--] = n->get_index();
 
 		n = n->data.parent;
 	}
@@ -1824,8 +1817,8 @@ void Node::get_owned_by(Node *p_by, List<Node *> *p_owned) {
 		p_owned->push_back(this);
 	}
 
-	for (int i = 0; i < get_child_count(); i++) {
-		get_child(i)->get_owned_by(p_by, p_owned);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->get_owned_by(p_by, p_owned);
 	}
 }
 
@@ -2101,9 +2094,10 @@ int Node::get_persistent_group_count() const {
 void Node::_print_tree_pretty(const String &prefix, const bool last) {
 	String new_prefix = last ? String::utf8(" ┖╴") : String::utf8(" ┠╴");
 	print_line(prefix + new_prefix + String(get_name()));
-	for (int i = 0; i < data.children.size(); i++) {
+	_update_children_cache();
+	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
 		new_prefix = last ? String::utf8("   ") : String::utf8(" ┃ ");
-		data.children[i]->_print_tree_pretty(prefix + new_prefix, i == data.children.size() - 1);
+		data.children_cache[i]->_print_tree_pretty(prefix + new_prefix, i == data.children_cache.size() - 1);
 	}
 }
 
@@ -2117,15 +2111,19 @@ void Node::print_tree() {
 
 void Node::_print_tree(const Node *p_node) {
 	print_line(String(p_node->get_path_to(this)));
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->_print_tree(p_node);
+
+	_update_children_cache();
+
+	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
+		data.children_cache[i]->_print_tree(p_node);
 	}
 }
 
 void Node::_propagate_reverse_notification(int p_notification) {
 	data.blocked++;
-	for (int i = data.children.size() - 1; i >= 0; i--) {
-		data.children[i]->_propagate_reverse_notification(p_notification);
+
+	for (HashMap<StringName, Node *>::Element *E = data.children.back(); E; E = E->prev) {
+		E->value()->_propagate_reverse_notification(p_notification);
 	}
 
 	notification(p_notification, true);
@@ -2141,8 +2139,8 @@ void Node::_propagate_deferred_notification(int p_notification, bool p_reverse) 
 		MessageQueue::get_singleton()->push_notification(this, p_notification);
 	}
 
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->_propagate_deferred_notification(p_notification, p_reverse);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_deferred_notification(p_notification, p_reverse);
 	}
 
 	if (p_reverse) {
@@ -2156,9 +2154,10 @@ void Node::propagate_notification(int p_notification) {
 	data.blocked++;
 	notification(p_notification);
 
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->propagate_notification(p_notification);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->propagate_notification(p_notification);
 	}
+
 	data.blocked--;
 }
 
@@ -2169,8 +2168,8 @@ void Node::propagate_call(const StringName &p_method, const Array &p_args, const
 		callv(p_method, p_args);
 	}
 
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->propagate_call(p_method, p_args, p_parent_first);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->propagate_call(p_method, p_args, p_parent_first);
 	}
 
 	if (!p_parent_first && has_method(p_method)) {
@@ -2186,14 +2185,10 @@ void Node::_propagate_replace_owner(Node *p_owner, Node *p_by_owner) {
 	}
 
 	data.blocked++;
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->_propagate_replace_owner(p_owner, p_by_owner);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_replace_owner(p_owner, p_by_owner);
 	}
 	data.blocked--;
-}
-
-int Node::get_index() const {
-	return data.pos;
 }
 
 Ref<SceneTreeTween> Node::create_tween() {
@@ -2206,14 +2201,16 @@ Ref<SceneTreeTween> Node::create_tween() {
 void Node::remove_and_skip() {
 	ERR_FAIL_COND(!data.parent);
 
+	_update_children_cache();
+
 	Node *new_owner = get_owner();
 
 	List<Node *> children;
 
 	while (true) {
 		bool clear = true;
-		for (int i = 0; i < data.children.size(); i++) {
-			Node *c_node = data.children[i];
+		for (uint32_t i = 0; i < data.children_cache.size(); i++) {
+			Node *c_node = data.children_cache[i];
 			if (!c_node->get_owner()) {
 				continue;
 			}
@@ -3161,8 +3158,9 @@ void Node::get_argument_options(const StringName &p_function, int p_idx, List<St
 
 void Node::clear_internal_tree_resource_paths() {
 	clear_internal_resource_paths();
-	for (int i = 0; i < data.children.size(); i++) {
-		data.children[i]->clear_internal_tree_resource_paths();
+
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->clear_internal_tree_resource_paths();
 	}
 }
 
@@ -3509,12 +3507,14 @@ Node::~Node() {
 	data.grouped.clear();
 	data.owned.clear();
 	data.children.clear();
+	data.children_cache.clear();
 
 	data._sees.clear();
 	data._seen_by.clear();
 
 	ERR_FAIL_COND(data.parent);
 	ERR_FAIL_COND(data.children.size());
+	ERR_FAIL_COND(data.children_cache.size());
 
 	orphan_node_count--;
 }

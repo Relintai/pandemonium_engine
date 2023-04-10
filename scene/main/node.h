@@ -32,6 +32,7 @@
 
 #include "core/object/object.h"
 
+#include "core/containers/hash_map.h"
 #include "core/containers/rb_map.h"
 #include "core/string/node_path.h"
 #include "scene/main/scene_tree.h"
@@ -91,6 +92,12 @@ private:
 		GroupData() { persistent = false; }
 	};
 
+	struct ComparatorByIndex {
+		bool operator()(const Node *p_left, const Node *p_right) const {
+			return p_left->data.pos < p_right->data.pos;
+		}
+	};
+
 	struct Data {
 		String filename;
 		Ref<SceneState> instance_state;
@@ -98,7 +105,9 @@ private:
 
 		Node *parent;
 		Node *owner;
-		Vector<Node *> children; // list of children
+		HashMap<StringName, Node *> children;
+		mutable bool children_cache_dirty = true;
+		mutable LocalVector<Node *> children_cache;
 		HashMap<StringName, Node *> owned_unique_nodes;
 		bool unique_name_in_owner = false;
 
@@ -224,6 +233,14 @@ private:
 	void _set_tree(SceneTree *p_tree);
 	void _release_unique_name_in_owner();
 	void _acquire_unique_name_in_owner();
+
+	_FORCE_INLINE_ void _update_children_cache() const {
+		if (unlikely(data.children_cache_dirty)) {
+			_update_children_cache_impl();
+		}
+	}
+
+	void _update_children_cache_impl() const;
 
 protected:
 	void _block() {
@@ -377,7 +394,21 @@ public:
 	bool is_unique_name_in_owner() const;
 
 	void remove_and_skip();
-	int get_index() const;
+	//int get_index() const;
+
+	//int Node::get_index() const {/
+	//	return data.pos;
+	//}
+
+	_FORCE_INLINE_ int get_index() const {
+		if (!data.parent) {
+			return data.pos;
+		}
+
+		data.parent->_update_children_cache();
+
+		return data.pos;
+	}
 
 	Ref<SceneTreeTween> create_tween();
 
