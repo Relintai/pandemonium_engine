@@ -32,12 +32,12 @@
 
 #include "core/object/message_queue.h"
 
-#include "core/config/engine.h"
-#include "core/config/project_settings.h"
-#include "physical_bone.h"
 #include "../resources/skeleton_modification_3d.h"
 #include "../resources/skeleton_modification_stack_3d.h"
 #include "../resources/skin.h"
+#include "core/config/engine.h"
+#include "core/config/project_settings.h"
+#include "physical_bone.h"
 #include "scene/resources/surface_tool.h"
 #include "scene/scene_string_names.h"
 
@@ -375,6 +375,8 @@ void Skeleton::_notification(int p_what) {
 			if (modification_stack.is_valid()) {
 				set_modification_stack(modification_stack);
 			}
+
+			init_pose();
 		} break;
 #endif
 	}
@@ -1075,6 +1077,20 @@ Ref<SkinReference> Skeleton::register_skin(const Ref<Skin> &p_skin) {
 	_make_dirty(); // Skin needs to be updated, so update skeleton.
 
 	return skin_ref;
+}
+
+void Skeleton::init_pose() {
+	const int bone_len = get_bone_count();
+	if (!bone_len) {
+		return;
+	}
+
+	for (int i = 0; i < bone_len; i++) {
+		Transform rest = get_bone_rest(i);
+		set_bone_pose_position(i, rest.origin);
+		set_bone_pose_rotation(i, rest.basis.get_rotation_quaternion());
+		set_bone_pose_scale(i, rest.basis.get_scale());
+	}
 }
 
 void Skeleton::force_update_all_dirty_bones() {

@@ -248,6 +248,8 @@ public:
 
 	Ref<SkinReference> register_skin(const Ref<Skin> &p_skin);
 
+	void init_pose();
+
 	void force_update_all_dirty_bones();
 	void force_update_all_bone_transforms();
 	void force_update_bone_children_transforms(int bone_idx);
