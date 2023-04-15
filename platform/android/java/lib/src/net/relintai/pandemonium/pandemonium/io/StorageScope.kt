@@ -66,7 +66,7 @@ internal enum class StorageScope {
 		/**
 		 * Determines which [StorageScope] the given path falls under.
 		 */
-    fun identifyStorageScope(path: String?): StorageScope {
+		fun identifyStorageScope(path: String?): StorageScope {
 			if (path == null) {
 				return UNKNOWN
 			}
@@ -76,31 +76,42 @@ internal enum class StorageScope {
 				return UNKNOWN
 			}
 
+			// If we have 'All Files Access' permission, we can access all directories without
+			// restriction.
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()) {
+				return APP
+			}
+
 			val canonicalPathFile = pathFile.canonicalPath
 
-      if (internalAppDir != null && canonicalPathFile.startsWith(internalAppDir)) {
+			if (internalAppDir != null && canonicalPathFile.startsWith(internalAppDir)) {
 				return APP
 			}
 
-      if (internalCacheDir != null && canonicalPathFile.startsWith(internalCacheDir)) {
+			if (internalCacheDir != null && canonicalPathFile.startsWith(internalCacheDir)) {
 				return APP
 			}
 
-      if (externalAppDir != null && canonicalPathFile.startsWith(externalAppDir)) {
+			if (externalAppDir != null && canonicalPathFile.startsWith(externalAppDir)) {
 				return APP
 			}
 
-      if (sharedDir != null && canonicalPathFile.startsWith(sharedDir)) {
+			val rootDir: String? = System.getenv("ANDROID_ROOT")
+			if (rootDir != null && canonicalPathFile.startsWith(rootDir)) {
+				return APP
+			}
+
+			if (sharedDir != null && canonicalPathFile.startsWith(sharedDir)) {
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
 					// Before R, apps had access to shared storage so long as they have the right
 					// permissions (and flag on Q).
 					return APP
 				}
 
-				// Post R, access is limited based on the target destination
-				// 'Downloads' and 'Documents' are still accessible
-        if ((downloadsSharedDir != null && canonicalPathFile.startsWith(downloadsSharedDir))
-					|| (documentsSharedDir != null && canonicalPathFile.startsWith(documentsSharedDir))) {
+					// Post R, access is limited based on the target destination
+					// 'Downloads' and 'Documents' are still accessible
+				if ((downloadsSharedDir != null && canonicalPathFile.startsWith(downloadsSharedDir))
+						|| (documentsSharedDir != null && canonicalPathFile.startsWith(documentsSharedDir))) {
 					return APP
 				}
 
