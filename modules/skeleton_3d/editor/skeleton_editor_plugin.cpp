@@ -30,6 +30,7 @@
 
 #include "skeleton_editor_plugin.h"
 
+#include "../nodes/physical_bone.h"
 #include "../resources/skin.h"
 #include "core/io/resource_saver.h"
 #include "core/os/keyboard.h"
@@ -45,7 +46,6 @@
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/physics_body.h"
-#include "../nodes/physical_bone.h"
 #include "scene/3d/physics_joint.h"
 #include "scene/gui/check_box.h"
 #include "scene/gui/grid_container.h"
@@ -870,6 +870,7 @@ void SkeletonEditor::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_draw_handles"), &SkeletonEditor::_draw_handles);
 	ClassDB::bind_method(D_METHOD("_draw_gizmo"), &SkeletonEditor::_draw_gizmo);
+	ClassDB::bind_method(D_METHOD("_update_gizmo_visible"), &SkeletonEditor::_update_gizmo_visible);
 
 	_bind_tool_popup_methods();
 }
