@@ -1330,8 +1330,11 @@ void Skeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_bone_local_pose_override", "bone_idx", "pose", "amount", "persistent"), &Skeleton::set_bone_local_pose_override, DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("get_bone_local_pose_override", "bone_idx"), &Skeleton::get_bone_local_pose_override);
 
+	ClassDB::bind_method(D_METHOD("init_pose"), &Skeleton::init_pose);
+
+	ClassDB::bind_method(D_METHOD("force_update_all_dirty_bones"), &Skeleton::force_update_all_dirty_bones);
 	ClassDB::bind_method(D_METHOD("force_update_all_bone_transforms"), &Skeleton::force_update_all_bone_transforms);
-	ClassDB::bind_method(D_METHOD("force_update_bone_child_transform", "bone_idx"), &Skeleton::force_update_bone_children_transforms);
+	ClassDB::bind_method(D_METHOD("force_update_bone_children_transforms", "bone_idx"), &Skeleton::force_update_bone_children_transforms);
 
 	// Helper functions
 	ClassDB::bind_method(D_METHOD("global_pose_to_world_transform", "global_pose"), &Skeleton::global_pose_to_world_transform);
