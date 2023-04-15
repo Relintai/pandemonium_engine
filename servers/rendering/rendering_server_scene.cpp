@@ -181,8 +181,8 @@ RenderingServerScene::SpatialPartitionID RenderingServerScene::SpatialPartitioni
 	p_userdata->bvh_pairable_mask = p_pairable_mask;
 	p_userdata->bvh_pairable_type = p_pairable_type;
 
-	uint32_t tree_id = p_pairable ? 1 : 0;
-	uint32_t tree_collision_mask = 3;
+	uint32_t tree_collision_mask = 0;
+	uint32_t tree_id = find_tree_id_and_collision_mask(p_pairable, tree_collision_mask);
 
 	return _bvh.create(p_userdata, p_userdata->visible, tree_id, tree_collision_mask, p_aabb, p_subindex) + 1;
 }
@@ -224,8 +224,8 @@ void RenderingServerScene::SpatialPartitioningScene_BVH::set_pairable(Instance *
 	p_instance->bvh_pairable_mask = p_pairable_mask;
 	p_instance->bvh_pairable_type = p_pairable_type;
 
-	uint32_t tree_id = p_pairable ? 1 : 0;
-	uint32_t tree_collision_mask = 3;
+	uint32_t tree_collision_mask = 0;
+	uint32_t tree_id = find_tree_id_and_collision_mask(p_pairable, tree_collision_mask);
 
 	_bvh.set_tree(handle - 1, tree_id, tree_collision_mask);
 }
