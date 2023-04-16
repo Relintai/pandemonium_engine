@@ -114,19 +114,6 @@ HTTPParser::~HTTPParser() {
 void HTTPParser::_bind_methods() {
 }
 
-String HTTPParser::chr_len_to_str(const char *at, size_t length) {
-	String ret;
-	ret.resize(length + 1);
-
-	CharType *p = ret.ptrw();
-
-	for (size_t i = 0; i <= length; ++i) {
-		p[i] = at[i];
-	}
-
-	return ret;
-}
-
 int HTTPParser::HTTPParser::process_multipart_data(const char *at, size_t p_length) {
 	ERR_FAIL_COND_V(!_multipart_parser, p_length);
 
@@ -134,7 +121,7 @@ int HTTPParser::HTTPParser::process_multipart_data(const char *at, size_t p_leng
 }
 
 void HTTPParser::_process_multipart_header_value(const String &val) {
-	if (_queued_multipart_header_field == "Content-Disposition") {
+	if (_queued_multipart_header_field == "content-disposition") {
 		int c = val.get_slice_count(";");
 
 		for (int j = 0; j < c; ++j) {
@@ -165,7 +152,7 @@ void HTTPParser::_process_multipart_header_value(const String &val) {
 			}
 		}
 
-	} else if (_queued_multipart_header_field == "Content-Type") {
+	} else if (_queued_multipart_header_field == "content-type") {
 		_multipart_form_content_type = val;
 	} else {
 		//Shouldn't happen, should probably close connection
@@ -267,7 +254,7 @@ int HTTPParser::on_message_begin() {
 int HTTPParser::on_url(const char *at, size_t length) {
 	ERR_FAIL_COND_V(!_request.is_valid(), 0);
 
-	String s = chr_len_to_str(at, length).uri_decode().strip_edges();
+	String s = String::utf8(at, length).uri_decode().strip_edges();
 
 #if MESSAGE_DEBUG
 	ERR_PRINT("url " + s);
@@ -280,7 +267,7 @@ int HTTPParser::on_url(const char *at, size_t length) {
 int HTTPParser::on_status(const char *at, size_t length) {
 	ERR_FAIL_COND_V(!_request.is_valid(), 0);
 
-	String s = chr_len_to_str(at, length);
+	String s = String::utf8(at, length);
 
 #if MESSAGE_DEBUG
 	ERR_PRINT("status " + s);
@@ -291,7 +278,7 @@ int HTTPParser::on_status(const char *at, size_t length) {
 int HTTPParser::on_header_field(const char *at, size_t length) {
 	ERR_FAIL_COND_V(!_request.is_valid(), 0);
 
-	String s = chr_len_to_str(at, length);
+	String s = String::utf8(at, length);
 
 #if MESSAGE_DEBUG
 	ERR_PRINT("header_field " + s);
@@ -304,7 +291,7 @@ int HTTPParser::on_header_field(const char *at, size_t length) {
 int HTTPParser::on_header_value(const char *at, size_t length) {
 	ERR_FAIL_COND_V(!_request.is_valid(), 0);
 
-	String s = chr_len_to_str(at, length);
+	String s = String::utf8(at, length);
 
 #if MESSAGE_DEBUG
 	ERR_PRINT("header_val " + s);
@@ -422,7 +409,7 @@ int HTTPParser::on_body(const char *at, size_t p_length) {
 		return 0;
 	}
 
-	String s = chr_len_to_str(at, length);
+	String s = String::utf8(at, length);
 
 #if MESSAGE_DEBUG
 	ERR_PRINT("on_body " + s);
@@ -532,18 +519,18 @@ int HTTPParser::_on_chunk_complete_cb(http_parser *parser) {
 #define MULTIPART_MESSAGE_DEBUG 0
 
 int HTTPParser::on_multipart_header_field_cb(const char *at, size_t length) {
-	String s = chr_len_to_str(at, length);
+	String s = String::utf8(at, length);
 
-	_queued_multipart_header_field = s;
+	_queued_multipart_header_field = s.to_lower();
 
 #if MULTIPART_MESSAGE_DEBUG
-	ERR_PRINT("on_multipart_header_field_cb " + s);
+	ERR_PRINT("on_multipart_header_field_cb " + _queued_multipart_header_field);
 #endif
 
 	return 0;
 }
 int HTTPParser::on_multipart_header_value_cb(const char *at, size_t length) {
-	String s = chr_len_to_str(at, length);
+	String s = String::utf8(at, length);
 
 	_process_multipart_header_value(s);
 
@@ -603,7 +590,7 @@ int HTTPParser::on_multipart_part_data_end_cb() {
 			_request->add_file(_multipart_form_name, _multipart_form_filename, file_data);
 		}
 	} else {
-		String s = _multipart_form_data.ptr();
+		String s = String::utf8(_multipart_form_data.ptr(), _multipart_form_data.size());
 		_request->add_post_parameter(_multipart_form_name, s);
 	}
 

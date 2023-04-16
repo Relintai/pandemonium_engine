@@ -69,8 +69,6 @@ protected:
 	bool _error;
 
 private:
-	String chr_len_to_str(const char *at, size_t length);
-
 	int process_multipart_data(const char *at, size_t length);
 	void _process_multipart_header_value(const String &val);
 	void process_urlenc_data();
