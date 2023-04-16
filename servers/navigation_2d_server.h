@@ -184,6 +184,8 @@ public:
 	/// Destroy the `RID`
 	virtual void free(RID p_object) const = 0;
 
+	virtual void init();
+
 	Navigation2DServer();
 	virtual ~Navigation2DServer();
 };

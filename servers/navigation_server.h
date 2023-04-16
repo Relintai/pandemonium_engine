@@ -213,6 +213,8 @@ public:
 	/// Note: This function is not thread safe.
 	virtual void process(real_t delta_time) = 0;
 
+	virtual void init();
+
 	NavigationServer();
 	virtual ~NavigationServer();
 };

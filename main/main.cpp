@@ -230,7 +230,7 @@ void initialize_navigation_server() {
 		navigation_server = NavigationServerManager::new_default_server();
 	}
 	ERR_FAIL_COND(!navigation_server);
-	//physics_server->init();
+	navigation_server->init();
 
 	/// 2D Navigation server
 	navigation_2d_server = Navigation2DServerManager::new_server(ProjectSettings::get_singleton()->get(Navigation2DServerManager::setting_property_name));
@@ -239,7 +239,7 @@ void initialize_navigation_server() {
 		navigation_2d_server = Navigation2DServerManager::new_default_server();
 	}
 	ERR_FAIL_COND(!navigation_2d_server);
-	//navigation_2d_server->init();
+	navigation_2d_server->init();
 }
 
 void finalize_navigation_server() {

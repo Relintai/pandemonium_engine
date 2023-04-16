@@ -90,6 +90,9 @@ void Navigation2DServer::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
 }
 
+void Navigation2DServer::init() {
+}
+
 Navigation2DServer::Navigation2DServer() {
 	singleton = this;
 }
