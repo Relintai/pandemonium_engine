@@ -30,9 +30,7 @@
 
 #include "servers/navigation_2d_server.h"
 
-#include "core/math/transform.h"
-#include "core/math/transform_2d.h"
-#include "scene/resources/navigation_mesh.h"
+#include "core/config/project_settings.h"
 #include "servers/navigation_server.h"
 
 Navigation2DServer *Navigation2DServer::singleton = nullptr;
@@ -100,13 +98,63 @@ Navigation2DServer::~Navigation2DServer() {
 	singleton = nullptr;
 }
 
-Navigation2DServerCallback Navigation2DServerManager::create_callback = nullptr;
+Vector<Navigation2DServerManager::ClassInfo> Navigation2DServerManager::navigation_servers;
+int Navigation2DServerManager::default_server_id = -1;
+int Navigation2DServerManager::default_server_priority = -1;
+const String Navigation2DServerManager::setting_property_name("navigation/2d/navigation_engine");
 
-void Navigation2DServerManager::set_default_server(Navigation2DServerCallback p_callback) {
-	create_callback = p_callback;
+void Navigation2DServerManager::on_servers_changed() {
+	String navigation_servers2("DEFAULT");
+	for (int i = get_servers_count() - 1; 0 <= i; --i) {
+		navigation_servers2 += "," + get_server_name(i);
+	}
+	ProjectSettings::get_singleton()->set_custom_property_info(setting_property_name, PropertyInfo(Variant::STRING, setting_property_name, PROPERTY_HINT_ENUM, navigation_servers2));
+}
+
+void Navigation2DServerManager::register_server(const String &p_name, CreateNavigation2DServerCallback p_creat_callback) {
+	ERR_FAIL_COND(!p_creat_callback);
+	ERR_FAIL_COND(find_server_id(p_name) != -1);
+	navigation_servers.push_back(ClassInfo(p_name, p_creat_callback));
+	on_servers_changed();
+}
+
+void Navigation2DServerManager::set_default_server(const String &p_name, int p_priority) {
+	const int id = find_server_id(p_name);
+	ERR_FAIL_COND(id == -1); // Not found
+	if (default_server_priority < p_priority) {
+		default_server_id = id;
+		default_server_priority = p_priority;
+	}
+}
+
+int Navigation2DServerManager::find_server_id(const String &p_name) {
+	for (int i = navigation_servers.size() - 1; 0 <= i; --i) {
+		if (p_name == navigation_servers[i].name) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+int Navigation2DServerManager::get_servers_count() {
+	return navigation_servers.size();
+}
+
+String Navigation2DServerManager::get_server_name(int p_id) {
+	ERR_FAIL_INDEX_V(p_id, get_servers_count(), "");
+	return navigation_servers[p_id].name;
 }
 
 Navigation2DServer *Navigation2DServerManager::new_default_server() {
-	ERR_FAIL_COND_V(create_callback == nullptr, nullptr);
-	return create_callback();
+	ERR_FAIL_COND_V(default_server_id == -1, nullptr);
+	return navigation_servers[default_server_id].create_callback();
+}
+
+Navigation2DServer *Navigation2DServerManager::new_server(const String &p_name) {
+	int id = find_server_id(p_name);
+	if (id == -1) {
+		return nullptr;
+	} else {
+		return navigation_servers[id].create_callback();
+	}
 }

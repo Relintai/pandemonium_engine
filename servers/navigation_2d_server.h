@@ -31,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/object/object.h"
 #include "core/containers/rid.h"
+#include "core/object/object.h"
 #include "scene/2d/navigation_polygon.h"
 
 // This server exposes the 3D `NavigationServer` features in the 2D world.
@@ -188,15 +188,51 @@ public:
 	virtual ~Navigation2DServer();
 };
 
-typedef Navigation2DServer *(*Navigation2DServerCallback)();
+typedef Navigation2DServer *(*CreateNavigation2DServerCallback)();
 
 /// Manager used for the server singleton registration
 class Navigation2DServerManager {
-	static Navigation2DServerCallback create_callback;
+	struct ClassInfo {
+		String name;
+		CreateNavigation2DServerCallback create_callback;
+
+		ClassInfo() :
+				name(""),
+				create_callback(nullptr) {}
+
+		ClassInfo(String p_name, CreateNavigation2DServerCallback p_create_callback) :
+				name(p_name),
+				create_callback(p_create_callback) {}
+
+		ClassInfo(const ClassInfo &p_ci) :
+				name(p_ci.name),
+				create_callback(p_ci.create_callback) {}
+
+		ClassInfo operator=(const ClassInfo &p_ci) {
+			name = p_ci.name;
+			create_callback = p_ci.create_callback;
+			return *this;
+		}
+	};
+
+	static Vector<ClassInfo> navigation_servers;
+	static int default_server_id;
+	static int default_server_priority;
 
 public:
-	static void set_default_server(Navigation2DServerCallback p_callback);
+	static const String setting_property_name;
+
+private:
+	static void on_servers_changed();
+
+public:
+	static void register_server(const String &p_name, CreateNavigation2DServerCallback p_create_callback);
+	static void set_default_server(const String &p_name, int p_priority = 0);
+	static int find_server_id(const String &p_name);
+	static int get_servers_count();
+	static String get_server_name(int p_id);
 	static Navigation2DServer *new_default_server();
+	static Navigation2DServer *new_server(const String &p_name);
 };
 
 #endif
