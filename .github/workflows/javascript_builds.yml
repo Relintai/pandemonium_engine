@@ -4,8 +4,7 @@ on: [push, pull_request]
 # Global Settings
 env:
   PANDEMONIUM_BASE_BRANCH: master
-  #werror=yes 
-  SCONSFLAGS: verbose=yes warnings=all debug_symbols=no 
+  SCONSFLAGS: verbose=yes warnings=all debug_symbols=no werror=yes 
   EM_VERSION: 3.1.18
   EM_CACHE_FOLDER: "emsdk-cache"
 
