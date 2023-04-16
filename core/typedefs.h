@@ -393,4 +393,34 @@ struct _GlobalLock {
 // Limit the depth of recursive algorithms when dealing with Array/Dictionary
 #define MAX_RECURSION 100
 
+//HAS_TRIVIAL_CONSTRUCTOR
+
+#if defined(__llvm__) && _llvm_has_builtin(__is_trivially_constructible)
+#define HAS_TRIVIAL_CONSTRUCTOR(T) __is_trivially_constructible(T)
+#endif
+
+#ifndef HAS_TRIVIAL_CONSTRUCTOR
+#define HAS_TRIVIAL_CONSTRUCTOR(T) __has_trivial_constructor(T)
+#endif
+
+//HAS_TRIVIAL_DESTRUCTOR
+
+#if defined(__llvm__) && _llvm_has_builtin(__is_trivially_destructible)
+#define HAS_TRIVIAL_DESTRUCTOR(T) __is_trivially_destructible(T)
+#endif
+
+#ifndef HAS_TRIVIAL_DESTRUCTOR
+#define HAS_TRIVIAL_DESTRUCTOR(T) __has_trivial_destructor(T)
+#endif
+
+//HAS_TRIVIAL_COPY
+
+#if defined(__llvm__) && _llvm_has_builtin(__is_trivially_copyable)
+#define HAS_TRIVIAL_COPY(T) __is_trivially_copyable(T)
+#endif
+
+#ifndef HAS_TRIVIAL_COPY
+#define HAS_TRIVIAL_COPY(T) __has_trivial_copy(T)
+#endif
+
 #endif // TYPEDEFS_H

@@ -63,7 +63,7 @@ public:
 			CRASH_COND_MSG(!data, "Out of memory");
 		}
 
-		if (!__has_trivial_constructor(T) && !force_trivial) {
+		if (!HAS_TRIVIAL_CONSTRUCTOR(T) && !force_trivial) {
 			memnew_placement(&data[count++], T(p_elem));
 		} else {
 			data[count++] = p_elem;
@@ -76,7 +76,7 @@ public:
 		for (U i = p_index; i < count; i++) {
 			data[i] = data[i + 1];
 		}
-		if (!__has_trivial_destructor(T) && !force_trivial) {
+		if (!HAS_TRIVIAL_DESTRUCTOR(T) && !force_trivial) {
 			data[count].~T();
 		}
 	}
@@ -89,7 +89,7 @@ public:
 		if (count > p_index) {
 			data[p_index] = data[count];
 		}
-		if (!__has_trivial_destructor(T) && !force_trivial) {
+		if (!HAS_TRIVIAL_DESTRUCTOR(T) && !force_trivial) {
 			data[count].~T();
 		}
 	}
@@ -146,7 +146,7 @@ public:
 	_FORCE_INLINE_ U size() const { return count; }
 	void resize(U p_size) {
 		if (p_size < count) {
-			if (!__has_trivial_destructor(T) && !force_trivial) {
+			if (!HAS_TRIVIAL_DESTRUCTOR(T) && !force_trivial) {
 				for (U i = p_size; i < count; i++) {
 					data[i].~T();
 				}
@@ -163,7 +163,7 @@ public:
 				data = (T *)memrealloc(data, capacity * sizeof(T));
 				CRASH_COND_MSG(!data, "Out of memory");
 			}
-			if (!__has_trivial_constructor(T) && !force_trivial) {
+			if (!HAS_TRIVIAL_CONSTRUCTOR(T) && !force_trivial) {
 				for (U i = count; i < p_size; i++) {
 					memnew_placement(&data[i], T);
 				}

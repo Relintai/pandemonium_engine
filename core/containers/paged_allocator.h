@@ -89,7 +89,7 @@ public:
 	}
 
 	void reset(bool p_allow_unfreed = false) {
-		if (!p_allow_unfreed || !__has_trivial_destructor(T)) {
+		if (!p_allow_unfreed || !HAS_TRIVIAL_DESTRUCTOR(T)) {
 			ERR_FAIL_COND(allocs_available < pages_allocated * page_size);
 		}
 		if (pages_allocated) {
