@@ -222,12 +222,13 @@ void finalize_physics() {
 void initialize_navigation_server() {
 	ERR_FAIL_COND(navigation_server != nullptr);
 	navigation_server = NavigationServerManager::new_default_server();
-	navigation_2d_server = memnew(Navigation2DServer);
+	navigation_2d_server = Navigation2DServerManager::new_default_server();
 }
 
 void finalize_navigation_server() {
 	memdelete(navigation_server);
 	navigation_server = nullptr;
+	
 	memdelete(navigation_2d_server);
 	navigation_2d_server = nullptr;
 }

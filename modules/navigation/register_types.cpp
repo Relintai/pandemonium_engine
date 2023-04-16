@@ -34,6 +34,9 @@
 #include "pandemonium_navigation_server.h"
 #include "servers/navigation_server.h"
 
+#include "pandemonium_navigation_2d_server.h"
+#include "servers/navigation_2d_server.h"
+
 #ifndef _3D_DISABLED
 #include "navigation_mesh_generator.h"
 #endif
@@ -50,10 +53,16 @@ NavigationServer *new_server() {
 	return memnew(PandemoniumNavigationServer);
 }
 
+Navigation2DServer *new_2d_server() {
+	return memnew(PandemoniumNavigation2DServer);
+}
+
 void register_navigation_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
 		NavigationServerManager::register_server("PandemoniumNavigation", new_server);
 		NavigationServerManager::set_default_server("PandemoniumNavigation");
+
+		Navigation2DServerManager::set_default_server(new_2d_server);
 
 #ifndef _3D_DISABLED
 		_nav_mesh_generator = memnew(NavigationMeshGenerator);

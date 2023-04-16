@@ -59,9 +59,9 @@
 #include "physics_2d/physics_2d_server_wrap_mt.h"
 #include "physics_2d_server.h"
 #include "physics_server.h"
-#include "scene/debugger/script_debugger_remote.h"
 #include "rendering/shader_types.h"
 #include "rendering_server.h"
+#include "scene/debugger/script_debugger_remote.h"
 
 static void _debugger_get_resource_usage(List<ScriptDebuggerRemote::ResourceUsage> *r_usage) {
 	List<RS::TextureInfo> tinfo;
