@@ -46,7 +46,10 @@ Navigation2DServer *new_dummy_2d_server() {
 void register_navigation_dummy_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
 		NavigationServerManager::register_server("Dummy", new_dummy_server);
+		NavigationServerManager::set_default_server("Dummy");
+
 		Navigation2DServerManager::register_server("Dummy", new_dummy_2d_server);
+		Navigation2DServerManager::set_default_server("Dummy");
 	}
 }
 

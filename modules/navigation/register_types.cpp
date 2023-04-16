@@ -60,10 +60,10 @@ Navigation2DServer *new_2d_server() {
 void register_navigation_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
 		NavigationServerManager::register_server("PandemoniumNavigation", new_server);
-		NavigationServerManager::set_default_server("PandemoniumNavigation");
+		NavigationServerManager::set_default_server("PandemoniumNavigation", 10);
 
 		Navigation2DServerManager::register_server("PandemoniumNavigation", new_2d_server);
-		Navigation2DServerManager::set_default_server("PandemoniumNavigation");
+		Navigation2DServerManager::set_default_server("PandemoniumNavigation", 10);
 
 #ifndef _3D_DISABLED
 		_nav_mesh_generator = memnew(NavigationMeshGenerator);
