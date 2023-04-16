@@ -434,7 +434,11 @@ if len(sys.argv) > 1:
             build_string += ' ' + sys.argv[i] + ' '
 
         if 'slim' in arg_split:
-            build_string += module_config.slim_args
+            if 'e' in arg:
+                build_string += module_config.slim_args_editor
+            else:
+                build_string += module_config.slim_args
+            
             build_string += ' '
 
         if 'latomic' in arg_split:
