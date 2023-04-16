@@ -342,4 +342,7 @@ void Vector4i::zero() {
 	x = y = z = w = 0;
 }
 
+typedef Vector4i Size4i;
+typedef Vector4i Point4i;
+
 #endif // VECTOR4I_H

@@ -320,4 +320,7 @@ void Vector3i::zero() {
 	x = y = z = 0;
 }
 
+typedef Vector3i Size3i;
+typedef Vector3i Point3i;
+
 #endif // VECTOR3I_H
