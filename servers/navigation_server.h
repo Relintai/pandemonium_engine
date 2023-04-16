@@ -30,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/object/object.h"
 #include "core/containers/rid.h"
+#include "core/object/object.h"
 
 #include "core/object/reference.h"
 
@@ -217,15 +217,52 @@ public:
 	virtual ~NavigationServer();
 };
 
-typedef NavigationServer *(*NavigationServerCallback)();
+typedef NavigationServer *(*CreateNavigationServerCallback)();
 
 /// Manager used for the server singleton registration
+
 class NavigationServerManager {
-	static NavigationServerCallback create_callback;
+	struct ClassInfo {
+		String name;
+		CreateNavigationServerCallback create_callback;
+
+		ClassInfo() :
+				name(""),
+				create_callback(nullptr) {}
+
+		ClassInfo(String p_name, CreateNavigationServerCallback p_create_callback) :
+				name(p_name),
+				create_callback(p_create_callback) {}
+
+		ClassInfo(const ClassInfo &p_ci) :
+				name(p_ci.name),
+				create_callback(p_ci.create_callback) {}
+
+		ClassInfo operator=(const ClassInfo &p_ci) {
+			name = p_ci.name;
+			create_callback = p_ci.create_callback;
+			return *this;
+		}
+	};
+
+	static Vector<ClassInfo> navigation_servers;
+	static int default_server_id;
+	static int default_server_priority;
 
 public:
-	static void set_default_server(NavigationServerCallback p_callback);
+	static const String setting_property_name;
+
+private:
+	static void on_servers_changed();
+
+public:
+	static void register_server(const String &p_name, CreateNavigationServerCallback p_create_callback);
+	static void set_default_server(const String &p_name, int p_priority = 0);
+	static int find_server_id(const String &p_name);
+	static int get_servers_count();
+	static String get_server_name(int p_id);
 	static NavigationServer *new_default_server();
+	static NavigationServer *new_server(const String &p_name);
 };
 
 #endif

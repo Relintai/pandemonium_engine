@@ -30,6 +30,7 @@
 
 #include "navigation_server.h"
 
+#include "core/config/project_settings.h"
 #include "scene/3d/navigation_mesh_instance.h"
 #include "scene/resources/navigation_mesh.h"
 
@@ -118,13 +119,63 @@ NavigationServer::~NavigationServer() {
 	singleton = nullptr;
 }
 
-NavigationServerCallback NavigationServerManager::create_callback = nullptr;
+Vector<NavigationServerManager::ClassInfo> NavigationServerManager::navigation_servers;
+int NavigationServerManager::default_server_id = -1;
+int NavigationServerManager::default_server_priority = -1;
+const String NavigationServerManager::setting_property_name("navigation/3d/navigation_engine");
 
-void NavigationServerManager::set_default_server(NavigationServerCallback p_callback) {
-	create_callback = p_callback;
+void NavigationServerManager::on_servers_changed() {
+	String navigation_servers2("DEFAULT");
+	for (int i = get_servers_count() - 1; 0 <= i; --i) {
+		navigation_servers2 += "," + get_server_name(i);
+	}
+	ProjectSettings::get_singleton()->set_custom_property_info(setting_property_name, PropertyInfo(Variant::STRING, setting_property_name, PROPERTY_HINT_ENUM, navigation_servers2));
+}
+
+void NavigationServerManager::register_server(const String &p_name, CreateNavigationServerCallback p_creat_callback) {
+	ERR_FAIL_COND(!p_creat_callback);
+	ERR_FAIL_COND(find_server_id(p_name) != -1);
+	navigation_servers.push_back(ClassInfo(p_name, p_creat_callback));
+	on_servers_changed();
+}
+
+void NavigationServerManager::set_default_server(const String &p_name, int p_priority) {
+	const int id = find_server_id(p_name);
+	ERR_FAIL_COND(id == -1); // Not found
+	if (default_server_priority < p_priority) {
+		default_server_id = id;
+		default_server_priority = p_priority;
+	}
+}
+
+int NavigationServerManager::find_server_id(const String &p_name) {
+	for (int i = navigation_servers.size() - 1; 0 <= i; --i) {
+		if (p_name == navigation_servers[i].name) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+int NavigationServerManager::get_servers_count() {
+	return navigation_servers.size();
+}
+
+String NavigationServerManager::get_server_name(int p_id) {
+	ERR_FAIL_INDEX_V(p_id, get_servers_count(), "");
+	return navigation_servers[p_id].name;
 }
 
 NavigationServer *NavigationServerManager::new_default_server() {
-	ERR_FAIL_COND_V(create_callback == nullptr, nullptr);
-	return create_callback();
+	ERR_FAIL_COND_V(default_server_id == -1, nullptr);
+	return navigation_servers[default_server_id].create_callback();
+}
+
+NavigationServer *NavigationServerManager::new_server(const String &p_name) {
+	int id = find_server_id(p_name);
+	if (id == -1) {
+		return nullptr;
+	} else {
+		return navigation_servers[id].create_callback();
+	}
 }

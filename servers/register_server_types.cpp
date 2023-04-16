@@ -190,6 +190,10 @@ void register_server_types() {
 
 	PhysicsServerManager::register_server("PandemoniumPhysics", &_createPandemoniumPhysicsCallback);
 	PhysicsServerManager::set_default_server("PandemoniumPhysics");
+
+	// Navigation 3D
+	GLOBAL_DEF(NavigationServerManager::setting_property_name, "DEFAULT");
+	ProjectSettings::get_singleton()->set_custom_property_info(NavigationServerManager::setting_property_name, PropertyInfo(Variant::STRING, NavigationServerManager::setting_property_name, PROPERTY_HINT_ENUM, "DEFAULT"));
 }
 
 void unregister_server_types() {
