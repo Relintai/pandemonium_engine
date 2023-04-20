@@ -31,12 +31,12 @@
 /*************************************************************************/
 
 #include "core/math/octree.h"
-#include "servers/rendering/rasterizer.h"
-#include "servers/rendering_server.h"
 #include "rendering_server_canvas.h"
 #include "rendering_server_globals.h"
 #include "rendering_server_scene.h"
 #include "rendering_server_viewport.h"
+#include "servers/rendering/rasterizer.h"
+#include "servers/rendering_server.h"
 
 class RenderingServerRaster : public RenderingServer {
 	enum {
@@ -594,6 +594,7 @@ public:
 	BIND4(canvas_item_add_circle, RID, const Point2 &, float, const Color &)
 	BIND7(canvas_item_add_texture_rect, RID, const Rect2 &, RID, bool, const Color &, bool, RID)
 	BIND8(canvas_item_add_texture_rect_region, RID, const Rect2 &, RID, const Rect2 &, const Color &, bool, RID, bool)
+	BIND7(canvas_item_add_texture_multirect_region, RID, const Vector<Rect2> &, RID, const Vector<Rect2> &, const Color &, uint32_t, RID)
 	BIND11(canvas_item_add_nine_patch, RID, const Rect2 &, const Rect2 &, RID, const Vector2 &, const Vector2 &, NinePatchAxisMode, NinePatchAxisMode, bool, const Color &, RID)
 	BIND7(canvas_item_add_primitive, RID, const Vector<Point2> &, const Vector<Color> &, const Vector<Point2> &, RID, float, RID)
 	BIND7(canvas_item_add_polygon, RID, const Vector<Point2> &, const Vector<Color> &, const Vector<Point2> &, RID, RID, bool)
