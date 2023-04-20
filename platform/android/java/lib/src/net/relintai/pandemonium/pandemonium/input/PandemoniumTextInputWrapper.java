@@ -125,10 +125,12 @@ public class PandemoniumTextInputWrapper implements TextWatcher, OnEditorActionL
 		if (this.mEdit == pTextView && this.isFullScreenEdit() && pKeyEvent != null) {
 			final String characters = pKeyEvent.getCharacters();
 
-			for (int i = 0; i < characters.length(); i++) {
-				final int ch = characters.codePointAt(i);
-				PandemoniumLib.key(ch, 0, ch, true);
-				PandemoniumLib.key(ch, 0, ch, false);
+			if (characters != null) {
+				for (int i = 0; i < characters.length(); i++) {
+					final int ch = characters.codePointAt(i);
+					PandemoniumLib.key(ch, 0, ch, true);
+					PandemoniumLib.key(ch, 0, ch, false);
+				}
 			}
 		}
 
