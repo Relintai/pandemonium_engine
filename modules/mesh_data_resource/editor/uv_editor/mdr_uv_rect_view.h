@@ -50,6 +50,7 @@ public:
 	void store_uvs();
 	PoolVector2Array get_uvs(const Ref<MeshDataResource> &mdr);
 	void apply_uvs(Ref<MeshDataResource> mdr, const PoolVector2Array &stored_uvs);
+	Array apply_uvs_arr(Ref<MeshDataResource> mdr, const PoolVector2Array &stored_uvs);
 
 	void refresh();
 	void clear();

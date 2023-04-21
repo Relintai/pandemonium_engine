@@ -112,6 +112,25 @@ void MDRUVRectView::apply_uvs(Ref<MeshDataResource> mdr, const PoolVector2Array 
 
 	_mdr->set_array(arrays);
 }
+Array MDRUVRectView::apply_uvs_arr(Ref<MeshDataResource> mdr, const PoolVector2Array &stored_uvs) {
+	if (!_mdr.is_valid()) {
+		return Array();
+	}
+
+	Array arrays = _mdr->get_array().duplicate(true);
+
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		return arrays;
+	}
+
+	if (arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		return arrays;
+	}
+
+	arrays[ArrayMesh::ARRAY_TEX_UV] = stored_uvs;
+
+	return arrays;
+}
 
 void MDRUVRectView::refresh() {
 	clear();
@@ -210,8 +229,8 @@ void MDRUVRectView::on_visibility_changed() {
 
 void MDRUVRectView::ok_pressed() {
 	_undo_redo->create_action("UV Editor Accept");
-	_undo_redo->add_do_method(this, "apply_uvs", _mdr, get_uvs(_mdr));
-	_undo_redo->add_undo_method(this, "apply_uvs", _mdr, _stored_uvs);
+	_undo_redo->add_do_method(_mdr.ptr(), "set_array", apply_uvs_arr(_mdr, get_uvs(_mdr)));
+	_undo_redo->add_undo_method(_mdr.ptr(), "set_array", apply_uvs_arr(_mdr, _stored_uvs));
 	_undo_redo->commit_action();
 }
 void MDRUVRectView::cancel_pressed() {
@@ -230,8 +249,8 @@ void MDRUVRectView::cancel_pressed() {
 	uvs.append_array(_stored_uvs);
 
 	_undo_redo->create_action("UV Editor Cancel");
-	_undo_redo->add_do_method(this, "apply_uvs", _mdr, uvs);
-	_undo_redo->add_undo_method(this, "apply_uvs", _mdr, get_uvs(_mdr));
+	_undo_redo->add_do_method(_mdr.ptr(), "set_array", apply_uvs_arr(_mdr, uvs));
+	_undo_redo->add_undo_method(_mdr.ptr(), "set_array", apply_uvs_arr(_mdr, get_uvs(_mdr)));
 	_undo_redo->commit_action();
 
 	_stored_uvs.resize(0);

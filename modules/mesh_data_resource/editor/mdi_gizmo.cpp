@@ -319,6 +319,7 @@ bool MDIGizmo::selection_click_select_front_or_back(Camera *camera, const Ref<In
 			if (_selected_points[si] == closest_idx) {
 				if (event->get_alt() || event->get_control()) {
 					_selected_points.remove(si);
+					redraw();
 					return true;
 				}
 
@@ -338,7 +339,6 @@ bool MDIGizmo::selection_click_select_front_or_back(Camera *camera, const Ref<In
 			_selected_points.append(closest_idx);
 		}
 
-		apply();
 		redraw();
 	} else {
 		// Don't unselect all if either control or shift is held down
@@ -385,6 +385,7 @@ bool MDIGizmo::selection_click_select_through(Camera *camera, const Ref<InputEve
 			if (_selected_points[si] == closest_idx) {
 				if (event->get_alt() || event->get_control()) {
 					_selected_points.remove(si);
+					redraw();
 					return true;
 				}
 
@@ -404,7 +405,6 @@ bool MDIGizmo::selection_click_select_through(Camera *camera, const Ref<InputEve
 			_selected_points.append(closest_idx);
 		}
 
-		apply();
 		redraw();
 	} else {
 		// Don't unselect all if either control or shift is held down
@@ -605,10 +605,18 @@ EditorPlugin::AfterGUIInput MDIGizmo::forward_spatial_gui_input(Camera *camera, 
 						PoolVector3Array vertices = arrs[ArrayMesh::ARRAY_VERTEX];
 
 						if (vertices.size() == _drag_op_orig_verices.size()) {
+							Array arr_new = _mdr->get_array().duplicate(true);
+							Array arr_orig = arr_new.duplicate(true);
+							arr_orig[ArrayMesh::ARRAY_VERTEX] = _drag_op_orig_verices;
+
+							disable_change_event();
+
 							_undo_redo->create_action("Drag");
-							_undo_redo->add_do_method(this, "apply_vertex_array", _mdr, vertices);
-							_undo_redo->add_undo_method(this, "apply_vertex_array", _mdr, _drag_op_orig_verices);
+							_undo_redo->add_do_method(_mdr.ptr(), "set_array", arr_new);
+							_undo_redo->add_undo_method(_mdr.ptr(), "set_array", arr_orig);
 							_undo_redo->commit_action();
+
+							enable_change_event();
 						}
 					}
 				}
@@ -788,6 +796,7 @@ void MDIGizmo::recalculate_handle_points() {
 	if (!_mdr.is_valid()) {
 		_handle_points.resize(0);
 		_handle_to_vertex_map.resize(0);
+		_selected_points.resize(0);
 		return;
 	}
 
@@ -796,6 +805,7 @@ void MDIGizmo::recalculate_handle_points() {
 	if (mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX].is_null()) {
 		_handle_points.resize(0);
 		_handle_to_vertex_map.resize(0);
+		_selected_points.resize(0);
 		return;
 	}
 
@@ -804,6 +814,7 @@ void MDIGizmo::recalculate_handle_points() {
 	if (vertices.size() == 0) {
 		_handle_points.resize(0);
 		_handle_to_vertex_map.resize(0);
+		_selected_points.resize(0);
 		return;
 	}
 
@@ -826,6 +837,13 @@ void MDIGizmo::recalculate_handle_points() {
 
 		_handle_points = result.handle_points;
 		_handle_to_vertex_map = result.handle_to_vertex_map;
+	}
+
+	for (int i = 0; i < _selected_points.size(); ++i) {
+		if (_selected_points[i] >= _handle_points.size()) {
+			_selected_points.remove(i);
+			--i;
+		}
 	}
 }
 void MDIGizmo::on_mesh_data_resource_changed(Ref<MeshDataResource> mdr) {
@@ -891,16 +909,20 @@ void MDIGizmo::enable_change_event(bool update) {
 }
 void MDIGizmo::add_triangle() {
 	if (_mdr.is_valid()) {
+		disable_change_event();
 		Array orig_arr = copy_arrays(_mdr->get_array());
 		MDREDMeshUtils::add_triangle(_mdr);
 		add_mesh_change_undo_redo(orig_arr, _mdr->get_array(), "Add Triangle");
+		enable_change_event();
 	}
 }
 void MDIGizmo::add_quad() {
 	if (_mdr.is_valid()) {
+		disable_change_event();
 		Array orig_arr = copy_arrays(_mdr->get_array());
 		MDREDMeshUtils::add_quad(_mdr);
 		add_mesh_change_undo_redo(orig_arr, _mdr->get_array(), "Add Quad");
+		enable_change_event();
 	}
 }
 
@@ -1260,9 +1282,11 @@ void MDIGizmo::extrude() {
 }
 void MDIGizmo::add_box() {
 	if (_mdr.is_valid()) {
+		disable_change_event();
 		Array orig_arr = copy_arrays(_mdr->get_array());
 		MDREDMeshUtils::add_box(_mdr);
 		add_mesh_change_undo_redo(orig_arr, _mdr->get_array(), "Add Box");
+		enable_change_event();
 	}
 }
 void MDIGizmo::split() {
@@ -1619,10 +1643,11 @@ void MDIGizmo::connect_to_first_selected() {
 		_mdr->set_array(mdr_arr);
 
 		add_mesh_change_undo_redo(orig_arr, _mdr->get_array(), "Connect to first selected");
-		enable_change_event();
 	} else if (selection_mode == SELECTION_MODE_EDGE) {
 	} else if (selection_mode == SELECTION_MODE_FACE) {
 	}
+
+	enable_change_event();
 }
 void MDIGizmo::connect_to_avg() {
 	if (!_mdr.is_valid()) {
@@ -1672,10 +1697,11 @@ void MDIGizmo::connect_to_avg() {
 		_mdr->set_array(mdr_arr);
 
 		add_mesh_change_undo_redo(orig_arr, _mdr->get_array(), "Connect to average");
-		enable_change_event();
 	} else if (selection_mode == SELECTION_MODE_EDGE) {
 	} else if (selection_mode == SELECTION_MODE_FACE) {
 	}
+
+	enable_change_event();
 }
 void MDIGizmo::connect_to_last_selected() {
 	if (!_mdr.is_valid()) {
@@ -1719,10 +1745,11 @@ void MDIGizmo::connect_to_last_selected() {
 		_mdr->set_array(mdr_arr);
 
 		add_mesh_change_undo_redo(orig_arr, _mdr->get_array(), "Connect to last selected");
-		enable_change_event();
 	} else if (selection_mode == SELECTION_MODE_EDGE) {
 	} else if (selection_mode == SELECTION_MODE_FACE) {
 	}
+
+	enable_change_event();
 }
 
 PoolIntArray MDIGizmo::get_first_index_pair_for_edge(int edge) {
@@ -1837,8 +1864,8 @@ void MDIGizmo::mark_seam() {
 		}
 
 		_undo_redo->create_action("mark_seam");
-		_undo_redo->add_do_method(this, "set_seam", _mdr, copy_pool_int_array(_mdr->get_seams()));
-		_undo_redo->add_undo_method(this, "set_seam", _mdr, prev_seams);
+		_undo_redo->add_do_method(_mdr.ptr(), "set_seams", copy_pool_int_array(_mdr->get_seams()));
+		_undo_redo->add_undo_method(_mdr.ptr(), "set_seams", prev_seams);
 		_undo_redo->commit_action();
 
 		enable_change_event();
@@ -1872,8 +1899,8 @@ void MDIGizmo::unmark_seam() {
 		}
 
 		_undo_redo->create_action("unmark_seam");
-		_undo_redo->add_do_method(this, "set_seam", _mdr, copy_pool_int_array(_mdr->get_seams()));
-		_undo_redo->add_undo_method(this, "set_seam", _mdr, prev_seams);
+		_undo_redo->add_do_method(_mdr.ptr(), "set_seams", copy_pool_int_array(_mdr->get_seams()));
+		_undo_redo->add_undo_method(_mdr.ptr(), "set_seams", prev_seams);
 		_undo_redo->commit_action();
 
 		enable_change_event();
@@ -1999,19 +2026,19 @@ void MDIGizmo::flip_selected_faces() {
 void MDIGizmo::add_mesh_change_undo_redo(const Array &orig_arr, const Array &new_arr, const String &action_name) {
 	_undo_redo->create_action(action_name);
 	Array nac = copy_arrays(new_arr);
-	_undo_redo->add_do_method(this, "apply_mesh_change", _mdr, nac);
-	_undo_redo->add_undo_method(this, "apply_mesh_change", _mdr, orig_arr);
+	_undo_redo->add_do_method(_mdr.ptr(), "set_array", nac);
+	_undo_redo->add_undo_method(_mdr.ptr(), "set_array", orig_arr);
 	_undo_redo->commit_action();
 }
 void MDIGizmo::add_mesh_seam_change_undo_redo(const Array &orig_arr, const PoolIntArray &orig_seams, const Array &new_arr, const PoolIntArray &new_seams, const String &action_name) {
 	_undo_redo->create_action(action_name);
 	Array nac = copy_arrays(new_arr);
 
-	_undo_redo->add_do_method(this, "apply_mesh_change", _mdr, nac);
-	_undo_redo->add_undo_method(this, "apply_mesh_change", _mdr, orig_arr);
+	_undo_redo->add_do_method(_mdr.ptr(), "set_array", nac);
+	_undo_redo->add_undo_method(_mdr.ptr(), "set_array", orig_arr);
 
-	_undo_redo->add_do_method(this, "set_seam", _mdr, copy_pool_int_array(new_seams));
-	_undo_redo->add_undo_method(this, "set_seam", _mdr, orig_seams);
+	_undo_redo->add_do_method(_mdr.ptr(), "set_seams", copy_pool_int_array(new_seams));
+	_undo_redo->add_undo_method(_mdr.ptr(), "set_seams", orig_seams);
 
 	_undo_redo->commit_action();
 }
