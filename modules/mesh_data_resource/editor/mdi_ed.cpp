@@ -796,7 +796,7 @@ MDIEd::MDIEd() {
 
 	action_button = memnew(Button);
 	action_button->set_text("Tangents");
-	action_button->connect("pressed", this, "on_remove_doubles_pressed");
+	action_button->connect("pressed", this, "on_generate_tangents_pressed");
 	operations_container->add_child(action_button);
 
 	action_label = memnew(Label);
