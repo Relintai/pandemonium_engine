@@ -611,9 +611,9 @@ MDIEd::MDIEd() {
 	action_button->set_custom_minimum_size(Size2(25, 20));
 	action_button->set_tooltip("Outline");
 	action_button->set_h_size_flags(SIZE_EXPAND_FILL);
-	action_button->connect("toggled", this, "on_handle_selection_type_front_toggled");
+	action_button->connect("toggled", this, "on_visual_indicator_outline_toggled");
 	action_buttons_container->add_child(action_button);
-
+	
 	action_button = memnew(Button);
 	action_button->set_text("S");
 	action_button->set_toggle_mode(true);
@@ -621,7 +621,7 @@ MDIEd::MDIEd() {
 	action_button->set_custom_minimum_size(Size2(25, 20));
 	action_button->set_tooltip("Seam");
 	action_button->set_h_size_flags(SIZE_EXPAND_FILL);
-	action_button->connect("toggled", this, "on_handle_selection_type_back_toggled");
+	action_button->connect("toggled", this, "on_visual_indicator_seam_toggled");
 	action_buttons_container->add_child(action_button);
 
 	action_button = memnew(Button);
@@ -631,7 +631,7 @@ MDIEd::MDIEd() {
 	action_button->set_custom_minimum_size(Size2(25, 20));
 	action_button->set_tooltip("Handle");
 	action_button->set_h_size_flags(SIZE_EXPAND_FILL);
-	action_button->connect("toggled", this, "on_handle_selection_type_all_toggled");
+	action_button->connect("toggled", this, "on_visual_indicator_handle_toggled");
 	action_buttons_container->add_child(action_button);
 
 	// -- Scroll -- Separator
