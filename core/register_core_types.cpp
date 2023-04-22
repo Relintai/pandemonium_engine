@@ -100,6 +100,7 @@ static ThreadPool *thread_pool = NULL;
 
 static IP *ip = nullptr;
 
+static _Math *_math = nullptr;
 static _Geometry *_geometry = nullptr;
 
 extern Mutex _global_mutex;
@@ -227,6 +228,7 @@ void register_core_types() {
 
 	ip = IP::create();
 
+	_math = memnew(_Math);
 	_geometry = memnew(_Geometry);
 
 	_resource_loader = memnew(_ResourceLoader);
@@ -257,6 +259,7 @@ void register_core_settings() {
 void register_core_singletons() {
 	ClassDB::register_class<ProjectSettings>();
 	ClassDB::register_virtual_class<IP>();
+	ClassDB::register_class<_Math>();
 	ClassDB::register_class<_Geometry>();
 	ClassDB::register_class<_ResourceLoader>();
 	ClassDB::register_class<_ResourceSaver>();
@@ -277,6 +280,7 @@ void register_core_singletons() {
 
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ProjectSettings", ProjectSettings::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("IP", IP::get_singleton()));
+	Engine::get_singleton()->add_singleton(Engine::Singleton("Math", _Math::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Geometry", _Geometry::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ResourceLoader", _ResourceLoader::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ResourceSaver", _ResourceSaver::get_singleton()));
@@ -303,6 +307,7 @@ void unregister_core_types() {
 	memdelete(_json);
 	memdelete(_plogger);
 
+	memdelete(_math);
 	memdelete(_geometry);
 	memdelete(thread_pool);
 

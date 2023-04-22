@@ -204,6 +204,12 @@ public:
 	static _ALWAYS_INLINE_ int64_t abs(int64_t g) {
 		return g > 0 ? g : -g;
 	}
+	static _ALWAYS_INLINE_ int absi(int g) {
+		return g > 0 ? g : -g;
+	}
+	static _ALWAYS_INLINE_ int64_t absi(int64_t g) {
+		return g > 0 ? g : -g;
+	}
 
 	static _ALWAYS_INLINE_ double fposmod(double p_x, double p_y) {
 		double value = Math::fmod(p_x, p_y);
@@ -431,6 +437,9 @@ public:
 	static float random(float from, float to);
 	static real_t randomr(real_t from, real_t to);
 	static int random(int from, int to);
+	static _ALWAYS_INLINE_ int randomi(int from, int to) {
+		return random(from, to);
+	}
 
 	static _ALWAYS_INLINE_ bool is_equal_approx_ratio(real_t a, real_t b, real_t epsilon = CMP_EPSILON, real_t min_epsilon = CMP_EPSILON) {
 		// this is an approximate way to check that numbers are close, as a ratio of their average size
@@ -458,6 +467,15 @@ public:
 	}
 
 	static _ALWAYS_INLINE_ bool is_equal_approx(float a, float b, float tolerance) {
+		// Check for exact equality first, required to handle "infinity" values.
+		if (a == b) {
+			return true;
+		}
+		// Then check for approximate equality.
+		return abs(a - b) < tolerance;
+	}
+
+	static _ALWAYS_INLINE_ bool is_equal_approxt(float a, float b, float tolerance) {
 		// Check for exact equality first, required to handle "infinity" values.
 		if (a == b) {
 			return true;

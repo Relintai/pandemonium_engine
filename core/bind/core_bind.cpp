@@ -1615,6 +1615,101 @@ _OS::_OS() {
 	singleton = this;
 }
 
+///////////////////// MATH
+
+_Math *_Math::singleton = nullptr;
+
+_Math *_Math::get_singleton() {
+	return singleton;
+}
+
+_Math::_Math() {
+	singleton = this;
+}
+
+void _Math::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("sin", "x"), &_Math::sin);
+	ClassDB::bind_method(D_METHOD("cos", "x"), &_Math::cos);
+	ClassDB::bind_method(D_METHOD("tan", "x"), &_Math::tan);
+	ClassDB::bind_method(D_METHOD("sinh", "x"), &_Math::sinh);
+	ClassDB::bind_method(D_METHOD("sinc", "x"), &_Math::sinc);
+	ClassDB::bind_method(D_METHOD("sincn", "x"), &_Math::sincn);
+	ClassDB::bind_method(D_METHOD("cosh", "x"), &_Math::cosh);
+	ClassDB::bind_method(D_METHOD("tanh", "x"), &_Math::tanh);
+	ClassDB::bind_method(D_METHOD("asin", "x"), &_Math::asin);
+	ClassDB::bind_method(D_METHOD("acos", "x"), &_Math::acos);
+	ClassDB::bind_method(D_METHOD("atan", "x"), &_Math::atan);
+	ClassDB::bind_method(D_METHOD("atan2", "y", "x"), &_Math::atan2);
+
+	ClassDB::bind_method(D_METHOD("sqrt", "x"), &_Math::sqrt);
+	ClassDB::bind_method(D_METHOD("fmod", "x", "y"), &_Math::fmod);
+	ClassDB::bind_method(D_METHOD("floor", "x"), &_Math::floor);
+	ClassDB::bind_method(D_METHOD("floorf_int", "x"), &_Math::floorf_int);
+	ClassDB::bind_method(D_METHOD("ceil", "x"), &_Math::ceil);
+	ClassDB::bind_method(D_METHOD("pow", "x", "y"), &_Math::pow);
+	ClassDB::bind_method(D_METHOD("log", "x"), &_Math::log);
+	ClassDB::bind_method(D_METHOD("log1p", "x"), &_Math::log1p);
+	ClassDB::bind_method(D_METHOD("log10", "x"), &_Math::log10);
+	ClassDB::bind_method(D_METHOD("log2", "x"), &_Math::log2);
+	ClassDB::bind_method(D_METHOD("exp", "x"), &_Math::exp);
+
+	ClassDB::bind_method(D_METHOD("is_nan", "val"), &_Math::is_nan);
+	ClassDB::bind_method(D_METHOD("is_inf", "val"), &_Math::is_inf);
+
+	ClassDB::bind_method(D_METHOD("abs", "g"), &_Math::abs);
+	ClassDB::bind_method(D_METHOD("absi", "g"), &_Math::absi);
+	ClassDB::bind_method(D_METHOD("fposmod", "x", "y"), &_Math::fposmod);
+	ClassDB::bind_method(D_METHOD("fposmodp", "x", "y"), &_Math::fposmodp);
+	ClassDB::bind_method(D_METHOD("posmod", "x", "y"), &_Math::posmod);
+	ClassDB::bind_method(D_METHOD("deg2rad", "y"), &_Math::deg2rad);
+	ClassDB::bind_method(D_METHOD("rad2deg", "y"), &_Math::rad2deg);
+
+	ClassDB::bind_method(D_METHOD("lerp", "from", "to", "weight"), &_Math::lerp);
+	ClassDB::bind_method(D_METHOD("lerp_angle", "from", "to", "weight"), &_Math::lerp_angle);
+	ClassDB::bind_method(D_METHOD("inverse_lerp", "from", "to", "value"), &_Math::inverse_lerp);
+	ClassDB::bind_method(D_METHOD("range_lerp", "value", "istart", "istop", "ostart", "ostop"), &_Math::range_lerp);
+	ClassDB::bind_method(D_METHOD("cubic_interpolate", "from", "to", "pre", "post", "weight"), &_Math::cubic_interpolate);
+	ClassDB::bind_method(D_METHOD("bezier_interpolate", "start", "control_1", "control_2", "end", "t"), &_Math::bezier_interpolate);
+	ClassDB::bind_method(D_METHOD("smoothstep", "from", "to", "s"), &_Math::smoothstep);
+	ClassDB::bind_method(D_METHOD("move_toward", "from", "to", "delta"), &_Math::move_toward);
+
+	ClassDB::bind_method(D_METHOD("linear2db", "linear"), &_Math::linear2db);
+	ClassDB::bind_method(D_METHOD("db2linear", "db"), &_Math::db2linear);
+
+	ClassDB::bind_method(D_METHOD("round", "val"), &_Math::round);
+	ClassDB::bind_method(D_METHOD("wrapi", "value", "min", "max"), &_Math::wrapi);
+	ClassDB::bind_method(D_METHOD("wrapf", "value", "min", "max"), &_Math::wrapf);
+	ClassDB::bind_method(D_METHOD("fract", "value"), &_Math::fract);
+	ClassDB::bind_method(D_METHOD("pingpong", "value", "length"), &_Math::pingpong);
+	ClassDB::bind_method(D_METHOD("ease", "x", "c"), &_Math::ease);
+	ClassDB::bind_method(D_METHOD("step_decimals", "step"), &_Math::step_decimals);
+	ClassDB::bind_method(D_METHOD("range_step_decimals", "step"), &_Math::range_step_decimals);
+	ClassDB::bind_method(D_METHOD("stepify", "value", "step"), &_Math::stepify);
+	ClassDB::bind_method(D_METHOD("dectime", "value", "amount", "step"), &_Math::dectime);
+
+	ClassDB::bind_method(D_METHOD("larger_prime", "val"), &_Math::larger_prime);
+	ClassDB::bind_method(D_METHOD("seed", "x"), &_Math::seed);
+	ClassDB::bind_method(D_METHOD("randomize"), &_Math::randomize);
+	ClassDB::bind_method(D_METHOD("rand"), &_Math::rand);
+	ClassDB::bind_method(D_METHOD("randd"), &_Math::randd);
+	ClassDB::bind_method(D_METHOD("randf"), &_Math::randf);
+	ClassDB::bind_method(D_METHOD("randfn", "mean", "deviation"), &_Math::randfn);
+	ClassDB::bind_method(D_METHOD("random", "from", "to"), &_Math::random);
+	ClassDB::bind_method(D_METHOD("randomi", "from", "to"), &_Math::randomi);
+
+	ClassDB::bind_method(D_METHOD("is_equal_approx_ratio", "a", "b", "epsilon", "min_epsilon"), &_Math::is_equal_approx_ratio, CMP_EPSILON, CMP_EPSILON);
+	ClassDB::bind_method(D_METHOD("is_equal_approx", "a", "b"), &_Math::is_equal_approx);
+	ClassDB::bind_method(D_METHOD("is_equal_approxt", "a", "b", "tolerance"), &_Math::is_equal_approxt);
+	ClassDB::bind_method(D_METHOD("is_zero_approx", "s"), &_Math::is_zero_approx);
+	ClassDB::bind_method(D_METHOD("absd", "g"), &_Math::absd);
+	ClassDB::bind_method(D_METHOD("fast_ftoi", "a"), &_Math::fast_ftoi);
+	ClassDB::bind_method(D_METHOD("halfbits_to_floatbits", "h"), &_Math::halfbits_to_floatbits);
+	ClassDB::bind_method(D_METHOD("half_to_float", "h"), &_Math::half_to_float);
+	ClassDB::bind_method(D_METHOD("make_half_float", "f"), &_Math::make_half_float);
+	ClassDB::bind_method(D_METHOD("snap_scalar", "offset", "step", "target"), &_Math::snap_scalar);
+	ClassDB::bind_method(D_METHOD("snap_scalar_separation", "offset", "step", "target", "separation"), &_Math::snap_scalar_separation);
+}
+
 ///////////////////// GEOMETRY
 
 _Geometry *_Geometry::singleton = nullptr;

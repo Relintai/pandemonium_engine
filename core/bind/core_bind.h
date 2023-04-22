@@ -34,6 +34,7 @@
 #include "core/io/image.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
+#include "core/math/math_funcs.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
@@ -432,6 +433,302 @@ VARIANT_ENUM_CAST(_OS::VirtualKeyboardType);
 VARIANT_ENUM_CAST(_OS::SystemDir);
 VARIANT_ENUM_CAST(_OS::ScreenOrientation);
 VARIANT_ENUM_CAST(_OS::HandleType);
+
+class _Math : public Object {
+	GDCLASS(_Math, Object);
+
+public:
+	_ALWAYS_INLINE_ real_t sin(real_t p_x) {
+		return Math::sin(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t cos(real_t p_x) {
+		return Math::cos(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t tan(real_t p_x) {
+		return Math::tan(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t sinh(real_t p_x) {
+		return Math::sinh(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t sinc(real_t p_x) {
+		return Math::sinc(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t sincn(real_t p_x) {
+		return Math::sincn(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t cosh(real_t p_x) {
+		return Math::cosh(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t tanh(real_t p_x) {
+		return Math::tanh(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t asin(real_t p_x) {
+		return Math::asin(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t acos(real_t p_x) {
+		return Math::acos(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t atan(real_t p_x) {
+		return Math::atan(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t atan2(real_t p_y, real_t p_x) {
+		return Math::atan2(p_y, p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t sqrt(real_t p_x) {
+		return Math::sqrt(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t fmod(real_t p_x, real_t p_y) {
+		return Math::fmod(p_x, p_y);
+	}
+
+	_ALWAYS_INLINE_ real_t floor(real_t p_x) {
+		return Math::floor(p_x);
+	}
+
+	_ALWAYS_INLINE_ int floorf_int(const float p_x) {
+		return Math::floorf_int(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t ceil(real_t p_x) {
+		return Math::ceil(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t pow(real_t p_x, real_t p_y) {
+		return Math::pow(p_x, p_y);
+	}
+
+	_ALWAYS_INLINE_ real_t log(real_t p_x) {
+		return Math::log(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t log1p(real_t p_x) {
+		return Math::log1p(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t log10(real_t p_x) {
+		return Math::log10(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t log2(real_t p_x) {
+		return Math::log2(p_x);
+	}
+
+	_ALWAYS_INLINE_ real_t exp(real_t p_x) {
+		return Math::exp(p_x);
+	}
+
+	_ALWAYS_INLINE_ bool is_nan(real_t p_val) {
+		return Math::is_nan(p_val);
+	}
+
+	_ALWAYS_INLINE_ bool is_inf(real_t p_val) {
+		return Math::is_inf(p_val);
+	}
+
+	_ALWAYS_INLINE_ real_t abs(real_t g) {
+		return Math::abs(g);
+	}
+
+	_ALWAYS_INLINE_ int absi(int g) {
+		return Math::abs(g);
+	}
+
+	_ALWAYS_INLINE_ real_t fposmod(real_t p_x, real_t p_y) {
+		return Math::fposmod(p_x, p_y);
+	}
+
+	_ALWAYS_INLINE_ real_t fposmodp(real_t p_x, real_t p_y) {
+		return Math::fposmodp(p_x, p_y);
+	}
+
+	_ALWAYS_INLINE_ int64_t posmod(int64_t p_x, int64_t p_y) {
+		return Math::posmod(p_x, p_y);
+	}
+
+	_ALWAYS_INLINE_ real_t deg2rad(real_t p_y) {
+		return Math::deg2rad(p_y);
+	}
+
+	_ALWAYS_INLINE_ real_t rad2deg(real_t p_y) {
+		return Math::rad2deg(p_y);
+	}
+
+	_ALWAYS_INLINE_ real_t lerp(real_t p_from, real_t p_to, real_t p_weight) {
+		return Math::lerp(p_from, p_to, p_weight);
+	}
+
+	_ALWAYS_INLINE_ real_t lerp_angle(real_t p_from, real_t p_to, real_t p_weight) {
+		return Math::lerp_angle(p_from, p_to, p_weight);
+	}
+
+	_ALWAYS_INLINE_ real_t inverse_lerp(real_t p_from, real_t p_to, real_t p_value) {
+		return Math::inverse_lerp(p_from, p_to, p_value);
+	}
+
+	_ALWAYS_INLINE_ real_t range_lerp(real_t p_value, real_t p_istart, real_t p_istop, real_t p_ostart, real_t p_ostop) {
+		return Math::range_lerp(p_value, p_istart, p_istop, p_ostart, p_ostop);
+	}
+
+	_ALWAYS_INLINE_ real_t cubic_interpolate(real_t p_from, real_t p_to, real_t p_pre, real_t p_post, real_t p_weight) {
+		return Math::cubic_interpolate(p_from, p_to, p_pre, p_post, p_weight);
+	}
+
+	_ALWAYS_INLINE_ real_t bezier_interpolate(real_t p_start, real_t p_control_1, real_t p_control_2, real_t p_end, real_t p_t) {
+		return Math::bezier_interpolate(p_start, p_control_1, p_control_2, p_end, p_t);
+	}
+
+	_ALWAYS_INLINE_ real_t smoothstep(real_t p_from, real_t p_to, real_t p_s) {
+		return Math::smoothstep(p_from, p_to, p_s);
+	}
+
+	_ALWAYS_INLINE_ real_t move_toward(real_t p_from, real_t p_to, real_t p_delta) {
+		return Math::move_toward(p_from, p_to, p_delta);
+	}
+
+	_ALWAYS_INLINE_ real_t linear2db(real_t p_linear) {
+		return Math::linear2db(p_linear);
+	}
+
+	_ALWAYS_INLINE_ real_t db2linear(real_t p_db) {
+		return Math::db2linear(p_db);
+	}
+
+	_ALWAYS_INLINE_ real_t round(real_t p_val) {
+		return Math::round(p_val);
+	}
+
+	_ALWAYS_INLINE_ int64_t wrapi(int64_t value, int64_t min, int64_t max) {
+		return Math::wrapi(value, min, max);
+	}
+
+	_ALWAYS_INLINE_ real_t wrapf(real_t value, real_t min, real_t max) {
+		return Math::wrapf(value, min, max);
+	}
+
+	_ALWAYS_INLINE_ real_t fract(real_t value) {
+		return Math::fract(value);
+	}
+
+	_ALWAYS_INLINE_ real_t pingpong(real_t value, real_t length) {
+		return Math::pingpong(value, length);
+	}
+
+	_ALWAYS_INLINE_ double ease(double p_x, double p_c) {
+		return Math::ease(p_x, p_c);
+	}
+
+	_ALWAYS_INLINE_ int step_decimals(double p_step) {
+		return Math::step_decimals(p_step);
+	}
+
+	_ALWAYS_INLINE_ int range_step_decimals(double p_step) {
+		return Math::range_step_decimals(p_step);
+	}
+	_ALWAYS_INLINE_ double stepify(double p_value, double p_step) {
+		return Math::stepify(p_value, p_step);
+	}
+
+	_ALWAYS_INLINE_ double dectime(double p_value, double p_amount, double p_step) {
+		return Math::dectime(p_value, p_amount, p_step);
+	}
+
+	_ALWAYS_INLINE_ uint32_t larger_prime(uint32_t p_val) {
+		return Math::larger_prime(p_val);
+	}
+
+	_ALWAYS_INLINE_ void seed(uint64_t x) {
+		return Math::seed(x);
+	}
+	_ALWAYS_INLINE_ void randomize() {
+		return Math::randomize();
+	}
+
+	_ALWAYS_INLINE_ uint32_t rand() {
+		return Math::rand();
+	}
+
+	_ALWAYS_INLINE_ double randd() {
+		return Math::randd();
+	}
+	_ALWAYS_INLINE_ float randf() {
+		return Math::randf();
+	}
+	_ALWAYS_INLINE_ double randfn(double mean, double deviation) {
+		return Math::randfn(mean, deviation);
+	}
+
+	_ALWAYS_INLINE_ real_t random(real_t from, real_t to) {
+		return Math::random(from, to);
+	}
+	_ALWAYS_INLINE_ int randomi(int from, int to) {
+		return Math::random(from, to);
+	}
+
+	_ALWAYS_INLINE_ bool is_equal_approx_ratio(real_t a, real_t b, real_t epsilon = CMP_EPSILON, real_t min_epsilon = CMP_EPSILON) {
+		return Math::is_equal_approx_ratio(a, b, epsilon, min_epsilon);
+	}
+
+	_ALWAYS_INLINE_ bool is_equal_approx(real_t a, real_t b) {
+		return Math::is_equal_approx(a, b);
+	}
+
+	_ALWAYS_INLINE_ bool is_equal_approxt(real_t a, real_t b, real_t tolerance) {
+		return Math::is_equal_approx(a, b, tolerance);
+	}
+
+	_ALWAYS_INLINE_ bool is_zero_approx(real_t s) {
+		return Math::is_zero_approx(s);
+	}
+
+	_ALWAYS_INLINE_ real_t absd(real_t g) {
+		return Math::absd(g);
+	}
+
+	_ALWAYS_INLINE_ int fast_ftoi(float a) {
+		return Math::fast_ftoi(a);
+	}
+
+	_ALWAYS_INLINE_ uint32_t halfbits_to_floatbits(uint16_t h) {
+		return Math::halfbits_to_floatbits(h);
+	}
+
+	_ALWAYS_INLINE_ float half_to_float(const uint16_t h) {
+		return Math::half_to_float(h);
+	}
+
+	_ALWAYS_INLINE_ uint16_t make_half_float(float f) {
+		return Math::make_half_float(f);
+	}
+
+	_ALWAYS_INLINE_ float snap_scalar(float p_offset, float p_step, float p_target) {
+		return Math::snap_scalar(p_offset, p_step, p_target);
+	}
+
+	_ALWAYS_INLINE_ float snap_scalar_separation(float p_offset, float p_step, float p_target, float p_separation) {
+		return Math::snap_scalar_separation(p_offset, p_step, p_target, p_separation);
+	}
+
+	static _Math *get_singleton();
+
+	_Math();
+
+protected:
+	static void _bind_methods();
+	static _Math *singleton;
+};
 
 class _Geometry : public Object {
 	GDCLASS(_Geometry, Object);
