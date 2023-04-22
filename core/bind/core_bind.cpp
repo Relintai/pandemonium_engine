@@ -1652,6 +1652,7 @@ void _Math::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("log10", "x"), &_Math::log10);
 	ClassDB::bind_method(D_METHOD("log2", "x"), &_Math::log2);
 	ClassDB::bind_method(D_METHOD("exp", "x"), &_Math::exp);
+	ClassDB::bind_method(D_METHOD("erf", "x"), &_Math::erf);
 
 	ClassDB::bind_method(D_METHOD("is_nan", "val"), &_Math::is_nan);
 	ClassDB::bind_method(D_METHOD("is_inf", "val"), &_Math::is_inf);

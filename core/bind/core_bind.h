@@ -530,6 +530,10 @@ public:
 		return Math::exp(p_x);
 	}
 
+	_ALWAYS_INLINE_ real_t erf(real_t p_x) {
+		return Math::erf(p_x);
+	}
+
 	_ALWAYS_INLINE_ bool is_nan(real_t p_val) {
 		return Math::is_nan(p_val);
 	}
