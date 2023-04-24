@@ -40,6 +40,10 @@
 #include "core/os/thread.h"
 #endif
 
+#ifdef DEV_ENABLED
+#include "core/os/thread.h"
+#endif
+
 void InputDefault::SpeedTrack::update(const Vector2 &p_delta_p) {
 	uint64_t tick = OS::get_singleton()->get_ticks_usec();
 	uint32_t tdiff = tick - last_tick;
