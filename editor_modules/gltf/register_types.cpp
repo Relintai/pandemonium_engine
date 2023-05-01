@@ -34,6 +34,8 @@
 
 #include "extensions/gltf_document_extension.h"
 #include "extensions/gltf_spec_gloss.h"
+#include "extensions/physics/gltf_document_extension_physics.h"
+#include "gltf_document.h"
 #include "gltf_state.h"
 
 #ifdef TOOLS_ENABLED
@@ -49,6 +51,11 @@ static void _editor_init() {
 	ResourceImporterScene::get_singleton()->add_importer(import_gltf);
 }
 #endif
+
+#define GLTF_REGISTER_DOCUMENT_EXTENSION(m_doc_ext_class) \
+	Ref<m_doc_ext_class> extension_##m_doc_ext_class;     \
+	extension_##m_doc_ext_class.instance();               \
+	GLTFDocument::register_gltf_document_extension(extension_##m_doc_ext_class);
 
 void register_gltf_types(ModuleRegistrationLevel p_level) {
 #ifdef TOOLS_ENABLED
@@ -69,20 +76,24 @@ void register_gltf_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<GLTFAnimation>();
 		ClassDB::register_class<GLTFBufferView>();
 		ClassDB::register_class<GLTFAccessor>();
+		ClassDB::register_class<GLTFCollider>();
 		ClassDB::register_class<GLTFTexture>();
 		ClassDB::register_class<GLTFTextureSampler>();
 		ClassDB::register_class<GLTFSkeleton>();
 		ClassDB::register_class<GLTFSkin>();
 		ClassDB::register_class<GLTFCamera>();
 		ClassDB::register_class<GLTFLight>();
+		ClassDB::register_class<GLTFPhysicsBody>();
 		ClassDB::register_class<GLTFState>();
 		ClassDB::register_class<GLTFDocument>();
 		ClassDB::register_class<GLTFDocumentExtension>();
 		ClassDB::register_class<PackedSceneGLTF>();
+		GLTF_REGISTER_DOCUMENT_EXTENSION(GLTFDocumentExtensionPhysics);
 	}
 }
 
 void unregister_gltf_types(ModuleRegistrationLevel p_level) {
+	GLTFDocument::unregister_all_gltf_document_extensions();
 }
 
 #endif // _3D_DISABLED
