@@ -31,6 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/math/vector2.h"
+
 #include <android/log.h>
 #include <jni.h>
 
@@ -44,6 +46,8 @@ private:
 
 	jmethodID _request_pointer_capture = 0;
 	jmethodID _release_pointer_capture = 0;
+
+	jmethodID _configure_pointer_icon = 0;
 	jmethodID _set_pointer_icon = 0;
 
 public:
@@ -54,6 +58,8 @@ public:
 
 	void request_pointer_capture();
 	void release_pointer_capture();
+
+	void configure_pointer_icon(int pointer_type, const String &image_path, const Vector2 &p_hotspot);
 	void set_pointer_icon(int pointer_type);
 
 	~PandemoniumJavaViewWrapper();

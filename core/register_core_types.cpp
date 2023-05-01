@@ -111,6 +111,8 @@ extern void register_variant_methods();
 extern void unregister_variant_methods();
 
 void register_core_types() {
+	OS::get_singleton()->benchmark_begin_measure("register_core_types");
+
 	MemoryPool::setup();
 
 	StringName::setup();
@@ -241,6 +243,8 @@ void register_core_types() {
 	_plogger = memnew(_PLogger);
 
 	thread_pool = memnew(ThreadPool);
+
+	OS::get_singleton()->benchmark_end_measure("register_core_types");
 }
 
 void register_core_settings() {
@@ -298,6 +302,8 @@ void register_core_singletons() {
 }
 
 void unregister_core_types() {
+	OS::get_singleton()->benchmark_begin_measure("unregister_core_types");
+
 	memdelete(_resource_loader);
 	memdelete(_resource_saver);
 	memdelete(_os);
@@ -349,4 +355,6 @@ void unregister_core_types() {
 	StringName::cleanup();
 
 	MemoryPool::cleanup();
+
+	OS::get_singleton()->benchmark_end_measure("unregister_core_types");
 }

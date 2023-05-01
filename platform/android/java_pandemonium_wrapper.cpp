@@ -83,6 +83,9 @@ PandemoniumJavaWrapper::PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity
 	_create_new_pandemonium_instance = p_env->GetMethodID(pandemonium_class, "createNewPandemoniumInstance", "([Ljava/lang/String;)I");
 	_request_framebuffer_swap = p_env->GetMethodID(pandemonium_class, "requestFramebufferSwap", "()V");
 	_get_render_view = p_env->GetMethodID(pandemonium_class, "getRenderView", "()Lnet/relintai/pandemonium/pandemonium/PandemoniumView;");
+	_begin_benchmark_measure = p_env->GetMethodID(pandemonium_class, "beginBenchmarkMeasure", "(Ljava/lang/String;)V");
+	_end_benchmark_measure = p_env->GetMethodID(pandemonium_class, "endBenchmarkMeasure", "(Ljava/lang/String;)V");
+	_dump_benchmark = p_env->GetMethodID(pandemonium_class, "dumpBenchmark", "(Ljava/lang/String;)V");
 
 	// get some Activity method pointers...
 	_get_class_loader = p_env->GetMethodID(activity_class, "getClassLoader", "()Ljava/lang/ClassLoader;");
@@ -424,5 +427,32 @@ void PandemoniumJavaWrapper::request_framebuffer_swap() {
 		ERR_FAIL_COND(env == nullptr);
 
 		env->CallVoidMethod(pandemonium_instance, _request_framebuffer_swap);
+	}
+}
+
+void PandemoniumJavaWrapper::begin_benchmark_measure(const String &p_label) {
+	if (_begin_benchmark_measure) {
+		JNIEnv *env = get_jni_env();
+		ERR_FAIL_NULL(env);
+		jstring j_label = env->NewStringUTF(p_label.utf8().get_data());
+		env->CallVoidMethod(pandemonium_instance, _begin_benchmark_measure, j_label);
+	}
+}
+
+void PandemoniumJavaWrapper::end_benchmark_measure(const String &p_label) {
+	if (_end_benchmark_measure) {
+		JNIEnv *env = get_jni_env();
+		ERR_FAIL_NULL(env);
+		jstring j_label = env->NewStringUTF(p_label.utf8().get_data());
+		env->CallVoidMethod(pandemonium_instance, _end_benchmark_measure, j_label);
+	}
+}
+
+void PandemoniumJavaWrapper::dump_benchmark(const String &benchmark_file) {
+	if (_dump_benchmark) {
+		JNIEnv *env = get_jni_env();
+		ERR_FAIL_NULL(env);
+		jstring j_benchmark_file = env->NewStringUTF(benchmark_file.utf8().get_data());
+		env->CallVoidMethod(pandemonium_instance, _dump_benchmark, j_benchmark_file);
 	}
 }

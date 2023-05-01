@@ -108,6 +108,9 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		if (args != null && args.isNotEmpty()) {
 			commandLineParams.addAll(listOf(*args))
 		}
+		if (BuildConfig.BUILD_TYPE == "dev") {
+			commandLineParams.add("--benchmark")
+		}
 	}
 
 	override fun getCommandLine() = commandLineParams
@@ -117,7 +120,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		var targetClass: Class<*> = PandemoniumGame::class.java
 		var instanceId = GAME_ID
 
-		// Whether we should launch the new godot instance in an adjacent window
+		// Whether we should launch the new pandemonium instance in an adjacent window
 		// https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_LAUNCH_ADJACENT
 		var launchAdjacent = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && (isInMultiWindowMode || isLargeScreen)
 
@@ -220,12 +223,12 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
   	protected open fun overrideOrientationRequest() = true
 
   	/**
-	 * Enable long press gestures for the Godot Android editor.
+	 * Enable long press gestures for the Pandemonium Android editor.
 	 */
 	protected open fun enableLongPressGestures() = true
 
 	/**
-	 * Enable pan and scale gestures for the Godot Android editor.
+	 * Enable pan and scale gestures for the Pandemonium Android editor.
 	 */
 	protected open fun enablePanAndScaleGestures() = true
 

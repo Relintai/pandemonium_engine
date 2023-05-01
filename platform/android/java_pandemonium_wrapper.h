@@ -77,6 +77,9 @@ private:
 	jmethodID _create_new_pandemonium_instance = 0;
 	jmethodID _request_framebuffer_swap = 0;
 	jmethodID _get_render_view = 0;
+	jmethodID _begin_benchmark_measure = 0;
+	jmethodID _end_benchmark_measure = 0;
+	jmethodID _dump_benchmark = 0;
 
 public:
 	PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity, jobject p_pandemonium_instance);
@@ -116,6 +119,9 @@ public:
 	String get_input_fallback_mapping();
 	int create_new_pandemonium_instance(List<String> args);
 	void request_framebuffer_swap();
+	void begin_benchmark_measure(const String &p_label);
+	void end_benchmark_measure(const String &p_label);
+	void dump_benchmark(const String &benchmark_file);
 };
 
 #endif /* !JAVA_PANDEMONIUM_WRAPPER_H */

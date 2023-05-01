@@ -76,6 +76,8 @@ _complete_pandemonium_options() {
 --doctool
 --no-docbase
 --gdnative-generate-json-api
+--benchmark
+--benchmark-file
 --test
 " -- "$1"))
 }

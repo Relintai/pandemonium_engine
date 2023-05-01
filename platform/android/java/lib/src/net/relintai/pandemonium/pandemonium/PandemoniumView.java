@@ -39,14 +39,21 @@ import net.relintai.pandemonium.pandemonium.config.RegularFallbackConfigChooser;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import android.view.PointerIcon;
 
 import androidx.annotation.Keep;
+
+import java.io.InputStream;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -76,6 +83,7 @@ public class PandemoniumView extends PandemoniumGLSurfaceView {
 	private final Pandemonium pandemonium;
 	private final PandemoniumInputHandler inputHandler;
 	private final PandemoniumRenderer pandemoniumRenderer;
+	private final SparseArray<PointerIcon> customPointerIcons = new SparseArray<>();
 
 	private EGLConfigChooser eglConfigChooser;
 	private EGLContextFactory eglContextFactory;
@@ -147,12 +155,47 @@ public class PandemoniumView extends PandemoniumGLSurfaceView {
 	}
 
 	/**
+	 * Used to configure the PointerIcon for the given type.
+	 *
+	 * Called from JNI
+	 */
+	@Keep
+	public void configurePointerIcon(int pointerType, String imagePath, float hotSpotX, float hotSpotY) {
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+			try {
+				Bitmap bitmap = null;
+				if (!TextUtils.isEmpty(imagePath)) {
+					if (pandemonium.getDirectoryAccessHandler().filesystemFileExists(imagePath)) {
+						// Try to load the bitmap from the file system
+						bitmap = BitmapFactory.decodeFile(imagePath);
+					} else if (pandemonium.getDirectoryAccessHandler().assetsFileExists(imagePath)) {
+						// Try to load the bitmap from the assets directory
+						AssetManager am = getContext().getAssets();
+						InputStream imageInputStream = am.open(imagePath);
+						bitmap = BitmapFactory.decodeStream(imageInputStream);
+					}
+				}
+
+				PointerIcon customPointerIcon = PointerIcon.create(bitmap, hotSpotX, hotSpotY);
+				customPointerIcons.put(pointerType, customPointerIcon);
+			} catch (Exception e) {
+				// Reset the custom pointer icon
+				customPointerIcons.delete(pointerType);
+			}
+		}
+	}
+
+	/**
 	 * Called from JNI to change the pointer icon
 	 */
 	@Keep
 	private void setPointerIcon(int pointerType) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-			setPointerIcon(PointerIcon.getSystemIcon(getContext(), pointerType));
+			PointerIcon pointerIcon = customPointerIcons.get(pointerType);
+			if (pointerIcon == null) {
+				pointerIcon = PointerIcon.getSystemIcon(getContext(), pointerType);
+			}
+			setPointerIcon(pointerIcon);
 		}
 	}
 

@@ -72,5 +72,7 @@ _arguments \
   '--export-pack[same as --export, but only export the game pack for the given preset]:export preset name' \
   '--doctool[dump the engine API reference to the given path in XML format, merging if existing files are found]:path to base Pandemonium build directory:_dirs' \
   '--no-docbase[disallow dumping the base types (used with --doctool)]' \
+  '--benchmark[benchmark the run time and print it to console]' \
+  '--benchmark-file[benchmark the run time and save it to a given file in JSON format]:path to output JSON file' \
   '--gdnative-generate-json-api[generate JSON dump of the Pandemonium API for GDNative bindings]' \
   '--test[run a unit test]:unit test name'

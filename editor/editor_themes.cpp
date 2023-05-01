@@ -41,6 +41,7 @@
 #include "core/math/math_funcs.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
+#include "core/os/os.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
 #include "core/typedefs.h"
@@ -151,6 +152,8 @@ static Ref<ImageTexture> editor_generate_icon(int p_index, bool p_convert_color,
 #endif
 
 void editor_register_and_generate_icons(Ref<Theme> p_theme, bool p_dark_theme = true, int p_thumb_size = 32, bool p_only_thumbs = false) {
+	OS::get_singleton()->benchmark_begin_measure("editor_register_and_generate_icons_" + String((p_only_thumbs ? "with_only_thumbs" : "all")));
+
 #ifdef MODULE_SVG_ENABLED
 	// The default icon theme is designed to be used for a dark theme.
 	// This dictionary stores color codes to convert to other colors
@@ -307,9 +310,13 @@ void editor_register_and_generate_icons(Ref<Theme> p_theme, bool p_dark_theme = 
 #else
 	WARN_PRINT("SVG support disabled, editor icons won't be rendered.");
 #endif
+
+	OS::get_singleton()->benchmark_end_measure("editor_register_and_generate_icons_" + String((p_only_thumbs ? "with_only_thumbs" : "all")));
 }
 
 Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
+	OS::get_singleton()->benchmark_begin_measure("create_editor_theme");
+
 	Ref<Theme> theme = Ref<Theme>(memnew(Theme));
 
 	const float default_contrast = 0.25;
@@ -1447,10 +1454,14 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 		setting->load_text_editor_theme();
 	}
 
+	OS::get_singleton()->benchmark_end_measure("create_editor_theme");
+
 	return theme;
 }
 
 Ref<Theme> create_custom_theme(const Ref<Theme> p_theme) {
+	OS::get_singleton()->benchmark_begin_measure("create_custom_theme");
+
 	Ref<Theme> theme = create_editor_theme(p_theme);
 
 	const String custom_theme_path = EditorSettings::get_singleton()->get("interface/theme/custom_theme");
@@ -1460,6 +1471,8 @@ Ref<Theme> create_custom_theme(const Ref<Theme> p_theme) {
 			theme->merge_with(custom_theme);
 		}
 	}
+
+	OS::get_singleton()->benchmark_end_measure("create_custom_theme");
 
 	return theme;
 }

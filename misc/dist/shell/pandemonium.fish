@@ -88,4 +88,6 @@ complete -c pandemonium -l doctool -d "Dump the engine API reference to the give
 complete -c pandemonium -l no-docbase -d "Disallow dumping the base types (used with --doctool)"
 complete -c pandemonium -l build-solutions -d "Build the scripting solutions (e.g. for C# projects)"
 complete -c pandemonium -l gdnative-generate-json-api -d "Generate JSON dump of the Godot API for GDNative bindings"
+complete -c pandemonium -l benchmark -d "Benchmark the run time and print it to console"
+complete -c pandemonium -l benchmark-file -d "Benchmark the run time and save it to a given file in JSON format" -x
 complete -c pandemonium -l test -d "Run a unit test" -x
