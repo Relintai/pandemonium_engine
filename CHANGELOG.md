@@ -2,13 +2,318 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Master] 
+## [Master]
 
-#### Backports
+Nothing yet.
 
-- Backported everything up to and including https://github.com/godotengine/godot/commit/cc60359a6c8b91d5df8c21f09f416b5d2ae87e94 Merge commit: https://github.com/godotengine/godot/commit/adee8cfee6df58744e08ccd03917829cc3faf465
+## [3.11.0]
 
-## [3.10.0] 
+### Added
+
+#### Core
+
+- Added module initialization levels (similar idea to what's in godot4, although I added more).
+- Backported the tight version of godot4's LocalVector as the new TightLocalVector class.
+- Small cleanups for PooledList and PagedAllocator. 
+- Renamed Map to RBMap.
+- Renamed Set to RBSet.
+- Replaced the HashMap's implementation with the one Godot4. Refactored it to work as a drop in replacement. Renamed the old one to OGHashMap.
+- Added more getters to the new HshMap, for more backwards compatibility.
+- Added the rest of the new container classes from godot4.
+- Added utf8_byte_length(), and utf16_byte_length() helper methods to String.
+- Added HAS_TRIVIAL_CONSTRUCTOR, HAS_TRIVIAL_DESTRUCTOR, and HAS_TRIVIAL_COPY macros to typedefs to fix new clang deprecations.
+- Added Size and Point typedefs for Vector3i and Vector4i. 
+- Added log10 to the Math class. 
+- Added a Math singleton exposing math functions directly to scripts. The idea is to make the disrepancies between scripts and engine side code smaller.
+- Added erf to Math. 
+
+#### Servers
+
+- Now more than one Navigation Server can be registered. 
+- Move NavigationServer2d's forwarding logic to the navigation module as a new derived class.
+- Now more than one Naviugation2D servers can be registered. 
+- Allocate the selected navigation srevers. 
+- Add init() virtual methods to the navigation servers. 
+
+#### Editor
+
+- Added a setting to force launch the project in an adjacent window in the android editor.
+- Re-enable remote debugging in the android editor build.
+
+#### Misc
+
+- Added alternate slim args when building the editor with the setup script. Also updated the list and style of the example.
+
+#### Platforms
+
+#### Modules
+
+- Added include guards to all module register_types.h-s.
+
+##### Steering AI
+
+- Added a new steering_ai module. It's a c++ port of https://github.com/GDQuest/godot-steering-ai-framework , with smaller modifications.
+
+##### Web
+
+- Added a new WebServerRequestScriptable class, so different web server request implementations can be created using scripts when needed.
+- Added missing binds in FileCache.
+- Added protocol error handling to the http server simple.
+- Added optional protocol error logging to HTTPParser. Also remove unnecessary error.
+- Set a better self signed cert path for the HTTPServerSimple.
+- Pre-create the required folders for the self signed cert files automatically.
+- Implement sending keep alive connection type if a connection has more than one request for HTTPServerSimple. Also more togglable debugging.
+- Implement max request size limit for HTTPServerSimple. 
+- Now post and get parameters can be set / changed in requests from scripts aswell.
+- Added missing helper method to WebServerRequest. 
+- Added more mimetypes to the HTTPServerSimple. 
+
+##### UnitTest
+
+- Added a new skeleton unit test module with some notes. 
+
+##### EditorCodeEditor
+
+- Move the editor's script text editor into the new code_editor module.
+
+##### ShaderEditor
+
+- Separated shader editor into a new module.
+
+##### Props
+
+- Added noise offset support to TiledWalls.
+
+##### MaterialMaker
+
+- Ported SlopeBlur from MaterialMaker. 
+- Ported the TonesStep Node from MaterialMaker. 
+- Ported the Warp Node from MaterialMaker.
+- Added buttons slots to MMGraphNodes. 
+- Ported the TonesMap from MaterialMaker. 
+- Tones Node + Editor port from MaterialMaker. 
+
+##### NavigationServerDummy
+
+- Added a new dummy navigation server module. 
+- Make sure the dummy navigation server is used automatically if the normal is disabled.
+
+### Fixed
+
+#### Core
+
+- String: Use set_length, instead of resize in String's operator +=.
+- Updated the logic of a few getters in String. 
+- Fix warning on clang.
+
+#### Editor
+
+-  Fix selecting the script editor even if it's not the 3rd in the editor_tables array.
+-  Make sure that the script editor is the 3rd tab.
+
+#### Platforms
+
+- Fix sprintf deprecation warning on osx.
+
+#### Modules
+
+- Now modules in custom folders can properly declare their copyright.txt.
+
+##### Web
+
+- Set _server_quit in WebServerSimple the way it was intended to be used.
+- Fixed multi threading + https in HTTPServerSimple.
+- Fixed more cases of using String.size() instead of String.length(). 
+-  Fix Content-Length calculation in HTTPServerConnection::send when using non-ascii utf-8 characters.
+- Fix handling utf-8 in the MarkdownRenderer. 
+- Use the size struct member when parsing markdown in MarkdownRenderer. 
+- Properly handle non-ascii characters in uris in HTTPParser. 
+- Quick fix for accessing files in the pck file for FileCaches. 
+-  Parse and process http headers in a case insensitive manner in HTTPParser.
+- Fix string parameter parsing in multipart forms, also make multipart form content fields case independent.
+
+##### Skeleton3D
+
+- Fix error spam in the skeleton editor. 
+- Make sure Skeletons set up their initial pose. 
+- Cleanups to Skeleton's bindings. 
+
+
+##### Entity
+
+- Add braces around one liner if-s in Entity.
+- Proper bind parameters for body_instance. 
+
+##### MaterialMaker
+
+
+- Fixed MMSdf3dOpExtrusion's name and added it to the build. 
+- Reworked MMOutputImage. Now it uses a button, and also it works as it should.
+
+##### Paint
+
+- Fixed the tooltip of the Add Paint Canvas button of the PaintProjectToolsPropertyInspector.
+
+##### MeshDataResource
+
+- Reworked undo redo handling in the MeshDataResource Editor. Now it will properly mark the actual resource dirty in all cases. Also fixed other small inconsistencies, and issues.
+- Fix visual indicator toggles in the MeshDataResource editor. 
+- Also fix the tangent generation button in the MeshDataResource editor. 
+
+### Changed
+
+#### Modules
+
+##### CVTT
+
+- Moved the cvtt module to the editor modules folder, as it's tools only.
+
+##### Entity
+
+- Make body related methods in entity have body as their prefix. (For example: get_body_path() -> body_get_path()).
+- Make body_instance in Entity virtual.
+
+##### Props
+
+- Don't serialize editor only omni lights in PropDataLight.
+
+##### Web
+
+- Improved PagedArticleWebPage's api.
+-  Refresh the file cache in WebRoot on NOTIFICATION_READY. 
+
+### Removed
+
+### Core
+
+- Removed the deprecated clamped() method from vector2. (The new method is limit_length().)
+
+#### Modules
+
+##### TileMap
+
+- Removed RTileMap and RTileSet compatibility classes.
+
+### Backports
+
+#### Godot 3.x
+
+Backported everything up to and including https://github.com/godotengine/godot/commit/cc60359a6c8b91d5df8c21f09f416b5d2ae87e94 Merge commit: https://github.com/godotengine/godot/commit/adee8cfee6df58744e08ccd03917829cc3faf465
+
+- Tweak particles animation offset property hint to allow more precise values
+- Fix Tree overflow without scrolling being enabled 
+- Fix RichTextLabel discards appended BBCode text on window resize when using DynamicFont
+- Fix local variables not showing when breaking on final line 
+- Expose API to force file system sync. 
+- Fix stylus tilt Y direction. 
+- iOS: Add new model identifiers for DPI metrics 
+- Support Git worktrees in generation of hash header 
+- Fix get_path() is not working when files are opend with `open_compressed` And also fixed `get_absolute_path()` in the same way
+- Make CollisionShape selection box use shape AABB 
+- Bump json5 from 1.0.1 to 1.0.2 in /platform/web 
+- zlib/minizip: Update to version 1.2.13, remove zlib from freetype Security update, fixes CVE-2022-37434 in zlib.
+- Faster queue free
+- Fix error when dropping script into script editor 
+- Fix for PoolArray comparison - AThousandShips 
+- Set touch input as handled only after _gui_call_input - necrashter
+- GLES2 fix octahedral half float unpacking 
+- Expose OS.read_string_from_stdin() to the scripting API This can be used in scripts to read user input in a blocking manner.
+This also removes the unused `block` argument, which is always `true`.
+- Fixed: Save Branch as Scene not workking in Remote Tree (only work when u pause)
+- Suggest Filename in Remote Tree File Dialog 
+- PopupMenu rework and enhancements Many scrolling behaviour improvements and the ability to limit popup size.
+- Add dumb theme item cache to Control 
+- Windows: Fix heap overflow setting native icon 
+- Update the logic to calculate the screen scale on Android. Takes into account the ratio between the screen size and the default window dimensions.
+- Improve error messages and classref for occluders and portals. Misused functions would previously produce no error messages which was confusing for users.
+- Provide a delegate implementation for the killProcess logic on Android
+- Add a theme usability setting which updates the touch area of UI elements (e.g: scrollbar) for the editor on touchscreen devices
+- Add independent spinbox arrow step precision 
+- Implement file provider capabilities. The previously used file sharing api was restricted after Android N causing the engine to crash whenever used on devices running Android N or higher.
+- Document image size restrictions for custom mouse cursors in HTML5 
+- Fix wrong SpriteFrames docs 
+- Fix Line2D UVs when using BOX end cap mode 
+- Default update_vital_only to true for Android and Web editor
+- Fix the issue causing long-press on a selected node on the scene tree to trigger both the context menu and the rename functionality.
+- Fix RichTextLabel: BBCode [color] tags are not counting in font char spacing
+- Improve the clarity of Viewport's documentation 
+- iOS: Fix memory leak on touch input
+- Fix Editor hanging if audiostream's pitch_scale is NaN 
+- TileSet: Fix resizing collision shape when vertex is outside the tilesheet
+- BVH - fix lockguards for multithread mode 
+- Add error messages for collision exception functions 
+- Backport Tree::set_selected 
+- Backport a simpler version of the accent color for check icons 
+- Document using String.percent_encode() with OS.shell_open()
+- Use the new API for virtual keyboard height detection on Android, bugfix .
+- iOS: Implement missing gamepad.buttonOptions, buttonMenu, and buttonHome joy buttons.
+- Fix AltGR getting stuck on Windows right alt-tab 
+- Fix Xbox Series controller duplicate input 
+- Mention String.match() is also called "glob"/"globbing" 
+- Math: Prevent division by zero in posmod 
+- Add PS3 controller guide button 
+- Sync controller mappings DB with SDL2 community repo 
+- Change message of unknown joypad property from error to warning. 
+- Fix Standard Gamepad Mapping triggers. 
+- increased max touches to 32 for ios 
+- fix shadows pass viewport calculation. ([3.x] Fix shadows when using 2 directional lights)
+- CI: Pin SCons to 4.4.0, the new 4.5.0 is broken 
+- GDScriptParser - don't use index operator on linked list. 
+- Use hash table for GDScript parsing
+- Fix GridMap free navigation RID error spam 
+- Set the unlit / unshaded extension when importing / exporting GLTF 
+- Fix for 2D viewport not updating in the editor when the camera moves 
+- Eliminate collision checks between geometry in rendering BVH. 
+- Add set_value_no_signal() to Range 
+- Add Color + alpha constructor for Color 
+- Fix directory access when the running app has the All files access permission
+- Bump the target SDK version to 33 (Android 13) 
+- Update make_rst.py to match the master version 
+- Make MessageQueue growable 
+- Batching - Add MultiRect command 
+- SurfaceTool - efficiency improvements 
+- Fix null in android text entry system. 
+- [3.x] Don't apply scale to autohide theme property 
+- [3.x] Expose more compression formats in Image 
+- Downgrade android gradle plugin to version 7.2.1. 
+- Make tab's close button responsive to touch taps 
+- Make EditorPropertyLayersGrid responsive to touch taps 
+- Add option in VisibilityEnabler2D to hide the parent for better performance
+- Backport from Godot 4 - Fix RigidDynamicBody gaining momentum with bounce
+- Fix inconsistent file dialog settings usage 
+- Suggest class_name in 3.x autocompletion. 
+- MessageQueue - Fix max usage performance statistic 
+- [3.x] Implement physics support in the GLTF module 
+- Make create folder popup support nested folders 
+- Fix Polygon2D skinned bounds (for culling) 
+- Add benchmark logic
+
+
+#### Godot4
+
+- Convert syntax highlighters into a resource
+- Extract Syntax highlighting from TextEdit and add EditorSyntaxHighlighter
+- Changed line_edited_from(from) to lines_edit_from(from, to)
+- Fix colour region continuation over blank lines, issue 41120
+- Fix color region end key seach and start key order.
+- Switch from recursion to iterative for backfilling colour regions.
+- Fix highlight color for class attributes that are also keywords.
+- Highlight control flow keywords with a different color. This makes them easier to distinguish from other keywords.
+- Improve GDScript Editor and Improve latency
+- Allow unicode identifier in GDScript syntax highlighter
+- Rework how current Camera2D is determined
+- Fix Camera2D crashes
+- Also fixed issues with active Camera2D switching.
+- Fix Viewport root order after Node2D raise
+- Remove NOTIFICATION_MOVED_IN_PARENT
+- Optimize Node children management
+- Optimize Node::add_child validation
+
+#### Godot plus
+
+- Add ability to mute AudioServer.
+
+## [3.10.0]
 
 ### Added
 
