@@ -199,6 +199,8 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 		if (event.actionMasked == MotionEvent.ACTION_UP) {
 			nextDownIsDoubleTap = false
 			PandemoniumInputHandler.handleMotionEvent(event)
+		} else if (event.actionMasked == MotionEvent.ACTION_MOVE && panningAndScalingEnabled == false) {
+			PandemoniumInputHandler.handleMotionEvent(event)
 		}
 
 		return true
