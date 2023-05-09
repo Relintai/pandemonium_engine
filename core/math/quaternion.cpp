@@ -35,7 +35,9 @@
 
 real_t Quaternion::angle_to(const Quaternion &p_to) const {
 	real_t d = dot(p_to);
-	return Math::acos(CLAMP(d * d * 2 - 1, -1, 1));
+
+	// acos does clamping.
+	return Math::acos(d * d * 2 - 1);
 }
 
 // set_euler_xyz expects a vector containing the Euler angles in the format

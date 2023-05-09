@@ -974,6 +974,7 @@ void Basis::get_axis_angle(Vector3 &r_axis, real_t &r_angle) const {
 	// as we have reached here there are no singularities so we can handle normally
 	real_t s = Math::sqrt((rows[1][2] - rows[2][1]) * (rows[1][2] - rows[2][1]) + (rows[2][0] - rows[0][2]) * (rows[2][0] - rows[0][2]) + (rows[0][1] - rows[1][0]) * (rows[0][1] - rows[1][0])); // s=|axis||sin(angle)|, used to normalise
 
+	// acos does clamping.
 	angle = Math::acos((rows[0][0] + rows[1][1] + rows[2][2] - 1) / 2);
 	if (angle < 0) {
 		s = -s;
