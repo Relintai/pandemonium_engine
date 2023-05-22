@@ -1080,6 +1080,8 @@ ProjectSettings::ProjectSettings() {
 	ProjectSettings::get_singleton()->set_custom_property_info("audio/general/ios/session_category", PropertyInfo(Variant::INT, "audio/general/ios/session_category", PROPERTY_HINT_ENUM, "Ambient,Multi Route,Play and Record,Playback,Record,Solo Ambient"));
 	GLOBAL_DEF("audio/general/ios/mix_with_others", false);
 
+	GLOBAL_DEF_RST("audio/general/text_to_speech", false);
+
 	PoolStringArray extensions = PoolStringArray();
 	extensions.push_back("gd");
 	extensions.push_back("gdshader");

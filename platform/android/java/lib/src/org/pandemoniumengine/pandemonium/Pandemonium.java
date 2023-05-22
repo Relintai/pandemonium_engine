@@ -457,7 +457,9 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 
 		final String[] current_command_line = command_line;
 		mView.queueEvent(() -> {
-			if (!PandemoniumLib.setup(current_command_line)) {
+			tts = new PandemoniumTTS(activity);
+
+			if (!PandemoniumLib.setup(current_command_line, tts)) {
 				pandemonium_initialized = false;
 				Log.e(TAG, "Unable to setup the Pandemonium engine! Aborting...");
 				alert(R.string.error_engine_setup_message, R.string.text_error_title, this::forceQuit);
@@ -711,7 +713,6 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		final Activity activity = getActivity();
 		io = new PandemoniumIO(activity);
 		netUtils = new PandemoniumNetUtils(activity);
-		tts = new PandemoniumTTS(activity);
 
 		Context context = getContext();
 		directoryAccessHandler = new DirectoryAccessHandler(context);
@@ -723,7 +724,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 		mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
-		PandemoniumLib.initialize(activity, this, activity.getAssets(), io, netUtils, directoryAccessHandler, fileAccessHandler, use_apk_expansion, tts);
+		PandemoniumLib.initialize(activity, this, activity.getAssets(), io, netUtils, directoryAccessHandler, fileAccessHandler, use_apk_expansion);
 
 		result_callback = null;
 

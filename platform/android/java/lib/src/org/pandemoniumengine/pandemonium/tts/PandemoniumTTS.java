@@ -62,8 +62,9 @@ public class PandemoniumTTS extends UtteranceProgressListener {
 	final private static int EVENT_CANCEL = 2;
 	final private static int EVENT_BOUNDARY = 3;
 
-	final private TextToSpeech synth;
-	final private LinkedList<PandemoniumUtterance> queue;
+	final private Activity activity;
+	private TextToSpeech synth;
+	private LinkedList<PandemoniumUtterance> queue;
 	final private Object lock = new Object();
 	private PandemoniumUtterance lastUtterance;
 
@@ -71,10 +72,7 @@ public class PandemoniumTTS extends UtteranceProgressListener {
 	private boolean paused;
 
 	public PandemoniumTTS(Activity p_activity) {
-		synth = new TextToSpeech(p_activity, null);
-		queue = new LinkedList<PandemoniumUtterance>();
-
-		synth.setOnUtteranceProgressListener(this);
+		activity = p_activity;
 	}
 
 	private void updateTTS() {
@@ -184,6 +182,16 @@ public class PandemoniumTTS extends UtteranceProgressListener {
 				updateTTS();
 			}
 		}
+	}
+
+	/**
+	 * Initialize synth and query.
+	 */
+	public void init() {
+		synth = new TextToSpeech(p_activity, null);
+		queue = new LinkedList<PandemoniumUtterance>();
+
+		synth.setOnUtteranceProgressListener(this);
 	}
 
 	/**

@@ -93,6 +93,7 @@ private:
 	List<AudioDriverJavaScript *> audio_drivers;
 	RenderingServer *rendering_server;
 
+	bool tts;
 	bool swap_ok_cancel;
 	bool idb_available;
 	bool idb_needs_sync;

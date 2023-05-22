@@ -160,7 +160,7 @@ JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_set
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion, jobject p_godot_tts) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion) {
 	initialized = true;
 
 	JavaVM *jvm;
@@ -179,7 +179,6 @@ JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ini
 	DirAccessJAndroid::setup(p_directory_access_handler);
 	FileAccessFilesystemJAndroid::setup(p_file_access_handler);
 	NetSocketAndroid::setup(p_net_utils);
-	TTS_Android::setup(p_godot_tts);
 
 	os_android = new OS_Android(pandemonium_java, pandemonium_io_java, p_use_apk_expansion);
 
@@ -193,7 +192,7 @@ JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ond
 	_terminate(env, false);
 }
 
-JNIEXPORT jboolean JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline) {
+JNIEXPORT jboolean JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline, jobject p_godot_tts) {
 	setup_android_thread();
 
 	const char **cmdline = NULL;
@@ -234,7 +233,10 @@ JNIEXPORT jboolean JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib
 		return false;
 	}
 
+	TTS_Android::setup(p_godot_tts);
+
 	java_class_wrapper = memnew(JavaClassWrapper(pandemonium_java->get_activity()));
+
 	ClassDB::register_class<JNISingleton>();
 	_initialize_java_modules();
 	return true;

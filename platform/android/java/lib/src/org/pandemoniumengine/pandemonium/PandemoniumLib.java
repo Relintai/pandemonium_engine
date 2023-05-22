@@ -53,7 +53,7 @@ public class PandemoniumLib {
 	/**
 	 * Invoked on the main thread to initialize Pandemonium native layer.
 	 */
-	public static native void initialize(Activity activity, Pandemonium p_instance, AssetManager p_asset_manager, PandemoniumIO pandemoniumIO, PandemoniumNetUtils netUtils, DirectoryAccessHandler directoryAccessHandler, FileAccessHandler fileAccessHandler, boolean use_apk_expansion, GodotTTS tts);
+	public static native void initialize(Activity activity, Pandemonium p_instance, AssetManager p_asset_manager, PandemoniumIO pandemoniumIO, PandemoniumNetUtils netUtils, DirectoryAccessHandler directoryAccessHandler, FileAccessHandler fileAccessHandler, boolean use_apk_expansion);
 
 	/**
 	 * Invoked on the main thread to clean up Pandemonium native layer.
@@ -65,7 +65,7 @@ public class PandemoniumLib {
 	 * Invoked on the GL thread to complete setup for the Pandemonium native layer logic.
 	 * @param p_cmdline Command line arguments used to configure Pandemonium native layer components.
 	 */
-	public static native boolean setup(String[] p_cmdline);
+	public static native boolean setup(String[] p_cmdline, PandemoniumTTS tts);
 
 	/**
 	 * Invoked on the GL thread when the underlying Android surface has changed size.
