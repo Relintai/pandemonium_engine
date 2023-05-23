@@ -273,7 +273,7 @@ MAKE_VECARG(Vector3i);
 MAKE_VECARG(Vector4);
 MAKE_VECARG(Vector4i);
 MAKE_VECARG(Color);
-MAKE_VECARG_ALT(String, StringName);
+//MAKE_VECARG_ALT(String, StringName);
 
 //for stuff that gets converted to Array vectors
 #define MAKE_VECARR(m_type)                                                    \
