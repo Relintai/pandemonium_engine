@@ -2738,8 +2738,17 @@ void RichTextLabel::set_use_bbcode(bool p_enable) {
 	if (use_bbcode == p_enable) {
 		return;
 	}
+
+	if (p_enable) {
+		cached_text = get_text();
+	}
+
 	use_bbcode = p_enable;
 	set_bbcode(bbcode);
+
+	if (!p_enable) {
+		set_text(cached_text);
+	}
 	property_list_changed_notify();
 }
 
