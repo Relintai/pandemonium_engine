@@ -433,7 +433,7 @@ public:
 		return OK;
 	}
 
-	String join(String delimiter) const {
+	String join(const String &delimiter) const {
 		String rs = "";
 		int s = size();
 		Read r = read();
