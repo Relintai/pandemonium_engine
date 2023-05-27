@@ -5538,12 +5538,11 @@ void Variant::interpolate(const Variant &a, const Variant &b, float c, Variant &
 		}
 			return;
 		case VECTOR4: {
-			r_dst = reinterpret_cast<const Vector4 *>(a._data._mem)->lerp(*reinterpret_cast<const Vector4 *>(b._data._mem), c);
+			r_dst = reinterpret_cast<const Vector4 *>(a._data._mem)->linear_interpolate(*reinterpret_cast<const Vector4 *>(b._data._mem), c);
 		}
 			return;
 		case VECTOR4I: {
-			//r_dst = reinterpret_cast<const Vector4i *>(a._data._mem)->lerp(*reinterpret_cast<const Vector4i *>(b._data._mem), c);
-			r_dst = a;
+			r_dst = reinterpret_cast<const Vector4i *>(a._data._mem)->linear_interpolate(*reinterpret_cast<const Vector4i *>(b._data._mem), c);
 		}
 			return;
 		case PLANE: {
