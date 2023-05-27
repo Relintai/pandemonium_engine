@@ -51,12 +51,12 @@ real_t Vector3::get_axis(int p_axis) const {
 	return operator[](p_axis);
 }
 
-void Vector3::snap(Vector3 p_val) {
+void Vector3::snap(const Vector3 &p_val) {
 	x = Math::stepify(x, p_val.x);
 	y = Math::stepify(y, p_val.y);
 	z = Math::stepify(z, p_val.z);
 }
-Vector3 Vector3::snapped(Vector3 p_val) const {
+Vector3 Vector3::snapped(const Vector3 &p_val) const {
 	Vector3 v = *this;
 	v.snap(p_val);
 	return v;
