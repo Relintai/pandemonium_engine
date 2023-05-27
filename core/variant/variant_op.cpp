@@ -5756,7 +5756,7 @@ void Variant::interpolate(const Variant &a, const Variant &b, float c, Variant &
 					PoolVector<Vector4>::Read br = arr_b->read();
 
 					for (int i = 0; i < sz; i++) {
-						vw[i] = ar[i].lerp(br[i], c);
+						vw[i] = ar[i].linear_interpolate(br[i], c);
 					}
 				}
 				r_dst = v;
