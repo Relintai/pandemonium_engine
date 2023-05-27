@@ -58,6 +58,10 @@ Vector3i Vector3i::clamp(const Vector3i &p_min, const Vector3i &p_max) const {
 			CLAMP(z, p_min.z, p_max.z));
 }
 
+Vector3 Vector3i::to_vector3() const {
+	return Vector3(x, y, z);
+}
+
 Vector3i::operator String() const {
 	return "(" + itos(x) + ", " + itos(y) + ", " + itos(z) + ")";
 }

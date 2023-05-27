@@ -76,6 +76,9 @@ struct _NO_DISCARD_CLASS_ Vector4 {
 	void normalize();
 	Vector4 normalized() const;
 	bool is_normalized() const;
+	Vector4 limit_length(const real_t p_len = 1.0) const;
+
+	_FORCE_INLINE_ void zero();
 
 	real_t distance_to(const Vector4 &p_to) const;
 	real_t distance_squared_to(const Vector4 &p_to) const;
@@ -87,7 +90,7 @@ struct _NO_DISCARD_CLASS_ Vector4 {
 	Vector4 ceil() const;
 	Vector4 round() const;
 
-	Vector4 lerp(const Vector4 &p_to, const real_t p_weight) const;
+	Vector4 linear_interpolate(const Vector4 &p_to, const real_t p_weight) const;
 	Vector4 cubic_interpolate(const Vector4 &p_b, const Vector4 &p_pre_a, const Vector4 &p_post_b, const real_t p_weight) const;
 
 	Vector4 posmod(const real_t p_mod) const;
@@ -161,6 +164,10 @@ real_t Vector4::dot(const Vector4 &p_vec4) const {
 
 real_t Vector4::length_squared() const {
 	return dot(*this);
+}
+
+void Vector4::zero() {
+	x = y = z = 0;
 }
 
 void Vector4::operator+=(const Vector4 &p_vec4) {

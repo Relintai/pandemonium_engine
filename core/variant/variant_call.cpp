@@ -693,6 +693,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(Vector3i, sign);
 	VCALL_LOCALMEM2R(Vector3i, clamp);
 	VCALL_LOCALMEM2R(Vector3i, linear_interpolate);
+	VCALL_LOCALMEM0R(Vector3i, to_vector3);
 
 	VCALL_LOCALMEM1(Vector4, set_all);
 	VCALL_LOCALMEM2(Vector4, set_axis);
@@ -705,6 +706,8 @@ struct _VariantCall {
 	VCALL_LOCALMEM0(Vector4, normalize);
 	VCALL_LOCALMEM0R(Vector4, normalized);
 	VCALL_LOCALMEM0R(Vector4, is_normalized);
+	VCALL_LOCALMEM1R(Vector4, limit_length);
+	VCALL_LOCALMEM0(Vector4, zero);
 	VCALL_LOCALMEM1R(Vector4, distance_to);
 	VCALL_LOCALMEM1R(Vector4, distance_squared_to);
 	VCALL_LOCALMEM1R(Vector4, direction_to);
@@ -713,7 +716,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(Vector4, floor);
 	VCALL_LOCALMEM0R(Vector4, ceil);
 	VCALL_LOCALMEM0R(Vector4, round);
-	VCALL_LOCALMEM2R(Vector4, lerp);
+	VCALL_LOCALMEM2R(Vector4, linear_interpolate);
 	VCALL_LOCALMEM4R(Vector4, cubic_interpolate);
 	VCALL_LOCALMEM1R(Vector4, posmod);
 	VCALL_LOCALMEM1R(Vector4, posmodv);
@@ -723,6 +726,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(Vector4, inverse);
 	VCALL_LOCALMEM1R(Vector4, dot);
 
+	VCALL_LOCALMEM1(Vector4i, set_all);
 	VCALL_LOCALMEM2(Vector4i, set_axis);
 	VCALL_LOCALMEM1R(Vector4i, get_axis);
 	VCALL_LOCALMEM0R(Vector4i, min_axis);
@@ -733,6 +737,8 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(Vector4i, abs);
 	VCALL_LOCALMEM0R(Vector4i, sign);
 	VCALL_LOCALMEM2R(Vector4i, clamp);
+	VCALL_LOCALMEM2R(Vector4i, linear_interpolate);
+	VCALL_LOCALMEM0R(Vector4i, to_vector4);
 
 	VCALL_LOCALMEM1(Plane, set_normal);
 	VCALL_LOCALMEM0R(Plane, get_normal);
@@ -2784,6 +2790,7 @@ void register_variant_methods() {
 	ADDFUNC0R(VECTOR3I, VECTOR3I, Vector3i, sign, varray());
 	ADDFUNC2R(VECTOR3I, VECTOR3I, Vector3i, clamp, VECTOR3I, "min", VECTOR3I, "max", varray());
 	ADDFUNC2R(VECTOR3I, VECTOR3I, Vector3i, linear_interpolate, VECTOR3I, "to", REAL, "weight", varray());
+	ADDFUNC0R(VECTOR3I, VECTOR3, Vector3i, to_vector3, varray());
 
 	ADDFUNC1(VECTOR4, NIL, Vector4, set_all, REAL, "value", varray());
 	ADDFUNC2(VECTOR4, NIL, Vector4, set_axis, INT, "axis", REAL, "value", varray());
@@ -2796,6 +2803,8 @@ void register_variant_methods() {
 	ADDFUNC0(VECTOR4, NIL, Vector4, normalize, varray());
 	ADDFUNC0R(VECTOR4, VECTOR4, Vector4, normalized, varray());
 	ADDFUNC0R(VECTOR4, BOOL, Vector4, is_normalized, varray());
+	ADDFUNC1R(VECTOR4, VECTOR4, Vector4, limit_length, REAL, "len", varray(1.0));
+	ADDFUNC0(VECTOR4, NIL, Vector4, zero, varray());
 	ADDFUNC1R(VECTOR4, REAL, Vector4, distance_to, VECTOR4, "b", varray());
 	ADDFUNC1R(VECTOR4, REAL, Vector4, distance_squared_to, VECTOR4, "b", varray());
 	ADDFUNC1R(VECTOR4, VECTOR4, Vector4, direction_to, VECTOR4, "b", varray());
@@ -2804,7 +2813,7 @@ void register_variant_methods() {
 	ADDFUNC0R(VECTOR4, VECTOR4, Vector4, floor, varray());
 	ADDFUNC0R(VECTOR4, VECTOR4, Vector4, ceil, varray());
 	ADDFUNC0R(VECTOR4, VECTOR4, Vector4, round, varray());
-	ADDFUNC2R(VECTOR4, VECTOR4, Vector4, lerp, VECTOR4, "to", REAL, "weight", varray());
+	ADDFUNC2R(VECTOR4, VECTOR4, Vector4, linear_interpolate, VECTOR4, "to", REAL, "weight", varray());
 	ADDFUNC4R(VECTOR4, VECTOR4, Vector4, cubic_interpolate, VECTOR4, "b", VECTOR4, "pre_a", VECTOR4, "post_b", REAL, "weight", varray());
 	ADDFUNC1R(VECTOR4, VECTOR4, Vector4, posmod, REAL, "mod", varray());
 	ADDFUNC1R(VECTOR4, VECTOR4, Vector4, posmodv, VECTOR4, "modv", varray());
@@ -2814,6 +2823,7 @@ void register_variant_methods() {
 	ADDFUNC0R(VECTOR4, VECTOR4, Vector4, inverse, varray());
 	ADDFUNC1R(VECTOR4, REAL, Vector4, dot, VECTOR4, "b", varray());
 
+	ADDFUNC1(VECTOR4I, NIL, Vector4i, set_all, INT, "value", varray());
 	ADDFUNC2(VECTOR4I, NIL, Vector4i, set_axis, INT, "axis", INT, "value", varray());
 	ADDFUNC1R(VECTOR4I, INT, Vector4i, get_axis, INT, "axis", varray());
 	ADDFUNC0R(VECTOR4I, INT, Vector4i, min_axis, varray());
@@ -2824,6 +2834,8 @@ void register_variant_methods() {
 	ADDFUNC0R(VECTOR4I, VECTOR4I, Vector4i, abs, varray());
 	ADDFUNC0R(VECTOR4I, VECTOR4I, Vector4i, sign, varray());
 	ADDFUNC2R(VECTOR4I, VECTOR4I, Vector4i, clamp, VECTOR4I, "min", VECTOR4I, "max", varray());
+	ADDFUNC2R(VECTOR4I, VECTOR4I, Vector4i, linear_interpolate, VECTOR4I, "to", REAL, "weight", varray());
+	ADDFUNC0R(VECTOR4I, VECTOR4, Vector4i, to_vector4, varray());
 
 	ADDFUNC1(PLANE, NIL, Plane, set_normal, VECTOR3, "normal", varray());
 	ADDFUNC0R(PLANE, VECTOR3, Plane, get_normal, varray());

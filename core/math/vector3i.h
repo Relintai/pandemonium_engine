@@ -114,6 +114,8 @@ struct _NO_DISCARD_CLASS_ Vector3i {
 	_FORCE_INLINE_ bool operator>(const Vector3i &p_v) const;
 	_FORCE_INLINE_ bool operator>=(const Vector3i &p_v) const;
 
+	Vector3 to_vector3() const;
+
 	operator String() const;
 	operator Vector3() const;
 

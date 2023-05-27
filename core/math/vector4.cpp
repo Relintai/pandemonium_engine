@@ -87,6 +87,17 @@ bool Vector4::is_normalized() const {
 	return Math::is_equal_approx(length_squared(), 1, (real_t)UNIT_EPSILON); // Use less epsilon.
 }
 
+Vector4 Vector4::limit_length(const real_t p_len) const {
+	const real_t l = length();
+	Vector4 v = *this;
+	if (l > 0 && p_len < l) {
+		v /= l;
+		v *= p_len;
+	}
+
+	return v;
+}
+
 real_t Vector4::distance_to(const Vector4 &p_to) const {
 	return (p_to - *this).length();
 }
@@ -121,7 +132,7 @@ Vector4 Vector4::round() const {
 	return Vector4(Math::round(x), Math::round(y), Math::round(z), Math::round(w));
 }
 
-Vector4 Vector4::lerp(const Vector4 &p_to, const real_t p_weight) const {
+Vector4 Vector4::linear_interpolate(const Vector4 &p_to, const real_t p_weight) const {
 	return Vector4(
 			x + (p_weight * (p_to.x - x)),
 			y + (p_weight * (p_to.y - y)),

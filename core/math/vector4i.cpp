@@ -75,6 +75,18 @@ Vector4i Vector4i::clamp(const Vector4i &p_min, const Vector4i &p_max) const {
 			CLAMP(w, p_min.w, p_max.w));
 }
 
+Vector4i Vector4i::linear_interpolate(const Vector4i &p_to, const real_t p_weight) const {
+	return Vector4i(
+			x + (p_weight * (p_to.x - x)),
+			y + (p_weight * (p_to.y - y)),
+			z + (p_weight * (p_to.z - z)),
+			w + (p_weight * (p_to.w - w)));
+}
+
+Vector4 Vector4i::to_vector4() const {
+	return Vector4(x, y, z, w);
+}
+
 Vector4i::operator String() const {
 	return "(" + itos(x) + ", " + itos(y) + ", " + itos(z) + ", " + itos(w) + ")";
 }

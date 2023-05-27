@@ -66,6 +66,8 @@ struct _NO_DISCARD_CLASS_ Vector4i {
 		return coord[p_axis];
 	}
 
+	_FORCE_INLINE_ void set_all(const int32_t p_value);
+
 	void set_axis(const int p_axis, const int32_t p_value);
 	int32_t get_axis(const int p_axis) const;
 
@@ -80,6 +82,8 @@ struct _NO_DISCARD_CLASS_ Vector4i {
 	_FORCE_INLINE_ Vector4i abs() const;
 	_FORCE_INLINE_ Vector4i sign() const;
 	Vector4i clamp(const Vector4i &p_min, const Vector4i &p_max) const;
+
+	Vector4i linear_interpolate(const Vector4i &p_to, const real_t p_weight) const;
 
 	/* Operators */
 
@@ -110,6 +114,8 @@ struct _NO_DISCARD_CLASS_ Vector4i {
 	_FORCE_INLINE_ bool operator>(const Vector4i &p_v) const;
 	_FORCE_INLINE_ bool operator>=(const Vector4i &p_v) const;
 
+	Vector4 to_vector4() const;
+
 	operator String() const;
 	operator Vector4() const;
 
@@ -129,6 +135,10 @@ struct _NO_DISCARD_CLASS_ Vector4i {
 		w = p_w;
 	}
 };
+
+void Vector4i::set_all(const int32_t p_value) {
+	x = y = z = p_value;
+}
 
 int64_t Vector4i::length_squared() const {
 	return x * (int64_t)x + y * (int64_t)y + z * (int64_t)z + w * (int64_t)w;
