@@ -122,7 +122,7 @@ struct _NO_DISCARD_CLASS_ Basis {
 	Basis scaled_orthogonal(const Vector3 &p_scale) const;
 
 	void make_scale_uniform();
-	float get_uniform_scale() const;
+	real_t get_uniform_scale() const;
 
 	Vector3 get_scale() const;
 	Vector3 get_scale_abs() const;

@@ -216,6 +216,10 @@ Basis Basis::transposed() const {
 	return tr;
 }
 
+Basis Basis::from_scale(const Vector3 &p_scale) {
+	return Basis(p_scale.x, 0, 0, 0, p_scale.y, 0, 0, 0, p_scale.z);
+}
+
 // Multiplies the matrix from left by the scaling matrix: M -> S.M
 // See the comment for Basis::rotated for further explanation.
 void Basis::scale(const Vector3 &p_scale) {
@@ -267,7 +271,7 @@ Basis Basis::scaled_orthogonal(const Vector3 &p_scale) const {
 	return m;
 }
 
-float Basis::get_uniform_scale() const {
+real_t Basis::get_uniform_scale() const {
 	return (rows[0].length() + rows[1].length() + rows[2].length()) / 3.0f;
 }
 
@@ -804,8 +808,8 @@ bool Basis::operator!=(const Basis &p_matrix) const {
 
 Basis::operator String() const {
 	return "[X: " + get_axis(0).operator String() +
-		   ", Y: " + get_axis(1).operator String() +
-		   ", Z: " + get_axis(2).operator String() + "]";
+			", Y: " + get_axis(1).operator String() +
+			", Z: " + get_axis(2).operator String() + "]";
 }
 
 Quaternion Basis::get_quaternion() const {
@@ -1193,4 +1197,3 @@ Basis Basis::looking_at(const Vector3 &p_target, const Vector3 &p_up) {
 	basis.set_columns(v_x, v_y, v_z);
 	return basis;
 }
-
