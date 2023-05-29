@@ -81,7 +81,7 @@ struct _NO_DISCARD_CLASS_ Basis {
 	Quaternion get_rotation_quaternion() const;
 	Vector3 get_rotation() const { return get_rotation_euler(); };
 
-	void rotate_to_align(Vector3 p_start_direction, Vector3 p_end_direction);
+	void rotate_to_align(const Vector3 &p_start_direction, const Vector3 &p_end_direction);
 
 	Vector3 rotref_posscale_decomposition(Basis &rotref) const;
 
