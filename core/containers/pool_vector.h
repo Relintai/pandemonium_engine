@@ -447,7 +447,7 @@ public:
 	bool contains(const T &p_val) const;
 	int find(const T &p_val, int p_from = 0) const;
 	int rfind(const T &p_val, int p_from = -1) const;
-	bool count(const T &p_val) const;
+	int count(const T &p_val) const;
 	bool has(const T &p_val) const;
 
 	bool is_locked() const {
@@ -568,7 +568,7 @@ int PoolVector<T>::rfind(const T &p_val, int p_from) const {
 }
 
 template <class T>
-bool PoolVector<T>::count(const T &p_val) const {
+int PoolVector<T>::count(const T &p_val) const {
 	const int s = size();
 	const Read r = read();
 	int amount = 0;
