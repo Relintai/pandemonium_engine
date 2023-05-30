@@ -158,6 +158,13 @@ struct _NO_DISCARD_CLASS_ Rect2i {
 		return g;
 	}
 
+	void grow_by(int p_by) {
+		position.x -= p_by;
+		position.y -= p_by;
+		size.width += p_by * 2;
+		size.height += p_by * 2;
+	}
+
 	inline Rect2i grow_margin(Margin p_margin, int p_amount) const {
 		Rect2i g = *this;
 		g = g.grow_individual((MARGIN_LEFT == p_margin) ? p_amount : 0,
@@ -225,6 +232,8 @@ struct _NO_DISCARD_CLASS_ Rect2i {
 	_FORCE_INLINE_ Vector2i get_end() const {
 		return position + size;
 	}
+
+	Rect2 to_rect2() const { return Rect2(position, size); }
 
 	operator String() const;
 	operator Rect2() const { return Rect2(position, size); }
