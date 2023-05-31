@@ -1173,7 +1173,7 @@ void Prop2DMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("transform_uv", "uv", "rect"), &Prop2DMesher::transform_uv);
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-	ClassDB::bind_method(D_METHOD("add_mesh_data_resource", "mesh", "position", "rotation", "scale", "uv_rect"), &Prop2DMesher::add_mesh_data_resource, DEFVAL(Rect2(0, 0, 1, 1)), DEFVAL(Vector3(1.0, 1.0, 1.0)), DEFVAL(Vector3()), DEFVAL(Vector3()));
+	ClassDB::bind_method(D_METHOD("add_mesh_data_resource", "mesh", "position", "rotation", "scale", "uv_rect"), &Prop2DMesher::add_mesh_data_resource, DEFVAL(Vector3()), DEFVAL(Vector3()), DEFVAL(Vector3(1.0, 1.0, 1.0)), DEFVAL(Rect2(0, 0, 1, 1)));
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform", "mesh", "transform", "uv_rect"), &Prop2DMesher::add_mesh_data_resource_transform, DEFVAL(Rect2(0, 0, 1, 1)));
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform_colored", "mesh", "transform", "colors", "uv_rect"), &Prop2DMesher::add_mesh_data_resource_transform_colored, DEFVAL(Rect2(0, 0, 1, 1)));
 #endif
