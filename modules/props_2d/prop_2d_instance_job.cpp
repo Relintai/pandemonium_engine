@@ -170,4 +170,8 @@ void Prop2DInstanceJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_execute_phase"), &Prop2DInstanceJob::_execute_phase);
 
 	ClassDB::bind_method(D_METHOD("prop_instance_exit_tree"), &Prop2DInstanceJob::prop_instance_exit_tree);
+
+	BIND_ENUM_CONSTANT(BUILD_PHASE_TYPE_NORMAL);
+	BIND_ENUM_CONSTANT(BUILD_PHASE_TYPE_PROCESS);
+	BIND_ENUM_CONSTANT(BUILD_PHASE_TYPE_PHYSICS_PROCESS);
 }
