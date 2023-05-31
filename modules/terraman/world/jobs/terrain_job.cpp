@@ -336,4 +336,8 @@ void TerrainJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("generate_random_ao", "seed", "octaves", "period", "persistence", "scale_factor"), &TerrainJob::generate_random_ao, DEFVAL(4), DEFVAL(30), DEFVAL(0.3), DEFVAL(0.6));
 
 	ClassDB::bind_method(D_METHOD("chunk_exit_tree"), &TerrainJob::chunk_exit_tree);
+
+	BIND_ENUM_CONSTANT(BUILD_PHASE_TYPE_NORMAL);
+	BIND_ENUM_CONSTANT(BUILD_PHASE_TYPE_PROCESS);
+	BIND_ENUM_CONSTANT(BUILD_PHASE_TYPE_PHYSICS_PROCESS);
 }
