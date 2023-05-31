@@ -47,35 +47,30 @@ class AuraGroup;
 class AuraApplyInfo;
 class EntityResource;
 
-enum TargetRelationType {
-	TARGET_SELF = 1 << 0,
-	TARGET_ENEMY = 1 << 1,
-	TARGET_FRIENDLY = 1 << 2
-};
-
-VARIANT_ENUM_CAST(TargetRelationType);
-
-enum SpellTargetType {
-	SPELL_TARGET_TYPE_SELF,
-	SPELL_TARGET_TYPE_TARGET,
-	SPELL_TARGET_TYPE_AROUND,
-	SPELL_TARGET_TYPE_FRONT,
-	SPELL_TARGET_TYPE_AROUND_TARGET
-};
-
-VARIANT_ENUM_CAST(SpellTargetType);
-
-enum SpellAOETargetType {
-	SPELL_AOE_TARGET_TYPE_CASTER,
-	SPELL_AOE_TARGET_TYPE_TARGET,
-	SPELL_AOE_TARGET_TYPE_GOUND_TARGET_SELECTION,
-	SPELL_AOE_TARGET_TYPE_RANDOM
-};
-
-VARIANT_ENUM_CAST(SpellAOETargetType);
-
 class Spell : public Resource {
 	GDCLASS(Spell, Resource);
+
+public:
+	enum TargetRelationType {
+		TARGET_SELF = 1 << 0,
+		TARGET_ENEMY = 1 << 1,
+		TARGET_FRIENDLY = 1 << 2
+	};
+
+	enum SpellTargetType {
+		SPELL_TARGET_TYPE_SELF,
+		SPELL_TARGET_TYPE_TARGET,
+		SPELL_TARGET_TYPE_AROUND,
+		SPELL_TARGET_TYPE_FRONT,
+		SPELL_TARGET_TYPE_AROUND_TARGET
+	};
+
+	enum SpellAOETargetType {
+		SPELL_AOE_TARGET_TYPE_CASTER,
+		SPELL_AOE_TARGET_TYPE_TARGET,
+		SPELL_AOE_TARGET_TYPE_GOUND_TARGET_SELECTION,
+		SPELL_AOE_TARGET_TYPE_RANDOM
+	};
 
 public:
 	int get_id() const;
@@ -824,5 +819,9 @@ private:
 	Ref<Spell> _aura_talent_required_talent;
 	Ref<Spell> _aura_talent_required_spell;
 };
+
+VARIANT_ENUM_CAST(Spell::TargetRelationType);
+VARIANT_ENUM_CAST(Spell::SpellTargetType);
+VARIANT_ENUM_CAST(Spell::SpellAOETargetType);
 
 #endif

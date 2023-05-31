@@ -74,14 +74,14 @@ void Spell::set_cooldown(const float value) {
 	_cooldown = value;
 }
 
-SpellTargetType Spell::get_target_type() const {
+Spell::SpellTargetType Spell::get_target_type() const {
 	return _target_type;
 }
 void Spell::set_target_type(const SpellTargetType value) {
 	_target_type = value;
 }
 
-TargetRelationType Spell::get_target_relation_type() const {
+Spell::TargetRelationType Spell::get_target_relation_type() const {
 	return _target_relation_type;
 }
 void Spell::set_target_relation_type(const TargetRelationType value) {
@@ -472,7 +472,7 @@ void Spell::set_is_aoe(const bool value) {
 	_is_aoe = value;
 }
 
-SpellAOETargetType Spell::get_aoe_target_type() const {
+Spell::SpellAOETargetType Spell::get_aoe_target_type() const {
 	return _aoe_targetType;
 }
 void Spell::set_aoe_target_type(const SpellAOETargetType value) {
@@ -2454,10 +2454,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_ccast", "what", "info"), &Spell::notification_ccast);
 
 	//Aura EventHandlers
-	BIND_VMETHOD(MethodInfo("_notification_saura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_notification_sheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
-	BIND_VMETHOD(MethodInfo("_notification_aura_scast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_notification_sdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_saura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_notification_sheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_aura_scast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_sdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
 	ClassDB::bind_method(D_METHOD("notification_saura", "what", "data"), &Spell::notification_saura);
 	ClassDB::bind_method(D_METHOD("notification_sheal", "what", "aura", "info"), &Spell::notification_sheal);
