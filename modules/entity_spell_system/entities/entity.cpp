@@ -6934,10 +6934,10 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "scharacter_talents", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "scharacter_talents_set", "scharacter_talents_get");
 
 	//Cooldowns
-	BIND_VMETHOD(MethodInfo("notification_scooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_scooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_scategory_cooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_scategory_cooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_scooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_scooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_scategory_cooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_scategory_cooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
 
 	ClassDB::bind_method(D_METHOD("notification_scooldown_added", "cooldown"), &Entity::notification_scooldown_added);
 	ClassDB::bind_method(D_METHOD("notification_scooldown_removed", "cooldown"), &Entity::notification_scooldown_removed);
@@ -6947,10 +6947,10 @@ void Entity::_bind_methods() {
 	//Clientside EventHandlers
 	BIND_VMETHOD(MethodInfo("_notification_cdeath"));
 
-	BIND_VMETHOD(MethodInfo("notification_ccooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_ccooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_ccategory_cooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_ccategory_cooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_ccooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_ccooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_ccategory_cooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_ccategory_cooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
 
 	ClassDB::bind_method(D_METHOD("notification_ccooldown_added", "cooldown"), &Entity::notification_ccooldown_added);
 	ClassDB::bind_method(D_METHOD("notification_ccooldown_removed", "cooldown"), &Entity::notification_ccooldown_removed);
