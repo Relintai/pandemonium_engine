@@ -2388,6 +2388,7 @@ bool String::is_numeric() const {
 				return false;
 			};
 			dot = true;
+			continue;
 		}
 		if (c < '0' || c > '9') {
 			return false;
