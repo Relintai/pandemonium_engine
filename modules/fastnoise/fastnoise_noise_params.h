@@ -21,8 +21,8 @@ public:
 	void set_frequency(real_t freq) { _freq = freq; }
 	real_t get_frequency() const { return _freq; }
 
-	void set_fractal_octaves(unsigned int octave_count) { _octave_count = octave_count; }
-	int get_fractal_octaves() const { return _octave_count; }
+	void set_fractal_octaves(uint32_t octave_count) { _octave_count = octave_count; }
+	uint32_t get_fractal_octaves() const { return _octave_count; }
 
 	void set_fractal_lacunarity(real_t lacunarity) { _lacunarity = lacunarity; }
 	real_t get_fractal_lacunarity() const { return _lacunarity; }
