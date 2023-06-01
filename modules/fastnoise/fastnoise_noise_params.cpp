@@ -66,7 +66,7 @@ void FastnoiseNoiseParams::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_cellular_distance_function", "func"), &FastnoiseNoiseParams::set_cellular_distance_function);
 	ClassDB::bind_method(D_METHOD("get_cellular_distance_function"), &FastnoiseNoiseParams::get_cellular_distance_function);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "set_cellular_distance_function", PROPERTY_HINT_ENUM, FastNoise::BINDING_STRING_CELLULAR_DISTANCE_FUNCTION), "set_cellular_distance_function", "get_cellular_distance_function");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cellular_distance_function", PROPERTY_HINT_ENUM, FastNoise::BINDING_STRING_CELLULAR_DISTANCE_FUNCTION), "set_cellular_distance_function", "get_cellular_distance_function");
 
 	ClassDB::bind_method(D_METHOD("set_cellular_return_type", "ret"), &FastnoiseNoiseParams::set_cellular_return_type);
 	ClassDB::bind_method(D_METHOD("get_cellular_return_type"), &FastnoiseNoiseParams::get_cellular_return_type);

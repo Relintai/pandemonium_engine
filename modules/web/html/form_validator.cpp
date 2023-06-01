@@ -778,11 +778,11 @@ void FormField::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_ignore_if_not_exists"), &FormField::get_ignore_if_not_exists);
 	ClassDB::bind_method(D_METHOD("set_ignore_if_not_exists", "val"), &FormField::set_ignore_if_not_exists);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "ignore_if_not_exists"), "set_ignore_if_not_exists", "get_ignore_if_not_exists");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_ignore_if_not_exists"), "set_ignore_if_not_exists", "get_ignore_if_not_exists");
 
 	ClassDB::bind_method(D_METHOD("get_ignore_if_other_field_not_exists"), &FormField::get_ignore_if_other_field_not_exists);
 	ClassDB::bind_method(D_METHOD("set_ignore_if_other_field_not_exists", "val"), &FormField::set_ignore_if_other_field_not_exists);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "ignore_if_other_field_not_exists"), "set_ignore_if_other_field_not_exists", "get_ignore_if_other_field_not_exists");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_ignore_if_other_field_not_exists"), "set_ignore_if_other_field_not_exists", "get_ignore_if_other_field_not_exists");
 
 	ClassDB::bind_method(D_METHOD("get_ignore_if_other_field_not_exist_field"), &FormField::get_ignore_if_other_field_not_exist_field);
 	ClassDB::bind_method(D_METHOD("set_ignore_if_other_field_not_exist_field", "val"), &FormField::set_ignore_if_other_field_not_exist_field);

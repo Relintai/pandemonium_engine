@@ -249,7 +249,7 @@ void SpellHealInfo::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("heal_type_get"), &SpellHealInfo::heal_type_get);
 	ClassDB::bind_method(D_METHOD("heal_type_set", "value"), &SpellHealInfo::heal_type_set);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_type_get"), "heal_type_set", "heal_type_get");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_type"), "heal_type_set", "heal_type_get");
 
 	ClassDB::bind_method(D_METHOD("dealer_get"), &SpellHealInfo::dealer_get);
 	ClassDB::bind_method(D_METHOD("dealer_set", "value"), &SpellHealInfo::dealer_set_bind);

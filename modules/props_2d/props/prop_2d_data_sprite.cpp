@@ -225,33 +225,33 @@ void Prop2DDataSprite::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_flip_v"), &Prop2DDataSprite::get_flip_v);
 	ClassDB::bind_method(D_METHOD("set_flip_v", "value"), &Prop2DDataSprite::set_flip_v);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "get_flip_v"), "set_flip_v", "get_flip_v");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_v"), "set_flip_v", "get_flip_v");
 
 	ClassDB::bind_method(D_METHOD("get_animation_h_frames"), &Prop2DDataSprite::get_animation_h_frames);
 	ClassDB::bind_method(D_METHOD("set_animation_h_frames", "value"), &Prop2DDataSprite::set_animation_h_frames);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "get_animation_h_frames"), "set_animation_h_frames", "get_animation_h_frames");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "animation_h_frames"), "set_animation_h_frames", "get_animation_h_frames");
 
 	ClassDB::bind_method(D_METHOD("get_animation_v_frames"), &Prop2DDataSprite::get_animation_v_frames);
 	ClassDB::bind_method(D_METHOD("set_animation_v_frames", "value"), &Prop2DDataSprite::set_animation_v_frames);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "set_animation_v_frames"), "set_animation_v_frames", "get_animation_v_frames");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "animation_v_frames"), "set_animation_v_frames", "get_animation_v_frames");
 
 	ClassDB::bind_method(D_METHOD("get_animation_frame"), &Prop2DDataSprite::get_animation_frame);
 	ClassDB::bind_method(D_METHOD("set_animation_frame", "value"), &Prop2DDataSprite::set_animation_frame);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "get_animation_frame"), "set_animation_frame", "get_animation_frame");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "animation_frame"), "set_animation_frame", "get_animation_frame");
 
 	ClassDB::bind_method(D_METHOD("get_animation_frame_coords"), &Prop2DDataSprite::get_animation_frame_coords);
 	ClassDB::bind_method(D_METHOD("set_animation_frame_coords", "value"), &Prop2DDataSprite::set_animation_frame_coords);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "get_animation_frame_coords"), "set_animation_frame_coords", "get_animation_frame_coords");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "animation_frame_coords"), "set_animation_frame_coords", "get_animation_frame_coords");
 
 	ClassDB::bind_method(D_METHOD("get_region_enabled"), &Prop2DDataSprite::get_region_enabled);
 	ClassDB::bind_method(D_METHOD("set_region_enabled", "value"), &Prop2DDataSprite::set_region_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "set_region_enabled"), "set_region_enabled", "get_region_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "region_enabled"), "set_region_enabled", "get_region_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_region"), &Prop2DDataSprite::get_region);
 	ClassDB::bind_method(D_METHOD("set_region", "value"), &Prop2DDataSprite::set_region);
-	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "get_region"), "set_region", "get_region");
+	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "region"), "set_region", "get_region");
 
 	ClassDB::bind_method(D_METHOD("get_filter_clip"), &Prop2DDataSprite::get_filter_clip);
 	ClassDB::bind_method(D_METHOD("set_filter_clip", "value"), &Prop2DDataSprite::set_filter_clip);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "get_filter_clip"), "set_filter_clip", "get_filter_clip");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "filter_clip"), "set_filter_clip", "get_filter_clip");
 }

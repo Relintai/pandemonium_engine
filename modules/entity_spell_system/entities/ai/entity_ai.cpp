@@ -364,7 +364,7 @@ void EntityAI::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_enabled"), &EntityAI::get_enabled);
 	ClassDB::bind_method(D_METHOD("set_enabled", "value"), &EntityAI::set_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "get_enabled"), "set_enabled", "get_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "get_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_owner"), &EntityAI::get_owner);
 	ClassDB::bind_method(D_METHOD("set_owner", "entity"), &EntityAI::set_owner_bind);

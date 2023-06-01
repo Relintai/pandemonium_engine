@@ -7735,7 +7735,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("pet_gets_ai_state"), &Entity::pet_gets_ai_state);
 	ClassDB::bind_method(D_METHOD("pet_sets_ai_state", "value"), &Entity::pet_sets_ai_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "pet_gets_ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES, PROPERTY_USAGE_ENTITY_HIDDEN), "pet_sets_ai_state", "pet_gets_ai_state");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "pet_ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES, PROPERTY_USAGE_ENTITY_HIDDEN), "pet_sets_ai_state", "pet_gets_ai_state");
 
 	ClassDB::bind_method(D_METHOD("gets_original_entity_controller"), &Entity::gets_original_entity_controller);
 	ClassDB::bind_method(D_METHOD("sets_original_entity_controller", "value"), &Entity::sets_original_entity_controller);

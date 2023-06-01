@@ -239,7 +239,7 @@ void ProfileManager::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_save_file"), &ProfileManager::get_save_file);
 	ClassDB::bind_method(D_METHOD("set_save_file", "path"), &ProfileManager::set_save_file);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "set_save_file"), "set_save_file", "get_save_file");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "save_file"), "set_save_file", "get_save_file");
 
 	ClassDB::bind_method(D_METHOD("gets_player_profile_count"), &ProfileManager::gets_player_profile_count);
 	ClassDB::bind_method(D_METHOD("gets_player_profile_index", "index"), &ProfileManager::gets_player_profile_index);

@@ -214,7 +214,7 @@ void PlayerProfile::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_last_used_character"), &PlayerProfile::get_last_used_character);
 	ClassDB::bind_method(D_METHOD("set_last_used_character", "value"), &PlayerProfile::set_last_used_character);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "set_last_used_character"), "set_last_used_character", "get_last_used_character");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "last_used_character"), "set_last_used_character", "get_last_used_character");
 
 	ClassDB::bind_method(D_METHOD("get_custom_data"), &PlayerProfile::get_custom_data);
 	ClassDB::bind_method(D_METHOD("set_custom_data", "value"), &PlayerProfile::set_custom_data);

@@ -248,7 +248,7 @@ void SpellDamageInfo::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("damage_type_get"), &SpellDamageInfo::damage_type_get);
 	ClassDB::bind_method(D_METHOD("damage_type_set", "value"), &SpellDamageInfo::damage_type_set);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_type_get"), "damage_type_set", "damage_type_get");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_type"), "damage_type_set", "damage_type_get");
 
 	ClassDB::bind_method(D_METHOD("dealer_get"), &SpellDamageInfo::dealer_get);
 	ClassDB::bind_method(D_METHOD("dealer_set", "value"), &SpellDamageInfo::dealer_set_bind);

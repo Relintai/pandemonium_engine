@@ -620,7 +620,7 @@ void TiledWallData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_tile_count"), &TiledWallData::get_tile_count);
 	ClassDB::bind_method(D_METHOD("set_tile_count", "count"), &TiledWallData::set_tile_count);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "set_tile_count", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_tile_count", "get_tile_count");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "tile_count", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_tile_count", "get_tile_count");
 
 	//flavour_tiles
 	ClassDB::bind_method(D_METHOD("add_flavour_tile", "texture", "y_size", "z_offset", "texture_scale"), &TiledWallData::add_flavour_tile, 1, 0, 1);

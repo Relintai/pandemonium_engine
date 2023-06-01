@@ -1380,25 +1380,25 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("material_cache_key_set"), &TerrainChunk::material_cache_key_set);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "material_cache_key", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "material_cache_key_set", "material_cache_key_get");
 
-	ClassDB::bind_method(D_METHOD("material_cache_key_has"), &TerrainChunk::material_cache_key_has);
+	ClassDB::bind_method(D_METHOD("material_cache_key_has_get"), &TerrainChunk::material_cache_key_has);
 	ClassDB::bind_method(D_METHOD("material_cache_key_has_set"), &TerrainChunk::material_cache_key_has_set);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "material_cache_key_has_set", "material_cache_key_has");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "material_cache_key_has_set", "material_cache_key_has_get");
 
 	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_get"), &TerrainChunk::liquid_material_cache_key_get);
 	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_set"), &TerrainChunk::liquid_material_cache_key_set);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "liquid_material_cache_key", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "liquid_material_cache_key_set", "liquid_material_cache_key_get");
 
-	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_has"), &TerrainChunk::liquid_material_cache_key_has);
+	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_has_get"), &TerrainChunk::liquid_material_cache_key_has);
 	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_has_set"), &TerrainChunk::liquid_material_cache_key_has_set);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "liquid_material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "liquid_material_cache_key_has_set", "liquid_material_cache_key_has");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "liquid_material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "liquid_material_cache_key_has_set", "liquid_material_cache_key_has_get");
 
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_get"), &TerrainChunk::prop_material_cache_key_get);
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_set"), &TerrainChunk::prop_material_cache_key_set);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "prop_material_cache_key", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "prop_material_cache_key_set", "prop_material_cache_key_get");
 
-	ClassDB::bind_method(D_METHOD("prop_material_cache_key_has"), &TerrainChunk::prop_material_cache_key_has);
+	ClassDB::bind_method(D_METHOD("prop_material_cache_key_has_get"), &TerrainChunk::prop_material_cache_key_has);
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_has_set"), &TerrainChunk::prop_material_cache_key_has_set);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "prop_material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "prop_material_cache_key_has_set", "prop_material_cache_key_has");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "prop_material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "prop_material_cache_key_has_set", "prop_material_cache_key_has_get");
 
 	ClassDB::bind_method(D_METHOD("get_library"), &TerrainChunk::get_library);
 	ClassDB::bind_method(D_METHOD("set_library", "value"), &TerrainChunk::set_library);
