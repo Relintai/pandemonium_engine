@@ -46,7 +46,7 @@ public:
 	void set_data(const Ref<TiledWallData> &data);
 
 	bool get_collision() const;
-	void set_collision(const int value);
+	void set_collision(const bool value);
 
 	uint32_t get_collision_layer() const;
 	void set_collision_layer(uint32_t p_layer);

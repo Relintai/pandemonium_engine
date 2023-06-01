@@ -32,7 +32,7 @@ class LootDataBase : public Resource {
 
 public:
 	int get_loot_db_size() const;
-	void set_loot_db_size(const float value);
+	void set_loot_db_size(const int value);
 
 	int get_items_size() const;
 	void set_items_size(const int value);

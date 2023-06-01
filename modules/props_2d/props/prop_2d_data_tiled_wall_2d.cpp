@@ -51,7 +51,7 @@ void Prop2DDataTiledWall2D::set_data(const Ref<TiledWall2DData> &data) {
 bool Prop2DDataTiledWall2D::get_collision() const {
 	return _collision;
 }
-void Prop2DDataTiledWall2D::set_collision(const int value) {
+void Prop2DDataTiledWall2D::set_collision(const bool value) {
 	_collision = value;
 }
 

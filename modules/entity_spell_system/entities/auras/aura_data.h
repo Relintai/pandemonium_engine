@@ -67,7 +67,7 @@ public:
 	int damage_get();
 	void damage_set(int value);
 
-	float damage_get_count();
+	int damage_get_count();
 	void damage_set_count(int damageTaken);
 
 	float get_tick();

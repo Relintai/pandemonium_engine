@@ -41,7 +41,7 @@ public:
 	void set_data(const Ref<TiledWall2DData> &data);
 
 	bool get_collision() const;
-	void set_collision(const int value);
+	void set_collision(const bool value);
 
 	bool _processor_handles(Node *node);
 	void _processor_process(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform, Ref<Prop2DDataEntry> entry = Ref<Prop2DDataEntry>());

@@ -27,7 +27,7 @@ SOFTWARE.
 int LootDataBase::get_loot_db_size() const {
 	return _loot_dbs.size();
 }
-void LootDataBase::set_loot_db_size(const float value) {
+void LootDataBase::set_loot_db_size(const int value) {
 	_loot_dbs.resize(value);
 }
 

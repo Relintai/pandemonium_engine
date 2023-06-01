@@ -29,7 +29,7 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-float AuraData::damage_get_count() {
+int AuraData::damage_get_count() {
 	return _damage_already_taken;
 }
 

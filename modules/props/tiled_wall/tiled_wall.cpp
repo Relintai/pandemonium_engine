@@ -59,7 +59,7 @@ void TiledWall::set_data(const Ref<TiledWallData> &data) {
 bool TiledWall::get_collision() const {
 	return _collision;
 }
-void TiledWall::set_collision(const int value) {
+void TiledWall::set_collision(const bool value) {
 	_collision = value;
 
 	/*
