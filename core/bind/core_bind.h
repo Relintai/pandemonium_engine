@@ -434,8 +434,10 @@ VARIANT_ENUM_CAST(_OS::SystemDir);
 VARIANT_ENUM_CAST(_OS::ScreenOrientation);
 VARIANT_ENUM_CAST(_OS::HandleType);
 
-class _Math : public Object {
-	GDCLASS(_Math, Object);
+// TODO Move this to a module
+
+class PMath : public Object {
+	GDCLASS(PMath, Object);
 
 public:
 	_ALWAYS_INLINE_ real_t sin(real_t p_x) {
@@ -725,13 +727,13 @@ public:
 		return Math::snap_scalar_separation(p_offset, p_step, p_target, p_separation);
 	}
 
-	static _Math *get_singleton();
+	static PMath *get_singleton();
 
-	_Math();
+	PMath();
 
 protected:
 	static void _bind_methods();
-	static _Math *singleton;
+	static PMath *singleton;
 };
 
 class _Geometry : public Object {
