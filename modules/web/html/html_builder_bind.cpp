@@ -1599,7 +1599,7 @@ Ref<_HTMLTag> _HTMLBuilder::noscript() {
 	return _tag->start("noscript");
 }
 
-Ref<_HTMLTag> _HTMLBuilder::object() {
+Ref<_HTMLTag> _HTMLBuilder::objectt() {
 	write_tag();
 
 	return _tag->start("object");
@@ -2443,7 +2443,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::cnoscript() {
 	return Ref<_HTMLBuilder>(this);
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::cobject() {
+Ref<_HTMLBuilder> _HTMLBuilder::cobjectt() {
 	write_tag();
 	result += "</object>";
 
@@ -3728,7 +3728,7 @@ void _HTMLBuilder::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("nav"), &_HTMLBuilder::nav);
 	ClassDB::bind_method(D_METHOD("noframes"), &_HTMLBuilder::noframes);
 	ClassDB::bind_method(D_METHOD("noscript"), &_HTMLBuilder::noscript);
-	ClassDB::bind_method(D_METHOD("object"), &_HTMLBuilder::object);
+	ClassDB::bind_method(D_METHOD("objectt"), &_HTMLBuilder::objectt);
 	ClassDB::bind_method(D_METHOD("ol"), &_HTMLBuilder::ol);
 	ClassDB::bind_method(D_METHOD("optgroup"), &_HTMLBuilder::optgroup);
 
@@ -3876,7 +3876,7 @@ void _HTMLBuilder::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("cnoframes"), &_HTMLBuilder::cnoframes);
 
 	ClassDB::bind_method(D_METHOD("cnoscript"), &_HTMLBuilder::cnoscript);
-	ClassDB::bind_method(D_METHOD("cobject"), &_HTMLBuilder::cobject);
+	ClassDB::bind_method(D_METHOD("cobjectt"), &_HTMLBuilder::cobjectt);
 	ClassDB::bind_method(D_METHOD("c_ol"), &_HTMLBuilder::c_ol);
 	ClassDB::bind_method(D_METHOD("coptgroup"), &_HTMLBuilder::coptgroup);
 	ClassDB::bind_method(D_METHOD("coption"), &_HTMLBuilder::coption);

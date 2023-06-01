@@ -280,7 +280,7 @@ public:
 	HTMLTag *nav();
 	HTMLTag *noframes(); // Not supported in HTML5.
 	HTMLTag *noscript();
-	HTMLTag *object();
+	HTMLTag *objectt(); //<object>, Like "object tag". As having a method named object() can cause issues.
 	HTMLTag *ol();
 	HTMLTag *optgroup();
 	HTMLTag *option();
@@ -424,7 +424,7 @@ public:
 	HTMLBuilder *cnav();
 	HTMLBuilder *cnoframes();
 	HTMLBuilder *cnoscript();
-	HTMLBuilder *cobject();
+	HTMLBuilder *cobjectt();
 	HTMLBuilder *c_ol();
 	HTMLBuilder *coptgroup();
 	HTMLBuilder *coption();

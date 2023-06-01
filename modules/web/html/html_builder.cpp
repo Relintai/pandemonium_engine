@@ -1334,7 +1334,7 @@ HTMLTag *HTMLBuilder::noscript() {
 	return _tag.start("noscript");
 }
 
-HTMLTag *HTMLBuilder::object() {
+HTMLTag *HTMLBuilder::objectt() {
 	write_tag();
 
 	return _tag.start("object");
@@ -2229,7 +2229,7 @@ HTMLBuilder *HTMLBuilder::cnoscript() {
 	return this;
 }
 
-HTMLBuilder *HTMLBuilder::cobject() {
+HTMLBuilder *HTMLBuilder::cobjectt() {
 	write_tag();
 	result += "</object>";
 

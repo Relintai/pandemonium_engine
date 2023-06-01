@@ -294,7 +294,7 @@ public:
 	Ref<_HTMLTag> nav();
 	Ref<_HTMLTag> noframes(); // Not supported in HTML5.
 	Ref<_HTMLTag> noscript();
-	Ref<_HTMLTag> object();
+	Ref<_HTMLTag> objectt(); //<object>, Like "object tag". As having a method named object() can cause issues.
 	Ref<_HTMLTag> ol();
 	Ref<_HTMLTag> optgroup();
 	Ref<_HTMLTag> option(const String &value = "");
@@ -426,7 +426,7 @@ public:
 	Ref<_HTMLBuilder> cnav();
 	Ref<_HTMLBuilder> cnoframes();
 	Ref<_HTMLBuilder> cnoscript();
-	Ref<_HTMLBuilder> cobject();
+	Ref<_HTMLBuilder> cobjectt();
 	Ref<_HTMLBuilder> c_ol();
 	Ref<_HTMLBuilder> coptgroup();
 	Ref<_HTMLBuilder> coption();
