@@ -404,7 +404,7 @@ void AuraData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_aura"), &AuraData::get_aura);
 	ClassDB::bind_method(D_METHOD("set_aura", "value"), &AuraData::set_aura);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_aura", "get_aura");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_aura", "get_aura");
 
 	ClassDB::bind_method(D_METHOD("refresh", "remaining"), &AuraData::refresh);
 

@@ -268,7 +268,7 @@ void SpellDamageInfo::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("aura_source_get"), &SpellDamageInfo::aura_source_get);
 	ClassDB::bind_method(D_METHOD("aura_source_set", "value"), &SpellDamageInfo::aura_source_set);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_source", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "aura_source_set", "aura_source_get");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_source", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "aura_source_set", "aura_source_get");
 
 	ClassDB::bind_method(D_METHOD("source_get_id"), &SpellDamageInfo::source_get_id);
 	ClassDB::bind_method(D_METHOD("source_set_id", "value"), &SpellDamageInfo::source_set_id);
