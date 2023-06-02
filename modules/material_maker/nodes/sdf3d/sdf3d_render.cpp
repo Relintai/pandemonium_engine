@@ -220,19 +220,19 @@ MMSdf3dRender::~MMSdf3dRender() {
 void MMSdf3dRender::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_input"), &MMSdf3dRender::get_input);
 	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMSdf3dRender::set_input);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_input", "get_input");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
 	ClassDB::bind_method(D_METHOD("get_out_height_map"), &MMSdf3dRender::get_out_height_map);
 	ClassDB::bind_method(D_METHOD("set_out_height_map", "value"), &MMSdf3dRender::set_out_height_map);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "out_height_map", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_out_height_map", "get_out_height_map");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "out_height_map", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_out_height_map", "get_out_height_map");
 
 	ClassDB::bind_method(D_METHOD("get_out_normal_map"), &MMSdf3dRender::get_out_normal_map);
 	ClassDB::bind_method(D_METHOD("set_out_normal_map", "value"), &MMSdf3dRender::set_out_normal_map);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "out_normal_map", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_out_normal_map", "get_out_normal_map");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "out_normal_map", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_out_normal_map", "get_out_normal_map");
 
 	ClassDB::bind_method(D_METHOD("get_out_color_map"), &MMSdf3dRender::get_out_color_map);
 	ClassDB::bind_method(D_METHOD("set_out_color_map", "value"), &MMSdf3dRender::set_out_color_map);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "out_color_map", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_out_color_map", "get_out_color_map");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "out_color_map", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_out_color_map", "get_out_color_map");
 
 	ClassDB::bind_method(D_METHOD("sdf3d_raymarch", "uv"), &MMSdf3dRender::sdf3d_raymarch);
 	ClassDB::bind_method(D_METHOD("sdf3d_normal", "p"), &MMSdf3dRender::sdf3d_normal);

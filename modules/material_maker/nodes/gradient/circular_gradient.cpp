@@ -81,7 +81,7 @@ MMCircularGradient::~MMCircularGradient() {
 void MMCircularGradient::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_image"), &MMCircularGradient::get_image);
 	ClassDB::bind_method(D_METHOD("set_image", "value"), &MMCircularGradient::set_image);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_image", "get_image");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_image", "get_image");
 
 	ClassDB::bind_method(D_METHOD("get_repeat"), &MMCircularGradient::get_repeat);
 	ClassDB::bind_method(D_METHOD("set_repeat", "value"), &MMCircularGradient::set_repeat);

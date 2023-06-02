@@ -121,15 +121,15 @@ MMFillChannel::~MMFillChannel() {
 void MMFillChannel::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_image"), &MMFillChannel::get_image);
 	ClassDB::bind_method(D_METHOD("set_image", "value"), &MMFillChannel::set_image);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_image", "get_image");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_image", "get_image");
 
 	ClassDB::bind_method(D_METHOD("get_input"), &MMFillChannel::get_input);
 	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMFillChannel::set_input);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_input", "get_input");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
 	ClassDB::bind_method(D_METHOD("get_value"), &MMFillChannel::get_value);
 	ClassDB::bind_method(D_METHOD("set_value", "value"), &MMFillChannel::set_value);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "value", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_value", "get_value");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "value", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_value", "get_value");
 
 	ClassDB::bind_method(D_METHOD("get_channel"), &MMFillChannel::get_channel);
 	ClassDB::bind_method(D_METHOD("set_channel", "value"), &MMFillChannel::set_channel);
