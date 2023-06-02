@@ -1199,7 +1199,7 @@ void Terrain2DWorld::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_player"), &Terrain2DWorld::get_player);
 	ClassDB::bind_method(D_METHOD("set_player", "player"), &Terrain2DWorld::set_player_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "player", PROPERTY_HINT_RESOURCE_TYPE, "node2D", 0), "set_player", "get_player");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "player", PROPERTY_HINT_RESOURCE_TYPE, "Node2D", 0), "set_player", "get_player");
 
 	ADD_GROUP("Mesh Transforms", "mesh_transform");
 	ClassDB::bind_method(D_METHOD("mesh_transform_terrain_get"), &Terrain2DWorld::mesh_transform_terrain_get);
