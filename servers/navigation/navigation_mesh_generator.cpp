@@ -31,7 +31,7 @@
 #include "navigation_mesh_generator.h"
 
 #include "core/config/project_settings.h"
-#include "core/object/funcref.h"
+#include "core/object/func_ref.h"
 
 #include "scene/2d/navigation_geometry_parser_2d.h"
 #ifndef _3D_DISABLED
@@ -50,9 +50,9 @@ void NavigationMeshGenerator::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("register_geometry_parser_2d", "geometry_parser"), &NavigationMeshGenerator::register_geometry_parser_2d);
 	ClassDB::bind_method(D_METHOD("unregister_geometry_parser_2d", "geometry_parser"), &NavigationMeshGenerator::unregister_geometry_parser_2d);
 
-	ClassDB::bind_method(D_METHOD("parse_2d_source_geometry_data", "navigation_polygon", "root_node", "callback"), &NavigationMeshGenerator::parse_2d_source_geometry_data, DEFVAL(Callable()));
-	ClassDB::bind_method(D_METHOD("bake_2d_from_source_geometry_data", "navigation_polygon", "source_geometry_data", "callback"), &NavigationMeshGenerator::bake_2d_from_source_geometry_data, DEFVAL(Callable()));
-	ClassDB::bind_method(D_METHOD("parse_and_bake_2d", "navigation_polygon", "root_node", "callback"), &NavigationMeshGenerator::parse_and_bake_2d, DEFVAL(Callable()));
+	ClassDB::bind_method(D_METHOD("parse_2d_source_geometry_data", "navigation_polygon", "root_node", "callback"), &NavigationMeshGenerator::parse_2d_source_geometry_data, DEFVAL(Ref<FuncRef>()));
+	ClassDB::bind_method(D_METHOD("bake_2d_from_source_geometry_data", "navigation_polygon", "source_geometry_data", "callback"), &NavigationMeshGenerator::bake_2d_from_source_geometry_data, DEFVAL(Ref<FuncRef>()));
+	ClassDB::bind_method(D_METHOD("parse_and_bake_2d", "navigation_polygon", "root_node", "callback"), &NavigationMeshGenerator::parse_and_bake_2d, DEFVAL(Ref<FuncRef>()));
 
 	ClassDB::bind_method(D_METHOD("is_navigation_polygon_baking", "navigation_polygon"), &NavigationMeshGenerator::is_navigation_polygon_baking);
 
@@ -60,9 +60,9 @@ void NavigationMeshGenerator::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("register_geometry_parser_3d", "geometry_parser"), &NavigationMeshGenerator::register_geometry_parser_3d);
 	ClassDB::bind_method(D_METHOD("unregister_geometry_parser_3d", "geometry_parser"), &NavigationMeshGenerator::unregister_geometry_parser_3d);
 
-	ClassDB::bind_method(D_METHOD("parse_3d_source_geometry_data", "navigation_mesh", "root_node", "callback"), &NavigationMeshGenerator::parse_3d_source_geometry_data, DEFVAL(Callable()));
-	ClassDB::bind_method(D_METHOD("bake_3d_from_source_geometry_data", "navigation_mesh", "source_geometry_data", "callback"), &NavigationMeshGenerator::bake_3d_from_source_geometry_data, DEFVAL(Callable()));
-	ClassDB::bind_method(D_METHOD("parse_and_bake_3d", "navigation_mesh", "root_node", "callback"), &NavigationMeshGenerator::parse_and_bake_3d, DEFVAL(Callable()));
+	ClassDB::bind_method(D_METHOD("parse_3d_source_geometry_data", "navigation_mesh", "root_node", "callback"), &NavigationMeshGenerator::parse_3d_source_geometry_data, DEFVAL(Ref<FuncRef>()));
+	ClassDB::bind_method(D_METHOD("bake_3d_from_source_geometry_data", "navigation_mesh", "source_geometry_data", "callback"), &NavigationMeshGenerator::bake_3d_from_source_geometry_data, DEFVAL(Ref<FuncRef>()));
+	ClassDB::bind_method(D_METHOD("parse_and_bake_3d", "navigation_mesh", "root_node", "callback"), &NavigationMeshGenerator::parse_and_bake_3d, DEFVAL(Ref<FuncRef>()));
 
 	ClassDB::bind_method(D_METHOD("is_navigation_mesh_baking", "navigation_mesh"), &NavigationMeshGenerator::is_navigation_mesh_baking);
 #endif // _3D_DISABLED
@@ -84,15 +84,17 @@ NavigationMeshGenerator::~NavigationMeshGenerator() {
 /// NavigationMeshGeneratorManager ////////////////////////////////////////////////////
 
 NavigationMeshGeneratorManager *NavigationMeshGeneratorManager::singleton = nullptr;
-const String NavigationMeshGeneratorManager::setting_property_name(PNAME("navigation/baking/generator/navigation_mesh_generator"));
+const String NavigationMeshGeneratorManager::setting_property_name("navigation/baking/generator/navigation_mesh_generator");
 
 void NavigationMeshGeneratorManager::on_servers_changed() {
 	String nav_server_names("DEFAULT");
-	for (const ClassInfo &server : navigation_mesh_generators) {
+
+	for (int i = 0; i < navigation_mesh_generators.size(); ++i) {
+		const ClassInfo &server = navigation_mesh_generators[i];
 		nav_server_names += "," + server.name;
 	}
 
-	ProjectSettings::get_singleton()->set_custom_property_info(PropertyInfo(Variant::STRING, setting_property_name, PROPERTY_HINT_ENUM, nav_server_names));
+	ProjectSettings::get_singleton()->set_custom_property_info(setting_property_name, PropertyInfo(Variant::STRING, setting_property_name, PROPERTY_HINT_ENUM, nav_server_names));
 }
 
 void NavigationMeshGeneratorManager::_bind_methods() {
@@ -104,7 +106,7 @@ NavigationMeshGeneratorManager *NavigationMeshGeneratorManager::get_singleton() 
 	return singleton;
 }
 
-void NavigationMeshGeneratorManager::register_server(const String &p_name, const  Ref<FuncRef> &p_create_callback) {
+void NavigationMeshGeneratorManager::register_server(const String &p_name, const Ref<FuncRef> &p_create_callback) {
 	// TODO: Enable check when is_valid() is fixed for static functions.
 	//ERR_FAIL_COND(!p_create_callback.is_valid());
 	ERR_FAIL_COND_MSG(find_server_id(p_name) != -1, "NavigationMeshGenerator with the same name was already registered.");
@@ -137,12 +139,21 @@ int NavigationMeshGeneratorManager::find_server_id(const String &p_name) const {
 NavigationMeshGenerator *NavigationMeshGeneratorManager::new_default_server() const {
 	ERR_FAIL_COND_V(default_server_id == -1, nullptr);
 
-	Variant ret;
-	Callable::CallError ce;
-	navigation_mesh_generators[default_server_id].create_callback.callp(nullptr, 0, ret, ce);
+	Ref<FuncRef> fr = navigation_mesh_generators[default_server_id].create_callback;
 
-	ERR_FAIL_COND_V(ce.error != Callable::CallError::CALL_OK, nullptr);
-	return Object::cast_to<NavigationMeshGenerator>(ret.get_validated_object());
+	ERR_FAIL_COND_V(!fr.is_valid(), nullptr);
+	Array arr;
+	Variant ret = fr->call_funcv(arr);
+
+	ERR_FAIL_COND_V(ret.is_invalid_object(), nullptr);
+
+	Object *o = ObjectDB::get_instance(ret.get_object_instance_id());
+
+	NavigationMeshGenerator *gen = Object::cast_to<NavigationMeshGenerator>(o);
+
+	ERR_FAIL_COND_V(!gen, nullptr);
+
+	return gen;
 }
 
 NavigationMeshGenerator *NavigationMeshGeneratorManager::new_server(const String &p_name) const {
@@ -152,12 +163,21 @@ NavigationMeshGenerator *NavigationMeshGeneratorManager::new_server(const String
 		return nullptr;
 	}
 
-	Variant ret;
-	Callable::CallError ce;
-	navigation_mesh_generators[id].create_callback.callp(nullptr, 0, ret, ce);
+	Ref<FuncRef> fr = navigation_mesh_generators[id].create_callback;
 
-	ERR_FAIL_COND_V(ce.error != Callable::CallError::CALL_OK, nullptr);
-	return Object::cast_to<NavigationMeshGenerator>(ret.get_validated_object());
+	ERR_FAIL_COND_V(!fr.is_valid(), nullptr);
+	Array arr;
+	Variant ret = fr->call_funcv(arr);
+
+	ERR_FAIL_COND_V(ret.is_invalid_object(), nullptr);
+
+	Object *o = ObjectDB::get_instance(ret.get_object_instance_id());
+
+	NavigationMeshGenerator *gen = Object::cast_to<NavigationMeshGenerator>(o);
+
+	ERR_FAIL_COND_V(!gen, nullptr);
+
+	return gen;
 }
 
 NavigationMeshGeneratorManager::NavigationMeshGeneratorManager() {
