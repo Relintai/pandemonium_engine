@@ -63,6 +63,8 @@
 #include "scene/register_scene_types.h"
 #include "scene/resources/packed_scene.h"
 #include "servers/audio_server.h"
+#include "servers/navigation/navigation_mesh_generator.h"
+#include "servers/navigation/navigation_mesh_generator_dummy.h"
 #include "servers/navigation_2d_server.h"
 #include "servers/navigation_server.h"
 #include "servers/physics_2d_server.h"
@@ -113,6 +115,8 @@ static AudioServer *audio_server = nullptr;
 static PhysicsServer *physics_server = nullptr;
 static Physics2DServer *physics_2d_server = nullptr;
 static RenderingServerCallbacks *rendering_server_callbacks = nullptr;
+static NavigationMeshGeneratorManager *navigation_mesh_generator_manager = nullptr;
+static NavigationMeshGenerator *navigation_mesh_generator = nullptr;
 static NavigationServer *navigation_server = nullptr;
 static Navigation2DServer *navigation_2d_server = nullptr;
 
@@ -217,6 +221,36 @@ void finalize_physics() {
 
 	physics_2d_server->finish();
 	memdelete(physics_2d_server);
+}
+
+void initialize_navigation_mesh_generator() {
+	// Init chosen NavigationMeshGenerator
+	const String &server_name = GLOBAL_GET(NavigationMeshGeneratorManager::setting_property_name);
+	navigation_mesh_generator = NavigationMeshGeneratorManager::get_singleton()->new_server(server_name);
+
+	// Fall back to default if not found
+	if (!navigation_mesh_generator) {
+		// Navigation server not found, so use the default.
+		navigation_mesh_generator = NavigationMeshGeneratorManager::get_singleton()->new_default_server();
+	}
+
+	// Fall back to dummy if no default server has been registered.
+	if (!navigation_mesh_generator) {
+		ERR_PRINT("No NavigationMeshGenerator implementation has been registered! Falling back to a dummy implementation: navigation mesh baking features will be unavailable.");
+		navigation_mesh_generator = memnew(NavigationMeshGeneratorDummy);
+	}
+
+	if (navigation_mesh_generator) {
+		// need to register singleton earlier so modules / extensions / addons can use it on SCENE / SERVER init level
+		Engine::get_singleton()->add_singleton(Engine::Singleton("NavigationMeshGenerator", NavigationMeshGenerator::get_singleton()));
+	}
+
+	ERR_FAIL_NULL_MSG(navigation_mesh_generator, "Failed to initialize NavigationMeshGenerator.");
+}
+
+void finalize_navigation_mesh_generator() {
+	memdelete(navigation_mesh_generator);
+	navigation_mesh_generator = nullptr;
 }
 
 void initialize_navigation_server() {
@@ -434,6 +468,9 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 	register_core_settings(); //here globals is present
 
 	translation_server = memnew(TranslationServer);
+
+	navigation_mesh_generator_manager = memnew(NavigationMeshGeneratorManager);
+
 	performance = memnew(Performance);
 	ClassDB::register_class<Performance>();
 	engine->add_singleton(Engine::Singleton("Performance", performance));
@@ -1334,6 +1371,9 @@ error:
 	if (translation_server) {
 		memdelete(translation_server);
 	}
+	if (navigation_mesh_generator_manager) {
+		memdelete(navigation_mesh_generator_manager);
+	}
 	if (globals) {
 		memdelete(globals);
 	}
@@ -1592,6 +1632,7 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	}
 
 	initialize_physics();
+	initialize_navigation_mesh_generator();
 	initialize_navigation_server();
 	register_server_singletons();
 
@@ -2346,6 +2387,8 @@ bool Main::iteration() {
 	rendering_server_callbacks->flush();
 	message_queue->flush();
 
+	NavigationMeshGenerator::get_singleton()->process();
+
 	RenderingServer::get_singleton()->sync(); //sync if still drawing from previous frames.
 
 	if (OS::get_singleton()->can_draw() && RenderingServer::get_singleton()->is_render_loop_enabled()) {
@@ -2526,6 +2569,7 @@ void Main::cleanup(bool p_force) {
 	}
 
 	finalize_navigation_server();
+	finalize_navigation_mesh_generator();
 	OS::get_singleton()->finalize();
 	finalize_physics();
 
@@ -2546,6 +2590,9 @@ void Main::cleanup(bool p_force) {
 	}
 	if (translation_server) {
 		memdelete(translation_server);
+	}
+	if (navigation_mesh_generator_manager) {
+		memdelete(navigation_mesh_generator_manager);
 	}
 	if (globals) {
 		memdelete(globals);

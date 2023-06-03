@@ -31,7 +31,6 @@
 #include "navigation_mesh_generator.h"
 
 #include "core/config/project_settings.h"
-#include "core/object/func_ref.h"
 
 #include "scene/2d/navigation_geometry_parser_2d.h"
 #ifndef _3D_DISABLED

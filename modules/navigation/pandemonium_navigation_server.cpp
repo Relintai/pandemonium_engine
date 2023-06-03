@@ -33,7 +33,7 @@
 #include "core/os/mutex.h"
 
 #ifndef _3D_DISABLED
-#include "navigation_mesh_generator.h"
+//#include "navigation_mesh_generator.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/navigation_mesh.h"
 #endif
@@ -418,8 +418,8 @@ void PandemoniumNavigationServer::region_bake_navmesh(Ref<NavigationMesh> r_mesh
 	ERR_FAIL_COND(p_node == nullptr);
 
 #ifndef _3D_DISABLED
-	NavigationMeshGenerator::get_singleton()->clear(r_mesh);
-	NavigationMeshGenerator::get_singleton()->bake(r_mesh, p_node);
+	//NavigationMeshGenerator::get_singleton()->clear(r_mesh);
+	//NavigationMeshGenerator::get_singleton()->bake(r_mesh, p_node);
 #endif
 }
 

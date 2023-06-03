@@ -34,6 +34,7 @@
 #include "core/containers/rid.h"
 #include "core/object/class_db.h"
 #include "core/object/reference.h"
+#include "core/object/func_ref.h"
 
 class Node;
 class NavigationGeometryParser2D;

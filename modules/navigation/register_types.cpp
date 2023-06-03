@@ -38,7 +38,7 @@
 #include "servers/navigation_2d_server.h"
 
 #ifndef _3D_DISABLED
-#include "navigation_mesh_generator.h"
+//#include "navigation_mesh_generator.h"
 #endif
 
 #ifdef TOOLS_ENABLED
@@ -46,7 +46,7 @@
 #endif
 
 #ifndef _3D_DISABLED
-NavigationMeshGenerator *_nav_mesh_generator = nullptr;
+//NavigationMeshGenerator *_nav_mesh_generator = nullptr;
 #endif
 
 NavigationServer *new_server() {
@@ -66,15 +66,15 @@ void register_navigation_types(ModuleRegistrationLevel p_level) {
 		Navigation2DServerManager::set_default_server("PandemoniumNavigation", 10);
 
 #ifndef _3D_DISABLED
-		_nav_mesh_generator = memnew(NavigationMeshGenerator);
-		ClassDB::register_class<NavigationMeshGenerator>();
-		Engine::get_singleton()->add_singleton(Engine::Singleton("NavigationMeshGenerator", NavigationMeshGenerator::get_singleton()));
+		//_nav_mesh_generator = memnew(NavigationMeshGenerator);
+		//ClassDB::register_class<NavigationMeshGenerator>();
+		//Engine::get_singleton()->add_singleton(Engine::Singleton("NavigationMeshGenerator", NavigationMeshGenerator::get_singleton()));
 #endif
 	}
 
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
-		EditorPlugins::add_by_type<NavigationMeshEditorPlugin>();
+		//EditorPlugins::add_by_type<NavigationMeshEditorPlugin>();
 	}
 #endif
 }
@@ -82,9 +82,9 @@ void register_navigation_types(ModuleRegistrationLevel p_level) {
 void unregister_navigation_types(ModuleRegistrationLevel p_level) {
 #ifndef _3D_DISABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		if (_nav_mesh_generator) {
-			memdelete(_nav_mesh_generator);
-		}
+		//if (_nav_mesh_generator) {
+		//	memdelete(_nav_mesh_generator);
+		//}
 	}
 #endif
 }
