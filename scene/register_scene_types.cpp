@@ -53,9 +53,9 @@
 #include "scene/2d/multimesh_instance_2d.h"
 #include "scene/2d/navigation_2d.h"
 #include "scene/2d/navigation_agent_2d.h"
+#include "scene/2d/navigation_geometry_parser_2d.h"
 #include "scene/2d/navigation_obstacle_2d.h"
 #include "scene/2d/navigation_region_2d.h"
-#include "scene/resources/navigation_polygon.h"
 #include "scene/2d/parallax_background.h"
 #include "scene/2d/parallax_layer.h"
 #include "scene/2d/path_2d.h"
@@ -158,6 +158,9 @@
 #include "scene/resources/mesh_data_tool.h"
 #include "scene/resources/multimesh.h"
 #include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
+#include "scene/resources/navigation_polygon.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/particles_material.h"
 #include "scene/resources/physics_material.h"
@@ -195,6 +198,7 @@
 #include "scene/3d/multimesh_instance.h"
 #include "scene/3d/navigation.h"
 #include "scene/3d/navigation_agent.h"
+#include "scene/3d/navigation_geometry_parser_3d.h"
 #include "scene/3d/navigation_mesh_instance.h"
 #include "scene/3d/navigation_obstacle.h"
 #include "scene/3d/occluder.h"
@@ -685,6 +689,14 @@ void register_scene_types() {
 	ClassDB::register_class<NavigationRegion2D>();
 	ClassDB::register_class<NavigationAgent2D>();
 	ClassDB::register_class<NavigationObstacle2D>();
+
+	ClassDB::register_class<NavigationMeshSourceGeometryData2D>();
+	ClassDB::register_class<NavigationMeshSourceGeometryData3D>();
+	ClassDB::register_class<NavigationGeometryParser2D>();
+
+#ifndef _3D_DISABLED
+	ClassDB::register_class<NavigationGeometryParser3D>();
+#endif
 
 	OS::get_singleton()->yield(); //may take time to init
 
