@@ -1,7 +1,7 @@
-#ifndef NAVIGATIONPOLYGONEDITORPLUGIN_H
-#define NAVIGATIONPOLYGONEDITORPLUGIN_H
+#ifndef NAVIGATION_POLYGON_H
+#define NAVIGATION_POLYGON_H
 /*************************************************************************/
-/*  navigation_polygon_editor_plugin.h                                   */
+/*  navigation_polygon.h                                                 */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,49 +30,66 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/plugins/abstract_polygon_2d_editor.h"
+#include "core/object/resource.h"
+#include "scene/2d/node_2d.h"
 
-#include "core/object/object.h"
-#include "core/object/reference.h"
-#include "core/variant/variant.h"
+class NavigationMesh;
 
-class EditorNode;
-class NavigationPolygon;
-class NavigationRegion2D;
-class Node2D;
-class Node;
+class NavigationPolygon : public Resource {
+	GDCLASS(NavigationPolygon, Resource);
 
-class NavigationPolygonEditor : public AbstractPolygon2DEditor {
-	GDCLASS(NavigationPolygonEditor, AbstractPolygon2DEditor);
+	PoolVector<Vector2> vertices;
+	struct Polygon {
+		Vector<int> indices;
+	};
+	Vector<Polygon> polygons;
+	Vector<PoolVector<Vector2>> outlines;
 
-	NavigationRegion2D *node;
+	mutable Rect2 item_rect;
+	mutable bool rect_cache_dirty;
 
-	Ref<NavigationPolygon> _ensure_navpoly() const;
+	Mutex navmesh_generation;
+	// Navigation mesh
+	Ref<NavigationMesh> navmesh;
 
 protected:
-	virtual Node2D *_get_node() const;
-	virtual void _set_node(Node *p_polygon);
+	static void _bind_methods();
 
-	virtual int _get_polygon_count() const;
-	virtual Variant _get_polygon(int p_idx) const;
-	virtual void _set_polygon(int p_idx, const Variant &p_polygon) const;
+	void _set_polygons(const Array &p_array);
+	Array _get_polygons() const;
 
-	virtual void _action_add_polygon(const Variant &p_polygon);
-	virtual void _action_remove_polygon(int p_idx);
-	virtual void _action_set_polygon(int p_idx, const Variant &p_previous, const Variant &p_polygon);
-
-	virtual bool _has_resource() const;
-	virtual void _create_resource();
+	void _set_outlines(const Array &p_array);
+	Array _get_outlines() const;
 
 public:
-	NavigationPolygonEditor(EditorNode *p_editor);
+#ifdef TOOLS_ENABLED
+	Rect2 _edit_get_rect() const;
+	bool _edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const;
+#endif
+
+	void set_vertices(const PoolVector<Vector2> &p_vertices);
+	PoolVector<Vector2> get_vertices() const;
+
+	void add_polygon(const Vector<int> &p_polygon);
+	int get_polygon_count() const;
+
+	void add_outline(const PoolVector<Vector2> &p_outline);
+	void add_outline_at_index(const PoolVector<Vector2> &p_outline, int p_index);
+	void set_outline(int p_idx, const PoolVector<Vector2> &p_outline);
+	PoolVector<Vector2> get_outline(int p_idx) const;
+	void remove_outline(int p_idx);
+	int get_outline_count() const;
+
+	void clear_outlines();
+	void make_polygons_from_outlines();
+
+	Vector<int> get_polygon(int p_idx);
+	void clear_polygons();
+
+	Ref<NavigationMesh> get_mesh();
+
+	NavigationPolygon();
+	~NavigationPolygon();
 };
 
-class NavigationPolygonEditorPlugin : public AbstractPolygon2DEditorPlugin {
-	GDCLASS(NavigationPolygonEditorPlugin, AbstractPolygon2DEditorPlugin);
-
-public:
-	NavigationPolygonEditorPlugin(EditorNode *p_node);
-};
-
-#endif // NAVIGATIONPOLYGONEDITORPLUGIN_H
+#endif // NAVIGATIONPOLYGON_H

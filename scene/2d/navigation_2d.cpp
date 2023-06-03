@@ -30,7 +30,8 @@
 
 #include "navigation_2d.h"
 
-#include "scene/2d/navigation_polygon.h"
+#include "scene/2d/navigation_region_2d.h"
+#include "scene/resources/navigation_polygon.h"
 #include "servers/navigation_2d_server.h"
 
 void Navigation2D::_bind_methods() {

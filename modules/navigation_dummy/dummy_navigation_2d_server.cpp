@@ -30,7 +30,7 @@
 
 #include "dummy_navigation_2d_server.h"
 
-#include "scene/2d/navigation_polygon.h"
+#include "scene/resources/navigation_polygon.h"
 
 void DummyNavigation2DServer::region_set_navpoly(RID p_region, Ref<NavigationPolygon> p_nav_mesh) const {
 }

@@ -35825,7 +35825,7 @@ msgid ""
 "Navigation2DServer.map_get_path] instead.\n"
 "Navigation2D provides navigation and pathfinding within a 2D area, specified "
 "as a collection of [NavigationPolygon] resources. By default, these are "
-"automatically collected from child [NavigationPolygonInstance] nodes."
+"automatically collected from child [NavigationRegion2D] nodes."
 msgstr ""
 
 #: doc/classes/Navigation2D.xml doc/classes/Navigation2DServer.xml
@@ -35837,7 +35837,7 @@ msgstr ""
 msgid ""
 "Returns the owner of the [NavigationPolygon] which contains the navigation "
 "point closest to the point given. This is usually a "
-"[NavigationPolygonInstance]."
+"[NavigationRegion2D]."
 msgstr ""
 
 #: doc/classes/Navigation2D.xml
@@ -36864,7 +36864,7 @@ msgid "Determines if the [NavigationMeshInstance] is enabled or disabled."
 msgstr ""
 
 #: doc/classes/NavigationMeshInstance.xml
-#: doc/classes/NavigationPolygonInstance.xml
+#: doc/classes/NavigationRegion2D.xml
 msgid ""
 "When pathfinding enters this region's navmesh from another regions navmesh "
 "the [code]enter_cost[/code] value is added to the path distance for "
@@ -36884,7 +36884,7 @@ msgid "The [NavigationMesh] resource to use."
 msgstr ""
 
 #: doc/classes/NavigationMeshInstance.xml
-#: doc/classes/NavigationPolygonInstance.xml
+#: doc/classes/NavigationRegion2D.xml
 msgid ""
 "When pathfinding moves inside this region's navmesh the traveled distances "
 "are multiplied with [code]travel_cost[/code] for determining the shortest "
@@ -36988,7 +36988,7 @@ msgid ""
 "50), Vector2(50, 0)])\n"
 "polygon.add_outline(outline)\n"
 "polygon.make_polygons_from_outlines()\n"
-"$NavigationPolygonInstance.navpoly = polygon\n"
+"$NavigationRegion2D.navpoly = polygon\n"
 "[/codeblock]\n"
 "Using [method add_polygon] and indices of the vertices array.\n"
 "[codeblock]\n"
@@ -36998,7 +36998,7 @@ msgid ""
 "polygon.set_vertices(vertices)\n"
 "var indices = PoolIntArray([0, 1, 2, 3])\n"
 "polygon.add_polygon(indices)\n"
-"$NavigationPolygonInstance.navpoly = polygon\n"
+"$NavigationRegion2D.navpoly = polygon\n"
 "[/codeblock]"
 msgstr ""
 
@@ -37075,11 +37075,11 @@ msgid ""
 "[method make_polygons_from_outlines] for the polygons to update."
 msgstr ""
 
-#: doc/classes/NavigationPolygonInstance.xml
+#: doc/classes/NavigationRegion2D.xml
 msgid "A region of the 2D navigation map."
 msgstr ""
 
-#: doc/classes/NavigationPolygonInstance.xml
+#: doc/classes/NavigationRegion2D.xml
 msgid ""
 "A region of the navigation map. It tells the [Navigation2DServer] what can "
 "be navigated and what cannot, based on its [NavigationPolygon] resource.\n"
@@ -37099,19 +37099,19 @@ msgid ""
 "controlled with the [member travel_cost] multiplier."
 msgstr ""
 
-#: doc/classes/NavigationPolygonInstance.xml
+#: doc/classes/NavigationRegion2D.xml
 msgid ""
 "Returns the [RID] of this region on the [Navigation2DServer]. Combined with "
 "[method Navigation2DServer.map_get_closest_point_owner] can be used to "
-"identify the [NavigationPolygonInstance] closest to a point on the merged "
+"identify the [NavigationRegion2D] closest to a point on the merged "
 "navigation map."
 msgstr ""
 
-#: doc/classes/NavigationPolygonInstance.xml
-msgid "Determines if the [NavigationPolygonInstance] is enabled or disabled."
+#: doc/classes/NavigationRegion2D.xml
+msgid "Determines if the [NavigationRegion2D] is enabled or disabled."
 msgstr ""
 
-#: doc/classes/NavigationPolygonInstance.xml
+#: doc/classes/NavigationRegion2D.xml
 msgid ""
 "A bitfield determining all navigation map layers the [NavigationPolygon] "
 "belongs to. On path requests with [method Navigation2DServer.map_get_path] "
@@ -37119,7 +37119,7 @@ msgid ""
 "will only proximity merge different navmeshes with matching layers."
 msgstr ""
 
-#: doc/classes/NavigationPolygonInstance.xml
+#: doc/classes/NavigationRegion2D.xml
 msgid "The [NavigationPolygon] resource to use."
 msgstr ""
 

@@ -35,7 +35,8 @@
 #include "core/object/undo_redo.h"
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"
-#include "scene/2d/navigation_polygon.h"
+#include "scene/2d/navigation_region_2d.h"
+#include "scene/resources/navigation_polygon.h"
 #include "scene/main/node.h"
 
 class EditorNode;
@@ -55,7 +56,7 @@ Node2D *NavigationPolygonEditor::_get_node() const {
 }
 
 void NavigationPolygonEditor::_set_node(Node *p_polygon) {
-	node = Object::cast_to<NavigationPolygonInstance>(p_polygon);
+	node = Object::cast_to<NavigationRegion2D>(p_polygon);
 }
 
 int NavigationPolygonEditor::_get_polygon_count() const {
@@ -129,5 +130,5 @@ NavigationPolygonEditor::NavigationPolygonEditor(EditorNode *p_editor) :
 }
 
 NavigationPolygonEditorPlugin::NavigationPolygonEditorPlugin(EditorNode *p_node) :
-		AbstractPolygon2DEditorPlugin(p_node, memnew(NavigationPolygonEditor(p_node)), "NavigationPolygonInstance") {
+		AbstractPolygon2DEditorPlugin(p_node, memnew(NavigationPolygonEditor(p_node)), "NavigationRegion2D") {
 }
