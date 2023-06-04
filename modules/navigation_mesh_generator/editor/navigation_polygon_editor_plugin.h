@@ -64,19 +64,19 @@ class NavigationPolygonEditor : public AbstractPolygon2DEditor {
 protected:
 	void _notification(int p_what);
 
-	virtual Node2D *_get_node() const override;
-	virtual void _set_node(Node *p_polygon) override;
+	virtual Node2D *_get_node() const;
+	virtual void _set_node(Node *p_polygon);
 
-	virtual int _get_polygon_count() const override;
-	virtual Variant _get_polygon(int p_idx) const override;
-	virtual void _set_polygon(int p_idx, const Variant &p_polygon) const override;
+	virtual int _get_polygon_count() const;
+	virtual Variant _get_polygon(int p_idx) const;
+	virtual void _set_polygon(int p_idx, const Variant &p_polygon) const;
 
-	virtual void _action_add_polygon(const Variant &p_polygon) override;
-	virtual void _action_remove_polygon(int p_idx) override;
-	virtual void _action_set_polygon(int p_idx, const Variant &p_previous, const Variant &p_polygon) override;
+	virtual void _action_add_polygon(const Variant &p_polygon);
+	virtual void _action_remove_polygon(int p_idx);
+	virtual void _action_set_polygon(int p_idx, const Variant &p_previous, const Variant &p_polygon);
 
-	virtual bool _has_resource() const override;
-	virtual void _create_resource() override;
+	virtual bool _has_resource() const;
+	virtual void _create_resource();
 
 public:
 	NavigationPolygonEditor();

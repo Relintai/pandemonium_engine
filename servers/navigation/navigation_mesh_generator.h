@@ -31,6 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
+#include "core/object/object.h"
+
 #include "core/containers/rid.h"
 #include "core/object/class_db.h"
 #include "core/object/func_ref.h"
@@ -84,7 +86,7 @@ public:
 #endif // _3D_DISABLED
 
 	NavigationMeshGenerator();
-	~NavigationMeshGenerator() override;
+	~NavigationMeshGenerator();
 };
 
 /// NavigationMeshGeneratorManager ////////////////////////////////////////////////////
@@ -123,7 +125,7 @@ public:
 	NavigationMeshGenerator *new_server(const String &p_name) const;
 
 	NavigationMeshGeneratorManager();
-	~NavigationMeshGeneratorManager() override;
+	~NavigationMeshGeneratorManager();
 };
 
 #endif // NAVIGATION_MESH_GENERATOR_H
