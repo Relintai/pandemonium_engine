@@ -33,8 +33,8 @@
 
 #include "core/containers/rid.h"
 #include "core/object/class_db.h"
-#include "core/object/reference.h"
 #include "core/object/func_ref.h"
+#include "core/object/reference.h"
 
 class Node;
 class NavigationGeometryParser2D;
@@ -89,6 +89,8 @@ public:
 
 /// NavigationMeshGeneratorManager ////////////////////////////////////////////////////
 
+typedef NavigationMeshGenerator *(*CreateNavigationMeshGeneratorCallback)();
+
 class NavigationMeshGeneratorManager : public Object {
 	GDCLASS(NavigationMeshGeneratorManager, Object);
 
@@ -96,7 +98,7 @@ class NavigationMeshGeneratorManager : public Object {
 
 	struct ClassInfo {
 		String name;
-		Ref<FuncRef> create_callback;
+		CreateNavigationMeshGeneratorCallback create_callback;
 	};
 
 	Vector<ClassInfo> navigation_mesh_generators;
@@ -113,7 +115,7 @@ public:
 
 	static NavigationMeshGeneratorManager *get_singleton();
 
-	void register_server(const String &p_name, const Ref<FuncRef> &p_create_callback);
+	void register_server(const String &p_name, CreateNavigationMeshGeneratorCallback p_create_callback);
 	void set_default_server(const String &p_name, int p_priority = 0);
 	int find_server_id(const String &p_name) const;
 

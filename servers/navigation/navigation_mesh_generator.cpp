@@ -97,17 +97,16 @@ void NavigationMeshGeneratorManager::on_servers_changed() {
 }
 
 void NavigationMeshGeneratorManager::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("register_server", "name", "create_callback"), &NavigationMeshGeneratorManager::register_server);
-	ClassDB::bind_method(D_METHOD("set_default_server", "name", "priority"), &NavigationMeshGeneratorManager::set_default_server);
+	//ClassDB::bind_method(D_METHOD("register_server", "name", "create_callback"), &NavigationMeshGeneratorManager::register_server);
+	//ClassDB::bind_method(D_METHOD("set_default_server", "name", "priority"), &NavigationMeshGeneratorManager::set_default_server);
 }
 
 NavigationMeshGeneratorManager *NavigationMeshGeneratorManager::get_singleton() {
 	return singleton;
 }
 
-void NavigationMeshGeneratorManager::register_server(const String &p_name, const Ref<FuncRef> &p_create_callback) {
-	// TODO: Enable check when is_valid() is fixed for static functions.
-	//ERR_FAIL_COND(!p_create_callback.is_valid());
+void NavigationMeshGeneratorManager::register_server(const String &p_name, CreateNavigationMeshGeneratorCallback p_create_callback) {
+	ERR_FAIL_COND(!p_create_callback);
 	ERR_FAIL_COND_MSG(find_server_id(p_name) != -1, "NavigationMeshGenerator with the same name was already registered.");
 
 	navigation_mesh_generators.push_back(ClassInfo{ p_name, p_create_callback });
@@ -138,17 +137,7 @@ int NavigationMeshGeneratorManager::find_server_id(const String &p_name) const {
 NavigationMeshGenerator *NavigationMeshGeneratorManager::new_default_server() const {
 	ERR_FAIL_COND_V(default_server_id == -1, nullptr);
 
-	Ref<FuncRef> fr = navigation_mesh_generators[default_server_id].create_callback;
-
-	ERR_FAIL_COND_V(!fr.is_valid(), nullptr);
-	Array arr;
-	Variant ret = fr->call_funcv(arr);
-
-	ERR_FAIL_COND_V(ret.is_invalid_object(), nullptr);
-
-	Object *o = ObjectDB::get_instance(ret.get_object_instance_id());
-
-	NavigationMeshGenerator *gen = Object::cast_to<NavigationMeshGenerator>(o);
+	NavigationMeshGenerator *gen = navigation_mesh_generators[default_server_id].create_callback();
 
 	ERR_FAIL_COND_V(!gen, nullptr);
 
@@ -162,17 +151,7 @@ NavigationMeshGenerator *NavigationMeshGeneratorManager::new_server(const String
 		return nullptr;
 	}
 
-	Ref<FuncRef> fr = navigation_mesh_generators[id].create_callback;
-
-	ERR_FAIL_COND_V(!fr.is_valid(), nullptr);
-	Array arr;
-	Variant ret = fr->call_funcv(arr);
-
-	ERR_FAIL_COND_V(ret.is_invalid_object(), nullptr);
-
-	Object *o = ObjectDB::get_instance(ret.get_object_instance_id());
-
-	NavigationMeshGenerator *gen = Object::cast_to<NavigationMeshGenerator>(o);
+	NavigationMeshGenerator *gen = navigation_mesh_generators[id].create_callback();
 
 	ERR_FAIL_COND_V(!gen, nullptr);
 
