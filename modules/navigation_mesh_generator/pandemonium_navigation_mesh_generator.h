@@ -46,7 +46,8 @@ class NavigationGeometryParser3D;
 
 class PandemoniumNavigationMeshGenerator : public NavigationMeshGenerator {
 public:
-	struct NavigationGeneratorTask2D {
+	class NavigationGeneratorTask2D : public ThreadPoolJob {
+	public:
 		enum TaskStatus {
 			PARSING_REQUIRED,
 			PARSING_STARTED,
@@ -76,7 +77,8 @@ private:
 
 #ifndef _3D_DISABLED
 public:
-	struct NavigationGeneratorTask3D {
+	class NavigationGeneratorTask3D : public ThreadPoolJob {
+	public:
 		enum TaskStatus {
 			PARSING_REQUIRED,
 			PARSING_STARTED,

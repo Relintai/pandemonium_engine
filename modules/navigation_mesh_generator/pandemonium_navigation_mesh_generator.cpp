@@ -30,11 +30,13 @@
 
 #include "pandemonium_navigation_mesh_generator.h"
 
+#include "core/config/engine.h"
 #include "core/config/project_settings.h"
 #include "core/core_string_names.h"
 
 #include "scene/2d/navigation_geometry_parser_2d.h"
 #include "scene/3d/navigation_geometry_parser_3d.h"
+#include "scene/resources/navigation_mesh.h"
 #include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
 
@@ -44,13 +46,17 @@
 #include "servers/navigation/geometry_parser_2d/polygon2d_navigation_geometry_parser_2d.h"
 #include "servers/navigation/geometry_parser_2d/staticbody2d_navigation_geometry_parser_2d.h"
 #include "servers/navigation/geometry_parser_2d/tilemap_navigation_geometry_parser_2d.h"
+*/
+
 #ifndef _3D_DISABLED
-#include "scene/3d/mesh_instance_3d.h"
+#include "scene/3d/mesh_instance.h"
+
+/*
 #include "servers/navigation/geometry_parser_3d/meshinstance3d_navigation_geometry_parser_3d.h"
 #include "servers/navigation/geometry_parser_3d/multimeshinstance3d_navigation_geometry_parser_3d.h"
 #include "servers/navigation/geometry_parser_3d/staticbody3d_navigation_geometry_parser_3d.h"
-#endif // _3D_DISABLED
 */
+#endif // _3D_DISABLED
 
 #ifdef CLIPPER_ENABLED
 #include "thirdparty/clipper2/include/clipper2/clipper.h"
@@ -60,6 +66,8 @@
 #ifndef _3D_DISABLED
 #include <Recast.h>
 #endif // _3D_DISABLED
+
+// todo port p_navigation_polygon->get_source_geometry_mode()
 
 void PandemoniumNavigationMeshGenerator::process() {
 	generator_mutex.lock();
@@ -93,6 +101,12 @@ void PandemoniumNavigationMeshGenerator::_process_2d_tasks() {
 }
 
 void PandemoniumNavigationMeshGenerator::_process_2d_parse_tasks() {
+	// add parse tasks to a different vector from the get go instead of collecting them ?
+
+	// _parse_tasks
+	// _submitted_jobs -> jobs submitted to threadpoool
+	// _process mutex, goes over _submitted_jobs if finished calls callback with results as param, and removes is
+
 	LocalVector<NavigationGeneratorTask2D *> _open_parse_tasks;
 
 	for (const KeyValue<NavigationGeneratorTask2D *, WorkerThreadPool::TaskID> &E : navigation_generator_2d_task_to_threadpool_task_id) {
@@ -103,22 +117,26 @@ void PandemoniumNavigationMeshGenerator::_process_2d_parse_tasks() {
 		}
 	}
 
+	// Note that this cannot be parallelized in a simple way, because we need mainloop to not delete nodes under it while processing.
+	// If parallelization is implemented, it needs to wait for the tasks to complete. (Like in the original pr.)
+	// Also the RenderingServer has locks that need the main thread to be active, so it can deadlock.
+
+	// TODO implement ThreadPool like max processing per frame support
+
 	if (_open_parse_tasks.size() > 0) {
-		// Use threads to parse the SceneTree only when RenderingServer is set to multi-threaded.
-		// When RenderingServer is set to single-threaded process gets stuck on receiving Mesh data arrays.
-		if (use_threads && parsing_use_multiple_threads && OS::get_singleton()->get_render_thread_mode() == OS::RenderThreadMode::RENDER_SEPARATE_THREAD) {
-			WorkerThreadPool::GroupID group_task = WorkerThreadPool::get_singleton()->add_template_group_task(this, &PandemoniumNavigationMeshGenerator::_parse_2d_scenetree_task, _open_parse_tasks.ptr(), _open_parse_tasks.size(), -1, parsing_use_high_priority_threads, SNAME("NavigationMeshGeneratorParsing2D"));
-			WorkerThreadPool::get_singleton()->wait_for_group_task_completion(group_task);
-		} else {
-			for (uint32_t i(0); i < _open_parse_tasks.size(); i++) {
-				_parse_2d_scenetree_task(i, _open_parse_tasks.ptr());
-			}
+		for (uint32_t i(0); i < _open_parse_tasks.size(); i++) {
+			// Add logic from _parse_2d_scenetree_task to here
+
+			_parse_2d_scenetree_task(i, _open_parse_tasks.ptr());
 		}
+
 		_open_parse_tasks.clear();
 	}
 }
 
 void PandemoniumNavigationMeshGenerator::_process_2d_bake_tasks() {
+	// Just merge this into the task and use ThreadPool
+
 	for (KeyValue<NavigationGeneratorTask2D *, WorkerThreadPool::TaskID> &E : navigation_generator_2d_task_to_threadpool_task_id) {
 		NavigationGeneratorTask2D *navigation_generator_task = E.key;
 
@@ -154,6 +172,8 @@ void PandemoniumNavigationMeshGenerator::_process_2d_bake_tasks() {
 }
 
 void PandemoniumNavigationMeshGenerator::_process_2d_callbacks() {
+	// Do this at the end when a job is finished on the main thread
+
 	for (const KeyValue<NavigationGeneratorTask2D *, WorkerThreadPool::TaskID> &E : navigation_generator_2d_task_to_threadpool_task_id) {
 		if (E.key->status == NavigationGeneratorTask2D::TaskStatus::BAKING_FINISHED) {
 			if (E.key->callback.is_valid()) {
@@ -190,12 +210,14 @@ void PandemoniumNavigationMeshGenerator::_process_2d_cleanup_tasks() {
 
 		int64_t navigation_polygon_index = baking_navpolys.find(tasks_to_remove[i]->navigation_polygon);
 		if (navigation_polygon_index >= 0) {
-			baking_navpolys.remove_at_unordered(navigation_polygon_index);
+			baking_navpolys.remove_unordered(navigation_polygon_index);
 		}
 	}
 }
 
 void PandemoniumNavigationMeshGenerator::_parse_2d_scenetree_task(uint32_t index, NavigationGeneratorTask2D **parse_task) {
+	// nott needed, control method
+
 	NavigationGeneratorTask2D *navigation_generator_task = (*(parse_task + index));
 	if (navigation_generator_task == nullptr) {
 		navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FAILED;
@@ -224,9 +246,13 @@ void PandemoniumNavigationMeshGenerator::_parse_2d_scenetree_task(uint32_t index
 	_static_parse_2d_source_geometry_data(navigation_polygon, parse_root_node, source_geometry_data, navigation_generator_task->geometry_parsers);
 
 	navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FINISHED;
+
+	// Submit resulting class To threadpool
 }
 
 void PandemoniumNavigationMeshGenerator::_navigation_mesh_generator_2d_thread_bake(void *p_arg) {
+	// Not needed control method
+
 	NavigationGeneratorTask2D *navigation_generator_task = static_cast<NavigationGeneratorTask2D *>(p_arg);
 
 	if (navigation_generator_task == nullptr) {
@@ -288,13 +314,15 @@ void PandemoniumNavigationMeshGenerator::bake_2d_from_source_geometry_data(Ref<N
 	generator_mutex.lock();
 	int64_t navigation_polygon_index = baking_navpolys.find(p_navigation_polygon);
 	if (navigation_polygon_index >= 0) {
-		baking_navpolys.remove_at_unordered(navigation_polygon_index);
+		baking_navpolys.remove_unordered(navigation_polygon_index);
 	}
 	generator_mutex.unlock();
 }
 
 void PandemoniumNavigationMeshGenerator::_static_parse_2d_geometry_node(Ref<NavigationPolygon> p_navigation_polygon, Node *p_node, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry_data, bool p_recurse_children, LocalVector<Ref<NavigationGeometryParser2D>> &p_geometry_2d_parsers) {
-	for (Ref<NavigationGeometryParser2D> &geometry_2d_parser : p_geometry_2d_parsers) {
+	for (int i = 0; i < p_geometry_2d_parsers.size(); ++i) {
+		Ref<NavigationGeometryParser2D> &geometry_2d_parser = p_geometry_2d_parsers[i];
+
 		if (geometry_2d_parser->parses_node(p_node)) {
 			geometry_2d_parser->parse_node_geometry(p_navigation_polygon, p_node, p_source_geometry_data);
 		};
@@ -331,6 +359,7 @@ void PandemoniumNavigationMeshGenerator::_static_parse_2d_source_geometry_data(R
 	}
 }
 
+// rewrite this to use clipper 1
 #ifdef CLIPPER_ENABLED
 static void _recursive_process_polytree_items(List<TPPLPoly> &p_tppl_in_polygon, const Clipper2Lib::PolyPath64 *p_polypath_item) {
 	using namespace Clipper2Lib;
@@ -370,6 +399,7 @@ void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_da
 	const Vector<Vector<Vector2>> &traversable_outlines = p_source_geometry_data->_get_traversable_outlines();
 	const Vector<Vector<Vector2>> &obstruction_outlines = p_source_geometry_data->_get_obstruction_outlines();
 
+// rewrite this to use clipper 1
 #ifdef CLIPPER_ENABLED
 	using namespace Clipper2Lib;
 
@@ -1012,13 +1042,15 @@ void PandemoniumNavigationMeshGenerator::bake_3d_from_source_geometry_data(Ref<N
 	generator_mutex.lock();
 	int64_t navigation_mesh_index = baking_navmeshes.find(p_navigation_mesh);
 	if (navigation_mesh_index >= 0) {
-		baking_navmeshes.remove_at_unordered(navigation_mesh_index);
+		baking_navmeshes.remove_unordered(navigation_mesh_index);
 	}
 	generator_mutex.unlock();
 }
 
 void PandemoniumNavigationMeshGenerator::_static_parse_3d_geometry_node(Ref<NavigationMesh> p_navigation_mesh, Node *p_node, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry_data, bool p_recurse_children, LocalVector<Ref<NavigationGeometryParser3D>> &p_geometry_3d_parsers) {
-	for (Ref<NavigationGeometryParser3D> &geometry_3d_parser : p_geometry_3d_parsers) {
+	for (int i = 0; i < p_geometry_3d_parsers.size(); ++i) {
+		Ref<NavigationGeometryParser3D> &geometry_3d_parser = p_geometry_3d_parsers[i];
+
 		if (geometry_3d_parser->parses_node(p_node)) {
 			geometry_3d_parser->parse_node_geometry(p_navigation_mesh, p_node, p_source_geometry_data);
 		};
