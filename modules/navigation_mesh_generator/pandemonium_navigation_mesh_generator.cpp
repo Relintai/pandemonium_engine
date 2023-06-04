@@ -69,6 +69,35 @@
 
 // todo port p_navigation_polygon->get_source_geometry_mode()
 
+void PandemoniumNavigationMeshGenerator::NavigationGeneratorTask2D::_execute() {
+	Ref<NavigationPolygon> navigation_polygon = navigation_polygon;
+	Ref<NavigationMeshSourceGeometryData3D> source_geometry_data = source_geometry_data;
+
+	if (navigation_polygon.is_null() || source_geometry_data.is_null() || !source_geometry_data->has_data()) {
+		status = NavigationGeneratorTask2D::TaskStatus::BAKING_FAILED;
+		set_complete(true);
+		return;
+	}
+	_static_bake_2d_from_source_geometry_data(navigation_polygon, source_geometry_data);
+	status = NavigationGeneratorTask2D::TaskStatus::BAKING_FINISHED;
+
+	set_complete(true);
+}
+
+void PandemoniumNavigationMeshGenerator::NavigationGeneratorTask2D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_execute"), &NavigationGeneratorTask2D::_execute);
+}
+
+#ifndef _3D_DISABLED
+void PandemoniumNavigationMeshGenerator::NavigationGeneratorTask3D::_execute() {
+	set_complete(true);
+}
+
+void PandemoniumNavigationMeshGenerator::NavigationGeneratorTask3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_execute"), &NavigationGeneratorTask3D::_execute);
+}
+#endif // _3D_DISABLED
+
 void PandemoniumNavigationMeshGenerator::process() {
 	generator_mutex.lock();
 
@@ -81,100 +110,77 @@ void PandemoniumNavigationMeshGenerator::process() {
 }
 
 void PandemoniumNavigationMeshGenerator::cleanup() {
-	baking_navpolys.clear();
-	geometry_2d_parsers.clear();
+	_baking_navpolys.clear();
+	_geometry_2d_parsers.clear();
 #ifndef _3D_DISABLED
-	baking_navmeshes.clear();
-	geometry_3d_parsers.clear();
+	_baking_navmeshes.clear();
+	_geometry_3d_parsers.clear();
 #endif // _3D_DISABLED
 }
 
 void PandemoniumNavigationMeshGenerator::_process_2d_tasks() {
-	if (navigation_generator_2d_task_to_threadpool_task_id.size() == 0) {
+	if (_2d_parse_jobs.size() == 0 && _2d_running_jobs.size() == 0) {
 		return;
 	}
 
 	_process_2d_parse_tasks();
-	_process_2d_bake_tasks();
-	_process_2d_callbacks();
 	_process_2d_cleanup_tasks();
 }
 
 void PandemoniumNavigationMeshGenerator::_process_2d_parse_tasks() {
-	// add parse tasks to a different vector from the get go instead of collecting them ?
-
-	// _parse_tasks
-	// _submitted_jobs -> jobs submitted to threadpoool
-	// _process mutex, goes over _submitted_jobs if finished calls callback with results as param, and removes is
-
-	LocalVector<NavigationGeneratorTask2D *> _open_parse_tasks;
-
-	for (const KeyValue<NavigationGeneratorTask2D *, WorkerThreadPool::TaskID> &E : navigation_generator_2d_task_to_threadpool_task_id) {
-		NavigationGeneratorTask2D *navigation_generator_task = E.key;
-		if (navigation_generator_task->status == NavigationGeneratorTask2D::TaskStatus::PARSING_REQUIRED) {
-			_open_parse_tasks.push_back(navigation_generator_task);
-			navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_STARTED;
-		}
-	}
-
 	// Note that this cannot be parallelized in a simple way, because we need mainloop to not delete nodes under it while processing.
 	// If parallelization is implemented, it needs to wait for the tasks to complete. (Like in the original pr.)
 	// Also the RenderingServer has locks that need the main thread to be active, so it can deadlock.
 
 	// TODO implement ThreadPool like max processing per frame support
 
-	if (_open_parse_tasks.size() > 0) {
-		for (uint32_t i(0); i < _open_parse_tasks.size(); i++) {
-			// Add logic from _parse_2d_scenetree_task to here
+	if (_2d_parse_jobs.size() > 0) {
+		while (_2d_parse_jobs.size() > 0) {
+			Ref<NavigationGeneratorTask2D> navigation_generator_task = _2d_parse_jobs[0];
 
-			_parse_2d_scenetree_task(i, _open_parse_tasks.ptr());
-		}
+			_2d_parse_jobs.remove(0);
 
-		_open_parse_tasks.clear();
-	}
-}
-
-void PandemoniumNavigationMeshGenerator::_process_2d_bake_tasks() {
-	// Just merge this into the task and use ThreadPool
-
-	for (KeyValue<NavigationGeneratorTask2D *, WorkerThreadPool::TaskID> &E : navigation_generator_2d_task_to_threadpool_task_id) {
-		NavigationGeneratorTask2D *navigation_generator_task = E.key;
-
-		if (navigation_generator_task->status == NavigationGeneratorTask2D::TaskStatus::PARSING_FINISHED) {
-			if (use_threads && baking_use_multiple_threads) {
-				WorkerThreadPool::TaskID threadpool_task_id = WorkerThreadPool::get_singleton()->add_native_task(
-						PandemoniumNavigationMeshGenerator::_navigation_mesh_generator_2d_thread_bake,
-						navigation_generator_task,
-						baking_use_high_priority_threads,
-						"NavigationMeshGeneratorBake2D");
-
-				navigation_generator_2d_task_to_threadpool_task_id[navigation_generator_task] = threadpool_task_id;
+			if (navigation_generator_task.is_null()) {
+				continue;
 			}
 
-			navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::BAKING_STARTED;
+			Ref<NavigationPolygon> navigation_polygon = navigation_generator_task->navigation_polygon;
+			Ref<NavigationMeshSourceGeometryData3D> source_geometry_data = navigation_generator_task->source_geometry_data;
+			ObjectID parse_root_object_id = navigation_generator_task->parse_root_object_id;
 
-		} else if (navigation_generator_task->status == NavigationGeneratorTask2D::TaskStatus::BAKING_STARTED) {
-			if (use_threads && baking_use_multiple_threads) {
-				WorkerThreadPool::TaskID threadpool_task_id = E.value;
-
-				if (WorkerThreadPool::get_singleton()->is_task_completed(threadpool_task_id)) {
-					WorkerThreadPool::get_singleton()->wait_for_task_completion(threadpool_task_id);
-
-					navigation_generator_2d_task_to_threadpool_task_id[navigation_generator_task] = WorkerThreadPool::TaskID();
-					navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::BAKING_FINISHED;
-				}
-			} else {
-				_navigation_mesh_generator_2d_thread_bake(navigation_generator_task);
-				navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::BAKING_FINISHED;
+			if (navigation_polygon.is_null() || parse_root_object_id == ObjectID()) {
+				navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FAILED;
+				continue;
 			}
+			Object *parse_root_obj = ObjectDB::get_instance(parse_root_object_id);
+			if (parse_root_obj == nullptr) {
+				navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FAILED;
+				return;
+			}
+			Node *parse_root_node = Object::cast_to<Node>(parse_root_obj);
+			if (parse_root_node == nullptr) {
+				navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FAILED;
+				return;
+			}
+
+			_static_parse_2d_source_geometry_data(navigation_polygon, parse_root_node, source_geometry_data, navigation_generator_task->geometry_parsers);
+
+			navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FINISHED;
+
+			// Submit resulting class To threadpool
+			navigation_generator_task->set_complete(false);
+			ThreadPool::get_singleton()->add_job(navigation_generator_task);
+			_2d_running_jobs.push_back(navigation_generator_task);
 		}
 	}
 }
 
-void PandemoniumNavigationMeshGenerator::_process_2d_callbacks() {
-	// Do this at the end when a job is finished on the main thread
+void PandemoniumNavigationMeshGenerator::_process_2d_cleanup_tasks() {
+	LocalVector<NavigationGeneratorTask2D *> tasks_to_remove;
 
 	for (const KeyValue<NavigationGeneratorTask2D *, WorkerThreadPool::TaskID> &E : navigation_generator_2d_task_to_threadpool_task_id) {
+		// only chech if completed is true
+
 		if (E.key->status == NavigationGeneratorTask2D::TaskStatus::BAKING_FINISHED) {
 			if (E.key->callback.is_valid()) {
 				Callable::CallError ce;
@@ -189,13 +195,7 @@ void PandemoniumNavigationMeshGenerator::_process_2d_callbacks() {
 				E.key->status = NavigationGeneratorTask2D::TaskStatus::CALLBACK_FAILED;
 			}
 		}
-	}
-}
 
-void PandemoniumNavigationMeshGenerator::_process_2d_cleanup_tasks() {
-	LocalVector<NavigationGeneratorTask2D *> tasks_to_remove;
-
-	for (const KeyValue<NavigationGeneratorTask2D *, WorkerThreadPool::TaskID> &E : navigation_generator_2d_task_to_threadpool_task_id) {
 		// every finished bake should have its callback by now, so remove everything that has bake/callback finished or that failed
 		if (E.key->status == NavigationGeneratorTask2D::TaskStatus::PARSING_FAILED ||
 				E.key->status == NavigationGeneratorTask2D::TaskStatus::BAKING_FAILED ||
@@ -215,73 +215,17 @@ void PandemoniumNavigationMeshGenerator::_process_2d_cleanup_tasks() {
 	}
 }
 
-void PandemoniumNavigationMeshGenerator::_parse_2d_scenetree_task(uint32_t index, NavigationGeneratorTask2D **parse_task) {
-	// nott needed, control method
-
-	NavigationGeneratorTask2D *navigation_generator_task = (*(parse_task + index));
-	if (navigation_generator_task == nullptr) {
-		navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FAILED;
-		return;
-	}
-
-	Ref<NavigationPolygon> navigation_polygon = navigation_generator_task->navigation_polygon;
-	Ref<NavigationMeshSourceGeometryData3D> source_geometry_data = navigation_generator_task->source_geometry_data;
-	ObjectID parse_root_object_id = navigation_generator_task->parse_root_object_id;
-
-	if (navigation_polygon.is_null() || parse_root_object_id == ObjectID()) {
-		navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FAILED;
-		return;
-	}
-	Object *parse_root_obj = ObjectDB::get_instance(parse_root_object_id);
-	if (parse_root_obj == nullptr) {
-		navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FAILED;
-		return;
-	}
-	Node *parse_root_node = Object::cast_to<Node>(parse_root_obj);
-	if (parse_root_node == nullptr) {
-		navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FAILED;
-		return;
-	}
-
-	_static_parse_2d_source_geometry_data(navigation_polygon, parse_root_node, source_geometry_data, navigation_generator_task->geometry_parsers);
-
-	navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FINISHED;
-
-	// Submit resulting class To threadpool
-}
-
-void PandemoniumNavigationMeshGenerator::_navigation_mesh_generator_2d_thread_bake(void *p_arg) {
-	// Not needed control method
-
-	NavigationGeneratorTask2D *navigation_generator_task = static_cast<NavigationGeneratorTask2D *>(p_arg);
-
-	if (navigation_generator_task == nullptr) {
-		navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_FAILED;
-		return;
-	}
-
-	Ref<NavigationPolygon> navigation_polygon = navigation_generator_task->navigation_polygon;
-	Ref<NavigationMeshSourceGeometryData3D> source_geometry_data = navigation_generator_task->source_geometry_data;
-
-	if (navigation_polygon.is_null() || source_geometry_data.is_null() || !source_geometry_data->has_data()) {
-		navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::BAKING_FAILED;
-		return;
-	}
-	_static_bake_2d_from_source_geometry_data(navigation_polygon, source_geometry_data);
-	navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::BAKING_FINISHED;
-}
-
 void PandemoniumNavigationMeshGenerator::register_geometry_parser_2d(Ref<NavigationGeometryParser2D> p_geometry_parser) {
 	generator_mutex.lock();
-	if (geometry_2d_parsers.find(p_geometry_parser) < 0) {
-		geometry_2d_parsers.push_back(p_geometry_parser);
+	if (_geometry_2d_parsers.find(p_geometry_parser) < 0) {
+		_geometry_2d_parsers.push_back(p_geometry_parser);
 	}
 	generator_mutex.unlock();
 }
 
 void PandemoniumNavigationMeshGenerator::unregister_geometry_parser_2d(Ref<NavigationGeometryParser2D> p_geometry_parser) {
 	generator_mutex.lock();
-	geometry_2d_parsers.erase(p_geometry_parser);
+	_geometry_2d_parsers.erase(p_geometry_parser);
 	generator_mutex.unlock();
 }
 
@@ -294,7 +238,7 @@ Ref<NavigationMeshSourceGeometryData2D> PandemoniumNavigationMeshGenerator::pars
 
 	Ref<NavigationMeshSourceGeometryData2D> source_geometry_data = Ref<NavigationMeshSourceGeometryData2D>(memnew(NavigationMeshSourceGeometryData2D));
 
-	_static_parse_2d_source_geometry_data(p_navigation_polygon, p_root_node, source_geometry_data, geometry_2d_parsers);
+	_static_parse_2d_source_geometry_data(p_navigation_polygon, p_root_node, source_geometry_data, _geometry_2d_parsers);
 
 	return source_geometry_data;
 };
@@ -303,18 +247,18 @@ void PandemoniumNavigationMeshGenerator::bake_2d_from_source_geometry_data(Ref<N
 	ERR_FAIL_COND_MSG(!p_navigation_polygon.is_valid(), "Invalid navigation mesh.");
 	ERR_FAIL_COND_MSG(!p_source_geometry_data.is_valid(), "Invalid NavigationMeshSourceGeometryData2D.");
 	ERR_FAIL_COND_MSG(p_navigation_polygon->get_outline_count() == 0 && !p_source_geometry_data->has_data(), "NavigationMeshSourceGeometryData2D is empty. Parse source geometry first.");
-	ERR_FAIL_COND_MSG(baking_navpolys.find(p_navigation_polygon) >= 0, "NavigationPolygon is already baking. Wait for current bake task to finish.");
+	ERR_FAIL_COND_MSG(_baking_navpolys.find(p_navigation_polygon) >= 0, "NavigationPolygon is already baking. Wait for current bake task to finish.");
 
 	generator_mutex.lock();
-	baking_navpolys.push_back(p_navigation_polygon);
+	_baking_navpolys.push_back(p_navigation_polygon);
 	generator_mutex.unlock();
 
 	_static_bake_2d_from_source_geometry_data(p_navigation_polygon, p_source_geometry_data);
 
 	generator_mutex.lock();
-	int64_t navigation_polygon_index = baking_navpolys.find(p_navigation_polygon);
+	int64_t navigation_polygon_index = _baking_navpolys.find(p_navigation_polygon);
 	if (navigation_polygon_index >= 0) {
-		baking_navpolys.remove_unordered(navigation_polygon_index);
+		_baking_navpolys.remove_unordered(navigation_polygon_index);
 	}
 	generator_mutex.unlock();
 }
@@ -572,11 +516,11 @@ void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_da
 }
 
 void PandemoniumNavigationMeshGenerator::parse_and_bake_2d(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Ref<FuncRef> p_callback) {
-	ERR_FAIL_COND_MSG(baking_navpolys.find(p_navigation_polygon) >= 0, "NavigationPolygon was already added to baking queue. Wait for current bake task to finish.");
+	ERR_FAIL_COND_MSG(_baking_navpolys.find(p_navigation_polygon) >= 0, "NavigationPolygon was already added to baking queue. Wait for current bake task to finish.");
 	ERR_FAIL_COND_MSG(p_root_node == nullptr, "NavigationPolygon requires a valid root node.");
 
 	generator_mutex.lock();
-	baking_navpolys.push_back(p_navigation_polygon);
+	_baking_navpolys.push_back(p_navigation_polygon);
 	generator_mutex.unlock();
 
 	NavigationGeneratorTask2D *navigation_generator_task = memnew(NavigationGeneratorTask2D);
@@ -585,7 +529,7 @@ void PandemoniumNavigationMeshGenerator::parse_and_bake_2d(Ref<NavigationPolygon
 	navigation_generator_task->source_geometry_data = Ref<NavigationMeshSourceGeometryData2D>(memnew(NavigationMeshSourceGeometryData2D));
 	navigation_generator_task->callback = p_callback;
 	navigation_generator_task->status = NavigationGeneratorTask2D::TaskStatus::PARSING_REQUIRED;
-	navigation_generator_task->geometry_parsers = geometry_2d_parsers;
+	navigation_generator_task->geometry_parsers = _geometry_2d_parsers;
 
 	generator_mutex.lock();
 	navigation_generator_2d_task_to_threadpool_task_id[navigation_generator_task] = WorkerThreadPool::TaskID();
@@ -594,12 +538,12 @@ void PandemoniumNavigationMeshGenerator::parse_and_bake_2d(Ref<NavigationPolygon
 
 bool PandemoniumNavigationMeshGenerator::is_navigation_polygon_baking(Ref<NavigationPolygon> p_navigation_polygon) const {
 	ERR_FAIL_COND_V(!p_navigation_polygon.is_valid(), false);
-	return baking_navpolys.find(p_navigation_polygon) >= 0;
+	return _baking_navpolys.find(p_navigation_polygon) >= 0;
 }
 
 #ifndef _3D_DISABLED
 void PandemoniumNavigationMeshGenerator::_process_3d_tasks() {
-	if (navigation_generator_3d_task_to_threadpool_task_id.size() == 0) {
+	if (_3d_parse_jobs.size() == 0 && _3d_running_jobs.size() == 0) {
 		return;
 	}
 
@@ -610,28 +554,28 @@ void PandemoniumNavigationMeshGenerator::_process_3d_tasks() {
 }
 
 void PandemoniumNavigationMeshGenerator::_process_3d_parse_tasks() {
-	LocalVector<NavigationGeneratorTask3D *> _open_parse_tasks;
+	LocalVector<NavigationGeneratorTask3D *> _2d_parse_jobs;
 
 	for (const KeyValue<NavigationGeneratorTask3D *, WorkerThreadPool::TaskID> &E : navigation_generator_3d_task_to_threadpool_task_id) {
 		NavigationGeneratorTask3D *navigation_generator_task = E.key;
 		if (navigation_generator_task->status == NavigationGeneratorTask3D::TaskStatus::PARSING_REQUIRED) {
-			_open_parse_tasks.push_back(navigation_generator_task);
+			_2d_parse_jobs.push_back(navigation_generator_task);
 			navigation_generator_task->status = NavigationGeneratorTask3D::TaskStatus::PARSING_STARTED;
 		}
 	}
 
-	if (_open_parse_tasks.size() > 0) {
+	if (_2d_parse_jobs.size() > 0) {
 		// Use threads to parse the SceneTree only when RenderingServer is set to multi-threaded.
 		// When RenderingServer is set to single-threaded process gets stuck on receiving Mesh data arrays.
 		if (use_threads && parsing_use_multiple_threads && OS::get_singleton()->get_render_thread_mode() == OS::RenderThreadMode::RENDER_SEPARATE_THREAD) {
-			WorkerThreadPool::GroupID group_task = WorkerThreadPool::get_singleton()->add_template_group_task(this, &PandemoniumNavigationMeshGenerator::_parse_3d_scenetree_task, _open_parse_tasks.ptr(), _open_parse_tasks.size(), -1, parsing_use_high_priority_threads, SNAME("NavigationMeshGeneratorParsing3D"));
+			WorkerThreadPool::GroupID group_task = WorkerThreadPool::get_singleton()->add_template_group_task(this, &PandemoniumNavigationMeshGenerator::_parse_3d_scenetree_task, _2d_parse_jobs.ptr(), _2d_parse_jobs.size(), -1, parsing_use_high_priority_threads, SNAME("NavigationMeshGeneratorParsing3D"));
 			WorkerThreadPool::get_singleton()->wait_for_group_task_completion(group_task);
 		} else {
-			for (uint32_t i(0); i < _open_parse_tasks.size(); i++) {
-				_parse_3d_scenetree_task(i, _open_parse_tasks.ptr());
+			for (uint32_t i(0); i < _2d_parse_jobs.size(); i++) {
+				_parse_3d_scenetree_task(i, _2d_parse_jobs.ptr());
 			}
 		}
-		_open_parse_tasks.clear();
+		_2d_parse_jobs.clear();
 	}
 }
 
@@ -1031,7 +975,7 @@ void PandemoniumNavigationMeshGenerator::bake_3d_from_source_geometry_data(Ref<N
 	ERR_FAIL_COND_MSG(!p_navigation_mesh.is_valid(), "Invalid navigation mesh.");
 	ERR_FAIL_COND_MSG(!p_source_geometry_data.is_valid(), "Invalid NavigationMeshSourceGeometryData3D.");
 	ERR_FAIL_COND_MSG(!p_source_geometry_data->has_data(), "NavigationMeshSourceGeometryData3D is empty. Parse source geometry first.");
-	ERR_FAIL_COND_MSG(baking_navmeshes.find(p_navigation_mesh) >= 0, "NavigationMesh is already baking. Wait for current bake task to finish.");
+	ERR_FAIL_COND_MSG(_baking_navmeshes.find(p_navigation_mesh) >= 0, "NavigationMesh is already baking. Wait for current bake task to finish.");
 
 	generator_mutex.lock();
 	baking_navmeshes.push_back(p_navigation_mesh);

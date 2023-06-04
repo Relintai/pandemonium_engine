@@ -47,6 +47,8 @@ class NavigationGeometryParser3D;
 class PandemoniumNavigationMeshGenerator : public NavigationMeshGenerator {
 public:
 	class NavigationGeneratorTask2D : public ThreadPoolJob {
+		GDCLASS(NavigationGeneratorTask2D, ThreadPoolJob);
+
 	public:
 		enum TaskStatus {
 			PARSING_REQUIRED,
@@ -66,17 +68,14 @@ public:
 		Ref<FuncRef> callback;
 		NavigationGeneratorTask2D::TaskStatus status = NavigationGeneratorTask2D::TaskStatus::PARSING_REQUIRED;
 		LocalVector<Ref<NavigationGeometryParser2D>> geometry_parsers;
+
+		void _execute();
+
+	protected:
+		static void _bind_methods();
 	};
 
-	static void _navigation_mesh_generator_2d_thread_bake(void *p_arg);
-
-private:
-	LocalVector<Ref<NavigationPolygon>> baking_navpolys;
-	LocalVector<Ref<NavigationGeometryParser2D>> geometry_2d_parsers;
-	HashMap<NavigationGeneratorTask2D *, WorkerThreadPool::TaskID> navigation_generator_2d_task_to_threadpool_task_id;
-
 #ifndef _3D_DISABLED
-public:
 	class NavigationGeneratorTask3D : public ThreadPoolJob {
 	public:
 		enum TaskStatus {
@@ -97,15 +96,16 @@ public:
 		Ref<FuncRef> callback;
 		NavigationGeneratorTask3D::TaskStatus status = NavigationGeneratorTask3D::TaskStatus::PARSING_REQUIRED;
 		LocalVector<Ref<NavigationGeometryParser3D>> geometry_parsers;
+
+		void _execute();
+
+	protected:
+		static void _bind_methods();
 	};
-
-	static void _navigation_mesh_generator_3d_thread_bake(void *p_arg);
-
-private:
-	LocalVector<Ref<NavigationMesh>> baking_navmeshes;
-	LocalVector<Ref<NavigationGeometryParser3D>> geometry_3d_parsers;
-	HashMap<NavigationGeneratorTask3D *, WorkerThreadPool::TaskID> navigation_generator_3d_task_to_threadpool_task_id;
 #endif // _3D_DISABLED
+
+	//Remove
+	static void _navigation_mesh_generator_3d_thread_bake(void *p_arg);
 
 public:
 	virtual void process();
@@ -145,10 +145,7 @@ public:
 private:
 	void _process_2d_tasks();
 	void _process_2d_parse_tasks();
-	void _process_2d_bake_tasks();
-	void _process_2d_callbacks();
 	void _process_2d_cleanup_tasks();
-	void _parse_2d_scenetree_task(uint32_t index, NavigationGeneratorTask2D **parse_task);
 
 #ifndef _3D_DISABLED
 	void _process_3d_tasks();
@@ -171,6 +168,18 @@ private:
 	bool parsing_use_high_priority_threads = true;
 	bool baking_use_multiple_threads = true;
 	bool baking_use_high_priority_threads = true;
+
+	LocalVector<Ref<NavigationPolygon>> _baking_navpolys;
+	LocalVector<Ref<NavigationGeometryParser2D>> _geometry_2d_parsers;
+	LocalVector<Ref<NavigationGeneratorTask2D>> _2d_parse_jobs;
+	LocalVector<Ref<NavigationGeneratorTask2D>> _2d_running_jobs;
+
+#ifndef _3D_DISABLED
+	LocalVector<Ref<NavigationMesh>> _baking_navmeshes;
+	LocalVector<Ref<NavigationGeometryParser3D>> _geometry_3d_parsers;
+	LocalVector<Ref<NavigationGeneratorTask3D>> _3d_parse_jobs;
+	LocalVector<Ref<NavigationGeneratorTask3D>> _3d_running_jobs;
+#endif // _3D_DISABLED
 };
 
 #endif // GODOT_NAVIGATION_MESH_GENERATOR_H
