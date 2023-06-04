@@ -1,3 +1,6 @@
+#ifndef PANDEMONIUM_NAVIGATION_MESH_GENERATOR_H
+#define PANDEMONIUM_NAVIGATION_MESH_GENERATOR_H
+
 /**************************************************************************/
 /*  godot_navigation_mesh_generator.h                                     */
 /**************************************************************************/
@@ -28,30 +31,21 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef PANDEMONIUM_NAVIGATION_MESH_GENERATOR_H
-#define PANDEMONIUM_NAVIGATION_MESH_GENERATOR_H
-
 #include "servers/navigation/navigation_mesh_generator.h"
 
-#include "core/object/worker_thread_pool.h"
-#include "scene/2d/navigation_geometry_parser_2d.h"
-#include "scene/3d/navigation_geometry_parser_3d.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
+#include "core/os/thread_pool.h"
+#include "core/os/thread_pool_job.h"
+
+#include "core/object/func_ref.h"
+
+class NavigationPolygon;
+class NavigationMeshSourceGeometryData2D;
+class NavigationGeometryParser2D;
+class NavigationMeshSourceGeometryData3D;
+class NavigationGeometryParser3D;
 
 class PandemoniumNavigationMeshGenerator : public NavigationMeshGenerator {
-	Mutex generator_mutex;
-
-	bool use_threads = true;
-	bool parsing_use_multiple_threads = true;
-	bool parsing_use_high_priority_threads = true;
-	bool baking_use_multiple_threads = true;
-	bool baking_use_high_priority_threads = true;
-
 public:
-	PandemoniumNavigationMeshGenerator();
-	~PandemoniumNavigationMeshGenerator() override;
-
 	struct NavigationGeneratorTask2D {
 		enum TaskStatus {
 			PARSING_REQUIRED,
@@ -68,7 +62,7 @@ public:
 		Ref<NavigationPolygon> navigation_polygon;
 		ObjectID parse_root_object_id;
 		Ref<NavigationMeshSourceGeometryData2D> source_geometry_data;
-		Callable callback;
+		Ref<FuncRef> callback;
 		NavigationGeneratorTask2D::TaskStatus status = NavigationGeneratorTask2D::TaskStatus::PARSING_REQUIRED;
 		LocalVector<Ref<NavigationGeometryParser2D>> geometry_parsers;
 	};
@@ -98,7 +92,7 @@ public:
 		Ref<NavigationMesh> navigation_mesh;
 		ObjectID parse_root_object_id;
 		Ref<NavigationMeshSourceGeometryData3D> source_geometry_data;
-		Callable callback;
+		Ref<FuncRef> callback;
 		NavigationGeneratorTask3D::TaskStatus status = NavigationGeneratorTask3D::TaskStatus::PARSING_REQUIRED;
 		LocalVector<Ref<NavigationGeometryParser3D>> geometry_parsers;
 	};
@@ -112,38 +106,38 @@ private:
 #endif // _3D_DISABLED
 
 public:
-	virtual void process() override;
-	virtual void cleanup() override;
+	virtual void process();
+	virtual void cleanup();
 
 	// 2D ////////////////////////////////////
-	virtual void register_geometry_parser_2d(Ref<NavigationGeometryParser2D> p_geometry_parser) override;
-	virtual void unregister_geometry_parser_2d(Ref<NavigationGeometryParser2D> p_geometry_parser) override;
+	virtual void register_geometry_parser_2d(Ref<NavigationGeometryParser2D> p_geometry_parser);
+	virtual void unregister_geometry_parser_2d(Ref<NavigationGeometryParser2D> p_geometry_parser);
 
-	virtual Ref<NavigationMeshSourceGeometryData2D> parse_2d_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Callable p_callback = Callable()) override;
-	virtual void bake_2d_from_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry_data, Callable p_callback = Callable()) override;
+	virtual Ref<NavigationMeshSourceGeometryData2D> parse_2d_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Ref<FuncRef> p_callback = Ref<FuncRef>());
+	virtual void bake_2d_from_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry_data, Ref<FuncRef> p_callback = Ref<FuncRef>());
 
-	virtual void parse_and_bake_2d(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Callable p_callback = Callable()) override;
+	virtual void parse_and_bake_2d(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Ref<FuncRef> p_callback = Ref<FuncRef>());
 
 	static void _static_parse_2d_geometry_node(Ref<NavigationPolygon> p_navigation_polygon, Node *p_node, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry_data, bool p_recurse_children, LocalVector<Ref<NavigationGeometryParser2D>> &p_geometry_2d_parsers);
 	static void _static_parse_2d_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry_data, LocalVector<Ref<NavigationGeometryParser2D>> &p_geometry_2d_parsers);
 	static void _static_bake_2d_from_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry_data);
 
-	virtual bool is_navigation_polygon_baking(Ref<NavigationPolygon> p_navigation_polygon) const override;
+	virtual bool is_navigation_polygon_baking(Ref<NavigationPolygon> p_navigation_polygon) const;
 
 #ifndef _3D_DISABLED
-	virtual void register_geometry_parser_3d(Ref<NavigationGeometryParser3D> p_geometry_parser) override;
-	virtual void unregister_geometry_parser_3d(Ref<NavigationGeometryParser3D> p_geometry_parser) override;
+	virtual void register_geometry_parser_3d(Ref<NavigationGeometryParser3D> p_geometry_parser);
+	virtual void unregister_geometry_parser_3d(Ref<NavigationGeometryParser3D> p_geometry_parser);
 
-	virtual Ref<NavigationMeshSourceGeometryData3D> parse_3d_source_geometry_data(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Callable p_callback = Callable()) override;
-	virtual void bake_3d_from_source_geometry_data(Ref<NavigationMesh> p_navigation_mesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry_data, Callable p_callback = Callable()) override;
+	virtual Ref<NavigationMeshSourceGeometryData3D> parse_3d_source_geometry_data(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Ref<FuncRef> p_callback = Ref<FuncRef>());
+	virtual void bake_3d_from_source_geometry_data(Ref<NavigationMesh> p_navigation_mesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry_data, Ref<FuncRef> p_callback = Ref<FuncRef>());
 
-	virtual void parse_and_bake_3d(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Callable p_callback = Callable()) override;
+	virtual void parse_and_bake_3d(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Ref<FuncRef> p_callback = Ref<FuncRef>());
 
 	static void _static_parse_3d_geometry_node(Ref<NavigationMesh> p_navigation_mesh, Node *p_node, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry_data, bool p_recurse_children, LocalVector<Ref<NavigationGeometryParser3D>> &p_geometry_3d_parsers);
 	static void _static_parse_3d_source_geometry_data(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry_data, LocalVector<Ref<NavigationGeometryParser3D>> &p_geometry_3d_parsers);
 	static void _static_bake_3d_from_source_geometry_data(Ref<NavigationMesh> p_navigation_mesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry_data);
 
-	virtual bool is_navigation_mesh_baking(Ref<NavigationMesh> p_navigation_mesh) const override;
+	virtual bool is_navigation_mesh_baking(Ref<NavigationMesh> p_navigation_mesh) const;
 #endif // _3D_DISABLED
 
 private:
@@ -162,6 +156,19 @@ private:
 	void _process_3d_cleanup_tasks();
 	void _parse_3d_scenetree_task(uint32_t index, NavigationGeneratorTask3D **parse_task);
 #endif // _3D_DISABLED
+
+	PandemoniumNavigationMeshGenerator();
+	~PandemoniumNavigationMeshGenerator();
+
+private:
+	Mutex generator_mutex;
+
+	bool use_threads = true;
+	bool parsing_use_multiple_threads = true;
+	// TODO implement support into ThreadPool
+	bool parsing_use_high_priority_threads = true;
+	bool baking_use_multiple_threads = true;
+	bool baking_use_high_priority_threads = true;
 };
 
 #endif // GODOT_NAVIGATION_MESH_GENERATOR_H

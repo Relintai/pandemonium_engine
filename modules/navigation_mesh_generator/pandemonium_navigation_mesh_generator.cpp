@@ -33,6 +33,11 @@
 #include "core/config/project_settings.h"
 #include "core/core_string_names.h"
 
+#include "scene/2d/navigation_geometry_parser_2d.h"
+#include "scene/3d/navigation_geometry_parser_3d.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
+
 /*
 #include "servers/navigation/geometry_parser_2d/meshinstance2d_navigation_geometry_parser_2d.h"
 #include "servers/navigation/geometry_parser_2d/multimeshinstance2d_navigation_geometry_parser_2d.h"
@@ -55,32 +60,6 @@
 #ifndef _3D_DISABLED
 #include <Recast.h>
 #endif // _3D_DISABLED
-
-PandemoniumNavigationMeshGenerator::PandemoniumNavigationMeshGenerator() {
-	/*
-	register_geometry_parser_2d(memnew(MeshInstance2DNavigationGeometryParser2D));
-	register_geometry_parser_2d(memnew(MultiMeshInstance2DNavigationGeometryParser2D));
-	register_geometry_parser_2d(memnew(Polygon2DNavigationGeometryParser2D));
-	register_geometry_parser_2d(memnew(StaticBody2DNavigationGeometryParser2D));
-	register_geometry_parser_2d(memnew(TileMap2DNavigationGeometryParser2D));
-#ifndef _3D_DISABLED
-	register_geometry_parser_3d(memnew(MeshInstance3DNavigationGeometryParser3D));
-	register_geometry_parser_3d(memnew(MultiMeshInstance3DNavigationGeometryParser3D));
-	register_geometry_parser_3d(memnew(StaticBody3DNavigationGeometryParser3D));
-#endif // _3D_DISABLED
-	*/
-	// Can't use threads in Editor as parsing gets stuck on RenderingServer / PhysicsServer locks.
-	use_threads = !Engine::get_singleton()->is_editor_hint();
-
-	parsing_use_multiple_threads = GLOBAL_GET("navigation/baking/thread_model/parsing_use_multiple_threads");
-	parsing_use_high_priority_threads = GLOBAL_GET("navigation/baking/thread_model/parsing_use_high_priority_threads");
-	baking_use_multiple_threads = GLOBAL_GET("navigation/baking/thread_model/baking_use_multiple_threads");
-	baking_use_high_priority_threads = GLOBAL_GET("navigation/baking/thread_model/baking_use_high_priority_threads");
-}
-
-PandemoniumNavigationMeshGenerator::~PandemoniumNavigationMeshGenerator() {
-	cleanup();
-}
 
 void PandemoniumNavigationMeshGenerator::process() {
 	generator_mutex.lock();
@@ -280,7 +259,7 @@ void PandemoniumNavigationMeshGenerator::unregister_geometry_parser_2d(Ref<Navig
 	generator_mutex.unlock();
 }
 
-Ref<NavigationMeshSourceGeometryData2D> PandemoniumNavigationMeshGenerator::parse_2d_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Callable p_callback) {
+Ref<NavigationMeshSourceGeometryData2D> PandemoniumNavigationMeshGenerator::parse_2d_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Ref<FuncRef> p_callback) {
 	ERR_FAIL_COND_V_MSG(!p_navigation_polygon.is_valid(), Ref<NavigationMeshSourceGeometryData3D>(), "Invalid navigation mesh.");
 	ERR_FAIL_COND_V_MSG(p_root_node == nullptr, Ref<NavigationMeshSourceGeometryData2D>(), "No parsing root node specified.");
 
@@ -294,7 +273,7 @@ Ref<NavigationMeshSourceGeometryData2D> PandemoniumNavigationMeshGenerator::pars
 	return source_geometry_data;
 };
 
-void PandemoniumNavigationMeshGenerator::bake_2d_from_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry_data, Callable p_callback) {
+void PandemoniumNavigationMeshGenerator::bake_2d_from_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry_data, Ref<FuncRef> p_callback) {
 	ERR_FAIL_COND_MSG(!p_navigation_polygon.is_valid(), "Invalid navigation mesh.");
 	ERR_FAIL_COND_MSG(!p_source_geometry_data.is_valid(), "Invalid NavigationMeshSourceGeometryData2D.");
 	ERR_FAIL_COND_MSG(p_navigation_polygon->get_outline_count() == 0 && !p_source_geometry_data->has_data(), "NavigationMeshSourceGeometryData2D is empty. Parse source geometry first.");
@@ -562,7 +541,7 @@ void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_da
 	p_navigation_polygon->commit_changes();
 }
 
-void PandemoniumNavigationMeshGenerator::parse_and_bake_2d(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Callable p_callback) {
+void PandemoniumNavigationMeshGenerator::parse_and_bake_2d(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Ref<FuncRef> p_callback) {
 	ERR_FAIL_COND_MSG(baking_navpolys.find(p_navigation_polygon) >= 0, "NavigationPolygon was already added to baking queue. Wait for current bake task to finish.");
 	ERR_FAIL_COND_MSG(p_root_node == nullptr, "NavigationPolygon requires a valid root node.");
 
@@ -962,7 +941,7 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 	p_navigation_mesh->commit_changes();
 }
 
-void PandemoniumNavigationMeshGenerator::parse_and_bake_3d(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Callable p_callback) {
+void PandemoniumNavigationMeshGenerator::parse_and_bake_3d(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Ref<FuncRef> p_callback) {
 	ERR_FAIL_COND_MSG(baking_navmeshes.find(p_navigation_mesh) >= 0, "NavigationMesh was already added to baking queue. Wait for current bake task to finish.");
 	ERR_FAIL_COND_MSG(p_root_node == nullptr, "avigationMesh requires a valid root node.");
 
@@ -1004,7 +983,7 @@ void PandemoniumNavigationMeshGenerator::unregister_geometry_parser_3d(Ref<Navig
 	generator_mutex.unlock();
 }
 
-Ref<NavigationMeshSourceGeometryData3D> PandemoniumNavigationMeshGenerator::parse_3d_source_geometry_data(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Callable p_callback) {
+Ref<NavigationMeshSourceGeometryData3D> PandemoniumNavigationMeshGenerator::parse_3d_source_geometry_data(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Ref<FuncRef> p_callback) {
 	ERR_FAIL_COND_V_MSG(!p_navigation_mesh.is_valid(), Ref<NavigationMeshSourceGeometryData3D>(), "Invalid navigation mesh.");
 	ERR_FAIL_COND_V_MSG(p_root_node == nullptr, Ref<NavigationMeshSourceGeometryData3D>(), "No parsing root node specified.");
 
@@ -1018,7 +997,7 @@ Ref<NavigationMeshSourceGeometryData3D> PandemoniumNavigationMeshGenerator::pars
 	return source_geometry_data;
 };
 
-void PandemoniumNavigationMeshGenerator::bake_3d_from_source_geometry_data(Ref<NavigationMesh> p_navigation_mesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry_data, Callable p_callback) {
+void PandemoniumNavigationMeshGenerator::bake_3d_from_source_geometry_data(Ref<NavigationMesh> p_navigation_mesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry_data, Ref<FuncRef> p_callback) {
 	ERR_FAIL_COND_MSG(!p_navigation_mesh.is_valid(), "Invalid navigation mesh.");
 	ERR_FAIL_COND_MSG(!p_source_geometry_data.is_valid(), "Invalid NavigationMeshSourceGeometryData3D.");
 	ERR_FAIL_COND_MSG(!p_source_geometry_data->has_data(), "NavigationMeshSourceGeometryData3D is empty. Parse source geometry first.");
@@ -1076,3 +1055,29 @@ void PandemoniumNavigationMeshGenerator::_static_parse_3d_source_geometry_data(R
 	}
 }
 #endif // _3D_DISABLED
+
+PandemoniumNavigationMeshGenerator::PandemoniumNavigationMeshGenerator() {
+	/*
+	register_geometry_parser_2d(memnew(MeshInstance2DNavigationGeometryParser2D));
+	register_geometry_parser_2d(memnew(MultiMeshInstance2DNavigationGeometryParser2D));
+	register_geometry_parser_2d(memnew(Polygon2DNavigationGeometryParser2D));
+	register_geometry_parser_2d(memnew(StaticBody2DNavigationGeometryParser2D));
+	register_geometry_parser_2d(memnew(TileMap2DNavigationGeometryParser2D));
+#ifndef _3D_DISABLED
+	register_geometry_parser_3d(memnew(MeshInstance3DNavigationGeometryParser3D));
+	register_geometry_parser_3d(memnew(MultiMeshInstance3DNavigationGeometryParser3D));
+	register_geometry_parser_3d(memnew(StaticBody3DNavigationGeometryParser3D));
+#endif // _3D_DISABLED
+	*/
+	// Can't use threads in Editor as parsing gets stuck on RenderingServer / PhysicsServer locks.
+	use_threads = !Engine::get_singleton()->is_editor_hint();
+
+	parsing_use_multiple_threads = GLOBAL_GET("navigation/baking/thread_model/parsing_use_multiple_threads");
+	parsing_use_high_priority_threads = GLOBAL_GET("navigation/baking/thread_model/parsing_use_high_priority_threads");
+	baking_use_multiple_threads = GLOBAL_GET("navigation/baking/thread_model/baking_use_multiple_threads");
+	baking_use_high_priority_threads = GLOBAL_GET("navigation/baking/thread_model/baking_use_high_priority_threads");
+}
+
+PandemoniumNavigationMeshGenerator::~PandemoniumNavigationMeshGenerator() {
+	cleanup();
+}
