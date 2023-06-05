@@ -38,29 +38,6 @@ class NavigationMesh;
 class NavigationPolygon : public Resource {
 	GDCLASS(NavigationPolygon, Resource);
 
-	PoolVector<Vector2> vertices;
-	struct Polygon {
-		Vector<int> indices;
-	};
-	Vector<Polygon> polygons;
-	Vector<PoolVector<Vector2>> outlines;
-
-	mutable Rect2 item_rect;
-	mutable bool rect_cache_dirty;
-
-	Mutex navmesh_generation;
-	// Navigation mesh
-	Ref<NavigationMesh> navmesh;
-
-protected:
-	static void _bind_methods();
-
-	void _set_polygons(const Array &p_array);
-	Array _get_polygons() const;
-
-	void _set_outlines(const Array &p_array);
-	Array _get_outlines() const;
-
 public:
 #ifdef TOOLS_ENABLED
 	Rect2 _edit_get_rect() const;
@@ -90,6 +67,30 @@ public:
 
 	NavigationPolygon();
 	~NavigationPolygon();
+
+protected:
+	void _set_polygons(const Array &p_array);
+	Array _get_polygons() const;
+
+	void _set_outlines(const Array &p_array);
+	Array _get_outlines() const;
+
+	static void _bind_methods();
+
+private:
+	PoolVector<Vector2> vertices;
+	struct Polygon {
+		Vector<int> indices;
+	};
+	Vector<Polygon> polygons;
+	Vector<PoolVector<Vector2>> outlines;
+
+	mutable Rect2 item_rect;
+	mutable bool rect_cache_dirty;
+
+	Mutex navmesh_generation;
+	// Navigation mesh
+	Ref<NavigationMesh> navmesh;
 };
 
 #endif // NAVIGATIONPOLYGON_H

@@ -30,8 +30,8 @@
 
 #include "navigation_polygon.h"
 
-#include "core/core_string_names.h"
 #include "core/config/engine.h"
+#include "core/core_string_names.h"
 #include "core/os/mutex.h"
 #include "scene/2d/navigation_2d.h"
 #include "scene/resources/navigation_mesh.h"
@@ -94,45 +94,6 @@ void NavigationPolygon::set_vertices(const PoolVector<Vector2> &p_vertices) {
 
 PoolVector<Vector2> NavigationPolygon::get_vertices() const {
 	return vertices;
-}
-
-void NavigationPolygon::_set_polygons(const Array &p_array) {
-	{
-		MutexLock lock(navmesh_generation);
-		navmesh.unref();
-	}
-	polygons.resize(p_array.size());
-	for (int i = 0; i < p_array.size(); i++) {
-		polygons.write[i].indices = p_array[i];
-	}
-}
-
-Array NavigationPolygon::_get_polygons() const {
-	Array ret;
-	ret.resize(polygons.size());
-	for (int i = 0; i < ret.size(); i++) {
-		ret[i] = polygons[i].indices;
-	}
-
-	return ret;
-}
-
-void NavigationPolygon::_set_outlines(const Array &p_array) {
-	outlines.resize(p_array.size());
-	for (int i = 0; i < p_array.size(); i++) {
-		outlines.write[i] = p_array[i];
-	}
-	rect_cache_dirty = true;
-}
-
-Array NavigationPolygon::_get_outlines() const {
-	Array ret;
-	ret.resize(outlines.size());
-	for (int i = 0; i < ret.size(); i++) {
-		ret[i] = outlines[i];
-	}
-
-	return ret;
 }
 
 void NavigationPolygon::add_polygon(const Vector<int> &p_polygon) {
@@ -326,6 +287,52 @@ void NavigationPolygon::make_polygons_from_outlines() {
 	emit_signal(CoreStringNames::get_singleton()->changed);
 }
 
+NavigationPolygon::NavigationPolygon() {
+	rect_cache_dirty = true;
+}
+
+NavigationPolygon::~NavigationPolygon() {
+}
+
+void NavigationPolygon::_set_polygons(const Array &p_array) {
+	{
+		MutexLock lock(navmesh_generation);
+		navmesh.unref();
+	}
+	polygons.resize(p_array.size());
+	for (int i = 0; i < p_array.size(); i++) {
+		polygons.write[i].indices = p_array[i];
+	}
+}
+
+Array NavigationPolygon::_get_polygons() const {
+	Array ret;
+	ret.resize(polygons.size());
+	for (int i = 0; i < ret.size(); i++) {
+		ret[i] = polygons[i].indices;
+	}
+
+	return ret;
+}
+
+void NavigationPolygon::_set_outlines(const Array &p_array) {
+	outlines.resize(p_array.size());
+	for (int i = 0; i < p_array.size(); i++) {
+		outlines.write[i] = p_array[i];
+	}
+	rect_cache_dirty = true;
+}
+
+Array NavigationPolygon::_get_outlines() const {
+	Array ret;
+	ret.resize(outlines.size());
+	for (int i = 0; i < ret.size(); i++) {
+		ret[i] = outlines[i];
+	}
+
+	return ret;
+}
+
 void NavigationPolygon::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_vertices", "vertices"), &NavigationPolygon::set_vertices);
 	ClassDB::bind_method(D_METHOD("get_vertices"), &NavigationPolygon::get_vertices);
@@ -354,11 +361,4 @@ void NavigationPolygon::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_VECTOR2_ARRAY, "vertices", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL), "set_vertices", "get_vertices");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "polygons", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL), "_set_polygons", "_get_polygons");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "outlines", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL), "_set_outlines", "_get_outlines");
-}
-
-NavigationPolygon::NavigationPolygon() {
-	rect_cache_dirty = true;
-}
-
-NavigationPolygon::~NavigationPolygon() {
 }
