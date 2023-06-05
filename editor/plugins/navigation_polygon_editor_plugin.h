@@ -38,14 +38,14 @@
 
 class EditorNode;
 class NavigationPolygon;
-class NavigationRegion2D;
+class NavigationPolygonInstance;
 class Node2D;
 class Node;
 
 class NavigationPolygonEditor : public AbstractPolygon2DEditor {
 	GDCLASS(NavigationPolygonEditor, AbstractPolygon2DEditor);
 
-	NavigationRegion2D *node;
+	NavigationPolygonInstance *node;
 
 	Ref<NavigationPolygon> _ensure_navpoly() const;
 

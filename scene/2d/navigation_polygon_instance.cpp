@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "navigation_region_2d.h"
+#include "navigation_polygon_instance.h"
 
 #include "core/config/engine.h"
 #include "core/core_string_names.h"
@@ -42,7 +42,7 @@
 
 #include "thirdparty/misc/triangulator.h"
 
-void NavigationRegion2D::set_enabled(bool p_enabled) {
+void NavigationPolygonInstance::set_enabled(bool p_enabled) {
 	if (enabled == p_enabled) {
 		return;
 	}
@@ -71,55 +71,55 @@ void NavigationRegion2D::set_enabled(bool p_enabled) {
 #endif // DEBUG_ENABLED
 }
 
-bool NavigationRegion2D::is_enabled() const {
+bool NavigationPolygonInstance::is_enabled() const {
 	return enabled;
 }
 
-void NavigationRegion2D::set_navigation_layers(uint32_t p_navigation_layers) {
+void NavigationPolygonInstance::set_navigation_layers(uint32_t p_navigation_layers) {
 	navigation_layers = p_navigation_layers;
 	Navigation2DServer::get_singleton()->region_set_navigation_layers(region, navigation_layers);
 }
 
-uint32_t NavigationRegion2D::get_navigation_layers() const {
+uint32_t NavigationPolygonInstance::get_navigation_layers() const {
 	return navigation_layers;
 }
 
-void NavigationRegion2D::set_enter_cost(real_t p_enter_cost) {
+void NavigationPolygonInstance::set_enter_cost(real_t p_enter_cost) {
 	ERR_FAIL_COND_MSG(p_enter_cost < 0.0, "The enter_cost must be positive.");
 	enter_cost = MAX(p_enter_cost, 0.0);
 	Navigation2DServer::get_singleton()->region_set_enter_cost(region, p_enter_cost);
 }
 
-real_t NavigationRegion2D::get_enter_cost() const {
+real_t NavigationPolygonInstance::get_enter_cost() const {
 	return enter_cost;
 }
 
-void NavigationRegion2D::set_travel_cost(real_t p_travel_cost) {
+void NavigationPolygonInstance::set_travel_cost(real_t p_travel_cost) {
 	ERR_FAIL_COND_MSG(p_travel_cost < 0.0, "The travel_cost must be positive.");
 	travel_cost = MAX(p_travel_cost, 0.0);
 	Navigation2DServer::get_singleton()->region_set_enter_cost(region, travel_cost);
 }
 
-real_t NavigationRegion2D::get_travel_cost() const {
+real_t NavigationPolygonInstance::get_travel_cost() const {
 	return travel_cost;
 }
 
-RID NavigationRegion2D::get_region_rid() const {
+RID NavigationPolygonInstance::get_region_rid() const {
 	return region;
 }
 
 /////////////////////////////
 #ifdef TOOLS_ENABLED
-Rect2 NavigationRegion2D::_edit_get_rect() const {
+Rect2 NavigationPolygonInstance::_edit_get_rect() const {
 	return navpoly.is_valid() ? navpoly->_edit_get_rect() : Rect2();
 }
 
-bool NavigationRegion2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
+bool NavigationPolygonInstance::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
 	return navpoly.is_valid() ? navpoly->_edit_is_selected_on_click(p_point, p_tolerance) : false;
 }
 #endif
 
-void NavigationRegion2D::_notification(int p_what) {
+void NavigationPolygonInstance::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			Node2D *c = this;
@@ -225,7 +225,7 @@ void NavigationRegion2D::_notification(int p_what) {
 	}
 }
 
-void NavigationRegion2D::set_navigation_polygon(const Ref<NavigationPolygon> &p_navpoly) {
+void NavigationPolygonInstance::set_navigation_polygon(const Ref<NavigationPolygon> &p_navpoly) {
 	if (p_navpoly == navpoly) {
 		return;
 	}
@@ -246,11 +246,11 @@ void NavigationRegion2D::set_navigation_polygon(const Ref<NavigationPolygon> &p_
 	update_configuration_warning();
 }
 
-Ref<NavigationPolygon> NavigationRegion2D::get_navigation_polygon() const {
+Ref<NavigationPolygon> NavigationPolygonInstance::get_navigation_polygon() const {
 	return navpoly;
 }
 
-void NavigationRegion2D::_navpoly_changed() {
+void NavigationPolygonInstance::_navpoly_changed() {
 	if (is_inside_tree() && (Engine::get_singleton()->is_editor_hint() || get_tree()->is_debugging_navigation_hint())) {
 		update();
 	}
@@ -259,7 +259,7 @@ void NavigationRegion2D::_navpoly_changed() {
 	}
 }
 
-void NavigationRegion2D::_map_changed(RID p_map) {
+void NavigationPolygonInstance::_map_changed(RID p_map) {
 #ifdef DEBUG_ENABLED
 	if (navigation != nullptr && enabled && (navigation->get_rid() == p_map)) {
 		update();
@@ -269,7 +269,7 @@ void NavigationRegion2D::_map_changed(RID p_map) {
 #endif // DEBUG_ENABLED
 }
 
-String NavigationRegion2D::get_configuration_warning() const {
+String NavigationPolygonInstance::get_configuration_warning() const {
 	if (!is_visible_in_tree() || !is_inside_tree()) {
 		return String();
 	}
@@ -285,25 +285,25 @@ String NavigationRegion2D::get_configuration_warning() const {
 	return warning;
 }
 
-void NavigationRegion2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("set_navigation_polygon", "navpoly"), &NavigationRegion2D::set_navigation_polygon);
-	ClassDB::bind_method(D_METHOD("get_navigation_polygon"), &NavigationRegion2D::get_navigation_polygon);
+void NavigationPolygonInstance::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_navigation_polygon", "navpoly"), &NavigationPolygonInstance::set_navigation_polygon);
+	ClassDB::bind_method(D_METHOD("get_navigation_polygon"), &NavigationPolygonInstance::get_navigation_polygon);
 
-	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &NavigationRegion2D::set_enabled);
-	ClassDB::bind_method(D_METHOD("is_enabled"), &NavigationRegion2D::is_enabled);
+	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &NavigationPolygonInstance::set_enabled);
+	ClassDB::bind_method(D_METHOD("is_enabled"), &NavigationPolygonInstance::is_enabled);
 
-	ClassDB::bind_method(D_METHOD("set_navigation_layers", "navigation_layers"), &NavigationRegion2D::set_navigation_layers);
-	ClassDB::bind_method(D_METHOD("get_navigation_layers"), &NavigationRegion2D::get_navigation_layers);
+	ClassDB::bind_method(D_METHOD("set_navigation_layers", "navigation_layers"), &NavigationPolygonInstance::set_navigation_layers);
+	ClassDB::bind_method(D_METHOD("get_navigation_layers"), &NavigationPolygonInstance::get_navigation_layers);
 
-	ClassDB::bind_method(D_METHOD("get_region_rid"), &NavigationRegion2D::get_region_rid);
+	ClassDB::bind_method(D_METHOD("get_region_rid"), &NavigationPolygonInstance::get_region_rid);
 
-	ClassDB::bind_method(D_METHOD("set_enter_cost", "enter_cost"), &NavigationRegion2D::set_enter_cost);
-	ClassDB::bind_method(D_METHOD("get_enter_cost"), &NavigationRegion2D::get_enter_cost);
+	ClassDB::bind_method(D_METHOD("set_enter_cost", "enter_cost"), &NavigationPolygonInstance::set_enter_cost);
+	ClassDB::bind_method(D_METHOD("get_enter_cost"), &NavigationPolygonInstance::get_enter_cost);
 
-	ClassDB::bind_method(D_METHOD("set_travel_cost", "travel_cost"), &NavigationRegion2D::set_travel_cost);
-	ClassDB::bind_method(D_METHOD("get_travel_cost"), &NavigationRegion2D::get_travel_cost);
+	ClassDB::bind_method(D_METHOD("set_travel_cost", "travel_cost"), &NavigationPolygonInstance::set_travel_cost);
+	ClassDB::bind_method(D_METHOD("get_travel_cost"), &NavigationPolygonInstance::get_travel_cost);
 
-	ClassDB::bind_method(D_METHOD("_navpoly_changed"), &NavigationRegion2D::_navpoly_changed);
+	ClassDB::bind_method(D_METHOD("_navpoly_changed"), &NavigationPolygonInstance::_navpoly_changed);
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "navpoly", PROPERTY_HINT_RESOURCE_TYPE, "NavigationPolygon"), "set_navigation_polygon", "get_navigation_polygon");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "is_enabled");
@@ -311,10 +311,10 @@ void NavigationRegion2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "enter_cost"), "set_enter_cost", "get_enter_cost");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "travel_cost"), "set_travel_cost", "get_travel_cost");
 
-	ClassDB::bind_method(D_METHOD("_map_changed"), &NavigationRegion2D::_map_changed);
+	ClassDB::bind_method(D_METHOD("_map_changed"), &NavigationPolygonInstance::_map_changed);
 }
 
-NavigationRegion2D::NavigationRegion2D() {
+NavigationPolygonInstance::NavigationPolygonInstance() {
 	enabled = true;
 	set_notify_transform(true);
 	region = Navigation2DServer::get_singleton()->region_create();
@@ -335,7 +335,7 @@ NavigationRegion2D::NavigationRegion2D() {
 #endif // DEBUG_ENABLED
 }
 
-NavigationRegion2D::~NavigationRegion2D() {
+NavigationPolygonInstance::~NavigationPolygonInstance() {
 	Navigation2DServer::get_singleton()->free(region);
 
 #ifdef DEBUG_ENABLED

@@ -55,7 +55,7 @@
 #include "scene/2d/navigation_agent_2d.h"
 #include "scene/2d/navigation_geometry_parser_2d.h"
 #include "scene/2d/navigation_obstacle_2d.h"
-#include "scene/2d/navigation_region_2d.h"
+#include "scene/2d/navigation_polygon_instance.h"
 #include "scene/2d/parallax_background.h"
 #include "scene/2d/parallax_layer.h"
 #include "scene/2d/path_2d.h"
@@ -686,7 +686,7 @@ void register_scene_types() {
 
 	ClassDB::register_class<Navigation2D>();
 	ClassDB::register_class<NavigationPolygon>();
-	ClassDB::register_class<NavigationRegion2D>();
+	ClassDB::register_class<NavigationPolygonInstance>();
 	ClassDB::register_class<NavigationAgent2D>();
 	ClassDB::register_class<NavigationObstacle2D>();
 

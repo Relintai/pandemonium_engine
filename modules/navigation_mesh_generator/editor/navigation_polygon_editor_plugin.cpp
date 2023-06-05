@@ -56,7 +56,7 @@ Node2D *NavigationPolygonEditor::_get_node() const {
 }
 
 void NavigationPolygonEditor::_set_node(Node *p_polygon) {
-	node = Object::cast_to<NavigationRegion2D>(p_polygon);
+	node = Object::cast_to<NavigationPolygonInstance>(p_polygon);
 }
 
 int NavigationPolygonEditor::_get_polygon_count() const {
@@ -206,5 +206,5 @@ void NavigationPolygonEditor::_update_polygon_editing_state() {
 }
 
 NavigationPolygonEditorPlugin::NavigationPolygonEditorPlugin() :
-		AbstractPolygon2DEditorPlugin(memnew(NavigationPolygonEditor), "NavigationRegion2D") {
+		AbstractPolygon2DEditorPlugin(memnew(NavigationPolygonEditor), "NavigationPolygonInstance") {
 }
