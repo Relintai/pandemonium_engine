@@ -159,7 +159,7 @@ ObjectID id_to_id(const ObjectID &id) {
 
 Ref<NavigationMesh> poly_to_mesh(Ref<NavigationPolygon> d) {
 	if (d.is_valid()) {
-		return d->get_mesh();
+		return d->get_navigation_mesh();
 	} else {
 		return Ref<NavigationMesh>();
 	}
