@@ -38,7 +38,7 @@ void ThreadPoolJob::set_complete(const bool value) {
 	_complete = value;
 
 	if (call_signal) {
-		emit_signal("completed");
+		call_deferred("emit_signal", "completed");
 	}
 }
 
