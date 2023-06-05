@@ -137,8 +137,6 @@ void ThreadPoolJob::execute() {
 
 void ThreadPoolJob::_execute() {
 	set_complete(true);
-
-	ERR_FAIL_MSG(get_class() + " ThreadPoolJob::_execute is not overridden!");
 }
 
 ThreadPoolJob::ThreadPoolJob() {
