@@ -37,6 +37,7 @@
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/world_2d.h"
 #include "servers/navigation_2d_server.h"
+#include "core/core_string_names.h"
 
 #include "thirdparty/misc/triangulator.h"
 
@@ -232,14 +233,11 @@ void NavigationPolygon::commit_changes() {
 		for (int i = 0; i < get_polygon_count(); i++) {
 			Vector<int> new_navigation_mesh_polygon = get_polygon(i);
 			new_navigation_mesh_polygons.push_back(new_navigation_mesh_polygon);
-			//OLD, remove:
-			navigation_mesh->add_polygon(get_polygon(i));
 		}
 
 		navigation_mesh->set_vertices(new_navigation_mesh_vertices);
-		// New, enable:
-		//navigation_mesh->set_polygons(new_navigation_mesh_polygons);
-		//navigation_mesh->commit_changes();
+		navigation_mesh->set_polygons(new_navigation_mesh_polygons);
+		navigation_mesh->commit_changes();
 
 		emit_changed();
 	}

@@ -40,9 +40,15 @@ class NavigationMesh : public Resource {
 
 	friend class NavigationMeshGenerator;
 
+	RID navmesh_rid;
+
 	PoolVector<Vector3> vertices;
+
 	Vector<Vector<int>> polygons;
+
 	Ref<ArrayMesh> debug_mesh;
+
+	bool navigation_mesh_dirty;
 
 protected:
 	static void _bind_methods();
@@ -185,11 +191,20 @@ public:
 	Vector<int> get_polygon(int p_idx);
 	void clear_polygons();
 
+	void clear();
+	void commit_changes();
+
+	void set_polygons(const Vector<Vector<int>> &p_polygons);
+	const Vector<Vector<int>> &get_polygons() const;
+
+	RID get_rid() const;
+
 #ifdef DEBUG_ENABLED
 	Ref<ArrayMesh> get_debug_mesh();
 #endif
 
 	NavigationMesh();
+	~NavigationMesh();
 };
 
 VARIANT_ENUM_CAST(NavigationMesh::SamplePartitionType);

@@ -70,6 +70,8 @@ void NavigationMesh::create_from_mesh(const Ref<Mesh> &p_mesh) {
 			add_polygon(vi);
 		}
 	}
+
+	navigation_mesh_dirty = true;
 }
 
 void NavigationMesh::set_sample_partition_type(SamplePartitionType p_value) {
@@ -321,7 +323,7 @@ Array NavigationMesh::_get_polygons() const {
 
 void NavigationMesh::add_polygon(const Vector<int> &p_polygon) {
 	polygons.push_back(p_polygon);
-	_change_notify();
+	navigation_mesh_dirty = true;
 }
 int NavigationMesh::get_polygon_count() const {
 	return polygons.size();
@@ -332,6 +334,52 @@ Vector<int> NavigationMesh::get_polygon(int p_idx) {
 }
 void NavigationMesh::clear_polygons() {
 	polygons.clear();
+	navigation_mesh_dirty = true;
+}
+
+void NavigationMesh::clear() {
+	polygons.clear();
+	vertices.clear();
+	navigation_mesh_dirty = true;
+}
+void NavigationMesh::commit_changes() {
+	// Function to synchronize the navigation mesh with the NavigationServer
+	// Placeholder function that gets fleshed out with PR 'Add NavigationServer Navmesh and NavMesh Instances'
+	// Function was already added so users and tutorials and documentation only have to adapt once to the procedural workflow changes
+	if (navigation_mesh_dirty) {
+		navigation_mesh_dirty = false;
+		/*
+		Vector<Vector3> new_navmesh_vertices;
+		Vector<Vector<int32_t>> new_navmesh_polygons;
+		new_navmesh_vertices.resize(vertices.size());
+		new_navmesh_polygons.resize(polygons.size());
+		Vector3 *new_navmesh_vertices_ptrw = new_navmesh_vertices.ptrw();
+		Vector<int32_t> *new_navmesh_polygons_ptrw = new_navmesh_polygons.ptrw();
+		for (int i = 0; i < vertices.size(); i++) {
+			new_navmesh_vertices_ptrw[i] = vertices[i];
+		}
+		for (int i = 0; i < polygons.size(); i++) {
+			new_navmesh_polygons_ptrw[i] = polygons[i];
+		}
+		NavigationServer3D::get_singleton()->navmesh_set_data(navmesh_rid, new_navmesh_vertices, new_navmesh_polygons);
+		*/
+		emit_changed();
+	}
+}
+
+void NavigationMesh::set_polygons(const Vector<Vector<int>> &p_polygons) {
+	polygons = p_polygons;
+	navigation_mesh_dirty = true;
+}
+const Vector<Vector<int>> &NavigationMesh::get_polygons() const {
+	return polygons;
+}
+
+RID NavigationMesh::get_rid() const {
+	if (navmesh_rid.is_valid()) {
+		return navmesh_rid;
+	}
+	return RID();
 }
 
 #ifdef DEBUG_ENABLED
@@ -510,6 +558,9 @@ void NavigationMesh::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("create_from_mesh", "mesh"), &NavigationMesh::create_from_mesh);
 
+	ClassDB::bind_method(D_METHOD("clear"), &NavigationMesh::clear);
+	ClassDB::bind_method(D_METHOD("commit_changes"), &NavigationMesh::commit_changes);
+
 	ClassDB::bind_method(D_METHOD("_set_polygons", "polygons"), &NavigationMesh::_set_polygons);
 	ClassDB::bind_method(D_METHOD("_get_polygons"), &NavigationMesh::_get_polygons);
 
@@ -612,4 +663,14 @@ NavigationMesh::NavigationMesh() {
 	filter_low_hanging_obstacles = false;
 	filter_ledge_spans = false;
 	filter_walkable_low_height_spans = false;
+
+	navigation_mesh_dirty = true;
+
+	//navmesh_rid = NavigationServer3D::get_singleton()->navmesh_create();
+	call_deferred("commit_changes");
+}
+
+NavigationMesh::~NavigationMesh() {
+	//ERR_FAIL_NULL(NavigationServer::get_singleton());
+	//NavigationServer::get_singleton()->free(navmesh_rid);
 }
