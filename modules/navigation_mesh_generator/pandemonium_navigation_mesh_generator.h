@@ -46,6 +46,8 @@ class NavigationGeometryParser3D;
 
 class PandemoniumNavigationMeshGenerator : public NavigationMeshGenerator {
 public:
+	// =======   TASKS   =======
+
 	class NavigationGeneratorTask2D : public ThreadPoolJob {
 		GDCLASS(NavigationGeneratorTask2D, ThreadPoolJob);
 
@@ -58,8 +60,6 @@ public:
 			BAKING_STARTED,
 			BAKING_FINISHED,
 			BAKING_FAILED,
-			CALLBACK_DISPATCHED,
-			CALLBACK_FAILED,
 		};
 
 		Ref<NavigationPolygon> navigation_polygon;
@@ -69,6 +69,8 @@ public:
 		NavigationGeneratorTask2D::TaskStatus status = NavigationGeneratorTask2D::TaskStatus::PARSING_REQUIRED;
 		LocalVector<Ref<NavigationGeometryParser2D>> geometry_parsers;
 
+		void call_callback();
+
 		void _execute();
 
 	protected:
@@ -77,6 +79,8 @@ public:
 
 #ifndef _3D_DISABLED
 	class NavigationGeneratorTask3D : public ThreadPoolJob {
+		GDCLASS(NavigationGeneratorTask3D, ThreadPoolJob);
+
 	public:
 		enum TaskStatus {
 			PARSING_REQUIRED,
@@ -85,9 +89,7 @@ public:
 			PARSING_FAILED,
 			BAKING_STARTED,
 			BAKING_FINISHED,
-			BAKING_FAILED,
-			CALLBACK_DISPATCHED,
-			CALLBACK_FAILED,
+			BAKING_FAILED
 		};
 
 		Ref<NavigationMesh> navigation_mesh;
@@ -97,6 +99,8 @@ public:
 		NavigationGeneratorTask3D::TaskStatus status = NavigationGeneratorTask3D::TaskStatus::PARSING_REQUIRED;
 		LocalVector<Ref<NavigationGeometryParser3D>> geometry_parsers;
 
+		void call_callback();
+
 		void _execute();
 
 	protected:
@@ -104,8 +108,7 @@ public:
 	};
 #endif // _3D_DISABLED
 
-	//Remove
-	static void _navigation_mesh_generator_3d_thread_bake(void *p_arg);
+	// =======   TASKS END  =======
 
 public:
 	virtual void process();
@@ -145,38 +148,34 @@ public:
 private:
 	void _process_2d_tasks();
 	void _process_2d_parse_tasks();
-	void _process_2d_cleanup_tasks();
+	void _process_2d_bake_cleanup_tasks();
 
 #ifndef _3D_DISABLED
 	void _process_3d_tasks();
 	void _process_3d_parse_tasks();
-	void _process_3d_bake_tasks();
-	void _process_3d_callbacks();
-	void _process_3d_cleanup_tasks();
-	void _parse_3d_scenetree_task(uint32_t index, NavigationGeneratorTask3D **parse_task);
+	void _process_3d_bake_cleanup_tasks();
 #endif // _3D_DISABLED
 
 	PandemoniumNavigationMeshGenerator();
 	~PandemoniumNavigationMeshGenerator();
 
 private:
-	Mutex generator_mutex;
+	Mutex _generator_mutex;
 
-	bool use_threads = true;
-	bool parsing_use_multiple_threads = true;
+	bool _use_thread_pool = true;
 	// TODO implement support into ThreadPool
-	bool parsing_use_high_priority_threads = true;
-	bool baking_use_multiple_threads = true;
-	bool baking_use_high_priority_threads = true;
+	//bool _baking_use_high_priority_threads = true;
+
+	LocalVector<Ref<NavigationGeometryParser2D>> _geometry_2d_parsers;
 
 	LocalVector<Ref<NavigationPolygon>> _baking_navpolys;
-	LocalVector<Ref<NavigationGeometryParser2D>> _geometry_2d_parsers;
 	LocalVector<Ref<NavigationGeneratorTask2D>> _2d_parse_jobs;
 	LocalVector<Ref<NavigationGeneratorTask2D>> _2d_running_jobs;
 
 #ifndef _3D_DISABLED
-	LocalVector<Ref<NavigationMesh>> _baking_navmeshes;
 	LocalVector<Ref<NavigationGeometryParser3D>> _geometry_3d_parsers;
+
+	LocalVector<Ref<NavigationMesh>> _baking_navmeshes;
 	LocalVector<Ref<NavigationGeneratorTask3D>> _3d_parse_jobs;
 	LocalVector<Ref<NavigationGeneratorTask3D>> _3d_running_jobs;
 #endif // _3D_DISABLED
