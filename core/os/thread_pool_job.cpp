@@ -107,23 +107,29 @@ bool ThreadPoolJob::should_do(const bool just_check) {
 	return true;
 }
 bool ThreadPoolJob::should_return() {
-	if (_cancelled)
+	if (_cancelled) {
 		return true;
+	}
 
-	if (_max_allocated_time < 0.00001)
+	if (_max_allocated_time < 0.00001) {
 		return false;
+	}
 
 	return get_current_execution_time() >= _max_allocated_time;
 }
 
 void ThreadPoolJob::execute() {
-	ERR_FAIL_COND(!has_method("_execute"));
-
 	_current_run_stage = 0;
 
 	_start_time = OS::get_singleton()->get_system_time_msecs();
 
 	call("_execute");
+}
+
+void ThreadPoolJob::_execute() {
+	set_complete(true);
+
+	ERR_FAIL_MSG(get_class() + " ThreadPoolJob::_execute is not overridden!");
 }
 
 ThreadPoolJob::ThreadPoolJob() {
@@ -181,6 +187,7 @@ void ThreadPoolJob::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_execute"));
 
 	ClassDB::bind_method(D_METHOD("execute"), &ThreadPoolJob::execute);
+	ClassDB::bind_method(D_METHOD("_execute"), &ThreadPoolJob::_execute);
 
 	ADD_SIGNAL(MethodInfo("completed"));
 }

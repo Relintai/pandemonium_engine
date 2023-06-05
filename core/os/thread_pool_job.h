@@ -63,6 +63,7 @@ public:
 	bool should_return();
 
 	void execute();
+	virtual void _execute();
 
 	ThreadPoolJob();
 	~ThreadPoolJob();
