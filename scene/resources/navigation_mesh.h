@@ -40,23 +40,6 @@ class NavigationMesh : public Resource {
 
 	friend class NavigationMeshGenerator;
 
-	RID navmesh_rid;
-
-	PoolVector<Vector3> vertices;
-
-	Vector<Vector<int>> polygons;
-
-	Ref<ArrayMesh> debug_mesh;
-
-	bool navigation_mesh_dirty;
-
-protected:
-	static void _bind_methods();
-	virtual void _validate_property(PropertyInfo &property) const;
-
-	void _set_polygons(const Array &p_array);
-	Array _get_polygons() const;
-
 public:
 	enum SamplePartitionType {
 		SAMPLE_PARTITION_WATERSHED = 0,
@@ -78,34 +61,6 @@ public:
 		SOURCE_GEOMETRY_GROUPS_EXPLICIT,
 		SOURCE_GEOMETRY_MAX
 	};
-
-protected:
-	float cell_size;
-	float cell_height;
-	float agent_height;
-	float agent_radius;
-	float agent_max_climb;
-	float agent_max_slope;
-	float region_min_size;
-	float region_merge_size;
-	float edge_max_length;
-	float edge_max_error;
-	float verts_per_poly;
-	float detail_sample_distance;
-	float detail_sample_max_error;
-
-	SamplePartitionType partition_type;
-	ParsedGeometryType parsed_geometry_type;
-	uint32_t collision_mask;
-
-	SourceGeometryMode source_geometry_mode;
-	StringName source_group_name;
-
-	bool filter_low_hanging_obstacles;
-	bool filter_ledge_spans;
-	bool filter_walkable_low_height_spans;
-	AABB filter_baking_aabb;
-	Vector3 filter_baking_aabb_offset;
 
 public:
 	// Recast settings
@@ -197,6 +152,9 @@ public:
 	void set_polygons(const Vector<Vector<int>> &p_polygons);
 	const Vector<Vector<int>> &get_polygons() const;
 
+	void _set_polygons(const Array &p_array);
+	Array _get_polygons() const;
+
 	RID get_rid() const;
 
 #ifdef DEBUG_ENABLED
@@ -205,6 +163,48 @@ public:
 
 	NavigationMesh();
 	~NavigationMesh();
+
+protected:
+	static void _bind_methods();
+	virtual void _validate_property(PropertyInfo &property) const;
+
+	float cell_size;
+	float cell_height;
+	float agent_height;
+	float agent_radius;
+	float agent_max_climb;
+	float agent_max_slope;
+	float region_min_size;
+	float region_merge_size;
+	float edge_max_length;
+	float edge_max_error;
+	float verts_per_poly;
+	float detail_sample_distance;
+	float detail_sample_max_error;
+
+	SamplePartitionType partition_type;
+	ParsedGeometryType parsed_geometry_type;
+	uint32_t collision_mask;
+
+	SourceGeometryMode source_geometry_mode;
+	StringName source_group_name;
+
+	bool filter_low_hanging_obstacles;
+	bool filter_ledge_spans;
+	bool filter_walkable_low_height_spans;
+	AABB filter_baking_aabb;
+	Vector3 filter_baking_aabb_offset;
+
+private:
+	RID navmesh_rid;
+
+	PoolVector<Vector3> vertices;
+
+	Vector<Vector<int>> polygons;
+
+	Ref<ArrayMesh> debug_mesh;
+
+	bool navigation_mesh_dirty;
 };
 
 VARIANT_ENUM_CAST(NavigationMesh::SamplePartitionType);

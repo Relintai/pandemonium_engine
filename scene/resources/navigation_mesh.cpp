@@ -303,24 +303,6 @@ PoolVector<Vector3> NavigationMesh::get_vertices() const {
 	return vertices;
 }
 
-void NavigationMesh::_set_polygons(const Array &p_array) {
-	polygons.resize(p_array.size());
-	for (int i = 0; i < p_array.size(); i++) {
-		polygons.write[i] = p_array[i];
-	}
-	_change_notify();
-}
-
-Array NavigationMesh::_get_polygons() const {
-	Array ret;
-	ret.resize(polygons.size());
-	for (int i = 0; i < ret.size(); i++) {
-		ret[i] = polygons[i];
-	}
-
-	return ret;
-}
-
 void NavigationMesh::add_polygon(const Vector<int> &p_polygon) {
 	polygons.push_back(p_polygon);
 	navigation_mesh_dirty = true;
@@ -373,6 +355,24 @@ void NavigationMesh::set_polygons(const Vector<Vector<int>> &p_polygons) {
 }
 const Vector<Vector<int>> &NavigationMesh::get_polygons() const {
 	return polygons;
+}
+
+void NavigationMesh::_set_polygons(const Array &p_array) {
+	polygons.resize(p_array.size());
+	for (int i = 0; i < p_array.size(); i++) {
+		polygons.write[i] = p_array[i];
+	}
+	_change_notify();
+}
+
+Array NavigationMesh::_get_polygons() const {
+	Array ret;
+	ret.resize(polygons.size());
+	for (int i = 0; i < ret.size(); i++) {
+		ret[i] = polygons[i];
+	}
+
+	return ret;
 }
 
 RID NavigationMesh::get_rid() const {
