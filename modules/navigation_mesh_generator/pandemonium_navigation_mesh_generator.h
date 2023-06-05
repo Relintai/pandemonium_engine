@@ -45,6 +45,8 @@ class NavigationMeshSourceGeometryData3D;
 class NavigationGeometryParser3D;
 
 class PandemoniumNavigationMeshGenerator : public NavigationMeshGenerator {
+	GDCLASS(PandemoniumNavigationMeshGenerator, NavigationMeshGenerator);
+
 public:
 	// =======   TASKS   =======
 
@@ -145,6 +147,9 @@ public:
 	virtual bool is_navigation_mesh_baking(Ref<NavigationMesh> p_navigation_mesh) const;
 #endif // _3D_DISABLED
 
+	PandemoniumNavigationMeshGenerator();
+	~PandemoniumNavigationMeshGenerator();
+
 private:
 	void _process_2d_tasks();
 	void _process_2d_parse_tasks();
@@ -155,9 +160,6 @@ private:
 	void _process_3d_parse_tasks();
 	void _process_3d_bake_cleanup_tasks();
 #endif // _3D_DISABLED
-
-	PandemoniumNavigationMeshGenerator();
-	~PandemoniumNavigationMeshGenerator();
 
 private:
 	Mutex _generator_mutex;

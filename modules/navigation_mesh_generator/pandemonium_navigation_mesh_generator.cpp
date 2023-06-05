@@ -200,7 +200,7 @@ void PandemoniumNavigationMeshGenerator::_process_2d_parse_tasks() {
 }
 
 void PandemoniumNavigationMeshGenerator::_process_2d_bake_cleanup_tasks() {
-	for (int i = 0; i < _2d_running_jobs.size(); ++i) {
+	for (uint32_t i = 0; i < _2d_running_jobs.size(); ++i) {
 		Ref<NavigationGeneratorTask2D> &e = _2d_running_jobs[i];
 
 		if (e->get_complete()) {
@@ -298,8 +298,8 @@ void PandemoniumNavigationMeshGenerator::_static_parse_2d_source_geometry_data(R
 	p_source_geometry_data->clear();
 	p_source_geometry_data->root_node_transform = root_node_transform;
 
-	for (Node *E : parse_nodes) {
-		_static_parse_2d_geometry_node(p_navigation_polygon, E, p_source_geometry_data, recurse_children, p_geometry_2d_parsers);
+	for (List<Node *>::Element *E = parse_nodes.front(); E; E = E->next()) {
+		_static_parse_2d_geometry_node(p_navigation_polygon, E->get(), p_source_geometry_data, recurse_children, p_geometry_2d_parsers);
 	}
 }
 
@@ -608,7 +608,7 @@ void PandemoniumNavigationMeshGenerator::_process_3d_parse_tasks() {
 }
 
 void PandemoniumNavigationMeshGenerator::_process_3d_bake_cleanup_tasks() {
-	for (int i = 0; i < _3d_running_jobs.size(); ++i) {
+	for (uint32_t i = 0; i < _3d_running_jobs.size(); ++i) {
 		Ref<NavigationGeneratorTask3D> &e = _3d_running_jobs[i];
 
 		if (e->get_complete()) {
@@ -629,8 +629,8 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 	}
 
 #ifndef _3D_DISABLED
-	const Vector<float> vertices = p_source_geometry_data->get_vertices();
-	const Vector<int> indices = p_source_geometry_data->get_indices();
+	PoolRealArray vertices = p_source_geometry_data->get_vertices();
+	PoolIntArray indices = p_source_geometry_data->get_indices();
 
 	if (vertices.size() < 3 || indices.size() < 3) {
 		return;
@@ -648,9 +648,11 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 
 	bake_state = "Setting up Configuration..."; // step #1
 
-	const float *verts = vertices.ptr();
+	PoolRealArray::Read vertices_read = vertices.read();
+	PoolIntArray::Read indices_read = indices.read();
+	const float *verts = vertices_read.ptr();
 	const int nverts = vertices.size() / 3;
-	const int *tris = indices.ptr();
+	const int *tris = indices_read.ptr();
 	const int ntris = indices.size() / 3;
 
 	float bmin[3], bmax[3];
@@ -669,7 +671,7 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 	cfg.maxSimplificationError = p_navigation_mesh->get_edge_max_error();
 	cfg.minRegionArea = (int)(p_navigation_mesh->get_region_min_size() * p_navigation_mesh->get_region_min_size());
 	cfg.mergeRegionArea = (int)(p_navigation_mesh->get_region_merge_size() * p_navigation_mesh->get_region_merge_size());
-	cfg.maxVertsPerPoly = (int)p_navigation_mesh->get_vertices_per_polygon();
+	cfg.maxVertsPerPoly = (int)p_navigation_mesh->get_verts_per_poly();
 	cfg.detailSampleDist = MAX(p_navigation_mesh->get_cell_size() * p_navigation_mesh->get_detail_sample_distance(), 0.1f);
 	cfg.detailSampleMaxError = p_navigation_mesh->get_cell_height() * p_navigation_mesh->get_detail_sample_max_error();
 
@@ -681,7 +683,7 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 	cfg.bmax[2] = bmax[2];
 
 	AABB baking_aabb = p_navigation_mesh->get_filter_baking_aabb();
-	if (baking_aabb.has_volume()) {
+	if (!baking_aabb.has_no_volume()) {
 		Vector3 baking_aabb_offset = p_navigation_mesh->get_filter_baking_aabb_offset();
 		cfg.bmin[0] = baking_aabb.position[0] + baking_aabb_offset.x;
 		cfg.bmin[1] = baking_aabb.position[1] + baking_aabb_offset.y;
@@ -775,7 +777,7 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 
 	bake_state = "Converting to native navigation mesh..."; // step #10
 
-	Vector<Vector3> new_navigation_mesh_vertices;
+	PoolVector<Vector3> new_navigation_mesh_vertices;
 	Vector<Vector<int>> new_navigation_mesh_polygons;
 
 	for (int i = 0; i < detail_mesh->nverts; i++) {
@@ -801,7 +803,7 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 	}
 
 	p_navigation_mesh->set_vertices(new_navigation_mesh_vertices);
-	p_navigation_mesh->internal_set_polygons(new_navigation_mesh_polygons);
+	p_navigation_mesh->set_polygons(new_navigation_mesh_polygons);
 
 	bake_state = "Cleanup..."; // step #11
 
@@ -831,11 +833,11 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 }
 
 void PandemoniumNavigationMeshGenerator::parse_and_bake_3d(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Ref<FuncRef> p_callback) {
-	ERR_FAIL_COND_MSG(baking_navmeshes.find(p_navigation_mesh) >= 0, "NavigationMesh was already added to baking queue. Wait for current bake task to finish.");
+	ERR_FAIL_COND_MSG(_baking_navmeshes.find(p_navigation_mesh) >= 0, "NavigationMesh was already added to baking queue. Wait for current bake task to finish.");
 	ERR_FAIL_COND_MSG(p_root_node == nullptr, "avigationMesh requires a valid root node.");
 
 	_generator_mutex.lock();
-	baking_navmeshes.push_back(p_navigation_mesh);
+	_baking_navmeshes.push_back(p_navigation_mesh);
 	_generator_mutex.unlock();
 
 	Ref<NavigationGeneratorTask3D> navigation_generator_task;
@@ -882,7 +884,7 @@ Ref<NavigationMeshSourceGeometryData3D> PandemoniumNavigationMeshGenerator::pars
 
 	Ref<NavigationMeshSourceGeometryData3D> source_geometry_data = Ref<NavigationMeshSourceGeometryData3D>(memnew(NavigationMeshSourceGeometryData3D));
 
-	_static_parse_3d_source_geometry_data(p_navigation_mesh, p_root_node, source_geometry_data, geometry_3d_parsers);
+	_static_parse_3d_source_geometry_data(p_navigation_mesh, p_root_node, source_geometry_data, _geometry_3d_parsers);
 
 	return source_geometry_data;
 };
@@ -942,8 +944,8 @@ void PandemoniumNavigationMeshGenerator::_static_parse_3d_source_geometry_data(R
 	p_source_geometry_data->clear();
 	p_source_geometry_data->root_node_transform = root_node_transform;
 
-	for (Node *E : parse_nodes) {
-		_static_parse_3d_geometry_node(p_navigation_mesh, E, p_source_geometry_data, recurse_children, p_geometry_3d_parsers);
+	for (List<Node *>::Element *E = parse_nodes.front(); E; E = E->next()) {
+		_static_parse_3d_geometry_node(p_navigation_mesh, E->get(), p_source_geometry_data, recurse_children, p_geometry_3d_parsers);
 	}
 }
 #endif // _3D_DISABLED

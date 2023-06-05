@@ -618,7 +618,7 @@ void NavigationMesh::_bind_methods() {
 	BIND_ENUM_CONSTANT(PARSED_GEOMETRY_BOTH);
 	BIND_ENUM_CONSTANT(PARSED_GEOMETRY_MAX);
 
-	BIND_ENUM_CONSTANT(SOURCE_GEOMETRY_NAVMESH_CHILDREN);
+	BIND_ENUM_CONSTANT(SOURCE_GEOMETRY_ROOT_NODE_CHILDREN);
 	BIND_ENUM_CONSTANT(SOURCE_GEOMETRY_GROUPS_WITH_CHILDREN);
 	BIND_ENUM_CONSTANT(SOURCE_GEOMETRY_GROUPS_EXPLICIT);
 	BIND_ENUM_CONSTANT(SOURCE_GEOMETRY_MAX);
@@ -633,7 +633,7 @@ void NavigationMesh::_validate_property(PropertyInfo &property) const {
 	}
 
 	if (property.name == "geometry/source_group_name") {
-		if (source_geometry_mode == SOURCE_GEOMETRY_NAVMESH_CHILDREN) {
+		if (source_geometry_mode == SOURCE_GEOMETRY_ROOT_NODE_CHILDREN) {
 			property.usage = 0;
 			return;
 		}
@@ -658,7 +658,7 @@ NavigationMesh::NavigationMesh() {
 	partition_type = SAMPLE_PARTITION_WATERSHED;
 	parsed_geometry_type = PARSED_GEOMETRY_MESH_INSTANCES;
 	collision_mask = 0xFFFFFFFF;
-	source_geometry_mode = SOURCE_GEOMETRY_NAVMESH_CHILDREN;
+	source_geometry_mode = SOURCE_GEOMETRY_ROOT_NODE_CHILDREN;
 	source_group_name = "navmesh";
 	filter_low_hanging_obstacles = false;
 	filter_ledge_spans = false;

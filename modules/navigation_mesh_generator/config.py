@@ -1,8 +1,9 @@
 
 
 def can_build(env, platform):
-    #return True
-    return False
+    env.module_add_dependencies("navigation_mesh_generator", ["navigation"], False)
+    
+    return True
 
 
 def configure(env):
