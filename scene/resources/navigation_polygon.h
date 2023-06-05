@@ -79,10 +79,7 @@ protected:
 
 private:
 	PoolVector<Vector2> vertices;
-	struct Polygon {
-		Vector<int> indices;
-	};
-	Vector<Polygon> polygons;
+	Vector<Vector<int>> polygons;
 	Vector<PoolVector<Vector2>> outlines;
 
 	mutable Rect2 item_rect;

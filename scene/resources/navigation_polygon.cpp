@@ -97,9 +97,7 @@ PoolVector<Vector2> NavigationPolygon::get_vertices() const {
 }
 
 void NavigationPolygon::add_polygon(const Vector<int> &p_polygon) {
-	Polygon polygon;
-	polygon.indices = p_polygon;
-	polygons.push_back(polygon);
+	polygons.push_back(p_polygon);
 	{
 		MutexLock lock(navmesh_generation);
 		navmesh.unref();
@@ -117,7 +115,7 @@ int NavigationPolygon::get_polygon_count() const {
 
 Vector<int> NavigationPolygon::get_polygon(int p_idx) {
 	ERR_FAIL_INDEX_V(p_idx, polygons.size(), Vector<int>());
-	return polygons[p_idx].indices;
+	return polygons[p_idx];
 }
 
 void NavigationPolygon::clear_polygons() {
@@ -270,7 +268,7 @@ void NavigationPolygon::make_polygons_from_outlines() {
 	for (List<TriangulatorPoly>::Element *I = out_poly.front(); I; I = I->next()) {
 		TriangulatorPoly &tp = I->get();
 
-		struct Polygon p;
+		Vector<int> p;
 
 		for (int64_t i = 0; i < tp.GetNumPoints(); i++) {
 			RBMap<Vector2, int>::Element *E = points.find(tp[i]);
@@ -278,7 +276,7 @@ void NavigationPolygon::make_polygons_from_outlines() {
 				E = points.insert(tp[i], vertices.size());
 				vertices.push_back(tp[i]);
 			}
-			p.indices.push_back(E->get());
+			p.push_back(E->get());
 		}
 
 		polygons.push_back(p);
@@ -301,7 +299,7 @@ void NavigationPolygon::_set_polygons(const Array &p_array) {
 	}
 	polygons.resize(p_array.size());
 	for (int i = 0; i < p_array.size(); i++) {
-		polygons.write[i].indices = p_array[i];
+		polygons.write[i] = p_array[i];
 	}
 }
 
@@ -309,7 +307,7 @@ Array NavigationPolygon::_get_polygons() const {
 	Array ret;
 	ret.resize(polygons.size());
 	for (int i = 0; i < ret.size(); i++) {
-		ret[i] = polygons[i].indices;
+		ret[i] = polygons[i];
 	}
 
 	return ret;
