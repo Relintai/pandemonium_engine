@@ -40,6 +40,10 @@
 #include "servers/physics_2d_server.h"
 #include "servers/rendering/rendering_server_canvas_helper.h"
 
+#ifdef DEBUG_ENABLED
+#include "servers/navigation_server.h"
+#endif // DEBUG_ENABLED
+
 void TileMap::Quadrant::clear_navpoly() {
 	for (RBMap<PosKey, Quadrant::NavPoly>::Element *E = navpoly_ids.front(); E; E = E->next()) {
 		RID region = E->get().region;
@@ -370,7 +374,7 @@ void TileMap::update_dirty_quadrants() {
 
 	SceneTree *st = SceneTree::get_singleton();
 	Color debug_collision_color;
-	Color debug_navigation_color;
+	Color debug_navigation_color = Color(0.5, 1.0, 1.0, 1.0);
 
 	bool debug_shapes = false;
 	if (st) {
@@ -387,7 +391,9 @@ void TileMap::update_dirty_quadrants() {
 
 	bool debug_navigation = st && st->is_debugging_navigation_hint();
 	if (debug_navigation) {
-		debug_navigation_color = st->get_debug_navigation_color();
+#ifdef DEBUG_ENABLED
+		debug_navigation_color = NavigationServer::get_singleton()->get_debug_navigation_geometry_face_color();
+#endif // DEBUG_ENABLED
 	}
 
 	while (dirty_quadrant_list.first()) {

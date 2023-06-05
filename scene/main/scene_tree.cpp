@@ -947,55 +947,6 @@ Color SceneTree::get_debug_collision_contact_color() const {
 	return debug_collision_contact_color;
 }
 
-void SceneTree::set_debug_navigation_color(const Color &p_color) {
-	debug_navigation_color = p_color;
-}
-
-Color SceneTree::get_debug_navigation_color() const {
-	return debug_navigation_color;
-}
-
-void SceneTree::set_debug_navigation_disabled_color(const Color &p_color) {
-	debug_navigation_disabled_color = p_color;
-}
-
-Color SceneTree::get_debug_navigation_disabled_color() const {
-	return debug_navigation_disabled_color;
-}
-
-Ref<Material> SceneTree::get_debug_navigation_material() {
-	if (navigation_material.is_valid()) {
-		return navigation_material;
-	}
-
-	Ref<SpatialMaterial> line_material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
-	line_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
-	line_material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
-	line_material->set_flag(SpatialMaterial::FLAG_SRGB_VERTEX_COLOR, true);
-	line_material->set_flag(SpatialMaterial::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
-	line_material->set_albedo(get_debug_navigation_color());
-
-	navigation_material = line_material;
-
-	return navigation_material;
-}
-
-Ref<Material> SceneTree::get_debug_navigation_disabled_material() {
-	if (navigation_disabled_material.is_valid()) {
-		return navigation_disabled_material;
-	}
-
-	Ref<SpatialMaterial> line_material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
-	line_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
-	line_material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
-	line_material->set_flag(SpatialMaterial::FLAG_SRGB_VERTEX_COLOR, true);
-	line_material->set_flag(SpatialMaterial::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
-	line_material->set_albedo(get_debug_navigation_disabled_color());
-
-	navigation_disabled_material = line_material;
-
-	return navigation_disabled_material;
-}
 Ref<Material> SceneTree::get_debug_collision_material() {
 	if (collision_material.is_valid()) {
 		return collision_material;
@@ -2284,8 +2235,6 @@ SceneTree::SceneTree() {
 #endif
 	debug_collisions_color = GLOBAL_DEF("debug/shapes/collision/shape_color", Color(0.0, 0.6, 0.7, 0.42));
 	debug_collision_contact_color = GLOBAL_DEF("debug/shapes/collision/contact_color", Color(1.0, 0.2, 0.1, 0.8));
-	debug_navigation_color = GLOBAL_DEF("debug/shapes/navigation/geometry_color", Color(0.1, 1.0, 0.7, 0.4));
-	debug_navigation_disabled_color = GLOBAL_DEF("debug/shapes/navigation/disabled_geometry_color", Color(1.0, 0.7, 0.1, 0.4));
 	collision_debug_contacts = GLOBAL_DEF("debug/shapes/collision/max_contacts_displayed", 10000);
 	ProjectSettings::get_singleton()->set_custom_property_info("debug/shapes/collision/max_contacts_displayed", PropertyInfo(Variant::INT, "debug/shapes/collision/max_contacts_displayed", PROPERTY_HINT_RANGE, "0,20000,1")); // No negative
 

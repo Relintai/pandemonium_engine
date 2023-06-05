@@ -369,14 +369,6 @@ public:
 	void set_debug_collision_contact_color(const Color &p_color);
 	Color get_debug_collision_contact_color() const;
 
-	void set_debug_navigation_color(const Color &p_color);
-	Color get_debug_navigation_color() const;
-
-	void set_debug_navigation_disabled_color(const Color &p_color);
-	Color get_debug_navigation_disabled_color() const;
-
-	Ref<Material> get_debug_navigation_material();
-	Ref<Material> get_debug_navigation_disabled_material();
 	Ref<Material> get_debug_collision_material();
 	Ref<ArrayMesh> get_debug_contact_mesh();
 

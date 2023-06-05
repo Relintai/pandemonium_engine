@@ -47,13 +47,6 @@ class NavigationMesh : public Resource {
 	Vector<Polygon> polygons;
 	Ref<ArrayMesh> debug_mesh;
 
-	struct _EdgeKey {
-		Vector3 from;
-		Vector3 to;
-
-		bool operator<(const _EdgeKey &p_with) const { return from == p_with.from ? to < p_with.to : from < p_with.from; }
-	};
-
 protected:
 	static void _bind_methods();
 	virtual void _validate_property(PropertyInfo &property) const;
@@ -195,10 +188,8 @@ public:
 	Vector<int> get_polygon(int p_idx);
 	void clear_polygons();
 
-	Ref<Mesh> get_debug_mesh();
-
 #ifdef DEBUG_ENABLED
-	Ref<ArrayMesh> _get_debug_mesh();
+	Ref<ArrayMesh> get_debug_mesh();
 #endif
 
 	NavigationMesh();

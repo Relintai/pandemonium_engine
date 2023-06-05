@@ -32,8 +32,8 @@
 
 #include "core/io/marshalls.h"
 #include "core/object/message_queue.h"
-#include "scene/3d/light.h"
 #include "mesh_library.h"
+#include "scene/3d/light.h"
 #include "scene/resources/physics_material.h"
 #include "scene/resources/primitive_meshes.h"
 #include "scene/resources/surface_tool.h"
@@ -41,8 +41,8 @@
 #include "servers/navigation_server.h"
 #include "servers/rendering_server.h"
 
-#include "scene/resources/world_3d.h"
 #include "scene/resources/navigation_mesh.h"
+#include "scene/resources/world_3d.h"
 
 bool GridMap::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name;
@@ -576,6 +576,7 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 				}
 				nm.region = region;
 
+#ifdef DEBUG_ENABLED
 				// add navigation debugmesh visual instances if debug is enabled
 				SceneTree *st = SceneTree::get_singleton();
 				if (st && st->is_debugging_navigation_hint()) {
@@ -583,13 +584,13 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 						RID navmesh_debug_rid = navmesh->get_debug_mesh()->get_rid();
 						nm.navmesh_debug_instance = RS::get_singleton()->instance_create();
 						RS::get_singleton()->instance_set_base(nm.navmesh_debug_instance, navmesh_debug_rid);
-						RS::get_singleton()->mesh_surface_set_material(navmesh_debug_rid, 0, st->get_debug_navigation_material()->get_rid());
 					}
 					if (is_inside_tree()) {
 						RS::get_singleton()->instance_set_scenario(nm.navmesh_debug_instance, get_world_3d()->get_scenario());
 						RS::get_singleton()->instance_set_transform(nm.navmesh_debug_instance, get_global_transform() * nm.xform);
 					}
 				}
+#endif // DEBUG_ENABLED
 			}
 			g.navmesh_ids[E->get()] = nm;
 		}

@@ -560,6 +560,7 @@ void NavigationMeshInstance::_update_debug_edge_connections_mesh() {
 	}
 
 	Vector<Vector3> vertex_array;
+	//vertex_array.resize(connections_count * 6);
 
 	for (int i = 0; i < connections_count; i++) {
 		Vector3 connection_pathway_start = NavigationServer::get_singleton()->region_get_connection_pathway_start(region, i);
