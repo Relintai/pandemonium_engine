@@ -162,8 +162,6 @@ void PropInstanceJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("reset"), &PropInstanceJob::reset);
 	ClassDB::bind_method(D_METHOD("_reset"), &PropInstanceJob::_reset);
 
-	ClassDB::bind_method(D_METHOD("_execute"), &PropInstanceJob::_execute);
-
 	BIND_VMETHOD(MethodInfo("_execute_phase"));
 
 	ClassDB::bind_method(D_METHOD("execute_phase"), &PropInstanceJob::execute_phase);

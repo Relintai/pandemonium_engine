@@ -325,8 +325,6 @@ void TerrainJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("reset"), &TerrainJob::reset);
 	ClassDB::bind_method(D_METHOD("_reset"), &TerrainJob::_reset);
 
-	ClassDB::bind_method(D_METHOD("_execute"), &TerrainJob::_execute);
-
 	BIND_VMETHOD(MethodInfo("_execute_phase"));
 
 	ClassDB::bind_method(D_METHOD("execute_phase"), &TerrainJob::execute_phase);

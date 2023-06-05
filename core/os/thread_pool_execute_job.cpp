@@ -152,8 +152,6 @@ ThreadPoolExecuteJob::~ThreadPoolExecuteJob() {
 }
 
 void ThreadPoolExecuteJob::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_execute"), &ThreadPoolExecuteJob::_execute);
-
 	MethodInfo mi;
 	mi.arguments.push_back(PropertyInfo(Variant::OBJECT, "obj"));
 	mi.arguments.push_back(PropertyInfo(Variant::STRING, "method"));

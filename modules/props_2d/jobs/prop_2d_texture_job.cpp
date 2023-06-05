@@ -63,6 +63,4 @@ void Prop2DTextureJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_merger", "value"), &Prop2DTextureJob::set_merger);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "merger", PROPERTY_HINT_RESOURCE_TYPE, "TexturePacker"), "set_merger", "get_merger");
 #endif
-
-	ClassDB::bind_method(D_METHOD("_execute"), &Prop2DTextureJob::_execute);
 }

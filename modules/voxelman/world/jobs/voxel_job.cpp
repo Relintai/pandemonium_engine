@@ -338,8 +338,6 @@ void VoxelJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("reset"), &VoxelJob::reset);
 	ClassDB::bind_method(D_METHOD("_reset"), &VoxelJob::_reset);
 
-	ClassDB::bind_method(D_METHOD("_execute"), &VoxelJob::_execute);
-
 	BIND_VMETHOD(MethodInfo("_execute_phase"));
 
 	ClassDB::bind_method(D_METHOD("execute_phase"), &VoxelJob::execute_phase);
