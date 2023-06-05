@@ -41,10 +41,7 @@ class NavigationMesh : public Resource {
 	friend class NavigationMeshGenerator;
 
 	PoolVector<Vector3> vertices;
-	struct Polygon {
-		Vector<int> indices;
-	};
-	Vector<Polygon> polygons;
+	Vector<Vector<int>> polygons;
 	Ref<ArrayMesh> debug_mesh;
 
 protected:
