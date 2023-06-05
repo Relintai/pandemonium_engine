@@ -89,7 +89,6 @@ void PandemoniumNavigationMeshGenerator::NavigationGeneratorTask2D::_execute() {
 }
 
 void PandemoniumNavigationMeshGenerator::NavigationGeneratorTask2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_execute"), &NavigationGeneratorTask2D::_execute);
 }
 
 #ifndef _3D_DISABLED
@@ -113,7 +112,6 @@ void PandemoniumNavigationMeshGenerator::NavigationGeneratorTask3D::_execute() {
 }
 
 void PandemoniumNavigationMeshGenerator::NavigationGeneratorTask3D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_execute"), &NavigationGeneratorTask3D::_execute);
 }
 #endif // _3D_DISABLED
 
