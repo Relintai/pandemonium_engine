@@ -35,12 +35,14 @@
 #include "core/io/marshalls.h"
 #include "core/io/resource_saver.h"
 #include "editor/editor_node.h"
-#include "scene/3d/mesh_instance_3d.h"
-#include "scene/3d/navigation_region_3d.h"
+#include "scene/3d/mesh_instance.h"
+#include "scene/3d/navigation_mesh_instance.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/label.h"
+#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
 #include "servers/navigation/navigation_mesh_generator.h"
 
 void NavigationMeshEditor::_node_removed(Node *p_node) {
@@ -54,8 +56,8 @@ void NavigationMeshEditor::_node_removed(Node *p_node) {
 void NavigationMeshEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
-			button_bake->set_icon(get_theme_icon(SNAME("Bake"), SNAME("EditorIcons")));
-			button_reset->set_icon(get_theme_icon(SNAME("Reload"), SNAME("EditorIcons")));
+			button_bake->set_icon(get_theme_icon("Bake", "EditorIcons"));
+			button_reset->set_icon(get_theme_icon("Reload", "EditorIcons"));
 		} break;
 	}
 }
@@ -77,7 +79,7 @@ void NavigationMeshEditor::_bake_pressed() {
 		if (srpos != -1) {
 			String base = path.substr(0, srpos);
 			if (ResourceLoader::get_resource_type(base) == "PackedScene") {
-				if (!get_tree()->get_edited_scene_root() || get_tree()->get_edited_scene_root()->get_scene_file_path() != base) {
+				if (!get_tree()->get_edited_scene_root() || get_tree()->get_edited_scene_root()->get_filename() != base) {
 					err_dialog->set_text(TTR("Cannot generate navigation mesh because it does not belong to the edited scene. Make it unique first."));
 					err_dialog->popup_centered();
 					return;
@@ -118,7 +120,7 @@ void NavigationMeshEditor::_clear_pressed() {
 	}
 }
 
-void NavigationMeshEditor::edit(NavigationRegion3D *p_nav_region) {
+void NavigationMeshEditor::edit(NavigationMeshInstance *p_nav_region) {
 	if (p_nav_region == nullptr || node == p_nav_region) {
 		return;
 	}
@@ -127,6 +129,8 @@ void NavigationMeshEditor::edit(NavigationRegion3D *p_nav_region) {
 }
 
 void NavigationMeshEditor::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_bake_pressed"), &NavigationMeshEditor::_bake_pressed);
+	ClassDB::bind_method(D_METHOD("_clear_pressed"), &NavigationMeshEditor::_clear_pressed);
 }
 
 NavigationMeshEditor::NavigationMeshEditor() {
@@ -137,15 +141,15 @@ NavigationMeshEditor::NavigationMeshEditor() {
 	bake_hbox->add_child(button_bake);
 	button_bake->set_toggle_mode(true);
 	button_bake->set_text(TTR("Bake NavigationMesh"));
-	button_bake->set_tooltip_text(TTR("Bakes the NavigationMesh by first parsing the scene for source geometry and then creating the navigation mesh vertices and indices."));
-	button_bake->connect("pressed", callable_mp(this, &NavigationMeshEditor::_bake_pressed));
+	button_bake->set_tooltip(TTR("Bakes the NavigationMesh by first parsing the scene for source geometry and then creating the navigation mesh vertices and indices."));
+	button_bake->connect("pressed", this, "_bake_pressed");
 
 	button_reset = memnew(Button);
 	button_reset->set_flat(true);
 	bake_hbox->add_child(button_reset);
 	button_reset->set_text(TTR("Clear NavigationMesh"));
-	button_reset->set_tooltip_text(TTR("Clears the internal NavigationMesh vertices and indices."));
-	button_reset->connect("pressed", callable_mp(this, &NavigationMeshEditor::_clear_pressed));
+	button_reset->set_tooltip(TTR("Clears the internal NavigationMesh vertices and indices."));
+	button_reset->connect("pressed", this, "_clear_pressed");
 
 	bake_info = memnew(Label);
 	bake_hbox->add_child(bake_info);
@@ -159,11 +163,11 @@ NavigationMeshEditor::~NavigationMeshEditor() {
 }
 
 void NavigationMeshEditorPlugin::edit(Object *p_object) {
-	navigation_mesh_editor->edit(Object::cast_to<NavigationRegion3D>(p_object));
+	navigation_mesh_editor->edit(Object::cast_to<NavigationMeshInstance>(p_object));
 }
 
 bool NavigationMeshEditorPlugin::handles(Object *p_object) const {
-	return p_object->is_class("NavigationRegion3D");
+	return p_object->is_class("NavigationMeshInstance");
 }
 
 void NavigationMeshEditorPlugin::make_visible(bool p_visible) {
@@ -177,15 +181,19 @@ void NavigationMeshEditorPlugin::make_visible(bool p_visible) {
 	}
 }
 
-NavigationMeshEditorPlugin::NavigationMeshEditorPlugin() {
+NavigationMeshEditorPlugin::NavigationMeshEditorPlugin(EditorNode *p_node) {
 	navigation_mesh_editor = memnew(NavigationMeshEditor);
-	EditorNode::get_singleton()->get_main_screen_control()->add_child(navigation_mesh_editor);
+
+	EditorNode::get_singleton()->get_viewport()->add_child(navigation_mesh_editor);
 	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, navigation_mesh_editor->bake_hbox);
 	navigation_mesh_editor->hide();
 	navigation_mesh_editor->bake_hbox->hide();
 }
 
 NavigationMeshEditorPlugin::~NavigationMeshEditorPlugin() {
+}
+
+void NavigationMeshEditorPlugin::_bind_methods() {
 }
 
 #endif // TOOLS_ENABLED

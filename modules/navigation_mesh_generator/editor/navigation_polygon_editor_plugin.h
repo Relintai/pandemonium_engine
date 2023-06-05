@@ -63,6 +63,7 @@ class NavigationPolygonEditor : public AbstractPolygon2DEditor {
 
 protected:
 	void _notification(int p_what);
+	static void _bind_methods();
 
 	virtual Node2D *_get_node() const;
 	virtual void _set_node(Node *p_polygon);
@@ -79,16 +80,19 @@ protected:
 	virtual void _create_resource();
 
 public:
-	NavigationPolygonEditor();
+	NavigationPolygonEditor(EditorNode *p_editor, bool p_wip_destructive = true);
+	~NavigationPolygonEditor();
 };
 
 class NavigationPolygonEditorPlugin : public AbstractPolygon2DEditorPlugin {
 	GDCLASS(NavigationPolygonEditorPlugin, AbstractPolygon2DEditorPlugin);
 
-	NavigationPolygonEditor *navigation_polygon_editor = nullptr;
-
 public:
-	NavigationPolygonEditorPlugin();
+	NavigationPolygonEditorPlugin(EditorNode *p_node);
+	~NavigationPolygonEditorPlugin();
+
+protected:
+	static void _bind_methods();
 };
 
 #endif // NAVIGATION_POLYGON_EDITOR_PLUGIN_H

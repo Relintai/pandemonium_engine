@@ -32,14 +32,16 @@
 
 #include "core/io/marshalls.h"
 #include "core/io/resource_saver.h"
+#include "core/object/undo_redo.h"
 #include "editor/editor_node.h"
-#include "editor/editor_undo_redo_manager.h"
 #include "scene/2d/mesh_instance_2d.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/label.h"
 #include "scene/gui/option_button.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_polygon.h"
 #include "servers/navigation/navigation_mesh_generator.h"
 
 Ref<NavigationPolygon> NavigationPolygonEditor::_ensure_navpoly() const {
@@ -84,23 +86,26 @@ void NavigationPolygonEditor::_set_polygon(int p_idx, const Variant &p_polygon) 
 
 void NavigationPolygonEditor::_action_add_polygon(const Variant &p_polygon) {
 	Ref<NavigationPolygon> navpoly = _ensure_navpoly();
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->add_do_method(navpoly.ptr(), "add_outline", p_polygon);
 	undo_redo->add_undo_method(navpoly.ptr(), "remove_outline", navpoly->get_outline_count());
+	undo_redo->commit_action();
 }
 
 void NavigationPolygonEditor::_action_remove_polygon(int p_idx) {
 	Ref<NavigationPolygon> navpoly = _ensure_navpoly();
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->add_do_method(navpoly.ptr(), "remove_outline", p_idx);
 	undo_redo->add_undo_method(navpoly.ptr(), "add_outline_at_index", navpoly->get_outline(p_idx), p_idx);
+	undo_redo->commit_action();
 }
 
 void NavigationPolygonEditor::_action_set_polygon(int p_idx, const Variant &p_previous, const Variant &p_polygon) {
 	Ref<NavigationPolygon> navpoly = _ensure_navpoly();
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->add_do_method(navpoly.ptr(), "set_outline", p_idx, p_polygon);
 	undo_redo->add_undo_method(navpoly.ptr(), "set_outline", p_idx, p_previous);
+	undo_redo->commit_action();
 }
 
 bool NavigationPolygonEditor::_has_resource() const {
@@ -112,16 +117,19 @@ void NavigationPolygonEditor::_create_resource() {
 		return;
 	}
 
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
+
 	undo_redo->create_action(TTR("Create Navigation Polygon"));
 	undo_redo->add_do_method(node, "set_navigation_polygon", Ref<NavigationPolygon>(memnew(NavigationPolygon)));
-	undo_redo->add_undo_method(node, "set_navigation_polygon", Variant(Ref<RefCounted>()));
+	undo_redo->add_undo_method(node, "set_navigation_polygon", Variant(Ref<NavigationPolygon>()));
 	undo_redo->commit_action();
 
 	_menu_option(MODE_CREATE);
 }
 
-NavigationPolygonEditor::NavigationPolygonEditor() {
+NavigationPolygonEditor::NavigationPolygonEditor(EditorNode *p_editor, bool p_wip_destructive) :
+		AbstractPolygon2DEditor(p_editor, p_wip_destructive) {
+			
 	bake_hbox = memnew(HBoxContainer);
 	add_child(bake_hbox);
 
@@ -130,15 +138,15 @@ NavigationPolygonEditor::NavigationPolygonEditor() {
 	bake_hbox->add_child(button_bake);
 	button_bake->set_toggle_mode(true);
 	button_bake->set_text(TTR("Bake NavigationPolygon"));
-	button_bake->set_tooltip_text(TTR("Bakes the NavigationPolygon by first parsing the scene for source geometry and then creating the navigation polygon vertices and polygons."));
-	button_bake->connect("pressed", callable_mp(this, &NavigationPolygonEditor::_bake_pressed));
+	button_bake->set_tooltip(TTR("Bakes the NavigationPolygon by first parsing the scene for source geometry and then creating the navigation polygon vertices and polygons."));
+	button_bake->connect("pressed", this, "_bake_pressed");
 
 	button_reset = memnew(Button);
 	button_reset->set_flat(true);
 	bake_hbox->add_child(button_reset);
 	button_reset->set_text(TTR("Clear NavigationPolygon"));
-	button_reset->set_tooltip_text(TTR("Clears the internal NavigationPolygon outlines, vertices and polygons."));
-	button_reset->connect("pressed", callable_mp(this, &NavigationPolygonEditor::_clear_pressed));
+	button_reset->set_tooltip(TTR("Clears the internal NavigationPolygon outlines, vertices and polygons."));
+	button_reset->connect("pressed", this, "_clear_pressed");
 
 	bake_info = memnew(Label);
 	bake_hbox->add_child(bake_info);
@@ -148,13 +156,21 @@ NavigationPolygonEditor::NavigationPolygonEditor() {
 	node = nullptr;
 }
 
+NavigationPolygonEditor::~NavigationPolygonEditor() {
+}
+
 void NavigationPolygonEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
-			button_bake->set_icon(get_theme_icon(SNAME("Bake"), SNAME("EditorIcons")));
-			button_reset->set_icon(get_theme_icon(SNAME("Reload"), SNAME("EditorIcons")));
+			button_bake->set_icon(get_theme_icon("Bake", "EditorIcons"));
+			button_reset->set_icon(get_theme_icon("Reload", "EditorIcons"));
 		} break;
 	}
+}
+
+void NavigationPolygonEditor::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_bake_pressed"), &NavigationPolygonEditor::_bake_pressed);
+	ClassDB::bind_method(D_METHOD("_clear_pressed"), &NavigationPolygonEditor::_clear_pressed);
 }
 
 void NavigationPolygonEditor::_bake_pressed() {
@@ -169,12 +185,12 @@ void NavigationPolygonEditor::_bake_pressed() {
 	}
 
 	navigation_polygon->clear_polygons();
-	navigation_polygon->set_vertices(Vector<Vector2>());
+	navigation_polygon->set_vertices(PoolVector<Vector2>());
 
 	Ref<NavigationMeshSourceGeometryData2D> source_geometry_data = NavigationMeshGenerator::get_singleton()->parse_2d_source_geometry_data(navigation_polygon, node);
 	NavigationMeshGenerator::get_singleton()->bake_2d_from_source_geometry_data(navigation_polygon, source_geometry_data);
 
-	node->queue_redraw();
+	node->update();
 }
 
 void NavigationPolygonEditor::_clear_pressed() {
@@ -189,7 +205,7 @@ void NavigationPolygonEditor::_clear_pressed() {
 	bake_info->set_text("");
 
 	if (node) {
-		node->queue_redraw();
+		node->update();
 	}
 }
 
@@ -205,6 +221,12 @@ void NavigationPolygonEditor::_update_polygon_editing_state() {
 	}
 }
 
-NavigationPolygonEditorPlugin::NavigationPolygonEditorPlugin() :
-		AbstractPolygon2DEditorPlugin(memnew(NavigationPolygonEditor), "NavigationPolygonInstance") {
+NavigationPolygonEditorPlugin::NavigationPolygonEditorPlugin(EditorNode *p_node) :
+		AbstractPolygon2DEditorPlugin(p_node, memnew(NavigationPolygonEditor(p_node)), "NavigationPolygonInstance") {
+}
+
+NavigationPolygonEditorPlugin::~NavigationPolygonEditorPlugin() {
+}
+
+void NavigationPolygonEditorPlugin::_bind_methods() {
 }

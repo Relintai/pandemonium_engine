@@ -39,7 +39,7 @@ class AcceptDialog;
 class Button;
 class HBoxContainer;
 class Label;
-class NavigationRegion3D;
+class NavigationMeshInstance;
 
 class NavigationMeshEditor : public Control {
 	friend class NavigationMeshEditorPlugin;
@@ -53,7 +53,7 @@ class NavigationMeshEditor : public Control {
 	Button *button_reset = nullptr;
 	Label *bake_info = nullptr;
 
-	NavigationRegion3D *node = nullptr;
+	NavigationMeshInstance *node = nullptr;
 
 	void _bake_pressed();
 	void _clear_pressed();
@@ -64,7 +64,7 @@ protected:
 	void _notification(int p_what);
 
 public:
-	void edit(NavigationRegion3D *p_nav_region);
+	void edit(NavigationMeshInstance *p_nav_region);
 	NavigationMeshEditor();
 	~NavigationMeshEditor();
 };
@@ -81,8 +81,11 @@ public:
 	virtual bool handles(Object *p_object) const;
 	virtual void make_visible(bool p_visible);
 
-	NavigationMeshEditorPlugin();
+	NavigationMeshEditorPlugin(EditorNode *p_node);
 	~NavigationMeshEditorPlugin();
+
+protected:
+	static void _bind_methods();
 };
 
 #endif // TOOLS_ENABLED
