@@ -274,7 +274,7 @@ bool NavigationMesh::get_filter_walkable_low_height_spans() const {
 
 void NavigationMesh::set_filter_baking_aabb(const AABB &p_aabb) {
 	filter_baking_aabb = p_aabb;
-	property_list_changed_notify();
+	emit_changed();
 }
 
 AABB NavigationMesh::get_filter_baking_aabb() const {
@@ -283,7 +283,7 @@ AABB NavigationMesh::get_filter_baking_aabb() const {
 
 void NavigationMesh::set_filter_baking_aabb_offset(const Vector3 &p_aabb_offset) {
 	filter_baking_aabb_offset = p_aabb_offset;
-	property_list_changed_notify();
+	emit_changed();
 }
 
 Vector3 NavigationMesh::get_filter_baking_aabb_offset() const {

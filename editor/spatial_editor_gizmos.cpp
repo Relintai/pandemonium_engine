@@ -31,8 +31,8 @@
 #include "spatial_editor_gizmos.h"
 
 #include "core/containers/list.h"
-#include "core/containers/rb_map.h"
 #include "core/containers/pool_vector.h"
+#include "core/containers/rb_map.h"
 #include "core/containers/rid.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
@@ -3545,6 +3545,10 @@ NavigationMeshSpatialGizmoPlugin::NavigationMeshSpatialGizmoPlugin() {
 	create_material("navigation_edge_material_disabled", EDITOR_DEF("editors/3d_gizmos/gizmo_colors/navigation_edge_disabled", Color(0.7, 0.7, 0.7)));
 	create_material("navigation_solid_material", EDITOR_DEF("editors/3d_gizmos/gizmo_colors/navigation_solid", Color(0.5, 1, 1, 0.4)));
 	create_material("navigation_solid_material_disabled", EDITOR_DEF("editors/3d_gizmos/gizmo_colors/navigation_solid_disabled", Color(0.7, 0.7, 0.7, 0.4)));
+
+	Color baking_aabb_material_color = Color(0.8, 0.5, 0.7);
+	baking_aabb_material_color.a = 0.1;
+	create_material("baking_aabb_material", baking_aabb_material_color);
 }
 
 bool NavigationMeshSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
@@ -3571,6 +3575,15 @@ void NavigationMeshSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	Ref<NavigationMesh> navmeshie = navmesh->get_navigation_mesh();
 	if (navmeshie.is_null()) {
 		return;
+	}
+
+	AABB baking_aabb = navmeshie->get_filter_baking_aabb();
+	if (!baking_aabb.has_no_volume()) {
+		Vector3 baking_aabb_offset = navmeshie->get_filter_baking_aabb_offset();
+		if (p_gizmo->is_selected()) {
+			Ref<Material> material = get_material("baking_aabb_material", p_gizmo);
+			p_gizmo->add_solid_box(material, baking_aabb.get_size(), baking_aabb.get_center() + baking_aabb_offset);
+		}
 	}
 
 	PoolVector<Vector3> vertices = navmeshie->get_vertices();
