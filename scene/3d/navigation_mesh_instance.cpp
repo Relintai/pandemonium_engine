@@ -324,9 +324,11 @@ void NavigationMeshInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_bake_finished", "nav_mesh"), &NavigationMeshInstance::_bake_finished);
 	ClassDB::bind_method(D_METHOD("_navigation_changed"), &NavigationMeshInstance::_navigation_changed);
 
+#ifdef DEBUG_ENABLED
 	ClassDB::bind_method(D_METHOD("_update_debug_mesh"), &NavigationMeshInstance::_update_debug_mesh);
 	ClassDB::bind_method(D_METHOD("_update_debug_edge_connections_mesh"), &NavigationMeshInstance::_update_debug_edge_connections_mesh);
 	ClassDB::bind_method(D_METHOD("_navigation_map_changed"), &NavigationMeshInstance::_navigation_map_changed);
+#endif
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "navmesh", PROPERTY_HINT_RESOURCE_TYPE, "NavigationMesh"), "set_navigation_mesh", "get_navigation_mesh");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "is_enabled");
