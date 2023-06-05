@@ -36,6 +36,7 @@
 #include "core/object/reference.h"
 
 class NavigationMesh;
+class SpatialMaterial;
 
 /// This server uses the concept of internal mutability.
 /// All the constant functions can be called in multithread because internally
@@ -217,6 +218,72 @@ public:
 
 	NavigationServer();
 	virtual ~NavigationServer();
+
+#ifdef DEBUG_ENABLED
+
+	void set_debug_enabled(bool p_enabled);
+	bool get_debug_enabled() const;
+
+	void set_debug_navigation_edge_connection_color(const Color &p_color);
+	Color get_debug_navigation_edge_connection_color() const;
+
+	void set_debug_navigation_geometry_edge_color(const Color &p_color);
+	Color get_debug_navigation_geometry_edge_color() const;
+
+	void set_debug_navigation_geometry_face_color(const Color &p_color);
+	Color get_debug_navigation_geometry_face_color() const;
+
+	void set_debug_navigation_geometry_edge_disabled_color(const Color &p_color);
+	Color get_debug_navigation_geometry_edge_disabled_color() const;
+
+	void set_debug_navigation_geometry_face_disabled_color(const Color &p_color);
+	Color get_debug_navigation_geometry_face_disabled_color() const;
+
+	void set_debug_navigation_enable_edge_connections(const bool p_value);
+	bool get_debug_navigation_enable_edge_connections() const;
+
+	void set_debug_navigation_enable_edge_connections_xray(const bool p_value);
+	bool get_debug_navigation_enable_edge_connections_xray() const;
+
+	void set_debug_navigation_enable_edge_lines(const bool p_value);
+	bool get_debug_navigation_enable_edge_lines() const;
+
+	void set_debug_navigation_enable_edge_lines_xray(const bool p_value);
+	bool get_debug_navigation_enable_edge_lines_xray() const;
+
+	void set_debug_navigation_enable_geometry_face_random_color(const bool p_value);
+	bool get_debug_navigation_enable_geometry_face_random_color() const;
+
+	Ref<SpatialMaterial> get_debug_navigation_geometry_face_material();
+	Ref<SpatialMaterial> get_debug_navigation_geometry_edge_material();
+	Ref<SpatialMaterial> get_debug_navigation_geometry_face_disabled_material();
+	Ref<SpatialMaterial> get_debug_navigation_geometry_edge_disabled_material();
+	Ref<SpatialMaterial> get_debug_navigation_edge_connections_material();
+
+	void _emit_navigation_debug_changed_signal();
+
+protected:
+	bool _debug_enabled;
+	bool _debug_dirty;
+
+	Color _debug_navigation_edge_connection_color;
+	Color _debug_navigation_geometry_edge_color;
+	Color _debug_navigation_geometry_face_color;
+	Color _debug_navigation_geometry_edge_disabled_color;
+	Color _debug_navigation_geometry_face_disabled_color;
+	bool _debug_navigation_enable_edge_connections;
+	bool _debug_navigation_enable_edge_connections_xray;
+	bool _debug_navigation_enable_edge_lines;
+	bool _debug_navigation_enable_edge_lines_xray;
+	bool _debug_navigation_enable_geometry_face_random_color;
+
+	Ref<SpatialMaterial> _debug_navigation_geometry_edge_material;
+	Ref<SpatialMaterial> _debug_navigation_geometry_face_material;
+	Ref<SpatialMaterial> _debug_navigation_geometry_edge_disabled_material;
+	Ref<SpatialMaterial> _debug_navigation_geometry_face_disabled_material;
+	Ref<SpatialMaterial> _debug_navigation_edge_connections_material;
+
+#endif // DEBUG_ENABLED
 };
 
 typedef NavigationServer *(*CreateNavigationServerCallback)();

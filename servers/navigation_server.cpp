@@ -34,6 +34,11 @@
 #include "scene/3d/navigation_mesh_instance.h"
 #include "scene/resources/navigation_mesh.h"
 
+#ifdef DEBUG_ENABLED
+#include "core/config/project_settings.h"
+#include "scene/resources/material.h"
+#endif
+
 NavigationServer *NavigationServer::singleton = nullptr;
 
 void NavigationServer::init() {
@@ -103,6 +108,10 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("process", "delta_time"), &NavigationServer::process);
 
 	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
+
+#ifdef DEBUG_ENABLED
+	ADD_SIGNAL(MethodInfo("navigation_debug_changed"));
+#endif // DEBUG_ENABLED
 }
 
 const NavigationServer *NavigationServer::get_singleton() {
@@ -116,11 +125,265 @@ NavigationServer *NavigationServer::get_singleton_mut() {
 NavigationServer::NavigationServer() {
 	ERR_FAIL_COND(singleton != nullptr);
 	singleton = this;
+
+#ifdef DEBUG_ENABLED
+	_debug_enabled = true;
+	_debug_dirty = true;
+
+	_debug_navigation_edge_connection_color = GLOBAL_DEF("debug/shapes/navigation/edge_connection_color", Color(1.0, 0.0, 1.0, 1.0));
+	_debug_navigation_geometry_edge_color = GLOBAL_DEF("debug/shapes/navigation/geometry_edge_color", Color(0.5, 1.0, 1.0, 1.0));
+	_debug_navigation_geometry_face_color = GLOBAL_DEF("debug/shapes/navigation/geometry_face_color", Color(0.5, 1.0, 1.0, 0.4));
+	_debug_navigation_geometry_edge_disabled_color = GLOBAL_DEF("debug/shapes/navigation/geometry_edge_disabled_color", Color(0.5, 0.5, 0.5, 1.0));
+	_debug_navigation_geometry_face_disabled_color = GLOBAL_DEF("debug/shapes/navigation/geometry_face_disabled_color", Color(0.5, 0.5, 0.5, 0.4));
+	_debug_navigation_enable_edge_connections = GLOBAL_DEF("debug/shapes/navigation/enable_edge_connections", true);
+	_debug_navigation_enable_edge_connections_xray = GLOBAL_DEF("debug/shapes/navigation/enable_edge_connections_xray", true);
+	_debug_navigation_enable_edge_lines = GLOBAL_DEF("debug/shapes/navigation/enable_edge_lines", true);
+	_debug_navigation_enable_edge_lines_xray = GLOBAL_DEF("debug/shapes/navigation/enable_edge_lines_xray", true);
+	_debug_navigation_enable_geometry_face_random_color = GLOBAL_DEF("debug/shapes/navigation/enable_geometry_face_random_color", true);
+#endif // DEBUG_ENABLED
 }
 
 NavigationServer::~NavigationServer() {
 	singleton = nullptr;
 }
+
+#ifdef DEBUG_ENABLED
+void NavigationServer::_emit_navigation_debug_changed_signal() {
+	if (_debug_dirty) {
+		_debug_dirty = false;
+		emit_signal("navigation_debug_changed");
+	}
+}
+#endif // DEBUG_ENABLED
+
+#ifdef DEBUG_ENABLED
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_geometry_face_material() {
+	if (_debug_navigation_geometry_face_material.is_valid()) {
+		return _debug_navigation_geometry_face_material;
+	}
+
+	bool enabled_geometry_face_random_color = get_debug_navigation_enable_geometry_face_random_color();
+
+	Color debug_navigation_geometry_face_color = get_debug_navigation_geometry_face_color();
+
+	Ref<SpatialMaterial> face_material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	face_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	face_material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
+	face_material->set_albedo(debug_navigation_geometry_face_color);
+	if (enabled_geometry_face_random_color) {
+		face_material->set_flag(SpatialMaterial::FLAG_SRGB_VERTEX_COLOR, true);
+		face_material->set_flag(SpatialMaterial::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
+	}
+
+	_debug_navigation_geometry_face_material = face_material;
+
+	return _debug_navigation_geometry_face_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_geometry_edge_material() {
+	if (_debug_navigation_geometry_edge_material.is_valid()) {
+		return _debug_navigation_geometry_edge_material;
+	}
+
+	bool enabled_edge_lines_xray = get_debug_navigation_enable_edge_lines_xray();
+
+	Color debug_navigation_geometry_edge_color = get_debug_navigation_geometry_edge_color();
+
+	Ref<SpatialMaterial> line_material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	line_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	line_material->set_albedo(debug_navigation_geometry_edge_color);
+	if (enabled_edge_lines_xray) {
+		line_material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, true);
+	}
+
+	_debug_navigation_geometry_edge_material = line_material;
+
+	return _debug_navigation_geometry_edge_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_geometry_face_disabled_material() {
+	if (_debug_navigation_geometry_face_disabled_material.is_valid()) {
+		return _debug_navigation_geometry_face_disabled_material;
+	}
+
+	Color debug_navigation_geometry_face_disabled_color = get_debug_navigation_geometry_face_disabled_color();
+
+	Ref<SpatialMaterial> face_disabled_material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	face_disabled_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	face_disabled_material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
+	face_disabled_material->set_albedo(debug_navigation_geometry_face_disabled_color);
+
+	_debug_navigation_geometry_face_disabled_material = face_disabled_material;
+
+	return _debug_navigation_geometry_face_disabled_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_geometry_edge_disabled_material() {
+	if (_debug_navigation_geometry_edge_disabled_material.is_valid()) {
+		return _debug_navigation_geometry_edge_disabled_material;
+	}
+
+	bool enabled_edge_lines_xray = get_debug_navigation_enable_edge_lines_xray();
+
+	Color debug_navigation_geometry_edge_disabled_color = get_debug_navigation_geometry_edge_disabled_color();
+
+	Ref<SpatialMaterial> line_disabled_material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	line_disabled_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	line_disabled_material->set_albedo(debug_navigation_geometry_edge_disabled_color);
+	if (enabled_edge_lines_xray) {
+		line_disabled_material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, true);
+	}
+
+	_debug_navigation_geometry_edge_disabled_material = line_disabled_material;
+
+	return _debug_navigation_geometry_edge_disabled_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_edge_connections_material() {
+	if (_debug_navigation_edge_connections_material.is_valid()) {
+		return _debug_navigation_edge_connections_material;
+	}
+
+	bool enabled_edge_connections_xray = get_debug_navigation_enable_edge_connections_xray();
+
+	Color debug_navigation_edge_connection_color = get_debug_navigation_edge_connection_color();
+
+	Ref<SpatialMaterial> edge_connections_material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	edge_connections_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	edge_connections_material->set_albedo(debug_navigation_edge_connection_color);
+	if (enabled_edge_connections_xray) {
+		edge_connections_material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, true);
+	}
+	edge_connections_material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MAX - 2);
+
+	_debug_navigation_edge_connections_material = edge_connections_material;
+
+	return _debug_navigation_edge_connections_material;
+}
+
+void NavigationServer::set_debug_navigation_edge_connection_color(const Color &p_color) {
+	_debug_navigation_edge_connection_color = p_color;
+	if (_debug_navigation_edge_connections_material.is_valid()) {
+		_debug_navigation_edge_connections_material->set_albedo(_debug_navigation_edge_connection_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_edge_connection_color() const {
+	return _debug_navigation_edge_connection_color;
+}
+
+void NavigationServer::set_debug_navigation_geometry_edge_color(const Color &p_color) {
+	_debug_navigation_geometry_edge_color = p_color;
+	if (_debug_navigation_geometry_edge_material.is_valid()) {
+		_debug_navigation_geometry_edge_material->set_albedo(_debug_navigation_geometry_edge_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_geometry_edge_color() const {
+	return _debug_navigation_geometry_edge_color;
+}
+
+void NavigationServer::set_debug_navigation_geometry_face_color(const Color &p_color) {
+	_debug_navigation_geometry_face_color = p_color;
+	if (_debug_navigation_geometry_face_material.is_valid()) {
+		_debug_navigation_geometry_face_material->set_albedo(_debug_navigation_geometry_face_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_geometry_face_color() const {
+	return _debug_navigation_geometry_face_color;
+}
+
+void NavigationServer::set_debug_navigation_geometry_edge_disabled_color(const Color &p_color) {
+	_debug_navigation_geometry_edge_disabled_color = p_color;
+	if (_debug_navigation_geometry_edge_disabled_material.is_valid()) {
+		_debug_navigation_geometry_edge_disabled_material->set_albedo(_debug_navigation_geometry_edge_disabled_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_geometry_edge_disabled_color() const {
+	return _debug_navigation_geometry_edge_disabled_color;
+}
+
+void NavigationServer::set_debug_navigation_geometry_face_disabled_color(const Color &p_color) {
+	_debug_navigation_geometry_face_disabled_color = p_color;
+	if (_debug_navigation_geometry_face_disabled_material.is_valid()) {
+		_debug_navigation_geometry_face_disabled_material->set_albedo(_debug_navigation_geometry_face_disabled_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_geometry_face_disabled_color() const {
+	return _debug_navigation_geometry_face_disabled_color;
+}
+
+void NavigationServer::set_debug_navigation_enable_edge_connections(const bool p_value) {
+	_debug_navigation_enable_edge_connections = p_value;
+	_debug_dirty = true;
+	call_deferred("_emit_navigation_debug_changed_signal");
+}
+
+bool NavigationServer::get_debug_navigation_enable_edge_connections() const {
+	return _debug_navigation_enable_edge_connections;
+}
+
+void NavigationServer::set_debug_navigation_enable_edge_connections_xray(const bool p_value) {
+	_debug_navigation_enable_edge_connections_xray = p_value;
+	if (_debug_navigation_edge_connections_material.is_valid()) {
+		_debug_navigation_edge_connections_material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, _debug_navigation_enable_edge_connections_xray);
+	}
+}
+
+bool NavigationServer::get_debug_navigation_enable_edge_connections_xray() const {
+	return _debug_navigation_enable_edge_connections_xray;
+}
+
+void NavigationServer::set_debug_navigation_enable_edge_lines(const bool p_value) {
+	_debug_navigation_enable_edge_lines = p_value;
+	_debug_dirty = true;
+	call_deferred("_emit_navigation_debug_changed_signal");
+}
+
+bool NavigationServer::get_debug_navigation_enable_edge_lines() const {
+	return _debug_navigation_enable_edge_lines;
+}
+
+void NavigationServer::set_debug_navigation_enable_edge_lines_xray(const bool p_value) {
+	_debug_navigation_enable_edge_lines_xray = p_value;
+	if (_debug_navigation_geometry_edge_material.is_valid()) {
+		_debug_navigation_geometry_edge_material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, _debug_navigation_enable_edge_lines_xray);
+	}
+}
+
+bool NavigationServer::get_debug_navigation_enable_edge_lines_xray() const {
+	return _debug_navigation_enable_edge_lines_xray;
+}
+
+void NavigationServer::set_debug_navigation_enable_geometry_face_random_color(const bool p_value) {
+	_debug_navigation_enable_geometry_face_random_color = p_value;
+	_debug_dirty = true;
+	call_deferred("_emit_navigation_debug_changed_signal");
+}
+
+bool NavigationServer::get_debug_navigation_enable_geometry_face_random_color() const {
+	return _debug_navigation_enable_geometry_face_random_color;
+}
+
+void NavigationServer::set_debug_enabled(bool p_enabled) {
+	if (_debug_enabled != p_enabled) {
+		_debug_dirty = true;
+	}
+
+	_debug_enabled = p_enabled;
+
+	if (_debug_dirty) {
+		call_deferred("_emit_navigation_debug_changed_signal");
+	}
+}
+
+bool NavigationServer::get_debug_enabled() const {
+	return _debug_enabled;
+}
+#endif // DEBUG_ENABLED
 
 Vector<NavigationServerManager::ClassInfo> NavigationServerManager::navigation_servers;
 int NavigationServerManager::default_server_id = -1;

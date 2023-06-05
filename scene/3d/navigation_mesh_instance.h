@@ -50,8 +50,19 @@ class NavigationMeshInstance : public Spatial {
 	uint32_t navigation_layers = 1;
 
 	Navigation *navigation = nullptr;
-	Node *debug_view = nullptr;
 	Thread bake_thread;
+
+#ifdef DEBUG_ENABLED
+	RID debug_instance;
+	RID debug_edge_connections_instance;
+	Ref<ArrayMesh> debug_mesh;
+	Ref<ArrayMesh> debug_edge_connections_mesh;
+
+private:
+	void _update_debug_mesh();
+	void _update_debug_edge_connections_mesh();
+	void _navigation_map_changed(RID p_map);
+#endif // DEBUG_ENABLED
 
 protected:
 	void _notification(int p_what);
@@ -80,6 +91,7 @@ public:
 	/// sets the new navigation mesh and emits a signal
 	void bake_navigation_mesh(bool p_on_thread);
 	void _bake_finished(Ref<NavigationMesh> p_nav_mesh);
+	void _navigation_changed();
 
 	String get_configuration_warning() const;
 

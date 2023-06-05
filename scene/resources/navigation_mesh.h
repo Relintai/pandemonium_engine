@@ -197,6 +197,10 @@ public:
 
 	Ref<Mesh> get_debug_mesh();
 
+#ifdef DEBUG_ENABLED
+	Ref<ArrayMesh> _get_debug_mesh();
+#endif
+
 	NavigationMesh();
 };
 
