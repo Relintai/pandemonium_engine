@@ -30,7 +30,16 @@ bool ThreadPoolJob::get_complete() const {
 	return _complete;
 }
 void ThreadPoolJob::set_complete(const bool value) {
+	bool call_signal = false;
+	if (!_complete && value) {
+		call_signal = true;
+	}
+
 	_complete = value;
+
+	if (call_signal) {
+		emit_signal("completed");
+	}
 }
 
 bool ThreadPoolJob::get_cancelled() const {
