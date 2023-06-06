@@ -30,14 +30,18 @@
 
 #include "tilemap_navigation_geometry_parser_2d.h"
 
-#include "scene/2d/tile_map.h"
+//#include "scene/2d/tile_map.h"
+
+#include "scene/resources/navigation_polygon.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
 
 #ifdef CLIPPER_ENABLED
 #include "thirdparty/clipper2/include/clipper2/clipper.h"
 #endif // CLIPPER_ENABLED
 
 bool TileMap2DNavigationGeometryParser2D::parses_node(Node *p_node) {
-	return (Object::cast_to<TileMap>(p_node) != nullptr);
+	//return (Object::cast_to<TileMap>(p_node) != nullptr);
+	return false;
 }
 
 void TileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {

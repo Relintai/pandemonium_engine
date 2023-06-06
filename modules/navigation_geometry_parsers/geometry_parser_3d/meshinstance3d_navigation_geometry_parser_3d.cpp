@@ -30,17 +30,20 @@
 
 #include "meshinstance3d_navigation_geometry_parser_3d.h"
 
-#include "scene/3d/mesh_instance_3d.h"
+#include "scene/3d/mesh_instance.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
 
 bool MeshInstance3DNavigationGeometryParser3D::parses_node(Node *p_node) {
-	return (Object::cast_to<MeshInstance3D>(p_node) != nullptr);
+	return (Object::cast_to<MeshInstance>(p_node) != nullptr);
 }
 
 void MeshInstance3DNavigationGeometryParser3D::parse_geometry(Node *p_node, Ref<NavigationMesh> p_navigationmesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry) {
 	NavigationMesh::ParsedGeometryType parsed_geometry_type = p_navigationmesh->get_parsed_geometry_type();
 
-	if (Object::cast_to<MeshInstance3D>(p_node) && parsed_geometry_type != NavigationMesh::PARSED_GEOMETRY_STATIC_COLLIDERS) {
-		MeshInstance3D *mesh_instance = Object::cast_to<MeshInstance3D>(p_node);
+	if (Object::cast_to<MeshInstance>(p_node) && parsed_geometry_type != NavigationMesh::PARSED_GEOMETRY_STATIC_COLLIDERS) {
+		MeshInstance *mesh_instance = Object::cast_to<MeshInstance>(p_node);
 		Ref<Mesh> mesh = mesh_instance->get_mesh();
 		if (mesh.is_valid()) {
 			p_source_geometry->add_mesh(mesh, mesh_instance->get_global_transform());

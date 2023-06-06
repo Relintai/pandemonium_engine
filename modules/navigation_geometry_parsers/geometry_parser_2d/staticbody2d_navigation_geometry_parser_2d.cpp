@@ -40,6 +40,9 @@
 #include "scene/resources/rectangle_shape_2d.h"
 #include "scene/resources/shape_2d.h"
 
+#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_polygon.h"
+
 bool StaticBody2DNavigationGeometryParser2D::parses_node(Node *p_node) {
 	return (Object::cast_to<StaticBody2D>(p_node) != nullptr);
 }
@@ -53,7 +56,10 @@ void StaticBody2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Na
 		if (static_body->get_collision_layer() & navigation_polygon_collision_mask) {
 			List<uint32_t> shape_owners;
 			static_body->get_shape_owners(&shape_owners);
-			for (uint32_t shape_owner : shape_owners) {
+
+			for (List<uint32_t>::Element *E = shape_owners.front(); E; E = E->next()) {
+				uint32_t shape_owner = E->get();
+
 				if (static_body->is_shape_owner_disabled(shape_owner)) {
 					continue;
 				}
@@ -69,16 +75,17 @@ void StaticBody2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Na
 
 					RectangleShape2D *rectangle_shape = Object::cast_to<RectangleShape2D>(*s);
 					if (rectangle_shape) {
-						Vector<Vector2> shape_outline;
+						PoolVector<Vector2> shape_outline;
 
-						const Vector2 &rectangle_size = rectangle_shape->get_size();
+						const Vector2 rectangle_size = rectangle_shape->get_extents();
 
 						shape_outline.resize(5);
-						shape_outline.write[0] = transform.xform(-rectangle_size * 0.5);
-						shape_outline.write[1] = transform.xform(Vector2(rectangle_size.x, -rectangle_size.y) * 0.5);
-						shape_outline.write[2] = transform.xform(rectangle_size * 0.5);
-						shape_outline.write[3] = transform.xform(Vector2(-rectangle_size.x, rectangle_size.y) * 0.5);
-						shape_outline.write[4] = transform.xform(-rectangle_size * 0.5);
+						PoolVector<Vector2>::Write shape_outline_write = shape_outline.write();
+						shape_outline_write[0] = transform.xform(-rectangle_size * 0.5);
+						shape_outline_write[1] = transform.xform(Vector2(rectangle_size.x, -rectangle_size.y) * 0.5);
+						shape_outline_write[2] = transform.xform(rectangle_size * 0.5);
+						shape_outline_write[3] = transform.xform(Vector2(-rectangle_size.x, rectangle_size.y) * 0.5);
+						shape_outline_write[4] = transform.xform(-rectangle_size * 0.5);
 
 						p_source_geometry->add_obstruction_outline(shape_outline);
 					}
@@ -93,13 +100,14 @@ void StaticBody2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Na
 
 					CircleShape2D *circle_shape = Object::cast_to<CircleShape2D>(*s);
 					if (circle_shape) {
-						Vector<Vector2> shape_outline;
+						PoolVector<Vector2> shape_outline;
 						int circle_edge_count = 12;
 						shape_outline.resize(circle_edge_count);
+						PoolVector<Vector2>::Write shape_outline_write = shape_outline.write();
 
 						const real_t turn_step = Math_TAU / real_t(circle_edge_count);
 						for (int i = 0; i < circle_edge_count; i++) {
-							shape_outline.write[i] = transform.xform(Vector2(Math::cos(i * turn_step), Math::sin(i * turn_step)) * circle_shape->get_radius());
+							shape_outline_write[i] = transform.xform(Vector2(Math::cos(i * turn_step), Math::sin(i * turn_step)) * circle_shape->get_radius());
 						}
 
 						p_source_geometry->add_obstruction_outline(shape_outline);
@@ -107,10 +115,11 @@ void StaticBody2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Na
 
 					ConcavePolygonShape2D *concave_polygon_shape = Object::cast_to<ConcavePolygonShape2D>(*s);
 					if (concave_polygon_shape) {
-						Vector<Vector2> shape_outline = concave_polygon_shape->get_segments();
+						PoolVector<Vector2> shape_outline = concave_polygon_shape->get_segments();
+						PoolVector<Vector2>::Write shape_outline_write = shape_outline.write();
 
 						for (int i = 0; i < shape_outline.size(); i++) {
-							shape_outline.write[i] = transform.xform(shape_outline[i]);
+							shape_outline_write[i] = transform.xform(shape_outline[i]);
 						}
 
 						p_source_geometry->add_obstruction_outline(shape_outline);
@@ -118,10 +127,14 @@ void StaticBody2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Na
 
 					ConvexPolygonShape2D *convex_polygon_shape = Object::cast_to<ConvexPolygonShape2D>(*s);
 					if (convex_polygon_shape) {
-						Vector<Vector2> shape_outline = convex_polygon_shape->get_points();
+						Vector<Vector2> shape_outlinev = convex_polygon_shape->get_points();
+
+						PoolVector<Vector2> shape_outline;
+						shape_outline.resize(shape_outlinev.size());
+						PoolVector<Vector2>::Write shape_outline_write = shape_outline.write();
 
 						for (int i = 0; i < shape_outline.size(); i++) {
-							shape_outline.write[i] = transform.xform(shape_outline[i]);
+							shape_outline_write[i] = transform.xform(shape_outlinev[i]);
 						}
 
 						p_source_geometry->add_obstruction_outline(shape_outline);

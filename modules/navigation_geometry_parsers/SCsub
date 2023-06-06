@@ -10,7 +10,7 @@ env_navigation = env_modules.Clone()
 module_obj = []
 
 env_navigation.add_source_files(module_obj, "*.cpp")
-#env_navigation.add_source_files(module_obj, "geometry_parser_2d/*.cpp")
-#env_navigation.add_source_files(module_obj, "geometry_parser_3d/*.cpp")
+env_navigation.add_source_files(module_obj, "geometry_parser_2d/*.cpp")
+env_navigation.add_source_files(module_obj, "geometry_parser_3d/*.cpp")
 
 env.modules_sources += module_obj

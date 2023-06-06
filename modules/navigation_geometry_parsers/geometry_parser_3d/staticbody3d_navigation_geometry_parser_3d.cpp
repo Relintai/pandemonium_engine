@@ -31,54 +31,61 @@
 #include "staticbody3d_navigation_geometry_parser_3d.h"
 
 #include "core/math/convex_hull.h"
-#include "scene/3d/mesh_instance_3d.h"
-#include "scene/3d/physics_body_3d.h"
-#include "scene/resources/box_shape_3d.h"
-#include "scene/resources/capsule_shape_3d.h"
-#include "scene/resources/concave_polygon_shape_3d.h"
-#include "scene/resources/convex_polygon_shape_3d.h"
-#include "scene/resources/cylinder_shape_3d.h"
-#include "scene/resources/height_map_shape_3d.h"
+#include "scene/3d/mesh_instance.h"
+#include "scene/3d/physics_body.h"
+#include "scene/resources/box_shape.h"
+#include "scene/resources/capsule_shape.h"
+#include "scene/resources/concave_polygon_shape.h"
+#include "scene/resources/convex_polygon_shape.h"
+#include "scene/resources/cylinder_shape.h"
+#include "scene/resources/height_map_shape.h"
+#include "scene/resources/plane_shape.h"
 #include "scene/resources/primitive_meshes.h"
-#include "scene/resources/shape_3d.h"
-#include "scene/resources/sphere_shape_3d.h"
-#include "scene/resources/world_boundary_shape_3d.h"
+#include "scene/resources/shape.h"
+#include "scene/resources/sphere_shape.h"
+
+#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
 
 bool StaticBody3DNavigationGeometryParser3D::parses_node(Node *p_node) {
-	return (Object::cast_to<StaticBody3D>(p_node) != nullptr);
+	return (Object::cast_to<StaticBody>(p_node) != nullptr);
 }
 
 void StaticBody3DNavigationGeometryParser3D::parse_geometry(Node *p_node, Ref<NavigationMesh> p_navigationmesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry) {
 	NavigationMesh::ParsedGeometryType parsed_geometry_type = p_navigationmesh->get_parsed_geometry_type();
 	uint32_t navigationmesh_collision_mask = p_navigationmesh->get_collision_mask();
 
-	if (Object::cast_to<StaticBody3D>(p_node) && parsed_geometry_type != NavigationMesh::PARSED_GEOMETRY_MESH_INSTANCES) {
-		StaticBody3D *static_body = Object::cast_to<StaticBody3D>(p_node);
+	if (Object::cast_to<StaticBody>(p_node) && parsed_geometry_type != NavigationMesh::PARSED_GEOMETRY_MESH_INSTANCES) {
+		StaticBody *static_body = Object::cast_to<StaticBody>(p_node);
 		if (static_body->get_collision_layer() & navigationmesh_collision_mask) {
 			List<uint32_t> shape_owners;
 			static_body->get_shape_owners(&shape_owners);
-			for (uint32_t shape_owner : shape_owners) {
+
+			for (List<uint32_t>::Element *E = shape_owners.front(); E; E = E->next()) {
+				uint32_t shape_owner = E->get();
+
 				if (static_body->is_shape_owner_disabled(shape_owner)) {
 					continue;
 				}
+
 				const int shape_count = static_body->shape_owner_get_shape_count(shape_owner);
 				for (int shape_index = 0; shape_index < shape_count; shape_index++) {
-					Ref<Shape3D> s = static_body->shape_owner_get_shape(shape_owner, shape_index);
+					Ref<Shape> s = static_body->shape_owner_get_shape(shape_owner, shape_index);
 					if (s.is_null()) {
 						continue;
 					}
 
-					const Transform3D transform = static_body->get_global_transform() * static_body->shape_owner_get_transform(shape_owner);
+					const Transform transform = static_body->get_global_transform() * static_body->shape_owner_get_transform(shape_owner);
 
-					BoxShape3D *box = Object::cast_to<BoxShape3D>(*s);
+					BoxShape *box = Object::cast_to<BoxShape>(*s);
 					if (box) {
 						Array arr;
 						arr.resize(RS::ARRAY_MAX);
-						BoxMesh::create_mesh_array(arr, box->get_size());
+						CubeMesh::create_mesh_array(arr, box->get_extents());
 						p_source_geometry->add_mesh_array(arr, transform);
 					}
 
-					CapsuleShape3D *capsule = Object::cast_to<CapsuleShape3D>(*s);
+					CapsuleShape *capsule = Object::cast_to<CapsuleShape>(*s);
 					if (capsule) {
 						Array arr;
 						arr.resize(RS::ARRAY_MAX);
@@ -86,7 +93,7 @@ void StaticBody3DNavigationGeometryParser3D::parse_geometry(Node *p_node, Ref<Na
 						p_source_geometry->add_mesh_array(arr, transform);
 					}
 
-					CylinderShape3D *cylinder = Object::cast_to<CylinderShape3D>(*s);
+					CylinderShape *cylinder = Object::cast_to<CylinderShape>(*s);
 					if (cylinder) {
 						Array arr;
 						arr.resize(RS::ARRAY_MAX);
@@ -94,7 +101,7 @@ void StaticBody3DNavigationGeometryParser3D::parse_geometry(Node *p_node, Ref<Na
 						p_source_geometry->add_mesh_array(arr, transform);
 					}
 
-					SphereShape3D *sphere = Object::cast_to<SphereShape3D>(*s);
+					SphereShape *sphere = Object::cast_to<SphereShape>(*s);
 					if (sphere) {
 						Array arr;
 						arr.resize(RS::ARRAY_MAX);
@@ -102,23 +109,25 @@ void StaticBody3DNavigationGeometryParser3D::parse_geometry(Node *p_node, Ref<Na
 						p_source_geometry->add_mesh_array(arr, transform);
 					}
 
-					ConcavePolygonShape3D *concave_polygon = Object::cast_to<ConcavePolygonShape3D>(*s);
+					ConcavePolygonShape *concave_polygon = Object::cast_to<ConcavePolygonShape>(*s);
 					if (concave_polygon) {
 						p_source_geometry->add_faces(concave_polygon->get_faces(), transform);
 					}
 
-					ConvexPolygonShape3D *convex_polygon = Object::cast_to<ConvexPolygonShape3D>(*s);
+					ConvexPolygonShape *convex_polygon = Object::cast_to<ConvexPolygonShape>(*s);
 					if (convex_polygon) {
 						Vector<Vector3> varr = Variant(convex_polygon->get_points());
-						Geometry3D::MeshData md;
+						Geometry::MeshData md;
 
 						Error err = ConvexHullComputer::convex_hull(varr, md);
 
 						if (err == OK) {
-							PackedVector3Array faces;
+							PoolVector3Array faces;
 
-							for (const Geometry3D::MeshData::Face &face : md.faces) {
-								for (uint32_t k = 2; k < face.indices.size(); ++k) {
+							for (int i = 0; i < md.faces.size(); ++i) {
+								const Geometry::MeshData::Face &face = md.faces[i];
+
+								for (int k = 2; k < face.indices.size(); ++k) {
 									faces.push_back(md.vertices[face.indices[0]]);
 									faces.push_back(md.vertices[face.indices[k - 1]]);
 									faces.push_back(md.vertices[face.indices[k]]);
@@ -129,18 +138,18 @@ void StaticBody3DNavigationGeometryParser3D::parse_geometry(Node *p_node, Ref<Na
 						}
 					}
 
-					HeightMapShape3D *heightmap_shape = Object::cast_to<HeightMapShape3D>(*s);
+					HeightMapShape *heightmap_shape = Object::cast_to<HeightMapShape>(*s);
 					if (heightmap_shape) {
 						int heightmap_depth = heightmap_shape->get_map_depth();
 						int heightmap_width = heightmap_shape->get_map_width();
 
 						if (heightmap_depth >= 2 && heightmap_width >= 2) {
-							const Vector<real_t> &map_data = heightmap_shape->get_map_data();
+							const PoolVector<real_t> &map_data = heightmap_shape->get_map_data();
 
 							Vector2 heightmap_gridsize(heightmap_width - 1, heightmap_depth - 1);
 							Vector2 start = heightmap_gridsize * -0.5;
 
-							Vector<Vector3> vertex_array;
+							PoolVector<Vector3> vertex_array;
 							vertex_array.resize((heightmap_depth - 1) * (heightmap_width - 1) * 6);
 							int map_data_current_index = 0;
 

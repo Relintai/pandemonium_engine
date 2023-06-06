@@ -35,9 +35,9 @@
 
 class MeshInstance3DNavigationGeometryParser3D : public NavigationGeometryParser3D {
 public:
-	virtual bool parses_node(Node *p_node) override;
+	virtual bool parses_node(Node *p_node);
 
-	virtual void parse_geometry(Node *p_node, Ref<NavigationMesh> p_navigationmesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry) override;
+	virtual void parse_geometry(Node *p_node, Ref<NavigationMesh> p_navigationmesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry);
 };
 
 #endif // MESHINSTANCE3D_NAVIGATION_GEOMETRY_PARSER_3D_H

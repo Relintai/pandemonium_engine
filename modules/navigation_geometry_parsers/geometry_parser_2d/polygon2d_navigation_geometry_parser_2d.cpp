@@ -32,6 +32,9 @@
 
 #include "scene/2d/polygon_2d.h"
 
+#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_polygon.h"
+
 bool Polygon2DNavigationGeometryParser2D::parses_node(Node *p_node) {
 	return (Object::cast_to<Polygon2D>(p_node) != nullptr);
 }
@@ -44,9 +47,10 @@ void Polygon2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Navig
 
 		const Transform2D transform = polygon_2d->get_global_transform();
 
-		Vector<Vector2> shape_outline = polygon_2d->get_polygon();
+		PoolVector<Vector2> shape_outline = polygon_2d->get_polygon();
+		PoolVector<Vector2>::Write shape_outline_write = shape_outline.write();
 		for (int i = 0; i < shape_outline.size(); i++) {
-			shape_outline.write[i] = transform.xform(shape_outline[i]);
+			shape_outline_write[i] = transform.xform(shape_outline[i]);
 		}
 
 		p_source_geometry->add_obstruction_outline(shape_outline);

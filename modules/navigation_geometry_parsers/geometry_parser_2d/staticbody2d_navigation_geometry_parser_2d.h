@@ -35,9 +35,9 @@
 
 class StaticBody2DNavigationGeometryParser2D : public NavigationGeometryParser2D {
 public:
-	virtual bool parses_node(Node *p_node) override;
+	virtual bool parses_node(Node *p_node);
 
-	virtual void parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) override;
+	virtual void parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry);
 };
 
 #endif // STATICBODY2D_NAVIGATION_GEOMETRY_PARSER_2D_H

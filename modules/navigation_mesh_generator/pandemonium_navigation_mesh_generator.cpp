@@ -40,22 +40,8 @@
 #include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
 
-/*
-#include "servers/navigation/geometry_parser_2d/meshinstance2d_navigation_geometry_parser_2d.h"
-#include "servers/navigation/geometry_parser_2d/multimeshinstance2d_navigation_geometry_parser_2d.h"
-#include "servers/navigation/geometry_parser_2d/polygon2d_navigation_geometry_parser_2d.h"
-#include "servers/navigation/geometry_parser_2d/staticbody2d_navigation_geometry_parser_2d.h"
-#include "servers/navigation/geometry_parser_2d/tilemap_navigation_geometry_parser_2d.h"
-*/
-
 #ifndef _3D_DISABLED
 #include "scene/3d/mesh_instance.h"
-
-/*
-#include "servers/navigation/geometry_parser_3d/meshinstance3d_navigation_geometry_parser_3d.h"
-#include "servers/navigation/geometry_parser_3d/multimeshinstance3d_navigation_geometry_parser_3d.h"
-#include "servers/navigation/geometry_parser_3d/staticbody3d_navigation_geometry_parser_3d.h"
-*/
 #endif // _3D_DISABLED
 
 #ifdef CLIPPER_ENABLED

@@ -30,17 +30,21 @@
 
 #include "multimeshinstance3d_navigation_geometry_parser_3d.h"
 
-#include "scene/3d/multimesh_instance_3d.h"
+#include "scene/3d/multimesh_instance.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/multimesh.h"
+#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
 
 bool MultiMeshInstance3DNavigationGeometryParser3D::parses_node(Node *p_node) {
-	return (Object::cast_to<MultiMeshInstance3D>(p_node) != nullptr);
+	return (Object::cast_to<MultiMeshInstance>(p_node) != nullptr);
 }
 
 void MultiMeshInstance3DNavigationGeometryParser3D::parse_geometry(Node *p_node, Ref<NavigationMesh> p_navigationmesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry) {
 	NavigationMesh::ParsedGeometryType parsed_geometry_type = p_navigationmesh->get_parsed_geometry_type();
 
-	if (Object::cast_to<MultiMeshInstance3D>(p_node) && parsed_geometry_type != NavigationMesh::PARSED_GEOMETRY_STATIC_COLLIDERS) {
-		MultiMeshInstance3D *multimesh_instance = Object::cast_to<MultiMeshInstance3D>(p_node);
+	if (Object::cast_to<MultiMeshInstance>(p_node) && parsed_geometry_type != NavigationMesh::PARSED_GEOMETRY_STATIC_COLLIDERS) {
+		MultiMeshInstance *multimesh_instance = Object::cast_to<MultiMeshInstance>(p_node);
 		Ref<MultiMesh> multimesh = multimesh_instance->get_multimesh();
 		if (multimesh.is_valid()) {
 			Ref<Mesh> mesh = multimesh->get_mesh();
