@@ -161,10 +161,7 @@ NavigationMeshGenerator *NavigationMeshGeneratorManager::new_server(const String
 NavigationMeshGeneratorManager::NavigationMeshGeneratorManager() {
 	singleton = this;
 
-	GLOBAL_DEF("navigation/baking/thread_model/parsing_use_multiple_threads", true);
-	GLOBAL_DEF("navigation/baking/thread_model/parsing_use_high_priority_threads", true);
-	GLOBAL_DEF("navigation/baking/thread_model/baking_use_multiple_threads", true);
-	GLOBAL_DEF("navigation/baking/thread_model/baking_use_high_priority_threads", true);
+	GLOBAL_DEF("navigation/baking/thread_model/use_thread_pool", true);
 }
 
 NavigationMeshGeneratorManager::~NavigationMeshGeneratorManager() {

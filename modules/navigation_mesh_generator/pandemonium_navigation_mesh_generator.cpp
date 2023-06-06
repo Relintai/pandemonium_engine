@@ -937,7 +937,7 @@ void PandemoniumNavigationMeshGenerator::_static_parse_3d_source_geometry_data(R
 #endif // _3D_DISABLED
 
 PandemoniumNavigationMeshGenerator::PandemoniumNavigationMeshGenerator() {
-	_use_thread_pool = GLOBAL_DEF("navigation/baking/thread_model/use_thread_pool", true);
+	_use_thread_pool = GLOBAL_GET("navigation/baking/thread_model/use_thread_pool");
 	// Can't use threads in Editor as parsing gets stuck on RenderingServer / PhysicsServer locks.
 	// (TODO needs to be tested) The way I have it now, it should work.
 	//_use_thread_pool = !Engine::get_singleton()->is_editor_hint();

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="NavigationMesh" inherits="Resource" version="3.11">
 	<brief_description>
-		A mesh to approximate the walkable areas and obstacles.
+		A mesh that defines the areas traversable by navigation agents that are safe from obstructions.
 	</brief_description>
 	<description>
-		A navigation mesh is a collection of polygons that define which areas of an environment are traversable to aid agents in pathfinding through complicated spaces.
+		A NavigationMesh is used in pathfinding to describe the traversable area that is safe from collision and other obstructions, assuming an agent's center position at zero radius. The mesh data can be created and baked to polygons with the [NavigationMeshGenerator] by parsing source geometry from the [SceneTree]. The mesh data can also be created without baking by adding the required arrays of vertices and polygon indices with a script.
+		When making procedual changes, a call to [method commit_changes] is required to apply these changes and to synchronize them with the [NavigationServer].
 	</description>
 	<tutorials>
 		<link title="3D Navmesh Demo">https://godotengine.org/asset-library/asset/124</link>
@@ -15,6 +16,31 @@
 			<argument index="0" name="polygon" type="PoolIntArray" />
 			<description>
 				Adds a polygon using the indices of the vertices you get when calling [method get_vertices].
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void" />
+			<description>
+				Clears both the internal polygons and vertices arrays.
+			</description>
+		</method>
+		<method name="commit_changes">
+			<return type="void" />
+			<description>
+				Applies all changes to vertices and polygons and synchronizes with the NavigationServer.
+			</description>
+		</method>
+		<method name="get_polygons" qualifiers="const">
+			<return type="Array" />
+			<description>
+				Returns the array of polygons used by the internal navigation mesh. Each polygon array consists of the indices for the vertices that make the polygon.
+			</description>
+		</method>
+		<method name="set_polygons">
+			<return type="void" />
+			<param index="0" name="polygons" type="Array" />
+			<description>
+				Sets the navigation mesh polygons. Each polygon array needs to consist of the indices for the vertices that make the polygon.
 			</description>
 		</method>
 		<method name="clear_polygons">
@@ -69,7 +95,7 @@
 			<return type="void" />
 			<argument index="0" name="vertices" type="PoolVector3Array" />
 			<description>
-				Sets the vertices that can be then indexed to create polygons with the [method add_polygon] method.
+				Sets the vertices that need to be indexed with the [method add_polygon] or [method set_polygons] methods. When finished changing the navigation mesh call [method commit_changes] in order to synchronize the changes with the [NavigationServer].
 			</description>
 		</method>
 	</methods>

@@ -20,12 +20,26 @@
 			<argument index="0" name="on_thread" type="bool" default="true" />
 			<description>
 				Bakes the [NavigationMesh]. If [code]on_thread[/code] is set to [code]true[/code] (default), the baking is done on a separate thread. Baking on separate thread is useful because navigation baking is not a cheap operation. When it is completed, it automatically sets the new [NavigationMesh]. Please note that baking on separate thread may be very slow if geometry is parsed from meshes as async access to each mesh involves heavy synchronization.
+				[b]Note:[/b] Only functional in Pandemonium builds with a [NavigationMeshGenerator] implementation available.
+			</description>
+		</method>
+		<method name="get_navigation_map" qualifiers="const">
+			<return type="RID" />
+			<description>
+				Returns the current navigation map [RID] use by this region.
 			</description>
 		</method>
 		<method name="get_region_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
 				Returns the [RID] of this region on the [NavigationServer]. Combined with [method NavigationServer.map_get_closest_point_owner] can be used to identify the [NavigationMeshInstance] closest to a point on the merged navigation map.
+			</description>
+		</method>
+		<method name="set_navigation_map">
+			<return type="void" />
+			<param index="0" name="navigation_map" type="RID" />
+			<description>
+				Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 			</description>
 		</method>
 	</methods>
@@ -49,12 +63,12 @@
 	<signals>
 		<signal name="bake_finished">
 			<description>
-				Notifies when the navigation mesh bake operation is completed.
+				Emitted when a navigation mesh bake operation is completed.
 			</description>
 		</signal>
 		<signal name="navigation_mesh_changed">
 			<description>
-				Notifies when the [NavigationMesh] has changed.
+				Emitted when the used navigation mesh is replaced or changes to the internals of the current navigation mesh are committed.
 			</description>
 		</signal>
 	</signals>

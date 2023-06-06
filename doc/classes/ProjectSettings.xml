@@ -559,6 +559,13 @@
 		<member name="debug/shapes/navigation/geometry_face_disabled_color" type="Color" setter="" getter="" default="Color(0.5, 0.5, 0.5, 0.4)">
 			Color to display disabled navigation mesh polygon faces, visible when "Visible Navigation" is enabled in the Debug menu.
 		</member>
+		<member name="navigation/baking/generator/navigation_mesh_generator" type="String" setter="" getter="" default="&quot;DEFAULT&quot;">
+			Sets which navigation mesh generator to use to bake navigation meshes and parse source geometry from the scene.
+			"DEFAULT" and "GodotNavigationMeshGenerator" are the same, as there is currently no alternative navigation mesh generator implemented.
+		</member>
+		<member name="navigation/baking/thread_model/use_thread_pool" type="bool" setter="" getter="" default="true">
+			If [code]true[/code] the navigation mesh generator uses ThreadPool for baking navigation meshes.
+		</member>
 		<member name="display/mouse_cursor/custom_image" type="String" setter="" getter="" default="&quot;&quot;">
 			Custom image for the mouse cursor (limited to 256×256).
 		</member>
