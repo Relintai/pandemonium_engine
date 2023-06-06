@@ -179,7 +179,7 @@ void NavigationPolygonEditor::_bake_pressed() {
 	ERR_FAIL_COND(!node);
 	Ref<NavigationPolygon> navigation_polygon = node->get_navigation_polygon();
 	if (!navigation_polygon.is_valid()) {
-		err_dialog->set_text(TTR("A NavigationMesh2D resource must be set or created for this node to work."));
+		err_dialog->set_text(TTR("A NavigationPolygon resource must be set or created for this node to work."));
 		err_dialog->popup_centered();
 		return;
 	}
