@@ -36,10 +36,12 @@
 #include "scene/2d/navigation_2d.h"
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/world_2d.h"
+#include "servers/navigation/navigation_mesh_generator.h"
 #include "servers/navigation_2d_server.h"
-#include "core/core_string_names.h"
 
-#include "thirdparty/misc/triangulator.h"
+#include "navigation_mesh_source_geometry_data_2d.h"
+
+//#include "thirdparty/misc/triangulator.h"
 
 #ifdef TOOLS_ENABLED
 Rect2 NavigationPolygon::_edit_get_rect() const {
@@ -197,7 +199,9 @@ void NavigationPolygon::clear_polygons() {
 }
 void NavigationPolygon::clear_outlines() {
 	outlines.clear();
+	baked_outlines.clear();
 	rect_cache_dirty = true;
+	navigation_polygon_dirty = true;
 }
 void NavigationPolygon::clear_baked_outlines() {
 	baked_outlines.clear();
@@ -252,12 +256,16 @@ Ref<NavigationMesh> NavigationPolygon::get_navigation_mesh() {
 
 void NavigationPolygon::add_outline(const PoolVector<Vector2> &p_outline) {
 	outlines.push_back(p_outline);
+	set_baked_outlines(outlines);
 	rect_cache_dirty = true;
+	navigation_polygon_dirty = true;
 }
 
 void NavigationPolygon::add_outline_at_index(const PoolVector<Vector2> &p_outline, int p_index) {
 	outlines.insert(p_index, p_outline);
+	set_baked_outlines(outlines);
 	rect_cache_dirty = true;
+	navigation_polygon_dirty = true;
 }
 
 int NavigationPolygon::get_outline_count() const {
@@ -267,13 +275,17 @@ int NavigationPolygon::get_outline_count() const {
 void NavigationPolygon::set_outline(int p_idx, const PoolVector<Vector2> &p_outline) {
 	ERR_FAIL_INDEX(p_idx, outlines.size());
 	outlines.write[p_idx] = p_outline;
+	set_baked_outlines(outlines);
 	rect_cache_dirty = true;
+	navigation_polygon_dirty = true;
 }
 
 void NavigationPolygon::remove_outline(int p_idx) {
 	ERR_FAIL_INDEX(p_idx, outlines.size());
 	outlines.remove(p_idx);
+	set_baked_outlines(outlines);
 	rect_cache_dirty = true;
+	navigation_polygon_dirty = true;
 }
 
 PoolVector<Vector2> NavigationPolygon::get_outline(int p_idx) const {
@@ -281,6 +293,8 @@ PoolVector<Vector2> NavigationPolygon::get_outline(int p_idx) const {
 	return outlines[p_idx];
 }
 
+/*
+//Old clipper version
 void NavigationPolygon::make_polygons_from_outlines() {
 	navigation_mesh.unref();
 
@@ -381,6 +395,19 @@ void NavigationPolygon::make_polygons_from_outlines() {
 
 	emit_signal(CoreStringNames::get_singleton()->changed);
 }
+*/
+
+void NavigationPolygon::make_polygons_from_outlines() {
+	if (outlines.size() == 0) {
+		set_vertices(PoolVector<Vector2>());
+		set_polygons(Vector<Vector<int>>());
+		commit_changes();
+		return;
+	}
+
+	NavigationMeshGenerator::get_singleton()->bake_2d_from_source_geometry_data(this, Ref<NavigationMeshSourceGeometryData2D>());
+	commit_changes();
+}
 
 RID NavigationPolygon::get_rid() const {
 	if (navigation_mesh.is_valid()) {
@@ -404,9 +431,66 @@ NavigationPolygon::NavigationPolygon() {
 	navigation_polygon_dirty = true;
 
 	rect_cache_dirty = true;
+
+	navigation_mesh.instance();
 }
 
 NavigationPolygon::~NavigationPolygon() {
+}
+
+void NavigationPolygon::set_polygons(const Vector<Vector<int>> &p_array) {
+	polygons.resize(p_array.size());
+	for (int i = 0; i < p_array.size(); i++) {
+		polygons.write[i] = p_array[i];
+	}
+	navigation_polygon_dirty = true;
+}
+
+Vector<Vector<int>> NavigationPolygon::get_polygons() const {
+	Vector<Vector<int>> ret;
+	ret.resize(polygons.size());
+	for (int i = 0; i < ret.size(); i++) {
+		ret.write[i] = polygons[i];
+	}
+
+	return ret;
+}
+
+void NavigationPolygon::set_outlines(const Vector<PoolVector<Vector2>> &p_array) {
+	outlines.resize(p_array.size());
+	for (int i = 0; i < p_array.size(); i++) {
+		outlines.write[i] = p_array[i];
+	}
+	rect_cache_dirty = true;
+	navigation_polygon_dirty = true;
+}
+
+Vector<PoolVector<Vector2>> NavigationPolygon::get_outlines() const {
+	Vector<PoolVector<Vector2>> ret;
+	ret.resize(outlines.size());
+	for (int i = 0; i < ret.size(); i++) {
+		ret.write[i] = outlines[i];
+	}
+
+	return ret;
+}
+
+void NavigationPolygon::set_baked_outlines(const Vector<PoolVector<Vector2>> &p_array) {
+	baked_outlines.resize(p_array.size());
+	for (int i = 0; i < p_array.size(); i++) {
+		baked_outlines.write[i] = p_array[i];
+	}
+	navigation_polygon_dirty = true;
+}
+
+Vector<PoolVector<Vector2>> NavigationPolygon::get_baked_outlines() const {
+	Vector<PoolVector<Vector2>> _typed_baked_outlines;
+	_typed_baked_outlines.resize(baked_outlines.size());
+	for (int i = 0; i < _typed_baked_outlines.size(); i++) {
+		_typed_baked_outlines.write[i] = baked_outlines[i];
+	}
+
+	return _typed_baked_outlines;
 }
 
 void NavigationPolygon::_set_polygons(const Array &p_array) {
@@ -451,7 +535,7 @@ void NavigationPolygon::_set_baked_outlines(const Array &p_array) {
 	for (int i = 0; i < p_array.size(); i++) {
 		baked_outlines.write[i] = p_array[i];
 	}
-	rect_cache_dirty = true;
+	navigation_polygon_dirty = true;
 }
 
 Array NavigationPolygon::_get_baked_outlines() const {
