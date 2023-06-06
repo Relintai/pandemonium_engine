@@ -58,7 +58,9 @@ void NavigationPolygonInstance::set_enabled(bool p_enabled) {
 
 	if (!enabled) {
 		Navigation2DServer::get_singleton()->region_set_map(region, RID());
+#ifdef DEBUG_ENABLED
 		Navigation2DServer::get_singleton_mut()->disconnect("map_changed", this, "_navigation_map_changed");
+#endif
 	} else {
 		if (navigation != nullptr) {
 			Navigation2DServer::get_singleton()->region_set_map(region, navigation->get_rid());
@@ -69,7 +71,9 @@ void NavigationPolygonInstance::set_enabled(bool p_enabled) {
 				Navigation2DServer::get_singleton()->region_set_map(region, get_world_2d()->get_navigation_map());
 			}
 		}
+#ifdef DEBUG_ENABLED
 		Navigation2DServer::get_singleton_mut()->connect("map_changed", this, "_navigation_map_changed");
+#endif
 	}
 
 #ifdef DEBUG_ENABLED
@@ -162,9 +166,12 @@ void NavigationPolygonInstance::_notification(int p_what) {
 					Navigation2DServer::get_singleton()->region_set_map(region, get_world_2d()->get_navigation_map());
 				}
 			}
+
+#ifdef DEBUG_ENABLED
 			if (enabled) {
 				Navigation2DServer::get_singleton_mut()->connect("map_changed", this, "_navigation_map_changed");
 			}
+#endif
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			Navigation2DServer::get_singleton()->region_set_transform(region, get_global_transform());
@@ -175,9 +182,11 @@ void NavigationPolygonInstance::_notification(int p_what) {
 			}
 			navigation = nullptr;
 
+#ifdef DEBUG_ENABLED
 			if (enabled) {
 				Navigation2DServer::get_singleton_mut()->disconnect("map_changed", this, "_navigation_map_changed");
 			}
+#endif
 		} break;
 		case NOTIFICATION_DRAW: {
 #ifdef DEBUG_ENABLED
@@ -275,15 +284,15 @@ void NavigationPolygonInstance::_navpoly_changed() {
 	update_configuration_warning();
 }
 
-void NavigationPolygonInstance::_navigation_map_changed(RID p_map) {
 #ifdef DEBUG_ENABLED
+void NavigationPolygonInstance::_navigation_map_changed(RID p_map) {
 	if (navigation != nullptr && enabled && (navigation->get_rid() == p_map)) {
 		update();
 	} else if (is_inside_tree() && enabled && (get_world_2d()->get_navigation_map() == p_map)) {
 		update();
 	}
-#endif // DEBUG_ENABLED
 }
+#endif // DEBUG_ENABLED
 
 String NavigationPolygonInstance::get_configuration_warning() const {
 	if (!is_visible_in_tree() || !is_inside_tree()) {
@@ -331,7 +340,9 @@ void NavigationPolygonInstance::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "enter_cost"), "set_enter_cost", "get_enter_cost");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "travel_cost"), "set_travel_cost", "get_travel_cost");
 
+#ifdef DEBUG_ENABLED
 	ClassDB::bind_method(D_METHOD("_navigation_map_changed"), &NavigationPolygonInstance::_navigation_map_changed);
+#endif
 	ClassDB::bind_method(D_METHOD("_navpoly_changed"), &NavigationPolygonInstance::_navpoly_changed);
 
 	ADD_SIGNAL(MethodInfo("navigation_polygon_changed"));
