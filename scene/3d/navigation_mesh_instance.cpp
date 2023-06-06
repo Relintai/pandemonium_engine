@@ -36,10 +36,10 @@
 #include "navigation.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
 #include "scene/resources/world_3d.h"
 #include "servers/navigation/navigation_mesh_generator.h"
 #include "servers/navigation_server.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
 
 void NavigationMeshInstance::set_enabled(bool p_enabled) {
 	if (enabled == p_enabled) {
@@ -107,7 +107,12 @@ uint32_t NavigationMeshInstance::get_navigation_layers() const {
 
 void NavigationMeshInstance::set_enter_cost(real_t p_enter_cost) {
 	ERR_FAIL_COND_MSG(p_enter_cost < 0.0, "The enter_cost must be positive.");
-	enter_cost = MAX(p_enter_cost, 0.0);
+	if (Math::is_equal_approx(enter_cost, p_enter_cost)) {
+		return;
+	}
+
+	enter_cost = p_enter_cost;
+
 	NavigationServer::get_singleton()->region_set_enter_cost(region, p_enter_cost);
 }
 
@@ -117,8 +122,12 @@ real_t NavigationMeshInstance::get_enter_cost() const {
 
 void NavigationMeshInstance::set_travel_cost(real_t p_travel_cost) {
 	ERR_FAIL_COND_MSG(p_travel_cost < 0.0, "The travel_cost must be positive.");
-	travel_cost = MAX(p_travel_cost, 0.0);
-	NavigationServer::get_singleton()->region_set_enter_cost(region, travel_cost);
+	if (Math::is_equal_approx(travel_cost, p_travel_cost)) {
+		return;
+	}
+
+	travel_cost = p_travel_cost;
+	NavigationServer::get_singleton()->region_set_travel_cost(region, travel_cost);
 }
 
 real_t NavigationMeshInstance::get_travel_cost() const {
@@ -373,14 +382,18 @@ NavigationMeshInstance::NavigationMeshInstance() {
 
 NavigationMeshInstance::~NavigationMeshInstance() {
 	if (navmesh.is_valid()) {
-		navmesh->remove_change_receptor(this);
+		navmesh->disconnect(CoreStringNames::get_singleton()->changed, this, "_navigation_mesh_changed");
 	}
+
+	ERR_FAIL_NULL(NavigationServer::get_singleton());
 	NavigationServer::get_singleton()->free(region);
 
 #ifdef DEBUG_ENABLED
 	NavigationServer::get_singleton_mut()->disconnect("map_changed", this, "_navigation_map_changed");
 	NavigationServer::get_singleton_mut()->disconnect("navigation_debug_changed", this, "_update_debug_mesh");
 	NavigationServer::get_singleton_mut()->disconnect("navigation_debug_changed", this, "_update_debug_edge_connections_mesh");
+
+	ERR_FAIL_NULL(RenderingServer::get_singleton());
 
 	if (debug_instance.is_valid()) {
 		RenderingServer::get_singleton()->free(debug_instance);
