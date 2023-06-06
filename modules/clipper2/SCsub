@@ -1,0 +1,15 @@
+Import('env')
+
+module_env = env.Clone()
+
+
+module_env.add_source_files(env.modules_sources,"*.cpp")
+module_env.add_source_files(env.modules_sources,"lib/src/*.cpp")
+
+# TODO this won't work as a custom module like this!
+module_env.Prepend(CPPPATH=["#modules/clipper2/lib/include"])
+
+if env.msvc:
+	module_env.Append(CXXFLAGS=['/std:c++17'])
+else:
+	module_env.Append(CXXFLAGS=['-std=c++17'])
