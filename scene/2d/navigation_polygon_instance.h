@@ -43,8 +43,10 @@ class NavigationPolygonInstance : public Node2D {
 
 	bool enabled;
 	RID region;
+	RID map_override;
 	Navigation2D *navigation;
 	Ref<NavigationPolygon> navpoly;
+	bool baking_started;
 
 	real_t enter_cost;
 	real_t travel_cost;
@@ -52,7 +54,12 @@ class NavigationPolygonInstance : public Node2D {
 	uint32_t navigation_layers;
 
 	void _navpoly_changed();
-	void _map_changed(RID p_map);
+
+#ifdef DEBUG_ENABLED
+	void _update_debug_mesh();
+	void _update_debug_edge_connections_mesh();
+	void _navigation_map_changed(RID p_map);
+#endif // DEBUG_ENABLED
 
 protected:
 	void _notification(int p_what);
@@ -80,6 +87,12 @@ public:
 
 	void set_navigation_polygon(const Ref<NavigationPolygon> &p_navpoly);
 	Ref<NavigationPolygon> get_navigation_polygon() const;
+
+	void set_navigation_map(RID p_navigation_map);
+	RID get_navigation_map() const;
+
+	void bake_navigation_polygon(bool p_on_thread);
+	void _bake_finished();
 
 	String get_configuration_warning() const;
 
