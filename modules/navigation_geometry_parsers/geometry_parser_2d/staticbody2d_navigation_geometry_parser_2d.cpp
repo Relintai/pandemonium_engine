@@ -81,11 +81,11 @@ void StaticBody2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Na
 
 						shape_outline.resize(5);
 						PoolVector<Vector2>::Write shape_outline_write = shape_outline.write();
-						shape_outline_write[0] = transform.xform(-rectangle_size * 0.5);
-						shape_outline_write[1] = transform.xform(Vector2(rectangle_size.x, -rectangle_size.y) * 0.5);
-						shape_outline_write[2] = transform.xform(rectangle_size * 0.5);
-						shape_outline_write[3] = transform.xform(Vector2(-rectangle_size.x, rectangle_size.y) * 0.5);
-						shape_outline_write[4] = transform.xform(-rectangle_size * 0.5);
+						shape_outline_write[0] = transform.xform(-rectangle_size);
+						shape_outline_write[1] = transform.xform(Vector2(rectangle_size.x, -rectangle_size.y));
+						shape_outline_write[2] = transform.xform(rectangle_size);
+						shape_outline_write[3] = transform.xform(Vector2(-rectangle_size.x, rectangle_size.y));
+						shape_outline_write[4] = transform.xform(-rectangle_size);
 
 						p_source_geometry->add_obstruction_outline(shape_outline);
 					}
