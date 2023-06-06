@@ -951,25 +951,12 @@ void PandemoniumNavigationMeshGenerator::_static_parse_3d_source_geometry_data(R
 #endif // _3D_DISABLED
 
 PandemoniumNavigationMeshGenerator::PandemoniumNavigationMeshGenerator() {
-	/*
-	register_geometry_parser_2d(memnew(MeshInstance2DNavigationGeometryParser2D));
-	register_geometry_parser_2d(memnew(MultiMeshInstance2DNavigationGeometryParser2D));
-	register_geometry_parser_2d(memnew(Polygon2DNavigationGeometryParser2D));
-	register_geometry_parser_2d(memnew(StaticBody2DNavigationGeometryParser2D));
-	register_geometry_parser_2d(memnew(TileMap2DNavigationGeometryParser2D));
-#ifndef _3D_DISABLED
-	register_geometry_parser_3d(memnew(MeshInstance3DNavigationGeometryParser3D));
-	register_geometry_parser_3d(memnew(MultiMeshInstance3DNavigationGeometryParser3D));
-	register_geometry_parser_3d(memnew(StaticBody3DNavigationGeometryParser3D));
-#endif // _3D_DISABLED
-	*/
-
-	_use_thread_pool = GLOBAL_GET("navigation/baking/thread_model/use_thread_pool");
+	_use_thread_pool = GLOBAL_DEF("navigation/baking/thread_model/use_thread_pool", true);
 	// Can't use threads in Editor as parsing gets stuck on RenderingServer / PhysicsServer locks.
 	// (TODO needs to be tested) The way I have it now, it should work.
 	//_use_thread_pool = !Engine::get_singleton()->is_editor_hint();
 
-	//_baking_use_high_priority_threads = GLOBAL_GET("navigation/baking/thread_model/baking_use_high_priority_threads");
+	//_baking_use_high_priority_threads = GLOBAL_DEF("navigation/baking/thread_model/baking_use_high_priority_threads");
 }
 
 PandemoniumNavigationMeshGenerator::~PandemoniumNavigationMeshGenerator() {
