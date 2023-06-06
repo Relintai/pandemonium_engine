@@ -30,13 +30,16 @@
 
 #include "navigation_mesh_instance.h"
 
+#include "core/core_string_names.h"
 #include "core/os/os.h"
 #include "mesh_instance.h"
 #include "navigation.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/world_3d.h"
+#include "servers/navigation/navigation_mesh_generator.h"
 #include "servers/navigation_server.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
 
 void NavigationMeshInstance::set_enabled(bool p_enabled) {
 	if (enabled == p_enabled) {
@@ -54,7 +57,11 @@ void NavigationMeshInstance::set_enabled(bool p_enabled) {
 		if (navigation) {
 			NavigationServer::get_singleton()->region_set_map(region, navigation->get_rid());
 		} else {
-			NavigationServer::get_singleton()->region_set_map(region, get_world_3d()->get_navigation_map());
+			if (map_override.is_valid()) {
+				NavigationServer::get_singleton()->region_set_map(region, map_override);
+			} else {
+				NavigationServer::get_singleton()->region_set_map(region, get_world_3d()->get_navigation_map());
+			}
 		}
 	}
 
@@ -142,7 +149,11 @@ void NavigationMeshInstance::_notification(int p_what) {
 
 			if (enabled && navigation == nullptr) {
 				// did not find a valid navigation node parent, fallback to default navigation map on world resource
-				NavigationServer::get_singleton()->region_set_map(region, get_world_3d()->get_navigation_map());
+				if (map_override.is_valid()) {
+					NavigationServer::get_singleton()->region_set_map(region, map_override);
+				} else {
+					NavigationServer::get_singleton()->region_set_map(region, get_world_3d()->get_navigation_map());
+				}
 			}
 
 #ifdef DEBUG_ENABLED
@@ -163,9 +174,7 @@ void NavigationMeshInstance::_notification(int p_what) {
 
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
-			if (navigation) {
-				NavigationServer::get_singleton()->region_set_map(region, RID());
-			}
+			NavigationServer::get_singleton()->region_set_map(region, RID());
 
 			navigation = nullptr;
 
@@ -182,22 +191,80 @@ void NavigationMeshInstance::_notification(int p_what) {
 	}
 }
 
-void NavigationMeshInstance::set_navigation_mesh(const Ref<NavigationMesh> &p_navmesh) {
-	if (p_navmesh == navmesh) {
+void NavigationMeshInstance::set_navigation_mesh(const Ref<NavigationMesh> &p_navigation_mesh) {
+	if (navmesh.is_valid()) {
+		navmesh->disconnect(CoreStringNames::get_singleton()->changed, this, "_navigation_mesh_changed");
+	}
+
+	navmesh = p_navigation_mesh;
+
+	if (navmesh.is_valid()) {
+		navmesh->connect(CoreStringNames::get_singleton()->changed, this, "_navigation_mesh_changed");
+	}
+
+	_navigation_mesh_changed();
+}
+
+Ref<NavigationMesh> NavigationMeshInstance::get_navigation_mesh() const {
+	return navmesh;
+}
+
+void NavigationMeshInstance::set_navigation_map(RID p_navigation_map) {
+	if (map_override == p_navigation_map) {
 		return;
 	}
 
-	if (navmesh.is_valid()) {
-		navmesh->remove_change_receptor(this);
+	map_override = p_navigation_map;
+
+	NavigationServer::get_singleton()->region_set_map(region, map_override);
+}
+
+RID NavigationMeshInstance::get_navigation_map() const {
+	if (map_override.is_valid()) {
+		return map_override;
+	} else if (is_inside_tree()) {
+		return get_world_3d()->get_navigation_map();
 	}
+	return RID();
+}
 
-	navmesh = p_navmesh;
-
-	if (navmesh.is_valid()) {
-		navmesh->add_change_receptor(this);
+void NavigationMeshInstance::bake_navigation_mesh(bool p_on_thread) {
+	ERR_FAIL_COND_MSG(!get_navigation_mesh().is_valid(), "Can't bake the navigation mesh if the `NavigationMesh` resource doesn't exist");
+	if (baking_started) {
+		WARN_PRINT("NavigationMesh baking already started. Wait for it to finish.");
+		return;
 	}
+	baking_started = true;
 
-	NavigationServer::get_singleton()->region_set_navmesh(region, p_navmesh);
+	navmesh->clear();
+
+	if (p_on_thread && OS::get_singleton()->get_render_thread_mode() == OS::RenderThreadMode::RENDER_SEPARATE_THREAD) {
+		Ref<FuncRef> f;
+		f.instance();
+		f->set_instance(this);
+		f->set_function("_bake_finished");
+
+		NavigationMeshGenerator::get_singleton()->parse_and_bake_3d(navmesh, this, f);
+	} else {
+		Ref<NavigationMeshSourceGeometryData3D> source_geometry_data = NavigationMeshGenerator::get_singleton()->parse_3d_source_geometry_data(navmesh, this);
+		NavigationMeshGenerator::get_singleton()->bake_3d_from_source_geometry_data(navmesh, source_geometry_data);
+		_bake_finished(navmesh);
+	}
+}
+
+void NavigationMeshInstance::_bake_finished(Ref<NavigationMesh> p_nav_mesh) {
+	baking_started = false;
+	set_navigation_mesh(p_nav_mesh);
+	emit_signal("bake_finished");
+}
+
+void NavigationMeshInstance::_navigation_mesh_changed() {
+	NavigationServer::get_singleton()->region_set_navmesh(region, navmesh);
+
+	update_gizmos();
+	update_configuration_warning();
+
+	emit_signal("navigation_mesh_changed");
 
 #ifdef DEBUG_ENABLED
 	if (is_inside_tree() && NavigationServer::get_singleton()->get_debug_enabled()) {
@@ -213,72 +280,6 @@ void NavigationMeshInstance::set_navigation_mesh(const Ref<NavigationMesh> &p_na
 			}
 		}
 	}
-#endif // DEBUG_ENABLED
-
-	emit_signal("navigation_mesh_changed");
-
-	update_gizmos();
-	update_configuration_warning();
-}
-
-Ref<NavigationMesh> NavigationMeshInstance::get_navigation_mesh() const {
-	return navmesh;
-}
-
-struct BakeThreadsArgs {
-	NavigationMeshInstance *nav_region;
-
-	BakeThreadsArgs() {
-		nav_region = nullptr;
-	}
-};
-
-void _bake_navigation_mesh(void *p_user_data) {
-	BakeThreadsArgs *args = static_cast<BakeThreadsArgs *>(p_user_data);
-
-	if (args->nav_region->get_navigation_mesh().is_valid()) {
-		Ref<NavigationMesh> nav_mesh = args->nav_region->get_navigation_mesh()->duplicate();
-
-		NavigationServer::get_singleton()->region_bake_navmesh(nav_mesh, args->nav_region);
-		args->nav_region->call_deferred("_bake_finished", nav_mesh);
-		memdelete(args);
-	} else {
-		ERR_PRINT("Can't bake the navigation mesh if the `NavigationMesh` resource doesn't exist");
-		args->nav_region->call_deferred("_bake_finished", Ref<NavigationMesh>());
-		memdelete(args);
-	}
-}
-
-void NavigationMeshInstance::bake_navigation_mesh(bool p_on_thread) {
-	ERR_FAIL_COND_MSG(bake_thread.is_started(), "Navigation Mesh Bake thread is already baking a Navigation Mesh. Unable to start another bake request.");
-
-	BakeThreadsArgs *args = memnew(BakeThreadsArgs);
-	args->nav_region = this;
-
-	if (p_on_thread && !OS::get_singleton()->can_use_threads()) {
-		WARN_PRINT("NavigationMesh bake 'on_thread' will be disabled as the current OS does not support multiple threads."
-				   "\nAs a fallback the navigation mesh will bake on the main thread which can cause framerate issues.");
-	}
-
-	if (p_on_thread && OS::get_singleton()->can_use_threads()) {
-		bake_thread.start(_bake_navigation_mesh, args);
-	} else {
-		_bake_navigation_mesh(args);
-	}
-}
-
-void NavigationMeshInstance::_bake_finished(Ref<NavigationMesh> p_nav_mesh) {
-	set_navigation_mesh(p_nav_mesh);
-	bake_thread.wait_to_finish();
-	emit_signal("bake_finished");
-}
-
-void NavigationMeshInstance::_navigation_changed() {
-	update_gizmos();
-	update_configuration_warning();
-
-#ifdef DEBUG_ENABLED
-	_update_debug_edge_connections_mesh();
 #endif // DEBUG_ENABLED
 }
 
@@ -303,16 +304,17 @@ String NavigationMeshInstance::get_configuration_warning() const {
 }
 
 void NavigationMeshInstance::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("set_navigation_mesh", "navmesh"), &NavigationMeshInstance::set_navigation_mesh);
-	ClassDB::bind_method(D_METHOD("get_navigation_mesh"), &NavigationMeshInstance::get_navigation_mesh);
-
 	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &NavigationMeshInstance::set_enabled);
 	ClassDB::bind_method(D_METHOD("is_enabled"), &NavigationMeshInstance::is_enabled);
 
+	ClassDB::bind_method(D_METHOD("set_navigation_mesh", "navmesh"), &NavigationMeshInstance::set_navigation_mesh);
+	ClassDB::bind_method(D_METHOD("get_navigation_mesh"), &NavigationMeshInstance::get_navigation_mesh);
+
+	ClassDB::bind_method(D_METHOD("set_navigation_map", "navigation_map"), &NavigationMeshInstance::set_navigation_map);
+	ClassDB::bind_method(D_METHOD("get_navigation_map"), &NavigationMeshInstance::get_navigation_map);
+
 	ClassDB::bind_method(D_METHOD("set_navigation_layers", "navigation_layers"), &NavigationMeshInstance::set_navigation_layers);
 	ClassDB::bind_method(D_METHOD("get_navigation_layers"), &NavigationMeshInstance::get_navigation_layers);
-
-	ClassDB::bind_method(D_METHOD("get_region_rid"), &NavigationMeshInstance::get_region_rid);
 
 	ClassDB::bind_method(D_METHOD("set_enter_cost", "enter_cost"), &NavigationMeshInstance::set_enter_cost);
 	ClassDB::bind_method(D_METHOD("get_enter_cost"), &NavigationMeshInstance::get_enter_cost);
@@ -320,9 +322,11 @@ void NavigationMeshInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_travel_cost", "travel_cost"), &NavigationMeshInstance::set_travel_cost);
 	ClassDB::bind_method(D_METHOD("get_travel_cost"), &NavigationMeshInstance::get_travel_cost);
 
+	ClassDB::bind_method(D_METHOD("get_region_rid"), &NavigationMeshInstance::get_region_rid);
+
 	ClassDB::bind_method(D_METHOD("bake_navigation_mesh", "on_thread"), &NavigationMeshInstance::bake_navigation_mesh, DEFVAL(true));
-	ClassDB::bind_method(D_METHOD("_bake_finished", "nav_mesh"), &NavigationMeshInstance::_bake_finished);
-	ClassDB::bind_method(D_METHOD("_navigation_changed"), &NavigationMeshInstance::_navigation_changed);
+	ClassDB::bind_method(D_METHOD("_bake_finished"), &NavigationMeshInstance::_bake_finished);
+	ClassDB::bind_method(D_METHOD("_navigation_mesh_changed"), &NavigationMeshInstance::_navigation_mesh_changed);
 
 #ifdef DEBUG_ENABLED
 	ClassDB::bind_method(D_METHOD("_update_debug_mesh"), &NavigationMeshInstance::_update_debug_mesh);
@@ -352,6 +356,8 @@ NavigationMeshInstance::NavigationMeshInstance() {
 	travel_cost = 1.0;
 
 	navigation_layers = 1;
+
+	baking_started = false;
 
 	region = NavigationServer::get_singleton()->region_create();
 	NavigationServer::get_singleton()->region_set_enter_cost(region, get_enter_cost());

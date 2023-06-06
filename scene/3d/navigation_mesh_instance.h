@@ -42,6 +42,7 @@ class NavigationMeshInstance : public Spatial {
 
 	bool enabled;
 	RID region;
+	RID map_override;
 	Ref<NavigationMesh> navmesh;
 
 	real_t enter_cost = 0.0;
@@ -50,7 +51,8 @@ class NavigationMeshInstance : public Spatial {
 	uint32_t navigation_layers = 1;
 
 	Navigation *navigation = nullptr;
-	Thread bake_thread;
+
+	bool baking_started;
 
 #ifdef DEBUG_ENABLED
 	RID debug_instance;
@@ -76,8 +78,6 @@ public:
 	void set_navigation_layers(uint32_t p_navigation_layers);
 	uint32_t get_navigation_layers() const;
 
-	RID get_region_rid() const;
-
 	void set_enter_cost(real_t p_enter_cost);
 	real_t get_enter_cost() const;
 
@@ -87,11 +87,16 @@ public:
 	void set_navigation_mesh(const Ref<NavigationMesh> &p_navmesh);
 	Ref<NavigationMesh> get_navigation_mesh() const;
 
+	void set_navigation_map(RID p_navigation_map);
+	RID get_navigation_map() const;
+
+	RID get_region_rid() const;
+
 	/// Bakes the navigation mesh; once done, automatically
 	/// sets the new navigation mesh and emits a signal
-	void bake_navigation_mesh(bool p_on_thread);
+	void bake_navigation_mesh(bool p_on_thread = true);
 	void _bake_finished(Ref<NavigationMesh> p_nav_mesh);
-	void _navigation_changed();
+	void _navigation_mesh_changed();
 
 	String get_configuration_warning() const;
 
