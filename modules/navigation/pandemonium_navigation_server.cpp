@@ -413,16 +413,6 @@ COMMAND_2(region_set_navmesh, RID, p_region, Ref<NavigationMesh>, p_nav_mesh) {
 	region->set_mesh(p_nav_mesh);
 }
 
-void PandemoniumNavigationServer::region_bake_navmesh(Ref<NavigationMesh> r_mesh, Node *p_node) const {
-	ERR_FAIL_COND(r_mesh.is_null());
-	ERR_FAIL_COND(p_node == nullptr);
-
-#ifndef _3D_DISABLED
-	//NavigationMeshGenerator::get_singleton()->clear(r_mesh);
-	//NavigationMeshGenerator::get_singleton()->bake(r_mesh, p_node);
-#endif
-}
-
 int PandemoniumNavigationServer::region_get_connections_count(RID p_region) const {
 	NavRegion *region = region_owner.getornull(p_region);
 	ERR_FAIL_COND_V(!region, 0);

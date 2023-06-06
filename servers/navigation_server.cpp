@@ -82,7 +82,6 @@ void NavigationServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("region_set_transform", "region", "transform"), &NavigationServer::region_set_transform);
 	ClassDB::bind_method(D_METHOD("region_set_navmesh", "region", "nav_mesh"), &NavigationServer::region_set_navmesh);
-	ClassDB::bind_method(D_METHOD("region_bake_navmesh", "mesh", "node"), &NavigationServer::region_bake_navmesh);
 
 	ClassDB::bind_method(D_METHOD("region_get_connections_count", "region"), &NavigationServer::region_get_connections_count);
 	ClassDB::bind_method(D_METHOD("region_get_connection_pathway_start", "region", "connection"), &NavigationServer::region_get_connection_pathway_start);
