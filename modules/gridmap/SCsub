@@ -8,6 +8,7 @@ env_gridmap = env_modules.Clone()
 env_gridmap.add_source_files(env.modules_sources, "grid_map.cpp")
 env_gridmap.add_source_files(env.modules_sources, "mesh_library.cpp")
 env_gridmap.add_source_files(env.modules_sources, "register_types.cpp")
+env_gridmap.add_source_files(env.modules_sources, "geometry_parser/*.cpp")
 
 if env["tools"]:
     env_gridmap.add_source_files(env.modules_sources, "grid_map_editor_plugin.cpp")
