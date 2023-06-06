@@ -44,10 +44,12 @@
 #include "scene/3d/mesh_instance.h"
 #endif // _3D_DISABLED
 
-#ifdef CLIPPER_ENABLED
-#include "thirdparty/clipper2/include/clipper2/clipper.h"
-#include "thirdparty/misc/polypartition.h"
-#endif // CLIPPER_ENABLED
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_CLIPPER2_ENABLED
+#include "modules/clipper2/lib/include/clipper2/clipper.h"
+#include "modules/clipper2/polypartition.h"
+#endif
 
 #ifndef _3D_DISABLED
 #include <Recast.h>
@@ -290,7 +292,7 @@ void PandemoniumNavigationMeshGenerator::_static_parse_2d_source_geometry_data(R
 }
 
 // rewrite this to use clipper 1
-#ifdef CLIPPER_ENABLED
+#ifdef MODULE_CLIPPER2_ENABLED
 static void _recursive_process_polytree_items(List<TPPLPoly> &p_tppl_in_polygon, const Clipper2Lib::PolyPath64 *p_polypath_item) {
 	using namespace Clipper2Lib;
 
@@ -319,18 +321,18 @@ static void _recursive_process_polytree_items(List<TPPLPoly> &p_tppl_in_polygon,
 		_recursive_process_polytree_items(p_tppl_in_polygon, polypath_item);
 	}
 }
-#endif // CLIPPER_ENABLED
+#endif // MODULE_CLIPPER2_ENABLED
 
 void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_data(Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry_data) {
 	ERR_FAIL_COND_MSG(!p_navigation_polygon.is_valid(), "Invalid navigation polygon.");
 	ERR_FAIL_COND_MSG(!p_source_geometry_data.is_valid(), "Invalid source geometry data.");
 	ERR_FAIL_COND_MSG(p_navigation_polygon->get_outline_count() == 0 && !p_source_geometry_data->has_data(), "NavigationMeshSourceGeometryData2D is empty. Parse source geometry first.");
 
-	//const Vector<Vector<Vector2>> &traversable_outlines = p_source_geometry_data->_get_traversable_outlines();
-	//const Vector<Vector<Vector2>> &obstruction_outlines = p_source_geometry_data->_get_obstruction_outlines();
+	const Vector<Vector<Vector2>> &traversable_outlines = p_source_geometry_data->_get_traversable_outlines();
+	const Vector<Vector<Vector2>> &obstruction_outlines = p_source_geometry_data->_get_obstruction_outlines();
 
 // rewrite this to use clipper 1
-#ifdef CLIPPER_ENABLED
+#ifdef MODULE_CLIPPER2_ENABLED
 	using namespace Clipper2Lib;
 
 	Paths64 traversable_polygon_paths;
@@ -338,27 +340,39 @@ void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_da
 
 	int outline_count = p_navigation_polygon->get_outline_count();
 	for (int i = 0; i < outline_count; i++) {
-		const Vector<Vector2> &traversable_outline = p_navigation_polygon->get_outline(i);
+		PoolVector<Vector2> traversable_outline = p_navigation_polygon->get_outline(i);
 		Path64 subject_path;
-		for (const Vector2 &traversable_point : traversable_outline) {
+
+		for (int j = 0; j < traversable_outline.size(); ++j) {
+			Vector2 traversable_point = traversable_outline[j];
+
 			const Point64 &point = Point64(traversable_point.x, traversable_point.y);
 			subject_path.push_back(point);
 		}
 		traversable_polygon_paths.push_back(subject_path);
 	}
 
-	for (const Vector<Vector2> &traversable_outline : traversable_outlines) {
+	for (int i = 0; i < traversable_outlines.size(); i++) {
+		Vector<Vector2> traversable_outline = traversable_outlines[i];
+
 		Path64 subject_path;
-		for (const Vector2 &traversable_point : traversable_outline) {
+		for (int j = 0; j < traversable_outline.size(); ++j) {
+			Vector2 traversable_point = traversable_outline[j];
+
 			const Point64 &point = Point64(traversable_point.x, traversable_point.y);
 			subject_path.push_back(point);
 		}
 		traversable_polygon_paths.push_back(subject_path);
 	}
 
-	for (const Vector<Vector2> &obstruction_outline : obstruction_outlines) {
+	for (int i = 0; i < obstruction_outlines.size(); i++) {
+		const Vector<Vector2> &obstruction_outline = obstruction_outlines[i];
+
 		Path64 clip_path;
-		for (const Vector2 &obstruction_point : obstruction_outline) {
+
+		for (int j = 0; j < obstruction_outline.size(); ++j) {
+			const Vector2 &obstruction_point = obstruction_outline[j];
+
 			const Point64 &point = Point64(obstruction_point.x, obstruction_point.y);
 			clip_path.push_back(point);
 		}
@@ -420,30 +434,39 @@ void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_da
 	}
 	//path_solution = RamerDouglasPeucker(path_solution, 0.025); //
 
-	Vector<Vector<Vector2>> new_baked_outlines;
+	Vector<PoolVector<Vector2>> new_baked_outlines;
 
-	for (const Path64 &scaled_path : path_solution) {
-		Vector<Vector2> polypath;
-		for (const Point64 &scaled_point : scaled_path) {
+	for (uint32_t i = 0; i < path_solution.size(); i++) {
+		const Path64 &scaled_path = path_solution[i];
+
+		PoolVector<Vector2> polypath;
+		for (uint32_t j = 0; j < scaled_path.size(); ++j) {
+			const Point64 &scaled_point = scaled_path[j];
+
 			polypath.push_back(Vector2(static_cast<real_t>(scaled_point.x), static_cast<real_t>(scaled_point.y)));
 		}
+
 		new_baked_outlines.push_back(polypath);
 	}
 
-	p_navigation_polygon->internal_set_baked_outlines(new_baked_outlines);
+	p_navigation_polygon->set_baked_outlines(new_baked_outlines);
 
 	if (new_baked_outlines.size() == 0) {
-		p_navigation_polygon->set_vertices(Vector<Vector2>());
-		p_navigation_polygon->internal_set_polygons(Vector<Vector<int>>());
+		p_navigation_polygon->set_vertices(PoolVector<Vector2>());
+		p_navigation_polygon->set_polygons(Vector<Vector<int>>());
 		p_navigation_polygon->commit_changes();
 		return;
 	}
 
 	Paths64 polygon_paths;
 
-	for (const Vector<Vector2> &baked_outline : new_baked_outlines) {
+	for (int i = 0; i < new_baked_outlines.size(); i++) {
+		const PoolVector<Vector2> &baked_outline = new_baked_outlines[i];
+
 		Path64 polygon_path;
-		for (const Vector2 &baked_outline_point : baked_outline) {
+		for (int j = 0; j < baked_outline.size(); ++j) {
+			const Vector2 &baked_outline_point = baked_outline[j];
+
 			const Point64 &point = Point64(baked_outline_point.x, baked_outline_point.y);
 			polygon_path.push_back(point);
 		}
@@ -468,13 +491,13 @@ void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_da
 	TPPLPartition tpart;
 	if (tpart.ConvexPartition_HM(&tppl_in_polygon, &tppl_out_polygon) == 0) { //failed!
 		ERR_PRINT("NavigationPolygon Convex partition failed. Unable to create a valid NavigationMesh from defined polygon outline paths.");
-		p_navigation_polygon->set_vertices(Vector<Vector2>());
-		p_navigation_polygon->internal_set_polygons(Vector<Vector<int>>());
+		p_navigation_polygon->set_vertices(PoolVector<Vector2>());
+		p_navigation_polygon->set_polygons(Vector<Vector<int>>());
 		p_navigation_polygon->commit_changes();
 		return;
 	}
 
-	Vector<Vector2> new_vertices;
+	PoolVector<Vector2> new_vertices;
 	Vector<Vector<int>> new_polygons;
 
 	HashMap<Vector2, int> points;
@@ -484,20 +507,20 @@ void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_da
 		Vector<int> new_polygon;
 
 		for (int64_t i = 0; i < tp.GetNumPoints(); i++) {
-			HashMap<Vector2, int>::Iterator E = points.find(tp[i]);
+			HashMap<Vector2, int>::Element *E = points.find(tp[i]);
 			if (!E) {
 				E = points.insert(tp[i], new_vertices.size());
 				new_vertices.push_back(tp[i]);
 			}
-			new_polygon.push_back(E->value);
+			new_polygon.push_back(E->value());
 		}
 
 		new_polygons.push_back(new_polygon);
 	}
 
 	p_navigation_polygon->set_vertices(new_vertices);
-	p_navigation_polygon->internal_set_polygons(new_polygons);
-#endif // CLIPPER_ENABLED
+	p_navigation_polygon->set_polygons(new_polygons);
+#endif // MODULE_CLIPPER2_ENABLED
 	p_navigation_polygon->commit_changes();
 }
 

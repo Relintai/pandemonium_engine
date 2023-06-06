@@ -35,6 +35,8 @@
 #include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_polygon.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #ifdef CLIPPER_ENABLED
 #include "thirdparty/clipper2/include/clipper2/clipper.h"
 #endif // CLIPPER_ENABLED
