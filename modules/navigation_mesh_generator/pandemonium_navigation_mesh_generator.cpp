@@ -264,7 +264,7 @@ void PandemoniumNavigationMeshGenerator::bake_2d_from_source_geometry_data(Ref<N
 }
 
 void PandemoniumNavigationMeshGenerator::_static_parse_2d_geometry_node(Ref<NavigationPolygon> p_navigation_polygon, Node *p_node, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry_data, bool p_recurse_children, LocalVector<Ref<NavigationGeometryParser2D>> &p_geometry_2d_parsers) {
-	for (int i = 0; i < p_geometry_2d_parsers.size(); ++i) {
+	for (uint32_t i = 0; i < p_geometry_2d_parsers.size(); ++i) {
 		Ref<NavigationGeometryParser2D> &geometry_2d_parser = p_geometry_2d_parsers[i];
 
 		if (geometry_2d_parser->parses_node(p_node)) {
@@ -910,7 +910,7 @@ void PandemoniumNavigationMeshGenerator::bake_3d_from_source_geometry_data(Ref<N
 }
 
 void PandemoniumNavigationMeshGenerator::_static_parse_3d_geometry_node(Ref<NavigationMesh> p_navigation_mesh, Node *p_node, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry_data, bool p_recurse_children, LocalVector<Ref<NavigationGeometryParser3D>> &p_geometry_3d_parsers) {
-	for (int i = 0; i < p_geometry_3d_parsers.size(); ++i) {
+	for (uint32_t i = 0; i < p_geometry_3d_parsers.size(); ++i) {
 		Ref<NavigationGeometryParser3D> &geometry_3d_parser = p_geometry_3d_parsers[i];
 
 		if (geometry_3d_parser->parses_node(p_node)) {
