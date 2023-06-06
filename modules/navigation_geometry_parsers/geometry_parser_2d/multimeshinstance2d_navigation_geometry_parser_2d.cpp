@@ -32,6 +32,9 @@
 
 #include "scene/2d/multimesh_instance_2d.h"
 
+#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_polygon.h"
+
 #ifdef CLIPPER_ENABLED
 #include "thirdparty/clipper2/include/clipper2/clipper.h"
 #endif // CLIPPER_ENABLED
