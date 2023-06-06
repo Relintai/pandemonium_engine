@@ -691,11 +691,11 @@ void register_scene_types() {
 	ClassDB::register_class<NavigationObstacle2D>();
 
 	ClassDB::register_class<NavigationMeshSourceGeometryData2D>();
-	ClassDB::register_class<NavigationMeshSourceGeometryData3D>();
 	ClassDB::register_class<NavigationGeometryParser2D>();
 
 #ifndef _3D_DISABLED
 	ClassDB::register_class<NavigationGeometryParser3D>();
+	ClassDB::register_class<NavigationMeshSourceGeometryData3D>();
 #endif
 
 	OS::get_singleton()->yield(); //may take time to init
