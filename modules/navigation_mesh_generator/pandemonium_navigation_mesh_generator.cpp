@@ -410,6 +410,8 @@ void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_da
 
 	path_solution = Difference(traversable_polygon_paths, obstruction_polygon_paths, clipper_fillrule);
 
+	// Seems to be bugged when dealing with 2d (likely because of the scales)
+	/*
 	JoinType clipper_jointype = JoinType::Square;
 
 	switch (p_navigation_polygon->get_offsetting_jointype()) {
@@ -432,6 +434,7 @@ void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_da
 	if (agent_radius_offset > 0.0) {
 		path_solution = InflatePaths(path_solution, -agent_radius_offset, clipper_jointype, EndType::Polygon);
 	}
+	*/
 	//path_solution = RamerDouglasPeucker(path_solution, 0.025); //
 
 	Vector<PoolVector<Vector2>> new_baked_outlines;
