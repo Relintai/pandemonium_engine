@@ -44,8 +44,7 @@
 #endif // MODULE_CLIPPER2_ENABLED
 
 bool TileMap2DNavigationGeometryParser2D::parses_node(Node *p_node) {
-	//return (Object::cast_to<TileMap>(p_node) != nullptr);
-	return false;
+	return (Object::cast_to<TileMap>(p_node) != nullptr);
 }
 
 void TileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {

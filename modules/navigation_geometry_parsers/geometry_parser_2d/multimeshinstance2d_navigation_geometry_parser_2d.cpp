@@ -31,22 +31,23 @@
 #include "multimeshinstance2d_navigation_geometry_parser_2d.h"
 
 #include "scene/2d/multimesh_instance_2d.h"
+#include "scene/resources/multimesh.h"
 
 #include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_polygon.h"
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef CLIPPER_ENABLED
-#include "thirdparty/clipper2/include/clipper2/clipper.h"
-#endif // CLIPPER_ENABLED
+#ifdef MODULE_CLIPPER2_ENABLED
+#include "modules/clipper2/lib/include/clipper2/clipper.h"
+#endif // MODULE_CLIPPER2_ENABLED
 
 bool MultiMeshInstance2DNavigationGeometryParser2D::parses_node(Node *p_node) {
 	return (Object::cast_to<MultiMeshInstance2D>(p_node) != nullptr);
 }
 
 void MultiMeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {
-#ifdef CLIPPER_ENABLED
+#ifdef MODULE_CLIPPER2_ENABLED
 	NavigationPolygon::ParsedGeometryType parsed_geometry_type = p_navigation_polygon->get_parsed_geometry_type();
 
 	if (Object::cast_to<MultiMeshInstance2D>(p_node) && parsed_geometry_type != NavigationPolygon::PARSED_GEOMETRY_STATIC_COLLIDERS) {
@@ -85,13 +86,18 @@ void MultiMeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node,
 
 					if (mesh->surface_get_format(i) & Mesh::ARRAY_FORMAT_INDEX) {
 						Vector<int> mesh_indices = a[Mesh::ARRAY_INDEX];
-						for (int vertex_index : mesh_indices) {
+
+						for (int j = 0; j < mesh_indices.size(); ++j) {
+							int vertex_index = mesh_indices[j];
+
 							const Vector2 &vertex = mesh_vertices[vertex_index];
 							const Point64 &point = Point64(vertex.x, vertex.y);
 							subject_path.push_back(point);
 						}
 					} else {
-						for (const Vector2 &vertex : mesh_vertices) {
+						for (int j = 0; j < mesh_vertices.size(); ++j) {
+							const Vector2 &vertex = mesh_vertices[j];
+
 							const Point64 &point = Point64(vertex.x, vertex.y);
 							subject_path.push_back(point);
 						}
@@ -111,20 +117,21 @@ void MultiMeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node,
 					const Transform2D multimesh_instance_transform = multimesh_instance->get_transform() * multimesh->get_instance_transform_2d(i);
 
 					for (const Path64 &mesh_path : mesh_path_solution) {
-						Vector<Vector2> shape_outline;
+						PoolVector<Vector2> shape_outline;
 
 						for (const Point64 &mesh_path_point : mesh_path) {
 							shape_outline.push_back(Point2(static_cast<real_t>(mesh_path_point.x), static_cast<real_t>(mesh_path_point.y)));
 						}
 
 						for (int j = 0; j < shape_outline.size(); j++) {
-							shape_outline.write[j] = multimesh_instance_transform.xform(shape_outline[j]);
+							shape_outline.set(j, multimesh_instance_transform.xform(shape_outline[j]));
 						}
+						
 						p_source_geometry->add_obstruction_outline(shape_outline);
 					}
 				}
 			}
 		}
 	}
-#endif // CLIPPER_ENABLED
+#endif // MODULE_CLIPPER2_ENABLED
 }

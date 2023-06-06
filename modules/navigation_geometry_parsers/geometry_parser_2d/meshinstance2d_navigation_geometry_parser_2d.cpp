@@ -31,22 +31,23 @@
 #include "meshinstance2d_navigation_geometry_parser_2d.h"
 
 #include "scene/2d/mesh_instance_2d.h"
+#include "scene/resources/mesh.h"
 
 #include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_polygon.h"
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef CLIPPER_ENABLED
-#include "thirdparty/clipper2/include/clipper2/clipper.h"
-#endif // CLIPPER_ENABLED
+#ifdef MODULE_CLIPPER2_ENABLED
+#include "modules/clipper2/lib/include/clipper2/clipper.h"
+#endif // MODULE_CLIPPER2_ENABLED
 
 bool MeshInstance2DNavigationGeometryParser2D::parses_node(Node *p_node) {
 	return (Object::cast_to<MeshInstance2D>(p_node) != nullptr);
 }
 
 void MeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {
-#ifdef CLIPPER_ENABLED
+#ifdef MODULE_CLIPPER2_ENABLED
 	NavigationPolygon::ParsedGeometryType parsed_geometry_type = p_navigation_polygon->get_parsed_geometry_type();
 
 	if (Object::cast_to<MeshInstance2D>(p_node) && parsed_geometry_type != NavigationPolygon::PARSED_GEOMETRY_STATIC_COLLIDERS) {
@@ -88,13 +89,17 @@ void MeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<
 
 			if (mesh->surface_get_format(i) & Mesh::ARRAY_FORMAT_INDEX) {
 				Vector<int> mesh_indices = a[Mesh::ARRAY_INDEX];
-				for (int vertex_index : mesh_indices) {
+				for (int j = 0; j < mesh_indices.size(); ++j) {
+					int vertex_index = mesh_indices[j];
+
 					const Vector2 &vertex = mesh_vertices[vertex_index];
 					const Point64 &point = Point64(vertex.x, vertex.y);
 					subject_path.push_back(point);
 				}
 			} else {
-				for (const Vector2 &vertex : mesh_vertices) {
+				for (int j = 0; j < mesh_vertices.size(); ++j) {
+					const Vector2 &vertex = mesh_vertices[j];
+
 					const Point64 &point = Point64(vertex.x, vertex.y);
 					subject_path.push_back(point);
 				}
@@ -110,18 +115,21 @@ void MeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<
 
 		Vector<Vector<Vector2>> polypaths;
 
-		for (const Path64 &scaled_path : path_solution) {
-			Vector<Vector2> shape_outline;
+		for (uint32_t i = 0; i < path_solution.size(); i++) {
+			const Path64 &scaled_path = path_solution[i];
+
+			PoolVector<Vector2> shape_outline;
+
 			for (const Point64 &scaled_point : scaled_path) {
 				shape_outline.push_back(Point2(static_cast<real_t>(scaled_point.x), static_cast<real_t>(scaled_point.y)));
 			}
 
-			for (int i = 0; i < shape_outline.size(); i++) {
-				shape_outline.write[i] = transform.xform(shape_outline[i]);
+			for (int j = 0; j < shape_outline.size(); j++) {
+				shape_outline.set(j, transform.xform(shape_outline[j]));
 			}
 
 			p_source_geometry->add_obstruction_outline(shape_outline);
 		}
 	}
-#endif // CLIPPER_ENABLED
+#endif // MODULE_CLIPPER2_ENABLED
 }
