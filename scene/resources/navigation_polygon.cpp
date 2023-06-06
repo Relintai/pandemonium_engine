@@ -181,7 +181,6 @@ PoolVector<Vector2> NavigationPolygon::get_vertices() const {
 
 void NavigationPolygon::add_polygon(const Vector<int> &p_polygon) {
 	polygons.push_back(p_polygon);
-	navigation_mesh.unref();
 }
 
 Vector<int> NavigationPolygon::get_polygon(int p_idx) {
@@ -195,7 +194,6 @@ int NavigationPolygon::get_polygon_count() const {
 
 void NavigationPolygon::clear_polygons() {
 	polygons.clear();
-	navigation_mesh.unref();
 }
 void NavigationPolygon::clear_outlines() {
 	outlines.clear();
@@ -296,7 +294,7 @@ PoolVector<Vector2> NavigationPolygon::get_outline(int p_idx) const {
 /*
 //Old clipper version
 void NavigationPolygon::make_polygons_from_outlines() {
-	navigation_mesh.unref();
+	//navigation_mesh.unref();
 
 	List<TriangulatorPoly> in_poly, out_poly;
 
@@ -494,8 +492,6 @@ Vector<PoolVector<Vector2>> NavigationPolygon::get_baked_outlines() const {
 }
 
 void NavigationPolygon::_set_polygons(const Array &p_array) {
-	navigation_mesh.unref();
-
 	polygons.resize(p_array.size());
 	for (int i = 0; i < p_array.size(); i++) {
 		polygons.write[i] = p_array[i];
