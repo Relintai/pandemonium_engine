@@ -58,9 +58,6 @@ void NavigationPolygonInstance::set_enabled(bool p_enabled) {
 
 	if (!enabled) {
 		Navigation2DServer::get_singleton()->region_set_map(region, RID());
-#ifdef DEBUG_ENABLED
-		Navigation2DServer::get_singleton_mut()->disconnect("map_changed", this, "_navigation_map_changed");
-#endif
 	} else {
 		if (navigation != nullptr) {
 			Navigation2DServer::get_singleton()->region_set_map(region, navigation->get_rid());
@@ -71,9 +68,6 @@ void NavigationPolygonInstance::set_enabled(bool p_enabled) {
 				Navigation2DServer::get_singleton()->region_set_map(region, get_world_2d()->get_navigation_map());
 			}
 		}
-#ifdef DEBUG_ENABLED
-		Navigation2DServer::get_singleton_mut()->connect("map_changed", this, "_navigation_map_changed");
-#endif
 	}
 
 #ifdef DEBUG_ENABLED
@@ -166,12 +160,6 @@ void NavigationPolygonInstance::_notification(int p_what) {
 					Navigation2DServer::get_singleton()->region_set_map(region, get_world_2d()->get_navigation_map());
 				}
 			}
-
-#ifdef DEBUG_ENABLED
-			if (enabled) {
-				Navigation2DServer::get_singleton_mut()->connect("map_changed", this, "_navigation_map_changed");
-			}
-#endif
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			Navigation2DServer::get_singleton()->region_set_transform(region, get_global_transform());
@@ -181,12 +169,6 @@ void NavigationPolygonInstance::_notification(int p_what) {
 				Navigation2DServer::get_singleton()->region_set_map(region, RID());
 			}
 			navigation = nullptr;
-
-#ifdef DEBUG_ENABLED
-			if (enabled) {
-				Navigation2DServer::get_singleton_mut()->disconnect("map_changed", this, "_navigation_map_changed");
-			}
-#endif
 		} break;
 		case NOTIFICATION_DRAW: {
 #ifdef DEBUG_ENABLED
