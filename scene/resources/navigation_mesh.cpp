@@ -296,7 +296,7 @@ Vector3 NavigationMesh::get_filter_baking_aabb_offset() const {
 
 void NavigationMesh::set_vertices(const PoolVector<Vector3> &p_vertices) {
 	vertices = p_vertices;
-	_change_notify();
+	navigation_mesh_dirty = true;
 }
 
 PoolVector<Vector3> NavigationMesh::get_vertices() const {
@@ -362,7 +362,7 @@ void NavigationMesh::_set_polygons(const Array &p_array) {
 	for (int i = 0; i < p_array.size(); i++) {
 		polygons.write[i] = p_array[i];
 	}
-	_change_notify();
+	navigation_mesh_dirty = true;
 }
 
 Array NavigationMesh::_get_polygons() const {
