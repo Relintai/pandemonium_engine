@@ -92,10 +92,22 @@ void StaticBody2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Na
 
 					CapsuleShape2D *capsule_shape = Object::cast_to<CapsuleShape2D>(*s);
 					if (capsule_shape) {
-						//const real_t capsule_height = capsule_shape->get_height();
-						//const real_t capsule_radius = capsule_shape->get_radius();
+						PoolVector<Vector2> shape_outline;
 
-						//p_source_geometry->add_mesh_array(arr, transform);
+						Vector<Vector2> points = capsule_shape->get_points();
+
+						shape_outline.resize(points.size() + 1);
+						PoolVector<Vector2>::Write shape_outline_write = shape_outline.write();
+
+						for (int i = 0; i < points.size(); ++i) {
+							shape_outline_write[i] = transform.xform(points[i]);
+						}
+
+						if (points.size() > 0) {
+							shape_outline_write[points.size()] = transform.xform(points[0]);
+						}
+
+						p_source_geometry->add_obstruction_outline(shape_outline);
 					}
 
 					CircleShape2D *circle_shape = Object::cast_to<CircleShape2D>(*s);

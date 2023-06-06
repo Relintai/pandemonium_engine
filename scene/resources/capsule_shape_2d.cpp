@@ -33,7 +33,7 @@
 #include "servers/physics_2d_server.h"
 #include "servers/rendering_server.h"
 
-Vector<Vector2> CapsuleShape2D::_get_points() const {
+Vector<Vector2> CapsuleShape2D::get_points() const {
 	Vector<Vector2> points;
 	for (int i = 0; i < 24; i++) {
 		Vector2 ofs = Vector2(0, (i > 6 && i <= 18) ? -get_height() * 0.5 : get_height() * 0.5);
@@ -48,7 +48,7 @@ Vector<Vector2> CapsuleShape2D::_get_points() const {
 }
 
 bool CapsuleShape2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
-	return Geometry::is_point_in_polygon(p_point, _get_points());
+	return Geometry::is_point_in_polygon(p_point, get_points());
 }
 
 void CapsuleShape2D::_update_shape() {
@@ -79,7 +79,7 @@ real_t CapsuleShape2D::get_height() const {
 }
 
 void CapsuleShape2D::draw(const RID &p_to_rid, const Color &p_color) {
-	Vector<Vector2> points = _get_points();
+	Vector<Vector2> points = get_points();
 	Vector<Color> col;
 	col.push_back(p_color);
 	RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
