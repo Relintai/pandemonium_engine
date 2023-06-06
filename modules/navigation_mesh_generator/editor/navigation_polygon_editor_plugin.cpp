@@ -87,6 +87,7 @@ void NavigationPolygonEditor::_set_polygon(int p_idx, const Variant &p_polygon) 
 void NavigationPolygonEditor::_action_add_polygon(const Variant &p_polygon) {
 	Ref<NavigationPolygon> navpoly = _ensure_navpoly();
 	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
+	undo_redo->create_action("Add Navigation Polygon");
 	undo_redo->add_do_method(navpoly.ptr(), "add_outline", p_polygon);
 	undo_redo->add_undo_method(navpoly.ptr(), "remove_outline", navpoly->get_outline_count());
 	undo_redo->commit_action();
@@ -95,6 +96,7 @@ void NavigationPolygonEditor::_action_add_polygon(const Variant &p_polygon) {
 void NavigationPolygonEditor::_action_remove_polygon(int p_idx) {
 	Ref<NavigationPolygon> navpoly = _ensure_navpoly();
 	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
+	undo_redo->create_action("Remove Navigation Polygon");
 	undo_redo->add_do_method(navpoly.ptr(), "remove_outline", p_idx);
 	undo_redo->add_undo_method(navpoly.ptr(), "add_outline_at_index", navpoly->get_outline(p_idx), p_idx);
 	undo_redo->commit_action();
@@ -103,6 +105,7 @@ void NavigationPolygonEditor::_action_remove_polygon(int p_idx) {
 void NavigationPolygonEditor::_action_set_polygon(int p_idx, const Variant &p_previous, const Variant &p_polygon) {
 	Ref<NavigationPolygon> navpoly = _ensure_navpoly();
 	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
+	undo_redo->create_action("Set Navigation Polygon");
 	undo_redo->add_do_method(navpoly.ptr(), "set_outline", p_idx, p_polygon);
 	undo_redo->add_undo_method(navpoly.ptr(), "set_outline", p_idx, p_previous);
 	undo_redo->commit_action();
