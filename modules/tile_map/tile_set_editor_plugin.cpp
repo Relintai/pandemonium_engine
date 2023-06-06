@@ -47,6 +47,8 @@
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
+#include "servers/navigation/navigation_mesh_generator.h"
 
 #include "scene/gui/check_box.h"
 #include "scene/gui/menu_button.h"
@@ -1692,7 +1694,18 @@ void TileSetEditor::_on_workspace_input(const Ref<InputEvent> &p_ie) {
 
 										edited_navigation_shape->clear_outlines();
 										edited_navigation_shape->add_outline(polygon);
-										edited_navigation_shape->make_polygons_from_outlines();
+										//edited_navigation_shape->make_polygons_from_outlines();
+
+										if (edited_navigation_shape->get_outline_count() > 0) {
+											Ref<NavigationMeshSourceGeometryData2D> source_geometry_dummy = Ref<NavigationMeshSourceGeometryData2D>();
+											source_geometry_dummy.instance();
+											// Sorry TileMap but your tile puzzle is the exact opposite what is needed for agent radius offsets so you get disabled.
+											edited_navigation_shape->set_agent_radius(0.0);
+											NavigationMeshGenerator::get_singleton()->bake_2d_from_source_geometry_data(edited_navigation_shape, source_geometry_dummy);
+										} else {
+											edited_navigation_shape->clear();
+										}
+
 										// FIXME Couldn't figure out the undo_redo quagmire
 										//undo_redo->create_action(TTR("Edit Navigation Polygon"));
 										//undo_redo->add_do_method(edited_navigation_shape.ptr(), "set_vertices", polygon);
@@ -3015,7 +3028,17 @@ void TileSetEditor::close_shape(const Vector2 &shape_anchor) {
 		w.release();
 		shape->clear_outlines();
 		shape->add_outline(polygon);
-		shape->make_polygons_from_outlines();
+		//shape->make_polygons_from_outlines();
+
+		if (shape->get_outline_count() > 0) {
+			Ref<NavigationMeshSourceGeometryData2D> source_geometry_dummy = Ref<NavigationMeshSourceGeometryData2D>();
+			source_geometry_dummy.instance();
+			// Sorry TileMap but your tile puzzle is the exact opposite what is needed for agent radius offsets so you get disabled.
+			shape->set_agent_radius(0.0);
+			NavigationMeshGenerator::get_singleton()->bake_2d_from_source_geometry_data(shape, source_geometry_dummy);
+		} else {
+			shape->clear();
+		}
 
 		undo_redo->create_action(TTR("Create Navigation Polygon"));
 		if (tileset->tile_get_tile_mode(get_current_tile()) == TileSet::AUTO_TILE || tileset->tile_get_tile_mode(get_current_tile()) == TileSet::ATLAS_TILE) {
