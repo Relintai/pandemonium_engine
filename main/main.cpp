@@ -1608,6 +1608,13 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_DRIVER);
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_PLATFORM);
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SERVER);
+
+	initialize_physics();
+	initialize_navigation_mesh_generator();
+	initialize_navigation_server();
+
+	register_server_singletons();
+
 	register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_SCENE);
 	if (Engine::get_singleton()->is_editor_hint()) {
 		register_module_types(ModuleRegistrationLevel::MODULE_REGISTRATION_LEVEL_EDITOR);
@@ -1630,11 +1637,6 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 			Input::get_singleton()->set_custom_mouse_cursor(cursor, Input::CURSOR_ARROW, hotspot);
 		}
 	}
-
-	initialize_physics();
-	initialize_navigation_mesh_generator();
-	initialize_navigation_server();
-	register_server_singletons();
 
 	register_driver_types();
 
