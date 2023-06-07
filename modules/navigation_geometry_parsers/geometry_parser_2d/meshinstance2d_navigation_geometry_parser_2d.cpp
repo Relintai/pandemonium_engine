@@ -36,18 +36,11 @@
 #include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_polygon.h"
 
-#include "modules/modules_enabled.gen.h"
-
-#ifdef MODULE_CLIPPER2_ENABLED
-#include "modules/clipper2/lib/include/clipper2/clipper.h"
-#endif // MODULE_CLIPPER2_ENABLED
-
 bool MeshInstance2DNavigationGeometryParser2D::parses_node(Node *p_node) {
 	return (Object::cast_to<MeshInstance2D>(p_node) != nullptr);
 }
 
 void MeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {
-#ifdef MODULE_CLIPPER2_ENABLED
 	NavigationPolygon::ParsedGeometryType parsed_geometry_type = p_navigation_polygon->get_parsed_geometry_type();
 
 	if (Object::cast_to<MeshInstance2D>(p_node) && parsed_geometry_type != NavigationPolygon::PARSED_GEOMETRY_STATIC_COLLIDERS) {
@@ -59,9 +52,7 @@ void MeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<
 
 		const Transform2D transform = mesh_instance->get_transform();
 
-		using namespace Clipper2Lib;
-
-		Paths64 subject_paths, dummy_clip_paths;
+		Vector<Vector<Point2>> mesh_subject_paths, dummy_clip_paths;
 
 		for (int i = 0; i < mesh->get_surface_count(); i++) {
 			if (mesh->surface_get_primitive_type(i) != Mesh::PRIMITIVE_TRIANGLES) {
@@ -72,7 +63,7 @@ void MeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<
 				continue;
 			}
 
-			Path64 subject_path;
+			Vector<Point2> subject_path;
 
 			int index_count = 0;
 			if (mesh->surface_get_format(i) & Mesh::ARRAY_FORMAT_INDEX) {
@@ -93,43 +84,32 @@ void MeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<
 					int vertex_index = mesh_indices[j];
 
 					const Vector2 &vertex = mesh_vertices[vertex_index];
-					const Point64 &point = Point64(vertex.x, vertex.y);
-					subject_path.push_back(point);
+					subject_path.push_back(vertex);
 				}
 			} else {
 				for (int j = 0; j < mesh_vertices.size(); ++j) {
 					const Vector2 &vertex = mesh_vertices[j];
-
-					const Point64 &point = Point64(vertex.x, vertex.y);
-					subject_path.push_back(point);
+					subject_path.push_back(vertex);
 				}
 			}
-			subject_paths.push_back(subject_path);
+			mesh_subject_paths.push_back(subject_path);
 		}
 
-		Paths64 path_solution;
-
-		path_solution = Union(subject_paths, dummy_clip_paths, FillRule::NonZero);
-
-		//path_solution = RamerDouglasPeucker(path_solution, 0.025);
+		Vector<Vector<Point2>> mesh_path_solution = Geometry::merge_all2_polygons_2d(mesh_subject_paths, dummy_clip_paths, Geometry::POLYGON_FILL_TYPE_NON_ZERO);
 
 		Vector<Vector<Vector2>> polypaths;
 
-		for (uint32_t i = 0; i < path_solution.size(); i++) {
-			const Path64 &scaled_path = path_solution[i];
+		for (int k = 0; k < mesh_path_solution.size(); ++k) {
+			const Vector<Point2> &mesh_path = mesh_path_solution[k];
 
 			PoolVector<Vector2> shape_outline;
 
-			for (const Point64 &scaled_point : scaled_path) {
-				shape_outline.push_back(Point2(static_cast<real_t>(scaled_point.x), static_cast<real_t>(scaled_point.y)));
-			}
-
-			for (int j = 0; j < shape_outline.size(); j++) {
-				shape_outline.set(j, transform.xform(shape_outline[j]));
+			for (int j = 0; j < mesh_path.size(); j++) {
+				const Vector2 &mesh_path_point = mesh_path[j];
+				shape_outline.push_back(transform.xform(mesh_path_point));
 			}
 
 			p_source_geometry->add_obstruction_outline(shape_outline);
 		}
 	}
-#endif // MODULE_CLIPPER2_ENABLED
 }
