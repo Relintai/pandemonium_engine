@@ -22,6 +22,9 @@ SOFTWARE.
 
 #include "register_types.h"
 
+#include "geometry_parser/tilemap_navigation_geometry_parser_2d.h"
+#include "servers/navigation/navigation_mesh_generator.h"
+
 #include "tile_map.h"
 #include "tile_set.h"
 
@@ -34,6 +37,8 @@ void register_tile_map_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 		ClassDB::register_class<TileMap>();
 		ClassDB::register_class<TileSet>();
+
+		NavigationMeshGenerator::get_singleton()->register_geometry_parser_2d(memnew(TileMap2DNavigationGeometryParser2D));
 	}
 
 #ifdef TOOLS_ENABLED
