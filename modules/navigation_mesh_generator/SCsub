@@ -47,11 +47,5 @@ if env["tools"]:
 
 env.modules_sources += module_obj
 
-# Temp TODO Remove
-if env_navigation_mesh_generator.msvc:
-    env_navigation_mesh_generator.Append(CXXFLAGS=['/std:c++17'])
-else:
-	env_navigation_mesh_generator.Append(CXXFLAGS=['-std=c++17'])
-
 # Needed to force rebuilding the module files when the thirdparty library is updated.
 #env.Depends(module_obj, thirdparty_obj)
