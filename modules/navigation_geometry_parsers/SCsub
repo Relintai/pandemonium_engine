@@ -14,9 +14,3 @@ env_navigation.add_source_files(module_obj, "geometry_parser_2d/*.cpp")
 env_navigation.add_source_files(module_obj, "geometry_parser_3d/*.cpp")
 
 env.modules_sources += module_obj
-
-# Temp TODO Remove
-if env_navigation.msvc:
-    env_navigation.Append(CXXFLAGS=['/std:c++17'])
-else:
-	env_navigation.Append(CXXFLAGS=['-std=c++17'])
