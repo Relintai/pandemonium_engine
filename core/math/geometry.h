@@ -771,6 +771,12 @@ public:
 		END_SQUARE,
 		END_ROUND
 	};
+	enum PolygonFillType {
+		POLYGON_FILL_TYPE_EVEN_ODD,
+		POLYGON_FILL_TYPE_NON_ZERO,
+		POLYGON_FILL_TYPE_POSITIVE,
+		POLYGON_FILL_TYPE_NEGATIVE,
+	};
 
 	static Vector<Vector<Point2>> merge_polygons_2d(const Vector<Point2> &p_polygon_a, const Vector<Point2> &p_polygon_b) {
 		return _polypaths_do_operation(OPERATION_UNION, p_polygon_a, p_polygon_b);
@@ -798,6 +804,18 @@ public:
 
 	static Vector<Vector<Point2>> offset_polygon_2d(const Vector<Vector2> &p_polygon, real_t p_delta, PolyJoinType p_join_type) {
 		return _polypath_offset(p_polygon, p_delta, p_join_type, END_POLYGON);
+	}
+
+	static Vector<Vector<Point2>> merge_all_polygons_2d(const Vector<Vector<Point2>> &p_polygons, const Vector<Point2> &p_polypath_clip, PolygonFillType fill_type = POLYGON_FILL_TYPE_EVEN_ODD) {
+		return _polypaths_do_operations(OPERATION_UNION, p_polygons, p_polypath_clip, fill_type);
+	}
+
+	static Vector<Vector<Point2>> clip_all2_polygons_2d(const Vector<Vector<Point2>> &p_polygons, const Vector<Vector<Point2>> &p_polypath_clip, PolygonFillType fill_type = POLYGON_FILL_TYPE_EVEN_ODD) {
+		return _polypaths2_do_operations(OPERATION_DIFFERENCE, p_polygons, p_polypath_clip, fill_type);
+	}
+
+	static bool merge_convex_decompose_polygon_2d(const Vector<Vector<Point2>> &p_polygons, PoolVector<Vector2> &r_new_vertices, Vector<Vector<int>> &r_new_polygons, PolygonFillType fill_type = POLYGON_FILL_TYPE_EVEN_ODD) {
+		return _merge_convex_decompose_polygon_2d(OPERATION_UNION, p_polygons, r_new_vertices, r_new_polygons, fill_type);
 	}
 
 	static Vector<Vector<Point2>> offset_polyline_2d(const Vector<Vector2> &p_polygon, real_t p_delta, PolyJoinType p_join_type, PolyEndType p_end_type) {
@@ -1110,6 +1128,9 @@ public:
 private:
 	static Vector<Vector<Point2>> _polypaths_do_operation(PolyBooleanOperation p_op, const Vector<Point2> &p_polypath_a, const Vector<Point2> &p_polypath_b, bool is_a_open = false);
 	static Vector<Vector<Point2>> _polypath_offset(const Vector<Point2> &p_polypath, real_t p_delta, PolyJoinType p_join_type, PolyEndType p_end_type);
+	static Vector<Vector<Point2>> _polypaths_do_operations(PolyBooleanOperation p_op, const Vector<Vector<Point2>> &p_polypaths, const Vector<Point2> &p_polypath_clip, PolygonFillType fill_type, bool is_a_open = false);
+	static Vector<Vector<Point2>> _polypaths2_do_operations(PolyBooleanOperation p_op, const Vector<Vector<Point2>> &p_polypaths, const Vector<Vector<Point2>> &p_polypath_clip, PolygonFillType fill_type, bool is_a_open = false);
+	static bool _merge_convex_decompose_polygon_2d(PolyBooleanOperation p_op, const Vector<Vector<Point2>> &p_polygons, PoolVector<Vector2> &r_new_vertices, Vector<Vector<int>> &r_new_polygons, PolygonFillType fill_type = POLYGON_FILL_TYPE_EVEN_ODD);
 };
 
 #endif

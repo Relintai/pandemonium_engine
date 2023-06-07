@@ -1278,6 +1278,316 @@ Vector<Vector<Point2>> Geometry::_polypath_offset(const Vector<Point2> &p_polypa
 	return polypaths;
 }
 
+Vector<Vector<Point2>> Geometry::_polypaths_do_operations(PolyBooleanOperation p_op, const Vector<Vector<Point2>> &p_polypaths, const Vector<Point2> &p_polypath_clip, PolygonFillType fill_type, bool is_a_open) {
+	using namespace ClipperLib;
+
+	ClipType op = ctUnion;
+
+	switch (p_op) {
+		case OPERATION_UNION:
+			op = ctUnion;
+			break;
+		case OPERATION_DIFFERENCE:
+			op = ctDifference;
+			break;
+		case OPERATION_INTERSECTION:
+			op = ctIntersection;
+			break;
+		case OPERATION_XOR:
+			op = ctXor;
+			break;
+	}
+
+	Paths in_paths;
+
+	// Need to scale points (Clipper's requirement for robust computation).
+	for (int j = 0; j < p_polypaths.size(); ++j) {
+		const Vector<Point2> &polypath = p_polypaths[j];
+
+		Path path_a;
+		for (int i = 0; i != polypath.size(); ++i) {
+			path_a << IntPoint(polypath[i].x * (real_t)SCALE_FACTOR, polypath[i].y * (real_t)SCALE_FACTOR);
+		}
+		in_paths << path_a;
+	}
+
+	Path path_clip;
+
+	for (int i = 0; i != p_polypath_clip.size(); ++i) {
+		path_clip << IntPoint(p_polypath_clip[i].x * (real_t)SCALE_FACTOR, p_polypath_clip[i].y * (real_t)SCALE_FACTOR);
+	}
+	Clipper clp;
+	clp.AddPaths(in_paths, ptSubject, !is_a_open);
+	clp.AddPath(path_clip, ptClip, true); // Polylines cannot be set as clip.
+
+	Paths paths;
+
+	PolyFillType pft;
+
+	switch (fill_type) {
+		case POLYGON_FILL_TYPE_EVEN_ODD:
+			pft = pftEvenOdd;
+			break;
+		case POLYGON_FILL_TYPE_NON_ZERO:
+			pft = pftNonZero;
+			break;
+		case POLYGON_FILL_TYPE_POSITIVE:
+			pft = pftPositive;
+			break;
+		case POLYGON_FILL_TYPE_NEGATIVE:
+			pft = pftNegative;
+			break;
+		default:
+			pft = pftEvenOdd;
+			break;
+	}
+
+	if (is_a_open) {
+		PolyTree tree; // Needed to populate polylines.
+		clp.Execute(op, tree, pft);
+		OpenPathsFromPolyTree(tree, paths);
+	} else {
+		clp.Execute(op, paths, pft); // Works on closed polygons only.
+	}
+	// Have to scale points down now.
+	Vector<Vector<Point2>> polypaths;
+
+	for (Paths::size_type i = 0; i < paths.size(); ++i) {
+		Vector<Vector2> polypath;
+
+		const Path &scaled_path = paths[i];
+
+		for (Paths::size_type j = 0; j < scaled_path.size(); ++j) {
+			polypath.push_back(Point2(
+					static_cast<real_t>(scaled_path[j].X) / (real_t)SCALE_FACTOR,
+					static_cast<real_t>(scaled_path[j].Y) / (real_t)SCALE_FACTOR));
+		}
+		polypaths.push_back(polypath);
+	}
+	return polypaths;
+}
+
+Vector<Vector<Point2>> Geometry::_polypaths2_do_operations(PolyBooleanOperation p_op, const Vector<Vector<Point2>> &p_polypaths, const Vector<Vector<Point2>> &p_polypath_clip, PolygonFillType fill_type, bool is_a_open) {
+	using namespace ClipperLib;
+
+	ClipType op = ctUnion;
+
+	switch (p_op) {
+		case OPERATION_UNION:
+			op = ctUnion;
+			break;
+		case OPERATION_DIFFERENCE:
+			op = ctDifference;
+			break;
+		case OPERATION_INTERSECTION:
+			op = ctIntersection;
+			break;
+		case OPERATION_XOR:
+			op = ctXor;
+			break;
+	}
+
+	Paths in_paths;
+
+	// Need to scale points (Clipper's requirement for robust computation).
+	for (int j = 0; j < p_polypaths.size(); ++j) {
+		const Vector<Point2> &polypath = p_polypaths[j];
+
+		Path path_a;
+		for (int i = 0; i != polypath.size(); ++i) {
+			path_a << IntPoint(polypath[i].x * (real_t)SCALE_FACTOR, polypath[i].y * (real_t)SCALE_FACTOR);
+		}
+		in_paths << path_a;
+	}
+
+	Paths paths_clip;
+
+	for (int j = 0; j < p_polypath_clip.size(); ++j) {
+		const Vector<Point2> &polypath = p_polypath_clip[j];
+
+		Path path_clip;
+
+		for (int i = 0; i != polypath.size(); ++i) {
+			path_clip << IntPoint(polypath[i].x * (real_t)SCALE_FACTOR, polypath[i].y * (real_t)SCALE_FACTOR);
+		}
+
+		paths_clip << path_clip;
+	}
+
+	Clipper clp;
+	clp.AddPaths(in_paths, ptSubject, !is_a_open);
+	clp.AddPaths(paths_clip, ptClip, true); // Polylines cannot be set as clip.
+
+	Paths paths;
+
+	PolyFillType pft;
+
+	switch (fill_type) {
+		case POLYGON_FILL_TYPE_EVEN_ODD:
+			pft = pftEvenOdd;
+			break;
+		case POLYGON_FILL_TYPE_NON_ZERO:
+			pft = pftNonZero;
+			break;
+		case POLYGON_FILL_TYPE_POSITIVE:
+			pft = pftPositive;
+			break;
+		case POLYGON_FILL_TYPE_NEGATIVE:
+			pft = pftNegative;
+			break;
+		default:
+			pft = pftEvenOdd;
+			break;
+	}
+
+	if (is_a_open) {
+		PolyTree tree; // Needed to populate polylines.
+		clp.Execute(op, tree, pft);
+		OpenPathsFromPolyTree(tree, paths);
+	} else {
+		clp.Execute(op, paths, pft); // Works on closed polygons only.
+	}
+	// Have to scale points down now.
+	Vector<Vector<Point2>> polypaths;
+
+	for (Paths::size_type i = 0; i < paths.size(); ++i) {
+		Vector<Vector2> polypath;
+
+		const Path &scaled_path = paths[i];
+
+		for (Paths::size_type j = 0; j < scaled_path.size(); ++j) {
+			polypath.push_back(Point2(
+					static_cast<real_t>(scaled_path[j].X) / (real_t)SCALE_FACTOR,
+					static_cast<real_t>(scaled_path[j].Y) / (real_t)SCALE_FACTOR));
+		}
+		polypaths.push_back(polypath);
+	}
+	return polypaths;
+}
+
+static void _recursive_process_polytree_items(List<TriangulatorPoly> &p_tppl_in_polygon, const ClipperLib::PolyNode *p_polypath_item) {
+	using namespace ClipperLib;
+
+	Vector<Vector2> polygon_vertices;
+
+	for (uint32_t i = 0; i < p_polypath_item->Contour.size(); ++i) {
+		const IntPoint &polypath_point = p_polypath_item->Contour[i];
+		// Have to scale points down now.
+		polygon_vertices.push_back(Vector2(static_cast<real_t>(polypath_point.X / (real_t)SCALE_FACTOR), static_cast<real_t>(polypath_point.Y / (real_t)SCALE_FACTOR)));
+	}
+
+	TriangulatorPoly tp;
+	tp.Init(polygon_vertices.size());
+	for (int j = 0; j < polygon_vertices.size(); j++) {
+		tp[j] = polygon_vertices[j];
+	}
+
+	if (p_polypath_item->IsHole()) {
+		tp.SetOrientation(TRIANGULATOR_CW);
+		tp.SetHole(true);
+	} else {
+		tp.SetOrientation(TRIANGULATOR_CCW);
+	}
+	p_tppl_in_polygon.push_back(tp);
+
+	for (int i = 0; i < p_polypath_item->ChildCount(); i++) {
+		const ClipperLib::PolyNode *polypath_item = p_polypath_item->Childs[i];
+		_recursive_process_polytree_items(p_tppl_in_polygon, polypath_item);
+	}
+}
+
+bool Geometry::_merge_convex_decompose_polygon_2d(Geometry::PolyBooleanOperation p_op, const Vector<Vector<Point2>> &p_polygons, PoolVector<Vector2> &r_new_vertices, Vector<Vector<int>> &r_new_polygons, Geometry::PolygonFillType fill_type) {
+	using namespace ClipperLib;
+
+	ClipType op = ctUnion;
+
+	switch (p_op) {
+		case OPERATION_UNION:
+			op = ctUnion;
+			break;
+		case OPERATION_DIFFERENCE:
+			op = ctDifference;
+			break;
+		case OPERATION_INTERSECTION:
+			op = ctIntersection;
+			break;
+		case OPERATION_XOR:
+			op = ctXor;
+			break;
+	}
+
+	PolyFillType pft;
+
+	switch (fill_type) {
+		case POLYGON_FILL_TYPE_EVEN_ODD:
+			pft = pftEvenOdd;
+			break;
+		case POLYGON_FILL_TYPE_NON_ZERO:
+			pft = pftNonZero;
+			break;
+		case POLYGON_FILL_TYPE_POSITIVE:
+			pft = pftPositive;
+			break;
+		case POLYGON_FILL_TYPE_NEGATIVE:
+			pft = pftNegative;
+			break;
+		default:
+			pft = pftEvenOdd;
+			break;
+	}
+
+	Paths polygon_paths_scaled;
+
+	for (int i = 0; i < p_polygons.size(); i++) {
+		const Vector<Vector2> &baked_outline = p_polygons[i];
+
+		Path polygon_path;
+		for (int j = 0; j < baked_outline.size(); ++j) {
+			const Vector2 &baked_outline_point = baked_outline[j];
+
+			polygon_path << IntPoint(baked_outline_point.x * (real_t)SCALE_FACTOR, baked_outline_point.y * (real_t)SCALE_FACTOR);
+		}
+		polygon_paths_scaled.push_back(polygon_path);
+	}
+
+	PolyTree polytree;
+	Clipper clp;
+
+	clp.AddPaths(polygon_paths_scaled, ptSubject, true);
+	clp.Execute(op, polytree, pft);
+
+	List<TriangulatorPoly> tppl_in_polygon, tppl_out_polygon;
+
+	for (int i = 0; i < polytree.ChildCount(); i++) {
+		const ClipperLib::PolyNode *polypath_item = polytree.Childs[i];
+		_recursive_process_polytree_items(tppl_in_polygon, polypath_item);
+	}
+	TriangulatorPartition tpart;
+	if (tpart.ConvexPartition_HM(&tppl_in_polygon, &tppl_out_polygon) == 0) { //failed!
+		return false;
+	}
+
+	HashMap<Vector2, int> points;
+	for (List<TriangulatorPoly>::Element *I = tppl_out_polygon.front(); I; I = I->next()) {
+		TriangulatorPoly &tp = I->get();
+
+		Vector<int> new_polygon;
+
+		for (int64_t i = 0; i < tp.GetNumPoints(); i++) {
+			HashMap<Vector2, int>::Element *E = points.find(tp[i]);
+			if (!E) {
+				E = points.insert(tp[i], r_new_vertices.size());
+				r_new_vertices.push_back(tp[i]);
+			}
+			new_polygon.push_back(E->value());
+		}
+
+		r_new_polygons.push_back(new_polygon);
+	}
+
+	return true;
+}
+
 real_t Geometry::calculate_convex_hull_volume(const Geometry::MeshData &p_md) {
 	if (!p_md.vertices.size()) {
 		return 0;
