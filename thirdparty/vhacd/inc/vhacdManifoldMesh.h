@@ -20,6 +20,11 @@ All rights reserved.
 #include "vhacdCircularList.h"
 #include "vhacdSArray.h"
 #include "vhacdVector.h"
+
+// -- GODOT start --
+#include <cstdint>
+// -- GODOT end --
+
 namespace VHACD {
 class TMMTriangle;
 class TMMEdge;
