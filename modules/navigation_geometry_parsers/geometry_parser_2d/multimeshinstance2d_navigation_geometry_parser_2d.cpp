@@ -30,24 +30,18 @@
 
 #include "multimeshinstance2d_navigation_geometry_parser_2d.h"
 
+#include "core/math/geometry.h"
 #include "scene/2d/multimesh_instance_2d.h"
 #include "scene/resources/multimesh.h"
 
 #include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_polygon.h"
 
-#include "modules/modules_enabled.gen.h"
-
-#ifdef MODULE_CLIPPER2_ENABLED
-#include "modules/clipper2/lib/include/clipper2/clipper.h"
-#endif // MODULE_CLIPPER2_ENABLED
-
 bool MultiMeshInstance2DNavigationGeometryParser2D::parses_node(Node *p_node) {
 	return (Object::cast_to<MultiMeshInstance2D>(p_node) != nullptr);
 }
 
 void MultiMeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {
-#ifdef MODULE_CLIPPER2_ENABLED
 	NavigationPolygon::ParsedGeometryType parsed_geometry_type = p_navigation_polygon->get_parsed_geometry_type();
 
 	if (Object::cast_to<MultiMeshInstance2D>(p_node) && parsed_geometry_type != NavigationPolygon::PARSED_GEOMETRY_STATIC_COLLIDERS) {
@@ -56,9 +50,7 @@ void MultiMeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node,
 		if (multimesh.is_valid() && multimesh->get_transform_format() == MultiMesh::TRANSFORM_2D) {
 			Ref<Mesh> mesh = multimesh->get_mesh();
 			if (mesh.is_valid()) {
-				using namespace Clipper2Lib;
-
-				Paths64 mesh_subject_paths, dummy_clip_paths;
+				Vector<Vector<Point2>> mesh_subject_paths, dummy_clip_paths;
 
 				for (int i = 0; i < mesh->get_surface_count(); i++) {
 					if (mesh->surface_get_primitive_type(i) != Mesh::PRIMITIVE_TRIANGLES) {
@@ -69,7 +61,7 @@ void MultiMeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node,
 						continue;
 					}
 
-					Path64 subject_path;
+					Vector<Point2> subject_path;
 
 					int index_count = 0;
 					if (mesh->surface_get_format(i) & Mesh::ARRAY_FORMAT_INDEX) {
@@ -89,49 +81,42 @@ void MultiMeshInstance2DNavigationGeometryParser2D::parse_geometry(Node *p_node,
 
 						for (int j = 0; j < mesh_indices.size(); ++j) {
 							int vertex_index = mesh_indices[j];
-
 							const Vector2 &vertex = mesh_vertices[vertex_index];
-							const Point64 &point = Point64(vertex.x, vertex.y);
-							subject_path.push_back(point);
+							subject_path.push_back(vertex);
 						}
 					} else {
 						for (int j = 0; j < mesh_vertices.size(); ++j) {
 							const Vector2 &vertex = mesh_vertices[j];
-
-							const Point64 &point = Point64(vertex.x, vertex.y);
-							subject_path.push_back(point);
+							subject_path.push_back(vertex);
 						}
 					}
 					mesh_subject_paths.push_back(subject_path);
 				}
 
-				Paths64 mesh_path_solution = Union(mesh_subject_paths, dummy_clip_paths, FillRule::NonZero);
-
-				//path_solution = RamerDouglasPeucker(path_solution, 0.025);
+				Vector<Vector<Point2>> mesh_path_solution = Geometry::merge_all2_polygons_2d(mesh_subject_paths, dummy_clip_paths, Geometry::POLYGON_FILL_TYPE_NON_ZERO);
 
 				int multimesh_instance_count = multimesh->get_visible_instance_count();
 				if (multimesh_instance_count == -1) {
 					multimesh_instance_count = multimesh->get_instance_count();
 				}
+
 				for (int i = 0; i < multimesh_instance_count; i++) {
 					const Transform2D multimesh_instance_transform = multimesh_instance->get_transform() * multimesh->get_instance_transform_2d(i);
 
-					for (const Path64 &mesh_path : mesh_path_solution) {
+					for (int k = 0; k < mesh_path_solution.size(); ++k) {
+						const Vector<Point2> &mesh_path = mesh_path_solution[k];
+
 						PoolVector<Vector2> shape_outline;
 
-						for (const Point64 &mesh_path_point : mesh_path) {
-							shape_outline.push_back(Point2(static_cast<real_t>(mesh_path_point.x), static_cast<real_t>(mesh_path_point.y)));
+						for (int j = 0; j < mesh_path.size(); j++) {
+							const Vector2 &mesh_path_point = mesh_path[j];
+							shape_outline.push_back(multimesh_instance_transform.xform(mesh_path_point));
 						}
 
-						for (int j = 0; j < shape_outline.size(); j++) {
-							shape_outline.set(j, multimesh_instance_transform.xform(shape_outline[j]));
-						}
-						
 						p_source_geometry->add_obstruction_outline(shape_outline);
 					}
 				}
 			}
 		}
 	}
-#endif // MODULE_CLIPPER2_ENABLED
 }

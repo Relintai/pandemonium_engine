@@ -810,6 +810,10 @@ public:
 		return _polypaths_do_operations(OPERATION_UNION, p_polygons, p_polypath_clip, fill_type);
 	}
 
+	static Vector<Vector<Point2>> merge_all2_polygons_2d(const Vector<Vector<Point2>> &p_polygons, const Vector<Vector<Point2>> &p_polypath_clip, PolygonFillType fill_type = POLYGON_FILL_TYPE_EVEN_ODD) {
+		return _polypaths2_do_operations(OPERATION_UNION, p_polygons, p_polypath_clip, fill_type);
+	}
+
 	static Vector<Vector<Point2>> clip_all2_polygons_2d(const Vector<Vector<Point2>> &p_polygons, const Vector<Vector<Point2>> &p_polypath_clip, PolygonFillType fill_type = POLYGON_FILL_TYPE_EVEN_ODD) {
 		return _polypaths2_do_operations(OPERATION_DIFFERENCE, p_polygons, p_polypath_clip, fill_type);
 	}

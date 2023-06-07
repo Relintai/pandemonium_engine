@@ -39,16 +39,11 @@
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef MODULE_CLIPPER2_ENABLED
-#include "modules/clipper2/lib/include/clipper2/clipper.h"
-#endif // MODULE_CLIPPER2_ENABLED
-
 bool TileMap2DNavigationGeometryParser2D::parses_node(Node *p_node) {
 	return (Object::cast_to<TileMap>(p_node) != nullptr);
 }
 
 void TileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {
-#ifdef MODULE_CLIPPER2_ENABLED
 	TileMap *tilemap = Object::cast_to<TileMap>(p_node);
 	//NavigationPolygon::ParsedGeometryType parsed_geometry_type = p_navigation_polygon->get_parsed_geometry_type();
 	//uint32_t navigation_polygon_collision_mask = p_navigation_polygon->get_collision_mask();
@@ -87,7 +82,7 @@ void TileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Navig
 					p_source_geometry->_add_traversable_outline(traversable_outline_new);
 				}
 			}
-			
+
 			/*
 			TODO
 			if (parsed_geometry_type != NavigationPolygon::PARSED_GEOMETRY_MESH_INSTANCES && (tilemap->get_collision_layer() & navigation_polygon_collision_mask)) {
@@ -105,4 +100,3 @@ void TileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Navig
 		}
 	}
 }
-#endif // MODULE_CLIPPER2_ENABLED
