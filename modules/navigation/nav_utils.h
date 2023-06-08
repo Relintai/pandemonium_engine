@@ -33,9 +33,7 @@
 #include "core/math/vector3.h"
 #include "core/containers/rid.h"
 
-#include <vector>
-
-class NavRegion;
+class NavBase;
 
 namespace gd {
 struct Polygon;
@@ -73,14 +71,18 @@ struct Point {
 };
 
 struct Edge {
-	/// This edge ID
-	int this_edge;
-
 	/// The gateway in the edge, as, in some case, the whole edge might not be navigable.
 	struct Connection {
+		/// Polygon that this connection leads to.
 		Polygon *polygon;
+
+		/// Edge of the source polygon where this connection starts from.
 		int edge;
+
+		/// Point on the edge where the gateway leading to the poly starts.
 		Vector3 pathway_start;
+
+		/// Point on the edge where the gateway leading to the poly ends.
 		Vector3 pathway_end;
 
 		Connection() {
@@ -89,20 +91,21 @@ struct Edge {
 		}
 	};
 
+	/// Connections from this edge to other polygons.
 	Vector<Connection> connections;
 
 	Edge() {
-		this_edge = -1;
 	}
 };
 
 struct Polygon {
-	NavRegion *owner;
+	/// Navigation region or link that contains this polygon.
+	NavBase *owner;
 
 	/// The points of this `Polygon`
 	LocalVector<Point> points;
 
-	/// Are the points clockwise ?
+	/// Are the points clockwise?
 	bool clockwise;
 
 	/// The edges of this `Polygon`
@@ -123,7 +126,7 @@ struct NavigationPoly {
 
 	/// Those 4 variables are used to travel the path backwards.
 	int back_navigation_poly_id;
-	uint32_t back_navigation_edge;
+	int back_navigation_edge;
 	Vector3 back_navigation_edge_pathway_start;
 	Vector3 back_navigation_edge_pathway_end;
 
@@ -141,7 +144,7 @@ struct NavigationPoly {
 		back_navigation_poly_id = -1;
 		back_navigation_edge = UINT32_MAX;
 
-		back_navigation_edge = 0;
+		back_navigation_edge = -1;
 		traveled_distance = 0.0;
 	}
 

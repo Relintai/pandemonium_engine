@@ -49,10 +49,13 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("map_get_cell_height", "map"), &Navigation2DServer::map_get_cell_size);
 	ClassDB::bind_method(D_METHOD("map_set_edge_connection_margin", "map", "margin"), &Navigation2DServer::map_set_edge_connection_margin);
 	ClassDB::bind_method(D_METHOD("map_get_edge_connection_margin", "map"), &Navigation2DServer::map_get_edge_connection_margin);
+	ClassDB::bind_method(D_METHOD("map_set_link_connection_radius", "map", "radius"), &Navigation2DServer::map_set_link_connection_radius);
+	ClassDB::bind_method(D_METHOD("map_get_link_connection_radius", "map"), &Navigation2DServer::map_get_link_connection_radius);
 	ClassDB::bind_method(D_METHOD("map_get_path", "map", "origin", "destination", "optimize", "navigation_layers"), &Navigation2DServer::map_get_path, 1);
 	ClassDB::bind_method(D_METHOD("map_get_closest_point", "map", "to_point"), &Navigation2DServer::map_get_closest_point);
 	ClassDB::bind_method(D_METHOD("map_get_closest_point_owner", "map", "to_point"), &Navigation2DServer::map_get_closest_point_owner);
 
+	ClassDB::bind_method(D_METHOD("map_get_links", "map"), &Navigation2DServer::map_get_links);
 	ClassDB::bind_method(D_METHOD("map_get_regions", "map"), &Navigation2DServer::map_get_regions);
 	ClassDB::bind_method(D_METHOD("map_get_agents", "map"), &Navigation2DServer::map_get_agents);
 	ClassDB::bind_method(D_METHOD("map_force_update", "map"), &Navigation2DServer::map_force_update);
@@ -72,6 +75,22 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("region_get_connections_count", "region"), &Navigation2DServer::region_get_connections_count);
 	ClassDB::bind_method(D_METHOD("region_get_connection_pathway_start", "region", "connection"), &Navigation2DServer::region_get_connection_pathway_start);
 	ClassDB::bind_method(D_METHOD("region_get_connection_pathway_end", "region", "connection"), &Navigation2DServer::region_get_connection_pathway_end);
+
+	ClassDB::bind_method(D_METHOD("link_create"), &Navigation2DServer::link_create);
+	ClassDB::bind_method(D_METHOD("link_set_map", "link", "map"), &Navigation2DServer::link_set_map);
+	ClassDB::bind_method(D_METHOD("link_get_map", "link"), &Navigation2DServer::link_get_map);
+	ClassDB::bind_method(D_METHOD("link_set_bidirectional", "link", "bidirectional"), &Navigation2DServer::link_set_bidirectional);
+	ClassDB::bind_method(D_METHOD("link_is_bidirectional", "link"), &Navigation2DServer::link_is_bidirectional);
+	ClassDB::bind_method(D_METHOD("link_set_navigation_layers", "link", "navigation_layers"), &Navigation2DServer::link_set_navigation_layers);
+	ClassDB::bind_method(D_METHOD("link_get_navigation_layers", "link"), &Navigation2DServer::link_get_navigation_layers);
+	ClassDB::bind_method(D_METHOD("link_set_start_location", "link", "location"), &Navigation2DServer::link_set_start_location);
+	ClassDB::bind_method(D_METHOD("link_get_start_location", "link"), &Navigation2DServer::link_get_start_location);
+	ClassDB::bind_method(D_METHOD("link_set_end_location", "link", "location"), &Navigation2DServer::link_set_end_location);
+	ClassDB::bind_method(D_METHOD("link_get_end_location", "link"), &Navigation2DServer::link_get_end_location);
+	ClassDB::bind_method(D_METHOD("link_set_enter_cost", "link", "enter_cost"), &Navigation2DServer::link_set_enter_cost);
+	ClassDB::bind_method(D_METHOD("link_get_enter_cost", "link"), &Navigation2DServer::link_get_enter_cost);
+	ClassDB::bind_method(D_METHOD("link_set_travel_cost", "link", "travel_cost"), &Navigation2DServer::link_set_travel_cost);
+	ClassDB::bind_method(D_METHOD("link_get_travel_cost", "link"), &Navigation2DServer::link_get_travel_cost);
 
 	ClassDB::bind_method(D_METHOD("agent_create"), &Navigation2DServer::agent_create);
 	ClassDB::bind_method(D_METHOD("agent_set_map", "agent", "map"), &Navigation2DServer::agent_set_map);
@@ -111,6 +130,29 @@ Navigation2DServer::Navigation2DServer() {
 Navigation2DServer::~Navigation2DServer() {
 	singleton = nullptr;
 }
+
+#ifdef DEBUG_ENABLED
+void Navigation2DServer::set_debug_enabled(bool p_enabled) {
+	NavigationServer::get_singleton_mut()->set_debug_enabled(p_enabled);
+}
+bool Navigation2DServer::get_debug_enabled() const {
+	return NavigationServer::get_singleton()->get_debug_enabled();
+}
+
+void Navigation2DServer::set_debug_navigation_link_connection_color(const Color &p_color) {
+	NavigationServer::get_singleton_mut()->set_debug_navigation_link_connection_color(p_color);
+}
+Color Navigation2DServer::get_debug_navigation_link_connection_color() const {
+	return NavigationServer::get_singleton()->get_debug_navigation_link_connection_color();
+}
+
+void Navigation2DServer::set_debug_navigation_link_connection_disabled_color(const Color &p_color) {
+	NavigationServer::get_singleton_mut()->set_debug_navigation_link_connection_disabled_color(p_color);
+}
+Color Navigation2DServer::get_debug_navigation_link_connection_disabled_color() const {
+	return NavigationServer::get_singleton()->get_debug_navigation_link_connection_disabled_color();
+}
+#endif
 
 Vector<Navigation2DServerManager::ClassInfo> Navigation2DServerManager::navigation_servers;
 int Navigation2DServerManager::default_server_id = -1;

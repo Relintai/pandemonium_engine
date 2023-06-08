@@ -52,6 +52,12 @@
 		return NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0)); \
 	}
 
+#define FORWARD_1_R_C(CONV_R, FUNC_NAME, T_0, D_0, CONV_0)                          \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0)                                          \
+			const {                                                                 \
+		return CONV_R(NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0))); \
+	}
+
 #define FORWARD_2_C(FUNC_NAME, T_0, D_0, T_1, D_1, CONV_0, CONV_1)                     \
 	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1)                         \
 			const {                                                                    \
@@ -194,6 +200,8 @@ PandemoniumNavigation2DServer::~PandemoniumNavigation2DServer() {
 
 Array FORWARD_0_C(get_maps);
 
+Array FORWARD_1_C(map_get_links, RID, p_map, rid_to_rid);
+
 Array FORWARD_1_C(map_get_regions, RID, p_map, rid_to_rid);
 
 Array FORWARD_1_C(map_get_agents, RID, p_map, rid_to_rid);
@@ -221,6 +229,9 @@ real_t FORWARD_1_C(map_get_cell_height, RID, p_map, rid_to_rid);
 void FORWARD_2_C(map_set_edge_connection_margin, RID, p_map, real_t, p_connection_margin, rid_to_rid, real_to_real);
 real_t FORWARD_1_C(map_get_edge_connection_margin, RID, p_map, rid_to_rid);
 
+void FORWARD_2_C(map_set_link_connection_radius, RID, p_map, real_t, p_connection_radius, rid_to_rid, real_to_real);
+real_t FORWARD_1_C(map_get_link_connection_radius, RID, p_map, rid_to_rid);
+
 Vector<Vector2> FORWARD_5_R_C(vector_v3_to_v2, map_get_path, RID, p_map, Vector2, p_origin, Vector2, p_destination, bool, p_optimize, uint32_t, p_navigation_layers, rid_to_rid, v2_to_v3, v2_to_v3, bool_to_bool, uint32_to_uint32);
 
 Vector2 FORWARD_2_R_C(v3_to_v2, map_get_closest_point, RID, p_map, const Vector2 &, p_point, rid_to_rid, v2_to_v3);
@@ -246,6 +257,23 @@ void PandemoniumNavigation2DServer::region_set_navpoly(RID p_region, Ref<Navigat
 int FORWARD_1_C(region_get_connections_count, RID, p_region, rid_to_rid);
 Vector2 FORWARD_2_R_C(v3_to_v2, region_get_connection_pathway_start, RID, p_region, int, p_connection_id, rid_to_rid, int_to_int);
 Vector2 FORWARD_2_R_C(v3_to_v2, region_get_connection_pathway_end, RID, p_region, int, p_connection_id, rid_to_rid, int_to_int);
+
+RID FORWARD_0_C(link_create);
+
+void FORWARD_2_C(link_set_map, RID, p_link, RID, p_map, rid_to_rid, rid_to_rid);
+RID FORWARD_1_C(link_get_map, RID, p_link, rid_to_rid);
+void FORWARD_2_C(link_set_bidirectional, RID, p_link, bool, p_bidirectional, rid_to_rid, bool_to_bool);
+bool FORWARD_1_C(link_is_bidirectional, RID, p_link, rid_to_rid);
+void FORWARD_2_C(link_set_navigation_layers, RID, p_link, uint32_t, p_navigation_layers, rid_to_rid, uint32_to_uint32);
+uint32_t FORWARD_1_C(link_get_navigation_layers, RID, p_link, rid_to_rid);
+void FORWARD_2_C(link_set_start_location, RID, p_link, Vector2, p_location, rid_to_rid, v2_to_v3);
+Vector2 FORWARD_1_R_C(v3_to_v2, link_get_start_location, RID, p_link, rid_to_rid);
+void FORWARD_2_C(link_set_end_location, RID, p_link, Vector2, p_location, rid_to_rid, v2_to_v3);
+Vector2 FORWARD_1_R_C(v3_to_v2, link_get_end_location, RID, p_link, rid_to_rid);
+void FORWARD_2_C(link_set_enter_cost, RID, p_link, real_t, p_enter_cost, rid_to_rid, real_to_real);
+real_t FORWARD_1_C(link_get_enter_cost, RID, p_link, rid_to_rid);
+void FORWARD_2_C(link_set_travel_cost, RID, p_link, real_t, p_travel_cost, rid_to_rid, real_to_real);
+real_t FORWARD_1_C(link_get_travel_cost, RID, p_link, rid_to_rid);
 
 RID PandemoniumNavigation2DServer::agent_create() const {
 	RID agent = NavigationServer::get_singleton()->agent_create();

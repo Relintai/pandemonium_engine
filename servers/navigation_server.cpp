@@ -60,12 +60,15 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("map_get_cell_height", "map"), &NavigationServer::map_get_cell_height);
 	ClassDB::bind_method(D_METHOD("map_set_edge_connection_margin", "map", "margin"), &NavigationServer::map_set_edge_connection_margin);
 	ClassDB::bind_method(D_METHOD("map_get_edge_connection_margin", "map"), &NavigationServer::map_get_edge_connection_margin);
+	ClassDB::bind_method(D_METHOD("map_set_link_connection_radius", "map", "radius"), &NavigationServer::map_set_link_connection_radius);
+	ClassDB::bind_method(D_METHOD("map_get_link_connection_radius", "map"), &NavigationServer::map_get_link_connection_radius);
 	ClassDB::bind_method(D_METHOD("map_get_path", "map", "origin", "destination", "optimize", "navigation_layers"), &NavigationServer::map_get_path, 1);
 	ClassDB::bind_method(D_METHOD("map_get_closest_point_to_segment", "map", "start", "end", "use_collision"), &NavigationServer::map_get_closest_point_to_segment, false);
 	ClassDB::bind_method(D_METHOD("map_get_closest_point", "map", "to_point"), &NavigationServer::map_get_closest_point);
 	ClassDB::bind_method(D_METHOD("map_get_closest_point_normal", "map", "to_point"), &NavigationServer::map_get_closest_point_normal);
 	ClassDB::bind_method(D_METHOD("map_get_closest_point_owner", "map", "to_point"), &NavigationServer::map_get_closest_point_owner);
 
+	ClassDB::bind_method(D_METHOD("map_get_links", "map"), &NavigationServer::map_get_links);
 	ClassDB::bind_method(D_METHOD("map_get_regions", "map"), &NavigationServer::map_get_regions);
 	ClassDB::bind_method(D_METHOD("map_get_agents", "map"), &NavigationServer::map_get_agents);
 	ClassDB::bind_method(D_METHOD("map_force_update", "map"), &NavigationServer::map_force_update);
@@ -90,6 +93,22 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("region_get_connections_count", "region"), &NavigationServer::region_get_connections_count);
 	ClassDB::bind_method(D_METHOD("region_get_connection_pathway_start", "region", "connection"), &NavigationServer::region_get_connection_pathway_start);
 	ClassDB::bind_method(D_METHOD("region_get_connection_pathway_end", "region", "connection"), &NavigationServer::region_get_connection_pathway_end);
+
+	ClassDB::bind_method(D_METHOD("link_create"), &NavigationServer::link_create);
+	ClassDB::bind_method(D_METHOD("link_set_map", "link", "map"), &NavigationServer::link_set_map);
+	ClassDB::bind_method(D_METHOD("link_get_map", "link"), &NavigationServer::link_get_map);
+	ClassDB::bind_method(D_METHOD("link_set_bidirectional", "link", "bidirectional"), &NavigationServer::link_set_bidirectional);
+	ClassDB::bind_method(D_METHOD("link_is_bidirectional", "link"), &NavigationServer::link_is_bidirectional);
+	ClassDB::bind_method(D_METHOD("link_set_navigation_layers", "link", "navigation_layers"), &NavigationServer::link_set_navigation_layers);
+	ClassDB::bind_method(D_METHOD("link_get_navigation_layers", "link"), &NavigationServer::link_get_navigation_layers);
+	ClassDB::bind_method(D_METHOD("link_set_start_location", "link", "location"), &NavigationServer::link_set_start_location);
+	ClassDB::bind_method(D_METHOD("link_get_start_location", "link"), &NavigationServer::link_get_start_location);
+	ClassDB::bind_method(D_METHOD("link_set_end_location", "link", "location"), &NavigationServer::link_set_end_location);
+	ClassDB::bind_method(D_METHOD("link_get_end_location", "link"), &NavigationServer::link_get_end_location);
+	ClassDB::bind_method(D_METHOD("link_set_enter_cost", "link", "enter_cost"), &NavigationServer::link_set_enter_cost);
+	ClassDB::bind_method(D_METHOD("link_get_enter_cost", "link"), &NavigationServer::link_get_enter_cost);
+	ClassDB::bind_method(D_METHOD("link_set_travel_cost", "link", "travel_cost"), &NavigationServer::link_set_travel_cost);
+	ClassDB::bind_method(D_METHOD("link_get_travel_cost", "link"), &NavigationServer::link_get_travel_cost);
 
 	ClassDB::bind_method(D_METHOD("agent_create"), &NavigationServer::agent_create);
 	ClassDB::bind_method(D_METHOD("agent_set_map", "agent", "map"), &NavigationServer::agent_set_map);
@@ -138,11 +157,16 @@ NavigationServer::NavigationServer() {
 	_debug_navigation_geometry_face_color = GLOBAL_DEF("debug/shapes/navigation/geometry_face_color", Color(0.5, 1.0, 1.0, 0.4));
 	_debug_navigation_geometry_edge_disabled_color = GLOBAL_DEF("debug/shapes/navigation/geometry_edge_disabled_color", Color(0.5, 0.5, 0.5, 1.0));
 	_debug_navigation_geometry_face_disabled_color = GLOBAL_DEF("debug/shapes/navigation/geometry_face_disabled_color", Color(0.5, 0.5, 0.5, 0.4));
+	_debug_navigation_link_connection_color = GLOBAL_DEF("debug/shapes/navigation/link_connection_color", Color(1.0, 0.5, 1.0, 1.0));
+	_debug_navigation_link_connection_disabled_color = GLOBAL_DEF("debug/shapes/navigation/link_connection_disabled_color", Color(0.5, 0.5, 0.5, 1.0));
+
 	_debug_navigation_enable_edge_connections = GLOBAL_DEF("debug/shapes/navigation/enable_edge_connections", true);
 	_debug_navigation_enable_edge_connections_xray = GLOBAL_DEF("debug/shapes/navigation/enable_edge_connections_xray", true);
 	_debug_navigation_enable_edge_lines = GLOBAL_DEF("debug/shapes/navigation/enable_edge_lines", true);
 	_debug_navigation_enable_edge_lines_xray = GLOBAL_DEF("debug/shapes/navigation/enable_edge_lines_xray", true);
 	_debug_navigation_enable_geometry_face_random_color = GLOBAL_DEF("debug/shapes/navigation/enable_geometry_face_random_color", true);
+	_debug_navigation_enable_link_connections = GLOBAL_DEF("debug/shapes/navigation/enable_link_connections", true);
+	_debug_navigation_enable_link_connections_xray = GLOBAL_DEF("debug/shapes/navigation/enable_link_connections_xray", true);
 #endif // DEBUG_ENABLED
 }
 
@@ -264,6 +288,42 @@ Ref<SpatialMaterial> NavigationServer::get_debug_navigation_edge_connections_mat
 	return _debug_navigation_edge_connections_material;
 }
 
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_link_connections_material() {
+	if (_debug_navigation_link_connections_material.is_valid()) {
+		return _debug_navigation_link_connections_material;
+	}
+
+	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+
+	material->set_albedo(_debug_navigation_link_connection_color);
+	if (_debug_navigation_enable_link_connections_xray) {
+		material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, true);
+	}
+	material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MAX - 2);
+
+	_debug_navigation_link_connections_material = material;
+	return _debug_navigation_link_connections_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_link_connections_disabled_material() {
+	if (_debug_navigation_link_connections_disabled_material.is_valid()) {
+		return _debug_navigation_link_connections_disabled_material;
+	}
+
+	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+
+	material->set_albedo(_debug_navigation_link_connection_disabled_color);
+	if (_debug_navigation_enable_link_connections_xray) {
+		material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, true);
+	}
+	material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MAX - 2);
+
+	_debug_navigation_link_connections_disabled_material = material;
+	return _debug_navigation_link_connections_disabled_material;
+}
+
 void NavigationServer::set_debug_navigation_edge_connection_color(const Color &p_color) {
 	_debug_navigation_edge_connection_color = p_color;
 	if (_debug_navigation_edge_connections_material.is_valid()) {
@@ -319,6 +379,28 @@ Color NavigationServer::get_debug_navigation_geometry_face_disabled_color() cons
 	return _debug_navigation_geometry_face_disabled_color;
 }
 
+void NavigationServer::set_debug_navigation_link_connection_color(const Color &p_color) {
+	_debug_navigation_link_connection_color = p_color;
+	if (_debug_navigation_link_connections_material.is_valid()) {
+		_debug_navigation_link_connections_material->set_albedo(_debug_navigation_link_connection_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_link_connection_color() const {
+	return _debug_navigation_link_connection_color;
+}
+
+void NavigationServer::set_debug_navigation_link_connection_disabled_color(const Color &p_color) {
+	_debug_navigation_link_connection_disabled_color = p_color;
+	if (_debug_navigation_link_connections_disabled_material.is_valid()) {
+		_debug_navigation_link_connections_disabled_material->set_albedo(_debug_navigation_link_connection_disabled_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_link_connection_disabled_color() const {
+	return _debug_navigation_link_connection_disabled_color;
+}
+
 void NavigationServer::set_debug_navigation_enable_edge_connections(const bool p_value) {
 	_debug_navigation_enable_edge_connections = p_value;
 	_debug_dirty = true;
@@ -369,6 +451,27 @@ void NavigationServer::set_debug_navigation_enable_geometry_face_random_color(co
 
 bool NavigationServer::get_debug_navigation_enable_geometry_face_random_color() const {
 	return _debug_navigation_enable_geometry_face_random_color;
+}
+
+void NavigationServer::set_debug_navigation_enable_link_connections(const bool p_value) {
+	_debug_navigation_enable_link_connections = p_value;
+	_debug_dirty = true;
+	call_deferred("_emit_navigation_debug_changed_signal");
+}
+
+bool NavigationServer::get_debug_navigation_enable_link_connections() const {
+	return _debug_navigation_enable_link_connections;
+}
+
+void NavigationServer::set_debug_navigation_enable_link_connections_xray(const bool p_value) {
+	_debug_navigation_enable_link_connections_xray = p_value;
+	if (_debug_navigation_link_connections_material.is_valid()) {
+		_debug_navigation_link_connections_material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, _debug_navigation_enable_link_connections_xray);
+	}
+}
+
+bool NavigationServer::get_debug_navigation_enable_link_connections_xray() const {
+	return _debug_navigation_enable_link_connections_xray;
 }
 
 void NavigationServer::set_debug_enabled(bool p_enabled) {

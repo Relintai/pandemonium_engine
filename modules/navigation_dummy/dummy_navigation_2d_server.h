@@ -20,9 +20,15 @@ public:
 	virtual real_t map_get_cell_height(RID p_map) const { return 0; }
 	virtual void map_set_edge_connection_margin(RID p_map, real_t p_connection_margin) const {}
 	virtual real_t map_get_edge_connection_margin(RID p_map) const { return 0; }
+
+	virtual void map_set_link_connection_radius(RID p_map, real_t p_connection_radius) const {}
+	virtual real_t map_get_link_connection_radius(RID p_map) const { return 0; }
+
 	virtual Vector<Vector2> map_get_path(RID p_map, Vector2 p_origin, Vector2 p_destination, bool p_optimize, uint32_t p_navigation_layers = 1) const { return Vector<Vector2>(); }
 	virtual Vector2 map_get_closest_point(RID p_map, const Vector2 &p_point) const { return Vector2(); }
 	virtual RID map_get_closest_point_owner(RID p_map, const Vector2 &p_point) const { return RID(); }
+
+	virtual Array map_get_links(RID p_map) const { return Array(); }
 	virtual Array map_get_regions(RID p_map) const { return Array(); }
 	virtual Array map_get_agents(RID p_map) const { return Array(); }
 	virtual void map_force_update(RID p_map) {}
@@ -42,6 +48,22 @@ public:
 	virtual int region_get_connections_count(RID p_region) const { return 0; }
 	virtual Vector2 region_get_connection_pathway_start(RID p_region, int p_connection_id) const { return Vector2(); }
 	virtual Vector2 region_get_connection_pathway_end(RID p_region, int p_connection_id) const { return Vector2(); }
+
+	virtual RID link_create() const { return RID(); }
+	virtual void link_set_map(RID p_link, RID p_map) const {}
+	virtual RID link_get_map(RID p_link) const { return RID(); }
+	virtual void link_set_bidirectional(RID p_link, bool p_bidirectional) const {}
+	virtual bool link_is_bidirectional(RID p_link) const { return false; }
+	virtual void link_set_navigation_layers(RID p_link, uint32_t p_navigation_layers) const {}
+	virtual uint32_t link_get_navigation_layers(RID p_link) const { return 0; }
+	virtual void link_set_start_location(RID p_link, Vector2 p_location) const {}
+	virtual Vector2 link_get_start_location(RID p_link) const { return Vector2(); }
+	virtual void link_set_end_location(RID p_link, Vector2 p_location) const {}
+	virtual Vector2 link_get_end_location(RID p_link) const { return Vector2(); }
+	virtual void link_set_enter_cost(RID p_link, real_t p_enter_cost) const {}
+	virtual real_t link_get_enter_cost(RID p_link) const { return 0; }
+	virtual void link_set_travel_cost(RID p_link, real_t p_travel_cost) const {}
+	virtual real_t link_get_travel_cost(RID p_link) const { return 0; }
 
 	virtual RID agent_create() const { return RID(); }
 	virtual void agent_set_map(RID p_agent, RID p_map) const {}

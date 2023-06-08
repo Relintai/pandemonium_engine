@@ -54,6 +54,7 @@
 #include "scene/2d/navigation_2d.h"
 #include "scene/2d/navigation_agent_2d.h"
 #include "scene/2d/navigation_geometry_parser_2d.h"
+#include "scene/2d/navigation_link_2d.h"
 #include "scene/2d/navigation_obstacle_2d.h"
 #include "scene/2d/navigation_polygon_instance.h"
 #include "scene/2d/parallax_background.h"
@@ -199,6 +200,7 @@
 #include "scene/3d/navigation.h"
 #include "scene/3d/navigation_agent.h"
 #include "scene/3d/navigation_geometry_parser_3d.h"
+#include "scene/3d/navigation_link_3d.h"
 #include "scene/3d/navigation_mesh_instance.h"
 #include "scene/3d/navigation_obstacle.h"
 #include "scene/3d/occluder.h"
@@ -499,6 +501,7 @@ void register_scene_types() {
 	ClassDB::register_class<NavigationMeshInstance>();
 	ClassDB::register_class<NavigationAgent>();
 	ClassDB::register_class<NavigationObstacle>();
+	ClassDB::register_class<NavigationLink3D>();
 
 	OS::get_singleton()->yield(); //may take time to init
 
@@ -689,6 +692,7 @@ void register_scene_types() {
 	ClassDB::register_class<NavigationPolygonInstance>();
 	ClassDB::register_class<NavigationAgent2D>();
 	ClassDB::register_class<NavigationObstacle2D>();
+	ClassDB::register_class<NavigationLink2D>();
 
 	ClassDB::register_class<NavigationMeshSourceGeometryData2D>();
 	ClassDB::register_class<NavigationGeometryParser2D>();

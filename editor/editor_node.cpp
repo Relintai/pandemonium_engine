@@ -126,6 +126,7 @@
 #include "editor/plugins/mesh_editor_plugin.h"
 #include "editor/plugins/mesh_instance_editor_plugin.h"
 #include "editor/plugins/multimesh_editor_plugin.h"
+#include "editor/plugins/navigation_link_2d_editor_plugin.h"
 #include "editor/plugins/packed_scene_editor_plugin.h"
 #include "editor/plugins/path_2d_editor_plugin.h"
 #include "editor/plugins/path_editor_plugin.h"
@@ -7015,6 +7016,7 @@ EditorNode::EditorNode() {
 	add_editor_plugin(memnew(Path2DEditorPlugin(this)));
 	add_editor_plugin(memnew(PathEditorPlugin(this)));
 	add_editor_plugin(memnew(Line2DEditorPlugin(this)));
+	add_editor_plugin(memnew(NavigationLink2DEditorPlugin));
 	add_editor_plugin(memnew(Polygon2DEditorPlugin(this)));
 	add_editor_plugin(memnew(LightOccluder2DEditorPlugin(this)));
 	add_editor_plugin(memnew(GradientEditorPlugin(this)));
