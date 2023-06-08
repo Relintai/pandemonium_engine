@@ -35,6 +35,10 @@
 void DummyNavigation2DServer::region_set_navpoly(RID p_region, Ref<NavigationPolygon> p_nav_mesh) const {
 }
 
+NavigationUtilities::PathQueryResult2D DummyNavigation2DServer::_query_path(const NavigationUtilities::PathQueryParameters2D &p_parameters) const {
+    return NavigationUtilities::PathQueryResult2D();
+}
+
 DummyNavigation2DServer::DummyNavigation2DServer() {
 }
 

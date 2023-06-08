@@ -33,10 +33,14 @@
 #include "core/containers/rid.h"
 #include "core/object/object.h"
 
+#include "navigation/navigation_utilities.h"
+
 #include "core/object/reference.h"
 
 class NavigationMesh;
 class SpatialMaterial;
+class NavigationPathQueryParameters3D;
+class NavigationPathQueryResult3D;
 
 /// This server uses the concept of internal mutability.
 /// All the constant functions can be called in multithread because internally
@@ -210,6 +214,11 @@ public:
 	/// so this must be called in the main thread.
 	/// Note: This function is not thread safe.
 	virtual void process(real_t delta_time) = 0;
+
+	/// Returns a customized navigation path using a query parameters object
+	void query_path(const Ref<NavigationPathQueryParameters3D> &p_query_parameters, Ref<NavigationPathQueryResult3D> p_query_result) const;
+
+	virtual NavigationUtilities::PathQueryResult _query_path(const NavigationUtilities::PathQueryParameters &p_parameters) const = 0;
 
 	virtual void init();
 

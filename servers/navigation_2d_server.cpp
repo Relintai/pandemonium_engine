@@ -31,6 +31,8 @@
 #include "servers/navigation_2d_server.h"
 
 #include "core/config/project_settings.h"
+#include "navigation/navigation_path_query_parameters_2d.h"
+#include "navigation/navigation_path_query_result_2d.h"
 #include "servers/navigation_server.h"
 
 Navigation2DServer *Navigation2DServer::singleton = nullptr;
@@ -91,6 +93,15 @@ void Navigation2DServer::_bind_methods() {
 }
 
 void Navigation2DServer::init() {
+}
+
+void Navigation2DServer::query_path(const Ref<NavigationPathQueryParameters2D> &p_query_parameters, Ref<NavigationPathQueryResult2D> p_query_result) const {
+	ERR_FAIL_COND(!p_query_parameters.is_valid());
+	ERR_FAIL_COND(!p_query_result.is_valid());
+
+	const NavigationUtilities::PathQueryResult2D _query_result = _query_path(p_query_parameters->get_parameters());
+
+	p_query_result->set_path(_query_result.path);
 }
 
 Navigation2DServer::Navigation2DServer() {

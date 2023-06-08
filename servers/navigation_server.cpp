@@ -31,6 +31,8 @@
 #include "navigation_server.h"
 
 #include "core/config/project_settings.h"
+#include "navigation/navigation_path_query_parameters_3d.h"
+#include "navigation/navigation_path_query_result_3d.h"
 #include "scene/3d/navigation_mesh_instance.h"
 #include "scene/resources/navigation_mesh.h"
 
@@ -67,6 +69,8 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("map_get_regions", "map"), &NavigationServer::map_get_regions);
 	ClassDB::bind_method(D_METHOD("map_get_agents", "map"), &NavigationServer::map_get_agents);
 	ClassDB::bind_method(D_METHOD("map_force_update", "map"), &NavigationServer::map_force_update);
+
+	ClassDB::bind_method(D_METHOD("query_path", "parameters", "result"), &NavigationServer::query_path);
 
 	ClassDB::bind_method(D_METHOD("region_create"), &NavigationServer::region_create);
 	ClassDB::bind_method(D_METHOD("region_set_enter_cost", "region", "enter_cost"), &NavigationServer::region_set_enter_cost);
@@ -383,6 +387,15 @@ bool NavigationServer::get_debug_enabled() const {
 	return _debug_enabled;
 }
 #endif // DEBUG_ENABLED
+
+void NavigationServer::query_path(const Ref<NavigationPathQueryParameters3D> &p_query_parameters, Ref<NavigationPathQueryResult3D> p_query_result) const {
+	ERR_FAIL_COND(!p_query_parameters.is_valid());
+	ERR_FAIL_COND(!p_query_result.is_valid());
+
+	const NavigationUtilities::PathQueryResult _query_result = _query_path(p_query_parameters->get_parameters());
+
+	p_query_result->set_path(_query_result.path);
+}
 
 Vector<NavigationServerManager::ClassInfo> NavigationServerManager::navigation_servers;
 int NavigationServerManager::default_server_id = -1;

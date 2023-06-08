@@ -34,8 +34,12 @@
 #include "core/containers/rid.h"
 #include "core/object/object.h"
 
+#include "navigation/navigation_utilities.h"
 #include "scene/2d/navigation_polygon_instance.h"
 #include "scene/resources/navigation_polygon.h"
+
+class NavigationPathQueryParameters2D;
+class NavigationPathQueryResult2D;
 
 // This server exposes the 3D `NavigationServer` features in the 2D world.
 class Navigation2DServer : public Object {
@@ -185,6 +189,11 @@ public:
 
 	/// Destroy the `RID`
 	virtual void free(RID p_object) const = 0;
+
+	/// Returns a customized navigation path using a query parameters object
+	void query_path(const Ref<NavigationPathQueryParameters2D> &p_query_parameters, Ref<NavigationPathQueryResult2D> p_query_result) const;
+
+	virtual NavigationUtilities::PathQueryResult2D _query_path(const NavigationUtilities::PathQueryParameters2D &p_parameters) const = 0;
 
 	virtual void init();
 

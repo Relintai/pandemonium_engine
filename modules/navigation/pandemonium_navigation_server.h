@@ -153,6 +153,8 @@ public:
 
 	void flush_queries();
 	virtual void process(real_t p_delta_time);
+
+	virtual NavigationUtilities::PathQueryResult _query_path(const NavigationUtilities::PathQueryParameters &p_parameters) const;
 };
 
 #undef COMMAND_1

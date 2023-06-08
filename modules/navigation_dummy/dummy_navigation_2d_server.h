@@ -60,6 +60,8 @@ public:
 
 	virtual void free(RID p_object) const {}
 
+	virtual NavigationUtilities::PathQueryResult2D _query_path(const NavigationUtilities::PathQueryParameters2D &p_parameters) const;
+
 	DummyNavigation2DServer();
 	virtual ~DummyNavigation2DServer();
 };

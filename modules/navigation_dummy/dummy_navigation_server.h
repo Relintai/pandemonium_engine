@@ -67,6 +67,8 @@ public:
 
 	virtual void process(real_t delta_time){};
 
+	virtual NavigationUtilities::PathQueryResult _query_path(const NavigationUtilities::PathQueryParameters &p_parameters) const;
+
 	DummyNavigationServer();
 	virtual ~DummyNavigationServer();
 };

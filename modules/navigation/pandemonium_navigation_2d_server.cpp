@@ -36,66 +36,66 @@
 #include "servers/navigation_server.h"
 
 #define FORWARD_0_C(FUNC_NAME)                                 \
-	PandemoniumNavigation2DServer::FUNC_NAME()                            \
+	PandemoniumNavigation2DServer::FUNC_NAME()                 \
 			const {                                            \
 		return NavigationServer::get_singleton()->FUNC_NAME(); \
 	}
 
 #define FORWARD_1(FUNC_NAME, T_0, D_0, CONV_0)                                \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0) {                                  \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0) {                       \
 		return NavigationServer::get_singleton_mut()->FUNC_NAME(CONV_0(D_0)); \
 	}
 
 #define FORWARD_1_C(FUNC_NAME, T_0, D_0, CONV_0)                          \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0)                                \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0)                     \
 			const {                                                       \
 		return NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0)); \
 	}
 
 #define FORWARD_2_C(FUNC_NAME, T_0, D_0, T_1, D_1, CONV_0, CONV_1)                     \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1)                                    \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1)                         \
 			const {                                                                    \
 		return NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0), CONV_1(D_1)); \
 	}
 
 #define FORWARD_2_R_C(CONV_R, FUNC_NAME, T_0, D_0, T_1, D_1, CONV_0, CONV_1)                   \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1)                                            \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1)                                 \
 			const {                                                                            \
 		return CONV_R(NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0), CONV_1(D_1))); \
 	}
 
 #define FORWARD_3_R_C(CONV_R, FUNC_NAME, T_0, D_0, T_1, D_1, T_2, D_2, CONV_0, CONV_1, CONV_2)              \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2)                                                \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2)                                     \
 			const {                                                                                         \
 		return CONV_R(NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0), CONV_1(D_1), CONV_2(D_2))); \
 	}
 
 #define FORWARD_3_C(FUNC_NAME, T_0, D_0, T_1, D_1, T_2, D_2, CONV_0, CONV_1, CONV_2)                \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2)                                        \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2)                             \
 			const {                                                                                 \
 		return NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0), CONV_1(D_1), CONV_2(D_2)); \
 	}
 
 #define FORWARD_4_R_C(CONV_R, FUNC_NAME, T_0, D_0, T_1, D_1, T_2, D_2, T_3, D_3, CONV_0, CONV_1, CONV_2, CONV_3)         \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3)                                                    \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3)                                         \
 			const {                                                                                                      \
 		return CONV_R(NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0), CONV_1(D_1), CONV_2(D_2), CONV_3(D_3))); \
 	}
 
 #define FORWARD_4_C(FUNC_NAME, T_0, D_0, T_1, D_1, T_2, D_2, T_3, D_3, CONV_0, CONV_1, CONV_2, CONV_3)           \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3)                                            \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3)                                 \
 			const {                                                                                              \
 		return NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0), CONV_1(D_1), CONV_2(D_2), CONV_3(D_3)); \
 	}
 
 #define FORWARD_5_R_C(CONV_R, FUNC_NAME, T_0, D_0, T_1, D_1, T_2, D_2, T_3, D_3, T_4, D_4, CONV_0, CONV_1, CONV_2, CONV_3, CONV_4)    \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3, T_4 D_4)                                                        \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3, T_4 D_4)                                             \
 			const {                                                                                                                   \
 		return CONV_R(NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0), CONV_1(D_1), CONV_2(D_2), CONV_3(D_3), CONV_4(D_4))); \
 	}
 
 #define FORWARD_5_C(FUNC_NAME, T_0, D_0, T_1, D_1, T_2, D_2, T_3, D_3, T_4, D_4, CONV_0, CONV_1, CONV_2, CONV_3, CONV_4)      \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3, T_4 D_4)                                                \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3, T_4 D_4)                                     \
 			const {                                                                                                           \
 		return NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0), CONV_1(D_1), CONV_2(D_2), CONV_3(D_3), CONV_4(D_4)); \
 	}
@@ -133,6 +133,17 @@ Vector<Vector2> vector_v3_to_v2(const Vector<Vector3> &d) {
 	nd.resize(d.size());
 	for (int i(0); i < nd.size(); i++) {
 		nd.write[i] = v3_to_v2(d[i]);
+	}
+	return nd;
+}
+
+PoolVector<Vector2> poolvector_v3_to_v2(const PoolVector<Vector3> &d) {
+	PoolVector<Vector2> nd;
+	nd.resize(d.size());
+	PoolVector2Array::Write w = nd.write();
+	Vector2 *wptr = w.ptr();
+	for (int i(0); i < nd.size(); i++) {
+		wptr[i] = v3_to_v2(d[i]);
 	}
 	return nd;
 }
@@ -267,3 +278,24 @@ bool FORWARD_1_C(agent_is_map_changed, RID, p_agent, rid_to_rid);
 void FORWARD_4_C(agent_set_callback, RID, p_agent, ObjectID, p_object_id, StringName, p_method, Variant, p_udata, rid_to_rid, id_to_id, sn_to_sn, var_to_var);
 
 void FORWARD_1_C(free, RID, p_object, rid_to_rid);
+
+NavigationUtilities::PathQueryResult2D PandemoniumNavigation2DServer::_query_path(const NavigationUtilities::PathQueryParameters2D &p_parameters) const {
+	NavigationUtilities::PathQueryParameters params;
+	params.pathfinding_algorithm = p_parameters.pathfinding_algorithm;
+	params.path_postprocessing = p_parameters.path_postprocessing;
+	params.map = p_parameters.map;
+	params.start_position = Vector3(p_parameters.start_position.x, 0.0, p_parameters.start_position.y);
+	params.target_position = Vector3(p_parameters.target_position.x, 0.0, p_parameters.target_position.y);
+	params.navigation_layers = p_parameters.navigation_layers;
+	params.metadata_flags = p_parameters.metadata_flags;
+
+	NavigationUtilities::PathQueryResult res = NavigationServer::get_singleton()->_query_path(params);
+
+	NavigationUtilities::PathQueryResult2D resf;
+	resf.path = poolvector_v3_to_v2(res.path);
+	resf.path_types = res.path_types;
+	resf.path_rids = res.path_rids;
+	resf.path_owner_ids = res.path_owner_ids;
+
+	return resf;
+}

@@ -53,6 +53,10 @@
 #include "audio/effects/audio_stream_generator.h"
 #include "audio_server.h"
 #include "navigation/navigation_mesh_generator.h"
+#include "navigation/navigation_path_query_parameters_2d.h"
+#include "navigation/navigation_path_query_parameters_3d.h"
+#include "navigation/navigation_path_query_result_2d.h"
+#include "navigation/navigation_path_query_result_3d.h"
 #include "navigation_2d_server.h"
 #include "navigation_server.h"
 #include "physics/physics_server_sw.h"
@@ -114,6 +118,11 @@ void register_server_types() {
 	ClassDB::register_virtual_class<Navigation2DServer>();
 	//ClassDB::register_class<NavigationMeshGeneratorManager>();
 	ClassDB::register_virtual_class<NavigationMeshGenerator>();
+
+	ClassDB::register_class<NavigationPathQueryParameters2D>();
+	ClassDB::register_class<NavigationPathQueryParameters3D>();
+	ClassDB::register_class<NavigationPathQueryResult2D>();
+	ClassDB::register_class<NavigationPathQueryResult3D>();
 
 	shader_types = memnew(ShaderTypes);
 
