@@ -282,7 +282,7 @@ NavigationAgent::NavigationAgent() {
 	debug_use_custom = false;
 	debug_path_custom_color = Color(1.0, 1.0, 1.0, 1.0);
 
-	NavigationServer::get_singleton_mut()->connect("navigation_debug_changed", this, "_navigation_debug_changed");
+	NavigationServer::get_singleton()->connect("navigation_debug_changed", this, "_navigation_debug_changed");
 #endif // DEBUG_ENABLED
 }
 
@@ -292,7 +292,7 @@ NavigationAgent::~NavigationAgent() {
 	agent = RID(); // Pointless
 
 #ifdef DEBUG_ENABLED
-	NavigationServer::get_singleton_mut()->disconnect("navigation_debug_changed", this, "_navigation_debug_changed");
+	NavigationServer::get_singleton()->disconnect("navigation_debug_changed", this, "_navigation_debug_changed");
 
 	ERR_FAIL_NULL(RenderingServer::get_singleton());
 	if (debug_path_instance.is_valid()) {
@@ -797,7 +797,7 @@ void NavigationAgent::_update_debug_path() {
 
 	debug_path_mesh->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, debug_path_lines_mesh_array);
 
-	Ref<SpatialMaterial> debug_agent_path_line_material = NavigationServer::get_singleton_mut()->get_debug_navigation_agent_path_line_material();
+	Ref<SpatialMaterial> debug_agent_path_line_material = NavigationServer::get_singleton()->get_debug_navigation_agent_path_line_material();
 	if (debug_use_custom) {
 		if (!debug_agent_path_line_custom_material.is_valid()) {
 			debug_agent_path_line_custom_material = debug_agent_path_line_material->duplicate();
@@ -820,7 +820,7 @@ void NavigationAgent::_update_debug_path() {
 
 	debug_path_mesh->add_surface_from_arrays(Mesh::PRIMITIVE_POINTS, debug_path_points_mesh_array);
 
-	Ref<SpatialMaterial> debug_agent_path_point_material = NavigationServer::get_singleton_mut()->get_debug_navigation_agent_path_point_material();
+	Ref<SpatialMaterial> debug_agent_path_point_material = NavigationServer::get_singleton()->get_debug_navigation_agent_path_point_material();
 	if (debug_use_custom) {
 		if (!debug_agent_path_point_custom_material.is_valid()) {
 			debug_agent_path_point_custom_material = debug_agent_path_point_material->duplicate();

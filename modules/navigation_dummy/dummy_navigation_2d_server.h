@@ -11,19 +11,19 @@ class DummyNavigation2DServer : public Navigation2DServer {
 public:
 	virtual Array get_maps() const { return Array(); }
 
-	virtual RID map_create() const { return RID(); }
-	virtual void map_set_active(RID p_map, bool p_active) const {}
+	virtual RID map_create() { return RID(); }
+	virtual void map_set_active(RID p_map, bool p_active) {}
 	virtual bool map_is_active(RID p_map) const { return false; }
-	virtual void map_set_cell_size(RID p_map, real_t p_cell_size) const {}
+	virtual void map_set_cell_size(RID p_map, real_t p_cell_size) {}
 	virtual real_t map_get_cell_size(RID p_map) const { return 0; }
-	virtual void map_set_cell_height(RID p_map, real_t p_cell_height) const {}
+	virtual void map_set_cell_height(RID p_map, real_t p_cell_height) {}
 	virtual real_t map_get_cell_height(RID p_map) const { return 0; }
 	void map_set_use_edge_connections(RID p_map, bool p_enabled) {}
 	bool map_get_use_edge_connections(RID p_map) const { return false; }
-	virtual void map_set_edge_connection_margin(RID p_map, real_t p_connection_margin) const {}
+	virtual void map_set_edge_connection_margin(RID p_map, real_t p_connection_margin) {}
 	virtual real_t map_get_edge_connection_margin(RID p_map) const { return 0; }
 
-	virtual void map_set_link_connection_radius(RID p_map, real_t p_connection_radius) const {}
+	virtual void map_set_link_connection_radius(RID p_map, real_t p_connection_radius) {}
 	virtual real_t map_get_link_connection_radius(RID p_map) const { return 0; }
 
 	virtual Vector<Vector2> map_get_path(RID p_map, Vector2 p_origin, Vector2 p_destination, bool p_optimize, uint32_t p_navigation_layers = 1) const { return Vector<Vector2>(); }
@@ -35,60 +35,60 @@ public:
 	virtual Array map_get_agents(RID p_map) const { return Array(); }
 	virtual void map_force_update(RID p_map) {}
 
-	virtual RID region_create() const { return RID(); }
+	virtual RID region_create() { return RID(); }
 	void region_set_use_edge_connections(RID p_region, bool p_enabled) {}
 	bool region_get_use_edge_connections(RID p_region) const { return false; }
-	virtual void region_set_enter_cost(RID p_region, real_t p_enter_cost) const {}
+	virtual void region_set_enter_cost(RID p_region, real_t p_enter_cost) {}
 	virtual real_t region_get_enter_cost(RID p_region) const { return 0; }
-	virtual void region_set_travel_cost(RID p_region, real_t p_travel_cost) const {}
+	virtual void region_set_travel_cost(RID p_region, real_t p_travel_cost) {}
 	virtual real_t region_get_travel_cost(RID p_region) const { return 0; }
-	virtual void region_set_owner_id(RID p_region, ObjectID p_owner_id) const {}
+	virtual void region_set_owner_id(RID p_region, ObjectID p_owner_id) {}
 	virtual ObjectID region_get_owner_id(RID p_region) const { return 0; }
 	virtual bool region_owns_point(RID p_region, const Vector2 &p_point) const { return false; }
-	virtual void region_set_map(RID p_region, RID p_map) const {}
+	virtual void region_set_map(RID p_region, RID p_map) {}
 	virtual RID region_get_map(RID p_region) const { return RID(); }
-	virtual void region_set_navigation_layers(RID p_region, uint32_t p_navigation_layers) const {}
+	virtual void region_set_navigation_layers(RID p_region, uint32_t p_navigation_layers) {}
 	virtual uint32_t region_get_navigation_layers(RID p_region) const { return 0; }
-	virtual void region_set_transform(RID p_region, Transform2D p_transform) const {}
-	virtual void region_set_navpoly(RID p_region, Ref<NavigationPolygon> p_nav_mesh) const;
+	virtual void region_set_transform(RID p_region, Transform2D p_transform) {}
+	virtual void region_set_navpoly(RID p_region, Ref<NavigationPolygon> p_nav_mesh);
 	virtual int region_get_connections_count(RID p_region) const { return 0; }
 	virtual Vector2 region_get_connection_pathway_start(RID p_region, int p_connection_id) const { return Vector2(); }
 	virtual Vector2 region_get_connection_pathway_end(RID p_region, int p_connection_id) const { return Vector2(); }
 
-	virtual RID link_create() const { return RID(); }
-	virtual void link_set_map(RID p_link, RID p_map) const {}
+	virtual RID link_create() { return RID(); }
+	virtual void link_set_map(RID p_link, RID p_map) {}
 	virtual RID link_get_map(RID p_link) const { return RID(); }
-	virtual void link_set_bidirectional(RID p_link, bool p_bidirectional) const {}
+	virtual void link_set_bidirectional(RID p_link, bool p_bidirectional) {}
 	virtual bool link_is_bidirectional(RID p_link) const { return false; }
-	virtual void link_set_navigation_layers(RID p_link, uint32_t p_navigation_layers) const {}
+	virtual void link_set_navigation_layers(RID p_link, uint32_t p_navigation_layers) {}
 	virtual uint32_t link_get_navigation_layers(RID p_link) const { return 0; }
-	virtual void link_set_start_position(RID p_link, Vector2 p_position) const {}
+	virtual void link_set_start_position(RID p_link, Vector2 p_position) {}
 	virtual Vector2 link_get_start_position(RID p_link) const { return Vector2(); }
-	virtual void link_set_end_position(RID p_link, Vector2 p_position) const {}
+	virtual void link_set_end_position(RID p_link, Vector2 p_position) {}
 	virtual Vector2 link_get_end_position(RID p_link) const { return Vector2(); }
-	virtual void link_set_enter_cost(RID p_link, real_t p_enter_cost) const {}
+	virtual void link_set_enter_cost(RID p_link, real_t p_enter_cost) {}
 	virtual real_t link_get_enter_cost(RID p_link) const { return 0; }
-	virtual void link_set_travel_cost(RID p_link, real_t p_travel_cost) const {}
+	virtual void link_set_travel_cost(RID p_link, real_t p_travel_cost) {}
 	virtual real_t link_get_travel_cost(RID p_link) const { return 0; }
-	virtual void link_set_owner_id(RID p_link, ObjectID p_owner_id) const {}
+	virtual void link_set_owner_id(RID p_link, ObjectID p_owner_id) {}
 	virtual ObjectID link_get_owner_id(RID p_link) const { return 0; }
 
-	virtual RID agent_create() const { return RID(); }
-	virtual void agent_set_map(RID p_agent, RID p_map) const {}
+	virtual RID agent_create() { return RID(); }
+	virtual void agent_set_map(RID p_agent, RID p_map) {}
 	virtual RID agent_get_map(RID p_agent) const { return RID(); }
-	virtual void agent_set_neighbor_dist(RID p_agent, real_t p_dist) const {}
-	virtual void agent_set_max_neighbors(RID p_agent, int p_count) const {}
-	virtual void agent_set_time_horizon(RID p_agent, real_t p_time) const {}
-	virtual void agent_set_radius(RID p_agent, real_t p_radius) const {}
-	virtual void agent_set_max_speed(RID p_agent, real_t p_max_speed) const {}
-	virtual void agent_set_velocity(RID p_agent, Vector2 p_velocity) const {}
-	virtual void agent_set_target_velocity(RID p_agent, Vector2 p_velocity) const {}
-	virtual void agent_set_position(RID p_agent, Vector2 p_position) const {}
-	virtual void agent_set_ignore_y(RID p_agent, bool p_ignore) const {}
+	virtual void agent_set_neighbor_dist(RID p_agent, real_t p_dist) {}
+	virtual void agent_set_max_neighbors(RID p_agent, int p_count) {}
+	virtual void agent_set_time_horizon(RID p_agent, real_t p_time) {}
+	virtual void agent_set_radius(RID p_agent, real_t p_radius) {}
+	virtual void agent_set_max_speed(RID p_agent, real_t p_max_speed) {}
+	virtual void agent_set_velocity(RID p_agent, Vector2 p_velocity) {}
+	virtual void agent_set_target_velocity(RID p_agent, Vector2 p_velocity) {}
+	virtual void agent_set_position(RID p_agent, Vector2 p_position) {}
+	virtual void agent_set_ignore_y(RID p_agent, bool p_ignore) {}
 	virtual bool agent_is_map_changed(RID p_agent) const { return false; }
-	virtual void agent_set_callback(RID p_agent, ObjectID p_object_id, StringName p_method, Variant p_udata = Variant()) const {}
+	virtual void agent_set_callback(RID p_agent, ObjectID p_object_id, StringName p_method, Variant p_udata = Variant()) {}
 
-	virtual void free(RID p_object) const {}
+	virtual void free(RID p_object) {}
 
 	virtual NavigationUtilities::PathQueryResult2D _query_path(const NavigationUtilities::PathQueryParameters2D &p_parameters) const;
 

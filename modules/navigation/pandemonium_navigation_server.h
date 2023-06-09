@@ -44,20 +44,16 @@
 #define MERGE_INTERNAL(A, B) A##B
 #define MERGE(A, B) MERGE_INTERNAL(A, B)
 
-#define COMMAND_1(F_NAME, T_0, D_0)     \
-	virtual void F_NAME(T_0 D_0) const; \
+#define COMMAND_1(F_NAME, T_0, D_0) \
+	virtual void F_NAME(T_0 D_0);   \
 	void MERGE(_cmd_, F_NAME)(T_0 D_0)
 
-#define COMMAND_2(F_NAME, T_0, D_0, T_1, D_1)    \
-	virtual void F_NAME(T_0 D_0, T_1 D_1) const; \
-	void MERGE(_cmd_, F_NAME)(T_0 D_0, T_1 D_1)
-
-#define COMMAND_2N(F_NAME, T_0, D_0, T_1, D_1)    \
-	virtual void F_NAME(T_0 D_0, T_1 D_1); \
+#define COMMAND_2(F_NAME, T_0, D_0, T_1, D_1) \
+	virtual void F_NAME(T_0 D_0, T_1 D_1);    \
 	void MERGE(_cmd_, F_NAME)(T_0 D_0, T_1 D_1)
 
 #define COMMAND_4_DEF(F_NAME, T_0, D_0, T_1, D_1, T_2, D_2, T_3, D_3, D_3_DEF) \
-	virtual void F_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3 = D_3_DEF) const;   \
+	virtual void F_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3 = D_3_DEF);         \
 	void MERGE(_cmd_, F_NAME)(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3)
 
 class PandemoniumNavigationServer;
@@ -101,7 +97,7 @@ public:
 
 	virtual Array get_maps() const;
 
-	virtual RID map_create() const;
+	virtual RID map_create();
 	COMMAND_2(map_set_active, RID, p_map, bool, p_active);
 	virtual bool map_is_active(RID p_map) const;
 
@@ -114,7 +110,7 @@ public:
 	COMMAND_2(map_set_cell_height, RID, p_map, real_t, p_cell_height);
 	virtual real_t map_get_cell_height(RID p_map) const;
 
-	COMMAND_2N(map_set_use_edge_connections, RID, p_map, bool, p_enabled);
+	COMMAND_2(map_set_use_edge_connections, RID, p_map, bool, p_enabled);
 	virtual bool map_get_use_edge_connections(RID p_map) const;
 
 	COMMAND_2(map_set_edge_connection_margin, RID, p_map, real_t, p_connection_margin);
@@ -136,9 +132,9 @@ public:
 
 	virtual void map_force_update(RID p_map);
 
-	virtual RID region_create() const;
+	virtual RID region_create();
 
-	COMMAND_2N(region_set_use_edge_connections, RID, p_region, bool, p_enabled);
+	COMMAND_2(region_set_use_edge_connections, RID, p_region, bool, p_enabled);
 	virtual bool region_get_use_edge_connections(RID p_region) const;
 
 	COMMAND_2(region_set_enter_cost, RID, p_region, real_t, p_enter_cost);
@@ -161,7 +157,7 @@ public:
 	virtual Vector3 region_get_connection_pathway_start(RID p_region, int p_connection_id) const;
 	virtual Vector3 region_get_connection_pathway_end(RID p_region, int p_connection_id) const;
 
-	virtual RID link_create() const;
+	virtual RID link_create();
 	COMMAND_2(link_set_map, RID, p_link, RID, p_map);
 	virtual RID link_get_map(RID p_link) const;
 	COMMAND_2(link_set_bidirectional, RID, p_link, bool, p_bidirectional);
@@ -179,7 +175,7 @@ public:
 	COMMAND_2(link_set_owner_id, RID, p_link, ObjectID, p_owner_id);
 	virtual ObjectID link_get_owner_id(RID p_link) const;
 
-	virtual RID agent_create() const;
+	virtual RID agent_create();
 	COMMAND_2(agent_set_map, RID, p_agent, RID, p_map);
 	virtual RID agent_get_map(RID p_agent) const;
 	COMMAND_2(agent_set_neighbor_dist, RID, p_agent, real_t, p_dist);
@@ -196,7 +192,7 @@ public:
 
 	COMMAND_1(free, RID, p_object);
 
-	virtual void set_active(bool p_active) const;
+	virtual void set_active(bool p_active);
 
 	void flush_queries();
 	virtual void process(real_t p_delta_time);

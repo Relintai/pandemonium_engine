@@ -277,7 +277,7 @@ NavigationAgent2D::NavigationAgent2D() {
 	debug_use_custom = false;
 	debug_path_custom_color = Color(1.0, 1.0, 1.0, 1.0);
 
-	Navigation2DServer::get_singleton_mut()->connect("navigation_debug_changed", this, "_navigation_debug_changed");
+	Navigation2DServer::get_singleton()->connect("navigation_debug_changed", this, "_navigation_debug_changed");
 #endif // DEBUG_ENABLED
 }
 
@@ -286,7 +286,7 @@ NavigationAgent2D::~NavigationAgent2D() {
 	agent = RID(); // Pointless
 
 #ifdef DEBUG_ENABLED
-	Navigation2DServer::get_singleton_mut()->disconnect("navigation_debug_changed", this, "_navigation_debug_changed");
+	Navigation2DServer::get_singleton()->disconnect("navigation_debug_changed", this, "_navigation_debug_changed");
 
 	ERR_FAIL_NULL(RenderingServer::get_singleton());
 	if (debug_path_instance.is_valid()) {

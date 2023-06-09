@@ -70,10 +70,10 @@ void NavigationMeshInstance::set_enabled(bool p_enabled) {
 		if (!is_enabled()) {
 			if (debug_mesh.is_valid()) {
 				if (debug_mesh->get_surface_count() > 0) {
-					RS::get_singleton()->instance_set_surface_material(debug_instance, 0, NavigationServer::get_singleton_mut()->get_debug_navigation_geometry_face_disabled_material()->get_rid());
+					RS::get_singleton()->instance_set_surface_material(debug_instance, 0, NavigationServer::get_singleton()->get_debug_navigation_geometry_face_disabled_material()->get_rid());
 				}
 				if (debug_mesh->get_surface_count() > 1) {
-					RS::get_singleton()->instance_set_surface_material(debug_instance, 1, NavigationServer::get_singleton_mut()->get_debug_navigation_geometry_edge_disabled_material()->get_rid());
+					RS::get_singleton()->instance_set_surface_material(debug_instance, 1, NavigationServer::get_singleton()->get_debug_navigation_geometry_edge_disabled_material()->get_rid());
 				}
 			}
 		} else {
@@ -103,7 +103,7 @@ void NavigationMeshInstance::set_use_edge_connections(bool p_enabled) {
 
 	use_edge_connections = p_enabled;
 
-	NavigationServer::get_singleton_mut()->region_set_use_edge_connections(region, use_edge_connections);
+	NavigationServer::get_singleton()->region_set_use_edge_connections(region, use_edge_connections);
 }
 
 bool NavigationMeshInstance::get_use_edge_connections() const {
@@ -429,9 +429,9 @@ NavigationMeshInstance::NavigationMeshInstance() {
 	enabled = true;
 
 #ifdef DEBUG_ENABLED
-	NavigationServer::get_singleton_mut()->connect("map_changed", this, "_navigation_map_changed");
-	NavigationServer::get_singleton_mut()->connect("navigation_debug_changed", this, "_update_debug_mesh");
-	NavigationServer::get_singleton_mut()->connect("navigation_debug_changed", this, "_update_debug_edge_connections_mesh");
+	NavigationServer::get_singleton()->connect("map_changed", this, "_navigation_map_changed");
+	NavigationServer::get_singleton()->connect("navigation_debug_changed", this, "_update_debug_mesh");
+	NavigationServer::get_singleton()->connect("navigation_debug_changed", this, "_update_debug_edge_connections_mesh");
 #endif // DEBUG_ENABLED
 }
 
@@ -444,9 +444,9 @@ NavigationMeshInstance::~NavigationMeshInstance() {
 	NavigationServer::get_singleton()->free(region);
 
 #ifdef DEBUG_ENABLED
-	NavigationServer::get_singleton_mut()->disconnect("map_changed", this, "_navigation_map_changed");
-	NavigationServer::get_singleton_mut()->disconnect("navigation_debug_changed", this, "_update_debug_mesh");
-	NavigationServer::get_singleton_mut()->disconnect("navigation_debug_changed", this, "_update_debug_edge_connections_mesh");
+	NavigationServer::get_singleton()->disconnect("map_changed", this, "_navigation_map_changed");
+	NavigationServer::get_singleton()->disconnect("navigation_debug_changed", this, "_update_debug_mesh");
+	NavigationServer::get_singleton()->disconnect("navigation_debug_changed", this, "_update_debug_edge_connections_mesh");
 
 	ERR_FAIL_NULL(RenderingServer::get_singleton());
 
@@ -582,7 +582,7 @@ void NavigationMeshInstance::_update_debug_mesh() {
 		}
 	}
 
-	Ref<SpatialMaterial> face_material = NavigationServer::get_singleton_mut()->get_debug_navigation_geometry_face_material();
+	Ref<SpatialMaterial> face_material = NavigationServer::get_singleton()->get_debug_navigation_geometry_face_material();
 
 	Array face_mesh_array;
 	face_mesh_array.resize(Mesh::ARRAY_MAX);
@@ -594,7 +594,7 @@ void NavigationMeshInstance::_update_debug_mesh() {
 	debug_mesh->surface_set_material(0, face_material);
 
 	if (enabled_edge_lines) {
-		Ref<SpatialMaterial> line_material = NavigationServer::get_singleton_mut()->get_debug_navigation_geometry_edge_material();
+		Ref<SpatialMaterial> line_material = NavigationServer::get_singleton()->get_debug_navigation_geometry_edge_material();
 
 		Array line_mesh_array;
 		line_mesh_array.resize(Mesh::ARRAY_MAX);
@@ -612,10 +612,10 @@ void NavigationMeshInstance::_update_debug_mesh() {
 	if (!is_enabled()) {
 		if (debug_mesh.is_valid()) {
 			if (debug_mesh->get_surface_count() > 0) {
-				RS::get_singleton()->instance_set_surface_material(debug_instance, 0, NavigationServer::get_singleton_mut()->get_debug_navigation_geometry_face_disabled_material()->get_rid());
+				RS::get_singleton()->instance_set_surface_material(debug_instance, 0, NavigationServer::get_singleton()->get_debug_navigation_geometry_face_disabled_material()->get_rid());
 			}
 			if (debug_mesh->get_surface_count() > 1) {
-				RS::get_singleton()->instance_set_surface_material(debug_instance, 1, NavigationServer::get_singleton_mut()->get_debug_navigation_geometry_edge_disabled_material()->get_rid());
+				RS::get_singleton()->instance_set_surface_material(debug_instance, 1, NavigationServer::get_singleton()->get_debug_navigation_geometry_edge_disabled_material()->get_rid());
 			}
 		}
 	} else {
@@ -711,7 +711,7 @@ void NavigationMeshInstance::_update_debug_edge_connections_mesh() {
 		return;
 	}
 
-	Ref<SpatialMaterial> edge_connections_material = NavigationServer::get_singleton_mut()->get_debug_navigation_edge_connections_material();
+	Ref<SpatialMaterial> edge_connections_material = NavigationServer::get_singleton()->get_debug_navigation_edge_connections_material();
 
 	Array mesh_array;
 	mesh_array.resize(Mesh::ARRAY_MAX);

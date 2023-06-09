@@ -161,11 +161,7 @@ void NavigationServer::_bind_methods() {
 #endif // DEBUG_ENABLED
 }
 
-const NavigationServer *NavigationServer::get_singleton() {
-	return singleton;
-}
-
-NavigationServer *NavigationServer::get_singleton_mut() {
+NavigationServer *NavigationServer::get_singleton() {
 	return singleton;
 }
 

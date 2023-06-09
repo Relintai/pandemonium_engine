@@ -1929,7 +1929,7 @@ bool Main::start() {
 		if (debug_navigation) {
 			sml->set_debug_navigation_hint(true);
 			NavigationServer::get_singleton()->set_active(true);
-			NavigationServer::get_singleton_mut()->set_debug_enabled(true);
+			NavigationServer::get_singleton()->set_debug_enabled(true);
 		}
 #endif
 
@@ -2360,7 +2360,7 @@ bool Main::iteration() {
 			break;
 		}
 
-		NavigationServer::get_singleton_mut()->process(frame_slice * time_scale);
+		NavigationServer::get_singleton()->process(frame_slice * time_scale);
 		message_queue->flush();
 
 		PhysicsServer::get_singleton()->step(frame_slice * time_scale);

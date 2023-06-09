@@ -88,7 +88,7 @@ void NavigationPolygonInstance::set_use_edge_connections(bool p_enabled) {
 
 	use_edge_connections = p_enabled;
 
-	Navigation2DServer::get_singleton_mut()->region_set_use_edge_connections(region, use_edge_connections);
+	Navigation2DServer::get_singleton()->region_set_use_edge_connections(region, use_edge_connections);
 }
 
 bool NavigationPolygonInstance::get_use_edge_connections() const {
@@ -418,8 +418,8 @@ NavigationPolygonInstance::NavigationPolygonInstance() {
 	Navigation2DServer::get_singleton()->region_set_travel_cost(region, get_travel_cost());
 
 #ifdef DEBUG_ENABLED
-	Navigation2DServer::get_singleton_mut()->connect("map_changed", this, "_navigation_map_changed");
-	NavigationServer::get_singleton_mut()->connect("navigation_debug_changed", this, "_navigation_debug_changed");
+	Navigation2DServer::get_singleton()->connect("map_changed", this, "_navigation_map_changed");
+	NavigationServer::get_singleton()->connect("navigation_debug_changed", this, "_navigation_debug_changed");
 #endif // DEBUG_ENABLED
 }
 
@@ -429,8 +429,8 @@ NavigationPolygonInstance::~NavigationPolygonInstance() {
 	Navigation2DServer::get_singleton()->free(region);
 
 #ifdef DEBUG_ENABLED
-	Navigation2DServer::get_singleton_mut()->disconnect("map_changed", this, "_navigation_map_changed");
-	NavigationServer::get_singleton_mut()->disconnect("navigation_debug_changed", this, "_navigation_debug_changed");
+	Navigation2DServer::get_singleton()->disconnect("map_changed", this, "_navigation_map_changed");
+	NavigationServer::get_singleton()->disconnect("navigation_debug_changed", this, "_navigation_debug_changed");
 #endif // DEBUG_ENABLED
 }
 

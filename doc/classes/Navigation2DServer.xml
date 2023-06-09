@@ -17,7 +17,7 @@
 		<link title="2D Navigation Demo">https://godotengine.org/asset-library/asset/117</link>
 	</tutorials>
 	<methods>
-		<method name="agent_create" qualifiers="const">
+		<method name="agent_create">
 			<return type="RID" />
 			<description>
 				Creates the agent.
@@ -37,7 +37,7 @@
 				Returns [code]true[/code] if the map got changed the previous frame.
 			</description>
 		</method>
-		<method name="agent_set_callback" qualifiers="const">
+		<method name="agent_set_callback">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="object_id" type="int" />
@@ -48,7 +48,7 @@
 				[b]Note:[/b] Created callbacks are always processed independently of the SceneTree state as long as the agent is on a navigation map and not freed. To disable the dispatch of a callback from an agent use [method agent_set_callback] again with a [code]0[/code] ObjectID as the [code]object_id[/code].
 			</description>
 		</method>
-		<method name="agent_set_map" qualifiers="const">
+		<method name="agent_set_map">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="map" type="RID" />
@@ -56,7 +56,7 @@
 				Puts the agent in the map.
 			</description>
 		</method>
-		<method name="agent_set_max_neighbors" qualifiers="const">
+		<method name="agent_set_max_neighbors">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="count" type="int" />
@@ -64,7 +64,7 @@
 				Sets the maximum number of other agents the agent takes into account in the navigation. The larger this number, the longer the running time of the simulation. If the number is too low, the simulation will not be safe.
 			</description>
 		</method>
-		<method name="agent_set_max_speed" qualifiers="const">
+		<method name="agent_set_max_speed">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="max_speed" type="float" />
@@ -72,7 +72,7 @@
 				Sets the maximum speed of the agent. Must be positive.
 			</description>
 		</method>
-		<method name="agent_set_neighbor_dist" qualifiers="const">
+		<method name="agent_set_neighbor_dist">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="dist" type="float" />
@@ -80,7 +80,7 @@
 				Sets the maximum distance to other agents this agent takes into account in the navigation. The larger this number, the longer the running time of the simulation. If the number is too low, the simulation will not be safe.
 			</description>
 		</method>
-		<method name="agent_set_position" qualifiers="const">
+		<method name="agent_set_position">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="position" type="Vector2" />
@@ -88,7 +88,7 @@
 				Sets the position of the agent in world space.
 			</description>
 		</method>
-		<method name="agent_set_radius" qualifiers="const">
+		<method name="agent_set_radius">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="radius" type="float" />
@@ -96,7 +96,7 @@
 				Sets the radius of the agent.
 			</description>
 		</method>
-		<method name="agent_set_target_velocity" qualifiers="const">
+		<method name="agent_set_target_velocity">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="target_velocity" type="Vector2" />
@@ -104,7 +104,7 @@
 				Sets the new target velocity.
 			</description>
 		</method>
-		<method name="agent_set_time_horizon" qualifiers="const">
+		<method name="agent_set_time_horizon">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="time" type="float" />
@@ -112,7 +112,7 @@
 				The minimal amount of time for which the agent's velocities that are computed by the simulation are safe with respect to other agents. The larger this number, the sooner this agent will respond to the presence of other agents, but the less freedom this agent has in choosing its velocities. Must be positive.
 			</description>
 		</method>
-		<method name="agent_set_velocity" qualifiers="const">
+		<method name="agent_set_velocity">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="velocity" type="Vector2" />
@@ -120,7 +120,7 @@
 				Sets the current velocity of the agent.
 			</description>
 		</method>
-		<method name="free_rid" qualifiers="const">
+		<method name="free_rid">
 			<return type="void" />
 			<argument index="0" name="rid" type="RID" />
 			<description>
@@ -139,7 +139,7 @@
 				Returns all created navigation map [RID]s on the NavigationServer. This returns both 2D and 3D created navigation maps as there is technically no distinction between them.
 			</description>
 		</method>
-		<method name="link_create" qualifiers="const">
+		<method name="link_create">
 			<return type="RID" />
 			<description>
 				Create a new link between two positions on a map.
@@ -201,7 +201,7 @@
 				Returns whether this [code]link[/code] can be travelled in both directions.
 			</description>
 		</method>
-		<method name="link_set_bidirectional" qualifiers="const">
+		<method name="link_set_bidirectional">
 			<return type="void" />
 			<param index="0" name="link" type="RID" />
 			<param index="1" name="bidirectional" type="bool" />
@@ -209,7 +209,7 @@
 				Sets whether this [code]link[/code] can be travelled in both directions.
 			</description>
 		</method>
-		<method name="link_set_end_position" qualifiers="const">
+		<method name="link_set_end_position">
 			<return type="void" />
 			<param index="0" name="link" type="RID" />
 			<param index="1" name="position" type="Vector2" />
@@ -217,7 +217,7 @@
 				Sets the exit position for the [code]link[/code].
 			</description>
 		</method>
-		<method name="link_set_enter_cost" qualifiers="const">
+		<method name="link_set_enter_cost">
 			<return type="void" />
 			<param index="0" name="link" type="RID" />
 			<param index="1" name="enter_cost" type="float" />
@@ -225,7 +225,7 @@
 				Sets the [code]enter_cost[/code] for this [code]link[/code].
 			</description>
 		</method>
-		<method name="link_set_map" qualifiers="const">
+		<method name="link_set_map">
 			<return type="void" />
 			<param index="0" name="link" type="RID" />
 			<param index="1" name="map" type="RID" />
@@ -233,7 +233,7 @@
 				Sets the navigation map [RID] for the link.
 			</description>
 		</method>
-		<method name="link_set_navigation_layers" qualifiers="const">
+		<method name="link_set_navigation_layers">
 			<return type="void" />
 			<param index="0" name="link" type="RID" />
 			<param index="1" name="navigation_layers" type="int" />
@@ -241,7 +241,7 @@
 				Set the links's navigation layers. This allows selecting links from a path request (when using [method NavigationServer2D.map_get_path]).
 			</description>
 		</method>
-		<method name="link_set_owner_id" qualifiers="const">
+		<method name="link_set_owner_id">
 			<return type="void" />
 			<param index="0" name="link" type="RID" />
 			<param index="1" name="owner_id" type="int" />
@@ -249,7 +249,7 @@
 				Set the [code]ObjectID[/code] of the object which manages this link.
 			</description>
 		</method>
-		<method name="link_set_start_position" qualifiers="const">
+		<method name="link_set_start_position">
 			<return type="void" />
 			<param index="0" name="link" type="RID" />
 			<param index="1" name="position" type="Vector2" />
@@ -257,7 +257,7 @@
 				Sets the entry position for this [code]link[/code].
 			</description>
 		</method>
-		<method name="link_set_travel_cost" qualifiers="const">
+		<method name="link_set_travel_cost">
 			<return type="void" />
 			<param index="0" name="link" type="RID" />
 			<param index="1" name="travel_cost" type="float" />
@@ -265,7 +265,7 @@
 				Sets the [code]travel_cost[/code] for this [code]link[/code].
 			</description>
 		</method>
-		<method name="map_create" qualifiers="const">
+		<method name="map_create">
 			<return type="RID" />
 			<description>
 				Create a new map.
@@ -371,7 +371,7 @@
 				Returns [code]true[/code] if the map is active.
 			</description>
 		</method>
-		<method name="map_set_active" qualifiers="const">
+		<method name="map_set_active">
 			<return type="void" />
 			<argument index="0" name="map" type="RID" />
 			<argument index="1" name="active" type="bool" />
@@ -379,7 +379,7 @@
 				Sets the map active.
 			</description>
 		</method>
-		<method name="map_set_cell_height" qualifiers="const">
+		<method name="map_set_cell_height">
 			<return type="void" />
 			<argument index="0" name="map" type="RID" />
 			<argument index="1" name="cell_height" type="float" />
@@ -387,7 +387,7 @@
 				Set the map cell height used to weld the navigation mesh polygons. [b]Note:[/b] Currently not implemented.
 			</description>
 		</method>
-		<method name="map_set_cell_size" qualifiers="const">
+		<method name="map_set_cell_size">
 			<return type="void" />
 			<argument index="0" name="map" type="RID" />
 			<argument index="1" name="cell_size" type="float" />
@@ -395,7 +395,7 @@
 				Set the map cell size used to weld the navigation mesh polygons.
 			</description>
 		</method>
-		<method name="map_set_edge_connection_margin" qualifiers="const">
+		<method name="map_set_edge_connection_margin">
 			<return type="void" />
 			<argument index="0" name="map" type="RID" />
 			<argument index="1" name="margin" type="float" />
@@ -411,7 +411,7 @@
 				Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query.
 			</description>
 		</method>
-		<method name="map_set_link_connection_radius" qualifiers="const">
+		<method name="map_set_link_connection_radius">
 			<return type="void" />
 			<param index="0" name="map" type="RID" />
 			<param index="1" name="radius" type="float" />
@@ -427,7 +427,7 @@
 				Set the navigation [param map] edge connection use. If [param enabled] the navigation map allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 			</description>
 		</method>
-		<method name="region_create" qualifiers="const">
+		<method name="region_create">
 			<return type="RID" />
 			<description>
 				Creates a new region.
@@ -508,7 +508,7 @@
 				[b]Note:[/b] If navigation meshes from different navigation regions overlap (which should be avoided in general) the result might not be what is expected.
 			</description>
 		</method>
-		<method name="region_set_enter_cost" qualifiers="const">
+		<method name="region_set_enter_cost">
 			<return type="void" />
 			<argument index="0" name="region" type="RID" />
 			<argument index="1" name="enter_cost" type="float" />
@@ -516,7 +516,7 @@
 				Sets the [code]enter_cost[/code] for this [code]region[/code].
 			</description>
 		</method>
-		<method name="region_set_map" qualifiers="const">
+		<method name="region_set_map">
 			<return type="void" />
 			<argument index="0" name="region" type="RID" />
 			<argument index="1" name="map" type="RID" />
@@ -524,7 +524,7 @@
 				Sets the map for the region.
 			</description>
 		</method>
-		<method name="region_set_navigation_layers" qualifiers="const">
+		<method name="region_set_navigation_layers">
 			<return type="void" />
 			<argument index="0" name="region" type="RID" />
 			<argument index="1" name="navigation_layers" type="int" />
@@ -532,7 +532,7 @@
 				Set the region's navigation layers. This allows selecting regions from a path request (when using [method Navigation2DServer.map_get_path]).
 			</description>
 		</method>
-		<method name="region_set_navpoly" qualifiers="const">
+		<method name="region_set_navpoly">
 			<return type="void" />
 			<argument index="0" name="region" type="RID" />
 			<argument index="1" name="nav_poly" type="NavigationPolygon" />
@@ -540,7 +540,7 @@
 				Sets the navigation mesh for the region.
 			</description>
 		</method>
-		<method name="region_set_owner_id" qualifiers="const">
+		<method name="region_set_owner_id">
 			<return type="void" />
 			<param index="0" name="region" type="RID" />
 			<param index="1" name="owner_id" type="int" />
@@ -548,7 +548,7 @@
 				Set the [code]ObjectID[/code] of the object which manages this region.
 			</description>
 		</method>
-		<method name="region_set_transform" qualifiers="const">
+		<method name="region_set_transform">
 			<return type="void" />
 			<argument index="0" name="region" type="RID" />
 			<argument index="1" name="transform" type="Transform2D" />
@@ -556,7 +556,7 @@
 				Sets the global transformation for the region.
 			</description>
 		</method>
-		<method name="region_set_travel_cost" qualifiers="const">
+		<method name="region_set_travel_cost">
 			<return type="void" />
 			<argument index="0" name="region" type="RID" />
 			<argument index="1" name="travel_cost" type="float" />

@@ -365,7 +365,7 @@ World3D::World3D() {
 	NavigationServer::get_singleton()->map_set_cell_height(navigation_map, GLOBAL_DEF("navigation/3d/default_cell_height", 0.25));
 	NavigationServer::get_singleton()->map_set_edge_connection_margin(navigation_map, GLOBAL_DEF("navigation/3d/default_edge_connection_margin", 0.25));
 	NavigationServer::get_singleton()->map_set_link_connection_radius(navigation_map, GLOBAL_DEF("navigation/3d/default_link_connection_radius", 1.0));
-	NavigationServer::get_singleton_mut()->map_set_use_edge_connections(navigation_map, GLOBAL_DEF("navigation/3d/use_edge_connections", true));
+	NavigationServer::get_singleton()->map_set_use_edge_connections(navigation_map, GLOBAL_DEF("navigation/3d/use_edge_connections", true));
 
 #ifdef _3D_DISABLED
 	indexer = NULL;
