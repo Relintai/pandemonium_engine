@@ -332,7 +332,7 @@ NavigationLink2D::NavigationLink2D() {
 	travel_cost = 1.0;
 
 	link = Navigation2DServer::get_singleton()->link_create();
-	//Navigation2DServer::get_singleton()->link_set_owner_id(link, get_instance_id());
+	Navigation2DServer::get_singleton()->link_set_owner_id(link, get_instance_id());
 
 	set_notify_transform(true);
 }

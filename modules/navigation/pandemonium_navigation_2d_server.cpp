@@ -52,9 +52,9 @@
 		return NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0)); \
 	}
 
-#define FORWARD_1_R_C(CONV_R, FUNC_NAME, T_0, D_0, CONV_0)                          \
-	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0)                                          \
-			const {                                                                 \
+#define FORWARD_1_R_C(CONV_R, FUNC_NAME, T_0, D_0, CONV_0)                        \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0)                             \
+			const {                                                               \
 		return CONV_R(NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0))); \
 	}
 
@@ -243,6 +243,8 @@ void FORWARD_2_C(region_set_enter_cost, RID, p_region, real_t, p_enter_cost, rid
 real_t FORWARD_1_C(region_get_enter_cost, RID, p_region, rid_to_rid);
 void FORWARD_2_C(region_set_travel_cost, RID, p_region, real_t, p_travel_cost, rid_to_rid, real_to_real);
 real_t FORWARD_1_C(region_get_travel_cost, RID, p_region, rid_to_rid);
+void FORWARD_2_C(region_set_owner_id, RID, p_region, ObjectID, p_owner_id, rid_to_rid, id_to_id);
+ObjectID FORWARD_1_C(region_get_owner_id, RID, p_region, rid_to_rid);
 bool FORWARD_2_C(region_owns_point, RID, p_region, const Vector2 &, p_point, rid_to_rid, v2_to_v3);
 
 void FORWARD_2_C(region_set_map, RID, p_region, RID, p_map, rid_to_rid, rid_to_rid);
@@ -274,6 +276,8 @@ void FORWARD_2_C(link_set_enter_cost, RID, p_link, real_t, p_enter_cost, rid_to_
 real_t FORWARD_1_C(link_get_enter_cost, RID, p_link, rid_to_rid);
 void FORWARD_2_C(link_set_travel_cost, RID, p_link, real_t, p_travel_cost, rid_to_rid, real_to_real);
 real_t FORWARD_1_C(link_get_travel_cost, RID, p_link, rid_to_rid);
+void FORWARD_2_C(link_set_owner_id, RID, p_link, ObjectID, p_owner_id, rid_to_rid, id_to_id);
+ObjectID FORWARD_1_C(link_get_owner_id, RID, p_link, rid_to_rid);
 
 RID PandemoniumNavigation2DServer::agent_create() const {
 	RID agent = NavigationServer::get_singleton()->agent_create();

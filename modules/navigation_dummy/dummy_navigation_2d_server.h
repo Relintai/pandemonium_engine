@@ -38,6 +38,8 @@ public:
 	virtual real_t region_get_enter_cost(RID p_region) const { return 0; }
 	virtual void region_set_travel_cost(RID p_region, real_t p_travel_cost) const {}
 	virtual real_t region_get_travel_cost(RID p_region) const { return 0; }
+	virtual void region_set_owner_id(RID p_region, ObjectID p_owner_id) const {}
+	virtual ObjectID region_get_owner_id(RID p_region) const { return 0; }
 	virtual bool region_owns_point(RID p_region, const Vector2 &p_point) const { return false; }
 	virtual void region_set_map(RID p_region, RID p_map) const {}
 	virtual RID region_get_map(RID p_region) const { return RID(); }
@@ -64,6 +66,8 @@ public:
 	virtual real_t link_get_enter_cost(RID p_link) const { return 0; }
 	virtual void link_set_travel_cost(RID p_link, real_t p_travel_cost) const {}
 	virtual real_t link_get_travel_cost(RID p_link) const { return 0; }
+	virtual void link_set_owner_id(RID p_link, ObjectID p_owner_id) const {}
+	virtual ObjectID link_get_owner_id(RID p_link) const { return 0; }
 
 	virtual RID agent_create() const { return RID(); }
 	virtual void agent_set_map(RID p_agent, RID p_map) const {}

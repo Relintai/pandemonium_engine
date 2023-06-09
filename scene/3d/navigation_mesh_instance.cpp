@@ -404,6 +404,7 @@ NavigationMeshInstance::NavigationMeshInstance() {
 	baking_started = false;
 
 	region = NavigationServer::get_singleton()->region_create();
+	NavigationServer::get_singleton()->region_set_owner_id(region, get_instance_id());
 	NavigationServer::get_singleton()->region_set_enter_cost(region, get_enter_cost());
 	NavigationServer::get_singleton()->region_set_travel_cost(region, get_travel_cost());
 	enabled = true;

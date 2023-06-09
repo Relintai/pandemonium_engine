@@ -135,6 +135,8 @@ public:
 	virtual real_t region_get_enter_cost(RID p_region) const;
 	COMMAND_2(region_set_travel_cost, RID, p_region, real_t, p_travel_cost);
 	virtual real_t region_get_travel_cost(RID p_region) const;
+	COMMAND_2(region_set_owner_id, RID, p_region, ObjectID, p_owner_id);
+	virtual ObjectID region_get_owner_id(RID p_region) const;
 
 	virtual bool region_owns_point(RID p_region, const Vector3 &p_point) const;
 
@@ -164,6 +166,8 @@ public:
 	virtual real_t link_get_enter_cost(RID p_link) const;
 	COMMAND_2(link_set_travel_cost, RID, p_link, real_t, p_travel_cost);
 	virtual real_t link_get_travel_cost(RID p_link) const;
+	COMMAND_2(link_set_owner_id, RID, p_link, ObjectID, p_owner_id);
+	virtual ObjectID link_get_owner_id(RID p_link) const;
 
 	virtual RID agent_create() const;
 	COMMAND_2(agent_set_map, RID, p_agent, RID, p_map);

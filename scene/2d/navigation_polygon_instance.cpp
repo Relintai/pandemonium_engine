@@ -394,7 +394,7 @@ NavigationPolygonInstance::NavigationPolygonInstance() {
 	navigation_layers = 1;
 
 	baking_started = false;
-
+	Navigation2DServer::get_singleton()->region_set_owner_id(region, get_instance_id());
 	Navigation2DServer::get_singleton()->region_set_enter_cost(region, get_enter_cost());
 	Navigation2DServer::get_singleton()->region_set_travel_cost(region, get_travel_cost());
 

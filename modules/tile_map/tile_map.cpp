@@ -679,6 +679,7 @@ void TileMap::update_dirty_quadrants() {
 					_fix_cell_transform(xform, c, npoly_ofs, s);
 
 					RID region = Navigation2DServer::get_singleton()->region_create();
+					Navigation2DServer::get_singleton()->region_set_owner_id(region, get_instance_id());
 					if (navigation) {
 						Navigation2DServer::get_singleton()->region_set_map(region, navigation->get_rid());
 					} else {

@@ -65,6 +65,8 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("region_get_enter_cost", "region"), &Navigation2DServer::region_get_enter_cost);
 	ClassDB::bind_method(D_METHOD("region_set_travel_cost", "region", "travel_cost"), &Navigation2DServer::region_set_travel_cost);
 	ClassDB::bind_method(D_METHOD("region_get_travel_cost", "region"), &Navigation2DServer::region_get_travel_cost);
+	ClassDB::bind_method(D_METHOD("region_set_owner_id", "region", "owner_id"), &Navigation2DServer::region_set_owner_id);
+	ClassDB::bind_method(D_METHOD("region_get_owner_id", "region"), &Navigation2DServer::region_get_owner_id);
 	ClassDB::bind_method(D_METHOD("region_owns_point", "region", "point"), &Navigation2DServer::region_owns_point);
 	ClassDB::bind_method(D_METHOD("region_set_map", "region", "map"), &Navigation2DServer::region_set_map);
 	ClassDB::bind_method(D_METHOD("region_get_map", "region"), &Navigation2DServer::region_get_map);
@@ -91,6 +93,8 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("link_get_enter_cost", "link"), &Navigation2DServer::link_get_enter_cost);
 	ClassDB::bind_method(D_METHOD("link_set_travel_cost", "link", "travel_cost"), &Navigation2DServer::link_set_travel_cost);
 	ClassDB::bind_method(D_METHOD("link_get_travel_cost", "link"), &Navigation2DServer::link_get_travel_cost);
+	ClassDB::bind_method(D_METHOD("link_set_owner_id", "link", "owner_id"), &Navigation2DServer::link_set_owner_id);
+	ClassDB::bind_method(D_METHOD("link_get_owner_id", "link"), &Navigation2DServer::link_get_owner_id);
 
 	ClassDB::bind_method(D_METHOD("agent_create"), &Navigation2DServer::agent_create);
 	ClassDB::bind_method(D_METHOD("agent_set_map", "agent", "map"), &Navigation2DServer::agent_set_map);
