@@ -185,6 +185,7 @@ NavigationServer::~NavigationServer() {
 }
 
 void NavigationServer::set_debug_enabled(bool p_enabled) {
+#ifdef DEBUG_ENABLED
 	if (_debug_enabled != p_enabled) {
 		_debug_dirty = true;
 	}
@@ -194,10 +195,15 @@ void NavigationServer::set_debug_enabled(bool p_enabled) {
 	if (_debug_dirty) {
 		call_deferred("_emit_navigation_debug_changed_signal");
 	}
+#endif
 }
 
 bool NavigationServer::get_debug_enabled() const {
+#ifdef DEBUG_ENABLED
 	return _debug_enabled;
+#else
+	return false;
+#endif
 }
 
 #ifdef DEBUG_ENABLED
