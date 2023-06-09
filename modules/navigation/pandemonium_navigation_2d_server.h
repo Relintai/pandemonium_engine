@@ -63,6 +63,9 @@ public:
 	/// Returns the map cell size.
 	virtual real_t map_get_cell_size(RID p_map) const;
 
+	virtual void map_set_use_edge_connections(RID p_map, bool p_enabled);
+	virtual bool map_get_use_edge_connections(RID p_map) const;
+
 	/// Set the map cell height used to weld the navigation mesh polygons.
 	virtual void map_set_cell_height(RID p_map, real_t p_cell_height) const;
 	virtual real_t map_get_cell_height(RID p_map) const;
@@ -93,6 +96,9 @@ public:
 
 	/// Creates a new region.
 	virtual RID region_create() const;
+
+	virtual void region_set_use_edge_connections(RID p_region, bool p_enabled);
+	virtual bool region_get_use_edge_connections(RID p_region) const;
 
 	/// Set the enter_cost of a region
 	virtual void region_set_enter_cost(RID p_region, real_t p_enter_cost) const;

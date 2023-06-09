@@ -54,6 +54,8 @@ class NavMap : public NavRid {
 	real_t cell_size;
 	real_t cell_height;
 
+	bool use_edge_connections;
+
 	/// This value is used to detect the near edges to connect.
 	real_t edge_connection_margin;
 
@@ -123,6 +125,11 @@ public:
 	void set_cell_height(real_t p_cell_height);
 	real_t get_cell_height() const {
 		return cell_height;
+	}
+
+	void set_use_edge_connections(bool p_enabled);
+	bool get_use_edge_connections() const {
+		return use_edge_connections;
 	}
 
 	void set_edge_connection_margin(real_t p_edge_connection_margin);

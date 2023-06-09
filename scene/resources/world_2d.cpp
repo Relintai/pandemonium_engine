@@ -385,6 +385,7 @@ World2D::World2D() {
 	Navigation2DServer::get_singleton()->map_set_cell_height(navigation_map, GLOBAL_DEF("navigation/2d/default_cell_height", 1.0));
 	Navigation2DServer::get_singleton()->map_set_edge_connection_margin(navigation_map, GLOBAL_DEF("navigation/2d/default_edge_connection_margin", 1.0));
 	Navigation2DServer::get_singleton()->map_set_link_connection_radius(navigation_map, GLOBAL_DEF("navigation/2d/default_link_connection_radius", 4));
+	Navigation2DServer::get_singleton_mut()->map_set_use_edge_connections(navigation_map, GLOBAL_DEF("navigation/2d/use_edge_connections", true));
 
 	indexer = memnew(SpatialIndexer2D);
 }

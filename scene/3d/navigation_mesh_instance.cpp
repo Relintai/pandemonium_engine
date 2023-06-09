@@ -96,6 +96,20 @@ bool NavigationMeshInstance::is_enabled() const {
 	return enabled;
 }
 
+void NavigationMeshInstance::set_use_edge_connections(bool p_enabled) {
+	if (use_edge_connections == p_enabled) {
+		return;
+	}
+
+	use_edge_connections = p_enabled;
+
+	NavigationServer::get_singleton_mut()->region_set_use_edge_connections(region, use_edge_connections);
+}
+
+bool NavigationMeshInstance::get_use_edge_connections() const {
+	return use_edge_connections;
+}
+
 void NavigationMeshInstance::set_navigation_layers(uint32_t p_navigation_layers) {
 	navigation_layers = p_navigation_layers;
 	NavigationServer::get_singleton()->region_set_navigation_layers(region, navigation_layers);
@@ -346,6 +360,9 @@ void NavigationMeshInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &NavigationMeshInstance::set_enabled);
 	ClassDB::bind_method(D_METHOD("is_enabled"), &NavigationMeshInstance::is_enabled);
 
+	ClassDB::bind_method(D_METHOD("set_use_edge_connections", "enabled"), &NavigationMeshInstance::set_use_edge_connections);
+	ClassDB::bind_method(D_METHOD("get_use_edge_connections"), &NavigationMeshInstance::get_use_edge_connections);
+
 	ClassDB::bind_method(D_METHOD("set_navigation_mesh", "navmesh"), &NavigationMeshInstance::set_navigation_mesh);
 	ClassDB::bind_method(D_METHOD("get_navigation_mesh"), &NavigationMeshInstance::get_navigation_mesh);
 
@@ -378,6 +395,7 @@ void NavigationMeshInstance::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "navmesh", PROPERTY_HINT_RESOURCE_TYPE, "NavigationMesh"), "set_navigation_mesh", "get_navigation_mesh");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "is_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_edge_connections"), "set_use_edge_connections", "get_use_edge_connections");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_layers", PROPERTY_HINT_LAYERS_3D_NAVIGATION), "set_navigation_layers", "get_navigation_layers");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "enter_cost"), "set_enter_cost", "get_enter_cost");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "travel_cost"), "set_travel_cost", "get_travel_cost");
@@ -395,6 +413,7 @@ NavigationMeshInstance::NavigationMeshInstance() {
 	set_notify_transform(true);
 
 	navigation = nullptr;
+	use_edge_connections = true;
 
 	enter_cost = 0.0;
 	travel_cost = 1.0;
@@ -622,6 +641,13 @@ void NavigationMeshInstance::_update_debug_edge_connections_mesh() {
 	}
 
 	if (!is_inside_tree()) {
+		return;
+	}
+
+	if (!use_edge_connections || !NavigationServer::get_singleton()->map_get_use_edge_connections(get_world_3d()->get_navigation_map())) {
+		if (debug_edge_connections_instance.is_valid()) {
+			RS::get_singleton()->instance_set_visible(debug_edge_connections_instance, false);
+		}
 		return;
 	}
 

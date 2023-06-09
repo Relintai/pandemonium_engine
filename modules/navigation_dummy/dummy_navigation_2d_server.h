@@ -18,6 +18,8 @@ public:
 	virtual real_t map_get_cell_size(RID p_map) const { return 0; }
 	virtual void map_set_cell_height(RID p_map, real_t p_cell_height) const {}
 	virtual real_t map_get_cell_height(RID p_map) const { return 0; }
+	void map_set_use_edge_connections(RID p_map, bool p_enabled) {}
+	bool map_get_use_edge_connections(RID p_map) const { return false; }
 	virtual void map_set_edge_connection_margin(RID p_map, real_t p_connection_margin) const {}
 	virtual real_t map_get_edge_connection_margin(RID p_map) const { return 0; }
 
@@ -34,6 +36,8 @@ public:
 	virtual void map_force_update(RID p_map) {}
 
 	virtual RID region_create() const { return RID(); }
+	void region_set_use_edge_connections(RID p_region, bool p_enabled) {}
+	bool region_get_use_edge_connections(RID p_region) const { return false; }
 	virtual void region_set_enter_cost(RID p_region, real_t p_enter_cost) const {}
 	virtual real_t region_get_enter_cost(RID p_region) const { return 0; }
 	virtual void region_set_travel_cost(RID p_region, real_t p_travel_cost) const {}

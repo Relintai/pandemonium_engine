@@ -45,6 +45,13 @@ void NavRegion::set_map(NavMap *p_map) {
 	}
 }
 
+void NavRegion::set_use_edge_connections(bool p_enabled) {
+	if (use_edge_connections != p_enabled) {
+		use_edge_connections = p_enabled;
+		polygons_dirty = true;
+	}
+}
+
 void NavRegion::set_transform(Transform p_transform) {
 	if (transform == p_transform) {
 		return;
@@ -163,6 +170,7 @@ NavRegion::NavRegion() {
 	enter_cost = 0.0;
 	travel_cost = 1.0;
 	polygons_dirty = true;
+	use_edge_connections = true;
 }
 
 NavRegion::~NavRegion() {}

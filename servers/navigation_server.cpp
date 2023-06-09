@@ -57,6 +57,8 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("map_get_up", "map"), &NavigationServer::map_get_up);
 	ClassDB::bind_method(D_METHOD("map_set_cell_size", "map", "cell_size"), &NavigationServer::map_set_cell_size);
 	ClassDB::bind_method(D_METHOD("map_get_cell_size", "map"), &NavigationServer::map_get_cell_size);
+	ClassDB::bind_method(D_METHOD("map_set_use_edge_connections", "map", "enabled"), &NavigationServer::map_set_use_edge_connections);
+	ClassDB::bind_method(D_METHOD("map_get_use_edge_connections", "map"), &NavigationServer::map_get_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("map_set_cell_height", "map", "cell_height"), &NavigationServer::map_set_cell_height);
 	ClassDB::bind_method(D_METHOD("map_get_cell_height", "map"), &NavigationServer::map_get_cell_height);
 	ClassDB::bind_method(D_METHOD("map_set_edge_connection_margin", "map", "margin"), &NavigationServer::map_set_edge_connection_margin);
@@ -77,6 +79,8 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("query_path", "parameters", "result"), &NavigationServer::query_path);
 
 	ClassDB::bind_method(D_METHOD("region_create"), &NavigationServer::region_create);
+	ClassDB::bind_method(D_METHOD("region_set_use_edge_connections", "region", "enabled"), &NavigationServer::region_set_use_edge_connections);
+	ClassDB::bind_method(D_METHOD("region_get_use_edge_connections", "region"), &NavigationServer::region_get_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("region_set_enter_cost", "region", "enter_cost"), &NavigationServer::region_set_enter_cost);
 	ClassDB::bind_method(D_METHOD("region_get_enter_cost", "region"), &NavigationServer::region_get_enter_cost);
 	ClassDB::bind_method(D_METHOD("region_set_travel_cost", "region", "travel_cost"), &NavigationServer::region_set_travel_cost);
@@ -168,6 +172,8 @@ NavigationServer *NavigationServer::get_singleton_mut() {
 NavigationServer::NavigationServer() {
 	ERR_FAIL_COND(singleton != nullptr);
 	singleton = this;
+
+	GLOBAL_DEF("navigation/3d/use_edge_connections", true);
 
 #ifdef DEBUG_ENABLED
 	_debug_enabled = true;

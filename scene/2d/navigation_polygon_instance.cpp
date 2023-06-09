@@ -81,6 +81,20 @@ bool NavigationPolygonInstance::is_enabled() const {
 	return enabled;
 }
 
+void NavigationPolygonInstance::set_use_edge_connections(bool p_enabled) {
+	if (use_edge_connections == p_enabled) {
+		return;
+	}
+
+	use_edge_connections = p_enabled;
+
+	Navigation2DServer::get_singleton_mut()->region_set_use_edge_connections(region, use_edge_connections);
+}
+
+bool NavigationPolygonInstance::get_use_edge_connections() const {
+	return use_edge_connections;
+}
+
 void NavigationPolygonInstance::set_navigation_layers(uint32_t p_navigation_layers) {
 	navigation_layers = p_navigation_layers;
 	Navigation2DServer::get_singleton()->region_set_navigation_layers(region, navigation_layers);
@@ -342,6 +356,9 @@ void NavigationPolygonInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &NavigationPolygonInstance::set_enabled);
 	ClassDB::bind_method(D_METHOD("is_enabled"), &NavigationPolygonInstance::is_enabled);
 
+	ClassDB::bind_method(D_METHOD("set_use_edge_connections", "enabled"), &NavigationPolygonInstance::set_use_edge_connections);
+	ClassDB::bind_method(D_METHOD("get_use_edge_connections"), &NavigationPolygonInstance::get_use_edge_connections);
+
 	ClassDB::bind_method(D_METHOD("set_navigation_layers", "navigation_layers"), &NavigationPolygonInstance::set_navigation_layers);
 	ClassDB::bind_method(D_METHOD("get_navigation_layers"), &NavigationPolygonInstance::get_navigation_layers);
 
@@ -367,6 +384,7 @@ void NavigationPolygonInstance::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "navpoly", PROPERTY_HINT_RESOURCE_TYPE, "NavigationPolygon"), "set_navigation_polygon", "get_navigation_polygon");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "is_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_edge_connections"), "set_use_edge_connections", "get_use_edge_connections");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_layers", PROPERTY_HINT_LAYERS_2D_NAVIGATION), "set_navigation_layers", "get_navigation_layers");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "enter_cost"), "set_enter_cost", "get_enter_cost");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "travel_cost"), "set_travel_cost", "get_travel_cost");
@@ -383,6 +401,7 @@ void NavigationPolygonInstance::_bind_methods() {
 
 NavigationPolygonInstance::NavigationPolygonInstance() {
 	enabled = true;
+	use_edge_connections = true;
 	set_notify_transform(true);
 	region = Navigation2DServer::get_singleton()->region_create();
 
@@ -480,7 +499,7 @@ void NavigationPolygonInstance::_update_debug_mesh() {
 
 	bool enabled_geometry_face_random_color = ns2d->get_debug_navigation_enable_geometry_face_random_color();
 	bool enabled_edge_lines = ns2d->get_debug_navigation_enable_edge_lines();
-	bool enable_edge_connections = ns2d->get_debug_navigation_enable_edge_connections();
+	bool enable_edge_connections = use_edge_connections && ns2d->get_debug_navigation_enable_edge_connections() && ns2d->map_get_use_edge_connections(get_world_2d()->get_navigation_map());
 
 	Color debug_face_color = ns2d->get_debug_navigation_geometry_face_color();
 	Color debug_edge_color = ns2d->get_debug_navigation_geometry_edge_color();

@@ -83,6 +83,29 @@ using namespace NavigationUtilities;
 	}                                                                  \
 	void PandemoniumNavigationServer::MERGE(_cmd_, F_NAME)(T_0 D_0, T_1 D_1)
 
+#define COMMAND_2N(F_NAME, T_0, D_0, T_1, D_1)                          \
+	struct MERGE(F_NAME, _command) : public SetCommand {               \
+		T_0 d_0;                                                       \
+		T_1 d_1;                                                       \
+		MERGE(F_NAME, _command)                                        \
+		(                                                              \
+				T_0 p_d_0,                                             \
+				T_1 p_d_1) :                                           \
+				d_0(p_d_0),                                            \
+				d_1(p_d_1) {}                                          \
+		virtual void exec(PandemoniumNavigationServer *server) {       \
+			server->MERGE(_cmd_, F_NAME)(d_0, d_1);                    \
+		}                                                              \
+	};                                                                 \
+	void PandemoniumNavigationServer::F_NAME(T_0 D_0, T_1 D_1) { \
+		auto cmd = memnew(MERGE(F_NAME, _command)(                     \
+				D_0,                                                   \
+				D_1));                                                 \
+		add_command(cmd);                                              \
+	}                                                                  \
+	void PandemoniumNavigationServer::MERGE(_cmd_, F_NAME)(T_0 D_0, T_1 D_1)
+
+
 #define COMMAND_4(F_NAME, T_0, D_0, T_1, D_1, T_2, D_2, T_3, D_3)                        \
 	struct MERGE(F_NAME, _command) : public SetCommand {                                 \
 		T_0 d_0;                                                                         \
@@ -214,6 +237,20 @@ real_t PandemoniumNavigationServer::map_get_cell_height(RID p_map) const {
 	ERR_FAIL_COND_V(map == nullptr, 0);
 
 	return map->get_cell_height();
+}
+
+COMMAND_2N(map_set_use_edge_connections, RID, p_map, bool, p_enabled) {
+	NavMap *map = map_owner.getornull(p_map);
+	ERR_FAIL_COND(map == nullptr);
+
+	map->set_use_edge_connections(p_enabled);
+}
+
+bool PandemoniumNavigationServer::map_get_use_edge_connections(RID p_map) const {
+	NavMap *map = map_owner.getornull(p_map);
+	ERR_FAIL_COND_V(map == nullptr, false);
+
+	return map->get_use_edge_connections();
 }
 
 COMMAND_2(map_set_edge_connection_margin, RID, p_map, real_t, p_connection_margin) {
@@ -351,6 +388,20 @@ RID PandemoniumNavigationServer::region_create() const {
 	RID rid = region_owner.make_rid(reg);
 	reg->set_self(rid);
 	return rid;
+}
+
+COMMAND_2N(region_set_use_edge_connections, RID, p_region, bool, p_enabled) {
+	NavRegion *region = region_owner.getornull(p_region);
+	ERR_FAIL_COND(region == nullptr);
+
+	region->set_use_edge_connections(p_enabled);
+}
+
+bool PandemoniumNavigationServer::region_get_use_edge_connections(RID p_region) const {
+	NavRegion *region = region_owner.getornull(p_region);
+	ERR_FAIL_COND_V(region == nullptr, false);
+
+	return region->get_use_edge_connections();
 }
 
 COMMAND_2(region_set_map, RID, p_region, RID, p_map) {
@@ -978,4 +1029,5 @@ int PandemoniumNavigationServer::get_process_info(ProcessInfo p_info) const {
 
 #undef COMMAND_1
 #undef COMMAND_2
+#undef COMMAND_2N
 #undef COMMAND_4

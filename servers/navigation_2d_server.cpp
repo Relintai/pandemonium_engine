@@ -45,6 +45,8 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("map_is_active", "map"), &Navigation2DServer::map_is_active);
 	ClassDB::bind_method(D_METHOD("map_set_cell_size", "map", "cell_size"), &Navigation2DServer::map_set_cell_size);
 	ClassDB::bind_method(D_METHOD("map_get_cell_size", "map"), &Navigation2DServer::map_get_cell_size);
+	ClassDB::bind_method(D_METHOD("map_set_use_edge_connections", "map", "enabled"), &Navigation2DServer::map_set_use_edge_connections);
+	ClassDB::bind_method(D_METHOD("map_get_use_edge_connections", "map"), &Navigation2DServer::map_get_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("map_set_cell_height", "map", "cell_height"), &Navigation2DServer::map_set_cell_size);
 	ClassDB::bind_method(D_METHOD("map_get_cell_height", "map"), &Navigation2DServer::map_get_cell_size);
 	ClassDB::bind_method(D_METHOD("map_set_edge_connection_margin", "map", "margin"), &Navigation2DServer::map_set_edge_connection_margin);
@@ -61,6 +63,8 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("map_force_update", "map"), &Navigation2DServer::map_force_update);
 
 	ClassDB::bind_method(D_METHOD("region_create"), &Navigation2DServer::region_create);
+	ClassDB::bind_method(D_METHOD("region_set_use_edge_connections", "region", "enabled"), &Navigation2DServer::region_set_use_edge_connections);
+	ClassDB::bind_method(D_METHOD("region_get_use_edge_connections", "region"), &Navigation2DServer::region_get_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("region_set_enter_cost", "region", "enter_cost"), &Navigation2DServer::region_set_enter_cost);
 	ClassDB::bind_method(D_METHOD("region_get_enter_cost", "region"), &Navigation2DServer::region_get_enter_cost);
 	ClassDB::bind_method(D_METHOD("region_set_travel_cost", "region", "travel_cost"), &Navigation2DServer::region_set_travel_cost);

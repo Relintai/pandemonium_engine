@@ -79,6 +79,14 @@ void NavMap::set_cell_height(real_t p_cell_height) {
 	regenerate_polygons = true;
 }
 
+void NavMap::set_use_edge_connections(bool p_enabled) {
+	if (use_edge_connections == p_enabled) {
+		return;
+	}
+	use_edge_connections = p_enabled;
+	regenerate_links = true;
+}
+
 void NavMap::set_edge_connection_margin(real_t p_edge_connection_margin) {
 	if (edge_connection_margin == p_edge_connection_margin) {
 		return;
@@ -391,7 +399,7 @@ Vector<Vector3> NavMap::get_path(Vector3 p_origin, Vector3 p_destination, bool p
 					apex_poly = p;
 					left_portal = apex_point;
 					right_portal = apex_point;
-					
+
 					path.push_back(apex_point);
 					APPEND_METADATA(apex_poly->poly);
 					skip = true;
@@ -751,7 +759,10 @@ void NavMap::sync() {
 				_new_pm_edge_merge_count += 1;
 			} else {
 				CRASH_COND_MSG(E->get().size() != 1, vformat("Number of connection != 1. Found: %d", E->get().size()));
-				free_edges.push_back(E->get()[0]);
+
+				if (use_edge_connections && E->get()[0].polygon->owner->get_use_edge_connections()) {
+					free_edges.push_back(E->get()[0]);
+				}
 			}
 		}
 
@@ -1046,6 +1057,7 @@ NavMap::NavMap() {
 	deltatime = 0.0;
 	map_update_id = 0;
 	link_connection_radius = 1.0;
+	use_edge_connections = true;
 
 	// Performance Monitor
 	pm_region_count = 0;

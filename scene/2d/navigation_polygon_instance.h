@@ -42,6 +42,8 @@ class NavigationPolygonInstance : public Node2D {
 	GDCLASS(NavigationPolygonInstance, Node2D);
 
 	bool enabled;
+	bool use_edge_connections;
+
 	RID region;
 	RID map_override;
 	Navigation2D *navigation;
@@ -76,6 +78,9 @@ public:
 
 	void set_enabled(bool p_enabled);
 	bool is_enabled() const;
+
+	void set_use_edge_connections(bool p_enabled);
+	bool get_use_edge_connections() const;
 
 	void set_navigation_layers(uint32_t p_navigation_layers);
 	uint32_t get_navigation_layers() const;

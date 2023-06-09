@@ -58,6 +58,11 @@
 		return CONV_R(NavigationServer::get_singleton()->FUNC_NAME(CONV_0(D_0))); \
 	}
 
+#define FORWARD_2(FUNC_NAME, T_0, D_0, T_1, D_1, CONV_0, CONV_1)                         \
+	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1) {                                    \
+		return NavigationServer::get_singleton_mut()->FUNC_NAME(CONV_0(D_0), CONV_1(D_1)); \
+	}
+
 #define FORWARD_2_C(FUNC_NAME, T_0, D_0, T_1, D_1, CONV_0, CONV_1)                     \
 	PandemoniumNavigation2DServer::FUNC_NAME(T_0 D_0, T_1 D_1)                         \
 			const {                                                                    \
@@ -223,6 +228,9 @@ void PandemoniumNavigation2DServer::map_force_update(RID p_map) {
 void FORWARD_2_C(map_set_cell_size, RID, p_map, real_t, p_cell_size, rid_to_rid, real_to_real);
 real_t FORWARD_1_C(map_get_cell_size, RID, p_map, rid_to_rid);
 
+void FORWARD_2(map_set_use_edge_connections, RID, p_map, bool, p_enabled, rid_to_rid, bool_to_bool);
+bool FORWARD_1_C(map_get_use_edge_connections, RID, p_map, rid_to_rid);
+
 void FORWARD_2_C(map_set_cell_height, RID, p_map, real_t, p_cell_height, rid_to_rid, real_to_real);
 real_t FORWARD_1_C(map_get_cell_height, RID, p_map, rid_to_rid);
 
@@ -238,6 +246,9 @@ Vector2 FORWARD_2_R_C(v3_to_v2, map_get_closest_point, RID, p_map, const Vector2
 RID FORWARD_2_C(map_get_closest_point_owner, RID, p_map, const Vector2 &, p_point, rid_to_rid, v2_to_v3);
 
 RID FORWARD_0_C(region_create);
+
+void FORWARD_2(region_set_use_edge_connections, RID, p_region, bool, p_enabled, rid_to_rid, bool_to_bool);
+bool FORWARD_1_C(region_get_use_edge_connections, RID, p_region, rid_to_rid);
 
 void FORWARD_2_C(region_set_enter_cost, RID, p_region, real_t, p_enter_cost, rid_to_rid, real_to_real);
 real_t FORWARD_1_C(region_get_enter_cost, RID, p_region, rid_to_rid);
