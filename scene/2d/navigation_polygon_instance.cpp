@@ -178,9 +178,30 @@ void NavigationPolygonInstance::_notification(int p_what) {
 					Navigation2DServer::get_singleton()->region_set_map(region, get_world_2d()->get_navigation_map());
 				}
 			}
+
+			current_global_transform = get_global_transform();
+			Navigation2DServer::get_singleton()->region_set_transform(region, current_global_transform);
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
-			Navigation2DServer::get_singleton()->region_set_transform(region, get_global_transform());
+			set_physics_process_internal(true);
+		} break;
+		case NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
+			set_physics_process_internal(false);
+			if (is_inside_tree()) {
+				Transform2D new_global_transform = get_global_transform();
+				if (current_global_transform != new_global_transform) {
+					current_global_transform = new_global_transform;
+					Navigation2DServer::get_singleton()->region_set_transform(region, current_global_transform);
+					update();
+
+					//TODO reenable!
+					//for (uint32_t i = 0; i < constrain_avoidance_obstacles.size(); i++) {
+					//	if (constrain_avoidance_obstacles[i].is_valid()) {
+					//		Navigation2DServer::get_singleton()->obstacle_set_position(constrain_avoidance_obstacles[i], get_global_position());
+					//	}
+					//}
+				}
+			}
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			if (navigation) {

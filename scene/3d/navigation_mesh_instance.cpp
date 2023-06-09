@@ -183,6 +183,9 @@ void NavigationMeshInstance::_notification(int p_what) {
 				}
 			}
 
+			current_global_transform = get_global_transform();
+			NavigationServer::get_singleton()->region_set_transform(region, current_global_transform);
+
 #ifdef DEBUG_ENABLED
 			if (NavigationServer::get_singleton()->get_debug_enabled()) {
 				_update_debug_mesh();
@@ -191,14 +194,23 @@ void NavigationMeshInstance::_notification(int p_what) {
 
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
-			NavigationServer::get_singleton()->region_set_transform(region, get_global_transform());
+			set_physics_process_internal(true);
+		} break;
 
+		case NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
+			set_physics_process_internal(false);
+			if (is_inside_tree()) {
+				Transform new_global_transform = get_global_transform();
+				if (current_global_transform != new_global_transform) {
+					current_global_transform = new_global_transform;
+					NavigationServer::get_singleton()->region_set_transform(region, current_global_transform);
 #ifdef DEBUG_ENABLED
-			if (is_inside_tree() && debug_instance.is_valid()) {
-				RS::get_singleton()->instance_set_transform(debug_instance, get_global_transform());
-			}
+					if (debug_instance.is_valid()) {
+						RS::get_singleton()->instance_set_transform(debug_instance, current_global_transform);
+					}
 #endif // DEBUG_ENABLED
-
+				}
+			}
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			NavigationServer::get_singleton()->region_set_map(region, RID());
@@ -381,6 +393,8 @@ void NavigationMeshInstance::_changed_callback(Object *p_changed, const char *p_
 
 NavigationMeshInstance::NavigationMeshInstance() {
 	set_notify_transform(true);
+
+	navigation = nullptr;
 
 	enter_cost = 0.0;
 	travel_cost = 1.0;
@@ -572,6 +586,7 @@ void NavigationMeshInstance::_update_debug_mesh() {
 	RS::get_singleton()->instance_set_base(debug_instance, debug_mesh->get_rid());
 	if (is_inside_tree()) {
 		RS::get_singleton()->instance_set_scenario(debug_instance, get_world_3d()->get_scenario());
+		RS::get_singleton()->instance_set_transform(debug_instance, current_global_transform);
 		RS::get_singleton()->instance_set_visible(debug_instance, is_visible_in_tree());
 	}
 	if (!is_enabled()) {

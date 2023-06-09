@@ -33,6 +33,10 @@
 #include "nav_map.h"
 
 void NavRegion::set_map(NavMap *p_map) {
+	if (map == p_map) {
+		return;
+	}
+
 	map = p_map;
 	polygons_dirty = true;
 
@@ -42,6 +46,10 @@ void NavRegion::set_map(NavMap *p_map) {
 }
 
 void NavRegion::set_transform(Transform p_transform) {
+	if (transform == p_transform) {
+		return;
+	}
+
 	transform = p_transform;
 	polygons_dirty = true;
 }

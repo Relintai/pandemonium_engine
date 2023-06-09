@@ -53,6 +53,8 @@ class NavigationPolygonInstance : public Node2D {
 
 	uint32_t navigation_layers;
 
+	Transform2D current_global_transform;
+
 	void _navpoly_changed();
 
 #ifdef DEBUG_ENABLED

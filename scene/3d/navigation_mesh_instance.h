@@ -45,12 +45,14 @@ class NavigationMeshInstance : public Spatial {
 	RID map_override;
 	Ref<NavigationMesh> navmesh;
 
-	real_t enter_cost = 0.0;
-	real_t travel_cost = 1.0;
+	Transform current_global_transform;
 
-	uint32_t navigation_layers = 1;
+	real_t enter_cost;
+	real_t travel_cost;
 
-	Navigation *navigation = nullptr;
+	uint32_t navigation_layers;
+
+	Navigation *navigation;
 
 	bool baking_started;
 
