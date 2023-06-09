@@ -881,8 +881,7 @@ NavigationUtilities::PathQueryResult PandemoniumNavigationServer::_query_path(co
 
 		r_query_result.path.resize(path.size());
 
-		PoolVector3Array::Write w = r_query_result.path.write();
-		Vector3 *wptr = w.ptr();
+		Vector3 *wptr = r_query_result.path.ptrw();
 		const Vector3 *pptr = path.ptr();
 
 		for (int i = 0; i < path.size(); ++i) {

@@ -30,19 +30,19 @@
 
 #include "navigation_path_query_result_3d.h"
 
-void NavigationPathQueryResult3D::set_path(const PoolVector<Vector3> &p_path) {
+void NavigationPathQueryResult3D::set_path(const Vector<Vector3> &p_path) {
 	path = p_path;
 }
 
-const PoolVector<Vector3> &NavigationPathQueryResult3D::get_path() const {
+const Vector<Vector3> &NavigationPathQueryResult3D::get_path() const {
 	return path;
 }
 
-void NavigationPathQueryResult3D::set_path_types(const PoolVector<int> &p_path_types) {
+void NavigationPathQueryResult3D::set_path_types(const Vector<int> &p_path_types) {
 	path_types = p_path_types;
 }
 
-const PoolVector<int> &NavigationPathQueryResult3D::get_path_types() const {
+const Vector<int> &NavigationPathQueryResult3D::get_path_types() const {
 	return path_types;
 }
 
@@ -54,11 +54,11 @@ Array NavigationPathQueryResult3D::get_path_rids() const {
 	return path_rids;
 }
 
-void NavigationPathQueryResult3D::set_path_owner_ids(const PoolVector<int> &p_path_owner_ids) {
+void NavigationPathQueryResult3D::set_path_owner_ids(const Vector<int> &p_path_owner_ids) {
 	path_owner_ids = p_path_owner_ids;
 }
 
-const PoolVector<int> &NavigationPathQueryResult3D::get_path_owner_ids() const {
+const Vector<int> &NavigationPathQueryResult3D::get_path_owner_ids() const {
 	return path_owner_ids;
 }
 

@@ -164,7 +164,7 @@ public:
 
 	Vector2 get_next_position();
 
-	const PoolVector<Vector2> &get_nav_path() const;
+	const Vector<Vector2> &get_nav_path() const;
 
 	int get_nav_path_index() const {
 		return nav_path_index;

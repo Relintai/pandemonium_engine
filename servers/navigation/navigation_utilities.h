@@ -32,9 +32,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
+#include "core/containers/rid.h"
 #include "core/math/vector3.h"
 #include "core/variant/array.h"
-#include "core/containers/rid.h"
 #include "core/variant/variant.h"
 
 namespace NavigationUtilities {
@@ -82,17 +82,17 @@ struct PathQueryParameters2D {
 };
 
 struct PathQueryResult {
-	PoolVector3Array path;
-	PoolIntArray path_types;
+	Vector<Vector3> path;
+	Vector<int> path_types;
 	Array path_rids;
-	PoolIntArray path_owner_ids;
+	Vector<int> path_owner_ids;
 };
 
 struct PathQueryResult2D {
-	PoolVector2Array path;
-	PoolIntArray path_types;
+	Vector<Vector2> path;
+	Vector<int> path_types;
 	Array path_rids;
-	PoolIntArray path_owner_ids;
+	Vector<int> path_owner_ids;
 };
 
 } //namespace NavigationUtilities

@@ -457,7 +457,7 @@ Vector3 NavigationAgent::get_target_position() const {
 Vector3 NavigationAgent::get_next_position() {
 	update_navigation();
 
-	const PoolVector<Vector3> &navigation_path = navigation_result->get_path();
+	const Vector<Vector3> &navigation_path = navigation_result->get_path();
 	if (navigation_path.size() == 0) {
 		ERR_FAIL_COND_V_MSG(agent_parent == nullptr, Vector3(), "The agent has no parent.");
 		return agent_parent->get_global_transform().origin;
@@ -466,7 +466,7 @@ Vector3 NavigationAgent::get_next_position() {
 	}
 }
 
-const PoolVector<Vector3> &NavigationAgent::get_nav_path() const {
+const Vector<Vector3> &NavigationAgent::get_nav_path() const {
 	return navigation_result->get_path();
 }
 
@@ -491,7 +491,7 @@ bool NavigationAgent::is_navigation_finished() {
 Vector3 NavigationAgent::get_final_position() {
 	update_navigation();
 
-	const PoolVector<Vector3> &navigation_path = navigation_result->get_path();
+	const Vector<Vector3> &navigation_path = navigation_result->get_path();
 
 	if (navigation_path.size() == 0) {
 		return Vector3();
@@ -553,7 +553,7 @@ void NavigationAgent::update_navigation() {
 	} else {
 		// Check if too far from the navigation path
 		if (nav_path_index > 0) {
-			const PoolVector<Vector3> &navigation_path = navigation_result->get_path();
+			const Vector<Vector3> &navigation_path = navigation_result->get_path();
 
 			Vector3 segment[2];
 			segment[0] = navigation_path[nav_path_index - 1];
@@ -601,7 +601,7 @@ void NavigationAgent::update_navigation() {
 	// Check if we can advance the navigation path
 	if (navigation_finished == false) {
 		// Advances to the next far away position.
-		const PoolVector<Vector3> &navigation_path = navigation_result->get_path();
+		const Vector<Vector3> &navigation_path = navigation_result->get_path();
 		while (origin.distance_to(navigation_path[nav_path_index] - Vector3(0, navigation_height_offset, 0)) < path_desired_distance) {
 			nav_path_index += 1;
 			if (nav_path_index == navigation_path.size()) {
@@ -698,7 +698,7 @@ void NavigationAgent::_update_debug_path() {
 		return;
 	}
 
-	const PoolVector<Vector3> &navigation_path = navigation_result->get_path();
+	const Vector<Vector3> &navigation_path = navigation_result->get_path();
 
 	if (navigation_path.size() <= 1) {
 		return;

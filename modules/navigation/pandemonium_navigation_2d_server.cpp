@@ -320,7 +320,7 @@ NavigationUtilities::PathQueryResult2D PandemoniumNavigation2DServer::_query_pat
 	NavigationUtilities::PathQueryResult res = NavigationServer::get_singleton()->_query_path(params);
 
 	NavigationUtilities::PathQueryResult2D resf;
-	resf.path = poolvector_v3_to_v2(res.path);
+	resf.path = vector_v3_to_v2(res.path);
 	resf.path_types = res.path_types;
 	resf.path_rids = res.path_rids;
 	resf.path_owner_ids = res.path_owner_ids;

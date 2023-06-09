@@ -38,10 +38,10 @@
 class NavigationPathQueryResult3D : public Reference {
 	GDCLASS(NavigationPathQueryResult3D, Reference);
 
-	PoolVector<Vector3> path;
-	PoolVector<int> path_types;
+	Vector<Vector3> path;
+	Vector<int> path_types;
 	Array path_rids;
-	PoolVector<int> path_owner_ids;
+	Vector<int> path_owner_ids;
 
 protected:
 	static void _bind_methods();
@@ -52,17 +52,17 @@ public:
 		PATH_SEGMENT_TYPE_LINK = 1,
 	};
 
-	void set_path(const PoolVector<Vector3> &p_path);
-	const PoolVector<Vector3> &get_path() const;
+	void set_path(const Vector<Vector3> &p_path);
+	const Vector<Vector3> &get_path() const;
 
-	void set_path_types(const PoolVector<int> &p_path_types);
-	const PoolVector<int> &get_path_types() const;
+	void set_path_types(const Vector<int> &p_path_types);
+	const Vector<int> &get_path_types() const;
 
 	void set_path_rids(const Array &p_path_rids);
 	Array get_path_rids() const;
 
-	void set_path_owner_ids(const PoolVector<int> &p_path_owner_ids);
-	const PoolVector<int> &get_path_owner_ids() const;
+	void set_path_owner_ids(const Vector<int> &p_path_owner_ids);
+	const Vector<int> &get_path_owner_ids() const;
 
 	void reset();
 };

@@ -440,7 +440,7 @@ Vector2 NavigationAgent2D::get_target_position() const {
 Vector2 NavigationAgent2D::get_next_position() {
 	update_navigation();
 
-	const PoolVector<Vector2> &navigation_path = navigation_result->get_path();
+	const Vector<Vector2> &navigation_path = navigation_result->get_path();
 	if (navigation_path.size() == 0) {
 		ERR_FAIL_COND_V(agent_parent == nullptr, Vector2());
 		return agent_parent->get_global_transform().get_origin();
@@ -449,7 +449,7 @@ Vector2 NavigationAgent2D::get_next_position() {
 	}
 }
 
-const PoolVector<Vector2> &NavigationAgent2D::get_nav_path() const {
+const Vector<Vector2> &NavigationAgent2D::get_nav_path() const {
 	return navigation_result->get_path();
 }
 
@@ -474,7 +474,7 @@ bool NavigationAgent2D::is_navigation_finished() {
 Vector2 NavigationAgent2D::get_final_position() {
 	update_navigation();
 
-	const PoolVector<Vector2> &navigation_path = navigation_result->get_path();
+	const Vector<Vector2> &navigation_path = navigation_result->get_path();
 	if (navigation_path.size() == 0) {
 		return Vector2();
 	}
@@ -533,7 +533,7 @@ void NavigationAgent2D::update_navigation() {
 	} else {
 		// Check if too far from the navigation path
 		if (nav_path_index > 0) {
-			const PoolVector<Vector2> &navigation_path = navigation_result->get_path();
+			const Vector<Vector2> &navigation_path = navigation_result->get_path();
 
 			Vector2 segment[2];
 			segment[0] = navigation_path[nav_path_index - 1];
@@ -577,7 +577,7 @@ void NavigationAgent2D::update_navigation() {
 	// Check if we can advance the navigation path
 	if (navigation_finished == false) {
 		// Advances to the next far away position.
-		const PoolVector<Vector2> &navigation_path = navigation_result->get_path();
+		const Vector<Vector2> &navigation_path = navigation_result->get_path();
 		while (origin.distance_to(navigation_path[nav_path_index]) < path_desired_distance) {
 			nav_path_index += 1;
 			if (nav_path_index == navigation_path.size()) {
@@ -682,7 +682,7 @@ void NavigationAgent2D::_update_debug_path() {
 	RenderingServer::get_singleton()->canvas_item_set_parent(debug_path_instance, agent_parent->get_canvas());
 	RenderingServer::get_singleton()->canvas_item_set_visible(debug_path_instance, agent_parent->is_visible_in_tree());
 
-	const PoolVector<Vector2> &navigation_path = navigation_result->get_path();
+	const Vector<Vector2> &navigation_path = navigation_result->get_path();
 
 	if (navigation_path.size() <= 1) {
 		return;
@@ -697,8 +697,7 @@ void NavigationAgent2D::_update_debug_path() {
 	debug_path_colors.resize(navigation_path.size());
 	debug_path_colors.fill(debug_path_color);
 
-	//TODO
-	//RenderingServer::get_singleton()->canvas_item_add_polyline(debug_path_instance, navigation_path, debug_path_colors, debug_path_custom_line_width, false);
+	RenderingServer::get_singleton()->canvas_item_add_polyline(debug_path_instance, navigation_path, debug_path_colors, debug_path_custom_line_width, false);
 
 	float point_size = Navigation2DServer::get_singleton()->get_debug_navigation_agent_path_point_size();
 	float half_point_size = point_size * 0.5;
