@@ -108,6 +108,9 @@ void Navigation2DServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("free_rid", "rid"), &Navigation2DServer::free);
 
+	ClassDB::bind_method(D_METHOD("set_debug_enabled", "enabled"), &Navigation2DServer::set_debug_enabled);
+	ClassDB::bind_method(D_METHOD("get_debug_enabled"), &Navigation2DServer::get_debug_enabled);
+
 	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
 }
 
@@ -131,13 +134,14 @@ Navigation2DServer::~Navigation2DServer() {
 	singleton = nullptr;
 }
 
-#ifdef DEBUG_ENABLED
 void Navigation2DServer::set_debug_enabled(bool p_enabled) {
 	NavigationServer::get_singleton_mut()->set_debug_enabled(p_enabled);
 }
 bool Navigation2DServer::get_debug_enabled() const {
 	return NavigationServer::get_singleton()->get_debug_enabled();
 }
+
+#ifdef DEBUG_ENABLED
 
 void Navigation2DServer::set_debug_navigation_link_connection_color(const Color &p_color) {
 	NavigationServer::get_singleton_mut()->set_debug_navigation_link_connection_color(p_color);

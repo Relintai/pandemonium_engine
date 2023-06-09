@@ -130,6 +130,9 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_active", "active"), &NavigationServer::set_active);
 	ClassDB::bind_method(D_METHOD("process", "delta_time"), &NavigationServer::process);
 
+	ClassDB::bind_method(D_METHOD("set_debug_enabled", "enabled"), &NavigationServer::set_debug_enabled);
+	ClassDB::bind_method(D_METHOD("get_debug_enabled"), &NavigationServer::get_debug_enabled);
+
 	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
 
 #ifdef DEBUG_ENABLED
@@ -179,6 +182,22 @@ NavigationServer::NavigationServer() {
 
 NavigationServer::~NavigationServer() {
 	singleton = nullptr;
+}
+
+void NavigationServer::set_debug_enabled(bool p_enabled) {
+	if (_debug_enabled != p_enabled) {
+		_debug_dirty = true;
+	}
+
+	_debug_enabled = p_enabled;
+
+	if (_debug_dirty) {
+		call_deferred("_emit_navigation_debug_changed_signal");
+	}
+}
+
+bool NavigationServer::get_debug_enabled() const {
+	return _debug_enabled;
 }
 
 #ifdef DEBUG_ENABLED
@@ -481,21 +500,6 @@ bool NavigationServer::get_debug_navigation_enable_link_connections_xray() const
 	return _debug_navigation_enable_link_connections_xray;
 }
 
-void NavigationServer::set_debug_enabled(bool p_enabled) {
-	if (_debug_enabled != p_enabled) {
-		_debug_dirty = true;
-	}
-
-	_debug_enabled = p_enabled;
-
-	if (_debug_dirty) {
-		call_deferred("_emit_navigation_debug_changed_signal");
-	}
-}
-
-bool NavigationServer::get_debug_enabled() const {
-	return _debug_enabled;
-}
 #endif // DEBUG_ENABLED
 
 void NavigationServer::query_path(const Ref<NavigationPathQueryParameters3D> &p_query_parameters, Ref<NavigationPathQueryResult3D> p_query_result) const {
