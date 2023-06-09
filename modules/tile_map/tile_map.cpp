@@ -374,7 +374,14 @@ void TileMap::update_dirty_quadrants() {
 
 	SceneTree *st = SceneTree::get_singleton();
 	Color debug_collision_color;
-	Color debug_navigation_color = Color(0.5, 1.0, 1.0, 1.0);
+
+#ifdef DEBUG_ENABLED
+	bool enabled_geometry_face_random_color = false;
+	bool enabled_edge_lines = false;
+
+	Color debug_face_color;
+	Color debug_edge_color;
+#endif // DEBUG_ENABLED
 
 	bool debug_shapes = false;
 	if (st) {
@@ -392,9 +399,17 @@ void TileMap::update_dirty_quadrants() {
 	bool debug_navigation = st && st->is_debugging_navigation_hint();
 	if (debug_navigation) {
 #ifdef DEBUG_ENABLED
-		debug_navigation_color = NavigationServer::get_singleton()->get_debug_navigation_geometry_face_color();
+		const Navigation2DServer *ns2d = Navigation2DServer::get_singleton();
+
+		enabled_geometry_face_random_color = ns2d->get_debug_navigation_enable_geometry_face_random_color();
+		enabled_edge_lines = ns2d->get_debug_navigation_enable_edge_lines();
+
+		debug_face_color = ns2d->get_debug_navigation_geometry_face_color();
+		debug_edge_color = ns2d->get_debug_navigation_geometry_edge_color();
 #endif // DEBUG_ENABLED
 	}
+
+	RandomPCG rand;
 
 	while (dirty_quadrant_list.first()) {
 		Quadrant &q = *dirty_quadrant_list.first()->self();
@@ -690,15 +705,27 @@ void TileMap::update_dirty_quadrants() {
 							int vsize = navigation_polygon_vertices.size();
 
 							if (vsize > 2) {
-								Vector<Color> colors;
-								Vector<Vector2> vertices;
-								vertices.resize(vsize);
-								colors.resize(vsize);
+								Vector<Vector2> debug_polygon_vertices;
+								debug_polygon_vertices.resize(vsize);
+
+								// Generate the polygon color, slightly randomly modified from the settings one.
+								Color random_variation_color = debug_face_color;
+								if (enabled_geometry_face_random_color) {
+									random_variation_color.set_hsv(
+											debug_face_color.get_h() + rand.random(-1.0, 1.0) * 0.1,
+											debug_face_color.get_s(),
+											debug_face_color.get_v() + rand.random(-1.0, 1.0) * 0.2);
+								}
+								random_variation_color.a = debug_face_color.a;
+
+								Vector<Color> debug_face_colors;
+								debug_face_colors.resize(vsize);
+
 								{
 									PoolVector<Vector2>::Read vr = navigation_polygon_vertices.read();
 									for (int j = 0; j < vsize; j++) {
-										vertices.write[j] = vr[j];
-										colors.write[j] = debug_navigation_color;
+										debug_polygon_vertices.write[j] = vr[j];
+										debug_face_colors.write[j] = random_variation_color;
 									}
 								}
 
@@ -721,7 +748,14 @@ void TileMap::update_dirty_quadrants() {
 								_fix_cell_transform(navxform, c, npoly_ofs, s);
 
 								vs->canvas_item_set_transform(debug_navigation_item, navxform);
-								vs->canvas_item_add_triangle_array(debug_navigation_item, indices, vertices, colors);
+								vs->canvas_item_add_triangle_array(debug_navigation_item, indices, debug_polygon_vertices, debug_face_colors);
+
+								if (enabled_edge_lines) {
+									Vector<Color> debug_edge_colors;
+									debug_edge_colors.push_back(debug_edge_color);
+									debug_polygon_vertices.push_back(debug_polygon_vertices[0]); // Add first again for closing polyline.
+									vs->canvas_item_add_polyline(debug_navigation_item, debug_polygon_vertices, debug_edge_colors);
+								}
 							}
 						}
 					}
