@@ -229,6 +229,7 @@ Ref<SpatialMaterial> NavigationServer::get_debug_navigation_geometry_face_materi
 	face_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
 	face_material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
 	face_material->set_albedo(debug_navigation_geometry_face_color);
+	face_material->set_cull_mode(SpatialMaterial::CULL_DISABLED);
 	if (enabled_geometry_face_random_color) {
 		face_material->set_flag(SpatialMaterial::FLAG_SRGB_VERTEX_COLOR, true);
 		face_material->set_flag(SpatialMaterial::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
