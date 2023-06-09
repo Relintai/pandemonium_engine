@@ -375,13 +375,11 @@ void TileMap::update_dirty_quadrants() {
 	SceneTree *st = SceneTree::get_singleton();
 	Color debug_collision_color;
 
-#ifdef DEBUG_ENABLED
 	bool enabled_geometry_face_random_color = false;
 	bool enabled_edge_lines = false;
 
 	Color debug_face_color;
 	Color debug_edge_color;
-#endif // DEBUG_ENABLED
 
 	bool debug_shapes = false;
 	if (st) {
