@@ -274,6 +274,13 @@ void NavigationPolygonInstance::_navigation_map_changed(RID p_map) {
 		update();
 	}
 }
+void NavigationPolygonInstance::_navigation_debug_changed() {
+	if (navigation != nullptr && enabled) {
+		update();
+	} else if (is_inside_tree() && enabled) {
+		update();
+	}
+}
 #endif // DEBUG_ENABLED
 
 String NavigationPolygonInstance::get_configuration_warning() const {
@@ -324,6 +331,7 @@ void NavigationPolygonInstance::_bind_methods() {
 
 #ifdef DEBUG_ENABLED
 	ClassDB::bind_method(D_METHOD("_navigation_map_changed"), &NavigationPolygonInstance::_navigation_map_changed);
+	ClassDB::bind_method(D_METHOD("_navigation_debug_changed"), &NavigationPolygonInstance::_navigation_debug_changed);
 #endif
 	ClassDB::bind_method(D_METHOD("_navpoly_changed"), &NavigationPolygonInstance::_navpoly_changed);
 
@@ -350,7 +358,7 @@ NavigationPolygonInstance::NavigationPolygonInstance() {
 
 #ifdef DEBUG_ENABLED
 	Navigation2DServer::get_singleton_mut()->connect("map_changed", this, "_navigation_map_changed");
-	NavigationServer::get_singleton_mut()->connect("navigation_debug_changed", this, "_navigation_map_changed");
+	NavigationServer::get_singleton_mut()->connect("navigation_debug_changed", this, "_navigation_debug_changed");
 #endif // DEBUG_ENABLED
 }
 
@@ -361,7 +369,7 @@ NavigationPolygonInstance::~NavigationPolygonInstance() {
 
 #ifdef DEBUG_ENABLED
 	Navigation2DServer::get_singleton_mut()->disconnect("map_changed", this, "_navigation_map_changed");
-	NavigationServer::get_singleton_mut()->disconnect("navigation_debug_changed", this, "_navigation_map_changed");
+	NavigationServer::get_singleton_mut()->disconnect("navigation_debug_changed", this, "_navigation_debug_changed");
 #endif // DEBUG_ENABLED
 }
 
