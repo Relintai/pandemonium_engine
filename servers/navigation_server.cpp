@@ -37,6 +37,7 @@
 #include "scene/resources/navigation_mesh.h"
 
 #ifdef DEBUG_ENABLED
+#include "core/config/engine.h"
 #include "core/config/project_settings.h"
 #include "scene/resources/material.h"
 #endif
@@ -167,6 +168,12 @@ NavigationServer::NavigationServer() {
 	_debug_navigation_enable_geometry_face_random_color = GLOBAL_DEF("debug/shapes/navigation/enable_geometry_face_random_color", true);
 	_debug_navigation_enable_link_connections = GLOBAL_DEF("debug/shapes/navigation/enable_link_connections", true);
 	_debug_navigation_enable_link_connections_xray = GLOBAL_DEF("debug/shapes/navigation/enable_link_connections_xray", true);
+
+	if (Engine::get_singleton()->is_editor_hint()) {
+		// enable NavigationServer3D when in Editor or else navmesh edge connections are invisible
+		// on runtime tests SceneTree has "Visible Navigation" set and main iteration takes care of this
+		set_debug_enabled(true);
+	}
 #endif // DEBUG_ENABLED
 }
 
