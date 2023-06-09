@@ -133,7 +133,7 @@ struct NavigationPoly {
 	/// The entry location of this poly.
 	Vector3 entry;
 	/// The distance to the destination.
-	float traveled_distance;
+	real_t traveled_distance;
 
 	NavigationPoly() { poly = nullptr; }
 
