@@ -41,6 +41,13 @@
 				Returns the [Navigation] node that the agent is using for its navigation system.
 			</description>
 		</method>
+		<method name="get_navigation_layer_value" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="layer_number" type="int" />
+			<description>
+				Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [code]layer_number[/code] between 1 and 32.
+			</description>
+		</method>
 		<method name="get_navigation_map" qualifiers="const">
 			<return type="RID" />
 			<description>
@@ -82,6 +89,14 @@
 			<argument index="0" name="navigation" type="Node" />
 			<description>
 				Sets the [Navigation] node used by the agent. Useful when you don't want to make the agent a child of a [Navigation] node.
+			</description>
+		</method>
+		<method name="set_navigation_layer_value">
+			<return type="void" />
+			<argument index="0" name="layer_number" type="int" />
+			<argument index="1" name="value" type="bool" />
+			<description>
+				Based on [code]value[/code], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [code]layer_number[/code] between 1 and 32.
 			</description>
 		</method>
 		<method name="set_navigation_map">

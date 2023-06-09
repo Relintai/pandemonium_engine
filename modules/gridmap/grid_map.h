@@ -31,9 +31,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "mesh_library.h"
 #include "scene/3d/navigation.h"
 #include "scene/3d/spatial.h"
-#include "mesh_library.h"
 #include "scene/resources/multimesh.h"
 
 //heh heh, godotsphir!! this shares no code and the design is completely different with previous projects i've done..
@@ -234,7 +234,10 @@ public:
 	bool is_baking_navigation();
 
 	void set_navigation_layers(uint32_t p_navigation_layers);
-	uint32_t get_navigation_layers();
+	uint32_t get_navigation_layers() const;
+
+	void set_navigation_layer_value(int p_layer_number, bool p_value);
+	bool get_navigation_layer_value(int p_layer_number) const;
 
 	void set_mesh_library(const Ref<MeshLibrary> &p_mesh_library);
 	Ref<MeshLibrary> get_mesh_library() const;
