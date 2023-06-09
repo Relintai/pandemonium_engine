@@ -36,6 +36,8 @@
 class Spatial;
 class Navigation;
 class SpatialMaterial;
+class NavigationPathQueryParameters3D;
+class NavigationPathQueryResult3D;
 
 class NavigationAgent : public Node {
 	GDCLASS(NavigationAgent, Node);
@@ -63,7 +65,8 @@ class NavigationAgent : public Node {
 	real_t path_max_distance;
 
 	Vector3 target_position;
-	Vector<Vector3> navigation_path;
+	Ref<NavigationPathQueryParameters3D> navigation_query;
+	Ref<NavigationPathQueryResult3D> navigation_result;
 	int nav_path_index;
 	bool velocity_submitted;
 	Vector3 prev_safe_velocity;
@@ -177,9 +180,7 @@ public:
 
 	Vector3 get_next_position();
 
-	Vector<Vector3> get_nav_path() const {
-		return navigation_path;
-	}
+	const PoolVector<Vector3> &get_nav_path() const;
 
 	int get_nav_path_index() const {
 		return nav_path_index;

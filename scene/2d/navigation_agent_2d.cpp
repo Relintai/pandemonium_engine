@@ -34,6 +34,8 @@
 #include "core/containers/vector.h"
 #include "scene/2d/navigation_2d.h"
 #include "scene/resources/world_2d.h"
+#include "servers/navigation/navigation_path_query_parameters_2d.h"
+#include "servers/navigation/navigation_path_query_result_2d.h"
 #include "servers/navigation_2d_server.h"
 
 void NavigationAgent2D::_bind_methods() {
@@ -244,16 +246,19 @@ NavigationAgent2D::NavigationAgent2D() {
 	navigation_finished = true;
 	agent = Navigation2DServer::get_singleton()->agent_create();
 
-	set_neighbor_dist(0.0);
-	set_max_neighbors(0);
-	set_time_horizon(0.0);
-	set_radius(0.0);
-	set_max_speed(0.0);
+	set_neighbor_dist(500.0);
+	set_max_neighbors(10);
+	set_time_horizon(20.0);
+	set_radius(10.0);
+	set_max_speed(200.0);
 
 	time_horizon = 0.0;
 
 	nav_path_index = 0;
 	update_frame_id = 0;
+
+	navigation_query.instance();
+	navigation_result.instance();
 
 #ifdef DEBUG_ENABLED
 	debug_enabled = false;
@@ -434,12 +439,18 @@ Vector2 NavigationAgent2D::get_target_position() const {
 
 Vector2 NavigationAgent2D::get_next_position() {
 	update_navigation();
+
+	const PoolVector<Vector2> &navigation_path = navigation_result->get_path();
 	if (navigation_path.size() == 0) {
 		ERR_FAIL_COND_V(agent_parent == nullptr, Vector2());
 		return agent_parent->get_global_transform().get_origin();
 	} else {
 		return navigation_path[nav_path_index];
 	}
+}
+
+const PoolVector<Vector2> &NavigationAgent2D::get_nav_path() const {
+	return navigation_result->get_path();
 }
 
 real_t NavigationAgent2D::distance_to_target() const {
@@ -462,6 +473,8 @@ bool NavigationAgent2D::is_navigation_finished() {
 
 Vector2 NavigationAgent2D::get_final_position() {
 	update_navigation();
+
+	const PoolVector<Vector2> &navigation_path = navigation_result->get_path();
 	if (navigation_path.size() == 0) {
 		return Vector2();
 	}
@@ -509,22 +522,24 @@ void NavigationAgent2D::update_navigation() {
 
 	update_frame_id = Engine::get_singleton()->get_physics_frames();
 
-	Vector2 o = agent_parent->get_global_transform().get_origin();
+	Vector2 origin = agent_parent->get_global_transform().get_origin();
 
 	bool reload_path = false;
 
 	if (Navigation2DServer::get_singleton()->agent_is_map_changed(agent)) {
 		reload_path = true;
-	} else if (navigation_path.size() == 0) {
+	} else if (navigation_result->get_path().size() == 0) {
 		reload_path = true;
 	} else {
 		// Check if too far from the navigation path
 		if (nav_path_index > 0) {
+			const PoolVector<Vector2> &navigation_path = navigation_result->get_path();
+
 			Vector2 segment[2];
 			segment[0] = navigation_path[nav_path_index - 1];
 			segment[1] = navigation_path[nav_path_index];
-			Vector2 p = Geometry::get_closest_point_to_segment_2d(o, segment);
-			if (o.distance_to(p) >= path_max_distance) {
+			Vector2 p = Geometry::get_closest_point_to_segment_2d(origin, segment);
+			if (origin.distance_to(p) >= path_max_distance) {
 				// To faraway, reload path
 				reload_path = true;
 			}
@@ -532,13 +547,19 @@ void NavigationAgent2D::update_navigation() {
 	}
 
 	if (reload_path) {
+		navigation_query->set_start_position(origin);
+		navigation_query->set_target_position(target_position);
+		navigation_query->set_navigation_layers(navigation_layers);
+
 		if (map_override.is_valid()) {
-			navigation_path = Navigation2DServer::get_singleton()->map_get_path(map_override, o, target_position, true, navigation_layers);
+			navigation_query->set_map(map_override);
 		} else if (navigation != nullptr) {
-			navigation_path = Navigation2DServer::get_singleton()->map_get_path(navigation->get_rid(), o, target_position, true, navigation_layers);
+			navigation_query->set_map(navigation->get_rid());
 		} else {
-			navigation_path = Navigation2DServer::get_singleton()->map_get_path(agent_parent->get_world_2d()->get_navigation_map(), o, target_position, true, navigation_layers);
+			navigation_query->set_map(agent_parent->get_world_2d()->get_navigation_map());
 		}
+
+		Navigation2DServer::get_singleton()->query_path(navigation_query, navigation_result);
 
 #ifdef DEBUG_ENABLED
 		debug_path_dirty = true;
@@ -549,14 +570,15 @@ void NavigationAgent2D::update_navigation() {
 		emit_signal("path_changed");
 	}
 
-	if (navigation_path.size() == 0) {
+	if (navigation_result->get_path().size() == 0) {
 		return;
 	}
 
 	// Check if we can advance the navigation path
 	if (navigation_finished == false) {
 		// Advances to the next far away position.
-		while (o.distance_to(navigation_path[nav_path_index]) < path_desired_distance) {
+		const PoolVector<Vector2> &navigation_path = navigation_result->get_path();
+		while (origin.distance_to(navigation_path[nav_path_index]) < path_desired_distance) {
 			nav_path_index += 1;
 			if (nav_path_index == navigation_path.size()) {
 				_check_distance_to_target();
@@ -570,7 +592,7 @@ void NavigationAgent2D::update_navigation() {
 }
 
 void NavigationAgent2D::_request_repath() {
-	navigation_path.clear();
+	navigation_result->reset();
 	target_reached = false;
 	navigation_finished = false;
 	update_frame_id = 0;
@@ -660,7 +682,7 @@ void NavigationAgent2D::_update_debug_path() {
 	RenderingServer::get_singleton()->canvas_item_set_parent(debug_path_instance, agent_parent->get_canvas());
 	RenderingServer::get_singleton()->canvas_item_set_visible(debug_path_instance, agent_parent->is_visible_in_tree());
 
-	//const Vector<Vector2> &navigation_path = navigation_result->get_path();
+	const PoolVector<Vector2> &navigation_path = navigation_result->get_path();
 
 	if (navigation_path.size() <= 1) {
 		return;
@@ -675,7 +697,8 @@ void NavigationAgent2D::_update_debug_path() {
 	debug_path_colors.resize(navigation_path.size());
 	debug_path_colors.fill(debug_path_color);
 
-	RenderingServer::get_singleton()->canvas_item_add_polyline(debug_path_instance, navigation_path, debug_path_colors, debug_path_custom_line_width, false);
+	//TODO
+	//RenderingServer::get_singleton()->canvas_item_add_polyline(debug_path_instance, navigation_path, debug_path_colors, debug_path_custom_line_width, false);
 
 	float point_size = Navigation2DServer::get_singleton()->get_debug_navigation_agent_path_point_size();
 	float half_point_size = point_size * 0.5;

@@ -36,6 +36,8 @@
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/world_3d.h"
+#include "servers/navigation/navigation_path_query_parameters_3d.h"
+#include "servers/navigation/navigation_path_query_result_3d.h"
 #include "servers/navigation_server.h"
 
 void NavigationAgent::_bind_methods() {
@@ -261,6 +263,9 @@ NavigationAgent::NavigationAgent() {
 	nav_path_index = 0;
 	update_frame_id = 0;
 
+	navigation_query.instance();
+	navigation_result.instance();
+
 #ifdef DEBUG_ENABLED
 	debug_enabled = false;
 	debug_path_dirty = true;
@@ -451,12 +456,18 @@ Vector3 NavigationAgent::get_target_position() const {
 
 Vector3 NavigationAgent::get_next_position() {
 	update_navigation();
+
+	const PoolVector<Vector3> &navigation_path = navigation_result->get_path();
 	if (navigation_path.size() == 0) {
 		ERR_FAIL_COND_V_MSG(agent_parent == nullptr, Vector3(), "The agent has no parent.");
 		return agent_parent->get_global_transform().origin;
 	} else {
 		return navigation_path[nav_path_index] - Vector3(0, navigation_height_offset, 0);
 	}
+}
+
+const PoolVector<Vector3> &NavigationAgent::get_nav_path() const {
+	return navigation_result->get_path();
 }
 
 real_t NavigationAgent::distance_to_target() const {
@@ -479,6 +490,9 @@ bool NavigationAgent::is_navigation_finished() {
 
 Vector3 NavigationAgent::get_final_position() {
 	update_navigation();
+
+	const PoolVector<Vector3> &navigation_path = navigation_result->get_path();
+
 	if (navigation_path.size() == 0) {
 		return Vector3();
 	}
@@ -528,25 +542,27 @@ void NavigationAgent::update_navigation() {
 
 	update_frame_id = Engine::get_singleton()->get_physics_frames();
 
-	Vector3 o = agent_parent->get_global_transform().origin;
+	Vector3 origin = agent_parent->get_global_transform().origin;
 
 	bool reload_path = false;
 
 	if (NavigationServer::get_singleton()->agent_is_map_changed(agent)) {
 		reload_path = true;
-	} else if (navigation_path.size() == 0) {
+	} else if (navigation_result->get_path().size() == 0) {
 		reload_path = true;
 	} else {
 		// Check if too far from the navigation path
 		if (nav_path_index > 0) {
+			const PoolVector<Vector3> &navigation_path = navigation_result->get_path();
+
 			Vector3 segment[2];
 			segment[0] = navigation_path[nav_path_index - 1];
 			segment[1] = navigation_path[nav_path_index];
 			segment[0].y -= navigation_height_offset;
 			segment[1].y -= navigation_height_offset;
-			Vector3 p = Geometry::get_closest_point_to_segment(o, segment);
+			Vector3 p = Geometry::get_closest_point_to_segment(origin, segment);
 
-			if (o.distance_to(p) >= path_max_distance) {
+			if (origin.distance_to(p) >= path_max_distance) {
 				// To faraway, reload path
 				reload_path = true;
 			}
@@ -554,13 +570,20 @@ void NavigationAgent::update_navigation() {
 	}
 
 	if (reload_path) {
+		navigation_query->set_start_position(origin);
+		navigation_query->set_target_position(target_position);
+		navigation_query->set_navigation_layers(navigation_layers);
+
+
 		if (map_override.is_valid()) {
-			navigation_path = NavigationServer::get_singleton()->map_get_path(map_override, o, target_position, true, navigation_layers);
+			navigation_query->set_map(map_override);
 		} else if (navigation != nullptr) {
-			navigation_path = NavigationServer::get_singleton()->map_get_path(navigation->get_rid(), o, target_position, true, navigation_layers);
+			navigation_query->set_map(navigation->get_rid());
 		} else {
-			navigation_path = NavigationServer::get_singleton()->map_get_path(agent_parent->get_world_3d()->get_navigation_map(), o, target_position, true, navigation_layers);
+			navigation_query->set_map(agent_parent->get_world_3d()->get_navigation_map());
 		}
+
+		NavigationServer::get_singleton()->query_path(navigation_query, navigation_result);
 
 #ifdef DEBUG_ENABLED
 		debug_path_dirty = true;
@@ -571,14 +594,15 @@ void NavigationAgent::update_navigation() {
 		emit_signal("path_changed");
 	}
 
-	if (navigation_path.size() == 0) {
+	if (navigation_result->get_path().size() == 0) {
 		return;
 	}
 
 	// Check if we can advance the navigation path
 	if (navigation_finished == false) {
 		// Advances to the next far away position.
-		while (o.distance_to(navigation_path[nav_path_index] - Vector3(0, navigation_height_offset, 0)) < path_desired_distance) {
+		const PoolVector<Vector3> &navigation_path = navigation_result->get_path();
+		while (origin.distance_to(navigation_path[nav_path_index] - Vector3(0, navigation_height_offset, 0)) < path_desired_distance) {
 			nav_path_index += 1;
 			if (nav_path_index == navigation_path.size()) {
 				_check_distance_to_target();
@@ -592,7 +616,7 @@ void NavigationAgent::update_navigation() {
 }
 
 void NavigationAgent::_request_repath() {
-	navigation_path.clear();
+	navigation_result->reset();
 	target_reached = false;
 	navigation_finished = false;
 	update_frame_id = 0;
@@ -674,7 +698,7 @@ void NavigationAgent::_update_debug_path() {
 		return;
 	}
 
-	//const Vector<Vector3> &navigation_path = navigation_result->get_path();
+	const PoolVector<Vector3> &navigation_path = navigation_result->get_path();
 
 	if (navigation_path.size() <= 1) {
 		return;

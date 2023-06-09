@@ -34,6 +34,8 @@
 
 class Node2D;
 class Navigation2D;
+class NavigationPathQueryParameters2D;
+class NavigationPathQueryResult2D;
 
 class NavigationAgent2D : public Node {
 	GDCLASS(NavigationAgent2D, Node);
@@ -59,7 +61,8 @@ class NavigationAgent2D : public Node {
 	real_t path_max_distance;
 
 	Vector2 target_position;
-	Vector<Vector2> navigation_path;
+	Ref<NavigationPathQueryParameters2D> navigation_query;
+	Ref<NavigationPathQueryResult2D> navigation_result;
 	int nav_path_index;
 	bool velocity_submitted;
 	Vector2 prev_safe_velocity;
@@ -161,9 +164,7 @@ public:
 
 	Vector2 get_next_position();
 
-	Vector<Vector2> get_nav_path() const {
-		return navigation_path;
-	}
+	const PoolVector<Vector2> &get_nav_path() const;
 
 	int get_nav_path_index() const {
 		return nav_path_index;
