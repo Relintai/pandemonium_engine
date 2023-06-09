@@ -303,6 +303,9 @@ public:
 	void set_debug_navigation_link_connection_disabled_color(const Color &p_color);
 	Color get_debug_navigation_link_connection_disabled_color() const;
 
+	void set_debug_navigation_agent_path_color(const Color &p_color);
+	Color get_debug_navigation_agent_path_color() const;
+
 	void set_debug_navigation_enable_edge_connections(const bool p_value);
 	bool get_debug_navigation_enable_edge_connections() const;
 
@@ -324,6 +327,15 @@ public:
 	void set_debug_navigation_enable_link_connections_xray(const bool p_value);
 	bool get_debug_navigation_enable_link_connections_xray() const;
 
+	void set_debug_navigation_enable_agent_paths(const bool p_value);
+	bool get_debug_navigation_enable_agent_paths() const;
+
+	void set_debug_navigation_enable_agent_paths_xray(const bool p_value);
+	bool get_debug_navigation_enable_agent_paths_xray() const;
+
+	void set_debug_navigation_agent_path_point_size(float p_point_size);
+	float get_debug_navigation_agent_path_point_size() const;
+
 	Ref<SpatialMaterial> get_debug_navigation_geometry_face_material();
 	Ref<SpatialMaterial> get_debug_navigation_geometry_edge_material();
 	Ref<SpatialMaterial> get_debug_navigation_geometry_face_disabled_material();
@@ -331,6 +343,9 @@ public:
 	Ref<SpatialMaterial> get_debug_navigation_edge_connections_material();
 	Ref<SpatialMaterial> get_debug_navigation_link_connections_material();
 	Ref<SpatialMaterial> get_debug_navigation_link_connections_disabled_material();
+
+	Ref<SpatialMaterial> get_debug_navigation_agent_path_line_material();
+	Ref<SpatialMaterial> get_debug_navigation_agent_path_point_material();
 
 	void _emit_navigation_debug_changed_signal();
 
@@ -345,6 +360,9 @@ protected:
 	Color _debug_navigation_geometry_face_disabled_color;
 	Color _debug_navigation_link_connection_color;
 	Color _debug_navigation_link_connection_disabled_color;
+	Color _debug_navigation_agent_path_color;
+
+	float _debug_navigation_agent_path_point_size;
 
 	bool _debug_navigation_enable_edge_connections;
 	bool _debug_navigation_enable_edge_connections_xray;
@@ -353,6 +371,8 @@ protected:
 	bool _debug_navigation_enable_geometry_face_random_color;
 	bool _debug_navigation_enable_link_connections;
 	bool _debug_navigation_enable_link_connections_xray;
+	bool _debug_navigation_enable_agent_paths;
+	bool _debug_navigation_enable_agent_paths_xray;
 
 	Ref<SpatialMaterial> _debug_navigation_geometry_edge_material;
 	Ref<SpatialMaterial> _debug_navigation_geometry_face_material;
@@ -361,6 +381,9 @@ protected:
 	Ref<SpatialMaterial> _debug_navigation_edge_connections_material;
 	Ref<SpatialMaterial> _debug_navigation_link_connections_material;
 	Ref<SpatialMaterial> _debug_navigation_link_connections_disabled_material;
+
+	Ref<SpatialMaterial> _debug_navigation_agent_path_line_material;
+	Ref<SpatialMaterial> _debug_navigation_agent_path_point_material;
 
 #endif // DEBUG_ENABLED
 };

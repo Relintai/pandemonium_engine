@@ -111,10 +111,18 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_debug_enabled", "enabled"), &Navigation2DServer::set_debug_enabled);
 	ClassDB::bind_method(D_METHOD("get_debug_enabled"), &Navigation2DServer::get_debug_enabled);
 
+#ifdef DEBUG_ENABLED
+	ClassDB::bind_method(D_METHOD("_emit_navigation_debug_changed_signal"), &Navigation2DServer::_emit_navigation_debug_changed_signal);
+#endif // DEBUG_ENABLED
+
 	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
+	ADD_SIGNAL(MethodInfo("navigation_debug_changed"));
 }
 
 void Navigation2DServer::init() {
+#ifdef DEBUG_ENABLED
+	NavigationServer::get_singleton_mut()->connect("navigation_debug_changed", this, "_emit_navigation_debug_changed_signal");
+#endif // DEBUG_ENABLED
 }
 
 void Navigation2DServer::query_path(const Ref<NavigationPathQueryParameters2D> &p_query_parameters, Ref<NavigationPathQueryResult2D> p_query_result) const {
@@ -133,6 +141,12 @@ Navigation2DServer::Navigation2DServer() {
 Navigation2DServer::~Navigation2DServer() {
 	singleton = nullptr;
 }
+
+#ifdef DEBUG_ENABLED
+void Navigation2DServer::_emit_navigation_debug_changed_signal() {
+	emit_signal("navigation_debug_changed");
+}
+#endif // DEBUG_ENABLED
 
 void Navigation2DServer::set_debug_enabled(bool p_enabled) {
 	NavigationServer::get_singleton_mut()->set_debug_enabled(p_enabled);
@@ -218,6 +232,30 @@ void Navigation2DServer::set_debug_navigation_link_connection_disabled_color(con
 }
 Color Navigation2DServer::get_debug_navigation_link_connection_disabled_color() const {
 	return NavigationServer::get_singleton()->get_debug_navigation_link_connection_disabled_color();
+}
+
+void Navigation2DServer::set_debug_navigation_agent_path_color(const Color &p_color) {
+	NavigationServer::get_singleton_mut()->set_debug_navigation_agent_path_color(p_color);
+}
+
+Color Navigation2DServer::get_debug_navigation_agent_path_color() const {
+	return NavigationServer::get_singleton()->get_debug_navigation_agent_path_color();
+}
+
+void Navigation2DServer::set_debug_navigation_enable_agent_paths(const bool p_value) {
+	NavigationServer::get_singleton_mut()->set_debug_navigation_enable_agent_paths(p_value);
+}
+
+bool Navigation2DServer::get_debug_navigation_enable_agent_paths() const {
+	return NavigationServer::get_singleton()->get_debug_navigation_enable_agent_paths();
+}
+
+void Navigation2DServer::set_debug_navigation_agent_path_point_size(float p_point_size) {
+	NavigationServer::get_singleton_mut()->set_debug_navigation_agent_path_point_size(p_point_size);
+}
+
+float Navigation2DServer::get_debug_navigation_agent_path_point_size() const {
+	return NavigationServer::get_singleton()->get_debug_navigation_agent_path_point_size();
 }
 
 #endif

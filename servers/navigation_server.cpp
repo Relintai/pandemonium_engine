@@ -135,8 +135,10 @@ void NavigationServer::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
 
-#ifdef DEBUG_ENABLED
 	ADD_SIGNAL(MethodInfo("navigation_debug_changed"));
+
+#ifdef DEBUG_ENABLED
+	ClassDB::bind_method(D_METHOD("_emit_navigation_debug_changed_signal"), &NavigationServer::_emit_navigation_debug_changed_signal);
 #endif // DEBUG_ENABLED
 }
 
@@ -163,6 +165,7 @@ NavigationServer::NavigationServer() {
 	_debug_navigation_geometry_face_disabled_color = GLOBAL_DEF("debug/shapes/navigation/geometry_face_disabled_color", Color(0.5, 0.5, 0.5, 0.4));
 	_debug_navigation_link_connection_color = GLOBAL_DEF("debug/shapes/navigation/link_connection_color", Color(1.0, 0.5, 1.0, 1.0));
 	_debug_navigation_link_connection_disabled_color = GLOBAL_DEF("debug/shapes/navigation/link_connection_disabled_color", Color(0.5, 0.5, 0.5, 1.0));
+	_debug_navigation_agent_path_color = GLOBAL_DEF("debug/shapes/navigation/agent_path_color", Color(1.0, 0.0, 0.0, 1.0));
 
 	_debug_navigation_enable_edge_connections = GLOBAL_DEF("debug/shapes/navigation/enable_edge_connections", true);
 	_debug_navigation_enable_edge_connections_xray = GLOBAL_DEF("debug/shapes/navigation/enable_edge_connections_xray", true);
@@ -172,8 +175,13 @@ NavigationServer::NavigationServer() {
 	_debug_navigation_enable_link_connections = GLOBAL_DEF("debug/shapes/navigation/enable_link_connections", true);
 	_debug_navigation_enable_link_connections_xray = GLOBAL_DEF("debug/shapes/navigation/enable_link_connections_xray", true);
 
+	_debug_navigation_enable_agent_paths = GLOBAL_DEF("debug/shapes/navigation/enable_agent_paths", true);
+	_debug_navigation_enable_agent_paths_xray = GLOBAL_DEF("debug/shapes/navigation/enable_agent_paths_xray", true);
+
+	_debug_navigation_agent_path_point_size = GLOBAL_DEF("debug/shapes/navigation/agent_path_point_size", 4.0);
+
 	if (Engine::get_singleton()->is_editor_hint()) {
-		// enable NavigationServer3D when in Editor or else navmesh edge connections are invisible
+		// enable NavigationServer when in Editor or else navmesh edge connections are invisible
 		// on runtime tests SceneTree has "Visible Navigation" set and main iteration takes care of this
 		set_debug_enabled(true);
 	}
@@ -357,6 +365,42 @@ Ref<SpatialMaterial> NavigationServer::get_debug_navigation_link_connections_dis
 	return _debug_navigation_link_connections_disabled_material;
 }
 
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_agent_path_line_material() {
+	if (_debug_navigation_agent_path_line_material.is_valid()) {
+		return _debug_navigation_agent_path_line_material;
+	}
+
+	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	material->set_albedo(_debug_navigation_agent_path_color);
+	if (_debug_navigation_enable_agent_paths_xray) {
+		material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, true);
+	}
+	material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MAX - 2);
+
+	_debug_navigation_agent_path_line_material = material;
+	return _debug_navigation_agent_path_line_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_agent_path_point_material() {
+	if (_debug_navigation_agent_path_point_material.is_valid()) {
+		return _debug_navigation_agent_path_point_material;
+	}
+
+	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	material->set_albedo(_debug_navigation_agent_path_color);
+	material->set_flag(SpatialMaterial::FLAG_USE_POINT_SIZE, true);
+	material->set_point_size(_debug_navigation_agent_path_point_size);
+	if (_debug_navigation_enable_agent_paths_xray) {
+		material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, true);
+	}
+	material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MAX - 2);
+
+	_debug_navigation_agent_path_point_material = material;
+	return _debug_navigation_agent_path_point_material;
+}
+
 void NavigationServer::set_debug_navigation_edge_connection_color(const Color &p_color) {
 	_debug_navigation_edge_connection_color = p_color;
 	if (_debug_navigation_edge_connections_material.is_valid()) {
@@ -434,6 +478,31 @@ Color NavigationServer::get_debug_navigation_link_connection_disabled_color() co
 	return _debug_navigation_link_connection_disabled_color;
 }
 
+void NavigationServer::set_debug_navigation_agent_path_point_size(float p_point_size) {
+	_debug_navigation_agent_path_point_size = MAX(0.1, p_point_size);
+	if (_debug_navigation_agent_path_point_material.is_valid()) {
+		_debug_navigation_agent_path_point_material->set_point_size(_debug_navigation_agent_path_point_size);
+	}
+}
+
+float NavigationServer::get_debug_navigation_agent_path_point_size() const {
+	return _debug_navigation_agent_path_point_size;
+}
+
+void NavigationServer::set_debug_navigation_agent_path_color(const Color &p_color) {
+	_debug_navigation_agent_path_color = p_color;
+	if (_debug_navigation_agent_path_line_material.is_valid()) {
+		_debug_navigation_agent_path_line_material->set_albedo(_debug_navigation_agent_path_color);
+	}
+	if (_debug_navigation_agent_path_point_material.is_valid()) {
+		_debug_navigation_agent_path_point_material->set_albedo(_debug_navigation_agent_path_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_agent_path_color() const {
+	return _debug_navigation_agent_path_color;
+}
+
 void NavigationServer::set_debug_navigation_enable_edge_connections(const bool p_value) {
 	_debug_navigation_enable_edge_connections = p_value;
 	_debug_dirty = true;
@@ -505,6 +574,36 @@ void NavigationServer::set_debug_navigation_enable_link_connections_xray(const b
 
 bool NavigationServer::get_debug_navigation_enable_link_connections_xray() const {
 	return _debug_navigation_enable_link_connections_xray;
+}
+
+void NavigationServer::set_debug_navigation_enable_agent_paths(const bool p_value) {
+	if (_debug_navigation_enable_agent_paths != p_value) {
+		_debug_dirty = true;
+	}
+
+	_debug_navigation_enable_agent_paths = p_value;
+
+	if (_debug_dirty) {
+		call_deferred("_emit_navigation_debug_changed_signal");
+	}
+}
+
+bool NavigationServer::get_debug_navigation_enable_agent_paths() const {
+	return _debug_navigation_enable_agent_paths;
+}
+
+void NavigationServer::set_debug_navigation_enable_agent_paths_xray(const bool p_value) {
+	_debug_navigation_enable_agent_paths_xray = p_value;
+	if (_debug_navigation_agent_path_line_material.is_valid()) {
+		_debug_navigation_agent_path_line_material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, _debug_navigation_enable_agent_paths_xray);
+	}
+	if (_debug_navigation_agent_path_point_material.is_valid()) {
+		_debug_navigation_agent_path_point_material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, _debug_navigation_enable_agent_paths_xray);
+	}
+}
+
+bool NavigationServer::get_debug_navigation_enable_agent_paths_xray() const {
+	return _debug_navigation_enable_agent_paths_xray;
 }
 
 #endif // DEBUG_ENABLED
