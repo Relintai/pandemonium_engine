@@ -142,6 +142,37 @@ bool Navigation2DServer::get_debug_enabled() const {
 }
 
 #ifdef DEBUG_ENABLED
+void Navigation2DServer::set_debug_navigation_edge_connection_color(const Color &p_color) {
+	NavigationServer::get_singleton_mut()->set_debug_navigation_edge_connection_color(p_color);
+}
+
+Color Navigation2DServer::get_debug_navigation_edge_connection_color() const {
+	return NavigationServer::get_singleton()->get_debug_navigation_edge_connection_color();
+}
+
+void Navigation2DServer::set_debug_navigation_geometry_face_color(const Color &p_color) {
+	NavigationServer::get_singleton_mut()->set_debug_navigation_geometry_face_color(p_color);
+}
+
+Color Navigation2DServer::get_debug_navigation_geometry_face_color() const {
+	return NavigationServer::get_singleton()->get_debug_navigation_geometry_face_color();
+}
+
+void Navigation2DServer::set_debug_navigation_geometry_face_disabled_color(const Color &p_color) {
+	NavigationServer::get_singleton_mut()->set_debug_navigation_geometry_face_disabled_color(p_color);
+}
+
+Color Navigation2DServer::get_debug_navigation_geometry_face_disabled_color() const {
+	return NavigationServer::get_singleton()->get_debug_navigation_geometry_face_disabled_color();
+}
+
+void Navigation2DServer::set_debug_navigation_enable_edge_connections(const bool p_value) {
+	NavigationServer::get_singleton_mut()->set_debug_navigation_enable_edge_connections(p_value);
+}
+
+bool Navigation2DServer::get_debug_navigation_enable_edge_connections() const {
+	return NavigationServer::get_singleton()->get_debug_navigation_enable_edge_connections();
+}
 
 void Navigation2DServer::set_debug_navigation_link_connection_color(const Color &p_color) {
 	NavigationServer::get_singleton_mut()->set_debug_navigation_link_connection_color(p_color);

@@ -242,6 +242,18 @@ public:
 	bool get_debug_enabled() const;
 
 #ifdef DEBUG_ENABLED
+	void set_debug_navigation_edge_connection_color(const Color &p_color);
+	Color get_debug_navigation_edge_connection_color() const;
+
+	void set_debug_navigation_geometry_face_color(const Color &p_color);
+	Color get_debug_navigation_geometry_face_color() const;
+
+	void set_debug_navigation_geometry_face_disabled_color(const Color &p_color);
+	Color get_debug_navigation_geometry_face_disabled_color() const;
+
+	void set_debug_navigation_enable_edge_connections(const bool p_value);
+	bool get_debug_navigation_enable_edge_connections() const;
+
 	void set_debug_navigation_link_connection_color(const Color &p_color);
 	Color get_debug_navigation_link_connection_color() const;
 
