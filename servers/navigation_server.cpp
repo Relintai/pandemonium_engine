@@ -130,12 +130,23 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_active", "active"), &NavigationServer::set_active);
 	ClassDB::bind_method(D_METHOD("process", "delta_time"), &NavigationServer::process);
 
+	ClassDB::bind_method(D_METHOD("get_process_info", "process_info"), &NavigationServer::get_process_info);
+
 	ClassDB::bind_method(D_METHOD("set_debug_enabled", "enabled"), &NavigationServer::set_debug_enabled);
 	ClassDB::bind_method(D_METHOD("get_debug_enabled"), &NavigationServer::get_debug_enabled);
 
 	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
-
 	ADD_SIGNAL(MethodInfo("navigation_debug_changed"));
+
+	BIND_ENUM_CONSTANT(INFO_ACTIVE_MAPS);
+	BIND_ENUM_CONSTANT(INFO_REGION_COUNT);
+	BIND_ENUM_CONSTANT(INFO_AGENT_COUNT);
+	BIND_ENUM_CONSTANT(INFO_LINK_COUNT);
+	BIND_ENUM_CONSTANT(INFO_POLYGON_COUNT);
+	BIND_ENUM_CONSTANT(INFO_EDGE_COUNT);
+	BIND_ENUM_CONSTANT(INFO_EDGE_MERGE_COUNT);
+	BIND_ENUM_CONSTANT(INFO_EDGE_CONNECTION_COUNT);
+	BIND_ENUM_CONSTANT(INFO_EDGE_FREE_COUNT);
 
 #ifdef DEBUG_ENABLED
 	ClassDB::bind_method(D_METHOD("_emit_navigation_debug_changed_signal"), &NavigationServer::_emit_navigation_debug_changed_signal);
