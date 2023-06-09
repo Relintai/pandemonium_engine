@@ -33,6 +33,7 @@
 #include "core/config/engine.h"
 #include "core/math/geometry.h"
 #include "scene/3d/navigation.h"
+#include "scene/3d/navigation_link_3d.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/world_3d.h"
@@ -653,6 +654,21 @@ void NavigationAgent::update_navigation() {
 				}
 
 				details["owner"] = owner;
+
+				if (waypoint_type == NavigationPathQueryResult3D::PATH_SEGMENT_TYPE_LINK) {
+					const NavigationLink3D *navlink = Object::cast_to<NavigationLink3D>(owner);
+					if (navlink) {
+						Vector3 link_global_start_position = navlink->get_global_start_position();
+						Vector3 link_global_end_position = navlink->get_global_end_position();
+						if (waypoint.distance_to(link_global_start_position) < waypoint.distance_to(link_global_end_position)) {
+							details["link_entry_position"] = link_global_start_position;
+							details["link_exit_position"] = link_global_end_position;
+						} else {
+							details["link_entry_position"] = link_global_end_position;
+							details["link_exit_position"] = link_global_start_position;
+						}
+					}
+				}
 			}
 
 			// Emit a signal for the waypoint

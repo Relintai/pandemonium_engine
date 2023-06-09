@@ -33,6 +33,7 @@
 #include "core/config/engine.h"
 #include "core/containers/vector.h"
 #include "scene/2d/navigation_2d.h"
+#include "scene/2d/navigation_link_2d.h"
 #include "scene/resources/world_2d.h"
 #include "servers/navigation/navigation_path_query_parameters_2d.h"
 #include "servers/navigation/navigation_path_query_result_2d.h"
@@ -630,6 +631,21 @@ void NavigationAgent2D::update_navigation() {
 				}
 
 				details["owner"] = owner;
+
+				if (waypoint_type == NavigationPathQueryResult2D::PATH_SEGMENT_TYPE_LINK) {
+					const NavigationLink2D *navlink = Object::cast_to<NavigationLink2D>(owner);
+					if (navlink) {
+						Vector2 link_global_start_position = navlink->get_global_start_position();
+						Vector2 link_global_end_position = navlink->get_global_end_position();
+						if (waypoint.distance_to(link_global_start_position) < waypoint.distance_to(link_global_end_position)) {
+							details["link_entry_position"] = link_global_start_position;
+							details["link_exit_position"] = link_global_end_position;
+						} else {
+							details["link_entry_position"] = link_global_end_position;
+							details["link_exit_position"] = link_global_start_position;
+						}
+					}
+				}
 			}
 
 			// Emit a signal for the waypoint
