@@ -79,6 +79,16 @@ class PandemoniumNavigationServer : public NavigationServer {
 	LocalVector<NavMap *> active_maps;
 	LocalVector<uint32_t> active_maps_update_id;
 
+	// Performance Monitor
+	int pm_region_count = 0;
+	int pm_agent_count = 0;
+	int pm_link_count = 0;
+	int pm_polygon_count = 0;
+	int pm_edge_count = 0;
+	int pm_edge_merge_count = 0;
+	int pm_edge_connection_count = 0;
+	int pm_edge_free_count = 0;
+
 public:
 	PandemoniumNavigationServer();
 	virtual ~PandemoniumNavigationServer();
@@ -176,6 +186,8 @@ public:
 
 	void flush_queries();
 	virtual void process(real_t p_delta_time);
+
+	virtual int get_process_info(ProcessInfo p_info) const;
 
 	virtual NavigationUtilities::PathQueryResult _query_path(const NavigationUtilities::PathQueryParameters &p_parameters) const;
 };

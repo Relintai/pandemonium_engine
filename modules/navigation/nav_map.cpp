@@ -547,6 +547,16 @@ void NavMap::remove_agent_as_controlled(RvoAgent *agent) {
 }
 
 void NavMap::sync() {
+	// Performance Monitor
+	int _new_pm_region_count = regions.size();
+	int _new_pm_agent_count = agents.size();
+	int _new_pm_link_count = links.size();
+	int _new_pm_polygon_count = pm_polygon_count;
+	int _new_pm_edge_count = pm_edge_count;
+	int _new_pm_edge_merge_count = pm_edge_merge_count;
+	int _new_pm_edge_connection_count = pm_edge_connection_count;
+	int _new_pm_edge_free_count = pm_edge_free_count;
+
 	// Check if we need to update the links.
 	if (regenerate_polygons) {
 		for (uint32_t r = 0; r < regions.size(); r++) {
@@ -568,6 +578,12 @@ void NavMap::sync() {
 	}
 
 	if (regenerate_links) {
+		_new_pm_polygon_count = 0;
+		_new_pm_edge_count = 0;
+		_new_pm_edge_merge_count = 0;
+		_new_pm_edge_connection_count = 0;
+		_new_pm_edge_free_count = 0;
+
 		// Remove regions connections.
 		for (uint32_t r = 0; r < regions.size(); r++) {
 			regions[r]->get_connections().clear();
@@ -592,6 +608,8 @@ void NavMap::sync() {
 			count += regions[r]->get_polygons().size();
 		}
 
+		_new_pm_polygon_count = polygons.size();
+
 		// Group all edges per key.
 		RBMap<gd::EdgeKey, Vector<gd::Edge::Connection>> connections;
 
@@ -606,6 +624,7 @@ void NavMap::sync() {
 
 				if (!connection) {
 					connections[ek] = Vector<gd::Edge::Connection>();
+					_new_pm_edge_count += 1;
 				}
 
 				if (connections[ek].size() <= 1) {
@@ -632,6 +651,7 @@ void NavMap::sync() {
 				c1.polygon->edges[c1.edge].connections.push_back(c2);
 				c2.polygon->edges[c2.edge].connections.push_back(c1);
 				// Note: The pathway_start/end are full for those connection and do not need to be modified.
+				_new_pm_edge_merge_count += 1;
 			} else {
 				CRASH_COND_MSG(E->get().size() != 1, vformat("Number of connection != 1. Found: %d", E->get().size()));
 				free_edges.push_back(E->get()[0]);
@@ -645,6 +665,8 @@ void NavMap::sync() {
 		// to be connected, create new polygons to remove that small gap is
 		// not really useful and would result in wasteful computation during
 		// connection, integration and path finding.
+		_new_pm_edge_free_count = free_edges.size();
+
 		for (int i = 0; i < free_edges.size(); i++) {
 			const gd::Edge::Connection &free_edge = free_edges[i];
 			Vector3 edge_p1 = free_edge.polygon->points[free_edge.edge].pos;
@@ -699,6 +721,7 @@ void NavMap::sync() {
 
 				// Add the connection to the region_connection map.
 				((NavRegion *)free_edge.polygon->owner)->get_connections().push_back(new_connection);
+				_new_pm_edge_connection_count += 1;
 			}
 		}
 
@@ -835,6 +858,16 @@ void NavMap::sync() {
 	regenerate_polygons = false;
 	regenerate_links = false;
 	agents_dirty = false;
+
+	// Performance Monitor
+	pm_region_count = _new_pm_region_count;
+	pm_agent_count = _new_pm_agent_count;
+	pm_link_count = _new_pm_link_count;
+	pm_polygon_count = _new_pm_polygon_count;
+	pm_edge_count = _new_pm_edge_count;
+	pm_edge_merge_count = _new_pm_edge_merge_count;
+	pm_edge_connection_count = _new_pm_edge_connection_count;
+	pm_edge_free_count = _new_pm_edge_free_count;
 }
 
 void NavMap::compute_single_step(uint32_t index, RvoAgent **agent) {
@@ -915,6 +948,16 @@ NavMap::NavMap() {
 	deltatime = 0.0;
 	map_update_id = 0;
 	link_connection_radius = 1.0;
+
+	// Performance Monitor
+	pm_region_count = 0;
+	pm_agent_count = 0;
+	pm_link_count = 0;
+	pm_polygon_count = 0;
+	pm_edge_count = 0;
+	pm_edge_merge_count = 0;
+	pm_edge_connection_count = 0;
+	pm_edge_free_count = 0;
 }
 
 NavMap::~NavMap() {

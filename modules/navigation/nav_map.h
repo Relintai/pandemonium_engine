@@ -91,6 +91,16 @@ class NavMap : public NavRid {
 	/// Change the id each time the map is updated.
 	uint32_t map_update_id;
 
+	// Performance Monitor
+	int pm_region_count;
+	int pm_agent_count;
+	int pm_link_count;
+	int pm_polygon_count;
+	int pm_edge_count;
+	int pm_edge_merge_count;
+	int pm_edge_connection_count;
+	int pm_edge_free_count;
+
 #ifndef NO_THREADS
 	/// Pooled threads for computing steps
 	ThreadWorkPool step_work_pool;
@@ -163,6 +173,16 @@ public:
 	void sync();
 	void step(real_t p_deltatime);
 	void dispatch_callbacks();
+
+	// Performance Monitor
+	int get_pm_region_count() const { return pm_region_count; }
+	int get_pm_agent_count() const { return pm_agent_count; }
+	int get_pm_link_count() const { return pm_link_count; }
+	int get_pm_polygon_count() const { return pm_polygon_count; }
+	int get_pm_edge_count() const { return pm_edge_count; }
+	int get_pm_edge_merge_count() const { return pm_edge_merge_count; }
+	int get_pm_edge_connection_count() const { return pm_edge_connection_count; }
+	int get_pm_edge_free_count() const { return pm_edge_free_count; }
 
 private:
 	void compute_single_step(uint32_t index, RvoAgent **agent);

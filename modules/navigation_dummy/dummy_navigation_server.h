@@ -88,6 +88,8 @@ public:
 
 	virtual void process(real_t delta_time){};
 
+	virtual int get_process_info(ProcessInfo p_info) const { return 0; };
+
 	virtual NavigationUtilities::PathQueryResult _query_path(const NavigationUtilities::PathQueryParameters &p_parameters) const;
 
 	DummyNavigationServer();

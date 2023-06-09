@@ -818,6 +818,15 @@ void PandemoniumNavigationServer::process(real_t p_delta_time) {
 		return;
 	}
 
+	int _new_pm_region_count = 0;
+	int _new_pm_agent_count = 0;
+	int _new_pm_link_count = 0;
+	int _new_pm_polygon_count = 0;
+	int _new_pm_edge_count = 0;
+	int _new_pm_edge_merge_count = 0;
+	int _new_pm_edge_connection_count = 0;
+	int _new_pm_edge_free_count = 0;
+
 	// In c++ we can't be sure that this is performed in the main thread
 	// even with mutable functions.
 	MutexLock lock(operations_mutex);
@@ -826,6 +835,15 @@ void PandemoniumNavigationServer::process(real_t p_delta_time) {
 		active_maps[i]->step(p_delta_time);
 		active_maps[i]->dispatch_callbacks();
 
+		_new_pm_region_count += active_maps[i]->get_pm_region_count();
+		_new_pm_agent_count += active_maps[i]->get_pm_agent_count();
+		_new_pm_link_count += active_maps[i]->get_pm_link_count();
+		_new_pm_polygon_count += active_maps[i]->get_pm_polygon_count();
+		_new_pm_edge_count += active_maps[i]->get_pm_edge_count();
+		_new_pm_edge_merge_count += active_maps[i]->get_pm_edge_merge_count();
+		_new_pm_edge_connection_count += active_maps[i]->get_pm_edge_connection_count();
+		_new_pm_edge_free_count += active_maps[i]->get_pm_edge_free_count();
+
 		// Emit a signal if a map changed.
 		const uint32_t new_map_update_id = active_maps[i]->get_map_update_id();
 		if (new_map_update_id != active_maps_update_id[i]) {
@@ -833,6 +851,15 @@ void PandemoniumNavigationServer::process(real_t p_delta_time) {
 			active_maps_update_id[i] = new_map_update_id;
 		}
 	}
+
+	pm_region_count = _new_pm_region_count;
+	pm_agent_count = _new_pm_agent_count;
+	pm_link_count = _new_pm_link_count;
+	pm_polygon_count = _new_pm_polygon_count;
+	pm_edge_count = _new_pm_edge_count;
+	pm_edge_merge_count = _new_pm_edge_merge_count;
+	pm_edge_connection_count = _new_pm_edge_connection_count;
+	pm_edge_free_count = _new_pm_edge_free_count;
 }
 
 NavigationUtilities::PathQueryResult PandemoniumNavigationServer::_query_path(const NavigationUtilities::PathQueryParameters &p_parameters) const {
@@ -870,6 +897,40 @@ NavigationUtilities::PathQueryResult PandemoniumNavigationServer::_query_path(co
 	// add path stats
 
 	return r_query_result;
+}
+
+int PandemoniumNavigationServer::get_process_info(ProcessInfo p_info) const {
+	switch (p_info) {
+		case INFO_ACTIVE_MAPS: {
+			return active_maps.size();
+		} break;
+		case INFO_REGION_COUNT: {
+			return pm_region_count;
+		} break;
+		case INFO_AGENT_COUNT: {
+			return pm_agent_count;
+		} break;
+		case INFO_LINK_COUNT: {
+			return pm_link_count;
+		} break;
+		case INFO_POLYGON_COUNT: {
+			return pm_polygon_count;
+		} break;
+		case INFO_EDGE_COUNT: {
+			return pm_edge_count;
+		} break;
+		case INFO_EDGE_MERGE_COUNT: {
+			return pm_edge_merge_count;
+		} break;
+		case INFO_EDGE_CONNECTION_COUNT: {
+			return pm_edge_connection_count;
+		} break;
+		case INFO_EDGE_FREE_COUNT: {
+			return pm_edge_free_count;
+		} break;
+	}
+
+	return 0;
 }
 
 #undef COMMAND_1

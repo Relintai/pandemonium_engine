@@ -260,6 +260,20 @@ public:
 
 	virtual void init();
 
+	enum ProcessInfo {
+		INFO_ACTIVE_MAPS,
+		INFO_REGION_COUNT,
+		INFO_AGENT_COUNT,
+		INFO_LINK_COUNT,
+		INFO_POLYGON_COUNT,
+		INFO_EDGE_COUNT,
+		INFO_EDGE_MERGE_COUNT,
+		INFO_EDGE_CONNECTION_COUNT,
+		INFO_EDGE_FREE_COUNT,
+	};
+
+	virtual int get_process_info(ProcessInfo p_info) const = 0;
+
 	NavigationServer();
 	virtual ~NavigationServer();
 
@@ -350,6 +364,8 @@ protected:
 
 #endif // DEBUG_ENABLED
 };
+
+VARIANT_ENUM_CAST(NavigationServer::ProcessInfo);
 
 typedef NavigationServer *(*CreateNavigationServerCallback)();
 

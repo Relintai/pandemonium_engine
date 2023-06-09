@@ -45,6 +45,7 @@ class Performance : public Object {
 
 	float _process_time;
 	float _physics_process_time;
+	float _navigation_process_time;
 
 public:
 	enum Monitor {
@@ -52,6 +53,7 @@ public:
 		TIME_FPS,
 		TIME_PROCESS,
 		TIME_PHYSICS_PROCESS,
+		TIME_NAVIGATION_PROCESS,
 		MEMORY_STATIC,
 		MEMORY_DYNAMIC,
 		MEMORY_STATIC_MAX,
@@ -79,8 +81,16 @@ public:
 		PHYSICS_3D_ACTIVE_OBJECTS,
 		PHYSICS_3D_COLLISION_PAIRS,
 		PHYSICS_3D_ISLAND_COUNT,
-		//physics
 		AUDIO_OUTPUT_LATENCY,
+		NAVIGATION_ACTIVE_MAPS,
+		NAVIGATION_REGION_COUNT,
+		NAVIGATION_AGENT_COUNT,
+		NAVIGATION_LINK_COUNT,
+		NAVIGATION_POLYGON_COUNT,
+		NAVIGATION_EDGE_COUNT,
+		NAVIGATION_EDGE_MERGE_COUNT,
+		NAVIGATION_EDGE_CONNECTION_COUNT,
+		NAVIGATION_EDGE_FREE_COUNT,
 		MONITOR_MAX
 	};
 
@@ -97,6 +107,7 @@ public:
 
 	void set_process_time(float p_pt);
 	void set_physics_process_time(float p_pt);
+	void set_navigation_process_time(float p_pt);
 
 	static Performance *get_singleton() { return singleton; }
 
