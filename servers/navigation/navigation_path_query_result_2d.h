@@ -40,7 +40,7 @@ class NavigationPathQueryResult2D : public Reference {
 	Vector<Vector2> path;
 	Vector<int> path_types;
 	Array path_rids;
-	Vector<int> path_owner_ids;
+	Vector<ObjectID> path_owner_ids;
 
 protected:
 	static void _bind_methods();
@@ -60,8 +60,11 @@ public:
 	void set_path_rids(const Array &p_path_rids);
 	Array get_path_rids() const;
 
-	void set_path_owner_ids(const Vector<int> &p_path_owner_ids);
-	const Vector<int> &get_path_owner_ids() const;
+	void set_path_owner_ids(const Vector<ObjectID> &p_path_owner_ids);
+	const Vector<ObjectID> &get_path_owner_ids() const;
+
+	void set_path_owner_ids_bind(const Array p_path_owner_ids);
+	Array get_path_owner_ids_bind() const;
 
 	void reset();
 };

@@ -54,12 +54,31 @@ Array NavigationPathQueryResult3D::get_path_rids() const {
 	return path_rids;
 }
 
-void NavigationPathQueryResult3D::set_path_owner_ids(const Vector<int> &p_path_owner_ids) {
+void NavigationPathQueryResult3D::set_path_owner_ids(const Vector<ObjectID> &p_path_owner_ids) {
 	path_owner_ids = p_path_owner_ids;
 }
 
-const Vector<int> &NavigationPathQueryResult3D::get_path_owner_ids() const {
+const Vector<ObjectID> &NavigationPathQueryResult3D::get_path_owner_ids() const {
 	return path_owner_ids;
+}
+
+void NavigationPathQueryResult3D::set_path_owner_ids_bind(const Array p_path_owner_ids) {
+	path_owner_ids.resize(p_path_owner_ids.size());
+
+	for (int i = 0; i < path_owner_ids.size(); ++i) {
+		path_owner_ids.write[i] = p_path_owner_ids[i];
+	}
+}
+Array NavigationPathQueryResult3D::get_path_owner_ids_bind() const {
+	Array ret;
+
+	ret.resize(path_owner_ids.size());
+
+	for (int i = 0; i < path_owner_ids.size(); ++i) {
+		ret[i] = path_owner_ids[i];
+	}
+
+	return ret;
 }
 
 void NavigationPathQueryResult3D::reset() {
@@ -79,8 +98,8 @@ void NavigationPathQueryResult3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_path_rids", "path_rids"), &NavigationPathQueryResult3D::set_path_rids);
 	ClassDB::bind_method(D_METHOD("get_path_rids"), &NavigationPathQueryResult3D::get_path_rids);
 
-	ClassDB::bind_method(D_METHOD("set_path_owner_ids", "path_owner_ids"), &NavigationPathQueryResult3D::set_path_owner_ids);
-	ClassDB::bind_method(D_METHOD("get_path_owner_ids"), &NavigationPathQueryResult3D::get_path_owner_ids);
+	ClassDB::bind_method(D_METHOD("set_path_owner_ids", "path_owner_ids"), &NavigationPathQueryResult3D::set_path_owner_ids_bind);
+	ClassDB::bind_method(D_METHOD("get_path_owner_ids"), &NavigationPathQueryResult3D::get_path_owner_ids_bind);
 
 	ClassDB::bind_method(D_METHOD("reset"), &NavigationPathQueryResult3D::reset);
 

@@ -49,6 +49,7 @@ class NavigationAgent2D : public Node {
 
 	bool avoidance_enabled;
 	uint32_t navigation_layers;
+	int path_metadata_flags;
 
 	real_t path_desired_distance;
 	real_t target_desired_distance;
@@ -118,6 +119,9 @@ public:
 	void set_navigation_layer_value(int p_layer_number, bool p_value);
 	bool get_navigation_layer_value(int p_layer_number) const;
 
+	void set_path_metadata_flags(const int p_flags);
+	int get_path_metadata_flags() const;
+
 	void set_navigation_map(RID p_navigation_map);
 	RID get_navigation_map() const;
 
@@ -163,6 +167,8 @@ public:
 	Vector2 get_target_position() const;
 
 	Vector2 get_next_position();
+
+	Ref<NavigationPathQueryResult2D> get_current_navigation_result() const;
 
 	const Vector<Vector2> &get_nav_path() const;
 

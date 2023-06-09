@@ -38,6 +38,8 @@
 #include "scene/resources/navigation_mesh.h"
 #endif
 
+using namespace NavigationUtilities;
+
 /// Creates a struct for each function and a function that once called creates
 /// an instance of that struct with the submitted parameters.
 /// Then, that struct is stored in an array; the `sync` function consume that array.
@@ -246,7 +248,7 @@ Vector<Vector3> PandemoniumNavigationServer::map_get_path(RID p_map, Vector3 p_o
 	const NavMap *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND_V(map == nullptr, Vector<Vector3>());
 
-	return map->get_path(p_origin, p_destination, p_optimize, p_layers);
+	return map->get_path(p_origin, p_destination, p_optimize, p_layers, nullptr, nullptr, nullptr);
 }
 
 Vector3 PandemoniumNavigationServer::map_get_closest_point_to_segment(RID p_map, const Vector3 &p_from, const Vector3 &p_to, const bool p_use_collision) const {
@@ -862,21 +864,35 @@ void PandemoniumNavigationServer::process(real_t p_delta_time) {
 	pm_edge_free_count = _new_pm_edge_free_count;
 }
 
-NavigationUtilities::PathQueryResult PandemoniumNavigationServer::_query_path(const NavigationUtilities::PathQueryParameters &p_parameters) const {
-	NavigationUtilities::PathQueryResult r_query_result;
+PathQueryResult PandemoniumNavigationServer::_query_path(const PathQueryParameters &p_parameters) const {
+	PathQueryResult r_query_result;
 
 	const NavMap *map = map_owner.getornull(p_parameters.map);
 	ERR_FAIL_COND_V(map == nullptr, r_query_result);
 
 	// run the pathfinding
 
-	if (p_parameters.pathfinding_algorithm == NavigationUtilities::PathfindingAlgorithm::PATHFINDING_ALGORITHM_ASTAR) {
+	if (p_parameters.pathfinding_algorithm == PathfindingAlgorithm::PATHFINDING_ALGORITHM_ASTAR) {
 		Vector<Vector3> path;
 		// while postprocessing is still part of map.get_path() need to check and route it here for the correct "optimize" post-processing
-		if (p_parameters.path_postprocessing == NavigationUtilities::PathPostProcessing::PATH_POSTPROCESSING_CORRIDORFUNNEL) {
-			path = map->get_path(p_parameters.start_position, p_parameters.target_position, true, p_parameters.navigation_layers);
-		} else if (p_parameters.path_postprocessing == NavigationUtilities::PathPostProcessing::PATH_POSTPROCESSING_EDGECENTERED) {
-			path = map->get_path(p_parameters.start_position, p_parameters.target_position, false, p_parameters.navigation_layers);
+		if (p_parameters.path_postprocessing == PathPostProcessing::PATH_POSTPROCESSING_CORRIDORFUNNEL) {
+			r_query_result.path = map->get_path(
+					p_parameters.start_position,
+					p_parameters.target_position,
+					true,
+					p_parameters.navigation_layers,
+					((p_parameters.metadata_flags & PathMetadataFlags::PATH_INCLUDE_TYPES) != 0) ? &r_query_result.path_types : nullptr,
+					((p_parameters.metadata_flags & PathMetadataFlags::PATH_INCLUDE_RIDS) != 0) ? &r_query_result.path_rids : nullptr,
+					((p_parameters.metadata_flags & PathMetadataFlags::PATH_INCLUDE_OWNERS) != 0) ? &r_query_result.path_owner_ids : nullptr);
+		} else if (p_parameters.path_postprocessing == PathPostProcessing::PATH_POSTPROCESSING_EDGECENTERED) {
+			r_query_result.path = map->get_path(
+					p_parameters.start_position,
+					p_parameters.target_position,
+					false,
+					p_parameters.navigation_layers,
+					((p_parameters.metadata_flags & PathMetadataFlags::PATH_INCLUDE_TYPES) != 0) ? &r_query_result.path_types : nullptr,
+					((p_parameters.metadata_flags & PathMetadataFlags::PATH_INCLUDE_RIDS) != 0) ? &r_query_result.path_rids : nullptr,
+					((p_parameters.metadata_flags & PathMetadataFlags::PATH_INCLUDE_OWNERS) != 0) ? &r_query_result.path_owner_ids : nullptr);
 		}
 
 		r_query_result.path.resize(path.size());

@@ -54,12 +54,31 @@ Array NavigationPathQueryResult2D::get_path_rids() const {
 	return path_rids;
 }
 
-void NavigationPathQueryResult2D::set_path_owner_ids(const Vector<int> &p_path_owner_ids) {
+void NavigationPathQueryResult2D::set_path_owner_ids(const Vector<ObjectID> &p_path_owner_ids) {
 	path_owner_ids = p_path_owner_ids;
 }
 
-const Vector<int> &NavigationPathQueryResult2D::get_path_owner_ids() const {
+const Vector<ObjectID> &NavigationPathQueryResult2D::get_path_owner_ids() const {
 	return path_owner_ids;
+}
+
+void NavigationPathQueryResult2D::set_path_owner_ids_bind(const Array p_path_owner_ids) {
+	path_owner_ids.resize(p_path_owner_ids.size());
+
+	for (int i = 0; i < path_owner_ids.size(); ++i) {
+		path_owner_ids.write[i] = p_path_owner_ids[i];
+	}
+}
+Array NavigationPathQueryResult2D::get_path_owner_ids_bind() const {
+	Array ret;
+
+	ret.resize(path_owner_ids.size());
+
+	for (int i = 0; i < path_owner_ids.size(); ++i) {
+		ret[i] = path_owner_ids[i];
+	}
+
+	return ret;
 }
 
 void NavigationPathQueryResult2D::reset() {
@@ -79,15 +98,15 @@ void NavigationPathQueryResult2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_path_rids", "path_rids"), &NavigationPathQueryResult2D::set_path_rids);
 	ClassDB::bind_method(D_METHOD("get_path_rids"), &NavigationPathQueryResult2D::get_path_rids);
 
-	ClassDB::bind_method(D_METHOD("set_path_owner_ids", "path_owner_ids"), &NavigationPathQueryResult2D::set_path_owner_ids);
-	ClassDB::bind_method(D_METHOD("get_path_owner_ids"), &NavigationPathQueryResult2D::get_path_owner_ids);
+	ClassDB::bind_method(D_METHOD("set_path_owner_ids", "path_owner_ids"), &NavigationPathQueryResult2D::set_path_owner_ids_bind);
+	ClassDB::bind_method(D_METHOD("get_path_owner_ids"), &NavigationPathQueryResult2D::get_path_owner_ids_bind);
 
 	ClassDB::bind_method(D_METHOD("reset"), &NavigationPathQueryResult2D::reset);
 
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_VECTOR2_ARRAY, "path"), "set_path", "get_path");
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "path_types"), "set_path_types", "get_path_types");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "path_rids"), "set_path_rids", "get_path_rids");
-	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "path_owner_ids"), "set_path_owner_ids", "get_path_owner_ids");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "path_owner_ids"), "set_path_owner_ids", "get_path_owner_ids");
 
 	BIND_ENUM_CONSTANT(PATH_SEGMENT_TYPE_REGION);
 	BIND_ENUM_CONSTANT(PATH_SEGMENT_TYPE_LINK);

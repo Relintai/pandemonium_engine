@@ -85,14 +85,14 @@ struct PathQueryResult {
 	Vector<Vector3> path;
 	Vector<int> path_types;
 	Array path_rids;
-	Vector<int> path_owner_ids;
+	Vector<uint64_t> path_owner_ids;
 };
 
 struct PathQueryResult2D {
 	Vector<Vector2> path;
 	Vector<int> path_types;
 	Array path_rids;
-	Vector<int> path_owner_ids;
+	Vector<uint64_t> path_owner_ids;
 };
 
 } //namespace NavigationUtilities
