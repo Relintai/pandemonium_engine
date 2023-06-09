@@ -3745,8 +3745,8 @@ void NavigationLink3DGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	Vector3 up_vector = NavigationServer::get_singleton()->map_get_up(nav_map);
 	Vector3::Axis up_axis = static_cast<Vector3::Axis>(up_vector.max_axis());
 
-	Vector3 start_location = link->get_start_position();
-	Vector3 end_location = link->get_end_position();
+	Vector3 start_position = link->get_start_position();
+	Vector3 end_position = link->get_end_position();
 
 	Ref<Material> link_material = get_material("navigation_link_material", p_gizmo);
 	Ref<Material> link_material_disabled = get_material("navigation_link_material_disabled", p_gizmo);
@@ -3756,10 +3756,10 @@ void NavigationLink3DGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 
 	// Draw line between the points.
 	Vector<Vector3> lines;
-	lines.push_back(start_location);
-	lines.push_back(end_location);
+	lines.push_back(start_position);
+	lines.push_back(end_position);
 
-	// Draw start location search radius
+	// Draw start position search radius
 	for (int i = 0; i < 30; i++) {
 		// Create a circle
 		const float ra = Math::deg2rad((float)(i * 12));
@@ -3770,21 +3770,21 @@ void NavigationLink3DGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 		// Draw axis-aligned circle
 		switch (up_axis) {
 			case Vector3::AXIS_X:
-				lines.push_back(start_location + Vector3(0, a.x, a.y));
-				lines.push_back(start_location + Vector3(0, b.x, b.y));
+				lines.push_back(start_position + Vector3(0, a.x, a.y));
+				lines.push_back(start_position + Vector3(0, b.x, b.y));
 				break;
 			case Vector3::AXIS_Y:
-				lines.push_back(start_location + Vector3(a.x, 0, a.y));
-				lines.push_back(start_location + Vector3(b.x, 0, b.y));
+				lines.push_back(start_position + Vector3(a.x, 0, a.y));
+				lines.push_back(start_position + Vector3(b.x, 0, b.y));
 				break;
 			case Vector3::AXIS_Z:
-				lines.push_back(start_location + Vector3(a.x, a.y, 0));
-				lines.push_back(start_location + Vector3(b.x, b.y, 0));
+				lines.push_back(start_position + Vector3(a.x, a.y, 0));
+				lines.push_back(start_position + Vector3(b.x, b.y, 0));
 				break;
 		}
 	}
 
-	// Draw end location search radius
+	// Draw end position search radius
 	for (int i = 0; i < 30; i++) {
 		// Create a circle
 		const float ra = Math::deg2rad((float)(i * 12));
@@ -3795,16 +3795,16 @@ void NavigationLink3DGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 		// Draw axis-aligned circle
 		switch (up_axis) {
 			case Vector3::AXIS_X:
-				lines.push_back(end_location + Vector3(0, a.x, a.y));
-				lines.push_back(end_location + Vector3(0, b.x, b.y));
+				lines.push_back(end_position + Vector3(0, a.x, a.y));
+				lines.push_back(end_position + Vector3(0, b.x, b.y));
 				break;
 			case Vector3::AXIS_Y:
-				lines.push_back(end_location + Vector3(a.x, 0, a.y));
-				lines.push_back(end_location + Vector3(b.x, 0, b.y));
+				lines.push_back(end_position + Vector3(a.x, 0, a.y));
+				lines.push_back(end_position + Vector3(b.x, 0, b.y));
 				break;
 			case Vector3::AXIS_Z:
-				lines.push_back(end_location + Vector3(a.x, a.y, 0));
-				lines.push_back(end_location + Vector3(b.x, b.y, 0));
+				lines.push_back(end_position + Vector3(a.x, a.y, 0));
+				lines.push_back(end_position + Vector3(b.x, b.y, 0));
 				break;
 		}
 	}
@@ -3813,8 +3813,8 @@ void NavigationLink3DGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	p_gizmo->add_collision_segments(lines);
 
 	Vector<Vector3> handles;
-	handles.push_back(start_location);
-	handles.push_back(end_location);
+	handles.push_back(start_position);
+	handles.push_back(end_position);
 	p_gizmo->add_handles(handles, handles_material);
 }
 
@@ -3839,8 +3839,8 @@ void NavigationLink3DGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_
 	Vector3 ray_from = p_camera->project_ray_origin(p_point);
 	Vector3 ray_dir = p_camera->project_ray_normal(p_point);
 
-	Vector3 location = p_id == 0 ? link->get_start_position() : link->get_end_position();
-	Plane move_plane = Plane(cam_dir, gt.xform(location));
+	Vector3 position = p_id == 0 ? link->get_start_position() : link->get_end_position();
+	Plane move_plane = Plane(cam_dir, gt.xform(position));
 
 	Vector3 intersection;
 	if (!move_plane.intersects_ray(ray_from, ray_dir, &intersection)) {
@@ -3852,11 +3852,11 @@ void NavigationLink3DGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_
 		intersection.snap(Vector3(snap, snap, snap));
 	}
 
-	location = gi.xform(intersection);
+	position = gi.xform(intersection);
 	if (p_id == 0) {
-		link->set_start_position(location);
+		link->set_start_position(position);
 	} else if (p_id == 1) {
-		link->set_end_position(location);
+		link->set_end_position(position);
 	}
 }
 

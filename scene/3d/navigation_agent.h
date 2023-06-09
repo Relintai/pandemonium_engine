@@ -61,7 +61,7 @@ class NavigationAgent : public Node {
 
 	real_t path_max_distance;
 
-	Vector3 target_location;
+	Vector3 target_position;
 	Vector<Vector3> navigation_path;
 	int nav_path_index;
 	bool velocity_submitted;
@@ -152,10 +152,10 @@ public:
 	void set_path_max_distance(real_t p_pmd);
 	real_t get_path_max_distance();
 
-	void set_target_location(Vector3 p_location);
-	Vector3 get_target_location() const;
+	void set_target_position(Vector3 p_position);
+	Vector3 get_target_position() const;
 
-	Vector3 get_next_location();
+	Vector3 get_next_position();
 
 	Vector<Vector3> get_nav_path() const {
 		return navigation_path;
@@ -169,7 +169,7 @@ public:
 	bool is_target_reached() const;
 	bool is_target_reachable();
 	bool is_navigation_finished();
-	Vector3 get_final_location();
+	Vector3 get_final_position();
 
 	void set_velocity(Vector3 p_velocity);
 	void _avoidance_done(Vector3 p_new_velocity);

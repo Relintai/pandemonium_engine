@@ -83,8 +83,8 @@ void NavigationLink2D::_notification(int p_what) {
 				Navigation2DServer::get_singleton()->link_set_map(link, get_world_2d()->get_navigation_map());
 			}
 			current_global_transform = get_global_transform();
-			Navigation2DServer::get_singleton()->link_set_start_location(link, current_global_transform.xform(start_position));
-			Navigation2DServer::get_singleton()->link_set_end_location(link, current_global_transform.xform(end_position));
+			Navigation2DServer::get_singleton()->link_set_start_position(link, current_global_transform.xform(start_position));
+			Navigation2DServer::get_singleton()->link_set_end_position(link, current_global_transform.xform(end_position));
 		} break;
 
 		case NOTIFICATION_TRANSFORM_CHANGED: {
@@ -97,8 +97,8 @@ void NavigationLink2D::_notification(int p_what) {
 				Transform2D new_global_transform = get_global_transform();
 				if (current_global_transform != new_global_transform) {
 					current_global_transform = new_global_transform;
-					Navigation2DServer::get_singleton()->link_set_start_location(link, current_global_transform.xform(start_position));
-					Navigation2DServer::get_singleton()->link_set_end_location(link, current_global_transform.xform(end_position));
+					Navigation2DServer::get_singleton()->link_set_start_position(link, current_global_transform.xform(start_position));
+					Navigation2DServer::get_singleton()->link_set_end_position(link, current_global_transform.xform(end_position));
 					update();
 				}
 			}
@@ -227,7 +227,7 @@ void NavigationLink2D::set_start_position(Vector2 p_position) {
 		return;
 	}
 
-	Navigation2DServer::get_singleton()->link_set_start_location(link, current_global_transform.xform(start_position));
+	Navigation2DServer::get_singleton()->link_set_start_position(link, current_global_transform.xform(start_position));
 
 	update_configuration_warning();
 
@@ -249,7 +249,7 @@ void NavigationLink2D::set_end_position(Vector2 p_position) {
 		return;
 	}
 
-	Navigation2DServer::get_singleton()->link_set_end_location(link, current_global_transform.xform(end_position));
+	Navigation2DServer::get_singleton()->link_set_end_position(link, current_global_transform.xform(end_position));
 
 	update_configuration_warning();
 

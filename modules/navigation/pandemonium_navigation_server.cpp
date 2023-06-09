@@ -531,28 +531,28 @@ uint32_t PandemoniumNavigationServer::link_get_navigation_layers(const RID p_lin
 	return link->get_navigation_layers();
 }
 
-COMMAND_2(link_set_start_location, RID, p_link, Vector3, p_location) {
+COMMAND_2(link_set_start_position, RID, p_link, Vector3, p_position) {
 	NavLink *link = link_owner.getornull(p_link);
 	ERR_FAIL_COND(link == nullptr);
 
-	link->set_start_position(p_location);
+	link->set_start_position(p_position);
 }
 
-Vector3 PandemoniumNavigationServer::link_get_start_location(RID p_link) const {
+Vector3 PandemoniumNavigationServer::link_get_start_position(RID p_link) const {
 	const NavLink *link = link_owner.getornull(p_link);
 	ERR_FAIL_COND_V(link == nullptr, Vector3());
 
 	return link->get_start_position();
 }
 
-COMMAND_2(link_set_end_location, RID, p_link, Vector3, p_location) {
+COMMAND_2(link_set_end_position, RID, p_link, Vector3, p_position) {
 	NavLink *link = link_owner.getornull(p_link);
 	ERR_FAIL_COND(link == nullptr);
 
-	link->set_end_position(p_location);
+	link->set_end_position(p_position);
 }
 
-Vector3 PandemoniumNavigationServer::link_get_end_location(RID p_link) const {
+Vector3 PandemoniumNavigationServer::link_get_end_position(RID p_link) const {
 	const NavLink *link = link_owner.getornull(p_link);
 	ERR_FAIL_COND_V(link == nullptr, Vector3());
 

@@ -81,10 +81,10 @@ void NavigationAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_navigation_layers", "navigation_layers"), &NavigationAgent::set_navigation_layers);
 	ClassDB::bind_method(D_METHOD("get_navigation_layers"), &NavigationAgent::get_navigation_layers);
 
-	ClassDB::bind_method(D_METHOD("set_target_location", "location"), &NavigationAgent::set_target_location);
-	ClassDB::bind_method(D_METHOD("get_target_location"), &NavigationAgent::get_target_location);
+	ClassDB::bind_method(D_METHOD("set_target_position", "position"), &NavigationAgent::set_target_position);
+	ClassDB::bind_method(D_METHOD("get_target_position"), &NavigationAgent::get_target_position);
 
-	ClassDB::bind_method(D_METHOD("get_next_location"), &NavigationAgent::get_next_location);
+	ClassDB::bind_method(D_METHOD("get_next_position"), &NavigationAgent::get_next_position);
 	ClassDB::bind_method(D_METHOD("distance_to_target"), &NavigationAgent::distance_to_target);
 	ClassDB::bind_method(D_METHOD("set_velocity", "velocity"), &NavigationAgent::set_velocity);
 	ClassDB::bind_method(D_METHOD("get_nav_path"), &NavigationAgent::get_nav_path);
@@ -92,12 +92,12 @@ void NavigationAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_target_reached"), &NavigationAgent::is_target_reached);
 	ClassDB::bind_method(D_METHOD("is_target_reachable"), &NavigationAgent::is_target_reachable);
 	ClassDB::bind_method(D_METHOD("is_navigation_finished"), &NavigationAgent::is_navigation_finished);
-	ClassDB::bind_method(D_METHOD("get_final_location"), &NavigationAgent::get_final_location);
+	ClassDB::bind_method(D_METHOD("get_final_position"), &NavigationAgent::get_final_position);
 
 	ClassDB::bind_method(D_METHOD("_avoidance_done", "new_velocity"), &NavigationAgent::_avoidance_done);
 
 	ADD_GROUP("Pathfinding", "");
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "target_location", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR), "set_target_location", "get_target_location");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "target_position", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR), "set_target_position", "get_target_position");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "path_desired_distance", PROPERTY_HINT_RANGE, "0.1,100,0.01"), "set_path_desired_distance", "get_path_desired_distance");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "target_desired_distance", PROPERTY_HINT_RANGE, "0.1,100,0.01"), "set_target_desired_distance", "get_target_desired_distance");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "agent_height_offset", PROPERTY_HINT_RANGE, "-100.0,100,0.01"), "set_agent_height_offset", "get_agent_height_offset");
@@ -358,16 +358,16 @@ real_t NavigationAgent::get_path_max_distance() {
 	return path_max_distance;
 }
 
-void NavigationAgent::set_target_location(Vector3 p_location) {
-	target_location = p_location;
+void NavigationAgent::set_target_position(Vector3 p_position) {
+	target_position = p_position;
 	_request_repath();
 }
 
-Vector3 NavigationAgent::get_target_location() const {
-	return target_location;
+Vector3 NavigationAgent::get_target_position() const {
+	return target_position;
 }
 
-Vector3 NavigationAgent::get_next_location() {
+Vector3 NavigationAgent::get_next_position() {
 	update_navigation();
 	if (navigation_path.size() == 0) {
 		ERR_FAIL_COND_V_MSG(agent_parent == nullptr, Vector3(), "The agent has no parent.");
@@ -379,7 +379,7 @@ Vector3 NavigationAgent::get_next_location() {
 
 real_t NavigationAgent::distance_to_target() const {
 	ERR_FAIL_COND_V_MSG(agent_parent == nullptr, 0.0, "The agent has no parent.");
-	return agent_parent->get_global_transform().origin.distance_to(target_location);
+	return agent_parent->get_global_transform().origin.distance_to(target_position);
 }
 
 bool NavigationAgent::is_target_reached() const {
@@ -387,7 +387,7 @@ bool NavigationAgent::is_target_reached() const {
 }
 
 bool NavigationAgent::is_target_reachable() {
-	return target_desired_distance >= get_final_location().distance_to(target_location);
+	return target_desired_distance >= get_final_position().distance_to(target_position);
 }
 
 bool NavigationAgent::is_navigation_finished() {
@@ -395,7 +395,7 @@ bool NavigationAgent::is_navigation_finished() {
 	return navigation_finished;
 }
 
-Vector3 NavigationAgent::get_final_location() {
+Vector3 NavigationAgent::get_final_position() {
 	update_navigation();
 	if (navigation_path.size() == 0) {
 		return Vector3();
@@ -473,11 +473,11 @@ void NavigationAgent::update_navigation() {
 
 	if (reload_path) {
 		if (map_override.is_valid()) {
-			navigation_path = NavigationServer::get_singleton()->map_get_path(map_override, o, target_location, true, navigation_layers);
+			navigation_path = NavigationServer::get_singleton()->map_get_path(map_override, o, target_position, true, navigation_layers);
 		} else if (navigation != nullptr) {
-			navigation_path = NavigationServer::get_singleton()->map_get_path(navigation->get_rid(), o, target_location, true, navigation_layers);
+			navigation_path = NavigationServer::get_singleton()->map_get_path(navigation->get_rid(), o, target_position, true, navigation_layers);
 		} else {
-			navigation_path = NavigationServer::get_singleton()->map_get_path(agent_parent->get_world_3d()->get_navigation_map(), o, target_location, true, navigation_layers);
+			navigation_path = NavigationServer::get_singleton()->map_get_path(agent_parent->get_world_3d()->get_navigation_map(), o, target_position, true, navigation_layers);
 		}
 
 		navigation_finished = false;
@@ -491,7 +491,7 @@ void NavigationAgent::update_navigation() {
 
 	// Check if we can advance the navigation path
 	if (navigation_finished == false) {
-		// Advances to the next far away location.
+		// Advances to the next far away position.
 		while (o.distance_to(navigation_path[nav_path_index] - Vector3(0, navigation_height_offset, 0)) < path_desired_distance) {
 			nav_path_index += 1;
 			if (nav_path_index == navigation_path.size()) {

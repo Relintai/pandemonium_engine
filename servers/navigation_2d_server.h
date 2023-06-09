@@ -134,7 +134,7 @@ public:
 	virtual Vector2 region_get_connection_pathway_start(RID p_region, int p_connection_id) const = 0;
 	virtual Vector2 region_get_connection_pathway_end(RID p_region, int p_connection_id) const = 0;
 
-	/// Creates a new link between locations in the nav map.
+	/// Creates a new link between positions in the nav map.
 	virtual RID link_create() const = 0;
 
 	/// Set the map of this link.
@@ -149,13 +149,13 @@ public:
 	virtual void link_set_navigation_layers(RID p_link, uint32_t p_navigation_layers) const = 0;
 	virtual uint32_t link_get_navigation_layers(RID p_link) const = 0;
 
-	/// Set the start location of the link.
-	virtual void link_set_start_location(RID p_link, Vector2 p_location) const = 0;
-	virtual Vector2 link_get_start_location(RID p_link) const = 0;
+	/// Set the start position of the link.
+	virtual void link_set_start_position(RID p_link, Vector2 p_position) const = 0;
+	virtual Vector2 link_get_start_position(RID p_link) const = 0;
 
-	/// Set the end location of the link.
-	virtual void link_set_end_location(RID p_link, Vector2 p_location) const = 0;
-	virtual Vector2 link_get_end_location(RID p_link) const = 0;
+	/// Set the end position of the link.
+	virtual void link_set_end_position(RID p_link, Vector2 p_position) const = 0;
+	virtual Vector2 link_get_end_position(RID p_link) const = 0;
 
 	/// Set the enter cost of the link.
 	virtual void link_set_enter_cost(RID p_link, real_t p_enter_cost) const = 0;

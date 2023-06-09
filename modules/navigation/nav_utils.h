@@ -130,7 +130,7 @@ struct NavigationPoly {
 	Vector3 back_navigation_edge_pathway_start;
 	Vector3 back_navigation_edge_pathway_end;
 
-	/// The entry location of this poly.
+	/// The entry position of this poly.
 	Vector3 entry;
 	/// The distance to the destination.
 	real_t traveled_distance;

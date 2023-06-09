@@ -196,8 +196,8 @@ void NavigationLink3D::_notification(int p_what) {
 				NavigationServer::get_singleton()->link_set_map(link, get_world_3d()->get_navigation_map());
 			}
 			current_global_transform = get_global_transform();
-			NavigationServer::get_singleton()->link_set_start_location(link, current_global_transform.xform(start_position));
-			NavigationServer::get_singleton()->link_set_end_location(link, current_global_transform.xform(end_position));
+			NavigationServer::get_singleton()->link_set_start_position(link, current_global_transform.xform(start_position));
+			NavigationServer::get_singleton()->link_set_end_position(link, current_global_transform.xform(end_position));
 
 #ifdef DEBUG_ENABLED
 			_update_debug_mesh();
@@ -214,8 +214,8 @@ void NavigationLink3D::_notification(int p_what) {
 				Transform new_global_transform = get_global_transform();
 				if (current_global_transform != new_global_transform) {
 					current_global_transform = new_global_transform;
-					NavigationServer::get_singleton()->link_set_start_location(link, current_global_transform.xform(start_position));
-					NavigationServer::get_singleton()->link_set_end_location(link, current_global_transform.xform(end_position));
+					NavigationServer::get_singleton()->link_set_start_position(link, current_global_transform.xform(start_position));
+					NavigationServer::get_singleton()->link_set_end_position(link, current_global_transform.xform(end_position));
 #ifdef DEBUG_ENABLED
 					if (debug_instance.is_valid()) {
 						RS::get_singleton()->instance_set_transform(debug_instance, current_global_transform);
@@ -346,7 +346,7 @@ void NavigationLink3D::set_start_position(Vector3 p_position) {
 		return;
 	}
 
-	NavigationServer::get_singleton()->link_set_start_location(link, current_global_transform.xform(start_position));
+	NavigationServer::get_singleton()->link_set_start_position(link, current_global_transform.xform(start_position));
 
 #ifdef DEBUG_ENABLED
 	_update_debug_mesh();
@@ -367,7 +367,7 @@ void NavigationLink3D::set_end_position(Vector3 p_position) {
 		return;
 	}
 
-	NavigationServer::get_singleton()->link_set_end_location(link, current_global_transform.xform(end_position));
+	NavigationServer::get_singleton()->link_set_end_position(link, current_global_transform.xform(end_position));
 
 #ifdef DEBUG_ENABLED
 	_update_debug_mesh();

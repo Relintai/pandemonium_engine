@@ -266,10 +266,10 @@ void FORWARD_2_C(link_set_bidirectional, RID, p_link, bool, p_bidirectional, rid
 bool FORWARD_1_C(link_is_bidirectional, RID, p_link, rid_to_rid);
 void FORWARD_2_C(link_set_navigation_layers, RID, p_link, uint32_t, p_navigation_layers, rid_to_rid, uint32_to_uint32);
 uint32_t FORWARD_1_C(link_get_navigation_layers, RID, p_link, rid_to_rid);
-void FORWARD_2_C(link_set_start_location, RID, p_link, Vector2, p_location, rid_to_rid, v2_to_v3);
-Vector2 FORWARD_1_R_C(v3_to_v2, link_get_start_location, RID, p_link, rid_to_rid);
-void FORWARD_2_C(link_set_end_location, RID, p_link, Vector2, p_location, rid_to_rid, v2_to_v3);
-Vector2 FORWARD_1_R_C(v3_to_v2, link_get_end_location, RID, p_link, rid_to_rid);
+void FORWARD_2_C(link_set_start_position, RID, p_link, Vector2, p_position, rid_to_rid, v2_to_v3);
+Vector2 FORWARD_1_R_C(v3_to_v2, link_get_start_position, RID, p_link, rid_to_rid);
+void FORWARD_2_C(link_set_end_position, RID, p_link, Vector2, p_position, rid_to_rid, v2_to_v3);
+Vector2 FORWARD_1_R_C(v3_to_v2, link_get_end_position, RID, p_link, rid_to_rid);
 void FORWARD_2_C(link_set_enter_cost, RID, p_link, real_t, p_enter_cost, rid_to_rid, real_to_real);
 real_t FORWARD_1_C(link_get_enter_cost, RID, p_link, rid_to_rid);
 void FORWARD_2_C(link_set_travel_cost, RID, p_link, real_t, p_travel_cost, rid_to_rid, real_to_real);

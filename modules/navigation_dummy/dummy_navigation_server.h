@@ -58,10 +58,10 @@ public:
 	virtual bool link_is_bidirectional(RID p_link) const { return false; }
 	virtual void link_set_navigation_layers(RID p_link, uint32_t p_navigation_layers) const {}
 	virtual uint32_t link_get_navigation_layers(RID p_link) const { return 0; }
-	virtual void link_set_start_location(RID p_link, Vector3 p_location) const {}
-	virtual Vector3 link_get_start_location(RID p_link) const { return Vector3(); }
-	virtual void link_set_end_location(RID p_link, Vector3 p_location) const {}
-	virtual Vector3 link_get_end_location(RID p_link) const { return Vector3(); }
+	virtual void link_set_start_position(RID p_link, Vector3 p_position) const {}
+	virtual Vector3 link_get_start_position(RID p_link) const { return Vector3(); }
+	virtual void link_set_end_position(RID p_link, Vector3 p_position) const {}
+	virtual Vector3 link_get_end_position(RID p_link) const { return Vector3(); }
 	virtual void link_set_enter_cost(RID p_link, real_t p_enter_cost) const {}
 	virtual real_t link_get_enter_cost(RID p_link) const { return 0; }
 	virtual void link_set_travel_cost(RID p_link, real_t p_travel_cost) const {}
