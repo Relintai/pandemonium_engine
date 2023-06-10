@@ -60,7 +60,9 @@ void NavigationPolygonInstance::set_enabled(bool p_enabled) {
 
 	if (!enabled) {
 		Navigation2DServer::get_singleton()->region_set_map(region, RID());
+#ifdef DEBUG_ENABLED
 		Navigation2DServer::get_singleton()->disconnect("map_changed", this, "_navigation_map_changed");
+#endif
 	} else {
 		if (navigation != nullptr) {
 			Navigation2DServer::get_singleton()->region_set_map(region, navigation->get_rid());
@@ -72,7 +74,9 @@ void NavigationPolygonInstance::set_enabled(bool p_enabled) {
 			}
 		}
 
+#ifdef DEBUG_ENABLED
 		Navigation2DServer::get_singleton()->connect("map_changed", this, "_navigation_map_changed");
+#endif
 	}
 
 #ifdef DEBUG_ENABLED
@@ -193,7 +197,9 @@ void NavigationPolygonInstance::_notification(int p_what) {
 				RID map = get_navigation_map();
 
 				Navigation2DServer::get_singleton()->region_set_map(region, map);
+#ifdef DEBUG_ENABLED
 				Navigation2DServer::get_singleton()->connect("map_changed", this, "_navigation_map_changed");
+#endif
 
 				for (uint32_t i = 0; i < constrain_avoidance_obstacles.size(); i++) {
 					if (constrain_avoidance_obstacles[i].is_valid()) {
@@ -238,9 +244,11 @@ void NavigationPolygonInstance::_notification(int p_what) {
 
 			navigation = nullptr;
 
+#ifdef DEBUG_ENABLED
 			if (enabled) {
 				Navigation2DServer::get_singleton()->disconnect("map_changed", this, "_navigation_map_changed");
 			}
+#endif
 
 			for (uint32_t i = 0; i < constrain_avoidance_obstacles.size(); i++) {
 				if (constrain_avoidance_obstacles[i].is_valid()) {
@@ -429,8 +437,8 @@ void NavigationPolygonInstance::_bind_methods() {
 
 #ifdef DEBUG_ENABLED
 	ClassDB::bind_method(D_METHOD("_navigation_debug_changed"), &NavigationPolygonInstance::_navigation_debug_changed);
-#endif
 	ClassDB::bind_method(D_METHOD("_navigation_map_changed"), &NavigationPolygonInstance::_navigation_map_changed);
+#endif
 	ClassDB::bind_method(D_METHOD("_navigation_polygon_changed"), &NavigationPolygonInstance::_navigation_polygon_changed);
 
 	ADD_SIGNAL(MethodInfo("navigation_polygon_changed"));
