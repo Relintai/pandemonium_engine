@@ -52,7 +52,7 @@
 		</method>
 		<method name="set_navigation_map">
 			<return type="void" />
-			<param index="0" name="navigation_map" type="RID" />
+			<argument index="0" name="navigation_map" type="RID" />
 			<description>
 				Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 			</description>

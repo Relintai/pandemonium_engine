@@ -38,7 +38,7 @@
 		</method>
 		<method name="set_polygons">
 			<return type="void" />
-			<param index="0" name="polygons" type="Array" />
+			<argument index="0" name="polygons" type="Array" />
 			<description>
 				Sets the navigation mesh polygons. Each polygon array needs to consist of the indices for the vertices that make the polygon.
 			</description>

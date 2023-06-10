@@ -24,29 +24,29 @@
 		</method>
 		<method name="get_navigation_layer_value" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="layer_number" type="int" />
+			<argument index="0" name="layer_number" type="int" />
 			<description>
 				Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 			</description>
 		</method>
 		<method name="set_global_end_position">
 			<return type="void" />
-			<param index="0" name="position" type="Vector2" />
+			<argument index="0" name="position" type="Vector2" />
 			<description>
 				Sets the [member end_position] that is relative to the link from a global [param position].
 			</description>
 		</method>
 		<method name="set_global_start_position">
 			<return type="void" />
-			<param index="0" name="position" type="Vector2" />
+			<argument index="0" name="position" type="Vector2" />
 			<description>
 				Sets the [member start_position] that is relative to the link from a global [param position].
 			</description>
 		</method>
 		<method name="set_navigation_layer_value">
 			<return type="void" />
-			<param index="0" name="layer_number" type="int" />
-			<param index="1" name="value" type="bool" />
+			<argument index="0" name="layer_number" type="int" />
+			<argument index="1" name="value" type="bool" />
 			<description>
 				Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 			</description>

@@ -20,7 +20,7 @@
 		</method>
 		<method name="get_avoidance_layer_value" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="layer_number" type="int" />
+			<argument index="0" name="layer_number" type="int" />
 			<description>
 				Returns whether or not the specified layer of the [member avoidance_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 			</description>
@@ -45,8 +45,8 @@
 		</method>
 		<method name="set_avoidance_layer_value">
 			<return type="void" />
-			<param index="0" name="layer_number" type="int" />
-			<param index="1" name="value" type="bool" />
+			<argument index="0" name="layer_number" type="int" />
+			<argument index="1" name="value" type="bool" />
 			<description>
 				Based on [param value], enables or disables the specified layer in the [member avoidance_layers] bitmask, given a [param layer_number] between 1 and 32.
 			</description>
@@ -60,7 +60,7 @@
 		</method>
 		<method name="set_navigation_map">
 			<return type="void" />
-			<param index="0" name="navigation_map" type="RID" />
+			<argument index="0" name="navigation_map" type="RID" />
 			<description>
 				Sets the [RID] of the navigation map this NavigationObstacle node should use and also updates the [code]obstacle[/code] on the NavigationServer.
 			</description>
@@ -83,7 +83,7 @@
 		<member name="velocity" type="Vector3" setter="set_velocity" getter="get_velocity" default="Vector3(0, 0, 0)">
 			Sets the wanted velocity for the obstacle so other agent's can better predict the obstacle if it is moved with a velocity regularly (every frame) instead of warped to a new position. Does only affect avoidance for the obstacles [member radius]. Does nothing for the obstacles static vertices.
 		</member>
-		<member name="vertices" type="PackedVector3Array" setter="set_vertices" getter="get_vertices" default="PackedVector3Array()">
+		<member name="vertices" type="PoolVector3Array" setter="set_vertices" getter="get_vertices" default="PoolVector3Array()">
 			The outline vertices of the obstacle. If the vertices are winded in clockwise order agents will be pushed in by the obstacle, else they will be pushed out. Outlines can not be crossed or overlap. Should the vertices using obstacle be warped to a new position agent's can not predict this movement and may get trapped inside the obstacle.
 		</member>
 	</members>

@@ -18,14 +18,14 @@
 		</method>
 		<method name="get_avoidance_layer_value" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="layer_number" type="int" />
+			<argument index="0" name="layer_number" type="int" />
 			<description>
 				Returns whether or not the specified layer of the [member avoidance_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 			</description>
 		</method>
 		<method name="get_avoidance_mask_value" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="mask_number" type="int" />
+			<argument index="0" name="mask_number" type="int" />
 			<description>
 				Returns whether or not the specified mask of the [member avoidance_mask] bitmask is enabled, given a [param mask_number] between 1 and 32.
 			</description>
@@ -112,16 +112,16 @@
 		</method>
 		<method name="set_avoidance_layer_value">
 			<return type="void" />
-			<param index="0" name="layer_number" type="int" />
-			<param index="1" name="value" type="bool" />
+			<argument index="0" name="layer_number" type="int" />
+			<argument index="1" name="value" type="bool" />
 			<description>
 				Based on [param value], enables or disables the specified layer in the [member avoidance_layers] bitmask, given a [param layer_number] between 1 and 32.
 			</description>
 		</method>
 		<method name="set_avoidance_mask_value">
 			<return type="void" />
-			<param index="0" name="mask_number" type="int" />
-			<param index="1" name="value" type="bool" />
+			<argument index="0" name="mask_number" type="int" />
+			<argument index="1" name="value" type="bool" />
 			<description>
 				Based on [param value], enables or disables the specified mask in the [member avoidance_mask] bitmask, given a [param mask_number] between 1 and 32.
 			</description>
@@ -227,7 +227,7 @@
 	</members>
 	<signals>
 		<signal name="link_reached">
-			<param index="0" name="details" type="Dictionary" />
+			<argument index="0" name="details" type="Dictionary" />
 			<description>
 				Notifies when a navigation link has been reached.
 				The details dictionary may contain the following keys depending on the value of [member path_metadata_flags]:
@@ -261,7 +261,7 @@
 			</description>
 		</signal>
 		<signal name="waypoint_reached">
-			<param index="0" name="details" type="Dictionary" />
+			<argument index="0" name="details" type="Dictionary" />
 			<description>
 				Notifies when a waypoint along the path has been reached.
 				The details dictionary may contain the following keys depending on the value of [member path_metadata_flags]:

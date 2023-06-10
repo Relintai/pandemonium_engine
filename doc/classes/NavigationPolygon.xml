@@ -10,7 +10,7 @@
 		Using [method add_outline]:
 		[codeblock]
 		var new_navigation_polygon = NavigationPolygon.new()
-		var new_navigation_polygon_outline = PackedVector2Array([Vector2(0, 0), Vector2(0, 50), Vector2(50, 50), Vector2(50, 0)])
+		var new_navigation_polygon_outline = PoolVector2Array([Vector2(0, 0), Vector2(0, 50), Vector2(50, 50), Vector2(50, 0)])
 		new_navigation_polygon.add_outline(new_navigation_polygon_outline)
 		NavigationMeshGenerator.bake_2d_from_source_geometry_data(new_navigation_polygon, NavigationMeshSourceGeometryData2D.new());
 		$NavigationRegion2D.navigation_polygon = new_navigation_polygon
@@ -18,9 +18,9 @@
 		Using [method add_polygon] and indices of the vertices array.
 		[codeblock]
 		var new_navigation_polygon = NavigationPolygon.new()
-		var new_navigation_polygon_vertices = PackedVector2Array([Vector2(0, 0), Vector2(0, 50), Vector2(50, 50), Vector2(50, 0)])
+		var new_navigation_polygon_vertices = PoolVector2Array([Vector2(0, 0), Vector2(0, 50), Vector2(50, 50), Vector2(50, 0)])
 		new_navigation_polygon.vertices = new_navigation_polygon_vertices
-		var new_navigation_polygon_polygon_indices = PackedInt32Array([0, 1, 2, 3])
+		var new_navigation_polygon_polygon_indices = PoolIntArray([0, 1, 2, 3])
 		new_navigation_polygon.add_polygon(new_navigation_polygon_polygon_indices)
 		new_navigation_polygon.commit_changes()
 		$NavigationRegion2D.navigation_polygon = new_navigation_polygon
@@ -104,21 +104,21 @@
 		</method>
 		<method name="set_baked_outlines">
 			<return type="void" />
-			<param index="0" name="baked_outlines" type="Array" />
+			<argument index="0" name="baked_outlines" type="Array" />
 			<description>
 				Sets the array of baked outlines. The baked outlines are the result of a finished [NavigationMeshGenerator] baking process and primarily used for debugging purposes.
 			</description>
 		</method>
 		<method name="set_outlines">
 			<return type="void" />
-			<param index="0" name="outlines" type="Array" />
+			<argument index="0" name="outlines" type="Array" />
 			<description>
 				Sets the outline arrays. The outlines need to be baked to actual navigation mesh polygons by using the [NavigationMeshGenerator].
 			</description>
 		</method>
 		<method name="set_polygons">
 			<return type="void" />
-			<param index="0" name="polygons" type="Array" />
+			<argument index="0" name="polygons" type="Array" />
 			<description>
 				Sets the navigation mesh polygons. Each polygon array needs to consist of the indices for the vertices that make the polygon.
 			</description>
@@ -164,14 +164,14 @@
 			</description>
 		</method>
 		<method name="get_baked_outlines" qualifiers="const">
-			<return type="PackedVector2Array[]" />
+			<return type="Array" />
 			<description>
 				Returns the array of baked outlines. The baked outlines are the result of a finished [NavigationMeshGenerator] baking process and primarily used for debugging purposes.
 			</description>
 		</method>
 		<method name="get_collision_mask_value" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="layer_number" type="int" />
+			<argument index="0" name="layer_number" type="int" />
 			<description>
 				Returns whether or not the specified layer of the [member geometry_collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 			</description>

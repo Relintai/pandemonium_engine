@@ -14,96 +14,96 @@
 	<methods>
 		<method name="bake_2d_from_source_geometry_data">
 			<return type="void" />
-			<param index="0" name="navigation_polygon" type="NavigationPolygon" />
-			<param index="1" name="source_geometry_data" type="NavigationMeshSourceGeometryData2D" />
-			<param index="2" name="callback" type="Callable" />
+			<argument index="0" name="navigation_polygon" type="NavigationPolygon" />
+			<argument index="1" name="source_geometry_data" type="NavigationMeshSourceGeometryData2D" />
+			<argument index="2" name="callback" type="Callable" />
 			<description>
 				Bakes the provided [param navigation_polygon] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 			</description>
 		</method>
 		<method name="bake_3d_from_source_geometry_data">
 			<return type="void" />
-			<param index="0" name="navigation_mesh" type="NavigationMesh" />
-			<param index="1" name="source_geometry_data" type="NavigationMeshSourceGeometryData3D" />
-			<param index="2" name="callback" type="Callable" />
+			<argument index="0" name="navigation_mesh" type="NavigationMesh" />
+			<argument index="1" name="source_geometry_data" type="NavigationMeshSourceGeometryData3D" />
+			<argument index="2" name="callback" type="Callable" />
 			<description>
 				Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 			</description>
 		</method>
 		<method name="is_navigation_mesh_baking" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="navigation_mesh" type="NavigationMesh" />
+			<argument index="0" name="navigation_mesh" type="NavigationMesh" />
 			<description>
 				Returns [code]true[/code] if [param navigation_mesh] is currently baking or geometry parsing.
 			</description>
 		</method>
 		<method name="is_navigation_polygon_baking" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="navigation_polygon" type="NavigationPolygon" />
+			<argument index="0" name="navigation_polygon" type="NavigationPolygon" />
 			<description>
 				Returns [code]true[/code] if [param navigation_polygon] is currently baking or geometry parsing.
 			</description>
 		</method>
 		<method name="parse_2d_source_geometry_data">
 			<return type="NavigationMeshSourceGeometryData2D" />
-			<param index="0" name="navigation_polygon" type="NavigationPolygon" />
-			<param index="1" name="root_node" type="Node" />
-			<param index="2" name="callback" type="Callable" />
+			<argument index="0" name="navigation_polygon" type="NavigationPolygon" />
+			<argument index="1" name="root_node" type="Node" />
+			<argument index="2" name="callback" type="Callable" />
 			<description>
 				Parses the [SceneTree] (not thread-safe) for source geometry according to the properties of [param navigation_polygon] and returns a [NavigationMeshSourceGeometryData2D] that can be used to bake a navigation mesh. After the process is finished the optional [param callback] will be called.
 			</description>
 		</method>
 		<method name="parse_3d_source_geometry_data">
 			<return type="NavigationMeshSourceGeometryData3D" />
-			<param index="0" name="navigation_mesh" type="NavigationMesh" />
-			<param index="1" name="root_node" type="Node" />
-			<param index="2" name="callback" type="Callable" />
+			<argument index="0" name="navigation_mesh" type="NavigationMesh" />
+			<argument index="1" name="root_node" type="Node" />
+			<argument index="2" name="callback" type="Callable" />
 			<description>
 				Parses the [SceneTree] (not thread-safe) for source geometry according to the properties of [param navigation_mesh] and returns a [NavigationMeshSourceGeometryData2D] that can be used to bake a navigation mesh. After the process is finished the optional [param callback] will be called.
 			</description>
 		</method>
 		<method name="parse_and_bake_2d">
 			<return type="void" />
-			<param index="0" name="navigation_polygon" type="NavigationPolygon" />
-			<param index="1" name="root_node" type="Node" />
-			<param index="2" name="callback" type="Callable" />
+			<argument index="0" name="navigation_polygon" type="NavigationPolygon" />
+			<argument index="1" name="root_node" type="Node" />
+			<argument index="2" name="callback" type="Callable" />
 			<description>
 				Uses both [method parse_2d_source_geometry_data] and [method bake_2d_from_source_geometry_data] in sequence. After the process is finished the optional [param callback] will be called.
 			</description>
 		</method>
 		<method name="parse_and_bake_3d">
 			<return type="void" />
-			<param index="0" name="navigation_mesh" type="NavigationMesh" />
-			<param index="1" name="root_node" type="Node" />
-			<param index="2" name="callback" type="Callable" />
+			<argument index="0" name="navigation_mesh" type="NavigationMesh" />
+			<argument index="1" name="root_node" type="Node" />
+			<argument index="2" name="callback" type="Callable" />
 			<description>
 				Uses both [method parse_3d_source_geometry_data] and [method bake_3d_from_source_geometry_data] in sequence. After the process is finished the optional [param callback] will be called.
 			</description>
 		</method>
 		<method name="register_geometry_parser_2d">
 			<return type="void" />
-			<param index="0" name="geometry_parser" type="NavigationGeometryParser2D" />
+			<argument index="0" name="geometry_parser" type="NavigationGeometryParser2D" />
 			<description>
 				Registers a 2d navigation geometry parser to contribute geometry data from parser specified node class(es) for navigation mesh baking.
 			</description>
 		</method>
 		<method name="register_geometry_parser_3d">
 			<return type="void" />
-			<param index="0" name="geometry_parser" type="NavigationGeometryParser3D" />
+			<argument index="0" name="geometry_parser" type="NavigationGeometryParser3D" />
 			<description>
 				Registers a 3d navigation geometry parser to contribute geometry data from parser specified node class(es) for navigation mesh baking.
 			</description>
 		</method>
 		<method name="unregister_geometry_parser_2d">
 			<return type="void" />
-			<param index="0" name="geometry_parser" type="NavigationGeometryParser2D" />
+			<argument index="0" name="geometry_parser" type="NavigationGeometryParser2D" />
 			<description>
 				Unregisters the specific 2d navigation geometry parser.
 			</description>
 		</method>
 		<method name="unregister_geometry_parser_3d">
 			<return type="void" />
-			<param index="0" name="geometry_parser" type="NavigationGeometryParser3D" />
+			<argument index="0" name="geometry_parser" type="NavigationGeometryParser3D" />
 			<description>
 				Unregisters the specific 3d navigation geometry parser.
 			</description>
