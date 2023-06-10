@@ -30,10 +30,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/self_list.h"
 #include "core/io/multiplayer_api.h"
 #include "core/os/main_loop.h"
 #include "core/os/thread_safe.h"
-#include "core/containers/self_list.h"
 
 class PackedScene;
 class Node;
@@ -118,6 +118,7 @@ private:
 #ifdef DEBUG_ENABLED
 	bool debug_collisions_hint;
 	bool debug_navigation_hint;
+	bool debug_avoidance_hint;
 #endif
 	bool pause;
 	int root_lock;
@@ -351,6 +352,9 @@ public:
 
 	void set_debug_navigation_hint(bool p_enabled);
 	bool is_debugging_navigation_hint() const;
+
+	void set_debug_avoidance_hint(bool p_enabled);
+	bool is_debugging_avoidance_hint() const;
 #else
 	void set_debug_collisions_hint(bool p_enabled) {}
 	bool is_debugging_collisions_hint() const {
@@ -359,6 +363,11 @@ public:
 
 	void set_debug_navigation_hint(bool p_enabled) {}
 	bool is_debugging_navigation_hint() const {
+		return false;
+	}
+
+	void set_debug_avoidance_hint(bool p_enabled) {}
+	bool is_debugging_avoidance_hint() const {
 		return false;
 	}
 #endif

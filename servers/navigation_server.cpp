@@ -74,6 +74,7 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("map_get_links", "map"), &NavigationServer::map_get_links);
 	ClassDB::bind_method(D_METHOD("map_get_regions", "map"), &NavigationServer::map_get_regions);
 	ClassDB::bind_method(D_METHOD("map_get_agents", "map"), &NavigationServer::map_get_agents);
+	ClassDB::bind_method(D_METHOD("map_get_obstacles", "map"), &NavigationServer::map_get_obstacles);
 	ClassDB::bind_method(D_METHOD("map_force_update", "map"), &NavigationServer::map_force_update);
 
 	ClassDB::bind_method(D_METHOD("query_path", "parameters", "result"), &NavigationServer::query_path);
@@ -120,18 +121,37 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("link_get_owner_id", "link"), &NavigationServer::link_get_owner_id);
 
 	ClassDB::bind_method(D_METHOD("agent_create"), &NavigationServer::agent_create);
+	ClassDB::bind_method(D_METHOD("agent_set_avoidance_enabled", "agent", "enabled"), &NavigationServer::agent_set_avoidance_enabled);
+	ClassDB::bind_method(D_METHOD("agent_get_avoidance_enabled", "agent"), &NavigationServer::agent_get_avoidance_enabled);
+	ClassDB::bind_method(D_METHOD("agent_set_use_3d_avoidance", "agent", "enabled"), &NavigationServer::agent_set_use_3d_avoidance);
+	ClassDB::bind_method(D_METHOD("agent_get_use_3d_avoidance", "agent"), &NavigationServer::agent_get_use_3d_avoidance);
+
 	ClassDB::bind_method(D_METHOD("agent_set_map", "agent", "map"), &NavigationServer::agent_set_map);
 	ClassDB::bind_method(D_METHOD("agent_get_map", "agent"), &NavigationServer::agent_get_map);
 	ClassDB::bind_method(D_METHOD("agent_set_neighbor_dist", "agent", "dist"), &NavigationServer::agent_set_neighbor_dist);
 	ClassDB::bind_method(D_METHOD("agent_set_max_neighbors", "agent", "count"), &NavigationServer::agent_set_max_neighbors);
-	ClassDB::bind_method(D_METHOD("agent_set_time_horizon", "agent", "time"), &NavigationServer::agent_set_time_horizon);
+	ClassDB::bind_method(D_METHOD("agent_set_time_horizon_agents", "agent", "time_horizon"), &NavigationServer::agent_set_time_horizon_agents);
+	ClassDB::bind_method(D_METHOD("agent_set_time_horizon_obstacles", "agent", "time_horizon"), &NavigationServer::agent_set_time_horizon_obstacles);
 	ClassDB::bind_method(D_METHOD("agent_set_radius", "agent", "radius"), &NavigationServer::agent_set_radius);
+	ClassDB::bind_method(D_METHOD("agent_set_height", "agent", "height"), &NavigationServer::agent_set_height);
 	ClassDB::bind_method(D_METHOD("agent_set_max_speed", "agent", "max_speed"), &NavigationServer::agent_set_max_speed);
+	ClassDB::bind_method(D_METHOD("agent_set_velocity_forced", "agent", "velocity"), &NavigationServer::agent_set_velocity_forced);
 	ClassDB::bind_method(D_METHOD("agent_set_velocity", "agent", "velocity"), &NavigationServer::agent_set_velocity);
-	ClassDB::bind_method(D_METHOD("agent_set_target_velocity", "agent", "target_velocity"), &NavigationServer::agent_set_target_velocity);
+
 	ClassDB::bind_method(D_METHOD("agent_set_position", "agent", "position"), &NavigationServer::agent_set_position);
 	ClassDB::bind_method(D_METHOD("agent_is_map_changed", "agent"), &NavigationServer::agent_is_map_changed);
-	ClassDB::bind_method(D_METHOD("agent_set_callback", "agent", "object_id", "method", "userdata"), &NavigationServer::agent_set_callback, DEFVAL(Variant()));
+	ClassDB::bind_method(D_METHOD("agent_set_avoidance_callback", "agent", "object_id", "method", "userdata"), &NavigationServer::agent_set_avoidance_callback, DEFVAL(Variant()));
+	ClassDB::bind_method(D_METHOD("agent_set_avoidance_layers", "agent", "layers"), &NavigationServer::agent_set_avoidance_layers);
+	ClassDB::bind_method(D_METHOD("agent_set_avoidance_mask", "agent", "mask"), &NavigationServer::agent_set_avoidance_mask);
+	ClassDB::bind_method(D_METHOD("agent_set_avoidance_priority", "agent", "priority"), &NavigationServer::agent_set_avoidance_priority);
+
+	ClassDB::bind_method(D_METHOD("obstacle_create"), &NavigationServer::obstacle_create);
+	ClassDB::bind_method(D_METHOD("obstacle_set_map", "obstacle", "map"), &NavigationServer::obstacle_set_map);
+	ClassDB::bind_method(D_METHOD("obstacle_get_map", "obstacle"), &NavigationServer::obstacle_get_map);
+	ClassDB::bind_method(D_METHOD("obstacle_set_height", "obstacle", "height"), &NavigationServer::obstacle_set_height);
+	ClassDB::bind_method(D_METHOD("obstacle_set_position", "obstacle", "position"), &NavigationServer::obstacle_set_position);
+	ClassDB::bind_method(D_METHOD("obstacle_set_vertices", "obstacle", "vertices"), &NavigationServer::obstacle_set_vertices);
+	ClassDB::bind_method(D_METHOD("obstacle_set_avoidance_layers", "obstacle", "layers"), &NavigationServer::obstacle_set_avoidance_layers);
 
 	ClassDB::bind_method(D_METHOD("free_rid", "rid"), &NavigationServer::free);
 
@@ -145,6 +165,7 @@ void NavigationServer::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
 	ADD_SIGNAL(MethodInfo("navigation_debug_changed"));
+	ADD_SIGNAL(MethodInfo("avoidance_debug_changed"));
 
 	BIND_ENUM_CONSTANT(INFO_ACTIVE_MAPS);
 	BIND_ENUM_CONSTANT(INFO_REGION_COUNT);
@@ -156,8 +177,12 @@ void NavigationServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(INFO_EDGE_CONNECTION_COUNT);
 	BIND_ENUM_CONSTANT(INFO_EDGE_FREE_COUNT);
 
+	GLOBAL_DEF("navigation/avoidance/thread_model/avoidance_use_multiple_threads", true);
+	GLOBAL_DEF("navigation/avoidance/thread_model/avoidance_use_high_priority_threads", true);
+
 #ifdef DEBUG_ENABLED
 	ClassDB::bind_method(D_METHOD("_emit_navigation_debug_changed_signal"), &NavigationServer::_emit_navigation_debug_changed_signal);
+	ClassDB::bind_method(D_METHOD("_emit_avoidance_debug_changed_signal"), &NavigationServer::_emit_avoidance_debug_changed_signal);
 #endif // DEBUG_ENABLED
 }
 
@@ -174,6 +199,12 @@ NavigationServer::NavigationServer() {
 #ifdef DEBUG_ENABLED
 	_debug_enabled = true;
 	_debug_dirty = true;
+
+	_debug_navigation_enabled = false;
+	_navigation_debug_dirty = true;
+
+	_debug_avoidance_enabled = false;
+	_avoidance_debug_dirty = true;
 
 	_debug_navigation_edge_connection_color = GLOBAL_DEF("debug/shapes/navigation/edge_connection_color", Color(1.0, 0.0, 1.0, 1.0));
 	_debug_navigation_geometry_edge_color = GLOBAL_DEF("debug/shapes/navigation/geometry_edge_color", Color(0.5, 1.0, 1.0, 1.0));
@@ -197,10 +228,22 @@ NavigationServer::NavigationServer() {
 
 	_debug_navigation_agent_path_point_size = GLOBAL_DEF("debug/shapes/navigation/agent_path_point_size", 4.0);
 
+	_debug_navigation_avoidance_agents_radius_color = GLOBAL_DEF("debug/shapes/avoidance/agents_radius_color", Color(1.0, 1.0, 0.0, 0.25));
+	_debug_navigation_avoidance_obstacles_radius_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_radius_color", Color(1.0, 0.5, 0.0, 0.25));
+	_debug_navigation_avoidance_static_obstacle_pushin_face_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_static_face_pushin_color", Color(1.0, 0.0, 0.0, 0.0));
+	_debug_navigation_avoidance_static_obstacle_pushin_edge_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_static_edge_pushin_color", Color(1.0, 0.0, 0.0, 1.0));
+	_debug_navigation_avoidance_static_obstacle_pushout_face_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_static_face_pushout_color", Color(1.0, 1.0, 0.0, 0.5));
+	_debug_navigation_avoidance_static_obstacle_pushout_edge_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_static_edge_pushout_color", Color(1.0, 1.0, 0.0, 1.0));
+	_debug_navigation_avoidance_enable_agents_radius = GLOBAL_DEF("debug/shapes/avoidance/enable_agents_radius", true);
+	_debug_navigation_avoidance_enable_obstacles_radius = GLOBAL_DEF("debug/shapes/avoidance/enable_obstacles_radius", true);
+	_debug_navigation_avoidance_enable_obstacles_static = GLOBAL_DEF("debug/shapes/avoidance/enable_obstacles_static", true);
+
 	if (Engine::get_singleton()->is_editor_hint()) {
 		// enable NavigationServer when in Editor or else navmesh edge connections are invisible
 		// on runtime tests SceneTree has "Visible Navigation" set and main iteration takes care of this
 		set_debug_enabled(true);
+		set_debug_navigation_enabled(true);
+		set_debug_avoidance_enabled(true);
 	}
 #endif // DEBUG_ENABLED
 }
@@ -233,9 +276,16 @@ bool NavigationServer::get_debug_enabled() const {
 
 #ifdef DEBUG_ENABLED
 void NavigationServer::_emit_navigation_debug_changed_signal() {
-	if (_debug_dirty) {
-		_debug_dirty = false;
+	if (_navigation_debug_dirty) {
+		_navigation_debug_dirty = false;
 		emit_signal("navigation_debug_changed");
+	}
+}
+
+void NavigationServer::_emit_avoidance_debug_changed_signal() {
+	if (_avoidance_debug_dirty) {
+		_avoidance_debug_dirty = false;
+		emit_signal("avoidance_debug_changed");
 	}
 }
 #endif // DEBUG_ENABLED
@@ -405,7 +455,7 @@ Ref<SpatialMaterial> NavigationServer::get_debug_navigation_agent_path_point_mat
 	}
 
 	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
-	material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	//material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
 	material->set_albedo(_debug_navigation_agent_path_color);
 	material->set_flag(SpatialMaterial::FLAG_USE_POINT_SIZE, true);
 	material->set_point_size(_debug_navigation_agent_path_point_size);
@@ -416,6 +466,103 @@ Ref<SpatialMaterial> NavigationServer::get_debug_navigation_agent_path_point_mat
 
 	_debug_navigation_agent_path_point_material = material;
 	return _debug_navigation_agent_path_point_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_avoidance_agents_radius_material() {
+	if (_debug_navigation_avoidance_agents_radius_material.is_valid()) {
+		return _debug_navigation_avoidance_agents_radius_material;
+	}
+
+	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
+	material->set_cull_mode(SpatialMaterial::CULL_DISABLED);
+	material->set_albedo(_debug_navigation_avoidance_agents_radius_color);
+	material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MIN + 2);
+
+	_debug_navigation_avoidance_agents_radius_material = material;
+	return _debug_navigation_avoidance_agents_radius_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_avoidance_obstacles_radius_material() {
+	if (_debug_navigation_avoidance_obstacles_radius_material.is_valid()) {
+		return _debug_navigation_avoidance_obstacles_radius_material;
+	}
+
+	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
+	material->set_cull_mode(SpatialMaterial::CULL_DISABLED);
+	material->set_albedo(_debug_navigation_avoidance_obstacles_radius_color);
+	material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MIN + 2);
+
+	_debug_navigation_avoidance_obstacles_radius_material = material;
+	return _debug_navigation_avoidance_obstacles_radius_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_avoidance_static_obstacle_pushin_face_material() {
+	if (_debug_navigation_avoidance_static_obstacle_pushin_face_material.is_valid()) {
+		return _debug_navigation_avoidance_static_obstacle_pushin_face_material;
+	}
+
+	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
+	material->set_cull_mode(SpatialMaterial::CULL_DISABLED);
+	material->set_albedo(_debug_navigation_avoidance_static_obstacle_pushin_face_color);
+	material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MIN + 2);
+
+	_debug_navigation_avoidance_static_obstacle_pushin_face_material = material;
+	return _debug_navigation_avoidance_static_obstacle_pushin_face_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_avoidance_static_obstacle_pushout_face_material() {
+	if (_debug_navigation_avoidance_static_obstacle_pushout_face_material.is_valid()) {
+		return _debug_navigation_avoidance_static_obstacle_pushout_face_material;
+	}
+
+	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
+	material->set_cull_mode(SpatialMaterial::CULL_DISABLED);
+	material->set_albedo(_debug_navigation_avoidance_static_obstacle_pushout_face_color);
+	material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MIN + 2);
+
+	_debug_navigation_avoidance_static_obstacle_pushout_face_material = material;
+	return _debug_navigation_avoidance_static_obstacle_pushout_face_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_avoidance_static_obstacle_pushin_edge_material() {
+	if (_debug_navigation_avoidance_static_obstacle_pushin_edge_material.is_valid()) {
+		return _debug_navigation_avoidance_static_obstacle_pushin_edge_material;
+	}
+
+	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	//material->set_transparency(SpatialMaterial::TRANSPARENCY_ALPHA);
+	//material->set_cull_mode(SpatialMaterial::CULL_DISABLED);
+	material->set_albedo(_debug_navigation_avoidance_static_obstacle_pushin_edge_color);
+	//material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MIN + 2);
+	material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, true);
+
+	_debug_navigation_avoidance_static_obstacle_pushin_edge_material = material;
+	return _debug_navigation_avoidance_static_obstacle_pushin_edge_material;
+}
+
+Ref<SpatialMaterial> NavigationServer::get_debug_navigation_avoidance_static_obstacle_pushout_edge_material() {
+	if (_debug_navigation_avoidance_static_obstacle_pushout_edge_material.is_valid()) {
+		return _debug_navigation_avoidance_static_obstacle_pushout_edge_material;
+	}
+
+	Ref<SpatialMaterial> material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	///material->set_transparency(SpatialMaterial::TRANSPARENCY_ALPHA);
+	//material->set_cull_mode(SpatialMaterial::CULL_DISABLED);
+	material->set_albedo(_debug_navigation_avoidance_static_obstacle_pushout_edge_color);
+	//material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MIN + 2);
+	material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, true);
+
+	_debug_navigation_avoidance_static_obstacle_pushout_edge_material = material;
+	return _debug_navigation_avoidance_static_obstacle_pushout_edge_material;
 }
 
 void NavigationServer::set_debug_navigation_edge_connection_color(const Color &p_color) {
@@ -522,7 +669,7 @@ Color NavigationServer::get_debug_navigation_agent_path_color() const {
 
 void NavigationServer::set_debug_navigation_enable_edge_connections(const bool p_value) {
 	_debug_navigation_enable_edge_connections = p_value;
-	_debug_dirty = true;
+	_navigation_debug_dirty = true;
 	call_deferred("_emit_navigation_debug_changed_signal");
 }
 
@@ -543,7 +690,7 @@ bool NavigationServer::get_debug_navigation_enable_edge_connections_xray() const
 
 void NavigationServer::set_debug_navigation_enable_edge_lines(const bool p_value) {
 	_debug_navigation_enable_edge_lines = p_value;
-	_debug_dirty = true;
+	_navigation_debug_dirty = true;
 	call_deferred("_emit_navigation_debug_changed_signal");
 }
 
@@ -564,7 +711,7 @@ bool NavigationServer::get_debug_navigation_enable_edge_lines_xray() const {
 
 void NavigationServer::set_debug_navigation_enable_geometry_face_random_color(const bool p_value) {
 	_debug_navigation_enable_geometry_face_random_color = p_value;
-	_debug_dirty = true;
+	_navigation_debug_dirty = true;
 	call_deferred("_emit_navigation_debug_changed_signal");
 }
 
@@ -574,7 +721,7 @@ bool NavigationServer::get_debug_navigation_enable_geometry_face_random_color() 
 
 void NavigationServer::set_debug_navigation_enable_link_connections(const bool p_value) {
 	_debug_navigation_enable_link_connections = p_value;
-	_debug_dirty = true;
+	_navigation_debug_dirty = true;
 	call_deferred("_emit_navigation_debug_changed_signal");
 }
 
@@ -591,6 +738,102 @@ void NavigationServer::set_debug_navigation_enable_link_connections_xray(const b
 
 bool NavigationServer::get_debug_navigation_enable_link_connections_xray() const {
 	return _debug_navigation_enable_link_connections_xray;
+}
+
+void NavigationServer::set_debug_navigation_avoidance_enable_agents_radius(const bool p_value) {
+	_debug_navigation_avoidance_enable_agents_radius = p_value;
+	_avoidance_debug_dirty = true;
+	call_deferred("_emit_avoidance_debug_changed_signal");
+}
+
+bool NavigationServer::get_debug_navigation_avoidance_enable_agents_radius() const {
+	return _debug_navigation_avoidance_enable_agents_radius;
+}
+
+void NavigationServer::set_debug_navigation_avoidance_enable_obstacles_radius(const bool p_value) {
+	_debug_navigation_avoidance_enable_obstacles_radius = p_value;
+	_avoidance_debug_dirty = true;
+	call_deferred("_emit_avoidance_debug_changed_signal");
+}
+
+bool NavigationServer::get_debug_navigation_avoidance_enable_obstacles_radius() const {
+	return _debug_navigation_avoidance_enable_obstacles_radius;
+}
+
+void NavigationServer::set_debug_navigation_avoidance_enable_obstacles_static(const bool p_value) {
+	_debug_navigation_avoidance_enable_obstacles_static = p_value;
+	_avoidance_debug_dirty = true;
+	call_deferred("_emit_avoidance_debug_changed_signal");
+}
+
+bool NavigationServer::get_debug_navigation_avoidance_enable_obstacles_static() const {
+	return _debug_navigation_avoidance_enable_obstacles_static;
+}
+
+void NavigationServer::set_debug_navigation_avoidance_agents_radius_color(const Color &p_color) {
+	_debug_navigation_avoidance_agents_radius_color = p_color;
+	if (_debug_navigation_avoidance_agents_radius_material.is_valid()) {
+		_debug_navigation_avoidance_agents_radius_material->set_albedo(_debug_navigation_avoidance_agents_radius_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_avoidance_agents_radius_color() const {
+	return _debug_navigation_avoidance_agents_radius_color;
+}
+
+void NavigationServer::set_debug_navigation_avoidance_obstacles_radius_color(const Color &p_color) {
+	_debug_navigation_avoidance_obstacles_radius_color = p_color;
+	if (_debug_navigation_avoidance_obstacles_radius_material.is_valid()) {
+		_debug_navigation_avoidance_obstacles_radius_material->set_albedo(_debug_navigation_avoidance_obstacles_radius_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_avoidance_obstacles_radius_color() const {
+	return _debug_navigation_avoidance_obstacles_radius_color;
+}
+
+void NavigationServer::set_debug_navigation_avoidance_static_obstacle_pushin_face_color(const Color &p_color) {
+	_debug_navigation_avoidance_static_obstacle_pushin_face_color = p_color;
+	if (_debug_navigation_avoidance_static_obstacle_pushin_face_material.is_valid()) {
+		_debug_navigation_avoidance_static_obstacle_pushin_face_material->set_albedo(_debug_navigation_avoidance_static_obstacle_pushin_face_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_avoidance_static_obstacle_pushin_face_color() const {
+	return _debug_navigation_avoidance_static_obstacle_pushin_face_color;
+}
+
+void NavigationServer::set_debug_navigation_avoidance_static_obstacle_pushout_face_color(const Color &p_color) {
+	_debug_navigation_avoidance_static_obstacle_pushout_face_color = p_color;
+	if (_debug_navigation_avoidance_static_obstacle_pushout_face_material.is_valid()) {
+		_debug_navigation_avoidance_static_obstacle_pushout_face_material->set_albedo(_debug_navigation_avoidance_static_obstacle_pushout_face_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_avoidance_static_obstacle_pushout_face_color() const {
+	return _debug_navigation_avoidance_static_obstacle_pushout_face_color;
+}
+
+void NavigationServer::set_debug_navigation_avoidance_static_obstacle_pushin_edge_color(const Color &p_color) {
+	_debug_navigation_avoidance_static_obstacle_pushin_edge_color = p_color;
+	if (_debug_navigation_avoidance_static_obstacle_pushin_edge_material.is_valid()) {
+		_debug_navigation_avoidance_static_obstacle_pushin_edge_material->set_albedo(_debug_navigation_avoidance_static_obstacle_pushin_edge_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_avoidance_static_obstacle_pushin_edge_color() const {
+	return _debug_navigation_avoidance_static_obstacle_pushin_edge_color;
+}
+
+void NavigationServer::set_debug_navigation_avoidance_static_obstacle_pushout_edge_color(const Color &p_color) {
+	_debug_navigation_avoidance_static_obstacle_pushout_edge_color = p_color;
+	if (_debug_navigation_avoidance_static_obstacle_pushout_edge_material.is_valid()) {
+		_debug_navigation_avoidance_static_obstacle_pushout_edge_material->set_albedo(_debug_navigation_avoidance_static_obstacle_pushout_edge_color);
+	}
+}
+
+Color NavigationServer::get_debug_navigation_avoidance_static_obstacle_pushout_edge_color() const {
+	return _debug_navigation_avoidance_static_obstacle_pushout_edge_color;
 }
 
 void NavigationServer::set_debug_navigation_enable_agent_paths(const bool p_value) {
@@ -621,6 +864,26 @@ void NavigationServer::set_debug_navigation_enable_agent_paths_xray(const bool p
 
 bool NavigationServer::get_debug_navigation_enable_agent_paths_xray() const {
 	return _debug_navigation_enable_agent_paths_xray;
+}
+
+void NavigationServer::set_debug_navigation_enabled(bool p_enabled) {
+	_debug_navigation_enabled = p_enabled;
+	_navigation_debug_dirty = true;
+	call_deferred("_emit_navigation_debug_changed_signal");
+}
+
+bool NavigationServer::get_debug_navigation_enabled() const {
+	return _debug_navigation_enabled;
+}
+
+void NavigationServer::set_debug_avoidance_enabled(bool p_enabled) {
+	_debug_avoidance_enabled = p_enabled;
+	_avoidance_debug_dirty = true;
+	call_deferred("_emit_avoidance_debug_changed_signal");
+}
+
+bool NavigationServer::get_debug_avoidance_enabled() const {
+	return _debug_avoidance_enabled;
 }
 
 #endif // DEBUG_ENABLED

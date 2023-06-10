@@ -314,7 +314,7 @@ void TextureMerger::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_textures"), &TextureMerger::get_textures);
 	ClassDB::bind_method(D_METHOD("set_textures", "textures"), &TextureMerger::set_textures);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "textures", PROPERTY_HINT_NONE, "23/19:Texture", PROPERTY_USAGE_DEFAULT, "Texture"), "set_textures", "get_textures");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "textures", PROPERTY_HINT_NONE, "23/20:Texture", PROPERTY_USAGE_DEFAULT, "Texture"), "set_textures", "get_textures");
 
 	ClassDB::bind_method(D_METHOD("get_packer"), &TextureMerger::get_packer);
 	ClassDB::bind_method(D_METHOD("set_packer", "packer"), &TextureMerger::set_packer);

@@ -38,12 +38,17 @@
 #include "core/os/thread_work_pool.h"
 #include "nav_utils.h"
 
-#include <KdTree.h>
+#include <KdTree2d.h>
+#include <RVOSimulator2d.h>
+
+#include <KdTree3d.h>
+#include <RVOSimulator3d.h>
 
 class NavLink;
 class NavRegion;
-class RvoAgent;
+class NavAgent;
 class NavRegion;
+class NavObstacle;
 
 class NavMap : public NavRid {
 	/// Map Up
@@ -75,23 +80,35 @@ class NavMap : public NavRid {
 	/// Map polygons
 	LocalVector<gd::Polygon> polygons;
 
-	/// Rvo world
-	RVO::KdTree rvo;
+	/// RVO avoidance worlds
+	RVO2D::RVOSimulator2D rvo_simulation_2d;
+	RVO3D::RVOSimulator3D rvo_simulation_3d;
 
-	/// Is agent array modified?
-	bool agents_dirty;
+	/// avoidance controlled agents
+	LocalVector<NavAgent *> active_2d_avoidance_agents;
+	LocalVector<NavAgent *> active_3d_avoidance_agents;
+
+	/// dirty flag when one of the agent's arrays are modified
+	bool agents_dirty = true;
 
 	/// All the Agents (even the controlled one)
-	LocalVector<RvoAgent *> agents;
+	LocalVector<NavAgent *> agents;
 
-	/// Controlled agents
-	LocalVector<RvoAgent *> controlled_agents;
+	/// All the avoidance obstacles (both static and dynamic)
+	LocalVector<NavObstacle *> obstacles;
+
+	/// Are rvo obstacles modified?
+	bool obstacles_dirty;
 
 	/// Physics delta time
 	real_t deltatime;
 
 	/// Change the id each time the map is updated.
 	uint32_t map_update_id;
+
+	bool use_threads;
+	bool avoidance_use_multiple_threads;
+	bool avoidance_use_high_priority_threads;
 
 	// Performance Monitor
 	int pm_region_count;
@@ -163,15 +180,22 @@ public:
 		return links;
 	}
 
-	bool has_agent(RvoAgent *agent) const;
-	void add_agent(RvoAgent *agent);
-	void remove_agent(RvoAgent *agent);
-	const LocalVector<RvoAgent *> &get_agents() const {
+	bool has_agent(NavAgent *agent) const;
+	void add_agent(NavAgent *agent);
+	void remove_agent(NavAgent *agent);
+	const LocalVector<NavAgent *> &get_agents() const {
 		return agents;
 	}
 
-	void set_agent_as_controlled(RvoAgent *agent);
-	void remove_agent_as_controlled(RvoAgent *agent);
+	void set_agent_as_controlled(NavAgent *agent);
+	void remove_agent_as_controlled(NavAgent *agent);
+
+	bool has_obstacle(NavObstacle *obstacle) const;
+	void add_obstacle(NavObstacle *obstacle);
+	void remove_obstacle(NavObstacle *obstacle);
+	const LocalVector<NavObstacle *> &get_obstacles() const {
+		return obstacles;
+	}
 
 	uint32_t get_map_update_id() const {
 		return map_update_id;
@@ -192,8 +216,15 @@ public:
 	int get_pm_edge_free_count() const { return pm_edge_free_count; }
 
 private:
-	void compute_single_step(uint32_t index, RvoAgent **agent);
+	void compute_single_avoidance_step_2d(uint32_t index, NavAgent **agent);
+	void compute_single_avoidance_step_3d(uint32_t index, NavAgent **agent);
+
 	void clip_path(const LocalVector<gd::NavigationPoly> &p_navigation_polys, Vector<Vector3> &path, const gd::NavigationPoly *from_poly, const Vector3 &p_to_point, const gd::NavigationPoly *p_to_poly, Vector<int32_t> *r_path_types, Array *r_path_rids, Vector<uint64_t> *r_path_owners) const;
+
+	void _update_rvo_simulation();
+	void _update_rvo_obstacles_tree_2d();
+	void _update_rvo_agents_tree_2d();
+	void _update_rvo_agents_tree_3d();
 };
 
 #endif // NAV_MAP_H

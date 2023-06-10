@@ -30,13 +30,16 @@
 
 #include "nav_map.h"
 
+#include "core/config/project_settings.h"
 #include "core/os/threaded_array_processor.h"
+#include "nav_agent.h"
 #include "nav_link.h"
+#include "nav_obstacle.h"
 #include "nav_region.h"
-#include "rvo_agent.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/navigation_mesh.h"
-#include <algorithm>
+
+#include <Obstacle2d.h>
 
 #define THREE_POINTS_CROSS_PRODUCT(m_a, m_b, m_c) (((m_c) - (m_a)).cross((m_b) - (m_a)))
 
@@ -593,7 +596,7 @@ void NavMap::add_region(NavRegion *p_region) {
 
 void NavMap::remove_region(NavRegion *p_region) {
 	int64_t region_index = regions.find(p_region);
-	if (region_index != -1) {
+	if (region_index >= 0) {
 		regions.remove_unordered(region_index);
 		regenerate_links = true;
 	}
@@ -606,47 +609,79 @@ void NavMap::add_link(NavLink *p_link) {
 
 void NavMap::remove_link(NavLink *p_link) {
 	int64_t link_index = links.find(p_link);
-	if (link_index != -1) {
+	if (link_index >= 0) {
 		links.remove_unordered(link_index);
 		regenerate_links = true;
 	}
 }
 
-bool NavMap::has_agent(RvoAgent *agent) const {
-	return (agents.find(agent) != -1);
+bool NavMap::has_agent(NavAgent *agent) const {
+	return (agents.find(agent) >= 0);
 }
 
-void NavMap::add_agent(RvoAgent *agent) {
+void NavMap::add_agent(NavAgent *agent) {
 	if (!has_agent(agent)) {
 		agents.push_back(agent);
 		agents_dirty = true;
 	}
 }
 
-void NavMap::remove_agent(RvoAgent *agent) {
+void NavMap::remove_agent(NavAgent *agent) {
 	remove_agent_as_controlled(agent);
 
 	int64_t agent_index = agents.find(agent);
 
-	if (agent_index != -1) {
+	if (agent_index >= 0) {
 		agents.remove_unordered(agent_index);
 		agents_dirty = true;
 	}
 }
 
-void NavMap::set_agent_as_controlled(RvoAgent *agent) {
-	const bool exist = (controlled_agents.find(agent) != -1);
+bool NavMap::has_obstacle(NavObstacle *obstacle) const {
+	return (obstacles.find(obstacle) >= 0);
+}
 
-	if (!exist) {
-		ERR_FAIL_COND(!has_agent(agent));
-		controlled_agents.push_back(agent);
+void NavMap::add_obstacle(NavObstacle *obstacle) {
+	if (!has_obstacle(obstacle)) {
+		obstacles.push_back(obstacle);
+		obstacles_dirty = true;
 	}
 }
 
-void NavMap::remove_agent_as_controlled(RvoAgent *agent) {
-	int64_t active_avoidance_agent_index = controlled_agents.find(agent);
-	if (active_avoidance_agent_index != -1) {
-		controlled_agents.remove_unordered(active_avoidance_agent_index);
+void NavMap::remove_obstacle(NavObstacle *obstacle) {
+	int64_t obstacle_index = obstacles.find(obstacle);
+	if (obstacle_index >= 0) {
+		obstacles.remove_unordered(obstacle_index);
+		obstacles_dirty = true;
+	}
+}
+
+void NavMap::set_agent_as_controlled(NavAgent *agent) {
+	remove_agent_as_controlled(agent);
+	if (agent->get_use_3d_avoidance()) {
+		int64_t agent_3d_index = active_3d_avoidance_agents.find(agent);
+		if (agent_3d_index < 0) {
+			active_3d_avoidance_agents.push_back(agent);
+			agents_dirty = true;
+		}
+	} else {
+		int64_t agent_2d_index = active_2d_avoidance_agents.find(agent);
+		if (agent_2d_index < 0) {
+			active_2d_avoidance_agents.push_back(agent);
+			agents_dirty = true;
+		}
+	}
+}
+
+void NavMap::remove_agent_as_controlled(NavAgent *agent) {
+	int64_t agent_3d_index = active_3d_avoidance_agents.find(agent);
+	if (agent_3d_index >= 0) {
+		active_3d_avoidance_agents.remove_unordered(agent_3d_index);
+		agents_dirty = true;
+	}
+	int64_t agent_2d_index = active_2d_avoidance_agents.find(agent);
+	if (agent_2d_index >= 0) {
+		active_2d_avoidance_agents.remove_unordered(agent_2d_index);
 		agents_dirty = true;
 	}
 }
@@ -951,20 +986,30 @@ void NavMap::sync() {
 		map_update_id = (map_update_id + 1) % 9999999;
 	}
 
-	// Update agents tree.
-	if (agents_dirty) {
-		// cannot use LocalVector here as RVO library expects std::vector to build KdTree
-		std::vector<RVO::Agent *> raw_agents;
-		raw_agents.reserve(agents.size());
-		for (size_t i(0); i < agents.size(); i++) {
-			raw_agents.push_back(agents[i]->get_agent());
-		}
+	// Do we have modified obstacle positions?
+	for (uint32_t i = 0; i < obstacles.size(); ++i) {
+		NavObstacle *obstacle = obstacles[i];
 
-		rvo.buildAgentTree(raw_agents);
+		if (obstacle->check_dirty()) {
+			obstacles_dirty = true;
+		}
+	}
+	// Do we have modified agent arrays?
+	for (uint32_t i = 0; i < agents.size(); ++i) {
+		NavAgent *agent = agents[i];
+		if (agent->check_dirty()) {
+			agents_dirty = true;
+		}
+	}
+
+	// Update avoidance worlds.
+	if (obstacles_dirty || agents_dirty) {
+		_update_rvo_simulation();
 	}
 
 	regenerate_polygons = false;
 	regenerate_links = false;
+	obstacles_dirty = false;
 	agents_dirty = false;
 
 	// Performance Monitor
@@ -978,35 +1023,197 @@ void NavMap::sync() {
 	pm_edge_free_count = _new_pm_edge_free_count;
 }
 
-void NavMap::compute_single_step(uint32_t index, RvoAgent **agent) {
-	(*(agent + index))->get_agent()->computeNeighbors(&rvo);
-	(*(agent + index))->get_agent()->computeNewVelocity(deltatime);
+void NavMap::_update_rvo_obstacles_tree_2d() {
+	int obstacle_vertex_count = 0;
+	for (uint32_t i = 0; i < obstacles.size(); ++i) {
+		NavObstacle *obstacle = obstacles[i];
+
+		obstacle_vertex_count += obstacle->get_vertices().size();
+	}
+
+	// Cannot use LocalVector here as RVO library expects std::vector to build KdTree
+	std::vector<RVO2D::Obstacle2D *> raw_obstacles;
+	raw_obstacles.reserve(obstacle_vertex_count);
+
+	// The following block is modified copy from RVO2D::AddObstacle()
+	// Obstacles are linked and depend on all other obstacles.
+	for (uint32_t k = 0; k < obstacles.size(); ++k) {
+		NavObstacle *obstacle = obstacles[k];
+
+		const Vector3 &_obstacle_position = obstacle->get_position();
+		const Vector<Vector3> &_obstacle_vertices = obstacle->get_vertices();
+
+		if (_obstacle_vertices.size() < 2) {
+			continue;
+		}
+
+		std::vector<RVO2D::Vector2> rvo_2d_vertices;
+		rvo_2d_vertices.reserve(_obstacle_vertices.size());
+
+		uint32_t _obstacle_avoidance_layers = obstacle->get_avoidance_layers();
+
+		for (int i = 0; i < _obstacle_vertices.size(); ++i) {
+			const Vector3 &_obstacle_vertex = _obstacle_vertices[i];
+
+			rvo_2d_vertices.push_back(RVO2D::Vector2(_obstacle_vertex.x + _obstacle_position.x, _obstacle_vertex.z + _obstacle_position.z));
+		}
+
+		const size_t obstacleNo = raw_obstacles.size();
+
+		for (size_t i = 0; i < rvo_2d_vertices.size(); i++) {
+			RVO2D::Obstacle2D *rvo_2d_obstacle = new RVO2D::Obstacle2D();
+			rvo_2d_obstacle->point_ = rvo_2d_vertices[i];
+			rvo_2d_obstacle->avoidance_layers_ = _obstacle_avoidance_layers;
+
+			if (i != 0) {
+				rvo_2d_obstacle->prevObstacle_ = raw_obstacles.back();
+				rvo_2d_obstacle->prevObstacle_->nextObstacle_ = rvo_2d_obstacle;
+			}
+
+			if (i == rvo_2d_vertices.size() - 1) {
+				rvo_2d_obstacle->nextObstacle_ = raw_obstacles[obstacleNo];
+				rvo_2d_obstacle->nextObstacle_->prevObstacle_ = rvo_2d_obstacle;
+			}
+
+			rvo_2d_obstacle->unitDir_ = normalize(rvo_2d_vertices[(i == rvo_2d_vertices.size() - 1 ? 0 : i + 1)] - rvo_2d_vertices[i]);
+
+			if (rvo_2d_vertices.size() == 2) {
+				rvo_2d_obstacle->isConvex_ = true;
+			} else {
+				rvo_2d_obstacle->isConvex_ = (leftOf(rvo_2d_vertices[(i == 0 ? rvo_2d_vertices.size() - 1 : i - 1)], rvo_2d_vertices[i], rvo_2d_vertices[(i == rvo_2d_vertices.size() - 1 ? 0 : i + 1)]) >= 0.0f);
+			}
+
+			rvo_2d_obstacle->id_ = raw_obstacles.size();
+
+			raw_obstacles.push_back(rvo_2d_obstacle);
+		}
+	}
+
+	rvo_simulation_2d.kdTree_->buildObstacleTree(raw_obstacles);
+}
+
+void NavMap::_update_rvo_agents_tree_2d() {
+	// Cannot use LocalVector here as RVO library expects std::vector to build KdTree.
+	std::vector<RVO2D::Agent2D *> raw_agents;
+	raw_agents.reserve(active_2d_avoidance_agents.size());
+	for (uint32_t k = 0; k < active_2d_avoidance_agents.size(); ++k) {
+		NavAgent *agent = active_2d_avoidance_agents[k];
+		raw_agents.push_back(agent->get_rvo_agent_2d());
+	}
+	rvo_simulation_2d.kdTree_->buildAgentTree(raw_agents);
+}
+
+void NavMap::_update_rvo_agents_tree_3d() {
+	// Cannot use LocalVector here as RVO library expects std::vector to build KdTree.
+	std::vector<RVO3D::Agent3D *> raw_agents;
+	raw_agents.reserve(active_3d_avoidance_agents.size());
+	for (uint32_t k = 0; k < active_3d_avoidance_agents.size(); ++k) {
+		NavAgent *agent = active_3d_avoidance_agents[k];
+		raw_agents.push_back(agent->get_rvo_agent_3d());
+	}
+	rvo_simulation_3d.kdTree_->buildAgentTree(raw_agents);
+}
+
+void NavMap::_update_rvo_simulation() {
+	if (obstacles_dirty) {
+		_update_rvo_obstacles_tree_2d();
+	}
+	if (agents_dirty) {
+		_update_rvo_agents_tree_2d();
+		_update_rvo_agents_tree_3d();
+	}
+}
+
+void NavMap::compute_single_avoidance_step_2d(uint32_t index, NavAgent **agent) {
+	(*(agent + index))->get_rvo_agent_2d()->computeNeighbors(&rvo_simulation_2d);
+	(*(agent + index))->get_rvo_agent_2d()->computeNewVelocity(&rvo_simulation_2d);
+	(*(agent + index))->get_rvo_agent_2d()->update(&rvo_simulation_2d);
+	(*(agent + index))->update();
+}
+
+void NavMap::compute_single_avoidance_step_3d(uint32_t index, NavAgent **agent) {
+	(*(agent + index))->get_rvo_agent_3d()->computeNeighbors(&rvo_simulation_3d);
+	(*(agent + index))->get_rvo_agent_3d()->computeNewVelocity(&rvo_simulation_3d);
+	(*(agent + index))->get_rvo_agent_3d()->update(&rvo_simulation_3d);
+	(*(agent + index))->update();
 }
 
 void NavMap::step(real_t p_deltatime) {
 	deltatime = p_deltatime;
-	if (controlled_agents.size() > 0) {
+	if (active_2d_avoidance_agents.size() > 0) {
 #ifndef NO_THREADS
-		if (step_work_pool.get_thread_count() == 0) {
-			step_work_pool.init();
+		if (use_threads && avoidance_use_multiple_threads) {
+			if (step_work_pool.get_thread_count() == 0) {
+				step_work_pool.init();
+			}
+			step_work_pool.do_work(
+					active_2d_avoidance_agents.size(),
+					this,
+					&NavMap::compute_single_avoidance_step_2d,
+					active_2d_avoidance_agents.ptr());
+		} else {
+			for (int i(0); i < static_cast<int>(active_2d_avoidance_agents.size()); i++) {
+				NavAgent *agent = active_2d_avoidance_agents[i];
+
+				agent->get_rvo_agent_2d()->computeNeighbors(&rvo_simulation_2d);
+				agent->get_rvo_agent_2d()->computeNewVelocity(&rvo_simulation_2d);
+				agent->get_rvo_agent_2d()->update(&rvo_simulation_2d);
+				agent->update();
+			}
 		}
-		step_work_pool.do_work(
-				controlled_agents.size(),
-				this,
-				&NavMap::compute_single_step,
-				controlled_agents.ptr());
 #else
-		for (int i(0); i < static_cast<int>(controlled_agents.size()); i++) {
-			controlled_agents[i]->get_agent()->computeNeighbors(&rvo);
-			controlled_agents[i]->get_agent()->computeNewVelocity(deltatime);
+		for (int i(0); i < static_cast<int>(active_2d_avoidance_agents.size()); i++) {
+			NavAgent *agent = active_2d_avoidance_agents[i];
+
+			agent->get_rvo_agent_2d()->computeNeighbors(&rvo_simulation_2d);
+			agent->get_rvo_agent_2d()->computeNewVelocity(&rvo_simulation_2d);
+			agent->get_rvo_agent_2d()->update(&rvo_simulation_2d);
+			agent->update();
+		}
+#endif // NO_THREADS
+	}
+
+	if (active_3d_avoidance_agents.size() > 0) {
+#ifndef NO_THREADS
+		if (use_threads && avoidance_use_multiple_threads) {
+			if (step_work_pool.get_thread_count() == 0) {
+				step_work_pool.init();
+			}
+			step_work_pool.do_work(
+					active_3d_avoidance_agents.size(),
+					this,
+					&NavMap::compute_single_avoidance_step_3d,
+					active_3d_avoidance_agents.ptr());
+		} else {
+			for (int i(0); i < static_cast<int>(active_3d_avoidance_agents.size()); i++) {
+				NavAgent *agent = active_3d_avoidance_agents[i];
+
+				agent->get_rvo_agent_3d()->computeNeighbors(&rvo_simulation_3d);
+				agent->get_rvo_agent_3d()->computeNewVelocity(&rvo_simulation_3d);
+				agent->get_rvo_agent_3d()->update(&rvo_simulation_3d);
+				agent->update();
+			}
+		}
+#else
+		for (int i(0); i < static_cast<int>(active_3d_avoidance_agents.size()); i++) {
+			NavAgent *agent = active_3d_avoidance_agents[i];
+
+			agent->get_rvo_agent_3d()->computeNeighbors(&rvo_simulation_3d);
+			agent->get_rvo_agent_3d()->computeNewVelocity(&rvo_simulation_3d);
+			agent->get_rvo_agent_3d()->update(&rvo_simulation_3d);
+			agent->update();
 		}
 #endif // NO_THREADS
 	}
 }
 
 void NavMap::dispatch_callbacks() {
-	for (int i(0); i < static_cast<int>(controlled_agents.size()); i++) {
-		controlled_agents[i]->dispatch_callback();
+	for (int i(0); i < static_cast<int>(active_2d_avoidance_agents.size()); i++) {
+		active_2d_avoidance_agents[i]->dispatch_avoidance_callback();
+	}
+
+	for (int i(0); i < static_cast<int>(active_3d_avoidance_agents.size()); i++) {
+		active_3d_avoidance_agents[i]->dispatch_avoidance_callback();
 	}
 }
 
@@ -1054,6 +1261,11 @@ NavMap::NavMap() {
 	regenerate_polygons = true;
 	regenerate_links = true;
 	agents_dirty = false;
+	agents_dirty = true;
+	obstacles_dirty = true;
+	use_threads = true;
+	avoidance_use_multiple_threads = true;
+	avoidance_use_high_priority_threads = true;
 	deltatime = 0.0;
 	map_update_id = 0;
 	link_connection_radius = 1.0;
@@ -1068,6 +1280,9 @@ NavMap::NavMap() {
 	pm_edge_merge_count = 0;
 	pm_edge_connection_count = 0;
 	pm_edge_free_count = 0;
+
+	avoidance_use_multiple_threads = GLOBAL_GET("navigation/avoidance/thread_model/avoidance_use_multiple_threads");
+	avoidance_use_high_priority_threads = GLOBAL_GET("navigation/avoidance/thread_model/avoidance_use_high_priority_threads");
 }
 
 NavMap::~NavMap() {

@@ -109,7 +109,7 @@ void NavigationLink2D::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_DRAW: {
 #ifdef DEBUG_ENABLED
-			if (is_inside_tree() && (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_enabled())) {
+			if (is_inside_tree() && (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_navigation_enabled())) {
 				Color color;
 				if (enabled) {
 					color = Navigation2DServer::get_singleton()->get_debug_navigation_link_connection_color();
@@ -168,7 +168,7 @@ void NavigationLink2D::set_enabled(bool p_enabled) {
 	}
 
 #ifdef DEBUG_ENABLED
-	if (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_enabled()) {
+	if (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_navigation_enabled()) {
 		update();
 	}
 #endif // DEBUG_ENABLED
@@ -232,7 +232,7 @@ void NavigationLink2D::set_start_position(Vector2 p_position) {
 	update_configuration_warning();
 
 #ifdef DEBUG_ENABLED
-	if (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_enabled()) {
+	if (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_navigation_enabled()) {
 		update();
 	}
 #endif // DEBUG_ENABLED
@@ -254,7 +254,7 @@ void NavigationLink2D::set_end_position(Vector2 p_position) {
 	update_configuration_warning();
 
 #ifdef DEBUG_ENABLED
-	if (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_enabled()) {
+	if (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_navigation_enabled()) {
 		update();
 	}
 #endif // DEBUG_ENABLED

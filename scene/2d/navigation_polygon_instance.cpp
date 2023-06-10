@@ -32,10 +32,12 @@
 
 #include "core/config/engine.h"
 #include "core/core_string_names.h"
+#include "core/math/geometry.h"
 #include "core/object/func_ref.h"
 #include "core/os/mutex.h"
 #include "core/os/os.h"
 #include "navigation_2d.h"
+#include "scene/2d/navigation_obstacle_2d.h"
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_polygon.h"
@@ -58,6 +60,7 @@ void NavigationPolygonInstance::set_enabled(bool p_enabled) {
 
 	if (!enabled) {
 		Navigation2DServer::get_singleton()->region_set_map(region, RID());
+		Navigation2DServer::get_singleton()->disconnect("map_changed", this, "_navigation_map_changed");
 	} else {
 		if (navigation != nullptr) {
 			Navigation2DServer::get_singleton()->region_set_map(region, navigation->get_rid());
@@ -68,10 +71,12 @@ void NavigationPolygonInstance::set_enabled(bool p_enabled) {
 				Navigation2DServer::get_singleton()->region_set_map(region, get_world_2d()->get_navigation_map());
 			}
 		}
+
+		Navigation2DServer::get_singleton()->connect("map_changed", this, "_navigation_map_changed");
 	}
 
 #ifdef DEBUG_ENABLED
-	if (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_enabled()) {
+	if (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_navigation_enabled()) {
 		update();
 	}
 #endif // DEBUG_ENABLED
@@ -184,12 +189,17 @@ void NavigationPolygonInstance::_notification(int p_what) {
 				c = Object::cast_to<Node2D>(c->get_parent());
 			}
 
-			if (enabled && navigation == nullptr) {
-				// did not find a valid navigation node parent, fallback to default navigation map on world resource
-				if (map_override.is_valid()) {
-					Navigation2DServer::get_singleton()->region_set_map(region, map_override);
-				} else {
-					Navigation2DServer::get_singleton()->region_set_map(region, get_world_2d()->get_navigation_map());
+			if (enabled) {
+				RID map = get_navigation_map();
+
+				Navigation2DServer::get_singleton()->region_set_map(region, map);
+				Navigation2DServer::get_singleton()->connect("map_changed", this, "_navigation_map_changed");
+
+				for (uint32_t i = 0; i < constrain_avoidance_obstacles.size(); i++) {
+					if (constrain_avoidance_obstacles[i].is_valid()) {
+						Navigation2DServer::get_singleton()->obstacle_set_map(constrain_avoidance_obstacles[i], map);
+						Navigation2DServer::get_singleton()->obstacle_set_position(constrain_avoidance_obstacles[i], get_global_position());
+					}
 				}
 			}
 
@@ -198,6 +208,12 @@ void NavigationPolygonInstance::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			set_physics_process_internal(true);
+
+			for (uint32_t i = 0; i < constrain_avoidance_obstacles.size(); i++) {
+				if (constrain_avoidance_obstacles[i].is_valid()) {
+					Navigation2DServer::get_singleton()->obstacle_set_position(constrain_avoidance_obstacles[i], get_global_position());
+				}
+			}
 		} break;
 		case NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
 			set_physics_process_internal(false);
@@ -218,14 +234,23 @@ void NavigationPolygonInstance::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
-			if (navigation) {
-				Navigation2DServer::get_singleton()->region_set_map(region, RID());
-			}
+			Navigation2DServer::get_singleton()->region_set_map(region, RID());
+
 			navigation = nullptr;
+
+			if (enabled) {
+				Navigation2DServer::get_singleton()->disconnect("map_changed", this, "_navigation_map_changed");
+			}
+
+			for (uint32_t i = 0; i < constrain_avoidance_obstacles.size(); i++) {
+				if (constrain_avoidance_obstacles[i].is_valid()) {
+					Navigation2DServer::get_singleton()->obstacle_set_map(constrain_avoidance_obstacles[i], RID());
+				}
+			}
 		} break;
 		case NOTIFICATION_DRAW: {
 #ifdef DEBUG_ENABLED
-			if (is_inside_tree() && (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_enabled()) && navpoly.is_valid()) {
+			if (is_inside_tree() && (Engine::get_singleton()->is_editor_hint() || Navigation2DServer::get_singleton()->get_debug_navigation_enabled()) && navpoly.is_valid()) {
 				_update_debug_mesh();
 				_update_debug_edge_connections_mesh();
 			}
@@ -240,17 +265,17 @@ void NavigationPolygonInstance::set_navigation_polygon(const Ref<NavigationPolyg
 	}
 
 	if (navpoly.is_valid()) {
-		navpoly->disconnect(CoreStringNames::get_singleton()->changed, this, "_navpoly_changed");
+		navpoly->disconnect(CoreStringNames::get_singleton()->changed, this, "_navigation_polygon_changed");
 	}
 
 	navpoly = p_navpoly;
 	Navigation2DServer::get_singleton()->region_set_navpoly(region, p_navpoly);
 
 	if (navpoly.is_valid()) {
-		navpoly->connect(CoreStringNames::get_singleton()->changed, this, "_navpoly_changed");
+		navpoly->connect(CoreStringNames::get_singleton()->changed, this, "_navigation_polygon_changed");
 	}
 
-	_navpoly_changed();
+	_navigation_polygon_changed();
 }
 
 Ref<NavigationPolygon> NavigationPolygonInstance::get_navigation_polygon() const {
@@ -268,7 +293,9 @@ void NavigationPolygonInstance::set_navigation_map(RID p_navigation_map) {
 }
 
 RID NavigationPolygonInstance::get_navigation_map() const {
-	if (map_override.is_valid()) {
+	if (navigation) {
+		return navigation->get_rid();
+	} else if (map_override.is_valid()) {
 		return map_override;
 	} else if (is_inside_tree()) {
 		return get_world_2d()->get_navigation_map();
@@ -305,13 +332,15 @@ void NavigationPolygonInstance::_bake_finished() {
 	emit_signal("bake_finished");
 }
 
-void NavigationPolygonInstance::_navpoly_changed() {
+void NavigationPolygonInstance::_navigation_polygon_changed() {
 	if (is_inside_tree() && (Engine::get_singleton()->is_editor_hint() || get_tree()->is_debugging_navigation_hint())) {
 		update();
 	}
 	if (navpoly.is_valid()) {
 		Navigation2DServer::get_singleton()->region_set_navpoly(region, navpoly);
 	}
+
+	_update_avoidance_constrain();
 
 	emit_signal("navigation_polygon_changed");
 	_change_notify("navpoly");
@@ -365,6 +394,13 @@ void NavigationPolygonInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_navigation_layer_value", "layer_number", "value"), &NavigationPolygonInstance::set_navigation_layer_value);
 	ClassDB::bind_method(D_METHOD("get_navigation_layer_value", "layer_number"), &NavigationPolygonInstance::get_navigation_layer_value);
 
+	ClassDB::bind_method(D_METHOD("set_constrain_avoidance", "enabled"), &NavigationPolygonInstance::set_constrain_avoidance);
+	ClassDB::bind_method(D_METHOD("get_constrain_avoidance"), &NavigationPolygonInstance::get_constrain_avoidance);
+	ClassDB::bind_method(D_METHOD("set_avoidance_layers", "layers"), &NavigationPolygonInstance::set_avoidance_layers);
+	ClassDB::bind_method(D_METHOD("get_avoidance_layers"), &NavigationPolygonInstance::get_avoidance_layers);
+	ClassDB::bind_method(D_METHOD("set_avoidance_layer_value", "layer_number", "value"), &NavigationPolygonInstance::set_avoidance_layer_value);
+	ClassDB::bind_method(D_METHOD("get_avoidance_layer_value", "layer_number"), &NavigationPolygonInstance::get_avoidance_layer_value);
+
 	ClassDB::bind_method(D_METHOD("set_enter_cost", "enter_cost"), &NavigationPolygonInstance::set_enter_cost);
 	ClassDB::bind_method(D_METHOD("get_enter_cost"), &NavigationPolygonInstance::get_enter_cost);
 
@@ -388,12 +424,14 @@ void NavigationPolygonInstance::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_layers", PROPERTY_HINT_LAYERS_2D_NAVIGATION), "set_navigation_layers", "get_navigation_layers");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "enter_cost"), "set_enter_cost", "get_enter_cost");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "travel_cost"), "set_travel_cost", "get_travel_cost");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "constrain_avoidance"), "set_constrain_avoidance", "get_constrain_avoidance");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "avoidance_layers", PROPERTY_HINT_LAYERS_AVOIDANCE), "set_avoidance_layers", "get_avoidance_layers");
 
 #ifdef DEBUG_ENABLED
-	ClassDB::bind_method(D_METHOD("_navigation_map_changed"), &NavigationPolygonInstance::_navigation_map_changed);
 	ClassDB::bind_method(D_METHOD("_navigation_debug_changed"), &NavigationPolygonInstance::_navigation_debug_changed);
 #endif
-	ClassDB::bind_method(D_METHOD("_navpoly_changed"), &NavigationPolygonInstance::_navpoly_changed);
+	ClassDB::bind_method(D_METHOD("_navigation_map_changed"), &NavigationPolygonInstance::_navigation_map_changed);
+	ClassDB::bind_method(D_METHOD("_navigation_polygon_changed"), &NavigationPolygonInstance::_navigation_polygon_changed);
 
 	ADD_SIGNAL(MethodInfo("navigation_polygon_changed"));
 	ADD_SIGNAL(MethodInfo("bake_finished"));
@@ -412,13 +450,15 @@ NavigationPolygonInstance::NavigationPolygonInstance() {
 
 	navigation_layers = 1;
 
+	constrain_avoidance = false;
+	avoidance_layers = 1;
+
 	baking_started = false;
 	Navigation2DServer::get_singleton()->region_set_owner_id(region, get_instance_id());
 	Navigation2DServer::get_singleton()->region_set_enter_cost(region, get_enter_cost());
 	Navigation2DServer::get_singleton()->region_set_travel_cost(region, get_travel_cost());
 
 #ifdef DEBUG_ENABLED
-	Navigation2DServer::get_singleton()->connect("map_changed", this, "_navigation_map_changed");
 	NavigationServer::get_singleton()->connect("navigation_debug_changed", this, "_navigation_debug_changed");
 #endif // DEBUG_ENABLED
 }
@@ -428,68 +468,135 @@ NavigationPolygonInstance::~NavigationPolygonInstance() {
 
 	Navigation2DServer::get_singleton()->free(region);
 
+	for (uint32_t i = 0; i < constrain_avoidance_obstacles.size(); i++) {
+		if (constrain_avoidance_obstacles[i].is_valid()) {
+			Navigation2DServer::get_singleton()->free(constrain_avoidance_obstacles[i]);
+		}
+	}
+	constrain_avoidance_obstacles.clear();
+
 #ifdef DEBUG_ENABLED
-	Navigation2DServer::get_singleton()->disconnect("map_changed", this, "_navigation_map_changed");
 	NavigationServer::get_singleton()->disconnect("navigation_debug_changed", this, "_navigation_debug_changed");
 #endif // DEBUG_ENABLED
 }
 
-#ifdef DEBUG_ENABLED
-void NavigationPolygonInstance::_update_debug_mesh() {
-	/*
-	Vector<Vector2> navigation_polygon_vertices = navigation_polygon->get_vertices();
-	if (navigation_polygon_vertices.size() < 3) {
+void NavigationPolygonInstance::_update_avoidance_constrain() {
+	for (uint32_t i = 0; i < constrain_avoidance_obstacles.size(); i++) {
+		if (constrain_avoidance_obstacles[i].is_valid()) {
+			Navigation2DServer::get_singleton()->free(constrain_avoidance_obstacles[i]);
+			constrain_avoidance_obstacles[i] = RID();
+		}
+	}
+	constrain_avoidance_obstacles.clear();
+
+	if (!constrain_avoidance) {
 		return;
 	}
 
-	const Navigation2DServer2D *ns2d = Navigation2DServer2D::get_singleton();
-
-	bool enabled_geometry_face_random_color = ns2d->get_debug_navigation_enable_geometry_face_random_color();
-	bool enabled_edge_lines = ns2d->get_debug_navigation_enable_edge_lines();
-
-	Color debug_face_color = ns2d->get_debug_navigation_geometry_face_color();
-	Color debug_edge_color = ns2d->get_debug_navigation_geometry_edge_color();
-
-	if (!enabled) {
-		debug_face_color = ns2d->get_debug_navigation_geometry_face_disabled_color();
-		debug_edge_color = ns2d->get_debug_navigation_geometry_edge_disabled_color();
+	if (get_navigation_polygon() == nullptr) {
+		return;
 	}
 
-	RandomPCG rand;
+	Ref<NavigationPolygon> _navpoly = get_navigation_polygon();
+	int _outline_count = _navpoly->get_outline_count();
+	if (_outline_count == 0) {
+		return;
+	}
 
-	for (int i = 0; i < navigation_polygon->get_polygon_count(); i++) {
-		// An array of vertices for this polygon.
-		Vector<int> polygon = navigation_polygon->get_polygon(i);
-		Vector<Vector2> debug_polygon_vertices;
-		debug_polygon_vertices.resize(polygon.size());
-		for (int j = 0; j < polygon.size(); j++) {
-			ERR_FAIL_INDEX(polygon[j], navigation_polygon_vertices.size());
-			debug_polygon_vertices.write[j] = navigation_polygon_vertices[polygon[j]];
+	for (int outline_index(0); outline_index < _outline_count; outline_index++) {
+		//TODO navpoly should probably use normal vectors internally
+		const PoolVector<Vector2> &_outline = _navpoly->get_outline(outline_index);
+
+		Vector<Vector2> outline;
+		outline.resize(_outline.size());
+		for (int i = 0; i < _outline.size(); ++i) {
+			outline.write[i] = outline[i];
 		}
 
-		// Generate the polygon color, slightly randomly modified from the settings one.
-		Color random_variation_color = debug_face_color;
-		if (enabled_geometry_face_random_color) {
-			random_variation_color.set_hsv(
-					debug_face_color.get_h() + rand.random(-1.0, 1.0) * 0.1,
-					debug_face_color.get_s(),
-					debug_face_color.get_v() + rand.random(-1.0, 1.0) * 0.2);
+		const int outline_size = _outline.size();
+		if (outline_size < 3) {
+			ERR_FAIL_COND_MSG(_outline.size() < 3, "NavigationPolygon outline needs to have at least 3 vertex to create avoidance obstacles to constrain avoidance agent's");
+			continue;
 		}
-		random_variation_color.a = debug_face_color.a;
 
-		Vector<Color> debug_face_colors;
-		debug_face_colors.push_back(random_variation_color);
-		RS::get_singleton()->canvas_item_add_polygon(get_canvas_item(), debug_polygon_vertices, debug_face_colors);
+		RID obstacle_rid = Navigation2DServer::get_singleton()->obstacle_create();
+		constrain_avoidance_obstacles.push_back(obstacle_rid);
 
-		if (enabled_edge_lines) {
-			Vector<Color> debug_edge_colors;
-			debug_edge_colors.push_back(debug_edge_color);
-			debug_polygon_vertices.push_back(debug_polygon_vertices[0]); // Add first again for closing polyline.
-			RS::get_singleton()->canvas_item_add_polyline(get_canvas_item(), debug_polygon_vertices, debug_edge_colors);
+		Vector<Vector2> new_obstacle_outline;
+
+		if (outline_index == 0) {
+			for (int i(0); i < outline_size; i++) {
+				new_obstacle_outline.push_back(_outline[outline_size - i - 1]);
+			}
+			ERR_FAIL_COND_MSG(Geometry::is_polygon_clockwise(outline), "Outermost outline needs to be clockwise to push avoidance agent inside");
+		} else {
+			for (int i(0); i < outline_size; i++) {
+				new_obstacle_outline.push_back(_outline[i]);
+			}
+		}
+		new_obstacle_outline.resize(outline_size);
+
+		Navigation2DServer::get_singleton()->obstacle_set_vertices(obstacle_rid, new_obstacle_outline);
+		Navigation2DServer::get_singleton()->obstacle_set_avoidance_layers(obstacle_rid, avoidance_layers);
+		if (is_inside_tree()) {
+			Navigation2DServer::get_singleton()->obstacle_set_map(obstacle_rid, get_world_2d()->get_navigation_map());
+			Navigation2DServer::get_singleton()->obstacle_set_position(obstacle_rid, get_global_position());
 		}
 	}
-	*/
+	constrain_avoidance_obstacles.resize(_outline_count);
+}
 
+void NavigationPolygonInstance::set_constrain_avoidance(bool p_enabled) {
+	constrain_avoidance = p_enabled;
+	_update_avoidance_constrain();
+	property_list_changed_notify();
+}
+
+bool NavigationPolygonInstance::get_constrain_avoidance() const {
+	return constrain_avoidance;
+}
+
+void NavigationPolygonInstance::_validate_property(PropertyInfo &p_property) const {
+	if (p_property.name == "avoidance_layers") {
+		if (!constrain_avoidance) {
+			p_property.usage = PROPERTY_USAGE_NOEDITOR;
+		}
+	}
+}
+
+void NavigationPolygonInstance::set_avoidance_layers(uint32_t p_layers) {
+	avoidance_layers = p_layers;
+	if (constrain_avoidance_obstacles.size() > 0) {
+		for (uint32_t i = 0; i < constrain_avoidance_obstacles.size(); i++) {
+			Navigation2DServer::get_singleton()->obstacle_set_avoidance_layers(constrain_avoidance_obstacles[i], avoidance_layers);
+		}
+	}
+}
+
+uint32_t NavigationPolygonInstance::get_avoidance_layers() const {
+	return avoidance_layers;
+}
+
+void NavigationPolygonInstance::set_avoidance_layer_value(int p_layer_number, bool p_value) {
+	ERR_FAIL_COND_MSG(p_layer_number < 1, "Avoidance layer number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_MSG(p_layer_number > 32, "Avoidance layer number must be between 1 and 32 inclusive.");
+	uint32_t avoidance_layers_new = get_avoidance_layers();
+	if (p_value) {
+		avoidance_layers_new |= 1 << (p_layer_number - 1);
+	} else {
+		avoidance_layers_new &= ~(1 << (p_layer_number - 1));
+	}
+	set_avoidance_layers(avoidance_layers_new);
+}
+
+bool NavigationPolygonInstance::get_avoidance_layer_value(int p_layer_number) const {
+	ERR_FAIL_COND_V_MSG(p_layer_number < 1, false, "Avoidance layer number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_V_MSG(p_layer_number > 32, false, "Avoidance layer number must be between 1 and 32 inclusive.");
+	return get_avoidance_layers() & (1 << (p_layer_number - 1));
+}
+
+#ifdef DEBUG_ENABLED
+void NavigationPolygonInstance::_update_debug_mesh() {
 	PoolVector<Vector2> navigation_polygon_vertices = navpoly->get_vertices();
 	if (navigation_polygon_vertices.size() < 3) {
 		return;
@@ -499,11 +606,11 @@ void NavigationPolygonInstance::_update_debug_mesh() {
 
 	bool enabled_geometry_face_random_color = ns2d->get_debug_navigation_enable_geometry_face_random_color();
 	bool enabled_edge_lines = ns2d->get_debug_navigation_enable_edge_lines();
-	bool enable_edge_connections = use_edge_connections && ns2d->get_debug_navigation_enable_edge_connections() && ns2d->map_get_use_edge_connections(get_world_2d()->get_navigation_map());
+	//bool enable_edge_connections = use_edge_connections && ns2d->get_debug_navigation_enable_edge_connections() && ns2d->map_get_use_edge_connections(get_world_2d()->get_navigation_map());
 
 	Color debug_face_color = ns2d->get_debug_navigation_geometry_face_color();
 	Color debug_edge_color = ns2d->get_debug_navigation_geometry_edge_color();
-	Color debug_edge_connection_color = ns2d->get_debug_navigation_edge_connection_color();
+	//Color debug_edge_connection_color = ns2d->get_debug_navigation_edge_connection_color();
 
 	if (!enabled) {
 		debug_face_color = ns2d->get_debug_navigation_geometry_face_disabled_color();
@@ -540,46 +647,25 @@ void NavigationPolygonInstance::_update_debug_mesh() {
 			RS::get_singleton()->canvas_item_add_polyline(get_canvas_item(), debug_polygon_vertices, debug_edge_colors);
 		}
 	}
-
-	if (enable_edge_connections) {
-		// Draw the region edge connections.
-		Transform2D xform = get_global_transform();
-
-		real_t radius = 1.0;
-		if (navigation != nullptr) {
-			radius = ns2d->map_get_edge_connection_margin(navigation->get_rid()) / 2.0;
-		} else {
-			radius = ns2d->map_get_edge_connection_margin(get_world_2d()->get_navigation_map()) / 2.0;
-		}
-
-		for (int i = 0; i < ns2d->region_get_connections_count(region); i++) {
-			// Two main points
-			Vector2 a = ns2d->region_get_connection_pathway_start(region, i);
-			a = xform.affine_inverse().xform(a);
-			Vector2 b = ns2d->region_get_connection_pathway_end(region, i);
-			b = xform.affine_inverse().xform(b);
-			draw_line(a, b, debug_edge_connection_color);
-
-			// Draw a circle to illustrate the margins.
-			real_t angle = a.angle_to_point(b);
-			draw_arc(a, radius, angle + Math_PI / 2.0, angle - Math_PI / 2.0 + Math_TAU, 10, debug_edge_connection_color);
-			draw_arc(b, radius, angle - Math_PI / 2.0, angle + Math_PI / 2.0, 10, debug_edge_connection_color);
-		}
-	}
 }
 #endif // DEBUG_ENABLED
 
 #ifdef DEBUG_ENABLED
 void NavigationPolygonInstance::_update_debug_edge_connections_mesh() {
 	const Navigation2DServer *ns2d = Navigation2DServer::get_singleton();
-	const Navigation2DServer *ns = Navigation2DServer::get_singleton();
-	bool enable_edge_connections = ns->get_debug_navigation_enable_edge_connections();
-	Color debug_edge_connection_color = ns->get_debug_navigation_edge_connection_color();
+	bool enable_edge_connections = ns2d->get_debug_navigation_enable_edge_connections();
 
 	if (enable_edge_connections) {
+		Color debug_edge_connection_color = ns2d->get_debug_navigation_edge_connection_color();
+
 		// Draw the region edge connections.
 		Transform2D xform = get_global_transform();
-		real_t radius = ns2d->map_get_edge_connection_margin(get_world_2d()->get_navigation_map()) / 2.0;
+
+		RID map = get_navigation_map();
+
+		real_t radius = 1.0;
+		radius = ns2d->map_get_edge_connection_margin(map) / 2.0;
+
 		for (int i = 0; i < ns2d->region_get_connections_count(region); i++) {
 			// Two main points
 			Vector2 a = ns2d->region_get_connection_pathway_start(region, i);

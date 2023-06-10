@@ -408,7 +408,7 @@ void PropCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("materials_get"), &PropCache::materials_get);
 	ClassDB::bind_method(D_METHOD("materials_set"), &PropCache::materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "23/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "23/20:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
 	ClassDB::bind_method(D_METHOD("material_cache_get", "prop"), &PropCache::material_cache_get);
 	ClassDB::bind_method(D_METHOD("material_cache_unref", "prop"), &PropCache::material_cache_unref);

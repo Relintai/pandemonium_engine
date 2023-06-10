@@ -96,5 +96,5 @@ void ModelVisual::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_visual_entries"), &ModelVisual::get_visual_entries);
 	ClassDB::bind_method(D_METHOD("set_visual_entries", "visual_entrys"), &ModelVisual::set_visual_entries);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "visual_entries", PROPERTY_HINT_NONE, "23/19:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visual_entries", "get_visual_entries");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "visual_entries", PROPERTY_HINT_NONE, "23/20:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visual_entries", "get_visual_entries");
 }

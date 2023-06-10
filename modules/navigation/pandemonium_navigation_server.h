@@ -34,10 +34,11 @@
 
 #include "core/containers/rid.h"
 
+#include "nav_agent.h"
 #include "nav_link.h"
 #include "nav_map.h"
 #include "nav_region.h"
-#include "rvo_agent.h"
+#include "nav_obstacle.h"
 
 /// The commands are functions executed during the `sync` phase.
 
@@ -73,21 +74,22 @@ class PandemoniumNavigationServer : public NavigationServer {
 	mutable RID_Owner<NavLink> link_owner;
 	mutable RID_Owner<NavMap> map_owner;
 	mutable RID_Owner<NavRegion> region_owner;
-	mutable RID_Owner<RvoAgent> agent_owner;
+	mutable RID_Owner<NavAgent> agent_owner;
+	mutable RID_Owner<NavObstacle> obstacle_owner;
 
 	bool active;
 	LocalVector<NavMap *> active_maps;
 	LocalVector<uint32_t> active_maps_update_id;
 
 	// Performance Monitor
-	int pm_region_count = 0;
-	int pm_agent_count = 0;
-	int pm_link_count = 0;
-	int pm_polygon_count = 0;
-	int pm_edge_count = 0;
-	int pm_edge_merge_count = 0;
-	int pm_edge_connection_count = 0;
-	int pm_edge_free_count = 0;
+	int pm_region_count;
+	int pm_agent_count;
+	int pm_link_count;
+	int pm_polygon_count;
+	int pm_edge_count;
+	int pm_edge_merge_count;
+	int pm_edge_connection_count;
+	int pm_edge_free_count;
 
 public:
 	PandemoniumNavigationServer();
@@ -129,6 +131,7 @@ public:
 	virtual Array map_get_links(RID p_map) const;
 	virtual Array map_get_regions(RID p_map) const;
 	virtual Array map_get_agents(RID p_map) const;
+	virtual Array map_get_obstacles(RID p_map) const;
 
 	virtual void map_force_update(RID p_map);
 
@@ -176,19 +179,36 @@ public:
 	virtual ObjectID link_get_owner_id(RID p_link) const;
 
 	virtual RID agent_create();
+	COMMAND_2(agent_set_avoidance_enabled, RID, p_agent, bool, p_enabled);
+	virtual bool agent_get_avoidance_enabled(RID p_agent) const;
+	COMMAND_2(agent_set_use_3d_avoidance, RID, p_agent, bool, p_enabled);
+	virtual bool agent_get_use_3d_avoidance(RID p_agent) const;
 	COMMAND_2(agent_set_map, RID, p_agent, RID, p_map);
 	virtual RID agent_get_map(RID p_agent) const;
 	COMMAND_2(agent_set_neighbor_dist, RID, p_agent, real_t, p_dist);
 	COMMAND_2(agent_set_max_neighbors, RID, p_agent, int, p_count);
-	COMMAND_2(agent_set_time_horizon, RID, p_agent, real_t, p_time);
+	COMMAND_2(agent_set_time_horizon_agents, RID, p_agent, real_t, p_time_horizon);
+	COMMAND_2(agent_set_time_horizon_obstacles, RID, p_agent, real_t, p_time_horizon);
 	COMMAND_2(agent_set_radius, RID, p_agent, real_t, p_radius);
+	COMMAND_2(agent_set_height, RID, p_agent, real_t, p_height);
 	COMMAND_2(agent_set_max_speed, RID, p_agent, real_t, p_max_speed);
 	COMMAND_2(agent_set_velocity, RID, p_agent, Vector3, p_velocity);
-	COMMAND_2(agent_set_target_velocity, RID, p_agent, Vector3, p_velocity);
+	COMMAND_2(agent_set_velocity_forced, RID, p_agent, Vector3, p_velocity);
 	COMMAND_2(agent_set_position, RID, p_agent, Vector3, p_position);
-	COMMAND_2(agent_set_ignore_y, RID, p_agent, bool, p_ignore);
 	virtual bool agent_is_map_changed(RID p_agent) const;
-	COMMAND_4_DEF(agent_set_callback, RID, p_agent, ObjectID, p_object_id, StringName, p_method, Variant, p_udata, Variant());
+	COMMAND_4_DEF(agent_set_avoidance_callback, RID, p_agent, ObjectID, p_object_id, StringName, p_method, Variant, p_udata, Variant());
+
+	COMMAND_2(agent_set_avoidance_layers, RID, p_agent, uint32_t, p_layers);
+	COMMAND_2(agent_set_avoidance_mask, RID, p_agent, uint32_t, p_mask);
+	COMMAND_2(agent_set_avoidance_priority, RID, p_agent, real_t, p_priority);
+
+	virtual RID obstacle_create();
+	COMMAND_2(obstacle_set_map, RID, p_obstacle, RID, p_map);
+	virtual RID obstacle_get_map(RID p_obstacle) const;
+	COMMAND_2(obstacle_set_position, RID, p_obstacle, Vector3, p_position);
+	COMMAND_2(obstacle_set_height, RID, p_obstacle, real_t, p_height);
+	virtual void obstacle_set_vertices(RID p_obstacle, const Vector<Vector3> &p_vertices);
+	COMMAND_2(obstacle_set_avoidance_layers, RID, p_obstacle, uint32_t, p_layers);
 
 	COMMAND_1(free, RID, p_object);
 

@@ -331,7 +331,7 @@ void SpeciesModelData::_get_property_list(List<PropertyInfo> *p_list) const {
 	int count = _customizable_slots_string.get_slice_count(",");
 
 	for (int i = 0; i < count; ++i) {
-		p_list->push_back(PropertyInfo(Variant::ARRAY, "customizable_slots/" + itos(i) + "_" + _customizable_slots_string.get_slicec(',', i), PROPERTY_HINT_NONE, "23/19:ModelVisualEntry", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL, "ModelVisualEntry"));
+		p_list->push_back(PropertyInfo(Variant::ARRAY, "customizable_slots/" + itos(i) + "_" + _customizable_slots_string.get_slicec(',', i), PROPERTY_HINT_NONE, "23/20:ModelVisualEntry", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL, "ModelVisualEntry"));
 	}
 
 	count = _customizable_color_slots_string.get_slice_count(",");
@@ -339,7 +339,7 @@ void SpeciesModelData::_get_property_list(List<PropertyInfo> *p_list) const {
 	for (int i = 0; i < count; ++i) {
 		p_list->push_back(PropertyInfo(Variant::INT, "customizable_color_slots/" + itos(i) + "_" + _customizable_color_slots_string.get_slicec(',', i) + "/texture_layer", PROPERTY_HINT_ENUM, ESS::get_singleton()->texture_layers_get(), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED));
 		p_list->push_back(PropertyInfo(Variant::INT, "customizable_color_slots/" + itos(i) + "_" + _customizable_color_slots_string.get_slicec(',', i) + "/bone_slot_mask", PROPERTY_HINT_FLAGS, ESS::get_singleton()->skeletons_bones_index_get(_bone_structure), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
-		p_list->push_back(PropertyInfo(Variant::ARRAY, "customizable_color_slots/" + itos(i) + "_" + _customizable_color_slots_string.get_slicec(',', i) + "/colors", PROPERTY_HINT_NONE, "23/19:Color", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL, "Color"));
+		p_list->push_back(PropertyInfo(Variant::ARRAY, "customizable_color_slots/" + itos(i) + "_" + _customizable_color_slots_string.get_slicec(',', i) + "/colors", PROPERTY_HINT_NONE, "23/20:Color", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL, "Color"));
 	}
 }
 void SpeciesModelData::_validate_property(PropertyInfo &property) const {

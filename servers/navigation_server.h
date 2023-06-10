@@ -114,6 +114,7 @@ public:
 	virtual Array map_get_links(RID p_map) const = 0;
 	virtual Array map_get_regions(RID p_map) const = 0;
 	virtual Array map_get_agents(RID p_map) const = 0;
+	virtual Array map_get_obstacles(RID p_map) const = 0;
 
 	virtual void map_force_update(RID p_map) = 0;
 
@@ -198,6 +199,12 @@ public:
 	virtual void agent_set_map(RID p_agent, RID p_map) = 0;
 	virtual RID agent_get_map(RID p_agent) const = 0;
 
+	virtual void agent_set_avoidance_enabled(RID p_agent, bool p_enabled) = 0;
+	virtual bool agent_get_avoidance_enabled(RID p_agent) const = 0;
+
+	virtual void agent_set_use_3d_avoidance(RID p_agent, bool p_enabled) = 0;
+	virtual bool agent_get_use_3d_avoidance(RID p_agent) const = 0;
+
 	/// The maximum distance (center point to
 	/// center point) to other agents this agent
 	/// takes into account in the navigation. The
@@ -215,41 +222,53 @@ public:
 	/// be safe.
 	virtual void agent_set_max_neighbors(RID p_agent, int p_count) = 0;
 
-	/// The minimal amount of time for which this
-	/// agent's velocities that are computed by the
-	/// simulation are safe with respect to other
-	/// agents. The larger this number, the sooner
-	/// this agent will respond to the presence of
-	/// other agents, but the less freedom this
-	/// agent has in choosing its velocities.
-	/// Must be positive.
-	virtual void agent_set_time_horizon(RID p_agent, real_t p_time) = 0;
+	// Sets the minimum amount of time in seconds that an agent's
+	// must be able to stay on the calculated velocity while still avoiding collisions with agent's
+	// if this value is set to high an agent will often fall back to using a very low velocity just to be safe
+	virtual void agent_set_time_horizon_agents(RID p_agent, real_t p_time_horizon) = 0;
+
+	/// Sets the minimum amount of time in seconds that an agent's
+	// must be able to stay on the calculated velocity while still avoiding collisions with obstacle's
+	// if this value is set to high an agent will often fall back to using a very low velocity just to be safe
+	virtual void agent_set_time_horizon_obstacles(RID p_agent, real_t p_time_horizon) = 0;
 
 	/// The radius of this agent.
 	/// Must be non-negative.
 	virtual void agent_set_radius(RID p_agent, real_t p_radius) = 0;
+	virtual void agent_set_height(RID p_agent, real_t p_height) = 0;
 
 	/// The maximum speed of this agent.
 	/// Must be non-negative.
 	virtual void agent_set_max_speed(RID p_agent, real_t p_max_speed) = 0;
 
-	/// Current velocity of the agent
-	virtual void agent_set_velocity(RID p_agent, Vector3 p_velocity) = 0;
+	/// forces and agent velocity change in the avoidance simulation, adds simulation instability if done recklessly
+	virtual void agent_set_velocity_forced(RID p_agent, Vector3 p_velocity) = 0;
 
-	/// The new target velocity.
-	virtual void agent_set_target_velocity(RID p_agent, Vector3 p_velocity) = 0;
+	/// The wanted velocity for the agent as a "suggestion" to the avoidance simulation.
+	/// The simulation will try to fulfil this velocity wish if possible but may change the velocity depending on other agent's and obstacles'.
+	virtual void agent_set_velocity(RID p_agent, Vector3 p_velocity) = 0;
 
 	/// Position of the agent in world space.
 	virtual void agent_set_position(RID p_agent, Vector3 p_position) = 0;
-
-	/// Agent ignore the Y axis and avoid collisions by moving only on the horizontal plane
-	virtual void agent_set_ignore_y(RID p_agent, bool p_ignore) = 0;
 
 	/// Returns true if the map got changed the previous frame.
 	virtual bool agent_is_map_changed(RID p_agent) const = 0;
 
 	/// Callback called at the end of the RVO process
-	virtual void agent_set_callback(RID p_agent, ObjectID p_object_id, StringName p_method, Variant p_udata = Variant()) = 0;
+	virtual void agent_set_avoidance_callback(RID p_agent, ObjectID p_object_id, StringName p_method, Variant p_udata = Variant()) = 0;
+
+	virtual void agent_set_avoidance_layers(RID p_agent, uint32_t p_layers) = 0;
+	virtual void agent_set_avoidance_mask(RID p_agent, uint32_t p_mask) = 0;
+	virtual void agent_set_avoidance_priority(RID p_agent, real_t p_priority) = 0;
+
+	/// Creates the obstacle.
+	virtual RID obstacle_create() = 0;
+	virtual void obstacle_set_map(RID p_obstacle, RID p_map) = 0;
+	virtual RID obstacle_get_map(RID p_obstacle) const = 0;
+	virtual void obstacle_set_height(RID p_obstacle, real_t p_height) = 0;
+	virtual void obstacle_set_position(RID p_obstacle, Vector3 p_position) = 0;
+	virtual void obstacle_set_vertices(RID p_obstacle, const Vector<Vector3> &p_vertices) = 0;
+	virtual void obstacle_set_avoidance_layers(RID p_obstacle, uint32_t p_layers) = 0;
 
 	/// Destroy the `RID`
 	virtual void free(RID p_object) = 0;
@@ -291,6 +310,11 @@ public:
 	bool get_debug_enabled() const;
 
 #ifdef DEBUG_ENABLED
+	void set_debug_navigation_enabled(bool p_enabled);
+	bool get_debug_navigation_enabled() const;
+
+	void set_debug_avoidance_enabled(bool p_enabled);
+	bool get_debug_avoidance_enabled() const;
 
 	void set_debug_navigation_edge_connection_color(const Color &p_color);
 	Color get_debug_navigation_edge_connection_color() const;
@@ -315,6 +339,24 @@ public:
 
 	void set_debug_navigation_agent_path_color(const Color &p_color);
 	Color get_debug_navigation_agent_path_color() const;
+
+	void set_debug_navigation_avoidance_agents_radius_color(const Color &p_color);
+	Color get_debug_navigation_avoidance_agents_radius_color() const;
+
+	void set_debug_navigation_avoidance_obstacles_radius_color(const Color &p_color);
+	Color get_debug_navigation_avoidance_obstacles_radius_color() const;
+
+	void set_debug_navigation_avoidance_static_obstacle_pushin_face_color(const Color &p_color);
+	Color get_debug_navigation_avoidance_static_obstacle_pushin_face_color() const;
+
+	void set_debug_navigation_avoidance_static_obstacle_pushout_face_color(const Color &p_color);
+	Color get_debug_navigation_avoidance_static_obstacle_pushout_face_color() const;
+
+	void set_debug_navigation_avoidance_static_obstacle_pushin_edge_color(const Color &p_color);
+	Color get_debug_navigation_avoidance_static_obstacle_pushin_edge_color() const;
+
+	void set_debug_navigation_avoidance_static_obstacle_pushout_edge_color(const Color &p_color);
+	Color get_debug_navigation_avoidance_static_obstacle_pushout_edge_color() const;
 
 	void set_debug_navigation_enable_edge_connections(const bool p_value);
 	bool get_debug_navigation_enable_edge_connections() const;
@@ -346,6 +388,15 @@ public:
 	void set_debug_navigation_agent_path_point_size(float p_point_size);
 	float get_debug_navigation_agent_path_point_size() const;
 
+	void set_debug_navigation_avoidance_enable_agents_radius(const bool p_value);
+	bool get_debug_navigation_avoidance_enable_agents_radius() const;
+
+	void set_debug_navigation_avoidance_enable_obstacles_radius(const bool p_value);
+	bool get_debug_navigation_avoidance_enable_obstacles_radius() const;
+
+	void set_debug_navigation_avoidance_enable_obstacles_static(const bool p_value);
+	bool get_debug_navigation_avoidance_enable_obstacles_static() const;
+
 	Ref<SpatialMaterial> get_debug_navigation_geometry_face_material();
 	Ref<SpatialMaterial> get_debug_navigation_geometry_edge_material();
 	Ref<SpatialMaterial> get_debug_navigation_geometry_face_disabled_material();
@@ -357,11 +408,25 @@ public:
 	Ref<SpatialMaterial> get_debug_navigation_agent_path_line_material();
 	Ref<SpatialMaterial> get_debug_navigation_agent_path_point_material();
 
-	void _emit_navigation_debug_changed_signal();
+	Ref<SpatialMaterial> get_debug_navigation_avoidance_agents_radius_material();
+	Ref<SpatialMaterial> get_debug_navigation_avoidance_obstacles_radius_material();
+
+	Ref<SpatialMaterial> get_debug_navigation_avoidance_static_obstacle_pushin_face_material();
+	Ref<SpatialMaterial> get_debug_navigation_avoidance_static_obstacle_pushout_face_material();
+	Ref<SpatialMaterial> get_debug_navigation_avoidance_static_obstacle_pushin_edge_material();
+	Ref<SpatialMaterial> get_debug_navigation_avoidance_static_obstacle_pushout_edge_material();
 
 protected:
 	bool _debug_enabled;
 	bool _debug_dirty;
+
+	bool _debug_navigation_enabled;
+	bool _navigation_debug_dirty;
+	void _emit_navigation_debug_changed_signal();
+
+	bool _debug_avoidance_enabled;
+	bool _avoidance_debug_dirty;
+	void _emit_avoidance_debug_changed_signal();
 
 	Color _debug_navigation_edge_connection_color;
 	Color _debug_navigation_geometry_edge_color;
@@ -374,6 +439,14 @@ protected:
 
 	float _debug_navigation_agent_path_point_size;
 
+	Color _debug_navigation_avoidance_agents_radius_color;
+	Color _debug_navigation_avoidance_obstacles_radius_color;
+
+	Color _debug_navigation_avoidance_static_obstacle_pushin_face_color;
+	Color _debug_navigation_avoidance_static_obstacle_pushout_face_color;
+	Color _debug_navigation_avoidance_static_obstacle_pushin_edge_color;
+	Color _debug_navigation_avoidance_static_obstacle_pushout_edge_color;
+
 	bool _debug_navigation_enable_edge_connections;
 	bool _debug_navigation_enable_edge_connections_xray;
 	bool _debug_navigation_enable_edge_lines;
@@ -384,6 +457,10 @@ protected:
 	bool _debug_navigation_enable_agent_paths;
 	bool _debug_navigation_enable_agent_paths_xray;
 
+	bool _debug_navigation_avoidance_enable_agents_radius;
+	bool _debug_navigation_avoidance_enable_obstacles_radius;
+	bool _debug_navigation_avoidance_enable_obstacles_static;
+
 	Ref<SpatialMaterial> _debug_navigation_geometry_edge_material;
 	Ref<SpatialMaterial> _debug_navigation_geometry_face_material;
 	Ref<SpatialMaterial> _debug_navigation_geometry_edge_disabled_material;
@@ -391,6 +468,13 @@ protected:
 	Ref<SpatialMaterial> _debug_navigation_edge_connections_material;
 	Ref<SpatialMaterial> _debug_navigation_link_connections_material;
 	Ref<SpatialMaterial> _debug_navigation_link_connections_disabled_material;
+	Ref<SpatialMaterial> _debug_navigation_avoidance_agents_radius_material;
+	Ref<SpatialMaterial> _debug_navigation_avoidance_obstacles_radius_material;
+
+	Ref<SpatialMaterial> _debug_navigation_avoidance_static_obstacle_pushin_face_material;
+	Ref<SpatialMaterial> _debug_navigation_avoidance_static_obstacle_pushout_face_material;
+	Ref<SpatialMaterial> _debug_navigation_avoidance_static_obstacle_pushin_edge_material;
+	Ref<SpatialMaterial> _debug_navigation_avoidance_static_obstacle_pushout_edge_material;
 
 	Ref<SpatialMaterial> _debug_navigation_agent_path_line_material;
 	Ref<SpatialMaterial> _debug_navigation_agent_path_point_material;

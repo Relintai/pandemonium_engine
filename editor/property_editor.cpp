@@ -30,15 +30,19 @@
 
 #include "property_editor.h"
 
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
+#include "core/config/project_settings.h"
+#include "core/containers/pair.h"
+#include "core/containers/rb_map.h"
+#include "core/containers/rb_set.h"
+#include "core/containers/rid.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
+#include "core/input/input.h"
+#include "core/input/input_event.h"
 #include "core/io/resource_loader.h"
-#include "core/containers/rb_map.h"
 #include "core/math/aabb.h"
 #include "core/math/basis.h"
+#include "core/math/color.h"
 #include "core/math/expression.h"
 #include "core/math/math_funcs.h"
 #include "core/math/plane.h"
@@ -48,20 +52,16 @@
 #include "core/math/transform_2d.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "core/input/input.h"
-#include "core/input/input_event.h"
+#include "core/object/class_db.h"
+#include "core/object/ref_ptr.h"
+#include "core/object/resource.h"
+#include "core/object/script_language.h"
 #include "core/os/keyboard.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
-#include "core/containers/pair.h"
-#include "core/config/project_settings.h"
-#include "core/object/ref_ptr.h"
-#include "core/object/resource.h"
-#include "core/containers/rid.h"
-#include "core/object/script_language.h"
-#include "core/containers/rb_set.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
+#include "core/variant/array.h"
 #include "editor/array_property_edit.h"
 #include "editor/create_dialog.h"
 #include "editor/dictionary_property_edit.h"
@@ -460,7 +460,13 @@ bool CustomPropertyEditor::edit(Object *p_owner, const String &p_name, Variant::
 				updating = false;
 				return false;
 
-			} else if (hint == PROPERTY_HINT_LAYERS_2D_PHYSICS || hint == PROPERTY_HINT_LAYERS_2D_RENDER || hint == PROPERTY_HINT_LAYERS_2D_NAVIGATION || hint == PROPERTY_HINT_LAYERS_3D_PHYSICS || hint == PROPERTY_HINT_LAYERS_3D_RENDER || hint == PROPERTY_HINT_LAYERS_3D_NAVIGATION) {
+			} else if (hint == PROPERTY_HINT_LAYERS_2D_PHYSICS ||
+					hint == PROPERTY_HINT_LAYERS_2D_RENDER ||
+					hint == PROPERTY_HINT_LAYERS_2D_NAVIGATION ||
+					hint == PROPERTY_HINT_LAYERS_3D_PHYSICS ||
+					hint == PROPERTY_HINT_LAYERS_3D_RENDER ||
+					hint == PROPERTY_HINT_LAYERS_3D_NAVIGATION ||
+					hint == PROPERTY_HINT_LAYERS_AVOIDANCE) {
 				String basename;
 				switch (hint) {
 					case PROPERTY_HINT_LAYERS_2D_RENDER:
@@ -480,6 +486,9 @@ bool CustomPropertyEditor::edit(Object *p_owner, const String &p_name, Variant::
 						break;
 					case PROPERTY_HINT_LAYERS_3D_NAVIGATION:
 						basename = "layer_names/3d_navigation";
+						break;
+					case PROPERTY_HINT_LAYERS_AVOIDANCE:
+						basename = "layer_names/avoidance";
 						break;
 				}
 

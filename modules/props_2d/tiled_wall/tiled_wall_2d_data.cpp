@@ -257,7 +257,7 @@ void TiledWall2DData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_textures"), &TiledWall2DData::get_textures);
 	ClassDB::bind_method(D_METHOD("set_textures", "textures"), &TiledWall2DData::set_textures);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "textures", PROPERTY_HINT_NONE, "23/19:Texture", PROPERTY_USAGE_DEFAULT, "Texture"), "set_textures", "get_textures");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "textures", PROPERTY_HINT_NONE, "23/20:Texture", PROPERTY_USAGE_DEFAULT, "Texture"), "set_textures", "get_textures");
 
 	//flavour_textures
 	ClassDB::bind_method(D_METHOD("get_flavour_texture", "index"), &TiledWall2DData::get_flavour_texture);
@@ -269,7 +269,7 @@ void TiledWall2DData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_flavour_textures"), &TiledWall2DData::get_flavour_textures);
 	ClassDB::bind_method(D_METHOD("set_flavour_textures", "textures"), &TiledWall2DData::set_flavour_textures);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "flavour_textures", PROPERTY_HINT_NONE, "23/19:Texture", PROPERTY_USAGE_DEFAULT, "Texture"), "set_flavour_textures", "get_flavour_textures");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "flavour_textures", PROPERTY_HINT_NONE, "23/20:Texture", PROPERTY_USAGE_DEFAULT, "Texture"), "set_flavour_textures", "get_flavour_textures");
 
 	ClassDB::bind_method(D_METHOD("get_flavour_chance"), &TiledWall2DData::get_flavour_chance);
 	ClassDB::bind_method(D_METHOD("set_flavour_chance", "texture"), &TiledWall2DData::set_flavour_chance);

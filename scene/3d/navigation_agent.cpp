@@ -56,11 +56,14 @@ void NavigationAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_radius", "radius"), &NavigationAgent::set_radius);
 	ClassDB::bind_method(D_METHOD("get_radius"), &NavigationAgent::get_radius);
 
-	ClassDB::bind_method(D_METHOD("set_agent_height_offset", "agent_height_offset"), &NavigationAgent::set_agent_height_offset);
-	ClassDB::bind_method(D_METHOD("get_agent_height_offset"), &NavigationAgent::get_agent_height_offset);
+	ClassDB::bind_method(D_METHOD("set_height", "height"), &NavigationAgent::set_height);
+	ClassDB::bind_method(D_METHOD("get_height"), &NavigationAgent::get_height);
 
-	ClassDB::bind_method(D_METHOD("set_ignore_y", "ignore"), &NavigationAgent::set_ignore_y);
-	ClassDB::bind_method(D_METHOD("get_ignore_y"), &NavigationAgent::get_ignore_y);
+	ClassDB::bind_method(D_METHOD("set_path_height_offset", "path_height_offset"), &NavigationAgent::set_path_height_offset);
+	ClassDB::bind_method(D_METHOD("get_path_height_offset"), &NavigationAgent::get_path_height_offset);
+
+	ClassDB::bind_method(D_METHOD("set_use_3d_avoidance", "enabled"), &NavigationAgent::set_use_3d_avoidance);
+	ClassDB::bind_method(D_METHOD("get_use_3d_avoidance"), &NavigationAgent::get_use_3d_avoidance);
 
 	ClassDB::bind_method(D_METHOD("set_navigation", "navigation"), &NavigationAgent::set_navigation_node);
 	ClassDB::bind_method(D_METHOD("get_navigation"), &NavigationAgent::get_navigation_node);
@@ -74,8 +77,11 @@ void NavigationAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_max_neighbors", "max_neighbors"), &NavigationAgent::set_max_neighbors);
 	ClassDB::bind_method(D_METHOD("get_max_neighbors"), &NavigationAgent::get_max_neighbors);
 
-	ClassDB::bind_method(D_METHOD("set_time_horizon", "time_horizon"), &NavigationAgent::set_time_horizon);
-	ClassDB::bind_method(D_METHOD("get_time_horizon"), &NavigationAgent::get_time_horizon);
+	ClassDB::bind_method(D_METHOD("set_time_horizon_agents", "time_horizon"), &NavigationAgent::set_time_horizon_agents);
+	ClassDB::bind_method(D_METHOD("get_time_horizon_agents"), &NavigationAgent::get_time_horizon_agents);
+
+	ClassDB::bind_method(D_METHOD("set_time_horizon_obstacles", "time_horizon"), &NavigationAgent::set_time_horizon_obstacles);
+	ClassDB::bind_method(D_METHOD("get_time_horizon_obstacles"), &NavigationAgent::get_time_horizon_obstacles);
 
 	ClassDB::bind_method(D_METHOD("set_max_speed", "max_speed"), &NavigationAgent::set_max_speed);
 	ClassDB::bind_method(D_METHOD("get_max_speed"), &NavigationAgent::get_max_speed);
@@ -96,15 +102,32 @@ void NavigationAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_target_position"), &NavigationAgent::get_target_position);
 
 	ClassDB::bind_method(D_METHOD("get_next_position"), &NavigationAgent::get_next_position);
-	ClassDB::bind_method(D_METHOD("distance_to_target"), &NavigationAgent::distance_to_target);
+
+	ClassDB::bind_method(D_METHOD("set_velocity_forced", "velocity"), &NavigationAgent::set_velocity_forced);
+
 	ClassDB::bind_method(D_METHOD("set_velocity", "velocity"), &NavigationAgent::set_velocity);
+	ClassDB::bind_method(D_METHOD("get_velocity"), &NavigationAgent::get_velocity);
+
+	ClassDB::bind_method(D_METHOD("distance_to_target"), &NavigationAgent::distance_to_target);
+
 	ClassDB::bind_method(D_METHOD("get_current_navigation_result"), &NavigationAgent::get_current_navigation_result);
-	ClassDB::bind_method(D_METHOD("get_nav_path"), &NavigationAgent::get_nav_path);
-	ClassDB::bind_method(D_METHOD("get_nav_path_index"), &NavigationAgent::get_nav_path_index);
+	ClassDB::bind_method(D_METHOD("get_current_navigation_path"), &NavigationAgent::get_current_navigation_path);
+	ClassDB::bind_method(D_METHOD("get_current_navigation_path_index"), &NavigationAgent::get_current_navigation_path_index);
 	ClassDB::bind_method(D_METHOD("is_target_reached"), &NavigationAgent::is_target_reached);
 	ClassDB::bind_method(D_METHOD("is_target_reachable"), &NavigationAgent::is_target_reachable);
 	ClassDB::bind_method(D_METHOD("is_navigation_finished"), &NavigationAgent::is_navigation_finished);
 	ClassDB::bind_method(D_METHOD("get_final_position"), &NavigationAgent::get_final_position);
+
+	ClassDB::bind_method(D_METHOD("set_avoidance_layers", "layers"), &NavigationAgent::set_avoidance_layers);
+	ClassDB::bind_method(D_METHOD("get_avoidance_layers"), &NavigationAgent::get_avoidance_layers);
+	ClassDB::bind_method(D_METHOD("set_avoidance_mask", "mask"), &NavigationAgent::set_avoidance_mask);
+	ClassDB::bind_method(D_METHOD("get_avoidance_mask"), &NavigationAgent::get_avoidance_mask);
+	ClassDB::bind_method(D_METHOD("set_avoidance_layer_value", "layer_number", "value"), &NavigationAgent::set_avoidance_layer_value);
+	ClassDB::bind_method(D_METHOD("get_avoidance_layer_value", "layer_number"), &NavigationAgent::get_avoidance_layer_value);
+	ClassDB::bind_method(D_METHOD("set_avoidance_mask_value", "mask_number", "value"), &NavigationAgent::set_avoidance_mask_value);
+	ClassDB::bind_method(D_METHOD("get_avoidance_mask_value", "mask_number"), &NavigationAgent::get_avoidance_mask_value);
+	ClassDB::bind_method(D_METHOD("set_avoidance_priority", "priority"), &NavigationAgent::set_avoidance_priority);
+	ClassDB::bind_method(D_METHOD("get_avoidance_priority"), &NavigationAgent::get_avoidance_priority);
 
 	ClassDB::bind_method(D_METHOD("_avoidance_done", "new_velocity"), &NavigationAgent::_avoidance_done);
 
@@ -112,19 +135,25 @@ void NavigationAgent::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "target_position", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR), "set_target_position", "get_target_position");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "path_desired_distance", PROPERTY_HINT_RANGE, "0.1,100,0.01"), "set_path_desired_distance", "get_path_desired_distance");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "target_desired_distance", PROPERTY_HINT_RANGE, "0.1,100,0.01"), "set_target_desired_distance", "get_target_desired_distance");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "agent_height_offset", PROPERTY_HINT_RANGE, "-100.0,100,0.01"), "set_agent_height_offset", "get_agent_height_offset");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "path_height_offset", PROPERTY_HINT_RANGE, "-100.0,100,0.01,or_greater,suffix:m"), "set_path_height_offset", "get_path_height_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "path_max_distance", PROPERTY_HINT_RANGE, "0.01,100,0.1"), "set_path_max_distance", "get_path_max_distance");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_layers", PROPERTY_HINT_LAYERS_3D_NAVIGATION), "set_navigation_layers", "get_navigation_layers");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "path_metadata_flags", PROPERTY_HINT_FLAGS, "Include Types,Include RIDs,Include Owners"), "set_path_metadata_flags", "get_path_metadata_flags");
 
 	ADD_GROUP("Avoidance", "");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "avoidance_enabled"), "set_avoidance_enabled", "get_avoidance_enabled");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "radius", PROPERTY_HINT_RANGE, "0.1,100,0.01"), "set_radius", "get_radius");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "velocity", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR), "set_velocity", "get_velocity");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "height", PROPERTY_HINT_RANGE, "0.01,100,0.01,or_greater,suffix:m"), "set_height", "get_height");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "radius", PROPERTY_HINT_RANGE, "0.01,100,0.01,or_greater,suffix:m"), "set_radius", "get_radius");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "neighbor_dist", PROPERTY_HINT_RANGE, "0.1,10000,0.01"), "set_neighbor_dist", "get_neighbor_dist");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_neighbors", PROPERTY_HINT_RANGE, "1,10000,1"), "set_max_neighbors", "get_max_neighbors");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time_horizon", PROPERTY_HINT_RANGE, "0.01,100,0.01"), "set_time_horizon", "get_time_horizon");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "max_speed", PROPERTY_HINT_RANGE, "0.1,10000,0.01"), "set_max_speed", "get_max_speed");
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "ignore_y"), "set_ignore_y", "get_ignore_y");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time_horizon_agents", PROPERTY_HINT_RANGE, "0.0,10,0.01,or_greater,suffix:s"), "set_time_horizon_agents", "get_time_horizon_agents");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time_horizon_obstacles", PROPERTY_HINT_RANGE, "0.0,10,0.01,or_greater,suffix:s"), "set_time_horizon_obstacles", "get_time_horizon_obstacles");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "max_speed", PROPERTY_HINT_RANGE, "0.01,10000,0.01,or_greater,suffix:m/s"), "set_max_speed", "get_max_speed");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_3d_avoidance"), "set_use_3d_avoidance", "get_use_3d_avoidance");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "avoidance_layers", PROPERTY_HINT_LAYERS_AVOIDANCE), "set_avoidance_layers", "get_avoidance_layers");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "avoidance_mask", PROPERTY_HINT_LAYERS_AVOIDANCE), "set_avoidance_mask", "get_avoidance_mask");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "avoidance_priority", PROPERTY_HINT_RANGE, "0.0,1.0,0.01"), "set_avoidance_priority", "get_avoidance_priority");
 
 #ifdef DEBUG_ENABLED
 	ClassDB::bind_method(D_METHOD("set_debug_enabled", "enabled"), &NavigationAgent::set_debug_enabled);
@@ -175,6 +204,10 @@ void NavigationAgent::_notification(int p_what) {
 			// cannot use READY as ready does not get called if Node is readded to SceneTree
 			set_agent_parent(get_parent());
 			set_physics_process_internal(true);
+
+			if (avoidance_enabled) {
+				NavigationServer::get_singleton()->agent_set_position(agent, agent_parent->get_global_transform().origin);
+			}
 
 #ifdef DEBUG_ENABLED
 			if (NavigationServer::get_singleton()->get_debug_enabled()) {
@@ -227,11 +260,23 @@ void NavigationAgent::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
-			if (agent_parent) {
-				if (avoidance_enabled) {
-					// agent_position on NavigationServer is avoidance only and has nothing to do with pathfinding
-					// no point in flooding NavigationServer queue with agent position updates that get send to the void if avoidance is not used
-					NavigationServer::get_singleton()->agent_set_position(agent, agent_parent->get_global_transform().origin);
+			if (agent_parent && target_position_submitted) {
+				if (velocity_submitted) {
+					velocity_submitted = false;
+					if (avoidance_enabled) {
+						NavigationServer::get_singleton()->agent_set_position(agent, agent_parent->get_global_transform().origin);
+						if (!use_3d_avoidance) {
+							stored_y_velocity = velocity.y;
+							velocity.y = 0.0;
+						}
+						NavigationServer::get_singleton()->agent_set_velocity(agent, velocity);
+					}
+				}
+				if (velocity_forced_submitted) {
+					velocity_forced_submitted = false;
+					if (avoidance_enabled) {
+						NavigationServer::get_singleton()->agent_set_velocity_forced(agent, velocity_forced);
+					}
 				}
 				_check_distance_to_target();
 			}
@@ -250,30 +295,49 @@ NavigationAgent::NavigationAgent() {
 	navigation = nullptr;
 
 	avoidance_enabled = false;
+	use_3d_avoidance = false;
+	avoidance_layers = 1;
+	avoidance_mask = 1;
+	avoidance_priority = 1.0;
 	navigation_layers = 1;
 	path_metadata_flags = NavigationPathQueryParameters3D::PATH_METADATA_INCLUDE_ALL;
 
 	path_desired_distance = 1.0;
 	target_desired_distance = 1.0;
-	navigation_height_offset = 0.0;
+	path_height_offset = 0.0;
 	path_max_distance = 3.0;
 	velocity_submitted = false;
 	target_reached = false;
+	time_horizon_agents = 1.0;
+	time_horizon_obstacles = 0.0;
 	navigation_finished = true;
+	velocity_forced_submitted = false;
+	stored_y_velocity = 0.0;
+
+	target_position_submitted = false;
+	height = 1.0;
+
 	agent = NavigationServer::get_singleton()->agent_create();
 
-	set_neighbor_dist(0.0);
-	set_max_neighbors(0);
-	set_time_horizon(0.0);
-	set_radius(1.0);
-	set_max_speed(0.0);
-	set_ignore_y(false);
+	NavigationServer::get_singleton()->agent_set_neighbor_dist(agent, neighbor_dist);
+	NavigationServer::get_singleton()->agent_set_max_neighbors(agent, max_neighbors);
+	NavigationServer::get_singleton()->agent_set_time_horizon_agents(agent, time_horizon_agents);
+	NavigationServer::get_singleton()->agent_set_time_horizon_obstacles(agent, time_horizon_obstacles);
+	NavigationServer::get_singleton()->agent_set_radius(agent, radius);
+	NavigationServer::get_singleton()->agent_set_height(agent, height);
+	NavigationServer::get_singleton()->agent_set_max_speed(agent, max_speed);
 
 	nav_path_index = 0;
 	update_frame_id = 0;
 
 	navigation_query.instance();
 	navigation_result.instance();
+
+	set_avoidance_layers(avoidance_layers);
+	set_avoidance_mask(avoidance_mask);
+	set_avoidance_priority(avoidance_priority);
+	set_use_3d_avoidance(use_3d_avoidance);
+	set_avoidance_enabled(avoidance_enabled);
 
 #ifdef DEBUG_ENABLED
 	debug_enabled = false;
@@ -307,9 +371,11 @@ NavigationAgent::~NavigationAgent() {
 void NavigationAgent::set_avoidance_enabled(bool p_enabled) {
 	avoidance_enabled = p_enabled;
 	if (avoidance_enabled) {
-		NavigationServer::get_singleton()->agent_set_callback(agent, get_instance_id(), "_avoidance_done");
+		NavigationServer::get_singleton()->agent_set_avoidance_enabled(agent, true);
+		NavigationServer::get_singleton()->agent_set_avoidance_callback(agent, get_instance_id(), "_avoidance_done");
 	} else {
-		NavigationServer::get_singleton()->agent_set_callback(agent, ObjectID(), "_avoidance_done");
+		NavigationServer::get_singleton()->agent_set_avoidance_enabled(agent, false);
+		NavigationServer::get_singleton()->agent_set_avoidance_callback(agent, ObjectID(), "_avoidance_done");
 	}
 }
 
@@ -338,24 +404,17 @@ Node *NavigationAgent::get_navigation_node() const {
 
 void NavigationAgent::set_agent_parent(Node *p_agent_parent) {
 	// remove agent from any avoidance map before changing parent or there will be leftovers on the RVO map
-	NavigationServer::get_singleton()->agent_set_callback(agent, ObjectID(), "_avoidance_done");
+	NavigationServer::get_singleton()->agent_set_avoidance_callback(agent, ObjectID(), "_avoidance_done");
+
 	if (Object::cast_to<Spatial>(p_agent_parent) != nullptr) {
 		// place agent on navigation map first or else the RVO agent callback creation fails silently later
 		agent_parent = Object::cast_to<Spatial>(p_agent_parent);
-		if (map_override.is_valid()) {
-			NavigationServer::get_singleton()->agent_set_map(get_rid(), map_override);
-		} else if (navigation != nullptr) {
-			NavigationServer::get_singleton()->agent_set_map(get_rid(), navigation->get_rid());
-		} else {
-			// no navigation node found in parent nodes, use default navigation map from world resource
-			NavigationServer::get_singleton()->agent_set_map(get_rid(), agent_parent->get_world_3d()->get_navigation_map());
-		}
-
+		NavigationServer::get_singleton()->agent_set_map(get_rid(), get_navigation_map());
 		// create new avoidance callback if enabled
 		set_avoidance_enabled(avoidance_enabled);
 	} else {
 		agent_parent = nullptr;
-		NavigationServer::get_singleton()->agent_set_map(get_rid(), RID());
+		NavigationServer::get_singleton()->agent_set_map(get_rid(), get_navigation_map());
 	}
 }
 
@@ -403,7 +462,9 @@ void NavigationAgent::set_navigation_map(RID p_navigation_map) {
 }
 
 RID NavigationAgent::get_navigation_map() const {
-	if (map_override.is_valid()) {
+	if (navigation) {
+		return navigation->get_rid();
+	} else if (map_override.is_valid()) {
 		return map_override;
 	} else if (agent_parent != nullptr) {
 		return agent_parent->get_world_3d()->get_navigation_map();
@@ -420,17 +481,29 @@ void NavigationAgent::set_target_desired_distance(real_t p_dd) {
 }
 
 void NavigationAgent::set_radius(real_t p_radius) {
+	ERR_FAIL_COND_MSG(p_radius < 0.0, "Radius must be positive.");
 	radius = p_radius;
 	NavigationServer::get_singleton()->agent_set_radius(agent, radius);
 }
 
-void NavigationAgent::set_agent_height_offset(real_t p_hh) {
-	navigation_height_offset = p_hh;
+void NavigationAgent::set_height(real_t p_height) {
+	ERR_FAIL_COND_MSG(p_height < 0.0, "Height must be positive.");
+	if (Math::is_equal_approx(height, p_height)) {
+		return;
+	}
+
+	height = p_height;
+	NavigationServer::get_singleton()->agent_set_height(agent, height);
 }
 
-void NavigationAgent::set_ignore_y(bool p_ignore_y) {
-	ignore_y = p_ignore_y;
-	NavigationServer::get_singleton()->agent_set_ignore_y(agent, ignore_y);
+void NavigationAgent::set_path_height_offset(real_t p_path_height_offset) {
+	path_height_offset = p_path_height_offset;
+}
+
+void NavigationAgent::set_use_3d_avoidance(bool p_use_3d_avoidance) {
+	use_3d_avoidance = p_use_3d_avoidance;
+	NavigationServer::get_singleton()->agent_set_use_3d_avoidance(agent, use_3d_avoidance);
+	property_list_changed_notify();
 }
 
 void NavigationAgent::set_neighbor_dist(real_t p_dist) {
@@ -443,12 +516,26 @@ void NavigationAgent::set_max_neighbors(int p_count) {
 	NavigationServer::get_singleton()->agent_set_max_neighbors(agent, max_neighbors);
 }
 
-void NavigationAgent::set_time_horizon(real_t p_time) {
-	time_horizon = p_time;
-	NavigationServer::get_singleton()->agent_set_time_horizon(agent, time_horizon);
+void NavigationAgent::set_time_horizon_agents(real_t p_time_horizon) {
+	ERR_FAIL_COND_MSG(p_time_horizon < 0.0, "Time horizion must be positive.");
+	if (Math::is_equal_approx(time_horizon_agents, p_time_horizon)) {
+		return;
+	}
+	time_horizon_agents = p_time_horizon;
+	NavigationServer::get_singleton()->agent_set_time_horizon_agents(agent, time_horizon_agents);
+}
+
+void NavigationAgent::set_time_horizon_obstacles(real_t p_time_horizon) {
+	ERR_FAIL_COND_MSG(p_time_horizon < 0.0, "Time horizion must be positive.");
+	if (Math::is_equal_approx(time_horizon_obstacles, p_time_horizon)) {
+		return;
+	}
+	time_horizon_obstacles = p_time_horizon;
+	NavigationServer::get_singleton()->agent_set_time_horizon_obstacles(agent, time_horizon_obstacles);
 }
 
 void NavigationAgent::set_max_speed(real_t p_max_speed) {
+	ERR_FAIL_COND_MSG(p_max_speed < 0.0, "Max speed must be positive.");
 	max_speed = p_max_speed;
 	NavigationServer::get_singleton()->agent_set_max_speed(agent, max_speed);
 }
@@ -478,7 +565,7 @@ Vector3 NavigationAgent::get_next_position() {
 		ERR_FAIL_COND_V_MSG(agent_parent == nullptr, Vector3(), "The agent has no parent.");
 		return agent_parent->get_global_transform().origin;
 	} else {
-		return navigation_path[nav_path_index] - Vector3(0, navigation_height_offset, 0);
+		return navigation_path[nav_path_index] - Vector3(0, path_height_offset, 0);
 	}
 }
 
@@ -486,7 +573,7 @@ Ref<NavigationPathQueryResult3D> NavigationAgent::get_current_navigation_result(
 	return navigation_result;
 }
 
-const Vector<Vector3> &NavigationAgent::get_nav_path() const {
+const Vector<Vector3> &NavigationAgent::get_current_navigation_path() const {
 	return navigation_result->get_path();
 }
 
@@ -520,23 +607,28 @@ Vector3 NavigationAgent::get_final_position() {
 	return navigation_path[navigation_path.size() - 1];
 }
 
-void NavigationAgent::set_velocity(Vector3 p_velocity) {
-	target_velocity = p_velocity;
-	NavigationServer::get_singleton()->agent_set_target_velocity(agent, target_velocity);
-	NavigationServer::get_singleton()->agent_set_velocity(agent, prev_safe_velocity);
+void NavigationAgent::set_velocity_forced(Vector3 p_velocity) {
+	// Intentionally not checking for equality of the parameter.
+	// We need to always submit the velocity to the navigation server, even when it is the same, in order to run avoidance every frame.
+	// Revisit later when the navigation server can update avoidance without users resubmitting the velocity.
+
+	velocity_forced = p_velocity;
+	velocity_forced_submitted = true;
+}
+
+void NavigationAgent::set_velocity(const Vector3 p_velocity) {
+	velocity = p_velocity;
 	velocity_submitted = true;
 }
 
 void NavigationAgent::_avoidance_done(Vector3 p_new_velocity) {
-	prev_safe_velocity = p_new_velocity;
+	safe_velocity = p_new_velocity;
 
-	if (!velocity_submitted) {
-		target_velocity = Vector3();
-		return;
+	if (!use_3d_avoidance) {
+		safe_velocity.y = stored_y_velocity;
 	}
-	velocity_submitted = false;
 
-	emit_signal("velocity_computed", p_new_velocity);
+	emit_signal("velocity_computed", safe_velocity);
 }
 
 String NavigationAgent::get_configuration_warning() const {
@@ -578,8 +670,8 @@ void NavigationAgent::update_navigation() {
 			Vector3 segment[2];
 			segment[0] = navigation_path[nav_path_index - 1];
 			segment[1] = navigation_path[nav_path_index];
-			segment[0].y -= navigation_height_offset;
-			segment[1].y -= navigation_height_offset;
+			segment[0].y -= path_height_offset;
+			segment[1].y -= path_height_offset;
 			Vector3 p = Geometry::get_closest_point_to_segment(origin, segment);
 
 			if (origin.distance_to(p) >= path_max_distance) {
@@ -594,14 +686,7 @@ void NavigationAgent::update_navigation() {
 		navigation_query->set_target_position(target_position);
 		navigation_query->set_navigation_layers(navigation_layers);
 		navigation_query->set_metadata_flags(path_metadata_flags);
-
-		if (map_override.is_valid()) {
-			navigation_query->set_map(map_override);
-		} else if (navigation != nullptr) {
-			navigation_query->set_map(navigation->get_rid());
-		} else {
-			navigation_query->set_map(agent_parent->get_world_3d()->get_navigation_map());
-		}
+		navigation_query->set_map(get_navigation_map());
 
 		NavigationServer::get_singleton()->query_path(navigation_query, navigation_result);
 
@@ -626,7 +711,7 @@ void NavigationAgent::update_navigation() {
 		const Array &navigation_path_rids = navigation_result->get_path_rids();
 		const Vector<uint64_t> &navigation_path_owners = navigation_result->get_path_owner_ids();
 
-		while (origin.distance_to(navigation_path[nav_path_index] - Vector3(0, navigation_height_offset, 0)) < path_desired_distance) {
+		while (origin.distance_to(navigation_path[nav_path_index] - Vector3(0, path_height_offset, 0)) < path_desired_distance) {
 			Dictionary details;
 
 			const Vector3 waypoint = navigation_path[nav_path_index];
@@ -693,6 +778,71 @@ void NavigationAgent::update_navigation() {
 			}
 		}
 	}
+}
+
+void NavigationAgent::set_avoidance_layers(uint32_t p_layers) {
+	avoidance_layers = p_layers;
+	NavigationServer::get_singleton()->agent_set_avoidance_layers(get_rid(), avoidance_layers);
+}
+
+uint32_t NavigationAgent::get_avoidance_layers() const {
+	return avoidance_layers;
+}
+
+void NavigationAgent::set_avoidance_mask(uint32_t p_mask) {
+	avoidance_mask = p_mask;
+	NavigationServer::get_singleton()->agent_set_avoidance_mask(get_rid(), avoidance_mask);
+}
+
+uint32_t NavigationAgent::get_avoidance_mask() const {
+	return avoidance_mask;
+}
+
+void NavigationAgent::set_avoidance_layer_value(int p_layer_number, bool p_value) {
+	ERR_FAIL_COND_MSG(p_layer_number < 1, "Avoidance layer number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_MSG(p_layer_number > 32, "Avoidance layer number must be between 1 and 32 inclusive.");
+	uint32_t avoidance_layers_new = get_avoidance_layers();
+	if (p_value) {
+		avoidance_layers_new |= 1 << (p_layer_number - 1);
+	} else {
+		avoidance_layers_new &= ~(1 << (p_layer_number - 1));
+	}
+	set_avoidance_layers(avoidance_layers_new);
+}
+
+bool NavigationAgent::get_avoidance_layer_value(int p_layer_number) const {
+	ERR_FAIL_COND_V_MSG(p_layer_number < 1, false, "Avoidance layer number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_V_MSG(p_layer_number > 32, false, "Avoidance layer number must be between 1 and 32 inclusive.");
+	return get_avoidance_layers() & (1 << (p_layer_number - 1));
+}
+
+void NavigationAgent::set_avoidance_mask_value(int p_mask_number, bool p_value) {
+	ERR_FAIL_COND_MSG(p_mask_number < 1, "Avoidance mask number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_MSG(p_mask_number > 32, "Avoidance mask number must be between 1 and 32 inclusive.");
+	uint32_t mask = get_avoidance_mask();
+	if (p_value) {
+		mask |= 1 << (p_mask_number - 1);
+	} else {
+		mask &= ~(1 << (p_mask_number - 1));
+	}
+	set_avoidance_mask(mask);
+}
+
+bool NavigationAgent::get_avoidance_mask_value(int p_mask_number) const {
+	ERR_FAIL_COND_V_MSG(p_mask_number < 1, false, "Avoidance mask number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_V_MSG(p_mask_number > 32, false, "Avoidance mask number must be between 1 and 32 inclusive.");
+	return get_avoidance_mask() & (1 << (p_mask_number - 1));
+}
+
+void NavigationAgent::set_avoidance_priority(real_t p_priority) {
+	ERR_FAIL_COND_MSG(p_priority < 0.0, "Avoidance priority must be between 0.0 and 1.0 inclusive.");
+	ERR_FAIL_COND_MSG(p_priority > 1.0, "Avoidance priority must be between 0.0 and 1.0 inclusive.");
+	avoidance_priority = p_priority;
+	NavigationServer::get_singleton()->agent_set_avoidance_priority(get_rid(), p_priority);
+}
+
+real_t NavigationAgent::get_avoidance_priority() const {
+	return avoidance_priority;
 }
 
 void NavigationAgent::_request_repath() {

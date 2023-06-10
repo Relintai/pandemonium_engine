@@ -367,6 +367,10 @@ void EditorExportPlatform::gen_debug_flags(Vector<String> &r_flags, int p_flags)
 		r_flags.push_back("--debug-navigation");
 	}
 
+	if (p_flags & DEBUG_FLAG_VIEW_AVOIDANCE) {
+		r_flags.push_back("--debug-avoidance");
+	}
+
 	if (p_flags & DEBUG_FLAG_SHADER_FALLBACKS) {
 		r_flags.push_back("--debug-shader-fallbacks");
 	}
@@ -1292,6 +1296,10 @@ void EditorExportPlatform::gen_export_flags(Vector<String> &r_flags, int p_flags
 
 	if (p_flags & DEBUG_FLAG_VIEW_NAVIGATION) {
 		r_flags.push_back("--debug-navigation");
+	}
+
+	if (p_flags & DEBUG_FLAG_VIEW_AVOIDANCE) {
+		r_flags.push_back("--debug-avoidance");
 	}
 }
 EditorExportPlatform::EditorExportPlatform() {

@@ -30,14 +30,14 @@
 
 #include "gdscript_parser.h"
 
-#include "core/core_string_names.h"
 #include "core/config/engine.h"
-#include "core/io/resource_loader.h"
-#include "core/os/file_access.h"
-#include "core/string/print_string.h"
 #include "core/config/project_settings.h"
+#include "core/core_string_names.h"
+#include "core/io/resource_loader.h"
 #include "core/object/reference.h"
 #include "core/object/script_language.h"
+#include "core/os/file_access.h"
+#include "core/string/print_string.h"
 #include "gdscript.h"
 
 template <class T>
@@ -4339,6 +4339,16 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 											return;
 										}
 										current_export.hint = PROPERTY_HINT_LAYERS_3D_NAVIGATION;
+										break;
+									}
+
+									if (tokenizer->get_token() == GDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "PROPERTY_HINT_LAYERS_AVOIDANCE") {
+										_ADVANCE_AND_CONSUME_NEWLINES;
+										if (tokenizer->get_token() != GDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+											_set_error("Expected \")\" in the avoidance 3D navigation hint.");
+											return;
+										}
+										current_export.hint = PROPERTY_HINT_LAYERS_AVOIDANCE;
 										break;
 									}
 

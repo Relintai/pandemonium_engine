@@ -158,6 +158,15 @@ Vector<Vector2> vector_v3_to_v2(const Vector<Vector3> &d) {
 	return nd;
 }
 
+static Vector<Vector3> vector_v2_to_v3(const Vector<Vector2> &d) {
+	Vector<Vector3> nd;
+	nd.resize(d.size());
+	for (int i(0); i < nd.size(); i++) {
+		nd.write[i] = v2_to_v3(d[i]);
+	}
+	return nd;
+}
+
 PoolVector<Vector2> poolvector_v3_to_v2(const PoolVector<Vector3> &d) {
 	PoolVector<Vector2> nd;
 	nd.resize(d.size());
@@ -220,6 +229,8 @@ Array FORWARD_1_C(map_get_links, RID, p_map, rid_to_rid);
 Array FORWARD_1_C(map_get_regions, RID, p_map, rid_to_rid);
 
 Array FORWARD_1_C(map_get_agents, RID, p_map, rid_to_rid);
+
+Array FORWARD_1_C(map_get_obstacles, RID, p_map, rid_to_rid);
 
 RID FORWARD_1_C(region_get_map, RID, p_region, rid_to_rid);
 
@@ -302,9 +313,12 @@ ObjectID FORWARD_1_C(link_get_owner_id, RID, p_link, rid_to_rid);
 
 RID PandemoniumNavigation2DServer::agent_create() {
 	RID agent = NavigationServer::get_singleton()->agent_create();
-	NavigationServer::get_singleton()->agent_set_ignore_y(agent, true);
 	return agent;
 }
+
+void FORWARD_2(agent_set_avoidance_enabled, RID, p_agent, bool, p_enabled, rid_to_rid, bool_to_bool);
+
+bool FORWARD_1_C(agent_get_avoidance_enabled, RID, p_agent, rid_to_rid);
 
 void FORWARD_2(agent_set_map, RID, p_agent, RID, p_map, rid_to_rid, rid_to_rid);
 
@@ -312,25 +326,42 @@ void FORWARD_2(agent_set_neighbor_dist, RID, p_agent, real_t, p_dist, rid_to_rid
 
 void FORWARD_2(agent_set_max_neighbors, RID, p_agent, int, p_count, rid_to_rid, int_to_int);
 
-void FORWARD_2(agent_set_time_horizon, RID, p_agent, real_t, p_time, rid_to_rid, real_to_real);
+void FORWARD_2(agent_set_time_horizon_agents, RID, p_agent, real_t, p_time_horizon, rid_to_rid, real_to_real);
+
+void FORWARD_2(agent_set_time_horizon_obstacles, RID, p_agent, real_t, p_time_horizon, rid_to_rid, real_to_real);
 
 void FORWARD_2(agent_set_radius, RID, p_agent, real_t, p_radius, rid_to_rid, real_to_real);
 
 void FORWARD_2(agent_set_max_speed, RID, p_agent, real_t, p_max_speed, rid_to_rid, real_to_real);
 
-void FORWARD_2(agent_set_velocity, RID, p_agent, Vector2, p_velocity, rid_to_rid, v2_to_v3);
+void FORWARD_2(agent_set_velocity_forced, RID, p_agent, Vector2, p_velocity, rid_to_rid, v2_to_v3);
 
-void FORWARD_2(agent_set_target_velocity, RID, p_agent, Vector2, p_velocity, rid_to_rid, v2_to_v3);
+void FORWARD_2(agent_set_velocity, RID, p_agent, Vector2, p_velocity, rid_to_rid, v2_to_v3);
 
 void FORWARD_2(agent_set_position, RID, p_agent, Vector2, p_position, rid_to_rid, v2_to_v3);
 
-void FORWARD_2(agent_set_ignore_y, RID, p_agent, bool, p_ignore, rid_to_rid, bool_to_bool);
-
 bool FORWARD_1_C(agent_is_map_changed, RID, p_agent, rid_to_rid);
 
-void FORWARD_4(agent_set_callback, RID, p_agent, ObjectID, p_object_id, StringName, p_method, Variant, p_udata, rid_to_rid, id_to_id, sn_to_sn, var_to_var);
-
 void FORWARD_1(free, RID, p_object, rid_to_rid);
+
+void FORWARD_4(agent_set_avoidance_callback, RID, p_agent, ObjectID, p_object_id, StringName, p_method, Variant, p_udata, rid_to_rid, id_to_id, sn_to_sn, var_to_var);
+
+void FORWARD_2(agent_set_avoidance_layers, RID, p_agent, uint32_t, p_layers, rid_to_rid, uint32_to_uint32);
+void FORWARD_2(agent_set_avoidance_mask, RID, p_agent, uint32_t, p_mask, rid_to_rid, uint32_to_uint32);
+void FORWARD_2(agent_set_avoidance_priority, RID, p_agent, real_t, p_priority, rid_to_rid, real_to_real);
+
+RID PandemoniumNavigation2DServer::obstacle_create() {
+	RID obstacle = NavigationServer::get_singleton()->obstacle_create();
+	return obstacle;
+}
+void FORWARD_2(obstacle_set_map, RID, p_obstacle, RID, p_map, rid_to_rid, rid_to_rid);
+RID FORWARD_1_C(obstacle_get_map, RID, p_obstacle, rid_to_rid);
+void FORWARD_2(obstacle_set_position, RID, p_obstacle, Vector2, p_position, rid_to_rid, v2_to_v3);
+void FORWARD_2(obstacle_set_avoidance_layers, RID, p_obstacle, uint32_t, p_layers, rid_to_rid, uint32_to_uint32);
+
+void PandemoniumNavigation2DServer::obstacle_set_vertices(RID p_obstacle, const Vector<Vector2> &p_vertices) {
+	NavigationServer::get_singleton()->obstacle_set_vertices(p_obstacle, vector_v2_to_v3(p_vertices));
+}
 
 NavigationUtilities::PathQueryResult2D PandemoniumNavigation2DServer::_query_path(const NavigationUtilities::PathQueryParameters2D &p_parameters) const {
 	NavigationUtilities::PathQueryParameters params;

@@ -2728,7 +2728,7 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("spells_cast_on_caster_get"), &Spell::spells_cast_on_caster_get);
 	ClassDB::bind_method(D_METHOD("spells_cast_on_caster_set", "caster_aura_applys"), &Spell::spells_cast_on_caster_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_caster", PROPERTY_HINT_NONE, "23/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "spells_cast_on_caster_set", "spells_cast_on_caster_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_caster", PROPERTY_HINT_NONE, "23/20:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "spells_cast_on_caster_set", "spells_cast_on_caster_get");
 
 	//ADD_GROUP("Target Aura Apply", "target_aura_applys");
 	ClassDB::bind_method(D_METHOD("spells_cast_on_target_num_get"), &Spell::spells_cast_on_target_num_get);
@@ -2739,7 +2739,7 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("spells_cast_on_target_get"), &Spell::spells_cast_on_target_get);
 	ClassDB::bind_method(D_METHOD("spells_cast_on_target_set", "target_aura_applys"), &Spell::spells_cast_on_target_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_target", PROPERTY_HINT_NONE, "23/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "spells_cast_on_target_set", "spells_cast_on_target_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_target", PROPERTY_HINT_NONE, "23/20:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "spells_cast_on_target_set", "spells_cast_on_target_get");
 
 	//ADD_GROUP("Apply Auras On Learn", "on_learn_auras");
 	ClassDB::bind_method(D_METHOD("on_learn_cast_spells_num_get"), &Spell::on_learn_cast_spells_num_get);
@@ -2750,7 +2750,7 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("spells_cast_on_learn_get"), &Spell::spells_cast_on_learn_get);
 	ClassDB::bind_method(D_METHOD("spells_cast_on_learn_set", "spells"), &Spell::spells_cast_on_learn_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_learn", PROPERTY_HINT_NONE, "23/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "spells_cast_on_learn_set", "spells_cast_on_learn_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_learn", PROPERTY_HINT_NONE, "23/20:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "spells_cast_on_learn_set", "spells_cast_on_learn_get");
 
 	ADD_GROUP("Texts", "text");
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description", PropertyInfo(Variant::INT, "class_level"), PropertyInfo(Variant::INT, "character_level")));

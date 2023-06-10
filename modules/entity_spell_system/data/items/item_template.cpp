@@ -550,7 +550,7 @@ void ItemTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_teaches_spells"), &ItemTemplate::get_teaches_spells);
 	ClassDB::bind_method(D_METHOD("set_teaches_spells", "spells"), &ItemTemplate::set_teaches_spells);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "teaches_spells", PROPERTY_HINT_NONE, "23/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_teaches_spells", "get_teaches_spells");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "teaches_spells", PROPERTY_HINT_NONE, "23/20:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_teaches_spells", "get_teaches_spells");
 
 	////    Grants Spells    ////
 	ClassDB::bind_method(D_METHOD("get_num_grants_spells"), &ItemTemplate::get_num_grants_spells);
@@ -561,7 +561,7 @@ void ItemTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_grants_spells"), &ItemTemplate::get_grants_spells);
 	ClassDB::bind_method(D_METHOD("set_grants_spells", "spells"), &ItemTemplate::set_grants_spells);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "grants_spells", PROPERTY_HINT_NONE, "23/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_grants_spells", "get_grants_spells");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "grants_spells", PROPERTY_HINT_NONE, "23/20:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_grants_spells", "get_grants_spells");
 
 	////    Auras    ////
 	ClassDB::bind_method(D_METHOD("get_num_auras"), &ItemTemplate::get_num_auras);
@@ -572,7 +572,7 @@ void ItemTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_auras"), &ItemTemplate::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &ItemTemplate::set_auras);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "23/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_auras", "get_auras");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "23/20:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_auras", "get_auras");
 
 	////    Required Skills    ////
 	ClassDB::bind_method(D_METHOD("get_num_required_skills"), &ItemTemplate::get_num_required_skills);
@@ -582,7 +582,7 @@ void ItemTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_required_skills"), &ItemTemplate::get_required_skills);
 	ClassDB::bind_method(D_METHOD("set_required_skills", "auras"), &ItemTemplate::set_required_skills);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "required_skills", PROPERTY_HINT_NONE, "23/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_required_skills", "get_required_skills");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "required_skills", PROPERTY_HINT_NONE, "23/20:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_required_skills", "get_required_skills");
 
 	//Use spell
 	ClassDB::bind_method(D_METHOD("get_use_spell"), &ItemTemplate::get_use_spell);

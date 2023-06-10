@@ -30,23 +30,23 @@
 
 #include "editor_run_native.h"
 
-#include "core/object/class_db.h"
 #include "core/error/error_macros.h"
 #include "core/io/image.h"
-#include "core/os/memory.h"
+#include "core/object/class_db.h"
 #include "core/object/reference.h"
-#include "core/typedefs.h"
+#include "core/os/memory.h"
 #include "core/string/ustring.h"
+#include "core/typedefs.h"
 #include "core/variant/variant.h"
 #include "editor_export.h"
 #include "editor_node.h"
 #include "editor_scale.h"
+#include "scene/gui/dialogs.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup_menu.h"
+#include "scene/gui/rich_text_label.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
-#include "scene/gui/dialogs.h"
-#include "scene/gui/rich_text_label.h"
 
 void EditorRunNative::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE) {
@@ -156,6 +156,9 @@ void EditorRunNative::_run_native(int p_idx, int p_platform) {
 	if (debug_navigation) {
 		flags |= EditorExportPlatform::DEBUG_FLAG_VIEW_NAVIGATION;
 	}
+	if (debug_avoidance) {
+		flags |= EditorExportPlatform::DEBUG_FLAG_VIEW_AVOIDANCE;
+	}
 	if (debug_shader_fallbacks) {
 		flags |= EditorExportPlatform::DEBUG_FLAG_SHADER_FALLBACKS;
 	}
@@ -210,6 +213,14 @@ bool EditorRunNative::get_debug_navigation() const {
 	return debug_navigation;
 }
 
+void EditorRunNative::set_debug_avoidance(bool p_debug) {
+	debug_avoidance = p_debug;
+}
+
+bool EditorRunNative::get_debug_avoidance() const {
+	return debug_avoidance;
+}
+
 void EditorRunNative::set_debug_shader_fallbacks(bool p_debug) {
 	debug_shader_fallbacks = p_debug;
 }
@@ -234,6 +245,7 @@ EditorRunNative::EditorRunNative() {
 	deploy_debug_remote = false;
 	debug_collisions = false;
 	debug_navigation = false;
+	debug_avoidance = false;
 	debug_shader_fallbacks = false;
 	resume_idx = 0;
 	resume_platform = 0;

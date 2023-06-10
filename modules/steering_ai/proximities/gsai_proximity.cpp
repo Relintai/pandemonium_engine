@@ -56,7 +56,7 @@ void GSAIProximity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_agents"), &GSAIProximity::get_agents_arr);
 	ClassDB::bind_method(D_METHOD("set_agents", "arr"), &GSAIProximity::set_agents_arr);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "agents", PROPERTY_HINT_NONE, "23/19:GSAISteeringAgent", PROPERTY_USAGE_DEFAULT, "GSAISteeringAgent"), "set_agents", "get_agents");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "agents", PROPERTY_HINT_NONE, "23/20:GSAISteeringAgent", PROPERTY_USAGE_DEFAULT, "GSAISteeringAgent"), "set_agents", "get_agents");
 
 	BIND_VMETHOD(MethodInfo(Variant::INT, "_find_neighbors", PropertyInfo(Variant::OBJECT, "callback", PROPERTY_HINT_RESOURCE_TYPE, "FuncRef")));
 

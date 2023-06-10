@@ -34,12 +34,14 @@ if env["builtin_recast"]:
     env_thirdparty.add_source_files(thirdparty_obj, thirdparty_sources)
     env.modules_sources += thirdparty_obj
 
-# RVO2
-if env["builtin_rvo2"]:
-    thirdparty_dir = "#thirdparty/rvo2/"
+# RVO 2D Thirdparty source files
+if env["builtin_rvo2_2d"]:
+    thirdparty_dir = "#thirdparty/rvo2/rvo2_2d/"
     thirdparty_sources = [
-        "Agent.cpp",
-        "KdTree.cpp",
+        "Agent2d.cpp",
+        "Obstacle2d.cpp",
+        "KdTree2d.cpp",
+        "RVOSimulator2d.cpp",
     ]
     thirdparty_sources = [thirdparty_dir + file for file in thirdparty_sources]
 
@@ -48,8 +50,25 @@ if env["builtin_rvo2"]:
     env_thirdparty = env_navigation.Clone()
     env_thirdparty.disable_warnings()
     env_thirdparty.add_source_files(thirdparty_obj, thirdparty_sources)
-    env.modules_sources += thirdparty_obj
+    #env.modules_sources += thirdparty_obj
 
+# RVO 3D Thirdparty source files
+if env["builtin_rvo2_3d"]:
+    thirdparty_dir = "#thirdparty/rvo2/rvo2_3d/"
+    thirdparty_sources = [
+        "Agent3d.cpp",
+        "KdTree3d.cpp",
+        "RVOSimulator3d.cpp",
+    ]
+    thirdparty_sources = [thirdparty_dir + file for file in thirdparty_sources]
+
+    env_navigation.Prepend(CPPPATH=[thirdparty_dir])
+
+    env_thirdparty = env_navigation.Clone()
+    env_thirdparty.disable_warnings()
+    env_thirdparty.add_source_files(thirdparty_obj, thirdparty_sources)
+
+env.modules_sources += thirdparty_obj
 
 # Pandemonium source files
 

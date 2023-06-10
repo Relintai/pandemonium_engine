@@ -321,7 +321,8 @@ public:
 		DEBUG_FLAG_REMOTE_DEBUG_LOCALHOST = 4,
 		DEBUG_FLAG_VIEW_COLLISONS = 8,
 		DEBUG_FLAG_VIEW_NAVIGATION = 16,
-		DEBUG_FLAG_SHADER_FALLBACKS = 32,
+		DEBUG_FLAG_VIEW_AVOIDANCE = 32,
+		DEBUG_FLAG_SHADER_FALLBACKS = 64,
 	};
 
 	virtual Error run(const Ref<EditorExportPreset> &p_preset, int p_device, int p_debug_flags) { return OK; }

@@ -115,6 +115,15 @@ using namespace NavigationUtilities;
 
 PandemoniumNavigationServer::PandemoniumNavigationServer() {
 	active = true;
+
+	pm_region_count = 0;
+	pm_agent_count = 0;
+	pm_link_count = 0;
+	pm_polygon_count = 0;
+	pm_edge_count = 0;
+	pm_edge_merge_count = 0;
+	pm_edge_connection_count = 0;
+	pm_edge_free_count = 0;
 }
 
 PandemoniumNavigationServer::~PandemoniumNavigationServer() {
@@ -326,7 +335,7 @@ Array PandemoniumNavigationServer::map_get_agents(RID p_map) const {
 	const NavMap *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND_V(map == nullptr, agents_rids);
 
-	const LocalVector<RvoAgent *> agents = map->get_agents();
+	const LocalVector<NavAgent *> agents = map->get_agents();
 	agents_rids.resize(agents.size());
 
 	for (uint32_t i = 0; i < agents.size(); i++) {
@@ -334,6 +343,18 @@ Array PandemoniumNavigationServer::map_get_agents(RID p_map) const {
 	}
 
 	return agents_rids;
+}
+
+Array PandemoniumNavigationServer::map_get_obstacles(RID p_map) const {
+	Array obstacles_rids;
+	const NavMap *map = map_owner.getornull(p_map);
+	ERR_FAIL_COND_V(map == nullptr, obstacles_rids);
+	const LocalVector<NavObstacle *> obstacles = map->get_obstacles();
+	obstacles_rids.resize(obstacles.size());
+	for (uint32_t i = 0; i < obstacles.size(); i++) {
+		obstacles_rids[i] = obstacles[i]->get_self();
+	}
+	return obstacles_rids;
 }
 
 RID PandemoniumNavigationServer::region_get_map(RID p_region) const {
@@ -348,7 +369,7 @@ RID PandemoniumNavigationServer::region_get_map(RID p_region) const {
 }
 
 RID PandemoniumNavigationServer::agent_get_map(RID p_agent) const {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND_V(agent == nullptr, RID());
 
 	if (agent->get_map()) {
@@ -648,14 +669,42 @@ ObjectID PandemoniumNavigationServer::link_get_owner_id(RID p_link) const {
 RID PandemoniumNavigationServer::agent_create() {
 	PandemoniumNavigationServer *mut_this = const_cast<PandemoniumNavigationServer *>(this);
 	MutexLock lock(mut_this->operations_mutex);
-	RvoAgent *agent = memnew(RvoAgent());
+	NavAgent *agent = memnew(NavAgent());
 	RID rid = agent_owner.make_rid(agent);
 	agent->set_self(rid);
 	return rid;
 }
 
+COMMAND_2(agent_set_avoidance_enabled, RID, p_agent, bool, p_enabled) {
+	NavAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND(agent == nullptr);
+
+	agent->set_avoidance_enabled(p_enabled);
+}
+
+bool PandemoniumNavigationServer::agent_get_avoidance_enabled(RID p_agent) const {
+	NavAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND_V(agent == nullptr, false);
+
+	return agent->is_avoidance_enabled();
+}
+
+COMMAND_2(agent_set_use_3d_avoidance, RID, p_agent, bool, p_enabled) {
+	NavAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND(agent == nullptr);
+
+	agent->set_use_3d_avoidance(p_enabled);
+}
+
+bool PandemoniumNavigationServer::agent_get_use_3d_avoidance(RID p_agent) const {
+	NavAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND_V(agent == nullptr, false);
+
+	return agent->get_use_3d_avoidance();
+}
+
 COMMAND_2(agent_set_map, RID, p_agent, RID, p_map) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 
 	if (agent->get_map()) {
@@ -675,87 +724,99 @@ COMMAND_2(agent_set_map, RID, p_agent, RID, p_map) {
 		agent->set_map(map);
 		map->add_agent(agent);
 
-		if (agent->has_callback()) {
+		if (agent->has_avoidance_callback()) {
 			map->set_agent_as_controlled(agent);
 		}
 	}
 }
 
 COMMAND_2(agent_set_neighbor_dist, RID, p_agent, real_t, p_dist) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 
-	agent->get_agent()->neighborDist_ = p_dist;
+	agent->set_neighbor_distance(p_dist);
 }
 
 COMMAND_2(agent_set_max_neighbors, RID, p_agent, int, p_count) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 
-	agent->get_agent()->maxNeighbors_ = p_count;
+	agent->set_max_neighbors(p_count);
 }
 
-COMMAND_2(agent_set_time_horizon, RID, p_agent, real_t, p_time) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+COMMAND_2(agent_set_time_horizon_agents, RID, p_agent, real_t, p_time_horizon) {
+	ERR_FAIL_COND_MSG(p_time_horizon < 0.0, "Time horizion must be positive.");
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 
-	agent->get_agent()->timeHorizon_ = p_time;
+	agent->set_time_horizon_agents(p_time_horizon);
+}
+
+COMMAND_2(agent_set_time_horizon_obstacles, RID, p_agent, real_t, p_time_horizon) {
+	ERR_FAIL_COND_MSG(p_time_horizon < 0.0, "Time horizion must be positive.");
+	NavAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND(agent == nullptr);
+
+	agent->set_time_horizon_obstacles(p_time_horizon);
 }
 
 COMMAND_2(agent_set_radius, RID, p_agent, real_t, p_radius) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND_MSG(p_radius < 0.0, "Radius must be positive.");
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 
-	agent->get_agent()->radius_ = p_radius;
+	agent->set_radius(p_radius);
+}
+
+COMMAND_2(agent_set_height, RID, p_agent, real_t, p_height) {
+	ERR_FAIL_COND_MSG(p_height < 0.0, "Height must be positive.");
+	NavAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND(agent == nullptr);
+
+	agent->set_height(p_height);
 }
 
 COMMAND_2(agent_set_max_speed, RID, p_agent, real_t, p_max_speed) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND_MSG(p_max_speed < 0.0, "Max speed must be positive.");
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 
-	agent->get_agent()->maxSpeed_ = p_max_speed;
+	agent->set_max_speed(p_max_speed);
 }
 
 COMMAND_2(agent_set_velocity, RID, p_agent, Vector3, p_velocity) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 
-	agent->get_agent()->velocity_ = RVO::Vector3(p_velocity.x, p_velocity.y, p_velocity.z);
+	agent->set_velocity(p_velocity);
 }
 
-COMMAND_2(agent_set_target_velocity, RID, p_agent, Vector3, p_velocity) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+COMMAND_2(agent_set_velocity_forced, RID, p_agent, Vector3, p_velocity) {
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 
-	agent->get_agent()->prefVelocity_ = RVO::Vector3(p_velocity.x, p_velocity.y, p_velocity.z);
+	agent->set_velocity_forced(p_velocity);
 }
 
 COMMAND_2(agent_set_position, RID, p_agent, Vector3, p_position) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 
-	agent->get_agent()->position_ = RVO::Vector3(p_position.x, p_position.y, p_position.z);
-}
-
-COMMAND_2(agent_set_ignore_y, RID, p_agent, bool, p_ignore) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
-	ERR_FAIL_COND(agent == nullptr);
-
-	agent->get_agent()->ignore_y_ = p_ignore;
+	agent->set_position(p_position);
 }
 
 bool PandemoniumNavigationServer::agent_is_map_changed(RID p_agent) const {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND_V(agent == nullptr, false);
 
 	return agent->is_map_changed();
 }
 
-COMMAND_4(agent_set_callback, RID, p_agent, ObjectID, p_object_id, StringName, p_method, Variant, p_udata) {
-	RvoAgent *agent = agent_owner.getornull(p_agent);
+COMMAND_4(agent_set_avoidance_callback, RID, p_agent, ObjectID, p_object_id, StringName, p_method, Variant, p_udata) {
+	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 
-	agent->set_callback(p_object_id, p_method, p_udata);
+	agent->set_avoidance_callback(p_object_id, p_method, p_udata);
 
 	if (agent->get_map()) {
 		if (p_object_id == ObjectID()) {
@@ -764,6 +825,91 @@ COMMAND_4(agent_set_callback, RID, p_agent, ObjectID, p_object_id, StringName, p
 			agent->get_map()->set_agent_as_controlled(agent);
 		}
 	}
+}
+
+COMMAND_2(agent_set_avoidance_layers, RID, p_agent, uint32_t, p_layers) {
+	NavAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND(agent == nullptr);
+	agent->set_avoidance_layers(p_layers);
+}
+
+COMMAND_2(agent_set_avoidance_mask, RID, p_agent, uint32_t, p_mask) {
+	NavAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND(agent == nullptr);
+	agent->set_avoidance_mask(p_mask);
+}
+
+COMMAND_2(agent_set_avoidance_priority, RID, p_agent, real_t, p_priority) {
+	ERR_FAIL_COND_MSG(p_priority < 0.0, "Avoidance priority must be between 0.0 and 1.0 inclusive.");
+	ERR_FAIL_COND_MSG(p_priority > 1.0, "Avoidance priority must be between 0.0 and 1.0 inclusive.");
+	NavAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND(agent == nullptr);
+	agent->set_avoidance_priority(p_priority);
+}
+
+RID PandemoniumNavigationServer::obstacle_create() {
+	PandemoniumNavigationServer *mut_this = const_cast<PandemoniumNavigationServer *>(this);
+	MutexLock lock(mut_this->operations_mutex);
+	NavObstacle *obstacle = memnew(NavObstacle());
+	RID rid = obstacle_owner.make_rid(obstacle);
+	obstacle->set_self(rid);
+	return rid;
+}
+
+COMMAND_2(obstacle_set_map, RID, p_obstacle, RID, p_map) {
+	NavObstacle *obstacle = obstacle_owner.getornull(p_obstacle);
+	ERR_FAIL_COND(obstacle == nullptr);
+
+	if (obstacle->get_map()) {
+		if (obstacle->get_map()->get_self() == p_map) {
+			return; // Pointless
+		}
+
+		obstacle->get_map()->remove_obstacle(obstacle);
+	}
+
+	obstacle->set_map(nullptr);
+
+	if (p_map.is_valid()) {
+		NavMap *map = map_owner.getornull(p_map);
+		ERR_FAIL_COND(map == nullptr);
+
+		obstacle->set_map(map);
+		map->add_obstacle(obstacle);
+	}
+}
+
+RID PandemoniumNavigationServer::obstacle_get_map(RID p_obstacle) const {
+	NavObstacle *obstacle = obstacle_owner.getornull(p_obstacle);
+	ERR_FAIL_COND_V(obstacle == nullptr, RID());
+	if (obstacle->get_map()) {
+		return obstacle->get_map()->get_self();
+	}
+	return RID();
+}
+
+COMMAND_2(obstacle_set_height, RID, p_obstacle, real_t, p_height) {
+	NavObstacle *obstacle = obstacle_owner.getornull(p_obstacle);
+	ERR_FAIL_COND(obstacle == nullptr);
+	obstacle->set_height(p_height);
+}
+
+COMMAND_2(obstacle_set_position, RID, p_obstacle, Vector3, p_position) {
+	NavObstacle *obstacle = obstacle_owner.getornull(p_obstacle);
+	ERR_FAIL_COND(obstacle == nullptr);
+	obstacle->set_position(p_position);
+}
+
+void PandemoniumNavigationServer::obstacle_set_vertices(RID p_obstacle, const Vector<Vector3> &p_vertices) {
+	NavObstacle *obstacle = obstacle_owner.getornull(p_obstacle);
+	ERR_FAIL_COND(obstacle == nullptr);
+	obstacle->set_vertices(p_vertices);
+}
+
+COMMAND_2(obstacle_set_avoidance_layers, RID, p_obstacle, uint32_t, p_layers) {
+	NavObstacle *obstacle = obstacle_owner.getornull(p_obstacle);
+	ERR_FAIL_COND(obstacle == nullptr);
+	obstacle->set_avoidance_layers(p_layers);
 }
 
 COMMAND_1(free, RID, p_object) {
@@ -790,10 +936,17 @@ COMMAND_1(free, RID, p_object) {
 		}
 
 		// Remove any assigned agent
-		LocalVector<RvoAgent *> agents = map->get_agents();
+		LocalVector<NavAgent *> agents = map->get_agents();
 		for (uint32_t i = 0; i < agents.size(); i++) {
 			map->remove_agent(agents[i]);
 			agents[i]->set_map(nullptr);
+		}
+
+		// Remove any assigned obstacles
+		LocalVector<NavObstacle *> obstacles = map->get_obstacles();
+		for (uint32_t i = 0; i < obstacles.size(); i++) {
+			map->remove_obstacle(obstacles[i]);
+			obstacles[i]->set_map(nullptr);
 		}
 
 		int map_index = active_maps.find(map);
@@ -826,7 +979,7 @@ COMMAND_1(free, RID, p_object) {
 		link_owner.free(p_object);
 
 	} else if (agent_owner.owns(p_object)) {
-		RvoAgent *agent = agent_owner.getornull(p_object);
+		NavAgent *agent = agent_owner.getornull(p_object);
 
 		// Removes this agent from the map if assigned
 		if (agent->get_map() != nullptr) {
@@ -837,6 +990,16 @@ COMMAND_1(free, RID, p_object) {
 		agent_owner.free(p_object);
 		memdelete(agent);
 
+	} else if (obstacle_owner.owns(p_object)) {
+		NavObstacle *obstacle = obstacle_owner.getornull(p_object);
+
+		// Removes this agent from the map if assigned
+		if (obstacle->get_map() != nullptr) {
+			obstacle->get_map()->remove_obstacle(obstacle);
+			obstacle->set_map(nullptr);
+		}
+
+		obstacle_owner.free(p_object);
 	} else {
 		ERR_FAIL_COND("Invalid RID.");
 	}

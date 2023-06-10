@@ -57,7 +57,11 @@ class NavigationPolygonInstance : public Node2D {
 
 	Transform2D current_global_transform;
 
-	void _navpoly_changed();
+	bool constrain_avoidance;
+	LocalVector<RID> constrain_avoidance_obstacles;
+	uint32_t avoidance_layers;
+
+	void _navigation_polygon_changed();
 
 #ifdef DEBUG_ENABLED
 	void _update_debug_mesh();
@@ -68,6 +72,7 @@ class NavigationPolygonInstance : public Node2D {
 
 protected:
 	void _notification(int p_what);
+	void _validate_property(PropertyInfo &p_property) const;
 	static void _bind_methods();
 
 public:
@@ -99,6 +104,15 @@ public:
 	void set_navigation_polygon(const Ref<NavigationPolygon> &p_navpoly);
 	Ref<NavigationPolygon> get_navigation_polygon() const;
 
+	void set_constrain_avoidance(bool p_enabled);
+	bool get_constrain_avoidance() const;
+
+	void set_avoidance_layers(uint32_t p_layers);
+	uint32_t get_avoidance_layers() const;
+
+	void set_avoidance_layer_value(int p_layer_number, bool p_value);
+	bool get_avoidance_layer_value(int p_layer_number) const;
+
 	void set_navigation_map(RID p_navigation_map);
 	RID get_navigation_map() const;
 
@@ -109,6 +123,9 @@ public:
 
 	NavigationPolygonInstance();
 	~NavigationPolygonInstance();
+
+private:
+	void _update_avoidance_constrain();
 };
 
 #endif // NAVIGATIONPOLYGON_H

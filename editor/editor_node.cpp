@@ -127,6 +127,8 @@
 #include "editor/plugins/mesh_instance_editor_plugin.h"
 #include "editor/plugins/multimesh_editor_plugin.h"
 #include "editor/plugins/navigation_link_2d_editor_plugin.h"
+#include "editor/plugins/navigation_obstacle_2d_editor_plugin.h"
+#include "editor/plugins/navigation_obstacle_3d_editor_plugin.h"
 #include "editor/plugins/packed_scene_editor_plugin.h"
 #include "editor/plugins/path_2d_editor_plugin.h"
 #include "editor/plugins/path_editor_plugin.h"
@@ -2768,6 +2770,14 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 			EditorSettings::get_singleton()->set_project_metadata("debug_options", "run_debug_navigation", !ischecked);
 
 		} break;
+		case RUN_DEBUG_AVOIDANCE: {
+			bool ischecked = debug_menu->get_popup()->is_item_checked(debug_menu->get_popup()->get_item_index(RUN_DEBUG_AVOIDANCE));
+			debug_menu->get_popup()->set_item_checked(debug_menu->get_popup()->get_item_index(RUN_DEBUG_AVOIDANCE), !ischecked);
+			run_native->set_debug_avoidance(!ischecked);
+			editor_run.set_debug_avoidance(!ischecked);
+			EditorSettings::get_singleton()->set_project_metadata("debug_options", "run_debug_avoidance", !ischecked);
+
+		} break;
 		case RUN_DEBUG_SHADER_FALLBACKS: {
 			bool ischecked = debug_menu->get_popup()->is_item_checked(debug_menu->get_popup()->get_item_index(RUN_DEBUG_SHADER_FALLBACKS));
 			debug_menu->get_popup()->set_item_checked(debug_menu->get_popup()->get_item_index(RUN_DEBUG_SHADER_FALLBACKS), !ischecked);
@@ -3059,6 +3069,7 @@ void EditorNode::_update_debug_options() {
 	bool check_file_server = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_file_server", false);
 	bool check_debug_collisons = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_debug_collisons", false);
 	bool check_debug_navigation = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_debug_navigation", false);
+	bool check_debug_avoidance = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_debug_avoidance", false);
 	bool check_debug_shader_fallbacks = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_debug_shader_fallbacks", false);
 	bool check_live_debug = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_live_debug", true);
 	bool check_reload_scripts = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_reload_scripts", true);
@@ -3074,6 +3085,9 @@ void EditorNode::_update_debug_options() {
 	}
 	if (check_debug_navigation) {
 		_menu_option_confirm(RUN_DEBUG_NAVIGATION, true);
+	}
+	if (check_debug_avoidance) {
+		_menu_option_confirm(RUN_DEBUG_AVOIDANCE, true);
 	}
 	if (check_debug_shader_fallbacks) {
 		_menu_option_confirm(RUN_DEBUG_SHADER_FALLBACKS, true);
@@ -6509,6 +6523,11 @@ EditorNode::EditorNode() {
 			p->get_item_count() - 1,
 			TTR("When this option is enabled, navigation meshes and polygons will be visible in the running project."));
 
+	p->add_check_shortcut(ED_SHORTCUT("editor/visible_avoidance", TTR("Visible Avoidance")), RUN_DEBUG_AVOIDANCE);
+	p->set_item_tooltip(
+			p->get_item_count() - 1,
+			TTR("When this option is enabled, avoidance debug information will be visible in the running project."));
+
 	if (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3") {
 		p->add_separator();
 
@@ -7011,12 +7030,14 @@ EditorNode::EditorNode() {
 	add_editor_plugin(memnew(RoomManagerEditorPlugin(this)));
 	add_editor_plugin(memnew(RoomEditorPlugin(this)));
 	add_editor_plugin(memnew(OccluderEditorPlugin(this)));
+	add_editor_plugin(memnew(NavigationObstacleEditorPlugin(this)));
 	add_editor_plugin(memnew(PortalEditorPlugin(this)));
 	add_editor_plugin(memnew(PackedSceneEditorPlugin(this)));
 	add_editor_plugin(memnew(Path2DEditorPlugin(this)));
 	add_editor_plugin(memnew(PathEditorPlugin(this)));
 	add_editor_plugin(memnew(Line2DEditorPlugin(this)));
 	add_editor_plugin(memnew(NavigationLink2DEditorPlugin));
+	add_editor_plugin(memnew(NavigationObstacle2DEditorPlugin(this)));
 	add_editor_plugin(memnew(Polygon2DEditorPlugin(this)));
 	add_editor_plugin(memnew(LightOccluder2DEditorPlugin(this)));
 	add_editor_plugin(memnew(GradientEditorPlugin(this)));

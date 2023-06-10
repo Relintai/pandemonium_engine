@@ -201,7 +201,7 @@ void NavigationMeshInstance::_notification(int p_what) {
 			NavigationServer::get_singleton()->region_set_transform(region, current_global_transform);
 
 #ifdef DEBUG_ENABLED
-			if (NavigationServer::get_singleton()->get_debug_enabled()) {
+			if (NavigationServer::get_singleton()->get_debug_navigation_enabled()) {
 				_update_debug_mesh();
 			}
 #endif // DEBUG_ENABLED
@@ -320,7 +320,7 @@ void NavigationMeshInstance::_navigation_mesh_changed() {
 	emit_signal("navigation_mesh_changed");
 
 #ifdef DEBUG_ENABLED
-	if (is_inside_tree() && NavigationServer::get_singleton()->get_debug_enabled()) {
+	if (is_inside_tree() && NavigationServer::get_singleton()->get_debug_navigation_enabled()) {
 		if (navmesh.is_valid()) {
 			_update_debug_mesh();
 			_update_debug_edge_connections_mesh();
@@ -467,7 +467,7 @@ NavigationMeshInstance::~NavigationMeshInstance() {
 
 #ifdef DEBUG_ENABLED
 void NavigationMeshInstance::_update_debug_mesh() {
-	if (!NavigationServer::get_singleton()->get_debug_enabled()) {
+	if (!NavigationServer::get_singleton()->get_debug_navigation_enabled()) {
 		if (debug_instance.is_valid()) {
 			RS::get_singleton()->instance_set_visible(debug_instance, false);
 		}
@@ -633,7 +633,7 @@ void NavigationMeshInstance::_update_debug_mesh() {
 
 #ifdef DEBUG_ENABLED
 void NavigationMeshInstance::_update_debug_edge_connections_mesh() {
-	if (!NavigationServer::get_singleton()->get_debug_enabled()) {
+	if (!NavigationServer::get_singleton()->get_debug_navigation_enabled()) {
 		if (debug_edge_connections_instance.is_valid()) {
 			RS::get_singleton()->instance_set_visible(debug_edge_connections_instance, false);
 		}

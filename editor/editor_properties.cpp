@@ -1117,6 +1117,12 @@ void EditorPropertyLayers::setup(LayerType p_layer_type) {
 			layer_group_size = 4;
 			layer_count = 32;
 		} break;
+
+		case LAYER_AVOIDANCE: {
+			basename = "layer_names/avoidance";
+			layer_group_size = 4;
+			layer_count = 32;
+		} break;
 	}
 
 	Vector<String> names;
@@ -3691,7 +3697,13 @@ bool EditorInspectorDefaultPlugin::parse_property(Object *p_object, Variant::Typ
 				editor->setup(options);
 				add_property_editor(p_path, editor);
 
-			} else if (p_hint == PROPERTY_HINT_LAYERS_2D_PHYSICS || p_hint == PROPERTY_HINT_LAYERS_2D_RENDER || p_hint == PROPERTY_HINT_LAYERS_2D_NAVIGATION || p_hint == PROPERTY_HINT_LAYERS_3D_PHYSICS || p_hint == PROPERTY_HINT_LAYERS_3D_RENDER || p_hint == PROPERTY_HINT_LAYERS_3D_NAVIGATION) {
+			} else if (p_hint == PROPERTY_HINT_LAYERS_2D_PHYSICS ||
+					p_hint == PROPERTY_HINT_LAYERS_2D_RENDER ||
+					p_hint == PROPERTY_HINT_LAYERS_2D_NAVIGATION ||
+					p_hint == PROPERTY_HINT_LAYERS_3D_PHYSICS ||
+					p_hint == PROPERTY_HINT_LAYERS_3D_RENDER ||
+					p_hint == PROPERTY_HINT_LAYERS_3D_NAVIGATION ||
+					p_hint == PROPERTY_HINT_LAYERS_AVOIDANCE) {
 				EditorPropertyLayers::LayerType lt = EditorPropertyLayers::LAYER_RENDER_2D;
 				switch (p_hint) {
 					case PROPERTY_HINT_LAYERS_2D_RENDER:
@@ -3711,6 +3723,9 @@ bool EditorInspectorDefaultPlugin::parse_property(Object *p_object, Variant::Typ
 						break;
 					case PROPERTY_HINT_LAYERS_3D_NAVIGATION:
 						lt = EditorPropertyLayers::LAYER_NAVIGATION_3D;
+						break;
+					case PROPERTY_HINT_LAYERS_AVOIDANCE:
+						lt = EditorPropertyLayers::LAYER_AVOIDANCE;
 						break;
 					default: {
 					} //compiler could be smarter here and realize this can't happen

@@ -35,6 +35,7 @@ public:
 	virtual Array map_get_links(RID p_map) const { return Array(); }
 	virtual Array map_get_regions(RID p_map) const { return Array(); }
 	virtual Array map_get_agents(RID p_map) const { return Array(); }
+	virtual Array map_get_obstacles(RID p_map) const { return Array(); }
 	virtual void map_force_update(RID p_map) {}
 
 	virtual RID region_create() { return RID(); }
@@ -78,17 +79,34 @@ public:
 	virtual RID agent_create() { return RID(); }
 	virtual void agent_set_map(RID p_agent, RID p_map) {}
 	virtual RID agent_get_map(RID p_agent) const { return RID(); }
+	virtual void agent_set_avoidance_enabled(RID p_agent, bool p_enabled) {}
+	virtual bool agent_get_avoidance_enabled(RID p_agent) const { return false; }
+	virtual void agent_set_use_3d_avoidance(RID p_agent, bool p_enabled) {}
+	virtual bool agent_get_use_3d_avoidance(RID p_agent) const { return false; }
 	virtual void agent_set_neighbor_dist(RID p_agent, real_t p_dist) {}
 	virtual void agent_set_max_neighbors(RID p_agent, int p_count) {}
-	virtual void agent_set_time_horizon(RID p_agent, real_t p_time) {}
+	virtual void agent_set_time_horizon_agents(RID p_agent, real_t p_time_horizon) {}
+	virtual void agent_set_time_horizon_obstacles(RID p_agent, real_t p_time_horizon) {}
 	virtual void agent_set_radius(RID p_agent, real_t p_radius) {}
+	virtual void agent_set_height(RID p_agent, real_t p_height) {}
 	virtual void agent_set_max_speed(RID p_agent, real_t p_max_speed) {}
+	virtual void agent_set_velocity_forced(RID p_agent, Vector3 p_velocity) {}
 	virtual void agent_set_velocity(RID p_agent, Vector3 p_velocity) {}
-	virtual void agent_set_target_velocity(RID p_agent, Vector3 p_velocity) {}
 	virtual void agent_set_position(RID p_agent, Vector3 p_position) {}
-	virtual void agent_set_ignore_y(RID p_agent, bool p_ignore) {}
 	virtual bool agent_is_map_changed(RID p_agent) const { return false; }
-	virtual void agent_set_callback(RID p_agent, ObjectID p_object_id, StringName p_method, Variant p_udata = Variant()) {}
+	virtual void agent_set_avoidance_callback(RID p_agent, ObjectID p_object_id, StringName p_method, Variant p_udata = Variant()) {}
+
+	virtual void agent_set_avoidance_layers(RID p_agent, uint32_t p_layers) {}
+	virtual void agent_set_avoidance_mask(RID p_agent, uint32_t p_mask) {}
+	virtual void agent_set_avoidance_priority(RID p_agent, real_t p_priority) {}
+
+	virtual RID obstacle_create() { return RID(); }
+	virtual void obstacle_set_map(RID p_obstacle, RID p_map) {}
+	virtual RID obstacle_get_map(RID p_obstacle) const { return RID(); }
+	virtual void obstacle_set_height(RID p_obstacle, real_t p_height) {}
+	virtual void obstacle_set_position(RID p_obstacle, Vector3 p_position) {}
+	virtual void obstacle_set_vertices(RID p_obstacle, const Vector<Vector3> &p_vertices) {}
+	virtual void obstacle_set_avoidance_layers(RID p_obstacle, uint32_t p_layers) {}
 
 	virtual void free(RID p_object){};
 

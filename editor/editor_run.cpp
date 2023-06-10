@@ -98,6 +98,10 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 		args.push_back("--debug-navigation");
 	}
 
+	if (debug_avoidance) {
+		args.push_back("--debug-avoidance");
+	}
+
 	if (debug_shader_fallbacks) {
 		args.push_back("--debug-shader-fallbacks");
 	}
@@ -305,6 +309,14 @@ bool EditorRun::get_debug_navigation() const {
 	return debug_navigation;
 }
 
+void EditorRun::set_debug_avoidance(bool p_debug) {
+	debug_avoidance = p_debug;
+}
+
+bool EditorRun::get_debug_avoidance() const {
+	return debug_avoidance;
+}
+
 void EditorRun::set_debug_shader_fallbacks(bool p_debug) {
 	debug_shader_fallbacks = p_debug;
 }
@@ -318,5 +330,6 @@ EditorRun::EditorRun() {
 	running_scene = "";
 	debug_collisions = false;
 	debug_navigation = false;
+	debug_avoidance = false;
 	debug_shader_fallbacks = false;
 }

@@ -91,6 +91,7 @@ public:
 	virtual Array map_get_links(RID p_map) const;
 	virtual Array map_get_regions(RID p_map) const;
 	virtual Array map_get_agents(RID p_map) const;
+	virtual Array map_get_obstacles(RID p_map) const;
 
 	virtual void map_force_update(RID p_map);
 
@@ -175,6 +176,9 @@ public:
 	virtual void agent_set_map(RID p_agent, RID p_map);
 	virtual RID agent_get_map(RID p_agent) const;
 
+	virtual void agent_set_avoidance_enabled(RID p_agent, bool p_enabled);
+	virtual bool agent_get_avoidance_enabled(RID p_agent) const;
+
 	/// The maximum distance (center point to
 	/// center point) to other agents this agent
 	/// takes into account in the navigation. The
@@ -200,7 +204,8 @@ public:
 	/// other agents, but the less freedom this
 	/// agent has in choosing its velocities.
 	/// Must be positive.
-	virtual void agent_set_time_horizon(RID p_agent, real_t p_time);
+	virtual void agent_set_time_horizon_agents(RID p_agent, real_t p_time_horizon);
+	virtual void agent_set_time_horizon_obstacles(RID p_agent, real_t p_time_horizon);
 
 	/// The radius of this agent.
 	/// Must be non-negative.
@@ -210,23 +215,33 @@ public:
 	/// Must be non-negative.
 	virtual void agent_set_max_speed(RID p_agent, real_t p_max_speed);
 
-	/// Current velocity of the agent
-	virtual void agent_set_velocity(RID p_agent, Vector2 p_velocity);
+	/// forces and agent velocity change in the avoidance simulation, adds simulation instability if done recklessly
+	virtual void agent_set_velocity_forced(RID p_agent, Vector2 p_velocity);
 
-	/// The new target velocity.
-	virtual void agent_set_target_velocity(RID p_agent, Vector2 p_velocity);
+	/// The wanted velocity for the agent as a "suggestion" to the avoidance simulation.
+	/// The simulation will try to fulfil this velocity wish if possible but may change the velocity depending on other agent's and obstacles'.
+	virtual void agent_set_velocity(RID p_agent, Vector2 p_velocity);
 
 	/// Position of the agent in world space.
 	virtual void agent_set_position(RID p_agent, Vector2 p_position);
-
-	/// Agent ignore the Y axis and avoid collisions by moving only on the horizontal plane
-	virtual void agent_set_ignore_y(RID p_agent, bool p_ignore);
 
 	/// Returns true if the map got changed the previous frame.
 	virtual bool agent_is_map_changed(RID p_agent) const;
 
 	/// Callback called at the end of the RVO process
-	virtual void agent_set_callback(RID p_agent, ObjectID p_object_id, StringName p_method, Variant p_udata = Variant());
+	virtual void agent_set_avoidance_callback(RID p_agent, ObjectID p_object_id, StringName p_method, Variant p_udata = Variant());
+
+	virtual void agent_set_avoidance_layers(RID p_agent, uint32_t p_layers);
+	virtual void agent_set_avoidance_mask(RID p_agent, uint32_t p_mask);
+	virtual void agent_set_avoidance_priority(RID p_agent, real_t p_priority);
+
+	/// Creates the obstacle.
+	virtual RID obstacle_create();
+	virtual void obstacle_set_map(RID p_obstacle, RID p_map);
+	virtual RID obstacle_get_map(RID p_obstacle) const;
+	virtual void obstacle_set_position(RID p_obstacle, Vector2 p_position);
+	virtual void obstacle_set_vertices(RID p_obstacle, const Vector<Vector2> &p_vertices);
+	virtual void obstacle_set_avoidance_layers(RID p_obstacle, uint32_t p_layers);
 
 	/// Destroy the `RID`
 	virtual void free(RID p_object);

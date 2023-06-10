@@ -64,5 +64,5 @@ void VendorItemData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_vendor_datas"), &VendorItemData::get_vendor_datas);
 	ClassDB::bind_method(D_METHOD("set_vendor_datas", "vendor_datas"), &VendorItemData::set_vendor_datas);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "vendor_datas", PROPERTY_HINT_NONE, "23/19:VendorItemDataEntry", PROPERTY_USAGE_DEFAULT, "VendorItemDataEntry"), "set_vendor_datas", "get_vendor_datas");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "vendor_datas", PROPERTY_HINT_NONE, "23/20:VendorItemDataEntry", PROPERTY_USAGE_DEFAULT, "VendorItemDataEntry"), "set_vendor_datas", "get_vendor_datas");
 }

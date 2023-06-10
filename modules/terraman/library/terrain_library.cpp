@@ -392,7 +392,7 @@ void TerrainLibrary::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("materials_get"), &TerrainLibrary::materials_get);
 	ClassDB::bind_method(D_METHOD("materials_set"), &TerrainLibrary::materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "23/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "23/20:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
 	BIND_VMETHOD(MethodInfo("_liquid_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_liquid_material_cache_get", PropertyInfo(Variant::INT, "key")));
@@ -416,7 +416,7 @@ void TerrainLibrary::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("liquid_materials_get"), &TerrainLibrary::liquid_materials_get);
 	ClassDB::bind_method(D_METHOD("liquid_materials_set"), &TerrainLibrary::liquid_materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "liquid_materials", PROPERTY_HINT_NONE, "23/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "liquid_materials_set", "liquid_materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "liquid_materials", PROPERTY_HINT_NONE, "23/20:Material", PROPERTY_USAGE_DEFAULT, "Material"), "liquid_materials_set", "liquid_materials_get");
 
 	BIND_VMETHOD(MethodInfo("_prop_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_prop_material_cache_get", PropertyInfo(Variant::INT, "key")));
@@ -440,7 +440,7 @@ void TerrainLibrary::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("prop_materials_get"), &TerrainLibrary::prop_materials_get);
 	ClassDB::bind_method(D_METHOD("prop_materials_set"), &TerrainLibrary::prop_materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "prop_materials", PROPERTY_HINT_NONE, "23/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "prop_materials_set", "prop_materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "prop_materials", PROPERTY_HINT_NONE, "23/20:Material", PROPERTY_USAGE_DEFAULT, "Material"), "prop_materials_set", "prop_materials_get");
 
 	ClassDB::bind_method(D_METHOD("terra_surface_get", "index"), &TerrainLibrary::terra_surface_get);
 	ClassDB::bind_method(D_METHOD("terra_surface_add", "value"), &TerrainLibrary::terra_surface_add);

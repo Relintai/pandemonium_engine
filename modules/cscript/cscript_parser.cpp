@@ -4266,6 +4266,16 @@ void CScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
+									if (tokenizer->get_token() == CScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "PROPERTY_HINT_LAYERS_AVOIDANCE") {
+										_ADVANCE_AND_CONSUME_NEWLINES;
+										if (tokenizer->get_token() != CScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+											_set_error("Expected \")\" in the avoidance 3D navigation hint.");
+											return;
+										}
+										current_export.hint = PROPERTY_HINT_LAYERS_AVOIDANCE;
+										break;
+									}
+
 									if (tokenizer->get_token() == CScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().get_type() == Variant::STRING) {
 										//enumeration
 										current_export.hint = PROPERTY_HINT_ENUM;
