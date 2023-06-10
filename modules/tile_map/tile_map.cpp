@@ -612,11 +612,15 @@ void TileMap::update_dirty_quadrants() {
 			if (r == Rect2()) {
 				tex->draw_rect(canvas_item, rect, false, modulate, c.transpose, normal_map);
 			} else {
-				if (!multirect_started) {
-					multirect_started = true;
-					RenderingServerCanvasHelper::tilemap_begin();
+				Rect2 dst_rect;
+				Rect2 src_rect;
+				if (tex->get_combined_rect_region(rect, r, dst_rect, src_rect)) {
+					if (!multirect_started) {
+						multirect_started = true;
+						RenderingServerCanvasHelper::tilemap_begin();
+					}
+					RenderingServerCanvasHelper::tilemap_add_rect(canvas_item, dst_rect, tex->get_rid(), src_rect, modulate, c.transpose, normal_map.is_valid() ? normal_map->get_rid() : RID(), clip_uv);
 				}
-				RenderingServerCanvasHelper::tilemap_add_rect(canvas_item, rect, tex->get_rid(), r, modulate, c.transpose, normal_map.is_valid() ? normal_map->get_rid() : RID(), clip_uv);
 			}
 
 			Vector<TileSet::ShapeData> shapes = tile_set->tile_get_shapes(c.id);
