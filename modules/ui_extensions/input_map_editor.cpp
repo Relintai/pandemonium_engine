@@ -267,7 +267,7 @@ void InputMapEditor::_press_a_key_confirm() {
 	if (last_wait_for_key.is_null())
 		return;
 
-	Ref<BSInputEventKey> ie;
+	Ref<InputEventKey> ie;
 
 	ie.instance();
 	ie->set_scancode(last_wait_for_key->get_scancode());
@@ -275,6 +275,7 @@ void InputMapEditor::_press_a_key_confirm() {
 	ie->set_alt(last_wait_for_key->get_alt());
 	ie->set_control(last_wait_for_key->get_control());
 	ie->set_metakey(last_wait_for_key->get_metakey());
+	ie->set_action_match_force_exact(true);
 
 	String name = add_at;
 	int idx = edit_idx;

@@ -267,6 +267,13 @@ bool InputEventKey::is_echo() const {
 	return echo;
 }
 
+void InputEventKey::set_action_match_force_exact(bool p_enable) {
+	action_match_force_exact = p_enable;
+}
+bool InputEventKey::is_action_match_force_exact() const {
+	return action_match_force_exact;
+}
+
 uint32_t InputEventKey::get_scancode_with_modifiers() const {
 	return scancode | get_modifiers_mask();
 }
@@ -307,6 +314,22 @@ bool InputEventKey::action_match(const Ref<InputEvent> &p_event, bool p_exact_ma
 	Ref<InputEventKey> key = p_event;
 	if (key.is_null()) {
 		return false;
+	}
+
+	if (action_match_force_exact) {
+		uint32_t code = get_scancode_with_modifiers();
+		uint32_t event_code = key->get_scancode_with_modifiers();
+
+		bool match = (code == event_code);
+		if (match) {
+			if (p_pressed != NULL) {
+				*p_pressed = key->is_pressed();
+			}
+			if (p_strength != NULL) {
+				*p_strength = (p_pressed != NULL && *p_pressed) ? 1.0f : 0.0f;
+			}
+		}
+		return match;
 	}
 
 	bool match;
@@ -368,6 +391,9 @@ void InputEventKey::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_echo", "echo"), &InputEventKey::set_echo);
 
+	ClassDB::bind_method(D_METHOD("set_action_match_force_exact", "unicode"), &InputEventKey::set_action_match_force_exact);
+	ClassDB::bind_method(D_METHOD("is_action_match_force_exact"), &InputEventKey::is_action_match_force_exact);
+
 	ClassDB::bind_method(D_METHOD("get_scancode_with_modifiers"), &InputEventKey::get_scancode_with_modifiers);
 	ClassDB::bind_method(D_METHOD("get_physical_scancode_with_modifiers"), &InputEventKey::get_physical_scancode_with_modifiers);
 
@@ -376,6 +402,7 @@ void InputEventKey::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "physical_scancode"), "set_physical_scancode", "get_physical_scancode");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "unicode"), "set_unicode", "get_unicode");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "echo"), "set_echo", "is_echo");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "action_match_force_exact"), "set_action_match_force_exact", "is_action_match_force_exact");
 }
 
 InputEventKey::InputEventKey() {
@@ -383,6 +410,7 @@ InputEventKey::InputEventKey() {
 	physical_scancode = 0;
 	unicode = 0; ///unicode
 	echo = false;
+	action_match_force_exact = false;
 }
 
 ////////////////////////////////////////

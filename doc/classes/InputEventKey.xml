@@ -43,6 +43,9 @@
 		<member name="unicode" type="int" setter="set_unicode" getter="get_unicode" default="0">
 			The key Unicode identifier (when relevant). Unicode identifiers for the composite characters and complex scripts may not be available unless IME input mode is active. See [method OS.set_ime_active] for more information.
 		</member>
+		<member name="action_match_force_exact" type="bool" setter="set_action_match_force_exact" getter="is_action_match_force_exact" default="false">
+			If [code]true[/code], the InputEvent will match exact InputActions when used as a keybind in the input singleton, similar to how ShortCuts work.
+		</member>
 	</members>
 	<constants>
 	</constants>

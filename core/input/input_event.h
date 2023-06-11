@@ -291,6 +291,8 @@ class InputEventKey : public InputEventWithModifiers {
 
 	bool echo; /// true if this is an echo key
 
+	bool action_match_force_exact;
+
 protected:
 	static void _bind_methods();
 
@@ -308,6 +310,9 @@ public:
 
 	void set_echo(bool p_enable);
 	virtual bool is_echo() const;
+
+	void set_action_match_force_exact(bool p_enable);
+	bool is_action_match_force_exact() const;
 
 	uint32_t get_scancode_with_modifiers() const;
 	uint32_t get_physical_scancode_with_modifiers() const;

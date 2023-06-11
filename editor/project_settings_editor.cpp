@@ -30,40 +30,40 @@
 
 #include "project_settings_editor.h"
 
-#include "core/input/input_map.h"
-#include "core/os/keyboard.h"
 #include "core/config/project_settings.h"
-#include "core/string/translation.h"
-#include "editor/editor_export.h"
-#include "editor/editor_node.h"
-#include "editor/editor_scale.h"
-#include "scene/gui/tab_container.h"
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/variant/dictionary.h"
+#include "core/containers/list.h"
+#include "core/containers/pool_vector.h"
+#include "core/containers/rb_map.h"
+#include "core/containers/rb_set.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
+#include "core/input/input_map.h"
 #include "core/io/resource_loader.h"
-#include "core/containers/list.h"
-#include "core/containers/rb_map.h"
+#include "core/math/color.h"
 #include "core/math/math_defs.h"
 #include "core/math/rect2.h"
-#include "core/os/memory.h"
-#include "core/containers/pool_vector.h"
-#include "core/containers/rb_set.h"
-#include "core/typedefs.h"
+#include "core/object/class_db.h"
 #include "core/object/undo_redo.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/string/translation.h"
+#include "core/typedefs.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 #include "editor/editor_autoload_settings.h"
 #include "editor/editor_data.h"
+#include "editor/editor_export.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_inspector.h"
+#include "editor/editor_node.h"
 #include "editor/editor_plugin_settings.h"
+#include "editor/editor_scale.h"
 #include "editor/editor_sectioned_inspector.h"
 #include "editor/editor_settings.h"
 #include "editor/import_defaults_editor.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
+#include "scene/gui/check_button.h"
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
@@ -73,10 +73,10 @@
 #include "scene/gui/popup.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
+#include "scene/gui/tab_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
-#include "scene/gui/check_button.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
 
@@ -292,14 +292,50 @@ void ProjectSettingsEditor::_action_edited() {
 		String name = "input/" + ti->get_text(0);
 		Dictionary old_action = ProjectSettings::get_singleton()->get(name);
 		Dictionary new_action = old_action.duplicate();
-		new_action["deadzone"] = ti->get_range(1);
 
-		undo_redo->create_action(TTR("Change Action deadzone"));
-		undo_redo->add_do_method(ProjectSettings::get_singleton(), "set", name, new_action);
-		undo_redo->add_do_method(this, "_settings_changed");
-		undo_redo->add_undo_method(ProjectSettings::get_singleton(), "set", name, old_action);
-		undo_redo->add_undo_method(this, "_settings_changed");
-		undo_redo->commit_action();
+		if (ti->get_cell_mode(1) == TreeItem::CELL_MODE_RANGE) {
+			new_action["deadzone"] = ti->get_range(1);
+
+			undo_redo->create_action(TTR("Change Action deadzone"));
+			undo_redo->add_do_method(ProjectSettings::get_singleton(), "set", name, new_action);
+			undo_redo->add_do_method(this, "_settings_changed");
+			undo_redo->add_undo_method(ProjectSettings::get_singleton(), "set", name, old_action);
+			undo_redo->add_undo_method(this, "_settings_changed");
+			undo_redo->commit_action();
+		} else if (ti->get_cell_mode(1) == TreeItem::CELL_MODE_CHECK) {
+			// Edit action event
+			String action_prop = "input/" + ti->get_parent()->get_text(0);
+
+			int idx = ti->get_metadata(0);
+			Dictionary old_val = ProjectSettings::get_singleton()->get(action_prop);
+			Dictionary action = old_val.duplicate();
+
+			Array events = action["events"].duplicate();
+			ERR_FAIL_INDEX(idx, events.size());
+
+			Ref<InputEventKey> event = events[idx];
+
+			if (event.is_null()) {
+				return;
+			}
+
+			event->set_action_match_force_exact(ti->is_checked(1));
+
+			action["events"] = events;
+
+			setting = true;
+			undo_redo->create_action(TTR("Set Input Action Event Exact"));
+			undo_redo->add_do_method(ProjectSettings::get_singleton(), "set", name, action);
+			undo_redo->add_undo_method(ProjectSettings::get_singleton(), "set", name, old_val);
+			undo_redo->add_do_method(this, "_update_actions");
+			undo_redo->add_undo_method(this, "_update_actions");
+			undo_redo->add_do_method(this, "_settings_changed");
+			undo_redo->add_undo_method(this, "_settings_changed");
+			undo_redo->commit_action();
+			setting = false;
+
+			_show_last_added(event, name);
+		}
 	}
 }
 
@@ -825,6 +861,11 @@ void ProjectSettingsEditor::_update_actions() {
 				} else {
 					action2->set_icon(0, get_theme_icon("KeyboardPhysical", "EditorIcons"));
 				}
+
+				action2->set_cell_mode(1, TreeItem::CELL_MODE_CHECK);
+				action2->set_text(1, TTR("Exact"));
+				action2->set_checked(1, k->is_action_match_force_exact());
+				action2->set_editable(1, true);
 			}
 
 			Ref<InputEventJoypadButton> jb = event;

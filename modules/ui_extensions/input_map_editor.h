@@ -30,7 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "bs_input_event_key.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/margin_container.h"
 #include "scene/gui/menu_button.h"
