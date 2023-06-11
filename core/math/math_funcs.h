@@ -81,6 +81,12 @@ public:
 	static _ALWAYS_INLINE_ double acos(double p_x) { return p_x < -1 ? Math_PI : (p_x > 1 ? 0 : ::acos(p_x)); }
 	static _ALWAYS_INLINE_ float acos(float p_x) { return p_x < -1 ? Math_PI : (p_x > 1 ? 0 : ::acosf(p_x)); }
 
+	static _ALWAYS_INLINE_ double asin_unsafe(double p_x) { return ::asin(p_x); }
+	static _ALWAYS_INLINE_ float asin_unsafe(float p_x) { return ::asinf(p_x); }
+
+	static _ALWAYS_INLINE_ double acos_unsafe(double p_x) { return ::acos(p_x); }
+	static _ALWAYS_INLINE_ float acos_unsafe(float p_x) { return ::acosf(p_x); }
+
 	static _ALWAYS_INLINE_ double atan(double p_x) { return ::atan(p_x); }
 	static _ALWAYS_INLINE_ float atan(float p_x) { return ::atanf(p_x); }
 
