@@ -83,6 +83,7 @@ class CollisionShape2DEditor : public Control {
 	int shape_type;
 	int edit_handle;
 	bool pressed;
+	real_t grab_threshold;
 	Variant original;
 	Transform2D original_transform;
 	Point2 last_point;

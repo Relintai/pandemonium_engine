@@ -31,6 +31,19 @@
 #include "collision_shape_2d_editor_plugin.h"
 
 #include "canvas_item_editor_plugin.h"
+#include "core/input/input.h"
+#include "core/input/input_event.h"
+#include "core/math/math_defs.h"
+#include "core/math/math_funcs.h"
+#include "core/object/class_db.h"
+#include "core/object/undo_redo.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "editor/editor_node.h"
+#include "editor/editor_settings.h"
+#include "scene/2d/collision_shape_2d.h"
+#include "scene/main/node.h"
+#include "scene/main/scene_tree.h"
 #include "scene/resources/capsule_shape_2d.h"
 #include "scene/resources/circle_shape_2d.h"
 #include "scene/resources/concave_polygon_shape_2d.h"
@@ -38,18 +51,6 @@
 #include "scene/resources/line_shape_2d.h"
 #include "scene/resources/rectangle_shape_2d.h"
 #include "scene/resources/segment_shape_2d.h"
-#include "core/object/class_db.h"
-#include "core/math/math_defs.h"
-#include "core/math/math_funcs.h"
-#include "core/input/input.h"
-#include "core/input/input_event.h"
-#include "core/os/keyboard.h"
-#include "core/os/memory.h"
-#include "core/object/undo_redo.h"
-#include "editor/editor_node.h"
-#include "scene/2d/collision_shape_2d.h"
-#include "scene/main/node.h"
-#include "scene/main/scene_tree.h"
 #include "scene/resources/shape_2d.h"
 #include "scene/resources/texture.h"
 
@@ -357,7 +358,7 @@ bool CollisionShape2DEditor::forward_canvas_gui_input(const Ref<InputEvent> &p_e
 		if (mb->get_button_index() == BUTTON_LEFT) {
 			if (mb->is_pressed()) {
 				for (int i = 0; i < handles.size(); i++) {
-					if (xform.xform(handles[i]).distance_to(gpoint) < 8) {
+					if (xform.xform(handles[i]).distance_to(gpoint) < grab_threshold) {
 						edit_handle = i;
 
 						break;
@@ -571,6 +572,10 @@ void CollisionShape2DEditor::_notification(int p_what) {
 		case NOTIFICATION_EXIT_TREE: {
 			get_tree()->disconnect("node_removed", this, "_node_removed");
 		} break;
+
+		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
+			grab_threshold = EDITOR_GET("editors/poly_editor/point_grab_radius");
+		} break;
 	}
 }
 
@@ -603,6 +608,7 @@ CollisionShape2DEditor::CollisionShape2DEditor(EditorNode *p_editor) {
 	node = nullptr;
 	canvas_item_editor = nullptr;
 	editor = p_editor;
+	grab_threshold = EDITOR_GET("editors/poly_editor/point_grab_radius");
 
 	undo_redo = p_editor->get_undo_redo();
 
