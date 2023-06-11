@@ -103,11 +103,20 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		}
 
 		super.onCreate(savedInstanceState);
+	}
 
-		// Enable long press, panning and scaling gestures
-		pandemoniumFragment?.renderView?.inputHandler?.apply {
-			enableLongPress(enableLongPressGestures())
-			enablePanningAndScalingGestures(enablePanAndScaleGestures())
+	override fun onPandemoniumSetupCompleted() {
+		super.onPandemoniumSetupCompleted()
+		val longPressEnabled = enableLongPressGestures()
+		val panScaleEnabled = enablePanAndScaleGestures()
+
+
+		runOnUiThread {
+			// Enable long press, panning and scaling gestures
+			pandemoniumFragment?.renderView?.inputHandler?.apply {
+				enableLongPress(longPressEnabled)
+				enablePanningAndScalingGestures(panScaleEnabled)
+			}
 		}
 	}
 
@@ -227,12 +236,16 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
   	/**
 	 * Enable long press gestures for the Pandemonium Android editor.
 	 */
-	protected open fun enableLongPressGestures() = true
+	protected open fun enableLongPressGestures() =
+		java.lang.Boolean.parseBoolean(PandemoniumLib.getEditorSetting("interface/touchscreen/enable_long_press_as_right_click"))
 
 	/**
 	 * Enable pan and scale gestures for the Pandemonium Android editor.
 	 */
-	protected open fun enablePanAndScaleGestures() = true
+	protected open fun enablePanAndScaleGestures() =
+		java.lang.Boolean.parseBoolean(PandemoniumLib.getEditorSetting("interface/touchscreen/enable_pan_and_scale_gestures"))
+
+
 
 	private fun shouldGameLaunchAdjacent(): Boolean {
 		return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

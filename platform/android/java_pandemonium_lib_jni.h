@@ -60,6 +60,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_focusin(JNIEnv *env, jclass clazz);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_focusout(JNIEnv *env, jclass clazz);
 JNIEXPORT jstring JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_getGlobal(JNIEnv *env, jclass clazz, jstring path);
+JNIEXPORT jstring JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_getEditorSetting(JNIEnv *env, jclass clazz, jstring p_setting_key);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_callobject(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_calldeferred(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setVirtualKeyboardHeight(JNIEnv *env, jclass clazz, jint p_height);

@@ -49,6 +49,10 @@
 #include "string_android.h"
 #include "thread_jandroid.h"
 
+#ifdef TOOLS_ENABLED
+#include "editor/editor_settings.h"
+#endif
+
 #include <android/input.h>
 #include <unistd.h>
 
@@ -444,6 +448,18 @@ JNIEXPORT jstring JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumL
 	String js = jstring_to_string(path, env);
 
 	return env->NewStringUTF(ProjectSettings::get_singleton()->get(js).operator String().utf8().get_data());
+}
+
+JNIEXPORT jstring JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_getEditorSetting(JNIEnv *env, jclass clazz, jstring p_setting_key) {
+	String editor_setting = "";
+#ifdef TOOLS_ENABLED
+	String godot_setting_key = jstring_to_string(p_setting_key, env);
+	editor_setting = EDITOR_GET(godot_setting_key).operator String();
+#else
+	WARN_PRINT("Access to the Editor Settings in only available on Editor builds");
+#endif
+
+	return env->NewStringUTF(editor_setting.utf8().get_data());
 }
 
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_callobject(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params) {
