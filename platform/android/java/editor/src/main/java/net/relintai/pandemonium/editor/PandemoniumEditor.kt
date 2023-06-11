@@ -128,7 +128,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 	 */
 	protected open fun checkForProjectPermissionsToEnable() {
 		// Check for RECORD_AUDIO permission
-		val audioInputEnabled = java.lang.Boolean.parseBoolean(pandemoniumLib.getGlobal("audio/enable_audio_input"));
+		val audioInputEnabled = java.lang.Boolean.parseBoolean(PandemoniumLib.getGlobal("audio/enable_audio_input"));
 		if (audioInputEnabled) {
 			PermissionsUtil.requestPermission(Manifest.permission.RECORD_AUDIO, this)
 		}
