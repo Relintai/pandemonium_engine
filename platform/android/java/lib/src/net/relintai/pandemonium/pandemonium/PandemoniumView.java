@@ -138,8 +138,15 @@ public class PandemoniumView extends PandemoniumGLSurfaceView {
 
 	@Override
 	public void onPointerCaptureChange(boolean hasCapture) {
-		super.onPointerCaptureChange(hasCapture);
-		inputHandler.onPointerCaptureChange(hasCapture);
+		if (canCapturePointer()) {
+			super.onPointerCaptureChange(hasCapture);
+			inputHandler.onPointerCaptureChange(hasCapture);
+		}
+	}
+
+	@Keep
+	private boolean canCapturePointer() {
+		return inputHandler.canCapturePointer();
 	}
 
 	@Override

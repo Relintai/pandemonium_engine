@@ -44,6 +44,7 @@ private:
 	jclass _cls;
 	jobject _pandemonium_view;
 
+	jmethodID _can_capture_pointer = 0;
 	jmethodID _request_pointer_capture = 0;
 	jmethodID _release_pointer_capture = 0;
 

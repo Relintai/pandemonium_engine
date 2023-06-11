@@ -227,18 +227,16 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 				)
 				dragInProgress = false
 			}
-			return true
 		}
-
-		dragInProgress = true
 
 		val x = terminusEvent.x
 		val y = terminusEvent.y
 		if (terminusEvent.pointerCount >= 2 && panningAndScalingEnabled && !pointerCaptureInProgress) {
 			PandemoniumLib.pan(x, y, distanceX / 5f, distanceY / 5f)
-		} else {
+		} else if (!scaleInProgress) {
 			PandemoniumInputHandler.handleMotionEvent(terminusEvent)
 		}
+
 		return true
 	}
 
@@ -246,11 +244,14 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 		if (!panningAndScalingEnabled || pointerCaptureInProgress) {
 			return false
 		}
-		PandemoniumLib.magnify(
-			detector.focusX,
-			detector.focusY,
-			detector.scaleFactor
-		)
+
+		if (detector.scaleFactor >= 0.8f && detector.scaleFactor != 1f && detector.scaleFactor <= 1.2f) {
+			PandemoniumLib.magnify(
+				detector.focusX,
+				detector.focusY,
+				detector.scaleFactor
+			)
+		}
 		return true
 	}
 
