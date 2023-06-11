@@ -31,6 +31,7 @@ SOFTWARE.
 #include "editor/editor_node.h"
 #include "modules/mesh_utils/mesh_utils.h"
 #include "scene/3d/camera.h"
+#include "editor/editor_settings.h"
 
 void MDIGizmo::set_visible(const bool visible) {
 	_visible = visible;
@@ -284,7 +285,7 @@ bool MDIGizmo::selection_click_select_front_or_back(Camera *camera, const Ref<In
 	Transform gt = get_spatial_node()->get_global_transform();
 	Vector3 ray_from = camera->get_global_transform().origin;
 	Vector2 gpoint = event->get_position();
-	float grab_threshold = 8;
+	float grab_threshold = EDITOR_GET("editors/poly_editor/point_grab_radius");
 
 	// select vertex
 	int closest_idx = -1;
@@ -362,7 +363,7 @@ bool MDIGizmo::selection_click_select_through(Camera *camera, const Ref<InputEve
 	Transform gt = get_spatial_node()->get_global_transform();
 	Vector3 ray_from = camera->get_global_transform().origin;
 	Vector2 gpoint = event->get_position();
-	float grab_threshold = 8;
+	float grab_threshold = EDITOR_GET("editors/poly_editor/point_grab_radius");
 
 	// select vertex
 	int closest_idx = -1;
