@@ -79,14 +79,6 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 	}
 #endif
 
-#ifdef ANDROID_ENABLED
-	const bool android_force_side_by_side_window = EditorSettings::get_singleton()->get("run/window_placement/android_force_launch_adjacent");
-
-	if (android_force_side_by_side_window) {
-		args.push_back("--android-force-launch-adjacent");
-	}
-#endif
-
 	args.push_back("--allow_focus_steal_pid");
 	args.push_back(itos(OS::get_singleton()->get_process_id()));
 

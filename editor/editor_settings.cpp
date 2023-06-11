@@ -629,9 +629,10 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("editors/visual_editors/minimap_opacity", 0.85);
 	hints["editors/visual_editors/minimap_opacity"] = PropertyInfo(Variant::REAL, "editors/visual_editors/minimap_opacity", PROPERTY_HINT_RANGE, "0.0,1.0,0.01", PROPERTY_USAGE_DEFAULT);
 
-	/* Run */
+/* Run */
 
-	// Window placement
+// Window placement
+#ifndef ANDROID_ENABLED
 	_initial_set("run/window_placement/rect", 1);
 	hints["run/window_placement/rect"] = PropertyInfo(Variant::INT, "run/window_placement/rect", PROPERTY_HINT_ENUM, "Top Left,Centered,Custom Position,Force Maximized,Force Fullscreen");
 	String screen_hints = "Same as Editor,Previous Monitor,Next Monitor";
@@ -641,8 +642,13 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("run/window_placement/rect_custom_position", Vector2());
 	_initial_set("run/window_placement/screen", 0);
 	hints["run/window_placement/screen"] = PropertyInfo(Variant::INT, "run/window_placement/screen", PROPERTY_HINT_ENUM, screen_hints);
+#endif
+
 #ifdef ANDROID_ENABLED
-	_initial_set("run/window_placement/android_force_launch_adjacent", false);
+	// Should match the ANDROID_WINDOW_* constants in 'platform/android/java/editor/src/main/java/org/godotengine/editor/GodotEditor.kt'
+	String android_window_hints = "Auto (based on screen size),Same as Editor,Side-by-side with Editor";
+	_initial_set("run/window_placement/android_window", 0);
+	hints["run/window_placement/android_window"] = PropertyInfo(Variant::INT, "run/window_placement/android_window", PROPERTY_HINT_ENUM, android_window_hints);
 #endif
 
 	// Auto save

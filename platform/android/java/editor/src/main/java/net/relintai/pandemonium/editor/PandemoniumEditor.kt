@@ -77,7 +77,15 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		private const val PROJECT_MANAGER_ARG_SHORT = "-p"
 		private const val PROJECT_MANAGER_PROCESS_NAME_SUFFIX = ":PandemoniumProjectManager"
 
-		private const val FORCE_LAUNCH_ADJACENT_ARG = "--android-force-launch-adjacent"
+		/**
+		 * Sets of constants to specify the window to use to run the project.
+		 *
+		 * Should match the values in 'editor/editor_settings.cpp' for the
+		 * 'run/window_placement/android_window' setting.
+		 */
+		private const val ANDROID_WINDOW_AUTO = 0
+		private const val ANDROID_WINDOW_SAME_AS_EDITOR = 1
+		private const val ANDROID_WINDOW_SIDE_BY_SIDE_WITH_EDITOR = 2
   	}
 
 	private val commandLineParams = ArrayList<String>()
@@ -122,7 +130,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 
 		// Whether we should launch the new pandemonium instance in an adjacent window
 		// https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_LAUNCH_ADJACENT
-		var launchAdjacent = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && (isInMultiWindowMode || isLargeScreen)
+		var launchAdjacent = shouldGameLaunchAdjacent()
 
 		for (arg in args) {
 			if (EDITOR_ARG == arg || EDITOR_ARG_SHORT == arg) {
@@ -136,13 +144,6 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 				targetClass = PandemoniumProjectManager::class.java
 				launchAdjacent = false
 				instanceId = PROJECT_MANAGER_ID
-				break
-			}
-		}
-
-		for (arg in args) {
-			if (FORCE_LAUNCH_ADJACENT_ARG == arg) {
-				launchAdjacent = true
 				break
 			}
 		}
@@ -231,6 +232,26 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 	 * Enable pan and scale gestures for the Pandemonium Android editor.
 	 */
 	protected open fun enablePanAndScaleGestures() = true
+
+	private fun shouldGameLaunchAdjacent(): Boolean {
+		return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			try {
+				when (Integer.parseInt(GodotLib.getEditorSetting("run/window_placement/android_window"))) {
+					ANDROID_WINDOW_SAME_AS_EDITOR -> false
+					ANDROID_WINDOW_SIDE_BY_SIDE_WITH_EDITOR -> true
+					else -> {
+						// ANDROID_WINDOW_AUTO
+						isInMultiWindowMode || isLargeScreen
+					}
+				}
+			} catch (e: NumberFormatException) {
+				// Fall-back to the 'Auto' behavior
+				isInMultiWindowMode || isLargeScreen
+			}
+		} else {
+			false
+		}
+	}
 
   	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
