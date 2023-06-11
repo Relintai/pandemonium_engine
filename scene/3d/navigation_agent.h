@@ -32,6 +32,7 @@
 /*************************************************************************/
 
 #include "core/containers/vector.h"
+
 #include "scene/main/node.h"
 
 class Spatial;
@@ -222,6 +223,7 @@ public:
 	Ref<NavigationPathQueryResult3D> get_current_navigation_result() const;
 
 	const Vector<Vector3> &get_current_navigation_path() const;
+	Vector<Vector3> get_current_navigation_path_bind() const;
 
 	int get_current_navigation_path_index() const {
 		return nav_path_index;

@@ -34,7 +34,7 @@ void NavigationPathQueryResult3D::set_path(const Vector<Vector3> &p_path) {
 	path = p_path;
 }
 
-const Vector<Vector3> &NavigationPathQueryResult3D::get_path() const {
+Vector<Vector3> NavigationPathQueryResult3D::get_path() const {
 	return path;
 }
 
@@ -42,7 +42,7 @@ void NavigationPathQueryResult3D::set_path_types(const Vector<int> &p_path_types
 	path_types = p_path_types;
 }
 
-const Vector<int> &NavigationPathQueryResult3D::get_path_types() const {
+Vector<int> NavigationPathQueryResult3D::get_path_types() const {
 	return path_types;
 }
 
@@ -58,7 +58,7 @@ void NavigationPathQueryResult3D::set_path_owner_ids(const Vector<ObjectID> &p_p
 	path_owner_ids = p_path_owner_ids;
 }
 
-const Vector<ObjectID> &NavigationPathQueryResult3D::get_path_owner_ids() const {
+Vector<ObjectID> NavigationPathQueryResult3D::get_path_owner_ids() const {
 	return path_owner_ids;
 }
 

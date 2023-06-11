@@ -52,7 +52,7 @@ void NavigationObstacle2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_velocity"), &NavigationObstacle2D::get_velocity);
 
 	ClassDB::bind_method(D_METHOD("set_vertices", "vertices"), &NavigationObstacle2D::set_vertices);
-	ClassDB::bind_method(D_METHOD("get_vertices"), &NavigationObstacle2D::get_vertices);
+	ClassDB::bind_method(D_METHOD("get_vertices"), &NavigationObstacle2D::get_vertices_bind);
 
 	ClassDB::bind_method(D_METHOD("set_avoidance_layers", "layers"), &NavigationObstacle2D::set_avoidance_layers);
 	ClassDB::bind_method(D_METHOD("get_avoidance_layers"), &NavigationObstacle2D::get_avoidance_layers);

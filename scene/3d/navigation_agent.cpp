@@ -111,7 +111,7 @@ void NavigationAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("distance_to_target"), &NavigationAgent::distance_to_target);
 
 	ClassDB::bind_method(D_METHOD("get_current_navigation_result"), &NavigationAgent::get_current_navigation_result);
-	ClassDB::bind_method(D_METHOD("get_current_navigation_path"), &NavigationAgent::get_current_navigation_path);
+	ClassDB::bind_method(D_METHOD("get_current_navigation_path"), &NavigationAgent::get_current_navigation_path_bind);
 	ClassDB::bind_method(D_METHOD("get_current_navigation_path_index"), &NavigationAgent::get_current_navigation_path_index);
 	ClassDB::bind_method(D_METHOD("is_target_reached"), &NavigationAgent::is_target_reached);
 	ClassDB::bind_method(D_METHOD("is_target_reachable"), &NavigationAgent::is_target_reachable);
@@ -574,6 +574,10 @@ Ref<NavigationPathQueryResult3D> NavigationAgent::get_current_navigation_result(
 }
 
 const Vector<Vector3> &NavigationAgent::get_current_navigation_path() const {
+	return navigation_result->get_path();
+}
+
+Vector<Vector3> NavigationAgent::get_current_navigation_path_bind() const {
 	return navigation_result->get_path();
 }
 

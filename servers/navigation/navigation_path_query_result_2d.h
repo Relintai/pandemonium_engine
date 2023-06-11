@@ -52,16 +52,16 @@ public:
 	};
 
 	void set_path(const Vector<Vector2> &p_path);
-	const Vector<Vector2> &get_path() const;
+	Vector<Vector2> get_path() const;
 
 	void set_path_types(const Vector<int> &p_path_types);
-	const Vector<int> &get_path_types() const;
+	Vector<int> get_path_types() const;
 
 	void set_path_rids(const Array &p_path_rids);
 	Array get_path_rids() const;
 
 	void set_path_owner_ids(const Vector<ObjectID> &p_path_owner_ids);
-	const Vector<ObjectID> &get_path_owner_ids() const;
+	Vector<ObjectID> get_path_owner_ids() const;
 
 	void set_path_owner_ids_bind(const Array p_path_owner_ids);
 	Array get_path_owner_ids_bind() const;

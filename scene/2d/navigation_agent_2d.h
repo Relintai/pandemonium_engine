@@ -198,6 +198,7 @@ public:
 	Ref<NavigationPathQueryResult2D> get_current_navigation_result() const;
 
 	const Vector<Vector2> &get_current_navigation_path() const;
+	Vector<Vector2> get_current_navigation_path_bind() const;
 
 	int get_current_navigation_path_index() const {
 		return nav_path_index;
