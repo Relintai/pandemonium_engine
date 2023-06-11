@@ -62,7 +62,7 @@ bool PandemoniumJavaViewWrapper::can_capture_pointer() const {
 		JNIEnv *env = get_jni_env();
 		ERR_FAIL_NULL_V(env, false);
 
-		return env->CallBooleanMethod(_godot_view, _can_capture_pointer);
+		return env->CallBooleanMethod(_pandemonium_view, _can_capture_pointer);
 	}
 
 	return false;
