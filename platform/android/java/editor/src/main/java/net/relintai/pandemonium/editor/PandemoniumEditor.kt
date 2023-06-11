@@ -92,7 +92,9 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 	private val commandLineParams = ArrayList<String>()
 
 	override fun onCreate(savedInstanceState : Bundle?) {
-		PermissionsUtil.requestManifestPermissions(this);
+		// We exclude certain permissions from the set we request at startup, as they'll be
+		// requested on demand based on use-cases.
+		PermissionsUtil.requestManifestPermissions(this, setOf(Manifest.permission.RECORD_AUDIO))
 
 		val params : Array<String>? = getIntent().getStringArrayExtra(COMMAND_LINE_PARAMS);
 
@@ -110,6 +112,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		val longPressEnabled = enableLongPressGestures()
 		val panScaleEnabled = enablePanAndScaleGestures()
 
+		checkForProjectPermissionsToEnable()
 
 		runOnUiThread {
 			// Enable long press, panning and scaling gestures
@@ -117,6 +120,17 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 				enableLongPress(longPressEnabled)
 				enablePanningAndScalingGestures(panScaleEnabled)
 			}
+		}
+	}
+
+	/**
+	 * Check for project permissions to enable
+	 */
+	protected open fun checkForProjectPermissionsToEnable() {
+		// Check for RECORD_AUDIO permission
+		val audioInputEnabled = java.lang.Boolean.parseBoolean(pandemoniumLib.getGlobal("audio/enable_audio_input"));
+		if (audioInputEnabled) {
+			PermissionsUtil.requestPermission(Manifest.permission.RECORD_AUDIO, this)
 		}
 	}
 

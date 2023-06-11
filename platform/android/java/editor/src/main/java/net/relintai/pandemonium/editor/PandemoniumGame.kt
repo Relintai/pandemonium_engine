@@ -39,4 +39,9 @@ class PandemoniumGame : PandemoniumEditor() {
   override fun enableLongPressGestures() = false
 
   override fun enablePanAndScaleGestures() = false
+
+  override fun checkForProjectPermissionsToEnable() {
+		// Nothing to do.. by the time we get here, the project permissions will have already
+		// been requested by the Editor window.
+	}
 }

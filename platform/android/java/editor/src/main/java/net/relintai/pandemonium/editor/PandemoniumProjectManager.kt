@@ -38,5 +38,9 @@ package net.relintai.pandemonium.editor
  * [PandemoniumEditor] activity.
  */
 
-class PandemoniumProjectManager : PandemoniumEditor() 
+class PandemoniumProjectManager : PandemoniumEditor() {
+    override fun checkForProjectPermissionsToEnable() {
+		// Nothing to do here.. we have yet to select a project to load.
+	}
+}
 

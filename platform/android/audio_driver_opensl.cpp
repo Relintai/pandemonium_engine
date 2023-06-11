@@ -284,7 +284,8 @@ Error AudioDriverOpenSL::capture_start() {
 		return capture_init_device();
 	}
 
-	return OK;
+	WARN_PRINT("Unable to start audio capture - No RECORD_AUDIO permission");
+	return ERR_UNAUTHORIZED;
 }
 
 Error AudioDriverOpenSL::capture_stop() {
