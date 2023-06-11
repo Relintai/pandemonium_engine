@@ -33,6 +33,7 @@ package net.relintai.pandemonium.editor
 import net.relintai.pandemonium.pandemonium.FullScreenPandemoniumApp
 import net.relintai.pandemonium.pandemonium.utils.PermissionsUtil
 import net.relintai.pandemonium.pandemonium.utils.ProcessPhoenix
+import net.relintai.pandemonium.pandemonium.PandemoniumLib
 
 import android.Manifest
 import android.app.ActivityManager
@@ -236,7 +237,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 	private fun shouldGameLaunchAdjacent(): Boolean {
 		return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			try {
-				when (Integer.parseInt(GodotLib.getEditorSetting("run/window_placement/android_window"))) {
+				when (Integer.parseInt(PandemoniumLib.getEditorSetting("run/window_placement/android_window"))) {
 					ANDROID_WINDOW_SAME_AS_EDITOR -> false
 					ANDROID_WINDOW_SIDE_BY_SIDE_WITH_EDITOR -> true
 					else -> {
