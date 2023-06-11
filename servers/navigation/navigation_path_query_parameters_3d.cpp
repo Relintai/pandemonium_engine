@@ -83,7 +83,7 @@ void NavigationPathQueryParameters3D::set_map(const RID &p_map) {
 	parameters.map = p_map;
 }
 
-const RID NavigationPathQueryParameters3D::get_map() const {
+RID NavigationPathQueryParameters3D::get_map() const {
 	return parameters.map;
 }
 
@@ -91,7 +91,7 @@ void NavigationPathQueryParameters3D::set_start_position(const Vector3 &p_start_
 	parameters.start_position = p_start_position;
 }
 
-const Vector3 NavigationPathQueryParameters3D::get_start_position() const {
+Vector3 NavigationPathQueryParameters3D::get_start_position() const {
 	return parameters.start_position;
 }
 
@@ -99,7 +99,7 @@ void NavigationPathQueryParameters3D::set_target_position(const Vector3 &p_targe
 	parameters.target_position = p_target_position;
 }
 
-const Vector3 NavigationPathQueryParameters3D::get_target_position() const {
+Vector3 NavigationPathQueryParameters3D::get_target_position() const {
 	return parameters.target_position;
 }
 
