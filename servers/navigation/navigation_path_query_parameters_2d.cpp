@@ -83,7 +83,7 @@ void NavigationPathQueryParameters2D::set_map(const RID &p_map) {
 	parameters.map = p_map;
 }
 
-const RID &NavigationPathQueryParameters2D::get_map() const {
+const RID NavigationPathQueryParameters2D::get_map() const {
 	return parameters.map;
 }
 

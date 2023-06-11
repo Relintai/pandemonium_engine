@@ -105,8 +105,7 @@ public:
 	real_t get_height() const { return height; }
 
 	void set_vertices(const Vector<Vector3> &p_vertices);
-	const Vector<Vector3> &get_vertices() const { return vertices; };
-	Vector<Vector3> get_vertices_bind() const { return vertices; };
+	Vector<Vector3> get_vertices() const { return vertices; };
 
 	void set_avoidance_layers(uint32_t p_layers);
 	uint32_t get_avoidance_layers() const;
