@@ -198,7 +198,7 @@ NavigationObstacle::NavigationObstacle() {
 	fake_agent = NavigationServer::get_singleton()->agent_create();
 
 	// change properties of the fake agent so it can act as fake obstacle with a radius
-	NavigationServer::get_singleton()->agent_set_neighbor_dist(fake_agent, 0.0);
+	NavigationServer::get_singleton()->agent_set_neighbor_distance(fake_agent, 0.0);
 	NavigationServer::get_singleton()->agent_set_max_neighbors(fake_agent, 0);
 	NavigationServer::get_singleton()->agent_set_time_horizon_agents(fake_agent, 0.0);
 	NavigationServer::get_singleton()->agent_set_time_horizon_obstacles(fake_agent, 0.0);

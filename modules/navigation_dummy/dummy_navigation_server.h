@@ -83,7 +83,7 @@ public:
 	virtual bool agent_get_avoidance_enabled(RID p_agent) const { return false; }
 	virtual void agent_set_use_3d_avoidance(RID p_agent, bool p_enabled) {}
 	virtual bool agent_get_use_3d_avoidance(RID p_agent) const { return false; }
-	virtual void agent_set_neighbor_dist(RID p_agent, real_t p_dist) {}
+	virtual void agent_set_neighbor_distance(RID p_agent, real_t p_dist) {}
 	virtual void agent_set_max_neighbors(RID p_agent, int p_count) {}
 	virtual void agent_set_time_horizon_agents(RID p_agent, real_t p_time_horizon) {}
 	virtual void agent_set_time_horizon_obstacles(RID p_agent, real_t p_time_horizon) {}

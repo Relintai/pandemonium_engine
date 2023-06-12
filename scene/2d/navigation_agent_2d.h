@@ -57,7 +57,7 @@ class NavigationAgent2D : public Node {
 	real_t path_desired_distance;
 	real_t target_desired_distance;
 	real_t radius;
-	real_t neighbor_dist;
+	real_t neighbor_distance;
 	int max_neighbors;
 	real_t time_horizon_agents;
 	real_t time_horizon_obstacles;
@@ -166,9 +166,9 @@ public:
 		return radius;
 	}
 
-	void set_neighbor_dist(real_t p_dist);
-	real_t get_neighbor_dist() const {
-		return neighbor_dist;
+	void set_neighbor_distance(real_t p_dist);
+	real_t get_neighbor_distance() const {
+		return neighbor_distance;
 	}
 
 	void set_max_neighbors(int p_count);

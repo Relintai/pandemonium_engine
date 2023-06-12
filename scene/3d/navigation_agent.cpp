@@ -71,8 +71,8 @@ void NavigationAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_navigation_map", "navigation_map"), &NavigationAgent::set_navigation_map);
 	ClassDB::bind_method(D_METHOD("get_navigation_map"), &NavigationAgent::get_navigation_map);
 
-	ClassDB::bind_method(D_METHOD("set_neighbor_dist", "neighbor_dist"), &NavigationAgent::set_neighbor_dist);
-	ClassDB::bind_method(D_METHOD("get_neighbor_dist"), &NavigationAgent::get_neighbor_dist);
+	ClassDB::bind_method(D_METHOD("set_neighbor_distance", "neighbor_distance"), &NavigationAgent::set_neighbor_distance);
+	ClassDB::bind_method(D_METHOD("get_neighbor_distance"), &NavigationAgent::get_neighbor_distance);
 
 	ClassDB::bind_method(D_METHOD("set_max_neighbors", "max_neighbors"), &NavigationAgent::set_max_neighbors);
 	ClassDB::bind_method(D_METHOD("get_max_neighbors"), &NavigationAgent::get_max_neighbors);
@@ -145,7 +145,7 @@ void NavigationAgent::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "velocity", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR), "set_velocity", "get_velocity");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "height", PROPERTY_HINT_RANGE, "0.01,100,0.01,or_greater,suffix:m"), "set_height", "get_height");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "radius", PROPERTY_HINT_RANGE, "0.01,100,0.01,or_greater,suffix:m"), "set_radius", "get_radius");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "neighbor_dist", PROPERTY_HINT_RANGE, "0.1,10000,0.01"), "set_neighbor_dist", "get_neighbor_dist");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "neighbor_distance", PROPERTY_HINT_RANGE, "0.1,10000,0.01"), "set_neighbor_distance", "get_neighbor_distance");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_neighbors", PROPERTY_HINT_RANGE, "1,10000,1"), "set_max_neighbors", "get_max_neighbors");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time_horizon_agents", PROPERTY_HINT_RANGE, "0.0,10,0.01,or_greater,suffix:s"), "set_time_horizon_agents", "get_time_horizon_agents");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time_horizon_obstacles", PROPERTY_HINT_RANGE, "0.0,10,0.01,or_greater,suffix:s"), "set_time_horizon_obstacles", "get_time_horizon_obstacles");
@@ -319,7 +319,7 @@ NavigationAgent::NavigationAgent() {
 
 	agent = NavigationServer::get_singleton()->agent_create();
 
-	NavigationServer::get_singleton()->agent_set_neighbor_dist(agent, neighbor_dist);
+	NavigationServer::get_singleton()->agent_set_neighbor_distance(agent, neighbor_distance);
 	NavigationServer::get_singleton()->agent_set_max_neighbors(agent, max_neighbors);
 	NavigationServer::get_singleton()->agent_set_time_horizon_agents(agent, time_horizon_agents);
 	NavigationServer::get_singleton()->agent_set_time_horizon_obstacles(agent, time_horizon_obstacles);
@@ -506,9 +506,9 @@ void NavigationAgent::set_use_3d_avoidance(bool p_use_3d_avoidance) {
 	property_list_changed_notify();
 }
 
-void NavigationAgent::set_neighbor_dist(real_t p_dist) {
-	neighbor_dist = p_dist;
-	NavigationServer::get_singleton()->agent_set_neighbor_dist(agent, neighbor_dist);
+void NavigationAgent::set_neighbor_distance(real_t p_dist) {
+	neighbor_distance = p_dist;
+	NavigationServer::get_singleton()->agent_set_neighbor_distance(agent, neighbor_distance);
 }
 
 void NavigationAgent::set_max_neighbors(int p_count) {

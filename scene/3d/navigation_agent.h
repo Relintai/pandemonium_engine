@@ -64,7 +64,7 @@ class NavigationAgent : public Node {
 	real_t height;
 	real_t radius;
 	real_t path_height_offset;
-	real_t neighbor_dist;
+	real_t neighbor_distance;
 	int max_neighbors;
 	real_t time_horizon_agents;
 	real_t time_horizon_obstacles;
@@ -191,9 +191,9 @@ public:
 	void set_use_3d_avoidance(bool p_use_3d_avoidance);
 	bool get_use_3d_avoidance() const { return use_3d_avoidance; }
 
-	void set_neighbor_dist(real_t p_dist);
-	real_t get_neighbor_dist() const {
-		return neighbor_dist;
+	void set_neighbor_distance(real_t p_dist);
+	real_t get_neighbor_distance() const {
+		return neighbor_distance;
 	}
 
 	void set_max_neighbors(int p_count);

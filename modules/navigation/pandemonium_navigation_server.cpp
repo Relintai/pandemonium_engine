@@ -730,7 +730,7 @@ COMMAND_2(agent_set_map, RID, p_agent, RID, p_map) {
 	}
 }
 
-COMMAND_2(agent_set_neighbor_dist, RID, p_agent, real_t, p_dist) {
+COMMAND_2(agent_set_neighbor_distance, RID, p_agent, real_t, p_dist) {
 	NavAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND(agent == nullptr);
 

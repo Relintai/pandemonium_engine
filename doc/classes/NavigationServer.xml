@@ -127,7 +127,7 @@
 				Sets the maximum speed of the agent. Must be positive.
 			</description>
 		</method>
-		<method name="agent_set_neighbor_dist">
+		<method name="agent_set_neighbor_distance">
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="dist" type="float" />
