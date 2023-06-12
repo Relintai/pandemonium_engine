@@ -391,6 +391,10 @@ bool Object::_predelete() {
 	return _predelete_ok;
 }
 
+void Object::cancel_free() {
+	_predelete_ok = 0;
+}
+
 void Object::_postinitialize() {
 	_class_ptr = _get_class_namev();
 	_initialize_classv();
@@ -955,10 +959,6 @@ void Object::remove_change_receptor(Object *p_receptor) {
 
 void Object::property_list_changed_notify() {
 	_change_notify();
-}
-
-void Object::cancel_delete() {
-	_predelete_ok = true;
 }
 
 ObjectRC *Object::_use_rc() {
@@ -1734,6 +1734,7 @@ void Object::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("tr", "message"), &Object::tr);
 
 	ClassDB::bind_method(D_METHOD("is_queued_for_deletion"), &Object::is_queued_for_deletion);
+	ClassDB::bind_method(D_METHOD("cancel_free"), &Object::cancel_free);
 
 	ClassDB::add_virtual_method("Object", MethodInfo("free"), false);
 

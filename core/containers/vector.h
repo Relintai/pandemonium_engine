@@ -37,9 +37,9 @@
  */
 
 #include "core/containers/cowdata.h"
+#include "core/containers/sort_array.h"
 #include "core/error/error_macros.h"
 #include "core/os/memory.h"
-#include "core/containers/sort_array.h"
 
 template <class T>
 class VectorWriteProxy {
@@ -65,11 +65,13 @@ public:
 	bool push_back(T p_elem);
 
 	void remove(int p_index) { _cowdata.remove(p_index); }
-	void erase(const T &p_val) {
+	_FORCE_INLINE_ bool erase(const T &p_val) {
 		int idx = find(p_val);
 		if (idx >= 0) {
 			remove(idx);
+			return true;
 		}
+		return false;
 	};
 	void invert();
 

@@ -96,6 +96,8 @@ public:
 	// get the ID of the main thread
 	_FORCE_INLINE_ static ID get_main_id() { return main_thread_id; }
 
+	_FORCE_INLINE_ static bool is_main_thread() { return get_caller_id() == main_thread_id; }
+
 	static Error set_name(const String &p_name);
 
 	void start(Thread::Callback p_callback, void *p_user, const Settings &p_settings = Settings());
@@ -110,6 +112,8 @@ public:
 	_FORCE_INLINE_ static ID get_caller_id() { return 0; }
 	// get the ID of the main thread
 	_FORCE_INLINE_ static ID get_main_id() { return 0; }
+	
+	_FORCE_INLINE_ static bool is_main_thread() { return true; }
 
 	static Error set_name(const String &p_name) { return ERR_UNAVAILABLE; }
 

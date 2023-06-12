@@ -33,12 +33,12 @@
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
+#include "core/containers/rb_set.h"
+#include "core/containers/vmap.h"
 #include "core/object/object_id.h"
 #include "core/os/rw_lock.h"
 #include "core/os/safe_refcount.h"
-#include "core/containers/rb_set.h"
 #include "core/variant/variant.h"
-#include "core/containers/vmap.h"
 
 #include <atomic>
 
@@ -565,8 +565,6 @@ protected:
 	static void get_valid_parents_static(List<String> *p_parents);
 	static void _get_valid_parents_static(List<String> *p_parents);
 
-	void cancel_delete();
-
 	void property_list_changed_notify();
 	virtual void _changed_callback(Object *p_changed, const char *p_prop);
 
@@ -808,6 +806,8 @@ public:
 	void set_script_instance_binding(int p_script_language_index, void *p_data);
 
 	void clear_internal_resource_paths();
+
+	void cancel_free();
 
 	Object();
 	virtual ~Object();

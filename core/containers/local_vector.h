@@ -30,11 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/error/error_macros.h"
-#include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
 #include "core/containers/sort_array.h"
 #include "core/containers/vector.h"
+#include "core/error/error_macros.h"
+#include "core/os/memory.h"
 
 template <class T, class U = uint32_t, bool force_trivial = false>
 class LocalVector {
@@ -94,11 +94,13 @@ public:
 		}
 	}
 
-	void erase(const T &p_val) {
+	_FORCE_INLINE_ bool erase(const T &p_val) {
 		int64_t idx = find(p_val);
 		if (idx >= 0) {
 			remove(idx);
+			return true;
 		}
+		return false;
 	}
 
 	U erase_multiple_unordered(const T &p_val) {
@@ -280,7 +282,7 @@ public:
 			data[i] = r[i];
 		}
 	}
-	
+
 	inline LocalVector &operator=(const LocalVector &p_from) {
 		resize(p_from.size());
 		for (U i = 0; i < p_from.count; i++) {

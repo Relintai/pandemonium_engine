@@ -99,7 +99,7 @@ public:
 	}
 
 	void clear() {
-		if (elements == nullptr) {
+		if (elements == nullptr || num_elements == 0) {
 			return;
 		}
 		uint32_t capacity = hash_table_size_primes[capacity_index];
@@ -517,7 +517,7 @@ private:
 	}
 
 	bool _lookup_pos(const TKey &p_key, uint32_t &r_pos) const {
-		if (elements == nullptr) {
+		if (elements == nullptr || num_elements == 0) {
 			return false; // Failed lookups, no elements
 		}
 
