@@ -14,7 +14,9 @@ def configure(env):
 
 def get_doc_classes():
   return [
-    "EditorScriptEditor"
+    "EditorScriptEditor",
+    "EditorScriptEditorBase",
+    "EditorSyntaxHighlighter"
   ]
 
 def get_doc_path():
