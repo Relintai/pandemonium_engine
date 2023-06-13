@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="String" version="3.11">
+<class name="String" version="3.12">
 	<brief_description>
 		Built-in string class.
 	</brief_description>
@@ -1215,6 +1215,16 @@
 		</method>
 		<method name="uri_encode">
 			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="utf16_byte_length">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="utf8_byte_length">
+			<return type="int" />
 			<description>
 			</description>
 		</method>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Viewport" inherits="World" version="3.11">
+<class name="Viewport" inherits="World" version="3.12">
 	<brief_description>
 		Creates a sub-view into the screen.
 	</brief_description>
@@ -23,6 +23,12 @@
 		<link title="3D Viewport Scaling Demo">https://godotengine.org/asset-library/asset/586</link>
 	</tutorials>
 	<methods>
+		<method name="canvas_parent_mark_dirty">
+			<return type="void" />
+			<argument index="0" name="node" type="Node" />
+			<description>
+			</description>
+		</method>
 		<method name="get_camera_2d" qualifiers="const">
 			<return type="Camera2D" />
 			<description>
@@ -95,6 +101,11 @@
 			<description>
 				Returns [code]true[/code] if the viewport is currently performing a drag operation.
 				Alternative to [constant Node.NOTIFICATION_DRAG_BEGIN] and [constant Node.NOTIFICATION_DRAG_END] when you prefer polling the value.
+			</description>
+		</method>
+		<method name="gui_set_root_order_dirty">
+			<return type="void" />
+			<description>
 			</description>
 		</method>
 		<method name="input">

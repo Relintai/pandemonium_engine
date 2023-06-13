@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ProjectSettings" inherits="Object" version="3.11">
+<class name="ProjectSettings" inherits="Object" version="3.12">
 	<brief_description>
 		Contains global variables accessible from everywhere.
 	</brief_description>
@@ -517,7 +517,7 @@
 		<member name="debug/settings/stdout/verbose_stdout" type="bool" setter="" getter="" default="false">
 			Print more information to standard output when running. It displays information such as memory leaks, which scenes and resources are being loaded, etc.
 		</member>
-		<member name="debug/shapes/avoidance/agents_radius_color" type="Color" setter="" getter="" default="Color(1, 1, 0, 0.25)">
+		<member name="debug/shapes/avoidance/agents_radius_color" type="Color" setter="" getter="" default="Color( 1, 1, 0, 0.25 )">
 			Color of the avoidance agents radius, visible when "Visible Avoidance" is enabled in the Debug menu.
 		</member>
 		<member name="debug/shapes/avoidance/enable_agents_radius" type="bool" setter="" getter="" default="true">
@@ -529,19 +529,19 @@
 		<member name="debug/shapes/avoidance/enable_obstacles_static" type="bool" setter="" getter="" default="true">
 			If enabled, displays static avoidance obstacles when "Visible Avoidance" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/avoidance/obstacles_radius_color" type="Color" setter="" getter="" default="Color(1, 0.5, 0, 0.25)">
+		<member name="debug/shapes/avoidance/obstacles_radius_color" type="Color" setter="" getter="" default="Color( 1, 0.5, 0, 0.25 )">
 			Color of the avoidance obstacles radius, visible when "Visible Avoidance" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/avoidance/obstacles_static_edge_pushin_color" type="Color" setter="" getter="" default="Color(1, 0, 0, 1)">
+		<member name="debug/shapes/avoidance/obstacles_static_edge_pushin_color" type="Color" setter="" getter="" default="Color( 1, 0, 0, 1 )">
 			Color of the static avoidance obstacles edges when their vertices are winded in order to push agents in, visible when "Visible Avoidance" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/avoidance/obstacles_static_edge_pushout_color" type="Color" setter="" getter="" default="Color(1, 1, 0, 1)">
+		<member name="debug/shapes/avoidance/obstacles_static_edge_pushout_color" type="Color" setter="" getter="" default="Color( 1, 1, 0, 1 )">
 			Color of the static avoidance obstacles edges when their vertices are winded in order to push agents out, visible when "Visible Avoidance" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/avoidance/obstacles_static_face_pushin_color" type="Color" setter="" getter="" default="Color(1, 0, 0, 0)">
+		<member name="debug/shapes/avoidance/obstacles_static_face_pushin_color" type="Color" setter="" getter="" default="Color( 1, 0, 0, 0 )">
 			Color of the static avoidance obstacles faces when their vertices are winded in order to push agents in, visible when "Visible Avoidance" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/avoidance/obstacles_static_face_pushout_color" type="Color" setter="" getter="" default="Color(1, 1, 0, 0.5)">
+		<member name="debug/shapes/avoidance/obstacles_static_face_pushout_color" type="Color" setter="" getter="" default="Color( 1, 1, 0, 0.5 )">
 			Color of the static avoidance obstacles faces when their vertices are winded in order to push agents out, visible when "Visible Avoidance" is enabled in the Debug menu.
 		</member>
 		<member name="debug/shapes/collision/contact_color" type="Color" setter="" getter="" default="Color( 1, 0.2, 0.1, 0.8 )">
@@ -556,13 +556,13 @@
 		<member name="debug/shapes/collision/shape_color" type="Color" setter="" getter="" default="Color( 0, 0.6, 0.7, 0.42 )">
 			Color of the collision shapes, visible when "Visible Collision Shapes" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/navigation/agent_path_color" type="Color" setter="" getter="" default="Color(1, 0, 0, 1)">
+		<member name="debug/shapes/navigation/agent_path_color" type="Color" setter="" getter="" default="Color( 1, 0, 0, 1 )">
 			Color to display enabled navigation agent paths when an agent has debug enabled.
 		</member>
 		<member name="debug/shapes/navigation/agent_path_point_size" type="float" setter="" getter="" default="4.0">
 			Rasterized size (pixel) used to render navigation agent path points when an agent has debug enabled.
 		</member>
-		<member name="debug/shapes/navigation/edge_connection_color" type="Color" setter="" getter="" default="Color(1, 0, 1, 1)">
+		<member name="debug/shapes/navigation/edge_connection_color" type="Color" setter="" getter="" default="Color( 1, 0, 1, 1 )">
 			Color to display edge connections between navigation regions, visible when "Visible Navigation" is enabled in the Debug menu.
 		</member>
 		<member name="debug/shapes/navigation/enable_agent_paths" type="bool" setter="" getter="" default="true">
@@ -592,30 +592,23 @@
 		<member name="debug/shapes/navigation/enable_link_connections_xray" type="bool" setter="" getter="" default="true">
 			If enabled, displays navigation link connections through geometry when "Visible Navigation" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/navigation/geometry_edge_color" type="Color" setter="" getter="" default="Color(0.5, 1, 1, 1)">
+		<member name="debug/shapes/navigation/geometry_edge_color" type="Color" setter="" getter="" default="Color( 0.5, 1, 1, 1 )">
 			Color to display enabled navigation mesh polygon edges, visible when "Visible Navigation" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/navigation/geometry_edge_disabled_color" type="Color" setter="" getter="" default="Color(0.5, 0.5, 0.5, 1)">
+		<member name="debug/shapes/navigation/geometry_edge_disabled_color" type="Color" setter="" getter="" default="Color( 0.5, 0.5, 0.5, 1 )">
 			Color to display disabled navigation mesh polygon edges, visible when "Visible Navigation" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/navigation/geometry_face_color" type="Color" setter="" getter="" default="Color(0.5, 1, 1, 0.4)">
+		<member name="debug/shapes/navigation/geometry_face_color" type="Color" setter="" getter="" default="Color( 0.5, 1, 1, 0.4 )">
 			Color to display enabled navigation mesh polygon faces, visible when "Visible Navigation" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/navigation/geometry_face_disabled_color" type="Color" setter="" getter="" default="Color(0.5, 0.5, 0.5, 0.4)">
+		<member name="debug/shapes/navigation/geometry_face_disabled_color" type="Color" setter="" getter="" default="Color( 0.5, 0.5, 0.5, 0.4 )">
 			Color to display disabled navigation mesh polygon faces, visible when "Visible Navigation" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/navigation/link_connection_color" type="Color" setter="" getter="" default="Color(1, 0.5, 1, 1)">
+		<member name="debug/shapes/navigation/link_connection_color" type="Color" setter="" getter="" default="Color( 1, 0.5, 1, 1 )">
 			Color to use to display navigation link connections, visible when "Visible Navigation" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/navigation/link_connection_disabled_color" type="Color" setter="" getter="" default="Color(0.5, 0.5, 0.5, 1)">
+		<member name="debug/shapes/navigation/link_connection_disabled_color" type="Color" setter="" getter="" default="Color( 0.5, 0.5, 0.5, 1 )">
 			Color to use to display disabled navigation link connections, visible when "Visible Navigation" is enabled in the Debug menu.
-		</member>
-		<member name="navigation/baking/generator/navigation_mesh_generator" type="String" setter="" getter="" default="&quot;DEFAULT&quot;">
-			Sets which navigation mesh generator to use to bake navigation meshes and parse source geometry from the scene.
-			"DEFAULT" and "GodotNavigationMeshGenerator" are the same, as there is currently no alternative navigation mesh generator implemented.
-		</member>
-		<member name="navigation/baking/thread_model/use_thread_pool" type="bool" setter="" getter="" default="true">
-			If [code]true[/code] the navigation mesh generator uses ThreadPool for baking navigation meshes.
 		</member>
 		<member name="display/mouse_cursor/custom_image" type="String" setter="" getter="" default="&quot;&quot;">
 			Custom image for the mouse cursor (limited to 256×256).
@@ -1381,30 +1374,6 @@
 		<member name="layer_names/avoidance/layer_1" type="String" setter="" getter="" default="&quot;&quot;">
 			Optional name for the navigation avoidance layer 1. If left empty, the layer will display as "Layer 1".
 		</member>
-		<member name="layer_names/avoidance/layer_2" type="String" setter="" getter="" default="&quot;&quot;">
-			Optional name for the navigation avoidance layer 2. If left empty, the layer will display as "Layer 2".
-		</member>
-		<member name="layer_names/avoidance/layer_3" type="String" setter="" getter="" default="&quot;&quot;">
-			Optional name for the navigation avoidance layer 3. If left empty, the layer will display as "Layer 3".
-		</member>
-		<member name="layer_names/avoidance/layer_4" type="String" setter="" getter="" default="&quot;&quot;">
-			Optional name for the navigation avoidance layer 4. If left empty, the layer will display as "Layer 4".
-		</member>
-		<member name="layer_names/avoidance/layer_5" type="String" setter="" getter="" default="&quot;&quot;">
-			Optional name for the navigation avoidance layer 5. If left empty, the layer will display as "Layer 5".
-		</member>
-		<member name="layer_names/avoidance/layer_6" type="String" setter="" getter="" default="&quot;&quot;">
-			Optional name for the navigation avoidance layer 6. If left empty, the layer will display as "Layer 6".
-		</member>
-		<member name="layer_names/avoidance/layer_7" type="String" setter="" getter="" default="&quot;&quot;">
-			Optional name for the navigation avoidance layer 7. If left empty, the layer will display as "Layer 7".
-		</member>
-		<member name="layer_names/avoidance/layer_8" type="String" setter="" getter="" default="&quot;&quot;">
-			Optional name for the navigation avoidance layer 8. If left empty, the layer will display as "Layer 8".
-		</member>
-		<member name="layer_names/avoidance/layer_9" type="String" setter="" getter="" default="&quot;&quot;">
-			Optional name for the navigation avoidance layer 9. If left empty, the layer will display as "Layer 9".
-		</member>
 		<member name="layer_names/avoidance/layer_10" type="String" setter="" getter="" default="&quot;&quot;">
 			Optional name for the navigation avoidance layer 10. If left empty, the layer will display as "Layer 10".
 		</member>
@@ -1434,6 +1403,9 @@
 		</member>
 		<member name="layer_names/avoidance/layer_19" type="String" setter="" getter="" default="&quot;&quot;">
 			Optional name for the navigation avoidance layer 19. If left empty, the layer will display as "Layer 19".
+		</member>
+		<member name="layer_names/avoidance/layer_2" type="String" setter="" getter="" default="&quot;&quot;">
+			Optional name for the navigation avoidance layer 2. If left empty, the layer will display as "Layer 2".
 		</member>
 		<member name="layer_names/avoidance/layer_20" type="String" setter="" getter="" default="&quot;&quot;">
 			Optional name for the navigation avoidance layer 20. If left empty, the layer will display as "Layer 20".
@@ -1465,6 +1437,9 @@
 		<member name="layer_names/avoidance/layer_29" type="String" setter="" getter="" default="&quot;&quot;">
 			Optional name for the navigation avoidance layer 29. If left empty, the layer will display as "Layer 29".
 		</member>
+		<member name="layer_names/avoidance/layer_3" type="String" setter="" getter="" default="&quot;&quot;">
+			Optional name for the navigation avoidance layer 3. If left empty, the layer will display as "Layer 3".
+		</member>
 		<member name="layer_names/avoidance/layer_30" type="String" setter="" getter="" default="&quot;&quot;">
 			Optional name for the navigation avoidance layer 30. If left empty, the layer will display as "Layer 30".
 		</member>
@@ -1473,6 +1448,24 @@
 		</member>
 		<member name="layer_names/avoidance/layer_32" type="String" setter="" getter="" default="&quot;&quot;">
 			Optional name for the navigation avoidance layer 32. If left empty, the layer will display as "Layer 32".
+		</member>
+		<member name="layer_names/avoidance/layer_4" type="String" setter="" getter="" default="&quot;&quot;">
+			Optional name for the navigation avoidance layer 4. If left empty, the layer will display as "Layer 4".
+		</member>
+		<member name="layer_names/avoidance/layer_5" type="String" setter="" getter="" default="&quot;&quot;">
+			Optional name for the navigation avoidance layer 5. If left empty, the layer will display as "Layer 5".
+		</member>
+		<member name="layer_names/avoidance/layer_6" type="String" setter="" getter="" default="&quot;&quot;">
+			Optional name for the navigation avoidance layer 6. If left empty, the layer will display as "Layer 6".
+		</member>
+		<member name="layer_names/avoidance/layer_7" type="String" setter="" getter="" default="&quot;&quot;">
+			Optional name for the navigation avoidance layer 7. If left empty, the layer will display as "Layer 7".
+		</member>
+		<member name="layer_names/avoidance/layer_8" type="String" setter="" getter="" default="&quot;&quot;">
+			Optional name for the navigation avoidance layer 8. If left empty, the layer will display as "Layer 8".
+		</member>
+		<member name="layer_names/avoidance/layer_9" type="String" setter="" getter="" default="&quot;&quot;">
+			Optional name for the navigation avoidance layer 9. If left empty, the layer will display as "Layer 9".
 		</member>
 		<member name="locale/fallback" type="String" setter="" getter="" default="&quot;en&quot;">
 			The locale to fall back to if a translation isn't available in a given language. If left empty, [code]en[/code] (English) will be used.
@@ -1513,6 +1506,8 @@
 		<member name="navigation/2d/default_link_connection_radius" type="int" setter="" getter="" default="4">
 			Default link connection radius for 2D navigation maps. See [method NavigationServer2D.map_set_link_connection_radius].
 		</member>
+		<member name="navigation/2d/navigation_engine" type="String" setter="" getter="" default="&quot;DEFAULT&quot;">
+		</member>
 		<member name="navigation/2d/use_edge_connections" type="bool" setter="" getter="" default="true">
 			If enabled 2D navigation regions will use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin. This setting only affects World2D default navigation maps.
 		</member>
@@ -1525,11 +1520,16 @@
 		<member name="navigation/3d/default_edge_connection_margin" type="float" setter="" getter="" default="0.25">
 			Default edge connection margin for 3D navigation maps. See [method NavigationServer.map_set_edge_connection_margin].
 		</member>
+		<member name="navigation/3d/default_link_connection_radius" type="float" setter="" getter="" default="1.0">
+			Default link connection radius for 3D navigation maps. See [method NavigationServer3D.map_set_link_connection_radius].
+		</member>
 		<member name="navigation/3d/default_map_up" type="Vector3" setter="" getter="" default="Vector3( 0, 1, 0 )">
 			Default map up vector for 3D navigation maps. See [method NavigationServer.map_set_up].
 		</member>
-		<member name="navigation/3d/default_link_connection_radius" type="float" setter="" getter="" default="1.0">
-			Default link connection radius for 3D navigation maps. See [method NavigationServer3D.map_set_link_connection_radius].
+		<member name="navigation/3d/navigation_engine" type="String" setter="" getter="" default="&quot;DEFAULT&quot;">
+		</member>
+		<member name="navigation/3d/use_edge_connections" type="bool" setter="" getter="" default="true">
+			If enabled 3D navigation regions will use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin. This setting only affects World3D default navigation maps.
 		</member>
 		<member name="navigation/avoidance/thread_model/avoidance_use_high_priority_threads" type="bool" setter="" getter="" default="true">
 			If enabled and avoidance calculations use multiple threads the threads run with high priority.
@@ -1537,8 +1537,12 @@
 		<member name="navigation/avoidance/thread_model/avoidance_use_multiple_threads" type="bool" setter="" getter="" default="true">
 			If enabled the avoidance calculations use multiple threads.
 		</member>
-		<member name="navigation/3d/use_edge_connections" type="bool" setter="" getter="" default="true">
-			If enabled 3D navigation regions will use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin. This setting only affects World3D default navigation maps.
+		<member name="navigation/baking/generator/navigation_mesh_generator" type="String" setter="" getter="" default="&quot;DEFAULT&quot;">
+			Sets which navigation mesh generator to use to bake navigation meshes and parse source geometry from the scene.
+			"DEFAULT" and "GodotNavigationMeshGenerator" are the same, as there is currently no alternative navigation mesh generator implemented.
+		</member>
+		<member name="navigation/baking/thread_model/use_thread_pool" type="bool" setter="" getter="" default="true">
+			If [code]true[/code] the navigation mesh generator uses ThreadPool for baking navigation meshes.
 		</member>
 		<member name="network/limits/debugger_stdout/max_chars_per_second" type="int" setter="" getter="" default="2048">
 			Maximum amount of characters allowed to send as output from the debugger. Over this value, content is dropped. This helps not to stall the debugger connection.

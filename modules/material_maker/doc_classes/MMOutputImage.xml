@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="MMOutputImage" inherits="MMNode" version="3.11">
+<class name="MMOutputImage" inherits="MMNode" version="3.12">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -7,9 +7,16 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="save">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
 		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
 		</member>
 		<member name="postfix" type="String" setter="set_postfix" getter="get_postfix" default="&quot;&quot;">
 		</member>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="MMAlgos" inherits="Object" version="3.11">
+<class name="MMAlgos" inherits="Object" version="3.12">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -49,6 +49,17 @@
 			<argument index="1" name="hue" type="float" />
 			<argument index="2" name="saturation" type="float" />
 			<argument index="3" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="adjust_levels">
+			<return type="Color" />
+			<argument index="0" name="color" type="Color" />
+			<argument index="1" name="in_min" type="Color" />
+			<argument index="2" name="in_mid" type="Color" />
+			<argument index="3" name="in_max" type="Color" />
+			<argument index="4" name="out_min" type="Color" />
+			<argument index="5" name="out_max" type="Color" />
 			<description>
 			</description>
 		</method>
@@ -776,6 +787,13 @@
 			<description>
 			</description>
 		</method>
+		<method name="generate_histogram">
+			<return type="Image" />
+			<argument index="0" name="input" type="Image" />
+			<argument index="1" name="texture_size" type="int" default="256" />
+			<description>
+			</description>
+		</method>
 		<method name="get_data_color">
 			<return type="Color" />
 			<argument index="0" name="index" type="int" />
@@ -950,6 +968,14 @@
 			<return type="float" />
 			<argument index="0" name="x" type="float" />
 			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="mixc">
+			<return type="Color" />
+			<argument index="0" name="a" type="Color" />
+			<argument index="1" name="b" type="Color" />
+			<argument index="2" name="c" type="Color" />
 			<description>
 			</description>
 		</method>
@@ -1877,6 +1903,13 @@
 			<return type="float" />
 			<argument index="0" name="edge" type="float" />
 			<argument index="1" name="x" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stepc">
+			<return type="Color" />
+			<argument index="0" name="edge" type="Color" />
+			<argument index="1" name="x" type="Color" />
 			<description>
 			</description>
 		</method>

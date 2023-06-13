@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="OmniLight" inherits="Light" version="3.11">
+<class name="OmniLight" inherits="Light" version="3.12">
 	<brief_description>
 		Omnidirectional light, such as a light bulb or a candle.
 	</brief_description>
@@ -27,6 +27,7 @@
 			The shadow rendering mode to use for this [OmniLight]. See [enum ShadowMode].
 			[b]Note:[/b] In GLES2, [constant SHADOW_CUBE] is only supported on GPUs that feature support for depth cubemaps. Old GPUs such as the Radeon HD 4000 series don't support cubemap shadows and will fall back to dual paraboloid shadows as a result.
 		</member>
+		<member name="shadow_bias" type="float" setter="set_param" getter="get_param" overrides="Light" default="0.15" />
 	</members>
 	<constants>
 		<constant name="SHADOW_DUAL_PARABOLOID" value="0" enum="ShadowMode">

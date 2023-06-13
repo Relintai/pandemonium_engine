@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WebServerSimple" inherits="WebServer" version="3.11">
+<class name="WebServerSimple" inherits="WebServer" version="3.12">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -31,6 +31,10 @@
 		</member>
 		<member name="bind_port" type="int" setter="set_bind_port" getter="get_bind_port" default="8080">
 		</member>
+		<member name="max_request_size" type="int" setter="set_max_request_size" getter="get_max_request_size" default="3">
+		</member>
+		<member name="max_request_size_type" type="int" setter="set_max_request_size_type" getter="get_max_request_size_type" enum="WebServerSimple.MaxRequestSizeTypes" default="2">
+		</member>
 		<member name="ssl_cert" type="String" setter="set_ssl_cert" getter="get_ssl_cert" default="&quot;&quot;">
 		</member>
 		<member name="ssl_key" type="String" setter="set_ssl_key" getter="get_ssl_key" default="&quot;&quot;">
@@ -45,5 +49,13 @@
 		</member>
 	</members>
 	<constants>
+		<constant name="MAX_REQUEST_SIZE_TYPE_BYTE" value="0" enum="MaxRequestSizeTypes">
+		</constant>
+		<constant name="MAX_REQUEST_SIZE_TYPE_KILO_BYTE" value="1" enum="MaxRequestSizeTypes">
+		</constant>
+		<constant name="MAX_REQUEST_SIZE_TYPE_MEGA_BYTE" value="2" enum="MaxRequestSizeTypes">
+		</constant>
+		<constant name="MAX_REQUEST_SIZE_TYPE_GIGA_BYTE" value="3" enum="MaxRequestSizeTypes">
+		</constant>
 	</constants>
 </class>

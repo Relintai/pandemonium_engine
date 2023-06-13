@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpotLight" inherits="Light" version="3.11">
+<class name="SpotLight" inherits="Light" version="3.12">
 	<brief_description>
 		A spotlight, such as a reflector spotlight or a lantern.
 	</brief_description>
@@ -14,6 +14,7 @@
 	<methods>
 	</methods>
 	<members>
+		<member name="shadow_bias" type="float" setter="set_param" getter="get_param" overrides="Light" default="0.15" />
 		<member name="spot_angle" type="float" setter="set_param" getter="get_param" default="45.0">
 			The spotlight's angle in degrees.
 			[b]Note:[/b] [member spot_angle] is not affected by [member Spatial.scale] (the light's scale or its parent's scale).

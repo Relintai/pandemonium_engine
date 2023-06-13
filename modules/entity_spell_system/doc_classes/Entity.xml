@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Entity" inherits="Node" version="3.11">
+<class name="Entity" inherits="Node" version="3.12">
 	<brief_description>
 		Represents an [Entity] inside the world. Entities can be players, mobs, chests, or any kind of interactable things.
 	</brief_description>
@@ -14,6 +14,13 @@
 	<methods>
 		<method name="_body_changed" qualifiers="virtual">
 			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_body_instance" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="EntityData" />
+			<argument index="1" name="model_index" type="int" />
 			<description>
 			</description>
 		</method>
@@ -227,6 +234,34 @@
 			<description>
 			</description>
 		</method>
+		<method name="_notification_ccategory_cooldown_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_ccategory_cooldown_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_ccooldown_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_ccooldown_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
 		<method name="_notification_cdamage" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="what" type="int" />
@@ -312,6 +347,34 @@
 			<return type="void" />
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scategory_cooldown_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scategory_cooldown_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scooldown_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scooldown_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
@@ -561,6 +624,39 @@
 		<method name="aura_removess_with_group">
 			<return type="void" />
 			<argument index="0" name="aura_group" type="AuraGroup" />
+			<description>
+			</description>
+		</method>
+		<method name="body_get">
+			<return type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="body_get_2d">
+			<return type="Node2D" />
+			<description>
+			</description>
+		</method>
+		<method name="body_get_3d">
+			<return type="Spatial" />
+			<description>
+			</description>
+		</method>
+		<method name="body_instance">
+			<return type="void" />
+			<argument index="0" name="data" type="EntityData" />
+			<argument index="1" name="model_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="body_on_changed">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="body_set">
+			<return type="void" />
+			<argument index="0" name="body" type="Node" />
 			<description>
 			</description>
 		</method>
@@ -1369,21 +1465,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_body">
-			<return type="Node" />
-			<description>
-			</description>
-		</method>
-		<method name="get_body_2d">
-			<return type="Node2D" />
-			<description>
-			</description>
-		</method>
-		<method name="get_body_3d">
-			<return type="Spatial" />
-			<description>
-			</description>
-		</method>
 		<method name="get_character_skeleton">
 			<return type="Node" />
 			<description>
@@ -1440,13 +1521,6 @@
 		</method>
 		<method name="gets_speed">
 			<return type="EntityResource" />
-			<description>
-			</description>
-		</method>
-		<method name="instance_body">
-			<return type="void" />
-			<argument index="0" name="arg0" type="EntityData" />
-			<argument index="1" name="arg1" type="int" />
 			<description>
 			</description>
 		</method>
@@ -1599,24 +1673,10 @@
 			<description>
 			</description>
 		</method>
-		<method name="notification_ccategory_cooldown_added" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="id" type="int" />
-			<argument index="1" name="value" type="float" />
-			<description>
-			</description>
-		</method>
 		<method name="notification_ccategory_cooldown_added">
 			<return type="void" />
 			<argument index="0" name="category_cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccategory_cooldown_removed" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="id" type="int" />
-			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
@@ -1627,24 +1687,10 @@
 			<description>
 			</description>
 		</method>
-		<method name="notification_ccooldown_added" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="id" type="int" />
-			<argument index="1" name="value" type="float" />
-			<description>
-			</description>
-		</method>
 		<method name="notification_ccooldown_added">
 			<return type="void" />
 			<argument index="0" name="cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccooldown_removed" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="id" type="int" />
-			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
@@ -1781,24 +1827,10 @@
 			<description>
 			</description>
 		</method>
-		<method name="notification_scategory_cooldown_added" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="id" type="int" />
-			<argument index="1" name="value" type="float" />
-			<description>
-			</description>
-		</method>
 		<method name="notification_scategory_cooldown_added">
 			<return type="void" />
 			<argument index="0" name="category_cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
-			<description>
-			</description>
-		</method>
-		<method name="notification_scategory_cooldown_removed" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="id" type="int" />
-			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
@@ -1809,24 +1841,10 @@
 			<description>
 			</description>
 		</method>
-		<method name="notification_scooldown_added" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="id" type="int" />
-			<argument index="1" name="value" type="float" />
-			<description>
-			</description>
-		</method>
 		<method name="notification_scooldown_added">
 			<return type="void" />
 			<argument index="0" name="cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
-			<description>
-			</description>
-		</method>
-		<method name="notification_scooldown_removed" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="id" type="int" />
-			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
@@ -1938,11 +1956,6 @@
 			<argument index="0" name="bag" type="Bag" />
 			<argument index="1" name="slot_id_1" type="int" />
 			<argument index="2" name="slot_id_2" type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="on_body_changed">
-			<return type="void" />
 			<description>
 			</description>
 		</method>
@@ -2163,12 +2176,6 @@
 		<method name="sdeal_heal_to">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellHealInfo" />
-			<description>
-			</description>
-		</method>
-		<method name="set_body">
-			<return type="void" />
-			<argument index="0" name="body" type="Node" />
 			<description>
 			</description>
 		</method>
@@ -2734,7 +2741,7 @@
 		</member>
 		<member name="ai_state" type="int" setter="sets_ai_state" getter="gets_ai_state" enum="EntityEnums.AIStates" default="0">
 		</member>
-		<member name="body_path" type="NodePath" setter="set_body_path" getter="get_body_path" default="NodePath(&quot;&quot;)">
+		<member name="body_path" type="NodePath" setter="body_set_path" getter="body_get_path" default="NodePath(&quot;&quot;)">
 		</member>
 		<member name="cbag" type="Bag" setter="setc_bag" getter="getc_bag">
 		</member>
@@ -2788,7 +2795,7 @@
 		</member>
 		<member name="entity_data_id" type="int" setter="setc_entity_data_id" getter="getc_entity_data_id" default="0">
 		</member>
-		<member name="pet_gets_ai_state" type="int" setter="pet_sets_ai_state" getter="pet_gets_ai_state" enum="EntityEnums.AIStates" default="0">
+		<member name="pet_ai_state" type="int" setter="pet_sets_ai_state" getter="pet_gets_ai_state" enum="EntityEnums.AIStates" default="0">
 		</member>
 		<member name="sai" type="EntityAI" setter="sets_ai" getter="gets_ai">
 		</member>

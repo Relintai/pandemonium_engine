@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="FastnoiseNoiseParams" inherits="Resource" version="3.11">
+<class name="FastnoiseNoiseParams" inherits="Resource" version="3.12">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -15,6 +15,8 @@
 		</method>
 	</methods>
 	<members>
+		<member name="cellular_distance_function" type="int" setter="set_cellular_distance_function" getter="get_cellular_distance_function" enum="FastNoise.CellularDistanceFunction" default="0">
+		</member>
 		<member name="cellular_jitter" type="float" setter="set_cellular_jitter" getter="get_cellular_jitter" default="0.45">
 		</member>
 		<member name="cellular_return_type" type="int" setter="set_cellular_return_type" getter="get_cellular_return_type" enum="FastNoise.CellularReturnType" default="0">
@@ -36,8 +38,6 @@
 		<member name="noise_type" type="int" setter="set_noise_type" getter="get_noise_type" enum="FastNoise.Type" default="4">
 		</member>
 		<member name="seed" type="int" setter="set_seed" getter="get_seed" default="1337">
-		</member>
-		<member name="set_cellular_distance_function" type="int" setter="set_cellular_distance_function" getter="get_cellular_distance_function" enum="FastNoise.CellularDistanceFunction" default="0">
 		</member>
 	</members>
 	<constants>

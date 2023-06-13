@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpellHealInfo" inherits="Reference" version="3.11">
+<class name="SpellHealInfo" inherits="Reference" version="3.12">
 	<brief_description>
 		Contains heal information. It is passed around in callbacks, so things can modify values. (absorbs, immunities etc.)
 	</brief_description>
@@ -25,7 +25,7 @@
 		</member>
 		<member name="heal" type="int" setter="heal_set" getter="heal_get" default="0">
 		</member>
-		<member name="heal_type_get" type="int" setter="heal_type_set" getter="heal_type_get" default="0">
+		<member name="heal_type" type="int" setter="heal_type_set" getter="heal_type_get" default="0">
 		</member>
 		<member name="immune" type="bool" setter="set_immune" getter="get_immune" default="false">
 		</member>

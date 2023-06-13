@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Vector4" version="3.11">
+<class name="Vector4" version="3.12">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -109,7 +109,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="lerp">
+		<method name="limit_length">
+			<return type="Vector4" />
+			<argument index="0" name="len" type="float" default="1.0" />
+			<description>
+			</description>
+		</method>
+		<method name="linear_interpolate">
 			<return type="Vector4" />
 			<argument index="0" name="to" type="Vector4" />
 			<argument index="1" name="weight" type="float" />
@@ -176,6 +182,10 @@
 		<method name="snapped">
 			<return type="Vector4" />
 			<argument index="0" name="by" type="Vector4" />
+			<description>
+			</description>
+		</method>
+		<method name="zero">
 			<description>
 			</description>
 		</method>

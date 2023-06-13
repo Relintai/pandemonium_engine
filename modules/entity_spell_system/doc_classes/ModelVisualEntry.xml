@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ModelVisualEntry" inherits="Resource" version="3.11">
+<class name="ModelVisualEntry" inherits="Resource" version="3.12">
 	<brief_description>
 		One Entry for [ModelVisual].
 	</brief_description>

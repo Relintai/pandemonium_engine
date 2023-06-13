@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ModelVisual" inherits="Resource" version="3.11">
+<class name="ModelVisual" inherits="Resource" version="3.12">
 	<brief_description>
 		Contains an item's visual information.
 	</brief_description>
@@ -40,9 +40,9 @@
 		</method>
 	</methods>
 	<members>
-		<member name="get_visual_entries" type="Array" setter="set_visual_entries" getter="get_visual_entries" default="[  ]">
-		</member>
 		<member name="layer" type="int" setter="set_layer" getter="get_layer" default="0">
+		</member>
+		<member name="visual_entries" type="Array" setter="set_visual_entries" getter="get_visual_entries" default="[  ]">
 		</member>
 	</members>
 	<constants>

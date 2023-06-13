@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Vector2" version="3.11">
+<class name="Vector2" version="3.12">
 	<brief_description>
 		Vector used for 2D math.
 	</brief_description>
@@ -87,14 +87,6 @@
 			<return type="Vector2" />
 			<description>
 				Returns a new vector with all components rounded up (towards positive infinity).
-			</description>
-		</method>
-		<method name="clamped">
-			<return type="Vector2" />
-			<argument index="0" name="length" type="float" />
-			<description>
-				Deprecated, please use [method limit_length] instead.
-				Returns the vector with a maximum length by limiting its length to [code]length[/code].
 			</description>
 		</method>
 		<method name="cross">

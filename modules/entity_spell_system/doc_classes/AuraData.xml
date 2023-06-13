@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="AuraData" inherits="Resource" version="3.11">
+<class name="AuraData" inherits="Resource" version="3.12">
 	<brief_description>
 		Stores an [Aura]'s runtime data on an [Entity].
 	</brief_description>
@@ -76,7 +76,7 @@
 		</member>
 		<member name="damage" type="int" setter="damage_set" getter="damage_get" default="0">
 		</member>
-		<member name="damage_count" type="float" setter="damage_set_count" getter="damage_get_count" default="0.0">
+		<member name="damage_count" type="int" setter="damage_set_count" getter="damage_get_count" default="0">
 		</member>
 		<member name="damage_taken" type="int" setter="damage_set_taken" getter="damage_get_taken" default="0">
 		</member>

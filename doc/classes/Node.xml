@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Node" inherits="Object" version="3.11">
+<class name="Node" inherits="Object" version="3.12">
 	<brief_description>
 		Base class for all [i]scene[/i] objects.
 	</brief_description>
@@ -72,6 +72,18 @@
 				It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process].
 				Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
 				[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+			</description>
+		</method>
+		<method name="_process_group_physics_process" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="delta" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_process_group_process" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="delta" type="float" />
+			<description>
 			</description>
 		</method>
 		<method name="_ready" qualifiers="virtual">
@@ -314,6 +326,11 @@
 				Returns the time elapsed (in seconds) since the last process callback. This value may vary from frame to frame.
 			</description>
 		</method>
+		<method name="get_process_group" qualifiers="const">
+			<return type="ProcessGroup" />
+			<description>
+			</description>
+		</method>
 		<method name="get_scene_instance_load_placeholder" qualifiers="const">
 			<return type="bool" />
 			<description>
@@ -436,6 +453,26 @@
 			<return type="bool" />
 			<description>
 				Returns [code]true[/code] if internal physics processing is enabled (see [method set_physics_process_internal]).
+			</description>
+		</method>
+		<method name="is_process_group_physics_processing" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="is_process_group_physics_processing_internal" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="is_process_group_processing" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="is_process_group_processing_internal" qualifiers="const">
+			<return type="bool" />
+			<description>
 			</description>
 		</method>
 		<method name="is_processing" qualifiers="const">
@@ -720,6 +757,30 @@
 			<argument index="0" name="enable" type="bool" />
 			<description>
 				Enables or disables processing. When a node is being processed, it will receive a [constant NOTIFICATION_PROCESS] on every drawn frame (and the [method _process] callback will be called if exists). Enabled automatically if [method _process] is overridden. Any calls to this before [method _ready] will be ignored.
+			</description>
+		</method>
+		<method name="set_process_group_physics_process">
+			<return type="void" />
+			<argument index="0" name="enable" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_process_group_physics_process_internal">
+			<return type="void" />
+			<argument index="0" name="enable" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_process_group_process">
+			<return type="void" />
+			<argument index="0" name="enable" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_process_group_process_internal">
+			<return type="void" />
+			<argument index="0" name="enable" type="bool" />
+			<description>
 			</description>
 		</method>
 		<method name="set_process_input">

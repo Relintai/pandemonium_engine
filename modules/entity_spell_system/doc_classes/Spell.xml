@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Spell" inherits="Resource" version="3.11">
+<class name="Spell" inherits="Resource" version="3.12">
 	<brief_description>
 		Base [Spell] class. Contains data, and callbacks for spell scripts. Inherit from this to create spells with different functionality.
 	</brief_description>
@@ -309,7 +309,7 @@
 		<method name="_notification_aura_ccast" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="what" type="int" />
-			<argument index="1" name="data" type="AuraData" />
+			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
@@ -317,7 +317,7 @@
 		<method name="_notification_aura_scast" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="what" type="int" />
-			<argument index="1" name="data" type="AuraData" />
+			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
@@ -325,7 +325,7 @@
 		<method name="_notification_caura" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="what" type="int" />
-			<argument index="1" name="data" type="AuraData" />
+			<argument index="1" name="aura_data" type="AuraData" />
 			<description>
 			</description>
 		</method>
@@ -371,7 +371,7 @@
 		<method name="_notification_cdamage" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="what" type="int" />
-			<argument index="1" name="data" type="AuraData" />
+			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="data" type="SpellDamageInfo" />
 			<description>
 			</description>
@@ -412,7 +412,7 @@
 		<method name="_notification_cheal" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="what" type="int" />
-			<argument index="1" name="data" type="AuraData" />
+			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="data" type="SpellHealInfo" />
 			<description>
 			</description>
@@ -434,7 +434,7 @@
 		<method name="_notification_saura" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="what" type="int" />
-			<argument index="1" name="data" type="AuraData" />
+			<argument index="1" name="aura_data" type="AuraData" />
 			<description>
 			</description>
 		</method>
@@ -480,7 +480,7 @@
 		<method name="_notification_sdamage" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="what" type="int" />
-			<argument index="1" name="data" type="AuraData" />
+			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="data" type="SpellDamageInfo" />
 			<description>
 			</description>
@@ -521,7 +521,7 @@
 		<method name="_notification_sheal" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="what" type="int" />
-			<argument index="1" name="data" type="AuraData" />
+			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="data" type="SpellHealInfo" />
 			<description>
 			</description>
@@ -1350,7 +1350,7 @@
 		</member>
 		<member name="aoe_radius" type="float" setter="set_aoe_radius" getter="get_aoe_radius" default="0.0">
 		</member>
-		<member name="aoe_targetType" type="int" setter="set_aoe_target_type" getter="get_aoe_target_type" enum="SpellAOETargetType" default="0">
+		<member name="aoe_targetType" type="int" setter="set_aoe_target_type" getter="get_aoe_target_type" enum="Spell.SpellAOETargetType" default="0">
 		</member>
 		<member name="aura_ability_scale_data_id" type="int" setter="aura_set_ability_scale_data_id" getter="aura_get_ability_scale_data_id" default="1">
 		</member>
@@ -1534,9 +1534,9 @@
 		</member>
 		<member name="spells_cast_on_target" type="Array" setter="spells_cast_on_target_set" getter="spells_cast_on_target_get" default="[  ]">
 		</member>
-		<member name="target_relation_type" type="int" setter="set_target_relation_type" getter="get_target_relation_type" enum="TargetRelationType" default="2">
+		<member name="target_relation_type" type="int" setter="set_target_relation_type" getter="get_target_relation_type" enum="Spell.TargetRelationType" default="2">
 		</member>
-		<member name="target_type" type="int" setter="set_target_type" getter="get_target_type" enum="SpellTargetType" default="1">
+		<member name="target_type" type="int" setter="set_target_type" getter="get_target_type" enum="Spell.SpellTargetType" default="1">
 		</member>
 		<member name="teaches_craft_recipe" type="CraftRecipe" setter="set_teaches_craft_recipe" getter="get_teaches_craft_recipe">
 		</member>
