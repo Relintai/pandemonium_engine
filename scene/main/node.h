@@ -41,6 +41,7 @@ class Viewport;
 class World;
 class SceneState;
 class SceneTreeTween;
+class ProcessGroup;
 
 class Node : public Object {
 	GDCLASS(Node, Object);
@@ -122,6 +123,7 @@ private:
 
 		Viewport *viewport;
 		World *world;
+		ProcessGroup *process_group;
 
 		RBMap<StringName, GroupData> grouped;
 		List<Node *>::Element *OW; // owned element
@@ -153,6 +155,12 @@ private:
 		bool input : 1;
 		bool unhandled_input : 1;
 		bool unhandled_key_input : 1;
+
+		bool process_group_physics_process : 1;
+		bool process_group_idle_process : 1;
+
+		bool process_group_physics_process_internal : 1;
+		bool process_group_idle_process_internal : 1;
 
 		// Physics interpolation can be turned on and off on a per node basis.
 		// This only takes effect when the SceneTree (or project setting) physics interpolation
@@ -458,6 +466,18 @@ public:
 	void set_process_priority(int p_priority);
 	int get_process_priority() const;
 
+	void set_process_group_physics_process(bool p_process);
+	bool is_process_group_physics_processing() const;
+
+	void set_process_group_process(bool p_idle_process);
+	bool is_process_group_processing() const;
+
+	void set_process_group_physics_process_internal(bool p_process_internal);
+	bool is_process_group_physics_processing_internal() const;
+
+	void set_process_group_process_internal(bool p_idle_process_internal);
+	bool is_process_group_processing_internal() const;
+
 	void set_process_input(bool p_enable);
 	bool is_processing_input() const;
 
@@ -468,7 +488,15 @@ public:
 	bool is_processing_unhandled_key_input() const;
 
 	_FORCE_INLINE_ bool _is_any_processing() const {
+		return _is_any_normal_processing() || _is_any_process_group_processing();
+	}
+
+	_FORCE_INLINE_ bool _is_any_normal_processing() const {
 		return data.idle_process || data.idle_process_internal || data.physics_process || data.physics_process_internal;
+	}
+
+	_FORCE_INLINE_ bool _is_any_process_group_processing() const {
+		return data.process_group_idle_process || data.process_group_idle_process_internal || data.process_group_physics_process || data.process_group_physics_process_internal;
 	}
 
 	int get_position_in_parent() const;
@@ -543,6 +571,10 @@ public:
 
 	_FORCE_INLINE_ World *get_world() const {
 		return data.world;
+	}
+
+	_FORCE_INLINE_ ProcessGroup *get_process_group() const {
+		return data.process_group;
 	}
 
 	virtual String get_configuration_warning() const;

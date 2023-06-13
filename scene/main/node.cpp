@@ -35,6 +35,7 @@
 #include "core/object/message_queue.h"
 #include "core/string/print_string.h"
 #include "instance_placeholder.h"
+#include "process_group.h"
 #include "scene/animation/scene_tree_tween.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/scene_string_names.h"
@@ -71,6 +72,21 @@ void Node::_notification(int p_notification) {
 			}
 
 		} break;
+		case ProcessGroup::NOTIFICATION_PROCESS_GROUP_PROCESS: {
+			if (get_script_instance()) {
+				Variant time = get_process_delta_time();
+				const Variant *ptr[1] = { &time };
+				get_script_instance()->call_multilevel(SceneStringNames::get_singleton()->_process_group_process, ptr, 1);
+			}
+		} break;
+		case ProcessGroup::NOTIFICATION_PROCESS_GROUP_PHYSICS_PROCESS: {
+			if (get_script_instance()) {
+				Variant time = get_physics_process_delta_time();
+				const Variant *ptr[1] = { &time };
+				get_script_instance()->call_multilevel(SceneStringNames::get_singleton()->_process_group_physics_process, ptr, 1);
+			}
+
+		} break;
 		case NOTIFICATION_ENTER_TREE: {
 			ERR_FAIL_COND(!get_viewport());
 			ERR_FAIL_COND(!get_world());
@@ -92,6 +108,24 @@ void Node::_notification(int p_notification) {
 					interpolate = data.parent->is_physics_interpolated();
 				}
 				_propagate_physics_interpolated(interpolate);
+			}
+
+			if (get_process_group()) {
+				if (data.process_group_physics_process) {
+					get_process_group()->register_node_physics_process(this);
+				}
+
+				if (data.process_group_physics_process_internal) {
+					get_process_group()->register_node_internal_physics_process(this);
+				}
+
+				if (data.process_group_idle_process) {
+					get_process_group()->register_node_process(this);
+				}
+
+				if (data.process_group_idle_process_internal) {
+					get_process_group()->register_node_internal_process(this);
+				}
 			}
 
 			if (data.input) {
@@ -126,6 +160,24 @@ void Node::_notification(int p_notification) {
 
 			data._seen_by.clear();
 			data._sees.clear();
+
+			if (get_process_group()) {
+				if (data.process_group_physics_process) {
+					get_process_group()->unregister_node_physics_process(this);
+				}
+
+				if (data.process_group_physics_process_internal) {
+					get_process_group()->unregister_node_internal_physics_process(this);
+				}
+
+				if (data.process_group_idle_process) {
+					get_process_group()->unregister_node_process(this);
+				}
+
+				if (data.process_group_idle_process_internal) {
+					get_process_group()->unregister_node_internal_process(this);
+				}
+			}
 
 			if (data.input) {
 				remove_from_group("_vp_input" + itos(get_viewport()->get_instance_id()));
@@ -169,6 +221,14 @@ void Node::_notification(int p_notification) {
 
 				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_physics_process)) {
 					set_physics_process(true);
+				}
+
+				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_process_group_process)) {
+					set_process_group_process(true);
+				}
+
+				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_process_group_physics_process)) {
+					set_process_group_physics_process(true);
 				}
 
 				get_script_instance()->call_multilevel_reversed(SceneStringNames::get_singleton()->_ready, nullptr, 0);
@@ -277,6 +337,11 @@ void Node::_propagate_enter_tree() {
 	data.world = Object::cast_to<World>(this);
 	if (!data.world && data.parent) {
 		data.world = data.parent->data.world;
+	}
+
+	data.process_group = Object::cast_to<ProcessGroup>(this);
+	if (!data.process_group && data.parent) {
+		data.process_group = data.parent->data.process_group;
 	}
 
 	data.inside_tree = true;
@@ -414,6 +479,7 @@ void Node::_propagate_exit_tree() {
 
 	data.viewport = nullptr;
 	data.world = nullptr;
+	data.process_group = nullptr;
 
 	if (data.tree) {
 		data.tree->tree_changed();
@@ -1039,6 +1105,14 @@ bool Node::can_process_notification(int p_what) const {
 			return data.idle_process_internal;
 		case NOTIFICATION_INTERNAL_PHYSICS_PROCESS:
 			return data.physics_process_internal;
+		case ProcessGroup::NOTIFICATION_PROCESS_GROUP_PROCESS:
+			return data.process_group_idle_process;
+		case ProcessGroup::NOTIFICATION_PROCESS_GROUP_INTERNAL_PROCESS:
+			return data.process_group_idle_process_internal;
+		case ProcessGroup::NOTIFICATION_PROCESS_GROUP_PHYSICS_PROCESS:
+			return data.process_group_physics_process;
+		case ProcessGroup::NOTIFICATION_PROCESS_GROUP_INTERNAL_PHYSICS_PROCESS:
+			return data.process_group_physics_process_internal;
 	}
 
 	return true;
@@ -1189,10 +1263,122 @@ void Node::set_process_priority(int p_priority) {
 	if (is_physics_processing_internal()) {
 		data.tree->make_group_changed("physics_process_internal");
 	}
+
+	if (is_process_group_processing()) {
+		if (get_process_group()) {
+			get_process_group()->node_process_changed(this);
+		}
+	}
+
+	if (is_process_group_processing_internal()) {
+		if (get_process_group()) {
+			get_process_group()->node_internal_process_changed(this);
+		}
+	}
+
+	if (is_process_group_physics_processing()) {
+		if (get_process_group()) {
+			get_process_group()->node_physics_process_changed(this);
+		}
+	}
+
+	if (is_process_group_physics_processing_internal()) {
+		if (get_process_group()) {
+			get_process_group()->node_internal_physics_process_changed(this);
+		}
+	}
 }
 
 int Node::get_process_priority() const {
 	return data.process_priority;
+}
+
+void Node::set_process_group_physics_process(bool p_process) {
+	if (data.process_group_physics_process == p_process) {
+		return;
+	}
+
+	data.process_group_physics_process = p_process;
+
+	if (get_process_group()) {
+		if (data.process_group_physics_process) {
+			get_process_group()->register_node_physics_process(this);
+		} else {
+			get_process_group()->unregister_node_physics_process(this);
+		}
+	}
+
+	_change_notify("process_group_physics_process");
+}
+
+bool Node::is_process_group_physics_processing() const {
+	return data.process_group_physics_process;
+}
+
+void Node::set_process_group_physics_process_internal(bool p_process_internal) {
+	if (data.process_group_physics_process_internal == p_process_internal) {
+		return;
+	}
+
+	data.process_group_physics_process_internal = p_process_internal;
+
+	if (get_process_group()) {
+		if (data.process_group_physics_process_internal) {
+			get_process_group()->register_node_internal_physics_process(this);
+		} else {
+			get_process_group()->unregister_node_internal_physics_process(this);
+		}
+	}
+
+	_change_notify("process_group_physics_process_internal");
+}
+
+bool Node::is_process_group_physics_processing_internal() const {
+	return data.process_group_physics_process_internal;
+}
+
+void Node::set_process_group_process(bool p_idle_process) {
+	if (data.process_group_idle_process == p_idle_process) {
+		return;
+	}
+
+	data.process_group_idle_process = p_idle_process;
+
+	if (get_process_group()) {
+		if (data.process_group_idle_process) {
+			get_process_group()->register_node_process(this);
+		} else {
+			get_process_group()->unregister_node_process(this);
+		}
+	}
+
+	_change_notify("process_group_idle_process");
+}
+
+bool Node::is_process_group_processing() const {
+	return data.process_group_idle_process;
+}
+
+void Node::set_process_group_process_internal(bool p_idle_process_internal) {
+	if (data.process_group_idle_process_internal == p_idle_process_internal) {
+		return;
+	}
+
+	data.process_group_idle_process_internal = p_idle_process_internal;
+
+	if (get_process_group()) {
+		if (data.process_group_idle_process_internal) {
+			get_process_group()->register_node_internal_process(this);
+		} else {
+			get_process_group()->unregister_node_internal_process(this);
+		}
+	}
+
+	_change_notify("process_group_idle_process_internal");
+}
+
+bool Node::is_process_group_processing_internal() const {
+	return data.process_group_idle_process_internal;
 }
 
 void Node::set_process_input(bool p_enable) {
@@ -1916,7 +2102,7 @@ bool Node::is_unique_name_in_owner() const {
 
 void Node::set_owner(Node *p_owner) {
 	ERR_FAIL_COND_MSG(is_inside_tree() && !Thread::is_main_thread(), "This function in this node can only be accessed from the main thread. Use call_deferred() instead.");
-	
+
 	if (data.owner) {
 		if (data.unique_name_in_owner) {
 			_release_unique_name_in_owner();
@@ -3282,6 +3468,7 @@ void Node::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_filename"), &Node::get_filename);
 	ClassDB::bind_method(D_METHOD("propagate_notification", "what"), &Node::propagate_notification);
 	ClassDB::bind_method(D_METHOD("propagate_call", "method", "args", "parent_first"), &Node::propagate_call, DEFVAL(Array()), DEFVAL(false));
+
 	ClassDB::bind_method(D_METHOD("set_physics_process", "enable"), &Node::set_physics_process);
 	ClassDB::bind_method(D_METHOD("get_physics_process_delta_time"), &Node::get_physics_process_delta_time);
 	ClassDB::bind_method(D_METHOD("is_physics_processing"), &Node::is_physics_processing);
@@ -3290,6 +3477,16 @@ void Node::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_process_priority", "priority"), &Node::set_process_priority);
 	ClassDB::bind_method(D_METHOD("get_process_priority"), &Node::get_process_priority);
 	ClassDB::bind_method(D_METHOD("is_processing"), &Node::is_processing);
+
+	ClassDB::bind_method(D_METHOD("set_process_group_physics_process", "enable"), &Node::set_process_group_physics_process);
+	ClassDB::bind_method(D_METHOD("is_process_group_physics_processing"), &Node::is_process_group_physics_processing);
+	ClassDB::bind_method(D_METHOD("set_process_group_process", "enable"), &Node::set_process_group_process);
+	ClassDB::bind_method(D_METHOD("is_process_group_processing"), &Node::is_process_group_processing);
+	ClassDB::bind_method(D_METHOD("set_process_group_physics_process_internal", "enable"), &Node::set_process_group_physics_process_internal);
+	ClassDB::bind_method(D_METHOD("is_process_group_physics_processing_internal"), &Node::is_process_group_physics_processing_internal);
+	ClassDB::bind_method(D_METHOD("set_process_group_process_internal", "enable"), &Node::set_process_group_process_internal);
+	ClassDB::bind_method(D_METHOD("is_process_group_processing_internal"), &Node::is_process_group_processing_internal);
+
 	ClassDB::bind_method(D_METHOD("set_process_input", "enable"), &Node::set_process_input);
 	ClassDB::bind_method(D_METHOD("is_processing_input"), &Node::is_processing_input);
 	ClassDB::bind_method(D_METHOD("set_process_unhandled_input", "enable"), &Node::set_process_unhandled_input);
@@ -3330,6 +3527,7 @@ void Node::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_viewport"), &Node::get_viewport);
 	ClassDB::bind_method(D_METHOD("get_world"), &Node::get_world);
+	ClassDB::bind_method(D_METHOD("get_process_group"), &Node::get_process_group);
 
 	ClassDB::bind_method(D_METHOD("queue_free"), &Node::queue_delete);
 
@@ -3478,6 +3676,8 @@ void Node::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_process", PropertyInfo(Variant::REAL, "delta")));
 	BIND_VMETHOD(MethodInfo("_physics_process", PropertyInfo(Variant::REAL, "delta")));
+	BIND_VMETHOD(MethodInfo("_process_group_process", PropertyInfo(Variant::REAL, "delta")));
+	BIND_VMETHOD(MethodInfo("_process_group_physics_process", PropertyInfo(Variant::REAL, "delta")));
 	BIND_VMETHOD(MethodInfo("_enter_tree"));
 	BIND_VMETHOD(MethodInfo("_exit_tree"));
 	BIND_VMETHOD(MethodInfo("_ready"));
@@ -3512,6 +3712,10 @@ Node::Node() {
 	data.process_priority = 0;
 	data.physics_process_internal = false;
 	data.idle_process_internal = false;
+	data.process_group_physics_process = false;
+	data.process_group_idle_process = false;
+	data.process_group_physics_process_internal = false;
+	data.process_group_idle_process_internal = false;
 	data.inside_tree = false;
 	data.ready_notified = false;
 	data.physics_interpolated = true;
@@ -3533,6 +3737,7 @@ Node::Node() {
 	data.in_constructor = true;
 	data.viewport = nullptr;
 	data.world = nullptr;
+	data.process_group = nullptr;
 	data.use_placeholder = false;
 	data.display_folded = false;
 	data.ready_first = true;

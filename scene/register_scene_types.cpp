@@ -132,6 +132,7 @@
 #include "scene/main/canvas_layer.h"
 #include "scene/main/http_request.h"
 #include "scene/main/instance_placeholder.h"
+#include "scene/main/process_group.h"
 #include "scene/main/resource_preloader.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/timer.h"
@@ -294,6 +295,7 @@ void register_scene_types() {
 	ClassDB::register_class<CanvasLayer>();
 	ClassDB::register_class<CanvasModulate>();
 	ClassDB::register_class<ResourcePreloader>();
+	ClassDB::register_class<ProcessGroup>();
 
 	/* REGISTER GUI */
 	ClassDB::register_class<ButtonGroup>();

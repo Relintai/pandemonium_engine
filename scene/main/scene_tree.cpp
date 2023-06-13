@@ -640,11 +640,18 @@ bool SceneTree::iteration(float p_time) {
 
 	emit_signal("physics_frame");
 
+	// Trigger ProcessGroups processing
+	call_group_flags(GROUP_CALL_REALTIME, "_pg_process", "trigger_physics_process");
+
 	_notify_group_pause("physics_process_internal", Node::NOTIFICATION_INTERNAL_PHYSICS_PROCESS);
 	if (GLOBAL_GET("physics/common/enable_pause_aware_picking")) {
 		call_group_flags(GROUP_CALL_REALTIME, "_viewports", "_process_picking", true);
 	}
 	_notify_group_pause("physics_process", Node::NOTIFICATION_PHYSICS_PROCESS);
+
+	// Wait for all ProcessGroups to finish
+	call_group_flags(GROUP_CALL_REALTIME, "_pg_process", "wait_physics_process");
+
 	_flush_ugc();
 	MessageQueue::get_singleton()->flush(); //small little hack
 
@@ -692,8 +699,14 @@ bool SceneTree::idle(float p_time) {
 
 	flush_transform_notifications();
 
+	// Trigger ProcessGroups processing
+	call_group_flags(GROUP_CALL_REALTIME, "_pg_process", "trigger_process");
+
 	_notify_group_pause("idle_process_internal", Node::NOTIFICATION_INTERNAL_PROCESS);
 	_notify_group_pause("idle_process", Node::NOTIFICATION_PROCESS);
+
+	// Wait for all ProcessGroups to finish
+	call_group_flags(GROUP_CALL_REALTIME, "_pg_process", "wait_process");
 
 	Size2 win_size = OS::get_singleton()->get_window_size();
 
