@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Light" inherits="VisualInstance" version="3.11">
+<class name="Light" inherits="VisualInstance" version="3.12">
 	<brief_description>
 		Provides a base class for different kinds of light nodes.
 	</brief_description>
@@ -53,7 +53,7 @@
 		<member name="light_specular" type="float" setter="set_param" getter="get_param" default="0.5">
 			The intensity of the specular blob in objects affected by the light. At [code]0[/code], the light becomes a pure diffuse light. When not baking emission, this can be used to avoid unrealistic reflections when placing lights above an emissive surface.
 		</member>
-		<member name="shadow_bias" type="float" setter="set_param" getter="get_param" default="0.15">
+		<member name="shadow_bias" type="float" setter="set_param" getter="get_param" default="0.1">
 			Used to adjust shadow appearance. Too small a value results in self-shadowing ("shadow acne"), while too large a value causes shadows to separate from casters ("peter-panning"). Adjust as needed.
 		</member>
 		<member name="shadow_color" type="Color" setter="set_shadow_color" getter="get_shadow_color" default="Color( 0, 0, 0, 1 )">

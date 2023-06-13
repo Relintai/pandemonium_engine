@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EditorSettings" inherits="Resource" version="3.11">
+<class name="EditorSettings" inherits="Resource" version="3.12">
 	<brief_description>
 		Object that holds the project-independent editor settings.
 	</brief_description>
@@ -551,10 +551,6 @@
 		<member name="run/output/font_size" type="int" setter="" getter="">
 			The size of the font in the [b]Output[/b] panel at the bottom of the editor. This setting does not impact the font size of the script editor (see [member interface/editor/code_font_size]).
 		</member>
-		<member name="run/window_placement/android_window" type="int" setter="" getter="">
-			The Android window to display the project on when starting the project from the editor.
-			[b]Note:[/b] Only available in the Android editor.
-		</member>
 		<member name="run/window_placement/rect" type="int" setter="" getter="">
 			The window mode to use to display the project when starting the project from the editor.
 		</member>
@@ -760,9 +756,6 @@
 		</member>
 		<member name="text_editor/highlighting/symbol_color" type="Color" setter="" getter="">
 			The script editor's color for operators ([code]( ) [ ] { } + - * /[/code], ...).
-		</member>
-		<member name="text_editor/highlighting/syntax_highlighting" type="bool" setter="" getter="">
-			If [code]true[/code], enables syntax highlighting in the script editor. Keywords and symbols are colored depending on their purpose in the code.
 		</member>
 		<member name="text_editor/highlighting/text_color" type="Color" setter="" getter="">
 			The script editor's color for text not highlighted by any syntax highlighting rule.

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="MeshTexture" inherits="Texture" version="3.11">
+<class name="MeshTexture" inherits="Texture" version="3.12">
 	<brief_description>
 		Simple texture that uses a mesh to draw itself.
 	</brief_description>
@@ -20,6 +20,7 @@
 		<member name="mesh" type="Mesh" setter="set_mesh" getter="get_mesh">
 			Sets the mesh used to draw. It must be a mesh using 2D vertices.
 		</member>
+		<member name="resource_local_to_scene" type="bool" setter="set_local_to_scene" getter="is_local_to_scene" overrides="Resource" default="false" />
 	</members>
 	<constants>
 	</constants>

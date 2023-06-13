@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Camera2D" inherits="Node2D" version="3.11">
+<class name="Camera2D" inherits="Node2D" version="3.12">
 	<brief_description>
 		Camera node for 2D scenes.
 	</brief_description>
@@ -115,10 +115,6 @@
 		<member name="drag_margin_v_enabled" type="bool" setter="set_v_drag_enabled" getter="is_v_drag_enabled" default="false">
 			If [code]true[/code], the camera only moves when reaching the vertical drag margins. If [code]false[/code], the camera moves vertically regardless of margins.
 		</member>
-		<member name="enabled" type="bool" setter="set_enabled" getter="is_enabled" default="true">
-			Controls whether the camera can be active or not. If [code]true[/code], the [Camera2D] will become the main camera when it enters the scene tree and there is no active camera currently (see [method Viewport.get_camera_2d]).
-			When the camera is currently active and [member enabled] is set to [code]false[/code], the next enabled [Camera2D] in the scene tree will become active.
-		</member>
 		<member name="editor_draw_drag_margin" type="bool" setter="set_margin_drawing_enabled" getter="is_margin_drawing_enabled" default="false">
 			If [code]true[/code], draws the camera's drag margin rectangle in the editor.
 		</member>
@@ -127,6 +123,10 @@
 		</member>
 		<member name="editor_draw_screen" type="bool" setter="set_screen_drawing_enabled" getter="is_screen_drawing_enabled" default="true">
 			If [code]true[/code], draws the camera's screen rectangle in the editor.
+		</member>
+		<member name="enabled" type="bool" setter="set_enabled" getter="is_enabled" default="true">
+			Controls whether the camera can be active or not. If [code]true[/code], the [Camera2D] will become the main camera when it enters the scene tree and there is no active camera currently (see [method Viewport.get_camera_2d]).
+			When the camera is currently active and [member enabled] is set to [code]false[/code], the next enabled [Camera2D] in the scene tree will become active.
 		</member>
 		<member name="limit_bottom" type="int" setter="set_limit" getter="get_limit" default="10000000">
 			Bottom scroll limit in pixels. The camera stops moving when reaching this value.

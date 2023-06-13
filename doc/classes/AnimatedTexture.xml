@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="AnimatedTexture" inherits="Texture" version="3.11">
+<class name="AnimatedTexture" inherits="Texture" version="3.12">
 	<brief_description>
 		Proxy texture for simple frame-based animations.
 	</brief_description>
@@ -68,6 +68,7 @@
 		<member name="pause" type="bool" setter="set_pause" getter="get_pause" default="false">
 			If [code]true[/code], the animation will pause where it currently is (i.e. at [member current_frame]). The animation will continue from where it was paused when changing this property to [code]false[/code].
 		</member>
+		<member name="resource_local_to_scene" type="bool" setter="set_local_to_scene" getter="is_local_to_scene" overrides="Resource" default="false" />
 	</members>
 	<constants>
 		<constant name="MAX_FRAMES" value="256">
