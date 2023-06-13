@@ -62,8 +62,7 @@ void register_gltf_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
 		ClassDB::APIType prev_api = ClassDB::get_current_api();
 		ClassDB::set_current_api(ClassDB::API_EDITOR);
-		ClassDB::register_class<EditorSceneImporterGLTF>();
-		ClassDB::register_class<GLTFMesh>();
+		//ClassDB::register_class<EditorSceneImporterGLTF>();
 		EditorPlugins::add_by_type<SceneExporterGLTFPlugin>();
 		ClassDB::set_current_api(prev_api);
 		EditorNode::add_init_callback(_editor_init);
@@ -82,6 +81,7 @@ void register_gltf_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<GLTFSkeleton>();
 		ClassDB::register_class<GLTFSkin>();
 		ClassDB::register_class<GLTFCamera>();
+		ClassDB::register_class<GLTFMesh>();
 		ClassDB::register_class<GLTFLight>();
 		ClassDB::register_class<GLTFPhysicsBody>();
 		ClassDB::register_class<GLTFState>();
