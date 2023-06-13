@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationObstacle" inherits="Spatial" version="3.11">
+<class name="NavigationObstacle" inherits="Spatial" version="3.12">
 	<brief_description>
 		3D Obstacle used in navigation to constrain avoidance controlled agents outside or inside an area.
 	</brief_description>
@@ -25,16 +25,16 @@
 				Returns whether or not the specified layer of the [member avoidance_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 			</description>
 		</method>
-		<method name="get_navigation_map" qualifiers="const">
-			<return type="RID" />
-			<description>
-				Returns the [RID] of the navigation map for this NavigationObstacle node. This function returns always the map set on the NavigationObstacle node and not the map of the abstract obstacle on the NavigationServer. If the obstacle map is changed directly with the NavigationServer API the NavigationObstacle node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationObstacle and also update the obstacle on the NavigationServer.
-			</description>
-		</method>
 		<method name="get_navigation" qualifiers="const">
 			<return type="Node" />
 			<description>
 				Returns the [Navigation] node that the obstacle is using for its navigation system.
+			</description>
+		</method>
+		<method name="get_navigation_map" qualifiers="const">
+			<return type="RID" />
+			<description>
+				Returns the [RID] of the navigation map for this NavigationObstacle node. This function returns always the map set on the NavigationObstacle node and not the map of the abstract obstacle on the NavigationServer. If the obstacle map is changed directly with the NavigationServer API the NavigationObstacle node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationObstacle and also update the obstacle on the NavigationServer.
 			</description>
 		</method>
 		<method name="get_obstacle_rid" qualifiers="const">
@@ -80,10 +80,10 @@
 			If [code]true[/code] the obstacle affects 3D avoidance using agent's with obstacle [member radius].
 			If [code]false[/code] the obstacle affects 2D avoidance using agent's with both obstacle [member vertices] as well as obstacle [member radius].
 		</member>
-		<member name="velocity" type="Vector3" setter="set_velocity" getter="get_velocity" default="Vector3(0, 0, 0)">
+		<member name="velocity" type="Vector3" setter="set_velocity" getter="get_velocity" default="Vector3( 0, 0, 0 )">
 			Sets the wanted velocity for the obstacle so other agent's can better predict the obstacle if it is moved with a velocity regularly (every frame) instead of warped to a new position. Does only affect avoidance for the obstacles [member radius]. Does nothing for the obstacles static vertices.
 		</member>
-		<member name="vertices" type="PoolVector3Array" setter="set_vertices" getter="get_vertices" default="PoolVector3Array()">
+		<member name="vertices" type="PoolVector3Array" setter="set_vertices" getter="get_vertices" default="PoolVector3Array(  )">
 			The outline vertices of the obstacle. If the vertices are winded in clockwise order agents will be pushed in by the obstacle, else they will be pushed out. Outlines can not be crossed or overlap. Should the vertices using obstacle be warped to a new position agent's can not predict this movement and may get trapped inside the obstacle.
 		</member>
 	</members>

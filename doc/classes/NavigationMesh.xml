@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationMesh" inherits="Resource" version="3.11">
+<class name="NavigationMesh" inherits="Resource" version="3.12">
 	<brief_description>
 		A mesh that defines the areas traversable by navigation agents that are safe from obstructions.
 	</brief_description>
@@ -24,29 +24,16 @@
 				Clears both the internal polygons and vertices arrays.
 			</description>
 		</method>
-		<method name="commit_changes">
-			<return type="void" />
-			<description>
-				Applies all changes to vertices and polygons and synchronizes with the NavigationServer.
-			</description>
-		</method>
-		<method name="get_polygons" qualifiers="const">
-			<return type="Array" />
-			<description>
-				Returns the array of polygons used by the internal navigation mesh. Each polygon array consists of the indices for the vertices that make the polygon.
-			</description>
-		</method>
-		<method name="set_polygons">
-			<return type="void" />
-			<argument index="0" name="polygons" type="Array" />
-			<description>
-				Sets the navigation mesh polygons. Each polygon array needs to consist of the indices for the vertices that make the polygon.
-			</description>
-		</method>
 		<method name="clear_polygons">
 			<return type="void" />
 			<description>
 				Clears the array of polygons, but it doesn't clear the array of vertices.
+			</description>
+		</method>
+		<method name="commit_changes">
+			<return type="void" />
+			<description>
+				Applies all changes to vertices and polygons and synchronizes with the NavigationServer.
 			</description>
 		</method>
 		<method name="create_from_mesh">
@@ -134,10 +121,10 @@
 			The maximum allowed length for contour edges along the border of the mesh.
 			[b]Note:[/b] While baking, this value will be rounded up to the nearest multiple of [member cell_size].
 		</member>
-		<member name="filter_baking_aabb" type="AABB" setter="set_filter_baking_aabb" getter="get_filter_baking_aabb" default="AABB(0, 0, 0, 0, 0, 0)">
+		<member name="filter_baking_aabb" type="AABB" setter="set_filter_baking_aabb" getter="get_filter_baking_aabb" default="AABB( 0, 0, 0, 0, 0, 0 )">
 			If the baking [AABB] has a volume the navigation mesh baking will be restricted to its enclosing area.
 		</member>
-		<member name="filter_baking_aabb_offset" type="Vector3" setter="set_filter_baking_aabb_offset" getter="get_filter_baking_aabb_offset" default="Vector3(0, 0, 0)">
+		<member name="filter_baking_aabb_offset" type="Vector3" setter="set_filter_baking_aabb_offset" getter="get_filter_baking_aabb_offset" default="Vector3( 0, 0, 0 )">
 			The position offset applied to the [member filter_baking_aabb] [AABB].
 		</member>
 		<member name="filter_ledge_spans" type="bool" setter="set_filter_ledge_spans" getter="get_filter_ledge_spans" default="false">
@@ -199,8 +186,7 @@
 		<constant name="PARSED_GEOMETRY_MAX" value="3" enum="ParsedGeometryType">
 			Represents the size of the [enum ParsedGeometryType] enum.
 		</constant>
-		<constant name="SOURCE_GEOMETRY_NAVMESH_CHILDREN" value="0" enum="SourceGeometryMode">
-			Scans the child nodes of [NavigationMeshInstance] recursively for geometry.
+		<constant name="SOURCE_GEOMETRY_ROOT_NODE_CHILDREN" value="0" enum="SourceGeometryMode">
 		</constant>
 		<constant name="SOURCE_GEOMETRY_GROUPS_WITH_CHILDREN" value="1" enum="SourceGeometryMode">
 			Scans nodes in a group and their child nodes recursively for geometry. The group is specified by [member geometry_source_group_name].

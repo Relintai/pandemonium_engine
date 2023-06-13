@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationObstacle2D" inherits="Node2D" version="3.11">
+<class name="NavigationObstacle2D" inherits="Node2D" version="3.12">
 	<brief_description>
 		2D Obstacle used in navigation to constrain avoidance controlled agents outside or inside an area.
 	</brief_description>
@@ -12,7 +12,7 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-	<method name="get_agent_rid" qualifiers="const">
+		<method name="get_agent_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
 				Returns the [RID] of this agent on the [NavigationServer2D]. This [RID] is used for the moving avoidance "obstacle" component (using a fake avoidance agent) which size is defined by [member radius] and velocity set by using [member velocity].
@@ -23,12 +23,6 @@
 			<argument index="0" name="layer_number" type="int" />
 			<description>
 				Returns whether or not the specified layer of the [member avoidance_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
-			</description>
-		</method>
-		<method name="get_navigation_map" qualifiers="const">
-			<return type="RID" />
-			<description>
-				Returns the [RID] of the navigation map for this NavigationObstacle node. This function returns always the map set on the NavigationObstacle node and not the map of the abstract obstacle on the NavigationServer. If the obstacle map is changed directly with the NavigationServer API the NavigationObstacle node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationObstacle and also update the obstacle on the NavigationServer.
 			</description>
 		</method>
 		<method name="get_navigation" qualifiers="const">
@@ -58,13 +52,6 @@
 				Sets the [Navigation2D] node used by the obstacle. Useful when you don't want to make the obstacle a child of a [Navigation2D] node.
 			</description>
 		</method>
-		<method name="set_navigation_map">
-			<return type="void" />
-			<argument index="0" name="navigation_map" type="RID" />
-			<description>
-				Sets the [RID] of the navigation map this NavigationObstacle node should use and also updates the [code]obstacle[/code] on the NavigationServer.
-			</description>
-		</method>
 	</methods>
 	<members>
 		<member name="avoidance_layers" type="int" setter="set_avoidance_layers" getter="get_avoidance_layers" default="1">
@@ -73,10 +60,10 @@
 		<member name="radius" type="float" setter="set_radius" getter="get_radius" default="0.0">
 			Sets the avoidance radius for the obstacle.
 		</member>
-		<member name="velocity" type="Vector2" setter="set_velocity" getter="get_velocity" default="Vector2(0, 0)">
+		<member name="velocity" type="Vector2" setter="set_velocity" getter="get_velocity" default="Vector2( 0, 0 )">
 			Sets the wanted velocity for the obstacle so other agent's can better predict the obstacle if it is moved with a velocity regularly (every frame) instead of warped to a new position. Does only affect avoidance for the obstacles [member radius]. Does nothing for the obstacles static vertices.
 		</member>
-		<member name="vertices" type="PoolVector2Array" setter="set_vertices" getter="get_vertices" default="PoolVector2Array()">
+		<member name="vertices" type="PoolVector2Array" setter="set_vertices" getter="get_vertices" default="PoolVector2Array(  )">
 			The outline vertices of the obstacle. If the vertices are winded in clockwise order agents will be pushed in by the obstacle, else they will be pushed out. Outlines can not be crossed or overlap. Should the vertices using obstacle be warped to a new position agent's can not predict this movement and may get trapped inside the obstacle.
 		</member>
 	</members>

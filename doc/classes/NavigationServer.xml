@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationServer" inherits="Object" version="3.11">
+<class name="NavigationServer" inherits="Object" version="3.12">
 	<brief_description>
 		Server interface for low-level 3D navigation access.
 	</brief_description>
@@ -200,11 +200,9 @@
 				Destroys the given RID.
 			</description>
 		</method>
-		<method name="set_debug_enabled">
-			<return type="void" />
-			<argument index="0" name="enabled" type="bool" />
+		<method name="get_debug_enabled" qualifiers="const">
+			<return type="bool" />
 			<description>
-				If [code]true[/code] enables debug mode on the NavigationServer.
 			</description>
 		</method>
 		<method name="get_maps" qualifiers="const">
@@ -215,7 +213,7 @@
 		</method>
 		<method name="get_process_info" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="process_info" type="int" enum="NavigationServer3D.ProcessInfo" />
+			<argument index="0" name="process_info" type="int" enum="NavigationServer.ProcessInfo" />
 			<description>
 				Returns information about the current state of the NavigationServer. See [enum ProcessInfo] for a list of available states.
 			</description>
@@ -532,6 +530,14 @@
 				Sets the map up direction.
 			</description>
 		</method>
+		<method name="map_set_use_edge_connections">
+			<return type="void" />
+			<argument index="0" name="map" type="RID" />
+			<argument index="1" name="enabled" type="bool" />
+			<description>
+				Set the navigation [param map] edge connection use. If [param enabled] the navigation map allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
+			</description>
+		</method>
 		<method name="obstacle_create">
 			<return type="RID" />
 			<description>
@@ -583,14 +589,6 @@
 			<argument index="1" name="vertices" type="PoolVector3Array" />
 			<description>
 				Sets the outline vertices for the obstacle. If the vertices are winded in clockwise order agents will be pushed in by the obstacle, else they will be pushed out.
-			</description>
-		</method>
-		<method name="map_set_use_edge_connections">
-			<return type="void" />
-			<argument index="0" name="map" type="RID" />
-			<argument index="1" name="enabled" type="bool" />
-			<description>
-				Set the navigation [param map] edge connection use. If [param enabled] the navigation map allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 			</description>
 		</method>
 		<method name="process">
@@ -760,6 +758,13 @@
 			<argument index="0" name="active" type="bool" />
 			<description>
 				Control activation of this server.
+			</description>
+		</method>
+		<method name="set_debug_enabled">
+			<return type="void" />
+			<argument index="0" name="enabled" type="bool" />
+			<description>
+				If [code]true[/code] enables debug mode on the NavigationServer.
 			</description>
 		</method>
 	</methods>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationGeometryParser2D" inherits="RefCounted" version="4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="NavigationGeometryParser2D" inherits="Reference" version="3.12">
 	<brief_description>
 		Parser to contribute a node's geometry data for [NavigationPolygon] baking.
 	</brief_description>
@@ -9,7 +9,7 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="_parse_geometry" qualifiers="virtual const">
+		<method name="_parse_geometry" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="node" type="Node" />
 			<argument index="1" name="navigation_polygon" type="NavigationPolygon" />
@@ -18,7 +18,7 @@
 				Called when overridden and the [NavigationMeshGenerator] is parsing geometry for [NavigationPolygon] baking. Custom 2D geometry can be added to the [param source_geometry].
 			</description>
 		</method>
-		<method name="_parses_node" qualifiers="virtual const">
+		<method name="_parses_node" qualifiers="virtual">
 			<return type="bool" />
 			<argument index="0" name="node" type="Node" />
 			<description>
@@ -26,4 +26,6 @@
 			</description>
 		</method>
 	</methods>
+	<constants>
+	</constants>
 </class>

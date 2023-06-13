@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationAgent" inherits="Node" version="3.11">
+<class name="NavigationAgent" inherits="Node" version="3.12">
 	<brief_description>
 		3D agent used in navigation for collision avoidance.
 	</brief_description>
@@ -30,18 +30,6 @@
 				Returns whether or not the specified mask of the [member avoidance_mask] bitmask is enabled, given a [param mask_number] between 1 and 32.
 			</description>
 		</method>
-		<method name="get_current_navigation_result" qualifiers="const">
-			<return type="NavigationPathQueryResult3D" />
-			<description>
-				Returns the path query result for the path the agent is currently following.
-			</description>
-		</method>
-		<method name="get_final_position">
-			<return type="Vector3" />
-			<description>
-				Returns the reachable final position of the current navigation path in global coordinates. This position can change if the navigation path is altered in any way. Because of this, it would be best to check this each frame.
-			</description>
-		</method>
 		<method name="get_current_navigation_path" qualifiers="const">
 			<return type="PoolVector3Array" />
 			<description>
@@ -52,6 +40,18 @@
 			<return type="int" />
 			<description>
 				Returns which index the agent is currently on in the navigation path's [PoolVector3Array].
+			</description>
+		</method>
+		<method name="get_current_navigation_result" qualifiers="const">
+			<return type="NavigationPathQueryResult3D" />
+			<description>
+				Returns the path query result for the path the agent is currently following.
+			</description>
+		</method>
+		<method name="get_final_position">
+			<return type="Vector3" />
+			<description>
+				Returns the reachable final position of the current navigation path in global coordinates. This position can change if the navigation path is altered in any way. Because of this, it would be best to check this each frame.
 			</description>
 		</method>
 		<method name="get_navigation" qualifiers="const">
@@ -103,13 +103,6 @@
 				Returns [code]true[/code] if [member target_position] is reached. It may not always be possible to reach the target position. It should always be possible to reach the final position though. See [method get_final_position].
 			</description>
 		</method>
-		<method name="set_navigation">
-			<return type="void" />
-			<argument index="0" name="navigation" type="Node" />
-			<description>
-				Sets the [Navigation] node used by the agent. Useful when you don't want to make the agent a child of a [Navigation] node.
-			</description>
-		</method>
 		<method name="set_avoidance_layer_value">
 			<return type="void" />
 			<argument index="0" name="layer_number" type="int" />
@@ -124,6 +117,13 @@
 			<argument index="1" name="value" type="bool" />
 			<description>
 				Based on [param value], enables or disables the specified mask in the [member avoidance_mask] bitmask, given a [param mask_number] between 1 and 32.
+			</description>
+		</method>
+		<method name="set_navigation">
+			<return type="void" />
+			<argument index="0" name="navigation" type="Node" />
+			<description>
+				Sets the [Navigation] node used by the agent. Useful when you don't want to make the agent a child of a [Navigation] node.
 			</description>
 		</method>
 		<method name="set_navigation_layer_value">
@@ -165,7 +165,7 @@
 		<member name="debug_enabled" type="bool" setter="set_debug_enabled" getter="get_debug_enabled" default="false">
 			If [code]true[/code] shows debug visuals for this agent.
 		</member>
-		<member name="debug_path_custom_color" type="Color" setter="set_debug_path_custom_color" getter="get_debug_path_custom_color" default="Color(1, 1, 1, 1)">
+		<member name="debug_path_custom_color" type="Color" setter="set_debug_path_custom_color" getter="get_debug_path_custom_color" default="Color( 1, 1, 1, 1 )">
 			If [member debug_use_custom] is [code]true[/code] uses this color for this agent instead of global color.
 		</member>
 		<member name="debug_path_custom_point_size" type="float" setter="set_debug_path_custom_point_size" getter="get_debug_path_custom_point_size" default="4.0">
@@ -186,7 +186,7 @@
 		<member name="navigation_layers" type="int" setter="set_navigation_layers" getter="get_navigation_layers" default="1">
 			A bitfield determining all navigation map layers the [NavigationAgent] belongs to. On path requests the agent will ignore navmeshes without at least one matching layer.
 		</member>
-		<member name="neighbor_distance" type="float" setter="set_neighbor_distance" getter="get_neighbor_distance" default="0.0">
+		<member name="neighbor_distance" type="float" setter="set_neighbor_distance" getter="get_neighbor_distance" default="1.0">
 			The distance to search for other agents.
 		</member>
 		<member name="path_desired_distance" type="float" setter="set_path_desired_distance" getter="get_path_desired_distance" default="1.0">
@@ -198,7 +198,7 @@
 		<member name="path_max_distance" type="float" setter="set_path_max_distance" getter="get_path_max_distance" default="3.0">
 			The maximum distance the agent is allowed away from the ideal path to the final position. This can happen due to trying to avoid collisions. When the maximum distance is exceeded, it recalculates the ideal path.
 		</member>
-		<member name="path_metadata_flags" type="int" setter="set_path_metadata_flags" getter="get_path_metadata_flags" enum="NavigationPathQueryParameters3D.PathMetadataFlags" default="7">
+		<member name="path_metadata_flags" type="int" setter="set_path_metadata_flags" getter="get_path_metadata_flags" default="7">
 			Additional information to return with the navigation path.
 		</member>
 		<member name="radius" type="float" setter="set_radius" getter="get_radius" default="1.0">
@@ -221,7 +221,7 @@
 			If [code]true[/code] the agent calculates avoidance velocities in 3D for the xyz-axis, e.g. for games that take place in air, unterwater or space. The 3D using agent only avoids other 3D avoidance using agent's. The 3D using agent only reacts to radius based avoidance obstacles. The 3D using agent ignores any vertices based obstacles. The 3D using agent only avoids other 3D using agent's.
 			If [code]false[/code] the agent calculates avoidance velocities in 2D along the xz-axis ignoring the y-axis. The 2D using agent only avoids other 2D avoidance using agent's. The 2D using agent reacts to radius avoidance obstacles. The 2D using agent reacts to vertices based avoidance obstacles. The 2D using agent only avoids other 2D using agent's. 2D using agents will ignore other 2D using agents or obstacles that are below their current position or above their current position including [member height] in 2D avoidance.
 		</member>
-		<member name="velocity" type="Vector3" setter="set_velocity" getter="get_velocity" default="Vector3(0, 0, 0)">
+		<member name="velocity" type="Vector3" setter="set_velocity" getter="get_velocity" default="Vector3( 0, 0, 0 )">
 			Sets the new wanted velocity for the agent. The avoidance simulation will try to fulfil this velocity if possible but will modify it to avoid collision with other agent's and obstacles. When an agent is teleported to a new position use [method set_velocity_forced] as well to reset the internal simulation velocity.
 		</member>
 	</members>

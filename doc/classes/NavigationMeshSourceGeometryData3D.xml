@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationMeshSourceGeometryData3D" inherits="Resource" version="4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="NavigationMeshSourceGeometryData3D" inherits="Resource" version="3.12">
 	<brief_description>
 		Contains parsed source geometry data for use in [NavigationMesh] baking with the [NavigationMeshGenerator].
 	</brief_description>
@@ -12,7 +12,7 @@
 		<method name="add_faces">
 			<return type="void" />
 			<argument index="0" name="faces" type="PoolVector3Array" />
-			<argument index="1" name="xform" type="Transform3D" />
+			<argument index="1" name="xform" type="Transform" />
 			<description>
 				Adds an array of vertex positions to the geometry data for navigation mesh baking to form triangulated faces. For each face the array must have three vertex positions in clockwise winding order. Since [NavigationMesh] resource have no transform all vertex positions need to be offset by the node's transform using the [code]xform[/code] parameter.
 			</description>
@@ -20,7 +20,7 @@
 		<method name="add_mesh">
 			<return type="void" />
 			<argument index="0" name="mesh" type="Mesh" />
-			<argument index="1" name="xform" type="Transform3D" />
+			<argument index="1" name="xform" type="Transform" />
 			<description>
 				Adds the geometry data of a [Mesh] resource to the navigation mesh baking data. The mesh must have valid triangulated mesh data to be considered. Since [NavigationMesh] resource have no transform all vertex positions need to be offset by the node's transform using the [code]xform[/code] parameter.
 			</description>
@@ -28,7 +28,7 @@
 		<method name="add_mesh_array">
 			<return type="void" />
 			<argument index="0" name="mesh_array" type="Array" />
-			<argument index="1" name="xform" type="Transform3D" />
+			<argument index="1" name="xform" type="Transform" />
 			<description>
 				Adds an [Array] the size of [constant Mesh.ARRAY_MAX] and with vertices at index [constant Mesh.ARRAY_VERTEX] and indices at index [constant Mesh.ARRAY_INDEX] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [NavigationMesh] resource have no transform all vertex positions need to be offset by the node's transform using the [code]xform[/code] parameter.
 			</description>
@@ -74,4 +74,6 @@
 			</description>
 		</method>
 	</methods>
+	<constants>
+	</constants>
 </class>
