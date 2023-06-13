@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WebServerRequestScriptable" inherits="WebServerRequest" version="3.11">
+<class name="WebServerRequestScriptable" inherits="WebServerRequest" version="3.12">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -122,6 +122,20 @@
 			<return type="void" />
 			<argument index="0" name="location" type="String" />
 			<argument index="1" name="status_code" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_set_get_parameter" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="key" type="String" />
+			<argument index="1" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_set_post_parameter" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="key" type="String" />
+			<argument index="1" name="value" type="String" />
 			<description>
 			</description>
 		</method>

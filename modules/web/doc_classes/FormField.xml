@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="FormField" inherits="Resource" version="3.11">
+<class name="FormField" inherits="Resource" version="3.12">
 	<brief_description>
 		[FormField] represents one field in a html form, like a password or user name input.
 	</brief_description>
@@ -133,11 +133,11 @@
 		</member>
 		<member name="human_name" type="String" setter="set_human_name" getter="get_human_name" default="&quot;&quot;">
 		</member>
-		<member name="ignore_if_not_exists" type="bool" setter="set_ignore_if_not_exists" getter="get_ignore_if_not_exists" default="false">
-		</member>
 		<member name="ignore_if_other_field_not_exist_field" type="String" setter="set_ignore_if_other_field_not_exist_field" getter="get_ignore_if_other_field_not_exist_field" default="&quot;&quot;">
 		</member>
-		<member name="ignore_if_other_field_not_exists" type="bool" setter="set_ignore_if_other_field_not_exists" getter="get_ignore_if_other_field_not_exists" default="false">
+		<member name="is_ignore_if_not_exists" type="bool" setter="set_ignore_if_not_exists" getter="get_ignore_if_not_exists" default="false">
+		</member>
+		<member name="is_ignore_if_other_field_not_exists" type="bool" setter="set_ignore_if_other_field_not_exists" getter="get_ignore_if_other_field_not_exists" default="false">
 		</member>
 	</members>
 	<constants>

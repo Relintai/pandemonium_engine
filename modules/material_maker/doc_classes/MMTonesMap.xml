@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMTonesMap" inherits="MMNode" version="3.12">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+		<member name="input_range" type="Vector2" setter="set_input_range" getter="get_input_range" default="Vector2( 0, 1 )">
+		</member>
+		<member name="output_range" type="Vector2" setter="set_output_range" getter="get_output_range" default="Vector2( 0, 1 )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

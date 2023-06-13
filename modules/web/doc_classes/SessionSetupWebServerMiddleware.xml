@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SessionSetupWebServerMiddleware" inherits="WebServerMiddleware" version="3.11">
+<class name="SessionSetupWebServerMiddleware" inherits="WebServerMiddleware" version="3.12">
 	<brief_description>
 		The [SessionSetupWebServerMiddleware] will look up [HTTPSession]s for a particular request using the stored session id.
 	</brief_description>

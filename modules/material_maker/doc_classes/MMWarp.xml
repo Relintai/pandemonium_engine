@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMWarp" inherits="MMNode" version="3.12">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="amount" type="float" setter="set_amount" getter="get_amount" default="0.1">
+		</member>
+		<member name="epsilon" type="float" setter="set_epsilon" getter="get_epsilon" default="0.1">
+		</member>
+		<member name="height_map" type="MMNodeUniversalProperty" setter="set_height_map" getter="get_height_map">
+		</member>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+		<member name="mode" type="int" setter="set_mode" getter="get_mode" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

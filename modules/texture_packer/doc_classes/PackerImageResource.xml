@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PackerImageResource" inherits="Texture" version="3.11">
+<class name="PackerImageResource" inherits="Texture" version="3.12">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -11,6 +11,7 @@
 	<members>
 		<member name="data" type="Image" setter="set_data" getter="get_data">
 		</member>
+		<member name="resource_local_to_scene" type="bool" setter="set_local_to_scene" getter="is_local_to_scene" overrides="Resource" default="false" />
 	</members>
 	<constants>
 	</constants>

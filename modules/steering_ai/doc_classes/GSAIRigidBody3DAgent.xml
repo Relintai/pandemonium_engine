@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GSAIRigidBody3DAgent" inherits="GSAISpecializedAgent" version="3.11">
+<class name="GSAIRigidBody3DAgent" inherits="GSAISpecializedAgent" version="3.12">
 	<brief_description>
 		A specialized steering agent that updates itself every frame so the user does not have to using a RigidBody
 	</brief_description>

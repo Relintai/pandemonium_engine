@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Skeleton2D" inherits="Node2D" version="3.11">
+<class name="Skeleton2D" inherits="Node2D" version="3.12">
 	<brief_description>
 		Skeleton for 2D characters and animated objects.
 	</brief_description>
@@ -12,7 +12,7 @@
 	<methods>
 		<method name="execute_modifications">
 			<return type="void" />
-			<argument index="0" name="execution_mode" type="float" />
+			<argument index="0" name="delta" type="float" />
 			<argument index="1" name="execution_mode" type="int" />
 			<description>
 				Executes all the modifications on the [SkeletonModificationStack2D], if the Skeleton3D has one assigned.

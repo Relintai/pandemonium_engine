@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="FormValidator" inherits="Resource" version="3.11">
+<class name="FormValidator" inherits="Resource" version="3.12">
 	<brief_description>
 		The [FormValidator] implements html form validation capabilities.
 	</brief_description>

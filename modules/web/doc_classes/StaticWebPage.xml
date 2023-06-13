@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="StaticWebPage" inherits="WebNode" version="3.11">
+<class name="StaticWebPage" inherits="WebNode" version="3.12">
 	<brief_description>
 		Sends what's in it's [code]data[/code] property when it handles a [WebServerRequest], and what's in it's [code]preview_data[/code] property when [code]render_preview()[/code] is called.
 	</brief_description>
