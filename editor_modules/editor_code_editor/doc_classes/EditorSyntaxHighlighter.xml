@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EditorSyntaxHighlighter" inherits="SyntaxHighlighter" version="3.12">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_get_name" qualifiers="virtual">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_supported_extentions" qualifiers="virtual">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_supported_languages" qualifiers="virtual">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

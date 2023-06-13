@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EditorScriptEditorBase" inherits="VBoxContainer" version="3.12">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<signals>
+		<signal name="edited_script_changed">
+			<description>
+			</description>
+		</signal>
+		<signal name="go_to_help">
+			<argument index="0" name="what" type="String" />
+			<description>
+			</description>
+		</signal>
+		<signal name="name_changed">
+			<description>
+			</description>
+		</signal>
+		<signal name="replace_in_files_requested">
+			<argument index="0" name="text" type="String" />
+			<description>
+			</description>
+		</signal>
+		<signal name="request_help">
+			<argument index="0" name="topic" type="String" />
+			<description>
+			</description>
+		</signal>
+		<signal name="request_open_script_at_line">
+			<argument index="0" name="script" type="Object" />
+			<argument index="1" name="line" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="request_save_history">
+			<description>
+			</description>
+		</signal>
+		<signal name="search_in_files_requested">
+			<argument index="0" name="text" type="String" />
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

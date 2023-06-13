@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TextEdit" inherits="Control" version="3.11">
+<class name="TextEdit" inherits="Control" version="3.12">
 	<brief_description>
 		Multiline text editing control.
 	</brief_description>
@@ -10,24 +10,6 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="add_color_region">
-			<return type="void" />
-			<argument index="0" name="begin_key" type="String" />
-			<argument index="1" name="end_key" type="String" />
-			<argument index="2" name="color" type="Color" />
-			<argument index="3" name="line_only" type="bool" default="false" />
-			<description>
-				Adds color region (given the delimiters) and its colors.
-			</description>
-		</method>
-		<method name="add_keyword_color">
-			<return type="void" />
-			<argument index="0" name="keyword" type="String" />
-			<argument index="1" name="color" type="Color" />
-			<description>
-				Adds a [code]keyword[/code] and its [Color].
-			</description>
-		</method>
 		<method name="can_fold" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="line" type="int" />
@@ -39,12 +21,6 @@
 			<return type="void" />
 			<description>
 				Centers the viewport on the line the editing cursor is at. This also resets the [member scroll_horizontal] value to [code]0[/code].
-			</description>
-		</method>
-		<method name="clear_colors">
-			<return type="void" />
-			<description>
-				Clears all custom syntax coloring information previously added with [method add_color_region] or [method add_keyword_color].
 			</description>
 		</method>
 		<method name="clear_undo_history">
@@ -121,13 +97,6 @@
 			<return type="Array" />
 			<description>
 				Returns an array containing the line number of each breakpoint.
-			</description>
-		</method>
-		<method name="get_keyword_color" qualifiers="const">
-			<return type="Color" />
-			<argument index="0" name="keyword" type="String" />
-			<description>
-				Returns the [Color] of the specified [code]keyword[/code].
 			</description>
 		</method>
 		<method name="get_line" qualifiers="const">
@@ -255,13 +224,6 @@
 			<return type="String" />
 			<description>
 				Returns a [String] text with the word under the caret (text cursor) location.
-			</description>
-		</method>
-		<method name="has_keyword_color" qualifiers="const">
-			<return type="bool" />
-			<argument index="0" name="keyword" type="String" />
-			<description>
-				Returns whether the specified [code]keyword[/code] has a color set to it or not.
 			</description>
 		</method>
 		<method name="has_redo" qualifiers="const">
@@ -549,8 +511,7 @@
 		<member name="smooth_scrolling" type="bool" setter="set_smooth_scroll_enable" getter="is_smooth_scroll_enabled" default="false">
 			If [code]true[/code], sets the [code]step[/code] of the scrollbars to [code]0.25[/code] which results in smoother scrolling.
 		</member>
-		<member name="syntax_highlighting" type="bool" setter="set_syntax_coloring" getter="is_syntax_coloring_enabled" default="false">
-			If [code]true[/code], any custom color properties that have been set for this [TextEdit] will be visible.
+		<member name="syntax_highlighter" type="SyntaxHighlighter" setter="set_syntax_highlighter" getter="get_syntax_highlighter">
 		</member>
 		<member name="text" type="String" setter="set_text" getter="get_text" default="&quot;&quot;">
 			String value of the [TextEdit].
@@ -582,6 +543,12 @@
 			<argument index="1" name="info" type="String" />
 			<description>
 				Emitted when the info icon is clicked.
+			</description>
+		</signal>
+		<signal name="lines_edited_from">
+			<argument index="0" name="from_line" type="int" />
+			<argument index="1" name="to_line" type="int" />
+			<description>
 			</description>
 		</signal>
 		<signal name="request_completion">
@@ -683,24 +650,16 @@
 		<theme_item name="font_color_selected" data_type="color" type="Color" default="Color( 0, 0, 0, 1 )">
 			Sets the [Color] of the selected text. [member override_selected_font_color] has to be enabled.
 		</theme_item>
-		<theme_item name="function_color" data_type="color" type="Color" default="Color( 0.4, 0.64, 0.81, 1 )">
-		</theme_item>
 		<theme_item name="line_number_color" data_type="color" type="Color" default="Color( 0.67, 0.67, 0.67, 0.4 )">
 			Sets the [Color] of the line numbers. [member show_line_numbers] has to be enabled.
 		</theme_item>
 		<theme_item name="mark_color" data_type="color" type="Color" default="Color( 1, 0.4, 0.4, 0.4 )">
 			Sets the [Color] of marked text.
 		</theme_item>
-		<theme_item name="member_variable_color" data_type="color" type="Color" default="Color( 0.9, 0.31, 0.35, 1 )">
-		</theme_item>
-		<theme_item name="number_color" data_type="color" type="Color" default="Color( 0.92, 0.58, 0.2, 1 )">
-		</theme_item>
 		<theme_item name="safe_line_number_color" data_type="color" type="Color" default="Color( 0.67, 0.78, 0.67, 0.6 )">
 		</theme_item>
 		<theme_item name="selection_color" data_type="color" type="Color" default="Color( 0.49, 0.49, 0.49, 1 )">
 			Sets the highlight [Color] of text selections.
-		</theme_item>
-		<theme_item name="symbol_color" data_type="color" type="Color" default="Color( 0.94, 0.94, 0.94, 1 )">
 		</theme_item>
 		<theme_item name="word_highlighted_color" data_type="color" type="Color" default="Color( 0.8, 0.9, 0.9, 0.15 )">
 			Sets the highlight [Color] of multiple occurrences. [member highlight_all_occurrences] has to be enabled.
