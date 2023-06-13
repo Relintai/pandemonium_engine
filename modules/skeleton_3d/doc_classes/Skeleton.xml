@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Skeleton" inherits="Spatial" version="3.11">
+<class name="Skeleton" inherits="Spatial" version="3.12">
 	<brief_description>
 		Skeleton for characters and animated objects.
 	</brief_description>
@@ -71,7 +71,12 @@
 				Force updates the bone transforms/poses for all bones in the skeleton.
 			</description>
 		</method>
-		<method name="force_update_bone_child_transform">
+		<method name="force_update_all_dirty_bones">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="force_update_bone_children_transforms">
 			<return type="void" />
 			<argument index="0" name="bone_idx" type="int" />
 			<description>
@@ -209,6 +214,11 @@
 			<description>
 				Rotates the given [Basis] so that the forward axis of the Basis is facing in the forward direction of the bone at [code]bone_idx[/code].
 				This is helper function to make using [method Transform.looking_at] easier with bone poses.
+			</description>
+		</method>
+		<method name="init_pose">
+			<return type="void" />
+			<description>
 			</description>
 		</method>
 		<method name="is_bone_enabled" qualifiers="const">
