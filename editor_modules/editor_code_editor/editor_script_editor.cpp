@@ -194,7 +194,7 @@ String EditorScriptEditor::_get_debug_tooltip(const String &p_text, Node *_se) {
 	}
 }
 
-void EditorScriptEditor::_breaked(bool p_breaked, bool p_can_debug) {
+void EditorScriptEditor::_breaked(bool p_breaked, bool p_can_debug, const String &p_reason, bool p_has_stackdump) {
 	if (bool(EditorSettings::get_singleton()->get("text_editor/external/use_external_editor"))) {
 		return;
 	}

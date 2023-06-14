@@ -32,21 +32,21 @@
 
 #include "scene/gui/margin_container.h"
 
-#include "core/variant/array.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
+#include "core/containers/rb_set.h"
+#include "core/containers/vector.h"
 #include "core/math/vector2.h"
-#include "core/string/node_path.h"
 #include "core/object/object.h"
 #include "core/object/object_id.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
-#include "core/containers/rb_set.h"
+#include "core/string/node_path.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
+#include "core/variant/array.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
 
 class Tree;
 class EditorNode;
@@ -73,6 +73,7 @@ class Script;
 class StreamPeerTCP;
 class TCP_Server;
 class VBoxContainer;
+class OptionButton;
 
 class EditorScriptEditorDebugger : public MarginContainer {
 	GDCLASS(EditorScriptEditorDebugger, MarginContainer);
@@ -179,6 +180,7 @@ private:
 
 	Tree *stack_dump;
 	LineEdit *search;
+	OptionButton *threads;
 	EditorInspector *inspector;
 
 	Ref<TCP_Server> server;
@@ -186,6 +188,7 @@ private:
 	Ref<PacketPeerStream> ppeer;
 
 	String message_type;
+	uint64_t message_thread;
 	Array message;
 	int pending_in_queue;
 
@@ -198,9 +201,37 @@ private:
 
 	EditorNode *editor;
 
-	bool breaked;
-
 	bool live_debug;
+
+	uint64_t debugging_thread_id;
+	uint64_t process_main_thread_id;
+
+	struct ThreadDebugged {
+		String name;
+		String error;
+		bool can_debug;
+		bool has_stackdump;
+		uint32_t debug_order;
+		uint64_t thread_id;
+
+		ThreadDebugged() {
+			can_debug = false;
+			has_stackdump = false;
+			debug_order = 0;
+			thread_id = 0;
+		}
+	};
+
+	struct ThreadSort {
+		bool operator()(const ThreadDebugged *a, const ThreadDebugged *b) const {
+			return a->debug_order < b->debug_order;
+		}
+	};
+
+	HashMap<uint64_t, ThreadDebugged> threads_debugged;
+	bool thread_list_updating;
+
+	void _select_thread(int p_index);
 
 	CameraOverride camera_override;
 
@@ -214,8 +245,9 @@ private:
 	void _scene_tree_rmb_selected(const Vector2 &p_position);
 	void _file_selected(const String &p_file);
 	void _scene_tree_request();
-	void _parse_message(const String &p_msg, const Array &p_data);
+	void _parse_message(const String &p_msg, uint64_t p_thread_id, const Array &p_data);
 	void _set_reason_text(const String &p_reason, MessageType p_type);
+	void _update_buttons_state();
 	void _scene_tree_property_select_object(ObjectID p_object);
 	void _scene_tree_property_value_edited(const String &p_prop, const Variant &p_value);
 	int _update_scene_tree(TreeItem *parent, const Array &nodes, int current_index);
@@ -258,6 +290,8 @@ private:
 
 	void _clear_execution();
 
+	void _thread_debug_enter(uint64_t p_thread_id);
+
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
@@ -275,6 +309,10 @@ public:
 	void debug_step();
 	void debug_break();
 	void debug_continue();
+
+	bool is_breaked() const { return threads_debugged.size() > 0; }
+	bool is_debuggable() const { return threads_debugged.size() > 0 && threads_debugged[debugging_thread_id].can_debug; }
+	bool is_session_active();
 
 	String get_var_value(const String &p_var) const;
 
@@ -296,6 +334,7 @@ public:
 
 	void set_breakpoint(const String &p_path, int p_line, bool p_enabled);
 
+	void get_process_main_thread_id();
 	void update_live_edit_root();
 
 	void set_hide_on_stop(bool p_hide);

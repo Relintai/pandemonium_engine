@@ -289,7 +289,7 @@ class EditorScriptEditor : public PanelContainer {
 	void _goto_script_line(REF p_script, int p_line);
 	void _set_execution(REF p_script, int p_line);
 	void _clear_execution(REF p_script);
-	void _breaked(bool p_breaked, bool p_can_debug);
+	void _breaked(bool p_breaked, bool p_can_debug, const String &p_reason, bool p_has_stackdump);
 	void _show_debugger(bool p_show);
 	void _script_created(Ref<Script> p_script);
 

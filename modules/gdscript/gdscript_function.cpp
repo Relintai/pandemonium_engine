@@ -411,8 +411,8 @@ Variant GDScriptFunction::call(GDScriptInstance *p_instance, const Variant **p_a
 	if (GDScriptLanguage::get_singleton()->profiling) {
 		function_start_time = OS::get_singleton()->get_ticks_usec();
 		function_call_time = 0;
-		profile.call_count++;
-		profile.frame_call_count++;
+		profile.call_count.increment();
+		profile.frame_call_count.increment();
 	}
 	bool exit_ok = false;
 	bool yielded = false;
@@ -1496,7 +1496,7 @@ Variant GDScriptFunction::call(GDScriptInstance *p_instance, const Variant **p_a
 						do_break = true;
 					}
 
-					if (do_break) {
+					if (unlikely(do_break)) {
 						GDScriptLanguage::get_singleton()->debug_break("Breakpoint", true);
 					}
 
@@ -1559,11 +1559,14 @@ Variant GDScriptFunction::call(GDScriptInstance *p_instance, const Variant **p_a
 #ifdef DEBUG_ENABLED
 	if (GDScriptLanguage::get_singleton()->profiling) {
 		uint64_t time_taken = OS::get_singleton()->get_ticks_usec() - function_start_time;
-		profile.total_time += time_taken;
-		profile.self_time += time_taken - function_call_time;
-		profile.frame_total_time += time_taken;
-		profile.frame_self_time += time_taken - function_call_time;
-		GDScriptLanguage::get_singleton()->script_frame_time += time_taken - function_call_time;
+		profile.total_time.add(time_taken);
+		profile.self_time.add(time_taken - function_call_time);
+		profile.frame_total_time.add(time_taken);
+		profile.frame_self_time.add(time_taken - function_call_time);
+
+		if (Thread::get_caller_id() == Thread::get_main_id()) {
+			GDScriptLanguage::get_singleton()->script_frame_time += time_taken - function_call_time;
+		}
 	}
 
 	// Check if this is the last time the function is resuming from yield
@@ -1707,12 +1710,12 @@ GDScriptFunction::GDScriptFunction() :
 	GDScriptLanguage::get_singleton()->function_list.add(&function_list);
 	GDScriptLanguage::get_singleton()->lock.unlock();
 
-	profile.call_count = 0;
-	profile.self_time = 0;
-	profile.total_time = 0;
-	profile.frame_call_count = 0;
-	profile.frame_self_time = 0;
-	profile.frame_total_time = 0;
+	profile.call_count.set(0);
+	profile.self_time.set(0);
+	profile.total_time.set(0);
+	profile.frame_call_count.set(0);
+	profile.frame_self_time.set(0);
+	profile.frame_total_time.set(0);
 	profile.last_frame_call_count = 0;
 	profile.last_frame_self_time = 0;
 	profile.last_frame_total_time = 0;

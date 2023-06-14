@@ -31,13 +31,13 @@
 #include "script_debugger_remote.h"
 
 #include "core/config/engine.h"
+#include "core/config/project_settings.h"
+#include "core/input/input.h"
 #include "core/io/ip.h"
 #include "core/io/marshalls.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
-#include "core/input/input.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/viewport.h"
@@ -53,6 +53,7 @@ void ScriptDebuggerRemote::_send_video_memory() {
 	usage.sort();
 
 	packet_peer_stream->put_var("message:video_mem");
+	packet_peer_stream->put_var(Thread::get_caller_id());
 	packet_peer_stream->put_var(usage.size() * 4);
 
 	for (List<ResourceUsage>::Element *E = usage.front(); E; E = E->next()) {
@@ -109,8 +110,9 @@ void ScriptDebuggerRemote::_put_variable(const String &p_name, const Variant &p_
 
 	int len = 0;
 	Error err = encode_variant(var, nullptr, len, true);
-	if (err != OK)
+	if (err != OK) {
 		ERR_PRINT("Failed to encode variant.");
+	}
 
 	if (len > packet_peer_stream->get_output_buffer_max_size()) { //limit to max size
 		packet_peer_stream->put_var(Variant());
@@ -136,22 +138,43 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script, bool p_can_continue, 
 		return;
 	}
 
-	ERR_FAIL_COND_MSG(!tcp_client->is_connected_to_host(), "Script Debugger failed to connect, but being used anyway.");
+	{
+		MutexLock lock(mutex);
+		// Tests that require mutex.
+
+		ERR_FAIL_COND_MSG(!tcp_client->is_connected_to_host(), "Script Debugger failed to connect, but being used anyway.");
+	}
 
 	if (allow_focus_steal_pid) {
 		OS::get_singleton()->enable_for_stealing_focus(allow_focus_steal_pid);
 	}
 
 	packet_peer_stream->put_var("debug_enter");
-	packet_peer_stream->put_var(2);
+	packet_peer_stream->put_var(Thread::get_caller_id());
+	packet_peer_stream->put_var(4);
 	packet_peer_stream->put_var(p_can_continue);
 	packet_peer_stream->put_var(p_script->debug_get_error());
+	packet_peer_stream->put_var(p_script->debug_get_stack_level_count() > 0);
+	packet_peer_stream->put_var(Thread::is_main_thread() ? String(RTR("Main Thread")) : String::num(Thread::get_caller_id()));
 
 	skip_profile_frame = true; // to avoid super long frame time for the frame
 
 	Input::MouseMode mouse_mode = Input::get_singleton()->get_mouse_mode();
-	if (mouse_mode != Input::MOUSE_MODE_VISIBLE) {
-		Input::get_singleton()->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
+
+	if (Thread::is_main_thread()) {
+		if (mouse_mode != Input::MOUSE_MODE_VISIBLE) {
+			Input::get_singleton()->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
+		}
+	} else {
+		MutexLock mutex_lock(mutex);
+
+		if (!incoming_messages.has(Thread::get_caller_id())) {
+			incoming_messages.insert(Thread::get_caller_id(), List<Message>());
+		}
+
+		if (!outgoing_messages.has(Thread::get_caller_id())) {
+			outgoing_messages.insert(Thread::get_caller_id(), List<Message>());
+		}
 	}
 
 	uint64_t loop_begin_usec = 0;
@@ -161,22 +184,22 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script, bool p_can_continue, 
 
 		_get_output();
 
-		if (packet_peer_stream->get_available_packet_count() > 0) {
-			Variant var;
-			Error err = packet_peer_stream->get_var(var);
+		_poll_messages();
 
-			ERR_CONTINUE(err != OK);
-			ERR_CONTINUE(var.get_type() != Variant::ARRAY);
-
-			Array cmd = var;
+		if (_has_incoming_messages()) {
+			Array cmd = _get_incoming_message();
 
 			ERR_CONTINUE(cmd.size() == 0);
 			ERR_CONTINUE(cmd[0].get_type() != Variant::STRING);
+			//cmd[1] is not the thread id here, was removed when polling
 
 			String command = cmd[0];
 
+			MutexLock mutex_lock(mutex);
+
 			if (command == "get_stack_dump") {
 				packet_peer_stream->put_var("stack_dump");
+				packet_peer_stream->put_var(Thread::get_caller_id());
 				int slc = p_script->debug_get_stack_level_count();
 				packet_peer_stream->put_var(slc);
 
@@ -216,6 +239,7 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script, bool p_can_continue, 
 				ERR_CONTINUE(globals.size() != globals_vals.size());
 
 				packet_peer_stream->put_var("stack_frame_vars");
+				packet_peer_stream->put_var(Thread::get_caller_id());
 				packet_peer_stream->put_var(3 + (locals.size() + members.size() + globals.size()) * 2);
 
 				{ //locals
@@ -277,6 +301,8 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script, bool p_can_continue, 
 			} else if (command == "break") {
 				ERR_PRINT("Got break when already broke!");
 				break;
+
+				//Below everything should only happen on the main thread. Should probably add a check.
 			} else if (command == "request_scene_tree") {
 #ifdef DEBUG_ENABLED
 				if (scene_tree) {
@@ -342,10 +368,11 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script, bool p_can_continue, 
 			} else {
 				_parse_live_edit(cmd);
 			}
-
 		} else {
 			OS::get_singleton()->delay_usec(10000);
-			OS::get_singleton()->process_and_drop_events();
+			if (Thread::is_main_thread()) {
+				OS::get_singleton()->process_and_drop_events();
+			}
 		}
 
 		// This is for the camera override to stay live even when the game is paused from the editor
@@ -356,12 +383,98 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script, bool p_can_continue, 
 		}
 	}
 
+	mutex.lock();
 	packet_peer_stream->put_var("debug_exit");
+	packet_peer_stream->put_var(Thread::get_caller_id());
 	packet_peer_stream->put_var(0);
+	mutex.unlock();
 
-	if (mouse_mode != Input::MOUSE_MODE_VISIBLE) {
-		Input::get_singleton()->set_mouse_mode(mouse_mode);
+	if (Thread::is_main_thread()) {
+		if (mouse_mode != Input::MOUSE_MODE_VISIBLE) {
+			Input::get_singleton()->set_mouse_mode(mouse_mode);
+		}
+	} else {
+		MutexLock mutex_lock(mutex);
+		incoming_messages.erase(Thread::get_caller_id());
+		outgoing_messages.erase(Thread::get_caller_id());
 	}
+}
+
+void ScriptDebuggerRemote::_poll_messages() {
+	MutexLock mutex_lock(mutex);
+
+	while (packet_peer_stream->get_available_packet_count() > 0) {
+		Variant var;
+		Error err = packet_peer_stream->get_var(var);
+
+		ERR_CONTINUE(err != OK);
+		ERR_CONTINUE(var.get_type() != Variant::ARRAY);
+
+		Array cmd = var;
+
+		ERR_CONTINUE(cmd.size() < 2);
+		ERR_CONTINUE(cmd[0].get_type() != Variant::STRING);
+		ERR_CONTINUE(cmd[1].get_type() != Variant::INT);
+
+		String command = cmd[0];
+
+		//Special case, as the editor doesn't yet have a proper thread id -> can't request anbything from main thread -> no remote tree etc
+		if (command == "get_main_thread_id") {
+			packet_peer_stream->put_var("main_thread_id");
+			packet_peer_stream->put_var(Thread::get_main_id());
+			packet_peer_stream->put_var(0);
+			continue;
+		}
+
+		Thread::ID thread = cmd[1];
+
+		if (!incoming_messages.has(thread)) {
+			continue; // This thread is not around to receive the messages
+		}
+
+		Message msg;
+		msg.message = command;
+
+		msg.data.push_back(command);
+
+		for (int i = 2; i < cmd.size(); ++i) {
+			msg.data.push_back(cmd[i]);
+		}
+
+		incoming_messages[thread].push_back(msg);
+	}
+}
+
+bool ScriptDebuggerRemote::_has_incoming_messages() {
+	MutexLock mutex_lock(mutex);
+	return incoming_messages.has(Thread::get_caller_id()) && !incoming_messages[Thread::get_caller_id()].empty();
+}
+Array ScriptDebuggerRemote::_get_incoming_message() {
+	ERR_FAIL_COND_V(!incoming_messages.has(Thread::get_caller_id()), Array());
+	List<Message> &message_list = incoming_messages[Thread::get_caller_id()];
+	ERR_FAIL_COND_V(message_list.empty(), Array());
+
+	const Message &msg = message_list.front()->get();
+	//msg.data should be in the correct format, with the command as the first element.
+	Array msgarr = msg.data;
+	message_list.pop_front();
+
+	return msgarr;
+}
+
+bool ScriptDebuggerRemote::_has_outgoing_messages() {
+	MutexLock mutex_lock(mutex);
+	return outgoing_messages.has(Thread::get_caller_id()) && !outgoing_messages[Thread::get_caller_id()].empty();
+}
+
+ScriptDebuggerRemote::Message ScriptDebuggerRemote::_get_outgoing_message() {
+	ERR_FAIL_COND_V(!outgoing_messages.has(Thread::get_caller_id()), ScriptDebuggerRemote::Message());
+	List<Message> &message_list = outgoing_messages[Thread::get_caller_id()];
+	ERR_FAIL_COND_V(message_list.empty(), ScriptDebuggerRemote::Message());
+
+	Message msg = message_list.front()->get();
+	message_list.pop_front();
+	return msg;
 }
 
 void ScriptDebuggerRemote::_get_output() {
@@ -369,6 +482,7 @@ void ScriptDebuggerRemote::_get_output() {
 	if (output_strings.size()) {
 		locking = true;
 		packet_peer_stream->put_var("output");
+		packet_peer_stream->put_var(Thread::get_caller_id());
 		packet_peer_stream->put_var(output_strings.size());
 
 		while (output_strings.size()) {
@@ -388,18 +502,21 @@ void ScriptDebuggerRemote::_get_output() {
 	if (n_messages_dropped > 0) {
 		Message msg;
 		msg.message = "Too many messages! " + String::num_int64(n_messages_dropped) + " messages were dropped.";
-		messages.push_back(msg);
+		outgoing_messages[Thread::get_caller_id()].push_back(msg);
 		n_messages_dropped = 0;
 	}
 
-	while (messages.size()) {
+	while (_has_outgoing_messages()) {
+		Message msg = _get_outgoing_message();
+
 		locking = true;
-		packet_peer_stream->put_var("message:" + messages.front()->get().message);
-		packet_peer_stream->put_var(messages.front()->get().data.size());
-		for (int i = 0; i < messages.front()->get().data.size(); i++) {
-			packet_peer_stream->put_var(messages.front()->get().data[i]);
+		packet_peer_stream->put_var("message:" + msg.message);
+		packet_peer_stream->put_var(Thread::get_caller_id());
+		packet_peer_stream->put_var(msg.data.size());
+		for (int i = 0; i < msg.data.size(); i++) {
+			packet_peer_stream->put_var(msg.data[i]);
 		}
-		messages.pop_front();
+
 		locking = false;
 	}
 
@@ -434,6 +551,7 @@ void ScriptDebuggerRemote::_get_output() {
 	while (errors.size()) {
 		locking = true;
 		packet_peer_stream->put_var("error");
+		packet_peer_stream->put_var(Thread::get_caller_id());
 		OutputError oe = errors.front()->get();
 
 		packet_peer_stream->put_var(oe.callstack.size() + 2);
@@ -687,6 +805,7 @@ void ScriptDebuggerRemote::_send_object_id(ObjectID p_id) {
 	}
 
 	packet_peer_stream->put_var("message:inspect_object");
+	packet_peer_stream->put_var(Thread::get_caller_id());
 	packet_peer_stream->put_var(3);
 	packet_peer_stream->put_var(p_id);
 	packet_peer_stream->put_var(obj->get_class());
@@ -712,24 +831,21 @@ void ScriptDebuggerRemote::_poll_events() {
 	//this si called from ::idle_poll, happens only when running the game,
 	//does not get called while on debug break
 
-	while (packet_peer_stream->get_available_packet_count() > 0) {
-		_get_output();
+	ERR_FAIL_COND(!Thread::is_main_thread());
 
-		//send over output_strings
+	//send over output_strings
+	_get_output();
 
-		Variant var;
-		Error err = packet_peer_stream->get_var(var);
+	_poll_messages();
 
-		ERR_CONTINUE(err != OK);
-		ERR_CONTINUE(var.get_type() != Variant::ARRAY);
-
-		Array cmd = var;
+	while (_has_incoming_messages()) {
+		Array cmd = _get_incoming_message();
 
 		ERR_CONTINUE(cmd.size() == 0);
 		ERR_CONTINUE(cmd[0].get_type() != Variant::STRING);
 
 		String command = cmd[0];
-		//cmd.remove(0);
+		//Thread::ID thread = cmd[1]; was removed from cmd when storing incoming messages
 
 		if (command == "break") {
 			if (get_break_language()) {
@@ -857,6 +973,7 @@ void ScriptDebuggerRemote::_send_profiling_data(bool p_for_frame) {
 		if (!profiler_function_signature_map.has(profile_info_ptrs[i]->signature)) {
 			int idx = profiler_function_signature_map.size();
 			packet_peer_stream->put_var("profile_sig");
+			packet_peer_stream->put_var(Thread::get_caller_id());
 			packet_peer_stream->put_var(2);
 			packet_peer_stream->put_var(profile_info_ptrs[i]->signature);
 			packet_peer_stream->put_var(idx);
@@ -871,9 +988,11 @@ void ScriptDebuggerRemote::_send_profiling_data(bool p_for_frame) {
 
 	if (p_for_frame) {
 		packet_peer_stream->put_var("profile_frame");
+		packet_peer_stream->put_var(Thread::get_caller_id());
 		packet_peer_stream->put_var(8 + profile_frame_data.size() * 2 + to_send * 4);
 	} else {
 		packet_peer_stream->put_var("profile_total");
+		packet_peer_stream->put_var(Thread::get_caller_id());
 		packet_peer_stream->put_var(8 + to_send * 4);
 	}
 
@@ -919,10 +1038,13 @@ void ScriptDebuggerRemote::idle_poll() {
 	// this function is called every frame, except when there is a debugger break (::debug() in this class)
 	// execution stops and remains in the ::debug function
 
+	ERR_FAIL_COND(!Thread::is_main_thread());
+
 	_get_output();
 
 	if (requested_quit) {
 		packet_peer_stream->put_var("kill_me");
+		packet_peer_stream->put_var(Thread::get_caller_id());
 		packet_peer_stream->put_var(0);
 		requested_quit = false;
 	}
@@ -938,6 +1060,7 @@ void ScriptDebuggerRemote::idle_poll() {
 				arr[i] = performance->call("get_monitor", i);
 			}
 			packet_peer_stream->put_var("performance");
+			packet_peer_stream->put_var(Thread::get_caller_id());
 			packet_peer_stream->put_var(1);
 			packet_peer_stream->put_var(arr);
 		}
@@ -980,6 +1103,7 @@ void ScriptDebuggerRemote::_send_network_profiling_data() {
 	int n_nodes = multiplayer->get_profiling_frame(&network_profile_info.write[0]);
 
 	packet_peer_stream->put_var("network_profile");
+	packet_peer_stream->put_var(Thread::get_caller_id());
 	packet_peer_stream->put_var(n_nodes * 6);
 	for (int i = 0; i < n_nodes; ++i) {
 		packet_peer_stream->put_var(network_profile_info[i].node);
@@ -998,6 +1122,7 @@ void ScriptDebuggerRemote::_send_network_bandwidth_usage() {
 	int outgoing_bandwidth = multiplayer->get_outgoing_bandwidth_usage();
 
 	packet_peer_stream->put_var("network_bandwidth");
+	packet_peer_stream->put_var(Thread::get_caller_id());
 	packet_peer_stream->put_var(2);
 	packet_peer_stream->put_var(incoming_bandwidth);
 	packet_peer_stream->put_var(outgoing_bandwidth);
@@ -1006,13 +1131,13 @@ void ScriptDebuggerRemote::_send_network_bandwidth_usage() {
 void ScriptDebuggerRemote::send_message(const String &p_message, const Array &p_args) {
 	mutex.lock();
 	if (!locking && tcp_client->is_connected_to_host()) {
-		if (messages.size() >= max_messages_per_frame) {
+		if (outgoing_messages[Thread::get_caller_id()].size() >= max_messages_per_frame) {
 			n_messages_dropped++;
 		} else {
 			Message msg;
 			msg.message = p_message;
 			msg.data = p_args;
-			messages.push_back(msg);
+			outgoing_messages[Thread::get_caller_id()].push_back(msg);
 		}
 	}
 	mutex.unlock();
@@ -1222,6 +1347,9 @@ ScriptDebuggerRemote::ScriptDebuggerRemote() :
 	eh.errfunc = _err_handler;
 	eh.userdata = this;
 	add_error_handler(&eh);
+
+	incoming_messages.insert(Thread::get_main_id(), List<Message>());
+	outgoing_messages.insert(Thread::get_main_id(), List<Message>());
 
 	profile_info.resize(GLOBAL_GET("debug/settings/profiler/max_functions"));
 	network_profile_info.resize(GLOBAL_GET("debug/settings/profiler/max_functions"));

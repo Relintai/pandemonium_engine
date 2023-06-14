@@ -30,11 +30,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/list.h"
 #include "core/io/packet_peer.h"
 #include "core/io/stream_peer_tcp.h"
-#include "core/containers/list.h"
-#include "core/os/os.h"
 #include "core/object/script_language.h"
+#include "core/os/os.h"
+#include "core/os/thread.h"
 
 class SceneTree;
 
@@ -93,7 +94,9 @@ class ScriptDebuggerRemote : public ScriptDebugger {
 	};
 
 	List<OutputString> output_strings;
-	List<Message> messages;
+	HashMap<Thread::ID, List<Message>> incoming_messages;
+	HashMap<Thread::ID, List<Message>> outgoing_messages;
+
 	int max_messages_per_frame;
 	int n_messages_dropped;
 	List<OutputError> errors;
@@ -115,6 +118,13 @@ class ScriptDebuggerRemote : public ScriptDebugger {
 	static void _print_handler(void *p_this, const String &p_string, bool p_error);
 
 	PrintHandlerList phl;
+
+	void _poll_messages();
+	bool _has_incoming_messages();
+	Array _get_incoming_message();
+
+	bool _has_outgoing_messages();
+	Message _get_outgoing_message();
 
 	void _get_output();
 	void _poll_events();

@@ -1425,12 +1425,12 @@ void GDScriptLanguage::profiling_start() {
 
 	SelfList<GDScriptFunction> *elem = function_list.first();
 	while (elem) {
-		elem->self()->profile.call_count = 0;
-		elem->self()->profile.self_time = 0;
-		elem->self()->profile.total_time = 0;
-		elem->self()->profile.frame_call_count = 0;
-		elem->self()->profile.frame_self_time = 0;
-		elem->self()->profile.frame_total_time = 0;
+		elem->self()->profile.call_count.set(0);
+		elem->self()->profile.self_time.set(0);
+		elem->self()->profile.total_time.set(0);
+		elem->self()->profile.frame_call_count.set(0);
+		elem->self()->profile.frame_self_time.set(0);
+		elem->self()->profile.frame_total_time.set(0);
 		elem->self()->profile.last_frame_call_count = 0;
 		elem->self()->profile.last_frame_self_time = 0;
 		elem->self()->profile.last_frame_total_time = 0;
@@ -1460,9 +1460,9 @@ int GDScriptLanguage::profiling_get_accumulated_data(ProfilingInfo *p_info_arr, 
 		if (current >= p_info_max) {
 			break;
 		}
-		p_info_arr[current].call_count = elem->self()->profile.call_count;
-		p_info_arr[current].self_time = elem->self()->profile.self_time;
-		p_info_arr[current].total_time = elem->self()->profile.total_time;
+		p_info_arr[current].call_count = elem->self()->profile.call_count.get();
+		p_info_arr[current].self_time = elem->self()->profile.self_time.get();
+		p_info_arr[current].total_time = elem->self()->profile.total_time.get();
 		p_info_arr[current].signature = elem->self()->profile.signature;
 		elem = elem->next();
 		current++;
@@ -1684,12 +1684,12 @@ void GDScriptLanguage::frame() {
 
 		SelfList<GDScriptFunction> *elem = function_list.first();
 		while (elem) {
-			elem->self()->profile.last_frame_call_count = elem->self()->profile.frame_call_count;
-			elem->self()->profile.last_frame_self_time = elem->self()->profile.frame_self_time;
-			elem->self()->profile.last_frame_total_time = elem->self()->profile.frame_total_time;
-			elem->self()->profile.frame_call_count = 0;
-			elem->self()->profile.frame_self_time = 0;
-			elem->self()->profile.frame_total_time = 0;
+			elem->self()->profile.last_frame_call_count = elem->self()->profile.frame_call_count.get();
+			elem->self()->profile.last_frame_self_time = elem->self()->profile.frame_self_time.get();
+			elem->self()->profile.last_frame_total_time = elem->self()->profile.frame_total_time.get();
+			elem->self()->profile.frame_call_count.set(0);
+			elem->self()->profile.frame_self_time.set(0);
+			elem->self()->profile.frame_total_time.set(0);
 			elem = elem->next();
 		}
 
@@ -2052,6 +2052,13 @@ GDScriptWarning::Code GDScriptWarning::get_code_from_name(const String &p_name) 
 
 #endif // DEBUG_ENABLED
 
+#if !defined(NO_THREADS)
+thread_local GDScriptLanguage::CallStack GDScriptLanguage::_call_stack;
+thread_local int GDScriptLanguage::_debug_parse_err_line = -1;
+thread_local String GDScriptLanguage::_debug_parse_err_file;
+thread_local String GDScriptLanguage::_debug_error;
+#endif
+
 GDScriptLanguage::GDScriptLanguage() {
 	GDScriptTokenizer::initialize();
 
@@ -2070,7 +2077,6 @@ GDScriptLanguage::GDScriptLanguage() {
 	profiling = false;
 	script_frame_time = 0;
 
-	_debug_call_stack_pos = 0;
 	int dmcs = GLOBAL_DEF("debug/settings/gdscript/max_call_stack", 1024);
 	ProjectSettings::get_singleton()->set_custom_property_info("debug/settings/gdscript/max_call_stack", PropertyInfo(Variant::INT, "debug/settings/gdscript/max_call_stack", PROPERTY_HINT_RANGE, "1024,4096,1,or_greater")); //minimum is 1024
 
@@ -2078,11 +2084,8 @@ GDScriptLanguage::GDScriptLanguage() {
 		//debugging enabled!
 
 		_debug_max_call_stack = dmcs;
-		_call_stack = memnew_arr(CallLevel, _debug_max_call_stack + 1);
-
 	} else {
 		_debug_max_call_stack = 0;
-		_call_stack = nullptr;
 	}
 
 #ifdef DEBUG_ENABLED
@@ -2101,9 +2104,7 @@ GDScriptLanguage::GDScriptLanguage() {
 GDScriptLanguage::~GDScriptLanguage() {
 	GDScriptTokenizer::terminate();
 
-	if (_call_stack) {
-		memdelete_arr(_call_stack);
-	}
+	_call_stack.free();
 
 	// Clear dependencies between scripts, to ensure cyclic references are broken (to avoid leaks at exit).
 	SelfList<GDScript> *s = script_list.first();

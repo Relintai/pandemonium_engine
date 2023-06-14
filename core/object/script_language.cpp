@@ -407,6 +407,11 @@ void ScriptLanguage::get_core_type_words(List<String> *p_words) const {
 
 void ScriptLanguage::frame() {
 }
+#if !defined(NO_THREADS)
+thread_local int ScriptDebugger::lines_left = -1;
+thread_local int ScriptDebugger::depth = -1;
+thread_local ScriptLanguage *ScriptDebugger::break_lang = nullptr;
+#endif
 
 ScriptDebugger *ScriptDebugger::singleton = nullptr;
 
@@ -444,7 +449,7 @@ void ScriptDebugger::remove_breakpoint(int p_line, const StringName &p_source) {
 	}
 }
 bool ScriptDebugger::is_breakpoint(int p_line, const StringName &p_source) const {
-	if (!breakpoints.has(p_line)) {
+	if (likely(!breakpoints.has(p_line))) {
 		return false;
 	}
 	return breakpoints[p_line].has(p_source);

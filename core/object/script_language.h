@@ -30,9 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/io/multiplayer_api.h"
-#include "core/containers/rb_map.h"
 #include "core/containers/pair.h"
+#include "core/containers/rb_map.h"
+#include "core/io/multiplayer_api.h"
 #include "core/object/resource.h"
 
 class ScriptLanguage;
@@ -415,13 +415,19 @@ public:
 };
 
 class ScriptDebugger {
+#if !defined(NO_THREADS)
+	static thread_local int lines_left;
+	static thread_local int depth;
+	static thread_local ScriptLanguage *break_lang;
+#else
 	int lines_left;
 	int depth;
+	ScriptLanguage *break_lang;
+#endif
 
 	static ScriptDebugger *singleton;
-	RBMap<int, RBSet<StringName>> breakpoints;
 
-	ScriptLanguage *break_lang;
+	RBMap<int, RBSet<StringName>> breakpoints;
 
 public:
 	_FORCE_INLINE_ static ScriptDebugger *get_singleton() { return singleton; }
