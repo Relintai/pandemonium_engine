@@ -836,7 +836,9 @@ void ScriptDebuggerRemote::_poll_events() {
 	//this si called from ::idle_poll, happens only when running the game,
 	//does not get called while on debug break
 
-	ERR_FAIL_COND(!Thread::is_main_thread());
+	if (!Thread::is_main_thread()) {
+		return;
+	}
 
 	//send over output_strings
 	_get_output();
@@ -1043,7 +1045,9 @@ void ScriptDebuggerRemote::idle_poll() {
 	// this function is called every frame, except when there is a debugger break (::debug() in this class)
 	// execution stops and remains in the ::debug function
 
-	ERR_FAIL_COND(!Thread::is_main_thread());
+	if (!Thread::is_main_thread()) {
+		return;
+	}
 
 	_get_output();
 
