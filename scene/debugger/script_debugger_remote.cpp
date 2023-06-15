@@ -429,7 +429,12 @@ void ScriptDebuggerRemote::_poll_messages() {
 		Thread::ID thread = cmd[1];
 
 		if (!incoming_messages.has(thread)) {
-			continue; // This thread is not around to receive the messages
+			if (thread != Thread::get_main_id()) {
+				continue; // This thread is not around to receive the messages
+			} else {
+				incoming_messages.insert(Thread::get_main_id(), List<Message>());
+				outgoing_messages.insert(Thread::get_main_id(), List<Message>());
+			}
 		}
 
 		Message msg;
