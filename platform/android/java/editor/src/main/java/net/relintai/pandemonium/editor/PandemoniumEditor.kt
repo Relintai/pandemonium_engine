@@ -190,6 +190,47 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		return instanceId
 	}
 
+	override fun enableForStealingFocus(processId: Int) {
+		if (shouldGameLaunchAdjacent()) {
+			return;
+		}
+
+		var reorder_intent : Intent? = null;
+
+		when (processId) {
+			GAME_ID -> {
+				reorder_intent = Intent(this, PandemoniumGame::class.java);
+			}
+			EDITOR_ID -> {
+				reorder_intent = Intent(this, PandemoniumEditor::class.java);
+			}
+			PROJECT_MANAGER_ID -> {
+				reorder_intent = Intent(this, PandemoniumProjectManager::class.java);
+			}
+			else -> {
+				// An unknown PID means the original editor instance
+				reorder_intent = Intent(this, PandemoniumEditor::class.java);
+			}
+		}
+		
+		if (reorder_intent != null) {
+			reorder_intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			reorder_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(reorder_intent);
+		}
+	}
+
+	override fun moveWindowToForeground() {
+		if (shouldGameLaunchAdjacent()) {
+			return;
+		}
+
+		var reorder_intent : Intent = Intent(this, javaClass);
+		reorder_intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		reorder_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		startActivity(reorder_intent);
+	}
+
 	override fun onPandemoniumForceQuit(pandemoniumInstanceId: Int): Boolean {
 		val processNameSuffix = when (pandemoniumInstanceId) {
 			GAME_ID -> {
@@ -261,7 +302,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 
 
 
-	private fun shouldGameLaunchAdjacent(): Boolean {
+	protected open fun shouldGameLaunchAdjacent(): Boolean {
 		return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			try {
 				when (Integer.parseInt(PandemoniumLib.getEditorSetting("run/window_placement/android_window"))) {

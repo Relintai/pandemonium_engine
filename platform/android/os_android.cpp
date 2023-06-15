@@ -580,6 +580,13 @@ OS::ScreenOrientation OS_Android::get_screen_orientation() const {
 	return OS::ScreenOrientation(orientation);
 }
 
+void OS_Android::enable_for_stealing_focus(ProcessID pid) {
+	pandemonium_java->enable_for_stealing_focus(pid);
+}
+void OS_Android::move_window_to_foreground() {
+	pandemonium_java->move_window_to_foreground();
+}
+
 String OS_Android::get_unique_id() const {
 	String unique_id = pandemonium_io_java->get_unique_id();
 	if (unique_id != "")

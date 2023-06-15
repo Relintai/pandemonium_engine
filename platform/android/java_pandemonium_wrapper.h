@@ -59,6 +59,8 @@ private:
 	jmethodID _finish = 0;
 	jmethodID _set_keep_screen_on = 0;
 	jmethodID _alert = 0;
+	jmethodID _enable_for_stealing_focus = 0;
+	jmethodID _move_window_to_foreground = 0;
 	jmethodID _get_GLES_version_code = 0;
 	jmethodID _get_clipboard = 0;
 	jmethodID _set_clipboard = 0;
@@ -102,6 +104,8 @@ public:
 	bool force_quit(JNIEnv *p_env = NULL, int p_instance_id = 0);
 	void set_keep_screen_on(bool p_enabled);
 	void alert(const String &p_message, const String &p_title);
+	void enable_for_stealing_focus(int pid);
+	void move_window_to_foreground();
 	int get_gles_version_code();
 	bool has_get_clipboard();
 	String get_clipboard();

@@ -30,10 +30,15 @@
 
 package net.relintai.pandemonium.editor
 
+import android.content.Intent
+import android.os.*
+
 /**
  * Drives the 'run project' window of the Pandemonium Editor.
  */
 class PandemoniumGame : PandemoniumEditor() {
+  private var isAdjacentFlagSet = false
+
   override fun overrideOrientationRequest() = false
 
   override fun enableLongPressGestures() = false
@@ -44,4 +49,14 @@ class PandemoniumGame : PandemoniumEditor() {
 		// Nothing to do.. by the time we get here, the project permissions will have already
 		// been requested by the Editor window.
 	}
+
+  override fun onCreate(savedInstanceState : Bundle?) {
+		isAdjacentFlagSet = (getIntent().getFlags() and Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT) != 0;
+
+		super.onCreate(savedInstanceState);
+	}
+
+  override fun shouldGameLaunchAdjacent(): Boolean {
+		return isAdjacentFlagSet
+  }
 }

@@ -558,6 +558,26 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		});
 	}
 
+	/**
+	 * Used by the native code (java_pandemonium_wrapper.h).
+	 */
+	@Keep
+	public void enableForStealingFocus(int processId) {
+		if (pandemoniumHost != null) {
+			pandemoniumHost.enableForStealingFocus(processId);
+		}
+	}
+
+	/**
+	 * Used by the native code (java_pandemonium_wrapper.h).
+	 */
+	@Keep
+	public void moveWindowToForeground() {
+		if (pandemoniumHost != null) {
+			pandemoniumHost.moveWindowToForeground();
+		}
+	}
+
 	public int getGLESVersionCode() {
 		ActivityManager am = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
 		ConfigurationInfo deviceInfo = am.getDeviceConfigurationInfo();
@@ -1264,7 +1284,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	@Keep
 	private int createNewPandemoniumInstance(String[] args) {
 		if (pandemoniumHost != null) {
-			pandemoniumHost.onNewPandemoniumInstanceRequested(args);
+			return pandemoniumHost.onNewPandemoniumInstanceRequested(args);
 		}
 		
 		return 0;

@@ -66,6 +66,8 @@ PandemoniumJavaWrapper::PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity
 	_finish = p_env->GetMethodID(pandemonium_class, "forceQuit", "(I)Z");
 	_set_keep_screen_on = p_env->GetMethodID(pandemonium_class, "setKeepScreenOn", "(Z)V");
 	_alert = p_env->GetMethodID(pandemonium_class, "alert", "(Ljava/lang/String;Ljava/lang/String;)V");
+	_enable_for_stealing_focus = p_env->GetMethodID(pandemonium_class, "enableForStealingFocus", "(I)V");
+	_move_window_to_foreground = p_env->GetMethodID(pandemonium_class, "moveWindowToForeground", "()V");
 	_get_GLES_version_code = p_env->GetMethodID(pandemonium_class, "getGLESVersionCode", "()I");
 	_get_clipboard = p_env->GetMethodID(pandemonium_class, "getClipboard", "()Ljava/lang/String;");
 	_set_clipboard = p_env->GetMethodID(pandemonium_class, "setClipboard", "(Ljava/lang/String;)V");
@@ -249,6 +251,23 @@ void PandemoniumJavaWrapper::alert(const String &p_message, const String &p_titl
 		jstring jStrMessage = env->NewStringUTF(p_message.utf8().get_data());
 		jstring jStrTitle = env->NewStringUTF(p_title.utf8().get_data());
 		env->CallVoidMethod(pandemonium_instance, _alert, jStrMessage, jStrTitle);
+	}
+}
+
+void PandemoniumJavaWrapper::enable_for_stealing_focus(int pid) {
+	JNIEnv *env = get_jni_env();
+	ERR_FAIL_COND(env == nullptr);
+
+	if (_enable_for_stealing_focus) {
+		env->CallVoidMethod(pandemonium_instance, _enable_for_stealing_focus, pid);
+	}
+}
+void PandemoniumJavaWrapper::move_window_to_foreground() {
+	JNIEnv *env = get_jni_env();
+	ERR_FAIL_COND(env == nullptr);
+
+	if (_move_window_to_foreground) {
+		env->CallVoidMethod(pandemonium_instance, _move_window_to_foreground);
 	}
 }
 

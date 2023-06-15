@@ -86,4 +86,10 @@ public interface PandemoniumHost {
 	default int onNewPandemoniumInstanceRequested(String[] args) {
 		return 0;
 	}
+
+	default public void enableForStealingFocus(int processId) {
+	}
+
+	default public void moveWindowToForeground() {
+	}
 }

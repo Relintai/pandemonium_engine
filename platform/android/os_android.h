@@ -176,6 +176,9 @@ public:
 	virtual void set_screen_orientation(ScreenOrientation p_orientation);
 	virtual ScreenOrientation get_screen_orientation() const;
 
+	virtual void enable_for_stealing_focus(ProcessID pid);
+	virtual void move_window_to_foreground();
+
 	virtual Error shell_open(String p_uri);
 	virtual String get_executable_path() const;
 	virtual String get_user_data_dir() const;

@@ -42,5 +42,9 @@ class PandemoniumProjectManager : PandemoniumEditor() {
     override fun checkForProjectPermissionsToEnable() {
 		// Nothing to do here.. we have yet to select a project to load.
 	}
+
+	override fun shouldGameLaunchAdjacent(): Boolean {
+		return false
+	}
 }
 
