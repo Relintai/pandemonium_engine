@@ -641,7 +641,6 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 /* Run */
 
 // Window placement
-#ifndef ANDROID_ENABLED
 	_initial_set("run/window_placement/rect", 1);
 	hints["run/window_placement/rect"] = PropertyInfo(Variant::INT, "run/window_placement/rect", PROPERTY_HINT_ENUM, "Top Left,Centered,Custom Position,Force Maximized,Force Fullscreen");
 	String screen_hints = "Same as Editor,Previous Monitor,Next Monitor";
@@ -651,7 +650,6 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("run/window_placement/rect_custom_position", Vector2());
 	_initial_set("run/window_placement/screen", 0);
 	hints["run/window_placement/screen"] = PropertyInfo(Variant::INT, "run/window_placement/screen", PROPERTY_HINT_ENUM, screen_hints);
-#endif
 
 #ifdef ANDROID_ENABLED
 	// Should match the ANDROID_WINDOW_* constants in 'platform/android/java/editor/src/main/java/org/godotengine/editor/GodotEditor.kt'
