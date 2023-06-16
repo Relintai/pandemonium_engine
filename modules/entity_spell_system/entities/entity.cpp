@@ -226,18 +226,18 @@ void Entity::body_on_changed() {
 	emit_signal("body_changed", this);
 }
 
-NodePath Entity::get_character_skeleton_path() {
+NodePath Entity::character_skeleton_path_get() {
 	return _character_skeleton_path;
 }
-void Entity::set_character_skeleton_path(NodePath value) {
+void Entity::character_skeleton_path_set(NodePath value) {
 	_character_skeleton_path = value;
 
-	set_character_skeleton(get_node_or_null(_character_skeleton_path));
+	character_skeleton_set(get_node_or_null(_character_skeleton_path));
 }
-Node *Entity::get_character_skeleton() {
+Node *Entity::character_skeleton_get() {
 	return _character_skeleton;
 }
-void Entity::set_character_skeleton(Node *skeleton) {
+void Entity::character_skeleton_set(Node *skeleton) {
 	_character_skeleton = skeleton;
 
 	if (ObjectDB::instance_validate(_character_skeleton) && _character_skeleton->has_method("add_model_visual")) {
@@ -516,43 +516,43 @@ void Entity::setc_money(int value) {
 	_c_money = value;
 }
 
-int Entity::gets_entity_data_id() {
+int Entity::entity_data_id_gets() {
 	return _s_class_id;
 }
 
-void Entity::sets_entity_data_id(int value) {
+void Entity::entity_data_id_sets(int value) {
 	_s_class_id = value;
 }
 
-int Entity::getc_entity_data_id() {
+int Entity::entity_data_id_getc() {
 	return _c_class_id;
 }
 
-void Entity::setc_entity_data_id(int value) {
+void Entity::entity_data_id_setc(int value) {
 	_c_class_id = value;
 
 	if (_c_class_id == 0) {
-		setc_entity_data(Ref<EntityData>());
+		entity_data_setc(Ref<EntityData>());
 		return;
 	}
 
 	if (ESS::get_singleton() != NULL) {
-		setc_entity_data(ESS::get_singleton()->get_resource_db()->get_entity_data(_c_class_id));
+		entity_data_setc(ESS::get_singleton()->get_resource_db()->get_entity_data(_c_class_id));
 	}
 }
 
-StringName Entity::gets_entity_data_path() {
+StringName Entity::entity_data_path_gets() {
 	return _s_entity_data_path;
 }
-void Entity::sets_entity_data_path(const StringName &value) {
+void Entity::entity_data_path_sets(const StringName &value) {
 	_s_entity_data_path = value;
 }
 
-Ref<EntityData> Entity::gets_entity_data() {
+Ref<EntityData> Entity::entity_data_gets() {
 	return _s_entity_data;
 }
 
-void Entity::sets_entity_data(Ref<EntityData> value) {
+void Entity::entity_data_sets(Ref<EntityData> value) {
 	if (is_queued_for_deletion()) {
 		return;
 	}
@@ -571,14 +571,14 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 
 	emit_signal("sentity_data_changed", value);
 
-	VRPC(setc_entity_data_id, _s_class_id);
+	VRPC(entity_data_id_setc, _s_class_id);
 }
 
-Ref<EntityData> Entity::getc_entity_data() {
+Ref<EntityData> Entity::entity_data_getc() {
 	return _c_entity_data;
 }
 
-void Entity::setc_entity_data(Ref<EntityData> value) {
+void Entity::entity_data_setc(Ref<EntityData> value) {
 	_c_entity_data = value;
 
 	body_instance(value, _c_model_index);
@@ -586,14 +586,14 @@ void Entity::setc_entity_data(Ref<EntityData> value) {
 	emit_signal("centity_data_changed", value);
 }
 
-EntityEnums::AIStates Entity::gets_ai_state() const {
+EntityEnums::AIStates Entity::ai_state_gets() const {
 	return _sai_state;
 }
 void Entity::sets_ai_state(EntityEnums::AIStates state) {
 	_sai_state = state;
 }
 
-EntityEnums::AIStates Entity::gets_ai_state_stored() const {
+EntityEnums::AIStates Entity::ai_state_stored_gets() const {
 	return _sai_state_stored;
 }
 void Entity::sets_ai_state_stored(EntityEnums::AIStates state) {
@@ -657,7 +657,7 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 	if (!info->get_serialized_data().empty()) {
 		from_dict(info->get_serialized_data());
 	} else {
-		sets_entity_data(info->get_entity_data());
+		entity_data_sets(info->get_entity_data());
 	}
 
 	if (has_method("_setup")) {
@@ -673,7 +673,7 @@ void Entity::_setup() {
 	}
 
 	if (_deserialized) {
-		Ref<EntityClassData> cc = gets_entity_data()->get_entity_class_data();
+		Ref<EntityClassData> cc = entity_data_gets()->get_entity_class_data();
 		ERR_FAIL_COND(!cc.is_valid());
 
 		//Ref<StatData> stat_data = _s_entity_data->get_stat_data();
@@ -690,7 +690,7 @@ void Entity::_setup() {
 		if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY) {
 			/*
 			if (ESS::get_singleton()->get_use_global_class_level()) {
-				Ref<ClassProfile> cp = ProfileManager::get_singleton()->getc_player_profile()->get_class_profile(gets_entity_data()->get_path());
+				Ref<ClassProfile> cp = ProfileManager::get_singleton()->getc_player_profile()->get_class_profile(entity_data_gets()->get_path());
 
 				if (cp.is_valid()) {
 					int leveldiff = cp->get_level() - _s_level;
@@ -715,9 +715,9 @@ void Entity::_setup() {
 		return;
 	}
 
-	ERR_FAIL_COND(!gets_entity_data().is_valid());
+	ERR_FAIL_COND(!entity_data_gets().is_valid());
 
-	Ref<EntityClassData> cc = gets_entity_data()->get_entity_class_data();
+	Ref<EntityClassData> cc = entity_data_gets()->get_entity_class_data();
 
 	ERR_FAIL_COND(!cc.is_valid());
 
@@ -744,7 +744,7 @@ void Entity::_setup() {
 
 	_s_entity_data->setup_resources(this);
 
-	sets_entity_data_id(_s_entity_data->get_id());
+	entity_data_id_sets(_s_entity_data->get_id());
 
 	Ref<EntitySpeciesData> spd = _s_entity_data->get_entity_species_data();
 
@@ -836,7 +836,7 @@ void Entity::_setup() {
 }
 
 void Entity::setup_actionbars() {
-	if (!gets_entity_data().is_valid()) {
+	if (!entity_data_gets().is_valid()) {
 		return;
 	}
 
@@ -867,7 +867,7 @@ void Entity::setup_actionbars() {
 		Ref<Bag> bag;
 		bag.instance();
 
-		bag->set_size(gets_entity_data()->get_bag_size());
+		bag->set_size(entity_data_gets()->get_bag_size());
 
 		sets_bag(bag);
 	}
@@ -910,7 +910,7 @@ void Entity::pet_sets_formation_index(int value) {
 	_s_pet_formation_index = value;
 }
 
-EntityEnums::AIStates Entity::pet_gets_ai_state() {
+EntityEnums::AIStates Entity::pet_ai_state_gets() {
 	return _s_pet_ai_state;
 }
 void Entity::pet_sets_ai_state(EntityEnums::AIStates value) {
@@ -980,7 +980,7 @@ void Entity::pet_adds(Entity *entity) {
 
 	_s_pets.push_back(entity);
 
-	entity->sets_ai_state_stored(entity->gets_ai_state());
+	entity->sets_ai_state_stored(entity->ai_state_gets());
 	entity->sets_ai_state(_s_pet_ai_state);
 	entity->sets_entity_controller(EntityEnums::ENITIY_CONTROLLER_AI);
 
@@ -1021,7 +1021,7 @@ void Entity::pet_removes_index(int index) {
 
 	entity->pet_sets_owner(NULL);
 
-	entity->sets_ai_state(entity->gets_ai_state_stored());
+	entity->sets_ai_state(entity->ai_state_stored_gets());
 	entity->sets_entity_controller(entity->gets_original_entity_controller());
 
 	//full callback stack spet_added
@@ -1679,10 +1679,10 @@ void Entity::_from_dict(const Dictionary &dict) {
 	StringName edp = dict.get("entity_data_path", "");
 
 	if (ESS::get_singleton() != NULL) {
-		sets_entity_data(ESS::get_singleton()->get_resource_db()->get_entity_data_path(edp));
+		entity_data_sets(ESS::get_singleton()->get_resource_db()->get_entity_data_path(edp));
 	}
 
-	sets_entity_data_path(edp);
+	entity_data_path_sets(edp);
 
 	// AI
 
@@ -5629,7 +5629,7 @@ Ref<ActionBarProfile> Entity::get_action_bar_profile() {
 
 	_action_bar_profile.instance();
 
-	Ref<ClassProfile> cp = ProfileManager::get_singleton()->getc_player_profile()->get_class_profile(gets_entity_data()->get_path());
+	Ref<ClassProfile> cp = ProfileManager::get_singleton()->getc_player_profile()->get_class_profile(entity_data_gets()->get_path());
 
 	if (cp.is_valid()) {
 		set_actionbar_locked(cp->get_actionbar_locked());
@@ -5904,7 +5904,7 @@ Entity::Entity() {
 	SET_RPC_REMOTE("csend_request_rank_decrease");
 
 	SET_RPC_REMOTE("setc_guid");
-	SET_RPC_REMOTE("setc_entity_data_id");
+	SET_RPC_REMOTE("entity_data_id_setc");
 	SET_RPC_REMOTE("setc_entity_type");
 	SET_RPC_REMOTE("setc_entity_name");
 	SET_RPC_REMOTE("setc_model_index");
@@ -6217,11 +6217,11 @@ void Entity::_notification_sxp_gained(int value) {
 void Entity::_notification_slevel_up(int level) {
 	ERR_FAIL_COND(!ESS::get_singleton());
 
-	if (!gets_entity_data().is_valid()) {
+	if (!entity_data_gets().is_valid()) {
 		return;
 	}
 
-	Ref<EntityClassData> ecd = gets_entity_data()->get_entity_class_data();
+	Ref<EntityClassData> ecd = entity_data_gets()->get_entity_class_data();
 
 	if (!ecd.is_valid()) {
 		return;
@@ -6398,7 +6398,7 @@ void Entity::_vendor_item_sbuy(const int index, const int count) {
 		return;
 	}
 
-	Ref<EntityData> ed = e->gets_entity_data();
+	Ref<EntityData> ed = e->entity_data_gets();
 
 	if (!ed.is_valid()) {
 		return;
@@ -6467,7 +6467,7 @@ void Entity::_vendor_item_ssell(const int slot_id) {
 		return;
 	}
 
-	Ref<EntityData> ed = e->gets_entity_data();
+	Ref<EntityData> ed = e->entity_data_gets();
 
 	if (!ed.is_valid()) {
 		return;
@@ -7111,17 +7111,21 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("body_set_path", "value"), &Entity::body_set_path);
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "body_path"), "body_set_path", "body_get_path");
 
-	ClassDB::bind_method(D_METHOD("get_character_skeleton_path"), &Entity::get_character_skeleton_path);
-	ClassDB::bind_method(D_METHOD("set_character_skeleton_path", "value"), &Entity::set_character_skeleton_path);
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "character_skeleton_path"), "set_character_skeleton_path", "get_character_skeleton_path");
+	ClassDB::bind_method(D_METHOD("character_skeleton_path_get"), &Entity::character_skeleton_path_get);
+	ClassDB::bind_method(D_METHOD("character_skeleton_path_set", "value"), &Entity::character_skeleton_path_set);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "character_skeleton_path"), "character_skeleton_path_set", "character_skeleton_path_get");
 
-	ClassDB::bind_method(D_METHOD("gets_entity_data_id"), &Entity::gets_entity_data_id);
-	ClassDB::bind_method(D_METHOD("sets_entity_data_id", "value"), &Entity::sets_entity_data_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "characterclass_id", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_entity_data_id", "gets_entity_data_id");
+	ClassDB::bind_method(D_METHOD("entity_data_id_gets"), &Entity::entity_data_id_gets);
+	ClassDB::bind_method(D_METHOD("entity_data_id_sets", "value"), &Entity::entity_data_id_sets);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_data_id", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "entity_data_id_sets", "entity_data_id_gets");
 
-	ClassDB::bind_method(D_METHOD("getc_entity_data_id"), &Entity::getc_entity_data_id);
-	ClassDB::bind_method(D_METHOD("setc_entity_data_id", "value"), &Entity::setc_entity_data_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_data_id", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "setc_entity_data_id", "getc_entity_data_id");
+	ClassDB::bind_method(D_METHOD("entity_data_id_getc"), &Entity::entity_data_id_getc);
+	ClassDB::bind_method(D_METHOD("entity_data_id_setc", "value"), &Entity::entity_data_id_setc);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_data_id", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "entity_data_id_setc", "entity_data_id_getc");
+
+	ClassDB::bind_method(D_METHOD("entity_data_path_gets"), &Entity::entity_data_path_gets);
+	ClassDB::bind_method(D_METHOD("entity_data_path_sets", "value"), &Entity::entity_data_path_sets);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "sentity_data_path", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "entity_data_path_sets", "entity_data_path_gets");
 
 	ClassDB::bind_method(D_METHOD("gets_entity_player_type"), &Entity::gets_entity_player_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_player_type", "value"), &Entity::sets_entity_player_type);
@@ -7147,9 +7151,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_entity_type", "value"), &Entity::sets_entity_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_type", PROPERTY_HINT_ENUM, "", 0), "setc_entity_type", "getc_entity_type");
 
-	ClassDB::bind_method(D_METHOD("gets_ai_state"), &Entity::gets_ai_state);
+	ClassDB::bind_method(D_METHOD("ai_state_gets"), &Entity::ai_state_gets);
 	ClassDB::bind_method(D_METHOD("sets_ai_state", "value"), &Entity::sets_ai_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES, PROPERTY_USAGE_ENTITY_HIDDEN), "sets_ai_state", "gets_ai_state");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES, PROPERTY_USAGE_ENTITY_HIDDEN), "sets_ai_state", "ai_state_gets");
 
 	ClassDB::bind_method(D_METHOD("gets_seed"), &Entity::gets_seed);
 	ClassDB::bind_method(D_METHOD("sets_seed", "value"), &Entity::sets_seed);
@@ -7229,13 +7233,13 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_money", "value"), &Entity::setc_money);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cmoney", PROPERTY_HINT_NONE, "", 0), "setc_money", "getc_money");
 
-	ClassDB::bind_method(D_METHOD("gets_entity_data"), &Entity::gets_entity_data);
-	ClassDB::bind_method(D_METHOD("sets_entity_data", "value"), &Entity::sets_entity_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sentity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "sets_entity_data", "gets_entity_data");
+	ClassDB::bind_method(D_METHOD("entity_data_gets"), &Entity::entity_data_gets);
+	ClassDB::bind_method(D_METHOD("entity_data_sets", "value"), &Entity::entity_data_sets);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sentity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "entity_data_sets", "entity_data_gets");
 
-	ClassDB::bind_method(D_METHOD("getc_entity_data"), &Entity::getc_entity_data);
-	ClassDB::bind_method(D_METHOD("setc_entity_data", "value"), &Entity::setc_entity_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "centity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData", 0), "setc_entity_data", "getc_entity_data");
+	ClassDB::bind_method(D_METHOD("entity_data_getc"), &Entity::entity_data_getc);
+	ClassDB::bind_method(D_METHOD("entity_data_setc", "value"), &Entity::entity_data_setc);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "centity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData", 0), "entity_data_setc", "entity_data_getc");
 
 	//todo
 	//for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
@@ -7570,8 +7574,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("body_get_2d"), &Entity::body_get_2d);
 	ClassDB::bind_method(D_METHOD("body_set", "body"), &Entity::body_set);
 
-	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
-	ClassDB::bind_method(D_METHOD("set_character_skeleton", "skeleton"), &Entity::set_character_skeleton);
+	ClassDB::bind_method(D_METHOD("character_skeleton_get"), &Entity::character_skeleton_get);
+	ClassDB::bind_method(D_METHOD("character_skeleton_set", "skeleton"), &Entity::character_skeleton_set);
 
 	BIND_VMETHOD(MethodInfo("_body_instance", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), PropertyInfo(Variant::INT, "model_index")));
 	ClassDB::bind_method(D_METHOD("body_instance", "data", "model_index"), &Entity::body_instance);
@@ -7733,9 +7737,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("pet_sets_formation_index", "value"), &Entity::pet_sets_formation_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "spet_formation_index", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "pet_sets_formation_index", "pet_gets_formation_index");
 
-	ClassDB::bind_method(D_METHOD("pet_gets_ai_state"), &Entity::pet_gets_ai_state);
+	ClassDB::bind_method(D_METHOD("pet_ai_state_gets"), &Entity::pet_ai_state_gets);
 	ClassDB::bind_method(D_METHOD("pet_sets_ai_state", "value"), &Entity::pet_sets_ai_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "pet_ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES, PROPERTY_USAGE_ENTITY_HIDDEN), "pet_sets_ai_state", "pet_gets_ai_state");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "pet_ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES, PROPERTY_USAGE_ENTITY_HIDDEN), "pet_sets_ai_state", "pet_ai_state_gets");
 
 	ClassDB::bind_method(D_METHOD("gets_original_entity_controller"), &Entity::gets_original_entity_controller);
 	ClassDB::bind_method(D_METHOD("sets_original_entity_controller", "value"), &Entity::sets_original_entity_controller);

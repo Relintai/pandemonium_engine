@@ -1465,7 +1465,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_character_skeleton">
+		<method name="character_skeleton_get">
 			<return type="Node" />
 			<description>
 			</description>
@@ -2179,7 +2179,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_character_skeleton">
+		<method name="character_skeleton_set">
 			<return type="void" />
 			<argument index="0" name="skeleton" type="Node" />
 			<description>
@@ -2739,7 +2739,7 @@
 	<members>
 		<member name="actionbar_locked" type="bool" setter="set_actionbar_locked" getter="get_actionbar_locked" default="false">
 		</member>
-		<member name="ai_state" type="int" setter="sets_ai_state" getter="gets_ai_state" enum="EntityEnums.AIStates" default="0">
+		<member name="ai_state" type="int" setter="sets_ai_state" getter="ai_state_gets" enum="EntityEnums.AIStates" default="0">
 		</member>
 		<member name="body_path" type="NodePath" setter="body_set_path" getter="body_get_path" default="NodePath(&quot;&quot;)">
 		</member>
@@ -2747,7 +2747,7 @@
 		</member>
 		<member name="centity_controller" type="int" setter="setc_entity_controller" getter="getc_entity_controller" enum="EntityEnums.EntityController" default="0">
 		</member>
-		<member name="centity_data" type="EntityData" setter="setc_entity_data" getter="getc_entity_data">
+		<member name="centity_data" type="EntityData" setter="entity_data_setc" getter="entity_data_getc">
 		</member>
 		<member name="centity_flags" type="int" setter="setc_entity_flags" getter="getc_entity_flags">
 		</member>
@@ -2769,9 +2769,9 @@
 		</member>
 		<member name="cguid" type="int" setter="setc_guid" getter="getc_guid">
 		</member>
-		<member name="character_skeleton_path" type="NodePath" setter="set_character_skeleton_path" getter="get_character_skeleton_path" default="NodePath(&quot;&quot;)">
+		<member name="character_skeleton_path" type="NodePath" setter="character_skeleton_path_set" getter="character_skeleton_path_get" default="NodePath(&quot;&quot;)">
 		</member>
-		<member name="characterclass_id" type="int" setter="sets_entity_data_id" getter="gets_entity_data_id" default="0">
+		<member name="sentity_data_id" type="int" setter="entity_data_id_sets" getter="entity_data_id_gets" default="0">
 		</member>
 		<member name="cis_pet" type="bool" setter="" getter="getc_is_pet">
 		</member>
@@ -2793,9 +2793,9 @@
 		</member>
 		<member name="cxp" type="int" setter="setc_xp" getter="getc_xp">
 		</member>
-		<member name="entity_data_id" type="int" setter="setc_entity_data_id" getter="getc_entity_data_id" default="0">
+		<member name="entity_data_id" type="int" setter="entity_data_id_setc" getter="entity_data_id_getc" default="0">
 		</member>
-		<member name="pet_ai_state" type="int" setter="pet_sets_ai_state" getter="pet_gets_ai_state" enum="EntityEnums.AIStates" default="0">
+		<member name="pet_ai_state" type="int" setter="pet_sets_ai_state" getter="pet_ai_state_gets" enum="EntityEnums.AIStates" default="0">
 		</member>
 		<member name="sai" type="EntityAI" setter="sets_ai" getter="gets_ai">
 		</member>
@@ -2817,7 +2817,7 @@
 		</member>
 		<member name="sentity_controller" type="int" setter="sets_entity_controller" getter="gets_entity_controller" enum="EntityEnums.EntityController" default="0">
 		</member>
-		<member name="sentity_data" type="EntityData" setter="sets_entity_data" getter="gets_entity_data">
+		<member name="sentity_data" type="EntityData" setter="entity_data_sets" getter="entity_data_gets">
 		</member>
 		<member name="sentity_flags" type="int" setter="sets_entity_flags" getter="gets_entity_flags" default="0">
 		</member>

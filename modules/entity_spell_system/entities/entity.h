@@ -235,10 +235,10 @@ public:
 	void _body_instance(const Ref<EntityData> &data, const int model_index);
 	void body_on_changed();
 
-	NodePath get_character_skeleton_path();
-	void set_character_skeleton_path(NodePath value);
-	Node *get_character_skeleton();
-	void set_character_skeleton(Node *skeleton);
+	NodePath character_skeleton_path_get();
+	void character_skeleton_path_set(NodePath value);
+	Node *character_skeleton_get();
+	void character_skeleton_set(Node *skeleton);
 
 	//Transforms
 	Transform get_transform_3d(bool only_stored = false) const;
@@ -322,28 +322,25 @@ public:
 	int getc_money();
 	void setc_money(int value);
 
-	Ref<EntityData> gets_entity_data();
-	void sets_entity_data(Ref<EntityData> value);
+	Ref<EntityData> entity_data_gets();
+	void entity_data_sets(Ref<EntityData> value);
 
-	Ref<EntityData> getc_entity_data();
-	void setc_entity_data(Ref<EntityData> value);
+	Ref<EntityData> entity_data_getc();
+	void entity_data_setc(Ref<EntityData> value);
 
-	int gets_entity_data_id();
-	void sets_entity_data_id(int value);
+	int entity_data_id_gets();
+	void entity_data_id_sets(int value);
 
-	int getc_entity_data_id();
-	void setc_entity_data_id(int value);
+	int entity_data_id_getc();
+	void entity_data_id_setc(int value);
 
-	StringName gets_entity_data_path();
-	void sets_entity_data_path(const StringName &value);
+	StringName entity_data_path_gets();
+	void entity_data_path_sets(const StringName &value);
 
-	StringName getc_entity_data_path();
-	void setc_entity_data_path(const StringName &value);
-
-	EntityEnums::AIStates gets_ai_state() const;
+	EntityEnums::AIStates ai_state_gets() const;
 	void sets_ai_state(EntityEnums::AIStates state);
 
-	EntityEnums::AIStates gets_ai_state_stored() const;
+	EntityEnums::AIStates ai_state_stored_gets() const;
 	void sets_ai_state_stored(EntityEnums::AIStates state);
 
 	int gets_seed();
@@ -998,7 +995,7 @@ public:
 	int pet_gets_formation_index();
 	void pet_sets_formation_index(int value);
 
-	EntityEnums::AIStates pet_gets_ai_state();
+	EntityEnums::AIStates pet_ai_state_gets();
 	void pet_sets_ai_state(EntityEnums::AIStates value);
 
 	EntityEnums::EntityController gets_original_entity_controller();
