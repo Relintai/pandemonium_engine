@@ -338,10 +338,10 @@ public:
 	void entity_data_path_sets(const StringName &value);
 
 	EntityEnums::AIStates ai_state_gets() const;
-	void sets_ai_state(EntityEnums::AIStates state);
+	void ai_state_sets(EntityEnums::AIStates state);
 
 	EntityEnums::AIStates ai_state_stored_gets() const;
-	void sets_ai_state_stored(EntityEnums::AIStates state);
+	void ai_state_stored_sets(EntityEnums::AIStates state);
 
 	int gets_seed();
 	void sets_seed(int value);
@@ -384,8 +384,8 @@ public:
 	void notification_sstat_changed(const int statid, const float current);
 	void notification_cstat_changed(const int statid, const float current);
 
-	void ssend_stat(int id, int ccurrent);
-	void creceive_stat(int id, int ccurrent);
+	void stat_ssend(int id, int ccurrent);
+	void stat_creceive(int id, int ccurrent);
 
 	void dies();
 	void diec();
@@ -477,14 +477,14 @@ public:
 	void gcd_startc(const float value);
 
 	////    States    ////
-	int getc_state();
-	void setc_state(int state);
+	int state_getc();
+	void state_setc(int state);
 
-	int gets_state();
-	void sets_state(int state);
+	int state_gets();
+	void state_sets(int state);
 
-	void adds_state_ref(int state_index);
-	void removes_state_ref(int state_index);
+	void state_ref_adds(int state_index);
+	void state_ref_removes(int state_index);
 
 	PoolIntArray states_gets() const;
 	void states_sets(const PoolIntArray &data);
@@ -739,11 +739,11 @@ public:
 
 	//Known Spells
 
-	int gets_free_spell_points();
-	void sets_free_spell_points(int value);
+	int free_spell_points_gets();
+	void free_spell_points_sets(int value);
 
-	int getc_free_spell_points();
-	void setc_free_spell_points(int value);
+	int free_spell_points_getc();
+	void free_spell_points_setc(int value);
 
 	void spell_learn_requestc(int id);
 	void spell_learns(int id);
@@ -802,11 +802,11 @@ public:
 	void target_net_sets(NodePath path);
 	void target_net_setc(NodePath path);
 
-	Entity *gets_target();
-	void sets_target(Node *p_target);
+	Entity *target_gets();
+	void target_sets(Node *p_target);
 
-	Entity *getc_target();
-	void setc_target(Node *p_target);
+	Entity *target_getc();
+	void target_setc(Node *p_target);
 
 	////    Class Talents    ////
 
@@ -888,14 +888,14 @@ public:
 	Ref<Bag> getc_bag() const;
 	void setc_bag(const Ref<Bag> bag);
 
-	Ref<Bag> gets_target_bag() const;
-	void sets_target_bag(const Ref<Bag> bag);
+	Ref<Bag> target_gets_bag() const;
+	void target_sets_bag(const Ref<Bag> bag);
 
-	Ref<Bag> getc_target_bag() const;
-	void setc_target_bag(const Ref<Bag> bag);
+	Ref<Bag> target_getc_bag() const;
+	void target_setc_bag(const Ref<Bag> bag);
 
 	void setc_bag_rpc(String data);
-	void setc_target_bag_rpc(String data);
+	void target_setc_bag_rpc(String data);
 
 	void loot_crequest(int index);
 	void loots(int index);
@@ -996,7 +996,7 @@ public:
 	void pet_sets_formation_index(int value);
 
 	EntityEnums::AIStates pet_ai_state_gets();
-	void pet_sets_ai_state(EntityEnums::AIStates value);
+	void pet_ai_state_sets(EntityEnums::AIStates value);
 
 	EntityEnums::EntityController gets_original_entity_controller();
 	void sets_original_entity_controller(EntityEnums::EntityController value);

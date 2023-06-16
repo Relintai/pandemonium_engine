@@ -489,7 +489,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_state_ref">
+		<method name="state_ref_adds">
 			<return type="void" />
 			<argument index="0" name="state_index" type="int" />
 			<description>
@@ -1256,7 +1256,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="creceive_stat">
+		<method name="stat_creceive">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<argument index="1" name="ccurrent" type="int" />
@@ -2029,7 +2029,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_state_ref">
+		<method name="state_ref_removes">
 			<return type="void" />
 			<argument index="0" name="state_index" type="int" />
 			<description>
@@ -2211,7 +2211,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="setc_target_bag_rpc">
+		<method name="target_setc_bag_rpc">
 			<return type="void" />
 			<argument index="0" name="data" type="String" />
 			<description>
@@ -2449,7 +2449,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ssend_stat">
+		<method name="stat_ssend">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<argument index="1" name="ccurrent" type="int" />
@@ -2739,7 +2739,7 @@
 	<members>
 		<member name="actionbar_locked" type="bool" setter="set_actionbar_locked" getter="get_actionbar_locked" default="false">
 		</member>
-		<member name="ai_state" type="int" setter="sets_ai_state" getter="ai_state_gets" enum="EntityEnums.AIStates" default="0">
+		<member name="ai_state" type="int" setter="ai_state_sets" getter="ai_state_gets" enum="EntityEnums.AIStates" default="0">
 		</member>
 		<member name="body_path" type="NodePath" setter="body_set_path" getter="body_get_path" default="NodePath(&quot;&quot;)">
 		</member>
@@ -2763,7 +2763,7 @@
 		</member>
 		<member name="cfree_class_talent_points" type="int" setter="setc_free_class_talent_points" getter="getc_free_class_talent_points">
 		</member>
-		<member name="cfree_spell_points" type="int" setter="setc_free_spell_points" getter="getc_free_spell_points">
+		<member name="cfree_spell_points" type="int" setter="free_spell_points_setc" getter="free_spell_points_getc">
 		</member>
 		<member name="cgcd" type="float" setter="gcd_setc" getter="gcd_getc" default="0.0">
 		</member>
@@ -2785,17 +2785,17 @@
 		</member>
 		<member name="cspell_cast_info" type="SpellCastInfo" setter="setc_spell_cast_info" getter="spell_getc_cast_info">
 		</member>
-		<member name="cstate" type="int" setter="setc_state" getter="getc_state" default="0">
+		<member name="cstate" type="int" setter="state_setc" getter="state_getc" default="0">
 		</member>
-		<member name="ctarget" type="Entity" setter="setc_target" getter="getc_target">
+		<member name="ctarget" type="Entity" setter="target_setc" getter="target_getc">
 		</member>
-		<member name="ctarget_bag" type="Bag" setter="setc_target_bag" getter="getc_target_bag">
+		<member name="ctarget_bag" type="Bag" setter="target_setc_bag" getter="target_getc_bag">
 		</member>
 		<member name="cxp" type="int" setter="setc_xp" getter="getc_xp">
 		</member>
 		<member name="entity_data_id" type="int" setter="entity_data_id_setc" getter="entity_data_id_getc" default="0">
 		</member>
-		<member name="pet_ai_state" type="int" setter="pet_sets_ai_state" getter="pet_ai_state_gets" enum="EntityEnums.AIStates" default="0">
+		<member name="pet_ai_state" type="int" setter="pet_ai_state_sets" getter="pet_ai_state_gets" enum="EntityEnums.AIStates" default="0">
 		</member>
 		<member name="sai" type="EntityAI" setter="sets_ai" getter="gets_ai">
 		</member>
@@ -2833,7 +2833,7 @@
 		</member>
 		<member name="sfree_class_talent_points" type="int" setter="sets_free_class_talent_points" getter="gets_free_class_talent_points" default="0">
 		</member>
-		<member name="sfree_spell_points" type="int" setter="sets_free_spell_points" getter="gets_free_spell_points" default="0">
+		<member name="sfree_spell_points" type="int" setter="free_spell_points_sets" getter="free_spell_points_gets" default="0">
 		</member>
 		<member name="sgcd" type="float" setter="gcd_sets" getter="gcd_gets" default="0.0">
 		</member>
@@ -2865,13 +2865,13 @@
 		</member>
 		<member name="sspells" type="Array" setter="sspells_set" getter="sspells_get" default="[  ]">
 		</member>
-		<member name="sstate" type="int" setter="sets_state" getter="gets_state" default="0">
+		<member name="sstate" type="int" setter="state_sets" getter="state_gets" default="0">
 		</member>
 		<member name="sstates" type="PoolIntArray" setter="states_sets" getter="states_gets" default="PoolIntArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )">
 		</member>
-		<member name="starget" type="Entity" setter="sets_target" getter="gets_target">
+		<member name="starget" type="Entity" setter="target_sets" getter="target_gets">
 		</member>
-		<member name="starget_bag" type="Bag" setter="sets_target_bag" getter="gets_target_bag">
+		<member name="starget_bag" type="Bag" setter="target_sets_bag" getter="target_gets_bag">
 		</member>
 		<member name="sxp" type="int" setter="sets_xp" getter="gets_xp" default="0">
 		</member>

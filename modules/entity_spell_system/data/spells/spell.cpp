@@ -971,7 +971,7 @@ void Spell::cast_starts_simple(Entity *caster, float spell_scale) {
 	Ref<SpellCastInfo> info = Ref<SpellCastInfo>(memnew(SpellCastInfo()));
 
 	info->caster_set(caster);
-	info->target_set(caster->gets_target());
+	info->target_set(caster->target_gets());
 	info->has_cast_time_set(cast_time_get_enabled());
 	info->cast_time_set(cast_time_get());
 	info->spell_scale_set(spell_scale);
@@ -2045,7 +2045,7 @@ void Spell::_aura_sapply(Ref<AuraApplyInfo> info) {
 				int t = 1 << i;
 
 				if ((_aura_add_states & t) != 0) {
-					info->target_get()->adds_state_ref(i);
+					info->target_get()->state_ref_adds(i);
 				}
 			}
 		}
@@ -2071,7 +2071,7 @@ void Spell::_aura_sdeapply(Ref<AuraData> data) {
 			int t = 1 << i;
 
 			if ((_aura_add_states & t) != 0) {
-				data->get_owner()->removes_state_ref(i);
+				data->get_owner()->state_ref_removes(i);
 			}
 		}
 	}
