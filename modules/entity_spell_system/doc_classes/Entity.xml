@@ -2205,13 +2205,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="setc_bag_rpc">
+		<method name="bag_setc_rpc">
 			<return type="void" />
 			<argument index="0" name="data" type="String" />
 			<description>
 			</description>
 		</method>
-		<method name="target_setc_bag_rpc">
+		<method name="target_bag_setc_rpc">
 			<return type="void" />
 			<argument index="0" name="data" type="String" />
 			<description>
@@ -2743,7 +2743,7 @@
 		</member>
 		<member name="body_path" type="NodePath" setter="body_set_path" getter="body_get_path" default="NodePath(&quot;&quot;)">
 		</member>
-		<member name="cbag" type="Bag" setter="setc_bag" getter="getc_bag">
+		<member name="cbag" type="Bag" setter="bag_setc" getter="bag_getc">
 		</member>
 		<member name="centity_controller" type="int" setter="setc_entity_controller" getter="getc_entity_controller" enum="EntityEnums.EntityController" default="0">
 		</member>
@@ -2759,9 +2759,9 @@
 		</member>
 		<member name="centity_type" type="int" setter="setc_entity_type" getter="getc_entity_type">
 		</member>
-		<member name="cfree_character_talent_points" type="int" setter="setc_free_character_talent_points" getter="getc_free_character_talent_points">
+		<member name="cfree_character_talent_points" type="int" setter="character_talent_points_setc_free" getter="character_talent_points_getc_free">
 		</member>
-		<member name="cfree_class_talent_points" type="int" setter="setc_free_class_talent_points" getter="getc_free_class_talent_points">
+		<member name="cfree_class_talent_points" type="int" setter="class_talent_points_setc_free" getter="class_talent_points_getc_free">
 		</member>
 		<member name="cfree_spell_points" type="int" setter="free_spell_points_setc" getter="free_spell_points_getc">
 		</member>
@@ -2789,7 +2789,7 @@
 		</member>
 		<member name="ctarget" type="Entity" setter="target_setc" getter="target_getc">
 		</member>
-		<member name="ctarget_bag" type="Bag" setter="target_setc_bag" getter="target_getc_bag">
+		<member name="ctarget_bag" type="Bag" setter="target_bag_setc" getter="target_bag_getc">
 		</member>
 		<member name="cxp" type="int" setter="setc_xp" getter="getc_xp">
 		</member>
@@ -2801,7 +2801,7 @@
 		</member>
 		<member name="sauras" type="Array" setter="sauras_set" getter="sauras_get" default="[  ]">
 		</member>
-		<member name="sbag" type="Bag" setter="sets_bag" getter="gets_bag">
+		<member name="sbag" type="Bag" setter="bag_sets" getter="bag_gets">
 		</member>
 		<member name="scategory_cooldowns" type="Array" setter="scategory_cooldowns_set" getter="scategory_cooldowns_get" default="[  ]">
 		</member>
@@ -2829,9 +2829,9 @@
 		</member>
 		<member name="sentity_type" type="int" setter="sets_entity_type" getter="gets_entity_type" default="0">
 		</member>
-		<member name="sfree_character_talent_points" type="int" setter="sets_free_character_talent_points" getter="gets_free_character_talent_points" default="0">
+		<member name="sfree_character_talent_points" type="int" setter="character_talent_points_sets_free" getter="character_talent_points_gets_free" default="0">
 		</member>
-		<member name="sfree_class_talent_points" type="int" setter="sets_free_class_talent_points" getter="gets_free_class_talent_points" default="0">
+		<member name="sfree_class_talent_points" type="int" setter="class_talent_points_sets_free" getter="class_talent_points_gets_free" default="0">
 		</member>
 		<member name="sfree_spell_points" type="int" setter="free_spell_points_sets" getter="free_spell_points_gets" default="0">
 		</member>
@@ -2871,7 +2871,7 @@
 		</member>
 		<member name="starget" type="Entity" setter="target_sets" getter="target_gets">
 		</member>
-		<member name="starget_bag" type="Bag" setter="target_sets_bag" getter="target_gets_bag">
+		<member name="starget_bag" type="Bag" setter="target_bag_sets" getter="target_bag_gets">
 		</member>
 		<member name="sxp" type="int" setter="sets_xp" getter="gets_xp" default="0">
 		</member>

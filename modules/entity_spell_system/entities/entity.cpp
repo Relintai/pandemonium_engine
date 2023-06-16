@@ -863,13 +863,13 @@ void Entity::setup_actionbars() {
 		}
 	}*/
 
-	if (!gets_bag().is_valid()) {
+	if (!bag_gets().is_valid()) {
 		Ref<Bag> bag;
 		bag.instance();
 
 		bag->set_size(entity_data_gets()->get_bag_size());
 
-		sets_bag(bag);
+		bag_sets(bag);
 	}
 }
 
@@ -1659,7 +1659,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 			bag->from_dict(bagd);
 
-			sets_bag(bag);
+			bag_sets(bag);
 		} else {
 			_s_bag->from_dict(bagd);
 		}
@@ -3093,7 +3093,7 @@ void Entity::_item_uses(int item_id) {
 
 		sp->cast_starts(info);
 	} else {
-		if (!gets_bag()->has_item(it, 1)) {
+		if (!bag_gets()->has_item(it, 1)) {
 			return;
 		}
 
@@ -4801,19 +4801,19 @@ void Entity::target_setc(Node *p_target) {
 
 ////    Class Talents    ////
 
-int Entity::gets_free_class_talent_points() {
+int Entity::class_talent_points_gets_free() {
 	return _s_free_class_talent_points;
 }
-void Entity::sets_free_class_talent_points(int value) {
+void Entity::class_talent_points_sets_free(int value) {
 	_s_free_class_talent_points = value;
 
-	ORPC(setc_free_class_talent_points, value);
+	ORPC(class_talent_points_setc_free, value);
 }
 
-int Entity::getc_free_class_talent_points() {
+int Entity::class_talent_points_getc_free() {
 	return _c_free_class_talent_points;
 }
-void Entity::setc_free_class_talent_points(int value) {
+void Entity::class_talent_points_setc_free(int value) {
 	_c_free_class_talent_points = value;
 }
 
@@ -4826,7 +4826,7 @@ void Entity::class_talent_sreceive_learn_request(int spec_index, int class_talen
 }
 
 void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_talent_row, int class_talent_culomn) {
-	if (gets_free_class_talent_points() <= 0) {
+	if (class_talent_points_gets_free() <= 0) {
 		return;
 	}
 
@@ -4891,7 +4891,7 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 
 		class_talent_adds(class_talent_id);
 
-		sets_free_class_talent_points(gets_free_class_talent_points() - 1);
+		class_talent_points_sets_free(class_talent_points_gets_free() - 1);
 
 		return;
 	}
@@ -5051,19 +5051,19 @@ void Entity::sclass_talents_set(const PoolIntArray &data) {
 
 ////    Character Talents    ////
 
-int Entity::gets_free_character_talent_points() {
+int Entity::character_talent_points_gets_free() {
 	return _s_free_character_talent_points;
 }
-void Entity::sets_free_character_talent_points(int value) {
+void Entity::character_talent_points_sets_free(int value) {
 	_s_free_character_talent_points = value;
 
-	ORPC(setc_free_character_talent_points, value);
+	ORPC(character_talent_points_setc_free, value);
 }
 
-int Entity::getc_free_character_talent_points() {
+int Entity::character_talent_points_getc_free() {
 	return _c_free_character_talent_points;
 }
-void Entity::setc_free_character_talent_points(int value) {
+void Entity::character_talent_points_setc_free(int value) {
 	_c_free_character_talent_points = value;
 }
 
@@ -5076,7 +5076,7 @@ void Entity::character_talent_sreceive_learn_request(int spec_index, int charact
 }
 
 void Entity::_character_talent_sreceive_learn_request(int spec_index, int character_talent_row, int character_talent_culomn) {
-	if (gets_free_character_talent_points() <= 0) {
+	if (character_talent_points_gets_free() <= 0) {
 		return;
 	}
 
@@ -5141,7 +5141,7 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 
 		character_talent_adds(character_talent_id);
 
-		sets_free_character_talent_points(gets_free_character_talent_points() - 1);
+		character_talent_points_sets_free(character_talent_points_gets_free() - 1);
 
 		return;
 	}
@@ -5301,10 +5301,10 @@ void Entity::scharacter_talents_set(const PoolIntArray &data) {
 
 ////    Bag    ////
 
-Ref<Bag> Entity::gets_bag() const {
+Ref<Bag> Entity::bag_gets() const {
 	return _s_bag;
 }
-void Entity::sets_bag(const Ref<Bag> bag) {
+void Entity::bag_sets(const Ref<Bag> bag) {
 	if (_s_bag.is_valid()) {
 		_s_bag->disconnect("item_added", this, "notification_item_sadded");
 		_s_bag->disconnect("item_removed", this, "notification_item_sremoved");
@@ -5328,25 +5328,25 @@ void Entity::sets_bag(const Ref<Bag> bag) {
 	emit_signal("sbag_changed", this, _s_bag);
 
 	if (_s_bag.is_valid()) {
-		ORPC(setc_bag_rpc, JSON::print(_s_bag->to_dict()));
+		ORPC(bag_setc_rpc, JSON::print(_s_bag->to_dict()));
 	} else {
-		ORPC(setc_bag_rpc, "");
+		ORPC(bag_setc_rpc, "");
 	}
 }
 
-Ref<Bag> Entity::getc_bag() const {
+Ref<Bag> Entity::bag_getc() const {
 	return _c_bag;
 }
-void Entity::setc_bag(const Ref<Bag> bag) {
+void Entity::bag_setc(const Ref<Bag> bag) {
 	_c_bag = bag;
 
 	emit_signal("cbag_changed", this, _c_bag);
 }
 
-Ref<Bag> Entity::target_gets_bag() const {
+Ref<Bag> Entity::target_bag_gets() const {
 	return _s_target_bag;
 }
-void Entity::target_sets_bag(const Ref<Bag> bag) {
+void Entity::target_bag_sets(const Ref<Bag> bag) {
 	if (_s_target_bag.is_valid()) {
 		_s_target_bag->disconnect("item_added", this, "notification_target_item_sadded");
 		_s_target_bag->disconnect("item_removed", this, "notification_target_item_sremoved");
@@ -5366,34 +5366,34 @@ void Entity::target_sets_bag(const Ref<Bag> bag) {
 	emit_signal("starget_bag_changed", this, _s_target_bag);
 
 	if (_s_target_bag.is_valid()) {
-		ORPC(target_setc_bag_rpc, JSON::print(_s_target_bag->to_dict()));
+		ORPC(target_bag_setc_rpc, JSON::print(_s_target_bag->to_dict()));
 	} else {
-		ORPC(target_setc_bag_rpc, "");
+		ORPC(target_bag_setc_rpc, "");
 	}
 }
 
-Ref<Bag> Entity::target_getc_bag() const {
+Ref<Bag> Entity::target_bag_getc() const {
 	return _c_target_bag;
 }
-void Entity::target_setc_bag(const Ref<Bag> bag) {
+void Entity::target_bag_setc(const Ref<Bag> bag) {
 	_c_target_bag = bag;
 
 	emit_signal("ctarget_bag_changed", this, _s_target_bag);
 }
 
-void Entity::setc_bag_rpc(String data) {
+void Entity::bag_setc_rpc(String data) {
 	Ref<Bag> bag;
 	bag.instance();
 	bag->from_dict(data_as_dict(data));
 
-	setc_bag(bag);
+	bag_setc(bag);
 }
-void Entity::target_setc_bag_rpc(String data) {
+void Entity::target_bag_setc_rpc(String data) {
 	Ref<Bag> bag;
 	bag.instance();
 	bag->from_dict(data_as_dict(data));
 
-	target_setc_bag(bag);
+	target_bag_setc(bag);
 }
 
 void Entity::loot_crequest(int index) {
@@ -6058,8 +6058,8 @@ Entity::Entity() {
 
 	////    Inventory    ////
 
-	SET_RPC_REMOTE("setc_bag_rpc");
-	SET_RPC_REMOTE("target_setc_bag_rpc");
+	SET_RPC_REMOTE("bag_setc_rpc");
+	SET_RPC_REMOTE("target_bag_setc_rpc");
 
 	SET_RPC_REMOTE("loots");
 	SET_RPC_REMOTE("lootc");
@@ -6154,7 +6154,7 @@ void Entity::_crafts(int id) {
 			continue;
 		}
 
-		if (!gets_bag()->has_item(mat->get_item(), mat->get_count())) {
+		if (!bag_gets()->has_item(mat->get_item(), mat->get_count())) {
 			return;
 		}
 	}
@@ -6166,7 +6166,7 @@ void Entity::_crafts(int id) {
 			continue;
 		}
 
-		if (!gets_bag()->has_item(mat->get_item(), mat->get_count())) {
+		if (!bag_gets()->has_item(mat->get_item(), mat->get_count())) {
 			return;
 		}
 	}
@@ -6180,12 +6180,12 @@ void Entity::_crafts(int id) {
 			continue;
 		}
 
-		gets_bag()->remove_items(mat->get_item(), mat->get_count());
+		bag_gets()->remove_items(mat->get_item(), mat->get_count());
 	}
 
 	Ref<ItemInstance> item = recipe->get_item()->get_item()->create_item_instance();
 
-	gets_bag()->add_item(item);
+	bag_gets()->add_item(item);
 }
 
 void Entity::_notification_sxp_gained(int value) {
@@ -6238,14 +6238,14 @@ void Entity::_notification_slevel_up(int level) {
 			free_spell_points_sets(free_spell_points_gets() + ecd->get_spell_points_per_level() * level);
 		}
 
-		sets_free_character_talent_points(gets_free_character_talent_points() + level);
+		character_talent_points_sets_free(character_talent_points_gets_free() + level);
 	}
 
 	if (ESS::get_singleton()->get_use_spell_points()) {
 		free_spell_points_sets(free_spell_points_gets() + ecd->get_spell_points_per_level() * level);
 	}
 
-	sets_free_class_talent_points(gets_free_class_talent_points() + level);
+	class_talent_points_sets_free(class_talent_points_gets_free() + level);
 
 	if (ESS::get_singleton()->get_auto_learn_spells()) {
 		for (int i = 0; i < ecd->get_num_spells(); ++i) {
@@ -6438,7 +6438,7 @@ void Entity::_vendor_item_sbuy(const int index, const int count) {
 		return;
 	}
 
-	Ref<Bag> sbag = gets_bag();
+	Ref<Bag> sbag = bag_gets();
 
 	int s = count;
 	if (t->get_stack_size() < s) {
@@ -6485,7 +6485,7 @@ void Entity::_vendor_item_ssell(const int slot_id) {
 		return;
 	}
 
-	Ref<Bag> bag = gets_bag();
+	Ref<Bag> bag = bag_gets();
 
 	Ref<ItemInstance> ii = bag->get_item(slot_id);
 
@@ -6827,13 +6827,13 @@ void Entity::_bind_methods() {
 
 	//Class Talents
 
-	ClassDB::bind_method(D_METHOD("gets_free_class_talent_points"), &Entity::gets_free_class_talent_points);
-	ClassDB::bind_method(D_METHOD("sets_free_class_talent_points", "value"), &Entity::sets_free_class_talent_points);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_class_talent_points", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_free_class_talent_points", "gets_free_class_talent_points");
+	ClassDB::bind_method(D_METHOD("class_talent_points_gets_free"), &Entity::class_talent_points_gets_free);
+	ClassDB::bind_method(D_METHOD("class_talent_points_sets_free", "value"), &Entity::class_talent_points_sets_free);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_class_talent_points", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "class_talent_points_sets_free", "class_talent_points_gets_free");
 
-	ClassDB::bind_method(D_METHOD("getc_free_class_talent_points"), &Entity::getc_free_class_talent_points);
-	ClassDB::bind_method(D_METHOD("setc_free_class_talent_points", "value"), &Entity::setc_free_class_talent_points);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_class_talent_points", PROPERTY_HINT_NONE, "", 0), "setc_free_class_talent_points", "getc_free_class_talent_points");
+	ClassDB::bind_method(D_METHOD("class_talent_points_getc_free"), &Entity::class_talent_points_getc_free);
+	ClassDB::bind_method(D_METHOD("class_talent_points_setc_free", "value"), &Entity::class_talent_points_setc_free);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_class_talent_points", PROPERTY_HINT_NONE, "", 0), "class_talent_points_setc_free", "class_talent_points_getc_free");
 
 	BIND_VMETHOD(MethodInfo("_class_talent_sreceive_learn_request", PropertyInfo(Variant::INT, "spec_index"), PropertyInfo(Variant::INT, "class_talent_row"), PropertyInfo(Variant::INT, "class_talent_culomn")));
 	BIND_VMETHOD(MethodInfo("_class_talent_sreceive_reset_request"));
@@ -6881,13 +6881,13 @@ void Entity::_bind_methods() {
 
 	//Character Talents
 
-	ClassDB::bind_method(D_METHOD("gets_free_character_talent_points"), &Entity::gets_free_character_talent_points);
-	ClassDB::bind_method(D_METHOD("sets_free_character_talent_points", "value"), &Entity::sets_free_character_talent_points);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_character_talent_points", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_free_character_talent_points", "gets_free_character_talent_points");
+	ClassDB::bind_method(D_METHOD("character_talent_points_gets_free"), &Entity::character_talent_points_gets_free);
+	ClassDB::bind_method(D_METHOD("character_talent_points_sets_free", "value"), &Entity::character_talent_points_sets_free);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_character_talent_points", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "character_talent_points_sets_free", "character_talent_points_gets_free");
 
-	ClassDB::bind_method(D_METHOD("getc_free_character_talent_points"), &Entity::getc_free_character_talent_points);
-	ClassDB::bind_method(D_METHOD("setc_free_character_talent_points", "value"), &Entity::setc_free_character_talent_points);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_character_talent_points", PROPERTY_HINT_NONE, "", 0), "setc_free_character_talent_points", "getc_free_character_talent_points");
+	ClassDB::bind_method(D_METHOD("character_talent_points_getc_free"), &Entity::character_talent_points_getc_free);
+	ClassDB::bind_method(D_METHOD("character_talent_points_setc_free", "value"), &Entity::character_talent_points_setc_free);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_character_talent_points", PROPERTY_HINT_NONE, "", 0), "character_talent_points_setc_free", "character_talent_points_getc_free");
 
 	BIND_VMETHOD(MethodInfo("_character_talent_sreceive_learn_request", PropertyInfo(Variant::INT, "spec_index"), PropertyInfo(Variant::INT, "character_talent_row"), PropertyInfo(Variant::INT, "character_talent_culomn")));
 	BIND_VMETHOD(MethodInfo("_character_talent_sreceive_reset_request"));
@@ -7612,27 +7612,27 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("sbag_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
 	ADD_SIGNAL(MethodInfo("cbag_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
 
-	ClassDB::bind_method(D_METHOD("gets_bag"), &Entity::gets_bag);
-	ClassDB::bind_method(D_METHOD("sets_bag", "bag"), &Entity::sets_bag);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sbag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "sets_bag", "gets_bag");
+	ClassDB::bind_method(D_METHOD("bag_gets"), &Entity::bag_gets);
+	ClassDB::bind_method(D_METHOD("bag_sets", "bag"), &Entity::bag_sets);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sbag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "bag_sets", "bag_gets");
 
-	ClassDB::bind_method(D_METHOD("getc_bag"), &Entity::getc_bag);
-	ClassDB::bind_method(D_METHOD("setc_bag", "bag"), &Entity::setc_bag);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cbag", PROPERTY_HINT_RESOURCE_TYPE, "Bag", 0), "setc_bag", "getc_bag");
+	ClassDB::bind_method(D_METHOD("bag_getc"), &Entity::bag_getc);
+	ClassDB::bind_method(D_METHOD("bag_setc", "bag"), &Entity::bag_setc);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cbag", PROPERTY_HINT_RESOURCE_TYPE, "Bag", 0), "bag_setc", "bag_getc");
 
 	ADD_SIGNAL(MethodInfo("starget_bag_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
 	ADD_SIGNAL(MethodInfo("ctarget_bag_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
 
-	ClassDB::bind_method(D_METHOD("target_gets_bag"), &Entity::target_gets_bag);
-	ClassDB::bind_method(D_METHOD("target_sets_bag", "bag"), &Entity::target_sets_bag);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "starget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag", PROPERTY_USAGE_ENTITY_HIDDEN), "target_sets_bag", "target_gets_bag");
+	ClassDB::bind_method(D_METHOD("target_bag_gets"), &Entity::target_bag_gets);
+	ClassDB::bind_method(D_METHOD("target_bag_sets", "bag"), &Entity::target_bag_sets);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "starget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag", PROPERTY_USAGE_ENTITY_HIDDEN), "target_bag_sets", "target_bag_gets");
 
-	ClassDB::bind_method(D_METHOD("target_getc_bag"), &Entity::target_getc_bag);
-	ClassDB::bind_method(D_METHOD("target_setc_bag", "bag"), &Entity::target_setc_bag);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag", 0), "target_setc_bag", "target_getc_bag");
+	ClassDB::bind_method(D_METHOD("target_bag_getc"), &Entity::target_bag_getc);
+	ClassDB::bind_method(D_METHOD("target_bag_setc", "bag"), &Entity::target_bag_setc);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag", 0), "target_bag_setc", "target_bag_getc");
 
-	ClassDB::bind_method(D_METHOD("setc_bag_rpc", "data"), &Entity::setc_bag_rpc);
-	ClassDB::bind_method(D_METHOD("target_setc_bag_rpc", "data"), &Entity::target_setc_bag_rpc);
+	ClassDB::bind_method(D_METHOD("bag_setc_rpc", "data"), &Entity::bag_setc_rpc);
+	ClassDB::bind_method(D_METHOD("target_bag_setc_rpc", "data"), &Entity::target_bag_setc_rpc);
 
 	ClassDB::bind_method(D_METHOD("loot_crequest"), &Entity::loot_crequest);
 	ClassDB::bind_method(D_METHOD("loots"), &Entity::loots);

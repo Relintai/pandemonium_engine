@@ -810,11 +810,11 @@ public:
 
 	////    Class Talents    ////
 
-	int gets_free_class_talent_points();
-	void sets_free_class_talent_points(int value);
+	int class_talent_points_gets_free();
+	void class_talent_points_sets_free(int value);
 
-	int getc_free_class_talent_points();
-	void setc_free_class_talent_points(int value);
+	int class_talent_points_getc_free();
+	void class_talent_points_setc_free(int value);
 
 	void class_talent_crequest_learn(int spec_index, int class_talent_row, int class_talent_culomn);
 	void class_talent_sreceive_learn_request(int spec_index, int class_talent_row, int class_talent_culomn);
@@ -846,11 +846,11 @@ public:
 
 	////    Character Talents    ////
 
-	int gets_free_character_talent_points();
-	void sets_free_character_talent_points(int value);
+	int character_talent_points_gets_free();
+	void character_talent_points_sets_free(int value);
 
-	int getc_free_character_talent_points();
-	void setc_free_character_talent_points(int value);
+	int character_talent_points_getc_free();
+	void character_talent_points_setc_free(int value);
 
 	void character_talent_crequest_learn(int spec_index, int character_talent_row, int character_talent_culomn);
 	void character_talent_sreceive_learn_request(int spec_index, int character_talent_row, int character_talent_culomn);
@@ -882,20 +882,20 @@ public:
 
 	////    Inventory    ////
 
-	Ref<Bag> gets_bag() const;
-	void sets_bag(const Ref<Bag> bag);
+	Ref<Bag> bag_gets() const;
+	void bag_sets(const Ref<Bag> bag);
 
-	Ref<Bag> getc_bag() const;
-	void setc_bag(const Ref<Bag> bag);
+	Ref<Bag> bag_getc() const;
+	void bag_setc(const Ref<Bag> bag);
 
-	Ref<Bag> target_gets_bag() const;
-	void target_sets_bag(const Ref<Bag> bag);
+	Ref<Bag> target_bag_gets() const;
+	void target_bag_sets(const Ref<Bag> bag);
 
-	Ref<Bag> target_getc_bag() const;
-	void target_setc_bag(const Ref<Bag> bag);
+	Ref<Bag> target_bag_getc() const;
+	void target_bag_setc(const Ref<Bag> bag);
 
-	void setc_bag_rpc(String data);
-	void target_setc_bag_rpc(String data);
+	void bag_setc_rpc(String data);
+	void target_bag_setc_rpc(String data);
 
 	void loot_crequest(int index);
 	void loots(int index);
