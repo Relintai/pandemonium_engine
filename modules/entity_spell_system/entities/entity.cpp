@@ -2032,13 +2032,13 @@ void Entity::scraft_recipes_set(const Vector<Variant> &resources) {
 
 ////    Stat System    ////
 
-EntityStat Entity::get_stat(const int stat_id) const {
+EntityStat Entity::stat_get(const int stat_id) const {
 	ERR_FAIL_INDEX_V(stat_id, _stats.size(), EntityStat());
 
 	return _stats[stat_id];
 }
 
-void Entity::set_stat(const int stat_id, const EntityStat &entry) {
+void Entity::stat_set(const int stat_id, const EntityStat &entry) {
 	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.set(stat_id, entry);

@@ -350,8 +350,9 @@ public:
 	void setc_seed(int value);
 
 	////     Stats    ////
-	EntityStat get_stat(const int stat_id) const;
-	void set_stat(const int stat_id, const EntityStat &entry);
+	
+	EntityStat stat_get(const int stat_id) const;
+	void stat_set(const int stat_id, const EntityStat &entry);
 
 	bool stat_get_dirty(const int stat_id) const;
 	void stat_set_dirty(const int stat_id, const bool value);
