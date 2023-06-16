@@ -739,11 +739,11 @@ public:
 
 	//Known Spells
 
-	int free_spell_points_gets();
-	void free_spell_points_sets(int value);
+	int spell_points_gets_free();
+	void spell_points_sets_free(int value);
 
-	int free_spell_points_getc();
-	void free_spell_points_setc(int value);
+	int spell_points_getc_free();
+	void spell_points_setc_free(int value);
 
 	void spell_learn_requestc(int id);
 	void spell_learns(int id);
@@ -985,8 +985,8 @@ public:
 
 	////    AI    ////
 
-	bool gets_is_pet();
-	bool getc_is_pet();
+	bool pet_gets_is();
+	bool pet_getc_is();
 
 	Entity *pet_gets_owner();
 	void pet_sets_owner(Entity *entity);
@@ -998,19 +998,19 @@ public:
 	EntityEnums::AIStates pet_ai_state_gets();
 	void pet_ai_state_sets(EntityEnums::AIStates value);
 
-	EntityEnums::EntityController gets_original_entity_controller();
-	void sets_original_entity_controller(EntityEnums::EntityController value);
+	EntityEnums::EntityController original_entity_controller_gets();
+	void original_entity_controller_sets(EntityEnums::EntityController value);
 
-	EntityEnums::EntityController gets_entity_controller();
-	void sets_entity_controller(EntityEnums::EntityController value);
+	EntityEnums::EntityController entity_controller_gets();
+	void entity_controller_sets(EntityEnums::EntityController value);
 
-	EntityEnums::EntityController getc_entity_controller();
-	void setc_entity_controller(EntityEnums::EntityController value);
+	EntityEnums::EntityController entity_controller_getc();
+	void entity_controller_setc(EntityEnums::EntityController value);
 
 	bool getc_is_controlled();
 
-	Ref<EntityAI> gets_ai();
-	void sets_ai(Ref<EntityAI> value);
+	Ref<EntityAI> ai_gets();
+	void ai_sets(Ref<EntityAI> value);
 
 	////    Pets    ////
 

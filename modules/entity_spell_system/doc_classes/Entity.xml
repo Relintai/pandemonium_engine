@@ -2745,7 +2745,7 @@
 		</member>
 		<member name="cbag" type="Bag" setter="bag_setc" getter="bag_getc">
 		</member>
-		<member name="centity_controller" type="int" setter="setc_entity_controller" getter="getc_entity_controller" enum="EntityEnums.EntityController" default="0">
+		<member name="centity_controller" type="int" setter="entity_controller_setc" getter="entity_controller_getc" enum="EntityEnums.EntityController" default="0">
 		</member>
 		<member name="centity_data" type="EntityData" setter="entity_data_setc" getter="entity_data_getc">
 		</member>
@@ -2763,7 +2763,7 @@
 		</member>
 		<member name="cfree_class_talent_points" type="int" setter="class_talent_points_setc_free" getter="class_talent_points_getc_free">
 		</member>
-		<member name="cfree_spell_points" type="int" setter="free_spell_points_setc" getter="free_spell_points_getc">
+		<member name="cfree_spell_points" type="int" setter="spell_points_setc_free" getter="spell_points_getc_free">
 		</member>
 		<member name="cgcd" type="float" setter="gcd_setc" getter="gcd_getc" default="0.0">
 		</member>
@@ -2773,7 +2773,7 @@
 		</member>
 		<member name="sentity_data_id" type="int" setter="entity_data_id_sets" getter="entity_data_id_gets" default="0">
 		</member>
-		<member name="cis_pet" type="bool" setter="" getter="getc_is_pet">
+		<member name="cis_pet" type="bool" setter="" getter="pet_getc_is">
 		</member>
 		<member name="clevel" type="int" setter="setc_level" getter="getc_level">
 		</member>
@@ -2797,7 +2797,7 @@
 		</member>
 		<member name="pet_ai_state" type="int" setter="pet_ai_state_sets" getter="pet_ai_state_gets" enum="EntityEnums.AIStates" default="0">
 		</member>
-		<member name="sai" type="EntityAI" setter="sets_ai" getter="gets_ai">
+		<member name="sai" type="EntityAI" setter="ai_sets" getter="ai_gets">
 		</member>
 		<member name="sauras" type="Array" setter="sauras_set" getter="sauras_get" default="[  ]">
 		</member>
@@ -2815,7 +2815,7 @@
 		</member>
 		<member name="sdatas" type="Array" setter="sdatas_set" getter="sdatas_get" default="[  ]">
 		</member>
-		<member name="sentity_controller" type="int" setter="sets_entity_controller" getter="gets_entity_controller" enum="EntityEnums.EntityController" default="0">
+		<member name="sentity_controller" type="int" setter="entity_controller_sets" getter="entity_controller_gets" enum="EntityEnums.EntityController" default="0">
 		</member>
 		<member name="sentity_data" type="EntityData" setter="entity_data_sets" getter="entity_data_gets">
 		</member>
@@ -2833,7 +2833,7 @@
 		</member>
 		<member name="sfree_class_talent_points" type="int" setter="class_talent_points_sets_free" getter="class_talent_points_gets_free" default="0">
 		</member>
-		<member name="sfree_spell_points" type="int" setter="free_spell_points_sets" getter="free_spell_points_gets" default="0">
+		<member name="sfree_spell_points" type="int" setter="spell_points_sets_free" getter="spell_points_gets_free" default="0">
 		</member>
 		<member name="sgcd" type="float" setter="gcd_sets" getter="gcd_gets" default="0.0">
 		</member>
@@ -2841,7 +2841,7 @@
 		</member>
 		<member name="simmunity_flags" type="int" setter="sets_immunity_flags" getter="gets_immunity_flags" default="0">
 		</member>
-		<member name="sis_pet" type="bool" setter="" getter="gets_is_pet">
+		<member name="sis_pet" type="bool" setter="" getter="pet_gets_is">
 		</member>
 		<member name="slevel" type="int" setter="sets_level" getter="gets_level" default="1">
 		</member>
@@ -2849,7 +2849,7 @@
 		</member>
 		<member name="smoney" type="int" setter="sets_money" getter="gets_money" default="0">
 		</member>
-		<member name="soriginal_entity_controller" type="int" setter="sets_original_entity_controller" getter="gets_original_entity_controller" enum="EntityEnums.EntityController" default="0">
+		<member name="soriginal_entity_controller" type="int" setter="original_entity_controller_sets" getter="original_entity_controller_gets" enum="EntityEnums.EntityController" default="0">
 		</member>
 		<member name="spet_formation_index" type="int" setter="pet_sets_formation_index" getter="pet_gets_formation_index" default="0">
 		</member>

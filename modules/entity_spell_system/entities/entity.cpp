@@ -643,8 +643,8 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 		set_network_master(info->get_network_owner());
 	}
 
-	sets_original_entity_controller(info->get_entity_controller());
-	sets_entity_controller(info->get_entity_controller());
+	original_entity_controller_sets(info->get_entity_controller());
+	entity_controller_sets(info->get_entity_controller());
 
 	_s_level = info->get_level();
 
@@ -678,7 +678,7 @@ void Entity::_setup() {
 
 		//Ref<StatData> stat_data = _s_entity_data->get_stat_data();
 
-		sets_ai(_s_entity_data->get_ai_instance());
+		ai_sets(_s_entity_data->get_ai_instance());
 
 		for (int i = 0; i < _s_auras.size(); ++i) {
 			Ref<AuraData> ad = _s_auras.get(i);
@@ -759,8 +759,8 @@ void Entity::_setup() {
 	sets_entity_flags(_s_entity_data->get_entity_flags());
 
 	//if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE) {
-	//	sets_original_entity_controller(_s_entity_data->get_entity_controller());
-	//	sets_entity_controller(_s_entity_data->get_entity_controller());
+	//	original_entity_controller_sets(_s_entity_data->get_entity_controller());
+	//	entity_controller_sets(_s_entity_data->get_entity_controller());
 	//}
 
 	//sets_entity_name(_s_entity_data->get_entity_name());
@@ -789,7 +789,7 @@ void Entity::_setup() {
 		}
 	}
 
-	sets_ai(_s_entity_data->get_ai_instance());
+	ai_sets(_s_entity_data->get_ai_instance());
 
 	if (!Engine::get_singleton()->is_editor_hint())
 		set_process(_s_entity_data.is_valid());
@@ -875,11 +875,11 @@ void Entity::setup_actionbars() {
 
 // AI
 
-bool Entity::gets_is_pet() {
+bool Entity::pet_gets_is() {
 	return _s_pet_owner;
 }
 
-bool Entity::getc_is_pet() {
+bool Entity::pet_getc_is() {
 	return _c_pet_owner;
 }
 
@@ -917,26 +917,26 @@ void Entity::pet_ai_state_sets(EntityEnums::AIStates value) {
 	_s_pet_ai_state = value;
 }
 
-EntityEnums::EntityController Entity::gets_original_entity_controller() {
+EntityEnums::EntityController Entity::original_entity_controller_gets() {
 	return _s_entity_controller;
 }
-void Entity::sets_original_entity_controller(EntityEnums::EntityController value) {
+void Entity::original_entity_controller_sets(EntityEnums::EntityController value) {
 	_s_entity_controller = value;
 }
 
-EntityEnums::EntityController Entity::gets_entity_controller() {
+EntityEnums::EntityController Entity::entity_controller_gets() {
 	return _s_entity_controller;
 }
-void Entity::sets_entity_controller(EntityEnums::EntityController value) {
+void Entity::entity_controller_sets(EntityEnums::EntityController value) {
 	_s_entity_controller = value;
 
-	ORPC(setc_entity_controller, value);
+	ORPC(entity_controller_setc, value);
 }
 
-EntityEnums::EntityController Entity::getc_entity_controller() {
+EntityEnums::EntityController Entity::entity_controller_getc() {
 	return _s_entity_controller;
 }
-void Entity::setc_entity_controller(EntityEnums::EntityController value) {
+void Entity::entity_controller_setc(EntityEnums::EntityController value) {
 	if (_c_entity_controller == value) {
 		return;
 	}
@@ -954,10 +954,10 @@ bool Entity::getc_is_controlled() {
 	}
 }
 
-Ref<EntityAI> Entity::gets_ai() {
+Ref<EntityAI> Entity::ai_gets() {
 	return _s_ai;
 }
-void Entity::sets_ai(Ref<EntityAI> value) {
+void Entity::ai_sets(Ref<EntityAI> value) {
 	if (_s_ai.is_valid()) {
 		_s_ai->set_owner(NULL);
 		_s_ai.unref();
@@ -982,7 +982,7 @@ void Entity::pet_adds(Entity *entity) {
 
 	entity->ai_state_stored_sets(entity->ai_state_gets());
 	entity->ai_state_sets(_s_pet_ai_state);
-	entity->sets_entity_controller(EntityEnums::ENITIY_CONTROLLER_AI);
+	entity->entity_controller_sets(EntityEnums::ENITIY_CONTROLLER_AI);
 
 	entity->pet_sets_formation_index(_s_pets.size());
 
@@ -1022,7 +1022,7 @@ void Entity::pet_removes_index(int index) {
 	entity->pet_sets_owner(NULL);
 
 	entity->ai_state_sets(entity->ai_state_stored_gets());
-	entity->sets_entity_controller(entity->gets_original_entity_controller());
+	entity->entity_controller_sets(entity->original_entity_controller_gets());
 
 	//full callback stack spet_added
 }
@@ -1400,8 +1400,8 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	//EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
 
-	//sets_original_entity_controller(contr);
-	//sets_entity_controller(contr);
+	//original_entity_controller_sets(contr);
+	//entity_controller_sets(contr);
 
 	////     Stats    ////
 
@@ -1616,7 +1616,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	////    Known Spells    ////
 
 	if (ESS::get_singleton() && ESS::get_singleton()->get_use_spell_points()) {
-		free_spell_points_sets(dict.get("free_spell_points", 0));
+		spell_points_sets_free(dict.get("free_spell_points", 0));
 	}
 
 	Dictionary known_spells = dict.get("known_spells", Dictionary());
@@ -4252,21 +4252,21 @@ void Entity::scategory_cooldowns_set(const Vector<Variant> &data) {
 
 //Known Spells
 
-int Entity::free_spell_points_gets() {
+int Entity::spell_points_gets_free() {
 	return _s_free_spell_points;
 }
-void Entity::free_spell_points_sets(int value) {
+void Entity::spell_points_sets_free(int value) {
 	_s_free_spell_points = value;
 
 	emit_signal("sfree_spell_points_changed", this, value);
 
-	ORPC(free_spell_points_setc, value);
+	ORPC(spell_points_setc_free, value);
 }
 
-int Entity::free_spell_points_getc() {
+int Entity::spell_points_getc_free() {
 	return _c_free_spell_points;
 }
-void Entity::free_spell_points_setc(int value) {
+void Entity::spell_points_setc_free(int value) {
 	_c_free_spell_points = value;
 
 	emit_signal("cfree_spell_points_changed", this, value);
@@ -5911,7 +5911,7 @@ Entity::Entity() {
 	SET_RPC_REMOTE("setc_level");
 	SET_RPC_REMOTE("setc_xp");
 	SET_RPC_REMOTE("setc_seed");
-	SET_RPC_REMOTE("setc_entity_controller");
+	SET_RPC_REMOTE("entity_controller_setc");
 
 	//EntityType
 
@@ -6027,7 +6027,7 @@ Entity::Entity() {
 
 	//Known Spells
 
-	SET_RPC_REMOTE("free_spell_points_setc");
+	SET_RPC_REMOTE("spell_points_setc_free");
 	SET_RPC_REMOTE("spell_learns");
 
 	SET_RPC_REMOTE("spell_addc_rpc");
@@ -6235,14 +6235,14 @@ void Entity::_notification_slevel_up(int level) {
 
 	if (!ESS::get_singleton()->get_use_class_xp()) {
 		if (ESS::get_singleton()->get_use_spell_points()) {
-			free_spell_points_sets(free_spell_points_gets() + ecd->get_spell_points_per_level() * level);
+			spell_points_sets_free(spell_points_gets_free() + ecd->get_spell_points_per_level() * level);
 		}
 
 		character_talent_points_sets_free(character_talent_points_gets_free() + level);
 	}
 
 	if (ESS::get_singleton()->get_use_spell_points()) {
-		free_spell_points_sets(free_spell_points_gets() + ecd->get_spell_points_per_level() * level);
+		spell_points_sets_free(spell_points_gets_free() + ecd->get_spell_points_per_level() * level);
 	}
 
 	class_talent_points_sets_free(class_talent_points_gets_free() + level);
@@ -6335,7 +6335,7 @@ void Entity::_spell_learns(int id) {
 	ERR_FAIL_COND(!ESS::get_singleton());
 
 	if (ESS::get_singleton()->get_use_spell_points()) {
-		ERR_FAIL_COND(free_spell_points_gets() <= 0);
+		ERR_FAIL_COND(spell_points_gets_free() <= 0);
 	}
 
 	ERR_FAIL_COND(!_s_entity_data.is_valid());
@@ -6375,7 +6375,7 @@ void Entity::_spell_learns(int id) {
 			spell_adds(sp);
 
 			if (ESS::get_singleton()->get_use_spell_points()) {
-				free_spell_points_sets(_s_free_spell_points - 1);
+				spell_points_sets_free(_s_free_spell_points - 1);
 			}
 
 			return;
@@ -7476,13 +7476,13 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("sfree_spell_points_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "new_value")));
 	ADD_SIGNAL(MethodInfo("cfree_spell_points_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "new_value")));
 
-	ClassDB::bind_method(D_METHOD("free_spell_points_gets"), &Entity::free_spell_points_gets);
-	ClassDB::bind_method(D_METHOD("free_spell_points_sets", "value"), &Entity::free_spell_points_sets);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_spell_points", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "free_spell_points_sets", "free_spell_points_gets");
+	ClassDB::bind_method(D_METHOD("spell_points_gets_free"), &Entity::spell_points_gets_free);
+	ClassDB::bind_method(D_METHOD("spell_points_sets_free", "value"), &Entity::spell_points_sets_free);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_spell_points", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "spell_points_sets_free", "spell_points_gets_free");
 
-	ClassDB::bind_method(D_METHOD("free_spell_points_getc"), &Entity::free_spell_points_getc);
-	ClassDB::bind_method(D_METHOD("free_spell_points_setc", "value"), &Entity::free_spell_points_setc);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_spell_points", PROPERTY_HINT_NONE, "", 0), "free_spell_points_setc", "free_spell_points_getc");
+	ClassDB::bind_method(D_METHOD("spell_points_getc_free"), &Entity::spell_points_getc_free);
+	ClassDB::bind_method(D_METHOD("spell_points_setc_free", "value"), &Entity::spell_points_setc_free);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_spell_points", PROPERTY_HINT_NONE, "", 0), "spell_points_setc_free", "spell_points_getc_free");
 
 	ClassDB::bind_method(D_METHOD("spell_learn_requestc", "id"), &Entity::spell_learn_requestc);
 	ClassDB::bind_method(D_METHOD("spell_learns", "id"), &Entity::spell_learns);
@@ -7723,11 +7723,11 @@ void Entity::_bind_methods() {
 
 	// AI
 
-	ClassDB::bind_method(D_METHOD("gets_is_pet"), &Entity::gets_is_pet);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "sis_pet", PROPERTY_HINT_NONE, "", 0), "", "gets_is_pet");
+	ClassDB::bind_method(D_METHOD("pet_gets_is"), &Entity::pet_gets_is);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "sis_pet", PROPERTY_HINT_NONE, "", 0), "", "pet_gets_is");
 
-	ClassDB::bind_method(D_METHOD("getc_is_pet"), &Entity::getc_is_pet);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cis_pet", PROPERTY_HINT_NONE, "", 0), "", "getc_is_pet");
+	ClassDB::bind_method(D_METHOD("pet_getc_is"), &Entity::pet_getc_is);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cis_pet", PROPERTY_HINT_NONE, "", 0), "", "pet_getc_is");
 
 	ClassDB::bind_method(D_METHOD("pet_gets_owner"), &Entity::pet_gets_owner);
 	ClassDB::bind_method(D_METHOD("pet_sets_owner", "entity"), &Entity::pet_sets_owner_bind);
@@ -7741,25 +7741,25 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("pet_ai_state_sets", "value"), &Entity::pet_ai_state_sets);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "pet_ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES, PROPERTY_USAGE_ENTITY_HIDDEN), "pet_ai_state_sets", "pet_ai_state_gets");
 
-	ClassDB::bind_method(D_METHOD("gets_original_entity_controller"), &Entity::gets_original_entity_controller);
-	ClassDB::bind_method(D_METHOD("sets_original_entity_controller", "value"), &Entity::sets_original_entity_controller);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "soriginal_entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER, PROPERTY_USAGE_ENTITY_HIDDEN), "sets_original_entity_controller", "gets_original_entity_controller");
+	ClassDB::bind_method(D_METHOD("original_entity_controller_gets"), &Entity::original_entity_controller_gets);
+	ClassDB::bind_method(D_METHOD("original_entity_controller_sets", "value"), &Entity::original_entity_controller_sets);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "soriginal_entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER, PROPERTY_USAGE_ENTITY_HIDDEN), "original_entity_controller_sets", "original_entity_controller_gets");
 
-	ClassDB::bind_method(D_METHOD("gets_entity_controller"), &Entity::gets_entity_controller);
-	ClassDB::bind_method(D_METHOD("sets_entity_controller", "value"), &Entity::sets_entity_controller);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "sets_entity_controller", "gets_entity_controller");
+	ClassDB::bind_method(D_METHOD("entity_controller_gets"), &Entity::entity_controller_gets);
+	ClassDB::bind_method(D_METHOD("entity_controller_sets", "value"), &Entity::entity_controller_sets);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "entity_controller_sets", "entity_controller_gets");
 
-	ClassDB::bind_method(D_METHOD("getc_entity_controller"), &Entity::getc_entity_controller);
-	ClassDB::bind_method(D_METHOD("setc_entity_controller", "value"), &Entity::setc_entity_controller);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "setc_entity_controller", "getc_entity_controller");
+	ClassDB::bind_method(D_METHOD("entity_controller_getc"), &Entity::entity_controller_getc);
+	ClassDB::bind_method(D_METHOD("entity_controller_setc", "value"), &Entity::entity_controller_setc);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "entity_controller_setc", "entity_controller_getc");
 
 	ADD_SIGNAL(MethodInfo("onc_entity_controller_changed"));
 
 	ClassDB::bind_method(D_METHOD("getc_is_controlled"), &Entity::getc_is_controlled);
 
-	ClassDB::bind_method(D_METHOD("gets_ai"), &Entity::gets_ai);
-	ClassDB::bind_method(D_METHOD("sets_ai", "value"), &Entity::sets_ai);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sai", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_ai", "gets_ai");
+	ClassDB::bind_method(D_METHOD("ai_gets"), &Entity::ai_gets);
+	ClassDB::bind_method(D_METHOD("ai_sets", "value"), &Entity::ai_sets);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sai", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI", PROPERTY_USAGE_ENTITY_HIDDEN), "ai_sets", "ai_gets");
 
 	//Serialization
 	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
