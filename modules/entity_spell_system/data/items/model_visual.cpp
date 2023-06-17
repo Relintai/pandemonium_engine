@@ -81,6 +81,19 @@ void ModelVisual::_validate_property(PropertyInfo &property) const {
 	}
 }
 
+#ifndef DISABLE_DEPRECATED
+// TODO REMOVE AFTER NEXT RELEASE
+bool ModelVisual::_set(const StringName &p_name, const Variant &p_value) {
+	if (p_name == "get_visual_entries") {
+		set_visual_entries(p_value);
+
+		return true;
+	}
+
+	return false;
+}
+#endif
+
 void ModelVisual::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_layer"), &ModelVisual::get_layer);
 	ClassDB::bind_method(D_METHOD("set_layer", "layer"), &ModelVisual::set_layer);

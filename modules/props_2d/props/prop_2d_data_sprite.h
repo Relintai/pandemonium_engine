@@ -79,6 +79,10 @@ public:
 	~Prop2DDataSprite();
 
 protected:
+#ifndef DISABLE_DEPRECATED
+	// TODO REMOVE AFTER NEXT RELEASE
+	bool _set(const StringName &p_name, const Variant &p_value);
+#endif
 	static void _bind_methods();
 
 private:

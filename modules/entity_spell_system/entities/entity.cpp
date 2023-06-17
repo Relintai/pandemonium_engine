@@ -6600,6 +6600,23 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		return true;
 	}
 
+#ifndef DISABLE_DEPRECATED
+	// TODO REMOVE AFTER NEXT RELEASE
+	if (main_prop == "characterclass_id") {
+		int id = p_value;
+
+		entity_data_id_sets(id);
+
+		return true;
+	} else if (main_prop == "entity_data_id") {
+		int id = p_value;
+
+		entity_data_id_setc(id);
+
+		return true;
+	}
+#endif
+
 	return false;
 }
 

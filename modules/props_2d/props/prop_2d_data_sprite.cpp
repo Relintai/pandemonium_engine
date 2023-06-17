@@ -202,6 +202,47 @@ Prop2DDataSprite::Prop2DDataSprite() {
 Prop2DDataSprite::~Prop2DDataSprite() {
 }
 
+#ifndef DISABLE_DEPRECATED
+// TODO REMOVE AFTER NEXT RELEASE
+bool Prop2DDataSprite::_set(const StringName &p_name, const Variant &p_value) {
+	if (p_name == "get_flip_v") {
+		set_flip_v(p_value);
+
+		return true;
+	} else if (p_name == "get_animation_h_frames") {
+		set_animation_h_frames(p_value);
+
+		return true;
+	} else if (p_name == "set_animation_v_frames") {
+		set_animation_v_frames(p_value);
+
+		return true;
+	} else if (p_name == "get_animation_frame") {
+		set_animation_frame(p_value);
+
+		return true;
+	} else if (p_name == "get_animation_frame_coords") {
+		set_animation_frame_coords(p_value);
+
+		return true;
+	} else if (p_name == "set_region_enabled") {
+		set_region_enabled(p_value);
+
+		return true;
+	} else if (p_name == "get_region") {
+		set_region(p_value);
+
+		return true;
+	} else if (p_name == "get_filter_clip") {
+		set_filter_clip(p_value);
+
+		return true;
+	}
+
+	return false;
+}
+#endif
+
 void Prop2DDataSprite::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_texture"), &Prop2DDataSprite::get_texture);
 	ClassDB::bind_method(D_METHOD("set_texture", "value"), &Prop2DDataSprite::set_texture);

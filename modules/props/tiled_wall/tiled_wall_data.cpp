@@ -510,6 +510,15 @@ bool TiledWallData::_set(const StringName &p_name, const Variant &p_value) {
 		}
 	}
 
+#ifndef DISABLE_DEPRECATED
+	// TODO REMOVE AFTER NEXT RELEASE
+	if (p_name == "set_tile_count") {
+		set_tile_count(p_value);
+
+		return true;
+	}
+#endif
+
 	return false;
 }
 

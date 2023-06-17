@@ -49,6 +49,10 @@ public:
 	~ModelVisual();
 
 protected:
+#ifndef DISABLE_DEPRECATED
+	// TODO REMOVE AFTER NEXT RELEASE
+	bool _set(const StringName &p_name, const Variant &p_value);
+#endif
 	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 
