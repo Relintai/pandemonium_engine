@@ -262,6 +262,7 @@ void SkeletonModification3DFABRIK::chain_apply() {
 	for (uint32_t i = 0; i < fabrik_data_chain.size(); i++) {
 		int current_bone_idx = fabrik_data_chain[i].bone_idx;
 		Transform current_trans = fabrik_transforms[i];
+		Transform current_bone_trans = stack->skeleton->get_bone_global_rest(current_bone_idx);
 
 		// If this is the last bone in the chain...
 		if (i == fabrik_data_chain.size() - 1) {
@@ -270,10 +271,10 @@ void SkeletonModification3DFABRIK::chain_apply() {
 				stack->skeleton->update_bone_rest_forward_vector(current_bone_idx);
 				Vector3 forward_vector = stack->skeleton->get_bone_axis_forward_vector(current_bone_idx);
 				// Rotate the bone towards the target:
-				current_trans.basis.rotate_to_align(forward_vector, current_trans.origin.direction_to(target_global_pose.origin));
-				current_trans.basis.rotate_local(forward_vector, fabrik_data_chain[i].roll);
+				current_bone_trans.basis.rotate_to_align(forward_vector, current_trans.origin.direction_to(target_global_pose.origin));
+				current_bone_trans.basis.rotate_local(forward_vector, fabrik_data_chain[i].roll);
 			} else { // Use the target's Basis...
-				current_trans.basis = target_global_pose.basis.orthonormalized().scaled(current_trans.basis.get_scale());
+				current_bone_trans.basis = target_global_pose.basis.orthonormalized().scaled(current_trans.basis.get_scale());
 			}
 		} else { // every other bone in the chain...
 			Transform next_trans = fabrik_transforms[i + 1];
@@ -282,10 +283,11 @@ void SkeletonModification3DFABRIK::chain_apply() {
 			stack->skeleton->update_bone_rest_forward_vector(current_bone_idx);
 			Vector3 forward_vector = stack->skeleton->get_bone_axis_forward_vector(current_bone_idx);
 			// Rotate the bone towards the next bone in the chain:
-			current_trans.basis.rotate_to_align(forward_vector, current_trans.origin.direction_to(next_trans.origin));
-			current_trans.basis.rotate_local(forward_vector, fabrik_data_chain[i].roll);
+			current_bone_trans.basis.rotate_to_align(forward_vector, current_trans.origin.direction_to(next_trans.origin));
+			current_bone_trans.basis.rotate_local(forward_vector, fabrik_data_chain[i].roll);
 		}
-		stack->skeleton->set_bone_local_pose_override(current_bone_idx, stack->skeleton->global_pose_to_local_pose(current_bone_idx, current_trans), stack->strength, true);
+		current_bone_trans.origin = current_trans.origin;
+		stack->skeleton->set_bone_local_pose_override(current_bone_idx, stack->skeleton->global_pose_to_local_pose(current_bone_idx, current_bone_trans), stack->strength, true);
 	}
 
 	// Update all the bones so the next modification has up-to-date data.
