@@ -30,7 +30,7 @@
 
 #include "nativescript.h"
 
-#include "gdnative/gdnative.h"
+#include "modules/gdnative/gdnative.h"
 
 #include "core/config/project_settings.h"
 #include "core/core_string_names.h"

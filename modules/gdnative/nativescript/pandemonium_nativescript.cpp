@@ -35,7 +35,7 @@
 #include "core/global_constants.h"
 #include "core/config/project_settings.h"
 #include "core/variant/variant.h"
-#include "gdnative/gdnative.h"
+#include "modules/gdnative/gdnative.h"
 
 #include "nativescript.h"
 
