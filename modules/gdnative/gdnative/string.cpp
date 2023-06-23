@@ -722,7 +722,8 @@ pandemonium_string GDAPI pandemonium_string_sprintf(const pandemonium_string *p_
 pandemonium_string GDAPI pandemonium_string_quote(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->quote();
+	memnew_placement(&dest, String(self->quote()));
+
 	return dest;
 }
 pandemonium_string GDAPI pandemonium_string_quote_quotechar(const pandemonium_string *p_self, pandemonium_string *p_quotechar) {
@@ -1203,7 +1204,8 @@ pandemonium_string GDAPI pandemonium_string_join(const pandemonium_string *p_sel
 pandemonium_string GDAPI pandemonium_string_get_with_code_lines(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->get_with_code_lines();
+	memnew_placement(&dest, String(self->get_with_code_lines()));
+
 	return dest;
 }
 
@@ -1296,7 +1298,8 @@ pandemonium_string GDAPI pandemonium_string_indent(const pandemonium_string *p_s
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
 	const String *prefix = (const String *)p_prefix;
-	*((String *)&dest) = self->indent(*prefix);
+	memnew_placement(&dest, String(self->indent(*prefix)));
+
 	return dest;
 }
 
@@ -1319,7 +1322,8 @@ pandemonium_string GDAPI pandemonium_string_lstrip(const pandemonium_string *p_s
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
 	const String *chars = (const String *)p_chars;
-	*((String *)&dest) = self->lstrip(*chars);
+	memnew_placement(&dest, String(self->lstrip(*chars)));
+
 	return dest;
 }
 void GDAPI pandemonium_string_erase(pandemonium_string *p_self, pandemonium_int p_pos, pandemonium_int p_chars) {
@@ -1518,7 +1522,8 @@ pandemonium_string GDAPI pandemonium_string_md5_text(const pandemonium_string *p
 pandemonium_string GDAPI pandemonium_string_sha1_text(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->sha1_text();
+	memnew_placement(&dest, String(self->sha1_text()));
+
 	return dest;
 }
 
@@ -1644,32 +1649,41 @@ pandemonium_bool GDAPI pandemonium_string_is_network_share_path(const pandemoniu
 pandemonium_string GDAPI pandemonium_string_append_pathc(const pandemonium_string *p_self, const char *p_path) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->append_path(p_path);
+	memnew_placement(&dest, String(self->append_path(p_path)));
+
 	return dest;
 }
 pandemonium_string GDAPI pandemonium_string_append_path(const pandemonium_string *p_self, const pandemonium_string *p_path) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
 	const String *path = (const String *)p_path;
-	*((String *)&dest) = self->append_path(*path);
+
+	memnew_placement(&dest, String(self->append_path(*path)));
+
 	return dest;
 }
 pandemonium_string GDAPI pandemonium_string_path_clean_end_slash(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->path_clean_end_slash();
+
+	memnew_placement(&dest, String(self->path_clean_end_slash()));
+
 	return dest;
 }
 pandemonium_string GDAPI pandemonium_string_path_ensure_end_slash(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->path_ensure_end_slash();
+
+	memnew_placement(&dest, String(self->path_ensure_end_slash()));
+
 	return dest;
 }
 pandemonium_string GDAPI pandemonium_string_path_get_prev_dir(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->path_get_prev_dir();
+
+	memnew_placement(&dest, String(self->path_get_prev_dir()));
+
 	return dest;
 }
 
@@ -1721,13 +1735,17 @@ pandemonium_string GDAPI pandemonium_string_http_unescape(const pandemonium_stri
 pandemonium_string GDAPI pandemonium_string_uri_encode(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->uri_encode();
+
+	memnew_placement(&dest, String(self->uri_encode()));
+
 	return dest;
 }
 pandemonium_string GDAPI pandemonium_string_uri_decode(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->uri_decode();
+
+	memnew_placement(&dest, String(self->uri_decode()));
+
 	return dest;
 }
 
@@ -1805,7 +1823,9 @@ pandemonium_string GDAPI pandemonium_string_percent_encode(const pandemonium_str
 pandemonium_string GDAPI pandemonium_string_property_name_encode(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->property_name_encode();
+
+	memnew_placement(&dest, String(self->property_name_encode()));
+
 	return dest;
 }
 
@@ -1829,19 +1849,25 @@ pandemonium_bool GDAPI pandemonium_string_is_valid_html_color(const pandemonium_
 
 pandemonium_string GDAPI pandemonium_string_get_invalid_node_name_characters() {
 	pandemonium_string dest;
-	*((String *)&dest) = String::get_invalid_node_name_characters();
+
+	memnew_placement(&dest, String(String::get_invalid_node_name_characters()));
+
 	return dest;
 }
 pandemonium_string GDAPI pandemonium_string_validate_node_name(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->validate_node_name();
+
+	memnew_placement(&dest, String(self->validate_node_name()));
+
 	return dest;
 }
 pandemonium_string GDAPI pandemonium_string_validate_identifier(const pandemonium_string *p_self) {
 	pandemonium_string dest;
 	const String *self = (const String *)p_self;
-	*((String *)&dest) = self->validate_identifier();
+
+	memnew_placement(&dest, String(self->validate_identifier()));
+
 	return dest;
 }
 
