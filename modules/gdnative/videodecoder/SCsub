@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+
+import os
+
+Import("env")
+Import("env_modules")
+
+env_vsdecoder_gdnative = env_modules.Clone()
+
+env_vsdecoder_gdnative.Prepend(CPPPATH=[os.path.normpath(os.path.abspath("../include/"))])
+env_vsdecoder_gdnative.add_source_files(env.modules_sources, "*.cpp")

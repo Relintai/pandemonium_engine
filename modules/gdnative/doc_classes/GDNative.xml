@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GDNative" inherits="Reference" version="3.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="call_native">
+			<return type="Variant" />
+			<argument index="0" name="calling_type" type="String" />
+			<argument index="1" name="procedure_name" type="String" />
+			<argument index="2" name="arguments" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="initialize">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="terminate">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="library" type="GDNativeLibrary" setter="set_library" getter="get_library">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>
