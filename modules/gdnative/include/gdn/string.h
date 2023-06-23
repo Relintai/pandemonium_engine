@@ -36,8 +36,14 @@ extern "C" {
 #endif
 
 #include <stdint.h>
-//#include <wchar.h>
-#include <uchar.h>
+
+#ifndef __cplusplus
+// maybe they should be these instead?
+//typedef __uint_least16_t char16_t;
+//typedef __uint_least32_t char32_t;
+typedef uint32_t char32_t;
+typedef uint16_t char16_t;
+#endif
 
 typedef char32_t pandemonium_char_type;
 
