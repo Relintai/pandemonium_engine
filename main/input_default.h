@@ -49,14 +49,28 @@ class InputDefault : public Input {
 	Vector3 gyroscope;
 	Vector2 mouse_pos;
 	MainLoop *main_loop;
+	bool legacy_just_pressed_behavior;
 
 	struct Action {
-		uint64_t physics_frame;
-		uint64_t idle_frame;
+		uint64_t pressed_physics_frame;
+		uint64_t pressed_idle_frame;
+		uint64_t released_physics_frame;
+		uint64_t released_idle_frame;
 		bool pressed;
 		bool exact;
 		float strength;
 		float raw_strength;
+
+		Action() {
+			pressed_physics_frame = UINT64_MAX;
+			pressed_idle_frame = UINT64_MAX;
+			released_physics_frame = UINT64_MAX;
+			released_idle_frame = UINT64_MAX;
+			pressed = false;
+			exact = true;
+			strength = 0.0f;
+			raw_strength = 0.0f;
+		}
 	};
 
 	RBMap<StringName, Action> action_state;

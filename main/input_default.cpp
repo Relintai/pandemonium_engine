@@ -33,6 +33,7 @@
 #include "core/input/default_controller_mappings.h"
 #include "core/input/input_map.h"
 #include "core/os/os.h"
+#include "core/config/project_settings.h"
 #include "scene/resources/texture.h"
 #include "servers/rendering_server.h"
 
@@ -124,10 +125,13 @@ bool InputDefault::is_action_just_pressed(const StringName &p_action, bool p_exa
 		return false;
 	}
 
+	// Backward compatibility for legacy behavior, only return true if currently pressed.
+	bool pressed_requirement = legacy_just_pressed_behavior ? E->get().pressed : true;
+
 	if (Engine::get_singleton()->is_in_physics_frame()) {
-		return E->get().pressed && E->get().physics_frame == Engine::get_singleton()->get_physics_frames();
+		return pressed_requirement && E->get().pressed_physics_frame == Engine::get_singleton()->get_physics_frames();
 	} else {
-		return E->get().pressed && E->get().idle_frame == Engine::get_singleton()->get_idle_frames();
+		return pressed_requirement && E->get().pressed_idle_frame == Engine::get_singleton()->get_idle_frames();
 	}
 }
 
@@ -142,10 +146,13 @@ bool InputDefault::is_action_just_released(const StringName &p_action, bool p_ex
 		return false;
 	}
 
+	// Backward compatibility for legacy behavior, only return true if currently released.
+	bool released_requirement = legacy_just_pressed_behavior ? !E->get().pressed : true;
+
 	if (Engine::get_singleton()->is_in_physics_frame()) {
-		return !E->get().pressed && E->get().physics_frame == Engine::get_singleton()->get_physics_frames();
+		return released_requirement && E->get().released_physics_frame == Engine::get_singleton()->get_physics_frames();
 	} else {
-		return !E->get().pressed && E->get().idle_frame == Engine::get_singleton()->get_idle_frames();
+		return released_requirement && E->get().released_idle_frame == Engine::get_singleton()->get_idle_frames();
 	}
 }
 
@@ -434,7 +441,7 @@ void InputDefault::_parse_input_event_impl(const Ref<InputEvent> &p_event, bool 
 				button_event->set_canceled(st->is_canceled());
 				button_event->set_button_index(BUTTON_LEFT);
 				button_event->set_doubleclick(st->is_double_tap());
-				
+
 				if (st->is_pressed()) {
 					button_event->set_button_mask(mouse_button_mask | (1 << (BUTTON_LEFT - 1)));
 				} else {
@@ -499,19 +506,27 @@ void InputDefault::_parse_input_event_impl(const Ref<InputEvent> &p_event, bool 
 
 	for (const RBMap<StringName, InputMap::Action>::Element *E = InputMap::get_singleton()->get_action_map().front(); E; E = E->next()) {
 		if (InputMap::get_singleton()->event_is_action(p_event, E->key())) {
+			Action &action = action_state[E->key()];
+
 			// If not echo and action pressed state has changed
 			if (!p_event->is_echo() && is_action_pressed(E->key(), false) != p_event->is_action_pressed(E->key())) {
-				Action action;
-				action.physics_frame = Engine::get_singleton()->get_physics_frames();
-				action.idle_frame = Engine::get_singleton()->get_idle_frames();
-				action.pressed = p_event->is_action_pressed(E->key());
+				if (p_event->is_action_pressed(E->key())) {
+					action.pressed = true;
+					action.pressed_physics_frame = Engine::get_singleton()->get_physics_frames();
+					action.pressed_idle_frame = Engine::get_singleton()->get_idle_frames();
+				} else {
+					action.pressed = false;
+					action.released_physics_frame = Engine::get_singleton()->get_physics_frames();
+					action.released_idle_frame = Engine::get_singleton()->get_idle_frames();
+				}
+
 				action.strength = 0.0f;
 				action.raw_strength = 0.0f;
 				action.exact = InputMap::get_singleton()->event_is_action(p_event, E->key(), true);
-				action_state[E->key()] = action;
 			}
-			action_state[E->key()].strength = p_event->get_action_strength(E->key());
-			action_state[E->key()].raw_strength = p_event->get_action_raw_strength(E->key());
+
+			action.strength = p_event->get_action_strength(E->key());
+			action.raw_strength = p_event->get_action_raw_strength(E->key());
 		}
 	}
 
@@ -632,29 +647,27 @@ void InputDefault::iteration(float p_step) {
 }
 
 void InputDefault::action_press(const StringName &p_action, float p_strength) {
-	Action action;
+	// Create or retrieve existing action.
+	Action &action = action_state[p_action];
 
-	action.physics_frame = Engine::get_singleton()->get_physics_frames();
-	action.idle_frame = Engine::get_singleton()->get_idle_frames();
+	action.pressed_physics_frame = Engine::get_singleton()->get_physics_frames();
+	action.pressed_idle_frame = Engine::get_singleton()->get_idle_frames();
 	action.pressed = true;
+	action.exact = true;
 	action.strength = p_strength;
 	action.raw_strength = p_strength;
-	action.exact = true;
-
-	action_state[p_action] = action;
 }
 
 void InputDefault::action_release(const StringName &p_action) {
-	Action action;
+	// Create or retrieve existing action.
+	Action &action = action_state[p_action];
 
-	action.physics_frame = Engine::get_singleton()->get_physics_frames();
-	action.idle_frame = Engine::get_singleton()->get_idle_frames();
+	action.released_physics_frame = Engine::get_singleton()->get_physics_frames();
+	action.released_idle_frame = Engine::get_singleton()->get_idle_frames();
 	action.pressed = false;
-	action.strength = 0.f;
-	action.raw_strength = 0.f;
 	action.exact = true;
-
-	action_state[p_action] = action;
+	action.strength = 0.0f;
+	action.raw_strength = 0.0f;
 }
 
 void InputDefault::set_emulate_touch_from_mouse(bool p_emulate) {
@@ -798,8 +811,15 @@ InputDefault::InputDefault() {
 	mouse_from_touch_index = -1;
 	main_loop = nullptr;
 	default_shape = CURSOR_ARROW;
+	legacy_just_pressed_behavior = false;
 
 	fallback_mapping = -1;
+
+	legacy_just_pressed_behavior = GLOBAL_DEF("input_devices/compatibility/legacy_just_pressed_behavior", false);
+	if (Engine::get_singleton()->is_editor_hint()) {
+		// Always use standard behaviour in the editor.
+		legacy_just_pressed_behavior = false;
+	}
 
 	// Parse default mappings.
 	{
