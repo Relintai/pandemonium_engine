@@ -29,8 +29,8 @@
 /*************************************************************************/
 
 #include "tile_set.h"
-#include "core/variant/array.h"
 #include "core/config/engine.h"
+#include "core/variant/array.h"
 
 bool TileSet::_set(const StringName &p_name, const Variant &p_value) {
 	String n = p_name;
@@ -376,6 +376,18 @@ void TileSet::create_tile(int p_id) {
 	emit_changed();
 }
 
+void TileSet::autotile_set_fallback_mode(int p_id, FallbackMode p_mode) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
+	tile_map[p_id].autotile_data.fallback_mode = p_mode;
+	_change_notify("");
+	emit_changed();
+}
+
+TileSet::FallbackMode TileSet::autotile_get_fallback_mode(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), FALLBACK_AUTO, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
+	return tile_map[p_id].autotile_data.fallback_mode;
+}
+
 void TileSet::autotile_set_bitmask_mode(int p_id, BitmaskMode p_mode) {
 	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].autotile_data.bitmask_mode = p_mode;
@@ -589,23 +601,8 @@ const RBMap<Vector2, uint32_t> &TileSet::autotile_get_bitmask_map(int p_id) {
 	}
 }
 
-Vector2 TileSet::autotile_get_subtile_for_bitmask(int p_id, uint16_t p_bitmask, const Node *p_tilemap_node, const Vector2 &p_tile_location) {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
-	//First try to forward selection to script
-	if (p_tilemap_node->get_class_name() == "TileMap") {
-		if (get_script_instance() != nullptr) {
-			if (get_script_instance()->has_method("_forward_subtile_selection")) {
-				Variant ret = get_script_instance()->call("_forward_subtile_selection", p_id, p_bitmask, p_tilemap_node, p_tile_location);
-				if (ret.get_type() == Variant::VECTOR2) {
-					return ret;
-				}
-			}
-		}
-	}
-
+List<Vector2> TileSet::_autotile_get_subtile_candidates_for_bitmask(int p_id, uint16_t p_bitmask) const {
 	List<Vector2> coords;
-	List<uint32_t> priorities;
-	uint32_t priority_sum = 0;
 	uint32_t mask;
 	uint16_t mask_;
 	uint16_t mask_ignore;
@@ -619,16 +616,120 @@ Vector2 TileSet::autotile_get_subtile_for_bitmask(int p_id, uint16_t p_bitmask, 
 		mask_ignore = mask >> 16;
 
 		if (((mask_ & (~mask_ignore)) == (p_bitmask & (~mask_ignore))) && (((~mask_) | mask_ignore) == ((~p_bitmask) | mask_ignore))) {
-			uint32_t priority = autotile_get_subtile_priority(p_id, E->key());
-			priority_sum += priority;
-			priorities.push_back(priority);
 			coords.push_back(E->key());
 		}
+	}
+
+	return coords;
+}
+
+uint32_t _count_bitmask_bits(uint32_t bitmask) {
+	uint32_t ret = 0;
+
+	for (uint32_t i = 1; i <= 256; i <<= 1) {
+		if (bitmask & i) {
+			ret++;
+		}
+	}
+
+	return ret;
+}
+uint32_t _score_bitmask_difference(uint32_t bitmask, uint32_t ref_bitmask) {
+	// low = less difference, high = more difference
+	uint32_t ret = 0;
+
+	bitmask ^= ref_bitmask;
+	// add one to the score for each non-matching bit
+	for (uint32_t i = 1; i <= 256; i <<= 1) {
+		if (bitmask & i) {
+			ret += 1;
+			// make axial edge mismatches cost four times as much
+			if (i & (TileSet::BIND_TOP | TileSet::BIND_LEFT | TileSet::BIND_RIGHT | TileSet::BIND_BOTTOM)) {
+				ret += 3;
+			}
+		}
+	}
+	bitmask ^= ref_bitmask;
+	// artificially reduce difference for all-filled and all-but-center-empty bitmasks
+	// (511 is the non-IGNORE bitmasks all or'd together; 0x1FF)
+	if (ret > 0 && (bitmask == 511 || bitmask == TileSet::BIND_CENTER)) {
+		ret -= 1;
+	}
+	// artificially increase difference for non-symmetric bitmasks if testing against all-filled or all-but-center-empty bitmask
+	// (need to cast the bit tests from int to bool before comparing)
+	if ((ref_bitmask == 511 || ref_bitmask == TileSet::BIND_CENTER) &&
+			(bool(bitmask & TileSet::BIND_LEFT) != bool(bitmask & TileSet::BIND_RIGHT) ||
+					bool(bitmask & TileSet::BIND_TOP) != bool(bitmask & TileSet::BIND_BOTTOM) ||
+					bool(bitmask & TileSet::BIND_TOPRIGHT) != bool(bitmask & TileSet::BIND_BOTTOMLEFT) ||
+					bool(bitmask & TileSet::BIND_TOPLEFT) != bool(bitmask & TileSet::BIND_BOTTOMRIGHT))) {
+		ret += 16;
+	}
+	return ret;
+}
+
+Vector2 TileSet::autotile_get_subtile_for_bitmask(int p_id, uint16_t p_bitmask, const Node *p_tilemap_node, const Vector2 &p_tile_location) {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
+	// First try to forward selection to script
+	if (p_tilemap_node->get_class_name() == "TileMap") {
+		if (get_script_instance() != nullptr) {
+			if (get_script_instance()->has_method("_forward_subtile_selection")) {
+				Variant ret = get_script_instance()->call("_forward_subtile_selection", p_id, p_bitmask, p_tilemap_node, p_tile_location);
+				if (ret.get_type() == Variant::VECTOR2) {
+					return ret;
+				}
+			}
+		}
+	}
+
+	// if no forward-selected tile, look for a matching tile
+	List<Vector2> coords = _autotile_get_subtile_candidates_for_bitmask(p_id, p_bitmask);
+
+	// if we didn't find anything, and auto fallback is enagled, try falling back to a tile with a similar bitmask instead of the default tile
+	if (tile_map[p_id].autotile_data.fallback_mode == FALLBACK_AUTO && coords.size() == 0) {
+		uint32_t best_match_cost = 100000; // main point of comparison, general difference between bitmasks
+		uint32_t best_match_bitcount = 0; // bit count, as a tie breaker
+		uint16_t best_match_bitmask = 0;
+
+		for (RBMap<Vector2, uint32_t>::Element *E = tile_map[p_id].autotile_data.flags.front(); E; E = E->next()) {
+			uint32_t mask = E->get();
+			if (tile_map[p_id].autotile_data.bitmask_mode == BITMASK_2X2) {
+				mask |= (BIND_IGNORE_TOP | BIND_IGNORE_LEFT | BIND_IGNORE_CENTER | BIND_IGNORE_RIGHT | BIND_IGNORE_BOTTOM);
+			}
+
+			uint16_t mask_ignore = mask >> 16;
+			uint16_t mask_low = mask & 0xFFFF;
+			mask_low &= ~mask_ignore;
+			mask_low |= p_bitmask & mask_ignore;
+
+			// always skip bitmasks with no center bit, or that have already been matched as the best
+			if ((mask_low & BIND_CENTER) == 0 || mask_low == best_match_bitmask) {
+				continue;
+			}
+
+			uint32_t cost = _score_bitmask_difference(mask_low, p_bitmask);
+			uint32_t bitcount = _count_bitmask_bits(mask_low); // to break ties, pick the bitmask with more set bits
+
+			// if more similar, confirm match
+			if (cost < best_match_cost || (cost == best_match_cost && bitcount > best_match_bitcount)) {
+				best_match_cost = cost;
+				best_match_bitcount = bitcount;
+				best_match_bitmask = mask_low;
+			}
+		}
+		coords = _autotile_get_subtile_candidates_for_bitmask(p_id, best_match_bitmask);
 	}
 
 	if (coords.size() == 0) {
 		return autotile_get_icon_coordinate(p_id);
 	} else {
+		List<uint32_t> priorities;
+		uint32_t priority_sum = 0;
+		for (List<Vector2>::Element *E = coords.front(); E; E = E->next()) {
+			uint32_t priority = autotile_get_subtile_priority(p_id, E->get());
+			priority_sum += priority;
+			priorities.push_back(priority);
+		}
+
 		uint32_t picked_value = Math::rand() % priority_sum;
 		uint32_t upper_bound;
 		uint32_t lower_bound = 0;
@@ -1135,6 +1236,8 @@ void TileSet::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("autotile_get_spacing", "id"), &TileSet::autotile_get_spacing);
 	ClassDB::bind_method(D_METHOD("autotile_set_size", "id", "size"), &TileSet::autotile_set_size);
 	ClassDB::bind_method(D_METHOD("autotile_get_size", "id"), &TileSet::autotile_get_size);
+	ClassDB::bind_method(D_METHOD("autotile_set_fallback_mode", "id", "mode"), &TileSet::autotile_set_fallback_mode);
+	ClassDB::bind_method(D_METHOD("autotile_get_fallback_mode", "id"), &TileSet::autotile_get_fallback_mode);
 	ClassDB::bind_method(D_METHOD("tile_set_name", "id", "name"), &TileSet::tile_set_name);
 	ClassDB::bind_method(D_METHOD("tile_get_name", "id"), &TileSet::tile_get_name);
 	ClassDB::bind_method(D_METHOD("tile_set_texture", "id", "texture"), &TileSet::tile_set_texture);
@@ -1195,6 +1298,9 @@ void TileSet::_bind_methods() {
 	BIND_ENUM_CONSTANT(BITMASK_2X2);
 	BIND_ENUM_CONSTANT(BITMASK_3X3_MINIMAL);
 	BIND_ENUM_CONSTANT(BITMASK_3X3);
+
+	BIND_ENUM_CONSTANT(FALLBACK_AUTO);
+	BIND_ENUM_CONSTANT(FALLBACK_ICON);
 
 	BIND_ENUM_CONSTANT(BIND_TOPLEFT);
 	BIND_ENUM_CONSTANT(BIND_TOP);
