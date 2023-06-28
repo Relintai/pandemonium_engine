@@ -41,6 +41,7 @@
 #include "scene/resources/world_2d.h"
 #include "scene/resources/world_3d.h"
 #include "scene/scene_string_names.h"
+#include "servers/rendering/rendering_server_constants.h"
 #include "servers/rendering/rendering_server_raster.h"
 #include "servers/rendering_server.h"
 
@@ -628,6 +629,17 @@ void CanvasItem::update_draw_order() {
 		RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_index());
 	}
 }
+
+#ifdef DEV_ENABLED
+void CanvasItem::_name_changed_notify() {
+	// Even in DEV builds, there is no point in calling this unless we are debugging
+	// canvas item names. Even calling the stub function will be expensive, as there
+	// are a lot of canvas items.
+#ifdef RENDERING_SERVER_CANVAS_DEBUG_ITEM_NAMES
+	RenderingServer::get_singleton()->canvas_item_set_name(canvas_item, get_name());
+#endif
+}
+#endif
 
 void CanvasItem::update() {
 	if (!is_inside_tree()) {
