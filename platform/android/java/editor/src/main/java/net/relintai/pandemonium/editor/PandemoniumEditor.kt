@@ -63,7 +63,8 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		private val TAG = PandemoniumEditor::class.java.simpleName
 
 		private const val WAIT_FOR_DEBUGGER = false
-		private const val COMMAND_LINE_PARAMS = "command_line_params"
+		private const val EXTRA_FORCE_QUIT = "force_quit_requested"
+		private const val EXTRA_COMMAND_LINE_PARAMS = "command_line_params"
 
 		private const val EDITOR_ID = 777
   		private const val EDITOR_ARG = "--editor"
@@ -96,15 +97,32 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		// requested on demand based on use-cases.
 		PermissionsUtil.requestManifestPermissions(this, setOf(Manifest.permission.RECORD_AUDIO))
 
-		val params : Array<String>? = getIntent().getStringArrayExtra(COMMAND_LINE_PARAMS);
-
-		updateCommandLineParams(params);
+		handleIntentParams(intent)
 
     	if (BuildConfig.BUILD_TYPE == "dev" && WAIT_FOR_DEBUGGER) {
 			Debug.waitForDebugger();
 		}
 
 		super.onCreate(savedInstanceState);
+	}
+
+	override fun onNewIntent(newIntent: Intent) {
+		intent = newIntent
+		handleIntentParams(newIntent)
+		super.onNewIntent(newIntent)
+	}
+
+	private fun handleIntentParams(receivedIntent: Intent) {
+		val forceQuitRequested = receivedIntent.getBooleanExtra(EXTRA_FORCE_QUIT, false)
+		if (forceQuitRequested) {
+			Log.d(TAG, "Force quit requested, terminating..")
+			ProcessPhoenix.forceQuit(this)
+			return
+		}
+
+		val params = receivedIntent.getStringArrayExtra(EXTRA_COMMAND_LINE_PARAMS)
+		Log.d(TAG, "Received parameters ${params.contentToString()}")
+		updateCommandLineParams(params)
 	}
 
 	override fun onPandemoniumSetupCompleted() {
@@ -173,17 +191,17 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		}
 
 		// Launch a new activity
-		val newInstance = Intent(this, targetClass).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(COMMAND_LINE_PARAMS, args)
+		val newInstance = Intent(this, targetClass).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(EXTRA_COMMAND_LINE_PARAMS, args)
 
 		if (launchAdjacent) {
 			newInstance.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT)
 		}
 
 		if (targetClass == javaClass) {
-			Log.d(TAG, "Restarting $targetClass")
+			Log.d(TAG, "Restarting $targetClass with parameters ${args.contentToString()}")
 			ProcessPhoenix.triggerRebirth(this, newInstance)
 		} else {
-			Log.d(TAG, "Starting $targetClass")
+			Log.d(TAG, "Starting $targetClass with parameters ${args.contentToString()}")
 			startActivity(newInstance)
 		}
 
@@ -232,17 +250,32 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 	}
 
 	override fun onPandemoniumForceQuit(pandemoniumInstanceId: Int): Boolean {
-		val processNameSuffix = when (pandemoniumInstanceId) {
+		val targetClass: Class<*>?
+		val processNameSuffix: String
+		
+		when (pandemoniumInstanceId) {
 			GAME_ID -> {
-				GAME_PROCESS_NAME_SUFFIX
+				processNameSuffix = GAME_PROCESS_NAME_SUFFIX
+				targetClass = PandemoniumGame::class.java
 			}
 			EDITOR_ID -> {
-				EDITOR_PROCESS_NAME_SUFFIX
+				processNameSuffix = EDITOR_PROCESS_NAME_SUFFIX
+				targetClass = PandemoniumEditor::class.java
 			}
 			PROJECT_MANAGER_ID -> {
-				PROJECT_MANAGER_PROCESS_NAME_SUFFIX
+				processNameSuffix = PROJECT_MANAGER_PROCESS_NAME_SUFFIX
+				targetClass = PandemoniumProjectManager::class.java
 			}
-			else -> ""
+			else -> {
+				processNameSuffix = ""
+				targetClass = null
+			}
+		}
+
+		if (targetClass == javaClass) {
+			Log.d(TAG, "Force quitting $targetClass")
+			ProcessPhoenix.forceQuit(this)
+			return true
 		}
 		
 		if (processNameSuffix.isBlank()) {
@@ -253,8 +286,17 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		val runningProcesses = activityManager.runningAppProcesses
 		for (runningProcess in runningProcesses) {
 			if (runningProcess.processName.endsWith(processNameSuffix)) {
-				Log.v(TAG, "Killing Pandemonium process ${runningProcess.processName}")
-				Process.killProcess(runningProcess.pid)
+				if (targetClass == null) {
+					// Killing process directly
+					Log.v(TAG, "Killing Pandemonium process ${runningProcess.processName}")
+					Process.killProcess(runningProcess.pid)
+				} else {
+					// Activity is running; sending a request for self termination.
+					Log.v(TAG, "Sending force quit request to $targetClass running on process ${runningProcess.processName}")
+					val forceQuitIntent = Intent(this, targetClass).putExtra(EXTRA_FORCE_QUIT, true)
+					startActivity(forceQuitIntent)
+				}
+
 				return true
 			}
 		}
