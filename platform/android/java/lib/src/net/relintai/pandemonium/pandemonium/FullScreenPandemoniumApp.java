@@ -50,6 +50,9 @@ import androidx.fragment.app.FragmentActivity;
 public abstract class FullScreenPandemoniumApp extends FragmentActivity implements PandemoniumHost {
 	private static final String TAG = FullScreenPandemoniumApp.class.getSimpleName();
 
+	protected static final String EXTRA_FORCE_QUIT = "force_quit_requested";
+	protected static final String EXTRA_NEW_LAUNCH = "new_launch_requested";
+
 	@Nullable
 	private Pandemonium pandemoniumFragment;
 
@@ -57,6 +60,8 @@ public abstract class FullScreenPandemoniumApp extends FragmentActivity implemen
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pandemonium_app_layout);
+
+		handleStartIntent(getIntent(), true);
 
 		Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.pandemonium_fragment_container);
 
@@ -109,8 +114,33 @@ public abstract class FullScreenPandemoniumApp extends FragmentActivity implemen
 	@Override
 	public void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
+
+		setIntent(intent);
+
+		handleStartIntent(intent, false);
+
 		if (pandemoniumFragment != null) {
 			pandemoniumFragment.onNewIntent(intent);
+		}
+	}
+
+	private void handleStartIntent(Intent intent, boolean newLaunch) {
+		boolean forceQuitRequested = intent.getBooleanExtra(EXTRA_FORCE_QUIT, false);
+		if (forceQuitRequested) {
+			Log.d(TAG, "Force quit requested, terminating..");
+			ProcessPhoenix.forceQuit(this);
+			return;
+		}
+
+		if (!newLaunch) {
+			boolean newLaunchRequested = intent.getBooleanExtra(EXTRA_NEW_LAUNCH, false);
+			if (newLaunchRequested) {
+				Log.d(TAG, "New launch requested, restarting..");
+
+				Intent restartIntent = new Intent(intent).putExtra(EXTRA_NEW_LAUNCH, false);
+				ProcessPhoenix.triggerRebirth(this, restartIntent);
+				return;
+			}
 		}
 	}
 

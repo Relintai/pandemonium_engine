@@ -41,7 +41,7 @@
             android:name=".PandemoniumApp"
             android:label="@string/pandemonium_project_name_string"
             android:theme="@style/PandemoniumAppSplashTheme"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
             android:excludeFromRecents="false"
             android:exported="true"
             android:screenOrientation="landscape"
