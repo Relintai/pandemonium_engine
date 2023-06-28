@@ -231,7 +231,7 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 
 		val x = terminusEvent.x
 		val y = terminusEvent.y
-		if (terminusEvent.pointerCount >= 2 && panningAndScalingEnabled && !pointerCaptureInProgress) {
+		if (terminusEvent.pointerCount >= 2 && panningAndScalingEnabled && !pointerCaptureInProgress && !dragInProgress) {
 			PandemoniumLib.pan(x, y, distanceX / 5f, distanceY / 5f)
 		} else if (!scaleInProgress) {
 			PandemoniumInputHandler.handleMotionEvent(terminusEvent)
@@ -241,7 +241,7 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 	}
 
 	override fun onScale(detector: ScaleGestureDetector): Boolean {
-		if (!panningAndScalingEnabled || pointerCaptureInProgress) {
+		if (!panningAndScalingEnabled || pointerCaptureInProgress || dragInProgress) {
 			return false
 		}
 
@@ -256,7 +256,7 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 	}
 
 	override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
-		if (!panningAndScalingEnabled || pointerCaptureInProgress) {
+		if (!panningAndScalingEnabled || pointerCaptureInProgress || dragInProgress) {
 			return false
 		}
 		scaleInProgress = true
