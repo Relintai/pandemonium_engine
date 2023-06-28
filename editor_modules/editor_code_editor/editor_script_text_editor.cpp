@@ -1283,6 +1283,10 @@ Control *EditorScriptTextEditor::get_edit_menu() {
 	return edit_hb;
 }
 
+Control *EditorScriptTextEditor::get_code_editor_text_edit() {
+	return code_editor->get_text_edit();
+}
+
 void EditorScriptTextEditor::clear_edit_menu() {
 	memdelete(edit_hb);
 }

@@ -294,6 +294,7 @@ class EditorScriptEditor : public PanelContainer {
 	void _script_created(Ref<Script> p_script);
 
 	EditorScriptEditorBase *_get_current_editor() const;
+	Control *_get_base_editor() const;
 
 	void _save_layout();
 	void _editor_settings_changed();
