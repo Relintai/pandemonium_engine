@@ -2712,6 +2712,42 @@ void _Mutex::_bind_methods() {
 
 ///////////////
 
+void _RWLock::read_lock() {
+	rw_lock.read_lock();
+}
+
+Error _RWLock::read_try_lock() {
+	return rw_lock.read_try_lock();
+}
+
+void _RWLock::read_unlock() {
+	rw_lock.read_unlock();
+}
+
+void _RWLock::write_lock() {
+	rw_lock.write_lock();
+}
+
+Error _RWLock::write_try_lock() {
+	return rw_lock.write_try_lock();
+}
+
+void _RWLock::write_unlock() {
+	rw_lock.write_unlock();
+}
+
+void _RWLock::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("read_lock"), &_RWLock::read_lock);
+	ClassDB::bind_method(D_METHOD("read_unlock"), &_RWLock::read_unlock);
+	ClassDB::bind_method(D_METHOD("read_try_lock"), &_RWLock::read_try_lock);
+
+	ClassDB::bind_method(D_METHOD("write_lock"), &_RWLock::write_lock);
+	ClassDB::bind_method(D_METHOD("write_unlock"), &_RWLock::write_unlock);
+	ClassDB::bind_method(D_METHOD("write_try_lock"), &_RWLock::write_try_lock);
+}
+
+///////////////
+
 void _Thread::_start_func(void *ud) {
 	Ref<_Thread> *tud = (Ref<_Thread> *)ud;
 	Ref<_Thread> t = *tud;

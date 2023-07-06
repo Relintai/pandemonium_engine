@@ -38,6 +38,7 @@
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
+#include "core/os/rw_lock.h"
 #include "core/os/safe_refcount.h"
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
@@ -697,6 +698,23 @@ public:
 	void lock();
 	Error try_lock();
 	void unlock();
+};
+
+class _RWLock : public Reference {
+	GDCLASS(_RWLock, Reference);
+
+	RWLock rw_lock;
+
+	static void _bind_methods();
+
+public:
+	void read_lock();
+	void read_unlock();
+	Error read_try_lock();
+
+	void write_lock();
+	void write_unlock();
+	Error write_try_lock();
 };
 
 class _Semaphore : public Reference {
