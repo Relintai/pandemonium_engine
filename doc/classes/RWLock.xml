@@ -34,21 +34,20 @@
 			<return type="void" />
 			<description>
 				Locks this [RWLock] for write access, blocks until it is unlocked by the current owner.
-				[b]Note:[/b] This function returns without blocking if the thread already has ownership of the rwlock.
+				[b]Note:[/b] This function will deadlock if the thread already has ownership of the rwlock!
 			</description>
 		</method>
 		<method name="write_try_lock">
 			<return type="int" enum="Error" />
 			<description>
 				Tries locking this [RWLock] for write access, but does not block. Returns [constant OK] on success, [constant ERR_BUSY] otherwise.
-				[b]Note:[/b] This function returns [constant OK] if the thread already has ownership of the rwlock.
+				[b]Note:[/b] This function returns [constant ERR_BUSY] if the thread already has ownership of the rwlock.
 			</description>
 		</method>
 		<method name="write_unlock">
 			<return type="void" />
 			<description>
 				Unlocks this [RWLock] for write access, leaving it to other threads.
-				[b]Note:[/b] If a thread called [method lock] or [method try_lock] multiple times while already having ownership of the rwlock, it must also call [method unlock] the same number of times in order to unlock it correctly.
 			</description>
 		</method>
 	</methods>
