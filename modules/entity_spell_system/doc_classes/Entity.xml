@@ -489,12 +489,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="state_ref_adds">
-			<return type="void" />
-			<argument index="0" name="state_index" type="int" />
-			<description>
-			</description>
-		</method>
 		<method name="aura_addc">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
@@ -624,6 +618,12 @@
 		<method name="aura_removess_with_group">
 			<return type="void" />
 			<argument index="0" name="aura_group" type="AuraGroup" />
+			<description>
+			</description>
+		</method>
+		<method name="bag_setc_rpc">
+			<return type="void" />
+			<argument index="0" name="data" type="String" />
 			<description>
 			</description>
 		</method>
@@ -849,6 +849,17 @@
 		<method name="cequip_applys_item">
 			<return type="void" />
 			<argument index="0" name="item" type="ItemInstance" />
+			<description>
+			</description>
+		</method>
+		<method name="character_skeleton_get">
+			<return type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="character_skeleton_set">
+			<return type="void" />
+			<argument index="0" name="skeleton" type="Node" />
 			<description>
 			</description>
 		</method>
@@ -1256,13 +1267,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="stat_creceive">
-			<return type="void" />
-			<argument index="0" name="id" type="int" />
-			<argument index="1" name="ccurrent" type="int" />
-			<description>
-			</description>
-		</method>
 		<method name="crequest_interact">
 			<return type="void" />
 			<description>
@@ -1462,11 +1466,6 @@
 		</method>
 		<method name="get_action_bar_profile">
 			<return type="ActionBarProfile" />
-			<description>
-			</description>
-		</method>
-		<method name="character_skeleton_get">
-			<return type="Node" />
 			<description>
 			</description>
 		</method>
@@ -2029,12 +2028,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="state_ref_removes">
-			<return type="void" />
-			<argument index="0" name="state_index" type="int" />
-			<description>
-			</description>
-		</method>
 		<method name="resource_addc">
 			<return type="void" />
 			<argument index="0" name="palyer_resource" type="int" />
@@ -2179,12 +2172,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="character_skeleton_set">
-			<return type="void" />
-			<argument index="0" name="skeleton" type="Node" />
-			<description>
-			</description>
-		</method>
 		<method name="set_maunal_process">
 			<return type="void" />
 			<argument index="0" name="value" type="bool" />
@@ -2202,18 +2189,6 @@
 			<return type="void" />
 			<argument index="0" name="transform" type="Transform" />
 			<argument index="1" name="only_stored" type="bool" default="false" />
-			<description>
-			</description>
-		</method>
-		<method name="bag_setc_rpc">
-			<return type="void" />
-			<argument index="0" name="data" type="String" />
-			<description>
-			</description>
-		</method>
-		<method name="target_bag_setc_rpc">
-			<return type="void" />
-			<argument index="0" name="data" type="String" />
 			<description>
 			</description>
 		</method>
@@ -2449,13 +2424,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="stat_ssend">
-			<return type="void" />
-			<argument index="0" name="id" type="int" />
-			<argument index="1" name="ccurrent" type="int" />
-			<description>
-			</description>
-		</method>
 		<method name="stake_damage">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
@@ -2465,6 +2433,13 @@
 		<method name="stake_heal">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_creceive">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="ccurrent" type="int" />
 			<description>
 			</description>
 		</method>
@@ -2592,6 +2567,31 @@
 			<return type="void" />
 			<argument index="0" name="stat_id" type="int" />
 			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_ssend">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="ccurrent" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="state_ref_adds">
+			<return type="void" />
+			<argument index="0" name="state_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="state_ref_removes">
+			<return type="void" />
+			<argument index="0" name="state_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="target_bag_setc_rpc">
+			<return type="void" />
+			<argument index="0" name="data" type="String" />
 			<description>
 			</description>
 		</method>
@@ -2749,6 +2749,8 @@
 		</member>
 		<member name="centity_data" type="EntityData" setter="entity_data_setc" getter="entity_data_getc">
 		</member>
+		<member name="centity_data_id" type="int" setter="entity_data_id_setc" getter="entity_data_id_getc" default="0">
+		</member>
 		<member name="centity_flags" type="int" setter="setc_entity_flags" getter="getc_entity_flags">
 		</member>
 		<member name="centity_interaction_type" type="int" setter="setc_entity_interaction_type" getter="getc_entity_interaction_type" enum="EntityEnums.EntityInteractionType">
@@ -2771,8 +2773,6 @@
 		</member>
 		<member name="character_skeleton_path" type="NodePath" setter="character_skeleton_path_set" getter="character_skeleton_path_get" default="NodePath(&quot;&quot;)">
 		</member>
-		<member name="sentity_data_id" type="int" setter="entity_data_id_sets" getter="entity_data_id_gets" default="0">
-		</member>
 		<member name="cis_pet" type="bool" setter="" getter="pet_getc_is">
 		</member>
 		<member name="clevel" type="int" setter="setc_level" getter="getc_level">
@@ -2792,8 +2792,6 @@
 		<member name="ctarget_bag" type="Bag" setter="target_bag_setc" getter="target_bag_getc">
 		</member>
 		<member name="cxp" type="int" setter="setc_xp" getter="getc_xp">
-		</member>
-		<member name="entity_data_id" type="int" setter="entity_data_id_setc" getter="entity_data_id_getc" default="0">
 		</member>
 		<member name="pet_ai_state" type="int" setter="pet_ai_state_sets" getter="pet_ai_state_gets" enum="EntityEnums.AIStates" default="0">
 		</member>
@@ -2818,6 +2816,10 @@
 		<member name="sentity_controller" type="int" setter="entity_controller_sets" getter="entity_controller_gets" enum="EntityEnums.EntityController" default="0">
 		</member>
 		<member name="sentity_data" type="EntityData" setter="entity_data_sets" getter="entity_data_gets">
+		</member>
+		<member name="sentity_data_id" type="int" setter="entity_data_id_sets" getter="entity_data_id_gets" default="0">
+		</member>
+		<member name="sentity_data_path" type="StringName" setter="entity_data_path_sets" getter="entity_data_path_gets" default="@&quot;&quot;">
 		</member>
 		<member name="sentity_flags" type="int" setter="sets_entity_flags" getter="gets_entity_flags" default="0">
 		</member>
