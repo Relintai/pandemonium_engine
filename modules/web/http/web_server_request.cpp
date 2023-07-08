@@ -176,6 +176,41 @@ void WebServerRequest::response_remove_cookie_simple(const String &key) {
 	_cookies.push_back(cookie);
 }
 
+void WebServerRequest::custom_response_header_set(const StringName &key, const String &value) {
+	_custom_response_headers[key] = value;
+}
+String WebServerRequest::custom_response_header_get(const StringName &key) {
+	String *e = _custom_response_headers.getptr(key);
+
+	if (!e) {
+		return "";
+	}
+
+	return *e;
+}
+bool WebServerRequest::custom_response_header_has(const StringName &key) {
+	return _custom_response_headers.has(key);
+}
+HashMap<StringName, String> WebServerRequest::custom_response_headers_get() {
+	return _custom_response_headers;
+}
+Dictionary WebServerRequest::custom_response_headers_get_bind() {
+	Dictionary ret;
+
+	for (HashMap<StringName, String>::Element *E = _custom_response_headers.front(); E; E = E->next) {
+		ret[E->key()] = E->value();
+	}
+
+	return ret;
+}
+
+String WebServerRequest::get_content_type() {
+	return custom_response_header_get("Content-Type");
+}
+void WebServerRequest::set_content_type(const String &content_type) {
+	custom_response_header_set("Content-Type", content_type);
+}
+
 HTTPServerEnums::HTTPMethod WebServerRequest::get_method() const {
 	return HTTPServerEnums::HTTP_METHOD_GET;
 }
@@ -549,6 +584,15 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("response_get_cookie", "index"), &WebServerRequest::response_get_cookie);
 	ClassDB::bind_method(D_METHOD("response_remove_cookie", "index"), &WebServerRequest::response_remove_cookie);
 	ClassDB::bind_method(D_METHOD("response_remove_cookie_simple", "key"), &WebServerRequest::response_remove_cookie_simple);
+
+	ClassDB::bind_method(D_METHOD("custom_response_header_set", "key", "value"), &WebServerRequest::custom_response_header_set);
+	ClassDB::bind_method(D_METHOD("custom_response_header_get", "key"), &WebServerRequest::custom_response_header_get);
+	ClassDB::bind_method(D_METHOD("custom_response_header_has", "key"), &WebServerRequest::custom_response_header_has);
+	ClassDB::bind_method(D_METHOD("custom_response_headers_get"), &WebServerRequest::custom_response_headers_get_bind);
+
+	ClassDB::bind_method(D_METHOD("get_content_type"), &WebServerRequest::get_content_type);
+	ClassDB::bind_method(D_METHOD("set_content_type", "content_type"), &WebServerRequest::set_content_type);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "content_type"), "set_content_type", "get_content_type");
 
 	ClassDB::bind_method(D_METHOD("get_method"), &WebServerRequest::get_method);
 

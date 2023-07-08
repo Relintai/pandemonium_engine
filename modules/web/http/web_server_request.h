@@ -4,6 +4,7 @@
 #include "core/variant/dictionary.h"
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"
+#include "core/containers/hash_map.h"
 
 #include "core/object/object.h"
 #include "core/object/reference.h"
@@ -66,6 +67,15 @@ public:
 	Ref<WebServerCookie> response_get_cookie(const int index);
 	void response_remove_cookie(const int index);
 	void response_remove_cookie_simple(const String &key);
+
+	void custom_response_header_set(const StringName &key, const String& value);
+	String custom_response_header_get(const StringName &key);
+	bool custom_response_header_has(const StringName &key);
+	HashMap<StringName, String> custom_response_headers_get();
+	Dictionary custom_response_headers_get_bind();
+
+	String get_content_type();
+	void set_content_type(const String &content_type);
 
 	virtual HTTPServerEnums::HTTPMethod get_method() const;
 
@@ -142,6 +152,8 @@ protected:
 	Vector<String> _path_stack;
 	int _path_stack_pointer;
 	Vector<Ref<WebServerCookie>> _cookies;
+
+	HashMap<StringName, String> _custom_response_headers;
 
 	Ref<WebPermission> _active_permission;
 	int _permissions;

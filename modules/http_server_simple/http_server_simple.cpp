@@ -139,12 +139,19 @@ void HTTPServerConnection::update() {
 void HTTPServerConnection::send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
 	//String s = "HTTP/1.1 " + itos(static_cast<int>(status_code)) + " Found\r\n";
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(status_code) + "\r\n";
-	s += "Location: " + location + "\r\n";
 
-	if (has_more_messages()) {
-		s += "Connection: keep-alive\r\n";
-	} else {
-		s += "Connection: close\r\n";
+	HashMap<StringName, String> custom_headers = request->custom_response_headers_get();
+
+	if (!custom_headers.has("Location")) {
+		s += "Location: " + location + "\r\n";
+	}
+
+	if (!custom_headers.has("Connection")) {
+		if (has_more_messages()) {
+			s += "Connection: keep-alive\r\n";
+		} else {
+			s += "Connection: close\r\n";
+		}
 	}
 
 	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
@@ -157,6 +164,10 @@ void HTTPServerConnection::send_redirect(Ref<WebServerRequest> request, const St
 		if (cookie_str != "") {
 			s += cookie_str;
 		}
+	}
+
+	for (HashMap<StringName, String>::Element *E = custom_headers.front(); E; E = E->next) {
+		s += String(E->key()) + ": " + E->value() + "\r\n";
 	}
 
 	s += "\r\n";
@@ -172,14 +183,24 @@ void HTTPServerConnection::send_redirect(Ref<WebServerRequest> request, const St
 void HTTPServerConnection::send(Ref<WebServerRequest> request) {
 	String body = request->get_compiled_body();
 
-	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
-	s += "Content-Length: " + itos(body.utf8_byte_length()) + "\r\n";
-	s += "Content-type: text/html\r\n";
+	HashMap<StringName, String> custom_headers = request->custom_response_headers_get();
 
-	if (has_more_messages()) {
-		s += "Connection: keep-alive\r\n";
-	} else {
-		s += "Connection: close\r\n";
+	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
+
+	if (!custom_headers.has("Content-Length")) {
+		s += "Content-Length: " + itos(body.utf8_byte_length()) + "\r\n";
+	}
+
+	if (!custom_headers.has("Content-type")) {
+		s += "Content-type: text/html\r\n";
+	}
+
+	if (!custom_headers.has("Connection")) {
+		if (has_more_messages()) {
+			s += "Connection: keep-alive\r\n";
+		} else {
+			s += "Connection: close\r\n";
+		}
 	}
 
 	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
@@ -194,6 +215,10 @@ void HTTPServerConnection::send(Ref<WebServerRequest> request) {
 		}
 	}
 
+	for (HashMap<StringName, String>::Element *E = custom_headers.front(); E; E = E->next) {
+		s += String(E->key()) + ": " + E->value() + "\r\n";
+	}
+
 	s += "\r\n";
 	s += body;
 
@@ -205,13 +230,17 @@ void HTTPServerConnection::send(Ref<WebServerRequest> request) {
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 }
 void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String &p_file_path) {
+	HashMap<StringName, String> custom_headers = request->custom_response_headers_get();
+
 	if (!FileAccess::exists(p_file_path)) {
 		String s = "HTTP/1.1 404 Not Found\r\n";
 
-		if (has_more_messages()) {
-			s += "Connection: keep-alive\r\n";
-		} else {
-			s += "Connection: close\r\n";
+		if (!custom_headers.has("Connection")) {
+			if (has_more_messages()) {
+				s += "Connection: keep-alive\r\n";
+			} else {
+				s += "Connection: close\r\n";
+			}
 		}
 
 		for (int i = 0; i < request->response_get_cookie_count(); ++i) {
@@ -226,6 +255,10 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 			}
 		}
 
+		for (HashMap<StringName, String>::Element *E = custom_headers.front(); E; E = E->next) {
+			s += String(E->key()) + ": " + E->value() + "\r\n";
+		}
+
 		s += "\r\n";
 
 #if CONNECTION_RESPOSE_DEBUG
@@ -237,26 +270,30 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 		return;
 	}
 
-	String ctype;
-	String req_ext = p_file_path.get_extension();
-
-	if (_http_server->mimes.has(req_ext)) {
-		ctype = _http_server->mimes[req_ext];
-	} else {
-		ctype = "text/plain";
-	}
-
 	FileAccess *f = FileAccess::open(p_file_path, FileAccess::READ);
 	ERR_FAIL_COND(!f);
 	String s = "HTTP/1.1 200 OK\r\n";
 
-	if (has_more_messages()) {
-		s += "Connection: keep-alive\r\n";
-	} else {
-		s += "Connection: close\r\n";
+	if (!custom_headers.has("Connection")) {
+		if (has_more_messages()) {
+			s += "Connection: keep-alive\r\n";
+		} else {
+			s += "Connection: close\r\n";
+		}
 	}
 
-	s += "Content-Type: " + ctype + "\r\n";
+	if (!custom_headers.has("Content-Type")) {
+		String ctype;
+		String req_ext = p_file_path.get_extension();
+
+		if (_http_server->mimes.has(req_ext)) {
+			ctype = _http_server->mimes[req_ext];
+		} else {
+			ctype = "text/plain";
+		}
+
+		s += "Content-Type: " + ctype + "\r\n";
+	}
 
 	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
 		Ref<WebServerCookie> cookie = request->response_get_cookie(i);
@@ -270,10 +307,10 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 		}
 	}
 
-	s += "Access-Control-Allow-Origin: *\r\n";
-	s += "Cross-Origin-Opener-Policy: same-origin\r\n";
-	s += "Cross-Origin-Embedder-Policy: require-corp\r\n";
-	s += "Cache-Control: no-store, max-age=0\r\n";
+	for (HashMap<StringName, String>::Element *E = custom_headers.front(); E; E = E->next) {
+		s += String(E->key()) + ": " + E->value() + "\r\n";
+	}
+
 	s += "\r\n";
 
 #if CONNECTION_RESPOSE_DEBUG

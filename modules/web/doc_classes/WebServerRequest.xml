@@ -48,6 +48,34 @@
 				Takes the head, body and footer properties, and merges them into the [code]compiled_body[/code] property. It adds an html5 type declaration, then the opening [code]html[/code] tag, then the contents of the [code]head[/code] property to the [code]head[/code] section of the response, and then the contents of the [code]body[/code] then footer property into the [code]body[/code] section of the response, then it closes the main [code]html[/code] tag.
 			</description>
 		</method>
+		<method name="custom_response_header_get">
+			<return type="String" />
+			<argument index="0" name="key" type="StringName" />
+			<description>
+				Returns a custom HTTP response header or an empty String if it's not set. 
+			</description>
+		</method>
+		<method name="custom_response_header_has">
+			<return type="bool" />
+			<argument index="0" name="key" type="StringName" />
+			<description>
+				Returns whether a custom HTTP response header is set. 
+			</description>
+		</method>
+		<method name="custom_response_header_set">
+			<return type="void" />
+			<argument index="0" name="key" type="StringName" />
+			<argument index="1" name="value" type="String" />
+			<description>
+				Set a custom HTTP response header that will be sent to the client. 
+			</description>
+		</method>
+		<method name="custom_response_headers_get">
+			<return type="Dictionary" />
+			<description>
+				Returns all the custom response headers that were previously set.
+			</description>
+		</method>
 		<method name="get_cookie">
 			<return type="String" />
 			<argument index="0" name="key" type="String" />
@@ -393,6 +421,10 @@
 		</member>
 		<member name="connection_closed" type="bool" setter="set_connection_closed" getter="get_connection_closed" default="false">
 			The server might set this to true if the connection got closed while handling the request. It's not yet used.
+		</member>
+		<member name="content_type" type="String" setter="set_content_type" getter="get_content_type" default="&quot;&quot;">
+			A shorthand property to set the Content-Type HTTP header.
+			Equivalent to [code]custom_response_header_set("Content-Type", content_type)[/code] and [code]custom_response_header_get("Content-Type")[/code].
 		</member>
 		<member name="footer" type="String" setter="set_footer" getter="get_footer" default="&quot;&quot;">
 			When you call [code]compile_body()[/code] or [code]compile_and_send_body()[/code], the contents of this property will end up in the bottom of the [code]body[/code] portion of the resulting HTML.
