@@ -49,6 +49,10 @@ class Skeleton;
 class BoneAttachment;
 #endif
 
+#ifdef MODULE_CSG_ENABLED
+class CSGShape;
+#endif // MODULE_CSG_ENABLED
+
 #ifdef MODULE_GRIDMAP_ENABLED
 class GridMap;
 #endif // MODULE_GRIDMAP_ENABLED
@@ -332,6 +336,10 @@ public:
 	void _convert_scene_node(Ref<GLTFState> p_state, Node *p_current,
 			const GLTFNodeIndex p_gltf_current,
 			const GLTFNodeIndex p_gltf_root);
+
+#ifdef MODULE_CSG_ENABLED
+	void _convert_csg_shape_to_gltf(CSGShape *p_current, GLTFNodeIndex p_gltf_parent, Ref<GLTFNode> p_gltf_node, Ref<GLTFState> p_state);
+#endif // MODULE_CSG_ENABLED
 
 	void _create_gltf_node(Ref<GLTFState> p_state,
 			Node *p_scene_parent,

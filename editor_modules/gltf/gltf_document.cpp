@@ -62,6 +62,10 @@
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap, regex.
 
+#ifdef MODULE_CSG_ENABLED
+#include "modules/csg/csg_shape.h"
+#endif // MODULE_CSG_ENABLED
+
 #ifdef MODULE_REGEX_ENABLED
 #include "modules/regex/regex.h"
 #endif // MODULE_REGEX_ENABLED
@@ -5350,6 +5354,13 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> p_state, Node *p_current, 
 		// We ignore the Pandemonium Engine node that is the skeleton.
 		return;
 #endif
+#ifdef MODULE_CSG_ENABLED
+	} else if (cast_to<CSGShape>(p_current)) {
+		CSGShape *shape = cast_to<CSGShape>(p_current);
+		if (shape->get_parent() && shape->is_root_shape()) {
+			_convert_csg_shape_to_gltf(shape, p_gltf_parent, gltf_node, p_state);
+		}
+#endif // MODULE_CSG_ENABLED
 #ifdef MODULE_GRIDMAP_ENABLED
 	} else if (cast_to<GridMap>(p_current)) {
 		GridMap *gridmap = Object::cast_to<GridMap>(p_current);
@@ -5388,6 +5399,35 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> p_state, Node *p_current, 
 		_convert_scene_node(p_state, p_current->get_child(node_i), current_node_i, gltf_root);
 	}
 }
+
+#ifdef MODULE_CSG_ENABLED
+void GLTFDocument::_convert_csg_shape_to_gltf(CSGShape *p_current, GLTFNodeIndex p_gltf_parent, Ref<GLTFNode> p_gltf_node, Ref<GLTFState> p_state) {
+	CSGShape *csg = p_current;
+	csg->call("_update_shape");
+	Array meshes = csg->get_meshes();
+	if (meshes.size() != 2) {
+		return;
+	}
+	Ref<Material> mat;
+	if (csg->get_material_override().is_valid()) {
+		mat = csg->get_material_override();
+	}
+	Ref<GLTFMesh> gltf_mesh;
+	gltf_mesh.instance();
+	Ref<ArrayMesh> import_mesh;
+	import_mesh.instance();
+	Ref<ArrayMesh> array_mesh = csg->get_meshes()[1];
+	for (int32_t surface_i = 0; surface_i < array_mesh->get_surface_count(); surface_i++) {
+		import_mesh->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, array_mesh->surface_get_arrays(surface_i));
+	}
+	gltf_mesh->set_mesh(import_mesh);
+	GLTFMeshIndex mesh_i = p_state->meshes.size();
+	p_state->meshes.push_back(gltf_mesh);
+	p_gltf_node->mesh = mesh_i;
+	p_gltf_node->xform = csg->get_meshes()[0];
+	p_gltf_node->set_name(_gen_unique_name(p_state, csg->get_name()));
+}
+#endif // MODULE_CSG_ENABLED
 
 void GLTFDocument::_create_gltf_node(Ref<GLTFState> p_state, Node *p_scene_parent, GLTFNodeIndex p_current_node_i,
 		GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_gltf_node, Ref<GLTFNode> p_gltf_node) {
