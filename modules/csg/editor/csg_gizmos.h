@@ -31,7 +31,7 @@
 #ifndef CSG_GIZMOS_H
 #define CSG_GIZMOS_H
 
-#include "csg_shape.h"
+#include "../csg_shape.h"
 #include "editor/editor_plugin.h"
 #include "editor/spatial_editor_gizmos.h"
 

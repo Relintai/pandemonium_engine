@@ -30,7 +30,10 @@
 
 #include "register_types.h"
 
-#include "csg_gizmos.h"
+#ifdef TOOLS_ENABLED
+#include "./editor/csg_gizmos.h"
+#endif
+
 #include "csg_shape.h"
 
 #include "modules/csg/geometry_parser/csgshape3d_navigation_geometry_parser_3d.h"
