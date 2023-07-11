@@ -1,4 +1,9 @@
+
+#ifndef COLOR_NAMES_INC_H
+#define COLOR_NAMES_INC_H
+
 // Names from https://en.wikipedia.org/wiki/X11_color_names
+
 #include "core/containers/rb_map.h"
 
 static RBMap<String, Color> _named_colors;
@@ -153,3 +158,5 @@ static void _populate_named_colors() {
 	_named_colors.insert("yellow", Color(1.00, 1.00, 0.00));
 	_named_colors.insert("yellowgreen", Color(0.60, 0.80, 0.20));
 }
+
+#endif

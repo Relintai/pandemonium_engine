@@ -1846,7 +1846,7 @@ EditorScriptTextEditor::~EditorScriptTextEditor() {
 	}
 }
 
-static EditorScriptEditorBase *create_editor(const RES &p_resource) {
+EditorScriptEditorBase *EditorScriptTextEditor::create_editor(const RES &p_resource) {
 	if (Object::cast_to<Script>(*p_resource)) {
 		return memnew(EditorScriptTextEditor);
 	}

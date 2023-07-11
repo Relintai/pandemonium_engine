@@ -153,6 +153,8 @@ class EditorScriptTextEditor : public EditorScriptEditorBase {
 		LOOKUP_SYMBOL,
 	};
 
+	static EditorScriptEditorBase *create_editor(const RES &p_resource);
+
 	void _enable_code_editor();
 
 protected:

@@ -477,7 +477,7 @@ void EditorTextEditor::_bind_methods() {
 	ClassDB::bind_method("_prepare_edit_menu", &EditorTextEditor::_prepare_edit_menu);
 }
 
-static EditorScriptEditorBase *create_editor(const RES &p_resource) {
+EditorScriptEditorBase *EditorTextEditor::create_editor(const RES &p_resource) {
 	if (Object::cast_to<TextFile>(*p_resource)) {
 		return memnew(EditorTextEditor);
 	}

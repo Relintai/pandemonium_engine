@@ -343,8 +343,8 @@ def run(target, source, env):
 
     versions = 13
     versions_ext = 6
-    text = ""
-    text_ext = ""
+    text = "#ifndef METHOD_BIND_GEN_INC_H\n#define METHOD_BIND_GEN_INC_H\n"
+    text_ext = "#ifndef METHOD_BIND_EXT_GEN_INC_H\n#define METHOD_BIND_EXT_GEN_INC_H\n"
     text_free_func = "#ifndef METHOD_BIND_FREE_FUNC_H\n#define METHOD_BIND_FREE_FUNC_H\n"
     text_free_func += "\n//including this header file allows method binding to use free functions\n"
     text_free_func += (
@@ -372,6 +372,8 @@ def run(target, source, env):
         text_free_func += make_version(template_typed_free_func, i, versions, True, False)
         text_free_func += make_version(template_typed_free_func, i, versions, True, True)
 
+    text += "#endif"
+    text_ext += "#endif"
     text_free_func += "#endif"
 
     with open(target[0], "w") as f:
