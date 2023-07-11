@@ -301,7 +301,7 @@ def generate_scu_files(verbose, is_release_build):
         ]
     )
 
-    #TODO most of these should be merged per module
+    #TODO These should be moved to module conpig.py s
 
     process_folder(["modules/broken_seals_module"])
     process_folder(["modules/cscript"])
@@ -310,46 +310,48 @@ def generate_scu_files(verbose, is_release_build):
     process_folder(["modules/database"])
     process_folder(["modules/database_sqlite"])
 
-    process_folder(["modules/entity_spell_system"])
-    process_folder(["modules/entity_spell_system/data/atlases"])
-    process_folder(["modules/entity_spell_system/data/auras"])
-    process_folder(["modules/entity_spell_system/data/items"])
-    process_folder(["modules/entity_spell_system/data/loot"])
-    process_folder(["modules/entity_spell_system/data/species"])
-    process_folder(["modules/entity_spell_system/data/spells"])
-    process_folder(["modules/entity_spell_system/database"])
-    process_folder(["modules/entity_spell_system/drag_and_drop"])
-    process_folder(["modules/entity_spell_system/editor"])
-    process_folder(["modules/entity_spell_system/entities"])
-    process_folder(["modules/entity_spell_system/entities/ai"])
-    process_folder(["modules/entity_spell_system/entities/auras"])
-    process_folder(["modules/entity_spell_system/entities/data"])
-    process_folder(["modules/entity_spell_system/entities/resources"])
-    process_folder(["modules/entity_spell_system/entities/skills"])
-    process_folder(["modules/entity_spell_system/entities/stats"])
-    process_folder(["modules/entity_spell_system/formations"])
-    process_folder(["modules/entity_spell_system/infos"])
-    process_folder(["modules/entity_spell_system/inventory"])
-    process_folder(["modules/entity_spell_system/material_cache"])
-    process_folder(["modules/entity_spell_system/pipelines"])
-    process_folder(["modules/entity_spell_system/profiles"])
-    process_folder(["modules/entity_spell_system/profiles/actionbar"])
-    process_folder(["modules/entity_spell_system/profiles/input"])
-    process_folder(["modules/entity_spell_system/projectiles/3d"])
-    process_folder(["modules/entity_spell_system/props"])
-    process_folder(["modules/entity_spell_system/singletons"])
-    process_folder(["modules/entity_spell_system/skeleton"])
-    process_folder(["modules/entity_spell_system/spawners"])
-    process_folder(["modules/entity_spell_system/utility"])
+    process_folder(["modules/entity_spell_system",
+        "data/atlases",
+        "data/auras",
+        "data/items",
+        "data/loot",
+        "data/species",
+        "data/spells",
+        "database",
+        "drag_and_drop",
+        "editor",
+        "entities",
+        "entities/ai",
+        "entities/auras",
+        "entities/data",
+        "entities/resources",
+        "entities/skills",
+        "entities/stats",
+        "formations",
+        "infos",
+        "inventory",
+        "material_cache",
+        "pipelines",
+        "profiles",
+        "profiles/actionbar",
+        "profiles/input",
+        "projectiles/3d",
+        "props",
+        "singletons",
+        "skeleton",
+        "spawners",
+        "utility",
+    ])
 
     process_folder(["modules/fastnoise"])
 
-    process_folder(["modules/gdnative"])
-    process_folder(["modules/gdnative/gdnative"])
-    process_folder(["modules/gdnative/nativescript"])
-    #process_folder(["modules/gdnative/arvr"])
-    process_folder(["modules/gdnative/pluginscript"])
-    process_folder(["modules/gdnative/net"])
+    process_folder(["modules/gdnative",
+        "gdnative",
+        "nativescript",
+        #"arvr",
+        "pluginscript",
+        "net",
+    ])
 
     process_folder(["modules/gdscript"])
     #process_folder(["modules/gdscript/language_server"])
@@ -361,175 +363,191 @@ def generate_scu_files(verbose, is_release_build):
 
     process_folder(["modules/lz4"])
 
-    process_folder(["modules/material_maker"])
-    process_folder(["modules/material_maker/algos"])
-    process_folder(["modules/material_maker/editor"])
-    process_folder(["modules/material_maker/editor/widgets/color_picker_popup"])
-    process_folder(["modules/material_maker/editor/widgets/curve_edit"])
-    process_folder(["modules/material_maker/editor/widgets/file_dialog"])
-    process_folder(["modules/material_maker/editor/widgets/float_edit"])
-    process_folder(["modules/material_maker/editor/widgets/gradient_editor"])
-    process_folder(["modules/material_maker/editor/widgets/image_picker_button"])
-    process_folder(["modules/material_maker/editor/widgets/mm_dnd_color_picker_button"])
-    process_folder(["modules/material_maker/editor/widgets/polygon_edit"])
-    process_folder(["modules/material_maker/editor/widgets/tones_editor"])
-    process_folder(["modules/material_maker/nodes"])
-    process_folder(["modules/material_maker/nodes/bases"])
-    process_folder(["modules/material_maker/nodes/filter"])
-    process_folder(["modules/material_maker/nodes/gradient"])
-    process_folder(["modules/material_maker/nodes/noise"])
-    process_folder(["modules/material_maker/nodes/other"])
-    process_folder(["modules/material_maker/nodes/pattern"])
-    process_folder(["modules/material_maker/nodes/sdf2d"])
-    process_folder(["modules/material_maker/nodes/sdf3d"])
-    process_folder(["modules/material_maker/nodes/simple"])
-    process_folder(["modules/material_maker/nodes/transform"])
-    process_folder(["modules/material_maker/nodes/uniform"])
+    process_folder(["modules/material_maker",
+        "algos",
+        "editor",
+        "editor/widgets/color_picker_popup",
+        "editor/widgets/curve_edit",
+        "editor/widgets/file_dialog",
+        "editor/widgets/float_edit",
+        "editor/widgets/gradient_editor",
+        "editor/widgets/image_picker_button",
+        "editor/widgets/mm_dnd_color_picker_button",
+        "editor/widgets/polygon_edit",
+        "editor/widgets/tones_editor",
+        "nodes",
+        "nodes/bases",
+        "nodes/filter",
+        "nodes/gradient",
+        "nodes/noise",
+        "nodes/other",
+        "nodes/pattern",
+        "nodes/sdf2d",
+        "nodes/sdf3d",
+        "nodes/simple",
+        "nodes/transform",
+        "nodes/uniform",
+    ])
 
     process_folder(["modules/mbedtls"])
 
-    process_folder(["modules/mesh_data_resource"])
-    process_folder(["modules/mesh_data_resource/editor"])
-    process_folder(["modules/mesh_data_resource/editor/utilities"])
-    process_folder(["modules/mesh_data_resource/editor/uv_editor"])
-    process_folder(["modules/mesh_data_resource/nodes"])
-    process_folder(["modules/mesh_data_resource/plugin"])
-    process_folder(["modules/mesh_data_resource/plugin_gltf"])
-    process_folder(["modules/mesh_data_resource/props"])
-    process_folder(["modules/mesh_data_resource/props_2d"])
+    process_folder(["modules/mesh_data_resource",
+        "editor",
+        "editor/utilities",
+        "editor/uv_editor",
+        "nodes",
+        "plugin",
+        "plugin_gltf",
+        "props",
+        "props_2d",
+    ])
 
     process_folder(["modules/mesh_utils"])
 
     process_folder(["modules/navigation"])
     process_folder(["modules/navigation_dummy"])
-    process_folder(["modules/navigation_geometry_parsers"])
-    process_folder(["modules/navigation_geometry_parsers/geometry_parser_2d"])
-    process_folder(["modules/navigation_geometry_parsers/geometry_parser_3d"])
+    process_folder(["modules/navigation_geometry_parsers",
+        "geometry_parser_2d",
+        "geometry_parser_3d",
+    ])
     process_folder(["modules/navigation_mesh_generator"])
     process_folder(["modules/navigation_mesh_generator/editor"])
 
     process_folder(["modules/network_synchronizer"])
 
-    process_folder(["modules/paint"])
-    process_folder(["modules/paint/actions"])
-    process_folder(["modules/paint/editor"])
-    process_folder(["modules/paint/nodes"])
-    process_folder(["modules/paint/ui"])
-    process_folder(["modules/paint/ui/property_inspectors"])
+    process_folder(["modules/paint",
+        "actions",
+        "editor",
+        "nodes",
+        "ui",
+        "ui/property_inspectors",
+    ])
 
-    process_folder(["modules/props"])
-    process_folder(["modules/props/clutter"])
-    process_folder(["modules/props/editor"])
-    process_folder(["modules/props/jobs"])
-    process_folder(["modules/props/lights"])
-    process_folder(["modules/props/material_cache"])
-    process_folder(["modules/props/props"])
-    process_folder(["modules/props/singleton"])
-    process_folder(["modules/props/tiled_wall"])
+    process_folder(["modules/props",
+        "clutter",
+        "editor",
+        "jobs",
+        "lights",
+        "material_cache",
+        "props",
+        "singleton",
+        "tiled_wall",
+    ])
 
-    process_folder(["modules/props_2d"])
-    process_folder(["modules/props_2d/clutter"])
-    process_folder(["modules/props_2d/editor"])
-    process_folder(["modules/props_2d/jobs"])
-    process_folder(["modules/props_2d/lights"])
-    process_folder(["modules/props_2d/material_cache"])
-    process_folder(["modules/props_2d/props"])
-    process_folder(["modules/props_2d/singleton"])
-    process_folder(["modules/props_2d/tiled_wall"])
+    process_folder(["modules/props_2d",
+        "clutter",
+        "editor",
+        "jobs",
+        "lights",
+        "material_cache",
+        "props",
+        "singleton",
+        "tiled_wall",
+    ])
 
-    process_folder(["modules/skeleton_2d"])
-    process_folder(["modules/skeleton_2d/editor"])
-    process_folder(["modules/skeleton_2d/nodes"])
-    process_folder(["modules/skeleton_2d/resources"])
-    process_folder(["modules/skeleton_3d"])
-    process_folder(["modules/skeleton_3d/editor"])
-    process_folder(["modules/skeleton_3d/nodes"])
-    process_folder(["modules/skeleton_3d/resources"])
+    process_folder(["modules/skeleton_2d",
+        "editor",
+        "nodes",
+        "resources",
+    ])
+    process_folder(["modules/skeleton_3d",
+        "editor",
+        "nodes",
+        "resources",
+    ])
 
-    process_folder(["modules/steering_ai"])
-    process_folder(["modules/steering_ai/agents"])
-    process_folder(["modules/steering_ai/behaviors"])
-    process_folder(["modules/steering_ai/proximities"])
+    process_folder(["modules/steering_ai",
+        "agents",
+        "behaviors",
+        "proximities",
+    ])
 
-    process_folder(["modules/terraman"])
-    process_folder(["modules/terraman/areas"])
-    process_folder(["modules/terraman/data"])
-    process_folder(["modules/terraman/level_generator"])
-    process_folder(["modules/terraman/library"])
-    process_folder(["modules/terraman/meshers"])
-    process_folder(["modules/terraman/meshers/blocky"])
-    process_folder(["modules/terraman/meshers/default"])
-    process_folder(["modules/terraman/nodes"])
-    process_folder(["modules/terraman/world"])
-    process_folder(["modules/terraman/world/blocky"])
-    process_folder(["modules/terraman/world/default"])
-    process_folder(["modules/terraman/world/jobs"])
+    process_folder(["modules/terraman",
+        "areas",
+        "data",
+        "level_generator",
+        "library",
+        "meshers",
+        "meshers/blocky",
+        "meshers/default",
+        "nodes",
+        "world",
+        "world/blocky",
+        "world/default",
+        "world/jobs",
+    ])
 
-    process_folder(["modules/terraman_2d"])
-    process_folder(["modules/terraman_2d/areas"])
-    process_folder(["modules/terraman_2d/data"])
-    process_folder(["modules/terraman_2d/level_generator"])
-    process_folder(["modules/terraman_2d/library"])
-    process_folder(["modules/terraman_2d/meshers"])
-    process_folder(["modules/terraman_2d/meshers/default"])
-    process_folder(["modules/terraman_2d/meshers/isometric"])
-    process_folder(["modules/terraman_2d/meshers/simple"])
-    process_folder(["modules/terraman_2d/nodes"])
-    process_folder(["modules/terraman_2d/world"])
-    process_folder(["modules/terraman_2d/world/default"])
-    process_folder(["modules/terraman_2d/world/isometric"])
-    process_folder(["modules/terraman_2d/world/jobs"])
-    process_folder(["modules/terraman_2d/world/simple"])
+    process_folder(["modules/terraman_2d",
+        "areas",
+        "data",
+        "level_generator",
+        "library",
+        "meshers",
+        "meshers/default",
+        "meshers/isometric",
+        "meshers/simple",
+        "nodes",
+        "world",
+        "world/default",
+        "world/isometric",
+        "world/jobs",
+        "world/simple",
+    ])
 
-    process_folder(["modules/texture_packer"])
-    process_folder(["modules/texture_packer/layers"])
-    process_folder(["modules/texture_packer/rectpack2D"])
-    process_folder(["modules/texture_packer/texture_resource"])
+    process_folder(["modules/texture_packer",
+        "layers",
+        "rectpack2D",
+        "texture_resource",
+    ])
 
-    process_folder(["modules/tile_map"])
-    process_folder(["modules/tile_map/geometry_parser"])
+    process_folder(["modules/tile_map",
+        "geometry_parser",
+    ])
 
     process_folder(["modules/ui_extensions"])
 
     process_folder(["modules/unit_test"])
 
-    process_folder(["modules/users"])
-    process_folder(["modules/users/managers"])
-    process_folder(["modules/users/singleton"])
-    process_folder(["modules/users/users"])
-    process_folder(["modules/users/web/middleware"])
-    process_folder(["modules/users/web/web_nodes"])
+    process_folder(["modules/users",
+        "managers",
+        "singleton",
+        "users",
+        "web/middleware",
+        "web/web_nodes",
+    ])
 
-    process_folder(["modules/voxelman"])
-    process_folder(["modules/voxelman/areas"])
-    process_folder(["modules/voxelman/data"])
-    process_folder(["modules/voxelman/level_generator"])
-    process_folder(["modules/voxelman/library"])
-    process_folder(["modules/voxelman/meshers"])
-    process_folder(["modules/voxelman/meshers/blocky"])
-    process_folder(["modules/voxelman/meshers/cubic"])
-    process_folder(["modules/voxelman/meshers/default"])
-    process_folder(["modules/voxelman/meshers/marching_cubes"])
-    process_folder(["modules/voxelman/nodes"])
-    process_folder(["modules/voxelman/world"])
-    process_folder(["modules/voxelman/world/blocky"])
-    process_folder(["modules/voxelman/world/cubic"])
-    process_folder(["modules/voxelman/world/default"])
-    process_folder(["modules/voxelman/world/jobs"])
-    process_folder(["modules/voxelman/world/marching_cubes"])
+    process_folder(["modules/voxelman",
+        "areas",
+        "data",
+        "level_generator",
+        "library",
+        "meshers",
+        "meshers/blocky",
+        "meshers/cubic",
+        "meshers/default",
+        "meshers/marching_cubes",
+        "nodes",
+        "world",
+        "world/blocky",
+        "world/cubic",
+        "world/default",
+        "world/jobs",
+        "world/marching_cubes",
+    ])
 
-    process_folder(["modules/web"])
-    process_folder(["modules/web/database"])
-    process_folder(["modules/web/editor"])
-    process_folder(["modules/web/html"])
-    process_folder(["modules/web/http"])
-    process_folder(["modules/web/nodes/admin_panel"])
-    process_folder(["modules/web/nodes/folder_serve_nodes"])
-    process_folder(["modules/web/nodes/list_page"])
-    process_folder(["modules/web/nodes/message_page"])
-    process_folder(["modules/web/nodes/paged_article"])
-    process_folder(["modules/web/nodes/redirect"])
-    process_folder(["modules/web/nodes/static_pages"])
+    process_folder(["modules/web",
+        "database",
+        "editor",
+        "html",
+        "http",
+        "nodes/admin_panel",
+        "nodes/folder_serve_nodes",
+        "nodes/list_page",
+        "nodes/message_page",
+        "nodes/paged_article",
+        "nodes/redirect",
+        "nodes/static_pages",
+    ])
 
     process_folder(["modules/websocket"])
 
