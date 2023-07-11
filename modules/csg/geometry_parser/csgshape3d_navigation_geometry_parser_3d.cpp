@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  register_types.cpp                                                    */
+/*  csgshape3d_navigation_geometry_parser_3d.cpp                          */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -28,37 +28,29 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#include "register_types.h"
+#include "csgshape3d_navigation_geometry_parser_3d.h"
 
-#include "csg_gizmos.h"
-#include "csg_shape.h"
+#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
+#include "scene/resources/mesh.h"
 
-#include "modules/csg/geometry_parser/csgshape3d_navigation_geometry_parser_3d.h"
-#include "servers/navigation/navigation_mesh_generator.h"
+#include "modules/csg/csg_shape.h"
 
-void register_csg_types(ModuleRegistrationLevel p_level) {
-#ifndef _3D_DISABLED
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_virtual_class<CSGShape>();
-		ClassDB::register_virtual_class<CSGPrimitive>();
-		ClassDB::register_class<CSGMesh>();
-		ClassDB::register_class<CSGSphere>();
-		ClassDB::register_class<CSGBox>();
-		ClassDB::register_class<CSGCylinder>();
-		ClassDB::register_class<CSGTorus>();
-		ClassDB::register_class<CSGPolygon>();
-		ClassDB::register_class<CSGCombiner>();
-
-		NavigationMeshGenerator::get_singleton()->register_geometry_parser_3d(memnew(CSGShape3DNavigationGeometryParser3D));
-	}
-
-#ifdef TOOLS_ENABLED
-	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
-		EditorPlugins::add_by_type<EditorPluginCSG>();
-	}
-#endif
-#endif
+bool CSGShape3DNavigationGeometryParser3D::parses_node(Node *p_node) {
+	return (Object::cast_to<CSGShape>(p_node) != nullptr);
 }
 
-void unregister_csg_types(ModuleRegistrationLevel p_level) {
+void CSGShape3DNavigationGeometryParser3D::parse_geometry(Node *p_node, Ref<NavigationMesh> p_navigationmesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry) {
+	NavigationMesh::ParsedGeometryType parsed_geometry_type = p_navigationmesh->get_parsed_geometry_type();
+
+	if (Object::cast_to<CSGShape>(p_node) && parsed_geometry_type != NavigationMesh::PARSED_GEOMETRY_STATIC_COLLIDERS) {
+		CSGShape *csg_shape = Object::cast_to<CSGShape>(p_node);
+		Array meshes = csg_shape->get_meshes();
+		if (!meshes.empty()) {
+			Ref<Mesh> mesh = meshes[1];
+			if (mesh.is_valid()) {
+				p_source_geometry->add_mesh(mesh, csg_shape->get_global_transform());
+			}
+		}
+	}
 }

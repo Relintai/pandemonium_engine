@@ -1,5 +1,9 @@
+
+#ifndef CSGSHAPE3D_NAVIGATION_GEOMETRY_PARSER_3D_H
+#define CSGSHAPE3D_NAVIGATION_GEOMETRY_PARSER_3D_H
+
 /**************************************************************************/
-/*  register_types.cpp                                                    */
+/*  csgshape3d_navigation_geometry_parser_3d.h                            */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -28,37 +32,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#include "register_types.h"
+#include "scene/3d/navigation_geometry_parser_3d.h"
 
-#include "csg_gizmos.h"
-#include "csg_shape.h"
+class CSGShape3DNavigationGeometryParser3D : public NavigationGeometryParser3D {
+public:
+	virtual bool parses_node(Node *p_node) override;
 
-#include "modules/csg/geometry_parser/csgshape3d_navigation_geometry_parser_3d.h"
-#include "servers/navigation/navigation_mesh_generator.h"
+	virtual void parse_geometry(Node *p_node, Ref<NavigationMesh> p_navigationmesh, Ref<NavigationMeshSourceGeometryData3D> p_source_geometry) override;
+};
 
-void register_csg_types(ModuleRegistrationLevel p_level) {
-#ifndef _3D_DISABLED
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_virtual_class<CSGShape>();
-		ClassDB::register_virtual_class<CSGPrimitive>();
-		ClassDB::register_class<CSGMesh>();
-		ClassDB::register_class<CSGSphere>();
-		ClassDB::register_class<CSGBox>();
-		ClassDB::register_class<CSGCylinder>();
-		ClassDB::register_class<CSGTorus>();
-		ClassDB::register_class<CSGPolygon>();
-		ClassDB::register_class<CSGCombiner>();
-
-		NavigationMeshGenerator::get_singleton()->register_geometry_parser_3d(memnew(CSGShape3DNavigationGeometryParser3D));
-	}
-
-#ifdef TOOLS_ENABLED
-	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
-		EditorPlugins::add_by_type<EditorPluginCSG>();
-	}
-#endif
-#endif
-}
-
-void unregister_csg_types(ModuleRegistrationLevel p_level) {
-}
+#endif // CSGSHAPE3D_NAVIGATION_GEOMETRY_PARSER_3D_H
