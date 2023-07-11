@@ -43,6 +43,7 @@
 #include "core/object/reference.h"
 #include "core/containers/vector.h"
 #include "scene/resources/material.h"
+#include "scene/resources/mesh.h"
 
 struct CSGBrush {
 	struct Face {
