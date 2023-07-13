@@ -13,8 +13,7 @@ sources = [
     "xatlas/xatlas.cpp",
 ]
 
-if version.major < 4:
-    sources.append("delaunay/r128.c")
+sources.append("delaunay/r128.c")
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation

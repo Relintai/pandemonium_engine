@@ -46,8 +46,7 @@ sources = [
     "material_cache/prop_2d_material_cache.cpp"
 ]
 
-if version.minor >= 4:
-    sources.append("props/prop_2d_data_portal.cpp")
+sources.append("props/prop_2d_data_portal.cpp")
 
 if env["module_texture_packer_enabled"]:
     sources.append("material_cache/prop_2d_material_cache_pcm.cpp")

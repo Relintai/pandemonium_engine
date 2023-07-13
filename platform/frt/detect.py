@@ -5,21 +5,12 @@ import sys
 
 import version
 
-if version.major > 2:
-	yes = True
-	no = False
-else:
-	yes = 'yes'
-	no = 'no'
+yes = True
+no = False
 
 
 def has_wrapper_for(lib):
-
-	if version.major == 2:
-		return False
-	if version.minor > 2:
-		return True
-	return False
+	return True
 
 
 def is_active():
@@ -40,11 +31,7 @@ def can_build():
 
 
 def get_opts():
-
-	if version.major > 2:
-		from SCons.Variables import BoolVariable
-	else:
-		def BoolVariable(a,b,c): return (a,b,c)
+	from SCons.Variables import BoolVariable
 
 	return [
 		('frt_arch', 'Architecture (no/arm32v6/arm32v7/arm64v8)', 'no'),
@@ -66,10 +53,8 @@ def check(env, key):
 
 	if not (key in env):
 		return False
-	if version.major > 2:
-		return env[key]
-	else:
-		return env[key] == 'yes'
+
+	return env[key]
 
 def configure(env):
 
@@ -133,9 +118,8 @@ def configure(env):
             if os.system(pkg_config + ' --exists libpulse') == 0:
                     print('Enabling PulseAudio')
                     env.Append(CPPDEFINES=['PULSEAUDIO_ENABLED'])
-                    if version.major == 2:
-                            env.ParseConfig(pkg_config + ' --cflags --libs libpulse-simple')
-                    elif has_wrapper_for('libpulse'):
+
+                    if has_wrapper_for('libpulse'):
                             env.ParseConfig(pkg_config + ' --cflags libpulse')
                     else:
                             env.ParseConfig(pkg_config + ' --cflags --libs libpulse')
@@ -162,9 +146,10 @@ def configure(env):
 		env.Append(CCFLAGS=['-O3', '-DDEBUG_ENABLED'])
 	elif env['target'] == 'debug':
 		env.Append(CCFLAGS=['-g2', '-DDEBUG_ENABLED', '-DDEBUG_MEMORY_ENABLED'])
-	if env['target'].startswith('release'):
-		if version.major == 2 or (version.major == 3 and version.minor == 0):
-			env.Append(CCFLAGS=['-ffast-math'])
+
+	#if env['target'].startswith('release'):
+	#	if version.major == 2 or (version.major == 3 and version.minor == 0):
+	#		env.Append(CCFLAGS=['-ffast-math'])
 
 	if env['frt_arch'] == 'arm32v6':
 		env.Append(CCFLAGS=['-march=armv6', '-mfpu=vfp', '-mfloat-abi=hard'])
@@ -179,7 +164,8 @@ def configure(env):
 	#env.Append(CFLAGS=['-std=gnu11']) # for libwebp (maybe more in the future)
 	env.Append(CPPFLAGS=['-DFRT_ENABLED', '-DUNIX_ENABLED', '-DGLES2_ENABLED', '-DGLES_ENABLED'])
 	env.Append(LIBS=['pthread'])
-	if env['frt_arch'] == 'arm32v6' and version.major == 3 and version.minor >= 4: # TODO find out exact combination
+
+	if env['frt_arch'] == 'arm32v6':
 		env.Append(LIBS=['atomic'])
 
 	env.Append(FRT_MODULES=['envprobe.cpp'])
