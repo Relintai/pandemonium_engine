@@ -4,7 +4,307 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
-Backported everything up to and including https://github.com/godotengine/godot/commit/43e181a00ab39671a3bb0b2d0302e25313f18aef Merge commit: https://github.com/godotengine/godot/commit/ac5d7dc82187940a5fb2908e276cf8eb0861cac4
+No changes yet.
+
+## [4.0.0]
+
+### Added
+
+#### Core
+
+- Bind RWLock, so it's accessible to scripts.
+- Implemented a new ProcessGroup Node. It can be used to multithread scenes updates.
+It was insipred by godot 4's ProcessGroup system, however while Godot 4's implementation tries to hide threaded processing as much as possible, this implementation focuses on making it explicitly known and obvious to the user, in a (hopefully) almost bolierplate free way. Also with the available options this node can be used for other purposes, like multi threaded cron job like method calls when paired with a Timer in manual mode.
+- Ported parts of: Refactor Node Processing * Node processing works on the concept of process groups. * A node group can be inherited, run on main thread, or a sub-thread. * Groups can be ordered. * Process priority is now present for physics. This is the first steps towards implementing godotengine/godot-proposals#6424. No threading or thread guards exist yet in most of the scene code other than Node. That will have to be added later. - reduz https://github.com/godotengine/godot/commit/98c655ec8db17e50afa58284b1dcad754034db4b - Only got the smaller improvements, and the thread safety for Node and SceneTree. I'm planning to implement a similar system, but I have a different way of doing it in mind.
+
+#### Modules
+
+##### CSG
+
+- Added back the csg module from godot.
+- Ported the navigation geometry parsers for the csg module.
+- Only build CSGGizmos when building the editor.
+- Added back CSG support code I removed.
+
+##### Web
+
+- Implemented custom response headers for WebServerRequest.
+
+##### GDNative
+
+- Added back gdnative as a built in module. It was worked on in this repository: https://github.com/Relintai/gdnative .
+
+### Fixed
+
+- Fix binding inconsistencies.
+- Fix property bind inconsistency.
+- Fix property binding hints.
+- Fix property types. Auras have been merged into Spells a while ago.
+- Fix some property names being the same as getters / setters.
+- Fixed disrepancies between a few getter and setters.
+- Bind missing enum values.
+- Fix duplicate parameter names in binding.
+- Fix the order of some default arguments in bindings.
+
+#### Core
+
+- Fix building with ptrcall on.
+- Fix the return type of PoolVector::count().
+- Added grow_by and to_rect2 helper method to Rect2i.
+- Now Basis::get_uniform_scale() returns a real_t instead of a float.
+- Mark the parameters of Basis::rotate_to_align as const ref.
+- Apparently Basis::rotate_to_align had a bug. Ported the fix by lyuma from: https://github.com/godotengine/godot/pull/77469/commits/6dfa6fc50e957dcffd6b2c33cc5a88448918d8a5
+- Fix error, also add linear_interpolate call for Vector4i to variant op.
+- Fix small inconsistencies in Vector3/3i/4/4i apis.
+- Also bind Vector3i set_all().
+- Added set_all() to Vector3i.
+- Made the parameter of snap and snapped in Vector3 const reference.
+- Make the parameters of String's and PoolVector's join() const ref.
+- Fix handling dots in String::is_numeric().
+
+#### Platforms
+
+##### Android Editor
+
+- Implemented switching between the running game and the editor in the android editor.
+- Fix debugging on the android editor.
+- Added warning for the android editor that android will kill the game after a few seconds if it's opened in the same window as the editor and then it goes to the backgond. Should be still enough to see what's the issue of you don't intentionally debug break though.
+
+##### Windows
+
+- Update the variant types in the windows natvis file.
+
+#### Modules
+
+##### Skeleton3D
+
+- Fixed SkeletonModification3DFABRIK.
+
+##### FastNoise
+
+- Fix the type of FastnoiseNoiseParams::get_fractal_octaves().
+
+##### Entity Spell System
+
+- Fix virtual method names in Entity.
+
+##### GLTF
+
+- Fix registering types in the gltf module.
+
+#### Docs
+
+- Re-extracted class docs.
+- Fix godot4 syntax in docs.
+- Add missing classes to the editor_code_editor module's class list.
+- Fix lots of small issues with the docs.
+
+### Changed
+
+#### Core
+
+- Merged the functionality of BSInputEventKey to InputEventKey. This new setting can make input event keys act as if they are shortcut matched.
+
+##### ThreadPool
+
+- Removed _execute method bind from the NavigationMeshGenerator jobs.
+- Don't print an error in ThreadPoolJob's _execute, as it's probably more intuitive this way.
+- Don't bind _execute() method in ThreadPoolJob derived classes, as it's not needed anymore.
+- Emit the completed signal automatically in ThreadPoolJob.
+- Added virtual _execute to threadPoolJob.
+
+#### Modules
+
+##### Navigation
+
+- Backported lots of improvements to the Navigation Servers from Godot 4. See the list in the Backports section.
+- Renamed neighbor_dist properties / getters / setters for the navigation server.
+
+##### MeshDataResource
+
+- Use the new scaled grab radius in MDIGizmo.
+
+##### Entity Spell System
+
+- Move the enums from the top of spell.h into the Spell class.
+- Added code to load old resource properties where applicable, to help converting resources to the new fixed apis. These will be removed after the next release.
+- Renamed get_stat, and set_stat in Entity. It's just a smell c++ side helper method, they aren't bound. Should not require any changes like the rest.
+- Fix Entity's api's inconsistencies.
+
+In projects mass replacing the following words will update everything:
+
+gets_is_pet -> pet_gets_is\
+getc_is_pet -> pet_getc_is
+
+gets_original_entity_controller -> original_entity_controller_gets\
+sets_original_entity_controller -> original_entity_controller_sets\
+gets_entity_controller -> entity_controller_gets\
+sets_entity_controller -> entity_controller_sets\
+getc_entity_controller -> entity_controller_getc\
+setc_entity_controller -> entity_controller_setc\
+gets_ai -> ai_gets\
+sets_ai -> ai_sets
+
+free_spell_points_gets -> spell_points_gets_free\
+free_spell_points_sets -> spell_points_sets_free\
+free_spell_points_getc -> spell_points_getc_free\
+free_spell_points_setc -> spell_points_setc_free
+
+gets_free_class_talent_points -> class_talent_points_gets_free\
+sets_free_class_talent_points -> class_talent_points_sets_free\
+getc_free_class_talent_points -> class_talent_points_getc_free\
+setc_free_class_talent_points -> class_talent_points_setc_free\
+gets_free_character_talent_points -> character_talent_points_gets_free\
+sets_free_character_talent_points -> character_talent_points_sets_free\
+getc_free_character_talent_points -> character_talent_points_getc_free\
+setc_free_character_talent_points -> character_talent_points_setc_free
+
+gets_bag -> bag_gets\
+sets_bag -> bag_sets\
+getc_bag -> bag_getc\
+setc_bag -> bag_setc
+
+sets_ai_state -> ai_state_sets\
+ai_state_sets_stored -> ai_state_stored_sets\
+ssend_stat -> stat_ssend\
+creceive_stat -> stat_creceive\
+getc_state -> state_getc\
+setc_state -> state_setc\
+gets_state -> state_gets\
+sets_state -> state_sets\
+adds_state_ref -> state_ref_adds\
+removes_state_ref -> state_ref_removes\
+gets_free_spell_points -> free_spell_points_gets\
+sets_free_spell_points -> free_spell_points_sets\
+getc_free_spell_points -> free_spell_points_getc\
+setc_free_spell_points -> free_spell_points_setc\
+gets_target -> target_gets\
+sets_target -> target_sets\
+getc_target -> target_getc\
+setc_target -> target_setc
+
+Mass replace these in the order given:
+
+get_character_skeleton_path -> character_skeleton_path_get\
+set_character_skeleton_path -> character_skeleton_path_set\
+get_character_skeleton -> character_skeleton_get\
+set_character_skeleton -> character_skeleton_set\
+gets_entity_data -> entity_data_gets\
+sets_entity_data -> entity_data_sets\
+getc_entity_data -> entity_data_getc\
+setc_entity_data -> entity_data_setc\
+entity_data_gets_id -> entity_data_id_gets\
+entity_data_sets_id -> entity_data_id_sets\
+entity_data_getc_id -> entity_data_id_getc\
+entity_data_setc_id -> entity_data_id_setc\
+entity_data_gets_path -> entity_data_path_gets\
+entity_data_sets_path -> entity_data_sets_path\
+gets_ai_state -> ai_state_gets\
+ai_state_gets_stored -> ai_state_stored_gets
+
+##### Web
+
+- Renamed the object() method in HTMLBuilder as it can cause issues with bind generators.
+
+### Removed
+
+#### Core
+
+- Removed the Math singleton. If needed it can easily be recreated as a module.
+
+### Backports
+
+- Backported everything up to and including https://github.com/godotengine/godot/commit/43e181a00ab39671a3bb0b2d0302e25313f18aef Merge commit: https://github.com/godotengine/godot/commit/ac5d7dc82187940a5fb2908e276cf8eb0861cac4
+
+#### Godot 3.x
+
+- Single Compilation Unit build. Adds support for simple SCU build. This speeds up compilation by compiling multiple cpp files within a single translation unit. - lawnjelly https://github.com/godotengine/godot/commit/43e181a00ab39671a3bb0b2d0302e25313f18aef
+- Canvas item hierarchical culling Adds optional hierarchical culling to the 2D rendering (within VisualServer). Each canvas item maintains a bound in local space of the item itself and all child / grandchild items. This allows branches to be culled at once when they don't intersect a viewport. - lawnjelly https://github.com/godotengine/godot/commit/b777a9e5f9838a98a0dc4c73f3ee6d777a5ab53d
+- Revert "Add option in VisibilityEnabler2D to hide the parent for better performance"
+This reverts commit ad6e504a5bc944892e93baacb5d9ee7de7f92e80.
+- Add parameters for the Godot Activity starting intent to allow restarting or force-quitting the engine Follow-up code cleanup for #78130 - m4gr3d https://github.com/godotengine/godot/commit/5cf0ba88e32cecefcaa73b9e326c948412da86e0
+- Expose the TextEdit control of the script editor
+Refactor ScriptEditor and ScriptTextEditor with added method to retrieve the script editor's TextEdit control. - jeronimo-schreyer https://github.com/godotengine/godot/commit/a248c318de3f221d174becd39050ce0728d9caf0
+- Move autotile fallback helper functions + fix comments and docs - wareya https://github.com/godotengine/godot/commit/a40ecc71e65eaf00895b4bd01db0495664be4274
+- Make autotiles fall back to the most similar bitmask using heuristics - wareya https://github.com/godotengine/godot/commit/73ad6517e4f5344f909a58dff7347eb69fe0a539
+- Fix issue causing the last edited project to open while switching to another one. Fixes #76562 -m4gr3d https://github.com/godotengine/godot/commit/ee07f60b07617fb470ec74294b5148a0dd8ec3aa
+- Fix spatial viewport multitouch detection support Regression introduced by #77497 - m4gr3d https://github.com/godotengine/godot/commit/8f447658311451985951157ac6284f0b36e4d9d0
+- Input - fix just pressed and released with short presses Previously if an action was both pressed and released on the same tick or frame, `is_action_just_pressed()` would return false, resulting in missed input. This PR separately the timestamp for pressing and releasing so each can be tested independently. - lawnjelly https://github.com/godotengine/godot/commit/63d208d1b0d9bf92f07dcd41a7d7a1c7d8baa8d4
+- Added missing descriptions to Input's class docs from godot.
+- Update gamepad button/axis names to match 4.0
+- Add example for `NodePath` to grandparent
+- Clarify `String.get_slice` behavior Clarify that the function returns the whole string if there is no instances of the delimiter in the string.
+- Fix overwriting of Spatial's local transform Modifies when 'DIRTY_LOCAL' flag is set to prevent a transform applied using `set_transform` to be overwritten by previous calls to change the node's rotation, translation or scale. Fixes #43130.
+- Backport VideoLooping and fix for initial black frame
+- Bounds fixes in `TextureAtlas` import
+- Use current keyboard layout in OS_X11::keyboard_get_scancode_from_physical.
+- Fix issue causing the Android editor to crash when creating a new AudioStreamMicrophone Fixes #73801 - m4gr3d https://github.com/godotengine/godot/commit/9c334fa242b35c2aa332556699cb094954a958d1
+- Improve touchpad and mouse support for the Android editor - m4gr3d https://github.com/godotengine/godot/commit/ccd36e0dbec048ef1645691d0cf838465bfb4bd0
+- Adds a scale_gizmo_handles entry to the Touchscreen editor settings When enabled, this scales the editor icons to improve usability on touchscreen devices. In addition this commit fixes touch detection for the collision_shape_2d_editor_plugin so it scales with the icons size. - m4gr3d https://github.com/godotengine/godot/commit/b78935ef518ae5a63451d6de32f9df6b35eb8cde
+- Enable granular control of touchscreen related settings - m4gr3d https://github.com/godotengine/godot/commit/61e41facc7e7aceac0fcdb1b90e433566301098c
+- Augment the InputEvent class with a CANCELED state The `InputEvent` class currently supports the `pressed` and `released` states, which given the binary nature, is represented by a `bool` field. This commit introduced the `CANCELED` state, which signals that an ongoing input event has been canceled. To represent all the states, the `InputEventState` enum is added and the `InputEvent` logic is refactored accordingly. - m4gr3d https://github.com/godotengine/godot/commit/94d6c3dcc68f9de4b7c004e3a18513edb1d5dda2
+- Add setting to control the window used to run the project for the Android editor - m4gr3d https://github.com/godotengine/godot/commit/b5a908c985e4f3e5633751012fac64ab3ba0fbbf Removed my force launch adjacent solution in favor of this.
+- Fix compilation of basis unit test - Calinou https://github.com/godotengine/godot/commit/d1c8c5dd304f82acbbeb903e4a8ec86a63a3930e
+- Test, refactor and fix a bug in Basis.get_axis_angle - fabriceci https://github.com/godotengine/godot/commit/9f1a57d48b296c607b76fdae30a78630065710e6
+- [3.x] Fix NODE_POSITION_VIEW Shader Built-In - paddy-exe https://github.com/godotengine/godot/commit/67d3fe4075955bd5eb8892c9610a3b469e81cbc9
+- Backport spatial shader built-ins Backport of this PR: godotengine#63597 This adds these as new Built-Ins to Spatial Shaders * Object's Position in World Space * Camera Position in World Space * Camera Direction in World Space * Object's Position in View Space - paddy-exe https://github.com/godotengine/godot/commit/be3d331f263a8ad1900f7b31965ff2d25f73c2e9
+- Follow up to https://github.com/godotengine/godot/pull/76400 to fix input ANR in the Godot Android editor
+- Allow concurrent buffering and dispatch of input events
+- Fix trim when importing WAV
+- Fix PopupMenu's maximum height not being automatically set
+- Cache text property when toggling BBCode
+- Add Tab Metadata
+- Improve tooltip for CanvasLayer.layer (3.x)
+- Fix small mistake in docs, "antecedents" -> "ancestors"
+- Add allow_search property to ItemList and Tree
+- Clarify range of various ID values are 32 bit
+- Stop dragging when a slider changes editability
+- Warn against using non-uniform scale for 3D physics (in class reference only) partial backport of #67847 fixes #56824
+- Minor improvements to NetworkedMultiplayerCustom.xml
+- Fix docs on multiplayer peer signals.
+- Fix `NodePath` subname index range documentation
+- Linux: Don't use udev for joypad hotloading when running in a sandbox
+- Add unsafe version from asin and acos.
+- Make acos and asin safe
+- update mymindstorm/setup-emsdk to v12
+- Document 3D particle color properties requiring vertex color as albedo - Calinou https://github.com/godotengine/godot/commit/c65967c17f30f94568396a620249df5a93a75872
+- Multirect - Fix refining regions for all derived Textures Fixes allowing all derived texture types to modify region prior to rendering. - lawnjelly https://github.com/godotengine/godot/commit/43b6205887605c7ac2ac79d4bf9306fb143abc80
+- Fix rendering tiles using nested AtlasTextures - kleonc https://github.com/godotengine/godot/commit/12c923cb8b19ca9dc49c45601e8e20630cbd8497
+- Fix GridContainer max row/column calculations not skipping hidden children - kleonc https://github.com/godotengine/godot/commit/0ce6ef72156291bdd4993dd0d6f6bf2b794c0baf
+- Fix size error in `BitMap.opaque_to_polygons` Previous estimate of upper limit on size was incorrect
+- Allow concurrent buffering and dispatch of input events
+
+#### Godot4
+
+- Support threads in the script debugger * This implementation adds threads on the side of the client (script debugger). * Some functions of the debugger are optimized. * The profile is also now thread safe using atomics. * The editor can switch between multiple threads when debugging. This PR adds threaded support for the script language debugger. Every thread has its own thread local data and it will connect to the debugger using multiple thread IDs. This means that, now, the editor can receive multiple threads entering debug mode at the same time. - reduz PR 76582 Will be available here after it's merged: https://github.com/godotengine/godot/commit/6b176671c4289e9096ea94583fae35f2c4686b7c
+- Add Navigation Debug for GridMap edge connections Adds navigation visual debug for GridMap edge connections that use baked navigationmesh with bake_navigation=true. - smix8 https://github.com/godotengine/godot/commit/4f0730d4bcad43e73c39f7d77f5bef5f2215440a
+- Rework Navigation Avoidance Rework Navigation Avoidance. - smix8 https://github.com/godotengine/godot/commit/a6ac305f967a272c35f984b046517629a401b688
+- Rework const on NavigationServer methods `const` is used on all methods, even when they cause modification of the server.  This reworks the methods of the server to only use `const` on method that don't change the state of the server. - DarkKilauea https://github.com/godotengine/godot/commit/a0715b30f94430078422ff05d81b9cfa85ddb4ce
+- Make navigation mesh edge connections optional Makes navigation mesh edge connections optional. - smix8 https://github.com/godotengine/godot/commit/f986b52b3cc107374d4e74774c8695a0f1282e11
+- Add NavigationLink helper functions for global positions Adds helper functions to set the links start and end position with global positions or get them as global positions. Adds global start and end position for the navigation link to the 'link_reached' signal of NavigationAgent. That signal gets emitted when a navigation link waypoint is reached. Requires that 'owner' meta data is enabled on the NavigationAgent. - smix8 https://github.com/godotengine/godot/commit/d87f1247689ae82996aeac77b6e9870bbc88142d
+- Enable assigning an owner to navigation regions and links This allows users of the server APIs to get back the nodes that created certain regions and links. - DarkKilauea https://github.com/godotengine/godot/commit/5769b0e8d8db75ff500c979aa63d3f3428de526d
+- Add support for emitting a signal when entering a NavLink - DarkKilauea https://github.com/godotengine/godot/commit/5d8ba2b2d11fc6c4debdf21fa91bddefaa6f3d6d
+- Prevent unnecessary navigation map synchronizations Prevents unnecessary navigation map synchronizations triggered by redundant calls to setters of e.g. region, link or map properties. - smix8 https://github.com/godotengine/godot/commit/7e1a261cc661ddbefb90208b94a6828c50750237
+- Update NavigationAgent to use query_path This paves the way for having agents respond to link traversal. - DarkKilauea https://github.com/godotengine/godot/commit/a2c53b881b1a54c95036f27577ee7d9b6e583d62
+- Add navigation layer bitmask helper functions Adds helper functions to work with the navigation layer bitmask. - smix8 https://github.com/godotengine/godot/commit/55923ade68237ae6a344efe23c2656ed7ba976c2
+- Add NavigationAgent Path Debug Visualization Adds path debug visuals for NavigationAgent2D, NavigationAgent3D and NavigationServer. - smix8 https://github.com/godotengine/godot/commit/0ab764e84bc9d7f21292f954fb2be215377a7276
+- Fix NavigationMesh debug visuals for non-triangulated meshes Fixes NavigationMesh debug visuals for non-triangulated meshes. - smix8 https://github.com/godotengine/godot/commit/4490a3303bc8b234dcccdbfdafd3877c9a11cb4d
+- Fix 2D navigation debug visuals ignoring half the ProjectSettings Fixes that NavigationRegion2D and TileMap debug visuals ignored more or less half the ProjectSetting. E.g. random color could not be disabled, edges did not display. https://github.com/godotengine/godot/commit/2b19c70664dafd3e5689fc612feb7f7ac17c1a0a
+- Rename Navigation uses of 'location' to 'position' Contrary to the entire rest of the engine NavigationAgent's and NavigationLinks decided to deal with locations instead of positions. - smix8 https://github.com/godotengine/godot/commit/bf1571979cd3cd90b2b5c4581b2947450aa4cd9d
+- Add NavigationServer Performance Monitor Adds Performance Monitor for NavigationServer3D. - smix8 https://github.com/godotengine/godot/commit/9802914f9793b6888cc70e3d7f0d815bdd5188bb
+- Add NavigationServer2D debug functions Adds debug functions to NavigationServer2D to mirror NavigationServer3D functions for 2D users. - smix8 https://github.com/godotengine/godot/commit/d254f0fa5f2fe23c4746b5b5a0f0e44f8613a0eb
+- Fix navigation debug not toggleable in scripts Fixes that navigation debug was not toggleable in script while even the docs mentioned it. - smix8 https://github.com/godotengine/godot/commit/aecad7bb25bf9b13c0ddc30a91cb68787c8dd53b
+- Fix Editor Navigation debug edge connection visuals Fixes missing Navigation debug edge connection visuals in Editor due to disabled NavigationServer. - smix8 https://github.com/godotengine/godot/commit/8bfea7dcb46b0a566bf1de7caa40533f29774e91
+- Fix NavigationServer internals still using float instead of real_t Fixes that some NavigationServer internals still used float instead of real_t in some parts. - smix8 https://github.com/godotengine/godot/commit/217a27014bb9e88605f44de3f0bb119f372a8378
+- Added node for Navigation links . - DarkKilauea https://github.com/godotengine/godot/commit/3dd59013f45b84cd0ded147df7684ffab424e407
+- Add NavigationPathQuery Adds NavigationPathQueryParameters objects that can be used with NavigationServer.query_path() to query a customized navigation path. - smix8 https://github.com/godotengine/godot/commit/63dcb9aa80a2c77053033ed3c39b4fe5ed6f229b
+- Fix NavigationRegion3D gizmo's odd visual behavior . - DarkKilauea https://github.com/godotengine/godot/commit/92c40bcf325ce91279c14f0b6a42c200fe4faf51
+- Remove / Replace old Navigation Debug Visualization - removes / replaces leftovers from old navigation debug code - cleanes SceneTree and ProjectSettings from old navigation debug - smix8 https://github.com/godotengine/godot/commit/d7f75fab606fece5f7eb083ef6931f75815630fc
+- Add more detailed Navigation Debug Visualization - Adds more customization options to ProjectSettings. - Displays navregion edge connections and navigation polygon edges in editor and at runtime. - Majority of debug code moved from SceneTree to NavigationServer. - Removes the irritating debug MeshInstance child node from NavigationRegion3D and replaces it with direct RenderingServer API. - smix8 https://github.com/godotengine/godot/commit/c394ea518e48bbce710b251cf20be078505ef8d7
+- Fix NavigationMesh baking AABB Editor handling and visuals Fixes handling and visuals for Navigation Mesh baking AABB in the Editor. - smix8
+- Implement NavigationMesh bake area. Adds two new properties to NavigationMesh resources to restrict the navmesh baking to an area enclosed by an AABB with volume. - smix8 https://github.com/godotengine/godot/commit/0c4d99f4fdcee4b1b6c289c83fb448262e60974b
+- Rework NavigationMeshGenerator Reworks NavigationMeshGenerator and navigation mesh parse and bake process. Adds navigation mesh baking for 2D. - smix8 https://github.com/godotengine/godot/pull/70724 https://github.com/godotengine/godot/pull/70724/commits/38699a82593ef60d680b7b46b06c92f896dd7c77
+
 
 ## [3.11.0]
 
