@@ -1,9 +1,9 @@
 short_name = "pandemonium_engine"
 name = "Pandemonium Engine"
 major = 4
-minor = 0
+minor = 1
 patch = 0
-status = "stable"
+status = "development"
 module_config = ""
 year = 2023
 website = "https://github.com/Relintai/pandemonium_engine"
