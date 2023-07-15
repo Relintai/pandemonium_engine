@@ -114,6 +114,7 @@ public:
 	}
 
 	MultiRect &get_multirect() { return multirect; }
+	void flush();
 
 	~FontDrawer();
 };
