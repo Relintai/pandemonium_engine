@@ -422,7 +422,7 @@ String WebServerRequest::get_url_root_parent(const int parent) const {
 }
 
 String WebServerRequest::get_url_root() const {
-	int pst = _path_stack_pointer + 1;
+	int pst = _path_stack_pointer;
 
 	if (pst > _path_stack.size()) {
 		pst = _path_stack.size();
@@ -430,7 +430,7 @@ String WebServerRequest::get_url_root() const {
 
 	String path = "/";
 
-	for (int i = 0; i < _path_stack_pointer; ++i) {
+	for (int i = 0; i < pst; ++i) {
 		path += _path_stack[i];
 		path += "/";
 	}
