@@ -46,6 +46,7 @@
 			<return type="void" />
 			<description>
 				Takes the head, body and footer properties, and merges them into the [code]compiled_body[/code] property. It adds an html5 type declaration, then the opening [code]html[/code] tag, then the contents of the [code]head[/code] property to the [code]head[/code] section of the response, and then the contents of the [code]body[/code] then footer property into the [code]body[/code] section of the response, then it closes the main [code]html[/code] tag.
+				Note: You can override the default doctype declaration by setting the [code]"compiled_body_doctype_override"[/code] meta, the [code]html[/code] tag by setting the [code]"compiled_body_html_tag_override"[/code] meta, and the [code]body[/code] tag by setting the [code]"compiled_body_body_tag_override"[/code] meta using [code]set_meta()[/code].
 			</description>
 		</method>
 		<method name="custom_response_header_get">

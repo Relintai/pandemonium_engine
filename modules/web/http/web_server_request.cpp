@@ -267,17 +267,17 @@ void WebServerRequest::compile_body() {
 	//compiled_body.ensure_capacity(body.size() + head.size() + 15 + 13 + 14 + 15 + 1);
 
 	// 15
-	compiled_body += "<!DOCTYPE html>";
+	compiled_body += String(get_meta("compiled_body_doctype_override", String("<!DOCTYPE html>")));
 
 	// 13
-	compiled_body += "<html>"
-					 "<head>";
+	compiled_body += String(get_meta("compiled_body_html_tag_override", String("<html>")));
+	compiled_body += "<head>";
 
 	compiled_body += head;
 
 	// 14
-	compiled_body += "</head>"
-					 "<body>";
+	compiled_body += "</head>";
+	compiled_body += String(get_meta("compiled_body_body_tag_override", String("<body>")));
 
 	compiled_body += body;
 	compiled_body += footer;
