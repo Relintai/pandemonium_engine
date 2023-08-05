@@ -138,9 +138,7 @@ void OS_Unix::alert(const String &p_alert, const String &p_title) {
 
 String OS_Unix::get_stdin_string() {
 	char buff[1024];
-	String ret = stdin_buf + fgets(buff, 1024, stdin);
-	stdin_buf = "";
-	return ret;
+	return String::utf8(fgets(buff, 1024, stdin));
 }
 
 String OS_Unix::get_name() const {
