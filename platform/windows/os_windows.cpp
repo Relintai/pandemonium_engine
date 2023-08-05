@@ -2872,7 +2872,7 @@ Error OS_Windows::execute(const String &p_path, const List<String> &p_arguments,
 		creaton_flags |= CREATE_NO_WINDOW;
 	}
 
-	int ret = CreateProcessW(nullptr, (LPWSTR)(modstr.ptrw()), nullptr, nullptr, 0, NORMAL_PRIORITY_CLASS & CREATE_NO_WINDOW, nullptr, nullptr, si_w, &pi.pi);
+	int ret = CreateProcessW(nullptr, (LPWSTR)(modstr.ptrw()), nullptr, nullptr, inherit_handles, creaton_flags, nullptr, nullptr, si_w, &pi.pi);
 	if (!ret && r_pipe) {
 		CloseHandle(pipe[0]); // Cleanup pipe handles.
 		CloseHandle(pipe[1]);
@@ -2922,7 +2922,7 @@ Error OS_Windows::execute(const String &p_path, const List<String> &p_arguments,
 
 			CloseHandle(pipe[0]); // Close pipe read handle.
 		}
-		
+
 		WaitForSingleObject(pi.pi.hProcess, INFINITE);
 
 		if (r_exitcode) {
