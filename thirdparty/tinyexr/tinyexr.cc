@@ -4,9 +4,9 @@
 #endif
 #endif
 
-// -- PANDEMONIUM start --
+// -- GODOT start --
 #include <zlib.h> // Should come before including tinyexr.
-// -- PANDEMONIUM end --
+// -- GODOT end --
 
 #define TINYEXR_IMPLEMENTATION
 #include "tinyexr.h"
