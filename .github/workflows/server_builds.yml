@@ -59,3 +59,15 @@ jobs:
           platform: server
           target: ${{ matrix.target }}
           tools: ${{ matrix.tools }}
+
+      - name: Prepare artifact
+        if: ${{ matrix.artifact }}
+        run: |
+          strip bin/pandemonium.*
+          chmod +x bin/pandemonium.*
+
+      - name: Upload artifact
+        uses: ./.github/actions/upload-artifact
+        if: ${{ matrix.artifact }}
+        with:
+          name: ${{ matrix.cache-name }}
