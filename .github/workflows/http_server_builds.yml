@@ -1,0 +1,61 @@
+name: ☁ HTTP Server Builds
+on: [push, pull_request]
+
+# Global Settings
+env:
+  PANDEMONIUM_BASE_BRANCH: master
+  SCONSFLAGS: verbose=yes warnings=all werror=yes debug_symbols=no
+
+concurrency:
+  group: ci-${{github.actor}}-${{github.head_ref || github.run_number}}-${{github.ref}}-http-server
+  cancel-in-progress: true
+
+jobs:
+  build-server:
+    runs-on: "ubuntu-20.04"
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          #- name: Linux HTTP Headless (target=release_debug, tools=yes)
+          #  cache-name: server-editor
+          #  target: release_debug
+          #  tools: true
+
+          - name: Linux HTTP Server (target=release, tools=no)
+            cache-name: http-server-template
+            target: release
+            tools: false
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Linux dependencies
+        shell: bash
+        run: |
+          # Azure repositories are not reliable, we need to prevent azure giving us packages.
+          sudo rm -f /etc/apt/sources.list.d/*
+          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
+          sudo apt-get update
+          # The actual dependencies
+          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
+              libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev \
+              libdbus-1-dev libudev-dev libxi-dev libxrandr-dev yasm xvfb wget unzip
+
+      - name: Setup Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache
+        with:
+          cache-name: ${{ matrix.cache-name }}
+        continue-on-error: true
+
+      - name: Setup python and scons
+        uses: ./.github/actions/pandemonium-deps
+
+      - name: Compilation
+        uses: ./.github/actions/pandemonium-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }} module_bmp_enabled=no module_broken_seals_module_enabled=no module_cscript_enabled=no module_dds_enabled=no module_enet_enabled=no module_entity_spell_system_enabled=no module_fastnoise_enabled=no module_freetype_enabled=no module_gridmap_enabled=no module_hdr_enabled=no module_jpg_enabled=no module_lz4_enabled=no module_material_maker_enabled=no module_mesh_data_resource_enabled=no module_mesh_utils_enabled=no module_minimp3_enabled=no module_navigation_enabled=no module_network_synchronizer_enabled=no module_ogg_enabled=no module_opensimplex_enabled=no module_opus_enabled=no module_paint_enabled=no module_props_enabled=no module_props_2d_enabled=no module_pvr_enabled=no module_regex_enabled=no module_skeleton_2d_enabled=no module_skeleton_3d_enabled=no module_squish_enabled=no module_stb_vorbis_enabled=no module_steering_ai_enabled=no module_svg_enabled=no module_terraman_enabled=no module_terraman_2d_enabled=no module_texture_packer_enabled=no module_tga_enabled=no module_theora_enabled=no module_tile_map_enabled=no module_ui_extensions_enabled=no module_unit_test_enabled=no module_upnp_enabled=no module_vhacd_enabled=no module_vorbis_enabled=no module_voxelman_enabled=no module_websocket_enabled=no module_wfc_enabled=no module_cvtt_enabled=no module_editor_code_editor_enabled=no module_etc_enabled=no module_gltf_enabled=no module_plugin_refresher_enabled=no module_shader_editor_enabled=no module_text_editor_enabled=no module_tinyexr_enabled=no disable_advanced_gui=yes disable_3d=yes 
+          platform: server
+          target: ${{ matrix.target }}
+          tools: ${{ matrix.tools }}
