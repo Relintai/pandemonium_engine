@@ -22,11 +22,13 @@ jobs:
           #  cache-name: server-editor
           #  target: release_debug
           #  tools: true
+          #  artifact: true
 
           - name: Linux HTTP Server (target=release, tools=no)
             cache-name: http-server-template
             target: release
             tools: false
+            artifact: true
 
     steps:
       - uses: actions/checkout@v3
