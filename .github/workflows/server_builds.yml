@@ -63,8 +63,8 @@ jobs:
       - name: Prepare artifact
         if: ${{ matrix.artifact }}
         run: |
-          strip bin/pandemonium.*
-          chmod +x bin/pandemonium.*
+          strip bin/pandemonium_server.*
+          chmod +x bin/pandemonium_server.*
 
       - name: Upload artifact
         uses: ./.github/actions/upload-artifact
