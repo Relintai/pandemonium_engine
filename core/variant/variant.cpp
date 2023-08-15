@@ -739,6 +739,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 				POOL_VECTOR2I_ARRAY,
 				POOL_VECTOR3_ARRAY,
 				POOL_VECTOR3I_ARRAY,
+				POOL_VECTOR4_ARRAY,
+				POOL_VECTOR4I_ARRAY,
 				NIL
 			};
 
@@ -1306,6 +1308,9 @@ void Variant::zero() {
 			break;
 		case COLOR:
 			*reinterpret_cast<Color *>(this->_data._mem) = Color();
+			break;
+		case PROJECTION:
+			*reinterpret_cast<Projection *>(this->_data._mem) = Projection();
 			break;
 		default:
 			this->clear();
