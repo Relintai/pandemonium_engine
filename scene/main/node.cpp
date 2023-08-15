@@ -917,7 +917,7 @@ Variant Node::_rpc_id_bind(const Variant **p_args, int p_argcount, Variant::Call
 		return Variant();
 	}
 
-	if (p_args[1]->get_type() != Variant::STRING && p_args[0]->get_type() != Variant::STRING_NAME) {
+	if (p_args[1]->get_type() != Variant::STRING && p_args[1]->get_type() != Variant::STRING_NAME) {
 		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 		r_error.argument = 1;
 		r_error.expected = Variant::STRING_NAME;
@@ -969,7 +969,7 @@ Variant Node::_rpc_unreliable_id_bind(const Variant **p_args, int p_argcount, Va
 		return Variant();
 	}
 
-	if (p_args[1]->get_type() != Variant::STRING && p_args[0]->get_type() != Variant::STRING_NAME) {
+	if (p_args[1]->get_type() != Variant::STRING && p_args[1]->get_type() != Variant::STRING_NAME) {
 		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 		r_error.argument = 1;
 		r_error.expected = Variant::STRING_NAME;
