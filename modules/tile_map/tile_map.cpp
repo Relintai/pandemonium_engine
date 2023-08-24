@@ -135,6 +135,17 @@ void TileMap::_notification(int p_what) {
 			}
 
 		} break;
+
+		case NOTIFICATION_RESET_PHYSICS_INTERPOLATION: {
+			if (is_visible_in_tree() && is_physics_interpolated_and_enabled()) {
+				for (Map<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
+					Quadrant &q = E->get();
+					for (List<RID>::Element *F = q.canvas_items.front(); F; F = F->next()) {
+						VisualServer::get_singleton()->canvas_item_reset_physics_interpolation(F->get());
+					}
+				}
+			}
+		} break;
 	}
 }
 
@@ -799,6 +810,13 @@ void TileMap::update_dirty_quadrants() {
 
 		if (multirect_started) {
 			RenderingServerCanvasHelper::tilemap_end();
+		}
+
+		// Reset physics interpolation for any recreated canvas items.
+		if (is_physics_interpolated_and_enabled() && is_visible_in_tree()) {
+			for (List<RID>::Element *F = q.canvas_items.front(); F; F = F->next()) {
+				VisualServer::get_singleton()->canvas_item_reset_physics_interpolation(F->get());
+			}
 		}
 
 		dirty_quadrant_list.remove(dirty_quadrant_list.first());
