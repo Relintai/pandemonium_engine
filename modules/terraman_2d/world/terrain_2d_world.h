@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include "scene/2d/navigation_2d.h"
+#include "scene/2d/node_2d.h"
 
 #include "../areas/terrain_2d_world_area.h"
 #include "../level_generator/terrain_2d_level_generator.h"
@@ -45,8 +45,8 @@ class Terrain2DStructure;
 class Terrain2DChunk;
 class Prop2DData;
 
-class Terrain2DWorld : public Navigation2D {
-	GDCLASS(Terrain2DWorld, Navigation2D);
+class Terrain2DWorld : public Node2D {
+	GDCLASS(Terrain2DWorld, Node2D);
 
 public:
 	enum ChannelTypeInfo {

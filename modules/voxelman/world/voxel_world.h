@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include "scene/3d/navigation.h"
+#include "scene/3d/spatial.h"
 
 #include "../areas/world_area.h"
 #include "../level_generator/voxel_level_generator.h"
@@ -45,8 +45,8 @@ class VoxelStructure;
 class VoxelChunk;
 class PropData;
 
-class VoxelWorld : public Navigation {
-	GDCLASS(VoxelWorld, Navigation);
+class VoxelWorld : public Spatial {
+	GDCLASS(VoxelWorld, Spatial);
 
 public:
 	enum ChannelTypeInfo {

@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include "scene/3d/navigation.h"
+#include "scene/3d/spatial.h"
 
 #include "../areas/terrain_world_area.h"
 #include "../level_generator/terrain_level_generator.h"
@@ -45,8 +45,8 @@ class TerrainStructure;
 class TerrainChunk;
 class PropData;
 
-class TerrainWorld : public Navigation {
-	GDCLASS(TerrainWorld, Navigation);
+class TerrainWorld : public Spatial {
+	GDCLASS(TerrainWorld, Spatial);
 
 public:
 	enum ChannelTypeInfo {
