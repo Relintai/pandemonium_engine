@@ -89,162 +89,163 @@ bool PaintPolygon2D::_edit_is_selected_on_click(const Point2 &p_point, double p_
 }
 #endif
 
+void PaintPolygon2D::_prepare_render_data(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices) {
+	int len = polygon.size();
+	if ((invert || polygons.size() == 0) && internal_vertices > 0) {
+		//if no polygons are around, internal vertices must not be drawn, else let them be
+		len -= internal_vertices;
+	}
+
+	if (len <= 0) {
+		return;
+	}
+
+	r_points.resize(len);
+
+	{
+		PoolVector<Vector2>::Read polyr = polygon.read();
+		for (int i = 0; i < len; i++) {
+			r_points.write[i] = polyr[i] + offset;
+		}
+	}
+
+	if (invert) {
+		Rect2 bounds;
+		int highest_idx = -1;
+		float highest_y = -1e20;
+		float sum = 0;
+
+		for (int i = 0; i < len; i++) {
+			if (i == 0) {
+				bounds.position = r_points[i];
+			} else {
+				bounds.expand_to(r_points[i]);
+			}
+			if (r_points[i].y > highest_y) {
+				highest_idx = i;
+				highest_y = r_points[i].y;
+			}
+			int ni = (i + 1) % len;
+			sum += (r_points[ni].x - r_points[i].x) * (r_points[ni].y + r_points[i].y);
+		}
+
+		bounds = bounds.grow(invert_border);
+
+		Vector2 ep[7] = {
+			Vector2(r_points[highest_idx].x, r_points[highest_idx].y + invert_border),
+			Vector2(bounds.position + bounds.size),
+			Vector2(bounds.position + Vector2(bounds.size.x, 0)),
+			Vector2(bounds.position),
+			Vector2(bounds.position + Vector2(0, bounds.size.y)),
+			Vector2(r_points[highest_idx].x - CMP_EPSILON, r_points[highest_idx].y + invert_border),
+			Vector2(r_points[highest_idx].x - CMP_EPSILON, r_points[highest_idx].y),
+		};
+
+		if (sum > 0) {
+			SWAP(ep[1], ep[4]);
+			SWAP(ep[2], ep[3]);
+			SWAP(ep[5], ep[0]);
+			SWAP(ep[6], r_points.write[highest_idx]);
+		}
+
+		r_points.resize(r_points.size() + 7);
+		for (int i = r_points.size() - 1; i >= highest_idx + 7; i--) {
+			r_points.write[i] = r_points[i - 7];
+		}
+
+		for (int i = 0; i < 7; i++) {
+			r_points.write[highest_idx + i + 1] = ep[i];
+		}
+
+		len = r_points.size();
+	}
+
+	if (texture.is_valid()) {
+		Transform2D texmat(tex_rot, tex_ofs);
+		texmat.scale(tex_scale);
+		Size2 tex_size = texture->get_size();
+
+		r_uvs.resize(len);
+
+		if (r_points.size() == uv.size()) {
+			PoolVector<Vector2>::Read uvr = uv.read();
+
+			for (int i = 0; i < len; i++) {
+				r_uvs.write[i] = texmat.xform(uvr[i]) / tex_size;
+			}
+
+		} else {
+			for (int i = 0; i < len; i++) {
+				r_uvs.write[i] = texmat.xform(r_points[i]) / tex_size;
+			}
+		}
+	}
+
+	if (vertex_colors.size() == r_points.size()) {
+		r_colors.resize(len);
+		PoolVector<Color>::Read color_r = vertex_colors.read();
+		for (int i = 0; i < len; i++) {
+			r_colors.write[i] = color_r[i];
+		}
+	} else {
+		r_colors.push_back(color);
+	}
+
+	if (invert || polygons.size() == 0) {
+		r_indices = Geometry::triangulate_polygon(r_points);
+
+	} else {
+		//draw individual polygons
+
+		for (int i = 0; i < polygons.size(); i++) {
+			PoolVector<int> src_indices = polygons[i];
+			int ic = src_indices.size();
+			if (ic < 3) {
+				continue;
+			}
+			PoolVector<int>::Read r = src_indices.read();
+
+			Vector<Vector2> tmp_r_points;
+			tmp_r_points.resize(ic);
+
+			for (int j = 0; j < ic; j++) {
+				int idx = r[j];
+				ERR_CONTINUE(idx < 0 || idx >= r_points.size());
+				tmp_r_points.write[j] = r_points[r[j]];
+			}
+			Vector<int> indices = Geometry::triangulate_polygon(tmp_r_points);
+			int ic2 = indices.size();
+			const int *r2 = indices.ptr();
+
+			int bic = r_indices.size();
+			r_indices.resize(bic + ic2);
+			int *w2 = r_indices.ptrw();
+
+			for (int j = 0; j < ic2; j++) {
+				w2[j + bic] = r[r2[j]];
+			}
+		}
+	}
+}
+
 void PaintPolygon2D::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_DRAW: {
+			_rendered_image.unref();
+
 			if (polygon.size() < 3) {
 				return;
 			}
 
 			Vector<Vector2> points;
 			Vector<Vector2> uvs;
-			Vector<int> bones;
-			Vector<float> weights;
-
-			int len = polygon.size();
-			if ((invert || polygons.size() == 0) && internal_vertices > 0) {
-				//if no polygons are around, internal vertices must not be drawn, else let them be
-				len -= internal_vertices;
-			}
-
-			if (len <= 0) {
-				return;
-			}
-			points.resize(len);
-
-			{
-				PoolVector<Vector2>::Read polyr = polygon.read();
-				for (int i = 0; i < len; i++) {
-					points.write[i] = polyr[i] + offset;
-				}
-			}
-
-			if (invert) {
-				Rect2 bounds;
-				int highest_idx = -1;
-				float highest_y = -1e20;
-				float sum = 0;
-
-				for (int i = 0; i < len; i++) {
-					if (i == 0) {
-						bounds.position = points[i];
-					} else {
-						bounds.expand_to(points[i]);
-					}
-					if (points[i].y > highest_y) {
-						highest_idx = i;
-						highest_y = points[i].y;
-					}
-					int ni = (i + 1) % len;
-					sum += (points[ni].x - points[i].x) * (points[ni].y + points[i].y);
-				}
-
-				bounds = bounds.grow(invert_border);
-
-				Vector2 ep[7] = {
-					Vector2(points[highest_idx].x, points[highest_idx].y + invert_border),
-					Vector2(bounds.position + bounds.size),
-					Vector2(bounds.position + Vector2(bounds.size.x, 0)),
-					Vector2(bounds.position),
-					Vector2(bounds.position + Vector2(0, bounds.size.y)),
-					Vector2(points[highest_idx].x - CMP_EPSILON, points[highest_idx].y + invert_border),
-					Vector2(points[highest_idx].x - CMP_EPSILON, points[highest_idx].y),
-				};
-
-				if (sum > 0) {
-					SWAP(ep[1], ep[4]);
-					SWAP(ep[2], ep[3]);
-					SWAP(ep[5], ep[0]);
-					SWAP(ep[6], points.write[highest_idx]);
-				}
-
-				points.resize(points.size() + 7);
-				for (int i = points.size() - 1; i >= highest_idx + 7; i--) {
-					points.write[i] = points[i - 7];
-				}
-
-				for (int i = 0; i < 7; i++) {
-					points.write[highest_idx + i + 1] = ep[i];
-				}
-
-				len = points.size();
-			}
-
-			if (texture.is_valid()) {
-				Transform2D texmat(tex_rot, tex_ofs);
-				texmat.scale(tex_scale);
-				Size2 tex_size = texture->get_size();
-
-				uvs.resize(len);
-
-				if (points.size() == uv.size()) {
-					PoolVector<Vector2>::Read uvr = uv.read();
-
-					for (int i = 0; i < len; i++) {
-						uvs.write[i] = texmat.xform(uvr[i]) / tex_size;
-					}
-
-				} else {
-					for (int i = 0; i < len; i++) {
-						uvs.write[i] = texmat.xform(points[i]) / tex_size;
-					}
-				}
-			}
-
 			Vector<Color> colors;
-			if (vertex_colors.size() == points.size()) {
-				colors.resize(len);
-				PoolVector<Color>::Read color_r = vertex_colors.read();
-				for (int i = 0; i < len; i++) {
-					colors.write[i] = color_r[i];
-				}
-			} else {
-				colors.push_back(color);
-			}
+			Vector<int> indices;
 
-			//			Vector<int> indices = Geometry::triangulate_polygon(points);
-			//			RS::get_singleton()->canvas_item_add_triangle_array(get_canvas_item(), indices, points, colors, uvs, texture.is_valid() ? texture->get_rid() : RID());
+			_prepare_render_data(points, uvs, colors, indices);
 
-			if (invert || polygons.size() == 0) {
-				Vector<int> indices = Geometry::triangulate_polygon(points);
-				if (indices.size()) {
-					RS::get_singleton()->canvas_item_add_triangle_array(get_canvas_item(), indices, points, colors, uvs, bones, weights, texture.is_valid() ? texture->get_rid() : RID(), -1, RID(), antialiased);
-				}
-			} else {
-				//draw individual polygons
-				Vector<int> total_indices;
-				for (int i = 0; i < polygons.size(); i++) {
-					PoolVector<int> src_indices = polygons[i];
-					int ic = src_indices.size();
-					if (ic < 3) {
-						continue;
-					}
-					PoolVector<int>::Read r = src_indices.read();
-
-					Vector<Vector2> tmp_points;
-					tmp_points.resize(ic);
-
-					for (int j = 0; j < ic; j++) {
-						int idx = r[j];
-						ERR_CONTINUE(idx < 0 || idx >= points.size());
-						tmp_points.write[j] = points[r[j]];
-					}
-					Vector<int> indices = Geometry::triangulate_polygon(tmp_points);
-					int ic2 = indices.size();
-					const int *r2 = indices.ptr();
-
-					int bic = total_indices.size();
-					total_indices.resize(bic + ic2);
-					int *w2 = total_indices.ptrw();
-
-					for (int j = 0; j < ic2; j++) {
-						w2[j + bic] = r[r2[j]];
-					}
-				}
-
-				if (total_indices.size()) {
-					RS::get_singleton()->canvas_item_add_triangle_array(get_canvas_item(), total_indices, points, colors, uvs, bones, weights, texture.is_valid() ? texture->get_rid() : RID(), -1, RID(), antialiased);
-				}
+			if (indices.size()) {
+				RS::get_singleton()->canvas_item_add_triangle_array(get_canvas_item(), indices, points, colors, uvs, Vector<int>(), Vector<float>(), texture.is_valid() ? texture->get_rid() : RID(), -1, RID(), antialiased);
 			}
 
 		} break;
@@ -384,6 +385,36 @@ void PaintPolygon2D::set_offset(const Vector2 &p_offset) {
 
 Vector2 PaintPolygon2D::get_offset() const {
 	return offset;
+}
+
+Ref<Image> PaintPolygon2D::_get_rendered_image() {
+	if (_rendered_image.is_valid()) {
+		return _rendered_image;
+	}
+
+	if (_size.x == 0 || _size.y == 0) {
+		return Ref<Image>();
+	}
+
+	if (polygon.size() < 3) {
+		return Ref<Image>();
+	}
+
+	Vector<Vector2> points;
+	Vector<Vector2> uvs;
+	Vector<Color> colors;
+	Vector<int> indices;
+
+	_prepare_render_data(points, uvs, colors, indices);
+
+	if (indices.size() == 0) {
+		return Ref<Image>();
+	}
+
+	_rendered_image.instance();
+	_rendered_image->create(_size.x, _size.y, false, Image::FORMAT_RGBA8);
+
+	return _rendered_image;
 }
 
 void PaintPolygon2D::_bind_methods() {

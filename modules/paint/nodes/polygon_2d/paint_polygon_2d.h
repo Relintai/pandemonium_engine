@@ -55,8 +55,11 @@ class PaintPolygon2D : public PaintNode {
 	Vector2 offset;
 	mutable bool rect_cache_dirty;
 	mutable Rect2 item_rect;
+	Ref<Image> _rendered_image;
 
 protected:
+	void _prepare_render_data(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices);
+
 	void _notification(int p_what);
 	static void _bind_methods();
 
@@ -118,6 +121,8 @@ public:
 
 	void set_offset(const Vector2 &p_offset);
 	Vector2 get_offset() const;
+
+	virtual Ref<Image> _get_rendered_image();
 
 	PaintPolygon2D();
 	virtual ~PaintPolygon2D();
