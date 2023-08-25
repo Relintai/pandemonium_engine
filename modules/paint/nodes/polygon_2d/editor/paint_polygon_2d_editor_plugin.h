@@ -82,12 +82,10 @@ class PaintPolygon2DEditor : public AbstractPolygon2DEditor {
 		UV_MODE_SCALE,
 		UV_MODE_ADD_POLYGON,
 		UV_MODE_REMOVE_POLYGON,
-		UV_MODE_PAINT_WEIGHT,
-		UV_MODE_CLEAR_WEIGHT,
 		UV_MODE_MAX
 	};
 
-	ToolButton *uv_edit_mode[4];
+	ToolButton *uv_edit_mode[3];
 	Ref<ButtonGroup> uv_edit_group;
 
 	PaintPolygon2D *node;
@@ -105,21 +103,7 @@ class PaintPolygon2DEditor : public AbstractPolygon2DEditor {
 	MenuButton *uv_menu;
 	TextureRect *uv_icon_zoom;
 
-	VBoxContainer *bone_scroll_main_vb;
-	ScrollContainer *bone_scroll;
-	VBoxContainer *bone_scroll_vb;
-	Button *sync_bones;
-	HSlider *bone_paint_strength;
-	SpinBox *bone_paint_radius;
-	Label *bone_paint_radius_label;
-	bool bone_painting;
-	int bone_painting_bone;
-	PoolVector<float> prev_weights;
-	Vector2 bone_paint_pos;
 	AcceptDialog *grid_settings;
-
-	void _sync_bones();
-	void _update_bone_list();
 
 	Vector2 uv_draw_ofs;
 	float uv_draw_zoom;
@@ -128,7 +112,6 @@ class PaintPolygon2DEditor : public AbstractPolygon2DEditor {
 	PoolVector<Vector2> uv_create_poly_prev;
 	PoolVector<Color> uv_create_colors_prev;
 	int uv_create_prev_internal_vertices;
-	Array uv_create_bones_prev;
 	Array polygons_prev;
 
 	Vector2 uv_create_to;
@@ -168,7 +151,6 @@ class PaintPolygon2DEditor : public AbstractPolygon2DEditor {
 
 	void _uv_edit_mode_select(int p_mode);
 	void _uv_edit_popup_hide();
-	void _bone_paint_selected(int p_index);
 
 	int _get_polygon_count() const;
 
