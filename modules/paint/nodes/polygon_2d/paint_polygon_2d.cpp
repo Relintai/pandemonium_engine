@@ -31,6 +31,7 @@
 #include "paint_polygon_2d.h"
 
 #include "core/math/geometry.h"
+#include <limits.h>
 
 #ifdef TOOLS_ENABLED
 Dictionary PaintPolygon2D::_edit_get_state() const {
@@ -411,8 +412,159 @@ Ref<Image> PaintPolygon2D::_get_rendered_image() {
 		return Ref<Image>();
 	}
 
+	Ref<Image> texture_image;
+	Vector2 texture_image_size;
+
+	if (uvs.size() > 0 && texture.is_valid()) {
+		texture_image = texture->get_data();
+	}
+
+	bool use_uvs = texture_image.is_valid();
+
+	if (use_uvs) {
+		texture_image_size = texture_image->get_size();
+	}
+
 	_rendered_image.instance();
 	_rendered_image->create(_size.x, _size.y, false, Image::FORMAT_RGBA8);
+
+	_rendered_image->lock();
+
+	if (use_uvs) {
+		texture_image->lock();
+	}
+
+	Vector2 cpoints[3];
+	Vector2 cuvs[3];
+	Color ccolors[3];
+	int cinds[3];
+
+	if (colors.size() == 1) {
+		for (int j = 0; j < 3; ++j) {
+			ccolors[j] = colors[0];
+		}
+	}
+
+	//Note: Don't worry about the Node's Transform here, that will get applied automatically in the caller
+
+	for (int index = 0; index < indices.size(); index += 3) {
+		// Rasterize triangle
+
+		for (int j = 0; j < 3; ++j) {
+			cinds[j] = indices[index + j];
+
+			cpoints[j] = points[cinds[j]];
+
+			if (colors.size() > 1) {
+				ccolors[j] = colors[cinds[j]];
+			}
+
+			if (use_uvs) {
+				cuvs[j] = uvs[cinds[j]];
+			}
+		}
+
+		// Super simple scanline rasterizer
+		// Same idea as presented here: https://www.youtube.com/watch?v=PahbNFypubE
+
+		Vector2i min_coords = Vector2i(INT_MAX, INT_MAX);
+		Vector2i max_coords = Vector2i(INT_MIN, INT_MIN);
+
+		for (int j = 0; j < 3; ++j) {
+			min_coords.x = MIN(cpoints[j].x, min_coords.x);
+			min_coords.y = MIN(cpoints[j].y, min_coords.y);
+			max_coords.x = MAX(cpoints[j].x, max_coords.x);
+			max_coords.y = MAX(cpoints[j].y, max_coords.y);
+		}
+
+		Vector<Point2i> brenzenham_line_points = Geometry::brenzenham_line(cpoints[0].x, cpoints[1].x, cpoints[0].y, cpoints[1].y);
+		brenzenham_line_points.append_array(Geometry::brenzenham_line(cpoints[1].x, cpoints[2].x, cpoints[1].y, cpoints[2].y));
+		brenzenham_line_points.append_array(Geometry::brenzenham_line(cpoints[2].x, cpoints[0].x, cpoints[2].y, cpoints[0].y));
+
+		//Rect2i tri_rect = Rect2i(min_coords, max_coords - min_coords);
+
+		const int blp_size = brenzenham_line_points.size();
+		const Point2i *blp_ptr = brenzenham_line_points.ptr();
+
+		int fys = MAX(0, min_coords.y);
+		int fye = MIN(_size.y, max_coords.y);
+
+		for (int y = fys; y < fye; ++y) {
+			// Current scanline:
+			// . . . . psx X X X X X pse . . . .
+
+			int psx = INT_MAX;
+			int pex = INT_MIN;
+
+			for (int i = 0; i < blp_size; ++i) {
+				Point2i p = blp_ptr[i];
+
+				if (p.y != y) {
+					continue;
+				}
+
+				if (p.x < psx) {
+					psx = p.x;
+				}
+
+				if (p.x > pex) {
+					pex = p.x;
+				}
+			}
+
+			if (psx == INT_MIN || pex == INT_MAX) {
+				continue;
+			}
+
+			// maybe?
+			// pse -= 1;
+
+			float interpy = (y - min_coords.y) / (float)(max_coords.y - min_coords.y);
+
+			Vector2 uvsy;
+			Vector2 uvey;
+
+			if (use_uvs) {
+				uvsy = cuvs[0].linear_interpolate(cuvs[1], interpy);
+				uvey = cuvs[0].linear_interpolate(cuvs[2], interpy);
+			}
+
+			Color colorsy = ccolors[0].linear_interpolate(ccolors[1], interpy);
+			Color colorey = ccolors[0].linear_interpolate(ccolors[2], interpy);
+
+			int fxs = MAX(0, psx);
+			int fxe = MIN(_size.x, pex);
+
+			for (int x = fxs; x < fxe; ++x) {
+				//Vector2 point = Vector2(x, y);
+
+				float interpx = (x - psx) / (float)(pex - psx);
+
+				Color color = colorsy.linear_interpolate(colorey, interpx);
+
+				if (use_uvs) {
+					Vector2 uv = uvsy.linear_interpolate(uvey, interpx);
+
+					Vector2 imgcoord = uv * texture_image_size;
+
+					imgcoord.x = CLAMP(imgcoord.x, 0, texture_image_size.x - 1);
+					imgcoord.y = CLAMP(imgcoord.y, 0, texture_image_size.y - 1);
+
+					Color img_color = texture_image->get_pixelv(imgcoord);
+
+					color *= img_color;
+				}
+
+				_rendered_image->set_pixelv(Vector2(x, y), color);
+			}
+		}
+	}
+
+	if (use_uvs) {
+		texture_image->unlock();
+	}
+
+	_rendered_image->unlock();
 
 	return _rendered_image;
 }
