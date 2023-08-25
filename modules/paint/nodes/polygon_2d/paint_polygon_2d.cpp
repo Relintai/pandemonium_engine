@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "polygon_2d.h"
+#include "paint_polygon_2d.h"
 
 #include "core/math/geometry.h"
 
@@ -39,31 +39,31 @@
 #endif
 
 #ifdef TOOLS_ENABLED
-Dictionary Polygon2D::_edit_get_state() const {
+Dictionary PaintPolygon2D::_edit_get_state() const {
 	Dictionary state = Node2D::_edit_get_state();
 	state["offset"] = offset;
 	return state;
 }
 
-void Polygon2D::_edit_set_state(const Dictionary &p_state) {
+void PaintPolygon2D::_edit_set_state(const Dictionary &p_state) {
 	Node2D::_edit_set_state(p_state);
 	set_offset(p_state["offset"]);
 }
 
-void Polygon2D::_edit_set_pivot(const Point2 &p_pivot) {
+void PaintPolygon2D::_edit_set_pivot(const Point2 &p_pivot) {
 	set_position(get_transform().xform(p_pivot));
 	set_offset(get_offset() - p_pivot);
 }
 
-Point2 Polygon2D::_edit_get_pivot() const {
+Point2 PaintPolygon2D::_edit_get_pivot() const {
 	return Vector2();
 }
 
-bool Polygon2D::_edit_use_pivot() const {
+bool PaintPolygon2D::_edit_use_pivot() const {
 	return true;
 }
 
-Rect2 Polygon2D::_edit_get_rect() const {
+Rect2 PaintPolygon2D::_edit_get_rect() const {
 	if (rect_cache_dirty) {
 		int l = polygon.size();
 		PoolVector<Vector2>::Read r = polygon.read();
@@ -82,11 +82,11 @@ Rect2 Polygon2D::_edit_get_rect() const {
 	return item_rect;
 }
 
-bool Polygon2D::_edit_use_rect() const {
+bool PaintPolygon2D::_edit_use_rect() const {
 	return polygon.size() > 0;
 }
 
-bool Polygon2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
+bool PaintPolygon2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
 	Vector<Vector2> polygon2d = Variant(polygon);
 	if (internal_vertices > 0) {
 		polygon2d.resize(polygon2d.size() - internal_vertices);
@@ -95,11 +95,11 @@ bool Polygon2D::_edit_is_selected_on_click(const Point2 &p_point, double p_toler
 }
 #endif
 
-void Polygon2D::_skeleton_bone_setup_changed() {
+void PaintPolygon2D::_skeleton_bone_setup_changed() {
 	update();
 }
 
-void Polygon2D::_notification(int p_what) {
+void PaintPolygon2D::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			// Must re-establish any existing links with skeletons on re-entering the tree.
@@ -107,7 +107,7 @@ void Polygon2D::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			// Always detach skeleton when exiting the tree, so skeletons don't inform
-			// Polygon2Ds outside the tree that they have moved (this would be useless work).
+			// PaintPolygon2Ds outside the tree that they have moved (this would be useless work).
 			RS::get_singleton()->canvas_item_attach_skeleton(get_canvas_item(), RID());
 		} break;
 		case NOTIFICATION_DRAW: {
@@ -127,7 +127,7 @@ void Polygon2D::_notification(int p_what) {
 				RS::get_singleton()->canvas_item_attach_skeleton(get_canvas_item(), skeleton_node->get_skeleton());
 				new_skeleton_id = skeleton_node->get_instance_id();
 
-				// Sync the offset transform between the Polygon2D and the skeleton.
+				// Sync the offset transform between the PaintPolygon2D and the skeleton.
 				// This is needed for accurate culling in VisualServer.
 				Transform2D global_xform_skel = skeleton_node->get_global_transform();
 				Transform2D global_xform_poly = get_global_transform();
@@ -376,59 +376,59 @@ void Polygon2D::_notification(int p_what) {
 	}
 }
 
-void Polygon2D::set_polygon(const PoolVector<Vector2> &p_polygon) {
+void PaintPolygon2D::set_polygon(const PoolVector<Vector2> &p_polygon) {
 	polygon = p_polygon;
 	rect_cache_dirty = true;
 	update();
 }
 
-PoolVector<Vector2> Polygon2D::get_polygon() const {
+PoolVector<Vector2> PaintPolygon2D::get_polygon() const {
 	return polygon;
 }
 
-void Polygon2D::set_internal_vertex_count(int p_count) {
+void PaintPolygon2D::set_internal_vertex_count(int p_count) {
 	internal_vertices = p_count;
 }
 
-int Polygon2D::get_internal_vertex_count() const {
+int PaintPolygon2D::get_internal_vertex_count() const {
 	return internal_vertices;
 }
 
-void Polygon2D::set_uv(const PoolVector<Vector2> &p_uv) {
+void PaintPolygon2D::set_uv(const PoolVector<Vector2> &p_uv) {
 	uv = p_uv;
 	update();
 }
 
-PoolVector<Vector2> Polygon2D::get_uv() const {
+PoolVector<Vector2> PaintPolygon2D::get_uv() const {
 	return uv;
 }
 
-void Polygon2D::set_polygons(const Array &p_polygons) {
+void PaintPolygon2D::set_polygons(const Array &p_polygons) {
 	polygons = p_polygons;
 	update();
 }
 
-Array Polygon2D::get_polygons() const {
+Array PaintPolygon2D::get_polygons() const {
 	return polygons;
 }
 
-void Polygon2D::set_color(const Color &p_color) {
+void PaintPolygon2D::set_color(const Color &p_color) {
 	color = p_color;
 	update();
 }
-Color Polygon2D::get_color() const {
+Color PaintPolygon2D::get_color() const {
 	return color;
 }
 
-void Polygon2D::set_vertex_colors(const PoolVector<Color> &p_colors) {
+void PaintPolygon2D::set_vertex_colors(const PoolVector<Color> &p_colors) {
 	vertex_colors = p_colors;
 	update();
 }
-PoolVector<Color> Polygon2D::get_vertex_colors() const {
+PoolVector<Color> PaintPolygon2D::get_vertex_colors() const {
 	return vertex_colors;
 }
 
-void Polygon2D::set_texture(const Ref<Texture> &p_texture) {
+void PaintPolygon2D::set_texture(const Ref<Texture> &p_texture) {
 	texture = p_texture;
 
 	/*if (texture.is_valid()) {
@@ -441,124 +441,124 @@ void Polygon2D::set_texture(const Ref<Texture> &p_texture) {
 	}*/
 	update();
 }
-Ref<Texture> Polygon2D::get_texture() const {
+Ref<Texture> PaintPolygon2D::get_texture() const {
 	return texture;
 }
 
-void Polygon2D::set_texture_offset(const Vector2 &p_offset) {
+void PaintPolygon2D::set_texture_offset(const Vector2 &p_offset) {
 	tex_ofs = p_offset;
 	update();
 }
-Vector2 Polygon2D::get_texture_offset() const {
+Vector2 PaintPolygon2D::get_texture_offset() const {
 	return tex_ofs;
 }
 
-void Polygon2D::set_texture_rotation(float p_rot) {
+void PaintPolygon2D::set_texture_rotation(float p_rot) {
 	tex_rot = p_rot;
 	update();
 }
-float Polygon2D::get_texture_rotation() const {
+float PaintPolygon2D::get_texture_rotation() const {
 	return tex_rot;
 }
 
-void Polygon2D::set_texture_rotation_degrees(float p_rot) {
+void PaintPolygon2D::set_texture_rotation_degrees(float p_rot) {
 	set_texture_rotation(Math::deg2rad(p_rot));
 }
-float Polygon2D::get_texture_rotation_degrees() const {
+float PaintPolygon2D::get_texture_rotation_degrees() const {
 	return Math::rad2deg(get_texture_rotation());
 }
 
-void Polygon2D::set_texture_scale(const Size2 &p_scale) {
+void PaintPolygon2D::set_texture_scale(const Size2 &p_scale) {
 	tex_scale = p_scale;
 	update();
 }
-Size2 Polygon2D::get_texture_scale() const {
+Size2 PaintPolygon2D::get_texture_scale() const {
 	return tex_scale;
 }
 
-void Polygon2D::set_invert(bool p_invert) {
+void PaintPolygon2D::set_invert(bool p_invert) {
 	invert = p_invert;
 	update();
 }
-bool Polygon2D::get_invert() const {
+bool PaintPolygon2D::get_invert() const {
 	return invert;
 }
 
-void Polygon2D::set_antialiased(bool p_antialiased) {
+void PaintPolygon2D::set_antialiased(bool p_antialiased) {
 	antialiased = p_antialiased;
 	update();
 }
-bool Polygon2D::get_antialiased() const {
+bool PaintPolygon2D::get_antialiased() const {
 	return antialiased;
 }
 
-void Polygon2D::set_invert_border(float p_invert_border) {
+void PaintPolygon2D::set_invert_border(float p_invert_border) {
 	invert_border = p_invert_border;
 	update();
 }
-float Polygon2D::get_invert_border() const {
+float PaintPolygon2D::get_invert_border() const {
 	return invert_border;
 }
 
-void Polygon2D::set_offset(const Vector2 &p_offset) {
+void PaintPolygon2D::set_offset(const Vector2 &p_offset) {
 	offset = p_offset;
 	rect_cache_dirty = true;
 	update();
 	_change_notify("offset");
 }
 
-Vector2 Polygon2D::get_offset() const {
+Vector2 PaintPolygon2D::get_offset() const {
 	return offset;
 }
 
-void Polygon2D::add_bone(const NodePath &p_path, const PoolVector<float> &p_weights) {
+void PaintPolygon2D::add_bone(const NodePath &p_path, const PoolVector<float> &p_weights) {
 	Bone bone;
 	bone.path = p_path;
 	bone.weights = p_weights;
 	bone_weights.push_back(bone);
 }
-int Polygon2D::get_bone_count() const {
+int PaintPolygon2D::get_bone_count() const {
 	return bone_weights.size();
 }
-NodePath Polygon2D::get_bone_path(int p_index) const {
+NodePath PaintPolygon2D::get_bone_path(int p_index) const {
 	ERR_FAIL_INDEX_V(p_index, bone_weights.size(), NodePath());
 	return bone_weights[p_index].path;
 }
-PoolVector<float> Polygon2D::get_bone_weights(int p_index) const {
+PoolVector<float> PaintPolygon2D::get_bone_weights(int p_index) const {
 	ERR_FAIL_INDEX_V(p_index, bone_weights.size(), PoolVector<float>());
 	return bone_weights[p_index].weights;
 }
-void Polygon2D::erase_bone(int p_idx) {
+void PaintPolygon2D::erase_bone(int p_idx) {
 	ERR_FAIL_INDEX(p_idx, bone_weights.size());
 	bone_weights.remove(p_idx);
 }
 
-void Polygon2D::clear_bones() {
+void PaintPolygon2D::clear_bones() {
 	bone_weights.clear();
 }
 
-void Polygon2D::set_bone_weights(int p_index, const PoolVector<float> &p_weights) {
+void PaintPolygon2D::set_bone_weights(int p_index, const PoolVector<float> &p_weights) {
 	ERR_FAIL_INDEX(p_index, bone_weights.size());
 	bone_weights.write[p_index].weights = p_weights;
 	update();
 }
-void Polygon2D::set_bone_path(int p_index, const NodePath &p_path) {
+void PaintPolygon2D::set_bone_path(int p_index, const NodePath &p_path) {
 	ERR_FAIL_INDEX(p_index, bone_weights.size());
 	bone_weights.write[p_index].path = p_path;
 	update();
 }
 
-Array Polygon2D::_get_bones() const {
+Array PaintPolygon2D::_get_bones() const {
 	Array bones;
 	for (int i = 0; i < get_bone_count(); i++) {
 		// Convert path property to String to avoid errors due to invalid node path in editor,
-		// because it's relative to the Skeleton2D node and not Polygon2D.
+		// because it's relative to the Skeleton2D node and not PaintPolygon2D.
 		bones.push_back(String(get_bone_path(i)));
 		bones.push_back(get_bone_weights(i));
 	}
 	return bones;
 }
-void Polygon2D::_set_bones(const Array &p_bones) {
+void PaintPolygon2D::_set_bones(const Array &p_bones) {
 	ERR_FAIL_COND(p_bones.size() & 1);
 	clear_bones();
 	for (int i = 0; i < p_bones.size(); i += 2) {
@@ -567,7 +567,7 @@ void Polygon2D::_set_bones(const Array &p_bones) {
 	}
 }
 
-void Polygon2D::set_skeleton(const NodePath &p_skeleton) {
+void PaintPolygon2D::set_skeleton(const NodePath &p_skeleton) {
 	if (skeleton == p_skeleton) {
 		return;
 	}
@@ -575,72 +575,72 @@ void Polygon2D::set_skeleton(const NodePath &p_skeleton) {
 	update();
 }
 
-NodePath Polygon2D::get_skeleton() const {
+NodePath PaintPolygon2D::get_skeleton() const {
 	return skeleton;
 }
 
-void Polygon2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("set_polygon", "polygon"), &Polygon2D::set_polygon);
-	ClassDB::bind_method(D_METHOD("get_polygon"), &Polygon2D::get_polygon);
+void PaintPolygon2D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_polygon", "polygon"), &PaintPolygon2D::set_polygon);
+	ClassDB::bind_method(D_METHOD("get_polygon"), &PaintPolygon2D::get_polygon);
 
-	ClassDB::bind_method(D_METHOD("set_uv", "uv"), &Polygon2D::set_uv);
-	ClassDB::bind_method(D_METHOD("get_uv"), &Polygon2D::get_uv);
+	ClassDB::bind_method(D_METHOD("set_uv", "uv"), &PaintPolygon2D::set_uv);
+	ClassDB::bind_method(D_METHOD("get_uv"), &PaintPolygon2D::get_uv);
 
-	ClassDB::bind_method(D_METHOD("set_color", "color"), &Polygon2D::set_color);
-	ClassDB::bind_method(D_METHOD("get_color"), &Polygon2D::get_color);
+	ClassDB::bind_method(D_METHOD("set_color", "color"), &PaintPolygon2D::set_color);
+	ClassDB::bind_method(D_METHOD("get_color"), &PaintPolygon2D::get_color);
 
-	ClassDB::bind_method(D_METHOD("set_polygons", "polygons"), &Polygon2D::set_polygons);
-	ClassDB::bind_method(D_METHOD("get_polygons"), &Polygon2D::get_polygons);
+	ClassDB::bind_method(D_METHOD("set_polygons", "polygons"), &PaintPolygon2D::set_polygons);
+	ClassDB::bind_method(D_METHOD("get_polygons"), &PaintPolygon2D::get_polygons);
 
-	ClassDB::bind_method(D_METHOD("set_vertex_colors", "vertex_colors"), &Polygon2D::set_vertex_colors);
-	ClassDB::bind_method(D_METHOD("get_vertex_colors"), &Polygon2D::get_vertex_colors);
+	ClassDB::bind_method(D_METHOD("set_vertex_colors", "vertex_colors"), &PaintPolygon2D::set_vertex_colors);
+	ClassDB::bind_method(D_METHOD("get_vertex_colors"), &PaintPolygon2D::get_vertex_colors);
 
-	ClassDB::bind_method(D_METHOD("set_texture", "texture"), &Polygon2D::set_texture);
-	ClassDB::bind_method(D_METHOD("get_texture"), &Polygon2D::get_texture);
+	ClassDB::bind_method(D_METHOD("set_texture", "texture"), &PaintPolygon2D::set_texture);
+	ClassDB::bind_method(D_METHOD("get_texture"), &PaintPolygon2D::get_texture);
 
-	ClassDB::bind_method(D_METHOD("set_texture_offset", "texture_offset"), &Polygon2D::set_texture_offset);
-	ClassDB::bind_method(D_METHOD("get_texture_offset"), &Polygon2D::get_texture_offset);
+	ClassDB::bind_method(D_METHOD("set_texture_offset", "texture_offset"), &PaintPolygon2D::set_texture_offset);
+	ClassDB::bind_method(D_METHOD("get_texture_offset"), &PaintPolygon2D::get_texture_offset);
 
-	ClassDB::bind_method(D_METHOD("set_texture_rotation", "texture_rotation"), &Polygon2D::set_texture_rotation);
-	ClassDB::bind_method(D_METHOD("get_texture_rotation"), &Polygon2D::get_texture_rotation);
+	ClassDB::bind_method(D_METHOD("set_texture_rotation", "texture_rotation"), &PaintPolygon2D::set_texture_rotation);
+	ClassDB::bind_method(D_METHOD("get_texture_rotation"), &PaintPolygon2D::get_texture_rotation);
 
-	ClassDB::bind_method(D_METHOD("set_texture_rotation_degrees", "texture_rotation"), &Polygon2D::set_texture_rotation_degrees);
-	ClassDB::bind_method(D_METHOD("get_texture_rotation_degrees"), &Polygon2D::get_texture_rotation_degrees);
+	ClassDB::bind_method(D_METHOD("set_texture_rotation_degrees", "texture_rotation"), &PaintPolygon2D::set_texture_rotation_degrees);
+	ClassDB::bind_method(D_METHOD("get_texture_rotation_degrees"), &PaintPolygon2D::get_texture_rotation_degrees);
 
-	ClassDB::bind_method(D_METHOD("set_texture_scale", "texture_scale"), &Polygon2D::set_texture_scale);
-	ClassDB::bind_method(D_METHOD("get_texture_scale"), &Polygon2D::get_texture_scale);
+	ClassDB::bind_method(D_METHOD("set_texture_scale", "texture_scale"), &PaintPolygon2D::set_texture_scale);
+	ClassDB::bind_method(D_METHOD("get_texture_scale"), &PaintPolygon2D::get_texture_scale);
 
-	ClassDB::bind_method(D_METHOD("set_invert", "invert"), &Polygon2D::set_invert);
-	ClassDB::bind_method(D_METHOD("get_invert"), &Polygon2D::get_invert);
+	ClassDB::bind_method(D_METHOD("set_invert", "invert"), &PaintPolygon2D::set_invert);
+	ClassDB::bind_method(D_METHOD("get_invert"), &PaintPolygon2D::get_invert);
 
-	ClassDB::bind_method(D_METHOD("set_antialiased", "antialiased"), &Polygon2D::set_antialiased);
-	ClassDB::bind_method(D_METHOD("get_antialiased"), &Polygon2D::get_antialiased);
+	ClassDB::bind_method(D_METHOD("set_antialiased", "antialiased"), &PaintPolygon2D::set_antialiased);
+	ClassDB::bind_method(D_METHOD("get_antialiased"), &PaintPolygon2D::get_antialiased);
 
-	ClassDB::bind_method(D_METHOD("set_invert_border", "invert_border"), &Polygon2D::set_invert_border);
-	ClassDB::bind_method(D_METHOD("get_invert_border"), &Polygon2D::get_invert_border);
+	ClassDB::bind_method(D_METHOD("set_invert_border", "invert_border"), &PaintPolygon2D::set_invert_border);
+	ClassDB::bind_method(D_METHOD("get_invert_border"), &PaintPolygon2D::get_invert_border);
 
-	ClassDB::bind_method(D_METHOD("set_offset", "offset"), &Polygon2D::set_offset);
-	ClassDB::bind_method(D_METHOD("get_offset"), &Polygon2D::get_offset);
+	ClassDB::bind_method(D_METHOD("set_offset", "offset"), &PaintPolygon2D::set_offset);
+	ClassDB::bind_method(D_METHOD("get_offset"), &PaintPolygon2D::get_offset);
 
-	ClassDB::bind_method(D_METHOD("add_bone", "path", "weights"), &Polygon2D::add_bone);
-	ClassDB::bind_method(D_METHOD("get_bone_count"), &Polygon2D::get_bone_count);
-	ClassDB::bind_method(D_METHOD("get_bone_path", "index"), &Polygon2D::get_bone_path);
-	ClassDB::bind_method(D_METHOD("get_bone_weights", "index"), &Polygon2D::get_bone_weights);
-	ClassDB::bind_method(D_METHOD("erase_bone", "index"), &Polygon2D::erase_bone);
-	ClassDB::bind_method(D_METHOD("clear_bones"), &Polygon2D::clear_bones);
-	ClassDB::bind_method(D_METHOD("set_bone_path", "index", "path"), &Polygon2D::set_bone_path);
-	ClassDB::bind_method(D_METHOD("set_bone_weights", "index", "weights"), &Polygon2D::set_bone_weights);
+	ClassDB::bind_method(D_METHOD("add_bone", "path", "weights"), &PaintPolygon2D::add_bone);
+	ClassDB::bind_method(D_METHOD("get_bone_count"), &PaintPolygon2D::get_bone_count);
+	ClassDB::bind_method(D_METHOD("get_bone_path", "index"), &PaintPolygon2D::get_bone_path);
+	ClassDB::bind_method(D_METHOD("get_bone_weights", "index"), &PaintPolygon2D::get_bone_weights);
+	ClassDB::bind_method(D_METHOD("erase_bone", "index"), &PaintPolygon2D::erase_bone);
+	ClassDB::bind_method(D_METHOD("clear_bones"), &PaintPolygon2D::clear_bones);
+	ClassDB::bind_method(D_METHOD("set_bone_path", "index", "path"), &PaintPolygon2D::set_bone_path);
+	ClassDB::bind_method(D_METHOD("set_bone_weights", "index", "weights"), &PaintPolygon2D::set_bone_weights);
 
-	ClassDB::bind_method(D_METHOD("set_skeleton", "skeleton"), &Polygon2D::set_skeleton);
-	ClassDB::bind_method(D_METHOD("get_skeleton"), &Polygon2D::get_skeleton);
+	ClassDB::bind_method(D_METHOD("set_skeleton", "skeleton"), &PaintPolygon2D::set_skeleton);
+	ClassDB::bind_method(D_METHOD("get_skeleton"), &PaintPolygon2D::get_skeleton);
 
-	ClassDB::bind_method(D_METHOD("set_internal_vertex_count", "internal_vertex_count"), &Polygon2D::set_internal_vertex_count);
-	ClassDB::bind_method(D_METHOD("get_internal_vertex_count"), &Polygon2D::get_internal_vertex_count);
+	ClassDB::bind_method(D_METHOD("set_internal_vertex_count", "internal_vertex_count"), &PaintPolygon2D::set_internal_vertex_count);
+	ClassDB::bind_method(D_METHOD("get_internal_vertex_count"), &PaintPolygon2D::get_internal_vertex_count);
 
-	ClassDB::bind_method(D_METHOD("_set_bones", "bones"), &Polygon2D::_set_bones);
-	ClassDB::bind_method(D_METHOD("_get_bones"), &Polygon2D::_get_bones);
+	ClassDB::bind_method(D_METHOD("_set_bones", "bones"), &PaintPolygon2D::_set_bones);
+	ClassDB::bind_method(D_METHOD("_get_bones"), &PaintPolygon2D::_get_bones);
 
-	ClassDB::bind_method(D_METHOD("_skeleton_bone_setup_changed"), &Polygon2D::_skeleton_bone_setup_changed);
+	ClassDB::bind_method(D_METHOD("_skeleton_bone_setup_changed"), &PaintPolygon2D::_skeleton_bone_setup_changed);
 
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "offset"), "set_offset", "get_offset");
@@ -668,7 +668,7 @@ void Polygon2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "internal_vertex_count", PROPERTY_HINT_RANGE, "0,1000"), "set_internal_vertex_count", "get_internal_vertex_count");
 }
 
-Polygon2D::Polygon2D() {
+PaintPolygon2D::PaintPolygon2D() {
 	invert = false;
 	invert_border = 100;
 	antialiased = false;
@@ -681,7 +681,7 @@ Polygon2D::Polygon2D() {
 	current_skeleton_id = 0;
 }
 
-Polygon2D::~Polygon2D() {
+PaintPolygon2D::~PaintPolygon2D() {
 	// Most definitely don't want to leave references to this deleted canvas item
 	// in the skeleton.
 	if (get_canvas_item().is_valid()) {

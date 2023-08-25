@@ -34,6 +34,9 @@ def get_doc_classes():
       "PaintProjectPropertyInspector",
       "PaintProjectToolsPropertyInspector",
       "PaintToolsPropertyInspector",
+
+      "PaintPolygon2D",
+      "PaintCurve2D",
     ]
 
 def get_doc_path():

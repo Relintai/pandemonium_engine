@@ -1,5 +1,5 @@
-#ifndef POLYGON_2D_H
-#define POLYGON_2D_H
+#ifndef PAINT_POLYGON_2D_H
+#define PAINT_POLYGON_2D_H
 
 /*************************************************************************/
 /*  polygon_2d.h                                                         */
@@ -31,10 +31,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/2d/node_2d.h"
+#include "../paint_node.h"
 
-class Polygon2D : public Node2D {
-	GDCLASS(Polygon2D, Node2D);
+class PaintPolygon2D : public PaintNode {
+	GDCLASS(PaintPolygon2D, PaintNode);
 
 	PoolVector<Vector2> polygon;
 	PoolVector<Vector2> uv;
@@ -146,8 +146,8 @@ public:
 	void set_skeleton(const NodePath &p_skeleton);
 	NodePath get_skeleton() const;
 
-	Polygon2D();
-	virtual ~Polygon2D();
+	PaintPolygon2D();
+	virtual ~PaintPolygon2D();
 };
 
 #endif // POLYGON_2D_H

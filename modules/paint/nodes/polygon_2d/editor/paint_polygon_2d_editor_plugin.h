@@ -1,5 +1,6 @@
-#ifndef POLYGON_2D_EDITOR_PLUGIN_H
-#define POLYGON_2D_EDITOR_PLUGIN_H
+#ifndef PAINT_POLYGON_2D_EDITOR_PLUGIN_H
+#define PAINT_POLYGON_2D_EDITOR_PLUGIN_H
+
 /*************************************************************************/
 /*  polygon_2d_editor_plugin.h                                           */
 /*************************************************************************/
@@ -51,16 +52,17 @@ class MenuButton;
 class Node2D;
 class Node;
 class Panel;
-class Polygon2D;
+class PaintPolygon2D;
 class ScrollContainer;
 class SpinBox;
 class TextureRect;
 class ToolButton;
 class VBoxContainer;
 class VScrollBar;
+class PaintPolygon2D;
 
-class Polygon2DEditor : public AbstractPolygon2DEditor {
-	GDCLASS(Polygon2DEditor, AbstractPolygon2DEditor);
+class PaintPolygon2DEditor : public AbstractPolygon2DEditor {
+	GDCLASS(PaintPolygon2DEditor, AbstractPolygon2DEditor);
 
 	enum Mode {
 		MODE_EDIT_UV = MODE_CONT,
@@ -88,7 +90,7 @@ class Polygon2DEditor : public AbstractPolygon2DEditor {
 	ToolButton *uv_edit_mode[4];
 	Ref<ButtonGroup> uv_edit_group;
 
-	Polygon2D *node;
+	PaintPolygon2D *node;
 
 	UVMode uv_mode;
 	AcceptDialog *uv_edit;
@@ -185,14 +187,14 @@ protected:
 	Vector2 snap_point(Vector2 p_target) const;
 
 public:
-	Polygon2DEditor(EditorNode *p_editor);
+	PaintPolygon2DEditor(EditorNode *p_editor);
 };
 
-class Polygon2DEditorPlugin : public AbstractPolygon2DEditorPlugin {
-	GDCLASS(Polygon2DEditorPlugin, AbstractPolygon2DEditorPlugin);
+class PaintPolygon2DEditorPlugin : public AbstractPolygon2DEditorPlugin {
+	GDCLASS(PaintPolygon2DEditorPlugin, AbstractPolygon2DEditorPlugin);
 
 public:
-	Polygon2DEditorPlugin(EditorNode *p_node);
+	PaintPolygon2DEditorPlugin(EditorNode *p_node);
 };
 
 #endif // POLYGON_2D_EDITOR_PLUGIN_H

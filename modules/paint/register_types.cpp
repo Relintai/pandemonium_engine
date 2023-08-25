@@ -48,8 +48,13 @@ SOFTWARE.
 #include "nodes/paint_node.h"
 #include "nodes/paint_project.h"
 
+#include "nodes/curve_2d/paint_curve_2d.h"
+#include "nodes/polygon_2d/paint_polygon_2d.h"
+
 #ifdef TOOLS_ENABLED
 #include "editor/paint_editor_plugin.h"
+#include "nodes/curve_2d/editor/paint_curve_2d_editor_plugin.h"
+#include "nodes/polygon_2d/editor/paint_polygon_2d_editor_plugin.h"
 #endif
 
 void register_paint_types(ModuleRegistrationLevel p_level) {
@@ -79,11 +84,16 @@ void register_paint_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<PaintNode>();
 		ClassDB::register_class<PaintCanvas>();
 		ClassDB::register_class<PaintProject>();
+		ClassDB::register_class<PaintCurve2D>();
+		ClassDB::register_class<PaintPolygon2D>();
 	}
 
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
 		EditorPlugins::add_by_type<PaintEditorPlugin>();
+
+		EditorPlugins::add_by_type<PaintPolygon2DEditorPlugin>();
+		EditorPlugins::add_by_type<PaintCurve2DEditorPlugin>();
 	}
 #endif
 }

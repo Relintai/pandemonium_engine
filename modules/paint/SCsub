@@ -36,7 +36,12 @@ module_env.add_source_files(env.modules_sources,"bush_prefabs.cpp")
 module_env.add_source_files(env.modules_sources,"nodes/paint_node.cpp")
 module_env.add_source_files(env.modules_sources,"nodes/paint_canvas.cpp")
 module_env.add_source_files(env.modules_sources,"nodes/paint_project.cpp")
+module_env.add_source_files(env.modules_sources,"nodes/curve_2d/paint_curve_2d.cpp")
+module_env.add_source_files(env.modules_sources,"nodes/polygon_2d/paint_polygon_2d.cpp")
 
 if 'TOOLS_ENABLED' in env["CPPDEFINES"]:
     module_env.add_source_files(env.modules_sources,"editor/paint_editor_plugin.cpp")
     module_env.add_source_files(env.modules_sources,"editor/paint_inspector_plugin.cpp")
+
+    module_env.add_source_files(env.modules_sources,"nodes/curve_2d/editor/paint_curve_2d_editor_plugin.cpp")
+    module_env.add_source_files(env.modules_sources,"nodes/polygon_2d/editor/paint_polygon_2d_editor_plugin.cpp")

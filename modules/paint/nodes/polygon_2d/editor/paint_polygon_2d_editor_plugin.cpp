@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "polygon_2d_editor_plugin.h"
+#include "paint_polygon_2d_editor_plugin.h"
 
 #include "modules/modules_enabled.gen.h"
 
@@ -36,7 +36,7 @@
 #include "modules/skeleton_2d/nodes/skeleton_2d.h"
 #endif
 
-#include "canvas_item_editor_plugin.h"
+#include "editor/plugins/canvas_item_editor_plugin.h"
 #include "core/input/input.h"
 #include "core/input/input_event.h"
 #include "core/math/geometry.h"
@@ -78,23 +78,25 @@
 #include "scene/resources/texture.h"
 #include "servers/rendering_server.h"
 
+#include "../paint_polygon_2d.h"
+
 class EditorNode;
 class Node2D;
 
-Node2D *Polygon2DEditor::_get_node() const {
+Node2D *PaintPolygon2DEditor::_get_node() const {
 	return node;
 }
 
-void Polygon2DEditor::_set_node(Node *p_polygon) {
-	node = Object::cast_to<Polygon2D>(p_polygon);
+void PaintPolygon2DEditor::_set_node(Node *p_polygon) {
+	node = Object::cast_to<PaintPolygon2D>(p_polygon);
 	_update_polygon_editing_state();
 }
 
-Vector2 Polygon2DEditor::_get_offset(int p_idx) const {
+Vector2 PaintPolygon2DEditor::_get_offset(int p_idx) const {
 	return node->get_offset();
 }
 
-int Polygon2DEditor::_get_polygon_count() const {
+int PaintPolygon2DEditor::_get_polygon_count() const {
 	if (node->get_internal_vertex_count() > 0) {
 		return 0; //do not edit if internal vertices exist
 	} else {
@@ -102,7 +104,7 @@ int Polygon2DEditor::_get_polygon_count() const {
 	}
 }
 
-void Polygon2DEditor::_notification(int p_what) {
+void PaintPolygon2DEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
@@ -139,11 +141,11 @@ void Polygon2DEditor::_notification(int p_what) {
 	}
 }
 
-void Polygon2DEditor::_sync_bones() {
+void PaintPolygon2DEditor::_sync_bones() {
 #ifdef MODULE_SKELETON_2D_ENABLED
 	Skeleton2D *skeleton = nullptr;
 	if (!node->has_node(node->get_skeleton())) {
-		error->set_text(TTR("The skeleton property of the Polygon2D does not point to a Skeleton2D node"));
+		error->set_text(TTR("The skeleton property of the PaintPolygon2D does not point to a Skeleton2D node"));
 		error->popup_centered_minsize();
 	} else {
 		Node *sn = node->get_node(node->get_skeleton());
@@ -154,7 +156,7 @@ void Polygon2DEditor::_sync_bones() {
 	node->clear_bones();
 
 	if (!skeleton) {
-		error->set_text(TTR("The skeleton property of the Polygon2D does not point to a Skeleton2D node"));
+		error->set_text(TTR("The skeleton property of the PaintPolygon2D does not point to a Skeleton2D node"));
 		error->popup_centered_minsize();
 	} else {
 		for (int i = 0; i < skeleton->get_bone_count(); i++) {
@@ -195,7 +197,7 @@ void Polygon2DEditor::_sync_bones() {
 #endif
 }
 
-void Polygon2DEditor::_update_bone_list() {
+void PaintPolygon2DEditor::_update_bone_list() {
 	NodePath selected;
 	while (bone_scroll_vb->get_child_count()) {
 		CheckBox *cb = Object::cast_to<CheckBox>(bone_scroll_vb->get_child(0));
@@ -233,11 +235,11 @@ void Polygon2DEditor::_update_bone_list() {
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_bone_paint_selected(int p_index) {
+void PaintPolygon2DEditor::_bone_paint_selected(int p_index) {
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_uv_edit_mode_select(int p_mode) {
+void PaintPolygon2DEditor::_uv_edit_mode_select(int p_mode) {
 	if (p_mode == 0) { //uv
 
 		uv_button[UV_MODE_CREATE]->hide();
@@ -307,13 +309,13 @@ void Polygon2DEditor::_uv_edit_mode_select(int p_mode) {
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_uv_edit_popup_hide() {
+void PaintPolygon2DEditor::_uv_edit_popup_hide() {
 	EditorSettings::get_singleton()->set("interface/dialogs/uv_editor_bounds", uv_edit->get_rect());
 
 	_cancel_editing();
 }
 
-void Polygon2DEditor::_menu_option(int p_option) {
+void PaintPolygon2DEditor::_menu_option(int p_option) {
 	switch (p_option) {
 		case MODE_EDIT_UV: {
 			if (node->get_texture().is_null()) {
@@ -388,7 +390,7 @@ void Polygon2DEditor::_menu_option(int p_option) {
 	}
 }
 
-void Polygon2DEditor::_cancel_editing() {
+void PaintPolygon2DEditor::_cancel_editing() {
 	if (uv_create) {
 		uv_drag = false;
 		uv_create = false;
@@ -412,7 +414,7 @@ void Polygon2DEditor::_cancel_editing() {
 	polygon_create.clear();
 }
 
-void Polygon2DEditor::_update_polygon_editing_state() {
+void PaintPolygon2DEditor::_update_polygon_editing_state() {
 	if (!_get_node()) {
 		return;
 	}
@@ -424,7 +426,7 @@ void Polygon2DEditor::_update_polygon_editing_state() {
 	}
 }
 
-void Polygon2DEditor::_commit_action() {
+void PaintPolygon2DEditor::_commit_action() {
 	// Makes that undo/redoing actions made outside of the UV editor still affect its polygon.
 	undo_redo->add_do_method(uv_edit_draw, "update");
 	undo_redo->add_undo_method(uv_edit_draw, "update");
@@ -433,42 +435,42 @@ void Polygon2DEditor::_commit_action() {
 	undo_redo->commit_action();
 }
 
-void Polygon2DEditor::_set_use_snap(bool p_use) {
+void PaintPolygon2DEditor::_set_use_snap(bool p_use) {
 	use_snap = p_use;
 	EditorSettings::get_singleton()->set_project_metadata("polygon_2d_uv_editor", "snap_enabled", p_use);
 }
 
-void Polygon2DEditor::_set_show_grid(bool p_show) {
+void PaintPolygon2DEditor::_set_show_grid(bool p_show) {
 	snap_show_grid = p_show;
 	EditorSettings::get_singleton()->set_project_metadata("polygon_2d_uv_editor", "show_grid", p_show);
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_set_snap_off_x(float p_val) {
+void PaintPolygon2DEditor::_set_snap_off_x(float p_val) {
 	snap_offset.x = p_val;
 	EditorSettings::get_singleton()->set_project_metadata("polygon_2d_uv_editor", "snap_offset", snap_offset);
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_set_snap_off_y(float p_val) {
+void PaintPolygon2DEditor::_set_snap_off_y(float p_val) {
 	snap_offset.y = p_val;
 	EditorSettings::get_singleton()->set_project_metadata("polygon_2d_uv_editor", "snap_offset", snap_offset);
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_set_snap_step_x(float p_val) {
+void PaintPolygon2DEditor::_set_snap_step_x(float p_val) {
 	snap_step.x = p_val;
 	EditorSettings::get_singleton()->set_project_metadata("polygon_2d_uv_editor", "snap_step", snap_step);
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_set_snap_step_y(float p_val) {
+void PaintPolygon2DEditor::_set_snap_step_y(float p_val) {
 	snap_step.y = p_val;
 	EditorSettings::get_singleton()->set_project_metadata("polygon_2d_uv_editor", "snap_step", snap_step);
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_uv_mode(int p_mode) {
+void PaintPolygon2DEditor::_uv_mode(int p_mode) {
 	polygon_create.clear();
 	uv_drag = false;
 	uv_create = false;
@@ -479,7 +481,7 @@ void Polygon2DEditor::_uv_mode(int p_mode) {
 	}
 }
 
-void Polygon2DEditor::_uv_input(const Ref<InputEvent> &p_input) {
+void PaintPolygon2DEditor::_uv_input(const Ref<InputEvent> &p_input) {
 	if (!_get_node()) {
 		return;
 	}
@@ -969,7 +971,7 @@ void Polygon2DEditor::_uv_input(const Ref<InputEvent> &p_input) {
 	}
 }
 
-void Polygon2DEditor::_uv_scroll_changed(float) {
+void PaintPolygon2DEditor::_uv_scroll_changed(float) {
 	if (updating_uv_scroll) {
 		return;
 	}
@@ -980,7 +982,7 @@ void Polygon2DEditor::_uv_scroll_changed(float) {
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_uv_draw() {
+void PaintPolygon2DEditor::_uv_draw() {
 	if (!uv_edit->is_visible() || !_get_node()) {
 		return;
 	}
@@ -1241,26 +1243,26 @@ void Polygon2DEditor::_uv_draw() {
 	updating_uv_scroll = false;
 }
 
-void Polygon2DEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_uv_mode"), &Polygon2DEditor::_uv_mode);
-	ClassDB::bind_method(D_METHOD("_uv_draw"), &Polygon2DEditor::_uv_draw);
-	ClassDB::bind_method(D_METHOD("_uv_input"), &Polygon2DEditor::_uv_input);
-	ClassDB::bind_method(D_METHOD("_uv_scroll_changed"), &Polygon2DEditor::_uv_scroll_changed);
-	ClassDB::bind_method(D_METHOD("_set_use_snap"), &Polygon2DEditor::_set_use_snap);
-	ClassDB::bind_method(D_METHOD("_set_show_grid"), &Polygon2DEditor::_set_show_grid);
-	ClassDB::bind_method(D_METHOD("_set_snap_off_x"), &Polygon2DEditor::_set_snap_off_x);
-	ClassDB::bind_method(D_METHOD("_set_snap_off_y"), &Polygon2DEditor::_set_snap_off_y);
-	ClassDB::bind_method(D_METHOD("_set_snap_step_x"), &Polygon2DEditor::_set_snap_step_x);
-	ClassDB::bind_method(D_METHOD("_set_snap_step_y"), &Polygon2DEditor::_set_snap_step_y);
-	ClassDB::bind_method(D_METHOD("_uv_edit_mode_select"), &Polygon2DEditor::_uv_edit_mode_select);
-	ClassDB::bind_method(D_METHOD("_uv_edit_popup_hide"), &Polygon2DEditor::_uv_edit_popup_hide);
-	ClassDB::bind_method(D_METHOD("_sync_bones"), &Polygon2DEditor::_sync_bones);
-	ClassDB::bind_method(D_METHOD("_update_bone_list"), &Polygon2DEditor::_update_bone_list);
-	ClassDB::bind_method(D_METHOD("_update_polygon_editing_state"), &Polygon2DEditor::_update_polygon_editing_state);
-	ClassDB::bind_method(D_METHOD("_bone_paint_selected"), &Polygon2DEditor::_bone_paint_selected);
+void PaintPolygon2DEditor::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_uv_mode"), &PaintPolygon2DEditor::_uv_mode);
+	ClassDB::bind_method(D_METHOD("_uv_draw"), &PaintPolygon2DEditor::_uv_draw);
+	ClassDB::bind_method(D_METHOD("_uv_input"), &PaintPolygon2DEditor::_uv_input);
+	ClassDB::bind_method(D_METHOD("_uv_scroll_changed"), &PaintPolygon2DEditor::_uv_scroll_changed);
+	ClassDB::bind_method(D_METHOD("_set_use_snap"), &PaintPolygon2DEditor::_set_use_snap);
+	ClassDB::bind_method(D_METHOD("_set_show_grid"), &PaintPolygon2DEditor::_set_show_grid);
+	ClassDB::bind_method(D_METHOD("_set_snap_off_x"), &PaintPolygon2DEditor::_set_snap_off_x);
+	ClassDB::bind_method(D_METHOD("_set_snap_off_y"), &PaintPolygon2DEditor::_set_snap_off_y);
+	ClassDB::bind_method(D_METHOD("_set_snap_step_x"), &PaintPolygon2DEditor::_set_snap_step_x);
+	ClassDB::bind_method(D_METHOD("_set_snap_step_y"), &PaintPolygon2DEditor::_set_snap_step_y);
+	ClassDB::bind_method(D_METHOD("_uv_edit_mode_select"), &PaintPolygon2DEditor::_uv_edit_mode_select);
+	ClassDB::bind_method(D_METHOD("_uv_edit_popup_hide"), &PaintPolygon2DEditor::_uv_edit_popup_hide);
+	ClassDB::bind_method(D_METHOD("_sync_bones"), &PaintPolygon2DEditor::_sync_bones);
+	ClassDB::bind_method(D_METHOD("_update_bone_list"), &PaintPolygon2DEditor::_update_bone_list);
+	ClassDB::bind_method(D_METHOD("_update_polygon_editing_state"), &PaintPolygon2DEditor::_update_polygon_editing_state);
+	ClassDB::bind_method(D_METHOD("_bone_paint_selected"), &PaintPolygon2DEditor::_bone_paint_selected);
 }
 
-Vector2 Polygon2DEditor::snap_point(Vector2 p_target) const {
+Vector2 PaintPolygon2DEditor::snap_point(Vector2 p_target) const {
 	if (use_snap) {
 		p_target.x = Math::snap_scalar(snap_offset.x * uv_draw_zoom - uv_draw_ofs.x, snap_step.x * uv_draw_zoom, p_target.x);
 		p_target.y = Math::snap_scalar(snap_offset.y * uv_draw_zoom - uv_draw_ofs.y, snap_step.y * uv_draw_zoom, p_target.y);
@@ -1269,7 +1271,7 @@ Vector2 Polygon2DEditor::snap_point(Vector2 p_target) const {
 	return p_target;
 }
 
-Polygon2DEditor::Polygon2DEditor(EditorNode *p_editor) :
+PaintPolygon2DEditor::PaintPolygon2DEditor(EditorNode *p_editor) :
 		AbstractPolygon2DEditor(p_editor) {
 	node = nullptr;
 	snap_offset = EditorSettings::get_singleton()->get_project_metadata("polygon_2d_uv_editor", "snap_offset", Vector2());
@@ -1526,6 +1528,6 @@ Polygon2DEditor::Polygon2DEditor(EditorNode *p_editor) :
 	uv_edit_draw->set_clip_contents(true);
 }
 
-Polygon2DEditorPlugin::Polygon2DEditorPlugin(EditorNode *p_node) :
-		AbstractPolygon2DEditorPlugin(p_node, memnew(Polygon2DEditor(p_node)), "Polygon2D") {
+PaintPolygon2DEditorPlugin::PaintPolygon2DEditorPlugin(EditorNode *p_node) :
+		AbstractPolygon2DEditorPlugin(p_node, memnew(PaintPolygon2DEditor(p_node)), "PaintPolygon2D") {
 }

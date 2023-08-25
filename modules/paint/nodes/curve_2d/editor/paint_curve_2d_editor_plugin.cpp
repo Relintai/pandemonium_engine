@@ -28,9 +28,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "path_2d_editor_plugin.h"
+#include "paint_curve_2d_editor_plugin.h"
 
-#include "canvas_item_editor_plugin.h"
+#include "editor/plugins/canvas_item_editor_plugin.h"
 #include "core/os/keyboard.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
@@ -55,7 +55,9 @@
 #include "scene/resources/curve.h"
 #include "scene/resources/texture.h"
 
-void Path2DEditor::_notification(int p_what) {
+#include "../paint_curve_2d.h"
+
+void PaintCurve2DEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_READY: {
 			//button_create->set_icon( get_theme_icon("Edit","EditorIcons"));
@@ -68,14 +70,14 @@ void Path2DEditor::_notification(int p_what) {
 		} break;
 	}
 }
-void Path2DEditor::_node_removed(Node *p_node) {
+void PaintCurve2DEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {
 		node = nullptr;
 		hide();
 	}
 }
 
-bool Path2DEditor::forward_gui_input(const Ref<InputEvent> &p_event) {
+bool PaintCurve2DEditor::forward_gui_input(const Ref<InputEvent> &p_event) {
 	if (!node) {
 		return false;
 	}
@@ -375,7 +377,7 @@ bool Path2DEditor::forward_gui_input(const Ref<InputEvent> &p_event) {
 	return false;
 }
 
-void Path2DEditor::forward_canvas_draw_over_viewport(Control *p_overlay) {
+void PaintCurve2DEditor::forward_canvas_draw_over_viewport(Control *p_overlay) {
 	if (!node || !node->is_visible_in_tree() || !node->get_curve().is_valid()) {
 		return;
 	}
@@ -434,7 +436,7 @@ void Path2DEditor::forward_canvas_draw_over_viewport(Control *p_overlay) {
 	}
 }
 
-void Path2DEditor::_node_visibility_changed() {
+void PaintCurve2DEditor::_node_visibility_changed() {
 	if (!node) {
 		return;
 	}
@@ -442,13 +444,13 @@ void Path2DEditor::_node_visibility_changed() {
 	canvas_item_editor->update_viewport();
 }
 
-void Path2DEditor::edit(Node *p_path2d) {
+void PaintCurve2DEditor::edit(Node *p_path2d) {
 	if (!canvas_item_editor) {
 		canvas_item_editor = CanvasItemEditor::get_singleton();
 	}
 
 	if (p_path2d) {
-		node = Object::cast_to<Path2D>(p_path2d);
+		node = Object::cast_to<PaintCurve2D>(p_path2d);
 		if (!node->is_connected("visibility_changed", this, "_node_visibility_changed")) {
 			node->connect("visibility_changed", this, "_node_visibility_changed");
 		}
@@ -462,14 +464,14 @@ void Path2DEditor::edit(Node *p_path2d) {
 	}
 }
 
-void Path2DEditor::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("_menu_option"),&Path2DEditor::_menu_option);
-	ClassDB::bind_method(D_METHOD("_node_visibility_changed"), &Path2DEditor::_node_visibility_changed);
-	ClassDB::bind_method(D_METHOD("_mode_selected"), &Path2DEditor::_mode_selected);
-	ClassDB::bind_method(D_METHOD("_handle_option_pressed"), &Path2DEditor::_handle_option_pressed);
+void PaintCurve2DEditor::_bind_methods() {
+	//ClassDB::bind_method(D_METHOD("_menu_option"),&PaintCurve2DEditor::_menu_option);
+	ClassDB::bind_method(D_METHOD("_node_visibility_changed"), &PaintCurve2DEditor::_node_visibility_changed);
+	ClassDB::bind_method(D_METHOD("_mode_selected"), &PaintCurve2DEditor::_mode_selected);
+	ClassDB::bind_method(D_METHOD("_handle_option_pressed"), &PaintCurve2DEditor::_handle_option_pressed);
 }
 
-void Path2DEditor::_mode_selected(int p_mode) {
+void PaintCurve2DEditor::_mode_selected(int p_mode) {
 	if (p_mode == MODE_CREATE) {
 		curve_create->set_pressed(true);
 		curve_edit->set_pressed(false);
@@ -518,7 +520,7 @@ void Path2DEditor::_mode_selected(int p_mode) {
 	mode = Mode(p_mode);
 }
 
-void Path2DEditor::_handle_option_pressed(int p_option) {
+void PaintCurve2DEditor::_handle_option_pressed(int p_option) {
 	PopupMenu *pm;
 	pm = handle_menu->get_popup();
 
@@ -537,7 +539,7 @@ void Path2DEditor::_handle_option_pressed(int p_option) {
 	}
 }
 
-Path2DEditor::Path2DEditor(EditorNode *p_editor) {
+PaintCurve2DEditor::PaintCurve2DEditor(EditorNode *p_editor) {
 	canvas_item_editor = nullptr;
 	editor = p_editor;
 	undo_redo = editor->get_undo_redo();
@@ -606,15 +608,15 @@ Path2DEditor::Path2DEditor(EditorNode *p_editor) {
 	curve_edit->set_pressed(true);
 }
 
-void Path2DEditorPlugin::edit(Object *p_object) {
+void PaintCurve2DEditorPlugin::edit(Object *p_object) {
 	path2d_editor->edit(Object::cast_to<Node>(p_object));
 }
 
-bool Path2DEditorPlugin::handles(Object *p_object) const {
-	return p_object->is_class("Path2D");
+bool PaintCurve2DEditorPlugin::handles(Object *p_object) const {
+	return p_object->is_class("PaintCurve2D");
 }
 
-void Path2DEditorPlugin::make_visible(bool p_visible) {
+void PaintCurve2DEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
 		path2d_editor->show();
 		path2d_editor->base_hb->show();
@@ -626,12 +628,12 @@ void Path2DEditorPlugin::make_visible(bool p_visible) {
 	}
 }
 
-Path2DEditorPlugin::Path2DEditorPlugin(EditorNode *p_node) {
+PaintCurve2DEditorPlugin::PaintCurve2DEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
-	path2d_editor = memnew(Path2DEditor(p_node));
+	path2d_editor = memnew(PaintCurve2DEditor(p_node));
 	CanvasItemEditor::get_singleton()->add_control_to_menu_panel(path2d_editor);
 	path2d_editor->hide();
 }
 
-Path2DEditorPlugin::~Path2DEditorPlugin() {
+PaintCurve2DEditorPlugin::~PaintCurve2DEditorPlugin() {
 }
