@@ -192,14 +192,6 @@ Vector2 PaintCurve2D::get_offset() const {
 	return offset;
 }
 
-void PaintCurve2D::set_render_segments(int p_segments) {
-	_render_segments = p_segments;
-	update();
-}
-int PaintCurve2D::get_render_segments() const {
-	return _render_segments;
-}
-
 void PaintCurve2D::fill_set_enabled(bool p_enabled) {
 	_fill_enabled = p_enabled;
 	update();
@@ -857,7 +849,6 @@ void PaintCurve2D::_bind_methods() {
 
 PaintCurve2D::PaintCurve2D() {
 	set_curve(Ref<Curve2D>(memnew(Curve2D))); //create one by default
-	_render_segments = 8;
 	//set_self_modulate(Color(0.5, 0.6, 1.0, 0.7));
 
 	_fill_enabled = true;

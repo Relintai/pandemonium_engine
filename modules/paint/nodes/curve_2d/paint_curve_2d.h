@@ -58,9 +58,6 @@ public:
 	void set_offset(const Vector2 &p_offset);
 	Vector2 get_offset() const;
 
-	void set_render_segments(int p_segments);
-	int get_render_segments() const;
-
 	void fill_set_enabled(bool p_enabled);
 	bool fill_get_enabled() const;
 
@@ -134,7 +131,6 @@ protected:
 protected:
 	Ref<Curve2D> curve;
 	Vector2 offset;
-	int _render_segments;
 
 	bool _fill_enabled;
 	Color _fill_color;
