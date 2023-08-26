@@ -30,11 +30,11 @@
 
 #include "resource_format_binary.h"
 
-#include "core/io/image.h"
+#include "core/config/project_settings.h"
 #include "core/io/file_access_compressed.h"
+#include "core/io/image.h"
 #include "core/io/marshalls.h"
 #include "core/os/dir_access.h"
-#include "core/config/project_settings.h"
 #include "core/version.h"
 
 //#define print_bl(m_what) print_line(m_what)
@@ -396,7 +396,18 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 							path = ProjectSettings::get_singleton()->localize_path(res_path.get_base_dir().plus_file(path));
 						}
 
-						RES res = ResourceLoader::load(path, exttype);
+						RES res;
+
+						for (List<RES>::Element *E = resource_cache.front(); E; E = E->next()) {
+							if (E->get()->get_path() == path) {
+								res = E->get();
+								break;
+							}
+						}
+
+						if (res.is_null()) {
+							res = ResourceLoader::load(path, exttype);
+						}
 
 						if (res.is_null()) {
 							WARN_PRINT(String("Couldn't load resource: " + path).utf8().get_data());
