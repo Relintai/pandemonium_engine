@@ -917,8 +917,9 @@ PaintCurve2D::PaintCurve2D() {
 	_fill_invert_border = 100;
 	_fill_antialiased = false;
 
-	_outline_enabled = true;
+	_outline_enabled = false;
 	//_outline_color = Color(0.5, 0.6, 1.0, 0.7);
+	_outline_color = Color(1, 1, 1);
 	_outline_width = 2;
 	_outline_tex_scale = Vector2(1, 1);
 	_outline_tex_tile = false;
