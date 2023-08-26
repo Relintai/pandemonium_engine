@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PaintCurve2D" inherits="PaintNode" version="4.1">
+	<brief_description>
+		A Paint Node that contains a [Curve2D] for defining a shape. For use with [PaintProject]s.
+	</brief_description>
+	<description>
+		A PaintNode that uses a [Curve2D] as a base for it's rendered shape. Supports both fills, and outlines.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="curve" type="Curve2D" setter="set_curve" getter="get_curve">
+			A [Curve2D] describing the shape.
+		</member>
+		<member name="fill_color" type="Color" setter="fill_set_color" getter="fill_get_color" default="Color( 1, 1, 1, 1 )">
+			The curve's fill color. If [code]texture[/code] is defined, it will be multiplied by this color. It will also be the default color for vertices not set in [code]vertex_colors[/code].
+		</member>
+		<member name="fill_enabled" type="bool" setter="fill_set_enabled" getter="fill_get_enabled" default="true">
+			Whether the curve is filled in.
+		</member>
+		<member name="fill_invert_border" type="float" setter="fill_set_invert_border" getter="fill_get_invert_border" default="100.0">
+			Added padding applied to the bounding box when using [code]fill_invert_enable[/code]. Setting this value too small may result in a "Bad Polygon" error.
+		</member>
+		<member name="fill_invert_enable" type="bool" setter="fill_set_invert" getter="fill_get_invert" default="false">
+			If [code]true[/code], shape will be inverted, containing the area outside the defined points and extending to the [code]fill_invert_border[/code].
+		</member>
+		<member name="fill_texture" type="Texture" setter="fill_set_texture" getter="fill_get_texture">
+			The shape's fill texture.
+		</member>
+		<member name="fill_texture_offset" type="Vector2" setter="fill_set_texture_offset" getter="fill_get_texture_offset" default="Vector2( 0, 0 )">
+			Amount to offset the shape's [code]fill_texture[/code]. If [code](0, 0)[/code] the texture's origin (its top-left corner) will be placed at the shapes's [code]position[/code].
+		</member>
+		<member name="fill_texture_rotation" type="float" setter="fill_set_texture_rotation" getter="fill_get_texture_rotation">
+			The fill texture's rotation in radians.
+		</member>
+		<member name="fill_texture_rotation_degrees" type="float" setter="fill_set_texture_rotation_degrees" getter="fill_get_texture_rotation_degrees" default="0.0">
+			The fill texture's rotation in degrees.
+		</member>
+		<member name="fill_texture_scale" type="Vector2" setter="fill_set_texture_scale" getter="fill_get_texture_scale" default="Vector2( 1, 1 )">
+			Amount to multiply the [code]uv[/code] coordinates when using a [code]fill_texture[/code]. Larger values make the texture smaller, and vice versa.
+		</member>
+		<member name="outline_color" type="Color" setter="outline_set_color" getter="outline_get_color" default="Color( 1, 1, 1, 1 )">
+			Color of the drawn outline if [code]outline_enabled[/code] is true. If [code]outline_texture[/code] is defined, it will be multiplied by this color.
+		</member>
+		<member name="outline_enabled" type="bool" setter="outline_set_enabled" getter="outline_get_enabled" default="false">
+			Whether an outline is drawn around the curve.
+		</member>
+		<member name="outline_texture" type="Texture" setter="outline_set_texture" getter="outline_get_texture">
+			The shape's outline texture.
+		</member>
+		<member name="outline_texture_offset" type="Vector2" setter="outline_set_texture_offset" getter="outline_get_texture_offset" default="Vector2( 0, 0 )">
+			Amount to offset the shape's [code]outline_texture[/code]. If [code](0, 0)[/code] the texture's origin (its top-left corner) will be placed at the shapes's [code]position[/code].
+		</member>
+		<member name="outline_texture_rotation" type="float" setter="outline_set_texture_rotation" getter="outline_get_texture_rotation">
+			The outline texture's rotation in radians.
+		</member>
+		<member name="outline_texture_rotation_degrees" type="float" setter="outline_set_texture_rotation_degrees" getter="outline_get_texture_rotation_degrees" default="0.0">
+			The outline texture's rotation in degrees.
+		</member>
+		<member name="outline_texture_scale" type="Vector2" setter="outline_set_texture_scale" getter="outline_get_texture_scale" default="Vector2( 1, 1 )">
+			Amount to multiply the [code]uv[/code] coordinates when using a [code]outline_texture[/code]. Larger values make the texture smaller, and vice versa.
+		</member>
+		<member name="outline_width" type="int" setter="outline_set_width" getter="outline_get_width" default="2">
+			Width of the drawn outline if [code]outline_enabled[/code] is true.
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>
