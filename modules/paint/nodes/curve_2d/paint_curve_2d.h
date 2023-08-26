@@ -40,6 +40,13 @@ class PaintCurve2D : public PaintNode {
 
 public:
 #ifdef TOOLS_ENABLED
+	virtual Dictionary _edit_get_state() const;
+	virtual void _edit_set_state(const Dictionary &p_state);
+
+	virtual void _edit_set_pivot(const Point2 &p_pivot);
+	virtual Point2 _edit_get_pivot() const;
+	virtual bool _edit_use_pivot() const;
+
 	virtual Rect2 _edit_get_rect() const;
 	virtual bool _edit_use_rect() const;
 	virtual bool _edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const;
@@ -50,6 +57,9 @@ public:
 
 	void set_offset(const Vector2 &p_offset);
 	Vector2 get_offset() const;
+
+	void set_render_segments(int p_segments);
+	int get_render_segments() const;
 
 	void fill_set_enabled(bool p_enabled);
 	bool fill_get_enabled() const;
@@ -108,13 +118,24 @@ public:
 	void outline_set_antialiased(bool p_antialiased);
 	bool outline_get_antialiased() const;
 
+	virtual Ref<Image> _get_rendered_image();
+
 	PaintCurve2D();
 
 protected:
+	//Todo this should probably be moved to Geometry, or maybe MeshUtils
+	PoolVector2Array generate_uvs(const Vector<Vector2> &p_points);
+	PoolVector2Array generate_uvs(const Vector<Vector2> &p_points, const Rect2 &p_uv_rect);
+	void _prepare_render_data_fill(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices);
+
 	void _notification(int p_what);
 	static void _bind_methods();
 
 protected:
+	Ref<Curve2D> curve;
+	Vector2 offset;
+	int _render_segments;
+
 	bool _fill_enabled;
 	Color _fill_color;
 	Ref<Texture> _fill_texture;
@@ -136,12 +157,11 @@ protected:
 	float _outline_tex_rot;
 	bool _outline_antialiased;
 
-	Vector2 offset;
 	mutable bool rect_cache_dirty;
 	mutable Rect2 item_rect;
+
 	Ref<Image> _rendered_image;
 
-	Ref<Curve2D> curve;
 	Vector<Vector2> _cached_draw_pts;
 
 	void _curve_changed();

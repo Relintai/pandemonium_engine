@@ -39,23 +39,47 @@
 #endif
 
 #ifdef TOOLS_ENABLED
+Dictionary PaintCurve2D::_edit_get_state() const {
+	Dictionary state = Node2D::_edit_get_state();
+	state["offset"] = offset;
+	return state;
+}
+
+void PaintCurve2D::_edit_set_state(const Dictionary &p_state) {
+	Node2D::_edit_set_state(p_state);
+	set_offset(p_state["offset"]);
+}
+
+void PaintCurve2D::_edit_set_pivot(const Point2 &p_pivot) {
+	set_position(get_transform().xform(p_pivot));
+	set_offset(get_offset() - p_pivot);
+}
+
+Point2 PaintCurve2D::_edit_get_pivot() const {
+	return Vector2();
+}
+
+bool PaintCurve2D::_edit_use_pivot() const {
+	return true;
+}
+
 Rect2 PaintCurve2D::_edit_get_rect() const {
-	//if (rect_cache_dirty) {
-	if (!curve.is_valid() || curve->get_point_count() == 0) {
-		return Rect2(0, 0, 0, 0);
-	}
-
-	item_rect = Rect2(curve->get_point_position(0), Vector2(0, 0));
-
-	for (int i = 0; i < curve->get_point_count(); i++) {
-		for (int j = 0; j <= 8; j++) {
-			real_t frac = j / 8.0;
-			Vector2 p = curve->interpolate(i, frac);
-			item_rect.expand_to(p);
+	if (rect_cache_dirty) {
+		if (!curve.is_valid() || curve->get_point_count() == 0) {
+			return Rect2(0, 0, 0, 0);
 		}
+
+		item_rect = Rect2(curve->get_point_position(0), Vector2(0, 0));
+
+		for (int i = 0; i < curve->get_point_count(); i++) {
+			for (int j = 0; j <= 8; j++) {
+				real_t frac = j / 8.0;
+				Vector2 p = curve->interpolate(i, frac);
+				item_rect.expand_to(p);
+			}
+		}
+		rect_cache_dirty = false;
 	}
-	//	rect_cache_dirty = false;
-	//}
 
 	return item_rect;
 }
@@ -94,19 +118,33 @@ void PaintCurve2D::_notification(int p_what) {
 	if (p_what == NOTIFICATION_DRAW && curve.is_valid()) {
 		//draw the curve!!
 
+		_rendered_image.unref();
+
 		if (curve->get_point_count() < 2) {
 			return;
 		}
 
-		if (_outline_enabled) {
-			_cached_draw_pts.resize(curve->get_point_count() * 8);
-			int count = 0;
+		if (_fill_enabled) {
+			Vector<Vector2> points;
+			Vector<Vector2> uvs;
+			Vector<Color> colors;
+			Vector<int> indices;
 
-			for (int i = 0; i < curve->get_point_count(); i++) {
-				for (int j = 0; j < 8; j++) {
-					real_t frac = j * (1.0 / 8.0);
-					Vector2 p = curve->interpolate(i, frac);
-					_cached_draw_pts.set(count++, p);
+			_prepare_render_data_fill(points, uvs, colors, indices);
+
+			if (indices.size()) {
+				RS::get_singleton()->canvas_item_add_triangle_array(get_canvas_item(), indices, points, colors, uvs, Vector<int>(), Vector<float>(), _fill_texture.is_valid() ? _fill_texture->get_rid() : RID(), -1, RID(), _fill_antialiased);
+			}
+		}
+
+		if (_outline_enabled) {
+			_cached_draw_pts = Variant(curve->tessellate());
+
+			{
+				int len = _cached_draw_pts.size();
+				Vector2 *ppw = _cached_draw_pts.ptrw();
+				for (int i = 0; i < len; i++) {
+					ppw[i] = ppw[i] + offset;
 				}
 			}
 
@@ -120,9 +158,7 @@ void PaintCurve2D::_curve_changed() {
 		return;
 	}
 
-	if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_navigation_hint()) {
-		return;
-	}
+	rect_cache_dirty = true;
 
 	update();
 }
@@ -154,6 +190,14 @@ void PaintCurve2D::set_offset(const Vector2 &p_offset) {
 
 Vector2 PaintCurve2D::get_offset() const {
 	return offset;
+}
+
+void PaintCurve2D::set_render_segments(int p_segments) {
+	_render_segments = p_segments;
+	update();
+}
+int PaintCurve2D::get_render_segments() const {
+	return _render_segments;
 }
 
 void PaintCurve2D::fill_set_enabled(bool p_enabled) {
@@ -308,6 +352,416 @@ bool PaintCurve2D::outline_get_antialiased() const {
 	return _outline_antialiased;
 }
 
+Ref<Image> PaintCurve2D::_get_rendered_image() {
+	if (_rendered_image.is_valid()) {
+		return _rendered_image;
+	}
+
+	if (_size.x == 0 || _size.y == 0) {
+		return Ref<Image>();
+	}
+
+	/*
+		if (polygon.size() < 3) {
+			return Ref<Image>();
+		}
+
+		Vector<Vector2> points;
+		Vector<Vector2> uvs;
+		Vector<Color> colors;
+		Vector<int> indices;
+
+		_prepare_render_data(points, uvs, colors, indices);
+
+		if (indices.size() == 0) {
+			return Ref<Image>();
+		}
+
+		Ref<Image> texture_image;
+		Vector2 texture_image_size;
+
+		if (uvs.size() > 0 && texture.is_valid()) {
+			texture_image = texture->get_data();
+		}
+
+		bool use_uvs = texture_image.is_valid();
+
+		if (use_uvs) {
+			texture_image_size = texture_image->get_size();
+		}
+
+		_rendered_image.instance();
+		_rendered_image->create(_size.x, _size.y, false, Image::FORMAT_RGBA8);
+
+		_rendered_image->lock();
+
+		if (use_uvs) {
+			texture_image->lock();
+		}
+
+		Vector2i cpoints[3];
+		Vector2 cuvs[3];
+		Color ccolors[3];
+
+		if (colors.size() == 1) {
+			for (int j = 0; j < 3; ++j) {
+				ccolors[j] = colors[0];
+			}
+		}
+
+		//Note: Don't worry about the Node's Transform here, that will get applied automatically in the caller
+
+		for (int index = 0; index < indices.size(); index += 3) {
+			// Rasterize triangle
+			// Based on https://www.youtube.com/watch?v=PahbNFypubE
+
+			for (int i = 0; i < 3; ++i) {
+				int cind = indices[index + i];
+
+				cpoints[i] = points[cind].round();
+
+				if (colors.size() > 1) {
+					ccolors[i] = colors[cind];
+				}
+
+				if (use_uvs) {
+					cuvs[i] = uvs[cind];
+				}
+			}
+
+			//Sort them
+
+			if (cpoints[1].y < cpoints[0].y || (cpoints[1].y == cpoints[0].y && cpoints[1].x < cpoints[0].x)) {
+				SWAP(cpoints[0], cpoints[1]);
+				SWAP(ccolors[0], ccolors[1]);
+				SWAP(cuvs[0], cuvs[1]);
+			}
+
+			if (cpoints[2].y < cpoints[0].y || (cpoints[2].y == cpoints[0].y && cpoints[2].x < cpoints[0].x)) {
+				SWAP(cpoints[0], cpoints[2]);
+				SWAP(ccolors[0], ccolors[2]);
+				SWAP(cuvs[0], cuvs[2]);
+			}
+
+			if (cpoints[2].y < cpoints[1].y || (cpoints[2].y == cpoints[1].y && cpoints[2].x < cpoints[1].x)) {
+				SWAP(cpoints[1], cpoints[2]);
+				SWAP(ccolors[1], ccolors[2]);
+				SWAP(cuvs[1], cuvs[2]);
+			}
+
+			if (cpoints[0].y == cpoints[2].y) {
+				continue;
+			}
+
+			bool shortside = (cpoints[1].y - cpoints[0].y) * (cpoints[2].x - cpoints[0].x) < (cpoints[1].x - cpoints[0].x) * (cpoints[2].y - cpoints[0].y);
+
+			Slope sides[2];
+
+			sides[!shortside].setup_position(cpoints[0], cpoints[2], cpoints[2].y - cpoints[0].y);
+			sides[!shortside].setup_color(ccolors[0], ccolors[2], cpoints[2].y - cpoints[0].y);
+
+			if (use_uvs) {
+				sides[!shortside].setup_uv(cuvs[0], cuvs[2], cpoints[2].y - cpoints[0].y);
+			}
+
+			if (cpoints[0].y < cpoints[1].y) {
+				sides[shortside].setup_position(cpoints[0], cpoints[1], cpoints[1].y - cpoints[0].y);
+				sides[shortside].setup_color(ccolors[0], ccolors[1], cpoints[1].y - cpoints[0].y);
+
+				if (use_uvs) {
+					sides[shortside].setup_uv(cuvs[0], cuvs[1], cpoints[1].y - cpoints[0].y);
+				}
+
+				int starty = MAX(0, cpoints[0].y);
+				int endy = MIN(cpoints[1].y, _size.y);
+
+				for (int y = starty; y < endy; ++y) {
+					Slope s;
+					s.setup_color(sides[0].color_current, sides[1].color_current, sides[1].position_current.x - sides[0].position_current.x);
+					if (use_uvs) {
+						s.setup_uv(sides[0].uv_current, sides[1].uv_current, sides[1].position_current.x - sides[0].position_current.x);
+					}
+
+					int startx = MAX(0, sides[0].position_current.x);
+					int endx = MIN(sides[1].position_current.x, _size.x);
+
+					for (int x = startx; x < endx; ++x) {
+						Color color = s.color_current;
+
+						if (use_uvs) {
+							Vector2 uv = s.uv_current;
+
+							uv.x = CLAMP(uv.x, 0, 1);
+							uv.y = CLAMP(uv.y, 0, 1);
+
+							Vector2 imgcoord = uv * texture_image_size;
+
+							imgcoord.x = CLAMP(imgcoord.x, 0, texture_image_size.x - 1);
+							imgcoord.y = CLAMP(imgcoord.y, 0, texture_image_size.y - 1);
+
+							Color img_color = texture_image->get_pixelv(imgcoord);
+
+							color *= img_color;
+						}
+
+						_rendered_image->set_pixelv(Vector2(x, y), color);
+
+						s.advance_color();
+
+						if (use_uvs) {
+							s.advance_uv();
+						}
+					}
+
+					sides[0].advance();
+					sides[1].advance();
+
+					if (use_uvs) {
+						sides[0].advance_uv();
+						sides[1].advance_uv();
+					}
+				}
+			}
+
+			if (cpoints[1].y < cpoints[2].y) {
+				sides[shortside].setup_position(cpoints[1], cpoints[2], cpoints[2].y - cpoints[1].y);
+				sides[shortside].setup_color(ccolors[1], ccolors[2], cpoints[2].y - cpoints[1].y);
+
+				if (use_uvs) {
+					sides[shortside].setup_uv(cuvs[1], cuvs[2], cpoints[2].y - cpoints[1].y);
+				}
+
+				int starty = MAX(0, cpoints[1].y);
+				int endy = MIN(cpoints[2].y, _size.y);
+
+				for (int y = starty; y < endy; ++y) {
+					Slope s;
+					s.setup_color(sides[0].color_current, sides[1].color_current, sides[1].position_current.x - sides[0].position_current.x);
+					if (use_uvs) {
+						s.setup_uv(sides[0].uv_current, sides[1].uv_current, sides[1].position_current.x - sides[0].position_current.x);
+					}
+
+					int startx = MAX(0, sides[0].position_current.x);
+					int endx = MIN(sides[1].position_current.x, _size.x);
+
+					for (int x = startx; x < endx; ++x) {
+						Color color = s.color_current;
+
+						if (use_uvs) {
+							Vector2 uv = s.uv_current;
+
+							uv.x = CLAMP(uv.x, 0, 1);
+							uv.y = CLAMP(uv.y, 0, 1);
+
+							Vector2 imgcoord = uv * texture_image_size;
+
+							imgcoord.x = CLAMP(imgcoord.x, 0, texture_image_size.x - 1);
+							imgcoord.y = CLAMP(imgcoord.y, 0, texture_image_size.y - 1);
+
+							Color img_color = texture_image->get_pixelv(imgcoord);
+
+							color *= img_color;
+						}
+
+						_rendered_image->set_pixelv(Vector2(x, y), color);
+
+						s.advance_color();
+
+						if (use_uvs) {
+							s.advance_uv();
+						}
+					}
+
+					sides[0].advance();
+					sides[1].advance();
+
+					if (use_uvs) {
+						sides[0].advance_uv();
+						sides[1].advance_uv();
+					}
+				}
+			}
+		}
+
+		if (use_uvs) {
+			texture_image->unlock();
+		}
+
+		_rendered_image->unlock();
+	*/
+	return _rendered_image;
+}
+
+PoolVector2Array PaintCurve2D::generate_uvs(const Vector<Vector2> &p_points) {
+	PoolVector2Array uvs;
+
+	int len = p_points.size();
+
+	if (len == 0) {
+		return uvs;
+	}
+
+	const Vector2 *pr = p_points.ptr();
+
+	Rect2 bounds = Rect2(pr[0], Vector2());
+
+	for (int i = 1; i < len; i++) {
+		Vector2 e = pr[i];
+
+		bounds.expand_to(e);
+	}
+
+	uvs.resize(len);
+
+	PoolVector2Array::Write uvr = uvs.write();
+	Vector2 *uvp = uvr.ptr();
+
+	for (int i = 0; i < len; i++) {
+		Vector2 e = pr[i];
+
+		e -= bounds.position;
+		e /= bounds.size;
+
+		uvp[i] = e;
+	}
+
+	return uvs;
+}
+
+PoolVector2Array PaintCurve2D::generate_uvs(const Vector<Vector2> &p_points, const Rect2 &p_uv_rect) {
+	PoolVector2Array uvs;
+
+	int len = p_points.size();
+
+	if (len == 0) {
+		return uvs;
+	}
+
+	const Vector2 *pr = p_points.ptr();
+
+	Rect2 bounds = Rect2(pr[0], Vector2());
+
+	for (int i = 1; i < len; i++) {
+		Vector2 e = pr[i];
+
+		bounds.expand_to(e);
+	}
+
+	uvs.resize(len);
+
+	PoolVector2Array::Write uvr = uvs.write();
+	Vector2 *uvp = uvr.ptr();
+
+	for (int i = 0; i < len; i++) {
+		Vector2 e = pr[i];
+
+		e -= bounds.position;
+		e /= bounds.size;
+
+		e *= p_uv_rect.size;
+		e += p_uv_rect.position;
+
+		uvp[i] = e;
+	}
+
+	return uvs;
+}
+
+void PaintCurve2D::_prepare_render_data_fill(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices) {
+	if (!curve.is_valid()) {
+		return;
+	}
+
+	int curve_len = curve->get_point_count();
+
+	if (curve_len < 2) {
+		return;
+	}
+
+	PoolVector2Array polygon = curve->tessellate();
+	int len = polygon.size();
+
+	r_points.resize(len);
+
+	{
+		PoolVector<Vector2>::Read polyr = polygon.read();
+		for (int i = 0; i < len; i++) {
+			r_points.write[i] = polyr[i] + offset;
+		}
+	}
+
+	if (_fill_invert) {
+		Rect2 bounds;
+		int highest_idx = -1;
+		float highest_y = -1e20;
+		float sum = 0;
+
+		for (int i = 0; i < len; i++) {
+			if (i == 0) {
+				bounds.position = r_points[i];
+			} else {
+				bounds.expand_to(r_points[i]);
+			}
+			if (r_points[i].y > highest_y) {
+				highest_idx = i;
+				highest_y = r_points[i].y;
+			}
+			int ni = (i + 1) % len;
+			sum += (r_points[ni].x - r_points[i].x) * (r_points[ni].y + r_points[i].y);
+		}
+
+		bounds = bounds.grow(_fill_invert_border);
+
+		Vector2 ep[7] = {
+			Vector2(r_points[highest_idx].x, r_points[highest_idx].y + _fill_invert_border),
+			Vector2(bounds.position + bounds.size),
+			Vector2(bounds.position + Vector2(bounds.size.x, 0)),
+			Vector2(bounds.position),
+			Vector2(bounds.position + Vector2(0, bounds.size.y)),
+			Vector2(r_points[highest_idx].x - CMP_EPSILON, r_points[highest_idx].y + _fill_invert_border),
+			Vector2(r_points[highest_idx].x - CMP_EPSILON, r_points[highest_idx].y),
+		};
+
+		if (sum > 0) {
+			SWAP(ep[1], ep[4]);
+			SWAP(ep[2], ep[3]);
+			SWAP(ep[5], ep[0]);
+			SWAP(ep[6], r_points.write[highest_idx]);
+		}
+
+		r_points.resize(r_points.size() + 7);
+		for (int i = r_points.size() - 1; i >= highest_idx + 7; i--) {
+			r_points.write[i] = r_points[i - 7];
+		}
+
+		for (int i = 0; i < 7; i++) {
+			r_points.write[highest_idx + i + 1] = ep[i];
+		}
+
+		len = r_points.size();
+	}
+
+	if (_fill_texture.is_valid()) {
+		Transform2D texmat(_fill_tex_rot, _fill_tex_ofs);
+		texmat.scale(_fill_tex_scale);
+		//Size2 tex_size = _fill_texture->get_size();
+
+		PoolVector2Array uv = generate_uvs(r_points);
+
+		r_uvs.resize(len);
+
+		PoolVector<Vector2>::Read uvr = uv.read();
+
+		for (int i = 0; i < len; i++) {
+			r_uvs.write[i] = texmat.xform(uvr[i]);
+		}
+	}
+
+	r_colors.push_back(_fill_color);
+
+	r_indices = Geometry::triangulate_polygon(r_points);
+}
+
 void PaintCurve2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_curve", "curve"), &PaintCurve2D::set_curve);
 	ClassDB::bind_method(D_METHOD("get_curve"), &PaintCurve2D::get_curve);
@@ -403,19 +857,22 @@ void PaintCurve2D::_bind_methods() {
 
 PaintCurve2D::PaintCurve2D() {
 	set_curve(Ref<Curve2D>(memnew(Curve2D))); //create one by default
+	_render_segments = 8;
 	//set_self_modulate(Color(0.5, 0.6, 1.0, 0.7));
 
 	_fill_enabled = true;
 	_fill_color = Color(1, 1, 1);
+	_fill_tex_scale = Vector2(1, 1);
 	_fill_tex_tile = false;
 	_fill_tex_rot = 0;
 	_fill_invert = false;
-	_fill_invert_border = 0;
+	_fill_invert_border = 100;
 	_fill_antialiased = false;
 
 	_outline_enabled = true;
 	//_outline_color = Color(0.5, 0.6, 1.0, 0.7);
 	_outline_width = 2;
+	_fill_tex_scale = Vector2(1, 1);
 	_outline_tex_tile = false;
 	_outline_tex_rot = 0;
 	_outline_antialiased = true;
