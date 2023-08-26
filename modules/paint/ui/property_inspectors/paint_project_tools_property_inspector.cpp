@@ -34,6 +34,8 @@ SOFTWARE.
 #include "../../nodes/paint_canvas.h"
 #include "../../nodes/paint_node.h"
 #include "../../nodes/paint_project.h"
+#include "../../nodes/curve_2d/paint_curve_2d.h"
+#include "../../nodes/polygon_2d/paint_polygon_2d.h"
 
 #ifdef TOOLS_ENABLED
 #include "core/config/engine.h"
@@ -115,6 +117,8 @@ PaintProjectToolsPropertyInspector::PaintProjectToolsPropertyInspector() {
 	add_action_button("_on_add_paint_visual_grid_pressed", "Add Paint Visual Grid", "PaintVisualGrid", "EditorIcons");
 	add_action_button("_on_add_paint_canvas_background_pressed", "Add Paint Canvas Background", "PaintCanvasBackground", "EditorIcons");
 	add_action_button("_on_add_paint_canvas_pressed", "Add Paint Canvas", "PaintCanvas", "EditorIcons");
+	add_action_button("_on_add_paint_curve_2d_pressed", "Add Paint Curve 2D", "PaintCurve2D", "EditorIcons");
+	add_action_button("_on_add_paint_polygon_2d_pressed", "Add Paint Polygon 2D", "PaintPolygon2D", "EditorIcons");
 }
 
 PaintProjectToolsPropertyInspector::~PaintProjectToolsPropertyInspector() {
@@ -199,6 +203,25 @@ void PaintProjectToolsPropertyInspector::_on_add_paint_canvas_pressed() {
 	canvas->set_owner(paint_project->get_tree()->get_edited_scene_root());
 }
 
+void PaintProjectToolsPropertyInspector::_on_add_paint_curve_2d_pressed() {
+	PaintProject *paint_project = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
+
+	ERR_FAIL_COND(!paint_project);
+
+	PaintCurve2D *node = memnew(PaintCurve2D);
+	paint_project->add_child(node);
+	node->set_owner(paint_project->get_tree()->get_edited_scene_root());
+}
+void PaintProjectToolsPropertyInspector::_on_add_paint_polygon_2d_pressed() {
+	PaintProject *paint_project = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
+
+	ERR_FAIL_COND(!paint_project);
+
+	PaintPolygon2D *node = memnew(PaintPolygon2D);
+	paint_project->add_child(node);
+	node->set_owner(paint_project->get_tree()->get_edited_scene_root());
+}
+
 //void PaintProjectToolsPropertyInspector::_notification(int p_what) {
 //if (p_what == NOTIFICATION_THEME_CHANGED || p_what == NOTIFICATION_ENTER_TREE) {
 //_add_color_button->set_icon(get_theme_icon("Add", "EditorIcons"));
@@ -215,4 +238,6 @@ void PaintProjectToolsPropertyInspector::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_add_paint_visual_grid_pressed"), &PaintProjectToolsPropertyInspector::_on_add_paint_visual_grid_pressed);
 	ClassDB::bind_method(D_METHOD("_on_add_paint_canvas_background_pressed"), &PaintProjectToolsPropertyInspector::_on_add_paint_canvas_background_pressed);
 	ClassDB::bind_method(D_METHOD("_on_add_paint_canvas_pressed"), &PaintProjectToolsPropertyInspector::_on_add_paint_canvas_pressed);
+	ClassDB::bind_method(D_METHOD("_on_add_paint_curve_2d_pressed"), &PaintProjectToolsPropertyInspector::_on_add_paint_curve_2d_pressed);
+	ClassDB::bind_method(D_METHOD("_on_add_paint_polygon_2d_pressed"), &PaintProjectToolsPropertyInspector::_on_add_paint_polygon_2d_pressed);
 }

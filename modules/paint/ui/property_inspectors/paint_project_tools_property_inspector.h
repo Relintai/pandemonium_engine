@@ -54,6 +54,8 @@ protected:
 	void _on_add_paint_visual_grid_pressed();
 	void _on_add_paint_canvas_background_pressed();
 	void _on_add_paint_canvas_pressed();
+	void _on_add_paint_curve_2d_pressed();
+	void _on_add_paint_polygon_2d_pressed();
 
 	//void _notification(int p_what);
 
