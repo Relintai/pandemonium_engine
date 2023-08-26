@@ -113,6 +113,8 @@ protected:
 	void _prepare_render_data_fill(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices);
 	void _prepare_render_data_outline(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices);
 
+	void _image_render_triangles(const Vector<Vector2> &p_points, const Vector<Vector2> &p_uvs, const Vector<Color> &p_colors, const Vector<int> &p_indices, const Ref<Texture> &p_texture);
+
 	void _notification(int p_what);
 	static void _bind_methods();
 

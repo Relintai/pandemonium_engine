@@ -308,234 +308,39 @@ Ref<Image> PaintCurve2D::_get_rendered_image() {
 		return Ref<Image>();
 	}
 
-	/*
-		if (polygon.size() < 3) {
-			return Ref<Image>();
-		}
+	if (!curve.is_valid()) {
+		return Ref<Image>();
+	}
 
-		Vector<Vector2> points;
-		Vector<Vector2> uvs;
-		Vector<Color> colors;
-		Vector<int> indices;
+	if (curve->get_point_count() < 2) {
+		return Ref<Image>();
+	}
 
-		_prepare_render_data(points, uvs, colors, indices);
+	_rendered_image.instance();
+	_rendered_image->create(_size.x, _size.y, false, Image::FORMAT_RGBA8);
 
-		if (indices.size() == 0) {
-			return Ref<Image>();
-		}
+	Vector<Vector2> points;
+	Vector<Vector2> uvs;
+	Vector<Color> colors;
+	Vector<int> indices;
 
-		Ref<Image> texture_image;
-		Vector2 texture_image_size;
+	if (_outline_enabled) {
+		_prepare_render_data_outline(points, uvs, colors, indices);
 
-		if (uvs.size() > 0 && texture.is_valid()) {
-			texture_image = texture->get_data();
-		}
+		_image_render_triangles(points, uvs, colors, indices, _outline_texture);
 
-		bool use_uvs = texture_image.is_valid();
+		points.clear();
+		uvs.clear();
+		colors.clear();
+		indices.clear();
+	}
 
-		if (use_uvs) {
-			texture_image_size = texture_image->get_size();
-		}
+	if (_fill_enabled) {
+		_prepare_render_data_fill(points, uvs, colors, indices);
 
-		_rendered_image.instance();
-		_rendered_image->create(_size.x, _size.y, false, Image::FORMAT_RGBA8);
+		_image_render_triangles(points, uvs, colors, indices, _fill_texture);
+	}
 
-		_rendered_image->lock();
-
-		if (use_uvs) {
-			texture_image->lock();
-		}
-
-		Vector2i cpoints[3];
-		Vector2 cuvs[3];
-		Color ccolors[3];
-
-		if (colors.size() == 1) {
-			for (int j = 0; j < 3; ++j) {
-				ccolors[j] = colors[0];
-			}
-		}
-
-		//Note: Don't worry about the Node's Transform here, that will get applied automatically in the caller
-
-		for (int index = 0; index < indices.size(); index += 3) {
-			// Rasterize triangle
-			// Based on https://www.youtube.com/watch?v=PahbNFypubE
-
-			for (int i = 0; i < 3; ++i) {
-				int cind = indices[index + i];
-
-				cpoints[i] = points[cind].round();
-
-				if (colors.size() > 1) {
-					ccolors[i] = colors[cind];
-				}
-
-				if (use_uvs) {
-					cuvs[i] = uvs[cind];
-				}
-			}
-
-			//Sort them
-
-			if (cpoints[1].y < cpoints[0].y || (cpoints[1].y == cpoints[0].y && cpoints[1].x < cpoints[0].x)) {
-				SWAP(cpoints[0], cpoints[1]);
-				SWAP(ccolors[0], ccolors[1]);
-				SWAP(cuvs[0], cuvs[1]);
-			}
-
-			if (cpoints[2].y < cpoints[0].y || (cpoints[2].y == cpoints[0].y && cpoints[2].x < cpoints[0].x)) {
-				SWAP(cpoints[0], cpoints[2]);
-				SWAP(ccolors[0], ccolors[2]);
-				SWAP(cuvs[0], cuvs[2]);
-			}
-
-			if (cpoints[2].y < cpoints[1].y || (cpoints[2].y == cpoints[1].y && cpoints[2].x < cpoints[1].x)) {
-				SWAP(cpoints[1], cpoints[2]);
-				SWAP(ccolors[1], ccolors[2]);
-				SWAP(cuvs[1], cuvs[2]);
-			}
-
-			if (cpoints[0].y == cpoints[2].y) {
-				continue;
-			}
-
-			bool shortside = (cpoints[1].y - cpoints[0].y) * (cpoints[2].x - cpoints[0].x) < (cpoints[1].x - cpoints[0].x) * (cpoints[2].y - cpoints[0].y);
-
-			Slope sides[2];
-
-			sides[!shortside].setup_position(cpoints[0], cpoints[2], cpoints[2].y - cpoints[0].y);
-			sides[!shortside].setup_color(ccolors[0], ccolors[2], cpoints[2].y - cpoints[0].y);
-
-			if (use_uvs) {
-				sides[!shortside].setup_uv(cuvs[0], cuvs[2], cpoints[2].y - cpoints[0].y);
-			}
-
-			if (cpoints[0].y < cpoints[1].y) {
-				sides[shortside].setup_position(cpoints[0], cpoints[1], cpoints[1].y - cpoints[0].y);
-				sides[shortside].setup_color(ccolors[0], ccolors[1], cpoints[1].y - cpoints[0].y);
-
-				if (use_uvs) {
-					sides[shortside].setup_uv(cuvs[0], cuvs[1], cpoints[1].y - cpoints[0].y);
-				}
-
-				int starty = MAX(0, cpoints[0].y);
-				int endy = MIN(cpoints[1].y, _size.y);
-
-				for (int y = starty; y < endy; ++y) {
-					Slope s;
-					s.setup_color(sides[0].color_current, sides[1].color_current, sides[1].position_current.x - sides[0].position_current.x);
-					if (use_uvs) {
-						s.setup_uv(sides[0].uv_current, sides[1].uv_current, sides[1].position_current.x - sides[0].position_current.x);
-					}
-
-					int startx = MAX(0, sides[0].position_current.x);
-					int endx = MIN(sides[1].position_current.x, _size.x);
-
-					for (int x = startx; x < endx; ++x) {
-						Color color = s.color_current;
-
-						if (use_uvs) {
-							Vector2 uv = s.uv_current;
-
-							uv.x = CLAMP(uv.x, 0, 1);
-							uv.y = CLAMP(uv.y, 0, 1);
-
-							Vector2 imgcoord = uv * texture_image_size;
-
-							imgcoord.x = CLAMP(imgcoord.x, 0, texture_image_size.x - 1);
-							imgcoord.y = CLAMP(imgcoord.y, 0, texture_image_size.y - 1);
-
-							Color img_color = texture_image->get_pixelv(imgcoord);
-
-							color *= img_color;
-						}
-
-						_rendered_image->set_pixelv(Vector2(x, y), color);
-
-						s.advance_color();
-
-						if (use_uvs) {
-							s.advance_uv();
-						}
-					}
-
-					sides[0].advance();
-					sides[1].advance();
-
-					if (use_uvs) {
-						sides[0].advance_uv();
-						sides[1].advance_uv();
-					}
-				}
-			}
-
-			if (cpoints[1].y < cpoints[2].y) {
-				sides[shortside].setup_position(cpoints[1], cpoints[2], cpoints[2].y - cpoints[1].y);
-				sides[shortside].setup_color(ccolors[1], ccolors[2], cpoints[2].y - cpoints[1].y);
-
-				if (use_uvs) {
-					sides[shortside].setup_uv(cuvs[1], cuvs[2], cpoints[2].y - cpoints[1].y);
-				}
-
-				int starty = MAX(0, cpoints[1].y);
-				int endy = MIN(cpoints[2].y, _size.y);
-
-				for (int y = starty; y < endy; ++y) {
-					Slope s;
-					s.setup_color(sides[0].color_current, sides[1].color_current, sides[1].position_current.x - sides[0].position_current.x);
-					if (use_uvs) {
-						s.setup_uv(sides[0].uv_current, sides[1].uv_current, sides[1].position_current.x - sides[0].position_current.x);
-					}
-
-					int startx = MAX(0, sides[0].position_current.x);
-					int endx = MIN(sides[1].position_current.x, _size.x);
-
-					for (int x = startx; x < endx; ++x) {
-						Color color = s.color_current;
-
-						if (use_uvs) {
-							Vector2 uv = s.uv_current;
-
-							uv.x = CLAMP(uv.x, 0, 1);
-							uv.y = CLAMP(uv.y, 0, 1);
-
-							Vector2 imgcoord = uv * texture_image_size;
-
-							imgcoord.x = CLAMP(imgcoord.x, 0, texture_image_size.x - 1);
-							imgcoord.y = CLAMP(imgcoord.y, 0, texture_image_size.y - 1);
-
-							Color img_color = texture_image->get_pixelv(imgcoord);
-
-							color *= img_color;
-						}
-
-						_rendered_image->set_pixelv(Vector2(x, y), color);
-
-						s.advance_color();
-
-						if (use_uvs) {
-							s.advance_uv();
-						}
-					}
-
-					sides[0].advance();
-					sides[1].advance();
-
-					if (use_uvs) {
-						sides[0].advance_uv();
-						sides[1].advance_uv();
-					}
-				}
-			}
-		}
-
-		if (use_uvs) {
-			texture_image->unlock();
-		}
-
-		_rendered_image->unlock();
-	*/
 	return _rendered_image;
 }
 
@@ -617,6 +422,10 @@ PoolVector2Array PaintCurve2D::generate_uvs(const Vector<Vector2> &p_points, con
 void PaintCurve2D::generate_polyline_mesh(const Vector<Point2> &p_points, float p_width, Vector<Vector2> &r_triangles, Vector<int> &r_indices) {
 	Vector2 prev_t;
 
+	if (p_points.size() < 2) {
+		return;
+	}
+
 	r_triangles.resize(p_points.size() * 2);
 	r_indices.resize(p_points.size() * 6);
 
@@ -644,7 +453,7 @@ void PaintCurve2D::generate_polyline_mesh(const Vector<Point2> &p_points, float 
 			r_indices.write[iindx + 1] = indx + 1;
 			r_indices.write[iindx + 2] = indx + 3;
 
-			r_indices.write[iindx + 3] = indx + 0;
+			r_indices.write[iindx + 3] = indx;
 			r_indices.write[iindx + 4] = indx + 2;
 			r_indices.write[iindx + 5] = indx + 3;
 		}
@@ -797,6 +606,223 @@ void PaintCurve2D::_prepare_render_data_outline(Vector<Vector2> &r_points, Vecto
 	}
 
 	r_colors.push_back(_outline_color);
+}
+
+void PaintCurve2D::_image_render_triangles(const Vector<Vector2> &p_points, const Vector<Vector2> &p_uvs, const Vector<Color> &p_colors, const Vector<int> &p_indices, const Ref<Texture> &p_texture) {
+	if (p_indices.size() == 0) {
+		return;
+	}
+
+	Ref<Image> texture_image;
+	Vector2 texture_image_size;
+
+	if (p_uvs.size() > 0 && p_texture.is_valid()) {
+		texture_image = p_texture->get_data();
+	}
+
+	bool use_uvs = texture_image.is_valid();
+
+	if (use_uvs) {
+		texture_image_size = texture_image->get_size();
+	}
+
+	_rendered_image->lock();
+
+	if (use_uvs) {
+		texture_image->lock();
+	}
+
+	Vector2i cpoints[3];
+	Vector2 cuvs[3];
+	Color ccolors[3];
+
+	if (p_colors.size() == 1) {
+		for (int j = 0; j < 3; ++j) {
+			ccolors[j] = p_colors[0];
+		}
+	}
+
+	//Note: Don't worry about the Node's Transform here, that will get applied automatically in the caller
+
+	for (int index = 0; index < p_indices.size(); index += 3) {
+		// Rasterize triangle
+		// Based on https://www.youtube.com/watch?v=PahbNFypubE
+
+		for (int i = 0; i < 3; ++i) {
+			int cind = p_indices[index + i];
+
+			ERR_FAIL_INDEX(cind, p_points.size());
+
+			cpoints[i] = p_points[cind].round();
+
+			if (p_colors.size() > 1) {
+				ccolors[i] = p_colors[cind];
+			}
+
+			if (use_uvs) {
+				cuvs[i] = p_uvs[cind];
+			}
+		}
+
+		//Sort them
+
+		if (cpoints[1].y < cpoints[0].y || (cpoints[1].y == cpoints[0].y && cpoints[1].x < cpoints[0].x)) {
+			SWAP(cpoints[0], cpoints[1]);
+			SWAP(ccolors[0], ccolors[1]);
+			SWAP(cuvs[0], cuvs[1]);
+		}
+
+		if (cpoints[2].y < cpoints[0].y || (cpoints[2].y == cpoints[0].y && cpoints[2].x < cpoints[0].x)) {
+			SWAP(cpoints[0], cpoints[2]);
+			SWAP(ccolors[0], ccolors[2]);
+			SWAP(cuvs[0], cuvs[2]);
+		}
+
+		if (cpoints[2].y < cpoints[1].y || (cpoints[2].y == cpoints[1].y && cpoints[2].x < cpoints[1].x)) {
+			SWAP(cpoints[1], cpoints[2]);
+			SWAP(ccolors[1], ccolors[2]);
+			SWAP(cuvs[1], cuvs[2]);
+		}
+
+		if (cpoints[0].y == cpoints[2].y) {
+			continue;
+		}
+
+		bool shortside = (cpoints[1].y - cpoints[0].y) * (cpoints[2].x - cpoints[0].x) < (cpoints[1].x - cpoints[0].x) * (cpoints[2].y - cpoints[0].y);
+
+		Slope sides[2];
+
+		sides[!shortside].setup_position(cpoints[0], cpoints[2], cpoints[2].y - cpoints[0].y);
+		sides[!shortside].setup_color(ccolors[0], ccolors[2], cpoints[2].y - cpoints[0].y);
+
+		if (use_uvs) {
+			sides[!shortside].setup_uv(cuvs[0], cuvs[2], cpoints[2].y - cpoints[0].y);
+		}
+
+		if (cpoints[0].y < cpoints[1].y) {
+			sides[shortside].setup_position(cpoints[0], cpoints[1], cpoints[1].y - cpoints[0].y);
+			sides[shortside].setup_color(ccolors[0], ccolors[1], cpoints[1].y - cpoints[0].y);
+
+			if (use_uvs) {
+				sides[shortside].setup_uv(cuvs[0], cuvs[1], cpoints[1].y - cpoints[0].y);
+			}
+
+			int starty = MAX(0, cpoints[0].y);
+			int endy = MIN(cpoints[1].y, _size.y);
+
+			for (int y = starty; y < endy; ++y) {
+				Slope s;
+				s.setup_color(sides[0].color_current, sides[1].color_current, sides[1].position_current.x - sides[0].position_current.x);
+				if (use_uvs) {
+					s.setup_uv(sides[0].uv_current, sides[1].uv_current, sides[1].position_current.x - sides[0].position_current.x);
+				}
+
+				int startx = MAX(0, sides[0].position_current.x);
+				int endx = MIN(sides[1].position_current.x, _size.x);
+
+				for (int x = startx; x < endx; ++x) {
+					Color color = s.color_current;
+
+					if (use_uvs) {
+						Vector2 uv = s.uv_current;
+
+						uv.x = CLAMP(uv.x, 0, 1);
+						uv.y = CLAMP(uv.y, 0, 1);
+
+						Vector2 imgcoord = uv * texture_image_size;
+
+						imgcoord.x = CLAMP(imgcoord.x, 0, texture_image_size.x - 1);
+						imgcoord.y = CLAMP(imgcoord.y, 0, texture_image_size.y - 1);
+
+						Color img_color = texture_image->get_pixelv(imgcoord);
+
+						color *= img_color;
+					}
+
+					_rendered_image->set_pixelv(Vector2(x, y), color);
+
+					s.advance_color();
+
+					if (use_uvs) {
+						s.advance_uv();
+					}
+				}
+
+				sides[0].advance();
+				sides[1].advance();
+
+				if (use_uvs) {
+					sides[0].advance_uv();
+					sides[1].advance_uv();
+				}
+			}
+		}
+
+		if (cpoints[1].y < cpoints[2].y) {
+			sides[shortside].setup_position(cpoints[1], cpoints[2], cpoints[2].y - cpoints[1].y);
+			sides[shortside].setup_color(ccolors[1], ccolors[2], cpoints[2].y - cpoints[1].y);
+
+			if (use_uvs) {
+				sides[shortside].setup_uv(cuvs[1], cuvs[2], cpoints[2].y - cpoints[1].y);
+			}
+
+			int starty = MAX(0, cpoints[1].y);
+			int endy = MIN(cpoints[2].y, _size.y);
+
+			for (int y = starty; y < endy; ++y) {
+				Slope s;
+				s.setup_color(sides[0].color_current, sides[1].color_current, sides[1].position_current.x - sides[0].position_current.x);
+				if (use_uvs) {
+					s.setup_uv(sides[0].uv_current, sides[1].uv_current, sides[1].position_current.x - sides[0].position_current.x);
+				}
+
+				int startx = MAX(0, sides[0].position_current.x);
+				int endx = MIN(sides[1].position_current.x, _size.x);
+
+				for (int x = startx; x < endx; ++x) {
+					Color color = s.color_current;
+
+					if (use_uvs) {
+						Vector2 uv = s.uv_current;
+
+						uv.x = CLAMP(uv.x, 0, 1);
+						uv.y = CLAMP(uv.y, 0, 1);
+
+						Vector2 imgcoord = uv * texture_image_size;
+
+						imgcoord.x = CLAMP(imgcoord.x, 0, texture_image_size.x - 1);
+						imgcoord.y = CLAMP(imgcoord.y, 0, texture_image_size.y - 1);
+
+						Color img_color = texture_image->get_pixelv(imgcoord);
+
+						color *= img_color;
+					}
+
+					_rendered_image->set_pixelv(Vector2(x, y), color);
+
+					s.advance_color();
+
+					if (use_uvs) {
+						s.advance_uv();
+					}
+				}
+
+				sides[0].advance();
+				sides[1].advance();
+
+				if (use_uvs) {
+					sides[0].advance_uv();
+					sides[1].advance_uv();
+				}
+			}
+		}
+	}
+
+	if (use_uvs) {
+		texture_image->unlock();
+	}
+
+	_rendered_image->unlock();
 }
 
 void PaintCurve2D::_bind_methods() {
