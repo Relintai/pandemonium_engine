@@ -113,7 +113,11 @@ protected:
 	//Todo this should probably be moved to Geometry, or maybe MeshUtils
 	PoolVector2Array generate_uvs(const Vector<Vector2> &p_points);
 	PoolVector2Array generate_uvs(const Vector<Vector2> &p_points, const Rect2 &p_uv_rect);
+
+	void generate_polyline_mesh(const Vector<Point2> &p_points, float p_width, Vector<Vector2> &r_triangless, Vector<int> &r_indices);
+
 	void _prepare_render_data_fill(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices);
+	void _prepare_render_data_outline(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices);
 
 	void _notification(int p_what);
 	static void _bind_methods();

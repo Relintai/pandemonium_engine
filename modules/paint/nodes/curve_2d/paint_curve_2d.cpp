@@ -117,15 +117,20 @@ void PaintCurve2D::_notification(int p_what) {
 		if (_outline_enabled) {
 			_cached_draw_pts = Variant(curve->tessellate());
 
-			{
-				int len = _cached_draw_pts.size();
-				Vector2 *ppw = _cached_draw_pts.ptrw();
-				for (int i = 0; i < len; i++) {
-					ppw[i] = ppw[i];
-				}
-			}
+			if (_outline_texture.is_valid()) {
+				Vector<Vector2> points;
+				Vector<Vector2> uvs;
+				Vector<Color> colors;
+				Vector<int> indices;
 
-			draw_polyline(_cached_draw_pts, _outline_color, _outline_width, _outline_antialiased);
+				_prepare_render_data_outline(points, uvs, colors, indices);
+
+				if (indices.size()) {
+					RS::get_singleton()->canvas_item_add_triangle_array(get_canvas_item(), indices, points, colors, uvs, Vector<int>(), Vector<float>(), _outline_texture.is_valid() ? _outline_texture->get_rid() : RID(), -1, RID(), _outline_antialiased);
+				}
+			} else {
+				draw_polyline(_cached_draw_pts, _outline_color, _outline_width, _outline_antialiased);
+			}
 		}
 	}
 }
@@ -625,6 +630,45 @@ PoolVector2Array PaintCurve2D::generate_uvs(const Vector<Vector2> &p_points, con
 	return uvs;
 }
 
+void PaintCurve2D::generate_polyline_mesh(const Vector<Point2> &p_points, float p_width, Vector<Vector2> &r_triangles, Vector<int> &r_indices) {
+	Vector2 prev_t;
+
+	r_triangles.resize(p_points.size() * 2);
+	r_indices.resize(p_points.size() * 6);
+
+	for (int i = 0; i < p_points.size(); i++) {
+		Vector2 t;
+		if (i == p_points.size() - 1) {
+			t = prev_t;
+		} else {
+			t = (p_points[i + 1] - p_points[i]).normalized().tangent();
+			if (i == 0) {
+				prev_t = t;
+			}
+		}
+
+		Vector2 tangent = ((t + prev_t).normalized()) * p_width * 0.5;
+
+		r_triangles.write[i * 2 + 0] = p_points[i] + tangent;
+		r_triangles.write[i * 2 + 1] = p_points[i] - tangent;
+
+		if (i != 0) {
+			int indx = (i - 1) * 2;
+			int iindx = (i - 1) * 6;
+
+			r_indices.write[iindx] = indx;
+			r_indices.write[iindx + 1] = indx + 1;
+			r_indices.write[iindx + 2] = indx + 3;
+
+			r_indices.write[iindx + 3] = indx + 0;
+			r_indices.write[iindx + 4] = indx + 2;
+			r_indices.write[iindx + 5] = indx + 3;
+		}
+
+		prev_t = t;
+	}
+}
+
 void PaintCurve2D::_prepare_render_data_fill(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices) {
 	if (!curve.is_valid()) {
 		return;
@@ -718,6 +762,57 @@ void PaintCurve2D::_prepare_render_data_fill(Vector<Vector2> &r_points, Vector<V
 	r_colors.push_back(_fill_color);
 
 	r_indices = Geometry::triangulate_polygon(r_points);
+}
+
+void PaintCurve2D::_prepare_render_data_outline(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices) {
+	if (!curve.is_valid()) {
+		return;
+	}
+
+	if (_outline_width <= 0) {
+		return;
+	}
+
+	int curve_len = curve->get_point_count();
+
+	if (curve_len < 2) {
+		return;
+	}
+
+	PoolVector2Array polygon = curve->tessellate();
+	int len = polygon.size();
+
+	Vector<Vector2> curve_points;
+	curve_points.resize(len);
+
+	{
+		PoolVector<Vector2>::Read polyr = polygon.read();
+		for (int i = 0; i < len; i++) {
+			curve_points.write[i] = polyr[i];
+		}
+	}
+
+	generate_polyline_mesh(curve_points, _outline_width, r_points, r_indices);
+
+	len = r_points.size();
+
+	if (_outline_texture.is_valid()) {
+		Transform2D texmat(_outline_tex_rot, _outline_tex_ofs);
+		texmat.scale(_outline_tex_scale);
+		//Size2 tex_size = _outline_texture->get_size();
+
+		PoolVector2Array uv = generate_uvs(r_points);
+
+		r_uvs.resize(len);
+
+		PoolVector<Vector2>::Read uvr = uv.read();
+
+		for (int i = 0; i < len; i++) {
+			r_uvs.write[i] = texmat.xform(uvr[i]);
+		}
+	}
+
+	r_colors.push_back(_outline_color);
 }
 
 void PaintCurve2D::_bind_methods() {
@@ -825,7 +920,7 @@ PaintCurve2D::PaintCurve2D() {
 	_outline_enabled = true;
 	//_outline_color = Color(0.5, 0.6, 1.0, 0.7);
 	_outline_width = 2;
-	_fill_tex_scale = Vector2(1, 1);
+	_outline_tex_scale = Vector2(1, 1);
 	_outline_tex_tile = false;
 	_outline_tex_rot = 0;
 	_outline_antialiased = true;
