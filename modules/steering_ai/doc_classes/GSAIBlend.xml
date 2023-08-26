@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GSAIBlend" inherits="GSAISteeringBehavior" version="3.12">
+<class name="GSAIBlend" inherits="GSAISteeringBehavior" version="4.1">
 	<brief_description>
 		Blends multiple steering behaviors into one, and returns a weighted acceleration from their calculations.
 	</brief_description>

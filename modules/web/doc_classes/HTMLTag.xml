@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="HTMLTag" inherits="Reference" version="3.12">
+<class name="HTMLTag" inherits="Reference" version="4.1">
 	<brief_description>
 		The HTMLTag class helps with the creation of HTML tags. HTMLBuilder uses it internally.
 	</brief_description>

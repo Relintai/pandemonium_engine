@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationAgent2D" inherits="Node" version="3.12">
+<class name="NavigationAgent2D" inherits="Node" version="4.1">
 	<brief_description>
 		2D agent used in navigation for collision avoidance.
 	</brief_description>
@@ -211,7 +211,7 @@
 		<member name="time_horizon_agents" type="float" setter="set_time_horizon_agents" getter="get_time_horizon_agents" default="1.0">
 			The minimal amount of time for which this agent's velocities, that are computed with the collision avoidance algorithm, are safe with respect to other agents. The larger the number, the sooner the agent will respond to other agents, but less freedom in choosing its velocities. A too high value will slow down agents movement considerably. Must be positive.
 		</member>
-		<member name="time_horizon_obstacles" type="float" setter="set_time_horizon_obstacles" getter="get_time_horizon_obstacles" default="5.2589e-34">
+		<member name="time_horizon_obstacles" type="float" setter="set_time_horizon_obstacles" getter="get_time_horizon_obstacles" default="8.85252e-34">
 			The minimal amount of time for which this agent's velocities, that are computed with the collision avoidance algorithm, are safe with respect to static avoidance obstacles. The larger the number, the sooner the agent will respond to static avoidance obstacles, but less freedom in choosing its velocities. A too high value will slow down agents movement considerably. Must be positive.
 		</member>
 		<member name="velocity" type="Vector2" setter="set_velocity" getter="get_velocity" default="Vector2( 0, 0 )">

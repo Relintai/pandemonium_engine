@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WebServerRequest" inherits="Reference" version="3.12">
+<class name="WebServerRequest" inherits="Reference" version="4.1">
 	<brief_description>
 		The [WebServerRequest] class represents one incoming HTTP request. It also contains the proper helper methods for sending a response.
 	</brief_description>
@@ -53,14 +53,14 @@
 			<return type="String" />
 			<argument index="0" name="key" type="StringName" />
 			<description>
-				Returns a custom HTTP response header or an empty String if it's not set. 
+				Returns a custom HTTP response header or an empty String if it's not set.
 			</description>
 		</method>
 		<method name="custom_response_header_has">
 			<return type="bool" />
 			<argument index="0" name="key" type="StringName" />
 			<description>
-				Returns whether a custom HTTP response header is set. 
+				Returns whether a custom HTTP response header is set.
 			</description>
 		</method>
 		<method name="custom_response_header_set">
@@ -68,7 +68,7 @@
 			<argument index="0" name="key" type="StringName" />
 			<argument index="1" name="value" type="String" />
 			<description>
-				Set a custom HTTP response header that will be sent to the client. 
+				Set a custom HTTP response header that will be sent to the client.
 			</description>
 		</method>
 		<method name="custom_response_headers_get">

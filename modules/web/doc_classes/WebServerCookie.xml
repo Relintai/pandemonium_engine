@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WebServerCookie" inherits="Reference" version="3.12">
+<class name="WebServerCookie" inherits="Reference" version="4.1">
 	<brief_description>
 		Used by [WebServerRequest]s, to set or delete cookies on the client.
 	</brief_description>
