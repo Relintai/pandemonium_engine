@@ -72,9 +72,6 @@ public:
 	void fill_set_invert(bool p_invert);
 	bool fill_get_invert() const;
 
-	void fill_set_antialiased(bool p_antialiased);
-	bool fill_get_antialiased() const;
-
 	void fill_set_invert_border(float p_invert_border);
 	float fill_get_invert_border() const;
 
@@ -101,9 +98,6 @@ public:
 
 	void outline_set_texture_scale(const Size2 &p_scale);
 	Size2 outline_get_texture_scale() const;
-
-	void outline_set_antialiased(bool p_antialiased);
-	bool outline_get_antialiased() const;
 
 	virtual Ref<Image> _get_rendered_image();
 
@@ -134,7 +128,6 @@ protected:
 	float _fill_tex_rot;
 	bool _fill_invert;
 	float _fill_invert_border;
-	bool _fill_antialiased;
 
 	bool _outline_enabled;
 	Color _outline_color;
@@ -144,7 +137,6 @@ protected:
 	Vector2 _outline_tex_ofs;
 	bool _outline_tex_tile;
 	float _outline_tex_rot;
-	bool _outline_antialiased;
 
 	mutable bool rect_cache_dirty;
 	mutable Rect2 item_rect;
