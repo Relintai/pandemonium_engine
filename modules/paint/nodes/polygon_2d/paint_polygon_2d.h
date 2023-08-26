@@ -126,6 +126,49 @@ public:
 
 	PaintPolygon2D();
 	virtual ~PaintPolygon2D();
+
+protected:
+	struct Slope {
+		Vector2 position_current;
+		Vector2 position_step;
+
+		Vector2 uv_current;
+		Vector2 uv_step;
+
+		Color color_current;
+		Color color_step;
+
+		_FORCE_INLINE_ void setup_position(Vector2 begin, Vector2 end, float num_steps) {
+			float inv_step = 1.0 / num_steps;
+			position_step = (end - begin) * Vector2(inv_step, inv_step);
+			position_current = begin;
+		}
+
+		_FORCE_INLINE_ void setup_color(Color begin, Color end, float num_steps) {
+			float inv_step = 1.0 / num_steps;
+			color_step = (end - begin) * Color(inv_step, inv_step, inv_step);
+			color_current = begin;
+		}
+
+		_FORCE_INLINE_ void setup_uv(Vector2 begin, Vector2 end, float num_steps) {
+			float inv_step = 1.0 / num_steps;
+			uv_step = (end - begin) * Vector2(inv_step, inv_step);
+			uv_current = begin;
+		}
+
+		_FORCE_INLINE_ void advance() {
+			position_current += position_step;
+			color_current += color_step;
+		}
+
+		_FORCE_INLINE_ void advance_color() {
+			color_current += color_step;
+		}
+
+		_FORCE_INLINE_ void advance_uv() {
+			uv_current += uv_step;
+		}
+	};
 };
 
 #endif // POLYGON_2D_H

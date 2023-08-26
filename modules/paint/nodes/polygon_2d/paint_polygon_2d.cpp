@@ -434,10 +434,9 @@ Ref<Image> PaintPolygon2D::_get_rendered_image() {
 		texture_image->lock();
 	}
 
-	Vector2 cpoints[3];
+	Vector2i cpoints[3];
 	Vector2 cuvs[3];
 	Color ccolors[3];
-	int cinds[3];
 
 	if (colors.size() == 1) {
 		for (int j = 0; j < 3; ++j) {
@@ -449,113 +448,172 @@ Ref<Image> PaintPolygon2D::_get_rendered_image() {
 
 	for (int index = 0; index < indices.size(); index += 3) {
 		// Rasterize triangle
+		// Based on https://www.youtube.com/watch?v=PahbNFypubE
 
-		for (int j = 0; j < 3; ++j) {
-			cinds[j] = indices[index + j];
+		for (int i = 0; i < 3; ++i) {
+			int cind = indices[index + i];
 
-			cpoints[j] = points[cinds[j]];
+			cpoints[i] = points[cind].round();
 
 			if (colors.size() > 1) {
-				ccolors[j] = colors[cinds[j]];
+				ccolors[i] = colors[cind];
 			}
 
 			if (use_uvs) {
-				cuvs[j] = uvs[cinds[j]];
+				cuvs[i] = uvs[cind];
 			}
 		}
 
-		// Super simple scanline rasterizer
-		// Same idea as presented here: https://www.youtube.com/watch?v=PahbNFypubE
+		//Sort them
 
-		Vector2i min_coords = Vector2i(INT_MAX, INT_MAX);
-		Vector2i max_coords = Vector2i(INT_MIN, INT_MIN);
-
-		for (int j = 0; j < 3; ++j) {
-			min_coords.x = MIN(cpoints[j].x, min_coords.x);
-			min_coords.y = MIN(cpoints[j].y, min_coords.y);
-			max_coords.x = MAX(cpoints[j].x, max_coords.x);
-			max_coords.y = MAX(cpoints[j].y, max_coords.y);
+		if (cpoints[1].y < cpoints[0].y || (cpoints[1].y == cpoints[0].y && cpoints[1].x < cpoints[0].x)) {
+			SWAP(cpoints[0], cpoints[1]);
+			SWAP(ccolors[0], ccolors[1]);
+			SWAP(cuvs[0], cuvs[1]);
 		}
 
-		Vector<Point2i> brenzenham_line_points = Geometry::brenzenham_line(cpoints[0].x, cpoints[1].x, cpoints[0].y, cpoints[1].y);
-		brenzenham_line_points.append_array(Geometry::brenzenham_line(cpoints[1].x, cpoints[2].x, cpoints[1].y, cpoints[2].y));
-		brenzenham_line_points.append_array(Geometry::brenzenham_line(cpoints[2].x, cpoints[0].x, cpoints[2].y, cpoints[0].y));
+		if (cpoints[2].y < cpoints[0].y || (cpoints[2].y == cpoints[0].y && cpoints[2].x < cpoints[0].x)) {
+			SWAP(cpoints[0], cpoints[2]);
+			SWAP(ccolors[0], ccolors[2]);
+			SWAP(cuvs[0], cuvs[2]);
+		}
 
-		//Rect2i tri_rect = Rect2i(min_coords, max_coords - min_coords);
+		if (cpoints[2].y < cpoints[1].y || (cpoints[2].y == cpoints[1].y && cpoints[2].x < cpoints[1].x)) {
+			SWAP(cpoints[1], cpoints[2]);
+			SWAP(ccolors[1], ccolors[2]);
+			SWAP(cuvs[1], cuvs[2]);
+		}
 
-		const int blp_size = brenzenham_line_points.size();
-		const Point2i *blp_ptr = brenzenham_line_points.ptr();
+		if (cpoints[0].y == cpoints[2].y) {
+			continue;
+		}
 
-		int fys = MAX(0, min_coords.y);
-		int fye = MIN(_size.y, max_coords.y);
+		bool shortside = (cpoints[1].y - cpoints[0].y) * (cpoints[2].x - cpoints[0].x) < (cpoints[1].x - cpoints[0].x) * (cpoints[2].y - cpoints[0].y);
 
-		for (int y = fys; y < fye; ++y) {
-			// Current scanline:
-			// . . . . psx X X X X X pse . . . .
+		Slope sides[2];
 
-			int psx = INT_MAX;
-			int pex = INT_MIN;
+		sides[!shortside].setup_position(cpoints[0], cpoints[2], cpoints[2].y - cpoints[0].y);
+		sides[!shortside].setup_color(ccolors[0], ccolors[2], cpoints[2].y - cpoints[0].y);
 
-			for (int i = 0; i < blp_size; ++i) {
-				Point2i p = blp_ptr[i];
+		if (use_uvs) {
+			sides[!shortside].setup_uv(cuvs[0], cuvs[2], cpoints[2].y - cpoints[0].y);
+		}
 
-				if (p.y != y) {
-					continue;
-				}
-
-				if (p.x < psx) {
-					psx = p.x;
-				}
-
-				if (p.x > pex) {
-					pex = p.x;
-				}
-			}
-
-			if (psx == INT_MIN || pex == INT_MAX) {
-				continue;
-			}
-
-			// maybe?
-			// pse -= 1;
-
-			float interpy = (y - min_coords.y) / (float)(max_coords.y - min_coords.y);
-
-			Vector2 uvsy;
-			Vector2 uvey;
+		if (cpoints[0].y < cpoints[1].y) {
+			sides[shortside].setup_position(cpoints[0], cpoints[1], cpoints[1].y - cpoints[0].y);
+			sides[shortside].setup_color(ccolors[0], ccolors[1], cpoints[1].y - cpoints[0].y);
 
 			if (use_uvs) {
-				uvsy = cuvs[0].linear_interpolate(cuvs[1], interpy);
-				uvey = cuvs[0].linear_interpolate(cuvs[2], interpy);
+				sides[shortside].setup_uv(cuvs[0], cuvs[1], cpoints[1].y - cpoints[0].y);
 			}
 
-			Color colorsy = ccolors[0].linear_interpolate(ccolors[1], interpy);
-			Color colorey = ccolors[0].linear_interpolate(ccolors[2], interpy);
+			int starty = MAX(0, cpoints[0].y);
+			int endy = MIN(cpoints[1].y, _size.y);
 
-			int fxs = MAX(0, psx);
-			int fxe = MIN(_size.x, pex);
+			for (int y = starty; y < endy; ++y) {
+				Slope s;
+				s.setup_color(sides[0].color_current, sides[1].color_current, sides[1].position_current.x - sides[0].position_current.x);
+				if (use_uvs) {
+					s.setup_uv(sides[0].uv_current, sides[1].uv_current, sides[1].position_current.x - sides[0].position_current.x);
+				}
 
-			for (int x = fxs; x < fxe; ++x) {
-				//Vector2 point = Vector2(x, y);
+				int startx = MAX(0, sides[0].position_current.x);
+				int endx = MIN(sides[1].position_current.x, _size.x);
 
-				float interpx = (x - psx) / (float)(pex - psx);
+				for (int x = startx; x < endx; ++x) {
+					Color color = s.color_current;
 
-				Color color = colorsy.linear_interpolate(colorey, interpx);
+					if (use_uvs) {
+						Vector2 uv = s.uv_current;
+
+						uv.x = CLAMP(uv.x, 0, 1);
+						uv.y = CLAMP(uv.y, 0, 1);
+
+						Vector2 imgcoord = uv * texture_image_size;
+
+						imgcoord.x = CLAMP(imgcoord.x, 0, texture_image_size.x - 1);
+						imgcoord.y = CLAMP(imgcoord.y, 0, texture_image_size.y - 1);
+
+						Color img_color = texture_image->get_pixelv(imgcoord);
+
+						color *= img_color;
+					}
+
+					_rendered_image->set_pixelv(Vector2(x, y), color);
+
+					s.advance_color();
+
+					if (use_uvs) {
+						s.advance_uv();
+					}
+				}
+
+				sides[0].advance();
+				sides[1].advance();
 
 				if (use_uvs) {
-					Vector2 uv = uvsy.linear_interpolate(uvey, interpx);
+					sides[0].advance_uv();
+					sides[1].advance_uv();
+				}
+			}
+		}
 
-					Vector2 imgcoord = uv * texture_image_size;
+		if (cpoints[1].y < cpoints[2].y) {
+			sides[shortside].setup_position(cpoints[1], cpoints[2], cpoints[2].y - cpoints[1].y);
+			sides[shortside].setup_color(ccolors[1], ccolors[2], cpoints[2].y - cpoints[1].y);
 
-					imgcoord.x = CLAMP(imgcoord.x, 0, texture_image_size.x - 1);
-					imgcoord.y = CLAMP(imgcoord.y, 0, texture_image_size.y - 1);
+			if (use_uvs) {
+				sides[shortside].setup_uv(cuvs[1], cuvs[2], cpoints[2].y - cpoints[1].y);
+			}
 
-					Color img_color = texture_image->get_pixelv(imgcoord);
+			int starty = MAX(0, cpoints[1].y);
+			int endy = MIN(cpoints[2].y, _size.y);
 
-					color *= img_color;
+			for (int y = starty; y < endy; ++y) {
+				Slope s;
+				s.setup_color(sides[0].color_current, sides[1].color_current, sides[1].position_current.x - sides[0].position_current.x);
+				if (use_uvs) {
+					s.setup_uv(sides[0].uv_current, sides[1].uv_current, sides[1].position_current.x - sides[0].position_current.x);
 				}
 
-				_rendered_image->set_pixelv(Vector2(x, y), color);
+				int startx = MAX(0, sides[0].position_current.x);
+				int endx = MIN(sides[1].position_current.x, _size.x);
+
+				for (int x = startx; x < endx; ++x) {
+					Color color = s.color_current;
+
+					if (use_uvs) {
+						Vector2 uv = s.uv_current;
+
+						uv.x = CLAMP(uv.x, 0, 1);
+						uv.y = CLAMP(uv.y, 0, 1);
+
+						Vector2 imgcoord = uv * texture_image_size;
+
+						imgcoord.x = CLAMP(imgcoord.x, 0, texture_image_size.x - 1);
+						imgcoord.y = CLAMP(imgcoord.y, 0, texture_image_size.y - 1);
+
+						Color img_color = texture_image->get_pixelv(imgcoord);
+
+						color *= img_color;
+					}
+
+					_rendered_image->set_pixelv(Vector2(x, y), color);
+
+					s.advance_color();
+
+					if (use_uvs) {
+						s.advance_uv();
+					}
+				}
+
+				sides[0].advance();
+				sides[1].advance();
+
+				if (use_uvs) {
+					sides[0].advance_uv();
+					sides[1].advance_uv();
+				}
 			}
 		}
 	}
