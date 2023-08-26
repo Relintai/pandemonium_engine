@@ -40,13 +40,6 @@ class PaintCurve2D : public PaintNode {
 
 public:
 #ifdef TOOLS_ENABLED
-	virtual Dictionary _edit_get_state() const;
-	virtual void _edit_set_state(const Dictionary &p_state);
-
-	virtual void _edit_set_pivot(const Point2 &p_pivot);
-	virtual Point2 _edit_get_pivot() const;
-	virtual bool _edit_use_pivot() const;
-
 	virtual Rect2 _edit_get_rect() const;
 	virtual bool _edit_use_rect() const;
 	virtual bool _edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const;
@@ -54,9 +47,6 @@ public:
 
 	void set_curve(const Ref<Curve2D> &p_curve);
 	Ref<Curve2D> get_curve() const;
-
-	void set_offset(const Vector2 &p_offset);
-	Vector2 get_offset() const;
 
 	void fill_set_enabled(bool p_enabled);
 	bool fill_get_enabled() const;
@@ -130,7 +120,6 @@ protected:
 
 protected:
 	Ref<Curve2D> curve;
-	Vector2 offset;
 
 	bool _fill_enabled;
 	Color _fill_color;

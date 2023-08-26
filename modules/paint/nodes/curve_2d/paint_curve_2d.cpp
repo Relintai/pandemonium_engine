@@ -39,30 +39,6 @@
 #endif
 
 #ifdef TOOLS_ENABLED
-Dictionary PaintCurve2D::_edit_get_state() const {
-	Dictionary state = Node2D::_edit_get_state();
-	state["offset"] = offset;
-	return state;
-}
-
-void PaintCurve2D::_edit_set_state(const Dictionary &p_state) {
-	Node2D::_edit_set_state(p_state);
-	set_offset(p_state["offset"]);
-}
-
-void PaintCurve2D::_edit_set_pivot(const Point2 &p_pivot) {
-	set_position(get_transform().xform(p_pivot));
-	set_offset(get_offset() - p_pivot);
-}
-
-Point2 PaintCurve2D::_edit_get_pivot() const {
-	return Vector2();
-}
-
-bool PaintCurve2D::_edit_use_pivot() const {
-	return true;
-}
-
 Rect2 PaintCurve2D::_edit_get_rect() const {
 	if (rect_cache_dirty) {
 		if (!curve.is_valid() || curve->get_point_count() == 0) {
@@ -78,6 +54,7 @@ Rect2 PaintCurve2D::_edit_get_rect() const {
 				item_rect.expand_to(p);
 			}
 		}
+
 		rect_cache_dirty = false;
 	}
 
@@ -144,7 +121,7 @@ void PaintCurve2D::_notification(int p_what) {
 				int len = _cached_draw_pts.size();
 				Vector2 *ppw = _cached_draw_pts.ptrw();
 				for (int i = 0; i < len; i++) {
-					ppw[i] = ppw[i] + offset;
+					ppw[i] = ppw[i];
 				}
 			}
 
@@ -179,17 +156,6 @@ void PaintCurve2D::set_curve(const Ref<Curve2D> &p_curve) {
 
 Ref<Curve2D> PaintCurve2D::get_curve() const {
 	return curve;
-}
-
-void PaintCurve2D::set_offset(const Vector2 &p_offset) {
-	offset = p_offset;
-	rect_cache_dirty = true;
-	update();
-	_change_notify("offset");
-}
-
-Vector2 PaintCurve2D::get_offset() const {
-	return offset;
 }
 
 void PaintCurve2D::fill_set_enabled(bool p_enabled) {
@@ -678,7 +644,7 @@ void PaintCurve2D::_prepare_render_data_fill(Vector<Vector2> &r_points, Vector<V
 	{
 		PoolVector<Vector2>::Read polyr = polygon.read();
 		for (int i = 0; i < len; i++) {
-			r_points.write[i] = polyr[i] + offset;
+			r_points.write[i] = polyr[i];
 		}
 	}
 
@@ -758,9 +724,6 @@ void PaintCurve2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_curve", "curve"), &PaintCurve2D::set_curve);
 	ClassDB::bind_method(D_METHOD("get_curve"), &PaintCurve2D::get_curve);
 
-	ClassDB::bind_method(D_METHOD("set_offset", "offset"), &PaintCurve2D::set_offset);
-	ClassDB::bind_method(D_METHOD("get_offset"), &PaintCurve2D::get_offset);
-
 	ClassDB::bind_method(D_METHOD("fill_set_enabled", "enabled"), &PaintCurve2D::fill_set_enabled);
 	ClassDB::bind_method(D_METHOD("fill_get_enabled"), &PaintCurve2D::fill_get_enabled);
 
@@ -819,7 +782,6 @@ void PaintCurve2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("outline_get_antialiased"), &PaintCurve2D::outline_get_antialiased);
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve2D"), "set_curve", "get_curve");
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "offset"), "set_offset", "get_offset");
 
 	ADD_GROUP("Fill", "fill_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "fill_enabled"), "fill_set_enabled", "fill_get_enabled");
