@@ -454,12 +454,23 @@ void PaintCurve2D::generate_polyline_mesh(const Vector<Point2> &p_points, float 
 			r_indices.write[iindx + 2] = indx + 3;
 
 			r_indices.write[iindx + 3] = indx;
-			r_indices.write[iindx + 4] = indx + 2;
-			r_indices.write[iindx + 5] = indx + 3;
+			r_indices.write[iindx + 4] = indx + 3;
+			r_indices.write[iindx + 5] = indx + 2;
 		}
 
 		prev_t = t;
 	}
+
+	int indx = (p_points.size() - 1) * 2;
+	int iindx = (p_points.size() - 1) * 6;
+
+	r_indices.write[iindx] = indx;
+	r_indices.write[iindx + 1] = indx + 1;
+	r_indices.write[iindx + 2] = 1;
+
+	r_indices.write[iindx + 3] = indx;
+	r_indices.write[iindx + 4] = 1;
+	r_indices.write[iindx + 5] = 0;
 }
 
 void PaintCurve2D::_prepare_render_data_fill(Vector<Vector2> &r_points, Vector<Vector2> &r_uvs, Vector<Color> &r_colors, Vector<int> &r_indices) {
