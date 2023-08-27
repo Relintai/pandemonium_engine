@@ -253,7 +253,9 @@ private:
 
 			Effect() {
 				enabled = false;
+#ifdef DEBUG_ENABLED
 				prof_time = 0;
+#endif
 			}
 		};
 
