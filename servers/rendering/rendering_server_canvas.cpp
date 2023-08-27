@@ -1466,6 +1466,12 @@ Rect2 RenderingServerCanvas::_debug_canvas_item_get_rect(RID p_item) {
 	return canvas_item->get_rect();
 }
 
+Rect2 RenderingServerCanvas::_debug_canvas_item_get_local_bound(RID p_item) {
+	Item *canvas_item = canvas_item_owner.getornull(p_item);
+	ERR_FAIL_COND_V(!canvas_item, Rect2());
+	return canvas_item->local_bound;
+}
+
 void RenderingServerCanvas::canvas_item_set_skeleton_relative_xform(RID p_item, Transform2D p_relative_xform) {
 	Item *canvas_item = canvas_item_owner.getornull(p_item);
 	ERR_FAIL_COND(!canvas_item);
@@ -2200,7 +2206,7 @@ void RenderingServerCanvas::tick() {
 }
 
 void RenderingServerCanvas::update_interpolation_tick(bool p_process) {
-#define PANDEMONIUM_UPDATE_INTERPOLATION_TICK(LIST_PREV, LIST_CURR, TYPE, OWNER_LIST)              \
+#define PANDEMONIUM_UPDATE_INTERPOLATION_TICK(LIST_PREV, LIST_CURR, TYPE, OWNER_LIST)        \
 	/* Detect any that were on the previous transform list that are no longer active. */     \
 	for (unsigned int n = 0; n < _interpolation_data.LIST_PREV->size(); n++) {               \
 		const RID &rid = (*_interpolation_data.LIST_PREV)[n];                                \
@@ -2267,8 +2273,6 @@ void RenderingServerCanvas::InterpolationData::notify_free_canvas_light_occluder
 	canvas_light_occluder_transform_update_list_curr->erase_multiple_unordered(p_rid);
 	canvas_light_occluder_transform_update_list_prev->erase_multiple_unordered(p_rid);
 }
-
-
 
 RenderingServerCanvas::RenderingServerCanvas() {
 	_canvas_cull_mode = CANVAS_CULL_MODE_NODE;

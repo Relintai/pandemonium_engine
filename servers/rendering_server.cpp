@@ -2141,6 +2141,7 @@ void RenderingServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("canvas_item_set_material", "item", "material"), &RenderingServer::canvas_item_set_material);
 	ClassDB::bind_method(D_METHOD("canvas_item_set_use_parent_material", "item", "enabled"), &RenderingServer::canvas_item_set_use_parent_material);
 	ClassDB::bind_method(D_METHOD("debug_canvas_item_get_rect", "item"), &RenderingServer::debug_canvas_item_get_rect);
+	ClassDB::bind_method(D_METHOD("debug_canvas_item_get_local_bound", "item"), &RenderingServer::debug_canvas_item_get_local_bound);
 	ClassDB::bind_method(D_METHOD("canvas_light_create"), &RenderingServer::canvas_light_create);
 	ClassDB::bind_method(D_METHOD("canvas_light_attach_to_canvas", "light", "canvas"), &RenderingServer::canvas_light_attach_to_canvas);
 	ClassDB::bind_method(D_METHOD("canvas_light_set_enabled", "light", "enabled"), &RenderingServer::canvas_light_set_enabled);
