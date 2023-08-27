@@ -43,6 +43,8 @@ void RenderingServerCanvas::_render_canvas_item_tree(Item *p_canvas_item, const 
 	memset(z_list, 0, z_range * sizeof(RasterizerCanvas::Item *));
 	memset(z_last_list, 0, z_range * sizeof(RasterizerCanvas::Item *));
 
+	_current_camera_transform = p_transform;
+
 	if (_canvas_cull_mode == CANVAS_CULL_MODE_NODE) {
 		_prepare_tree_bounds(p_canvas_item);
 		_render_canvas_item_cull_by_node(p_canvas_item, p_transform, p_clip_rect, Color(1, 1, 1, 1), 0, z_list, z_last_list, nullptr, nullptr, false);
@@ -339,7 +341,12 @@ void RenderingServerCanvas::_render_canvas_item_cull_by_item(Item *p_canvas_item
 		real_t f = Engine::get_singleton()->get_physics_interpolation_fraction();
 		TransformInterpolator::interpolate_transform_2d(ci->xform_prev, ci->xform_curr, final_xform, f);
 	}
-	final_xform = p_transform * final_xform;
+
+	if (!p_canvas_item->ignore_parent_xform) {
+		final_xform = p_transform * final_xform;
+	} else {
+		final_xform = _current_camera_transform * final_xform;
+	}
 
 	Rect2 global_rect = final_xform.xform(rect);
 	global_rect.position += p_clip_rect.position;
@@ -476,7 +483,11 @@ void RenderingServerCanvas::_render_canvas_item_cull_by_node(Item *p_canvas_item
 		TransformInterpolator::interpolate_transform_2d(ci->xform_prev, ci->xform_curr, final_xform, f);
 	}
 
-	final_xform = p_transform * final_xform;
+	if (!p_canvas_item->ignore_parent_xform) {
+		final_xform = p_transform * final_xform;
+	} else {
+		final_xform = _current_camera_transform * final_xform;
+	}
 
 	Rect2 global_rect = final_xform.xform(rect);
 	ci->global_rect_cache = global_rect;
@@ -669,6 +680,8 @@ void RenderingServerCanvas::render_canvas(Canvas *p_canvas, const Transform2D &p
 
 		memset(z_list, 0, z_range * sizeof(RasterizerCanvas::Item *));
 		memset(z_last_list, 0, z_range * sizeof(RasterizerCanvas::Item *));
+
+		_current_camera_transform = p_transform;
 
 #ifdef RENDERING_SERVER_CANVAS_TIME_NODE_CULLING
 		bool measure = (Engine::get_singleton()->get_frames_drawn() % 100) == 0;
@@ -951,6 +964,14 @@ void RenderingServerCanvas::canvas_item_set_draw_behind_parent(RID p_item, bool 
 	ERR_FAIL_COND(!canvas_item);
 
 	canvas_item->behind = p_enable;
+	_make_bound_dirty(canvas_item);
+}
+
+void RenderingServerCanvas::canvas_item_set_ignore_parent_transform(RID p_item, bool p_enable) {
+	Item *canvas_item = canvas_item_owner.getornull(p_item);
+	ERR_FAIL_COND(!canvas_item);
+
+	canvas_item->ignore_parent_xform = p_enable;
 	_make_bound_dirty(canvas_item);
 }
 

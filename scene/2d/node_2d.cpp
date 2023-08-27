@@ -305,7 +305,9 @@ void Node2D::set_transform(const Transform2D &p_transform) {
 	_mat = p_transform;
 	_xform_dirty = true;
 
-	RenderingServer::get_singleton()->canvas_item_set_transform(get_canvas_item(), _mat);
+	if (!_is_using_identity_transform()) {
+		RenderingServer::get_singleton()->canvas_item_set_transform(get_canvas_item(), _mat);
+	}
 
 	if (!is_inside_tree()) {
 		return;
