@@ -590,9 +590,12 @@ public:
 	};
 
 	struct Light : public RID_Data {
-		bool enabled;
+		bool enabled : 1;
+		bool on_interpolate_transform_list : 1;
+		bool interpolated : 1;
 		Color color;
-		Transform2D xform;
+		Transform2D xform_curr;
+		Transform2D xform_prev;
 		float height;
 		float energy;
 		float scale;
@@ -631,6 +634,8 @@ public:
 
 		Light() {
 			enabled = true;
+			on_interpolate_transform_list = false;
+			interpolated = true;
 			color = Color(1, 1, 1);
 			shadow_color = Color(0, 0, 0, 0);
 			height = 0;
@@ -837,13 +842,19 @@ public:
 			Rect2 rect;
 		};
 
-		Transform2D xform;
+		// For interpolation we store the current local xform,
+		// and the previous xform from the previous tick.
+		Transform2D xform_curr;
+		Transform2D xform_prev;
+
 		bool clip : 1;
 		bool visible : 1;
 		bool behind : 1;
 		bool update_when_visible : 1;
 		bool distance_field : 1;
 		bool light_masked : 1;
+		bool on_interpolate_transform_list : 1;
+		bool interpolated : 1;
 		mutable bool custom_rect : 1;
 		mutable bool rect_dirty : 1;
 		mutable bool bound_dirty : 1;
@@ -889,6 +900,13 @@ public:
 		// the rect containing this item and all children,
 		// in local space.
 		Rect2 local_bound;
+
+		// When using interpolation, the local bound for culling
+		// should be a combined bound of the previous and current.
+		// To keep this up to date, we need to keep track of the previous
+		// bound separately rather than just the combined bound.
+		Rect2 local_bound_prev;
+		uint32_t local_bound_last_update_tick;
 
 		const Rect2 &get_rect() const {
 			if (custom_rect) {
@@ -1049,6 +1067,8 @@ public:
 				memdelete(skinning_data);
 				skinning_data = NULL;
 			}
+
+			on_interpolate_transform_list = false;
 		}
 
 		Item() {
@@ -1070,6 +1090,9 @@ public:
 			distance_field = false;
 			light_masked = false;
 			update_when_visible = false;
+			on_interpolate_transform_list = false;
+			interpolated = true;
+			local_bound_last_update_tick = 0;
 		}
 
 		virtual ~Item() {
@@ -1089,12 +1112,15 @@ public:
 	virtual void canvas_debug_viewport_shadows(Light *p_lights_with_shadow) = 0;
 
 	struct LightOccluderInstance : public RID_Data {
-		bool enabled;
+		bool enabled : 1;
+		bool on_interpolate_transform_list : 1;
+		bool interpolated : 1;
 		RID canvas;
 		RID polygon;
 		RID polygon_buffer;
 		Rect2 aabb_cache;
-		Transform2D xform;
+		Transform2D xform_curr;
+		Transform2D xform_prev;
 		Transform2D xform_cache;
 		int light_mask;
 		RS::CanvasOccluderPolygonCullMode cull_cache;
@@ -1106,6 +1132,8 @@ public:
 			next = nullptr;
 			light_mask = 1;
 			cull_cache = RS::CANVAS_OCCLUDER_POLYGON_CULL_DISABLED;
+			on_interpolate_transform_list = false;
+			interpolated = true;
 		}
 	};
 

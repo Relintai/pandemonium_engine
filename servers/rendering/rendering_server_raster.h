@@ -361,11 +361,6 @@ public:
 //from now on, calls forwarded to this singleton
 #define BINDBASE RSG::scene
 
-	/* EVENT QUEUING */
-
-	BIND0N(tick)
-	BIND1N(pre_draw, bool)
-
 	/* CAMERA API */
 
 	BIND0R(RID, camera_create)
@@ -466,10 +461,6 @@ public:
 #undef BINDBASE
 #define BINDBASE RSG::scene
 
-	/* INTERPOLATION */
-
-	BIND1(set_physics_interpolation_enabled, bool)
-
 	/* SCENARIO API */
 
 	BIND0R(RID, scenario_create)
@@ -503,7 +494,7 @@ public:
 	BIND2(instance_set_extra_visibility_margin, RID, real_t)
 
 	/* PORTALS */
-	
+
 	BIND2(instance_set_portal_mode, RID, InstancePortalMode)
 
 	BIND0R(RID, ghost_create)
@@ -524,7 +515,7 @@ public:
 	BIND2(roomgroup_add_room, RID, RID)
 
 	/* OCCLUDERS */
-	
+
 	BIND0R(RID, occluder_instance_create)
 	BIND2(occluder_instance_set_scenario, RID, RID)
 	BIND2(occluder_instance_link_resource, RID, RID)
@@ -624,16 +615,18 @@ public:
 	BIND2(canvas_item_set_z_index, RID, int)
 	BIND2(canvas_item_set_z_as_relative_to_parent, RID, bool)
 	BIND3(canvas_item_set_copy_to_backbuffer, RID, bool, const Rect2 &)
+	BIND1(canvas_item_clear, RID)
+	BIND2(canvas_item_set_draw_index, RID, int)
+	BIND2(canvas_item_set_material, RID, RID)
+	BIND2(canvas_item_set_use_parent_material, RID, bool)
+
 	BIND2(canvas_item_attach_skeleton, RID, RID)
 	BIND2(canvas_item_set_skeleton_relative_xform, RID, Transform2D)
 	BIND1R(Rect2, _debug_canvas_item_get_rect, RID)
 
-	BIND1(canvas_item_clear, RID)
-	BIND2(canvas_item_set_draw_index, RID, int)
-
-	BIND2(canvas_item_set_material, RID, RID)
-
-	BIND2(canvas_item_set_use_parent_material, RID, bool)
+	BIND2(canvas_item_set_interpolated, RID, bool)
+	BIND1(canvas_item_reset_physics_interpolation, RID)
+	BIND2(canvas_item_transform_physics_interpolation, RID, Transform2D)
 
 	BIND0R(RID, canvas_light_create)
 	BIND2(canvas_light_attach_to_canvas, RID, RID)
@@ -659,12 +652,20 @@ public:
 	BIND2(canvas_light_set_shadow_color, RID, const Color &)
 	BIND2(canvas_light_set_shadow_smooth, RID, float)
 
+	BIND2(canvas_light_set_interpolated, RID, bool)
+	BIND1(canvas_light_reset_physics_interpolation, RID)
+	BIND2(canvas_light_transform_physics_interpolation, RID, Transform2D)
+
 	BIND0R(RID, canvas_light_occluder_create)
 	BIND2(canvas_light_occluder_attach_to_canvas, RID, RID)
 	BIND2(canvas_light_occluder_set_enabled, RID, bool)
 	BIND2(canvas_light_occluder_set_polygon, RID, RID)
 	BIND2(canvas_light_occluder_set_transform, RID, const Transform2D &)
 	BIND2(canvas_light_occluder_set_light_mask, RID, int)
+
+	BIND2(canvas_light_occluder_set_interpolated, RID, bool)
+	BIND1(canvas_light_occluder_reset_physics_interpolation, RID)
+	BIND2(canvas_light_occluder_transform_physics_interpolation, RID, Transform2D)
 
 	BIND0R(RID, canvas_occluder_polygon_create)
 	BIND3(canvas_occluder_polygon_set_shape, RID, const PoolVector<Vector2> &, bool)
@@ -685,11 +686,15 @@ public:
 
 	virtual void request_frame_drawn_callback(Object *p_where, const StringName &p_method, const Variant &p_userdata);
 
+	virtual void tick();
+	virtual void pre_draw(bool p_will_draw);
 	virtual void draw(bool p_swap_buffers, double frame_step);
 	virtual void sync();
 	virtual bool has_changed(ChangedPriority p_priority = CHANGED_PRIORITY_ANY) const;
 	virtual void init();
 	virtual void finish();
+
+	virtual void set_physics_interpolation_enabled(bool p_enabled);
 
 	/* STATUS INFORMATION */
 

@@ -603,6 +603,12 @@ void SceneTree::client_physics_interpolation_remove_spatial(SelfList<Spatial> *p
 	_client_physics_interpolation._spatials_list.remove(p_elem);
 }
 
+void SceneTree::iteration_prepare() {
+	if (_physics_interpolation_enabled) {
+		RenderingServer::get_singleton()->tick();
+	}
+}
+
 void SceneTree::iteration_end() {
 	// When physics interpolation is active, we want all pending transforms
 	// to be flushed to the RenderingServer before finishing a physics tick.
@@ -615,10 +621,6 @@ bool SceneTree::iteration(float p_time) {
 	root_lock++;
 
 	current_frame++;
-
-	if (_physics_interpolation_enabled) {
-		RenderingServer::get_singleton()->tick();
-	}
 
 	// Any objects performing client physics interpolation
 	// should be given an opportunity to keep their previous transforms

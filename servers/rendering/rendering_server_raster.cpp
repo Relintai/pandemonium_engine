@@ -135,6 +135,20 @@ void RenderingServerRaster::draw(bool p_swap_buffers, double frame_step) {
 void RenderingServerRaster::sync() {
 }
 
+void RenderingServerRaster::set_physics_interpolation_enabled(bool p_enabled) {
+	RSG::scene->set_physics_interpolation_enabled(p_enabled);
+	RSG::canvas->set_physics_interpolation_enabled(p_enabled);
+}
+
+void RenderingServerRaster::tick() {
+	RSG::scene->tick();
+	RSG::canvas->tick();
+}
+
+void RenderingServerRaster::pre_draw(bool p_will_draw) {
+	RSG::scene->pre_draw(p_will_draw);
+}
+
 bool RenderingServerRaster::has_changed(ChangedPriority p_priority) const {
 	switch (p_priority) {
 		default: {

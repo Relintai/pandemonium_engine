@@ -570,6 +570,10 @@ void CanvasItem::_exit_canvas() {
 	}
 }
 
+void CanvasItem::_physics_interpolated_changed() {
+	RenderingServer::get_singleton()->canvas_item_set_interpolated(canvas_item, is_physics_interpolated());
+}
+
 void CanvasItem::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
@@ -605,6 +609,11 @@ void CanvasItem::_notification(int p_what) {
 
 			if (get_viewport()) {
 				get_parent()->disconnect(SceneStringNames::get_singleton()->child_order_changed, get_viewport(), SceneStringNames::get_singleton()->canvas_parent_mark_dirty);
+			}
+		} break;
+		case NOTIFICATION_RESET_PHYSICS_INTERPOLATION: {
+			if (is_visible_in_tree() && is_physics_interpolated()) {
+				RenderingServer::get_singleton()->canvas_item_reset_physics_interpolation(canvas_item);
 			}
 		} break;
 		case NOTIFICATION_DRAW:

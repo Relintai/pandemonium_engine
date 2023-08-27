@@ -73,6 +73,30 @@ void RenderingServerWrapMT::thread_loop() {
 
 /* EVENT QUEUING */
 
+void RenderingServerWrapMT::set_physics_interpolation_enabled(bool p_enabled) {
+	if (Thread::get_caller_id() != server_thread) {
+		command_queue.push(rendering_server, &RenderingServer::set_physics_interpolation_enabled, p_enabled);
+	} else {
+		rendering_server->set_physics_interpolation_enabled(p_enabled);
+	}
+}
+
+void RenderingServerWrapMT::tick() {
+	if (Thread::get_caller_id() != server_thread) {
+		command_queue.push(rendering_server, &RenderingServer::tick);
+	} else {
+		rendering_server->tick();
+	}
+}
+
+void RenderingServerWrapMT::pre_draw(bool p_will_draw) {
+	if (Thread::get_caller_id() != server_thread) {
+		command_queue.push(rendering_server, &RenderingServer::pre_draw, p_will_draw);
+	} else {
+		rendering_server->pre_draw(p_will_draw);
+	}
+}
+
 void RenderingServerWrapMT::sync() {
 	if (create_thread) {
 		draw_pending.increment();
