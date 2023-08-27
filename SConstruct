@@ -129,12 +129,12 @@ opts.Add(EnumVariable("optimize", "Optimization type", "speed", ("speed", "size"
 opts.Add(BoolVariable("production", "Set defaults to build Pandemonium for use in production", False))
 opts.Add(EnumVariable("lto", "Link-time optimization (production builds)", "none", ("none", "auto", "thin", "full")))
 opts.Add(BoolVariable("use_rtti", "Use RTTI", False))
-opts.Add(BoolVariable("use_exceptions", "Use exceptions", False))
 
 # Components
 opts.Add(BoolVariable("deprecated", "Enable deprecated features", True))
 opts.Add(BoolVariable("minizip", "Enable ZIP archive support using minizip", True))
 opts.Add(BoolVariable("xaudio2", "Enable the XAudio2 audio driver", False))
+opts.Add(BoolVariable("disable_exceptions", "Force disabling exception handling code", True))
 opts.Add("custom_modules", "A list of comma-separated directory paths containing custom modules to build.", "")
 opts.Add(BoolVariable("custom_modules_recursive", "Detect custom modules recursively for each specified path.", True))
 
@@ -475,36 +475,6 @@ if selected_platform in platform_list:
         env_base.Prepend(CPPDEFINES=["NO_SAFE_CAST"])
         env.Prepend(CPPDEFINES=["NO_SAFE_CAST"])
 
-    if not env_base["use_exceptions"]:
-        if not env.msvc:
-            env_base.Prepend(CXXFLAGS=["-fno-exceptions"])
-            env.Prepend(CXXFLAGS=["-fno-exceptions"])
-        else:
-            #env_base.Prepend(CXXFLAGS=["/EHa-"])
-            #env_base.Prepend(CXXFLAGS=["/EHs-"])
-            #env_base.Prepend(CXXFLAGS=["/EHc-"])
-            #not needed
-            #env_base.Prepend(CXXFLAGS=["/EHr-"])
-
-            #env.Prepend(CXXFLAGS=["/EHa-"])
-            #env.Prepend(CXXFLAGS=["/EHs-"])
-            #env.Prepend(CXXFLAGS=["/EHc-"])
-            #not needed
-            #env.Prepend(CXXFLAGS=["/EHr-"])
-
-            # Apparently disabling exceptions when you also need to have stl containers 
-            # (Some of the 3rd party code needs them)
-            # is not as simple with msvc as I originally thought.
-            # So for now they are always enabled.
-            # TODO: Write drop-in replacement for them. (They should use error macros, etc)
-            # (I bet it will come handy having them in more ways later.)
-            env_base.Prepend(CXXFLAGS=["/EHsc"])
-            env.Prepend(CXXFLAGS=["/EHsc"])
-    else:
-        if env.msvc:
-            env_base.Prepend(CXXFLAGS=["/EHsc"])
-            env.Prepend(CXXFLAGS=["/EHsc"])
-
     # Handle renamed options.
     if "use_lto" in ARGUMENTS or "use_thinlto" in ARGUMENTS:
         print("Error: The `use_lto` and `use_thinlto` boolean options have been unified to `lto=<none|thin|full>`.")
@@ -514,6 +484,16 @@ if selected_platform in platform_list:
         print("Error: The `use_lld` boolean option has been replaced by `linker=<default|bfd|gold|lld|mold>`.")
         print("       Please adjust your scripts accordingly.")
         Exit(255)
+
+    # Disable exception handling. Godot doesn't use exceptions anywhere, and this
+    # saves around 20% of binary size and very significant build time (GH-80513).
+    if env["disable_exceptions"]:
+        if env.msvc:
+            env.Append(CPPDEFINES=[("_HAS_EXCEPTIONS", 0)])
+        else:
+            env.Append(CCFLAGS=["-fno-exceptions"])
+    elif env.msvc:
+        env.Append(CCFLAGS=["/EHsc"])
 
     # Configure compiler warnings
     if env.msvc:  # MSVC

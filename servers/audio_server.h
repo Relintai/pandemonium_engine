@@ -250,6 +250,11 @@ private:
 #ifdef DEBUG_ENABLED
 			uint64_t prof_time;
 #endif
+
+			Effect() {
+				enabled = false;
+				prof_time = 0;
+			}
 		};
 
 		Vector<Effect> effects;
