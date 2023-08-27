@@ -31,7 +31,7 @@
 
         <!-- Records the version of the Pandemonium editor used for building -->
         <meta-data
-            android:name="net.relintai.pandemonium.editor.version"
+            android:name="org.pandemoniumengine.editor.version"
             android:value="${pandemoniumEditorVersion}" />
 
         <!-- The following metadata values are replaced when Pandemonium exports, modifying them here has no effect. -->

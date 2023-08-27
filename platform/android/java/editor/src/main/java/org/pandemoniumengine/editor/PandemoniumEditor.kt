@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package net.relintai.pandemonium.editor
+package org.pandemoniumengine.editor
 
 import net.relintai.pandemonium.pandemonium.FullScreenPandemoniumApp
 import net.relintai.pandemonium.pandemonium.utils.PermissionsUtil

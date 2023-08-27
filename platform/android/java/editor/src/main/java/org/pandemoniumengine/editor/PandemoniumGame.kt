@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package net.relintai.pandemonium.editor
+package org.pandemoniumengine.editor
 
 import android.content.Intent
 import android.os.*

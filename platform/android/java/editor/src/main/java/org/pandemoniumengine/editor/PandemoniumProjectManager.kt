@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package net.relintai.pandemonium.editor
+package org.pandemoniumengine.editor
 
 /**
  * Launcher activity for the Pandemonium Android Editor.

@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         // The 'applicationId' suffix allows to install Pandemonium 3.x(v3) and 4.x(v4) on the same device
-        applicationId "net.relintai.pandemonium.editor.v3"
+        applicationId "org.pandemoniumengine.editor.v3"
         versionCode getPandemoniumLibraryVersionCode()
         versionName getPandemoniumLibraryVersionName()
         minSdkVersion versions.minSdk
