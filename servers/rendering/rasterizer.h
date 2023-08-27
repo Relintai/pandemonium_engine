@@ -376,6 +376,7 @@ public:
 	virtual void multimesh_set_visible_instances(RID p_multimesh, int p_visible);
 	virtual int multimesh_get_visible_instances(RID p_multimesh) const;
 	virtual AABB multimesh_get_aabb(RID p_multimesh) const;
+	virtual void multimesh_attach_canvas_item(RID p_multimesh, RID p_canvas_item, bool p_attach) = 0;
 
 	virtual RID _multimesh_create() = 0;
 	virtual void _multimesh_allocate(RID p_multimesh, int p_instances, RS::MultimeshTransformFormat p_transform_format, RS::MultimeshColorFormat p_color_format, RS::MultimeshCustomDataFormat p_data = RS::MULTIMESH_CUSTOM_DATA_NONE) = 0;
@@ -681,6 +682,8 @@ public:
 				TYPE_MULTIRECT,
 			};
 
+			virtual bool contains_reference(const RID &p_rid) const { return false; }
+
 			Type type;
 			virtual ~Command() {}
 		};
@@ -813,7 +816,17 @@ public:
 			RID multimesh;
 			RID texture;
 			RID normal_map;
+			RID canvas_item;
+			virtual bool contains_reference(const RID &p_rid) const { return multimesh == p_rid; }
+
 			CommandMultiMesh() { type = TYPE_MULTIMESH; }
+
+			virtual ~CommandMultiMesh() {
+				// Remove any backlinks from multimesh to canvas item.
+				if (multimesh.is_valid()) {
+					RasterizerStorage::base_singleton->multimesh_attach_canvas_item(multimesh, canvas_item, false);
+				}
+			}
 		};
 
 		struct CommandCircle : public Command {
@@ -1050,6 +1063,20 @@ public:
 
 			rect_dirty = false;
 			return rect;
+		}
+
+		void remove_references(const RID &p_rid) {
+			for (int i = commands.size() - 1; i >= 0; i--) {
+				if (commands[i]->contains_reference(p_rid)) {
+					memdelete(commands[i]);
+
+					// This could possibly be unordered if occurring close
+					// to canvas_item deletion, but is
+					// unlikely to make much performance difference,
+					// and is safer.
+					commands.remove(i);
+				}
+			}
 		}
 
 		void clear() {
