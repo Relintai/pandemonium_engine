@@ -1,8 +1,8 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  PandemoniumDownloaderAlarmReceiver.java                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -28,20 +28,32 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
+package org.pandemoniumengine.pandemonium;
 
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.util.Log;
 
-import android.os.Bundle;
+import com.google.android.vending.expansion.downloader.DownloaderClientMarshaller;
 
 /**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
+ * You should start your derived downloader class when this receiver gets the message
+ * from the alarm service using the provided service helper function within the
+ * DownloaderClientMarshaller. This class must be then registered in your AndroidManifest.xml
+ * file with a section like this:
+ *         <receiver android:name=".PandemoniumDownloaderAlarmReceiver"/>
  */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
+public class PandemoniumDownloaderAlarmReceiver extends BroadcastReceiver {
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
+	public void onReceive(Context context, Intent intent) {
+		Log.d("PANDEMONIUM", "Alarma recivida");
+		try {
+			DownloaderClientMarshaller.startDownloadServiceIfRequired(context, intent, PandemoniumDownloaderService.class);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			Log.d("PANDEMONIUM", "Exception: " + e.getClass().getName() + ":" + e.getMessage());
+		}
 	}
 }

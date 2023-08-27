@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  PandemoniumRenderer.java                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,67 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
+package org.pandemoniumengine.pandemonium;
 
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
+import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
 
-import android.os.Bundle;
+import org.pandemoniumengine.pandemonium.plugin.PandemoniumPlugin;
+import org.pandemoniumengine.pandemonium.plugin.PandemoniumPluginRegistry;
+import org.pandemoniumengine.pandemonium.utils.GLUtils;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 /**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
+ * Pandemonium's renderer implementation.
  */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
+class PandemoniumRenderer implements PandemoniumGLSurfaceView.Renderer {
+	private final PandemoniumPluginRegistry pluginRegistry;
+	private boolean activityJustResumed = false;
+
+	PandemoniumRenderer() {
+		this.pluginRegistry = PandemoniumPluginRegistry.getPluginRegistry();
+	}
+
+	public void onDrawFrame(GL10 gl) {
+		if (activityJustResumed) {
+			PandemoniumLib.onRendererResumed();
+			activityJustResumed = false;
+		}
+
+		PandemoniumLib.step();
+		for (int i = 0; i < Pandemonium.singleton_count; i++) {
+			Pandemonium.singletons[i].onGLDrawFrame(gl);
+		}
+		for (PandemoniumPlugin plugin : pluginRegistry.getAllPlugins()) {
+			plugin.onGLDrawFrame(gl);
+		}
+	}
+
+	public void onSurfaceChanged(GL10 gl, int width, int height) {
+		PandemoniumLib.resize(width, height);
+		for (int i = 0; i < Pandemonium.singleton_count; i++) {
+			Pandemonium.singletons[i].onGLSurfaceChanged(gl, width, height);
+		}
+		for (PandemoniumPlugin plugin : pluginRegistry.getAllPlugins()) {
+			plugin.onGLSurfaceChanged(gl, width, height);
+		}
+	}
+
+	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+		PandemoniumLib.newcontext();
+		for (PandemoniumPlugin plugin : pluginRegistry.getAllPlugins()) {
+			plugin.onGLSurfaceCreated(gl, config);
+		}
+	}
+
+	void onActivityResumed() {
+		// We defer invoking PandemoniumLib.onRendererResumed() until the first draw frame call.
+		// This ensures we have a valid GL context and surface when we do so.
+		activityJustResumed = true;
+	}
+
+	void onActivityPaused() {
+		PandemoniumLib.onRendererPaused();
 	}
 }

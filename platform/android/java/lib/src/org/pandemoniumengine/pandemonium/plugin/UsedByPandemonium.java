@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  UsedByPandemonium.java                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,18 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
+package org.pandemoniumengine.pandemonium.plugin;
 
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
-
-import android.os.Bundle;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
+ * Annotation to indicate a method is being invoked from the Pandemonium game logic.
+ *
+ * At runtime, annotated plugin methods are detected and automatically registered.
  */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
-	}
-}
+@Target({ ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface UsedByPandemonium {}

@@ -13,7 +13,7 @@
 	<key>CFBundleIconFile</key>
 	<string>Pandemonium.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.relintai.pandemonium.pandemonium</string>
+	<string>org.pandemoniumengine.pandemonium</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  PandemoniumNetUtils.java                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,55 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
+package org.pandemoniumengine.pandemonium.utils;
 
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
-
-import android.os.Bundle;
+import android.app.Activity;
+import android.content.Context;
+import android.net.wifi.WifiManager;
+import android.util.Log;
 
 /**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
+ * This class handles Android-specific networking functions.
+ * For now, it only provides access to WifiManager.MulticastLock, which is needed on some devices
+ * to receive broadcast and multicast packets.
  */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
+public class PandemoniumNetUtils {
+	/* A single, reference counted, multicast lock, or null if permission CHANGE_WIFI_MULTICAST_STATE is missing */
+	private WifiManager.MulticastLock multicastLock;
+
+	public PandemoniumNetUtils(Activity p_activity) {
+		if (PermissionsUtil.hasManifestPermission(p_activity, "android.permission.CHANGE_WIFI_MULTICAST_STATE")) {
+			WifiManager wifi = (WifiManager)p_activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+			multicastLock = wifi.createMulticastLock("PandemoniumMulticastLock");
+			multicastLock.setReferenceCounted(true);
+		}
+	}
+
+	/**
+	 * Acquire the multicast lock. This is required on some devices to receive broadcast/multicast packets.
+	 * This is done automatically by Pandemonium when enabling broadcast or joining a multicast group on a socket.
+	 */
+	public void multicastLockAcquire() {
+		if (multicastLock == null)
+			return;
+		try {
+			multicastLock.acquire();
+		} catch (RuntimeException e) {
+			Log.e("Pandemonium", "Exception during multicast lock acquire: " + e);
+		}
+	}
+
+	/**
+	 * Release the multicast lock.
+	 * This is done automatically by Pandemonium when the lock is no longer needed by a socket.
+	 */
+	public void multicastLockRelease() {
+		if (multicastLock == null)
+			return;
+		try {
+			multicastLock.release();
+		} catch (RuntimeException e) {
+			Log.e("Pandemonium", "Exception during multicast lock release: " + e);
+		}
 	}
 }

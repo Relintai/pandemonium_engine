@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  Joystick.java                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,25 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
+package org.pandemoniumengine.pandemonium.input;
 
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
+import android.util.SparseArray;
 
-import android.os.Bundle;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
+ * POJO class to represent a Joystick input device.
  */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
-	}
+class Joystick {
+	int device_id;
+	String name;
+	List<Integer> axes = new ArrayList<>();
+	protected boolean hasAxisHat = false;
+	/*
+	 * Keep track of values so we can prevent flooding the engine with useless events.
+	 */
+	protected final SparseArray<Float> axesValues = new SparseArray<>(4);
+	protected int hatX;
+	protected int hatY;
 }

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  FileAccessFlags.kt                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,60 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
-
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
-
-import android.os.Bundle;
+package org.pandemoniumengine.pandemonium.io.file
 
 /**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
+ * Android representation of Godot native access flags.
  */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
-	}
+internal enum class FileAccessFlags(val nativeValue: Int) {
+    /**
+     * Opens the file for read operations.
+     * The cursor is positioned at the beginning of the file.
+     */
+    READ(1),
+
+    /**
+     * Opens the file for write operations.
+     * The file is created if it does not exist, and truncated if it does.
+     */
+    WRITE(2),
+
+    /**
+     * Opens the file for read and write operations.
+     * Does not truncate the file. The cursor is positioned at the beginning of the file.
+     */
+    READ_WRITE(3),
+
+    /**
+     * Opens the file for read and write operations.
+     * The file is created if it does not exist, and truncated if it does.
+     * The cursor is positioned at the beginning of the file.
+     */
+    WRITE_READ(7);
+
+    fun getMode(): String {
+        return when (this) {
+            READ -> "r"
+            WRITE -> "w"
+            READ_WRITE, WRITE_READ -> "rw"
+        }
+    }
+
+    fun shouldTruncate(): Boolean {
+        return when (this) {
+            READ, READ_WRITE -> false
+            WRITE, WRITE_READ -> true
+        }
+    }
+
+    companion object {
+        fun fromNativeModeFlags(modeFlag: Int): FileAccessFlags? {
+            for (flag in values()) {
+                if (flag.nativeValue == modeFlag) {
+                    return flag
+                }
+            }
+            return null
+        }
+    }
 }

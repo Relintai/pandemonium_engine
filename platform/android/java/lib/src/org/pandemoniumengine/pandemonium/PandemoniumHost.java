@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  PandemoniumHost.java                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,68 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
+package org.pandemoniumengine.pandemonium;
 
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
-
-import android.os.Bundle;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
+ * Denotate a component (e.g: Activity, Fragment) that hosts the {@link Pandemonium} fragment.
  */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
+public interface PandemoniumHost {
+	/**
+	 * Provides a set of command line parameters to setup the engine.
+	 */
+	default List<String> getCommandLine() {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * Invoked on the render thread when the Pandemonium setup is complete.
+	 */
+	default void onPandemoniumSetupCompleted() {}
+
+	/**
+	 * Invoked on the render thread when the Pandemonium main loop has started.
+	 */
+	default void onPandemoniumMainLoopStarted() {}
+
+	/**
+	 * Invoked on the render thread to terminate the given Pandemonium instance.
+	 */
+	default void onPandemoniumForceQuit(Pandemonium instance) {}
+
+	/**
+ * Invoked on the render thread to terminate the Pandemonium instance with the given id.
+	 * @param pandemoniumInstanceId id of the Pandemonium instance to terminate. See {@code onNewPandemoniumInstanceRequested}
+	 *
+	 * @return true if successful, false otherwise.
+	 */
+	default boolean onPandemoniumForceQuit(int pandemoniumInstanceId) {
+		return false;
+	}
+
+	/**
+	 * Invoked on the render thread when the Pandemonium instance wants to be restarted. It's up to the host
+	 * to perform the appropriate action(s).
+	 */
+	default void onPandemoniumRestartRequested(Pandemonium instance) {}
+
+	/**
+	 * Invoked on the render thread when a new Pandemonium instance is requested. It's up to the host to
+	 * perform the appropriate action(s).
+	 *
+	 * @param args Arguments used to initialize the new instance.
+	 *
+	 * @return the id of the new instance. See {@code onPandemoniumForceQuit}
+	 */
+	default int onNewPandemoniumInstanceRequested(String[] args) {
+		return 0;
+	}
+
+	default public void enableForStealingFocus(int processId) {
+	}
+
+	default public void moveWindowToForeground() {
 	}
 }

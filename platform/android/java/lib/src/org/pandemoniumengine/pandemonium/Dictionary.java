@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  Dictionary.java                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,48 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
+package org.pandemoniumengine.pandemonium;
 
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
+import java.util.HashMap;
+import java.util.Set;
 
-import android.os.Bundle;
+public class Dictionary extends HashMap<String, Object> {
+	protected String[] keys_cache;
 
-/**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
- */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
+	public String[] get_keys() {
+		String[] ret = new String[size()];
+		int i = 0;
+		Set<String> keys = keySet();
+		for (String key : keys) {
+			ret[i] = key;
+			i++;
+		}
+
+		return ret;
+	}
+
+	public Object[] get_values() {
+		Object[] ret = new Object[size()];
+		int i = 0;
+		Set<String> keys = keySet();
+		for (String key : keys) {
+			ret[i] = get(key);
+			i++;
+		}
+
+		return ret;
+	}
+
+	public void set_keys(String[] keys) {
+		keys_cache = keys;
+	}
+
+	public void set_values(Object[] vals) {
+		int i = 0;
+		for (String key : keys_cache) {
+			put(key, vals[i]);
+			i++;
+		}
+		keys_cache = null;
 	}
 }

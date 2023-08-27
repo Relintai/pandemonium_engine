@@ -32,7 +32,7 @@ package com.google.android.vending.licensing.util;
  */
 
 // -- PANDEMONIUM start --
-import net.relintai.pandemonium.pandemonium.BuildConfig;
+import org.pandemoniumengine.pandemonium.BuildConfig;
 // -- PANDEMONIUM end --
 
 /**

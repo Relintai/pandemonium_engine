@@ -18,7 +18,7 @@ package com.google.android.vending.expansion.downloader.impl;
 
 // -- PANDEMONIUM start --
 //import com.android.vending.expansion.downloader.R;
-import net.relintai.pandemonium.pandemonium.R;
+import org.pandemoniumengine.pandemonium.R;
 // -- PANDEMONIUM end --
 
 import com.google.android.vending.expansion.downloader.DownloadProgressInfo;

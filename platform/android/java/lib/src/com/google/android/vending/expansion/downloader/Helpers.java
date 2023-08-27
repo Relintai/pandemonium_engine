@@ -26,7 +26,7 @@ import android.util.Log;
 
 // -- PANDEMONIUM start --
 //import com.android.vending.expansion.downloader.R;
-import net.relintai.pandemonium.pandemonium.R;
+import org.pandemoniumengine.pandemonium.R;
 // -- PANDEMONIUM end --
 
 import java.io.File;

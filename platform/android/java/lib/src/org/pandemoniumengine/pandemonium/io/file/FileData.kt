@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  FileData.kt                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,66 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
+package org.pandemoniumengine.pandemonium.io.file
 
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
-
-import android.os.Bundle;
+import java.io.File
+import java.io.FileOutputStream
+import java.io.RandomAccessFile
+import java.nio.channels.FileChannel
 
 /**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
+ * Implementation of [DataAccess] which handles regular (not scoped) file access and interactions.
  */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
+internal class FileData(filePath: String, accessFlag: FileAccessFlags) : DataAccess(filePath) {
+
+	companion object {
+		private val TAG = FileData::class.java.simpleName
+
+		fun fileExists(path: String): Boolean {
+			return try {
+				File(path).isFile
+			} catch (e: SecurityException) {
+				false
+			}
+		}
+
+		fun fileLastModified(filepath: String): Long {
+			return try {
+				File(filepath).lastModified()
+			} catch (e: SecurityException) {
+				0L
+			}
+		}
+
+		fun delete(filepath: String): Boolean {
+			return try {
+				File(filepath).delete()
+			} catch (e: Exception) {
+				false
+			}
+		}
+
+		fun rename(from: String, to: String): Boolean {
+			return try {
+				val fromFile = File(from)
+				fromFile.renameTo(File(to))
+			} catch (e: Exception) {
+				false
+			}
+		}
+	}
+
+	override val fileChannel: FileChannel
+
+	init {
+		if (accessFlag == FileAccessFlags.WRITE) {
+			fileChannel = FileOutputStream(filePath, !accessFlag.shouldTruncate()).channel
+		} else {
+			fileChannel = RandomAccessFile(filePath, accessFlag.getMode()).channel
+		}
+
+		if (accessFlag.shouldTruncate()) {
+			fileChannel.truncate(0)
+		}
 	}
 }

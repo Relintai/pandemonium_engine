@@ -30,10 +30,10 @@
 
 package org.pandemoniumengine.editor
 
-import net.relintai.pandemonium.pandemonium.FullScreenPandemoniumApp
-import net.relintai.pandemonium.pandemonium.utils.PermissionsUtil
-import net.relintai.pandemonium.pandemonium.utils.ProcessPhoenix
-import net.relintai.pandemonium.pandemonium.PandemoniumLib
+import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp
+import org.pandemoniumengine.pandemonium.utils.PermissionsUtil
+import org.pandemoniumengine.pandemonium.utils.ProcessPhoenix
+import org.pandemoniumengine.pandemonium.PandemoniumLib
 
 import android.Manifest
 import android.app.ActivityManager

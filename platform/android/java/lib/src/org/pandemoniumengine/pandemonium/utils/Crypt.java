@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  Crypt.java                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,41 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
+package org.pandemoniumengine.pandemonium.utils;
 
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
+import java.security.MessageDigest;
+import java.util.Random;
 
-import android.os.Bundle;
+public class Crypt {
+	public static String md5(String input) {
+		try {
+			// Create MD5 Hash
+			MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+			digest.update(input.getBytes());
+			byte[] messageDigest = digest.digest();
 
-/**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
- */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
+			// Create Hex String
+			StringBuilder hexString = new StringBuilder();
+			for (int i = 0; i < messageDigest.length; i++)
+				hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+			return hexString.toString();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public static String createRandomHash() {
+		return md5(Long.toString(createRandomLong()));
+	}
+
+	public static long createAbsRandomLong() {
+		return Math.abs(createRandomLong());
+	}
+
+	public static long createRandomLong() {
+		Random r = new Random();
+		return r.nextLong();
 	}
 }

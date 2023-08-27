@@ -21,7 +21,7 @@ index a0d2779af..a8bf65f9c 100644
   */
  
 +// -- PANDEMONIUM start --
-import net.relintai.pandemonium.pandemonium.BuildConfig;
+import org.pandemoniumengine.pandemonium.BuildConfig;
 +// -- PANDEMONIUM end --
 +
  /**

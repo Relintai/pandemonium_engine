@@ -308,7 +308,7 @@ Variant _jobject_to_variant(JNIEnv *env, jobject obj) {
 		return varr;
 	};
 
-	if (name == "java.util.HashMap" || name == "net.relintai.pandemonium.pandemonium.Dictionary") {
+	if (name == "java.util.HashMap" || name == "org.pandemoniumengine.pandemonium.Dictionary") {
 		Dictionary ret;
 		jclass oclass = c;
 		jmethodID get_keys = env->GetMethodID(oclass, "get_keys", "()[Ljava/lang/String;");
@@ -350,7 +350,7 @@ Variant::Type get_jni_type(const String &p_type) {
 		{ "[B", Variant::POOL_BYTE_ARRAY },
 		{ "[F", Variant::POOL_REAL_ARRAY },
 		{ "[Ljava.lang.String;", Variant::POOL_STRING_ARRAY },
-		{ "net.relintai.pandemonium.pandemonium.Dictionary", Variant::DICTIONARY },
+		{ "org.pandemoniumengine.pandemonium.Dictionary", Variant::DICTIONARY },
 		{ NULL, Variant::NIL }
 	};
 
@@ -377,7 +377,7 @@ const char *get_jni_sig(const String &p_type) {
 		{ "float", "F" },
 		{ "double", "D" },
 		{ "java.lang.String", "Ljava/lang/String;" },
-		{ "net.relintai.pandemonium.pandemonium.Dictionary", "Lnet/relintai/pandemonium/pandemonium/Dictionary;" },
+		{ "org.pandemoniumengine.pandemonium.Dictionary", "Lnet/relintai/pandemonium/pandemonium/Dictionary;" },
 		{ "[I", "[I" },
 		{ "[B", "[B" },
 		{ "[F", "[F" },

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumApp.java                                                        */
+/*  SignalInfo.java                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,72 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package com.pandemonium.game;
+package org.pandemoniumengine.pandemonium.plugin;
 
-import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
+import android.text.TextUtils;
 
-import android.os.Bundle;
+import androidx.annotation.NonNull;
+
+import java.util.Arrays;
 
 /**
- * Template activity for Pandemonium Android custom builds.
- * Feel free to extend and modify this class for your custom logic.
+ * Store information about a {@link PandemoniumPlugin}'s signal.
  */
-public class PandemoniumApp extends FullScreenPandemoniumApp {
+public final class SignalInfo {
+	private final String name;
+	private final Class<?>[] paramTypes;
+	private final String[] paramTypesNames;
+
+	public SignalInfo(@NonNull String signalName, Class<?>... paramTypes) {
+		if (TextUtils.isEmpty(signalName)) {
+			throw new IllegalArgumentException("Invalid signal name: " + signalName);
+		}
+
+		this.name = signalName;
+		this.paramTypes = paramTypes == null ? new Class<?>[ 0 ] : paramTypes;
+		this.paramTypesNames = new String[this.paramTypes.length];
+		for (int i = 0; i < this.paramTypes.length; i++) {
+			this.paramTypesNames[i] = this.paramTypes[i].getName();
+		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	Class<?>[] getParamTypes() {
+		return paramTypes;
+	}
+
+	String[] getParamTypesNames() {
+		return paramTypesNames;
+	}
+
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.PandemoniumAppMainTheme);
-		super.onCreate(savedInstanceState);
+	public String toString() {
+		return "SignalInfo{"
+				+
+				"name='" + name + '\'' +
+				", paramsTypes=" + Arrays.toString(paramTypes) +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof SignalInfo)) {
+			return false;
+		}
+
+		SignalInfo that = (SignalInfo)o;
+
+		return name.equals(that.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
 	}
 }
