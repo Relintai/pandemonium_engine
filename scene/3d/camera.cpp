@@ -120,10 +120,6 @@ void Camera::_notification(int p_what) {
 			if (current || first_camera) {
 				world->_camera_set(this);
 			}
-
-			ERR_FAIL_COND(get_world_3d().is_null());
-			RenderingServer::get_singleton()->camera_set_scenario(camera, get_world_3d()->get_scenario());
-
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			_request_camera_update();
@@ -137,8 +133,6 @@ void Camera::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
-			RenderingServer::get_singleton()->camera_set_scenario(camera, RID());
-
 			if (!get_tree()->is_node_being_edited(this)) {
 				if (is_current()) {
 					clear_current();

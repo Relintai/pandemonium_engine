@@ -101,14 +101,6 @@ void RenderingServerRaster::request_frame_drawn_callback(Object *p_where, const 
 	frame_drawn_callbacks.push_back(fdc);
 }
 
-void RenderingServerRaster::scenario_tick(RID p_scenario) {
-	RSG::scene->_scenario_tick(p_scenario);
-}
-
-void RenderingServerRaster::scenario_pre_draw(RID p_scenario, bool p_will_draw) {
-	RSG::scene->_scenario_pre_draw(p_scenario, p_will_draw);
-}
-
 void RenderingServerRaster::draw(bool p_swap_buffers, double frame_step) {
 	//needs to be done before changes is reset to 0, to not force the editor to redraw
 	RS::get_singleton()->emit_signal("frame_pre_draw");

@@ -36,18 +36,6 @@ void RenderingServerWrapMT::thread_exit() {
 	exit.set();
 }
 
-void RenderingServerWrapMT::thread_scenario_tick(RID p_scenario) {
-	if (!draw_pending.decrement()) {
-		rendering_server->scenario_tick(p_scenario);
-	}
-}
-
-void RenderingServerWrapMT::thread_scenario_pre_draw(RID p_scenario, bool p_will_draw) {
-	if (!draw_pending.decrement()) {
-		rendering_server->scenario_pre_draw(p_scenario, p_will_draw);
-	}
-}
-
 void RenderingServerWrapMT::thread_draw(bool p_swap_buffers, double frame_step) {
 	if (!draw_pending.decrement()) {
 		rendering_server->draw(p_swap_buffers, frame_step);
@@ -91,24 +79,6 @@ void RenderingServerWrapMT::sync() {
 		command_queue.push_and_sync(this, &RenderingServerWrapMT::thread_flush);
 	} else {
 		command_queue.flush_all(); //flush all pending from other threads
-	}
-}
-
-void RenderingServerWrapMT::scenario_tick(RID p_scenario) {
-	if (create_thread) {
-		draw_pending.increment();
-		command_queue.push(this, &RenderingServerWrapMT::thread_scenario_tick, p_scenario);
-	} else {
-		rendering_server->scenario_tick(p_scenario);
-	}
-}
-
-void RenderingServerWrapMT::scenario_pre_draw(RID p_scenario, bool p_will_draw) {
-	if (create_thread) {
-		draw_pending.increment();
-		command_queue.push(this, &RenderingServerWrapMT::thread_scenario_pre_draw, p_scenario, p_will_draw);
-	} else {
-		rendering_server->scenario_pre_draw(p_scenario, p_will_draw);
 	}
 }
 
