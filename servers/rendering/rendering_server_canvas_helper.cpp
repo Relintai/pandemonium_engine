@@ -99,7 +99,7 @@ void MultiRect::add_rect(RID p_canvas_item, const Rect2 &p_rect, RID p_texture, 
 	sources.push_back(source);
 
 	// Legacy path
-	if (!VisualServerCanvasHelper::_multirect_enabled) {
+	if (!RenderingServerCanvasHelper::_multirect_enabled) {
 		flush();
 	}
 }

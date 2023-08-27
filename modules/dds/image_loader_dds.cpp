@@ -31,7 +31,7 @@
 #include "image_loader_dds.h"
 
 #include "core/os/os.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 #include "core/io/file_access_memory.h"
 #include "core/os/file_access.h"

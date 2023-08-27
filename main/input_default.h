@@ -203,7 +203,7 @@ private:
 
 	Vector<JoyDeviceMapping> map_db;
 
-	Set<uint32_t> ignored_device_ids;
+	RBSet<uint32_t> ignored_device_ids;
 
 	JoyEvent _get_mapped_button_event(const JoyDeviceMapping &mapping, int p_button);
 	JoyEvent _get_mapped_axis_event(const JoyDeviceMapping &mapping, int p_axis, float p_value);
