@@ -60,6 +60,9 @@ public:
 	String get_bind_host();
 	void set_bind_host(const String &val);
 
+	bool get_start_on_ready();
+	void set_start_on_ready(const bool val);
+
 	bool get_use_ssl();
 	void set_use_ssl(const bool val);
 
@@ -110,6 +113,8 @@ protected:
 
 	int _bind_port;
 	String _bind_host;
+
+	bool _start_on_ready;
 
 	//TODO add binds to set path
 	bool _use_ssl;

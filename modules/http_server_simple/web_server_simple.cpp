@@ -51,6 +51,13 @@ void WebServerSimple::set_bind_host(const String &val) {
 	_bind_host = val;
 }
 
+bool WebServerSimple::get_start_on_ready() {
+	return _start_on_ready;
+}
+void WebServerSimple::set_start_on_ready(const bool val) {
+	_start_on_ready = val;
+}
+
 bool WebServerSimple::get_use_ssl() {
 	return _use_ssl;
 }
@@ -222,6 +229,8 @@ WebServerSimple::WebServerSimple() {
 	_bind_port = 8080;
 	_bind_host = "0.0.0.0";
 
+	_start_on_ready = false;
+
 	_use_ssl = false;
 
 	_use_worker_threads = true;
@@ -254,12 +263,21 @@ void WebServerSimple::_apply_max_request_size_type() {
 }
 
 void WebServerSimple::_notification(int p_what) {
-	if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
-		if (_single_threaded_poll) {
-			_server_lock.lock();
-			_server->poll();
-			_server_lock.unlock();
-		}
+	switch (p_what) {
+		case NOTIFICATION_INTERNAL_PROCESS: {
+			if (_single_threaded_poll) {
+				_server_lock.lock();
+				_server->poll();
+				_server_lock.unlock();
+			}
+		} break;
+		case NOTIFICATION_READY: {
+			if (_start_on_ready) {
+				start();
+			}
+		} break;
+		default:
+			break;
 	}
 }
 
@@ -271,6 +289,10 @@ void WebServerSimple::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_bind_host"), &WebServerSimple::get_bind_host);
 	ClassDB::bind_method(D_METHOD("set_bind_host", "val"), &WebServerSimple::set_bind_host);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "bind_host"), "set_bind_host", "get_bind_host");
+
+	ClassDB::bind_method(D_METHOD("get_start_on_ready"), &WebServerSimple::get_start_on_ready);
+	ClassDB::bind_method(D_METHOD("set_start_on_ready", "val"), &WebServerSimple::set_start_on_ready);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "start_on_ready"), "set_start_on_ready", "get_start_on_ready");
 
 	ClassDB::bind_method(D_METHOD("get_use_ssl"), &WebServerSimple::get_use_ssl);
 	ClassDB::bind_method(D_METHOD("set_use_ssl", "val"), &WebServerSimple::set_use_ssl);
