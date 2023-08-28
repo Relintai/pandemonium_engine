@@ -272,7 +272,7 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 
 	FileAccess *f = FileAccess::open(p_file_path, FileAccess::READ);
 	ERR_FAIL_COND(!f);
-	String s = "HTTP/1.1 200 OK\r\n";
+	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
 
 	if (!custom_headers.has("Connection")) {
 		if (has_more_messages()) {
