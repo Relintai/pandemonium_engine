@@ -211,9 +211,14 @@ void SimpleWebServerRequest::set_method(const HTTPServerEnums::HTTPMethod method
 	_method = method;
 }
 
+bool SimpleWebServerRequest::sent() {
+	return !_sending_file_fa;
+}
+
 SimpleWebServerRequest::SimpleWebServerRequest() {
 	_server = nullptr;
 	_method = HTTPServerEnums::HTTP_METHOD_GET;
+	_sending_file_fa = NULL;
 }
 
 SimpleWebServerRequest::~SimpleWebServerRequest() {

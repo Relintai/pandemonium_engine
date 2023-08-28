@@ -41,7 +41,9 @@
 #define CONNECTION_RESPOSE_DEBUG 0
 
 void HTTPServerConnection::update() {
-	ERR_FAIL_COND(closed());
+	if (closed()) {
+		return;
+	}
 
 	if (OS::get_singleton()->get_ticks_usec() - time > 1000000) {
 		close();
@@ -91,6 +93,22 @@ void HTTPServerConnection::update() {
 		}
 	}
 
+	if (_current_request.is_valid()) {
+		udpate_send_file(_current_request);
+
+		if (closed()) {
+			//some error happened
+			return;
+		}
+
+		if (!_current_request->sent()) {
+			// we will get back to this
+			return;
+		}
+
+		_current_request.unref();
+	}
+
 	int read = 0;
 	Error err = peer->get_partial_data(req_buf, 4096, read);
 
@@ -118,13 +136,25 @@ void HTTPServerConnection::update() {
 	}
 
 	if (_http_parser->get_request_count() > 0) {
-		Ref<SimpleWebServerRequest> request = _http_parser->get_next_request();
+		_current_request = _http_parser->get_next_request();
 
-		request->_server = _http_server;
-		request->_connection = Ref<HTTPServerConnection>(this);
-		request->setup_url_stack();
+		_current_request->_server = _http_server;
+		_current_request->_connection = Ref<HTTPServerConnection>(this);
+		_current_request->setup_url_stack();
 
-		_web_server->server_handle_request(request);
+		_web_server->server_handle_request(_current_request);
+
+		if (closed()) {
+			//some error happened
+			return;
+		}
+
+		if (!_current_request->sent()) {
+			// we will get back to this
+			return;
+		}
+
+		_current_request.unref();
 
 		if (_http_parser->get_request_count() == 0 && _http_parser->is_finished()) {
 			close();
@@ -233,45 +263,19 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 	HashMap<StringName, String> custom_headers = request->custom_response_headers_get();
 
 	if (!FileAccess::exists(p_file_path)) {
-		String s = "HTTP/1.1 404 Not Found\r\n";
-
-		if (!custom_headers.has("Connection")) {
-			if (has_more_messages()) {
-				s += "Connection: keep-alive\r\n";
-			} else {
-				s += "Connection: close\r\n";
-			}
-		}
-
-		for (int i = 0; i < request->response_get_cookie_count(); ++i) {
-			Ref<WebServerCookie> cookie = request->response_get_cookie(i);
-
-			ERR_CONTINUE(!cookie.is_valid());
-
-			String cookie_str = cookie->get_response_header_string();
-
-			if (cookie_str != "") {
-				s += cookie_str;
-			}
-		}
-
-		for (HashMap<StringName, String>::Element *E = custom_headers.front(); E; E = E->next) {
-			s += String(E->key()) + ": " + E->value() + "\r\n";
-		}
-
-		s += "\r\n";
-
-#if CONNECTION_RESPOSE_DEBUG
-		ERR_PRINT(s);
-#endif
-
-		CharString cs = s.utf8();
-		peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
+		request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
 		return;
 	}
 
-	FileAccess *f = FileAccess::open(p_file_path, FileAccess::READ);
-	ERR_FAIL_COND(!f);
+	Ref<SimpleWebServerRequest> r = request;
+
+	r->_sending_file_fa = FileAccess::open(p_file_path, FileAccess::READ);
+
+	if (!r->_sending_file_fa) {
+		request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
+		return;
+	}
+
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
 
 	if (!custom_headers.has("Connection")) {
@@ -294,6 +298,10 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 
 		s += "Content-Type: " + ctype + "\r\n";
 	}
+
+	uint64_t file_length = r->_sending_file_fa->get_len();
+
+	s += "Content-Length: " + itos(file_length) + "\r\n";
 
 	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
 		Ref<WebServerCookie> cookie = request->response_get_cookie(i);
@@ -321,24 +329,55 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 
 	Error err = peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 	if (err != OK) {
-		memdelete(f);
-		ERR_FAIL();
+		close();
+		return;
 	}
 
+	_buffer_start = 0;
+	_buffer_end = 0;
+
+	udpate_send_file(r);
+}
+
+void HTTPServerConnection::udpate_send_file(Ref<SimpleWebServerRequest> request) {
 	while (true) {
-		uint8_t bytes[4096];
-		uint64_t read = f->get_buffer(bytes, 4096);
-		if (read == 0) {
-			break;
+		//read into buffer
+		if (_buffer_start == _buffer_end) {
+			_buffer_start = 0;
+
+			_buffer_end = request->_sending_file_fa->get_buffer(_file_send_buffer, 4096);
+
+			if (_buffer_end == 0) {
+				//finished
+				break;
+			}
 		}
-		err = peer->put_data(bytes, read);
+
+		int read = 0;
+		Error err = peer->put_partial_data(&_file_send_buffer[_buffer_start], _buffer_end - _buffer_start, read);
+
+		_buffer_start += read;
+
+		if (err == ERR_BUSY) {
+			// we can get ERR_BUSY is the socket is full -> we need to wait
+			return;
+		}
+
 		if (err != OK) {
-			memdelete(f);
-			ERR_FAIL();
+			close();
+			memdelete(request->_sending_file_fa);
+			request->_sending_file_fa = NULL;
+			_buffer_start = 0;
+			_buffer_end = 0;
+			return;
 		}
 	}
 
-	memdelete(f);
+	memdelete(request->_sending_file_fa);
+	request->_sending_file_fa = NULL;
+
+	_buffer_start = 0;
+	_buffer_end = 0;
 }
 
 void HTTPServerConnection::close() {
@@ -383,6 +422,9 @@ HTTPServerConnection::HTTPServerConnection() {
 	memset(req_buf, 0, sizeof(req_buf));
 
 	_closed = false;
+
+	_buffer_start = 0;
+	_buffer_end = 0;
 }
 HTTPServerConnection::~HTTPServerConnection() {
 }

@@ -47,6 +47,7 @@ class HTTPParser;
 class WebServerSimple;
 class WebServerRequest;
 class HTTPServerSimple;
+class SimpleWebServerRequest;
 
 class HTTPServerConnection : public Reference {
 	GDCLASS(HTTPServerConnection, Reference);
@@ -57,6 +58,8 @@ public:
 	void send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
 	void send(Ref<WebServerRequest> request);
 	void send_file(Ref<WebServerRequest> request, const String &p_file_path);
+
+	void udpate_send_file(Ref<SimpleWebServerRequest> request);
 
 	void close();
 	bool closed();
@@ -81,6 +84,11 @@ public:
 	Ref<HTTPParser> _http_parser;
 	uint64_t time = 0;
 	uint8_t req_buf[4096];
+
+	Ref<SimpleWebServerRequest> _current_request;
+	uint8_t _file_send_buffer[4096];
+	uint64_t _buffer_start;
+	uint64_t _buffer_end;
 
 	bool _closed;
 };

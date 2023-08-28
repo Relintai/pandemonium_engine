@@ -5,6 +5,7 @@
 #include "core/containers/vector.h"
 #include "core/string/ustring.h"
 #include "core/variant/dictionary.h"
+#include "core/os/file_access.h"
 
 #include "modules/web/http/web_server_request.h"
 
@@ -60,11 +61,15 @@ public:
 
 	//virtual String get_path_full() const;
 
+	bool sent();
+
 	SimpleWebServerRequest();
 	~SimpleWebServerRequest();
 
 	HTTPServerSimple *_server;
 	Ref<HTTPServerConnection> _connection;
+
+	FileAccess *_sending_file_fa;
 
 protected:
 	static void _bind_methods();
