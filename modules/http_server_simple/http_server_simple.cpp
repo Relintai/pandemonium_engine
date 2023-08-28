@@ -614,6 +614,7 @@ HTTPServerSimple::HTTPServerSimple() {
 	mimes["opus"] = "audio/opus";
 	mimes["bmp"] = "image/bmp";
 	mimes["csv"] = "text/csv";
+	mimes["md"] = "text/markdown";
 
 	server.instance();
 	stop();
