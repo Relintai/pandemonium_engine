@@ -45,7 +45,7 @@ void HTTPServerConnection::update() {
 		return;
 	}
 
-	if (OS::get_singleton()->get_ticks_usec() - time > 1000000) {
+	if (OS::get_singleton()->get_ticks_usec() - time > _timeout_usec) {
 		close();
 		return;
 	}
@@ -133,6 +133,9 @@ void HTTPServerConnection::update() {
 				break;
 			}
 		}
+
+		// We had activity, reset timeout timer
+		time = OS::get_singleton()->get_ticks_usec();
 	}
 
 	if (_http_parser->get_request_count() > 0) {
@@ -151,6 +154,7 @@ void HTTPServerConnection::update() {
 
 		if (!_current_request->sent()) {
 			// we will get back to this
+			time = OS::get_singleton()->get_ticks_usec();
 			return;
 		}
 
@@ -333,30 +337,36 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 		return;
 	}
 
-	_buffer_start = 0;
-	_buffer_end = 0;
+	_file_buffer_start = 0;
+	_file_buffer_end = 0;
 
 	udpate_send_file(r);
 }
 
 void HTTPServerConnection::udpate_send_file(Ref<SimpleWebServerRequest> request) {
+	int loop_count = 0;
+
 	while (true) {
 		//read into buffer
-		if (_buffer_start == _buffer_end) {
-			_buffer_start = 0;
+		if (_file_buffer_start == _file_buffer_end) {
+			_file_buffer_start = 0;
 
-			_buffer_end = request->_sending_file_fa->get_buffer(_file_send_buffer, 4096);
+			_file_buffer_end = request->_sending_file_fa->get_buffer(_file_send_buffer, 4096);
 
-			if (_buffer_end == 0) {
+			if (_file_buffer_end == 0) {
 				//finished
 				break;
 			}
 		}
 
 		int read = 0;
-		Error err = peer->put_partial_data(&_file_send_buffer[_buffer_start], _buffer_end - _buffer_start, read);
+		Error err = peer->put_partial_data(&_file_send_buffer[_file_buffer_start], _file_buffer_end - _file_buffer_start, read);
 
-		_buffer_start += read;
+		_file_buffer_start += read;
+
+		if (read > 0) {
+			time = OS::get_singleton()->get_ticks_usec();
+		}
 
 		if (err == ERR_BUSY) {
 			// we can get ERR_BUSY is the socket is full -> we need to wait
@@ -367,8 +377,15 @@ void HTTPServerConnection::udpate_send_file(Ref<SimpleWebServerRequest> request)
 			close();
 			memdelete(request->_sending_file_fa);
 			request->_sending_file_fa = NULL;
-			_buffer_start = 0;
-			_buffer_end = 0;
+			_file_buffer_start = 0;
+			_file_buffer_end = 0;
+			return;
+		}
+
+		loop_count += 1;
+
+		if (loop_count >= _file_buffer_send_max_consecutive_loops) {
+			// Work on other clients aswell.
 			return;
 		}
 	}
@@ -376,8 +393,8 @@ void HTTPServerConnection::udpate_send_file(Ref<SimpleWebServerRequest> request)
 	memdelete(request->_sending_file_fa);
 	request->_sending_file_fa = NULL;
 
-	_buffer_start = 0;
-	_buffer_end = 0;
+	_file_buffer_start = 0;
+	_file_buffer_end = 0;
 }
 
 void HTTPServerConnection::close() {
@@ -415,6 +432,12 @@ HTTPServerConnection::HTTPServerConnection() {
 	_web_server = nullptr;
 	_http_server = nullptr;
 
+	// This parameter will likely needs some tweaks
+	_file_buffer_send_max_consecutive_loops = 5;
+
+	// 20 sec
+	_timeout_usec = 20 * 1000 * 1000;
+
 	_http_parser.instance();
 	_http_parser->max_request_size = max_request_size;
 	time = 0;
@@ -423,8 +446,8 @@ HTTPServerConnection::HTTPServerConnection() {
 
 	_closed = false;
 
-	_buffer_start = 0;
-	_buffer_end = 0;
+	_file_buffer_start = 0;
+	_file_buffer_end = 0;
 }
 HTTPServerConnection::~HTTPServerConnection() {
 }

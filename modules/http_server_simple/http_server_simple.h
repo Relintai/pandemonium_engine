@@ -87,8 +87,11 @@ public:
 
 	Ref<SimpleWebServerRequest> _current_request;
 	uint8_t _file_send_buffer[4096];
-	uint64_t _buffer_start;
-	uint64_t _buffer_end;
+	uint64_t _file_buffer_start;
+	uint64_t _file_buffer_end;
+	int _file_buffer_send_max_consecutive_loops;
+
+	uint64_t _timeout_usec;
 
 	bool _closed;
 };
