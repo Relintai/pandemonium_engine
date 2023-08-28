@@ -575,7 +575,22 @@ HTTPServerSimple::HTTPServerSimple() {
 	mimes["zip"] = "application/zip";
 	mimes["rar"] = "application/vnd.rar";
 	mimes["txt"] = "text/plain";
-	mimes["md"] = "text/markdown";
+	mimes["exe"] = "application/vnd.microsoft.portable-executable";
+	mimes["vorbis"] = "audio/vorbis";
+	mimes["otf"] = "font/otf";
+	mimes["sfnt"] = "font/sfnt";
+	mimes["ttf"] = "font/ttf";
+	mimes["ogg"] = "video/ogg";
+	mimes["ogv"] = "video/ogg";
+	mimes["mpv"] = "video/MPV";
+	mimes["quicktime"] = "video/quicktime";
+	mimes["gzip"] = "application/gzip";
+	mimes["pdf"] = "application/pdf";
+	mimes["rtf"] = "application/rtf";
+	mimes["zip"] = "application/zip";
+	mimes["opus"] = "audio/opus";
+	mimes["bmp"] = "image/bmp";
+	mimes["csv"] = "text/csv";
 
 	server.instance();
 	stop();
