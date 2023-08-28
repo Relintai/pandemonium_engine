@@ -220,7 +220,7 @@ WebServerSimple::WebServerSimple() {
 	_max_request_size = 3;
 
 	_bind_port = 8080;
-	_bind_host = "127.0.0.1";
+	_bind_host = "0.0.0.0";
 
 	_use_ssl = false;
 
