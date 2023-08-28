@@ -110,7 +110,7 @@ public:
 
 	uint64_t max_request_size;
 
-	RBMap<String, String> mimes;
+	RBMap<StringName, String> mimes;
 
 	Ref<X509Certificate> cert;
 

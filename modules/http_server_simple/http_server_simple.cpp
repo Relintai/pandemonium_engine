@@ -288,7 +288,7 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 
 	if (!custom_headers.has("Content-Type")) {
 		String ctype;
-		String req_ext = p_file_path.get_extension();
+		StringName req_ext = p_file_path.get_extension().to_lower();
 
 		if (_http_server->mimes.has(req_ext)) {
 			ctype = _http_server->mimes[req_ext];
