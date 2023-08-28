@@ -293,7 +293,7 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 		if (_http_server->mimes.has(req_ext)) {
 			ctype = _http_server->mimes[req_ext];
 		} else {
-			ctype = "text/plain";
+			ctype = "application/octet-stream";
 		}
 
 		s += "Content-Type: " + ctype + "\r\n";
