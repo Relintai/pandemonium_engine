@@ -205,7 +205,9 @@ const PandemoniumJSWrapper = {
                 return;
             }
             const args = Array.from(arguments);
-            func(p_ref, PandemoniumJSWrapper.get_proxied(args), args.length);
+            const argsProxy = new PandemoniumJSWrapper.MyProxy(args);
+            func(p_ref, argsProxy.get_id(), args.length);
+            argsProxy.unref();
         };
         id = PandemoniumJSWrapper.get_proxied(cb);
         return id;
