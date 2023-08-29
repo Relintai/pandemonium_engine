@@ -69,6 +69,10 @@ gmon.out
 *.pydevproject
 *.launch
 
+# GCOV code coverage
+*.gcno
+*.gcda
+
 # Geany/geany-plugins files
 *.geany
 .geanyprj
