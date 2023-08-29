@@ -243,7 +243,7 @@ that file when upgrading.
 ## minizip
 
 - Upstream: https://www.zlib.net
-- Version: 1.2.13 (zlib contrib, 2022)
+- Version: 1.3 (zlib contrib, 2023)
 - License: zlib
 
 Files extracted from the upstream source:
@@ -482,12 +482,12 @@ File extracted from upstream release tarball:
 ## zlib
 
 - Upstream: https://www.zlib.net
-- Version: 1.2.13 (2022)
+- Version: 1.3 (2023)
 - License: zlib
 
 Files extracted from upstream source:
 
-- All `*.c` and `*.h` files
+- All `*.c` and `*.h` files, minus `infback.c`
 - `LICENSE`
 
 
