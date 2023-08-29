@@ -7,4 +7,4 @@ status = "development"
 module_config = ""
 year = 2023
 website = "https://github.com/Relintai/pandemonium_engine"
-docs = "4.0"
+docs = "master"

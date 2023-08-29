@@ -245,7 +245,7 @@ def generate_version_header(module_version_string=""):
 #define VERSION_YEAR {year}
 #define VERSION_WEBSITE "{website}"
 #define VERSION_DOCS_BRANCH "{docs_branch}"
-#define VERSION_DOCS_URL "https://docs.godotengine.org/en/" VERSION_DOCS_BRANCH
+#define VERSION_DOCS_URL "https://github.com/Relintai/pandemonium_engine_docs/blob/" VERSION_DOCS_BRANCH
 #endif // VERSION_GENERATED_GEN_H
 """.format(
             **version_info
