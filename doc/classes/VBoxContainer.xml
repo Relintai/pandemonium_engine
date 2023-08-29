@@ -7,7 +7,7 @@
 		Vertical box container. See [BoxContainer].
 	</description>
 	<tutorials>
-		<link title="GUI containers">$DOCS_URL/tutorials/ui/gui_containers.html</link>
+		<link title="GUI containers">$DOCS_URL/tutorials/ui/gui_containers.md</link>
 		<link title="3D Voxel Demo">https://godotengine.org/asset-library/asset/676</link>
 	</tutorials>
 	<methods>

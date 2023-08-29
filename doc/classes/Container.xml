@@ -8,7 +8,7 @@
 		A Control can inherit this to create custom container classes.
 	</description>
 	<tutorials>
-		<link title="GUI containers">$DOCS_URL/tutorials/ui/gui_containers.html</link>
+		<link title="GUI containers">$DOCS_URL/tutorials/ui/gui_containers.md</link>
 	</tutorials>
 	<methods>
 		<method name="fit_child_in_rect">

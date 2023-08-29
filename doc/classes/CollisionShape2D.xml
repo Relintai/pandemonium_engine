@@ -8,7 +8,7 @@
 		You can use this node to represent all sorts of collision shapes, for example, add this to an [Area2D] to give it a detection shape, or add it to a [PhysicsBody2D] to create a solid object.
 	</description>
 	<tutorials>
-		<link title="Physics introduction">$DOCS_URL/tutorials/physics/physics_introduction.html</link>
+		<link title="Physics introduction">$DOCS_URL/tutorials/physics/physics_introduction.md</link>
 		<link title="2D Dodge The Creeps Demo">https://godotengine.org/asset-library/asset/515</link>
 		<link title="2D Pong Demo">https://godotengine.org/asset-library/asset/121</link>
 		<link title="2D Kinematic Character Demo">https://godotengine.org/asset-library/asset/113</link>

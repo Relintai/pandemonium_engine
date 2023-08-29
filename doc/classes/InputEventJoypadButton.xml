@@ -7,7 +7,7 @@
 		Input event type for gamepad buttons. For gamepad analog sticks and joysticks, see [InputEventJoypadMotion].
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/inputs/inputevent.html</link>
+		<link>$DOCS_URL/tutorials/inputs/inputevent.md</link>
 	</tutorials>
 	<methods>
 	</methods>

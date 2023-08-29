@@ -11,7 +11,7 @@
 		[b]Note:[/b] GridMap doesn't extend [VisualInstance] and therefore can't be hidden or cull masked based on [member VisualInstance.layers]. If you make a light not affect the first layer, the whole GridMap won't be lit by the light in question.
 	</description>
 	<tutorials>
-		<link title="Using gridmaps">$DOCS_URL/tutorials/3d/using_gridmaps.html</link>
+		<link title="Using gridmaps">$DOCS_URL/tutorials/3d/using_gridmaps.md</link>
 		<link title="3D Platformer Demo">https://godotengine.org/asset-library/asset/125</link>
 		<link title="3D Kinematic Character Demo">https://godotengine.org/asset-library/asset/126</link>
 	</tutorials>

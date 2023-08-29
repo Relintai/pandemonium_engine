@@ -7,7 +7,7 @@
 		By changing various properties of this object, such as the start and target position, you can configure path queries to the [NavigationServer3D].
 	</description>
 	<tutorials>
-		<link title="Using NavigationPathQueryObjects">$DOCS_URL/tutorials/navigation/navigation_using_navigationpathqueryobjects.html</link>
+		<link title="Using NavigationPathQueryObjects">$DOCS_URL/tutorials/navigation/navigation_using_navigationpathqueryobjects.md</link>
 	</tutorials>
 	<methods>
 	</methods>

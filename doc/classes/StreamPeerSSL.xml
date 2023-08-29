@@ -7,7 +7,7 @@
 		SSL stream peer. This object can be used to connect to an SSL server or accept a single SSL client connection.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/networking/ssl_certificates.html</link>
+		<link>$DOCS_URL/tutorials/networking/ssl_certificates.md</link>
 	</tutorials>
 	<methods>
 		<method name="accept_stream">

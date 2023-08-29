@@ -8,7 +8,7 @@
 		An [AnimationNodeOutput] node named [code]output[/code] is created by default.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/animation/animation_tree.html</link>
+		<link>$DOCS_URL/tutorials/animation/animation_tree.md</link>
 	</tutorials>
 	<methods>
 		<method name="add_node">

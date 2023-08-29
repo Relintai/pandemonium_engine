@@ -7,7 +7,7 @@
 		Contains mouse click information. See [method Node._input].
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/inputs/mouse_and_input_coordinates.html</link>
+		<link>$DOCS_URL/tutorials/inputs/mouse_and_input_coordinates.md</link>
 	</tutorials>
 	<methods>
 	</methods>

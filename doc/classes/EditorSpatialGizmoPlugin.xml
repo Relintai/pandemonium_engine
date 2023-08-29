@@ -8,7 +8,7 @@
 		To use [EditorSpatialGizmoPlugin], register it using the [method EditorPlugin.add_spatial_gizmo_plugin] method first.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/plugins/editor/spatial_gizmos.html</link>
+		<link>$DOCS_URL/tutorials/plugins/editor/spatial_gizmos.md</link>
 	</tutorials>
 	<methods>
 		<method name="add_material">

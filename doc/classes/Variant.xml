@@ -47,7 +47,7 @@
 		Modifications to a container will modify all references to it. A [Mutex] should be created to lock it if multi-threaded access is desired.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/development/cpp/variant_class.html</link>
+		<link>$DOCS_URL/development/cpp/variant_class.md</link>
 	</tutorials>
 	<methods>
 	</methods>
