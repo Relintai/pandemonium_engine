@@ -30,9 +30,9 @@
 
 #include "translation.h"
 
+#include "core/config/project_settings.h"
 #include "core/io/resource_loader.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
 
 // ISO 639-1 language codes (and a couple of three-letter ISO 639-2 codes),
 // with the addition of glibc locales with their regional identifiers.
@@ -1149,6 +1149,62 @@ StringName TranslationServer::translate(const StringName &p_message) const {
 	return res;
 }
 
+StringName TranslationServer::translate_to(const StringName &p_message, const String &p_locale) const {
+	// Match given message against the translation catalog for the project locale.
+
+	if (!enabled) {
+		return p_message;
+	}
+
+	ERR_FAIL_COND_V_MSG(p_locale.length() < 2, p_message, "Could not translate message as configured locale '" + p_locale + "' is invalid.");
+
+	// Locale can be of the form 'll_CC', i.e. language code and regional code,
+	// e.g. 'en_US', 'en_GB', etc. It might also be simply 'll', e.g. 'en'.
+	// To find the relevant translation, we look for those with locale starting
+	// with the language code, and then if any is an exact match for the long
+	// form. If not found, we fall back to a near match (another locale with
+	// same language code).
+
+	StringName res;
+	String lang = get_language_code(p_locale);
+	bool near_match = false;
+
+	for (const RBSet<Ref<Translation>>::Element *E = translations.front(); E; E = E->next()) {
+		const Ref<Translation> &t = E->get();
+		ERR_FAIL_COND_V(t.is_null(), p_message);
+		String l = t->get_locale();
+
+		bool exact_match = (l == p_locale);
+		if (!exact_match) {
+			if (near_match) {
+				continue; // Only near-match once, but keep looking for exact matches.
+			}
+			if (get_language_code(l) != lang) {
+				continue; // Language code does not match.
+			}
+		}
+
+		StringName r = t->get_message(p_message);
+		if (!r) {
+			continue;
+		}
+		res = r;
+
+		if (exact_match) {
+			break;
+		} else {
+			near_match = true;
+		}
+	}
+
+	if (!res) {
+		// fall back to the app's default locale
+		return translate(p_message);
+	}
+
+	return res;
+}
+
 TranslationServer *TranslationServer::singleton = nullptr;
 
 bool TranslationServer::_load_translations(const String &p_from) {
@@ -1233,6 +1289,7 @@ void TranslationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_locale_name", "locale"), &TranslationServer::get_locale_name);
 
 	ClassDB::bind_method(D_METHOD("translate", "message"), &TranslationServer::translate);
+	ClassDB::bind_method(D_METHOD("translate_to", "message", "locale"), &TranslationServer::translate_to);
 
 	ClassDB::bind_method(D_METHOD("add_translation", "translation"), &TranslationServer::add_translation);
 	ClassDB::bind_method(D_METHOD("remove_translation", "translation"), &TranslationServer::remove_translation);

@@ -777,6 +777,7 @@ public:
 	virtual void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const;
 
 	StringName tr(const StringName &p_message) const; // translate message (internationalization)
+	StringName trt(const StringName &p_message, const String &p_locale) const; // translate message (translate_to) (internationalization)
 
 	bool _is_queued_for_deletion; // set to true by SceneTree::queue_delete()
 	bool is_queued_for_deletion() const;

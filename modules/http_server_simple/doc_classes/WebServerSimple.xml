@@ -27,7 +27,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="bind_host" type="String" setter="set_bind_host" getter="get_bind_host" default="&quot;127.0.0.1&quot;">
+		<member name="bind_host" type="String" setter="set_bind_host" getter="get_bind_host" default="&quot;0.0.0.0&quot;">
 		</member>
 		<member name="bind_port" type="int" setter="set_bind_port" getter="get_bind_port" default="8080">
 		</member>
@@ -38,6 +38,8 @@
 		<member name="ssl_cert" type="String" setter="set_ssl_cert" getter="get_ssl_cert" default="&quot;&quot;">
 		</member>
 		<member name="ssl_key" type="String" setter="set_ssl_key" getter="get_ssl_key" default="&quot;&quot;">
+		</member>
+		<member name="start_on_ready" type="bool" setter="set_start_on_ready" getter="get_start_on_ready" default="false">
 		</member>
 		<member name="use_poll_thread" type="bool" setter="set_use_poll_thread" getter="get_use_poll_thread" default="true">
 		</member>

@@ -97,7 +97,7 @@
 		<method name="can_translate_messages" qualifiers="const">
 			<return type="bool" />
 			<description>
-				Returns [code]true[/code] if the object can translate strings. See [method set_message_translation] and [method tr].
+				Returns [code]true[/code] if the object can translate strings. See [method set_message_translation] and [method tr] and [method trt].
 			</description>
 		</method>
 		<method name="cancel_free">
@@ -370,6 +370,17 @@
 			<return type="StringName" />
 			<argument index="0" name="message" type="StringName" />
 			<description>
+				Translates a message using translation catalogs configured in the Project Settings.
+				Only works if message translation is enabled (which it is by default), otherwise it returns the [code]message[/code] unchanged. See [method set_message_translation].
+			</description>
+		</method>
+		<method name="trt" qualifiers="const">
+			<return type="StringName" />
+			<argument index="0" name="message" type="StringName" />
+			<argument index="1" name="locale" type="String" />
+			<description>
+				Translates a message to the specified locale, of if it can't to the application's default locale using translation catalogs configured in the Project Settings.
+				Only works if message translation is enabled (which it is by default), otherwise it returns the [code]message[/code] unchanged. See [method set_message_translation].
 			</description>
 		</method>
 	</methods>

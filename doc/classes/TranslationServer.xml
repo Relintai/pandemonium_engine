@@ -63,6 +63,15 @@
 			<return type="StringName" />
 			<argument index="0" name="message" type="StringName" />
 			<description>
+				Returns the current locale's translation for the given message (key).
+			</description>
+		</method>
+		<method name="translate_to" qualifiers="const">
+			<return type="StringName" />
+			<argument index="0" name="message" type="StringName" />
+			<argument index="1" name="locale" type="String" />
+			<description>
+				Returns the passed in locale's translation, or the current locale's translation if it can't be found for the given message (key).
 			</description>
 		</method>
 	</methods>

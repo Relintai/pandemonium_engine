@@ -1593,6 +1593,14 @@ StringName Object::tr(const StringName &p_message) const {
 	return TranslationServer::get_singleton()->translate(p_message);
 }
 
+StringName Object::trt(const StringName &p_message, const String &p_locale) const {
+	if (!_can_translate || !TranslationServer::get_singleton()) {
+		return p_message;
+	}
+
+	return TranslationServer::get_singleton()->translate_to(p_message, p_locale);
+}
+
 void Object::_clear_internal_resource_paths(const Variant &p_var) {
 	switch (p_var.get_type()) {
 		case Variant::OBJECT: {
@@ -1732,6 +1740,7 @@ void Object::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_message_translation", "enable"), &Object::set_message_translation);
 	ClassDB::bind_method(D_METHOD("can_translate_messages"), &Object::can_translate_messages);
 	ClassDB::bind_method(D_METHOD("tr", "message"), &Object::tr);
+	ClassDB::bind_method(D_METHOD("trt", "message", "locale"), &Object::trt);
 
 	ClassDB::bind_method(D_METHOD("is_queued_for_deletion"), &Object::is_queued_for_deletion);
 	ClassDB::bind_method(D_METHOD("cancel_free"), &Object::cancel_free);
