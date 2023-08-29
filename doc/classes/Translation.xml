@@ -23,18 +23,21 @@
 			<argument index="0" name="src_message" type="StringName" />
 			<argument index="1" name="xlated_message" type="StringName" />
 			<description>
+				Adds a message if nonexistent, followed by its translation.
 			</description>
 		</method>
 		<method name="erase_message">
 			<return type="void" />
 			<argument index="0" name="src_message" type="StringName" />
 			<description>
+				Erases a message.
 			</description>
 		</method>
 		<method name="get_message" qualifiers="const">
 			<return type="StringName" />
 			<argument index="0" name="src_message" type="StringName" />
 			<description>
+				Returns a message's translation.
 			</description>
 		</method>
 		<method name="get_message_count" qualifiers="const">
