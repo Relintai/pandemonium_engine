@@ -380,7 +380,7 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 						path = remaps[path];
 					}
 
-					RES res = ResourceLoader::load(path, exttype, no_subresource_cache);
+					RES res = ResourceLoader::load(path, exttype, false);
 
 					if (res.is_null()) {
 						WARN_PRINT(String("Couldn't load resource: " + path).utf8().get_data());
@@ -724,7 +724,7 @@ Error ResourceInteractiveLoaderBinary::poll() {
 		if (remaps.has(path)) {
 			path = remaps[path];
 		}
-		RES res = ResourceLoader::load(path, external_resources[s].type, no_subresource_cache);
+		RES res = ResourceLoader::load(path, external_resources[s].type, false);
 		if (res.is_null()) {
 			if (!ResourceLoader::get_abort_on_missing_resources()) {
 				ResourceLoader::notify_dependency_error(local_path, path, external_resources[s].type);
@@ -827,6 +827,7 @@ Error ResourceInteractiveLoaderBinary::poll() {
 #endif
 	stage++;
 
+	internal_resources_cache[subindex] = res;
 	resource_cache.push_back(res);
 
 	if (main) {
