@@ -1,5 +1,3 @@
-#ifndef WSLAY_H
-#define WSLAY_H
 /*
  * Wslay - The WebSocket Library
  *
@@ -24,8 +22,8 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
-
+#ifndef WSLAY_H
+#define WSLAY_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,12 +33,12 @@ extern "C" {
 #include <stdlib.h>
 #include <sys/types.h>
 
-/* PANDEMONIUM ADDITTION */
+/* GODOT ADDITTION */
 #if defined(_MSC_VER)
 #include <BaseTsd.h>
 typedef SSIZE_T ssize_t;
 #endif
-/* PANDEMONIUM END */
+/* GODOT END */
 
 /*
  * wslay/wslayver.h is generated from wslay/wslayver.h.in by
@@ -487,7 +485,7 @@ void wslay_event_config_set_max_recv_msg_length(wslay_event_context_ptr ctx,
                                                 uint64_t val);
 
 /*
- * Sets callbacks to ctx. The callbacks previouly set by this function
+ * Sets callbacks to ctx. The callbacks previously set by this function
  * or wslay_event_context_server_init() or
  * wslay_event_context_client_init() are replaced with callbacks.
  */
