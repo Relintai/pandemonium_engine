@@ -197,7 +197,7 @@ NavigationServer::NavigationServer() {
 	GLOBAL_DEF("navigation/3d/use_edge_connections", true);
 
 #ifdef DEBUG_ENABLED
-	_debug_enabled = true;
+	_debug_enabled = false;
 	_debug_dirty = true;
 
 	_debug_navigation_enabled = false;
