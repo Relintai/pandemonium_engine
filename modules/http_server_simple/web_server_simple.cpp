@@ -272,7 +272,7 @@ void WebServerSimple::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_READY: {
-			if (_start_on_ready) {
+			if (!Engine::get_singleton()->is_editor_hint() && _start_on_ready) {
 				start();
 			}
 		} break;
