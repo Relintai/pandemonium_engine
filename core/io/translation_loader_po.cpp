@@ -189,7 +189,7 @@ RES TranslationLoaderPO::load_translation(FileAccess *f, Error *r_error) {
 	return translation;
 }
 
-RES TranslationLoaderPO::load(const String &p_path, const String &p_original_path, Error *r_error) {
+RES TranslationLoaderPO::load(const String &p_path, const String &p_original_path, Error *r_error, bool p_no_subresource_cache) {
 	if (r_error) {
 		*r_error = ERR_CANT_OPEN;
 	}
