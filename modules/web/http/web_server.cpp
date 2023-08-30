@@ -77,12 +77,10 @@ String WebServer::get_configuration_warning() const {
 	int session_manager_count = 0;
 
 	for (int i = 0; i < get_child_count(); ++i) {
-		if (!_web_root) {
-			WebNode *wn = Object::cast_to<WebNode>(get_child(i));
+		WebNode *wn = Object::cast_to<WebNode>(get_child(i));
 
-			if (wn) {
-				++webnode_count;
-			}
+		if (wn) {
+			++webnode_count;
 		}
 
 		if (!_session_manager) {
