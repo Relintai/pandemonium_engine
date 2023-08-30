@@ -291,7 +291,7 @@ void NavigationMeshInstance::bake_navigation_mesh(bool p_on_thread) {
 
 	navmesh->clear();
 
-	if (p_on_thread && OS::get_singleton()->get_render_thread_mode() == OS::RenderThreadMode::RENDER_SEPARATE_THREAD) {
+	if (p_on_thread && OS::get_singleton()->can_use_threads()) {
 		Ref<FuncRef> f;
 		f.instance();
 		f->set_instance(this);
