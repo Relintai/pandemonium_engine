@@ -1,5 +1,3 @@
-#ifndef RECASTASSERT_H
-#define RECASTASSERT_H
 //
 // Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
 //
@@ -18,16 +16,13 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
-
-// Note: This header file's only purpose is to include define assert.
-// Feel free to change the file and include your own implementation instead.
+#ifndef RECASTASSERT_H
+#define RECASTASSERT_H
 
 #ifdef NDEBUG
 
-// From http://cnicholson.net/2009/02/stupid-c-tricks-adventures-in-assert/
-#	define rcAssert(x) do { (void)sizeof(x); } while((void)(__LINE__==-1),false)
+// From https://web.archive.org/web/20210117002833/http://cnicholson.net/2009/02/stupid-c-tricks-adventures-in-assert/
+#	define rcAssert(x) do { (void)sizeof(x); } while ((void)(__LINE__==-1), false)
 
 #else
 
@@ -40,7 +35,7 @@ typedef void (rcAssertFailFunc)(const char* expression, const char* file, int li
 
 /// Sets the base custom assertion failure function to be used by Recast.
 ///  @param[in]		assertFailFunc	The function to be used in case of failure of #dtAssert
-void rcAssertFailSetCustom(rcAssertFailFunc *assertFailFunc);
+void rcAssertFailSetCustom(rcAssertFailFunc* assertFailFunc);
 
 /// Gets the base custom assertion failure function to be used by Recast.
 rcAssertFailFunc* rcAssertFailGetCustom();
@@ -49,8 +44,8 @@ rcAssertFailFunc* rcAssertFailGetCustom();
 #	define rcAssert(expression) \
 		{ \
 			rcAssertFailFunc* failFunc = rcAssertFailGetCustom(); \
-			if(failFunc == NULL) { assert(expression); } \
-			else if(!(expression)) { (*failFunc)(#expression, __FILE__, __LINE__); } \
+			if (failFunc == NULL) { assert(expression); } \
+			else if (!(expression)) { (*failFunc)(#expression, __FILE__, __LINE__); } \
 		}
 
 #endif

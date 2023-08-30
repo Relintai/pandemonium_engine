@@ -1,5 +1,3 @@
-#ifndef RECASTALLOC_H
-#define RECASTALLOC_H
 //
 // Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
 //
@@ -18,13 +16,13 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
-
-#include <stddef.h>
-#include <stdint.h>
+#ifndef RECASTALLOC_H
+#define RECASTALLOC_H
 
 #include "RecastAssert.h"
+
+#include <stdlib.h>
+#include <stdint.h>
 
 /// Provides hint values to the memory allocator on how long the
 /// memory is expected to be used.
@@ -49,18 +47,27 @@ typedef void (rcFreeFunc)(void* ptr);
 /// Sets the base custom allocation functions to be used by Recast.
 ///  @param[in]		allocFunc	The memory allocation function to be used by #rcAlloc
 ///  @param[in]		freeFunc	The memory de-allocation function to be used by #rcFree
+///  
+/// @see rcAlloc, rcFree
 void rcAllocSetCustom(rcAllocFunc *allocFunc, rcFreeFunc *freeFunc);
 
 /// Allocates a memory block.
-///  @param[in]		size	The size, in bytes of memory, to allocate.
-///  @param[in]		hint	A hint to the allocator on how long the memory is expected to be in use.
-///  @return A pointer to the beginning of the allocated memory block, or null if the allocation failed.
-/// @see rcFree
+/// 
+/// @param[in]		size	The size, in bytes of memory, to allocate.
+/// @param[in]		hint	A hint to the allocator on how long the memory is expected to be in use.
+/// @return A pointer to the beginning of the allocated memory block, or null if the allocation failed.
+/// 
+/// @see rcFree, rcAllocSetCustom
 void* rcAlloc(size_t size, rcAllocHint hint);
 
-/// Deallocates a memory block.
-///  @param[in]		ptr		A pointer to a memory block previously allocated using #rcAlloc.
-/// @see rcAlloc
+/// Deallocates a memory block.  If @p ptr is NULL, this does nothing.
+///
+/// @warning This function leaves the value of @p ptr unchanged.  So it still
+/// points to the same (now invalid) location, and not to null.
+/// 
+/// @param[in]		ptr		A pointer to a memory block previously allocated using #rcAlloc.
+/// 
+/// @see rcAlloc, rcAllocSetCustom
 void rcFree(void* ptr);
 
 /// An implementation of operator new usable for placement new. The default one is part of STL (which we don't use).
