@@ -31,7 +31,7 @@ while IFS= read -rd '' f; do
                 continue 2
             elif [[ "$f" == *"theme_data.h" ]]; then
                 continue 2
-            elif [[ "$f" == "platform/android/java/lib/src/net/relintai/pandemonium/pandemonium/utils/ProcessPhoenix"* ]]; then
+            elif [[ "$f" == "platform/android/java/lib/src/org/pandemoniumengine/pandemonium/utils/ProcessPhoenix"* ]]; then
                 continue 2
             fi
             #python misc/scripts/copyright_headers.py "$f"

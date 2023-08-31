@@ -38,7 +38,7 @@
 
 #include "string_android.h"
 
-// Class that makes functions in java/src/net/relintai/pandemonium/pandemonium/PandemoniumIO.java callable from C++
+// Class that makes functions in java/src/org/pandemoniumengine/pandemonium/PandemoniumIO.java callable from C++
 class PandemoniumIOJavaWrapper {
 private:
 	jobject pandemonium_io_instance;

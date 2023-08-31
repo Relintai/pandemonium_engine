@@ -2153,7 +2153,7 @@ bool EditorExportPlatformAndroid::has_valid_project_configuration(const Ref<Edit
 	// The PandemoniumPaymentV3 module was converted to the external PandemoniumGooglePlayBilling plugin in Pandemonium 3.2.2,
 	// this check helps users to notice the change to ensure that they change their settings.
 	String modules = ProjectSettings::get_singleton()->get("android/modules");
-	if (modules.find("net/relintai/pandemonium/pandemonium/PandemoniumPaymentV3") != -1) {
+	if (modules.find("org/pandemoniumengine/pandemonium/PandemoniumPaymentV3") != -1) {
 		bool pandemonium_google_play_billing_enabled = p_preset->get("plugins/PandemoniumGooglePlayBilling");
 		if (!pandemonium_google_play_billing_enabled) {
 			valid = false;

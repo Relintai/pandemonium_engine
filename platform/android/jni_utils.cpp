@@ -100,7 +100,7 @@ jvalret _variant_to_jvalue(JNIEnv *env, Variant::Type p_type, const Variant *p_a
 
 		case Variant::DICTIONARY: {
 			Dictionary dict = *p_arg;
-			jclass dclass = env->FindClass("net/relintai/pandemonium/pandemonium/Dictionary");
+			jclass dclass = env->FindClass("org/pandemoniumengine/pandemonium/Dictionary");
 			jmethodID ctor = env->GetMethodID(dclass, "<init>", "()V");
 			jobject jdict = env->NewObject(dclass, ctor);
 
@@ -377,7 +377,7 @@ const char *get_jni_sig(const String &p_type) {
 		{ "float", "F" },
 		{ "double", "D" },
 		{ "java.lang.String", "Ljava/lang/String;" },
-		{ "org.pandemoniumengine.pandemonium.Dictionary", "Lnet/relintai/pandemonium/pandemonium/Dictionary;" },
+		{ "org.pandemoniumengine.pandemonium.Dictionary", "Lorg/pandemoniumengine/pandemonium/Dictionary;" },
 		{ "[I", "[I" },
 		{ "[B", "[B" },
 		{ "[F", "[F" },

@@ -34,11 +34,11 @@
 #include <jni.h>
 
 extern "C" {
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_plugin_PandemoniumPlugin_nativeRegisterSingleton(JNIEnv *env, jclass clazz, jstring name, jobject obj);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_plugin_PandemoniumPlugin_nativeRegisterMethod(JNIEnv *env, jclass clazz, jstring sname, jstring name, jstring ret, jobjectArray args);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_plugin_PandemoniumPlugin_nativeRegisterSignal(JNIEnv *env, jclass clazz, jstring j_plugin_name, jstring j_signal_name, jobjectArray j_signal_param_types);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_plugin_PandemoniumPlugin_nativeEmitSignal(JNIEnv *env, jclass clazz, jstring j_plugin_name, jstring j_signal_name, jobjectArray j_signal_params);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_plugin_PandemoniumPlugin_nativeRegisterGDNativeLibraries(JNIEnv *env, jclass clazz, jobjectArray gdnlib_paths);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_plugin_PandemoniumPlugin_nativeRegisterSingleton(JNIEnv *env, jclass clazz, jstring name, jobject obj);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_plugin_PandemoniumPlugin_nativeRegisterMethod(JNIEnv *env, jclass clazz, jstring sname, jstring name, jstring ret, jobjectArray args);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_plugin_PandemoniumPlugin_nativeRegisterSignal(JNIEnv *env, jclass clazz, jstring j_plugin_name, jstring j_signal_name, jobjectArray j_signal_param_types);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_plugin_PandemoniumPlugin_nativeEmitSignal(JNIEnv *env, jclass clazz, jstring j_plugin_name, jstring j_signal_name, jobjectArray j_signal_params);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_plugin_PandemoniumPlugin_nativeRegisterGDNativeLibraries(JNIEnv *env, jclass clazz, jobjectArray gdnlib_paths);
 }
 
 #endif // PANDEMONIUM_PLUGIN_JNI_H

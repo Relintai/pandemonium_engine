@@ -34,39 +34,39 @@
 #include <jni.h>
 
 // These functions can be called from within JAVA and are the means by which our JAVA implementation calls back into our C++ code.
-// See java/src/net/relintai/pandemonium/pandemonium/PandemoniumLib.java for the JAVA side of this (yes that's why we have the long names)
+// See java/src/org/pandemoniumengine/pandemonium/PandemoniumLib.java for the JAVA side of this (yes that's why we have the long names)
 extern "C" {
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_ondestroy(JNIEnv *env, jclass clazz);
-JNIEXPORT jboolean JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_resize(JNIEnv *env, jclass clazz, jint width, jint height);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_newcontext(JNIEnv *env, jclass clazz);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_step(JNIEnv *env, jclass clazz);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_back(JNIEnv *env, jclass clazz);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_dispatchMouseEvent(JNIEnv *env, jclass clazz, jint p_event_type, jint p_button_mask, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y, jboolean p_double_click, jboolean p_source_mouse_relative);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_dispatchTouchEvent(JNIEnv *env, jclass clazz, jint ev, jint pointer, jint pointer_count, jfloatArray positions, jboolean p_double_tap);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_magnify(JNIEnv *env, jclass clazz, jfloat p_x, jfloat p_y, jfloat p_factor);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_pan(JNIEnv *env, jclass clazz, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_key(JNIEnv *env, jclass clazz, jint p_scancode, jint p_physical_scancode, jint p_unicode, jboolean p_pressed);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joybutton(JNIEnv *env, jclass clazz, jint p_device, jint p_button, jboolean p_pressed);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joyaxis(JNIEnv *env, jclass clazz, jint p_device, jint p_axis, jfloat p_value);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joyhat(JNIEnv *env, jclass clazz, jint p_device, jint p_hat_x, jint p_hat_y);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joyconnectionchanged(JNIEnv *env, jclass clazz, jint p_device, jboolean p_connected, jstring p_name);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_accelerometer(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_gravity(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_magnetometer(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_gyroscope(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_focusin(JNIEnv *env, jclass clazz);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_focusout(JNIEnv *env, jclass clazz);
-JNIEXPORT jstring JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_getGlobal(JNIEnv *env, jclass clazz, jstring path);
-JNIEXPORT jstring JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_getEditorSetting(JNIEnv *env, jclass clazz, jstring p_setting_key);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_callobject(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_calldeferred(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setVirtualKeyboardHeight(JNIEnv *env, jclass clazz, jint p_height);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_requestPermissionResult(JNIEnv *env, jclass clazz, jstring p_permission, jboolean p_result);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_onRendererResumed(JNIEnv *env, jclass clazz);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_onRendererPaused(JNIEnv *env, jclass clazz);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ondestroy(JNIEnv *env, jclass clazz);
+JNIEXPORT jboolean JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_resize(JNIEnv *env, jclass clazz, jint width, jint height);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_newcontext(JNIEnv *env, jclass clazz);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_step(JNIEnv *env, jclass clazz);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_back(JNIEnv *env, jclass clazz);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_dispatchMouseEvent(JNIEnv *env, jclass clazz, jint p_event_type, jint p_button_mask, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y, jboolean p_double_click, jboolean p_source_mouse_relative);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_dispatchTouchEvent(JNIEnv *env, jclass clazz, jint ev, jint pointer, jint pointer_count, jfloatArray positions, jboolean p_double_tap);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_magnify(JNIEnv *env, jclass clazz, jfloat p_x, jfloat p_y, jfloat p_factor);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_pan(JNIEnv *env, jclass clazz, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_key(JNIEnv *env, jclass clazz, jint p_scancode, jint p_physical_scancode, jint p_unicode, jboolean p_pressed);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_joybutton(JNIEnv *env, jclass clazz, jint p_device, jint p_button, jboolean p_pressed);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_joyaxis(JNIEnv *env, jclass clazz, jint p_device, jint p_axis, jfloat p_value);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_joyhat(JNIEnv *env, jclass clazz, jint p_device, jint p_hat_x, jint p_hat_y);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_joyconnectionchanged(JNIEnv *env, jclass clazz, jint p_device, jboolean p_connected, jstring p_name);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_accelerometer(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_gravity(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_magnetometer(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_gyroscope(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_focusin(JNIEnv *env, jclass clazz);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_focusout(JNIEnv *env, jclass clazz);
+JNIEXPORT jstring JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_getGlobal(JNIEnv *env, jclass clazz, jstring path);
+JNIEXPORT jstring JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_getEditorSetting(JNIEnv *env, jclass clazz, jstring p_setting_key);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_callobject(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_calldeferred(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_setVirtualKeyboardHeight(JNIEnv *env, jclass clazz, jint p_height);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_requestPermissionResult(JNIEnv *env, jclass clazz, jstring p_permission, jboolean p_result);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_onRendererResumed(JNIEnv *env, jclass clazz);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_onRendererPaused(JNIEnv *env, jclass clazz);
 }
 
 #endif /* !JAVA_PANDEMONIUM_LIB_JNI_H */

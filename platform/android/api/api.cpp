@@ -42,7 +42,7 @@ void register_android_api() {
 #if !defined(ANDROID_ENABLED)
 	// On Android platforms, the `java_class_wrapper` instantiation and the
 	// `JNISingleton` registration occurs in
-	// `platform/android/java_pandemonium_lib_jni.cpp#Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setup`
+	// `platform/android/java_pandemonium_lib_jni.cpp#Java_org_pandemoniumengine_pandemonium_PandemoniumLib_setup`
 	java_class_wrapper = memnew(JavaClassWrapper); // Dummy
 	ClassDB::register_class<JNISingleton>();
 #endif

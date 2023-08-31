@@ -96,7 +96,7 @@ static void _initialize_java_modules() {
 			String m = mods[i];
 
 			// Deprecated in Pandemonium 3.2.2, it's now a plugin to enable in export preset.
-			if (m == "java/src/net/relintai/pandemonium/pandemonium/PandemoniumPaymentV3") {
+			if (m == "java/src/org/pandemoniumengine/pandemonium/PandemoniumPaymentV3") {
 				WARN_PRINT("PandemoniumPaymentV3 is deprecated and is replaced by the 'PandemoniumPayment' plugin, which should be enabled in the Android export preset.");
 				print_line("Skipping Android module: " + m);
 				continue;
@@ -107,7 +107,7 @@ static void _initialize_java_modules() {
 			jclass singletonClass = (jclass)env->CallObjectMethod(cls, findClass, strClassName);
 			ERR_CONTINUE_MSG(!singletonClass, "Couldn't find singleton for class: " + m + ".");
 
-			jmethodID initialize = env->GetStaticMethodID(singletonClass, "initialize", "(Landroid/app/Activity;)Ljava/src/net/relintai/pandemonium/pandemonium/Pandemonium$SingletonBase;");
+			jmethodID initialize = env->GetStaticMethodID(singletonClass, "initialize", "(Landroid/app/Activity;)Ljava/src/org/pandemoniumengine/pandemonium/Pandemonium$SingletonBase;");
 			ERR_CONTINUE_MSG(!initialize, "Couldn't find proper initialize function 'public static Pandemonium.SingletonBase Class::initialize(Activity p_activity)' initializer for singleton class: " + m + ".");
 
 			jobject obj = env->CallStaticObjectMethod(singletonClass, initialize, pandemonium_java->get_activity());
@@ -152,13 +152,13 @@ static void _terminate(JNIEnv *env, bool p_restart = false) {
 
 extern "C" {
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setVirtualKeyboardHeight(JNIEnv *env, jclass clazz, jint p_height) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_setVirtualKeyboardHeight(JNIEnv *env, jclass clazz, jint p_height) {
 	if (pandemonium_io_java) {
 		pandemonium_io_java->set_vk_height(p_height);
 	}
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion) {
 	initialized = true;
 
 	JavaVM *jvm;
@@ -186,11 +186,11 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	pandemonium_java->on_video_init(env);
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_ondestroy(JNIEnv *env, jclass clazz) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ondestroy(JNIEnv *env, jclass clazz) {
 	_terminate(env, false);
 }
 
-JNIEXPORT jboolean JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline) {
+JNIEXPORT jboolean JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline) {
 	setup_android_thread();
 
 	const char **cmdline = NULL;
@@ -237,12 +237,12 @@ JNIEXPORT jboolean JNICALL Java_net_relintai_pandemonium_pandemonium_Pandemonium
 	return true;
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_resize(JNIEnv *env, jclass clazz, jint width, jint height) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_resize(JNIEnv *env, jclass clazz, jint width, jint height) {
 	if (os_android)
 		os_android->set_display_size(Size2(width, height));
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_newcontext(JNIEnv *env, jclass clazz) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_newcontext(JNIEnv *env, jclass clazz) {
 	if (os_android) {
 		if (step.get() == 0) {
 			// During startup
@@ -254,7 +254,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	}
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_back(JNIEnv *env, jclass clazz) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_back(JNIEnv *env, jclass clazz) {
 	if (step.get() == 0)
 		return;
 
@@ -263,7 +263,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	}
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_step(JNIEnv *env, jclass clazz) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_step(JNIEnv *env, jclass clazz) {
 	if (step.get() == -1)
 		return;
 
@@ -298,7 +298,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 // Called on the UI thread
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_dispatchMouseEvent(JNIEnv *env, jclass clazz, jint p_event_type, jint p_button_mask, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y, jboolean p_double_click, jboolean p_source_mouse_relative) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_dispatchMouseEvent(JNIEnv *env, jclass clazz, jint p_event_type, jint p_button_mask, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y, jboolean p_double_click, jboolean p_source_mouse_relative) {
 	if (step.get() <= 0) {
 		return;
 	}
@@ -307,7 +307,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 // Called on the UI thread
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_dispatchTouchEvent(JNIEnv *env, jclass clazz, jint ev, jint pointer, jint pointer_count, jfloatArray position, jboolean p_double_tap) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_dispatchTouchEvent(JNIEnv *env, jclass clazz, jint ev, jint pointer, jint pointer_count, jfloatArray position, jboolean p_double_tap) {
 	if (step.get() <= 0)
 		return;
 
@@ -325,7 +325,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 // Called on the UI thread
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_magnify(JNIEnv *env, jclass clazz, jfloat p_x, jfloat p_y, jfloat p_factor) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_magnify(JNIEnv *env, jclass clazz, jfloat p_x, jfloat p_y, jfloat p_factor) {
 	if (step.get() <= 0) {
 		return;
 	}
@@ -334,7 +334,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 // Called on the UI thread
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_pan(JNIEnv *env, jclass clazz, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_pan(JNIEnv *env, jclass clazz, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y) {
 	if (step.get() <= 0) {
 		return;
 	}
@@ -343,7 +343,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 // Called on the UI thread
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joybutton(JNIEnv *env, jclass clazz, jint p_device, jint p_button, jboolean p_pressed) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_joybutton(JNIEnv *env, jclass clazz, jint p_device, jint p_button, jboolean p_pressed) {
 	if (step.get() <= 0) {
 		return;
 	}
@@ -358,7 +358,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 // Called on the UI thread
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joyaxis(JNIEnv *env, jclass clazz, jint p_device, jint p_axis, jfloat p_value) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_joyaxis(JNIEnv *env, jclass clazz, jint p_device, jint p_axis, jfloat p_value) {
 	if (step.get() <= 0)
 		return;
 
@@ -372,7 +372,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 // Called on the UI thread
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joyhat(JNIEnv *env, jclass clazz, jint p_device, jint p_hat_x, jint p_hat_y) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_joyhat(JNIEnv *env, jclass clazz, jint p_device, jint p_hat_x, jint p_hat_y) {
 	if (step.get() <= 0)
 		return;
 
@@ -398,7 +398,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 // Called on the UI thread
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joyconnectionchanged(JNIEnv *env, jclass clazz, jint p_device, jboolean p_connected, jstring p_name) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_joyconnectionchanged(JNIEnv *env, jclass clazz, jint p_device, jboolean p_connected, jstring p_name) {
 	if (step.get() <= 0)
 		return;
 
@@ -407,50 +407,50 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 // Called on the UI thread
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_key(JNIEnv *env, jclass clazz, jint p_scancode, jint p_physical_scancode, jint p_unicode, jboolean p_pressed) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_key(JNIEnv *env, jclass clazz, jint p_scancode, jint p_physical_scancode, jint p_unicode, jboolean p_pressed) {
 	if (step.get() <= 0)
 		return;
 
 	input_handler->process_key_event(p_scancode, p_physical_scancode, p_unicode, p_pressed);
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_accelerometer(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_accelerometer(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z) {
 	accelerometer = Vector3(x, y, z);
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_gravity(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_gravity(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z) {
 	gravity = Vector3(x, y, z);
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_magnetometer(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_magnetometer(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z) {
 	magnetometer = Vector3(x, y, z);
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_gyroscope(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_gyroscope(JNIEnv *env, jclass clazz, jfloat x, jfloat y, jfloat z) {
 	gyroscope = Vector3(x, y, z);
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_focusin(JNIEnv *env, jclass clazz) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_focusin(JNIEnv *env, jclass clazz) {
 	if (step.get() <= 0)
 		return;
 
 	os_android->main_loop_focusin();
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_focusout(JNIEnv *env, jclass clazz) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_focusout(JNIEnv *env, jclass clazz) {
 	if (step.get() <= 0)
 		return;
 
 	os_android->main_loop_focusout();
 }
 
-JNIEXPORT jstring JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_getGlobal(JNIEnv *env, jclass clazz, jstring path) {
+JNIEXPORT jstring JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_getGlobal(JNIEnv *env, jclass clazz, jstring path) {
 	String js = jstring_to_string(path, env);
 
 	return env->NewStringUTF(ProjectSettings::get_singleton()->get(js).operator String().utf8().get_data());
 }
 
-JNIEXPORT jstring JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_getEditorSetting(JNIEnv *env, jclass clazz, jstring p_setting_key) {
+JNIEXPORT jstring JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_getEditorSetting(JNIEnv *env, jclass clazz, jstring p_setting_key) {
 	String editor_setting = "";
 #ifdef TOOLS_ENABLED
 	String godot_setting_key = jstring_to_string(p_setting_key, env);
@@ -462,7 +462,7 @@ JNIEXPORT jstring JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumL
 	return env->NewStringUTF(editor_setting.utf8().get_data());
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_callobject(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_callobject(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params) {
 	Object *obj = ObjectDB::get_instance(ID);
 	ERR_FAIL_COND(!obj);
 
@@ -492,7 +492,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	env->PopLocalFrame(NULL);
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_calldeferred(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_calldeferred(JNIEnv *env, jclass clazz, jlong ID, jstring method, jobjectArray params) {
 	Object *obj = ObjectDB::get_instance(ID);
 	ERR_FAIL_COND(!obj);
 
@@ -517,7 +517,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	env->PopLocalFrame(NULL);
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_requestPermissionResult(JNIEnv *env, jclass clazz, jstring p_permission, jboolean p_result) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_requestPermissionResult(JNIEnv *env, jclass clazz, jstring p_permission, jboolean p_result) {
 	String permission = jstring_to_string(p_permission, env);
 	if (permission == "android.permission.RECORD_AUDIO" && p_result) {
 		AudioDriver::get_singleton()->capture_start();
@@ -528,7 +528,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	}
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_onRendererResumed(JNIEnv *env, jclass clazz) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_onRendererResumed(JNIEnv *env, jclass clazz) {
 	if (step.get() <= 0)
 		return;
 
@@ -537,7 +537,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	}
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_onRendererPaused(JNIEnv *env, jclass clazz) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_onRendererPaused(JNIEnv *env, jclass clazz) {
 	if (step.get() <= 0)
 		return;
 

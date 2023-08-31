@@ -42,7 +42,7 @@ PandemoniumJavaWrapper::PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity
 	activity = p_env->NewGlobalRef(p_activity);
 
 	// get info about our Pandemonium class so we can get pointers and stuff...
-	pandemonium_class = p_env->FindClass("net/relintai/pandemonium/pandemonium/Pandemonium");
+	pandemonium_class = p_env->FindClass("org/pandemoniumengine/pandemonium/Pandemonium");
 	if (pandemonium_class) {
 		pandemonium_class = (jclass)p_env->NewGlobalRef(pandemonium_class);
 	} else {
@@ -84,7 +84,7 @@ PandemoniumJavaWrapper::PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity
 	_on_pandemonium_main_loop_started = p_env->GetMethodID(pandemonium_class, "onPandemoniumMainLoopStarted", "()V");
 	_create_new_pandemonium_instance = p_env->GetMethodID(pandemonium_class, "createNewPandemoniumInstance", "([Ljava/lang/String;)I");
 	_request_framebuffer_swap = p_env->GetMethodID(pandemonium_class, "requestFramebufferSwap", "()V");
-	_get_render_view = p_env->GetMethodID(pandemonium_class, "getRenderView", "()Lnet/relintai/pandemonium/pandemonium/PandemoniumView;");
+	_get_render_view = p_env->GetMethodID(pandemonium_class, "getRenderView", "()Lorg/pandemoniumengine/pandemonium/PandemoniumView;");
 	_begin_benchmark_measure = p_env->GetMethodID(pandemonium_class, "beginBenchmarkMeasure", "(Ljava/lang/String;)V");
 	_end_benchmark_measure = p_env->GetMethodID(pandemonium_class, "endBenchmarkMeasure", "(Ljava/lang/String;)V");
 	_dump_benchmark = p_env->GetMethodID(pandemonium_class, "dumpBenchmark", "(Ljava/lang/String;)V");
