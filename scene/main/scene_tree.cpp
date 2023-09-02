@@ -992,6 +992,15 @@ void SceneTree::set_debug_avoidance_hint(bool p_enabled) {
 bool SceneTree::is_debugging_avoidance_hint() const {
 	return debug_avoidance_hint;
 }
+
+void SceneTree::set_debug_paths_hint(bool p_enabled) {
+	debug_paths_hint = p_enabled;
+}
+
+bool SceneTree::is_debugging_paths_hint() const {
+	return debug_paths_hint;
+}
+
 #endif
 
 void SceneTree::set_debug_collisions_color(const Color &p_color) {
@@ -1008,6 +1017,39 @@ void SceneTree::set_debug_collision_contact_color(const Color &p_color) {
 
 Color SceneTree::get_debug_collision_contact_color() const {
 	return debug_collision_contact_color;
+}
+
+void SceneTree::set_debug_paths_color(const Color &p_color) {
+	debug_paths_color = p_color;
+}
+
+Color SceneTree::get_debug_paths_color() const {
+	return debug_paths_color;
+}
+
+void SceneTree::set_debug_paths_width(float p_width) {
+	debug_paths_width = p_width;
+}
+
+float SceneTree::get_debug_paths_width() const {
+	return debug_paths_width;
+}
+
+Ref<Material> SceneTree::get_debug_paths_material() {
+	if (debug_paths_material.is_valid()) {
+		return debug_paths_material;
+	}
+
+	Ref<SpatialMaterial> _debug_material = Ref<SpatialMaterial>(memnew(SpatialMaterial));
+	_debug_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
+	_debug_material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
+	_debug_material->set_flag(SpatialMaterial::FLAG_SRGB_VERTEX_COLOR, true);
+	_debug_material->set_flag(SpatialMaterial::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
+	_debug_material->set_albedo(get_debug_paths_color());
+
+	debug_paths_material = _debug_material;
+
+	return debug_paths_material;
 }
 
 Ref<Material> SceneTree::get_debug_collision_material() {
@@ -2152,6 +2194,8 @@ void SceneTree::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_debugging_navigation_hint"), &SceneTree::is_debugging_navigation_hint);
 	ClassDB::bind_method(D_METHOD("set_debug_avoidance_hint", "enable"), &SceneTree::set_debug_avoidance_hint);
 	ClassDB::bind_method(D_METHOD("is_debugging_avoidance_hint"), &SceneTree::is_debugging_avoidance_hint);
+	ClassDB::bind_method(D_METHOD("set_debug_paths_hint", "enable"), &SceneTree::set_debug_paths_hint);
+	ClassDB::bind_method(D_METHOD("is_debugging_paths_hint"), &SceneTree::is_debugging_paths_hint);
 
 	ClassDB::bind_method(D_METHOD("set_edited_scene_root", "scene"), &SceneTree::set_edited_scene_root);
 	ClassDB::bind_method(D_METHOD("get_edited_scene_root"), &SceneTree::get_edited_scene_root);
@@ -2233,6 +2277,7 @@ void SceneTree::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "debug_collisions_hint"), "set_debug_collisions_hint", "is_debugging_collisions_hint");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "debug_navigation_hint"), "set_debug_navigation_hint", "is_debugging_navigation_hint");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "debug_paths_hint"), "set_debug_paths_hint", "is_debugging_paths_hint");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "paused"), "set_pause", "is_paused");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "refuse_new_network_connections"), "set_refuse_new_network_connections", "is_refusing_new_network_connections");
 	ADD_PROPERTY_DEFAULT("refuse_new_network_connections", false);
@@ -2356,9 +2401,12 @@ SceneTree::SceneTree() {
 	debug_collisions_hint = false;
 	debug_navigation_hint = false;
 	debug_avoidance_hint = false;
+	debug_paths_hint = false;
 #endif
 	debug_collisions_color = GLOBAL_DEF("debug/shapes/collision/shape_color", Color(0.0, 0.6, 0.7, 0.42));
 	debug_collision_contact_color = GLOBAL_DEF("debug/shapes/collision/contact_color", Color(1.0, 0.2, 0.1, 0.8));
+	debug_paths_color = GLOBAL_DEF("debug/shapes/paths/geometry_color", Color(0.1, 1.0, 0.7, 0.4));
+	debug_paths_width = GLOBAL_DEF("debug/shapes/paths/geometry_width", 2.0);
 	collision_debug_contacts = GLOBAL_DEF("debug/shapes/collision/max_contacts_displayed", 10000);
 	ProjectSettings::get_singleton()->set_custom_property_info("debug/shapes/collision/max_contacts_displayed", PropertyInfo(Variant::INT, "debug/shapes/collision/max_contacts_displayed", PROPERTY_HINT_RANGE, "0,20000,1")); // No negative
 

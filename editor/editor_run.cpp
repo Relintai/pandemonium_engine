@@ -94,6 +94,10 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 		args.push_back("--debug-avoidance");
 	}
 
+	if (debug_paths) {
+		args.push_back("--debug-paths");
+	}
+
 	if (debug_shader_fallbacks) {
 		args.push_back("--debug-shader-fallbacks");
 	}
@@ -309,6 +313,14 @@ bool EditorRun::get_debug_avoidance() const {
 	return debug_avoidance;
 }
 
+void EditorRun::set_debug_paths(bool p_debug) {
+	debug_paths = p_debug;
+}
+
+bool EditorRun::get_debug_paths() const {
+	return debug_paths;
+}
+
 void EditorRun::set_debug_shader_fallbacks(bool p_debug) {
 	debug_shader_fallbacks = p_debug;
 }
@@ -323,5 +335,6 @@ EditorRun::EditorRun() {
 	debug_collisions = false;
 	debug_navigation = false;
 	debug_avoidance = false;
+	debug_paths = false;
 	debug_shader_fallbacks = false;
 }

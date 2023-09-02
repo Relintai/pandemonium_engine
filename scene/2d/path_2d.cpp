@@ -91,7 +91,7 @@ void Path2D::_notification(int p_what) {
 	if (p_what == NOTIFICATION_DRAW && curve.is_valid()) {
 		//draw the curve!!
 
-		if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_navigation_hint()) {
+		if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_paths_hint()) {
 			return;
 		}
 
@@ -100,11 +100,10 @@ void Path2D::_notification(int p_what) {
 		}
 
 #ifdef TOOLS_ENABLED
-		const float line_width = 2 * EDSCALE;
+		const float line_width = get_tree()->get_debug_paths_width() * EDSCALE;
 #else
-		const float line_width = 2;
+		const float line_width = get_tree()->get_debug_paths_width();
 #endif
-		const Color color = Color(1.0, 1.0, 1.0, 1.0);
 
 		_cached_draw_pts.resize(curve->get_point_count() * 8);
 		int count = 0;
@@ -117,7 +116,7 @@ void Path2D::_notification(int p_what) {
 			}
 		}
 
-		draw_polyline(_cached_draw_pts, color, line_width, true);
+		draw_polyline(_cached_draw_pts, get_tree()->get_debug_paths_color(), line_width, true);
 	}
 }
 
@@ -126,7 +125,7 @@ void Path2D::_curve_changed() {
 		return;
 	}
 
-	if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_navigation_hint()) {
+	if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_paths_hint()) {
 		return;
 	}
 

@@ -322,7 +322,8 @@ public:
 		DEBUG_FLAG_VIEW_COLLISONS = 8,
 		DEBUG_FLAG_VIEW_NAVIGATION = 16,
 		DEBUG_FLAG_VIEW_AVOIDANCE = 32,
-		DEBUG_FLAG_SHADER_FALLBACKS = 64,
+		DEBUG_FLAG_VIEW_PATHS = 64,
+		DEBUG_FLAG_SHADER_FALLBACKS = 128,
 	};
 
 	virtual Error run(const Ref<EditorExportPreset> &p_preset, int p_device, int p_debug_flags) { return OK; }

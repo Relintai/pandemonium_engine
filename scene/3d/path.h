@@ -42,6 +42,12 @@ class Path : public Spatial {
 
 	void _curve_changed();
 
+	RID debug_instance;
+	Ref<ArrayMesh> debug_mesh;
+
+private:
+	void _update_debug_mesh();
+
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
@@ -51,6 +57,7 @@ public:
 	Ref<Curve3D> get_curve() const;
 
 	Path();
+	~Path();
 };
 
 class PathFollow : public Spatial {

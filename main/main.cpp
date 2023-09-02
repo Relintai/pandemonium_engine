@@ -160,6 +160,7 @@ static bool use_debug_profiler = false;
 static bool debug_collisions = false;
 static bool debug_navigation = false;
 static bool debug_avoidance = false;
+static bool debug_paths = false;
 static bool debug_shader_fallbacks = false;
 #endif
 static int frame_delay = 0;
@@ -376,7 +377,8 @@ void Main::print_help(const char *p_binary) {
 #if defined(DEBUG_ENABLED) && !defined(SERVER_ENABLED)
 	OS::get_singleton()->print("  --debug-collisions               Show collision shapes when running the scene.\n");
 	OS::get_singleton()->print("  --debug-navigation               Show navigation polygons when running the scene.\n");
-	OS::get_singleton()->print("  --debug-avoidance                 Show navigation polygons when running the scene.\n");
+	OS::get_singleton()->print("  --debug-avoidance                Show navigation polygons when running the scene.\n");
+	OS::get_singleton()->print("  --debug-paths                    Show path lines when running the scene.\n");
 	OS::get_singleton()->print("  --debug-shader-fallbacks         Use the fallbacks of the shaders which have one when running the scene (GL ES 3 only).\n");
 #endif
 	OS::get_singleton()->print("  --frame-delay <ms>               Simulate high CPU load (delay each frame by <ms> milliseconds).\n");
@@ -916,6 +918,8 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 			debug_navigation = true;
 		} else if (I->get() == "--debug-avoidance") {
 			debug_avoidance = true;
+		} else if (I->get() == "--debug-paths") {
+			debug_paths = true;
 		} else if (I->get() == "--debug-shader-fallbacks") {
 			debug_shader_fallbacks = true;
 #endif
@@ -1935,6 +1939,9 @@ bool Main::start() {
 		}
 		if (debug_avoidance) {
 			sml->set_debug_avoidance_hint(true);
+		}
+		if (debug_paths) {
+			sml->set_debug_paths_hint(true);
 		}
 		if (debug_navigation || debug_avoidance) {
 			NavigationServer::get_singleton()->set_active(true);

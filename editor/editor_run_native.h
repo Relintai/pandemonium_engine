@@ -52,6 +52,7 @@ class EditorRunNative : public HBoxContainer {
 	bool debug_collisions;
 	bool debug_navigation;
 	bool debug_avoidance;
+	bool debug_paths;
 	bool debug_shader_fallbacks;
 
 	int resume_idx;
@@ -78,6 +79,9 @@ public:
 
 	void set_debug_avoidance(bool p_debug);
 	bool get_debug_avoidance() const;
+
+	void set_debug_paths(bool p_debug);
+	bool get_debug_paths() const;
 
 	void set_debug_shader_fallbacks(bool p_debug);
 	bool get_debug_shader_fallbacks() const;

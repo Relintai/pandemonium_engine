@@ -159,6 +159,9 @@ void EditorRunNative::_run_native(int p_idx, int p_platform) {
 	if (debug_avoidance) {
 		flags |= EditorExportPlatform::DEBUG_FLAG_VIEW_AVOIDANCE;
 	}
+	if (debug_paths) {
+		flags |= EditorExportPlatform::DEBUG_FLAG_VIEW_PATHS;
+	}
 	if (debug_shader_fallbacks) {
 		flags |= EditorExportPlatform::DEBUG_FLAG_SHADER_FALLBACKS;
 	}
@@ -221,6 +224,14 @@ bool EditorRunNative::get_debug_avoidance() const {
 	return debug_avoidance;
 }
 
+void EditorRunNative::set_debug_paths(bool p_debug) {
+	debug_paths = p_debug;
+}
+
+bool EditorRunNative::get_debug_paths() const {
+	return debug_paths;
+}
+
 void EditorRunNative::set_debug_shader_fallbacks(bool p_debug) {
 	debug_shader_fallbacks = p_debug;
 }
@@ -246,6 +257,7 @@ EditorRunNative::EditorRunNative() {
 	debug_collisions = false;
 	debug_navigation = false;
 	debug_avoidance = false;
+	debug_paths = false;
 	debug_shader_fallbacks = false;
 	resume_idx = 0;
 	resume_platform = 0;

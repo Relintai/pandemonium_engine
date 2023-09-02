@@ -2778,6 +2778,14 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 			EditorSettings::get_singleton()->set_project_metadata("debug_options", "run_debug_avoidance", !ischecked);
 
 		} break;
+		case RUN_DEBUG_PATHS: {
+			bool ischecked = debug_menu->get_popup()->is_item_checked(debug_menu->get_popup()->get_item_index(RUN_DEBUG_PATHS));
+			debug_menu->get_popup()->set_item_checked(debug_menu->get_popup()->get_item_index(RUN_DEBUG_PATHS), !ischecked);
+			run_native->set_debug_paths(!ischecked);
+			editor_run.set_debug_paths(!ischecked);
+			EditorSettings::get_singleton()->set_project_metadata("debug_options", "run_debug_paths", !ischecked);
+
+		} break;
 		case RUN_DEBUG_SHADER_FALLBACKS: {
 			bool ischecked = debug_menu->get_popup()->is_item_checked(debug_menu->get_popup()->get_item_index(RUN_DEBUG_SHADER_FALLBACKS));
 			debug_menu->get_popup()->set_item_checked(debug_menu->get_popup()->get_item_index(RUN_DEBUG_SHADER_FALLBACKS), !ischecked);
@@ -3070,6 +3078,7 @@ void EditorNode::_update_debug_options() {
 	bool check_debug_collisons = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_debug_collisons", false);
 	bool check_debug_navigation = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_debug_navigation", false);
 	bool check_debug_avoidance = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_debug_avoidance", false);
+	bool check_debug_paths = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_debug_paths", false);
 	bool check_debug_shader_fallbacks = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_debug_shader_fallbacks", false);
 	bool check_live_debug = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_live_debug", true);
 	bool check_reload_scripts = EditorSettings::get_singleton()->get_project_metadata("debug_options", "run_reload_scripts", true);
@@ -3088,6 +3097,9 @@ void EditorNode::_update_debug_options() {
 	}
 	if (check_debug_avoidance) {
 		_menu_option_confirm(RUN_DEBUG_AVOIDANCE, true);
+	}
+	if (check_debug_paths) {
+		_menu_option_confirm(RUN_DEBUG_PATHS, true);
 	}
 	if (check_debug_shader_fallbacks) {
 		_menu_option_confirm(RUN_DEBUG_SHADER_FALLBACKS, true);
@@ -6527,6 +6539,10 @@ EditorNode::EditorNode() {
 	p->set_item_tooltip(
 			p->get_item_count() - 1,
 			TTR("When this option is enabled, avoidance debug information will be visible in the running project."));
+
+	p->add_check_shortcut(ED_SHORTCUT("editor/visible_paths", TTR("Visible Paths")), RUN_DEBUG_PATHS);
+	p->set_item_tooltip(-1,
+			TTR("When this option is enabled, curve resources used by path nodes will be visible in the running project."));
 
 	if (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3") {
 		p->add_separator();
