@@ -377,7 +377,7 @@ void Main::print_help(const char *p_binary) {
 #if defined(DEBUG_ENABLED) && !defined(SERVER_ENABLED)
 	OS::get_singleton()->print("  --debug-collisions               Show collision shapes when running the scene.\n");
 	OS::get_singleton()->print("  --debug-navigation               Show navigation polygons when running the scene.\n");
-	OS::get_singleton()->print("  --debug-avoidance                Show navigation polygons when running the scene.\n");
+	OS::get_singleton()->print("  --debug-avoidance                Show navigation avoidance debug visuals when running the scene.\n");
 	OS::get_singleton()->print("  --debug-paths                    Show path lines when running the scene.\n");
 	OS::get_singleton()->print("  --debug-shader-fallbacks         Use the fallbacks of the shaders which have one when running the scene (GL ES 3 only).\n");
 #endif
