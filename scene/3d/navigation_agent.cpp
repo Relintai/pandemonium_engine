@@ -166,7 +166,7 @@ void NavigationAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_debug_path_custom_point_size"), &NavigationAgent::get_debug_path_custom_point_size);
 	ClassDB::bind_method(D_METHOD("_navigation_debug_changed"), &NavigationAgent::_navigation_debug_changed);
 
-	ADD_GROUP("Debug", "");
+	ADD_GROUP("Debug", "debug_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "debug_enabled"), "set_debug_enabled", "get_debug_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "debug_use_custom"), "set_debug_use_custom", "get_debug_use_custom");
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "debug_path_custom_color"), "set_debug_path_custom_color", "get_debug_path_custom_color");
