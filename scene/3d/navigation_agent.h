@@ -72,6 +72,7 @@ class NavigationAgent : public Node {
 	real_t path_max_distance;
 
 	Vector3 target_position;
+	bool target_position_submitted;
 
 	Ref<NavigationPathQueryParameters3D> navigation_query;
 	Ref<NavigationPathQueryResult3D> navigation_result;
@@ -95,8 +96,6 @@ class NavigationAgent : public Node {
 	// 2D avoidance has no y-axis. This stores and reapplies the y-axis velocity to the agent before and after the avoidance step.
 	// While not perfect it at least looks way better than agent's that clip through everything that is not a flat surface
 	float stored_y_velocity;
-
-	bool target_position_submitted;
 
 	bool target_reached;
 	bool navigation_finished;

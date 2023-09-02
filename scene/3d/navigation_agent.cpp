@@ -550,6 +550,7 @@ real_t NavigationAgent::get_path_max_distance() {
 
 void NavigationAgent::set_target_position(Vector3 p_position) {
 	target_position = p_position;
+	target_position_submitted = true;
 	_request_repath();
 }
 
@@ -645,6 +646,10 @@ void NavigationAgent::update_navigation() {
 	}
 
 	if (!agent_parent->is_inside_tree()) {
+		return;
+	}
+
+	if (!target_position_submitted) {
 		return;
 	}
 
@@ -773,6 +778,7 @@ void NavigationAgent::update_navigation() {
 				_check_distance_to_target();
 				nav_path_index -= 1;
 				navigation_finished = true;
+				target_position_submitted = false;
 				emit_signal("navigation_finished");
 				break;
 			}

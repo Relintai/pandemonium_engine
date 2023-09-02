@@ -66,6 +66,8 @@ class NavigationAgent2D : public Node {
 	real_t path_max_distance;
 
 	Vector2 target_position;
+	bool target_position_submitted;
+	
 	Ref<NavigationPathQueryParameters2D> navigation_query;
 	Ref<NavigationPathQueryResult2D> navigation_result;
 	int nav_path_index;
@@ -83,8 +85,6 @@ class NavigationAgent2D : public Node {
 	// should only be used very intentionally and not every frame as it interferes with the simulation stability
 	Vector2 velocity_forced;
 	bool velocity_forced_submitted;
-
-	bool target_position_submitted;
 
 	bool target_reached;
 	bool navigation_finished;

@@ -248,7 +248,7 @@ void NavigationAgent2D::_notification(int p_what) {
 #endif // DEBUG_ENABLED
 		} break;
 		case NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
-			if (agent_parent) {
+			if (agent_parent && target_position_submitted) {
 				if (velocity_submitted) {
 					velocity_submitted = false;
 					if (avoidance_enabled) {
@@ -573,6 +573,7 @@ real_t NavigationAgent2D::get_path_max_distance() {
 
 void NavigationAgent2D::set_target_position(Vector2 p_position) {
 	target_position = p_position;
+	target_position_submitted = true;
 	_request_repath();
 }
 
@@ -660,6 +661,10 @@ void NavigationAgent2D::update_navigation() {
 		return;
 	}
 	if (!agent_parent->is_inside_tree()) {
+		return;
+	}
+
+	if (!target_position_submitted) {
 		return;
 	}
 
@@ -788,6 +793,7 @@ void NavigationAgent2D::update_navigation() {
 				_check_distance_to_target();
 				nav_path_index -= 1;
 				navigation_finished = true;
+				target_position_submitted = false;
 				emit_signal("navigation_finished");
 				break;
 			}
