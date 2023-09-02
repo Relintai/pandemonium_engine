@@ -31,6 +31,12 @@
 				Returns the [Navigation2D] node that the obstacle is using for its navigation system.
 			</description>
 		</method>
+		<method name="get_navigation_map" qualifiers="const">
+			<return type="RID" />
+			<description>
+				Returns the [RID] of the navigation map for this NavigationObstacle2D node. This function returns always the map set on the NavigationObstacle node and not the map of the abstract obstacle on the NavigationServer. If the obstacle map is changed directly with the NavigationServer API the NavigationObstacle node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationObstacle2D and also update the obstacle on the [NavigationServer2D].
+			</description>
+		</method>
 		<method name="get_obstacle_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
@@ -50,6 +56,13 @@
 			<argument index="0" name="navigation" type="Node" />
 			<description>
 				Sets the [Navigation2D] node used by the obstacle. Useful when you don't want to make the obstacle a child of a [Navigation2D] node.
+			</description>
+		</method>
+		<method name="set_navigation_map">
+			<return type="void" />
+			<argument index="0" name="navigation_map" type="RID" />
+			<description>
+				Sets the [RID] of the navigation map this NavigationObstacle2D node should use and also updates the [code]obstacle[/code] on the [NavigationServer2D].
 			</description>
 		</method>
 	</methods>
