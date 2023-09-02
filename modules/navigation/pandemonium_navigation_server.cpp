@@ -1001,7 +1001,7 @@ COMMAND_1(free, RID, p_object) {
 
 		obstacle_owner.free(p_object);
 	} else {
-		ERR_FAIL_COND("Invalid RID.");
+		ERR_PRINT("Invalid RID.");
 	}
 }
 
