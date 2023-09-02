@@ -227,12 +227,15 @@ bool GridMap::is_baking_navigation() {
 
 void GridMap::set_navigation_map(RID p_navigation_map) {
 	map_override = p_navigation_map;
+
+	RID nav_map = get_navigation_map();
+
 	for (RBMap<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
 		Octant &g = *(E->get());
 
 		for (RBMap<IndexKey, Octant::NavMesh>::Element *F = g.navmesh_ids.front(); F; F = F->next()) {
 			if (F->get().region.is_valid()) {
-				NavigationServer::get_singleton()->region_set_map(F->get().region, map_override);
+				NavigationServer::get_singleton()->region_set_map(F->get().region, nav_map);
 			}
 		}
 	}
