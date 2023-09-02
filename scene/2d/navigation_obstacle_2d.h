@@ -42,7 +42,7 @@ class NavigationObstacle2D : public Node2D {
 
 	RID obstacle;
 	RID map_before_pause;
-	RID map_override; //!!!
+	RID map_override;
 	RID map_current;
 
 	real_t radius = 0.0;

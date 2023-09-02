@@ -85,15 +85,8 @@ void NavigationObstacle2D::_notification(int p_what) {
 				navigation = nav;
 			}
 
-			if (navigation) {
-				_update_map(navigation->get_rid());
-			} else if (map_override.is_valid()) {
-				_update_map(map_override);
-			} else if (is_inside_tree()) {
-				_update_map(get_world_2d()->get_navigation_map());
-			} else {
-				_update_map(RID());
-			}
+			_update_map(get_navigation_map());
+
 			previous_transform = get_global_transform();
 			// need to trigger map controlled agent assignment somehow for the fake_agent since obstacles use no callback like regular agents
 			Navigation2DServer::get_singleton()->agent_set_avoidance_enabled(fake_agent, radius > 0);
@@ -162,7 +155,7 @@ void NavigationObstacle2D::_notification(int p_what) {
 }
 
 NavigationObstacle2D::NavigationObstacle2D() {
-	navigation = nullptr;
+	navigation = NULL;
 
 	obstacle = Navigation2DServer::get_singleton()->obstacle_create();
 	fake_agent = Navigation2DServer::get_singleton()->agent_create();
@@ -198,15 +191,7 @@ void NavigationObstacle2D::set_navigation(Navigation2D *p_nav) {
 
 	navigation = p_nav;
 
-	if (navigation) {
-		_update_map(navigation->get_rid());
-	} else if (map_override.is_valid()) {
-		_update_map(map_override);
-	} else if (is_inside_tree()) {
-		_update_map(get_world_2d()->get_navigation_map());
-	} else {
-		_update_map(RID());
-	}
+	_update_map(get_navigation_map());
 }
 
 void NavigationObstacle2D::set_navigation_node(Node *p_nav) {
@@ -231,15 +216,17 @@ void NavigationObstacle2D::set_navigation_map(RID p_navigation_map) {
 	if (map_override == p_navigation_map) {
 		return;
 	}
+
 	map_override = p_navigation_map;
-	_update_map(map_override);
+
+	_update_map(get_navigation_map());
 }
 
 RID NavigationObstacle2D::get_navigation_map() const {
-	if (navigation) {
-		return navigation->get_rid();
-	} else if (map_override.is_valid()) {
+	if (map_override.is_valid()) {
 		return map_override;
+	} else if (navigation) {
+		return navigation->get_rid();
 	} else if (is_inside_tree()) {
 		return get_world_2d()->get_navigation_map();
 	}
