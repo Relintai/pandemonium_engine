@@ -179,6 +179,15 @@ PoolVector<Vector2> NavigationPolygon::get_vertices() const {
 	return vertices;
 }
 
+void NavigationPolygon::set_cell_size(real_t p_cell_size) {
+	cell_size = p_cell_size;
+	navigation_polygon_dirty = true;
+}
+
+real_t NavigationPolygon::get_cell_size() const {
+	return cell_size;
+}
+
 void NavigationPolygon::add_polygon(const Vector<int> &p_polygon) {
 	polygons.push_back(p_polygon);
 }
@@ -237,6 +246,7 @@ void NavigationPolygon::commit_changes() {
 			new_navigation_mesh_polygons.push_back(new_navigation_mesh_polygon);
 		}
 
+		navigation_mesh->set_cell_size(cell_size); // Needed to not fail the cell size check on the server
 		navigation_mesh->set_vertices(new_navigation_mesh_vertices);
 		navigation_mesh->set_polygons(new_navigation_mesh_polygons);
 		navigation_mesh->commit_changes();
@@ -416,6 +426,7 @@ RID NavigationPolygon::get_rid() const {
 
 NavigationPolygon::NavigationPolygon() {
 	agent_radius = 10.0f;
+	cell_size = 1.0f;
 
 	parsed_geometry_type = PARSED_GEOMETRY_MESH_INSTANCES;
 	collision_mask = 0xFFFFFFFF;
@@ -585,6 +596,9 @@ void NavigationPolygon::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_agent_radius", "agent_radius"), &NavigationPolygon::set_agent_radius);
 	ClassDB::bind_method(D_METHOD("get_agent_radius"), &NavigationPolygon::get_agent_radius);
 
+	ClassDB::bind_method(D_METHOD("set_cell_size", "cell_size"), &NavigationPolygon::set_cell_size);
+	ClassDB::bind_method(D_METHOD("get_cell_size"), &NavigationPolygon::get_cell_size);
+
 	ClassDB::bind_method(D_METHOD("set_vertices", "vertices"), &NavigationPolygon::set_vertices);
 	ClassDB::bind_method(D_METHOD("get_vertices"), &NavigationPolygon::get_vertices);
 
@@ -619,6 +633,7 @@ void NavigationPolygon::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "polygons", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL), "set_polygons", "get_polygons");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "outlines", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL), "set_outlines", "get_outlines");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "baked_outlines", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL), "set_baked_outlines", "get_baked_outlines");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cell_size", PROPERTY_HINT_RANGE, "0.01,500.0,0.01,or_greater,suffix:px"), "set_cell_size", "get_cell_size");
 
 	ADD_GROUP("Polygons", "polygon_");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "polygon_bake_fillrule", PROPERTY_HINT_ENUM, "EvenOdd,NonZero,Positive,Negative"), "set_polygon_bake_fillrule", "get_polygon_bake_fillrule");

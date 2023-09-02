@@ -98,6 +98,9 @@ public:
 	void set_agent_radius(real_t p_value);
 	real_t get_agent_radius() const;
 
+	void set_cell_size(real_t p_cell_size);
+	real_t get_cell_size() const;
+
 	void set_vertices(const PoolVector<Vector2> &p_vertices);
 	PoolVector<Vector2> get_vertices() const;
 
@@ -165,6 +168,7 @@ private:
 
 	bool navigation_polygon_dirty;
 
+	real_t cell_size;
 	PoolVector<Vector2> vertices;
 	Vector<Vector<int>> polygons;
 	Vector<PoolVector<Vector2>> outlines;
