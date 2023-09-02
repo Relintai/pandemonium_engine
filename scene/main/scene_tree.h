@@ -181,13 +181,9 @@ private:
 
 	Color debug_collisions_color;
 	Color debug_collision_contact_color;
-	Color debug_navigation_color;
-	Color debug_navigation_disabled_color;
 	Color debug_paths_color;
 	float debug_paths_width = 1.0f;
 	Ref<ArrayMesh> debug_contact_mesh;
-	Ref<Material> navigation_material;
-	Ref<Material> navigation_disabled_material;
 	Ref<Material> debug_paths_material;
 	Ref<Material> collision_material;
 	int collision_debug_contacts;
