@@ -210,6 +210,9 @@
 		<member name="polygon_bake_fillrule" type="int" setter="set_polygon_bake_fillrule" getter="get_polygon_bake_fillrule" enum="NavigationPolygon.PolygonFillRule" default="0">
 			Filling rule for baking polygons that defines in complex polygons which polygon sub-regions will be considered inside a given polygon, and which sub-regions will not, aka what is a hole.
 		</member>
+		<member name="cell_size" type="float" setter="set_cell_size" getter="get_cell_size" default="1.0">
+			The cell size used to rasterize the navigation mesh vertices. Must match with the cell size on the navigation map.
+		</member>
 	</members>
 	<constants>
 		<constant name="PARSED_GEOMETRY_MESH_INSTANCES" value="0" enum="ParsedGeometryType">
