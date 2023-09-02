@@ -140,8 +140,9 @@ class GridMap : public Spatial {
 	uint32_t collision_layer;
 	uint32_t collision_mask;
 	Ref<PhysicsMaterial> physics_material;
-	bool bake_navigation = false;
-	uint32_t navigation_layers = 1;
+	bool bake_navigation;
+	RID map_override;
+	uint32_t navigation_layers;
 
 	Transform last_transform;
 
@@ -241,6 +242,9 @@ public:
 
 	void set_bake_navigation(bool p_bake_navigation);
 	bool is_baking_navigation();
+
+	void set_navigation_map(RID p_navigation_map);
+	RID get_navigation_map() const;
 
 	void set_navigation_layers(uint32_t p_navigation_layers);
 	uint32_t get_navigation_layers() const;

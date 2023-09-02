@@ -173,6 +173,13 @@
 				[code]pos[/code] should be in the GridMap's local coordinate space.
 			</description>
 		</method>
+		<method name="set_navigation_map">
+			<return type="void" />
+			<param index="0" name="navigation_map" type="RID" />
+			<description>
+				Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
+			</description>
+		</method>
 	</methods>
 	<members>
 		<member name="bake_navigation" type="bool" setter="set_bake_navigation" getter="is_baking_navigation" default="false">
