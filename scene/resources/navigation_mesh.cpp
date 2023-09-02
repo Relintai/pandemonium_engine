@@ -649,7 +649,7 @@ NavigationMesh::NavigationMesh() {
 	agent_max_slope = 45.0f;
 	region_min_size = 2.0f;
 	region_merge_size = 20.0f;
-	edge_max_length = 12.0f;
+	edge_max_length = 0.0f;
 	edge_max_error = 1.3f;
 	verts_per_poly = 6.0f;
 	detail_sample_distance = 6.0f;
