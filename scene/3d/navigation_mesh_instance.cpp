@@ -467,6 +467,12 @@ NavigationMeshInstance::~NavigationMeshInstance() {
 
 #ifdef DEBUG_ENABLED
 void NavigationMeshInstance::_update_debug_mesh() {
+	if (Engine::get_singleton()->is_editor_hint()) {
+		// don't update inside Editor as node 3d gizmo takes care of this
+		// as collisions and selections for Editor Viewport need to be updated
+		return;
+	}
+
 	if (!NavigationServer::get_singleton()->get_debug_navigation_enabled()) {
 		if (debug_instance.is_valid()) {
 			RS::get_singleton()->instance_set_visible(debug_instance, false);
