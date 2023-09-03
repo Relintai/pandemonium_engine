@@ -43,12 +43,14 @@ class Room;
 class RoomManager;
 class ToolButton;
 class UndoRedo;
+class HBoxContainer;
 
 class RoomManagerEditorPlugin : public EditorPlugin {
 	GDCLASS(RoomManagerEditorPlugin, EditorPlugin);
 
 	RoomManager *_room_manager;
 
+	HBoxContainer *button_container;
 	ToolButton *button_flip_portals;
 	EditorNode *editor;
 
@@ -74,6 +76,8 @@ class RoomEditorPlugin : public EditorPlugin {
 	GDCLASS(RoomEditorPlugin, EditorPlugin);
 
 	Room *_room;
+
+	HBoxContainer *button_container;
 	ToolButton *button_generate;
 	EditorNode *editor;
 	UndoRedo *undo_redo;
@@ -100,6 +104,8 @@ class PortalEditorPlugin : public EditorPlugin {
 	GDCLASS(PortalEditorPlugin, EditorPlugin);
 
 	Portal *_portal;
+
+	HBoxContainer *button_container;
 	ToolButton *button_flip;
 	EditorNode *editor;
 
@@ -125,6 +131,8 @@ class OccluderEditorPlugin : public EditorPlugin {
 	GDCLASS(OccluderEditorPlugin, EditorPlugin);
 
 	Occluder *_occluder;
+
+	HBoxContainer *button_container;
 	ToolButton *button_center;
 	EditorNode *editor;
 	UndoRedo *undo_redo;

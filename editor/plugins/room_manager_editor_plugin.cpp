@@ -30,29 +30,31 @@
 
 #include "room_manager_editor_plugin.h"
 
-#include "editor/spatial_editor_gizmos.h"
-#include "scene/resources/occluder_shape.h"
-#include "core/object/class_db.h"
 #include "core/config/engine.h"
 #include "core/containers/local_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/math/math_defs.h"
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
-#include "core/os/memory.h"
-#include "core/containers/pool_vector.h"
+#include "core/object/class_db.h"
 #include "core/object/reference.h"
-#include "core/string/string_name.h"
 #include "core/object/undo_redo.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
 #include "editor/editor_node.h"
 #include "editor/plugins/spatial_editor_plugin.h"
+#include "editor/spatial_editor_gizmos.h"
 #include "scene/3d/occluder.h"
 #include "scene/3d/portal.h"
 #include "scene/3d/room.h"
 #include "scene/3d/room_manager.h"
 #include "scene/3d/spatial.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/control.h"
+#include "scene/gui/separator.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
+#include "scene/resources/occluder_shape.h"
 
 void RoomManagerEditorPlugin::_flip_portals() {
 	if (_room_manager) {
@@ -75,9 +77,9 @@ bool RoomManagerEditorPlugin::handles(Object *p_object) const {
 
 void RoomManagerEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
-		button_flip_portals->show();
+		button_container->show();
 	} else {
-		button_flip_portals->hide();
+		button_container->hide();
 	}
 
 	SpatialEditor::get_singleton()->show_advanced_portal_tools(p_visible);
@@ -90,12 +92,17 @@ void RoomManagerEditorPlugin::_bind_methods() {
 RoomManagerEditorPlugin::RoomManagerEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
+	button_container = memnew(HBoxContainer);
+	button_container->hide();
+	button_container->add_child(memnew(VSeparator));
+
 	button_flip_portals = memnew(ToolButton);
+	button_container->add_child(button_flip_portals);
 	button_flip_portals->set_icon(editor->get_gui_base()->get_theme_icon("Portal", "EditorIcons"));
-	button_flip_portals->set_text(TTR("Flip Portals"));
-	button_flip_portals->hide();
+	button_flip_portals->set_tooltip(TTR("Flip Portals"));
 	button_flip_portals->connect("pressed", this, "_flip_portals");
-	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, button_flip_portals);
+
+	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, button_container);
 
 	_room_manager = nullptr;
 
@@ -154,9 +161,9 @@ bool RoomEditorPlugin::handles(Object *p_object) const {
 
 void RoomEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
-		button_generate->show();
+		button_container->show();
 	} else {
-		button_generate->hide();
+		button_container->hide();
 	}
 }
 
@@ -167,12 +174,16 @@ void RoomEditorPlugin::_bind_methods() {
 RoomEditorPlugin::RoomEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
+	button_container = memnew(HBoxContainer);
+	button_container->hide();
+	button_container->add_child(memnew(VSeparator));
+
 	button_generate = memnew(ToolButton);
+	button_container->add_child(button_generate);
 	button_generate->set_icon(editor->get_gui_base()->get_theme_icon("Room", "EditorIcons"));
-	button_generate->set_text(TTR("Generate Points"));
-	button_generate->hide();
+	button_generate->set_tooltip(TTR("Generate Points"));
 	button_generate->connect("pressed", this, "_generate_points");
-	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, button_generate);
+	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, button_container);
 
 	_room = nullptr;
 
@@ -206,9 +217,9 @@ bool PortalEditorPlugin::handles(Object *p_object) const {
 
 void PortalEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
-		button_flip->show();
+		button_container->show();
 	} else {
-		button_flip->hide();
+		button_container->hide();
 	}
 }
 
@@ -219,12 +230,16 @@ void PortalEditorPlugin::_bind_methods() {
 PortalEditorPlugin::PortalEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
+	button_container = memnew(HBoxContainer);
+	button_container->hide();
+	button_container->add_child(memnew(VSeparator));
+
 	button_flip = memnew(ToolButton);
+	button_container->add_child(button_flip);
 	button_flip->set_icon(editor->get_gui_base()->get_theme_icon("Portal", "EditorIcons"));
-	button_flip->set_text(TTR("Flip Portal"));
-	button_flip->hide();
+	button_flip->set_tooltip(TTR("Flip Portal"));
 	button_flip->connect("pressed", this, "_flip_portal");
-	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, button_flip);
+	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, button_container);
 
 	_portal = nullptr;
 }
@@ -279,9 +294,9 @@ bool OccluderEditorPlugin::handles(Object *p_object) const {
 
 void OccluderEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
-		button_center->show();
+		button_container->show();
 	} else {
-		button_center->hide();
+		button_container->hide();
 	}
 }
 
@@ -292,12 +307,16 @@ void OccluderEditorPlugin::_bind_methods() {
 OccluderEditorPlugin::OccluderEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
+	button_container = memnew(HBoxContainer);
+	button_container->hide();
+	button_container->add_child(memnew(VSeparator));
+
 	button_center = memnew(ToolButton);
+	button_container->add_child(button_center);
 	button_center->set_icon(editor->get_gui_base()->get_theme_icon("EditorPosition", "EditorIcons"));
-	button_center->set_text(TTR("Center Node"));
-	button_center->hide();
+	button_center->set_tooltip(TTR("Center Node"));
 	button_center->connect("pressed", this, "_center");
-	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, button_center);
+	add_control_to_container(CONTAINER_SPATIAL_EDITOR_MENU, button_container);
 
 	undo_redo = EditorNode::get_undo_redo();
 
