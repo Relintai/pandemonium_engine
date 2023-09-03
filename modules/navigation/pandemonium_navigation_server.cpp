@@ -1001,7 +1001,7 @@ COMMAND_1(free, RID, p_object) {
 
 		obstacle_owner.free(p_object);
 	} else {
-		ERR_PRINT("Invalid RID.");
+		ERR_PRINT("Attempted to free a NavigationServer RID that did not exist (or was already freed).");
 	}
 }
 
