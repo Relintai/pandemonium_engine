@@ -6256,18 +6256,6 @@ void SpatialEditor::_init_indicators() {
 	_generate_selection_boxes();
 }
 
-void SpatialEditor::_update_context_menu_stylebox() {
-	// This must be called when the theme changes to follow the new accent color.
-	Ref<StyleBoxFlat> context_menu_stylebox = memnew(StyleBoxFlat);
-	const Color accent_color = EditorNode::get_singleton()->get_gui_base()->get_theme_color("accent_color", "Editor");
-	context_menu_stylebox->set_bg_color(accent_color * Color(1, 1, 1, 0.1));
-	// Add an underline to the StyleBox, but prevent its minimum vertical size from changing.
-	context_menu_stylebox->set_border_color(accent_color);
-	context_menu_stylebox->set_border_width(MARGIN_BOTTOM, Math::round(2 * EDSCALE));
-	context_menu_stylebox->set_default_margin(MARGIN_BOTTOM, 0);
-	context_menu_panel->add_theme_style_override("panel", context_menu_stylebox);
-}
-
 void SpatialEditor::_update_gizmos_menu() {
 	gizmos_menu->clear();
 
@@ -6762,7 +6750,6 @@ void SpatialEditor::_notification(int p_what) {
 		_init_indicators();
 	} else if (p_what == NOTIFICATION_THEME_CHANGED) {
 		_update_gizmos_menu_theme();
-		_update_context_menu_stylebox();
 	} else if (p_what == NOTIFICATION_EXIT_TREE) {
 		_finish_indicators();
 	} else if (p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
@@ -6830,11 +6817,11 @@ Vector<int> SpatialEditor::get_subgizmo_selection() {
 }
 
 void SpatialEditor::add_control_to_menu_panel(Control *p_control) {
-	context_menu_hbox->add_child(p_control);
+	main_flow->add_child(p_control);
 }
 
 void SpatialEditor::remove_control_from_menu_panel(Control *p_control) {
-	context_menu_hbox->remove_child(p_control);
+	main_flow->remove_child(p_control);
 }
 
 void SpatialEditor::set_can_preview(Camera *p_preview) {
@@ -7134,7 +7121,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	camera_override_viewport_id = 0;
 
 	// A fluid container for all toolbars.
-	HFlowContainer *main_flow = memnew(HFlowContainer);
+	main_flow = memnew(HFlowContainer);
 	vbc->add_child(main_flow);
 
 	// Main toolbars.
@@ -7306,15 +7293,6 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	main_menu_hbox->add_child(view_menu);
 
 	main_menu_hbox->add_child(memnew(VSeparator));
-
-	context_menu_panel = memnew(PanelContainer);
-	context_menu_hbox = memnew(HBoxContainer);
-	context_menu_panel->add_child(context_menu_hbox);
-	// Use a custom stylebox to make contextual menu items stand out from the rest.
-	// This helps with editor usability as contextual menu items change when selecting nodes,
-	// even though it may not be immediately obvious at first.
-	main_flow->add_child(context_menu_panel);
-	_update_context_menu_stylebox();
 
 	// Get the view menu popup and have it stay open when a checkable item is selected
 	p = view_menu->get_popup();

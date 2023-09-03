@@ -73,6 +73,7 @@ class VScrollBar;
 class VSplitContainer;
 class WindowDialog;
 struct Color;
+class HFlowContainer;
 
 class CanvasItemEditorSelectedItem : public Object {
 	GDCLASS(CanvasItemEditorSelectedItem, Object);
@@ -261,10 +262,7 @@ private:
 	HScrollBar *h_scroll;
 	VScrollBar *v_scroll;
 
-	// Used for secondary menu items which are displayed depending on the currently selected node
-	// (such as MeshInstance's "Mesh" menu).
-	PanelContainer *context_menu_panel;
-	HBoxContainer *context_menu_hbox;
+	HFlowContainer *main_flow;
 
 	ToolButton *zoom_minus;
 	ToolButton *zoom_reset;
@@ -577,7 +575,6 @@ private:
 	HSplitContainer *right_panel_split;
 	VSplitContainer *bottom_split;
 
-	void _update_context_menu_stylebox();
 	void _popup_warning_temporarily(Control *p_control, const float p_duration);
 	void _popup_warning_depop(Control *p_control);
 
