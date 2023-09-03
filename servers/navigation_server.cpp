@@ -156,8 +156,7 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("free_rid", "rid"), &NavigationServer::free);
 
 	ClassDB::bind_method(D_METHOD("set_active", "active"), &NavigationServer::set_active);
-	ClassDB::bind_method(D_METHOD("process", "delta_time"), &NavigationServer::process);
-
+	
 	ClassDB::bind_method(D_METHOD("get_process_info", "process_info"), &NavigationServer::get_process_info);
 
 	ClassDB::bind_method(D_METHOD("set_debug_enabled", "enabled"), &NavigationServer::set_debug_enabled);
