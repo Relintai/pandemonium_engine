@@ -288,6 +288,7 @@ public:
 	virtual NavigationUtilities::PathQueryResult _query_path(const NavigationUtilities::PathQueryParameters &p_parameters) const = 0;
 
 	virtual void init();
+	virtual void finish();
 
 	enum ProcessInfo {
 		INFO_ACTIVE_MAPS,

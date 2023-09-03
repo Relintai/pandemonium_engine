@@ -279,11 +279,14 @@ void initialize_navigation_server() {
 }
 
 void finalize_navigation_server() {
-	memdelete(navigation_server);
-	navigation_server = nullptr;
+	navigation_2d_server->finish();
+	navigation_server->finish();
 
 	memdelete(navigation_2d_server);
 	navigation_2d_server = nullptr;
+
+	memdelete(navigation_server);
+	navigation_server = nullptr;
 }
 
 //#define DEBUG_INIT

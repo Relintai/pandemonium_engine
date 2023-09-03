@@ -259,6 +259,7 @@ public:
 	virtual NavigationUtilities::PathQueryResult2D _query_path(const NavigationUtilities::PathQueryParameters2D &p_parameters) const = 0;
 
 	virtual void init();
+	virtual void finish();
 
 	Navigation2DServer();
 	virtual ~Navigation2DServer();

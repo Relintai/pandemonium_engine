@@ -147,6 +147,9 @@ void Navigation2DServer::init() {
 #endif // DEBUG_ENABLED
 }
 
+void Navigation2DServer::finish() {
+}
+
 void Navigation2DServer::query_path(const Ref<NavigationPathQueryParameters2D> &p_query_parameters, Ref<NavigationPathQueryResult2D> p_query_result) const {
 	ERR_FAIL_COND(!p_query_parameters.is_valid());
 	ERR_FAIL_COND(!p_query_result.is_valid());
