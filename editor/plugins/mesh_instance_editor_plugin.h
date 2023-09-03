@@ -46,6 +46,7 @@ class MenuButton;
 class MeshInstance;
 class Node;
 class SpinBox;
+class HBoxContainer;
 
 class MeshInstanceEditor : public Control {
 	GDCLASS(MeshInstanceEditor, Control);
@@ -65,6 +66,7 @@ class MeshInstanceEditor : public Control {
 
 	MeshInstance *node;
 
+	HBoxContainer *options_container;
 	MenuButton *options;
 
 	ConfirmationDialog *outline_dialog;

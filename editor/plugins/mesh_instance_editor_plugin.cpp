@@ -30,43 +30,44 @@
 
 #include "mesh_instance_editor_plugin.h"
 
-#include "editor/editor_scale.h"
-#include "scene/3d/collision_shape.h"
-#include "scene/3d/navigation_mesh_instance.h"
-#include "scene/3d/physics_body.h"
-#include "scene/gui/box_container.h"
-#include "scene/resources/navigation_mesh.h"
-#include "spatial_editor_plugin.h"
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/error/error_macros.h"
 #include "core/containers/list.h"
+#include "core/containers/pool_vector.h"
+#include "core/containers/rb_set.h"
+#include "core/error/error_macros.h"
+#include "core/math/color.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
-#include "core/os/memory.h"
-#include "core/containers/pool_vector.h"
+#include "core/object/class_db.h"
 #include "core/object/reference.h"
-#include "core/containers/rb_set.h"
 #include "core/object/undo_redo.h"
+#include "core/os/memory.h"
+#include "core/variant/array.h"
 #include "core/variant/variant.h"
 #include "editor/editor_data.h"
 #include "editor/editor_node.h"
+#include "editor/editor_scale.h"
+#include "scene/3d/collision_shape.h"
 #include "scene/3d/mesh_instance.h"
+#include "scene/3d/navigation_mesh_instance.h"
+#include "scene/3d/physics_body.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup_menu.h"
+#include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/resources/mesh.h"
+#include "scene/resources/navigation_mesh.h"
 #include "scene/resources/shape.h"
+#include "spatial_editor_plugin.h"
 
 void MeshInstanceEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {
 		node = nullptr;
-		options->hide();
+		options_container->hide();
 	}
 }
 
@@ -450,11 +451,14 @@ void MeshInstanceEditor::_bind_methods() {
 }
 
 MeshInstanceEditor::MeshInstanceEditor() {
-	options = memnew(MenuButton);
-	options->set_switch_on_hover(true);
-	SpatialEditor::get_singleton()->add_control_to_menu_panel(options);
+	options_container = memnew(HBoxContainer);
+	options_container->add_child(memnew(VSeparator));
+	SpatialEditor::get_singleton()->add_control_to_menu_panel(options_container);
 
-	options->set_text(TTR("Mesh"));
+	options = memnew(MenuButton);
+	options_container->add_child(options);
+	options->set_switch_on_hover(true);
+	options->set_tooltip(TTR("Mesh"));
 	options->set_icon(EditorNode::get_singleton()->get_gui_base()->get_theme_icon("MeshInstance", "EditorIcons"));
 
 	options->get_popup()->add_item(TTR("Create Trimesh Static Body"), MENU_OPTION_CREATE_STATIC_TRIMESH_BODY);
@@ -519,9 +523,9 @@ bool MeshInstanceEditorPlugin::handles(Object *p_object) const {
 
 void MeshInstanceEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
-		mesh_editor->options->show();
+		mesh_editor->options_container->show();
 	} else {
-		mesh_editor->options->hide();
+		mesh_editor->options_container->hide();
 		mesh_editor->edit(nullptr);
 	}
 }
@@ -531,7 +535,7 @@ MeshInstanceEditorPlugin::MeshInstanceEditorPlugin(EditorNode *p_node) {
 	mesh_editor = memnew(MeshInstanceEditor);
 	editor->get_viewport()->add_child(mesh_editor);
 
-	mesh_editor->options->hide();
+	mesh_editor->options_container->hide();
 }
 
 MeshInstanceEditorPlugin::~MeshInstanceEditorPlugin() {
