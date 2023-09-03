@@ -30,6 +30,7 @@ SOFTWARE.
 
 #include "scene/gui/separator.h"
 #include "editor/editor_settings.h"
+#include "scene/gui/box_container.h"
 
 void PropEditorPlugin::convert_active_scene_to_prop_data() {
 	SceneTree *st = SceneTree::get_singleton();
@@ -101,14 +102,18 @@ PropEditorPlugin::PropEditorPlugin(EditorNode *p_node) {
 	editor->add_tool_menu_item("Convert selected scene(s) to PropData", this, "convert_selected_scene_to_prop_data");
 	editor->add_tool_menu_item("(Prop) Find room points.", this, "find_room_points");
 
+	HBoxContainer *bc = memnew(HBoxContainer);
+	bc->add_child(memnew(VSeparator));
+
 	Button *b = memnew(Button);
+	bc->add_child(b);
 	b->set_flat(true);
 
 	b->connect("pressed", this, "_quick_convert_button_pressed");
 	b->set_text("To Prop");
 	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to PropData.", KEY_MASK_ALT + KEY_U));
 
-	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_MENU, b);
+	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_MENU, bc);
 }
 
 PropEditorPlugin::~PropEditorPlugin() {

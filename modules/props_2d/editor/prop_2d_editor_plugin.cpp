@@ -24,9 +24,11 @@ SOFTWARE.
 
 #include "../props/prop_2d_data.h"
 #include "../singleton/prop_2d_utils.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "editor/editor_settings.h"
-#include "core/input/input.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/separator.h"
 
 void Prop2DEditorPlugin::convert_active_scene_to_prop_data() {
 	SceneTree *st = SceneTree::get_singleton();
@@ -98,14 +100,18 @@ Prop2DEditorPlugin::Prop2DEditorPlugin(EditorNode *p_node) {
 	editor->add_tool_menu_item("Convert selected scene(s) to Prop2DData", this, "convert_selected_scene_to_prop_data");
 	editor->add_tool_menu_item("(Prop2D) Find room points.", this, "find_room_points");
 
+	HBoxContainer *bc = memnew(HBoxContainer);
+	bc->add_child(memnew(VSeparator));
+
 	Button *b = memnew(Button);
+	bc->add_child(b);
 	b->set_flat(true);
 
 	b->connect("pressed", this, "_quick_convert_button_pressed");
 	b->set_text("To Prop2D");
 	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to Prop2DData.", KEY_MASK_ALT + KEY_U));
 
-	add_control_to_container(EditorPlugin::CONTAINER_CANVAS_EDITOR_MENU, b);
+	add_control_to_container(EditorPlugin::CONTAINER_CANVAS_EDITOR_MENU, bc);
 }
 
 Prop2DEditorPlugin::~Prop2DEditorPlugin() {
