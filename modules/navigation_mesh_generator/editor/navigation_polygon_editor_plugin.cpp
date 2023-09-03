@@ -43,6 +43,7 @@
 #include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_polygon.h"
 #include "servers/navigation/navigation_mesh_generator.h"
+#include "scene/gui/separator.h"
 
 Ref<NavigationPolygon> NavigationPolygonEditor::_ensure_navpoly() const {
 	Ref<NavigationPolygon> navpoly = node->get_navigation_polygon();
@@ -135,6 +136,8 @@ NavigationPolygonEditor::NavigationPolygonEditor(EditorNode *p_editor, bool p_wi
 			
 	bake_hbox = memnew(HBoxContainer);
 	add_child(bake_hbox);
+
+	bake_hbox->add_child(memnew(VSeparator));
 
 	button_bake = memnew(Button);
 	button_bake->set_flat(true);

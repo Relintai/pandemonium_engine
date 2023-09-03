@@ -44,6 +44,7 @@
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
 #include "servers/navigation/navigation_mesh_generator.h"
+#include "scene/gui/separator.h"
 
 void NavigationMeshEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {
@@ -135,6 +136,8 @@ void NavigationMeshEditor::_bind_methods() {
 
 NavigationMeshEditor::NavigationMeshEditor() {
 	bake_hbox = memnew(HBoxContainer);
+
+	bake_hbox->add_child(memnew(VSeparator));
 
 	button_bake = memnew(Button);
 	button_bake->set_flat(true);
