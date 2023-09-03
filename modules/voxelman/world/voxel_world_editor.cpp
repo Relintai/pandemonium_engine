@@ -43,6 +43,7 @@ SOFTWARE.
 #include "scene/3d/camera.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/scroll_container.h"
+#include "scene/gui/separator.h"
 
 EditorPlugin::AfterGUIInput VoxelWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {
@@ -200,6 +201,8 @@ VoxelWorldEditor::VoxelWorldEditor(EditorNode *p_editor) {
 	spatial_editor_hb->set_h_size_flags(SIZE_EXPAND_FILL);
 	spatial_editor_hb->set_alignment(BoxContainer::ALIGN_BEGIN);
 	SpatialEditor::get_singleton()->add_control_to_menu_panel(spatial_editor_hb);
+
+	spatial_editor_hb->add_child(memnew(VSeparator));
 
 	_tool_button_group.instance();
 
