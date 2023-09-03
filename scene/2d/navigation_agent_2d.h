@@ -32,6 +32,8 @@
 
 #include "scene/main/node.h"
 
+#include "servers/navigation/navigation_path_query_parameters_2d.h"
+
 class Node2D;
 class Navigation2D;
 class NavigationPathQueryParameters2D;
@@ -52,6 +54,8 @@ class NavigationAgent2D : public Node {
 	uint32_t avoidance_mask;
 	real_t avoidance_priority;
 	uint32_t navigation_layers;
+	NavigationPathQueryParameters2D::PathfindingAlgorithm pathfinding_algorithm;
+	NavigationPathQueryParameters2D::PathPostProcessing path_postprocessing;
 	int path_metadata_flags;
 
 	real_t path_desired_distance;
@@ -67,7 +71,7 @@ class NavigationAgent2D : public Node {
 
 	Vector2 target_position;
 	bool target_position_submitted;
-	
+
 	Ref<NavigationPathQueryParameters2D> navigation_query;
 	Ref<NavigationPathQueryResult2D> navigation_result;
 	int nav_path_index;
@@ -129,6 +133,16 @@ public:
 
 	void set_navigation_layer_value(int p_layer_number, bool p_value);
 	bool get_navigation_layer_value(int p_layer_number) const;
+
+	void set_pathfinding_algorithm(const NavigationPathQueryParameters2D::PathfindingAlgorithm p_pathfinding_algorithm);
+	NavigationPathQueryParameters2D::PathfindingAlgorithm get_pathfinding_algorithm() const {
+		return pathfinding_algorithm;
+	}
+
+	void set_path_postprocessing(const NavigationPathQueryParameters2D::PathPostProcessing p_path_postprocessing);
+	NavigationPathQueryParameters2D::PathPostProcessing get_path_postprocessing() const {
+		return path_postprocessing;
+	}
 
 	void set_avoidance_layers(uint32_t p_layers);
 	uint32_t get_avoidance_layers() const;
@@ -213,7 +227,7 @@ public:
 	Vector2 get_velocity() { return velocity; }
 
 	void set_velocity_forced(const Vector2 p_velocity);
-	
+
 	void _avoidance_done(Vector3 p_new_velocity);
 
 	virtual String get_configuration_warning() const;

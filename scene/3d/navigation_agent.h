@@ -34,6 +34,7 @@
 #include "core/containers/vector.h"
 
 #include "scene/main/node.h"
+#include "servers/navigation/navigation_path_query_parameters_3d.h"
 
 class Spatial;
 class Navigation;
@@ -57,6 +58,8 @@ class NavigationAgent : public Node {
 	uint32_t avoidance_mask;
 	real_t avoidance_priority;
 	uint32_t navigation_layers;
+	NavigationPathQueryParameters3D::PathfindingAlgorithm pathfinding_algorithm;
+	NavigationPathQueryParameters3D::PathPostProcessing path_postprocessing;
 	int path_metadata_flags;
 
 	real_t path_desired_distance;
@@ -144,6 +147,16 @@ public:
 
 	void set_navigation_layer_value(int p_layer_number, bool p_value);
 	bool get_navigation_layer_value(int p_layer_number) const;
+
+	void set_pathfinding_algorithm(const NavigationPathQueryParameters3D::PathfindingAlgorithm p_pathfinding_algorithm);
+	NavigationPathQueryParameters3D::PathfindingAlgorithm get_pathfinding_algorithm() const {
+		return pathfinding_algorithm;
+	}
+
+	void set_path_postprocessing(const NavigationPathQueryParameters3D::PathPostProcessing p_path_postprocessing);
+	NavigationPathQueryParameters3D::PathPostProcessing get_path_postprocessing() const {
+		return path_postprocessing;
+	}
 
 	void set_avoidance_layers(uint32_t p_layers);
 	uint32_t get_avoidance_layers() const;

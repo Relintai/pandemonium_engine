@@ -35,7 +35,6 @@
 #include "scene/2d/navigation_2d.h"
 #include "scene/2d/navigation_link_2d.h"
 #include "scene/resources/world_2d.h"
-#include "servers/navigation/navigation_path_query_parameters_2d.h"
 #include "servers/navigation/navigation_path_query_result_2d.h"
 #include "servers/navigation_2d_server.h"
 
@@ -81,6 +80,12 @@ void NavigationAgent2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_navigation_layer_value", "layer_number", "value"), &NavigationAgent2D::set_navigation_layer_value);
 	ClassDB::bind_method(D_METHOD("get_navigation_layer_value", "layer_number"), &NavigationAgent2D::get_navigation_layer_value);
 
+	ClassDB::bind_method(D_METHOD("set_pathfinding_algorithm", "pathfinding_algorithm"), &NavigationAgent2D::set_pathfinding_algorithm);
+	ClassDB::bind_method(D_METHOD("get_pathfinding_algorithm"), &NavigationAgent2D::get_pathfinding_algorithm);
+
+	ClassDB::bind_method(D_METHOD("set_path_postprocessing", "path_postprocessing"), &NavigationAgent2D::set_path_postprocessing);
+	ClassDB::bind_method(D_METHOD("get_path_postprocessing"), &NavigationAgent2D::get_path_postprocessing);
+
 	ClassDB::bind_method(D_METHOD("set_path_metadata_flags", "flags"), &NavigationAgent2D::set_path_metadata_flags);
 	ClassDB::bind_method(D_METHOD("get_path_metadata_flags"), &NavigationAgent2D::get_path_metadata_flags);
 
@@ -124,6 +129,8 @@ void NavigationAgent2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "target_desired_distance", PROPERTY_HINT_RANGE, "0.1,1000,0.01,or_greater,suffix:px"), "set_target_desired_distance", "get_target_desired_distance");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "path_max_distance", PROPERTY_HINT_RANGE, "10,1000,1,or_greater,suffix:px"), "set_path_max_distance", "get_path_max_distance");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_layers", PROPERTY_HINT_LAYERS_2D_NAVIGATION), "set_navigation_layers", "get_navigation_layers");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "pathfinding_algorithm", PROPERTY_HINT_ENUM, "AStar"), "set_pathfinding_algorithm", "get_pathfinding_algorithm");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "path_postprocessing", PROPERTY_HINT_ENUM, "Corridorfunnel,Edgecentered"), "set_path_postprocessing", "get_path_postprocessing");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "path_metadata_flags", PROPERTY_HINT_FLAGS, "Include Types,Include RIDs,Include Owners"), "set_path_metadata_flags", "get_path_metadata_flags");
 
 	ADD_GROUP("Avoidance", "");
@@ -283,6 +290,8 @@ NavigationAgent2D::NavigationAgent2D() {
 	avoidance_mask = 1;
 	avoidance_priority = 1.0;
 	navigation_layers = 1;
+	pathfinding_algorithm = NavigationPathQueryParameters2D::PathfindingAlgorithm::PATHFINDING_ALGORITHM_ASTAR;
+	path_postprocessing = NavigationPathQueryParameters2D::PathPostProcessing::PATH_POSTPROCESSING_CORRIDORFUNNEL;
 	path_metadata_flags = NavigationPathQueryParameters2D::PATH_METADATA_INCLUDE_ALL;
 
 	path_desired_distance = 20.0;
@@ -497,6 +506,26 @@ void NavigationAgent2D::set_avoidance_priority(real_t p_priority) {
 
 real_t NavigationAgent2D::get_avoidance_priority() const {
 	return avoidance_priority;
+}
+
+void NavigationAgent2D::set_pathfinding_algorithm(const NavigationPathQueryParameters2D::PathfindingAlgorithm p_pathfinding_algorithm) {
+	if (pathfinding_algorithm == p_pathfinding_algorithm) {
+		return;
+	}
+
+	pathfinding_algorithm = p_pathfinding_algorithm;
+
+	navigation_query->set_pathfinding_algorithm(pathfinding_algorithm);
+}
+
+void NavigationAgent2D::set_path_postprocessing(const NavigationPathQueryParameters2D::PathPostProcessing p_path_postprocessing) {
+	if (path_postprocessing == p_path_postprocessing) {
+		return;
+	}
+
+	path_postprocessing = p_path_postprocessing;
+
+	navigation_query->set_path_postprocessing(path_postprocessing);
 }
 
 void NavigationAgent2D::set_path_metadata_flags(const int p_flags) {
