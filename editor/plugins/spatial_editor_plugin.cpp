@@ -7294,8 +7294,6 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	view_menu->set_switch_on_hover(true);
 	main_menu_hbox->add_child(view_menu);
 
-	main_menu_hbox->add_child(memnew(VSeparator));
-
 	// Get the view menu popup and have it stay open when a checkable item is selected
 	p = view_menu->get_popup();
 	p->set_hide_on_checkable_item_selection(false);
