@@ -226,6 +226,8 @@ void finalize_physics() {
 }
 
 void initialize_navigation_mesh_generator() {
+	ERR_FAIL_COND(navigation_mesh_generator != NULL);
+
 	// Init chosen NavigationMeshGenerator
 	const String &server_name = GLOBAL_GET(NavigationMeshGeneratorManager::setting_property_name);
 	navigation_mesh_generator = NavigationMeshGeneratorManager::get_singleton()->new_server(server_name);
@@ -243,6 +245,8 @@ void initialize_navigation_mesh_generator() {
 	}
 
 	if (navigation_mesh_generator) {
+		navigation_mesh_generator->init();
+
 		// need to register singleton earlier so modules / extensions / addons can use it on SCENE / SERVER init level
 		Engine::get_singleton()->add_singleton(Engine::Singleton("NavigationMeshGenerator", NavigationMeshGenerator::get_singleton()));
 	}
@@ -251,6 +255,10 @@ void initialize_navigation_mesh_generator() {
 }
 
 void finalize_navigation_mesh_generator() {
+	ERR_FAIL_COND(!navigation_mesh_generator);
+
+	navigation_mesh_generator->finish();
+
 	memdelete(navigation_mesh_generator);
 	navigation_mesh_generator = nullptr;
 }

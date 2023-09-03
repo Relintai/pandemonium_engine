@@ -71,6 +71,12 @@ NavigationMeshGenerator *NavigationMeshGenerator::get_singleton() {
 	return singleton;
 }
 
+void NavigationMeshGenerator::init() {
+}
+
+void NavigationMeshGenerator::finish() {
+}
+
 NavigationMeshGenerator::NavigationMeshGenerator() {
 	ERR_FAIL_COND(singleton != nullptr);
 	singleton = this;

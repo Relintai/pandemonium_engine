@@ -85,6 +85,9 @@ public:
 	virtual bool is_navigation_mesh_baking(Ref<NavigationMesh> p_navigation_mesh) const = 0;
 #endif // _3D_DISABLED
 
+	virtual void init();
+	virtual void finish();
+
 	NavigationMeshGenerator();
 	~NavigationMeshGenerator();
 };
