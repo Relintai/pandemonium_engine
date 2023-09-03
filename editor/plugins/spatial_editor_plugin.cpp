@@ -6729,6 +6729,8 @@ void SpatialEditor::_notification(int p_what) {
 		tool_option_button[SpatialEditor::TOOL_OPT_USE_SNAP]->set_icon(get_theme_icon("Snap", "EditorIcons"));
 		tool_option_button[SpatialEditor::TOOL_OPT_OVERRIDE_CAMERA]->set_icon(get_theme_icon("Camera", "EditorIcons"));
 
+		transform_menu->set_icon(get_theme_icon("3D", "EditorIcons"));
+
 		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_1_VIEWPORT), get_theme_icon("Panels1", "EditorIcons"));
 		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS), get_theme_icon("Panels2", "EditorIcons"));
 		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS_ALT), get_theme_icon("Panels2Alt", "EditorIcons"));
@@ -7276,7 +7278,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	PopupMenu *p;
 
 	transform_menu = memnew(MenuButton);
-	transform_menu->set_text(TTR("Transform"));
+	transform_menu->set_tooltip(TTR("Transform"));
 	transform_menu->set_switch_on_hover(true);
 	main_menu_hbox->add_child(transform_menu);
 
