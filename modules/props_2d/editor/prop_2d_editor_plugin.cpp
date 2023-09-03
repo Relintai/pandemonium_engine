@@ -110,7 +110,7 @@ Prop2DEditorPlugin::Prop2DEditorPlugin(EditorNode *p_node) {
 	b->connect("pressed", this, "_quick_convert_button_pressed");
 	b->set_icon(editor->get_scene_tree_dock()->get_theme_icon("AssetLib", "EditorIcons"));
 	//b->set_text("To Prop2D");
-	b->set_tooltip(TTR("To Prop") + "\n" + TTR("Quick convert this scene to a Prop 2D Resource."));
+	b->set_tooltip(TTR("Quick convert this scene to a Prop 2D Resource."));
 	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to Prop2DData.", KEY_MASK_ALT + KEY_U));
 
 	add_control_to_container(EditorPlugin::CONTAINER_CANVAS_EDITOR_MENU, bc);
