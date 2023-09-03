@@ -3740,8 +3740,7 @@ void CanvasItemEditor::_notification(int p_what) {
 
 		// Show / Hide the layout and anchors mode buttons
 		if (nb_control > 0 && nb_control == selection.size()) {
-			presets_menu->set_visible(true);
-			anchor_mode_button->set_visible(true);
+			preset_anchor_hbox->set_visible(true);
 
 			// Disable if the selected node is child of a container
 			if (has_container_parents) {
@@ -3756,8 +3755,7 @@ void CanvasItemEditor::_notification(int p_what) {
 				anchor_mode_button->set_tooltip(TTR("When active, moving Control nodes changes their anchors instead of their margins."));
 			}
 		} else {
-			presets_menu->set_visible(false);
-			anchor_mode_button->set_visible(false);
+			preset_anchor_hbox->set_visible(false);
 		}
 
 #ifdef MODULE_SKELETON_2D_ENABLED
@@ -5650,12 +5648,15 @@ CanvasItemEditor::CanvasItemEditor(EditorNode *p_editor) {
 	p->add_separator();
 	p->add_check_shortcut(ED_SHORTCUT("canvas_item_editor/preview_canvas_scale", TTR("Preview Canvas Scale"), KEY_MASK_SHIFT | KEY_MASK_CMD | KEY_P), PREVIEW_CANVAS_SCALE);
 
-	main_menu_hbox->add_child(memnew(VSeparator));
+	preset_anchor_hbox = memnew(HBoxContainer);
+	main_flow->add_child(preset_anchor_hbox);
+	preset_anchor_hbox->hide();
+
+	preset_anchor_hbox->add_child(memnew(VSeparator));
 
 	presets_menu = memnew(MenuButton);
 	presets_menu->set_text(TTR("Layout"));
-	main_flow->add_child(presets_menu);
-	presets_menu->hide();
+	preset_anchor_hbox->add_child(presets_menu);
 	presets_menu->set_switch_on_hover(true);
 
 	p = presets_menu->get_popup();
@@ -5667,9 +5668,8 @@ CanvasItemEditor::CanvasItemEditor(EditorNode *p_editor) {
 	anchors_popup->connect("id_pressed", this, "_popup_callback");
 
 	anchor_mode_button = memnew(ToolButton);
-	main_flow->add_child(anchor_mode_button);
+	preset_anchor_hbox->add_child(anchor_mode_button);
 	anchor_mode_button->set_toggle_mode(true);
-	anchor_mode_button->hide();
 	anchor_mode_button->connect("toggled", this, "_button_toggle_anchor_mode");
 
 	animation_hb = memnew(HBoxContainer);

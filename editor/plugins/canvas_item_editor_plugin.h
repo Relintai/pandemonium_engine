@@ -401,6 +401,7 @@ private:
 	HBoxContainer *animation_hb;
 	MenuButton *animation_menu;
 
+	HBoxContainer *preset_anchor_hbox;
 	MenuButton *presets_menu;
 	PopupMenu *anchors_and_margins_popup;
 	PopupMenu *anchors_popup;
