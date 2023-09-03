@@ -5004,6 +5004,7 @@ void SpatialEditor::select_gizmo_highlight_axis(int p_axis) {
 }
 
 void SpatialEditor::show_advanced_portal_tools(bool p_show) {
+	/*
 	// toolbar button
 	Button *const button = tool_button[TOOL_CONVERT_ROOMS];
 	if (p_show) {
@@ -5011,6 +5012,7 @@ void SpatialEditor::show_advanced_portal_tools(bool p_show) {
 	} else {
 		button->set_text("");
 	}
+	*/
 }
 
 void SpatialEditor::update_portal_tools() {
