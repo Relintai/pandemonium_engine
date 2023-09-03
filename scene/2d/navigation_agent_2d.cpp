@@ -120,9 +120,9 @@ void NavigationAgent2D::_bind_methods() {
 
 	ADD_GROUP("Pathfinding", "");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "target_position", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR), "set_target_position", "get_target_position");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "path_desired_distance", PROPERTY_HINT_RANGE, "0.1,100,0.01"), "set_path_desired_distance", "get_path_desired_distance");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "target_desired_distance", PROPERTY_HINT_RANGE, "0.1,100,0.01"), "set_target_desired_distance", "get_target_desired_distance");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "path_max_distance", PROPERTY_HINT_RANGE, "10,100,1"), "set_path_max_distance", "get_path_max_distance");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "path_desired_distance", PROPERTY_HINT_RANGE, "0.1,1000,0.01,suffix:px"), "set_path_desired_distance", "get_path_desired_distance");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "target_desired_distance", PROPERTY_HINT_RANGE, "0.1,1000,0.01,suffix:px"), "set_target_desired_distance", "get_target_desired_distance");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "path_max_distance", PROPERTY_HINT_RANGE, "10,1000,1,suffix:px"), "set_path_max_distance", "get_path_max_distance");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_layers", PROPERTY_HINT_LAYERS_2D_NAVIGATION), "set_navigation_layers", "get_navigation_layers");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "path_metadata_flags", PROPERTY_HINT_FLAGS, "Include Types,Include RIDs,Include Owners"), "set_path_metadata_flags", "get_path_metadata_flags");
 
@@ -134,7 +134,7 @@ void NavigationAgent2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_neighbors", PROPERTY_HINT_RANGE, "1,10000,1,or_greater"), "set_max_neighbors", "get_max_neighbors");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time_horizon_agents", PROPERTY_HINT_RANGE, "0.0,10,0.01,or_greater,suffix:s"), "set_time_horizon_agents", "get_time_horizon_agents");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time_horizon_obstacles", PROPERTY_HINT_RANGE, "0.0,10,0.01,or_greater,suffix:s"), "set_time_horizon_obstacles", "get_time_horizon_obstacles");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "max_speed", PROPERTY_HINT_RANGE, "0.01,100000,0.01,or_greater,suffix:px/s"), "set_max_speed", "get_max_speed");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "max_speed", PROPERTY_HINT_RANGE, "0.01,10000,0.01,or_greater,suffix:px/s"), "set_max_speed", "get_max_speed");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "avoidance_layers", PROPERTY_HINT_LAYERS_AVOIDANCE), "set_avoidance_layers", "get_avoidance_layers");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "avoidance_mask", PROPERTY_HINT_LAYERS_AVOIDANCE), "set_avoidance_mask", "get_avoidance_mask");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "avoidance_priority", PROPERTY_HINT_RANGE, "0.0,1.0,0.01"), "set_avoidance_priority", "get_avoidance_priority");
@@ -285,20 +285,19 @@ NavigationAgent2D::NavigationAgent2D() {
 	navigation_layers = 1;
 	path_metadata_flags = NavigationPathQueryParameters2D::PATH_METADATA_INCLUDE_ALL;
 
-	path_desired_distance = 1.0;
-	target_desired_distance = 1.0;
-	path_max_distance = 3.0;
+	path_desired_distance = 20.0;
+	target_desired_distance = 10.0;
+	radius = 10.0;
+	neighbor_distance = 500.0;
+	max_neighbors = 10;
+	time_horizon_agents = 1.0;
+	time_horizon_obstacles = 0;
+	max_speed = 100.0;
+	path_max_distance = 100.0;
+
 	velocity_submitted = false;
 	target_reached = false;
 	navigation_finished = true;
-	agent = Navigation2DServer::get_singleton()->agent_create();
-
-	set_neighbor_distance(500.0);
-	set_max_neighbors(10);
-	set_time_horizon_agents(1.0);
-	set_time_horizon_obstacles(0.0);
-	set_radius(10.0);
-	set_max_speed(200.0);
 
 	velocity_forced_submitted = false;
 	target_position_submitted = false;
@@ -306,8 +305,22 @@ NavigationAgent2D::NavigationAgent2D() {
 	nav_path_index = 0;
 	update_frame_id = 0;
 
+	agent = Navigation2DServer::get_singleton()->agent_create();
+
+	Navigation2DServer::get_singleton()->agent_set_neighbor_distance(agent, neighbor_distance);
+	Navigation2DServer::get_singleton()->agent_set_max_neighbors(agent, max_neighbors);
+	Navigation2DServer::get_singleton()->agent_set_time_horizon_agents(agent, time_horizon_agents);
+	Navigation2DServer::get_singleton()->agent_set_time_horizon_obstacles(agent, time_horizon_obstacles);
+	Navigation2DServer::get_singleton()->agent_set_radius(agent, radius);
+	Navigation2DServer::get_singleton()->agent_set_max_speed(agent, max_speed);
+
 	navigation_query.instance();
 	navigation_result.instance();
+
+	set_avoidance_layers(avoidance_layers);
+	set_avoidance_mask(avoidance_mask);
+	set_avoidance_priority(avoidance_priority);
+	set_avoidance_enabled(avoidance_enabled);
 
 	debug_enabled = false;
 	debug_path_dirty = true;
@@ -319,11 +332,6 @@ NavigationAgent2D::NavigationAgent2D() {
 #ifdef DEBUG_ENABLED
 	Navigation2DServer::get_singleton()->connect("navigation_debug_changed", this, "_navigation_debug_changed");
 #endif // DEBUG_ENABLED
-
-	set_avoidance_layers(avoidance_layers);
-	set_avoidance_mask(avoidance_mask);
-	set_avoidance_priority(avoidance_priority);
-	set_avoidance_enabled(avoidance_enabled);
 }
 
 NavigationAgent2D::~NavigationAgent2D() {
