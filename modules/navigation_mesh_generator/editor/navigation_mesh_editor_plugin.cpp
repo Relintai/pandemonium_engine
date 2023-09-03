@@ -100,7 +100,7 @@ void NavigationMeshEditor::_bake_pressed() {
 		}
 	}
 
-	node->bake_navigation_mesh(true);
+	node->bake_navigation_mesh(false);
 
 	node->update_gizmos();
 }
