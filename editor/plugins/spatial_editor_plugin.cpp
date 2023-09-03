@@ -6730,6 +6730,7 @@ void SpatialEditor::_notification(int p_what) {
 		tool_option_button[SpatialEditor::TOOL_OPT_OVERRIDE_CAMERA]->set_icon(get_theme_icon("Camera", "EditorIcons"));
 
 		transform_menu->set_icon(get_theme_icon("3D", "EditorIcons"));
+		view_menu->set_icon(get_theme_icon("GuiVisibilityVisible", "EditorIcons"));
 
 		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_1_VIEWPORT), get_theme_icon("Panels1", "EditorIcons"));
 		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS), get_theme_icon("Panels2", "EditorIcons"));
@@ -7292,7 +7293,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	p->connect("id_pressed", this, "_menu_item_pressed");
 
 	view_menu = memnew(MenuButton);
-	view_menu->set_text(TTR("View"));
+	view_menu->set_tooltip(TTR("View"));
 	view_menu->set_switch_on_hover(true);
 	main_menu_hbox->add_child(view_menu);
 

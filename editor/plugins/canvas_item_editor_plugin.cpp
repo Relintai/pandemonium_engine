@@ -3812,6 +3812,7 @@ void CanvasItemEditor::_notification(int p_what) {
 		grid_snap_button->set_icon(get_theme_icon("SnapGrid", "EditorIcons"));
 		snap_config_menu->set_icon(get_theme_icon("GuiTabMenuHl", "EditorIcons"));
 		skeleton_menu->set_icon(get_theme_icon("Bone", "EditorIcons"));
+		view_menu->set_icon(get_theme_icon("GuiVisibilityVisible", "EditorIcons"));
 		override_camera_button->set_icon(get_theme_icon("Camera2D", "EditorIcons"));
 		pan_button->set_icon(get_theme_icon("ToolPan", "EditorIcons"));
 		ruler_button->set_icon(get_theme_icon("Ruler", "EditorIcons"));
@@ -5626,7 +5627,7 @@ CanvasItemEditor::CanvasItemEditor(EditorNode *p_editor) {
 	main_menu_hbox->add_child(memnew(VSeparator));
 
 	view_menu = memnew(MenuButton);
-	view_menu->set_text(TTR("View"));
+	view_menu->set_tooltip(TTR("View"));
 	main_menu_hbox->add_child(view_menu);
 	view_menu->get_popup()->connect("id_pressed", this, "_popup_callback");
 	view_menu->set_switch_on_hover(true);
