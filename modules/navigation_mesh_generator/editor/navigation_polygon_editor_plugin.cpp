@@ -140,19 +140,19 @@ NavigationPolygonEditor::NavigationPolygonEditor(EditorNode *p_editor, bool p_wi
 	button_bake->set_flat(true);
 	bake_hbox->add_child(button_bake);
 	button_bake->set_toggle_mode(true);
-	button_bake->set_text(TTR("Bake NavigationPolygon"));
-	button_bake->set_tooltip(TTR("Bakes the NavigationPolygon by first parsing the scene for source geometry and then creating the navigation polygon vertices and polygons."));
+	//button_bake->set_text(TTR("Bake NavigationPolygon"));
+	button_bake->set_tooltip(TTR("Bake NavigationPolygon") + "\n" + TTR("Bakes the NavigationPolygon by first parsing the scene for source geometry and then creating the navigation polygon vertices and polygons."));
 	button_bake->connect("pressed", this, "_bake_pressed");
 
 	button_reset = memnew(Button);
 	button_reset->set_flat(true);
 	bake_hbox->add_child(button_reset);
-	button_reset->set_text(TTR("Clear NavigationPolygon"));
-	button_reset->set_tooltip(TTR("Clears the internal NavigationPolygon outlines, vertices and polygons."));
+	//button_reset->set_text(TTR("Clear NavigationPolygon"));
+	button_reset->set_tooltip(TTR("Clear NavigationPolygon") + "\n" + TTR("Clears the internal NavigationPolygon outlines, vertices and polygons."));
 	button_reset->connect("pressed", this, "_clear_pressed");
 
-	bake_info = memnew(Label);
-	bake_hbox->add_child(bake_info);
+	//bake_info = memnew(Label);
+	//bake_hbox->add_child(bake_info);
 
 	err_dialog = memnew(AcceptDialog);
 	add_child(err_dialog);
@@ -205,7 +205,7 @@ void NavigationPolygonEditor::_clear_pressed() {
 	node->get_navigation_polygon()->clear();
 
 	button_bake->set_pressed(false);
-	bake_info->set_text("");
+	//bake_info->set_text("");
 
 	if (node) {
 		node->update();

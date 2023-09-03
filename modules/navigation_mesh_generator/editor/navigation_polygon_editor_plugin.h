@@ -54,7 +54,7 @@ class NavigationPolygonEditor : public AbstractPolygon2DEditor {
 	HBoxContainer *bake_hbox = nullptr;
 	Button *button_bake = nullptr;
 	Button *button_reset = nullptr;
-	Label *bake_info = nullptr;
+	//Label *bake_info = nullptr;
 
 	void _bake_pressed();
 	void _clear_pressed();

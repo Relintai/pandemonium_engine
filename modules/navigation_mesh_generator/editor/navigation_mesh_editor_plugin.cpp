@@ -113,7 +113,7 @@ void NavigationMeshEditor::_clear_pressed() {
 	}
 
 	button_bake->set_pressed(false);
-	bake_info->set_text("");
+	//bake_info->set_text("");
 
 	if (node) {
 		node->update_gizmos();
@@ -140,19 +140,19 @@ NavigationMeshEditor::NavigationMeshEditor() {
 	button_bake->set_flat(true);
 	bake_hbox->add_child(button_bake);
 	button_bake->set_toggle_mode(true);
-	button_bake->set_text(TTR("Bake NavigationMesh"));
-	button_bake->set_tooltip(TTR("Bakes the NavigationMesh by first parsing the scene for source geometry and then creating the navigation mesh vertices and indices."));
+	//button_bake->set_text(TTR("Bake NavigationMesh"));
+	button_bake->set_tooltip(TTR("Bake NavigationMesh") + "\n" + TTR("Bakes the NavigationMesh by first parsing the scene for source geometry and then creating the navigation mesh vertices and indices."));
 	button_bake->connect("pressed", this, "_bake_pressed");
 
 	button_reset = memnew(Button);
 	button_reset->set_flat(true);
 	bake_hbox->add_child(button_reset);
-	button_reset->set_text(TTR("Clear NavigationMesh"));
-	button_reset->set_tooltip(TTR("Clears the internal NavigationMesh vertices and indices."));
+	//button_reset->set_text(TTR("Clear NavigationMesh"));
+	button_reset->set_tooltip(TTR("Clear NavigationMesh") + "\n" + TTR("Clears the internal NavigationMesh vertices and indices."));
 	button_reset->connect("pressed", this, "_clear_pressed");
 
-	bake_info = memnew(Label);
-	bake_hbox->add_child(bake_info);
+	//bake_info = memnew(Label);
+	//bake_hbox->add_child(bake_info);
 
 	err_dialog = memnew(AcceptDialog);
 	add_child(err_dialog);

@@ -51,7 +51,7 @@ class NavigationMeshEditor : public Control {
 	HBoxContainer *bake_hbox = nullptr;
 	Button *button_bake = nullptr;
 	Button *button_reset = nullptr;
-	Label *bake_info = nullptr;
+	//Label *bake_info = nullptr;
 
 	NavigationMeshInstance *node = nullptr;
 
