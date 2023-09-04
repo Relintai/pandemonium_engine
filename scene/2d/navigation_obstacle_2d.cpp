@@ -209,9 +209,10 @@ Node *NavigationObstacle2D::get_navigation_node() const {
 void NavigationObstacle2D::set_vertices(const Vector<Vector2> &p_vertices) {
 	vertices = p_vertices;
 	Navigation2DServer::get_singleton()->obstacle_set_vertices(obstacle, vertices);
-	if (is_inside_tree() && (Engine::get_singleton()->is_editor_hint() || get_tree()->is_debugging_navigation_hint())) {
-		update();
-	}
+
+#ifdef DEBUG_ENABLED
+	update();
+#endif // DEBUG_ENABLED
 }
 
 void NavigationObstacle2D::set_navigation_map(RID p_navigation_map) {
@@ -245,9 +246,10 @@ void NavigationObstacle2D::set_radius(real_t p_radius) {
 	radius = p_radius;
 
 	Navigation2DServer::get_singleton()->obstacle_set_radius(obstacle, radius);
-	if (is_inside_tree() && (Engine::get_singleton()->is_editor_hint() || get_tree()->is_debugging_navigation_hint())) {
-		update();
-	}
+
+#ifdef DEBUG_ENABLED
+	update();
+#endif // DEBUG_ENABLED
 }
 
 void NavigationObstacle2D::set_avoidance_layers(uint32_t p_layers) {
@@ -288,6 +290,10 @@ void NavigationObstacle2D::set_avoidance_enabled(bool p_enabled) {
 
 	avoidance_enabled = p_enabled;
 	Navigation2DServer::get_singleton()->obstacle_set_avoidance_enabled(obstacle, avoidance_enabled);
+
+#ifdef DEBUG_ENABLED
+	update();
+#endif // DEBUG_ENABLED
 }
 
 bool NavigationObstacle2D::get_avoidance_enabled() const {
@@ -306,13 +312,18 @@ void NavigationObstacle2D::_update_map(RID p_map) {
 
 void NavigationObstacle2D::_update_position(const Vector2 p_position) {
 	Navigation2DServer::get_singleton()->obstacle_set_position(obstacle, p_position);
+
+#ifdef DEBUG_ENABLED
+	update();
+#endif // DEBUG_ENABLED
 }
 
 #ifdef DEBUG_ENABLED
 void NavigationObstacle2D::_update_fake_agent_radius_debug() {
 	if (radius > 0.0 && Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_enable_obstacles_radius()) {
 		Color debug_radius_color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_obstacles_radius_color();
-		draw_circle(get_global_transform().get_origin(), radius, debug_radius_color);
+
+		RS::get_singleton()->canvas_item_add_circle(get_canvas_item(), Vector2(), radius, debug_radius_color);
 	}
 }
 #endif // DEBUG_ENABLED
