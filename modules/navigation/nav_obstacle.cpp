@@ -38,6 +38,7 @@ NavObstacle::NavObstacle() {
 	avoidance_layers = 1;
 	obstacle_dirty = true;
 	map_update_id = 0;
+	paused = false;
 }
 
 NavObstacle::~NavObstacle() {}
@@ -87,4 +88,25 @@ bool NavObstacle::check_dirty() {
 	const bool was_dirty = obstacle_dirty;
 	obstacle_dirty = false;
 	return was_dirty;
+}
+
+void NavObstacle::set_paused(bool p_paused) {
+	if (paused == p_paused) {
+		return;
+	}
+
+	paused = p_paused;
+
+	if (map) {
+		if (paused) {
+			map->remove_obstacle(this);
+		} else {
+			map->add_obstacle(this);
+		}
+	}
+	//internal_update_agent();
+}
+
+bool NavObstacle::get_paused() const {
+	return paused;
 }

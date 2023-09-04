@@ -131,6 +131,8 @@ void NavigationServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("agent_set_map", "agent", "map"), &NavigationServer::agent_set_map);
 	ClassDB::bind_method(D_METHOD("agent_get_map", "agent"), &NavigationServer::agent_get_map);
+	ClassDB::bind_method(D_METHOD("agent_set_paused", "agent", "paused"), &NavigationServer::agent_set_paused);
+	ClassDB::bind_method(D_METHOD("agent_get_paused", "agent"), &NavigationServer::agent_get_paused);
 	ClassDB::bind_method(D_METHOD("agent_set_neighbor_distance", "agent", "dist"), &NavigationServer::agent_set_neighbor_distance);
 	ClassDB::bind_method(D_METHOD("agent_set_max_neighbors", "agent", "count"), &NavigationServer::agent_set_max_neighbors);
 	ClassDB::bind_method(D_METHOD("agent_set_time_horizon_agents", "agent", "time_horizon"), &NavigationServer::agent_set_time_horizon_agents);
@@ -151,6 +153,8 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("obstacle_create"), &NavigationServer::obstacle_create);
 	ClassDB::bind_method(D_METHOD("obstacle_set_map", "obstacle", "map"), &NavigationServer::obstacle_set_map);
 	ClassDB::bind_method(D_METHOD("obstacle_get_map", "obstacle"), &NavigationServer::obstacle_get_map);
+	ClassDB::bind_method(D_METHOD("obstacle_set_paused", "obstacle", "paused"), &NavigationServer::obstacle_set_paused);
+	ClassDB::bind_method(D_METHOD("obstacle_get_paused", "obstacle"), &NavigationServer::obstacle_get_paused);
 	ClassDB::bind_method(D_METHOD("obstacle_set_height", "obstacle", "height"), &NavigationServer::obstacle_set_height);
 	ClassDB::bind_method(D_METHOD("obstacle_set_position", "obstacle", "position"), &NavigationServer::obstacle_set_position);
 	ClassDB::bind_method(D_METHOD("obstacle_set_vertices", "obstacle", "vertices"), &NavigationServer::obstacle_set_vertices);
@@ -159,7 +163,7 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("free_rid", "rid"), &NavigationServer::free);
 
 	ClassDB::bind_method(D_METHOD("set_active", "active"), &NavigationServer::set_active);
-	
+
 	ClassDB::bind_method(D_METHOD("get_process_info", "process_info"), &NavigationServer::get_process_info);
 
 	ClassDB::bind_method(D_METHOD("set_debug_enabled", "enabled"), &NavigationServer::set_debug_enabled);

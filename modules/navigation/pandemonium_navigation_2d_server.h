@@ -176,6 +176,9 @@ public:
 	virtual void agent_set_map(RID p_agent, RID p_map);
 	virtual RID agent_get_map(RID p_agent) const;
 
+	virtual void agent_set_paused(RID p_agent, bool p_paused);
+	virtual bool agent_get_paused(RID p_agent) const;
+
 	virtual void agent_set_avoidance_enabled(RID p_agent, bool p_enabled);
 	virtual bool agent_get_avoidance_enabled(RID p_agent) const;
 
@@ -239,6 +242,10 @@ public:
 	virtual RID obstacle_create();
 	virtual void obstacle_set_map(RID p_obstacle, RID p_map);
 	virtual RID obstacle_get_map(RID p_obstacle) const;
+
+	virtual void obstacle_set_paused(RID p_obstacle, bool p_paused);
+	virtual bool obstacle_get_paused(RID p_obstacle) const;
+
 	virtual void obstacle_set_position(RID p_obstacle, Vector2 p_position);
 	virtual void obstacle_set_vertices(RID p_obstacle, const Vector<Vector2> &p_vertices);
 	virtual void obstacle_set_avoidance_layers(RID p_obstacle, uint32_t p_layers);

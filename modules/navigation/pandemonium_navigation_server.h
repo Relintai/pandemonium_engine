@@ -37,8 +37,8 @@
 #include "nav_agent.h"
 #include "nav_link.h"
 #include "nav_map.h"
-#include "nav_region.h"
 #include "nav_obstacle.h"
+#include "nav_region.h"
 
 /// The commands are functions executed during the `sync` phase.
 
@@ -185,6 +185,8 @@ public:
 	virtual bool agent_get_use_3d_avoidance(RID p_agent) const;
 	COMMAND_2(agent_set_map, RID, p_agent, RID, p_map);
 	virtual RID agent_get_map(RID p_agent) const;
+	COMMAND_2(agent_set_paused, RID, p_agent, bool, p_paused);
+	virtual bool agent_get_paused(RID p_agent) const;
 	COMMAND_2(agent_set_neighbor_distance, RID, p_agent, real_t, p_dist);
 	COMMAND_2(agent_set_max_neighbors, RID, p_agent, int, p_count);
 	COMMAND_2(agent_set_time_horizon_agents, RID, p_agent, real_t, p_time_horizon);
@@ -205,6 +207,8 @@ public:
 	virtual RID obstacle_create();
 	COMMAND_2(obstacle_set_map, RID, p_obstacle, RID, p_map);
 	virtual RID obstacle_get_map(RID p_obstacle) const;
+	COMMAND_2(obstacle_set_paused, RID, p_obstacle, bool, p_paused);
+	virtual bool obstacle_get_paused(RID p_obstacle) const;
 	COMMAND_2(obstacle_set_position, RID, p_obstacle, Vector3, p_position);
 	COMMAND_2(obstacle_set_height, RID, p_obstacle, real_t, p_height);
 	virtual void obstacle_set_vertices(RID p_obstacle, const Vector<Vector3> &p_vertices);

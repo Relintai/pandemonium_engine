@@ -131,6 +131,7 @@ void NavigationObstacle::_notification(int p_what) {
 				_update_map(map_before_pause);
 				map_before_pause = RID();
 			}
+			NavigationServer::get_singleton()->obstacle_set_paused(obstacle, !can_process());
 		} break;
 		case NOTIFICATION_UNPAUSED: {
 			if (!can_process()) {
@@ -140,6 +141,7 @@ void NavigationObstacle::_notification(int p_what) {
 				_update_map(map_before_pause);
 				map_before_pause = RID();
 			}
+			NavigationServer::get_singleton()->obstacle_set_paused(obstacle, !can_process());
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			set_navigation(nullptr);

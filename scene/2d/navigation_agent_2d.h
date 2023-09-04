@@ -46,7 +46,6 @@ class NavigationAgent2D : public Node {
 	Navigation2D *navigation;
 
 	RID agent;
-	RID map_before_pause;
 	RID map_override;
 
 	bool avoidance_enabled;

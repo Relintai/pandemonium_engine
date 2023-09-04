@@ -55,6 +55,7 @@ NavAgent::NavAgent() {
 	agent_dirty = true;
 
 	map_update_id = 0;
+	paused = false;
 }
 
 void NavAgent::set_avoidance_enabled(bool p_enabled) {
@@ -329,6 +330,26 @@ const Dictionary NavAgent::get_avoidance_data() const {
 		_avoidance_data["avoidance_priority"] = float(rvo_agent_2d.avoidance_priority_);
 	}
 	return _avoidance_data;
+}
+
+void NavAgent::set_paused(bool p_paused) {
+	if (paused == p_paused) {
+		return;
+	}
+
+	paused = p_paused;
+
+	if (map) {
+		if (paused) {
+			map->remove_agent_as_controlled(this);
+		} else {
+			map->set_agent_as_controlled(this);
+		}
+	}
+}
+
+bool NavAgent::get_paused() const {
+	return paused;
 }
 
 void NavAgent::set_avoidance_callback(ObjectID p_id, const StringName p_method, const Variant p_udata) {

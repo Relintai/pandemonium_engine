@@ -80,6 +80,7 @@ class NavAgent : public NavRid {
 	bool agent_dirty;
 
 	uint32_t map_update_id;
+	bool paused;
 
 public:
 	NavAgent();
@@ -139,6 +140,9 @@ public:
 
 	void set_avoidance_priority(real_t p_priority);
 	real_t get_avoidance_priority() const { return avoidance_priority; };
+
+	void set_paused(bool p_paused);
+	bool get_paused() const;
 
 	bool check_dirty();
 

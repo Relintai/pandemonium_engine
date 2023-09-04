@@ -32,8 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#include "core/object/class_db.h"
 #include "core/containers/local_vector.h"
+#include "core/object/class_db.h"
 #include "nav_agent.h"
 #include "nav_rid.h"
 
@@ -51,6 +51,7 @@ class NavObstacle : public NavRid {
 	bool obstacle_dirty;
 
 	uint32_t map_update_id;
+	bool paused;
 
 public:
 	NavObstacle();
@@ -72,6 +73,9 @@ public:
 
 	void set_avoidance_layers(uint32_t p_layers);
 	uint32_t get_avoidance_layers() const { return avoidance_layers; };
+
+	void set_paused(bool p_paused);
+	bool get_paused() const;
 
 	bool check_dirty();
 };

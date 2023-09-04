@@ -49,7 +49,6 @@ class NavigationAgent : public Node {
 	Navigation *navigation;
 
 	RID agent;
-	RID map_before_pause;
 	RID map_override;
 
 	bool avoidance_enabled;
