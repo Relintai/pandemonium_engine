@@ -150,7 +150,7 @@ public:
 	virtual void region_set_transform(RID p_region, Transform p_transform) = 0;
 
 	/// Set the navigation mesh of this region.
-	virtual void region_set_navmesh(RID p_region, Ref<NavigationMesh> p_nav_mesh) = 0;
+	virtual void region_set_navigation_mesh(RID p_region, Ref<NavigationMesh> p_navigation_mesh) = 0;
 
 	/// Get a list of a region's connection to other regions.
 	virtual int region_get_connections_count(RID p_region) const = 0;

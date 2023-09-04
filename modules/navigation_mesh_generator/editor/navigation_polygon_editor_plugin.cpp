@@ -45,13 +45,13 @@
 #include "servers/navigation/navigation_mesh_generator.h"
 #include "scene/gui/separator.h"
 
-Ref<NavigationPolygon> NavigationPolygonEditor::_ensure_navpoly() const {
-	Ref<NavigationPolygon> navpoly = node->get_navigation_polygon();
-	if (!navpoly.is_valid()) {
-		navpoly = Ref<NavigationPolygon>(memnew(NavigationPolygon));
-		node->set_navigation_polygon(navpoly);
+Ref<NavigationPolygon> NavigationPolygonEditor::_ensure_navigation_polygon() const {
+	Ref<NavigationPolygon> navigation_polygon = node->get_navigation_polygon();
+	if (!navigation_polygon.is_valid()) {
+		navigation_polygon = Ref<NavigationPolygon>(memnew(NavigationPolygon));
+		node->set_navigation_polygon(navigation_polygon);
 	}
-	return navpoly;
+	return navigation_polygon;
 }
 
 Node2D *NavigationPolygonEditor::_get_node() const {
@@ -63,52 +63,52 @@ void NavigationPolygonEditor::_set_node(Node *p_polygon) {
 }
 
 int NavigationPolygonEditor::_get_polygon_count() const {
-	Ref<NavigationPolygon> navpoly = node->get_navigation_polygon();
-	if (navpoly.is_valid()) {
-		return navpoly->get_outline_count();
+	Ref<NavigationPolygon> navigation_polygon = node->get_navigation_polygon();
+	if (navigation_polygon.is_valid()) {
+		return navigation_polygon->get_outline_count();
 	} else {
 		return 0;
 	}
 }
 
 Variant NavigationPolygonEditor::_get_polygon(int p_idx) const {
-	Ref<NavigationPolygon> navpoly = node->get_navigation_polygon();
-	if (navpoly.is_valid()) {
-		return navpoly->get_outline(p_idx);
+	Ref<NavigationPolygon> navigation_polygon = node->get_navigation_polygon();
+	if (navigation_polygon.is_valid()) {
+		return navigation_polygon->get_outline(p_idx);
 	} else {
 		return Variant(Vector<Vector2>());
 	}
 }
 
 void NavigationPolygonEditor::_set_polygon(int p_idx, const Variant &p_polygon) const {
-	Ref<NavigationPolygon> navpoly = _ensure_navpoly();
-	navpoly->set_outline(p_idx, p_polygon);
+	Ref<NavigationPolygon> navigation_polygon = _ensure_navigation_polygon();
+	navigation_polygon->set_outline(p_idx, p_polygon);
 }
 
 void NavigationPolygonEditor::_action_add_polygon(const Variant &p_polygon) {
-	Ref<NavigationPolygon> navpoly = _ensure_navpoly();
+	Ref<NavigationPolygon> navigation_polygon = _ensure_navigation_polygon();
 	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->create_action("Add Navigation Polygon");
-	undo_redo->add_do_method(navpoly.ptr(), "add_outline", p_polygon);
-	undo_redo->add_undo_method(navpoly.ptr(), "remove_outline", navpoly->get_outline_count());
+	undo_redo->add_do_method(navigation_polygon.ptr(), "add_outline", p_polygon);
+	undo_redo->add_undo_method(navigation_polygon.ptr(), "remove_outline", navigation_polygon->get_outline_count());
 	undo_redo->commit_action();
 }
 
 void NavigationPolygonEditor::_action_remove_polygon(int p_idx) {
-	Ref<NavigationPolygon> navpoly = _ensure_navpoly();
+	Ref<NavigationPolygon> navigation_polygon = _ensure_navigation_polygon();
 	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->create_action("Remove Navigation Polygon");
-	undo_redo->add_do_method(navpoly.ptr(), "remove_outline", p_idx);
-	undo_redo->add_undo_method(navpoly.ptr(), "add_outline_at_index", navpoly->get_outline(p_idx), p_idx);
+	undo_redo->add_do_method(navigation_polygon.ptr(), "remove_outline", p_idx);
+	undo_redo->add_undo_method(navigation_polygon.ptr(), "add_outline_at_index", navigation_polygon->get_outline(p_idx), p_idx);
 	undo_redo->commit_action();
 }
 
 void NavigationPolygonEditor::_action_set_polygon(int p_idx, const Variant &p_previous, const Variant &p_polygon) {
-	Ref<NavigationPolygon> navpoly = _ensure_navpoly();
+	Ref<NavigationPolygon> navigation_polygon = _ensure_navigation_polygon();
 	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->create_action("Set Navigation Polygon");
-	undo_redo->add_do_method(navpoly.ptr(), "set_outline", p_idx, p_polygon);
-	undo_redo->add_undo_method(navpoly.ptr(), "set_outline", p_idx, p_previous);
+	undo_redo->add_do_method(navigation_polygon.ptr(), "set_outline", p_idx, p_polygon);
+	undo_redo->add_undo_method(navigation_polygon.ptr(), "set_outline", p_idx, p_previous);
 	undo_redo->commit_action();
 }
 

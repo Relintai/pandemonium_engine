@@ -44,13 +44,13 @@
 #include "servers/navigation_server.h"
 #endif // DEBUG_ENABLED
 
-void TileMap::Quadrant::clear_navpoly() {
-	for (RBMap<PosKey, Quadrant::NavPoly>::Element *E = navpoly_ids.front(); E; E = E->next()) {
+void TileMap::Quadrant::clear_navigation_polygon() {
+	for (RBMap<PosKey, Quadrant::NavPoly>::Element *E = navigation_polygon_ids.front(); E; E = E->next()) {
 		RID region = E->get().region;
 		Navigation2DServer::get_singleton()->region_set_map(region, RID());
 		Navigation2DServer::get_singleton()->free(region);
 	}
-	navpoly_ids.clear();
+	navigation_polygon_ids.clear();
 }
 
 int TileMap::_get_quadrant_size() const {
@@ -96,7 +96,7 @@ void TileMap::_notification(int p_what) {
 			for (RBMap<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
 				Quadrant &q = E->get();
 				if (bake_navigation) {
-					q.clear_navpoly();
+					q.clear_navigation_polygon();
 				}
 
 				if (collision_parent) {
@@ -181,7 +181,7 @@ void TileMap::_update_quadrant_transform() {
 		}
 
 		if (bake_navigation) {
-			for (RBMap<PosKey, Quadrant::NavPoly>::Element *F = q.navpoly_ids.front(); F; F = F->next()) {
+			for (RBMap<PosKey, Quadrant::NavPoly>::Element *F = q.navigation_polygon_ids.front(); F; F = F->next()) {
 				Navigation2DServer::get_singleton()->region_set_transform(F->get().region, nav_rel * F->get().xform);
 			}
 		}
@@ -427,7 +427,7 @@ void TileMap::update_dirty_quadrants() {
 		int shape_idx = 0;
 
 		if (bake_navigation) {
-			q.clear_navpoly();
+			q.clear_navigation_polygon();
 		}
 
 		for (RBMap<PosKey, Quadrant::Occluder>::Element *E = q.occluder_instances.front(); E; E = E->next()) {
@@ -680,17 +680,17 @@ void TileMap::update_dirty_quadrants() {
 			}
 
 			if (bake_navigation) {
-				Ref<NavigationPolygon> navpoly;
+				Ref<NavigationPolygon> navigation_polygon;
 				Vector2 npoly_ofs;
 				if (tile_set->tile_get_tile_mode(c.id) == TileSet::AUTO_TILE || tile_set->tile_get_tile_mode(c.id) == TileSet::ATLAS_TILE) {
-					navpoly = tile_set->autotile_get_navigation_polygon(c.id, Vector2(c.autotile_coord_x, c.autotile_coord_y));
+					navigation_polygon = tile_set->autotile_get_navigation_polygon(c.id, Vector2(c.autotile_coord_x, c.autotile_coord_y));
 					npoly_ofs = Vector2();
 				} else {
-					navpoly = tile_set->tile_get_navigation_polygon(c.id);
+					navigation_polygon = tile_set->tile_get_navigation_polygon(c.id);
 					npoly_ofs = tile_set->tile_get_navigation_polygon_offset(c.id);
 				}
 
-				if (navpoly.is_valid()) {
+				if (navigation_polygon.is_valid()) {
 					Transform2D xform;
 					xform.set_origin(offset.floor() + q.pos + tile_ofs);
 					_fix_cell_transform(xform, c, npoly_ofs, s);
@@ -704,11 +704,11 @@ void TileMap::update_dirty_quadrants() {
 					}
 					Navigation2DServer::get_singleton()->region_set_navigation_layers(region, navigation_layers);
 					Navigation2DServer::get_singleton()->region_set_transform(region, nav_rel * xform);
-					Navigation2DServer::get_singleton()->region_set_navpoly(region, navpoly);
+					Navigation2DServer::get_singleton()->region_set_navigation_polygon(region, navigation_polygon);
 					Quadrant::NavPoly np;
 					np.region = region;
 					np.xform = xform;
-					q.navpoly_ids[E->key()] = np;
+					q.navigation_polygon_ids[E->key()] = np;
 
 					if (debug_navigation) {
 						RID debug_navigation_item = RID_PRIME(vs->canvas_item_create());
@@ -717,7 +717,7 @@ void TileMap::update_dirty_quadrants() {
 						vs->canvas_item_set_z_index(debug_navigation_item, RS::CANVAS_ITEM_Z_MAX - 2); // Display one below collision debug
 
 						if (debug_navigation_item.is_valid()) {
-							PoolVector<Vector2> navigation_polygon_vertices = navpoly->get_vertices();
+							PoolVector<Vector2> navigation_polygon_vertices = navigation_polygon->get_vertices();
 							int vsize = navigation_polygon_vertices.size();
 
 							if (vsize > 2) {
@@ -747,8 +747,8 @@ void TileMap::update_dirty_quadrants() {
 
 								Vector<int> indices;
 
-								for (int j = 0; j < navpoly->get_polygon_count(); j++) {
-									Vector<int> polygon = navpoly->get_polygon(j);
+								for (int j = 0; j < navigation_polygon->get_polygon_count(); j++) {
+									Vector<int> polygon = navigation_polygon->get_polygon(j);
 
 									for (int k = 2; k < polygon.size(); k++) {
 										int kofs[3] = { 0, k - 1, k };
@@ -922,7 +922,7 @@ void TileMap::_erase_quadrant(RBMap<PosKey, Quadrant>::Element *Q) {
 	}
 
 	if (bake_navigation) {
-		q.clear_navpoly();
+		q.clear_navigation_polygon();
 	}
 
 	for (RBMap<PosKey, Quadrant::Occluder>::Element *E = q.occluder_instances.front(); E; E = E->next()) {

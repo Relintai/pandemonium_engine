@@ -245,21 +245,21 @@ void NavigationMeshInstance::_notification(int p_what) {
 }
 
 void NavigationMeshInstance::set_navigation_mesh(const Ref<NavigationMesh> &p_navigation_mesh) {
-	if (navmesh.is_valid()) {
-		navmesh->disconnect(CoreStringNames::get_singleton()->changed, this, "_navigation_mesh_changed");
+	if (navigation_mesh.is_valid()) {
+		navigation_mesh->disconnect(CoreStringNames::get_singleton()->changed, this, "_navigation_mesh_changed");
 	}
 
-	navmesh = p_navigation_mesh;
+	navigation_mesh = p_navigation_mesh;
 
-	if (navmesh.is_valid()) {
-		navmesh->connect(CoreStringNames::get_singleton()->changed, this, "_navigation_mesh_changed");
+	if (navigation_mesh.is_valid()) {
+		navigation_mesh->connect(CoreStringNames::get_singleton()->changed, this, "_navigation_mesh_changed");
 	}
 
 	_navigation_mesh_changed();
 }
 
 Ref<NavigationMesh> NavigationMeshInstance::get_navigation_mesh() const {
-	return navmesh;
+	return navigation_mesh;
 }
 
 void NavigationMeshInstance::set_navigation_map(RID p_navigation_map) {
@@ -289,7 +289,7 @@ void NavigationMeshInstance::bake_navigation_mesh(bool p_on_thread) {
 	}
 	baking_started = true;
 
-	navmesh->clear();
+	navigation_mesh->clear();
 
 	if (p_on_thread && OS::get_singleton()->can_use_threads()) {
 		Ref<FuncRef> f;
@@ -297,22 +297,22 @@ void NavigationMeshInstance::bake_navigation_mesh(bool p_on_thread) {
 		f->set_instance(this);
 		f->set_function("_bake_finished");
 
-		NavigationMeshGenerator::get_singleton()->parse_and_bake_3d(navmesh, this, f);
+		NavigationMeshGenerator::get_singleton()->parse_and_bake_3d(navigation_mesh, this, f);
 	} else {
-		Ref<NavigationMeshSourceGeometryData3D> source_geometry_data = NavigationMeshGenerator::get_singleton()->parse_3d_source_geometry_data(navmesh, this);
-		NavigationMeshGenerator::get_singleton()->bake_3d_from_source_geometry_data(navmesh, source_geometry_data);
-		_bake_finished(navmesh);
+		Ref<NavigationMeshSourceGeometryData3D> source_geometry_data = NavigationMeshGenerator::get_singleton()->parse_3d_source_geometry_data(navigation_mesh, this);
+		NavigationMeshGenerator::get_singleton()->bake_3d_from_source_geometry_data(navigation_mesh, source_geometry_data);
+		_bake_finished(navigation_mesh);
 	}
 }
 
-void NavigationMeshInstance::_bake_finished(Ref<NavigationMesh> p_nav_mesh) {
+void NavigationMeshInstance::_bake_finished(Ref<NavigationMesh> p_navigation_mesh) {
 	baking_started = false;
-	set_navigation_mesh(p_nav_mesh);
+	set_navigation_mesh(p_navigation_mesh);
 	emit_signal("bake_finished");
 }
 
 void NavigationMeshInstance::_navigation_mesh_changed() {
-	NavigationServer::get_singleton()->region_set_navmesh(region, navmesh);
+	NavigationServer::get_singleton()->region_set_navigation_mesh(region, navigation_mesh);
 
 	update_gizmos();
 	update_configuration_warning();
@@ -321,7 +321,7 @@ void NavigationMeshInstance::_navigation_mesh_changed() {
 
 #ifdef DEBUG_ENABLED
 	if (is_inside_tree() && NavigationServer::get_singleton()->get_debug_navigation_enabled()) {
-		if (navmesh.is_valid()) {
+		if (navigation_mesh.is_valid()) {
 			_update_debug_mesh();
 			_update_debug_edge_connections_mesh();
 		} else {
@@ -349,7 +349,7 @@ String NavigationMeshInstance::get_configuration_warning() const {
 		return String();
 	}
 
-	if (!navmesh.is_valid()) {
+	if (!navigation_mesh.is_valid()) {
 		return TTR("A NavigationMesh resource must be set or created for this node to work.");
 	}
 
@@ -363,7 +363,7 @@ void NavigationMeshInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_use_edge_connections", "enabled"), &NavigationMeshInstance::set_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("get_use_edge_connections"), &NavigationMeshInstance::get_use_edge_connections);
 
-	ClassDB::bind_method(D_METHOD("set_navigation_mesh", "navmesh"), &NavigationMeshInstance::set_navigation_mesh);
+	ClassDB::bind_method(D_METHOD("set_navigation_mesh", "navigation_mesh"), &NavigationMeshInstance::set_navigation_mesh);
 	ClassDB::bind_method(D_METHOD("get_navigation_mesh"), &NavigationMeshInstance::get_navigation_mesh);
 
 	ClassDB::bind_method(D_METHOD("set_navigation_map", "navigation_map"), &NavigationMeshInstance::set_navigation_map);
@@ -393,7 +393,7 @@ void NavigationMeshInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_navigation_map_changed"), &NavigationMeshInstance::_navigation_map_changed);
 #endif
 
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "navmesh", PROPERTY_HINT_RESOURCE_TYPE, "NavigationMesh"), "set_navigation_mesh", "get_navigation_mesh");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "navigation_mesh", PROPERTY_HINT_RESOURCE_TYPE, "NavigationMesh"), "set_navigation_mesh", "get_navigation_mesh");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "is_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_edge_connections"), "set_use_edge_connections", "get_use_edge_connections");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_layers", PROPERTY_HINT_LAYERS_3D_NAVIGATION), "set_navigation_layers", "get_navigation_layers");
@@ -436,8 +436,8 @@ NavigationMeshInstance::NavigationMeshInstance() {
 }
 
 NavigationMeshInstance::~NavigationMeshInstance() {
-	if (navmesh.is_valid()) {
-		navmesh->disconnect(CoreStringNames::get_singleton()->changed, this, "_navigation_mesh_changed");
+	if (navigation_mesh.is_valid()) {
+		navigation_mesh->disconnect(CoreStringNames::get_singleton()->changed, this, "_navigation_mesh_changed");
 	}
 
 	ERR_FAIL_NULL(NavigationServer::get_singleton());
@@ -480,7 +480,7 @@ void NavigationMeshInstance::_update_debug_mesh() {
 		return;
 	}
 
-	if (!navmesh.is_valid()) {
+	if (!navigation_mesh.is_valid()) {
 		if (debug_instance.is_valid()) {
 			RS::get_singleton()->instance_set_visible(debug_instance, false);
 		}
@@ -497,12 +497,12 @@ void NavigationMeshInstance::_update_debug_mesh() {
 
 	debug_mesh->clear_surfaces();
 
-	PoolVector<Vector3> vertices = navmesh->get_vertices();
+	PoolVector<Vector3> vertices = navigation_mesh->get_vertices();
 	if (vertices.size() == 0) {
 		return;
 	}
 
-	int polygon_count = navmesh->get_polygon_count();
+	int polygon_count = navigation_mesh->get_polygon_count();
 	if (polygon_count == 0) {
 		return;
 	}
@@ -514,7 +514,7 @@ void NavigationMeshInstance::_update_debug_mesh() {
 	int line_count = 0;
 
 	for (int i = 0; i < polygon_count; i++) {
-		const Vector<int> &polygon = navmesh->get_polygon(i);
+		const Vector<int> &polygon = navigation_mesh->get_polygon(i);
 		int polygon_size = polygon.size();
 		if (polygon_size < 3) {
 			continue;
@@ -549,7 +549,7 @@ void NavigationMeshInstance::_update_debug_mesh() {
 	Vector3 *line_vertex_array_ptrw = line_vertex_array.ptrw();
 
 	for (int polygon_index = 0; polygon_index < polygon_count; polygon_index++) {
-		const Vector<int> &polygon_indices = navmesh->get_polygon(polygon_index);
+		const Vector<int> &polygon_indices = navigation_mesh->get_polygon(polygon_index);
 		int polygon_indices_size = polygon_indices.size();
 		if (polygon_indices_size < 3) {
 			continue;
@@ -657,7 +657,7 @@ void NavigationMeshInstance::_update_debug_edge_connections_mesh() {
 		return;
 	}
 
-	if (!navmesh.is_valid()) {
+	if (!navigation_mesh.is_valid()) {
 		if (debug_edge_connections_instance.is_valid()) {
 			RS::get_singleton()->instance_set_visible(debug_edge_connections_instance, false);
 		}

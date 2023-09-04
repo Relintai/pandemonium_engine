@@ -225,13 +225,13 @@ float NavigationMesh::get_edge_max_error() const {
 	return edge_max_error;
 }
 
-void NavigationMesh::set_verts_per_poly(float p_value) {
+void NavigationMesh::set_vertices_per_polyon(float p_value) {
 	ERR_FAIL_COND(p_value < 3);
-	verts_per_poly = p_value;
+	vertices_per_polyon = p_value;
 }
 
-float NavigationMesh::get_verts_per_poly() const {
-	return verts_per_poly;
+float NavigationMesh::get_vertices_per_polyon() const {
+	return vertices_per_polyon;
 }
 
 void NavigationMesh::set_detail_sample_distance(float p_value) {
@@ -331,19 +331,19 @@ void NavigationMesh::commit_changes() {
 	if (navigation_mesh_dirty) {
 		navigation_mesh_dirty = false;
 		/*
-		Vector<Vector3> new_navmesh_vertices;
-		Vector<Vector<int32_t>> new_navmesh_polygons;
-		new_navmesh_vertices.resize(vertices.size());
-		new_navmesh_polygons.resize(polygons.size());
-		Vector3 *new_navmesh_vertices_ptrw = new_navmesh_vertices.ptrw();
-		Vector<int32_t> *new_navmesh_polygons_ptrw = new_navmesh_polygons.ptrw();
+		Vector<Vector3> new_navigation_mesh_vertices;
+		Vector<Vector<int32_t>> new_navigation_mesh_polygons;
+		new_navigation_mesh_vertices.resize(vertices.size());
+		new_navigation_mesh_polygons.resize(polygons.size());
+		Vector3 *new_navigation_mesh_vertices_ptrw = new_navigation_mesh_vertices.ptrw();
+		Vector<int32_t> *new_navigation_mesh_polygons_ptrw = new_navigation_mesh_polygons.ptrw();
 		for (int i = 0; i < vertices.size(); i++) {
-			new_navmesh_vertices_ptrw[i] = vertices[i];
+			new_navigation_mesh_vertices_ptrw[i] = vertices[i];
 		}
 		for (int i = 0; i < polygons.size(); i++) {
-			new_navmesh_polygons_ptrw[i] = polygons[i];
+			new_navigation_mesh_polygons_ptrw[i] = polygons[i];
 		}
-		NavigationServer3D::get_singleton()->navmesh_set_data(navmesh_rid, new_navmesh_vertices, new_navmesh_polygons);
+		NavigationServer3D::get_singleton()->navigation_mesh_set_data(navigation_mesh_rid, new_navigation_mesh_vertices, new_navigation_mesh_polygons);
 		*/
 		emit_changed();
 	}
@@ -376,8 +376,8 @@ Array NavigationMesh::_get_polygons() const {
 }
 
 RID NavigationMesh::get_rid() const {
-	if (navmesh_rid.is_valid()) {
-		return navmesh_rid;
+	if (navigation_mesh_rid.is_valid()) {
+		return navigation_mesh_rid;
 	}
 	return RID();
 }
@@ -526,8 +526,8 @@ void NavigationMesh::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_edge_max_error", "edge_max_error"), &NavigationMesh::set_edge_max_error);
 	ClassDB::bind_method(D_METHOD("get_edge_max_error"), &NavigationMesh::get_edge_max_error);
 
-	ClassDB::bind_method(D_METHOD("set_verts_per_poly", "verts_per_poly"), &NavigationMesh::set_verts_per_poly);
-	ClassDB::bind_method(D_METHOD("get_verts_per_poly"), &NavigationMesh::get_verts_per_poly);
+	ClassDB::bind_method(D_METHOD("set_vertices_per_polyon", "vertices_per_polyon"), &NavigationMesh::set_vertices_per_polyon);
+	ClassDB::bind_method(D_METHOD("get_vertices_per_polyon"), &NavigationMesh::get_vertices_per_polyon);
 
 	ClassDB::bind_method(D_METHOD("set_detail_sample_distance", "detail_sample_dist"), &NavigationMesh::set_detail_sample_distance);
 	ClassDB::bind_method(D_METHOD("get_detail_sample_distance"), &NavigationMesh::get_detail_sample_distance);
@@ -595,7 +595,7 @@ void NavigationMesh::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "edge_max_error", PROPERTY_HINT_RANGE, "0.1,3.0,0.01,or_greater"), "set_edge_max_error", "get_edge_max_error");
 
 	ADD_GROUP("Polygons", "polygon_");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "polygon_verts_per_poly", PROPERTY_HINT_RANGE, "3.0,12.0,1.0,or_greater"), "set_verts_per_poly", "get_verts_per_poly");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "polygon_vertices_per_polyon", PROPERTY_HINT_RANGE, "3.0,12.0,1.0,or_greater"), "set_vertices_per_polyon", "get_vertices_per_polyon");
 
 	ADD_GROUP("Details", "detail_");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "detail_sample_distance", PROPERTY_HINT_RANGE, "0.1,16.0,0.01,or_greater"), "set_detail_sample_distance", "get_detail_sample_distance");
@@ -651,7 +651,7 @@ NavigationMesh::NavigationMesh() {
 	region_merge_size = 20.0f;
 	edge_max_length = 0.0f;
 	edge_max_error = 1.3f;
-	verts_per_poly = 6.0f;
+	vertices_per_polyon = 6.0f;
 	detail_sample_distance = 6.0f;
 	detail_sample_max_error = 5.0f;
 
@@ -659,18 +659,18 @@ NavigationMesh::NavigationMesh() {
 	parsed_geometry_type = PARSED_GEOMETRY_MESH_INSTANCES;
 	collision_mask = 0xFFFFFFFF;
 	source_geometry_mode = SOURCE_GEOMETRY_ROOT_NODE_CHILDREN;
-	source_group_name = "navmesh";
+	source_group_name = "navigation_mesh";
 	filter_low_hanging_obstacles = false;
 	filter_ledge_spans = false;
 	filter_walkable_low_height_spans = false;
 
 	navigation_mesh_dirty = true;
 
-	//navmesh_rid = NavigationServer3D::get_singleton()->navmesh_create();
+	//navigation_mesh_rid = NavigationServer3D::get_singleton()->navigation_mesh_create();
 	call_deferred("commit_changes");
 }
 
 NavigationMesh::~NavigationMesh() {
 	//ERR_FAIL_NULL(NavigationServer::get_singleton());
-	//NavigationServer::get_singleton()->free(navmesh_rid);
+	//NavigationServer::get_singleton()->free(navigation_mesh_rid);
 }

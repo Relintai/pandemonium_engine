@@ -32,7 +32,7 @@
 
 #include "scene/resources/navigation_polygon.h"
 
-void DummyNavigation2DServer::region_set_navpoly(RID p_region, Ref<NavigationPolygon> p_nav_mesh) {
+void DummyNavigation2DServer::region_set_navigation_polygon(RID p_region, Ref<NavigationPolygon> p_navigation_mesh) {
 }
 
 NavigationUtilities::PathQueryResult2D DummyNavigation2DServer::_query_path(const NavigationUtilities::PathQueryParameters2D &p_parameters) const {

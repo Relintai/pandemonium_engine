@@ -99,7 +99,7 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("region_get_navigation_layers", "region"), &NavigationServer::region_get_navigation_layers);
 
 	ClassDB::bind_method(D_METHOD("region_set_transform", "region", "transform"), &NavigationServer::region_set_transform);
-	ClassDB::bind_method(D_METHOD("region_set_navmesh", "region", "nav_mesh"), &NavigationServer::region_set_navmesh);
+	ClassDB::bind_method(D_METHOD("region_set_navigation_mesh", "region", "navigation_mesh"), &NavigationServer::region_set_navigation_mesh);
 
 	ClassDB::bind_method(D_METHOD("region_get_connections_count", "region"), &NavigationServer::region_get_connections_count);
 	ClassDB::bind_method(D_METHOD("region_get_connection_pathway_start", "region", "connection"), &NavigationServer::region_get_connection_pathway_start);
@@ -241,7 +241,7 @@ NavigationServer::NavigationServer() {
 	_debug_navigation_avoidance_enable_obstacles_static = GLOBAL_DEF("debug/shapes/avoidance/enable_obstacles_static", true);
 
 	if (Engine::get_singleton()->is_editor_hint()) {
-		// enable NavigationServer when in Editor or else navmesh edge connections are invisible
+		// enable NavigationServer when in Editor or else navigation_mesh edge connections are invisible
 		// on runtime tests SceneTree has "Visible Navigation" set and main iteration takes care of this
 		set_debug_enabled(true);
 		set_debug_navigation_enabled(true);

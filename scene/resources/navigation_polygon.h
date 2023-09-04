@@ -153,7 +153,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	RID navmesh_rid;
+	RID navigation_mesh_rid;
 
 	real_t agent_radius;
 

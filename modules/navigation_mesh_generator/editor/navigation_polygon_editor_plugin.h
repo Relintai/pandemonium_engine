@@ -47,7 +47,7 @@ class NavigationPolygonEditor : public AbstractPolygon2DEditor {
 
 	NavigationPolygonInstance *node = nullptr;
 
-	Ref<NavigationPolygon> _ensure_navpoly() const;
+	Ref<NavigationPolygon> _ensure_navigation_polygon() const;
 
 	AcceptDialog *err_dialog = nullptr;
 

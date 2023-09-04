@@ -127,7 +127,7 @@ public:
 	virtual void region_set_transform(RID p_region, Transform2D p_transform);
 
 	/// Set the navigation poly of this region.
-	virtual void region_set_navpoly(RID p_region, Ref<NavigationPolygon> p_nav_mesh);
+	virtual void region_set_navigation_polygon(RID p_region, Ref<NavigationPolygon> p_navigation_mesh);
 
 	/// Get a list of a region's connection to other regions.
 	virtual int region_get_connections_count(RID p_region) const;

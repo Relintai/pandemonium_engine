@@ -184,7 +184,7 @@
 			The maximum speed that an agent can move.
 		</member>
 		<member name="navigation_layers" type="int" setter="set_navigation_layers" getter="get_navigation_layers" default="1">
-			A bitfield determining all navigation map layers the [NavigationAgent2D] belongs to. On path requests the agent will ignore navmeshes without at least one matching layer.
+			A bitfield determining all navigation map layers the [NavigationAgent2D] belongs to. On path requests the agent will ignore navigation meshes without at least one matching layer.
 		</member>
 		<member name="neighbor_distance" type="float" setter="set_neighbor_distance" getter="get_neighbor_distance" default="500.0">
 			The distance to search for other agents.

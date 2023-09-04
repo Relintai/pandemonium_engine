@@ -531,7 +531,7 @@ Node *ResourceImporterScene::_fix_node(Node *p_node, Node *p_root, RBMap<Ref<Mes
 			}
 		}
 
-	} else if (_teststr(name, "navmesh") && Object::cast_to<MeshInstance>(p_node)) {
+	} else if (_teststr(name, "navigation_mesh") && Object::cast_to<MeshInstance>(p_node)) {
 		if (isroot) {
 			return p_node;
 		}
@@ -542,7 +542,7 @@ Node *ResourceImporterScene::_fix_node(Node *p_node, Node *p_root, RBMap<Ref<Mes
 		ERR_FAIL_COND_V(mesh.is_null(), nullptr);
 		NavigationMeshInstance *nmi = memnew(NavigationMeshInstance);
 
-		nmi->set_name(_fixstr(name, "navmesh"));
+		nmi->set_name(_fixstr(name, "navigation_mesh"));
 		Ref<NavigationMesh> nmesh = memnew(NavigationMesh);
 		nmesh->create_from_mesh(mesh);
 		nmi->set_navigation_mesh(nmesh);

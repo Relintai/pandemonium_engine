@@ -156,12 +156,12 @@ private:
 			Transform2D xform;
 		};
 
-		RBMap<PosKey, NavPoly> navpoly_ids;
+		RBMap<PosKey, NavPoly> navigation_polygon_ids;
 		RBMap<PosKey, Occluder> occluder_instances;
 
 		VSet<PosKey> cells;
 
-		void clear_navpoly();
+		void clear_navigation_polygon();
 
 		void operator=(const Quadrant &q) {
 			pos = q.pos;
@@ -169,7 +169,7 @@ private:
 			body = q.body;
 			shape_owner_id = q.shape_owner_id;
 			cells = q.cells;
-			navpoly_ids = q.navpoly_ids;
+			navigation_polygon_ids = q.navigation_polygon_ids;
 			occluder_instances = q.occluder_instances;
 		}
 		Quadrant(const Quadrant &q) :
@@ -180,7 +180,7 @@ private:
 			shape_owner_id = q.shape_owner_id;
 			cells = q.cells;
 			occluder_instances = q.occluder_instances;
-			navpoly_ids = q.navpoly_ids;
+			navigation_polygon_ids = q.navigation_polygon_ids;
 		}
 		Quadrant() :
 				dirty_list(this) {}

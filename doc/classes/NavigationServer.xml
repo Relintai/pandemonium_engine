@@ -704,10 +704,10 @@
 				Set the region's navigation layers. This allows selecting regions from a path request (when using [method NavigationServer.map_get_path]).
 			</description>
 		</method>
-		<method name="region_set_navmesh">
+		<method name="region_set_navigation_mesh">
 			<return type="void" />
 			<argument index="0" name="region" type="RID" />
-			<argument index="1" name="nav_mesh" type="NavigationMesh" />
+			<argument index="1" name="navigation_mesh" type="NavigationMesh" />
 			<description>
 				Sets the navigation mesh for the region.
 			</description>

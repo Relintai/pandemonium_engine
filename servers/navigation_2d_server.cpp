@@ -78,7 +78,7 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("region_set_navigation_layers", "region", "navigation_layers"), &Navigation2DServer::region_set_navigation_layers);
 	ClassDB::bind_method(D_METHOD("region_get_navigation_layers", "region"), &Navigation2DServer::region_get_navigation_layers);
 	ClassDB::bind_method(D_METHOD("region_set_transform", "region", "transform"), &Navigation2DServer::region_set_transform);
-	ClassDB::bind_method(D_METHOD("region_set_navpoly", "region", "nav_poly"), &Navigation2DServer::region_set_navpoly);
+	ClassDB::bind_method(D_METHOD("region_set_navigation_polygon", "region", "nav_poly"), &Navigation2DServer::region_set_navigation_polygon);
 	ClassDB::bind_method(D_METHOD("region_get_connections_count", "region"), &Navigation2DServer::region_get_connections_count);
 	ClassDB::bind_method(D_METHOD("region_get_connection_pathway_start", "region", "connection"), &Navigation2DServer::region_get_connection_pathway_start);
 	ClassDB::bind_method(D_METHOD("region_get_connection_pathway_end", "region", "connection"), &Navigation2DServer::region_get_connection_pathway_end);

@@ -170,14 +170,14 @@ private:
 
 	LocalVector<Ref<NavigationGeometryParser2D>> _geometry_2d_parsers;
 
-	LocalVector<Ref<NavigationPolygon>> _baking_navpolys;
+	LocalVector<Ref<NavigationPolygon>> _baking_navigation_polygons;
 	LocalVector<Ref<NavigationGeneratorTask2D>> _2d_parse_jobs;
 	LocalVector<Ref<NavigationGeneratorTask2D>> _2d_running_jobs;
 
 #ifndef _3D_DISABLED
 	LocalVector<Ref<NavigationGeometryParser3D>> _geometry_3d_parsers;
 
-	LocalVector<Ref<NavigationMesh>> _baking_navmeshes;
+	LocalVector<Ref<NavigationMesh>> _baking_navigation_meshes;
 	LocalVector<Ref<NavigationGeneratorTask3D>> _3d_parse_jobs;
 	LocalVector<Ref<NavigationGeneratorTask3D>> _3d_running_jobs;
 #endif // _3D_DISABLED

@@ -284,8 +284,8 @@ void FORWARD_2(region_set_navigation_layers, RID, p_region, uint32_t, p_navigati
 uint32_t FORWARD_1_C(region_get_navigation_layers, RID, p_region, rid_to_rid);
 void FORWARD_2(region_set_transform, RID, p_region, Transform2D, p_transform, rid_to_rid, trf2_to_trf3);
 
-void PandemoniumNavigation2DServer::region_set_navpoly(RID p_region, Ref<NavigationPolygon> p_nav_mesh) {
-	NavigationServer::get_singleton()->region_set_navmesh(p_region, poly_to_mesh(p_nav_mesh));
+void PandemoniumNavigation2DServer::region_set_navigation_polygon(RID p_region, Ref<NavigationPolygon> p_navigation_mesh) {
+	NavigationServer::get_singleton()->region_set_navigation_mesh(p_region, poly_to_mesh(p_navigation_mesh));
 }
 
 int FORWARD_1_C(region_get_connections_count, RID, p_region, rid_to_rid);

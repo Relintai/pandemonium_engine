@@ -45,7 +45,7 @@ class NavigationMeshInstance : public Spatial {
 
 	RID region;
 	RID map_override;
-	Ref<NavigationMesh> navmesh;
+	Ref<NavigationMesh> navigation_mesh;
 
 	Transform current_global_transform;
 
@@ -94,7 +94,7 @@ public:
 	void set_travel_cost(real_t p_travel_cost);
 	real_t get_travel_cost() const;
 
-	void set_navigation_mesh(const Ref<NavigationMesh> &p_navmesh);
+	void set_navigation_mesh(const Ref<NavigationMesh> &p_navigation_mesh);
 	Ref<NavigationMesh> get_navigation_mesh() const;
 
 	void set_navigation_map(RID p_navigation_map);
@@ -105,7 +105,7 @@ public:
 	/// Bakes the navigation mesh; once done, automatically
 	/// sets the new navigation mesh and emits a signal
 	void bake_navigation_mesh(bool p_on_thread = true);
-	void _bake_finished(Ref<NavigationMesh> p_nav_mesh);
+	void _bake_finished(Ref<NavigationMesh> p_navigation_mesh);
 	void _navigation_mesh_changed();
 
 	String get_configuration_warning() const;

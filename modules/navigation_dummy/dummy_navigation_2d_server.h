@@ -51,7 +51,7 @@ public:
 	virtual void region_set_navigation_layers(RID p_region, uint32_t p_navigation_layers) {}
 	virtual uint32_t region_get_navigation_layers(RID p_region) const { return 0; }
 	virtual void region_set_transform(RID p_region, Transform2D p_transform) {}
-	virtual void region_set_navpoly(RID p_region, Ref<NavigationPolygon> p_nav_mesh);
+	virtual void region_set_navigation_polygon(RID p_region, Ref<NavigationPolygon> p_navigation_mesh);
 	virtual int region_get_connections_count(RID p_region) const { return 0; }
 	virtual Vector2 region_get_connection_pathway_start(RID p_region, int p_connection_id) const { return Vector2(); }
 	virtual Vector2 region_get_connection_pathway_end(RID p_region, int p_connection_id) const { return Vector2(); }

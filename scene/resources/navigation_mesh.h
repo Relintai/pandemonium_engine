@@ -112,8 +112,8 @@ public:
 	void set_edge_max_error(float p_value);
 	float get_edge_max_error() const;
 
-	void set_verts_per_poly(float p_value);
-	float get_verts_per_poly() const;
+	void set_vertices_per_polyon(float p_value);
+	float get_vertices_per_polyon() const;
 
 	void set_detail_sample_distance(float p_value);
 	float get_detail_sample_distance() const;
@@ -178,7 +178,7 @@ protected:
 	float region_merge_size;
 	float edge_max_length;
 	float edge_max_error;
-	float verts_per_poly;
+	float vertices_per_polyon;
 	float detail_sample_distance;
 	float detail_sample_max_error;
 
@@ -196,7 +196,7 @@ protected:
 	Vector3 filter_baking_aabb_offset;
 
 private:
-	RID navmesh_rid;
+	RID navigation_mesh_rid;
 
 	PoolVector<Vector3> vertices;
 

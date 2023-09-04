@@ -47,7 +47,7 @@ class NavigationPolygonInstance : public Node2D {
 	RID region;
 	RID map_override;
 	Navigation2D *navigation;
-	Ref<NavigationPolygon> navpoly;
+	Ref<NavigationPolygon> navigation_polygon;
 	bool baking_started;
 
 	real_t enter_cost;
@@ -101,7 +101,7 @@ public:
 	void set_travel_cost(real_t p_travel_cost);
 	real_t get_travel_cost() const;
 
-	void set_navigation_polygon(const Ref<NavigationPolygon> &p_navpoly);
+	void set_navigation_polygon(const Ref<NavigationPolygon> &p_navigation_polygon);
 	Ref<NavigationPolygon> get_navigation_polygon() const;
 
 	void set_constrain_avoidance(bool p_enabled);

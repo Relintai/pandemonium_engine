@@ -87,10 +87,10 @@ class GridMap : public Spatial {
 	 * A GridMap can have multiple Octants.
 	 */
 	struct Octant {
-		struct NavMesh {
+		struct NavigationCell {
 			RID region;
 			Transform xform;
-			RID navmesh_debug_instance;
+			RID navigation_mesh_debug_instance;
 		};
 
 		struct MultimeshInstance {
@@ -116,7 +116,7 @@ class GridMap : public Spatial {
 
 		bool dirty;
 		RID static_body;
-		RBMap<IndexKey, NavMesh> navmesh_ids;
+		RBMap<IndexKey, NavigationCell> navigation_cell_ids;
 	};
 
 	union OctantKey {

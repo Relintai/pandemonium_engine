@@ -233,7 +233,7 @@ void GridMap::set_navigation_map(RID p_navigation_map) {
 	for (RBMap<OctantKey, Octant *>::Element *E = octant_map.front(); E; E = E->next()) {
 		Octant &g = *(E->get());
 
-		for (RBMap<IndexKey, Octant::NavMesh>::Element *F = g.navmesh_ids.front(); F; F = F->next()) {
+		for (RBMap<IndexKey, Octant::NavigationCell>::Element *F = g.navigation_cell_ids.front(); F; F = F->next()) {
 			if (F->get().region.is_valid()) {
 				NavigationServer::get_singleton()->region_set_map(F->get().region, nav_map);
 			}
@@ -489,12 +489,12 @@ void GridMap::_octant_transform(const OctantKey &p_key) {
 
 	// update transform for NavigationServer regions and navigation debugmesh instances
 	if (bake_navigation) {
-		for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+		for (RBMap<IndexKey, Octant::NavigationCell>::Element *E = g.navigation_cell_ids.front(); E; E = E->next()) {
 			if (E->get().region.is_valid()) {
 				NavigationServer::get_singleton()->region_set_transform(E->get().region, get_global_transform() * E->get().xform);
 			}
-			if (E->get().navmesh_debug_instance.is_valid()) {
-				RS::get_singleton()->instance_set_transform(E->get().navmesh_debug_instance, get_global_transform() * E->get().xform);
+			if (E->get().navigation_mesh_debug_instance.is_valid()) {
+				RS::get_singleton()->instance_set_transform(E->get().navigation_mesh_debug_instance, get_global_transform() * E->get().xform);
 			}
 		}
 	}
@@ -520,16 +520,16 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 	}
 
 	//erase navigation
-	for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Octant::NavigationCell>::Element *E = g.navigation_cell_ids.front(); E; E = E->next()) {
 		if (E->get().region.is_valid()) {
 			NavigationServer::get_singleton()->free(E->get().region);
 			E->get().region = RID();
 		}
-		if (E->get().navmesh_debug_instance.is_valid()) {
-			RS::get_singleton()->free(E->get().navmesh_debug_instance);
+		if (E->get().navigation_mesh_debug_instance.is_valid()) {
+			RS::get_singleton()->free(E->get().navigation_mesh_debug_instance);
 		}
 	}
-	g.navmesh_ids.clear();
+	g.navigation_cell_ids.clear();
 
 	//erase multimeshes
 
@@ -601,17 +601,17 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 			}
 		}
 
-		// add the item's navmesh at given xform to GridMap's Navigation ancestor
-		Ref<NavigationMesh> navmesh = mesh_library->get_item_navmesh(c.item);
-		if (navmesh.is_valid()) {
-			Octant::NavMesh nm;
-			nm.xform = xform * mesh_library->get_item_navmesh_transform(c.item);
+		// add the item's navigation_mesh at given xform to GridMap's Navigation ancestor
+		Ref<NavigationMesh> navigation_mesh = mesh_library->get_item_navigation_mesh(c.item);
+		if (navigation_mesh.is_valid()) {
+			Octant::NavigationCell nm;
+			nm.xform = xform * mesh_library->get_item_navigation_mesh_transform(c.item);
 
 			if (bake_navigation) {
 				RID region = NavigationServer::get_singleton()->region_create();
 				NavigationServer::get_singleton()->region_set_owner_id(region, get_instance_id());
 				NavigationServer::get_singleton()->region_set_navigation_layers(region, navigation_layers);
-				NavigationServer::get_singleton()->region_set_navmesh(region, navmesh);
+				NavigationServer::get_singleton()->region_set_navigation_mesh(region, navigation_mesh);
 				NavigationServer::get_singleton()->region_set_transform(region, get_global_transform() * nm.xform);
 				if (is_inside_tree()) {
 					NavigationServer::get_singleton()->region_set_map(region, get_navigation_map());
@@ -622,19 +622,19 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 				// add navigation debugmesh visual instances if debug is enabled
 				SceneTree *st = SceneTree::get_singleton();
 				if (st && st->is_debugging_navigation_hint()) {
-					if (!nm.navmesh_debug_instance.is_valid()) {
-						RID navmesh_debug_rid = navmesh->get_debug_mesh()->get_rid();
-						nm.navmesh_debug_instance = RS::get_singleton()->instance_create();
-						RS::get_singleton()->instance_set_base(nm.navmesh_debug_instance, navmesh_debug_rid);
+					if (!nm.navigation_mesh_debug_instance.is_valid()) {
+						RID navigation_mesh_debug_rid = navigation_mesh->get_debug_mesh()->get_rid();
+						nm.navigation_mesh_debug_instance = RS::get_singleton()->instance_create();
+						RS::get_singleton()->instance_set_base(nm.navigation_mesh_debug_instance, navigation_mesh_debug_rid);
 					}
 					if (is_inside_tree()) {
-						RS::get_singleton()->instance_set_scenario(nm.navmesh_debug_instance, get_world_3d()->get_scenario());
-						RS::get_singleton()->instance_set_transform(nm.navmesh_debug_instance, get_global_transform() * nm.xform);
+						RS::get_singleton()->instance_set_scenario(nm.navigation_mesh_debug_instance, get_world_3d()->get_scenario());
+						RS::get_singleton()->instance_set_transform(nm.navigation_mesh_debug_instance, get_global_transform() * nm.xform);
 					}
 				}
 #endif // DEBUG_ENABLED
 			}
-			g.navmesh_ids[E->get()] = nm;
+			g.navigation_cell_ids[E->get()] = nm;
 		}
 	}
 
@@ -725,14 +725,14 @@ void GridMap::_octant_enter_world(const OctantKey &p_key) {
 	}
 
 	if (bake_navigation && mesh_library.is_valid()) {
-		for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+		for (RBMap<IndexKey, Octant::NavigationCell>::Element *E = g.navigation_cell_ids.front(); E; E = E->next()) {
 			if (cell_map.has(E->key()) && E->get().region.is_valid() == false) {
-				Ref<NavigationMesh> nm = mesh_library->get_item_navmesh(cell_map[E->key()].item);
+				Ref<NavigationMesh> nm = mesh_library->get_item_navigation_mesh(cell_map[E->key()].item);
 				if (nm.is_valid()) {
 					RID region = NavigationServer::get_singleton()->region_create();
 					NavigationServer::get_singleton()->region_set_owner_id(region, get_instance_id());
 					NavigationServer::get_singleton()->region_set_navigation_layers(region, navigation_layers);
-					NavigationServer::get_singleton()->region_set_navmesh(region, nm);
+					NavigationServer::get_singleton()->region_set_navigation_mesh(region, nm);
 					NavigationServer::get_singleton()->region_set_transform(region, get_global_transform() * E->get().xform);
 					NavigationServer::get_singleton()->region_set_map(region, get_navigation_map());
 					E->get().region = region;
@@ -769,14 +769,14 @@ void GridMap::_octant_exit_world(const OctantKey &p_key) {
 		RS::get_singleton()->instance_set_scenario(g.multimesh_instances[i].instance, RID());
 	}
 
-	for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Octant::NavigationCell>::Element *E = g.navigation_cell_ids.front(); E; E = E->next()) {
 		if (E->get().region.is_valid()) {
 			NavigationServer::get_singleton()->free(E->get().region);
 			E->get().region = RID();
 		}
-		if (E->get().navmesh_debug_instance.is_valid()) {
-			RS::get_singleton()->free(E->get().navmesh_debug_instance);
-			E->get().navmesh_debug_instance = RID();
+		if (E->get().navigation_mesh_debug_instance.is_valid()) {
+			RS::get_singleton()->free(E->get().navigation_mesh_debug_instance);
+			E->get().navigation_mesh_debug_instance = RID();
 		}
 	}
 
@@ -813,15 +813,15 @@ void GridMap::_octant_clean_up(const OctantKey &p_key) {
 	}
 
 	// Erase navigation
-	for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Octant::NavigationCell>::Element *E = g.navigation_cell_ids.front(); E; E = E->next()) {
 		if (E->get().region.is_valid()) {
 			NavigationServer::get_singleton()->free(E->get().region);
 		}
-		if (E->get().navmesh_debug_instance.is_valid()) {
-			RS::get_singleton()->free(E->get().navmesh_debug_instance);
+		if (E->get().navigation_mesh_debug_instance.is_valid()) {
+			RS::get_singleton()->free(E->get().navigation_mesh_debug_instance);
 		}
 	}
-	g.navmesh_ids.clear();
+	g.navigation_cell_ids.clear();
 
 #ifdef DEBUG_ENABLED
 	if (bake_navigation) {
@@ -1422,7 +1422,7 @@ void GridMap::_update_octant_navigation_debug_edge_connections_mesh(const Octant
 
 	Vector<Vector3> vertex_array;
 
-	for (RBMap<IndexKey, Octant::NavMesh>::Element *E = g.navmesh_ids.front(); E; E = E->next()) {
+	for (RBMap<IndexKey, Octant::NavigationCell>::Element *E = g.navigation_cell_ids.front(); E; E = E->next()) {
 		if (cell_map.has(E->key()) && E->get().region.is_valid()) {
 			int connections_count = NavigationServer::get_singleton()->region_get_connections_count(E->get().region);
 			if (connections_count == 0) {

@@ -499,11 +499,11 @@ uint32_t PandemoniumNavigationServer::region_get_navigation_layers(RID p_region)
 	return region->get_navigation_layers();
 }
 
-COMMAND_2(region_set_navmesh, RID, p_region, Ref<NavigationMesh>, p_nav_mesh) {
+COMMAND_2(region_set_navigation_mesh, RID, p_region, Ref<NavigationMesh>, p_navigation_mesh) {
 	NavRegion *region = region_owner.getornull(p_region);
 	ERR_FAIL_COND(region == nullptr);
 
-	region->set_mesh(p_nav_mesh);
+	region->set_mesh(p_navigation_mesh);
 }
 
 int PandemoniumNavigationServer::region_get_connections_count(RID p_region) const {

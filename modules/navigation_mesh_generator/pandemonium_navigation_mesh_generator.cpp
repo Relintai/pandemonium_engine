@@ -108,10 +108,10 @@ void PandemoniumNavigationMeshGenerator::process() {
 }
 
 void PandemoniumNavigationMeshGenerator::cleanup() {
-	_baking_navpolys.clear();
+	_baking_navigation_polygons.clear();
 	_geometry_2d_parsers.clear();
 #ifndef _3D_DISABLED
-	_baking_navmeshes.clear();
+	_baking_navigation_meshes.clear();
 	_geometry_3d_parsers.clear();
 #endif // _3D_DISABLED
 }
@@ -188,8 +188,8 @@ void PandemoniumNavigationMeshGenerator::_process_2d_bake_cleanup_tasks() {
 			_2d_running_jobs.remove_unordered(i);
 			--i;
 
-			int indx = _baking_navpolys.find(e->navigation_polygon);
-			_baking_navpolys.remove_unordered(indx);
+			int indx = _baking_navigation_polygons.find(e->navigation_polygon);
+			_baking_navigation_polygons.remove_unordered(indx);
 
 			e->call_callback();
 		}
@@ -228,18 +228,18 @@ void PandemoniumNavigationMeshGenerator::bake_2d_from_source_geometry_data(Ref<N
 	ERR_FAIL_COND_MSG(!p_navigation_polygon.is_valid(), "Invalid navigation mesh.");
 	ERR_FAIL_COND_MSG(!p_source_geometry_data.is_valid(), "Invalid NavigationMeshSourceGeometryData2D.");
 	ERR_FAIL_COND_MSG(p_navigation_polygon->get_outline_count() == 0 && !p_source_geometry_data->has_data(), "NavigationMeshSourceGeometryData2D is empty. Parse source geometry first.");
-	ERR_FAIL_COND_MSG(_baking_navpolys.find(p_navigation_polygon) >= 0, "NavigationPolygon is already baking. Wait for current bake task to finish.");
+	ERR_FAIL_COND_MSG(_baking_navigation_polygons.find(p_navigation_polygon) >= 0, "NavigationPolygon is already baking. Wait for current bake task to finish.");
 
 	_generator_mutex.lock();
-	_baking_navpolys.push_back(p_navigation_polygon);
+	_baking_navigation_polygons.push_back(p_navigation_polygon);
 	_generator_mutex.unlock();
 
 	_static_bake_2d_from_source_geometry_data(p_navigation_polygon, p_source_geometry_data);
 
 	_generator_mutex.lock();
-	int64_t navigation_polygon_index = _baking_navpolys.find(p_navigation_polygon);
+	int64_t navigation_polygon_index = _baking_navigation_polygons.find(p_navigation_polygon);
 	if (navigation_polygon_index >= 0) {
-		_baking_navpolys.remove_unordered(navigation_polygon_index);
+		_baking_navigation_polygons.remove_unordered(navigation_polygon_index);
 	}
 	_generator_mutex.unlock();
 }
@@ -443,11 +443,11 @@ void PandemoniumNavigationMeshGenerator::_static_bake_2d_from_source_geometry_da
 }
 
 void PandemoniumNavigationMeshGenerator::parse_and_bake_2d(Ref<NavigationPolygon> p_navigation_polygon, Node *p_root_node, Ref<FuncRef> p_callback) {
-	ERR_FAIL_COND_MSG(_baking_navpolys.find(p_navigation_polygon) >= 0, "NavigationPolygon was already added to baking queue. Wait for current bake task to finish.");
+	ERR_FAIL_COND_MSG(_baking_navigation_polygons.find(p_navigation_polygon) >= 0, "NavigationPolygon was already added to baking queue. Wait for current bake task to finish.");
 	ERR_FAIL_COND_MSG(p_root_node == nullptr, "NavigationPolygon requires a valid root node.");
 
 	_generator_mutex.lock();
-	_baking_navpolys.push_back(p_navigation_polygon);
+	_baking_navigation_polygons.push_back(p_navigation_polygon);
 	_generator_mutex.unlock();
 
 	Ref<NavigationGeneratorTask2D> navigation_generator_task;
@@ -466,7 +466,7 @@ void PandemoniumNavigationMeshGenerator::parse_and_bake_2d(Ref<NavigationPolygon
 
 bool PandemoniumNavigationMeshGenerator::is_navigation_polygon_baking(Ref<NavigationPolygon> p_navigation_polygon) const {
 	ERR_FAIL_COND_V(!p_navigation_polygon.is_valid(), false);
-	return _baking_navpolys.find(p_navigation_polygon) >= 0;
+	return _baking_navigation_polygons.find(p_navigation_polygon) >= 0;
 }
 
 #ifndef _3D_DISABLED
@@ -542,8 +542,8 @@ void PandemoniumNavigationMeshGenerator::_process_3d_bake_cleanup_tasks() {
 			_3d_running_jobs.remove_unordered(i);
 			--i;
 
-			int indx = _baking_navpolys.find(e->navigation_mesh);
-			_baking_navpolys.remove_unordered(indx);
+			int indx = _baking_navigation_polygons.find(e->navigation_mesh);
+			_baking_navigation_polygons.remove_unordered(indx);
 
 			e->call_callback();
 		}
@@ -598,7 +598,7 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 	cfg.maxSimplificationError = p_navigation_mesh->get_edge_max_error();
 	cfg.minRegionArea = (int)(p_navigation_mesh->get_region_min_size() * p_navigation_mesh->get_region_min_size());
 	cfg.mergeRegionArea = (int)(p_navigation_mesh->get_region_merge_size() * p_navigation_mesh->get_region_merge_size());
-	cfg.maxVertsPerPoly = (int)p_navigation_mesh->get_verts_per_poly();
+	cfg.maxVertsPerPoly = (int)p_navigation_mesh->get_vertices_per_polyon();
 	cfg.detailSampleDist = MAX(p_navigation_mesh->get_cell_size() * p_navigation_mesh->get_detail_sample_distance(), 0.1f);
 	cfg.detailSampleMaxError = p_navigation_mesh->get_cell_height() * p_navigation_mesh->get_detail_sample_max_error();
 
@@ -760,11 +760,11 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 }
 
 void PandemoniumNavigationMeshGenerator::parse_and_bake_3d(Ref<NavigationMesh> p_navigation_mesh, Node *p_root_node, Ref<FuncRef> p_callback) {
-	ERR_FAIL_COND_MSG(_baking_navmeshes.find(p_navigation_mesh) >= 0, "NavigationMesh was already added to baking queue. Wait for current bake task to finish.");
+	ERR_FAIL_COND_MSG(_baking_navigation_meshes.find(p_navigation_mesh) >= 0, "NavigationMesh was already added to baking queue. Wait for current bake task to finish.");
 	ERR_FAIL_COND_MSG(p_root_node == nullptr, "avigationMesh requires a valid root node.");
 
 	_generator_mutex.lock();
-	_baking_navmeshes.push_back(p_navigation_mesh);
+	_baking_navigation_meshes.push_back(p_navigation_mesh);
 	_generator_mutex.unlock();
 
 	Ref<NavigationGeneratorTask3D> navigation_generator_task;
@@ -785,7 +785,7 @@ void PandemoniumNavigationMeshGenerator::parse_and_bake_3d(Ref<NavigationMesh> p
 
 bool PandemoniumNavigationMeshGenerator::is_navigation_mesh_baking(Ref<NavigationMesh> p_navigation_mesh) const {
 	ERR_FAIL_COND_V(!p_navigation_mesh.is_valid(), false);
-	return _baking_navmeshes.find(p_navigation_mesh) >= 0;
+	return _baking_navigation_meshes.find(p_navigation_mesh) >= 0;
 }
 
 void PandemoniumNavigationMeshGenerator::register_geometry_parser_3d(Ref<NavigationGeometryParser3D> p_geometry_parser) {
@@ -820,18 +820,18 @@ void PandemoniumNavigationMeshGenerator::bake_3d_from_source_geometry_data(Ref<N
 	ERR_FAIL_COND_MSG(!p_navigation_mesh.is_valid(), "Invalid navigation mesh.");
 	ERR_FAIL_COND_MSG(!p_source_geometry_data.is_valid(), "Invalid NavigationMeshSourceGeometryData3D.");
 	ERR_FAIL_COND_MSG(!p_source_geometry_data->has_data(), "NavigationMeshSourceGeometryData3D is empty. Parse source geometry first.");
-	ERR_FAIL_COND_MSG(_baking_navmeshes.find(p_navigation_mesh) >= 0, "NavigationMesh is already baking. Wait for current bake task to finish.");
+	ERR_FAIL_COND_MSG(_baking_navigation_meshes.find(p_navigation_mesh) >= 0, "NavigationMesh is already baking. Wait for current bake task to finish.");
 
 	_generator_mutex.lock();
-	_baking_navmeshes.push_back(p_navigation_mesh);
+	_baking_navigation_meshes.push_back(p_navigation_mesh);
 	_generator_mutex.unlock();
 
 	_static_bake_3d_from_source_geometry_data(p_navigation_mesh, p_source_geometry_data);
 
 	_generator_mutex.lock();
-	int64_t navigation_mesh_index = _baking_navmeshes.find(p_navigation_mesh);
+	int64_t navigation_mesh_index = _baking_navigation_meshes.find(p_navigation_mesh);
 	if (navigation_mesh_index >= 0) {
-		_baking_navmeshes.remove_unordered(navigation_mesh_index);
+		_baking_navigation_meshes.remove_unordered(navigation_mesh_index);
 	}
 	_generator_mutex.unlock();
 }

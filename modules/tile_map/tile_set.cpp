@@ -104,8 +104,8 @@ bool TileSet::_set(const StringName &p_name, const Variant &p_value) {
 				}
 				p.pop_front();
 			}
-		} else if (what == "navpoly_map") {
-			tile_map[id].autotile_data.navpoly_map.clear();
+		} else if (what == "navigation_polygon_map") {
+			tile_map[id].autotile_data.navigation_polygon_map.clear();
 			Array p = p_value;
 			Vector2 last_coord;
 			while (p.size() > 0) {
@@ -260,9 +260,9 @@ bool TileSet::_get(const StringName &p_name, Variant &r_ret) const {
 				p.push_back(E->value());
 			}
 			r_ret = p;
-		} else if (what == "navpoly_map") {
+		} else if (what == "navigation_polygon_map") {
 			Array p;
-			for (RBMap<Vector2, Ref<NavigationPolygon>>::Element *E = tile_map[id].autotile_data.navpoly_map.front(); E; E = E->next()) {
+			for (RBMap<Vector2, Ref<NavigationPolygon>>::Element *E = tile_map[id].autotile_data.navigation_polygon_map.front(); E; E = E->next()) {
 				p.push_back(E->key());
 				p.push_back(E->value());
 			}
@@ -342,7 +342,7 @@ void TileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 			p_list->push_back(PropertyInfo(Variant::VECTOR2, pre + "autotile/tile_size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 			p_list->push_back(PropertyInfo(Variant::INT, pre + "autotile/spacing", PROPERTY_HINT_RANGE, "0,256,1", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 			p_list->push_back(PropertyInfo(Variant::ARRAY, pre + "autotile/occluder_map", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
-			p_list->push_back(PropertyInfo(Variant::ARRAY, pre + "autotile/navpoly_map", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
+			p_list->push_back(PropertyInfo(Variant::ARRAY, pre + "autotile/navigation_polygon_map", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 			p_list->push_back(PropertyInfo(Variant::ARRAY, pre + "autotile/priority_map", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 			p_list->push_back(PropertyInfo(Variant::ARRAY, pre + "autotile/z_index_map", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 		} else if (tile_get_tile_mode(id) == ATLAS_TILE) {
@@ -350,7 +350,7 @@ void TileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 			p_list->push_back(PropertyInfo(Variant::VECTOR2, pre + "autotile/tile_size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 			p_list->push_back(PropertyInfo(Variant::INT, pre + "autotile/spacing", PROPERTY_HINT_RANGE, "0,256,1", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 			p_list->push_back(PropertyInfo(Variant::ARRAY, pre + "autotile/occluder_map", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
-			p_list->push_back(PropertyInfo(Variant::ARRAY, pre + "autotile/navpoly_map", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
+			p_list->push_back(PropertyInfo(Variant::ARRAY, pre + "autotile/navigation_polygon_map", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 			p_list->push_back(PropertyInfo(Variant::ARRAY, pre + "autotile/priority_map", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 			p_list->push_back(PropertyInfo(Variant::ARRAY, pre + "autotile/z_index_map", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 		}
@@ -976,27 +976,27 @@ const RBMap<Vector2, Ref<OccluderPolygon2D>> &TileSet::autotile_get_light_oclusi
 void TileSet::autotile_set_navigation_polygon(int p_id, const Ref<NavigationPolygon> &p_navigation_polygon, const Vector2 &p_coord) {
 	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	if (p_navigation_polygon.is_null()) {
-		if (tile_map[p_id].autotile_data.navpoly_map.has(p_coord)) {
-			tile_map[p_id].autotile_data.navpoly_map.erase(p_coord);
+		if (tile_map[p_id].autotile_data.navigation_polygon_map.has(p_coord)) {
+			tile_map[p_id].autotile_data.navigation_polygon_map.erase(p_coord);
 		}
 	} else {
-		tile_map[p_id].autotile_data.navpoly_map[p_coord] = p_navigation_polygon;
+		tile_map[p_id].autotile_data.navigation_polygon_map[p_coord] = p_navigation_polygon;
 	}
 }
 
 Ref<NavigationPolygon> TileSet::autotile_get_navigation_polygon(int p_id, const Vector2 &p_coord) const {
 	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<NavigationPolygon>(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
-	if (!tile_map[p_id].autotile_data.navpoly_map.has(p_coord)) {
+	if (!tile_map[p_id].autotile_data.navigation_polygon_map.has(p_coord)) {
 		return Ref<NavigationPolygon>();
 	} else {
-		return tile_map[p_id].autotile_data.navpoly_map[p_coord];
+		return tile_map[p_id].autotile_data.navigation_polygon_map[p_coord];
 	}
 }
 
 const RBMap<Vector2, Ref<NavigationPolygon>> &TileSet::autotile_get_navigation_map(int p_id) const {
 	static RBMap<Vector2, Ref<NavigationPolygon>> dummy;
 	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
-	return tile_map[p_id].autotile_data.navpoly_map;
+	return tile_map[p_id].autotile_data.navigation_polygon_map;
 }
 
 void TileSet::tile_set_occluder_offset(int p_id, const Vector2 &p_offset) {

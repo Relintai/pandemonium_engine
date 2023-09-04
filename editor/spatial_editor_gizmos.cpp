@@ -3566,10 +3566,10 @@ int NavigationMeshSpatialGizmoPlugin::get_priority() const {
 }
 
 void NavigationMeshSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
-	NavigationMeshInstance *navmesh_instance = Object::cast_to<NavigationMeshInstance>(p_gizmo->get_spatial_node());
+	NavigationMeshInstance *navigation_mesh_instance = Object::cast_to<NavigationMeshInstance>(p_gizmo->get_spatial_node());
 
 	p_gizmo->clear();
-	Ref<NavigationMesh> navigationmesh = navmesh_instance->get_navigation_mesh();
+	Ref<NavigationMesh> navigationmesh = navigation_mesh_instance->get_navigation_mesh();
 	if (navigationmesh.is_null()) {
 		return;
 	}
@@ -3693,7 +3693,7 @@ void NavigationMeshSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	}
 
 	debug_mesh->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, face_mesh_array);
-	p_gizmo->add_mesh(debug_mesh, navmesh_instance->is_enabled() ? get_material("face_material", p_gizmo) : get_material("face_material_disabled", p_gizmo));
+	p_gizmo->add_mesh(debug_mesh, navigation_mesh_instance->is_enabled() ? get_material("face_material", p_gizmo) : get_material("face_material_disabled", p_gizmo));
 
 	// if enabled build geometry edge line surface
 	bool enabled_edge_lines = NavigationServer::get_singleton()->get_debug_navigation_enable_edge_lines();
@@ -3713,7 +3713,7 @@ void NavigationMeshSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 			line_vertex_array.push_back(vertices[polygon[0]]);
 		}
 
-		p_gizmo->add_lines(line_vertex_array, navmesh_instance->is_enabled() ? get_material("edge_material", p_gizmo) : get_material("edge_material_disabled", p_gizmo));
+		p_gizmo->add_lines(line_vertex_array, navigation_mesh_instance->is_enabled() ? get_material("edge_material", p_gizmo) : get_material("edge_material_disabled", p_gizmo));
 	}
 }
 

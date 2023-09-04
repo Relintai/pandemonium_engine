@@ -55,7 +55,7 @@ private:
 public:
 	// kept root node transform here on the geometry data
 	// if we add this transform to all exposed functions we need to break comp on all functions later
-	// when navmesh changes from global transfrom to relative to navregion
+	// when navigation_mesh changes from global transfrom to relative to navregion
 	// but if it stays here we can just remove it and change the internal functions only
 	Transform root_node_transform;
 

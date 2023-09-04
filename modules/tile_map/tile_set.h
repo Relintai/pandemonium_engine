@@ -104,7 +104,7 @@ public:
 		Vector2 icon_coord;
 		RBMap<Vector2, uint32_t> flags;
 		RBMap<Vector2, Ref<OccluderPolygon2D>> occluder_map;
-		RBMap<Vector2, Ref<NavigationPolygon>> navpoly_map;
+		RBMap<Vector2, Ref<NavigationPolygon>> navigation_polygon_map;
 		RBMap<Vector2, int> priority_map;
 		RBMap<Vector2, int> z_index_map;
 		FallbackMode fallback_mode;
