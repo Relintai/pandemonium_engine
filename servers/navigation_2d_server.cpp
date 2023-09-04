@@ -64,6 +64,8 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("map_force_update", "map"), &Navigation2DServer::map_force_update);
 
 	ClassDB::bind_method(D_METHOD("region_create"), &Navigation2DServer::region_create);
+	ClassDB::bind_method(D_METHOD("region_set_enabled", "region", "enabled"), &Navigation2DServer::region_set_enabled);
+	ClassDB::bind_method(D_METHOD("region_get_enabled", "region"), &Navigation2DServer::region_get_enabled);
 	ClassDB::bind_method(D_METHOD("region_set_use_edge_connections", "region", "enabled"), &Navigation2DServer::region_set_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("region_get_use_edge_connections", "region"), &Navigation2DServer::region_get_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("region_set_enter_cost", "region", "enter_cost"), &Navigation2DServer::region_set_enter_cost);
@@ -86,6 +88,8 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("link_create"), &Navigation2DServer::link_create);
 	ClassDB::bind_method(D_METHOD("link_set_map", "link", "map"), &Navigation2DServer::link_set_map);
 	ClassDB::bind_method(D_METHOD("link_get_map", "link"), &Navigation2DServer::link_get_map);
+	ClassDB::bind_method(D_METHOD("link_set_enabled", "link", "enabled"), &Navigation2DServer::link_set_enabled);
+	ClassDB::bind_method(D_METHOD("link_get_enabled", "link"), &Navigation2DServer::link_get_enabled);
 	ClassDB::bind_method(D_METHOD("link_set_bidirectional", "link", "bidirectional"), &Navigation2DServer::link_set_bidirectional);
 	ClassDB::bind_method(D_METHOD("link_is_bidirectional", "link"), &Navigation2DServer::link_is_bidirectional);
 	ClassDB::bind_method(D_METHOD("link_set_navigation_layers", "link", "navigation_layers"), &Navigation2DServer::link_set_navigation_layers);

@@ -54,9 +54,7 @@ void NavigationPolygonInstance::set_enabled(bool p_enabled) {
 	}
 	enabled = p_enabled;
 
-	if (!is_inside_tree()) {
-		return;
-	}
+	Navigation2DServer::get_singleton()->region_set_enabled(region, enabled);
 
 	if (!enabled) {
 		Navigation2DServer::get_singleton()->region_set_map(region, RID());

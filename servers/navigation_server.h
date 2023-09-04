@@ -121,6 +121,9 @@ public:
 	/// Creates a new region.
 	virtual RID region_create() = 0;
 
+	virtual void region_set_enabled(RID p_region, bool p_enabled) = 0;
+	virtual bool region_get_enabled(RID p_region) const = 0;
+
 	virtual void region_set_use_edge_connections(RID p_region, bool p_enabled) = 0;
 	virtual bool region_get_use_edge_connections(RID p_region) const = 0;
 
@@ -163,6 +166,9 @@ public:
 	/// Set the map of this link.
 	virtual void link_set_map(RID p_link, RID p_map) = 0;
 	virtual RID link_get_map(RID p_link) const = 0;
+
+	virtual void link_set_enabled(RID p_link, bool p_enabled) = 0;
+	virtual bool link_get_enabled(RID p_link) const = 0;
 
 	/// Set whether this link travels in both directions.
 	virtual void link_set_bidirectional(RID p_link, bool p_bidirectional) = 0;

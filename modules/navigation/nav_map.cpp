@@ -839,7 +839,13 @@ void NavMap::sync() {
 		// Resize the polygon count.
 		int count = 0;
 		for (uint32_t r = 0; r < regions.size(); r++) {
-			count += regions[r]->get_polygons().size();
+			NavRegion *region = regions[r];
+
+			if (!region->get_enabled()) {
+				continue;
+			}
+
+			count += region->get_polygons().size();
 		}
 
 		polygons.resize(count);
@@ -847,12 +853,18 @@ void NavMap::sync() {
 		// Copy all region polygons in the map.
 		count = 0;
 		for (uint32_t r = 0; r < regions.size(); r++) {
-			const LocalVector<gd::Polygon> &polygons_source = regions[r]->get_polygons();
+			NavRegion *region = regions[r];
+
+			if (!region->get_enabled()) {
+				continue;
+			}
+
+			const LocalVector<gd::Polygon> &polygons_source = region->get_polygons();
 			for (uint32_t n = 0; n < polygons_source.size(); n++) {
 				polygons[count + n] = polygons_source[n];
 			}
 
-			count += regions[r]->get_polygons().size();
+			count += region->get_polygons().size();
 		}
 
 		_new_pm_polygon_count = polygons.size();

@@ -83,6 +83,7 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("query_path", "parameters", "result"), &NavigationServer::query_path);
 
 	ClassDB::bind_method(D_METHOD("region_create"), &NavigationServer::region_create);
+	ClassDB::bind_method(D_METHOD("region_set_enabled", "region", "enabled"), &NavigationServer::region_set_enabled);
 	ClassDB::bind_method(D_METHOD("region_set_use_edge_connections", "region", "enabled"), &NavigationServer::region_set_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("region_get_use_edge_connections", "region"), &NavigationServer::region_get_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("region_set_enter_cost", "region", "enter_cost"), &NavigationServer::region_set_enter_cost);
@@ -108,6 +109,8 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("link_create"), &NavigationServer::link_create);
 	ClassDB::bind_method(D_METHOD("link_set_map", "link", "map"), &NavigationServer::link_set_map);
 	ClassDB::bind_method(D_METHOD("link_get_map", "link"), &NavigationServer::link_get_map);
+	ClassDB::bind_method(D_METHOD("link_set_enabled", "link", "enabled"), &NavigationServer::link_set_enabled);
+	ClassDB::bind_method(D_METHOD("link_get_enabled", "link"), &NavigationServer::link_get_enabled);
 	ClassDB::bind_method(D_METHOD("link_set_bidirectional", "link", "bidirectional"), &NavigationServer::link_set_bidirectional);
 	ClassDB::bind_method(D_METHOD("link_is_bidirectional", "link"), &NavigationServer::link_is_bidirectional);
 	ClassDB::bind_method(D_METHOD("link_set_navigation_layers", "link", "navigation_layers"), &NavigationServer::link_set_navigation_layers);

@@ -47,23 +47,7 @@ void NavigationMeshInstance::set_enabled(bool p_enabled) {
 	}
 	enabled = p_enabled;
 
-	if (!is_inside_tree()) {
-		return;
-	}
-
-	if (!enabled) {
-		NavigationServer::get_singleton()->region_set_map(region, RID());
-	} else {
-		if (navigation) {
-			NavigationServer::get_singleton()->region_set_map(region, navigation->get_rid());
-		} else {
-			if (map_override.is_valid()) {
-				NavigationServer::get_singleton()->region_set_map(region, map_override);
-			} else {
-				NavigationServer::get_singleton()->region_set_map(region, get_world_3d()->get_navigation_map());
-			}
-		}
-	}
+	NavigationServer::get_singleton()->region_set_enabled(region, enabled);
 
 #ifdef DEBUG_ENABLED
 	if (debug_instance.is_valid()) {

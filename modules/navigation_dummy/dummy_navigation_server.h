@@ -19,8 +19,8 @@ public:
 	virtual real_t map_get_cell_size(RID p_map) const { return 0; }
 	virtual void map_set_cell_height(RID p_map, real_t p_cell_height) {}
 	virtual real_t map_get_cell_height(RID p_map) const { return 0; }
-	void map_set_use_edge_connections(RID p_map, bool p_enabled) {}
-	bool map_get_use_edge_connections(RID p_map) const { return false; }
+	virtual void map_set_use_edge_connections(RID p_map, bool p_enabled) {}
+	virtual bool map_get_use_edge_connections(RID p_map) const { return false; }
 	virtual void map_set_edge_connection_margin(RID p_map, real_t p_connection_margin) {}
 	virtual real_t map_get_edge_connection_margin(RID p_map) const { return 0; }
 	virtual void map_set_link_connection_radius(RID p_map, real_t p_connection_radius) {}
@@ -39,8 +39,10 @@ public:
 	virtual void map_force_update(RID p_map) {}
 
 	virtual RID region_create() { return RID(); }
-	void region_set_use_edge_connections(RID p_region, bool p_enabled) {}
-	bool region_get_use_edge_connections(RID p_region) const { return false; }
+	virtual void region_set_enabled(RID p_region, bool p_enabled) {}
+	virtual bool region_get_enabled(RID p_region) const { return false; }
+	virtual void region_set_use_edge_connections(RID p_region, bool p_enabled) {}
+	virtual bool region_get_use_edge_connections(RID p_region) const { return false; }
 	virtual void region_set_enter_cost(RID p_region, real_t p_enter_cost) {}
 	virtual real_t region_get_enter_cost(RID p_region) const { return 0; }
 	virtual void region_set_travel_cost(RID p_region, real_t p_travel_cost) {}
@@ -61,6 +63,8 @@ public:
 	virtual RID link_create() { return RID(); }
 	virtual void link_set_map(RID p_link, RID p_map) {}
 	virtual RID link_get_map(RID p_link) const { return RID(); }
+	virtual void link_set_enabled(RID p_link, bool p_enabled) {}
+	virtual bool link_get_enabled(RID p_link) const { return false; }
 	virtual void link_set_bidirectional(RID p_link, bool p_bidirectional) {}
 	virtual bool link_is_bidirectional(RID p_link) const { return false; }
 	virtual void link_set_navigation_layers(RID p_link, uint32_t p_navigation_layers) {}

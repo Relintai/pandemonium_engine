@@ -40,6 +40,7 @@ class NavLink : public NavBase {
 	bool bidirectional;
 	Vector3 start_position;
 	Vector3 end_position;
+	bool enabled;
 
 	bool link_dirty;
 
@@ -48,6 +49,7 @@ public:
 		type = NavigationUtilities::PathSegmentType::PATH_SEGMENT_TYPE_LINK;
 		map = nullptr;
 		bidirectional = true;
+		enabled = true;
 		link_dirty = true;
 	}
 
@@ -55,6 +57,9 @@ public:
 	NavMap *get_map() const {
 		return map;
 	}
+
+	void set_enabled(bool p_enabled);
+	bool get_enabled() const { return enabled; }
 
 	void set_bidirectional(bool p_bidirectional);
 	bool is_bidirectional() const {

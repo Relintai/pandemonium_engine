@@ -268,6 +268,8 @@ RID FORWARD_2_C(map_get_closest_point_owner, RID, p_map, const Vector2 &, p_poin
 
 RID FORWARD_0(region_create);
 
+void FORWARD_2(region_set_enabled, RID, p_region, bool, p_enabled, rid_to_rid, bool_to_bool);
+bool FORWARD_1_C(region_get_enabled, RID, p_region, rid_to_rid);
 void FORWARD_2(region_set_use_edge_connections, RID, p_region, bool, p_enabled, rid_to_rid, bool_to_bool);
 bool FORWARD_1_C(region_get_use_edge_connections, RID, p_region, rid_to_rid);
 
@@ -296,6 +298,8 @@ RID FORWARD_0(link_create);
 
 void FORWARD_2(link_set_map, RID, p_link, RID, p_map, rid_to_rid, rid_to_rid);
 RID FORWARD_1_C(link_get_map, RID, p_link, rid_to_rid);
+void FORWARD_2(link_set_enabled, RID, p_link, bool, p_enabled, rid_to_rid, bool_to_bool);
+bool FORWARD_1_C(link_get_enabled, RID, p_link, rid_to_rid);
 void FORWARD_2(link_set_bidirectional, RID, p_link, bool, p_bidirectional, rid_to_rid, bool_to_bool);
 bool FORWARD_1_C(link_is_bidirectional, RID, p_link, rid_to_rid);
 void FORWARD_2(link_set_navigation_layers, RID, p_link, uint32_t, p_navigation_layers, rid_to_rid, uint32_to_uint32);
