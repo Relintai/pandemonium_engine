@@ -30,8 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/math/vector3.h"
+#include "core/containers/hashfuncs.h"
 #include "core/containers/rid.h"
+#include "core/math/vector3.h"
 
 class NavBase;
 
@@ -52,8 +53,16 @@ struct EdgeKey {
 	PointKey a;
 	PointKey b;
 
+	static uint32_t hash(const EdgeKey &p_val) {
+		return hash_one_uint64(p_val.a.key) ^ hash_one_uint64(p_val.b.key);
+	}
+
 	bool operator<(const EdgeKey &p_key) const {
 		return (a.key == p_key.a.key) ? (b.key < p_key.b.key) : (a.key < p_key.a.key);
+	}
+
+	bool operator==(const EdgeKey &p_key) const {
+		return (a.key == p_key.a.key) && (b.key == p_key.b.key);
 	}
 
 	EdgeKey(const PointKey &p_a = PointKey(), const PointKey &p_b = PointKey()) :
@@ -142,8 +151,6 @@ struct NavigationPoly {
 		poly = p_poly;
 
 		back_navigation_poly_id = -1;
-		back_navigation_edge = UINT32_MAX;
-
 		back_navigation_edge = -1;
 		traveled_distance = 0.0;
 	}

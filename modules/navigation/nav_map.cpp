@@ -870,7 +870,7 @@ void NavMap::sync() {
 		_new_pm_polygon_count = polygons.size();
 
 		// Group all edges per key.
-		RBMap<gd::EdgeKey, Vector<gd::Edge::Connection>> connections;
+		HashMap<gd::EdgeKey, Vector<gd::Edge::Connection>, gd::EdgeKey> connections;
 
 		for (uint32_t poly_id = 0; poly_id < polygons.size(); poly_id++) {
 			gd::Polygon &poly(polygons[poly_id]);
@@ -879,7 +879,7 @@ void NavMap::sync() {
 				int next_point = (p + 1) % poly.points.size();
 				gd::EdgeKey ek(poly.points[p].key, poly.points[next_point].key);
 
-				RBMap<gd::EdgeKey, Vector<gd::Edge::Connection>>::Element *connection = connections.find(ek);
+				HashMap<gd::EdgeKey, Vector<gd::Edge::Connection>, gd::EdgeKey>::Element *connection = connections.find(ek);
 
 				if (!connection) {
 					connections[ek] = Vector<gd::Edge::Connection>();
@@ -894,7 +894,7 @@ void NavMap::sync() {
 					new_connection.pathway_start = poly.points[p].pos;
 					new_connection.pathway_end = poly.points[next_point].pos;
 					connections[ek].push_back(new_connection);
-
+				} else {
 					// The edge is already connected with another edge, skip.
 					ERR_PRINT_ONCE("Navigation map synchronization error. Attempted to merge a navigation mesh polygon edge with another already-merged edge. This is usually caused by crossing edges, overlapping polygons, or a mismatch of the NavigationMesh / NavigationPolygon baked 'cell_size' and navigation map 'cell_size'.");
 				}
@@ -902,7 +902,7 @@ void NavMap::sync() {
 		}
 
 		Vector<gd::Edge::Connection> free_edges;
-		for (RBMap<gd::EdgeKey, Vector<gd::Edge::Connection>>::Element *E = connections.front(); E; E = E->next()) {
+		for (HashMap<gd::EdgeKey, Vector<gd::Edge::Connection>, gd::EdgeKey>::Element *E = connections.front(); E; E = E->next) {
 			if (E->get().size() == 2) {
 				// Connect edge that are shared in different polygons.
 				gd::Edge::Connection &c1 = E->get().write[0];
