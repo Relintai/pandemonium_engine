@@ -6541,7 +6541,8 @@ EditorNode::EditorNode() {
 			TTR("When this option is enabled, avoidance debug information will be visible in the running project."));
 
 	p->add_check_shortcut(ED_SHORTCUT("editor/visible_paths", TTR("Visible Paths")), RUN_DEBUG_PATHS);
-	p->set_item_tooltip(-1,
+	p->set_item_tooltip(
+			p->get_item_count() - 1,
 			TTR("When this option is enabled, curve resources used by path nodes will be visible in the running project."));
 
 	if (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3") {
