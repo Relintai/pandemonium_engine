@@ -112,6 +112,11 @@ public:
 
 	NavigationMeshInstance();
 	~NavigationMeshInstance();
+
+private:
+	void _region_enter_navigation_map();
+	void _region_exit_navigation_map();
+	void _region_update_transform();
 };
 
 #endif // NAVIGATION_MESH_INSTANCE_H

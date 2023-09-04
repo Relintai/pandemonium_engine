@@ -163,33 +163,13 @@ void NavigationMeshInstance::_notification(int p_what) {
 			while (c) {
 				navigation = Object::cast_to<Navigation>(c);
 				if (navigation) {
-					if (enabled) {
-						NavigationServer::get_singleton()->region_set_map(region, navigation->get_rid());
-					}
 					break;
 				}
 
 				c = c->get_parent_spatial();
 			}
 
-			if (enabled && navigation == nullptr) {
-				// did not find a valid navigation node parent, fallback to default navigation map on world resource
-				if (map_override.is_valid()) {
-					NavigationServer::get_singleton()->region_set_map(region, map_override);
-				} else {
-					NavigationServer::get_singleton()->region_set_map(region, get_world_3d()->get_navigation_map());
-				}
-			}
-
-			current_global_transform = get_global_transform();
-			NavigationServer::get_singleton()->region_set_transform(region, current_global_transform);
-
-#ifdef DEBUG_ENABLED
-			if (NavigationServer::get_singleton()->get_debug_navigation_enabled()) {
-				_update_debug_mesh();
-			}
-#endif // DEBUG_ENABLED
-
+			_region_enter_navigation_map();
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			set_physics_process_internal(true);
@@ -197,32 +177,11 @@ void NavigationMeshInstance::_notification(int p_what) {
 
 		case NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
 			set_physics_process_internal(false);
-			if (is_inside_tree()) {
-				Transform new_global_transform = get_global_transform();
-				if (current_global_transform != new_global_transform) {
-					current_global_transform = new_global_transform;
-					NavigationServer::get_singleton()->region_set_transform(region, current_global_transform);
-#ifdef DEBUG_ENABLED
-					if (debug_instance.is_valid()) {
-						RS::get_singleton()->instance_set_transform(debug_instance, current_global_transform);
-					}
-#endif // DEBUG_ENABLED
-				}
-			}
+
+			_region_update_transform();
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
-			NavigationServer::get_singleton()->region_set_map(region, RID());
-
-			navigation = nullptr;
-
-#ifdef DEBUG_ENABLED
-			if (debug_instance.is_valid()) {
-				RS::get_singleton()->instance_set_visible(debug_instance, false);
-			}
-			if (debug_edge_connections_instance.is_valid()) {
-				RS::get_singleton()->instance_set_visible(debug_edge_connections_instance, false);
-			}
-#endif // DEBUG_ENABLED
+			_region_exit_navigation_map();
 
 		} break;
 	}
@@ -259,6 +218,8 @@ void NavigationMeshInstance::set_navigation_map(RID p_navigation_map) {
 RID NavigationMeshInstance::get_navigation_map() const {
 	if (map_override.is_valid()) {
 		return map_override;
+	} else if (navigation) {
+		return navigation->get_rid();
 	} else if (is_inside_tree()) {
 		return get_world_3d()->get_navigation_map();
 	}
@@ -447,6 +408,61 @@ NavigationMeshInstance::~NavigationMeshInstance() {
 		RenderingServer::get_singleton()->free(debug_edge_connections_mesh->get_rid());
 	}
 #endif // DEBUG_ENABLED
+}
+
+void NavigationMeshInstance::_region_enter_navigation_map() {
+	if (!is_inside_tree()) {
+		return;
+	}
+
+	if (enabled) {
+		RID map = get_navigation_map();
+
+		NavigationServer::get_singleton()->region_set_map(region, map);
+	}
+
+	current_global_transform = get_global_transform();
+	NavigationServer::get_singleton()->region_set_transform(region, current_global_transform);
+
+#ifdef DEBUG_ENABLED
+	if (NavigationServer::get_singleton()->get_debug_navigation_enabled()) {
+		_update_debug_mesh();
+	}
+#endif // DEBUG_ENABLED
+}
+
+void NavigationMeshInstance::_region_exit_navigation_map() {
+	NavigationServer::get_singleton()->region_set_map(region, RID());
+
+#ifdef DEBUG_ENABLED
+	if (debug_instance.is_valid()) {
+		RS::get_singleton()->instance_set_visible(debug_instance, false);
+	}
+
+	if (debug_edge_connections_instance.is_valid()) {
+		RS::get_singleton()->instance_set_visible(debug_edge_connections_instance, false);
+	}
+#endif // DEBUG_ENABLED
+}
+
+void NavigationMeshInstance::_region_update_transform() {
+	if (!is_inside_tree()) {
+		return;
+	}
+
+	Transform new_global_transform = get_global_transform();
+
+	if (current_global_transform != new_global_transform) {
+		current_global_transform = new_global_transform;
+
+		NavigationServer::get_singleton()->region_set_transform(region, current_global_transform);
+
+#ifdef DEBUG_ENABLED
+		if (debug_instance.is_valid()) {
+			RS::get_singleton()->instance_set_transform(debug_instance, current_global_transform);
+		}
+#endif // DEBUG_ENABLED
+	}
 }
 
 #ifdef DEBUG_ENABLED

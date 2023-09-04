@@ -126,6 +126,9 @@ public:
 
 private:
 	void _update_avoidance_constrain();
+	void _region_enter_navigation_map();
+	void _region_exit_navigation_map();
+	void _region_update_transform();
 };
 
 #endif // NAVIGATIONPOLYGON_H
