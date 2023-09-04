@@ -357,8 +357,12 @@ RID PandemoniumNavigation2DServer::obstacle_create() {
 	RID obstacle = NavigationServer::get_singleton()->obstacle_create();
 	return obstacle;
 }
+void FORWARD_2(obstacle_set_avoidance_enabled, RID, p_obstacle, bool, p_enabled, rid_to_rid, bool_to_bool);
+bool FORWARD_1_C(obstacle_get_avoidance_enabled, RID, p_obstacle, rid_to_rid);
 void FORWARD_2(obstacle_set_map, RID, p_obstacle, RID, p_map, rid_to_rid, rid_to_rid);
 RID FORWARD_1_C(obstacle_get_map, RID, p_obstacle, rid_to_rid);
+void FORWARD_2(obstacle_set_radius, RID, p_obstacle, real_t, p_radius, rid_to_rid, real_to_real);
+void FORWARD_2(obstacle_set_velocity, RID, p_obstacle, Vector2, p_velocity, rid_to_rid, v2_to_v3);
 void FORWARD_2(obstacle_set_paused, RID, p_obstacle, bool, p_paused, rid_to_rid, bool_to_bool);
 bool FORWARD_1_C(obstacle_get_paused, RID, p_obstacle, rid_to_rid);
 void FORWARD_2(obstacle_set_position, RID, p_obstacle, Vector2, p_position, rid_to_rid, v2_to_v3);

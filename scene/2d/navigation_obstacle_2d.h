@@ -45,18 +45,18 @@ class NavigationObstacle2D : public Node2D {
 	RID map_override;
 	RID map_current;
 
-	real_t radius = 0.0;
+	real_t radius;
 
 	Vector<Vector2> vertices;
 
-	RID fake_agent;
-	uint32_t avoidance_layers = 1;
+	bool avoidance_enabled;
+	uint32_t avoidance_layers;
 
 	Transform2D previous_transform;
 
 	Vector2 velocity;
 	Vector2 previous_velocity;
-	bool velocity_submitted = false;
+	bool velocity_submitted;
 
 #ifdef DEBUG_ENABLED
 private:
@@ -80,8 +80,10 @@ public:
 	void set_navigation_node(Node *p_nav);
 	Node *get_navigation_node() const;
 
-	RID get_obstacle_rid() const { return obstacle; }
-	RID get_agent_rid() const { return fake_agent; }
+	RID get_rid() const { return obstacle; }
+
+	void set_avoidance_enabled(bool p_enabled);
+	bool get_avoidance_enabled() const;
 
 	void set_navigation_map(RID p_navigation_map);
 	RID get_navigation_map() const;

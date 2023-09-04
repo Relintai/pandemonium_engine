@@ -105,9 +105,15 @@ public:
 	virtual RID obstacle_create() { return RID(); }
 	virtual void obstacle_set_map(RID p_obstacle, RID p_map) {}
 	virtual RID obstacle_get_map(RID p_obstacle) const { return RID(); }
+	virtual void obstacle_set_avoidance_enabled(RID p_obstacle, bool p_enabled) {}
+	virtual bool obstacle_get_avoidance_enabled(RID p_obstacle) const { return false; }
+	virtual void obstacle_set_use_3d_avoidance(RID p_obstacle, bool p_enabled) {}
+	virtual bool obstacle_get_use_3d_avoidance(RID p_obstacle) const { return false; }
+	virtual void obstacle_set_radius(RID p_obstacle, real_t p_radius) {}
 	virtual void obstacle_set_paused(RID p_obstacle, bool p_paused) {}
 	virtual bool obstacle_get_paused(RID p_obstacle) const { return false; }
 	virtual void obstacle_set_height(RID p_obstacle, real_t p_height) {}
+	virtual void obstacle_set_velocity(RID p_obstacle, Vector3 p_velocity) {}
 	virtual void obstacle_set_position(RID p_obstacle, Vector3 p_position) {}
 	virtual void obstacle_set_vertices(RID p_obstacle, const Vector<Vector3> &p_vertices) {}
 	virtual void obstacle_set_avoidance_layers(RID p_obstacle, uint32_t p_layers) {}

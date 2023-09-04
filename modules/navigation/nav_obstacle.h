@@ -34,18 +34,23 @@
 
 #include "core/containers/local_vector.h"
 #include "core/object/class_db.h"
-#include "nav_agent.h"
 #include "nav_rid.h"
 
+class NavAgent;
 class NavMap;
 
 class NavObstacle : public NavRid {
+	NavAgent *agent;
 	NavMap *map;
+	Vector3 velocity;
 	Vector3 position;
 	Vector<Vector3> vertices;
 
+	real_t radius;
 	real_t height;
 
+	bool avoidance_enabled;
+	bool use_3d_avoidance;
 	uint32_t avoidance_layers;
 
 	bool obstacle_dirty;
@@ -57,14 +62,29 @@ public:
 	NavObstacle();
 	~NavObstacle();
 
+	void set_avoidance_enabled(bool p_enabled);
+	bool is_avoidance_enabled() { return avoidance_enabled; }
+
+	void set_use_3d_avoidance(bool p_enabled);
+	bool get_use_3d_avoidance() { return use_3d_avoidance; }
+
 	void set_map(NavMap *p_map);
 	NavMap *get_map() { return map; }
+
+	void set_agent(NavAgent *p_agent);
+	NavAgent *get_agent() { return agent; }
 
 	void set_position(const Vector3 p_position);
 	const Vector3 &get_position() const { return position; }
 
+	void set_radius(real_t p_radius);
+	real_t get_radius() const { return radius; }
+
 	void set_height(const real_t p_height);
 	real_t get_height() const { return height; }
+
+	void set_velocity(const Vector3 p_velocity);
+	const Vector3 &get_velocity() const { return velocity; }
 
 	void set_vertices(const Vector<Vector3> &p_vertices);
 	const Vector<Vector3> &get_vertices() const { return vertices; }
@@ -78,6 +98,9 @@ public:
 	bool get_paused() const;
 
 	bool check_dirty();
+
+private:
+	void internal_update_agent();
 };
 
 #endif // NAV_OBSTACLE_H

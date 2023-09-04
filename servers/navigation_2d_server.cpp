@@ -124,8 +124,12 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("agent_set_avoidance_priority", "agent", "priority"), &Navigation2DServer::agent_set_avoidance_priority);
 
 	ClassDB::bind_method(D_METHOD("obstacle_create"), &Navigation2DServer::obstacle_create);
+	ClassDB::bind_method(D_METHOD("obstacle_set_avoidance_enabled", "obstacle", "enabled"), &Navigation2DServer::obstacle_set_avoidance_enabled);
+	ClassDB::bind_method(D_METHOD("obstacle_get_avoidance_enabled", "obstacle"), &Navigation2DServer::obstacle_get_avoidance_enabled);
 	ClassDB::bind_method(D_METHOD("obstacle_set_map", "obstacle", "map"), &Navigation2DServer::obstacle_set_map);
 	ClassDB::bind_method(D_METHOD("obstacle_get_map", "obstacle"), &Navigation2DServer::obstacle_get_map);
+	ClassDB::bind_method(D_METHOD("obstacle_set_radius", "obstacle", "radius"), &Navigation2DServer::obstacle_set_radius);
+	ClassDB::bind_method(D_METHOD("obstacle_set_velocity", "obstacle", "velocity"), &Navigation2DServer::obstacle_set_velocity);
 	ClassDB::bind_method(D_METHOD("obstacle_set_paused", "obstacle", "paused"), &Navigation2DServer::obstacle_set_paused);
 	ClassDB::bind_method(D_METHOD("obstacle_get_paused", "obstacle"), &Navigation2DServer::obstacle_get_paused);
 	ClassDB::bind_method(D_METHOD("obstacle_set_position", "obstacle", "position"), &Navigation2DServer::obstacle_set_position);
