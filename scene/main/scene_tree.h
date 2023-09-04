@@ -118,7 +118,6 @@ private:
 #ifdef DEBUG_ENABLED
 	bool debug_collisions_hint;
 	bool debug_navigation_hint;
-	bool debug_avoidance_hint;
 	bool debug_paths_hint;
 #endif
 	bool pause;
@@ -354,9 +353,6 @@ public:
 	void set_debug_navigation_hint(bool p_enabled);
 	bool is_debugging_navigation_hint() const;
 
-	void set_debug_avoidance_hint(bool p_enabled);
-	bool is_debugging_avoidance_hint() const;
-
 	void set_debug_paths_hint(bool p_enabled);
 	bool is_debugging_paths_hint() const;
 #else
@@ -367,11 +363,6 @@ public:
 
 	void set_debug_navigation_hint(bool p_enabled) {}
 	bool is_debugging_navigation_hint() const {
-		return false;
-	}
-
-	void set_debug_avoidance_hint(bool p_enabled) {}
-	bool is_debugging_avoidance_hint() const {
 		return false;
 	}
 

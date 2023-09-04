@@ -1947,9 +1947,10 @@ bool Main::start() {
 		}
 		if (debug_navigation) {
 			sml->set_debug_navigation_hint(true);
+			NavigationServer::get_singleton()->set_debug_navigation_enabled(true);
 		}
 		if (debug_avoidance) {
-			sml->set_debug_avoidance_hint(true);
+			NavigationServer::get_singleton()->set_debug_avoidance_enabled(true);
 		}
 		if (debug_paths) {
 			sml->set_debug_paths_hint(true);
@@ -1957,12 +1958,6 @@ bool Main::start() {
 		if (debug_navigation || debug_avoidance) {
 			NavigationServer::get_singleton()->set_active(true);
 			NavigationServer::get_singleton()->set_debug_enabled(true);
-			if (debug_navigation) {
-				NavigationServer::get_singleton()->set_debug_navigation_enabled(true);
-			}
-			if (debug_avoidance) {
-				NavigationServer::get_singleton()->set_debug_avoidance_enabled(true);
-			}
 		}
 #endif
 

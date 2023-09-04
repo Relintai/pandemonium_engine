@@ -985,14 +985,6 @@ bool SceneTree::is_debugging_navigation_hint() const {
 	return debug_navigation_hint;
 }
 
-void SceneTree::set_debug_avoidance_hint(bool p_enabled) {
-	debug_avoidance_hint = p_enabled;
-}
-
-bool SceneTree::is_debugging_avoidance_hint() const {
-	return debug_avoidance_hint;
-}
-
 void SceneTree::set_debug_paths_hint(bool p_enabled) {
 	debug_paths_hint = p_enabled;
 }
@@ -2193,8 +2185,6 @@ void SceneTree::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_debugging_collisions_hint"), &SceneTree::is_debugging_collisions_hint);
 	ClassDB::bind_method(D_METHOD("set_debug_navigation_hint", "enable"), &SceneTree::set_debug_navigation_hint);
 	ClassDB::bind_method(D_METHOD("is_debugging_navigation_hint"), &SceneTree::is_debugging_navigation_hint);
-	ClassDB::bind_method(D_METHOD("set_debug_avoidance_hint", "enable"), &SceneTree::set_debug_avoidance_hint);
-	ClassDB::bind_method(D_METHOD("is_debugging_avoidance_hint"), &SceneTree::is_debugging_avoidance_hint);
 	ClassDB::bind_method(D_METHOD("set_debug_paths_hint", "enable"), &SceneTree::set_debug_paths_hint);
 	ClassDB::bind_method(D_METHOD("is_debugging_paths_hint"), &SceneTree::is_debugging_paths_hint);
 
@@ -2401,7 +2391,6 @@ SceneTree::SceneTree() {
 #ifdef DEBUG_ENABLED
 	debug_collisions_hint = false;
 	debug_navigation_hint = false;
-	debug_avoidance_hint = false;
 	debug_paths_hint = false;
 #endif
 	debug_collisions_color = GLOBAL_DEF("debug/shapes/collision/shape_color", Color(0.0, 0.6, 0.7, 0.42));
