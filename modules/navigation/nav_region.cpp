@@ -113,6 +113,10 @@ void NavRegion::update_polygons() {
 		ERR_PRINT_ONCE(vformat("Navigation map synchronization error. Attempted to update a navigation region with a navigation mesh that uses a `cell_size` of %s while assigned to a navigation map set to a `cell_size` of %s. The cell size for navigation maps can be changed by using the NavigationServer map_set_cell_size() function. The cell size for default navigation maps can also be changed in the ProjectSettings.", double(map->get_cell_size()), double(mesh->get_cell_size())));
 	}
 
+	if (!Math::is_equal_approx(double(map->get_cell_height()), double(mesh->get_cell_height()))) {
+		ERR_PRINT_ONCE("Navigation map synchronization error. Attempted to update a navigation region with a navigation mesh that uses a different `cell_height` than the `cell_height` set on the navigation map.");
+	}
+
 	if (map && Math::rad2deg(map->get_up().angle_to(transform.basis.get_column(1))) >= 90.0f) {
 		ERR_PRINT_ONCE(vformat("Navigation map synchronization error. Attempted to update a navigation region with a navigation mesh that uses a `cell_height` of %s while assigned to a navigation map set to a `cell_height` of %s. The cell height for navigation maps can be changed by using the NavigationServer map_set_cell_height() function. The cell height for default navigation maps can also be changed in the ProjectSettings.", double(map->get_cell_height()), double(mesh->get_cell_height())));
 	}

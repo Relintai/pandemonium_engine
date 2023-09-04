@@ -641,8 +641,8 @@ void NavigationMesh::_validate_property(PropertyInfo &property) const {
 }
 
 NavigationMesh::NavigationMesh() {
-	cell_size = 0.25f;
-	cell_height = 0.25f;
+	cell_size = 0.25f; // Must match ProjectSettings default 3D cell_size and NavigationServer NavMap cell_size.
+	cell_height = 0.25f; // Must match ProjectSettings default 3D cell_height and NavigationServer NavMap cell_height.
 	agent_height = 1.5f;
 	agent_radius = 0.5f;
 	agent_max_climb = 0.25f;

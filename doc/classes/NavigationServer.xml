@@ -369,16 +369,16 @@
 		</method>
 		<method name="map_get_cell_height" qualifiers="const">
 			<return type="float" />
-			<argument index="0" name="map" type="RID" />
+			<param index="0" name="map" type="RID" />
 			<description>
-				Returns the map cell height.
+				Returns the map cell height used to rasterize the navigation mesh vertices on the Y axis.
 			</description>
 		</method>
 		<method name="map_get_cell_size" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="map" type="RID" />
 			<description>
-				Returns the map cell size.
+				Returns the map cell size used to rasterize the navigation mesh vertices on the XZ plane.
 			</description>
 		</method>
 		<method name="map_get_closest_point" qualifiers="const">
@@ -495,7 +495,7 @@
 			<argument index="0" name="map" type="RID" />
 			<argument index="1" name="cell_height" type="float" />
 			<description>
-				Set the map cell height used to weld the navigation mesh polygons.
+				Sets the map cell height used to rasterize the navigation mesh vertices on the Y axis. Must match with the cell height of the used navigation meshes.
 			</description>
 		</method>
 		<method name="map_set_cell_size">

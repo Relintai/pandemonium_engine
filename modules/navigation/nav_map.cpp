@@ -1352,8 +1352,9 @@ void NavMap::clip_path(const LocalVector<gd::NavigationPoly> &p_navigation_polys
 
 NavMap::NavMap() {
 	up = Vector3(0, 1, 0);
-	cell_size = 0.25;
-	cell_height = 0.25;
+	/// each cell has the following cell_size and cell_height.
+	cell_size = 0.25; // Must match ProjectSettings default 3D cell_size and NavigationMesh cell_size.
+	cell_height = 0.25; // Must match ProjectSettings default 3D cell_height and NavigationMesh cell_height.
 	edge_connection_margin = 0.25;
 	regenerate_polygons = true;
 	regenerate_links = true;

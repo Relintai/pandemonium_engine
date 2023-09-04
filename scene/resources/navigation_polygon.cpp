@@ -426,7 +426,7 @@ RID NavigationPolygon::get_rid() const {
 
 NavigationPolygon::NavigationPolygon() {
 	agent_radius = 10.0f;
-	cell_size = 1.0f;
+	cell_size = 1.0f; // Must match ProjectSettings default 2D cell_size.
 
 	parsed_geometry_type = PARSED_GEOMETRY_MESH_INSTANCES;
 	collision_mask = 0xFFFFFFFF;
