@@ -166,7 +166,7 @@ void Navigation2DServer::query_path(const Ref<NavigationPathQueryParameters2D> &
 
 	const NavigationUtilities::PathQueryResult2D _query_result = _query_path(p_query_parameters->get_parameters());
 
-	p_query_result->set_path(_query_result.path);
+	p_query_result->set_from_query_result(_query_result);
 }
 
 Navigation2DServer::Navigation2DServer() {

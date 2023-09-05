@@ -67,6 +67,8 @@ public:
 	void set_path_owner_ids_bind(const Array p_path_owner_ids);
 	Array get_path_owner_ids_bind() const;
 
+	void set_from_query_result(const NavigationUtilities::PathQueryResult &p_result);
+
 	void reset();
 };
 

@@ -81,6 +81,13 @@ Array NavigationPathQueryResult2D::get_path_owner_ids_bind() const {
 	return ret;
 }
 
+void NavigationPathQueryResult2D::set_from_query_result(const NavigationUtilities::PathQueryResult2D &p_result) {
+	path = p_result.path;
+	path_types = p_result.path_types;
+	path_rids = p_result.path_rids;
+	path_owner_ids = p_result.path_owner_ids;
+}
+
 void NavigationPathQueryResult2D::reset() {
 	path.clear();
 	path_types.clear();

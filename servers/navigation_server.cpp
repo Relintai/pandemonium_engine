@@ -909,10 +909,7 @@ void NavigationServer::query_path(const Ref<NavigationPathQueryParameters3D> &p_
 
 	const NavigationUtilities::PathQueryResult _query_result = _query_path(p_query_parameters->get_parameters());
 
-	p_query_result->set_path(_query_result.path);
-	p_query_result->set_path_types(_query_result.path_types);
-	p_query_result->set_path_rids(_query_result.path_rids);
-	p_query_result->set_path_owner_ids(_query_result.path_owner_ids);
+	p_query_result->set_from_query_result(_query_result);
 }
 
 Vector<NavigationServerManager::ClassInfo> NavigationServerManager::navigation_servers;
