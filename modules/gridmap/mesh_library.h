@@ -33,8 +33,8 @@
 
 #include "core/containers/rb_map.h"
 #include "core/object/resource.h"
-#include "scene/resources/mesh.h"
 #include "scene/3d/navigation_mesh_instance.h"
+#include "scene/resources/mesh.h"
 #include "scene/resources/shape.h"
 
 class NavigationMesh;
@@ -56,6 +56,9 @@ public:
 		Transform navigation_mesh_transform;
 		Transform mesh_transform;
 		Ref<NavigationMesh> navigation_mesh;
+		uint32_t navigation_layers;
+
+		Item() ;
 	};
 
 	RBMap<int, Item> item_map;
@@ -77,6 +80,7 @@ public:
 	void set_item_mesh_transform(int p_item, const Transform &p_transform);
 	void set_item_navigation_mesh(int p_item, const Ref<NavigationMesh> &p_navigation_mesh);
 	void set_item_navigation_mesh_transform(int p_item, const Transform &p_transform);
+	void set_item_navigation_layers(int p_item, uint32_t p_navigation_layers);
 	void set_item_shapes(int p_item, const Vector<ShapeData> &p_shapes);
 	void set_item_preview(int p_item, const Ref<Texture> &p_preview);
 	String get_item_name(int p_item) const;
@@ -84,6 +88,7 @@ public:
 	Transform get_item_mesh_transform(int p_item) const;
 	Ref<NavigationMesh> get_item_navigation_mesh(int p_item) const;
 	Transform get_item_navigation_mesh_transform(int p_item) const;
+	uint32_t get_item_navigation_layers(int p_item) const;
 	Vector<ShapeData> get_item_shapes(int p_item) const;
 	Ref<Texture> get_item_preview(int p_item) const;
 
