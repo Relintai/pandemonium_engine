@@ -128,6 +128,7 @@ typedef struct {
 	const char **string_delimiters; // NULL terminated array
 	pandemonium_bool has_named_classes;
 	pandemonium_bool supports_builtin_mode;
+	pandemonium_bool has_delayed_script_class_metadata;
 
 	pandemonium_string (*get_template_source_code)(pandemonium_pluginscript_language_data *p_data, const pandemonium_string *p_class_name, const pandemonium_string *p_base_class_name);
 	pandemonium_bool (*validate)(pandemonium_pluginscript_language_data *p_data, const pandemonium_string *p_script, int *r_line_error, int *r_col_error, pandemonium_string *r_test_error, const pandemonium_string *p_path, pandemonium_pool_string_array *r_functions);

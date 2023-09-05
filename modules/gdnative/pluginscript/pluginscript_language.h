@@ -32,11 +32,11 @@
 #define PLUGINSCRIPT_LANGUAGE_H
 
 // Pandemonium imports
+#include "core/containers/rb_map.h"
+#include "core/containers/self_list.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
-#include "core/containers/rb_map.h"
 #include "core/object/script_language.h"
-#include "core/containers/self_list.h"
 // PluginScript imports
 #include "pluginscript_loader.h"
 #include <pluginscript/pandemonium_pluginscript.h>
@@ -80,6 +80,7 @@ public:
 	virtual bool has_named_classes() const;
 	virtual bool supports_builtin_mode() const;
 	virtual bool can_inherit_from_file() { return true; }
+	virtual bool has_delayed_script_class_metadata() const;
 	virtual int find_function(const String &p_function, const String &p_code) const;
 	virtual String make_function(const String &p_class, const String &p_name, const PoolStringArray &p_args) const;
 	virtual Error complete_code(const String &p_code, const String &p_path, Object *p_owner, List<ScriptCodeCompletionOption> *r_options, bool &r_force, String &r_call_hint);

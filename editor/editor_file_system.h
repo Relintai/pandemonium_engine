@@ -30,21 +30,21 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/main/node.h"
 #include "core/object/object.h"
+#include "scene/main/node.h"
 
-#include "core/os/dir_access.h"
-#include "core/os/thread.h"
-#include "core/os/thread_safe.h"
-#include "core/os/safe_refcount.h"
-#include "core/containers/rb_set.h"
-#include "core/error/error_list.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
+#include "core/containers/rb_set.h"
+#include "core/containers/vector.h"
+#include "core/error/error_list.h"
+#include "core/os/dir_access.h"
+#include "core/os/safe_refcount.h"
+#include "core/os/thread.h"
+#include "core/os/thread_safe.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
-#include "core/containers/vector.h"
 
 class FileAccess;
 struct EditorProgressBG;
@@ -168,6 +168,8 @@ class EditorFileSystem : public Node {
 
 	void _save_late_updated_files();
 
+	HashMap<String, Dictionary> compiled_lang_script_class_file_cache; // keep track of script classes from compiled languages
+
 	EditorFileSystemDirectory *filesystem;
 
 	static EditorFileSystem *singleton;
@@ -244,7 +246,8 @@ class EditorFileSystem : public Node {
 	SafeFlag update_script_classes_queued;
 	void _queue_update_script_classes();
 
-	String _get_global_script_class(const String &p_type, const String &p_path, String *r_extends, String *r_icon_path) const;
+	String _get_global_script_class(const String &p_type, const String &p_path, String *r_extends = NULL, String *r_icon_path = NULL) const;
+	//String _get_global_class_name(String p_path, String *p_base = nullptr, String *p_icon_path = nullptr);
 
 	static Error _resource_import(const String &p_path);
 
@@ -280,6 +283,9 @@ public:
 	void reimport_files(const Vector<String> &p_files);
 
 	void update_script_classes();
+	void update_file_script_class_metadata(const String &p_path, const StringName &p_name, const StringName &p_base, const StringName &p_language, const String &p_icon_path);
+	void remove_compiled_lang_script_class_file_cache(const String &p_file);
+	void init_compiled_lang_script_class_file_cache();
 
 	bool is_group_file(const String &p_path) const;
 	void move_group_file(const String &p_path, const String &p_new_path);

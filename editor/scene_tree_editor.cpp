@@ -246,15 +246,17 @@ bool SceneTreeEditor::_add_nodes(Node *p_node, TreeItem *p_parent, bool p_scroll
 		Color accent = get_theme_color("accent_color", "Editor");
 
 		Ref<Script> script = p_node->get_script();
-		if (!script.is_null() && EditorNode::get_singleton()->get_object_custom_type_base(p_node) != script) {
+		if (script.is_valid() &&
+				ScriptServer::get_global_class_name(script->get_path()) == StringName() &&
+				EditorNode::get_singleton()->get_object_custom_type_base(p_node) != script) {
 			//has script
 			item->add_button(0, get_theme_icon("Script", "EditorIcons"), BUTTON_SCRIPT);
 		} else {
-			//has no script (or script is a custom type)
+			//has no script (or script is a custom type / script class)
 			item->set_custom_color(0, get_theme_color("disabled_font_color", "Editor"));
 			item->set_selectable(0, false);
 
-			if (!script.is_null()) { // make sure to mark the script if a custom type
+			if (script.is_valid()) { // make sure to mark the script if a custom type or script class
 				item->add_button(0, get_theme_icon("Script", "EditorIcons"), BUTTON_SCRIPT);
 				item->set_button_disabled(0, item->get_button_count(0) - 1, true);
 			}
@@ -380,6 +382,11 @@ bool SceneTreeEditor::_add_nodes(Node *p_node, TreeItem *p_parent, bool p_scroll
 			if (script->is_tool()) {
 				additional_notes += "\n" + TTR("This script is currently running in the editor.");
 				button_color = get_theme_color("accent_color", "Editor");
+			}
+			item->add_button(0, get_theme_icon("Script", "EditorIcons"), BUTTON_SCRIPT, false, TTR("Open Script:") + " " + script->get_path());
+			if (EditorNode::get_singleton()->get_object_custom_type_base(p_node) == script ||
+					ScriptServer::get_global_class_name(script->get_path()) != StringName()) {
+				item->set_button_color(0, item->get_button_count(0) - 1, Color(1, 1, 1, 0.5));
 			}
 			if (EditorNode::get_singleton()->get_object_custom_type_base(p_node) == script) {
 				additional_notes += "\n" + TTR("This script is a custom type.");

@@ -29,9 +29,9 @@
 /**************************************************************************/
 
 // Pandemonium imports
+#include "core/config/project_settings.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
 // PluginScript imports
 #include "pluginscript_language.h"
 #include "pluginscript_script.h"
@@ -144,6 +144,10 @@ bool PluginScriptLanguage::has_named_classes() const {
 
 bool PluginScriptLanguage::supports_builtin_mode() const {
 	return _desc.supports_builtin_mode;
+}
+
+bool PluginScriptLanguage::has_delayed_script_class_metadata() const {
+	return _desc.has_delayed_script_class_metadata;
 }
 
 int PluginScriptLanguage::find_function(const String &p_function, const String &p_code) const {
