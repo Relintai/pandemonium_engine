@@ -1365,7 +1365,7 @@ void GridMap::_update_navigation_debug_edge_connections() {
 }
 
 void GridMap::_navigation_map_changed(RID p_map) {
-	if (bake_navigation && is_inside_tree() && p_map == get_world_3d()->get_navigation_map()) {
+	if (bake_navigation && is_inside_tree() && p_map == get_navigation_map()) {
 		_update_navigation_debug_edge_connections();
 	}
 }
@@ -1417,7 +1417,7 @@ void GridMap::_update_octant_navigation_debug_edge_connections_mesh(const Octant
 
 	g.navigation_debug_edge_connections_mesh->clear_surfaces();
 
-	float edge_connection_margin = NavigationServer::get_singleton()->map_get_edge_connection_margin(get_world_3d()->get_navigation_map());
+	float edge_connection_margin = NavigationServer::get_singleton()->map_get_edge_connection_margin(get_navigation_map());
 	float half_edge_connection_margin = edge_connection_margin * 0.5;
 
 	Vector<Vector3> vertex_array;
