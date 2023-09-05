@@ -252,9 +252,6 @@ real_t FORWARD_1_C(map_get_cell_size, RID, p_map, rid_to_rid);
 void FORWARD_2(map_set_use_edge_connections, RID, p_map, bool, p_enabled, rid_to_rid, bool_to_bool);
 bool FORWARD_1_C(map_get_use_edge_connections, RID, p_map, rid_to_rid);
 
-void FORWARD_2(map_set_cell_height, RID, p_map, real_t, p_cell_height, rid_to_rid, real_to_real);
-real_t FORWARD_1_C(map_get_cell_height, RID, p_map, rid_to_rid);
-
 void FORWARD_2(map_set_edge_connection_margin, RID, p_map, real_t, p_connection_margin, rid_to_rid, real_to_real);
 real_t FORWARD_1_C(map_get_edge_connection_margin, RID, p_map, rid_to_rid);
 

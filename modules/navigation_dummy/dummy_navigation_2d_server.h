@@ -16,8 +16,6 @@ public:
 	virtual bool map_is_active(RID p_map) const { return false; }
 	virtual void map_set_cell_size(RID p_map, real_t p_cell_size) {}
 	virtual real_t map_get_cell_size(RID p_map) const { return 0; }
-	virtual void map_set_cell_height(RID p_map, real_t p_cell_height) {}
-	virtual real_t map_get_cell_height(RID p_map) const { return 0; }
 	virtual void map_set_use_edge_connections(RID p_map, bool p_enabled) {}
 	virtual bool map_get_use_edge_connections(RID p_map) const { return false; }
 	virtual void map_set_edge_connection_margin(RID p_map, real_t p_connection_margin) {}

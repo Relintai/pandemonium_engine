@@ -47,8 +47,6 @@ void Navigation2DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("map_get_cell_size", "map"), &Navigation2DServer::map_get_cell_size);
 	ClassDB::bind_method(D_METHOD("map_set_use_edge_connections", "map", "enabled"), &Navigation2DServer::map_set_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("map_get_use_edge_connections", "map"), &Navigation2DServer::map_get_use_edge_connections);
-	ClassDB::bind_method(D_METHOD("map_set_cell_height", "map", "cell_height"), &Navigation2DServer::map_set_cell_size);
-	ClassDB::bind_method(D_METHOD("map_get_cell_height", "map"), &Navigation2DServer::map_get_cell_size);
 	ClassDB::bind_method(D_METHOD("map_set_edge_connection_margin", "map", "margin"), &Navigation2DServer::map_set_edge_connection_margin);
 	ClassDB::bind_method(D_METHOD("map_get_edge_connection_margin", "map"), &Navigation2DServer::map_get_edge_connection_margin);
 	ClassDB::bind_method(D_METHOD("map_set_link_connection_radius", "map", "radius"), &Navigation2DServer::map_set_link_connection_radius);

@@ -66,10 +66,6 @@ public:
 	virtual void map_set_use_edge_connections(RID p_map, bool p_enabled);
 	virtual bool map_get_use_edge_connections(RID p_map) const;
 
-	/// Set the map cell height used to weld the navigation mesh polygons.
-	virtual void map_set_cell_height(RID p_map, real_t p_cell_height);
-	virtual real_t map_get_cell_height(RID p_map) const;
-
 	/// Set the map edge connection margin used to weld the compatible region edges.
 	virtual void map_set_edge_connection_margin(RID p_map, real_t p_connection_margin);
 
