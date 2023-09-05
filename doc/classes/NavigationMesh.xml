@@ -8,7 +8,7 @@
 		When making procedual changes, a call to [method commit_changes] is required to apply these changes and to synchronize them with the [NavigationServer].
 	</description>
 	<tutorials>
-		<link title="3D Navmesh Demo">https://godotengine.org/asset-library/asset/124</link>
+		<link title="3D Navmesh Demo">https://github.com/Relintai/pandemonium_demo_projects/tree/master/3d/navmesh</link>
 		<link title="Using NavigationMeshes">$DOCS_URL/tutorials/navigation/navigation_using_navigationmeshes.md</link>
 	</tutorials>
 	<methods>

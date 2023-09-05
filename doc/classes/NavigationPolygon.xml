@@ -27,7 +27,7 @@
 		[/codeblock]
 	</description>
 	<tutorials>
-		<link title="2D Navigation Demo">https://godotengine.org/asset-library/asset/117</link>
+		<link title="2D Navigation Demo">https://github.com/Relintai/pandemonium_demo_projects/tree/master/2d/navigation</link>
 		<link title="Using NavigationMeshes">$DOCS_URL/tutorials/navigation/navigation_using_navigationmeshes.md</link>
 	</tutorials>
 	<methods>
