@@ -611,7 +611,7 @@ Vector2 NavigationAgent2D::get_target_position() const {
 Vector2 NavigationAgent2D::get_next_position() {
 	update_navigation();
 
-	const Vector<Vector2> &navigation_path = navigation_result->get_path();
+	const Vector<Vector2> navigation_path = navigation_result->get_path();
 	if (navigation_path.size() == 0) {
 		ERR_FAIL_COND_V(agent_parent == nullptr, Vector2());
 		return agent_parent->get_global_transform().get_origin();
@@ -649,7 +649,7 @@ bool NavigationAgent2D::is_navigation_finished() {
 Vector2 NavigationAgent2D::get_final_position() {
 	update_navigation();
 
-	const Vector<Vector2> &navigation_path = navigation_result->get_path();
+	const Vector<Vector2> navigation_path = navigation_result->get_path();
 	if (navigation_path.size() == 0) {
 		return Vector2();
 	}
@@ -687,6 +687,7 @@ void NavigationAgent2D::update_navigation() {
 	if (agent_parent == nullptr) {
 		return;
 	}
+
 	if (!agent_parent->is_inside_tree()) {
 		return;
 	}
@@ -708,7 +709,7 @@ void NavigationAgent2D::update_navigation() {
 	} else {
 		// Check if too far from the navigation path
 		if (nav_path_index > 0) {
-			const Vector<Vector2> &navigation_path = navigation_result->get_path();
+			const Vector<Vector2> navigation_path = navigation_result->get_path();
 
 			Vector2 segment[2];
 			segment[0] = navigation_path[nav_path_index - 1];
@@ -727,13 +728,7 @@ void NavigationAgent2D::update_navigation() {
 		navigation_query->set_navigation_layers(navigation_layers);
 		navigation_query->set_metadata_flags(path_metadata_flags);
 
-		if (map_override.is_valid()) {
-			navigation_query->set_map(map_override);
-		} else if (navigation != nullptr) {
-			navigation_query->set_map(navigation->get_rid());
-		} else {
-			navigation_query->set_map(agent_parent->get_world_2d()->get_navigation_map());
-		}
+		navigation_query->set_map(get_navigation_map());
 
 		Navigation2DServer::get_singleton()->query_path(navigation_query, navigation_result);
 
@@ -753,10 +748,10 @@ void NavigationAgent2D::update_navigation() {
 	// Check if we can advance the navigation path
 	if (navigation_finished == false) {
 		// Advances to the next far away position.
-		const Vector<Vector2> &navigation_path = navigation_result->get_path();
-		const Vector<int32_t> &navigation_path_types = navigation_result->get_path_types();
-		const Array &navigation_path_rids = navigation_result->get_path_rids();
-		const Vector<uint64_t> &navigation_path_owners = navigation_result->get_path_owner_ids();
+		const Vector<Vector2> navigation_path = navigation_result->get_path();
+		const Vector<int32_t> navigation_path_types = navigation_result->get_path_types();
+		const Array navigation_path_rids = navigation_result->get_path_rids();
+		const Vector<uint64_t> navigation_path_owners = navigation_result->get_path_owner_ids();
 
 		while (origin.distance_to(navigation_path[nav_path_index]) < path_desired_distance) {
 			Dictionary details;
@@ -924,7 +919,7 @@ void NavigationAgent2D::_update_debug_path() {
 	RenderingServer::get_singleton()->canvas_item_set_parent(debug_path_instance, agent_parent->get_canvas());
 	RenderingServer::get_singleton()->canvas_item_set_visible(debug_path_instance, agent_parent->is_visible_in_tree());
 
-	const Vector<Vector2> &navigation_path = navigation_result->get_path();
+	const Vector<Vector2> navigation_path = navigation_result->get_path();
 
 	if (navigation_path.size() <= 1) {
 		return;

@@ -590,7 +590,7 @@ Vector3 NavigationAgent::get_target_position() const {
 Vector3 NavigationAgent::get_next_position() {
 	update_navigation();
 
-	const Vector<Vector3> &navigation_path = navigation_result->get_path();
+	const Vector<Vector3> navigation_path = navigation_result->get_path();
 	if (navigation_path.size() == 0) {
 		ERR_FAIL_COND_V_MSG(agent_parent == nullptr, Vector3(), "The agent has no parent.");
 		return agent_parent->get_global_transform().origin;
@@ -628,7 +628,7 @@ bool NavigationAgent::is_navigation_finished() {
 Vector3 NavigationAgent::get_final_position() {
 	update_navigation();
 
-	const Vector<Vector3> &navigation_path = navigation_result->get_path();
+	const Vector<Vector3> navigation_path = navigation_result->get_path();
 
 	if (navigation_path.size() == 0) {
 		return Vector3();
@@ -699,7 +699,7 @@ void NavigationAgent::update_navigation() {
 	} else {
 		// Check if too far from the navigation path
 		if (nav_path_index > 0) {
-			const Vector<Vector3> &navigation_path = navigation_result->get_path();
+			const Vector<Vector3> navigation_path = navigation_result->get_path();
 
 			Vector3 segment[2];
 			segment[0] = navigation_path[nav_path_index - 1];
@@ -740,10 +740,10 @@ void NavigationAgent::update_navigation() {
 	// Check if we can advance the navigation path
 	if (navigation_finished == false) {
 		// Advances to the next far away position.
-		const Vector<Vector3> &navigation_path = navigation_result->get_path();
-		const Vector<int32_t> &navigation_path_types = navigation_result->get_path_types();
-		const Array &navigation_path_rids = navigation_result->get_path_rids();
-		const Vector<uint64_t> &navigation_path_owners = navigation_result->get_path_owner_ids();
+		const Vector<Vector3> navigation_path = navigation_result->get_path();
+		const Vector<int32_t> navigation_path_types = navigation_result->get_path_types();
+		const Array navigation_path_rids = navigation_result->get_path_rids();
+		const Vector<uint64_t> navigation_path_owners = navigation_result->get_path_owner_ids();
 
 		while (origin.distance_to(navigation_path[nav_path_index] - Vector3(0, path_height_offset, 0)) < path_desired_distance) {
 			Dictionary details;
@@ -969,7 +969,7 @@ void NavigationAgent::_update_debug_path() {
 		return;
 	}
 
-	const Vector<Vector3> &navigation_path = navigation_result->get_path();
+	const Vector<Vector3> navigation_path = navigation_result->get_path();
 
 	if (navigation_path.size() <= 1) {
 		return;
