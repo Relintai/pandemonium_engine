@@ -172,6 +172,7 @@ void MeshLibraryEditor::_import_scene(Node *p_scene, Ref<MeshLibrary> p_library,
 
 		Ref<NavigationMesh> navigation_mesh;
 		Transform navigation_mesh_transform;
+		uint32_t navigation_layers = 1;
 		for (int j = 0; j < mi->get_child_count(); j++) {
 			Node *child2 = mi->get_child(j);
 			if (!Object::cast_to<NavigationMeshInstance>(child2)) {
@@ -180,12 +181,14 @@ void MeshLibraryEditor::_import_scene(Node *p_scene, Ref<MeshLibrary> p_library,
 			NavigationMeshInstance *sb = Object::cast_to<NavigationMeshInstance>(child2);
 			navigation_mesh = sb->get_navigation_mesh();
 			navigation_mesh_transform = sb->get_transform();
+			navigation_layers = sb->get_navigation_layers();
 			if (!navigation_mesh.is_null()) {
 				break;
 			}
 		}
 		if (!navigation_mesh.is_null()) {
 			p_library->set_item_navigation_mesh(id, navigation_mesh);
+			p_library->set_item_navigation_layers(id, navigation_layers);
 			p_library->set_item_navigation_mesh_transform(id, navigation_mesh_transform);
 		}
 	}
@@ -197,7 +200,7 @@ void MeshLibraryEditor::_import_scene(Node *p_scene, Ref<MeshLibrary> p_library,
 	if (ids.size() != 0) {
 		Vector<Ref<Mesh>> meshes;
 		Vector<Transform> transforms;
-		
+
 		for (int i = 0; i < ids.size(); i++) {
 			if (mesh_instances.find(ids[i])) {
 				meshes.push_back(p_library->get_item_mesh(ids[i]));
