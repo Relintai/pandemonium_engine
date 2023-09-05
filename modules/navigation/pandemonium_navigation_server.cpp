@@ -1217,7 +1217,7 @@ PathQueryResult PandemoniumNavigationServer::_query_path(const PathQueryParamete
 		Vector<Vector3> path;
 		// while postprocessing is still part of map.get_path() need to check and route it here for the correct "optimize" post-processing
 		if (p_parameters.path_postprocessing == PathPostProcessing::PATH_POSTPROCESSING_CORRIDORFUNNEL) {
-			r_query_result.path = map->get_path(
+			path = map->get_path(
 					p_parameters.start_position,
 					p_parameters.target_position,
 					true,
@@ -1226,7 +1226,7 @@ PathQueryResult PandemoniumNavigationServer::_query_path(const PathQueryParamete
 					((p_parameters.metadata_flags & PathMetadataFlags::PATH_INCLUDE_RIDS) != 0) ? &r_query_result.path_rids : nullptr,
 					((p_parameters.metadata_flags & PathMetadataFlags::PATH_INCLUDE_OWNERS) != 0) ? &r_query_result.path_owner_ids : nullptr);
 		} else if (p_parameters.path_postprocessing == PathPostProcessing::PATH_POSTPROCESSING_EDGECENTERED) {
-			r_query_result.path = map->get_path(
+			path = map->get_path(
 					p_parameters.start_position,
 					p_parameters.target_position,
 					false,
