@@ -79,6 +79,7 @@ private:
 	bool use_parent;
 	CollisionObject2D *collision_parent;
 	bool use_kinematic;
+	RID navigation_map_override;
 	Navigation2D *navigation;
 	bool bake_navigation;
 	uint32_t navigation_layers;
@@ -349,6 +350,9 @@ public:
 
 	void set_centered_textures(bool p_enable);
 	bool is_centered_textures_enabled() const;
+
+	void set_navigation_map(RID p_navigation_map);
+	RID get_navigation_map() const;
 
 	// TODO change these to PoolVector2iArrays
 	Array get_used_cells() const;

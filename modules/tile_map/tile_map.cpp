@@ -68,8 +68,6 @@ void TileMap::_notification(int p_what) {
 			while (c) {
 				navigation = Object::cast_to<Navigation2D>(c);
 				if (navigation) {
-					// only for <3.5 backward compatibility
-					bake_navigation = true;
 					break;
 				}
 
@@ -697,11 +695,7 @@ void TileMap::update_dirty_quadrants() {
 
 					RID region = Navigation2DServer::get_singleton()->region_create();
 					Navigation2DServer::get_singleton()->region_set_owner_id(region, get_instance_id());
-					if (navigation) {
-						Navigation2DServer::get_singleton()->region_set_map(region, navigation->get_rid());
-					} else {
-						Navigation2DServer::get_singleton()->region_set_map(region, get_world_2d()->get_navigation_map());
-					}
+					Navigation2DServer::get_singleton()->region_set_map(region, get_navigation_map());
 					Navigation2DServer::get_singleton()->region_set_navigation_layers(region, navigation_layers);
 					Navigation2DServer::get_singleton()->region_set_transform(region, nav_rel * xform);
 					Navigation2DServer::get_singleton()->region_set_navigation_polygon(region, navigation_polygon);
@@ -1771,6 +1765,29 @@ bool TileMap::is_centered_textures_enabled() const {
 	return centered_textures;
 }
 
+void TileMap::set_navigation_map(RID p_navigation_map) {
+	if (navigation_map_override == p_navigation_map) {
+		return;
+	}
+
+	navigation_map_override = p_navigation_map;
+
+	for (RBMap<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
+		_make_quadrant_dirty(E);
+	}
+}
+
+RID TileMap::get_navigation_map() const {
+	if (navigation_map_override.is_valid()) {
+		return navigation_map_override;
+	} else if (navigation) {
+		return navigation->get_rid();
+	} else if (is_inside_tree()) {
+		return get_world_2d()->get_navigation_map();
+	}
+	return RID();
+}
+
 Array TileMap::get_used_cells() const {
 	Array a;
 	a.resize(tile_map.size());
@@ -1960,6 +1977,9 @@ void TileMap::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("fix_invalid_tiles"), &TileMap::fix_invalid_tiles);
 	ClassDB::bind_method(D_METHOD("clear"), &TileMap::clear);
+
+	ClassDB::bind_method(D_METHOD("set_navigation_map", "navigation_map"), &TileMap::set_navigation_map);
+	ClassDB::bind_method(D_METHOD("get_navigation_map"), &TileMap::get_navigation_map);
 
 	ClassDB::bind_method(D_METHOD("get_used_cells"), &TileMap::get_used_cells);
 	ClassDB::bind_method(D_METHOD("get_used_cells_by_id", "id"), &TileMap::get_used_cells_by_id);
