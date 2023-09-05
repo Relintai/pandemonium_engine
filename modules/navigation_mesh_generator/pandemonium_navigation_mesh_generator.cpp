@@ -598,7 +598,7 @@ void PandemoniumNavigationMeshGenerator::_static_bake_3d_from_source_geometry_da
 	cfg.maxSimplificationError = p_navigation_mesh->get_edge_max_error();
 	cfg.minRegionArea = (int)(p_navigation_mesh->get_region_min_size() * p_navigation_mesh->get_region_min_size());
 	cfg.mergeRegionArea = (int)(p_navigation_mesh->get_region_merge_size() * p_navigation_mesh->get_region_merge_size());
-	cfg.maxVertsPerPoly = (int)p_navigation_mesh->get_vertices_per_polyon();
+	cfg.maxVertsPerPoly = (int)p_navigation_mesh->get_vertices_per_polygon();
 	cfg.detailSampleDist = MAX(p_navigation_mesh->get_cell_size() * p_navigation_mesh->get_detail_sample_distance(), 0.1f);
 	cfg.detailSampleMaxError = p_navigation_mesh->get_cell_height() * p_navigation_mesh->get_detail_sample_max_error();
 

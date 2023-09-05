@@ -112,8 +112,8 @@ public:
 	void set_edge_max_error(float p_value);
 	float get_edge_max_error() const;
 
-	void set_vertices_per_polyon(float p_value);
-	float get_vertices_per_polyon() const;
+	void set_vertices_per_polygon(float p_value);
+	float get_vertices_per_polygon() const;
 
 	void set_detail_sample_distance(float p_value);
 	float get_detail_sample_distance() const;
@@ -168,6 +168,11 @@ protected:
 	static void _bind_methods();
 	virtual void _validate_property(PropertyInfo &property) const;
 
+#ifndef DISABLE_DEPRECATED
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+#endif // DISABLE_DEPRECATED
+
 	float cell_size;
 	float cell_height;
 	float agent_height;
@@ -178,7 +183,7 @@ protected:
 	float region_merge_size;
 	float edge_max_length;
 	float edge_max_error;
-	float vertices_per_polyon;
+	float vertices_per_polygon;
 	float detail_sample_distance;
 	float detail_sample_max_error;
 

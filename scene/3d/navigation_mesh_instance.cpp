@@ -349,6 +349,25 @@ void NavigationMeshInstance::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("bake_finished"));
 }
 
+#ifndef DISABLE_DEPRECATED
+//Renamed after 4.0
+bool NavigationMeshInstance::_set(const StringName &p_name, const Variant &p_value) {
+	if (p_name == "navmesh") {
+		set_navigation_mesh(p_value);
+		return true;
+	}
+	return false;
+}
+
+bool NavigationMeshInstance::_get(const StringName &p_name, Variant &r_ret) const {
+	if (p_name == "navmesh") {
+		r_ret = get_navigation_mesh();
+		return true;
+	}
+	return false;
+}
+#endif // DISABLE_DEPRECATED
+
 void NavigationMeshInstance::_changed_callback(Object *p_changed, const char *p_prop) {
 	update_gizmos();
 	update_configuration_warning();

@@ -174,7 +174,7 @@ void NavigationPolygonInstance::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
 			set_physics_process_internal(false);
-			
+
 			_region_update_transform();
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
@@ -370,6 +370,25 @@ void NavigationPolygonInstance::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("navigation_polygon_changed"));
 	ADD_SIGNAL(MethodInfo("bake_finished"));
 }
+
+#ifndef DISABLE_DEPRECATED
+//Renamed after 4.0
+bool NavigationPolygonInstance::_set(const StringName &p_name, const Variant &p_value) {
+	if (p_name == "navpoly") {
+		set_navigation_polygon(p_value);
+		return true;
+	}
+	return false;
+}
+
+bool NavigationPolygonInstance::_get(const StringName &p_name, Variant &r_ret) const {
+	if (p_name == "navpoly") {
+		r_ret = get_navigation_polygon();
+		return true;
+	}
+	return false;
+}
+#endif // DISABLE_DEPRECATED
 
 NavigationPolygonInstance::NavigationPolygonInstance() {
 	enabled = true;

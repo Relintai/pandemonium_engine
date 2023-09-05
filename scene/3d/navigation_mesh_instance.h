@@ -75,6 +75,11 @@ protected:
 	static void _bind_methods();
 	void _changed_callback(Object *p_changed, const char *p_prop);
 
+#ifndef DISABLE_DEPRECATED
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+#endif // DISABLE_DEPRECATED
+
 public:
 	void set_enabled(bool p_enabled);
 	bool is_enabled() const;
