@@ -826,6 +826,11 @@ void NavigationAgent2D::update_navigation() {
 				nav_path_index -= 1;
 				navigation_finished = true;
 				target_position_submitted = false;
+				if (avoidance_enabled) {
+					Navigation2DServer::get_singleton()->agent_set_position(agent, agent_parent->get_global_position());
+					Navigation2DServer::get_singleton()->agent_set_velocity(agent, Vector2(0.0, 0.0));
+					Navigation2DServer::get_singleton()->agent_set_velocity_forced(agent, Vector2(0.0, 0.0));
+				}
 				emit_signal("navigation_finished");
 				break;
 			}
