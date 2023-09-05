@@ -373,14 +373,9 @@ void NavigationAgent2D::set_agent_parent(Node *p_agent_parent) {
 	if (Object::cast_to<Node2D>(p_agent_parent) != nullptr) {
 		// place agent on navigation map first or else the RVO agent callback creation fails silently later
 		agent_parent = Object::cast_to<Node2D>(p_agent_parent);
-		if (map_override.is_valid()) {
-			Navigation2DServer::get_singleton()->agent_set_map(get_rid(), map_override);
-		} else if (navigation != nullptr) {
-			Navigation2DServer::get_singleton()->agent_set_map(get_rid(), navigation->get_rid());
-		} else {
-			// no navigation node found in parent nodes, use default navigation map from world resource
-			Navigation2DServer::get_singleton()->agent_set_map(get_rid(), agent_parent->get_world_2d()->get_navigation_map());
-		}
+
+		Navigation2DServer::get_singleton()->agent_set_map(get_rid(), get_navigation_map());
+
 		// create new avoidance callback if enabled
 		Navigation2DServer::get_singleton()->agent_set_avoidance_callback(agent, get_instance_id(), "_avoidance_done");
 	} else {
