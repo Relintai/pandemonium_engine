@@ -2545,7 +2545,6 @@ ImageMemLoadFunc Image::_jpg_mem_loader_func = nullptr;
 ImageMemLoadFunc Image::_webp_mem_loader_func = nullptr;
 ImageMemLoadFunc Image::_tga_mem_loader_func = nullptr;
 ImageMemLoadFunc Image::_bmp_mem_loader_func = nullptr;
-ImageMemLoadFunc Image::_dds_mem_loader_func = nullptr;
 
 void (*Image::_image_compress_bc_func)(Image *, float, Image::CompressSource) = nullptr;
 void (*Image::_image_compress_bptc_func)(Image *, float, Image::CompressSource) = nullptr;
@@ -2987,7 +2986,6 @@ void Image::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_webp_from_buffer", "buffer"), &Image::load_webp_from_buffer);
 	ClassDB::bind_method(D_METHOD("load_tga_from_buffer", "buffer"), &Image::load_tga_from_buffer);
 	ClassDB::bind_method(D_METHOD("load_bmp_from_buffer", "buffer"), &Image::load_bmp_from_buffer);
-	ClassDB::bind_method(D_METHOD("load_dds_from_buffer", "buffer"), &Image::load_dds_from_buffer);
 
 	ClassDB::bind_method(D_METHOD("convert_rg_to_ra_rgba8"), &Image::convert_rg_to_ra_rgba8);
 	ClassDB::bind_method(D_METHOD("convert_ra_rgba8_to_rg"), &Image::convert_ra_rgba8_to_rg);
@@ -3319,32 +3317,8 @@ Error Image::load_bmp_from_buffer(const PoolVector<uint8_t> &p_array) {
 	ERR_FAIL_NULL_V_MSG(
 			_bmp_mem_loader_func,
 			ERR_UNAVAILABLE,
-			"The BMP module isn't enabled. Recompile the Pandemonium editor or export template binary with the `module_bmp_enabled=yes` SCons option.");
+			"The BMP module isn't enabled. Recompile the Godot editor or export template binary with the `module_bmp_enabled=yes` SCons option.");
 	return _load_from_buffer(p_array, _bmp_mem_loader_func);
-}
-
-Error Image::load_dds_from_buffer(const PoolVector<uint8_t> &p_array) {
-	ERR_FAIL_NULL_V_MSG(
-			_dds_mem_loader_func,
-			ERR_UNAVAILABLE,
-			"The DDS module isn't enabled. Recompile the Pandemonium editor or export template binary with the `module_dds_enabled=yes` SCons option.");
-	return _load_from_buffer(p_array, _dds_mem_loader_func);
-}
-
-Error Image::_load_from_buffer(const PoolVector<uint8_t> &p_array, ImageMemLoadFunc p_loader) {
-	int buffer_size = p_array.size();
-
-	ERR_FAIL_COND_V(buffer_size == 0, ERR_INVALID_PARAMETER);
-	ERR_FAIL_COND_V(!p_loader, ERR_INVALID_PARAMETER);
-
-	PoolVector<uint8_t>::Read r = p_array.read();
-
-	Ref<Image> image = p_loader(r.ptr(), buffer_size);
-	ERR_FAIL_COND_V(!image.is_valid(), ERR_PARSE_ERROR);
-
-	copy_internals_from(image);
-
-	return OK;
 }
 
 void Image::convert_rg_to_ra_rgba8() {
@@ -3373,6 +3347,22 @@ void Image::convert_ra_rgba8_to_rg() {
 		w[i + 2] = 0;
 		w[i + 3] = 255;
 	}
+}
+
+Error Image::_load_from_buffer(const PoolVector<uint8_t> &p_array, ImageMemLoadFunc p_loader) {
+	int buffer_size = p_array.size();
+
+	ERR_FAIL_COND_V(buffer_size == 0, ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V(!p_loader, ERR_INVALID_PARAMETER);
+
+	PoolVector<uint8_t>::Read r = p_array.read();
+
+	Ref<Image> image = p_loader(r.ptr(), buffer_size);
+	ERR_FAIL_COND_V(!image.is_valid(), ERR_PARSE_ERROR);
+
+	copy_internals_from(image);
+
+	return OK;
 }
 
 void Image::average_4_uint8(uint8_t &p_out, const uint8_t &p_a, const uint8_t &p_b, const uint8_t &p_c, const uint8_t &p_d) {
