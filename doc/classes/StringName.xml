@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="StringName" version="4.1">
 	<brief_description>
+		A built-in type for unique strings.
 	</brief_description>
 	<description>
+		[StringName]s are immutable strings designed for general-purpose representation of unique names (also called "string interning"). Two [StringName]s with the same value are the same object. Comparing them is extremely fast compared to regular [String]s.
+		You will usually just pass a [String] to methods expecting a [StringName] and it will be automatically converted, but you may occasionally want to construct a [StringName] ahead of time with the [StringName] constructor or, in GDScript, the literal syntax [code]@"example"[/code].
+		See also [NodePath], which is a similar concept specifically designed to store pre-parsed scene tree paths.
+	</description>
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,6 +16,7 @@
 			<return type="StringName" />
 			<argument index="0" name="from" type="String" />
 			<description>
+				Constructs a [StringName] as a copy of the given [StringName].
 			</description>
 		</method>
 	</methods>
