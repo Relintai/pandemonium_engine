@@ -153,6 +153,8 @@ protected:
 
 public:
 	void add_message(const String &p_msg, MessageType p_type = MSG_TYPE_STD);
+	//not thread safe!
+	void add_thread_message(Thread::ID thread_id, const String &p_msg, MessageType p_type = MSG_TYPE_STD);
 	void set_tool_button(ToolButton *p_tool_button);
 	void deinit();
 

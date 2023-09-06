@@ -961,10 +961,11 @@ void EditorScriptEditorDebugger::_parse_message(const String &p_msg, uint64_t p_
 		//OUT
 		for (int i = 0; i < p_data.size(); i++) {
 			Array output = p_data[i];
-			ERR_FAIL_COND_MSG(output.size() < 2, "Malformed output message from script debugger.");
+			ERR_FAIL_COND_MSG(output.size() < 3, "Malformed output message from script debugger.");
 
 			String str = output[0];
 			ScriptDebuggerRemote::MessageType type = (ScriptDebuggerRemote::MessageType)(int)(output[1]);
+			Thread::ID logger_thread_id = (Thread::ID)(output[2]);
 
 			EditorLog::MessageType msg_type;
 			switch (type) {
@@ -990,7 +991,11 @@ void EditorScriptEditorDebugger::_parse_message(const String &p_msg, uint64_t p_
 				}
 			}
 
-			EditorNode::get_log()->add_message(str, msg_type);
+			if (process_main_thread_id == 0 || process_main_thread_id == logger_thread_id) {
+				EditorNode::get_log()->add_message(str, msg_type);
+			} else {
+				EditorNode::get_log()->add_thread_message(logger_thread_id, str, msg_type);
+			}
 		}
 	} else if (p_msg == "performance") {
 		Array arr = p_data[0];

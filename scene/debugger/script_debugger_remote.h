@@ -91,6 +91,7 @@ class ScriptDebuggerRemote : public ScriptDebugger {
 	struct OutputString {
 		String message;
 		int type;
+		Thread::ID thread;
 	};
 
 	List<OutputString> output_strings;

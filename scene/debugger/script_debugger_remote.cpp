@@ -496,6 +496,7 @@ void ScriptDebuggerRemote::_get_output() {
 			Array msg_data;
 			msg_data.push_back(output_string.message);
 			msg_data.push_back(output_string.type);
+			msg_data.push_back(output_string.thread);
 
 			packet_peer_stream->put_var(msg_data);
 
@@ -1250,11 +1251,13 @@ void ScriptDebuggerRemote::_print_handler(void *p_this, const String &p_string, 
 		OutputString output_string;
 		output_string.message = s;
 		output_string.type = p_error ? MESSAGE_TYPE_ERROR : MESSAGE_TYPE_LOG;
+		output_string.thread = Thread::get_caller_id();
 		sdr->output_strings.push_back(output_string);
 
 		if (overflowed) {
 			output_string.message = "[output overflow, print less text!]";
 			output_string.type = MESSAGE_TYPE_ERROR;
+			output_string.thread = Thread::get_caller_id();
 			sdr->output_strings.push_back(output_string);
 		}
 	}

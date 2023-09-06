@@ -96,22 +96,17 @@ void EditorLog::_error_handler(void *p_self, const char *p_func, const char *p_f
 	EditorLog *self = (EditorLog *)p_self;
 
 	String err_str;
+
 	if (p_errorexp && p_errorexp[0]) {
 		err_str = String::utf8(p_errorexp);
 	} else {
 		err_str = String::utf8(p_file) + ":" + itos(p_line) + " - " + String::utf8(p_error);
 	}
 
-	if (p_type == ERR_HANDLER_WARNING) {
-		self->add_message(err_str, MSG_TYPE_WARNING);
-	} else {
-		self->add_message(err_str, MSG_TYPE_ERROR);
-	}
-
 	MessageType message_type = p_type == ERR_HANDLER_WARNING ? MSG_TYPE_WARNING : MSG_TYPE_ERROR;
 
 	if (self->current != Thread::get_caller_id()) {
-		self->call_deferred("add_message", err_str, message_type);
+		self->call_deferred("add_thread_message", Thread::get_caller_id(), err_str, message_type);
 	} else {
 		self->add_message(err_str, message_type);
 	}
@@ -260,39 +255,6 @@ void EditorLog::_process_message(const String &p_msg, MessageType p_type, bool p
 }
 
 void EditorLog::add_message(const String &p_msg, MessageType p_type) {
-	/* TODO
-	bool restore = p_type != MSG_TYPE_STD;
-	switch (p_type) {
-		case MSG_TYPE_STD: {
-		} break;
-		case MSG_TYPE_ERROR: {
-			log->push_color(get_theme_color("error_color", "Editor"));
-			Ref<Texture> icon = get_theme_icon("Error", "EditorIcons");
-			log->add_image(icon);
-			log->add_text(" ");
-			tool_button->set_icon(icon);
-		} break;
-		case MSG_TYPE_WARNING: {
-			log->push_color(get_theme_color("warning_color", "Editor"));
-			Ref<Texture> icon = get_theme_icon("Warning", "EditorIcons");
-			log->add_image(icon);
-			log->add_text(" ");
-			tool_button->set_icon(icon);
-		} break;
-		case MSG_TYPE_EDITOR: {
-			// Distinguish editor messages from messages printed by the project
-			log->push_color(get_theme_color("font_color", "Editor") * Color(1, 1, 1, 0.6));
-		} break;
-	}
-
-	log->add_text(p_msg);
-	log->add_newline();
-
-	if (restore) {
-		log->pop();
-	}
-	*/
-
 	// Make text split by new lines their own message.
 	// See #41321 for reasoning. At time of writing, multiple print()'s in running projects
 	// get grouped together and sent to the editor log as one message. This can mess with the
@@ -303,6 +265,22 @@ void EditorLog::add_message(const String &p_msg, MessageType p_type) {
 
 	for (int i = 0; i < line_count; i++) {
 		_process_message(lines[i], p_type, i == line_count - 1);
+	}
+}
+
+void EditorLog::add_thread_message(Thread::ID thread_id, const String &p_msg, MessageType p_type) {
+	// Make text split by new lines their own message.
+	// See #41321 for reasoning. At time of writing, multiple print()'s in running projects
+	// get grouped together and sent to the editor log as one message. This can mess with the
+	// search functionality (see the comments on the PR above for more details). This behavior
+	// also matches that of other IDE's.
+	Vector<String> lines = p_msg.split("\n", true);
+	int line_count = lines.size();
+
+	String thread_str = "(T: " + String::num(thread_id) + ") ";
+
+	for (int i = 0; i < line_count; i++) {
+		_process_message(thread_str + lines[i], p_type, i == line_count - 1);
 	}
 }
 
@@ -412,6 +390,9 @@ void EditorLog::_reset_message_counts() {
 }
 
 void EditorLog::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("add_message"), &EditorLog::add_message);
+	ClassDB::bind_method(D_METHOD("add_thread_message"), &EditorLog::add_thread_message);
+
 	ClassDB::bind_method(D_METHOD("_clear_request"), &EditorLog::_clear_request);
 	ClassDB::bind_method(D_METHOD("_copy_request"), &EditorLog::_copy_request);
 
