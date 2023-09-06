@@ -436,6 +436,7 @@ EditorLog::EditorLog() {
 	search_box->set_clear_button_enabled(true);
 	search_box->set_visible(true);
 	search_box->connect("text_changed", this, "_search_changed");
+	search_box->hide();
 	vb_left->add_child(search_box);
 
 	VBoxContainer *vb_right = memnew(VBoxContainer);
@@ -484,7 +485,7 @@ EditorLog::EditorLog() {
 	show_search_button->set_flat(true);
 	show_search_button->set_focus_mode(FOCUS_NONE);
 	show_search_button->set_toggle_mode(true);
-	show_search_button->set_pressed(true);
+	show_search_button->set_pressed(false);
 	show_search_button->set_shortcut(ED_SHORTCUT("editor/open_search", TTR("Focus Search/Filter Bar"), KEY_MASK_CTRL | KEY_F));
 	//show_search_button->set_shortcut_context(this);
 	show_search_button->connect("toggled", this, "_set_search_visible");
