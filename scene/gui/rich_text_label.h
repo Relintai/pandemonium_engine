@@ -83,7 +83,8 @@ public:
 		ITEM_TORNADO,
 		ITEM_RAINBOW,
 		ITEM_META,
-		ITEM_CUSTOMFX
+		ITEM_CUSTOMFX,
+		ITEM_CONTEXT
 	};
 
 protected:
@@ -317,6 +318,10 @@ private:
 		}
 	};
 
+	struct ItemContext : public Item {
+		ItemContext() { type = ITEM_CONTEXT; }
+	};
+
 	ItemFrame *main;
 	Item *current;
 	ItemFrame *current_frame;
@@ -446,10 +451,13 @@ public:
 	void push_tornado(float p_frequency, float p_radius);
 	void push_rainbow(float p_saturation, float p_value, float p_frequency);
 	void push_customfx(Ref<RichTextEffect> p_custom_effect, Dictionary p_environment);
+	void push_context();
 	void set_table_column_expand(int p_column, bool p_expand, int p_ratio = 1);
 	int get_current_table_column() const;
 	void push_cell();
 	void pop();
+	void pop_context();
+	void pop_all();
 
 	void clear();
 
