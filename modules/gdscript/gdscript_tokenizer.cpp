@@ -547,6 +547,7 @@ void GDScriptTokenizerText::_advance() {
 	}
 	while (true) {
 		bool is_string_name = false;
+		bool is_node_path = false;
 		StringMode string_mode = STRING_DOUBLE_QUOTE;
 
 		switch (GETCHAR(0)) {
@@ -733,14 +734,13 @@ void GDScriptTokenizerText::_advance() {
 			case '$':
 				_make_token(TK_DOLLAR); //for the get_node() shortener
 				break;
-			case '^': {
+			case '%': {
 				if (GETCHAR(1) == '=') {
-					_make_token(TK_OP_ASSIGN_BIT_XOR);
+					_make_token(TK_OP_ASSIGN_MOD);
 					INCPOS(1);
 				} else {
-					_make_token(TK_OP_BIT_XOR);
+					_make_token(TK_OP_MOD);
 				}
-
 			} break;
 			case '~':
 				_make_token(TK_OP_BIT_INVERT);
@@ -800,21 +800,29 @@ void GDScriptTokenizerText::_advance() {
 					_make_token(TK_OP_SUB);
 				}
 			} break;
-			case '%': {
+			case '^': {
 				if (GETCHAR(1) == '=') {
-					_make_token(TK_OP_ASSIGN_MOD);
+					_make_token(TK_OP_ASSIGN_BIT_XOR);
 					INCPOS(1);
+					break;
+				} else if (GETCHAR(1) == '"' || GETCHAR(1) == '\'') {
+					INCPOS(1);
+					is_node_path = true;
+					FALLTHROUGH;
 				} else {
-					_make_token(TK_OP_MOD);
+					_make_token(TK_OP_BIT_XOR);
+					break;
 				}
-			} break;
+			}
 			case '@':
-				if (CharType(GETCHAR(1)) != '"' && CharType(GETCHAR(1)) != '\'') {
-					_make_error("Unexpected '@'");
-					return;
+				if (!is_node_path) {
+					if (CharType(GETCHAR(1)) != '"' && CharType(GETCHAR(1)) != '\'') {
+						_make_error("Unexpected '@'");
+						return;
+					}
+					INCPOS(1);
+					is_string_name = true;
 				}
-				INCPOS(1);
-				is_string_name = true;
 				FALLTHROUGH;
 			case '\'':
 			case '"': {
@@ -944,6 +952,8 @@ void GDScriptTokenizerText::_advance() {
 
 				if (is_string_name) {
 					_make_constant(StringName(str));
+				} else if (is_node_path) {
+					_make_constant(NodePath(str));
 				} else {
 					_make_constant(str);
 				}
