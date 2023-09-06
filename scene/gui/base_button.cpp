@@ -358,6 +358,7 @@ void BaseButton::_unhandled_input(Ref<InputEvent> p_event) {
 		}
 
 		on_action_event(p_event);
+		get_tree()->set_input_as_handled();
 	}
 }
 
