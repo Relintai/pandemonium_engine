@@ -1132,7 +1132,7 @@ void SceneTree::set_pause(bool p_enabled) {
 
 	PhysicsServer::get_singleton()->set_active(!p_enabled);
 	Physics2DServer::get_singleton()->set_active(!p_enabled);
-	
+
 	if (get_root()) {
 		get_root()->propagate_notification(p_enabled ? Node::NOTIFICATION_PAUSED : Node::NOTIFICATION_UNPAUSED);
 	}
@@ -1359,6 +1359,23 @@ void SceneTree::get_nodes_in_group(const StringName &p_group, List<Node *> *p_li
 	for (int i = 0; i < nc; i++) {
 		p_list->push_back(ptr[i]);
 	}
+}
+Node *SceneTree::get_first_node_in_group(const StringName &p_group) {
+	_THREAD_SAFE_METHOD_
+
+	RBMap<StringName, Group>::Element *E = group_map.find(p_group);
+	if (!E) {
+		return NULL;
+	}
+
+	_update_group_order(E->get()); //update order just in case
+
+	int nc = E->get().nodes.size();
+	if (nc == 0) {
+		return NULL;
+	}
+
+	return E->get().nodes[0];
 }
 
 void SceneTree::_flush_delete_queue() {
@@ -2233,6 +2250,7 @@ void SceneTree::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_group", "group", "property", "value"), &SceneTree::set_group);
 
 	ClassDB::bind_method(D_METHOD("get_nodes_in_group", "group"), &SceneTree::_get_nodes_in_group);
+	ClassDB::bind_method(D_METHOD("get_first_node_in_group", "group"), &SceneTree::get_first_node_in_group);
 
 	ClassDB::bind_method(D_METHOD("set_current_scene", "child_node"), &SceneTree::set_current_scene);
 	ClassDB::bind_method(D_METHOD("get_current_scene"), &SceneTree::get_current_scene);

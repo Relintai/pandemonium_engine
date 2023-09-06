@@ -400,6 +400,7 @@ public:
 	void queue_delete(Object *p_object);
 
 	void get_nodes_in_group(const StringName &p_group, List<Node *> *p_list);
+	Node *get_first_node_in_group(const StringName &p_group);
 	bool has_group(const StringName &p_identifier) const;
 
 	void set_screen_stretch(StretchMode p_mode, StretchAspect p_aspect, const Size2 &p_minsize, real_t p_scale = 1.0);
