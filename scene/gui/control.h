@@ -199,6 +199,10 @@ private:
 		NodePath focus_next;
 		NodePath focus_prev;
 
+		ObjectID shortcut_context;
+		NodePath shortcut_context_path;
+		mutable ObjectID shortcut_context_path_cache;
+
 		HashMap<StringName, Ref<Texture>> icon_override;
 		HashMap<StringName, Ref<Shader>> shader_override;
 		HashMap<StringName, Ref<StyleBox>> style_override;
@@ -493,6 +497,14 @@ public:
 	void grab_click_focus();
 
 	void warp_mouse(const Point2 &p_to_pos);
+
+	void set_shortcut_context(const Node *p_node);
+	Node *get_shortcut_context() const;
+
+	void set_shortcut_context_path(const NodePath &p_node_path);
+	NodePath get_shortcut_context_path() const;
+
+	bool is_focus_owner_in_shortcut_context() const;
 
 	virtual bool is_text_field() const;
 

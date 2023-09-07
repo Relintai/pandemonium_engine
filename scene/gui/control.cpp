@@ -2503,6 +2503,68 @@ void Control::warp_mouse(const Point2 &p_to_pos) {
 	get_viewport()->warp_mouse(get_global_transform().xform(p_to_pos));
 }
 
+void Control::set_shortcut_context(const Node *p_node) {
+	if (p_node != nullptr) {
+		data.shortcut_context = p_node->get_instance_id();
+	} else {
+		data.shortcut_context = ObjectID();
+	}
+}
+
+Node *Control::get_shortcut_context() const {
+	if (unlikely(data.shortcut_context)) {
+		Object *ctx_obj = ObjectDB::get_instance(data.shortcut_context);
+		Node *ctx_node = Object::cast_to<Node>(ctx_obj);
+
+		return ctx_node;
+	}
+
+	if (likely(data.shortcut_context_path.is_empty())) {
+		return NULL;
+	}
+
+	if (data.shortcut_context_path_cache) {
+		Object *ctx_obj = ObjectDB::get_instance(data.shortcut_context_path_cache);
+
+		if (ctx_obj) {
+			Node *ctx_node = Object::cast_to<Node>(ctx_obj);
+
+			return ctx_node;
+		} else {
+			data.shortcut_context_path_cache = ObjectID();
+		}
+	}
+
+	Node *n = get_node_or_null(data.shortcut_context_path);
+
+	if (n) {
+		data.shortcut_context_path_cache = n->get_instance_id();
+	}
+
+	return n;
+}
+
+void Control::set_shortcut_context_path(const NodePath &p_node_path) {
+	data.shortcut_context_path = p_node_path;
+	data.shortcut_context_path_cache = 0;
+}
+NodePath Control::get_shortcut_context_path() const {
+	return data.shortcut_context_path;
+}
+
+bool Control::is_focus_owner_in_shortcut_context() const {
+	if (data.shortcut_context == ObjectID()) {
+		// No context, therefore global - always "in" context.
+		return true;
+	}
+
+	const Node *ctx_node = get_shortcut_context();
+	const Control *vp_focus = get_viewport() ? get_viewport()->_gui_get_focus_owner() : NULL;
+
+	// If the context is valid and the viewport focus is valid, check if the context is the focus or is a parent of it.
+	return ctx_node && vp_focus && (ctx_node == vp_focus || ctx_node->is_a_parent_of(vp_focus));
+}
+
 bool Control::is_text_field() const {
 	return false;
 }
@@ -2817,6 +2879,12 @@ void Control::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("warp_mouse", "to_position"), &Control::warp_mouse);
 
+	ClassDB::bind_method(D_METHOD("set_shortcut_context", "node"), &Control::set_shortcut_context);
+	ClassDB::bind_method(D_METHOD("get_shortcut_context"), &Control::get_shortcut_context);
+
+	ClassDB::bind_method(D_METHOD("set_shortcut_context_path", "path"), &Control::set_shortcut_context_path);
+	ClassDB::bind_method(D_METHOD("get_shortcut_context_path"), &Control::get_shortcut_context_path);
+
 	ClassDB::bind_method(D_METHOD("minimum_size_changed"), &Control::minimum_size_changed);
 
 	ClassDB::bind_method(D_METHOD("_theme_changed"), &Control::_theme_changed);
@@ -2881,6 +2949,8 @@ void Control::_bind_methods() {
 
 	ADD_GROUP("Input", "input_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "input_pass_on_modal_close_click"), "set_pass_on_modal_close_click", "get_pass_on_modal_close_click");
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "shortcut_context_path"), "set_shortcut_context_path", "get_shortcut_context_path");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "shortcut_context", PROPERTY_HINT_NONE, "", 0), "set_shortcut_context", "get_shortcut_context");
 
 	ADD_GROUP("Size Flags", "size_flags_");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "size_flags_horizontal", PROPERTY_HINT_FLAGS, "Fill,Expand,Shrink Center,Shrink End"), "set_h_size_flags", "get_h_size_flags");
@@ -3007,7 +3077,9 @@ Control::Control() {
 		data.margin[i] = 0;
 	}
 	data.focus_mode = FOCUS_NONE;
-	data.modal_prev_focus_owner = 0;
+	data.modal_prev_focus_owner = ObjectID();
+	data.shortcut_context = ObjectID();
+	data.shortcut_context_path_cache = ObjectID();
 
 	set_physics_interpolation_mode(Node::PHYSICS_INTERPOLATION_MODE_OFF);
 }

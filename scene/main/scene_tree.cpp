@@ -45,6 +45,7 @@
 #include "scene/3d/spatial.h"
 #include "scene/animation/scene_tree_tween.h"
 #include "scene/debugger/script_debugger_remote.h"
+#include "scene/gui/control.h"
 #include "scene/resources/dynamic_font.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
@@ -1279,6 +1280,8 @@ void SceneTree::_call_input_pause(const StringName &p_group, const CallInputType
 	call_lock++;
 	_THREAD_SAFE_UNLOCK_
 
+	Vector<Node *> no_context_nodes;
+
 	StringName method;
 
 	switch (p_call_type) {
@@ -1296,22 +1299,62 @@ void SceneTree::_call_input_pause(const StringName &p_group, const CallInputType
 			break;
 	}
 
-	for (int i = node_count - 1; i >= 0; i--) {
-		if (input_handled) {
-			break;
+	if (p_call_type != CALL_INPUT_TYPE_SHORTCUT_INPUT) {
+		for (int i = node_count - 1; i >= 0; i--) {
+			if (input_handled) {
+				break;
+			}
+
+			Node *n = nodes[i];
+			if (call_lock && call_skip.has(n)) {
+				continue;
+			}
+
+			if (!n->can_process()) {
+				continue;
+			}
+
+			n->call_multilevel(method, (const Variant **)v, 1);
+			//ERR_FAIL_COND(node_count != g.nodes.size());
+		}
+	} else {
+		for (int i = node_count - 1; i >= 0; i--) {
+			if (input_handled) {
+				break;
+			}
+
+			Node *n = nodes[i];
+			if (call_lock && call_skip.has(n)) {
+				continue;
+			}
+
+			if (!n->can_process()) {
+				continue;
+			}
+
+			const Control *c = Object::cast_to<Control>(n);
+			if (c) {
+				// If calling shortcut input on a control, ensure it respects the shortcut context.
+				// Shortcut context (based on focus) only makes sense for controls (UI), so don't need to worry about it for nodes
+				if (c->get_shortcut_context() == NULL) {
+					no_context_nodes.push_back(n);
+					continue;
+				}
+				if (!c->is_focus_owner_in_shortcut_context()) {
+					continue;
+				}
+			}
+
+			n->call_multilevel(method, (const Variant **)v, 1);
+			//ERR_FAIL_COND(node_count != g.nodes.size());
 		}
 
-		Node *n = nodes[i];
-		if (call_lock && call_skip.has(n)) {
-			continue;
-		}
+		int ncns = no_context_nodes.size();
 
-		if (!n->can_process()) {
-			continue;
+		for (int i = 0; i < ncns; ++i) {
+			Node *n = no_context_nodes[i];
+			n->call_multilevel(method, (const Variant **)v, 1);
 		}
-
-		n->call_multilevel(method, (const Variant **)v, 1);
-		//ERR_FAIL_COND(node_count != g.nodes.size());
 	}
 
 	_THREAD_SAFE_LOCK_
