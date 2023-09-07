@@ -599,6 +599,7 @@ EditorTextEditor::EditorTextEditor() {
 	edit_hb = memnew(HBoxContainer);
 
 	search_menu = memnew(MenuButton);
+	search_menu->set_shortcut_context(this);
 	edit_hb->add_child(search_menu);
 	search_menu->set_text(TTR("Search"));
 	search_menu->set_switch_on_hover(true);
@@ -613,6 +614,7 @@ EditorTextEditor::EditorTextEditor() {
 	search_menu->get_popup()->add_shortcut(ED_GET_SHORTCUT("script_text_editor/replace_in_files"), REPLACE_IN_FILES);
 
 	edit_menu = memnew(MenuButton);
+	edit_menu->set_shortcut_context(this);
 	edit_hb->add_child(edit_menu);
 	edit_menu->set_text(TTR("Edit"));
 	edit_menu->set_switch_on_hover(true);
@@ -668,6 +670,7 @@ EditorTextEditor::EditorTextEditor() {
 	set_syntax_highlighter(plain_highlighter);
 
 	MenuButton *goto_menu = memnew(MenuButton);
+	goto_menu->set_shortcut_context(this);
 	edit_hb->add_child(goto_menu);
 	goto_menu->set_text(TTR("Go To"));
 	goto_menu->set_switch_on_hover(true);

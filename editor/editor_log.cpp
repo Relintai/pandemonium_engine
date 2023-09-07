@@ -452,8 +452,8 @@ EditorLog::EditorLog() {
 	clear_button->set_flat(true);
 	clear_button->set_focus_mode(FOCUS_NONE);
 	clear_button->set_tooltip(TTR("Clear Output"));
-	//clear_button->set_shortcut(ED_SHORTCUT("editor/clear_output", TTR("Clear Output"), KEY_MASK_CTRL | KEY_MASK_SHIFT | KEY_K));
-	//clear_button->set_shortcut_context(this);
+	clear_button->set_shortcut(ED_SHORTCUT("editor/clear_output", TTR("Clear Output"), KEY_MASK_CTRL | KEY_MASK_SHIFT | KEY_K));
+	clear_button->set_shortcut_context(this);
 	clear_button->connect("pressed", this, "_clear_request");
 	hb_tools->add_child(clear_button);
 
@@ -462,8 +462,8 @@ EditorLog::EditorLog() {
 	copy_button->set_flat(true);
 	copy_button->set_focus_mode(FOCUS_NONE);
 	copy_button->set_tooltip(TTR("Copy Selection"));
-	//copy_button->set_shortcut(ED_SHORTCUT("editor/copy_output", TTR("Copy Selection"), KEY_MASK_CTRL | KEY_K));
-	//copy_button->set_shortcut_context(this);
+	copy_button->set_shortcut(ED_SHORTCUT("editor/copy_output", TTR("Copy Selection"), KEY_MASK_CTRL | KEY_K));
+	copy_button->set_shortcut_context(this);
 	copy_button->connect("pressed", this, "_copy_request");
 	hb_tools->add_child(copy_button);
 
@@ -489,8 +489,8 @@ EditorLog::EditorLog() {
 	show_search_button->set_toggle_mode(true);
 	show_search_button->set_pressed(false);
 	show_search_button->set_tooltip(TTR("Open Search/Filter Bar"));
-	//show_search_button->set_shortcut(ED_SHORTCUT("editor/open_search", TTR("Open Search/Filter Bar"), KEY_MASK_CTRL | KEY_F));
-	//show_search_button->set_shortcut_context(this);
+	show_search_button->set_shortcut(ED_SHORTCUT("editor/open_search", TTR("Open Search/Filter Bar"), KEY_MASK_CTRL | KEY_F));
+	show_search_button->set_shortcut_context(this);
 	show_search_button->connect("toggled", this, "_set_search_visible");
 	hb_tools2->add_child(show_search_button);
 

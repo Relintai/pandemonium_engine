@@ -3583,6 +3583,7 @@ SceneTreeDock::SceneTreeDock(EditorNode *p_editor, Node *p_scene_root, EditorSel
 	quick_open = memnew(EditorQuickOpen);
 	add_child(quick_open);
 	quick_open->connect("quick_open", this, "_quick_open");
+	
 	set_process_shortcut_input(true);
 
 	delete_dialog = memnew(ConfirmationDialog);

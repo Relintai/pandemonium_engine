@@ -2879,6 +2879,8 @@ void Control::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("warp_mouse", "to_position"), &Control::warp_mouse);
 
+	ClassDB::bind_method(D_METHOD("is_focus_owner_in_shortcut_context"), &Control::is_focus_owner_in_shortcut_context);
+
 	ClassDB::bind_method(D_METHOD("set_shortcut_context", "node"), &Control::set_shortcut_context);
 	ClassDB::bind_method(D_METHOD("get_shortcut_context"), &Control::get_shortcut_context);
 

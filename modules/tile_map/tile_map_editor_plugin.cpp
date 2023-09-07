@@ -2036,6 +2036,7 @@ TileMapEditor::TileMapEditor(EditorNode *p_editor) {
 	// Tools.
 	paint_button = memnew(ToolButton);
 	paint_button->set_shortcut(ED_SHORTCUT("tile_map_editor/paint_tile", TTR("Paint Tile"), KEY_P));
+	paint_button->set_shortcut_context(this);
 #ifdef OSX_ENABLED
 	paint_button->set_tooltip(TTR("Shift+LMB: Line Draw\nShift+Command+LMB: Rectangle Paint"));
 #else
@@ -2046,18 +2047,21 @@ TileMapEditor::TileMapEditor(EditorNode *p_editor) {
 	toolbar->add_child(paint_button);
 
 	bucket_fill_button = memnew(ToolButton);
+	bucket_fill_button->set_shortcut_context(this);
 	bucket_fill_button->set_shortcut(ED_SHORTCUT("tile_map_editor/bucket_fill", TTR("Bucket Fill"), KEY_B));
 	bucket_fill_button->connect("pressed", this, "_button_tool_select", make_binds(TOOL_BUCKET));
 	bucket_fill_button->set_toggle_mode(true);
 	toolbar->add_child(bucket_fill_button);
 
 	picker_button = memnew(ToolButton);
+	picker_button->set_shortcut_context(this);
 	picker_button->set_shortcut(ED_SHORTCUT("tile_map_editor/pick_tile", TTR("Pick Tile"), KEY_I));
 	picker_button->connect("pressed", this, "_button_tool_select", make_binds(TOOL_PICKING));
 	picker_button->set_toggle_mode(true);
 	toolbar->add_child(picker_button);
 
 	select_button = memnew(ToolButton);
+	select_button->set_shortcut_context(this);
 	select_button->set_shortcut(ED_SHORTCUT("tile_map_editor/select", TTR("Select"), KEY_M));
 	select_button->connect("pressed", this, "_button_tool_select", make_binds(TOOL_SELECTING));
 	select_button->set_toggle_mode(true);
@@ -2083,9 +2087,9 @@ TileMapEditor::TileMapEditor(EditorNode *p_editor) {
 
 	// Menu.
 	options = memnew(MenuButton);
+	options->set_shortcut_context(this);
 	options->set_text("TileMap");
 	options->set_icon(EditorNode::get_singleton()->get_gui_base()->get_theme_icon("TileMap", "EditorIcons"));
-	options->set_process_unhandled_key_input(false);
 	toolbar_right->add_child(options);
 
 	PopupMenu *p = options->get_popup();
@@ -2101,6 +2105,7 @@ TileMapEditor::TileMapEditor(EditorNode *p_editor) {
 	rotate_left_button->set_focus_mode(FOCUS_NONE);
 	rotate_left_button->connect("pressed", this, "_rotate", varray(-1));
 	rotate_left_button->set_shortcut(ED_SHORTCUT("tile_map_editor/rotate_left", TTR("Rotate Left"), KEY_A));
+	rotate_left_button->set_shortcut_context(this);
 	tool_hb->add_child(rotate_left_button);
 
 	rotate_right_button = memnew(ToolButton);
@@ -2108,6 +2113,7 @@ TileMapEditor::TileMapEditor(EditorNode *p_editor) {
 	rotate_right_button->set_focus_mode(FOCUS_NONE);
 	rotate_right_button->connect("pressed", this, "_rotate", varray(1));
 	rotate_right_button->set_shortcut(ED_SHORTCUT("tile_map_editor/rotate_right", TTR("Rotate Right"), KEY_S));
+	rotate_right_button->set_shortcut_context(this);
 	tool_hb->add_child(rotate_right_button);
 
 	flip_horizontal_button = memnew(ToolButton);
@@ -2115,6 +2121,7 @@ TileMapEditor::TileMapEditor(EditorNode *p_editor) {
 	flip_horizontal_button->set_focus_mode(FOCUS_NONE);
 	flip_horizontal_button->connect("pressed", this, "_flip_horizontal");
 	flip_horizontal_button->set_shortcut(ED_SHORTCUT("tile_map_editor/flip_horizontal", TTR("Flip Horizontally"), KEY_X));
+	flip_horizontal_button->set_shortcut_context(this);
 	tool_hb->add_child(flip_horizontal_button);
 
 	flip_vertical_button = memnew(ToolButton);
@@ -2122,6 +2129,7 @@ TileMapEditor::TileMapEditor(EditorNode *p_editor) {
 	flip_vertical_button->set_focus_mode(FOCUS_NONE);
 	flip_vertical_button->connect("pressed", this, "_flip_vertical");
 	flip_vertical_button->set_shortcut(ED_SHORTCUT("tile_map_editor/flip_vertical", TTR("Flip Vertically"), KEY_Z));
+	flip_vertical_button->set_shortcut_context(this);
 	tool_hb->add_child(flip_vertical_button);
 
 	clear_transform_button = memnew(ToolButton);
@@ -2129,6 +2137,7 @@ TileMapEditor::TileMapEditor(EditorNode *p_editor) {
 	clear_transform_button->set_focus_mode(FOCUS_NONE);
 	clear_transform_button->connect("pressed", this, "_clear_transform");
 	clear_transform_button->set_shortcut(ED_SHORTCUT("tile_map_editor/clear_transform", TTR("Clear Transform"), KEY_W));
+	clear_transform_button->set_shortcut_context(this);
 	tool_hb->add_child(clear_transform_button);
 
 	clear_transform_button->set_disabled(true);

@@ -30,29 +30,27 @@
 
 #include "editor_audio_buses.h"
 
-#include "core/io/resource_saver.h"
-#include "core/input/input.h"
-#include "core/os/keyboard.h"
-#include "editor_node.h"
-#include "editor_scale.h"
-#include "filesystem_dock.h"
-#include "scene/resources/font.h"
-#include "servers/audio_server.h"
 #include "core/config/project_settings.h"
-#include "core/object/class_db.h"
-#include "core/variant/dictionary.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
+#include "core/input/input.h"
+#include "core/input/input_event.h"
 #include "core/io/resource_loader.h"
+#include "core/io/resource_saver.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
-#include "core/input/input_event.h"
+#include "core/object/class_db.h"
+#include "core/object/undo_redo.h"
+#include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/string/string_name.h"
-#include "core/object/undo_redo.h"
+#include "core/variant/dictionary.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_settings.h"
+#include "editor_node.h"
+#include "editor_scale.h"
+#include "filesystem_dock.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/gui/button.h"
 #include "scene/gui/label.h"
@@ -68,8 +66,10 @@
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
+#include "scene/resources/font.h"
 #include "scene/resources/style_box.h"
 #include "servers/audio/audio_effect.h"
+#include "servers/audio_server.h"
 
 void EditorAudioBus::_update_visible_channels() {
 	int i = 0;
@@ -567,12 +567,6 @@ void EditorAudioBus::_effect_add(int p_which) {
 }
 
 void EditorAudioBus::_gui_input(const Ref<InputEvent> &p_event) {
-	Ref<InputEventKey> k = p_event;
-	if (k.is_valid() && k->is_pressed() && k->get_scancode() == KEY_DELETE && !k->is_echo()) {
-		accept_event();
-		emit_signal("delete_request");
-	}
-
 	Ref<InputEventMouseButton> mb = p_event;
 	if (mb.is_valid() && mb->get_button_index() == 2 && mb->is_pressed()) {
 		Vector2 pos = Vector2(mb->get_position().x, mb->get_position().y);
@@ -853,12 +847,6 @@ EditorAudioBus::EditorAudioBus(EditorAudioBuses *p_buses, bool p_is_master) {
 	hbc->add_child(bypass);
 	hbc->add_spacer();
 
-	bus_options = memnew(MenuButton);
-	bus_options->set_h_size_flags(SIZE_SHRINK_END);
-	bus_options->set_anchor(MARGIN_RIGHT, 0.0);
-	bus_options->set_tooltip(TTR("Bus Options"));
-	hbc->add_child(bus_options);
-
 	Ref<StyleBoxEmpty> sbempty = memnew(StyleBoxEmpty);
 	for (int i = 0; i < hbc->get_child_count(); i++) {
 		Control *child = Object::cast_to<Control>(hbc->get_child(i));
@@ -975,9 +963,16 @@ EditorAudioBus::EditorAudioBus(EditorAudioBuses *p_buses, bool p_is_master) {
 		effect_options->set_item_metadata(effect_options->get_item_count() - 1, E->get());
 	}
 
+	bus_options = memnew(MenuButton);
+	bus_options->set_shortcut_context(this);
+	bus_options->set_h_size_flags(SIZE_SHRINK_END);
+	bus_options->set_anchor(MARGIN_RIGHT, 0.0);
+	bus_options->set_tooltip(TTR("Bus Options"));
+	hbc->add_child(bus_options);
+
 	bus_popup = bus_options->get_popup();
-	bus_popup->add_item(TTR("Duplicate"));
-	bus_popup->add_item(TTR("Delete"));
+	bus_popup->add_shortcut(ED_SHORTCUT("audio_bus_editor/duplicate_selected_bus", TTR("Duplicate Bus"), KEY_MASK_CMD | KEY_D));
+	bus_popup->add_shortcut(ED_SHORTCUT("audio_bus_editor/delete_selected_bus", TTR("Delete Bus"), KEY_DELETE));
 	bus_popup->set_item_disabled(1, is_master);
 	bus_popup->add_item(TTR("Reset Volume"));
 	bus_popup->connect("index_pressed", this, "_bus_popup_pressed");

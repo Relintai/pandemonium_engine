@@ -2581,13 +2581,15 @@ void EditorScriptEditor::_input(const Ref<InputEvent> &p_event) {
 		// Navigate the script history using additional mouse buttons present on some mice.
 		// This must be hardcoded as the editor shortcuts dialog doesn't allow assigning
 		// more than one shortcut per action.
-		if (mb.is_valid() && mb->is_pressed() && is_visible_in_tree() && !get_viewport()->gui_has_modal_stack()) {
+		if (mb.is_valid() && mb->is_pressed() && is_visible_in_tree() && is_focus_owner_in_shortcut_context() && !get_viewport()->gui_has_modal_stack()) {
 			if (mb->get_button_index() == BUTTON_XBUTTON1) {
 				_history_back();
+				accept_event();
 			}
 
 			if (mb->get_button_index() == BUTTON_XBUTTON2) {
 				_history_forward();
+				accept_event();
 			}
 		}
 	}
@@ -2599,6 +2601,7 @@ void EditorScriptEditor::_shortcut_input(const Ref<InputEvent> &p_event) {
 	if (!is_visible_in_tree() || !p_event->is_pressed() || p_event->is_echo()) {
 		return;
 	}
+
 	if (ED_IS_SHORTCUT("script_editor/next_script", p_event)) {
 		if (script_list->get_item_count() > 1) {
 			int next_tab = script_list->get_current() + 1;
@@ -2608,6 +2611,7 @@ void EditorScriptEditor::_shortcut_input(const Ref<InputEvent> &p_event) {
 		}
 		accept_event();
 	}
+
 	if (ED_IS_SHORTCUT("script_editor/prev_script", p_event)) {
 		if (script_list->get_item_count() > 1) {
 			int next_tab = script_list->get_current() - 1;
@@ -2617,10 +2621,12 @@ void EditorScriptEditor::_shortcut_input(const Ref<InputEvent> &p_event) {
 		}
 		accept_event();
 	}
+
 	if (ED_IS_SHORTCUT("script_editor/window_move_up", p_event)) {
 		_menu_option(WINDOW_MOVE_UP);
 		accept_event();
 	}
+
 	if (ED_IS_SHORTCUT("script_editor/window_move_down", p_event)) {
 		_menu_option(WINDOW_MOVE_DOWN);
 		accept_event();

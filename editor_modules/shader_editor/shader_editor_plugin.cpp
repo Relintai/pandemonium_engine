@@ -642,6 +642,8 @@ ShaderEditor::ShaderEditor(EditorNode *p_node) {
 	edit_menu = memnew(MenuButton);
 	edit_menu->set_text(TTR("Edit"));
 	edit_menu->set_switch_on_hover(true);
+	edit_menu->set_shortcut_context(this);
+
 	edit_menu->get_popup()->set_hide_on_window_lose_focus(true);
 	edit_menu->get_popup()->add_shortcut(ED_GET_SHORTCUT("script_text_editor/undo"), EDIT_UNDO);
 	edit_menu->get_popup()->add_shortcut(ED_GET_SHORTCUT("script_text_editor/redo"), EDIT_REDO);
@@ -674,6 +676,7 @@ ShaderEditor::ShaderEditor(EditorNode *p_node) {
 	search_menu->get_popup()->connect("id_pressed", this, "_menu_option");
 
 	MenuButton *goto_menu = memnew(MenuButton);
+	goto_menu->set_shortcut_context(this);
 	goto_menu->set_text(TTR("Go To"));
 	goto_menu->set_switch_on_hover(true);
 	goto_menu->get_popup()->connect("id_pressed", this, "_menu_option");

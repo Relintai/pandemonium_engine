@@ -4443,9 +4443,10 @@ SpatialEditorViewport::SpatialEditorViewport(SpatialEditor *p_spatial_editor, Ed
 
 	view_menu = memnew(MenuButton);
 	view_menu->set_flat(false);
-	vbox->add_child(view_menu);
+	view_menu->set_shortcut_context(this);
 	view_menu->set_h_size_flags(0);
 	view_menu->get_popup()->set_hide_on_checkable_item_selection(false);
+	vbox->add_child(view_menu);
 
 	view_menu->get_popup()->add_shortcut(ED_GET_SHORTCUT("spatial_editor/top_view"), VIEW_TOP);
 	view_menu->get_popup()->add_shortcut(ED_GET_SHORTCUT("spatial_editor/bottom_view"), VIEW_BOTTOM);
@@ -7146,6 +7147,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	button_binds.write[0] = MENU_TOOL_SELECT;
 	tool_button[TOOL_MODE_SELECT]->connect("pressed", this, "_menu_item_pressed", button_binds);
 	tool_button[TOOL_MODE_SELECT]->set_shortcut(ED_SHORTCUT("spatial_editor/tool_select", TTR("Select Mode"), KEY_Q));
+	tool_button[TOOL_MODE_SELECT]->set_shortcut_context(this);
 	tool_button[TOOL_MODE_SELECT]->set_tooltip(keycode_get_string(KEY_MASK_CMD) + TTR("Drag: Rotate selected node around pivot.") + "\n" + TTR("Alt+RMB: Show list of all nodes at position clicked, including locked."));
 	main_menu_hbox->add_child(memnew(VSeparator));
 
@@ -7156,6 +7158,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	button_binds.write[0] = MENU_TOOL_MOVE;
 	tool_button[TOOL_MODE_MOVE]->connect("pressed", this, "_menu_item_pressed", button_binds);
 	tool_button[TOOL_MODE_MOVE]->set_shortcut(ED_SHORTCUT("spatial_editor/tool_move", TTR("Move Mode"), KEY_W));
+	tool_button[TOOL_MODE_MOVE]->set_shortcut_context(this);
 
 	tool_button[TOOL_MODE_ROTATE] = memnew(ToolButton);
 	main_menu_hbox->add_child(tool_button[TOOL_MODE_ROTATE]);
@@ -7164,6 +7167,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	button_binds.write[0] = MENU_TOOL_ROTATE;
 	tool_button[TOOL_MODE_ROTATE]->connect("pressed", this, "_menu_item_pressed", button_binds);
 	tool_button[TOOL_MODE_ROTATE]->set_shortcut(ED_SHORTCUT("spatial_editor/tool_rotate", TTR("Rotate Mode"), KEY_E));
+	tool_button[TOOL_MODE_ROTATE]->set_shortcut_context(this);
 
 	tool_button[TOOL_MODE_SCALE] = memnew(ToolButton);
 	main_menu_hbox->add_child(tool_button[TOOL_MODE_SCALE]);
@@ -7172,6 +7176,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	button_binds.write[0] = MENU_TOOL_SCALE;
 	tool_button[TOOL_MODE_SCALE]->connect("pressed", this, "_menu_item_pressed", button_binds);
 	tool_button[TOOL_MODE_SCALE]->set_shortcut(ED_SHORTCUT("spatial_editor/tool_scale", TTR("Scale Mode"), KEY_R));
+	tool_button[TOOL_MODE_SCALE]->set_shortcut_context(this);
 
 	main_menu_hbox->add_child(memnew(VSeparator));
 
@@ -7220,6 +7225,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	button_binds.write[0] = MENU_TOOL_LOCAL_COORDS;
 	tool_option_button[TOOL_OPT_LOCAL_COORDS]->connect("toggled", this, "_menu_item_toggled", button_binds);
 	tool_option_button[TOOL_OPT_LOCAL_COORDS]->set_shortcut(ED_SHORTCUT("spatial_editor/local_coords", TTR("Use Local Space"), KEY_T));
+	tool_option_button[TOOL_OPT_LOCAL_COORDS]->set_shortcut_context(this);
 
 	tool_option_button[TOOL_OPT_USE_SNAP] = memnew(ToolButton);
 	main_menu_hbox->add_child(tool_option_button[TOOL_OPT_USE_SNAP]);
@@ -7228,6 +7234,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	button_binds.write[0] = MENU_TOOL_USE_SNAP;
 	tool_option_button[TOOL_OPT_USE_SNAP]->connect("toggled", this, "_menu_item_toggled", button_binds);
 	tool_option_button[TOOL_OPT_USE_SNAP]->set_shortcut(ED_SHORTCUT("spatial_editor/snap", TTR("Use Snap"), KEY_Y));
+	tool_option_button[TOOL_OPT_USE_SNAP]->set_shortcut_context(this);
 
 	main_menu_hbox->add_child(memnew(VSeparator));
 
@@ -7282,6 +7289,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	transform_menu = memnew(MenuButton);
 	transform_menu->set_tooltip(TTR("Transform"));
 	transform_menu->set_switch_on_hover(true);
+	transform_menu->set_shortcut_context(this);
 	main_menu_hbox->add_child(transform_menu);
 
 	p = transform_menu->get_popup();
@@ -7296,6 +7304,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	view_menu = memnew(MenuButton);
 	view_menu->set_tooltip(TTR("View"));
 	view_menu->set_switch_on_hover(true);
+	view_menu->set_shortcut_context(this);
 	main_menu_hbox->add_child(view_menu);
 
 	// Get the view menu popup and have it stay open when a checkable item is selected

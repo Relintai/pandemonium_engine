@@ -1305,11 +1305,10 @@ void AnimationPlayerEditor::_shortcut_input(const Ref<InputEvent> &p_ev) {
 			case KEY_A: {
 				if (!k->get_shift()) {
 					_play_bw_from_pressed();
-					accept_event();
 				} else {
 					_play_bw_pressed();
-					accept_event();
 				}
+				accept_event();
 			} break;
 			case KEY_S: {
 				_stop_pressed();
@@ -1318,11 +1317,10 @@ void AnimationPlayerEditor::_shortcut_input(const Ref<InputEvent> &p_ev) {
 			case KEY_D: {
 				if (!k->get_shift()) {
 					_play_from_pressed();
-					accept_event();
 				} else {
 					_play_pressed();
-					accept_event();
 				}
+				accept_event();
 			} break;
 		}
 	}
@@ -1666,6 +1664,7 @@ AnimationPlayerEditor::AnimationPlayerEditor(EditorNode *p_editor, AnimationPlay
 	delete_dialog->connect("confirmed", this, "_animation_remove_confirmed");
 
 	tool_anim = memnew(MenuButton);
+	tool_anim->set_shortcut_context(this);
 	tool_anim->set_flat(false);
 	tool_anim->set_tooltip(TTR("Animation Tools"));
 	tool_anim->set_text(TTR("Animation"));
