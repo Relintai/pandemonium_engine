@@ -1289,7 +1289,7 @@ void SceneTree::_call_input_pause(const StringName &p_group, const CallInputType
 			method = SceneStringNames::get_singleton()->_unhandled_input;
 			break;
 		case CALL_INPUT_TYPE_UNHANDLED_KEY_INPUT:
-			method = SceneStringNames::get_singleton()->_unhandled_input;
+			method = SceneStringNames::get_singleton()->_unhandled_key_input;
 			break;
 	}
 
