@@ -30,8 +30,8 @@
 
 #include "base_button.h"
 
-#include "core/os/keyboard.h"
 #include "core/input/shortcut.h"
+#include "core/os/keyboard.h"
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"
 
@@ -352,13 +352,25 @@ Ref<ShortCut> BaseButton::get_shortcut() const {
 void BaseButton::_shortcut_input(Ref<InputEvent> p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
-	if (!is_disabled() && is_visible_in_tree() && !p_event->is_echo() && shortcut.is_valid() && shortcut->is_shortcut(p_event)) {
-		if (get_viewport()->get_modal_stack_top() && !get_viewport()->get_modal_stack_top()->is_a_parent_of(this)) {
-			return; //ignore because of modal window
+	if (!is_disabled() && p_event->is_pressed() && is_visible_in_tree() && !p_event->is_echo() && shortcut.is_valid() && shortcut->is_shortcut(p_event)) {
+		if (toggle_mode) {
+			status.pressed = !status.pressed;
+
+			_unpress_group();
+			if (button_group.is_valid()) {
+				button_group->emit_signal("pressed", this);
+			}
+
+			_toggled(status.pressed);
+			_pressed();
+
+		} else {
+			_pressed();
 		}
 
-		on_action_event(p_event);
-		get_tree()->set_input_as_handled();
+		accept_event();
+
+		update();
 	}
 }
 
@@ -463,10 +475,10 @@ BaseButton::BaseButton() {
 	status.hovering = false;
 	status.pressing_inside = false;
 	status.disabled = false;
-	set_focus_mode(FOCUS_ALL);
 	enabled_focus_mode = FOCUS_ALL;
 	action_mode = ACTION_MODE_BUTTON_RELEASE;
 	button_mask = BUTTON_MASK_LEFT;
+	set_focus_mode(FOCUS_ALL);
 }
 
 BaseButton::~BaseButton() {
