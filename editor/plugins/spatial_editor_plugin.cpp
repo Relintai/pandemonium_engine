@@ -6703,7 +6703,7 @@ void SpatialEditor::snap_selected_nodes_to_floor() {
 	}
 }
 
-void SpatialEditor::_unhandled_key_input(Ref<InputEvent> p_event) {
+void SpatialEditor::_shortcut_input(Ref<InputEvent> p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
 	if (!is_visible_in_tree() || get_viewport()->gui_has_modal_stack()) {
@@ -6711,6 +6711,7 @@ void SpatialEditor::_unhandled_key_input(Ref<InputEvent> p_event) {
 	}
 
 	snap_key_enabled = Input::get_singleton()->is_key_pressed(KEY_CONTROL);
+	// Don't accept event here
 }
 void SpatialEditor::_notification(int p_what) {
 	if (p_what == NOTIFICATION_READY) {
@@ -7057,7 +7058,7 @@ void SpatialEditor::_register_all_gizmos() {
 }
 
 void SpatialEditor::_bind_methods() {
-	ClassDB::bind_method("_unhandled_key_input", &SpatialEditor::_unhandled_key_input);
+	ClassDB::bind_method("_shortcut_input", &SpatialEditor::_shortcut_input);
 	ClassDB::bind_method("_node_removed", &SpatialEditor::_node_removed);
 	ClassDB::bind_method("_menu_item_pressed", &SpatialEditor::_menu_item_pressed);
 	ClassDB::bind_method("_menu_gizmo_toggled", &SpatialEditor::_menu_gizmo_toggled);
@@ -7483,7 +7484,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 
 	selected = nullptr;
 
-	set_process_unhandled_key_input(true);
+	set_process_shortcut_input(true);
 	add_to_group("_spatial_editor_group");
 
 	EDITOR_DEF("editors/3d/manipulator_gizmo_size", 80);

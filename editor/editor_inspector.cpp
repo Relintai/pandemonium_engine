@@ -579,7 +579,7 @@ void EditorProperty::_gui_input(const Ref<InputEvent> &p_event) {
 	}
 }
 
-void EditorProperty::_unhandled_key_input(const Ref<InputEvent> &p_event) {
+void EditorProperty::_shortcut_input(const Ref<InputEvent> &p_event) {
 	if (!selected) {
 		return;
 	}
@@ -755,7 +755,7 @@ void EditorProperty::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_gui_input"), &EditorProperty::_gui_input);
 	ClassDB::bind_method(D_METHOD("_menu_option", "option"), &EditorProperty::_menu_option);
-	ClassDB::bind_method(D_METHOD("_unhandled_key_input"), &EditorProperty::_unhandled_key_input);
+	ClassDB::bind_method(D_METHOD("_shortcut_input"), &EditorProperty::_shortcut_input);
 	ClassDB::bind_method(D_METHOD("_focusable_focused"), &EditorProperty::_focusable_focused);
 
 	ClassDB::bind_method(D_METHOD("add_focusable", "control"), &EditorProperty::add_focusable);
@@ -812,7 +812,7 @@ EditorProperty::EditorProperty() {
 	bottom_editor = nullptr;
 	menu = nullptr;
 
-	set_process_unhandled_key_input(true);
+	set_process_shortcut_input(true);
 }
 
 void EditorProperty::_update_popup() {

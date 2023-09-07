@@ -127,7 +127,7 @@ class ProjectManager : public Control {
 	void _install_project(const String &p_zip_path, const String &p_title);
 
 	void _dim_window();
-	void _unhandled_input(const Ref<InputEvent> &p_ev);
+	void _shortcut_input(const Ref<InputEvent> &p_ev);
 	void _files_dropped(PoolStringArray p_files, int p_screen);
 	void _scan_multiple_folders(PoolStringArray p_files);
 

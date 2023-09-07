@@ -122,7 +122,7 @@ static const char *_axis_names[JOY_AXIS_MAX * 2] = {
 	"", " (Right Trigger, Sony R2, Xbox RT)"
 };
 
-void ProjectSettingsEditor::_unhandled_input(const Ref<InputEvent> &p_event) {
+void ProjectSettingsEditor::_shortcut_input(const Ref<InputEvent> &p_event) {
 	const Ref<InputEventKey> k = p_event;
 
 	if (k.is_valid() && is_window_modal_on_top() && k->is_pressed()) {
@@ -192,7 +192,7 @@ void ProjectSettingsEditor::_notification(int p_what) {
 
 		case NOTIFICATION_POPUP_HIDE: {
 			EditorSettings::get_singleton()->set_project_metadata("dialog_bounds", "project_settings", get_rect());
-			set_process_unhandled_input(false);
+			set_process_shortcut_input(false);
 		} break;
 		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
 			search_button->set_icon(get_theme_icon("Search", "EditorIcons"));
@@ -945,7 +945,7 @@ void ProjectSettingsEditor::popup_project_settings() {
 	autoload_settings->update_autoload();
 	plugin_settings->update_plugins();
 	import_defaults_editor->clear();
-	set_process_unhandled_input(true);
+	set_process_shortcut_input(true);
 }
 
 void ProjectSettingsEditor::update_plugins() {
@@ -1822,7 +1822,7 @@ void ProjectSettingsEditor::_update_theme() {
 }
 
 void ProjectSettingsEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_unhandled_input"), &ProjectSettingsEditor::_unhandled_input);
+	ClassDB::bind_method(D_METHOD("_shortcut_input"), &ProjectSettingsEditor::_shortcut_input);
 	ClassDB::bind_method(D_METHOD("_item_selected"), &ProjectSettingsEditor::_item_selected);
 	ClassDB::bind_method(D_METHOD("_item_add"), &ProjectSettingsEditor::_item_add);
 	ClassDB::bind_method(D_METHOD("_item_adds"), &ProjectSettingsEditor::_item_adds);

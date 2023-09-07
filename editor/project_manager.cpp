@@ -1806,7 +1806,7 @@ void ProjectManager::_notification(int p_what) {
 #endif
 		} break;
 		case NOTIFICATION_VISIBILITY_CHANGED: {
-			set_process_unhandled_input(is_visible_in_tree());
+			set_process_shortcut_input(is_visible_in_tree());
 		} break;
 		case NOTIFICATION_WM_QUIT_REQUEST: {
 			_dim_window();
@@ -1848,7 +1848,7 @@ void ProjectManager::_update_project_buttons() {
 	erase_missing_btn->set_disabled(!_project_list->is_any_project_missing());
 }
 
-void ProjectManager::_unhandled_input(const Ref<InputEvent> &p_ev) {
+void ProjectManager::_shortcut_input(const Ref<InputEvent> &p_ev) {
 	Ref<InputEventKey> k = p_ev;
 
 	if (k.is_valid()) {
@@ -2378,7 +2378,7 @@ void ProjectManager::_bind_methods() {
 	ClassDB::bind_method("_on_tab_changed", &ProjectManager::_on_tab_changed);
 	ClassDB::bind_method("_on_projects_updated", &ProjectManager::_on_projects_updated);
 	ClassDB::bind_method("_on_project_created", &ProjectManager::_on_project_created);
-	ClassDB::bind_method("_unhandled_input", &ProjectManager::_unhandled_input);
+	ClassDB::bind_method("_shortcut_input", &ProjectManager::_shortcut_input);
 	ClassDB::bind_method("_install_project", &ProjectManager::_install_project);
 	ClassDB::bind_method("_files_dropped", &ProjectManager::_files_dropped);
 	ClassDB::bind_method("_confirm_update_settings", &ProjectManager::_confirm_update_settings);

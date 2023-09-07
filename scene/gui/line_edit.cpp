@@ -51,6 +51,27 @@ bool LineEdit::_is_text_char(CharType c) {
 	return !is_symbol(c);
 }
 
+void LineEdit::_unhandled_key_input(const Ref<InputEvent> &p_event) {
+	Ref<InputEventKey> k = p_event;
+
+	if (k.is_valid()) {
+		if (!k->is_pressed()) {
+			return;
+		}
+		// Handle Unicode (with modifiers active, process after shortcuts).
+		if (has_focus() && editable && (k->get_unicode() >= 32)) {
+			selection_delete();
+			char32_t ucodestr[2] = { (char32_t)k->get_unicode(), 0 };
+			int prev_len = text.length();
+			append_at_cursor(ucodestr);
+			if (text.length() != prev_len) {
+				_text_changed();
+			}
+			accept_event();
+		}
+	}
+}
+
 void LineEdit::_gui_input(Ref<InputEvent> p_event) {
 	Ref<InputEventMouseButton> b = p_event;
 
@@ -1951,6 +1972,7 @@ void LineEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_align"), &LineEdit::get_align);
 
 	ClassDB::bind_method(D_METHOD("_gui_input"), &LineEdit::_gui_input);
+	ClassDB::bind_method(D_METHOD("_unhandled_key_input"), &LineEdit::_unhandled_key_input);
 	ClassDB::bind_method(D_METHOD("clear"), &LineEdit::clear);
 	ClassDB::bind_method(D_METHOD("select", "from", "to"), &LineEdit::select, DEFVAL(0), DEFVAL(-1));
 	ClassDB::bind_method(D_METHOD("select_all"), &LineEdit::select_all);
@@ -2086,6 +2108,7 @@ LineEdit::LineEdit() {
 	set_focus_mode(FOCUS_ALL);
 	set_default_cursor_shape(CURSOR_IBEAM);
 	set_mouse_filter(MOUSE_FILTER_STOP);
+	set_process_unhandled_key_input(true);
 
 	draw_caret = true;
 	caret_blink_enabled = false;

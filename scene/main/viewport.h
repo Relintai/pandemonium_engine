@@ -416,6 +416,7 @@ private:
 
 	StringName input_group;
 	StringName gui_input_group;
+	StringName shortcut_input_group;
 	StringName unhandled_input_group;
 	StringName unhandled_key_input_group;
 

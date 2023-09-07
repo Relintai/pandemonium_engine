@@ -30,40 +30,38 @@
 
 #include "animation_player_editor_plugin.h"
 
+#include "core/config/project_settings.h"
+#include "core/input/input.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
-#include "core/input/input.h"
 #include "core/os/keyboard.h"
-#include "core/config/project_settings.h"
 #include "editor/animation_track_editor.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 // For onion skinning.
-#include "editor/plugins/canvas_item_editor_plugin.h"
-#include "editor/plugins/spatial_editor_plugin.h"
-#include "scene/main/viewport.h"
-#include "servers/rendering_server.h"
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
+#include "core/containers/list.h"
+#include "core/containers/rid_handle.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
+#include "core/input/input_event.h"
 #include "core/io/image.h"
-#include "core/containers/list.h"
+#include "core/math/color.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
-#include "core/input/input_event.h"
-#include "core/os/memory.h"
+#include "core/object/class_db.h"
 #include "core/object/resource.h"
-#include "core/containers/rid_handle.h"
+#include "core/object/undo_redo.h"
+#include "core/os/memory.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
-#include "core/object/undo_redo.h"
+#include "core/variant/array.h"
 #include "core/variant/variant.h"
 #include "editor/editor_data.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_inspector.h"
 #include "editor/editor_node.h"
+#include "editor/plugins/canvas_item_editor_plugin.h"
+#include "editor/plugins/spatial_editor_plugin.h"
 #include "editor/scene_tree_dock.h"
 #include "editor/scene_tree_editor.h"
 #include "scene/animation/animation_player.h"
@@ -80,8 +78,10 @@
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
 #include "scene/resources/animation.h"
 #include "scene/resources/texture.h"
+#include "servers/rendering_server.h"
 
 void AnimationPlayerEditor::_node_removed(Node *p_node) {
 	if (player && player == p_node) {
@@ -1296,7 +1296,7 @@ void AnimationPlayerEditor::_onion_skinning_menu(int p_option) {
 	}
 }
 
-void AnimationPlayerEditor::_unhandled_key_input(const Ref<InputEvent> &p_ev) {
+void AnimationPlayerEditor::_shortcut_input(const Ref<InputEvent> &p_ev) {
 	ERR_FAIL_COND(p_ev.is_null());
 
 	Ref<InputEventKey> k = p_ev;
@@ -1305,18 +1305,23 @@ void AnimationPlayerEditor::_unhandled_key_input(const Ref<InputEvent> &p_ev) {
 			case KEY_A: {
 				if (!k->get_shift()) {
 					_play_bw_from_pressed();
+					accept_event();
 				} else {
 					_play_bw_pressed();
+					accept_event();
 				}
 			} break;
 			case KEY_S: {
 				_stop_pressed();
+				accept_event();
 			} break;
 			case KEY_D: {
 				if (!k->get_shift()) {
 					_play_from_pressed();
+					accept_event();
 				} else {
 					_play_pressed();
+					accept_event();
 				}
 			} break;
 		}
@@ -1582,7 +1587,7 @@ void AnimationPlayerEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_animation_key_editor_anim_len_changed"), &AnimationPlayerEditor::_animation_key_editor_anim_len_changed);
 	ClassDB::bind_method(D_METHOD("_animation_duplicate"), &AnimationPlayerEditor::_animation_duplicate);
 	ClassDB::bind_method(D_METHOD("_blend_editor_next_changed"), &AnimationPlayerEditor::_blend_editor_next_changed);
-	ClassDB::bind_method(D_METHOD("_unhandled_key_input"), &AnimationPlayerEditor::_unhandled_key_input);
+	ClassDB::bind_method(D_METHOD("_shortcut_input"), &AnimationPlayerEditor::_shortcut_input);
 	ClassDB::bind_method(D_METHOD("_animation_tool_menu"), &AnimationPlayerEditor::_animation_tool_menu);
 
 	ClassDB::bind_method(D_METHOD("_onion_skinning_menu"), &AnimationPlayerEditor::_onion_skinning_menu);
@@ -1789,7 +1794,7 @@ AnimationPlayerEditor::AnimationPlayerEditor(EditorNode *p_editor, AnimationPlay
 	last_active = false;
 	timeline_position = 0;
 
-	set_process_unhandled_key_input(true);
+	set_process_shortcut_input(true);
 
 	add_child(track_editor);
 	track_editor->set_v_size_flags(SIZE_EXPAND_FILL);

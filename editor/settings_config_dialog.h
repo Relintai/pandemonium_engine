@@ -81,7 +81,7 @@ class EditorSettingsDialog : public AcceptDialog {
 	void _settings_property_edited(const String &p_name);
 	void _settings_save();
 
-	void _unhandled_input(const Ref<InputEvent> &p_event);
+	void _shortcut_input(const Ref<InputEvent> &p_event);
 	void _notification(int p_what);
 	void _update_icons();
 

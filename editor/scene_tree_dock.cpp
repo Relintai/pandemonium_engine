@@ -127,7 +127,7 @@ void SceneTreeDock::_input(Ref<InputEvent> p_event) {
 	}
 }
 
-void SceneTreeDock::_unhandled_key_input(Ref<InputEvent> p_event) {
+void SceneTreeDock::_shortcut_input(Ref<InputEvent> p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
 	if (get_viewport()->get_modal_stack_top()) {
@@ -186,7 +186,11 @@ void SceneTreeDock::_unhandled_key_input(Ref<InputEvent> p_event) {
 		_tool_selected(TOOL_TOGGLE_SCENE_UNIQUE_NAME);
 	} else if (ED_IS_SHORTCUT("scene_tree/delete", p_event)) {
 		_tool_selected(TOOL_ERASE);
+	} else {
+		return;
 	}
+
+	accept_event();
 }
 
 void SceneTreeDock::instance(const String &p_file) {
@@ -3355,7 +3359,7 @@ void SceneTreeDock::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_script_creation_closed"), &SceneTreeDock::_script_creation_closed);
 	ClassDB::bind_method(D_METHOD("_load_request"), &SceneTreeDock::_load_request);
 	ClassDB::bind_method(D_METHOD("_script_open_request"), &SceneTreeDock::_script_open_request);
-	ClassDB::bind_method(D_METHOD("_unhandled_key_input"), &SceneTreeDock::_unhandled_key_input);
+	ClassDB::bind_method(D_METHOD("_shortcut_input"), &SceneTreeDock::_shortcut_input);
 	ClassDB::bind_method(D_METHOD("_input"), &SceneTreeDock::_input);
 	ClassDB::bind_method(D_METHOD("_nodes_drag_begin"), &SceneTreeDock::_nodes_drag_begin);
 	ClassDB::bind_method(D_METHOD("_delete_confirm"), &SceneTreeDock::_delete_confirm);
@@ -3579,7 +3583,7 @@ SceneTreeDock::SceneTreeDock(EditorNode *p_editor, Node *p_scene_root, EditorSel
 	quick_open = memnew(EditorQuickOpen);
 	add_child(quick_open);
 	quick_open->connect("quick_open", this, "_quick_open");
-	set_process_unhandled_key_input(true);
+	set_process_shortcut_input(true);
 
 	delete_dialog = memnew(ConfirmationDialog);
 	add_child(delete_dialog);

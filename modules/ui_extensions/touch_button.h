@@ -39,7 +39,7 @@ public:
 protected:
 	void _notification(int p_what);
 	virtual void _gui_input(Ref<InputEvent> p_event);
-	virtual void _unhandled_input(Ref<InputEvent> p_event);
+	virtual void _shortcut_input(Ref<InputEvent> p_event);
 	void _input(Ref<InputEvent> p_event);
 	static void _bind_methods();
 };

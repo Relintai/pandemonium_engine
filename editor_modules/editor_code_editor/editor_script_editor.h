@@ -328,7 +328,7 @@ class EditorScriptEditor : public PanelContainer {
 	void drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from);
 
 	void _input(const Ref<InputEvent> &p_event);
-	void _unhandled_input(const Ref<InputEvent> &p_event);
+	void _shortcut_input(const Ref<InputEvent> &p_event);
 
 	void _script_list_gui_input(const Ref<InputEvent> &ev);
 	void _make_script_list_context_menu();

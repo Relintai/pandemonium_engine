@@ -225,7 +225,7 @@ class AnimationPlayerEditor : public VBoxContainer {
 	void _animation_key_editor_seek(float p_pos, bool p_drag);
 	void _animation_key_editor_anim_len_changed(float p_len);
 
-	void _unhandled_key_input(const Ref<InputEvent> &p_ev);
+	void _shortcut_input(const Ref<InputEvent> &p_ev);
 	void _animation_tool_menu(int p_option);
 	void _onion_skinning_menu(int p_option);
 

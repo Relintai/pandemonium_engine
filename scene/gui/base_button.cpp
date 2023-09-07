@@ -342,14 +342,14 @@ bool BaseButton::is_keep_pressed_outside() const {
 
 void BaseButton::set_shortcut(const Ref<ShortCut> &p_shortcut) {
 	shortcut = p_shortcut;
-	set_process_unhandled_input(shortcut.is_valid());
+	set_process_shortcut_input(shortcut.is_valid());
 }
 
 Ref<ShortCut> BaseButton::get_shortcut() const {
 	return shortcut;
 }
 
-void BaseButton::_unhandled_input(Ref<InputEvent> p_event) {
+void BaseButton::_shortcut_input(Ref<InputEvent> p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
 	if (!is_disabled() && is_visible_in_tree() && !p_event->is_echo() && shortcut.is_valid() && shortcut->is_shortcut(p_event)) {
@@ -398,7 +398,7 @@ bool BaseButton::_was_pressed_by_mouse() const {
 
 void BaseButton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_gui_input"), &BaseButton::_gui_input);
-	ClassDB::bind_method(D_METHOD("_unhandled_input"), &BaseButton::_unhandled_input);
+	ClassDB::bind_method(D_METHOD("_shortcut_input"), &BaseButton::_shortcut_input);
 	ClassDB::bind_method(D_METHOD("set_pressed", "pressed"), &BaseButton::set_pressed);
 	ClassDB::bind_method(D_METHOD("is_pressed"), &BaseButton::is_pressed);
 	ClassDB::bind_method(D_METHOD("set_pressed_no_signal", "pressed"), &BaseButton::set_pressed_no_signal);

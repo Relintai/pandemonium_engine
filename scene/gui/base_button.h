@@ -77,7 +77,7 @@ protected:
 	virtual void toggled(bool p_pressed);
 	static void _bind_methods();
 	virtual void _gui_input(Ref<InputEvent> p_event);
-	virtual void _unhandled_input(Ref<InputEvent> p_event);
+	virtual void _shortcut_input(Ref<InputEvent> p_event);
 	void _notification(int p_what);
 
 	bool _was_pressed_by_mouse() const;

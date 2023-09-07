@@ -131,6 +131,9 @@ void Node::_notification(int p_notification) {
 			if (data.input) {
 				add_to_group("_vp_input" + itos(get_viewport()->get_instance_id()));
 			}
+			if (data.shortcut_input) {
+				add_to_group("_vp_shortcut_input" + itos(get_viewport()->get_instance_id()));
+			}
 			if (data.unhandled_input) {
 				add_to_group("_vp_unhandled_input" + itos(get_viewport()->get_instance_id()));
 			}
@@ -182,6 +185,9 @@ void Node::_notification(int p_notification) {
 			if (data.input) {
 				remove_from_group("_vp_input" + itos(get_viewport()->get_instance_id()));
 			}
+			if (data.shortcut_input) {
+				remove_from_group("_vp_shortcut_input" + itos(get_viewport()->get_instance_id()));
+			}
 			if (data.unhandled_input) {
 				remove_from_group("_vp_unhandled_input" + itos(get_viewport()->get_instance_id()));
 			}
@@ -205,6 +211,10 @@ void Node::_notification(int p_notification) {
 			if (get_script_instance()) {
 				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_input)) {
 					set_process_input(true);
+				}
+
+				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_shortcut_input)) {
+					set_process_shortcut_input(true);
 				}
 
 				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_unhandled_input)) {
@@ -1400,6 +1410,27 @@ void Node::set_process_input(bool p_enable) {
 
 bool Node::is_processing_input() const {
 	return data.input;
+}
+
+void Node::set_process_shortcut_input(bool p_enable) {
+	if (p_enable == data.shortcut_input) {
+		return;
+	}
+
+	data.shortcut_input = p_enable;
+	if (!is_inside_tree()) {
+		return;
+	}
+
+	if (p_enable) {
+		add_to_group("_vp_shortcut_input" + itos(get_viewport()->get_instance_id()));
+	} else {
+		remove_from_group("_vp_shortcut_input" + itos(get_viewport()->get_instance_id()));
+	}
+}
+
+bool Node::is_processing_shortcut_input() const {
+	return data.shortcut_input;
 }
 
 void Node::set_process_unhandled_input(bool p_enable) {
@@ -3501,6 +3532,8 @@ void Node::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_process_input", "enable"), &Node::set_process_input);
 	ClassDB::bind_method(D_METHOD("is_processing_input"), &Node::is_processing_input);
+	ClassDB::bind_method(D_METHOD("set_process_shortcut_input", "enable"), &Node::set_process_shortcut_input);
+	ClassDB::bind_method(D_METHOD("is_processing_shortcut_input"), &Node::is_processing_shortcut_input);
 	ClassDB::bind_method(D_METHOD("set_process_unhandled_input", "enable"), &Node::set_process_unhandled_input);
 	ClassDB::bind_method(D_METHOD("is_processing_unhandled_input"), &Node::is_processing_unhandled_input);
 	ClassDB::bind_method(D_METHOD("set_process_unhandled_key_input", "enable"), &Node::set_process_unhandled_key_input);
@@ -3694,6 +3727,7 @@ void Node::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_exit_tree"));
 	BIND_VMETHOD(MethodInfo("_ready"));
 	BIND_VMETHOD(MethodInfo("_input", PropertyInfo(Variant::OBJECT, "event", PROPERTY_HINT_RESOURCE_TYPE, "InputEvent")));
+	BIND_VMETHOD(MethodInfo("_shortcut_input", PropertyInfo(Variant::OBJECT, "event", PROPERTY_HINT_RESOURCE_TYPE, "InputEvent")));
 	BIND_VMETHOD(MethodInfo("_unhandled_input", PropertyInfo(Variant::OBJECT, "event", PROPERTY_HINT_RESOURCE_TYPE, "InputEvent")));
 	BIND_VMETHOD(MethodInfo("_unhandled_key_input", PropertyInfo(Variant::OBJECT, "event", PROPERTY_HINT_RESOURCE_TYPE, "InputEventKey")));
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_get_configuration_warning"));
@@ -3738,6 +3772,7 @@ Node::Node() {
 	data.owner = nullptr;
 	data.OW = nullptr;
 	data.input = false;
+	data.shortcut_input = false;
 	data.unhandled_input = false;
 	data.unhandled_key_input = false;
 	data.pause_mode = PAUSE_MODE_INHERIT;

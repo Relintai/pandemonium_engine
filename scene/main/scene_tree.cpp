@@ -1285,6 +1285,9 @@ void SceneTree::_call_input_pause(const StringName &p_group, const CallInputType
 		case CALL_INPUT_TYPE_INPUT:
 			method = SceneStringNames::get_singleton()->_input;
 			break;
+		case CALL_INPUT_TYPE_SHORTCUT_INPUT:
+			method = SceneStringNames::get_singleton()->_shortcut_input;
+			break;
 		case CALL_INPUT_TYPE_UNHANDLED_INPUT:
 			method = SceneStringNames::get_singleton()->_unhandled_input;
 			break;

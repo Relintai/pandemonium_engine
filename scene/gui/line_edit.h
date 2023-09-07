@@ -175,6 +175,7 @@ private:
 
 	void _editor_settings_changed();
 
+	void _unhandled_key_input(const Ref<InputEvent> &p_event);
 	void _gui_input(Ref<InputEvent> p_event);
 	void _notification(int p_what);
 

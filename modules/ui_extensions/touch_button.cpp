@@ -98,13 +98,13 @@ void TouchButton::_gui_input(Ref<InputEvent> p_event) {
 	BaseButton::_gui_input(p_event);
 }
 
-void TouchButton::_unhandled_input(Ref<InputEvent> p_event) {
+void TouchButton::_shortcut_input(Ref<InputEvent> p_event) {
 	if (p_event->get_device() == -1) {
 		//accept_event();
 		return;
 	}
 
-	Button::_unhandled_input(p_event);
+	Button::_shortcut_input(p_event);
 }
 
 void TouchButton::_bind_methods() {

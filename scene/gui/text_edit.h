@@ -515,6 +515,7 @@ protected:
 	void _insert_text(int p_line, int p_char, const String &p_text, int *r_end_line = nullptr, int *r_end_char = nullptr);
 	void _remove_text(int p_from_line, int p_from_column, int p_to_line, int p_to_column);
 	void _insert_text_at_cursor(const String &p_text);
+	void _unhandled_key_input(const Ref<InputEvent> &p_event);
 	void _gui_input(const Ref<InputEvent> &p_gui_input);
 	void _notification(int p_what);
 

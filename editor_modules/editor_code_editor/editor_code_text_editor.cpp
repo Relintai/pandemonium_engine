@@ -71,7 +71,7 @@
 
 // This function should be used to handle shortcuts that could otherwise
 // be handled too late if they weren't handled here.
-void EditorCodeTextEditor::_input(const Ref<InputEvent> &event) {
+void EditorCodeTextEditor::_shortcut_input(const Ref<InputEvent> &event) {
 	const Ref<InputEventKey> key_event = event;
 	if (!key_event.is_valid() || !key_event->is_pressed()) {
 		return;
@@ -964,7 +964,7 @@ void EditorCodeTextEditor::_notification(int p_what) {
 			if (toggle_scripts_button->is_visible()) {
 				update_toggle_scripts_button();
 			}
-			set_process_input(is_visible_in_tree());
+			set_process_shortcut_input(is_visible_in_tree());
 		} break;
 		default:
 			break;
@@ -1045,7 +1045,7 @@ void EditorCodeTextEditor::remove_all_bookmarks() {
 }
 
 void EditorCodeTextEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_input"), &EditorCodeTextEditor::_input);
+	ClassDB::bind_method(D_METHOD("_shortcut_input"), &EditorCodeTextEditor::_shortcut_input);
 	ClassDB::bind_method("_text_editor_gui_input", &EditorCodeTextEditor::_text_editor_gui_input);
 	ClassDB::bind_method("_line_col_changed", &EditorCodeTextEditor::_line_col_changed);
 	ClassDB::bind_method("_text_changed", &EditorCodeTextEditor::_text_changed);

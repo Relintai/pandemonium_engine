@@ -125,7 +125,7 @@ private:
 
 	void _update_drives(bool p_select = true);
 
-	void _unhandled_input(const Ref<InputEvent> &p_event);
+	void _shortcut_input(const Ref<InputEvent> &p_event);
 
 	bool _is_open_should_be_disabled();
 

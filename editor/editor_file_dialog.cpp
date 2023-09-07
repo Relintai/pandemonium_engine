@@ -109,7 +109,7 @@ void EditorFileDialog::_notification(int p_what) {
 			}
 		}
 	} else if (p_what == NOTIFICATION_POPUP_HIDE) {
-		set_process_unhandled_input(false);
+		set_process_shortcut_input(false);
 
 	} else if (p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
 		bool is_showing_hidden = EditorSettings::get_singleton()->get("filesystem/file_dialog/show_hidden_files");
@@ -146,7 +146,7 @@ void EditorFileDialog::_notification(int p_what) {
 	}
 }
 
-void EditorFileDialog::_unhandled_input(const Ref<InputEvent> &p_event) {
+void EditorFileDialog::_shortcut_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventKey> k = p_event;
 
 	if (k.is_valid() && is_window_modal_on_top()) {
@@ -345,7 +345,7 @@ void EditorFileDialog::_post_popup() {
 		_update_favorites();
 	}
 
-	set_process_unhandled_input(true);
+	set_process_shortcut_input(true);
 }
 
 void EditorFileDialog::_thumbnail_result(const String &p_path, const Ref<Texture> &p_preview, const Ref<Texture> &p_small_preview, const Variant &p_udata) {
@@ -1397,7 +1397,7 @@ EditorFileDialog::DisplayMode EditorFileDialog::get_display_mode() const {
 }
 
 void EditorFileDialog::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_unhandled_input"), &EditorFileDialog::_unhandled_input);
+	ClassDB::bind_method(D_METHOD("_shortcut_input"), &EditorFileDialog::_shortcut_input);
 
 	ClassDB::bind_method(D_METHOD("_item_selected"), &EditorFileDialog::_item_selected);
 	ClassDB::bind_method(D_METHOD("_multi_selected"), &EditorFileDialog::_multi_selected);

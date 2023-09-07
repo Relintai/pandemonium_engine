@@ -143,6 +143,8 @@ SceneStringNames::SceneStringNames() {
 	gui_input = StaticCString::create("gui_input");
 	_gui_input = StaticCString::create("_gui_input");
 
+	_shortcut_input = StaticCString::create("_shortcut_input");
+
 	_unhandled_input = StaticCString::create("_unhandled_input");
 	_unhandled_key_input = StaticCString::create("_unhandled_key_input");
 

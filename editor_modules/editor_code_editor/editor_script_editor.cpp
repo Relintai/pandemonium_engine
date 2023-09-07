@@ -2593,7 +2593,7 @@ void EditorScriptEditor::_input(const Ref<InputEvent> &p_event) {
 	}
 }
 
-void EditorScriptEditor::_unhandled_input(const Ref<InputEvent> &p_event) {
+void EditorScriptEditor::_shortcut_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
 	if (!is_visible_in_tree() || !p_event->is_pressed() || p_event->is_echo()) {
@@ -2606,6 +2606,7 @@ void EditorScriptEditor::_unhandled_input(const Ref<InputEvent> &p_event) {
 			_go_to_tab(script_list->get_item_metadata(next_tab));
 			_update_script_names();
 		}
+		accept_event();
 	}
 	if (ED_IS_SHORTCUT("script_editor/prev_script", p_event)) {
 		if (script_list->get_item_count() > 1) {
@@ -2614,12 +2615,15 @@ void EditorScriptEditor::_unhandled_input(const Ref<InputEvent> &p_event) {
 			_go_to_tab(script_list->get_item_metadata(next_tab));
 			_update_script_names();
 		}
+		accept_event();
 	}
 	if (ED_IS_SHORTCUT("script_editor/window_move_up", p_event)) {
 		_menu_option(WINDOW_MOVE_UP);
+		accept_event();
 	}
 	if (ED_IS_SHORTCUT("script_editor/window_move_down", p_event)) {
 		_menu_option(WINDOW_MOVE_DOWN);
+		accept_event();
 	}
 }
 
@@ -3165,7 +3169,7 @@ void EditorScriptEditor::_bind_methods() {
 	ClassDB::bind_method("_history_back", &EditorScriptEditor::_history_back);
 	ClassDB::bind_method("_live_auto_reload_running_scripts", &EditorScriptEditor::_live_auto_reload_running_scripts);
 	ClassDB::bind_method("_input", &EditorScriptEditor::_input);
-	ClassDB::bind_method("_unhandled_input", &EditorScriptEditor::_unhandled_input);
+	ClassDB::bind_method("_shortcut_input", &EditorScriptEditor::_shortcut_input);
 	ClassDB::bind_method("_script_list_gui_input", &EditorScriptEditor::_script_list_gui_input);
 	ClassDB::bind_method("_toggle_members_overview_alpha_sort", &EditorScriptEditor::_toggle_members_overview_alpha_sort);
 	ClassDB::bind_method("_update_members_overview", &EditorScriptEditor::_update_members_overview);
@@ -3301,7 +3305,7 @@ EditorScriptEditor::EditorScriptEditor(EditorNode *p_editor) {
 	ED_SHORTCUT("script_editor/next_script", TTR("Next Script"), KEY_MASK_CMD | KEY_MASK_SHIFT | KEY_PERIOD);
 	ED_SHORTCUT("script_editor/prev_script", TTR("Previous Script"), KEY_MASK_CMD | KEY_MASK_SHIFT | KEY_COMMA);
 	set_process_input(true);
-	set_process_unhandled_input(true);
+	set_process_shortcut_input(true);
 
 	file_menu = memnew(MenuButton);
 	menu_hb->add_child(file_menu);

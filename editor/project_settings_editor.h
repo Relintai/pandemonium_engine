@@ -206,7 +206,7 @@ class ProjectSettingsEditor : public AcceptDialog {
 	void _update_theme();
 
 protected:
-	void _unhandled_input(const Ref<InputEvent> &p_event);
+	void _shortcut_input(const Ref<InputEvent> &p_event);
 	void _notification(int p_what);
 	static void _bind_methods();
 

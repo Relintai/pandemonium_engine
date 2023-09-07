@@ -82,11 +82,11 @@ void FileDialog::_notification(int p_what) {
 		show_hidden->add_theme_color_override("icon_color_pressed", font_color_pressed);
 
 	} else if (p_what == NOTIFICATION_POPUP_HIDE) {
-		set_process_unhandled_input(false);
+		set_process_shortcut_input(false);
 	}
 }
 
-void FileDialog::_unhandled_input(const Ref<InputEvent> &p_event) {
+void FileDialog::_shortcut_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventKey> k = p_event;
 	if (k.is_valid() && is_window_modal_on_top()) {
 		if (k->is_pressed()) {
@@ -181,7 +181,7 @@ void FileDialog::_post_popup() {
 		tree->grab_focus();
 	}
 
-	set_process_unhandled_input(true);
+	set_process_shortcut_input(true);
 
 	// For open dir mode, deselect all items on file dialog open.
 	if (mode == MODE_OPEN_DIR) {
@@ -803,7 +803,7 @@ void FileDialog::_update_drives(bool p_select) {
 bool FileDialog::default_show_hidden_files = false;
 
 void FileDialog::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_unhandled_input"), &FileDialog::_unhandled_input);
+	ClassDB::bind_method(D_METHOD("_shortcut_input"), &FileDialog::_shortcut_input);
 
 	ClassDB::bind_method(D_METHOD("_tree_multi_selected"), &FileDialog::_tree_multi_selected);
 	ClassDB::bind_method(D_METHOD("_tree_selected"), &FileDialog::_tree_selected);

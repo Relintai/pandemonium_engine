@@ -40,6 +40,8 @@
  * The events are pretty obvious.
  */
 
+class ShortCut;
+
 enum ButtonList {
 	BUTTON_LEFT = 1,
 	BUTTON_RIGHT = 2,
@@ -649,6 +651,25 @@ public:
 	virtual String as_text() const;
 
 	InputEventMIDI();
+};
+
+class InputEventShortCut : public InputEvent {
+	GDCLASS(InputEventShortCut, InputEvent);
+
+	Ref<ShortCut> shortcut;
+
+protected:
+	static void _bind_methods();
+
+public:
+	void set_shortcut(Ref<ShortCut> p_shortcut);
+	Ref<ShortCut> get_shortcut();
+
+	virtual String as_text() const;
+	virtual String to_string();
+
+	InputEventShortCut();
+	~InputEventShortCut();
 };
 
 #endif

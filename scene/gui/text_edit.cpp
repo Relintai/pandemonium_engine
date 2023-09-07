@@ -2300,6 +2300,45 @@ void TextEdit::_get_minimap_mouse_row(const Point2i &p_mouse, int &r_row) const 
 	r_row = row;
 }
 
+void TextEdit::_unhandled_key_input(const Ref<InputEvent> &p_event) {
+	Ref<InputEventKey> k = p_event;
+
+	if (k.is_valid()) {
+		if (!k->is_pressed()) {
+			return;
+		}
+		// Handle Unicode (with modifiers active, process after shortcuts).
+		if (has_focus() && !readonly && (k->get_unicode() >= 32)) {
+			//handle_unicode_input(k->get_unicode());
+
+			_reset_caret_blink_timer();
+
+			const CharType chr[2] = { (CharType)k->get_unicode(), 0 };
+			if (auto_brace_completion_enabled && _is_pair_symbol(chr[0])) {
+				_consume_pair_symbol(chr[0]);
+			} else {
+				// Remove the old character if in insert mode.
+				if (insert_mode) {
+					begin_complex_operation();
+
+					// Make sure we don't try and remove empty space.
+					if (cursor.column < get_line(cursor.line).length()) {
+						_remove_text(cursor.line, cursor.column, cursor.line, cursor.column + 1);
+					}
+				}
+
+				_insert_text_at_cursor(chr);
+
+				if (insert_mode) {
+					end_complex_operation();
+				}
+			}
+			_update_completion_candidates();
+			accept_event();
+		}
+	}
+}
+
 void TextEdit::_gui_input(const Ref<InputEvent> &p_gui_input) {
 	double prev_v_scroll = v_scroll->get_value();
 	double prev_h_scroll = h_scroll->get_value();
@@ -7155,6 +7194,7 @@ int TextEdit::get_line_height() const {
 
 void TextEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_gui_input"), &TextEdit::_gui_input);
+	ClassDB::bind_method(D_METHOD("_unhandled_key_input"), &TextEdit::_unhandled_key_input);
 	ClassDB::bind_method(D_METHOD("_scroll_moved"), &TextEdit::_scroll_moved);
 	ClassDB::bind_method(D_METHOD("_cursor_changed_emit"), &TextEdit::_cursor_changed_emit);
 	ClassDB::bind_method(D_METHOD("_text_changed_emit"), &TextEdit::_text_changed_emit);
@@ -7401,6 +7441,7 @@ TextEdit::TextEdit() {
 	info_gutter_width = 0;
 	cache.info_gutter_width = 0;
 	set_default_cursor_shape(CURSOR_IBEAM);
+	set_process_unhandled_key_input(true);
 
 	drag_action = false;
 	drag_caret_force_displayed = false;

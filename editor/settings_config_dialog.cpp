@@ -123,7 +123,7 @@ void EditorSettingsDialog::popup_edit_settings() {
 	search_box->grab_focus();
 
 	_update_shortcuts();
-	set_process_unhandled_input(true);
+	set_process_shortcut_input(true);
 
 	// Restore valid window bounds or pop up at default size.
 	Rect2 saved_size = EditorSettings::get_singleton()->get_project_metadata("dialog_bounds", "editor_settings", Rect2());
@@ -160,7 +160,7 @@ void EditorSettingsDialog::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_POPUP_HIDE: {
 			EditorSettings::get_singleton()->set_project_metadata("dialog_bounds", "editor_settings", get_rect());
-			set_process_unhandled_input(false);
+			set_process_shortcut_input(false);
 		} break;
 		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
 			_update_icons();
@@ -171,7 +171,7 @@ void EditorSettingsDialog::_notification(int p_what) {
 	}
 }
 
-void EditorSettingsDialog::_unhandled_input(const Ref<InputEvent> &p_event) {
+void EditorSettingsDialog::_shortcut_input(const Ref<InputEvent> &p_event) {
 	const Ref<InputEventKey> k = p_event;
 
 	if (k.is_valid() && is_window_modal_on_top() && k->is_pressed()) {
@@ -415,7 +415,7 @@ void EditorSettingsDialog::_editor_restart_close() {
 }
 
 void EditorSettingsDialog::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_unhandled_input"), &EditorSettingsDialog::_unhandled_input);
+	ClassDB::bind_method(D_METHOD("_shortcut_input"), &EditorSettingsDialog::_shortcut_input);
 	ClassDB::bind_method(D_METHOD("_settings_save"), &EditorSettingsDialog::_settings_save);
 	ClassDB::bind_method(D_METHOD("_settings_changed"), &EditorSettingsDialog::_settings_changed);
 	ClassDB::bind_method(D_METHOD("_settings_property_edited"), &EditorSettingsDialog::_settings_property_edited);

@@ -153,6 +153,7 @@ private:
 		bool idle_process_internal : 1;
 
 		bool input : 1;
+		bool shortcut_input : 1;
 		bool unhandled_input : 1;
 		bool unhandled_key_input : 1;
 
@@ -483,6 +484,9 @@ public:
 
 	void set_process_input(bool p_enable);
 	bool is_processing_input() const;
+
+	void set_process_shortcut_input(bool p_enable);
+	bool is_processing_shortcut_input() const;
 
 	void set_process_unhandled_input(bool p_enable);
 	bool is_processing_unhandled_input() const;

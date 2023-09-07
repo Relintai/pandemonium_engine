@@ -31,6 +31,7 @@
 #include "input_event.h"
 
 #include "core/input/input_map.h"
+#include "core/input/shortcut.h"
 #include "core/os/keyboard.h"
 
 const int InputEvent::DEVICE_ID_TOUCH_MOUSE = -1;
@@ -1067,8 +1068,9 @@ String InputEventScreenDrag::as_text() const {
 
 bool InputEventScreenDrag::accumulate(const Ref<InputEvent> &p_event) {
 	Ref<InputEventScreenDrag> drag = p_event;
-	if (drag.is_null())
+	if (drag.is_null()) {
 		return false;
+	}
 
 	if (get_index() != drag->get_index()) {
 		return false;
@@ -1377,4 +1379,40 @@ InputEventMIDI::InputEventMIDI() {
 	pressure = 0;
 	controller_number = 0;
 	controller_value = 0;
+}
+
+///////////////////////////////////
+
+void InputEventShortCut::set_shortcut(Ref<ShortCut> p_shortcut) {
+	shortcut = p_shortcut;
+	emit_changed();
+}
+
+Ref<ShortCut> InputEventShortCut::get_shortcut() {
+	return shortcut;
+}
+
+void InputEventShortCut::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_shortcut", "shortcut"), &InputEventShortCut::set_shortcut);
+	ClassDB::bind_method(D_METHOD("get_shortcut"), &InputEventShortCut::get_shortcut);
+
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "shortcut", PROPERTY_HINT_RESOURCE_TYPE, "ShortCut"), "set_shortcut", "get_shortcut");
+}
+
+String InputEventShortCut::as_text() const {
+	ERR_FAIL_COND_V(shortcut.is_null(), "None");
+
+	return vformat(RTR("Input Event with ShortCut=%s"), shortcut->get_as_text());
+}
+
+String InputEventShortCut::to_string() {
+	ERR_FAIL_COND_V(shortcut.is_null(), "None");
+
+	return vformat("InputEventShortCut: shortcut=%s", shortcut->get_as_text());
+}
+
+InputEventShortCut::InputEventShortCut() {
+}
+
+InputEventShortCut::~InputEventShortCut() {
 }
