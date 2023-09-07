@@ -1142,64 +1142,6 @@ bool SceneTree::is_paused() const {
 	return pause;
 }
 
-void SceneTree::_call_input_pause(const StringName &p_group, const StringName &p_method, const Ref<InputEvent> &p_input) {
-	Vector<Node *> nodes_copy;
-
-	{
-		_THREAD_SAFE_METHOD_
-
-		RBMap<StringName, Group>::Element *E = group_map.find(p_group);
-		if (!E) {
-			return;
-		}
-		Group &g = E->get();
-		if (g.nodes.empty()) {
-			return;
-		}
-
-		_update_group_order(g);
-
-		//copy, so copy on write happens in case something is removed from process while being called
-		//performance is not lost because only if something is added/removed the vector is copied.
-		nodes_copy = g.nodes;
-	}
-
-	int node_count = nodes_copy.size();
-	Node **nodes = nodes_copy.ptrw();
-
-	Variant arg = p_input;
-	const Variant *v[1] = { &arg };
-
-	_THREAD_SAFE_LOCK_
-	call_lock++;
-	_THREAD_SAFE_UNLOCK_
-
-	for (int i = node_count - 1; i >= 0; i--) {
-		if (input_handled) {
-			break;
-		}
-
-		Node *n = nodes[i];
-		if (call_lock && call_skip.has(n)) {
-			continue;
-		}
-
-		if (!n->can_process()) {
-			continue;
-		}
-
-		n->call_multilevel(p_method, (const Variant **)v, 1);
-		//ERR_FAIL_COND(node_count != g.nodes.size());
-	}
-
-	_THREAD_SAFE_LOCK_
-	call_lock--;
-	if (call_lock == 0) {
-		call_skip.clear();
-	}
-	_THREAD_SAFE_UNLOCK_
-}
-
 void SceneTree::_notify_group_pause(const StringName &p_group, int p_notification) {
 	Vector<Node *> nodes_copy;
 
@@ -1303,6 +1245,78 @@ Variant SceneTree::_call_group(const Variant **p_args, int p_argcount, Variant::
 
 	call_group_flags(0, group, method, v[0], v[1], v[2], v[3], v[4]);
 	return Variant();
+}
+
+void SceneTree::_call_input_pause(const StringName &p_group, const CallInputType p_call_type, const Ref<InputEvent> &p_input) {
+	Vector<Node *> nodes_copy;
+
+	{
+		_THREAD_SAFE_METHOD_
+
+		RBMap<StringName, Group>::Element *E = group_map.find(p_group);
+		if (!E) {
+			return;
+		}
+		Group &g = E->get();
+		if (g.nodes.empty()) {
+			return;
+		}
+
+		_update_group_order(g);
+
+		//copy, so copy on write happens in case something is removed from process while being called
+		//performance is not lost because only if something is added/removed the vector is copied.
+		nodes_copy = g.nodes;
+	}
+
+	int node_count = nodes_copy.size();
+	Node **nodes = nodes_copy.ptrw();
+
+	Variant arg = p_input;
+	const Variant *v[1] = { &arg };
+
+	_THREAD_SAFE_LOCK_
+	call_lock++;
+	_THREAD_SAFE_UNLOCK_
+
+	StringName method;
+
+	switch (p_call_type) {
+		case CALL_INPUT_TYPE_INPUT:
+			method = SceneStringNames::get_singleton()->_input;
+			break;
+		case CALL_INPUT_TYPE_UNHANDLED_INPUT:
+			method = SceneStringNames::get_singleton()->_unhandled_input;
+			break;
+		case CALL_INPUT_TYPE_UNHANDLED_KEY_INPUT:
+			method = SceneStringNames::get_singleton()->_unhandled_input;
+			break;
+	}
+
+	for (int i = node_count - 1; i >= 0; i--) {
+		if (input_handled) {
+			break;
+		}
+
+		Node *n = nodes[i];
+		if (call_lock && call_skip.has(n)) {
+			continue;
+		}
+
+		if (!n->can_process()) {
+			continue;
+		}
+
+		n->call_multilevel(method, (const Variant **)v, 1);
+		//ERR_FAIL_COND(node_count != g.nodes.size());
+	}
+
+	_THREAD_SAFE_LOCK_
+	call_lock--;
+	if (call_lock == 0) {
+		call_skip.clear();
+	}
+	_THREAD_SAFE_UNLOCK_
 }
 
 int64_t SceneTree::get_frame() const {

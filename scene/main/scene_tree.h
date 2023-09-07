@@ -219,9 +219,16 @@ private:
 	void make_group_changed(const StringName &p_group);
 
 	void _notify_group_pause(const StringName &p_group, int p_notification);
-	void _call_input_pause(const StringName &p_group, const StringName &p_method, const Ref<InputEvent> &p_input);
 	Variant _call_group_flags(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
 	Variant _call_group(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
+
+	enum CallInputType {
+		CALL_INPUT_TYPE_INPUT,
+		CALL_INPUT_TYPE_UNHANDLED_INPUT,
+		CALL_INPUT_TYPE_UNHANDLED_KEY_INPUT,
+	};
+
+	void _call_input_pause(const StringName &p_group, const CallInputType p_call_type, const Ref<InputEvent> &p_input);
 
 	void _flush_delete_queue();
 	//optimization

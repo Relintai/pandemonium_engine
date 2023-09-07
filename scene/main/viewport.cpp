@@ -2812,7 +2812,7 @@ void Viewport::input(const Ref<InputEvent> &p_event) {
 	local_input_handled = false;
 
 	if (!is_input_handled()) {
-		get_tree()->_call_input_pause(input_group, "_input", p_event); //not a bug, must happen before GUI, order is _input -> gui input -> _unhandled input
+		get_tree()->_call_input_pause(input_group, SceneTree::CALL_INPUT_TYPE_INPUT, p_event); //not a bug, must happen before GUI, order is _input -> gui input -> _unhandled input
 	}
 
 	if (!is_input_handled()) {
@@ -2827,10 +2827,10 @@ void Viewport::input(const Ref<InputEvent> &p_event) {
 void Viewport::unhandled_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(!is_inside_tree());
 
-	get_tree()->_call_input_pause(unhandled_input_group, "_unhandled_input", p_event);
+	get_tree()->_call_input_pause(unhandled_input_group, SceneTree::CALL_INPUT_TYPE_UNHANDLED_INPUT, p_event);
 	//call_group(GROUP_CALL_REVERSE|GROUP_CALL_REALTIME|GROUP_CALL_MULIILEVEL,"unhandled_input","_unhandled_input",ev);
 	if (!get_tree()->input_handled && Object::cast_to<InputEventKey>(*p_event) != nullptr) {
-		get_tree()->_call_input_pause(unhandled_key_input_group, "_unhandled_key_input", p_event);
+		get_tree()->_call_input_pause(unhandled_key_input_group, SceneTree::CALL_INPUT_TYPE_UNHANDLED_KEY_INPUT, p_event);
 		//call_group(GROUP_CALL_REVERSE|GROUP_CALL_REALTIME|GROUP_CALL_MULIILEVEL,"unhandled_key_input","_unhandled_key_input",ev);
 	}
 
