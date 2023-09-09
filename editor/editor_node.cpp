@@ -6898,7 +6898,7 @@ EditorNode::EditorNode() {
 
 	bottom_panel_collapse = memnew(ToolButton);
 	bottom_panel_collapse->set_icon(gui_base->get_theme_icon("CollapseBottomDock", "EditorIcons"));
-	bottom_panel_collapse->set_shortcut(ED_SHORTCUT("editor/bottom_panel_collapse", TTR("Collapse Bottom Panel"), KEY_MASK_CTRL | KEY_B));
+	bottom_panel_collapse->set_shortcut(ED_SHORTCUT("editor/bottom_panel_collapse", TTR("Collapse Bottom Panel"), KEY_MASK_CMD | KEY_U));
 	bottom_panel_hb->add_child(bottom_panel_collapse);
 	bottom_panel_collapse->hide();
 	bottom_panel_collapse->connect("pressed", this, "_bottom_panel_collapse_pressed");
