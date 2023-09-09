@@ -69,36 +69,6 @@
 
 #include "editor_script_editor.h"
 
-// This function should be used to handle shortcuts that could otherwise
-// be handled too late if they weren't handled here.
-void EditorCodeTextEditor::_shortcut_input(const Ref<InputEvent> &event) {
-	const Ref<InputEventKey> key_event = event;
-	if (!key_event.is_valid() || !key_event->is_pressed()) {
-		return;
-	}
-
-	if (ED_IS_SHORTCUT("script_text_editor/move_up", key_event)) {
-		move_lines_up();
-		accept_event();
-		return;
-	}
-	if (ED_IS_SHORTCUT("script_text_editor/move_down", key_event)) {
-		move_lines_down();
-		accept_event();
-		return;
-	}
-	if (ED_IS_SHORTCUT("script_text_editor/delete_line", key_event)) {
-		delete_lines();
-		accept_event();
-		return;
-	}
-	if (ED_IS_SHORTCUT("script_text_editor/duplicate_selection", key_event)) {
-		duplicate_selection();
-		accept_event();
-		return;
-	}
-}
-
 void EditorCodeTextEditor::_text_editor_gui_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventMouseButton> mb = p_event;
 
@@ -964,7 +934,6 @@ void EditorCodeTextEditor::_notification(int p_what) {
 			if (toggle_scripts_button->is_visible()) {
 				update_toggle_scripts_button();
 			}
-			set_process_shortcut_input(is_visible_in_tree());
 		} break;
 		default:
 			break;
@@ -1045,7 +1014,6 @@ void EditorCodeTextEditor::remove_all_bookmarks() {
 }
 
 void EditorCodeTextEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_shortcut_input"), &EditorCodeTextEditor::_shortcut_input);
 	ClassDB::bind_method("_text_editor_gui_input", &EditorCodeTextEditor::_text_editor_gui_input);
 	ClassDB::bind_method("_line_col_changed", &EditorCodeTextEditor::_line_col_changed);
 	ClassDB::bind_method("_text_changed", &EditorCodeTextEditor::_text_changed);
