@@ -1049,7 +1049,8 @@ void EditorAudioBuses::_update_buses() {
 
 EditorAudioBuses *EditorAudioBuses::register_editor() {
 	EditorAudioBuses *audio_buses = memnew(EditorAudioBuses);
-	EditorNode::get_singleton()->add_bottom_panel_item(TTR("Audio"), audio_buses);
+	ToolButton *tb = EditorNode::get_singleton()->add_bottom_panel_item(TTR("Audio"), audio_buses);
+	tb->set_shortcut(ED_SHORTCUT("audio_bus_editor/toggle_audio_panel", TTR("Toggle Audio Panel"), KEY_MASK_CMD | KEY_MASK_ALT | KEY_2));
 	return audio_buses;
 }
 

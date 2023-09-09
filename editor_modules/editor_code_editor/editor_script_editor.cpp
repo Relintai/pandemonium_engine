@@ -3483,6 +3483,7 @@ EditorScriptEditor::EditorScriptEditor(EditorNode *p_editor) {
 	script_editor = this;
 
 	Button *db = EditorNode::get_singleton()->add_bottom_panel_item(TTR("Debugger"), debugger);
+	db->set_shortcut(ED_SHORTCUT("debugger/toggle_debugger_panel", TTR("Toggle Debugger Panel"), KEY_MASK_CMD | KEY_MASK_ALT | KEY_4));
 	// Add separation for the warning/error icon that is displayed later.
 	db->add_theme_constant_override("hseparation", 6 * EDSCALE);
 	debugger->set_tool_button(db);
@@ -3507,6 +3508,7 @@ EditorScriptEditor::EditorScriptEditor(EditorNode *p_editor) {
 	add_child(find_in_files_dialog);
 	find_in_files = memnew(FindInFilesPanel);
 	find_in_files_button = editor->add_bottom_panel_item(TTR("Search Results"), find_in_files);
+	find_in_files_button->set_shortcut(ED_SHORTCUT("script_editor/toggle_search_results_panel", TTR("Toggle Search Results Panel"), KEY_MASK_CMD | KEY_MASK_ALT | KEY_5));
 	find_in_files->set_custom_minimum_size(Size2(0, 200) * EDSCALE);
 	find_in_files->connect(FindInFilesPanel::SIGNAL_RESULT_SELECTED, this, "_on_find_in_files_result_selected");
 	find_in_files->connect(FindInFilesPanel::SIGNAL_FILES_MODIFIED, this, "_on_find_in_files_modified_files");

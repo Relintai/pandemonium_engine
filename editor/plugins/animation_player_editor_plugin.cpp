@@ -1886,7 +1886,8 @@ AnimationPlayerEditorPlugin::AnimationPlayerEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 	anim_editor = memnew(AnimationPlayerEditor(editor, this));
 	anim_editor->set_undo_redo(EditorNode::get_undo_redo());
-	editor->add_bottom_panel_item(TTR("Animation"), anim_editor);
+	ToolButton *tb = editor->add_bottom_panel_item(TTR("Animation"), anim_editor);
+	tb->set_shortcut(ED_SHORTCUT("animation_player_editor/toggle_animation_panel", TTR("Toggle Animation Panel"), KEY_MASK_CMD | KEY_MASK_ALT | KEY_3));
 }
 
 AnimationPlayerEditorPlugin::~AnimationPlayerEditorPlugin() {

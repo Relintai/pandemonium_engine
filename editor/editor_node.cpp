@@ -6913,6 +6913,7 @@ EditorNode::EditorNode() {
 
 	log = memnew(EditorLog);
 	ToolButton *output_button = add_bottom_panel_item(TTR("Output"), log);
+	output_button->set_shortcut(ED_SHORTCUT("editor/toggle_output_panel", TTR("Toggle Output Panel"), KEY_MASK_CMD | KEY_MASK_ALT | KEY_1));
 	log->set_tool_button(output_button);
 
 	old_split_ofs = 0;
