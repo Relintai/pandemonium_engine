@@ -627,6 +627,7 @@ void EditorNode::_notification(int p_what) {
 			scene_tab_add->set_icon(gui_base->get_theme_icon("Add", "EditorIcons"));
 
 			bottom_panel_raise->set_icon(gui_base->get_theme_icon("ExpandBottomDock", "EditorIcons"));
+			bottom_panel_collapse->set_icon(gui_base->get_theme_icon("CollapseBottomDock", "EditorIcons"));
 
 			// clear_button->set_icon(gui_base->get_theme_icon("Close", "EditorIcons")); don't have access to that node. needs to become a class property
 			dock_tab_move_left->set_icon(theme->get_icon("Back", "EditorIcons"));
@@ -4113,7 +4114,7 @@ Ref<Texture> EditorNode::get_class_icon(const String &p_class, const String &p_f
 		String class_name = p_class;
 
 		while (script.is_valid()) {
-						class_name = ScriptServer::get_global_class_name(script->get_path());
+			class_name = ScriptServer::get_global_class_name(script->get_path());
 			String current_icon_path = ed.script_class_get_icon_path(class_name);
 			icon = _load_custom_class_icon(current_icon_path);
 			if (icon.is_valid()) {
@@ -5184,6 +5185,7 @@ void EditorNode::_bottom_panel_switch(bool p_enable, int p_idx) {
 			top_split->hide();
 		}
 		bottom_panel_raise->show();
+		bottom_panel_collapse->show();
 
 	} else {
 		bottom_panel->add_theme_style_override("panel", gui_base->get_theme_stylebox("panel", "TabContainer"));
@@ -5192,6 +5194,7 @@ void EditorNode::_bottom_panel_switch(bool p_enable, int p_idx) {
 		center_split->set_dragger_visibility(SplitContainer::DRAGGER_HIDDEN);
 		center_split->set_collapsed(true);
 		bottom_panel_raise->hide();
+		bottom_panel_collapse->hide();
 		if (bottom_panel_raise->is_pressed()) {
 			top_split->show();
 		}
@@ -5649,6 +5652,15 @@ void EditorNode::_bottom_panel_raise_toggled(bool p_pressed) {
 	top_split->set_visible(!p_pressed);
 }
 
+void EditorNode::_bottom_panel_collapse_pressed() {
+	top_split->set_visible(true);
+
+	for (int i = 0; i < bottom_panel_items.size(); i++) {
+		bottom_panel_items[i].button->set_pressed(false);
+		bottom_panel_items[i].control->set_visible(false);
+	}
+}
+
 void EditorNode::_update_video_driver_color() {
 	// TODO: Probably should de-hardcode this and add to editor settings.
 	if (video_driver->get_text() == "GLES2") {
@@ -5786,6 +5798,7 @@ void EditorNode::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_resources_reimported"), &EditorNode::_resources_reimported);
 	ClassDB::bind_method(D_METHOD("_bottom_panel_raise_toggled"), &EditorNode::_bottom_panel_raise_toggled);
+	ClassDB::bind_method(D_METHOD("_bottom_panel_collapse_pressed"), &EditorNode::_bottom_panel_collapse_pressed);
 
 	ClassDB::bind_method(D_METHOD("_on_plugin_ready"), &EditorNode::_on_plugin_ready);
 
@@ -6883,11 +6896,16 @@ EditorNode::EditorNode() {
 	Control *h_spacer = memnew(Control);
 	bottom_panel_hb->add_child(h_spacer);
 
+	bottom_panel_collapse = memnew(ToolButton);
+	bottom_panel_collapse->set_icon(gui_base->get_theme_icon("CollapseBottomDock", "EditorIcons"));
+	bottom_panel_collapse->set_shortcut(ED_SHORTCUT("editor/bottom_panel_collapse", TTR("Collapse Bottom Panel"), KEY_MASK_CTRL | KEY_B));
+	bottom_panel_hb->add_child(bottom_panel_collapse);
+	bottom_panel_collapse->hide();
+	bottom_panel_collapse->connect("pressed", this, "_bottom_panel_collapse_pressed");
+
 	bottom_panel_raise = memnew(ToolButton);
 	bottom_panel_raise->set_icon(gui_base->get_theme_icon("ExpandBottomDock", "EditorIcons"));
-
 	bottom_panel_raise->set_shortcut(ED_SHORTCUT("editor/bottom_panel_expand", TTR("Expand Bottom Panel"), KEY_MASK_SHIFT | KEY_F12));
-
 	bottom_panel_hb->add_child(bottom_panel_raise);
 	bottom_panel_raise->hide();
 	bottom_panel_raise->set_toggle_mode(true);

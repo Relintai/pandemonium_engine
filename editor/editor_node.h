@@ -710,6 +710,7 @@ private:
 	VBoxContainer *bottom_panel_vb;
 	LinkButton *version_btn;
 	ToolButton *bottom_panel_raise;
+	ToolButton *bottom_panel_collapse;
 
 	enum FileChangedActions {
 		FILE_CHANGED_ACTION_ASK = 0,
@@ -730,6 +731,7 @@ private:
 	OptionButton *remember_disk_changed;
 
 	void _bottom_panel_raise_toggled(bool);
+	void _bottom_panel_collapse_pressed();
 
 	EditorInterface *editor_interface;
 
