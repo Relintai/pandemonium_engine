@@ -1316,7 +1316,7 @@ void SceneTree::_call_input_pause(const StringName &p_group, const CallInputType
 			//ERR_FAIL_COND(node_count != g.nodes.size());
 		}
 	} else {
-		Vector<ObjectID> no_context_node_ids;
+		Vector<Node *> no_context_nodes;
 
 		for (int i = node_count - 1; i >= 0; i--) {
 			if (input_handled) {
@@ -1337,7 +1337,7 @@ void SceneTree::_call_input_pause(const StringName &p_group, const CallInputType
 				// If calling shortcut input on a control, ensure it respects the shortcut context.
 				// Shortcut context (based on focus) only makes sense for controls (UI), so don't need to worry about it for nodes
 				if (c->get_shortcut_context() == NULL) {
-					no_context_node_ids.push_back(n->get_instance_id());
+					no_context_nodes.push_back(n);
 					continue;
 				}
 				if (!c->is_focus_owner_in_shortcut_context()) {
@@ -1349,14 +1349,15 @@ void SceneTree::_call_input_pause(const StringName &p_group, const CallInputType
 			//ERR_FAIL_COND(node_count != g.nodes.size());
 		}
 
-		int ncns = no_context_node_ids.size();
+		int ncns = no_context_nodes.size();
 
 		for (int i = 0; i < ncns; ++i) {
 			if (input_handled) {
 				break;
 			}
 
-			Node *n = Object::cast_to<Node>(ObjectDB::get_instance(no_context_node_ids[i]));
+			Node *n = no_context_nodes[i];
+
 			if (n) {
 				n->call_multilevel(method, (const Variant **)v, 1);
 			}
