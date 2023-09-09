@@ -615,6 +615,7 @@ EditorFindReplaceBar::EditorFindReplaceBar() {
 	hbc_option_search->add_child(case_sensitive);
 	case_sensitive->set_text(TTR("Match Case"));
 	case_sensitive->set_focus_mode(FOCUS_NONE);
+	case_sensitive->set_pressed(true);
 	case_sensitive->connect("toggled", this, "_search_options_changed");
 
 	whole_words = memnew(CheckBox);

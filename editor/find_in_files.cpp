@@ -364,6 +364,7 @@ FindInFilesDialog::FindInFilesDialog() {
 
 		_match_case_checkbox = memnew(CheckBox);
 		_match_case_checkbox->set_text(TTR("Match Case"));
+		_match_case_checkbox->set_pressed(true);
 		hbc->add_child(_match_case_checkbox);
 
 		gc->add_child(hbc);
