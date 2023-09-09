@@ -580,7 +580,7 @@ ObjectID SpatialEditorViewport::_select_ray(const Point2 &p_pos) {
 	RBSet<Ref<EditorSpatialGizmo>> found_gizmos;
 
 	Node *edited_scene = get_tree()->get_edited_scene_root();
-	ObjectID closest;
+	ObjectID closest = ObjectID();
 	Node *item = nullptr;
 	float closest_dist = 1e20;
 
