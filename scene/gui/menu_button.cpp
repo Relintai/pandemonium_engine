@@ -30,9 +30,9 @@
 
 #include "menu_button.h"
 #include "core/input/input.h"
+#include "core/input/shortcut.h"
 #include "core/os/keyboard.h"
 #include "scene/gui/popup_menu.h"
-#include "core/input/shortcut.h"
 #include "scene/main/viewport.h"
 
 void MenuButton::_shortcut_input(Ref<InputEvent> p_event) {
@@ -41,8 +41,6 @@ void MenuButton::_shortcut_input(Ref<InputEvent> p_event) {
 	if (disable_shortcuts) {
 		return;
 	}
-
-	BaseButton::_shortcut_input(p_event);
 
 	if (p_event->is_pressed() && !p_event->is_echo() && (Object::cast_to<InputEventKey>(p_event.ptr()) || Object::cast_to<InputEventJoypadButton>(p_event.ptr()) || Object::cast_to<InputEventAction>(*p_event))) {
 		if (!get_parent() || !is_visible_in_tree() || is_disabled()) {
@@ -53,8 +51,11 @@ void MenuButton::_shortcut_input(Ref<InputEvent> p_event) {
 
 		if (popup->activate_item_by_event(p_event, global_only)) {
 			accept_event();
+			return;
 		}
 	}
+
+	BaseButton::_shortcut_input(p_event);
 }
 
 void MenuButton::pressed() {
