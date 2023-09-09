@@ -1358,9 +1358,7 @@ void SceneTree::_call_input_pause(const StringName &p_group, const CallInputType
 
 			Node *n = no_context_nodes[i];
 
-			if (n) {
-				n->call_multilevel(method, (const Variant **)v, 1);
-			}
+			n->call_multilevel(method, (const Variant **)v, 1);
 		}
 	}
 
