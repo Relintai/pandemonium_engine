@@ -2613,6 +2613,147 @@ _Directory::~_Directory() {
 	}
 }
 
+///////////////////////
+
+void _SubProcess::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_executable_path"), &_SubProcess::get_executable_path);
+	ClassDB::bind_method(D_METHOD("set_executable_path", "executable_path"), &_SubProcess::set_executable_path);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "executable_path"), "set_executable_path", "get_executable_path");
+
+	ClassDB::bind_method(D_METHOD("get_arguments"), &_SubProcess::get_arguments);
+	ClassDB::bind_method(D_METHOD("set_arguments", "arguments"), &_SubProcess::set_arguments);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "arguments"), "set_arguments", "get_arguments");
+
+	ClassDB::bind_method(D_METHOD("get_blocking"), &_SubProcess::get_blocking);
+	ClassDB::bind_method(D_METHOD("set_blocking", "value"), &_SubProcess::set_blocking);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "blocking"), "set_blocking", "get_blocking");
+
+	ClassDB::bind_method(D_METHOD("get_read_output"), &_SubProcess::get_read_output);
+	ClassDB::bind_method(D_METHOD("set_read_output", "value"), &_SubProcess::set_read_output);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "read_output"), "set_read_output", "get_read_output");
+
+	ClassDB::bind_method(D_METHOD("get_read_std"), &_SubProcess::get_read_std);
+	ClassDB::bind_method(D_METHOD("set_read_std", "value"), &_SubProcess::set_read_std);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "read_std"), "set_read_std", "get_read_std");
+
+	ClassDB::bind_method(D_METHOD("get_read_std_err"), &_SubProcess::get_read_std_err);
+	ClassDB::bind_method(D_METHOD("set_read_std_err", "value"), &_SubProcess::set_read_std_err);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "read_std_err"), "set_read_std_err", "get_read_std_err");
+
+	ClassDB::bind_method(D_METHOD("get_use_pipe_mutex"), &_SubProcess::get_use_pipe_mutex);
+	ClassDB::bind_method(D_METHOD("set_use_pipe_mutex", "value"), &_SubProcess::set_use_pipe_mutex);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_pipe_mutex"), "set_use_pipe_mutex", "get_use_pipe_mutex");
+
+	ClassDB::bind_method(D_METHOD("get_open_console"), &_SubProcess::get_open_console);
+	ClassDB::bind_method(D_METHOD("set_open_console", "value"), &_SubProcess::set_open_console);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "open_console"), "set_open_console", "get_open_console");
+
+	ClassDB::bind_method(D_METHOD("get_data"), &_SubProcess::get_data);
+	ClassDB::bind_method(D_METHOD("get_process_id"), &_SubProcess::get_process_id);
+	ClassDB::bind_method(D_METHOD("get_exitcode"), &_SubProcess::get_exitcode);
+
+	ClassDB::bind_method(D_METHOD("start"), &_SubProcess::start);
+	ClassDB::bind_method(D_METHOD("stop"), &_SubProcess::stop);
+	ClassDB::bind_method(D_METHOD("poll"), &_SubProcess::poll);
+	ClassDB::bind_method(D_METHOD("send_signal", "signal"), &_SubProcess::send_signal);
+	ClassDB::bind_method(D_METHOD("send_data", "data"), &_SubProcess::send_data);
+	ClassDB::bind_method(D_METHOD("is_process_running"), &_SubProcess::is_process_running);
+}
+
+String _SubProcess::get_executable_path() const {
+	return _sub_process->get_executable_path();
+}
+void _SubProcess::set_executable_path(const String &p_executable_path) {
+	_sub_process->set_executable_path(p_executable_path);
+}
+
+Vector<String> _SubProcess::get_arguments() const {
+	return _sub_process->get_arguments();
+}
+void _SubProcess::set_arguments(const Vector<String> &p_arguments) {
+	_sub_process->set_arguments(p_arguments);
+}
+
+bool _SubProcess::get_blocking() const {
+	return _sub_process->get_blocking();
+}
+void _SubProcess::set_blocking(const bool p_value) {
+	_sub_process->set_blocking(p_value);
+}
+
+bool _SubProcess::get_read_output() const {
+	return _sub_process->get_read_output();
+}
+void _SubProcess::set_read_output(const bool p_value) {
+	_sub_process->set_read_output(p_value);
+}
+
+bool _SubProcess::get_read_std() const {
+	return _sub_process->get_read_std();
+}
+void _SubProcess::set_read_std(const bool p_value) {
+	_sub_process->set_read_std(p_value);
+}
+
+bool _SubProcess::get_read_std_err() const {
+	return _sub_process->get_read_std_err();
+}
+void _SubProcess::set_read_std_err(const bool p_value) {
+	_sub_process->set_read_std_err(p_value);
+}
+
+bool _SubProcess::get_use_pipe_mutex() const {
+	return _sub_process->get_use_pipe_mutex();
+}
+void _SubProcess::set_use_pipe_mutex(const bool p_value) {
+	_sub_process->set_use_pipe_mutex(p_value);
+}
+
+bool _SubProcess::get_open_console() const {
+	return _sub_process->get_open_console();
+}
+void _SubProcess::set_open_console(const bool p_value) {
+	_sub_process->set_open_console(p_value);
+}
+
+String _SubProcess::get_data() const {
+	return _sub_process->get_data();
+}
+int _SubProcess::get_process_id() const {
+	return _sub_process->get_process_id();
+}
+int _SubProcess::get_exitcode() const {
+	return _sub_process->get_exitcode();
+}
+
+Error _SubProcess::start() {
+	return _sub_process->start();
+}
+Error _SubProcess::stop() {
+	return _sub_process->stop();
+}
+Error _SubProcess::poll() {
+	return _sub_process->poll();
+}
+Error _SubProcess::send_signal(const int p_signal) {
+	return _sub_process->send_signal(p_signal);
+}
+Error _SubProcess::send_data(const String &p_data) {
+	return _sub_process->send_data(p_data);
+}
+bool _SubProcess::is_process_running() const {
+	return _sub_process->is_process_running();
+}
+
+_SubProcess::_SubProcess() {
+	_sub_process = SubProcess::create();
+}
+_SubProcess::~_SubProcess() {
+	memdelete(_sub_process);
+}
+
+///////////////////////
+
 _Marshalls *_Marshalls::singleton = nullptr;
 
 _Marshalls *_Marshalls::get_singleton() {

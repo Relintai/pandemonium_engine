@@ -41,6 +41,7 @@
 #include "core/os/rw_lock.h"
 #include "core/os/safe_refcount.h"
 #include "core/os/semaphore.h"
+#include "core/os/sub_process.h"
 #include "core/os/thread.h"
 
 class _ResourceLoader : public Object {
@@ -665,6 +666,54 @@ public:
 private:
 	bool _list_skip_navigational;
 	bool _list_skip_hidden;
+};
+
+class _SubProcess : public Reference {
+	GDCLASS(_SubProcess, Reference);
+
+	SubProcess *_sub_process;
+
+protected:
+	static void _bind_methods();
+
+public:
+	String get_executable_path() const;
+	void set_executable_path(const String &p_executable_path);
+
+	Vector<String> get_arguments() const;
+	void set_arguments(const Vector<String> &p_arguments);
+
+	bool get_blocking() const;
+	void set_blocking(const bool p_value);
+
+	bool get_read_output() const;
+	void set_read_output(const bool p_value);
+
+	bool get_read_std() const;
+	void set_read_std(const bool p_value);
+
+	bool get_read_std_err() const;
+	void set_read_std_err(const bool p_value);
+
+	bool get_use_pipe_mutex() const;
+	void set_use_pipe_mutex(const bool p_value);
+
+	bool get_open_console() const;
+	void set_open_console(const bool p_value);
+
+	String get_data() const;
+	int get_process_id() const;
+	int get_exitcode() const;
+
+	Error start();
+	Error stop();
+	Error poll();
+	Error send_signal(const int p_signal);
+	Error send_data(const String &p_data);
+	bool is_process_running() const;
+
+	_SubProcess();
+	virtual ~_SubProcess();
 };
 
 class _Marshalls : public Object {

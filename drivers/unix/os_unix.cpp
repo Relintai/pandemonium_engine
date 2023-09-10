@@ -36,6 +36,7 @@
 #include "drivers/unix/dir_access_unix.h"
 #include "drivers/unix/file_access_unix.h"
 #include "drivers/unix/net_socket_posix.h"
+#include "drivers/unix/sub_process_unix.h"
 #include "drivers/unix/thread_posix.h"
 #include "servers/rendering_server.h"
 
@@ -119,6 +120,8 @@ void OS_Unix::initialize_core() {
 	DirAccess::make_default<DirAccessUnix>(DirAccess::ACCESS_RESOURCES);
 	DirAccess::make_default<DirAccessUnix>(DirAccess::ACCESS_USERDATA);
 	DirAccess::make_default<DirAccessUnix>(DirAccess::ACCESS_FILESYSTEM);
+
+	SubProcess::make_default<SubProcessUnix>();
 
 #ifndef NO_NETWORK
 	NetSocketPosix::make_default();
