@@ -30,6 +30,14 @@
 
 #include "sub_process_windows.h"
 
+// TODO clean these up
+#include <avrt.h>
+#include <direct.h>
+#include <knownfolders.h>
+#include <process.h>
+#include <regstr.h>
+#include <shlobj.h>
+
 Error SubProcessWindows::start() {
 	if (_executable_path.empty()) {
 		return ERR_FILE_BAD_PATH;
