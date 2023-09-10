@@ -45,6 +45,7 @@
 #include "servers/rendering/rendering_server_raster.h"
 #include "servers/rendering/rendering_server_wrap_mt.h"
 #include "windows_terminal_logger.h"
+#include "sub_process_windows.h"
 
 #include <avrt.h>
 #include <direct.h>
@@ -196,6 +197,8 @@ void OS_Windows::initialize_core() {
 	DirAccess::make_default<DirAccessWindows>(DirAccess::ACCESS_RESOURCES);
 	DirAccess::make_default<DirAccessWindows>(DirAccess::ACCESS_USERDATA);
 	DirAccess::make_default<DirAccessWindows>(DirAccess::ACCESS_FILESYSTEM);
+
+	SubProcessWindows::make_default();
 
 	NetSocketPosix::make_default();
 
