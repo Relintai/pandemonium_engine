@@ -53,10 +53,8 @@ Error SubProcessWindows::start() {
 	String path = _executable_path.replace("/", "\\");
 
 	String cmdline = _quote_command_line_argument(path);
-	const List<String>::Element *I = _arguments.front();
-	while (I) {
-		cmdline += " " + _quote_command_line_argument(I->get());
-		I = I->next();
+	for (int i = 0; i < _arguments.size(); ++i) {
+		cmdline += " " + _quote_command_line_argument(_arguments[i]);
 	}
 
 	ZeroMemory(&_process_info.si, sizeof(_process_info.si));
@@ -324,7 +322,6 @@ void SubProcessWindows::_append_to_pipe(char *p_bytes, int p_size) {
 
 SubProcessWindows::SubProcessWindows() :
 		SubProcess() {
-
 	_pipe_handles[0] = NULL;
 	_pipe_handles[1] = NULL;
 
