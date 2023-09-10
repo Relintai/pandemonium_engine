@@ -84,6 +84,7 @@ void NavigationServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("region_create"), &NavigationServer::region_create);
 	ClassDB::bind_method(D_METHOD("region_set_enabled", "region", "enabled"), &NavigationServer::region_set_enabled);
+	ClassDB::bind_method(D_METHOD("region_get_enabled", "region"), &NavigationServer::region_get_enabled);
 	ClassDB::bind_method(D_METHOD("region_set_use_edge_connections", "region", "enabled"), &NavigationServer::region_set_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("region_get_use_edge_connections", "region"), &NavigationServer::region_get_use_edge_connections);
 	ClassDB::bind_method(D_METHOD("region_set_enter_cost", "region", "enter_cost"), &NavigationServer::region_set_enter_cost);
