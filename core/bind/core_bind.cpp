@@ -509,6 +509,47 @@ int _OS::execute(const String &p_path, const Vector<String> &p_arguments, bool p
 	}
 }
 
+int _OS::run(const String &p_path, const Vector<String> &p_arguments, Array r_output, bool p_read_stderr, bool p_open_console) {
+	List<String> args;
+	for (int i = 0; i < p_arguments.size(); i++) {
+		args.push_back(p_arguments[i]);
+	}
+	String pipe;
+	int exitcode = 0;
+	Error err = ::OS::get_singleton()->run(p_path, args, &pipe, &exitcode, p_read_stderr, nullptr, p_open_console);
+	r_output.push_back(pipe);
+	if (err != OK) {
+		return -1;
+	}
+	return exitcode;
+}
+
+int _OS::create_process(const String &p_path, const Vector<String> &p_arguments, bool p_open_console) {
+	List<String> args;
+	for (int i = 0; i < p_arguments.size(); i++) {
+		args.push_back(p_arguments[i]);
+	}
+	::OS::ProcessID pid = 0;
+	Error err = ::OS::get_singleton()->create_process(p_path, args, &pid, p_open_console);
+	if (err != OK) {
+		return -1;
+	}
+	return pid;
+}
+
+int _OS::create_instance(const Vector<String> &p_arguments) {
+	List<String> args;
+	for (int i = 0; i < p_arguments.size(); i++) {
+		args.push_back(p_arguments[i]);
+	}
+	::OS::ProcessID pid = 0;
+	Error err = ::OS::get_singleton()->create_instance(args, &pid);
+	if (err != OK) {
+		return -1;
+	}
+	return pid;
+}
+
 Error _OS::kill(int p_pid) {
 	return OS::get_singleton()->kill(p_pid);
 }
@@ -1374,6 +1415,9 @@ void _OS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_executable_path"), &_OS::get_executable_path);
 	ClassDB::bind_method(D_METHOD("read_string_from_stdin"), &_OS::read_string_from_stdin);
 	ClassDB::bind_method(D_METHOD("execute", "path", "arguments", "blocking", "output", "read_stderr", "open_console"), &_OS::execute, DEFVAL(true), DEFVAL(Array()), DEFVAL(false), DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("run", "path", "arguments", "output", "read_stderr", "open_console"), &_OS::run, DEFVAL(Array()), DEFVAL(false), DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("create_process", "path", "arguments", "open_console"), &_OS::create_process, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("create_instance", "arguments"), &_OS::create_instance);
 	ClassDB::bind_method(D_METHOD("kill", "pid"), &_OS::kill);
 	ClassDB::bind_method(D_METHOD("shell_open", "uri"), &_OS::shell_open);
 	ClassDB::bind_method(D_METHOD("is_process_running", "pid"), &_OS::is_process_running);

@@ -50,6 +50,34 @@
 				Crashes the engine (or the editor if called within a [code]tool[/code] script). This should [i]only[/i] be used for testing the system's crash handler, not for any other purpose. For general error reporting, use (in order of preference) [method @GDScript.assert], [method @GDScript.push_error] or [method alert]. See also [method kill].
 			</description>
 		</method>
+		<method name="create_instance">
+			<return type="int" />
+			<argument index="0" name="arguments" type="PoolStringArray" />
+			<description>
+				Creates a new instance of Pandemonium that runs independently. The [param arguments] are used in the given order and separated by a space.
+				If the process creation succeeds, the method will return the new process ID, which you can use to monitor the process (and potentially terminate it with [method kill]). If the process creation fails, the method will return [code]-1[/code].
+				[b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
+			</description>
+		</method>
+		<method name="create_process">
+			<return type="int" />
+			<argument index="0" name="path" type="String" />
+			<argument index="1" name="arguments" type="PoolStringArray" />
+			<argument index="2" name="open_console" type="bool" default="false" />
+			<description>
+				Creates a new process that runs independently of Pandemonium. It will not terminate if Pandemonium terminates. The path specified in [param path] must exist and be executable file or macOS .app bundle. Platform path resolution will be used. The [param arguments] are used in the given order and separated by a space.
+				On Windows, if [param open_console] is [code]true[/code] and the process is a console app, a new terminal window will be opened. This is ignored on other platforms.
+				If the process creation succeeds, the method will return the new process ID, which you can use to monitor the process (and potentially terminate it with [method kill]). If the process creation fails, the method will return [code]-1[/code].
+				For example, running another instance of the project:
+				[codeblock]
+				var pid = OS.create_process(OS.get_executable_path(), [])
+				[/codeblock]
+				See [method run] or [method execute] if you wish to run an external command and retrieve the results.
+				[b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
+				[b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
+				[b]Note:[/b] Equivalent with [method execute] when blocking is set to false.
+			</description>
+		</method>
 		<method name="delay_msec" qualifiers="const">
 			<return type="void" />
 			<argument index="0" name="msec" type="int" />
@@ -97,8 +125,8 @@
 				Execute the file at the given path with the arguments passed as an array of strings. Platform path resolution will take place. The resolved file must exist and be executable.
 				The arguments are used in the given order and separated by a space, so [code]OS.execute("ping", ["-w", "3", "godotengine.org"], false)[/code] will resolve to [code]ping -w 3 godotengine.org[/code] in the system's shell.
 				This method has slightly different behavior based on whether the [code]blocking[/code] mode is enabled.
-				If [code]blocking[/code] is [code]true[/code], the Godot thread will pause its execution while waiting for the process to terminate. The shell output of the process will be written to the [code]output[/code] array as a single string. When the process terminates, the Godot thread will resume execution.
-				If [code]blocking[/code] is [code]false[/code], the Godot thread will continue while the new process runs. It is not possible to retrieve the shell output in non-blocking mode, so [code]output[/code] will be empty.
+				If [code]blocking[/code] is [code]true[/code], the Pandemonium thread will pause its execution while waiting for the process to terminate. The shell output of the process will be written to the [code]output[/code] array as a single string. When the process terminates, the Pandemonium thread will resume execution.
+				If [code]blocking[/code] is [code]false[/code], the Pandemonium thread will continue while the new process runs. It is not possible to retrieve the shell output in non-blocking mode, so [code]output[/code] will be empty.
 				On Windows, if [code]open_console[/code] is [code]true[/code] and process is console app, new terminal window will be opened, it's ignored on other platforms.
 				The return value also depends on the blocking mode. When blocking, the method will return an exit code of the process. When non-blocking, the method returns a process ID, which you can use to monitor the process (and potentially terminate it with [method kill]). If the process forking (non-blocking) or opening (blocking) fails, the method will return [code]-1[/code] or another exit code.
 				Example of blocking mode and retrieving the shell output:
@@ -114,6 +142,7 @@
 				[codeblock]
 				OS.execute("CMD.exe", ["/C", "cd %TEMP% &amp;&amp; dir"], true, output)
 				[/codeblock]
+				[b]Note:[/b] See [method run] or [method create_process] for simpler (but equivalent) alternatives.
 				[b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 				[b]Note:[/b] To execute a Windows command interpreter built-in command, specify [code]cmd.exe[/code] in [code]path[/code], [code]/c[/code] as the first argument, and the desired command as the second argument.
 				[b]Note:[/b] To execute a PowerShell built-in command, specify [code]powershell.exe[/code] in [code]path[/code], [code]-Command[/code] as the first argument, and the desired command as the second argument.
@@ -143,7 +172,7 @@
 		<method name="get_cache_dir" qualifiers="const">
 			<return type="String" />
 			<description>
-				Returns the [i]global[/i] cache data directory according to the operating system's standards. On desktop platforms, this path can be overridden by setting the [code]XDG_CACHE_HOME[/code] environment variable before starting the project. See [url=$DOCS_URL/tutorials/io/data_paths.html]File paths in Godot projects[/url] in the documentation for more information. See also [method get_config_dir] and [method get_data_dir].
+				Returns the [i]global[/i] cache data directory according to the operating system's standards. On desktop platforms, this path can be overridden by setting the [code]XDG_CACHE_HOME[/code] environment variable before starting the project. See [url=$DOCS_URL/tutorials/io/data_paths.html]File paths in Pandemonium projects[/url] in the documentation for more information. See also [method get_config_dir] and [method get_data_dir].
 				Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 			</description>
 		</method>
@@ -171,7 +200,7 @@
 		<method name="get_config_dir" qualifiers="const">
 			<return type="String" />
 			<description>
-				Returns the [i]global[/i] user configuration directory according to the operating system's standards. On desktop platforms, this path can be overridden by setting the [code]XDG_CONFIG_HOME[/code] environment variable before starting the project. See [url=$DOCS_URL/tutorials/io/data_paths.html]File paths in Godot projects[/url] in the documentation for more information. See also [method get_cache_dir] and [method get_data_dir].
+				Returns the [i]global[/i] user configuration directory according to the operating system's standards. On desktop platforms, this path can be overridden by setting the [code]XDG_CONFIG_HOME[/code] environment variable before starting the project. See [url=$DOCS_URL/tutorials/io/data_paths.html]File paths in Pandemonium projects[/url] in the documentation for more information. See also [method get_cache_dir] and [method get_data_dir].
 				Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 			</description>
 		</method>
@@ -192,7 +221,7 @@
 		<method name="get_data_dir" qualifiers="const">
 			<return type="String" />
 			<description>
-				Returns the [i]global[/i] user data directory according to the operating system's standards. On desktop platforms, this path can be overridden by setting the [code]XDG_DATA_HOME[/code] environment variable before starting the project. See [url=$DOCS_URL/tutorials/io/data_paths.html]File paths in Godot projects[/url] in the documentation for more information. See also [method get_cache_dir] and [method get_config_dir].
+				Returns the [i]global[/i] user data directory according to the operating system's standards. On desktop platforms, this path can be overridden by setting the [code]XDG_DATA_HOME[/code] environment variable before starting the project. See [url=$DOCS_URL/tutorials/io/data_paths.html]File paths in Pandemonium projects[/url] in the documentation for more information. See also [method get_cache_dir] and [method get_config_dir].
 				Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 			</description>
 		</method>
@@ -430,7 +459,7 @@
 			<argument index="0" name="screen" type="int" default="-1" />
 			<description>
 				Returns the current refresh rate of the specified screen. If [code]screen[/code] is [code]-1[/code] (the default value), the current screen will be used.
-				[b]Note:[/b] Returns [code]-1.0[/code] if Godot fails to find the refresh rate for the specified screen. On HTML5, [method get_screen_refresh_rate] will always return [code]-1.0[/code] as there is no way to retrieve the refresh rate on that platform.
+				[b]Note:[/b] Returns [code]-1.0[/code] if Pandemonium fails to find the refresh rate for the specified screen. On HTML5, [method get_screen_refresh_rate] will always return [code]-1.0[/code] as there is no way to retrieve the refresh rate on that platform.
 				To fallback to a default refresh rate if the method fails, try:
 				[codeblock]
 				var refresh_rate = OS.get_screen_refresh_rate()
@@ -575,8 +604,8 @@
 			<description>
 				Returns the absolute directory path where user data is written ([code]user://[/code]).
 				On Linux, this is [code]~/.local/share/godot/app_userdata/[project_name][/code], or [code]~/.local/share/[custom_name][/code] if [code]use_custom_user_dir[/code] is set.
-				On macOS, this is [code]~/Library/Application Support/Godot/app_userdata/[project_name][/code], or [code]~/Library/Application Support/[custom_name][/code] if [code]use_custom_user_dir[/code] is set.
-				On Windows, this is [code]%APPDATA%\Godot\app_userdata\[project_name][/code], or [code]%APPDATA%\[custom_name][/code] if [code]use_custom_user_dir[/code] is set. [code]%APPDATA%[/code] expands to [code]%USERPROFILE%\AppData\Roaming[/code].
+				On macOS, this is [code]~/Library/Application Support/Pandemonium/app_userdata/[project_name][/code], or [code]~/Library/Application Support/[custom_name][/code] if [code]use_custom_user_dir[/code] is set.
+				On Windows, this is [code]%APPDATA%\Pandemonium\app_userdata\[project_name][/code], or [code]%APPDATA%\[custom_name][/code] if [code]use_custom_user_dir[/code] is set. [code]%APPDATA%[/code] expands to [code]%USERPROFILE%\AppData\Roaming[/code].
 				If the project name is empty, [code]user://[/code] falls back to [code]res://[/code].
 				Not to be confused with [method get_data_dir], which returns the [i]global[/i] (non-project-specific) user data directory.
 			</description>
@@ -685,9 +714,9 @@
 		<method name="is_debug_build" qualifiers="const">
 			<return type="bool" />
 			<description>
-				Returns [code]true[/code] if the Godot binary used to run the project is a [i]debug[/i] export template, or when running in the editor.
-				Returns [code]false[/code] if the Godot binary used to run the project is a [i]release[/i] export template.
-				To check whether the Godot binary used to run the project is an export template (debug or release), use [code]OS.has_feature("standalone")[/code] instead.
+				Returns [code]true[/code] if the Pandemonium binary used to run the project is a [i]debug[/i] export template, or when running in the editor.
+				Returns [code]false[/code] if the Pandemonium binary used to run the project is a [i]release[/i] export template.
+				To check whether the Pandemonium binary used to run the project is an export template (debug or release), use [code]OS.has_feature("standalone")[/code] instead.
 			</description>
 		</method>
 		<method name="is_ok_left_and_cancel_right" qualifiers="const">
@@ -919,12 +948,42 @@
 				[b]Note:[/b] This method is implemented on Android.
 			</description>
 		</method>
+		<method name="run">
+			<return type="int" />
+			<argument index="0" name="path" type="String" />
+			<argument index="1" name="arguments" type="PoolStringArray" />
+			<argument index="2" name="output" type="Array" default="[  ]" />
+			<argument index="3" name="read_stderr" type="bool" default="false" />
+			<argument index="4" name="open_console" type="bool" default="false" />
+			<description>
+				Executes a command. The file specified in [param path] must exist and be executable. Platform path resolution will be used. The [param arguments] are used in the given order, separated by spaces, and wrapped in quotes. If an [param output] [Array] is provided, the complete shell output of the process will be appended as a single [String] element in [param output]. If [param read_stderr] is [code]true[/code], the output to the standard error stream will be included too.
+				On Windows, if [param open_console] is [code]true[/code] and the process is a console app, a new terminal window will be opened. This is ignored on other platforms.
+				If the command is successfully executed, the method will return the exit code of the command, or [code]-1[/code] if it fails.
+				[b]Note:[/b] The Pandemonium thread will pause its execution until the executed command terminates. Use [Thread] to create a separate thread that will not pause the Pandemonium thread, or use [method create_process] to create a completely independent process.
+				For example, to retrieve a list of the working directory's contents:
+				[codeblock]
+				var output = []
+				var exit_code = OS.execute("ls", ["-l", "/tmp"], output)
+				[/codeblock]
+				If you wish to access a shell built-in or execute a composite command, a platform-specific shell can be invoked. For example:
+				[codeblock]
+				var output = []
+				OS.execute("CMD.exe", ["/C", "cd %TEMP% &amp;&amp; dir"], output)
+				[/codeblock]
+				[b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
+				[b]Note:[/b] To execute a Windows command interpreter built-in command, specify [code]cmd.exe[/code] in [param path], [code]/c[/code] as the first argument, and the desired command as the second argument.
+				[b]Note:[/b] To execute a PowerShell built-in command, specify [code]powershell.exe[/code] in [param path], [code]-Command[/code] as the first argument, and the desired command as the second argument.
+				[b]Note:[/b] To execute a Unix shell built-in command, specify shell executable name in [param path], [code]-c[/code] as the first argument, and the desired command as the second argument.
+				[b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export.
+				[b]Note:[/b] Equivalent with [method execute] when blocking is set to true.
+			</description>
+		</method>
 		<method name="set_environment" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="variable" type="String" />
 			<argument index="1" name="value" type="String" />
 			<description>
-				Sets the value of the environment variable [code]variable[/code] to [code]value[/code]. The environment variable will be set for the Godot process and any process executed with [method execute] after running [method set_environment]. The environment variable will [i]not[/i] persist to processes run after the Godot process was terminated.
+				Sets the value of the environment variable [code]variable[/code] to [code]value[/code]. The environment variable will be set for the Pandemonium process and any process executed with [method execute] after running [method set_environment]. The environment variable will [i]not[/i] persist to processes run after the Pandemonium process was terminated.
 				[b]Note:[/b] Double-check the casing of [code]variable[/code]. Environment variable names are case-sensitive on all platforms except Windows.
 			</description>
 		</method>
@@ -1033,7 +1092,7 @@
 			<description>
 				Requests the OS to open a resource with the most appropriate program. For example:
 				- [code]OS.shell_open("C:\\Users\name\Downloads")[/code] on Windows opens the file explorer at the user's Downloads folder.
-				- [code]OS.shell_open("https://godotengine.org")[/code] opens the default web browser on the official Godot website.
+				- [code]OS.shell_open("https://godotengine.org")[/code] opens the default web browser on the official Pandemonium website.
 				- [code]OS.shell_open("mailto:example@example.com")[/code] opens the default email client with the "To" field set to [code]example@example.com[/code]. See [url=https://blog.escapecreative.com/customizing-mailto-links/]Customizing [code]mailto:[/code] Links[/url] for a list of fields that can be added.
 				Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or [code]user://[/code] path into a system path for use with this method.
 				[b]Note:[/b] Use [method String.percent_encode] to encode characters within URLs in a URL-safe, portable way. This is especially required for line breaks. Otherwise, [method shell_open] may not work correctly in a project exported to the Web platform.
@@ -1048,7 +1107,7 @@
 				Shows the virtual keyboard if the platform has one.
 				The [code]existing_text[/code] parameter is useful for implementing your own [LineEdit] or [TextEdit], as it tells the virtual keyboard what text has already been typed (the virtual keyboard uses it for auto-correct and predictions).
 				The [code]multiline[/code] parameter needs to be set to [code]true[/code] to be able to enter multiple lines of text, as in [TextEdit].
-				[b]Note:[/b] This method is equivalent to calling [method show_virtual_keyboard_type] with either default or multiline keyboard type. It is kept for compatibility with previous Godot releases and should be considered [i]deprecated[/i] and replaced by [method show_virtual_keyboard_type].
+				[b]Note:[/b] This method is equivalent to calling [method show_virtual_keyboard_type] with either default or multiline keyboard type. It is kept for compatibility with previous Pandemonium releases and should be considered [i]deprecated[/i] and replaced by [method show_virtual_keyboard_type].
 				[b]Note:[/b] This method is implemented on Android, iOS, UWP, and HTML5.
 			</description>
 		</method>

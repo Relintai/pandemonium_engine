@@ -327,6 +327,15 @@ public:
 
 	virtual String get_executable_path() const;
 	virtual Error execute(const String &p_path, const List<String> &p_arguments, bool p_blocking = true, ProcessID *r_child_id = nullptr, String *r_pipe = nullptr, int *r_exitcode = nullptr, bool read_stderr = false, Mutex *p_pipe_mutex = nullptr, bool p_open_console = false) = 0;
+	virtual Error run(const String &p_path, const List<String> &p_arguments, String *r_pipe = nullptr, int *r_exitcode = nullptr, bool read_stderr = false, Mutex *p_pipe_mutex = nullptr, bool p_open_console = false) {
+		return execute(p_path, p_arguments, true, nullptr, r_pipe, r_exitcode, read_stderr, p_pipe_mutex, p_open_console);
+	}
+	virtual Error create_process(const String &p_path, const List<String> &p_arguments, ProcessID *r_child_id = nullptr, bool p_open_console = false) {
+		return execute(p_path, p_arguments, false, r_child_id, nullptr, nullptr, false, nullptr, p_open_console);
+	}
+	virtual Error create_instance(const List<String> &p_arguments, ProcessID *r_child_id = nullptr) {
+		return create_process(get_executable_path(), p_arguments, r_child_id);
+	};
 	virtual Error kill(const ProcessID &p_pid) = 0;
 	virtual int get_process_id() const;
 	virtual bool is_process_running(const ProcessID &p_pid) const;

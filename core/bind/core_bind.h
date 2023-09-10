@@ -246,6 +246,9 @@ public:
 	String get_executable_path() const;
 	String read_string_from_stdin();
 	int execute(const String &p_path, const Vector<String> &p_arguments, bool p_blocking = true, Array p_output = Array(), bool p_read_stderr = false, bool p_open_console = false);
+	int run(const String &p_path, const Vector<String> &p_arguments, Array r_output = Array(), bool p_read_stderr = false, bool p_open_console = false);
+	int create_process(const String &p_path, const Vector<String> &p_arguments, bool p_open_console = false);
+	int create_instance(const Vector<String> &p_arguments);
 
 	Error kill(int p_pid);
 	Error shell_open(String p_uri);
