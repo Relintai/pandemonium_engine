@@ -40,6 +40,10 @@
 #include <sys/wait.h>
 
 Error SubProcessUnix::start() {
+	if (_executable_path.empty()) {
+		return ERR_FILE_BAD_PATH;
+	}
+
 	if (is_process_running()) {
 		return ERR_BUSY;
 	}
