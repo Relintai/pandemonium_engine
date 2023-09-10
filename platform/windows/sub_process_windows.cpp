@@ -32,8 +32,6 @@
 
 #include "core/containers/local_vector.h"
 
-#include "os_windows.h"
-
 // TODO clean these up
 #include <wchar.h>
 #include <avrt.h>
