@@ -183,7 +183,7 @@ Error SubProcessUnix::stop() {
 		return ret ? ERR_INVALID_PARAMETER : OK;
 	}
 
-	ERR_FAIL_V(ERR_BUG);
+	return OK;
 #endif
 }
 
