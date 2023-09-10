@@ -30,8 +30,6 @@
 
 #include "sub_process_windows.h"
 
-#include <process.h>
-
 Error SubProcessWindows::start() {
 	if (_executable_path.empty()) {
 		return ERR_FILE_BAD_PATH;

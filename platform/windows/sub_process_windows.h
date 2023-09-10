@@ -33,9 +33,11 @@
 
 #include "core/os/sub_process.h"
 
+#include <process.h>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <windowsx.h>
+
+typedef HANDLE(WINAPI *WTOpenPtr)(HWND p_window, LOGCONTEXTW *p_ctx, BOOL p_enable);
 
 class SubProcessWindows : public SubProcess {
 public:
