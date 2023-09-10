@@ -33,13 +33,13 @@
 #include "core/containers/local_vector.h"
 
 // TODO clean these up
-#include <wchar.h>
 #include <avrt.h>
 #include <direct.h>
 #include <knownfolders.h>
 #include <process.h>
 #include <regstr.h>
 #include <shlobj.h>
+#include <wchar.h>
 
 Error SubProcessWindows::start() {
 	if (_executable_path.empty()) {
@@ -50,10 +50,10 @@ Error SubProcessWindows::start() {
 		return ERR_BUSY;
 	}
 
-	String path = p_path.replace("/", "\\");
+	String path = _executable_path.replace("/", "\\");
 
 	String cmdline = _quote_command_line_argument(path);
-	const List<String>::Element *I = p_arguments.front();
+	const List<String>::Element *I = _arguments.front();
 	while (I) {
 		cmdline += " " + _quote_command_line_argument(I->get());
 		I = I->next();
@@ -149,11 +149,9 @@ Error SubProcessWindows::start() {
 
 		WaitForSingleObject(_process_info.pi.hProcess, INFINITE);
 
-		if (r_exitcode) {
-			DWORD ret2;
-			GetExitCodeProcess(_process_info.pi.hProcess, &ret2);
-			_exitcode = ret2;
-		}
+		DWORD ret2;
+		GetExitCodeProcess(_process_info.pi.hProcess, &ret2);
+		_exitcode = ret2;
 
 		CloseHandle(_process_info.pi.hProcess);
 		CloseHandle(_process_info.pi.hThread);
@@ -326,7 +324,9 @@ void SubProcessWindows::_append_to_pipe(char *p_bytes, int p_size) {
 
 SubProcessWindows::SubProcessWindows() :
 		SubProcess() {
-	_pipe_handles = { NULL, NULL };
+
+	_pipe_handles[0] = NULL;
+	_pipe_handles[1] = NULL;
 
 	_process_started = false;
 
