@@ -1006,6 +1006,38 @@ Ref<Script> EditorData::script_class_get_base_from_anonymous_path(const String &
 	return nullptr;
 }
 
+StringName EditorData::type_get_from_anonymous_path(const String &p_path) const {
+	Ref<Resource> res = ResourceLoader::load(p_path);
+
+	if (!res.is_valid()) {
+		return StringName();
+	}
+
+	Ref<Script> script = res->get_script();
+
+	StringName res_name = "Resource";
+
+	if (script.is_null()) {
+		return res_name;
+	}
+
+	do {
+		StringName scls_name = ScriptServer::get_global_class_name(script->get_path());
+
+		if (scls_name != StringName()) {
+			return scls_name;
+		}
+
+		if (script->get_path().find("::") != -1) {
+			WARN_PRINT_ONCE("If you remove a built-in script that derives a script class, inheritance cannot be determined. The entire script is removed.");
+		}
+
+		script = script->get_base_script();
+	} while (script.is_valid());
+
+	return res_name;
+}
+
 void EditorData::script_class_save_icon_paths() {
 	List<StringName> keys;
 	_script_class_icon_paths.get_key_list(&keys);

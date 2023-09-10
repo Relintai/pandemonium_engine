@@ -30,17 +30,19 @@
 
 #include "quick_open.h"
 
+#include "core/containers/pair.h"
+#include "core/input/input_event.h"
+#include "core/object/class_db.h"
 #include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/typedefs.h"
+#include "editor/editor_data.h"
+#include "editor/editor_file_system.h"
+#include "editor/editor_node.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/gui/line_edit.h"
-#include "core/object/class_db.h"
-#include "core/input/input_event.h"
-#include "core/os/memory.h"
-#include "core/containers/pair.h"
-#include "core/typedefs.h"
-#include "editor/editor_file_system.h"
 #include "scene/gui/control.h"
+#include "scene/gui/line_edit.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
@@ -138,16 +140,21 @@ void EditorQuickOpen::_parse_fs(EditorFileSystemDirectory *efsd, Vector<Pair<Str
 	}
 
 	String search_text = search_box->get_text();
+	EditorData &ed = EditorNode::get_editor_data();
 
 	Vector<String> base_types = String(base_type).split(String(","));
 	for (int i = 0; i < efsd->get_file_count(); i++) {
-		String file = efsd->get_file_path(i);
-		file = file.substr(6, file.length());
+		String file_path_full = efsd->get_file_path(i);
+		String file = file_path_full.substr(6, file_path_full.length());
 
 		StringName file_type = efsd->get_file_type(i);
+		StringName script_type = ed.type_get_from_anonymous_path(file_path_full);
+
+		StringName class_name = script_type != StringName() ? script_type : file_type;
+
 		// Iterate all possible base types.
 		for (int j = 0; j < base_types.size(); j++) {
-			if (ClassDB::is_parent_class(file_type, base_types[j]) && search_text.is_subsequence_ofi(file)) {
+			if (ed.class_equals_or_inherits(class_name, base_types[j]) && search_text.is_subsequence_ofi(file)) {
 				Pair<String, Ref<Texture>> pair;
 				pair.first = file;
 				StringName icon_name = search_options->has_theme_icon(file_type, ei) ? file_type : ot;
