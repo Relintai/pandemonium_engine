@@ -367,13 +367,6 @@
 				Returns all navigation agents [RID]s that are currently assigned to the requested navigation [code]map[/code].
 			</description>
 		</method>
-		<method name="map_get_cell_height" qualifiers="const">
-			<return type="float" />
-			<argument index="0" name="map" type="RID" />
-			<description>
-				Returns the map cell height. [b]Note:[/b] Currently not implemented.
-			</description>
-		</method>
 		<method name="map_get_cell_size" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="map" type="RID" />
@@ -463,14 +456,6 @@
 			<argument index="1" name="active" type="bool" />
 			<description>
 				Sets the map active.
-			</description>
-		</method>
-		<method name="map_set_cell_height">
-			<return type="void" />
-			<argument index="0" name="map" type="RID" />
-			<argument index="1" name="cell_height" type="float" />
-			<description>
-				Set the map cell height used to weld the navigation mesh polygons. [b]Note:[/b] Currently not implemented.
 			</description>
 		</method>
 		<method name="map_set_cell_size">

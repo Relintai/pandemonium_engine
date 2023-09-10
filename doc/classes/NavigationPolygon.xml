@@ -193,6 +193,9 @@
 		<member name="agent_radius" type="float" setter="set_agent_radius" getter="get_agent_radius" default="10.0">
 			The distance to erode/shrink the traversable area from obstructions when baking polygons.
 		</member>
+		<member name="cell_size" type="float" setter="set_cell_size" getter="get_cell_size" default="1.0">
+			The cell size used to rasterize the navigation mesh vertices. Must match with the cell size on the navigation map.
+		</member>
 		<member name="geometry_collision_mask" type="int" setter="set_collision_mask" getter="get_collision_mask" default="4294967295">
 			The physics layers to scan for static colliders. Only used when [member geometry_parsed_geometry_type] is [constant PARSED_GEOMETRY_STATIC_COLLIDERS] or [constant PARSED_GEOMETRY_BOTH].
 		</member>
@@ -210,9 +213,6 @@
 		</member>
 		<member name="polygon_bake_fillrule" type="int" setter="set_polygon_bake_fillrule" getter="get_polygon_bake_fillrule" enum="NavigationPolygon.PolygonFillRule" default="0">
 			Filling rule for baking polygons that defines in complex polygons which polygon sub-regions will be considered inside a given polygon, and which sub-regions will not, aka what is a hole.
-		</member>
-		<member name="cell_size" type="float" setter="set_cell_size" getter="get_cell_size" default="1.0">
-			The cell size used to rasterize the navigation mesh vertices. Must match with the cell size on the navigation map.
 		</member>
 	</members>
 	<constants>

@@ -49,6 +49,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_navigation_map" qualifiers="const">
+			<return type="RID" />
+			<description>
+				Returns the current navigation map [RID] use by this region.
+			</description>
+		</method>
 		<method name="get_used_cells" qualifiers="const">
 			<return type="Array" />
 			<description>
@@ -129,6 +135,13 @@
 			<description>
 			</description>
 		</method>
+		<method name="set_navigation_map">
+			<return type="void" />
+			<argument index="0" name="navigation_map" type="RID" />
+			<description>
+				Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World2D] default navigation map so this function is only required to override the default map.
+			</description>
+		</method>
 		<method name="update_bitmask_area">
 			<return type="void" />
 			<argument index="0" name="position" type="Vector2" />
@@ -151,19 +164,6 @@
 			<return type="Vector2" />
 			<argument index="0" name="world_position" type="Vector2" />
 			<description>
-			</description>
-		</method>
-		<method name="set_navigation_map">
-			<return type="void" />
-			<argument index="0" name="navigation_map" type="RID" />
-			<description>
-				Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World2D] default navigation map so this function is only required to override the default map.
-			</description>
-		</method>
-		<method name="get_navigation_map" qualifiers="const">
-			<return type="RID" />
-			<description>
-				Returns the current navigation map [RID] use by this region.
 			</description>
 		</method>
 	</methods>

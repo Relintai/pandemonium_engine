@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ScriptServer" inherits="Object" version="3.5">
+<class name="ScriptServer" inherits="Object" version="4.1">
 	<brief_description>
 		Global script class management singleton.
 	</brief_description>
@@ -12,7 +12,7 @@
 	</tutorials>
 	<methods>
 		<method name="get_global_class_base" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="class" type="String" />
 			<description>
 				Returns the class name that the script named [code]class[/code] directly extends. This may be an engine class or another global script class.
@@ -25,14 +25,14 @@
 			</description>
 		</method>
 		<method name="get_global_class_name" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="path" type="String" />
 			<description>
 				Returns the global class name bound to the [Script] at [code]path[/code].
 			</description>
 		</method>
 		<method name="get_global_class_native_base" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="class" type="String" />
 			<description>
 				Returns the native engine class that the script named [code]class[/code] eventually extends.

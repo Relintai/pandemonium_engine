@@ -352,12 +352,6 @@
 				Returns [code]true[/code] if local transform notifications are communicated to children.
 			</description>
 		</method>
-		<method name="is_set_as_toplevel" qualifiers="const">
-			<return type="bool" />
-			<description>
-				Returns [code]true[/code] if the node is set as top-level. See [method set_as_toplevel].
-			</description>
-		</method>
 		<method name="is_transform_notification_enabled" qualifiers="const">
 			<return type="bool" />
 			<description>
@@ -382,13 +376,6 @@
 			<argument index="0" name="event" type="InputEvent" />
 			<description>
 				Transformations issued by [code]event[/code]'s inputs are applied in local space instead of global space.
-			</description>
-		</method>
-		<method name="set_as_toplevel">
-			<return type="void" />
-			<argument index="0" name="enable" type="bool" />
-			<description>
-				If [code]enable[/code] is [code]true[/code], this [CanvasItem] will [i]not[/i] inherit its transform from parent [CanvasItem]s. Its draw order will also be changed to make it draw on top of other [CanvasItem]s that are not set as top-level. The [CanvasItem] will effectively act as if it was placed as a child of a bare [Node]. See also [method is_set_as_toplevel].
 			</description>
 		</method>
 		<method name="set_notify_local_transform">
@@ -434,8 +421,8 @@
 		<member name="show_behind_parent" type="bool" setter="set_draw_behind_parent" getter="is_draw_behind_parent_enabled" default="false">
 			If [code]true[/code], the object draws behind its parent.
 		</member>
-		<member name="show_on_top" type="bool" setter="_set_on_top" getter="_is_on_top">
-			If [code]true[/code], the object draws on top of its parent.
+		<member name="toplevel" type="bool" setter="set_as_toplevel" getter="is_set_as_toplevel" default="false">
+			If [code]true[/code], this [CanvasItem] will [i]not[/i] inherit its transform from parent [CanvasItem]s. Its draw order will also be changed to make it draw on top of other [CanvasItem]s that do not have [member top_level] set to [code]true[/code]. The [CanvasItem] will effectively act as if it was placed as a child of a bare [Node].
 		</member>
 		<member name="use_parent_material" type="bool" setter="set_use_parent_material" getter="get_use_parent_material" default="false">
 			If [code]true[/code], the parent [CanvasItem]'s [member material] property is used as this one's material.

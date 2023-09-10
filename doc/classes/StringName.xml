@@ -8,7 +8,6 @@
 		You will usually just pass a [String] to methods expecting a [StringName] and it will be automatically converted, but you may occasionally want to construct a [StringName] ahead of time with the [StringName] constructor or, in GDScript, the literal syntax [code]@"example"[/code].
 		See also [NodePath], which is a similar concept specifically designed to store pre-parsed scene tree paths.
 	</description>
-	</description>
 	<tutorials>
 	</tutorials>
 	<methods>

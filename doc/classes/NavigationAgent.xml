@@ -179,16 +179,16 @@
 		<member name="height" type="float" setter="set_height" getter="get_height" default="1.0">
 			The height of the avoidance agent. Agents will ignore other agents or obstacles that are above or below their current position + height in 2D avoidance. Does nothing in 3D avoidance which uses radius spheres alone.
 		</member>
-		<member name="max_neighbors" type="int" setter="set_max_neighbors" getter="get_max_neighbors" default="0">
+		<member name="max_neighbors" type="int" setter="set_max_neighbors" getter="get_max_neighbors" default="10">
 			The maximum number of neighbors for the agent to consider.
 		</member>
-		<member name="max_speed" type="float" setter="set_max_speed" getter="get_max_speed" default="0.0">
+		<member name="max_speed" type="float" setter="set_max_speed" getter="get_max_speed" default="10.0">
 			The maximum speed that an agent can move.
 		</member>
 		<member name="navigation_layers" type="int" setter="set_navigation_layers" getter="get_navigation_layers" default="1">
 			A bitfield determining which navigation layers of navigation regions this agent will use to calculate a path. Changing it during runtime will clear the current navigation path and generate a new one, according to the new navigation layers.
 		</member>
-		<member name="neighbor_distance" type="float" setter="set_neighbor_distance" getter="get_neighbor_distance" default="1.0">
+		<member name="neighbor_distance" type="float" setter="set_neighbor_distance" getter="get_neighbor_distance" default="50.0">
 			The distance to search for other agents.
 		</member>
 		<member name="path_desired_distance" type="float" setter="set_path_desired_distance" getter="get_path_desired_distance" default="1.0">

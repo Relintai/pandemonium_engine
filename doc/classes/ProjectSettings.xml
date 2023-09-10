@@ -333,68 +333,6 @@
 		<member name="compression/formats/zstd/window_log_size" type="int" setter="" getter="" default="27">
 			Largest size limit (in power of 2) allowed when compressing using long-distance matching with Zstandard. Higher values can result in better compression, but will require more memory when compressing and decompressing.
 		</member>
-		<member name="debug/cscript/completion/autocomplete_setters_and_getters" type="bool" setter="" getter="" default="false">
-		</member>
-		<member name="debug/cscript/warnings/constant_used_as_function" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/deprecated_keyword" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/enable" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/exclude_addons" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/export_hint_type_mistmatch" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/function_conflicts_constant" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/function_conflicts_variable" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/function_used_as_property" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/incompatible_ternary" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/integer_division" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/narrowing_conversion" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/property_used_as_function" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/return_value_discarded" type="bool" setter="" getter="" default="false">
-		</member>
-		<member name="debug/cscript/warnings/shadowed_variable" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/standalone_expression" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/standalone_ternary" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/treat_warnings_as_errors" type="bool" setter="" getter="" default="false">
-		</member>
-		<member name="debug/cscript/warnings/unassigned_variable" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/unassigned_variable_op_assign" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/unreachable_code" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/unsafe_call_argument" type="bool" setter="" getter="" default="false">
-		</member>
-		<member name="debug/cscript/warnings/unsafe_cast" type="bool" setter="" getter="" default="false">
-		</member>
-		<member name="debug/cscript/warnings/unsafe_method_access" type="bool" setter="" getter="" default="false">
-		</member>
-		<member name="debug/cscript/warnings/unsafe_property_access" type="bool" setter="" getter="" default="false">
-		</member>
-		<member name="debug/cscript/warnings/unused_argument" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/unused_class_variable" type="bool" setter="" getter="" default="false">
-		</member>
-		<member name="debug/cscript/warnings/unused_signal" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/unused_variable" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/variable_conflicts_function" type="bool" setter="" getter="" default="true">
-		</member>
-		<member name="debug/cscript/warnings/void_assignment" type="bool" setter="" getter="" default="true">
-		</member>
 		<member name="debug/gdscript/completion/autocomplete_setters_and_getters" type="bool" setter="" getter="" default="false">
 			If [code]true[/code], displays getters and setters in autocompletion results in the script editor. This setting is meant to be used when porting old projects (Godot 2), as using member variables is the preferred style from Godot 3 onwards.
 		</member>
@@ -496,8 +434,6 @@
 		</member>
 		<member name="debug/settings/crash_handler/message.editor" type="String" setter="" getter="" default="&quot;Please include this when reporting the bug on: https://github.com/Relintai/pandemonium_engine/issues&quot;">
 			Editor-only override for [member debug/settings/crash_handler/message]. Does not affect exported projects in debug or release mode.
-		</member>
-		<member name="debug/settings/cscript/max_call_stack" type="int" setter="" getter="" default="1024">
 		</member>
 		<member name="debug/settings/fps/force_fps" type="int" setter="" getter="" default="0">
 			Maximum number of frames per second allowed. The actual number of frames per second may still be below this value if the game is lagging. See also [member physics/common/physics_ticks_per_second].
@@ -610,7 +546,7 @@
 		<member name="debug/shapes/navigation/link_connection_disabled_color" type="Color" setter="" getter="" default="Color( 0.5, 0.5, 0.5, 1 )">
 			Color to use to display disabled navigation link connections, visible when "Visible Navigation" is enabled in the Debug menu.
 		</member>
-		<member name="debug/shapes/paths/geometry_color" type="Color" setter="" getter="" default="Color(0.1, 1, 0.7, 0.4)">
+		<member name="debug/shapes/paths/geometry_color" type="Color" setter="" getter="" default="Color( 0.1, 1, 0.7, 0.4 )">
 			Color of the curve path geometry, visible when "Visible Paths" is enabled in the Debug menu.
 		</member>
 		<member name="debug/shapes/paths/geometry_width" type="float" setter="" getter="" default="2.0">
@@ -1503,10 +1439,6 @@
 		</member>
 		<member name="memory/limits/multithreaded_server/rid_pool_prealloc" type="int" setter="" getter="" default="60">
 			This is used by servers when used in multi-threading mode (servers and visual). RIDs are preallocated to avoid stalling the server requesting them on threads. If servers get stalled too often when loading resources in a thread, increase this number.
-		</member>
-		<member name="navigation/2d/default_cell_height" type="float" setter="" getter="" default="1.0">
-			Default cell height for 2D navigation maps. See [method Navigation2DServer.map_set_cell_height].
-			[b]Note:[/b] Currently not implemented.
 		</member>
 		<member name="navigation/2d/default_cell_size" type="float" setter="" getter="" default="1.0">
 			Default cell size for 2D navigation maps. See [method Navigation2DServer.map_set_cell_size].

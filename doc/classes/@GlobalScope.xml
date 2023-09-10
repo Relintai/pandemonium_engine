@@ -102,13 +102,13 @@
 		<member name="ResourceSaver" type="ResourceSaver" setter="" getter="">
 			The [ResourceSaver] singleton.
 		</member>
+		<member name="ScriptServer" type="ScriptServer" setter="" getter="">
+			The [ScriptServer] singleton.
+		</member>
 		<member name="ThreadPool" type="ThreadPool" setter="" getter="">
 		</member>
 		<member name="Time" type="Time" setter="" getter="">
 			The [Time] singleton.
-		</member>
-		<member name="ScriptServer" type="ScriptServer" setter="" getter="">
-			The [ScriptServer] singleton.
 		</member>
 		<member name="TranslationServer" type="TranslationServer" setter="" getter="">
 			The [TranslationServer] singleton.

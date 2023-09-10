@@ -8,9 +8,13 @@
 	</description>
 	<tutorials>
 	</tutorials>
+	<methods>
+	</methods>
 	<members>
 		<member name="shortcut" type="ShortCut" setter="set_shortcut" getter="get_shortcut">
 			The [ShortCut] represented by this event. Its [method ShortCut.matches_event] method will always return [code]true[/code] for this event.
 		</member>
 	</members>
+	<constants>
+	</constants>
 </class>

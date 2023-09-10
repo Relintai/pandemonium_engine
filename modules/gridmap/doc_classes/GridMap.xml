@@ -161,19 +161,19 @@
 				Sets an individual bit on the [member collision_mask].
 			</description>
 		</method>
+		<method name="set_navigation_map">
+			<return type="void" />
+			<argument index="0" name="navigation_map" type="RID" />
+			<description>
+				Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
+			</description>
+		</method>
 		<method name="world_to_map" qualifiers="const">
 			<return type="Vector3" />
 			<argument index="0" name="pos" type="Vector3" />
 			<description>
 				Returns the coordinates of the grid cell containing the given point.
 				[code]pos[/code] should be in the GridMap's local coordinate space.
-			</description>
-		</method>
-		<method name="set_navigation_map">
-			<return type="void" />
-			<argument index="0" name="navigation_map" type="RID" />
-			<description>
-				Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
 			</description>
 		</method>
 	</methods>

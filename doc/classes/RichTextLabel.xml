@@ -177,6 +177,13 @@
 				Adds a context marker to the tag stack. See [method pop_context].
 			</description>
 		</method>
+		<method name="push_customfx">
+			<return type="void" />
+			<argument index="0" name="effect" type="RichTextEffect" />
+			<argument index="1" name="env" type="Dictionary" />
+			<description>
+			</description>
+		</method>
 		<method name="push_font">
 			<return type="void" />
 			<argument index="0" name="font" type="Font" />
