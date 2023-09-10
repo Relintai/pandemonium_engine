@@ -30,7 +30,12 @@
 
 #include "sub_process_windows.h"
 
+#include "core/containers/local_vector.h"
+
+#include "os_windows.h"
+
 // TODO clean these up
+#include <wchar.h>
 #include <avrt.h>
 #include <direct.h>
 #include <knownfolders.h>
