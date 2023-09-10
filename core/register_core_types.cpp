@@ -88,19 +88,20 @@ static Ref<TranslationLoaderPO> resource_format_po;
 static Ref<ResourceFormatSaverCrypto> resource_format_saver_crypto;
 static Ref<ResourceFormatLoaderCrypto> resource_format_loader_crypto;
 
-static _ResourceLoader *_resource_loader = nullptr;
-static _ResourceSaver *_resource_saver = nullptr;
-static _OS *_os = nullptr;
-static _Engine *_engine = nullptr;
-static _ClassDB *_classdb = nullptr;
-static _Marshalls *_marshalls = nullptr;
-static _JSON *_json = nullptr;
-static _PLogger *_plogger = nullptr;
-static ThreadPool *thread_pool = NULL;
+static _ResourceLoader *_resource_loader = NULL;
+static _ResourceSaver *_resource_saver = NULL;
+static _OS *_os = NULL;
+static _Engine *_engine = NULL;
+static _ClassDB *_classdb = NULL;
+static _Marshalls *_marshalls = NULL;
+static _JSON *_json = NULL;
+static _PLogger *_plogger = NULL;
+static ThreadPool *_thread_pool = NULL;
+static _ScriptServer *_script_server = NULL;
 
-static IP *ip = nullptr;
+static IP *ip = NULL;
 
-static _Geometry *_geometry = nullptr;
+static _Geometry *_geometry = NULL;
 
 extern Mutex _global_mutex;
 
@@ -242,7 +243,9 @@ void register_core_types() {
 	_json = memnew(_JSON);
 	_plogger = memnew(_PLogger);
 
-	thread_pool = memnew(ThreadPool);
+	_thread_pool = memnew(ThreadPool);
+
+	_script_server = memnew(_ScriptServer);
 
 	OS::get_singleton()->benchmark_end_measure("register_core_types");
 }
@@ -280,6 +283,7 @@ void register_core_singletons() {
 	ClassDB::register_class<ThreadPoolJob>();
 	ClassDB::register_class<ThreadPoolExecuteJob>();
 	ClassDB::register_class<ThreadPool>();
+	ClassDB::register_class<_ScriptServer>();
 
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ProjectSettings", ProjectSettings::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("IP", IP::get_singleton()));
@@ -297,6 +301,7 @@ void register_core_singletons() {
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Time", Time::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("PLogger", _PLogger::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ThreadPool", ThreadPool::get_singleton()));
+	Engine::get_singleton()->add_singleton(Engine::Singleton("ScriptServer", _ScriptServer::get_singleton()));
 }
 
 void unregister_core_types() {
@@ -312,7 +317,9 @@ void unregister_core_types() {
 	memdelete(_plogger);
 
 	memdelete(_geometry);
-	memdelete(thread_pool);
+	memdelete(_thread_pool);
+
+	memdelete(_script_server);
 
 	ResourceLoader::remove_resource_format_loader(resource_format_image);
 	resource_format_image.unref();
