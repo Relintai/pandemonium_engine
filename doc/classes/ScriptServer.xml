@@ -8,7 +8,7 @@
 		[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton through a global variable.
 	</description>
 	<tutorials>
-		<link>https://docs.godotengine.org/en/stable/getting_started/scripting/gdscript/gdscript_basics.html#classes</link>
+		<link>https://github.com/Relintai/pandemonium_engine_docs/blob/master/tutorials/scripting/gdscript/gdscript_basics.md</link>
 	</tutorials>
 	<methods>
 		<method name="get_global_class_base" qualifiers="const">
@@ -47,21 +47,21 @@
 		</method>
 		<method name="get_global_class_script" qualifiers="const">
 			<return type="Script" />
-			<argument index="0" name="class" type="String" />
+			<argument index="0" name="class" type="StringName" />
 			<description>
 				Returns the loaded [Script] named [code]class[/code].
 			</description>
 		</method>
 		<method name="instantiate_global_class" qualifiers="const">
 			<return type="Variant" />
-			<argument index="0" name="class" type="String" />
+			<argument index="0" name="class" type="StringName" />
 			<description>
 				Returns a new instance of the scripted type defined by the script named [code]class[/code].
 			</description>
 		</method>
 		<method name="is_global_class" qualifiers="const">
 			<return type="bool" />
-			<argument index="0" name="class" type="String" />
+			<argument index="0" name="class" type="StringName" />
 			<description>
 				Returns [code]true[/code] if the name [code]class[/code] is a global script class.
 			</description>
