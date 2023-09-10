@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SubProcess" inherits="Reference" version="4.1">
+	<brief_description>
+		Run and manage sub processes.
+	</brief_description>
+	<description>
+		This class grants acess to run and manage sub processes with more fine grained control compared to OS.execute().
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_data" qualifiers="const">
+			<return type="String" />
+			<description>
+				Returns the data returned by the last [member poll] run.
+			</description>
+		</method>
+		<method name="get_exitcode" qualifiers="const">
+			<return type="int" />
+			<description>
+				Returns the exit code of the process.
+			</description>
+		</method>
+		<method name="get_process_id" qualifiers="const">
+			<return type="int" />
+			<description>
+				Returns the exit code of the running process, or 0.
+			</description>
+		</method>
+		<method name="is_process_running" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns whether a subprocess is running.
+			</description>
+		</method>
+		<method name="poll">
+			<return type="int" enum="Error" />
+			<description>
+				Reads from the running process's console output if applicable.
+			</description>
+		</method>
+		<method name="send_data">
+			<return type="int" enum="Error" />
+			<argument index="0" name="data" type="String" />
+			<description>
+				Pipe data to the running process.
+			</description>
+		</method>
+		<method name="send_signal">
+			<return type="int" enum="Error" />
+			<argument index="0" name="signal" type="int" />
+			<description>
+				Send a signal to the runnign process.
+			</description>
+		</method>
+		<method name="start">
+			<return type="int" enum="Error" />
+			<description>
+				Start a subprocess according to the properties. Will return ERR_BUSY if something is already running.
+				If [member blocking] is true, and [member read_output] is also true, the output can be read from [member get_data()] after this method returns.
+				If [member blocking] is false, and [member read_output] is true, the output can be read (usually line-by-line) from [member get_data()] after every [member poll()] calls.
+			</description>
+		</method>
+		<method name="stop">
+			<return type="int" enum="Error" />
+			<description>
+				Stop the running subprocess.
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="arguments" type="PoolStringArray" setter="set_arguments" getter="get_arguments" default="PoolStringArray(  )">
+			The arguments that will be passed to the executable.
+		</member>
+		<member name="blocking" type="bool" setter="set_blocking" getter="get_blocking" default="false">
+			Whether to block until the subprocess finishes or not.
+		</member>
+		<member name="executable_path" type="String" setter="set_executable_path" getter="get_executable_path" default="&quot;&quot;">
+			The executable's path that will be run.
+		</member>
+		<member name="open_console" type="bool" setter="set_open_console" getter="get_open_console" default="false">
+			Whether to open a console window or not. Windows only.
+		</member>
+		<member name="read_output" type="bool" setter="set_read_output" getter="get_read_output" default="true">
+			Controls whether to read any output of the subprocess or not.
+		</member>
+		<member name="read_std" type="bool" setter="set_read_std" getter="get_read_std" default="true">
+			Controls whether to read the standard output of the subprocess or not.
+		</member>
+		<member name="read_std_err" type="bool" setter="set_read_std_err" getter="get_read_std_err" default="false">
+			Controls whether to read the standard error output of the subprocess or not.
+		</member>
+		<member name="use_pipe_mutex" type="bool" setter="set_use_pipe_mutex" getter="get_use_pipe_mutex" default="false">
+			Controls whether to use a mutex when reading the output of the subprocess.
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>
