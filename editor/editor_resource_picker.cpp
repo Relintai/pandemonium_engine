@@ -635,7 +635,10 @@ bool EditorResourcePicker::_is_drop_valid(const Dictionary &p_drag_data) const {
 			String file = files[0];
 
 			String file_type = EditorFileSystem::get_singleton()->get_file_type(file);
-			if (file_type != "" && _is_type_valid(file_type, allowed_types)) {
+			String script_type = EditorNode::get_editor_data().type_get_from_anonymous_path(file);
+			String class_name = script_type.empty() ? file_type : script_type;
+
+			if (class_name != "" && _is_type_valid(class_name, allowed_types)) {
 				return true;
 			}
 		}
