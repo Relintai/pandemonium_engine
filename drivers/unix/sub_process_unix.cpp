@@ -40,6 +40,11 @@
 #include <sys/wait.h>
 
 Error SubProcessUnix::start() {
+#ifdef __EMSCRIPTEN__
+	// Don't compile this code at all to avoid undefined references.
+	// Actual virtual call goes to OS_JavaScript.
+	ERR_FAIL_V(ERR_BUG);
+#else
 	if (_executable_path.empty()) {
 		return ERR_FILE_BAD_PATH;
 	}
@@ -48,11 +53,6 @@ Error SubProcessUnix::start() {
 		return ERR_BUSY;
 	}
 
-#ifdef __EMSCRIPTEN__
-	// Don't compile this code at all to avoid undefined references.
-	// Actual virtual call goes to OS_JavaScript.
-	ERR_FAIL_V(ERR_BUG);
-#else
 	if (_blocking && _read_output) {
 		String argss;
 		argss = "\"" + _executable_path + "\"";
@@ -155,6 +155,11 @@ Error SubProcessUnix::start() {
 }
 
 Error SubProcessUnix::stop() {
+#ifdef __EMSCRIPTEN__
+	// Don't compile this code at all to avoid undefined references.
+	// Actual virtual call goes to OS_JavaScript.
+	ERR_FAIL_V(ERR_BUG);
+#else
 	if (_process_fp) {
 		int rv = pclose(_process_fp);
 		_process_fp = NULL;
@@ -178,6 +183,7 @@ Error SubProcessUnix::stop() {
 	}
 
 	ERR_FAIL_V(ERR_BUG);
+#endif
 }
 
 Error SubProcessUnix::poll() {
@@ -219,6 +225,12 @@ Error SubProcessUnix::send_data(const String &p_data) {
 }
 
 bool SubProcessUnix::is_process_running() const {
+#ifdef __EMSCRIPTEN__
+	// Don't compile this code at all to avoid undefined references.
+	// Actual virtual call goes to OS_JavaScript.
+	ERR_FAIL_V(false);
+#else
+
 	if (_process_fp) {
 		return !feof(_process_fp);
 	}
@@ -233,9 +245,11 @@ bool SubProcessUnix::is_process_running() const {
 	}
 
 	return true;
+#endif
 }
 
-SubProcessUnix::SubProcessUnix() : SubProcess() {
+SubProcessUnix::SubProcessUnix() :
+		SubProcess() {
 	_process_fp = NULL;
 }
 SubProcessUnix::~SubProcessUnix() {
