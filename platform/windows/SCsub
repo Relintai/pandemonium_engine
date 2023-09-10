@@ -15,6 +15,7 @@ common_win = [
     "joypad_windows.cpp",
     "power_windows.cpp",
     "windows_terminal_logger.cpp",
+    "sub_process_windows.cpp",
 ]
 
 res_file = "pandemonium_res.rc"
