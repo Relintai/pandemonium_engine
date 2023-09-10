@@ -61,7 +61,7 @@
 		</method>
 		<method name="get_item_navigation_layers" qualifiers="const">
 			<return type="int" />
-			<param index="0" name="id" type="int" />
+			<argument index="0" name="id" type="int" />
 			<description>
 				Returns the item's navigation layers bitmask.
 			</description>
@@ -135,8 +135,8 @@
 		</method>
 		<method name="set_item_navigation_layers">
 			<return type="void" />
-			<param index="0" name="id" type="int" />
-			<param index="1" name="navigation_layers" type="int" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="navigation_layers" type="int" />
 			<description>
 				Sets the item's navigation layers bitmask.
 			</description>

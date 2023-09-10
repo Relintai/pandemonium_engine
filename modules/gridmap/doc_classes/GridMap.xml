@@ -171,7 +171,7 @@
 		</method>
 		<method name="set_navigation_map">
 			<return type="void" />
-			<param index="0" name="navigation_map" type="RID" />
+			<argument index="0" name="navigation_map" type="RID" />
 			<description>
 				Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
 			</description>

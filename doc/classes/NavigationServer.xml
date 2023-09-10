@@ -40,7 +40,7 @@
 		</method>
 		<method name="agent_get_paused" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="agent" type="RID" />
+			<argument index="0" name="agent" type="RID" />
 			<description>
 				Returns [code]true[/code] if the specified [param agent] is paused.
 			</description>
@@ -145,8 +145,8 @@
 		</method>
 		<method name="agent_set_paused">
 			<return type="void" />
-			<param index="0" name="agent" type="RID" />
-			<param index="1" name="paused" type="bool" />
+			<argument index="0" name="agent" type="RID" />
+			<argument index="1" name="paused" type="bool" />
 			<description>
 				If [param paused] is true the specified [param agent] will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
 			</description>
@@ -242,7 +242,7 @@
 		</method>
 		<method name="link_get_enabled" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="link" type="RID" />
+			<argument index="0" name="link" type="RID" />
 			<description>
 				Returns [code]true[/code] if the specified [param link] is enabled.
 			</description>
@@ -313,8 +313,8 @@
 		</method>
 		<method name="link_set_enabled">
 			<return type="void" />
-			<param index="0" name="link" type="RID" />
-			<param index="1" name="enabled" type="bool" />
+			<argument index="0" name="link" type="RID" />
+			<argument index="1" name="enabled" type="bool" />
 			<description>
 				If [param enabled] is [code]true[/code] the specified [param link] will contribute to its current navigation map.
 			</description>
@@ -400,7 +400,7 @@
 		</method>
 		<method name="map_get_cell_height" qualifiers="const">
 			<return type="float" />
-			<param index="0" name="map" type="RID" />
+			<argument index="0" name="map" type="RID" />
 			<description>
 				Returns the map cell height used to rasterize the navigation mesh vertices on the Y axis.
 			</description>
@@ -577,7 +577,7 @@
 		</method>
 		<method name="obstacle_get_avoidance_enabled" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="obstacle" type="RID" />
+			<argument index="0" name="obstacle" type="RID" />
 			<description>
 				Returns [code]true[/code] if the provided [param obstacle] has avoidance enabled.
 			</description>
@@ -591,22 +591,22 @@
 		</method>
 		<method name="obstacle_get_paused" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="obstacle" type="RID" />
+			<argument index="0" name="obstacle" type="RID" />
 			<description>
 				Returns [code]true[/code] if the specified [param obstacle] is paused.
 			</description>
 		</method>
 		<method name="obstacle_get_use_3d_avoidance" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="obstacle" type="RID" />
+			<argument index="0" name="obstacle" type="RID" />
 			<description>
 				Returns [code]true[/code] if the provided [param obstacle] uses avoidance in 3D space Vector3(x,y,z) instead of horizontal 2D Vector2(x,y) / Vector3(x,0.0,z).
 			</description>
 		</method>
 		<method name="obstacle_set_avoidance_enabled">
 			<return type="void" />
-			<param index="0" name="obstacle" type="RID" />
-			<param index="1" name="enabled" type="bool" />
+			<argument index="0" name="obstacle" type="RID" />
+			<argument index="1" name="enabled" type="bool" />
 			<description>
 				If [param enabled] the provided [param obstacle] affects avoidance using agents.
 			</description>
@@ -637,8 +637,8 @@
 		</method>
 		<method name="obstacle_set_paused">
 			<return type="void" />
-			<param index="0" name="obstacle" type="RID" />
-			<param index="1" name="paused" type="bool" />
+			<argument index="0" name="obstacle" type="RID" />
+			<argument index="1" name="paused" type="bool" />
 			<description>
 				If [param paused] is true the specified [param obstacle] will not be processed, e.g. affect avoidance velocities.
 			</description>
@@ -653,24 +653,24 @@
 		</method>
 		<method name="obstacle_set_radius">
 			<return type="void" />
-			<param index="0" name="obstacle" type="RID" />
-			<param index="1" name="radius" type="float" />
+			<argument index="0" name="obstacle" type="RID" />
+			<argument index="1" name="radius" type="float" />
 			<description>
 				Sets the radius of the dynamic obstacle.
 			</description>
 		</method>
 		<method name="obstacle_set_use_3d_avoidance">
 			<return type="void" />
-			<param index="0" name="obstacle" type="RID" />
-			<param index="1" name="enabled" type="bool" />
+			<argument index="0" name="obstacle" type="RID" />
+			<argument index="1" name="enabled" type="bool" />
 			<description>
 				Sets if the [param obstacle] uses the 2D avoidance or the 3D avoidance while avoidance is enabled.
 			</description>
 		</method>
 		<method name="obstacle_set_velocity">
 			<return type="void" />
-			<param index="0" name="obstacle" type="RID" />
-			<param index="1" name="velocity" type="Vector3" />
+			<argument index="0" name="obstacle" type="RID" />
+			<argument index="1" name="velocity" type="Vector3" />
 			<description>
 				Sets [param velocity] of the dynamic [param obstacle]. Allows other agents to better predict the movement of the dynamic obstacle. Only works in combination with the radius of the obstacle.
 			</description>
@@ -722,7 +722,7 @@
 		</method>
 		<method name="region_get_enabled" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="region" type="RID" />
+			<argument index="0" name="region" type="RID" />
 			<description>
 				Returns [code]true[/code] if the specified [param region] is enabled.
 			</description>
@@ -781,8 +781,8 @@
 		</method>
 		<method name="region_set_enabled">
 			<return type="void" />
-			<param index="0" name="region" type="RID" />
-			<param index="1" name="enabled" type="bool" />
+			<argument index="0" name="region" type="RID" />
+			<argument index="1" name="enabled" type="bool" />
 			<description>
 				If [param enabled] is [code]true[/code] the specified [param region] will contribute to its current navigation map.
 			</description>
