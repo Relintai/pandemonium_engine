@@ -107,7 +107,7 @@ public:
 
 	virtual void move_window_to_foreground();
 
-	void run();
+	void main_run();
 
 	virtual OS::PowerState get_power_state();
 	virtual int get_power_seconds_left();

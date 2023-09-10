@@ -3491,7 +3491,7 @@ void OS_Windows::force_process_input() {
 	process_events(); // get rid of pending events
 }
 
-void OS_Windows::run() {
+void OS_Windows::main_run() {
 	if (!main_loop)
 		return;
 

@@ -399,7 +399,7 @@ extern "C" int frt_godot_main(int argc, char *argv[]) {
 	if (err != OK)
 		return 255;
 	if (Main::start())
-		os.run();
+		os.main_run();
 	Main::cleanup();
 	return os.get_exit_code();
 }

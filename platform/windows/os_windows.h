@@ -571,7 +571,7 @@ public:
 
 	virtual Error shell_open(String p_uri);
 
-	void run();
+	void main_run();
 
 	virtual bool get_swap_ok_cancel() {
 		return true;

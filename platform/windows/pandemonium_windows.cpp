@@ -171,7 +171,7 @@ __declspec(dllexport) int widechar_main(int argc, wchar_t **argv) {
 	}
 
 	if (Main::start())
-		os.run();
+		os.main_run();
 	Main::cleanup();
 
 	for (int i = 0; i < argc; ++i) {

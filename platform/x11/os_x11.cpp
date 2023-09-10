@@ -3898,7 +3898,7 @@ void OS_X11::force_process_input() {
 #endif
 }
 
-void OS_X11::run() {
+void OS_X11::main_run() {
 	force_quit = false;
 
 	if (!main_loop) {

@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 		return 255;
 
 	if (Main::start())
-		os.run(); // it is actually the OS that decides how to run
+		os.main_run(); // it is actually the OS that decides how to run
 	Main::cleanup();
 
 	return os.get_exit_code();

@@ -617,7 +617,7 @@ public:
 			fatal("no video module available.");
 		screen_size = env->video->get_screen_size();
 	}
-	void run_() { run(); }
+	void run_() { main_run(); }
 	int get_exit_code_() { return get_exit_code(); }
 };
 

@@ -323,7 +323,7 @@ public:
 	virtual void _set_use_vsync(bool p_enable);
 	//virtual bool is_vsync_enabled() const;
 
-	void run();
+	void main_run();
 
 	void set_mouse_mode(MouseMode p_mode);
 	MouseMode get_mouse_mode() const;

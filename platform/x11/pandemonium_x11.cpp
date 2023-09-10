@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (Main::start()) {
-		os.run(); // it is actually the OS that decides how to run
+		os.main_run(); // it is actually the OS that decides how to run
 	}
 	Main::cleanup();
 

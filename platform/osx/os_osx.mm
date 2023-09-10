@@ -3402,7 +3402,7 @@ void OS_OSX::pre_wait_observer_cb(CFRunLoopObserverRef p_observer, CFRunLoopActi
 	CFRunLoopWakeUp(CFRunLoopGetCurrent()); // Prevent main loop from sleeping.
 }
 
-void OS_OSX::run() {
+void OS_OSX::main_run() {
 	force_quit = false;
 
 	if (!main_loop) {

@@ -190,7 +190,7 @@ bool OS_Server::_check_internal_feature_support(const String &p_feature) {
 	return p_feature == "pc";
 }
 
-void OS_Server::run() {
+void OS_Server::main_run() {
 	force_quit = false;
 
 	if (!main_loop)
