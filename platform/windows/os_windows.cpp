@@ -198,7 +198,7 @@ void OS_Windows::initialize_core() {
 	DirAccess::make_default<DirAccessWindows>(DirAccess::ACCESS_USERDATA);
 	DirAccess::make_default<DirAccessWindows>(DirAccess::ACCESS_FILESYSTEM);
 
-	SubProcessWindows::make_default();
+	SubProcess::make_default<SubProcessWindows>();
 
 	NetSocketPosix::make_default();
 
