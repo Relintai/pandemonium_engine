@@ -105,10 +105,6 @@ def configure(env):
         else:
             env.Append(CCFLAGS=["-flto"])
             env.Append(LINKFLAGS=["-flto"])
-        # Workaround https://github.com/emscripten-core/emscripten/issues/19781.
-        cc_semver = tuple(get_compiler_version(env))
-        if cc_semver >= (3, 1, 42):
-            env.Append(LINKFLAGS=["-Wl,-u,scalbnf"])
 
     # Sanitizers
     if env["use_ubsan"]:
@@ -191,11 +187,22 @@ def configure(env):
     else:
         env.Append(CPPDEFINES=["NO_THREADS"])
 
+    # Get version info for checks below.
+    cc_semver = tuple(get_compiler_version(env))
+
+    if env["lto"] != "none":
+        # Workaround https://github.com/emscripten-core/emscripten/issues/19781.
+        if cc_semver >= (3, 1, 42) and cc_semver < (3, 1, 46):
+            env.Append(LINKFLAGS=["-Wl,-u,scalbnf"])
+
     if env["gdnative_enabled"]:
-        major, minor, patch = get_compiler_version(env)
-        if major < 2 or (major == 2 and minor == 0 and patch < 10):
-            print("GDNative support requires emscripten >= 2.0.10, detected: %s.%s.%s" % (major, minor, patch))
+        if cc_semver < (2, 0, 10):
+            print("GDNative support requires emscripten >= 2.0.10, detected: %s.%s.%s" % cc_semver)
             sys.exit(255)
+        if env["threads_enabled"] and cc_semver < (3, 1, 14):
+            print("Threads and GDNative requires emscripten => 3.1.14, detected: %s.%s.%s" % cc_semver)
+            sys.exit(255)
+            
         env.Append(CCFLAGS=["-s", "RELOCATABLE=1"])
         env.Append(LINKFLAGS=["-s", "RELOCATABLE=1"])
         # Weak symbols are broken upstream: https://github.com/emscripten-core/emscripten/issues/12819
