@@ -50,6 +50,25 @@ Ref<User> UserManagerFile::_get_user_name(const String &user_name) {
 	_rw_lock.read_unlock();
 	return Ref<User>();
 }
+Ref<User> UserManagerFile::_get_user_email(const String &user_email) {
+	_rw_lock.read_lock();
+
+	for (int i = 0; i < _users.size(); ++i) {
+		Ref<User> u = _users[i];
+
+		if (u.is_valid()) {
+			if (u->get_email() == user_email) {
+				_rw_lock.read_unlock();
+
+				return u;
+			}
+		}
+	}
+
+	_rw_lock.read_unlock();
+	return Ref<User>();
+}
+
 void UserManagerFile::_save_user(Ref<User> user) {
 	_save_queued = true;
 }

@@ -29,6 +29,8 @@ public:
 
 	Ref<User> get_user(const int id);
 	Ref<User> get_user_name(const String &user_name);
+	Ref<User> get_user_email(const String &user_email);
+
 	void save_user(const Ref<User> &user);
 
 	Ref<User> create_user();

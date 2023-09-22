@@ -103,7 +103,7 @@ Ref<User> UserManagerDB::_get_user(const int id) {
 	return user;
 }
 Ref<User> UserManagerDB::_get_user_name(const String &user_name) {
-	if (user_name == "") {
+	if (user_name.empty()) {
 		return Ref<User>();
 	}
 
@@ -136,6 +136,41 @@ Ref<User> UserManagerDB::_get_user_name(const String &user_name) {
 
 	return user;
 }
+Ref<User> UserManagerDB::_get_user_email(const String &user_email) {
+	if (user_email.empty()) {
+		return Ref<User>();
+	}
+
+	Ref<QueryBuilder> b = get_query_builder();
+
+	b->select("id, username, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
+	b->from(_database_table_name);
+	b->where()->wps("email", user_email);
+	b->end_command();
+
+	Ref<QueryResult> r = b->run();
+
+	if (!r->next_row()) {
+		return Ref<User>();
+	}
+
+	Ref<User> user;
+	user = create_user();
+
+	user->set_user_id(r->get_cell_int(0));
+	user->set_user_name(r->get_cell(1));
+	user->set_email(user_email);
+	user->set_rank(r->get_cell_int(2));
+	user->set_pre_salt(r->get_cell(3));
+	user->set_post_salt(r->get_cell(4));
+	user->set_password_hash(r->get_cell(5));
+	user->set_banned(r->get_cell_bool(6));
+	user->set_password_reset_token(r->get_cell(7));
+	user->set_locked(r->get_cell_bool(8));
+
+	return user;
+}
+
 void UserManagerDB::_save_user(Ref<User> user) {
 	Ref<QueryBuilder> b = get_query_builder();
 

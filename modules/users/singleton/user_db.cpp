@@ -38,6 +38,28 @@ Ref<User> UserDB::get_user_name(const String &user_name) {
 
 	return Ref<User>();
 }
+Ref<User> UserDB::get_user_email(const String &user_email) {
+	if (_user_manager) {
+		return _user_manager->get_user_email(user_email);
+	}
+
+	_lock.read_lock();
+
+	for (int i = 0; i < _users.size(); ++i) {
+		Ref<User> u = _users[i];
+
+		if (u.is_valid()) {
+			if (u->get_email() == user_email) {
+				_lock.read_unlock();
+				return u;
+			}
+		}
+	}
+
+	_lock.read_unlock();
+
+	return Ref<User>();
+}
 void UserDB::save_user(const Ref<User> &user) {
 	if (_user_manager) {
 		_user_manager->save_user(user);
@@ -121,16 +143,18 @@ UserDB *UserDB::get_singleton() {
 
 UserDB::UserDB() {
 	_self = this;
-	_user_manager = nullptr;
+	_user_manager = NULL;
 }
 
 UserDB::~UserDB() {
-	_self = nullptr;
+	_self = NULL;
 }
 
 void UserDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_user", "id"), &UserDB::get_user);
 	ClassDB::bind_method(D_METHOD("get_user_name", "user_name"), &UserDB::get_user_name);
+	ClassDB::bind_method(D_METHOD("get_user_email", "user_email"), &UserDB::get_user_email);
+
 	ClassDB::bind_method(D_METHOD("save_user", "user"), &UserDB::save_user);
 
 	ClassDB::bind_method(D_METHOD("create_user"), &UserDB::create_user);

@@ -30,6 +30,8 @@ public:
 
 	Ref<User> _get_user(const int id);
 	Ref<User> _get_user_name(const String &user);
+	Ref<User> _get_user_email(const String &user_email);
+	
 	void _save_user(Ref<User> user);
 
 	Ref<User> _create_user();

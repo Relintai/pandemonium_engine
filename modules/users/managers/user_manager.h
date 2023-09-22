@@ -9,14 +9,14 @@
 
 class User;
 
-//TODO UserManagerStatic, UserManagerDB, UserManagerFile
-
 class UserManager : public Node {
 	GDCLASS(UserManager, Node);
 
 public:
 	Ref<User> get_user(const int id);
 	Ref<User> get_user_name(const String &user_name);
+	Ref<User> get_user_email(const String &user_email);
+
 	void save_user(const Ref<User> &user);
 
 	Ref<User> create_user();
@@ -26,6 +26,8 @@ public:
 
 	virtual Ref<User> _get_user(const int id);
 	virtual Ref<User> _get_user_name(const String &user);
+	virtual Ref<User> _get_user_email(const String &user_email);
+
 	virtual void _save_user(Ref<User> user);
 
 	virtual Ref<User> _create_user();

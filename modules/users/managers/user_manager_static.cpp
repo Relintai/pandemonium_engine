@@ -20,6 +20,20 @@ Ref<User> UserManagerStatic::_get_user_name(const String &user_name) {
 
 	return Ref<User>();
 }
+Ref<User> UserManagerStatic::_get_user_email(const String &user_email) {
+	for (int i = 0; i < _users.size(); ++i) {
+		Ref<User> u = _users[i];
+
+		if (u.is_valid()) {
+			if (u->get_email() == user_email) {
+				return u;
+			}
+		}
+	}
+
+	return Ref<User>();
+}
+
 void UserManagerStatic::_save_user(Ref<User> user) {
 	//With this class Users are serialized via editor properties, ignore
 }

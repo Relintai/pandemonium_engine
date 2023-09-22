@@ -11,6 +11,9 @@ Ref<User> UserManager::get_user(const int id) {
 Ref<User> UserManager::get_user_name(const String &user_name) {
 	return call("_get_user_name", user_name);
 }
+Ref<User> UserManager::get_user_email(const String &user_email) {
+	return call("_get_user_email", user_email);
+}
 void UserManager::save_user(const Ref<User> &user) {
 	call("_save_user", user);
 }
@@ -28,6 +31,9 @@ Ref<User> UserManager::_get_user(const int id) {
 	return Ref<User>();
 }
 Ref<User> UserManager::_get_user_name(const String &user_name) {
+	return Ref<User>();
+}
+Ref<User> UserManager::_get_user_email(const String &user_email) {
 	return Ref<User>();
 }
 void UserManager::_save_user(Ref<User> user) {
@@ -66,6 +72,7 @@ void UserManager::_notification(int p_what) {
 void UserManager::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "User"), "_get_user", PropertyInfo(Variant::INT, "id")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "User"), "_get_user_name", PropertyInfo(Variant::STRING, "user_name")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "User"), "_get_user_email", PropertyInfo(Variant::STRING, "user_email")));
 	BIND_VMETHOD(MethodInfo("_save_user", PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User")));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "User"), "_create_user"));
@@ -75,6 +82,8 @@ void UserManager::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_user", "id"), &UserManager::get_user);
 	ClassDB::bind_method(D_METHOD("get_user_name", "user_name"), &UserManager::get_user_name);
+	ClassDB::bind_method(D_METHOD("get_user_email", "user_email"), &UserManager::get_user_email);
+
 	ClassDB::bind_method(D_METHOD("save_user", "user"), &UserManager::save_user);
 
 	ClassDB::bind_method(D_METHOD("create_user"), &UserManager::create_user);
@@ -84,6 +93,7 @@ void UserManager::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_get_user", "id"), &UserManager::_get_user);
 	ClassDB::bind_method(D_METHOD("_get_user_name", "user_name"), &UserManager::_get_user_name);
+	ClassDB::bind_method(D_METHOD("_get_user_email", "user_email"), &UserManager::_get_user_email);
 	ClassDB::bind_method(D_METHOD("_save_user", "user"), &UserManager::_save_user);
 
 	ClassDB::bind_method(D_METHOD("_create_user"), &UserManager::_create_user);
