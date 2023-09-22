@@ -1015,7 +1015,7 @@ StringName EditorData::type_get_from_anonymous_path(const String &p_path) const 
 
 	Ref<Script> script = res->get_script();
 
-	StringName res_name = "Resource";
+	StringName res_name = res->get_class_name();
 
 	if (script.is_null()) {
 		return res_name;
