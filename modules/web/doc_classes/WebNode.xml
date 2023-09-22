@@ -108,11 +108,11 @@
 				The default implementation of render_preview().
 			</description>
 		</method>
-		<method name="_udpate_table" qualifiers="virtual">
+		<method name="_update_table" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="current_table_version" type="int" />
 			<description>
-				The default implementation of udpate_table().
+				The default implementation of update_table().
 			</description>
 		</method>
 		<method name="build_handler_map">
@@ -293,7 +293,7 @@
 				Helper method that will try to route requests to child [WebNode]s. Useful when when overriding _handle_request_main().
 			</description>
 		</method>
-		<method name="udpate_table">
+		<method name="update_table">
 			<return type="void" />
 			<argument index="0" name="current_table_version" type="int" />
 			<description>

@@ -59,7 +59,7 @@ public:
 	void send(Ref<WebServerRequest> request);
 	void send_file(Ref<WebServerRequest> request, const String &p_file_path);
 
-	void udpate_send_file(Ref<SimpleWebServerRequest> request);
+	void update_send_file(Ref<SimpleWebServerRequest> request);
 
 	void close();
 	bool closed();

@@ -44,12 +44,12 @@ public:
 
 	void create_table();
 	void drop_table();
-	void udpate_table(const int p_current_table_version);
+	void update_table(const int p_current_table_version);
 	void create_default_entries(const int p_seed);
 
 	virtual void _create_table();
 	virtual void _drop_table();
-	virtual void _udpate_table(const int p_current_table_version);
+	virtual void _update_table(const int p_current_table_version);
 	virtual void _create_default_entries(const int p_seed);
 
 	void migrate(const bool p_clear, const bool p_should_seed, const int p_seed);

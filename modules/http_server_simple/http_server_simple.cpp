@@ -94,7 +94,7 @@ void HTTPServerConnection::update() {
 	}
 
 	if (_current_request.is_valid()) {
-		udpate_send_file(_current_request);
+		update_send_file(_current_request);
 
 		if (closed()) {
 			//some error happened
@@ -340,10 +340,10 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 	_file_buffer_start = 0;
 	_file_buffer_end = 0;
 
-	udpate_send_file(r);
+	update_send_file(r);
 }
 
-void HTTPServerConnection::udpate_send_file(Ref<SimpleWebServerRequest> request) {
+void HTTPServerConnection::update_send_file(Ref<SimpleWebServerRequest> request) {
 	int loop_count = 0;
 
 	while (true) {

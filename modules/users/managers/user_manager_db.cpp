@@ -246,8 +246,8 @@ void UserManagerDB::create_table() {
 void UserManagerDB::drop_table() {
 	call("_drop_table");
 }
-void UserManagerDB::udpate_table(const int p_current_table_version) {
-	call("_udpate_table", p_current_table_version);
+void UserManagerDB::update_table(const int p_current_table_version) {
+	call("_update_table", p_current_table_version);
 }
 void UserManagerDB::create_default_entries(const int p_seed) {
 	call("_create_default_entries", p_seed);
@@ -278,7 +278,7 @@ void UserManagerDB::_drop_table() {
 	tb->drop_table_if_exists(_database_table_name)->run_query();
 }
 
-void UserManagerDB::_udpate_table(const int p_current_table_version) {
+void UserManagerDB::_update_table(const int p_current_table_version) {
 }
 
 void UserManagerDB::_create_default_entries(const int p_seed) {
@@ -315,9 +315,9 @@ void UserManagerDB::_migrate(const bool p_clear, const bool p_should_seed, const
 		Ref<DatabaseConnection> conn = get_database_connection();
 		ERR_FAIL_COND(!conn.is_valid());
 		int ver = conn->get_table_version(_database_table_name);
-		udpate_table(ver);
+		update_table(ver);
 #else
-		udpate_table(0);
+		update_table(0);
 #endif
 	}
 
@@ -361,17 +361,17 @@ void UserManagerDB::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_create_table"));
 	BIND_VMETHOD(MethodInfo("_drop_table"));
-	BIND_VMETHOD(MethodInfo("_udpate_table", PropertyInfo(Variant::INT, "current_table_version")));
+	BIND_VMETHOD(MethodInfo("_update_table", PropertyInfo(Variant::INT, "current_table_version")));
 	BIND_VMETHOD(MethodInfo("_create_default_entries", PropertyInfo(Variant::INT, "pseed")));
 
 	ClassDB::bind_method(D_METHOD("create_table"), &UserManagerDB::create_table);
 	ClassDB::bind_method(D_METHOD("drop_table"), &UserManagerDB::drop_table);
-	ClassDB::bind_method(D_METHOD("udpate_table", "current_table_version"), &UserManagerDB::udpate_table);
+	ClassDB::bind_method(D_METHOD("update_table", "current_table_version"), &UserManagerDB::update_table);
 	ClassDB::bind_method(D_METHOD("create_default_entries", "pseed"), &UserManagerDB::create_default_entries);
 
 	ClassDB::bind_method(D_METHOD("_create_table"), &UserManagerDB::_create_table);
 	ClassDB::bind_method(D_METHOD("_drop_table"), &UserManagerDB::_drop_table);
-	ClassDB::bind_method(D_METHOD("_udpate_table", "current_table_version"), &UserManagerDB::_udpate_table);
+	ClassDB::bind_method(D_METHOD("_update_table", "current_table_version"), &UserManagerDB::_update_table);
 	ClassDB::bind_method(D_METHOD("_create_default_entries", "pseed"), &UserManagerDB::_create_default_entries);
 
 	BIND_VMETHOD(MethodInfo("_migrate", PropertyInfo(Variant::BOOL, "clear"), PropertyInfo(Variant::BOOL, "should_seed"), PropertyInfo(Variant::INT, "pseed")));

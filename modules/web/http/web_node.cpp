@@ -245,8 +245,8 @@ void WebNode::create_table() {
 void WebNode::drop_table() {
 	call("_drop_table");
 }
-void WebNode::udpate_table(const int p_current_table_version) {
-	call("_udpate_table", p_current_table_version);
+void WebNode::update_table(const int p_current_table_version) {
+	call("_update_table", p_current_table_version);
 }
 void WebNode::create_default_entries(const int p_seed) {
 	call("_create_default_entries", p_seed);
@@ -256,7 +256,7 @@ void WebNode::_create_table() {
 }
 void WebNode::_drop_table() {
 }
-void WebNode::_udpate_table(const int p_current_table_version) {
+void WebNode::_update_table(const int p_current_table_version) {
 }
 void WebNode::_create_default_entries(const int p_seed) {
 }
@@ -274,9 +274,9 @@ void WebNode::_migrate(const bool p_clear, const bool p_should_seed, const int p
 		Ref<DatabaseConnection> conn = get_database_connection();
 		ERR_FAIL_COND(!conn.is_valid());
 		int ver = conn->get_table_version(_database_table_name);
-		udpate_table(ver);
+		update_table(ver);
 #else
-		udpate_table(0);
+		update_table(0);
 #endif
 	}
 
@@ -533,17 +533,17 @@ void WebNode::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_create_table"));
 	BIND_VMETHOD(MethodInfo("_drop_table"));
-	BIND_VMETHOD(MethodInfo("_udpate_table", PropertyInfo(Variant::INT, "current_table_version")));
+	BIND_VMETHOD(MethodInfo("_update_table", PropertyInfo(Variant::INT, "current_table_version")));
 	BIND_VMETHOD(MethodInfo("_create_default_entries", PropertyInfo(Variant::INT, "pseed")));
 
 	ClassDB::bind_method(D_METHOD("create_table"), &WebNode::create_table);
 	ClassDB::bind_method(D_METHOD("drop_table"), &WebNode::drop_table);
-	ClassDB::bind_method(D_METHOD("udpate_table", "current_table_version"), &WebNode::udpate_table);
+	ClassDB::bind_method(D_METHOD("update_table", "current_table_version"), &WebNode::update_table);
 	ClassDB::bind_method(D_METHOD("create_default_entries", "pseed"), &WebNode::create_default_entries);
 
 	ClassDB::bind_method(D_METHOD("_create_table"), &WebNode::_create_table);
 	ClassDB::bind_method(D_METHOD("_drop_table"), &WebNode::_drop_table);
-	ClassDB::bind_method(D_METHOD("_udpate_table", "current_table_version"), &WebNode::_udpate_table);
+	ClassDB::bind_method(D_METHOD("_update_table", "current_table_version"), &WebNode::_update_table);
 	ClassDB::bind_method(D_METHOD("_create_default_entries", "pseed"), &WebNode::_create_default_entries);
 
 	BIND_VMETHOD(MethodInfo("_migrate", PropertyInfo(Variant::BOOL, "clear"), PropertyInfo(Variant::BOOL, "should_seed"), PropertyInfo(Variant::INT, "pseed")));

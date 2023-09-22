@@ -202,8 +202,8 @@ void HTTPSessionManagerDB::create_table() {
 void HTTPSessionManagerDB::drop_table() {
 	call("_drop_table");
 }
-void HTTPSessionManagerDB::udpate_table(const int p_current_table_version) {
-	call("_udpate_table", p_current_table_version);
+void HTTPSessionManagerDB::update_table(const int p_current_table_version) {
+	call("_update_table", p_current_table_version);
 }
 void HTTPSessionManagerDB::create_default_entries(const int p_seed) {
 	call("_create_default_entries", p_seed);
@@ -238,7 +238,7 @@ void HTTPSessionManagerDB::_drop_table() {
 	tb->drop_table_if_exists(_database_table_name)->run_query();
 	tb->drop_table_if_exists(_database_data_table_name)->run_query();
 }
-void HTTPSessionManagerDB::_udpate_table(const int p_current_table_version) {
+void HTTPSessionManagerDB::_update_table(const int p_current_table_version) {
 }
 void HTTPSessionManagerDB::_create_default_entries(const int p_seed) {
 }
@@ -256,9 +256,9 @@ void HTTPSessionManagerDB::_migrate(const bool p_clear, const bool p_should_seed
 		Ref<DatabaseConnection> conn = get_database_connection();
 		ERR_FAIL_COND(!conn.is_valid());
 		int ver = conn->get_table_version(_database_table_name);
-		udpate_table(ver);
+		update_table(ver);
 #else
-		udpate_table(0);
+		update_table(0);
 #endif
 	}
 
@@ -307,17 +307,17 @@ void HTTPSessionManagerDB::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_create_table"));
 	BIND_VMETHOD(MethodInfo("_drop_table"));
-	BIND_VMETHOD(MethodInfo("_udpate_table", PropertyInfo(Variant::INT, "current_table_version")));
+	BIND_VMETHOD(MethodInfo("_update_table", PropertyInfo(Variant::INT, "current_table_version")));
 	BIND_VMETHOD(MethodInfo("_create_default_entries", PropertyInfo(Variant::INT, "pseed")));
 
 	ClassDB::bind_method(D_METHOD("create_table"), &HTTPSessionManagerDB::create_table);
 	ClassDB::bind_method(D_METHOD("drop_table"), &HTTPSessionManagerDB::drop_table);
-	ClassDB::bind_method(D_METHOD("udpate_table", "current_table_version"), &HTTPSessionManagerDB::udpate_table);
+	ClassDB::bind_method(D_METHOD("update_table", "current_table_version"), &HTTPSessionManagerDB::update_table);
 	ClassDB::bind_method(D_METHOD("create_default_entries", "pseed"), &HTTPSessionManagerDB::create_default_entries);
 
 	ClassDB::bind_method(D_METHOD("_create_table"), &HTTPSessionManagerDB::_create_table);
 	ClassDB::bind_method(D_METHOD("_drop_table"), &HTTPSessionManagerDB::_drop_table);
-	ClassDB::bind_method(D_METHOD("_udpate_table", "current_table_version"), &HTTPSessionManagerDB::_udpate_table);
+	ClassDB::bind_method(D_METHOD("_update_table", "current_table_version"), &HTTPSessionManagerDB::_update_table);
 	ClassDB::bind_method(D_METHOD("_create_default_entries", "pseed"), &HTTPSessionManagerDB::_create_default_entries);
 
 	BIND_VMETHOD(MethodInfo("_migrate", PropertyInfo(Variant::BOOL, "clear"), PropertyInfo(Variant::BOOL, "should_seed"), PropertyInfo(Variant::INT, "pseed")));

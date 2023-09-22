@@ -31,7 +31,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_udpate_table" qualifiers="virtual">
+		<method name="_update_table" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="current_table_version" type="int" />
 			<description>
@@ -76,7 +76,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="udpate_table">
+		<method name="update_table">
 			<return type="void" />
 			<argument index="0" name="current_table_version" type="int" />
 			<description>
