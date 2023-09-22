@@ -5673,7 +5673,7 @@ CanvasItemEditor::CanvasItemEditor(EditorNode *p_editor) {
 
 	presets_menu = memnew(MenuButton);
 	presets_menu->set_shortcut_context(this);
-	presets_menu->set_text(TTR("Layout"));
+	//presets_menu->set_text(TTR("Layout"));
 	preset_anchor_hbox->add_child(presets_menu);
 	presets_menu->set_switch_on_hover(true);
 
