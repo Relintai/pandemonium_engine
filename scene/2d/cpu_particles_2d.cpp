@@ -1215,14 +1215,14 @@ void CPUParticles2D::_notification(int p_what) {
 				Transform2D t = inv_emission_transform * r[i].transform;
 
 				if (r[i].active) {
-					ptr[0] = t.elements[0][0];
-					ptr[1] = t.elements[1][0];
+					ptr[0] = t.columns[0][0];
+					ptr[1] = t.columns[1][0];
 					ptr[2] = 0;
-					ptr[3] = t.elements[2][0];
-					ptr[4] = t.elements[0][1];
-					ptr[5] = t.elements[1][1];
+					ptr[3] = t.columns[2][0];
+					ptr[4] = t.columns[0][1];
+					ptr[5] = t.columns[1][1];
 					ptr[6] = 0;
-					ptr[7] = t.elements[2][1];
+					ptr[7] = t.columns[2][1];
 
 				} else {
 					memset(ptr, 0, sizeof(float) * 8);
