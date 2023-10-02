@@ -29,12 +29,16 @@
 /**************************************************************************/
 
 #include "register_types.h"
-#include "core/class_db.h"
+
+#include "core/object/class_db.h"
+
 #include "jsonrpc.h"
 
-void register_jsonrpc_types() {
-	ClassDB::register_class<JSONRPC>();
+void register_jsonrpc_types(ModuleRegistrationLevel p_level) {
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<JSONRPC>();
+	}
 }
 
-void unregister_jsonrpc_types() {
+void unregister_jsonrpc_types(ModuleRegistrationLevel p_level) {
 }

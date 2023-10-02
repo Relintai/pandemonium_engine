@@ -31,13 +31,13 @@
 #ifndef JSONRPC_H
 #define JSONRPC_H
 
-#include "core/object.h"
-#include "core/variant.h"
+#include "core/object/object.h"
+#include "core/variant/variant.h"
 
 class JSONRPC : public Object {
 	GDCLASS(JSONRPC, Object)
 
-	Map<String, Object *> method_scopes;
+	RBMap<String, Object *> method_scopes;
 
 protected:
 	static void _bind_methods();
