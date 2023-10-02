@@ -39,6 +39,7 @@
 int GDScriptLanguageServer::port_override = -1;
 
 GDScriptLanguageServer::GDScriptLanguageServer() {
+	enabled = false;
 	thread_running = false;
 	started = false;
 	use_thread = false;
