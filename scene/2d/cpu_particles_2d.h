@@ -35,7 +35,7 @@
 class RID;
 class Texture;
 
-#define PANDEMONIUM_CPU_PARTICLES_2D_LEGACY_COMPATIBILITY
+//#define PANDEMONIUM_CPU_PARTICLES_2D_LEGACY_COMPATIBILITY
 
 class CPUParticles2D : public Node2D {
 private:
@@ -200,7 +200,17 @@ private:
 	void _update_particle_data_buffer();
 
 	Mutex update_mutex;
+	// Whether this particle system is interpolated.
 	bool _interpolated;
+
+	struct InterpolationData {
+		// Whether this particle is non-interpolated, but following an interpolated parent.
+		bool interpolated_follow;
+
+		// If doing interpolated follow, we need to keep these updated per tick.
+		Transform2D global_xform_curr;
+		Transform2D global_xform_prev;
+	} _interpolation_data;
 
 	void _update_render_thread();
 
