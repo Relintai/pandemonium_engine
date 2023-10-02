@@ -4,6 +4,17 @@ Please keep categories (`##` level) listed alphabetically and matching their
 respective folder names. Use two empty lines to separate categories for
 readability.
 
+## brotli
+
+- Upstream: https://github.com/google/brotli
+- Version: git (ed1995b6bda19244070ab5d331111f16f67c8054, 2023)
+- License: MIT
+
+Files extracted from upstream source:
+
+- `common/`, `dec/` and `include/` folders from `c/`,
+  minus the `dictionary.bin*` files
+- `LICENSE`
 
 ## certs
 
@@ -64,20 +75,21 @@ comments.
 
 ## fonts
 
-- `NotoSans*.ttf`, `NotoNaskhArabicUI_Regular.ttf`:
+- `NotoSans*.woff2`, `NotoNaskhArabicUI_Regular.woff2`:
   * Upstream: https://github.com/googlei18n/noto-fonts
   * Version: 1.06 (2017)
   * License: OFL-1.1
   * Comment: Use UI font variant if available, because it has tight vertical metrics and
     good for UI.
-- `Hack_Regular.ttf`:
+- `Hack_Regular.woff2`:
   * Upstream: https://github.com/source-foundry/Hack
   * Version: 3.003 (2018)
   * License: MIT + Bitstream Vera License
-- `DroidSans*.ttf`:
+- `DroidSans*.woff2`:
   * Upstream: https://android.googlesource.com/platform/frameworks/base/+/master/data/fonts/
   * Version: ? (pre-2014 commit when DroidSansJapanese.ttf was obsoleted)
   * License: Apache 2.0
+- All fonts are converted from the `.ttf` sources using `https://github.com/google/woff2` tool.
 
 
 ## freetype
