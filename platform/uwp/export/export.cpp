@@ -34,13 +34,17 @@
 #include "core/crypto/crypto_core.h"
 #include "core/io/marshalls.h"
 #include "core/io/zip_io.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/version.h"
+#include "core/string/ustring.h"
+
 #include "editor/editor_export.h"
 #include "editor/editor_node.h"
+#include "editor/editor_settings.h"
+
 #include "platform/uwp/logo.gen.h"
 
 // Mono build doesn't support UWP, so we show a specific error.
@@ -139,7 +143,7 @@ class AppxPackager {
 	String progress_task;
 	FileAccess *package;
 
-	Set<String> mime_types;
+	RBSet<String> mime_types;
 
 	Vector<FileMeta> file_metadata;
 
@@ -259,7 +263,7 @@ void AppxPackager::make_content_types(const String &p_path) {
 	tmp_file->store_string("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 	tmp_file->store_string("<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">");
 
-	Map<String, String> types;
+	RBMap<String, String> types;
 
 	for (int i = 0; i < file_metadata.size(); i++) {
 		String ext = file_metadata[i].name.get_extension().to_lower();
@@ -1558,7 +1562,7 @@ public:
 		r_features->push_back("UWP");
 	}
 
-	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) {
+	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, RBSet<String> &p_features) {
 	}
 
 	static Error copy_shared_objects(void *p_userdata, const SharedObject &p_so) {
