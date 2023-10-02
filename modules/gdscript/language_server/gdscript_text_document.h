@@ -32,7 +32,7 @@
 #define GDSCRIPT_TEXT_DOCUMENT_H
 
 #include "core/os/file_access.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "lsp.hpp"
 
 class GDScriptTextDocument : public Reference {

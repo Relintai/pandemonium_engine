@@ -33,7 +33,7 @@
 #include "../gdscript.h"
 #include "core/os/os.h"
 #include "editor/editor_settings.h"
-#include "editor/plugins/script_text_editor.h"
+#include "editor_modules/editor_code_editor/editor_script_editor.h"
 #include "gdscript_extend_parser.h"
 #include "gdscript_language_protocol.h"
 
@@ -142,7 +142,7 @@ Array GDScriptTextDocument::documentSymbol(const Dictionary &p_params) {
 	String uri = params["uri"];
 	String path = GDScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_path(uri);
 	Array arr;
-	if (const Map<String, ExtendGDScriptParser *>::Element *parser = GDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(path)) {
+	if (const RBMap<String, ExtendGDScriptParser *>::Element *parser = GDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(path)) {
 		Vector<lsp::DocumentedSymbolInformation> list;
 		parser->get()->get_symbols().symbol_tree_as_list(uri, list);
 		for (int i = 0; i < list.size(); i++) {
@@ -212,7 +212,7 @@ Array GDScriptTextDocument::completion(const Dictionary &p_params) {
 	} else if (GDScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
 		arr = native_member_completions.duplicate();
 
-		for (Map<String, ExtendGDScriptParser *>::Element *E = GDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.front(); E; E = E->next()) {
+		for (RBMap<String, ExtendGDScriptParser *>::Element *E = GDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.front(); E; E = E->next()) {
 			ExtendGDScriptParser *script = E->get();
 			const Array &items = script->get_member_completions();
 
@@ -268,7 +268,7 @@ Dictionary GDScriptTextDocument::resolve(const Dictionary &p_params) {
 			}
 
 			if (!symbol) {
-				if (const Map<String, ExtendGDScriptParser *>::Element *E = GDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(class_name)) {
+				if (const RBMap<String, ExtendGDScriptParser *>::Element *E = GDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(class_name)) {
 					symbol = E->get()->get_member_symbol(member_name, inner_class_name);
 				}
 			}
@@ -431,7 +431,7 @@ void GDScriptTextDocument::sync_script_content(const String &p_path, const Strin
 }
 
 void GDScriptTextDocument::show_native_symbol_in_editor(const String &p_symbol_id) {
-	ScriptEditor::get_singleton()->call_deferred("_help_class_goto", p_symbol_id);
+	EditorScriptEditor::get_singleton()->call_deferred("_help_class_goto", p_symbol_id);
 	OS::get_singleton()->move_window_to_foreground();
 }
 

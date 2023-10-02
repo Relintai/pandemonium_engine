@@ -217,7 +217,7 @@ void ExtendGDScriptParser::parse_class_symbol(const GDScriptParser::ClassNode *p
 		r_symbol.children.push_back(symbol);
 	}
 
-	for (Map<StringName, GDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
+	for (RBMap<StringName, GDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
 		lsp::DocumentSymbol symbol;
 		const GDScriptParser::ClassNode::Constant &c = E->value();
 		const GDScriptParser::ConstantNode *node = dynamic_cast<const GDScriptParser::ConstantNode *>(c.expression);
@@ -246,7 +246,7 @@ void ExtendGDScriptParser::parse_class_symbol(const GDScriptParser::ClassNode *p
 			if (res.is_valid() && !res->get_path().empty()) {
 				value_text = "preload(\"" + res->get_path() + "\")";
 				if (symbol.documentation.empty()) {
-					if (Map<String, ExtendGDScriptParser *>::Element *S = GDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(res->get_path())) {
+					if (RBMap<String, ExtendGDScriptParser *>::Element *S = GDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(res->get_path())) {
 						symbol.documentation = S->get()->class_symbol.documentation;
 					}
 				}
@@ -356,7 +356,7 @@ void ExtendGDScriptParser::parse_function_symbol(const GDScriptParser::FunctionN
 	}
 
 	for (const List<GDScriptParser::BlockNode *>::Element *B = function_blocks.front(); B; B = B->next()) {
-		for (const Map<StringName, LocalVarNode *>::Element *E = B->get()->variables.front(); E; E = E->next()) {
+		for (const RBMap<StringName, LocalVarNode *>::Element *E = B->get()->variables.front(); E; E = E->next()) {
 			lsp::DocumentSymbol symbol;
 			const GDScriptParser::LocalVarNode *var = E->value();
 			symbol.name = E->key();
@@ -651,7 +651,6 @@ Dictionary ExtendGDScriptParser::dump_function_api(const GDScriptParser::Functio
 	ERR_FAIL_NULL_V(p_func, func);
 	func["name"] = p_func->name;
 	func["return_type"] = p_func->return_type.to_string();
-	func["rpc_mode"] = p_func->rpc_mode;
 	Array arguments;
 	for (int i = 0; i < p_func->arguments.size(); i++) {
 		Dictionary arg;
@@ -707,7 +706,7 @@ Dictionary ExtendGDScriptParser::dump_class_api(const GDScriptParser::ClassNode 
 	class_api["sub_classes"] = subclasses;
 
 	Array constants;
-	for (Map<StringName, GDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
+	for (RBMap<StringName, GDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
 		const GDScriptParser::ClassNode::Constant &c = E->value();
 		const GDScriptParser::ConstantNode *node = dynamic_cast<const GDScriptParser::ConstantNode *>(c.expression);
 		ERR_FAIL_COND_V(!node, class_api);

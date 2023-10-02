@@ -31,8 +31,8 @@
 #ifndef GODOT_LSP_H
 #define GODOT_LSP_H
 
-#include "core/class_db.h"
-#include "core/list.h"
+#include "core/object/class_db.h"
+#include "core/containers/list.h"
 #include "editor/doc/doc_data.h"
 
 namespace lsp {
@@ -261,7 +261,7 @@ struct WorkspaceEdit {
 	/**
 	 * Holds changes to existing resources.
 	 */
-	Map<String, Vector<TextEdit>> changes;
+	RBMap<String, Vector<TextEdit>> changes;
 
 	_FORCE_INLINE_ void add_edit(const String &uri, const TextEdit &edit) {
 		if (changes.has(uri)) {
@@ -277,7 +277,7 @@ struct WorkspaceEdit {
 		Dictionary dict;
 
 		Dictionary out_changes;
-		for (Map<String, Vector<TextEdit>>::Element *E = changes.front(); E; E = E->next()) {
+		for (RBMap<String, Vector<TextEdit>>::Element *E = changes.front(); E; E = E->next()) {
 			Array edits;
 			for (int i = 0; i < E->get().size(); ++i) {
 				Dictionary text_edit;
@@ -293,7 +293,7 @@ struct WorkspaceEdit {
 	}
 
 	_FORCE_INLINE_ void add_change(const String &uri, const int &line, const int &start_character, const int &end_character, const String &new_text) {
-		if (Map<String, Vector<TextEdit>>::Element *E = changes.find(uri)) {
+		if (RBMap<String, Vector<TextEdit>>::Element *E = changes.find(uri)) {
 			Vector<TextEdit> edit_list = E->value();
 			for (int i = 0; i < edit_list.size(); ++i) {
 				TextEdit edit = edit_list[i];
@@ -310,7 +310,7 @@ struct WorkspaceEdit {
 		new_edit.range.end.line = line;
 		new_edit.range.end.character = end_character;
 
-		if (Map<String, Vector<TextEdit>>::Element *E = changes.find(uri)) {
+		if (RBMap<String, Vector<TextEdit>>::Element *E = changes.find(uri)) {
 			E->value().push_back(new_edit);
 		} else {
 			Vector<TextEdit> edit_list;
