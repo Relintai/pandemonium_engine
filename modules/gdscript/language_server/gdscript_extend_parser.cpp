@@ -83,7 +83,11 @@ void ExtendGDScriptParser::update_symbols() {
 	members.clear();
 
 	const GDScriptParser::Node *head = get_parse_tree();
-	if (const GDScriptParser::ClassNode *gdclass = dynamic_cast<const GDScriptParser::ClassNode *>(head)) {
+
+
+if (head && head->type == Node::TYPE_CLASS) {
+		const GDScriptParser::ClassNode *gdclass = static_cast<const GDScriptParser::ClassNode *>(head);
+
 		parse_class_symbol(gdclass, class_symbol);
 
 		for (int i = 0; i < class_symbol.children.size(); i++) {
@@ -220,8 +224,11 @@ void ExtendGDScriptParser::parse_class_symbol(const GDScriptParser::ClassNode *p
 	for (RBMap<StringName, GDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
 		lsp::DocumentSymbol symbol;
 		const GDScriptParser::ClassNode::Constant &c = E->value();
-		const GDScriptParser::ConstantNode *node = dynamic_cast<const GDScriptParser::ConstantNode *>(c.expression);
-		ERR_FAIL_COND(!node);
+
+		ERR_FAIL_COND(c.expression->type != Node::TYPE_CONSTANT);
+
+		const GDScriptParser::ConstantNode *node = static_cast<const GDScriptParser::ConstantNode *>(c.expression);
+
 		symbol.name = E->key();
 		symbol.kind = lsp::SymbolKind::Constant;
 		symbol.deprecated = false;
@@ -322,12 +329,17 @@ void ExtendGDScriptParser::parse_function_symbol(const GDScriptParser::FunctionN
 		}
 		int default_value_idx = i - (p_func->arguments.size() - p_func->default_values.size());
 		if (default_value_idx >= 0) {
-			const GDScriptParser::ConstantNode *const_node = dynamic_cast<const GDScriptParser::ConstantNode *>(p_func->default_values[default_value_idx]);
-			if (const_node == nullptr) {
-				const GDScriptParser::OperatorNode *operator_node = dynamic_cast<const GDScriptParser::OperatorNode *>(p_func->default_values[default_value_idx]);
-				if (operator_node) {
-					const_node = dynamic_cast<const GDScriptParser::ConstantNode *>(operator_node->next);
+			const GDScriptParser::Node *current_defval_node = p_func->default_values[default_value_idx];
+			const GDScriptParser::ConstantNode *const_node = NULL;
+
+			if (current_defval_node->type == Node::TYPE_OPERATOR) {
+				const GDScriptParser::OperatorNode *operator_node = static_cast<const GDScriptParser::OperatorNode *>(current_defval_node);
+
+				if (operator_node->next->type == Node::TYPE_CONSTANT) {
+					const_node = static_cast<const GDScriptParser::ConstantNode *>(operator_node->next);
 				}
+			} else if (current_defval_node->type == Node::TYPE_CONSTANT) {
+				const_node = static_cast<const GDScriptParser::ConstantNode *>(current_defval_node);
 			}
 
 			if (const_node) {
@@ -657,18 +669,26 @@ Dictionary ExtendGDScriptParser::dump_function_api(const GDScriptParser::Functio
 		arg["name"] = p_func->arguments[i];
 		arg["type"] = p_func->argument_types[i].to_string();
 		int default_value_idx = i - (p_func->arguments.size() - p_func->default_values.size());
+
 		if (default_value_idx >= 0) {
-			const GDScriptParser::ConstantNode *const_node = dynamic_cast<const GDScriptParser::ConstantNode *>(p_func->default_values[default_value_idx]);
-			if (const_node == nullptr) {
-				const GDScriptParser::OperatorNode *operator_node = dynamic_cast<const GDScriptParser::OperatorNode *>(p_func->default_values[default_value_idx]);
-				if (operator_node) {
-					const_node = dynamic_cast<const GDScriptParser::ConstantNode *>(operator_node->next);
+			const GDScriptParser::Node *current_defval_node = p_func->default_values[default_value_idx];
+			const GDScriptParser::ConstantNode *const_node = NULL;
+
+			if (current_defval_node->type == Node::TYPE_OPERATOR) {
+				const GDScriptParser::OperatorNode *operator_node = static_cast<const GDScriptParser::OperatorNode *>(current_defval_node);
+
+				if (operator_node->next->type == Node::TYPE_CONSTANT) {
+					const_node = static_cast<const GDScriptParser::ConstantNode *>(operator_node->next);
 				}
+			} else if (current_defval_node->type == Node::TYPE_CONSTANT) {
+				const_node = static_cast<const GDScriptParser::ConstantNode *>(current_defval_node);
 			}
+
 			if (const_node) {
 				arg["default_value"] = const_node->value;
 			}
 		}
+
 		arguments.push_back(arg);
 	}
 	if (const lsp::DocumentSymbol *symbol = get_symbol_defined_at_line(LINE_NUMBER_TO_INDEX(p_func->line))) {
@@ -708,8 +728,10 @@ Dictionary ExtendGDScriptParser::dump_class_api(const GDScriptParser::ClassNode 
 	Array constants;
 	for (RBMap<StringName, GDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
 		const GDScriptParser::ClassNode::Constant &c = E->value();
-		const GDScriptParser::ConstantNode *node = dynamic_cast<const GDScriptParser::ConstantNode *>(c.expression);
-		ERR_FAIL_COND_V(!node, class_api);
+
+		ERR_FAIL_COND_V(c.expression->type != Node::TYPE_CONSTANT, class_api);
+
+		const GDScriptParser::ConstantNode *node = static_cast<const GDScriptParser::ConstantNode *>(c.expression);
 
 		Dictionary api;
 		api["name"] = E->key();
@@ -777,7 +799,8 @@ Dictionary ExtendGDScriptParser::dump_class_api(const GDScriptParser::ClassNode 
 Dictionary ExtendGDScriptParser::generate_api() const {
 	Dictionary api;
 	const GDScriptParser::Node *head = get_parse_tree();
-	if (const GDScriptParser::ClassNode *gdclass = dynamic_cast<const GDScriptParser::ClassNode *>(head)) {
+	if (head && head->type == Node::TYPE_CLASS) {
+		const GDScriptParser::ClassNode *gdclass = static_cast<const GDScriptParser::ClassNode *>(head);
 		api = dump_class_api(gdclass);
 	}
 	return api;
