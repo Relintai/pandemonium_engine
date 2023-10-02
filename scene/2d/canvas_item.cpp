@@ -747,7 +747,7 @@ void CanvasItem::set_canvas_item_use_identity_transform(bool p_enable) {
 	_set_use_identity_transform(p_enable);
 
 	// Let VisualServer know not to concatenate the parent transform during the render.
-	RenderingServer::get_singleton()->canvas_item_set_ignore_parent_transform(get_canvas_item(), p_enable);
+	RenderingServer::get_singleton()->canvas_item_set_use_identity_transform(get_canvas_item(), p_enable);
 
 	if (is_inside_tree()) {
 		if (p_enable) {
