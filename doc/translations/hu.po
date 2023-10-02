@@ -1557,7 +1557,7 @@ msgid "The [TranslationServer] singleton."
 msgstr ""
 
 #: doc/classes/@GlobalScope.xml
-msgid "The [VisualEditorScriptEditor] singleton."
+msgid "The [VisualScriptEditor] singleton."
 msgstr ""
 
 #: doc/classes/@GlobalScope.xml
@@ -21001,7 +21001,7 @@ msgid ""
 "customizing the window, saving and (re-)loading scenes, rendering mesh "
 "previews, inspecting and editing resources and objects, and provides access "
 "to [EditorSettings], [EditorFileSystem], [EditorResourcePreview], "
-"[EditorScriptEditor], the editor viewport, and information about scenes.\n"
+"[ScriptEditor], the editor viewport, and information about scenes.\n"
 "[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access "
 "the singleton using [method EditorPlugin.get_editor_interface]."
 msgstr ""
@@ -21099,7 +21099,7 @@ msgstr ""
 
 #: doc/classes/EditorInterface.xml
 msgid ""
-"Returns the editor's [EditorScriptEditor] instance.\n"
+"Returns the editor's [ScriptEditor] instance.\n"
 "[b]Warning:[/b] Removing and freeing this node will render a part of the "
 "editor useless and may cause a crash."
 msgstr ""
@@ -29927,7 +29927,11 @@ msgid ""
 "using an [AnimatedTexture], only the first frame will be displayed.\n"
 "[b]Note:[/b] Only images imported with the [b]Lossless[/b], [b]Lossy[/b] or "
 "[b]Uncompressed[/b] compression modes are supported. The [b]Video RAM[/b] "
-"compression mode can't be used for custom cursors."
+"compression mode can't be used for custom cursors.\n"
+"[b]Note:[/b] On the web platform, the maximum allowed cursor image size is "
+"128×128. Cursor images larger than 32×32 will also only be displayed if the "
+"mouse cursor image is entirely located within the page for [url=https://"
+"chromestatus.com/feature/5825971391299584]security reasons[/url]."
 msgstr ""
 
 #: doc/classes/Input.xml
@@ -36370,7 +36374,7 @@ msgstr ""
 msgid ""
 "The radius of the avoidance agent. This is the \"body\" of the avoidance "
 "agent and not the avoidance maneuver starting radius (which is controlled by "
-"[member neighbor_distance]).\n"
+"[member neighbor_dist]).\n"
 "Does not affect normal pathfinding. To change an actor's pathfinding radius "
 "bake [NavigationMesh] resources with a different [member NavigationMesh."
 "agent_radius] property and use different navigation maps for each actor size."
@@ -36484,7 +36488,7 @@ msgstr ""
 msgid ""
 "The radius of the avoidance agent. This is the \"body\" of the avoidance "
 "agent and not the avoidance maneuver starting radius (which is controlled by "
-"[member neighbor_distance]).\n"
+"[member neighbor_dist]).\n"
 "Does not affect normal pathfinding."
 msgstr ""
 
@@ -54947,50 +54951,50 @@ msgstr ""
 msgid "Emitted when the user clicks the OK button."
 msgstr ""
 
-#: doc/classes/EditorScriptEditor.xml
+#: doc/classes/ScriptEditor.xml
 msgid "Godot editor's script editor."
 msgstr ""
 
-#: doc/classes/EditorScriptEditor.xml
+#: doc/classes/ScriptEditor.xml
 msgid ""
 "[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access "
 "the singleton using [method EditorInterface.get_script_editor]."
 msgstr ""
 
-#: doc/classes/EditorScriptEditor.xml
+#: doc/classes/ScriptEditor.xml
 msgid "Returns a [Script] that is currently active in editor."
 msgstr ""
 
-#: doc/classes/EditorScriptEditor.xml
+#: doc/classes/ScriptEditor.xml
 msgid ""
 "Returns an array with all [Script] objects which are currently open in "
 "editor."
 msgstr ""
 
-#: doc/classes/EditorScriptEditor.xml
+#: doc/classes/ScriptEditor.xml
 msgid "Goes to the specified line in the current script."
 msgstr ""
 
-#: doc/classes/EditorScriptEditor.xml
+#: doc/classes/ScriptEditor.xml
 msgid ""
 "Opens the script create dialog. The script will extend [code]base_name[/"
 "code]. The file extension can be omitted from [code]base_path[/code]. It "
 "will be added based on the selected scripting language."
 msgstr ""
 
-#: doc/classes/EditorScriptEditor.xml
+#: doc/classes/ScriptEditor.xml
 msgid ""
 "Reload all currently opened scripts from disk in case the file contents are "
 "newer."
 msgstr ""
 
-#: doc/classes/EditorScriptEditor.xml
+#: doc/classes/ScriptEditor.xml
 msgid ""
 "Emitted when user changed active script. Argument is a freshly activated "
 "[Script]."
 msgstr ""
 
-#: doc/classes/EditorScriptEditor.xml
+#: doc/classes/ScriptEditor.xml
 msgid ""
 "Emitted when editor is about to close the active script. Argument is a "
 "[Script] that is going to be closed."
@@ -68338,19 +68342,19 @@ msgstr ""
 msgid "The type to deconstruct."
 msgstr ""
 
-#: modules/visual_script/doc_classes/VisualEditorScriptEditor.xml
+#: modules/visual_script/doc_classes/VisualScriptEditor.xml
 msgid ""
 "Add a custom Visual Script node to the editor. It'll be placed under "
 "\"Custom Nodes\" with the [code]category[/code] as the parameter."
 msgstr ""
 
-#: modules/visual_script/doc_classes/VisualEditorScriptEditor.xml
+#: modules/visual_script/doc_classes/VisualScriptEditor.xml
 msgid ""
 "Remove a custom Visual Script node from the editor. Custom nodes already "
 "placed on scripts won't be removed."
 msgstr ""
 
-#: modules/visual_script/doc_classes/VisualEditorScriptEditor.xml
+#: modules/visual_script/doc_classes/VisualScriptEditor.xml
 msgid "Emitted when a custom Visual Script node is added or removed."
 msgstr ""
 

@@ -3,6 +3,7 @@
 import enum
 import fnmatch
 import os
+import os.path
 import re
 import shutil
 import subprocess
@@ -61,17 +62,23 @@ matches.sort()
 
 remaps = {}
 remap_re = re.compile(r'^\t*capitalize_string_remaps\["(?P<from>.+)"\] = (String::utf8\()?"(?P<to>.+)"')
+stop_words = set()
+stop_words_re = re.compile(r'^\t*stop_words\.push_back\("(?P<word>.+)"\)')
 with open("editor/editor_property_name_processor.cpp") as f:
     for line in f:
         m = remap_re.search(line)
         if m:
             remaps[m.group("from")] = m.group("to")
+        else:
+            m = stop_words_re.search(line)
+            if m:
+                stop_words.add(m.group("word"))
 
 
 main_po = """
-# LANGUAGE translation of the Pandemonium Engine editor.
-# Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.
-# Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).
+# LANGUAGE translation of the Godot Engine editor.
+# Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md).
+# Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
 # This file is distributed under the same license as the Godot source code.
 #
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
@@ -79,8 +86,8 @@ main_po = """
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Pandemonium Engine editor\\n"
-"Report-Msgid-Bugs-To: https://github.com/Relintai/pandemonium_engine\\n"
+"Project-Id-Version: Godot Engine editor\\n"
+"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\\n"
 "MIME-Version: 1.0\\n"
 "Content-Type: text/plain; charset=UTF-8\\n"
 "Content-Transfer-Encoding: 8-bit\\n"\n
@@ -99,15 +106,22 @@ message_patterns = {
     re.compile(r'TTR\("(?P<message>([^"\\]|\\.)*)"(, "(?P<context>([^"\\]|\\.)*)")?\)'): ExtractType.TEXT,
     re.compile(r'TTRC\("(?P<message>([^"\\]|\\.)*)"\)'): ExtractType.TEXT,
     re.compile(r'_initial_set\("(?P<message>[^"]+?)",'): ExtractType.PROPERTY_PATH,
-    re.compile(r'GLOBAL_DEF(_RST)?(_NOVAL)?\("(?P<message>[^".]+?)",'): ExtractType.PROPERTY_PATH,
+    re.compile(r'GLOBAL_DEF(_RST)?(_NOVAL)?\("(?P<message>[^"]+?)",'): ExtractType.PROPERTY_PATH,
     re.compile(r'EDITOR_DEF(_RST)?\("(?P<message>[^"]+?)",'): ExtractType.PROPERTY_PATH,
     re.compile(
-        r'(ADD_PROPERTYI?|ImportOption|ExportOption)\(PropertyInfo\(Variant::[_A-Z0-9]+, "(?P<message>[^"]+?)"[,)]'
+        r"(ADD_PROPERTYI?|ImportOption|ExportOption)\(PropertyInfo\("
+        + r"Variant::[_A-Z0-9]+"  # Name
+        + r', "(?P<message>[^"]+)"'  # Type
+        + r'(, [_A-Z0-9]+(, "([^"\\]|\\.)*"(, (?P<usage>[_A-Z0-9]+))?)?|\))'  # [, hint[, hint string[, usage]]].
     ): ExtractType.PROPERTY_PATH,
     re.compile(
         r"(?!#define )LIMPL_PROPERTY(_RANGE)?\(Variant::[_A-Z0-9]+, (?P<message>[^,]+?),"
     ): ExtractType.PROPERTY_PATH,
-    re.compile(r'ADD_GROUP\("(?P<message>[^"]+?)", "(?P<prefix>[^"]*?)"\)'): ExtractType.GROUP,
+    re.compile(r'(ADD_GROUP|GNAME)\("(?P<message>[^"]+)", "(?P<prefix>[^"]*)"\)'): ExtractType.GROUP,
+    re.compile(r'PNAME\("(?P<message>[^"]+)"\)'): ExtractType.PROPERTY_PATH,
+}
+theme_property_patterns = {
+    re.compile(r'set_(constant|font|stylebox|color|icon)\("(?P<message>[^"]+)", '): ExtractType.PROPERTY_PATH,
 }
 
 
@@ -118,9 +132,12 @@ capitalize_re = re.compile(r"(?<=\D)(?=\d)|(?<=\d)(?=\D([a-z]|\d))")
 def _process_editor_string(name):
     # See EditorPropertyNameProcessor::process_string().
     capitalized_parts = []
-    for segment in name.split("_"):
-        if not segment:
+    parts = list(filter(bool, name.split("_")))  # Non-empty only.
+    for i, segment in enumerate(parts):
+        if i > 0 and i + 1 < len(parts) and segment in stop_words:
+            capitalized_parts.append(segment)
             continue
+
         remapped = remaps.get(segment)
         if remapped:
             capitalized_parts.append(remapped)
@@ -181,6 +198,10 @@ def process_file(f, fname):
     translator_comment = ""
     current_group = ""
 
+    patterns = message_patterns
+    if os.path.basename(fname) == "default_theme.cpp":
+        patterns = {**message_patterns, **theme_property_patterns}
+
     while l:
 
         # Detect translator comments.
@@ -198,7 +219,7 @@ def process_file(f, fname):
                 translator_comment = translator_comment[:-1]  # Remove extra \n at the end.
 
         if not reading_translator_comment:
-            for pattern, extract_type in message_patterns.items():
+            for pattern, extract_type in patterns.items():
                 for m in pattern.finditer(l):
                     location = os.path.relpath(fname).replace("\\", "/")
                     if line_nb:
@@ -211,11 +232,19 @@ def process_file(f, fname):
                     if extract_type == ExtractType.TEXT:
                         _add_message(msg, msgctx, location, translator_comment)
                     elif extract_type == ExtractType.PROPERTY_PATH:
+                        if captures.get("usage") == "PROPERTY_USAGE_NOEDITOR":
+                            continue
+
                         if current_group:
                             if msg.startswith(current_group):
                                 msg = msg[len(current_group) :]
+                            elif current_group.startswith(msg):
+                                pass  # Keep this as-is. See EditorInspector::update_tree().
                             else:
                                 current_group = ""
+
+                        if "." in msg:  # Strip feature tag.
+                            msg = msg.split(".", 1)[0]
                         for part in msg.split("/"):
                             _add_message(_process_editor_string(part), msgctx, location, translator_comment)
                     elif extract_type == ExtractType.GROUP:

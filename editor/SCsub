@@ -79,7 +79,7 @@ if env["tools"]:
 
     # Editor translations
     to_include = (
-        "hu"
+        "bg,ca,cs,de,el,eo,es_AR,es,fi,fr,gl,hu,id,it,ja,ko,lv,ms,nb,nl,pl,pt_BR,pt,ro,ru,sk,sv,th,tr,uk,vi,zh_CN,zh_TW"
     ).split(",")
     tlist = [env.Dir("#editor/translations").abspath + "/" + f + ".po" for f in to_include]
     env.Depends("#editor/editor_translations.gen.h", tlist)
@@ -88,7 +88,7 @@ if env["tools"]:
     )
 
     # Documentation translations
-    to_include = "hu".split(",")
+    to_include = "de,es,fr,hu,ja,zh_CN".split(",")
     tlist = [env.Dir("#doc/translations").abspath + "/" + f + ".po" for f in to_include]
     env.Depends("#editor/doc_translations.gen.h", tlist)
     env.CommandNoCache(
