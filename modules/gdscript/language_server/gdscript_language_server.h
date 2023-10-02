@@ -46,6 +46,8 @@ class GDScriptLanguageServer : public EditorPlugin {
 	bool use_thread;
 	String host;
 	int port;
+	bool enabled;
+	
 	static void thread_main(void *p_userdata);
 
 private:

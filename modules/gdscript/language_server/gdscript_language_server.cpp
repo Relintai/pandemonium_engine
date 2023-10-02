@@ -45,6 +45,7 @@ GDScriptLanguageServer::GDScriptLanguageServer() {
 	host = "127.0.0.1";
 	port = 6008;
 
+	_EDITOR_DEF("network/language_server/enabled", enabled, true);
 	_EDITOR_DEF("network/language_server/remote_host", host);
 	_EDITOR_DEF("network/language_server/remote_port", port);
 	_EDITOR_DEF("network/language_server/enable_smart_resolve", true);
@@ -66,6 +67,10 @@ void GDScriptLanguageServer::_notification(int p_what) {
 			}
 		} break;
 		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
+			if (!enabled) {
+				return;
+			}
+
 			String host = String(_EDITOR_GET("network/language_server/remote_host"));
 			int port = (GDScriptLanguageServer::port_override > -1) ? GDScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
 			bool use_thread = (bool)_EDITOR_GET("network/language_server/use_thread");
@@ -87,9 +92,15 @@ void GDScriptLanguageServer::thread_main(void *p_userdata) {
 }
 
 void GDScriptLanguageServer::start() {
+	enabled = _EDITOR_GET("network/language_server/enabled");
 	host = String(_EDITOR_GET("network/language_server/remote_host"));
 	port = (GDScriptLanguageServer::port_override > -1) ? GDScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
 	use_thread = (bool)_EDITOR_GET("network/language_server/use_thread");
+
+	if (!enabled) {
+		return;
+	}
+
 	if (protocol.start(port, IP_Address(host)) == OK) {
 		EditorNode::get_log()->add_message("--- GDScript language server started on port " + itos(port) + " ---", EditorLog::MSG_TYPE_EDITOR);
 		if (use_thread) {
@@ -102,6 +113,10 @@ void GDScriptLanguageServer::start() {
 }
 
 void GDScriptLanguageServer::stop() {
+	if (!enabled) {
+		return;
+	}
+
 	if (use_thread) {
 		ERR_FAIL_COND(!thread.is_started());
 		thread_running = false;
