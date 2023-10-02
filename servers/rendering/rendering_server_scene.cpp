@@ -2117,6 +2117,9 @@ bool RenderingServerScene::_light_instance_update_shadow(Instance *p_instance, c
 				case RS::LIGHT_DIRECTIONAL_SHADOW_PARALLEL_2_SPLITS:
 					splits = 2;
 					break;
+				case RS::LIGHT_DIRECTIONAL_SHADOW_PARALLEL_3_SPLITS:
+					splits = 3;
+					break;
 				case RS::LIGHT_DIRECTIONAL_SHADOW_PARALLEL_4_SPLITS:
 					splits = 4;
 					break;
