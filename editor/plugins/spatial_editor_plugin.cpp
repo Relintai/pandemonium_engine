@@ -7192,6 +7192,7 @@ void SpatialEditor::_register_all_gizmos() {
 	add_gizmo_plugin(Ref<NavigationLink3DGizmoPlugin>(memnew(NavigationLink3DGizmoPlugin)));
 	add_gizmo_plugin(Ref<NavigationMeshSpatialGizmoPlugin>(memnew(NavigationMeshSpatialGizmoPlugin)));
 	add_gizmo_plugin(Ref<JointSpatialGizmoPlugin>(memnew(JointSpatialGizmoPlugin)));
+	add_gizmo_plugin(Ref<BlobShadowSpatialGizmoPlugin>(memnew(BlobShadowSpatialGizmoPlugin)));
 }
 
 void SpatialEditor::_bind_methods() {

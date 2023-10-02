@@ -115,6 +115,9 @@ struct _NO_DISCARD_CLASS_ Projection {
 	Vector<Plane> get_projection_planes(const Transform &p_transform) const;
 	Array get_projection_planes_array(const Transform &p_transform) const;
 
+	// Returns efficiently all info needed for culling AABBs via AABB::intersects_convex_shape().
+	bool get_projection_planes_and_endpoints(const Transform &p_transform, Plane *p_6planes, Vector3 *p_8points) const;
+
 	bool get_endpoints(const Transform &p_transform, Vector3 *p_8points) const;
 	Vector2 get_viewport_half_extents() const;
 	Vector2 get_far_plane_half_extents() const;
@@ -179,6 +182,10 @@ struct _NO_DISCARD_CLASS_ Projection {
 	Projection(const Vector4 &p_x, const Vector4 &p_y, const Vector4 &p_z, const Vector4 &p_w);
 	Projection(const Transform &p_transform);
 	~Projection();
+
+private:
+	void _get_projection_planes(Plane *p_6planes) const;
+	void _transform_projection_planes(const Transform &p_transform, Plane *p_6planes) const;
 };
 
 Vector3 Projection::xform(const Vector3 &p_vec3) const {

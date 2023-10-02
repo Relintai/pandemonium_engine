@@ -194,6 +194,8 @@
 #ifndef _3D_DISABLED
 #include "scene/3d/area.h"
 #include "scene/3d/audio_stream_player_3d.h"
+#include "scene/3d/blob_focus.h"
+#include "scene/3d/blob_shadow.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/collision_polygon.h"
 #include "scene/3d/collision_shape.h"
@@ -479,6 +481,8 @@ void register_scene_types() {
 	ClassDB::register_class<Occluder>();
 	ClassDB::register_class<Portal>();
 	ClassDB::register_class<MergeGroup>();
+	ClassDB::register_class<BlobShadow>();
+	ClassDB::register_class<BlobFocus>();
 
 	ClassDB::register_class<RootMotionView>();
 	ClassDB::set_class_enabled("RootMotionView", false); //disabled by default, enabled by editor
