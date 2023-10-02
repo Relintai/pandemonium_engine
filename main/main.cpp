@@ -87,9 +87,16 @@
 #endif
 
 #include "modules/modules_enabled.gen.h"
+
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 #include "editor_code_editor/editor_script_editor.h"
 #endif
+
+#ifdef MODULE_GDSCRIPT_ENABLED
+#if defined(TOOLS_ENABLED) && !defined(GDSCRIPT_NO_LSP)
+#include "modules/gdscript/language_server/gdscript_language_server.h"
+#endif // TOOLS_ENABLED && !GDSCRIPT_NO_LSP
+#endif // MODULE_GDSCRIPT_ENABLED
 
 /* Static members */
 
@@ -328,6 +335,9 @@ void Main::print_help(const char *p_binary) {
 	OS::get_singleton()->print("  -e, --editor                     Start the editor instead of running the scene.\n");
 	OS::get_singleton()->print("  -p, --project-manager            Start the project manager, even if a project is auto-detected.\n");
 	OS::get_singleton()->print("  --debug-server <address>         Start the editor debug server (<IP>:<port>, e.g. 127.0.0.1:6007)\n");
+#if defined(MODULE_GDSCRIPT_ENABLED) && !defined(GDSCRIPT_NO_LSP)
+	OS::get_singleton()->print("  --lsp-port <port>                 Use the specified port for the language server protocol. The port must be between 0 to 65535.\n");
+#endif // MODULE_GDSCRIPT_ENABLED && !GDSCRIPT_NO_LSP
 #endif
 	OS::get_singleton()->print("  -q, --quit                       Quit after the first iteration.\n");
 	OS::get_singleton()->print("  -l, --language <locale>          Use a specific locale (<locale> being a two-letter code).\n");
@@ -984,7 +994,21 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 				OS::get_singleton()->print("Missing <path> argument for --benchmark-file <path>.\n");
 				goto error;
 			}
-
+#if defined(TOOLS_ENABLED) && !defined(GDSCRIPT_NO_LSP)
+		} else if (I->get() == "--lsp-port") {
+			if (I->next()) {
+				int port_override = I->next()->get().to_int();
+				if (port_override < 0 || port_override > 65535) {
+					OS::get_singleton()->print("<port> argument for --lsp-port <port> must be between 0 and 65535.\n");
+					goto error;
+				}
+				GDScriptLanguageServer::port_override = port_override;
+				N = I->next()->next();
+			} else {
+				OS::get_singleton()->print("Missing <port> argument for --lsp-port <port>.\n");
+				goto error;
+			}
+#endif // TOOLS_ENABLED && !GDSCRIPT_NO_LSP
 		} else {
 			main_args.push_back(I->get());
 		}
