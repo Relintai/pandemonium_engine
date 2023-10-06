@@ -212,8 +212,6 @@ class AnimatedSprite3D : public SpriteBase3D {
 	StringName animation;
 	int frame;
 
-	bool centered;
-
 	float timeout;
 
 	bool hflip;
