@@ -644,13 +644,20 @@ void EditorNode::_notification(int p_what) {
 			if (EDITOR_GET("interface/editor/hide_main_screen_plugin_names")) {
 				for (int i = 0; i < main_editor_buttons.size(); ++i) {
 					ToolButton *tb = main_editor_buttons[i];
-					tb->set_text("");
+
+					// Only process it if it has a valid icon
+					if (tb->get_icon().is_valid()) {
+						tb->set_text("");
+					}
 				}
 			} else {
 				String meta_name = "text";
 				for (int i = 0; i < main_editor_buttons.size(); ++i) {
 					ToolButton *tb = main_editor_buttons[i];
-					tb->set_text(tb->get_meta(meta_name));
+
+					if (tb->get_icon().is_valid()) {
+						tb->set_text(tb->get_meta(meta_name));
+					}
 				}
 			}
 
@@ -3236,7 +3243,9 @@ void EditorNode::add_editor_plugin(EditorPlugin *p_editor, bool p_config_changed
 		tb->set_toggle_mode(true);
 		tb->connect("pressed", singleton, "_editor_select", varray(singleton->main_editor_buttons.size()));
 
-		if (!EDITOR_GET("interface/editor/hide_main_screen_plugin_names")) {
+		bool hide_main_screen_plugin_names = EDITOR_GET("interface/editor/hide_main_screen_plugin_names");
+
+		if (!hide_main_screen_plugin_names) {
 			tb->set_text(p_editor->get_name());
 		}
 
@@ -3248,6 +3257,11 @@ void EditorNode::add_editor_plugin(EditorPlugin *p_editor, bool p_config_changed
 			tb->set_icon(icon);
 		} else if (singleton->gui_base->has_theme_icon(p_editor->get_name(), "EditorIcons")) {
 			tb->set_icon(singleton->gui_base->get_theme_icon(p_editor->get_name(), "EditorIcons"));
+		} else {
+			// Fall back to text when no icon is available and the plugin names are hidden
+			if (hide_main_screen_plugin_names) {
+				tb->set_text(p_editor->get_name());
+			}
 		}
 
 		tb->set_name(p_editor->get_name());
