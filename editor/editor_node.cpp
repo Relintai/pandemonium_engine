@@ -641,6 +641,19 @@ void EditorNode::_notification(int p_what) {
 			p->set_item_icon(p->get_item_index(HELP_ABOUT), gui_base->get_theme_icon("Pandemonium", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT), gui_base->get_theme_icon("Heart", "EditorIcons"));
 
+			if (EDITOR_GET("interface/editor/hide_main_screen_plugin_names")) {
+				for (int i = 0; i < main_editor_buttons.size(); ++i) {
+					ToolButton *tb = main_editor_buttons[i];
+					tb->set_text("");
+				}
+			} else {
+				String meta_name = "text";
+				for (int i = 0; i < main_editor_buttons.size(); ++i) {
+					ToolButton *tb = main_editor_buttons[i];
+					tb->set_text(tb->get_meta(meta_name));
+				}
+			}
+
 			_update_update_spinner();
 		} break;
 
@@ -3188,8 +3201,10 @@ void EditorNode::_editor_select(int p_which) {
 void EditorNode::select_editor_by_name(const String &p_name) {
 	ERR_FAIL_COND(p_name == "");
 
+	String meta_name = "text";
+
 	for (int i = 0; i < main_editor_buttons.size(); i++) {
-		if (main_editor_buttons[i]->get_text() == p_name) {
+		if (main_editor_buttons[i]->get_meta(meta_name) == p_name) {
 			main_editor_buttons[i]->set_visible(true);
 			_editor_select(i);
 			return;
@@ -3202,8 +3217,10 @@ void EditorNode::select_editor_by_name(const String &p_name) {
 void EditorNode::editor_set_visible_by_name(const String &p_name, const bool p_visible) {
 	ERR_FAIL_COND(p_name == "");
 
+	String meta_name = "text";
+
 	for (int i = 0; i < main_editor_buttons.size(); i++) {
-		if (main_editor_buttons[i]->get_text() == p_name) {
+		if (main_editor_buttons[i]->get_meta(meta_name) == p_name) {
 			main_editor_buttons[i]->set_visible(p_visible);
 			return;
 		}
@@ -3215,9 +3232,16 @@ void EditorNode::editor_set_visible_by_name(const String &p_name, const bool p_v
 void EditorNode::add_editor_plugin(EditorPlugin *p_editor, bool p_config_changed) {
 	if (p_editor->has_main_screen()) {
 		ToolButton *tb = memnew(ToolButton);
+		tb->set_meta("text", p_editor->get_name());
 		tb->set_toggle_mode(true);
 		tb->connect("pressed", singleton, "_editor_select", varray(singleton->main_editor_buttons.size()));
-		tb->set_text(p_editor->get_name());
+
+		if (!EDITOR_GET("interface/editor/hide_main_screen_plugin_names")) {
+			tb->set_text(p_editor->get_name());
+		}
+
+		tb->set_tooltip(p_editor->get_name() + " Editor");
+
 		Ref<Texture> icon = p_editor->get_icon();
 
 		if (icon.is_valid()) {
@@ -3242,10 +3266,12 @@ void EditorNode::add_editor_plugin(EditorPlugin *p_editor, bool p_config_changed
 
 void EditorNode::remove_editor_plugin(EditorPlugin *p_editor, bool p_config_changed) {
 	if (p_editor->has_main_screen()) {
+		String meta_name = "text";
+
 		for (int i = 0; i < singleton->main_editor_buttons.size(); i++) {
-			if (p_editor->get_name() == singleton->main_editor_buttons[i]->get_text()) {
+			if (p_editor->get_name() == singleton->main_editor_buttons[i]->get_meta(meta_name)) {
 				if (singleton->main_editor_buttons[i]->is_pressed()) {
-					singleton->select_editor_by_name("Script");
+					singleton->_editor_select_prev();
 				}
 
 				memdelete(singleton->main_editor_buttons[i]);
@@ -6105,6 +6131,8 @@ EditorNode::EditorNode() {
 
 		EditorSettings::get_singleton()->set("", file_changed_action);
 	}
+
+	EDITOR_DEF("interface/editor/hide_main_screen_plugin_names", false);
 
 	AudioServer::get_singleton()->set_enabled(!EDITOR_DEF_RST("interface/audio/muting/mute_driver", false));
 	AudioDriverManager::set_mute_sensitivity(AudioDriverManager::MUTE_FLAG_SILENCE, EDITOR_DEF_RST("interface/audio/muting/mute_on_silence", true));
