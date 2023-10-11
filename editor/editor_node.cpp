@@ -6841,6 +6841,8 @@ EditorNode::EditorNode() {
 	filesystem_dock->connect("instance", this, "_instance_request");
 	filesystem_dock->connect("display_mode_changed", this, "_save_docks");
 
+	bool filesystem_dock_wide = EDITOR_GET("docks/filesystem/wide_bottom_panel");
+
 	// Scene: Top left
 	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(scene_tree_dock);
 	dock_slot[DOCK_SLOT_LEFT_UR]->set_tab_title(scene_tree_dock->get_index(), TTR("Scene"));
@@ -6849,9 +6851,11 @@ EditorNode::EditorNode() {
 	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(import_dock);
 	dock_slot[DOCK_SLOT_LEFT_UR]->set_tab_title(import_dock->get_index(), TTR("Import"));
 
-	// FileSystem: Bottom left
-	dock_slot[DOCK_SLOT_LEFT_BR]->add_child(filesystem_dock);
-	dock_slot[DOCK_SLOT_LEFT_BR]->set_tab_title(filesystem_dock->get_index(), TTR("FileSystem"));
+	if (!filesystem_dock_wide) {
+		// FileSystem: Bottom left
+		dock_slot[DOCK_SLOT_LEFT_BR]->add_child(filesystem_dock);
+		dock_slot[DOCK_SLOT_LEFT_BR]->set_tab_title(filesystem_dock->get_index(), TTR("FileSystem"));
+	}
 
 	// Inspector: Full height right
 	dock_slot[DOCK_SLOT_RIGHT_UL]->add_child(inspector_dock);
@@ -6952,6 +6956,12 @@ EditorNode::EditorNode() {
 	bottom_panel_raise->hide();
 	bottom_panel_raise->set_toggle_mode(true);
 	bottom_panel_raise->connect("toggled", this, "_bottom_panel_raise_toggled");
+
+	if (filesystem_dock_wide) {
+		filesystem_dock->set_custom_minimum_size(Size2(0, 230 * EDSCALE));
+		ToolButton *fs_button = add_bottom_panel_item(TTR("FileSystem"), filesystem_dock);
+		fs_button->set_shortcut(ED_SHORTCUT("editor/toggle_filesystem_panel", TTR("Toggle FileSystem Panel"), KEY_MASK_CMD | KEY_MASK_ALT | KEY_QUOTELEFT));
+	}
 
 	log = memnew(EditorLog);
 	ToolButton *output_button = add_bottom_panel_item(TTR("Output"), log);
