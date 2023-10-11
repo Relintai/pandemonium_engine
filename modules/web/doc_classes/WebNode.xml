@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WebNode" inherits="Node" version="4.1">
+<class name="WebNode" inherits="Node" version="4.2">
 	<brief_description>
 		WebNodes are Nodes that can be used to create HTTP based guis for games / applications, using a [WebNode] tree for routing. They only work when they are a child of a [WebServer].
 	</brief_description>

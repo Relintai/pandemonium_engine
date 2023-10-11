@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityClassData" inherits="Resource" version="4.1">
+<class name="EntityClassData" inherits="Resource" version="4.2">
 	<brief_description>
 		Contains all of information for an [Entity]'s class. (Ingame class)
 	</brief_description>

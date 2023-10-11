@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Node2D" inherits="CanvasItem" version="4.1">
+<class name="Node2D" inherits="CanvasItem" version="4.2">
 	<brief_description>
 		A 2D game object, inherited by all 2D-related nodes. Has a position, rotation, scale, and Z index.
 	</brief_description>
@@ -120,6 +120,8 @@
 		<member name="scale" type="Vector2" setter="set_scale" getter="get_scale" default="Vector2( 1, 1 )">
 			The node's scale. Unscaled value: [code](1, 1)[/code].
 			[b]Note:[/b] Negative X scales in 2D are not decomposable from the transformation matrix. Due to the way scale is represented with transformation matrices in Godot, negative scales on the X axis will be changed to negative scales on the Y axis and a rotation of 180 degrees when decomposed.
+		</member>
+		<member name="toplevel" type="bool" setter="set_as_toplevel" getter="is_set_as_toplevel" default="false">
 		</member>
 		<member name="transform" type="Transform2D" setter="set_transform" getter="get_transform">
 			Local [Transform2D].

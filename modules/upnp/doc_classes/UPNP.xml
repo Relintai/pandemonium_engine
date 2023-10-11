@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="UPNP" inherits="Reference" version="4.1">
+<class name="UPNP" inherits="Reference" version="4.2">
 	<brief_description>
 		Universal Plug and Play (UPnP) functions for network device discovery, querying and port forwarding.
 	</brief_description>
