@@ -4,9 +4,365 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
+Nothing yet.
+
+## [4.1.0]
+
+### Added
+
+#### Core
+
+- Added back the translations from godot.
+- Added back missing descriptions to Translation's class docs.
+- Added translate_to() method to TranslationServer, and trt() method to Object. This let's you transalte strings into specific (noon app wide) locales.
+- Added missing Variant conversion and zero cases.
+
+#### Docs
+
+- Added docs for StringName.
+
+#### Platform
+
+##### OS
+
+- Added a new SubProcess class with a Unix and Widnows backend for better process control.
+- Updated an another missing OS.run() call.
+- Added run, create_process and create_instance helper methods to OS. Inspired by godot4's split of execute.
+
+##### UWP
+
+- Added back the uwp platform. It likely won't work for a while. Fixed includes and build.
+
+#### Scene
+
+##### GUI
+
+- Added Toplevel property to Node2D.
+- Backported _shortcut_input() virtual from godot4.
+
+#### Editor
+
+- Added shortcut for toggling the default bottom menu items. CTRL + ALT + 1 - 5.
+- Change the bottom bar collapse shortcut to CTRL (CMD) - U.
+- Added a shortcut and button to quickly collapse / close the bottom panel (CTRL-B).
+- Backported the new output window from godot4.
+- Now custom resources can be exported from/to any scripting language.
+
+#### Modules
+
+##### Users
+
+- Implemented getting users using their email from the UserDB.
+
+##### GDScript
+
+- Added setting to enable / disable gdscript's language server.
+- Added back the language server for gdscript.
+- Implemented a literal syntax for NodePaths in GDScript I decided on using godot4's (^). The doc already said it's '@' but that was wrong.
+
+##### JSonRPC
+
+- Added back the jsonrpc module.
+
+##### Navigation
+
+- Added init and finish methods to the NavigationMeshGenerator. Also small tweaks in initialization.
+- Added finish method to the NavigationServers.
+
+##### TileMap
+
+- TileMaps now support navigation map overrides.
+
+##### Paint
+
+- Added a new PaintPolygon2D and PaintCurve2D Nodes.
+
+##### Web
+
+- Added more mime types by default.
+- Added start_on_ready property to WebServerSimple.
+- Added a way to customize the doctype declaration the html tag and the body tag to WebServerRequest.
+
+#### CI
+
+- Added a note and some commented out commands to the container linux build script.
+- Save artifacts for both the server and the http server github actions.
+- Added a http server template build github action.
+
+### Fixed
+
+#### Core
+
+- Fix typos in _rpc_id_bind and _rpc_unreliable_id_bind.
+- Make sure rpc binds can take both Strings and StringNames as method names.
+- Only update the RenderingServer from the Main Thread while in debug break.
+
+#### Docs
+
+- Replace navigation demo locations.
+- Updated the links in the docs.
+- Changed the docs url from godot's to my docs repository.
+
+#### Platform
+
+##### Android
+
+- Fix JNI method names and java class lookup names in the android backend.
+- Fix the android lib's package locations.
+- Fix the android editor's package locations.
+
+#### Scene
+
+##### GUI
+
+- Set input as handled when processing shortcuts in BaseButton. This fixes the issue when the script editor tab is active and the scene - tree editor is focused, a ctrl+a press both opens the new Node popup and selects all text in the script editor.
+
+##### Navigation
+
+- Bind missing method in NavigationServer.
+- Fix NavigationObstacle2D::set_navigation.
+- Also add docs for the newly bound methods.
+- Fix the initial value of _debug_enabled in NavigationServer.
+- Fix threaded bake logic in NavigationPolygonInstance and NavigationMeshInstance.
+- Bind get_navigation_map and set_navigation_map in NavigationObstacle2D.
+- Simplify some logic NavigationObstacle2D.
+
+#### Modules
+
+##### Navigation
+
+- Make sure that all parameters are properly set into PathQueryResults.
+- Fix querying paths.
+
+##### GridMap
+
+- MeshLibrary's SceneConverter will also processes the navigation layers for the items.
+- Use get_navigation_map() in GridMap.
+- Fix logic in GridMap::set_navigation_map().
+
+##### Web
+
+- Fix counting children even if the server is running in WebServer::get_configuration_warning().
+- Fix crash in WebServerRequest::get_url_root().
+
+### Changed
+
+#### Editor
+
+- Prefix messages with their thread id if they aren't coming from the main thread in the editor log.
+- The match case option is on by default now when searching in the current file and in files in the editor.
+- Removed the text from the layouts buttons in the CanvasItemEditor.
+- Replaced the text with an icon on the SpatialEditor's and the CanvasItemEditor's view button.
+- Replace the Transform text with an icon in SpatialEditor's toolbar.
+- Removed superfluous VSeparator from the SpatialEditor.
+- Convert MeshInstanceEditorPlugin's toolbar to the new style.
+- Added separators to TerrainWorldEditor and VoxelWorldEditor's toolbars.
+- Converted the menu buttons of the Portals and Rooms system to the new style.
+- Small tweak to the tooltip of the quick prop convert buttons.
+- Never show text for the Convert Rooms button.
+- Use an icon for the quick prop conversion buttons instead of text.
+- Added a VSeparator to the To Prop editor buttons.
+- Group the Anchor and Presets buttons under a common HBoxContainer in CanvasItemEditor.
+- Added a VSeparator to the NavigationPolygonEditor and the NavigationMeshEditor.
+- Removed the diffferently styled context menu from  the SpatialEditor and the CanvasItemEditor. New controls are now added directly to the main FlowContainer, so they wrap properly. While having a different background for context sensitive items can look good, it doesn't work well if it's not per plugin.
+
+#### Modules
+
+- Now VoxelWorld and TerrainWorld inherits from Spatial instead of Navigation, and Terrain2DWorld inherits from Node2D insteaf of Navigation2D, as there is now a proper NavigationServer. Also this will make Node hieararchies involvig them more versatile.
+
+##### CScript
+
+- The CScript module is now disabled by default. It will get re-enabled once it gets finished.
+
+##### Navigation
+
+- Removed cell height getters and setters from the Navigation2DServer.
+- Simplifications to NavigationAgent and NavigationAgent2D.
+- Bake the NavigationMesh on the main thread in the editor.
+
+##### Web
+
+- De default mime type is application/octet-stream now for files in HTTPServerConnection.
+- Now HTTPServerSimple sends files in non-blocking mode.
+- Send the user's header when sending the file in HTTPServerConnection.
+- The mime types dictionary now uses StringName indexes. Also compare against lowercase extensions.
+- Changed the default bind host in WebServerSimple to 0.0.0.0 for convenience.
+
+### Removed
+
+#### Generic
+
+- Removed the entire funding.yaml file.
+- Removed funding links.
+
 ### Backports
 
+#### Godot3
+
 - Backported everything up to and including https://github.com/godotengine/godot/commit/ab76395144baa431865ef2b39c6c9cfa11b8f154 Merge commit: https://github.com/godotengine/godot/commit/fe7ed984b5a187f0fbdf531fa72f7b7479778d79
+
+- Port4ed from godot:  Add binary MO translation file support. Add brotli decoder and WOFF2 support. Use smaller .mo files instead of .po, if gettext is available. Convert editor fonts to .woff2 format. - bruvzg https://github.com/godotengine/godot/commit/fd2fba7c2cfa96b0987c3c9f12e304bb2bbd9183
+- Ported from godot: Add context support for editor translation - timothyqiu https://github.com/godotengine/godot/commit/878cf8262a94367f4ffb7c706773075cd563ee38
+- Ported from godot: add support for 3 dir shadow splits - Ansraer https://github.com/godotengine/godot/commit/54bc6a300e4c21579117c1b728042977ee8a1534
+- Ported from godot:  CPUParticles2D - Add ability to follow physics interpolated target Allows a non-interpolated particle system to closely follow an interpolated target without tracking ahead of the target, by performing fixed timestep interpolation on the particle system global transform, and using this for emission. - lawnjelly https://github.com/godotengine/godot/commit/3e19cf834aa3116f2e8cc329d232b3e747becfb7
+- Ported:  CPUParticles2D - fix interpolated transforms and culling 1) Physics interpolated particles in global mode are specified in global space. In VisualServer they should therefore ignore local transform. 2) Additionally, the expected final_transform should be passed on to children, rather than the identity transform used on the local item. 3) Local bounds in hierarchical culling are fixed for items using identity transform, by calculating their local bound in local space from the global space particles. - lawnjelly https://github.com/godotengine/godot/commit/723632a76a6d88c2f95ef728bbf2f7182cab05a0
+- Ported from godot:  Fix Android input routing logic when using a hardware keyboard When a hardware keyboard is connected, all key events come through so we can route them directly to the engine. This is not the case for soft keyboards, for which the current logic was designed as it requires extra processing. - m4gr3d https://github.com/godotengine/godot/commit/620fdd1f078908e665a0eb2dd71306016c785abd
+- Fix PopupMenu icon and text not having separation
+- BVH - fix axis getting mixed up when split leaf
+- BVH - fix not refitting upward from leaf nodes
+- Workaround Xcode 15 linker bug.
+- Change target version to 11.0+ to fix PCRE SLJIT build.
+- Physics Interpolation - automatic resets for Camera2D and TileMap.
+- CPUParticles - fix non-interpolated NOTIFICATION_TRANSFORM
+- Disable live resize in multithreaded rendering mode.
+- Mark debugger limits settings as requiring a restart
+- Fix cursor after last character in line counting as a character outside of the viewing area
+- mbedtls: Fix UWP arm32 build after 2.28.3 enabled AES-NI intrinsics on MSVC
+- Make `TextureButton` and `Button` update on texture change
+- Fix AudioEffectRecord circular reference
+- Core: Add recursion level check for `VariantWriter::write()`
+- Fix TouchScreenButton not redrawn when texture changes
+- Fix JavaScript callback memory leak
+- Revert "Backport implement loading DDS textures at run-time"
+- Ported: Fix binary internal cache not being filled - Razoric480 https://github.com/godotengine/godot/commit/d331e5c7ac4865e9d023ebfbba1bc6473d0ecec6
+- Ported: Force external resources to have their path set - Razoric480 https://github.com/godotengine/godot/commit/420794b61d2c77fe92ed390245b5c8467d30ef0b
+- Ported:  Fix custom res caching sub-res even if no-cache -Razoric480 https://github.com/godotengine/godot/commit/2ceb93bbeff6f5c7b6eed4ea79aff5f0574f4f92
+- Update the last backported commit.
+- Actually use loaded resource cache
+- Core: Add recursion level check for `Array` and `Dictionary` hashing
+- wslay: Sync with upstream 0e7d106ff from godot.
+- recast: Update to upstream version 1.6.0 from Godot.
+- mbedtls: Update to upstream version 2.28.4  from Godot.
+- SCons: Disable misbehaving MSVC incremental linking
+- Ensure `joy_connection_changed` is emitted on the main thread
+- Add missing stdint.h includes for GCC 13+
+- Build `JoypadLinux` sandbox detection method only with udev
+- Add support for DPAD Center key of Android TV remote controller
+- tinyexr: Sync with upstream 1.0.7
+- Update certs (2023.06 revision)
+- certs: Sync with Mozilla bundle as of Mar 23, 2023
+- Document the database for `Input.get_joy_name()` and `Input.get_joy_guid()`
+- Added a few additional GUIDs to list of hardcoded IDs in is_xinput_device
+- Add mono audio support to WASAPI
+- Fix the Python type error when creating the .sln file
+- add venv and .venv to the .gitignore
+- Added note to used set_deferred while setting scroll values in _ready function.
+- Fix double tap & drag on Android
+- ios splash screen rotation fix
+- Add information about how `Engine.time_scale` affects Timers
+- Document custom mouse cursors larger than 128×128 potentially having issues
+- Fix Windows StringFileInfo structure
+- Fix moving position indicator out of bounds in FileAccessMemory
+- Document how to use logarithm of base 10 with `log()`
+- Fix scrolling behaviour with low page value
+- Notify child controls when BackBufferCopy's rect changed
+- Fix mesh library remove selected item menu option
+- Added code coverate support to Godot
+- Add static check for overzealous .gitignores.
+- Remove too greedy GCOV ignores from `.gitignore`
+- Fix: incorrectly .gitignored files.
+- SCons: Enable `/WX` on LINKFLAGS for MSVC with `werror=yes`
+- CI: Free disk space on Linux runners
+- Update PCK embedding SCons warning message to mention mold linker
+- Make PIE relocation detection glibc-only
+- Alter linux debug stacktraces handling to support more environments
+- Fix crash when calling `fill` method on an empty `Image`
+- Fix .gitignore ignores part of the committed repo.
+- zstd: Update to upstream version 1.5.5
+- pcre2: Update to upstream version 10.42 (take two)
+- miniupnpc: Update to version 2.2.5
+- libpng: Update to upstream 1.6.40
+- Ported:  Initialize GLWrapper earlier in Storage::initialize() Make sure `GLWrapper` is initialized before `glActiveTexture` is called by other parts of the storage initialize(), to prevent benign warnings. - lawnjelly https://github.com/godotengine/godot/commit/857d8840262b3339cda05dc77fe28de817322673
+- Ported:  Unbind texture slots when changing framebuffer Prevent bugs whereby texture still in use. - lawnjelly https://github.com/godotengine/godot/commit/5e197fd21ea836a632d97e27a3dd5ecfaa8405f8
+- Ported:  Hierarchical culling - Add extra check to skeleton_attach_canvas_item Although this check shouldn't be able to fail currently, it provides a small level of extra logic checking at only small cost in DEV builds. - lawnjelly https://github.com/godotengine/godot/commit/d7cca42ef6c720f455d1cc2c49c8667911f7ad78
+- Ported:  Physics Interpolation 2D - reset on NOTIFICATION_ENTER_TREE As a convenience, physics interpolation is reset automatically on entering the tree. This will be desired in most situations, and saves the user having to write code for this explicitly. - lawnjelly https://github.com/godotengine/godot/commit/bcfca5ec8615cf796dcb02d4291d9475feb58031
+- Ported:  Physics Interpolation - add support for CPUParticles2D Similar to the existing 3D CPUParticles physics interpolation. - lawnjelly https://github.com/godotengine/godot/commit/a117a3307a9eec69c5ed7c80a0b4eb272fafc474
+- Ported:  Fix 2D MultiMesh hierarchical culling Fixes updating local bounds for MultiMeshes used in canvas items by introducing a back link. - lawnjelly https://github.com/godotengine/godot/commit/ad577e3c7e5e334144cbe15b46c670aaabb9b871
+- Ported:  Add debug_canvas_item_get_local_bound() function to VisualServer Useful for debugging hierarchical culling. - lawnjelly https://github.com/godotengine/godot/commit/61e41cc9a1e22d0b15b8bd06ff848eed5d0f095f
+- Ported:  2D Fixed Timestep Interpolation Adds support to canvas items and Camera2D. - lawnjelly https://github.com/godotengine/godot/commit/5162efbfe9daddb9b30c15c906890e0ea4e4213a
+- Ported:  Physics interpolation - Move out of Scenario
+- Remove unused variables.
+- Fix non-tools builds.
+- Ported:  SCons: Disable C++ exception handling
+- Fix build.
+- Make AnimationNodeBlendTree use OrderedHashMap insteads Map
+- GLES2: Make GPU skinning more consistent
+- Fix AnimatedSprite normal map loading
+- Fix infinite loop on EOF in the command line debugger
+- PulseAudio: Remove get_latency() caching
+- Back-port notarytool, provisioning profile and PKG export options.
+- Fix `ProjectSettings::localize_path` for Windows paths
+- Backport AudioStream icons from 4.0
+- Update npm packages
+- Prevent double input events on gamepad when running through steam input #79706
+- Update to upstream master.
+- Explicitly handle buffer errors in send/recv
+- MultiRect - Fix flushing in TextEdit
+- Backport implement loading DDS textures at run-time
+
+#### Godot4
+
+- Backported the editor constrol changes for the new shortcut system from godot4.
+- Backported the shortcut context system from godot4.
+- Backported _shortcut_input() virtual from godot4.
+- Backported the CallInputType parameter for SceneTree::_call_input_pause() from godot4.
+- Backported the new output window from godot4.
+- Backported SceneTree::get_first_node_in_group() from godot4.
+- Backported from godot4:  Change GridMap navigation_layers to be per mesh_library item Changes GridMap navigation_layers from a single bitmask for the entire GridMap to a bitmask for each item used in the mesh_library with a baked navmesh. - smix8 https://github.com/godotengine/godot/commit/61f33e205cecc923786fb646f6e325657751a3f5
+- Backported from godot4:  Add navigation tutorial links inside class doc Adds navigation tutorial links inside the class doc to the related and more detailed godot-docs pages. - smix8 https://github.com/godotengine/godot/commit/7506ecc5d96b6a894be05acca61593da73cccb81
+- Backported from godot4:  Fix typo and ensure backwards compatibility for changed property names Changes to the name of the `navmesh` and `navpoly` properties on `NavigationRegion` caused navigation data to be lost on load. This PR creates uses `_set`/`_get` to handle compatibility with the older names on load, preserving the data. Also fixes a typo on `get_vertices_per_polygon` in `NavigationMesh`, and renames the property to remove the `polygon_` prefix which doesn't match the setter/getter. - DarkKilauea, akien-mga https://github.com/godotengine/godot/commit/0572346985eef45123a0f25cbd7c295e06bd9097
+- Simplify some logic in NavigationAgent2D.
+- Backported from godot4:  NavigationAgent2D, NavigationAgent3D typo fixes Fixed minor spelling errors in the NavigationAgent2D and NavigationAgent3D classes. - JustinDodemaide https://github.com/godotengine/godot/commit/29a228595c1b27b2755b0f5cd3465f05a7604c92
+- Backported from godot4:  Fix NavigationAgent continues avoidance velocity Fixes NavigationAgent continues avoidance velocity. - smix8 https://github.com/godotengine/godot/commit/c912df9d0591a7abcab9d0eab5fac80c28117e9f
+- Fix the tooltip of the Debug Paths option.
+- Fix logic in NavMap::sync().
+- Backported from godot4:  Remove SceneTree debug avoidance hint Removes SceneTree debug avoidance hint. - smix8 https://github.com/godotengine/godot/commit/f1d8ddd9bd03ff4debb5345ca302652b5a7858bc
+- Backported from godot4: Fix NavigationObstacle2D debug position Fixes NavigationObstacle2D debug position. - smix8 https://github.com/godotengine/godot/commit/25121572947ff524651473bf2fdaaf411c9ef883
+- Backported form godot4:  Add NavigationRegion function to change navigation map Adds NavigationRegion function to change navigation map. - smix8 https://github.com/smix8/godot/commit/84647ab09eba232ec7466dda9ce5fa269aad8bf3
+- Backported from godot4:  Add NavigationServer API to enable regions and links Adds NavigationServer API to enable regions and links. - smix8 https://github.com/godotengine/godot/commit/69fad39cf5437b45bac2039d864605b2b63b9950
+- Backported from godot4:  Update navigation obstacle API Updates navigation obstacle API. - smix8 https://github.com/godotengine/godot/commit/c1fc331b8865bd099df210fa434782bc9b60b2d8
+- Backported from godot4:  Add agent pause mode to NavigationServer Adds agent pause mode to NavigationServer. - smix8 https://github.com/godotengine/godot/commit/ae9dd47d0c1c237d0733439862aa5ff651dcac2
+- Backported from godot4:  Fix cell_height for navigation meshes Fixes `cell_height` for navigation meshes. - smix8 https://github.com/godotengine/godot/commit/180a5cded1d01e8c8965f009624652ee6ef1807c
+- Backported from godot4:  Allow negative NavigationAgent2D path debug line_width for thin lines Allows the line_width for NavigationAgent2D path debug to go negativ for thin line rendering. - smix8 https://github.com/godotengine/godot/commit/f6a10c0565e32e0170bcce71635d8bad16077d1d
+- Backported from godot4: Fix NavMesh map_update_id returning 0 results in errors - zorbathut https://github.com/godotengine/godot/commit/d0564f2466cec9d0e108cadf18f2aae642c90be7
+- Backported from godot4:  Add detail to NavigationAgent signal descriptions Adds detail to NavigationAgent signal descriptions. - smix8 https://github.com/godotengine/godot/commit/99e70ab6efd18c0ed472041dcc2b7b3ae1c22de1
+- Backported from godot4:  Fix pathfinding funnel adding unwanted point Fixes pathfinding funnel adding unwanted point due to precision issues. - smix8 https://github.com/godotengine/godot/commit/c51e2644466b96d414d4e42a9cfe283ce1162264
+- Ported from godot4:  Fix NavigationAgent position not always updating Fixes NavigationAgent position not always updating. - smix8 https://github.com/godotengine/godot/commit/34bc410fb419cb002dbe6cd676f0ff54fab5db9c
+- Ported from godot4:  Fix Navigation API abbreviations inconsistency Schema for navigation to name user facing API with  "navigation" without abbreviation and e.g. NavigationServer internals with abbr "nav". - smix8 https://github.com/godotengine/godot/commit/34e7628f5f1b419bfed1acd915209347e615bedf
+- Add back the missing lines to GridMap's class doc.
+- Backported from godot4:  Fix NavigationAgent3D debug path duplicated points Fixes duplicated points in NavigationAgent3D debug path. - smix8 https://github.com/godotengine/godot/commit/0b8798a9950ca7a86b1b2e20f69f22ba4396d55a
+- Added in missing changes from  Add NavigationServer Performance Monitor Adds Performance Monitor for NavigationServer3D.. https://github.com/godotengine/godot/commit/9802914f9793b6888cc70e3d7f0d815bdd5188bb
+- Backported from godot4:  Expose NavigationAgent path postprocessing and pathfinding algorithm options Exposes the path postprocessing and pathfinding algorithm options of the NavigationAgent internal NavigationPathQueryParameters object. - smix8 https://github.com/godotengine/godot/commit/6e324bb341c795905085e25e7f7c153d89949fa9
+- Backported from godot4:  Tweak NavigationAgent3D defaults Tweaks default values for NavigationAgent3D to work better out of the box within a new 3D project. - smix8 https://github.com/godotengine/godot/commit/8be4af38e4a8a99a89cb258315080cf5f495e30f
+- Backported from godot4:  Unbind NavigationServer3D.process() Unbinds NavigationServer3D.process(). - smix8 https://github.com/godotengine/godot/commit/f1026450bfe9bf4df2e059f220c2e579fa3e4f64
+- Backported from godot4:  Improve NavigationServer.free() error msg when RID not found Improves the error msg when NavigationServer.free() does not find the RID e.g. because it was already deleted or did never exist in the first place. - smix8 https://github.com/godotengine/godot/commit/b51cab3411a18d0cce8f3bfd1e849a607ad4cab7
+- Backported from godot4:  Tweak NavigationAgent2D defaults Tweaks default values for NavigationAgent2D to work better out of the box within a new 2D project using default resolution. - smix8 https://github.com/godotengine/godot/commit/594ffd220051d3be5b106f097ed8ca3371ab0ca0
+- Backported from godot4:  Fix NavigationRegion3D debug mesh rendering twice in Editor Fixes double rendering of NavigationRegion3D debug mesh due to both 3DGizmo and runtime debug rendering the mesh at the same time. - smix8 https://github.com/godotengine/godot/commit/0e4c31ce57443d03a7d223618760998ad807def6
+- Added missing doc for NavigationPolygon's cell_size.
+- Backported from godot4:  Disable NavigationMesh edge_max_length property by default Disables NavigationMesh edge_max_length property by default. - smix8 https://github.com/godotengine/godot/commit/c63125c31760b4896414cf6e8bd67234c072f9a5
+- Backported from godot4:  Add more hints to navigation map cell size errors Adds more hints to navigation map cell size errors. - smix8 https://github.com/godotengine/godot/commit/90e2d9fa7e4def8556919df58680746abe0ce5bf
+- Backported from godot4:  Change 2D navigation ProjectSettings from integers to floats Changes 2D navigation ProjectSettings from integers to floats. - smix8 https://github.com/godotengine/godot/commit/2852fb43f707789bc05083302b1f2d6a19edec42
+- Backported from godot4:  Fix closest possible navigation path position Fixes closest possible navigation path position. - smix8 https://github.com/godotengine/godot/commit/e5c24f7118854d36845af0de81d83da5ec18e2a8
+- Backported from godot4: Fix crash in 'NavigationAgent3D', fixes #78910 - Scony https://github.com/godotengine/godot/commit/fcbb5213922829817b6ee76a15f1e4f7519b51d6
+- Backported from godot4: Remove legacy navigation debug materials Removes legacy navigation debug materials. - smix8 https://github.com/godotengine/godot/commit/1b506cd49cdaa62d8cc8cdd3146007f3bcecf50f
+- Backported from godot4:  Add NavigationRegion rotation warning Adds NavigationRegion rotation warning. - smix8 https://github.com/godotengine/godot/commit/4d8553ff6310c6f4d3c1dc4c9e2118dcd4570ae8
+- Backported from godot4:  Add NavigationPolygon cell_size property - smix8 https://github.com/godotengine/godot/commit/9c8626bfd8b945787aa258c5706a6a2e0578e089
+- Backported from godot4:  Improve navigation map synchronisation error msgs Improves navigation map synchronisation error msgs related to mismatch of cell sizes. - smix8 https://github.com/godotengine/godot/commit/7f2417135f75b1bb48d570db41e2127c9585238a
+- Backported from godot4:  Add navigation map synchronization warnings. - smix8 https://github.com/godotengine/godot/commit/fef7b4efdc5653866a5fba3d2d6a515138c11a99
+- Backported from godot4:  Fix --debug-avoidance description. Fixes c&p error in --debug-avoidance description. - smix8 https://github.com/godotengine/godot/commit/d171dfce9a5fcbe89ed5093484c85dab83fe3b88
+- Backported from godot4:  Fix NavigationServer free error print Fixes error print for NavigationServer free when a RID can not be found. - smix8 https://github.com/godotengine/godot/commit/73dc680fc127014ad805e5968f98ebb3e0281de7
+- Backported from godot4: Keep NavigationServer active while SceneTree is paused. - smix8 https://github.com/godotengine/godot/commit/4b0dee080e5eba37dd43346c6c02bb7dce2b39e7
+- Backported from godot4: Strip name prefix of navigation agent debug properties in the inspector. - timothyqiu https://github.com/godotengine/godot/commit/65223e98de7504e61b414ff3858c5a2347acae56
+- Backported from godot4: Stops NavigationAgents moving to the world origin without anyone telling them to do so. -smix8 https://github.com/godotengine/godot/commit/860379fc161698234b2757c6f62f8e05fa68ada8
+- Backported from godot4:  Add GridMap function to change navigation map for baked navigation regions Adds function to change the navigation map for baked navigation regions. Before all cells with a baked navigation mesh were locked to the default navigation map of the world resource. - smix8 https://github.com/godotengine/godot/commit/41c529a94d7c690dca127bbc4f37c7f65d040f6b
+- Backported from godot4:  Add Path2D/3D debug options - smix8 https://github.com/godotengine/godot/commit/e12e239ab4a9bb764105e3a0cde284f788cd59b3
+- Ported from godot4: Fix reading Unicode from stdio. - bruvzg https://github.com/godotengine/godot/commit/3d8a942a56e1de32e23cd02eada3899c4d6d1033
+- Pass in variables as intended to CreateProcessW().
+- Ported from Godot4: Fix Windows execute exit code. - bruvzg https://github.com/godotengine/godot/commit/94355249c360be694bdb692f357dc017d742aee7
+
+#### Other
+
+- Ported godot pr: [3.x] Allow exporting custom resources from/to any scripting language (GDScript, VisualScript, C#, NativeScript, PluginScript) - willnationsdev https://github.com/godotengine/godot/pull/44879 Using the rebased version from https://github.com/Atlinx/godot/commit/02d1f70ee5ec1b7bb08bc6dddac7fe39b4727e1e by Atlinx
 
 ## [4.0.0]
 
