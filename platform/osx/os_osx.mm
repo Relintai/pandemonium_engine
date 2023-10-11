@@ -462,6 +462,10 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 	OS_OSX::singleton->window_focused = true;
 };
 
+- (void)windowDidChangeOcclusionState:(NSNotification *)notification {
+	OS_OSX::singleton->is_visible = ([OS_OSX::singleton->window_object occlusionState] & NSWindowOcclusionStateVisible) && [OS_OSX::singleton->window_object isVisible];
+}
+
 @end
 
 @interface PandemoniumContentView : NSOpenGLView <NSTextInputClient> {
@@ -2387,7 +2391,7 @@ String OS_OSX::get_system_dir(SystemDir p_dir, bool p_shared_storage) const {
 }
 
 bool OS_OSX::can_draw() const {
-	return true;
+	return is_visible;
 }
 
 void OS_OSX::set_clipboard(const String &p_text) {
@@ -3540,6 +3544,7 @@ OS_OSX::OS_OSX() {
 	im_position = Point2();
 	layered_window = false;
 	autoreleasePool = [[NSAutoreleasePool alloc] init];
+	is_visible = true;
 
 	eventSource = CGEventSourceCreate(kCGEventSourceStateHIDSystemState);
 	ERR_FAIL_COND(!eventSource);
