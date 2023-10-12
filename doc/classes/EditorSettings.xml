@@ -162,6 +162,9 @@
 		<member name="docks/filesystem/thumbnail_size" type="int" setter="" getter="">
 			The thumbnail size to use in the FileSystem dock (in pixels). See also [member filesystem/file_dialog/thumbnail_size].
 		</member>
+		<member name="docks/filesystem/wide_bottom_panel" type="bool" setter="" getter="">
+			If [code]true[/code], the editor will display the FileSystem panel at the bottom as an openable panel instead of a dock.
+		</member>
 		<member name="docks/property_editor/auto_refresh_interval" type="float" setter="" getter="">
 			The refresh interval to use for the inspector dock's properties. The effect of this setting is mainly noticeable when adjusting gizmos in the 2D/3D editor and looking at the inspector at the same time. Lower values make the inspector more often, but take up more CPU time.
 		</member>
@@ -396,6 +399,9 @@
 			- [b]Auto[/b] follows the platform convention: Cancel first on macOS and Linux, OK first on Windows.
 			- [b]Cancel First[/b] forces the ordering Cancel/OK.
 			- [b]OK First[/b] forces the ordering OK/Cancel.
+		</member>
+		<member name="interface/editor/hide_main_screen_plugin_names" type="bool" setter="" getter="">
+			If [code]true[/code] the names of the main screen plugins will be hidden (when they have an icon).
 		</member>
 		<member name="interface/editor/automatically_open_screenshots" type="bool" setter="" getter="">
 			If [code]true[/code], automatically opens screenshots with the default program associated to [code].png[/code] files after a screenshot is taken using the [b]Editor &gt; Take Screenshot[/b] action.

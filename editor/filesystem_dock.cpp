@@ -2889,8 +2889,6 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	VBoxContainer *top_vbc = memnew(VBoxContainer);
 	add_child(top_vbc);
 
-
-
 	HBoxContainer *toolbar_hbc = memnew(HBoxContainer);
 	toolbar_hbc->add_theme_constant_override("separation", 0);
 	top_vbc->add_child(toolbar_hbc);
