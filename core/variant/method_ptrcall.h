@@ -143,6 +143,8 @@ MAKE_PTRARG(PoolVector2Array);
 MAKE_PTRARG(PoolVector2iArray);
 MAKE_PTRARG(PoolVector3Array);
 MAKE_PTRARG(PoolVector3iArray);
+MAKE_PTRARG(PoolVector4Array);
+MAKE_PTRARG(PoolVector4iArray);
 MAKE_PTRARG(PoolColorArray);
 MAKE_PTRARG_BY_REFERENCE(Variant);
 
