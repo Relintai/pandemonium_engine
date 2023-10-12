@@ -333,13 +333,24 @@ void FileSystemDock::_update_tree(const Vector<String> &p_uncollapsed_paths, boo
 }
 
 void FileSystemDock::set_display_mode(DisplayMode p_display_mode) {
-	display_mode = p_display_mode;
-	_update_display_mode(false);
+	if (display_mode != DISPLAY_MODE_WIDE && p_display_mode != DISPLAY_MODE_WIDE) {
+		display_mode = p_display_mode;
+		_update_display_mode(false);
+	}
 }
 
 void FileSystemDock::_update_display_mode(bool p_force) {
 	if (old_display_mode == DISPLAY_MODE_WIDE || display_mode == DISPLAY_MODE_WIDE) {
 		// Changing between wide and normal needs restart, ignore
+
+		if (p_force || old_display_mode != display_mode) {
+			tree->ensure_cursor_is_visible();
+			_update_tree(_compute_uncollapsed_paths());
+			_update_file_list(true);
+		}
+
+		old_display_mode = display_mode;
+
 		return;
 	}
 
@@ -1032,10 +1043,6 @@ void FileSystemDock::_fs_changed() {
 		split_box->show();
 	}
 
-	if (wide_hsplit_box) {
-		wide_hsplit_box->show();
-	}
-
 	if (tree->is_visible()) {
 		_update_tree(_compute_uncollapsed_paths());
 	}
@@ -1053,10 +1060,6 @@ void FileSystemDock::_set_scanning_mode() {
 
 	if (split_box) {
 		split_box->hide();
-	}
-
-	if (wide_hsplit_box) {
-		wide_hsplit_box->hide();
 	}
 
 	scanning_vb->show();

@@ -428,6 +428,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	hints["docks/filesystem/thumbnail_size"] = PropertyInfo(Variant::INT, "docks/filesystem/thumbnail_size", PROPERTY_HINT_RANGE, "32,128,16");
 	_initial_set("docks/filesystem/always_show_folders", true);
 	_initial_set("docks/filesystem/wide_bottom_panel", false);
+	hints["docks/filesystem/wide_bottom_panel"] = PropertyInfo(Variant::BOOL, "docks/filesystem/wide_bottom_panel", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);
 
 	// Property editor
 	_initial_set("docks/property_editor/auto_refresh_interval", 0.3);
