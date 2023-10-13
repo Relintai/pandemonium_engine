@@ -66,7 +66,7 @@ void PropDataStaticBody::_processor_process(Ref<PropData> prop_data, Node *node,
 	c->set_collision_layer(sb->get_collision_layer());
 	c->set_collision_mask(sb->get_collision_mask());
 
-	processor_process_collision_objects(node, Transform());
+	c->processor_process_collision_objects(node, Transform());
 
 	prop_data->add_prop(c);
 }

@@ -74,12 +74,17 @@ void PropDataCollisionObject::add_collision_shape(const Transform &p_transform, 
 	ShapeEntry e;
 	e.transform = p_transform;
 	e.shape = p_shape;
+
 	_shapes.push_back(e);
+
+	property_list_changed_notify();
 }
 void PropDataCollisionObject::remove_collision_shape(const int p_index) {
 	ERR_FAIL_INDEX(p_index, _shapes.size());
 
 	_shapes.remove(p_index);
+
+	property_list_changed_notify();
 }
 
 bool PropDataCollisionObject::_processor_evaluate_children() {
