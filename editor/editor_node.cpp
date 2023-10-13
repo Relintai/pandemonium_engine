@@ -6960,6 +6960,7 @@ EditorNode::EditorNode() {
 	if (filesystem_dock_wide) {
 		filesystem_dock->set_custom_minimum_size(Size2(0, 230 * EDSCALE));
 		ToolButton *fs_button = add_bottom_panel_item(TTR("FileSystem"), filesystem_dock);
+		filesystem_dock->set_bottom_panel_tool_button(fs_button);
 		fs_button->set_shortcut(ED_SHORTCUT("editor/toggle_filesystem_panel", TTR("Toggle FileSystem Panel"), KEY_MASK_CMD | KEY_MASK_ALT | KEY_QUOTELEFT));
 	}
 

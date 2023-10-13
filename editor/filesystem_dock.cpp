@@ -73,6 +73,7 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/progress_bar.h"
 #include "scene/gui/scroll_bar.h"
+#include "scene/gui/tab_container.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
@@ -2094,6 +2095,24 @@ void FileSystemDock::remove_custom_popup_creation_entry(const int id) {
 	}
 }
 
+void FileSystemDock::ensure_visible() {
+	if (display_mode == DISPLAY_MODE_WIDE) {
+		if (bottom_panel_tool_button) {
+			bottom_panel_tool_button->set_pressed(true);
+		}
+	} else {
+		// Ensure that the FileSystem dock is visible.
+		TabContainer *tab_container = (TabContainer *)get_parent_control();
+
+		if (tab_container) {
+			tab_container->set_current_tab(get_position_in_parent());
+		}
+	}
+}
+void FileSystemDock::set_bottom_panel_tool_button(ToolButton *fs_button) {
+	bottom_panel_tool_button = fs_button;
+}
+
 Variant FileSystemDock::get_drag_data_fw(const Point2 &p_point, Control *p_from) {
 	bool all_favorites = true;
 	bool all_not_favorites = true;
@@ -2853,6 +2872,7 @@ void FileSystemDock::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("can_drop_data_fw", "point", "data", "from"), &FileSystemDock::can_drop_data_fw);
 	ClassDB::bind_method(D_METHOD("drop_data_fw", "point", "data", "from"), &FileSystemDock::drop_data_fw);
 	ClassDB::bind_method(D_METHOD("navigate_to_path", "path"), &FileSystemDock::navigate_to_path);
+	ClassDB::bind_method(D_METHOD("ensure_visible"), &FileSystemDock::ensure_visible);
 
 	ClassDB::bind_method(D_METHOD("_preview_invalidated"), &FileSystemDock::_preview_invalidated);
 	ClassDB::bind_method(D_METHOD("_file_multi_selected"), &FileSystemDock::_file_multi_selected);
@@ -2875,6 +2895,9 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	set_name("FileSystem");
 	editor = p_editor;
 	path = "res://";
+
+	file_sort = FILE_SORT_NAME;
+	bottom_panel_tool_button = NULL;
 
 	// `KEY_MASK_CMD | KEY_C` conflicts with other editor shortcuts.
 	ED_SHORTCUT("filesystem_dock/copy_path", TTR("Copy Path"), KEY_MASK_CMD | KEY_MASK_SHIFT | KEY_C);

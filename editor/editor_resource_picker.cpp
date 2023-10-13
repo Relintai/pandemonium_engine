@@ -396,10 +396,7 @@ void EditorResourcePicker::_edit_menu_cbk(int p_which) {
 		case OBJ_MENU_SHOW_IN_FILE_SYSTEM: {
 			FileSystemDock *file_system_dock = EditorNode::get_singleton()->get_filesystem_dock();
 			file_system_dock->navigate_to_path(edited_resource->get_path());
-
-			// Ensure that the FileSystem dock is visible.
-			TabContainer *tab_container = (TabContainer *)file_system_dock->get_parent_control();
-			tab_container->set_current_tab(file_system_dock->get_index());
+			file_system_dock->ensure_visible();
 		} break;
 
 		default: {

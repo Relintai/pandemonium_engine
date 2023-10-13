@@ -69,6 +69,7 @@ class TextureRect;
 class Tree;
 class TreeItem;
 class DirectoryCreateDialog;
+class ToolButton;
 
 class FileSystemDock : public VBoxContainer {
 	GDCLASS(FileSystemDock, VBoxContainer);
@@ -122,7 +123,9 @@ private:
 		FILE_NEW_CUSTOM_ENTRY_START,
 	};
 
-	FileSortOption file_sort = FILE_SORT_NAME;
+	FileSortOption file_sort;
+
+	ToolButton *bottom_panel_tool_button;
 
 	VBoxContainer *scanning_vb;
 	ProgressBar *scanning_progress;
@@ -368,6 +371,9 @@ public:
 
 	int add_custom_popup_creation_entry(const String &entry_text, const String &theme_icon_name = "", const String &theme_icon_category = "");
 	void remove_custom_popup_creation_entry(const int id);
+
+	void ensure_visible();
+	void set_bottom_panel_tool_button(ToolButton *fs_button);
 
 	FileSystemDock(EditorNode *p_editor);
 	~FileSystemDock();
