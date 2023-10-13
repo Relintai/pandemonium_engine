@@ -33,6 +33,8 @@ SOFTWARE.
 #include "props/prop_data_prop.h"
 #include "props/prop_data_scene.h"
 #include "props/prop_data_tiled_wall.h"
+#include "props/prop_data_collision_object.h"
+#include "props/prop_data_static_body.h"
 
 #include "props/prop_data_portal.h"
 
@@ -94,6 +96,8 @@ void register_props_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<PropDataLight>();
 		ClassDB::register_class<PropDataProp>();
 		ClassDB::register_class<PropDataTiledWall>();
+		ClassDB::register_class<PropDataCollisionObject>();
+		ClassDB::register_class<PropDataStaticBody>();
 
 		ClassDB::register_class<PropDataPortal>();
 
@@ -135,6 +139,9 @@ void register_props_types(ModuleRegistrationLevel p_level) {
 
 		Ref<PropDataTiledWall> tiled_wall_processor = Ref<PropDataTiledWall>(memnew(PropDataTiledWall));
 		PropUtils::add_processor(tiled_wall_processor);
+
+		Ref<PropDataStaticBody> static_body_processor = Ref<PropDataStaticBody>(memnew(PropDataStaticBody));
+		PropUtils::add_processor(static_body_processor);
 	}
 
 #ifdef TOOLS_ENABLED

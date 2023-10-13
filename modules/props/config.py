@@ -17,6 +17,8 @@ def get_doc_classes():
         "PropDataPortal",
         "PropDataTiledWall",
         "PropData",
+        "PropDataCollisionObject",
+        "PropDataStaticBody",
 
         "TiledWall",
         "TiledWallData",

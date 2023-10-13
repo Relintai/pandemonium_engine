@@ -21,6 +21,8 @@ sources = [
     "props/prop_data_light.cpp",
     "props/prop_data_prop.cpp",
     "props/prop_data_tiled_wall.cpp",
+    "props/prop_data_collision_object.cpp",
+    "props/prop_data_static_body.cpp",
 
     "clutter/ground_clutter.cpp",
     "clutter/ground_clutter_foliage.cpp",
