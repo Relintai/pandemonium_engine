@@ -113,7 +113,7 @@ PropEditorPlugin::PropEditorPlugin(EditorNode *p_node) {
 	b->set_icon(editor->get_scene_tree_dock()->get_theme_icon("AssetLib", "EditorIcons"));
 	//b->set_text("To Prop");
 	b->set_tooltip(TTR("Quick convert this scene to a Prop Resource."));
-	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to PropData.", KEY_MASK_ALT + KEY_U));
+	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to Prop.", KEY_MASK_ALT + KEY_U));
 
 	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_MENU, bc);
 }
