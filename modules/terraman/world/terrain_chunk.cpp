@@ -804,18 +804,20 @@ int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const
 	e.is_inside = aabb.encloses(mesh_aabb);
 
 #ifdef MODULE_PROPS_ENABLED
-	if (get_library().is_valid() && texture.is_valid())
+	if (get_library().is_valid() && texture.is_valid()) {
 		e.uv_rect = get_library()->get_prop_uv_rect(texture);
-	else
+	} else {
 		e.uv_rect = Rect2(0, 0, 1, 1);
+	}
 #else
 	e.uv_rect = Rect2(0, 0, 1, 1);
 #endif
 
 	_mesh_data_resources.push_back(e);
 
-	if (has_method("_mesh_data_resource_added"))
+	if (has_method("_mesh_data_resource_added")) {
 		call("_mesh_data_resource_added", index);
+	}
 
 	return index;
 }
