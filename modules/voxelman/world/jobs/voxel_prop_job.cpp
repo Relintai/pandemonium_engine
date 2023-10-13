@@ -47,6 +47,10 @@ SOFTWARE.
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
+#ifdef MODULE_PROPS_ENABLED
+#include "../../../props/props/prop_data_static_body.h"
+#endif
+
 Ref<VoxelMesher> VoxelPropJob::get_prop_mesher() const {
 	return _prop_mesher;
 }
@@ -122,6 +126,56 @@ void VoxelPropJob::phase_physics_process() {
 			PhysicsServer::get_singleton()->body_set_state(body, PhysicsServer::BODY_STATE_TRANSFORM, chunk->get_transform() * transform);
 
 			chunk->collider_add(transform, shape, shape->get_rid(), body);
+		}
+	}
+#endif
+
+#ifdef MODULE_PROPS_ENABLED
+	for (int i = 0; i < chunk->prop_get_count(); ++i) {
+		Ref<PropData> prop = chunk->prop_get(i);
+
+		for (int j = 0; j < prop->get_prop_count(); ++j) {
+			Ref<PropDataStaticBody> psb = prop->get_prop(j);
+
+			if (!psb.is_valid()) {
+				continue;
+			}
+
+			if (psb->get_collision_shape_count() == 0) {
+				continue;
+			}
+
+			for (int k = 0; k < psb->get_collision_shape_count(); ++k) {
+				Ref<Shape> shape = psb->get_collision_shape(k);
+				Transform offset = psb->get_collision_shape_transform(k);
+
+				if (!shape.is_valid()) {
+					continue;
+				}
+
+				RID body = PhysicsServer::get_singleton()->body_create(PhysicsServer::BODY_MODE_STATIC);
+
+				Transform transform = chunk->prop_get_tarnsform(i);
+				transform *= offset;
+
+				PhysicsServer::get_singleton()->body_add_shape(body, shape->get_rid());
+
+				//TODO store the layer mask somewhere
+				PhysicsServer::get_singleton()->body_set_collision_layer(body, 1);
+				PhysicsServer::get_singleton()->body_set_collision_mask(body, 1);
+
+				if (chunk->get_voxel_world()->is_inside_tree() && chunk->get_voxel_world()->is_inside_world()) {
+					Ref<World3D> world = chunk->get_voxel_world()->get_world_3d();
+
+					if (world.is_valid() && world->get_space() != RID()) {
+						PhysicsServer::get_singleton()->body_set_space(body, world->get_space());
+					}
+				}
+
+				PhysicsServer::get_singleton()->body_set_state(body, PhysicsServer::BODY_STATE_TRANSFORM, chunk->get_transform() * transform);
+
+				chunk->collider_add(transform, shape, shape->get_rid(), body);
+			}
 		}
 	}
 #endif
@@ -224,8 +278,9 @@ void VoxelPropJob::phase_prop() {
 }
 
 void VoxelPropJob::_physics_process(float delta) {
-	if (_phase == 0)
+	if (_phase == 0) {
 		phase_physics_process();
+	}
 }
 
 void VoxelPropJob::_execute_phase() {
@@ -309,8 +364,9 @@ void VoxelPropJob::phase_setup() {
 		for (int i = 0; i < _chunk->mesh_data_resource_get_count(); ++i) {
 			Ref<Texture> tex = _chunk->mesh_data_resource_get_texture(i);
 
-			if (!tex.is_valid())
+			if (!tex.is_valid()) {
 				continue;
+			}
 
 			Rect2 r = cache->additional_texture_get_uv_rect(tex);
 
@@ -385,8 +441,9 @@ void VoxelPropJob::phase_steps() {
 			}
 
 			//allocate
-			if (count > 0)
+			if (count > 0) {
 				chunk->meshes_create(VoxelChunkDefault::MESH_INDEX_PROP, count);
+			}
 
 		} else {
 			//we have the meshes, just clear
@@ -395,8 +452,9 @@ void VoxelPropJob::phase_steps() {
 			for (int i = 0; i < count; ++i) {
 				mesh_rid = chunk->mesh_rid_get_index(VoxelChunkDefault::MESH_INDEX_PROP, VoxelChunkDefault::MESH_TYPE_INDEX_MESH, i);
 
-				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
 					RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
+				}
 			}
 		}
 	}

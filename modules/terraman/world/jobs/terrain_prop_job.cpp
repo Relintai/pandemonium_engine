@@ -46,6 +46,10 @@ SOFTWARE.
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
+#ifdef MODULE_PROPS_ENABLED
+#include "../../../props/props/prop_data_static_body.h"
+#endif
+
 Ref<TerrainMesher> TerrainPropJob::get_prop_mesher() const {
 	return _prop_mesher;
 }
@@ -121,6 +125,56 @@ void TerrainPropJob::phase_physics_process() {
 			PhysicsServer::get_singleton()->body_set_state(body, PhysicsServer::BODY_STATE_TRANSFORM, chunk->get_transform() * transform);
 
 			chunk->collider_add(transform, shape, shape->get_rid(), body);
+		}
+	}
+#endif
+
+#ifdef MODULE_PROPS_ENABLED
+	for (int i = 0; i < chunk->prop_get_count(); ++i) {
+		Ref<PropData> prop = chunk->prop_get(i);
+
+		for (int j = 0; j < prop->get_prop_count(); ++j) {
+			Ref<PropDataStaticBody> psb = prop->get_prop(j);
+
+			if (!psb.is_valid()) {
+				continue;
+			}
+
+			if (psb->get_collision_shape_count() == 0) {
+				continue;
+			}
+
+			for (int k = 0; k < psb->get_collision_shape_count(); ++k) {
+				Ref<Shape> shape = psb->get_collision_shape(k);
+				Transform offset = psb->get_collision_shape_transform(k);
+
+				if (!shape.is_valid()) {
+					continue;
+				}
+
+				RID body = PhysicsServer::get_singleton()->body_create(PhysicsServer::BODY_MODE_STATIC);
+
+				Transform transform = chunk->prop_get_tarnsform(i);
+				transform *= offset;
+
+				PhysicsServer::get_singleton()->body_add_shape(body, shape->get_rid());
+
+				//TODO store the layer mask somewhere
+				PhysicsServer::get_singleton()->body_set_collision_layer(body, 1);
+				PhysicsServer::get_singleton()->body_set_collision_mask(body, 1);
+
+				if (chunk->get_voxel_world()->is_inside_tree() && chunk->get_voxel_world()->is_inside_world()) {
+					Ref<World3D> world = chunk->get_voxel_world()->get_world_3d();
+
+					if (world.is_valid() && world->get_space() != RID()) {
+						PhysicsServer::get_singleton()->body_set_space(body, world->get_space());
+					}
+				}
+
+				PhysicsServer::get_singleton()->body_set_state(body, PhysicsServer::BODY_STATE_TRANSFORM, chunk->get_transform() * transform);
+
+				chunk->collider_add(transform, shape, shape->get_rid(), body);
+			}
 		}
 	}
 #endif
