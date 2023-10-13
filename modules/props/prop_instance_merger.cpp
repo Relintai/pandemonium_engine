@@ -30,6 +30,8 @@
 #include "./props/prop_data_light.h"
 #include "./props/prop_data_prop.h"
 #include "./props/prop_data_scene.h"
+#include "./props/prop_data_static_body.h"
+
 #include "jobs/prop_mesher_job_step.h"
 #include "lights/prop_light.h"
 #include "material_cache/prop_material_cache.h"
@@ -595,6 +597,22 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 			}
 
 			prop_preprocess(t, p);
+
+			continue;
+		}
+
+		Ref<PropDataStaticBody> static_body_data = e;
+
+		if (static_body_data.is_valid()) {
+			for (int j = 0; j < static_body_data->get_collision_shape_count(); ++j) {
+				Ref<Shape> collision_shape = static_body_data->get_collision_shape(j);
+
+				if (collision_shape.is_valid()) {
+					Transform et = t * static_body_data->get_collision_shape_transform(j);
+
+					_job->add_collision_shape(collision_shape, et, true);
+				}
+			}
 
 			continue;
 		}

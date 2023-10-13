@@ -43,8 +43,9 @@ void PropDataEntry::set_transform(const Transform &value) {
 
 #ifdef MODULE_TEXTURE_PACKER_ENABLED
 void PropDataEntry::add_textures_into(Ref<TexturePacker> texture_packer) {
-	if (has_method("_add_textures_into"))
+	if (has_method("_add_textures_into")) {
 		call("_add_textures_into", texture_packer);
+	}
 }
 #endif
 

@@ -73,7 +73,7 @@ void PropDataStaticBody::_processor_process(Ref<PropData> prop_data, Node *node,
 
 Node *PropDataStaticBody::_processor_get_node_for(const Transform &transform) {
 	StaticBody *sb = memnew(StaticBody);
-	sb->set_transform(get_transform());
+	sb->set_transform(transform);
 	sb->set_physics_material_override(_physics_material_override);
 	sb->set_constant_linear_velocity(_constant_linear_velocity);
 	sb->set_constant_angular_velocity(_constant_angular_velocity);

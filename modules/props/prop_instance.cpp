@@ -3,6 +3,7 @@
 #include "../mesh_data_resource/nodes/mesh_data_instance.h"
 
 #include "scene/3d/light.h"
+#include "scene/3d/physics_body.h"
 
 #include "modules/modules_enabled.gen.h"
 
@@ -14,6 +15,7 @@
 #include "./props/prop_data_light.h"
 #include "./props/prop_data_prop.h"
 #include "./props/prop_data_scene.h"
+#include "./props/prop_data_static_body.h"
 #include "./props/prop_data_tiled_wall.h"
 
 #include "tiled_wall/tiled_wall.h"
@@ -23,8 +25,9 @@ Ref<PropData> PropInstance::get_prop_data() {
 	return _prop_data;
 }
 void PropInstance::set_prop_data(const Ref<PropData> &data) {
-	if (_prop_data == data)
+	if (_prop_data == data) {
 		return;
+	}
 
 	_prop_data = data;
 
@@ -103,8 +106,9 @@ void PropInstance::_build() {
 		}
 	}
 
-	if (!_prop_data.is_valid())
+	if (!_prop_data.is_valid()) {
 		return;
+	}
 
 	prop_preprocess(Transform(), _prop_data);
 }
@@ -130,8 +134,9 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 	for (int i = 0; i < count; ++i) {
 		Ref<PropDataEntry> e = prop->get_prop(i);
 
-		if (!e.is_valid())
+		if (!e.is_valid()) {
 			continue;
+		}
 
 		Transform t = transform * e->get_transform();
 
@@ -140,8 +145,9 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 		if (prop_entry_data.is_valid()) {
 			Ref<PropData> p = prop_entry_data->get_prop();
 
-			if (!p.is_valid())
+			if (!p.is_valid()) {
 				continue;
+			}
 
 			prop_preprocess(t, p);
 
@@ -170,8 +176,9 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 		if (scene_data.is_valid()) {
 			Ref<PackedScene> sc = scene_data->get_scene();
 
-			if (!sc.is_valid())
+			if (!sc.is_valid()) {
 				continue;
+			}
 
 			Node *n = sc->instance();
 			add_child(n);
@@ -197,14 +204,24 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 			continue;
 		}
 
+		Ref<PropDataStaticBody> static_body_data = e;
+
+		if (static_body_data.is_valid()) {
+			Node *static_body = static_body_data->processor_get_node_for(t);
+			add_child(static_body);
+
+			continue;
+		}
+
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<PropDataMeshData> mesh_data = e;
 
 		if (mesh_data.is_valid()) {
 			Ref<MeshDataResource> mdr = mesh_data->get_mesh();
 
-			if (!mdr.is_valid())
+			if (!mdr.is_valid()) {
 				continue;
+			}
 
 			MeshDataInstance *mdi = memnew(MeshDataInstance);
 			add_child(mdi);
