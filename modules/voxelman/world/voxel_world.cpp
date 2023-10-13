@@ -101,8 +101,9 @@ void VoxelWorld::set_use_threads(const bool value) {
 	for (int i = 0; i < chunk_get_count(); ++i) {
 		Ref<VoxelChunk> c = chunk_get_index(i);
 
-		if (!c.is_valid())
+		if (!c.is_valid()) {
 			continue;
+		}
 
 		c->set_is_build_threaded(_use_threads);
 	}
@@ -131,8 +132,9 @@ void VoxelWorld::set_library(const Ref<VoxelLibrary> &library) {
 	for (int i = 0; i < chunk_get_count(); ++i) {
 		Ref<VoxelChunk> c = chunk_get_index(i);
 
-		if (!c.is_valid())
+		if (!c.is_valid()) {
 			continue;
+		}
 
 		c->set_library(_library);
 	}
@@ -154,8 +156,9 @@ void VoxelWorld::set_voxel_scale(const float value) {
 	for (int i = 0; i < chunk_get_count(); ++i) {
 		Ref<VoxelChunk> c = chunk_get_index(i);
 
-		if (!c.is_valid())
+		if (!c.is_valid()) {
 			continue;
+		}
 
 		c->set_voxel_scale(_voxel_scale);
 	}
@@ -217,8 +220,9 @@ void VoxelWorld::voxel_structure_add(const Ref<VoxelStructure> &structure) {
 	_voxel_structures.push_back(structure);
 }
 void VoxelWorld::voxel_structure_remove(const Ref<VoxelStructure> &structure) {
-	if (!structure.is_valid())
+	if (!structure.is_valid()) {
 		return;
+	}
 
 	int index = _voxel_structures.find(structure);
 
@@ -272,14 +276,17 @@ void VoxelWorld::chunk_add(Ref<VoxelChunk> chunk, const int x, const int y, cons
 	chunk->set_position(x, y, z);
 	chunk->world_transform_changed();
 
-	if (!_chunks.has(pos))
+	if (!_chunks.has(pos)) {
 		_chunks.set(pos, chunk);
+	}
 
-	if (_chunks_vector.find(chunk) == -1)
+	if (_chunks_vector.find(chunk) == -1) {
 		_chunks_vector.push_back(chunk);
+	}
 
-	if (is_inside_tree())
+	if (is_inside_tree()) {
 		chunk->enter_tree();
+	}
 
 	if (has_method("_chunk_added")) {
 		call("_chunk_added", chunk);
@@ -291,16 +298,18 @@ bool VoxelWorld::chunk_has(const int x, const int y, const int z) const {
 Ref<VoxelChunk> VoxelWorld::chunk_get(const int x, const int y, const int z) {
 	IntPos pos(x, y, z);
 
-	if (_chunks.has(pos))
+	if (_chunks.has(pos)) {
 		return _chunks.get(pos);
+	}
 
 	return Ref<VoxelChunk>();
 }
 Ref<VoxelChunk> VoxelWorld::chunk_remove(const int x, const int y, const int z) {
 	IntPos pos(x, y, z);
 
-	if (!_chunks.has(pos))
+	if (!_chunks.has(pos)) {
 		return NULL;
+	}
 
 	Ref<VoxelChunk> chunk = _chunks.get(pos);
 
@@ -390,8 +399,9 @@ Ref<VoxelChunk> VoxelWorld::_create_chunk(const int x, const int y, const int z,
 	chunk->set_voxel_world(this);
 
 	//TODO this will need to be changed
-	if (chunk->has_method("set_is_build_threaded"))
+	if (chunk->has_method("set_is_build_threaded")) {
 		chunk->call("set_is_build_threaded", _use_threads);
+	}
 
 	chunk->set_position(x, y, z);
 	chunk->set_library(_library);
@@ -437,11 +447,13 @@ void VoxelWorld::chunks_set(const Vector<Variant> &chunks) {
 		for (int i = 0; i < chunks.size(); ++i) {
 			Ref<VoxelChunk> chunk = Ref<VoxelChunk>(chunks[i]);
 
-			if (!chunk.is_valid())
+			if (!chunk.is_valid()) {
 				continue;
+			}
 
-			if (_chunks_vector.find(chunk) != -1)
+			if (_chunks_vector.find(chunk) != -1) {
 				continue;
+			}
 
 			chunk_add(chunk, chunk->get_position_x(), chunk->get_position_y(), chunk->get_position_z());
 		}
@@ -495,8 +507,9 @@ bool VoxelWorld::is_position_walkable(const Vector3 &p_pos) {
 
 	Ref<VoxelChunk> c = chunk_get(x, y, z);
 
-	if (!c.is_valid())
+	if (!c.is_valid()) {
 		return false;
+	}
 
 	return !c->get_is_generating();
 }
@@ -679,8 +692,9 @@ void VoxelWorld::lights_clear() {
 	for (int i = 0; i < _lights.size(); ++i) {
 		Ref<VoxelLight> light = _lights[i];
 
-		if (!light.is_valid())
+		if (!light.is_valid()) {
 			continue;
+		}
 
 		for (int j = 0; j < _chunks_vector.size(); ++j) {
 			Ref<VoxelChunk> chunk = _chunks_vector[j];
@@ -733,8 +747,9 @@ uint8_t VoxelWorld::get_voxel_at_world_position(const Vector3 &world_position, c
 
 	Ref<VoxelChunk> chunk = chunk_get(x, y, z);
 
-	if (chunk.is_valid())
+	if (chunk.is_valid()) {
 		return chunk->get_voxel(bx, by, bz, channel_index);
+	}
 
 	return 0;
 }
@@ -768,24 +783,27 @@ void VoxelWorld::set_voxel_at_world_position(const Vector3 &world_position, cons
 			Ref<VoxelChunk> chunk = chunk_get_or_create(x - 1, y, z);
 			chunk->set_voxel(data, get_chunk_size_x(), by, bz, channel_index);
 
-			if (rebuild)
+			if (rebuild) {
 				chunk->build();
+			}
 		}
 
 		if (by == 0) {
 			Ref<VoxelChunk> chunk = chunk_get_or_create(x, y - 1, z);
 			chunk->set_voxel(data, bx, get_chunk_size_y(), bz, channel_index);
 
-			if (rebuild)
+			if (rebuild) {
 				chunk->build();
+			}
 		}
 
 		if (bz == 0) {
 			Ref<VoxelChunk> chunk = chunk_get_or_create(x, y, z - 1);
 			chunk->set_voxel(data, bx, by, get_chunk_size_z(), channel_index);
 
-			if (rebuild)
+			if (rebuild) {
 				chunk->build();
+			}
 		}
 	}
 
@@ -794,32 +812,36 @@ void VoxelWorld::set_voxel_at_world_position(const Vector3 &world_position, cons
 			Ref<VoxelChunk> chunk = chunk_get_or_create(x + 1, y, z);
 			chunk->set_voxel(data, -1, by, bz, channel_index);
 
-			if (rebuild)
+			if (rebuild) {
 				chunk->build();
+			}
 		}
 
 		if (by == get_chunk_size_y() - 1) {
 			Ref<VoxelChunk> chunk = chunk_get_or_create(x, y + 1, z);
 			chunk->set_voxel(data, bx, -1, bz, channel_index);
 
-			if (rebuild)
+			if (rebuild) {
 				chunk->build();
+			}
 		}
 
 		if (bz == get_chunk_size_z() - 1) {
 			Ref<VoxelChunk> chunk = chunk_get_or_create(x, y, z + 1);
 			chunk->set_voxel(data, bx, by, -1, channel_index);
 
-			if (rebuild)
+			if (rebuild) {
 				chunk->build();
+			}
 		}
 	}
 
 	Ref<VoxelChunk> chunk = chunk_get_or_create(x, y, z);
 	chunk->set_voxel(data, bx, by, bz, channel_index);
 
-	if (rebuild)
+	if (rebuild) {
 		chunk->build();
+	}
 }
 
 Ref<VoxelChunk> VoxelWorld::get_chunk_at_world_position(const Vector3 &world_position) {
@@ -894,18 +916,21 @@ VoxelWorld ::~VoxelWorld() {
 void VoxelWorld::_generate_chunk(Ref<VoxelChunk> chunk) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
-	if (_level_generator.is_valid())
+	if (_level_generator.is_valid()) {
 		_level_generator->generate_chunk(chunk);
+	}
 
 	for (int i = 0; i < _voxel_structures.size(); ++i) {
 		Ref<VoxelStructure> structure = _voxel_structures.get(i);
 
-		if (!structure.is_valid())
+		if (!structure.is_valid()) {
 			continue;
+		}
 
 		if (structure->get_use_aabb()) {
-			if (structure->get_chunk_aabb().has_point(Vector3(chunk->get_position_x(), chunk->get_position_y(), chunk->get_position_z())))
+			if (structure->get_chunk_aabb().has_point(Vector3(chunk->get_position_x(), chunk->get_position_y(), chunk->get_position_z()))) {
 				structure->write_to_chunk(chunk);
+			}
 		} else {
 			structure->write_to_chunk(chunk);
 		}
@@ -921,8 +946,9 @@ void VoxelWorld::_notification(int p_what) {
 			set_physics_process_internal(true);
 			set_notify_transform(true);
 
-			if (_library.is_valid())
+			if (_library.is_valid()) {
 				_library->refresh_rects();
+			}
 
 			for (int i = 0; i < _chunks_vector.size(); ++i) {
 				Ref<VoxelChunk> chunk = _chunks_vector[i];
@@ -971,11 +997,13 @@ void VoxelWorld::_notification(int p_what) {
 				}
 			}
 
-			if (_generating.size() >= _max_concurrent_generations)
+			if (_generating.size() >= _max_concurrent_generations) {
 				return;
+			}
 
-			if (_generation_queue.size() == 0)
+			if (_generation_queue.size() == 0) {
 				return;
+			}
 
 			while (_generating.size() < _max_concurrent_generations && _generation_queue.size() != 0) {
 				Ref<VoxelChunk> chunk = _generation_queue.get(0);
