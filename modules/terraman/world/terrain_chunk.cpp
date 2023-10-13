@@ -364,8 +364,9 @@ uint8_t TerrainChunk::get_voxel(const int p_x, const int p_z, const int p_channe
 
 	uint8_t *ch = _channels.get(p_channel_index);
 
-	if (!ch)
+	if (!ch) {
 		return 0;
+	}
 
 	return ch[get_data_index(x, z)];
 }
@@ -386,8 +387,9 @@ int TerrainChunk::channel_get_count() const {
 }
 
 void TerrainChunk::channel_set_count(const int count) {
-	if (count == _channels.size())
+	if (count == _channels.size()) {
 		return;
+	}
 
 	if (_channels.size() >= count) {
 		for (int i = count; i < _channels.size(); ++i) {
@@ -419,14 +421,16 @@ bool TerrainChunk::channel_is_allocated(const int channel_index) {
 void TerrainChunk::channel_ensure_allocated(const int channel_index, const uint8_t default_value) {
 	ERR_FAIL_INDEX(channel_index, _channels.size());
 
-	if (_channels[channel_index] == NULL)
+	if (_channels[channel_index] == NULL) {
 		channel_allocate(channel_index, default_value);
+	}
 }
 void TerrainChunk::channel_allocate(const int channel_index, const uint8_t default_value) {
 	ERR_FAIL_INDEX(channel_index, _channels.size());
 
-	if (_channels[channel_index] != NULL)
+	if (_channels[channel_index] != NULL) {
 		return;
+	}
 
 	uint32_t size = _data_size_x * _data_size_z;
 
@@ -487,13 +491,15 @@ PoolByteArray TerrainChunk::channel_get_array(const int channel_index) const {
 
 	uint32_t size = _data_size_x * _data_size_z;
 
-	if (channel_index >= _channels.size())
+	if (channel_index >= _channels.size()) {
 		return arr;
+	}
 
 	uint8_t *ch = _channels.get(channel_index);
 
-	if (ch == NULL)
+	if (ch == NULL) {
 		return arr;
+	}
 
 	arr.resize(size);
 
@@ -504,17 +510,20 @@ PoolByteArray TerrainChunk::channel_get_array(const int channel_index) const {
 	return arr;
 }
 void TerrainChunk::channel_set_array(const int channel_index, const PoolByteArray &array) {
-	if (array.size() == 0)
+	if (array.size() == 0) {
 		return;
+	}
 
-	if (_channels.size() <= channel_index)
+	if (_channels.size() <= channel_index) {
 		channel_set_count(channel_index + 1);
+	}
 
 	uint8_t *ch = _channels.get(channel_index);
 
 	if (ch == NULL) {
-		if (_channels[channel_index] != NULL)
+		if (_channels[channel_index] != NULL) {
 			return;
+		}
 
 		ch = memnew_arr(uint8_t, array.size());
 		_channels.set(channel_index, ch);
@@ -530,13 +539,15 @@ PoolByteArray TerrainChunk::channel_get_compressed(const int channel_index) cons
 #ifdef MODULE_LZ4_ENABLED
 	int size = _data_size_x * _data_size_z;
 
-	if (channel_index >= _channels.size())
+	if (channel_index >= _channels.size()) {
 		return arr;
+	}
 
 	uint8_t *ch = _channels.get(channel_index);
 
-	if (ch == NULL)
+	if (ch == NULL) {
 		return arr;
+	}
 
 	int bound = LZ4Compressor::LZ4_compressBound(size);
 	arr.resize(bound);
@@ -552,19 +563,22 @@ PoolByteArray TerrainChunk::channel_get_compressed(const int channel_index) cons
 }
 void TerrainChunk::channel_set_compressed(const int channel_index, const PoolByteArray &data) {
 #ifdef MODULE_LZ4_ENABLED
-	if (data.size() == 0)
+	if (data.size() == 0) {
 		return;
+	}
 
 	int size = _data_size_x * _data_size_z;
 
-	if (_channels.size() <= channel_index)
+	if (_channels.size() <= channel_index) {
 		channel_set_count(channel_index + 1);
+	}
 
 	uint8_t *ch = _channels.get(channel_index);
 
 	if (ch == NULL) {
-		if (_channels[channel_index] != NULL)
+		if (_channels[channel_index] != NULL) {
 			return;
+		}
 
 		ch = memnew_arr(uint8_t, size);
 		_channels.set(channel_index, ch);
@@ -604,13 +618,15 @@ void TerrainChunk::voxel_structure_add(const Ref<TerrainStructure> &structure) {
 	_voxel_structures.push_back(structure);
 }
 void TerrainChunk::voxel_structure_remove(const Ref<TerrainStructure> &structure) {
-	if (!structure.is_valid())
+	if (!structure.is_valid()) {
 		return;
+	}
 
 	int index = _voxel_structures.find(structure);
 
-	if (index != -1)
+	if (index != -1) {
 		_voxel_structures.remove(index);
+	}
 }
 void TerrainChunk::voxel_structure_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _voxel_structures.size());
@@ -692,19 +708,23 @@ void TerrainChunk::cancel_build() {
 }
 
 void TerrainChunk::bake_lights() {
-	if (has_method("_bake_lights"))
+	if (has_method("_bake_lights")) {
 		call("_bake_lights");
+	}
 }
 void TerrainChunk::bake_light(Ref<TerrainLight> light) {
-	if (!light.is_valid())
+	if (!light.is_valid()) {
 		return;
+	}
 
-	if (has_method("_bake_lights"))
+	if (has_method("_bake_lights")) {
 		call("_bake_light", light);
+	}
 }
 void TerrainChunk::clear_baked_lights() {
-	if (has_method("_clear_baked_lights"))
+	if (has_method("_clear_baked_lights")) {
 		call("_clear_baked_lights");
+	}
 }
 
 #ifdef MODULE_PROPS_ENABLED
@@ -775,8 +795,9 @@ int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const R
 
 	_mesh_data_resources.push_back(e);
 
-	if (has_method("_mesh_data_resource_added"))
+	if (has_method("_mesh_data_resource_added")) {
 		call("_mesh_data_resource_added", index);
+	}
 
 	return index;
 }
@@ -977,37 +998,44 @@ void TerrainChunk::colliders_clear() {
 void TerrainChunk::enter_tree() {
 	_is_in_tree = true;
 
-	if (has_method("_enter_tree"))
+	if (has_method("_enter_tree")) {
 		call("_enter_tree");
+	}
 }
 void TerrainChunk::exit_tree() {
 	_is_in_tree = false;
 
-	if (has_method("_exit_tree"))
+	if (has_method("_exit_tree")) {
 		call("_exit_tree");
+	}
 }
 void TerrainChunk::process(const float delta) {
-	if (has_method("_process"))
+	if (has_method("_process")) {
 		call("_process", delta);
+	}
 }
 void TerrainChunk::physics_process(const float delta) {
-	if (has_method("_physics_process"))
+	if (has_method("_physics_process")) {
 		call("_physics_process", delta);
+	}
 }
 void TerrainChunk::world_transform_changed() {
 	call("_world_transform_changed");
 }
 void TerrainChunk::visibility_changed(const bool visible) {
-	if (has_method("_visibility_changed"))
+	if (has_method("_visibility_changed")) {
 		call("_visibility_changed", _is_visible);
+	}
 }
 void TerrainChunk::world_light_added(const Ref<TerrainLight> &light) {
-	if (has_method("_world_light_added"))
+	if (has_method("_world_light_added")) {
 		call("_world_light_added", light);
+	}
 }
 void TerrainChunk::world_light_removed(const Ref<TerrainLight> &light) {
-	if (has_method("_world_light_removed"))
+	if (has_method("_world_light_removed")) {
 		call("_world_light_removed", light);
+	}
 }
 void TerrainChunk::generation_process(const float delta) {
 	call("_generation_process", delta);
@@ -1161,16 +1189,18 @@ void TerrainChunk::_generation_process(const float delta) {
 
 	_THREAD_SAFE_METHOD_
 
-	if (_current_job < 0 || _current_job >= _jobs.size())
+	if (_current_job < 0 || _current_job >= _jobs.size()) {
 		return;
+	}
 
 	Ref<TerrainJob> job = _jobs[_current_job];
 
 	ERR_FAIL_COND(!job.is_valid());
 
 	if (job->get_build_phase_type() == TerrainJob::BUILD_PHASE_TYPE_PROCESS) {
-		if (!_voxel_world->can_chunk_do_build_step())
+		if (!_voxel_world->can_chunk_do_build_step()) {
 			return;
+		}
 
 		job->process(delta);
 
@@ -1186,16 +1216,18 @@ void TerrainChunk::_generation_physics_process(const float delta) {
 
 	_THREAD_SAFE_METHOD_
 
-	if (_current_job < 0 || _current_job >= _jobs.size())
+	if (_current_job < 0 || _current_job >= _jobs.size()) {
 		return;
+	}
 
 	Ref<TerrainJob> job = _jobs[_current_job];
 
 	ERR_FAIL_COND(!job.is_valid());
 
 	if (job->get_build_phase_type() == TerrainJob::BUILD_PHASE_TYPE_PHYSICS_PROCESS) {
-		if (!_voxel_world->can_chunk_do_build_step())
+		if (!_voxel_world->can_chunk_do_build_step()) {
 			return;
+		}
 
 		job->physics_process(delta);
 

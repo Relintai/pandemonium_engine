@@ -223,8 +223,9 @@ void TerrainPropJob::phase_prop() {
 }
 
 void TerrainPropJob::_physics_process(float delta) {
-	if (_phase == 0)
+	if (_phase == 0) {
 		phase_physics_process();
+	}
 }
 
 void TerrainPropJob::_execute_phase() {
@@ -308,8 +309,9 @@ void TerrainPropJob::phase_setup() {
 		for (int i = 0; i < _chunk->mesh_data_resource_get_count(); ++i) {
 			Ref<Texture> tex = _chunk->mesh_data_resource_get_texture(i);
 
-			if (!tex.is_valid())
+			if (!tex.is_valid()) {
 				continue;
+			}
 
 			Rect2 r = cache->additional_texture_get_uv_rect(tex);
 
@@ -384,8 +386,9 @@ void TerrainPropJob::phase_steps() {
 			}
 
 			//allocate
-			if (count > 0)
+			if (count > 0) {
 				chunk->meshes_create(TerrainChunkDefault::MESH_INDEX_PROP, count);
+			}
 
 		} else {
 			//we have the meshes, just clear
@@ -394,8 +397,9 @@ void TerrainPropJob::phase_steps() {
 			for (int i = 0; i < count; ++i) {
 				mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, i);
 
-				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
 					RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
+				}
 			}
 		}
 	}

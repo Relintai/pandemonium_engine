@@ -123,8 +123,9 @@ void TerrainWorld::set_library(const Ref<TerrainLibrary> &library) {
 	for (int i = 0; i < chunk_get_count(); ++i) {
 		Ref<TerrainChunk> c = chunk_get_index(i);
 
-		if (!c.is_valid())
+		if (!c.is_valid()) {
 			continue;
+		}
 
 		c->set_library(_library);
 	}
@@ -146,8 +147,9 @@ void TerrainWorld::set_voxel_scale(const float value) {
 	for (int i = 0; i < chunk_get_count(); ++i) {
 		Ref<TerrainChunk> c = chunk_get_index(i);
 
-		if (!c.is_valid())
+		if (!c.is_valid()) {
 			continue;
+		}
 
 		c->set_voxel_scale(_voxel_scale);
 	}
@@ -209,13 +211,15 @@ void TerrainWorld::voxel_structure_add(const Ref<TerrainStructure> &structure) {
 	_voxel_structures.push_back(structure);
 }
 void TerrainWorld::voxel_structure_remove(const Ref<TerrainStructure> &structure) {
-	if (!structure.is_valid())
+	if (!structure.is_valid()) {
 		return;
+	}
 
 	int index = _voxel_structures.find(structure);
 
-	if (index != -1)
+	if (index != -1) {
 		_voxel_structures.remove(index);
+	}
 }
 void TerrainWorld::voxel_structure_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _voxel_structures.size());
@@ -263,14 +267,17 @@ void TerrainWorld::chunk_add(Ref<TerrainChunk> chunk, const int x, const int z) 
 	chunk->set_position(x, z);
 	chunk->world_transform_changed();
 
-	if (!_chunks.has(pos))
+	if (!_chunks.has(pos)) {
 		_chunks.set(pos, chunk);
+	}
 
-	if (_chunks_vector.find(chunk) == -1)
+	if (_chunks_vector.find(chunk) == -1) {
 		_chunks_vector.push_back(chunk);
+	}
 
-	if (is_inside_tree())
+	if (is_inside_tree()) {
 		chunk->enter_tree();
+	}
 
 	if (has_method("_chunk_added")) {
 		call("_chunk_added", chunk);
@@ -284,8 +291,9 @@ bool TerrainWorld::chunk_has(const int x, const int z) const {
 Ref<TerrainChunk> TerrainWorld::chunk_get(const int x, const int z) {
 	IntPos pos(x, z);
 
-	if (_chunks.has(pos))
+	if (_chunks.has(pos)) {
 		return _chunks.get(pos);
+	}
 
 	return Ref<TerrainChunk>();
 }
@@ -474,11 +482,13 @@ void TerrainWorld::chunks_set(const Vector<Variant> &chunks) {
 		for (int i = 0; i < chunks.size(); ++i) {
 			Ref<TerrainChunk> chunk = Ref<TerrainChunk>(chunks[i]);
 
-			if (!chunk.is_valid())
+			if (!chunk.is_valid()) {
 				continue;
+			}
 
-			if (_chunks_vector.find(chunk) != -1)
+			if (_chunks_vector.find(chunk) != -1) {
 				continue;
+			}
 
 			chunk_add(chunk, chunk->get_position_x(), chunk->get_position_z());
 		}
@@ -531,8 +541,9 @@ bool TerrainWorld::is_position_walkable(const Vector3 &p_pos) {
 
 	Ref<TerrainChunk> c = chunk_get(x, z);
 
-	if (!c.is_valid())
+	if (!c.is_valid()) {
 		return false;
+	}
 
 	return !c->get_is_generating();
 }
@@ -720,8 +731,9 @@ void TerrainWorld::lights_clear() {
 	for (int i = 0; i < _lights.size(); ++i) {
 		Ref<TerrainLight> light = _lights[i];
 
-		if (!light.is_valid())
+		if (!light.is_valid()) {
 			continue;
+		}
 
 		for (int j = 0; j < _chunks_vector.size(); ++j) {
 			Ref<TerrainChunk> chunk = _chunks_vector[j];
@@ -768,8 +780,9 @@ uint8_t TerrainWorld::get_voxel_at_world_position(const Vector3 &world_position,
 
 	Ref<TerrainChunk> chunk = chunk_get(x, z);
 
-	if (chunk.is_valid())
+	if (chunk.is_valid()) {
 		return chunk->get_voxel(bx, bz, channel_index);
+	}
 
 	return 0;
 }
@@ -797,16 +810,18 @@ void TerrainWorld::set_voxel_at_world_position(const Vector3 &world_position, co
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, z);
 			chunk->set_voxel(data, get_chunk_size_x(), bz, channel_index);
 
-			if (rebuild)
+			if (rebuild) {
 				chunk->build();
+			}
 		}
 
 		if (bz == 0) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x, z - 1);
 			chunk->set_voxel(data, bx, get_chunk_size_z(), channel_index);
 
-			if (rebuild)
+			if (rebuild) {
 				chunk->build();
+			}
 		}
 	}
 
@@ -815,24 +830,27 @@ void TerrainWorld::set_voxel_at_world_position(const Vector3 &world_position, co
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x + 1, z);
 			chunk->set_voxel(data, -1, bz, channel_index);
 
-			if (rebuild)
+			if (rebuild) {
 				chunk->build();
+			}
 		}
 
 		if (bz == get_chunk_size_z() - 1) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x, z + 1);
 			chunk->set_voxel(data, bx, -1, channel_index);
 
-			if (rebuild)
+			if (rebuild) {
 				chunk->build();
+			}
 		}
 	}
 
 	Ref<TerrainChunk> chunk = chunk_get_or_create(x, z);
 	chunk->set_voxel(data, bx, bz, channel_index);
 
-	if (rebuild)
+	if (rebuild) {
 		chunk->build();
+	}
 }
 
 Ref<TerrainChunk> TerrainWorld::get_chunk_at_world_position(const Vector3 &world_position) {
@@ -925,18 +943,21 @@ TerrainWorld ::~TerrainWorld() {
 void TerrainWorld::_generate_chunk(Ref<TerrainChunk> chunk) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
-	if (_level_generator.is_valid())
+	if (_level_generator.is_valid()) {
 		_level_generator->generate_chunk(chunk);
+	}
 
 	for (int i = 0; i < _voxel_structures.size(); ++i) {
 		Ref<TerrainStructure> structure = _voxel_structures.get(i);
 
-		if (!structure.is_valid())
+		if (!structure.is_valid()) {
 			continue;
+		}
 
 		if (structure->get_use_aabb()) {
-			if (structure->get_chunk_aabb().has_point(Vector3(chunk->get_position_x(), 1, chunk->get_position_z())))
+			if (structure->get_chunk_aabb().has_point(Vector3(chunk->get_position_x(), 1, chunk->get_position_z()))) {
 				structure->write_to_chunk(chunk);
+			}
 		} else {
 			structure->write_to_chunk(chunk);
 		}
@@ -952,8 +973,9 @@ void TerrainWorld::_notification(int p_what) {
 			set_physics_process_internal(true);
 			set_notify_transform(true);
 
-			if (_library.is_valid())
+			if (_library.is_valid()) {
 				_library->refresh_rects();
+			}
 
 			for (int i = 0; i < _chunks_vector.size(); ++i) {
 				Ref<TerrainChunk> chunk = _chunks_vector[i];
@@ -1015,11 +1037,13 @@ void TerrainWorld::_notification(int p_what) {
 				}
 			}
 
-			if (_generating.size() >= _max_concurrent_generations)
+			if (_generating.size() >= _max_concurrent_generations) {
 				return;
+			}
 
-			if (_generation_queue.size() == 0)
+			if (_generation_queue.size() == 0) {
 				return;
+			}
 
 			while (_generating.size() < _max_concurrent_generations && _generation_queue.size() != 0) {
 				Ref<TerrainChunk> chunk = _generation_queue.get(0);
