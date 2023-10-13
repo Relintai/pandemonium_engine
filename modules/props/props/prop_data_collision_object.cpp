@@ -108,10 +108,6 @@ void PropDataCollisionObject::processor_process_collision_objects(Node *node, co
 		if (shape.is_valid()) {
 			add_collision_shape(current_transform, shape);
 		}
-
-		if (c->get_child_count() > 0) {
-			processor_process_collision_objects(c, current_transform);
-		}
 	}
 }
 
