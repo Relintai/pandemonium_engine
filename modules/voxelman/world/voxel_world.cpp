@@ -563,8 +563,9 @@ void VoxelWorld::prop_add(Transform tarnsform, const Ref<PropData> &prop, const 
 	for (int i = 0; i < count; ++i) {
 		Ref<PropDataEntry> entry = prop->get_prop(i);
 
-		if (!entry.is_valid())
+		if (!entry.is_valid()) {
 			continue;
+		}
 
 		Transform t = tarnsform * entry->get_transform();
 
@@ -576,8 +577,9 @@ void VoxelWorld::prop_add(Transform tarnsform, const Ref<PropData> &prop, const 
 		if (prop_entry_data.is_valid()) {
 			Ref<PropData> p = prop_entry_data->get_prop();
 
-			if (!p.is_valid())
+			if (!p.is_valid()) {
 				continue;
+			}
 
 			prop_add(t, p, false);
 
@@ -589,8 +591,9 @@ void VoxelWorld::prop_add(Transform tarnsform, const Ref<PropData> &prop, const 
 		if (scene_data.is_valid()) {
 			Ref<PackedScene> sc = scene_data->get_scene();
 
-			if (!sc.is_valid())
+			if (!sc.is_valid()) {
 				continue;
+			}
 
 			Node *n = sc->instance();
 			add_child(n);

@@ -599,21 +599,24 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 	for (int i = 0; i < count; ++i) {
 		Ref<PropDataEntry> entry = prop->get_prop(i);
 
-		if (!entry.is_valid())
+		if (!entry.is_valid()) {
 			continue;
+		}
 
 		Transform t = transform * entry->get_transform();
 
 		wp = t.xform(Vector3());
 		chunk = get_or_create_chunk_at_world_position(wp);
 
+
 		Ref<PropDataProp> prop_entry_data = entry;
 
 		if (prop_entry_data.is_valid()) {
 			Ref<PropData> p = prop_entry_data->get_prop();
 
-			if (!p.is_valid())
+			if (!p.is_valid()) {
 				continue;
+			}
 
 			prop_add(t, p, false);
 
@@ -625,8 +628,9 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 		if (scene_data.is_valid()) {
 			Ref<PackedScene> sc = scene_data->get_scene();
 
-			if (!sc.is_valid())
+			if (!sc.is_valid()) {
 				continue;
+			}
 
 			Node *n = sc->instance();
 			add_child(n);
@@ -662,8 +666,9 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 		if (mesh_data.is_valid()) {
 			Ref<MeshDataResource> mdr = mesh_data->get_mesh();
 
-			if (!mdr.is_valid())
+			if (!mdr.is_valid()) {
 				continue;
+			}
 
 			Transform chunk_local_tform = t;
 
