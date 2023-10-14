@@ -133,6 +133,9 @@ void VoxelPropJob::phase_physics_process() {
 #ifdef MODULE_PROPS_ENABLED
 	for (int i = 0; i < chunk->prop_get_count(); ++i) {
 		Ref<PropData> prop = chunk->prop_get(i);
+		Transform prop_transform = chunk->prop_get_tarnsform(i);
+		Transform chunk_prop_local_tform = prop_transform;
+		chunk_prop_local_tform.origin = chunk->to_local(chunk_prop_local_tform.origin);
 
 		for (int j = 0; j < prop->get_prop_count(); ++j) {
 			Ref<PropDataStaticBody> psb = prop->get_prop(j);
@@ -155,7 +158,7 @@ void VoxelPropJob::phase_physics_process() {
 
 				RID body = PhysicsServer::get_singleton()->body_create(PhysicsServer::BODY_MODE_STATIC);
 
-				Transform transform = chunk->prop_get_tarnsform(i);
+				Transform transform = chunk_prop_local_tform;
 				transform *= offset;
 
 				PhysicsServer::get_singleton()->body_add_shape(body, shape->get_rid());
