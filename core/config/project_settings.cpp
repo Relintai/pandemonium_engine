@@ -1068,6 +1068,10 @@ ProjectSettings::ProjectSettings() {
 	GLOBAL_DEF_RST("audio/3d_panning_strength", 1.0f);
 	custom_prop_info["audio/3d_panning_strength"] = PropertyInfo(Variant::REAL, "audio/3d_panning_strength", PROPERTY_HINT_RANGE, "0,4,0.01");
 
+	GLOBAL_DEF("audio/general/ios/session_category", 0);
+	ProjectSettings::get_singleton()->set_custom_property_info("audio/general/ios/session_category", PropertyInfo(Variant::INT, "audio/general/ios/session_category", PROPERTY_HINT_ENUM, "Ambient,Multi Route,Play and Record,Playback,Record,Solo Ambient"));
+	GLOBAL_DEF("audio/general/ios/mix_with_others", false);
+
 	PoolStringArray extensions = PoolStringArray();
 	extensions.push_back("gd");
 	extensions.push_back("gdshader");
