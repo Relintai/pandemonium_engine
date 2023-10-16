@@ -3551,6 +3551,7 @@ void EditorPropertyResource::update_property() {
 				sub_inspector = memnew(EditorInspector);
 				sub_inspector->set_enable_v_scroll(false);
 				sub_inspector->set_use_doc_hints(true);
+				sub_inspector->set_hide_script(false);
 
 				sub_inspector->set_sub_inspector(true);
 				sub_inspector->set_enable_capitalize_paths(bool(EDITOR_GET("interface/inspector/capitalize_properties")));
