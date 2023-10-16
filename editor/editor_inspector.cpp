@@ -2296,7 +2296,38 @@ void EditorInspector::_bind_methods() {
 	ClassDB::bind_method("_vscroll_changed", &EditorInspector::_vscroll_changed);
 
 	ClassDB::bind_method("refresh", &EditorInspector::refresh);
-
+	
+	ClassDB::bind_method(D_METHOD("edit", "object"), &EditorInspector::edit);
+	ClassDB::bind_method(D_METHOD("get_edited_object"), &EditorInspector::get_edited_object);
+	
+	ClassDB::bind_method(D_METHOD("set_show_categories", "show"), &EditorInspector::set_show_categories);
+	ClassDB::bind_method(D_METHOD("set_use_doc_hints", "enable"), &EditorInspector::set_use_doc_hints);
+	ClassDB::bind_method(D_METHOD("set_hide_script", "hide"), &EditorInspector::set_hide_script);
+	
+	ClassDB::bind_method(D_METHOD("set_use_filter", "use"), &EditorInspector::set_use_filter);
+	ClassDB::bind_method(D_METHOD("register_text_enter", "line_edit"), &EditorInspector::register_text_enter);
+	
+	ClassDB::bind_method(D_METHOD("set_use_folding", "enable"), &EditorInspector::set_use_folding);
+	ClassDB::bind_method(D_METHOD("is_using_folding"), &EditorInspector::is_using_folding);
+	
+	ClassDB::bind_method(D_METHOD("collapse_all_folding"), &EditorInspector::collapse_all_folding);
+	ClassDB::bind_method(D_METHOD("expand_all_folding"), &EditorInspector::expand_all_folding);
+	
+	ClassDB::bind_method(D_METHOD("set_scroll_offset", "offset"), &EditorInspector::set_scroll_offset);
+	ClassDB::bind_method(D_METHOD("get_scroll_offset"), &EditorInspector::get_scroll_offset);
+	
+	ClassDB::bind_method(D_METHOD("set_property_prefix", "prefix"), &EditorInspector::set_property_prefix);
+	ClassDB::bind_method(D_METHOD("get_property_prefix"), &EditorInspector::get_property_prefix);
+	
+	ClassDB::bind_method(D_METHOD("set_object_class", "class"), &EditorInspector::set_object_class);
+	ClassDB::bind_method(D_METHOD("get_object_class"), &EditorInspector::get_object_class);
+	
+	ClassDB::bind_method(D_METHOD("set_sub_inspector", "enable"), &EditorInspector::set_sub_inspector);
+	ClassDB::bind_method(D_METHOD("is_sub_inspector"), &EditorInspector::is_sub_inspector);
+	
+	ClassDB::bind_method(D_METHOD("set_property_clipboard", "value"), &EditorInspector::set_property_clipboard);
+	ClassDB::bind_method(D_METHOD("get_property_clipboard"), &EditorInspector::get_property_clipboard);
+	
 	ADD_SIGNAL(MethodInfo("property_selected", PropertyInfo(Variant::STRING, "property")));
 	ADD_SIGNAL(MethodInfo("property_keyed", PropertyInfo(Variant::STRING, "property")));
 	ADD_SIGNAL(MethodInfo("resource_selected", PropertyInfo(Variant::OBJECT, "res"), PropertyInfo(Variant::STRING, "prop")));
