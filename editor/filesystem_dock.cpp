@@ -467,6 +467,11 @@ void FileSystemDock::_notification(int p_what) {
 				_update_file_list(true);
 			}
 
+			SplitMode new_split_mode = SplitMode(int(EditorSettings::get_singleton()->get("docks/filesystem/split_mode")));
+			if (new_split_mode != split_mode) {
+				set_split_mode(new_split_mode);
+			}
+
 			// Change full tree mode.
 			_update_display_mode();
 		} break;
@@ -2034,9 +2039,9 @@ void FileSystemDock::set_split_mode(SplitMode p_split_mode) {
 	split_mode = p_split_mode;
 
 	if (split_mode == SPLIT_MODE_HORIZONTAL) {
-		split_box->set_mode(CSplitContainer::CONTAINER_MODE_HORIZONTAL);
-	} else {
 		split_box->set_mode(CSplitContainer::CONTAINER_MODE_VERTICAL);
+	} else {
+		split_box->set_mode(CSplitContainer::CONTAINER_MODE_HORIZONTAL);
 	}
 }
 FileSystemDock::SplitMode FileSystemDock::get_split_mode() {

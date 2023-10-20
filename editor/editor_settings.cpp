@@ -432,7 +432,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	hints["docks/filesystem/dock_mode"] = PropertyInfo(Variant::INT, "docks/filesystem/dock_mode", PROPERTY_HINT_ENUM, "Dock,Bottom Bar", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);
 
 	_initial_set("docks/filesystem/split_mode", 0);
-	hints["docks/filesystem/split_mode"] = PropertyInfo(Variant::INT, "docks/filesystem/split_mode", PROPERTY_HINT_ENUM, "Vertical,Horizontal", PROPERTY_USAGE_DEFAULT);
+	hints["docks/filesystem/split_mode"] = PropertyInfo(Variant::INT, "docks/filesystem/split_mode", PROPERTY_HINT_ENUM, "Horizontal,Vertical", PROPERTY_USAGE_DEFAULT);
 
 	// Property editor
 	_initial_set("docks/property_editor/auto_refresh_interval", 0.3);

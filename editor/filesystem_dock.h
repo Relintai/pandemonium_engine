@@ -86,8 +86,8 @@ public:
 	};
 
 	enum SplitMode {
+		SPLIT_MODE_HORIZONTAL = 0,
 		SPLIT_MODE_VERTICAL,
-		SPLIT_MODE_HORIZONTAL,
 	};
 
 	enum DockMode {
