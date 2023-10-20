@@ -13,11 +13,128 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="collapse_all_folding">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="edit">
+			<return type="void" />
+			<argument index="0" name="object" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="expand_all_folding">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_edited_object">
+			<return type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="get_object_class" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_property_clipboard" qualifiers="const">
+			<return type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="get_property_prefix" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_scroll_offset" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="is_sub_inspector" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="is_using_folding">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
 		<method name="refresh">
 			<return type="void" />
 			<description>
 				Refreshes the inspector.
 				[b]Note:[/b] To save on CPU resources, calling this method will do nothing if the time specified in [code]docks/property_editor/auto_refresh_interval[/code] editor setting hasn't passed yet since this method was last called. (By default, this interval is set to 0.3 seconds.)
+			</description>
+		</method>
+		<method name="register_text_enter">
+			<return type="void" />
+			<argument index="0" name="line_edit" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="set_hide_script">
+			<return type="void" />
+			<argument index="0" name="hide" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_object_class">
+			<return type="void" />
+			<argument index="0" name="class" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_property_clipboard">
+			<return type="void" />
+			<argument index="0" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="set_property_prefix">
+			<return type="void" />
+			<argument index="0" name="prefix" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_scroll_offset">
+			<return type="void" />
+			<argument index="0" name="offset" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_show_categories">
+			<return type="void" />
+			<argument index="0" name="show" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_sub_inspector">
+			<return type="void" />
+			<argument index="0" name="enable" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_use_doc_hints">
+			<return type="void" />
+			<argument index="0" name="enable" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_use_filter">
+			<return type="void" />
+			<argument index="0" name="use" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_use_folding">
+			<return type="void" />
+			<argument index="0" name="enable" type="bool" />
+			<description>
 			</description>
 		</method>
 	</methods>

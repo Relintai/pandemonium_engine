@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PropDataCollisionObject" inherits="PropDataEntry" version="4.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_collision_shape">
+			<return type="void" />
+			<argument index="0" name="transform" type="Transform" />
+			<argument index="1" name="shape" type="Shape" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collision_shape" qualifiers="const">
+			<return type="Shape" />
+			<argument index="0" name="arg0" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collision_shape_transform" qualifiers="const">
+			<return type="Transform" />
+			<argument index="0" name="arg0" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_collision_shape">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_collision_shape">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="shape" type="Shape" />
+			<description>
+			</description>
+		</method>
+		<method name="set_collision_shape_transform">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="transform" type="Transform" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="collision_layer" type="int" setter="set_collision_layer" getter="get_collision_layer" default="0">
+		</member>
+		<member name="collision_mask" type="int" setter="set_collision_mask" getter="get_collision_mask" default="0">
+		</member>
+		<member name="collision_shape_count" type="int" setter="set_collision_shape_count" getter="get_collision_shape_count" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

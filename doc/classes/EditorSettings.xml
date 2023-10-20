@@ -400,9 +400,6 @@
 			- [b]Cancel First[/b] forces the ordering Cancel/OK.
 			- [b]OK First[/b] forces the ordering OK/Cancel.
 		</member>
-		<member name="interface/editor/hide_main_screen_plugin_names" type="bool" setter="" getter="">
-			If [code]true[/code] the names of the main screen plugins will be hidden (when they have an icon).
-		</member>
 		<member name="interface/editor/automatically_open_screenshots" type="bool" setter="" getter="">
 			If [code]true[/code], automatically opens screenshots with the default program associated to [code].png[/code] files after a screenshot is taken using the [b]Editor &gt; Take Screenshot[/b] action.
 		</member>
@@ -437,6 +434,9 @@
 			- [b]Light:[/b] Use hinting on the X axis only. This is a compromise between font sharpness and smoothness.
 			- [b]Normal:[/b] Use hinting on both X and Y axes. This results in a sharp font, but it doesn't look very smooth.
 			If set to [b]Auto[/b], the font hinting mode will be set to match the current operating system in use. This means the [b]Light[/b] hinting mode will be used on Windows and Linux, and the [b]None[/b] hinting mode will be used on macOS.
+		</member>
+		<member name="interface/editor/hide_main_screen_plugin_names" type="bool" setter="" getter="">
+			If [code]true[/code] the names of the main screen plugins will be hidden (when they have an icon).
 		</member>
 		<member name="interface/editor/low_processor_mode_sleep_usec" type="float" setter="" getter="">
 			The amount of sleeping between frames when the low-processor usage mode is enabled (in microseconds). Higher values will result in lower CPU/GPU usage, which can improve battery life on laptops. However, higher values will result in a less responsive editor. The default value is set to allow for maximum smoothness on monitors up to 144 Hz. See also [member interface/editor/unfocused_low_processor_mode_sleep_usec].

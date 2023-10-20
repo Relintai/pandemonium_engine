@@ -23,6 +23,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="ensure_visible">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 		<method name="get_drag_data_fw">
 			<return type="Variant" />
 			<argument index="0" name="point" type="Vector2" />

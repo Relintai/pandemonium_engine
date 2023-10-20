@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="JSONRPC" inherits="Object" version="4.2">
-<brief_description>
+	<brief_description>
 		A helper to handle dictionaries which look like JSONRPC documents.
 	</brief_description>
 	<description>
