@@ -880,12 +880,17 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 
 	theme->set_stylebox("bg", "VSplitContainer", make_stylebox(vsplit_bg_png, 1, 1, 1, 1));
 	theme->set_stylebox("bg", "HSplitContainer", make_stylebox(hsplit_bg_png, 1, 1, 1, 1));
+	theme->set_stylebox("bg", "CSplitContainer", make_stylebox(hsplit_bg_png, 1, 1, 1, 1));
 
 	theme->set_icon("grabber", "VSplitContainer", make_icon(vsplitter_png));
 	theme->set_icon("grabber", "HSplitContainer", make_icon(hsplitter_png));
+	theme->set_icon("vgrabber", "CSplitContainer", make_icon(vsplitter_png));
+	theme->set_icon("hgrabber", "CSplitContainer", make_icon(hsplitter_png));
 
 	theme->set_constant("separation", "HBoxContainer", 4 * scale);
 	theme->set_constant("separation", "VBoxContainer", 4 * scale);
+	theme->set_constant("separation", "CBoxContainer", 4 * scale);
+
 	theme->set_constant("margin_left", "MarginContainer", 0 * scale);
 	theme->set_constant("margin_top", "MarginContainer", 0 * scale);
 	theme->set_constant("margin_right", "MarginContainer", 0 * scale);
@@ -894,8 +899,10 @@ void fill_default_theme(Ref<Theme> &theme, const Ref<Font> &default_font, const 
 	theme->set_constant("vseparation", "GridContainer", 4 * scale);
 	theme->set_constant("separation", "HSplitContainer", 12 * scale);
 	theme->set_constant("separation", "VSplitContainer", 12 * scale);
+	theme->set_constant("separation", "CSplitContainer", 12 * scale);
 	theme->set_constant("autohide", "HSplitContainer", 1);
 	theme->set_constant("autohide", "VSplitContainer", 1);
+	theme->set_constant("autohide", "CSplitContainer", 1);
 	theme->set_constant("hseparation", "HFlowContainer", 4 * scale);
 	theme->set_constant("vseparation", "HFlowContainer", 4 * scale);
 	theme->set_constant("hseparation", "VFlowContainer", 4 * scale);

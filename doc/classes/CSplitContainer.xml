@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CSplitContainer" inherits="SplitContainer" version="4.2">
+	<brief_description>
+		Horizontal or vertical split container.
+	</brief_description>
+	<description>
+		Horizontal or vertical split container depending on it's [member mode] setting. See [SplitContainer].
+	</description>
+	<tutorials>
+		<link title="GUI containers">$DOCS_URL/tutorials/ui/gui_containers.md</link>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="mode" type="int" setter="set_mode" getter="get_mode" enum="CSplitContainer.ContainerMode" default="0">
+			Sets whether this [CSplitContainer] will act as a [HSplitContainer] or a [VSplitContainer].
+		</member>
+	</members>
+	<constants>
+		<constant name="CONTAINER_MODE_HORIZONTAL" value="0" enum="ContainerMode">
+			This [CSplitContainer] will act as a [HSplitContainer].
+		</constant>
+		<constant name="CONTAINER_MODE_VERTICAL" value="1" enum="ContainerMode">
+			This [CSplitContainer] will act as a [VSplitContainer].
+		</constant>
+	</constants>
+	<theme_items>
+		<theme_item name="autohide" data_type="constant" type="int" default="1">
+			Boolean value. If 1 ([code]true[/code]), the grabber will hide automatically when it isn't under the cursor. If 0 ([code]false[/code]), it's always visible.
+		</theme_item>
+		<theme_item name="separation" data_type="constant" type="int" default="12">
+			The horizontal or vertical space between the [CSplitContainer]'s elements.
+		</theme_item>
+		<theme_item name="hgrabber" data_type="icon" type="Texture">
+			The icon used for the horizontal grabber drawn in the middle area.
+		</theme_item>
+		<theme_item name="vgrabber" data_type="icon" type="Texture">
+			The icon used for the vertical grabber drawn in the middle area.
+		</theme_item>
+		<theme_item name="bg" data_type="style" type="StyleBox">
+			The background drawn under this control.
+		</theme_item>
+	</theme_items>
+</class>

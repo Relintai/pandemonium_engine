@@ -55,6 +55,25 @@ Control *SplitContainer::_getch(int p_idx) const {
 	return nullptr;
 }
 
+bool SplitContainer::_get_vertical() const {
+	return vertical;
+}
+void SplitContainer::_set_vertical(bool p_vertical) {
+	if (vertical == p_vertical) {
+		return;
+	}
+
+	vertical = p_vertical;
+
+	should_clamp_split_offset = true;
+	queue_sort();
+	minimum_size_changed();
+}
+
+String SplitContainer::get_grabber_theme_constant_name() const {
+	return "grabber";
+}
+
 void SplitContainer::_resort() {
 	int axis = vertical ? 1 : 0;
 
@@ -76,7 +95,7 @@ void SplitContainer::_resort() {
 	bool second_expanded = (vertical ? second->get_v_size_flags() : second->get_h_size_flags()) & SIZE_EXPAND;
 
 	// Determine the separation between items
-	Ref<Texture> g = get_theme_icon("grabber");
+	Ref<Texture> g = get_theme_icon(get_grabber_theme_constant_name());
 	int sep = get_theme_constant("separation");
 	sep = (dragger_visibility != DRAGGER_HIDDEN_COLLAPSED) ? MAX(sep, vertical ? g->get_height() : g->get_width()) : 0;
 
@@ -124,7 +143,7 @@ Size2 SplitContainer::get_minimum_size() const {
 	/* Calculate MINIMUM SIZE */
 
 	Size2i minimum;
-	Ref<Texture> g = get_theme_icon("grabber");
+	Ref<Texture> g = get_theme_icon(get_grabber_theme_constant_name());
 	int sep = get_theme_constant("separation");
 	sep = (dragger_visibility != DRAGGER_HIDDEN_COLLAPSED) ? MAX(sep, vertical ? g->get_height() : g->get_width()) : 0;
 
@@ -180,7 +199,7 @@ void SplitContainer::_notification(int p_what) {
 			}
 
 			int sep = dragger_visibility != DRAGGER_HIDDEN_COLLAPSED ? get_theme_constant("separation") : 0;
-			Ref<Texture> tex = get_theme_icon("grabber");
+			Ref<Texture> tex = get_theme_icon(get_grabber_theme_constant_name());
 			Size2 size = get_size();
 
 			if (vertical) {
@@ -352,4 +371,40 @@ SplitContainer::SplitContainer(bool p_vertical) {
 	dragging = false;
 	collapsed = false;
 	dragger_visibility = DRAGGER_VISIBLE;
+}
+
+CSplitContainer::ContainerMode CSplitContainer::get_mode() const {
+	return _mode;
+}
+void CSplitContainer::set_mode(const ContainerMode p_mode) {
+	if (p_mode == _mode) {
+		return;
+	}
+
+	_mode = p_mode;
+
+	_set_vertical(_mode == CONTAINER_MODE_VERTICAL);
+}
+
+CSplitContainer::CSplitContainer() {
+	_mode = CONTAINER_MODE_HORIZONTAL;
+}
+CSplitContainer::~CSplitContainer() {
+}
+
+String CSplitContainer::get_grabber_theme_constant_name() const {
+	if (_get_vertical()) {
+		return "vgrabber";
+	} else {
+		return "hgrabber";
+	}
+}
+
+void CSplitContainer::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_mode"), &CSplitContainer::get_mode);
+	ClassDB::bind_method(D_METHOD("set_mode", "mode"), &CSplitContainer::set_mode);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "mode", PROPERTY_HINT_ENUM, "Horizontal,Vertical"), "set_mode", "get_mode");
+
+	BIND_ENUM_CONSTANT(CONTAINER_MODE_HORIZONTAL);
+	BIND_ENUM_CONSTANT(CONTAINER_MODE_VERTICAL);
 }

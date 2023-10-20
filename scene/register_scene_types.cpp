@@ -387,6 +387,7 @@ void register_scene_types() {
 	ClassDB::register_virtual_class<SplitContainer>();
 	ClassDB::register_class<HSplitContainer>();
 	ClassDB::register_class<VSplitContainer>();
+	ClassDB::register_class<CSplitContainer>();
 	ClassDB::register_class<GraphNode>();
 	ClassDB::register_class<GraphEdit>();
 

@@ -56,9 +56,14 @@ private:
 
 	Control *_getch(int p_idx) const;
 
+protected:
+	bool _get_vertical() const;
+	void _set_vertical(bool p_vertical);
+
+	virtual String get_grabber_theme_constant_name() const;
+
 	void _resort();
 
-protected:
 	void _gui_input(const Ref<InputEvent> &p_event);
 	void _notification(int p_what);
 	static void _bind_methods();
@@ -83,6 +88,8 @@ public:
 
 VARIANT_ENUM_CAST(SplitContainer::DraggerVisibility);
 
+// ==== HSplitContainer ====
+
 class HSplitContainer : public SplitContainer {
 	GDCLASS(HSplitContainer, SplitContainer);
 
@@ -91,6 +98,8 @@ public:
 			SplitContainer(false) {}
 };
 
+// ==== VSplitContainer ====
+
 class VSplitContainer : public SplitContainer {
 	GDCLASS(VSplitContainer, SplitContainer);
 
@@ -98,5 +107,32 @@ public:
 	VSplitContainer() :
 			SplitContainer(true) {}
 };
+
+// ==== CSplitContainer ====
+
+class CSplitContainer : public SplitContainer {
+	GDCLASS(CSplitContainer, SplitContainer);
+
+public:
+	enum ContainerMode {
+		CONTAINER_MODE_HORIZONTAL = 0,
+		CONTAINER_MODE_VERTICAL,
+	};
+
+	ContainerMode get_mode() const;
+	void set_mode(const ContainerMode p_mode);
+
+	CSplitContainer();
+	~CSplitContainer();
+
+protected:
+	virtual String get_grabber_theme_constant_name() const;
+
+	static void _bind_methods();
+
+	ContainerMode _mode;
+};
+
+VARIANT_ENUM_CAST(CSplitContainer::ContainerMode);
 
 #endif // SPLIT_CONTAINER_H
