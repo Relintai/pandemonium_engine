@@ -65,9 +65,11 @@ void SplitContainer::_set_vertical(bool p_vertical) {
 
 	vertical = p_vertical;
 
-	should_clamp_split_offset = true;
-	queue_sort();
-	minimum_size_changed();
+	if (is_inside_tree()) {
+		should_clamp_split_offset = true;
+		_resort();
+		minimum_size_changed();
+	}
 }
 
 String SplitContainer::get_grabber_theme_constant_name() const {
