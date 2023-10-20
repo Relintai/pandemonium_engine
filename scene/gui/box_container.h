@@ -48,18 +48,6 @@ public:
 		ALIGN_END
 	};
 
-private:
-	bool vertical;
-	AlignMode align;
-
-	void _resort();
-
-protected:
-	void _notification(int p_what);
-
-	static void _bind_methods();
-
-public:
 	void add_spacer(bool p_begin = false);
 
 	void set_alignment(AlignMode p_align);
@@ -68,6 +56,20 @@ public:
 	virtual Size2 get_minimum_size() const;
 
 	BoxContainer(bool p_vertical = false);
+
+protected:
+	bool _get_vertical() const;
+	void _set_vertical(bool p_vertical);
+
+	void _resort();
+
+	void _notification(int p_what);
+
+	static void _bind_methods();
+
+private:
+	bool vertical;
+	AlignMode align;
 };
 
 class HBoxContainer : public BoxContainer {
@@ -89,6 +91,28 @@ public:
 			BoxContainer(true) {}
 };
 
+class CBoxContainer : public BoxContainer {
+	GDCLASS(CBoxContainer, BoxContainer);
+
+public:
+	enum ContainerMode {
+		CONTAINER_MODE_HORIZONTAL = 0,
+		CONTAINER_MODE_VERTICAL,
+	};
+
+	ContainerMode get_mode() const;
+	void set_mode(const ContainerMode p_mode);
+
+	CBoxContainer();
+	~CBoxContainer();
+
+protected:
+	static void _bind_methods();
+
+	ContainerMode _mode;
+};
+
 VARIANT_ENUM_CAST(BoxContainer::AlignMode);
+VARIANT_ENUM_CAST(CBoxContainer::ContainerMode);
 
 #endif // BOX_CONTAINER_H

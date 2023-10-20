@@ -341,6 +341,7 @@ void register_scene_types() {
 	ClassDB::register_virtual_class<BoxContainer>();
 	ClassDB::register_class<HBoxContainer>();
 	ClassDB::register_class<VBoxContainer>();
+	ClassDB::register_class<CBoxContainer>();
 	ClassDB::register_class<GridContainer>();
 	ClassDB::register_class<CenterContainer>();
 	ClassDB::register_class<ScrollContainer>();

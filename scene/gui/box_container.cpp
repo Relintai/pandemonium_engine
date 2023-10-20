@@ -32,6 +32,116 @@
 #include "label.h"
 #include "margin_container.h"
 
+Size2 BoxContainer::get_minimum_size() const {
+	/* Calculate MINIMUM SIZE */
+
+	Size2i minimum;
+	int sep = get_theme_constant("separation"); //,vertical?"VBoxContainer":"HBoxContainer");
+
+	bool first = true;
+
+	for (int i = 0; i < get_child_count(); i++) {
+		Control *c = Object::cast_to<Control>(get_child(i));
+		if (!c) {
+			continue;
+		}
+		if (c->is_set_as_toplevel()) {
+			continue;
+		}
+
+		if (!c->is_visible()) {
+			continue;
+		}
+
+		Size2i size = c->get_combined_minimum_size();
+
+		if (vertical) { /* VERTICAL */
+
+			if (size.width > minimum.width) {
+				minimum.width = size.width;
+			}
+
+			minimum.height += size.height + (first ? 0 : sep);
+
+		} else { /* HORIZONTAL */
+
+			if (size.height > minimum.height) {
+				minimum.height = size.height;
+			}
+
+			minimum.width += size.width + (first ? 0 : sep);
+		}
+
+		first = false;
+	}
+
+	return minimum;
+}
+
+void BoxContainer::set_alignment(AlignMode p_align) {
+	align = p_align;
+	_resort();
+}
+
+BoxContainer::AlignMode BoxContainer::get_alignment() const {
+	return align;
+}
+
+void BoxContainer::add_spacer(bool p_begin) {
+	Control *c = memnew(Control);
+	c->set_mouse_filter(MOUSE_FILTER_PASS); //allow spacer to pass mouse events
+	c->set_meta("is_box_container_spacer", true);
+
+	if (vertical) {
+		c->set_v_size_flags(SIZE_EXPAND_FILL);
+	} else {
+		c->set_h_size_flags(SIZE_EXPAND_FILL);
+	}
+
+	add_child(c);
+	if (p_begin) {
+		move_child(c, 0);
+	}
+}
+
+BoxContainer::BoxContainer(bool p_vertical) {
+	vertical = p_vertical;
+	align = ALIGN_BEGIN;
+	//set_ignore_mouse(true);
+	set_mouse_filter(MOUSE_FILTER_PASS);
+}
+
+bool BoxContainer::_get_vertical() const {
+	return vertical;
+}
+void BoxContainer::_set_vertical(bool p_vertical) {
+	if (vertical == p_vertical) {
+		return;
+	}
+
+	vertical = p_vertical;
+
+	int cc = get_child_count();
+
+	for (int i = 0; i < cc; ++i) {
+		Control *c = Object::cast_to<Control>(get_child(i));
+
+		if (c) {
+			if (c->has_meta("is_box_container_spacer")) {
+				if (vertical) {
+					c->set_v_size_flags(SIZE_EXPAND_FILL);
+					c->set_h_size_flags(SIZE_FILL);
+				} else {
+					c->set_v_size_flags(SIZE_FILL);
+					c->set_h_size_flags(SIZE_EXPAND_FILL);
+				}
+			}
+		}
+	}
+
+	_resort();
+}
+
 void BoxContainer::_resort() {
 	/** First pass, determine minimum size AND amount of stretchable elements */
 
@@ -205,52 +315,6 @@ void BoxContainer::_resort() {
 	}
 }
 
-Size2 BoxContainer::get_minimum_size() const {
-	/* Calculate MINIMUM SIZE */
-
-	Size2i minimum;
-	int sep = get_theme_constant("separation"); //,vertical?"VBoxContainer":"HBoxContainer");
-
-	bool first = true;
-
-	for (int i = 0; i < get_child_count(); i++) {
-		Control *c = Object::cast_to<Control>(get_child(i));
-		if (!c) {
-			continue;
-		}
-		if (c->is_set_as_toplevel()) {
-			continue;
-		}
-
-		if (!c->is_visible()) {
-			continue;
-		}
-
-		Size2i size = c->get_combined_minimum_size();
-
-		if (vertical) { /* VERTICAL */
-
-			if (size.width > minimum.width) {
-				minimum.width = size.width;
-			}
-
-			minimum.height += size.height + (first ? 0 : sep);
-
-		} else { /* HORIZONTAL */
-
-			if (size.height > minimum.height) {
-				minimum.height = size.height;
-			}
-
-			minimum.width += size.width + (first ? 0 : sep);
-		}
-
-		first = false;
-	}
-
-	return minimum;
-}
-
 void BoxContainer::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_SORT_CHILDREN: {
@@ -260,38 +324,6 @@ void BoxContainer::_notification(int p_what) {
 			minimum_size_changed();
 		} break;
 	}
-}
-
-void BoxContainer::set_alignment(AlignMode p_align) {
-	align = p_align;
-	_resort();
-}
-
-BoxContainer::AlignMode BoxContainer::get_alignment() const {
-	return align;
-}
-
-void BoxContainer::add_spacer(bool p_begin) {
-	Control *c = memnew(Control);
-	c->set_mouse_filter(MOUSE_FILTER_PASS); //allow spacer to pass mouse events
-
-	if (vertical) {
-		c->set_v_size_flags(SIZE_EXPAND_FILL);
-	} else {
-		c->set_h_size_flags(SIZE_EXPAND_FILL);
-	}
-
-	add_child(c);
-	if (p_begin) {
-		move_child(c, 0);
-	}
-}
-
-BoxContainer::BoxContainer(bool p_vertical) {
-	vertical = p_vertical;
-	align = ALIGN_BEGIN;
-	//set_ignore_mouse(true);
-	set_mouse_filter(MOUSE_FILTER_PASS);
 }
 
 void BoxContainer::_bind_methods() {
@@ -319,4 +351,32 @@ MarginContainer *VBoxContainer::add_margin_child(const String &p_label, Control 
 	}
 
 	return mc;
+}
+
+CBoxContainer::ContainerMode CBoxContainer::get_mode() const {
+	return _mode;
+}
+void CBoxContainer::set_mode(const ContainerMode p_mode) {
+	if (p_mode == _mode) {
+		return;
+	}
+
+	_mode = p_mode;
+
+	_set_vertical(_mode == CONTAINER_MODE_VERTICAL);
+}
+
+CBoxContainer::CBoxContainer() {
+	_mode = CONTAINER_MODE_HORIZONTAL;
+}
+CBoxContainer::~CBoxContainer() {
+}
+
+void CBoxContainer::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_mode"), &CBoxContainer::get_mode);
+	ClassDB::bind_method(D_METHOD("set_mode", "mode"), &CBoxContainer::set_mode);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "mode", PROPERTY_HINT_ENUM, "Horizontal,Vertical"), "set_mode", "get_mode");
+
+	BIND_ENUM_CONSTANT(CONTAINER_MODE_HORIZONTAL);
+	BIND_ENUM_CONSTANT(CONTAINER_MODE_VERTICAL);
 }
