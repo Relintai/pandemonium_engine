@@ -83,7 +83,16 @@ public:
 	enum DisplayMode {
 		DISPLAY_MODE_TREE_ONLY,
 		DISPLAY_MODE_SPLIT,
-		DISPLAY_MODE_WIDE,
+	};
+
+	enum SplitMode {
+		SPLIT_MODE_VERTICAL,
+		SPLIT_MODE_HORIZONTAL,
+	};
+
+	enum DockMode {
+		DOCK_MODE_DOCK,
+		DOCK_MODE_BOTTOM_BAR,
 	};
 
 	enum FileSortOption {
@@ -130,8 +139,7 @@ private:
 	VBoxContainer *scanning_vb;
 	ProgressBar *scanning_progress;
 
-	HSplitContainer *wide_hsplit_box;
-	VSplitContainer *split_box;
+	CSplitContainer *split_box;
 
 	VBoxContainer *file_list_vb;
 
@@ -161,6 +169,11 @@ private:
 	FileListDisplayMode file_list_display_mode;
 	DisplayMode display_mode;
 	DisplayMode old_display_mode;
+
+	DockMode dock_mode;
+	DockMode applied_dock_mode;
+
+	SplitMode split_mode;
 
 	PopupMenu *file_list_popup;
 	PopupMenu *tree_popup;
@@ -345,18 +358,10 @@ public:
 	void fix_dependencies(const String &p_for_file);
 
 	int get_split_offset() {
-		if (split_box) {
-			return split_box->get_split_offset();
-		} else {
-			return wide_hsplit_box->get_split_offset();
-		}
+		return split_box->get_split_offset();
 	}
 	void set_split_offset(int p_offset) {
-		if (split_box) {
-			split_box->set_split_offset(p_offset);
-		} else {
-			wide_hsplit_box->set_split_offset(p_offset);
-		}
+		split_box->set_split_offset(p_offset);
 	}
 	void select_file(const String &p_file);
 
@@ -368,6 +373,15 @@ public:
 
 	void set_file_list_display_mode(FileListDisplayMode p_mode);
 	FileListDisplayMode get_file_list_display_mode() { return file_list_display_mode; }
+
+	void set_dock_mode(DockMode p_dock_mode);
+	DockMode get_dock_mode() { return dock_mode; }
+
+	void set_applied_dock_mode(DockMode p_dock_mode);
+	DockMode get_applied_dock_mode() { return applied_dock_mode; }
+
+	void set_split_mode(SplitMode p_split_mode);
+	SplitMode get_split_mode();
 
 	int add_custom_popup_creation_entry(const String &entry_text, const String &theme_icon_name = "", const String &theme_icon_category = "");
 	void remove_custom_popup_creation_entry(const int id);

@@ -4547,6 +4547,7 @@ void EditorNode::_save_docks_to_config(Ref<ConfigFile> p_layout, const String &p
 	p_layout->set_value(p_section, "dock_filesystem_split", filesystem_dock->get_split_offset());
 	p_layout->set_value(p_section, "dock_filesystem_display_mode", filesystem_dock->get_display_mode());
 	p_layout->set_value(p_section, "dock_filesystem_file_list_display_mode", filesystem_dock->get_file_list_display_mode());
+	p_layout->set_value(p_section, "dock_filesystem_split_mode", filesystem_dock->get_split_mode());
 
 	for (int i = 0; i < vsplits.size(); i++) {
 		if (vsplits[i]->is_visible_in_tree()) {
@@ -4732,19 +4733,24 @@ void EditorNode::_load_docks_from_config(Ref<ConfigFile> p_layout, const String 
 		}
 	}
 
-	if (p_layout->has_section_key(p_section, "dock_filesystem_split")) {
-		int fs_split_ofs = p_layout->get_value(p_section, "dock_filesystem_split");
-		filesystem_dock->set_split_offset(fs_split_ofs);
-	}
-
 	if (p_layout->has_section_key(p_section, "dock_filesystem_display_mode")) {
 		FileSystemDock::DisplayMode dock_filesystem_display_mode = FileSystemDock::DisplayMode(int(p_layout->get_value(p_section, "dock_filesystem_display_mode")));
 		filesystem_dock->set_display_mode(dock_filesystem_display_mode);
 	}
 
+	if (p_layout->has_section_key(p_section, "dock_filesystem_split_mode")) {
+		FileSystemDock::SplitMode dock_filesystem_split_mode = FileSystemDock::SplitMode(int(p_layout->get_value(p_section, "dock_filesystem_split_mode")));
+		filesystem_dock->set_split_mode(dock_filesystem_split_mode);
+	}
+
 	if (p_layout->has_section_key(p_section, "dock_filesystem_file_list_display_mode")) {
 		FileSystemDock::FileListDisplayMode dock_filesystem_file_list_display_mode = FileSystemDock::FileListDisplayMode(int(p_layout->get_value(p_section, "dock_filesystem_file_list_display_mode")));
 		filesystem_dock->set_file_list_display_mode(dock_filesystem_file_list_display_mode);
+	}
+
+	if (p_layout->has_section_key(p_section, "dock_filesystem_split")) {
+		int fs_split_ofs = p_layout->get_value(p_section, "dock_filesystem_split");
+		filesystem_dock->set_split_offset(fs_split_ofs);
 	}
 
 	for (int i = 0; i < vsplits.size(); i++) {
@@ -6841,7 +6847,7 @@ EditorNode::EditorNode() {
 	filesystem_dock->connect("instance", this, "_instance_request");
 	filesystem_dock->connect("display_mode_changed", this, "_save_docks");
 
-	bool filesystem_dock_wide = EDITOR_GET("docks/filesystem/wide_bottom_panel");
+	int filesystem_dock_mode = EDITOR_GET("docks/filesystem/dock_mode");
 
 	// Scene: Top left
 	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(scene_tree_dock);
@@ -6851,10 +6857,13 @@ EditorNode::EditorNode() {
 	dock_slot[DOCK_SLOT_LEFT_UR]->add_child(import_dock);
 	dock_slot[DOCK_SLOT_LEFT_UR]->set_tab_title(import_dock->get_index(), TTR("Import"));
 
-	if (!filesystem_dock_wide) {
+	if (filesystem_dock_mode == static_cast<int>(FileSystemDock::DOCK_MODE_DOCK)) {
 		// FileSystem: Bottom left
 		dock_slot[DOCK_SLOT_LEFT_BR]->add_child(filesystem_dock);
 		dock_slot[DOCK_SLOT_LEFT_BR]->set_tab_title(filesystem_dock->get_index(), TTR("FileSystem"));
+
+		filesystem_dock->set_dock_mode(FileSystemDock::DOCK_MODE_DOCK);
+		filesystem_dock->set_applied_dock_mode(FileSystemDock::DOCK_MODE_DOCK);
 	}
 
 	// Inspector: Full height right
@@ -6957,11 +6966,14 @@ EditorNode::EditorNode() {
 	bottom_panel_raise->set_toggle_mode(true);
 	bottom_panel_raise->connect("toggled", this, "_bottom_panel_raise_toggled");
 
-	if (filesystem_dock_wide) {
+	if (filesystem_dock_mode == static_cast<int>(FileSystemDock::DOCK_MODE_BOTTOM_BAR)) {
 		filesystem_dock->set_custom_minimum_size(Size2(0, 230 * EDSCALE));
 		ToolButton *fs_button = add_bottom_panel_item(TTR("FileSystem"), filesystem_dock);
 		filesystem_dock->set_bottom_panel_tool_button(fs_button);
 		fs_button->set_shortcut(ED_SHORTCUT("editor/toggle_filesystem_panel", TTR("Toggle FileSystem Panel"), KEY_MASK_CMD | KEY_MASK_ALT | KEY_QUOTELEFT));
+
+		filesystem_dock->set_dock_mode(FileSystemDock::DOCK_MODE_BOTTOM_BAR);
+		filesystem_dock->set_applied_dock_mode(FileSystemDock::DOCK_MODE_BOTTOM_BAR);
 	}
 
 	log = memnew(EditorLog);

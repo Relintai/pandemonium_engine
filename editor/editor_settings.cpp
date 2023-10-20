@@ -427,8 +427,12 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("docks/filesystem/thumbnail_size", 64);
 	hints["docks/filesystem/thumbnail_size"] = PropertyInfo(Variant::INT, "docks/filesystem/thumbnail_size", PROPERTY_HINT_RANGE, "32,128,16");
 	_initial_set("docks/filesystem/always_show_folders", true);
-	_initial_set("docks/filesystem/wide_bottom_panel", false);
-	hints["docks/filesystem/wide_bottom_panel"] = PropertyInfo(Variant::BOOL, "docks/filesystem/wide_bottom_panel", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);
+
+	_initial_set("docks/filesystem/dock_mode", 0);
+	hints["docks/filesystem/dock_mode"] = PropertyInfo(Variant::INT, "docks/filesystem/dock_mode", PROPERTY_HINT_ENUM, "Dock,Bottom Bar", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);
+
+	_initial_set("docks/filesystem/split_mode", 0);
+	hints["docks/filesystem/split_mode"] = PropertyInfo(Variant::INT, "docks/filesystem/split_mode", PROPERTY_HINT_ENUM, "Vertical,Horizontal", PROPERTY_USAGE_DEFAULT);
 
 	// Property editor
 	_initial_set("docks/property_editor/auto_refresh_interval", 0.3);
@@ -641,9 +645,9 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("editors/visual_editors/minimap_opacity", 0.85);
 	hints["editors/visual_editors/minimap_opacity"] = PropertyInfo(Variant::REAL, "editors/visual_editors/minimap_opacity", PROPERTY_HINT_RANGE, "0.0,1.0,0.01", PROPERTY_USAGE_DEFAULT);
 
-/* Run */
+	/* Run */
 
-// Window placement
+	// Window placement
 	_initial_set("run/window_placement/rect", 1);
 	hints["run/window_placement/rect"] = PropertyInfo(Variant::INT, "run/window_placement/rect", PROPERTY_HINT_ENUM, "Top Left,Centered,Custom Position,Force Maximized,Force Fullscreen");
 	String screen_hints = "Same as Editor,Previous Monitor,Next Monitor";

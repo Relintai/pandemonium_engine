@@ -190,11 +190,6 @@ bool FileSystemDock::_create_tree(TreeItem *p_parent, EditorFileSystemDirectory 
 			subdirectory_item->select(0);
 			subdirectory_item->set_as_cursor(0);
 		}
-	} else if (display_mode == DISPLAY_MODE_WIDE) {
-		if (lpath.get_base_dir() == path.get_base_dir()) {
-			subdirectory_item->select(0);
-			subdirectory_item->set_as_cursor(0);
-		}
 	}
 
 	if (searched_string.length() > 0) {
@@ -334,34 +329,17 @@ void FileSystemDock::_update_tree(const Vector<String> &p_uncollapsed_paths, boo
 }
 
 void FileSystemDock::set_display_mode(DisplayMode p_display_mode) {
-	if (display_mode != DISPLAY_MODE_WIDE && p_display_mode != DISPLAY_MODE_WIDE) {
-		display_mode = p_display_mode;
-		_update_display_mode(false);
-	}
+	display_mode = p_display_mode;
+	_update_display_mode(false);
 }
 
 void FileSystemDock::_update_display_mode(bool p_force) {
-	if (old_display_mode == DISPLAY_MODE_WIDE || display_mode == DISPLAY_MODE_WIDE) {
-		// Changing between wide and normal needs restart, ignore
-
-		if (p_force || old_display_mode != display_mode) {
-			tree->ensure_cursor_is_visible();
-			_update_tree(_compute_uncollapsed_paths());
-			_update_file_list(true);
-		}
-
-		old_display_mode = display_mode;
-
-		return;
-	}
-
 	// Compute the new display mode.
 	if (p_force || old_display_mode != display_mode) {
+		button_toggle_display_mode->set_pressed_no_signal(display_mode == DISPLAY_MODE_SPLIT);
+
 		switch (display_mode) {
 			case DISPLAY_MODE_TREE_ONLY:
-				button_toggle_display_mode->set_pressed(display_mode == DISPLAY_MODE_SPLIT);
-				button_toggle_display_mode->show();
-
 				tree->show();
 				tree->set_v_size_flags(SIZE_EXPAND_FILL);
 				toolbar2_hbc->show();
@@ -371,9 +349,6 @@ void FileSystemDock::_update_display_mode(bool p_force) {
 				break;
 
 			case DISPLAY_MODE_SPLIT:
-				button_toggle_display_mode->set_pressed(display_mode == DISPLAY_MODE_SPLIT);
-				button_toggle_display_mode->show();
-
 				tree->show();
 				tree->set_v_size_flags(SIZE_EXPAND_FILL);
 				tree->ensure_cursor_is_visible();
@@ -382,9 +357,6 @@ void FileSystemDock::_update_display_mode(bool p_force) {
 
 				file_list_vb->show();
 				_update_file_list(true);
-				break;
-
-			case DISPLAY_MODE_WIDE:
 				break;
 		}
 		old_display_mode = display_mode;
@@ -1038,11 +1010,9 @@ void FileSystemDock::_preview_invalidated(const String &p_path) {
 void FileSystemDock::_fs_changed() {
 	button_hist_prev->set_disabled(history_pos == 0);
 	button_hist_next->set_disabled(history_pos == history.size() - 1);
-	scanning_vb->hide();
 
-	if (split_box) {
-		split_box->show();
-	}
+	scanning_vb->hide();
+	split_box->show();
 
 	if (tree->is_visible()) {
 		_update_tree(_compute_uncollapsed_paths());
@@ -1059,11 +1029,9 @@ void FileSystemDock::_set_scanning_mode() {
 	button_hist_prev->set_disabled(true);
 	button_hist_next->set_disabled(true);
 
-	if (split_box) {
-		split_box->hide();
-	}
-
+	split_box->hide();
 	scanning_vb->show();
+
 	set_process(true);
 	if (EditorFileSystem::get_singleton()->is_scanning()) {
 		scanning_progress->set_value(EditorFileSystem::get_singleton()->get_scanning_progress() * 100);
@@ -1994,8 +1962,6 @@ void FileSystemDock::_focus_current_search_box() {
 		current_search_box = tree_search_box;
 	} else if (display_mode == DISPLAY_MODE_SPLIT) {
 		current_search_box = file_list_search_box;
-	} else if (display_mode == DISPLAY_MODE_WIDE) {
-		current_search_box = file_list_search_box;
 	}
 
 	if (current_search_box) {
@@ -2027,10 +1993,6 @@ void FileSystemDock::_search_changed(const String &p_text, const Control *p_from
 			_update_file_list(false);
 			_update_tree(searched_string.length() == 0 ? uncollapsed_paths_before_search : Vector<String>(), false, false, unfold_path);
 		} break;
-		case DISPLAY_MODE_WIDE: {
-			_update_file_list(false);
-			_update_tree(searched_string.length() == 0 ? uncollapsed_paths_before_search : Vector<String>(), false, false, unfold_path);
-		} break;
 	}
 }
 
@@ -2040,11 +2002,6 @@ void FileSystemDock::_rescan() {
 }
 
 void FileSystemDock::_toggle_split_mode(bool p_active) {
-	if (display_mode == DISPLAY_MODE_WIDE) {
-		//shouldn't happen
-		return;
-	}
-
 	set_display_mode(p_active ? DISPLAY_MODE_SPLIT : DISPLAY_MODE_TREE_ONLY);
 	emit_signal("display_mode_changed");
 }
@@ -2063,6 +2020,27 @@ void FileSystemDock::set_file_list_display_mode(FileListDisplayMode p_mode) {
 	}
 
 	_toggle_file_display();
+}
+
+void FileSystemDock::set_dock_mode(DockMode p_dock_mode) {
+	dock_mode = p_dock_mode;
+}
+
+void FileSystemDock::set_applied_dock_mode(DockMode p_dock_mode) {
+	applied_dock_mode = p_dock_mode;
+}
+
+void FileSystemDock::set_split_mode(SplitMode p_split_mode) {
+	split_mode = p_split_mode;
+
+	if (split_mode == SPLIT_MODE_HORIZONTAL) {
+		split_box->set_mode(CSplitContainer::CONTAINER_MODE_HORIZONTAL);
+	} else {
+		split_box->set_mode(CSplitContainer::CONTAINER_MODE_VERTICAL);
+	}
+}
+FileSystemDock::SplitMode FileSystemDock::get_split_mode() {
+	return split_mode;
 }
 
 int FileSystemDock::add_custom_popup_creation_entry(const String &entry_text, const String &theme_icon_name, const String &theme_icon_category) {
@@ -2096,7 +2074,7 @@ void FileSystemDock::remove_custom_popup_creation_entry(const int id) {
 }
 
 void FileSystemDock::ensure_visible() {
-	if (display_mode == DISPLAY_MODE_WIDE) {
+	if (applied_dock_mode == DOCK_MODE_BOTTOM_BAR) {
 		if (bottom_panel_tool_button) {
 			bottom_panel_tool_button->set_pressed(true);
 		}
@@ -2910,7 +2888,7 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 #endif
 	ED_SHORTCUT("filesystem_dock/open_search", TTR("Focus the search box"), KEY_MASK_CMD | KEY_F);
 
-	bool wide = EDITOR_DEF_RST("docks/filesystem/wide_bottom_panel", false);
+	bool wide = static_cast<SplitMode>(static_cast<int>(EDITOR_GET("docks/filesystem/dock_mode")));
 
 	VBoxContainer *top_vbc = memnew(VBoxContainer);
 	add_child(top_vbc);
@@ -2952,10 +2930,6 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	button_toggle_display_mode->set_tooltip(TTR("Toggle Split Mode"));
 	toolbar_hbc->add_child(button_toggle_display_mode);
 
-	if (wide) {
-		button_toggle_display_mode->hide();
-	}
-
 	toolbar2_hbc = memnew(HBoxContainer);
 	toolbar2_hbc->add_theme_constant_override("separation", 0);
 	top_vbc->add_child(toolbar2_hbc);
@@ -2969,10 +2943,6 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	tree_button_sort = _create_file_menu_button();
 	toolbar2_hbc->add_child(tree_button_sort);
 
-	if (wide) {
-		toolbar2_hbc->hide();
-	}
-
 	file_list_popup = memnew(PopupMenu);
 	file_list_popup->set_hide_on_window_lose_focus(true);
 	add_child(file_list_popup);
@@ -2981,22 +2951,10 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	tree_popup->set_hide_on_window_lose_focus(true);
 	add_child(tree_popup);
 
-	wide_hsplit_box = NULL;
-	split_box = NULL;
-	SplitContainer *split_container = NULL;
-
-	if (!wide) {
-		split_box = memnew(VSplitContainer);
-		split_box->set_v_size_flags(SIZE_EXPAND_FILL);
-		add_child(split_box);
-		split_container = split_box;
-	} else {
-		wide_hsplit_box = memnew(HSplitContainer);
-		wide_hsplit_box->set_v_size_flags(SIZE_EXPAND_FILL);
-		wide_hsplit_box->set_h_size_flags(SIZE_EXPAND_FILL);
-		add_child(wide_hsplit_box);
-		split_container = wide_hsplit_box;
-	}
+	split_box = memnew(CSplitContainer);
+	split_box->set_v_size_flags(SIZE_EXPAND_FILL);
+	split_box->set_h_size_flags(SIZE_EXPAND_FILL);
+	add_child(split_box);
 
 	tree = memnew(Tree);
 
@@ -3005,7 +2963,7 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	tree->set_allow_rmb_select(true);
 	tree->set_select_mode(Tree::SELECT_MULTI);
 	tree->set_custom_minimum_size(Size2(0, 15 * EDSCALE));
-	split_container->add_child(tree);
+	split_box->add_child(tree);
 
 	tree->connect("item_activated", this, "_tree_activate_file");
 	tree->connect("multi_selected", this, "_tree_multi_selected");
@@ -3016,7 +2974,7 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 
 	file_list_vb = memnew(VBoxContainer);
 	file_list_vb->set_v_size_flags(SIZE_EXPAND_FILL);
-	split_container->add_child(file_list_vb);
+	split_box->add_child(file_list_vb);
 
 	path_hb = memnew(HBoxContainer);
 	file_list_vb->add_child(path_hb);
@@ -3137,16 +3095,25 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	history.push_back("res://");
 
 	if (wide) {
-		display_mode = DISPLAY_MODE_WIDE;
-		old_display_mode = DISPLAY_MODE_WIDE;
+		display_mode = DISPLAY_MODE_SPLIT;
+		old_display_mode = DISPLAY_MODE_SPLIT;
+		split_mode = SPLIT_MODE_VERTICAL;
 	} else {
 		display_mode = DISPLAY_MODE_TREE_ONLY;
 		old_display_mode = DISPLAY_MODE_TREE_ONLY;
+		split_mode = SPLIT_MODE_HORIZONTAL;
 	}
+
+	set_split_mode(split_mode);
+
+	_update_display_mode(true);
 
 	file_list_display_mode = FILE_LIST_DISPLAY_THUMBNAILS;
 
 	always_show_folders = false;
+
+	dock_mode = DOCK_MODE_DOCK;
+	applied_dock_mode = DOCK_MODE_DOCK;
 }
 
 FileSystemDock::~FileSystemDock() {
