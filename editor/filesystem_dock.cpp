@@ -470,6 +470,10 @@ void FileSystemDock::_notification(int p_what) {
 			SplitMode new_split_mode = SplitMode(int(EditorSettings::get_singleton()->get("docks/filesystem/split_mode")));
 			if (new_split_mode != split_mode) {
 				set_split_mode(new_split_mode);
+
+				if (split_box->get_split_offset() < 100 * EDSCALE) {
+					split_box->set_split_offset(100 * EDSCALE);
+				}
 			}
 
 			// Change full tree mode.
@@ -3112,6 +3116,8 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	set_split_mode(split_mode);
 
 	_update_display_mode(true);
+
+	split_box->set_split_offset(200 * EDSCALE);
 
 	file_list_display_mode = FILE_LIST_DISPLAY_THUMBNAILS;
 
