@@ -31,15 +31,15 @@
 #ifndef NATIVESCRIPT_H
 #define NATIVESCRIPT_H
 
-#include "core/io/resource_loader.h"
-#include "core/io/resource_saver.h"
 #include "core/containers/oa_hash_map.h"
 #include "core/containers/ordered_hash_map.h"
-#include "core/os/thread_safe.h"
-#include "core/object/resource.h"
-#include "core/os/safe_refcount.h"
-#include "core/object/script_language.h"
 #include "core/containers/self_list.h"
+#include "core/io/resource_loader.h"
+#include "core/io/resource_saver.h"
+#include "core/object/resource.h"
+#include "core/object/script_language.h"
+#include "core/os/safe_refcount.h"
+#include "core/os/thread_safe.h"
 #include "scene/main/node.h"
 
 #include "../gdnative.h"
@@ -338,6 +338,7 @@ public:
 	virtual void profiling_stop();
 	virtual int profiling_get_accumulated_data(ProfilingInfo *p_info_arr, int p_info_max);
 	virtual int profiling_get_frame_data(ProfilingInfo *p_info_arr, int p_info_max);
+	virtual bool has_delayed_script_class_metadata() const { return true; }
 
 	int register_binding_functions(pandemonium_instance_binding_functions p_binding_functions);
 	void unregister_binding_functions(int p_idx);
