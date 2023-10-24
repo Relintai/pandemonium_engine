@@ -7,13 +7,13 @@ void LoggerBackend::log_trace(const String &str) {
 	call("_log_trace", str);
 }
 void LoggerBackend::log_message(const String &str) {
-	call("_log_trace", str);
+	call("_log_message", str);
 }
 void LoggerBackend::log_warning(const String &str) {
-	call("_log_trace", str);
+	call("_log_warning", str);
 }
 void LoggerBackend::log_error(const String &str) {
-	call("_log_trace", str);
+	call("_log_error", str);
 }
 
 void LoggerBackend::_log_trace(const String &str) {
@@ -26,7 +26,7 @@ void LoggerBackend::_log_warning(const String &str) {
 	print_line(str);
 }
 void LoggerBackend::_log_error(const String &str) {
-	print_line(str);
+	print_error(str);
 }
 
 LoggerBackend::LoggerBackend() {

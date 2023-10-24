@@ -75,7 +75,7 @@ void PLogger::log_message(const String &str) {
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_message(s);
 }
 void PLogger::log_message(const char *str) {
 	if (_log_level > LOG_LEVEL_MESSAGE) {
@@ -87,7 +87,7 @@ void PLogger::log_message(const char *str) {
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_message(s);
 }
 void PLogger::log_message(const char *p_function, const char *p_file, int p_line, const char *str) {
 	if (_log_level > LOG_LEVEL_MESSAGE) {
@@ -105,7 +105,7 @@ void PLogger::log_message(const char *p_function, const char *p_file, int p_line
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_message(s);
 }
 void PLogger::log_message(const char *p_function, const char *p_file, int p_line, const String &str) {
 	if (_log_level > LOG_LEVEL_MESSAGE) {
@@ -123,7 +123,7 @@ void PLogger::log_message(const char *p_function, const char *p_file, int p_line
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_message(s);
 }
 
 void PLogger::log_warning(const String &str) {
@@ -136,7 +136,7 @@ void PLogger::log_warning(const String &str) {
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_warning(s);
 }
 void PLogger::log_warning(const char *str) {
 	if (_log_level > LOG_LEVEL_WARNING) {
@@ -148,7 +148,7 @@ void PLogger::log_warning(const char *str) {
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_warning(s);
 }
 void PLogger::log_warning(const char *p_function, const char *p_file, int p_line, const char *str) {
 	if (_log_level > LOG_LEVEL_WARNING) {
@@ -166,7 +166,7 @@ void PLogger::log_warning(const char *p_function, const char *p_file, int p_line
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_warning(s);
 }
 void PLogger::log_warning(const char *p_function, const char *p_file, int p_line, const String &str) {
 	if (_log_level > LOG_LEVEL_WARNING) {
@@ -184,7 +184,7 @@ void PLogger::log_warning(const char *p_function, const char *p_file, int p_line
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_warning(s);
 }
 
 void PLogger::log_error(const String &str) {
@@ -197,7 +197,7 @@ void PLogger::log_error(const String &str) {
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_error(s);
 }
 void PLogger::log_error(const char *str) {
 	if (_log_level > LOG_LEVEL_ERROR) {
@@ -209,7 +209,7 @@ void PLogger::log_error(const char *str) {
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_error(s);
 }
 void PLogger::log_error(const char *p_function, const char *p_file, int p_line, const char *str) {
 	if (_log_level > LOG_LEVEL_ERROR) {
@@ -227,7 +227,7 @@ void PLogger::log_error(const char *p_function, const char *p_file, int p_line, 
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_error(s);
 }
 void PLogger::log_error(const char *p_function, const char *p_file, int p_line, const String &str) {
 	if (_log_level > LOG_LEVEL_ERROR) {
@@ -245,7 +245,7 @@ void PLogger::log_error(const char *p_function, const char *p_file, int p_line, 
 	s += str;
 	//s += "\n";
 
-	do_log_trace(s);
+	do_log_error(s);
 }
 
 void PLogger::do_log_trace(const String &str) {
@@ -276,7 +276,8 @@ void PLogger::do_log_error(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_error(str);
 	} else {
-		print_line(str);
+		ERR_PRINT(str);
+		//print_error(str);
 	}
 }
 
