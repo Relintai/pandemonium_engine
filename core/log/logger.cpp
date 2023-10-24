@@ -288,5 +288,5 @@ void PLogger::set_log_level(const LogLevel p_log_level) {
 	_log_level = p_log_level;
 }
 
-PLogger::LogLevel PLogger::_log_level = LOG_LEVEL_TRACE;
+PLogger::LogLevel PLogger::_log_level = LOG_LEVEL_MESSAGE;
 Ref<LoggerBackend> PLogger::_backend;
