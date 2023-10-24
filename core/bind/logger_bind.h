@@ -13,6 +13,14 @@ class _PLogger : public Object {
 	GDCLASS(_PLogger, Object);
 
 public:
+	enum LogLevel {
+		LOG_LEVEL_TRACE = 0,
+		LOG_LEVEL_MESSAGE,
+		LOG_LEVEL_WARNING,
+		LOG_LEVEL_ERROR,
+		LOG_LEVEL_NONE,
+	};
+
 	Ref<LoggerBackend> get_backend();
 	void set_backend(const Ref<LoggerBackend> &backend);
 
@@ -20,6 +28,9 @@ public:
 	void log_message(const String &str);
 	void log_warning(const String &str);
 	void log_error(const String &str);
+	
+	LogLevel get_log_level();
+	void set_log_level(const LogLevel p_log_level);
 
 	static _PLogger *get_singleton();
 
@@ -31,5 +42,7 @@ protected:
 
 	static _PLogger *_self;
 };
+
+VARIANT_ENUM_CAST(_PLogger::LogLevel);
 
 #endif

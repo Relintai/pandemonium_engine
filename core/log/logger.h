@@ -23,6 +23,14 @@ class String;
 
 class PLogger : public Object {
 public:
+	enum LogLevel {
+		LOG_LEVEL_TRACE = 0,
+		LOG_LEVEL_MESSAGE,
+		LOG_LEVEL_WARNING,
+		LOG_LEVEL_ERROR,
+		LOG_LEVEL_NONE,
+	};
+
 	static void log_trace(const String &str);
 	static void log_trace(const char *str);
 	static void log_trace(const char *p_function, const char *p_file, int p_line, const String &str);
@@ -47,7 +55,11 @@ public:
 	static void do_log_message(const String &str);
 	static void do_log_warning(const String &str);
 	static void do_log_error(const String &str);
+	
+	static LogLevel get_log_level();
+	static void set_log_level(const LogLevel p_log_level);
 
+	static LogLevel _log_level;
 	static Ref<LoggerBackend> _backend;
 };
 

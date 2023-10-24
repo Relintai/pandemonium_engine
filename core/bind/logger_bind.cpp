@@ -26,6 +26,13 @@ void _PLogger::log_error(const String &str) {
 	PLogger::log_error(str);
 }
 
+_PLogger::LogLevel _PLogger::get_log_level() {
+	return static_cast<LogLevel>(static_cast<int>(PLogger::get_log_level()));
+}
+void _PLogger::set_log_level(const LogLevel p_log_level) {
+	PLogger::set_log_level(static_cast<PLogger::LogLevel>(static_cast<int>(p_log_level)));
+}
+
 _PLogger *_PLogger::get_singleton() {
 	return _self;
 }
@@ -46,6 +53,16 @@ void _PLogger::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("log_message", "str"), &_PLogger::log_message);
 	ClassDB::bind_method(D_METHOD("log_warning", "str"), &_PLogger::log_warning);
 	ClassDB::bind_method(D_METHOD("log_error", "str"), &_PLogger::log_error);
+
+	ClassDB::bind_method(D_METHOD("get_log_level"), &_PLogger::get_log_level);
+	ClassDB::bind_method(D_METHOD("set_log_level", "log_level"), &_PLogger::set_log_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "log_level", PROPERTY_HINT_ENUM, "Trace,Message,Warning,Error,None"), "set_log_level", "get_log_level");
+
+	BIND_ENUM_CONSTANT(LOG_LEVEL_TRACE);
+	BIND_ENUM_CONSTANT(LOG_LEVEL_MESSAGE);
+	BIND_ENUM_CONSTANT(LOG_LEVEL_WARNING);
+	BIND_ENUM_CONSTANT(LOG_LEVEL_ERROR);
+	BIND_ENUM_CONSTANT(LOG_LEVEL_NONE);
 }
 
 _PLogger *_PLogger::_self = nullptr;

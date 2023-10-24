@@ -5,6 +5,10 @@
 #include "core/typedefs.h"
 
 void PLogger::log_trace(const String &str) {
+	if (_log_level > LOG_LEVEL_TRACE) {
+		return;
+	}
+
 	String s;
 	s += "T ";
 	s += str;
@@ -13,6 +17,10 @@ void PLogger::log_trace(const String &str) {
 	do_log_trace(s);
 }
 void PLogger::log_trace(const char *str) {
+	if (_log_level > LOG_LEVEL_TRACE) {
+		return;
+	}
+
 	String s;
 	s += "T ";
 	s += str;
@@ -21,6 +29,10 @@ void PLogger::log_trace(const char *str) {
 	do_log_trace(s);
 }
 void PLogger::log_trace(const char *p_function, const char *p_file, int p_line, const char *str) {
+	if (_log_level > LOG_LEVEL_TRACE) {
+		return;
+	}
+
 	String s;
 	s += "T | ";
 	s += p_file;
@@ -35,6 +47,10 @@ void PLogger::log_trace(const char *p_function, const char *p_file, int p_line, 
 	do_log_trace(s);
 }
 void PLogger::log_trace(const char *p_function, const char *p_file, int p_line, const String &str) {
+	if (_log_level > LOG_LEVEL_TRACE) {
+		return;
+	}
+
 	String s;
 	s += "T | ";
 	s += p_file;
@@ -50,6 +66,10 @@ void PLogger::log_trace(const char *p_function, const char *p_file, int p_line, 
 }
 
 void PLogger::log_message(const String &str) {
+	if (_log_level > LOG_LEVEL_MESSAGE) {
+		return;
+	}
+
 	String s;
 	s += "M ";
 	s += str;
@@ -58,6 +78,10 @@ void PLogger::log_message(const String &str) {
 	do_log_trace(s);
 }
 void PLogger::log_message(const char *str) {
+	if (_log_level > LOG_LEVEL_MESSAGE) {
+		return;
+	}
+
 	String s;
 	s += "M ";
 	s += str;
@@ -66,6 +90,10 @@ void PLogger::log_message(const char *str) {
 	do_log_trace(s);
 }
 void PLogger::log_message(const char *p_function, const char *p_file, int p_line, const char *str) {
+	if (_log_level > LOG_LEVEL_MESSAGE) {
+		return;
+	}
+
 	String s;
 	s += "M | ";
 	s += p_file;
@@ -80,6 +108,10 @@ void PLogger::log_message(const char *p_function, const char *p_file, int p_line
 	do_log_trace(s);
 }
 void PLogger::log_message(const char *p_function, const char *p_file, int p_line, const String &str) {
+	if (_log_level > LOG_LEVEL_MESSAGE) {
+		return;
+	}
+
 	String s;
 	s += "M | ";
 	s += p_file;
@@ -95,6 +127,10 @@ void PLogger::log_message(const char *p_function, const char *p_file, int p_line
 }
 
 void PLogger::log_warning(const String &str) {
+	if (_log_level > LOG_LEVEL_WARNING) {
+		return;
+	}
+
 	String s;
 	s += "W ";
 	s += str;
@@ -103,6 +139,10 @@ void PLogger::log_warning(const String &str) {
 	do_log_trace(s);
 }
 void PLogger::log_warning(const char *str) {
+	if (_log_level > LOG_LEVEL_WARNING) {
+		return;
+	}
+
 	String s;
 	s += "W ";
 	s += str;
@@ -111,6 +151,10 @@ void PLogger::log_warning(const char *str) {
 	do_log_trace(s);
 }
 void PLogger::log_warning(const char *p_function, const char *p_file, int p_line, const char *str) {
+	if (_log_level > LOG_LEVEL_WARNING) {
+		return;
+	}
+
 	String s;
 	s += "W | ";
 	s += p_file;
@@ -125,6 +169,10 @@ void PLogger::log_warning(const char *p_function, const char *p_file, int p_line
 	do_log_trace(s);
 }
 void PLogger::log_warning(const char *p_function, const char *p_file, int p_line, const String &str) {
+	if (_log_level > LOG_LEVEL_WARNING) {
+		return;
+	}
+
 	String s;
 	s += "W | ";
 	s += p_file;
@@ -140,6 +188,10 @@ void PLogger::log_warning(const char *p_function, const char *p_file, int p_line
 }
 
 void PLogger::log_error(const String &str) {
+	if (_log_level > LOG_LEVEL_ERROR) {
+		return;
+	}
+
 	String s;
 	s += "E ";
 	s += str;
@@ -148,6 +200,10 @@ void PLogger::log_error(const String &str) {
 	do_log_trace(s);
 }
 void PLogger::log_error(const char *str) {
+	if (_log_level > LOG_LEVEL_ERROR) {
+		return;
+	}
+
 	String s;
 	s += "E ";
 	s += str;
@@ -156,6 +212,10 @@ void PLogger::log_error(const char *str) {
 	do_log_trace(s);
 }
 void PLogger::log_error(const char *p_function, const char *p_file, int p_line, const char *str) {
+	if (_log_level > LOG_LEVEL_ERROR) {
+		return;
+	}
+
 	String s;
 	s += "E | ";
 	s += p_file;
@@ -170,6 +230,10 @@ void PLogger::log_error(const char *p_function, const char *p_file, int p_line, 
 	do_log_trace(s);
 }
 void PLogger::log_error(const char *p_function, const char *p_file, int p_line, const String &str) {
+	if (_log_level > LOG_LEVEL_ERROR) {
+		return;
+	}
+
 	String s;
 	s += "E | ";
 	s += p_file;
@@ -216,4 +280,12 @@ void PLogger::do_log_error(const String &str) {
 	}
 }
 
+PLogger::LogLevel PLogger::get_log_level() {
+	return _log_level;
+}
+void PLogger::set_log_level(const LogLevel p_log_level) {
+	_log_level = p_log_level;
+}
+
+PLogger::LogLevel PLogger::_log_level = LOG_LEVEL_TRACE;
 Ref<LoggerBackend> PLogger::_backend;
