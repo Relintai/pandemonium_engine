@@ -120,6 +120,7 @@ import org.pandemoniumengine.pandemonium.plugin.PandemoniumPluginRegistry;
 import org.pandemoniumengine.pandemonium.utils.BenchmarkUtils;
 import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
 import org.pandemoniumengine.pandemonium.utils.PermissionsUtil;
+import org.pandemoniumengine.pandemonium.input.PandemoniumInputHandler;
 
 public class Pandemonium extends Fragment implements SensorEventListener, IDownloaderClient {
 	private static final String TAG = Pandemonium.class.getSimpleName();
@@ -331,6 +332,21 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	 */
 	@CallSuper
 	protected void onPandemoniumSetupCompleted() {
+		Log.d(TAG, "onPandemoniumSetupCompleted");
+
+		// These properties are defined after Godot setup completion, so we retrieve them here.
+		boolean longPressEnabled = Boolean.parseBoolean(PandemoniumLib.getGlobal("input_devices/pointing/android/enable_long_press_as_right_click"));
+		boolean panScaleEnabled = Boolean.parseBoolean(PandemoniumLib.getGlobal("input_devices/pointing/android/enable_pan_and_scale_gestures"));
+
+		runOnUiThread(() -> {
+			PandemoniumView renderView = getRenderView();
+			PandemoniumInputHandler inputHandler = renderView != null ? renderView.getInputHandler() : null;
+			if (inputHandler != null) {
+				inputHandler.enableLongPress(longPressEnabled);
+				inputHandler.enablePanningAndScalingGestures(panScaleEnabled);
+			}
+		});
+
 		for (PandemoniumPlugin plugin : pluginRegistry.getAllPlugins()) {
 			plugin.onPandemoniumSetupCompleted();
 		}
@@ -345,6 +361,8 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	 */
 	@CallSuper
 	protected void onPandemoniumMainLoopStarted() {
+		Log.d(TAG, "onPandemoniumMainLoopStarted");
+
 		for (PandemoniumPlugin plugin : pluginRegistry.getAllPlugins()) {
 			plugin.onPandemoniumMainLoopStarted();
 		}
