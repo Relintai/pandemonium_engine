@@ -35,6 +35,7 @@
 #include "core/math/octree.h"
 #include "core/math/projection.h"
 #include "scene/3d/camera.h"
+#include "scene/3d/lod_manager.h"
 #include "scene/3d/visibility_notifier.h"
 #include "scene/main/scene_string_names.h"
 #include "servers/navigation_server.h"
@@ -224,6 +225,7 @@ struct SpatialIndexer {
 void World3D::_register_camera(Camera *p_camera) {
 #ifndef _3D_DISABLED
 	indexer->_add_camera(p_camera);
+	lod_manager->register_camera(p_camera);
 #endif
 }
 
@@ -235,6 +237,19 @@ void World3D::_update_camera(Camera *p_camera) {
 void World3D::_remove_camera(Camera *p_camera) {
 #ifndef _3D_DISABLED
 	indexer->_remove_camera(p_camera);
+	lod_manager->remove_camera(p_camera);
+#endif
+}
+
+void World::_register_lod(LOD *p_lod, uint32_t p_queue_id) {
+#ifndef _3D_DISABLED
+	lod_manager->register_lod(p_lod, p_queue_id);
+#endif
+}
+
+void World::_unregister_lod(LOD *p_lod, uint32_t p_queue_id) {
+#ifndef _3D_DISABLED
+	lod_manager->unregister_lod(p_lod, p_queue_id);
 #endif
 }
 
@@ -259,6 +274,7 @@ void World3D::_remove_notifier(VisibilityNotifier *p_notifier) {
 void World3D::_update(uint64_t p_frame) {
 #ifndef _3D_DISABLED
 	indexer->_update(p_frame);
+	lod_manager->update();
 #endif
 }
 
@@ -339,7 +355,15 @@ void World3D::move_cameras_into(Ref<World3D> target) {
 	}
 }
 
+void World::notify_saving(bool p_active) {
+	if (lod_manager) {
+		lod_manager->notify_saving(p_active);
+	}
+}
+
 void World3D::_bind_methods() {
+
+
 	ClassDB::bind_method(D_METHOD("get_space"), &World3D::get_space);
 	ClassDB::bind_method(D_METHOD("get_scenario"), &World3D::get_scenario);
 	ClassDB::bind_method(D_METHOD("get_navigation_map"), &World3D::get_navigation_map);
@@ -390,6 +414,7 @@ World3D::World3D() {
 	indexer = NULL;
 #else
 	indexer = memnew(SpatialIndexer);
+	lod_manager = memnew(LODManager);
 #endif
 }
 
@@ -404,5 +429,7 @@ World3D::~World3D() {
 
 #ifndef _3D_DISABLED
 	memdelete(indexer);
+	memdelete(lod_manager);
+	lod_manager = nullptr;
 #endif
 }

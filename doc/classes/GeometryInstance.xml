@@ -39,22 +39,6 @@
 		<member name="extra_cull_margin" type="float" setter="set_extra_cull_margin" getter="get_extra_cull_margin" default="0.0">
 			The extra distance added to the GeometryInstance's bounding box ([AABB]) to increase its cull box.
 		</member>
-		<member name="lod_max_distance" type="float" setter="set_lod_max_distance" getter="get_lod_max_distance" default="0.0">
-			The GeometryInstance's max LOD distance.
-			[b]Note:[/b] This property currently has no effect.
-		</member>
-		<member name="lod_max_hysteresis" type="float" setter="set_lod_max_hysteresis" getter="get_lod_max_hysteresis" default="0.0">
-			The GeometryInstance's max LOD margin.
-			[b]Note:[/b] This property currently has no effect.
-		</member>
-		<member name="lod_min_distance" type="float" setter="set_lod_min_distance" getter="get_lod_min_distance" default="0.0">
-			The GeometryInstance's min LOD distance.
-			[b]Note:[/b] This property currently has no effect.
-		</member>
-		<member name="lod_min_hysteresis" type="float" setter="set_lod_min_hysteresis" getter="get_lod_min_hysteresis" default="0.0">
-			The GeometryInstance's min LOD margin.
-			[b]Note:[/b] This property currently has no effect.
-		</member>
 		<member name="material_overlay" type="Material" setter="set_material_overlay" getter="get_material_overlay">
 			The material overlay for the whole geometry.
 			If a material is assigned to this property, it will be rendered on top of any other active material for all the surfaces.

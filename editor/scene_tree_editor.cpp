@@ -54,6 +54,7 @@
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/box_container.h"
+#include "scene/3d/lod_manager.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/texture_rect.h"
@@ -194,7 +195,7 @@ void SceneTreeEditor::_toggle_visible(Node *p_node) {
 	}
 }
 
-void SceneTreeEditor::_add_nodes(Node *p_node, TreeItem *p_parent) {
+void SceneTreeEditor::_add_nodes(Node *p_node, TreeItem *p_parent, bool p_disable_visibility) {
 	if (!p_node) {
 		return;
 	}
@@ -443,9 +444,9 @@ void SceneTreeEditor::_add_nodes(Node *p_node, TreeItem *p_parent) {
 
 			bool v = p_node->call("is_visible");
 			if (v) {
-				item->add_button(0, get_theme_icon("GuiVisibilityVisible", "EditorIcons"), BUTTON_VISIBILITY, false, TTR("Toggle Visibility"));
+				item->add_button(0, get_theme_icon("GuiVisibilityVisible", "EditorIcons"), BUTTON_VISIBILITY, p_disable_visibility, TTR("Toggle Visibility"));
 			} else {
-				item->add_button(0, get_theme_icon("GuiVisibilityHidden", "EditorIcons"), BUTTON_VISIBILITY, false, TTR("Toggle Visibility"));
+				item->add_button(0, get_theme_icon("GuiVisibilityHidden", "EditorIcons"), BUTTON_VISIBILITY, p_disable_visibility, TTR("Toggle Visibility"));
 			}
 
 			if (!p_node->is_connected("visibility_changed", this, "_node_visibility_changed")) {
@@ -475,8 +476,12 @@ void SceneTreeEditor::_add_nodes(Node *p_node, TreeItem *p_parent) {
 		item->set_as_cursor(0);
 	}
 
+	// In some cases we want to disable visibility control by the user
+	// for automatically visibility-controlled children.
+	bool disable_visibility = p_node->is_class("LOD") && LODManager::is_enabled();
+
 	for (int i = 0; i < p_node->get_child_count(); i++) {
-		_add_nodes(p_node->get_child(i), item);
+		_add_nodes(p_node->get_child(i), item, disable_visibility);
 	}
 
 	if (valid_types.size()) {
