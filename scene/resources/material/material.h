@@ -84,7 +84,7 @@ protected:
 
 	static void _bind_methods();
 
-	void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const;
+	void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options, const String &quote_style) const;
 
 	virtual bool _can_do_next_pass() const;
 

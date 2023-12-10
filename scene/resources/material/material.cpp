@@ -233,13 +233,7 @@ void ShaderMaterial::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "shader", PROPERTY_HINT_RESOURCE_TYPE, "Shader"), "set_shader", "get_shader");
 }
 
-void ShaderMaterial::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const {
-#ifdef TOOLS_ENABLED
-	const String quote_style = EDITOR_DEF("text_editor/completion/use_single_quotes", 0) ? "'" : "\"";
-#else
-	const String quote_style = "\"";
-#endif
-
+void ShaderMaterial::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options, const String &quote_style) const {
 	String f = p_function.operator String();
 	if ((f == "get_shader_param" || f == "set_shader_param") && p_idx == 0) {
 		if (shader.is_valid()) {
@@ -250,7 +244,7 @@ void ShaderMaterial::get_argument_options(const StringName &p_function, int p_id
 			}
 		}
 	}
-	Resource::get_argument_options(p_function, p_idx, r_options);
+	Resource::get_argument_options(p_function, p_idx, r_options, quote_style);
 }
 
 bool ShaderMaterial::_can_do_next_pass() const {

@@ -2431,7 +2431,7 @@ bool SceneTree::is_using_font_oversampling() const {
 	return use_font_oversampling;
 }
 
-void SceneTree::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const {
+void SceneTree::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options, const String &quote_style) const {
 	if (p_function == "change_scene") {
 		DirAccessRef dir_access = DirAccess::create(DirAccess::ACCESS_RESOURCES);
 		List<String> directories;

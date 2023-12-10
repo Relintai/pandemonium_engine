@@ -774,7 +774,7 @@ public:
 
 	virtual void get_translatable_strings(List<String> *p_strings) const;
 
-	virtual void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const;
+	virtual void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options, const String &quote_style) const;
 
 	StringName tr(const StringName &p_message) const; // translate message (internationalization)
 	StringName trt(const StringName &p_message, const String &p_locale) const; // translate message (translate_to) (internationalization)

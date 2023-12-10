@@ -136,11 +136,8 @@ void Input::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("joy_connection_changed", PropertyInfo(Variant::INT, "device"), PropertyInfo(Variant::BOOL, "connected")));
 }
 
-void Input::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const {
+void Input::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options, const String &quote_style) const {
 #ifdef TOOLS_ENABLED
-
-	const String quote_style = EDITOR_DEF("text_editor/completion/use_single_quotes", false) ? "'" : "\"";
-
 	String pf = p_function;
 	if (p_idx == 0 &&
 			(pf == "is_action_pressed" || pf == "action_press" || pf == "action_release" ||

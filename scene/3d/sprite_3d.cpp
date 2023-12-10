@@ -440,13 +440,7 @@ SpatialMaterial::BillboardMode SpriteBase3D::get_billboard_mode() const {
 	return billboard_mode;
 }
 
-void AnimatedSprite3D::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const {
-#ifdef TOOLS_ENABLED
-	const String quote_style = EDITOR_GET("text_editor/completion/use_single_quotes") ? "'" : "\"";
-#else
-	const String quote_style = "\"";
-#endif
-
+void AnimatedSprite3D::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options, const String &quote_style) const {
 	if (p_idx == 0 && p_function == "play" && frames.is_valid()) {
 		List<StringName> al;
 		frames->get_animation_list(&al);
@@ -454,7 +448,7 @@ void AnimatedSprite3D::get_argument_options(const StringName &p_function, int p_
 			r_options->push_back(quote_style + String(E->get()) + quote_style);
 		}
 	}
-	Node::get_argument_options(p_function, p_idx, r_options);
+	Node::get_argument_options(p_function, p_idx, r_options, quote_style);
 }
 
 void SpriteBase3D::_bind_methods() {

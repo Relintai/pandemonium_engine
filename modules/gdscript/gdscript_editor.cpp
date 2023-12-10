@@ -2330,7 +2330,7 @@ static void _find_call_arguments(const GDScriptCompletionContext &p_context, con
 							Object *obj = base.operator Object *();
 							if (obj) {
 								List<String> options;
-								obj->get_argument_options(p_method, p_argidx, &options);
+								obj->get_argument_options(p_method, p_argidx, &options, quote_style);
 								for (List<String>::Element *F = options.front(); F; F = F->next()) {
 									ScriptCodeCompletionOption option(F->get(), ScriptCodeCompletionOption::KIND_FUNCTION);
 									r_result.insert(option.display, option);
@@ -2632,7 +2632,7 @@ Error GDScriptLanguage::complete_code(const String &p_code, const String &p_path
 		case GDScriptParser::COMPLETION_GET_NODE: {
 			if (p_owner) {
 				List<String> opts;
-				p_owner->get_argument_options("get_node", 0, &opts);
+				p_owner->get_argument_options("get_node", 0, &opts, quote_style);
 
 				for (List<String>::Element *E = opts.front(); E; E = E->next()) {
 					String opt = E->get().strip_edges();

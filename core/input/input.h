@@ -126,7 +126,7 @@ public:
 	virtual void action_press(const StringName &p_action, float p_strength = 1.f) = 0;
 	virtual void action_release(const StringName &p_action) = 0;
 
-	void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const;
+	void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options, const String &quote_style) const;
 
 	virtual bool is_emulating_touch_from_mouse() const = 0;
 	virtual bool is_emulating_mouse_from_touch() const = 0;

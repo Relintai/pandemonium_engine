@@ -247,7 +247,7 @@ public:
 	virtual Rect2 get_item_rect() const;
 
 	virtual String get_configuration_warning() const;
-	virtual void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const;
+	virtual void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options, const String &quote_style) const;
 
 	AnimatedSprite3D();
 };

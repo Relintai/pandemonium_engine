@@ -2059,7 +2059,7 @@ void ObjectDB::debug_objects(DebugFunc p_func) {
 	rw_lock.read_unlock();
 }
 
-void Object::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const {
+void Object::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options, const String &quote_style) const {
 }
 
 int ObjectDB::get_object_count() {
