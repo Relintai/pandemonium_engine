@@ -48,7 +48,7 @@
 
 #include "tiled_wall/tiled_wall_data.h"
 
-#include "scene/resources/shapes/box_shape.h"
+#include "core/scene/resources/shapes/box_shape.h"
 
 const float PropInstanceMerger::LOD_CHECK_INTERVAL = 2;
 

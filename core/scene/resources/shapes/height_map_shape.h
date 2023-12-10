@@ -1,7 +1,7 @@
-#ifndef BOX_SHAPE_H
-#define BOX_SHAPE_H
+#ifndef HEIGHT_MAP_SHAPE_H
+#define HEIGHT_MAP_SHAPE_H
 /*************************************************************************/
-/*  box_shape.h                                                          */
+/*  height_map_shape.h                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,25 +30,33 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shapes/shape.h"
+#include "core/scene/resources/shapes/shape.h"
 
-class BoxShape : public Shape {
-	GDCLASS(BoxShape, Shape);
-	Vector3 extents;
+class HeightMapShape : public Shape {
+	GDCLASS(HeightMapShape, Shape);
+
+	int map_width;
+	int map_depth;
+	PoolRealArray map_data;
+	float min_height;
+	float max_height;
 
 protected:
 	static void _bind_methods();
-
 	virtual void _update_shape();
 
 public:
-	void set_extents(const Vector3 &p_extents);
-	Vector3 get_extents() const;
+	void set_map_width(int p_new);
+	int get_map_width() const;
+	void set_map_depth(int p_new);
+	int get_map_depth() const;
+	void set_map_data(PoolRealArray p_new);
+	PoolRealArray get_map_data() const;
 
 	virtual Vector<Vector3> get_debug_mesh_lines();
 	virtual real_t get_enclosing_radius() const;
 
-	BoxShape();
+	HeightMapShape();
 };
 
-#endif // BOX_SHAPE_H
+#endif /* !HEIGHT_MAP_SHAPE_H */

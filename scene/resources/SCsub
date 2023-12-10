@@ -25,13 +25,6 @@ env.add_source_files(shapes_2d_obj, "shapes_2d/*.cpp")
 for o in shapes_2d_obj:
     scene_obj.append(o)
 
-# 3d shapes
-shapes_3d_obj = []
-env.add_source_files(shapes_3d_obj, "shapes/*.cpp")
-
-for o in shapes_3d_obj:
-    scene_obj.append(o)
-
 # 2d navigation
 navigation_2d_obj = []
 env.add_source_files(navigation_2d_obj, "navigation_2d/*.cpp")

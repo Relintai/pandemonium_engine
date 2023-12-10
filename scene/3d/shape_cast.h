@@ -34,7 +34,7 @@
 #include "core/math/color.h"
 
 #include "scene/main/spatial.h"
-#include "scene/resources/shapes/shape.h"
+#include "core/scene/resources/shapes/shape.h"
 #include "core/servers/physics/physics_server.h"
 
 class SpatialMaterial;

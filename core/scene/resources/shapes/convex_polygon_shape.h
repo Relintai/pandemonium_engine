@@ -1,7 +1,7 @@
-#ifndef CONCAVE_POLYGON_SHAPE_H
-#define CONCAVE_POLYGON_SHAPE_H
+#ifndef CONVEX_POLYGON_SHAPE_H
+#define CONVEX_POLYGON_SHAPE_H
 /*************************************************************************/
-/*  concave_polygon_shape.h                                              */
+/*  convex_polygon_shape.h                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,30 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shapes/shape.h"
+#include "core/scene/resources/shapes/shape.h"
 
-class ConcavePolygonShape : public Shape {
-	GDCLASS(ConcavePolygonShape, Shape);
-
-	struct DrawEdge {
-		Vector3 a;
-		Vector3 b;
-		bool operator<(const DrawEdge &p_edge) const {
-			if (a == p_edge.a) {
-				return b < p_edge.b;
-			} else {
-				return a < p_edge.a;
-			}
-		}
-
-		DrawEdge(const Vector3 &p_a = Vector3(), const Vector3 &p_b = Vector3()) {
-			a = p_a;
-			b = p_b;
-			if (a < b) {
-				SWAP(a, b);
-			}
-		}
-	};
+class ConvexPolygonShape : public Shape {
+	GDCLASS(ConvexPolygonShape, Shape);
+	PoolVector<Vector3> points;
 
 protected:
 	static void _bind_methods();
@@ -61,13 +42,13 @@ protected:
 	virtual void _update_shape();
 
 public:
-	void set_faces(const PoolVector<Vector3> &p_faces);
-	PoolVector<Vector3> get_faces() const;
+	void set_points(const PoolVector<Vector3> &p_points);
+	PoolVector<Vector3> get_points() const;
 
-	Vector<Vector3> get_debug_mesh_lines();
+	virtual Vector<Vector3> get_debug_mesh_lines();
 	virtual real_t get_enclosing_radius() const;
 
-	ConcavePolygonShape();
+	ConvexPolygonShape();
 };
 
-#endif // CONCAVE_POLYGON_SHAPE_H
+#endif // CONVEX_POLYGON_SHAPE_H

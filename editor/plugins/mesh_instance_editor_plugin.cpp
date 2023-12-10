@@ -61,7 +61,7 @@
 #include "scene/main/scene_tree.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/navigation/navigation_mesh.h"
-#include "scene/resources/shapes/shape.h"
+#include "core/scene/resources/shapes/shape.h"
 #include "spatial_editor_plugin.h"
 
 void MeshInstanceEditor::_node_removed(Node *p_node) {

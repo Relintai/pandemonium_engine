@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shapes/shape.h"
+#include "core/scene/resources/shapes/shape.h"
 
 class SphereShape : public Shape {
 	GDCLASS(SphereShape, Shape);

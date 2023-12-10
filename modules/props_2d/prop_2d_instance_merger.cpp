@@ -45,7 +45,7 @@
 
 #include "tiled_wall/tiled_wall_2d_data.h"
 
-#include "scene/resources/shapes/box_shape.h"
+#include "core/scene/resources/shapes/box_shape.h"
 
 bool Prop2DInstanceMerger::get_building() {
 	return _building;

@@ -22,13 +22,13 @@ SOFTWARE.
 
 #include "mdr_import_plugin_base.h"
 
-#include "scene/resources/shapes/box_shape.h"
-#include "scene/resources/shapes/capsule_shape.h"
-#include "scene/resources/shapes/concave_polygon_shape.h"
-#include "scene/resources/shapes/convex_polygon_shape.h"
-#include "scene/resources/shapes/cylinder_shape.h"
-#include "scene/resources/shapes/shape.h"
-#include "scene/resources/shapes/sphere_shape.h"
+#include "core/scene/resources/shapes/box_shape.h"
+#include "core/scene/resources/shapes/capsule_shape.h"
+#include "core/scene/resources/shapes/concave_polygon_shape.h"
+#include "core/scene/resources/shapes/convex_polygon_shape.h"
+#include "core/scene/resources/shapes/cylinder_shape.h"
+#include "core/scene/resources/shapes/shape.h"
+#include "core/scene/resources/shapes/sphere_shape.h"
 
 #include "modules/modules_enabled.gen.h"
 

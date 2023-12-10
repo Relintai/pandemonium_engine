@@ -3,4 +3,5 @@
 Import("env")
 
 env.add_source_files(env.core_sources, "resources/*.cpp")
+env.add_source_files(env.core_sources, "resources/shapes/*.cpp")
 #env.add_source_files(env.core_sources, "*.cpp")

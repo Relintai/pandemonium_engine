@@ -1,7 +1,7 @@
-#ifndef CONVEX_POLYGON_SHAPE_H
-#define CONVEX_POLYGON_SHAPE_H
+#ifndef RAY_SHAPE_H
+#define RAY_SHAPE_H
 /*************************************************************************/
-/*  convex_polygon_shape.h                                               */
+/*  ray_shape.h                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,25 +30,27 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shapes/shape.h"
+#include "core/scene/resources/shapes/shape.h"
 
-class ConvexPolygonShape : public Shape {
-	GDCLASS(ConvexPolygonShape, Shape);
-	PoolVector<Vector3> points;
+class RayShape : public Shape {
+	GDCLASS(RayShape, Shape);
+	float length;
+	bool slips_on_slope;
 
 protected:
 	static void _bind_methods();
-
 	virtual void _update_shape();
 
 public:
-	void set_points(const PoolVector<Vector3> &p_points);
-	PoolVector<Vector3> get_points() const;
+	void set_length(float p_length);
+	float get_length() const;
+
+	void set_slips_on_slope(bool p_active);
+	bool get_slips_on_slope() const;
 
 	virtual Vector<Vector3> get_debug_mesh_lines();
 	virtual real_t get_enclosing_radius() const;
 
-	ConvexPolygonShape();
+	RayShape();
 };
-
-#endif // CONVEX_POLYGON_SHAPE_H
+#endif // RAY_SHAPE_H

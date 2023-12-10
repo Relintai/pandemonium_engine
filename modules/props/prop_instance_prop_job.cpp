@@ -28,7 +28,7 @@ SOFTWARE.
 #include "prop_instance.h"
 #include "prop_instance_merger.h"
 #include "prop_mesher.h"
-#include "scene/resources/shapes/shape.h"
+#include "core/scene/resources/shapes/shape.h"
 #include "scene/resources/world_3d.h"
 #include "core/servers/physics/physics_server.h"
 #include "singleton/prop_cache.h"

@@ -1,7 +1,7 @@
-#ifndef PLANE_SHAPE_H
-#define PLANE_SHAPE_H
+#ifndef BOX_SHAPE_H
+#define BOX_SHAPE_H
 /*************************************************************************/
-/*  plane_shape.h                                                        */
+/*  box_shape.h                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,26 +30,25 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shapes/shape.h"
+#include "core/scene/resources/shapes/shape.h"
 
-class PlaneShape : public Shape {
-	GDCLASS(PlaneShape, Shape);
-	Plane plane;
+class BoxShape : public Shape {
+	GDCLASS(BoxShape, Shape);
+	Vector3 extents;
 
 protected:
 	static void _bind_methods();
+
 	virtual void _update_shape();
 
 public:
-	void set_plane(Plane p_plane);
-	Plane get_plane() const;
+	void set_extents(const Vector3 &p_extents);
+	Vector3 get_extents() const;
 
 	virtual Vector<Vector3> get_debug_mesh_lines();
-	virtual real_t get_enclosing_radius() const {
-		// Should be infinite?
-		return 0;
-	};
+	virtual real_t get_enclosing_radius() const;
 
-	PlaneShape();
+	BoxShape();
 };
-#endif // PLANE_SHAPE_H
+
+#endif // BOX_SHAPE_H
