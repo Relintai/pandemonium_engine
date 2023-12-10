@@ -33,7 +33,7 @@
 #include "core/input/input_map.h"
 #include "core/input/input.h"
 #include "core/os/os.h"
-#include "scene/resources/bit_map.h"
+#include "core/scene/resources/bit_map.h"
 #include "scene/resources/shapes_2d/rectangle_shape_2d.h"
 #include "scene/resources/texture.h"
 #include "scene/main/scene_string_names.h"

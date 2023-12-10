@@ -31,7 +31,7 @@
 #include "texture_button.h"
 
 #include "core/typedefs.h"
-#include "scene/resources/bit_map.h"
+#include "core/scene/resources/bit_map.h"
 #include "scene/main/scene_string_names.h"
 
 #include <stdlib.h>

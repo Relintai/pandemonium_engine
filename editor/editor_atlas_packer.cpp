@@ -33,7 +33,7 @@
 #include "core/math/rect2.h"
 #include "core/typedefs.h"
 #include "core/string/ustring.h"
-#include "scene/resources/bit_map.h"
+#include "core/scene/resources/bit_map.h"
 
 void EditorAtlasPacker::_plot_triangle(Ref<BitMap> p_bitmap, Vector2i *vertices) {
 	int width = p_bitmap->get_size().width;

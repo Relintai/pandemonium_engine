@@ -139,7 +139,7 @@
 #include "scene/main/viewport.h"
 #include "scene/main/world.h"
 #include "scene/audio/audio_stream_sample.h"
-#include "scene/resources/bit_map.h"
+#include "core/scene/resources/bit_map.h"
 #include "scene/resources/shapes/box_shape.h"
 #include "scene/resources/shapes/capsule_shape.h"
 #include "scene/resources/shapes_2d/capsule_shape_2d.h"

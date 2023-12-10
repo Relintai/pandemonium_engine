@@ -34,7 +34,7 @@
 #include "core/os/os.h"
 #include "editor/editor_settings.h"
 #include "editor/editor_scale.h"
-#include "scene/resources/bit_map.h"
+#include "core/scene/resources/bit_map.h"
 #include "scene/resources/font/dynamic_font.h"
 #include "scene/resources/material/material.h"
 #include "scene/resources/mesh/mesh.h"
