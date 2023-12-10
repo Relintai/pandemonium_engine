@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shapes_2d/shape_2d.h"
+#include "core/scene/resources/shapes_2d/shape_2d.h"
 
 class ConvexPolygonShape2D : public Shape2D {
 	GDCLASS(ConvexPolygonShape2D, Shape2D);

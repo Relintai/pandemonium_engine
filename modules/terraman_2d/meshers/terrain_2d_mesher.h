@@ -44,7 +44,7 @@ SOFTWARE.
 #include "../../mesh_data_resource/mesh_data_resource.h"
 #endif
 
-#include "scene/resources/shapes_2d/shape_2d.h"
+#include "core/scene/resources/shapes_2d/shape_2d.h"
 
 #include "../library/terrain_2d_library.h"
 

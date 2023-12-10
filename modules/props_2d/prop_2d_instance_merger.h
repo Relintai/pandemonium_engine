@@ -25,7 +25,7 @@ SOFTWARE.
 #include "prop_2d_instance.h"
 
 #include "scene/main/node_2d.h"
-#include "scene/resources/shapes_2d/shape_2d.h"
+#include "core/scene/resources/shapes_2d/shape_2d.h"
 
 #include "core/math/vector3.h"
 

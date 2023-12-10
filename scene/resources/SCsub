@@ -18,13 +18,6 @@ env.scene_sources += thirdparty_obj
 scene_obj = []
 env.add_source_files(scene_obj, "*.cpp")
 
-# 2d shapes
-shapes_2d_obj = []
-env.add_source_files(shapes_2d_obj, "shapes_2d/*.cpp")
-
-for o in shapes_2d_obj:
-    scene_obj.append(o)
-
 # 2d navigation
 navigation_2d_obj = []
 env.add_source_files(navigation_2d_obj, "navigation_2d/*.cpp")

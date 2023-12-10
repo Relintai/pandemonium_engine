@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "scene/main/node_2d.h"
-#include "scene/resources/shapes_2d/shape_2d.h"
+#include "core/scene/resources/shapes_2d/shape_2d.h"
 
 class CollisionObject2D : public Node2D {
 	GDCLASS(CollisionObject2D, Node2D);

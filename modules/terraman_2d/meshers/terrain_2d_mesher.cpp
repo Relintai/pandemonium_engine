@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include "../world/default/terrain_2d_chunk_default.h"
 #include "../world/terrain_2d_chunk.h"
-#include "scene/resources/shapes_2d/rectangle_shape_2d.h"
+#include "core/scene/resources/shapes_2d/rectangle_shape_2d.h"
 #include "core/servers/physics_2d/physics_2d_server.h"
 
 #include "modules/modules_enabled.gen.h"
