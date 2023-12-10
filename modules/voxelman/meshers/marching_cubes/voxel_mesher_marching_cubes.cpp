@@ -30,7 +30,7 @@ SOFTWARE.
 
 #include "../../world/jobs/voxel_job.h"
 
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 void VoxelMesherMarchingCubes::get_voxel_type_array(int *arr, Ref<VoxelChunk> chunk, const int x, const int y, const int z, const int size) {
 	uint8_t *channel_type = chunk->channel_get(_channel_index_type);

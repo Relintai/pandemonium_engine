@@ -35,7 +35,7 @@
 #include "core/math/transform_2d.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 #include "world.h"
 
 class Camera;

@@ -34,7 +34,7 @@
 #include "core/containers/self_list.h"
 #include "scene/resources/mesh/mesh.h"
 #include "servers/rendering/rasterizer.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 class RasterizerSceneDummy : public RasterizerScene {
 public:

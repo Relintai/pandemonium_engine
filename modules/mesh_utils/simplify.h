@@ -32,7 +32,7 @@
 #include <map>
 #include <vector>
 
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 namespace Simplify {
 

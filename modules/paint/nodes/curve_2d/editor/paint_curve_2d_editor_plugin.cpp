@@ -52,7 +52,7 @@
 #include "scene/gui/separator.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
-#include "core/scene/resources/curve.h"
+#include "scene/resources/curve.h"
 #include "scene/resources/texture.h"
 
 #include "../paint_curve_2d.h"

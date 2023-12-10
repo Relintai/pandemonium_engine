@@ -38,10 +38,10 @@
 #include "scene/resources/material/material.h"
 #include "scene/resources/material/spatial_material.h"
 #include "scene/resources/mesh/mesh.h"
-#include "core/scene/resources/shapes/shape.h"
+#include "scene/resources/shapes/shape.h"
 #include "scene/resources/world_3d.h"
 #include "servers/navigation_server.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 void NavigationObstacle::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_rid"), &NavigationObstacle::get_rid);

@@ -30,7 +30,7 @@
 
 #include "csg_shape.h"
 
-#include "core/servers/physics/physics_server.h"
+#include "servers/physics_server.h"
 #include "scene/resources/world_3d.h"
 #include "scene/resources/mesh/mesh.h"
 

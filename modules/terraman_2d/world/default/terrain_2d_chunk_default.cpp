@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include "core/servers/physics/physics_server.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/physics_server.h"
+#include "servers/rendering_server.h"
 
 #include "../../../opensimplex/open_simplex_noise.h"
 #include "../../meshers/default/terrain_2d_mesher_default.h"
@@ -40,7 +40,7 @@ SOFTWARE.
 #include "../jobs/terrain_2d_terrain_job.h"
 #include "scene/resources/world_3d.h"
 #include "scene/resources/world_2d.h"
-#include "core/servers/physics_2d/physics_2d_server.h"
+#include "servers/physics_2d_server.h"
 
 const String Terrain2DChunkDefault::BINDING_STRING_BUILD_FLAGS = "Use Lighting,Use AO,Use RAO,Generate AO,Generate RAO,Bake Lights,Create Collider";
 

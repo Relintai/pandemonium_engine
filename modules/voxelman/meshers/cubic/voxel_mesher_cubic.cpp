@@ -26,7 +26,7 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 void VoxelMesherCubic::_add_chunk(Ref<VoxelChunk> p_chunk) {
 	Ref<VoxelChunkDefault> chunk = p_chunk;

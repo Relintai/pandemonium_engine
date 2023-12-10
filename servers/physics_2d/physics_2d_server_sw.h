@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "joints_2d_sw.h"
-#include "core/servers/physics_2d/physics_2d_server.h"
+#include "servers/physics_2d_server.h"
 #include "shape_2d_sw.h"
 #include "space_2d_sw.h"
 #include "step_2d_sw.h"

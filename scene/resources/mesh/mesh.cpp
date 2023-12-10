@@ -34,8 +34,8 @@
 #include "core/containers/local_vector.h"
 #include "core/math/convex_hull.h"
 #include "core/containers/pair.h"
-#include "core/scene/resources/shapes/concave_polygon_shape.h"
-#include "core/scene/resources/shapes/convex_polygon_shape.h"
+#include "scene/resources/shapes/concave_polygon_shape.h"
+#include "scene/resources/shapes/convex_polygon_shape.h"
 #include "surface_tool.h"
 
 #include <stdlib.h>

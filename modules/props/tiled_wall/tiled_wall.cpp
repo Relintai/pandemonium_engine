@@ -16,7 +16,7 @@
 
 #include "core/core_string_names.h"
 #include "scene/resources/world_3d.h"
-#include "core/servers/physics/physics_server.h"
+#include "servers/physics_server.h"
 #include "tiled_wall_data.h"
 
 int TiledWall::get_width() const {

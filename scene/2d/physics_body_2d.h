@@ -32,7 +32,7 @@
 
 #include "core/containers/vset.h"
 #include "scene/2d/collision_object_2d.h"
-#include "core/servers/physics_2d/physics_2d_server.h"
+#include "servers/physics_2d_server.h"
 
 class PhysicsMaterial;
 class KinematicCollision2D;

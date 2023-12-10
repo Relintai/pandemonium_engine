@@ -34,8 +34,8 @@
 #include "core/config/engine.h"
 #include "scene/2d/collision_object_2d.h"
 #include "scene/2d/physics_body_2d.h"
-#include "core/scene/resources/shapes_2d/circle_shape_2d.h"
-#include "core/servers/physics_2d/physics_2d_server.h"
+#include "scene/resources/shapes_2d/circle_shape_2d.h"
+#include "servers/physics_2d_server.h"
 
 void ShapeCast2D::set_target_position(const Vector2 &p_point) {
 	target_position = p_point;

@@ -31,7 +31,7 @@
 #include "shader_language.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 static bool _is_text_char(CharType c) {
 	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_';

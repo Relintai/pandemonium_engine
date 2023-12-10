@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/object/resource.h"
 
-#include "core/scene/resources/curve.h"
+#include "scene/resources/curve.h"
 
 #include "level_stat_data.h"
 

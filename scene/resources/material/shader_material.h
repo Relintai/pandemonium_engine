@@ -37,7 +37,7 @@
 #include "scene/resources/material/material.h"
 
 #include "scene/resources/shader.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 class Texture;
 

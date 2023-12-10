@@ -27,7 +27,7 @@ SOFTWARE.
 #include "prop_2d_instance.h"
 #include "prop_2d_instance_merger.h"
 #include "prop_2d_mesher.h"
-#include "core/scene/resources/shapes/shape.h"
+#include "scene/resources/shapes/shape.h"
 #include "singleton/prop_2d_cache.h"
 
 #include "modules/modules_enabled.gen.h"

@@ -33,9 +33,9 @@
 #include "collision_object_2d.h"
 #include "core/config/engine.h"
 #include "scene/2d/area_2d.h"
-#include "core/scene/resources/shapes_2d/concave_polygon_shape_2d.h"
-#include "core/scene/resources/shapes_2d/convex_polygon_shape_2d.h"
-#include "core/scene/resources/shapes_2d/shape_2d.h"
+#include "scene/resources/shapes_2d/concave_polygon_shape_2d.h"
+#include "scene/resources/shapes_2d/convex_polygon_shape_2d.h"
+#include "scene/resources/shapes_2d/shape_2d.h"
 
 #include "thirdparty/misc/triangulator.h"
 

@@ -5,7 +5,7 @@
 //#include "../thread_pool/thread_pool.h"
 
 #include "scene/resources/world_3d.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 #include "core/config/engine.h"
 
@@ -16,7 +16,7 @@
 	}                                      \
 	return r;
 
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 #include "modules/modules_enabled.gen.h"
 
@@ -48,7 +48,7 @@
 
 #include "tiled_wall/tiled_wall_data.h"
 
-#include "core/scene/resources/shapes/box_shape.h"
+#include "scene/resources/shapes/box_shape.h"
 
 const float PropInstanceMerger::LOD_CHECK_INTERVAL = 2;
 

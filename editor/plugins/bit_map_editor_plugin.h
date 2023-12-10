@@ -33,7 +33,7 @@
 
 #include "editor/editor_inspector.h"
 #include "editor/editor_plugin.h"
-#include "core/scene/resources/bit_map.h"
+#include "scene/resources/bit_map.h"
 
 #include "scene/gui/box_container.h"
 

@@ -32,9 +32,9 @@
 
 #include "collision_object.h"
 #include "core/math/geometry.h"
-#include "core/scene/resources/shapes/concave_polygon_shape.h"
-#include "core/scene/resources/shapes/convex_polygon_shape.h"
-#include "core/scene/resources/shapes/shape.h"
+#include "scene/resources/shapes/concave_polygon_shape.h"
+#include "scene/resources/shapes/convex_polygon_shape.h"
+#include "scene/resources/shapes/shape.h"
 
 void CollisionPolygon::_build_polygon() {
 	if (!parent) {

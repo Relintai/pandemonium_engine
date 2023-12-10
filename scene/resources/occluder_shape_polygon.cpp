@@ -30,7 +30,7 @@
 
 #include "occluder_shape_polygon.h"
 
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 #ifdef TOOLS_ENABLED
 void OccluderShapePolygon::_update_aabb() {

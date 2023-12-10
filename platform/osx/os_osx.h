@@ -43,7 +43,7 @@
 #include "servers/audio_server.h"
 #include "servers/rendering/rasterizer.h"
 #include "servers/rendering/rendering_server_wrap_mt.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 #include <AppKit/AppKit.h>
 #include <AppKit/NSCursor.h>

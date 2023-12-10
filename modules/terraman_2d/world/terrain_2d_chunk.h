@@ -49,7 +49,7 @@ SOFTWARE.
 #include "../../props_2d/props/prop_2d_data.h"
 #endif
 
-#include "core/scene/resources/shapes_2d/shape_2d.h"
+#include "scene/resources/shapes_2d/shape_2d.h"
 
 #include "../library/terrain_2d_library.h"
 #include "../library/terrain_2d_surface.h"

@@ -1,8 +1,0 @@
-#!/usr/bin/env python
-
-Import("env")
-
-env.add_source_files(env.core_sources, "rendering/*.cpp")
-env.add_source_files(env.core_sources, "physics/*.cpp")
-env.add_source_files(env.core_sources, "physics_2d/*.cpp")
-#env.add_source_files(env.core_sources, "*.cpp")

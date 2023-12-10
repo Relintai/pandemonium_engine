@@ -36,7 +36,7 @@
 #include "core/object/method_bind_ext.gen.inc"
 #include "core/os/os.h"
 #include "scene/resources/mesh/mesh.h"
-#include "core/scene/resources/bit_map.h"
+#include "scene/resources/bit_map.h"
 
 Size2 Texture::get_size() const {
 	return Size2(get_width(), get_height());

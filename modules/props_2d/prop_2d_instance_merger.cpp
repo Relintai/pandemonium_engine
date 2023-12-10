@@ -4,7 +4,7 @@
 
 //#include "../thread_pool/thread_pool.h"
 #include "scene/resources/world_2d.h"
-#include "core/servers/physics/physics_server.h"
+#include "servers/physics_server.h"
 
 #include "core/config/engine.h"
 
@@ -19,7 +19,7 @@
 	}                                      \
 	return r;
 
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 #include "modules/modules_enabled.gen.h"
 
@@ -45,7 +45,7 @@
 
 #include "tiled_wall/tiled_wall_2d_data.h"
 
-#include "core/scene/resources/shapes/box_shape.h"
+#include "scene/resources/shapes/box_shape.h"
 
 bool Prop2DInstanceMerger::get_building() {
 	return _building;

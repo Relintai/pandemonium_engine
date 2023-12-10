@@ -31,7 +31,7 @@
 #include "light_2d.h"
 
 #include "core/config/engine.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 #ifdef TOOLS_ENABLED
 Dictionary Light2D::_edit_get_state() const {

@@ -30,7 +30,7 @@
 
 #include "vehicle_body.h"
 
-#include "core/scene/resources/shapes/shape.h"
+#include "scene/resources/shapes/shape.h"
 
 #define ROLLING_INFLUENCE_FIX
 

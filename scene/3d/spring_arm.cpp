@@ -31,10 +31,10 @@
 #include "spring_arm.h"
 #include "core/config/engine.h"
 #include "scene/3d/collision_object.h"
-#include "core/scene/resources/shapes/shape.h"
-#include "core/scene/resources/shapes/sphere_shape.h"
+#include "scene/resources/shapes/shape.h"
+#include "scene/resources/shapes/sphere_shape.h"
 #include "scene/resources/world_3d.h"
-#include "core/servers/physics/physics_server.h"
+#include "servers/physics_server.h"
 
 SpringArm::SpringArm() :
 		spring_length(1),

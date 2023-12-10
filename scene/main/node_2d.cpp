@@ -34,7 +34,7 @@
 #include "scene/main/control.h"
 #include "scene/main/viewport.h"
 #include "scene/main/scene_string_names.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 #ifdef TOOLS_ENABLED
 Dictionary Node2D::_edit_get_state() const {

@@ -98,7 +98,7 @@
 #include "scene/resources/font/font.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/theme.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 #include "modules/modules_enabled.gen.h"
 

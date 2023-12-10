@@ -29,10 +29,10 @@
 /*************************************************************************/
 
 #include "area.h"
-#include "core/scene/resources/shapes/shape.h"
+#include "scene/resources/shapes/shape.h"
 #include "scene/main/scene_string_names.h"
 #include "servers/audio_server.h"
-#include "core/servers/physics/physics_server.h"
+#include "servers/physics_server.h"
 
 void Area::set_space_override_mode(SpaceOverride p_mode) {
 	space_override = p_mode;

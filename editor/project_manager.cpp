@@ -85,8 +85,8 @@
 #include "scene/main/scene_tree.h"
 #include "scene/resources/texture.h"
 #include "servers/navigation_server.h"
-#include "core/servers/physics_2d/physics_2d_server.h"
-#include "core/servers/physics/physics_server.h"
+#include "servers/physics_2d_server.h"
+#include "servers/physics_server.h"
 #include "thirdparty/minizip/ioapi.h"
 #include "thirdparty/minizip/unzip.h"
 

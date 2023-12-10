@@ -34,7 +34,7 @@
 #include "core/os/os.h"
 #include "editor/editor_settings.h"
 #include "editor/editor_scale.h"
-#include "core/scene/resources/bit_map.h"
+#include "scene/resources/bit_map.h"
 #include "scene/resources/font/dynamic_font.h"
 #include "scene/resources/material/material.h"
 #include "scene/resources/mesh/mesh.h"
@@ -66,7 +66,7 @@
 #include "scene/resources/shader.h"
 #include "scene/resources/texture.h"
 #include "servers/audio_server.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 void post_process_preview(Ref<Image> p_image) {
 	if (p_image->get_format() != Image::FORMAT_RGBA8) {

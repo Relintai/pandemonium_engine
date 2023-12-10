@@ -34,7 +34,7 @@
 #include "core/io/image_loader.h"
 #include "editor/editor_file_system.h"
 #include "editor/editor_node.h"
-#include "core/scene/resources/bit_map.h"
+#include "scene/resources/bit_map.h"
 #include "scene/resources/texture.h"
 #include "core/io/image.h"
 

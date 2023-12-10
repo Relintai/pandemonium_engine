@@ -36,7 +36,7 @@
 #include "rendering_server_scene.h"
 #include "rendering_server_viewport.h"
 #include "servers/rendering/rasterizer.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 class RenderingServerRaster : public RenderingServer {
 	enum {

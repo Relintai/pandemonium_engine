@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "scene/main/spatial.h"
-#include "core/servers/physics/physics_server.h"
+#include "servers/physics_server.h"
 
 class PhysicsBody;
 

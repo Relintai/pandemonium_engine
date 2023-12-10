@@ -38,7 +38,7 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_3d.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 bool Portal::_portal_plane_convention = false;
 bool Portal::_settings_gizmo_show_margins = true;

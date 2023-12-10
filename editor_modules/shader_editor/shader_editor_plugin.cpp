@@ -64,7 +64,7 @@
 #include "scene/gui/resources/syntax_highlighter.h"
 #include "servers/rendering/shader_language.h"
 #include "servers/rendering/shader_types.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 #include "editor_code_editor/editor_find_replace_bar.h"
 #include "editor_code_editor/editor_goto_line_dialog.h"

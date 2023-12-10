@@ -36,9 +36,9 @@
 #include "core/variant/array.h"
 #include "scene/2d/light_occluder_2d.h"
 #include "scene/2d/navigation_polygon_instance.h"
-#include "core/scene/resources/shapes_2d/convex_polygon_shape_2d.h"
+#include "scene/resources/shapes_2d/convex_polygon_shape_2d.h"
 #include "scene/resources/navigation_2d/navigation_polygon.h"
-#include "core/scene/resources/shapes_2d/shape_2d.h"
+#include "scene/resources/shapes_2d/shape_2d.h"
 #include "scene/resources/texture.h"
 #include "scene/resources/material/shader_material.h"
 

@@ -35,7 +35,7 @@
 #include "core/input/input.h"
 #include "core/os/file_access.h"
 #include "drivers/unix/os_unix.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 #include "servers/rendering/rasterizer.h"
 #include "servers/audio/audio_driver_dummy.h"
 #include "servers/rendering/rendering_server_raster.h"

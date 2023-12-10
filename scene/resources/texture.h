@@ -36,9 +36,9 @@
 #include "core/os/mutex.h"
 #include "core/os/rw_lock.h"
 #include "core/os/thread_safe.h"
-#include "core/scene/resources/curve.h"
-#include "core/scene/resources/gradient.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "scene/resources/curve.h"
+#include "scene/resources/gradient.h"
+#include "servers/rendering_server.h"
 
 class Texture : public Resource {
 	GDCLASS(Texture, Resource);

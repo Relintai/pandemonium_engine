@@ -31,7 +31,7 @@
 #include "rendering_server_canvas_helper.h"
 
 #include "servers/rendering/rasterizer.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 LocalVector<MultiRect> RenderingServerCanvasHelper::_tilemap_multirects;
 Mutex RenderingServerCanvasHelper::_tilemap_mutex;

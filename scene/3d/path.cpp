@@ -31,11 +31,11 @@
 #include "path.h"
 
 #include "core/config/engine.h"
-#include "core/scene/resources/curve.h"
+#include "scene/resources/curve.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_3d.h"
 #include "scene/main/scene_string_names.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 Path::Path() {
 	SceneTree *st = SceneTree::get_singleton();

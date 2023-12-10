@@ -36,8 +36,8 @@
 #include "core/os/main_loop.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
-#include "core/servers/physics/physics_server.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/physics_server.h"
+#include "servers/rendering_server.h"
 
 class TestPhysicsMainLoop : public MainLoop {
 	GDCLASS(TestPhysicsMainLoop, MainLoop);

@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "prop_2d_instance_job.h"
 
-#include "core/scene/resources/shapes_2d/shape_2d.h"
+#include "scene/resources/shapes_2d/shape_2d.h"
 
 #include "modules/modules_enabled.gen.h"
 

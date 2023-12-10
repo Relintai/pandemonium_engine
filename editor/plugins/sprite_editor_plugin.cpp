@@ -37,7 +37,7 @@
 #include "scene/2d/mesh_instance_2d.h"
 #include "scene/2d/polygon_2d.h"
 #include "scene/gui/box_container.h"
-#include "core/scene/resources/bit_map.h"
+#include "scene/resources/bit_map.h"
 #include "thirdparty/misc/clipper.hpp"
 #include "scene/resources/mesh/mesh.h"
 #include "core/variant/array.h"

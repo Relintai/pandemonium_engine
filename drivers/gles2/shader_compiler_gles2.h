@@ -34,7 +34,7 @@
 #include "core/string/string_builder.h"
 #include "servers/rendering/shader_language.h"
 #include "servers/rendering/shader_types.h"
-#include "core/servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 class ShaderCompilerGLES2 {
 public:

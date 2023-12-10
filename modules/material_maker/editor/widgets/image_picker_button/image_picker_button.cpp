@@ -6,7 +6,7 @@
 #include "core/io/resource_loader.h"
 #include "scene/resources/texture.h"
 
-#include "core/scene/resources/bit_map.h"
+#include "scene/resources/bit_map.h"
 
 String ImagePickerButton::get_image_path() {
 	return image_path;

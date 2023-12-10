@@ -30,7 +30,7 @@ SOFTWARE.
 #include "../../meshers/terrain_mesher.h"
 
 #include "../default/terrain_chunk_default.h"
-#include "core/servers/physics/physics_server.h"
+#include "servers/physics_server.h"
 #include "scene/resources/material/spatial_material.h"
 #include "scene/resources/material/shader_material.h"
 

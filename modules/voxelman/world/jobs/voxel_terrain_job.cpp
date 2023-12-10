@@ -30,7 +30,7 @@ SOFTWARE.
 
 #include "../../library/voxel_material_cache.h"
 #include "../default/voxel_chunk_default.h"
-#include "core/servers/physics/physics_server.h"
+#include "servers/physics_server.h"
 #include "scene/resources/material/spatial_material.h"
 #include "scene/resources/material/shader_material.h"
 

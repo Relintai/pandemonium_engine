@@ -200,8 +200,6 @@ SConscript("log/SCsub")
 SConscript("object/SCsub")
 SConscript("input/SCsub")
 SConscript("bind/SCsub")
-SConscript("scene/SCsub")
-SConscript("servers/SCsub")
 
 # Build it all as a library
 lib = env.add_library("core", env.core_sources)

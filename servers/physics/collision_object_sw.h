@@ -32,7 +32,7 @@
 
 #include "broad_phase_sw.h"
 #include "core/containers/self_list.h"
-#include "core/servers/physics/physics_server.h"
+#include "servers/physics_server.h"
 #include "shape_sw.h"
 
 #ifdef DEBUG_ENABLED
