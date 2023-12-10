@@ -34,6 +34,7 @@
 #include "scene/3d/visual_instance.h"
 #include "scene/resources/font/font.h"
 #include "scene/resources/material/material.h"
+#include "scene/resources/material/spatial_material.h"
 
 class TriangleMesh;
 

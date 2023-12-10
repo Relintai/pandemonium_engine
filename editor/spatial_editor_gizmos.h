@@ -46,6 +46,7 @@
 #include "core/variant/variant.h"
 
 #include "scene/resources/mesh/mesh.h"
+#include "scene/resources/material/spatial_material.h"
 
 #include "modules/modules_enabled.gen.h"
 

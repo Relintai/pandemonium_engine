@@ -48,6 +48,8 @@
 #include "scene/main/control.h"
 #include "scene/resources/font/dynamic_font.h"
 #include "scene/resources/material/material.h"
+#include "scene/resources/material/spatial_material.h"
+#include "scene/resources/material/shader_material.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/main/scene_string_names.h"

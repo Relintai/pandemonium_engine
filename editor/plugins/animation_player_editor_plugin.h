@@ -41,6 +41,8 @@
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
+#include "scene/resources/material/shader_material.h"
+
 class AnimationTrackEditor;
 class AnimationPlayerEditorPlugin;
 class AcceptDialog;

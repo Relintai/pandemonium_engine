@@ -33,6 +33,8 @@ SOFTWARE.
 #include "../default/terrain_chunk_default.h"
 #include "scene/resources/world_3d.h"
 #include "core/servers/physics/physics_server.h"
+#include "scene/resources/material/spatial_material.h"
+#include "scene/resources/material/shader_material.h"
 
 #include "modules/modules_enabled.gen.h"
 

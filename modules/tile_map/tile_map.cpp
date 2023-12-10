@@ -39,6 +39,7 @@
 #include "servers/navigation_2d_server.h"
 #include "core/servers/physics_2d/physics_2d_server.h"
 #include "servers/rendering/rendering_server_canvas_helper.h"
+#include "scene/resources/material/shader_material.h"
 
 #ifdef DEBUG_ENABLED
 #include "servers/navigation_server.h"

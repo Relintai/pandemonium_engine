@@ -36,6 +36,7 @@
 #include "scene/main/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/material/material.h"
+#include "scene/resources/material/spatial_material.h"
 #include "scene/resources/texture.h"
 
 #include "extensions/gltf_document_extension.h"

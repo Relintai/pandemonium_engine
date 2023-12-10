@@ -31,6 +31,7 @@
 #include "navigation_mesh.h"
 
 #include "servers/navigation_server.h"
+#include "scene/resources/material/spatial_material.h"
 
 void NavigationMesh::create_from_mesh(const Ref<Mesh> &p_mesh) {
 	ERR_FAIL_COND(p_mesh.is_null());

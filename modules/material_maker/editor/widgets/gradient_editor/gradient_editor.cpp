@@ -17,6 +17,7 @@
 #include "scene/gui/option_button.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/resources/material/material.h"
+#include "scene/resources/material/shader_material.h"
 
 MMGraphNode *MMGradientEditor::get_graph_node() {
 	return graph_node;

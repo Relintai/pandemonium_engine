@@ -36,6 +36,8 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/environment_3d.h"
 #include "scene/resources/material/particles_material.h"
+#include "scene/resources/material/spatial_material.h"
+#include "scene/resources/material/shader_material.h"
 #include "scene/resources/sky.h"
 #include "scene/resources/world_3d.h"
 #include "core/object/class_db.h"

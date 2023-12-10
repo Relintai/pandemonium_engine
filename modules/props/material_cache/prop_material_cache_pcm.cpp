@@ -25,6 +25,8 @@ SOFTWARE.
 #include "../../texture_packer/texture_packer.h"
 #include "../singleton/prop_cache.h"
 #include "scene/resources/texture.h"
+#include "scene/resources/material/spatial_material.h"
+#include "scene/resources/material/shader_material.h"
 
 int PropMaterialCachePCM::get_texture_flags() const {
 	return _packer->get_texture_flags();

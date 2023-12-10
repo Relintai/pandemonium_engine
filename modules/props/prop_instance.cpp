@@ -4,6 +4,8 @@
 
 #include "scene/3d/light.h"
 #include "scene/3d/physics_body.h"
+#include "scene/resources/material/spatial_material.h"
+#include "scene/resources/material/shader_material.h"
 
 #include "modules/modules_enabled.gen.h"
 

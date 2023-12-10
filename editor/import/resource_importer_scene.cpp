@@ -50,6 +50,8 @@
 #include "scene/resources/resource_format_text.h"
 #include "core/scene/resources/shapes/shape.h"
 #include "core/scene/resources/shapes/sphere_shape.h"
+#include "scene/resources/material/spatial_material.h"
+#include "scene/resources/material/shader_material.h"
 
 uint32_t EditorSceneImporter::get_import_flags() const {
 	if (get_script_instance()) {

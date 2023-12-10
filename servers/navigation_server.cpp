@@ -40,6 +40,7 @@
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
 #include "scene/resources/material/material.h"
+#include "scene/resources/material/spatial_material.h"
 #endif
 
 NavigationServer *NavigationServer::singleton = nullptr;

@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
+#include "scene/resources/material/shader_material.h"
 
 #include "modules/modules_enabled.gen.h"
 

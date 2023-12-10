@@ -34,6 +34,7 @@
 #include "core/config/engine.h"
 #include "mesh_instance.h"
 #include "scene/resources/material/material.h"
+#include "scene/resources/material/spatial_material.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_3d.h"
 #include "core/servers/physics/physics_server.h"

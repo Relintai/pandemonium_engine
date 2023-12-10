@@ -40,6 +40,7 @@
 #include "scene/resources/world_3d.h"
 #include "servers/navigation/navigation_mesh_generator.h"
 #include "servers/navigation_server.h"
+#include "scene/resources/material/spatial_material.h"
 
 void NavigationMeshInstance::set_enabled(bool p_enabled) {
 	if (enabled == p_enabled) {

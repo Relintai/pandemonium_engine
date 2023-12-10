@@ -43,6 +43,7 @@
 
 #include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/world_3d.h"
+#include "scene/resources/material/spatial_material.h"
 
 bool GridMap::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name;

@@ -40,6 +40,8 @@
 #include "editor/pane_drag.h"
 #include "grid_map.h"
 
+#include "scene/resources/material/spatial_material.h"
+
 class UndoRedo;
 class Panel;
 class MenuButton;

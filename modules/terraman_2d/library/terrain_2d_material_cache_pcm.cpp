@@ -26,6 +26,7 @@ SOFTWARE.
 #include "scene/resources/texture.h"
 #include "terrain_2d_surface.h"
 #include "terrain_2d_surface_merger.h"
+#include "scene/resources/material/shader_material.h"
 
 int Terrain2DMaterialCachePCM::get_texture_flags() const {
 	return _packer->get_texture_flags();

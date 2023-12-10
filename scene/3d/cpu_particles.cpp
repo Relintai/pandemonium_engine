@@ -37,6 +37,8 @@
 #include "core/scene/resources/gradient.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/material/particles_material.h"
+#include "scene/resources/material/spatial_material.h"
+#include "scene/resources/material/shader_material.h"
 #include "core/servers/rendering/rendering_server.h"
 
 AABB CPUParticles::get_aabb() const {

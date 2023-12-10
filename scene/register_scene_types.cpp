@@ -156,6 +156,8 @@
 #include "scene/resources/mesh/immediate_mesh.h"
 #include "core/scene/resources/shapes_2d/line_shape_2d.h"
 #include "scene/resources/material/material.h"
+#include "scene/resources/material/spatial_material.h"
+#include "scene/resources/material/shader_material.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/mesh/mesh_data_tool.h"
 #include "scene/resources/mesh/multimesh.h"

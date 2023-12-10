@@ -35,6 +35,7 @@
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_3d.h"
 #include "servers/navigation_server.h"
+#include "scene/resources/material/spatial_material.h"
 
 #ifdef DEBUG_ENABLED
 void NavigationLink3D::_update_debug_mesh() {

@@ -65,6 +65,8 @@
 #include "scene/main/node.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/material/material.h"
+#include "scene/resources/material/spatial_material.h"
+#include "scene/resources/material/shader_material.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"

@@ -28,6 +28,7 @@ SOFTWARE.
 
 #include "../nodes/mesh_data_instance.h"
 #include "scene/resources/material/material.h"
+#include "scene/resources/material/spatial_material.h"
 
 Ref<MeshDataResource> PropDataMeshData::get_mesh() const {
 	return _mesh;

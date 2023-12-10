@@ -1,6 +1,7 @@
 #include "mesh_data_instance.h"
 
 #include "scene/resources/texture.h"
+#include "scene/resources/material/spatial_material.h"
 
 #include "core/io/image.h"
 

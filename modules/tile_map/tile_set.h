@@ -40,6 +40,7 @@
 #include "scene/resources/navigation_2d/navigation_polygon.h"
 #include "core/scene/resources/shapes_2d/shape_2d.h"
 #include "scene/resources/texture.h"
+#include "scene/resources/material/shader_material.h"
 
 class TileSet : public Resource {
 	GDCLASS(TileSet, Resource);
