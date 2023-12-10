@@ -36,10 +36,6 @@
 #include "scene/resources/texture.h"
 #include "servers/rendering/shader_language.h"
 
-#ifdef TOOLS_ENABLED
-#include "editor/editor_settings.h"
-#endif
-
 #include "scene/main/scene_string_names.h"
 
 void Material::set_next_pass(const Ref<Material> &p_pass) {
