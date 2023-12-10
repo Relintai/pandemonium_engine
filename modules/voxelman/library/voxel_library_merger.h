@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "voxel_library.h"
 
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 #include "../data/voxel_light.h"
 #include "voxel_surface_merger.h"

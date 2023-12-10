@@ -25,7 +25,7 @@ SOFTWARE.
 #include "core/object/resource.h"
 
 #include "core/math/rect2.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 #include "../data/voxel_light.h"
 #include "voxel_surface.h"

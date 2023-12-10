@@ -29,7 +29,7 @@ SOFTWARE.
 #include "core/object/reference.h"
 #include "core/containers/vector.h"
 
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 #include "core/os/mutex.h"
 

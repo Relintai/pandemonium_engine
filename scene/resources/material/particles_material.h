@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/rid.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 class ParticlesMaterial : public Material {
 	GDCLASS(ParticlesMaterial, Material);

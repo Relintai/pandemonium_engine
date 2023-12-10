@@ -53,6 +53,14 @@ env.add_source_files(font_obj, "font/*.cpp")
 for o in font_obj:
     scene_obj.append(o)
 
+
+# material
+material_obj = []
+env.add_source_files(material_obj, "material/*.cpp")
+
+for o in material_obj:
+    scene_obj.append(o)
+
 env.scene_sources += scene_obj
 
 # Needed to force rebuilding the scene files when the thirdparty code is updated.

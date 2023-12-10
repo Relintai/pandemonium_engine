@@ -34,7 +34,7 @@
 #include "core/math/geometry.h"
 #include "scene/3d/navigation.h"
 #include "scene/3d/navigation_link_3d.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/world_3d.h"
 #include "servers/navigation/navigation_path_query_result_3d.h"

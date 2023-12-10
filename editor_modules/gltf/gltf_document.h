@@ -35,7 +35,7 @@
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/spatial.h"
 #include "scene/animation/animation_player.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 #include "scene/resources/texture.h"
 
 #include "extensions/gltf_document_extension.h"

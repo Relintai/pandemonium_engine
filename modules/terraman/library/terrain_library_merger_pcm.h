@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "terrain_library.h"
 
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 #include "../data/terrain_light.h"
 #include "terrain_surface_merger.h"

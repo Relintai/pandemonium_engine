@@ -37,7 +37,7 @@
 
 #include "scene/resources/primitive_meshes.h"
 
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"

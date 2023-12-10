@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include "core/math/rect2.h"
 #include "core/os/mutex.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 class Prop2DData;
 

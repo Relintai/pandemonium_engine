@@ -38,7 +38,7 @@
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 #include "scene/resources/mesh.h"
 
 class Camera;

@@ -39,7 +39,7 @@
 #ifdef DEBUG_ENABLED
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 #endif
 
 NavigationServer *NavigationServer::singleton = nullptr;

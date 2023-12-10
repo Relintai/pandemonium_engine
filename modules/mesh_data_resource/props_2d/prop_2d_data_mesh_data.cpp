@@ -27,7 +27,7 @@ SOFTWARE.
 #ifdef MODULE_PROPS_2D_ENABLED
 
 #include "../nodes/mesh_data_instance.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 Ref<MeshDataResource> Prop2DDataMeshData::get_mesh() const {
 	return _mesh;

@@ -30,7 +30,7 @@
 
 #include "visual_instance.h"
 
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 #include "scene/resources/world_3d.h"
 #include "scene/scene_string_names.h"
 #include "servers/rendering_server.h"

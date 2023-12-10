@@ -36,7 +36,7 @@
 #include "core/math/transform_interpolator.h"
 
 #include "scene/2d/canvas_item.h"
-#include "scene/resources/particles_material.h"
+#include "scene/resources/material/particles_material.h"
 #include "scene/resources/texture.h"
 #include "servers/rendering_server.h"
 

@@ -32,7 +32,7 @@
 
 #include "core/object/reference.h"
 #include "scene/3d/visual_instance.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 class TriangleMesh;
 class SpriteFrames;

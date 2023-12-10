@@ -64,7 +64,7 @@
 #include "scene/gui/texture_rect.h"
 #include "scene/main/node.h"
 #include "scene/main/viewport.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"

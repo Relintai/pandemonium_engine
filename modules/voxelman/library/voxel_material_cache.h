@@ -27,7 +27,7 @@ SOFTWARE.
 #include "core/containers/vector.h"
 
 #include "core/math/rect2.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 #include "voxel_library.h"
 

@@ -30,7 +30,7 @@
 
 #include "root_motion_view.h"
 #include "scene/animation/animation_tree.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 void RootMotionView::set_animation_path(const NodePath &p_path) {
 	path = p_path;
 	first = true;

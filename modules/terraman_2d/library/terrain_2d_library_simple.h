@@ -26,7 +26,7 @@ SOFTWARE.
 
 #include "terrain_2d_library.h"
 
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 #include "../data/terrain_2d_light.h"
 #include "terrain_2d_surface_simple.h"

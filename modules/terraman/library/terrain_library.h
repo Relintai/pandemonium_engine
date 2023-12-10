@@ -25,7 +25,7 @@ SOFTWARE.
 #include "core/object/resource.h"
 
 #include "core/math/rect2.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 
 #include "../data/terrain_light.h"
 #include "terrain_surface.h"
