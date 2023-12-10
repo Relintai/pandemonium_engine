@@ -1,7 +1,7 @@
 
 #include "dummy_navigation_server.h"
 
-#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh.h"
 
 void DummyNavigationServer::region_set_navigation_mesh(RID p_region, Ref<NavigationMesh> p_navigation_mesh) {
 }

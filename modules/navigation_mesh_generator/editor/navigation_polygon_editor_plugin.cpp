@@ -40,8 +40,8 @@
 #include "scene/gui/dialogs.h"
 #include "scene/gui/label.h"
 #include "scene/gui/option_button.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
-#include "scene/resources/navigation_polygon.h"
+#include "scene/resources/navigation_2d/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_2d/navigation_polygon.h"
 #include "servers/navigation/navigation_mesh_generator.h"
 #include "scene/gui/separator.h"
 

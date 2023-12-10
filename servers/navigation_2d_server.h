@@ -36,7 +36,7 @@
 
 #include "navigation/navigation_utilities.h"
 #include "scene/2d/navigation_polygon_instance.h"
-#include "scene/resources/navigation_polygon.h"
+#include "scene/resources/navigation_2d/navigation_polygon.h"
 
 class NavigationPathQueryParameters2D;
 class NavigationPathQueryResult2D;

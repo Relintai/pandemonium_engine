@@ -32,8 +32,8 @@
 
 #include "spatial.h"
 
-#include "scene/resources/navigation_mesh.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
+#include "scene/resources/navigation/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"
 
 #ifndef _3D_DISABLED
 bool NavigationGeometryParser3D::parses_node(Node *p_node) {

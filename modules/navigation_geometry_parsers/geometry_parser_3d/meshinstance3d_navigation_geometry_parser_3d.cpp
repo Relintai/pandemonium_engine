@@ -32,8 +32,8 @@
 
 #include "scene/3d/mesh_instance.h"
 #include "scene/resources/mesh.h"
-#include "scene/resources/navigation_mesh.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
+#include "scene/resources/navigation/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"
 
 bool MeshInstance3DNavigationGeometryParser3D::parses_node(Node *p_node) {
 	return (Object::cast_to<MeshInstance>(p_node) != nullptr);

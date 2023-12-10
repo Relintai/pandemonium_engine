@@ -34,8 +34,8 @@
 
 #include "modules/tile_map/tile_map.h"
 #include "modules/tile_map/tile_set.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
-#include "scene/resources/navigation_polygon.h"
+#include "scene/resources/navigation_2d/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_2d/navigation_polygon.h"
 
 #include "modules/modules_enabled.gen.h"
 

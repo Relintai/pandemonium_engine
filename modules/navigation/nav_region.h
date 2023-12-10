@@ -35,7 +35,7 @@
 
 #include "nav_utils.h"
 #include "scene/3d/navigation.h"
-#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh.h"
 
 class NavRegion : public NavBase {
 	NavMap *map;

@@ -34,7 +34,7 @@
 #include "core/core_string_names.h"
 #include "core/os/mutex.h"
 #include "scene/2d/navigation_2d.h"
-#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/world_2d.h"
 #include "servers/navigation/navigation_mesh_generator.h"
 #include "servers/navigation_2d_server.h"

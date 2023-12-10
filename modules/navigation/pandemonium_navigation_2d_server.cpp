@@ -32,7 +32,7 @@
 
 #include "core/math/transform.h"
 #include "core/math/transform_2d.h"
-#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh.h"
 #include "servers/navigation_server.h"
 
 #define FORWARD_0(FUNC_NAME)                                   \

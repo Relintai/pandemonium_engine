@@ -33,8 +33,8 @@
 #include "scene/3d/multimesh_instance.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/multimesh.h"
-#include "scene/resources/navigation_mesh.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
+#include "scene/resources/navigation/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"
 
 bool MultiMeshInstance3DNavigationGeometryParser3D::parses_node(Node *p_node) {
 	return (Object::cast_to<MultiMeshInstance>(p_node) != nullptr);

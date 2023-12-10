@@ -41,8 +41,8 @@
 #include "scene/gui/button.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/label.h"
-#include "scene/resources/navigation_mesh.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
+#include "scene/resources/navigation/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"
 #include "servers/navigation/navigation_mesh_generator.h"
 #include "scene/gui/separator.h"
 

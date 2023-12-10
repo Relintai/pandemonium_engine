@@ -32,8 +32,8 @@
 
 #include "scene/2d/node_2d.h"
 
-#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
-#include "scene/resources/navigation_polygon.h"
+#include "scene/resources/navigation_2d/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_2d/navigation_polygon.h"
 
 bool NavigationGeometryParser2D::parses_node(Node *p_node) {
 	if (Object::cast_to<Node2D>(p_node)) {

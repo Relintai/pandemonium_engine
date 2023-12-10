@@ -8,10 +8,10 @@
 #include "scene/3d/navigation_geometry_parser_3d.h"
 #endif // _3D_DISABLED
 #include "scene/main/node.h"
-#include "scene/resources/navigation_mesh.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation/navigation_mesh.h"
+#include "scene/resources/navigation_2d/navigation_mesh_source_geometry_data_2d.h"
 #ifndef _3D_DISABLED
-#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
+#include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"
 #endif // _3D_DISABLED
 
 void NavigationMeshGeneratorDummy::cleanup() {}

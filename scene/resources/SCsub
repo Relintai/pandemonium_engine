@@ -32,6 +32,20 @@ env.add_source_files(shapes_3d_obj, "shapes/*.cpp")
 for o in shapes_3d_obj:
     scene_obj.append(o)
 
+# 2d navigation
+navigation_2d_obj = []
+env.add_source_files(navigation_2d_obj, "navigation_2d/*.cpp")
+
+for o in navigation_2d_obj:
+    scene_obj.append(o)
+
+# 3d navigation
+navigation_obj = []
+env.add_source_files(navigation_obj, "navigation/*.cpp")
+
+for o in navigation_obj:
+    scene_obj.append(o)
+
 env.scene_sources += scene_obj
 
 # Needed to force rebuilding the scene files when the thirdparty code is updated.

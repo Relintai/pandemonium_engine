@@ -41,7 +41,7 @@
 #include "servers/navigation_server.h"
 #include "servers/rendering_server.h"
 
-#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/world_3d.h"
 
 bool GridMap::_set(const StringName &p_name, const Variant &p_value) {

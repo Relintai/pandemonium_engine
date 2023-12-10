@@ -40,8 +40,8 @@
 #include "scene/resources/shapes_2d/rectangle_shape_2d.h"
 #include "scene/resources/shapes_2d/shape_2d.h"
 
-#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
-#include "scene/resources/navigation_polygon.h"
+#include "scene/resources/navigation_2d/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_2d/navigation_polygon.h"
 
 bool StaticBody2DNavigationGeometryParser2D::parses_node(Node *p_node) {
 	return (Object::cast_to<StaticBody2D>(p_node) != nullptr);

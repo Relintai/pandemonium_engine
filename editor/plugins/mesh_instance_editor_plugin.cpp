@@ -60,7 +60,7 @@
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/resources/mesh.h"
-#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/shapes/shape.h"
 #include "spatial_editor_plugin.h"
 

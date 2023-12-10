@@ -93,7 +93,7 @@
 #include "scene/resources/shapes/cylinder_shape.h"
 #include "scene/resources/shapes/height_map_shape.h"
 #include "scene/resources/material.h"
-#include "scene/resources/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/occluder_shape.h"
 #include "scene/resources/occluder_shape_polygon.h"
 #include "scene/resources/shapes/plane_shape.h"

@@ -47,7 +47,7 @@
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_2d.h"
+#include "scene/resources/navigation_2d/navigation_mesh_source_geometry_data_2d.h"
 #include "servers/navigation/navigation_mesh_generator.h"
 
 #include "scene/gui/check_box.h"

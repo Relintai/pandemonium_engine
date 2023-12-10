@@ -44,8 +44,8 @@
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/shapes/sphere_shape.h"
 
-#include "scene/resources/navigation_mesh.h"
-#include "scene/resources/navigation_mesh_source_geometry_data_3d.h"
+#include "scene/resources/navigation/navigation_mesh.h"
+#include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"
 
 bool StaticBody3DNavigationGeometryParser3D::parses_node(Node *p_node) {
 	return (Object::cast_to<StaticBody>(p_node) != nullptr);

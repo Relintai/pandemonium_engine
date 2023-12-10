@@ -37,7 +37,7 @@
 #include "scene/2d/light_occluder_2d.h"
 #include "scene/2d/navigation_polygon_instance.h"
 #include "scene/resources/shapes_2d/convex_polygon_shape_2d.h"
-#include "scene/resources/navigation_polygon.h"
+#include "scene/resources/navigation_2d/navigation_polygon.h"
 #include "scene/resources/shapes_2d/shape_2d.h"
 #include "scene/resources/texture.h"
 
