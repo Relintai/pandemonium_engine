@@ -32,7 +32,7 @@
 
 #include "core/object/resource.h"
 #include "scene/main/node.h"
-#include "scene/resources/animation.h"
+#include "scene/animation/animation.h"
 
 #include "modules/modules_enabled.gen.h"
 

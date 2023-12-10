@@ -42,7 +42,7 @@
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
-#include "scene/resources/animation.h"
+#include "scene/animation/animation.h"
 #include "scene/resources/texture.h"
 
 class AnimationTimelineEdit;

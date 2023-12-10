@@ -40,7 +40,7 @@
 #include "scene/3d/physics_body.h"
 #include "scene/3d/vehicle_body.h"
 #include "scene/animation/animation_player.h"
-#include "scene/resources/animation.h"
+#include "scene/animation/animation.h"
 #include "scene/resources/box_shape.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/navigation_mesh.h"

@@ -66,7 +66,7 @@
 #include "scene/gui/separator.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
-#include "scene/resources/animation.h"
+#include "scene/animation/animation.h"
 #include "scene/resources/style_box.h"
 
 #include "modules/modules_enabled.gen.h"

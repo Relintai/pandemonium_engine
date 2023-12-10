@@ -31,7 +31,7 @@
 #ifdef TOOLS_ENABLED
 
 #include "editor_scene_importer_gltf.h"
-#include "scene/resources/animation.h"
+#include "scene/animation/animation.h"
 
 #include "gltf_state.h"
 #include "packed_scene_gltf.h"

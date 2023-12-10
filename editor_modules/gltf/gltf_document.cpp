@@ -56,7 +56,7 @@
 #include "scene/3d/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/main/node.h"
-#include "scene/resources/animation.h"
+#include "scene/animation/animation.h"
 #include "scene/resources/multimesh.h"
 #include "scene/resources/surface_tool.h"
 

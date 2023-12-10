@@ -79,7 +79,7 @@
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/viewport.h"
-#include "scene/resources/animation.h"
+#include "scene/animation/animation.h"
 #include "scene/resources/texture.h"
 #include "servers/rendering_server.h"
 
