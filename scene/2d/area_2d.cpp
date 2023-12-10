@@ -32,7 +32,7 @@
 #include "scene/resources/world_3d.h"
 #include "scene/main/scene_string_names.h"
 #include "servers/audio_server.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 
 void Area2D::set_space_override_mode(SpaceOverride p_mode) {
 	space_override = p_mode;

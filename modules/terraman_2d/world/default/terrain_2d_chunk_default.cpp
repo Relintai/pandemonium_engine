@@ -40,7 +40,7 @@ SOFTWARE.
 #include "../jobs/terrain_2d_terrain_job.h"
 #include "scene/resources/world_3d.h"
 #include "scene/resources/world_2d.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 
 const String Terrain2DChunkDefault::BINDING_STRING_BUILD_FLAGS = "Use Lighting,Use AO,Use RAO,Generate AO,Generate RAO,Bake Lights,Create Collider";
 

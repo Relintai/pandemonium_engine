@@ -37,7 +37,7 @@
 #include "scene/2d/collision_object_2d.h"
 #include "scene/resources/world_2d.h"
 #include "servers/navigation_2d_server.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 #include "servers/rendering/rendering_server_canvas_helper.h"
 
 #ifdef DEBUG_ENABLED

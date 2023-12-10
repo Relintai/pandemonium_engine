@@ -67,7 +67,7 @@
 #include "servers/navigation/navigation_mesh_generator_dummy.h"
 #include "servers/navigation_2d_server.h"
 #include "servers/navigation_server.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 #include "core/servers/physics/physics_server.h"
 #include "servers/register_server_types.h"
 #include "core/servers/rendering/rendering_server_callbacks.h"

@@ -30,7 +30,7 @@ SOFTWARE.
 #include "../../meshers/terrain_2d_mesher.h"
 
 #include "../default/terrain_2d_chunk_default.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 
 #include "modules/modules_enabled.gen.h"
 

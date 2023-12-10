@@ -35,7 +35,7 @@
 #include "core/os/os.h"
 #include "core/string/print_string.h"
 #include "scene/resources/texture.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 #include "core/servers/rendering/rendering_server.h"
 
 static const unsigned char convex_png[] = {

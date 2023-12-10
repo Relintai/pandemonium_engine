@@ -53,7 +53,7 @@
 #include "scene/main/scene_string_names.h"
 #include "servers/audio_server.h"
 #include "servers/navigation_server.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 #include "core/servers/physics/physics_server.h"
 #include "viewport.h"
 

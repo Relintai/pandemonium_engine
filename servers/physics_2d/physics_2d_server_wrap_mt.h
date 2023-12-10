@@ -34,7 +34,7 @@
 #include "core/os/thread.h"
 #include "core/config/project_settings.h"
 #include "core/os/safe_refcount.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 
 #ifdef DEBUG_SYNC
 #define SYNC_DEBUG print_line("sync on: " + String(__FUNCTION__));

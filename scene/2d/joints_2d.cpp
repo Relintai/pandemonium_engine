@@ -33,7 +33,7 @@
 #include "core/config/engine.h"
 #include "physics_body_2d.h"
 #include "scene/main/scene_string_names.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 
 void Joint2D::_disconnect_signals() {
 	Node *node_a = get_node_or_null(a);

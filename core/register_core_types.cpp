@@ -82,6 +82,7 @@
 
 #include "core/servers/rendering/rendering_server.h"
 #include "core/servers/physics/physics_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 
 static Ref<ResourceFormatSaverBinary> resource_saver_binary;
 static Ref<ResourceFormatLoaderBinary> resource_loader_binary;
@@ -302,6 +303,7 @@ void register_core_singletons() {
 	ClassDB::register_class<_ScriptServer>();
 	ClassDB::register_virtual_class<RenderingServer>();
 	ClassDB::register_virtual_class<PhysicsServer>();
+	ClassDB::register_virtual_class<Physics2DServer>();
 
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ProjectSettings", ProjectSettings::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("IP", IP::get_singleton()));
@@ -322,6 +324,7 @@ void register_core_singletons() {
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ScriptServer", _ScriptServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("RenderingServer", RenderingServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("PhysicsServer", PhysicsServer::get_singleton()));
+	Engine::get_singleton()->add_singleton(Engine::Singleton("Physics2DServer", Physics2DServer::get_singleton()));
 }
 
 void unregister_core_types() {

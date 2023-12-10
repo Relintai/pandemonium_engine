@@ -30,7 +30,7 @@
 
 #include "segment_shape_2d.h"
 
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 #include "core/servers/rendering/rendering_server.h"
 
 bool SegmentShape2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {

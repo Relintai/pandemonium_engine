@@ -36,7 +36,7 @@
 #include "scene/main/viewport.h"
 #include "scene/main/world.h"
 #include "servers/navigation_2d_server.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 #include "core/servers/rendering/rendering_server.h"
 
 struct SpatialIndexer2D {

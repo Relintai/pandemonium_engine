@@ -32,7 +32,7 @@
 
 #include "core/config/project_settings.h"
 #include "core/object/resource.h"
-#include "servers/physics_2d_server.h"
+#include "core/servers/physics_2d/physics_2d_server.h"
 
 class VisibilityNotifier2D;
 class Viewport;
