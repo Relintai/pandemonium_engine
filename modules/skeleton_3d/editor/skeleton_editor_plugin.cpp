@@ -57,7 +57,7 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/shapes/capsule_shape.h"
 #include "scene/resources/shapes/sphere_shape.h"
-#include "scene/resources/surface_tool.h"
+#include "scene/resources/mesh/surface_tool.h"
 
 #include "physical_bone_editor_plugin.h"
 

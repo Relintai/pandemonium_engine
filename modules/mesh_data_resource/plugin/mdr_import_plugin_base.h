@@ -31,7 +31,7 @@ SOFTWARE.
 #include "core/math/transform.h"
 #include "editor/import/editor_import_plugin.h"
 #include "scene/main/node.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 #include "../mesh_data_resource.h"
 

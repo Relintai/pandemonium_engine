@@ -37,7 +37,7 @@
 #include "scene/resources/bit_map.h"
 #include "scene/resources/font/dynamic_font.h"
 #include "scene/resources/material/material.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "servers/audio/audio_stream.h"
 #include "core/config/project_settings.h"
 #include "core/variant/array.h"

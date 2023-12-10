@@ -31,8 +31,8 @@
 #include "multimeshinstance3d_navigation_geometry_parser_3d.h"
 
 #include "scene/3d/multimesh_instance.h"
-#include "scene/resources/mesh.h"
-#include "scene/resources/multimesh.h"
+#include "scene/resources/mesh/mesh.h"
+#include "scene/resources/mesh/multimesh.h"
 #include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"
 

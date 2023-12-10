@@ -27,7 +27,7 @@ SOFTWARE.
 #include "core/object/resource.h"
 #include "core/variant/variant.h"
 
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 #include "scene/resources/shapes/shape.h"
 

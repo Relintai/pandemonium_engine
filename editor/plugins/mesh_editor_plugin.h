@@ -39,7 +39,7 @@
 #include "core/string/ustring.h"
 
 #include "scene/resources/material/material.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 class Camera;
 class DirectionalLight;

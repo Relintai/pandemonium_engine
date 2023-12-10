@@ -37,7 +37,7 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/environment_3d.h"
 #include "scene/resources/material/material.h"
-#include "scene/resources/surface_tool.h"
+#include "scene/resources/mesh/surface_tool.h"
 #include "scene/resources/world_3d.h"
 
 void Camera::_update_audio_listener_state() {

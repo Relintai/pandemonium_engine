@@ -35,7 +35,7 @@
 #include "core/containers/local_vector.h"
 #include "scene/resources/shapes/concave_polygon_shape.h"
 #include "scene/resources/shapes/convex_polygon_shape.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/navigation/navigation_mesh.h"
 
 #include <cstdint>

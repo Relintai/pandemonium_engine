@@ -35,7 +35,7 @@
 #include "scene/gui/control.h"
 #include "editor/property_editor.h"
 
-#include "scene/resources/primitive_meshes.h"
+#include "scene/resources/mesh/primitive_meshes.h"
 
 #include "scene/resources/material/material.h"
 #include "core/object/object.h"

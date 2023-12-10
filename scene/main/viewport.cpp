@@ -52,7 +52,7 @@
 #include "scene/gui/viewport_container.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/timer.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_2d.h"
 #include "scene/resources/world_3d.h"
 #include "scene/scene_string_names.h"

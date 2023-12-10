@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "../../mesh_data_resource.h"
 #include "modules/mesh_utils/mesh_utils.h"
-#include "scene/resources/mesh.h"
-#include "scene/resources/surface_tool.h"
+#include "scene/resources/mesh/mesh.h"
+#include "scene/resources/mesh/surface_tool.h"
 
 #include "modules/modules_enabled.gen.h"
 

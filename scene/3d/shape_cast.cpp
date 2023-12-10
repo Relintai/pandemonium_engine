@@ -35,7 +35,7 @@
 #include "mesh_instance.h"
 #include "scene/resources/shapes/concave_polygon_shape.h"
 #include "scene/resources/material/material.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_3d.h"
 
 void ShapeCast::_notification(int p_what) {

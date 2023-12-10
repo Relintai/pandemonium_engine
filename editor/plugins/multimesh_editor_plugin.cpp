@@ -32,7 +32,7 @@
 
 #include "scene/3d/mesh_instance.h"
 #include "scene/gui/box_container.h"
-#include "scene/resources/multimesh.h"
+#include "scene/resources/mesh/multimesh.h"
 #include "spatial_editor_plugin.h"
 #include "core/object/class_db.h"
 #include "core/error/error_macros.h"
@@ -62,7 +62,7 @@
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
 #include "scene/main/node.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 void MultiMeshEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {

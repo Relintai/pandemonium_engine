@@ -38,7 +38,7 @@
 #include "scene/3d/camera.h"
 #include "scene/3d/mesh_instance.h"
 #include "../nodes/skeleton.h"
-#include "scene/resources/immediate_mesh.h"
+#include "scene/resources/mesh/immediate_mesh.h"
 
 class EditorInspectorPluginSkeleton;
 class Joint;

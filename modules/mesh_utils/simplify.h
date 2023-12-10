@@ -24,7 +24,7 @@
 
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 #include <float.h> //FLT_EPSILON, DBL_EPSILON
 #include <limits.h>

@@ -35,7 +35,7 @@
 #include "core/containers/rid.h"
 #include "scene/3d/collision_object.h"
 #include "scene/3d/physics_body.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
 

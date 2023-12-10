@@ -35,7 +35,7 @@
 #include "core/io/resource_saver.h"
 #include "core/os/file_access.h"
 #include "editor/editor_atlas_packer.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/texture.h"
 
 String ResourceImporterTextureAtlas::get_importer_name() const {

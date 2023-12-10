@@ -36,7 +36,7 @@
 #include "scene/3d/physics_body.h"
 #include "scene/3d/spatial.h"
 #include "scene/resources/material/material.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/world_3d.h"
 #include "servers/navigation_server.h"

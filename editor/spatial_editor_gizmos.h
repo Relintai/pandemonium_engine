@@ -45,7 +45,7 @@
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
 
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 #include "modules/modules_enabled.gen.h"
 

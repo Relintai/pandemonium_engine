@@ -58,7 +58,7 @@
 #include "scene/3d/mesh_instance.h"
 #include "scene/gui/box_container.h"
 #include "scene/main/node.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/texture.h"
 #include "servers/rendering_server.h"

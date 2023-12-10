@@ -34,7 +34,7 @@
 #include "scene/gui/texture_button.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/world_3d.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/math/aabb.h"

@@ -95,7 +95,7 @@
 #include "scene/resources/shader.h"
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/style_box.h"
-#include "scene/resources/surface_tool.h"
+#include "scene/resources/mesh/surface_tool.h"
 #include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
 

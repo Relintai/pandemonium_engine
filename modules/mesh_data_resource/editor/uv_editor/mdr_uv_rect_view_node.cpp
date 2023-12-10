@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "../../mesh_data_resource.h"
 #include "mdr_uv_rect_view.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 void MDRUVRectViewNode::set_edited_resource(const Ref<MeshDataResource> &mdr, const PoolIntArray &indices) {
 	_mdr = mdr;

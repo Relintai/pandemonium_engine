@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "position_3d.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 Position3D::Position3D() {
 }

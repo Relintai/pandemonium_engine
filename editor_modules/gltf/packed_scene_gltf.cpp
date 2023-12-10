@@ -35,7 +35,7 @@
 #include "editor/import/resource_importer_scene.h"
 #include "scene/3d/spatial.h"
 #include "scene/animation/animation_player.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 #include "gltf_document.h"
 

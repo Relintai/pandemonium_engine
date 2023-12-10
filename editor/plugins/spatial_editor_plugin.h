@@ -62,7 +62,7 @@
 #include "editor/spatial_editor_gizmos.h"
 
 #include "scene/resources/material/material.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/texture.h"
 
 class Camera;

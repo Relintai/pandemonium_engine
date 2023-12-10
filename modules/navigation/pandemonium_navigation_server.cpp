@@ -34,7 +34,7 @@
 
 #ifndef _3D_DISABLED
 //#include "navigation_mesh_generator.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/navigation/navigation_mesh.h"
 #endif
 

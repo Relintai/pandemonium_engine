@@ -31,7 +31,7 @@ SOFTWARE.
 #include "scene/3d/room_manager.h"
 
 #include "scene/3d/mesh_instance.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 #include "modules/modules_enabled.gen.h"
 

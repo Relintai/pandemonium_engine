@@ -35,7 +35,7 @@
 #include "core/core_string_names.h"
 #include "physics_body.h"
 #include "scene/resources/material/material.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/scene_string_names.h"
 #include "servers/rendering/rendering_server_globals.h"
 

@@ -48,7 +48,7 @@
 #include "scene/gui/control.h"
 #include "scene/resources/font/dynamic_font.h"
 #include "scene/resources/material/material.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/scene_string_names.h"
 #include "servers/audio_server.h"
@@ -58,7 +58,7 @@
 #include "viewport.h"
 
 #include "modules/modules_enabled.gen.h" // For freetype.
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_2d.h"
 #include "scene/resources/world_3d.h"
 

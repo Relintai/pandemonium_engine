@@ -31,7 +31,7 @@ SOFTWARE.
 #include "../../entity_enums.h"
 #include "../../item_enums.h"
 
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/packed_scene.h"
 
 #include "modules/modules_enabled.gen.h"

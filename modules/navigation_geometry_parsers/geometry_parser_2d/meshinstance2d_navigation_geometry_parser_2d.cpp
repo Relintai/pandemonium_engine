@@ -31,7 +31,7 @@
 #include "meshinstance2d_navigation_geometry_parser_2d.h"
 
 #include "scene/2d/mesh_instance_2d.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 #include "scene/resources/navigation_2d/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_2d/navigation_polygon.h"

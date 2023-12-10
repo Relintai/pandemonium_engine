@@ -35,7 +35,7 @@
 #include "scene/3d/collision_polygon.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/gui/box_container.h"
-#include "scene/resources/immediate_mesh.h"
+#include "scene/resources/mesh/immediate_mesh.h"
 
 #include "scene/3d/navigation_obstacle.h"
 

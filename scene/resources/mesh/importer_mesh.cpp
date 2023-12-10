@@ -31,7 +31,7 @@
 #include "importer_mesh.h"
 
 #include "core/math/random_pcg.h"
-#include "scene/resources/surface_tool.h"
+#include "scene/resources/mesh/surface_tool.h"
 #include "core/object/method_bind_ext.gen.inc"
 
 #include <cstdint>

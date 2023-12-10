@@ -39,7 +39,7 @@
 #include "scene/gui/box_container.h"
 #include "scene/resources/bit_map.h"
 #include "thirdparty/misc/clipper.hpp"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "core/variant/array.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"

@@ -32,7 +32,7 @@
 
 #include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 #include "modules/csg/csg_shape.h"
 

@@ -34,7 +34,7 @@
 #include "core/os/os.h"
 #include "mesh_instance.h"
 #include "navigation.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"
 #include "scene/resources/world_3d.h"

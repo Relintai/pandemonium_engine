@@ -32,7 +32,7 @@
 
 #include "scene/3d/visual_instance.h"
 
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 class Texture;
 

@@ -32,7 +32,7 @@
 
 #include "core/math/projection.h"
 #include "core/containers/self_list.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "servers/rendering/rasterizer.h"
 #include "servers/rendering_server.h"
 

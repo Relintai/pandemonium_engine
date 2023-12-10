@@ -32,7 +32,7 @@
 #define IMMEDIATE_MESH_H
 
 #include "core/containers/vector.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 class ImmediateMesh : public Mesh {
 	GDCLASS(ImmediateMesh, Mesh)

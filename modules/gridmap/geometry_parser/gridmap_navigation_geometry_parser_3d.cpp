@@ -44,7 +44,7 @@
 #include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"
 #include "scene/resources/shapes/plane_shape.h"
-#include "scene/resources/primitive_meshes.h"
+#include "scene/resources/mesh/primitive_meshes.h"
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/shapes/sphere_shape.h"
 

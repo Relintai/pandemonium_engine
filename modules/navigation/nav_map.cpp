@@ -36,7 +36,7 @@
 #include "nav_link.h"
 #include "nav_obstacle.h"
 #include "nav_region.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/navigation/navigation_mesh.h"
 
 #include <Obstacle2d.h>

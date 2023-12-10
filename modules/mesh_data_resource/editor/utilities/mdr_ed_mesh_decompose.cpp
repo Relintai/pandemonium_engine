@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "../../mesh_data_resource.h"
 #include "modules/mesh_utils/mesh_utils.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 //you can use MeshUtils.merge_mesh_array(arr) to get optimalized handle points. Just get the vertices from it.
 Vector<PoolIntArray> MDREDMeshDecompose::get_handle_vertex_to_vertex_map(const Array &arrays, const PoolVector3Array &handle_points) {

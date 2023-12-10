@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/resource.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 class GLTFMesh : public Resource {
 	GDCLASS(GLTFMesh, Resource);

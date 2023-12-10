@@ -35,7 +35,7 @@ SOFTWARE.
 #include "core/math/vector3.h"
 #include "scene/main/node.h"
 #include "scene/resources/material/material.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 #include "modules/modules_enabled.gen.h"
 

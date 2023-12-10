@@ -42,7 +42,7 @@
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation.h"
 #include "scene/resources/shapes/box_shape.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/shapes/plane_shape.h"

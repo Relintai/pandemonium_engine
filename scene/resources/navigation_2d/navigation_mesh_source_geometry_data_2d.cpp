@@ -30,7 +30,7 @@
 
 #include "navigation_mesh_source_geometry_data_2d.h"
 
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 void NavigationMeshSourceGeometryData2D::clear() {
 	traversable_outlines.clear();

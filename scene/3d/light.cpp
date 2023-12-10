@@ -32,7 +32,7 @@
 
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
-#include "scene/resources/surface_tool.h"
+#include "scene/resources/mesh/surface_tool.h"
 
 void Light::set_param(Param p_param, float p_value) {
 	ERR_FAIL_INDEX(p_param, PARAM_MAX);

@@ -31,7 +31,7 @@
 #include "listener.h"
 
 #include "scene/main/viewport.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 void Listener::_update_audio_listener_state() {
 }

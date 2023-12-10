@@ -35,7 +35,7 @@
 
 #include "core/math/transform.h"
 
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 class NavigationMeshSourceGeometryData3D : public Resource {
 	GDCLASS(NavigationMeshSourceGeometryData3D, Resource);

@@ -53,12 +53,20 @@ env.add_source_files(font_obj, "font/*.cpp")
 for o in font_obj:
     scene_obj.append(o)
 
-
 # material
 material_obj = []
 env.add_source_files(material_obj, "material/*.cpp")
 
 for o in material_obj:
+    scene_obj.append(o)
+
+env.scene_sources += scene_obj
+
+# mesh
+mesh_obj = []
+env.add_source_files(mesh_obj, "mesh/*.cpp")
+
+for o in mesh_obj:
     scene_obj.append(o)
 
 env.scene_sources += scene_obj

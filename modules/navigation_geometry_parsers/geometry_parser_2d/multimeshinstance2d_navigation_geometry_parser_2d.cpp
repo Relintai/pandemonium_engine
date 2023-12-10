@@ -32,7 +32,7 @@
 
 #include "core/math/geometry.h"
 #include "scene/2d/multimesh_instance_2d.h"
-#include "scene/resources/multimesh.h"
+#include "scene/resources/mesh/multimesh.h"
 
 #include "scene/resources/navigation_2d/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_2d/navigation_polygon.h"

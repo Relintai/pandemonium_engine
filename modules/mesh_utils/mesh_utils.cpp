@@ -23,7 +23,7 @@ SOFTWARE.
 #include "mesh_utils.h"
 #include "core/containers/local_vector.h"
 #include "core/variant/variant.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 #include "servers/rendering_server.h"
 

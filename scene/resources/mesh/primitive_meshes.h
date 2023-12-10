@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "scene/resources/font/font.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 ///@TODO probably should change a few integers to unsigned integers...
 

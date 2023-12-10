@@ -32,7 +32,7 @@
 
 #include "servers/physics_server.h"
 #include "scene/resources/world_3d.h"
-#include "scene/resources/mesh.h"
+#include "scene/resources/mesh/mesh.h"
 
 void CSGShape::set_use_collision(bool p_enable) {
 	if (use_collision == p_enable) {

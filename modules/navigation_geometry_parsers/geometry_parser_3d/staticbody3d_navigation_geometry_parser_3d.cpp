@@ -40,7 +40,7 @@
 #include "scene/resources/shapes/cylinder_shape.h"
 #include "scene/resources/shapes/height_map_shape.h"
 #include "scene/resources/shapes/plane_shape.h"
-#include "scene/resources/primitive_meshes.h"
+#include "scene/resources/mesh/primitive_meshes.h"
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/shapes/sphere_shape.h"
 

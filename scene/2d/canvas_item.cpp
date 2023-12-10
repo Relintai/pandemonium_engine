@@ -46,7 +46,7 @@
 #include "servers/rendering_server.h"
 
 #include "scene/main/scene_tree.h"
-#include "scene/resources/multimesh.h"
+#include "scene/resources/mesh/multimesh.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/texture.h"
 
