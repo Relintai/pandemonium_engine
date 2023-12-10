@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "animation.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 #include "core/math/geometry.h"
 

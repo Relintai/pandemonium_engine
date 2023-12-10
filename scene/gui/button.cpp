@@ -32,7 +32,7 @@
 
 #include "core/string/translation.h"
 #include "servers/rendering_server.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 Size2 Button::get_minimum_size() const {
 	Size2 minsize = get_theme_font("font")->total_size_of_lines(xl_text.split("\n"));

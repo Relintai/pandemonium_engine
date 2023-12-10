@@ -62,7 +62,7 @@
 #include "scene/gui/scroll_bar.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
-#include "scene/property_utils.h"
+#include "scene/main/property_utils.h"
 #include "scene/resources/font/font.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/style_box.h"

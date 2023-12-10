@@ -32,7 +32,7 @@
 #include "core/core_string_names.h"
 #include "core/math/triangle_mesh.h"
 #include "scene/2d/animated_sprite.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_settings.h"

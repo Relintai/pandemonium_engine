@@ -32,7 +32,7 @@
 
 #include "core/os/os.h"
 #include "scene/resources/texture.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_settings.h"

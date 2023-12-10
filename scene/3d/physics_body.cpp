@@ -38,7 +38,7 @@
 #include "core/object/method_bind_ext.gen.inc"
 #include "core/object/object.h"
 #include "scene/resources/physics_material.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 //#include "skeleton.h"
 
 #ifdef TOOLS_ENABLED

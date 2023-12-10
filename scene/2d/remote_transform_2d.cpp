@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "remote_transform_2d.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 void RemoteTransform2D::_update_cache() {
 	cache = 0;

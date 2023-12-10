@@ -35,7 +35,7 @@
 #include "core/os/os.h"
 #include "label.h"
 #include "scene/gui/scroll_bar.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"

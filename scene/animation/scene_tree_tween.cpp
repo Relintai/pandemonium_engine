@@ -33,7 +33,7 @@
 #include "core/object/method_bind_ext.gen.inc"
 #include "scene/animation/tween.h"
 #include "scene/main/node.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 void Tweener::set_tween(Ref<SceneTreeTween> p_tween) {
 	tween = p_tween;

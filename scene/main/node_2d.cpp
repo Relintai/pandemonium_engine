@@ -33,7 +33,7 @@
 #include "core/object/message_queue.h"
 #include "scene/main/control.h"
 #include "scene/main/viewport.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "servers/rendering_server.h"
 
 #ifdef TOOLS_ENABLED

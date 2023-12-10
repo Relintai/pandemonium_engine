@@ -39,7 +39,7 @@
 #include "core/config/project_settings.h"
 #include "physical_bone.h"
 #include "scene/resources/mesh/surface_tool.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 void SkinReference::_skin_changed() {
 	if (skeleton_node) {

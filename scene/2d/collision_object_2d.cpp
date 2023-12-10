@@ -31,7 +31,7 @@
 #include "collision_object_2d.h"
 
 #include "scene/resources/world_2d.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "servers/physics_2d_server.h"
 
 void CollisionObject2D::_notification(int p_what) {

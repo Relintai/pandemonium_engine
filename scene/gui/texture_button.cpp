@@ -32,7 +32,7 @@
 
 #include "core/typedefs.h"
 #include "scene/resources/bit_map.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 #include <stdlib.h>
 

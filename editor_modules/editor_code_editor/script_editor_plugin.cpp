@@ -88,7 +88,7 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/text_file.h"
 #include "scene/resources/texture.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 #include "editor_script_editor_quick_open.h"
 #include "editor_script_text_editor.h"

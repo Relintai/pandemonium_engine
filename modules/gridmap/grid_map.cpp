@@ -37,7 +37,7 @@
 #include "scene/resources/physics_material.h"
 #include "scene/resources/mesh/primitive_meshes.h"
 #include "scene/resources/mesh/surface_tool.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "servers/navigation_server.h"
 #include "servers/rendering_server.h"
 

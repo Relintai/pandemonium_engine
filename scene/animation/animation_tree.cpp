@@ -35,7 +35,7 @@
 #include "core/config/engine.h"
 #include "core/object/method_bind_ext.gen.inc"
 #include "scene/main/spatial.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "servers/audio/audio_stream.h"
 
 #ifdef MODULE_SKELETON_3D_ENABLED

@@ -30,7 +30,7 @@
 
 #include "container.h"
 #include "core/object/message_queue.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 void Container::_child_minsize_changed() {
 	//Size2 ms = get_combined_minimum_size();

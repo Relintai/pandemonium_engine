@@ -33,7 +33,7 @@
 #include "core/core_string_names.h"
 #include "scene/resources/mesh/primitive_meshes.h"
 #include "scene/resources/theme.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 void Label3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_horizontal_alignment", "alignment"), &Label3D::set_horizontal_alignment);

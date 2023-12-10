@@ -35,7 +35,7 @@
 #include "core/math/projection.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/visibility_notifier.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "servers/navigation_server.h"
 
 struct SpatialIndexer {

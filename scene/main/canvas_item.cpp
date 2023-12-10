@@ -40,7 +40,7 @@
 #include "scene/resources/texture.h"
 #include "scene/resources/world_2d.h"
 #include "scene/resources/world_3d.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "servers/rendering/rendering_server_constants.h"
 #include "servers/rendering/rendering_server_raster.h"
 #include "servers/rendering_server.h"

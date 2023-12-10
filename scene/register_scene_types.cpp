@@ -183,7 +183,7 @@
 #include "scene/resources/video_stream.h"
 #include "scene/resources/world_2d.h"
 #include "scene/resources/world_3d.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 #ifndef _3D_DISABLED
 #include "scene/3d/area.h"

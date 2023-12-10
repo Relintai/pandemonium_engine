@@ -31,7 +31,7 @@
 #include "canvas_layer.h"
 #include "scene/main/canvas_item.h"
 #include "scene/resources/world_2d.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "viewport.h"
 
 void CanvasLayer::set_layer(int p_xform) {

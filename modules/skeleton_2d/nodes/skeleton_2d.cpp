@@ -33,7 +33,7 @@
 #include "../resources/skeleton_modification_2d.h"
 #include "../resources/skeleton_modification_stack_2d.h"
 #include "core/config/engine.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_data.h"

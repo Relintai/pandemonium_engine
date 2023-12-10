@@ -35,7 +35,7 @@
 #include "scene/main/node_2d.h"
 #include "scene/main/spatial.h"
 #include "scene/animation/animation.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "servers/audio/audio_stream.h"
 
 #ifdef MODULE_SKELETON_3D_ENABLED

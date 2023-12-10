@@ -50,7 +50,7 @@
 #include "scene/resources/material/material.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/packed_scene.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "servers/audio_server.h"
 #include "servers/navigation_server.h"
 #include "servers/physics_2d_server.h"

@@ -37,7 +37,7 @@
 #include "scene/animation/animation_tree.h"
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/world_3d.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 void VisibilityNotifier::_enter_camera(Camera *p_camera) {
 	ERR_FAIL_COND(cameras.has(p_camera));

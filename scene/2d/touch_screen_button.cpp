@@ -36,7 +36,7 @@
 #include "scene/resources/bit_map.h"
 #include "scene/resources/shapes_2d/rectangle_shape_2d.h"
 #include "scene/resources/texture.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 void TouchScreenButton::set_texture(const Ref<Texture> &p_texture) {
 	if (texture == p_texture) {

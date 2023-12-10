@@ -38,7 +38,7 @@
 #include "core/config/project_settings.h"
 #include "core/containers/rid.h"
 #include "scene/resources/physics_material.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "skeleton.h"
 
 #ifdef TOOLS_ENABLED

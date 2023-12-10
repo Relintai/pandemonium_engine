@@ -32,7 +32,7 @@
 
 #include "core/config/engine.h"
 #include "scene/resources/curve.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"

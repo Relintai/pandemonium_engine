@@ -40,7 +40,7 @@
 #include "scene/main/control.h"
 #include "core/input/shortcut.h"
 #include "scene/main/instance_placeholder.h"
-#include "scene/property_utils.h"
+#include "scene/main/property_utils.h"
 
 #define PACKED_SCENE_VERSION 2
 

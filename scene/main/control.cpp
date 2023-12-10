@@ -42,7 +42,7 @@
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
 #include "scene/main/viewport.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "servers/rendering_server.h"
 
 #ifdef TOOLS_ENABLED

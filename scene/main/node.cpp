@@ -38,7 +38,7 @@
 #include "process_group.h"
 #include "scene/animation/scene_tree_tween.h"
 #include "scene/resources/packed_scene.h"
-#include "scene/scene_string_names.h"
+#include "scene/main/scene_string_names.h"
 #include "viewport.h"
 #include "world.h"
 
