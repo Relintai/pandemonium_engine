@@ -1,7 +1,7 @@
-#ifndef CYLINDER_SHAPE_H
-#define CYLINDER_SHAPE_H
+#ifndef BOX_SHAPE_H
+#define BOX_SHAPE_H
 /*************************************************************************/
-/*  cylinder_shape.h                                                     */
+/*  box_shape.h                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,27 +30,25 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 
-class CylinderShape : public Shape {
-	GDCLASS(CylinderShape, Shape);
-	float radius;
-	float height;
+class BoxShape : public Shape {
+	GDCLASS(BoxShape, Shape);
+	Vector3 extents;
 
 protected:
 	static void _bind_methods();
+
 	virtual void _update_shape();
 
 public:
-	void set_radius(float p_radius);
-	float get_radius() const;
-	void set_height(float p_height);
-	float get_height() const;
+	void set_extents(const Vector3 &p_extents);
+	Vector3 get_extents() const;
 
 	virtual Vector<Vector3> get_debug_mesh_lines();
 	virtual real_t get_enclosing_radius() const;
 
-	CylinderShape();
+	BoxShape();
 };
 
-#endif // CYLINDER_SHAPE_H
+#endif // BOX_SHAPE_H

@@ -30,7 +30,7 @@
 
 #include "mesh_library.h"
 
-#include "scene/resources/box_shape.h"
+#include "scene/resources/shapes/box_shape.h"
 #include "scene/resources/navigation_mesh.h"
 
 MeshLibrary::Item::Item() {

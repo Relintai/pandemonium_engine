@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "area.h"
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 #include "scene/scene_string_names.h"
 #include "servers/audio_server.h"
 #include "servers/physics_server.h"

@@ -1,7 +1,7 @@
-#ifndef CAPSULE_SHAPE_H
-#define CAPSULE_SHAPE_H
+#ifndef SPHERE_SHAPE_H
+#define SPHERE_SHAPE_H
 /*************************************************************************/
-/*  capsule_shape.h                                                      */
+/*  sphere_shape.h                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,12 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 
-class CapsuleShape : public Shape {
-	GDCLASS(CapsuleShape, Shape);
+class SphereShape : public Shape {
+	GDCLASS(SphereShape, Shape);
 	float radius;
-	float height;
 
 protected:
 	static void _bind_methods();
@@ -45,13 +44,11 @@ protected:
 public:
 	void set_radius(float p_radius);
 	float get_radius() const;
-	void set_height(float p_height);
-	float get_height() const;
 
 	virtual Vector<Vector3> get_debug_mesh_lines();
 	virtual real_t get_enclosing_radius() const;
 
-	CapsuleShape();
+	SphereShape();
 };
 
-#endif // CAPSULE_SHAPE_H
+#endif // SPHERE_SHAPE_H

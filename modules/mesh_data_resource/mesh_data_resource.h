@@ -29,7 +29,7 @@ SOFTWARE.
 
 #include "scene/resources/mesh.h"
 
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 
 class MeshDataResource : public Resource {
 	GDCLASS(MeshDataResource, Resource);

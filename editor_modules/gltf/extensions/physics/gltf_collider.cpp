@@ -33,12 +33,12 @@
 #include "../../gltf_state.h"
 #include "core/math/convex_hull.h"
 #include "scene/3d/area.h"
-#include "scene/resources/box_shape.h"
-#include "scene/resources/capsule_shape.h"
-#include "scene/resources/concave_polygon_shape.h"
-#include "scene/resources/convex_polygon_shape.h"
-#include "scene/resources/cylinder_shape.h"
-#include "scene/resources/sphere_shape.h"
+#include "scene/resources/shapes/box_shape.h"
+#include "scene/resources/shapes/capsule_shape.h"
+#include "scene/resources/shapes/concave_polygon_shape.h"
+#include "scene/resources/shapes/convex_polygon_shape.h"
+#include "scene/resources/shapes/cylinder_shape.h"
+#include "scene/resources/shapes/sphere_shape.h"
 
 void GLTFCollider::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("to_node", "cache_shapes"), &GLTFCollider::to_node, DEFVAL(false));

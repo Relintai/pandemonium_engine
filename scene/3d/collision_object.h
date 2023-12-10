@@ -32,7 +32,7 @@
 
 #include "core/object/reference.h"
 #include "scene/3d/spatial.h"
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 
 class CollisionObject : public Spatial {
 	GDCLASS(CollisionObject, Spatial);

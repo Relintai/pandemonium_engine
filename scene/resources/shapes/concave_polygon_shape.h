@@ -1,7 +1,7 @@
-#ifndef PLANE_SHAPE_H
-#define PLANE_SHAPE_H
+#ifndef CONCAVE_POLYGON_SHAPE_H
+#define CONCAVE_POLYGON_SHAPE_H
 /*************************************************************************/
-/*  plane_shape.h                                                        */
+/*  concave_polygon_shape.h                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,26 +30,44 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 
-class PlaneShape : public Shape {
-	GDCLASS(PlaneShape, Shape);
-	Plane plane;
+class ConcavePolygonShape : public Shape {
+	GDCLASS(ConcavePolygonShape, Shape);
+
+	struct DrawEdge {
+		Vector3 a;
+		Vector3 b;
+		bool operator<(const DrawEdge &p_edge) const {
+			if (a == p_edge.a) {
+				return b < p_edge.b;
+			} else {
+				return a < p_edge.a;
+			}
+		}
+
+		DrawEdge(const Vector3 &p_a = Vector3(), const Vector3 &p_b = Vector3()) {
+			a = p_a;
+			b = p_b;
+			if (a < b) {
+				SWAP(a, b);
+			}
+		}
+	};
 
 protected:
 	static void _bind_methods();
+
 	virtual void _update_shape();
 
 public:
-	void set_plane(Plane p_plane);
-	Plane get_plane() const;
+	void set_faces(const PoolVector<Vector3> &p_faces);
+	PoolVector<Vector3> get_faces() const;
 
-	virtual Vector<Vector3> get_debug_mesh_lines();
-	virtual real_t get_enclosing_radius() const {
-		// Should be infinite?
-		return 0;
-	};
+	Vector<Vector3> get_debug_mesh_lines();
+	virtual real_t get_enclosing_radius() const;
 
-	PlaneShape();
+	ConcavePolygonShape();
 };
-#endif // PLANE_SHAPE_H
+
+#endif // CONCAVE_POLYGON_SHAPE_H

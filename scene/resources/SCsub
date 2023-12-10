@@ -18,10 +18,18 @@ env.scene_sources += thirdparty_obj
 scene_obj = []
 env.add_source_files(scene_obj, "*.cpp")
 
+# 2d shapes
 shapes_2d_obj = []
 env.add_source_files(shapes_2d_obj, "shapes_2d/*.cpp")
 
 for o in shapes_2d_obj:
+    scene_obj.append(o)
+
+# 3d shapes
+shapes_3d_obj = []
+env.add_source_files(shapes_3d_obj, "shapes/*.cpp")
+
+for o in shapes_3d_obj:
     scene_obj.append(o)
 
 env.scene_sources += scene_obj

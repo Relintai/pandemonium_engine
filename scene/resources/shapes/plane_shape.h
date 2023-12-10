@@ -1,7 +1,7 @@
-#ifndef HEIGHT_MAP_SHAPE_H
-#define HEIGHT_MAP_SHAPE_H
+#ifndef PLANE_SHAPE_H
+#define PLANE_SHAPE_H
 /*************************************************************************/
-/*  height_map_shape.h                                                   */
+/*  plane_shape.h                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,33 +30,26 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 
-class HeightMapShape : public Shape {
-	GDCLASS(HeightMapShape, Shape);
-
-	int map_width;
-	int map_depth;
-	PoolRealArray map_data;
-	float min_height;
-	float max_height;
+class PlaneShape : public Shape {
+	GDCLASS(PlaneShape, Shape);
+	Plane plane;
 
 protected:
 	static void _bind_methods();
 	virtual void _update_shape();
 
 public:
-	void set_map_width(int p_new);
-	int get_map_width() const;
-	void set_map_depth(int p_new);
-	int get_map_depth() const;
-	void set_map_data(PoolRealArray p_new);
-	PoolRealArray get_map_data() const;
+	void set_plane(Plane p_plane);
+	Plane get_plane() const;
 
 	virtual Vector<Vector3> get_debug_mesh_lines();
-	virtual real_t get_enclosing_radius() const;
+	virtual real_t get_enclosing_radius() const {
+		// Should be infinite?
+		return 0;
+	};
 
-	HeightMapShape();
+	PlaneShape();
 };
-
-#endif /* !HEIGHT_MAP_SHAPE_H */
+#endif // PLANE_SHAPE_H

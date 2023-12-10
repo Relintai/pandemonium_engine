@@ -41,15 +41,15 @@
 #include "scene/3d/vehicle_body.h"
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation.h"
-#include "scene/resources/box_shape.h"
+#include "scene/resources/shapes/box_shape.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/packed_scene.h"
-#include "scene/resources/plane_shape.h"
-#include "scene/resources/ray_shape.h"
+#include "scene/resources/shapes/plane_shape.h"
+#include "scene/resources/shapes/ray_shape.h"
 #include "scene/resources/resource_format_text.h"
-#include "scene/resources/shape.h"
-#include "scene/resources/sphere_shape.h"
+#include "scene/resources/shapes/shape.h"
+#include "scene/resources/shapes/sphere_shape.h"
 
 uint32_t EditorSceneImporter::get_import_flags() const {
 	if (get_script_instance()) {

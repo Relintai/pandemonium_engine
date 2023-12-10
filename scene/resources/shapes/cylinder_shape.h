@@ -1,7 +1,7 @@
-#ifndef CONVEX_POLYGON_SHAPE_H
-#define CONVEX_POLYGON_SHAPE_H
+#ifndef CYLINDER_SHAPE_H
+#define CYLINDER_SHAPE_H
 /*************************************************************************/
-/*  convex_polygon_shape.h                                               */
+/*  cylinder_shape.h                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,25 +30,27 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 
-class ConvexPolygonShape : public Shape {
-	GDCLASS(ConvexPolygonShape, Shape);
-	PoolVector<Vector3> points;
+class CylinderShape : public Shape {
+	GDCLASS(CylinderShape, Shape);
+	float radius;
+	float height;
 
 protected:
 	static void _bind_methods();
-
 	virtual void _update_shape();
 
 public:
-	void set_points(const PoolVector<Vector3> &p_points);
-	PoolVector<Vector3> get_points() const;
+	void set_radius(float p_radius);
+	float get_radius() const;
+	void set_height(float p_height);
+	float get_height() const;
 
 	virtual Vector<Vector3> get_debug_mesh_lines();
 	virtual real_t get_enclosing_radius() const;
 
-	ConvexPolygonShape();
+	CylinderShape();
 };
 
-#endif // CONVEX_POLYGON_SHAPE_H
+#endif // CYLINDER_SHAPE_H

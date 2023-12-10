@@ -35,7 +35,7 @@
 #include "core/object/resource.h"
 #include "scene/3d/navigation_mesh_instance.h"
 #include "scene/resources/mesh.h"
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 
 class NavigationMesh;
 

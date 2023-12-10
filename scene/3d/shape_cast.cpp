@@ -33,7 +33,7 @@
 #include "collision_object.h"
 #include "core/config/engine.h"
 #include "mesh_instance.h"
-#include "scene/resources/concave_polygon_shape.h"
+#include "scene/resources/shapes/concave_polygon_shape.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/world_3d.h"

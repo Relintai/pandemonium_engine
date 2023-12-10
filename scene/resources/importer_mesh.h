@@ -33,8 +33,8 @@
 
 #include "core/object/resource.h"
 #include "core/containers/local_vector.h"
-#include "scene/resources/concave_polygon_shape.h"
-#include "scene/resources/convex_polygon_shape.h"
+#include "scene/resources/shapes/concave_polygon_shape.h"
+#include "scene/resources/shapes/convex_polygon_shape.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/navigation_mesh.h"
 

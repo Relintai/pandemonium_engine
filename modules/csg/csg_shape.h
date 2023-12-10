@@ -36,7 +36,7 @@
 #include "csg.h"
 #include "scene/3d/path.h"
 #include "scene/3d/visual_instance.h"
-#include "scene/resources/concave_polygon_shape.h"
+#include "scene/resources/shapes/concave_polygon_shape.h"
 #include "thirdparty/misc/mikktspace.h"
 
 class CSGShape : public GeometryInstance {

@@ -31,8 +31,8 @@
 #include "spring_arm.h"
 #include "core/config/engine.h"
 #include "scene/3d/collision_object.h"
-#include "scene/resources/shape.h"
-#include "scene/resources/sphere_shape.h"
+#include "scene/resources/shapes/shape.h"
+#include "scene/resources/shapes/sphere_shape.h"
 #include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
 

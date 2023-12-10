@@ -1,7 +1,7 @@
-#ifndef CONCAVE_POLYGON_SHAPE_H
-#define CONCAVE_POLYGON_SHAPE_H
+#ifndef RAY_SHAPE_H
+#define RAY_SHAPE_H
 /*************************************************************************/
-/*  concave_polygon_shape.h                                              */
+/*  ray_shape.h                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,44 +30,27 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 
-class ConcavePolygonShape : public Shape {
-	GDCLASS(ConcavePolygonShape, Shape);
-
-	struct DrawEdge {
-		Vector3 a;
-		Vector3 b;
-		bool operator<(const DrawEdge &p_edge) const {
-			if (a == p_edge.a) {
-				return b < p_edge.b;
-			} else {
-				return a < p_edge.a;
-			}
-		}
-
-		DrawEdge(const Vector3 &p_a = Vector3(), const Vector3 &p_b = Vector3()) {
-			a = p_a;
-			b = p_b;
-			if (a < b) {
-				SWAP(a, b);
-			}
-		}
-	};
+class RayShape : public Shape {
+	GDCLASS(RayShape, Shape);
+	float length;
+	bool slips_on_slope;
 
 protected:
 	static void _bind_methods();
-
 	virtual void _update_shape();
 
 public:
-	void set_faces(const PoolVector<Vector3> &p_faces);
-	PoolVector<Vector3> get_faces() const;
+	void set_length(float p_length);
+	float get_length() const;
 
-	Vector<Vector3> get_debug_mesh_lines();
+	void set_slips_on_slope(bool p_active);
+	bool get_slips_on_slope() const;
+
+	virtual Vector<Vector3> get_debug_mesh_lines();
 	virtual real_t get_enclosing_radius() const;
 
-	ConcavePolygonShape();
+	RayShape();
 };
-
-#endif // CONCAVE_POLYGON_SHAPE_H
+#endif // RAY_SHAPE_H

@@ -35,7 +35,7 @@
 #include "core/object/resource.h"
 
 #include "scene/resources/material.h"
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 #include "servers/rendering_server.h"
 
 class Mesh : public Resource {

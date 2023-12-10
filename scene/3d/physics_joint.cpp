@@ -31,7 +31,7 @@
 #include "physics_joint.h"
 
 #include "scene/3d/physics_body.h"
-#include "scene/resources/shape.h"
+#include "scene/resources/shapes/shape.h"
 #include "scene/scene_string_names.h"
 
 void Joint::_disconnect_signals() {
