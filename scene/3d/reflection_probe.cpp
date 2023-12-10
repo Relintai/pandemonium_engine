@@ -31,7 +31,7 @@
 #include "reflection_probe.h"
 #include "scene/resources/sky.h"
 #include "scene/resources/texture.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 void ReflectionProbe::set_intensity(float p_intensity) {
 	intensity = p_intensity;

@@ -61,7 +61,7 @@
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/texture.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 class EditorNode;
 

@@ -43,7 +43,7 @@
 #include "power_x11.h"
 #include "servers/audio_server.h"
 #include "servers/rendering/rasterizer.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #include <X11/Xcursor/Xcursor.h>
 #include <X11/Xlib.h>

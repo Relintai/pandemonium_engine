@@ -72,7 +72,7 @@
 #include "scene/gui/tab_container.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/texture.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #include "modules/modules_enabled.gen.h"
 

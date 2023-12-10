@@ -80,6 +80,8 @@
 #include "core/bind/logger_bind.h"
 #include "core/log/logger_backend.h"
 
+#include "core/servers/rendering/rendering_server.h"
+
 static Ref<ResourceFormatSaverBinary> resource_saver_binary;
 static Ref<ResourceFormatLoaderBinary> resource_loader_binary;
 static Ref<ResourceFormatImporter> resource_format_importer;
@@ -109,6 +111,16 @@ extern void register_global_constants();
 extern void unregister_global_constants();
 extern void register_variant_methods();
 extern void unregister_variant_methods();
+
+static bool has_server_feature_callback(const String &p_feature) {
+	if (RenderingServer::get_singleton()) {
+		if (RenderingServer::get_singleton()->has_os_feature(p_feature)) {
+			return true;
+		}
+	}
+
+	return false;
+}
 
 void register_core_types() {
 	OS::get_singleton()->benchmark_begin_measure("register_core_types");
@@ -265,6 +277,8 @@ void register_core_settings() {
 }
 
 void register_core_singletons() {
+	OS::get_singleton()->set_has_server_feature_callback(has_server_feature_callback);
+
 	ClassDB::register_class<ProjectSettings>();
 	ClassDB::register_virtual_class<IP>();
 	ClassDB::register_class<_Geometry>();
@@ -285,6 +299,7 @@ void register_core_singletons() {
 	ClassDB::register_class<ThreadPoolExecuteJob>();
 	ClassDB::register_class<ThreadPool>();
 	ClassDB::register_class<_ScriptServer>();
+	ClassDB::register_virtual_class<RenderingServer>();
 
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ProjectSettings", ProjectSettings::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("IP", IP::get_singleton()));
@@ -303,6 +318,7 @@ void register_core_singletons() {
 	Engine::get_singleton()->add_singleton(Engine::Singleton("PLogger", _PLogger::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ThreadPool", ThreadPool::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ScriptServer", _ScriptServer::get_singleton()));
+	Engine::get_singleton()->add_singleton(Engine::Singleton("RenderingServer", RenderingServer::get_singleton()));
 }
 
 void unregister_core_types() {

@@ -42,7 +42,7 @@
 #include "scene/resources/shapes/ray_shape.h"
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/shapes/sphere_shape.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 void CollisionShape::make_convex_from_brothers() {
 	Node *p = get_parent();

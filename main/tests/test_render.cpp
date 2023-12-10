@@ -36,7 +36,7 @@
 #include "core/os/main_loop.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #define OBJECT_COUNT 50
 

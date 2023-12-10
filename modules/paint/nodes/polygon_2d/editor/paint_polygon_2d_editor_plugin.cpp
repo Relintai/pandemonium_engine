@@ -72,7 +72,7 @@
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #include "../paint_polygon_2d.h"
 

@@ -65,7 +65,6 @@
 #include "physics_2d_server.h"
 #include "physics_server.h"
 #include "rendering/shader_types.h"
-#include "rendering_server.h"
 #include "scene/debugger/script_debugger_remote.h"
 
 static void _debugger_get_resource_usage(List<ScriptDebuggerRemote::ResourceUsage> *r_usage) {
@@ -97,20 +96,8 @@ Physics2DServer *_createPandemoniumPhysics2DCallback() {
 	return Physics2DServerWrapMT::init_server<Physics2DServerSW>();
 }
 
-static bool has_server_feature_callback(const String &p_feature) {
-	if (RenderingServer::get_singleton()) {
-		if (RenderingServer::get_singleton()->has_os_feature(p_feature)) {
-			return true;
-		}
-	}
-
-	return false;
-}
 
 void register_server_types() {
-	OS::get_singleton()->set_has_server_feature_callback(has_server_feature_callback);
-
-	ClassDB::register_virtual_class<RenderingServer>();
 	ClassDB::register_class<AudioServer>();
 	ClassDB::register_virtual_class<PhysicsServer>();
 	ClassDB::register_virtual_class<Physics2DServer>();
@@ -221,7 +208,6 @@ void unregister_server_types() {
 }
 
 void register_server_singletons() {
-	Engine::get_singleton()->add_singleton(Engine::Singleton("RenderingServer", RenderingServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("AudioServer", AudioServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("PhysicsServer", PhysicsServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Physics2DServer", Physics2DServer::get_singleton()));

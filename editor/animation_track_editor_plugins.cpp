@@ -52,7 +52,7 @@
 #include "core/containers/vector.h"
 #include "scene/animation/animation.h"
 #include "scene/resources/font/font.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 /// BOOL ///
 int AnimationTrackEditBool::get_key_height() const {

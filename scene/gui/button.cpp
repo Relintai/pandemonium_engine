@@ -31,7 +31,7 @@
 #include "button.h"
 
 #include "core/string/translation.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 #include "scene/main/scene_string_names.h"
 
 Size2 Button::get_minimum_size() const {

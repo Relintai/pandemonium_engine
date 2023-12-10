@@ -43,7 +43,7 @@
 #include "scene/main/scene_string_names.h"
 #include "servers/rendering/rendering_server_constants.h"
 #include "servers/rendering/rendering_server_raster.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #include "scene/main/scene_tree.h"
 #include "scene/resources/mesh/multimesh.h"

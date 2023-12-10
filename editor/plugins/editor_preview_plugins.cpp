@@ -66,7 +66,7 @@
 #include "scene/resources/shader.h"
 #include "scene/resources/texture.h"
 #include "servers/audio_server.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 void post_process_preview(Ref<Image> p_image) {
 	if (p_image->get_format() != Image::FORMAT_RGBA8) {

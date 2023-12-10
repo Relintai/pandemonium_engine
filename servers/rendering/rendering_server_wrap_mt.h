@@ -33,7 +33,7 @@
 #include "core/containers/command_queue_mt.h"
 #include "core/os/safe_refcount.h"
 #include "core/os/thread.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 class RenderingServerWrapMT : public RenderingServer {
 	// the real visual server

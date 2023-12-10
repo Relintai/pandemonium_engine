@@ -190,7 +190,7 @@
 #include "servers/navigation_server.h"
 #include "servers/physics_2d_server.h"
 #include "servers/physics_server.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #include "modules/modules_enabled.gen.h"
 

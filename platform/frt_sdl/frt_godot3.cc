@@ -17,7 +17,7 @@
 #pragma GCC diagnostic ignored "-Wvolatile"
 #include "servers/audio_server.h"
 #pragma GCC diagnostic pop
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 #include "servers/rendering/rendering_server_wrap_mt.h"
 #include "servers/rendering/rasterizer.h"
 #include "servers/rendering/rendering_server_raster.h"

@@ -28,7 +28,7 @@ SOFTWARE.
 #include "../../defines.h"
 
 #include "scene/3d/mesh_instance.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #include "scene/resources/world_2d.h"
 #include "servers/physics_2d_server.h"

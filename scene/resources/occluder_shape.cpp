@@ -32,7 +32,7 @@
 
 #include "core/config/engine.h"
 #include "core/math/transform.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_node.h"

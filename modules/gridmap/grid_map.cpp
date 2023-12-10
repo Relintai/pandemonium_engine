@@ -39,7 +39,7 @@
 #include "scene/resources/mesh/surface_tool.h"
 #include "scene/main/scene_string_names.h"
 #include "servers/navigation_server.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/world_3d.h"

@@ -38,7 +38,7 @@
 #include "drivers/unix/net_socket_posix.h"
 #include "drivers/unix/sub_process_unix.h"
 #include "drivers/unix/thread_posix.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #ifdef __APPLE__
 #include <mach-o/dyld.h>

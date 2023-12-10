@@ -34,7 +34,7 @@
 #include "core/math/face3.h"
 #include "core/object/reference.h"
 #include "scene/3d/cull_instance.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 class Material;
 

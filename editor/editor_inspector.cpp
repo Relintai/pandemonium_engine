@@ -66,7 +66,7 @@
 #include "scene/resources/font/font.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/style_box.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 Size2 EditorProperty::get_minimum_size() const {
 	Size2 ms;

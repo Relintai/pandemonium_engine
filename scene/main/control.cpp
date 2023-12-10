@@ -43,7 +43,7 @@
 #include "scene/main/timer.h"
 #include "scene/main/viewport.h"
 #include "scene/main/scene_string_names.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_settings.h"

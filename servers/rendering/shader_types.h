@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/ordered_hash_map.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 #include "shader_language.h"
 
 class ShaderTypes {

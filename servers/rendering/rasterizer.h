@@ -32,7 +32,7 @@
 
 #include "core/math/projection.h"
 #include "core/math/transform_interpolator.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #include "core/containers/self_list.h"
 

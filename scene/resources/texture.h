@@ -38,7 +38,7 @@
 #include "core/os/thread_safe.h"
 #include "scene/resources/curve.h"
 #include "scene/resources/gradient.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 class Texture : public Resource {
 	GDCLASS(Texture, Resource);

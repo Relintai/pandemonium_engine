@@ -42,7 +42,7 @@
 #include "scene/main/scene_tree.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/packed_scene.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 void ScriptDebuggerRemote::_send_video_memory() {
 	List<ResourceUsage> usage;

@@ -33,7 +33,7 @@
 #include "core/object/resource.h"
 #include "core/containers/self_list.h"
 #include "scene/resources/shader.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 class Texture;
 

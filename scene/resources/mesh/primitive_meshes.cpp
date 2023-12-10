@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "primitive_meshes.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #include "core/core_string_names.h"
 #include "core/os/main_loop.h"

@@ -34,10 +34,6 @@
 #include "core/config/project_settings.h"
 #include "core/object/method_bind_ext.gen.inc"
 
-#ifdef TOOLS_ENABLED
-#include "editor/editor_settings.h"
-#endif
-
 RenderingServer *RenderingServer::singleton = nullptr;
 RenderingServer *(*RenderingServer::create_func)() = nullptr;
 

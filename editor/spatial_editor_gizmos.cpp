@@ -104,7 +104,7 @@
 #include "scene/resources/mesh/surface_tool.h"
 #include "scene/resources/world_3d.h"
 #include "servers/navigation_server.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 #ifdef MODULE_SKELETON_3D_ENABLED
 #include "modules/skeleton_3d/nodes/skeleton.h"

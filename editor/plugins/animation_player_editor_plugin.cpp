@@ -81,7 +81,7 @@
 #include "scene/main/viewport.h"
 #include "scene/animation/animation.h"
 #include "scene/resources/texture.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 void AnimationPlayerEditor::_node_removed(Node *p_node) {
 	if (player && player == p_node) {

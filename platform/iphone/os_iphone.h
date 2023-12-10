@@ -41,7 +41,7 @@
 #include "main/input_default.h"
 #include "servers/audio_server.h"
 #include "servers/rendering/rasterizer.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 class OSIPhone : public OS_Unix {
 private:

@@ -31,7 +31,7 @@
 #include "nine_patch_rect.h"
 
 #include "core/config/project_settings.h"
-#include "servers/rendering_server.h"
+#include "core/servers/rendering/rendering_server.h"
 
 void NinePatchRect::_notification(int p_what) {
 	if (p_what == NOTIFICATION_DRAW) {
