@@ -31,7 +31,7 @@
 #include "path.h"
 
 #include "core/config/engine.h"
-#include "scene/resources/curve.h"
+#include "core/scene/resources/curve.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_3d.h"
 #include "scene/main/scene_string_names.h"

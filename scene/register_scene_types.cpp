@@ -151,7 +151,7 @@
 #include "core/scene/resources/shapes/cylinder_shape.h"
 #include "scene/resources/default_theme/default_theme.h"
 #include "scene/resources/font/dynamic_font.h"
-#include "scene/resources/gradient.h"
+#include "core/scene/resources/gradient.h"
 #include "core/scene/resources/shapes/height_map_shape.h"
 #include "scene/resources/mesh/immediate_mesh.h"
 #include "core/scene/resources/shapes_2d/line_shape_2d.h"

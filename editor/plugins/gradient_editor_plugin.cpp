@@ -36,7 +36,7 @@
 #include "core/object/undo_redo.h"
 #include "core/containers/vector.h"
 #include "editor/editor_node.h"
-#include "scene/resources/gradient.h"
+#include "core/scene/resources/gradient.h"
 
 Size2 GradientEditor::get_minimum_size() const {
 	return Size2(0, 60) * EDSCALE;

@@ -54,7 +54,7 @@
 #include "scene/gui/separator.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
-#include "scene/resources/curve.h"
+#include "core/scene/resources/curve.h"
 #include "scene/resources/material/material.h"
 #include "spatial_editor_plugin.h"
 

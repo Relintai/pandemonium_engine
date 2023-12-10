@@ -31,7 +31,7 @@
 #include "paint_curve_2d.h"
 
 #include "core/config/engine.h"
-#include "scene/resources/curve.h"
+#include "core/scene/resources/curve.h"
 #include "scene/main/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED

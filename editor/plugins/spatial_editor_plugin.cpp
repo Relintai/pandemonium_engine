@@ -90,7 +90,7 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/environment_3d.h"
 #include "scene/resources/font/font.h"
-#include "scene/resources/gradient.h"
+#include "core/scene/resources/gradient.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/shader.h"
 #include "core/scene/resources/shapes/shape.h"

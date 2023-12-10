@@ -32,7 +32,7 @@
 
 #include "core/math/color.h"
 #include "core/math/vector2.h"
-#include "scene/resources/gradient.h"
+#include "core/scene/resources/gradient.h"
 
 //----------------------------------------------------------------------------
 // Util

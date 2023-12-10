@@ -32,7 +32,7 @@
 
 #include "scene/main/control.h"
 
-#include "scene/resources/gradient.h"
+#include "core/scene/resources/gradient.h"
 
 class PopupPanel;
 class ColorPicker;
