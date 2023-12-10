@@ -33,7 +33,7 @@
 #include "core/os/os.h"
 #include "scene/main/scene_tree.h"
 #include "scene/resources/mesh/mesh.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 void Shape::add_vertices_to_array(PoolVector<Vector3> &array, const Transform &p_xform) {
 	Vector<Vector3> toadd = get_debug_mesh_lines();

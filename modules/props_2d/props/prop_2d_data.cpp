@@ -26,7 +26,7 @@ SOFTWARE.
 #include "prop_2d_data_light.h"
 #include "prop_2d_data_prop.h"
 
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 #include "modules/modules_enabled.gen.h"
 

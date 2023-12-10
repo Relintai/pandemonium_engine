@@ -32,7 +32,7 @@
 
 #include "collision_object_sw.h"
 #include "core/containers/self_list.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 //#include "servers/physics/query_sw.h"
 
 class SpaceSW;

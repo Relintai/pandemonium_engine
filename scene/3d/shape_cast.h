@@ -35,7 +35,7 @@
 
 #include "scene/main/spatial.h"
 #include "scene/resources/shapes/shape.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 class SpatialMaterial;
 

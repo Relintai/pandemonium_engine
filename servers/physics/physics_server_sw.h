@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "joints_sw.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 #include "shape_sw.h"
 #include "space_sw.h"
 #include "step_sw.h"

@@ -32,7 +32,7 @@ SOFTWARE.
 #include "../../meshers/terrain_mesher.h"
 #include "../default/terrain_chunk_default.h"
 #include "scene/resources/world_3d.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 #include "modules/modules_enabled.gen.h"
 

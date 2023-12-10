@@ -30,7 +30,7 @@
 
 #include "plane_shape.h"
 
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 Vector<Vector3> PlaneShape::get_debug_mesh_lines() {
 	Plane p = get_plane();

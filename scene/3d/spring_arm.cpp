@@ -34,7 +34,7 @@
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/shapes/sphere_shape.h"
 #include "scene/resources/world_3d.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 SpringArm::SpringArm() :
 		spring_length(1),

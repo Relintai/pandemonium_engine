@@ -30,7 +30,7 @@
 
 #include "capsule_shape.h"
 
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 Vector<Vector3> CapsuleShape::get_debug_mesh_lines() {
 	float radius = get_radius();

@@ -27,7 +27,7 @@ SOFTWARE.
 #include "../defines.h"
 
 #include "jobs/voxel_job.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 #include "voxel_structure.h"
 
 #include "core/os/thread_pool.h"

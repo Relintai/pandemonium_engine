@@ -63,7 +63,7 @@
 #include "physics_2d/physics_2d_server_sw.h"
 #include "physics_2d/physics_2d_server_wrap_mt.h"
 #include "physics_2d_server.h"
-#include "physics_server.h"
+#include "core/servers/physics/physics_server.h"
 #include "rendering/shader_types.h"
 #include "scene/debugger/script_debugger_remote.h"
 
@@ -99,7 +99,7 @@ Physics2DServer *_createPandemoniumPhysics2DCallback() {
 
 void register_server_types() {
 	ClassDB::register_class<AudioServer>();
-	ClassDB::register_virtual_class<PhysicsServer>();
+	
 	ClassDB::register_virtual_class<Physics2DServer>();
 	ClassDB::register_virtual_class<NavigationServer>();
 	ClassDB::register_virtual_class<Navigation2DServer>();
@@ -209,7 +209,6 @@ void unregister_server_types() {
 
 void register_server_singletons() {
 	Engine::get_singleton()->add_singleton(Engine::Singleton("AudioServer", AudioServer::get_singleton()));
-	Engine::get_singleton()->add_singleton(Engine::Singleton("PhysicsServer", PhysicsServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Physics2DServer", Physics2DServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("NavigationServer", NavigationServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Navigation2DServer", Navigation2DServer::get_singleton()));

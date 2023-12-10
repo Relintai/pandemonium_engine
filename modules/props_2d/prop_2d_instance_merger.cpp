@@ -4,7 +4,7 @@
 
 //#include "../thread_pool/thread_pool.h"
 #include "scene/resources/world_2d.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 #include "core/config/engine.h"
 

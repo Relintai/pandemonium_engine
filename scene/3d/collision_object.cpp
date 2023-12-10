@@ -35,7 +35,7 @@
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_3d.h"
 #include "scene/main/scene_string_names.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 void CollisionObject::_notification(int p_what) {
 	switch (p_what) {

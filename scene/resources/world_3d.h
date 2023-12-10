@@ -33,7 +33,7 @@
 
 #include "core/object/resource.h"
 #include "scene/resources/environment_3d.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 #include "core/servers/rendering/rendering_server.h"
 
 class Camera;

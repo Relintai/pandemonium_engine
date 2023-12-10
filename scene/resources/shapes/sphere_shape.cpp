@@ -30,7 +30,7 @@
 
 #include "sphere_shape.h"
 
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 Vector<Vector3> SphereShape::get_debug_mesh_lines() {
 	float r = get_radius();

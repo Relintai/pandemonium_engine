@@ -36,7 +36,7 @@
 #include "scene/resources/material/material.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/world_3d.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 void RayCast::set_cast_to(const Vector3 &p_point) {
 	cast_to = p_point;

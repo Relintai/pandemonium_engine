@@ -33,7 +33,7 @@
 #include "core/containers/vset.h"
 #include "core/object/reference.h"
 #include "scene/3d/collision_object.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 class PhysicsMaterial;
 class Skeleton;

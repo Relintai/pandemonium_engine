@@ -33,7 +33,7 @@
 #include "core/containers/local_vector.h"
 #include "core/math/bsp_tree.h"
 #include "core/math/geometry.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 /*
 
 SHAPE_LINE, ///< plane:"plane"

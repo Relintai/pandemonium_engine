@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "tiled_wall_data.h"
 
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 #define VARIANT_ARRAY_GET(arr)             \
 	Vector<Variant> r;                     \

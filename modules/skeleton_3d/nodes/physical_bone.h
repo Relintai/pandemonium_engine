@@ -34,7 +34,7 @@
 #include "core/object/reference.h"
 #include "core/containers/vset.h"
 #include "scene/3d/collision_object.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 #include "scene/3d/physics_body.h"
 
 class PhysicsMaterial;

@@ -30,7 +30,7 @@
 
 #include "concave_polygon_shape.h"
 
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 Vector<Vector3> ConcavePolygonShape::get_debug_mesh_lines() {
 	RBSet<DrawEdge> edges;

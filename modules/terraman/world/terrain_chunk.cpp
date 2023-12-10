@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include "core/object/message_queue.h"
 #include "jobs/terrain_job.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 #include "terrain_structure.h"
 
 #include "core/os/thread_pool.h"

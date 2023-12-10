@@ -30,7 +30,7 @@
 
 #include "convex_polygon_shape.h"
 #include "core/math/convex_hull.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 
 Vector<Vector3> ConvexPolygonShape::get_debug_mesh_lines() {
 	PoolVector<Vector3> points = get_points();

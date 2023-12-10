@@ -30,7 +30,7 @@ SOFTWARE.
 #include "prop_mesher.h"
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/world_3d.h"
-#include "servers/physics_server.h"
+#include "core/servers/physics/physics_server.h"
 #include "singleton/prop_cache.h"
 
 #include "modules/modules_enabled.gen.h"
