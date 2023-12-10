@@ -32,7 +32,7 @@
 
 #include "editor/editor_inspector.h"
 #include "editor/editor_plugin.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "editor/property_editor.h"
 
 #include "scene/resources/mesh/primitive_meshes.h"

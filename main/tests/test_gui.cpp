@@ -37,7 +37,7 @@
 #include "core/string/print_string.h"
 #include "scene/2d/sprite.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/menu_button.h"

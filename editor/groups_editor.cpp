@@ -48,7 +48,7 @@
 #include "core/variant/variant.h"
 #include "editor/scene_tree_dock.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"

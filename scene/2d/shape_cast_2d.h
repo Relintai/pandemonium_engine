@@ -31,7 +31,7 @@
 #ifndef SHAPE_CAST_2D_H
 #define SHAPE_CAST_2D_H
 
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 #include "scene/resources/shapes_2d/shape_2d.h"
 #include "scene/resources/world_2d.h"
 

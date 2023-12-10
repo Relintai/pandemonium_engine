@@ -37,7 +37,7 @@
 #include "core/error/error_macros.h"
 #include "core/os/memory.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/tool_button.h"
 

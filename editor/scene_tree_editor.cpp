@@ -51,7 +51,7 @@
 #include "editor/node_dock.h"
 #include "editor/plugins/animation_player_editor_plugin.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/label.h"

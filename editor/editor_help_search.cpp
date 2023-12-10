@@ -46,7 +46,7 @@
 #include "editor/editor_settings.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/popup.h"

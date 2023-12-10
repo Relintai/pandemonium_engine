@@ -33,7 +33,7 @@
 #include "core/object/class_db.h"
 #include "core/input/input_event.h"
 #include "core/variant/variant.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/resources/texture.h"
 
 void PaneDrag::_gui_input(const Ref<InputEvent> &p_input) {

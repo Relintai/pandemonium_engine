@@ -8,7 +8,7 @@
 #include "modules/material_maker/editor/mm_create_name_popup.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/graph_edit.h"
 #include "scene/gui/panel_container.h"
 

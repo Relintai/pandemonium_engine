@@ -37,7 +37,7 @@
 #include "core/string/print_string.h"
 #include "core/object/resource.h"
 #include "core/variant/variant_parser.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 
 String Variant::get_type_name(Variant::Type p_type) {

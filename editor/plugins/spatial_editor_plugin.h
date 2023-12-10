@@ -31,10 +31,10 @@
 /*************************************************************************/
 
 #include "editor/editor_plugin.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 #include "scene/gui/spin_box.h"
 

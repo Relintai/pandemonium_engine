@@ -56,7 +56,7 @@
 
 #include "editor_node.h"
 #include "modules/regex/regex.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/tab_container.h"
 #include "scene/gui/check_button.h"

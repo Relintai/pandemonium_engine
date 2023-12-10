@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 #include "../areas/terrain_2d_world_area.h"
 #include "../level_generator/terrain_2d_level_generator.h"

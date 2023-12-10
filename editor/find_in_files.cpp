@@ -58,7 +58,7 @@
 #include "core/string/print_string.h"
 #include "core/object/reference.h"
 #include "core/typedefs.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/resources/font/font.h"
 
 const char *FindInFiles::SIGNAL_RESULT_FOUND = "result_found";

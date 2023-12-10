@@ -49,11 +49,11 @@
 #include "core/variant/variant.h"
 #include "core/version.h"
 #include "drivers/png/png_driver_common.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/multimesh_instance.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/main/node.h"
 #include "scene/animation/animation.h"

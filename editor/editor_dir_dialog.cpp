@@ -44,7 +44,7 @@
 #include "core/os/dir_access.h"
 #include "core/os/memory.h"
 #include "core/variant/variant.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 

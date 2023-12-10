@@ -50,9 +50,9 @@
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
 #include "scene/3d/mesh_instance.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 
 class EditorNode;

@@ -31,7 +31,7 @@
 #include "node_2d.h"
 
 #include "core/object/message_queue.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"
 #include "servers/rendering_server.h"

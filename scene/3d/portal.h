@@ -32,7 +32,7 @@
 
 #include "core/containers/local_vector.h"
 #include "core/containers/rid.h"
-#include "spatial.h"
+#include "scene/main/spatial.h"
 
 class RoomManager;
 class MeshInstance;

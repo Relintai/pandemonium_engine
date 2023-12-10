@@ -50,7 +50,7 @@
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"

@@ -43,7 +43,7 @@
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/text_edit.h"

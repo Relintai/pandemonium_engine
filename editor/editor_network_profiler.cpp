@@ -41,7 +41,7 @@
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"

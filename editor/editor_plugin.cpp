@@ -66,7 +66,7 @@
 #include "scene/3d/camera.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/tab_container.h"

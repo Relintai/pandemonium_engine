@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "canvas_layer.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/resources/world_2d.h"
 #include "scene/scene_string_names.h"
 #include "viewport.h"

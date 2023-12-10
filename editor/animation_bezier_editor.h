@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 #include "core/containers/rb_map.h"
 #include "core/math/rect2.h"

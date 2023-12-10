@@ -31,7 +31,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 #include "scene/resources/navigation_2d/navigation_polygon.h"
 
 class NavigationMeshSourceGeometryData2D : public Resource {

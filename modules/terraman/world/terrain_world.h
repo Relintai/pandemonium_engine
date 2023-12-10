@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 #include "../areas/terrain_world_area.h"
 #include "../level_generator/terrain_level_generator.h"

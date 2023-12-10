@@ -30,7 +30,7 @@
 
 #include "navigation_geometry_parser_2d.h"
 
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 #include "scene/resources/navigation_2d/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_2d/navigation_polygon.h"

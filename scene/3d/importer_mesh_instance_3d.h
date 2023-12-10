@@ -31,7 +31,7 @@
 #ifndef IMPORTER_MESH_INSTANCE_3D_H
 #define IMPORTER_MESH_INSTANCE_3D_H
 
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 #include "modules/modules_enabled.gen.h"
 

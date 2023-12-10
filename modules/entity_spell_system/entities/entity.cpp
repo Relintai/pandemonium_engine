@@ -41,7 +41,7 @@ SOFTWARE.
 #include "./resources/entity_resource_health.h"
 #include "./resources/entity_resource_speed.h"
 #include "./skills/entity_skill.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 #include "core/object/script_language.h"
 

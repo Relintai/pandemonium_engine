@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/reference.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 class Curve3D;
 

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "servers/audio/audio_rb_resampler.h"
 
 #include "scene/resources/video_stream.h"

@@ -49,7 +49,7 @@
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"
 #include "editor/scene_tree_editor.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "scene/3d/visual_instance.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"

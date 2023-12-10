@@ -35,7 +35,7 @@
 #include "core/os/os.h"
 
 #include "core/string/print_string.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "core/input/shortcut.h"
 #include "scene/gui/text_edit.h"
 #include "servers/rendering/shader_language.h"

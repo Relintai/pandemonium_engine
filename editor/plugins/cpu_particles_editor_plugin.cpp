@@ -40,7 +40,7 @@
 #include "editor/scene_tree_editor.h"
 #include "scene/3d/cpu_particles.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/main/node.h"

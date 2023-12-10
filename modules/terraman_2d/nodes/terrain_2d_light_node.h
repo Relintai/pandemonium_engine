@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 #include "core/math/vector3.h"
 

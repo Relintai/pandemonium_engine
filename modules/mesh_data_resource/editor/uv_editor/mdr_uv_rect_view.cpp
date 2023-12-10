@@ -27,7 +27,7 @@ SOFTWARE.
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "mdr_uv_rect_view_node.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 void MDRUVRectView::set_plugin(EditorPlugin *plugin) {
 	_plugin = plugin;

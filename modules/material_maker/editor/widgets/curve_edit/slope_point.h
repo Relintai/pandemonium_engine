@@ -4,7 +4,7 @@
 #include "core/math/vector2.h"
 #include "core/input/input_event.h"
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 class SlopePoint : public Control {
 	GDCLASS(SlopePoint, Control);

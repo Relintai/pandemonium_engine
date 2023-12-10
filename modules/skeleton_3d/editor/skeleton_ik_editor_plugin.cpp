@@ -36,7 +36,7 @@
 #include "core/os/memory.h"
 #include "editor/editor_node.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 void SkeletonIKEditorPlugin::_play() {
 	if (!skeleton_ik) {

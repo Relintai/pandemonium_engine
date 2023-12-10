@@ -3,7 +3,7 @@
 #include "core/config/engine.h"
 #include "core/core_string_names.h"
 #include "scene/3d/camera.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "scene/3d/world_environment_3d.h"
 #include "scene/resources/world_2d.h"
 #include "scene/resources/world_3d.h"

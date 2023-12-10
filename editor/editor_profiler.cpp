@@ -42,7 +42,7 @@
 #include "core/os/memory.h"
 #include "core/variant/variant.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/spin_box.h"

@@ -56,7 +56,7 @@
 #include "editor/script_editor_debugger.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/color_picker.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup.h"

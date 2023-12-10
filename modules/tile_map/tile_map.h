@@ -33,7 +33,7 @@
 #include "core/containers/self_list.h"
 #include "core/containers/vset.h"
 #include "scene/2d/navigation_2d.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 #include "tile_set.h"
 
 #include "../fastnoise/noise.h"

@@ -40,7 +40,7 @@
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 #include "editor/editor_inspector.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 class EditorNode;
 class InputEvent;

@@ -32,7 +32,7 @@
 /*************************************************************************/
 
 #include "editor/editor_plugin.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 #include "core/object/object.h"
 #include "core/string/ustring.h"

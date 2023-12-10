@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 #include "scene/main/node.h"
 
@@ -40,7 +40,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 class ModelVisual;
 

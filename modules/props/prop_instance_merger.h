@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "prop_instance.h"
 
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 #include "core/math/vector3.h"
 

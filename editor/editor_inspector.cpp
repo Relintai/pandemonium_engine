@@ -53,7 +53,7 @@
 #include "editor_scale.h"
 #include "editor_settings.h"
 #include "multi_node_edit.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"

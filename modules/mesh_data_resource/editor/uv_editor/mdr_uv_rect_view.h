@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/math/rect2.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/reference.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 class MeshDataResource;
 class MeshDataInstance;

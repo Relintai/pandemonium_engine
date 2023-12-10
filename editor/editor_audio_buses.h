@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "editor_plugin.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/panel_container.h"
 #include "scene/gui/box_container.h"
 

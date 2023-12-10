@@ -33,7 +33,7 @@
 #include "core/config/engine.h"
 #include "scene/2d/collision_shape_2d.h"
 #include "scene/2d/navigation_2d.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 #include "scene/2d/physics_body_2d.h"
 #include "scene/resources/world_2d.h"
 #include "servers/navigation_2d_server.h"

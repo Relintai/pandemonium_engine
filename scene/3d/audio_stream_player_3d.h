@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/os/safe_refcount.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "servers/audio/audio_filter_sw.h"
 #include "servers/audio_server.h"
 

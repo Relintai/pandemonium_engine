@@ -51,7 +51,7 @@
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "filesystem_dock.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/gui/button.h"
 #include "scene/gui/label.h"
 #include "scene/gui/menu_button.h"

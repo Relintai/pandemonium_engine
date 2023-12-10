@@ -34,7 +34,7 @@
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/navigation.h"
 #include "scene/3d/physics_body.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "scene/resources/material/material.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/shapes/shape.h"

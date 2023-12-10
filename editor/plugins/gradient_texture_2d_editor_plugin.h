@@ -33,7 +33,7 @@
 
 #include "editor/editor_plugin.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "editor/editor_inspector.h"
 
 #include "core/object/reference.h"

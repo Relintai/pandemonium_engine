@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "scene/gui/dialogs.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 
 #include "core/containers/hash_map.h"

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "node_2d.h"
+#include "scene/main/node_2d.h"
 
 class Line2D : public Node2D {
 	GDCLASS(Line2D, Node2D);

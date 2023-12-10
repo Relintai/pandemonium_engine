@@ -46,7 +46,7 @@
 #include "editor/editor_inspector.h"
 #include "scene/gui/button.h"
 #include "scene/gui/center_container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/option_button.h"
 

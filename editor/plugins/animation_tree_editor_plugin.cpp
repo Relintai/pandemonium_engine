@@ -49,7 +49,7 @@
 #include "scene/animation/animation_tree.h"
 #include "scene/gui/base_button.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/margin_container.h"
 #include "scene/gui/scroll_container.h"

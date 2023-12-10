@@ -44,7 +44,7 @@
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"

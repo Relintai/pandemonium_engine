@@ -33,7 +33,7 @@
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
 #include "scene/3d/mesh_instance.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/material/material.h"
 #include "scene/resources/texture.h"

@@ -46,7 +46,7 @@
 #include "core/variant/variant.h"
 #include "editor/editor_node.h"
 #include "scene/2d/path_2d.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"

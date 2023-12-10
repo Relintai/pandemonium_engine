@@ -38,7 +38,7 @@
 #include "core/string/ustring.h"
 #include "editor/connections_dialog.h"
 #include "editor/groups_editor.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"

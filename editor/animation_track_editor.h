@@ -32,7 +32,7 @@
 
 #include "core/object/reference.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/range.h"
 
 #include "scene/gui/slider.h"

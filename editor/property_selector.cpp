@@ -47,7 +47,7 @@
 #include "editor/editor_node.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/gui/tree.h"

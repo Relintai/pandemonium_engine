@@ -40,7 +40,7 @@ SOFTWARE.
 
 #include "core/config/engine.h"
 
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 Prop2DUtils *Prop2DUtils::_instance;
 Vector<Ref<Prop2DDataEntry>> Prop2DUtils::_processors;

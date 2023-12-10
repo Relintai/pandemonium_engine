@@ -48,7 +48,7 @@
 #include "core/os/os.h"
 #include "core/object/script_language.h"
 #include "core/typedefs.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "servers/rendering_server.h"
 
 bool EditorResourcePreviewGenerator::handles(const String &p_type) const {

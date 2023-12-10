@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/reference.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 class Shape2D;
 class CollisionObject2D;

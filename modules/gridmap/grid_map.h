@@ -33,7 +33,7 @@
 
 #include "mesh_library.h"
 #include "scene/3d/navigation.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "scene/resources/mesh/multimesh.h"
 
 //heh heh, godotsphir!! this shares no code and the design is completely different with previous projects i've done..

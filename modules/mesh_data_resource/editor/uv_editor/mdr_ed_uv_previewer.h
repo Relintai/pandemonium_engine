@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 #include "core/object/reference.h"
 

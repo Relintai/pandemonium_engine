@@ -31,7 +31,7 @@
 #include "parallax_background.h"
 #include "parallax_layer.h"
 #include "scene/2d/camera_2d.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 void ParallaxBackground::_notification(int p_what) {
 	switch (p_what) {

@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "scene/resources/texture.h"
 
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 #include "core/math/vector3.h"
 

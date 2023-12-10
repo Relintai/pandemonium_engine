@@ -66,7 +66,7 @@
 #include "editor/scene_tree_editor.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"

@@ -52,7 +52,7 @@
 #include "core/object/resource.h"
 #include "core/variant/variant.h"
 #include "editor/editor_settings.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
 #include "scene/3d/mesh_instance.h"

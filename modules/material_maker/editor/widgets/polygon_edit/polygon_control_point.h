@@ -1,7 +1,7 @@
 #ifndef POLYGON_CONTROL_POINT_H
 #define POLYGON_CONTROL_POINT_H
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 #include "core/input/input_event.h"
 

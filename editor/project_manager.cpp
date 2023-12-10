@@ -63,7 +63,7 @@
 #include "editor_scale.h"
 #include "editor_settings.h"
 #include "editor_themes.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/gui/base_button.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"

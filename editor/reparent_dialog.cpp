@@ -36,7 +36,7 @@
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "editor/scene_tree_editor.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
 #include "scene/gui/tree.h"

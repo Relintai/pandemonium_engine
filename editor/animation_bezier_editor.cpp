@@ -49,7 +49,7 @@
 #include "core/object/undo_redo.h"
 #include "editor/animation_track_editor.h"
 #include "editor/editor_settings.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/range.h"

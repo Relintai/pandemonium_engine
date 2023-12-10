@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 class OccluderPolygon2D : public Resource {
 	GDCLASS(OccluderPolygon2D, Resource);

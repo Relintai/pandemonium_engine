@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "world_environment_3d.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "scene/main/viewport.h"
 
 #include "scene/resources/environment_3d.h"

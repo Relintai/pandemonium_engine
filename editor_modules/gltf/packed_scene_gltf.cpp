@@ -33,7 +33,7 @@
 #include "packed_scene_gltf.h"
 
 #include "editor/import/resource_importer_scene.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/mesh/mesh.h"
 

@@ -6,7 +6,7 @@
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 class MenuButton;
 class PopupMenu;

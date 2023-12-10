@@ -38,7 +38,7 @@
 #include "editor/editor_node.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/tool_button.h"

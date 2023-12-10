@@ -45,7 +45,7 @@
 #include "core/variant/variant.h"
 #include "editor/editor_data.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/margin_container.h"
 #include "scene/gui/popup_menu.h"

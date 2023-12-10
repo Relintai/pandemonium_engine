@@ -54,7 +54,7 @@
 #include "core/variant/variant.h"
 #include "editor/editor_node.h"
 #include "editor/scene_tree_dock.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 #include "scene/2d/sprite.h"
 #include "scene/gui/button.h"
 #include "scene/gui/dialogs.h"

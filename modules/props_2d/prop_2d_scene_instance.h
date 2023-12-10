@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 #include "props/prop_2d_data.h"
 #include "scene/resources/packed_scene.h"

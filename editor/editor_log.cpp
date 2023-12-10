@@ -43,7 +43,7 @@
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/rich_text_label.h"

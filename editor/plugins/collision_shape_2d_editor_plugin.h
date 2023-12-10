@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "editor/editor_plugin.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 #include "core/math/transform_2d.h"
 #include "core/math/vector2.h"

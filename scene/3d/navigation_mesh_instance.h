@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/os/thread.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 class Mesh;
 class Navigation;

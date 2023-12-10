@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/object.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 class Tree;
 class HScrollBar;

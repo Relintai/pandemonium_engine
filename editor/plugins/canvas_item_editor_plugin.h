@@ -32,7 +32,7 @@
 
 #include "editor/editor_plugin.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"

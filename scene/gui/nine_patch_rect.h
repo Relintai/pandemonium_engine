@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 class NinePatchRect : public Control {
 	GDCLASS(NinePatchRect, Control);

@@ -32,7 +32,7 @@
 
 #include "core/object/reference.h"
 #include "scene/gui/container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/scroll_container.h"
 
 #include "core/containers/list.h"

@@ -31,7 +31,7 @@
 #include "skeleton_modification_2d_ccdik.h"
 #include "../nodes/skeleton_2d.h"
 #include "skeleton_modification_stack_2d.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 #include "core/config/engine.h"
 
 #ifdef TOOLS_ENABLED

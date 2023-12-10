@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "prop_data.h"
 
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 #include "modules/modules_enabled.gen.h"
 

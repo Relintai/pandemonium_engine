@@ -3,7 +3,7 @@
 
 #include "core/object/reference.h"
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 class CurveBase;
 

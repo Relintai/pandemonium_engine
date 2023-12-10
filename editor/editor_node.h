@@ -63,7 +63,7 @@
 #include "core/variant/dictionary.h"
 #include "core/variant/variant.h"
 #include "editor/editor_data.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 #include "scene/resources/texture.h"
 #include "scene/resources/theme.h"

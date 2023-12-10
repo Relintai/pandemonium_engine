@@ -66,7 +66,7 @@
 #include "editor/scene_tree_editor.h"
 #include "editor/script_editor_debugger.h"
 #include "editor/spatial_editor_gizmos.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/mesh_instance.h"

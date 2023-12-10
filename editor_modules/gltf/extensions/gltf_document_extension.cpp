@@ -31,7 +31,7 @@
 #include "gltf_document_extension.h"
 
 #include "../gltf_document.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 void GLTFDocumentExtension::_bind_methods() {
 	// Import process.

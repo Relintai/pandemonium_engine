@@ -30,7 +30,7 @@
 
 #include "navigation_geometry_parser_3d.h"
 
-#include "spatial.h"
+#include "scene/main/spatial.h"
 
 #include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/navigation/navigation_mesh_source_geometry_data_3d.h"

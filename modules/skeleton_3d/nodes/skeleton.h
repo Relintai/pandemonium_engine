@@ -32,7 +32,7 @@
 
 #include "core/object/reference.h"
 #include "core/containers/rid.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 #ifndef _3D_DISABLED
 typedef int BoneId;

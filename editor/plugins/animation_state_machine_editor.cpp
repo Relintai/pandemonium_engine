@@ -50,7 +50,7 @@
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
-#include "scene/2d/canvas_item.h"
+#include "scene/main/canvas_item.h"
 #include "scene/gui/base_button.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/label.h"

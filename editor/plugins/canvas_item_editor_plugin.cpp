@@ -65,7 +65,7 @@
 #include "editor/scene_tree_dock.h"
 #include "editor/script_editor_debugger.h"
 #include "scene/2d/light_2d.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 #include "scene/2d/polygon_2d.h"
 
 #include "scene/2d/sprite.h"

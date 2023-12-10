@@ -1,7 +1,7 @@
 #ifndef CONTROL_POINT_H
 #define CONTROL_POINT_H
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 #include "../../../nodes/bases/curve_base.h"
 

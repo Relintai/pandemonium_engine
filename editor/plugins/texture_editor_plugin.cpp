@@ -37,7 +37,7 @@
 #include "core/io/image.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/main/node.h"

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/reference.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 class Sprite : public Node2D {
 	GDCLASS(Sprite, Node2D);

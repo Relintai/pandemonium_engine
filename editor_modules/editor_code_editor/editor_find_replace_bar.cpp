@@ -39,7 +39,7 @@
 #include "editor/editor_settings.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/scroll_container.h"

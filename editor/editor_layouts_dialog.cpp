@@ -45,7 +45,7 @@
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 void EditorLayoutsDialog::_line_gui_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventKey> k = p_event;

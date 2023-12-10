@@ -6,7 +6,7 @@
 #include "core/input/input_event.h"
 #include "core/variant/variant.h"
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 
 class Label;
 

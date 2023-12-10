@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/resource.h"
-#include "scene/2d/node_2d.h"
+#include "scene/main/node_2d.h"
 
 class NavigationMesh;
 

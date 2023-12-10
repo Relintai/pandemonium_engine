@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 class CullInstance : public Spatial {
 	GDCLASS(CullInstance, Spatial);
