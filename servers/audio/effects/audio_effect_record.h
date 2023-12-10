@@ -35,7 +35,7 @@
 #include "core/os/os.h"
 #include "core/os/thread.h"
 #include "editor/import/resource_importer_wav.h"
-#include "scene/resources/audio_stream_sample.h"
+#include "scene/audio/audio_stream_sample.h"
 #include "servers/audio/audio_effect.h"
 #include "servers/audio_server.h"
 

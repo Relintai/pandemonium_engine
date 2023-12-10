@@ -138,7 +138,7 @@
 #include "scene/main/timer.h"
 #include "scene/main/viewport.h"
 #include "scene/main/world.h"
-#include "scene/resources/audio_stream_sample.h"
+#include "scene/audio/audio_stream_sample.h"
 #include "scene/resources/bit_map.h"
 #include "scene/resources/shapes/box_shape.h"
 #include "scene/resources/shapes/capsule_shape.h"
