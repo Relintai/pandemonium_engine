@@ -1,7 +1,7 @@
-#ifndef RECTANGLE_SHAPE_2D_H
-#define RECTANGLE_SHAPE_2D_H
+#ifndef CONVEX_POLYGON_SHAPE_2D_H
+#define CONVEX_POLYGON_SHAPE_2D_H
 /*************************************************************************/
-/*  rectangle_shape_2d.h                                                 */
+/*  convex_polygon_shape_2d.h                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,26 +30,29 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/shape_2d.h"
+#include "scene/resources/shapes_2d/shape_2d.h"
 
-class RectangleShape2D : public Shape2D {
-	GDCLASS(RectangleShape2D, Shape2D);
+class ConvexPolygonShape2D : public Shape2D {
+	GDCLASS(ConvexPolygonShape2D, Shape2D);
 
-	Vector2 extents;
+	Vector<Vector2> points;
 	void _update_shape();
 
 protected:
 	static void _bind_methods();
 
 public:
-	void set_extents(const Vector2 &p_extents);
-	Vector2 get_extents() const;
+	virtual bool _edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const;
+
+	void set_point_cloud(const Vector<Vector2> &p_points);
+	void set_points(const Vector<Vector2> &p_points);
+	Vector<Vector2> get_points() const;
 
 	virtual void draw(const RID &p_to_rid, const Color &p_color);
 	virtual Rect2 get_rect() const;
 	virtual real_t get_enclosing_radius() const;
 
-	RectangleShape2D();
+	ConvexPolygonShape2D();
 };
 
-#endif // RECTANGLE_SHAPE_2D_H
+#endif // CONVEX_POLYGON_SHAPE_2D_H

@@ -25,7 +25,7 @@ SOFTWARE.
 #include "core/math/math_funcs.h"
 
 #include "../../library/terrain_2d_material_cache.h"
-#include "scene/resources/convex_polygon_shape_2d.h"
+#include "scene/resources/shapes_2d/convex_polygon_shape_2d.h"
 
 void Terrain2DMesherIsometric::_add_chunk(Ref<Terrain2DChunk> p_chunk) {
 	Ref<Terrain2DChunkDefault> chunk = p_chunk;
