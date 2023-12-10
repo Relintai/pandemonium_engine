@@ -46,7 +46,7 @@
 #include "scene/animation/scene_tree_tween.h"
 #include "scene/debugger/script_debugger_remote.h"
 #include "scene/gui/control.h"
-#include "scene/resources/dynamic_font.h"
+#include "scene/resources/font/dynamic_font.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/packed_scene.h"

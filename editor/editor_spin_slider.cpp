@@ -53,7 +53,7 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/main/node.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
 

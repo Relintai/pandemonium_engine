@@ -94,7 +94,7 @@
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/viewport.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
 #include "servers/rendering_server.h"

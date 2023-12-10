@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/mesh.h"
 
 ///@TODO probably should change a few integers to unsigned integers...

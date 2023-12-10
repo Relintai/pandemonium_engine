@@ -38,7 +38,7 @@
 #include "core/string/ustring.h"
 
 #include "scene/resources/theme.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/style_box.h"
 

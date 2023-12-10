@@ -51,7 +51,7 @@
 #include "core/object/undo_redo.h"
 #include "core/containers/vector.h"
 #include "scene/animation/animation.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "servers/rendering_server.h"
 
 /// BOOL ///

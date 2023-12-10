@@ -67,7 +67,7 @@
 #include "scene/gui/spin_box.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"
 
 bool AnimationNodeBlendSpace2DEditor::can_edit(const Ref<AnimationNode> &p_node) {

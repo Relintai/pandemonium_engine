@@ -32,7 +32,7 @@
 
 #include "core/io/resource_loader.h"
 #include "core/object/resource.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"

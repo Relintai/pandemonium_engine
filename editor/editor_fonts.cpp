@@ -38,8 +38,8 @@
 #include "core/variant/variant.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
-#include "scene/resources/dynamic_font.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/dynamic_font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/theme.h"
 
 #define MAKE_FALLBACKS(m_name)          \

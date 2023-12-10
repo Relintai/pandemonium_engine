@@ -89,7 +89,7 @@
 #include "scene/main/scene_tree.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/environment_3d.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/gradient.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/shader.h"

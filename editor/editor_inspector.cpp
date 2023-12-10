@@ -63,7 +63,7 @@
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/property_utils.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/style_box.h"
 #include "servers/rendering_server.h"

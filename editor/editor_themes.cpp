@@ -52,7 +52,7 @@
 #include "editor_scale.h"
 #include "editor_settings.h"
 #include "modules/modules_enabled.gen.h" // For svg.
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
 #ifdef MODULE_SVG_ENABLED

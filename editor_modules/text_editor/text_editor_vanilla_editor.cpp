@@ -18,7 +18,7 @@
 #include "editor_code_editor/editor_code_text_editor.h"
 #include "editor_code_editor/editor_find_replace_bar.h"
 
-#include "scene/resources/dynamic_font.h"
+#include "scene/resources/font/dynamic_font.h"
 
 String TextEditorVanillaEditor::get_current_path() {
 	return current_path;

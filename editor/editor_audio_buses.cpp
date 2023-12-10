@@ -66,7 +66,7 @@
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/style_box.h"
 #include "servers/audio/audio_effect.h"
 #include "servers/audio_server.h"

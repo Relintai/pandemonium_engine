@@ -46,6 +46,13 @@ env.add_source_files(navigation_obj, "navigation/*.cpp")
 for o in navigation_obj:
     scene_obj.append(o)
 
+# font
+font_obj = []
+env.add_source_files(font_obj, "font/*.cpp")
+
+for o in font_obj:
+    scene_obj.append(o)
+
 env.scene_sources += scene_obj
 
 # Needed to force rebuilding the scene files when the thirdparty code is updated.

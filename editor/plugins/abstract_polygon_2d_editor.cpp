@@ -55,7 +55,7 @@
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"
 
 AbstractPolygon2DEditor::Vertex::Vertex() :

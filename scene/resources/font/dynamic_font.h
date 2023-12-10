@@ -37,7 +37,7 @@
 #include "core/os/mutex.h"
 #include "core/os/thread_safe.h"
 #include "core/containers/pair.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"
 
 #include <ft2build.h>

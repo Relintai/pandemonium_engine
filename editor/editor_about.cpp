@@ -55,7 +55,7 @@
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"
 
 // The metadata key used to store and retrieve the version text to copy to the clipboard.

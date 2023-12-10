@@ -35,7 +35,7 @@
 #include "core/version.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/viewport.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
 #include "scene/resources/world_2d.h"

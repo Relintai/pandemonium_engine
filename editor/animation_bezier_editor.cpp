@@ -55,7 +55,7 @@
 #include "scene/gui/range.h"
 #include "core/input/shortcut.h"
 #include "scene/main/node.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 
 float AnimationBezierTrackEdit::_bezier_h_to_pixel(float p_h) {
 	float h = p_h;

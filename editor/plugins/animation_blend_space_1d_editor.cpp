@@ -62,7 +62,7 @@
 #include "scene/gui/spin_box.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"
 #include "scene/animation/animation_blend_space_1d.h"
 

@@ -46,7 +46,7 @@
 #include "scene/gui/text_edit.h"
 #include "scene/gui/texture_button.h"
 #include "scene/gui/tool_button.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"
 
 void EditorFindReplaceBar::_notification(int p_what) {

@@ -24,7 +24,7 @@
 #include "scene/gui/separator.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/text_edit.h"
-#include "scene/resources/dynamic_font.h"
+#include "scene/resources/font/dynamic_font.h"
 
 void TextFileEditor::connect_signals() {
 	file_list->connect("confirmed", this, "update_list");

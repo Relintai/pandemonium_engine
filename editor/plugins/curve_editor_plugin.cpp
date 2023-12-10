@@ -52,7 +52,7 @@
 #include "editor/editor_settings.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/gui/popup_menu.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"
 
 CurveEditor::CurveEditor() {

@@ -60,8 +60,8 @@
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
-#include "scene/resources/dynamic_font.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/dynamic_font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"
 
 #include "editor_find_replace_bar.h"

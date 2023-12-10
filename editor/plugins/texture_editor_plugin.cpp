@@ -31,7 +31,7 @@
 #include "texture_editor_plugin.h"
 
 #include "editor/editor_scale.h"
-#include "scene/resources/dynamic_font.h"
+#include "scene/resources/font/dynamic_font.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/io/image.h"
@@ -41,7 +41,7 @@
 #include "scene/gui/label.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/main/node.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"
 
 class EditorNode;

@@ -32,7 +32,7 @@
 #define LABEL_3D_H
 
 #include "scene/3d/visual_instance.h"
-#include "scene/resources/font.h"
+#include "scene/resources/font/font.h"
 #include "scene/resources/material.h"
 
 class TriangleMesh;

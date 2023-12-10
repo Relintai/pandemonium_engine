@@ -50,7 +50,7 @@
 #include "scene/gui/separator.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
-#include "scene/resources/dynamic_font.h"
+#include "scene/resources/font/dynamic_font.h"
 #include "scene/resources/texture.h"
 
 void EditorLog::LogFilter::initialize_button(const String &p_tooltip, Object *p_cb_obj, const StringName &p_method) {
