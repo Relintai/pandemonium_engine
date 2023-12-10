@@ -61,7 +61,7 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/text_edit.h"
 #include "scene/gui/tool_button.h"
-#include "scene/resources/syntax_highlighter.h"
+#include "scene/gui/resources/syntax_highlighter.h"
 #include "servers/rendering/shader_language.h"
 #include "servers/rendering/shader_types.h"
 #include "servers/rendering_server.h"

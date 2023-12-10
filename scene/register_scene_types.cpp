@@ -177,7 +177,7 @@
 #include "scene/resources/sky.h"
 #include "scene/resources/sphere_shape.h"
 #include "scene/resources/surface_tool.h"
-#include "scene/resources/syntax_highlighter.h"
+#include "scene/gui/resources/syntax_highlighter.h"
 #include "scene/resources/text_file.h"
 #include "scene/resources/texture.h"
 #include "scene/resources/video_stream.h"

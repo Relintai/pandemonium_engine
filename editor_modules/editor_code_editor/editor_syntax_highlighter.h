@@ -33,7 +33,7 @@
 
 #include "editor/editor_plugin.h"
 
-#include "scene/resources/syntax_highlighter.h"
+#include "scene/gui/resources/syntax_highlighter.h"
 
 class EditorSyntaxHighlighter : public SyntaxHighlighter {
 	GDCLASS(EditorSyntaxHighlighter, SyntaxHighlighter)

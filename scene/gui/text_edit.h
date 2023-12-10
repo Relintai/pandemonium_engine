@@ -32,7 +32,7 @@
 
 #include "scene/gui/control.h"
 
-#include "scene/resources/syntax_highlighter.h"
+#include "scene/gui/resources/syntax_highlighter.h"
 
 class PopupMenu;
 class Timer;

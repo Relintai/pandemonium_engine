@@ -13,7 +13,7 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/text_edit.h"
 #include "scene/gui/texture_rect.h"
-#include "scene/resources/syntax_highlighter.h"
+#include "scene/gui/resources/syntax_highlighter.h"
 
 #include "editor_code_editor/editor_code_text_editor.h"
 #include "editor_code_editor/editor_find_replace_bar.h"
