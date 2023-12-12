@@ -34,10 +34,10 @@
 #include "core/containers/rid.h"
 #include "core/object/object.h"
 
-class DisplayServer : public Object {
-	GDCLASS(DisplayServer, Object);
+class WindowServer : public Object {
+	GDCLASS(WindowServer, Object);
 
-	static DisplayServer *singleton;
+	static WindowServer *singleton;
 
 public:
 	const float SCREEN_REFRESH_RATE_FALLBACK = -1.0;
@@ -100,7 +100,7 @@ public:
 	virtual void request_attention() {}
 	virtual void center_window() {}
 
-	//DisplayServer
+	//WindowServer
 	enum HandleType {
 		DISPLAY_HANDLE, // X11::Display* ...
 		WINDOW_HANDLE, // HWND, X11::Window*, NSWindow*, UIWindow*, Android activity ...
@@ -125,18 +125,18 @@ public:
 	virtual void swap_buffers() {}
 
 protected:
-	static DisplayServer *(*create_func)();
+	static WindowServer *(*create_func)();
 
 	static void _bind_methods();
 
 public:
-	static DisplayServer *get_singleton();
-	static DisplayServer *create();
+	static WindowServer *get_singleton();
+	static WindowServer *create();
 
-	DisplayServer();
-	virtual ~DisplayServer();
+	WindowServer();
+	virtual ~WindowServer();
 };
 
-VARIANT_ENUM_CAST(DisplayServer::HandleType);
+VARIANT_ENUM_CAST(WindowServer::HandleType);
 
 #endif

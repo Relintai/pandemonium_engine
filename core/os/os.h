@@ -101,7 +101,7 @@ public:
 		RENDER_SEPARATE_THREAD
 	};
 
-	//DisplayServer
+	//WindowServer
 	struct VideoMode {
 		int width, height;
 		bool fullscreen;
@@ -186,7 +186,7 @@ public:
 	virtual String get_clipboard() const;
 	virtual bool has_clipboard() const;
 
-	//DisplayServer
+	//WindowServer
 	virtual void set_video_mode(const VideoMode &p_video_mode, int p_screen = 0) = 0;
 	virtual VideoMode get_video_mode(int p_screen = 0) const = 0;
 	virtual void get_fullscreen_mode_list(List<VideoMode> *p_list, int p_screen = 0) const = 0;
@@ -219,7 +219,7 @@ public:
 	// Returned by get_screen_refresh_rate if the method fails.
 	const float SCREEN_REFRESH_RATE_FALLBACK = -1.0;
 
-	//DisplayServer
+	//WindowServer
 	virtual int get_screen_count() const { return 1; }
 	virtual int get_current_screen() const { return 0; }
 	virtual void set_current_screen(int p_screen) {}
@@ -282,11 +282,11 @@ public:
 
 	virtual Array get_display_cutouts() const { return Array(); }
 
-	//DisplayServer
+	//WindowServer
 	virtual void set_borderless_window(bool p_borderless) {}
 	virtual bool get_borderless_window() { return false; }
 
-	//DisplayServer
+	//WindowServer
 	virtual bool get_window_per_pixel_transparency_enabled() const { return false; }
 	virtual void set_window_per_pixel_transparency_enabled(bool p_enabled) {}
 
@@ -544,7 +544,7 @@ public:
 		return FAILED;
 	}
 
-	//DisplayServer
+	//WindowServer
 	virtual void set_no_window_mode(bool p_enable);
 	virtual bool is_no_window_mode_enabled() const;
 
@@ -566,13 +566,13 @@ public:
 	ScreenOrientation get_screen_orientation_from_string(const String &p_orientation) const;
 
 	virtual void enable_for_stealing_focus(ProcessID pid) {}
-	//DisplayServer
+	//WindowServer
 	virtual void move_window_to_foreground() {}
 
 	virtual void release_rendering_thread();
 	virtual void make_rendering_thread();
 
-	//DisplayServer
+	//WindowServer
 	virtual void swap_buffers();
 
 	virtual void set_native_icon(const String &p_filename);

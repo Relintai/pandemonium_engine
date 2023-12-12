@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  DisplayServer.cpp                                                    */
+/*  WindowServer.cpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,20 +28,20 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "display_server.h"
+#include "window_server.h"
 
-DisplayServer *DisplayServer::singleton = nullptr;
-DisplayServer *(*DisplayServer::create_func)() = nullptr;
+WindowServer *WindowServer::singleton = nullptr;
+WindowServer *(*WindowServer::create_func)() = nullptr;
 
-int64_t DisplayServer::get_native_handle_bind(HandleType p_handle_type) {
+int64_t WindowServer::get_native_handle_bind(HandleType p_handle_type) {
 	return (int64_t)get_native_handle(p_handle_type);
 }
 
-DisplayServer *DisplayServer::get_singleton() {
+WindowServer *WindowServer::get_singleton() {
 	return singleton;
 }
 
-DisplayServer *DisplayServer::create() {
+WindowServer *WindowServer::create() {
 	ERR_FAIL_COND_V(singleton, nullptr);
 
 	if (create_func) {
@@ -51,47 +51,47 @@ DisplayServer *DisplayServer::create() {
 	return nullptr;
 }
 
-void DisplayServer::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_screen_count"), &DisplayServer::get_screen_count);
-	ClassDB::bind_method(D_METHOD("get_current_screen"), &DisplayServer::get_current_screen);
-	ClassDB::bind_method(D_METHOD("set_current_screen", "screen"), &DisplayServer::set_current_screen);
-	ClassDB::bind_method(D_METHOD("get_screen_position", "screen"), &DisplayServer::get_screen_position, DEFVAL(-1));
-	ClassDB::bind_method(D_METHOD("get_screen_size", "screen"), &DisplayServer::get_screen_size, DEFVAL(-1));
-	ClassDB::bind_method(D_METHOD("get_screen_dpi", "screen"), &DisplayServer::get_screen_dpi, DEFVAL(-1));
-	ClassDB::bind_method(D_METHOD("get_screen_scale", "screen"), &DisplayServer::get_screen_scale, DEFVAL(-1));
-	ClassDB::bind_method(D_METHOD("get_screen_max_scale"), &DisplayServer::get_screen_max_scale);
-	ClassDB::bind_method(D_METHOD("get_screen_refresh_rate", "screen"), &DisplayServer::get_screen_refresh_rate, DEFVAL(-1));
-	ClassDB::bind_method(D_METHOD("get_window_position"), &DisplayServer::get_window_position);
-	ClassDB::bind_method(D_METHOD("set_window_position", "position"), &DisplayServer::set_window_position);
-	ClassDB::bind_method(D_METHOD("get_window_size"), &DisplayServer::get_window_size);
-	ClassDB::bind_method(D_METHOD("get_max_window_size"), &DisplayServer::get_max_window_size);
-	ClassDB::bind_method(D_METHOD("get_min_window_size"), &DisplayServer::get_min_window_size);
-	ClassDB::bind_method(D_METHOD("set_max_window_size", "size"), &DisplayServer::set_max_window_size);
-	ClassDB::bind_method(D_METHOD("set_min_window_size", "size"), &DisplayServer::set_min_window_size);
-	ClassDB::bind_method(D_METHOD("set_window_size", "size"), &DisplayServer::set_window_size);
-	ClassDB::bind_method(D_METHOD("set_window_fullscreen", "enabled"), &DisplayServer::set_window_fullscreen);
-	ClassDB::bind_method(D_METHOD("is_window_fullscreen"), &DisplayServer::is_window_fullscreen);
-	ClassDB::bind_method(D_METHOD("set_window_resizable", "enabled"), &DisplayServer::set_window_resizable);
-	ClassDB::bind_method(D_METHOD("is_window_resizable"), &DisplayServer::is_window_resizable);
-	ClassDB::bind_method(D_METHOD("set_window_minimized", "enabled"), &DisplayServer::set_window_minimized);
-	ClassDB::bind_method(D_METHOD("is_window_minimized"), &DisplayServer::is_window_minimized);
-	ClassDB::bind_method(D_METHOD("set_window_maximized", "enabled"), &DisplayServer::set_window_maximized);
-	ClassDB::bind_method(D_METHOD("is_window_maximized"), &DisplayServer::is_window_maximized);
-	ClassDB::bind_method(D_METHOD("set_window_always_on_top", "enabled"), &DisplayServer::set_window_always_on_top);
-	ClassDB::bind_method(D_METHOD("is_window_always_on_top"), &DisplayServer::is_window_always_on_top);
-	ClassDB::bind_method(D_METHOD("is_window_focused"), &DisplayServer::is_window_focused);
-	ClassDB::bind_method(D_METHOD("request_attention"), &DisplayServer::request_attention);
-	ClassDB::bind_method(D_METHOD("get_real_window_size"), &DisplayServer::get_real_window_size);
-	ClassDB::bind_method(D_METHOD("center_window"), &DisplayServer::center_window);
-	ClassDB::bind_method(D_METHOD("move_window_to_foreground"), &DisplayServer::move_window_to_foreground);
+void WindowServer::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_screen_count"), &WindowServer::get_screen_count);
+	ClassDB::bind_method(D_METHOD("get_current_screen"), &WindowServer::get_current_screen);
+	ClassDB::bind_method(D_METHOD("set_current_screen", "screen"), &WindowServer::set_current_screen);
+	ClassDB::bind_method(D_METHOD("get_screen_position", "screen"), &WindowServer::get_screen_position, DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("get_screen_size", "screen"), &WindowServer::get_screen_size, DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("get_screen_dpi", "screen"), &WindowServer::get_screen_dpi, DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("get_screen_scale", "screen"), &WindowServer::get_screen_scale, DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("get_screen_max_scale"), &WindowServer::get_screen_max_scale);
+	ClassDB::bind_method(D_METHOD("get_screen_refresh_rate", "screen"), &WindowServer::get_screen_refresh_rate, DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("get_window_position"), &WindowServer::get_window_position);
+	ClassDB::bind_method(D_METHOD("set_window_position", "position"), &WindowServer::set_window_position);
+	ClassDB::bind_method(D_METHOD("get_window_size"), &WindowServer::get_window_size);
+	ClassDB::bind_method(D_METHOD("get_max_window_size"), &WindowServer::get_max_window_size);
+	ClassDB::bind_method(D_METHOD("get_min_window_size"), &WindowServer::get_min_window_size);
+	ClassDB::bind_method(D_METHOD("set_max_window_size", "size"), &WindowServer::set_max_window_size);
+	ClassDB::bind_method(D_METHOD("set_min_window_size", "size"), &WindowServer::set_min_window_size);
+	ClassDB::bind_method(D_METHOD("set_window_size", "size"), &WindowServer::set_window_size);
+	ClassDB::bind_method(D_METHOD("set_window_fullscreen", "enabled"), &WindowServer::set_window_fullscreen);
+	ClassDB::bind_method(D_METHOD("is_window_fullscreen"), &WindowServer::is_window_fullscreen);
+	ClassDB::bind_method(D_METHOD("set_window_resizable", "enabled"), &WindowServer::set_window_resizable);
+	ClassDB::bind_method(D_METHOD("is_window_resizable"), &WindowServer::is_window_resizable);
+	ClassDB::bind_method(D_METHOD("set_window_minimized", "enabled"), &WindowServer::set_window_minimized);
+	ClassDB::bind_method(D_METHOD("is_window_minimized"), &WindowServer::is_window_minimized);
+	ClassDB::bind_method(D_METHOD("set_window_maximized", "enabled"), &WindowServer::set_window_maximized);
+	ClassDB::bind_method(D_METHOD("is_window_maximized"), &WindowServer::is_window_maximized);
+	ClassDB::bind_method(D_METHOD("set_window_always_on_top", "enabled"), &WindowServer::set_window_always_on_top);
+	ClassDB::bind_method(D_METHOD("is_window_always_on_top"), &WindowServer::is_window_always_on_top);
+	ClassDB::bind_method(D_METHOD("is_window_focused"), &WindowServer::is_window_focused);
+	ClassDB::bind_method(D_METHOD("request_attention"), &WindowServer::request_attention);
+	ClassDB::bind_method(D_METHOD("get_real_window_size"), &WindowServer::get_real_window_size);
+	ClassDB::bind_method(D_METHOD("center_window"), &WindowServer::center_window);
+	ClassDB::bind_method(D_METHOD("move_window_to_foreground"), &WindowServer::move_window_to_foreground);
 
-	ClassDB::bind_method(D_METHOD("get_native_handle", "handle_type"), &DisplayServer::get_native_handle_bind);
+	ClassDB::bind_method(D_METHOD("get_native_handle", "handle_type"), &WindowServer::get_native_handle_bind);
 
-	ClassDB::bind_method(D_METHOD("set_borderless_window", "borderless"), &DisplayServer::set_borderless_window);
-	ClassDB::bind_method(D_METHOD("get_borderless_window"), &DisplayServer::get_borderless_window);
+	ClassDB::bind_method(D_METHOD("set_borderless_window", "borderless"), &WindowServer::set_borderless_window);
+	ClassDB::bind_method(D_METHOD("get_borderless_window"), &WindowServer::get_borderless_window);
 
-	ClassDB::bind_method(D_METHOD("get_window_per_pixel_transparency_enabled"), &DisplayServer::get_window_per_pixel_transparency_enabled);
-	ClassDB::bind_method(D_METHOD("set_window_per_pixel_transparency_enabled", "enabled"), &DisplayServer::set_window_per_pixel_transparency_enabled);
+	ClassDB::bind_method(D_METHOD("get_window_per_pixel_transparency_enabled"), &WindowServer::get_window_per_pixel_transparency_enabled);
+	ClassDB::bind_method(D_METHOD("set_window_per_pixel_transparency_enabled", "enabled"), &WindowServer::set_window_per_pixel_transparency_enabled);
 
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_screen"), "set_current_screen", "get_current_screen");
@@ -136,10 +136,10 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(WINDOW_VIEW);
 	BIND_ENUM_CONSTANT(OPENGL_CONTEXT);
 	
-	//ClassDB::bind_method(D_METHOD("force_sync"), &DisplayServer::sync);
+	//ClassDB::bind_method(D_METHOD("force_sync"), &WindowServer::sync);
 
-	//ClassDB::bind_method(D_METHOD("is_render_loop_enabled"), &DisplayServer::is_render_loop_enabled);
-	//ClassDB::bind_method(D_METHOD("set_render_loop_enabled", "enabled"), &DisplayServer::set_render_loop_enabled);
+	//ClassDB::bind_method(D_METHOD("is_render_loop_enabled"), &WindowServer::is_render_loop_enabled);
+	//ClassDB::bind_method(D_METHOD("set_render_loop_enabled", "enabled"), &WindowServer::set_render_loop_enabled);
 	//ADD_PROPERTY(PropertyInfo(Variant::BOOL, "render_loop_enabled"), "set_render_loop_enabled", "is_render_loop_enabled");
 
 	//BIND_CONSTANT(NO_INDEX_ARRAY);
@@ -149,11 +149,11 @@ void DisplayServer::_bind_methods() {
 	//ADD_SIGNAL(MethodInfo("frame_pre_draw"));
 }
 
-DisplayServer::DisplayServer() {
+WindowServer::WindowServer() {
 	//ERR_FAIL_COND(singleton);
 	singleton = this;
 }
 
-DisplayServer::~DisplayServer() {
+WindowServer::~WindowServer() {
 	singleton = nullptr;
 }
