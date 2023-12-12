@@ -35,7 +35,19 @@
 	<members>
 		<member name="backend" type="LoggerBackend" setter="set_backend" getter="get_backend">
 		</member>
+		<member name="log_level" type="int" setter="set_log_level" getter="get_log_level" enum="PLogger.LogLevel" default="1">
+		</member>
 	</members>
 	<constants>
+		<constant name="LOG_LEVEL_TRACE" value="0" enum="LogLevel">
+		</constant>
+		<constant name="LOG_LEVEL_MESSAGE" value="1" enum="LogLevel">
+		</constant>
+		<constant name="LOG_LEVEL_WARNING" value="2" enum="LogLevel">
+		</constant>
+		<constant name="LOG_LEVEL_ERROR" value="3" enum="LogLevel">
+		</constant>
+		<constant name="LOG_LEVEL_NONE" value="4" enum="LogLevel">
+		</constant>
 	</constants>
 </class>
