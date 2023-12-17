@@ -1,14 +1,16 @@
 #ifndef PAGED_ALLOCATOR_H
 #define PAGED_ALLOCATOR_H
+
 /*************************************************************************/
 /*  paged_allocator.h                                                    */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -117,9 +119,9 @@ public:
 		page_shift = get_shift_from_power_of_2(page_size);
 	}
 
-	// Power of 2 recommended because of alignment with OS page sizes. 
+	// Power of 2 recommended because of alignment with OS page sizes.
 	// Even if element is bigger, its still a multiple and get rounded amount of pages
-	PagedAllocator(uint32_t p_page_size = 4096) { 
+	PagedAllocator(uint32_t p_page_size = 4096) {
 		configure(p_page_size);
 	}
 

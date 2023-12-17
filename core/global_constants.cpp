@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  global_constants.cpp                                                 */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,8 +31,8 @@
 
 #include "global_constants.h"
 
-#include "core/object/object.h"
 #include "core/input/input_event.h"
+#include "core/object/object.h"
 #include "core/os/keyboard.h"
 #include "core/variant/variant.h"
 
@@ -635,7 +636,7 @@ void register_global_constants() {
 	BIND_GLOBAL_ENUM_CONSTANT(PROPERTY_USAGE_STORAGE);
 	BIND_GLOBAL_ENUM_CONSTANT(PROPERTY_USAGE_EDITOR);
 	BIND_GLOBAL_ENUM_CONSTANT(PROPERTY_USAGE_NETWORK);
-	
+
 	BIND_GLOBAL_ENUM_CONSTANT(PROPERTY_USAGE_EDITOR_HELPER);
 	BIND_GLOBAL_ENUM_CONSTANT(PROPERTY_USAGE_CHECKABLE);
 	BIND_GLOBAL_ENUM_CONSTANT(PROPERTY_USAGE_CHECKED);

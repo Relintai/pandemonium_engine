@@ -1,14 +1,16 @@
 #ifndef HASHFUNCS_H
 #define HASHFUNCS_H
+
 /*************************************************************************/
 /*  hashfuncs.h                                                          */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,6 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/rid.h"
 #include "core/math/aabb.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
@@ -45,7 +48,6 @@
 #include "core/string/node_path.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
-#include "core/containers/rid.h"
 #include "core/typedefs.h"
 
 /**
@@ -334,7 +336,7 @@ struct HashMapHasherDefault {
 	static _FORCE_INLINE_ uint32_t hash(const int16_t p_int) { return hash_fmix32(p_int); }
 	static _FORCE_INLINE_ uint32_t hash(const uint8_t p_int) { return hash_fmix32(p_int); }
 	static _FORCE_INLINE_ uint32_t hash(const int8_t p_int) { return hash_fmix32(p_int); }
-	
+
 	static _FORCE_INLINE_ uint32_t hash(const Vector2i &p_vec) {
 		uint32_t h = hash_murmur3_one_32(p_vec.x);
 		h = hash_murmur3_one_32(p_vec.y, h);

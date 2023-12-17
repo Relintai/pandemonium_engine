@@ -1,14 +1,16 @@
 #ifndef GLOBAL_CONFIG_H
 #define GLOBAL_CONFIG_H
+
 /*************************************************************************/
 /*  project_settings.h                                                   */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,9 +32,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/rb_set.h"
 #include "core/object/object.h"
 #include "core/os/thread_safe.h"
-#include "core/containers/rb_set.h"
 
 // Querying ProjectSettings is usually done at startup.
 // Additionally, in order to keep track of changes to ProjectSettings,

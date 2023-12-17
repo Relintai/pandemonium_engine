@@ -1,14 +1,16 @@
 #ifndef BVH_TREE_H
 #define BVH_TREE_H
+
 /*************************************************************************/
 /*  bvh_tree.h                                                           */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -39,11 +41,11 @@
 // Note that MAX_CHILDREN should be fixed at 2 for now.
 
 #include "core/containers/local_vector.h"
+#include "core/containers/pooled_list.h"
 #include "core/math/aabb.h"
 #include "core/math/bvh_abb.h"
 #include "core/math/geometry.h"
 #include "core/math/vector3.h"
-#include "core/containers/pooled_list.h"
 #include "core/string/print_string.h"
 #include <limits.h>
 
