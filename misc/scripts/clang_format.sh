@@ -14,6 +14,8 @@ while IFS= read -rd '' f; do
     # Exclude some files.
     if [[ "$f" == "thirdparty"* ]]; then
         continue
+    elif [[ "$f" == "modules/database_sqlite/sqlite"* ]]; then
+        continue
     elif [[ "$f" == "platform/android/java/lib/src/com/google"* ]]; then
         continue
     elif [[ "$f" == *"-so_wrap."* ]]; then
