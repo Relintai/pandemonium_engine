@@ -16,6 +16,8 @@ while IFS= read -rd '' f; do
         continue
     elif [[ "$f" == "modules/database_sqlite/sqlite"* ]]; then
         continue
+    elif [[ "$f" == "modules/fastnoise/lib"* ]]; then
+        continue
     elif [[ "$f" == "platform/android/java/lib/src/com/google"* ]]; then
         continue
     elif [[ "$f" == *"-so_wrap."* ]]; then
