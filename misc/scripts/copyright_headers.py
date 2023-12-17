@@ -79,6 +79,8 @@ while line == "" or line.startswith("#ifndef") or line.startswith("#define"):  #
     line = fileread.readline()
     line = line.strip()
 
+line += "\n"
+
 if orig_lines != "":
     text = orig_lines + "\n" + text
 
