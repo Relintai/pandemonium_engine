@@ -30,6 +30,8 @@ while IFS= read -rd '' f; do
         continue
     elif [[ "$f" == "modules/texture_packer/rectpack2D"* ]]; then
         continue
+    elif [[ "$f" == "modules/web/libs"* ]]; then
+        continue
     elif [[ "$f" == "platform/android/java/lib/src/com/google"* ]]; then
         continue
     elif [[ "$f" == *"-so_wrap."* ]]; then
