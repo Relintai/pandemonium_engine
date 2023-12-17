@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  progress_dialog.cpp                                                  */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -42,11 +43,11 @@
 #include "core/typedefs.h"
 #include "editor_scale.h"
 #include "main/main.h"
-#include "scene/main/canvas_item.h"
 #include "scene/gui/button.h"
-#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/progress_bar.h"
+#include "scene/main/canvas_item.h"
+#include "scene/main/control.h"
 #include "scene/resources/style_box.h"
 
 void BackgroundProgress::_add_task(const String &p_task, const String &p_label, int p_steps) {

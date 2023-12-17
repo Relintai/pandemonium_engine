@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  animation_blend_space_2d_editor.cpp                                  */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,33 +31,31 @@
 
 #include "animation_blend_space_2d_editor.h"
 
-#include "scene/animation/animation_blend_space_2d.h"
-#include "core/io/resource_loader.h"
-#include "core/math/delaunay.h"
-#include "core/os/keyboard.h"
-#include "editor/editor_scale.h"
-#include "scene/animation/animation_blend_tree.h"
-#include "scene/animation/animation_player.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/error/error_macros.h"
 #include "core/containers/list.h"
+#include "core/error/error_macros.h"
+#include "core/input/input_event.h"
+#include "core/io/resource_loader.h"
+#include "core/math/color.h"
+#include "core/math/delaunay.h"
 #include "core/math/geometry.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/math/transform_2d.h"
-#include "core/input/input_event.h"
-#include "core/os/memory.h"
+#include "core/object/class_db.h"
 #include "core/object/undo_redo.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
 #include "core/variant/variant.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"
+#include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
-#include "scene/main/canvas_item.h"
+#include "scene/animation/animation_blend_space_2d.h"
+#include "scene/animation/animation_blend_tree.h"
+#include "scene/animation/animation_player.h"
 #include "scene/gui/base_button.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/main/control.h"
 #include "scene/gui/grid_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
@@ -66,6 +65,8 @@
 #include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/tool_button.h"
+#include "scene/main/canvas_item.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 #include "scene/resources/font/font.h"
 #include "scene/resources/texture.h"

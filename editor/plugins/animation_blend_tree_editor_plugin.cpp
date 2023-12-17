@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  animation_blend_tree_editor_plugin.cpp                               */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -47,13 +48,12 @@
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
-#include "scene/main/canvas_item.h"
+#include "scene/animation/animation.h"
 #include "scene/animation/animation_blend_tree.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
-#include "scene/main/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/graph_edit.h"
 #include "scene/gui/graph_node.h"
@@ -65,8 +65,9 @@
 #include "scene/gui/progress_bar.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/tree.h"
+#include "scene/main/canvas_item.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
-#include "scene/animation/animation.h"
 #include "scene/resources/style_box.h"
 
 #include "modules/modules_enabled.gen.h"

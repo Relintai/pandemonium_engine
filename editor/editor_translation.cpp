@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  editor_translation.cpp                                               */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,15 +31,15 @@
 
 #include "editor/editor_translation.h"
 
+#include "core/error/error_macros.h"
 #include "core/io/compression.h"
 #include "core/io/file_access_memory.h"
 #include "core/io/translation_loader_po.h"
+#include "core/object/reference.h"
+#include "core/os/memory.h"
+#include "core/string/translation.h"
 #include "editor/doc_translations.gen.h"
 #include "editor/editor_translations.gen.h"
-#include "core/error/error_macros.h"
-#include "core/os/memory.h"
-#include "core/object/reference.h"
-#include "core/string/translation.h"
 
 Vector<String> get_editor_locales() {
 	Vector<String> locales;

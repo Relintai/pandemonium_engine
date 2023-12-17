@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  reparent_dialog.cpp                                                  */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,16 +31,16 @@
 
 #include "reparent_dialog.h"
 
-#include "scene/gui/box_container.h"
 #include "core/object/class_db.h"
 #include "core/os/memory.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "editor/scene_tree_editor.h"
-#include "scene/main/canvas_item.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
 #include "scene/gui/tree.h"
+#include "scene/main/canvas_item.h"
 #include "scene/main/node.h"
 
 void ReparentDialog::_notification(int p_what) {

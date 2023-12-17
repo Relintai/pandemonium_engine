@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  editor_resource_preview.cpp                                          */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -32,21 +33,21 @@
 
 #include "core/object/method_bind_ext.gen.inc"
 
+#include "core/config/project_settings.h"
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
+#include "core/io/image.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
 #include "core/object/message_queue.h"
 #include "core/os/file_access.h"
-#include "core/config/project_settings.h"
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
-#include "core/error/error_list.h"
-#include "core/error/error_macros.h"
-#include "core/io/image.h"
 
+#include "core/object/script_language.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/object/script_language.h"
 #include "core/typedefs.h"
 #include "scene/main/control.h"
 #include "servers/rendering_server.h"

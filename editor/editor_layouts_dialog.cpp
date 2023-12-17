@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  editor_layouts_dialog.cpp                                            */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,21 +31,21 @@
 
 #include "editor_layouts_dialog.h"
 
-#include "core/object/class_db.h"
+#include "core/containers/list.h"
+#include "core/containers/vector.h"
+#include "core/error/error_list.h"
+#include "core/input/input_event.h"
 #include "core/io/config_file.h"
+#include "core/math/math_defs.h"
+#include "core/object/class_db.h"
 #include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/string/ustring.h"
+#include "core/variant/variant.h"
 #include "editor/editor_settings.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/line_edit.h"
-#include "core/error/error_list.h"
-#include "core/containers/list.h"
-#include "core/math/math_defs.h"
-#include "core/input/input_event.h"
-#include "core/os/memory.h"
-#include "core/string/ustring.h"
-#include "core/variant/variant.h"
-#include "core/containers/vector.h"
 #include "scene/main/control.h"
 
 void EditorLayoutsDialog::_line_gui_input(const Ref<InputEvent> &p_event) {

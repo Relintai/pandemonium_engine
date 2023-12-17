@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  spatial_editor_plugin.cpp                                            */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           PANDEMONIUM ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -66,7 +67,6 @@
 #include "editor/scene_tree_editor.h"
 #include "editor/script_editor_debugger.h"
 #include "editor/spatial_editor_gizmos.h"
-#include "scene/main/canvas_item.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/mesh_instance.h"
@@ -86,16 +86,17 @@
 #include "scene/gui/split_container.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/viewport_container.h"
+#include "scene/main/canvas_item.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/environment_3d.h"
 #include "scene/resources/font/font.h"
 #include "scene/resources/gradient.h"
+#include "scene/resources/mesh/surface_tool.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/style_box.h"
-#include "scene/resources/mesh/surface_tool.h"
 #include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
 

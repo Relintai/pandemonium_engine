@@ -1,14 +1,16 @@
 #ifndef THREAD_H
 #define THREAD_H
+
 /*************************************************************************/
 /*  thread.h                                                             */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -112,7 +114,7 @@ public:
 	_FORCE_INLINE_ static ID get_caller_id() { return 0; }
 	// get the ID of the main thread
 	_FORCE_INLINE_ static ID get_main_id() { return 0; }
-	
+
 	_FORCE_INLINE_ static bool is_main_thread() { return true; }
 
 	static Error set_name(const String &p_name) { return ERR_UNAVAILABLE; }

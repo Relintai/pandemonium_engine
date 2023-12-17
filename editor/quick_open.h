@@ -1,14 +1,16 @@
 #ifndef EDITOR_QUICK_OPEN_H
 #define EDITOR_QUICK_OPEN_H
+
 /*************************************************************************/
 /*  quick_open.h                                                         */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -33,17 +35,18 @@
 #include "scene/gui/dialogs.h"
 
 #include "core/containers/pair.h"
+#include "core/containers/vector.h"
 #include "core/object/reference.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
-#include "core/containers/vector.h"
 
 class EditorFileSystemDirectory;
 class InputEvent;
 class LineEdit;
 class Texture;
 class Tree;
-template <class F, class S> struct Pair;
+template <class F, class S>
+struct Pair;
 
 class EditorQuickOpen : public ConfirmationDialog {
 	GDCLASS(EditorQuickOpen, ConfirmationDialog);

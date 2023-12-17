@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  editor_file_dialog.cpp                                               */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,22 +31,22 @@
 
 #include "editor_file_dialog.h"
 
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/variant/dictionary.h"
+#include "core/config/project_settings.h"
+#include "core/containers/list.h"
+#include "core/containers/pool_vector.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
-#include "core/containers/list.h"
+#include "core/input/input_event.h"
+#include "core/math/color.h"
 #include "core/math/vector2.h"
+#include "core/object/class_db.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "core/input/input_event.h"
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/containers/pool_vector.h"
-#include "core/config/project_settings.h"
 #include "core/typedefs.h"
+#include "core/variant/dictionary.h"
 #include "dependency_editor.h"
 #include "editor_file_system.h"
 #include "editor_resource_preview.h"
@@ -55,7 +56,6 @@
 #include "scene/gui/base_button.h"
 #include "scene/gui/button.h"
 #include "scene/gui/center_container.h"
-#include "scene/main/control.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
@@ -67,6 +67,7 @@
 #include "scene/gui/split_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
 

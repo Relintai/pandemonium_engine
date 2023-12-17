@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  path_2d_editor_plugin.cpp                                            */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,26 +32,26 @@
 #include "path_2d_editor_plugin.h"
 
 #include "canvas_item_editor_plugin.h"
-#include "core/os/keyboard.h"
-#include "editor/editor_scale.h"
-#include "editor/editor_settings.h"
-#include "core/object/class_db.h"
+#include "core/input/input_event.h"
 #include "core/math/color.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/math/transform_2d.h"
-#include "core/input/input_event.h"
-#include "core/os/memory.h"
+#include "core/object/class_db.h"
 #include "core/object/undo_redo.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
 #include "core/variant/variant.h"
 #include "editor/editor_node.h"
+#include "editor/editor_scale.h"
+#include "editor/editor_settings.h"
 #include "scene/2d/path_2d.h"
-#include "scene/main/control.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/tool_button.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 #include "scene/resources/curve.h"
 #include "scene/resources/texture.h"

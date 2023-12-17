@@ -2,14 +2,15 @@
 #define EDITOR_TEXT_EDITOR_H
 
 /*************************************************************************/
-/*  text_editor.h                                                        */
+/*  editor_text_editor.h                                                 */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -129,7 +130,7 @@ protected:
 	void _text_edit_gui_input(const Ref<InputEvent> &ev);
 	void _prepare_edit_menu();
 
-	RBMap<String, Ref<EditorSyntaxHighlighter> > highlighters;
+	RBMap<String, Ref<EditorSyntaxHighlighter>> highlighters;
 	void _change_syntax_highlighter(int p_idx);
 	void _load_theme_settings();
 

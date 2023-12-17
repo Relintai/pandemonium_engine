@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  material_editor_plugin.cpp                                           */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,39 +31,39 @@
 
 #include "material_editor_plugin.h"
 
-#include "editor/editor_scale.h"
-#include "scene/gui/texture_button.h"
-#include "scene/gui/viewport_container.h"
-#include "scene/main/viewport.h"
-#include "scene/resources/environment_3d.h"
-#include "scene/resources/material/particles_material.h"
-#include "scene/resources/material/spatial_material.h"
-#include "scene/resources/material/shader_material.h"
-#include "scene/resources/sky.h"
-#include "scene/resources/world_3d.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/error/error_macros.h"
 #include "core/containers/list.h"
+#include "core/error/error_macros.h"
 #include "core/math/basis.h"
+#include "core/math/color.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/math/transform.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "core/os/memory.h"
+#include "core/object/class_db.h"
 #include "core/object/resource.h"
+#include "core/os/memory.h"
 #include "core/variant/variant.h"
+#include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
-#include "scene/main/canvas_item.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/texture_button.h"
+#include "scene/gui/viewport_container.h"
+#include "scene/main/canvas_item.h"
 #include "scene/main/node.h"
+#include "scene/main/viewport.h"
+#include "scene/resources/environment_3d.h"
+#include "scene/resources/material/particles_material.h"
+#include "scene/resources/material/shader_material.h"
+#include "scene/resources/material/spatial_material.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/shader.h"
+#include "scene/resources/sky.h"
 #include "scene/resources/texture.h"
+#include "scene/resources/world_3d.h"
 #include "servers/rendering_server.h"
 
 class EditorNode;
@@ -257,7 +258,6 @@ MaterialEditor::MaterialEditor() {
 }
 
 MaterialEditor::~MaterialEditor() {
-
 }
 
 ///////////////////////

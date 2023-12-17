@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  resource_importer_image.cpp                                          */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,11 +31,11 @@
 
 #include "resource_importer_image.h"
 
+#include "core/io/image.h"
 #include "core/io/image_loader.h"
 #include "core/io/resource_saver.h"
 #include "core/os/file_access.h"
 #include "scene/resources/texture.h"
-#include "core/io/image.h"
 
 String ResourceImporterImage::get_importer_name() const {
 	return "image";

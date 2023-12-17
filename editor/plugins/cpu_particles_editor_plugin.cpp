@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  cpu_particles_editor_plugin.cpp                                      */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,19 +31,19 @@
 
 #include "cpu_particles_editor_plugin.h"
 
-#include "editor/plugins/spatial_editor_plugin.h"
-#include "core/object/class_db.h"
-#include "core/math/vector3.h"
-#include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
+#include "core/math/vector3.h"
+#include "core/object/class_db.h"
+#include "core/os/memory.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"
+#include "editor/plugins/spatial_editor_plugin.h"
 #include "editor/scene_tree_editor.h"
 #include "scene/3d/cpu_particles.h"
 #include "scene/gui/box_container.h"
-#include "scene/main/control.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup_menu.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 
 void CPUParticlesEditor::_node_removed(Node *p_node) {

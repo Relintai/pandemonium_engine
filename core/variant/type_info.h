@@ -1,14 +1,16 @@
 #ifndef GET_TYPE_INFO_H
 #define GET_TYPE_INFO_H
+
 /*************************************************************************/
 /*  type_info.h                                                          */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -86,40 +88,40 @@ enum Metadata {
 template <class T, typename = void>
 struct GetTypeInfo;
 
-#define MAKE_TYPE_INFO(m_type, m_var_type)                                            \
-	template <>                                                                       \
-	struct GetTypeInfo<m_type> {                                                      \
-		static const Variant::Type VARIANT_TYPE = m_var_type;                         \
+#define MAKE_TYPE_INFO(m_type, m_var_type)                                                        \
+	template <>                                                                                   \
+	struct GetTypeInfo<m_type> {                                                                  \
+		static const Variant::Type VARIANT_TYPE = m_var_type;                                     \
 		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE; \
-		static inline PropertyInfo get_class_info() {                                 \
-			return PropertyInfo(VARIANT_TYPE, String());                              \
-		}                                                                             \
-	};                                                                                \
-	template <>                                                                       \
-	struct GetTypeInfo<const m_type &> {                                              \
-		static const Variant::Type VARIANT_TYPE = m_var_type;                         \
+		static inline PropertyInfo get_class_info() {                                             \
+			return PropertyInfo(VARIANT_TYPE, String());                                          \
+		}                                                                                         \
+	};                                                                                            \
+	template <>                                                                                   \
+	struct GetTypeInfo<const m_type &> {                                                          \
+		static const Variant::Type VARIANT_TYPE = m_var_type;                                     \
 		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE; \
-		static inline PropertyInfo get_class_info() {                                 \
-			return PropertyInfo(VARIANT_TYPE, String());                              \
-		}                                                                             \
+		static inline PropertyInfo get_class_info() {                                             \
+			return PropertyInfo(VARIANT_TYPE, String());                                          \
+		}                                                                                         \
 	};
 
-#define MAKE_TYPE_INFO_WITH_META(m_type, m_var_type, m_metadata)    \
-	template <>                                                     \
-	struct GetTypeInfo<m_type> {                                    \
-		static const Variant::Type VARIANT_TYPE = m_var_type;       \
+#define MAKE_TYPE_INFO_WITH_META(m_type, m_var_type, m_metadata)          \
+	template <>                                                           \
+	struct GetTypeInfo<m_type> {                                          \
+		static const Variant::Type VARIANT_TYPE = m_var_type;             \
 		static const PandemoniumTypeInfo::Metadata METADATA = m_metadata; \
-		static inline PropertyInfo get_class_info() {               \
-			return PropertyInfo(VARIANT_TYPE, String());            \
-		}                                                           \
-	};                                                              \
-	template <>                                                     \
-	struct GetTypeInfo<const m_type &> {                            \
-		static const Variant::Type VARIANT_TYPE = m_var_type;       \
+		static inline PropertyInfo get_class_info() {                     \
+			return PropertyInfo(VARIANT_TYPE, String());                  \
+		}                                                                 \
+	};                                                                    \
+	template <>                                                           \
+	struct GetTypeInfo<const m_type &> {                                  \
+		static const Variant::Type VARIANT_TYPE = m_var_type;             \
 		static const PandemoniumTypeInfo::Metadata METADATA = m_metadata; \
-		static inline PropertyInfo get_class_info() {               \
-			return PropertyInfo(VARIANT_TYPE, String());            \
-		}                                                           \
+		static inline PropertyInfo get_class_info() {                     \
+			return PropertyInfo(VARIANT_TYPE, String());                  \
+		}                                                                 \
 	};
 
 MAKE_TYPE_INFO(bool, Variant::BOOL)
@@ -212,22 +214,22 @@ struct GetTypeInfo<const Variant &> {
 	}
 };
 
-#define MAKE_TEMPLATE_TYPE_INFO(m_template, m_type, m_var_type)                       \
-	template <>                                                                       \
-	struct GetTypeInfo<m_template<m_type>> {                                          \
-		static const Variant::Type VARIANT_TYPE = m_var_type;                         \
+#define MAKE_TEMPLATE_TYPE_INFO(m_template, m_type, m_var_type)                                   \
+	template <>                                                                                   \
+	struct GetTypeInfo<m_template<m_type>> {                                                      \
+		static const Variant::Type VARIANT_TYPE = m_var_type;                                     \
 		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE; \
-		static inline PropertyInfo get_class_info() {                                 \
-			return PropertyInfo(VARIANT_TYPE, String());                              \
-		}                                                                             \
-	};                                                                                \
-	template <>                                                                       \
-	struct GetTypeInfo<const m_template<m_type> &> {                                  \
-		static const Variant::Type VARIANT_TYPE = m_var_type;                         \
+		static inline PropertyInfo get_class_info() {                                             \
+			return PropertyInfo(VARIANT_TYPE, String());                                          \
+		}                                                                                         \
+	};                                                                                            \
+	template <>                                                                                   \
+	struct GetTypeInfo<const m_template<m_type> &> {                                              \
+		static const Variant::Type VARIANT_TYPE = m_var_type;                                     \
 		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE; \
-		static inline PropertyInfo get_class_info() {                                 \
-			return PropertyInfo(VARIANT_TYPE, String());                              \
-		}                                                                             \
+		static inline PropertyInfo get_class_info() {                                             \
+			return PropertyInfo(VARIANT_TYPE, String());                                          \
+		}                                                                                         \
 	};
 
 MAKE_TEMPLATE_TYPE_INFO(Vector, uint8_t, Variant::POOL_BYTE_ARRAY)
@@ -272,7 +274,7 @@ struct GetTypeInfo<const T *, typename EnableIf<TypeInherits<Object, T>::value>:
 	template <>                                                                                                                                                                   \
 	struct GetTypeInfo<m_impl> {                                                                                                                                                  \
 		static const Variant::Type VARIANT_TYPE = Variant::INT;                                                                                                                   \
-		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE;                                                                                             \
+		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE;                                                                                 \
 		static inline PropertyInfo get_class_info() {                                                                                                                             \
 			return PropertyInfo(Variant::INT, String(), PROPERTY_HINT_NONE, String(), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_CLASS_IS_ENUM, String(#m_enum).replace("::", ".")); \
 		}                                                                                                                                                                         \

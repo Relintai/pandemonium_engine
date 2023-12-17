@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  animation_bezier_editor.cpp                                          */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,30 +31,30 @@
 
 #include "animation_bezier_editor.h"
 
-#include "editor/editor_node.h"
-#include "editor_scale.h"
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/error/error_macros.h"
 #include "core/containers/list.h"
+#include "core/containers/pair.h"
+#include "core/error/error_macros.h"
+#include "core/input/input_event.h"
+#include "core/input/shortcut.h"
+#include "core/math/color.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/math/transform_2d.h"
-#include "core/string/node_path.h"
-#include "core/input/input_event.h"
+#include "core/object/class_db.h"
+#include "core/object/undo_redo.h"
 #include "core/os/memory.h"
-#include "core/containers/pair.h"
+#include "core/string/node_path.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
-#include "core/object/undo_redo.h"
+#include "core/variant/array.h"
 #include "editor/animation_track_editor.h"
+#include "editor/editor_node.h"
 #include "editor/editor_settings.h"
-#include "scene/main/canvas_item.h"
+#include "editor_scale.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/range.h"
-#include "core/input/shortcut.h"
+#include "scene/main/canvas_item.h"
 #include "scene/main/node.h"
 #include "scene/resources/font/font.h"
 

@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  variant.cpp                                                          */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,8 +35,8 @@
 #include "core/io/marshalls.h"
 #include "core/math/math_funcs.h"
 #include "core/object/object_rc.h"
-#include "core/string/print_string.h"
 #include "core/object/resource.h"
+#include "core/string/print_string.h"
 #include "core/variant/variant_parser.h"
 #include "scene/main/control.h"
 #include "scene/main/node.h"
@@ -3386,7 +3387,7 @@ uint32_t Variant::recursive_hash(int p_recursion_count) const {
 			const Array &arr = *reinterpret_cast<const Array *>(_data._mem);
 			return arr.recursive_hash(p_recursion_count);
 		} break;
-		
+
 		case POOL_BYTE_ARRAY: {
 			const PoolVector<uint8_t> &arr = *reinterpret_cast<const PoolVector<uint8_t> *>(_data._mem);
 			int len = arr.size();
@@ -3588,44 +3589,44 @@ uint32_t Variant::recursive_hash(int p_recursion_count) const {
 #define hash_compare_scalar(p_lhs, p_rhs) \
 	(((p_lhs) == (p_rhs)) || (Math::is_nan(p_lhs) && Math::is_nan(p_rhs)))
 
-#define hash_compare_vector2(p_lhs, p_rhs)         \
+#define hash_compare_vector2(p_lhs, p_rhs)        \
 	(hash_compare_scalar((p_lhs).x, (p_rhs).x) && \
 			hash_compare_scalar((p_lhs).y, (p_rhs).y))
 
 #define hash_compare_vector2i(p_lhs, p_rhs) \
-	(((p_lhs).x == (p_rhs).x) &&           \
+	(((p_lhs).x == (p_rhs).x) &&            \
 			((p_lhs).y == (p_rhs).y))
 
-#define hash_compare_vector3(p_lhs, p_rhs)                 \
-	(hash_compare_scalar((p_lhs).x, (p_rhs).x) &&         \
+#define hash_compare_vector3(p_lhs, p_rhs)               \
+	(hash_compare_scalar((p_lhs).x, (p_rhs).x) &&        \
 			hash_compare_scalar((p_lhs).y, (p_rhs).y) && \
 			hash_compare_scalar((p_lhs).z, (p_rhs).z))
 
 #define hash_compare_vector3i(p_lhs, p_rhs) \
-	(((p_lhs).x == (p_rhs).x) &&           \
-			((p_lhs).y == (p_rhs).y) &&   \
+	(((p_lhs).x == (p_rhs).x) &&            \
+			((p_lhs).y == (p_rhs).y) &&     \
 			((p_lhs).z == (p_rhs).z))
 
-#define hash_compare_vector4(p_lhs, p_rhs)                 \
-	(hash_compare_scalar((p_lhs).x, (p_rhs).x) &&         \
+#define hash_compare_vector4(p_lhs, p_rhs)               \
+	(hash_compare_scalar((p_lhs).x, (p_rhs).x) &&        \
 			hash_compare_scalar((p_lhs).y, (p_rhs).y) && \
 			hash_compare_scalar((p_lhs).z, (p_rhs).z) && \
 			hash_compare_scalar((p_lhs).w, (p_rhs).w))
 
 #define hash_compare_vector4i(p_lhs, p_rhs) \
-	(((p_lhs).x == (p_rhs).x) &&           \
-			((p_lhs).y == (p_rhs).y) &&   \
-			((p_lhs).z == (p_rhs).z) &&   \
+	(((p_lhs).x == (p_rhs).x) &&            \
+			((p_lhs).y == (p_rhs).y) &&     \
+			((p_lhs).z == (p_rhs).z) &&     \
 			((p_lhs).w == (p_rhs).w))
 
-#define hash_compare_quat(p_lhs, p_rhs)                    \
-	(hash_compare_scalar((p_lhs).x, (p_rhs).x) &&         \
+#define hash_compare_quat(p_lhs, p_rhs)                  \
+	(hash_compare_scalar((p_lhs).x, (p_rhs).x) &&        \
 			hash_compare_scalar((p_lhs).y, (p_rhs).y) && \
 			hash_compare_scalar((p_lhs).z, (p_rhs).z) && \
 			hash_compare_scalar((p_lhs).w, (p_rhs).w))
 
-#define hash_compare_color(p_lhs, p_rhs)                   \
-	(hash_compare_scalar((p_lhs).r, (p_rhs).r) &&         \
+#define hash_compare_color(p_lhs, p_rhs)                 \
+	(hash_compare_scalar((p_lhs).r, (p_rhs).r) &&        \
 			hash_compare_scalar((p_lhs).g, (p_rhs).g) && \
 			hash_compare_scalar((p_lhs).b, (p_rhs).b) && \
 			hash_compare_scalar((p_lhs).a, (p_rhs).a))

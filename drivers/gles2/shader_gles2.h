@@ -1,14 +1,16 @@
 #ifndef SHADER_GLES2_H
 #define SHADER_GLES2_H
+
 /*************************************************************************/
 /*  shader_gles2.h                                                       */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -39,9 +41,9 @@
 #endif
 
 #include "core/containers/hash_map.h"
+#include "core/containers/pair.h"
 #include "core/containers/rb_map.h"
 #include "core/math/projection.h"
-#include "core/containers/pair.h"
 #include "core/variant/variant.h"
 #include "servers/rendering/shader_language.h"
 
@@ -51,7 +53,7 @@ class RasterizerStorageGLES2;
 
 class ShaderGLES2 {
 	static String _mkid(const String &p_id);
-	
+
 protected:
 	struct Enum {
 		uint64_t mask;

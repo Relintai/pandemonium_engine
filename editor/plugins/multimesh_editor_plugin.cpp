@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  multimesh_editor_plugin.cpp                                          */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,13 +31,9 @@
 
 #include "multimesh_editor_plugin.h"
 
-#include "scene/3d/mesh_instance.h"
-#include "scene/gui/box_container.h"
-#include "scene/resources/mesh/multimesh.h"
-#include "spatial_editor_plugin.h"
-#include "core/object/class_db.h"
-#include "core/error/error_macros.h"
+#include "core/containers/pool_vector.h"
 #include "core/containers/rb_map.h"
+#include "core/error/error_macros.h"
 #include "core/math/basis.h"
 #include "core/math/face3.h"
 #include "core/math/math_defs.h"
@@ -45,14 +42,16 @@
 #include "core/math/transform.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "core/os/memory.h"
-#include "core/containers/pool_vector.h"
+#include "core/object/class_db.h"
 #include "core/object/reference.h"
+#include "core/os/memory.h"
 #include "core/typedefs.h"
 #include "editor/editor_node.h"
 #include "editor/scene_tree_editor.h"
+#include "scene/3d/mesh_instance.h"
 #include "scene/3d/multimesh_instance.h"
 #include "scene/3d/visual_instance.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/line_edit.h"
@@ -63,6 +62,8 @@
 #include "scene/gui/spin_box.h"
 #include "scene/main/node.h"
 #include "scene/resources/mesh/mesh.h"
+#include "scene/resources/mesh/multimesh.h"
+#include "spatial_editor_plugin.h"
 
 void MultiMeshEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {

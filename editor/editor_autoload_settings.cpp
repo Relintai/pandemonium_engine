@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  editor_autoload_settings.cpp                                         */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,38 +31,38 @@
 
 #include "editor_autoload_settings.h"
 
-#include "core/global_constants.h"
 #include "core/config/project_settings.h"
-#include "editor_node.h"
-#include "editor_scale.h"
-#include "project_settings_editor.h"
-#include "scene/main/viewport.h"
-#include "scene/resources/packed_scene.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/variant/dictionary.h"
-#include "core/error/error_macros.h"
-#include "core/io/resource_loader.h"
-#include "core/containers/rb_map.h"
-#include "core/math/math_funcs.h"
-#include "core/os/file_access.h"
-#include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
+#include "core/containers/rb_map.h"
+#include "core/containers/vector.h"
+#include "core/error/error_macros.h"
+#include "core/global_constants.h"
+#include "core/io/resource_loader.h"
+#include "core/math/color.h"
+#include "core/math/math_funcs.h"
+#include "core/object/class_db.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"
+#include "core/object/undo_redo.h"
+#include "core/os/file_access.h"
+#include "core/os/memory.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
-#include "core/object/undo_redo.h"
-#include "core/containers/vector.h"
+#include "core/variant/dictionary.h"
 #include "editor/editor_file_dialog.h"
+#include "editor_node.h"
+#include "editor_scale.h"
+#include "project_settings_editor.h"
 #include "scene/gui/button.h"
-#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/tree.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
+#include "scene/resources/packed_scene.h"
 
 #define PREVIEW_LIST_MAX_SIZE 10
 

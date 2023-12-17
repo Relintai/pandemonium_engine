@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  particles_editor_plugin.cpp                                          */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,11 +31,10 @@
 
 #include "particles_editor_plugin.h"
 
-#include "core/io/resource_loader.h"
-#include "core/object/class_db.h"
-#include "core/error/error_macros.h"
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
+#include "core/error/error_macros.h"
+#include "core/io/resource_loader.h"
 #include "core/math/aabb.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
@@ -42,14 +42,14 @@
 #include "core/math/transform.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
+#include "core/object/class_db.h"
 #include "core/os/memory.h"
-#include "core/typedefs.h"
 #include "core/string/ustring.h"
+#include "core/typedefs.h"
 #include "core/variant/variant.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"
 #include "editor/scene_tree_editor.h"
-#include "scene/main/spatial.h"
 #include "scene/3d/visual_instance.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
@@ -57,6 +57,7 @@
 #include "scene/gui/option_button.h"
 #include "scene/gui/spin_box.h"
 #include "scene/main/node.h"
+#include "scene/main/spatial.h"
 
 bool ParticlesEditorBase::_generate(PoolVector<Vector3> &points, PoolVector<Vector3> &normals) {
 	bool use_normals = emission_fill->get_selected() == 1;

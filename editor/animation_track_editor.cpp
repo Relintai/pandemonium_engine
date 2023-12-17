@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  animation_track_editor.cpp                                           */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,28 +32,29 @@
 #include "animation_track_editor.h"
 
 #include "animation_track_editor_plugins.h"
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
 #include "core/config/engine.h"
+#include "core/containers/pair.h"
+#include "core/containers/rb_set.h"
 #include "core/error/error_macros.h"
+#include "core/input/input.h"
+#include "core/input/input_event.h"
+#include "core/input/shortcut.h"
 #include "core/math/basis.h"
+#include "core/math/color.h"
 #include "core/math/math_funcs.h"
 #include "core/math/quaternion.h"
 #include "core/math/transform.h"
 #include "core/math/transform_2d.h"
 #include "core/math/vector3.h"
-#include "core/input/input.h"
-#include "core/input/input_event.h"
-#include "core/os/keyboard.h"
-#include "core/os/memory.h"
-#include "core/containers/pair.h"
+#include "core/object/class_db.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"
-#include "core/containers/rb_set.h"
+#include "core/object/undo_redo.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
-#include "core/object/undo_redo.h"
+#include "core/variant/array.h"
 #include "editor/animation_bezier_editor.h"
 #include "editor/editor_data.h"
 #include "editor/editor_inspector.h"
@@ -63,8 +65,6 @@
 #include "editor/scene_tree_editor.h"
 #include "editor_node.h"
 #include "editor_scale.h"
-#include "scene/main/canvas_item.h"
-#include "scene/main/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
@@ -78,14 +78,15 @@
 #include "scene/gui/scroll_bar.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/separator.h"
-#include "core/input/shortcut.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "scene/main/canvas_item.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/spatial.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/font/font.h"
 #include "scene/resources/style_box.h"
@@ -3674,7 +3675,7 @@ bool AnimationTrackEditor::has_track(Spatial *p_node, const String &p_sub, const
 	if (p_sub != "") {
 		path += ":" + p_sub;
 	}
-	
+
 	int track_id = animation->find_track(path, p_type);
 
 	if (track_id >= 0) {
@@ -3683,7 +3684,6 @@ bool AnimationTrackEditor::has_track(Spatial *p_node, const String &p_sub, const
 
 	return false;
 }
-
 
 void AnimationTrackEditor::_insert_animation_key(NodePath p_path, const Variant &p_value) {
 	String path = p_path;
@@ -6391,4 +6391,3 @@ AnimationTrackEditor::~AnimationTrackEditor() {
 		memdelete(multi_key_edit);
 	}
 }
-

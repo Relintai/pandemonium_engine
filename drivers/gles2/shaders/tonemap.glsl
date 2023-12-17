@@ -182,11 +182,11 @@ vec4 texture2D_bicubic(sampler2D tex, vec2 uv, int p_lod) {
 
 vec4 apply_glow(vec4 color, vec3 glow) { // apply glow using the selected blending mode
 #ifdef USE_GLOW_REPLACE
-  color.rgb = glow;
+	color.rgb = glow;
 #endif
 
 #ifdef USE_GLOW_SCREEN
-  color.rgb = max((color.rgb + glow) - (color.rgb * glow), vec3(0.0));
+	color.rgb = max((color.rgb + glow) - (color.rgb * glow), vec3(0.0));
 #endif
 
 #ifdef USE_GLOW_SOFTLIGHT
@@ -277,7 +277,6 @@ vec4 apply_fxaa(vec4 color, vec2 uv_interp, vec2 pixel_size) {
 	vec4 rgbA = 0.5 * (texture2DLod(source, uv_interp + dir * (1.0 / 3.0 - 0.5), 0.0) + texture2DLod(source, uv_interp + dir * (2.0 / 3.0 - 0.5), 0.0));
 	vec4 rgbB = rgbA * 0.5 + 0.25 * (texture2DLod(source, uv_interp + dir * -0.5, 0.0) + texture2DLod(source, uv_interp + dir * 0.5, 0.0));
 
-
 #ifdef DISABLE_ALPHA
 	float lumaB = dot(rgbB.rgb, luma);
 	vec4 color_output = ((lumaB < lumaMin) || (lumaB > lumaMax)) ? rgbA : rgbB;
@@ -292,12 +291,12 @@ vec4 apply_fxaa(vec4 color, vec2 uv_interp, vec2 pixel_size) {
 		color_output.rgb /= color_output.a;
 	}
 
-  return color_output;
+	return color_output;
 #endif
 }
 
 void main() {
-  vec4 color = texture2DLod(source, uv_interp, 0.0);
+	vec4 color = texture2DLod(source, uv_interp, 0.0);
 
 #ifdef DISABLE_ALPHA
 	color.a = 1.0;
@@ -372,14 +371,14 @@ void main() {
 	// Additional effects
 
 #ifdef USE_BCS
-  color.rgb = apply_bcs(color.rgb, bcs);
+	color.rgb = apply_bcs(color.rgb, bcs);
 #endif
 
 #ifdef USE_COLOR_CORRECTION
-  color.rgb = apply_color_correction(color.rgb, color_correction);
+	color.rgb = apply_color_correction(color.rgb, color_correction);
 #endif
 
-  gl_FragColor = color;
+	gl_FragColor = color;
 
 #ifdef DISABLE_ALPHA
 	gl_FragColor.a = 1.0;

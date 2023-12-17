@@ -1,14 +1,16 @@
 #ifndef VARIANT_H
 #define VARIANT_H
+
 /*************************************************************************/
 /*  variant.h                                                            */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,12 +32,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/variant/array.h"
-#include "core/math/color.h"
-#include "core/variant/dictionary.h"
+#include "core/containers/pool_vector.h"
+#include "core/containers/rid.h"
 #include "core/io/ip_address.h"
 #include "core/math/aabb.h"
 #include "core/math/basis.h"
+#include "core/math/color.h"
 #include "core/math/face3.h"
 #include "core/math/plane.h"
 #include "core/math/projection.h"
@@ -46,12 +48,12 @@
 #include "core/math/vector3i.h"
 #include "core/math/vector4.h"
 #include "core/math/vector4i.h"
-#include "core/string/node_path.h"
 #include "core/object/object_id.h"
-#include "core/containers/pool_vector.h"
 #include "core/object/ref_ptr.h"
-#include "core/containers/rid.h"
+#include "core/string/node_path.h"
 #include "core/string/ustring.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 
 class Object;
 class ObjectRC;

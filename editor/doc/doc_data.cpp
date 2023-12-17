@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  doc_data.cpp                                                         */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,29 +32,29 @@
 #include "doc_data.h"
 
 #include "core/config/engine.h"
+#include "core/config/project_settings.h"
+#include "core/containers/list.h"
+#include "core/containers/pair.h"
+#include "core/containers/rb_set.h"
+#include "core/error/error_macros.h"
 #include "core/global_constants.h"
 #include "core/io/compression.h"
-#include "core/os/dir_access.h"
-#include "core/config/project_settings.h"
+#include "core/io/xml_parser.h"
+#include "core/object/class_db.h"
+#include "core/object/method_bind.h"
+#include "core/object/object.h"
 #include "core/object/script_language.h"
+#include "core/os/dir_access.h"
+#include "core/os/file_access.h"
+#include "core/os/memory.h"
+#include "core/string/print_string.h"
+#include "core/string/string_name.h"
 #include "core/string/translation.h"
+#include "core/typedefs.h"
+#include "core/variant/variant.h"
 #include "core/version.h"
 #include "editor/editor_settings.h"
 #include "scene/resources/theme.h"
-#include "core/io/xml_parser.h"
-#include "core/object/class_db.h"
-#include "core/error/error_macros.h"
-#include "core/containers/list.h"
-#include "core/object/method_bind.h"
-#include "core/object/object.h"
-#include "core/os/file_access.h"
-#include "core/os/memory.h"
-#include "core/containers/pair.h"
-#include "core/string/print_string.h"
-#include "core/containers/rb_set.h"
-#include "core/string/string_name.h"
-#include "core/typedefs.h"
-#include "core/variant/variant.h"
 
 static String _get_indent(const String &p_text) {
 	String indent;

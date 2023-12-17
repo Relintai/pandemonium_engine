@@ -1,14 +1,16 @@
 #ifndef THEME_EDITOR_PREVIEW_H
 #define THEME_EDITOR_PREVIEW_H
+
 /*************************************************************************/
 /*  theme_editor_preview.h                                               */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -37,10 +39,10 @@
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 
-#include "scene/resources/theme.h"
 #include "scene/resources/font/font.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/style_box.h"
+#include "scene/resources/theme.h"
 
 class Button;
 class ColorRect;

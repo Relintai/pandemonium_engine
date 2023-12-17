@@ -1,14 +1,16 @@
 #ifndef SPATIAL_EDITOR_PLUGIN_H
 #define SPATIAL_EDITOR_PLUGIN_H
+
 /*************************************************************************/
 /*  spatial_editor_plugin.h                                              */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           PANDEMONIUM ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,10 +33,10 @@
 /*************************************************************************/
 
 #include "editor/editor_plugin.h"
-#include "scene/main/spatial.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/container.h"
 #include "scene/main/control.h"
+#include "scene/main/spatial.h"
 
 #include "scene/gui/spin_box.h"
 
@@ -62,8 +64,8 @@
 #include "editor/spatial_editor_gizmos.h"
 
 #include "scene/resources/material/material.h"
-#include "scene/resources/material/spatial_material.h"
 #include "scene/resources/material/shader_material.h"
+#include "scene/resources/material/spatial_material.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/texture.h"
 

@@ -1,14 +1,16 @@
 #ifndef AUDIO_DRIVER_XAUDIO2_H
 #define AUDIO_DRIVER_XAUDIO2_H
+
 /*************************************************************************/
 /*  audio_driver_xaudio2.h                                               */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,8 +33,8 @@
 /*************************************************************************/
 
 #include "core/os/mutex.h"
-#include "core/os/thread.h"
 #include "core/os/safe_refcount.h"
+#include "core/os/thread.h"
 #include "servers/audio_server.h"
 
 #include <mmsystem.h>

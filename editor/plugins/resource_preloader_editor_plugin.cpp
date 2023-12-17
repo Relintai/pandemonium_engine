@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  resource_preloader_editor_plugin.cpp                                 */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,27 +31,27 @@
 
 #include "resource_preloader_editor_plugin.h"
 
-#include "core/io/resource_loader.h"
-#include "editor/editor_scale.h"
-#include "editor/editor_settings.h"
-#include "core/object/class_db.h"
-#include "core/variant/dictionary.h"
-#include "core/error/error_macros.h"
 #include "core/containers/list.h"
-#include "core/os/memory.h"
-#include "core/object/resource.h"
-#include "core/string/string_name.h"
-#include "core/object/undo_redo.h"
 #include "core/containers/vector.h"
+#include "core/error/error_macros.h"
+#include "core/io/resource_loader.h"
+#include "core/object/class_db.h"
+#include "core/object/resource.h"
+#include "core/object/undo_redo.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/variant/dictionary.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"
-#include "scene/main/canvas_item.h"
+#include "editor/editor_scale.h"
+#include "editor/editor_settings.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/main/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "scene/main/canvas_item.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 #include "scene/main/resource_preloader.h"
 

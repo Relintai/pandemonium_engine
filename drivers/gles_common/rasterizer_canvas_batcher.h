@@ -1,14 +1,16 @@
 #ifndef RASTERIZER_CANVAS_BATCHER_H
 #define RASTERIZER_CANVAS_BATCHER_H
+
 /*************************************************************************/
 /*  rasterizer_canvas_batcher.h                                          */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -2760,7 +2762,7 @@ PREAMBLE(bool)::prefill_joined_item(FillState &r_fill_state, int &r_command_star
 				if (buffer_full) {
 					return true;
 				}
-				
+
 			} break;
 			case RasterizerCanvas::Item::Command::TYPE_MULTIRECT: {
 				RasterizerCanvas::Item::CommandMultiRect *mrect = static_cast<RasterizerCanvas::Item::CommandMultiRect *>(command);

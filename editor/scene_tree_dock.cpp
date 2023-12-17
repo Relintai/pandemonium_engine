@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  scene_tree_dock.cpp                                                  */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -74,13 +75,10 @@
 #include "editor/script_create_dialog.h"
 #include "editor/script_editor_debugger.h"
 #include "modules/modules_enabled.gen.h" // For regex.
-#include "scene/main/canvas_item.h"
-#include "scene/main/node_2d.h"
-#include "scene/main/spatial.h"
+#include "scene/animation/animation.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/base_button.h"
 #include "scene/gui/button.h"
-#include "scene/main/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
@@ -88,11 +86,14 @@
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "scene/main/canvas_item.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
-#include "scene/main/scene_tree.h"
-#include "scene/main/viewport.h"
+#include "scene/main/node_2d.h"
 #include "scene/main/property_utils.h"
-#include "scene/animation/animation.h"
+#include "scene/main/scene_tree.h"
+#include "scene/main/spatial.h"
+#include "scene/main/viewport.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
@@ -3583,7 +3584,7 @@ SceneTreeDock::SceneTreeDock(EditorNode *p_editor, Node *p_scene_root, EditorSel
 	quick_open = memnew(EditorQuickOpen);
 	add_child(quick_open);
 	quick_open->connect("quick_open", this, "_quick_open");
-	
+
 	set_process_shortcut_input(true);
 
 	delete_dialog = memnew(ConfirmationDialog);

@@ -1,14 +1,16 @@
 #ifndef EDITOR_SETTINGS_H
 #define EDITOR_SETTINGS_H
+
 /*************************************************************************/
 /*  editor_settings.h                                                    */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,18 +36,18 @@
 
 #include "core/input/shortcut.h"
 
-#include "core/object/object.h"
-#include "core/io/config_file.h"
-#include "core/os/thread_safe.h"
-#include "core/string/translation.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
+#include "core/containers/vector.h"
+#include "core/io/config_file.h"
+#include "core/object/object.h"
 #include "core/object/reference.h"
+#include "core/os/thread_safe.h"
 #include "core/string/string_name.h"
+#include "core/string/translation.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
 
 class EditorPlugin;
 class Dictionary;

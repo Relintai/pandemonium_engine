@@ -1,14 +1,16 @@
 #ifndef RESOURCE_PRELOADER_EDITOR_PLUGIN_H
 #define RESOURCE_PRELOADER_EDITOR_PLUGIN_H
+
 /*************************************************************************/
 /*  resource_preloader_editor_plugin.h                                   */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,16 +32,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/panel_container.h"
 #include "editor/editor_plugin.h"
+#include "scene/gui/panel_container.h"
 
-#include "scene/main/resource_preloader.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
-
+#include "scene/main/resource_preloader.h"
 
 class AcceptDialog;
 class Button;
@@ -50,7 +51,8 @@ class InputEvent;
 class ResourcePreloader;
 class Tree;
 class UndoRedo;
-template <class T> class Vector;
+template <class T>
+class Vector;
 
 class ResourcePreloaderEditor : public PanelContainer {
 	GDCLASS(ResourcePreloaderEditor, PanelContainer);

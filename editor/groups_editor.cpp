@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  groups_editor.cpp                                                    */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,30 +31,30 @@
 
 #include "groups_editor.h"
 
+#include "core/containers/list.h"
+#include "core/math/vector2.h"
+#include "core/object/class_db.h"
+#include "core/object/reference.h"
+#include "core/object/undo_redo.h"
+#include "core/os/memory.h"
+#include "core/os/os.h"
+#include "core/string/node_path.h"
+#include "core/string/string_name.h"
+#include "core/variant/variant.h"
+#include "editor/scene_tree_dock.h"
 #include "editor/scene_tree_editor.h"
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/label.h"
-#include "scene/resources/packed_scene.h"
-#include "core/object/class_db.h"
-#include "core/containers/list.h"
-#include "core/math/vector2.h"
-#include "core/string/node_path.h"
-#include "core/os/memory.h"
-#include "core/os/os.h"
-#include "core/object/reference.h"
-#include "core/string/string_name.h"
-#include "core/object/undo_redo.h"
-#include "core/variant/variant.h"
-#include "editor/scene_tree_dock.h"
 #include "scene/gui/button.h"
-#include "scene/main/control.h"
+#include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
 void GroupDialog::_group_selected() {

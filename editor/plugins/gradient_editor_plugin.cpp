@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  gradient_editor_plugin.cpp                                           */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,12 +31,12 @@
 
 #include "gradient_editor_plugin.h"
 
-#include "editor/editor_scale.h"
-#include "core/object/class_db.h"
-#include "core/os/memory.h"
-#include "core/object/undo_redo.h"
 #include "core/containers/vector.h"
+#include "core/object/class_db.h"
+#include "core/object/undo_redo.h"
+#include "core/os/memory.h"
 #include "editor/editor_node.h"
+#include "editor/editor_scale.h"
 #include "scene/resources/gradient.h"
 
 Size2 GradientEditor::get_minimum_size() const {
@@ -86,7 +87,6 @@ GradientEditor::GradientEditor() {
 }
 
 GradientEditor::~GradientEditor() {
-
 }
 
 ///////////////////////

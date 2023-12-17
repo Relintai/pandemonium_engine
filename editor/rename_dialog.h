@@ -1,14 +1,16 @@
 #ifndef RENAME_DIALOG_H
 #define RENAME_DIALOG_H
+
 /*************************************************************************/
 /*  rename_dialog.h                                                      */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,11 +36,11 @@
 
 #ifdef MODULE_REGEX_ENABLED
 
-#include "core/error/error_macros.h"
 #include "core/containers/list.h"
-#include "core/string/node_path.h"
-#include "core/object/object.h"
 #include "core/containers/pair.h"
+#include "core/error/error_macros.h"
+#include "core/object/object.h"
+#include "core/string/node_path.h"
 #include "core/string/ustring.h"
 
 #include "scene/gui/dialogs.h"
@@ -55,7 +57,6 @@ class SceneTreeEditor;
 class SpinBox;
 class TabContainer;
 class UndoRedo;
-
 
 /**
 @author Blazej Floch

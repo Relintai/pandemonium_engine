@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  spatial_editor_gizmos.cpp                                            */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -76,7 +77,6 @@
 #include "scene/3d/room.h"
 #include "scene/3d/shape_cast.h"
 #include "scene/3d/soft_body.h"
-#include "scene/main/spatial.h"
 #include "scene/3d/spring_arm.h"
 #include "scene/3d/sprite_3d.h"
 #include "scene/3d/vehicle_body.h"
@@ -84,26 +84,27 @@
 #include "scene/main/control.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/spatial.h"
 #include "scene/main/timer.h"
 #include "scene/main/viewport.h"
+#include "scene/resources/material/material.h"
+#include "scene/resources/material/shader_material.h"
+#include "scene/resources/material/spatial_material.h"
+#include "scene/resources/mesh/primitive_meshes.h"
+#include "scene/resources/mesh/surface_tool.h"
+#include "scene/resources/navigation/navigation_mesh.h"
+#include "scene/resources/occluder_shape.h"
+#include "scene/resources/occluder_shape_polygon.h"
 #include "scene/resources/shapes/box_shape.h"
 #include "scene/resources/shapes/capsule_shape.h"
 #include "scene/resources/shapes/concave_polygon_shape.h"
 #include "scene/resources/shapes/convex_polygon_shape.h"
 #include "scene/resources/shapes/cylinder_shape.h"
 #include "scene/resources/shapes/height_map_shape.h"
-#include "scene/resources/material/material.h"
-#include "scene/resources/material/spatial_material.h"
-#include "scene/resources/material/shader_material.h"
-#include "scene/resources/navigation/navigation_mesh.h"
-#include "scene/resources/occluder_shape.h"
-#include "scene/resources/occluder_shape_polygon.h"
 #include "scene/resources/shapes/plane_shape.h"
-#include "scene/resources/mesh/primitive_meshes.h"
 #include "scene/resources/shapes/ray_shape.h"
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/shapes/sphere_shape.h"
-#include "scene/resources/mesh/surface_tool.h"
 #include "scene/resources/world_3d.h"
 #include "servers/navigation_server.h"
 #include "servers/rendering_server.h"

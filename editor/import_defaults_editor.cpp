@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  import_defaults_editor.cpp                                           */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,25 +31,25 @@
 
 #include "import_defaults_editor.h"
 
-#include "core/object/class_db.h"
-#include "core/variant/dictionary.h"
-#include "core/io/resource_importer.h"
+#include "core/config/project_settings.h"
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
-#include "core/os/memory.h"
-#include "core/config/project_settings.h"
-#include "core/object/reference.h"
-#include "core/string/string_name.h"
-#include "core/typedefs.h"
-#include "core/string/ustring.h"
-#include "core/variant/variant.h"
 #include "core/containers/vector.h"
+#include "core/io/resource_importer.h"
+#include "core/object/class_db.h"
+#include "core/object/reference.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/typedefs.h"
+#include "core/variant/dictionary.h"
+#include "core/variant/variant.h"
 #include "editor/editor_inspector.h"
 #include "scene/gui/button.h"
 #include "scene/gui/center_container.h"
-#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/option_button.h"
+#include "scene/main/control.h"
 
 class ImportDefaultsEditorSettings : public Object {
 	GDCLASS(ImportDefaultsEditorSettings, Object)

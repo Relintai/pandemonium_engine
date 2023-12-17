@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  texture_region_editor_plugin.cpp                                     */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,36 +32,36 @@
 #include "texture_region_editor_plugin.h"
 
 #include "core/core_string_names.h"
-#include "core/input/input.h"
-#include "core/os/keyboard.h"
-#include "editor/editor_scale.h"
-#include "scene/gui/panel.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
 #include "core/error/error_macros.h"
+#include "core/input/input.h"
+#include "core/input/input_event.h"
+#include "core/math/color.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/math/transform_2d.h"
-#include "core/input/input_event.h"
+#include "core/object/class_db.h"
+#include "core/object/undo_redo.h"
+#include "core/os/keyboard.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
-#include "core/object/undo_redo.h"
 #include "core/variant/variant.h"
 #include "editor/editor_node.h"
-#include "scene/main/canvas_item.h"
+#include "editor/editor_scale.h"
 #include "scene/2d/sprite.h"
 #include "scene/3d/sprite_3d.h"
 #include "scene/gui/button.h"
-#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/nine_patch_rect.h"
 #include "scene/gui/option_button.h"
+#include "scene/gui/panel.h"
 #include "scene/gui/scroll_bar.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/tool_button.h"
+#include "scene/main/canvas_item.h"
+#include "scene/main/control.h"
 #include "scene/main/node.h"
 #include "servers/rendering_server.h"
 
