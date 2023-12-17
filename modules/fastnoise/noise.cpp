@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  noise.cpp                                                            */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                    http://www.godotengine.org                         */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2016 Juan Linietsky, Ariel Manzur.                 */
-/* This file is (c) 2016 Marc Gilleron <moc.liamg@norellig.cram>         */
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
