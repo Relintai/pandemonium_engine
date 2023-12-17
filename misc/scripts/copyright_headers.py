@@ -7,12 +7,13 @@ header = """\
 /*************************************************************************/
 /*  $filename                                                            */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -66,11 +67,20 @@ text += "\n"
 # then we can append the rest (step 2).
 
 fileread = open(fname.strip(), "r")
-line = fileread.readline()
+line = fileread.readline().strip()
 header_done = False
 
-while line.strip() == "":  # Skip empty lines at the top
+orig_lines = ""
+
+while line == "" or line.startswith("#ifndef") or line.startswith("#define"):  # Skip empty lines at the top, and include guards
+    if line != "":
+        orig_lines += line + "\n"
+
     line = fileread.readline()
+    line = line.strip()
+
+if orig_lines != "":
+    text = orig_lines + "\n" + text
 
 if line.find("/**********") == -1:  # Pandemonium header starts this way
     # Maybe starting with a non-Pandemonium comment, abort header magic
