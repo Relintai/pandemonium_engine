@@ -29,8 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "biome_terrain_generator.h"
 
 #include "core/config/engine.h"

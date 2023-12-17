@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  grid_map.cpp                                                         */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,16 +35,16 @@
 #include "core/object/message_queue.h"
 #include "mesh_library.h"
 #include "scene/3d/light.h"
-#include "scene/resources/physics_material.h"
+#include "scene/main/scene_string_names.h"
 #include "scene/resources/mesh/primitive_meshes.h"
 #include "scene/resources/mesh/surface_tool.h"
-#include "scene/main/scene_string_names.h"
+#include "scene/resources/physics_material.h"
 #include "servers/navigation_server.h"
 #include "servers/rendering_server.h"
 
+#include "scene/resources/material/spatial_material.h"
 #include "scene/resources/navigation/navigation_mesh.h"
 #include "scene/resources/world_3d.h"
-#include "scene/resources/material/spatial_material.h"
 
 bool GridMap::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name;

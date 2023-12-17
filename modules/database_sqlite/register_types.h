@@ -32,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "modules/register_module_types.h"
 
 void register_database_sqlite_types(ModuleRegistrationLevel p_level);

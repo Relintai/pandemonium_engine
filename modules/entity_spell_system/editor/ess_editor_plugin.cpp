@@ -29,8 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "ess_editor_plugin.h"
 
 void ESSEditorPlugin::fix_ids(Variant param) {

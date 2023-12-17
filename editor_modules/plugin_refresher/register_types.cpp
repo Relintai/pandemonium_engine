@@ -29,8 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "register_types.h"
 
 #ifdef TOOLS_ENABLED
