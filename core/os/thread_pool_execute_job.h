@@ -32,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "thread_pool_job.h"
 
 class ThreadPoolExecuteJob : public ThreadPoolJob {

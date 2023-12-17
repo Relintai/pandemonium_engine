@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  test_gui.cpp                                                         */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -32,12 +33,12 @@
 
 #include "test_gui.h"
 
+#include "core/input/shortcut.h"
 #include "core/io/image_loader.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
 #include "scene/2d/sprite.h"
 #include "scene/gui/button.h"
-#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/menu_button.h"
@@ -47,11 +48,11 @@
 #include "scene/gui/progress_bar.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/gui/scroll_bar.h"
-#include "core/input/shortcut.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/tab_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tree.h"
+#include "scene/main/control.h"
 #include "scene/main/scene_tree.h"
 
 #include "scene/3d/camera.h"

@@ -32,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "core/object/reference.h"
 
 class ThreadPoolJob : public Reference {

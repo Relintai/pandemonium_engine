@@ -1,12 +1,13 @@
 /*************************************************************************/
-/*  gdscript_functions.cpp                                               */
+/*  cscript_functions.cpp                                                */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,13 +31,13 @@
 
 #include "cscript_functions.h"
 
-#include "core/object/class_db.h"
-#include "core/object/func_ref.h"
 #include "core/io/json.h"
 #include "core/io/marshalls.h"
 #include "core/math/math_funcs.h"
-#include "core/os/os.h"
+#include "core/object/class_db.h"
+#include "core/object/func_ref.h"
 #include "core/object/reference.h"
+#include "core/os/os.h"
 #include "core/variant/variant_parser.h"
 #include "cscript.h"
 
