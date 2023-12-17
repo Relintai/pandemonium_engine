@@ -1,3 +1,34 @@
+/*************************************************************************/
+/*  sdl2_adapter.h                                                       */
+/*************************************************************************/
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
+/*************************************************************************/
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
 // sdl2_adapter.h
 /*
   FRT - A Godot platform targeting single board computers
@@ -47,8 +78,10 @@ private:
 	SDL_mutex *mutex_;
 	int32_t *samples_;
 	int n_of_samples_;
+
 public:
-	Audio(SampleProducer *producer) : producer_(producer) {
+	Audio(SampleProducer *producer) :
+			producer_(producer) {
 		mutex_ = 0;
 	}
 	bool init(int mix_rate, int samples) {
@@ -154,7 +187,8 @@ struct InputModifierState {
 	bool alt;
 	bool control;
 	bool meta;
-	InputModifierState() : shift(false), alt(false), control(false), meta(false) {}
+	InputModifierState() :
+			shift(false), alt(false), control(false), meta(false) {}
 };
 
 enum GraphicsAPI {
@@ -235,17 +269,17 @@ private:
 			handler_->handle_mouse_button_event(os_button, false, false);
 		} else { // SDL_MOUSEBUTTONUP, SDL_MOUSEBUTTONDOWN
 			switch (ev.button.button) {
-			case SDL_BUTTON_LEFT:
-				os_button = ButtonLeft;
-				break;
-			case SDL_BUTTON_MIDDLE:
-				os_button = ButtonMiddle;
-				break;
-			case SDL_BUTTON_RIGHT:
-				os_button = ButtonRight;
-				break;
-			default:
-				return;
+				case SDL_BUTTON_LEFT:
+					os_button = ButtonLeft;
+					break;
+				case SDL_BUTTON_MIDDLE:
+					os_button = ButtonMiddle;
+					break;
+				case SDL_BUTTON_RIGHT:
+					os_button = ButtonRight;
+					break;
+				default:
+					return;
 			}
 			handler_->handle_mouse_button_event(os_button, ev.button.state == SDL_PRESSED, ev.button.clicks > 1);
 		}
@@ -260,78 +294,80 @@ private:
 	void js_event(const SDL_Event &ev) {
 		int id;
 		switch (ev.type) {
-		case SDL_JOYAXISMOTION: {
-			if ((id = get_js_id(ev.jaxis.which)) < 0)
-				return;
-			int axis = ev.jaxis.axis;
-			float value = (float)ev.jaxis.value / 32768.0f;
-			handler_->handle_js_axis_event(id, axis, value);
+			case SDL_JOYAXISMOTION: {
+				if ((id = get_js_id(ev.jaxis.which)) < 0)
+					return;
+				int axis = ev.jaxis.axis;
+				float value = (float)ev.jaxis.value / 32768.0f;
+				handler_->handle_js_axis_event(id, axis, value);
 			} break;
-		case SDL_JOYHATMOTION: {
-			if ((id = get_js_id(ev.jhat.which)) < 0)
-				return;
-			if (ev.jhat.hat != 0)
-				return;
-			int mask = 0;
-			switch (ev.jhat.value) {
-			case SDL_HAT_LEFT:
-				mask = HatLeft;
-				break;
-			case SDL_HAT_LEFTUP:
-				mask = HatLeft | HatUp;
-				break;
-			case SDL_HAT_UP:
-				mask = HatUp;
-				break;
-			case SDL_HAT_RIGHTUP:
-				mask = HatRight | HatUp;
-				break;
-			case SDL_HAT_RIGHT:
-				mask = HatRight;
-				break;
-			case SDL_HAT_RIGHTDOWN:
-				mask = HatRight | HatDown;
-				break;
-			case SDL_HAT_DOWN:
-				mask = HatDown;
-				break;
-			case SDL_HAT_LEFTDOWN:
-				mask = HatLeft | HatDown;
-				break;
-			}
-			handler_->handle_js_hat_event(id, mask);
+			case SDL_JOYHATMOTION: {
+				if ((id = get_js_id(ev.jhat.which)) < 0)
+					return;
+				if (ev.jhat.hat != 0)
+					return;
+				int mask = 0;
+				switch (ev.jhat.value) {
+					case SDL_HAT_LEFT:
+						mask = HatLeft;
+						break;
+					case SDL_HAT_LEFTUP:
+						mask = HatLeft | HatUp;
+						break;
+					case SDL_HAT_UP:
+						mask = HatUp;
+						break;
+					case SDL_HAT_RIGHTUP:
+						mask = HatRight | HatUp;
+						break;
+					case SDL_HAT_RIGHT:
+						mask = HatRight;
+						break;
+					case SDL_HAT_RIGHTDOWN:
+						mask = HatRight | HatDown;
+						break;
+					case SDL_HAT_DOWN:
+						mask = HatDown;
+						break;
+					case SDL_HAT_LEFTDOWN:
+						mask = HatLeft | HatDown;
+						break;
+				}
+				handler_->handle_js_hat_event(id, mask);
 			} break;
-		case SDL_JOYBUTTONDOWN:
-		case SDL_JOYBUTTONUP: {
-			if ((id = get_js_id(ev.jbutton.which)) < 0)
-				return;
-			int button = ev.jbutton.button;
-			bool pressed = ev.jbutton.state == SDL_PRESSED;
-			if (exit_shortcuts_ && button == 6 && pressed)
-				fatal("exit_shortcut (joystick button #6), disable by setting FRT_NO_EXIT_SHORTCUTS");
-			handler_->handle_js_button_event(id, button, pressed);
+			case SDL_JOYBUTTONDOWN:
+			case SDL_JOYBUTTONUP: {
+				if ((id = get_js_id(ev.jbutton.which)) < 0)
+					return;
+				int button = ev.jbutton.button;
+				bool pressed = ev.jbutton.state == SDL_PRESSED;
+				if (exit_shortcuts_ && button == 6 && pressed)
+					fatal("exit_shortcut (joystick button #6), disable by setting FRT_NO_EXIT_SHORTCUTS");
+				handler_->handle_js_button_event(id, button, pressed);
 			} break;
-		case SDL_JOYDEVICEADDED: {
-			id = ev.jdevice.which;
-			if (id >= MAX_JOYSTICKS)
-				return;
-			const char *name = SDL_JoystickNameForIndex(id);
-			char guid[64];
-			SDL_JoystickGetGUIDString(SDL_JoystickGetDeviceGUID(id), guid, sizeof(guid));
-			handler_->handle_js_status_event(id, true, name, guid);
-			js_[id] = SDL_JoystickOpen(id);
+			case SDL_JOYDEVICEADDED: {
+				id = ev.jdevice.which;
+				if (id >= MAX_JOYSTICKS)
+					return;
+				const char *name = SDL_JoystickNameForIndex(id);
+				char guid[64];
+				SDL_JoystickGetGUIDString(SDL_JoystickGetDeviceGUID(id), guid, sizeof(guid));
+				handler_->handle_js_status_event(id, true, name, guid);
+				js_[id] = SDL_JoystickOpen(id);
 			} break;
-		case SDL_JOYDEVICEREMOVED: {
-			if ((id = get_js_id(ev.jdevice.which)) < 0)
-				return;
-			SDL_JoystickClose(js_[id]);
-			js_[id] = 0;
-			handler_->handle_js_status_event(id, false, "", "");
+			case SDL_JOYDEVICEREMOVED: {
+				if ((id = get_js_id(ev.jdevice.which)) < 0)
+					return;
+				SDL_JoystickClose(js_[id]);
+				js_[id] = 0;
+				handler_->handle_js_status_event(id, false, "", "");
 			} break;
 		}
 	}
+
 public:
-	OS_FRT(EventHandler *handler) : handler_(handler) {
+	OS_FRT(EventHandler *handler) :
+			handler_(handler) {
 		mouse_mode_ = MouseVisible;
 		key_unicode_ = 0;
 		memset(js_, 0, sizeof(js_));
@@ -380,34 +416,34 @@ public:
 		SDL_Event ev;
 		while (SDL_PollEvent(&ev)) {
 			switch (ev.type) {
-			case SDL_WINDOWEVENT:
-				if (ev.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-					resize_event(ev);
-				break;
-			case SDL_TEXTINPUT:
-				text_event(ev.text);
-				break;
-			case SDL_KEYUP:
-			case SDL_KEYDOWN:
-				key_event(ev.key);
-				break;
-			case SDL_MOUSEMOTION:
-			case SDL_MOUSEWHEEL:
-			case SDL_MOUSEBUTTONUP:
-			case SDL_MOUSEBUTTONDOWN:
-				mouse_event(ev);
-				break;
-			case SDL_JOYAXISMOTION:
-			case SDL_JOYHATMOTION:
-			case SDL_JOYBUTTONDOWN:
-			case SDL_JOYBUTTONUP:
-			case SDL_JOYDEVICEADDED:
-			case SDL_JOYDEVICEREMOVED:
-				js_event(ev);
-				break;
-			case SDL_QUIT:
-				handler_->handle_quit_event();
-				break;
+				case SDL_WINDOWEVENT:
+					if (ev.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+						resize_event(ev);
+					break;
+				case SDL_TEXTINPUT:
+					text_event(ev.text);
+					break;
+				case SDL_KEYUP:
+				case SDL_KEYDOWN:
+					key_event(ev.key);
+					break;
+				case SDL_MOUSEMOTION:
+				case SDL_MOUSEWHEEL:
+				case SDL_MOUSEBUTTONUP:
+				case SDL_MOUSEBUTTONDOWN:
+					mouse_event(ev);
+					break;
+				case SDL_JOYAXISMOTION:
+				case SDL_JOYHATMOTION:
+				case SDL_JOYBUTTONDOWN:
+				case SDL_JOYBUTTONUP:
+				case SDL_JOYDEVICEADDED:
+				case SDL_JOYDEVICEREMOVED:
+					js_event(ev);
+					break;
+				case SDL_QUIT:
+					handler_->handle_quit_event();
+					break;
 			}
 		}
 		handler_->handle_flush_events();
@@ -482,18 +518,18 @@ public:
 	}
 	void set_mouse_mode(MouseMode mouse_mode) {
 		switch (mouse_mode) {
-		case MouseVisible:
-			SDL_CaptureMouse(SDL_FALSE);
-			SDL_ShowCursor(1);
-			break;
-		case MouseHidden:
-			SDL_CaptureMouse(SDL_FALSE);
-			SDL_ShowCursor(0);
-			break;
-		case MouseCaptured:
-			SDL_ShowCursor(0);
-			SDL_CaptureMouse(SDL_TRUE);
-			break;
+			case MouseVisible:
+				SDL_CaptureMouse(SDL_FALSE);
+				SDL_ShowCursor(1);
+				break;
+			case MouseHidden:
+				SDL_CaptureMouse(SDL_FALSE);
+				SDL_ShowCursor(0);
+				break;
+			case MouseCaptured:
+				SDL_ShowCursor(0);
+				SDL_CaptureMouse(SDL_TRUE);
+				break;
 		}
 		mouse_mode_ = mouse_mode;
 	}

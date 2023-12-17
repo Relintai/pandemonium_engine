@@ -1,12 +1,13 @@
 /*************************************************************************/
-/*  PandemoniumPluginRegistry.java                                             */
+/*  PandemoniumPluginRegistry.java                                       */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           PANDEMONIUM ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,8 +31,6 @@
 
 package org.pandemoniumengine.pandemonium.plugin;
 
-import org.pandemoniumengine.pandemonium.Pandemonium;
-
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -45,6 +44,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.pandemoniumengine.pandemonium.Pandemonium;
 
 /**
  * Registry used to load and access the registered Pandemonium Android plugins.
@@ -137,9 +138,9 @@ public final class PandemoniumPluginRegistry {
 							// Attempt to create the plugin init class via reflection.
 							@SuppressWarnings("unchecked")
 							Class<PandemoniumPlugin> pluginClass = (Class<PandemoniumPlugin>)Class
-																	 .forName(pluginHandleClassFullName);
+																		   .forName(pluginHandleClassFullName);
 							Constructor<PandemoniumPlugin> pluginConstructor = pluginClass
-																				 .getConstructor(Pandemonium.class);
+																					   .getConstructor(Pandemonium.class);
 							PandemoniumPlugin pluginHandle = pluginConstructor.newInstance(pandemonium);
 
 							// Load the plugin initializer into the registry using the plugin name as key.

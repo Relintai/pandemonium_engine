@@ -1,12 +1,13 @@
 /*************************************************************************/
-/*  Pandemonium.java                                                           */
+/*  Pandemonium.java                                                     */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -32,15 +33,6 @@ package org.pandemoniumengine.pandemonium;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.WINDOW_SERVICE;
-
-import org.pandemoniumengine.pandemonium.input.PandemoniumEditText;
-import org.pandemoniumengine.pandemonium.io.directory.DirectoryAccessHandler;
-import org.pandemoniumengine.pandemonium.io.file.FileAccessHandler;
-import org.pandemoniumengine.pandemonium.plugin.PandemoniumPlugin;
-import org.pandemoniumengine.pandemonium.plugin.PandemoniumPluginRegistry;
-import org.pandemoniumengine.pandemonium.utils.BenchmarkUtils;
-import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
-import org.pandemoniumengine.pandemonium.utils.PermissionsUtil;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -119,6 +111,15 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.microedition.khronos.opengles.GL10;
+
+import org.pandemoniumengine.pandemonium.input.PandemoniumEditText;
+import org.pandemoniumengine.pandemonium.io.directory.DirectoryAccessHandler;
+import org.pandemoniumengine.pandemonium.io.file.FileAccessHandler;
+import org.pandemoniumengine.pandemonium.plugin.PandemoniumPlugin;
+import org.pandemoniumengine.pandemonium.plugin.PandemoniumPluginRegistry;
+import org.pandemoniumengine.pandemonium.utils.BenchmarkUtils;
+import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
+import org.pandemoniumengine.pandemonium.utils.PermissionsUtil;
 
 public class Pandemonium extends Fragment implements SensorEventListener, IDownloaderClient {
 	private static final String TAG = Pandemonium.class.getSimpleName();
@@ -447,7 +448,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 			for (PandemoniumPlugin plugin : pluginRegistry.getAllPlugins()) {
 				plugin.onRegisterPluginWithPandemoniumNative();
 			}
-			
+
 			setKeepScreenOn(Boolean.parseBoolean(PandemoniumLib.getGlobal("display/window/energy_saving/keep_screen_on")));
 
 			// The Pandemonium Android plugins are setup on completion of PandemoniumLib.setup
@@ -522,8 +523,8 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	 */
 	@Keep
 	public void requestFramebufferSwap() {
-        mView.requestFramebufferSwap();
-    }
+		mView.requestFramebufferSwap();
+	}
 
 	public void restart() {
 		if (pandemoniumHost != null) {
@@ -691,8 +692,8 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		io = new PandemoniumIO(activity);
 		netUtils = new PandemoniumNetUtils(activity);
 
-    	Context context = getContext();
-   		directoryAccessHandler = new DirectoryAccessHandler(context);
+		Context context = getContext();
+		directoryAccessHandler = new DirectoryAccessHandler(context);
 		fileAccessHandler = new FileAccessHandler(context);
 
 		mSensorManager = (SensorManager)activity.getSystemService(Context.SENSOR_SERVICE);
@@ -917,7 +918,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	}
 
 	public String getClipboard() {
-    ClipData clipData = mClipboard.getPrimaryClip();
+		ClipData clipData = mClipboard.getPrimaryClip();
 		if (clipData == null)
 			return "";
 		CharSequence text = clipData.getItemAt(0).getText();
@@ -1286,7 +1287,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		if (pandemoniumHost != null) {
 			return pandemoniumHost.onNewPandemoniumInstanceRequested(args);
 		}
-		
+
 		return 0;
 	}
 

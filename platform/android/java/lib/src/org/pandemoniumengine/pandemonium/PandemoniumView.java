@@ -1,12 +1,13 @@
 /*************************************************************************/
-/*  PandemoniumView.java                                                       */
+/*  PandemoniumView.java                                                 */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,13 +31,6 @@
 
 package org.pandemoniumengine.pandemonium;
 
-import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
-import org.pandemoniumengine.pandemonium.input.PandemoniumInputHandler;
-import org.pandemoniumengine.pandemonium.utils.GLUtils;
-import org.pandemoniumengine.pandemonium.config.RegularConfigChooser;
-import org.pandemoniumengine.pandemonium.config.RegularContextFactory;
-import org.pandemoniumengine.pandemonium.config.RegularFallbackConfigChooser;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -48,7 +42,6 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-
 import android.view.PointerIcon;
 
 import androidx.annotation.Keep;
@@ -58,6 +51,13 @@ import java.io.InputStream;
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
+
+import org.pandemoniumengine.pandemonium.config.RegularConfigChooser;
+import org.pandemoniumengine.pandemonium.config.RegularContextFactory;
+import org.pandemoniumengine.pandemonium.config.RegularFallbackConfigChooser;
+import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
+import org.pandemoniumengine.pandemonium.input.PandemoniumInputHandler;
+import org.pandemoniumengine.pandemonium.utils.GLUtils;
 
 /**
  * A simple GLSurfaceView sub-class that demonstrate how to perform

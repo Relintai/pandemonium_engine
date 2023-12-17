@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  touch_screen_button.cpp                                              */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,13 +31,13 @@
 
 #include "touch_screen_button.h"
 
-#include "core/input/input_map.h"
 #include "core/input/input.h"
+#include "core/input/input_map.h"
 #include "core/os/os.h"
+#include "scene/main/scene_string_names.h"
 #include "scene/resources/bit_map.h"
 #include "scene/resources/shapes_2d/rectangle_shape_2d.h"
 #include "scene/resources/texture.h"
-#include "scene/main/scene_string_names.h"
 
 void TouchScreenButton::set_texture(const Ref<Texture> &p_texture) {
 	if (texture == p_texture) {

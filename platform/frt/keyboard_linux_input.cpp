@@ -1,3 +1,34 @@
+/*************************************************************************/
+/*  keyboard_linux_input.cpp                                             */
+/*************************************************************************/
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
+/*************************************************************************/
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
 // keyboard_linux_input.cpp
 /*
  * FRT - A Godot platform targeting single board computers
@@ -48,95 +79,95 @@ static struct KeyMap {
 	int kernel_code;
 	int gd_code;
 } keymap[] = {
-	  { KEY_SPACE, ' ' },
-	  { KEY_A, 'A' },
-	  { KEY_B, 'B' },
-	  { KEY_C, 'C' },
-	  { KEY_D, 'D' },
-	  { KEY_E, 'E' },
-	  { KEY_F, 'F' },
-	  { KEY_G, 'G' },
-	  { KEY_H, 'H' },
-	  { KEY_I, 'I' },
-	  { KEY_J, 'J' },
-	  { KEY_K, 'K' },
-	  { KEY_L, 'L' },
-	  { KEY_M, 'M' },
-	  { KEY_N, 'N' },
-	  { KEY_O, 'O' },
-	  { KEY_P, 'P' },
-	  { KEY_Q, 'Q' },
-	  { KEY_R, 'R' },
-	  { KEY_S, 'S' },
-	  { KEY_T, 'T' },
-	  { KEY_U, 'U' },
-	  { KEY_V, 'V' },
-	  { KEY_W, 'W' },
-	  { KEY_X, 'X' },
-	  { KEY_Y, 'Y' },
-	  { KEY_Z, 'Z' },
-	  { KEY_0, '0' },
-	  { KEY_1, '1' },
-	  { KEY_2, '2' },
-	  { KEY_3, '3' },
-	  { KEY_4, '4' },
-	  { KEY_5, '5' },
-	  { KEY_6, '6' },
-	  { KEY_7, '7' },
-	  { KEY_8, '8' },
-	  { KEY_9, '9' },
-	  { KEY_F1, GD_KEY_F1 },
-	  { KEY_F2, GD_KEY_F2 },
-	  { KEY_F3, GD_KEY_F3 },
-	  { KEY_F4, GD_KEY_F4 },
-	  { KEY_F5, GD_KEY_F5 },
-	  { KEY_F6, GD_KEY_F6 },
-	  { KEY_F7, GD_KEY_F7 },
-	  { KEY_F8, GD_KEY_F8 },
-	  { KEY_F9, GD_KEY_F9 },
-	  { KEY_F10, GD_KEY_F10 },
-	  { KEY_F11, GD_KEY_F11 },
-	  { KEY_F12, GD_KEY_F12 },
-	  { KEY_UP, GD_KEY_UP },
-	  { KEY_DOWN, GD_KEY_DOWN },
-	  { KEY_LEFT, GD_KEY_LEFT },
-	  { KEY_RIGHT, GD_KEY_RIGHT },
-	  { KEY_TAB, GD_KEY_TAB },
-	  { KEY_BACKSPACE, GD_KEY_BACKSPACE },
-	  { KEY_INSERT, GD_KEY_INSERT },
-	  { KEY_DELETE, GD_KEY_DELETE },
-	  { KEY_HOME, GD_KEY_HOME },
-	  { KEY_END, GD_KEY_END },
-	  { KEY_PAGEUP, GD_KEY_PAGEUP },
-	  { KEY_PAGEDOWN, GD_KEY_PAGEDOWN },
-	  { KEY_ENTER, GD_KEY_RETURN },
-	  { KEY_ESC, GD_KEY_ESCAPE },
-	  { KEY_LEFTCTRL, GD_KEY_CONTROL },
-	  { KEY_RIGHTCTRL, GD_KEY_CONTROL },
-	  { KEY_LEFTALT, GD_KEY_ALT },
-	  { KEY_RIGHTALT, GD_KEY_ALT },
-	  { KEY_LEFTSHIFT, GD_KEY_SHIFT },
-	  { KEY_RIGHTSHIFT, GD_KEY_SHIFT },
-	  { KEY_LEFTMETA, GD_KEY_META },
-	  { KEY_RIGHTMETA, GD_KEY_META },
-	  { KEY_KP0, GD_KEY_KP_0 },
-	  { KEY_KP1, GD_KEY_KP_1 },
-	  { KEY_KP2, GD_KEY_KP_2 },
-	  { KEY_KP3, GD_KEY_KP_3 },
-	  { KEY_KP4, GD_KEY_KP_4 },
-	  { KEY_KP5, GD_KEY_KP_5 },
-	  { KEY_KP6, GD_KEY_KP_6 },
-	  { KEY_KP7, GD_KEY_KP_7 },
-	  { KEY_KP8, GD_KEY_KP_8 },
-	  { KEY_KP9, GD_KEY_KP_9 },
-	  { KEY_KPASTERISK, GD_KEY_KP_MULTIPLY },
-	  { KEY_KPMINUS, GD_KEY_KP_SUBTRACT },
-	  { KEY_KPPLUS, GD_KEY_KP_ADD },
-	  { KEY_KPDOT, GD_KEY_KP_PERIOD },
-	  { KEY_KPENTER, GD_KEY_KP_ENTER },
-	  { KEY_KPSLASH, GD_KEY_KP_DIVIDE },
-	  { 0, 0 },
-  };
+	{ KEY_SPACE, ' ' },
+	{ KEY_A, 'A' },
+	{ KEY_B, 'B' },
+	{ KEY_C, 'C' },
+	{ KEY_D, 'D' },
+	{ KEY_E, 'E' },
+	{ KEY_F, 'F' },
+	{ KEY_G, 'G' },
+	{ KEY_H, 'H' },
+	{ KEY_I, 'I' },
+	{ KEY_J, 'J' },
+	{ KEY_K, 'K' },
+	{ KEY_L, 'L' },
+	{ KEY_M, 'M' },
+	{ KEY_N, 'N' },
+	{ KEY_O, 'O' },
+	{ KEY_P, 'P' },
+	{ KEY_Q, 'Q' },
+	{ KEY_R, 'R' },
+	{ KEY_S, 'S' },
+	{ KEY_T, 'T' },
+	{ KEY_U, 'U' },
+	{ KEY_V, 'V' },
+	{ KEY_W, 'W' },
+	{ KEY_X, 'X' },
+	{ KEY_Y, 'Y' },
+	{ KEY_Z, 'Z' },
+	{ KEY_0, '0' },
+	{ KEY_1, '1' },
+	{ KEY_2, '2' },
+	{ KEY_3, '3' },
+	{ KEY_4, '4' },
+	{ KEY_5, '5' },
+	{ KEY_6, '6' },
+	{ KEY_7, '7' },
+	{ KEY_8, '8' },
+	{ KEY_9, '9' },
+	{ KEY_F1, GD_KEY_F1 },
+	{ KEY_F2, GD_KEY_F2 },
+	{ KEY_F3, GD_KEY_F3 },
+	{ KEY_F4, GD_KEY_F4 },
+	{ KEY_F5, GD_KEY_F5 },
+	{ KEY_F6, GD_KEY_F6 },
+	{ KEY_F7, GD_KEY_F7 },
+	{ KEY_F8, GD_KEY_F8 },
+	{ KEY_F9, GD_KEY_F9 },
+	{ KEY_F10, GD_KEY_F10 },
+	{ KEY_F11, GD_KEY_F11 },
+	{ KEY_F12, GD_KEY_F12 },
+	{ KEY_UP, GD_KEY_UP },
+	{ KEY_DOWN, GD_KEY_DOWN },
+	{ KEY_LEFT, GD_KEY_LEFT },
+	{ KEY_RIGHT, GD_KEY_RIGHT },
+	{ KEY_TAB, GD_KEY_TAB },
+	{ KEY_BACKSPACE, GD_KEY_BACKSPACE },
+	{ KEY_INSERT, GD_KEY_INSERT },
+	{ KEY_DELETE, GD_KEY_DELETE },
+	{ KEY_HOME, GD_KEY_HOME },
+	{ KEY_END, GD_KEY_END },
+	{ KEY_PAGEUP, GD_KEY_PAGEUP },
+	{ KEY_PAGEDOWN, GD_KEY_PAGEDOWN },
+	{ KEY_ENTER, GD_KEY_RETURN },
+	{ KEY_ESC, GD_KEY_ESCAPE },
+	{ KEY_LEFTCTRL, GD_KEY_CONTROL },
+	{ KEY_RIGHTCTRL, GD_KEY_CONTROL },
+	{ KEY_LEFTALT, GD_KEY_ALT },
+	{ KEY_RIGHTALT, GD_KEY_ALT },
+	{ KEY_LEFTSHIFT, GD_KEY_SHIFT },
+	{ KEY_RIGHTSHIFT, GD_KEY_SHIFT },
+	{ KEY_LEFTMETA, GD_KEY_META },
+	{ KEY_RIGHTMETA, GD_KEY_META },
+	{ KEY_KP0, GD_KEY_KP_0 },
+	{ KEY_KP1, GD_KEY_KP_1 },
+	{ KEY_KP2, GD_KEY_KP_2 },
+	{ KEY_KP3, GD_KEY_KP_3 },
+	{ KEY_KP4, GD_KEY_KP_4 },
+	{ KEY_KP5, GD_KEY_KP_5 },
+	{ KEY_KP6, GD_KEY_KP_6 },
+	{ KEY_KP7, GD_KEY_KP_7 },
+	{ KEY_KP8, GD_KEY_KP_8 },
+	{ KEY_KP9, GD_KEY_KP_9 },
+	{ KEY_KPASTERISK, GD_KEY_KP_MULTIPLY },
+	{ KEY_KPMINUS, GD_KEY_KP_SUBTRACT },
+	{ KEY_KPPLUS, GD_KEY_KP_ADD },
+	{ KEY_KPDOT, GD_KEY_KP_PERIOD },
+	{ KEY_KPENTER, GD_KEY_KP_ENTER },
+	{ KEY_KPSLASH, GD_KEY_KP_DIVIDE },
+	{ 0, 0 },
+};
 
 class KeyboardLinuxInput : public Keyboard, public EventDispatcher, public LinuxInput {
 private:

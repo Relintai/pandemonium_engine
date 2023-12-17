@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  visibility_notifier.cpp                                              */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -35,9 +36,9 @@
 #include "scene/3d/physics_body.h"
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation_tree.h"
+#include "scene/main/scene_string_names.h"
 #include "scene/resources/shapes/shape.h"
 #include "scene/resources/world_3d.h"
-#include "scene/main/scene_string_names.h"
 
 void VisibilityNotifier::_enter_camera(Camera *p_camera) {
 	ERR_FAIL_COND(cameras.has(p_camera));

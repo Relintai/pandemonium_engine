@@ -1,3 +1,34 @@
+/*************************************************************************/
+/*  frt_godot3.cc                                                        */
+/*************************************************************************/
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
+/*************************************************************************/
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
 // frt_godot3.cc
 /*
   FRT - A Godot platform targeting single board computers
@@ -17,11 +48,11 @@
 #pragma GCC diagnostic ignored "-Wvolatile"
 #include "servers/audio_server.h"
 #pragma GCC diagnostic pop
-#include "servers/rendering_server.h"
-#include "servers/rendering/rendering_server_wrap_mt.h"
+#include "main/main.h"
 #include "servers/rendering/rasterizer.h"
 #include "servers/rendering/rendering_server_raster.h"
-#include "main/main.h"
+#include "servers/rendering/rendering_server_wrap_mt.h"
+#include "servers/rendering_server.h"
 
 namespace frt {
 
@@ -32,9 +63,12 @@ private:
 	Audio audio_;
 	int mix_rate_;
 	SpeakerMode speaker_mode_;
+
 public:
-	AudioDriverSDL2() : audio_(this) {
+	AudioDriverSDL2() :
+			audio_(this) {
 	}
+
 public: // AudioDriverSW
 	const char *get_name() const FRT_OVERRIDE {
 		return "SDL2";
@@ -74,6 +108,7 @@ public: // AudioDriverSW
 	void finish() FRT_OVERRIDE {
 		audio_.finish();
 	}
+
 public: // SampleProducer
 	void produce_samples(int n_of_frames, int32_t *frames) FRT_OVERRIDE {
 		audio_server_process(n_of_frames, frames);
@@ -96,7 +131,7 @@ private:
 		frt_resolve_symbols_gles2(get_proc_address);
 		RasterizerGLES2::register_config();
 		RasterizerGLES2::make_current();
-		//} 
+		//}
 		rendering_server_ = memnew(RenderingServerRaster);
 		rendering_server_->init();
 	}
@@ -128,8 +163,10 @@ private:
 		st->set_control(os_st->control);
 		st->set_metakey(os_st->meta);
 	}
+
 public:
-	Godot3_OS() : os_(this) {
+	Godot3_OS() :
+			os_(this) {
 		AudioDriverManager::add_driver(&audio_driver_);
 		main_loop_ = 0;
 		quit_ = false;
@@ -142,6 +179,7 @@ public:
 			main_loop_->finish();
 		}
 	}
+
 public: // OS
 	int get_video_driver_count() const FRT_OVERRIDE {
 		return 2;
@@ -309,6 +347,7 @@ public: // OS
 		PoolVector<uint8_t>::Read r = i->get_data().read();
 		os_.set_icon(i->get_width(), i->get_height(), r.ptr());
 	}
+
 public: // EventHandler
 	void handle_resize_event(ivec2 size) FRT_OVERRIDE {
 		video_mode_.width = size.x;

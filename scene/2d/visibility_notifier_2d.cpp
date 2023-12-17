@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  visibility_notifier_2d.cpp                                           */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,10 +35,10 @@
 #include "scene/2d/animated_sprite.h"
 #include "scene/2d/physics_body_2d.h"
 #include "scene/animation/animation_player.h"
+#include "scene/main/scene_string_names.h"
 #include "scene/main/viewport.h"
 #include "scene/main/world.h"
 #include "scene/resources/world_2d.h"
-#include "scene/main/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
 Rect2 VisibilityNotifier2D::_edit_get_rect() const {

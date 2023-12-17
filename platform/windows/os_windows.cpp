@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  os_windows.cpp                                                       */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           PANDEMONIUM ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -44,8 +45,8 @@
 #include "servers/audio_server.h"
 #include "servers/rendering/rendering_server_raster.h"
 #include "servers/rendering/rendering_server_wrap_mt.h"
-#include "windows_terminal_logger.h"
 #include "sub_process_windows.h"
+#include "windows_terminal_logger.h"
 
 #include <avrt.h>
 #include <direct.h>

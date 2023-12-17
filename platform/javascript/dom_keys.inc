@@ -32,9 +32,9 @@
 
 // See https://w3c.github.io/uievents-code/#code-value-tables
 int dom_code2pandemonium_scancode(EM_UTF8 const p_code[32], EM_UTF8 const p_key[32], bool p_physical) {
-#define DOM2PANDEMONIUM(p_str, p_pandemonium_code)                                         \
+#define DOM2PANDEMONIUM(p_str, p_pandemonium_code)                             \
 	if (memcmp((const void *)p_str, (void *)p_code, strlen(p_str) + 1) == 0) { \
-		return KEY_##p_pandemonium_code;                                             \
+		return KEY_##p_pandemonium_code;                                       \
 	}
 
 	// Numpad section.

@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  RegularContextFactory.java                                           */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,16 +31,16 @@
 
 package org.pandemoniumengine.pandemonium.config;
 
-import org.pandemoniumengine.pandemonium.PandemoniumLib;
-import org.pandemoniumengine.pandemonium.utils.GLUtils;
-import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
-
 import android.util.Log;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
+
+import org.pandemoniumengine.pandemonium.PandemoniumLib;
+import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
+import org.pandemoniumengine.pandemonium.utils.GLUtils;
 
 /**
  * Factory used to setup the opengl context for pancake games.

@@ -1,3 +1,34 @@
+/*************************************************************************/
+/*  os_frt.cpp                                                           */
+/*************************************************************************/
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
+/*************************************************************************/
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
 // os_frt.cpp
 /*
  * FRT - A Godot platform targeting single board computers
@@ -23,35 +54,35 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include <errno.h>
 #include <unistd.h>
 
-#include "core/version.h"
-#include "core/os/os.h"
 #include "core/input/input.h"
 #include "core/os/file_access.h"
-#include "drivers/unix/os_unix.h"
-#include "servers/rendering_server.h"
-#include "servers/rendering/rasterizer.h"
-#include "servers/audio/audio_driver_dummy.h"
-#include "servers/rendering/rendering_server_raster.h"
+#include "core/os/os.h"
+#include "core/string/print_string.h"
+#include "core/version.h"
 #include "drivers/alsa/audio_driver_alsa.h"
 #include "drivers/pulseaudio/audio_driver_pulseaudio.h"
-#include "main/main.h"
+#include "drivers/unix/os_unix.h"
 #include "main/input_default.h"
+#include "main/main.h"
 #include "main/performance.h"
-#include "core/string/print_string.h"
+#include "servers/audio/audio_driver_dummy.h"
+#include "servers/rendering/rasterizer.h"
+#include "servers/rendering/rendering_server_raster.h"
+#include "servers/rendering_server.h"
 
 #define VIDEO_DRIVER_GLES2 0
 #define VIDEO_DRIVER_COUNT 1
 
 #include "platform/x11/joypad_linux.h"
 
-//#define FRT_DL_SKIP
+// #define FRT_DL_SKIP
 #include "drivers/gles2/rasterizer_gles2.h"
 typedef AudioDriverManager AudioDriverManagerSW;
 typedef AudioDriver AudioDriverSW;
@@ -68,15 +99,15 @@ typedef AudioDriver AudioDriverSW;
 #define PROJECT_SETTINGS \
 	ProjectSettings *project_settings = ProjectSettings::get_singleton();
 
-#include "frt.h"
 #include "bits/mouse_virtual.h"
+#include "frt.h"
 
 using namespace frt;
 
 namespace frt {
 extern const char *perfmon_filename;
 extern const char *extract_resource_name;
-}
+} // namespace frt
 
 static class PerfMon {
 private:
@@ -204,7 +235,7 @@ public:
 
 	void extract_resource_fatal(const char *msg) {
 		fatal("failed extracting resource '%s': %s.",
-			   extract_resource_name, msg);
+			  extract_resource_name, msg);
 	}
 	void extract_resource_if_requested() {
 		const char *s = extract_resource_name;
@@ -371,7 +402,7 @@ public:
 	String get_name() const { return "FRT"; }
 	void move_window_to_foreground() {}
 	void set_cursor_shape(CursorShape shape) {}
-	void set_custom_mouse_cursor(const RES&, OS::CursorShape, const Vector2&) {}
+	void set_custom_mouse_cursor(const RES &, OS::CursorShape, const Vector2 &) {}
 	void release_rendering_thread() { context_gl->release_current(); }
 	void make_rendering_thread() { context_gl->make_current(); }
 	void swap_buffers() { context_gl->swap_buffers(); }
@@ -407,7 +438,8 @@ public:
 	}
 
 	void process_keyboard_event(int key, bool pressed, uint32_t unicode, bool echo) {
-		INPUT_EVENT_REF(InputEventKey) k;
+		INPUT_EVENT_REF(InputEventKey)
+		k;
 		k.instance();
 		InputModifierState st;
 		get_key_modifier_state(k, &st);
@@ -429,7 +461,8 @@ public:
 		}
 		Vector2 rel = mouse_pos - last_mouse_pos;
 		last_mouse_pos = mouse_pos;
-		INPUT_EVENT_REF(InputEventMouseMotion) mm;
+		INPUT_EVENT_REF(InputEventMouseMotion)
+		mm;
 		mm.instance();
 		get_key_modifier_state(mm);
 		mm->set_button_mask(mouse_state);
@@ -446,7 +479,8 @@ public:
 			mouse_state |= bit;
 		else
 			mouse_state &= ~bit;
-		INPUT_EVENT_REF(InputEventMouseButton) mb;
+		INPUT_EVENT_REF(InputEventMouseButton)
+		mb;
 		mb.instance();
 		get_key_modifier_state(mb);
 		mb->set_button_mask(mouse_state);

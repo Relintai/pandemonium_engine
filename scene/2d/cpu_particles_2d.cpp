@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  cpu_particles_2d.cpp                                                 */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -29,11 +30,11 @@
 /*************************************************************************/
 
 #include "cpu_particles_2d.h"
+#include "core/containers/fixed_array.h"
 #include "core/containers/rid.h"
 #include "core/core_string_names.h"
-#include "core/os/os.h"
-#include "core/containers/fixed_array.h"
 #include "core/math/transform_interpolator.h"
+#include "core/os/os.h"
 
 #include "scene/main/canvas_item.h"
 #include "scene/resources/material/particles_material.h"

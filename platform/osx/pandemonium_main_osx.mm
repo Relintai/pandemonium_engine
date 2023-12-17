@@ -1,12 +1,13 @@
 /*************************************************************************/
-/*  pandemonium_main_osx.mm                                                    */
+/*  pandemonium_main_osx.mm                                              */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -72,7 +73,7 @@ int main(int argc, char **argv) {
 
 	if (Main::start()) {
 		os.main_run(); // it is actually the OS that decides how to run
-  }
+	}
 
 	Main::cleanup();
 

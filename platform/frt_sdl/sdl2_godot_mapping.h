@@ -1,3 +1,34 @@
+/*************************************************************************/
+/*  sdl2_godot_mapping.h                                                 */
+/*************************************************************************/
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
+/*************************************************************************/
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
 // sdl2_godot_mapping.h
 /*
   FRT - A Godot platform targeting single board computers
@@ -9,56 +40,56 @@
 
 #define FRT_GODOT_VERSION ((((VERSION_MAJOR * 100) + VERSION_MINOR) * 100) + VERSION_PATCH)
 
-#include "core/os/os.h"
 #include "core/input/input.h"
 #include "core/os/keyboard.h"
+#include "core/os/os.h"
 #include "main/input_default.h"
 
 namespace frt {
 
 int map_mouse_os_button(int os_button) {
 	switch (os_button) {
-	case ButtonLeft:
-		return BUTTON_LEFT;
-	case ButtonRight:
-		return BUTTON_RIGHT;
-	case ButtonMiddle:
-		return BUTTON_MIDDLE;
-	case WheelUp:
-		return BUTTON_WHEEL_UP;
-	case WheelDown:
-		return BUTTON_WHEEL_DOWN;
-	default:
-		fatal("unexpected mouse button: %d", os_button);
+		case ButtonLeft:
+			return BUTTON_LEFT;
+		case ButtonRight:
+			return BUTTON_RIGHT;
+		case ButtonMiddle:
+			return BUTTON_MIDDLE;
+		case WheelUp:
+			return BUTTON_WHEEL_UP;
+		case WheelDown:
+			return BUTTON_WHEEL_DOWN;
+		default:
+			fatal("unexpected mouse button: %d", os_button);
 	}
 }
 
 OS::MouseMode map_mouse_os_mode(MouseMode os_mode) {
 	switch (os_mode) {
-	case MouseVisible:
-		return OS::MOUSE_MODE_VISIBLE;
-	case MouseHidden:
-		return OS::MOUSE_MODE_HIDDEN;
-	case MouseCaptured:
-		return OS::MOUSE_MODE_CAPTURED;
-	default:
-		fatal("unexpected mouse mode: %d", os_mode);
+		case MouseVisible:
+			return OS::MOUSE_MODE_VISIBLE;
+		case MouseHidden:
+			return OS::MOUSE_MODE_HIDDEN;
+		case MouseCaptured:
+			return OS::MOUSE_MODE_CAPTURED;
+		default:
+			fatal("unexpected mouse mode: %d", os_mode);
 	}
 }
 
 MouseMode map_mouse_mode(OS::MouseMode mode) {
 	switch (mode) {
-	case OS::MOUSE_MODE_VISIBLE:
-		return MouseVisible;
-	case OS::MOUSE_MODE_HIDDEN:
-		return MouseHidden;
-	case OS::MOUSE_MODE_CAPTURED:
+		case OS::MOUSE_MODE_VISIBLE:
+			return MouseVisible;
+		case OS::MOUSE_MODE_HIDDEN:
+			return MouseHidden;
+		case OS::MOUSE_MODE_CAPTURED:
 #if FRT_GODOT_VERSION >= 30000
-	case OS::MOUSE_MODE_CONFINED:
+		case OS::MOUSE_MODE_CONFINED:
 #endif
-		return MouseCaptured;
-	default: // NOT REACHED
-		return MouseVisible;
+			return MouseCaptured;
+		default: // NOT REACHED
+			return MouseVisible;
 	}
 }
 

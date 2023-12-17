@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  PermissionsUtil.java                                                 */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -93,7 +94,7 @@ public final class PermissionsUtil {
 					return false;
 				}
 				return true;
-							case "VIBRATE":
+			case "VIBRATE":
 			case Manifest.permission.VIBRATE:
 				if (ContextCompat.checkSelfPermission(activity, Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED) {
 					activity.requestPermissions(new String[] { Manifest.permission.VIBRATE }, REQUEST_VIBRATE_PERMISSION);
@@ -150,14 +151,14 @@ public final class PermissionsUtil {
 		if (manifestPermissions.length == 0)
 			return true;
 
-    List<String> requestedPermissions = new ArrayList<>();
+		List<String> requestedPermissions = new ArrayList<>();
 		for (String manifestPermission : manifestPermissions) {
 			if (excludes != null && excludes.contains(manifestPermission)) {
 				continue;
 			}
-			
+
 			try {
-       			if (manifestPermission.equals(Manifest.permission.MANAGE_EXTERNAL_STORAGE)) {
+				if (manifestPermission.equals(Manifest.permission.MANAGE_EXTERNAL_STORAGE)) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
 						try {
 							Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
@@ -186,7 +187,7 @@ public final class PermissionsUtil {
 			return true;
 		}
 
-    activity.requestPermissions(requestedPermissions.toArray(new String[0]), REQUEST_ALL_PERMISSION_REQ_CODE);
+		activity.requestPermissions(requestedPermissions.toArray(new String[0]), REQUEST_ALL_PERMISSION_REQ_CODE);
 		return false;
 	}
 
@@ -206,10 +207,10 @@ public final class PermissionsUtil {
 		if (manifestPermissions.length == 0)
 			return manifestPermissions;
 
-    List<String> grantedPermissions = new ArrayList<>();
+		List<String> grantedPermissions = new ArrayList<>();
 		for (String manifestPermission : manifestPermissions) {
 			try {
-        if (manifestPermission.equals(Manifest.permission.MANAGE_EXTERNAL_STORAGE)) {
+				if (manifestPermission.equals(Manifest.permission.MANAGE_EXTERNAL_STORAGE)) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()) {
 						grantedPermissions.add(manifestPermission);
 					}
@@ -226,7 +227,7 @@ public final class PermissionsUtil {
 			}
 		}
 
-    return grantedPermissions.toArray(new String[0]);
+		return grantedPermissions.toArray(new String[0]);
 	}
 
 	/**

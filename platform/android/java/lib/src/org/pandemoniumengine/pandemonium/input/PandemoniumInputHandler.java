@@ -1,12 +1,13 @@
 /*************************************************************************/
-/*  PandemoniumInputHandler.java                                               */
+/*  PandemoniumInputHandler.java                                         */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -32,9 +33,8 @@ package org.pandemoniumengine.pandemonium.input;
 
 import static org.pandemoniumengine.pandemonium.utils.GLUtils.DEBUG;
 
-import org.pandemoniumengine.pandemonium.PandemoniumLib;
-import org.pandemoniumengine.pandemonium.PandemoniumView;
-
+import android.content.Context;
+import android.hardware.input.InputManager;
 import android.os.Build;
 import android.util.Log;
 import android.util.SparseArray;
@@ -44,12 +44,13 @@ import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.content.Context;
-import android.hardware.input.InputManager;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.pandemoniumengine.pandemonium.PandemoniumLib;
+import org.pandemoniumengine.pandemonium.PandemoniumView;
 
 /**
  * Handles input related events for the {@link PandemoniumView} view.
@@ -230,7 +231,7 @@ public class PandemoniumInputHandler implements InputManager.InputDeviceListener
 				final int pandemoniumJoyId = mJoystickIds.get(deviceId);
 				Joystick joystick = mJoysticksDevices.get(deviceId);
 
-        if (joystick == null) {
+				if (joystick == null) {
 					return true;
 				}
 
@@ -522,7 +523,7 @@ public class PandemoniumInputHandler implements InputManager.InputDeviceListener
 				PandemoniumLib.dispatchMouseEvent(eventAction, buttonsMask, x, y, deltaX, deltaY, doubleClick, sourceMouseRelative);
 				return true;
 			}
-			}
+		}
 		return false;
 	}
 

@@ -1,3 +1,34 @@
+/*************************************************************************/
+/*  linux_input.h                                                        */
+/*************************************************************************/
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
+/*************************************************************************/
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
 // linux_input.h
 /*
  * FRT - A Godot platform targeting single board computers
@@ -27,10 +58,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <unistd.h>
 #include <dirent.h>
 #include <fcntl.h>
 #include <linux/input.h>
+#include <unistd.h>
 
 namespace frt {
 
@@ -56,25 +87,24 @@ private:
 		int state = 0, nn = strlen(name), ns;
 		while (fgets(s, sizeof(s), f) && !found) {
 			switch (state) {
-			case 0:
-				if (!strncmp(s_name, s, strlen(s_name))) {
-					ns = strlen(s);
-					if (((int)(ns - strlen(s_name) - strlen("\"\n")) == nn)
-					  && !memcmp(&s[strlen(s_name)], name, nn))
-						state = 1;
-				}
-				break;
-			case 1:
-				if (!strncmp(s_handlers, s, strlen(s_handlers))) {
-					state = 0;
-					char *event = strstr(s, s_event);
-					if (!event)
-						break;
-					int id = atoi(event + strlen(s_event));
-					snprintf(buf, size, "/dev/input/event%d", id);
-					found = true;
-				}
-				break;
+				case 0:
+					if (!strncmp(s_name, s, strlen(s_name))) {
+						ns = strlen(s);
+						if (((int)(ns - strlen(s_name) - strlen("\"\n")) == nn) && !memcmp(&s[strlen(s_name)], name, nn))
+							state = 1;
+					}
+					break;
+				case 1:
+					if (!strncmp(s_handlers, s, strlen(s_handlers))) {
+						state = 0;
+						char *event = strstr(s, s_event);
+						if (!event)
+							break;
+						int id = atoi(event + strlen(s_event));
+						snprintf(buf, size, "/dev/input/event%d", id);
+						found = true;
+					}
+					break;
 			}
 		}
 		fclose(f);

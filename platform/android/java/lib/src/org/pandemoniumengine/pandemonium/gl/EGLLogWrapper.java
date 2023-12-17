@@ -1,3 +1,34 @@
+/*************************************************************************/
+/*  EGLLogWrapper.java                                                   */
+/*************************************************************************/
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
+/*************************************************************************/
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
 /*
  * Copyright (C) 2008 The Android Open Source Project
  *
@@ -37,9 +68,8 @@ public class EGLLogWrapper implements EGL11 {
 	boolean mCheckError;
 	private int mArgCount;
 
-
 	public EGLLogWrapper(EGL egl, int configFlags, Writer log) {
-		mEgl10 = (EGL10) egl;
+		mEgl10 = (EGL10)egl;
 		mLog = log;
 		mLogArgumentNames =
 				(GLDebugHelper.CONFIG_LOG_ARGUMENT_NAMES & configFlags) != 0;
@@ -48,7 +78,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public boolean eglChooseConfig(EGLDisplay display, int[] attrib_list,
-								   EGLConfig[] configs, int config_size, int[] num_config) {
+			EGLConfig[] configs, int config_size, int[] num_config) {
 		begin("eglChooseConfig");
 		arg("display", display);
 		arg("attrib_list", attrib_list);
@@ -65,7 +95,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public boolean eglCopyBuffers(EGLDisplay display, EGLSurface surface,
-								  Object native_pixmap) {
+			Object native_pixmap) {
 		begin("eglCopyBuffers");
 		arg("display", display);
 		arg("surface", surface);
@@ -79,7 +109,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public EGLContext eglCreateContext(EGLDisplay display, EGLConfig config,
-									   EGLContext share_context, int[] attrib_list) {
+			EGLContext share_context, int[] attrib_list) {
 		begin("eglCreateContext");
 		arg("display", display);
 		arg("config", config);
@@ -95,7 +125,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public EGLSurface eglCreatePbufferSurface(EGLDisplay display,
-											  EGLConfig config, int[] attrib_list) {
+			EGLConfig config, int[] attrib_list) {
 		begin("eglCreatePbufferSurface");
 		arg("display", display);
 		arg("config", config);
@@ -110,7 +140,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public EGLSurface eglCreatePixmapSurface(EGLDisplay display,
-											 EGLConfig config, Object native_pixmap, int[] attrib_list) {
+			EGLConfig config, Object native_pixmap, int[] attrib_list) {
 		begin("eglCreatePixmapSurface");
 		arg("display", display);
 		arg("config", config);
@@ -126,7 +156,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public EGLSurface eglCreateWindowSurface(EGLDisplay display,
-											 EGLConfig config, Object native_window, int[] attrib_list) {
+			EGLConfig config, Object native_window, int[] attrib_list) {
 		begin("eglCreateWindowSurface");
 		arg("display", display);
 		arg("config", config);
@@ -166,7 +196,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public boolean eglGetConfigAttrib(EGLDisplay display, EGLConfig config,
-									  int attribute, int[] value) {
+			int attribute, int[] value) {
 		begin("eglGetConfigAttrib");
 		arg("display", display);
 		arg("config", config);
@@ -181,7 +211,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public boolean eglGetConfigs(EGLDisplay display, EGLConfig[] configs,
-								 int config_size, int[] num_config) {
+			int config_size, int[] num_config) {
 		begin("eglGetConfigs");
 		arg("display", display);
 		arg("config_size", config_size);
@@ -264,7 +294,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public boolean eglMakeCurrent(EGLDisplay display, EGLSurface draw,
-								  EGLSurface read, EGLContext context) {
+			EGLSurface read, EGLContext context) {
 		begin("eglMakeCurrent");
 		arg("display", display);
 		arg("draw", draw);
@@ -278,7 +308,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public boolean eglQueryContext(EGLDisplay display, EGLContext context,
-								   int attribute, int[] value) {
+			int attribute, int[] value) {
 		begin("eglQueryContext");
 		arg("display", display);
 		arg("context", context);
@@ -304,7 +334,7 @@ public class EGLLogWrapper implements EGL11 {
 	}
 
 	public boolean eglQuerySurface(EGLDisplay display, EGLSurface surface,
-								   int attribute, int[] value) {
+			int attribute, int[] value) {
 		begin("eglQuerySurface");
 		arg("display", display);
 		arg("surface", surface);

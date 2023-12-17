@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  animation_tree.cpp                                                   */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,8 +35,8 @@
 #include "animation_player.h"
 #include "core/config/engine.h"
 #include "core/object/method_bind_ext.gen.inc"
-#include "scene/main/spatial.h"
 #include "scene/main/scene_string_names.h"
+#include "scene/main/spatial.h"
 #include "servers/audio/audio_stream.h"
 
 #ifdef MODULE_SKELETON_3D_ENABLED

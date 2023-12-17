@@ -1,14 +1,16 @@
 #ifndef OS_WINDOWS_H
 #define OS_WINDOWS_H
+
 /*************************************************************************/
 /*  os_windows.h                                                         */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,9 +33,9 @@
 /*************************************************************************/
 
 #include "context_gl_windows.h"
+#include "core/config/project_settings.h"
 #include "core/input/input.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
 #include "crash_handler_windows.h"
 #include "drivers/unix/ip_unix.h"
 #include "drivers/wasapi/audio_driver_wasapi.h"

@@ -1,12 +1,13 @@
 /*************************************************************************/
-/*  PandemoniumLib.java                                                        */
+/*  PandemoniumLib.java                                                  */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,15 +31,15 @@
 
 package org.pandemoniumengine.pandemonium;
 
-import org.pandemoniumengine.pandemonium.io.directory.DirectoryAccessHandler;
-import org.pandemoniumengine.pandemonium.io.file.FileAccessHandler;
-import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
-
 import android.app.Activity;
 import android.content.res.AssetManager;
 import android.hardware.SensorEvent;
 
 import javax.microedition.khronos.opengles.GL10;
+
+import org.pandemoniumengine.pandemonium.io.directory.DirectoryAccessHandler;
+import org.pandemoniumengine.pandemonium.io.file.FileAccessHandler;
+import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
 
 /**
  * Wrapper for native library
@@ -51,7 +52,7 @@ public class PandemoniumLib {
 	/**
 	 * Invoked on the main thread to initialize Pandemonium native layer.
 	 */
-  public static native void initialize(Activity activity, Pandemonium p_instance, AssetManager p_asset_manager, PandemoniumIO pandemoniumIO, PandemoniumNetUtils netUtils, DirectoryAccessHandler directoryAccessHandler, FileAccessHandler fileAccessHandler, boolean use_apk_expansion);
+	public static native void initialize(Activity activity, Pandemonium p_instance, AssetManager p_asset_manager, PandemoniumIO pandemoniumIO, PandemoniumNetUtils netUtils, DirectoryAccessHandler directoryAccessHandler, FileAccessHandler fileAccessHandler, boolean use_apk_expansion);
 
 	/**
 	 * Invoked on the main thread to clean up Pandemonium native layer.

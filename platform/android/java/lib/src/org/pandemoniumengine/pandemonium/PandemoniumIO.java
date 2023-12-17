@@ -1,12 +1,13 @@
 /*************************************************************************/
-/*  PandemoniumIO.java                                                         */
+/*  PandemoniumIO.java                                                   */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,8 +31,6 @@
 
 package org.pandemoniumengine.pandemonium;
 
-import org.pandemoniumengine.pandemonium.input.PandemoniumEditText;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -54,6 +53,8 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
+
+import org.pandemoniumengine.pandemonium.input.PandemoniumEditText;
 
 // Wrapper for native library
 
@@ -145,14 +146,14 @@ public class PandemoniumIO {
 	}
 
 	public int getScreenDPI() {
-    return activity.getResources().getDisplayMetrics().densityDpi;
+		return activity.getResources().getDisplayMetrics().densityDpi;
 	}
 
 	/**
 	 * Returns bucketized density values.
 	 */
-  public float getScaledDensity() {
-    int densityDpi = activity.getResources().getDisplayMetrics().densityDpi;
+	public float getScaledDensity() {
+		int densityDpi = activity.getResources().getDisplayMetrics().densityDpi;
 		float selectedScaledDensity;
 		if (densityDpi >= DisplayMetrics.DENSITY_XXXHIGH) {
 			selectedScaledDensity = 4.0f;
@@ -201,7 +202,7 @@ public class PandemoniumIO {
 		return result;
 	}
 
-  public int[] getDisplayCutouts() {
+	public int[] getDisplayCutouts() {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P)
 			return new int[0];
 		DisplayCutout cutout = activity.getWindow().getDecorView().getRootWindowInsets().getDisplayCutout();

@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  canvas_item.cpp                                                      */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,13 +35,13 @@
 #include "core/object/method_bind_ext.gen.inc"
 #include "core/version.h"
 #include "scene/main/canvas_layer.h"
+#include "scene/main/scene_string_names.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/font/font.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
 #include "scene/resources/world_2d.h"
 #include "scene/resources/world_3d.h"
-#include "scene/main/scene_string_names.h"
 #include "servers/rendering/rendering_server_constants.h"
 #include "servers/rendering/rendering_server_raster.h"
 #include "servers/rendering_server.h"
