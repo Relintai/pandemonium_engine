@@ -29,8 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "voxel_world_cubic.h"
 
 #include "voxel_chunk_cubic.h"

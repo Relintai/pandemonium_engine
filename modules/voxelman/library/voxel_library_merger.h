@@ -32,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "core/containers/rb_map.h"
 #include "core/object/resource.h"
 

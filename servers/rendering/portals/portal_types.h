@@ -1,14 +1,16 @@
 #ifndef PORTAL_TYPES_H
 #define PORTAL_TYPES_H
+
 /*************************************************************************/
 /*  portal_types.h                                                       */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,13 +33,13 @@
 /*************************************************************************/
 
 #include "core/containers/local_vector.h"
+#include "core/containers/rid.h"
 #include "core/math/aabb.h"
 #include "core/math/plane.h"
 #include "core/math/quaternion.h"
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
 #include "core/object/object_id.h"
-#include "core/containers/rid.h"
 #include "portal_defines.h"
 
 // visual server scene instance.

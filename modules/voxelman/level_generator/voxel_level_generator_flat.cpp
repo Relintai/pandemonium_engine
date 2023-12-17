@@ -29,8 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "voxel_level_generator_flat.h"
 
 #include "../world/voxel_chunk.h"

@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  importer_mesh.cpp                                                    */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,8 +32,8 @@
 #include "importer_mesh.h"
 
 #include "core/math/random_pcg.h"
-#include "scene/resources/mesh/surface_tool.h"
 #include "core/object/method_bind_ext.gen.inc"
+#include "scene/resources/mesh/surface_tool.h"
 
 #include <cstdint>
 
@@ -498,7 +499,6 @@ struct EditorSceneFormatImporterMeshLightmapSurface {
 	uint32_t format = 0;
 	String name;
 };
-
 
 void ImporterMesh::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_blend_shape", "name"), &ImporterMesh::add_blend_shape);

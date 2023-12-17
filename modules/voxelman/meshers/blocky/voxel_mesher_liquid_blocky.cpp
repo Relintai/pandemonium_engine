@@ -29,8 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "voxel_mesher_liquid_blocky.h"
 
 #include "../../world/default/voxel_chunk_default.h"

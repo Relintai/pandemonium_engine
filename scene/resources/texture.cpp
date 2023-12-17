@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  texture.cpp                                                          */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -35,8 +36,8 @@
 #include "core/math/geometry.h"
 #include "core/object/method_bind_ext.gen.inc"
 #include "core/os/os.h"
-#include "scene/resources/mesh/mesh.h"
 #include "scene/resources/bit_map.h"
+#include "scene/resources/mesh/mesh.h"
 
 Size2 Texture::get_size() const {
 	return Size2(get_width(), get_height());

@@ -29,8 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "voxel_cube_points.h"
 #include "../../world/default/voxel_chunk_default.h"
 #include "../../world/voxel_chunk.h"

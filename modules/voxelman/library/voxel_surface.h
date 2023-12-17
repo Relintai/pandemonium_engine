@@ -32,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "core/containers/vector.h"
 #include "core/math/color.h"
 #include "core/object/resource.h"

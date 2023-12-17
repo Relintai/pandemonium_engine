@@ -29,8 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "block_voxel_structure.h"
 
 int BlockVoxelStructure::get_channel_type() const {

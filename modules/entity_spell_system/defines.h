@@ -1,7 +1,6 @@
 #ifndef ESS_DEFINES_H
 #define ESS_DEFINES_H
 
-
 /*************************************************************************/
 /*  defines.h                                                            */
 /*************************************************************************/
@@ -33,12 +32,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#define VARIANT_ARRAY_GET(arr) \
-Vector<Variant> r;\
-for (int i = 0; i < arr.size(); i++) {\
-	r.push_back(arr[i].get_ref_ptr());\
-}\
-return r;
+#define VARIANT_ARRAY_GET(arr)             \
+	Vector<Variant> r;                     \
+	for (int i = 0; i < arr.size(); i++) { \
+		r.push_back(arr[i].get_ref_ptr()); \
+	}                                      \
+	return r;
 
 #define VARIANT_ARRAY_SET(arr, arr_into, type) \
 	arr_into.clear();                          \

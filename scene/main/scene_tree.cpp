@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  scene_tree.cpp                                                       */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -42,17 +43,17 @@
 #include "core/variant/variant_parser.h"
 #include "main/input_default.h"
 #include "node.h"
-#include "scene/main/spatial.h"
 #include "scene/animation/scene_tree_tween.h"
 #include "scene/debugger/script_debugger_remote.h"
 #include "scene/main/control.h"
+#include "scene/main/scene_string_names.h"
+#include "scene/main/spatial.h"
 #include "scene/resources/font/dynamic_font.h"
 #include "scene/resources/material/material.h"
-#include "scene/resources/material/spatial_material.h"
 #include "scene/resources/material/shader_material.h"
+#include "scene/resources/material/spatial_material.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/packed_scene.h"
-#include "scene/main/scene_string_names.h"
 #include "servers/audio_server.h"
 #include "servers/navigation_server.h"
 #include "servers/physics_2d_server.h"

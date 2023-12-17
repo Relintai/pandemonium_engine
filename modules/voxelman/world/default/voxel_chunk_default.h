@@ -32,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "core/config/engine.h"
 #include "core/string/ustring.h"
 #include "core/variant/array.h"

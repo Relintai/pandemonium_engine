@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  portal_renderer.cpp                                                  */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,10 +31,10 @@
 
 #include "portal_renderer.h"
 
+#include "core/config/project_settings.h"
 #include "portal_pvs_builder.h"
 #include "servers/rendering/rendering_server_globals.h"
 #include "servers/rendering/rendering_server_scene.h"
-#include "core/config/project_settings.h"
 
 bool PortalRenderer::use_occlusion_culling = true;
 

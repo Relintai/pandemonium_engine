@@ -32,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "../default/voxel_chunk_default.h"
 
 class VoxelChunkBlocky : public VoxelChunkDefault {

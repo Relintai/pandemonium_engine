@@ -29,8 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "marching_cubes_cell_data.h"
 
 int MarchingCubesCellData::get_vertex_index(int index) const {

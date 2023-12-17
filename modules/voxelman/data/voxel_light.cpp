@@ -29,8 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "voxel_light.h"
 
 _FORCE_INLINE_ int VoxelLight::get_world_position_x() const {

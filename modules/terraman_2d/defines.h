@@ -1,6 +1,6 @@
 #ifndef TERRAIN_2D_DEFINES_H
 #define TERRAIN_2D_DEFINES_H
-#define VARIANT_ARRAY_GET(arr)             \
+#define VARIANT_ARRAY_GET(arr)
 
 /*************************************************************************/
 /*  defines.h                                                            */
@@ -33,11 +33,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-Vector<Variant> r;                     \
-	for (int i = 0; i < arr.size(); i++) { \
-		r.push_back(arr[i].get_ref_ptr()); \
-	}                                      \
-	return r;
+Vector<Variant> r;
+for (int i = 0; i < arr.size(); i++) {
+	r.push_back(arr[i].get_ref_ptr());
+}
+return r;
 
 #define VARIANT_ARRAY_SET(arr, arr_into, type) \
 	arr_into.clear();                          \

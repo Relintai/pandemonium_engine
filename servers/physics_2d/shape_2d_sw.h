@@ -1,14 +1,16 @@
 #ifndef SHAPE_2D_2DSW_H
 #define SHAPE_2D_2DSW_H
+
 /*************************************************************************/
 /*  shape_2d_sw.h                                                        */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -144,7 +146,7 @@ public:
 		real_t mina, maxa;                                                                                                                                       \
 		real_t minb, maxb;                                                                                                                                       \
 		Transform2D ofsb = p_transform;                                                                                                                          \
-		ofsb.columns[2] += p_cast;                                                                                                                              \
+		ofsb.columns[2] += p_cast;                                                                                                                               \
 		project_range(p_normal, p_transform, mina, maxa);                                                                                                        \
 		project_range(p_normal, ofsb, minb, maxb);                                                                                                               \
 		r_min = MIN(mina, minb);                                                                                                                                 \
