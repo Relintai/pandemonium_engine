@@ -1,16 +1,16 @@
-
 #ifndef SKELETON_MODIFICATION_2D_PHYSICALBONES_H
 #define SKELETON_MODIFICATION_2D_PHYSICALBONES_H
 
 /*************************************************************************/
 /*  skeleton_modification_2d_physicalbones.h                             */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -55,7 +55,7 @@ private:
 			physical_bone_node_cache = 0;
 		}
 	};
-	
+
 	Vector<PhysicalBone_Data2D> physical_bone_chain;
 
 	void _physical_bone_update_cache(int p_joint_idx);

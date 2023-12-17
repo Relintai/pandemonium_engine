@@ -31,8 +31,6 @@
 
 #include "fast_quadratic_mesh_simplifier.h"
 
-
-
 int FastQuadraticMeshSimplifier::get_max_iteration_count() const {
 	return simplify._max_iteration_count;
 }

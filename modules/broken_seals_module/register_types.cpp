@@ -31,8 +31,6 @@
 
 #include "register_types.h"
 
-
-
 #include "biome_terrain_generator.h"
 
 void register_broken_seals_module_types(ModuleRegistrationLevel p_level) {

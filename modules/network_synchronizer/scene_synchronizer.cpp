@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  scene_synchronizer.cpp                                               */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,11 +35,11 @@
 
 #include "scene_synchronizer.h"
 
-#include "networked_controller.h"
 #include "core/config/engine.h"
 #include "core/object/class_db.h"
-#include "scene_diff.h"
+#include "networked_controller.h"
 #include "scene/main/viewport.h"
+#include "scene_diff.h"
 
 void SceneSynchronizer::_bind_methods() {
 	BIND_ENUM_CONSTANT(CHANGE)
@@ -1293,13 +1294,13 @@ bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second)
 
 bool SceneSynchronizer::compare(const Vector2 &p_first, const Vector2 &p_second, real_t p_tolerance) {
 	return Math::is_equal_approx(p_first.x, p_second.x, p_tolerance) &&
-		   Math::is_equal_approx(p_first.y, p_second.y, p_tolerance);
+			Math::is_equal_approx(p_first.y, p_second.y, p_tolerance);
 }
 
 bool SceneSynchronizer::compare(const Vector3 &p_first, const Vector3 &p_second, real_t p_tolerance) {
 	return Math::is_equal_approx(p_first.x, p_second.x, p_tolerance) &&
-		   Math::is_equal_approx(p_first.y, p_second.y, p_tolerance) &&
-		   Math::is_equal_approx(p_first.z, p_second.z, p_tolerance);
+			Math::is_equal_approx(p_first.y, p_second.y, p_tolerance) &&
+			Math::is_equal_approx(p_first.z, p_second.z, p_tolerance);
 }
 
 bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second, real_t p_tolerance) {
@@ -3021,10 +3022,10 @@ bool ClientSynchronizer::compare_vars(
 			} else {
 				// The vars are different.
 				NET_DEBUG_PRINT("Difference found on var #" + itos(var_index) + " " + p_synchronizer_node_data->vars[var_index].var.name + " " +
-								"Server value: `" + s_vars[var_index].value + "` " +
-								"Client value: `" + c_vars[var_index].value + "`.    " +
-								"[Server name: `" + s_vars[var_index].name + "` " +
-								"Client name: `" + c_vars[var_index].name + "`].");
+						"Server value: `" + s_vars[var_index].value + "` " +
+						"Client value: `" + c_vars[var_index].value + "`.    " +
+						"[Server name: `" + s_vars[var_index].name + "` " +
+						"Client name: `" + c_vars[var_index].name + "`].");
 #ifdef DEBUG_ENABLED
 				diff = true;
 #else

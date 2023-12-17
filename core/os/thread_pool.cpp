@@ -31,8 +31,6 @@
 
 #include "thread_pool.h"
 
-
-
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
 

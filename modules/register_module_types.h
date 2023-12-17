@@ -1,14 +1,16 @@
 #ifndef REGISTER_MODULE_TYPES_H
 #define REGISTER_MODULE_TYPES_H
+
 /*************************************************************************/
 /*  register_module_types.h                                              */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-// Note: The engine will call register_module_types in this order, 
+// Note: The engine will call register_module_types in this order,
 // and in reverse order (except for start and finalize) when it goes through unregister_module_types.
 
 enum ModuleRegistrationLevel {
@@ -44,7 +46,7 @@ enum ModuleRegistrationLevel {
 	MODULE_REGISTRATION_LEVEL_CORE,
 
 	// Set up driver level things here.
-    MODULE_REGISTRATION_LEVEL_DRIVER,
+	MODULE_REGISTRATION_LEVEL_DRIVER,
 
 	// Set up platform level things here.
 	MODULE_REGISTRATION_LEVEL_PLATFORM,
@@ -59,7 +61,7 @@ enum ModuleRegistrationLevel {
 	MODULE_REGISTRATION_LEVEL_EDITOR,
 
 	// Set up testing related things here. Will only get called if necessary. (Mostly test registrations.)
-    MODULE_REGISTRATION_LEVEL_TEST,
+	MODULE_REGISTRATION_LEVEL_TEST,
 
 	// After everything have been set up, or uninitialized.
 	// Good place to change some settings, or maybe to do something like disabling an another modules's editor plugin when necessary.

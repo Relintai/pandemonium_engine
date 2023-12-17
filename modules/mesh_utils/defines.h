@@ -33,7 +33,7 @@
 /*************************************************************************/
 
 #define VARIANT_ARRAY_GET(arr)             \
-Vector<Variant> r;                     \
+	Vector<Variant> r;                     \
 	for (int i = 0; i < arr.size(); i++) { \
 		r.push_back(arr[i].get_ref_ptr()); \
 	}                                      \

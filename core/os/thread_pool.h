@@ -32,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "core/containers/list.h"
 #include "core/containers/vector.h"
 #include "core/object/object.h"

@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  skeleton_modification_3d_jiggle.cpp                                  */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,9 +31,9 @@
 
 #include "skeleton_modification_3d_jiggle.h"
 #include "../nodes/skeleton.h"
-#include "skeleton_modification_stack_3d.h"
-#include "servers/physics_server.h"
 #include "scene/resources/world_3d.h"
+#include "servers/physics_server.h"
+#include "skeleton_modification_stack_3d.h"
 
 bool SkeletonModification3DJiggle::_set(const StringName &p_path, const Variant &p_value) {
 	String path = p_path;

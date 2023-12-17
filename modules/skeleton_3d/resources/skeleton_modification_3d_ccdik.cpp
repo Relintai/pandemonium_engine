@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  skeleton_modification_3d_ccdik.cpp                                   */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -116,7 +117,7 @@ void SkeletonModification3DCCDIK::_execute(real_t p_delta) {
 		return;
 	}
 
-	if (target_node_cache== 0) {
+	if (target_node_cache == 0) {
 		_print_execution_error(true, "Target cache is out of date. Attempting to update");
 		update_target_cache();
 		return;
@@ -234,7 +235,7 @@ void SkeletonModification3DCCDIK::_execute_ccdik_joint(int p_joint_idx, Spatial 
 
 void SkeletonModification3DCCDIK::_setup_modification(Ref<SkeletonModificationStack3D> p_stack) {
 	stack = p_stack.ptr();
-	
+
 	if (stack != nullptr) {
 		is_setup = true;
 		execution_error_found = false;

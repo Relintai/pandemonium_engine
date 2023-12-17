@@ -1,14 +1,16 @@
 #ifndef VIDEO_STREAM_THEORA_H
 #define VIDEO_STREAM_THEORA_H
+
 /*************************************************************************/
 /*  video_stream_theora.h                                                */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,12 +32,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/ring_buffer.h"
 #include "core/io/resource_loader.h"
 #include "core/os/file_access.h"
+#include "core/os/safe_refcount.h"
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
-#include "core/containers/ring_buffer.h"
-#include "core/os/safe_refcount.h"
 #include "scene/resources/video_stream.h"
 #include "servers/audio_server.h"
 

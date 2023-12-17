@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  physical_bone_plugin.cpp                                             */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,16 +31,16 @@
 
 #include "physical_bone_plugin.h"
 
+#include "../nodes/physical_bone.h"
+#include "core/error/error_macros.h"
+#include "core/object/class_db.h"
+#include "core/os/memory.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/physics_body.h"
-#include "../nodes/physical_bone.h"
-#include "core/object/class_db.h"
-#include "core/error/error_macros.h"
-#include "core/os/memory.h"
 #include "scene/gui/box_container.h"
-#include "scene/main/control.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/tool_button.h"
+#include "scene/main/control.h"
 
 class EditorNode;
 
