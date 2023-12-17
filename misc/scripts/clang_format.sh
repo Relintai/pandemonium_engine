@@ -18,6 +18,16 @@ while IFS= read -rd '' f; do
         continue
     elif [[ "$f" == "modules/fastnoise/lib"* ]]; then
         continue
+    elif [[ "$f" == "modules/http_server_simple/http_parser"* ]]; then
+        continue
+    elif [[ "$f" == "modules/http_server_simple/multipart_parser_c"* ]]; then
+        continue
+    elif [[ "$f" == "modules/lz4/thirdparty"* ]]; then
+        continue
+    elif [[ "$f" == "modules/mesh_utils/delaunay"* ]]; then
+        continue
+    elif [[ "$f" == "modules/mesh_utils/xatlas"* ]]; then
+        continue
     elif [[ "$f" == "platform/android/java/lib/src/com/google"* ]]; then
         continue
     elif [[ "$f" == *"-so_wrap."* ]]; then
