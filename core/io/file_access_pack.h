@@ -1,14 +1,16 @@
 #ifndef FILE_ACCESS_PACK_H
 #define FILE_ACCESS_PACK_H
+
 /*************************************************************************/
 /*  file_access_pack.h                                                   */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,13 +32,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/hashfuncs.h"
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"
+#include "core/containers/rb_set.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/string/print_string.h"
-#include "core/containers/rb_set.h"
-#include "core/containers/hashfuncs.h"
 
 // Pandemonium's packed file magic header ("GDPC" in ASCII).
 #define PACK_HEADER_MAGIC 0x43504447

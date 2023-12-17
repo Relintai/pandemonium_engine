@@ -1,14 +1,16 @@
 #ifndef TRANSFORM_2D_H
 #define TRANSFORM_2D_H
+
 /*************************************************************************/
 /*  transform_2d.h                                                       */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,9 +32,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/pool_vector.h"
 #include "core/math/rect2.h" // also includes vector2, math_funcs, and ustring
 #include "core/math/rect2i.h" // also includes vector2i, math_funcs, and ustring
-#include "core/containers/pool_vector.h"
 
 struct _NO_DISCARD_CLASS_ Transform2D {
 	// Warning #1: basis of Transform2D is stored differently from Basis. In terms of columns array, the basis matrix looks like "on paper":

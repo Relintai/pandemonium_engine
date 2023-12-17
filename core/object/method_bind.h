@@ -1,14 +1,16 @@
 #ifndef METHOD_BIND_H
 #define METHOD_BIND_H
+
 /*************************************************************************/
 /*  method_bind.h                                                        */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2022-present Péter Magyar.                              */
 /* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,8 +33,8 @@
 /*************************************************************************/
 
 #include "core/containers/list.h"
-#include "core/variant/method_ptrcall.h"
 #include "core/object/object.h"
+#include "core/variant/method_ptrcall.h"
 #include "core/variant/variant.h"
 
 #include <stdio.h>
@@ -163,7 +165,6 @@ struct VariantObjectClassChecker<Control *> {
 	}
 
 // some helpers
-
 
 VARIANT_ENUM_CAST(Vector2::Axis);
 VARIANT_ENUM_CAST(Vector2i::Axis);
