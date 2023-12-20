@@ -33,6 +33,7 @@
 			<return type="Variant" />
 			<argument index="0" name="property" type="StringName" />
 			<description>
+				Returns the default value of the specified property.
 			</description>
 		</method>
 		<method name="get_script_constant_map">
@@ -63,6 +64,7 @@
 			<return type="bool" />
 			<argument index="0" name="signal_name" type="StringName" />
 			<description>
+				Returns [code]true[/code] if the script, or a base class, defines a signal with the given name.
 			</description>
 		</method>
 		<method name="has_source_code" qualifiers="const">

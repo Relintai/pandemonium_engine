@@ -77,6 +77,7 @@
 			<return type="int" />
 			<argument index="0" name="bus_name" type="StringName" />
 			<description>
+				Returns the index of the bus with the name [code]bus_name[/code].
 			</description>
 		</method>
 		<method name="get_bus_name" qualifiers="const">
@@ -262,6 +263,7 @@
 			<argument index="0" name="bus_idx" type="int" />
 			<argument index="1" name="send" type="StringName" />
 			<description>
+				Connects the output of the bus at [code]bus_idx[/code] to the bus named [code]send[/code].
 			</description>
 		</method>
 		<method name="set_bus_solo">

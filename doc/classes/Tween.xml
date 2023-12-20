@@ -34,6 +34,8 @@
 			<argument index="7" name="ease_type" type="int" enum="Tween.EaseType" default="2" />
 			<argument index="8" name="delay" type="float" default="0" />
 			<description>
+				Follows [code]method[/code] of [code]object[/code] and applies the returned value on [code]target_method[/code] of [code]target[/code], beginning from [code]initial_val[/code] for [code]duration[/code] seconds, [code]delay[/code] later. Methods are called with consecutive values.
+				Use [enum TransitionType] for [code]trans_type[/code] and [enum EaseType] for [code]ease_type[/code] parameters. These values control the timing and direction of the interpolation. See the class description for more information.
 			</description>
 		</method>
 		<method name="follow_property">
@@ -103,6 +105,8 @@
 			<argument index="6" name="ease_type" type="int" enum="Tween.EaseType" default="2" />
 			<argument index="7" name="delay" type="float" default="0" />
 			<description>
+				Animates [code]method[/code] of [code]object[/code] from [code]initial_val[/code] to [code]final_val[/code] for [code]duration[/code] seconds, [code]delay[/code] seconds later. Methods are called with consecutive values.
+				Use [enum TransitionType] for [code]trans_type[/code] and [enum EaseType] for [code]ease_type[/code] parameters. These values control the timing and direction of the interpolation. See the class description for more information.
 			</description>
 		</method>
 		<method name="interpolate_property">
@@ -132,6 +136,7 @@
 			<argument index="0" name="object" type="Object" />
 			<argument index="1" name="key" type="StringName" default="&quot;&quot;" />
 			<description>
+				Stops animation and removes a tween, given its object and property/method pair. By default, all tweens are removed, unless [code]key[/code] is specified.
 			</description>
 		</method>
 		<method name="remove_all">
@@ -159,6 +164,7 @@
 			<argument index="0" name="object" type="Object" />
 			<argument index="1" name="key" type="StringName" default="&quot;&quot;" />
 			<description>
+				Continues animating a stopped tween, given its object and property/method pair. By default, all tweens are resumed, unless [code]key[/code] is specified.
 			</description>
 		</method>
 		<method name="resume_all">
@@ -192,6 +198,7 @@
 			<argument index="0" name="object" type="Object" />
 			<argument index="1" name="key" type="StringName" default="&quot;&quot;" />
 			<description>
+				Stops a tween, given its object and property/method pair. By default, all tweens are stopped, unless [code]key[/code] is specified.
 			</description>
 		</method>
 		<method name="stop_all">
@@ -212,6 +219,8 @@
 			<argument index="7" name="ease_type" type="int" enum="Tween.EaseType" default="2" />
 			<argument index="8" name="delay" type="float" default="0" />
 			<description>
+				Animates [code]method[/code] of [code]object[/code] from the value returned by [code]initial_method[/code] to [code]final_val[/code] for [code]duration[/code] seconds, [code]delay[/code] seconds later. Methods are animated by calling them with consecutive values.
+				Use [enum TransitionType] for [code]trans_type[/code] and [enum EaseType] for [code]ease_type[/code] parameters. These values control the timing and direction of the interpolation. See the class description for more information.
 			</description>
 		</method>
 		<method name="targeting_property">

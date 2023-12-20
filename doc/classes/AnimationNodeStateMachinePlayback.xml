@@ -48,6 +48,7 @@
 			<return type="void" />
 			<argument index="0" name="node" type="StringName" />
 			<description>
+				Starts playing the given animation.
 			</description>
 		</method>
 		<method name="stop">
@@ -60,6 +61,7 @@
 			<return type="void" />
 			<argument index="0" name="to_node" type="StringName" />
 			<description>
+				Transitions from the current state to another one, following the shortest path.
 			</description>
 		</method>
 	</methods>

@@ -16,6 +16,7 @@
 			<argument index="0" name="object" type="Object" />
 			<argument index="1" name="method" type="StringName" />
 			<description>
+				Creates a reference to a script function that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 			</description>
 		</method>
 		<method name="create_object" qualifiers="vararg">

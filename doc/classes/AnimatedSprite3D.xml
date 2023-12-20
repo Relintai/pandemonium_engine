@@ -20,6 +20,7 @@
 			<return type="void" />
 			<argument index="0" name="anim" type="StringName" default="@&quot;&quot;" />
 			<description>
+				Plays the animation named [code]anim[/code]. If no [code]anim[/code] is provided, the current animation is played.
 			</description>
 		</method>
 		<method name="stop">

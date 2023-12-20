@@ -214,6 +214,18 @@
 			<argument index="1" name="method" type="StringName" />
 			<argument index="2" name="binds" type="Array" default="[  ]" />
 			<description>
+				Creates and appends a [CallbackTweener]. This method can be used to call an arbitrary method in any object. Use [code]binds[/code] to bind additional arguments for the call.
+				Example: object that keeps shooting every 1 second.
+				[codeblock]
+				var tween = get_tree().create_tween().set_loops()
+				tween.tween_callback(self, "shoot").set_delay(1)
+				[/codeblock]
+				Example: turning a sprite red and then blue, with 2 second delay.
+				[codeblock]
+				var tween = get_tree().create_tween()
+				tween.tween_callback($Sprite, "set_modulate", [Color.red]).set_delay(2)
+				tween.tween_callback($Sprite, "set_modulate", [Color.blue]).set_delay(2)
+				[/codeblock]
 			</description>
 		</method>
 		<method name="tween_interval">
@@ -248,6 +260,21 @@
 			<argument index="4" name="duration" type="float" />
 			<argument index="5" name="binds" type="Array" default="[  ]" />
 			<description>
+				Creates and appends a [MethodTweener]. This method is similar to a combination of [method tween_callback] and [method tween_property]. It calls a method over time with a tweened value provided as an argument. The value is tweened between [code]from[/code] and [code]to[/code] over the time specified by [code]duration[/code], in seconds. Use [code]binds[/code] to bind additional arguments for the call. You can use [method MethodTweener.set_ease] and [method MethodTweener.set_trans] to tweak the easing and transition of the value or [method MethodTweener.set_delay] to delay the tweening.
+				Example: making a 3D object look from one point to another point.
+				[codeblock]
+				var tween = create_tween()
+				tween.tween_method(self, "look_at", Vector3(-1, 0, -1), Vector3(1, 0, -1), 1, [Vector3.UP]) # The look_at() method takes up vector as second argument.
+				[/codeblock]
+				Example: setting a text of a [Label], using an intermediate method and after a delay.
+				[codeblock]
+				func _ready():
+				    var tween = create_tween()
+				    tween.tween_method(self, "set_label_text", 0, 10, 1).set_delay(1)
+
+				func set_label_text(value: int):
+				    $Label.text = "Counting " + str(value)
+				[/codeblock]
 			</description>
 		</method>
 		<method name="tween_property">

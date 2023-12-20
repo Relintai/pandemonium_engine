@@ -215,6 +215,7 @@
 			<return type="String" />
 			<argument index="0" name="from" type="StringName" />
 			<description>
+				Constructs a new String from the given [StringName].
 			</description>
 		</method>
 		<method name="String">

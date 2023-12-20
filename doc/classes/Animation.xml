@@ -42,6 +42,7 @@
 			<argument index="1" name="time" type="float" />
 			<argument index="2" name="animation" type="StringName" />
 			<description>
+				Inserts a key with value [code]animation[/code] at the given [code]time[/code] (in seconds). The [code]track_idx[/code] must be the index of an Animation Track.
 			</description>
 		</method>
 		<method name="animation_track_set_key_animation">
@@ -50,6 +51,7 @@
 			<argument index="1" name="key_idx" type="int" />
 			<argument index="2" name="animation" type="StringName" />
 			<description>
+				Sets the key identified by [code]key_idx[/code] to value [code]animation[/code]. The [code]track_idx[/code] must be the index of an Animation Track.
 			</description>
 		</method>
 		<method name="audio_track_get_key_end_offset" qualifiers="const">

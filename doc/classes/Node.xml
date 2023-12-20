@@ -160,6 +160,9 @@
 			<argument index="0" name="group" type="StringName" />
 			<argument index="1" name="persistent" type="bool" default="false" />
 			<description>
+				Adds the node to a group. Groups are helpers to name and organize a subset of nodes, for example "enemies" or "collectables". A node can be in any number of groups. Nodes can be assigned a group at any time, but will not be added until they are inside the scene tree (see [method is_inside_tree]). See notes in the description, and the group methods in [SceneTree].
+				The [code]persistent[/code] option is used when packing node to [PackedScene] and saving to file. Non-persistent groups aren't stored.
+				[b]Note:[/b] For performance reasons, the order of node groups is [i]not[/i] guaranteed. The order of node groups should not be relied upon as it can vary across project runs.
 			</description>
 		</method>
 		<method name="can_process" qualifiers="const">
@@ -416,6 +419,7 @@
 			<return type="bool" />
 			<argument index="0" name="group" type="StringName" />
 			<description>
+				Returns [code]true[/code] if this node is in the specified group. See notes in the description, and the group methods in [SceneTree].
 			</description>
 		</method>
 		<method name="is_inside_tree" qualifiers="const">
@@ -573,6 +577,7 @@
 			<argument index="1" name="args" type="Array" default="[  ]" />
 			<argument index="2" name="parent_first" type="bool" default="false" />
 			<description>
+				Calls the given method (if present) with the arguments given in [code]args[/code] on this node and recursively on all its children. If the [code]parent_first[/code] argument is [code]true[/code], the method will be called on the current node first, then on all its children. If [code]parent_first[/code] is [code]false[/code], the children will be called first.
 			</description>
 		</method>
 		<method name="propagate_notification">
@@ -614,6 +619,7 @@
 			<return type="void" />
 			<argument index="0" name="group" type="StringName" />
 			<description>
+				Removes a node from a group. See notes in the description, and the group methods in [SceneTree].
 			</description>
 		</method>
 		<method name="replace_by">
@@ -645,6 +651,8 @@
 			<return type="Variant" />
 			<argument index="0" name="method" type="StringName" />
 			<description>
+				Sends a remote procedure call request for the given [code]method[/code] to peers on the network (and locally), optionally sending all additional arguments as arguments to the method called by the RPC. The call request will only be received by nodes with the same [NodePath], including the exact same node name. Behaviour depends on the RPC configuration for the given method, see [method rpc_config]. Methods are not exposed to RPCs by default. See also [method rset] and [method rset_config] for properties. Returns [code]null[/code].
+				[b]Note:[/b] You can only safely use RPCs on clients after you received the [code]connected_to_server[/code] signal from the [SceneTree]. You also need to keep track of the connection state, either by the [SceneTree] signals like [code]server_disconnected[/code] or by checking [code]SceneTree.network_peer.get_connection_status() == CONNECTION_CONNECTED[/code].
 			</description>
 		</method>
 		<method name="rpc_config">
@@ -652,6 +660,7 @@
 			<argument index="0" name="method" type="StringName" />
 			<argument index="1" name="mode" type="int" enum="MultiplayerAPI.RPCMode" />
 			<description>
+				Changes the RPC mode for the given [code]method[/code] to the given [code]mode[/code]. See [enum MultiplayerAPI.RPCMode]. An alternative is annotating methods and properties with the corresponding keywords ([code]remote[/code], [code]master[/code], [code]puppet[/code], [code]remotesync[/code], [code]mastersync[/code], [code]puppetsync[/code]). By default, methods are not exposed to networking (and RPCs). See also [method rset] and [method rset_config] for properties.
 			</description>
 		</method>
 		<method name="rpc_id" qualifiers="vararg">
@@ -659,12 +668,14 @@
 			<argument index="0" name="peer_id" type="int" />
 			<argument index="1" name="method" type="StringName" />
 			<description>
+				Sends a [method rpc] to a specific peer identified by [code]peer_id[/code] (see [method NetworkedMultiplayerPeer.set_target_peer]). Returns [code]null[/code].
 			</description>
 		</method>
 		<method name="rpc_unreliable" qualifiers="vararg">
 			<return type="Variant" />
 			<argument index="0" name="method" type="StringName" />
 			<description>
+				Sends a [method rpc] using an unreliable protocol. Returns [code]null[/code].
 			</description>
 		</method>
 		<method name="rpc_unreliable_id" qualifiers="vararg">
@@ -672,64 +683,75 @@
 			<argument index="0" name="peer_id" type="int" />
 			<argument index="1" name="method" type="StringName" />
 			<description>
+				Sends a [method rpc] to a specific peer identified by [code]peer_id[/code] using an unreliable protocol (see [method NetworkedMultiplayerPeer.set_target_peer]). Returns [code]null[/code].
 			</description>
 		</method>
 		<method name="seen_by_add">
 			<return type="void" />
 			<argument index="0" name="entity" type="Node" />
 			<description>
+				Add a Node that is seen by this Node. Used by vrpcs.
 			</description>
 		</method>
 		<method name="seen_by_get">
 			<return type="Node" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get a Node that is seen by this node. Used by vrpcs.
 			</description>
 		</method>
 		<method name="seen_by_get_count">
 			<return type="int" />
 			<description>
+				How many Nodes see this Node.
 			</description>
 		</method>
 		<method name="seen_by_remove">
 			<return type="void" />
 			<argument index="0" name="entity" type="Node" />
 			<description>
+				Remove a Node that is seen by this node. Used by vrpcs.
 			</description>
 		</method>
 		<method name="seen_by_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove a Node that is seen by this node. Used by vrpcs.
 			</description>
 		</method>
 		<method name="sees_add">
 			<return type="void" />
 			<argument index="0" name="entity" type="Node" />
 			<description>
+				Add a Node that this Node sees. Used by vrpcs.
 			</description>
 		</method>
 		<method name="sees_get">
 			<return type="Node" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get a Node that this Node sees. Used by vrpcs.
 			</description>
 		</method>
 		<method name="sees_get_count">
 			<return type="int" />
 			<description>
+				How many Nodes this Node sees.
 			</description>
 		</method>
 		<method name="sees_remove">
 			<return type="void" />
 			<argument index="0" name="entity" type="Node" />
 			<description>
+				Remove a Node that this Node sees. Used by vrpcs.
 			</description>
 		</method>
 		<method name="sees_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove a Node that this Node sees. Used by vrpcs.
 			</description>
 		</method>
 		<method name="set_display_folded">
@@ -855,12 +877,14 @@
 			<return type="Variant" />
 			<argument index="0" name="method" type="StringName" />
 			<description>
+				Same as [method rpc] but it will only send the call to clients that see ([mehod seen_by_add]) this Node. (v = visibility)
 			</description>
 		</method>
 		<method name="vrpc_unreliable" qualifiers="vararg">
 			<return type="Variant" />
 			<argument index="0" name="method" type="StringName" />
 			<description>
+				Same as [method rpc_unreliable] but it will only send the call to clients that see ([mehod seen_by_add]) this Node. (v = visibility)
 			</description>
 		</method>
 	</methods>

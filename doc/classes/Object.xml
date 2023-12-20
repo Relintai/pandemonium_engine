@@ -29,6 +29,8 @@
 			<return type="Variant" />
 			<argument index="0" name="property" type="StringName" />
 			<description>
+				Virtual method which can be overridden to customize the return value of [method get].
+				Returns the given property. Returns [code]null[/code] if the [code]property[/code] does not exist.
 			</description>
 		</method>
 		<method name="_get_property_list" qualifiers="virtual">
@@ -58,6 +60,8 @@
 			<argument index="0" name="property" type="StringName" />
 			<argument index="1" name="value" type="Variant" />
 			<description>
+				Virtual method which can be overridden to customize the return value of [method set].
+				Sets a property. Returns [code]true[/code] if the [code]property[/code] exists.
 			</description>
 		</method>
 		<method name="_to_string" qualifiers="virtual">
@@ -79,12 +83,22 @@
 			<return type="Variant" />
 			<argument index="0" name="method" type="StringName" />
 			<description>
+				Calls the [code]method[/code] on the object and returns the result. This method supports a variable number of arguments, so parameters are passed as a comma separated list. Example:
+				[codeblock]
+				call("set", "position", Vector2(42.0, 0.0))
+				[/codeblock]
+				[b]Note:[/b] In C#, the method name must be specified as snake_case if it is defined by a built-in Godot node. This doesn't apply to user-defined methods where you should use the same convention as in the C# source (typically PascalCase).
 			</description>
 		</method>
 		<method name="call_deferred" qualifiers="vararg">
 			<return type="void" />
 			<argument index="0" name="method" type="StringName" />
 			<description>
+				Calls the [code]method[/code] on the object during idle time. This method supports a variable number of arguments, so parameters are passed as a comma separated list. Example:
+				[codeblock]
+				call_deferred("set", "position", Vector2(42.0, 0.0))
+				[/codeblock]
+				[b]Note:[/b] In C#, the method name must be specified as snake_case if it is defined by a built-in Godot node. This doesn't apply to user-defined methods where you should use the same convention as in the C# source (typically PascalCase).
 			</description>
 		</method>
 		<method name="callv">
@@ -92,6 +106,10 @@
 			<argument index="0" name="method" type="StringName" />
 			<argument index="1" name="arg_array" type="Array" />
 			<description>
+				Calls the [code]method[/code] on the object and returns the result. Contrarily to [method call], this method does not support a variable number of arguments but expects all parameters to be via a single [Array].
+				[codeblock]
+				callv("set", [ "position", Vector2(42.0, 0.0) ])
+				[/codeblock]
 			</description>
 		</method>
 		<method name="can_translate_messages" qualifiers="const">
@@ -114,6 +132,22 @@
 			<argument index="3" name="binds" type="Array" default="[  ]" />
 			<argument index="4" name="flags" type="int" default="0" />
 			<description>
+				Connects a [code]signal[/code] to a [code]method[/code] on a [code]target[/code] object. Pass optional [code]binds[/code] to the call as an [Array] of parameters. These parameters will be passed to the method after any parameter used in the call to [method emit_signal]. Use [code]flags[/code] to set deferred or one-shot connections. See [enum ConnectFlags] constants.
+				A [code]signal[/code] can only be connected once to a [code]method[/code]. It will print an error if already connected, unless the signal was connected with [constant CONNECT_REFERENCE_COUNTED]. To avoid this, first, use [method is_connected] to check for existing connections.
+				If the [code]target[/code] is destroyed in the game's lifecycle, the connection will be lost.
+				Examples:
+				[codeblock]
+				connect("pressed", self, "_on_Button_pressed") # BaseButton signal
+				connect("text_entered", self, "_on_LineEdit_text_entered") # LineEdit signal
+				connect("hit", self, "_on_Player_hit", [ weapon_type, damage ]) # User-defined signal
+				[/codeblock]
+				An example of the relationship between [code]binds[/code] passed to [method connect] and parameters used when calling [method emit_signal]:
+				[codeblock]
+				connect("hit", self, "_on_Player_hit", [ weapon_type, damage ]) # weapon_type and damage are passed last
+				emit_signal("hit", "Dark lord", 5) # "Dark lord" and 5 are passed first
+				func _on_Player_hit(hit_by, level, weapon_type, damage):
+				    print("Hit by %s (lvl %d) with weapon %s for %d damage" % [hit_by, level, weapon_type, damage])
+				[/codeblock]
 			</description>
 		</method>
 		<method name="disconnect">
@@ -122,12 +156,19 @@
 			<argument index="1" name="target" type="Object" />
 			<argument index="2" name="method" type="StringName" />
 			<description>
+				Disconnects a [code]signal[/code] from a [code]method[/code] on the given [code]target[/code].
+				If you try to disconnect a connection that does not exist, the method will print an error. Use [method is_connected] to ensure that the connection exists.
 			</description>
 		</method>
 		<method name="emit_signal" qualifiers="vararg">
 			<return type="void" />
 			<argument index="0" name="signal" type="StringName" />
 			<description>
+				Emits the given [code]signal[/code]. The signal must exist, so it should be a built-in signal of this class or one of its parent classes, or a user-defined signal. This method supports a variable number of arguments, so parameters are passed as a comma separated list. Example:
+				[codeblock]
+				emit_signal("hit", weapon_type, damage)
+				emit_signal("game_over")
+				[/codeblock]
 			</description>
 		</method>
 		<method name="free">
@@ -235,18 +276,21 @@
 			<return type="bool" />
 			<argument index="0" name="method" type="StringName" />
 			<description>
+				Returns [code]true[/code] if the object contains the given [code]method[/code].
 			</description>
 		</method>
 		<method name="has_signal" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="signal" type="StringName" />
 			<description>
+				Returns [code]true[/code] if the given [code]signal[/code] exists.
 			</description>
 		</method>
 		<method name="has_user_signal" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="signal" type="StringName" />
 			<description>
+				Returns [code]true[/code] if the given user-defined [code]signal[/code] exists. Only signals added using [method add_user_signal] are taken into account.
 			</description>
 		</method>
 		<method name="is_blocking_signals" qualifiers="const">
@@ -269,6 +313,7 @@
 			<argument index="1" name="target" type="Object" />
 			<argument index="2" name="method" type="StringName" />
 			<description>
+				Returns [code]true[/code] if a connection exists for a given [code]signal[/code], [code]target[/code], and [code]method[/code].
 			</description>
 		</method>
 		<method name="is_queued_for_deletion" qualifiers="const">
@@ -320,6 +365,8 @@
 			<argument index="0" name="property" type="StringName" />
 			<argument index="1" name="value" type="Variant" />
 			<description>
+				Assigns a new value to the given property, after the current frame's physics step. This is equivalent to calling [method set] via [method call_deferred], i.e. [code]call_deferred("set", property, value)[/code].
+				[b]Note:[/b] In C#, the property name must be specified as snake_case if it is defined by a built-in Godot node. This doesn't apply to user-defined properties where you should use the same convention as in the C# source (typically PascalCase).
 			</description>
 		</method>
 		<method name="set_indexed">

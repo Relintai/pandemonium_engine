@@ -45,6 +45,7 @@
 			<argument index="1" name="property" type="StringName" />
 			<argument index="2" name="value" type="Variant" />
 			<description>
+				Register a property value change for "do".
 			</description>
 		</method>
 		<method name="add_do_reference">
@@ -59,6 +60,7 @@
 			<argument index="0" name="object" type="Object" />
 			<argument index="1" name="method" type="StringName" />
 			<description>
+				Register a method that will be called when the action is undone.
 			</description>
 		</method>
 		<method name="add_undo_property">
@@ -67,6 +69,7 @@
 			<argument index="1" name="property" type="StringName" />
 			<argument index="2" name="value" type="Variant" />
 			<description>
+				Register a property value change for "undo".
 			</description>
 		</method>
 		<method name="add_undo_reference">

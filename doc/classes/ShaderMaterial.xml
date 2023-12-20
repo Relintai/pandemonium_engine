@@ -15,6 +15,7 @@
 			<return type="Variant" />
 			<argument index="0" name="param" type="StringName" />
 			<description>
+				Returns the current value set for this material of a uniform in the shader.
 			</description>
 		</method>
 		<method name="property_can_revert">
@@ -36,6 +37,8 @@
 			<argument index="0" name="param" type="StringName" />
 			<argument index="1" name="value" type="Variant" />
 			<description>
+				Changes the value set for this material of a uniform in the shader.
+				[b]Note:[/b] [code]param[/code] must match the name of the uniform in the code exactly.
 			</description>
 		</method>
 	</methods>

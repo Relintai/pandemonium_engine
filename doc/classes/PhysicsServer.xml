@@ -144,6 +144,12 @@
 			<argument index="1" name="receiver" type="Object" />
 			<argument index="2" name="method" type="StringName" />
 			<description>
+				Sets the function to call when any body/area enters or exits the area. This callback will be called for any object interacting with the area, and takes five parameters:
+				1: [constant AREA_BODY_ADDED] or [constant AREA_BODY_REMOVED], depending on whether the object entered or exited the area.
+				2: [RID] of the object that entered/exited the area.
+				3: Instance ID of the object that entered/exited the area.
+				4: The shape index of the object that entered/exited the area.
+				5: The shape index of the area where the object entered/exited.
 			</description>
 		</method>
 		<method name="area_set_monitorable">
@@ -494,6 +500,7 @@
 			<argument index="2" name="method" type="StringName" />
 			<argument index="3" name="userdata" type="Variant" default="null" />
 			<description>
+				Sets the function used to calculate physics for an object, if that object allows it (see [method body_set_omit_force_integration]).
 			</description>
 		</method>
 		<method name="body_set_kinematic_safe_margin">

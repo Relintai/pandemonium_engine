@@ -19,6 +19,7 @@
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="animation" type="Animation" />
 			<description>
+				Adds [code]animation[/code] to the player accessible with the key [code]name[/code].
 			</description>
 		</method>
 		<method name="advance">
@@ -32,6 +33,7 @@
 			<return type="StringName" />
 			<argument index="0" name="anim_from" type="StringName" />
 			<description>
+				Returns the name of the next animation in the queue.
 			</description>
 		</method>
 		<method name="animation_set_next">
@@ -39,6 +41,7 @@
 			<argument index="0" name="anim_from" type="StringName" />
 			<argument index="1" name="anim_to" type="StringName" />
 			<description>
+				Triggers the [code]anim_to[/code] animation when the [code]anim_from[/code] animation completes.
 			</description>
 		</method>
 		<method name="clear_caches">
@@ -64,6 +67,7 @@
 			<return type="Animation" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns the [Animation] with the key [code]name[/code]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 			</description>
 		</method>
 		<method name="get_animation_list" qualifiers="const">
@@ -77,6 +81,7 @@
 			<argument index="0" name="anim_from" type="StringName" />
 			<argument index="1" name="anim_to" type="StringName" />
 			<description>
+				Gets the blend time (in seconds) between two animations, referenced by their names.
 			</description>
 		</method>
 		<method name="get_playing_speed" qualifiers="const">
@@ -95,6 +100,7 @@
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns [code]true[/code] if the [AnimationPlayer] stores an [Animation] with key [code]name[/code].
 			</description>
 		</method>
 		<method name="is_playing" qualifiers="const">
@@ -110,6 +116,9 @@
 			<argument index="2" name="custom_speed" type="float" default="1.0" />
 			<argument index="3" name="from_end" type="bool" default="false" />
 			<description>
+				Plays the animation with key [code]name[/code]. Custom blend times and speed can be set. If [code]custom_speed[/code] is negative and [code]from_end[/code] is [code]true[/code], the animation will play backwards (which is equivalent to calling [method play_backwards]).
+				The [AnimationPlayer] keeps track of its current or last played animation with [member assigned_animation]. If this method is called with that same animation [code]name[/code], or with no [code]name[/code] parameter, the assigned animation will resume playing if it was paused, or restart if it was stopped (see [method stop] for both pause and stop). If the animation was already playing, it will keep playing.
+				[b]Note:[/b] The animation will be updated the next time the [AnimationPlayer] is processed. If other variables are updated at the same time this is called, they may be updated too early. To perform the update immediately, call [code]advance(0)[/code].
 			</description>
 		</method>
 		<method name="play_backwards">
@@ -117,18 +126,23 @@
 			<argument index="0" name="name" type="StringName" default="&quot;&quot;" />
 			<argument index="1" name="custom_blend" type="float" default="-1" />
 			<description>
+				Plays the animation with key [code]name[/code] in reverse.
+				This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 			</description>
 		</method>
 		<method name="queue">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Queues an animation for playback once the current one is done.
+				[b]Note:[/b] If a looped animation is currently playing, the queued animation will never play unless the looped animation is stopped somehow.
 			</description>
 		</method>
 		<method name="remove_animation">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Removes the animation with key [code]name[/code].
 			</description>
 		</method>
 		<method name="rename_animation">
@@ -136,6 +150,7 @@
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="newname" type="StringName" />
 			<description>
+				Renames an existing animation with key [code]name[/code] to [code]newname[/code].
 			</description>
 		</method>
 		<method name="seek">
@@ -153,6 +168,7 @@
 			<argument index="1" name="anim_to" type="StringName" />
 			<argument index="2" name="sec" type="float" />
 			<description>
+				Specifies a blend time (in seconds) between two animations, referenced by their names.
 			</description>
 		</method>
 		<method name="stop">
