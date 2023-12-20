@@ -3514,7 +3514,9 @@ Error String::parse_utf16(const char16_t *p_utf16, int p_len) {
 	{
 		const char16_t *ptrtmp = p_utf16;
 		const char16_t *ptrtmp_limit = &p_utf16[p_len];
+#if PRINT_UNICODE_ERRORS
 		uint32_t c_prev = 0;
+#endif
 		bool skip = false;
 		while (ptrtmp != ptrtmp_limit && *ptrtmp) {
 			uint32_t c = (byteswap) ? BSWAP16(*ptrtmp) : *ptrtmp;
@@ -3541,7 +3543,9 @@ Error String::parse_utf16(const char16_t *p_utf16, int p_len) {
 				skip = false;
 			}
 
+#if PRINT_UNICODE_ERRORS
 			c_prev = c;
+#endif
 			str_size++;
 			cstr_size++;
 			ptrtmp++;
