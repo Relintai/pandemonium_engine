@@ -4205,8 +4205,17 @@ String String::path_clean_end_slash() const {
 
 	String ret = *this;
 
-	while (ret.length() > 1 && (ret.ends_with("/") || ret.ends_with("\\"))) {
-		ret.resize(ret.length());
+	int strip_to = ret.length() - 1;
+
+	CharType c = ret[strip_to];
+
+	while (strip_to > 1 && (c == '/' || c == '\\')) {
+		--strip_to;
+		c = ret[strip_to];
+	}
+
+	if (ret.length() != strip_to + 1) {
+		ret.set_length(strip_to + 1);
 	}
 
 	return ret;
