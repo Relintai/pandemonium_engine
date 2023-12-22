@@ -24,6 +24,12 @@
 				The default implementation of stop().
 			</description>
 		</method>
+		<method name="_unregister_connection_for_request" qualifiers="virtual">
+			<return type="Dictionary" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
 		<method name="get_session_manager">
 			<return type="HTTPSessionManager" />
 			<description>
@@ -61,6 +67,12 @@
 			<return type="void" />
 			<description>
 				Stop the server.
+			</description>
+		</method>
+		<method name="unregister_connection_for_request">
+			<return type="Dictionary" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
 			</description>
 		</method>
 	</methods>

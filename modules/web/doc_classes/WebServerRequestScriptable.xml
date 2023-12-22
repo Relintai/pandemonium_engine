@@ -64,6 +64,22 @@
 			<description>
 			</description>
 		</method>
+		<method name="_get_get_parameter_keys" qualifiers="virtual">
+			<return type="PoolStringArray" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_header_parameter" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_header_parameter_keys" qualifiers="virtual">
+			<return type="PoolStringArray" />
+			<description>
+			</description>
+		</method>
 		<method name="_get_host" qualifiers="virtual">
 			<return type="void" />
 			<description>
@@ -80,6 +96,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="_get_parameter_keys" qualifiers="virtual">
+			<return type="PoolStringArray" />
+			<description>
+			</description>
+		</method>
 		<method name="_get_path_full" qualifiers="virtual">
 			<return type="void" />
 			<description>
@@ -88,6 +109,11 @@
 		<method name="_get_post_parameter" qualifiers="virtual">
 			<return type="String" />
 			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_post_parameter_keys" qualifiers="virtual">
+			<return type="PoolStringArray" />
 			<description>
 			</description>
 		</method>
@@ -126,6 +152,13 @@
 			</description>
 		</method>
 		<method name="_set_get_parameter" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="key" type="String" />
+			<argument index="1" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_set_header_parameter" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="key" type="String" />
 			<argument index="1" name="value" type="String" />

@@ -150,6 +150,22 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_get_parameter_keys" qualifiers="const">
+			<return type="PoolStringArray" />
+			<description>
+			</description>
+		</method>
+		<method name="get_header_parameter" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_header_parameter_keys" qualifiers="const">
+			<return type="PoolStringArray" />
+			<description>
+			</description>
+		</method>
 		<method name="get_host" qualifiers="const">
 			<return type="String" />
 			<description>
@@ -179,6 +195,11 @@
 			<argument index="0" name="key" type="String" />
 			<description>
 				Returns the value that was set in the request header for the given key, or an empty String.
+			</description>
+		</method>
+		<method name="get_parameter_keys" qualifiers="const">
+			<return type="PoolStringArray" />
+			<description>
 			</description>
 		</method>
 		<method name="get_path" qualifiers="const">
@@ -211,6 +232,11 @@
 		<method name="get_post_parameter" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_post_parameter_keys" qualifiers="const">
+			<return type="PoolStringArray" />
 			<description>
 			</description>
 		</method>
@@ -384,6 +410,13 @@
 			</description>
 		</method>
 		<method name="set_get_parameter">
+			<return type="void" />
+			<argument index="0" name="key" type="String" />
+			<argument index="1" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_header_parameter">
 			<return type="void" />
 			<argument index="0" name="key" type="String" />
 			<argument index="1" name="value" type="String" />

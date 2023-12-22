@@ -43,50 +43,14 @@
 			<description>
 			</description>
 		</method>
-		<method name="wwwroot_deregister_file">
-			<return type="void" />
-			<argument index="0" name="file_path" type="String" />
-			<description>
-			</description>
-		</method>
-		<method name="wwwroot_evaluate_dir">
-			<return type="void" />
-			<argument index="0" name="file_path" type="String" />
-			<argument index="1" name="should_exist " type="bool" default="true" />
-			<description>
-			</description>
-		</method>
-		<method name="wwwroot_get_file_index">
-			<return type="int" />
-			<argument index="0" name="file_path" type="String" />
-			<description>
-			</description>
-		</method>
-		<method name="wwwroot_get_file_orig_path">
+		<method name="wwwroot_get_file_abspath">
 			<return type="String" />
-			<argument index="0" name="index" type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="wwwroot_get_file_orig_path_abs">
-			<return type="String" />
-			<argument index="0" name="index" type="int" />
+			<argument index="0" name="file_path" type="String" />
 			<description>
 			</description>
 		</method>
 		<method name="wwwroot_has_file">
 			<return type="bool" />
-			<argument index="0" name="file_path" type="String" />
-			<description>
-			</description>
-		</method>
-		<method name="wwwroot_refresh_cache">
-			<return type="void" />
-			<description>
-			</description>
-		</method>
-		<method name="wwwroot_register_file">
-			<return type="void" />
 			<argument index="0" name="file_path" type="String" />
 			<description>
 			</description>
