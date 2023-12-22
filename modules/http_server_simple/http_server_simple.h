@@ -69,6 +69,8 @@ public:
 
 	bool has_more_messages();
 
+	void close_file(Ref<SimpleWebServerRequest> request);
+
 	HTTPServerConnection();
 	~HTTPServerConnection();
 
@@ -92,6 +94,11 @@ public:
 	uint8_t _file_send_buffer[4096];
 	uint64_t _file_buffer_start;
 	uint64_t _file_buffer_end;
+
+	uint64_t _file_start;
+	uint64_t _file_end;
+	uint64_t _file_length;
+
 	int _file_buffer_send_max_consecutive_loops;
 
 	uint64_t _timeout_usec;

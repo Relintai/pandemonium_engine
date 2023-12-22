@@ -281,10 +281,123 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 		return;
 	}
 
-	//String range = request->get_htt
+	_file_start = 0;
+	_file_length = r->_sending_file_fa->get_len();
+	_file_end = _file_length;
+	uint64_t content_length = _file_length;
+	String result_content_range_header;
 
+	String range_header = request->get_header_parameter("range");
+
+	if (!range_header.empty()) {
+		//Range: <unit>=<range-start>-
+		//Range: <unit>=<range-start>-<range-end>
+		//Range: <unit>=<range-start>-<range-end>, <range-start>-<range-end>
+		//Range: <unit>=<range-start>-<range-end>, <range-start>-<range-end>, <range-start>-<range-end>
+		//Range: <unit>=-<suffix-length>
+
+		//Range: bytes=200-999, 2000-2499, 9500-
+		//range_header -> "bytes=200-999, 2000-2499, 9500-"
+
+		//Currently only bytes units are registered which are offsets (zero-indexed & inclusive). If the requested data has a content coding applied, each byte range represents the encoded sequence of bytes, not the bytes that would be obtained after decoding.
+
+		if (!range_header.begins_with("bytes=")) {
+			//If the ranges are invalid, the server returns the 416 Range Not Satisfiable error.
+			close_file(request);
+			request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_416_REQUESTED_RANGE_NOT_SATISFIABLE);
+			return;
+		}
+
+		//range_noprefix -> "200-999, 2000-2499, 9500-"
+		String range_noprefix = range_header.substr_index(5, range_header.size() - 1);
+
+		Vector<String> ranges = range_header.split(",");
+
+		if (ranges.size() == 0) {
+			//If the ranges are invalid, the server returns the 416 Range Not Satisfiable error.
+			close_file(request);
+			request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_416_REQUESTED_RANGE_NOT_SATISFIABLE);
+			return;
+		}
+
+		// only handle the first one. Handling more creates extreme amounts of unnecessary complexity.
+
+		//range -> "200-999"
+		String range = ranges[0].strip_edges();
+
+		Vector<String> range_values = range.split("-");
+
+		if (range_values.size() != 2) {
+			//If the ranges are invalid, the server returns the 416 Range Not Satisfiable error.
+			close_file(request);
+			request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_416_REQUESTED_RANGE_NOT_SATISFIABLE);
+			return;
+		}
+
+		//9500-
+
+		bool error = false;
+		uint64_t start_value = 0;
+
+		if (!range_values[0].empty() && !range_values[0].is_valid_unsigned_integer()) {
+			start_value = range_values[0].to_int64();
+		} else {
+			error = true;
+		}
+
+		if (!error && start_value >= _file_length) {
+			error = true;
+		}
+
+		if (!error) {
+			_file_start = start_value;
+
+			r->_sending_file_fa->seek(_file_start);
+
+			if (!range_values[1].empty()) {
+				//200-999
+
+				uint64_t end_value = 0;
+
+				if (!range_values[1].is_valid_unsigned_integer()) {
+					end_value = range_values[1].to_int64();
+				} else {
+					error = true;
+				}
+
+				if (!error && end_value > _file_length) {
+					error = true;
+				}
+
+				if (!error) {
+					_file_end = end_value;
+				}
+			}
+		}
+
+		if (error) {
+			//If the ranges are invalid, the server returns the 416 Range Not Satisfiable error.
+			close_file(request);
+			request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_416_REQUESTED_RANGE_NOT_SATISFIABLE);
+			return;
+		}
+
+		if (request->get_status_code() == 200) {
+			request->set_status_code(HTTPServerEnums::HTTP_STATUS_CODE_206_PARTIAL_CONTENT);
+		}
+
+		content_length = _file_end - _file_start;
+
+		//Content-Range: <unit> <range-start>-<range-end>/<size> (<size> = The total length of the document (or '*' if unknown).)
+
+		result_content_range_header = "Content-Range: bytes " + itos(_file_start) + "-" + itos(_file_end) + "/" + itos(_file_length) + +"\r\n";
+	}
 
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
+
+	if (!result_content_range_header.empty()) {
+		s += result_content_range_header;
+	}
 
 	if (!custom_headers.has("Connection")) {
 		if (has_more_messages()) {
@@ -307,9 +420,7 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 		s += "Content-Type: " + ctype + "\r\n";
 	}
 
-	uint64_t file_length = r->_sending_file_fa->get_len();
-
-	s += "Content-Length: " + itos(file_length) + "\r\n";
+	s += "Content-Length: " + itos(content_length) + "\r\n";
 
 	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
 		Ref<WebServerCookie> cookie = request->response_get_cookie(i);
@@ -355,7 +466,10 @@ void HTTPServerConnection::update_send_file(Ref<SimpleWebServerRequest> request)
 		if (_file_buffer_start == _file_buffer_end) {
 			_file_buffer_start = 0;
 
-			_file_buffer_end = request->_sending_file_fa->get_buffer(_file_send_buffer, 4096);
+			uint64_t remaining = _file_end - request->_sending_file_fa->get_position();
+			uint64_t read_length = MIN(remaining, 4096);
+
+			_file_buffer_end = request->_sending_file_fa->get_buffer(_file_send_buffer, read_length);
 
 			if (_file_buffer_end == 0) {
 				//finished
@@ -378,9 +492,8 @@ void HTTPServerConnection::update_send_file(Ref<SimpleWebServerRequest> request)
 		}
 
 		if (err != OK) {
+			close_file(request);
 			close();
-			memdelete(request->_sending_file_fa);
-			request->_sending_file_fa = NULL;
 			_file_buffer_start = 0;
 			_file_buffer_end = 0;
 			return;
@@ -394,8 +507,7 @@ void HTTPServerConnection::update_send_file(Ref<SimpleWebServerRequest> request)
 		}
 	}
 
-	memdelete(request->_sending_file_fa);
-	request->_sending_file_fa = NULL;
+	close_file(request);
 
 	_file_buffer_start = 0;
 	_file_buffer_end = 0;
@@ -432,6 +544,13 @@ bool HTTPServerConnection::has_more_messages() {
 	return true;
 }
 
+void HTTPServerConnection::close_file(Ref<SimpleWebServerRequest> request) {
+	if (request.is_valid() && request->_sending_file_fa) {
+		memdelete(request->_sending_file_fa);
+		request->_sending_file_fa = NULL;
+	}
+}
+
 HTTPServerConnection::HTTPServerConnection() {
 	_web_server = nullptr;
 	_http_server = nullptr;
@@ -452,6 +571,9 @@ HTTPServerConnection::HTTPServerConnection() {
 
 	_file_buffer_start = 0;
 	_file_buffer_end = 0;
+	_file_start = 0;
+	_file_end = 0;
+	_file_length = 0;
 }
 HTTPServerConnection::~HTTPServerConnection() {
 }
