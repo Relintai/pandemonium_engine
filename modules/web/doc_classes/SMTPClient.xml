@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SMTPClient" inherits="Node" version="4.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="send_mail">
+			<return type="void" />
+			<argument index="0" name="address" type="String" />
+			<argument index="1" name="subject" type="String" />
+			<argument index="2" name="message" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="auth_type" type="int" setter="set_auth_type" getter="get_auth_type" enum="SMTPClient.AuthType" default="2">
+		</member>
+		<member name="get_delay" type="int" setter="set_delay" getter="get_delay" default="200">
+		</member>
+		<member name="retries" type="int" setter="set_retries" getter="get_retries" default="3">
+		</member>
+		<member name="smtp_client_id" type="String" setter="set_smtp_client_id" getter="get_smtp_client_id" default="&quot;&quot;">
+		</member>
+		<member name="smtp_server_address" type="String" setter="set_smtp_server_address" getter="get_smtp_server_address" default="&quot;&quot;">
+		</member>
+		<member name="smtp_server_password" type="String" setter="set_smtp_server_password" getter="get_smtp_server_password" default="&quot;&quot;">
+		</member>
+		<member name="smtp_server_port" type="int" setter="set_smtp_server_port" getter="get_smtp_server_port" default="465">
+		</member>
+		<member name="smtp_server_sender_email_address" type="String" setter="set_smtp_server_sender_email_address" getter="get_smtp_server_sender_email_address" default="&quot;&quot;">
+		</member>
+		<member name="smtp_server_sender_name" type="String" setter="set_smtp_server_sender_name" getter="get_smtp_server_sender_name" default="&quot;&quot;">
+		</member>
+		<member name="smtp_server_user_name" type="String" setter="set_smtp_server_user_name" getter="get_smtp_server_user_name" default="&quot;&quot;">
+		</member>
+		<member name="use_threads" type="bool" setter="set_use_threads" getter="get_use_threads" default="true">
+		</member>
+	</members>
+	<constants>
+		<constant name="AUTH_TYPE_PLAINTEXT" value="0" enum="AuthType">
+		</constant>
+		<constant name="AUTH_TYPE_STARTTLS" value="1" enum="AuthType">
+		</constant>
+		<constant name="AUTH_TYPE_SMTPS" value="2" enum="AuthType">
+		</constant>
+	</constants>
+</class>
