@@ -281,6 +281,9 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 		return;
 	}
 
+	//String range = request->get_htt
+
+
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
 
 	if (!custom_headers.has("Connection")) {

@@ -85,6 +85,13 @@ void WebServerRequestScriptable::set_get_parameter(const String &key, const Stri
 	call("_set_get_parameter", key, value);
 }
 
+String WebServerRequestScriptable::get_header_parameter(const String &key) const {
+	return const_cast<WebServerRequestScriptable *>(this)->call("_get_header_parameter", key);
+}
+void WebServerRequestScriptable::set_header_parameter(const String &key, const String &value) {
+	call("_set_header_parameter", key, value);
+}
+
 void WebServerRequestScriptable::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
 	call("_send_redirect", location, status_code);
 }
@@ -128,7 +135,7 @@ void WebServerRequestScriptable::update() {
 // script virtuals
 
 String WebServerRequestScriptable::_get_cookie(const String &key) {
-	return "";
+	return String();
 }
 
 HTTPServerEnums::HTTPMethod WebServerRequestScriptable::_get_method() const {
@@ -141,10 +148,10 @@ int WebServerRequestScriptable::_get_file_count() const {
 	return 0;
 }
 String WebServerRequestScriptable::_get_file_file_name(const int index) const {
-	return "";
+	return String();
 }
 String WebServerRequestScriptable::_get_file_key(const int index) const {
-	return "";
+	return String();
 }
 int WebServerRequestScriptable::_get_file_length(const int index) const {
 	return 0;
@@ -153,24 +160,30 @@ PoolByteArray WebServerRequestScriptable::_get_file_data(const int index) const 
 	return PoolByteArray();
 }
 String WebServerRequestScriptable::_get_file_data_str(const int index) const {
-	return "";
+	return String();
 }
 
 String WebServerRequestScriptable::_get_parameter(const String &key) const {
-	return "";
+	return String();
 }
 
 String WebServerRequestScriptable::_get_post_parameter(const String &key) const {
-	return "";
+	return String();
 }
 
 String WebServerRequestScriptable::_get_get_parameter(const String &key) const {
-	return "";
+	return String();
 }
 
 void WebServerRequestScriptable::_set_post_parameter(const String &key, const String &value) {
 }
 void WebServerRequestScriptable::_set_get_parameter(const String &key, const String &value) {
+}
+
+String WebServerRequestScriptable::_get_header_parameter(const String &key) const {
+	return String();
+}
+void WebServerRequestScriptable::_set_header_parameter(const String &key, const String &value) {
 }
 
 void WebServerRequestScriptable::_send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
@@ -224,7 +237,7 @@ void WebServerRequestScriptable::_send_error(int error_code) {
 }
 
 String WebServerRequestScriptable::_parser_get_path() {
-	return "";
+	return String();
 }
 
 String WebServerRequestScriptable::_get_path_full() const {
@@ -232,7 +245,7 @@ String WebServerRequestScriptable::_get_path_full() const {
 }
 
 String WebServerRequestScriptable::_get_host() const {
-	return "";
+	return String();
 }
 
 void WebServerRequestScriptable::_update() {
@@ -271,6 +284,9 @@ void WebServerRequestScriptable::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_set_post_parameter", PropertyInfo(Variant::STRING, "key"), PropertyInfo(Variant::STRING, "value")));
 	BIND_VMETHOD(MethodInfo("_set_get_parameter", PropertyInfo(Variant::STRING, "key"), PropertyInfo(Variant::STRING, "value")));
 
+	BIND_VMETHOD(MethodInfo("_get_header_parameter", PropertyInfo(Variant::STRING, "key")));
+	BIND_VMETHOD(MethodInfo("_set_header_parameter", PropertyInfo(Variant::STRING, "key"), PropertyInfo(Variant::STRING, "value")));
+
 	BIND_VMETHOD(MethodInfo("_send_redirect", PropertyInfo(Variant::STRING, "location"), PropertyInfo(Variant::INT, "status_code")));
 
 	BIND_VMETHOD(MethodInfo("_compile_body"));
@@ -303,6 +319,9 @@ void WebServerRequestScriptable::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_set_post_parameter", "key", "value"), &WebServerRequestScriptable::_set_post_parameter);
 	ClassDB::bind_method(D_METHOD("_set_get_parameter", "key", "value"), &WebServerRequestScriptable::_set_get_parameter);
+
+	ClassDB::bind_method(D_METHOD("_get_header_parameter", "key"), &WebServerRequestScriptable::_get_header_parameter);
+	ClassDB::bind_method(D_METHOD("_set_header_parameter", "key", "value"), &WebServerRequestScriptable::_set_header_parameter);
 
 	ClassDB::bind_method(D_METHOD("_send_redirect", "location", "status_code"), &WebServerRequestScriptable::_send_redirect);
 

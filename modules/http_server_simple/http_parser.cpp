@@ -328,7 +328,7 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 	ERR_PRINT("header_val " + s);
 #endif
 
-	_request->add_post_parameter(_queued_header_field, s);
+	_request->add_header_parameter(_queued_header_field, s);
 
 	if (_queued_header_field == "host") {
 		_request->set_host(s);

@@ -73,6 +73,9 @@ public:
 	virtual void set_post_parameter(const String &key, const String &value);
 	virtual void set_get_parameter(const String &key, const String &value);
 
+	virtual String get_header_parameter(const String &key) const;
+	virtual void set_header_parameter(const String &key, const String &value);
+
 	virtual void send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code = HTTPServerEnums::HTTP_STATUS_CODE_302_FOUND);
 	virtual void send();
 	virtual void send_file(const String &p_file_path);
@@ -81,6 +84,7 @@ public:
 
 	void add_post_parameter(const String &key, const String &value);
 	void add_get_parameter(const String &key, const String &value);
+	void add_header_parameter(const String &key, const String &value);
 	void set_parser_path(const String &value);
 	void set_host(const String &value);
 
@@ -107,6 +111,7 @@ protected:
 
 	HashMap<String, String> _post_parameters;
 	HashMap<String, String> _get_parameters;
+	HashMap<String, String> _header_parameters;
 	String _parser_path;
 	String _host;
 

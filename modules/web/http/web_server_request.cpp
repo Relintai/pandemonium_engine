@@ -136,7 +136,7 @@ bool WebServerRequest::has_csrf_token() {
 
 String WebServerRequest::get_csrf_token() {
 	if (!_session.is_valid()) {
-		return "";
+		return String();
 	}
 
 	const Variant &val = _session->get_const("csrf_token");
@@ -174,7 +174,7 @@ bool WebServerRequest::validate_csrf_token() {
 }
 
 String WebServerRequest::get_cookie(const String &key) {
-	return "";
+	return String();
 }
 
 void WebServerRequest::response_add_cookie(const Ref<WebServerCookie> &cookie) {
@@ -214,7 +214,7 @@ String WebServerRequest::custom_response_header_get(const StringName &key) {
 	String *e = _custom_response_headers.getptr(key);
 
 	if (!e) {
-		return "";
+		return String();
 	}
 
 	return *e;
@@ -252,10 +252,10 @@ int WebServerRequest::get_file_count() const {
 	return 0;
 }
 String WebServerRequest::get_file_file_name(const int index) const {
-	return "";
+	return String();
 }
 String WebServerRequest::get_file_key(const int index) const {
-	return "";
+	return String();
 }
 int WebServerRequest::get_file_length(const int index) const {
 	return 0;
@@ -264,24 +264,30 @@ PoolByteArray WebServerRequest::get_file_data(const int index) const {
 	return PoolByteArray();
 }
 String WebServerRequest::get_file_data_str(const int index) const {
-	return "";
+	return String();
 }
 
 String WebServerRequest::get_parameter(const String &key) const {
-	return "";
+	return String();
 }
 
 String WebServerRequest::get_post_parameter(const String &key) const {
-	return "";
+	return String();
 }
 
 String WebServerRequest::get_get_parameter(const String &key) const {
-	return "";
+	return String();
 }
 
 void WebServerRequest::set_post_parameter(const String &key, const String &value) {
 }
 void WebServerRequest::set_get_parameter(const String &key, const String &value) {
+}
+
+String WebServerRequest::get_header_parameter(const String &key) const {
+	return String();
+}
+void WebServerRequest::set_header_parameter(const String &key, const String &value) {
 }
 
 HTTPServerEnums::HTTPStatusCode WebServerRequest::get_status_code() const {
@@ -343,7 +349,7 @@ void WebServerRequest::send_error(int error_code) {
 }
 
 String WebServerRequest::parser_get_path() {
-	return "";
+	return String();
 }
 
 void WebServerRequest::setup_url_stack() {
@@ -517,7 +523,7 @@ String WebServerRequest::get_url_site_add(const String &add) const {
 }
 
 String WebServerRequest::get_host() const {
-	return "";
+	return String();
 }
 
 void WebServerRequest::update() {
@@ -641,6 +647,9 @@ void WebServerRequest::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_post_parameter", "key", "value"), &WebServerRequest::set_post_parameter);
 	ClassDB::bind_method(D_METHOD("set_get_parameter", "key", "value"), &WebServerRequest::set_get_parameter);
+
+	ClassDB::bind_method(D_METHOD("get_header_parameter", "key"), &WebServerRequest::get_header_parameter);
+	ClassDB::bind_method(D_METHOD("set_header_parameter", "key", "value"), &WebServerRequest::set_header_parameter);
 
 	ClassDB::bind_method(D_METHOD("get_status_code"), &WebServerRequest::get_status_code);
 	ClassDB::bind_method(D_METHOD("set_status_code", "val"), &WebServerRequest::set_status_code);

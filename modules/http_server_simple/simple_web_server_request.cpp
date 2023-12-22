@@ -124,6 +124,17 @@ void SimpleWebServerRequest::set_get_parameter(const String &key, const String &
 	_get_parameters[key] = value;
 }
 
+String SimpleWebServerRequest::get_header_parameter(const String &key) const {
+	if (!_header_parameters.has(key)) {
+		return "";
+	}
+
+	return _header_parameters[key];
+}
+void SimpleWebServerRequest::set_header_parameter(const String &key, const String &value) {
+	_header_parameters[key] = value;
+}
+
 void SimpleWebServerRequest::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
 	ERR_FAIL_COND(!_server);
 
@@ -165,6 +176,10 @@ void SimpleWebServerRequest::add_post_parameter(const String &key, const String 
 
 void SimpleWebServerRequest::add_get_parameter(const String &key, const String &value) {
 	_get_parameters[key] = value;
+}
+
+void SimpleWebServerRequest::add_header_parameter(const String &key, const String &value) {
+	_header_parameters[key] = value;
 }
 
 void SimpleWebServerRequest::set_parser_path(const String &value) {
