@@ -236,6 +236,7 @@ private:
 	void _set_snap_step(Vector2 p_val);
 	void _set_snap_off(Vector2 p_val);
 	void _set_snap_sep(Vector2 p_val);
+	void _on_select_context_button_pressed();
 
 	void _validate_current_tile_id();
 	void _select_edited_shape_coord();

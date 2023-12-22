@@ -302,6 +302,7 @@ void TileSetEditor::_bind_methods() {
 	ClassDB::bind_method("_zoom_reset", &TileSetEditor::_zoom_reset);
 	ClassDB::bind_method("_select_edited_shape_coord", &TileSetEditor::_select_edited_shape_coord);
 	ClassDB::bind_method("_sort_tiles", &TileSetEditor::_sort_tiles);
+	ClassDB::bind_method("_on_select_context_button_pressed", &TileSetEditor::_on_select_context_button_pressed);
 
 	ClassDB::bind_method(D_METHOD("get_drag_data_fw"), &TileSetEditor::get_drag_data_fw);
 	ClassDB::bind_method(D_METHOD("can_drop_data_fw"), &TileSetEditor::can_drop_data_fw);
@@ -434,6 +435,12 @@ TileSetEditor::TileSetEditor(EditorNode *p_editor) {
 		tool_workspacemode[i]->connect("pressed", this, "_on_workspace_mode_changed", varray(i));
 		tool_hb->add_child(tool_workspacemode[i]);
 	}
+
+	Button *select_context_button = memnew(Button);
+	select_context_button->set_text("->");
+	select_context_button->set_tooltip("Select TilesetEditorContext.");
+	select_context_button->connect("pressed", this, "_on_select_context_button_pressed");
+	tool_hb->add_child(select_context_button);
 
 	Control *spacer = memnew(Control);
 	spacer->set_h_size_flags(Control::SIZE_EXPAND_FILL);
@@ -2410,6 +2417,10 @@ void TileSetEditor::_set_snap_sep(Vector2 p_val) {
 	snap_separation.x = CLAMP(p_val.x, 0, 1024);
 	snap_separation.y = CLAMP(p_val.y, 0, 1024);
 	workspace->update();
+}
+
+void TileSetEditor::_on_select_context_button_pressed() {
+	editor->get_inspector()->edit(helper);
 }
 
 void TileSetEditor::_validate_current_tile_id() {
