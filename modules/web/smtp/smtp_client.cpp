@@ -619,6 +619,8 @@ void SMTPClient::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_use_threads", "val"), &SMTPClient::set_use_threads);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_threads"), "set_use_threads", "get_use_threads");
 
+	ClassDB::bind_method(D_METHOD("send_mail", "address", "subject", "message"), &SMTPClient::send_mail);
+
 	BIND_ENUM_CONSTANT(AUTH_TYPE_PLAINTEXT);
 	BIND_ENUM_CONSTANT(AUTH_TYPE_STARTTLS);
 	BIND_ENUM_CONSTANT(AUTH_TYPE_SMTPS);
