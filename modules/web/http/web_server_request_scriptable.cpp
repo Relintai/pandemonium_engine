@@ -92,6 +92,19 @@ void WebServerRequestScriptable::set_header_parameter(const String &key, const S
 	call("_set_header_parameter", key, value);
 }
 
+PoolStringArray WebServerRequestScriptable::get_header_parameter_keys() const {
+	return const_cast<WebServerRequestScriptable *>(this)->call("_get_header_parameter_keys");
+}
+PoolStringArray WebServerRequestScriptable::get_parameter_keys() const {
+	return const_cast<WebServerRequestScriptable *>(this)->call("_get_parameter_keys");
+}
+PoolStringArray WebServerRequestScriptable::get_post_parameter_keys() const {
+	return const_cast<WebServerRequestScriptable *>(this)->call("_get_post_parameter_keys");
+}
+PoolStringArray WebServerRequestScriptable::get_get_parameter_keys() const {
+	return const_cast<WebServerRequestScriptable *>(this)->call("_get_get_parameter_keys");
+}
+
 void WebServerRequestScriptable::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
 	call("_send_redirect", location, status_code);
 }
@@ -184,6 +197,19 @@ String WebServerRequestScriptable::_get_header_parameter(const String &key) cons
 	return String();
 }
 void WebServerRequestScriptable::_set_header_parameter(const String &key, const String &value) {
+}
+
+PoolStringArray WebServerRequestScriptable::_get_header_parameter_keys() const {
+	return PoolStringArray();
+}
+PoolStringArray WebServerRequestScriptable::_get_parameter_keys() const {
+	return PoolStringArray();
+}
+PoolStringArray WebServerRequestScriptable::_get_post_parameter_keys() const {
+	return PoolStringArray();
+}
+PoolStringArray WebServerRequestScriptable::_get_get_parameter_keys() const {
+	return PoolStringArray();
 }
 
 void WebServerRequestScriptable::_send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
@@ -287,6 +313,11 @@ void WebServerRequestScriptable::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_get_header_parameter", PropertyInfo(Variant::STRING, "key")));
 	BIND_VMETHOD(MethodInfo("_set_header_parameter", PropertyInfo(Variant::STRING, "key"), PropertyInfo(Variant::STRING, "value")));
 
+	BIND_VMETHOD(MethodInfo(Variant::POOL_STRING_ARRAY, "_get_header_parameter_keys"));
+	BIND_VMETHOD(MethodInfo(Variant::POOL_STRING_ARRAY, "_get_parameter_keys"));
+	BIND_VMETHOD(MethodInfo(Variant::POOL_STRING_ARRAY, "_get_post_parameter_keys"));
+	BIND_VMETHOD(MethodInfo(Variant::POOL_STRING_ARRAY, "_get_get_parameter_keys"));
+
 	BIND_VMETHOD(MethodInfo("_send_redirect", PropertyInfo(Variant::STRING, "location"), PropertyInfo(Variant::INT, "status_code")));
 
 	BIND_VMETHOD(MethodInfo("_compile_body"));
@@ -322,6 +353,11 @@ void WebServerRequestScriptable::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_get_header_parameter", "key"), &WebServerRequestScriptable::_get_header_parameter);
 	ClassDB::bind_method(D_METHOD("_set_header_parameter", "key", "value"), &WebServerRequestScriptable::_set_header_parameter);
+
+	ClassDB::bind_method(D_METHOD("_get_header_parameter_keys"), &WebServerRequestScriptable::_get_header_parameter_keys);
+	ClassDB::bind_method(D_METHOD("_get_parameter_keys"), &WebServerRequestScriptable::_get_parameter_keys);
+	ClassDB::bind_method(D_METHOD("_get_post_parameter_keys"), &WebServerRequestScriptable::_get_post_parameter_keys);
+	ClassDB::bind_method(D_METHOD("_get_get_parameter_keys"), &WebServerRequestScriptable::_get_get_parameter_keys);
 
 	ClassDB::bind_method(D_METHOD("_send_redirect", "location", "status_code"), &WebServerRequestScriptable::_send_redirect);
 

@@ -128,6 +128,11 @@ public:
 	virtual String get_header_parameter(const String &key) const;
 	virtual void set_header_parameter(const String &key, const String &value);
 
+	virtual PoolStringArray get_header_parameter_keys() const;
+	virtual PoolStringArray get_parameter_keys() const;
+	virtual PoolStringArray get_post_parameter_keys() const;
+	virtual PoolStringArray get_get_parameter_keys() const;
+
 	HTTPServerEnums::HTTPStatusCode get_status_code() const;
 	void set_status_code(const HTTPServerEnums::HTTPStatusCode status_code);
 

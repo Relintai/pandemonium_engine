@@ -290,6 +290,19 @@ String WebServerRequest::get_header_parameter(const String &key) const {
 void WebServerRequest::set_header_parameter(const String &key, const String &value) {
 }
 
+PoolStringArray WebServerRequest::get_header_parameter_keys() const {
+	return PoolStringArray();
+}
+PoolStringArray WebServerRequest::get_parameter_keys() const {
+	return PoolStringArray();
+}
+PoolStringArray WebServerRequest::get_post_parameter_keys() const {
+	return PoolStringArray();
+}
+PoolStringArray WebServerRequest::get_get_parameter_keys() const {
+	return PoolStringArray();
+}
+
 HTTPServerEnums::HTTPStatusCode WebServerRequest::get_status_code() const {
 	return _status_code;
 }
@@ -650,6 +663,11 @@ void WebServerRequest::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_header_parameter", "key"), &WebServerRequest::get_header_parameter);
 	ClassDB::bind_method(D_METHOD("set_header_parameter", "key", "value"), &WebServerRequest::set_header_parameter);
+
+	ClassDB::bind_method(D_METHOD("get_header_parameter_keys"), &WebServerRequest::get_header_parameter_keys);
+	ClassDB::bind_method(D_METHOD("get_parameter_keys"), &WebServerRequest::get_parameter_keys);
+	ClassDB::bind_method(D_METHOD("get_post_parameter_keys"), &WebServerRequest::get_post_parameter_keys);
+	ClassDB::bind_method(D_METHOD("get_get_parameter_keys"), &WebServerRequest::get_get_parameter_keys);
 
 	ClassDB::bind_method(D_METHOD("get_status_code"), &WebServerRequest::get_status_code);
 	ClassDB::bind_method(D_METHOD("set_status_code", "val"), &WebServerRequest::set_status_code);

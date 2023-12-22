@@ -135,6 +135,41 @@ void SimpleWebServerRequest::set_header_parameter(const String &key, const Strin
 	_header_parameters[key] = value;
 }
 
+PoolStringArray SimpleWebServerRequest::get_header_parameter_keys() const {
+	PoolStringArray ks;
+
+	for (const HashMap<String, String>::Element *E = _header_parameters.front(); E; E = E->next) {
+		ks.push_back(E->key());
+	}
+
+	return ks;
+}
+PoolStringArray SimpleWebServerRequest::get_parameter_keys() const {
+	PoolStringArray g = get_get_parameter_keys();
+
+	g.append_array(get_post_parameter_keys());
+
+	return g;
+}
+PoolStringArray SimpleWebServerRequest::get_post_parameter_keys() const {
+	PoolStringArray ks;
+
+	for (const HashMap<String, String>::Element *E = _post_parameters.front(); E; E = E->next) {
+		ks.push_back(E->key());
+	}
+
+	return ks;
+}
+PoolStringArray SimpleWebServerRequest::get_get_parameter_keys() const {
+	PoolStringArray ks;
+
+	for (const HashMap<String, String>::Element *E = _get_parameters.front(); E; E = E->next) {
+		ks.push_back(E->key());
+	}
+
+	return ks;
+}
+
 void SimpleWebServerRequest::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
 	ERR_FAIL_COND(!_server);
 

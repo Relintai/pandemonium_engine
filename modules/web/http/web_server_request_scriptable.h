@@ -75,6 +75,11 @@ public:
 	virtual String get_header_parameter(const String &key) const;
 	virtual void set_header_parameter(const String &key, const String &value);
 
+	virtual PoolStringArray get_header_parameter_keys() const;
+	virtual PoolStringArray get_parameter_keys() const;
+	virtual PoolStringArray get_post_parameter_keys() const;
+	virtual PoolStringArray get_get_parameter_keys() const;
+
 	virtual void send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code = HTTPServerEnums::HTTP_STATUS_CODE_302_FOUND);
 	virtual void compile_body();
 	virtual void compile_and_send_body();
@@ -110,6 +115,11 @@ public:
 
 	virtual String _get_header_parameter(const String &key) const;
 	virtual void _set_header_parameter(const String &key, const String &value);
+
+	virtual PoolStringArray _get_header_parameter_keys() const;
+	virtual PoolStringArray _get_parameter_keys() const;
+	virtual PoolStringArray _get_post_parameter_keys() const;
+	virtual PoolStringArray _get_get_parameter_keys() const;
 
 	void _send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
 	void _compile_body();
