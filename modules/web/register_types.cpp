@@ -71,6 +71,8 @@
 #include "nodes/redirect/alias_web_page.h"
 #include "nodes/redirect/redirect_web_page.h"
 
+#include "smtp/smtp_client.h"
+
 #if TOOLS_ENABLED
 #include "editor/web_node_editor_plugin.h"
 #endif
@@ -146,6 +148,8 @@ void register_web_types(ModuleRegistrationLevel p_level) {
 
 		ClassDB::register_class<RedirectWebPage>();
 		ClassDB::register_class<AliasWebPage>();
+
+		ClassDB::register_class<SMTPClient>();
 
 #ifdef MODULE_DATABASE_ENABLED
 		ClassDB::register_class<HTTPSessionManagerDB>();
