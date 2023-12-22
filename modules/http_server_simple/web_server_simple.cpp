@@ -223,6 +223,10 @@ void WebServerSimple::_stop() {
 	_server_lock.unlock();
 }
 
+Dictionary WebServerSimple::_unregister_connection_for_request(const Ref<WebServerRequest> &request) {
+	return _server->unregister_connection_for_request(request);
+}
+
 WebServerSimple::WebServerSimple() {
 	_max_request_size_type = MAX_REQUEST_SIZE_TYPE_MEGA_BYTE;
 	_max_request_size = 3;

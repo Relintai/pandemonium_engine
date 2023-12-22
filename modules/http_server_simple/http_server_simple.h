@@ -109,6 +109,8 @@ public:
 	bool is_listening() const;
 	void poll();
 
+	Dictionary unregister_connection_for_request(const Ref<WebServerRequest> &request);
+
 	HTTPServerSimple();
 	~HTTPServerSimple();
 
@@ -145,6 +147,7 @@ private:
 		Thread *thread;
 		Semaphore *semaphore;
 		Ref<HTTPServerSimple> server;
+		Ref<HTTPServerConnection> current_connection;
 		bool running;
 		bool working;
 

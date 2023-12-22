@@ -75,6 +75,9 @@ public:
 	virtual void _start();
 	virtual void _stop();
 
+	Dictionary unregister_connection_for_request(const Ref<WebServerRequest> &request);
+	virtual Dictionary _unregister_connection_for_request(const Ref<WebServerRequest> &request);
+
 	String get_configuration_warning() const;
 
 	WebServer();

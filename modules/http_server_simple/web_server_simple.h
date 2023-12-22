@@ -103,6 +103,8 @@ public:
 	void _start();
 	void _stop();
 
+	Dictionary _unregister_connection_for_request(const Ref<WebServerRequest> &request);
+
 	WebServerSimple();
 	~WebServerSimple();
 

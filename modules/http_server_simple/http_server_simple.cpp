@@ -581,6 +581,80 @@ void HTTPServerSimple::poll() {
 	}
 }
 
+Dictionary HTTPServerSimple::unregister_connection_for_request(const Ref<WebServerRequest> &request) {
+	Ref<SimpleWebServerRequest> srequest = request;
+
+	Dictionary d;
+	d["result"] = ERR_DOES_NOT_EXIST;
+
+	if (!srequest.is_valid()) {
+		return d;
+	}
+
+	bool found = false;
+
+	_connections_lock.write_lock();
+
+	List<Ref<HTTPServerConnection>>::Element *e = _connections.front();
+
+	while (e) {
+		Ref<HTTPServerConnection> c = e->get();
+
+		if (c->_current_request == srequest) {
+			d["result"] = OK;
+
+			d["use_ssl"] = c->use_ssl;
+			d["key"] = c->key;
+
+			d["tcp"] = c->tcp;
+			d["ssl"] = c->ssl;
+			d["peer"] = c->peer;
+
+			c->_closed = true;
+
+			found = true;
+
+			_connections.erase(e);
+
+			break;
+		}
+
+		e = e->next();
+	}
+
+	if (!found) {
+		for (int i = 0; i < _threads.size(); ++i) {
+			ServerWorkerThread *t = _threads[i];
+
+			Ref<HTTPServerConnection> &c = t->current_connection;
+
+			if (!c.is_valid()) {
+				continue;
+			}
+
+			if (c->_current_request == srequest) {
+				d["result"] = OK;
+
+				d["use_ssl"] = c->use_ssl;
+				d["key"] = c->key;
+
+				d["tcp"] = c->tcp;
+				d["ssl"] = c->ssl;
+				d["peer"] = c->peer;
+
+				//So the thread will not put it back to the connections array
+				c->_closed = true;
+
+				break;
+			}
+		}
+	}
+
+	_connections_lock.write_unlock();
+
+	return d;
+}
+
 HTTPServerSimple::HTTPServerSimple() {
 	_web_server = nullptr;
 
@@ -716,6 +790,7 @@ void HTTPServerSimple::_worker_thread_func(void *data) {
 			}
 
 			Ref<HTTPServerConnection> c = e->get();
+			context->current_connection = c;
 
 			server->_connections.pop_front();
 			server->_connections_lock.write_unlock();
@@ -732,6 +807,7 @@ void HTTPServerSimple::_worker_thread_func(void *data) {
 
 			server->_connections_lock.write_lock();
 			server->_connections.push_back(c);
+			context->current_connection.unref();
 			server->_connections_lock.write_unlock();
 		}
 

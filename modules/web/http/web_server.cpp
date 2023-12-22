@@ -103,6 +103,13 @@ void WebServer::_stop() {
 	_is_running = false;
 }
 
+Dictionary WebServer::unregister_connection_for_request(const Ref<WebServerRequest> &request) {
+	return call("_unregister_connection_for_request", request);
+}
+Dictionary WebServer::_unregister_connection_for_request(const Ref<WebServerRequest> &request) {
+	return Dictionary();
+}
+
 String WebServer::get_configuration_warning() const {
 	int webnode_count = 0;
 	int session_manager_count = 0;
@@ -183,6 +190,11 @@ void WebServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("stop"), &WebServer::stop);
 	ClassDB::bind_method(D_METHOD("_start"), &WebServer::_start);
 	ClassDB::bind_method(D_METHOD("_stop"), &WebServer::_stop);
+
+	BIND_VMETHOD(MethodInfo(Variant::DICTIONARY, "_unregister_connection_for_request",
+			PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	ClassDB::bind_method(D_METHOD("unregister_connection_for_request", "request"), &WebServer::unregister_connection_for_request);
+	ClassDB::bind_method(D_METHOD("_unregister_connection_for_request", "request"), &WebServer::_unregister_connection_for_request);
 
 	BIND_CONSTANT(NOTIFICATION_WEB_SERVER_STARTED);
 	BIND_CONSTANT(NOTIFICATION_WEB_SERVER_STOPPED);
