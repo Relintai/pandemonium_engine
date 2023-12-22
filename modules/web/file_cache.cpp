@@ -37,15 +37,29 @@
 #include "core/os/os.h"
 #include "core/string/print_string.h"
 
+FileCache::PathCacheMode FileCache::get_path_cache_mode() const {
+	return _path_cache_mode;
+}
+void FileCache::set_path_cache_mode(const PathCacheMode p_mode) {
+	_path_cache_mode = p_mode;
+}
+
 String FileCache::get_wwwroot() {
 	return _wwwroot_orig;
 }
 void FileCache::set_wwwroot(const String &val) {
 	_wwwroot_orig = val;
+	_wwwroot = _wwwroot_orig.path_clean_end_slash();
+
+	if (!_wwwroot.empty()) {
+		_wwwroot_abs = DirAccess::get_filesystem_abspath_for(_wwwroot_orig).path_clean_end_slash();
+	} else {
+		_wwwroot_abs = "";
+	}
 }
 
 String FileCache::get_wwwroot_abs() {
-	return _wwwroot;
+	return _wwwroot_abs;
 }
 
 int FileCache::get_cache_invalidation_time() {
@@ -55,55 +69,159 @@ void FileCache::set_cache_invalidation_time(const int &val) {
 	cache_invalidation_time = static_cast<uint64_t>(val);
 }
 
+String FileCache::wwwroot_get_file_abspath(const String &file_path) {
+	if (file_path.empty() || file_path == "/") {
+		return String();
+	}
+
+	String fp = _wwwroot_abs + file_path;
+
+	if (!FileAccess::exists(fp)) {
+		return String();
+	}
+
+	Error err;
+	FileAccess *f = FileAccess::open(fp, FileAccess::READ, &err);
+
+	if (!f) {
+		return String();
+	}
+
+	if (err != OK) {
+		memdelete(f);
+		return String();
+	}
+
+	String absp = f->get_path_absolute();
+	memdelete(f);
+
+	//likely a directory walking attempt. e.g. ../../../../../etc/passwd
+	if (!absp.begins_with(_wwwroot_abs)) {
+		return String();
+	}
+
+	return absp;
+}
+
 void FileCache::wwwroot_register_file(const String &file_path) {
+	_cache_lock.write_lock();
+
 	RegisteredFileEntry e;
 	e.orig_path = file_path;
 	e.lowercase_path = file_path.to_lower();
 
 	_registered_files.push_back(e);
+
+	_cache_lock.write_unlock();
 }
 
 void FileCache::wwwroot_deregister_file(const String &file_path) {
+	_cache_lock.write_lock();
+
 	for (int i = 0; i < _registered_files.size(); ++i) {
 		const RegisteredFileEntry &e = _registered_files[i];
 
 		if (file_path == e.orig_path) {
 			_registered_files.remove(i);
+			_cache_lock.write_unlock();
 			return;
 		}
 	}
+
+	_cache_lock.write_unlock();
 }
 
 bool FileCache::wwwroot_has_file(const String &file_path) {
 	//return registered_files.has(file_path);
 
-	for (int i = 0; i < _registered_files.size(); ++i) {
-		const RegisteredFileEntry &e = _registered_files[i];
+	if (_path_cache_mode == PATH_CACHE_MODE_OFF) {
+		String absp = DirAccess::get_filesystem_abspath_for(_wwwroot + file_path);
 
-		if (file_path == e.lowercase_path) {
-			return true;
+		//likely a directory walking attempt. e.g. ../../../../../etc/passwd
+		if (!absp.begins_with(_wwwroot_abs)) {
+			return false;
 		}
+
+		return FileAccess::exists(absp);
+
+	} else if (_path_cache_mode == PATH_CACHE_MODE_STATIC) {
+		_cache_lock.read_lock();
+
+		for (int i = 0; i < _registered_files.size(); ++i) {
+			const RegisteredFileEntry &e = _registered_files[i];
+
+			if (file_path == e.lowercase_path) {
+				_cache_lock.read_unlock();
+				return true;
+			}
+		}
+
+		_cache_lock.read_unlock();
 	}
 
 	return false;
 }
 
 int FileCache::wwwroot_get_file_index(const String &file_path) {
+	_cache_lock.read_lock();
+
 	for (int i = 0; i < _registered_files.size(); ++i) {
 		const RegisteredFileEntry &e = _registered_files[i];
 
 		if (file_path == e.lowercase_path) {
+			_cache_lock.read_unlock();
 			return i;
 		}
+	}
+
+	_cache_lock.read_unlock();
+
+	if (_path_cache_mode == PATH_CACHE_MODE_OFF) {
+		String np = _wwwroot;
+		np.append_path(file_path);
+
+		String absp = DirAccess::get_filesystem_abspath_for(np);
+
+		//likely a directory walking attempt. e.g. ../../../../../etc/passwd
+		if (!absp.begins_with(_wwwroot_abs)) {
+			return -1;
+		}
+
+		if (!FileAccess::exists(absp)) {
+			return -1;
+		}
+
+		RegisteredFileEntry e;
+		e.orig_path = file_path;
+		e.lowercase_path = file_path.to_lower();
+
+		_cache_lock.write_lock();
+
+		_registered_files.push_back(e);
+
+		int s = _registered_files.size() - 1;
+
+		_cache_lock.write_unlock();
+
+		return s;
 	}
 
 	return -1;
 }
 
 String FileCache::wwwroot_get_file_orig_path(const int index) {
-	ERR_FAIL_INDEX_V(index, _registered_files.size(), "");
+	_cache_lock.read_lock();
 
-	return _registered_files[index].orig_path;
+	if (index < 0 || index >= _registered_files.size()) {
+		_cache_lock.read_unlock();
+		ERR_FAIL_V("");
+	}
+
+	String s = _registered_files[index].orig_path;
+
+	_cache_lock.read_unlock();
+
+	return s;
 }
 
 String FileCache::wwwroot_get_file_orig_path_abs(const int index) {
@@ -111,18 +229,15 @@ String FileCache::wwwroot_get_file_orig_path_abs(const int index) {
 }
 
 void FileCache::wwwroot_refresh_cache() {
-	_lock.write_lock();
-
+	_cache_lock.write_lock();
 	_registered_files.clear();
+	_cache_lock.write_unlock();
 
-	if (_wwwroot_orig != "") {
-		_wwwroot = _wwwroot_orig; //DirAccess::get_filesystem_abspath_for(_wwwroot_orig);
-		_wwwroot = _wwwroot.path_clean_end_slash();
-
-		wwwroot_evaluate_dir(_wwwroot);
+	if (_path_cache_mode == PATH_CACHE_MODE_STATIC) {
+		if (_wwwroot != "") {
+			wwwroot_evaluate_dir(_wwwroot);
+		}
 	}
-
-	_lock.write_unlock();
 }
 
 void FileCache::wwwroot_evaluate_dir(const String &path, const bool should_exist) {
@@ -158,9 +273,9 @@ void FileCache::wwwroot_evaluate_dir(const String &path, const bool should_exist
 bool FileCache::get_cached_body(const String &path, String *body) {
 	//TODO ERROR MACRO body == null
 
-	_lock.read_lock();
+	_body_lock.read_lock();
 	CacheEntry *e = cache_map[path];
-	_lock.read_unlock();
+	_body_lock.read_unlock();
 
 	if (!e) {
 		return false;
@@ -183,9 +298,9 @@ bool FileCache::get_cached_body(const String &path, String *body) {
 bool FileCache::has_cached_body(const String &path) {
 	//TODO ERROR MACRO body == null
 
-	_lock.read_lock();
+	_body_lock.read_lock();
 	CacheEntry *e = cache_map[path];
-	_lock.read_unlock();
+	_body_lock.read_unlock();
 
 	if (!e) {
 		return false;
@@ -206,9 +321,9 @@ bool FileCache::has_cached_body(const String &path) {
 String FileCache::get_cached_body_bind(const String &path) {
 	//TODO ERROR MACRO body == null
 
-	_lock.read_lock();
+	_body_lock.read_lock();
 	CacheEntry *e = cache_map[path];
-	_lock.read_unlock();
+	_body_lock.read_unlock();
 
 	if (!e) {
 		return "";
@@ -227,7 +342,7 @@ String FileCache::get_cached_body_bind(const String &path) {
 }
 
 void FileCache::set_cached_body(const String &path, const String &body) {
-	_lock.write_lock();
+	_body_lock.write_lock();
 
 	CacheEntry *e = cache_map[path];
 
@@ -241,13 +356,15 @@ void FileCache::set_cached_body(const String &path, const String &body) {
 	e->timestamp = current_timestamp;
 	e->body = body;
 
-	_lock.write_unlock();
+	_body_lock.write_unlock();
 }
 
 void FileCache::clear() {
-	_lock.write_lock();
-
+	_cache_lock.write_lock();
 	_registered_files.clear();
+	_cache_lock.write_unlock();
+
+	_body_lock.write_lock();
 
 	for (RBMap<String, CacheEntry *>::Element *E = cache_map.front(); E; E++) {
 		CacheEntry *ce = E->get();
@@ -259,11 +376,12 @@ void FileCache::clear() {
 
 	cache_map.clear();
 
-	_lock.write_unlock();
+	_body_lock.write_unlock();
 }
 
 FileCache::FileCache() {
 	cache_invalidation_time = 0;
+	_path_cache_mode = PATH_CACHE_MODE_OFF;
 }
 
 FileCache::~FileCache() {
@@ -271,11 +389,17 @@ FileCache::~FileCache() {
 }
 
 void FileCache::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_path_cache_mode"), &FileCache::get_path_cache_mode);
+	ClassDB::bind_method(D_METHOD("set_path_cache_mode", "mode"), &FileCache::set_path_cache_mode);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "path_cache_mode", PROPERTY_HINT_ENUM, "Off,Static"), "set_path_cache_mode", "get_path_cache_mode");
+
 	ClassDB::bind_method(D_METHOD("get_wwwroot"), &FileCache::get_wwwroot);
 	ClassDB::bind_method(D_METHOD("set_wwwroot", "val"), &FileCache::set_wwwroot);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "wwwroot"), "set_wwwroot", "get_wwwroot");
 
 	ClassDB::bind_method(D_METHOD("get_wwwroot_abs"), &FileCache::get_wwwroot_abs);
+
+	ClassDB::bind_method(D_METHOD("wwwroot_get_file_abspath", "file_path"), &FileCache::wwwroot_get_file_abspath);
 
 	ClassDB::bind_method(D_METHOD("get_cache_invalidation_time"), &FileCache::get_cache_invalidation_time);
 	ClassDB::bind_method(D_METHOD("set_cache_invalidation_time", "val"), &FileCache::set_cache_invalidation_time);
@@ -295,4 +419,7 @@ void FileCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_cached_body", "path", "body"), &FileCache::set_cached_body);
 
 	ClassDB::bind_method(D_METHOD("clear"), &FileCache::clear);
+
+	BIND_ENUM_CONSTANT(PATH_CACHE_MODE_OFF);
+	BIND_ENUM_CONSTANT(PATH_CACHE_MODE_STATIC);
 }

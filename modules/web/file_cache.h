@@ -45,6 +45,15 @@ class FileCache : public Reference {
 	GDCLASS(FileCache, Reference);
 
 public:
+	enum PathCacheMode {
+		PATH_CACHE_MODE_OFF,
+		PATH_CACHE_MODE_STATIC,
+		//TIMED?
+	};
+
+	PathCacheMode get_path_cache_mode() const;
+	void set_path_cache_mode(const PathCacheMode p_mode);
+
 	String get_wwwroot();
 	void set_wwwroot(const String &val);
 
@@ -55,6 +64,8 @@ public:
 
 	//Note: file path should be the url you want to access the file with, including lead slash
 	//e.g. http://127.0.0.1/a/b/d.jpg -> /a/b/d.jpg
+	String wwwroot_get_file_abspath(const String &file_path);
+
 	void wwwroot_register_file(const String &file_path);
 	void wwwroot_deregister_file(const String &file_path);
 	bool wwwroot_has_file(const String &file_path);
@@ -62,6 +73,7 @@ public:
 	int wwwroot_get_file_index(const String &file_path);
 	String wwwroot_get_file_orig_path(const int index);
 	String wwwroot_get_file_orig_path_abs(const int index);
+
 	void wwwroot_refresh_cache();
 	void wwwroot_evaluate_dir(const String &path, const bool should_exist = true);
 
@@ -89,11 +101,14 @@ protected:
 		}
 	};
 
-	RWLock _lock;
+	RWLock _body_lock;
 	RBMap<String, CacheEntry *> cache_map;
 
+	RWLock _cache_lock;
+	PathCacheMode _path_cache_mode;
 	String _wwwroot_orig;
 	String _wwwroot;
+	String _wwwroot_abs;
 
 	struct RegisteredFileEntry {
 		String orig_path;
@@ -102,5 +117,7 @@ protected:
 
 	Vector<RegisteredFileEntry> _registered_files;
 };
+
+VARIANT_ENUM_CAST(FileCache::PathCacheMode);
 
 #endif

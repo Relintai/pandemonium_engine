@@ -167,12 +167,11 @@ bool WebRoot::process_middlewares(Ref<WebServerRequest> request) {
 
 bool WebRoot::try_send_wwwroot_file(Ref<WebServerRequest> request) {
 	String path = request->get_path_full();
-	path = path.to_lower();
 
-	int file_indx = _www_root_file_cache->wwwroot_get_file_index(path);
+	String file_path = _www_root_file_cache->wwwroot_get_file_abspath(path);
 
-	if (file_indx != -1) {
-		send_file(_www_root_file_cache->wwwroot_get_file_orig_path(file_indx), request);
+	if (!file_path.empty()) {
+		request->send_file(file_path);
 
 		return true;
 	}
