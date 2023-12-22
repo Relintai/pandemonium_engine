@@ -40,7 +40,7 @@
 
 #define WORKSPACE_MARGIN Vector2(10, 10)
 
-class RTilesetEditorContext;
+class TilesetEditorContext;
 class ScrollContainer;
 class SpinBox;
 class Label;
@@ -56,7 +56,7 @@ class CheckBox;
 
 class TileSetEditor : public HSplitContainer {
 	friend class TileSetEditorPlugin;
-	friend class RTilesetEditorContext;
+	friend class TilesetEditorContext;
 
 	GDCLASS(TileSetEditor, HSplitContainer);
 
@@ -115,7 +115,7 @@ class TileSetEditor : public HSplitContainer {
 	};
 
 	Ref<TileSet> tileset;
-	RTilesetEditorContext *helper;
+	TilesetEditorContext *helper;
 	EditorNode *editor;
 	UndoRedo *undo_redo;
 
@@ -264,9 +264,9 @@ private:
 	void set_current_tile(int p_id);
 };
 
-class RTilesetEditorContext : public Object {
+class TilesetEditorContext : public Object {
 	friend class TileSetEditor;
-	GDCLASS(RTilesetEditorContext, Object);
+	GDCLASS(TilesetEditorContext, Object);
 
 	Ref<TileSet> tileset;
 	TileSetEditor *tileset_editor;
@@ -286,7 +286,7 @@ protected:
 	static void _bind_methods();
 
 public:
-	RTilesetEditorContext(TileSetEditor *p_tileset_editor);
+	TilesetEditorContext(TileSetEditor *p_tileset_editor);
 };
 
 class TileSetEditorPlugin : public EditorPlugin {

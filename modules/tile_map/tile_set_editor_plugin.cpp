@@ -680,7 +680,7 @@ TileSetEditor::TileSetEditor(EditorNode *p_editor) {
 	texture_dialog->connect("files_selected", this, "_on_textures_added");
 
 	//---------------
-	helper = memnew(RTilesetEditorContext(this));
+	helper = memnew(TilesetEditorContext(this));
 	tile_names_visible = false;
 
 	// Config scale.
@@ -3463,16 +3463,16 @@ Ref<Texture> TileSetEditor::get_current_texture() {
 	}
 }
 
-void RTilesetEditorContext::set_tileset(const Ref<TileSet> &p_tileset) {
+void TilesetEditorContext::set_tileset(const Ref<TileSet> &p_tileset) {
 	tileset = p_tileset;
 }
 
-void RTilesetEditorContext::set_snap_options_visible(bool p_visible) {
+void TilesetEditorContext::set_snap_options_visible(bool p_visible) {
 	snap_options_visible = p_visible;
 	_change_notify("");
 }
 
-bool RTilesetEditorContext::_set(const StringName &p_name, const Variant &p_value) {
+bool TilesetEditorContext::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name.operator String();
 
 	if (name == "options_offset") {
@@ -3540,7 +3540,7 @@ bool RTilesetEditorContext::_set(const StringName &p_name, const Variant &p_valu
 	return false;
 }
 
-bool RTilesetEditorContext::_get(const StringName &p_name, Variant &r_ret) const {
+bool TilesetEditorContext::_get(const StringName &p_name, Variant &r_ret) const {
 	String name = p_name.operator String();
 	bool v = false;
 
@@ -3609,7 +3609,7 @@ bool RTilesetEditorContext::_get(const StringName &p_name, Variant &r_ret) const
 	return v;
 }
 
-void RTilesetEditorContext::_get_property_list(List<PropertyInfo> *p_list) const {
+void TilesetEditorContext::_get_property_list(List<PropertyInfo> *p_list) const {
 	if (snap_options_visible) {
 		p_list->push_back(PropertyInfo(Variant::NIL, "Snap Options", PROPERTY_HINT_NONE, "options_", PROPERTY_USAGE_GROUP));
 		p_list->push_back(PropertyInfo(Variant::VECTOR2, "options_offset"));
@@ -3659,11 +3659,11 @@ void RTilesetEditorContext::_get_property_list(List<PropertyInfo> *p_list) const
 	}
 }
 
-void RTilesetEditorContext::_bind_methods() {
-	ClassDB::bind_method("_hide_script_from_inspector", &RTilesetEditorContext::_hide_script_from_inspector);
+void TilesetEditorContext::_bind_methods() {
+	ClassDB::bind_method("_hide_script_from_inspector", &TilesetEditorContext::_hide_script_from_inspector);
 }
 
-RTilesetEditorContext::RTilesetEditorContext(TileSetEditor *p_tileset_editor) {
+TilesetEditorContext::TilesetEditorContext(TileSetEditor *p_tileset_editor) {
 	tileset_editor = p_tileset_editor;
 	snap_options_visible = false;
 }
@@ -3675,7 +3675,7 @@ void TileSetEditorPlugin::edit(Object *p_node) {
 }
 
 bool TileSetEditorPlugin::handles(Object *p_node) const {
-	return p_node->is_class("TileSet") || p_node->is_class("RTilesetEditorContext");
+	return p_node->is_class("TileSet") || p_node->is_class("TilesetEditorContext");
 }
 
 void TileSetEditorPlugin::make_visible(bool p_visible) {
