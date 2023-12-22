@@ -926,12 +926,16 @@ String String::substr(int p_from, int p_chars) const {
 String String::substr_index(const int start_index, const int end_index) const {
 	int s = length();
 
-	if (start_index < 0 || start_index >= s || end_index < 0 || start_index >= s) {
+	if (start_index < 0 || start_index >= s || end_index < 0) {
 		return "";
 	}
 
 	if (start_index > end_index) {
 		return "";
+	}
+
+	if (end_index >= s) {
+		return substr(start_index, (s - 1) - start_index);
 	}
 
 	return substr(start_index, end_index - start_index);
