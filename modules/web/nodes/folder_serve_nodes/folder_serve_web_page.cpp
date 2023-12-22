@@ -59,12 +59,11 @@ void FolderServeWebPage::_handle_request_main(Ref<WebServerRequest> request) {
 	}
 
 	String file_name = request->get_path(true, false);
-	file_name = file_name.to_lower();
 
-	int file_indx = _file_cache->wwwroot_get_file_index(file_name);
+	String file_path = _file_cache->wwwroot_get_file_abspath(file_name);
 
-	if (file_indx != -1) {
-		request->send_file(_file_cache->wwwroot_get_file_orig_path_abs(file_indx));
+	if (!file_path.empty()) {
+		request->send_file(file_path);
 		return;
 	}
 
@@ -76,13 +75,7 @@ void FolderServeWebPage::_handle_request_main(Ref<WebServerRequest> request) {
 void FolderServeWebPage::load() {
 	_file_cache->clear();
 
-	if (_serve_folder == "") {
-		_file_cache->set_wwwroot(_serve_folder);
-		_file_cache->clear();
-	} else {
-		_file_cache->set_wwwroot(_serve_folder);
-		_file_cache->wwwroot_refresh_cache();
-	}
+	_file_cache->set_wwwroot(_serve_folder);
 }
 
 void FolderServeWebPage::_notification(const int what) {

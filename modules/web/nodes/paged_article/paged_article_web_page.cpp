@@ -125,13 +125,10 @@ void PagedArticleWebPage::_handle_request_main(Ref<WebServerRequest> request) {
 
 	if (request->get_remaining_segment_count() > 1 && rp == "files") {
 		String file_name = "/" + request->get_path_segment(request->get_current_segment_index() + 1);
+		String file_path = file_cache->wwwroot_get_file_abspath(file_name);
 
-		int file_indx = file_cache->wwwroot_get_file_index(file_name);
-
-		if (file_indx != -1) {
-			String fp = file_cache->wwwroot_get_file_orig_path_abs(file_indx);
-
-			request->send_file(fp);
+		if (!file_path.empty()) {
+			request->send_file(file_path);
 			return;
 		}
 	}
@@ -248,8 +245,6 @@ void PagedArticleWebPage::_load() {
 		} else {
 			file_cache->set_wwwroot(serve_folder);
 		}
-
-		file_cache->wwwroot_refresh_cache();
 	}
 
 	if (summary.empty()) {

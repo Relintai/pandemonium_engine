@@ -45,13 +45,7 @@ String WebRoot::get_www_root_path() {
 void WebRoot::set_www_root_path(const String &val) {
 	_www_root_path = val;
 
-	if (val == "") {
-		_www_root_file_cache->set_wwwroot(val);
-		_www_root_file_cache->clear();
-	} else {
-		_www_root_file_cache->set_wwwroot(val);
-		_www_root_file_cache->wwwroot_refresh_cache();
-	}
+	_www_root_file_cache->set_wwwroot(val);
 }
 
 Ref<FileCache> WebRoot::get_www_root_file_cache() {
@@ -221,10 +215,6 @@ void WebRoot::_notification(int p_what) {
 			Ref<WebServerRequest> r = _update_registered_requests[i];
 
 			r->update();
-		}
-	} else if (p_what == NOTIFICATION_READY) {
-		if (!_www_root_path.empty()) {
-			_www_root_file_cache->wwwroot_refresh_cache();
 		}
 	}
 }
