@@ -174,6 +174,7 @@ void PagedArticleWebPage::_load() {
 	ERR_FAIL_COND_MSG(!dir, "Error opening PagedArticleWebPage::folder! folder: " + _articles_folder_abs);
 
 	Vector<String> files;
+	String summary_file;
 
 	dir->list_dir_begin();
 
@@ -181,7 +182,11 @@ void PagedArticleWebPage::_load() {
 
 	while (!file.empty()) {
 		if (!dir->current_is_dir()) {
-			files.push_back(file);
+			if (file.get_basename() == "summary") {
+				summary_file = file;
+			} else {
+				files.push_back(file);
+			}
 		}
 
 		file = dir->get_next();
@@ -218,12 +223,6 @@ void PagedArticleWebPage::_load() {
 			fd = r->render_to_html(fd);
 		}
 
-		if (files[i].get_file().get_basename() == "summary") {
-			summary = fd;
-
-			continue;
-		}
-
 		String pagination;
 
 		pagination = HTMLPaginator::get_pagination_links_old(get_full_uri(false), files, i, _max_pagination_links);
@@ -235,6 +234,29 @@ void PagedArticleWebPage::_load() {
 		finals += pagination;
 
 		pages[files[i]] = finals;
+	}
+
+	if (!summary_file.empty()) {
+		String file_path = _articles_folder_abs;
+		file_path += summary_file;
+
+		String fd;
+
+		FileAccess *f = FileAccess::open(file_path, FileAccess::READ);
+
+		if (!f) {
+			ERR_PRINT("Error opening file! " + file_path);
+		}
+
+		fd = f->get_as_utf8_string();
+		f->close();
+		memdelete(f);
+
+		if (summary_file.get_extension() == "md") {
+			fd = r->render_to_html(fd);
+		}
+
+		summary = fd;
 	}
 
 	file_cache->clear();
