@@ -36,31 +36,37 @@
 
 #include "core/engine.h"
 #include "data_buffer.h"
+#include "input_network_encoder.h"
 #include "networked_controller.h"
 #include "scene_diff.h"
 #include "scene_synchronizer.h"
 #include "scene_synchronizer_debugger.h"
-#include "input_network_encoder.h"
 
-void register_network_synchronizer_types() {
-	ClassDB::register_class<DataBuffer>();
-	ClassDB::register_class<SceneDiff>();
-	ClassDB::register_class<NetworkedController>();
-	ClassDB::register_class<SceneSynchronizer>();
-	ClassDB::register_class<SceneSynchronizerDebugger>();
-	ClassDB::register_class<InputNetworkEncoder>();
+void register_network_synchronizer_types(ModuleRegistrationLevel p_level) {
+	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
+		ClassDB::register_class<SceneSynchronizerDebugger>();
+		memnew(SceneSynchronizerDebugger);
+		Engine::get_singleton()->add_singleton(Engine::Singleton("SceneSynchronizerDebugger", SceneSynchronizerDebugger::singleton()));
 
-	memnew(SceneSynchronizerDebugger);
-	Engine::get_singleton()->add_singleton(Engine::Singleton("SceneSynchronizerDebugger", SceneSynchronizerDebugger::singleton()));
+		GLOBAL_DEF("NetworkSynchronizer/debug_server_speedup", false);
+		GLOBAL_DEF("NetworkSynchronizer/debug_doll_speedup", false);
+		GLOBAL_DEF("NetworkSynchronizer/log_debug_warnings_and_messages", true);
+		GLOBAL_DEF("NetworkSynchronizer/debugger/dump_enabled", false);
+		GLOBAL_DEF("NetworkSynchronizer/debugger/dump_classes", Array());
+		GLOBAL_DEF("NetworkSynchronizer/debugger/log_debug_fps_warnings", true);
+	}
 
-	GLOBAL_DEF("NetworkSynchronizer/debug_server_speedup", false);
-	GLOBAL_DEF("NetworkSynchronizer/debug_doll_speedup", false);
-	GLOBAL_DEF("NetworkSynchronizer/log_debug_warnings_and_messages", true);
-	GLOBAL_DEF("NetworkSynchronizer/debugger/dump_enabled", false);
-	GLOBAL_DEF("NetworkSynchronizer/debugger/dump_classes", Array());
-	GLOBAL_DEF("NetworkSynchronizer/debugger/log_debug_fps_warnings", true);
+	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<DataBuffer>();
+		ClassDB::register_class<SceneDiff>();
+		ClassDB::register_class<NetworkedController>();
+		ClassDB::register_class<SceneSynchronizer>();
+		ClassDB::register_class<InputNetworkEncoder>();
+	}
 }
 
-void unregister_network_synchronizer_types() {
-	memdelete(SceneSynchronizerDebugger::singleton());
+void unregister_network_synchronizer_types(ModuleRegistrationLevel p_level) {
+	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
+		memdelete(SceneSynchronizerDebugger::singleton());
+	}
 }
