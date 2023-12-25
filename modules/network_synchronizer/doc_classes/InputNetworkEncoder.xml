@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="InputNetworkEncoder" inherits="Resource" version="4.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="are_different" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="buffer_a" type="Object" />
+			<argument index="1" name="buffer_b" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="count_size" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="buffer" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="decode" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="buffer" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="encode" qualifiers="const">
+			<return type="void" />
+			<argument index="0" name="inputs" type="Array" />
+			<argument index="1" name="buffer" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="find_input_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="get_defaults" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="register_input">
+			<return type="int" />
+			<argument index="0" name="name" type="StringName" />
+			<argument index="1" name="default_value" type="Variant" />
+			<argument index="2" name="type" type="int" enum="DataBuffer.DataType" />
+			<argument index="3" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" />
+			<argument index="4" name="comparison_floating_point_precision" type="float" default="1e-05" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

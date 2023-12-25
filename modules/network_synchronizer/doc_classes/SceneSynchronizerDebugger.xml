@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SceneSynchronizerDebugger" inherits="Node" version="4.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_node_message">
+			<return type="void" />
+			<argument index="0" name="node" type="Node" />
+			<argument index="1" name="message" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="add_node_message_by_path">
+			<return type="void" />
+			<argument index="0" name="node_path" type="String" />
+			<argument index="1" name="message" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="debug_error">
+			<return type="void" />
+			<argument index="0" name="node" type="Node" />
+			<argument index="1" name="message" type="String" />
+			<argument index="2" name="silent" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="debug_print">
+			<return type="void" />
+			<argument index="0" name="node" type="Node" />
+			<argument index="1" name="message" type="String" />
+			<argument index="2" name="silent" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="debug_warning">
+			<return type="void" />
+			<argument index="0" name="node" type="Node" />
+			<argument index="1" name="message" type="String" />
+			<argument index="2" name="silent" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="on_node_added">
+			<return type="void" />
+			<argument index="0" name="arg0" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="on_node_removed">
+			<return type="void" />
+			<argument index="0" name="arg0" type="Node" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

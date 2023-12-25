@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NetworkedController" inherits="Node" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="NetworkedController" inherits="Node" version="4.2">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -81,7 +81,6 @@
 		</method>
 		<method name="player_get_pretended_delta" qualifiers="const">
 			<return type="float" />
-			<argument index="0" name="iterations_per_seconds" type="int" />
 			<description>
 			</description>
 		</method>
@@ -115,24 +114,30 @@
 		</member>
 		<member name="input_storage_size" type="int" setter="set_player_input_storage_size" getter="get_player_input_storage_size" default="180">
 		</member>
-		<member name="max_frames_delay" type="int" setter="set_max_frames_delay" getter="get_max_frames_delay" default="6">
+		<member name="max_frames_delay" type="int" setter="set_max_frames_delay" getter="get_max_frames_delay" default="7">
 		</member>
-		<member name="max_redundant_inputs" type="int" setter="set_max_redundant_inputs" getter="get_max_redundant_inputs" default="5">
+		<member name="max_redundant_inputs" type="int" setter="set_max_redundant_inputs" getter="get_max_redundant_inputs" default="6">
 		</member>
-		<member name="min_frames_delay" type="int" setter="set_min_frames_delay" getter="get_min_frames_delay" default="1">
-		</member>
-		<member name="net_sensitivity" type="float" setter="set_net_sensitivity" getter="get_net_sensitivity" default="0.1">
+		<member name="min_frames_delay" type="int" setter="set_min_frames_delay" getter="get_min_frames_delay" default="0">
 		</member>
 		<member name="network_traced_frames" type="int" setter="set_network_traced_frames" getter="get_network_traced_frames" default="120">
 		</member>
 		<member name="server_controlled" type="bool" setter="set_server_controlled" getter="get_server_controlled" default="false">
 		</member>
-		<member name="tick_acceleration" type="float" setter="set_tick_acceleration" getter="get_tick_acceleration" default="2.0">
+		<member name="tick_acceleration" type="float" setter="set_tick_acceleration" getter="get_tick_acceleration" default="5.0">
 		</member>
-		<member name="tick_speedup_notification_delay" type="float" setter="set_tick_speedup_notification_delay" getter="get_tick_speedup_notification_delay" default="0.33">
+		<member name="tick_speedup_notification_delay" type="int" setter="set_tick_speedup_notification_delay" getter="get_tick_speedup_notification_delay" default="600">
 		</member>
 	</members>
 	<signals>
+		<signal name="client_speedup_adjusted">
+			<argument index="0" name="input_worst_receival_time_ms" type="int" />
+			<argument index="1" name="optimal_frame_delay" type="int" />
+			<argument index="2" name="current_frame_delay" type="int" />
+			<argument index="3" name="distance_to_optimal" type="int" />
+			<description>
+			</description>
+		</signal>
 		<signal name="controller_reset">
 			<description>
 			</description>
@@ -142,6 +147,11 @@
 			</description>
 		</signal>
 		<signal name="doll_sync_started">
+			<description>
+			</description>
+		</signal>
+		<signal name="input_missed">
+			<argument index="0" name="missing_input_id" type="int" />
 			<description>
 			</description>
 		</signal>

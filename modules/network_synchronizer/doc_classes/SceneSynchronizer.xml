@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SceneSynchronizer" inherits="Node" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="SceneSynchronizer" inherits="Node" version="4.2">
 	<brief_description>
 		The `SceneSynchronizer` is used to synchronize all the peers using server authoritative networking model.
 	</brief_description>
@@ -49,7 +49,7 @@
 		<method name="find_action_id" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="event_name" type="String" />
+			<argument index="1" name="event_name" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -79,7 +79,7 @@
 		<method name="get_variable_id">
 			<return type="int" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="variable" type="String" />
+			<argument index="1" name="variable" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -133,11 +133,11 @@
 		<method name="register_action">
 			<return type="int" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="action_func" type="String" />
-			<argument index="2" name="action_encoding_func" type="String" />
+			<argument index="1" name="action_func" type="StringName" />
+			<argument index="2" name="action_encoding_func" type="StringName" />
 			<argument index="3" name="can_client_trigger" type="bool" default="false" />
 			<argument index="4" name="wait_server_validation" type="bool" default="false" />
-			<argument index="5" name="server_action_validation_func" type="String" default="&quot;&quot;" />
+			<argument index="5" name="server_action_validation_func" type="StringName" default="@&quot;&quot;" />
 			<description>
 				Register an new action.
 				`node` The node that owns the event
@@ -157,15 +157,15 @@
 		<method name="register_process">
 			<return type="void" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="function" type="String" />
+			<argument index="1" name="function" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="register_variable">
 			<return type="void" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="variable" type="String" />
-			<argument index="2" name="on_change_notify" type="String" default="&quot;&quot;" />
+			<argument index="1" name="variable" type="StringName" />
+			<argument index="2" name="on_change_notify" type="StringName" default="@&quot;&quot;" />
 			<argument index="3" name="flags" type="int" enum="NetEventFlag" default="17" />
 			<description>
 			</description>
@@ -198,7 +198,7 @@
 		<method name="set_skip_rewinding">
 			<return type="void" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="variable" type="String" />
+			<argument index="1" name="variable" type="StringName" />
 			<argument index="2" name="skip_rewinding" type="bool" />
 			<description>
 			</description>
@@ -230,9 +230,9 @@
 		<method name="track_variable_changes">
 			<return type="void" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="variable" type="String" />
+			<argument index="1" name="variable" type="StringName" />
 			<argument index="2" name="object" type="Object" />
-			<argument index="3" name="method" type="String" />
+			<argument index="3" name="method" type="StringName" />
 			<argument index="4" name="flags" type="int" enum="NetEventFlag" default="17" />
 			<description>
 			</description>
@@ -252,7 +252,7 @@
 		<method name="trigger_action_by_name">
 			<return type="void" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="event_name" type="String" />
+			<argument index="1" name="event_name" type="StringName" />
 			<argument index="2" name="arguments" type="Array" default="[  ]" />
 			<argument index="3" name="recipients_peers" type="PoolIntArray" default="PoolIntArray(  )" />
 			<description>
@@ -270,23 +270,23 @@
 		<method name="unregister_process">
 			<return type="void" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="function" type="String" />
+			<argument index="1" name="function" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="unregister_variable">
 			<return type="void" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="variable" type="String" />
+			<argument index="1" name="variable" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="untrack_variable_changes">
 			<return type="void" />
 			<argument index="0" name="node" type="Node" />
-			<argument index="1" name="variable" type="String" />
+			<argument index="1" name="variable" type="StringName" />
 			<argument index="2" name="object" type="Object" />
-			<argument index="3" name="method" type="String" />
+			<argument index="3" name="method" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -302,6 +302,15 @@
 		</member>
 	</members>
 	<signals>
+		<signal name="desync_detected">
+			<argument index="0" name="input_id" type="int" />
+			<argument index="1" name="node" type="Object" />
+			<argument index="2" name="var_names" type="Array" />
+			<argument index="3" name="client_values" type="Array" />
+			<argument index="4" name="server_values" type="Array" />
+			<description>
+			</description>
+		</signal>
 		<signal name="sync_paused">
 			<description>
 			</description>
