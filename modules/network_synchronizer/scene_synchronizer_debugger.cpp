@@ -392,6 +392,7 @@ String type_to_string(Variant::Type p_type) {
 	switch (p_type) {
 		case Variant::NIL:
 			return "NIL";
+
 		case Variant::BOOL:
 			return "BOOL";
 		case Variant::INT:
@@ -400,36 +401,55 @@ String type_to_string(Variant::Type p_type) {
 			return "REAL";
 		case Variant::STRING:
 			return "STRING";
-		case Variant::VECTOR2:
-			return "VECTOR2";
+
 		case Variant::RECT2:
 			return "RECT2";
+		case Variant::RECT2I:
+			return "RECT2I";
+
+		case Variant::VECTOR2:
+			return "VECTOR2";
+		case Variant::VECTOR2I:
+			return "VECTOR2I";
 		case Variant::VECTOR3:
 			return "VECTOR3";
-		case Variant::TRANSFORM2D:
-			return "TRANSFORM2D";
+		case Variant::VECTOR3I:
+			return "VECTOR3I";
+		case Variant::VECTOR4:
+			return "VECTOR4";
+		case Variant::VECTOR4I:
+			return "VECTOR4I";
+
 		case Variant::PLANE:
 			return "PLANE";
 		case Variant::QUATERNION:
-			return "QUAT";
+			return "QUATERNION";
 		case Variant::AABB:
 			return "AABB";
 		case Variant::BASIS:
 			return "BASIS";
 		case Variant::TRANSFORM:
 			return "TRANSFORM";
+		case Variant::TRANSFORM2D:
+			return "TRANSFORM2D";
+		case Variant::PROJECTION:
+			return "PROJECTION";
+
 		case Variant::COLOR:
 			return "COLOR";
 		case Variant::NODE_PATH:
 			return "NODE_PATH";
 		case Variant::RID:
-			return "_RID";
+			return "RID";
 		case Variant::OBJECT:
 			return "OBJECT";
+		case Variant::STRING_NAME:
+			return "STRING_NAME";
 		case Variant::DICTIONARY:
 			return "DICTIONARY";
 		case Variant::ARRAY:
 			return "ARRAY";
+
 		case Variant::POOL_BYTE_ARRAY:
 			return "POOL_BYTE_ARRAY";
 		case Variant::POOL_INT_ARRAY:
@@ -440,10 +460,19 @@ String type_to_string(Variant::Type p_type) {
 			return "POOL_STRING_ARRAY";
 		case Variant::POOL_VECTOR2_ARRAY:
 			return "POOL_VECTOR2_ARRAY";
+		case Variant::POOL_VECTOR2I_ARRAY:
+			return "POOL_VECTOR2I_ARRAY";
 		case Variant::POOL_VECTOR3_ARRAY:
 			return "POOL_VECTOR3_ARRAY";
+		case Variant::POOL_VECTOR3I_ARRAY:
+			return "POOL_VECTOR3I_ARRAY";
+		case Variant::POOL_VECTOR4_ARRAY:
+			return "POOL_VECTOR4_ARRAY";
+		case Variant::POOL_VECTOR4I_ARRAY:
+			return "POOL_VECTOR4I_ARRAY";
 		case Variant::POOL_COLOR_ARRAY:
 			return "POOL_COLOR_ARRAY";
+
 		case Variant::VARIANT_MAX:
 			return "VARIANT_MAX";
 	}
