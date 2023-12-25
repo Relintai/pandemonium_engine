@@ -34,7 +34,7 @@
 
 #include "register_types.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "data_buffer.h"
 #include "input_network_encoder.h"
 #include "networked_controller.h"

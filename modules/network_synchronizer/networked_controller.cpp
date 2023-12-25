@@ -34,7 +34,7 @@
 
 #include "networked_controller.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/io/marshalls.h"
 #include "core/os/os.h"
 #include "scene_synchronizer.h"
@@ -634,7 +634,7 @@ void NetworkedController::_notification(int p_what) {
 			// This can't happen, since only the doll are processed here.
 			CRASH_COND(is_doll_controller() == false);
 #endif
-			const double physics_ticks_per_second = Engine::get_singleton()->get_iterations_per_second();
+			const double physics_ticks_per_second = Engine::get_singleton()->get_physics_ticks_per_second();
 			const double delta = 1.0 / physics_ticks_per_second;
 			static_cast<DollController *>(controller)->process(delta);
 
@@ -1044,7 +1044,7 @@ bool ServerController::fetch_next_input(real_t p_delta) {
 void ServerController::set_frame_input(const FrameSnapshot &p_frame_snapshot) {
 	// If `previous_frame_received_timestamp` is bigger, the controller was disabled, so nothing to do.
 	if (previous_frame_received_timestamp < p_frame_snapshot.received_timestamp) {
-		const double physics_ticks_per_second = Engine::get_singleton()->get_iterations_per_second();
+		const double physics_ticks_per_second = Engine::get_singleton()->get_physics_ticks_per_second();
 		const uint32_t frame_delta_ms = (1.0 / physics_ticks_per_second) * 1000.0;
 
 		const uint32_t receival_time = p_frame_snapshot.received_timestamp - previous_frame_received_timestamp;
@@ -1673,7 +1673,7 @@ void DollController::receive_epoch(const Vector<uint8_t> &p_data) {
 			net_poorness);
 
 	const real_t epochs_span = target_virtual_delay - current_virtual_delay;
-	const real_t frame_time = 1.0 / real_t(Engine::get_singleton()->get_iterations_per_second());
+	const real_t frame_time = 1.0 / real_t(Engine::get_singleton()->get_physics_ticks_per_second());
 	interpolation_time_window =
 			next_sync_time +
 			(current_virtual_delay * frame_time) +

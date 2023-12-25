@@ -1,3 +1,6 @@
+#ifndef SCENE_SYNCHRONIZER_H
+#define SCENE_SYNCHRONIZER_H
+
 /*************************************************************************/
 /*  scene_synchronizer.h                                                 */
 /*************************************************************************/
@@ -34,14 +37,11 @@
 
 #include "scene/main/node.h"
 
-#include "core/local_vector.h"
-#include "core/oa_hash_map.h"
+#include "core/containers/local_vector.h"
+#include "core/containers/oa_hash_map.h"
 #include "net_action.h"
 #include "net_utilities.h"
 #include <deque>
-
-#ifndef SCENE_SYNCHRONIZER_H
-#define SCENE_SYNCHRONIZER_H
 
 #include "godot_backward_utility_header.h"
 
@@ -432,8 +432,8 @@ class ServerSynchronizer : public Synchronizer {
 
 	struct Change {
 		bool not_known_before = false;
-		Set<StringName> uknown_vars;
-		Set<StringName> vars;
+		RBSet<StringName> uknown_vars;
+		RBSet<StringName> vars;
 	};
 
 	enum SnapshotGenerationMode {
@@ -515,7 +515,7 @@ class ClientSynchronizer : public Synchronizer {
 		}
 	};
 
-	Set<EndSyncEvent> sync_end_events;
+	RBSet<EndSyncEvent> sync_end_events;
 
 	uint32_t locally_triggered_actions_count = 0;
 	uint32_t actions_input_id = 0;

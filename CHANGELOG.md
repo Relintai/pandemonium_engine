@@ -1352,7 +1352,7 @@ Added an icon for UserModule.
 
 ### Changed
 
-- Renamed Quat to Quaternion for consistency with the other engine math classes.
+- Renamed Quaternion to Quaternion for consistency with the other engine math classes.
 - Removed CameraMatrix, and switched to Projection.
 - Now all Variant math types are structs.
 - Ported form godot4: Reformat structure string operators.

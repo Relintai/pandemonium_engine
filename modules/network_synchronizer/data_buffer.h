@@ -1,3 +1,6 @@
+#ifndef INPUT_BUFFER_H
+#define INPUT_BUFFER_H
+
 /*************************************************************************/
 /*  data_buffer.h                                                        */
 /*************************************************************************/
@@ -32,12 +35,9 @@
 	@author AndreaCatania
 */
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 
 #include "bit_array.h"
-
-#ifndef INPUT_BUFFER_H
-#define INPUT_BUFFER_H
 
 class DataBuffer : public Object {
 	GDCLASS(DataBuffer, Object);

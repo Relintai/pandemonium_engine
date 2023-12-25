@@ -1,3 +1,6 @@
+#ifndef NETWORKED_CONTROLLER_H
+#define NETWORKED_CONTROLLER_H
+
 /*************************************************************************/
 /*  networked_controller.h                                               */
 /*************************************************************************/
@@ -37,9 +40,6 @@
 #include "data_buffer.h"
 #include "net_utilities.h"
 #include <deque>
-
-#ifndef NETWORKED_CONTROLLER_H
-#define NETWORKED_CONTROLLER_H
 
 #include "godot_backward_utility_header.h"
 

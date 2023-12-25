@@ -34,7 +34,7 @@
 
 #include "scene_synchronizer.h"
 
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 #include "core/os/os.h"
 #include "input_network_encoder.h"
 #include "networked_controller.h"
@@ -1548,9 +1548,9 @@ bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second,
 		case Variant::TRANSFORM2D: {
 			const Transform2D a(p_first);
 			const Transform2D b(p_second);
-			if (compare(a.elements[0], b.elements[0], p_tolerance)) {
-				if (compare(a.elements[1], b.elements[1], p_tolerance)) {
-					if (compare(a.elements[2], b.elements[2], p_tolerance)) {
+			if (compare(a.columns[0], b.columns[0], p_tolerance)) {
+				if (compare(a.columns[1], b.columns[1], p_tolerance)) {
+					if (compare(a.columns[2], b.columns[2], p_tolerance)) {
 						return true;
 					}
 				}
@@ -1560,10 +1560,10 @@ bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second,
 		case Variant::VECTOR3:
 			return compare(Vector3(p_first), Vector3(p_second), p_tolerance);
 
-		case Variant::QUAT: {
-			const Quat a = p_first;
-			const Quat b = p_second;
-			const Quat r(a - b); // Element wise subtraction.
+		case Variant::QUATERNION: {
+			const Quaternion a = p_first;
+			const Quaternion b = p_second;
+			const Quaternion r(a - b); // Element wise subtraction.
 			return (r.x * r.x + r.y * r.y + r.z * r.z + r.w * r.w) <= (p_tolerance * p_tolerance);
 		}
 		case Variant::PLANE: {
@@ -1589,9 +1589,9 @@ bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second,
 		case Variant::BASIS: {
 			const Basis a = p_first;
 			const Basis b = p_second;
-			if (compare(a.elements[0], b.elements[0], p_tolerance)) {
-				if (compare(a.elements[1], b.elements[1], p_tolerance)) {
-					if (compare(a.elements[2], b.elements[2], p_tolerance)) {
+			if (compare(a.rows[0], b.rows[0], p_tolerance)) {
+				if (compare(a.rows[1], b.rows[1], p_tolerance)) {
+					if (compare(a.rows[2], b.rows[2], p_tolerance)) {
 						return true;
 					}
 				}
@@ -1602,9 +1602,9 @@ bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second,
 			const Transform a = p_first;
 			const Transform b = p_second;
 			if (compare(a.origin, b.origin, p_tolerance)) {
-				if (compare(a.basis.elements[0], b.basis.elements[0], p_tolerance)) {
-					if (compare(a.basis.elements[1], b.basis.elements[1], p_tolerance)) {
-						if (compare(a.basis.elements[2], b.basis.elements[2], p_tolerance)) {
+				if (compare(a.basis.rows[0], b.basis.rows[0], p_tolerance)) {
+					if (compare(a.basis.rows[1], b.basis.rows[1], p_tolerance)) {
+						if (compare(a.basis.rows[2], b.basis.rows[2], p_tolerance)) {
 							return true;
 						}
 					}
@@ -1886,7 +1886,7 @@ void NoNetSynchronizer::process() {
 
 	SceneSynchronizerDebugger::singleton()->scene_sync_process_start(scene_synchronizer);
 
-	const double physics_ticks_per_second = Engine::get_singleton()->get_iterations_per_second();
+	const double physics_ticks_per_second = Engine::get_singleton()->get_physics_ticks_per_second();
 	const double delta = 1.0 / physics_ticks_per_second;
 
 	// Process the scene
@@ -1969,7 +1969,7 @@ void ServerSynchronizer::process() {
 
 	scene_synchronizer->update_peers();
 
-	const double physics_ticks_per_second = Engine::get_singleton()->get_iterations_per_second();
+	const double physics_ticks_per_second = Engine::get_singleton()->get_physics_ticks_per_second();
 	const double delta = 1.0 / physics_ticks_per_second;
 
 	SceneSynchronizerDebugger::singleton()->scene_sync_process_start(scene_synchronizer);
@@ -2620,7 +2620,7 @@ void ClientSynchronizer::process() {
 		return;
 	}
 
-	const double physics_ticks_per_second = Engine::get_singleton()->get_iterations_per_second();
+	const double physics_ticks_per_second = Engine::get_singleton()->get_physics_ticks_per_second();
 	const double delta = 1.0 / physics_ticks_per_second;
 
 #ifdef DEBUG_ENABLED
@@ -2722,7 +2722,7 @@ void ClientSynchronizer::process() {
 
 	// Now trigger the END_SYNC event.
 	scene_synchronizer->change_events_begin(NetEventFlag::END_SYNC);
-	for (const Set<EndSyncEvent>::Element *e = sync_end_events.front();
+	for (const RBSet<EndSyncEvent>::Element *e = sync_end_events.front();
 			e != nullptr;
 			e = e->next()) {
 		// Check if the values between the variables before the sync and the

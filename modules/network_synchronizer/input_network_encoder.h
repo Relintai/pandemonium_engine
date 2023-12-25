@@ -1,8 +1,9 @@
-#pragma once
+#ifndef INPUT_NETWORK_ENCODER_H
+#define INPUT_NETWORK_ENCODER_H
 
-#include "core/local_vector.h"
-#include "core/resource.h"
-#include "core/variant.h"
+#include "core/containers/local_vector.h"
+#include "core/object/resource.h"
+#include "core/variant/variant.h"
 #include "data_buffer.h"
 
 struct NetworkedInputInfo {
@@ -49,3 +50,5 @@ public:
 	bool script_are_different(Object *p_buffer_A, Object *p_buffer_B) const;
 	uint32_t script_count_size(Object *p_buffer) const;
 };
+
+#endif

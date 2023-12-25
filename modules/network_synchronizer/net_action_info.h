@@ -1,6 +1,7 @@
-#pragma once
+#ifndef NET_ACTION_INFO_H
+#define NET_ACTION_INFO_H
 
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "input_network_encoder.h"
 #include "net_action_processor.h"
 
@@ -22,3 +23,5 @@ struct NetActionInfo {
 	bool operator==(const NetActionInfo &p_other) const;
 	bool operator<(const NetActionInfo &p_other) const;
 };
+
+#endif

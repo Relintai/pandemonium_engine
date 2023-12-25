@@ -1,3 +1,6 @@
+#ifndef NET_UTILITIES_H
+#define NET_UTILITIES_H
+
 /*************************************************************************/
 /*  net_utilities.h                                                      */
 /*************************************************************************/
@@ -32,13 +35,10 @@
 	@author AndreaCatania
 */
 
-#ifndef NET_UTILITIES_H
-#define NET_UTILITIES_H
-
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "core/math/math_funcs.h"
-#include "core/project_settings.h"
-#include "core/variant.h"
+#include "core/config/project_settings.h"
+#include "core/variant/variant.h"
 #include "net_action_info.h"
 #include "net_action_processor.h"
 

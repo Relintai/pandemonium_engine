@@ -1,7 +1,8 @@
-#pragma once
+#ifndef NET_ACTION_PROCESSOR_H
+#define NET_ACTION_PROCESSOR_H
 
-#include "core/array.h"
-#include "core/ustring.h"
+#include "core/variant/array.h"
+#include "core/string/ustring.h"
 
 namespace NetUtility {
 struct NodeData;
@@ -38,3 +39,5 @@ struct TokenizedNetActionProcessor {
 	TokenizedNetActionProcessor(uint32_t p_at, NetActionProcessor p_p) :
 			action_token(p_at), processor(p_p) {}
 };
+
+#endif

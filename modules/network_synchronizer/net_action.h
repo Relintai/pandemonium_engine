@@ -1,3 +1,6 @@
+#ifndef NET_ACTIONS_H
+#define NET_ACTIONS_H
+
 /*************************************************************************/
 /*  net_actions.h**                                                      */
 /*************************************************************************/
@@ -28,10 +31,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NET_ACTIONS_H
-#define NET_ACTIONS_H
-
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "net_action_processor.h"
 #include "net_utilities.h"
 

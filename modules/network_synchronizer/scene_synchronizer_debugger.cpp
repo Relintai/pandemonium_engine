@@ -410,7 +410,7 @@ String type_to_string(Variant::Type p_type) {
 			return "TRANSFORM2D";
 		case Variant::PLANE:
 			return "PLANE";
-		case Variant::QUAT:
+		case Variant::QUATERNION:
 			return "QUAT";
 		case Variant::AABB:
 			return "AABB";
@@ -422,7 +422,7 @@ String type_to_string(Variant::Type p_type) {
 			return "COLOR";
 		case Variant::NODE_PATH:
 			return "NODE_PATH";
-		case Variant::_RID:
+		case Variant::RID:
 			return "_RID";
 		case Variant::OBJECT:
 			return "OBJECT";

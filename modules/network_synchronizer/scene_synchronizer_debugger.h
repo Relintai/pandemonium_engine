@@ -1,3 +1,6 @@
+#ifndef SCENE_SYNCHRONIZER_DEBUGGER_H
+#define SCENE_SYNCHRONIZER_DEBUGGER_H
+
 /*************************************************************************/
 /*  scene_synchronizer_debugger.h                                        */
 /*************************************************************************/
@@ -28,13 +31,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#pragma once
-
 #include "scene/main/node.h"
 
 #ifdef DEBUG_ENABLED
 
-#include "core/oa_hash_map.h"
+#include "core/containers/oa_hash_map.h"
 
 #endif
 
@@ -169,3 +170,5 @@ public:
 private:
 	void dump_tracked_objects(const SceneSynchronizer *p_scene_sync, Dictionary &p_dump);
 };
+
+#endif

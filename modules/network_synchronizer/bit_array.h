@@ -1,3 +1,6 @@
+#ifndef BITARRAY_H
+#define BITARRAY_H
+
 /*************************************************************************/
 /*  bit_array.h                                                          */
 /*************************************************************************/
@@ -32,10 +35,7 @@
 	@author AndreaCatania
 */
 
-#include "core/vector.h"
-
-#ifndef BITARRAY_H
-#define BITARRAY_H
+#include "core/containers/vector.h"
 
 class BitArray {
 	Vector<uint8_t> bytes;
