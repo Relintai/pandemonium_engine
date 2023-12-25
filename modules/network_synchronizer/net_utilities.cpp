@@ -1,13 +1,12 @@
 /*************************************************************************/
 /*  net_utilities.cpp                                                    */
 /*************************************************************************/
-/*                         This file is part of:                         */
-/*                          PANDEMONIUM ENGINE                           */
-/*             https://github.com/Relintai/pandemonium_engine            */
+/*                       This file is part of:                           */
+/*                           GODOT ENGINE                                */
+/*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2022-present Péter Magyar.                              */
-/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,8 +33,9 @@
 */
 
 #include "net_utilities.h"
-
 #include "scene/main/node.h"
+
+#include "godot_backward_utility_cpp.h"
 
 bool NetUtility::ChangeListener::operator==(const ChangeListener &p_other) const {
 	return object_id == p_other.object_id && method == p_other.method;
@@ -61,7 +61,7 @@ bool NetUtility::VarData::operator<(const VarData &p_other) const {
 	return id < p_other.id;
 }
 
-void NetUtility::NodeData::process(const real_t p_delta) const {
+void NetUtility::NodeData::process(const double p_delta) const {
 	const Variant var_delta = p_delta;
 	const Variant *fake_array_vars = &var_delta;
 

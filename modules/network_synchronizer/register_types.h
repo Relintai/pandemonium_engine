@@ -1,16 +1,12 @@
-#ifndef NETWORK_SYNCHRONIZER_REGISTER_TYPES_H
-#define NETWORK_SYNCHRONIZER_REGISTER_TYPES_H
-
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
-/*                         This file is part of:                         */
-/*                          PANDEMONIUM ENGINE                           */
-/*             https://github.com/Relintai/pandemonium_engine            */
+/*                       This file is part of:                           */
+/*                           GODOT ENGINE                                */
+/*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2022-present Péter Magyar.                              */
-/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -36,9 +32,5 @@
 	@author AndreaCatania
 */
 
-#include "modules/register_module_types.h"
-
-void register_network_synchronizer_types(ModuleRegistrationLevel p_level);
-void unregister_network_synchronizer_types(ModuleRegistrationLevel p_level);
-
-#endif
+void register_network_synchronizer_types();
+void unregister_network_synchronizer_types();

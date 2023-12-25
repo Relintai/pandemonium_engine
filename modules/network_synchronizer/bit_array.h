@@ -1,16 +1,12 @@
-#ifndef BITARRAY_H
-#define BITARRAY_H
-
 /*************************************************************************/
 /*  bit_array.h                                                          */
 /*************************************************************************/
-/*                         This file is part of:                         */
-/*                          PANDEMONIUM ENGINE                           */
-/*             https://github.com/Relintai/pandemonium_engine            */
+/*                       This file is part of:                           */
+/*                           GODOT ENGINE                                */
+/*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2022-present Péter Magyar.                              */
-/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -36,21 +32,24 @@
 	@author AndreaCatania
 */
 
-#include "core/variant/variant.h"
+#include "core/vector.h"
+
+#ifndef BITARRAY_H
+#define BITARRAY_H
 
 class BitArray {
-	PoolByteArray bytes;
+	Vector<uint8_t> bytes;
 
 public:
 	BitArray() = default;
 	BitArray(uint32_t p_initial_size_in_bit);
-	BitArray(const PoolByteArray &p_bytes);
+	BitArray(const Vector<uint8_t> &p_bytes);
 
-	const PoolByteArray &get_bytes() const {
+	const Vector<uint8_t> &get_bytes() const {
 		return bytes;
 	}
 
-	PoolByteArray &get_bytes_mut() {
+	Vector<uint8_t> &get_bytes_mut() {
 		return bytes;
 	}
 

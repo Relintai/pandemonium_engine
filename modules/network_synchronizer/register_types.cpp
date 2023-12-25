@@ -1,13 +1,12 @@
 /*************************************************************************/
 /*  register_types.cpp                                                   */
 /*************************************************************************/
-/*                         This file is part of:                         */
-/*                          PANDEMONIUM ENGINE                           */
-/*             https://github.com/Relintai/pandemonium_engine            */
+/*                       This file is part of:                           */
+/*                           GODOT ENGINE                                */
+/*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2022-present Péter Magyar.                              */
-/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -35,25 +34,33 @@
 
 #include "register_types.h"
 
-#include "core/config/project_settings.h"
+#include "core/engine.h"
 #include "data_buffer.h"
-#include "interpolator.h"
 #include "networked_controller.h"
 #include "scene_diff.h"
 #include "scene_synchronizer.h"
+#include "scene_synchronizer_debugger.h"
+#include "input_network_encoder.h"
 
-void register_network_synchronizer_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<DataBuffer>();
-		ClassDB::register_class<SceneDiff>();
-		ClassDB::register_class<Interpolator>();
-		ClassDB::register_class<NetworkedController>();
-		ClassDB::register_class<SceneSynchronizer>();
+void register_network_synchronizer_types() {
+	ClassDB::register_class<DataBuffer>();
+	ClassDB::register_class<SceneDiff>();
+	ClassDB::register_class<NetworkedController>();
+	ClassDB::register_class<SceneSynchronizer>();
+	ClassDB::register_class<SceneSynchronizerDebugger>();
+	ClassDB::register_class<InputNetworkEncoder>();
 
-		GLOBAL_DEF("NetworkSynchronizer/debug_server_speedup", false);
-		GLOBAL_DEF("NetworkSynchronizer/debug_doll_speedup", false);
-	}
+	memnew(SceneSynchronizerDebugger);
+	Engine::get_singleton()->add_singleton(Engine::Singleton("SceneSynchronizerDebugger", SceneSynchronizerDebugger::singleton()));
+
+	GLOBAL_DEF("NetworkSynchronizer/debug_server_speedup", false);
+	GLOBAL_DEF("NetworkSynchronizer/debug_doll_speedup", false);
+	GLOBAL_DEF("NetworkSynchronizer/log_debug_warnings_and_messages", true);
+	GLOBAL_DEF("NetworkSynchronizer/debugger/dump_enabled", false);
+	GLOBAL_DEF("NetworkSynchronizer/debugger/dump_classes", Array());
+	GLOBAL_DEF("NetworkSynchronizer/debugger/log_debug_fps_warnings", true);
 }
 
-void unregister_network_synchronizer_types(ModuleRegistrationLevel p_level) {
+void unregister_network_synchronizer_types() {
+	memdelete(SceneSynchronizerDebugger::singleton());
 }

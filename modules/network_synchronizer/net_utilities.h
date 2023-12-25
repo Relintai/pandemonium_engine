@@ -1,16 +1,12 @@
-#ifndef NET_UTILITIES_H
-#define NET_UTILITIES_H
-
 /*************************************************************************/
 /*  net_utilities.h                                                      */
 /*************************************************************************/
-/*                         This file is part of:                         */
-/*                          PANDEMONIUM ENGINE                           */
-/*             https://github.com/Relintai/pandemonium_engine            */
+/*                       This file is part of:                           */
+/*                           GODOT ENGINE                                */
+/*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2022-present Péter Magyar.                              */
-/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -36,14 +32,25 @@
 	@author AndreaCatania
 */
 
-#include "core/containers/local_vector.h"
+#ifndef NET_UTILITIES_H
+#define NET_UTILITIES_H
+
+#include "core/local_vector.h"
 #include "core/math/math_funcs.h"
-#include "core/variant/variant.h"
+#include "core/project_settings.h"
+#include "core/variant.h"
+#include "net_action_info.h"
+#include "net_action_processor.h"
+
+#include "godot_backward_utility_header.h"
+#define ObjectID CompatObjectID
 
 #ifdef DEBUG_ENABLED
-#define NET_DEBUG_PRINT(msg) \
+#define NET_DEBUG_PRINT(msg)                                                                                  \
+	if (ProjectSettings::get_singleton()->get_setting("NetworkSynchronizer/log_debug_warnings_and_messages")) \
 	print_line(String("[Net] ") + msg)
-#define NET_DEBUG_WARN(msg) \
+#define NET_DEBUG_WARN(msg)                                                                                   \
+	if (ProjectSettings::get_singleton()->get_setting("NetworkSynchronizer/log_debug_warnings_and_messages")) \
 	WARN_PRINT(String("[Net] ") + msg)
 #define NET_DEBUG_ERR(msg) \
 	ERR_PRINT(String("[Net] ") + msg)
@@ -55,6 +62,28 @@
 
 typedef uint32_t NetNodeId;
 typedef uint32_t NetVarId;
+
+#ifdef TRACY_ENABLE
+
+#include "godot_tracy/profiler.h"
+
+#define PROFILE \
+	ZoneScoped;
+
+#define PROFILE_NODE                                        \
+	ZoneScoped;                                             \
+	CharString c = String(get_path()).utf8();               \
+	if (c.size() >= std::numeric_limits<uint16_t>::max()) { \
+		c.resize(std::numeric_limits<uint16_t>::max() - 1); \
+	}                                                       \
+	ZoneText(c.ptr(), c.size());
+
+#else
+
+#define PROFILE
+#define PROFILE_NODE
+
+#endif
 
 /// Flags used to control when an event is executed.
 enum NetEventFlag {
@@ -108,11 +137,12 @@ public:
 	/// Maximum value.
 	T max() const;
 
-	/// Minimum value.
-	T min(uint32_t p_consider_last) const;
+	/// Minumum value.
+	T min(uint32_t p_consider_last = UINT32_MAX) const;
 
 	/// Median value.
 	T average() const;
+	T average_rounded() const;
 
 	T get_deviation(T p_mean) const;
 
@@ -210,6 +240,29 @@ T StatisticalRingBuffer<T>::average() const {
 }
 
 template <class T>
+T StatisticalRingBuffer<T>::average_rounded() const {
+	CRASH_COND(data.size() == 0);
+
+#ifdef DEBUG_ENABLED
+	T a = data[0];
+	for (uint32_t i = 1; i < data.size(); i += 1) {
+		a += data[i];
+	}
+	a = Math::round(double(a) / double(data.size()));
+	T b = Math::round(double(avg_sum) / double(data.size()));
+	const T difference = a > b ? a - b : b - a;
+	ERR_FAIL_COND_V_MSG(difference > (CMP_EPSILON * 4.0), b, "The `avg_sum` accumulated a sensible precision loss: " + rtos(difference));
+	return b;
+#else
+	// Divide it by the buffer size is wrong when the buffer is not yet fully
+	// initialized. However, this is wrong just for the first run.
+	// I'm leaving it as is because solve it mean do more operations. All this
+	// just to get the right value for the first few frames.
+	return Math::round(double(avg_sum) / double(data.size()));
+#endif
+}
+
+template <class T>
 T StatisticalRingBuffer<T>::get_deviation(T p_mean) const {
 	if (data.size() <= 0) {
 		return T();
@@ -247,7 +300,7 @@ struct NodeChangeListener {
 	bool operator==(const NodeChangeListener &p_other) const;
 };
 
-/// Change listener that represents a pair of Object and Method.
+/// Change listener that rapresents a pair of Object and Method.
 /// This can track the changes of many nodes and variables. It's dispatched
 /// if one or more tracked variable change during the tracked phase, specified
 /// by the flag.
@@ -291,7 +344,7 @@ struct NodeData {
 	ObjectID instance_id = ObjectID();
 	NodeData *controlled_by = nullptr;
 
-	/// When `false`, this node is not sync. It's useful to locally pause sync
+	/// When `false`, this node is not sync. It's usefult to locally pause sync
 	/// of specific nodes.
 	bool sync_enabled = true;
 
@@ -305,12 +358,14 @@ struct NodeData {
 	LocalVector<VarData> vars;
 	LocalVector<StringName> functions;
 
+	LocalVector<NetActionInfo> net_actions;
+
 	// This is valid to use only inside the process function.
 	Node *node = nullptr;
 
 	NodeData() = default;
 
-	void process(const real_t p_delta) const;
+	void process(const double p_delta) const;
 };
 
 struct PeerData {
@@ -330,6 +385,8 @@ struct Snapshot {
 	/// The variable array order also matter.
 	Vector<Vector<Var>> node_vars;
 
+	Vector<TokenizedNetActionProcessor> actions;
+
 	operator String() const;
 };
 
@@ -339,5 +396,7 @@ struct PostponedRecover {
 };
 
 } // namespace NetUtility
+
+#undef ObjectID
 
 #endif

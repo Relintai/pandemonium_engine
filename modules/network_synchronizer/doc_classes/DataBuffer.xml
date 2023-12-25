@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="DataBuffer" inherits="Object" version="4.2">
+<class name="DataBuffer" inherits="Object" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -44,6 +44,13 @@
 		<method name="add_real">
 			<return type="float" />
 			<argument index="0" name="value" type="float" />
+			<argument index="1" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
+			<description>
+			</description>
+		</method>
+		<method name="add_uint">
+			<return type="int" />
+			<argument index="0" name="value" type="int" />
 			<argument index="1" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
 			<description>
 			</description>
@@ -120,6 +127,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_uint_size" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
+			<description>
+			</description>
+		</method>
 		<method name="get_unit_real_size" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
@@ -184,6 +197,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="read_positive_unit_real">
+			<return type="float" />
+			<argument index="0" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
+			<description>
+			</description>
+		</method>
 		<method name="read_real">
 			<return type="float" />
 			<argument index="0" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
@@ -191,6 +210,18 @@
 			</description>
 		</method>
 		<method name="read_real_size">
+			<return type="int" />
+			<argument index="0" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
+			<description>
+			</description>
+		</method>
+		<method name="read_uint">
+			<return type="int" />
+			<argument index="0" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
+			<description>
+			</description>
+		</method>
+		<method name="read_uint_size">
 			<return type="int" />
 			<argument index="0" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
 			<description>
@@ -276,6 +307,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="skip_uint">
+			<return type="void" />
+			<argument index="0" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
+			<description>
+			</description>
+		</method>
 		<method name="skip_unit_real">
 			<return type="void" />
 			<argument index="0" name="compression_level" type="int" enum="DataBuffer.CompressionLevel" default="1" />
@@ -300,17 +337,23 @@
 		</constant>
 		<constant name="DATA_TYPE_INT" value="1" enum="DataType">
 		</constant>
-		<constant name="DATA_TYPE_REAL" value="2" enum="DataType">
+		<constant name="DATA_TYPE_UINT" value="2" enum="DataType">
 		</constant>
-		<constant name="DATA_TYPE_UNIT_REAL" value="4" enum="DataType">
+		<constant name="DATA_TYPE_REAL" value="3" enum="DataType">
 		</constant>
-		<constant name="DATA_TYPE_VECTOR2" value="5" enum="DataType">
+		<constant name="DATA_TYPE_POSITIVE_UNIT_REAL" value="4" enum="DataType">
 		</constant>
-		<constant name="DATA_TYPE_NORMALIZED_VECTOR2" value="6" enum="DataType">
+		<constant name="DATA_TYPE_UNIT_REAL" value="5" enum="DataType">
 		</constant>
-		<constant name="DATA_TYPE_VECTOR3" value="7" enum="DataType">
+		<constant name="DATA_TYPE_VECTOR2" value="6" enum="DataType">
 		</constant>
-		<constant name="DATA_TYPE_NORMALIZED_VECTOR3" value="8" enum="DataType">
+		<constant name="DATA_TYPE_NORMALIZED_VECTOR2" value="7" enum="DataType">
+		</constant>
+		<constant name="DATA_TYPE_VECTOR3" value="8" enum="DataType">
+		</constant>
+		<constant name="DATA_TYPE_NORMALIZED_VECTOR3" value="9" enum="DataType">
+		</constant>
+		<constant name="DATA_TYPE_VARIANT" value="10" enum="DataType">
 		</constant>
 		<constant name="COMPRESSION_LEVEL_0" value="0" enum="CompressionLevel">
 		</constant>

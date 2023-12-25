@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NetworkedController" inherits="Node" version="4.2">
+<class name="NetworkedController" inherits="Node" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -10,7 +10,9 @@
 		<method name="_apply_epoch" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
-			<argument index="1" name="interpolated_data" type="Array" />
+			<argument index="1" name="interpolation_alpha" type="float" />
+			<argument index="2" name="past_buffer" type="DataBuffer" />
+			<argument index="3" name="future_buffer" type="DataBuffer" />
 			<description>
 			</description>
 		</method>
@@ -47,19 +49,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="_parse_epoch_data" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="interpolator" type="Interpolator" />
-			<argument index="1" name="buffer" type="DataBuffer" />
-			<description>
-			</description>
-		</method>
-		<method name="_setup_interpolator" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="interpolator" type="Interpolator" />
-			<description>
-			</description>
-		</method>
 		<method name="get_current_input_id" qualifiers="const">
 			<return type="int" />
 			<description>
@@ -92,7 +81,7 @@
 		</method>
 		<method name="player_get_pretended_delta" qualifiers="const">
 			<return type="float" />
-			<argument index="0" name="physics_ticks_per_seconds" type="int" />
+			<argument index="0" name="iterations_per_seconds" type="int" />
 			<description>
 			</description>
 		</method>
@@ -112,21 +101,17 @@
 		</method>
 	</methods>
 	<members>
-		<member name="doll_connection_stats_frame_span" type="int" setter="set_doll_connection_stats_frame_span" getter="get_doll_connection_stats_frame_span" default="30">
+		<member name="doll_connection_stats_frame_span" type="int" setter="set_doll_connection_stats_frame_span" getter="get_doll_connection_stats_frame_span" default="60">
 		</member>
-		<member name="doll_epoch_batch_sync_rate" type="float" setter="set_doll_epoch_batch_sync_rate" getter="get_doll_epoch_batch_sync_rate" default="0.25">
+		<member name="doll_interpolation_max_overshot" type="float" setter="set_doll_interpolation_max_overshot" getter="get_doll_interpolation_max_overshot" default="0.2">
 		</member>
-		<member name="doll_epoch_collect_rate" type="int" setter="set_doll_epoch_collect_rate" getter="get_doll_epoch_collect_rate" default="1">
+		<member name="doll_max_frames_delay" type="int" setter="set_doll_max_frames_delay" getter="get_doll_max_frames_delay" default="25">
 		</member>
-		<member name="doll_interpolation_max_speedup" type="float" setter="set_doll_interpolation_max_speedup" getter="get_doll_interpolation_max_speedup" default="0.2">
+		<member name="doll_min_frames_delay" type="int" setter="set_doll_min_frames_delay" getter="get_doll_min_frames_delay" default="0">
 		</member>
-		<member name="doll_max_delay" type="int" setter="set_doll_max_delay" getter="get_doll_max_delay" default="60">
+		<member name="doll_net_sensitivity" type="float" setter="set_doll_net_sensitivity" getter="get_doll_net_sensitivity" default="0.21">
 		</member>
-		<member name="doll_max_frames_delay" type="int" setter="set_doll_max_frames_delay" getter="get_doll_max_frames_delay" default="5">
-		</member>
-		<member name="doll_min_frames_delay" type="int" setter="set_doll_min_frames_delay" getter="get_doll_min_frames_delay" default="2">
-		</member>
-		<member name="doll_net_sensitivity" type="float" setter="set_doll_net_sensitivity" getter="get_doll_net_sensitivity" default="0.2">
+		<member name="doll_sync_rate" type="int" setter="set_doll_sync_rate" getter="get_doll_sync_rate" default="30">
 		</member>
 		<member name="input_storage_size" type="int" setter="set_player_input_storage_size" getter="get_player_input_storage_size" default="180">
 		</member>
@@ -134,11 +119,13 @@
 		</member>
 		<member name="max_redundant_inputs" type="int" setter="set_max_redundant_inputs" getter="get_max_redundant_inputs" default="5">
 		</member>
-		<member name="min_frames_delay" type="int" setter="set_min_frames_delay" getter="get_min_frames_delay" default="2">
+		<member name="min_frames_delay" type="int" setter="set_min_frames_delay" getter="get_min_frames_delay" default="1">
 		</member>
 		<member name="net_sensitivity" type="float" setter="set_net_sensitivity" getter="get_net_sensitivity" default="0.1">
 		</member>
 		<member name="network_traced_frames" type="int" setter="set_network_traced_frames" getter="get_network_traced_frames" default="120">
+		</member>
+		<member name="server_controlled" type="bool" setter="set_server_controlled" getter="get_server_controlled" default="false">
 		</member>
 		<member name="tick_acceleration" type="float" setter="set_tick_acceleration" getter="get_tick_acceleration" default="2.0">
 		</member>
@@ -146,6 +133,10 @@
 		</member>
 	</members>
 	<signals>
+		<signal name="controller_reset">
+			<description>
+			</description>
+		</signal>
 		<signal name="doll_sync_paused">
 			<description>
 			</description>

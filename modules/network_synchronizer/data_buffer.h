@@ -1,16 +1,12 @@
-#ifndef INPUT_BUFFER_H
-#define INPUT_BUFFER_H
-
 /*************************************************************************/
 /*  data_buffer.h                                                        */
 /*************************************************************************/
-/*                         This file is part of:                         */
-/*                          PANDEMONIUM ENGINE                           */
-/*             https://github.com/Relintai/pandemonium_engine            */
+/*                       This file is part of:                           */
+/*                           GODOT ENGINE                                */
+/*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2022-present Péter Magyar.                              */
-/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
-/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -36,9 +32,12 @@
 	@author AndreaCatania
 */
 
-#include "core/object/class_db.h"
+#include "core/class_db.h"
 
 #include "bit_array.h"
+
+#ifndef INPUT_BUFFER_H
+#define INPUT_BUFFER_H
 
 class DataBuffer : public Object {
 	GDCLASS(DataBuffer, Object);
@@ -47,6 +46,7 @@ public:
 	enum DataType {
 		DATA_TYPE_BOOL,
 		DATA_TYPE_INT,
+		DATA_TYPE_UINT,
 		DATA_TYPE_REAL,
 		DATA_TYPE_POSITIVE_UNIT_REAL,
 		DATA_TYPE_UNIT_REAL,
@@ -147,12 +147,19 @@ private:
 	bool is_reading = false;
 	BitArray buffer;
 
+#if DEBUG_ENABLED
+	bool debug_enabled = true;
+#endif
+
 public:
 	static void _bind_methods();
 
 	DataBuffer() = default;
 	DataBuffer(const DataBuffer &p_other);
 	DataBuffer(const BitArray &p_buffer);
+
+	void copy(const DataBuffer &p_other);
+	void copy(const BitArray &p_buffer);
 
 	const BitArray &get_buffer() const {
 		return buffer;
@@ -204,6 +211,12 @@ public:
 	/// Parse the next data as int.
 	int64_t read_int(CompressionLevel p_compression_level);
 
+	/// Add the next data as uint
+	uint64_t add_uint(uint64_t p_input, CompressionLevel p_compression_level);
+
+	/// Parse the next data as uint.
+	uint64_t read_uint(CompressionLevel p_compression_level);
+
 	/// Add a real into the buffer. Depending on the compression level is possible
 	/// to store different range level.
 	/// The fractional part has a precision of ~0.3%
@@ -238,7 +251,7 @@ public:
 	real_t read_unit_real(CompressionLevel p_compression_level);
 
 	/// Add a vector2 into the buffer.
-	/// Note: This kind of vector occupies more space than the normalized version.
+	/// Note: This kind of vector occupies more space than the normalized verison.
 	/// Consider use a normalized vector to save bandwidth if possible.
 	///
 	/// Returns the decompressed vector so both the client and the peers can use
@@ -260,7 +273,7 @@ public:
 	Vector2 read_normalized_vector2(CompressionLevel p_compression_level);
 
 	/// Add a vector3 into the buffer.
-	/// Note: This kind of vector occupies more space than the normalized version.
+	/// Note: This kind of vector occupies more space than the normalized verison.
 	/// Consider use a normalized vector to save bandwidth if possible.
 	///
 	/// Returns the decompressed vector so both the client and the peers can use
@@ -294,7 +307,9 @@ public:
 
 	void skip_bool();
 	void skip_int(CompressionLevel p_compression);
+	void skip_uint(CompressionLevel p_compression);
 	void skip_real(CompressionLevel p_compression);
+	void skip_positive_unit_real(CompressionLevel p_compression);
 	void skip_unit_real(CompressionLevel p_compression);
 	void skip_vector2(CompressionLevel p_compression);
 	void skip_normalized_vector2(CompressionLevel p_compression);
@@ -305,7 +320,9 @@ public:
 
 	int get_bool_size() const;
 	int get_int_size(CompressionLevel p_compression) const;
+	int get_uint_size(CompressionLevel p_compression) const;
 	int get_real_size(CompressionLevel p_compression) const;
+	int get_positive_unit_real_size(CompressionLevel p_compression) const;
 	int get_unit_real_size(CompressionLevel p_compression) const;
 	int get_vector2_size(CompressionLevel p_compression) const;
 	int get_normalized_vector2_size(CompressionLevel p_compression) const;
@@ -316,7 +333,9 @@ public:
 
 	int read_bool_size();
 	int read_int_size(CompressionLevel p_compression);
+	int read_uint_size(CompressionLevel p_compression);
 	int read_real_size(CompressionLevel p_compression);
+	int read_positive_unit_real_size(CompressionLevel p_compression);
 	int read_unit_real_size(CompressionLevel p_compression);
 	int read_vector2_size(CompressionLevel p_compression);
 	int read_normalized_vector2_size(CompressionLevel p_compression);
