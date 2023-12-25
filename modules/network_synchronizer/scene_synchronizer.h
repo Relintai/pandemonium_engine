@@ -43,7 +43,7 @@
 #include "net_utilities.h"
 #include <deque>
 
-#include "godot_backward_utility_header.h"
+#include "compat_object_id.h"
 
 class Synchronizer;
 class NetworkedController;

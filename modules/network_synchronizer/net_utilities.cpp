@@ -35,8 +35,6 @@
 #include "net_utilities.h"
 #include "scene/main/node.h"
 
-#include "godot_backward_utility_cpp.h"
-
 bool NetUtility::ChangeListener::operator==(const ChangeListener &p_other) const {
 	return object_id == p_other.object_id && method == p_other.method;
 }

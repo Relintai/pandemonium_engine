@@ -42,8 +42,7 @@
 #include "net_action_info.h"
 #include "net_action_processor.h"
 
-#include "godot_backward_utility_header.h"
-#define ObjectID CompatObjectID
+#include "compat_object_id.h"
 
 #ifdef DEBUG_ENABLED
 #define NET_DEBUG_PRINT(msg)                                                                                  \
@@ -306,7 +305,7 @@ struct NodeChangeListener {
 /// by the flag.
 struct ChangeListener {
 	// TODO use a callable instead??
-	ObjectID object_id = ObjectID();
+	CompatObjectID object_id = CompatObjectID();
 	StringName method;
 	uint32_t method_argument_count;
 	NetEventFlag flag;
@@ -341,7 +340,7 @@ struct VarData {
 struct NodeData {
 	// ID used to reference this Node in the networked calls.
 	uint32_t id = 0;
-	ObjectID instance_id = ObjectID();
+	CompatObjectID instance_id = CompatObjectID();
 	NodeData *controlled_by = nullptr;
 
 	/// When `false`, this node is not sync. It's usefult to locally pause sync
@@ -397,6 +396,6 @@ struct PostponedRecover {
 
 } // namespace NetUtility
 
-#undef ObjectID
+#undef CompatObjectID
 
 #endif

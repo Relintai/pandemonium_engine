@@ -40,8 +40,8 @@
 #include "networked_controller.h"
 #include "scene_diff.h"
 #include "scene_synchronizer_debugger.h"
-
-#include "godot_backward_utility_cpp.h"
+#include "compat_object_id.h"
+#include "scene/main/viewport.h"
 
 void SceneSynchronizer::_bind_methods() {
 	BIND_ENUM_CONSTANT(CHANGE)
@@ -132,10 +132,10 @@ void SceneSynchronizer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_rpc_notify_peer_status", "enabled"), &SceneSynchronizer::_rpc_notify_peer_status);
 	ClassDB::bind_method(D_METHOD("_rpc_send_actions", "enabled"), &SceneSynchronizer::_rpc_send_actions);
 
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "server_notify_state_interval", PROPERTY_HINT_RANGE, "0.001,10.0,0.0001"), "set_server_notify_state_interval", "get_server_notify_state_interval");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "comparison_float_tolerance", PROPERTY_HINT_RANGE, "0.000001,0.01,0.000001"), "set_comparison_float_tolerance", "get_comparison_float_tolerance");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "server_notify_state_interval", PROPERTY_HINT_RANGE, "0.001,10.0,0.0001"), "set_server_notify_state_interval", "get_server_notify_state_interval");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "comparison_float_tolerance", PROPERTY_HINT_RANGE, "0.000001,0.01,0.000001"), "set_comparison_float_tolerance", "get_comparison_float_tolerance");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "actions_redundancy", PROPERTY_HINT_RANGE, "1,10,1"), "set_actions_redundancy", "get_actions_redundancy");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "actions_resend_time", PROPERTY_HINT_RANGE, "0.000001,0.5,0.000001"), "set_actions_resend_time", "get_actions_resend_time");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "actions_resend_time", PROPERTY_HINT_RANGE, "0.000001,0.5,0.000001"), "set_actions_resend_time", "get_actions_resend_time");
 
 	ADD_SIGNAL(MethodInfo("sync_started"));
 	ADD_SIGNAL(MethodInfo("sync_paused"));
@@ -166,10 +166,10 @@ void SceneSynchronizer::_notification(int p_what) {
 			clear();
 			reset_synchronizer_mode();
 
-			get_multiplayer()->connect(SNAME("network_peer_connected"), Callable(this, SNAME("_on_peer_connected")));
-			get_multiplayer()->connect(SNAME("network_peer_disconnected"), Callable(this, SNAME("_on_peer_disconnected")));
+			get_multiplayer()->connect("network_peer_connected", this, "_on_peer_connected");
+			get_multiplayer()->connect("network_peer_disconnected", this, "_on_peer_disconnected");
 
-			get_tree()->connect(SNAME("node_removed"), Callable(this, SNAME("_on_node_removed")));
+			get_tree()->connect("node_removed", this, "_on_node_removed");
 
 			// Make sure to reset all the assigned controllers.
 			reset_controllers();
@@ -190,10 +190,10 @@ void SceneSynchronizer::_notification(int p_what) {
 
 			clear_peers();
 
-			get_multiplayer()->disconnect(SNAME("network_peer_connected"), Callable(this, SNAME("_on_peer_connected")));
-			get_multiplayer()->disconnect(SNAME("network_peer_disconnected"), Callable(this, SNAME("_on_peer_disconnected")));
+			get_multiplayer()->disconnect("network_peer_connected", this, "_on_peer_connected");
+			get_multiplayer()->disconnect("network_peer_disconnected", this, "_on_peer_disconnected");
 
-			get_tree()->disconnect(SNAME("node_removed"), Callable(this, SNAME("_on_node_removed")));
+			get_tree()->disconnect("node_removed", this, "_on_node_removed");
 
 			clear();
 
@@ -212,11 +212,11 @@ void SceneSynchronizer::_notification(int p_what) {
 }
 
 SceneSynchronizer::SceneSynchronizer() {
-	rpc_config(SNAME("_rpc_send_state"), MultiplayerAPI::RPC_MODE_REMOTE);
-	rpc_config(SNAME("_rpc_notify_need_full_snapshot"), MultiplayerAPI::RPC_MODE_REMOTE);
-	rpc_config(SNAME("_rpc_set_network_enabled"), MultiplayerAPI::RPC_MODE_REMOTE);
-	rpc_config(SNAME("_rpc_notify_peer_status"), MultiplayerAPI::RPC_MODE_REMOTE);
-	rpc_config(SNAME("_rpc_send_actions"), MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_send_state", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_notify_need_full_snapshot", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_set_network_enabled", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_notify_peer_status", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_send_actions", MultiplayerAPI::RPC_MODE_REMOTE);
 
 	// Avoid too much useless re-allocations
 	event_listener.reserve(100);
@@ -962,7 +962,7 @@ void SceneSynchronizer::dirty_peers() {
 void SceneSynchronizer::set_enabled(bool p_enable) {
 	ERR_FAIL_COND_MSG(synchronizer_type == SYNCHRONIZER_TYPE_SERVER, "The server is always enabled.");
 	if (synchronizer_type == SYNCHRONIZER_TYPE_CLIENT) {
-		rpc_id(1, SNAME("_rpc_set_network_enabled"), p_enable);
+		rpc_id(1, "_rpc_set_network_enabled", p_enable);
 		if (p_enable == false) {
 			// If the peer want to disable, we can disable it locally
 			// immediately. When it wants to enable the networking, the server
@@ -1006,7 +1006,7 @@ void SceneSynchronizer::set_peer_networking_enable(int p_peer, bool p_enable) {
 		dirty_peers();
 
 		// Just notify the peer status.
-		rpc_id(p_peer, SNAME("_rpc_notify_peer_status"), p_enable);
+		rpc_id(p_peer, "_rpc_notify_peer_status", p_enable);
 	} else {
 		ERR_FAIL_COND_MSG(synchronizer_type != SYNCHRONIZER_TYPE_NONETWORK, "At this point no network is expected.");
 		static_cast<NoNetSynchronizer *>(synchronizer)->set_enabled(p_enable);
@@ -1319,7 +1319,7 @@ void SceneSynchronizer::change_events_flush() {
 		if (obj == nullptr) {
 			// Setting the flag to 0 so no events trigger this anymore.
 			listener.flag = NetEventFlag::EMPTY;
-			listener.object_id = ObjectID();
+			listener.object_id = CompatObjectID();
 			listener.method = StringName();
 
 			// Make sure this listener is not tracking any variable.
@@ -1529,7 +1529,7 @@ bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second,
 
 	// Custom evaluation methods
 	switch (p_first.get_type()) {
-		case Variant::FLOAT: {
+		case Variant::REAL: {
 			return Math::is_equal_approx(p_first, p_second, p_tolerance);
 		}
 		case Variant::VECTOR2: {
@@ -2259,7 +2259,7 @@ void ServerSynchronizer::process_snapshot_notificator(real_t p_delta) {
 			snap.append_array(delta_global_nodes_snapshot);
 		}
 
-		scene_synchronizer->rpc_id(*peer_it.key, SNAME("_rpc_send_state"), snap);
+		scene_synchronizer->rpc_id(*peer_it.key, "_rpc_send_state", snap);
 
 		if (nd) {
 			NetworkedController *controller = static_cast<NetworkedController *>(nd->node);
@@ -4009,7 +4009,7 @@ void ClientSynchronizer::notify_server_full_snapshot_is_needed() {
 
 	// Notify the server that a full snapshot is needed.
 	need_full_snapshot_notified = true;
-	scene_synchronizer->rpc_id(1, SNAME("_rpc_notify_need_full_snapshot"));
+	scene_synchronizer->rpc_id(1, "_rpc_notify_need_full_snapshot");
 }
 
 void ClientSynchronizer::send_actions_to_server() {

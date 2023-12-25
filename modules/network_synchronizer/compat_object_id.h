@@ -1,10 +1,5 @@
-#pragma once
-
-/// Used to compile against Godot 3.x
-
-/**
-	@author AndreaCatania
-*/
+#ifndef COMPAT_OBJECT_ID_H
+#define COMPAT_OBJECT_ID_H
 
 #include "core/typedefs.h"
 
@@ -21,3 +16,5 @@ struct CompatObjectID {
 	bool is_valid() const { return id != 0; }
 	bool is_null() const { return id == 0; }
 };
+
+#endif

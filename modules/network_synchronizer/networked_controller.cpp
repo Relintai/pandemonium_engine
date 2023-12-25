@@ -41,8 +41,6 @@
 #include "scene_synchronizer_debugger.h"
 #include <algorithm>
 
-#include "godot_backward_utility_cpp.h"
-
 #define METADATA_SIZE 1
 #define DOLL_EPOCH_METADATA_SIZE (DataBuffer::get_bit_taken(DataBuffer::DATA_TYPE_REAL, DataBuffer::COMPRESSION_LEVEL_1) + DataBuffer::get_bit_taken(DataBuffer::DATA_TYPE_INT, DataBuffer::COMPRESSION_LEVEL_1))
 
@@ -112,26 +110,26 @@ void NetworkedController::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("__on_sync_paused"), &NetworkedController::__on_sync_paused);
 
-	BIND_VMETHOD(MethodInfo("_collect_inputs", PropertyInfo(Variant::FLOAT, "delta"), PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
-	BIND_VMETHOD(MethodInfo("_controller_process", PropertyInfo(Variant::FLOAT, "delta"), PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
+	BIND_VMETHOD(MethodInfo("_collect_inputs", PropertyInfo(Variant::REAL, "delta"), PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
+	BIND_VMETHOD(MethodInfo("_controller_process", PropertyInfo(Variant::REAL, "delta"), PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
 	BIND_VMETHOD(MethodInfo(Variant::BOOL, "_are_inputs_different", PropertyInfo(Variant::OBJECT, "inputs_A", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer"), PropertyInfo(Variant::OBJECT, "inputs_B", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
 	BIND_VMETHOD(MethodInfo(Variant::INT, "_count_input_size", PropertyInfo(Variant::OBJECT, "inputs", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
 	BIND_VMETHOD(MethodInfo("_collect_epoch_data", PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
-	BIND_VMETHOD(MethodInfo("_apply_epoch", PropertyInfo(Variant::FLOAT, "delta"), PropertyInfo(Variant::FLOAT, "interpolation_alpha"), PropertyInfo(Variant::OBJECT, "past_buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer"), PropertyInfo(Variant::OBJECT, "future_buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
+	BIND_VMETHOD(MethodInfo("_apply_epoch", PropertyInfo(Variant::REAL, "delta"), PropertyInfo(Variant::REAL, "interpolation_alpha"), PropertyInfo(Variant::OBJECT, "past_buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer"), PropertyInfo(Variant::OBJECT, "future_buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "server_controlled"), "set_server_controlled", "get_server_controlled");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "input_storage_size", PROPERTY_HINT_RANGE, "5,2000,1"), "set_player_input_storage_size", "get_player_input_storage_size");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_redundant_inputs", PROPERTY_HINT_RANGE, "0,1000,1"), "set_max_redundant_inputs", "get_max_redundant_inputs");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "tick_speedup_notification_delay", PROPERTY_HINT_RANGE, "0,5000,1"), "set_tick_speedup_notification_delay", "get_tick_speedup_notification_delay");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "tick_speedup_notification_delay", PROPERTY_HINT_RANGE, "0,5000,1"), "set_tick_speedup_notification_delay", "get_tick_speedup_notification_delay");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "network_traced_frames", PROPERTY_HINT_RANGE, "1,1000,1"), "set_network_traced_frames", "get_network_traced_frames");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "min_frames_delay", PROPERTY_HINT_RANGE, "0,100,1"), "set_min_frames_delay", "get_min_frames_delay");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_frames_delay", PROPERTY_HINT_RANGE, "0,100,1"), "set_max_frames_delay", "get_max_frames_delay");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "tick_acceleration", PROPERTY_HINT_RANGE, "0.1,20.0,0.01"), "set_tick_acceleration", "get_tick_acceleration");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "tick_acceleration", PROPERTY_HINT_RANGE, "0.1,20.0,0.01"), "set_tick_acceleration", "get_tick_acceleration");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doll_sync_rate", PROPERTY_HINT_RANGE, "1,240,1"), "set_doll_sync_rate", "get_doll_sync_rate");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doll_min_frames_delay", PROPERTY_HINT_RANGE, "0,240,1"), "set_doll_min_frames_delay", "get_doll_min_frames_delay");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doll_max_frames_delay", PROPERTY_HINT_RANGE, "0,240,1"), "set_doll_max_frames_delay", "get_doll_max_frames_delay");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "doll_net_sensitivity", PROPERTY_HINT_RANGE, "0,1.0,0.00001"), "set_doll_net_sensitivity", "get_doll_net_sensitivity");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "doll_interpolation_max_overshot", PROPERTY_HINT_RANGE, "0.01,5.0,0.01"), "set_doll_interpolation_max_overshot", "get_doll_interpolation_max_overshot");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "doll_net_sensitivity", PROPERTY_HINT_RANGE, "0,1.0,0.00001"), "set_doll_net_sensitivity", "get_doll_net_sensitivity");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "doll_interpolation_max_overshot", PROPERTY_HINT_RANGE, "0.01,5.0,0.01"), "set_doll_interpolation_max_overshot", "get_doll_interpolation_max_overshot");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doll_connection_stats_frame_span", PROPERTY_HINT_RANGE, "1,1000,1"), "set_doll_connection_stats_frame_span", "get_doll_connection_stats_frame_span");
 
 	ADD_SIGNAL(MethodInfo("doll_sync_started"));
@@ -142,11 +140,11 @@ void NetworkedController::_bind_methods() {
 }
 
 NetworkedController::NetworkedController() {
-	rpc_config(SNAME("_rpc_server_send_inputs"), MultiplayerAPI::RPC_MODE_REMOTE);
-	rpc_config(SNAME("_rpc_set_server_controlled"), MultiplayerAPI::RPC_MODE_REMOTE);
-	rpc_config(SNAME("_rpc_notify_fps_acceleration"), MultiplayerAPI::RPC_MODE_REMOTE);
-	rpc_config(SNAME("_rpc_doll_notify_sync_pause"), MultiplayerAPI::RPC_MODE_REMOTE);
-	rpc_config(SNAME("_rpc_doll_send_epoch_batch"), MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_server_send_inputs", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_set_server_controlled", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_notify_fps_acceleration", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_doll_notify_sync_pause", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_doll_send_epoch_batch", MultiplayerAPI::RPC_MODE_REMOTE);
 }
 
 NetworkedController::~NetworkedController() {
@@ -181,7 +179,7 @@ void NetworkedController::set_server_controlled(bool p_server_controlled) {
 			if (get_network_master() != 1) {
 				rpc_id(
 						get_network_master(),
-						SNAME("_rpc_set_server_controlled"),
+						"_rpc_set_server_controlled",
 						server_controlled);
 			} else {
 				SceneSynchronizerDebugger::singleton()->debug_warning(this, "The node is owned by the server, there is no client that can control it; please assign the proper authority.");
@@ -383,7 +381,7 @@ void NetworkedController::set_doll_peer_active(int p_peer_id, bool p_active) {
 	if (p_active == false) {
 		// Notify the doll only for deactivations. The activations are automatically
 		// handled when the first epoch is received.
-		rpc_id(p_peer_id, SNAME("_rpc_doll_notify_sync_pause"), server_controller->epoch);
+		rpc_id(p_peer_id, "_rpc_doll_notify_sync_pause", server_controller->epoch);
 	}
 }
 
@@ -395,7 +393,7 @@ void NetworkedController::pause_notify_dolls() {
 	for (uint32_t i = 0; i < server_controller->peers.size(); i += 1) {
 		if (server_controller->peers[i].active) {
 			// Notify this actor is no more active.
-			rpc_id(server_controller->peers[i].peer, SNAME("_rpc_doll_notify_sync_pause"), server_controller->epoch);
+			rpc_id(server_controller->peers[i].peer, "_rpc_doll_notify_sync_pause", server_controller->epoch);
 		}
 	}
 }
@@ -413,7 +411,7 @@ void NetworkedController::native_collect_inputs(double p_delta, DataBuffer &r_bu
 	PROFILE_NODE
 
 	call(
-			SNAME("_collect_inputs"),
+			"_collect_inputs",
 			p_delta,
 			&r_buffer);
 }
@@ -422,7 +420,7 @@ void NetworkedController::native_controller_process(double p_delta, DataBuffer &
 	PROFILE_NODE
 
 	call(
-			SNAME("_controller_process"),
+			"_controller_process",
 			p_delta,
 			&p_buffer);
 }
@@ -430,26 +428,26 @@ void NetworkedController::native_controller_process(double p_delta, DataBuffer &
 bool NetworkedController::native_are_inputs_different(DataBuffer &p_buffer_A, DataBuffer &p_buffer_B) {
 	PROFILE_NODE
 
-	return call(SNAME("_are_inputs_different"), &p_buffer_A, &p_buffer_B);
+	return call("_are_inputs_different", &p_buffer_A, &p_buffer_B);
 }
 
 uint32_t NetworkedController::native_count_input_size(DataBuffer &p_buffer) {
 	PROFILE_NODE
 
-	return call(SNAME("_count_input_size"), &p_buffer);
+	return call("_count_input_size", &p_buffer);
 }
 
 void NetworkedController::native_collect_epoch_data(DataBuffer &r_buffer) {
 	PROFILE_NODE
 
-	call(SNAME("_collect_epoch_data"), &r_buffer);
+	call("_collect_epoch_data", &r_buffer);
 }
 
 void NetworkedController::native_apply_epoch(double p_delta, real_t p_interpolation_alpha, DataBuffer &p_past_buffer, DataBuffer &p_future_buffer) {
 	PROFILE_NODE
 
 	call(
-			SNAME("_apply_epoch"),
+			"_apply_epoch",
 			p_delta,
 			p_interpolation_alpha,
 			&p_past_buffer,
@@ -528,13 +526,13 @@ void NetworkedController::set_inputs_buffer(const BitArray &p_new_buffer, uint32
 
 void NetworkedController::set_scene_synchronizer(SceneSynchronizer *p_synchronizer) {
 	if (scene_synchronizer) {
-		scene_synchronizer->disconnect(SNAME("sync_paused"), Callable(this, SNAME("__on_sync_paused")));
+		scene_synchronizer->disconnect("sync_paused", this, "__on_sync_paused");
 	}
 
 	scene_synchronizer = p_synchronizer;
 
 	if (scene_synchronizer) {
-		scene_synchronizer->connect(SNAME("sync_paused"), Callable(this, SNAME("__on_sync_paused")));
+		scene_synchronizer->connect("sync_paused", this, "__on_sync_paused");
 	}
 }
 
@@ -1115,7 +1113,7 @@ void ServerController::doll_sync(real_t p_delta) {
 		// Send the data
 		node->rpc_unreliable_id(
 				peers[i].peer,
-				SNAME("_rpc_doll_send_epoch_batch"),
+				"_rpc_doll_send_epoch_batch",
 				epoch_state_data_cache.get_buffer().get_bytes());
 	}
 
@@ -1189,7 +1187,7 @@ void ServerController::adjust_player_tick_rate(double p_delta) {
 
 		node->rpc_unreliable_id(
 				node->get_network_master(),
-				SNAME("_rpc_notify_fps_acceleration"),
+				"_rpc_notify_fps_acceleration",
 				packet_data);
 	}
 }
@@ -1555,7 +1553,7 @@ void PlayerController::send_frame_input_buffer_to_server() {
 	const int server_peer_id = 1;
 	node->rpc_unreliable_id(
 			server_peer_id,
-			SNAME("_rpc_server_send_inputs"),
+			"_rpc_server_send_inputs",
 			packet_data);
 }
 
