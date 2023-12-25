@@ -669,7 +669,11 @@ void ServerController::process(double p_delta) {
 		return;
 	}
 
+#ifdef DEBUG_ENABLED
 	const bool is_new_input = fetch_next_input(p_delta);
+#else
+	fetch_next_input(p_delta);
+#endif
 
 	if (unlikely(current_input_buffer_id == UINT32_MAX)) {
 		// Skip this until the first input arrive.
