@@ -247,6 +247,16 @@ void SceneSynchronizerDebugger::prepare_dumping(int p_peer, SceneTree *p_scene_t
 
 void SceneSynchronizerDebugger::setup_debugger_python_ui() {
 #ifdef DEBUG_ENABLED
+
+	DirAccess *dir = DirAccess::create_for_path(main_dump_directory_path);
+
+	Error e;
+	e = dir->make_dir_recursive(main_dump_directory_path);
+
+	memdelete(dir);
+
+	ERR_FAIL_COND_MSG(e != OK, "Can't create the `" + main_dump_directory_path + "` directory.");
+
 	// Verify if file exists.
 	const String path = main_dump_directory_path + "/debugger.py";
 
