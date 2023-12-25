@@ -138,34 +138,34 @@ void InputNetworkEncoder::encode(const LocalVector<Variant> &p_input, DataBuffer
 						CRASH_NOW_MSG("Boolean are handled differently. Thanks to the above IF this condition never occurs.");
 						break;
 					case DataBuffer::DATA_TYPE_UINT:
-						r_buffer.add_uint(pending_input.operator unsigned int(), info.compression_level);
+						(void)r_buffer.add_uint(pending_input.operator unsigned int(), info.compression_level);
 						break;
 					case DataBuffer::DATA_TYPE_INT:
-						r_buffer.add_int(pending_input.operator int(), info.compression_level);
+						(void)r_buffer.add_int(pending_input.operator int(), info.compression_level);
 						break;
 					case DataBuffer::DATA_TYPE_REAL:
-						r_buffer.add_real(pending_input.operator real_t(), info.compression_level);
+						(void)r_buffer.add_real(pending_input.operator real_t(), info.compression_level);
 						break;
 					case DataBuffer::DATA_TYPE_POSITIVE_UNIT_REAL:
-						r_buffer.add_positive_unit_real(pending_input.operator real_t(), info.compression_level);
+						(void)r_buffer.add_positive_unit_real(pending_input.operator real_t(), info.compression_level);
 						break;
 					case DataBuffer::DATA_TYPE_UNIT_REAL:
-						r_buffer.add_unit_real(pending_input.operator real_t(), info.compression_level);
+						(void)r_buffer.add_unit_real(pending_input.operator real_t(), info.compression_level);
 						break;
 					case DataBuffer::DATA_TYPE_VECTOR2:
-						r_buffer.add_vector2(pending_input.operator Vector2(), info.compression_level);
+						(void)r_buffer.add_vector2(pending_input.operator Vector2(), info.compression_level);
 						break;
 					case DataBuffer::DATA_TYPE_NORMALIZED_VECTOR2:
-						r_buffer.add_normalized_vector2(pending_input.operator Vector2(), info.compression_level);
+						(void)r_buffer.add_normalized_vector2(pending_input.operator Vector2(), info.compression_level);
 						break;
 					case DataBuffer::DATA_TYPE_VECTOR3:
-						r_buffer.add_vector3(pending_input.operator Vector3(), info.compression_level);
+						(void)r_buffer.add_vector3(pending_input.operator Vector3(), info.compression_level);
 						break;
 					case DataBuffer::DATA_TYPE_NORMALIZED_VECTOR3:
-						r_buffer.add_normalized_vector3(pending_input.operator Vector3(), info.compression_level);
+						(void)r_buffer.add_normalized_vector3(pending_input.operator Vector3(), info.compression_level);
 						break;
 					case DataBuffer::DATA_TYPE_VARIANT:
-						r_buffer.add_variant(pending_input);
+						(void)r_buffer.add_variant(pending_input);
 						break;
 				};
 			}
