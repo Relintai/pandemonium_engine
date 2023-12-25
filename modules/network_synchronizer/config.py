@@ -15,8 +15,10 @@ def get_doc_classes():
         "SceneSynchronizer",
         "NetworkedController",
         "DataBuffer",
+        "SceneDiff",
+        "SceneSynchronizerDebugger",
+        "InputNetworkEncoder",
     ]
-
 
 def is_enabled():
     return True
