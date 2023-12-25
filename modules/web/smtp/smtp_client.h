@@ -33,9 +33,9 @@
 /*************************************************************************/
 
 #include "core/containers/vector.h"
-#include "core/object/reference.h"
 #include "core/io/stream_peer_ssl.h"
 #include "core/io/stream_peer_tcp.h"
+#include "core/object/reference.h"
 #include "core/os/mutex.h"
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"

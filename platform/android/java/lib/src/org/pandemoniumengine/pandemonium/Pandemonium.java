@@ -113,6 +113,7 @@ import java.util.Locale;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.pandemoniumengine.pandemonium.input.PandemoniumEditText;
+import org.pandemoniumengine.pandemonium.input.PandemoniumInputHandler;
 import org.pandemoniumengine.pandemonium.io.directory.DirectoryAccessHandler;
 import org.pandemoniumengine.pandemonium.io.file.FileAccessHandler;
 import org.pandemoniumengine.pandemonium.plugin.PandemoniumPlugin;
@@ -120,7 +121,6 @@ import org.pandemoniumengine.pandemonium.plugin.PandemoniumPluginRegistry;
 import org.pandemoniumengine.pandemonium.utils.BenchmarkUtils;
 import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
 import org.pandemoniumengine.pandemonium.utils.PermissionsUtil;
-import org.pandemoniumengine.pandemonium.input.PandemoniumInputHandler;
 
 public class Pandemonium extends Fragment implements SensorEventListener, IDownloaderClient {
 	private static final String TAG = Pandemonium.class.getSimpleName();

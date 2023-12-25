@@ -31,8 +31,8 @@
 
 #include "export.h"
 
-#include "export_plugin.h"
 #include "core/os/os.h"
+#include "export_plugin.h"
 
 #include "editor/editor_settings.h"
 

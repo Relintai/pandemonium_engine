@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*  scene_synchronizer.cpp                                               */
 /*************************************************************************/
-/*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
-/*                      https://godotengine.org                          */
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
 /*************************************************************************/
-/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,14 +35,14 @@
 
 #include "scene_synchronizer.h"
 
+#include "compat_object_id.h"
 #include "core/object/method_bind_ext.gen.inc"
 #include "core/os/os.h"
 #include "input_network_encoder.h"
 #include "networked_controller.h"
+#include "scene/main/viewport.h"
 #include "scene_diff.h"
 #include "scene_synchronizer_debugger.h"
-#include "compat_object_id.h"
-#include "scene/main/viewport.h"
 
 void SceneSynchronizer::_bind_methods() {
 	BIND_ENUM_CONSTANT(CHANGE)
