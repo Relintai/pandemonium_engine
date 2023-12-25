@@ -48,7 +48,7 @@
 
 class Synchronizer;
 class NetworkedController;
-class PlayerController;
+struct PlayerController;
 
 /// # SceneSynchronizer
 ///
