@@ -247,7 +247,8 @@ pandemonium_bool GDAPI pandemonium_string_is_numeric(const pandemonium_string *p
 pandemonium_bool GDAPI pandemonium_string_is_zero(const pandemonium_string *p_self);
 
 double GDAPI pandemonium_string_to_double(const pandemonium_string *p_self);
-pandemonium_real GDAPI pandemonium_string_to_float(const pandemonium_string *p_self);
+float GDAPI pandemonium_string_to_float(const pandemonium_string *p_self);
+pandemonium_real GDAPI pandemonium_string_to_real(const pandemonium_string *p_self);
 pandemonium_int GDAPI pandemonium_string_to_int(const pandemonium_string *p_self);
 pandemonium_bool GDAPI pandemonium_string_to_bool(const pandemonium_string *p_self);
 uint32_t GDAPI pandemonium_string_to_uint(const pandemonium_string *p_self);

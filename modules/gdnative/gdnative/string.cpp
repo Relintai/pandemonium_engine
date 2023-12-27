@@ -767,10 +767,16 @@ double GDAPI pandemonium_string_to_double(const pandemonium_string *p_self) {
 	return self->to_double();
 }
 
-pandemonium_real GDAPI pandemonium_string_to_float(const pandemonium_string *p_self) {
+float GDAPI pandemonium_string_to_float(const pandemonium_string *p_self) {
 	const String *self = (const String *)p_self;
 
 	return self->to_float();
+}
+
+pandemonium_real GDAPI pandemonium_string_to_real(const pandemonium_string *p_self) {
+	const String *self = (const String *)p_self;
+
+	return self->to_real();
 }
 
 pandemonium_int GDAPI pandemonium_string_to_int(const pandemonium_string *p_self) {
