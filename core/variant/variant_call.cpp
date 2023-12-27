@@ -342,6 +342,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(String, is_zero);
 	VCALL_LOCALMEM0R(String, to_double);
 	VCALL_LOCALMEM0R(String, to_float);
+	VCALL_LOCALMEM0R(String, to_real);
 	VCALL_LOCALMEM0R(String, to_int);
 	VCALL_LOCALMEM0R(String, to_bool);
 	VCALL_LOCALMEM0R(String, to_uint);
@@ -2514,6 +2515,7 @@ void register_variant_methods() {
 
 	ADDFUNC0R(STRING, REAL, String, to_double, varray());
 	ADDFUNC0R(STRING, REAL, String, to_float, varray());
+	ADDFUNC0R(STRING, REAL, String, to_real, varray());
 	ADDFUNC0R(STRING, INT, String, to_int, varray());
 	ADDFUNC0R(STRING, INT, String, to_bool, varray());
 	ADDFUNC0R(STRING, INT, String, to_uint, varray());

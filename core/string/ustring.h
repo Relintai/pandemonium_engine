@@ -34,6 +34,7 @@
 
 #include "core/containers/cowdata.h"
 #include "core/containers/vector.h"
+#include "core/math/math_defs.h"
 #include "core/string/char_utils.h"
 #include "core/typedefs.h"
 #include "core/variant/array.h"
@@ -372,6 +373,14 @@ public:
 	bool to_bool() const;
 	uint32_t to_uint() const;
 
+	_FORCE_INLINE_ real_t to_real() const {
+#ifdef REAL_T_IS_DOUBLE
+		return to_double();
+#else
+		return to_float();
+#endif
+	}
+
 	int hex_to_int(bool p_with_prefix = true) const;
 	int64_t hex_to_int64(bool p_with_prefix = true) const;
 	int64_t bin_to_int64(bool p_with_prefix = true) const;
@@ -388,6 +397,28 @@ public:
 	static double to_double(const char *p_str);
 	static double to_double(const wchar_t *p_str, const wchar_t **r_end = nullptr);
 	static double to_double(const CharType *p_str, const CharType **r_end = nullptr);
+
+	_FORCE_INLINE_ static real_t to_real(const char *p_str) {
+#ifdef REAL_T_IS_DOUBLE
+		return to_double(p_str);
+#else
+		return to_float(p_str);
+#endif
+	}
+	_FORCE_INLINE_ static real_t to_real(const wchar_t *p_str, const wchar_t **r_end = nullptr) {
+#ifdef REAL_T_IS_DOUBLE
+		return to_double(p_str, r_end);
+#else
+		return to_float(p_str, r_end);
+#endif
+	}
+	_FORCE_INLINE_ static real_t to_real(const CharType *p_str, const CharType **r_end = nullptr) {
+#ifdef REAL_T_IS_DOUBLE
+		return to_double(p_str, r_end);
+#else
+		return to_float(p_str, r_end);
+#endif
+	}
 
 	static uint32_t num_characters(int64_t p_int);
 
