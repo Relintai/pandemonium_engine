@@ -248,7 +248,7 @@ void initialize_navigation_mesh_generator() {
 
 	// Fall back to dummy if no default server has been registered.
 	if (!navigation_mesh_generator) {
-		ERR_PRINT("No NavigationMeshGenerator implementation has been registered! Falling back to a dummy implementation: navigation mesh baking features will be unavailable.");
+		//ERR_PRINT("No NavigationMeshGenerator implementation has been registered! Falling back to a dummy implementation: navigation mesh baking features will be unavailable.");
 		navigation_mesh_generator = memnew(NavigationMeshGeneratorDummy);
 	}
 
