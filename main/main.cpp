@@ -537,6 +537,10 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 	bool quiet_stdout = false;
 	int rtm = -1;
 
+#ifndef TOOLS_ENABLED
+	bool has_script = false;
+#endif
+
 	String remotefs;
 	String remotefs_pass;
 
@@ -598,6 +602,12 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 			print_line(String(VERSION_FULL_CONFIG));
 			exit_code = ERR_HELP; // Hack to force an early exit in `main()` with a success code.
 			goto error;
+#endif
+
+#ifndef TOOLS_ENABLED
+		} else if (I->get() == "-s" || I->get() == "--script") {
+			has_script = true;
+
 #endif
 
 		} else if (I->get() == "-v" || I->get() == "--verbose") { // verbose output
@@ -1054,7 +1064,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 #ifdef TOOLS_ENABLED
 		editor = false;
 #else
-		if (script.empty()) {
+		if (!has_script) {
 			const String error_msg = "Error: Couldn't load project data at path \"" + project_path + "\". Is the .pck file missing?\nIf you've renamed the executable, the associated .pck file should also be renamed to match the executable's name (without the extension).\n";
 			OS::get_singleton()->print("%s", error_msg.utf8().get_data());
 			OS::get_singleton()->alert(error_msg);
