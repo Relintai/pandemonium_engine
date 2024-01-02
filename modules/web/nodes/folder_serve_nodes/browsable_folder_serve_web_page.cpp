@@ -132,9 +132,6 @@ void BrowsableFolderServeWebPage::evaluate_dir(const String &path, const bool to
 	folders.sort();
 	files.sort();
 
-	//folders.sort_inc();
-	//files.sort_inc();
-
 	render_dir_page(dir_uri, folders, files, top_level);
 }
 
@@ -142,6 +139,10 @@ void BrowsableFolderServeWebPage::render_dir_page(const String &dir_uri, const V
 	HTMLBuilder b;
 
 	String uri = get_full_uri(false);
+
+	if (uri == "/") {
+		uri = "";
+	}
 
 	b.div("file_list");
 	{
