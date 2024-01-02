@@ -142,7 +142,9 @@ int NavigationMeshGeneratorManager::find_server_id(const String &p_name) const {
 }
 
 NavigationMeshGenerator *NavigationMeshGeneratorManager::new_default_server() const {
-	ERR_FAIL_COND_V(default_server_id == -1, nullptr);
+	if (default_server_id == -1) {
+		return NULL;
+	}
 
 	NavigationMeshGenerator *gen = navigation_mesh_generators[default_server_id].create_callback();
 
