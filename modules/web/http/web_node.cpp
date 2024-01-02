@@ -85,7 +85,7 @@ String WebNode::get_full_uri_parent(const bool slash_at_the_end) {
 	_rw_lock.read_unlock();
 
 	if (!slash_at_the_end) {
-		uri.resize(uri.length() - 1);
+		uri.set_length(uri.length() - 1);
 	}
 
 	return uri;
