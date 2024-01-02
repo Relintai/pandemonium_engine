@@ -607,7 +607,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 #ifndef TOOLS_ENABLED
 		} else if (I->get() == "-s" || I->get() == "--script") {
 			has_script = true;
-
+			main_args.push_back(I->get());
 #endif
 
 		} else if (I->get() == "-v" || I->get() == "--verbose") { // verbose output
