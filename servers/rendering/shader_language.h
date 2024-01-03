@@ -603,7 +603,7 @@ public:
 		struct Function {
 			StringName name;
 			FunctionNode *function;
-			RBSet<StringName> uses_function;
+			Vector<StringName> uses_function;
 			bool callable;
 		};
 
