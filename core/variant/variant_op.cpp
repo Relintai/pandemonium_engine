@@ -3315,7 +3315,11 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 			DEFAULT_OP_DVECTOR_SET(POOL_REAL_ARRAY, real_t, p_value.type != Variant::REAL && p_value.type != Variant::INT)
 			DEFAULT_OP_DVECTOR_SET(POOL_STRING_ARRAY, String, p_value.type != Variant::STRING)
 			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR2_ARRAY, Vector2, p_value.type != Variant::VECTOR2) // 25
+			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR2I_ARRAY, Vector2i, p_value.type != Variant::VECTOR2I) 
 			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR3_ARRAY, Vector3, p_value.type != Variant::VECTOR3)
+			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR3I_ARRAY, Vector3i, p_value.type != Variant::VECTOR3I)
+			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR4_ARRAY, Vector4, p_value.type != Variant::VECTOR4)
+			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR4I_ARRAY, Vector4i, p_value.type != Variant::VECTOR4I)
 			DEFAULT_OP_DVECTOR_SET(POOL_COLOR_ARRAY, Color, p_value.type != Variant::COLOR)
 		default:
 			return;
