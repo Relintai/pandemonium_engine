@@ -7,7 +7,160 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="add_cc">
+			<return type="void" />
+			<argument index="0" name="address" type="String" />
+			<argument index="1" name="personal" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="add_recipient">
+			<return type="void" />
+			<argument index="0" name="address" type="String" />
+			<argument index="1" name="personal" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cc_address" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cc_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cc_data_string">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cc_personal" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_ccs">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_email_data_string">
+			<return type="String" />
+			<argument index="0" name="email_default_sender_name" type="String" />
+			<argument index="1" name="email_default_sender_email" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_recipient_address" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_recipient_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_recipient_personal" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_recipients">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_sender_address" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_to_data_string">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_cc">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_recipient">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cc_address">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cc_personal">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_ccs">
+			<return type="void" />
+			<argument index="0" name="ccs" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="set_recipient_address">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_recipient_personal">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_recipients">
+			<return type="void" />
+			<argument index="0" name="recipients" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="set_sender">
+			<return type="void" />
+			<argument index="0" name="address" type="String" />
+			<argument index="1" name="personal" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_sender_address">
+			<return type="void" />
+			<argument index="0" name="val" type="String" />
+			<description>
+			</description>
+		</method>
 	</methods>
+	<members>
+		<member name="body" type="String" setter="set_body" getter="get_body" default="&quot;&quot;">
+		</member>
+		<member name="sender_personal" type="String" setter="set_sender_personal" getter="get_sender_personal" default="&quot;&quot;">
+		</member>
+		<member name="subject" type="String" setter="set_subject" getter="get_subject" default="&quot;&quot;">
+		</member>
+	</members>
 	<constants>
 	</constants>
 </class>

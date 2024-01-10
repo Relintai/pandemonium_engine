@@ -7,7 +7,53 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="send_email">
+			<return type="void" />
+			<argument index="0" name="email" type="EMail" />
+			<description>
+			</description>
+		</method>
 	</methods>
+	<members>
+		<member name="client_id" type="String" setter="set_client_id" getter="get_client_id" default="&quot;smtp.pandemoniumengine.org&quot;">
+		</member>
+		<member name="email_default_sender_email" type="String" setter="set_email_default_sender_email" getter="get_email_default_sender_email" default="&quot;&quot;">
+		</member>
+		<member name="email_default_sender_name" type="String" setter="set_email_default_sender_name" getter="get_email_default_sender_name" default="&quot;&quot;">
+		</member>
+		<member name="host" type="String" setter="set_host" getter="get_host" default="&quot;&quot;">
+		</member>
+		<member name="port" type="int" setter="set_port" getter="get_port" default="465">
+		</member>
+		<member name="server_auth_method" type="int" setter="set_server_auth_method" getter="get_server_auth_method" enum="SMTPClient.ServerAuthMethod" default="1">
+		</member>
+		<member name="server_auth_password" type="String" setter="set_server_auth_password" getter="get_server_auth_password" default="&quot;&quot;">
+		</member>
+		<member name="server_auth_username" type="String" setter="set_server_auth_username" getter="get_server_auth_username" default="&quot;&quot;">
+		</member>
+		<member name="thread_sleep_usec" type="int" setter="set_thread_sleep_usec" getter="get_thread_sleep_usec" default="10000">
+		</member>
+		<member name="tls_method" type="int" setter="set_tls_method" getter="get_tls_method" enum="SMTPClient.TLSMethod" default="2">
+		</member>
+		<member name="use_threads" type="bool" setter="set_use_threads" getter="get_use_threads" default="true">
+		</member>
+	</members>
+	<signals>
+		<signal name="email_sent">
+			<description>
+			</description>
+		</signal>
+		<signal name="error">
+			<argument index="0" name="error" type="Dictionary" />
+			<description>
+			</description>
+		</signal>
+		<signal name="result">
+			<argument index="0" name="content" type="Dictionary" />
+			<description>
+			</description>
+		</signal>
+	</signals>
 	<constants>
 	</constants>
 </class>
