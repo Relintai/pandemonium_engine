@@ -55,5 +55,15 @@
 		</signal>
 	</signals>
 	<constants>
+		<constant name="TLS_METHOD_NONE" value="0" enum="TLSMethod">
+		</constant>
+		<constant name="TLS_METHOD_STARTTLS" value="1" enum="TLSMethod">
+		</constant>
+		<constant name="TLS_METHOD_SMTPS" value="2" enum="TLSMethod">
+		</constant>
+		<constant name="SERVER_AUTH_PLAIN" value="0" enum="ServerAuthMethod">
+		</constant>
+		<constant name="SERVER_AUTH_LOGIN" value="1" enum="ServerAuthMethod">
+		</constant>
 	</constants>
 </class>

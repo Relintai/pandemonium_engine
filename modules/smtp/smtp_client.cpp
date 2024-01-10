@@ -725,4 +725,11 @@ void SMTPClient::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "thread_sleep_usec"), "set_thread_sleep_usec", "get_thread_sleep_usec");
 
 	ClassDB::bind_method(D_METHOD("send_email", "email"), &SMTPClient::send_email);
+
+	BIND_ENUM_CONSTANT(TLS_METHOD_NONE);
+	BIND_ENUM_CONSTANT(TLS_METHOD_STARTTLS);
+	BIND_ENUM_CONSTANT(TLS_METHOD_SMTPS);
+
+	BIND_ENUM_CONSTANT(SERVER_AUTH_PLAIN);
+	BIND_ENUM_CONSTANT(SERVER_AUTH_LOGIN);
 }

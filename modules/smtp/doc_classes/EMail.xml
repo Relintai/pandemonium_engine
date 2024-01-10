@@ -77,11 +77,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_sender_address" qualifiers="const">
-			<return type="String" />
-			<description>
-			</description>
-		</method>
 		<method name="get_to_data_string">
 			<return type="String" />
 			<description>
@@ -146,15 +141,11 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_sender_address">
-			<return type="void" />
-			<argument index="0" name="val" type="String" />
-			<description>
-			</description>
-		</method>
 	</methods>
 	<members>
 		<member name="body" type="String" setter="set_body" getter="get_body" default="&quot;&quot;">
+		</member>
+		<member name="sender_address" type="String" setter="set_sender_address" getter="get_sender_address" default="&quot;&quot;">
 		</member>
 		<member name="sender_personal" type="String" setter="set_sender_personal" getter="get_sender_personal" default="&quot;&quot;">
 		</member>
