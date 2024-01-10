@@ -56,8 +56,6 @@ sources = [
 
     "nodes/redirect/redirect_web_page.cpp",
     "nodes/redirect/alias_web_page.cpp",
-
-    "smtp/smtp_client.cpp",
 ]
 
 if env["tools"]:
