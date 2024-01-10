@@ -31,17 +31,106 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/vector.h"
+#include "core/string/ustring.h"
+
 #include "core/object/reference.h"
 
 class EMail : public Reference {
 	GDCLASS(EMail, Reference);
 
 public:
+	struct Address {
+		String address;
+		String personal;
+
+		String get_address_data_string() {
+			if (personal.size() == 0) {
+				return address;
+			}
+
+			return personal + " <" + address + ">";
+		}
+
+		String get_address_data_list_string() {
+			if (personal.size() > 0) {
+				return personal + ":" + address;
+			}
+
+			return address;
+		}
+	};
+
+	// Sender
+	String get_sender_address() const;
+	void set_sender_address(const String &p_value);
+
+	String get_sender_personal() const;
+	void set_sender_personal(const String &p_value);
+
+	void set_sender(String p_address, String p_personal);
+
+	// Recipients
+	String get_recipient_address(const int p_index) const;
+	void set_recipient_address(const int p_index, const String &p_value);
+
+	String get_recipient_personal(const int p_index) const;
+	void set_recipient_personal(const int p_index, const String &p_value);
+
+	void add_recipient(String p_address, String p_personal);
+
+	int get_recipient_count() const;
+
+	void remove_recipient(const int p_index);
+
+	Array get_recipients();
+	void set_recipients(const Array &p_recipients);
+
+	// CC
+	String get_cc_address(const int p_index) const;
+	void set_cc_address(const int p_index, const String &p_value);
+
+	String get_cc_personal(const int p_index) const;
+	void set_cc_personal(const int p_index, const String &p_value);
+
+	void add_cc(String p_address, String p_personal);
+
+	int get_cc_count() const;
+
+	void remove_cc(const int p_index);
+
+	Array get_ccs();
+	void set_ccs(const Array &p_ccs);
+
+	// Other
+	String get_subject() const;
+	void set_subject(String p_subject);
+
+	String get_body() const;
+	void set_body(String p_body);
+
+	// Helpers
+	String get_to_data_string();
+	String get_cc_data_string();
+
+	String get_email_data_string(String email_default_sender_name, String email_default_sender_email);
+
+	String _to_string();
+
 	EMail();
 	~EMail();
 
 protected:
 	static void _bind_methods();
+
+	String sender_address;
+	String sender_personal;
+
+	Vector<Address> to;
+	Vector<Address> cc;
+
+	String subject;
+	String body;
 };
 
 #endif
