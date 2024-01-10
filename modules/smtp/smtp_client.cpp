@@ -163,6 +163,11 @@ void SMTPClient::send_email(const Ref<EMail> &p_email) {
 
 		_worker_semaphore.post();
 	} else {
+		if (_current_session_email.is_valid()) {
+			_mail_queue.push_back(p_email);
+			return;
+		}
+
 		_send_email(p_email);
 	}
 }
@@ -200,7 +205,7 @@ void SMTPClient::_send_email(const Ref<EMail> &p_email) {
 		emit_signal("result", result);
 
 		if (!should_use_threading()) {
-			set_process(false);
+			_no_thread_next_email();
 		}
 	}
 
@@ -224,7 +229,7 @@ void SMTPClient::_send_email(const Ref<EMail> &p_email) {
 			emit_signal("result", result);
 
 			if (!should_use_threading()) {
-				set_process(false);
+				_no_thread_next_email();
 			}
 
 			return;
@@ -342,7 +347,7 @@ void SMTPClient::close_connection() {
 	_current_tls_established = false;
 
 	if (!should_use_threading()) {
-		set_process(false);
+		_no_thread_next_email();
 	}
 }
 
@@ -546,6 +551,27 @@ void SMTPClient::_process_email() {
 	} else {
 		PLOG_ERR("Couldn't poll!")
 	}
+}
+
+void SMTPClient::_no_thread_next_email() {
+	if (should_use_threading()) {
+		return;
+	}
+
+	Ref<EMail> mail;
+
+	int size = _mail_queue.size();
+	if (size > 0) {
+		mail = _mail_queue[0];
+		_mail_queue.remove(0);
+	} else {
+		set_process(false);
+		return;
+	}
+
+	if (mail.is_valid()) {
+		_send_email(mail);
+	} 
 }
 
 void SMTPClient::_worker_thread_func(void *user_data) {
