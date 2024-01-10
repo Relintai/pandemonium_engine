@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="SMTPClient" inherits="Node" version="4.2">
 	<brief_description>
+		An SMTP Client Node.
 	</brief_description>
 	<description>
+		A Node that can be used to send emails using the SMTP protocol.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,59 +13,79 @@
 			<return type="void" />
 			<argument index="0" name="email" type="EMail" />
 			<description>
+				Send an email.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="client_id" type="String" setter="set_client_id" getter="get_client_id" default="&quot;smtp.pandemoniumengine.org&quot;">
+			Client id that will be sent to the server. Not an account, it's an arbitrary value. Should not be empty.
 		</member>
 		<member name="email_default_sender_email" type="String" setter="set_email_default_sender_email" getter="get_email_default_sender_email" default="&quot;&quot;">
+			This is the address from where the email will come if you don't override it using [class EMail].
 		</member>
 		<member name="email_default_sender_name" type="String" setter="set_email_default_sender_name" getter="get_email_default_sender_name" default="&quot;&quot;">
+			This is the dislpayed name of the address from where the email will come if you don't override it using [class EMail].
 		</member>
 		<member name="host" type="String" setter="set_host" getter="get_host" default="&quot;&quot;">
+			The smtp server's host.
 		</member>
 		<member name="port" type="int" setter="set_port" getter="get_port" default="465">
+			The smtp server's port.
 		</member>
 		<member name="server_auth_method" type="int" setter="set_server_auth_method" getter="get_server_auth_method" enum="SMTPClient.ServerAuthMethod" default="1">
+			What authentication method the server uses.
 		</member>
 		<member name="server_auth_password" type="String" setter="set_server_auth_password" getter="get_server_auth_password" default="&quot;&quot;">
+			The server's account's password.
 		</member>
 		<member name="server_auth_username" type="String" setter="set_server_auth_username" getter="get_server_auth_username" default="&quot;&quot;">
+			The server's account's username.
 		</member>
 		<member name="thread_sleep_usec" type="int" setter="set_thread_sleep_usec" getter="get_thread_sleep_usec" default="10000">
+			When using threading the worker thread will wait this much time between 2 polls. 1 msec = 1000 usec.
 		</member>
 		<member name="tls_method" type="int" setter="set_tls_method" getter="get_tls_method" enum="SMTPClient.TLSMethod" default="2">
+			How to set up encryption with the server.
 		</member>
 		<member name="use_threads" type="bool" setter="set_use_threads" getter="get_use_threads" default="true">
+			Whether to use threading or not.
 		</member>
 	</members>
 	<signals>
 		<signal name="email_sent">
 			<description>
+				Emitted when an email is successfully sent.
 			</description>
 		</signal>
 		<signal name="error">
 			<argument index="0" name="error" type="Dictionary" />
 			<description>
+				Emitted when sending an email encountered an error.
 			</description>
 		</signal>
 		<signal name="result">
 			<argument index="0" name="content" type="Dictionary" />
 			<description>
+				Emitted when a email either successully sent, or encountered an error.
 			</description>
 		</signal>
 	</signals>
 	<constants>
 		<constant name="TLS_METHOD_NONE" value="0" enum="TLSMethod">
+			No encryption. Username / Password will be sent without encryption. Not recommended if you don't know what you are doing. Usual port: 587.
 		</constant>
 		<constant name="TLS_METHOD_STARTTLS" value="1" enum="TLSMethod">
+			Connect, then use the STARTTLS command, and upgarde to using SSL. Usual port: 587.
 		</constant>
 		<constant name="TLS_METHOD_SMTPS" value="2" enum="TLSMethod">
+			Connect, and immediately just set up SSL. The best option. Use this whenever you can. Usual port: 465.
 		</constant>
 		<constant name="SERVER_AUTH_PLAIN" value="0" enum="ServerAuthMethod">
+			Server does not need authentication.
 		</constant>
 		<constant name="SERVER_AUTH_LOGIN" value="1" enum="ServerAuthMethod">
+			Server needs account and password.
 		</constant>
 	</constants>
 </class>

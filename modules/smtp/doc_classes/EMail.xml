@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EMail" inherits="Reference" version="4.2">
 	<brief_description>
+		Class that is used by the [SMTPClient] to send emails.
 	</brief_description>
 	<description>
+		Class that is used by the [SMTPClient] to send emails.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,6 +14,7 @@
 			<argument index="0" name="address" type="String" />
 			<argument index="1" name="personal" type="String" />
 			<description>
+				Add an address to the Cc section of an email.
 			</description>
 		</method>
 		<method name="add_recipient">
@@ -19,33 +22,39 @@
 			<argument index="0" name="address" type="String" />
 			<argument index="1" name="personal" type="String" />
 			<description>
+				Add an address to the recipients of an email.
 			</description>
 		</method>
 		<method name="get_cc_address" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns a cc's email address.
 			</description>
 		</method>
 		<method name="get_cc_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return how many cc is set.
 			</description>
 		</method>
 		<method name="get_cc_data_string">
 			<return type="String" />
 			<description>
+				Helper emthod. Returns cc addresses formatted for the smtp protocoll.
 			</description>
 		</method>
 		<method name="get_cc_personal" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns a cc's name.
 			</description>
 		</method>
 		<method name="get_ccs">
 			<return type="Array" />
 			<description>
+				Returns all ccs.
 			</description>
 		</method>
 		<method name="get_email_data_string">
@@ -53,45 +62,53 @@
 			<argument index="0" name="email_default_sender_name" type="String" />
 			<argument index="1" name="email_default_sender_email" type="String" />
 			<description>
+				Helper emthod. Returns the email's body formatted for the smtp protocoll.
 			</description>
 		</method>
 		<method name="get_recipient_address" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns a recipient's email address.
 			</description>
 		</method>
 		<method name="get_recipient_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return how many recipient is set.
 			</description>
 		</method>
 		<method name="get_recipient_personal" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns a recipient's name.
 			</description>
 		</method>
 		<method name="get_recipients">
 			<return type="Array" />
 			<description>
+				Returns all recipients.
 			</description>
 		</method>
 		<method name="get_to_data_string">
 			<return type="String" />
 			<description>
+				Helper emthod. Returns the target addresses formatted for the smtp protocoll.
 			</description>
 		</method>
 		<method name="remove_cc">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes a cc.
 			</description>
 		</method>
 		<method name="remove_recipient">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes a recipient.
 			</description>
 		</method>
 		<method name="set_cc_address">
@@ -99,6 +116,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="val" type="String" />
 			<description>
+				Set a recipient's email address.
 			</description>
 		</method>
 		<method name="set_cc_personal">
@@ -106,12 +124,14 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="val" type="String" />
 			<description>
+				Set a cc's name.
 			</description>
 		</method>
 		<method name="set_ccs">
 			<return type="void" />
 			<argument index="0" name="ccs" type="Array" />
 			<description>
+				Set all ccs. Should countain arrays of size 2. index 0 is address, index 1 is email.
 			</description>
 		</method>
 		<method name="set_recipient_address">
@@ -119,6 +139,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="val" type="String" />
 			<description>
+				Set a recipient's email address.
 			</description>
 		</method>
 		<method name="set_recipient_personal">
@@ -126,12 +147,14 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="val" type="String" />
 			<description>
+				Set a recipient's name.
 			</description>
 		</method>
 		<method name="set_recipients">
 			<return type="void" />
 			<argument index="0" name="recipients" type="Array" />
 			<description>
+				Set all recipients. Should countain arrays of size 2. index 0 is address, index 1 is email.
 			</description>
 		</method>
 		<method name="set_sender">
@@ -139,17 +162,22 @@
 			<argument index="0" name="address" type="String" />
 			<argument index="1" name="personal" type="String" />
 			<description>
+				Shorthand for setting [member sender_address], and [member sender_personal].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="body" type="String" setter="set_body" getter="get_body" default="&quot;&quot;">
+			The email's body.
 		</member>
 		<member name="sender_address" type="String" setter="set_sender_address" getter="get_sender_address" default="&quot;&quot;">
+			The email's sender address. If you leave it empty the server default is used.
 		</member>
 		<member name="sender_personal" type="String" setter="set_sender_personal" getter="get_sender_personal" default="&quot;&quot;">
+			The email's sender name. If you leave it empty the server default is used.
 		</member>
 		<member name="subject" type="String" setter="set_subject" getter="get_subject" default="&quot;&quot;">
+			The email's subject.
 		</member>
 	</members>
 	<constants>
