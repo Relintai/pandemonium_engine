@@ -316,7 +316,7 @@ EMail::~EMail() {
 void EMail::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_sender_address"), &EMail::get_sender_address);
 	ClassDB::bind_method(D_METHOD("set_sender_address", "val"), &EMail::set_sender_address);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "sender_address"), "set_sender_address", "get_ignored_urls");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "sender_address"), "set_sender_address", "get_sender_address");
 
 	ClassDB::bind_method(D_METHOD("get_sender_personal"), &EMail::get_sender_personal);
 	ClassDB::bind_method(D_METHOD("set_sender_personal", "val"), &EMail::set_sender_personal);
