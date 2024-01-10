@@ -1118,6 +1118,13 @@
 		<method name="to_double">
 			<return type="float" />
 			<description>
+				Converts a string containing a decimal number into a [code]double[/code]. The method will stop on the first non-number character except the first [code].[/code] (decimal point), and [code]e[/code] which is used for exponential.
+				[codeblock]
+				print("12.3".to_double()) # 12.3
+				print("1.2.3".to_double()) # 1.2
+				print("12ab3".to_double()) # 12
+				print("1e3".to_double()) # 1000
+				[/codeblock]
 			</description>
 		</method>
 		<method name="to_float">
@@ -1147,6 +1154,18 @@
 			<return type="String" />
 			<description>
 				Returns the string converted to lowercase.
+			</description>
+		</method>
+		<method name="to_real">
+			<return type="float" />
+			<description>
+				Converts a string containing a decimal number into a [code]real[/code]. Reals can be either floats or doubles based on how the engine was compiled. By default they are floats. The method will stop on the first non-number character except the first [code].[/code] (decimal point), and [code]e[/code] which is used for exponential.
+				[codeblock]
+				print("12.3".to_real()) # 12.3
+				print("1.2.3".to_real()) # 1.2
+				print("12ab3".to_real()) # 12
+				print("1e3".to_real()) # 1000
+				[/codeblock]
 			</description>
 		</method>
 		<method name="to_uint">
