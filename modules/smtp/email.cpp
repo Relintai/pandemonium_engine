@@ -228,8 +228,8 @@ String EMail::get_to_data_string() {
 String EMail::get_cc_data_string() {
 	String ret;
 
-	for (int i = 0; i < to.size(); ++i) {
-		Address t = to[i];
+	for (int i = 0; i < cc.size(); ++i) {
+		Address t = cc[i];
 
 		if (ret.size() != 0) {
 			ret += ", ";

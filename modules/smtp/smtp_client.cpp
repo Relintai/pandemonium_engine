@@ -152,7 +152,7 @@ void SMTPClient::set_thread_sleep_usec(const int p_value) {
 }
 
 void SMTPClient::send_email(const Ref<EMail> &p_email) {
-	ERR_FAIL_COND(!Engine::get_singleton()->is_editor_hint());
+	ERR_FAIL_COND(Engine::get_singleton()->is_editor_hint());
 	ERR_FAIL_COND(!is_inside_tree());
 	ERR_FAIL_COND(!p_email.is_valid());
 
@@ -187,7 +187,15 @@ void SMTPClient::_send_email(const Ref<EMail> &p_email) {
 		return;
 	}
 
-	Error err = _tcp_client->connect_to_host(host, port);
+	IP_Address ip;
+
+	if (host.is_valid_ip_address()) {
+		ip = host;
+	} else {
+		ip = IP::get_singleton()->resolve_hostname(host);
+	}
+
+	Error err = _tcp_client->connect_to_host(ip, port);
 	if (err != OK) {
 		PLOG_ERR("Could not connect! " + itos(err));
 
@@ -207,36 +215,6 @@ void SMTPClient::_send_email(const Ref<EMail> &p_email) {
 		if (!should_use_threading()) {
 			_no_thread_next_email();
 		}
-	}
-
-	if (tls_method == TLS_METHOD_SMTPS) {
-		err = _tls_client->connect_to_stream(_tcp_client, false, host);
-
-		if (err != OK) {
-			_current_session_status = SESSION_STATUS_SERVER_ERROR;
-
-			Dictionary error_body;
-
-			error_body["message"] = "Error connecting to TLS Stream.";
-			error_body["code"] = err;
-
-			emit_signal("error", error_body);
-
-			Dictionary result;
-			result["success"] = false;
-			result["error"] = error_body;
-
-			emit_signal("result", result);
-
-			if (!should_use_threading()) {
-				_no_thread_next_email();
-			}
-
-			return;
-		}
-
-		_current_tls_started = true;
-		_current_tls_established = true;
 	}
 
 	_current_session_status = SESSION_STATUS_HELO;
@@ -302,17 +280,19 @@ bool SMTPClient::start_hello() {
 	return true;
 }
 
-Error SMTPClient::client_put_data(const CharString &data) {
+Error SMTPClient::client_put_data(const String &data) {
+	Vector<uint8_t> buffer = data.to_utf8_buffer();
+
 	if (_current_tls_established) {
-		return _tls_client->put_data((const uint8_t *)data.ptr(), data.size());
+		return _tls_client->put_data(buffer.ptr(), buffer.size());
 	}
 
-	return _tcp_client->put_data((const uint8_t *)data.ptr(), data.size());
+	return _tcp_client->put_data(buffer.ptr(), buffer.size());
 }
 
 bool SMTPClient::write_command(const String &command) {
-	//print("COMMAND: " + command)
-	Error err = client_put_data((command + "\n").utf8());
+	//PLOG_ERR("COMMAND: " + command + "\n");
+	Error err = client_put_data(command + "\n");
 
 	if (err != OK) {
 		_current_session_status = SESSION_STATUS_COMMAND_NOT_SENT;
@@ -334,7 +314,7 @@ bool SMTPClient::write_command(const String &command) {
 }
 
 Error SMTPClient::write_data(const String &data) {
-	return client_put_data((data + "\r\n.\r\n").utf8());
+	return client_put_data(data + "\r\n.\r\n");
 }
 
 void SMTPClient::close_connection() {
@@ -367,11 +347,42 @@ void SMTPClient::_process_email() {
 		bool connected = client_get_status();
 
 		if (connected) {
+			// We need to wait until the connection is properly set up before starting ssl
+			if (tls_method == TLS_METHOD_SMTPS && !_current_tls_started) {
+				Error err = _tls_client->connect_to_stream(_tcp_client, false, host);
+
+				if (err != OK) {
+					_current_session_status = SESSION_STATUS_SERVER_ERROR;
+
+					Dictionary error_body;
+
+					error_body["message"] = "Error connecting to TLS Stream.";
+					error_body["code"] = err;
+
+					emit_signal("error", error_body);
+
+					Dictionary result;
+					result["success"] = false;
+					result["error"] = error_body;
+
+					emit_signal("result", result);
+
+					if (!should_use_threading()) {
+						_no_thread_next_email();
+					}
+
+					return;
+				}
+
+				_current_tls_started = true;
+				_current_tls_established = true;
+			}
+
 			int bytes = client_get_available_bytes();
 
 			if (bytes > 0) {
 				String msg = client_get_string(bytes);
-				//print("RECEIVED: " + msg)
+				//PLOG_ERR("RECEIVED: " + msg)
 				String code = msg.left(3);
 
 				if (code == "220") {
@@ -571,7 +582,7 @@ void SMTPClient::_no_thread_next_email() {
 
 	if (mail.is_valid()) {
 		_send_email(mail);
-	} 
+	}
 }
 
 void SMTPClient::_worker_thread_func(void *user_data) {

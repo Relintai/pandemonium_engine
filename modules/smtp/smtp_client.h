@@ -131,7 +131,7 @@ protected:
 	bool start_auth();
 	bool start_hello();
 
-	Error client_put_data(const CharString &data);
+	Error client_put_data(const String &data);
 
 	bool write_command(const String &command);
 	Error write_data(const String &data);
