@@ -225,7 +225,7 @@ void SMTPClient::_send_email(const Ref<EMail> &p_email) {
 }
 
 Error SMTPClient::poll_client() {
-	if (_current_tls_started or _current_tls_established) {
+	if (_current_tls_started || _current_tls_established) {
 		_tls_client->poll();
 		return OK;
 	} else {
