@@ -63,9 +63,14 @@ void TextEditorTextLoader::get_recognized_extensions(List<String> *p_extensions)
 	p_extensions->push_back("yaml");
 	p_extensions->push_back("toml");
 	p_extensions->push_back("html");
+	p_extensions->push_back("htm");
 	p_extensions->push_back("js");
 	p_extensions->push_back("css");
 	p_extensions->push_back("htmpl");
+	p_extensions->push_back("sh");
+	p_extensions->push_back("bat");
+	p_extensions->push_back("ps1");
+	p_extensions->push_back("pxml"); // can be used as a normal easily editable non-translation xml
 }
 
 bool TextEditorTextLoader::handles_type(const String &p_type) const {
