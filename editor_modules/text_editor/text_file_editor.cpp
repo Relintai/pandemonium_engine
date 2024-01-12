@@ -59,7 +59,7 @@
 void TextFileEditor::connect_signals() {
 	file_list->connect("confirmed", this, "update_list");
 	file_btn_popup->connect("id_pressed", this, "_on_file_btn_pressed");
-	preview_btn_popup->connect("id_pressed", this, "_on_preview_btn_pressed");
+	//preview_btn_popup->connect("id_pressed", this, "_on_preview_btn_pressed");
 	settings_btn_popup->connect("id_pressed", this, "_on_settings_btn_pressed");
 	_open_file_list->connect("item_selected", this, "_on_fileitem_pressed");
 	wrap_btn->connect("item_selected", this, "on_wrap_button");
@@ -632,6 +632,7 @@ TextFileEditor::TextFileEditor() {
 	file_btn_popup->add_item("Replace occurencies", FILE_MENU_OPTION_REPLACE, hotkey->get_scancode_with_modifiers());
 
 	//TextEditorPreview;
+	/*
 	preview_btn = memnew(MenuButton);
 	tob_bar->add_child(preview_btn);
 	preview_btn->set_text("Preview");
@@ -641,6 +642,7 @@ TextFileEditor::TextFileEditor() {
 	preview_btn_popup->add_item("Markdown Preview");
 	preview_btn_popup->add_item("HTML Preview");
 	preview_btn_popup->add_item("CSV Preview");
+	*/
 
 	//Settings;
 	settings_btn = memnew(MenuButton);
