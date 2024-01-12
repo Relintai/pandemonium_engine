@@ -63,16 +63,14 @@ public:
 		FILE_MENU_OPTION_CLOSE = 2,
 		FILE_MENU_OPTION_SAVE = 3,
 		FILE_MENU_OPTION_SAVE_AS = 4,
-		FILE_MENU_OPTION_DELETE = 5,
-		FILE_MENU_OPTION_SEARCH = 6,
-		FILE_MENU_OPTION_REPLACE = 7,
+		FILE_MENU_OPTION_SEARCH = 5,
+		FILE_MENU_OPTION_REPLACE = 6,
 	};
 
 	void connect_signals();
 
 	void create_selected_file();
 	void open_selected_file();
-	void delete_selected_file();
 	void save_current_file_as();
 
 	void _on_file_btn_pressed(const int index);
@@ -89,7 +87,6 @@ public:
 
 	void _on_update_file();
 
-	void delete_file(const PoolStringArray &files_selected);
 	void open_new_file_dialogue();
 	void open_file_list();
 	void create_new_file(const String &given_path);

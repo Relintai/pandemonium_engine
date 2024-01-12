@@ -73,10 +73,6 @@ void TextFileEditor::create_selected_file() {
 	file_list->set_mode(FileDialog::MODE_SAVE_FILE);
 	file_list->set_title("Create a new File");
 
-	if (file_list->is_connected("file_selected", this, "delete_file")) {
-		file_list->disconnect("file_selected", this, "delete_file");
-	}
-
 	if (file_list->is_connected("file_selected", this, "open_file")) {
 		file_list->disconnect("file_selected", this, "open_file");
 	}
@@ -94,10 +90,6 @@ void TextFileEditor::open_selected_file() {
 	file_list->set_mode(FileDialog::MODE_OPEN_FILE);
 	file_list->set_title("Select a File you want to edit");
 
-	if (file_list->is_connected("file_selected", this, "delete_file")) {
-		file_list->disconnect("file_selected", this, "delete_file");
-	}
-
 	if (file_list->is_connected("file_selected", this, "create_new_file")) {
 		file_list->disconnect("file_selected", this, "create_new_file");
 	}
@@ -109,36 +101,11 @@ void TextFileEditor::open_selected_file() {
 	open_file_list();
 }
 
-void TextFileEditor::delete_selected_file() {
-	update_list();
-
-	file_list->set_mode(FileDialog::MODE_OPEN_FILES);
-	file_list->set_title("Select one or more Files you want to delete");
-
-	if (file_list->is_connected("file_selected", this, "open_file")) {
-		file_list->disconnect("file_selected", this, "open_file");
-	}
-
-	if (file_list->is_connected("file_selected", this, "create_new_file")) {
-		file_list->disconnect("file_selected", this, "create_new_file");
-	}
-
-	if (!file_list->is_connected("files_selected", this, "delete_file")) {
-		file_list->connect("files_selected", this, "delete_file");
-	}
-
-	open_file_list();
-}
-
 void TextFileEditor::save_current_file_as() {
 	update_list();
 
 	file_list->set_mode(FileDialog::MODE_SAVE_FILE);
 	file_list->set_title("Save this File as...");
-
-	if (file_list->is_connected("file_selected", this, "delete_file")) {
-		file_list->disconnect("file_selected", this, "delete_file");
-	}
 
 	if (file_list->is_connected("file_selected", this, "open_file")) {
 		file_list->disconnect("file_selected", this, "open_file");
@@ -176,9 +143,6 @@ void TextFileEditor::_on_file_btn_pressed(const int index) {
 				save_file(current_file_path);
 				save_current_file_as();
 			}
-		} break;
-		case FILE_MENU_OPTION_DELETE: {
-			delete_selected_file();
 		} break;
 		case FILE_MENU_OPTION_SEARCH: {
 			current_editor->open_search_box();
@@ -366,15 +330,6 @@ void TextFileEditor::_on_update_file() {
 	memdelete(current_file);
 
 	current_editor->new_file_open(current_content, last_modified, current_file_path);
-}
-
-void TextFileEditor::delete_file(const PoolStringArray &files_selected) {
-	for (int i = 0; i < files_selected.size(); ++i) {
-		String file = files_selected[i];
-		DirAccess::remove_file_or_error(file);
-	}
-
-	update_list();
 }
 
 void TextFileEditor::open_new_file_dialogue() {
@@ -613,12 +568,6 @@ TextFileEditor::TextFileEditor() {
 	hotkey->set_alt(true);
 	file_btn_popup->add_item("Save File as...", FILE_MENU_OPTION_SAVE_AS, hotkey->get_scancode_with_modifiers());
 
-	//hotkey = InputEventKey.new();
-	//hotkey.scancode = KEY_D;
-	//hotkey.control = true;
-	//file_btn_popup.add_item("Delete File", FileMenuOptions.FILE_MENU_OPTION_DELETE, hotkey.get_scancode_with_modifiers());
-	file_btn_popup->add_item("Delete File", FILE_MENU_OPTION_DELETE);
-
 	file_btn_popup->add_separator();
 
 	hotkey.instance();
@@ -789,7 +738,6 @@ void TextFileEditor::_bind_methods() {
 	//ClassDB::bind_method(D_METHOD("connect_signals"), &TextFileEditor::connect_signals);
 	//ClassDB::bind_method(D_METHOD("create_selected_file"), &TextFileEditor::create_selected_file);
 	//ClassDB::bind_method(D_METHOD("open_selected_file"), &TextFileEditor::open_selected_file);
-	//	ClassDB::bind_method(D_METHOD("delete_selected_file"), &TextFileEditor::delete_selected_file);
 	//ClassDB::bind_method(D_METHOD("save_current_file_as"), &TextFileEditor::save_current_file_as);
 
 	ClassDB::bind_method(D_METHOD("_on_file_btn_pressed", "index"), &TextFileEditor::_on_file_btn_pressed);
@@ -806,7 +754,6 @@ void TextFileEditor::_bind_methods() {
 	//ClassDB::bind_method(D_METHOD("confirm_close", "index"), &TextFileEditor::confirm_close);
 	ClassDB::bind_method(D_METHOD("_on_update_file"), &TextFileEditor::_on_update_file);
 
-	ClassDB::bind_method(D_METHOD("delete_file", "files_selected"), &TextFileEditor::delete_file);
 	//ClassDB::bind_method(D_METHOD("open_new_file_dialogue"), &TextFileEditor::open_new_file_dialogue);
 	//ClassDB::bind_method(D_METHOD("open_file_list"), &TextFileEditor::open_file_list);
 	ClassDB::bind_method(D_METHOD("create_new_file", "given_path"), &TextFileEditor::create_new_file);
