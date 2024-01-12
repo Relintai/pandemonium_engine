@@ -190,12 +190,15 @@ void TextFileEditor::_on_font_selected(const String &font_path) {
 }
 
 void TextFileEditor::_on_fileitem_pressed(const int index) {
+	ERR_FAIL_INDEX(index, _open_file_list->get_item_count());
+
 	current_file_index = index;
 	Array selected_item_metadata = _open_file_list->get_item_metadata(current_file_index);
 
-	// TODO Make this store ObjectIDs
-	Control *c = selected_item_metadata[0];
-	TextEditorVanillaEditor *e = Object::cast_to<TextEditorVanillaEditor>(c);
+	ObjectID editor = selected_item_metadata[0];
+	TextEditorVanillaEditor *e = Object::cast_to<TextEditorVanillaEditor>(ObjectDB::get_instance(editor));
+
+	ERR_FAIL_COND(!e);
 
 	String extension = e->get_current_path().get_file().get_extension();
 
@@ -229,46 +232,46 @@ void TextFileEditor::_on_fileitem_pressed(const int index) {
 }
 
 void TextFileEditor::open_file(const String &path, const String &font) {
-	if (current_file_path != path) {
-		for (int i = 0; i < _open_file_list->get_item_count(); ++i) {
-			Array selected_item_metadata = _open_file_list->get_item_metadata(i);
+	for (int i = 0; i < _open_file_list->get_item_count(); ++i) {
+		Array selected_item_metadata = _open_file_list->get_item_metadata(i);
 
-			Control *c = selected_item_metadata[0];
-			TextEditorVanillaEditor *e = Object::cast_to<TextEditorVanillaEditor>(c);
+		ObjectID editor = selected_item_metadata[0];
+		TextEditorVanillaEditor *e = Object::cast_to<TextEditorVanillaEditor>(ObjectDB::get_instance(editor));
 
-			if (e) {
-				if (e->get_current_path() == path) {
-					_open_file_list->select(i);
-					_on_fileitem_pressed(i);
-					return;
-				}
+		if (e) {
+			if (e->get_current_path() == path) {
+				_open_file_list->select(i);
+				_on_fileitem_pressed(i);
+				return;
 			}
 		}
-
-		current_file_path = path;
-		TextEditorVanillaEditor *vanilla_editor = open_in_vanillaeditor(path);
-
-		Ref<Font> edf = vanilla_editor->get("custom_fonts/font");
-
-		//TODO this logic seems wrong
-		if (font != "null" && edf.is_valid()) {
-			vanilla_editor->set_font(font);
-		}
-
-		generate_file_item(path, vanilla_editor);
-		last_opened_files->store_opened_files(_open_file_list);
 	}
+
+	current_file_path = path;
+	TextEditorVanillaEditor *vanilla_editor = open_in_vanillaeditor(path);
+
+	Ref<Font> edf = vanilla_editor->get("custom_fonts/font");
+
+	//TODO this logic seems wrong
+	if (font != "null" && edf.is_valid()) {
+		vanilla_editor->set_font(font);
+	}
+
+	generate_file_item(path, vanilla_editor);
+	last_opened_files->store_opened_files(_open_file_list);
 
 	current_editor->show();
 }
 
 void TextFileEditor::generate_file_item(const String &path, Control *veditor) {
+	ERR_FAIL_COND(!veditor);
+
 	open_file_name->set_text(path);
 	_open_file_list->add_item(path.get_file(), nullptr, true);
 	current_file_index = _open_file_list->get_item_count() - 1;
 
 	Array arr;
-	arr.push_back(veditor);
+	arr.push_back(veditor->get_instance_id());
 
 	_open_file_list->set_item_metadata(current_file_index, arr);
 	_open_file_list->select(_open_file_list->get_item_count() - 1);
@@ -319,15 +322,23 @@ void TextFileEditor::close_file(const int index) {
 }
 
 void TextFileEditor::confirm_close(const int index) {
+	ERR_FAIL_INDEX(index, _open_file_list->get_item_count());
+
 	last_opened_files->remove_opened_file(index, _open_file_list);
 	_open_file_list->remove_item(index);
 	open_file_name->clear();
 	current_editor->queue_delete();
 	current_editor = NULL;
+	current_file_path = "";
 
 	if (index > 0) {
 		_open_file_list->select(index - 1);
 		_on_fileitem_pressed(index - 1);
+	} else {
+		if (_open_file_list->get_item_count() > 0) {
+			_open_file_list->select(0);
+			_on_fileitem_pressed(0);
+		}
 	}
 }
 
@@ -396,7 +407,7 @@ void TextFileEditor::save_file(const String &current_path) {
 	current_editor->update_lastmodified(last_modified, "save");
 
 	Array arr;
-	arr.push_back(current_editor);
+	arr.push_back(current_editor->get_instance_id());
 
 	_open_file_list->set_item_metadata(current_file_index, arr);
 
@@ -409,18 +420,22 @@ void TextFileEditor::save_file(const String &current_path) {
 }
 
 void TextFileEditor::clean_editor() {
-	List<Node *> nodes;
+	for (int child = 0; child < _open_file_list->get_item_count(); ++child) {
+		Array metaarr = _open_file_list->get_item_metadata(child);
+		ObjectID editor = metaarr[0];
+		TextEditorVanillaEditor *ed = Object::cast_to<TextEditorVanillaEditor>(ObjectDB::get_instance(editor));
 
-	get_tree()->get_nodes_in_group("vanilla_editor", &nodes);
-
-	for (List<Node *>::Element *e = nodes.front(); e; e = e->next()) {
-		e->get()->queue_delete();
+		if (ed) {
+			ed->queue_delete();
+		}
 	}
 
 	current_editor = NULL;
 
+	current_file_path = "";
 	open_file_name->clear();
 	_open_file_list->clear();
+	last_opened_files->store_opened_files(_open_file_list);
 }
 
 void TextFileEditor::csv_preview() {

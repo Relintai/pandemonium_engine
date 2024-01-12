@@ -42,9 +42,10 @@ void TextEditorSettings::store_opened_files(ItemList *filecontainer) {
 
 	for (int child = 0; child < filecontainer->get_item_count(); ++child) {
 		Array metaarr = filecontainer->get_item_metadata(child);
-		Variant e = metaarr[0];
-		Control *c = e;
-		TextEditorVanillaEditor *ed = Object::cast_to<TextEditorVanillaEditor>(c);
+		ObjectID editor = metaarr[0];
+		TextEditorVanillaEditor *ed = Object::cast_to<TextEditorVanillaEditor>(ObjectDB::get_instance(editor));
+
+		ERR_CONTINUE(!ed);
 
 		String filepath = ed->get_current_path();
 		Array a = Array();
@@ -58,9 +59,10 @@ void TextEditorSettings::store_opened_files(ItemList *filecontainer) {
 
 void TextEditorSettings::remove_opened_file(const int index, ItemList *filecontainer) {
 	Array metaarr = filecontainer->get_item_metadata(index);
-	Variant e = metaarr[0];
-	Control *c = e;
-	TextEditorVanillaEditor *ed = Object::cast_to<TextEditorVanillaEditor>(c);
+	ObjectID editor = metaarr[0];
+	TextEditorVanillaEditor *ed = Object::cast_to<TextEditorVanillaEditor>(ObjectDB::get_instance(editor));
+
+	ERR_FAIL_COND(!ed);
 
 	String filepath = ed->get_current_path();
 	String f = filepath.get_file();
