@@ -114,7 +114,12 @@ static int _find_first_non_whitespace_column_of_line(const String &line) {
 }
 
 void TextEdit::Text::set_font(const Ref<Font> &p_font) {
+	if (font == p_font) {
+		return;
+	}
+
 	font = p_font;
+	clear_width_cache();
 }
 
 void TextEdit::Text::set_indent_size(int p_indent_size) {
