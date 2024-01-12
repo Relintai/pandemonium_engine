@@ -105,6 +105,7 @@ void TextEditorVanillaEditor::draw_minimap(const bool value) {
 }
 
 void TextEditorVanillaEditor::color_region(const String &fileextension) {
+	/*
 	if (fileextension == "bbs") {
 		Ref<CodeHighlighter> highlighter;
 		highlighter.instance();
@@ -177,6 +178,7 @@ void TextEditorVanillaEditor::color_region(const String &fileextension) {
 
 		text_editor->set_syntax_highlighter(highlighter);
 	}
+	*/
 }
 
 void TextEditorVanillaEditor::clean_editor() {
