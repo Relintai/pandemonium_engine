@@ -1001,11 +1001,11 @@ void TextEdit::_notification(int p_what) {
 			int top_limit_y = 0;
 			int bottom_limit_y = get_size().height;
 			if (readonly) {
-				top_limit_y += cache.style_readonly->get_margin(MARGIN_BOTTOM);
+				top_limit_y += cache.style_readonly->get_margin(MARGIN_TOP);
 				bottom_limit_y -= cache.style_readonly->get_margin(MARGIN_BOTTOM);
 			} else {
 				top_limit_y += cache.style_normal->get_margin(MARGIN_TOP);
-				bottom_limit_y -= cache.style_normal->get_margin(MARGIN_TOP);
+				bottom_limit_y -= cache.style_normal->get_margin(MARGIN_BOTTOM);
 			}
 
 			// Draw main text.
