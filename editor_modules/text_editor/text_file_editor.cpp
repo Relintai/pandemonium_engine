@@ -186,7 +186,7 @@ void TextFileEditor::_on_font_selected(const String &font_path) {
 		current_editor->set_font(font_path);
 	}
 
-	_text_editor_settings->store_editor_fonts(current_file_path.get_file(), font_path);
+	_text_editor_settings->store_editor_fonts(current_file_path, font_path);
 }
 
 void TextFileEditor::_on_fileitem_pressed(const int index) {
@@ -250,14 +250,9 @@ void TextFileEditor::open_file(const String &path, const String &font) {
 	current_file_path = path;
 	TextEditorVanillaEditor *vanilla_editor = open_in_vanillaeditor(path);
 
-	/*
-	Ref<Font> edf = vanilla_editor->get("custom_fonts/font");
-
-	//TODO this logic seems wrong
-	if (font != "null" && edf.is_valid()) {
+	if (font != "null") {
 		vanilla_editor->set_font(font);
 	}
-	*/
 
 	generate_file_item(path, vanilla_editor);
 
@@ -783,11 +778,11 @@ void TextFileEditor::_notification(int p_what) {
 		for (int i = 0; i < opened_files.size(); ++i) {
 			Array opened_file = opened_files[i];
 
-			if (opened_file.size() < 2) {
+			if (opened_file.size() < 3) {
 				continue;
 			}
 
-			open_file(opened_file[0], opened_file[1]);
+			open_file(opened_file[1], opened_file[2]);
 		}
 
 		file_list->set_filters(EXTENSIONS);
