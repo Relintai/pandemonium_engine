@@ -145,9 +145,17 @@ void TextFileEditor::_on_file_btn_pressed(const int index) {
 			}
 		} break;
 		case FILE_MENU_OPTION_SEARCH: {
+			if (!current_editor) {
+				return;
+			}
+
 			current_editor->open_search_box();
 		} break;
 		case FILE_MENU_OPTION_REPLACE: {
+			if (!current_editor) {
+				return;
+			}
+
 			current_editor->open_replace_box();
 		} break;
 		default:
@@ -174,7 +182,10 @@ void TextFileEditor::_on_settings_btn_pressed(const int index) {
 }
 
 void TextFileEditor::_on_font_selected(const String &font_path) {
-	current_editor->set_font(font_path);
+	if (current_editor) {
+		current_editor->set_font(font_path);
+	}
+
 	last_opened_files->store_editor_fonts(current_file_path.get_file(), font_path);
 }
 
@@ -182,6 +193,7 @@ void TextFileEditor::_on_fileitem_pressed(const int index) {
 	current_file_index = index;
 	Array selected_item_metadata = _open_file_list->get_item_metadata(current_file_index);
 
+	// TODO Make this store ObjectIDs
 	Control *c = selected_item_metadata[0];
 	TextEditorVanillaEditor *e = Object::cast_to<TextEditorVanillaEditor>(c);
 
@@ -195,26 +207,24 @@ void TextFileEditor::_on_fileitem_pressed(const int index) {
 
 	current_file_path = e->get_current_path();
 
-	if (current_editor->is_visible() || current_editor == nullptr) {
-		if (current_editor != nullptr) {
-			current_editor->hide();
-		}
+	if (current_editor && current_editor->is_visible()) {
+		current_editor->hide();
+	}
 
-		current_editor = e;
-		current_editor->show();
-		open_file_name->set_text(current_editor->get_current_path());
+	current_editor = e;
+	current_editor->show();
+	open_file_name->set_text(current_editor->get_current_path());
 
-		if (wrap_btn->get_selected_id() == 1) {
-			current_editor->set_wrap_enabled(true);
-		} else {
-			current_editor->set_wrap_enabled(false);
-		}
+	if (wrap_btn->get_selected_id() == 1) {
+		current_editor->set_wrap_enabled(true);
+	} else {
+		current_editor->set_wrap_enabled(false);
+	}
 
-		if (map_btn->get_selected_id() == 1) {
-			current_editor->draw_minimap(true);
-		} else {
-			current_editor->draw_minimap(false);
-		}
+	if (map_btn->get_selected_id() == 1) {
+		current_editor->draw_minimap(true);
+	} else {
+		current_editor->draw_minimap(false);
 	}
 }
 
@@ -270,11 +280,11 @@ TextEditorVanillaEditor *TextFileEditor::open_in_vanillaeditor(const String &pat
 	split_editor_container->add_child(editor, true);
 
 	if (current_editor && current_editor != editor) {
-		editor->show();
 		current_editor->hide();
 	}
 
 	current_editor = editor;
+	editor->show();
 	editor->connect("text_changed", this, "_on_vanillaeditor_text_changed");
 
 	FileAccess *current_file = FileAccess::open(path, FileAccess::READ);
@@ -313,6 +323,7 @@ void TextFileEditor::confirm_close(const int index) {
 	_open_file_list->remove_item(index);
 	open_file_name->clear();
 	current_editor->queue_delete();
+	current_editor = NULL;
 
 	if (index > 0) {
 		_open_file_list->select(index - 1);
@@ -323,13 +334,17 @@ void TextFileEditor::confirm_close(const int index) {
 void TextFileEditor::_on_update_file() {
 	FileAccess *current_file = FileAccess::open(current_file_path, FileAccess::READ);
 
+	ERR_FAIL_COND(!current_file);
+
 	String current_content = current_file->get_as_utf8_string();
 	OS::DateTime last_modified = OS::get_singleton()->get_datetime_from_unix_time(current_file->get_modified_time(current_file_path));
 
 	current_file->close();
 	memdelete(current_file);
 
-	current_editor->new_file_open(current_content, last_modified, current_file_path);
+	if (current_editor) {
+		current_editor->new_file_open(current_content, last_modified, current_file_path);
+	}
 }
 
 void TextFileEditor::open_new_file_dialogue() {
@@ -347,7 +362,7 @@ void TextFileEditor::create_new_file(const String &given_path) {
 	FileAccess *current_file = FileAccess::open(given_path, FileAccess::WRITE);
 
 	if (save_as) {
-		current_file->store_line(current_editor->text_editor->get_text());
+		current_file->store_string(current_editor->text_editor->get_text());
 	}
 
 	current_file->close();
@@ -371,7 +386,7 @@ void TextFileEditor::save_file(const String &current_path) {
 	//		current_file->store_line(current_editor->text_editor->get_line(line));
 	//}
 
-	current_file->store_line(current_editor->text_editor->get_text());
+	current_file->store_string(current_editor->text_editor->get_text());
 
 	current_file->close();
 	memdelete(current_file);
@@ -402,11 +417,17 @@ void TextFileEditor::clean_editor() {
 		e->get()->queue_delete();
 	}
 
+	current_editor = NULL;
+
 	open_file_name->clear();
 	_open_file_list->clear();
 }
 
 void TextFileEditor::csv_preview() {
+	if (!current_editor) {
+		return;
+	}
+
 	TextEditorPreview *preview = memnew(TextEditorPreview);
 	get_parent()->get_parent()->get_parent()->add_child(preview);
 
@@ -423,6 +444,10 @@ void TextFileEditor::csv_preview() {
 }
 
 void TextFileEditor::bbcode_preview() {
+	if (!current_editor) {
+		return;
+	}
+
 	TextEditorPreview *preview = memnew(TextEditorPreview);
 	get_parent()->get_parent()->get_parent()->add_child(preview);
 	preview->popup();
@@ -431,6 +456,10 @@ void TextFileEditor::bbcode_preview() {
 }
 
 void TextFileEditor::markdown_preview() {
+	if (!current_editor) {
+		return;
+	}
+
 	TextEditorPreview *preview = memnew(TextEditorPreview);
 	get_parent()->get_parent()->get_parent()->add_child(preview);
 	preview->popup();
@@ -439,6 +468,10 @@ void TextFileEditor::markdown_preview() {
 }
 
 void TextFileEditor::html_preview() {
+	if (!current_editor) {
+		return;
+	}
+
 	TextEditorPreview *preview = memnew(TextEditorPreview);
 	get_parent()->get_parent()->get_parent()->add_child(preview);
 	preview->popup();
@@ -458,6 +491,10 @@ void TextFileEditor::update_list() {
 }
 
 void TextFileEditor::on_wrap_button(const int index) {
+	if (!current_editor) {
+		return;
+	}
+
 	switch (index) {
 		case 0: {
 			current_editor->set_wrap_enabled(false);
@@ -471,6 +508,10 @@ void TextFileEditor::on_wrap_button(const int index) {
 }
 
 void TextFileEditor::on_minimap_button(const int index) {
+	if (!current_editor) {
+		return;
+	}
+
 	switch (index) {
 		case 0: {
 			current_editor->draw_minimap(false);
@@ -519,7 +560,7 @@ TextFileEditor::TextFileEditor() {
 
 	current_file_index = -1;
 	save_as = false;
-	current_editor = nullptr;
+	current_editor = NULL;
 	editing_file = false;
 
 	set_anchors_and_margins_preset(PRESET_WIDE);
