@@ -186,7 +186,7 @@ void TextFileEditor::_on_font_selected(const String &font_path) {
 		current_editor->set_font(font_path);
 	}
 
-	last_opened_files->store_editor_fonts(current_file_path.get_file(), font_path);
+	_text_editor_settings->store_editor_fonts(current_file_path.get_file(), font_path);
 }
 
 void TextFileEditor::_on_fileitem_pressed(const int index) {
@@ -250,15 +250,18 @@ void TextFileEditor::open_file(const String &path, const String &font) {
 	current_file_path = path;
 	TextEditorVanillaEditor *vanilla_editor = open_in_vanillaeditor(path);
 
+	/*
 	Ref<Font> edf = vanilla_editor->get("custom_fonts/font");
 
 	//TODO this logic seems wrong
 	if (font != "null" && edf.is_valid()) {
 		vanilla_editor->set_font(font);
 	}
+	*/
 
 	generate_file_item(path, vanilla_editor);
-	last_opened_files->store_opened_files(_open_file_list);
+
+	_text_editor_settings->store_opened_files(_open_file_list);
 
 	current_editor->show();
 }
@@ -324,7 +327,7 @@ void TextFileEditor::close_file(const int index) {
 void TextFileEditor::confirm_close(const int index) {
 	ERR_FAIL_INDEX(index, _open_file_list->get_item_count());
 
-	last_opened_files->remove_opened_file(index, _open_file_list);
+	_text_editor_settings->remove_opened_file(index, _open_file_list);
 	_open_file_list->remove_item(index);
 	open_file_name->clear();
 	current_editor->queue_delete();
@@ -435,7 +438,6 @@ void TextFileEditor::clean_editor() {
 	current_file_path = "";
 	open_file_name->clear();
 	_open_file_list->clear();
-	last_opened_files->store_opened_files(_open_file_list);
 }
 
 void TextFileEditor::csv_preview() {
@@ -548,7 +550,7 @@ void TextFileEditor::_on_ConfirmationDialog_confirmed() {
 }
 
 TextFileEditor::TextFileEditor() {
-	last_opened_files.instance();
+	_text_editor_settings.instance();
 
 	DIRECTORY = "res://";
 	EXCEPTIONS = "addons";
@@ -776,12 +778,16 @@ void TextFileEditor::_notification(int p_what) {
 		clean_editor();
 		connect_signals();
 
-		Array opened_files = last_opened_files->load_opened_files();
+		Array opened_files = _text_editor_settings->load_opened_files();
 
 		for (int i = 0; i < opened_files.size(); ++i) {
 			Array opened_file = opened_files[i];
 
-			open_file(opened_file[1], opened_file[2]);
+			if (opened_file.size() < 2) {
+				continue;
+			}
+
+			open_file(opened_file[0], opened_file[1]);
 		}
 
 		file_list->set_filters(EXTENSIONS);

@@ -38,6 +38,8 @@
 #include "text_editor_vanilla_editor.h"
 
 void TextEditorSettings::store_opened_files(ItemList *filecontainer) {
+	ERR_FAIL_COND(!filecontainer);
+
 	Array arr;
 
 	for (int child = 0; child < filecontainer->get_item_count(); ++child) {
@@ -71,6 +73,10 @@ void TextEditorSettings::remove_opened_file(const int index, ItemList *fileconta
 	for (int i = 0; i < arr.size(); ++i) {
 		Array a = arr[i];
 
+		if (a.size() < 2) {
+			continue;
+		}
+
 		if (a[0] == f) {
 			arr.remove(i);
 			break;
@@ -78,12 +84,15 @@ void TextEditorSettings::remove_opened_file(const int index, ItemList *fileconta
 	}
 
 	EditorSettings::get_singleton()->set_project_metadata("file_editor", "files", arr);
-	Dictionary fonts_dict = EditorSettings::get_singleton()->get_project_metadata("file_editor", "file_fonts", Dictionary());
 
+	/*
+	Dictionary fonts_dict = EditorSettings::get_singleton()->get_project_metadata("file_editor", "file_fonts", Dictionary());
+	
 	if (fonts_dict.has(f)) {
 		fonts_dict.erase(f);
 		EditorSettings::get_singleton()->set_project_metadata("file_editor", "file_fonts", fonts_dict);
 	}
+	*/
 }
 
 Array TextEditorSettings::load_opened_files() {
@@ -91,20 +100,25 @@ Array TextEditorSettings::load_opened_files() {
 	Dictionary fonts_dict = EditorSettings::get_singleton()->get_project_metadata("file_editor", "file_fonts", Dictionary());
 	Array keys;
 
-	for (int i = 0; i < arr.size(); ++i) { //i in range(arr.size())
+	for (int i = 0; i < arr.size(); ++i) {
 		Array a = arr[i];
+
+		if (a.size() < 2) {
+			continue;
+		}
+
 		// creating and returning an Array with this format [1:file name, 2:file path, 3:file font];
 		Array k;
 		k.push_back(a[0]);
 		k.push_back(a[1]);
 
-		if (fonts_dict.has(a[0])) {
-			k.push_back(fonts_dict[a[0]]);
-		}
-
-		else {
+		/*
+		if (fonts_dict.has(a[2])) {
+			k.push_back(fonts_dict[a[2]]);
+		} else {
 			k.push_back("null");
 		}
+		*/
 
 		keys.append(k);
 	}

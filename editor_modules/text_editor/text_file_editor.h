@@ -141,7 +141,7 @@ protected:
 	ConfirmationDialog *confirmation_close;
 	FileDialog *select_font_dialog;
 
-	Ref<TextEditorSettings> last_opened_files;
+	Ref<TextEditorSettings> _text_editor_settings;
 
 	Array directories;
 	Array files;
