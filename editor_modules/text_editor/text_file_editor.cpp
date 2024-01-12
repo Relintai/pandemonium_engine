@@ -178,6 +178,27 @@ void TextFileEditor::_on_preview_btn_pressed(const int id) {
 void TextFileEditor::_on_settings_btn_pressed(const int index) {
 	if (index == 0) {
 		select_font_dialog->popup();
+	} else if (index == 1) {
+		if (!current_file_path.empty()) {
+			_text_editor_settings->store_editor_fonts(current_file_path, "");
+		}
+
+		if (current_editor) {
+			current_editor->set_font("");
+		}
+	} else if (index == 2) {
+		_text_editor_settings->clear_editor_fonts();
+
+		for (int i = 0; i < _open_file_list->get_item_count(); ++i) {
+			Array selected_item_metadata = _open_file_list->get_item_metadata(i);
+
+			ObjectID editor = selected_item_metadata[0];
+			TextEditorVanillaEditor *e = Object::cast_to<TextEditorVanillaEditor>(ObjectDB::get_instance(editor));
+
+			if (e) {
+				e->set_font("");
+			}
+		}
 	}
 }
 
@@ -250,7 +271,7 @@ void TextFileEditor::open_file(const String &path, const String &font) {
 	current_file_path = path;
 	TextEditorVanillaEditor *vanilla_editor = open_in_vanillaeditor(path);
 
-	if (font != "null") {
+	if (!font.empty()) {
 		vanilla_editor->set_font(font);
 	}
 
@@ -651,6 +672,8 @@ TextFileEditor::TextFileEditor() {
 
 	settings_btn_popup = settings_btn->get_popup();
 	settings_btn_popup->add_item("Change Font");
+	settings_btn_popup->add_item("Clear Font");
+	settings_btn_popup->add_item("Clear All Fonts");
 
 	//SplitContainer;
 	editor_container = memnew(HSplitContainer);
@@ -801,7 +824,7 @@ void TextFileEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_font_selected", "font_path"), &TextFileEditor::_on_font_selected);
 	ClassDB::bind_method(D_METHOD("_on_fileitem_pressed", "index"), &TextFileEditor::_on_fileitem_pressed);
 
-	ClassDB::bind_method(D_METHOD("open_file", "path", "font"), &TextFileEditor::open_file, "null");
+	ClassDB::bind_method(D_METHOD("open_file", "path", "font"), &TextFileEditor::open_file, "");
 	//ClassDB::bind_method(D_METHOD("generate_file_item", "path", "veditor"), &TextFileEditor::generate_file_item);
 	//ClassDB::bind_method(D_METHOD("open_in_vanillaeditor", "path"), &TextFileEditor::open_in_vanillaeditor);
 

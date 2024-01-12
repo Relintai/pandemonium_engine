@@ -88,7 +88,7 @@ void TextEditorSettings::remove_opened_file(const int index, ItemList *fileconta
 	EditorSettings::get_singleton()->set_project_metadata("file_editor", "files", arr);
 
 	Dictionary fonts_dict = EditorSettings::get_singleton()->get_project_metadata("file_editor", "file_fonts", Dictionary());
-	
+
 	if (fonts_dict.has(f)) {
 		fonts_dict.erase(f);
 		EditorSettings::get_singleton()->set_project_metadata("file_editor", "file_fonts", fonts_dict);
@@ -115,28 +115,33 @@ Array TextEditorSettings::load_opened_files() {
 		if (fonts_dict.has(a[1])) {
 			k.push_back(fonts_dict[a[1]]);
 		} else {
-			k.push_back("null");
+			k.push_back("");
 		}
 
 		keys.append(k);
 	}
-
-	ERR_PRINT(Variant(keys));
 
 	return keys;
 }
 
 void TextEditorSettings::store_editor_fonts(const String &file_path, const String &font_path) {
 	Dictionary fonts_dict = EditorSettings::get_singleton()->get_project_metadata("file_editor", "file_fonts", Dictionary());
-	fonts_dict[file_path] = font_path;
 
-	ERR_PRINT(Variant(fonts_dict));
+	if (!font_path.empty()) {
+		fonts_dict[file_path] = font_path;
+	} else {
+		fonts_dict.erase(file_path);
+	}
 
 	EditorSettings::get_singleton()->set_project_metadata("file_editor", "file_fonts", fonts_dict);
 }
 
 String TextEditorSettings::get_editor_font() {
 	return EditorSettings::get_singleton()->get_setting("interface/editor/code_font");
+}
+
+void TextEditorSettings::clear_editor_fonts() {
+	EditorSettings::get_singleton()->set_project_metadata("file_editor", "file_fonts", Dictionary());
 }
 
 TextEditorSettings::TextEditorSettings() {

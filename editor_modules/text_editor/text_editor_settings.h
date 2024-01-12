@@ -43,8 +43,10 @@ public:
 	void store_opened_files(ItemList *filecontainer);
 	void remove_opened_file(const int index, ItemList *filecontainer);
 	Array load_opened_files();
+	
 	void store_editor_fonts(const String &file_name, const String &font_path);
 	String get_editor_font();
+	void clear_editor_fonts();
 
 	TextEditorSettings();
 	~TextEditorSettings();

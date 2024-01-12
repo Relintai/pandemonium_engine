@@ -79,7 +79,7 @@ public:
 	void _on_font_selected(const String &font_path);
 	void _on_fileitem_pressed(const int index);
 
-	void open_file(const String &path, const String &font = "null");
+	void open_file(const String &path, const String &font = "");
 	void generate_file_item(const String &path, Control *veditor);
 	TextEditorVanillaEditor *open_in_vanillaeditor(const String &path);
 	void close_file(const int index);

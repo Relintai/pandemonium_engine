@@ -75,6 +75,11 @@ void TextEditorVanillaEditor::set_search_flag(const int val) {
 }
 
 void TextEditorVanillaEditor::set_font(const String &font_path) {
+	if (font_path.empty()) {
+		text_editor->remove_theme_font_override("font");
+		return;
+	}
+
 	Ref<DynamicFont> dynamic_font;
 	Ref<DynamicFontData> dynamic_font_data;
 
@@ -83,7 +88,7 @@ void TextEditorVanillaEditor::set_font(const String &font_path) {
 
 	dynamic_font_data->set_font_path(font_path);
 	dynamic_font->set_font_data(dynamic_font_data);
-	text_editor->set("custom_fonts/font", dynamic_font);
+	text_editor->add_theme_font_override("font", dynamic_font);
 }
 
 void TextEditorVanillaEditor::load_default_font() {
