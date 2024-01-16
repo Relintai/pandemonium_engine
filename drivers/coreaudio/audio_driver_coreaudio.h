@@ -121,6 +121,6 @@ public:
 	~AudioDriverCoreAudio();
 };
 
-#endif
+#endif // COREAUDIO_ENABLED
 
 #endif
