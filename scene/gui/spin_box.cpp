@@ -54,7 +54,7 @@ void SpinBox::_value_changed(double) {
 		}
 	}
 
-	line_edit->set_text(value);
+	line_edit->set_text_with_selection(value);
 }
 
 void SpinBox::_text_entered(const String &p_string) {
