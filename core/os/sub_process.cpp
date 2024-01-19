@@ -115,8 +115,8 @@ Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_a
 		return ERR_ALREADY_IN_USE;
 	}
 
-	String _executable_path = p_executable_path;
-	Vector<String> _arguments = p_arguments;
+	_executable_path = p_executable_path;
+	_arguments = p_arguments;
 
 	_blocking = p_blocking;
 
