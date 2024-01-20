@@ -3315,7 +3315,7 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 			DEFAULT_OP_DVECTOR_SET(POOL_REAL_ARRAY, real_t, p_value.type != Variant::REAL && p_value.type != Variant::INT)
 			DEFAULT_OP_DVECTOR_SET(POOL_STRING_ARRAY, String, p_value.type != Variant::STRING)
 			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR2_ARRAY, Vector2, p_value.type != Variant::VECTOR2) // 25
-			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR2I_ARRAY, Vector2i, p_value.type != Variant::VECTOR2I) 
+			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR2I_ARRAY, Vector2i, p_value.type != Variant::VECTOR2I)
 			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR3_ARRAY, Vector3, p_value.type != Variant::VECTOR3)
 			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR3I_ARRAY, Vector3i, p_value.type != Variant::VECTOR3I)
 			DEFAULT_OP_DVECTOR_SET(POOL_VECTOR4_ARRAY, Vector4, p_value.type != Variant::VECTOR4)
@@ -5382,7 +5382,7 @@ void Variant::blend(const Variant &a, const Variant &b, float c, Variant &r_dst)
 		case RECT2I: {
 			const Rect2i *ra = reinterpret_cast<const Rect2i *>(a._data._mem);
 			const Rect2i *rb = reinterpret_cast<const Rect2i *>(b._data._mem);
-			r_dst = Rect2(ra->position + rb->position * c, ra->size + rb->size * c);
+			r_dst = Rect2i(ra->position + rb->position * c, ra->size + rb->size * c);
 		}
 			return;
 		case VECTOR2: {
@@ -5523,7 +5523,7 @@ void Variant::interpolate(const Variant &a, const Variant &b, float c, Variant &
 		}
 			return;
 		case RECT2I: {
-			r_dst = Rect2(reinterpret_cast<const Rect2i *>(a._data._mem)->position.linear_interpolate(reinterpret_cast<const Rect2i *>(b._data._mem)->position, c), reinterpret_cast<const Rect2 *>(a._data._mem)->size.linear_interpolate(reinterpret_cast<const Rect2 *>(b._data._mem)->size, c));
+			r_dst = Rect2i(reinterpret_cast<const Rect2i *>(a._data._mem)->position.linear_interpolate(reinterpret_cast<const Rect2i *>(b._data._mem)->position, c), reinterpret_cast<const Rect2i *>(a._data._mem)->size.linear_interpolate(reinterpret_cast<const Rect2i *>(b._data._mem)->size, c));
 		}
 			return;
 		case VECTOR2: {
@@ -5768,7 +5768,6 @@ void Variant::interpolate(const Variant &a, const Variant &b, float c, Variant &
 		}
 			return;
 		case POOL_VECTOR4I_ARRAY: {
-			/*
 			const PoolVector<Vector4i> *arr_a = reinterpret_cast<const PoolVector<Vector4i> *>(a._data._mem);
 			const PoolVector<Vector4i> *arr_b = reinterpret_cast<const PoolVector<Vector4i> *>(b._data._mem);
 			int sz = arr_a->size();
@@ -5783,12 +5782,12 @@ void Variant::interpolate(const Variant &a, const Variant &b, float c, Variant &
 					PoolVector<Vector4i>::Read br = arr_b->read();
 
 					for (int i = 0; i < sz; i++) {
-						vw[i] = ar[i].lerp(br[i], c);
+						vw[i] = ar[i].linear_interpolate(br[i], c);
 					}
 				}
 				r_dst = v;
 			}
-			*/
+
 			r_dst = a;
 		}
 			return;
