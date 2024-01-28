@@ -59,6 +59,7 @@ import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -382,6 +383,8 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		PandemoniumEditText edittext = new PandemoniumEditText(activity);
 		edittext.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT,
 				(int)getResources().getDimension(R.dimen.text_edit_height)));
+		// Prevent GodotEditText from showing on splash screen on devices with Android 14 or newer.
+		edittext.setBackgroundColor(Color.TRANSPARENT);
 		// ...add to FrameLayout
 		containerLayout.addView(edittext);
 
