@@ -67,6 +67,7 @@ public:
 	};
 
 	struct TraceParams {
+		int start_room_id;
 		bool use_pvs;
 		uint8_t *decompressed_room_pvs;
 	};
