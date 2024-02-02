@@ -77,6 +77,10 @@ gmon.out
 *.pydevproject
 *.launch
 
+# Emacs
+\#*\#
+.\#*
+
 # GCOV code coverage
 *.gcno
 *.gcda
