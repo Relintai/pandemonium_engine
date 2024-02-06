@@ -83,9 +83,17 @@ def configure(env):
 
     ## Architecture
 
-    is64 = sys.maxsize > 2 ** 32
+    # Cross-compilation
+    # TODO: Support cross-compilation on architectures other than x86.
+    host_is_64_bit = sys.maxsize > 2**32
     if env["bits"] == "default":
-        env["bits"] = "64" if is64 else "32"
+        env["bits"] = "64" if host_is_64_bit else "32"
+    if host_is_64_bit and (env["bits"] == "32" or env["arch"] == "x86"):
+        env.Append(CCFLAGS=["-m32"])
+        env.Append(LINKFLAGS=["-m32"])
+    elif not host_is_64_bit and (env["bits"] == "64" or env["arch"] == "x86_64"):
+        env.Append(CCFLAGS=["-m64"])
+        env.Append(LINKFLAGS=["-m64"])
 
     if env["arch"] == "" and platform.machine() == "riscv64":
         env["arch"] = "rv64"
