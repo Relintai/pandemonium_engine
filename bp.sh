@@ -10,6 +10,8 @@ git format-patch -1 "$1" --stdout > bp.patch
 
 mv bp.patch ../pandemonium_engine_backport/
 
+cd ../pandemonium_engine_backport/
+
 git am --ignore-whitespace --ignore-space-change -3 < bp.patch
 
 
