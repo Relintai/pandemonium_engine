@@ -3052,10 +3052,10 @@ void SceneTreeDock::_filter_changed(const String &p_filter) {
 
 	String warning = scene_tree->get_filter_term_warning();
 	if (!warning.empty()) {
-		filter->add_icon_override("clear", get_icon("NodeWarning", "EditorIcons"));
+		filter->add_theme_icon_override("clear", get_theme_icon("NodeWarning", "EditorIcons"));
 		filter->set_tooltip(warning);
 	} else {
-		filter->remove_icon_override("clear");
+		filter->remove_theme_icon_override("clear");
 		filter->set_tooltip("");
 	}
 }
@@ -3102,8 +3102,8 @@ void SceneTreeDock::_append_filter_options_to(PopupMenu *p_menu, bool p_include_
 
 	p_menu->add_item(TTR("Filter by Type"), FILTER_BY_TYPE);
 	p_menu->add_item(TTR("Filter by Group"), FILTER_BY_GROUP);
-	p_menu->set_item_icon(p_menu->get_item_index(FILTER_BY_TYPE), get_icon("Node", "EditorIcons"));
-	p_menu->set_item_icon(p_menu->get_item_index(FILTER_BY_GROUP), get_icon("Groups", "EditorIcons"));
+	p_menu->set_item_icon(p_menu->get_item_index(FILTER_BY_TYPE), get_theme_icon("Node", "EditorIcons"));
+	p_menu->set_item_icon(p_menu->get_item_index(FILTER_BY_GROUP), get_theme_icon("Groups", "EditorIcons"));
 	p_menu->set_item_tooltip(p_menu->get_item_index(FILTER_BY_TYPE), TTR("Selects all Nodes of the given type."));
 	p_menu->set_item_tooltip(p_menu->get_item_index(FILTER_BY_GROUP), TTR("Selects all Nodes belonging to the given group.\nIf empty, selects any Node belonging to any group."));
 }

@@ -645,7 +645,7 @@ bool SceneTreeEditor::_update_filter(TreeItem *p_parent, bool p_scroll_to_select
 		if (keep_for_children) {
 			if (!keep) {
 				const Color original_color = p_parent->get_custom_color(0);
-				const Color disabled_color = get_color("disabled_font_color", "Editor");
+				const Color disabled_color = get_theme_color("disabled_font_color", "Editor");
 				if (original_color == Color()) {
 					p_parent->set_custom_color(0, disabled_color);
 				} else {
