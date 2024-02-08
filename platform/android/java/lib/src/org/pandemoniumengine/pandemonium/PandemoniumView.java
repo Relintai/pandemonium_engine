@@ -284,10 +284,11 @@ public class PandemoniumView extends PandemoniumGLSurfaceView {
 		return inputHandler;
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
+	void onActivityStarted() {
+		resumeGLThread();
+	}
 
+	void onActivityResumed() {
 		queueEvent(() -> {
 			// Resume the renderer
 			pandemoniumRenderer.onActivityResumed();
@@ -295,14 +296,15 @@ public class PandemoniumView extends PandemoniumGLSurfaceView {
 		});
 	}
 
-	@Override
-	public void onPause() {
-		super.onPause();
-
+	void onActivityPaused() {
 		queueEvent(() -> {
 			PandemoniumLib.focusout();
 			// Pause the renderer
 			pandemoniumRenderer.onActivityPaused();
 		});
+	}
+
+	void onActivityStopped() {
+		pauseGLThread();
 	}
 }

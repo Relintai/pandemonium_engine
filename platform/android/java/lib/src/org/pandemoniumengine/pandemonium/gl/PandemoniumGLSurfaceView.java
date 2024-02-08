@@ -250,8 +250,8 @@ public class PandemoniumGLSurfaceView extends SurfaceView implements SurfaceHold
 	 * setRenderer is called:
 	 * <ul>
 	 * <li>{@link #getRenderMode()}
-	 * <li>{@link #onPause()}
-	 * <li>{@link #onResume()}
+	 * <li>{@link #pauseGLThread()}
+	 * <li>{@link #resumeGLThread()}
 	 * <li>{@link #queueEvent(Runnable)}
 	 * <li>{@link #requestRender()}
 	 * <li>{@link #setRenderMode(int)}
@@ -489,6 +489,7 @@ public class PandemoniumGLSurfaceView extends SurfaceView implements SurfaceHold
 		mGLThread.requestFramebufferSwap();
 	}
 
+	// -- GODOT start --
 	/**
 	 * Pause the rendering thread, optionally tearing down the EGL context
 	 * depending upon the value of {@link #setPreserveEGLContextOnPause(boolean)}.
@@ -499,22 +500,23 @@ public class PandemoniumGLSurfaceView extends SurfaceView implements SurfaceHold
 	 *
 	 * Must not be called before a renderer has been set.
 	 */
-	public void onPause() {
+	protected final void pauseGLThread() {
 		mGLThread.onPause();
 	}
 
 	/**
 	 * Resumes the rendering thread, re-creating the OpenGL context if necessary. It
-	 * is the counterpart to {@link #onPause()}.
+	 * is the counterpart to {@link #pauseGLThread()}.
 	 *
 	 * This method should typically be called in
 	 * {@link android.app.Activity#onStart Activity.onStart}.
 	 *
 	 * Must not be called before a renderer has been set.
 	 */
-	public void onResume() {
+	protected final void resumeGLThread() {
 		mGLThread.onResume();
 	}
+	// -- GODOT end --
 
 	/**
 	 * Queue a runnable to be run on the GL rendering thread. This can be used
