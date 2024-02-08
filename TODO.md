@@ -261,3 +261,14 @@ This PR mainly is to aid in faster development as outlined in godotengine/godot-
 
 https://github.com/godotengine/godot/pull/52566
 
+## [3.x] Update Android dependencies for the project
+
+Updates Java version from 11 to 17. Will need more testing, also likely an udpate to my build containers.\
+Do after the next release.
+
+https://github.com/godotengine/godot/commit/d1b6b6f725af4fadb8108c3769d3e7a36f6f8e5a
+https://github.com/godotengine/godot/pull/87588
+
+## Cleanup TODOs
+
+Cleanup this file, lots of things are already done.
