@@ -492,8 +492,8 @@ private:
 	String debug_file_32;
 	String debug_file_64;
 	// For Linux only.
-	Map<String, String> release_files;
-	Map<String, String> debug_files;
+	RBMap<String, String> release_files;
+	RBMap<String, String> debug_files;
 
 	RBSet<String> extra_features;
 
