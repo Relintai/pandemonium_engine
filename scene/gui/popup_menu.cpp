@@ -494,6 +494,8 @@ void PopupMenu::_draw_items() {
 	Ref<StyleBox> style = get_theme_stylebox("panel");
 	Ref<StyleBox> hover = get_theme_stylebox("hover");
 	Ref<Font> font = get_theme_font("font");
+	select_font(font);
+	
 	// In Item::checkable_type enum order (less the non-checkable member)
 	Ref<Texture> check[] = { get_theme_icon("checked"), get_theme_icon("radio_checked") };
 	Ref<Texture> uncheck[] = { get_theme_icon("unchecked"), get_theme_icon("radio_unchecked") };

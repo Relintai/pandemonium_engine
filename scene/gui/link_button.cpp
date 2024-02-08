@@ -130,6 +130,7 @@ void LinkButton::_notification(int p_what) {
 			}
 
 			Ref<Font> font = get_theme_font("font");
+			select_font(font);
 
 			draw_string(font, Vector2(0, font->get_ascent()), xl_text, color);
 

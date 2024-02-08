@@ -1078,6 +1078,7 @@ void RichTextLabel::_notification(int p_what) {
 			}
 			int y = (main->lines[from_line].height_accum_cache - main->lines[from_line].height_cache) - ofs;
 			Ref<Font> base_font = get_theme_font("normal_font");
+			select_font(base_font);
 			Color base_color = get_theme_color("default_color");
 			Color font_color_shadow = get_theme_color("font_color_shadow");
 			bool use_outline = get_theme_constant("shadow_as_outline");

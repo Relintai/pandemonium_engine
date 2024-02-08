@@ -53,6 +53,7 @@ void ProgressBar::_notification(int p_what) {
 		Ref<StyleBox> bg = get_theme_stylebox("bg");
 		Ref<StyleBox> fg = get_theme_stylebox("fg");
 		Ref<Font> font = get_theme_font("font");
+		select_font(font);
 		Color font_color = get_theme_color("font_color");
 
 		draw_style_box(bg, Rect2(Point2(), get_size()));

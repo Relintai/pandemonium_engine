@@ -811,6 +811,7 @@ void LineEdit::_notification(int p_what) {
 			}
 
 			Ref<Font> font = get_theme_font("font");
+			select_font(font);
 
 			style->draw(ci, Rect2(Point2(), size));
 

@@ -242,6 +242,7 @@ void Tabs::_notification(int p_what) {
 			Ref<StyleBox> tab_fg = get_theme_stylebox("tab_fg");
 			Ref<StyleBox> tab_disabled = get_theme_stylebox("tab_disabled");
 			Ref<Font> font = get_theme_font("font");
+			select_font(font);
 			Color color_fg = get_theme_color("font_color_fg");
 			Color color_bg = get_theme_color("font_color_bg");
 			Color color_disabled = get_theme_color("font_color_disabled");

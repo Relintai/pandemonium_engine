@@ -769,6 +769,7 @@ void ItemList::_notification(int p_what) {
 		Ref<StyleBox> cursor = has_focus() ? get_theme_stylebox("cursor") : get_theme_stylebox("cursor_unfocused");
 
 		Ref<Font> font = get_theme_font("font");
+		select_font(font);
 		Color guide_color = get_theme_color("guide_color");
 		Color font_color = get_theme_color("font_color");
 		Color font_color_selected = get_theme_color("font_color_selected");

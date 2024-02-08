@@ -91,6 +91,7 @@ void Label::_notification(int p_what) {
 		Size2 size = get_size();
 		Ref<StyleBox> style = get_theme_stylebox("normal");
 		Ref<Font> font = get_theme_font("font");
+		select_font(font);
 		Color font_color = get_theme_color("font_color");
 		Color font_color_shadow = get_theme_color("font_color_shadow");
 		bool use_outline = get_theme_constant("shadow_as_outline");
@@ -99,8 +100,6 @@ void Label::_notification(int p_what) {
 		Color font_outline_modulate = get_theme_color("font_outline_modulate");
 
 		style->draw(ci, Rect2(Point2(0, 0), get_size()));
-
-		RenderingServer::get_singleton()->canvas_item_set_distance_field_mode(get_canvas_item(), font.is_valid() && font->is_distance_field_hint());
 
 		int font_h = font->get_height() + line_spacing;
 
