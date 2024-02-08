@@ -43,6 +43,8 @@
 #include "core/os/thread.h"
 #include "portals/portal_renderer.h"
 
+class RenderingServerLightCuller;
+
 class RenderingServerScene {
 public:
 	enum {
@@ -480,14 +482,59 @@ public:
 		uint64_t last_version;
 		List<Instance *>::Element *D; // directional light in scenario
 
-		bool shadow_dirty;
-
 		List<PairInfo> geometries;
 
 		int32_t previous_room_id_hint;
 
+	private:
+		// Instead of a single dirty flag, we maintain a count
+		// so that we can detect lights that are being made dirty
+		// each frame, and switch on tighter caster culling.
+		int32_t shadow_dirty_count;
+
+		uint32_t light_update_frame_id;
+		bool light_intersects_multiple_cameras;
+		uint32_t light_intersects_multiple_cameras_timeout_frame_id;
+
+	public:
+		bool is_shadow_dirty() const { return shadow_dirty_count != 0; }
+		void make_shadow_dirty() { shadow_dirty_count = light_intersects_multiple_cameras ? 1 : 2; }
+		void detect_light_intersects_multiple_cameras(uint32_t p_frame_id) {
+			// We need to detect the case where shadow updates are occurring
+			// more than once per frame. In this case, we need to turn off
+			// tighter caster culling, so situation reverts to one full shadow update
+			// per frame (light_intersects_multiple_cameras is set).
+			if (p_frame_id == light_update_frame_id) {
+				light_intersects_multiple_cameras = true;
+				light_intersects_multiple_cameras_timeout_frame_id = p_frame_id + 60;
+			} else {
+				// When shadow_volume_intersects_multiple_cameras is set, we
+				// want to detect the situation this is no longer the case, via a timeout.
+				// The system can go back to tighter caster culling in this situation.
+				// Having a long-ish timeout prevents rapid cycling.
+				if (light_intersects_multiple_cameras && (p_frame_id >= light_intersects_multiple_cameras_timeout_frame_id)) {
+					light_intersects_multiple_cameras = false;
+					light_intersects_multiple_cameras_timeout_frame_id = UINT32_MAX;
+				}
+			}
+			light_update_frame_id = p_frame_id;
+		}
+
+		void decrement_shadow_dirty() {
+			shadow_dirty_count--;
+			DEV_ASSERT(shadow_dirty_count >= 0);
+		}
+
+		// Shadow updates can either full (everything in the shadow volume)
+		// or closely culled to the camera frustum.
+		bool is_shadow_update_full() const { return shadow_dirty_count == 0; }
+
 		InstanceLightData() {
-			shadow_dirty = true;
+			shadow_dirty_count = 1;
+			light_update_frame_id = UINT32_MAX;
+			light_intersects_multiple_cameras_timeout_frame_id = UINT32_MAX;
+			light_intersects_multiple_cameras = false;
+
 			D = nullptr;
 			last_version = 0;
 			previous_room_id_hint = -1;
@@ -501,6 +548,7 @@ public:
 	RID light_instance_cull_result[MAX_LIGHTS_CULLED];
 	int light_cull_count;
 	int directional_light_count;
+	RenderingServerLightCuller *light_culler;
 	RID reflection_probe_instance_cull_result[MAX_REFLECTION_PROBES_CULLED];
 	int reflection_probe_cull_count;
 

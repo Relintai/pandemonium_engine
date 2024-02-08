@@ -793,9 +793,7 @@ bool SceneTree::idle(float p_time) {
 
 #endif
 
-	if (_physics_interpolation_enabled) {
-		RenderingServer::get_singleton()->pre_draw(true);
-	}
+	RenderingServer::get_singleton()->pre_draw(true);
 
 	return _quit;
 }
