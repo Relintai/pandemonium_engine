@@ -37,7 +37,7 @@
 #include "rendering_server_scene.h"
 
 struct Projection;
-class Transform;
+struct Transform;
 
 // For testing performance improvements from the LightCuller:
 // Uncomment LIGHT_CULLER_DEBUG_FLASH and it will turn the culler
