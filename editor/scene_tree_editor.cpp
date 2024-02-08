@@ -655,8 +655,6 @@ bool SceneTreeEditor::_update_filter(TreeItem *p_parent, bool p_scroll_to_select
 				}
 			}
 		}
-	} else {
-		memdelete(p_parent);
 	}
 
 	if (editor_selection) {
@@ -671,6 +669,11 @@ bool SceneTreeEditor::_update_filter(TreeItem *p_parent, bool p_scroll_to_select
 				p_parent->deselect(0);
 			}
 		}
+	}
+
+	if (!(keep_for_children || keep)) {
+		memdelete(p_parent);
+		return false;
 	}
 
 	return keep || keep_for_children;
