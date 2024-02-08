@@ -68,7 +68,7 @@
 #include "servers/physics_2d_server.h"
 #include "servers/physics_server.h"
 #include "servers/rendering_server.h"
-#include "servers/window_server.h"
+//#include "servers/window_server.h"
 
 static void _debugger_get_resource_usage(List<ScriptDebuggerRemote::ResourceUsage> *r_usage) {
 	List<RS::TextureInfo> tinfo;
@@ -114,7 +114,7 @@ void register_server_types() {
 
 	ClassDB::register_virtual_class<RenderingServer>();
 
-	ClassDB::register_virtual_class<WindowServer>();
+	//ClassDB::register_virtual_class<WindowServer>();
 
 	ClassDB::register_class<AudioServer>();
 
@@ -229,7 +229,7 @@ void unregister_server_types() {
 
 void register_server_singletons() {
 	Engine::get_singleton()->add_singleton(Engine::Singleton("RenderingServer", RenderingServer::get_singleton()));
-	Engine::get_singleton()->add_singleton(Engine::Singleton("WindowServer", WindowServer::get_singleton()));
+	//Engine::get_singleton()->add_singleton(Engine::Singleton("WindowServer", WindowServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("PhysicsServer", PhysicsServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Physics2DServer", Physics2DServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("AudioServer", AudioServer::get_singleton()));
