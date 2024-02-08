@@ -1,8 +1,4 @@
 #include "core/version.h"
-#ifndef _STR
-#define _STR(m_x) #m_x
-#define _MKSTR(m_x) _STR(m_x)
-#endif
 
 PANDEMONIUM_ICON ICON platform/windows/pandemonium.ico
 
@@ -21,7 +17,7 @@ BEGIN
             VALUE "FileVersion",            VERSION_NUMBER
             VALUE "ProductName",            VERSION_NAME
             VALUE "Licence",                "MIT"
-            VALUE "LegalCopyright",         "Copyright (c) 2007-" _MKSTR(VERSION_YEAR) " Juan Linietsky, Ariel Manzur and contributors"
+            VALUE "LegalCopyright",         "Copyright (c) 2022-present Péter Magyar, 2007-2022 Juan Linietsky, Ariel Manzur and Godot Engine contributors"
             VALUE "Info",                   "https://github.com/Relintai/pandemonium_engine"
             VALUE "ProductVersion",         VERSION_FULL_BUILD
         END
