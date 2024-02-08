@@ -5,6 +5,6 @@ minor = 2
 patch = 0
 status = "development"
 module_config = ""
-year = 2023
+year = 2024
 website = "https://github.com/Relintai/pandemonium_engine"
 docs = "master"
