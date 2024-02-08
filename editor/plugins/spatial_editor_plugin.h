@@ -822,6 +822,10 @@ public:
 		return current_hover_gizmo_handle;
 	}
 
+	// Simple way to turn off (expensive) gizmo generation
+	// especially for temporary objects in the editor.
+	static bool _prevent_gizmo_generation;
+
 	void set_can_preview(Camera *p_preview);
 	void set_message(String p_message, float p_time = 5);
 

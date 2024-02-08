@@ -128,6 +128,8 @@
 #define MIN_FOV 0.01
 #define MAX_FOV 179
 
+bool SpatialEditor::_prevent_gizmo_generation = false;
+
 void ViewportRotationControl::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE) {
 		axis_menu_options.clear();
@@ -6894,6 +6896,10 @@ void SpatialEditor::move_control_to_right_panel(Control *p_control) {
 }
 
 void SpatialEditor::_request_gizmo(Object *p_obj) {
+	if (_prevent_gizmo_generation) {
+		return;
+	}
+
 	Spatial *sp = Object::cast_to<Spatial>(p_obj);
 	if (!sp) {
 		return;

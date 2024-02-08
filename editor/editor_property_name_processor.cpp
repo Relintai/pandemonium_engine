@@ -79,6 +79,7 @@ EditorPropertyNameProcessor::EditorPropertyNameProcessor() {
 	capitalize_string_remaps["api"] = "API";
 	capitalize_string_remaps["Bvh"] = "BVH";
 	capitalize_string_remaps["Csg"] = "CSG";
+	capitalize_string_remaps["Csgs"] = "CSGs";
 	capitalize_string_remaps["Cpu"] = "CPU";
 	capitalize_string_remaps["Db"] = "dB";
 	capitalize_string_remaps["Dof"] = "DoF";

@@ -1027,47 +1027,28 @@ void RenderingServer::mesh_surface_make_offsets_from_format(uint32_t p_format, i
 	}
 }
 
-void RenderingServer::mesh_add_surface_from_arrays(RID p_mesh, PrimitiveType p_primitive, const Array &p_arrays, const Array &p_blend_shapes, uint32_t p_compress_format) {
-	ERR_FAIL_INDEX(p_primitive, RS::PRIMITIVE_MAX);
-	ERR_FAIL_COND(p_arrays.size() != RS::ARRAY_MAX);
-
-	bool use_split_stream = GLOBAL_GET("rendering/misc/mesh_storage/split_stream") && !(p_compress_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
-
-	uint32_t format = 0;
-
-	// validation
-	int index_array_len = 0;
-	int array_len = 0;
+// This function is separated from the main mesh_add_surface_from_arrays() to allow finding the format WITHOUT creating data.
+// This is necessary for CPU meshes, where we may want to know the final format without creating final data.
+bool RenderingServer::_mesh_find_format(RS::PrimitiveType p_primitive, const Array &p_arrays, const Array &p_blend_shapes, uint32_t p_compress_format, bool p_use_split_stream, uint32_t r_offsets[], int &r_attributes_base_offset, int &r_attributes_stride, int &r_positions_stride, uint32_t &r_format, int &r_index_array_len, int &r_array_len) {
+	ERR_FAIL_INDEX_V(p_primitive, RS::PRIMITIVE_MAX, false);
+	ERR_FAIL_COND_V(p_arrays.size() != RS::ARRAY_MAX, false);
 
 	for (int i = 0; i < p_arrays.size(); i++) {
 		if (p_arrays[i].get_type() == Variant::NIL) {
 			continue;
 		}
 
-		format |= (1 << i);
+		r_format |= (1 << i);
 
 		if (i == RS::ARRAY_VERTEX) {
-			Variant var = p_arrays[i];
-			switch (var.get_type()) {
-				case Variant::POOL_VECTOR2_ARRAY: {
-					PoolVector<Vector2> v2 = var;
-				} break;
-				case Variant::POOL_VECTOR3_ARRAY: {
-					PoolVector<Vector3> v3 = var;
-				} break;
-				default: {
-					Array v = var;
-				} break;
-			}
-
-			array_len = PoolVector3Array(p_arrays[i]).size();
-			ERR_FAIL_COND(array_len == 0);
+			r_array_len = PoolVector3Array(p_arrays[i]).size();
+			ERR_FAIL_COND_V(r_array_len == 0, false);
 		} else if (i == RS::ARRAY_INDEX) {
-			index_array_len = PoolIntArray(p_arrays[i]).size();
+			r_index_array_len = PoolIntArray(p_arrays[i]).size();
 		}
 	}
 
-	ERR_FAIL_COND((format & RS::ARRAY_FORMAT_VERTEX) == 0); // mandatory
+	ERR_FAIL_COND_V((r_format & RS::ARRAY_FORMAT_VERTEX) == 0, false); // mandatory
 
 	if (p_blend_shapes.size()) {
 		//validate format for morphs
@@ -1080,21 +1061,14 @@ void RenderingServer::mesh_add_surface_from_arrays(RID p_mesh, PrimitiveType p_p
 				}
 			}
 
-			ERR_FAIL_COND((bsformat) != (format & (RS::ARRAY_FORMAT_INDEX - 1)));
+			ERR_FAIL_COND_V((bsformat) != (r_format & (RS::ARRAY_FORMAT_INDEX - 1)), false);
 		}
 	}
 
-	uint32_t offsets[RS::ARRAY_MAX];
-	uint32_t strides[RS::ARRAY_MAX];
-
-	int attributes_base_offset = 0;
-	int attributes_stride = 0;
-	int positions_stride = 0;
-
 	for (int i = 0; i < RS::ARRAY_MAX; i++) {
-		offsets[i] = 0; //reset
+		r_offsets[i] = 0; //reset
 
-		if (!(format & (1 << i))) { // no array
+		if (!(r_format & (1 << i))) { // no array
 			continue;
 		}
 
@@ -1105,15 +1079,15 @@ void RenderingServer::mesh_add_surface_from_arrays(RID p_mesh, PrimitiveType p_p
 				Variant arr = p_arrays[0];
 				if (arr.get_type() == Variant::POOL_VECTOR2_ARRAY) {
 					elem_size = 2;
-					p_compress_format |= ARRAY_FLAG_USE_2D_VERTICES;
+					p_compress_format |= RS::ARRAY_FLAG_USE_2D_VERTICES;
 				} else if (arr.get_type() == Variant::POOL_VECTOR3_ARRAY) {
-					p_compress_format &= ~ARRAY_FLAG_USE_2D_VERTICES;
+					p_compress_format &= ~RS::ARRAY_FLAG_USE_2D_VERTICES;
 					elem_size = 3;
 				} else {
-					elem_size = (p_compress_format & ARRAY_FLAG_USE_2D_VERTICES) ? 2 : 3;
+					elem_size = (p_compress_format & RS::ARRAY_FLAG_USE_2D_VERTICES) ? 2 : 3;
 				}
 
-				if (p_compress_format & ARRAY_COMPRESS_VERTEX) {
+				if (p_compress_format & RS::ARRAY_COMPRESS_VERTEX) {
 					elem_size *= sizeof(int16_t);
 				} else {
 					elem_size *= sizeof(float);
@@ -1124,94 +1098,94 @@ void RenderingServer::mesh_add_surface_from_arrays(RID p_mesh, PrimitiveType p_p
 					elem_size = 8;
 				}
 
-				offsets[i] = 0;
-				positions_stride = elem_size;
-				if (use_split_stream) {
-					attributes_base_offset = elem_size * array_len;
+				r_offsets[i] = 0;
+				r_positions_stride = elem_size;
+				if (p_use_split_stream) {
+					r_attributes_base_offset = elem_size * r_array_len;
 				} else {
-					attributes_base_offset = elem_size;
+					r_attributes_base_offset = elem_size;
 				}
 
 			} break;
 			case RS::ARRAY_NORMAL: {
-				if (p_compress_format & ARRAY_FLAG_USE_OCTAHEDRAL_COMPRESSION) {
+				if (p_compress_format & RS::ARRAY_FLAG_USE_OCTAHEDRAL_COMPRESSION) {
 					// normal will always be oct32 (4 byte) encoded
 					// UNLESS tangent exists and is also compressed
 					// then it will be oct16 encoded along with tangent
-					if ((p_compress_format & ARRAY_COMPRESS_NORMAL) && (format & ARRAY_FORMAT_TANGENT) && (p_compress_format & ARRAY_COMPRESS_TANGENT)) {
+					if ((p_compress_format & RS::ARRAY_COMPRESS_NORMAL) && (r_format & ARRAY_FORMAT_TANGENT) && (p_compress_format & RS::ARRAY_COMPRESS_TANGENT)) {
 						elem_size = sizeof(uint8_t) * 2;
 					} else {
 						elem_size = sizeof(uint16_t) * 2;
 					}
 				} else {
-					if (p_compress_format & ARRAY_COMPRESS_NORMAL) {
+					if (p_compress_format & RS::ARRAY_COMPRESS_NORMAL) {
 						elem_size = sizeof(uint32_t);
 					} else {
 						elem_size = sizeof(float) * 3;
 					}
 				}
-				offsets[i] = attributes_base_offset + attributes_stride;
-				attributes_stride += elem_size;
+				r_offsets[i] = r_attributes_base_offset + r_attributes_stride;
+				r_attributes_stride += elem_size;
 
 			} break;
 
 			case RS::ARRAY_TANGENT: {
-				if (p_compress_format & ARRAY_FLAG_USE_OCTAHEDRAL_COMPRESSION) {
-					if (p_compress_format & ARRAY_COMPRESS_TANGENT && (format & ARRAY_FORMAT_NORMAL) && (p_compress_format & ARRAY_COMPRESS_NORMAL)) {
+				if (p_compress_format & RS::ARRAY_FLAG_USE_OCTAHEDRAL_COMPRESSION) {
+					if (p_compress_format & RS::ARRAY_COMPRESS_TANGENT && (r_format & RS::ARRAY_FORMAT_NORMAL) && (p_compress_format & RS::ARRAY_COMPRESS_NORMAL)) {
 						elem_size = sizeof(uint8_t) * 2;
 					} else {
 						elem_size = sizeof(uint16_t) * 2;
 					}
 				} else {
-					if (p_compress_format & ARRAY_COMPRESS_TANGENT) {
+					if (p_compress_format & RS::ARRAY_COMPRESS_TANGENT) {
 						elem_size = sizeof(uint32_t);
 					} else {
 						elem_size = sizeof(float) * 4;
 					}
 				}
-				offsets[i] = attributes_base_offset + attributes_stride;
-				attributes_stride += elem_size;
+				r_offsets[i] = r_attributes_base_offset + r_attributes_stride;
+				r_attributes_stride += elem_size;
 
 			} break;
 			case RS::ARRAY_COLOR: {
-				if (p_compress_format & ARRAY_COMPRESS_COLOR) {
+				if (p_compress_format & RS::ARRAY_COMPRESS_COLOR) {
 					elem_size = sizeof(uint32_t);
 				} else {
 					elem_size = sizeof(float) * 4;
 				}
-				offsets[i] = attributes_base_offset + attributes_stride;
-				attributes_stride += elem_size;
+				r_offsets[i] = r_attributes_base_offset + r_attributes_stride;
+				r_attributes_stride += elem_size;
 
 			} break;
 			case RS::ARRAY_TEX_UV: {
-				if (p_compress_format & ARRAY_COMPRESS_TEX_UV) {
+				if (p_compress_format & RS::ARRAY_COMPRESS_TEX_UV) {
 					elem_size = sizeof(uint32_t);
 				} else {
 					elem_size = sizeof(float) * 2;
 				}
-				offsets[i] = attributes_base_offset + attributes_stride;
-				attributes_stride += elem_size;
+				r_offsets[i] = r_attributes_base_offset + r_attributes_stride;
+				r_attributes_stride += elem_size;
 
 			} break;
 
 			case RS::ARRAY_TEX_UV2: {
-				if (p_compress_format & ARRAY_COMPRESS_TEX_UV2) {
+				if (p_compress_format & RS::ARRAY_COMPRESS_TEX_UV2) {
 					elem_size = sizeof(uint32_t);
 				} else {
 					elem_size = sizeof(float) * 2;
 				}
-				offsets[i] = attributes_base_offset + attributes_stride;
-				attributes_stride += elem_size;
+				r_offsets[i] = r_attributes_base_offset + r_attributes_stride;
+				r_attributes_stride += elem_size;
 
 			} break;
 			case RS::ARRAY_WEIGHTS: {
-				if (p_compress_format & ARRAY_COMPRESS_WEIGHTS) {
+				if (p_compress_format & RS::ARRAY_COMPRESS_WEIGHTS) {
 					elem_size = sizeof(uint16_t) * 4;
 				} else {
 					elem_size = sizeof(float) * 4;
 				}
-				offsets[i] = attributes_base_offset + attributes_stride;
-				attributes_stride += elem_size;
+				r_offsets[i] = r_attributes_base_offset + r_attributes_stride;
+				r_attributes_stride += elem_size;
 
 			} break;
 			case RS::ARRAY_BONES: {
@@ -1227,36 +1201,82 @@ void RenderingServer::mesh_add_surface_from_arrays(RID p_mesh, PrimitiveType p_p
 				}
 
 				if (max_bone > 255) {
-					p_compress_format |= ARRAY_FLAG_USE_16_BIT_BONES;
+					p_compress_format |= RS::ARRAY_FLAG_USE_16_BIT_BONES;
 					elem_size = sizeof(uint16_t) * 4;
 				} else {
-					p_compress_format &= ~ARRAY_FLAG_USE_16_BIT_BONES;
+					p_compress_format &= ~RS::ARRAY_FLAG_USE_16_BIT_BONES;
 					elem_size = sizeof(uint32_t);
 				}
-				offsets[i] = attributes_base_offset + attributes_stride;
-				attributes_stride += elem_size;
+				r_offsets[i] = r_attributes_base_offset + r_attributes_stride;
+				r_attributes_stride += elem_size;
 
 			} break;
 			case RS::ARRAY_INDEX: {
-				if (index_array_len <= 0) {
+				if (r_index_array_len <= 0) {
 					ERR_PRINT("index_array_len==NO_INDEX_ARRAY");
 					break;
 				}
 				/* determine whether using 16 or 32 bits indices */
-				if (array_len >= (1 << 16)) {
+				if (r_array_len >= (1 << 16)) {
 					elem_size = 4;
 
 				} else {
 					elem_size = 2;
 				}
-				offsets[i] = elem_size;
+				r_offsets[i] = elem_size;
 				continue;
 			}
 			default: {
-				ERR_FAIL();
+				ERR_FAIL_V(false);
 			}
 		}
 	}
+
+	uint32_t mask = (1 << RS::ARRAY_MAX) - 1;
+	r_format |= (~mask) & p_compress_format; //make the full format
+
+	return true;
+}
+
+uint32_t RenderingServer::mesh_find_format_from_arrays(PrimitiveType p_primitive, const Array &p_arrays, const Array &p_blend_shapes, uint32_t p_compress_format) {
+	bool use_split_stream = GLOBAL_GET("rendering/misc/mesh_storage/split_stream") && !(p_compress_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
+
+	uint32_t offsets[RS::ARRAY_MAX];
+
+	int attributes_base_offset = 0;
+	int attributes_stride = 0;
+	int positions_stride = 0;
+
+	uint32_t format = 0;
+
+	// validation
+	int index_array_len = 0;
+	int array_len = 0;
+
+	bool res = _mesh_find_format(p_primitive, p_arrays, p_blend_shapes, p_compress_format, use_split_stream, offsets, attributes_base_offset, attributes_stride, positions_stride, format, index_array_len, array_len);
+	ERR_FAIL_COND_V(!res, 0);
+	return format;
+}
+
+void RenderingServer::mesh_add_surface_from_arrays(RID p_mesh, PrimitiveType p_primitive, const Array &p_arrays, const Array &p_blend_shapes, uint32_t p_compress_format) {
+	bool use_split_stream = GLOBAL_GET("rendering/misc/mesh_storage/split_stream") && !(p_compress_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
+
+	uint32_t offsets[RS::ARRAY_MAX];
+
+	int attributes_base_offset = 0;
+	int attributes_stride = 0;
+	int positions_stride = 0;
+
+	uint32_t format = 0;
+
+	// validation
+	int index_array_len = 0;
+	int array_len = 0;
+
+	bool res = _mesh_find_format(p_primitive, p_arrays, p_blend_shapes, p_compress_format, use_split_stream, offsets, attributes_base_offset, attributes_stride, positions_stride, format, index_array_len, array_len);
+	ERR_FAIL_COND(!res);
+
+	uint32_t strides[RS::ARRAY_MAX];
 
 	if (use_split_stream) {
 		strides[RS::ARRAY_VERTEX] = positions_stride;
@@ -1268,9 +1288,6 @@ void RenderingServer::mesh_add_surface_from_arrays(RID p_mesh, PrimitiveType p_p
 			strides[i] = positions_stride + attributes_stride;
 		}
 	}
-
-	uint32_t mask = (1 << ARRAY_MAX) - 1;
-	format |= (~mask) & p_compress_format; //make the full format
 
 	int array_size = (positions_stride + attributes_stride) * array_len;
 

@@ -55,6 +55,14 @@ class Spatial : public Node {
 	GDCLASS(Spatial, Node);
 	OBJ_CATEGORY("3D");
 
+public:
+	enum MergingMode : unsigned int {
+		MERGING_MODE_INHERIT,
+		MERGING_MODE_OFF,
+		MERGING_MODE_ON
+	};
+
+private:
 	// optionally stored if we need to do interpolation
 	// client side (i.e. not in RenderingServer) so interpolated transforms
 	// can be read back with get_global_transform_interpolated()
@@ -83,6 +91,8 @@ class Spatial : public Node {
 
 		mutable int dirty;
 
+		MergingMode merging_mode : 2;
+
 		bool toplevel_active : 1;
 		bool toplevel : 1;
 		bool inside_world : 1;
@@ -98,6 +108,8 @@ class Spatial : public Node {
 
 		bool visible : 1;
 		bool disable_scale : 1;
+
+		bool merging_allowed : 1;
 
 		int children_lock;
 		Spatial *parent;
@@ -120,6 +132,7 @@ class Spatial : public Node {
 	void _propagate_transform_changed(Spatial *p_origin);
 
 	void _propagate_visibility_changed();
+	void _propagate_merging_allowed(bool p_merging_allowed);
 
 protected:
 	_FORCE_INLINE_ void set_ignore_transform_notification(bool p_ignore) {
@@ -235,6 +248,10 @@ public:
 	void set_notify_local_transform(bool p_enable);
 	bool is_local_transform_notification_enabled() const;
 
+	void set_merging_mode(MergingMode p_mode);
+	MergingMode get_merging_mode() const { return data.merging_mode; }
+	_FORCE_INLINE_ bool is_merging_allowed() const { return data.merging_allowed; }
+
 	void orthonormalize();
 	void set_identity();
 
@@ -249,5 +266,7 @@ public:
 	Spatial();
 	~Spatial();
 };
+
+VARIANT_ENUM_CAST(Spatial::MergingMode);
 
 #endif
