@@ -4,7 +4,242 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
+Nothing Yet.
+
+## [4.2.0]
+
+### Added
+
+#### Core
+
+- Added missing setters to VariantOP.
+- Added to_real helper methods to String. (Also added it to the gdnative api.)
+
+##### PLogger
+
+- Added log level support for PLogger.
+
+#### Servers
+
+- Added a new dummy WindowServer class. (Disabled it for now.)
+
+#### Editor
+
+- Added back ResourceImporterOBJ from godot.
+- Added a new editor setting (docks/filesystem/wide_bottom_panel) which makes the file system appear in the bottom panel instad of as a dock.
+- Now the names of the main screen plugins can be hidden in the editor by the new interface/editor/hide_main_screen_plugin_names editor setting. (If a plugin does not have an icon fall back to using it's name.)
+
+#### Scene
+
+##### GUI
+
+- Added a new CSplitContainer type which acts as both a VSplitContainer and HSplitContainer and allows changing between them using a property.
+- Added a new CBoxContainer type which acts as both a VBoxContainer and HBoxContainer and allows changing between them using a property.
+
+#### Modules
+
+##### SMTP
+
+- Added a new smtp module.
+
+##### Tile Map
+
+- Added a button to the TilesetEditor to easily select the TilesetEditorContext when needed.
+
+##### Web
+
+- Implemented range requests for the HTTPServerSimple. It does work in fiefox, however wget seems to choke on it. This will be fixed later.
+- Added a way to get all available parameter keys to WebServerRequest.
+- Added a way to unregister connections and get out their raw connection data from the http server.
+
+##### Prop
+
+- Implemented PropDataStaticBody handling for TerrainPropJob and VoxelPropJob.
+- Initial StaticBody support for the prop system.
+
+#### Misc
+
+- Added a backport helper script.
+
+### Fixed
+
+#### Core
+
+- Fixed smaller issues in VariantOP.
+- Fix running standalone scripts in non-editor builds.
+- Fix logic in String::substr_index.
+- Added missing Variant PTRARG conversion.
+
+#### Modules
+
+- Fix build when the mbedtls module is disabled.
+- Fix build when the jsonrpc module is disabled.
+
+##### Editor Text Editor
+
+- Implemented clearing custom fonts in the editor's text editor module. Also small improvements.
+- Fixed custom font support in the editor's text editor module.
+- Fixed reopening files from the previous session in the editor's text editor module. Also small cleanups.
+- Added more extensions to the editor's text editor module.
+- Fixed all the crashes (and potential crashed) in the editor's text editor module I could find. Also fixed some smaller usability issues.
+- Fix lots of potential crashes in the editor's text editor module. Now it also won't add an additional newline to the end of files.
+- Removed the delete file option from the editor's text editor module.
+- Disabled syntax highlighting in the editor's text editor module. It will need to be reworked.
+- Fixed TextEdit width calculation after it's font changes. This fixes lines being too long to scroll to in the editor.
+
+##### Web
+
+- Fixed generating urls in BrowsableFolderServeWebPage.
+- Now PagedArticleWebPage won't add the summary page to the list of pages you can switch to.
+- Store incoming http request parameters properly.
+
+##### GDNative
+
+- Mark NativeScripts as having delayed metadata.
+
+#### Docs
+
+- Fix the doc descriptions where they got lost due to adding StringName to Variants. Also fixed smaller issues where I ran into them.
+
+### Changed
+
+#### Generic
+
+- Some reorganization of files, particularly in the scene folder.
+
+#### Core
+
+- Updated year in version.py.
+- Allow running standalone scripts in non-editor builds.
+- Optimized path_clean_end_slash in String.
+- Now unicode error printing is disabled by default. Also can be enabled via a macro.
+
+##### PLogger
+
+- The default log level in PLogger is now message.
+- Call the proper methods in PLogger. Also use ERR_PRINT when logging errors.
+
+#### Platform
+
+- Updated copyright info in pandemonium_res.rc.
+
+#### Editor
+
+- Bind more methods in EditorInspector.
+- Don't hide the script property in sub inspectors.
+
+#### Modules
+
+- Updated the sample module config file with the new modules.
+
+##### Navigation Mesh Generator
+
+- Don't print error when there is no default NavigationMeshGenerator.
+- Don't warn when falling back to NavigationMeshGeneratorDummy.
+
+##### Network Synchronizer
+
+- Now SceneSynchronizerDebugger can properly create it's debugger.py file.
+- Updated NetworkSynchronizer from https://github.com/GameNetworking/network_synchronizer/tree/godot-3.x .  f12fee66a7e3eb2013d6c5437837770455105b91 (Merge commit: cc3c7d244adea8b25822f43963618fd2dbf18ec8)
+
+##### Tile Map
+
+- Renamed RTilesetEditorContext to TilesetEditorContext.
+
+##### Web
+
+- Completely removed the cached path api from FileCache.
+
+#### License
+
+- Updated the license to current year, and also updated it on the top of the headers.
+
+### Backports
+
+#### Godot3
+
 - Backported everything up to and including https://github.com/godotengine/godot/commit/b859a1898d82ff5d0c568d45b45eabc054d981cf Merge commit: https://github.com/godotengine/godot/commit/cc4492f9b9ccb8d93c132d97ca3439b8ba925b08
+
+- Ported:  Update the logic used to start / stop the GL thread Currently the GL thread is started / stopped when the activity is respectively resumed / paused. However, according to the `GLSurfaceView` documentation, this should be done instead when the activity is started / stopped, so this change updates the start / stop logic for the GL thread to match the documentation. - m4gr3d https://github.com/godotengine/godot/commit/194452bf38e5a0de0f1c8e0698244a6f47b88a08
+- Ported:  Vertex cache optimizer Optimizes indices to make good use of vertex cache on GPU. - lawnjelly https://github.com/godotengine/godot/commit/0aa22b8f1309652353a1ca257f75ff6b3a0437c8
+- Portred: Add MergeGroup node to simplify merging Meshes at runtime. - lawnjelly https://github.com/godotengine/godot/commit/8b791355386b9528523010d27e9a674b5bf8c28a
+- Ported:  Fix signed distance field font rendering This fix works in both GLES3 and GLES2. The rendering formula in the shader was adjusted to further improve the sharpness/antialiasing quality balance. - lawnjelly and Calinou https://github.com/godotengine/godot/commit/bc607fb6075cebf78d8e562d7b7423b2650906ac
+- Ported:  Shadow volume culling and tighter shadow caster culling Existing shadow caster culling using the BVH takes no account of the camera. This PR adds the highly encapsulated class VisualServerLightCuller which can cut down the casters in the shadow volume to only those which can cast shadows on the camera frustum. This is used to: * More accurately defer dirty updates to shadows when the shadow volume does not intersect the camera frustum. * Tighter cull shadow casters to the view frustum. Lights dirty state is now automatically managed: * Continuous (tighter caster culling) * Static (all casters are rendered) - lawnjelly https://github.com/godotengine/godot/commit/8ca631a466e3dfe0d6e0bce54c6a78c652fca81c
+- Ported parts of:  [3.x] Add Selected Collision Group in TileSet Editor Also moves the TileSet Script property down to its own category. - Mickeon https://github.com/godotengine/godot/commit/211c707e67725f27ae995a923dd206cca9976315
+- mbedtls: Update to upstream version 2.28.7
+- certs: Sync with Mozilla bundle as of Dec 13, 2023 bagder/ca-bundle@bef37a9
+- Sync controller mappings DB with SDL2 community repo Synced with mdqinc/SDL_GameControllerDB@232c738
+- Fix build on X11 following 64-bit detection changes This also ports over the cross-compilation logic to the `server` platform, and allows Embree to be used in server tools builds on aarch64.
+- Fix invalid Python escape sequences
+- SCons: Fix Python 3.12 SyntaxError with regex escape sequences
+- Linux: Remove hardcoded lib path for x86 cross-compilation This breaks the build with our updated i686 Linux SDK which doesn't contain this path, and may not be needed at all.
+- CI: Update mymindstorm/setup-emsdk to v14, should fix cache folder conflicts https://github.com/mymindstorm/setup-emsdk/releases/tag/v14
+- Style: Mark clang-format 16 as supported for pre-commit hook It only introduced a difference in a .glsl file, which I've worked around by removing an empty line. This keeps formatting consistent between clang-format 15 and 16.
+- SCons: Fix Web build when compiler version isn't properly detected Quick fix for #82585. Also set CI version to 3.1.39, which is what we use for official 3.6 builds since 3.6-beta4.
+- Portals - Improve conversion logging Logging is now allowed in any TOOLS build (rather than just in the editor), but still prevented in final exports. Logging  an be switched off via project settings. Autoplacement is now logged.
+- Portals - include in bound and special cases in start room * Re-introduces a property for portals to decide whether they are included in room bounds during room conversion. * Adds a special case for portals that extend into the start room, which may be caused by level design inaccuracies.
+- zlib/minizip: Update to version 1.3 Remove `infback.c` which we don't need. The `OF` macro was also removed so I can drop the patch where I yell at Gentoo developers.
+- minizip: Backport patch to fix CVE-2023-45853
+- brotli: Sync with upstream 1.1.0 https://github.com/google/brotli/releases/tag/v1.1.0
+- Web: Clarify that `OS.get_unique_id` is not supported Remove the base error message in `OS`, we no longer really error out this way for not implemented methods. Instead, each platform should override them to provide the context they want.
+- Add XInput device ID for wireless Series 2 Elite controller
+- SCons: Add `stack_size` and `default_pthread_stack_size` options to Web target
+- Set what were default values for some emscripten linkflags - Set `-sSTACK_SIZE` to what it was before emscripten 3.1.27. It was renamed in 3.1.25 so also set  sTOTAL_SIZE for older versions for consistency. And Set `-sDEFAULT_PTHREAD_STACK_SIZE` to what it was before 3.1.30.
+- Fix generating vsproj with SCons 4.6.0+
+- Linux: Add support for arm64 and arm32 export templates This is done in a hacky way, mostly to keep it simple and avoid having to do a refactoring of the `EditorExportPlatform` interface.
+- GLES2 / GLES3 - Use gl_FragColor temporary On some hardware, modifying gl_FragColor multiple times can cause large performance drops. This PR writes to a standard temporary variable instead, and copies across to gl_FragColor once only at the end of the fragment shader. This could potentially lead to large gains in performance on affected hardware.
+- Mention InputEventJoypadButton's pressure not working
+- Add Editor Description group Backport from 4.0
+- GDScript: Fix `get_method_list` for custom functions
+- Add APP_PAUSED and APP_RESUMED MainLoop notifications
+- Prevent shuffling custom shader functions (shader cache requires determinism)
+- Document some Image methods can unlock it (making `set_pixel` fail)
+- Improve Scene Tree Dock's Node filter (Allow multiple terms & more)
+- Preserve selection when focusing SpinBox
+- Rewrite most of Resource's documentation
+- Update linker flags for Xcode 15.0 - 15.2. Bump min. iOS version to 12.
+- UWP: Fix VS 2017 build with new `get_unique_id` method Fixes this error:```platform\uwp\os_uwp.cpp(715): error C3149: 'Windows::Storage::Streams::IBuffer': cannot use this type here without a top-level '^'```
+- Fix `#if *_ENABLED` inconsistencies, should check if defined
+- Fix Dummy audio driver initialization issue on WASAPI output device initialization failure
+- Add project settings for AVAudioSessionCategory on iOS
+- Fix AABB.encloses failing on shared upper bound This differs from `Rect2` and was fixed for those classes in the past
+- Implement UWP version of `OS.get_unique_id` function.
+- Prevent using name with leading dot when create/rename/duplicate scene/folder/script/resource Fixes #62497
+- Fix unitialized variables in `core`
+- Fix typo.
+- Remove unused struct in GradientTexture1D
+- GDScript: Prevent native class shadowing
+- Add Android project settings for gesture support - Include project setting to enable long press for Android devices - Include project setting to enable pan and scale gestures on Android devices
+- Improve TileMap editor visible names and tooltips
+- GDNative: Fix Linux arm64 warning about ignored `sysv_abi` attribute Fixes #41160.
+- Fix various GCC 13 warnings Fixes occurrences of `-Wtype-limits`, `-Wmaybe-uninitialized`, `-Wduplicated-branches`.
+- Update the `launchMode` for the `GodotApp` activity to allow other activities to be part of the same task For details, see https://developer.android.com/guide/topics/manifest/activity-element#lmode
+- Fix Android editor crash issue Fix issue causing the Android editor to crash when pressing back from a running project
+- Automatically pick the Android sdk path using environment variables
+- Also backported the previous change for cscript.
+- Far faster and more efficient method of checking if an identifer refers an autoload.
+- Make gizmo plugin handle SpriteBase3D instead of Sprite3D
+- Fix grayscale dds loading
+- Fix glGet overflows by using 64 bit versions Certain glGet operations require 64 bit versions according to the GLES spec. The previous code was susceptible to overflow bugs,  especially running under ANGLE.
+- Remove the separator from `ItemList`'s thumbnail mode
+- Use occlusionState to determine when window is drawable.
+- Return exit code 0 when running --version or --help Fixes https://github.com/godotengine/godot/issues/83661
+- Fix File.get_buffer returning wrong length File.get_buffer always returned as many bytes as requested (even when EOF was reached), this resulted in random bytes being returned when overflowing.
+- Make OSIPhone::get_screen_refresh_rate respect iOS Low Power Mode
+- Allow dragging editable children
+- Workaround GCC warning in `rasterizer_canvas_batcher` `-Werror=array-bounds` flags when creating a new batch, possibly due to the possibility of the malloc failing (out of memory). This PR adds an explicit `CRASHNOW` in the hope the compiler will recognise this case is not intended to be recoverable.
+- mbedTLS: Update to version 2.18.5
+- Check parameter validity in `Object::set_script` Fixes #46120.
+- Updated controller mappings DB from godot.
+- Web: Fix version check for missing scalbnf LTO workaround The check needs to happen after we set `env["CXX"]`. Follow-up to #81340.
+- Web: Workaround Emscripten 3.1.42+ LTO regression Fixes #80010.
+- Updated github action checkout.
+- Build system: add option for MSVC incremental linking.
+
+#### Godot4
+
+- Fix TextEdit.get_rect_at_line_column returning negative pos even though cursor is in viewable area of the control - MJacred https://github.com/godotengine/godot/commit/6170381bd754490aee34e5a34558460d5c2f33f9
+
 
 ## [4.1.0]
 
