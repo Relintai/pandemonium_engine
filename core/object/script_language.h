@@ -154,6 +154,8 @@ public:
 	virtual void get_script_method_list(List<MethodInfo> *p_list) const = 0;
 	virtual void get_script_property_list(List<PropertyInfo> *p_list) const = 0;
 
+	virtual String get_global_class_name() const = 0;
+
 	virtual int get_member_line(const StringName &p_member) const { return -1; }
 
 	virtual void get_constants(RBMap<StringName, Variant> *p_constants) {}
@@ -417,6 +419,8 @@ public:
 
 	virtual void property_set_fallback(const StringName &p_name, const Variant &p_value, bool *r_valid = nullptr);
 	virtual Variant property_get_fallback(const StringName &p_name, bool *r_valid = nullptr);
+
+	virtual String get_global_class_name() const { return String(); }
 
 	PlaceHolderScriptInstance(ScriptLanguage *p_language, Ref<Script> p_script, Object *p_owner);
 	~PlaceHolderScriptInstance();

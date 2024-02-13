@@ -239,6 +239,8 @@ public:
 	}
 #endif
 
+	virtual String get_global_class_name() const { return name; }
+
 	CScript();
 	~CScript();
 };

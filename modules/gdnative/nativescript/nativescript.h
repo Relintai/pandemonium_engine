@@ -175,6 +175,8 @@ public:
 	virtual void get_script_method_list(List<MethodInfo> *p_list) const;
 	virtual void get_script_property_list(List<PropertyInfo> *p_list) const;
 
+	virtual String get_global_class_name() const { return script_class_name; }
+
 	String get_class_documentation() const;
 	String get_method_documentation(const StringName &p_method) const;
 	String get_signal_documentation(const StringName &p_signal_name) const;

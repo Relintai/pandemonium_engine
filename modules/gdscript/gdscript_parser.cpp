@@ -4686,7 +4686,12 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 								Ref<Script> res_script = constant;
 								StringName script_class;
 								if (res_script.is_valid()) {
-									script_class = res_script->get_language()->get_global_class_name(res_script->get_path());
+									script_class = res_script->get_global_class_name();
+
+									if (script_class == "") {
+										// Note this will currently fail for gdscript if the scripts are remapped in an exported .pck!
+										script_class = res_script->get_language()->get_global_class_name(res_script->get_path());
+									}
 
 									if (ClassDB::is_parent_class(ScriptServer::get_global_class_native_base(script_class), "Resource")) {
 										class_name = script_class;

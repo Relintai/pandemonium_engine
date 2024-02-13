@@ -120,6 +120,8 @@ public:
 
 	virtual int get_member_line(const StringName &p_member) const;
 
+	virtual String get_global_class_name() const { return _name; }
+
 	PluginScript();
 	void init(PluginScriptLanguage *language);
 	virtual ~PluginScript();

@@ -220,6 +220,8 @@ public:
 	virtual bool is_placeholder_fallback_enabled() const { return placeholder_fallback_enabled; }
 #endif
 
+	virtual String get_global_class_name() const { return name; }
+
 	GDScript();
 	~GDScript();
 };
