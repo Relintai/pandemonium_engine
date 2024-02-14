@@ -1,6 +1,3 @@
-#ifndef IP_UNIX_H
-#define IP_UNIX_H
-
 /*************************************************************************/
 /*  ip_unix.h                                                            */
 /*************************************************************************/
@@ -32,9 +29,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#ifndef IP_UNIX_H
+#define IP_UNIX_H
+
 #include "core/io/ip.h"
 
-#if defined(UNIX_ENABLED) || defined(WINDOWS_ENABLED)
+#if defined(UNIX_ENABLED) || defined(WINDOWS_ENABLED) || defined(HORIZON_ENABLED)
 
 class IP_Unix : public IP {
 	GDCLASS(IP_Unix, IP);

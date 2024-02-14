@@ -399,6 +399,14 @@ Error ProjectSettings::_setup(const String &p_path, const String &p_main_pack, b
 		}
 #endif
 
+#ifdef HORIZON_ENABLED
+		if (!found) {
+			if (_load_resource_pack("romfs:/game.pck")) {
+				found = true;
+			}
+		}
+#endif // HORIZON_ENABLED
+
 		if (!found) {
 			// Try to load data pack at the location of the executable.
 			// As mentioned above, we have two potential names to attempt.

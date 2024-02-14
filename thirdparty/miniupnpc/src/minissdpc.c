@@ -58,7 +58,15 @@ struct sockaddr_un {
 #include <sys/socket.h>
 #include <sys/param.h>
 #include <sys/time.h>
+#ifndef __SWITCH__
 #include <sys/un.h>
+#else // __SWITCH__
+#define UNIX_PATH_LEN   108
+struct sockaddr_un {
+	uint16_t sun_family;
+	char     sun_path[UNIX_PATH_LEN];
+};
+#endif // __SWITCH__
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>

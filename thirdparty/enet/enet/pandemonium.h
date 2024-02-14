@@ -1,10 +1,10 @@
 #ifndef __ENET_PANDEMONIUM_H__
 #define __ENET_PANDEMONIUM_H__
 /*************************************************************************/
-/*  pandemonium.h                                                              */
+/*  pandemonium.h                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           PANDEMONIUM ENGINE                                */
+/*                        PANDEMONIUM ENGINE                             */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -29,19 +29,17 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+
 /**
  @file  pandemonium.h
  @brief ENet Pandemonium header
 */
 
-
-
-
 #ifdef WINDOWS_ENABLED
 #include <stdint.h>
 #include <winsock2.h>
 #endif
-#ifdef UNIX_ENABLED
+#if defined(UNIX_ENABLED) || defined(HORIZON_ENABLED)
 #include <arpa/inet.h>
 #endif
 

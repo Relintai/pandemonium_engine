@@ -31,6 +31,9 @@ sources = [
     "sqlite3_table_builder.cpp",
 ]
 
+if module_env["platform"] == "switch":
+    sources += ["sqlite/nx-vfs.c"]
+
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation
     module_env.Append(CCFLAGS=['-fPIC'])
