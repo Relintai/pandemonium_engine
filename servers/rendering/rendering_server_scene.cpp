@@ -2813,7 +2813,7 @@ void RenderingServerScene::_prepare_scene(const Transform p_cam_transform, const
 
 				// Directional lights aren't handled here, _light_instance_update_shadow is called from elsewhere.
 				// Checking for this in case this changes, as this is assumed.
-				DEV_CHECK_ONCE(VSG::storage->light_get_type(ins->base) != VS::LIGHT_DIRECTIONAL);
+				DEV_CHECK_ONCE(RSG::storage->light_get_type(ins->base) != RS::LIGHT_DIRECTIONAL);
 
 				// Tighter caster culling to the camera frustum should work correctly with multiple viewports + cameras.
 				// The first camera will cull tightly, but if the light is present on more than 1 camera, the second will
