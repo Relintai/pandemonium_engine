@@ -454,7 +454,8 @@ String DirAccess::get_filesystem_abspath_for(String p_path) {
 			if (resource_path != "") {
 				p_path = p_path.replace_first("res:/", resource_path);
 			} else {
-				p_path = p_path.replace_first("res://", "");
+				//for resources in this case actually the "res://<path>" is the proper filesystem path.
+				return p_path;
 			}
 		}
 	} else if (p_path.begins_with("user://")) {
