@@ -51,6 +51,7 @@ class WebServerSimple;
 class WebServerRequest;
 class HTTPServerSimple;
 class SimpleWebServerRequest;
+class X509Certificate;
 
 class HTTPServerConnection : public Reference {
 	GDCLASS(HTTPServerConnection, Reference);
@@ -81,6 +82,7 @@ public:
 
 	bool use_ssl = false;
 	Ref<CryptoKey> key;
+	Ref<X509Certificate> _certificate;
 
 	Ref<StreamPeerTCP> tcp;
 	Ref<StreamPeerSSL> ssl;

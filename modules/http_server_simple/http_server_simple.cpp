@@ -58,8 +58,8 @@ void HTTPServerConnection::update() {
 	if (use_ssl) {
 		if (ssl.is_null()) {
 			ssl = Ref<StreamPeerSSL>(StreamPeerSSL::create());
-			peer = ssl;
 			ssl->set_blocking_handshake_enabled(false);
+			peer = ssl;
 
 			Ref<CryptoKey> key = Ref<CryptoKey>(CryptoKey::create());
 			Error err = key->load(_http_server->_ssl_key_file);
@@ -68,14 +68,14 @@ void HTTPServerConnection::update() {
 				ERR_FAIL_COND(err != OK);
 			}
 
-			Ref<X509Certificate> cert = Ref<X509Certificate>(X509Certificate::create());
-			err = cert->load(_http_server->_ssl_cert_file);
+			_certificate = Ref<X509Certificate>(X509Certificate::create());
+			err = _certificate->load(_http_server->_ssl_cert_file);
 			if (err != OK) {
 				close();
 				ERR_FAIL_COND(err != OK);
 			}
 
-			if (ssl->accept_stream(tcp, key, cert) != OK) {
+			if (ssl->accept_stream(tcp, key, _certificate) != OK) {
 				close();
 				return;
 			}
@@ -172,6 +172,10 @@ void HTTPServerConnection::update() {
 }
 
 void HTTPServerConnection::send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
+	if (closed()) {
+		return;
+	}
+
 	//String s = "HTTP/1.1 " + itos(static_cast<int>(status_code)) + " Found\r\n";
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(status_code) + "\r\n";
 
@@ -216,6 +220,10 @@ void HTTPServerConnection::send_redirect(Ref<WebServerRequest> request, const St
 }
 
 void HTTPServerConnection::send(Ref<WebServerRequest> request) {
+	if (closed()) {
+		return;
+	}
+
 	String body = request->get_compiled_body();
 
 	HashMap<StringName, String> custom_headers = request->custom_response_headers_get();
@@ -265,6 +273,10 @@ void HTTPServerConnection::send(Ref<WebServerRequest> request) {
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 }
 void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String &p_file_path) {
+	if (closed()) {
+		return;
+	}
+
 	HashMap<StringName, String> custom_headers = request->custom_response_headers_get();
 
 	if (!FileAccess::exists(p_file_path)) {
@@ -459,6 +471,10 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 }
 
 void HTTPServerConnection::update_send_file(Ref<SimpleWebServerRequest> request) {
+	if (closed()) {
+		return;
+	}
+
 	int loop_count = 0;
 
 	while (true) {
@@ -518,9 +534,17 @@ void HTTPServerConnection::close() {
 	ERR_PRINT("CONN CLOSE");
 #endif
 
-	tcp.unref();
-	ssl.unref();
+	if (ssl.is_valid()) {
+		ssl->disconnect_from_stream();
+	}
+
+	if (tcp.is_valid()) {
+		tcp->disconnect_from_host();
+	}
+
 	peer.unref();
+	ssl.unref();
+	tcp.unref();
 
 	_closed = true;
 }
