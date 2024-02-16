@@ -85,6 +85,10 @@ bool FileCache::wwwroot_has_file(const String &file_path) {
 		return false;
 	}
 
+	if (fp.begins_with("res://")) {
+		return true;
+	}
+
 	String absp = f->get_path_absolute();
 	memdelete(f);
 
@@ -117,6 +121,10 @@ String FileCache::wwwroot_get_file_abspath(const String &file_path) {
 	if (err != OK) {
 		memdelete(f);
 		return String();
+	}
+
+	if (fp.begins_with("res://")) {
+		return fp;
 	}
 
 	String absp = f->get_path_absolute();
