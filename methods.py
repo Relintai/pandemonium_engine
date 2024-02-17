@@ -439,7 +439,7 @@ def convert_custom_modules_path(path):
     if path == os.path.realpath("modules"):
         raise ValueError(err_msg % "be a directory other than built-in `modules` directory.")
     
-    current_path = os.path.realpath(".")
+    current_path = os.path.realpath(".") + "/"
 
     if path.startswith(current_path):
         path = path.replace(current_path, "", 1)

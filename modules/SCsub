@@ -17,8 +17,12 @@ env.modules_sources = []
 env_modules.add_source_files(env.modules_sources, "register_module_types.gen.cpp")
 
 for name, path in env.module_list.items():
+
     if not os.path.isabs(path):
-        SConscript(name + "/SCsub")  # Built-in.
+        if path.startswith("modules/"):
+            SConscript(name + "/SCsub")  # Built-in.
+        else:
+            SConscript("../" + path + "/SCsub")  # In the engine's folder, so start from there
     else:
         SConscript(path + "/SCsub")  # Custom.
 

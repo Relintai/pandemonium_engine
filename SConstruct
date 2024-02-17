@@ -295,7 +295,12 @@ for path in module_search_paths:
         # from the built-in "modules" name (e.g. "custom_modules/summator/summator.h"),
         # so it can be referenced simply as `#include "summator/summator.h"`
         # independently of where a module is located on user's filesystem.
-        env_base.Prepend(CPPPATH=[path, os.path.dirname(path)])
+
+        if not os.path.isabs(path):
+            env_base.Prepend(CPPPATH=["#" + path, "#" + os.path.dirname(path)])
+        else:
+            env_base.Prepend(CPPPATH=[path, os.path.dirname(path)])
+            
     # Note: custom modules can override built-in ones.
     modules_detected.update(modules)
 
