@@ -429,12 +429,21 @@ void unregister_module_types(ModuleRegistrationLevel p_level) {
 def convert_custom_modules_path(path):
     if not path:
         return path
+    
     path = os.path.realpath(os.path.expanduser(os.path.expandvars(path)))
     err_msg = "Build option 'custom_modules' must %s"
+
     if not os.path.isdir(path):
         raise ValueError(err_msg % "point to an existing directory.")
+    
     if path == os.path.realpath("modules"):
         raise ValueError(err_msg % "be a directory other than built-in `modules` directory.")
+    
+    current_path = os.path.realpath(".")
+
+    if path.startswith(current_path):
+        path = path.replace(current_path, "", 1)
+
     return path
 
 
