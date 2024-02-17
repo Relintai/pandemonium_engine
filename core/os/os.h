@@ -687,6 +687,8 @@ public:
 
 	virtual void process_and_drop_events() {}
 
+	virtual String get_custom_platform_resource_pack_location() { return String(); }
+
 	OS();
 	virtual ~OS();
 };

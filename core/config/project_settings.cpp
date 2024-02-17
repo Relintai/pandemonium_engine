@@ -400,6 +400,14 @@ Error ProjectSettings::_setup(const String &p_path, const String &p_main_pack, b
 #endif
 
 		if (!found) {
+			String crl = OS::get_singleton()->get_custom_platform_resource_pack_location();
+
+			if (!crl.empty()) {
+				found = _load_resource_pack(crl);
+			}
+		}
+
+		if (!found) {
 			// Try to load data pack at the location of the executable.
 			// As mentioned above, we have two potential names to attempt.
 			found = _load_resource_pack(exec_dir.plus_file(exec_basename + ".pck")) || _load_resource_pack(exec_dir.plus_file(exec_filename + ".pck"));
