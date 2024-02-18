@@ -333,6 +333,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		// These properties are defined after Godot setup completion, so we retrieve them here.
 		boolean longPressEnabled = Boolean.parseBoolean(PandemoniumLib.getGlobal("input_devices/pointing/android/enable_long_press_as_right_click"));
 		boolean panScaleEnabled = Boolean.parseBoolean(PandemoniumLib.getGlobal("input_devices/pointing/android/enable_pan_and_scale_gestures"));
+		int rotaryInputAxis = java.lang.Integer.parseInt(PandemoniumLib.getGlobal("input_devices/pointing/android/rotary_input_scroll_axis"));
 
 		runOnUiThread(() -> {
 			PandemoniumView renderView = getRenderView();
@@ -341,6 +342,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 				inputHandler.enableLongPress(longPressEnabled);
 				inputHandler.enablePanningAndScalingGestures(panScaleEnabled);
 			}
+			PandemoniumInputHandler.setRotaryInputAxis(rotaryInputAxis);
 		});
 
 		for (PandemoniumPlugin plugin : pluginRegistry.getAllPlugins()) {

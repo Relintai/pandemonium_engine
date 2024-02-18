@@ -58,6 +58,9 @@ import java.util.Set;
 public class PandemoniumInputHandler implements InputManager.InputDeviceListener {
 	private static final String TAG = PandemoniumInputHandler.class.getSimpleName();
 
+	private static final int ROTARY_INPUT_VERTICAL_AXIS = 1;
+	private static final int ROTARY_INPUT_HORIZONTAL_AXIS = 0;
+
 	private final SparseIntArray mJoystickIds = new SparseIntArray(4);
 	private final SparseArray<Joystick> mJoysticksDevices = new SparseArray<>(4);
 
@@ -71,6 +74,7 @@ public class PandemoniumInputHandler implements InputManager.InputDeviceListener
 	 * Used to decide whether mouse capture can be enabled.
 	 */
 	private int lastSeenToolType = MotionEvent.TOOL_TYPE_UNKNOWN;
+	private static int rotaryInputAxis = ROTARY_INPUT_VERTICAL_AXIS;
 
 	public PandemoniumInputHandler(PandemoniumView pandemoniumView) {
 		final Context context = pandemoniumView.getContext();
@@ -101,6 +105,13 @@ public class PandemoniumInputHandler implements InputManager.InputDeviceListener
 	 */
 	public void enablePanningAndScalingGestures(boolean enable) {
 		this.pandemoniumGestureHandler.setPanningAndScalingEnabled(enable);
+	}
+
+	/**
+	 * On Wear OS devices, sets which axis of the mouse wheel rotary input is mapped to. This is 1 (vertical axis) by default.
+	 */
+	public static void setRotaryInputAxis(int axis) {
+		rotaryInputAxis = axis;
 	}
 
 	private boolean isKeyEventGameDevice(int source) {
@@ -474,9 +485,23 @@ public class PandemoniumInputHandler implements InputManager.InputDeviceListener
 		final float y = event.getY();
 		final int buttonsMask = event.getButtonState();
 
-		final float verticalFactor = event.getAxisValue(MotionEvent.AXIS_VSCROLL);
-		final float horizontalFactor = event.getAxisValue(MotionEvent.AXIS_HSCROLL);
+		float verticalFactor = 0;
+		float horizontalFactor = 0;
 
+		// If event came from RotaryEncoder (Bezel or Crown rotate event on Wear OS smart watches),
+		// convert it to mouse wheel event.
+		if (event.isFromSource(InputDevice.SOURCE_ROTARY_ENCODER)) {
+			if (rotaryInputAxis == ROTARY_INPUT_HORIZONTAL_AXIS) {
+				horizontalFactor = -event.getAxisValue(MotionEvent.AXIS_SCROLL);
+			} else {
+				// If rotaryInputAxis is not ROTARY_INPUT_HORIZONTAL_AXIS then use default ROTARY_INPUT_VERTICAL_AXIS axis.
+				verticalFactor = -event.getAxisValue(MotionEvent.AXIS_SCROLL);
+			}
+		} else {
+			verticalFactor = event.getAxisValue(MotionEvent.AXIS_VSCROLL);
+			horizontalFactor = event.getAxisValue(MotionEvent.AXIS_HSCROLL);
+		}
+		
 		boolean sourceMouseRelative = false;
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 			sourceMouseRelative = event.isFromSource(InputDevice.SOURCE_MOUSE_RELATIVE);
