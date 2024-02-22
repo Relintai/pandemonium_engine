@@ -1663,7 +1663,7 @@ void EditorExportPlatformAndroid::get_export_options(List<ExportOption> *r_optio
 	r_options->push_back(ExportOption(PropertyInfo(Variant::INT, "version/min_sdk", PROPERTY_HINT_RANGE, SDK_VERSION_RANGE), DEFAULT_MIN_SDK_VERSION));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::INT, "version/target_sdk", PROPERTY_HINT_RANGE, SDK_VERSION_RANGE), DEFAULT_TARGET_SDK_VERSION));
 
-	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "package/unique_name", PROPERTY_HINT_PLACEHOLDER_TEXT, "ext.domain.name"), "net.relintai.pandemonium.$genname"));
+	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "package/unique_name", PROPERTY_HINT_PLACEHOLDER_TEXT, "ext.domain.name"), "org.pandemoniumengine.pandemonium.$genname"));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "package/name", PROPERTY_HINT_PLACEHOLDER_TEXT, "Game Name [default if blank]"), ""));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "package/signed"), true));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "package/classify_as_game"), true));
@@ -2122,7 +2122,7 @@ bool EditorExportPlatformAndroid::has_valid_export_configuration(const Ref<Edito
 bool EditorExportPlatformAndroid::has_valid_project_configuration(const Ref<EditorExportPreset> &p_preset, String &r_error) const {
 	String err;
 	bool valid = true;
-	const bool custom_build_enabled = p_preset->get("custom_build/use_custom_build");
+	const bool custom_build_enabled = p_preset->get("custom_template/use_custom_build");
 
 	// Validate the project configuration.
 	bool apk_expansion = p_preset->get("apk_expansion/enable");
