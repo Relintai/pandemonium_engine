@@ -53,7 +53,7 @@ import org.pandemoniumengine.pandemonium.Pandemonium;
 public final class PandemoniumPluginRegistry {
 	private static final String TAG = PandemoniumPluginRegistry.class.getSimpleName();
 
-	private static final String PANDEMONIUM_PLUGIN_V1_NAME_PREFIX = "net.relintai.pandemonium.plugin.v1.";
+	private static final String PANDEMONIUM_PLUGIN_V1_NAME_PREFIX = "org.pandemoniumengine.pandemonium.plugin.v1.";
 
 	private static PandemoniumPluginRegistry instance;
 	private final ConcurrentHashMap<String, PandemoniumPlugin> registry;

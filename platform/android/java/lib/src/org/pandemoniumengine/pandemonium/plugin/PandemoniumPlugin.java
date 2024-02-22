@@ -65,7 +65,7 @@ import org.pandemoniumengine.pandemonium.Pandemonium;
  * A stable version is available for each release.
  * <p>
  * - The library must include a <meta-data> tag in its manifest file setup as follow:
- * <meta-data android:name="net.relintai.pandemonium.plugin.v1.[PluginName]" android:value="[plugin.init.ClassFullName]" />
+ * <meta-data android:name="org.pandemoniumengine.pandemonium.plugin.v1.[PluginName]" android:value="[plugin.init.ClassFullName]" />
  * Where:
  * - 'PluginName' is the name of the plugin.
  * - 'plugin.init.ClassFullName' is the full name (package + class name) of the plugin class

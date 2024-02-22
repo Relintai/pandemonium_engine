@@ -8,7 +8,7 @@
 
         <!-- Records the version of the Pandemonium library -->
         <meta-data
-            android:name="net.relintai.pandemonium.library.version"
+            android:name="org.pandemoniumengine.pandemonium.library.version"
             android:value="${pandemoniumLibraryVersion}" />
 
         <service android:name=".PandemoniumDownloaderService" />
