@@ -185,5 +185,5 @@ ObjCBlockIndentWidth: 4
 ### Java specific config ###
 Language:        Java
 # BreakAfterJavaFieldAnnotations: false
-JavaImportGroups: ['net.relintai.pandemonium', 'android', 'androidx', 'com.android', 'com.google', 'java', 'javax']
+JavaImportGroups: ['org.pandemoniumengine.pandemonium', 'android', 'androidx', 'com.android', 'com.google', 'java', 'javax']
 ...
