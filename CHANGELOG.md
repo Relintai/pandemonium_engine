@@ -6,6 +6,31 @@ All notable changes to this project will be documented in this file.
 
 Nothing Yet.
 
+## [4.2.1]
+
+### Added
+
+-Added get_global_class_name method to Script. Now GDScriptParser uses this first to determine global class names, instead of parsing the script file again.
+-Added a way for platforms to define a custom resource pack location.
+-Added more defines for platform specific configs.
+-Added S3TC_NOT_SUPPORTED define to be used by platforms externally.
+-Added optional GLES2_LOAD_EXT_NO_DLCFN_AVAILABLE define for the rasterizer storage.
+
+### Changed
+
+-Turn custom module paths relative to the engine's directory when they reside inside the engine's folder.
+
+### Fixed
+
+-Found and updated some remaining old Java package paths.
+-Fix checking the wrong property in the Android's export plugin.
+-Moved dlfcn.h include in RasterizerStorageGLES2 to it's proper place according to the comment above it.
+-Fix custom module paths for the editor builds.
+-Small tweaks to HTTPServerSimple, mostly related to ssl handling.
+-Fix FileCache for files in .pck-s.
+-Fix DirAccess::get_filesystem_abspath_for() for .pck files.
+-Fix build on MSVC.
+
 ## [4.2.0]
 
 ### Added
