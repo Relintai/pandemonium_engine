@@ -291,7 +291,7 @@ void HTMLTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_template_overrides"), &HTMLTemplate::get_template_overrides);
 	ClassDB::bind_method(D_METHOD("set_template_overrides", "dict"), &HTMLTemplate::set_template_overrides);
-	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "template_overrides"), "set_template_overrides", "get_template_overrides");
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "template_overrides", PROPERTY_HINT_NONE, "", 0), "set_template_overrides", "get_template_overrides");
 
 	// Defaults
 	ClassDB::bind_method(D_METHOD("has_template_default", "name"), &HTMLTemplate::has_template_default);
@@ -303,7 +303,7 @@ void HTMLTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_template_defaults"), &HTMLTemplate::get_template_defaults);
 	ClassDB::bind_method(D_METHOD("set_template_defaults", "dict"), &HTMLTemplate::set_template_defaults);
-	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "template_defaults"), "set_template_defaults", "get_template_defaults");
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "template_defaults", PROPERTY_HINT_NONE, "", 0), "set_template_defaults", "get_template_defaults");
 
 	// Use
 
