@@ -2209,6 +2209,33 @@ Variant Expression::execute(Array p_inputs, Object *p_base, bool p_show_error) {
 	return output;
 }
 
+Array Expression::execute_arr(Array p_inputs, Object *p_base, bool p_show_error) {
+	Array ret;
+	ret.resize(3);
+
+	ERR_FAIL_COND_V_MSG(error_set, ret, "There was previously a parse error: " + error_str + ".");
+
+	execution_error = false;
+	Variant output;
+	String error_txt;
+
+	bool err = _execute(p_inputs, p_base, root, output, error_txt);
+
+	ret[0] = output;
+
+	if (err) {
+		ret[1] = true;
+		ret[2] = error_txt;
+
+		ERR_FAIL_COND_V_MSG(p_show_error, ret, error_str);
+	} else {
+		ret[1] = false;
+		ret[2] = "";
+	}
+
+	return ret;
+}
+
 bool Expression::has_execute_failed() const {
 	return execution_error;
 }
@@ -2220,6 +2247,7 @@ String Expression::get_error_text() const {
 void Expression::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("parse", "expression", "input_names"), &Expression::parse, DEFVAL(Vector<String>()));
 	ClassDB::bind_method(D_METHOD("execute", "inputs", "base_instance", "show_error"), &Expression::execute, DEFVAL(Array()), DEFVAL(Variant()), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("execute_arr", "inputs", "base_instance", "show_error"), &Expression::execute_arr, DEFVAL(Array()), DEFVAL(Variant()), DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("has_execute_failed"), &Expression::has_execute_failed);
 	ClassDB::bind_method(D_METHOD("get_error_text"), &Expression::get_error_text);
 }

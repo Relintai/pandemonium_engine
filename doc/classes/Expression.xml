@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Expression" inherits="Reference" version="4.2">
+<class name="Expression" inherits="Reference" version="4.3">
 	<brief_description>
 		A class that stores an expression you can execute.
 	</brief_description>
@@ -34,6 +34,15 @@
 			<description>
 				Executes the expression that was previously parsed by [method parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [method has_execute_failed].
 				If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
+			</description>
+		</method>
+		<method name="execute_arr">
+			<return type="Array" />
+			<argument index="0" name="inputs" type="Array" default="[  ]" />
+			<argument index="1" name="base_instance" type="Object" default="null" />
+			<argument index="2" name="show_error" type="bool" default="true" />
+			<description>
+				Same as [method execute] except it does not set member variables. ret[0] is the result, ret[1] is a bool telling you whether execute was successful or not, ret[2] is a String contanining the error string if there was any.
 			</description>
 		</method>
 		<method name="get_error_text" qualifiers="const">
