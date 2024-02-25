@@ -63,7 +63,7 @@ enum PropertyHint {
 	PROPERTY_HINT_ENUM, ///< hint_text= "val1,val2,val3,etc"
 	PROPERTY_HINT_EXP_EASING, /// exponential easing function (Math::ease) use "attenuation" hint string to revert (flip h), "full" to also include in/out. (ie: "attenuation,inout")
 	PROPERTY_HINT_LENGTH, ///< hint_text= "length" (as integer)
-	PROPERTY_HINT_BUTTON, // Use a button in the inspector for this property. The property's type has to be Variant::NIL. hint_text="call_func:name/theme_type" -> calls call_func on press, optional: ":name/theme_type" -> get_theme_icon("name", "theme_type")
+	PROPERTY_HINT_BUTTON, // Use a button in the inspector for this property. The property's type has to be Variant::NIL. hint_text="call_func:name/theme_type" -> calls call_func(const StringName &p_property) on press, optional: ":name/theme_type" -> get_theme_icon("name", "theme_type")
 	PROPERTY_HINT_KEY_ACCEL, ///< hint_text= "length" (as integer)
 	PROPERTY_HINT_FLAGS, ///< hint_text= "flag1,flag2,etc" (as bit flags)
 	PROPERTY_HINT_LAYERS_2D_RENDER,

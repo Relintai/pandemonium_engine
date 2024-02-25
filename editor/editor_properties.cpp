@@ -688,7 +688,7 @@ void EditorPropertyButton::_button_pressed() {
 	//get_edited_object()->get(get_edited_property());
 
 	if (_method_name != "") {
-		get_edited_object()->call(_method_name);
+		get_edited_object()->call(_method_name, get_edited_property());
 	}
 }
 
