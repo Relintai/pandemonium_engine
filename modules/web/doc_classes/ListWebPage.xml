@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ListWebPage" inherits="WebNode" version="4.2">
+<class name="ListWebPage" inherits="WebNode" version="4.3">
 	<brief_description>
 		The ListPage WebNode can be pointed to a folder using it's folder variable, and then it will load all files in that folder, process them as markdown in alphabetical order, and put them onto a page, one after the other. It also supports pagination.
 	</brief_description>
@@ -49,7 +49,7 @@
 		<member name="max_visible_navigation_links" type="int" setter="set_max_visible_navigation_links" getter="get_max_visible_navigation_links" default="6">
 			This many pagination links will be visible max.
 		</member>
-		<member name="paginate" type="bool" setter="set_paginate" getter="get_paginate" default="false">
+		<member name="paginate" type="bool" setter="set_paginate" getter="get_paginate" default="true">
 			Whether to allow pagination or not.
 		</member>
 		<member name="placeholder_text" type="String" setter="set_placeholder_text" getter="get_placeholder_text" default="&quot;No content yet!&quot;">

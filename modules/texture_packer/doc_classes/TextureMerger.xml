@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TextureMerger" inherits="Node" version="4.2">
+<class name="TextureMerger" inherits="Node" version="4.3">
 	<brief_description>
 		A node, that can merge textures.
 	</brief_description>
