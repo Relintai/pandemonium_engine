@@ -279,11 +279,13 @@ void HTMLTemplate::_on_editor_template_button_pressed(const StringName &p_proper
 		if (scount == 2) {
 			// This way add_key can also be used as a key
 			if (key == "add_key_button") {
-				_template_overrides[_editor_new_template_override_key] = "";
+				if (!_editor_new_template_override_key.empty()) {
+					_template_overrides[_editor_new_template_override_key] = "";
 
-				_editor_new_template_override_key = "";
+					_editor_new_template_override_key = "";
 
-				property_list_changed_notify();
+					property_list_changed_notify();
+				}
 			}
 
 			return;
@@ -296,7 +298,7 @@ void HTMLTemplate::_on_editor_template_button_pressed(const StringName &p_proper
 			property_list_changed_notify();
 		}
 
-		return ;
+		return;
 	}
 
 	if (name.begins_with("template_defaults/")) {
@@ -307,11 +309,13 @@ void HTMLTemplate::_on_editor_template_button_pressed(const StringName &p_proper
 		if (scount == 2) {
 			// This way add_key can also be used as a key
 			if (key == "add_key_button") {
-				_template_defaults[_editor_new_template_default_key] = "";
+				if (!_editor_new_template_default_key.empty()) {
+					_template_defaults[_editor_new_template_default_key] = "";
 
-				_editor_new_template_default_key = "";
+					_editor_new_template_default_key = "";
 
-				property_list_changed_notify();
+					property_list_changed_notify();
+				}
 
 				return;
 			}
