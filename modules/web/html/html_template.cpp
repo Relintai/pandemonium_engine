@@ -277,7 +277,7 @@ void HTMLTemplate::_on_editor_template_button_pressed(const StringName &p_proper
 		String key = name.get_slicec('/', 1);
 
 		if (scount == 2) {
-			// This way add_key can also be used ay a key
+			// This way add_key can also be used as a key
 			if (key == "add_key_button") {
 				_template_overrides[_editor_new_template_override_key] = "";
 
@@ -305,7 +305,7 @@ void HTMLTemplate::_on_editor_template_button_pressed(const StringName &p_proper
 		String key = name.get_slicec('/', 1);
 
 		if (scount == 2) {
-			// This way add_key can also be used ay a key
+			// This way add_key can also be used as a key
 			if (key == "add_key_button") {
 				_template_defaults[_editor_new_template_default_key] = "";
 
@@ -337,7 +337,7 @@ bool HTMLTemplate::_set(const StringName &p_name, const Variant &p_value) {
 		String key = name.get_slicec('/', 1);
 
 		if (scount == 2) {
-			// This way add_key can also be used ay a key
+			// This way add_key can also be used as a key
 			if (key == "add_key") {
 				_editor_new_template_override_key = p_value;
 				return true;
@@ -361,7 +361,7 @@ bool HTMLTemplate::_set(const StringName &p_name, const Variant &p_value) {
 		String key = name.get_slicec('/', 1);
 
 		if (scount == 2) {
-			// This way add_key can also be used ay a key
+			// This way add_key can also be used as a key
 			if (key == "add_key") {
 				_editor_new_template_default_key = p_value;
 				return true;
@@ -391,7 +391,7 @@ bool HTMLTemplate::_get(const StringName &p_name, Variant &r_ret) const {
 		String key = name.get_slicec('/', 1);
 
 		if (scount == 2) {
-			// This way add_key can also be used ay a key
+			// This way add_key can also be used as a key
 			if (key == "add_key") {
 				r_ret = _editor_new_template_override_key;
 				return true;
@@ -418,7 +418,7 @@ bool HTMLTemplate::_get(const StringName &p_name, Variant &r_ret) const {
 		String key = name.get_slicec('/', 1);
 
 		if (scount == 2) {
-			// This way add_key can also be used ay a key
+			// This way add_key can also be used as a key
 			if (key == "add_key") {
 				r_ret = _editor_new_template_default_key;
 				return true;
