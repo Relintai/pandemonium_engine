@@ -22,10 +22,10 @@
 			Client id that will be sent to the server. Not an account, it's an arbitrary value. Should not be empty.
 		</member>
 		<member name="email_default_sender_email" type="String" setter="set_email_default_sender_email" getter="get_email_default_sender_email" default="&quot;&quot;">
-			This is the address from where the email will come if you don't override it using [class EMail].
+			This is the address from where the email will come if you don't override it using [EMail].
 		</member>
 		<member name="email_default_sender_name" type="String" setter="set_email_default_sender_name" getter="get_email_default_sender_name" default="&quot;&quot;">
-			This is the dislpayed name of the address from where the email will come if you don't override it using [class EMail].
+			This is the dislpayed name of the address from where the email will come if you don't override it using [EMail].
 		</member>
 		<member name="host" type="String" setter="set_host" getter="get_host" default="&quot;&quot;">
 			The smtp server's host.
