@@ -32,17 +32,43 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/hash_map.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/variant/dictionary.h"
+
 #include "core/object/resource.h"
 
 class HTMLTemplateData : public Resource {
 	GDCLASS(HTMLTemplateData, Resource);
 
 public:
+	bool has_template(const StringName &p_name) const;
+	String get_template(const StringName &p_name) const;
+	void set_template(const StringName &p_name, const String &p_value);
+	void remove_template(const StringName &p_name);
+
+	Dictionary get_templates() const;
+	void set_templates(const Dictionary &p_dict);
+
+	HashMap<StringName, String> get_templates_map() const;
+	void set_templates_map(const HashMap<StringName, String> &p_map);
+
+	void clear();
+	
+	Error load_from_file(const String &p_file);
+	Error save_to_file(const String &p_file) const;
+	
+	void load_from_string(const String &p_data);
+	String save_as_string() const;
+
 	HTMLTemplateData();
 	~HTMLTemplateData();
 
 protected:
 	static void _bind_methods();
+
+	HashMap<StringName, String> _templates;
 };
 
 #endif
