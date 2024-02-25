@@ -74,9 +74,9 @@ void ResourceImporterHTMLTemplateData::get_import_options(List<ImportOption> *r_
 Error ResourceImporterHTMLTemplateData::import(const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
 	Ref<HTMLTemplateData> template_data;
 	template_data.instance();
-	
+
 	Error err = template_data->load_from_file(p_source_file);
-	
+
 	if (err != OK) {
 		return err;
 	}
@@ -94,10 +94,16 @@ ResourceImporterHTMLTemplateData::~ResourceImporterHTMLTemplateData() {
 
 void HTMLTemplateDataEditorPlugin::edit(Object *p_object) {
 	Ref<HTMLTemplateData> f = Ref<HTMLTemplateData>(Object::cast_to<HTMLTemplateData>(p_object));
-	
+
 	if (f.is_valid()) {
+		String path = f->get_path();
+
+		if (path.empty()) {
+			return;
+		}
+
 		EditorPlugin *ep = EditorNode::get_singleton()->get_editor_by_name("Text");
-		
+
 		if (ep) {
 			ep->call("open_file", f->get_path());
 		}
@@ -105,7 +111,15 @@ void HTMLTemplateDataEditorPlugin::edit(Object *p_object) {
 }
 
 bool HTMLTemplateDataEditorPlugin::handles(Object *p_object) const {
-	return p_object->is_class("HTMLTemplateData");
+	Ref<HTMLTemplateData> f = Ref<HTMLTemplateData>(Object::cast_to<HTMLTemplateData>(p_object));
+
+	if (f.is_valid()) {
+		String path = f->get_path();
+
+		return !path.empty();
+	}
+
+	return false;
 }
 
 HTMLTemplateDataEditorPlugin::HTMLTemplateDataEditorPlugin(EditorNode *p_node) {
