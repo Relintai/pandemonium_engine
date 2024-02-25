@@ -146,22 +146,19 @@ void UserManagerStatic::set_create_user_password_bind(const String &val) {
 	_create_user_password = val;
 }
 
-bool UserManagerStatic::get_create_user_bind() {
-	return false;
-}
-void UserManagerStatic::set_create_user_bind(const bool val) {
-	if (val) {
-		Ref<User> u = create_user();
+void UserManagerStatic::_editor_create_user_button(const StringName &p_property) {
+	Ref<User> u = create_user();
 
-		u->set_user_name(_create_user_name);
-		u->set_email(_create_user_email);
-		u->create_password(_create_user_password);
-		u->save();
+	u->set_user_name(_create_user_name);
+	u->set_email(_create_user_email);
+	u->create_password(_create_user_password);
+	u->save();
 
-		_create_user_password = "";
-		_create_user_email = "";
-		_create_user_name = "";
-	}
+	_create_user_password = "";
+	_create_user_email = "";
+	_create_user_name = "";
+	
+	property_list_changed_notify();
 }
 
 UserManagerStatic::UserManagerStatic() {
@@ -187,7 +184,6 @@ void UserManagerStatic::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_create_user_password", "val"), &UserManagerStatic::set_create_user_password_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "create_user_password"), "set_create_user_password", "get_create_user_password");
 
-	ClassDB::bind_method(D_METHOD("get_create_user"), &UserManagerStatic::get_create_user_bind);
-	ClassDB::bind_method(D_METHOD("set_create_user", "val"), &UserManagerStatic::set_create_user_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "create_user"), "set_create_user", "get_create_user");
+	ClassDB::bind_method(D_METHOD("_editor_create_user_button"), &UserManagerStatic::_editor_create_user_button);
+	ADD_PROPERTY(PropertyInfo(Variant::NIL, "create_user", PROPERTY_HINT_BUTTON, "_editor_create_user_button:Add/EditorIcons"), "", "");
 }

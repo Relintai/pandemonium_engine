@@ -70,13 +70,12 @@ public:
 	String get_create_user_password_bind();
 	void set_create_user_password_bind(const String &val);
 
-	bool get_create_user_bind();
-	void set_create_user_bind(const bool val);
-
 	UserManagerStatic();
 	~UserManagerStatic();
 
 protected:
+	void _editor_create_user_button(const StringName &p_property);
+
 	static void _bind_methods();
 
 	Vector<Ref<User>> _users;
