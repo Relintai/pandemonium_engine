@@ -61,6 +61,8 @@ sources = [
 ]
 
 if env["tools"]:
+    sources.append("html/editor/resource_importer_html_template_data.cpp")
+
     sources.append("editor/web_node_editor.cpp")
     sources.append("editor/web_node_editor_plugin.cpp")
     sources.append("editor/web_node_editor_web_server.cpp")
