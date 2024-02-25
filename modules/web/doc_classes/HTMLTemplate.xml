@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTMLTemplate" inherits="Resource" version="4.3">
 	<brief_description>
+		A class that can be used to easily script and render HTML with.
 	</brief_description>
 	<description>
+		A class that can be used to easily render HTML with. An instance of this class could be a traditional web application's View.
+		Some traditional web applications use a templating language to render their final output using a set of variables. Some examples: Blade, Handlebars, Razor, etc. Some of these have features like for loops, ifs, they can even support method calls. Thic class implements similar functinality, albeit in a different manner.
+		The render control logic should be implemented by overriding [method _render], variable substitotions can be done using the available helper methods.
+		Note: For a different approach to generating HTML, you can also take a look at [HTMLBuilder].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,27 +17,32 @@
 			<argument index="0" name="request" type="WebServerRequest" />
 			<argument index="1" name="data" type="Dictionary" />
 			<description>
+				Override this method to implement your own rendering for any given HTMLTemplate.
 			</description>
 		</method>
 		<method name="add_template">
 			<return type="void" />
 			<argument index="0" name="template" type="HTMLTemplateData" />
 			<description>
+				Adds a [HTMLTemplateData] template.
 			</description>
 		</method>
 		<method name="clear_template_defaults">
 			<return type="void" />
 			<description>
+				Clears template defaults.
 			</description>
 		</method>
 		<method name="clear_template_overrides">
 			<return type="void" />
 			<description>
+				Clears template overrides.
 			</description>
 		</method>
 		<method name="clear_templates">
 			<return type="void" />
 			<description>
+				Clears templates.
 			</description>
 		</method>
 		<method name="get_and_render_template">
@@ -41,65 +51,76 @@
 			<argument index="1" name="request" type="WebServerRequest" />
 			<argument index="2" name="data" type="Dictionary" />
 			<description>
+				Gets a template string using [method get_template] and does variable substitutions on it.
 			</description>
 		</method>
 		<method name="get_template">
 			<return type="HTMLTemplateData" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Gets a template.
 			</description>
 		</method>
 		<method name="get_template_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the template count.
 			</description>
 		</method>
 		<method name="get_template_default" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns a default template value previously set.
 			</description>
 		</method>
 		<method name="get_template_override" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns an override template value previously set.
 			</description>
 		</method>
 		<method name="get_template_text">
 			<return type="String" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns a template text identified by name. This method first looks into overrides, then it tries to get it from [member templates] (in order), and then it tries default values.
 			</description>
 		</method>
 		<method name="has_template_default" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns whether a template default denoted by name is set.
 			</description>
 		</method>
 		<method name="has_template_override" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns whether a template override denoted by name is set.
 			</description>
 		</method>
 		<method name="remove_template">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes a template.
 			</description>
 		</method>
 		<method name="remove_template_default">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Removes a template default.
 			</description>
 		</method>
 		<method name="remove_template_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Removes a template override.
 			</description>
 		</method>
 		<method name="render">
@@ -107,6 +128,7 @@
 			<argument index="0" name="request" type="WebServerRequest" />
 			<argument index="1" name="data" type="Dictionary" />
 			<description>
+				Use this method to render the final output. This calls [method _render].
 			</description>
 		</method>
 		<method name="render_template">
@@ -115,6 +137,7 @@
 			<argument index="1" name="request" type="WebServerRequest" />
 			<argument index="2" name="data" type="Dictionary" />
 			<description>
+				Helper method that does variable substitutions on a given text.
 			</description>
 		</method>
 		<method name="set_template_default">
@@ -122,6 +145,7 @@
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="value" type="String" />
 			<description>
+				Sets a template default value.
 			</description>
 		</method>
 		<method name="set_template_override">
@@ -129,6 +153,7 @@
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="value" type="String" />
 			<description>
+				Sets a template override value.
 			</description>
 		</method>
 		<method name="substitute_data_variables">
@@ -136,6 +161,7 @@
 			<argument index="0" name="text" type="String" />
 			<argument index="1" name="data" type="Dictionary" />
 			<description>
+				Helper method that does data variable substitutions on a given text.
 			</description>
 		</method>
 		<method name="substitute_request_variables">
@@ -143,15 +169,19 @@
 			<argument index="0" name="text" type="String" />
 			<argument index="1" name="request" type="WebServerRequest" />
 			<description>
+				Helper method that does request variable substitutions on a given text.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="template_defaults" type="Dictionary" setter="set_template_defaults" getter="get_template_defaults" default="{}">
+			Returns all template default values.
 		</member>
 		<member name="template_overrides" type="Dictionary" setter="set_template_overrides" getter="get_template_overrides" default="{}">
+			Returns all template override values.
 		</member>
 		<member name="templates" type="Array" setter="set_templates" getter="get_templates" default="[  ]">
+			Returns all templates.
 		</member>
 	</members>
 	<constants>

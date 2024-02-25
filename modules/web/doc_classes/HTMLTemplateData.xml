@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTMLTemplateData" inherits="Resource" version="4.3">
 	<brief_description>
+		Stores data for [HTMLTemplate]s.
 	</brief_description>
 	<description>
+		Stores HTML template data for [HTMLTemplate]s.
+		It uses a cusom format, which should make it easy to edit. Create files using the [code].phtpl[/code] (Pandemonium HTML Template) file extenstion, the editor will import those files as this class. Double clicking on them will directly open them in the Text Editor (if available).
+		The [code].phtpl[/code] file format looks a bit similar to config files, except it's a lot simpler. For example:
+		[code]
+		
+		[ Head ]
+		
+		... Head html here
+		
+		[ Content ]
+		
+		... Content html here
+		
+		[ Shell ]
+		
+		... Shell html here
+		
+		[/code]
+		This file will be parsed as 3 key-value template strings. A key named [code]Head[/code] with the content [code]... Head html here[/code], a key named [code]Content[/code] with the content [code]... Content html here[/code] and a key named [code]Shell[/code] with the content [code]... Shell html here[/code].
+		Note: Make sure there is no whitespace before and after the square brackets of the section keys. Also note that white space will be stripped on both sides of the keys before storing them.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,47 +31,55 @@
 		<method name="clear">
 			<return type="void" />
 			<description>
+				Clears all data.
 			</description>
 		</method>
 		<method name="get_template" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Gets the template string for the given name and returns it, or it returns an empty String if not found.
 			</description>
 		</method>
 		<method name="has_template" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Checks whether the template string for the given name is available.
 			</description>
 		</method>
 		<method name="load_from_file">
 			<return type="int" enum="Error" />
 			<argument index="0" name="file" type="String" />
 			<description>
+				Loads data from a file using the [code].phtpl[/code] file format.
 			</description>
 		</method>
 		<method name="load_from_string">
 			<return type="void" />
 			<argument index="0" name="data" type="String" />
 			<description>
+				Loads data from a string using the [code].phtpl[/code] file format.
 			</description>
 		</method>
 		<method name="remove_template">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Removes a set key value pair.
 			</description>
 		</method>
 		<method name="save_as_string" qualifiers="const">
 			<return type="String" />
 			<description>
+				Saves data to a string using the [code].phtpl[/code] file format.
 			</description>
 		</method>
 		<method name="save_to_file" qualifiers="const">
 			<return type="int" enum="Error" />
 			<argument index="0" name="file" type="String" />
 			<description>
+				Saves data to a file using the [code].phtpl[/code] file format.
 			</description>
 		</method>
 		<method name="set_template">
@@ -58,11 +87,13 @@
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="value" type="String" />
 			<description>
+				Sets a template key value pair.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="templates" type="Dictionary" setter="set_templates" getter="get_templates" default="{}">
+			Returns att stored templates as a Dictionary.
 		</member>
 	</members>
 	<constants>
