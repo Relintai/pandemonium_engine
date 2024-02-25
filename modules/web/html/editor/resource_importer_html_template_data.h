@@ -34,6 +34,11 @@
 
 #include "core/io/resource_importer.h"
 
+#include "editor/editor_plugin.h"
+#include "modules/modules_enabled.gen.h"
+
+class EditorNode;
+
 class ResourceImporterHTMLTemplateData : public ResourceImporter {
 	GDCLASS(ResourceImporterHTMLTemplateData, ResourceImporter);
 
@@ -54,4 +59,21 @@ public:
 	ResourceImporterHTMLTemplateData();
 	~ResourceImporterHTMLTemplateData();
 };
+
+#ifdef MODULE_TEXT_EDITOR_ENABLED
+
+class HTMLTemplateDataEditorPlugin : public EditorPlugin {
+	GDCLASS(HTMLTemplateDataEditorPlugin, EditorPlugin);
+
+public:
+	virtual void edit(Object *p_object);
+	virtual bool handles(Object *p_object) const;
+	
+	HTMLTemplateDataEditorPlugin(EditorNode *p_node);
+
+	virtual String get_name() const { return "HTMLTemplateData"; }
+};
+
+#endif
+
 #endif // RESOURCE_IMPORTER_HTML_TEMPLATE_DATA_H

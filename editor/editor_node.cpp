@@ -3244,6 +3244,22 @@ void EditorNode::editor_set_visible_by_name(const String &p_name, const bool p_v
 	ERR_FAIL_MSG("The editor name '" + p_name + "' was not found.");
 }
 
+EditorPlugin *EditorNode::get_editor_by_name(const String &p_name) {
+	ERR_FAIL_COND_V(p_name == "", NULL);
+
+	String meta_name = "text";
+
+	for (int i = 0; i < main_editor_buttons.size(); i++) {
+		if (main_editor_buttons[i]->get_meta(meta_name) == p_name) {
+			EditorPlugin *editor = editor_table[i];
+			ERR_FAIL_COND_V(!editor, NULL);
+			return editor;
+		}
+	}
+
+	ERR_FAIL_V_MSG(NULL, "The editor name '" + p_name + "' was not found.");
+}
+
 void EditorNode::add_editor_plugin(EditorPlugin *p_editor, bool p_config_changed) {
 	if (p_editor->has_main_screen()) {
 		ToolButton *tb = memnew(ToolButton);

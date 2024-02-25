@@ -35,6 +35,10 @@
 
 #include "../html_template_data.h"
 
+#ifdef MODULE_TEXT_EDITOR_ENABLED
+#include "editor/editor_node.h"
+#endif
+
 String ResourceImporterHTMLTemplateData::get_importer_name() const {
 	return "html_template_data";
 }
@@ -85,3 +89,26 @@ ResourceImporterHTMLTemplateData::ResourceImporterHTMLTemplateData() {
 
 ResourceImporterHTMLTemplateData::~ResourceImporterHTMLTemplateData() {
 }
+
+#ifdef MODULE_TEXT_EDITOR_ENABLED
+
+void HTMLTemplateDataEditorPlugin::edit(Object *p_object) {
+	Ref<HTMLTemplateData> f = Ref<HTMLTemplateData>(Object::cast_to<HTMLTemplateData>(p_object));
+	
+	if (f.is_valid()) {
+		EditorPlugin *ep = EditorNode::get_singleton()->get_editor_by_name("Text");
+		
+		if (ep) {
+			ep->call("open_file", f->get_path());
+		}
+	}
+}
+
+bool HTMLTemplateDataEditorPlugin::handles(Object *p_object) const {
+	return p_object->is_class("HTMLTemplateData");
+}
+
+HTMLTemplateDataEditorPlugin::HTMLTemplateDataEditorPlugin(EditorNode *p_node) {
+}
+
+#endif

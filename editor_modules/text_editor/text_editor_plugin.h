@@ -49,6 +49,8 @@ public:
 	String get_name() const;
 	void edit(Object *p_object);
 	bool handles(Object *p_object) const;
+	
+	void open_file(const String &p_path);
 
 	TextEditorEditorPlugin(EditorNode *p_node);
 	~TextEditorEditorPlugin();

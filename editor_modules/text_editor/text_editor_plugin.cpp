@@ -65,6 +65,11 @@ bool TextEditorEditorPlugin::handles(Object *p_object) const {
 	return p_object->is_class("TextEditorFile");
 }
 
+void TextEditorEditorPlugin::open_file(const String &p_path) {
+	window->open_file(p_path);
+	editor->select_editor_by_name(get_name());
+}
+
 TextEditorEditorPlugin::TextEditorEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
@@ -90,5 +95,7 @@ void TextEditorEditorPlugin::_on_filesystem_dock_entry_pressed(int id) {
 }
 
 void TextEditorEditorPlugin::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("open_file", "file"), &TextEditorEditorPlugin::open_file);
+
 	ClassDB::bind_method(D_METHOD("_on_filesystem_dock_entry_pressed"), &TextEditorEditorPlugin::_on_filesystem_dock_entry_pressed);
 }

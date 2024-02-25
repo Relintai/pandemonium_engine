@@ -165,6 +165,10 @@ void register_web_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
 		EditorPlugins::add_by_type<WebNodeEditorPlugin>();
 
+#ifdef MODULE_TEXT_EDITOR_ENABLED
+		EditorPlugins::add_by_type<HTMLTemplateDataEditorPlugin>();
+#endif
+
 		Ref<ResourceImporterHTMLTemplateData> html_template_data_importer;
 		html_template_data_importer.instance();
 		ResourceFormatImporter::get_singleton()->add_importer(html_template_data_importer);
