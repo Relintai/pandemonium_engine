@@ -29,6 +29,8 @@ sources = [
     "html/html_parser.cpp",
     "html/bbcode_parser.cpp",
     "html/form_validator.cpp",
+    "html/html_template.cpp",
+    "html/html_template_data.cpp",
 
     "html/libs/hoedown/autolink.c",
     "html/libs/hoedown/buffer.c",

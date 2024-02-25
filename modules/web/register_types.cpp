@@ -41,6 +41,8 @@
 #include "html/html_parser.h"
 #include "html/markdown_renderer.h"
 #include "html/paginator.h"
+#include "html/html_template.h"
+#include "html/html_template_data.h"
 
 #include "http/csrf_token.h"
 #include "http/http_server_enums.h"
@@ -85,6 +87,9 @@ void register_web_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 		ClassDB::register_class<_HTMLBuilder>();
 		ClassDB::register_class<_HTMLTag>();
+		
+		ClassDB::register_class<HTMLTemplate>();
+		ClassDB::register_class<HTMLTemplateData>();
 
 		ClassDB::register_class<HTMLPaginator>();
 
