@@ -588,9 +588,19 @@ TextFileEditor::TextFileEditor() {
 	EXTENSIONS.push_back("*.csv ; Comma-separated values");
 	EXTENSIONS.push_back("*.cfg ; Configuration File");
 	EXTENSIONS.push_back("*.ini ; Initialization File (same as .cfg Configuration File)");
-	EXTENSIONS.push_back("*.csv ; Comma-separated values File");
 	EXTENSIONS.push_back("*.res ; Resource File");
-
+	EXTENSIONS.push_back("*.yml ; YAML File");
+	EXTENSIONS.push_back("*.yaml ; YAML File");
+	EXTENSIONS.push_back("*.toml ; TOML File");
+	EXTENSIONS.push_back("*.htm ; HTML File");
+	EXTENSIONS.push_back("*.js ; Javascript File");
+	EXTENSIONS.push_back("*.css ; Cascading Style Sheets");
+	EXTENSIONS.push_back("*.phtpl ; Pandemonium HTML Template Data File");
+	EXTENSIONS.push_back("*.sh ; Bash Script");
+	EXTENSIONS.push_back("*.bat ; Windows batch File");
+	EXTENSIONS.push_back("*.ps1 ; Powershell File");
+	EXTENSIONS.push_back("*.pxml ; Non-translation xml.");
+	
 	current_file_index = -1;
 	save_as = false;
 	current_editor = NULL;
