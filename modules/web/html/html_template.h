@@ -103,12 +103,21 @@ public:
 	~HTMLTemplate();
 
 protected:
+	void _on_editor_template_button_pressed(const StringName &p_property);
+
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
+	
 	static void _bind_methods();
 
 	Vector<Ref<HTMLTemplateData>> _templates;
 	
 	HashMap<StringName, String> _template_overrides;
 	HashMap<StringName, String> _template_defaults;
+	
+	String _editor_new_template_override_key;
+	String _editor_new_template_default_key;
 };
 
 #endif

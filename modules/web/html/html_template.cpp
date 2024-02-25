@@ -31,8 +31,8 @@
 
 #include "html_template.h"
 
-#include "html_template_data.h"
 #include "../http/web_server_request.h"
+#include "html_template_data.h"
 
 // Templates
 
@@ -268,7 +268,201 @@ HTMLTemplate::HTMLTemplate() {
 HTMLTemplate::~HTMLTemplate() {
 }
 
+void HTMLTemplate::_on_editor_template_button_pressed(const StringName &p_property) {
+	String name = p_property;
+
+	if (name.begins_with("template_override/")) {
+		int scount = name.get_slice_count("/");
+
+		String key = name.get_slicec('/', 1);
+
+		if (scount == 2) {
+			// This way add_key can also be used ay a key
+			if (key == "add_key_button") {
+				_template_overrides[_editor_new_template_override_key] = "";
+
+				_editor_new_template_override_key = "";
+
+				property_list_changed_notify();
+			}
+
+			return;
+		}
+
+		String property = name.get_slicec('/', 2);
+
+		if (property == "delete_key_button") {
+			_template_overrides.erase(key);
+			property_list_changed_notify();
+		}
+
+		return ;
+	}
+
+	if (name.begins_with("template_defaults/")) {
+		int scount = name.get_slice_count("/");
+
+		String key = name.get_slicec('/', 1);
+
+		if (scount == 2) {
+			// This way add_key can also be used ay a key
+			if (key == "add_key_button") {
+				_template_defaults[_editor_new_template_default_key] = "";
+
+				_editor_new_template_default_key = "";
+
+				property_list_changed_notify();
+
+				return;
+			}
+		}
+
+		String property = name.get_slicec('/', 2);
+
+		if (property == "delete_key_button") {
+			_template_defaults.erase(key);
+			property_list_changed_notify();
+		}
+
+		return;
+	}
+}
+
+bool HTMLTemplate::_set(const StringName &p_name, const Variant &p_value) {
+	String name = p_name;
+
+	if (name.begins_with("template_override/")) {
+		int scount = name.get_slice_count("/");
+
+		String key = name.get_slicec('/', 1);
+
+		if (scount == 2) {
+			// This way add_key can also be used ay a key
+			if (key == "add_key") {
+				_editor_new_template_override_key = p_value;
+				return true;
+			} else if (key == "add_key_button") {
+				return true;
+			}
+		}
+
+		String property = name.get_slicec('/', 2);
+
+		if (property == "value") {
+			_template_overrides[key] = String(p_value);
+		}
+
+		return true;
+	}
+
+	if (name.begins_with("template_defaults/")) {
+		int scount = name.get_slice_count("/");
+
+		String key = name.get_slicec('/', 1);
+
+		if (scount == 2) {
+			// This way add_key can also be used ay a key
+			if (key == "add_key") {
+				_editor_new_template_default_key = p_value;
+				return true;
+			} else if (key == "add_key_button") {
+				return true;
+			}
+		}
+
+		String property = name.get_slicec('/', 2);
+
+		if (property == "value") {
+			_template_defaults[key] = String(p_value);
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool HTMLTemplate::_get(const StringName &p_name, Variant &r_ret) const {
+	String name = p_name;
+
+	if (name.begins_with("template_override/")) {
+		int scount = name.get_slice_count("/");
+
+		String key = name.get_slicec('/', 1);
+
+		if (scount == 2) {
+			// This way add_key can also be used ay a key
+			if (key == "add_key") {
+				r_ret = _editor_new_template_override_key;
+				return true;
+			}
+		}
+
+		String property = name.get_slicec('/', 2);
+
+		if (property == "value") {
+			if (!_template_overrides.has(key)) {
+				return false;
+			}
+
+			r_ret = _template_overrides[key];
+			return true;
+		}
+
+		return true;
+	}
+
+	if (name.begins_with("template_defaults/")) {
+		int scount = name.get_slice_count("/");
+
+		String key = name.get_slicec('/', 1);
+
+		if (scount == 2) {
+			// This way add_key can also be used ay a key
+			if (key == "add_key") {
+				r_ret = _editor_new_template_default_key;
+				return true;
+			}
+		}
+
+		String property = name.get_slicec('/', 2);
+
+		if (property == "value") {
+			if (!_template_defaults.has(key)) {
+				return false;
+			}
+
+			r_ret = _template_defaults[key];
+			return true;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void HTMLTemplate::_get_property_list(List<PropertyInfo> *p_list) const {
+	for (const HashMap<StringName, String>::Element *E = _template_overrides.front(); E; E = E->next) {
+		p_list->push_back(PropertyInfo(Variant::STRING, "template_override/" + E->key() + "/value", PROPERTY_HINT_MULTILINE_TEXT));
+		p_list->push_back(PropertyInfo(Variant::NIL, "template_override/" + E->key() + "/delete_key_button", PROPERTY_HINT_BUTTON, "_on_editor_template_button_pressed:Close/EditorIcons"));
+	}
+
+	p_list->push_back(PropertyInfo(Variant::STRING, "template_override/add_key"));
+	p_list->push_back(PropertyInfo(Variant::NIL, "template_override/add_key_button", PROPERTY_HINT_BUTTON, "_on_editor_template_button_pressed:Add/EditorIcons"));
+
+	for (const HashMap<StringName, String>::Element *E = _template_defaults.front(); E; E = E->next) {
+		p_list->push_back(PropertyInfo(Variant::STRING, "template_defaults/" + E->key() + "/value", PROPERTY_HINT_MULTILINE_TEXT));
+		p_list->push_back(PropertyInfo(Variant::NIL, "template_defaults/" + E->key() + "/delete_key_button", PROPERTY_HINT_BUTTON, "_on_editor_template_button_pressed:Close/EditorIcons"));
+	}
+
+	p_list->push_back(PropertyInfo(Variant::STRING, "template_defaults/add_key"));
+	p_list->push_back(PropertyInfo(Variant::NIL, "template_defaults/add_key_button", PROPERTY_HINT_BUTTON, "_on_editor_template_button_pressed:Add/EditorIcons"));
+}
+
 void HTMLTemplate::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_on_editor_template_button_pressed"), &HTMLTemplate::_on_editor_template_button_pressed);
+
 	// Templates
 	ClassDB::bind_method(D_METHOD("get_template_count"), &HTMLTemplate::get_template_count);
 	ClassDB::bind_method(D_METHOD("get_template", "index"), &HTMLTemplate::get_template);
