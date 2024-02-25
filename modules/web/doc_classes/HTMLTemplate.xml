@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="HTMLTemplate" inherits="Resource" version="4.3">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_render" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<argument index="1" name="data" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="add_template">
+			<return type="void" />
+			<argument index="0" name="template" type="HTMLTemplateData" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_template_defaults">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_template_overrides">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_templates">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_and_render_template">
+			<return type="String" />
+			<argument index="0" name="name" type="StringName" />
+			<argument index="1" name="request" type="WebServerRequest" />
+			<argument index="2" name="data" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="get_template">
+			<return type="HTMLTemplateData" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_template_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_template_default" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="get_template_override" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="get_template_text">
+			<return type="String" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="has_template_default" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="has_template_override" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_template">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_template_default">
+			<return type="void" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_template_override">
+			<return type="void" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="render">
+			<return type="String" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<argument index="1" name="data" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="render_template">
+			<return type="String" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="request" type="WebServerRequest" />
+			<argument index="2" name="data" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="set_template_default">
+			<return type="void" />
+			<argument index="0" name="name" type="StringName" />
+			<argument index="1" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_template_override">
+			<return type="void" />
+			<argument index="0" name="name" type="StringName" />
+			<argument index="1" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="substitute_data_variables">
+			<return type="String" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="data" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="substitute_request_variables">
+			<return type="String" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="template_defaults" type="Dictionary" setter="set_template_defaults" getter="get_template_defaults" default="{}">
+		</member>
+		<member name="template_overrides" type="Dictionary" setter="set_template_overrides" getter="get_template_overrides" default="{}">
+		</member>
+		<member name="templates" type="Array" setter="set_templates" getter="get_templates" default="[  ]">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

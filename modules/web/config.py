@@ -54,6 +54,9 @@ def get_doc_classes():
 	    "HTMLParserAttribute",
 	    "HTMLParserTag",
 	    "HTMLParser",
+	    
+	    "HTMLTemplate",
+	    "HTMLTemplateData",
 
     	"BBCodeParserAttribute",
 	    "BBCodeParserTag",

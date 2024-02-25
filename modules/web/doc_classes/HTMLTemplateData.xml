@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="HTMLTemplateData" inherits="Resource" version="4.3">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_template" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="has_template" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="load_from_file">
+			<return type="int" enum="Error" />
+			<argument index="0" name="file" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="load_from_string">
+			<return type="void" />
+			<argument index="0" name="data" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_template">
+			<return type="void" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="save_as_string" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="save_to_file" qualifiers="const">
+			<return type="int" enum="Error" />
+			<argument index="0" name="file" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_template">
+			<return type="void" />
+			<argument index="0" name="name" type="StringName" />
+			<argument index="1" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="templates" type="Dictionary" setter="set_templates" getter="get_templates" default="{}">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>
