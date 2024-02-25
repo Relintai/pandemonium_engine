@@ -62,6 +62,20 @@ Dictionary HTMLTemplateData::get_templates() const {
 	return ret;
 }
 void HTMLTemplateData::set_templates(const Dictionary &p_dict) {
+	clear();
+	
+	Array keys = p_dict.keys();
+	
+	for (int i = 0; i < keys.size(); ++i) {
+		Variant k = keys[i];
+		Variant::Type t = k.get_type();
+		
+		if (t != Variant::STRING && t != Variant::STRING_NAME) {
+			continue;
+		}
+		
+		_templates[k] = String(p_dict[k]);
+	}
 }
 
 HashMap<StringName, String> HTMLTemplateData::get_templates_map() const {
@@ -137,7 +151,7 @@ void HTMLTemplateData::load_from_string(const String &p_data) {
 			}
 			
 			// Remove [ and ], and strip it.
-			current_section_name = l.substr_index(1, l.length() - 1).strip_edges();
+			current_section_name = l.substr_index(1, l.length() - 2).strip_edges();
 			current_str = "";
 			continue;
 		}
