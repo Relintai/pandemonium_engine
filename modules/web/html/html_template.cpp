@@ -31,6 +31,8 @@
 
 #include "html_template.h"
 
+#include "core/containers/local_vector.h"
+
 #include "../http/web_server_request.h"
 #include "html_template_data.h"
 
@@ -225,8 +227,183 @@ String HTMLTemplate::get_template_text(const StringName &p_name) {
 	return String();
 }
 
-String HTMLTemplate::process_template_expression(const String &p_expression, const Dictionary &p_data) {
+String HTMLTemplate::process_template_expression_variable(const String &p_variable, const TemplateExpressionMethods p_method, const Dictionary &p_data) {
 	return String();
+}
+
+String HTMLTemplate::process_template_expression(const String &p_expression, const Dictionary &p_data) {
+	// Supported:
+	// var // equivalent to p(var)
+	// (var) // equivalent to p(var)
+	// p(var) // print, escaped, also includes to string cast
+	// pr(var) // print_raw, not escaped, also includes to string
+	// pb(var) // print_newline_to_br, escaped, turns newlines into <br>, also includes to string cast
+	// prb(var) // print_raw_newline_to_br, not escaped, turns newlines into <br>, also includes to string cast
+	// vf("%d %d", var1, var2) // vformat
+	// p(var[1]) // Array indexing
+	// p(var["x"]) // Dictionary indexing
+	// p(var1, var2) All methods can do multiple arguments
+	// No actual method calls. Even though it should be relatively trivial to implement, it's probably not a good idea.
+
+	String expression = p_expression.strip_edges();
+	int expression_length = expression.length();
+
+	if (expression_length == 0) {
+		return String();
+	}
+
+	int i = 0;
+	int method_name_end_index = 0;
+
+	while (i < expression_length) {
+		CharType current_token = expression[i];
+
+		switch (current_token) {
+			case '(': {
+				// Found start '('
+				method_name_end_index = i;
+				goto method_name_search_done;
+			} break;
+			case ')': {
+				ERR_FAIL_V_MSG(String(), "There is an error in the syntax of an expression! Erroneously placed ). Expression: " + p_expression);
+			} break;
+			case '"':
+			case '\'':
+			case '[':
+			case ']': {
+				// Encountering any of these before a '(' means that a variable is just on it's own.
+				// Encountering a '(' ends the search.
+				goto method_name_search_done;
+			} break;
+			default:
+				break;
+		}
+
+		++i;
+	}
+
+method_name_search_done:
+
+	TemplateExpressionMethods call_method = TEMPLATE_EXPRESSION_METHOD_PRINT;
+
+	// This will be zero even if (var)
+	if (method_name_end_index != 0) {
+		//method_name_end_index points to a '(', substr_index does not include end index.
+		String method_name = expression.substr_index(0, method_name_end_index).strip_edges();
+
+		if (method_name == "p") {
+			//default, needs to be checked so no error
+		} else if (method_name == "pr") {
+			call_method = TEMPLATE_EXPRESSION_METHOD_PRINT_RAW;
+		} else if (method_name == "pb") {
+			call_method = TEMPLATE_EXPRESSION_METHOD_PRINT_BR;
+		} else if (method_name == "prb") {
+			call_method = TEMPLATE_EXPRESSION_METHOD_PRINT_RAW_BR;
+		} else if (method_name == "vf") {
+			call_method = TEMPLATE_EXPRESSION_METHOD_VFORMAT;
+		} else {
+			ERR_FAIL_V_MSG(String(), "There is an error in the syntax of an expression! Not a valid method!. Method: " + method_name + " Expression: " + p_expression);
+		}
+	}
+
+	// From vf("%d %d", var1, var2) this ends up being ("%d %d", var1, var2)
+	// Note this can be (((var))) too!
+	String variables_str = expression.substr_index(method_name_end_index, expression.length()).strip_edges();
+
+	// Get rid of all '(' from beginning, and ')' from end
+	variables_str = variables_str.lstrip("(").rstrip(")");
+	int variables_str_length = variables_str.length();
+
+	i = 0;
+	bool in_string = false;
+	CharType current_string_type = '"';
+	bool escape_next = false;
+	int last_variable_end_index = 0;
+	LocalVector<String> variables;
+
+	// Find all variables, note we can't just split because of strings
+	while (i < variables_str_length) {
+		CharType current_token = variables_str[i];
+
+		if (escape_next) {
+			escape_next = false;
+			continue;
+		}
+
+		switch (current_token) {
+			case ',': {
+				// Nothing to do if we are in a string.
+				if (in_string) {
+					break;
+				}
+				
+				// last_variable_end_index = v
+				// i = ^
+				//      v
+				// var1, var2, var3
+				//           ^
+				// in substr_index end index is not included:
+				String current_variable_str = variables_str.substr_index(last_variable_end_index, i).strip_edges();
+				variables.push_back(current_variable_str);
+
+				// next var:
+				
+				// last_variable_end_index = i + 1 means:
+				// var1, var2, var3
+				//      ^
+				
+				last_variable_end_index = i + 1;
+			} break;
+			case '"': {
+				if (in_string) {
+					if (current_string_type == '"') {
+						in_string = false;
+					}
+
+					break;
+				}
+
+				// String start
+				in_string = true;
+				current_string_type = '"';
+			} break;
+			case '\'': {
+				if (in_string) {
+					if (current_string_type == '\'') {
+						in_string = false;
+					}
+
+					break;
+				}
+
+				// String start
+				in_string = true;
+				current_string_type = '\'';
+			} break;
+			case '\\': {
+				// There is nothing we can escape outside of strings
+				// This way beginning string symbol cannot be escaped. (Which is bad syntax anyway).
+				if (in_string) {
+					escape_next = true;
+				}
+			} break;
+			default: {
+			} break;
+		}
+
+		++i;
+	}
+	
+	String ret;
+	
+	// Finally let's just process the variables themselves, and generate the final output
+	for (uint32_t vi = 0; vi < variables.size(); ++vi) {
+		String variable = variables[vi];
+		
+		ret += process_template_expression_variable(variable, call_method, p_data);
+	}
+
+	return ret;
 }
 
 String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_data) {
@@ -299,6 +476,8 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 							//                 ... {\\\\{
 							// last_section_start:      ^
 							last_section_start = i;
+
+							escape_next = false;
 
 							break;
 						}
@@ -420,13 +599,13 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 
 						String expression = p_text.substr_index(last_section_start, i - 2);
 
-						result += process_template_expression(expression.strip_edges(), p_data);
+						result += process_template_expression(expression, p_data);
 
 						// i points to:          v
 						//                  ... {{
 						// last_section_start:    ^
 						last_section_start = i + 1;
-						
+
 						current_state = RENDER_TEMPLATE_STATE_NORMAL_TEXT;
 					} break;
 					default: {
@@ -440,7 +619,7 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 				}
 			} break;
 		}
-		
+
 		i += 1;
 	}
 
@@ -727,10 +906,11 @@ void HTMLTemplate::_bind_methods() {
 	// Use
 
 	ClassDB::bind_method(D_METHOD("get_template_text", "name"), &HTMLTemplate::get_template_text);
-
+	
+	ClassDB::bind_method(D_METHOD("process_template_expression_variable", "variable", "method", "data"), &HTMLTemplate::process_template_expression_variable);
 	ClassDB::bind_method(D_METHOD("process_template_expression", "expression", "data"), &HTMLTemplate::process_template_expression);
 	ClassDB::bind_method(D_METHOD("render_template", "text", "data"), &HTMLTemplate::render_template);
-
+	
 	ClassDB::bind_method(D_METHOD("get_and_render_template", "name", "data"), &HTMLTemplate::get_and_render_template);
 
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_render",
@@ -739,4 +919,11 @@ void HTMLTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("render", "request", "data"), &HTMLTemplate::render);
 	ClassDB::bind_method(D_METHOD("_render", "request", "data"), &HTMLTemplate::_render);
+	
+	// Enums
+	BIND_ENUM_CONSTANT(TEMPLATE_EXPRESSION_METHOD_PRINT);
+	BIND_ENUM_CONSTANT(TEMPLATE_EXPRESSION_METHOD_PRINT_RAW);
+	BIND_ENUM_CONSTANT(TEMPLATE_EXPRESSION_METHOD_PRINT_BR);
+	BIND_ENUM_CONSTANT(TEMPLATE_EXPRESSION_METHOD_PRINT_RAW_BR);
+	BIND_ENUM_CONSTANT(TEMPLATE_EXPRESSION_METHOD_VFORMAT);
 }

@@ -46,6 +46,14 @@ class HTMLTemplate : public Resource {
 	GDCLASS(HTMLTemplate, Resource);
 
 public:
+	enum TemplateExpressionMethods {
+		TEMPLATE_EXPRESSION_METHOD_PRINT = 0,
+		TEMPLATE_EXPRESSION_METHOD_PRINT_RAW,
+		TEMPLATE_EXPRESSION_METHOD_PRINT_BR,
+		TEMPLATE_EXPRESSION_METHOD_PRINT_RAW_BR,
+		TEMPLATE_EXPRESSION_METHOD_VFORMAT,
+	};
+
 	// Templates
 	int get_template_count() const;
 	Ref<HTMLTemplateData> get_template(const int p_index);
@@ -89,6 +97,7 @@ public:
 
 	String get_template_text(const StringName &p_name);
 
+	String process_template_expression_variable(const String &p_variable, const TemplateExpressionMethods p_method, const Dictionary &p_data);
 	String process_template_expression(const String &p_expression, const Dictionary &p_data);
 	String render_template(const String &p_text, const Dictionary &p_data);
 
@@ -124,5 +133,7 @@ protected:
 	String _editor_new_template_override_key;
 	String _editor_new_template_default_key;
 };
+
+VARIANT_ENUM_CAST(HTMLTemplate::TemplateExpressionMethods);
 
 #endif
