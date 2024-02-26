@@ -67,6 +67,7 @@
 			<return type="String" />
 			<argument index="0" name="method" type="int" enum="HTMLTemplate.TemplateExpressionMethods" />
 			<argument index="1" name="data" type="Array" />
+			<argument index="2" name="first_var_decides_print" type="bool" />
 			<description>
 				Turns an [Array] of Variants into [String] using the given method.
 			</description>
