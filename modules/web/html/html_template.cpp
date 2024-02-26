@@ -649,7 +649,7 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 							// We should have {\\\ .
 
 							// We cut
-							result += p_text.substr_index(last_section_start, i - 2);
+							result += p_text.substr_index(last_section_start, i - 1);
 
 							// Don't append the now missing {, it will be appended on the next normal text cut
 
@@ -674,7 +674,7 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 						// i points to:       v
 						//               ... {{
 						// cut up to here:  ^   (Don't include {{ )
-						result += p_text.substr_index(last_section_start, i - 2);
+						result += p_text.substr_index(last_section_start, i - 1);
 
 						// i points to:          v
 						//                  ... {{
