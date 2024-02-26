@@ -336,7 +336,7 @@ method_name_search_done:
 				if (in_string) {
 					break;
 				}
-				
+
 				// last_variable_end_index = v
 				// i = ^
 				//      v
@@ -347,11 +347,11 @@ method_name_search_done:
 				variables.push_back(current_variable_str);
 
 				// next var:
-				
+
 				// last_variable_end_index = i + 1 means:
 				// var1, var2, var3
 				//      ^
-				
+
 				last_variable_end_index = i + 1;
 			} break;
 			case '"': {
@@ -393,13 +393,20 @@ method_name_search_done:
 
 		++i;
 	}
-	
+
+	// Also add the last entry
+	String current_variable_str = variables_str.substr_index(last_variable_end_index, variables_str_length).strip_edges();
+
+	if (!current_variable_str.empty()) {
+		variables.push_back(current_variable_str);
+	}
+
 	String ret;
-	
+
 	// Finally let's just process the variables themselves, and generate the final output
 	for (uint32_t vi = 0; vi < variables.size(); ++vi) {
 		String variable = variables[vi];
-		
+
 		ret += process_template_expression_variable(variable, call_method, p_data);
 	}
 
@@ -906,11 +913,11 @@ void HTMLTemplate::_bind_methods() {
 	// Use
 
 	ClassDB::bind_method(D_METHOD("get_template_text", "name"), &HTMLTemplate::get_template_text);
-	
+
 	ClassDB::bind_method(D_METHOD("process_template_expression_variable", "variable", "method", "data"), &HTMLTemplate::process_template_expression_variable);
 	ClassDB::bind_method(D_METHOD("process_template_expression", "expression", "data"), &HTMLTemplate::process_template_expression);
 	ClassDB::bind_method(D_METHOD("render_template", "text", "data"), &HTMLTemplate::render_template);
-	
+
 	ClassDB::bind_method(D_METHOD("get_and_render_template", "name", "data"), &HTMLTemplate::get_and_render_template);
 
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_render",
@@ -919,7 +926,7 @@ void HTMLTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("render", "request", "data"), &HTMLTemplate::render);
 	ClassDB::bind_method(D_METHOD("_render", "request", "data"), &HTMLTemplate::_render);
-	
+
 	// Enums
 	BIND_ENUM_CONSTANT(TEMPLATE_EXPRESSION_METHOD_PRINT);
 	BIND_ENUM_CONSTANT(TEMPLATE_EXPRESSION_METHOD_PRINT_RAW);
