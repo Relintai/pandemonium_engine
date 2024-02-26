@@ -422,7 +422,7 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 
 						String expression = p_text.substr_index(last_section_start, i - 2);
 
-						result += process_template_expression(expression, p_data);
+						result += process_template_expression(expression.strip_edges(), p_data);
 
 						// i points to:          v
 						//                  ... {{
