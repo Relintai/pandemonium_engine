@@ -48,10 +48,9 @@
 		<method name="get_and_render_template">
 			<return type="String" />
 			<argument index="0" name="name" type="StringName" />
-			<argument index="1" name="request" type="WebServerRequest" />
-			<argument index="2" name="data" type="Dictionary" />
+			<argument index="1" name="data" type="Dictionary" />
 			<description>
-				Gets a template string using [method get_template] and does variable substitutions on it.
+				Gets a template string using [method get_template] and does method substitutions on it.
 			</description>
 		</method>
 		<method name="get_template">
@@ -154,22 +153,6 @@
 			<argument index="1" name="value" type="String" />
 			<description>
 				Sets a template override value.
-			</description>
-		</method>
-		<method name="substitute_data_variables">
-			<return type="String" />
-			<argument index="0" name="text" type="String" />
-			<argument index="1" name="data" type="Dictionary" />
-			<description>
-				Helper method that does data variable substitutions on a given text.
-			</description>
-		</method>
-		<method name="substitute_request_variables">
-			<return type="String" />
-			<argument index="0" name="text" type="String" />
-			<argument index="1" name="request" type="WebServerRequest" />
-			<description>
-				Helper method that does request variable substitutions on a given text.
 			</description>
 		</method>
 	</methods>

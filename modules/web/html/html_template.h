@@ -34,10 +34,10 @@
 
 #include "core/object/resource.h"
 
-#include "core/containers/vector.h"
 #include "core/containers/hash_map.h"
-#include "core/string/ustring.h"
+#include "core/containers/vector.h"
 #include "core/string/string_name.h"
+#include "core/string/ustring.h"
 
 class HTMLTemplateData;
 class WebServerRequest;
@@ -51,7 +51,7 @@ public:
 	Ref<HTMLTemplateData> get_template(const int p_index);
 	void add_template(const Ref<HTMLTemplateData> &p_template);
 	void remove_template(const int p_index);
-	
+
 	void clear_templates();
 
 	Vector<Variant> get_templates();
@@ -62,7 +62,7 @@ public:
 	String get_template_override(const StringName &p_name) const;
 	void set_template_override(const StringName &p_name, const String &p_value);
 	void remove_template_override(const StringName &p_name);
-	
+
 	void clear_template_overrides();
 
 	Dictionary get_template_overrides() const;
@@ -70,13 +70,13 @@ public:
 
 	HashMap<StringName, String> get_template_overrides_map() const;
 	void set_template_overrides_map(const HashMap<StringName, String> &p_map);
-	
+
 	// Defaults
 	bool has_template_default(const StringName &p_name) const;
 	String get_template_default(const StringName &p_name) const;
 	void set_template_default(const StringName &p_name, const String &p_value);
 	void remove_template_default(const StringName &p_name);
-	
+
 	void clear_template_defaults();
 
 	Dictionary get_template_defaults() const;
@@ -84,16 +84,14 @@ public:
 
 	HashMap<StringName, String> get_template_defaults_map() const;
 	void set_template_defaults_map(const HashMap<StringName, String> &p_map);
-	
+
 	// Use
-	
-	String substitute_data_variables(const String &p_text, const Dictionary &p_data);
-	String substitute_request_variables(const String &p_text, const Ref<WebServerRequest> &p_request);
 
 	String get_template_text(const StringName &p_name);
-	
-	String render_template(const String &p_text, const Ref<WebServerRequest> &p_request, const Dictionary &p_data);
-	
+
+	String process_template_expression(const String &p_expression, const Dictionary &p_data);
+	String render_template(const String &p_text, const Dictionary &p_data);
+
 	String get_and_render_template(const StringName &p_name, const Ref<WebServerRequest> &p_request, const Dictionary &p_data);
 
 	String render(const Ref<WebServerRequest> &p_request, const Dictionary &p_data);
@@ -103,19 +101,26 @@ public:
 	~HTMLTemplate();
 
 protected:
+	enum RenderTemplateState {
+		RENDER_TEMPLATE_STATE_NORMAL_TEXT = 0,
+		RENDER_TEMPLATE_STATE_EXPRESSION_POTENTIAL_START,
+		RENDER_TEMPLATE_STATE_EXPRESSION,
+		RENDER_TEMPLATE_STATE_EXPRESSION_END_NEXT,
+	};
+
 	void _on_editor_template_button_pressed(const StringName &p_property);
 
 	bool _set(const StringName &p_name, const Variant &p_value);
 	bool _get(const StringName &p_name, Variant &r_ret) const;
 	void _get_property_list(List<PropertyInfo> *p_list) const;
-	
+
 	static void _bind_methods();
 
 	Vector<Ref<HTMLTemplateData>> _templates;
-	
+
 	HashMap<StringName, String> _template_overrides;
 	HashMap<StringName, String> _template_defaults;
-	
+
 	String _editor_new_template_override_key;
 	String _editor_new_template_default_key;
 };

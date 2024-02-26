@@ -190,21 +190,6 @@ void HTMLTemplate::set_template_defaults_map(const HashMap<StringName, String> &
 
 // Use
 
-String HTMLTemplate::substitute_data_variables(const String &p_text, const Dictionary &p_data) {
-	//TODO
-
-	return p_text;
-}
-String HTMLTemplate::substitute_request_variables(const String &p_text, const Ref<WebServerRequest> &p_request) {
-	if (!p_request.is_valid()) {
-		return p_text;
-	}
-
-	//TODO
-
-	return p_text;
-}
-
 String HTMLTemplate::get_template_text(const StringName &p_name) {
 	// First try overrides
 	String *sptr = _template_overrides.getptr(p_name);
@@ -240,18 +225,252 @@ String HTMLTemplate::get_template_text(const StringName &p_name) {
 	return String();
 }
 
-String HTMLTemplate::render_template(const String &p_text, const Ref<WebServerRequest> &p_request, const Dictionary &p_data) {
-	String res = substitute_data_variables(p_text, p_data);
+String HTMLTemplate::process_template_expression(const String &p_expression, const Dictionary &p_data) {
+	//TODO
+	
+	return String();
+}
 
-	res = substitute_request_variables(p_text, p_request);
+String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_data) {
+	// {\{ Escaped {{
+	// {\\{ -> {\{ etc
+	// {{ p(var) }} // print, escaped, also includes to string cast
+	// {{ pr(var) }} // print_raw, not escaped, also includes to string
+	// {{ pb(var) }} // print_newline_to_br, escaped, turns newlines into <br>, also includes to string cast
+	// {{ prb(var) }} // print_raw_newline_to_br, not escaped, turns newlines into <br>, also includes to string cast
+	// {{ vf("%d %d", var1, var2) }} // vformat
 
-	return res;
+	String result;
+
+	int text_length = p_text.length();
+
+	if (text_length == 0) {
+		return result;
+	}
+
+	int i = 0;
+	int last_section_start = 0;
+	bool in_string = false;
+	CharType current_string_type = '"';
+	int current_state = RENDER_TEMPLATE_STATE_NORMAL_TEXT;
+	bool escape_next = false;
+
+	while (i < text_length) {
+		CharType current_token = p_text[i];
+
+		switch (current_state) {
+			case RENDER_TEMPLATE_STATE_NORMAL_TEXT: {
+				if (escape_next) {
+					escape_next = false;
+					continue;
+				}
+
+				switch (current_token) {
+					case '{': {
+						// A { is encountered, might be an expression.
+						current_state = RENDER_TEMPLATE_STATE_EXPRESSION_POTENTIAL_START;
+					} break;
+				}
+			} break;
+			case RENDER_TEMPLATE_STATE_EXPRESSION_POTENTIAL_START: {
+				switch (current_token) {
+					case '\\': {
+						// The last token was {, The current token is \.
+						// Just set escape_next to true
+						// If the next token is {, it will be handled properly in "case '{':"
+						// If it's something else "default:" will reset state back to proper
+						// In case of {\\\\{ We need to turn it to {\\\{
+						// This will go through all \'s
+						escape_next = true;
+					} break;
+					case '{': {
+						if (escape_next) {
+							// i points to:    v
+							// In case of {\\\\{ We need to turn it to {\\\{
+							// cut here:     ^
+							// We should have {\\\ .
+
+							// We cut
+							result += p_text.substr_index(last_section_start, i - 2);
+
+							// Don't append the now missing {, it will be appended on the next normal text cut
+
+							// Go back to normal state
+							current_state = RENDER_TEMPLATE_STATE_NORMAL_TEXT;
+
+							//                 ... {\\\\{
+							// last_section_start:      ^
+							last_section_start = i;
+
+							break;
+						}
+
+						// No escape happened, we had a {{. We are in an expression now.
+
+						current_state = RENDER_TEMPLATE_STATE_EXPRESSION;
+
+						// Cut text
+
+						// i points to:       v
+						//               ... {{
+						// cut up to here:  ^   (Don't include {{ )
+						result += p_text.substr_index(last_section_start, i - 2);
+
+						// i points to:          v
+						//                  ... {{
+						// last_section_start:    ^ (Crop {{ so later it doesn't have to be handled. Having more { should result in an error.)
+						last_section_start = i + 1;
+					} break;
+					default: {
+						// Some other token encountered, just go back to normal
+						current_state = RENDER_TEMPLATE_STATE_NORMAL_TEXT;
+						escape_next = false;
+					} break;
+				}
+			}
+			case RENDER_TEMPLATE_STATE_EXPRESSION: {
+				switch (current_token) {
+					case '}': {
+						// We only need to worry about being in a string here, the syntax does not use }-s for anything else.
+						if (in_string) {
+							break;
+						}
+
+						// i points to:      v
+						//               ... }}
+						// Expression has to end at next token.
+
+						current_state = RENDER_TEMPLATE_STATE_EXPRESSION_END_NEXT;
+					} break;
+					case '\'': {
+						// Previous token was \.
+						if (escape_next) {
+							escape_next = false;
+							break;
+						}
+
+						if (in_string) {
+							// Only end string with the correct , so "'", or '"' will work
+							if (current_string_type == '\'') {
+								in_string = false;
+								break;
+							}
+
+							break;
+						}
+
+						// Start string, and remember string type
+						current_string_type = '\'';
+						in_string = true;
+					} break;
+					case '"': {
+						// Previous token was \.
+						if (escape_next) {
+							escape_next = false;
+							break;
+						}
+
+						if (in_string) {
+							// Only end string with the correct , so "'", or '"' will work
+							if (current_string_type == '"') {
+								in_string = false;
+								break;
+							}
+
+							break;
+						}
+
+						// Start string, and remember string type
+						current_string_type = '"';
+						in_string = true;
+					} break;
+					case '\\': {
+						// Previous token was a \.
+						if (escape_next) {
+							escape_next = false;
+							break;
+						}
+
+						// If we are in a string escape next character.
+						// Otherwise it doesn't matters.
+						if (in_string) {
+							escape_next = true;
+							break;
+						}
+					} break;
+					default: {
+						// Just set back escape_next
+						// Could have been a \n in vformat for example.
+						escape_next = false;
+					} break;
+				}
+			} break;
+			case RENDER_TEMPLATE_STATE_EXPRESSION_END_NEXT: {
+				switch (current_token) {
+					case '}': {
+						// i points to:       v
+						//               ... }}
+						// Expression has ended
+
+						// Grab expression
+
+						// last_section_start:        v
+						//                      ... {{ ... }}
+						// i:                               ^
+
+						// We want everything between {{ }} -s
+
+						String expression = p_text.substr_index(last_section_start, i - 2);
+
+						result += process_template_expression(expression, p_data);
+
+						// i points to:          v
+						//                  ... {{
+						// last_section_start:    ^
+						last_section_start = i + 1;
+					} break;
+					default: {
+						// Some other token encountered, error in template
+
+						result += p_text.substr_index(last_section_start, i);
+
+						// Don't return half-rendered templates.
+						ERR_FAIL_V_MSG(String(), "Error in template! One missing closing bracket encountered. Generated html so far:\n\n" + result);
+					} break;
+				}
+			} break;
+		}
+	}
+
+	// Unterminated expression in template
+	if (current_state != RENDER_TEMPLATE_STATE_NORMAL_TEXT) {
+		if (in_string) {
+			String c;
+			c += current_string_type;
+			ERR_FAIL_V_MSG(String(), "Error in template! Unterminated string of type " + c + " encountered. Generated html so far:\n\n" + result);
+		}
+
+		if (current_state == RENDER_TEMPLATE_STATE_EXPRESSION || current_state == RENDER_TEMPLATE_STATE_EXPRESSION_END_NEXT) {
+			ERR_FAIL_V_MSG(String(), "Error in template! Unterminated expression encountered. Generated html so far:\n\n" + result);
+		}
+
+		// if current_state is RENDER_TEMPLATE_STATE_EXPRESSION_POTENTIAL_START, that is actually fine. Template just ends in {
+	}
+
+	// Get the last bit of text
+	// If the template closes with }}, last_section_start should be == to text_length
+	// If template closes like }}X last_section_start should be == to text_length - 1, in that case we still need to get the last character
+	if (last_section_start <= text_length - 1) {
+		result += p_text.substr_index(last_section_start, text_length);
+	}
+	
+	return result;
 }
 
 String HTMLTemplate::get_and_render_template(const StringName &p_name, const Ref<WebServerRequest> &p_request, const Dictionary &p_data) {
 	String text = get_template_text(p_name);
 
-	return render_template(text, p_request, p_data);
+	return render_template(text, p_data);
 }
 
 String HTMLTemplate::render(const Ref<WebServerRequest> &p_request, const Dictionary &p_data) {
@@ -505,11 +724,9 @@ void HTMLTemplate::_bind_methods() {
 
 	// Use
 
-	ClassDB::bind_method(D_METHOD("substitute_data_variables", "text", "data"), &HTMLTemplate::substitute_data_variables);
-	ClassDB::bind_method(D_METHOD("substitute_request_variables", "text", "request"), &HTMLTemplate::substitute_request_variables);
-
 	ClassDB::bind_method(D_METHOD("get_template_text", "name"), &HTMLTemplate::get_template_text);
 
+	ClassDB::bind_method(D_METHOD("process_template_expression", "expression", "data"), &HTMLTemplate::process_template_expression);
 	ClassDB::bind_method(D_METHOD("render_template", "text", "request", "data"), &HTMLTemplate::render_template);
 
 	ClassDB::bind_method(D_METHOD("get_and_render_template", "name", "request", "data"), &HTMLTemplate::get_and_render_template);
