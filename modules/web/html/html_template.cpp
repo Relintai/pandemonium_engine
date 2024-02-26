@@ -226,8 +226,6 @@ String HTMLTemplate::get_template_text(const StringName &p_name) {
 }
 
 String HTMLTemplate::process_template_expression(const String &p_expression, const Dictionary &p_data) {
-	//TODO
-	
 	return String();
 }
 
@@ -428,6 +426,8 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 						//                  ... {{
 						// last_section_start:    ^
 						last_section_start = i + 1;
+						
+						current_state = RENDER_TEMPLATE_STATE_NORMAL_TEXT;
 					} break;
 					default: {
 						// Some other token encountered, error in template
@@ -440,6 +440,8 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 				}
 			} break;
 		}
+		
+		i += 1;
 	}
 
 	// Unterminated expression in template
