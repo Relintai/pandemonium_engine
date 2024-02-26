@@ -256,7 +256,7 @@ void SimpleWebServerRequest::set_parser_path(const String &value) {
 		}
 
 		String key = cp.substr_index(0, eq);
-		String val = cp.substr_index(eq + 1, cp.size());
+		String val = cp.substr_index(eq + 1, cp.length());
 
 		if (key.empty() || val.empty()) {
 			// &=v&  or  &p=&
