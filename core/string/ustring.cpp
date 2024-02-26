@@ -934,7 +934,7 @@ String String::substr_index(const int start_index, const int end_index) const {
 		return "";
 	}
 
-	if (end_index >= s) {
+	if (end_index > s) {
 		return substr(start_index, (s - 1) - start_index);
 	}
 
