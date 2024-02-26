@@ -229,14 +229,14 @@ String HTMLTemplate::get_template_text(const StringName &p_name) {
 
 String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_method, const Array &p_data, const bool p_first_var_decides_print) {
 	int s = p_data.size();
-	
+
 	if (s == 0) {
 		return String();
 	}
-	
+
 	if (p_first_var_decides_print) {
 		Variant v = p_data[0];
-		
+
 		if (!v) {
 			return String();
 		}
@@ -244,11 +244,11 @@ String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_meth
 
 	if (p_method != TEMPLATE_EXPRESSION_METHOD_VFORMAT) {
 		int arg_start = 0;
-		
+
 		if (p_first_var_decides_print) {
 			++arg_start;
 		}
-		
+
 		String ret;
 
 		for (int i = arg_start; i < s; ++i) {
@@ -273,11 +273,11 @@ String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_meth
 		return ret;
 	} else {
 		int arg_start = 1;
-		
+
 		if (p_first_var_decides_print) {
 			++arg_start;
 		}
-		
+
 		//VFormat
 
 		ERR_FAIL_COND_V_MSG(s < arg_start, String(), "vformat requires at least one positional argument!");
@@ -301,7 +301,7 @@ String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_meth
 	return String();
 }
 
-Variant HTMLTemplate::process_template_expression_variable(const String &p_variable, const Dictionary &p_data) {
+Variant HTMLTemplate::process_template_expression_variable(const String &p_variable, const Dictionary &p_data, const bool p_allow_missing) {
 	// "XXX" // String
 	// 'XXX' // String
 	// var[1] // Array indexing
@@ -334,6 +334,10 @@ Variant HTMLTemplate::process_template_expression_variable(const String &p_varia
 
 		const Variant *element = p_data.getptr(Variant(p_variable));
 
+		if (p_allow_missing && !element) {
+			return Variant();
+		}
+
 		ERR_FAIL_COND_V_MSG(!element, Variant(), "The given Dictionary does not contain value! " + variable);
 
 		return *element;
@@ -341,9 +345,13 @@ Variant HTMLTemplate::process_template_expression_variable(const String &p_varia
 
 	int rsqbrace_pos = variable.find_last("]");
 
-	// Has no [, but has ]. Might be a bug, or just ] in name of variable. If it's not intenrional, the error macro will get triggered.
+	// Has no [, but has ]. Might be a bug, or just ] in name of variable. If it's not intentional, the error macro will get triggered.
 	if (rsqbrace_pos == -1) {
 		const Variant *element = p_data.getptr(Variant(p_variable));
+
+		if (p_allow_missing && !element) {
+			return Variant();
+		}
 
 		ERR_FAIL_COND_V_MSG(!element, Variant(), "The given Dictionary does not contain value! " + variable);
 
@@ -353,6 +361,10 @@ Variant HTMLTemplate::process_template_expression_variable(const String &p_varia
 	String var_name = variable.substr_index(0, lsqbrace_pos);
 
 	const Variant *element = p_data.getptr(Variant(var_name));
+
+	if (p_allow_missing && !element) {
+		return Variant();
+	}
 
 	ERR_FAIL_COND_V_MSG(!element, Variant(), "The given Dictionary does not contain value! " + var_name + " Full variable: " + variable);
 
@@ -578,7 +590,7 @@ method_name_search_done:
 	for (uint32_t vi = 0; vi < variables.size(); ++vi) {
 		String variable = variables[vi];
 
-		final_values.set(vi, process_template_expression_variable(variable, p_data));
+		final_values.set(vi, process_template_expression_variable(variable, p_data, first_var_decides_print && vi == 0));
 	}
 
 	return call_template_method(call_method, final_values, first_var_decides_print);
@@ -1091,7 +1103,7 @@ void HTMLTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_template_text", "name"), &HTMLTemplate::get_template_text);
 
 	ClassDB::bind_method(D_METHOD("call_template_method", "method", "data", "first_var_decides_print"), &HTMLTemplate::call_template_method);
-	ClassDB::bind_method(D_METHOD("process_template_expression_variable", "variable", "data"), &HTMLTemplate::process_template_expression_variable);
+	ClassDB::bind_method(D_METHOD("process_template_expression_variable", "variable", "data", "allow_missing"), &HTMLTemplate::process_template_expression_variable, false);
 	ClassDB::bind_method(D_METHOD("process_template_expression", "expression", "data"), &HTMLTemplate::process_template_expression);
 	ClassDB::bind_method(D_METHOD("render_template", "text", "data"), &HTMLTemplate::render_template);
 

@@ -158,6 +158,7 @@
 			<return type="Variant" />
 			<argument index="0" name="variable" type="String" />
 			<argument index="1" name="data" type="Dictionary" />
+			<argument index="2" name="allow_missing" type="bool" default="false" />
 			<description>
 				Processes one variable from an expression in a template. An expression in the template look like: [code]{{ EXPRESSION }}[/code].
 			</description>
