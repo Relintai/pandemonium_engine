@@ -727,11 +727,11 @@ void HTMLTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_template_text", "name"), &HTMLTemplate::get_template_text);
 
 	ClassDB::bind_method(D_METHOD("process_template_expression", "expression", "data"), &HTMLTemplate::process_template_expression);
-	ClassDB::bind_method(D_METHOD("render_template", "text", "request", "data"), &HTMLTemplate::render_template);
+	ClassDB::bind_method(D_METHOD("render_template", "text", "data"), &HTMLTemplate::render_template);
 
 	ClassDB::bind_method(D_METHOD("get_and_render_template", "name", "request", "data"), &HTMLTemplate::get_and_render_template);
 
-	BIND_VMETHOD(MethodInfo("_render",
+	BIND_VMETHOD(MethodInfo(Variant::STRING, "_render",
 			PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"),
 			PropertyInfo(Variant::DICTIONARY, "data")));
 

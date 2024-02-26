@@ -144,7 +144,7 @@ void HTMLTemplateData::load_from_string(const String &p_data) {
 		// Section header: [ Section Name ]
 		// Should not have whitespace in front and back
 		String l = lines[i];
-		
+
 		if (l.begins_with("[") && l.ends_with("]")) {
 			if (!current_section_name.empty()) {
 				_templates[current_section_name] = current_str;
