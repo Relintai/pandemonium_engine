@@ -1102,6 +1102,8 @@
 			<argument index="0" name="start_index" type="int" />
 			<argument index="1" name="end_index" type="int" />
 			<description>
+				Returns part of the string from the position [code]start_index[/code] to the position [code]end_index[/code]. The character at [code]end_index[/code] position not included. As an interval: [code] [ start_index, end_index [ [/code].
+				If you want to get everything from the [code]current_position[/code] to the end of string [code]s[/code] you can use: [code]s.substr_index(current_position, s.length())[/code] or [code]s.substr_index(current_position, s.size() - 1)[/code].
 			</description>
 		</method>
 		<method name="to_ascii">
