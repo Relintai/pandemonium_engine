@@ -8,19 +8,19 @@
 		It uses a cusom format, which should make it easy to edit. Create files using the [code].phtpl[/code] (Pandemonium HTML Template) file extenstion, the editor will import those files as this class. Double clicking on them will directly open them in the Text Editor (if available).
 		The [code].phtpl[/code] file format looks a bit similar to config files, except it's a lot simpler. For example:
 		[code]
-		
+
 		[ Head ]
-		
+
 		... Head html here
-		
+
 		[ Content ]
-		
+
 		... Content html here
-		
+
 		[ Shell ]
-		
+
 		... Shell html here
-		
+
 		[/code]
 		This file will be parsed as 3 key-value template strings. A key named [code]Head[/code] with the content [code]... Head html here[/code], a key named [code]Content[/code] with the content [code]... Content html here[/code] and a key named [code]Shell[/code] with the content [code]... Shell html here[/code].
 		Note: Make sure there is no whitespace before and after the square brackets of the section keys. Also note that white space will be stripped on both sides of the keys before storing them.

@@ -9,8 +9,6 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="create_user" type="bool" setter="set_create_user" getter="get_create_user" default="false">
-		</member>
 		<member name="create_user_email" type="String" setter="set_create_user_email" getter="get_create_user_email" default="&quot;&quot;">
 		</member>
 		<member name="create_user_name" type="String" setter="set_create_user_name" getter="get_create_user_name" default="&quot;&quot;">

@@ -4,16 +4,47 @@
 		A class that can be used to easily script and render HTML with.
 	</brief_description>
 	<description>
-		A class that can be used to easily render HTML with. An instance of this class could be a traditional web application's View.
-		Some traditional web applications use a templating language to render their final output using a set of variables. Some examples: Blade, Handlebars, Razor, etc. Some of these have features like for loops, ifs, they can even support method calls. Thic class implements similar functinality, albeit in a different manner.
-		The render control logic should be implemented by overriding [method _render], variable substitotions can be done using the available helper methods.
+		A class that can be used to easily render HTML with. An instance of this class could be one of a traditional web application's View. (From the Model-View-Controller or MVC pattern.)
+		Some traditional web applications use a templating language to render their final output using a set of variables. Some templating language examples: Blade, Handlebars, Razor, etc. Some of these have features like for loops, ifs, they can even support method calls. This class implements similar functinality, albeit in a different manner.
+		The render control logic should be implemented by overriding [method _render], variable substitutions can be done using the available helper methods.
+		This class uses a templating syntax like: [code]{{ EXPRESSION }}[/code]. Everything inbetween [code]{{ }}[/code] is an expression that the system will replace during rendering with actual values from a passed in Dictionary.
+		Assuming you pass in the following Dictionary to [method render_template]:
+		[code]var d : Dictionary = { 
+			"var": VALUE,
+			"var1": VALUE,
+			"var2": VALUE,
+			"var_dict": {
+				"x": VALUE
+			},
+			"var_arr": [
+				VALUE,
+			]
+		}[/code]
+		Supported expressions:
+		0. To escape [code]{{[/code] use: [code]{\{[/code].  [code]{\\{[/code] will turn into [code]{\{[/code] etc.
+		1. [code]p(var)[/code] - print, escaped, also includes to string cast.
+		2. [code]{{ var }}[/code] - equivalent to [code]p(var)[/code].
+		3. [code](var)[/code] - equivalent to [code]p(var)[/code].
+		4. [code]pr(var)[/code] - print_raw, not escaped, also includes a cast to string.
+		5. [code]pb(var)[/code] - print_newline_to_br, escaped, turns newlines into br tags, also includes a to string cast.
+		6. [code]prb(var)[/code] - print_raw_newline_to_br, not escaped, turns newlines into br tags, also includes a to string cast.
+		7. [code]vf("%d %d", var1, var2)[/code] - vformat or snprintf or String fromatting using % in gdscript.
+		8. [code]p(var_arr[0])[/code] - Array indexing.
+		9. [code]p(var_dict["x"]), p(var_dict[x]), p(var_dict['x'])[/code] - Dictionary indexing.
+		10. [code]p(var1, var2)[/code] - All methods supports multiple arguments.
+		11. Let's say [code]var1[/code] is a [Vector3], [code]var["x"][/code] and [code]var[0][/code] and [code]var[x][/code] will also work.
+		12. Indexing will also call [code]get()[/code] on [Object]s.
+		Not supported:
+		0. [code]p(var[var[var[2]]])[/code] Recursive indexing.
+		1. No actual method calls. Make everything available that your templates need in your controller class!
+		So this is how your HTML will look like: [code]... HTML markup ... {{ p(var) }} ... {{ pr(var) }} ... {{ pb(var) }} ... {{ prb(var, var2) }} ... {{ vf("%d %d", var1, var2) }} ... etc.[/code]
 		Note: For a different approach to generating HTML, you can also take a look at [HTMLBuilder].
 	</description>
 	<tutorials>
 	</tutorials>
 	<methods>
 		<method name="_render" qualifiers="virtual">
-			<return type="void" />
+			<return type="String" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<argument index="1" name="data" type="Dictionary" />
 			<description>
@@ -25,6 +56,14 @@
 			<argument index="0" name="template" type="HTMLTemplateData" />
 			<description>
 				Adds a [HTMLTemplateData] template.
+			</description>
+		</method>
+		<method name="call_template_method">
+			<return type="String" />
+			<argument index="0" name="method" type="int" enum="HTMLTemplate.TemplateExpressionMethods" />
+			<argument index="1" name="data" type="Array" />
+			<description>
+				Turns an [Array] of Variants into [String] using the given method.
 			</description>
 		</method>
 		<method name="clear_template_defaults">
@@ -101,6 +140,22 @@
 				Returns whether a template override denoted by name is set.
 			</description>
 		</method>
+		<method name="process_template_expression">
+			<return type="String" />
+			<argument index="0" name="expression" type="String" />
+			<argument index="1" name="data" type="Dictionary" />
+			<description>
+				Processes an expression in a template. An expression in the template look like: [code]{{ EXPRESSION }}[/code].
+			</description>
+		</method>
+		<method name="process_template_expression_variable">
+			<return type="Variant" />
+			<argument index="0" name="variable" type="String" />
+			<argument index="1" name="data" type="Dictionary" />
+			<description>
+				Processes one variable from an expression in a template. An expression in the template look like: [code]{{ EXPRESSION }}[/code].
+			</description>
+		</method>
 		<method name="remove_template">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
@@ -133,10 +188,9 @@
 		<method name="render_template">
 			<return type="String" />
 			<argument index="0" name="text" type="String" />
-			<argument index="1" name="request" type="WebServerRequest" />
-			<argument index="2" name="data" type="Dictionary" />
+			<argument index="1" name="data" type="Dictionary" />
 			<description>
-				Helper method that does variable substitutions on a given text.
+				Soes does variable substitutions on the given template text.
 			</description>
 		</method>
 		<method name="set_template_default">
@@ -157,10 +211,10 @@
 		</method>
 	</methods>
 	<members>
-		<member name="template_defaults" type="Dictionary" setter="set_template_defaults" getter="get_template_defaults" default="{}">
+		<member name="template_defaults" type="Dictionary" setter="set_template_defaults" getter="get_template_defaults">
 			Returns all template default values.
 		</member>
-		<member name="template_overrides" type="Dictionary" setter="set_template_overrides" getter="get_template_overrides" default="{}">
+		<member name="template_overrides" type="Dictionary" setter="set_template_overrides" getter="get_template_overrides">
 			Returns all template override values.
 		</member>
 		<member name="templates" type="Array" setter="set_templates" getter="get_templates" default="[  ]">
@@ -168,5 +222,20 @@
 		</member>
 	</members>
 	<constants>
+		<constant name="TEMPLATE_EXPRESSION_METHOD_PRINT" value="0" enum="TemplateExpressionMethods">
+			xml_excape() and add value to the final string.
+		</constant>
+		<constant name="TEMPLATE_EXPRESSION_METHOD_PRINT_RAW" value="1" enum="TemplateExpressionMethods">
+			Add value to the final string.
+		</constant>
+		<constant name="TEMPLATE_EXPRESSION_METHOD_PRINT_BR" value="2" enum="TemplateExpressionMethods">
+			xml_excape() and add value to the final string. This also converts newlines into br html tags.
+		</constant>
+		<constant name="TEMPLATE_EXPRESSION_METHOD_PRINT_RAW_BR" value="3" enum="TemplateExpressionMethods">
+			Add value to the final string. This also converts newlines into br html tags.
+		</constant>
+		<constant name="TEMPLATE_EXPRESSION_METHOD_VFORMAT" value="4" enum="TemplateExpressionMethods">
+			vformat the given string, using it's passed variables.
+		</constant>
 	</constants>
 </class>
