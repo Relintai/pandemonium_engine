@@ -227,13 +227,31 @@ String HTMLTemplate::get_template_text(const StringName &p_name) {
 	return String();
 }
 
-String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_method, const Array &p_data) {
+String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_method, const Array &p_data, const bool p_first_var_decides_print) {
 	int s = p_data.size();
+	
+	if (s == 0) {
+		return String();
+	}
+	
+	if (p_first_var_decides_print) {
+		Variant v = p_data[0];
+		
+		if (!v) {
+			return String();
+		}
+	}
 
 	if (p_method != TEMPLATE_EXPRESSION_METHOD_VFORMAT) {
+		int arg_start = 0;
+		
+		if (p_first_var_decides_print) {
+			++arg_start;
+		}
+		
 		String ret;
 
-		for (int i = 0; i < s; ++i) {
+		for (int i = arg_start; i < s; ++i) {
 			switch (p_method) {
 				case TEMPLATE_EXPRESSION_METHOD_PRINT: {
 					ret += String(p_data[i]).xml_escape();
@@ -254,17 +272,23 @@ String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_meth
 
 		return ret;
 	} else {
+		int arg_start = 1;
+		
+		if (p_first_var_decides_print) {
+			++arg_start;
+		}
+		
 		//VFormat
 
-		ERR_FAIL_COND_V_MSG(s < 1, String(), "vformat requires at least one positional argument!");
+		ERR_FAIL_COND_V_MSG(s < arg_start, String(), "vformat requires at least one positional argument!");
 
 		Array args;
 
-		for (int i = 1; i < s; ++i) {
+		for (int i = arg_start; i < s; ++i) {
 			args.push_back(p_data[i]);
 		}
-		
-		String fstring = String(p_data[0]);
+
+		String fstring = String(p_data[arg_start - 1]);
 
 		bool error = false;
 		String fmt = fstring.sprintf(args, &error);
@@ -363,6 +387,11 @@ String HTMLTemplate::process_template_expression(const String &p_expression, con
 	// pb(var) // print_newline_to_br, escaped, turns newlines into <br>, also includes to string cast
 	// prb(var) // print_raw_newline_to_br, not escaped, turns newlines into <br>, also includes to string cast
 	// vf("%d %d", var1, var2) // vformat
+	// qp(var1, var2) // Same as p, but only prints when it's first argument evaluates to true
+	// qpr(var1, var2) // Same as pr, but only prints when it's first argument evaluates to true
+	// qpb(var1, var2) // Same as pb, but only prints when it's first argument evaluates to true
+	// qprb(var1, var2) // Same as prb, but only prints when it's first argument evaluates to true
+	// qvf(var1, "%d %d", var1, var2) // Same as vf, but only prints when it's first argument evaluates to true
 	// p(var[1]) // Array indexing
 	// p(var["x"]) // Dictionary indexing
 	// p(var1, var2) All methods can do multiple arguments
@@ -410,6 +439,7 @@ String HTMLTemplate::process_template_expression(const String &p_expression, con
 method_name_search_done:
 
 	TemplateExpressionMethods call_method = TEMPLATE_EXPRESSION_METHOD_PRINT;
+	bool first_var_decides_print = false;
 
 	// This will be zero even if (var)
 	if (method_name_end_index != 0) {
@@ -426,6 +456,21 @@ method_name_search_done:
 			call_method = TEMPLATE_EXPRESSION_METHOD_PRINT_RAW_BR;
 		} else if (method_name == "vf") {
 			call_method = TEMPLATE_EXPRESSION_METHOD_VFORMAT;
+		} else if (method_name == "qp") {
+			//default, needs to be checked so no error
+			first_var_decides_print = true;
+		} else if (method_name == "qpr") {
+			call_method = TEMPLATE_EXPRESSION_METHOD_PRINT_RAW;
+			first_var_decides_print = true;
+		} else if (method_name == "qpb") {
+			call_method = TEMPLATE_EXPRESSION_METHOD_PRINT_BR;
+			first_var_decides_print = true;
+		} else if (method_name == "qprb") {
+			call_method = TEMPLATE_EXPRESSION_METHOD_PRINT_RAW_BR;
+			first_var_decides_print = true;
+		} else if (method_name == "qvf") {
+			call_method = TEMPLATE_EXPRESSION_METHOD_VFORMAT;
+			first_var_decides_print = true;
 		} else {
 			ERR_FAIL_V_MSG(String(), "There is an error in the syntax of an expression! Not a valid method!. Method: " + method_name + " Expression: " + p_expression);
 		}
@@ -536,7 +581,7 @@ method_name_search_done:
 		final_values.set(vi, process_template_expression_variable(variable, p_data));
 	}
 
-	return call_template_method(call_method, final_values);
+	return call_template_method(call_method, final_values, first_var_decides_print);
 }
 
 String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_data) {
@@ -547,6 +592,11 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 	// {{ pb(var) }} // print_newline_to_br, escaped, turns newlines into <br>, also includes to string cast
 	// {{ prb(var) }} // print_raw_newline_to_br, not escaped, turns newlines into <br>, also includes to string cast
 	// {{ vf("%d %d", var1, var2) }} // vformat
+	// {{ qp(var) }} // Same as p, but only prints when it's first argument evaluates to true
+	// {{ qpr(var) }} // Same as pr, but only prints when it's first argument evaluates to true
+	// {{ qpb(var) }} // Same as pb, but only prints when it's first argument evaluates to true
+	// {{ qprb(var) }} // Same as prb, but only prints when it's first argument evaluates to true
+	// {{ qvf("%d %d", var1, var2) }} // Same as vf, but only prints when it's first argument evaluates to true
 
 	String result;
 
@@ -1040,7 +1090,7 @@ void HTMLTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_template_text", "name"), &HTMLTemplate::get_template_text);
 
-	ClassDB::bind_method(D_METHOD("call_template_method", "method", "data"), &HTMLTemplate::call_template_method);
+	ClassDB::bind_method(D_METHOD("call_template_method", "method", "data", "first_var_decides_print"), &HTMLTemplate::call_template_method);
 	ClassDB::bind_method(D_METHOD("process_template_expression_variable", "variable", "data"), &HTMLTemplate::process_template_expression_variable);
 	ClassDB::bind_method(D_METHOD("process_template_expression", "expression", "data"), &HTMLTemplate::process_template_expression);
 	ClassDB::bind_method(D_METHOD("render_template", "text", "data"), &HTMLTemplate::render_template);

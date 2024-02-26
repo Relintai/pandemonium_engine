@@ -29,11 +29,16 @@
 		5. [code]pb(var)[/code] - print_newline_to_br, escaped, turns newlines into br tags, also includes a to string cast.
 		6. [code]prb(var)[/code] - print_raw_newline_to_br, not escaped, turns newlines into br tags, also includes a to string cast.
 		7. [code]vf("%d %d", var1, var2)[/code] - vformat or snprintf or String fromatting using % in gdscript.
-		8. [code]p(var_arr[0])[/code] - Array indexing.
-		9. [code]p(var_dict["x"]), p(var_dict[x]), p(var_dict['x'])[/code] - Dictionary indexing.
-		10. [code]p(var1, var2)[/code] - All methods supports multiple arguments.
-		11. Let's say [code]var1[/code] is a [Vector3], [code]var["x"][/code] and [code]var[0][/code] and [code]var[x][/code] will also work.
-		12. Indexing will also call [code]get()[/code] on [Object]s.
+		8. [code]qp(var1, var2)[/code] -  Same as p, but only prints when it's first argument evaluates to true. (First arg is not printed!)
+		9. [code]qpr(var1, var2)[/code] - Same as pr, but only prints when it's first argument evaluates to true. (First arg is not printed!)
+		10. [code]qpb(var1, var2)[/code] - Same as pb, but only prints when it's first argument evaluates to true. (First arg is not printed!)
+		11. [code]qprb(var1, var2)[/code] - Same as prb, but only prints when it's first argument evaluates to true. (First arg is not printed!)
+		12. [code]qvf(var1, "%d %d", var1, var2)[/code] - Same as vf, but only prints when it's first argument evaluates to true. (First arg is not printed!)
+		13. [code]p(var_arr[0])[/code] - Array indexing.
+		14. [code]p(var_dict["x"]), p(var_dict[x]), p(var_dict['x'])[/code] - Dictionary indexing.
+		15. [code]p(var1, var2)[/code] - All methods supports multiple arguments.
+		16. Let's say [code]var1[/code] is a [Vector3], [code]var["x"][/code] and [code]var[0][/code] and [code]var[x][/code] will also work.
+		17. Indexing will also call [code]get()[/code] on [Object]s.
 		Not supported:
 		0. [code]p(var[var[var[2]]])[/code] Recursive indexing.
 		1. No actual method calls. Make everything available that your templates need in your controller class!
