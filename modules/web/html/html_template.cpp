@@ -227,8 +227,131 @@ String HTMLTemplate::get_template_text(const StringName &p_name) {
 	return String();
 }
 
-String HTMLTemplate::process_template_expression_variable(const String &p_variable, const TemplateExpressionMethods p_method, const Dictionary &p_data) {
+String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_method, const Array &p_data) {
+	int s = p_data.size();
+
+	if (p_method != TEMPLATE_EXPRESSION_METHOD_VFORMAT) {
+		String ret;
+
+		for (int i = 0; i < s; ++i) {
+			switch (p_method) {
+				case TEMPLATE_EXPRESSION_METHOD_PRINT: {
+					ret += String(p_data[i]).xml_escape();
+				} break;
+				case TEMPLATE_EXPRESSION_METHOD_PRINT_RAW: {
+					ret += String(p_data[i]);
+				} break;
+				case TEMPLATE_EXPRESSION_METHOD_PRINT_BR: {
+					ret += String(p_data[i]).xml_escape().newline_to_br();
+				} break;
+				case TEMPLATE_EXPRESSION_METHOD_PRINT_RAW_BR: {
+					ret += String(p_data[i]).newline_to_br();
+				} break;
+				default:
+					break;
+			}
+		}
+
+		return ret;
+	} else {
+		//VFormat
+
+		ERR_FAIL_COND_V_MSG(s < 1, String(), "vformat requires at least one positional argument!");
+
+		Array args;
+
+		for (int i = 1; i < s; ++i) {
+			args.push_back(p_data[i]);
+		}
+		
+		String fstring = String(p_data[0]);
+
+		bool error = false;
+		String fmt = fstring.sprintf(args, &error);
+
+		ERR_FAIL_COND_V_MSG(error, String(), "vformat error! Format string: " + fstring + " params: " + String(Variant(args)) + " error string: " + fmt);
+
+		return fmt;
+	}
+
 	return String();
+}
+
+Variant HTMLTemplate::process_template_expression_variable(const String &p_variable, const Dictionary &p_data) {
+	// "XXX" // String
+	// 'XXX' // String
+	// var[1] // Array indexing
+	// var["x"] // Dictionary indexing
+	// () just gets used ar variable names, except for an outside one, that gets stripped: (var["x"]), also var[("X")], also var[(1)].
+	// NO:
+	// var[var[var[2]]] Recursive indexing doesn't work.
+
+	// Remove outside brackets
+	String variable = p_variable.strip_edges().lstrip("(").rstrip(")").strip_edges();
+
+	if (variable.empty()) {
+		return Variant();
+	}
+
+	// String
+	if (variable.begins_with("\"")) {
+		return variable.lstrip("\"").rstrip("\"");
+	}
+
+	// String
+	if (variable.begins_with("'")) {
+		return variable.lstrip("'").rstrip("'");
+	}
+
+	int lsqbrace_pos = variable.find("[");
+
+	if (lsqbrace_pos == -1) {
+		// Simplest case
+
+		const Variant *element = p_data.getptr(Variant(p_variable));
+
+		ERR_FAIL_COND_V_MSG(!element, Variant(), "The given Dictionary does not contain value! " + variable);
+
+		return *element;
+	}
+
+	int rsqbrace_pos = variable.find_last("]");
+
+	// Has no [, but has ]. Might be a bug, or just ] in name of variable. If it's not intenrional, the error macro will get triggered.
+	if (rsqbrace_pos == -1) {
+		const Variant *element = p_data.getptr(Variant(p_variable));
+
+		ERR_FAIL_COND_V_MSG(!element, Variant(), "The given Dictionary does not contain value! " + variable);
+
+		return *element;
+	}
+
+	String var_name = variable.substr_index(0, lsqbrace_pos);
+
+	const Variant *element = p_data.getptr(Variant(var_name));
+
+	ERR_FAIL_COND_V_MSG(!element, Variant(), "The given Dictionary does not contain value! " + var_name + " Full variable: " + variable);
+
+	String var_index = variable.substr_index(lsqbrace_pos + 1, rsqbrace_pos).lstrip("(").rstrip(")").strip_edges();
+	Variant final_index;
+
+	if (var_index.begins_with("\"")) {
+		final_index = var_index.lstrip("\"").rstrip("\"");
+	} else if (variable.begins_with("'")) {
+		final_index = var_index.lstrip("'").rstrip("'");
+	} else {
+		// Try to convert to int, if can't leave as string
+		if (var_index.is_valid_integer()) {
+			final_index = var_index.to_int();
+		} else {
+			final_index = var_index;
+		}
+	}
+
+	Variant v = *element;
+	Variant r = v.get(final_index);
+
+	return r;
 }
 
 String HTMLTemplate::process_template_expression(const String &p_expression, const Dictionary &p_data) {
@@ -243,6 +366,8 @@ String HTMLTemplate::process_template_expression(const String &p_expression, con
 	// p(var[1]) // Array indexing
 	// p(var["x"]) // Dictionary indexing
 	// p(var1, var2) All methods can do multiple arguments
+	// Not supported:
+	// p(var[var[var[2]]]) Recursive indexing.
 	// No actual method calls. Even though it should be relatively trivial to implement, it's probably not a good idea.
 
 	String expression = p_expression.strip_edges();
@@ -401,16 +526,17 @@ method_name_search_done:
 		variables.push_back(current_variable_str);
 	}
 
-	String ret;
+	Array final_values;
+	final_values.resize(variables.size());
 
 	// Finally let's just process the variables themselves, and generate the final output
 	for (uint32_t vi = 0; vi < variables.size(); ++vi) {
 		String variable = variables[vi];
 
-		ret += process_template_expression_variable(variable, call_method, p_data);
+		final_values.set(vi, process_template_expression_variable(variable, p_data));
 	}
 
-	return ret;
+	return call_template_method(call_method, final_values);
 }
 
 String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_data) {
@@ -914,7 +1040,8 @@ void HTMLTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_template_text", "name"), &HTMLTemplate::get_template_text);
 
-	ClassDB::bind_method(D_METHOD("process_template_expression_variable", "variable", "method", "data"), &HTMLTemplate::process_template_expression_variable);
+	ClassDB::bind_method(D_METHOD("call_template_method", "method", "data"), &HTMLTemplate::call_template_method);
+	ClassDB::bind_method(D_METHOD("process_template_expression_variable", "variable", "data"), &HTMLTemplate::process_template_expression_variable);
 	ClassDB::bind_method(D_METHOD("process_template_expression", "expression", "data"), &HTMLTemplate::process_template_expression);
 	ClassDB::bind_method(D_METHOD("render_template", "text", "data"), &HTMLTemplate::render_template);
 

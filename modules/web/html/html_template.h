@@ -97,7 +97,8 @@ public:
 
 	String get_template_text(const StringName &p_name);
 
-	String process_template_expression_variable(const String &p_variable, const TemplateExpressionMethods p_method, const Dictionary &p_data);
+	String call_template_method(const TemplateExpressionMethods p_method, const Array &p_data);
+	Variant process_template_expression_variable(const String &p_variable, const Dictionary &p_data);
 	String process_template_expression(const String &p_expression, const Dictionary &p_data);
 	String render_template(const String &p_text, const Dictionary &p_data);
 
