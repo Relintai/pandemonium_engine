@@ -463,11 +463,11 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 	if (last_section_start <= text_length - 1) {
 		result += p_text.substr_index(last_section_start, text_length);
 	}
-	
+
 	return result;
 }
 
-String HTMLTemplate::get_and_render_template(const StringName &p_name, const Ref<WebServerRequest> &p_request, const Dictionary &p_data) {
+String HTMLTemplate::get_and_render_template(const StringName &p_name, const Dictionary &p_data) {
 	String text = get_template_text(p_name);
 
 	return render_template(text, p_data);
@@ -729,7 +729,7 @@ void HTMLTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("process_template_expression", "expression", "data"), &HTMLTemplate::process_template_expression);
 	ClassDB::bind_method(D_METHOD("render_template", "text", "data"), &HTMLTemplate::render_template);
 
-	ClassDB::bind_method(D_METHOD("get_and_render_template", "name", "request", "data"), &HTMLTemplate::get_and_render_template);
+	ClassDB::bind_method(D_METHOD("get_and_render_template", "name", "data"), &HTMLTemplate::get_and_render_template);
 
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_render",
 			PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"),

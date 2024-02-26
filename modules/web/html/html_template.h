@@ -92,7 +92,7 @@ public:
 	String process_template_expression(const String &p_expression, const Dictionary &p_data);
 	String render_template(const String &p_text, const Dictionary &p_data);
 
-	String get_and_render_template(const StringName &p_name, const Ref<WebServerRequest> &p_request, const Dictionary &p_data);
+	String get_and_render_template(const StringName &p_name, const Dictionary &p_data);
 
 	String render(const Ref<WebServerRequest> &p_request, const Dictionary &p_data);
 	virtual String _render(const Ref<WebServerRequest> &p_request, const Dictionary &p_data);
