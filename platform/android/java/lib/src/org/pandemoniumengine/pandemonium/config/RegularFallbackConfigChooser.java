@@ -31,13 +31,13 @@
 
 package org.pandemoniumengine.pandemonium.config;
 
+import org.pandemoniumengine.pandemonium.utils.GLUtils;
+
 import android.util.Log;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLDisplay;
-
-import org.pandemoniumengine.pandemonium.utils.GLUtils;
 
 /* Fallback if the requested configuration is not supported */
 public class RegularFallbackConfigChooser extends RegularConfigChooser {

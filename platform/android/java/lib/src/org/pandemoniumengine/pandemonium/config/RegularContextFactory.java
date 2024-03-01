@@ -31,16 +31,16 @@
 
 package org.pandemoniumengine.pandemonium.config;
 
+import org.pandemoniumengine.pandemonium.PandemoniumLib;
+import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
+import org.pandemoniumengine.pandemonium.utils.GLUtils;
+
 import android.util.Log;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
-
-import org.pandemoniumengine.pandemonium.PandemoniumLib;
-import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
-import org.pandemoniumengine.pandemonium.utils.GLUtils;
 
 /**
  * Factory used to setup the opengl context for pancake games.

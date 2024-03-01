@@ -33,6 +33,9 @@ package org.pandemoniumengine.pandemonium.input;
 
 import static org.pandemoniumengine.pandemonium.utils.GLUtils.DEBUG;
 
+import org.pandemoniumengine.pandemonium.PandemoniumLib;
+import org.pandemoniumengine.pandemonium.PandemoniumView;
+
 import android.content.Context;
 import android.hardware.input.InputManager;
 import android.os.Build;
@@ -48,9 +51,6 @@ import android.view.ScaleGestureDetector;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.pandemoniumengine.pandemonium.PandemoniumLib;
-import org.pandemoniumengine.pandemonium.PandemoniumView;
 
 /**
  * Handles input related events for the {@link PandemoniumView} view.

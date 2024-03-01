@@ -31,6 +31,8 @@
 
 package org.pandemoniumengine.pandemonium.plugin;
 
+import org.pandemoniumengine.pandemonium.Pandemonium;
+
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -44,8 +46,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.pandemoniumengine.pandemonium.Pandemonium;
 
 /**
  * Registry used to load and access the registered Pandemonium Android plugins.

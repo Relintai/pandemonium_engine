@@ -31,13 +31,13 @@
 
 package org.pandemoniumengine.pandemonium;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
 import org.pandemoniumengine.pandemonium.plugin.PandemoniumPlugin;
 import org.pandemoniumengine.pandemonium.plugin.PandemoniumPluginRegistry;
 import org.pandemoniumengine.pandemonium.utils.GLUtils;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 /**
  * Pandemonium's renderer implementation.

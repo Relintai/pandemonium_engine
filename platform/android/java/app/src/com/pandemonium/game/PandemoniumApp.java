@@ -31,9 +31,9 @@
 
 package com.pandemonium.game;
 
-import android.os.Bundle;
-
 import org.pandemoniumengine.pandemonium.FullScreenPandemoniumApp;
+
+import android.os.Bundle;
 
 /**
  * Template activity for Pandemonium Android custom builds.

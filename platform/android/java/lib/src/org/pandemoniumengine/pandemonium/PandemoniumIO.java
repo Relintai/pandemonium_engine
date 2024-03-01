@@ -31,6 +31,8 @@
 
 package org.pandemoniumengine.pandemonium;
 
+import org.pandemoniumengine.pandemonium.input.PandemoniumEditText;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -53,8 +55,6 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
-
-import org.pandemoniumengine.pandemonium.input.PandemoniumEditText;
 
 // Wrapper for native library
 

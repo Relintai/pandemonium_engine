@@ -31,6 +31,13 @@
 
 package org.pandemoniumengine.pandemonium;
 
+import org.pandemoniumengine.pandemonium.config.RegularConfigChooser;
+import org.pandemoniumengine.pandemonium.config.RegularContextFactory;
+import org.pandemoniumengine.pandemonium.config.RegularFallbackConfigChooser;
+import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
+import org.pandemoniumengine.pandemonium.input.PandemoniumInputHandler;
+import org.pandemoniumengine.pandemonium.utils.GLUtils;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -51,13 +58,6 @@ import java.io.InputStream;
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
-
-import org.pandemoniumengine.pandemonium.config.RegularConfigChooser;
-import org.pandemoniumengine.pandemonium.config.RegularContextFactory;
-import org.pandemoniumengine.pandemonium.config.RegularFallbackConfigChooser;
-import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
-import org.pandemoniumengine.pandemonium.input.PandemoniumInputHandler;
-import org.pandemoniumengine.pandemonium.utils.GLUtils;
 
 /**
  * A simple GLSurfaceView sub-class that demonstrate how to perform

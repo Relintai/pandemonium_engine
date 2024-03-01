@@ -31,15 +31,15 @@
 
 package org.pandemoniumengine.pandemonium;
 
+import org.pandemoniumengine.pandemonium.io.directory.DirectoryAccessHandler;
+import org.pandemoniumengine.pandemonium.io.file.FileAccessHandler;
+import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
+
 import android.app.Activity;
 import android.content.res.AssetManager;
 import android.hardware.SensorEvent;
 
 import javax.microedition.khronos.opengles.GL10;
-
-import org.pandemoniumengine.pandemonium.io.directory.DirectoryAccessHandler;
-import org.pandemoniumengine.pandemonium.io.file.FileAccessHandler;
-import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
 
 /**
  * Wrapper for native library

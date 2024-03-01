@@ -63,17 +63,17 @@ Dictionary HTMLTemplateData::get_templates() const {
 }
 void HTMLTemplateData::set_templates(const Dictionary &p_dict) {
 	clear();
-	
+
 	Array keys = p_dict.keys();
-	
+
 	for (int i = 0; i < keys.size(); ++i) {
 		Variant k = keys[i];
 		Variant::Type t = k.get_type();
-		
+
 		if (t != Variant::STRING && t != Variant::STRING_NAME) {
 			continue;
 		}
-		
+
 		_templates[k] = String(p_dict[k]);
 	}
 }
@@ -135,9 +135,9 @@ Error HTMLTemplateData::save_to_file(const String &p_file) const {
 }
 void HTMLTemplateData::load_from_string(const String &p_data) {
 	clear();
-	
+
 	Vector<String> lines = p_data.split("\n", false);
-	
+
 	String current_section_name;
 	String current_str;
 	for (int i = 0; i < lines.size(); ++i) {
@@ -149,26 +149,26 @@ void HTMLTemplateData::load_from_string(const String &p_data) {
 			if (!current_section_name.empty()) {
 				_templates[current_section_name] = current_str;
 			}
-			
+
 			// Remove [ and ], and strip it.
 			current_section_name = l.substr_index(1, l.length() - 2).strip_edges();
 			current_str = "";
 			continue;
 		}
-		
+
 		current_str += l + "\n";
 	}
-	
+
 	if (!current_section_name.empty()) {
 		_templates[current_section_name] = current_str;
 	}
 }
 String HTMLTemplateData::save_as_string() const {
 	String data;
-	
+
 	for (const HashMap<StringName, String>::Element *E = _templates.front(); E; E = E->next) {
 		data += "[ " + E->key() + " ]\n\n";
-		data +=  E->value();
+		data += E->value();
 		data += "\n\n";
 	}
 

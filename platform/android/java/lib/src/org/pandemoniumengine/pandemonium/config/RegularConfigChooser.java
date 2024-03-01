@@ -31,12 +31,12 @@
 
 package org.pandemoniumengine.pandemonium.config;
 
+import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
+import org.pandemoniumengine.pandemonium.utils.GLUtils;
+
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLDisplay;
-
-import org.pandemoniumengine.pandemonium.gl.PandemoniumGLSurfaceView;
-import org.pandemoniumengine.pandemonium.utils.GLUtils;
 
 /**
  * Used to select the egl config for pancake games.

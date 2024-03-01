@@ -600,7 +600,7 @@ TextFileEditor::TextFileEditor() {
 	EXTENSIONS.push_back("*.bat ; Windows batch File");
 	EXTENSIONS.push_back("*.ps1 ; Powershell File");
 	EXTENSIONS.push_back("*.pxml ; Non-translation xml.");
-	
+
 	current_file_index = -1;
 	save_as = false;
 	current_editor = NULL;

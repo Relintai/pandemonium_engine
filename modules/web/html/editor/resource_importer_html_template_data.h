@@ -68,7 +68,7 @@ class HTMLTemplateDataEditorPlugin : public EditorPlugin {
 public:
 	virtual void edit(Object *p_object);
 	virtual bool handles(Object *p_object) const;
-	
+
 	HTMLTemplateDataEditorPlugin(EditorNode *p_node);
 
 	virtual String get_name() const { return "HTMLTemplateData"; }

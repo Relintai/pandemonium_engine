@@ -31,6 +31,8 @@
 
 package org.pandemoniumengine.pandemonium.input;
 
+import org.pandemoniumengine.pandemonium.*;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Handler;
@@ -44,8 +46,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.lang.ref.WeakReference;
-
-import org.pandemoniumengine.pandemonium.*;
 
 public class PandemoniumEditText extends EditText {
 	// ===========================================================

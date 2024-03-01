@@ -31,6 +31,8 @@
 
 package org.pandemoniumengine.pandemonium.input;
 
+import org.pandemoniumengine.pandemonium.*;
+
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,8 +41,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-
-import org.pandemoniumengine.pandemonium.*;
 
 public class PandemoniumTextInputWrapper implements TextWatcher, OnEditorActionListener {
 	// ===========================================================

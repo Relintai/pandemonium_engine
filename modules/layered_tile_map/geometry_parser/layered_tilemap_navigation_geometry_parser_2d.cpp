@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  tilemap_navigation_geometry_parser_2d.cpp                            */
+/*  layered_tilemap_navigation_geometry_parser_2d.cpp                    */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */

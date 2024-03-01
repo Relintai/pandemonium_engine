@@ -2,7 +2,7 @@
 #define TILEMAP_NAVIGATION_GEOMETRY_PARSER_2D_H
 
 /*************************************************************************/
-/*  tilemap_navigation_geometry_parser_2d.h                              */
+/*  layered_tilemap_navigation_geometry_parser_2d.h                      */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */

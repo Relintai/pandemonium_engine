@@ -234,7 +234,7 @@ public:
 
 	void select_editor_by_name(const String &p_name);
 	void editor_set_visible_by_name(const String &p_name, const bool p_visible);
-	
+
 	EditorPlugin *get_editor_by_name(const String &p_name);
 
 	void open_request(const String &p_path);

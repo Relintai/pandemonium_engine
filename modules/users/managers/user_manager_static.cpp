@@ -157,7 +157,7 @@ void UserManagerStatic::_editor_create_user_button(const StringName &p_property)
 	_create_user_password = "";
 	_create_user_email = "";
 	_create_user_name = "";
-	
+
 	property_list_changed_notify();
 }
 

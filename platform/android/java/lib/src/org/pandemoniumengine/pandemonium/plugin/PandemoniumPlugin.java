@@ -31,6 +31,9 @@
 
 package org.pandemoniumengine.pandemonium.plugin;
 
+import org.pandemoniumengine.pandemonium.BuildConfig;
+import org.pandemoniumengine.pandemonium.Pandemonium;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,9 +55,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-
-import org.pandemoniumengine.pandemonium.BuildConfig;
-import org.pandemoniumengine.pandemonium.Pandemonium;
 
 /**
  * Base class for the Pandemonium Android plugins.

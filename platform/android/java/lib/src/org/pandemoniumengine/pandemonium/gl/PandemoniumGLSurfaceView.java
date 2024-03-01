@@ -49,6 +49,8 @@ package org.pandemoniumengine.pandemonium.gl;
 
 //import android.compat.annotation.UnsupportedAppUsage;
 
+import org.pandemoniumengine.pandemonium.gl.EGLLogWrapper;
+
 import android.content.Context;
 import android.opengl.EGL14;
 import android.opengl.EGLExt;
@@ -71,8 +73,6 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL;
 import javax.microedition.khronos.opengles.GL10;
-
-import org.pandemoniumengine.pandemonium.gl.EGLLogWrapper;
 
 public class PandemoniumGLSurfaceView extends SurfaceView implements SurfaceHolder.Callback2 {
 	private final static String TAG = "PandemoniumGLSurfaceView";

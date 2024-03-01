@@ -34,6 +34,16 @@ package org.pandemoniumengine.pandemonium;
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.WINDOW_SERVICE;
 
+import org.pandemoniumengine.pandemonium.input.PandemoniumEditText;
+import org.pandemoniumengine.pandemonium.input.PandemoniumInputHandler;
+import org.pandemoniumengine.pandemonium.io.directory.DirectoryAccessHandler;
+import org.pandemoniumengine.pandemonium.io.file.FileAccessHandler;
+import org.pandemoniumengine.pandemonium.plugin.PandemoniumPlugin;
+import org.pandemoniumengine.pandemonium.plugin.PandemoniumPluginRegistry;
+import org.pandemoniumengine.pandemonium.utils.BenchmarkUtils;
+import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
+import org.pandemoniumengine.pandemonium.utils.PermissionsUtil;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -106,16 +116,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.microedition.khronos.opengles.GL10;
-
-import org.pandemoniumengine.pandemonium.input.PandemoniumEditText;
-import org.pandemoniumengine.pandemonium.input.PandemoniumInputHandler;
-import org.pandemoniumengine.pandemonium.io.directory.DirectoryAccessHandler;
-import org.pandemoniumengine.pandemonium.io.file.FileAccessHandler;
-import org.pandemoniumengine.pandemonium.plugin.PandemoniumPlugin;
-import org.pandemoniumengine.pandemonium.plugin.PandemoniumPluginRegistry;
-import org.pandemoniumengine.pandemonium.utils.BenchmarkUtils;
-import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
-import org.pandemoniumengine.pandemonium.utils.PermissionsUtil;
 
 public class Pandemonium extends Fragment implements SensorEventListener, IDownloaderClient {
 	private static final String TAG = Pandemonium.class.getSimpleName();
