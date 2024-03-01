@@ -45,11 +45,11 @@
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/main/control.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/tab_container.h"
+#include "scene/main/control.h"
 
 #include "core/core_string_names.h"
 #include "core/math/geometry_2d.h"

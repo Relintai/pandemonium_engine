@@ -1,3 +1,6 @@
+#ifndef EASING_EQUATIONS_H
+#define EASING_EQUATIONS_H
+
 /*************************************************************************/
 /*  easing_equations.h                                                   */
 /*************************************************************************/
@@ -52,9 +55,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-#ifndef EASING_EQUATIONS_H
-#define EASING_EQUATIONS_H
 
 namespace linear {
 static real_t in(real_t t, real_t b, real_t c, real_t d) {

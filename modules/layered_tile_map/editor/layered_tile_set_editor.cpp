@@ -43,9 +43,9 @@
 #include "editor/themes/editor_scale.h"
 
 #include "scene/gui/box_container.h"
-#include "scene/main/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tab_container.h"
+#include "scene/main/control.h"
 
 LayeredTileSetEditor *LayeredTileSetEditor::singleton = nullptr;
 

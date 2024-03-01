@@ -1,3 +1,6 @@
+#ifndef FILE_ACCESS_FILESYSTEM_JANDROID_H
+#define FILE_ACCESS_FILESYSTEM_JANDROID_H
+
 /*************************************************************************/
 /*  file_access_filesystem_jandroid.h                                    */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef FILE_ACCESS_FILESYSTEM_JANDROID_H
-#define FILE_ACCESS_FILESYSTEM_JANDROID_H
 
 #include "core/os/file_access.h"
 #include "java_pandemonium_lib_jni.h"

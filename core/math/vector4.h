@@ -1,3 +1,6 @@
+#ifndef VECTOR4_H
+#define VECTOR4_H
+
 /*************************************************************************/
 /*  vector4.h                                                            */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef VECTOR4_H
-#define VECTOR4_H
 
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"

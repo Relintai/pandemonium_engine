@@ -35,6 +35,9 @@
 
 #include "core/os/mutex.h"
 
+#include "../layered_tile_map.h"
+#include "../layered_tile_map_layer.h"
+#include "../layered_tile_set.h"
 #include "editor/editor_interface.h"
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
@@ -42,13 +45,10 @@
 #include "editor/gui/editor_bottom_panel.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "editor/themes/editor_scale.h"
-#include "../layered_tile_map.h"
-#include "../layered_tile_map_layer.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/main/control.h"
 #include "scene/gui/separator.h"
-#include "../layered_tile_set.h"
+#include "scene/main/control.h"
 #include "scene/resources/image_texture.h"
 
 LayeredTilesEditorUtils *LayeredTilesEditorUtils::singleton = nullptr;

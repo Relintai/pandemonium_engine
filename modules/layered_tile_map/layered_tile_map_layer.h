@@ -32,8 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/2d/tile_map.h"
 #include "layered_tile_set.h"
+#include "scene/2d/tile_map.h"
 
 class LayeredTileSetAtlasSource;
 

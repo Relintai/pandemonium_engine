@@ -35,8 +35,8 @@
 #include "layered_tile_atlas_view.h"
 #include "layered_tile_data_editors.h"
 
-#include "scene/gui/split_container.h"
 #include "../layered_tile_set.h"
+#include "scene/gui/split_container.h"
 
 class Popup;
 class LayeredTileSet;

@@ -1,3 +1,6 @@
+#ifndef PROJECTION_H
+#define PROJECTION_H
+
 /*************************************************************************/
 /*  projection.h                                                         */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef PROJECTION_H
-#define PROJECTION_H
 
 #include "core/containers/vector.h"
 #include "core/math/math_defs.h"

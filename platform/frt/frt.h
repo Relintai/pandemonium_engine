@@ -1,3 +1,6 @@
+#ifndef FRT_H
+#define FRT_H
+
 /*************************************************************************/
 /*  frt.h                                                                */
 /*************************************************************************/
@@ -53,9 +56,6 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
-#ifndef FRT_H
-#define FRT_H
 
 #define FRT_WINDOW_TITLE "Pandemonium / FRT"
 #define FRT_VERSION "1.1.0"

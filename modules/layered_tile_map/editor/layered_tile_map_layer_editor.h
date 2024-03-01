@@ -34,9 +34,9 @@
 
 #include "tile_atlas_view.h"
 
+#include "../layered_tile_map.h"
 #include "core/os/thread.h"
 #include "core/typedefs.h"
-#include "../layered_tile_map.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/check_box.h"
 #include "scene/gui/flow_container.h"

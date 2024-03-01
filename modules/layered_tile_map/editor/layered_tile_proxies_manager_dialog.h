@@ -32,8 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_properties.h"
 #include "../layered_tile_map.h"
+#include "editor/editor_properties.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/item_list.h"
 

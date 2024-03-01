@@ -1,3 +1,6 @@
+#ifndef IMPORTER_MESH_H
+#define IMPORTER_MESH_H
+
 /*************************************************************************/
 /*  importer_mesh.h                                                      */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef IMPORTER_MESH_H
-#define IMPORTER_MESH_H
 
 #include "core/containers/local_vector.h"
 #include "core/object/resource.h"

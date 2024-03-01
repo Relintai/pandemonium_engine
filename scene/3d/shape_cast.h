@@ -1,3 +1,6 @@
+#ifndef SHAPE_CAST_H
+#define SHAPE_CAST_H
+
 /*************************************************************************/
 /*  shape_cast.h                                                         */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef SHAPE_CAST_H
-#define SHAPE_CAST_H
 
 #include "core/math/color.h"
 

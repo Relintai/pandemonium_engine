@@ -1,3 +1,6 @@
+#ifndef JOYPAD_UWP_H
+#define JOYPAD_UWP_H
+
 /*************************************************************************/
 /*  joypad_uwp.h                                                         */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef JOYPAD_UWP_H
-#define JOYPAD_UWP_H
 
 #include "main/input_default.h"
 

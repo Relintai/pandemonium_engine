@@ -1,3 +1,6 @@
+#ifndef JSONRPC_H
+#define JSONRPC_H
+
 /*************************************************************************/
 /*  jsonrpc.h                                                            */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef JSONRPC_H
-#define JSONRPC_H
 
 #include "core/object/object.h"
 #include "core/variant/variant.h"

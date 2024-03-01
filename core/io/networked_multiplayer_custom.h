@@ -1,3 +1,6 @@
+#ifndef NETWORKED_MULTIPLAYER_CUSTOM_H
+#define NETWORKED_MULTIPLAYER_CUSTOM_H
+
 /*************************************************************************/
 /*  networked_multiplayer_custom.h                                       */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef NETWORKED_MULTIPLAYER_CUSTOM_H
-#define NETWORKED_MULTIPLAYER_CUSTOM_H
 
 #include "core/io/networked_multiplayer_peer.h"
 

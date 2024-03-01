@@ -1,3 +1,6 @@
+#ifndef CONTEXT_EGL_UWP_H
+#define CONTEXT_EGL_UWP_H
+
 /*************************************************************************/
 /*  context_egl_uwp.h                                                    */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef CONTEXT_EGL_UWP_H
-#define CONTEXT_EGL_UWP_H
 
 #include <wrl.h>
 

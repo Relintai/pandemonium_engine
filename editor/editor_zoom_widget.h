@@ -1,3 +1,6 @@
+#ifndef EDITOR_ZOOM_WIDGET_H
+#define EDITOR_ZOOM_WIDGET_H
+
 /*************************************************************************/
 /*  editor_zoom_widget.h                                                 */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef EDITOR_ZOOM_WIDGET_H
-#define EDITOR_ZOOM_WIDGET_H
 
 #include "scene/gui/box_container.h"
 

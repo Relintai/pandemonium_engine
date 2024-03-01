@@ -35,17 +35,17 @@
 #include "core/containers/local_vector.h"
 #include "core/containers/rb_set.h"
 
-#include "core/object/resource.h"
 #include "core/object/object.h"
+#include "core/object/resource.h"
 
 #include "scene/2d/light_occluder_2d.h"
 #include "scene/main/canvas_item.h"
 
-#include "scene/resources/texture.h"
 #include "scene/resources/navigation_2d/navigation_polygon.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/physics_material.h"
 #include "scene/resources/shapes_2d/concave_polygon_shape_2d.h"
+#include "scene/resources/texture.h"
 
 #ifndef DISABLE_DEPRECATED
 #include "scene/resources/shader.h"

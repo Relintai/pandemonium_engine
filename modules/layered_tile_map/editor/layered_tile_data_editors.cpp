@@ -43,12 +43,12 @@
 #include "editor/editor_undo_redo_manager.h"
 #include "editor/themes/editor_scale.h"
 
-#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
+#include "scene/main/control.h"
 
 #include "servers/navigation_2d_server.h"
 

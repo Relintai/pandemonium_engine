@@ -1,3 +1,6 @@
+#ifndef JSONRPC_REGISTER_TYPES_H
+#define JSONRPC_REGISTER_TYPES_H
+
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef JSONRPC_REGISTER_TYPES_H
-#define JSONRPC_REGISTER_TYPES_H
 
 #include "modules/register_module_types.h"
 

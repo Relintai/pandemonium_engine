@@ -1,3 +1,6 @@
+#ifndef GRADIENT_TEXTURE_2D_EDITOR
+#define GRADIENT_TEXTURE_2D_EDITOR
+
 /*************************************************************************/
 /*  gradient_texture_2d_editor_plugin.h                                  */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GRADIENT_TEXTURE_2D_EDITOR
-#define GRADIENT_TEXTURE_2D_EDITOR
 
 #include "editor/editor_inspector.h"
 #include "editor/editor_plugin.h"

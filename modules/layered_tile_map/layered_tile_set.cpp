@@ -29,13 +29,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "layered_tile_set.compat.inc"
 #include "layered_tile_set.h"
+#include "layered_tile_set.compat.inc"
 
-#include "core/io/marshalls.h"
-#include "core/math/geometry.h"
 #include "core/containers/local_vector.h"
 #include "core/containers/rb_set.h"
+#include "core/io/marshalls.h"
+#include "core/math/geometry.h"
 #include "scene/main/control.h"
 #include "scene/resources/texture.h"
 #include "servers/navigation_2d_server.h"

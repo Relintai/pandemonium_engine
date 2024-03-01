@@ -1,3 +1,6 @@
+#ifndef RAY_CAST_2D_EDITOR_PLUGIN_H
+#define RAY_CAST_2D_EDITOR_PLUGIN_H
+
 /*************************************************************************/
 /*  ray_cast_2d_editor_plugin.h                                          */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef RAY_CAST_2D_EDITOR_PLUGIN_H
-#define RAY_CAST_2D_EDITOR_PLUGIN_H
 
 #include "editor/editor_plugin.h"
 #include "scene/2d/ray_cast_2d.h"

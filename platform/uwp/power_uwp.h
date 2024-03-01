@@ -1,3 +1,6 @@
+#ifndef POWER_UWP_H
+#define POWER_UWP_H
+
 /*************************************************************************/
 /*  power_uwp.h                                                          */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef POWER_UWP_H
-#define POWER_UWP_H
 
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"

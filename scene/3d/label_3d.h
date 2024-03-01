@@ -1,3 +1,6 @@
+#ifndef LABEL_3D_H
+#define LABEL_3D_H
+
 /*************************************************************************/
 /*  label_3d.h                                                           */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef LABEL_3D_H
-#define LABEL_3D_H
 
 #include "scene/3d/visual_instance.h"
 #include "scene/resources/font/font.h"

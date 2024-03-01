@@ -1,3 +1,6 @@
+#ifndef SHAPE_CAST_2D_H
+#define SHAPE_CAST_2D_H
+
 /*************************************************************************/
 /*  shape_cast_2d.h                                                      */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef SHAPE_CAST_2D_H
-#define SHAPE_CAST_2D_H
 
 #include "scene/main/node_2d.h"
 #include "scene/resources/shapes_2d/shape_2d.h"

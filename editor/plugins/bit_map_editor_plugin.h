@@ -1,3 +1,6 @@
+#ifndef BIT_MAP_EDITOR_PLUGIN_H
+#define BIT_MAP_EDITOR_PLUGIN_H
+
 /*************************************************************************/
 /*  bit_map_editor_plugin.h                                              */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef BIT_MAP_EDITOR_PLUGIN_H
-#define BIT_MAP_EDITOR_PLUGIN_H
 
 #include "editor/editor_inspector.h"
 #include "editor/editor_plugin.h"

@@ -1,3 +1,6 @@
+#ifndef KEY_MAPPING_X11_H
+#define KEY_MAPPING_X11_H
+
 /*************************************************************************/
 /*  key_mapping_x11.h                                                    */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef KEY_MAPPING_X11_H
-#define KEY_MAPPING_X11_H
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>

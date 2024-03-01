@@ -32,12 +32,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "atlas_merging_dialog.h"
-#include "scene/gui/tab_bar.h"
 #include "../layered_tile_set.h"
+#include "atlas_merging_dialog.h"
 #include "layered_tile_proxies_manager_dialog.h"
 #include "layered_tile_set_atlas_source_editor.h"
 #include "layered_tile_set_scenes_collection_source_editor.h"
+#include "scene/gui/tab_bar.h"
 
 class AcceptDialog;
 class SpinBox;

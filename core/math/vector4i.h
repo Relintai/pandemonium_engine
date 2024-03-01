@@ -1,3 +1,6 @@
+#ifndef VECTOR4I_H
+#define VECTOR4I_H
+
 /*************************************************************************/
 /*  vector4i.h                                                           */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef VECTOR4I_H
-#define VECTOR4I_H
 
 #include "core/error/error_macros.h"
 #include "core/math/math_funcs.h"

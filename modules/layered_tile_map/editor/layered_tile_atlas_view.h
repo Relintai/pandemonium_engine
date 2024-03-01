@@ -32,13 +32,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "../layered_tile_set.h"
 #include "editor/gui/editor_zoom_widget.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/center_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/margin_container.h"
-#include "../layered_tile_set.h"
 
 class ViewPanner;
 

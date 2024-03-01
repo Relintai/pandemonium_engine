@@ -1,3 +1,6 @@
+#ifndef SCENE_TREE_TWEEN_H
+#define SCENE_TREE_TWEEN_H
+
 /*************************************************************************/
 /*  scene_tree_tween.h                                                   */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef SCENE_TREE_TWEEN_H
-#define SCENE_TREE_TWEEN_H
 
 #include "core/object/reference.h"
 #include "scene/animation/tween.h"

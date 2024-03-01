@@ -1,3 +1,6 @@
+#ifndef SYNTAX_HIGHLIGHTER_H
+#define SYNTAX_HIGHLIGHTER_H
+
 /*************************************************************************/
 /*  syntax_highlighter.h                                                 */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef SYNTAX_HIGHLIGHTER_H
-#define SYNTAX_HIGHLIGHTER_H
 
 #include "core/object/resource.h"
 

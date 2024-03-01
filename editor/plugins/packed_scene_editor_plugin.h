@@ -1,3 +1,6 @@
+#ifndef PACKED_SCENE_EDITOR_PLUGIN_H
+#define PACKED_SCENE_EDITOR_PLUGIN_H
+
 /*************************************************************************/
 /*  packed_scene_editor_plugin.h                                         */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef PACKED_SCENE_EDITOR_PLUGIN_H
-#define PACKED_SCENE_EDITOR_PLUGIN_H
 
 #include "editor/editor_inspector.h"
 #include "editor/editor_plugin.h"

@@ -29,8 +29,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "layered_tile_map.compat.inc"
 #include "layered_tile_map.h"
+#include "layered_tile_map.compat.inc"
 
 #include "core/core_string_names.h"
 #include "scene/2d/tile_map_layer.h"

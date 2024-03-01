@@ -32,11 +32,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "../layered_tile_set.h"
 #include "editor/editor_properties.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/texture_rect.h"
-#include "../layered_tile_set.h"
 
 class EditorFileDialog;
 class EditorPropertyVector2i;

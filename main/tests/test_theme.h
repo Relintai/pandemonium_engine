@@ -1,3 +1,6 @@
+#ifndef TEST_THEME_H
+#define TEST_THEME_H
+
 /*************************************************************************/
 /*  test_theme.h                                                         */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef TEST_THEME_H
-#define TEST_THEME_H
 
 #include "core/os/main_loop.h"
 

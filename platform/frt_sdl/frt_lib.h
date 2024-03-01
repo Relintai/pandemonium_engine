@@ -1,3 +1,6 @@
+#ifndef FRT_LIB_H
+#define FRT_LIB_H
+
 /*************************************************************************/
 /*  frt_lib.h                                                            */
 /*************************************************************************/
@@ -35,9 +38,6 @@
   Copyright (c) 2017-2022  Emanuele Fornara
   SPDX-License-Identifier: MIT
  */
-
-#ifndef FRT_LIB_H
-#define FRT_LIB_H
 
 #ifdef __cplusplus
 extern "C" {

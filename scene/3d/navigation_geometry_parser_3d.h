@@ -1,3 +1,6 @@
+#ifndef NAVIGATION_GEOMETRY_PARSER_3D_H
+#define NAVIGATION_GEOMETRY_PARSER_3D_H
+
 /*************************************************************************/
 /*  navigation_geometry_parser_3d.h                                      */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef NAVIGATION_GEOMETRY_PARSER_3D_H
-#define NAVIGATION_GEOMETRY_PARSER_3D_H
 
 #include "core/object/reference.h"
 

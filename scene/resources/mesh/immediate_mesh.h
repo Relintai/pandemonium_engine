@@ -1,3 +1,6 @@
+#ifndef IMMEDIATE_MESH_H
+#define IMMEDIATE_MESH_H
+
 /*************************************************************************/
 /*  immediate_mesh.h                                                     */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef IMMEDIATE_MESH_H
-#define IMMEDIATE_MESH_H
 
 #include "core/containers/vector.h"
 #include "scene/resources/mesh/mesh.h"

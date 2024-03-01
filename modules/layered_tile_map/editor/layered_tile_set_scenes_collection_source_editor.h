@@ -32,9 +32,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "../layered_tile_set.h"
 #include "editor/editor_inspector.h"
 #include "scene/gui/box_container.h"
-#include "../layered_tile_set.h"
 
 class Button;
 class ItemList;

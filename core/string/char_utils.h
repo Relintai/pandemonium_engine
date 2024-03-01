@@ -1,3 +1,6 @@
+#ifndef CHAR_UTILS_H
+#define CHAR_UTILS_H
+
 /*************************************************************************/
 /*  char_utils.h                                                         */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef CHAR_UTILS_H
-#define CHAR_UTILS_H
 
 #include "core/typedefs.h"
 

@@ -1,3 +1,6 @@
+#ifndef THREAD_WORK_POOL_H
+#define THREAD_WORK_POOL_H
+
 /*************************************************************************/
 /*  thread_work_pool.h                                                   */
 /*************************************************************************/
@@ -28,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef THREAD_WORK_POOL_H
-#define THREAD_WORK_POOL_H
 
 #include "core/os/memory.h"
 #include "core/os/semaphore.h"
