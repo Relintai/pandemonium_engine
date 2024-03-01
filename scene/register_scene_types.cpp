@@ -127,6 +127,7 @@
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
 #include "scene/gui/video_player.h"
+#include "scene/gui/view_panner.h"
 #include "scene/gui/viewport_container.h"
 #include "scene/main/canvas_item.h"
 #include "scene/main/canvas_layer.h"
@@ -361,6 +362,8 @@ void register_scene_types() {
 
 	ClassDB::register_class<LineEdit>();
 	ClassDB::register_class<VideoPlayer>();
+
+	ClassDB::register_class<ViewPanner>();
 
 #ifndef ADVANCED_GUI_DISABLED
 

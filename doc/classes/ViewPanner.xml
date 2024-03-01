@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ViewPanner" inherits="Resource" version="4.3">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="gui_input">
+			<return type="bool" />
+			<argument index="0" name="ev" type="InputEvent" />
+			<argument index="1" name="canvas_rect" type="Rect2" default="Rect2( 0, 0, 0, 0 )" />
+			<description>
+			</description>
+		</method>
+		<method name="is_panning" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="release_pan_key">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="set_force_drag">
+			<return type="void" />
+			<argument index="0" name="force" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="setup">
+			<return type="void" />
+			<argument index="0" name="scheme" type="int" enum="ViewPanner.ControlScheme" />
+			<argument index="1" name="shortcut" type="ShortCut" />
+			<argument index="2" name="simple_panning" type="bool" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="control_scheme" type="int" setter="set_control_scheme" getter="get_control_scheme" enum="ViewPanner.ControlScheme" default="0">
+		</member>
+		<member name="enable_rmb" type="bool" setter="set_enable_rmb" getter="get_enable_rmb" default="false">
+		</member>
+		<member name="pan_axis" type="int" setter="set_pan_axis" getter="get_pan_axis" enum="ViewPanner.PanAxis" default="0">
+		</member>
+		<member name="pan_shortcut" type="ShortCut" setter="set_pan_shortcut" getter="get_pan_shortcut">
+		</member>
+		<member name="scroll_speed" type="int" setter="set_scroll_speed" getter="get_scroll_speed" default="32">
+		</member>
+		<member name="scroll_zoom_factor" type="float" setter="set_scroll_zoom_factor" getter="get_scroll_zoom_factor" default="1.1">
+		</member>
+		<member name="simple_panning_enabled" type="bool" setter="set_simple_panning_enabled" getter="get_simple_panning_enabled" default="false">
+		</member>
+	</members>
+	<signals>
+		<signal name="panned">
+			<argument index="0" name="position" type="Vector2" />
+			<argument index="1" name="event" type="InputEvent" />
+			<description>
+			</description>
+		</signal>
+		<signal name="zoomed">
+			<argument index="0" name="amount" type="float" />
+			<argument index="1" name="position" type="Vector2" />
+			<argument index="2" name="event" type="InputEvent" />
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="SCROLL_ZOOMS" value="0" enum="ControlScheme">
+		</constant>
+		<constant name="SCROLL_PANS" value="1" enum="ControlScheme">
+		</constant>
+		<constant name="PAN_AXIS_BOTH" value="0" enum="PanAxis">
+		</constant>
+		<constant name="PAN_AXIS_HORIZONTAL" value="1" enum="PanAxis">
+		</constant>
+		<constant name="PAN_AXIS_VERTICAL" value="2" enum="PanAxis">
+		</constant>
+	</constants>
+</class>
