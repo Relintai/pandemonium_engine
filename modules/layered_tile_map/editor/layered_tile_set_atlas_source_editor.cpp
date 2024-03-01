@@ -29,9 +29,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_set_atlas_source_editor.h"
+#include "layered_tile_set_atlas_source_editor.h"
 
-#include "tiles_editor_plugin.h"
+#include "layered_tiles_editor_plugin.h"
 
 #include "editor/editor_inspector.h"
 #include "editor/editor_node.h"
@@ -45,7 +45,7 @@
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/split_container.h"
@@ -55,7 +55,7 @@
 #include "core/math/geometry_2d.h"
 #include "core/os/keyboard.h"
 
-#include "servers/navigation_server_2d.h"
+#include "servers/navigation_2d_server.h"
 
 void LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::set_id(int p_id) {
 	ERR_FAIL_COND(p_id < 0);

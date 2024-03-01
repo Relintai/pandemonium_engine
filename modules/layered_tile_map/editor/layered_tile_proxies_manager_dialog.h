@@ -33,7 +33,7 @@
 /*************************************************************************/
 
 #include "editor/editor_properties.h"
-#include "scene/2d/tile_map.h"
+#include "../layered_tile_map.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/item_list.h"
 

@@ -32,8 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/2d/tile_map_layer_group.h"
-#include "scene/resources/2d/tile_set.h"
+#include "layered_tile_map_layer_group.h"
+#include "layered_tile_set.h"
 
 class Control;
 class LayeredTileMapLayer;

@@ -29,10 +29,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_set_editor.h"
+#include "layered_tile_set_editor.h"
 
-#include "tile_data_editors.h"
-#include "tiles_editor_plugin.h"
+#include "layered_tile_data_editors.h"
+#include "layered_tiles_editor_plugin.h"
 
 #include "editor/editor_file_system.h"
 #include "editor/editor_inspector.h"
@@ -43,7 +43,7 @@
 #include "editor/themes/editor_scale.h"
 
 #include "scene/gui/box_container.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tab_container.h"
 

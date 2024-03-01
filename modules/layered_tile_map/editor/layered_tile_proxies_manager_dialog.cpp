@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_proxies_manager_dialog.h"
+#include "layered_tile_proxies_manager_dialog.h"
 
 #include "editor/editor_properties_vector.h"
 #include "editor/editor_settings.h"

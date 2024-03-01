@@ -29,16 +29,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_set.compat.inc"
-#include "tile_set.h"
+#include "layered_tile_set.compat.inc"
+#include "layered_tile_set.h"
 
 #include "core/io/marshalls.h"
-#include "core/math/geometry_2d.h"
-#include "core/templates/local_vector.h"
-#include "core/templates/rb_set.h"
-#include "scene/gui/control.h"
-#include "scene/resources/image_texture.h"
-#include "servers/navigation_server_2d.h"
+#include "core/math/geometry.h"
+#include "core/containers/local_vector.h"
+#include "core/containers/rb_set.h"
+#include "scene/main/control.h"
+#include "scene/resources/texture.h"
+#include "servers/navigation_2d_server.h"
 
 /////////////////////////////// LayeredTileMapPattern //////////////////////////////////////
 

@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_set_scenes_collection_source_editor.h"
+#include "layered_tile_set_scenes_collection_source_editor.h"
 
 #include "editor/editor_file_system.h"
 #include "editor/editor_node.h"

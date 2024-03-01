@@ -32,17 +32,20 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/io/resource.h"
+#include "core/containers/local_vector.h"
+#include "core/containers/rb_set.h"
+
+#include "core/object/resource.h"
 #include "core/object/object.h"
-#include "core/templates/local_vector.h"
-#include "core/templates/rb_set.h"
+
 #include "scene/2d/light_occluder_2d.h"
 #include "scene/main/canvas_item.h"
-#include "scene/resources/2d/convex_polygon_shape_2d.h"
-#include "scene/resources/image_texture.h"
-#include "scene/resources/navigation_polygon.h"
+
+#include "scene/resources/texture.h"
+#include "scene/resources/navigation_2d/navigation_polygon.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/physics_material.h"
+#include "scene/resources/shapes_2d/concave_polygon_shape_2d.h"
 
 #ifndef DISABLE_DEPRECATED
 #include "scene/resources/shader.h"

@@ -35,7 +35,7 @@
 #include "tile_atlas_view.h"
 
 #include "editor/editor_properties.h"
-#include "scene/2d/tile_map.h"
+#include "../layered_tile_map.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/panel_container.h"
 

@@ -29,9 +29,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tiles_editor_plugin.h"
+#include "layered_tiles_editor_plugin.h"
 
-#include "tile_set_editor.h"
+#include "layered_tile_set_editor.h"
 
 #include "core/os/mutex.h"
 
@@ -42,13 +42,13 @@
 #include "editor/gui/editor_bottom_panel.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "editor/themes/editor_scale.h"
-#include "scene/2d/tile_map.h"
-#include "scene/2d/tile_map_layer.h"
+#include "../layered_tile_map.h"
+#include "../layered_tile_map_layer.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/separator.h"
-#include "scene/resources/2d/tile_set.h"
+#include "../layered_tile_set.h"
 #include "scene/resources/image_texture.h"
 
 LayeredTilesEditorUtils *LayeredTilesEditorUtils::singleton = nullptr;

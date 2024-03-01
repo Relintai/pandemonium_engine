@@ -29,11 +29,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_data_editors.h"
+#include "layered_tile_data_editors.h"
 
-#include "tile_set_editor.h"
+#include "layered_tile_set_editor.h"
 
-#include "core/math/geometry_2d.h"
+#include "core/math/geometry.h"
 #include "core/os/keyboard.h"
 
 #include "editor/editor_node.h"
@@ -43,14 +43,14 @@
 #include "editor/editor_undo_redo_manager.h"
 #include "editor/themes/editor_scale.h"
 
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
 
-#include "servers/navigation_server_2d.h"
+#include "servers/navigation_2d_server.h"
 
 void LayeredTileDataEditor::_tile_set_changed_plan_update() {
 	_tile_set_changed_update_needed = true;

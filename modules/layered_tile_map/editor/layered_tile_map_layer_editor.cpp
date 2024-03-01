@@ -29,9 +29,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_map_layer_editor.h"
+#include "layered_tile_map_layer_editor.h"
 
-#include "tiles_editor_plugin.h"
+#include "layered_tiles_editor_plugin.h"
 
 #include "editor/editor_node.h"
 #include "editor/editor_resource_preview.h"
@@ -41,12 +41,12 @@
 #include "editor/themes/editor_scale.h"
 
 #include "scene/2d/camera_2d.h"
-#include "scene/2d/tile_map_layer.h"
+#include "../layered_tile_map_layer.h"
 #include "scene/gui/center_container.h"
 #include "scene/gui/split_container.h"
 
 #include "core/input/input.h"
-#include "core/math/geometry_2d.h"
+#include "core/math/geometry.h"
 #include "core/os/keyboard.h"
 
 LayeredTileMapLayer *LayeredTileMapLayerSubEditorPlugin::_get_edited_layer() const {

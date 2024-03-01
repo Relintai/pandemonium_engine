@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_map_layer.h"
+#include "layered_tile_map_layer.h"
 
 #include "core/core_string_names.h"
 #include "core/io/marshalls.h"

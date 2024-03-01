@@ -32,11 +32,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_atlas_view.h"
-#include "tile_data_editors.h"
+#include "layered_tile_atlas_view.h"
+#include "layered_tile_data_editors.h"
 
 #include "scene/gui/split_container.h"
-#include "scene/resources/2d/tile_set.h"
+#include "../layered_tile_set.h"
 
 class Popup;
 class LayeredTileSet;

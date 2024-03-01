@@ -35,9 +35,9 @@
 #include "editor/editor_plugin.h"
 #include "scene/gui/box_container.h"
 
-#include "tile_atlas_view.h"
-#include "tile_map_layer_editor.h"
-#include "tile_set_editor.h"
+#include "layered_tile_atlas_view.h"
+#include "layered_tile_map_layer_editor.h"
+#include "layered_tile_set_editor.h"
 
 class LayeredTilesEditorUtils : public Object {
 	GDCLASS(LayeredTilesEditorUtils, Object);
