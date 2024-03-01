@@ -1,5 +1,5 @@
-#ifndef TILE_SET_SCENES_COLLECTION_SOURCE_EDITOR_H
-#define TILE_SET_SCENES_COLLECTION_SOURCE_EDITOR_H
+#ifndef LAYERED_TILE_SET_SCENES_COLLECTION_SOURCE_EDITOR_H
+#define LAYERED_TILE_SET_SCENES_COLLECTION_SOURCE_EDITOR_H
 
 /*************************************************************************/
 /*  layered_tile_set_scenes_collection_source_editor.h                   */

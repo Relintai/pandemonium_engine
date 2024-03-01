@@ -1,5 +1,5 @@
-#ifndef TILE_SET_ATLAS_SOURCE_EDITOR_H
-#define TILE_SET_ATLAS_SOURCE_EDITOR_H
+#ifndef LAYERED_TILE_SET_ATLAS_SOURCE_EDITOR_H
+#define LAYERED_TILE_SET_ATLAS_SOURCE_EDITOR_H
 
 /*************************************************************************/
 /*  layered_tile_set_atlas_source_editor.h                               */

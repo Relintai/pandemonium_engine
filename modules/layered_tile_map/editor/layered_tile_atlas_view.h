@@ -1,5 +1,5 @@
-#ifndef TILE_ATLAS_VIEW_H
-#define TILE_ATLAS_VIEW_H
+#ifndef LAYERED_TILE_ATLAS_VIEW_H
+#define LAYERED_TILE_ATLAS_VIEW_H
 
 /*************************************************************************/
 /*  layered_tile_atlas_view.h                                            */

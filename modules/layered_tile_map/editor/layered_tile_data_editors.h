@@ -1,5 +1,5 @@
-#ifndef TILE_DATA_EDITORS_H
-#define TILE_DATA_EDITORS_H
+#ifndef LAYERED_TILE_DATA_EDITORS_H
+#define LAYERED_TILE_DATA_EDITORS_H
 
 /*************************************************************************/
 /*  layered_tile_data_editors.h                                          */

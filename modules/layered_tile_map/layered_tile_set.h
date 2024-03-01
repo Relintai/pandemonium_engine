@@ -1,5 +1,5 @@
-#ifndef TILE_SET_H
-#define TILE_SET_H
+#ifndef LAYERED_TILE_SET_H
+#define LAYERED_TILE_SET_H
 
 /*************************************************************************/
 /*  layered_tile_set.h                                                   */

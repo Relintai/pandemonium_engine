@@ -1,5 +1,5 @@
-#ifndef TILE_MAP_LAYER_EDITOR_H
-#define TILE_MAP_LAYER_EDITOR_H
+#ifndef LAYERED_TILE_MAP_LAYER_EDITOR_H
+#define LAYERED_TILE_MAP_LAYER_EDITOR_H
 
 /*************************************************************************/
 /*  layered_tile_map_layer_editor.h                                      */

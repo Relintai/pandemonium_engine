@@ -1,5 +1,5 @@
-#ifndef TILES_EDITOR_PLUGIN_H
-#define TILES_EDITOR_PLUGIN_H
+#ifndef LAYERED_TILES_EDITOR_PLUGIN_H
+#define LAYERED_TILES_EDITOR_PLUGIN_H
 
 /*************************************************************************/
 /*  layered_tiles_editor_plugin.h                                        */

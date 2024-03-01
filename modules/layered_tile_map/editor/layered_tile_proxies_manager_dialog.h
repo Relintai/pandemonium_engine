@@ -1,5 +1,5 @@
-#ifndef TILE_PROXIES_MANAGER_DIALOG_H
-#define TILE_PROXIES_MANAGER_DIALOG_H
+#ifndef LAYERED_TILE_PROXIES_MANAGER_DIALOG_H
+#define LAYERED_TILE_PROXIES_MANAGER_DIALOG_H
 
 /*************************************************************************/
 /*  layered_tile_proxies_manager_dialog.h                                */

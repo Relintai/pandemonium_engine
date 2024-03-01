@@ -1,5 +1,5 @@
-#ifndef TILEMAP_NAVIGATION_GEOMETRY_PARSER_2D_H
-#define TILEMAP_NAVIGATION_GEOMETRY_PARSER_2D_H
+#ifndef LAYERED_TILEMAP_NAVIGATION_GEOMETRY_PARSER_2D_H
+#define LAYERED_TILEMAP_NAVIGATION_GEOMETRY_PARSER_2D_H
 
 /*************************************************************************/
 /*  layered_tilemap_navigation_geometry_parser_2d.h                      */
