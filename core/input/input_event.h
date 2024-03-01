@@ -328,6 +328,8 @@ public:
 
 	virtual String as_text() const;
 
+	static Ref<InputEventKey> create_reference(uint32_t p_keycode_with_modifier_masks, bool p_physical = false);
+
 	InputEventKey();
 };
 
@@ -446,6 +448,8 @@ public:
 	virtual bool is_action_type() const { return true; }
 	virtual String as_text() const;
 
+	static Ref<InputEventJoypadMotion> create_reference(int p_axis, float p_value);
+
 	InputEventJoypadMotion();
 };
 
@@ -471,6 +475,8 @@ public:
 
 	virtual bool is_action_type() const { return true; }
 	virtual String as_text() const;
+
+	static Ref<InputEventJoypadButton> create_reference(int p_btn_index);
 
 	InputEventJoypadButton();
 };

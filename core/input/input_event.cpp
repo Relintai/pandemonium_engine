@@ -407,6 +407,38 @@ void InputEventKey::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "action_match_force_exact"), "set_action_match_force_exact", "is_action_match_force_exact");
 }
 
+Ref<InputEventKey> InputEventKey::create_reference(uint32_t p_keycode, bool p_physical) {
+	Ref<InputEventKey> ie;
+	ie.instance();
+
+	if (p_physical) {
+		ie->set_physical_scancode(p_keycode & KEY_CODE_MASK);
+	} else {
+		ie->set_scancode(p_keycode & KEY_CODE_MASK);
+	}
+
+	char32_t ch = char32_t(p_keycode & KEY_CODE_MASK);
+	if (ch < 0xd800 || (ch > 0xdfff && ch <= 0x10ffff)) {
+		ie->set_unicode(ch);
+	}
+
+	if ((p_keycode & KEY_MASK_SHIFT)) {
+		ie->set_shift(true);
+	}
+	if ((p_keycode & KEY_MASK_ALT)) {
+		ie->set_alt(true);
+	}
+
+	if ((p_keycode & KEY_MASK_CTRL)) {
+		ie->set_control(true);
+	}
+	if ((p_keycode & KEY_MASK_META)) {
+		ie->set_command(true);
+	}
+
+	return ie;
+}
+
 InputEventKey::InputEventKey() {
 	scancode = 0;
 	physical_scancode = 0;
@@ -864,6 +896,15 @@ void InputEventJoypadMotion::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "axis_value"), "set_axis_value", "get_axis_value");
 }
 
+Ref<InputEventJoypadMotion> InputEventJoypadMotion::create_reference(int p_axis, float p_value) {
+	Ref<InputEventJoypadMotion> ie;
+	ie.instance();
+	ie->set_axis(p_axis);
+	ie->set_axis_value(p_value);
+
+	return ie;
+}
+
 InputEventJoypadMotion::InputEventJoypadMotion() {
 	axis = 0;
 	axis_value = 0;
@@ -938,6 +979,14 @@ void InputEventJoypadButton::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "button_index"), "set_button_index", "get_button_index");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "pressure"), "set_pressure", "get_pressure");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "pressed"), "set_pressed", "is_pressed");
+}
+
+Ref<InputEventJoypadButton> InputEventJoypadButton::create_reference(int p_btn_index) {
+	Ref<InputEventJoypadButton> ie;
+	ie.instance();
+	ie->set_button_index(p_btn_index);
+
+	return ie;
 }
 
 InputEventJoypadButton::InputEventJoypadButton() {
