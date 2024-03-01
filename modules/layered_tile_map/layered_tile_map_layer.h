@@ -35,11 +35,11 @@
 #include "scene/2d/tile_map.h"
 #include "scene/resources/2d/tile_set.h"
 
-class TileSetAtlasSource;
+class LayeredTileSetAtlasSource;
 
 class TerrainConstraint {
 private:
-	Ref<TileSet> tile_set;
+	Ref<LayeredTileSet> tile_set;
 	Vector2i base_cell_coords;
 	int bit = -1;
 	int terrain = -1;
@@ -66,7 +66,7 @@ public:
 		return bit == 0;
 	}
 
-	HashMap<Vector2i, TileSet::CellNeighbor> get_overlapping_coords_and_peering_bits() const;
+	HashMap<Vector2i, LayeredTileSet::CellNeighbor> get_overlapping_coords_and_peering_bits() const;
 
 	void set_terrain(int p_terrain) {
 		terrain = p_terrain;
@@ -84,8 +84,8 @@ public:
 		return priority;
 	}
 
-	TerrainConstraint(Ref<TileSet> p_tile_set, const Vector2i &p_position, int p_terrain); // For the center terrain bit
-	TerrainConstraint(Ref<TileSet> p_tile_set, const Vector2i &p_position, const TileSet::CellNeighbor &p_bit, int p_terrain); // For peering bits
+	TerrainConstraint(Ref<LayeredTileSet> p_tile_set, const Vector2i &p_position, int p_terrain); // For the center terrain bit
+	TerrainConstraint(Ref<LayeredTileSet> p_tile_set, const Vector2i &p_position, const LayeredTileSet::CellNeighbor &p_bit, int p_terrain); // For peering bits
 	TerrainConstraint(){};
 };
 
@@ -96,7 +96,7 @@ class RenderingQuadrant;
 
 struct CellData {
 	Vector2i coords;
-	TileMapCell cell;
+	LayeredTileMapCell cell;
 
 	// Debug.
 	SelfList<CellData> debug_quadrant_list_element;
@@ -215,8 +215,8 @@ public:
 	}
 };
 
-class TileMapLayer : public Node2D {
-	GDCLASS(TileMapLayer, Node2D);
+class LayeredTileMapLayer : public Node2D {
+	GDCLASS(LayeredTileMapLayer, Node2D);
 
 public:
 	enum VisibilityMode {
@@ -272,8 +272,8 @@ private:
 	HashMap<Vector2i, CellData> tile_map;
 	bool pending_update = false;
 
-	// For keeping compatibility with TileMap.
-	TileMap *tile_map_node = nullptr;
+	// For keeping compatibility with LayeredTileMap.
+	LayeredTileMap *tile_map_node = nullptr;
 	int layer_index_in_tile_map_node = -1;
 
 	// Dirty flag. Allows knowing what was modified since the last update.
@@ -345,8 +345,8 @@ private:
 #endif // DEBUG_ENABLED
 
 	// Terrains.
-	TileSet::TerrainsPattern _get_best_terrain_pattern_for_constraints(int p_terrain_set, const Vector2i &p_position, const RBSet<TerrainConstraint> &p_constraints, TileSet::TerrainsPattern p_current_pattern) const;
-	RBSet<TerrainConstraint> _get_terrain_constraints_from_added_pattern(const Vector2i &p_position, int p_terrain_set, TileSet::TerrainsPattern p_terrains_pattern) const;
+	LayeredTileSet::TerrainsPattern _get_best_terrain_pattern_for_constraints(int p_terrain_set, const Vector2i &p_position, const RBSet<TerrainConstraint> &p_constraints, LayeredTileSet::TerrainsPattern p_current_pattern) const;
+	RBSet<TerrainConstraint> _get_terrain_constraints_from_added_pattern(const Vector2i &p_position, int p_terrain_set, LayeredTileSet::TerrainsPattern p_terrains_pattern) const;
 	RBSet<TerrainConstraint> _get_terrain_constraints_from_painted_cells_list(const RBSet<Vector2i> &p_painted, int p_terrain_set, bool p_ignore_empty_terrains) const;
 
 	void _renamed();
@@ -362,32 +362,32 @@ protected:
 	static void _bind_methods();
 
 public:
-	// TileMap node.
+	// LayeredTileMap node.
 	void set_as_tile_map_internal_node(int p_index);
 
 	// Rect caching.
 	Rect2 get_rect(bool &r_changed) const;
 
 	// Terrains.
-	HashMap<Vector2i, TileSet::TerrainsPattern> terrain_fill_constraints(const Vector<Vector2i> &p_to_replace, int p_terrain_set, const RBSet<TerrainConstraint> &p_constraints) const; // Not exposed.
-	HashMap<Vector2i, TileSet::TerrainsPattern> terrain_fill_connect(const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true) const; // Not exposed.
-	HashMap<Vector2i, TileSet::TerrainsPattern> terrain_fill_path(const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true) const; // Not exposed.
-	HashMap<Vector2i, TileSet::TerrainsPattern> terrain_fill_pattern(const Vector<Vector2i> &p_coords_array, int p_terrain_set, TileSet::TerrainsPattern p_terrains_pattern, bool p_ignore_empty_terrains = true) const; // Not exposed.
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> terrain_fill_constraints(const Vector<Vector2i> &p_to_replace, int p_terrain_set, const RBSet<TerrainConstraint> &p_constraints) const; // Not exposed.
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> terrain_fill_connect(const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true) const; // Not exposed.
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> terrain_fill_path(const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true) const; // Not exposed.
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> terrain_fill_pattern(const Vector<Vector2i> &p_coords_array, int p_terrain_set, LayeredTileSet::TerrainsPattern p_terrains_pattern, bool p_ignore_empty_terrains = true) const; // Not exposed.
 
 	// Not exposed to users.
-	TileMapCell get_cell(const Vector2i &p_coords, bool p_use_proxies = false) const;
+	LayeredTileMapCell get_cell(const Vector2i &p_coords, bool p_use_proxies = false) const;
 
-	// For TileMap node's use.
-	void set_tile_data(TileMapDataFormat p_format, const Vector<int> &p_data);
+	// For LayeredTileMap node's use.
+	void set_tile_data(LayeredTileMapDataFormat p_format, const Vector<int> &p_data);
 	Vector<int> get_tile_data() const;
 	void notify_tile_map_layer_group_change(DirtyFlags p_what);
 
 	void update_internals();
 	void notify_runtime_tile_data_update();
 
-	// --- Exposed in TileMap ---
+	// --- Exposed in LayeredTileMap ---
 	// Cells manipulation.
-	void set_cell(const Vector2i &p_coords, int p_source_id = TileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = TileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = 0);
+	void set_cell(const Vector2i &p_coords, int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = 0);
 	void erase_cell(const Vector2i &p_coords);
 
 	int get_cell_source_id(const Vector2i &p_coords, bool p_use_proxies = false) const;
@@ -397,8 +397,8 @@ public:
 	void clear();
 
 	// Patterns.
-	Ref<TileMapPattern> get_pattern(TypedArray<Vector2i> p_coords_array);
-	void set_pattern(const Vector2i &p_position, const Ref<TileMapPattern> p_pattern);
+	Ref<LayeredTileMapPattern> get_pattern(TypedArray<Vector2i> p_coords_array);
+	void set_pattern(const Vector2i &p_position, const Ref<LayeredTileMapPattern> p_pattern);
 
 	// Terrains.
 	void set_cells_terrain_connect(TypedArray<Vector2i> p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
@@ -406,7 +406,7 @@ public:
 
 	// Cells usage.
 	TypedArray<Vector2i> get_used_cells() const;
-	TypedArray<Vector2i> get_used_cells_by_id(int p_source_id = TileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = TileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = TileSetSource::INVALID_TILE_ALTERNATIVE) const;
+	TypedArray<Vector2i> get_used_cells_by_id(int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE) const;
 	Rect2i get_used_rect() const;
 
 	// Layer properties.
@@ -443,15 +443,15 @@ public:
 	Vector2i get_coords_for_body_rid(RID p_physics_body) const; // For finding tiles from collision.
 
 	// Helper.
-	Ref<TileSet> get_effective_tile_set() const;
+	Ref<LayeredTileSet> get_effective_tile_set() const;
 
 	// Virtual function to modify the TileData at runtime.
 	GDVIRTUAL1R(bool, _use_tile_data_runtime_update, Vector2i);
 	GDVIRTUAL2(_tile_data_runtime_update, Vector2i, TileData *);
 	// ---
 
-	TileMapLayer();
-	~TileMapLayer();
+	LayeredTileMapLayer();
+	~LayeredTileMapLayer();
 };
 
 #endif // TILE_MAP_LAYER_H

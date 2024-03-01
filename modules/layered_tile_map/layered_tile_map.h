@@ -36,21 +36,21 @@
 #include "scene/resources/2d/tile_set.h"
 
 class Control;
-class TileMapLayer;
+class LayeredTileMapLayer;
 class TerrainConstraint;
 
-enum TileMapDataFormat {
+enum LayeredTileMapDataFormat {
 	FORMAT_1 = 0,
 	FORMAT_2,
 	FORMAT_3,
 	FORMAT_MAX,
 };
 
-class TileMap : public TileMapLayerGroup {
-	GDCLASS(TileMap, TileMapLayerGroup)
+class LayeredTileMap : public LayeredTileMapLayerGroup {
+	GDCLASS(LayeredTileMap, LayeredTileMapLayerGroup)
 
 public:
-	// Kept for compatibility, but should use TileMapLayer::VisibilityMode instead.
+	// Kept for compatibility, but should use LayeredTileMapLayer::VisibilityMode instead.
 	enum VisibilityMode {
 		VISIBILITY_MODE_DEFAULT,
 		VISIBILITY_MODE_FORCE_SHOW,
@@ -58,10 +58,10 @@ public:
 	};
 
 private:
-	friend class TileSetPlugin;
+	friend class LayeredTileSetPlugin;
 
 	// A compatibility enum to specify how is the data if formatted.
-	mutable TileMapDataFormat format = TileMapDataFormat::FORMAT_3;
+	mutable LayeredTileMapDataFormat format = LayeredTileMapDataFormat::FORMAT_3;
 
 	static constexpr float FP_ADJUST = 0.00001;
 
@@ -72,8 +72,8 @@ private:
 	VisibilityMode navigation_visibility_mode = VISIBILITY_MODE_DEFAULT;
 
 	// Layers.
-	LocalVector<TileMapLayer *> layers;
-	TileMapLayer *default_layer; // Dummy layer to fetch default values.
+	LocalVector<LayeredTileMapLayer *> layers;
+	LayeredTileMapLayer *default_layer; // Dummy layer to fetch default values.
 
 	// Transforms for collision_animatable.
 	Transform2D last_valid_transform;
@@ -113,7 +113,7 @@ public:
 	void set_rendering_quadrant_size(int p_size);
 	int get_rendering_quadrant_size() const;
 
-	static void draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<TileSet> p_tile_set, int p_atlas_source_id, const Vector2i &p_atlas_coords, int p_alternative_tile, int p_frame = -1, Color p_modulation = Color(1.0, 1.0, 1.0, 1.0), const TileData *p_tile_data_override = nullptr, real_t p_normalized_animation_offset = 0.0);
+	static void draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<LayeredTileSet> p_tile_set, int p_atlas_source_id, const Vector2i &p_atlas_coords, int p_alternative_tile, int p_frame = -1, Color p_modulation = Color(1.0, 1.0, 1.0, 1.0), const TileData *p_tile_data_override = nullptr, real_t p_normalized_animation_offset = 0.0);
 
 	// Layers management.
 	int get_layers_count() const;
@@ -149,7 +149,7 @@ public:
 	VisibilityMode get_navigation_visibility_mode() const;
 
 	// Cells accessors.
-	void set_cell(int p_layer, const Vector2i &p_coords, int p_source_id = TileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = TileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = 0);
+	void set_cell(int p_layer, const Vector2i &p_coords, int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = 0);
 	void erase_cell(int p_layer, const Vector2i &p_coords);
 	int get_cell_source_id(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
 	Vector2i get_cell_atlas_coords(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
@@ -158,33 +158,33 @@ public:
 	TileData *get_cell_tile_data(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
 
 	// Patterns.
-	Ref<TileMapPattern> get_pattern(int p_layer, TypedArray<Vector2i> p_coords_array);
-	Vector2i map_pattern(const Vector2i &p_position_in_tilemap, const Vector2i &p_coords_in_pattern, Ref<TileMapPattern> p_pattern);
-	void set_pattern(int p_layer, const Vector2i &p_position, const Ref<TileMapPattern> p_pattern);
+	Ref<LayeredTileMapPattern> get_pattern(int p_layer, TypedArray<Vector2i> p_coords_array);
+	Vector2i map_pattern(const Vector2i &p_position_in_tilemap, const Vector2i &p_coords_in_pattern, Ref<LayeredTileMapPattern> p_pattern);
+	void set_pattern(int p_layer, const Vector2i &p_position, const Ref<LayeredTileMapPattern> p_pattern);
 
 	// Terrains (Not exposed).
-	HashMap<Vector2i, TileSet::TerrainsPattern> terrain_fill_constraints(int p_layer, const Vector<Vector2i> &p_to_replace, int p_terrain_set, const RBSet<TerrainConstraint> &p_constraints);
-	HashMap<Vector2i, TileSet::TerrainsPattern> terrain_fill_connect(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
-	HashMap<Vector2i, TileSet::TerrainsPattern> terrain_fill_path(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
-	HashMap<Vector2i, TileSet::TerrainsPattern> terrain_fill_pattern(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, TileSet::TerrainsPattern p_terrains_pattern, bool p_ignore_empty_terrains = true);
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> terrain_fill_constraints(int p_layer, const Vector<Vector2i> &p_to_replace, int p_terrain_set, const RBSet<TerrainConstraint> &p_constraints);
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> terrain_fill_connect(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> terrain_fill_path(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> terrain_fill_pattern(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, LayeredTileSet::TerrainsPattern p_terrains_pattern, bool p_ignore_empty_terrains = true);
 
 	// Terrains (exposed).
 	void set_cells_terrain_connect(int p_layer, TypedArray<Vector2i> p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
 	void set_cells_terrain_path(int p_layer, TypedArray<Vector2i> p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
 
 	// Not exposed to users.
-	TileMapCell get_cell(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
+	LayeredTileMapCell get_cell(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
 	int get_effective_quadrant_size(int p_layer) const;
 
 	virtual void set_y_sort_enabled(bool p_enable) override;
 
 	Vector2 map_to_local(const Vector2i &p_pos) const;
 	Vector2i local_to_map(const Vector2 &p_pos) const;
-	bool is_existing_neighbor(TileSet::CellNeighbor p_cell_neighbor) const;
-	Vector2i get_neighbor_cell(const Vector2i &p_coords, TileSet::CellNeighbor p_cell_neighbor) const;
+	bool is_existing_neighbor(LayeredTileSet::CellNeighbor p_cell_neighbor) const;
+	Vector2i get_neighbor_cell(const Vector2i &p_coords, LayeredTileSet::CellNeighbor p_cell_neighbor) const;
 
 	TypedArray<Vector2i> get_used_cells(int p_layer) const;
-	TypedArray<Vector2i> get_used_cells_by_id(int p_layer, int p_source_id = TileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = TileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = TileSetSource::INVALID_TILE_ALTERNATIVE) const;
+	TypedArray<Vector2i> get_used_cells_by_id(int p_layer, int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE) const;
 	Rect2i get_used_rect() const;
 
 	// Override some methods of the CanvasItem class to pass the changes to the quadrants CanvasItems.
@@ -205,7 +205,7 @@ public:
 	void clear_layer(int p_layer);
 	void clear();
 
-	// Force a TileMap update.
+	// Force a LayeredTileMap update.
 	void update_internals();
 	void notify_runtime_tile_data_update(int p_layer = -1);
 
@@ -219,10 +219,10 @@ public:
 	// Configuration warnings.
 	PackedStringArray get_configuration_warnings() const override;
 
-	TileMap();
-	~TileMap();
+	LayeredTileMap();
+	~LayeredTileMap();
 };
 
-VARIANT_ENUM_CAST(TileMap::VisibilityMode);
+VARIANT_ENUM_CAST(LayeredTileMap::VisibilityMode);
 
 #endif // TILE_MAP_H

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TileSetAtlasSource" inherits="TileSetSource" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="LayeredTileSetAtlasSource" inherits="LayeredTileSetSource" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
-		Exposes a 2D atlas texture as a set of tiles for a [TileSet] resource.
+		Exposes a 2D atlas texture as a set of tiles for a [LayeredTileSet] resource.
 	</brief_description>
 	<description>
 		An atlas is a grid of tiles laid out on a texture. Each tile in the grid must be exposed using [method create_tile]. Those tiles are then indexed using their coordinates in the grid.
 		Each tile can also have a size in the grid coordinates, making it more or less cells in the atlas.
 		Alternatives version of a tile can be created using [method create_alternative_tile], which are then indexed using an alternative ID. The main tile (the one in the grid), is accessed with an alternative ID equal to 0.
-		Each tile alternate has a set of properties that is defined by the source's [TileSet] layers. Those properties are stored in a TileData object that can be accessed and modified using [method get_tile_data].
-		As TileData properties are stored directly in the TileSetAtlasSource resource, their properties might also be set using [code]TileSetAtlasSource.set("&lt;coords_x&gt;:&lt;coords_y&gt;/&lt;alternative_id&gt;/&lt;tile_data_property&gt;")[/code].
+		Each tile alternate has a set of properties that is defined by the source's [LayeredTileSet] layers. Those properties are stored in a TileData object that can be accessed and modified using [method get_tile_data].
+		As TileData properties are stored directly in the LayeredTileSetAtlasSource resource, their properties might also be set using [code]LayeredTileSetAtlasSource.set("&lt;coords_x&gt;:&lt;coords_y&gt;/&lt;alternative_id&gt;/&lt;tile_data_property&gt;")[/code].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -87,7 +87,7 @@
 			</description>
 		</method>
 		<method name="get_tile_animation_mode" qualifiers="const">
-			<return type="int" enum="TileSetAtlasSource.TileAnimationMode" />
+			<return type="int" enum="LayeredTileSetAtlasSource.TileAnimationMode" />
 			<param index="0" name="atlas_coords" type="Vector2i" />
 			<description>
 				Returns the tile animation mode of the tile at [param atlas_coords]. See also [method set_tile_animation_mode].
@@ -237,7 +237,7 @@
 		<method name="set_tile_animation_mode">
 			<return type="void" />
 			<param index="0" name="atlas_coords" type="Vector2i" />
-			<param index="1" name="mode" type="int" enum="TileSetAtlasSource.TileAnimationMode" />
+			<param index="1" name="mode" type="int" enum="LayeredTileSetAtlasSource.TileAnimationMode" />
 			<description>
 				Sets the tile animation mode of the tile at [param atlas_coords] to [param mode]. See also [method get_tile_animation_mode].
 			</description>
@@ -270,11 +270,11 @@
 			The atlas texture.
 		</member>
 		<member name="texture_region_size" type="Vector2i" setter="set_texture_region_size" getter="get_texture_region_size" default="Vector2i(16, 16)">
-			The base tile size in the texture (in pixel). This size must be bigger than the TileSet's [code]tile_size[/code] value.
+			The base tile size in the texture (in pixel). This size must be bigger than the LayeredTileSet's [code]tile_size[/code] value.
 		</member>
 		<member name="use_texture_padding" type="bool" setter="set_use_texture_padding" getter="get_use_texture_padding" default="true">
 			If [code]true[/code], generates an internal texture with an additional one pixel padding around each tile. Texture padding avoids a common artifact where lines appear between tiles.
-			Disabling this setting might lead a small performance improvement, as generating the internal texture requires both memory and processing time when the TileSetAtlasSource resource is modified.
+			Disabling this setting might lead a small performance improvement, as generating the internal texture requires both memory and processing time when the LayeredTileSetAtlasSource resource is modified.
 		</member>
 	</members>
 	<constants>
@@ -288,12 +288,12 @@
 			Represents the size of the [enum TileAnimationMode] enum.
 		</constant>
 		<constant name="TRANSFORM_FLIP_H" value="4096">
-			Represents cell's horizontal flip flag. Should be used directly with [TileMap] to flip placed tiles by altering their alternative IDs.
+			Represents cell's horizontal flip flag. Should be used directly with [LayeredTileMap] to flip placed tiles by altering their alternative IDs.
 			[codeblock]
-			var alternate_id = $TileMap.get_cell_alternative_tile(0, Vector2i(2, 2))
-			if not alternate_id &amp; TileSetAtlasSource.TRANSFORM_FLIP_H:
+			var alternate_id = $LayeredTileMap.get_cell_alternative_tile(0, Vector2i(2, 2))
+			if not alternate_id &amp; LayeredTileSetAtlasSource.TRANSFORM_FLIP_H:
 			    # If tile is not already flipped, flip it.
-			    $TileMap.set_cell(0, Vector2i(2, 2), source_id, atlas_coords, alternate_id | TileSetAtlasSource.TRANSFORM_FLIP_H)
+			    $LayeredTileMap.set_cell(0, Vector2i(2, 2), source_id, atlas_coords, alternate_id | LayeredTileSetAtlasSource.TRANSFORM_FLIP_H)
 			[/codeblock]
 		</constant>
 		<constant name="TRANSFORM_FLIP_V" value="8192">

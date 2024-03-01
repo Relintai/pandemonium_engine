@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TileMap" inherits="TileMapLayerGroup" keywords="gridmap" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="LayeredTileMap" inherits="LayeredTileMapLayerGroup" keywords="gridmap" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		Node for 2D tile-based maps.
 	</brief_description>
 	<description>
-		Node for 2D tile-based maps. Tilemaps use a [TileSet] which contain a list of tiles which are used to create grid-based maps. A TileMap may have several layers, layouting tiles on top of each other.
-		For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [TileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
+		Node for 2D tile-based maps. Tilemaps use a [LayeredTileSet] which contain a list of tiles which are used to create grid-based maps. A LayeredTileMap may have several layers, layouting tiles on top of each other.
+		For performance reasons, all LayeredTileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [LayeredTileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
 		To force an update earlier on, call [method update_internals].
 	</description>
 	<tutorials>
@@ -24,10 +24,10 @@
 			<param index="1" name="coords" type="Vector2i" />
 			<param index="2" name="tile_data" type="TileData" />
 			<description>
-				Called with a TileData object about to be used internally by the TileMap, allowing its modification at runtime.
+				Called with a TileData object about to be used internally by the LayeredTileMap, allowing its modification at runtime.
 				This method is only called if [method _use_tile_data_runtime_update] is implemented and returns [code]true[/code] for the given tile [param coords] and [param layer].
-				[b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the TileSet. Modifying them might impact the whole TileSet. Instead, make sure to duplicate those resources.
-				[b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
+				[b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the LayeredTileSet. Modifying them might impact the whole LayeredTileSet. Instead, make sure to duplicate those resources.
+				[b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the LayeredTileMap it needs an update.
 			</description>
 		</method>
 		<method name="_use_tile_data_runtime_update" qualifiers="virtual">
@@ -37,7 +37,7 @@
 			<description>
 				Should return [code]true[/code] if the tile at coordinates [param coords] on layer [param layer] requires a runtime update.
 				[b]Warning:[/b] Make sure this function only return [code]true[/code] when needed. Any tile processed at runtime without a need for it will imply a significant performance penalty.
-				[b]Note:[/b] If the result of this function should changed, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
+				[b]Note:[/b] If the result of this function should changed, use [method notify_runtime_tile_data_update] to notify the LayeredTileMap it needs an update.
 			</description>
 		</method>
 		<method name="add_layer">
@@ -80,7 +80,7 @@
 			<return type="void" />
 			<param index="0" name="layer" type="int" default="-1" />
 			<description>
-				Forces the TileMap and the layer [param layer] to update.
+				Forces the LayeredTileMap and the layer [param layer] to update.
 			</description>
 		</method>
 		<method name="get_cell_alternative_tile" qualifiers="const">
@@ -89,7 +89,7 @@
 			<param index="1" name="coords" type="Vector2i" />
 			<param index="2" name="use_proxies" type="bool" default="false" />
 			<description>
-				Returns the tile alternative ID of the cell on layer [param layer] at [param coords]. If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw alternative identifier. See [method TileSet.map_tile_proxy].
+				Returns the tile alternative ID of the cell on layer [param layer] at [param coords]. If [param use_proxies] is [code]false[/code], ignores the [LayeredTileSet]'s tile proxies, returning the raw alternative identifier. See [method LayeredTileSet.map_tile_proxy].
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -99,7 +99,7 @@
 			<param index="1" name="coords" type="Vector2i" />
 			<param index="2" name="use_proxies" type="bool" default="false" />
 			<description>
-				Returns the tile atlas coordinates ID of the cell on layer [param layer] at coordinates [param coords]. If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw alternative identifier. See [method TileSet.map_tile_proxy].
+				Returns the tile atlas coordinates ID of the cell on layer [param layer] at coordinates [param coords]. If [param use_proxies] is [code]false[/code], ignores the [LayeredTileSet]'s tile proxies, returning the raw alternative identifier. See [method LayeredTileSet.map_tile_proxy].
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -110,7 +110,7 @@
 			<param index="2" name="use_proxies" type="bool" default="false" />
 			<description>
 				Returns the tile source ID of the cell on layer [param layer] at coordinates [param coords]. Returns [code]-1[/code] if the cell does not exist.
-				If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw alternative identifier. See [method TileSet.map_tile_proxy].
+				If [param use_proxies] is [code]false[/code], ignores the [LayeredTileSet]'s tile proxies, returning the raw alternative identifier. See [method LayeredTileSet.map_tile_proxy].
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -120,9 +120,9 @@
 			<param index="1" name="coords" type="Vector2i" />
 			<param index="2" name="use_proxies" type="bool" default="false" />
 			<description>
-				Returns the [TileData] object associated with the given cell, or [code]null[/code] if the cell does not exist or is not a [TileSetAtlasSource].
+				Returns the [TileData] object associated with the given cell, or [code]null[/code] if the cell does not exist or is not a [LayeredTileSetAtlasSource].
 				If [param layer] is negative, the layers are accessed from the last one.
-				If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw alternative identifier. See [method TileSet.map_tile_proxy].
+				If [param use_proxies] is [code]false[/code], ignores the [LayeredTileSet]'s tile proxies, returning the raw alternative identifier. See [method LayeredTileSet.map_tile_proxy].
 				[codeblock]
 				func get_clicked_tile_power():
 				    var clicked_cell = tile_map.local_to_map(tile_map.get_local_mouse_position())
@@ -152,7 +152,7 @@
 			<return type="Color" />
 			<param index="0" name="layer" type="int" />
 			<description>
-				Returns a TileMap layer's modulate.
+				Returns a LayeredTileMap layer's modulate.
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -160,7 +160,7 @@
 			<return type="String" />
 			<param index="0" name="layer" type="int" />
 			<description>
-				Returns a TileMap layer's name.
+				Returns a LayeredTileMap layer's name.
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -168,9 +168,9 @@
 			<return type="RID" />
 			<param index="0" name="layer" type="int" />
 			<description>
-				Returns the [RID] of the [NavigationServer2D] navigation map assigned to the specified TileMap layer [param layer].
-				By default the TileMap uses the default [World2D] navigation map for the first TileMap layer. For each additional TileMap layer a new navigation map is created for the additional layer.
-				In order to make [NavigationAgent2D] switch between TileMap layer navigation maps use [method NavigationAgent2D.set_navigation_map] with the navigation map received from [method get_layer_navigation_map].
+				Returns the [RID] of the [NavigationServer2D] navigation map assigned to the specified LayeredTileMap layer [param layer].
+				By default the LayeredTileMap uses the default [World2D] navigation map for the first LayeredTileMap layer. For each additional LayeredTileMap layer a new navigation map is created for the additional layer.
+				In order to make [NavigationAgent2D] switch between LayeredTileMap layer navigation maps use [method NavigationAgent2D.set_navigation_map] with the navigation map received from [method get_layer_navigation_map].
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -178,7 +178,7 @@
 			<return type="int" />
 			<param index="0" name="layer" type="int" />
 			<description>
-				Returns a TileMap layer's Y sort origin.
+				Returns a LayeredTileMap layer's Y sort origin.
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -186,37 +186,37 @@
 			<return type="int" />
 			<param index="0" name="layer" type="int" />
 			<description>
-				Returns a TileMap layer's Z-index value.
+				Returns a LayeredTileMap layer's Z-index value.
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
 		<method name="get_layers_count" qualifiers="const">
 			<return type="int" />
 			<description>
-				Returns the number of layers in the TileMap.
+				Returns the number of layers in the LayeredTileMap.
 			</description>
 		</method>
 		<method name="get_navigation_map" qualifiers="const" deprecated="Use [method get_layer_navigation_map] instead.">
 			<return type="RID" />
 			<param index="0" name="layer" type="int" />
 			<description>
-				Returns the [RID] of the [NavigationServer2D] navigation map assigned to the specified TileMap layer [param layer].
+				Returns the [RID] of the [NavigationServer2D] navigation map assigned to the specified LayeredTileMap layer [param layer].
 			</description>
 		</method>
 		<method name="get_neighbor_cell" qualifiers="const">
 			<return type="Vector2i" />
 			<param index="0" name="coords" type="Vector2i" />
-			<param index="1" name="neighbor" type="int" enum="TileSet.CellNeighbor" />
+			<param index="1" name="neighbor" type="int" enum="LayeredTileSet.CellNeighbor" />
 			<description>
-				Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
+				Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a LayeredTileMap can take.
 			</description>
 		</method>
 		<method name="get_pattern">
-			<return type="TileMapPattern" />
+			<return type="LayeredTileMapPattern" />
 			<param index="0" name="layer" type="int" />
 			<param index="1" name="coords_array" type="Vector2i[]" />
 			<description>
-				Creates a new [TileMapPattern] from the given layer and set of cells.
+				Creates a new [LayeredTileMapPattern] from the given layer and set of cells.
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -288,16 +288,16 @@
 			<return type="Vector2i" />
 			<param index="0" name="position_in_tilemap" type="Vector2i" />
 			<param index="1" name="coords_in_pattern" type="Vector2i" />
-			<param index="2" name="pattern" type="TileMapPattern" />
+			<param index="2" name="pattern" type="LayeredTileMapPattern" />
 			<description>
-				Returns for the given coordinate [param coords_in_pattern] in a [TileMapPattern] the corresponding cell coordinates if the pattern was pasted at the [param position_in_tilemap] coordinates (see [method set_pattern]). This mapping is required as in half-offset tile shapes, the mapping might not work by calculating [code]position_in_tile_map + coords_in_pattern[/code].
+				Returns for the given coordinate [param coords_in_pattern] in a [LayeredTileMapPattern] the corresponding cell coordinates if the pattern was pasted at the [param position_in_tilemap] coordinates (see [method set_pattern]). This mapping is required as in half-offset tile shapes, the mapping might not work by calculating [code]position_in_tile_map + coords_in_pattern[/code].
 			</description>
 		</method>
 		<method name="map_to_local" qualifiers="const">
 			<return type="Vector2" />
 			<param index="0" name="map_position" type="Vector2i" />
 			<description>
-				Returns the centered position of a cell in the TileMap's local coordinate space. To convert the returned value into global coordinates, use [method Node2D.to_global]. See also [method local_to_map].
+				Returns the centered position of a cell in the LayeredTileMap's local coordinate space. To convert the returned value into global coordinates, use [method Node2D.to_global]. See also [method local_to_map].
 				[b]Note:[/b] This may not correspond to the visual position of the tile, i.e. it ignores the [member TileData.texture_origin] property of individual tiles.
 			</description>
 		</method>
@@ -313,10 +313,10 @@
 			<return type="void" />
 			<param index="0" name="layer" type="int" default="-1" />
 			<description>
-				Notifies the TileMap node that calls to [method _use_tile_data_runtime_update] or [method _tile_data_runtime_update] will lead to different results. This will thus trigger a TileMap update.
+				Notifies the LayeredTileMap node that calls to [method _use_tile_data_runtime_update] or [method _tile_data_runtime_update] will lead to different results. This will thus trigger a LayeredTileMap update.
 				If [param layer] is provided, only notifies changes for the given layer. Providing the [param layer] argument (when applicable) is usually preferred for performance reasons.
-				[b]Warning:[/b] Updating the TileMap is computationally expensive and may impact performance. Try to limit the number of calls to this function to avoid unnecessary update.
-				[b]Note:[/b] This does not trigger a direct update of the TileMap, the update will be done at the end of the frame as usual (unless you call [method update_internals]).
+				[b]Warning:[/b] Updating the LayeredTileMap is computationally expensive and may impact performance. Try to limit the number of calls to this function to avoid unnecessary update.
+				[b]Note:[/b] This does not trigger a direct update of the LayeredTileMap, the update will be done at the end of the frame as usual (unless you call [method update_internals]).
 			</description>
 		</method>
 		<method name="remove_layer">
@@ -334,10 +334,10 @@
 			<param index="3" name="atlas_coords" type="Vector2i" default="Vector2i(-1, -1)" />
 			<param index="4" name="alternative_tile" type="int" default="0" />
 			<description>
-				Sets the tile identifiers for the cell on layer [param layer] at coordinates [param coords]. Each tile of the [TileSet] is identified using three parts:
-				- The source identifier [param source_id] identifies a [TileSetSource] identifier. See [method TileSet.set_source_id],
-				- The atlas coordinates identifier [param atlas_coords] identifies a tile coordinates in the atlas (if the source is a [TileSetAtlasSource]). For [TileSetScenesCollectionSource] it should always be [code]Vector2i(0, 0)[/code]),
-				- The alternative tile identifier [param alternative_tile] identifies a tile alternative in the atlas (if the source is a [TileSetAtlasSource]), and the scene for a [TileSetScenesCollectionSource].
+				Sets the tile identifiers for the cell on layer [param layer] at coordinates [param coords]. Each tile of the [LayeredTileSet] is identified using three parts:
+				- The source identifier [param source_id] identifies a [LayeredTileSetSource] identifier. See [method LayeredTileSet.set_source_id],
+				- The atlas coordinates identifier [param atlas_coords] identifies a tile coordinates in the atlas (if the source is a [LayeredTileSetAtlasSource]). For [LayeredTileSetScenesCollectionSource] it should always be [code]Vector2i(0, 0)[/code]),
+				- The alternative tile identifier [param alternative_tile] identifies a tile alternative in the atlas (if the source is a [LayeredTileSetAtlasSource]), and the scene for a [LayeredTileSetScenesCollectionSource].
 				If [param source_id] is set to [code]-1[/code], [param atlas_coords] to [code]Vector2i(-1, -1)[/code] or [param alternative_tile] to [code]-1[/code], the cell will be erased. An erased cell gets [b]all[/b] its identifiers automatically set to their respective invalid values, namely [code]-1[/code], [code]Vector2i(-1, -1)[/code] and [code]-1[/code].
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
@@ -353,7 +353,7 @@
 				Update all the cells in the [param cells] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. If an updated cell has the same terrain as one of its neighboring cells, this function tries to join the two. This function might update neighboring tiles if needed to create correct terrain transitions.
 				If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 				If [param layer] is negative, the layers are accessed from the last one.
-				[b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
+				[b]Note:[/b] To work correctly, this method requires the LayeredTileMap's LayeredTileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 			</description>
 		</method>
 		<method name="set_cells_terrain_path">
@@ -367,7 +367,7 @@
 				Update all the cells in the [param path] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. The function will also connect two successive cell in the path with the same terrain. This function might update neighboring tiles if needed to create correct terrain transitions.
 				If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 				If [param layer] is negative, the layers are accessed from the last one.
-				[b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
+				[b]Note:[/b] To work correctly, this method requires the LayeredTileMap's LayeredTileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 			</description>
 		</method>
 		<method name="set_layer_enabled">
@@ -384,7 +384,7 @@
 			<param index="0" name="layer" type="int" />
 			<param index="1" name="modulate" type="Color" />
 			<description>
-				Sets a layer's color. It will be multiplied by tile's color and TileMap's modulate.
+				Sets a layer's color. It will be multiplied by tile's color and LayeredTileMap's modulate.
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -402,7 +402,7 @@
 			<param index="0" name="layer" type="int" />
 			<param index="1" name="enabled" type="bool" />
 			<description>
-				Enables or disables a layer's built-in navigation regions generation. Disable this if you need to bake navigation regions from a TileMap using a [NavigationRegion2D] node.
+				Enables or disables a layer's built-in navigation regions generation. Disable this if you need to bake navigation regions from a LayeredTileMap using a [NavigationRegion2D] node.
 			</description>
 		</method>
 		<method name="set_layer_navigation_map">
@@ -410,9 +410,9 @@
 			<param index="0" name="layer" type="int" />
 			<param index="1" name="map" type="RID" />
 			<description>
-				Assigns [param map] as a [NavigationServer2D] navigation map for the specified TileMap layer [param layer].
-				By default the TileMap uses the default [World2D] navigation map for the first TileMap layer. For each additional TileMap layer a new navigation map is created for the additional layer.
-				In order to make [NavigationAgent2D] switch between TileMap layer navigation maps use [method NavigationAgent2D.set_navigation_map] with the navigation map received from [method get_layer_navigation_map].
+				Assigns [param map] as a [NavigationServer2D] navigation map for the specified LayeredTileMap layer [param layer].
+				By default the LayeredTileMap uses the default [World2D] navigation map for the first LayeredTileMap layer. For each additional LayeredTileMap layer a new navigation map is created for the additional layer.
+				In order to make [NavigationAgent2D] switch between LayeredTileMap layer navigation maps use [method NavigationAgent2D.set_navigation_map] with the navigation map received from [method get_layer_navigation_map].
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -450,49 +450,49 @@
 			<param index="0" name="layer" type="int" />
 			<param index="1" name="map" type="RID" />
 			<description>
-				Assigns [param map] as a [NavigationServer2D] navigation map for the specified TileMap layer [param layer].
+				Assigns [param map] as a [NavigationServer2D] navigation map for the specified LayeredTileMap layer [param layer].
 			</description>
 		</method>
 		<method name="set_pattern">
 			<return type="void" />
 			<param index="0" name="layer" type="int" />
 			<param index="1" name="position" type="Vector2i" />
-			<param index="2" name="pattern" type="TileMapPattern" />
+			<param index="2" name="pattern" type="LayeredTileMapPattern" />
 			<description>
-				Paste the given [TileMapPattern] at the given [param position] and [param layer] in the tile map.
+				Paste the given [LayeredTileMapPattern] at the given [param position] and [param layer] in the tile map.
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
 		<method name="update_internals">
 			<return type="void" />
 			<description>
-				Triggers a direct update of the TileMap. Usually, calling this function is not needed, as TileMap node updates automatically when one of its properties or cells is modified.
-				However, for performance reasons, those updates are batched and delayed to the end of the frame. Calling this function will force the TileMap to update right away instead.
-				[b]Warning:[/b] Updating the TileMap is computationally expensive and may impact performance. Try to limit the number of updates and how many tiles they impact.
+				Triggers a direct update of the LayeredTileMap. Usually, calling this function is not needed, as LayeredTileMap node updates automatically when one of its properties or cells is modified.
+				However, for performance reasons, those updates are batched and delayed to the end of the frame. Calling this function will force the LayeredTileMap to update right away instead.
+				[b]Warning:[/b] Updating the LayeredTileMap is computationally expensive and may impact performance. Try to limit the number of updates and how many tiles they impact.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="collision_animatable" type="bool" setter="set_collision_animatable" getter="is_collision_animatable" default="false">
-			If enabled, the TileMap will see its collisions synced to the physics tick and change its collision type from static to kinematic. This is required to create TileMap-based moving platform.
-			[b]Note:[/b] Enabling [member collision_animatable] may have a small performance impact, only do it if the TileMap is moving and has colliding tiles.
+			If enabled, the LayeredTileMap will see its collisions synced to the physics tick and change its collision type from static to kinematic. This is required to create LayeredTileMap-based moving platform.
+			[b]Note:[/b] Enabling [member collision_animatable] may have a small performance impact, only do it if the LayeredTileMap is moving and has colliding tiles.
 		</member>
-		<member name="collision_visibility_mode" type="int" setter="set_collision_visibility_mode" getter="get_collision_visibility_mode" enum="TileMap.VisibilityMode" default="0">
-			Show or hide the TileMap's collision shapes. If set to [constant VISIBILITY_MODE_DEFAULT], this depends on the show collision debug settings.
+		<member name="collision_visibility_mode" type="int" setter="set_collision_visibility_mode" getter="get_collision_visibility_mode" enum="LayeredTileMap.VisibilityMode" default="0">
+			Show or hide the LayeredTileMap's collision shapes. If set to [constant VISIBILITY_MODE_DEFAULT], this depends on the show collision debug settings.
 		</member>
-		<member name="navigation_visibility_mode" type="int" setter="set_navigation_visibility_mode" getter="get_navigation_visibility_mode" enum="TileMap.VisibilityMode" default="0">
-			Show or hide the TileMap's navigation meshes. If set to [constant VISIBILITY_MODE_DEFAULT], this depends on the show navigation debug settings.
+		<member name="navigation_visibility_mode" type="int" setter="set_navigation_visibility_mode" getter="get_navigation_visibility_mode" enum="LayeredTileMap.VisibilityMode" default="0">
+			Show or hide the LayeredTileMap's navigation meshes. If set to [constant VISIBILITY_MODE_DEFAULT], this depends on the show navigation debug settings.
 		</member>
 		<member name="rendering_quadrant_size" type="int" setter="set_rendering_quadrant_size" getter="get_rendering_quadrant_size" default="16">
-			The TileMap's quadrant size. A quadrant is a group of tiles to be drawn together on a single canvas item, for optimization purposes. [member rendering_quadrant_size] defines the length of a square's side, in the map's coordinate system, that forms the quadrant. Thus, the default quandrant size groups together [code]16 * 16 = 256[/code] tiles.
+			The LayeredTileMap's quadrant size. A quadrant is a group of tiles to be drawn together on a single canvas item, for optimization purposes. [member rendering_quadrant_size] defines the length of a square's side, in the map's coordinate system, that forms the quadrant. Thus, the default quandrant size groups together [code]16 * 16 = 256[/code] tiles.
 			The quadrant size does not apply on Y-sorted layers, as tiles are be grouped by Y position instead in that case.
-			[b]Note:[/b] As quadrants are created according to the map's coordinate system, the quadrant's "square shape" might not look like square in the TileMap's local coordinate system.
+			[b]Note:[/b] As quadrants are created according to the map's coordinate system, the quadrant's "square shape" might not look like square in the LayeredTileMap's local coordinate system.
 		</member>
 	</members>
 	<signals>
 		<signal name="changed">
 			<description>
-				Emitted when the [TileSet] of this TileMap changes.
+				Emitted when the [LayeredTileSet] of this LayeredTileMap changes.
 			</description>
 		</signal>
 	</signals>

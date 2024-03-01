@@ -34,10 +34,10 @@
 
 #include "scene/2d/node_2d.h"
 
-class TileSet;
+class LayeredTileSet;
 
-class TileMapLayerGroup : public Node2D {
-	GDCLASS(TileMapLayerGroup, Node2D);
+class LayeredTileMapLayerGroup : public Node2D {
+	GDCLASS(LayeredTileMapLayerGroup, Node2D);
 
 private:
 	mutable Vector<StringName> selected_layers;
@@ -49,7 +49,7 @@ private:
 	void _tile_set_changed();
 
 protected:
-	Ref<TileSet> tile_set;
+	Ref<LayeredTileSet> tile_set;
 
 	virtual void remove_child_notify(Node *p_child) override;
 
@@ -65,10 +65,10 @@ public:
 #endif
 
 	// Accessors.
-	void set_tileset(const Ref<TileSet> &p_tileset);
-	Ref<TileSet> get_tileset() const;
+	void set_tileset(const Ref<LayeredTileSet> &p_tileset);
+	Ref<LayeredTileSet> get_tileset() const;
 
-	~TileMapLayerGroup();
+	~LayeredTileMapLayerGroup();
 };
 
 #endif // TILE_MAP_LAYER_GROUP_H

@@ -47,9 +47,9 @@
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tab_container.h"
 
-TileSetEditor *TileSetEditor::singleton = nullptr;
+LayeredTileSetEditor *LayeredTileSetEditor::singleton = nullptr;
 
-void TileSetEditor::_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
+void LayeredTileSetEditor::_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
 	ERR_FAIL_COND(!tile_set.is_valid());
 
 	if (!_can_drop_data_fw(p_point, p_data, p_from)) {
@@ -64,7 +64,7 @@ void TileSetEditor::_drop_data_fw(const Point2 &p_point, const Variant &p_data, 
 	}
 }
 
-bool TileSetEditor::_can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
+bool LayeredTileSetEditor::_can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
 	ERR_FAIL_COND_V(!tile_set.is_valid(), false);
 
 	if (read_only) {
@@ -100,9 +100,9 @@ bool TileSetEditor::_can_drop_data_fw(const Point2 &p_point, const Variant &p_da
 	return false;
 }
 
-void TileSetEditor::_load_texture_files(const Vector<String> &p_paths) {
-	int source_id = TileSet::INVALID_SOURCE;
-	Vector<Ref<TileSetAtlasSource>> atlases;
+void LayeredTileSetEditor::_load_texture_files(const Vector<String> &p_paths) {
+	int source_id = LayeredTileSet::INVALID_SOURCE;
+	Vector<Ref<LayeredTileSetAtlasSource>> atlases;
 
 	for (const String &p_path : p_paths) {
 		Ref<Texture2D> texture = ResourceLoader::load(p_path);
@@ -116,7 +116,7 @@ void TileSetEditor::_load_texture_files(const Vector<String> &p_paths) {
 		source_id = tile_set->get_next_source_id();
 
 		// Actually create the new source.
-		Ref<TileSetAtlasSource> atlas_source = memnew(TileSetAtlasSource);
+		Ref<LayeredTileSetAtlasSource> atlas_source = memnew(LayeredTileSetAtlasSource);
 		atlas_source->set_texture(texture);
 		atlas_source->set_texture_region_size(tile_set->get_tile_size());
 
@@ -137,13 +137,13 @@ void TileSetEditor::_load_texture_files(const Vector<String> &p_paths) {
 	_update_sources_list(source_id);
 }
 
-void TileSetEditor::_update_sources_list(int force_selected_id) {
+void LayeredTileSetEditor::_update_sources_list(int force_selected_id) {
 	if (tile_set.is_null()) {
 		return;
 	}
 
 	// Get the previously selected id.
-	int old_selected = TileSet::INVALID_SOURCE;
+	int old_selected = LayeredTileSet::INVALID_SOURCE;
 	if (sources_list->get_current() >= 0) {
 		int source_id = sources_list->get_item_metadata(sources_list->get_current());
 		if (tile_set->has_source(source_id)) {
@@ -151,7 +151,7 @@ void TileSetEditor::_update_sources_list(int force_selected_id) {
 		}
 	}
 
-	int to_select = TileSet::INVALID_SOURCE;
+	int to_select = LayeredTileSet::INVALID_SOURCE;
 	if (force_selected_id >= 0) {
 		to_select = force_selected_id;
 	} else if (old_selected >= 0) {
@@ -162,9 +162,9 @@ void TileSetEditor::_update_sources_list(int force_selected_id) {
 	sources_list->clear();
 
 	// Update the atlas sources.
-	List<int> source_ids = TilesEditorUtils::get_singleton()->get_sorted_sources(tile_set);
+	List<int> source_ids = LayeredTilesEditorUtils::get_singleton()->get_sorted_sources(tile_set);
 	for (const int &source_id : source_ids) {
-		TileSetSource *source = *tile_set->get_source(source_id);
+		LayeredTileSetSource *source = *tile_set->get_source(source_id);
 
 		Ref<Texture2D> texture;
 		String item_text;
@@ -175,7 +175,7 @@ void TileSetEditor::_update_sources_list(int force_selected_id) {
 		}
 
 		// Atlas source.
-		TileSetAtlasSource *atlas_source = Object::cast_to<TileSetAtlasSource>(source);
+		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 		if (atlas_source) {
 			texture = atlas_source->get_texture();
 			if (item_text.is_empty()) {
@@ -188,7 +188,7 @@ void TileSetEditor::_update_sources_list(int force_selected_id) {
 		}
 
 		// Scene collection source.
-		TileSetScenesCollectionSource *scene_collection_source = Object::cast_to<TileSetScenesCollectionSource>(source);
+		LayeredTileSetScenesCollectionSource *scene_collection_source = Object::cast_to<LayeredTileSetScenesCollectionSource>(source);
 		if (scene_collection_source) {
 			texture = get_editor_theme_icon(SNAME("PackedScene"));
 			if (item_text.is_empty()) {
@@ -238,10 +238,10 @@ void TileSetEditor::_update_sources_list(int force_selected_id) {
 	_source_selected(sources_list->get_current());
 
 	// Synchronize the lists.
-	TilesEditorUtils::get_singleton()->set_sources_lists_current(sources_list->get_current());
+	LayeredTilesEditorUtils::get_singleton()->set_sources_lists_current(sources_list->get_current());
 }
 
-void TileSetEditor::_source_selected(int p_source_index) {
+void LayeredTileSetEditor::_source_selected(int p_source_index) {
 	ERR_FAIL_COND(!tile_set.is_valid());
 
 	// Update the selected source.
@@ -249,8 +249,8 @@ void TileSetEditor::_source_selected(int p_source_index) {
 
 	if (p_source_index >= 0) {
 		int source_id = sources_list->get_item_metadata(p_source_index);
-		TileSetAtlasSource *atlas_source = Object::cast_to<TileSetAtlasSource>(*tile_set->get_source(source_id));
-		TileSetScenesCollectionSource *scenes_collection_source = Object::cast_to<TileSetScenesCollectionSource>(*tile_set->get_source(source_id));
+		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(*tile_set->get_source(source_id));
+		LayeredTileSetScenesCollectionSource *scenes_collection_source = Object::cast_to<LayeredTileSetScenesCollectionSource>(*tile_set->get_source(source_id));
 		if (atlas_source) {
 			no_source_selected_label->hide();
 			tile_set_atlas_source_editor->edit(*tile_set, atlas_source, source_id);
@@ -273,13 +273,13 @@ void TileSetEditor::_source_selected(int p_source_index) {
 	}
 }
 
-void TileSetEditor::_source_delete_pressed() {
+void LayeredTileSetEditor::_source_delete_pressed() {
 	ERR_FAIL_COND(!tile_set.is_valid());
 
 	// Update the selected source.
 	int to_delete = sources_list->get_item_metadata(sources_list->get_current());
 
-	Ref<TileSetSource> source = tile_set->get_source(to_delete);
+	Ref<LayeredTileSetSource> source = tile_set->get_source(to_delete);
 
 	// Remove the source.
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
@@ -291,7 +291,7 @@ void TileSetEditor::_source_delete_pressed() {
 	_update_sources_list();
 }
 
-void TileSetEditor::_source_add_id_pressed(int p_id_pressed) {
+void LayeredTileSetEditor::_source_add_id_pressed(int p_id_pressed) {
 	ERR_FAIL_COND(!tile_set.is_valid());
 
 	switch (p_id_pressed) {
@@ -300,7 +300,7 @@ void TileSetEditor::_source_add_id_pressed(int p_id_pressed) {
 				texture_file_dialog = memnew(EditorFileDialog);
 				add_child(texture_file_dialog);
 				texture_file_dialog->set_file_mode(EditorFileDialog::FILE_MODE_OPEN_FILES);
-				texture_file_dialog->connect("files_selected", callable_mp(this, &TileSetEditor::_load_texture_files));
+				texture_file_dialog->connect("files_selected", callable_mp(this, &LayeredTileSetEditor::_load_texture_files));
 
 				List<String> extensions;
 				ResourceLoader::get_recognized_extensions_for_type("Texture2D", &extensions);
@@ -313,7 +313,7 @@ void TileSetEditor::_source_add_id_pressed(int p_id_pressed) {
 		case 1: {
 			int source_id = tile_set->get_next_source_id();
 
-			Ref<TileSetScenesCollectionSource> scene_collection_source = memnew(TileSetScenesCollectionSource);
+			Ref<LayeredTileSetScenesCollectionSource> scene_collection_source = memnew(LayeredTileSetScenesCollectionSource);
 
 			// Add a new source.
 			EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
@@ -329,7 +329,7 @@ void TileSetEditor::_source_add_id_pressed(int p_id_pressed) {
 	}
 }
 
-void TileSetEditor::_sources_advanced_menu_id_pressed(int p_id_pressed) {
+void LayeredTileSetEditor::_sources_advanced_menu_id_pressed(int p_id_pressed) {
 	ERR_FAIL_COND(!tile_set.is_valid());
 
 	switch (p_id_pressed) {
@@ -344,13 +344,13 @@ void TileSetEditor::_sources_advanced_menu_id_pressed(int p_id_pressed) {
 	}
 }
 
-void TileSetEditor::_set_source_sort(int p_sort) {
-	TilesEditorUtils::get_singleton()->set_sorting_option(p_sort);
-	for (int i = 0; i != TilesEditorUtils::SOURCE_SORT_MAX; i++) {
+void LayeredTileSetEditor::_set_source_sort(int p_sort) {
+	LayeredTilesEditorUtils::get_singleton()->set_sorting_option(p_sort);
+	for (int i = 0; i != LayeredTilesEditorUtils::SOURCE_SORT_MAX; i++) {
 		source_sort_button->get_popup()->set_item_checked(i, (i == (int)p_sort));
 	}
 
-	int old_selected = TileSet::INVALID_SOURCE;
+	int old_selected = LayeredTileSet::INVALID_SOURCE;
 	if (sources_list->get_current() >= 0) {
 		int source_id = sources_list->get_item_metadata(sources_list->get_current());
 		if (tile_set->has_source(source_id)) {
@@ -361,14 +361,14 @@ void TileSetEditor::_set_source_sort(int p_sort) {
 	EditorSettings::get_singleton()->set_project_metadata("editor_metadata", "tile_source_sort", p_sort);
 }
 
-void TileSetEditor::_notification(int p_what) {
+void LayeredTileSetEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_THEME_CHANGED: {
 			sources_delete_button->set_icon(get_editor_theme_icon(SNAME("Remove")));
 			sources_add_button->set_icon(get_editor_theme_icon(SNAME("Add")));
 			source_sort_button->set_icon(get_editor_theme_icon(SNAME("Sort")));
 			sources_advanced_menu_button->set_icon(get_editor_theme_icon(SNAME("GuiTabMenuHl")));
-			missing_texture_texture = get_editor_theme_icon(SNAME("TileSet"));
+			missing_texture_texture = get_editor_theme_icon(SNAME("LayeredTileSet"));
 			expanded_area->add_theme_style_override("panel", get_theme_stylebox("panel", "Tree"));
 			_update_sources_list();
 		} break;
@@ -403,7 +403,7 @@ void TileSetEditor::_notification(int p_what) {
 	}
 }
 
-void TileSetEditor::_patterns_item_list_gui_input(const Ref<InputEvent> &p_event) {
+void LayeredTileSetEditor::_patterns_item_list_gui_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(!tile_set.is_valid());
 
 	if (EditorNode::get_singleton()->is_resource_read_only(tile_set)) {
@@ -413,7 +413,7 @@ void TileSetEditor::_patterns_item_list_gui_input(const Ref<InputEvent> &p_event
 	if (ED_IS_SHORTCUT("tiles_editor/delete", p_event) && p_event->is_pressed() && !p_event->is_echo()) {
 		Vector<int> selected = patterns_item_list->get_selected_items();
 		EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
-		undo_redo->create_action(TTR("Remove TileSet patterns"));
+		undo_redo->create_action(TTR("Remove LayeredTileSet patterns"));
 		for (int i = 0; i < selected.size(); i++) {
 			int pattern_index = selected[i];
 			undo_redo->add_do_method(*tile_set, "remove_pattern", pattern_index);
@@ -424,7 +424,7 @@ void TileSetEditor::_patterns_item_list_gui_input(const Ref<InputEvent> &p_event
 	}
 }
 
-void TileSetEditor::_pattern_preview_done(Ref<TileMapPattern> p_pattern, Ref<Texture2D> p_texture) {
+void LayeredTileSetEditor::_pattern_preview_done(Ref<LayeredTileMapPattern> p_pattern, Ref<Texture2D> p_texture) {
 	// TODO optimize ?
 	for (int i = 0; i < patterns_item_list->get_item_count(); i++) {
 		if (patterns_item_list->get_item_metadata(i) == p_pattern) {
@@ -434,7 +434,7 @@ void TileSetEditor::_pattern_preview_done(Ref<TileMapPattern> p_pattern, Ref<Tex
 	}
 }
 
-void TileSetEditor::_update_patterns_list() {
+void LayeredTileSetEditor::_update_patterns_list() {
 	ERR_FAIL_COND(!tile_set.is_valid());
 
 	// Recreate the items.
@@ -443,27 +443,27 @@ void TileSetEditor::_update_patterns_list() {
 		int id = patterns_item_list->add_item("");
 		patterns_item_list->set_item_metadata(id, tile_set->get_pattern(i));
 		patterns_item_list->set_item_tooltip(id, vformat(TTR("Index: %d"), i));
-		TilesEditorUtils::get_singleton()->queue_pattern_preview(tile_set, tile_set->get_pattern(i), callable_mp(this, &TileSetEditor::_pattern_preview_done));
+		LayeredTilesEditorUtils::get_singleton()->queue_pattern_preview(tile_set, tile_set->get_pattern(i), callable_mp(this, &LayeredTileSetEditor::_pattern_preview_done));
 	}
 
 	// Update the label visibility.
 	patterns_help_label->set_visible(patterns_item_list->get_item_count() == 0);
 }
 
-void TileSetEditor::_tile_set_changed() {
+void LayeredTileSetEditor::_tile_set_changed() {
 	tile_set_changed_needs_update = true;
 }
 
-void TileSetEditor::_tab_changed(int p_tab_changed) {
+void LayeredTileSetEditor::_tab_changed(int p_tab_changed) {
 	split_container->set_visible(p_tab_changed == 0);
 	patterns_item_list->set_visible(p_tab_changed == 1);
 }
 
-void TileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Object *p_edited, const String &p_array_prefix, int p_from_index, int p_to_pos) {
+void LayeredTileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Object *p_edited, const String &p_array_prefix, int p_from_index, int p_to_pos) {
 	EditorUndoRedoManager *undo_redo_man = Object::cast_to<EditorUndoRedoManager>(p_undo_redo);
 	ERR_FAIL_NULL(undo_redo_man);
 
-	TileSet *ed_tile_set = Object::cast_to<TileSet>(p_edited);
+	LayeredTileSet *ed_tile_set = Object::cast_to<LayeredTileSet>(p_edited);
 	if (!ed_tile_set) {
 		return;
 	}
@@ -487,7 +487,7 @@ void TileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Object *p_
 	} else if (p_array_prefix == "custom_data_layer_") {
 		end = ed_tile_set->get_custom_data_layers_count();
 	} else {
-		ERR_FAIL_MSG("Invalid array prefix for TileSet.");
+		ERR_FAIL_MSG("Invalid array prefix for LayeredTileSet.");
 	}
 	if (p_from_index < 0) {
 		// Adding new.
@@ -557,11 +557,11 @@ void TileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Object *p_
 		}
 	}
 
-	// Save properties for TileSetAtlasSources tile data
+	// Save properties for LayeredTileSetAtlasSources tile data
 	for (int i = 0; i < ed_tile_set->get_source_count(); i++) {
 		int source_id = ed_tile_set->get_source_id(i);
 
-		Ref<TileSetAtlasSource> tas = ed_tile_set->get_source(source_id);
+		Ref<LayeredTileSetAtlasSource> tas = ed_tile_set->get_source(source_id);
 		if (tas.is_valid()) {
 			for (int j = 0; j < tas->get_tiles_count(); j++) {
 				Vector2i tile_id = tas->get_tile_id(j);
@@ -587,18 +587,18 @@ void TileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Object *p_
 					} else if (p_array_prefix == "terrain_set_") {
 						ADD_UNDO(tile_data, "terrain_set");
 						for (int terrain_set_index = begin; terrain_set_index < end; terrain_set_index++) {
-							for (int l = 0; l < TileSet::CELL_NEIGHBOR_MAX; l++) {
-								TileSet::CellNeighbor bit = TileSet::CellNeighbor(l);
+							for (int l = 0; l < LayeredTileSet::CELL_NEIGHBOR_MAX; l++) {
+								LayeredTileSet::CellNeighbor bit = LayeredTileSet::CellNeighbor(l);
 								if (tile_data->is_valid_terrain_peering_bit(bit)) {
-									ADD_UNDO(tile_data, "terrains_peering_bit/" + String(TileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[l]));
+									ADD_UNDO(tile_data, "terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[l]));
 								}
 							}
 						}
 					} else if (components.size() >= 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_int() && components[1] == "terrain_") {
-						for (int terrain_index = 0; terrain_index < TileSet::CELL_NEIGHBOR_MAX; terrain_index++) {
-							TileSet::CellNeighbor bit = TileSet::CellNeighbor(terrain_index);
+						for (int terrain_index = 0; terrain_index < LayeredTileSet::CELL_NEIGHBOR_MAX; terrain_index++) {
+							LayeredTileSet::CellNeighbor bit = LayeredTileSet::CellNeighbor(terrain_index);
 							if (tile_data->is_valid_terrain_peering_bit(bit)) {
-								ADD_UNDO(tile_data, "terrains_peering_bit/" + String(TileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[terrain_index]));
+								ADD_UNDO(tile_data, "terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[terrain_index]));
 							}
 						}
 					} else if (p_array_prefix == "navigation_layer_") {
@@ -669,18 +669,18 @@ void TileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Object *p_
 	}
 }
 
-void TileSetEditor::_undo_redo_inspector_callback(Object *p_undo_redo, Object *p_edited, const String &p_property, const Variant &p_new_value) {
+void LayeredTileSetEditor::_undo_redo_inspector_callback(Object *p_undo_redo, Object *p_edited, const String &p_property, const Variant &p_new_value) {
 	EditorUndoRedoManager *undo_redo_man = Object::cast_to<EditorUndoRedoManager>(p_undo_redo);
 	ERR_FAIL_NULL(undo_redo_man);
 
 #define ADD_UNDO(obj, property) undo_redo_man->add_undo_property(obj, property, obj->get(property));
-	TileSet *ed_tile_set = Object::cast_to<TileSet>(p_edited);
+	LayeredTileSet *ed_tile_set = Object::cast_to<LayeredTileSet>(p_edited);
 	if (ed_tile_set) {
 		Vector<String> components = p_property.split("/", true, 3);
 		for (int i = 0; i < ed_tile_set->get_source_count(); i++) {
 			int source_id = ed_tile_set->get_source_id(i);
 
-			Ref<TileSetAtlasSource> tas = ed_tile_set->get_source(source_id);
+			Ref<LayeredTileSetAtlasSource> tas = ed_tile_set->get_source(source_id);
 			if (tas.is_valid()) {
 				for (int j = 0; j < tas->get_tiles_count(); j++) {
 					Vector2i tile_id = tas->get_tile_id(j);
@@ -692,10 +692,10 @@ void TileSetEditor::_undo_redo_inspector_callback(Object *p_undo_redo, Object *p
 						if (components.size() == 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_int() && components[1] == "mode") {
 							ADD_UNDO(tile_data, "terrain_set");
 							ADD_UNDO(tile_data, "terrain");
-							for (int l = 0; l < TileSet::CELL_NEIGHBOR_MAX; l++) {
-								TileSet::CellNeighbor bit = TileSet::CellNeighbor(l);
+							for (int l = 0; l < LayeredTileSet::CELL_NEIGHBOR_MAX; l++) {
+								LayeredTileSet::CellNeighbor bit = LayeredTileSet::CellNeighbor(l);
 								if (tile_data->is_valid_terrain_peering_bit(bit)) {
-									ADD_UNDO(tile_data, "terrains_peering_bit/" + String(TileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[l]));
+									ADD_UNDO(tile_data, "terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[l]));
 								}
 							}
 						} else if (components.size() == 2 && components[0].begins_with("custom_data_layer_") && components[0].trim_prefix("custom_data_layer_").is_valid_int() && components[1] == "type") {
@@ -710,7 +710,7 @@ void TileSetEditor::_undo_redo_inspector_callback(Object *p_undo_redo, Object *p
 #undef ADD_UNDO
 }
 
-void TileSetEditor::edit(Ref<TileSet> p_tile_set) {
+void LayeredTileSetEditor::edit(Ref<LayeredTileSet> p_tile_set) {
 	bool new_read_only_state = false;
 	if (p_tile_set.is_valid()) {
 		new_read_only_state = EditorNode::get_singleton()->is_resource_read_only(p_tile_set);
@@ -722,7 +722,7 @@ void TileSetEditor::edit(Ref<TileSet> p_tile_set) {
 
 	// Remove listener.
 	if (tile_set.is_valid()) {
-		tile_set->disconnect_changed(callable_mp(this, &TileSetEditor::_tile_set_changed));
+		tile_set->disconnect_changed(callable_mp(this, &LayeredTileSetEditor::_tile_set_changed));
 	}
 
 	// Change the edited object.
@@ -737,7 +737,7 @@ void TileSetEditor::edit(Ref<TileSet> p_tile_set) {
 		sources_advanced_menu_button->set_disabled(read_only);
 		source_sort_button->set_disabled(read_only);
 
-		tile_set->connect_changed(callable_mp(this, &TileSetEditor::_tile_set_changed));
+		tile_set->connect_changed(callable_mp(this, &LayeredTileSetEditor::_tile_set_changed));
 		if (first_edit) {
 			first_edit = false;
 			_set_source_sort(EditorSettings::get_singleton()->get_project_metadata("editor_metadata", "tile_source_sort", 0));
@@ -748,7 +748,7 @@ void TileSetEditor::edit(Ref<TileSet> p_tile_set) {
 	}
 }
 
-void TileSetEditor::add_expanded_editor(Control *p_editor) {
+void LayeredTileSetEditor::add_expanded_editor(Control *p_editor) {
 	expanded_editor = p_editor;
 	expanded_editor_parent = p_editor->get_parent()->get_instance_id();
 
@@ -778,7 +778,7 @@ void TileSetEditor::add_expanded_editor(Control *p_editor) {
 	}
 }
 
-void TileSetEditor::remove_expanded_editor() {
+void LayeredTileSetEditor::remove_expanded_editor() {
 	if (!expanded_editor) {
 		return;
 	}
@@ -799,11 +799,11 @@ void TileSetEditor::remove_expanded_editor() {
 	}
 }
 
-void TileSetEditor::register_split(SplitContainer *p_split) {
+void LayeredTileSetEditor::register_split(SplitContainer *p_split) {
 	disable_on_expand.push_back(p_split);
 }
 
-TileSetEditor::TileSetEditor() {
+LayeredTileSetEditor::LayeredTileSetEditor() {
 	singleton = this;
 
 	set_process_internal(true);
@@ -818,7 +818,7 @@ TileSetEditor::TileSetEditor() {
 	tabs_bar->set_clip_tabs(false);
 	tabs_bar->add_tab(TTR("Tiles"));
 	tabs_bar->add_tab(TTR("Patterns"));
-	tabs_bar->connect("tab_changed", callable_mp(this, &TileSetEditor::_tab_changed));
+	tabs_bar->connect("tab_changed", callable_mp(this, &LayeredTileSetEditor::_tab_changed));
 
 	tile_set_toolbar = memnew(HBoxContainer);
 	tile_set_toolbar->set_h_size_flags(SIZE_EXPAND_FILL);
@@ -847,25 +847,25 @@ TileSetEditor::TileSetEditor() {
 	source_sort_button->set_tooltip_text(TTR("Sort Sources"));
 
 	PopupMenu *p = source_sort_button->get_popup();
-	p->connect("id_pressed", callable_mp(this, &TileSetEditor::_set_source_sort));
-	p->add_radio_check_item(TTR("Sort by ID (Ascending)"), TilesEditorUtils::SOURCE_SORT_ID);
-	p->add_radio_check_item(TTR("Sort by ID (Descending)"), TilesEditorUtils::SOURCE_SORT_ID_REVERSE);
-	p->add_radio_check_item(TTR("Sort by Name (Ascending)"), TilesEditorUtils::SOURCE_SORT_NAME);
-	p->add_radio_check_item(TTR("Sort by Name (Descending)"), TilesEditorUtils::SOURCE_SORT_NAME_REVERSE);
-	p->set_item_checked(TilesEditorUtils::SOURCE_SORT_ID, true);
+	p->connect("id_pressed", callable_mp(this, &LayeredTileSetEditor::_set_source_sort));
+	p->add_radio_check_item(TTR("Sort by ID (Ascending)"), LayeredTilesEditorUtils::SOURCE_SORT_ID);
+	p->add_radio_check_item(TTR("Sort by ID (Descending)"), LayeredTilesEditorUtils::SOURCE_SORT_ID_REVERSE);
+	p->add_radio_check_item(TTR("Sort by Name (Ascending)"), LayeredTilesEditorUtils::SOURCE_SORT_NAME);
+	p->add_radio_check_item(TTR("Sort by Name (Descending)"), LayeredTilesEditorUtils::SOURCE_SORT_NAME_REVERSE);
+	p->set_item_checked(LayeredTilesEditorUtils::SOURCE_SORT_ID, true);
 
 	sources_list = memnew(ItemList);
 	sources_list->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	sources_list->set_fixed_icon_size(Size2(60, 60) * EDSCALE);
 	sources_list->set_h_size_flags(SIZE_EXPAND_FILL);
 	sources_list->set_v_size_flags(SIZE_EXPAND_FILL);
-	sources_list->connect("item_selected", callable_mp(this, &TileSetEditor::_source_selected));
-	sources_list->connect("item_selected", callable_mp(TilesEditorUtils::get_singleton(), &TilesEditorUtils::set_sources_lists_current));
-	sources_list->connect("visibility_changed", callable_mp(TilesEditorUtils::get_singleton(), &TilesEditorUtils::synchronize_sources_list).bind(sources_list, source_sort_button));
+	sources_list->connect("item_selected", callable_mp(this, &LayeredTileSetEditor::_source_selected));
+	sources_list->connect("item_selected", callable_mp(LayeredTilesEditorUtils::get_singleton(), &LayeredTilesEditorUtils::set_sources_lists_current));
+	sources_list->connect("visibility_changed", callable_mp(LayeredTilesEditorUtils::get_singleton(), &LayeredTilesEditorUtils::synchronize_sources_list).bind(sources_list, source_sort_button));
 	sources_list->add_user_signal(MethodInfo("sort_request"));
-	sources_list->connect("sort_request", callable_mp(this, &TileSetEditor::_update_sources_list).bind(-1));
+	sources_list->connect("sort_request", callable_mp(this, &LayeredTileSetEditor::_update_sources_list).bind(-1));
 	sources_list->set_texture_filter(CanvasItem::TEXTURE_FILTER_NEAREST);
-	SET_DRAG_FORWARDING_CDU(sources_list, TileSetEditor);
+	SET_DRAG_FORWARDING_CDU(sources_list, LayeredTileSetEditor);
 	split_container_left_side->add_child(sources_list);
 
 	HBoxContainer *sources_bottom_actions = memnew(HBoxContainer);
@@ -875,7 +875,7 @@ TileSetEditor::TileSetEditor() {
 	sources_delete_button = memnew(Button);
 	sources_delete_button->set_theme_type_variation("FlatButton");
 	sources_delete_button->set_disabled(true);
-	sources_delete_button->connect("pressed", callable_mp(this, &TileSetEditor::_source_delete_pressed));
+	sources_delete_button->connect("pressed", callable_mp(this, &LayeredTileSetEditor::_source_delete_pressed));
 	sources_bottom_actions->add_child(sources_delete_button);
 
 	sources_add_button = memnew(MenuButton);
@@ -883,7 +883,7 @@ TileSetEditor::TileSetEditor() {
 	sources_add_button->set_theme_type_variation("FlatButton");
 	sources_add_button->get_popup()->add_item(TTR("Atlas"));
 	sources_add_button->get_popup()->add_item(TTR("Scenes Collection"));
-	sources_add_button->get_popup()->connect("id_pressed", callable_mp(this, &TileSetEditor::_source_add_id_pressed));
+	sources_add_button->get_popup()->connect("id_pressed", callable_mp(this, &LayeredTileSetEditor::_source_add_id_pressed));
 	sources_bottom_actions->add_child(sources_add_button);
 
 	sources_advanced_menu_button = memnew(MenuButton);
@@ -891,14 +891,14 @@ TileSetEditor::TileSetEditor() {
 	sources_advanced_menu_button->set_theme_type_variation("FlatButton");
 	sources_advanced_menu_button->get_popup()->add_item(TTR("Open Atlas Merging Tool"));
 	sources_advanced_menu_button->get_popup()->add_item(TTR("Manage Tile Proxies"));
-	sources_advanced_menu_button->get_popup()->connect("id_pressed", callable_mp(this, &TileSetEditor::_sources_advanced_menu_id_pressed));
+	sources_advanced_menu_button->get_popup()->connect("id_pressed", callable_mp(this, &LayeredTileSetEditor::_sources_advanced_menu_id_pressed));
 	sources_bottom_actions->add_child(sources_advanced_menu_button);
 	sources_bottom_actions->add_child(source_sort_button);
 
 	atlas_merging_dialog = memnew(AtlasMergingDialog);
 	add_child(atlas_merging_dialog);
 
-	tile_proxies_manager_dialog = memnew(TileProxiesManagerDialog);
+	tile_proxies_manager_dialog = memnew(LayeredTileProxiesManagerDialog);
 	add_child(tile_proxies_manager_dialog);
 
 	// Right side container.
@@ -909,7 +909,7 @@ TileSetEditor::TileSetEditor() {
 
 	// No source selected.
 	no_source_selected_label = memnew(Label);
-	no_source_selected_label->set_text(TTR("No TileSet source selected. Select or create a TileSet source.\nYou can create a new source by using the Add button on the left or by dropping a tileset texture onto the source list."));
+	no_source_selected_label->set_text(TTR("No LayeredTileSet source selected. Select or create a LayeredTileSet source.\nYou can create a new source by using the Add button on the left or by dropping a tileset texture onto the source list."));
 	no_source_selected_label->set_h_size_flags(SIZE_EXPAND_FILL);
 	no_source_selected_label->set_v_size_flags(SIZE_EXPAND_FILL);
 	no_source_selected_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
@@ -917,18 +917,18 @@ TileSetEditor::TileSetEditor() {
 	split_container_right_side->add_child(no_source_selected_label);
 
 	// Atlases editor.
-	tile_set_atlas_source_editor = memnew(TileSetAtlasSourceEditor);
+	tile_set_atlas_source_editor = memnew(LayeredTileSetAtlasSourceEditor);
 	tile_set_atlas_source_editor->set_h_size_flags(SIZE_EXPAND_FILL);
 	tile_set_atlas_source_editor->set_v_size_flags(SIZE_EXPAND_FILL);
-	tile_set_atlas_source_editor->connect("source_id_changed", callable_mp(this, &TileSetEditor::_update_sources_list));
+	tile_set_atlas_source_editor->connect("source_id_changed", callable_mp(this, &LayeredTileSetEditor::_update_sources_list));
 	split_container_right_side->add_child(tile_set_atlas_source_editor);
 	tile_set_atlas_source_editor->hide();
 
 	// Scenes collection editor.
-	tile_set_scenes_collection_source_editor = memnew(TileSetScenesCollectionSourceEditor);
+	tile_set_scenes_collection_source_editor = memnew(LayeredTileSetScenesCollectionSourceEditor);
 	tile_set_scenes_collection_source_editor->set_h_size_flags(SIZE_EXPAND_FILL);
 	tile_set_scenes_collection_source_editor->set_v_size_flags(SIZE_EXPAND_FILL);
-	tile_set_scenes_collection_source_editor->connect("source_id_changed", callable_mp(this, &TileSetEditor::_update_sources_list));
+	tile_set_scenes_collection_source_editor->connect("source_id_changed", callable_mp(this, &LayeredTileSetEditor::_update_sources_list));
 	split_container_right_side->add_child(tile_set_scenes_collection_source_editor);
 	tile_set_scenes_collection_source_editor->hide();
 
@@ -942,12 +942,12 @@ TileSetEditor::TileSetEditor() {
 	patterns_item_list->set_max_text_lines(2);
 	patterns_item_list->set_fixed_icon_size(Size2(thumbnail_size, thumbnail_size));
 	patterns_item_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	patterns_item_list->connect("gui_input", callable_mp(this, &TileSetEditor::_patterns_item_list_gui_input));
+	patterns_item_list->connect("gui_input", callable_mp(this, &LayeredTileSetEditor::_patterns_item_list_gui_input));
 	main_vb->add_child(patterns_item_list);
 	patterns_item_list->hide();
 
 	patterns_help_label = memnew(Label);
-	patterns_help_label->set_text(TTR("Add new patterns in the TileMap editing mode."));
+	patterns_help_label->set_text(TTR("Add new patterns in the LayeredTileMap editing mode."));
 	patterns_help_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
 	patterns_help_label->set_anchors_and_offsets_preset(Control::PRESET_CENTER);
 	patterns_item_list->add_child(patterns_help_label);
@@ -959,19 +959,19 @@ TileSetEditor::TileSetEditor() {
 	expanded_area->hide();
 
 	// Registers UndoRedo inspector callback.
-	EditorNode::get_editor_data().add_move_array_element_function(SNAME("TileSet"), callable_mp(this, &TileSetEditor::_move_tile_set_array_element));
-	EditorNode::get_editor_data().add_undo_redo_inspector_hook_callback(callable_mp(this, &TileSetEditor::_undo_redo_inspector_callback));
+	EditorNode::get_editor_data().add_move_array_element_function(SNAME("LayeredTileSet"), callable_mp(this, &LayeredTileSetEditor::_move_tile_set_array_element));
+	EditorNode::get_editor_data().add_undo_redo_inspector_hook_callback(callable_mp(this, &LayeredTileSetEditor::_undo_redo_inspector_callback));
 }
 
-void TileSourceInspectorPlugin::_show_id_edit_dialog(Object *p_for_source) {
+void LayeredTileSourceInspectorPlugin::_show_id_edit_dialog(Object *p_for_source) {
 	if (!id_edit_dialog) {
 		id_edit_dialog = memnew(ConfirmationDialog);
-		TileSetEditor::get_singleton()->add_child(id_edit_dialog);
+		LayeredTileSetEditor::get_singleton()->add_child(id_edit_dialog);
 
 		VBoxContainer *vbox = memnew(VBoxContainer);
 		id_edit_dialog->add_child(vbox);
 
-		Label *label = memnew(Label(TTR("Warning: Modifying a source ID will result in all TileMaps using that source to reference an invalid source instead. This may result in unexpected data loss. Change this ID carefully.")));
+		Label *label = memnew(Label(TTR("Warning: Modifying a source ID will result in all LayeredTileMaps using that source to reference an invalid source instead. This may result in unexpected data loss. Change this ID carefully.")));
 		label->set_autowrap_mode(TextServer::AUTOWRAP_WORD);
 		vbox->add_child(label);
 
@@ -979,7 +979,7 @@ void TileSourceInspectorPlugin::_show_id_edit_dialog(Object *p_for_source) {
 		vbox->add_child(id_input);
 		id_input->set_max(INT_MAX);
 
-		id_edit_dialog->connect("confirmed", callable_mp(this, &TileSourceInspectorPlugin::_confirm_change_id));
+		id_edit_dialog->connect("confirmed", callable_mp(this, &LayeredTileSourceInspectorPlugin::_confirm_change_id));
 	}
 	edited_source = p_for_source;
 	id_input->set_value(p_for_source->get("id"));
@@ -987,16 +987,16 @@ void TileSourceInspectorPlugin::_show_id_edit_dialog(Object *p_for_source) {
 	callable_mp((Control *)id_input->get_line_edit(), &Control::grab_focus).call_deferred();
 }
 
-void TileSourceInspectorPlugin::_confirm_change_id() {
+void LayeredTileSourceInspectorPlugin::_confirm_change_id() {
 	edited_source->set("id", id_input->get_value());
 	id_label->set_text(itos(edited_source->get("id"))); // Use get(), because the provided ID might've been invalid.
 }
 
-bool TileSourceInspectorPlugin::can_handle(Object *p_object) {
-	return p_object->is_class("TileSetAtlasSourceProxyObject") || p_object->is_class("TileSetScenesCollectionProxyObject");
+bool LayeredTileSourceInspectorPlugin::can_handle(Object *p_object) {
+	return p_object->is_class("LayeredTileSetAtlasSourceProxyObject") || p_object->is_class("LayeredTileSetScenesCollectionProxyObject");
 }
 
-bool TileSourceInspectorPlugin::parse_property(Object *p_object, const Variant::Type p_type, const String &p_path, const PropertyHint p_hint, const String &p_hint_text, const BitField<PropertyUsageFlags> p_usage, const bool p_wide) {
+bool LayeredTileSourceInspectorPlugin::parse_property(Object *p_object, const Variant::Type p_type, const String &p_path, const PropertyHint p_hint, const String &p_hint_text, const BitField<PropertyUsageFlags> p_usage, const bool p_wide) {
 	if (p_path == "id") {
 		const Variant value = p_object->get("id");
 		if (value.get_type() == Variant::NIL) { // May happen if the object is not yet initialized.
@@ -1015,7 +1015,7 @@ bool TileSourceInspectorPlugin::parse_property(Object *p_object, const Variant::
 		Button *button = memnew(Button(TTR("Edit")));
 		button->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 		hbox->add_child(button);
-		button->connect("pressed", callable_mp(this, &TileSourceInspectorPlugin::_show_id_edit_dialog).bind(p_object));
+		button->connect("pressed", callable_mp(this, &LayeredTileSourceInspectorPlugin::_show_id_edit_dialog).bind(p_object));
 
 		ep->add_child(hbox);
 		add_property_editor(p_path, ep);

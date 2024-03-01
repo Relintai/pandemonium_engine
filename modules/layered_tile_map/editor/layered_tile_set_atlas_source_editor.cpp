@@ -57,12 +57,12 @@
 
 #include "servers/navigation_server_2d.h"
 
-void TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::set_id(int p_id) {
+void LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::set_id(int p_id) {
 	ERR_FAIL_COND(p_id < 0);
 	if (source_id == p_id) {
 		return;
 	}
-	ERR_FAIL_COND_MSG(tile_set->has_source(p_id), vformat("Cannot change TileSet Atlas Source ID. Another source exists with id %d.", p_id));
+	ERR_FAIL_COND_MSG(tile_set->has_source(p_id), vformat("Cannot change LayeredTileSet Atlas Source ID. Another source exists with id %d.", p_id));
 
 	int previous_source = source_id;
 	source_id = p_id; // source_id must be updated before, because it's used by the source list update.
@@ -70,11 +70,11 @@ void TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::set_id(int p_id) {
 	emit_signal(SNAME("changed"), "id");
 }
 
-int TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::get_id() const {
+int LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::get_id() const {
 	return source_id;
 }
 
-bool TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::_set(const StringName &p_name, const Variant &p_value) {
+bool LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::_set(const StringName &p_name, const Variant &p_value) {
 	if (p_name == "id") {
 		set_id(p_value);
 		return true;
@@ -92,7 +92,7 @@ bool TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::_set(const StringN
 	return valid;
 }
 
-bool TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::_get(const StringName &p_name, Variant &r_ret) const {
+bool LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::_get(const StringName &p_name, Variant &r_ret) const {
 	if (!tile_set_atlas_source.is_valid()) {
 		return false;
 	}
@@ -110,7 +110,7 @@ bool TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::_get(const StringN
 	return valid;
 }
 
-void TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::_get_property_list(List<PropertyInfo> *p_list) const {
+void LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::_get_property_list(List<PropertyInfo> *p_list) const {
 	p_list->push_back(PropertyInfo(Variant::NIL, TTR("Atlas"), PROPERTY_HINT_NONE, String(), PROPERTY_USAGE_CATEGORY));
 	p_list->push_back(PropertyInfo(Variant::INT, PNAME("id"), PROPERTY_HINT_RANGE, "0," + itos(INT_MAX) + ",1"));
 	p_list->push_back(PropertyInfo(Variant::STRING, PNAME("name")));
@@ -121,11 +121,11 @@ void TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::_get_property_list
 	p_list->push_back(PropertyInfo(Variant::BOOL, PNAME("use_texture_padding")));
 }
 
-void TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::_bind_methods() {
+void LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("changed", PropertyInfo(Variant::STRING, "what")));
 }
 
-void TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::edit(Ref<TileSet> p_tile_set, Ref<TileSetAtlasSource> p_tile_set_atlas_source, int p_source_id) {
+void LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::edit(Ref<LayeredTileSet> p_tile_set, Ref<LayeredTileSetAtlasSource> p_tile_set_atlas_source, int p_source_id) {
 	ERR_FAIL_COND(!p_tile_set_atlas_source.is_valid());
 	ERR_FAIL_COND(p_source_id < 0);
 	ERR_FAIL_COND(p_tile_set.is_valid() && p_tile_set->get_source(p_source_id) != p_tile_set_atlas_source);
@@ -154,7 +154,7 @@ void TileSetAtlasSourceEditor::TileSetAtlasSourceProxyObject::edit(Ref<TileSet> 
 }
 
 // -- Proxy object used by the tile inspector --
-bool TileSetAtlasSourceEditor::AtlasTileProxyObject::_set(const StringName &p_name, const Variant &p_value) {
+bool LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_set(const StringName &p_name, const Variant &p_value) {
 	if (!tile_set_atlas_source.is_valid()) {
 		return false;
 	}
@@ -186,7 +186,7 @@ bool TileSetAtlasSourceEditor::AtlasTileProxyObject::_set(const StringName &p_na
 				Vector2i as_vector2i = Vector2i(p_value);
 				bool has_room_for_tile = tile_set_atlas_source->has_room_for_tile(coords, as_vector2i, tile_set_atlas_source->get_tile_animation_columns(coords), tile_set_atlas_source->get_tile_animation_separation(coords), tile_set_atlas_source->get_tile_animation_frames_count(coords), coords);
 				ERR_FAIL_COND_V_EDMSG(!has_room_for_tile, false, "Invalid size or not enough room in the atlas for the tile.");
-				tile_set_atlas_source->move_tile_in_atlas(coords, TileSetSource::INVALID_ATLAS_COORDS, as_vector2i);
+				tile_set_atlas_source->move_tile_in_atlas(coords, LayeredTileSetSource::INVALID_ATLAS_COORDS, as_vector2i);
 				emit_signal(SNAME("changed"), "size_in_atlas");
 				return true;
 			}
@@ -254,7 +254,7 @@ bool TileSetAtlasSourceEditor::AtlasTileProxyObject::_set(const StringName &p_na
 			return true;
 		} else if (p_name == "animation_mode") {
 			for (TileSelection tile : tiles) {
-				tile_set_atlas_source->set_tile_animation_mode(tile.tile, VariantCaster<TileSetAtlasSource::TileAnimationMode>::cast(p_value));
+				tile_set_atlas_source->set_tile_animation_mode(tile.tile, VariantCaster<LayeredTileSetAtlasSource::TileAnimationMode>::cast(p_value));
 			}
 			emit_signal(SNAME("changed"), "animation_mode");
 			return true;
@@ -311,7 +311,7 @@ bool TileSetAtlasSourceEditor::AtlasTileProxyObject::_set(const StringName &p_na
 	return any_valid;
 }
 
-bool TileSetAtlasSourceEditor::AtlasTileProxyObject::_get(const StringName &p_name, Variant &r_ret) const {
+bool LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_get(const StringName &p_name, Variant &r_ret) const {
 	if (!tile_set_atlas_source.is_valid()) {
 		return false;
 	}
@@ -398,7 +398,7 @@ bool TileSetAtlasSourceEditor::AtlasTileProxyObject::_get(const StringName &p_na
 	return false;
 }
 
-void TileSetAtlasSourceEditor::AtlasTileProxyObject::_get_property_list(List<PropertyInfo> *p_list) const {
+void LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_get_property_list(List<PropertyInfo> *p_list) const {
 	if (!tile_set_atlas_source.is_valid()) {
 		return;
 	}
@@ -508,11 +508,11 @@ void TileSetAtlasSourceEditor::AtlasTileProxyObject::_get_property_list(List<Pro
 	}
 }
 
-void TileSetAtlasSourceEditor::AtlasTileProxyObject::edit(Ref<TileSetAtlasSource> p_tile_set_atlas_source, const RBSet<TileSelection> &p_tiles) {
+void LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::edit(Ref<LayeredTileSetAtlasSource> p_tile_set_atlas_source, const RBSet<TileSelection> &p_tiles) {
 	ERR_FAIL_COND(!p_tile_set_atlas_source.is_valid());
 	ERR_FAIL_COND(p_tiles.is_empty());
 	for (const TileSelection &E : p_tiles) {
-		ERR_FAIL_COND(E.tile == TileSetSource::INVALID_ATLAS_COORDS);
+		ERR_FAIL_COND(E.tile == LayeredTileSetSource::INVALID_ATLAS_COORDS);
 		ERR_FAIL_COND(E.alternative < 0);
 	}
 
@@ -548,17 +548,17 @@ void TileSetAtlasSourceEditor::AtlasTileProxyObject::edit(Ref<TileSetAtlasSource
 	notify_property_list_changed();
 }
 
-void TileSetAtlasSourceEditor::AtlasTileProxyObject::_bind_methods() {
+void LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("changed", PropertyInfo(Variant::STRING, "what")));
 }
 
-void TileSetAtlasSourceEditor::_inspector_property_selected(const String &p_property) {
+void LayeredTileSetAtlasSourceEditor::_inspector_property_selected(const String &p_property) {
 	selected_property = p_property;
 	_update_atlas_view();
 	_update_current_tile_data_editor();
 }
 
-void TileSetAtlasSourceEditor::_update_tile_id_label() {
+void LayeredTileSetAtlasSourceEditor::_update_tile_id_label() {
 	if (selection.size() == 1) {
 		TileSelection selected = selection.front()->get();
 		tool_tile_id_label->set_text(vformat("%d, %s, %d", tile_set_atlas_source_id, selected.tile, selected.alternative));
@@ -569,12 +569,12 @@ void TileSetAtlasSourceEditor::_update_tile_id_label() {
 	}
 }
 
-void TileSetAtlasSourceEditor::_update_source_inspector() {
+void LayeredTileSetAtlasSourceEditor::_update_source_inspector() {
 	// Update the proxy object.
 	atlas_source_proxy_object->edit(tile_set, tile_set_atlas_source, tile_set_atlas_source_id);
 }
 
-void TileSetAtlasSourceEditor::_update_fix_selected_and_hovered_tiles() {
+void LayeredTileSetAtlasSourceEditor::_update_fix_selected_and_hovered_tiles() {
 	// Fix selected.
 	for (RBSet<TileSelection>::Element *E = selection.front(); E;) {
 		RBSet<TileSelection>::Element *N = E->next();
@@ -587,23 +587,23 @@ void TileSetAtlasSourceEditor::_update_fix_selected_and_hovered_tiles() {
 
 	// Fix hovered.
 	if (!tile_set_atlas_source->has_tile(hovered_base_tile_coords)) {
-		hovered_base_tile_coords = TileSetSource::INVALID_ATLAS_COORDS;
+		hovered_base_tile_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS;
 	}
 	Vector2i coords = Vector2i(hovered_alternative_tile_coords.x, hovered_alternative_tile_coords.y);
 	int alternative = hovered_alternative_tile_coords.z;
 	if (!tile_set_atlas_source->has_tile(coords) || !tile_set_atlas_source->has_alternative_tile(coords, alternative)) {
-		hovered_alternative_tile_coords = Vector3i(TileSetSource::INVALID_ATLAS_COORDS.x, TileSetSource::INVALID_ATLAS_COORDS.y, TileSetSource::INVALID_TILE_ALTERNATIVE);
+		hovered_alternative_tile_coords = Vector3i(LayeredTileSetSource::INVALID_ATLAS_COORDS.x, LayeredTileSetSource::INVALID_ATLAS_COORDS.y, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
 	}
 }
 
-void TileSetAtlasSourceEditor::_update_atlas_source_inspector() {
+void LayeredTileSetAtlasSourceEditor::_update_atlas_source_inspector() {
 	// Update visibility.
 	bool inspector_visible = tools_button_group->get_pressed_button() == tool_setup_atlas_source_button;
 	atlas_source_inspector->set_visible(inspector_visible);
 	atlas_source_inspector->set_read_only(read_only);
 }
 
-void TileSetAtlasSourceEditor::_update_tile_inspector() {
+void LayeredTileSetAtlasSourceEditor::_update_tile_inspector() {
 	// Update visibility.
 	if (tools_button_group->get_pressed_button() == tool_select_button) {
 		if (!selection.is_empty()) {
@@ -618,7 +618,7 @@ void TileSetAtlasSourceEditor::_update_tile_inspector() {
 	tile_inspector->set_read_only(read_only);
 }
 
-void TileSetAtlasSourceEditor::_update_tile_data_editors() {
+void LayeredTileSetAtlasSourceEditor::_update_tile_data_editors() {
 	String previously_selected;
 	if (tile_data_editors_tree && tile_data_editors_tree->get_selected()) {
 		previously_selected = tile_data_editors_tree->get_selected()->get_metadata(0);
@@ -761,7 +761,7 @@ void TileSetAtlasSourceEditor::_update_tile_data_editors() {
 		item->set_icon(0, get_editor_theme_icon("Info"));
 		item->set_icon_modulate(0, disabled_color);
 		item->set_text(0, TTR("No physics layers"));
-		item->set_tooltip_text(0, TTR("Create and customize physics layers in the inspector of the TileSet resource."));
+		item->set_tooltip_text(0, TTR("Create and customize physics layers in the inspector of the LayeredTileSet resource."));
 		item->set_selectable(0, false);
 		item->set_custom_color(0, disabled_color);
 	}
@@ -789,7 +789,7 @@ void TileSetAtlasSourceEditor::_update_tile_data_editors() {
 		item->set_icon(0, get_editor_theme_icon("Info"));
 		item->set_icon_modulate(0, disabled_color);
 		item->set_text(0, TTR("No navigation layers"));
-		item->set_tooltip_text(0, TTR("Create and customize navigation layers in the inspector of the TileSet resource."));
+		item->set_tooltip_text(0, TTR("Create and customize navigation layers in the inspector of the LayeredTileSet resource."));
 		item->set_selectable(0, false);
 		item->set_custom_color(0, disabled_color);
 	}
@@ -832,7 +832,7 @@ void TileSetAtlasSourceEditor::_update_tile_data_editors() {
 		item->set_icon(0, get_editor_theme_icon("Info"));
 		item->set_icon_modulate(0, disabled_color);
 		item->set_text(0, TTR("No custom data layers"));
-		item->set_tooltip_text(0, TTR("Create and customize custom data layers in the inspector of the TileSet resource."));
+		item->set_tooltip_text(0, TTR("Create and customize custom data layers in the inspector of the LayeredTileSet resource."));
 		item->set_selectable(0, false);
 		item->set_custom_color(0, disabled_color);
 	}
@@ -843,9 +843,9 @@ void TileSetAtlasSourceEditor::_update_tile_data_editors() {
 #undef ADD_TILE_DATA_EDITOR
 
 	// Add tile data editors as children.
-	for (KeyValue<String, TileDataEditor *> &E : tile_data_editors) {
+	for (KeyValue<String, LayeredTileDataEditor *> &E : tile_data_editors) {
 		// Tile Data Editor.
-		TileDataEditor *tile_data_editor = E.value;
+		LayeredTileDataEditor *tile_data_editor = E.value;
 		if (!tile_data_editor->is_inside_tree()) {
 			tile_data_painting_editor_container->add_child(tile_data_editor);
 		}
@@ -870,7 +870,7 @@ void TileSetAtlasSourceEditor::_update_tile_data_editors() {
 	tile_data_editors_scroll->set_visible(is_visible);
 }
 
-void TileSetAtlasSourceEditor::_update_current_tile_data_editor() {
+void LayeredTileSetAtlasSourceEditor::_update_current_tile_data_editor() {
 	// Find the property to use.
 	String property;
 	if (tools_button_group->get_pressed_button() == tool_select_button && tile_inspector->is_visible() && !tile_inspector->get_selected_path().is_empty()) {
@@ -889,7 +889,7 @@ void TileSetAtlasSourceEditor::_update_current_tile_data_editor() {
 	}
 
 	// Hide all editors but the current one.
-	for (const KeyValue<String, TileDataEditor *> &E : tile_data_editors) {
+	for (const KeyValue<String, LayeredTileDataEditor *> &E : tile_data_editors) {
 		E.value->hide();
 		E.value->get_toolbar()->hide();
 	}
@@ -908,7 +908,7 @@ void TileSetAtlasSourceEditor::_update_current_tile_data_editor() {
 	}
 }
 
-void TileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_draw() {
+void LayeredTileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_draw() {
 	if (!has_theme_icon(SNAME("arrow"), SNAME("OptionButton"))) {
 		return;
 	}
@@ -947,14 +947,14 @@ void TileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_draw() {
 	arrow->draw(ci, ofs, clr);
 }
 
-void TileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_pressed() {
+void LayeredTileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_pressed() {
 	Size2 size = tile_data_editor_dropdown_button->get_size();
 	tile_data_editors_popup->set_position(tile_data_editor_dropdown_button->get_screen_position() + Size2(0, size.height * get_global_transform().get_scale().y));
 	tile_data_editors_popup->set_size(Size2(size.width, 0));
 	tile_data_editors_popup->popup();
 }
 
-void TileSetAtlasSourceEditor::_tile_data_editors_tree_selected() {
+void LayeredTileSetAtlasSourceEditor::_tile_data_editors_tree_selected() {
 	callable_mp((Window *)tile_data_editors_popup, &Window::hide).call_deferred();
 	_update_current_tile_data_editor();
 	tile_atlas_control->queue_redraw();
@@ -963,7 +963,7 @@ void TileSetAtlasSourceEditor::_tile_data_editors_tree_selected() {
 	alternative_tiles_control_unscaled->queue_redraw();
 }
 
-void TileSetAtlasSourceEditor::_update_atlas_view() {
+void LayeredTileSetAtlasSourceEditor::_update_atlas_view() {
 	// Update the atlas display.
 	tile_atlas_view->set_atlas_source(*tile_set, tile_set_atlas_source, tile_set_atlas_source_id);
 
@@ -1003,7 +1003,7 @@ void TileSetAtlasSourceEditor::_update_atlas_view() {
 			button->add_theme_style_override("hover", memnew(StyleBoxEmpty));
 			button->add_theme_style_override("focus", memnew(StyleBoxEmpty));
 			button->add_theme_style_override("pressed", memnew(StyleBoxEmpty));
-			button->connect("pressed", callable_mp(tile_set_atlas_source, &TileSetAtlasSource::create_alternative_tile).bind(tile_id, TileSetSource::INVALID_TILE_ALTERNATIVE));
+			button->connect("pressed", callable_mp(tile_set_atlas_source, &LayeredTileSetAtlasSource::create_alternative_tile).bind(tile_id, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE));
 			button->set_rect(Rect2(Vector2(pos.x, pos.y + (y_increment - texture_region_base_size.y) / 2.0), Vector2(texture_region_base_size_min, texture_region_base_size_min)));
 			button->set_expand_icon(true);
 			alternative_tiles_control->add_child(button);
@@ -1021,10 +1021,10 @@ void TileSetAtlasSourceEditor::_update_atlas_view() {
 	tile_atlas_view->queue_redraw();
 
 	// Synchronize atlas view.
-	TilesEditorUtils::get_singleton()->synchronize_atlas_view(tile_atlas_view);
+	LayeredTilesEditorUtils::get_singleton()->synchronize_atlas_view(tile_atlas_view);
 }
 
-void TileSetAtlasSourceEditor::_update_toolbar() {
+void LayeredTileSetAtlasSourceEditor::_update_toolbar() {
 	// Show the tools and settings.
 	if (tools_button_group->get_pressed_button() == tool_setup_atlas_source_button) {
 		if (current_tile_data_editor_toolbar) {
@@ -1047,19 +1047,19 @@ void TileSetAtlasSourceEditor::_update_toolbar() {
 	}
 }
 
-void TileSetAtlasSourceEditor::_tile_atlas_control_mouse_exited() {
-	hovered_base_tile_coords = TileSetSource::INVALID_ATLAS_COORDS;
+void LayeredTileSetAtlasSourceEditor::_tile_atlas_control_mouse_exited() {
+	hovered_base_tile_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS;
 	tile_atlas_control->queue_redraw();
 	tile_atlas_control_unscaled->queue_redraw();
 	tile_atlas_view->queue_redraw();
 }
 
-void TileSetAtlasSourceEditor::_tile_atlas_view_transform_changed() {
+void LayeredTileSetAtlasSourceEditor::_tile_atlas_view_transform_changed() {
 	tile_atlas_control->queue_redraw();
 	tile_atlas_control_unscaled->queue_redraw();
 }
 
-void TileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<InputEvent> &p_event) {
+void LayeredTileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<InputEvent> &p_event) {
 	// Update the hovered coords.
 	hovered_base_tile_coords = tile_atlas_view->get_atlas_tile_coords_at_pos(tile_atlas_control->get_local_mouse_position());
 
@@ -1106,7 +1106,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<InputEven
 
 				Vector<Point2i> line = Geometry2D::bresenham_line(last_base_tiles_coords, new_base_tiles_coords);
 				for (int i = 0; i < line.size(); i++) {
-					if (tile_set_atlas_source->get_tile_at_coords(line[i]) == TileSetSource::INVALID_ATLAS_COORDS) {
+					if (tile_set_atlas_source->get_tile_at_coords(line[i]) == LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 						tile_set_atlas_source->create_tile(line[i]);
 						drag_modified_tiles.insert(line[i]);
 					}
@@ -1122,7 +1122,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<InputEven
 				Vector<Point2i> line = Geometry2D::bresenham_line(last_base_tiles_coords, new_base_tiles_coords);
 				for (int i = 0; i < line.size(); i++) {
 					Vector2i base_tile_coords = tile_set_atlas_source->get_tile_at_coords(line[i]);
-					if (base_tile_coords != TileSetSource::INVALID_ATLAS_COORDS) {
+					if (base_tile_coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 						drag_modified_tiles.insert(base_tile_coords);
 					}
 				}
@@ -1224,10 +1224,10 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<InputEven
 
 								// Remove a first tile.
 								Vector2i coords = tile_atlas_view->get_atlas_tile_coords_at_pos(drag_start_mouse_pos);
-								if (coords != TileSetSource::INVALID_ATLAS_COORDS) {
+								if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 									coords = tile_set_atlas_source->get_tile_at_coords(coords);
 								}
-								if (coords != TileSetSource::INVALID_ATLAS_COORDS) {
+								if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 									drag_modified_tiles.insert(coords);
 								}
 							}
@@ -1236,7 +1236,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<InputEven
 							if (mb->is_shift_pressed()) {
 								// Create a big tile.
 								Vector2i coords = tile_atlas_view->get_atlas_tile_coords_at_pos(mouse_local_pos);
-								if (coords != TileSetSource::INVALID_ATLAS_COORDS && tile_set_atlas_source->get_tile_at_coords(coords) == TileSetSource::INVALID_ATLAS_COORDS) {
+								if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS && tile_set_atlas_source->get_tile_at_coords(coords) == LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 									// Setup the dragging info, only if we start on an empty tile.
 									drag_type = DRAG_TYPE_CREATE_BIG_TILE;
 									drag_start_mouse_pos = mouse_local_pos;
@@ -1261,7 +1261,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<InputEven
 
 								// Create a first tile if needed.
 								Vector2i coords = tile_atlas_view->get_atlas_tile_coords_at_pos(drag_start_mouse_pos);
-								if (coords != TileSetSource::INVALID_ATLAS_COORDS && tile_set_atlas_source->get_tile_at_coords(coords) == TileSetSource::INVALID_ATLAS_COORDS) {
+								if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS && tile_set_atlas_source->get_tile_at_coords(coords) == LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 									tile_set_atlas_source->create_tile(coords);
 									drag_modified_tiles.insert(coords);
 								}
@@ -1272,7 +1272,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<InputEven
 						drag_type = DRAG_TYPE_NONE;
 						if (selection.size() == 1) {
 							TileSelection selected = selection.front()->get();
-							if (selected.tile != TileSetSource::INVALID_ATLAS_COORDS && selected.alternative == 0) {
+							if (selected.tile != LayeredTileSetSource::INVALID_ATLAS_COORDS && selected.alternative == 0) {
 								Vector2i size_in_atlas = tile_set_atlas_source->get_tile_size_in_atlas(selected.tile);
 								Rect2 region = tile_set_atlas_source->get_tile_texture_region(selected.tile);
 								Size2 zoomed_size = resize_handle->get_size() / tile_atlas_view->get_zoom();
@@ -1307,17 +1307,17 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<InputEven
 
 						// Selecting then dragging a tile.
 						if (drag_type == DRAG_TYPE_NONE) {
-							TileSelection selected = { TileSetSource::INVALID_ATLAS_COORDS, TileSetSource::INVALID_TILE_ALTERNATIVE };
+							TileSelection selected = { LayeredTileSetSource::INVALID_ATLAS_COORDS, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE };
 							Vector2i coords = tile_atlas_view->get_atlas_tile_coords_at_pos(mouse_local_pos);
-							if (coords != TileSetSource::INVALID_ATLAS_COORDS) {
+							if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 								coords = tile_set_atlas_source->get_tile_at_coords(coords);
-								if (coords != TileSetSource::INVALID_ATLAS_COORDS) {
+								if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 									selected = { coords, 0 };
 								}
 							}
 
 							bool shift = mb->is_shift_pressed();
-							if (!shift && selection.size() == 1 && selected.tile != TileSetSource::INVALID_ATLAS_COORDS && selection.has(selected)) {
+							if (!shift && selection.size() == 1 && selected.tile != LayeredTileSetSource::INVALID_ATLAS_COORDS && selection.has(selected)) {
 								// Start move dragging.
 								drag_type = DRAG_TYPE_MOVE_TILE;
 								drag_start_mouse_pos = mouse_local_pos;
@@ -1362,7 +1362,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<InputEven
 	}
 }
 
-void TileSetAtlasSourceEditor::_end_dragging() {
+void LayeredTileSetAtlasSourceEditor::_end_dragging() {
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
 	switch (drag_type) {
 		case DRAG_TYPE_CREATE_TILES:
@@ -1409,7 +1409,7 @@ void TileSetAtlasSourceEditor::_end_dragging() {
 			for (int x = area.get_position().x; x < area.get_end().x; x++) {
 				for (int y = area.get_position().y; y < area.get_end().y; y++) {
 					Vector2i coords = Vector2i(x, y);
-					if (tile_set_atlas_source->get_tile_at_coords(coords) == TileSetSource::INVALID_ATLAS_COORDS) {
+					if (tile_set_atlas_source->get_tile_at_coords(coords) == LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 						undo_redo->add_do_method(tile_set_atlas_source, "create_tile", coords);
 						undo_redo->add_undo_method(tile_set_atlas_source, "remove_tile", coords);
 					}
@@ -1430,7 +1430,7 @@ void TileSetAtlasSourceEditor::_end_dragging() {
 			for (int x = area.get_position().x; x < area.get_end().x; x++) {
 				for (int y = area.get_position().y; y < area.get_end().y; y++) {
 					Vector2i coords = tile_set_atlas_source->get_tile_at_coords(Vector2i(x, y));
-					if (coords != TileSetSource::INVALID_ATLAS_COORDS) {
+					if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 						to_delete.insert(coords);
 					}
 				}
@@ -1471,8 +1471,8 @@ void TileSetAtlasSourceEditor::_end_dragging() {
 		case DRAG_TYPE_RECT_SELECT: {
 			Vector2i start_base_tiles_coords = tile_atlas_view->get_atlas_tile_coords_at_pos(drag_start_mouse_pos, true);
 			Vector2i new_base_tiles_coords = tile_atlas_view->get_atlas_tile_coords_at_pos(tile_atlas_control->get_local_mouse_position(), true);
-			ERR_FAIL_COND(start_base_tiles_coords == TileSetSource::INVALID_ATLAS_COORDS);
-			ERR_FAIL_COND(new_base_tiles_coords == TileSetSource::INVALID_ATLAS_COORDS);
+			ERR_FAIL_COND(start_base_tiles_coords == LayeredTileSetSource::INVALID_ATLAS_COORDS);
+			ERR_FAIL_COND(new_base_tiles_coords == LayeredTileSetSource::INVALID_ATLAS_COORDS);
 
 			Rect2i region = Rect2i(start_base_tiles_coords, new_base_tiles_coords - start_base_tiles_coords).abs();
 			region.size += Vector2i(1, 1);
@@ -1484,7 +1484,7 @@ void TileSetAtlasSourceEditor::_end_dragging() {
 			bool add_to_selection = true;
 			if (Input::get_singleton()->is_key_pressed(Key::SHIFT)) {
 				Vector2i coords = tile_set_atlas_source->get_tile_at_coords(start_base_tiles_coords);
-				if (coords != TileSetSource::INVALID_ATLAS_COORDS) {
+				if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 					if (selection.has({ coords, 0 })) {
 						add_to_selection = false;
 					}
@@ -1498,7 +1498,7 @@ void TileSetAtlasSourceEditor::_end_dragging() {
 				for (int y = region.position.y; y < region.get_end().y; y++) {
 					Vector2i coords = Vector2i(x, y);
 					coords = tile_set_atlas_source->get_tile_at_coords(coords);
-					if (coords != TileSetSource::INVALID_ATLAS_COORDS) {
+					if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 						if (add_to_selection && !selection.has({ coords, 0 })) {
 							selection.insert({ coords, 0 });
 						} else if (!add_to_selection && selection.has({ coords, 0 })) {
@@ -1516,13 +1516,13 @@ void TileSetAtlasSourceEditor::_end_dragging() {
 		case DRAG_TYPE_MAY_POPUP_MENU: {
 			Vector2 mouse_local_pos = tile_atlas_control->get_local_mouse_position();
 			TileSelection selected = { tile_atlas_view->get_atlas_tile_coords_at_pos(mouse_local_pos), 0 };
-			if (selected.tile != TileSetSource::INVALID_ATLAS_COORDS) {
+			if (selected.tile != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 				selected.tile = tile_set_atlas_source->get_tile_at_coords(selected.tile);
 			}
 
 			// Set the selection if needed.
 			if (selection.size() <= 1) {
-				if (selected.tile != TileSetSource::INVALID_ATLAS_COORDS) {
+				if (selected.tile != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 					undo_redo->create_action(TTR("Select tiles"));
 					undo_redo->add_undo_method(this, "_set_selection_from_array", _get_selection_as_array());
 					selection.clear();
@@ -1536,15 +1536,15 @@ void TileSetAtlasSourceEditor::_end_dragging() {
 			}
 
 			// Pops up the correct menu, depending on whether we have a tile or not.
-			if (selected.tile != TileSetSource::INVALID_ATLAS_COORDS && selection.has(selected)) {
+			if (selected.tile != LayeredTileSetSource::INVALID_ATLAS_COORDS && selection.has(selected)) {
 				// We have a tile.
 				menu_option_coords = selected.tile;
 				menu_option_alternative = 0;
 				base_tile_popup_menu->popup(Rect2i(get_screen_transform().xform(get_local_mouse_position()), Size2i()));
-			} else if (hovered_base_tile_coords != TileSetSource::INVALID_ATLAS_COORDS) {
+			} else if (hovered_base_tile_coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 				// We don't have a tile, but can create one.
 				menu_option_coords = hovered_base_tile_coords;
-				menu_option_alternative = TileSetSource::INVALID_TILE_ALTERNATIVE;
+				menu_option_alternative = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE;
 				empty_base_tile_popup_menu->popup(Rect2i(get_screen_transform().xform(get_local_mouse_position()), Size2i()));
 			}
 		} break;
@@ -1577,7 +1577,7 @@ void TileSetAtlasSourceEditor::_end_dragging() {
 	// Change mouse accordingly.
 }
 
-HashMap<Vector2i, List<const PropertyInfo *>> TileSetAtlasSourceEditor::_group_properties_per_tiles(const List<PropertyInfo> &r_list, const TileSetAtlasSource *p_atlas) {
+HashMap<Vector2i, List<const PropertyInfo *>> LayeredTileSetAtlasSourceEditor::_group_properties_per_tiles(const List<PropertyInfo> &r_list, const LayeredTileSetAtlasSource *p_atlas) {
 	// Group properties per tile.
 	HashMap<Vector2i, List<const PropertyInfo *>> per_tile;
 	for (const List<PropertyInfo>::Element *E_property = r_list.front(); E_property; E_property = E_property->next()) {
@@ -1593,7 +1593,7 @@ HashMap<Vector2i, List<const PropertyInfo *>> TileSetAtlasSourceEditor::_group_p
 	return per_tile;
 }
 
-void TileSetAtlasSourceEditor::_menu_option(int p_option) {
+void LayeredTileSetAtlasSourceEditor::_menu_option(int p_option) {
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
 
 	switch (p_option) {
@@ -1692,7 +1692,7 @@ void TileSetAtlasSourceEditor::_menu_option(int p_option) {
 	}
 }
 
-void TileSetAtlasSourceEditor::shortcut_input(const Ref<InputEvent> &p_event) {
+void LayeredTileSetAtlasSourceEditor::shortcut_input(const Ref<InputEvent> &p_event) {
 	// Check for shortcuts.
 	if (ED_IS_SHORTCUT("tiles_editor/delete_tile", p_event)) {
 		if (tools_button_group->get_pressed_button() == tool_select_button && !selection.is_empty()) {
@@ -1702,7 +1702,7 @@ void TileSetAtlasSourceEditor::shortcut_input(const Ref<InputEvent> &p_event) {
 	}
 }
 
-void TileSetAtlasSourceEditor::_set_selection_from_array(const Array &p_selection) {
+void LayeredTileSetAtlasSourceEditor::_set_selection_from_array(const Array &p_selection) {
 	ERR_FAIL_COND((p_selection.size() % 2) != 0);
 	selection.clear();
 	for (int i = 0; i < p_selection.size() / 2; i++) {
@@ -1717,7 +1717,7 @@ void TileSetAtlasSourceEditor::_set_selection_from_array(const Array &p_selectio
 	_update_current_tile_data_editor();
 }
 
-Array TileSetAtlasSourceEditor::_get_selection_as_array() {
+Array LayeredTileSetAtlasSourceEditor::_get_selection_as_array() {
 	Array output;
 	for (const TileSelection &E : selection) {
 		output.push_back(E.tile);
@@ -1726,7 +1726,7 @@ Array TileSetAtlasSourceEditor::_get_selection_as_array() {
 	return output;
 }
 
-void TileSetAtlasSourceEditor::_tile_atlas_control_draw() {
+void LayeredTileSetAtlasSourceEditor::_tile_atlas_control_draw() {
 	// Draw the selected tile.
 	if (tools_button_group->get_pressed_button() == tool_select_button) {
 		for (const TileSelection &E : selection) {
@@ -1736,7 +1736,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_draw() {
 				for (int frame = 0; frame < tile_set_atlas_source->get_tile_animation_frames_count(selected.tile); frame++) {
 					Color color = Color(0.0, 1.0, 0.0, frame == 0 ? 1.0 : 0.3);
 					Rect2 region = tile_set_atlas_source->get_tile_texture_region(selected.tile, frame);
-					TilesEditorUtils::draw_selection_rect(tile_atlas_control, region, color);
+					LayeredTilesEditorUtils::draw_selection_rect(tile_atlas_control, region, color);
 				}
 			}
 		}
@@ -1778,7 +1778,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_draw() {
 		// Draw the tiles to be removed.
 		for (const Vector2i &E : drag_modified_tiles) {
 			for (int frame = 0; frame < tile_set_atlas_source->get_tile_animation_frames_count(E); frame++) {
-				TilesEditorUtils::draw_selection_rect(tile_atlas_control, tile_set_atlas_source->get_tile_texture_region(E, frame), Color(0.0, 0.0, 0.0));
+				LayeredTilesEditorUtils::draw_selection_rect(tile_atlas_control, tile_set_atlas_source->get_tile_texture_region(E, frame), Color(0.0, 0.0, 0.0));
 			}
 		}
 	} else if (drag_type == DRAG_TYPE_RECT_SELECT || drag_type == DRAG_TYPE_REMOVE_TILES_USING_RECT) {
@@ -1797,7 +1797,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_draw() {
 		for (int x = area.get_position().x; x < area.get_end().x; x++) {
 			for (int y = area.get_position().y; y < area.get_end().y; y++) {
 				Vector2i coords = tile_set_atlas_source->get_tile_at_coords(Vector2i(x, y));
-				if (coords != TileSetSource::INVALID_ATLAS_COORDS) {
+				if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 					to_paint.insert(coords);
 				}
 			}
@@ -1805,7 +1805,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_draw() {
 
 		for (const Vector2i &E : to_paint) {
 			Vector2i coords = E;
-			TilesEditorUtils::draw_selection_rect(tile_atlas_control, tile_set_atlas_source->get_tile_texture_region(coords), color);
+			LayeredTilesEditorUtils::draw_selection_rect(tile_atlas_control, tile_set_atlas_source->get_tile_texture_region(coords), color);
 		}
 	} else if (drag_type == DRAG_TYPE_CREATE_TILES_USING_RECT) {
 		// Draw tiles to be created.
@@ -1820,9 +1820,9 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_draw() {
 		for (int x = area.get_position().x; x < area.get_end().x; x++) {
 			for (int y = area.get_position().y; y < area.get_end().y; y++) {
 				Vector2i coords = Vector2i(x, y);
-				if (tile_set_atlas_source->get_tile_at_coords(coords) == TileSetSource::INVALID_ATLAS_COORDS) {
+				if (tile_set_atlas_source->get_tile_at_coords(coords) == LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 					Vector2i origin = margins + (coords * (tile_size + separation));
-					TilesEditorUtils::draw_selection_rect(tile_atlas_control, Rect2i(origin, tile_size));
+					LayeredTilesEditorUtils::draw_selection_rect(tile_atlas_control, Rect2i(origin, tile_size));
 				}
 			}
 		}
@@ -1839,16 +1839,16 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_draw() {
 		Vector2i separation = tile_set_atlas_source->get_separation();
 		Vector2i tile_size = tile_set_atlas_source->get_texture_region_size();
 		Vector2i origin = margins + (area.position * (tile_size + separation));
-		TilesEditorUtils::draw_selection_rect(tile_atlas_control, Rect2i(origin, area.size * tile_size));
+		LayeredTilesEditorUtils::draw_selection_rect(tile_atlas_control, Rect2i(origin, area.size * tile_size));
 	} else {
 		Vector2i grid_size = tile_set_atlas_source->get_atlas_grid_size();
 		if (hovered_base_tile_coords.x >= 0 && hovered_base_tile_coords.y >= 0 && hovered_base_tile_coords.x < grid_size.x && hovered_base_tile_coords.y < grid_size.y) {
 			Vector2i hovered_tile = tile_set_atlas_source->get_tile_at_coords(hovered_base_tile_coords);
-			if (hovered_tile != TileSetSource::INVALID_ATLAS_COORDS) {
+			if (hovered_tile != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 				// Draw existing hovered tile.
 				for (int frame = 0; frame < tile_set_atlas_source->get_tile_animation_frames_count(hovered_tile); frame++) {
 					Color color = Color(1.0, 0.8, 0.0, frame == 0 ? 0.6 : 0.3);
-					TilesEditorUtils::draw_selection_rect(tile_atlas_control, tile_set_atlas_source->get_tile_texture_region(hovered_tile, frame), color);
+					LayeredTilesEditorUtils::draw_selection_rect(tile_atlas_control, tile_set_atlas_source->get_tile_texture_region(hovered_tile, frame), color);
 				}
 			} else {
 				// Draw empty tile, only in add/remove tiles mode.
@@ -1857,14 +1857,14 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_draw() {
 					Vector2i separation = tile_set_atlas_source->get_separation();
 					Vector2i tile_size = tile_set_atlas_source->get_texture_region_size();
 					Vector2i origin = margins + (hovered_base_tile_coords * (tile_size + separation));
-					TilesEditorUtils::draw_selection_rect(tile_atlas_control, Rect2i(origin, tile_size));
+					LayeredTilesEditorUtils::draw_selection_rect(tile_atlas_control, Rect2i(origin, tile_size));
 				}
 			}
 		}
 	}
 }
 
-void TileSetAtlasSourceEditor::_tile_atlas_control_unscaled_draw() {
+void LayeredTileSetAtlasSourceEditor::_tile_atlas_control_unscaled_draw() {
 	if (current_tile_data_editor) {
 		// Draw the preview of the selected property.
 		for (int i = 0; i < tile_set_atlas_source->get_tiles_count(); i++) {
@@ -1879,7 +1879,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_unscaled_draw() {
 				continue;
 			}
 
-			TileMapCell cell;
+			LayeredTileMapCell cell;
 			cell.source_id = tile_set_atlas_source_id;
 			cell.set_atlas_coords(coords);
 			cell.alternative_tile = 0;
@@ -1898,7 +1898,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_unscaled_draw() {
 				Transform2D xform = tile_atlas_control->get_parent_control()->get_transform();
 				xform.translate_local(position);
 
-				TileMapCell cell;
+				LayeredTileMapCell cell;
 				cell.source_id = tile_set_atlas_source_id;
 				cell.set_atlas_coords(E.tile);
 				cell.alternative_tile = 0;
@@ -1914,7 +1914,7 @@ void TileSetAtlasSourceEditor::_tile_atlas_control_unscaled_draw() {
 	}
 }
 
-void TileSetAtlasSourceEditor::_tile_alternatives_control_gui_input(const Ref<InputEvent> &p_event) {
+void LayeredTileSetAtlasSourceEditor::_tile_alternatives_control_gui_input(const Ref<InputEvent> &p_event) {
 	// Update the hovered alternative tile.
 	hovered_alternative_tile_coords = tile_atlas_view->get_alternative_tile_at_pos(alternative_tiles_control->get_local_mouse_position());
 
@@ -1956,7 +1956,7 @@ void TileSetAtlasSourceEditor::_tile_alternatives_control_gui_input(const Ref<In
 
 					selection.clear();
 					TileSelection selected = { Vector2i(tile.x, tile.y), int(tile.z) };
-					if (selected.tile != TileSetSource::INVALID_ATLAS_COORDS) {
+					if (selected.tile != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 						selection.insert(selected);
 					}
 
@@ -1975,7 +1975,7 @@ void TileSetAtlasSourceEditor::_tile_alternatives_control_gui_input(const Ref<In
 
 					selection.clear();
 					TileSelection selected = { Vector2i(tile.x, tile.y), int(tile.z) };
-					if (selected.tile != TileSetSource::INVALID_ATLAS_COORDS) {
+					if (selected.tile != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 						selection.insert(selected);
 					}
 
@@ -2000,23 +2000,23 @@ void TileSetAtlasSourceEditor::_tile_alternatives_control_gui_input(const Ref<In
 	}
 }
 
-void TileSetAtlasSourceEditor::_tile_alternatives_control_mouse_exited() {
-	hovered_alternative_tile_coords = Vector3i(TileSetSource::INVALID_ATLAS_COORDS.x, TileSetSource::INVALID_ATLAS_COORDS.y, TileSetSource::INVALID_TILE_ALTERNATIVE);
+void LayeredTileSetAtlasSourceEditor::_tile_alternatives_control_mouse_exited() {
+	hovered_alternative_tile_coords = Vector3i(LayeredTileSetSource::INVALID_ATLAS_COORDS.x, LayeredTileSetSource::INVALID_ATLAS_COORDS.y, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
 	tile_atlas_control->queue_redraw();
 	tile_atlas_control_unscaled->queue_redraw();
 	alternative_tiles_control->queue_redraw();
 	alternative_tiles_control_unscaled->queue_redraw();
 }
 
-void TileSetAtlasSourceEditor::_tile_alternatives_control_draw() {
+void LayeredTileSetAtlasSourceEditor::_tile_alternatives_control_draw() {
 	// Update the hovered alternative tile.
 	if (tools_button_group->get_pressed_button() == tool_select_button) {
 		// Draw hovered tile.
 		Vector2i coords = Vector2(hovered_alternative_tile_coords.x, hovered_alternative_tile_coords.y);
-		if (coords != TileSetSource::INVALID_ATLAS_COORDS) {
+		if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 			Rect2i rect = tile_atlas_view->get_alternative_tile_rect(coords, hovered_alternative_tile_coords.z);
 			if (rect != Rect2i()) {
-				TilesEditorUtils::draw_selection_rect(alternative_tiles_control, rect, Color(1.0, 0.8, 0.0, 0.5));
+				LayeredTilesEditorUtils::draw_selection_rect(alternative_tiles_control, rect, Color(1.0, 0.8, 0.0, 0.5));
 			}
 		}
 
@@ -2026,14 +2026,14 @@ void TileSetAtlasSourceEditor::_tile_alternatives_control_draw() {
 			if (selected.alternative >= 1) {
 				Rect2i rect = tile_atlas_view->get_alternative_tile_rect(selected.tile, selected.alternative);
 				if (rect != Rect2i()) {
-					TilesEditorUtils::draw_selection_rect(alternative_tiles_control, rect);
+					LayeredTilesEditorUtils::draw_selection_rect(alternative_tiles_control, rect);
 				}
 			}
 		}
 	}
 }
 
-void TileSetAtlasSourceEditor::_tile_alternatives_control_unscaled_draw() {
+void LayeredTileSetAtlasSourceEditor::_tile_alternatives_control_unscaled_draw() {
 	// Draw the preview of the selected property.
 	if (current_tile_data_editor) {
 		// Draw the preview of the currently selected property.
@@ -2054,7 +2054,7 @@ void TileSetAtlasSourceEditor::_tile_alternatives_control_unscaled_draw() {
 					continue;
 				}
 
-				TileMapCell cell;
+				LayeredTileMapCell cell;
 				cell.source_id = tile_set_atlas_source_id;
 				cell.set_atlas_coords(coords);
 				cell.alternative_tile = alternative_tile;
@@ -2074,7 +2074,7 @@ void TileSetAtlasSourceEditor::_tile_alternatives_control_unscaled_draw() {
 				Transform2D xform = alternative_tiles_control->get_parent_control()->get_transform();
 				xform.translate_local(position);
 
-				TileMapCell cell;
+				LayeredTileMapCell cell;
 				cell.source_id = tile_set_atlas_source_id;
 				cell.set_atlas_coords(E.tile);
 				cell.alternative_tile = E.alternative;
@@ -2090,23 +2090,23 @@ void TileSetAtlasSourceEditor::_tile_alternatives_control_unscaled_draw() {
 	}
 }
 
-void TileSetAtlasSourceEditor::_tile_set_changed() {
+void LayeredTileSetAtlasSourceEditor::_tile_set_changed() {
 	if (tile_set->get_source_count() == 0) {
 		// No sources, so nothing to do here anymore.
-		tile_set->disconnect_changed(callable_mp(this, &TileSetAtlasSourceEditor::_tile_set_changed));
-		tile_set = Ref<TileSet>();
+		tile_set->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
+		tile_set = Ref<LayeredTileSet>();
 		return;
 	}
 
 	tile_set_changed_needs_update = true;
 }
 
-void TileSetAtlasSourceEditor::_tile_proxy_object_changed(const String &p_what) {
+void LayeredTileSetAtlasSourceEditor::_tile_proxy_object_changed(const String &p_what) {
 	tile_set_changed_needs_update = false; // Avoid updating too many things.
 	_update_atlas_view();
 }
 
-void TileSetAtlasSourceEditor::_atlas_source_proxy_object_changed(const String &p_what) {
+void LayeredTileSetAtlasSourceEditor::_atlas_source_proxy_object_changed(const String &p_what) {
 	if (p_what == "texture" && !atlas_source_proxy_object->get("texture").is_null()) {
 		atlases_to_auto_create_tiles.clear();
 		atlases_to_auto_create_tiles.append(tile_set_atlas_source);
@@ -2116,13 +2116,13 @@ void TileSetAtlasSourceEditor::_atlas_source_proxy_object_changed(const String &
 	}
 }
 
-void TileSetAtlasSourceEditor::_undo_redo_inspector_callback(Object *p_undo_redo, Object *p_edited, const String &p_property, const Variant &p_new_value) {
+void LayeredTileSetAtlasSourceEditor::_undo_redo_inspector_callback(Object *p_undo_redo, Object *p_edited, const String &p_property, const Variant &p_new_value) {
 	EditorUndoRedoManager *undo_redo_man = Object::cast_to<EditorUndoRedoManager>(p_undo_redo);
 	ERR_FAIL_NULL(undo_redo_man);
 
 #define ADD_UNDO(obj, property) undo_redo_man->add_undo_property(obj, property, obj->get(property));
 
-	AtlasTileProxyObject *tile_data_proxy = Object::cast_to<AtlasTileProxyObject>(p_edited);
+	LayeredAtlasTileProxyObject *tile_data_proxy = Object::cast_to<LayeredAtlasTileProxyObject>(p_edited);
 	if (tile_data_proxy) {
 		UndoRedo *internal_undo_redo = undo_redo_man->get_history_for_object(tile_data_proxy).undo_redo;
 		internal_undo_redo->start_force_keep_in_merge_ends();
@@ -2142,10 +2142,10 @@ void TileSetAtlasSourceEditor::_undo_redo_inspector_callback(Object *p_undo_redo
 		} else if (p_property == "terrain_set") {
 			int current_terrain_set = tile_data_proxy->get("terrain_set");
 			ADD_UNDO(tile_data_proxy, "terrain");
-			for (int i = 0; i < TileSet::CELL_NEIGHBOR_MAX; i++) {
-				TileSet::CellNeighbor bit = TileSet::CellNeighbor(i);
+			for (int i = 0; i < LayeredTileSet::CELL_NEIGHBOR_MAX; i++) {
+				LayeredTileSet::CellNeighbor bit = LayeredTileSet::CellNeighbor(i);
 				if (tile_set->is_valid_terrain_peering_bit(current_terrain_set, bit)) {
-					ADD_UNDO(tile_data_proxy, "terrains_peering_bit/" + String(TileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[i]));
+					ADD_UNDO(tile_data_proxy, "terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[i]));
 				}
 			}
 		}
@@ -2154,13 +2154,13 @@ void TileSetAtlasSourceEditor::_undo_redo_inspector_callback(Object *p_undo_redo
 #undef ADD_UNDO
 }
 
-Vector2i TileSetAtlasSourceEditor::_get_drag_offset_tile_coords(const Vector2i &p_offset) const {
+Vector2i LayeredTileSetAtlasSourceEditor::_get_drag_offset_tile_coords(const Vector2i &p_offset) const {
 	Vector2i half_tile_size = tile_set->get_tile_size() / 2;
 	Vector2i new_base_tiles_coords = tile_atlas_view->get_atlas_tile_coords_at_pos(tile_atlas_control->get_local_mouse_position() + half_tile_size * p_offset);
 	return new_base_tiles_coords.max(Vector2i(-1, -1)).min(tile_set_atlas_source->get_atlas_grid_size());
 }
 
-void TileSetAtlasSourceEditor::edit(Ref<TileSet> p_tile_set, TileSetAtlasSource *p_tile_set_atlas_source, int p_source_id) {
+void LayeredTileSetAtlasSourceEditor::edit(Ref<LayeredTileSet> p_tile_set, LayeredTileSetAtlasSource *p_tile_set_atlas_source, int p_source_id) {
 	ERR_FAIL_COND(!p_tile_set.is_valid());
 	ERR_FAIL_NULL(p_tile_set_atlas_source);
 	ERR_FAIL_COND(p_source_id < 0);
@@ -2177,13 +2177,13 @@ void TileSetAtlasSourceEditor::edit(Ref<TileSet> p_tile_set, TileSetAtlasSource 
 
 	// Remove listener for old objects.
 	if (tile_set.is_valid()) {
-		tile_set->disconnect_changed(callable_mp(this, &TileSetAtlasSourceEditor::_tile_set_changed));
+		tile_set->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
 	}
 
 	if (tile_set_atlas_source) {
-		tile_set_atlas_source->disconnect_changed(callable_mp(this, &TileSetAtlasSourceEditor::_update_source_texture));
+		tile_set_atlas_source->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_source_texture));
 		if (atlas_source_texture.is_valid()) {
-			atlas_source_texture->disconnect_changed(callable_mp(this, &TileSetAtlasSourceEditor::_check_outside_tiles));
+			atlas_source_texture->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles));
 			atlas_source_texture = Ref<Texture2D>();
 		}
 	}
@@ -2200,11 +2200,11 @@ void TileSetAtlasSourceEditor::edit(Ref<TileSet> p_tile_set, TileSetAtlasSource 
 	read_only = new_read_only_state;
 
 	if (tile_set.is_valid()) {
-		tile_set->connect_changed(callable_mp(this, &TileSetAtlasSourceEditor::_tile_set_changed));
+		tile_set->connect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
 	}
 
 	if (tile_set_atlas_source) {
-		tile_set_atlas_source->connect_changed(callable_mp(this, &TileSetAtlasSourceEditor::_update_source_texture));
+		tile_set_atlas_source->connect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_source_texture));
 		_update_source_texture();
 	}
 
@@ -2231,19 +2231,19 @@ void TileSetAtlasSourceEditor::edit(Ref<TileSet> p_tile_set, TileSetAtlasSource 
 	_update_current_tile_data_editor();
 }
 
-void TileSetAtlasSourceEditor::init_new_atlases(const Vector<Ref<TileSetAtlasSource>> &p_atlases) {
+void LayeredTileSetAtlasSourceEditor::init_new_atlases(const Vector<Ref<LayeredTileSetAtlasSource>> &p_atlases) {
 	tool_setup_atlas_source_button->set_pressed(true);
 	atlases_to_auto_create_tiles = p_atlases;
 	confirm_auto_create_tiles->popup_centered();
 }
 
-void TileSetAtlasSourceEditor::_update_source_texture() {
+void LayeredTileSetAtlasSourceEditor::_update_source_texture() {
 	if (tile_set_atlas_source && tile_set_atlas_source->get_texture() == atlas_source_texture) {
 		return;
 	}
 
 	if (atlas_source_texture.is_valid()) {
-		atlas_source_texture->disconnect_changed(callable_mp(this, &TileSetAtlasSourceEditor::_check_outside_tiles));
+		atlas_source_texture->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles));
 		atlas_source_texture = Ref<Texture2D>();
 	}
 
@@ -2251,17 +2251,17 @@ void TileSetAtlasSourceEditor::_update_source_texture() {
 		return;
 	}
 	atlas_source_texture = tile_set_atlas_source->get_texture();
-	atlas_source_texture->connect_changed(callable_mp(this, &TileSetAtlasSourceEditor::_check_outside_tiles), CONNECT_DEFERRED);
+	atlas_source_texture->connect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles), CONNECT_DEFERRED);
 	_check_outside_tiles();
 }
 
-void TileSetAtlasSourceEditor::_check_outside_tiles() {
+void LayeredTileSetAtlasSourceEditor::_check_outside_tiles() {
 	ERR_FAIL_NULL(tile_set_atlas_source);
 	outside_tiles_warning->set_visible(!read_only && tile_set_atlas_source->has_tiles_outside_texture());
 	tool_advanced_menu_button->get_popup()->set_item_disabled(tool_advanced_menu_button->get_popup()->get_item_index(ADVANCED_CLEANUP_TILES), !tile_set_atlas_source->has_tiles_outside_texture());
 }
 
-void TileSetAtlasSourceEditor::_cleanup_outside_tiles() {
+void LayeredTileSetAtlasSourceEditor::_cleanup_outside_tiles() {
 	ERR_FAIL_NULL(tile_set_atlas_source);
 
 	List<PropertyInfo> list;
@@ -2292,8 +2292,8 @@ void TileSetAtlasSourceEditor::_cleanup_outside_tiles() {
 	outside_tiles_warning->hide();
 }
 
-void TileSetAtlasSourceEditor::_auto_create_tiles() {
-	for (Ref<TileSetAtlasSource> &atlas_source : atlases_to_auto_create_tiles) {
+void LayeredTileSetAtlasSourceEditor::_auto_create_tiles() {
+	for (Ref<LayeredTileSetAtlasSource> &atlas_source : atlases_to_auto_create_tiles) {
 		if (atlas_source.is_valid()) {
 			Ref<Texture2D> texture = atlas_source->get_texture();
 			if (texture.is_valid()) {
@@ -2307,7 +2307,7 @@ void TileSetAtlasSourceEditor::_auto_create_tiles() {
 					for (int x = 0; x < grid_size.x; x++) {
 						// Check if we have a tile at the coord.
 						Vector2i coords = Vector2i(x, y);
-						if (atlas_source->get_tile_at_coords(coords) == TileSetSource::INVALID_ATLAS_COORDS) {
+						if (atlas_source->get_tile_at_coords(coords) == LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 							// Check if the texture is empty at the given coords.
 							Rect2i region = Rect2i(margins + (coords * (texture_region_size + separation)), texture_region_size);
 							bool is_opaque = false;
@@ -2339,11 +2339,11 @@ void TileSetAtlasSourceEditor::_auto_create_tiles() {
 	_cancel_auto_create_tiles();
 }
 
-void TileSetAtlasSourceEditor::_cancel_auto_create_tiles() {
+void LayeredTileSetAtlasSourceEditor::_cancel_auto_create_tiles() {
 	atlases_to_auto_create_tiles.clear();
 }
 
-void TileSetAtlasSourceEditor::_auto_remove_tiles() {
+void LayeredTileSetAtlasSourceEditor::_auto_remove_tiles() {
 	if (!tile_set_atlas_source) {
 		return;
 	}
@@ -2405,36 +2405,36 @@ void TileSetAtlasSourceEditor::_auto_remove_tiles() {
 	}
 }
 
-void TileSetAtlasSourceEditor::_notification(int p_what) {
+void LayeredTileSetAtlasSourceEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_READY: {
 			atlas_source_inspector->edit(atlas_source_proxy_object);
-			atlas_source_inspector->add_custom_property_description("TileSetAtlasSourceProxyObject", "id", TTR("The tile's unique identifier within this TileSet. Each tile stores its source ID, so changing one may make tiles invalid."));
-			atlas_source_inspector->add_custom_property_description("TileSetAtlasSourceProxyObject", "name", TTR("The human-readable name for the atlas. Use a descriptive name here for organizational purposes (such as \"terrain\", \"decoration\", etc.)."));
-			atlas_source_inspector->add_custom_property_description("TileSetAtlasSourceProxyObject", "texture", TTR("The image from which the tiles will be created."));
-			atlas_source_inspector->add_custom_property_description("TileSetAtlasSourceProxyObject", "margins", TTR("The margins on the image's edges that should not be selectable as tiles (in pixels). Increasing this can be useful if you download a tilesheet image that has margins on the edges (e.g. for attribution)."));
-			atlas_source_inspector->add_custom_property_description("TileSetAtlasSourceProxyObject", "separation", TTR("The separation between each tile on the atlas in pixels. Increasing this can be useful if the tilesheet image you're using contains guides (such as outlines between every tile)."));
-			atlas_source_inspector->add_custom_property_description("TileSetAtlasSourceProxyObject", "texture_region_size", TTR("The size of each tile on the atlas in pixels. In most cases, this should match the tile size defined in the TileMap property (although this is not strictly necessary)."));
-			atlas_source_inspector->add_custom_property_description("TileSetAtlasSourceProxyObject", "use_texture_padding", TTR("If checked, adds a 1-pixel transparent edge around each tile to prevent texture bleeding when filtering is enabled. It's recommended to leave this enabled unless you're running into rendering issues due to texture padding."));
+			atlas_source_inspector->add_custom_property_description("LayeredTileSetAtlasSourceProxyObject", "id", TTR("The tile's unique identifier within this LayeredTileSet. Each tile stores its source ID, so changing one may make tiles invalid."));
+			atlas_source_inspector->add_custom_property_description("LayeredTileSetAtlasSourceProxyObject", "name", TTR("The human-readable name for the atlas. Use a descriptive name here for organizational purposes (such as \"terrain\", \"decoration\", etc.)."));
+			atlas_source_inspector->add_custom_property_description("LayeredTileSetAtlasSourceProxyObject", "texture", TTR("The image from which the tiles will be created."));
+			atlas_source_inspector->add_custom_property_description("LayeredTileSetAtlasSourceProxyObject", "margins", TTR("The margins on the image's edges that should not be selectable as tiles (in pixels). Increasing this can be useful if you download a tilesheet image that has margins on the edges (e.g. for attribution)."));
+			atlas_source_inspector->add_custom_property_description("LayeredTileSetAtlasSourceProxyObject", "separation", TTR("The separation between each tile on the atlas in pixels. Increasing this can be useful if the tilesheet image you're using contains guides (such as outlines between every tile)."));
+			atlas_source_inspector->add_custom_property_description("LayeredTileSetAtlasSourceProxyObject", "texture_region_size", TTR("The size of each tile on the atlas in pixels. In most cases, this should match the tile size defined in the LayeredTileMap property (although this is not strictly necessary)."));
+			atlas_source_inspector->add_custom_property_description("LayeredTileSetAtlasSourceProxyObject", "use_texture_padding", TTR("If checked, adds a 1-pixel transparent edge around each tile to prevent texture bleeding when filtering is enabled. It's recommended to leave this enabled unless you're running into rendering issues due to texture padding."));
 
 			tile_inspector->edit(tile_proxy_object);
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "atlas_coords", TTR("The position of the tile's top-left corner in the atlas. The position and size must be within the atlas and can't overlap another tile.\nEach painted tile has associated atlas coords, so changing this property may cause your TileMaps to not display properly."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "size_in_atlas", TTR("The unit size of the tile."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "animation_columns", TTR("Number of columns for the animation grid. If number of columns is lower than number of frames, the animation will automatically adjust row count."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "animation_separation", TTR("The space (in tiles) between each frame of the animation."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "animation_speed", TTR("Animation speed in frames per second."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "animation_mode", TTR("Determines how animation will start. In \"Default\" mode all tiles start animating at the same frame. In \"Random Start Times\" mode, each tile starts animation with a random offset."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "flip_h", TTR("If [code]true[/code], the tile is horizontally flipped."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "flip_v", TTR("If [code]true[/code], the tile is vertically flipped."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "transpose", TTR("If [code]true[/code], the tile is rotated 90 degrees [i]counter-clockwise[/i] and then flipped vertically. In practice, this means that to rotate a tile by 90 degrees clockwise without flipping it, you should enable [b]Flip H[/b] and [b]Transpose[/b]. To rotate a tile by 180 degrees clockwise, enable [b]Flip H[/b] and [b]Flip V[/b]. To rotate a tile by 270 degrees clockwise, enable [b]Flip V[/b] and [b]Transpose[/b]."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "texture_origin", TTR("The origin to use for drawing the tile. This can be used to visually offset the tile compared to the base tile."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "modulate", TTR("The color multiplier to use when rendering the tile."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "material", TTR("The material to use for this tile. This can be used to apply a different blend mode or custom shaders to a single tile."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "z_index", TTR("The sorting order for this tile. Higher values will make the tile render in front of others on the same layer. The index is relative to the TileMap's own Z index."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "y_sort_origin", TTR("The vertical offset to use for tile sorting based on its Y coordinate (in pixels). This allows using layers as if they were on different height for top-down games. Adjusting this can help alleviate issues with sorting certain tiles. Only effective if Y Sort Enabled is true on the TileMap layer the tile is placed on."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "terrain_set", TTR("The index of the terrain set this tile belongs to. [code]-1[/code] means it will not be used in terrains."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "terrain", TTR("The index of the terrain inside the terrain set this tile belongs to. [code]-1[/code] means it will not be used in terrains."));
-			tile_inspector->add_custom_property_description("AtlasTileProxyObject", "probability", TTR("The relative probability of this tile appearing when painting with \"Place Random Tile\" enabled."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "atlas_coords", TTR("The position of the tile's top-left corner in the atlas. The position and size must be within the atlas and can't overlap another tile.\nEach painted tile has associated atlas coords, so changing this property may cause your LayeredTileMaps to not display properly."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "size_in_atlas", TTR("The unit size of the tile."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "animation_columns", TTR("Number of columns for the animation grid. If number of columns is lower than number of frames, the animation will automatically adjust row count."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "animation_separation", TTR("The space (in tiles) between each frame of the animation."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "animation_speed", TTR("Animation speed in frames per second."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "animation_mode", TTR("Determines how animation will start. In \"Default\" mode all tiles start animating at the same frame. In \"Random Start Times\" mode, each tile starts animation with a random offset."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "flip_h", TTR("If [code]true[/code], the tile is horizontally flipped."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "flip_v", TTR("If [code]true[/code], the tile is vertically flipped."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "transpose", TTR("If [code]true[/code], the tile is rotated 90 degrees [i]counter-clockwise[/i] and then flipped vertically. In practice, this means that to rotate a tile by 90 degrees clockwise without flipping it, you should enable [b]Flip H[/b] and [b]Transpose[/b]. To rotate a tile by 180 degrees clockwise, enable [b]Flip H[/b] and [b]Flip V[/b]. To rotate a tile by 270 degrees clockwise, enable [b]Flip V[/b] and [b]Transpose[/b]."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "texture_origin", TTR("The origin to use for drawing the tile. This can be used to visually offset the tile compared to the base tile."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "modulate", TTR("The color multiplier to use when rendering the tile."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "material", TTR("The material to use for this tile. This can be used to apply a different blend mode or custom shaders to a single tile."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "z_index", TTR("The sorting order for this tile. Higher values will make the tile render in front of others on the same layer. The index is relative to the LayeredTileMap's own Z index."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "y_sort_origin", TTR("The vertical offset to use for tile sorting based on its Y coordinate (in pixels). This allows using layers as if they were on different height for top-down games. Adjusting this can help alleviate issues with sorting certain tiles. Only effective if Y Sort Enabled is true on the LayeredTileMap layer the tile is placed on."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "terrain_set", TTR("The index of the terrain set this tile belongs to. [code]-1[/code] means it will not be used in terrains."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "terrain", TTR("The index of the terrain inside the terrain set this tile belongs to. [code]-1[/code] means it will not be used in terrains."));
+			tile_inspector->add_custom_property_description("LayeredAtlasTileProxyObject", "probability", TTR("The relative probability of this tile appearing when painting with \"Place Random Tile\" enabled."));
 		} break;
 
 		case NOTIFICATION_THEME_CHANGED: {
@@ -2481,7 +2481,7 @@ void TileSetAtlasSourceEditor::_notification(int p_what) {
 		} break;
 
 		case NOTIFICATION_EXIT_TREE: {
-			for (KeyValue<String, TileDataEditor *> &E : tile_data_editors) {
+			for (KeyValue<String, LayeredTileDataEditor *> &E : tile_data_editors) {
 				Control *toolbar = E.value->get_toolbar();
 				if (toolbar->get_parent() == tool_settings_tile_data_toolbar_container) {
 					tool_settings_tile_data_toolbar_container->remove_child(toolbar);
@@ -2491,18 +2491,18 @@ void TileSetAtlasSourceEditor::_notification(int p_what) {
 	}
 }
 
-void TileSetAtlasSourceEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_set_selection_from_array"), &TileSetAtlasSourceEditor::_set_selection_from_array);
-	ClassDB::bind_method(D_METHOD("_check_outside_tiles"), &TileSetAtlasSourceEditor::_check_outside_tiles);
+void LayeredTileSetAtlasSourceEditor::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_set_selection_from_array"), &LayeredTileSetAtlasSourceEditor::_set_selection_from_array);
+	ClassDB::bind_method(D_METHOD("_check_outside_tiles"), &LayeredTileSetAtlasSourceEditor::_check_outside_tiles);
 
 	ADD_SIGNAL(MethodInfo("source_id_changed", PropertyInfo(Variant::INT, "source_id")));
 }
 
-TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
+LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	set_shortcut_context(this);
 	set_process_shortcut_input(true);
 	set_process_internal(true);
-	TileSetEditor::get_singleton()->register_split(this);
+	LayeredTileSetEditor::get_singleton()->register_split(this);
 
 	// Middle panel.
 	VBoxContainer *middle_vbox_container = memnew(VBoxContainer);
@@ -2511,14 +2511,14 @@ TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
 
 	// -- Toolbox --
 	tools_button_group.instantiate();
-	tools_button_group->connect("pressed", callable_mp(this, &TileSetAtlasSourceEditor::_update_fix_selected_and_hovered_tiles).unbind(1));
-	tools_button_group->connect("pressed", callable_mp(this, &TileSetAtlasSourceEditor::_update_tile_id_label).unbind(1));
-	tools_button_group->connect("pressed", callable_mp(this, &TileSetAtlasSourceEditor::_update_atlas_source_inspector).unbind(1));
-	tools_button_group->connect("pressed", callable_mp(this, &TileSetAtlasSourceEditor::_update_tile_inspector).unbind(1));
-	tools_button_group->connect("pressed", callable_mp(this, &TileSetAtlasSourceEditor::_update_tile_data_editors).unbind(1));
-	tools_button_group->connect("pressed", callable_mp(this, &TileSetAtlasSourceEditor::_update_current_tile_data_editor).unbind(1));
-	tools_button_group->connect("pressed", callable_mp(this, &TileSetAtlasSourceEditor::_update_atlas_view).unbind(1));
-	tools_button_group->connect("pressed", callable_mp(this, &TileSetAtlasSourceEditor::_update_toolbar).unbind(1));
+	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_fix_selected_and_hovered_tiles).unbind(1));
+	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_tile_id_label).unbind(1));
+	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_atlas_source_inspector).unbind(1));
+	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_tile_inspector).unbind(1));
+	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_tile_data_editors).unbind(1));
+	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_current_tile_data_editor).unbind(1));
+	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_atlas_view).unbind(1));
+	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_toolbar).unbind(1));
 
 	HBoxContainer *toolbox = memnew(HBoxContainer);
 	middle_vbox_container->add_child(toolbox);
@@ -2550,15 +2550,15 @@ TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
 	toolbox->add_child(tool_paint_button);
 
 	// Tile inspector.
-	tile_proxy_object = memnew(AtlasTileProxyObject(this));
-	tile_proxy_object->connect("changed", callable_mp(this, &TileSetAtlasSourceEditor::_tile_proxy_object_changed));
+	tile_proxy_object = memnew(LayeredAtlasTileProxyObject(this));
+	tile_proxy_object->connect("changed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_proxy_object_changed));
 
 	tile_inspector = memnew(EditorInspector);
 	tile_inspector->set_v_size_flags(SIZE_EXPAND_FILL);
 	tile_inspector->set_show_categories(true);
 	tile_inspector->set_use_doc_hints(true);
 	tile_inspector->set_use_folding(true);
-	tile_inspector->connect("property_selected", callable_mp(this, &TileSetAtlasSourceEditor::_inspector_property_selected));
+	tile_inspector->connect("property_selected", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_inspector_property_selected));
 	middle_vbox_container->add_child(tile_inspector);
 
 	tile_inspector_no_tile_selected_label = memnew(Label);
@@ -2586,8 +2586,8 @@ TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
 	tile_data_editors_vbox->add_child(tile_data_editors_label);
 
 	tile_data_editor_dropdown_button = memnew(Button);
-	tile_data_editor_dropdown_button->connect("draw", callable_mp(this, &TileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_draw));
-	tile_data_editor_dropdown_button->connect("pressed", callable_mp(this, &TileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_pressed));
+	tile_data_editor_dropdown_button->connect("draw", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_draw));
+	tile_data_editor_dropdown_button->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_pressed));
 	tile_data_editors_vbox->add_child(tile_data_editor_dropdown_button);
 	tile_data_editor_dropdown_button->add_child(tile_data_editors_popup);
 
@@ -2596,7 +2596,7 @@ TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
 	tile_data_editors_tree->set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
 	tile_data_editors_tree->set_h_scroll_enabled(false);
 	tile_data_editors_tree->set_v_scroll_enabled(false);
-	tile_data_editors_tree->connect("item_selected", callable_mp(this, &TileSetAtlasSourceEditor::_tile_data_editors_tree_selected));
+	tile_data_editors_tree->connect("item_selected", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_data_editors_tree_selected));
 	tile_data_editors_popup->add_child(tile_data_editors_tree);
 
 	tile_data_painting_editor_container = memnew(VBoxContainer);
@@ -2604,14 +2604,14 @@ TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
 	tile_data_editors_vbox->add_child(tile_data_painting_editor_container);
 
 	// Atlas source inspector.
-	atlas_source_proxy_object = memnew(TileSetAtlasSourceProxyObject());
-	atlas_source_proxy_object->connect("changed", callable_mp(this, &TileSetAtlasSourceEditor::_atlas_source_proxy_object_changed));
+	atlas_source_proxy_object = memnew(LayeredTileSetAtlasSourceProxyObject());
+	atlas_source_proxy_object->connect("changed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_atlas_source_proxy_object_changed));
 
 	atlas_source_inspector = memnew(EditorInspector);
 	atlas_source_inspector->set_v_size_flags(SIZE_EXPAND_FILL);
 	atlas_source_inspector->set_show_categories(true);
 	atlas_source_inspector->set_use_doc_hints(true);
-	atlas_source_inspector->add_inspector_plugin(memnew(TileSourceInspectorPlugin));
+	atlas_source_inspector->add_inspector_plugin(memnew(LayeredTileSourceInspectorPlugin));
 	middle_vbox_container->add_child(atlas_source_inspector);
 
 	// -- Right side --
@@ -2638,7 +2638,7 @@ TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
 	tool_advanced_menu_button->get_popup()->add_item(TTR("Create Tiles in Non-Transparent Texture Regions"), ADVANCED_AUTO_CREATE_TILES);
 	tool_advanced_menu_button->get_popup()->add_item(TTR("Remove Tiles in Fully Transparent Texture Regions"), ADVANCED_AUTO_REMOVE_TILES);
 	tool_advanced_menu_button->get_popup()->add_item(TTR("Remove Tiles Outside the Texture"), ADVANCED_CLEANUP_TILES);
-	tool_advanced_menu_button->get_popup()->connect("id_pressed", callable_mp(this, &TileSetAtlasSourceEditor::_menu_option));
+	tool_advanced_menu_button->get_popup()->connect("id_pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_menu_option));
 	tool_settings->add_child(tool_advanced_menu_button);
 
 	outside_tiles_warning = memnew(TextureRect);
@@ -2666,12 +2666,12 @@ TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
 	right_vbox_container->add_child(right_panel);
 
 	// Tile atlas view.
-	tile_atlas_view = memnew(TileAtlasView);
+	tile_atlas_view = memnew(LayeredTileAtlasView);
 	tile_atlas_view->set_h_size_flags(SIZE_EXPAND_FILL);
 	tile_atlas_view->set_v_size_flags(SIZE_EXPAND_FILL);
 	tile_atlas_view->set_custom_minimum_size(Size2(200, 0) * EDSCALE);
-	tile_atlas_view->connect("transform_changed", callable_mp(TilesEditorUtils::get_singleton(), &TilesEditorUtils::set_atlas_view_transform));
-	tile_atlas_view->connect("transform_changed", callable_mp(this, &TileSetAtlasSourceEditor::_tile_atlas_view_transform_changed).unbind(2));
+	tile_atlas_view->connect("transform_changed", callable_mp(LayeredTilesEditorUtils::get_singleton(), &LayeredTilesEditorUtils::set_atlas_view_transform));
+	tile_atlas_view->connect("transform_changed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_atlas_view_transform_changed).unbind(2));
 	right_panel->add_child(tile_atlas_view);
 
 	tile_create_help = memnew(VBoxContainer);
@@ -2692,42 +2692,42 @@ TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
 	base_tile_popup_menu = memnew(PopupMenu);
 	base_tile_popup_menu->add_shortcut(ED_SHORTCUT("tiles_editor/delete", TTR("Delete"), Key::KEY_DELETE), TILE_DELETE);
 	base_tile_popup_menu->add_item(TTR("Create an Alternative Tile"), TILE_CREATE_ALTERNATIVE);
-	base_tile_popup_menu->connect("id_pressed", callable_mp(this, &TileSetAtlasSourceEditor::_menu_option));
+	base_tile_popup_menu->connect("id_pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_menu_option));
 	tile_atlas_view->add_child(base_tile_popup_menu);
 
 	empty_base_tile_popup_menu = memnew(PopupMenu);
 	empty_base_tile_popup_menu->add_item(TTR("Create a Tile"), TILE_CREATE);
-	empty_base_tile_popup_menu->connect("id_pressed", callable_mp(this, &TileSetAtlasSourceEditor::_menu_option));
+	empty_base_tile_popup_menu->connect("id_pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_menu_option));
 	tile_atlas_view->add_child(empty_base_tile_popup_menu);
 
-	tile_atlas_control = memnew(TileAtlasControl(this));
-	tile_atlas_control->connect("draw", callable_mp(this, &TileSetAtlasSourceEditor::_tile_atlas_control_draw));
-	tile_atlas_control->connect("mouse_exited", callable_mp(this, &TileSetAtlasSourceEditor::_tile_atlas_control_mouse_exited));
-	tile_atlas_control->connect("gui_input", callable_mp(this, &TileSetAtlasSourceEditor::_tile_atlas_control_gui_input));
+	tile_atlas_control = memnew(LayeredTileAtlasControl(this));
+	tile_atlas_control->connect("draw", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_atlas_control_draw));
+	tile_atlas_control->connect("mouse_exited", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_atlas_control_mouse_exited));
+	tile_atlas_control->connect("gui_input", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_atlas_control_gui_input));
 	tile_atlas_view->add_control_over_atlas_tiles(tile_atlas_control);
 
 	tile_atlas_control_unscaled = memnew(Control);
-	tile_atlas_control_unscaled->connect("draw", callable_mp(this, &TileSetAtlasSourceEditor::_tile_atlas_control_unscaled_draw));
+	tile_atlas_control_unscaled->connect("draw", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_atlas_control_unscaled_draw));
 	tile_atlas_view->add_control_over_atlas_tiles(tile_atlas_control_unscaled, false);
 	tile_atlas_control_unscaled->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 
 	alternative_tile_popup_menu = memnew(PopupMenu);
 	alternative_tile_popup_menu->add_shortcut(ED_SHORTCUT("tiles_editor/delete_tile", TTR("Delete"), Key::KEY_DELETE), TILE_DELETE);
-	alternative_tile_popup_menu->connect("id_pressed", callable_mp(this, &TileSetAtlasSourceEditor::_menu_option));
+	alternative_tile_popup_menu->connect("id_pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_menu_option));
 	tile_atlas_view->add_child(alternative_tile_popup_menu);
 
 	alternative_tiles_control = memnew(Control);
-	alternative_tiles_control->connect("draw", callable_mp(this, &TileSetAtlasSourceEditor::_tile_alternatives_control_draw));
-	alternative_tiles_control->connect("mouse_exited", callable_mp(this, &TileSetAtlasSourceEditor::_tile_alternatives_control_mouse_exited));
-	alternative_tiles_control->connect("gui_input", callable_mp(this, &TileSetAtlasSourceEditor::_tile_alternatives_control_gui_input));
+	alternative_tiles_control->connect("draw", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_alternatives_control_draw));
+	alternative_tiles_control->connect("mouse_exited", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_alternatives_control_mouse_exited));
+	alternative_tiles_control->connect("gui_input", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_alternatives_control_gui_input));
 	tile_atlas_view->add_control_over_alternative_tiles(alternative_tiles_control);
 
 	alternative_tiles_control_unscaled = memnew(Control);
-	alternative_tiles_control_unscaled->connect("draw", callable_mp(this, &TileSetAtlasSourceEditor::_tile_alternatives_control_unscaled_draw));
+	alternative_tiles_control_unscaled->connect("draw", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_alternatives_control_unscaled_draw));
 	tile_atlas_view->add_control_over_alternative_tiles(alternative_tiles_control_unscaled, false);
 	alternative_tiles_control_unscaled->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 
-	EditorNode::get_editor_data().add_undo_redo_inspector_hook_callback(callable_mp(this, &TileSetAtlasSourceEditor::_undo_redo_inspector_callback));
+	EditorNode::get_editor_data().add_undo_redo_inspector_hook_callback(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_undo_redo_inspector_callback));
 
 	// -- Dialogs --
 	confirm_auto_create_tiles = memnew(AcceptDialog);
@@ -2735,8 +2735,8 @@ TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
 	confirm_auto_create_tiles->set_text(TTR("The atlas's texture was modified.\nWould you like to automatically create tiles in the atlas?"));
 	confirm_auto_create_tiles->set_ok_button_text(TTR("Yes"));
 	confirm_auto_create_tiles->add_cancel_button()->set_text(TTR("No"));
-	confirm_auto_create_tiles->connect("confirmed", callable_mp(this, &TileSetAtlasSourceEditor::_auto_create_tiles));
-	confirm_auto_create_tiles->connect("canceled", callable_mp(this, &TileSetAtlasSourceEditor::_cancel_auto_create_tiles));
+	confirm_auto_create_tiles->connect("confirmed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_auto_create_tiles));
+	confirm_auto_create_tiles->connect("canceled", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_cancel_auto_create_tiles));
 	add_child(confirm_auto_create_tiles);
 
 	// Inspector plugin.
@@ -2745,14 +2745,14 @@ TileSetAtlasSourceEditor::TileSetAtlasSourceEditor() {
 	EditorInspector::add_inspector_plugin(tile_data_inspector_plugin);
 }
 
-TileSetAtlasSourceEditor::~TileSetAtlasSourceEditor() {
+LayeredTileSetAtlasSourceEditor::~LayeredTileSetAtlasSourceEditor() {
 	memdelete(tile_proxy_object);
 	memdelete(atlas_source_proxy_object);
 
-	// Remove listener for old objects, so the TileSet doesn't
-	// try to call the destroyed TileSetAtlasSourceEditor.
+	// Remove listener for old objects, so the LayeredTileSet doesn't
+	// try to call the destroyed LayeredTileSetAtlasSourceEditor.
 	if (tile_set.is_valid()) {
-		tile_set->disconnect_changed(callable_mp(this, &TileSetAtlasSourceEditor::_tile_set_changed));
+		tile_set->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
 	}
 }
 
@@ -2817,12 +2817,12 @@ void EditorPropertyTilePolygon::_polygons_changed() {
 }
 
 void EditorPropertyTilePolygon::update_property() {
-	TileSetAtlasSourceEditor::AtlasTileProxyObject *atlas_tile_proxy_object = Object::cast_to<TileSetAtlasSourceEditor::AtlasTileProxyObject>(get_edited_object());
+	LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject *atlas_tile_proxy_object = Object::cast_to<LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject>(get_edited_object());
 	ERR_FAIL_NULL(atlas_tile_proxy_object);
 	ERR_FAIL_COND(atlas_tile_proxy_object->get_edited_tiles().is_empty());
 
-	Ref<TileSetAtlasSource> tile_set_atlas_source = atlas_tile_proxy_object->get_edited_tile_set_atlas_source();
-	generic_tile_polygon_editor->set_tile_set(Ref<TileSet>(tile_set_atlas_source->get_tile_set()));
+	Ref<LayeredTileSetAtlasSource> tile_set_atlas_source = atlas_tile_proxy_object->get_edited_tile_set_atlas_source();
+	generic_tile_polygon_editor->set_tile_set(Ref<LayeredTileSet>(tile_set_atlas_source->get_tile_set()));
 
 	// Set the background
 	Vector2i coords = atlas_tile_proxy_object->get_edited_tiles().front()->get().tile;
@@ -2894,7 +2894,7 @@ EditorPropertyTilePolygon::EditorPropertyTilePolygon() {
 ////// EditorInspectorPluginTileData //////
 
 bool EditorInspectorPluginTileData::can_handle(Object *p_object) {
-	return Object::cast_to<TileSetAtlasSourceEditor::AtlasTileProxyObject>(p_object) != nullptr;
+	return Object::cast_to<LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject>(p_object) != nullptr;
 }
 
 bool EditorInspectorPluginTileData::parse_property(Object *p_object, const Variant::Type p_type, const String &p_path, const PropertyHint p_hint, const String &p_hint_text, const BitField<PropertyUsageFlags> p_usage, const bool p_wide) {
@@ -2945,13 +2945,13 @@ bool EditorInspectorPluginTileData::parse_property(Object *p_object, const Varia
 	return false;
 }
 
-Control::CursorShape TileSetAtlasSourceEditor::TileAtlasControl::get_cursor_shape(const Point2 &p_pos) const {
+Control::CursorShape LayeredTileSetAtlasSourceEditor::LayeredTileAtlasControl::get_cursor_shape(const Point2 &p_pos) const {
 	Control::CursorShape cursor_shape = get_default_cursor_shape();
 	if (editor->drag_type == DRAG_TYPE_NONE) {
 		if (editor->selection.size() == 1) {
 			// Change the cursor depending on the hovered thing.
 			TileSelection selected = editor->selection.front()->get();
-			if (selected.tile != TileSetSource::INVALID_ATLAS_COORDS && selected.alternative == 0) {
+			if (selected.tile != LayeredTileSetSource::INVALID_ATLAS_COORDS && selected.alternative == 0) {
 				Transform2D xform = editor->tile_atlas_control->get_global_transform().affine_inverse() * get_global_transform();
 				Vector2 mouse_local_pos = xform.xform(p_pos);
 				Vector2i size_in_atlas = editor->tile_set_atlas_source->get_tile_size_in_atlas(selected.tile);

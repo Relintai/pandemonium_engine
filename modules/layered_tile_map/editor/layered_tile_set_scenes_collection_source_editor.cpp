@@ -47,12 +47,12 @@
 
 #include "core/core_string_names.h"
 
-void TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::set_id(int p_id) {
+void LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionProxyObject::set_id(int p_id) {
 	ERR_FAIL_COND(p_id < 0);
 	if (source_id == p_id) {
 		return;
 	}
-	ERR_FAIL_COND_MSG(tile_set->has_source(p_id), vformat("Cannot change TileSet Scenes Collection source ID. Another TileSet source exists with id %d.", p_id));
+	ERR_FAIL_COND_MSG(tile_set->has_source(p_id), vformat("Cannot change LayeredTileSet Scenes Collection source ID. Another LayeredTileSet source exists with id %d.", p_id));
 
 	int previous_source = source_id;
 	source_id = p_id; // source_id must be updated before, because it's used by the source list update.
@@ -60,11 +60,11 @@ void TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::se
 	emit_signal(SNAME("changed"), "id");
 }
 
-int TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::get_id() {
+int LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionProxyObject::get_id() {
 	return source_id;
 }
 
-bool TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::_set(const StringName &p_name, const Variant &p_value) {
+bool LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionProxyObject::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name;
 	if (name == "name") {
 		// Use the resource_name property to store the source's name.
@@ -78,7 +78,7 @@ bool TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::_s
 	return valid;
 }
 
-bool TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::_get(const StringName &p_name, Variant &r_ret) const {
+bool LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionProxyObject::_get(const StringName &p_name, Variant &r_ret) const {
 	if (!tile_set_scenes_collection_source) {
 		return false;
 	}
@@ -92,21 +92,21 @@ bool TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::_g
 	return valid;
 }
 
-void TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::_get_property_list(List<PropertyInfo> *p_list) const {
+void LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionProxyObject::_get_property_list(List<PropertyInfo> *p_list) const {
 	p_list->push_back(PropertyInfo(Variant::STRING, "name", PROPERTY_HINT_NONE, ""));
 }
 
-void TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::_bind_methods() {
+void LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionProxyObject::_bind_methods() {
 	// -- Shape and layout --
-	ClassDB::bind_method(D_METHOD("set_id", "id"), &TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::set_id);
-	ClassDB::bind_method(D_METHOD("get_id"), &TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::get_id);
+	ClassDB::bind_method(D_METHOD("set_id", "id"), &LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionProxyObject::set_id);
+	ClassDB::bind_method(D_METHOD("get_id"), &LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionProxyObject::get_id);
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 
 	ADD_SIGNAL(MethodInfo("changed", PropertyInfo(Variant::STRING, "what")));
 }
 
-void TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::edit(Ref<TileSet> p_tile_set, TileSetScenesCollectionSource *p_tile_set_scenes_collection_source, int p_source_id) {
+void LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionProxyObject::edit(Ref<LayeredTileSet> p_tile_set, LayeredTileSetScenesCollectionSource *p_tile_set_scenes_collection_source, int p_source_id) {
 	ERR_FAIL_COND(!p_tile_set.is_valid());
 	ERR_FAIL_NULL(p_tile_set_scenes_collection_source);
 	ERR_FAIL_COND(p_source_id < 0);
@@ -136,7 +136,7 @@ void TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::ed
 }
 
 // -- Proxy object used by the tile inspector --
-bool TileSetScenesCollectionSourceEditor::SceneTileProxyObject::_set(const StringName &p_name, const Variant &p_value) {
+bool LayeredTileSetScenesCollectionSourceEditor::LayeredSceneTileProxyObject::_set(const StringName &p_name, const Variant &p_value) {
 	if (!tile_set_scenes_collection_source) {
 		return false;
 	}
@@ -168,7 +168,7 @@ bool TileSetScenesCollectionSourceEditor::SceneTileProxyObject::_set(const Strin
 	return false;
 }
 
-bool TileSetScenesCollectionSourceEditor::SceneTileProxyObject::_get(const StringName &p_name, Variant &r_ret) const {
+bool LayeredTileSetScenesCollectionSourceEditor::LayeredSceneTileProxyObject::_get(const StringName &p_name, Variant &r_ret) const {
 	if (!tile_set_scenes_collection_source) {
 		return false;
 	}
@@ -187,7 +187,7 @@ bool TileSetScenesCollectionSourceEditor::SceneTileProxyObject::_get(const Strin
 	return false;
 }
 
-void TileSetScenesCollectionSourceEditor::SceneTileProxyObject::_get_property_list(List<PropertyInfo> *p_list) const {
+void LayeredTileSetScenesCollectionSourceEditor::LayeredSceneTileProxyObject::_get_property_list(List<PropertyInfo> *p_list) const {
 	if (!tile_set_scenes_collection_source) {
 		return;
 	}
@@ -197,7 +197,7 @@ void TileSetScenesCollectionSourceEditor::SceneTileProxyObject::_get_property_li
 	p_list->push_back(PropertyInfo(Variant::BOOL, "display_placeholder", PROPERTY_HINT_NONE, ""));
 }
 
-void TileSetScenesCollectionSourceEditor::SceneTileProxyObject::edit(TileSetScenesCollectionSource *p_tile_set_scenes_collection_source, int p_scene_id) {
+void LayeredTileSetScenesCollectionSourceEditor::LayeredSceneTileProxyObject::edit(LayeredTileSetScenesCollectionSource *p_tile_set_scenes_collection_source, int p_scene_id) {
 	ERR_FAIL_NULL(p_tile_set_scenes_collection_source);
 	ERR_FAIL_COND(!p_tile_set_scenes_collection_source->has_scene_tile_id(p_scene_id));
 
@@ -211,21 +211,21 @@ void TileSetScenesCollectionSourceEditor::SceneTileProxyObject::edit(TileSetScen
 	notify_property_list_changed();
 }
 
-void TileSetScenesCollectionSourceEditor::SceneTileProxyObject::_bind_methods() {
+void LayeredTileSetScenesCollectionSourceEditor::LayeredSceneTileProxyObject::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("changed", PropertyInfo(Variant::STRING, "what")));
 }
 
-void TileSetScenesCollectionSourceEditor::_scenes_collection_source_proxy_object_changed(const String &p_what) {
+void LayeredTileSetScenesCollectionSourceEditor::_scenes_collection_source_proxy_object_changed(const String &p_what) {
 	if (p_what == "id") {
 		emit_signal(SNAME("source_id_changed"), scenes_collection_source_proxy_object->get_id());
 	}
 }
 
-void TileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed() {
+void LayeredTileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed() {
 	tile_set_scenes_collection_source_changed_needs_update = true;
 }
 
-void TileSetScenesCollectionSourceEditor::_scene_thumbnail_done(const String &p_path, const Ref<Texture2D> &p_preview, const Ref<Texture2D> &p_small_preview, const Variant &p_ud) {
+void LayeredTileSetScenesCollectionSourceEditor::_scene_thumbnail_done(const String &p_path, const Ref<Texture2D> &p_preview, const Ref<Texture2D> &p_small_preview, const Variant &p_ud) {
 	int index = p_ud;
 
 	if (index >= 0 && index < scene_tiles_list->get_item_count()) {
@@ -233,19 +233,19 @@ void TileSetScenesCollectionSourceEditor::_scene_thumbnail_done(const String &p_
 	}
 }
 
-void TileSetScenesCollectionSourceEditor::_scenes_list_item_activated(int p_index) {
+void LayeredTileSetScenesCollectionSourceEditor::_scenes_list_item_activated(int p_index) {
 	Ref<PackedScene> packed_scene = tile_set_scenes_collection_source->get_scene_tile_scene(scene_tiles_list->get_item_metadata(p_index));
 	if (packed_scene.is_valid()) {
 		EditorNode::get_singleton()->open_request(packed_scene->get_path());
 	}
 }
 
-void TileSetScenesCollectionSourceEditor::_source_add_pressed() {
+void LayeredTileSetScenesCollectionSourceEditor::_source_add_pressed() {
 	if (!scene_select_dialog) {
 		scene_select_dialog = memnew(EditorFileDialog);
 		add_child(scene_select_dialog);
 		scene_select_dialog->set_file_mode(EditorFileDialog::FILE_MODE_OPEN_FILE);
-		scene_select_dialog->connect("file_selected", callable_mp(this, &TileSetScenesCollectionSourceEditor::_scene_file_selected));
+		scene_select_dialog->connect("file_selected", callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_scene_file_selected));
 
 		for (const String &E : Vector<String>{ "tscn", "scn" }) {
 			scene_select_dialog->add_filter("*." + E, E.to_upper());
@@ -254,7 +254,7 @@ void TileSetScenesCollectionSourceEditor::_source_add_pressed() {
 	scene_select_dialog->popup_file_dialog();
 }
 
-void TileSetScenesCollectionSourceEditor::_scene_file_selected(const String &p_path) {
+void LayeredTileSetScenesCollectionSourceEditor::_scene_file_selected(const String &p_path) {
 	Ref<PackedScene> scene = ResourceLoader::load(p_path);
 
 	int scene_id = tile_set_scenes_collection_source->get_next_scene_tile_id();
@@ -268,7 +268,7 @@ void TileSetScenesCollectionSourceEditor::_scene_file_selected(const String &p_p
 	_update_tile_inspector();
 }
 
-void TileSetScenesCollectionSourceEditor::_source_delete_pressed() {
+void LayeredTileSetScenesCollectionSourceEditor::_source_delete_pressed() {
 	Vector<int> selected_indices = scene_tiles_list->get_selected_items();
 	ERR_FAIL_COND(selected_indices.is_empty());
 	int scene_id = scene_tiles_list->get_item_metadata(selected_indices[0]);
@@ -283,12 +283,12 @@ void TileSetScenesCollectionSourceEditor::_source_delete_pressed() {
 	_update_tile_inspector();
 }
 
-void TileSetScenesCollectionSourceEditor::_update_source_inspector() {
+void LayeredTileSetScenesCollectionSourceEditor::_update_source_inspector() {
 	// Update the proxy object.
 	scenes_collection_source_proxy_object->edit(tile_set, tile_set_scenes_collection_source, tile_set_source_id);
 }
 
-void TileSetScenesCollectionSourceEditor::_update_tile_inspector() {
+void LayeredTileSetScenesCollectionSourceEditor::_update_tile_inspector() {
 	Vector<int> selected_indices = scene_tiles_list->get_selected_items();
 	bool has_atlas_tile_selected = (selected_indices.size() > 0);
 
@@ -303,12 +303,12 @@ void TileSetScenesCollectionSourceEditor::_update_tile_inspector() {
 	tile_inspector->set_visible(has_atlas_tile_selected);
 }
 
-void TileSetScenesCollectionSourceEditor::_update_action_buttons() {
+void LayeredTileSetScenesCollectionSourceEditor::_update_action_buttons() {
 	Vector<int> selected_indices = scene_tiles_list->get_selected_items();
 	scene_tile_delete_button->set_disabled(selected_indices.size() <= 0 || read_only);
 }
 
-void TileSetScenesCollectionSourceEditor::_update_scenes_list() {
+void LayeredTileSetScenesCollectionSourceEditor::_update_scenes_list() {
 	if (!tile_set_scenes_collection_source) {
 		return;
 	}
@@ -356,17 +356,17 @@ void TileSetScenesCollectionSourceEditor::_update_scenes_list() {
 	scene_tiles_list->set_fixed_icon_size(Vector2(int_size, int_size));
 }
 
-void TileSetScenesCollectionSourceEditor::_notification(int p_what) {
+void LayeredTileSetScenesCollectionSourceEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_READY: {
 			scenes_collection_source_inspector->edit(scenes_collection_source_proxy_object);
-			scenes_collection_source_inspector->add_custom_property_description("TileSetScenesCollectionProxyObject", "id", TTR("The tile's unique identifier within this TileSet. Each tile stores its source ID, so changing one may make tiles invalid."));
-			scenes_collection_source_inspector->add_custom_property_description("TileSetScenesCollectionProxyObject", "name", TTR("The human-readable name for the scene collection. Use a descriptive name here for organizational purposes (such as \"obstacles\", \"decoration\", etc.)."));
+			scenes_collection_source_inspector->add_custom_property_description("LayeredTileSetScenesCollectionProxyObject", "id", TTR("The tile's unique identifier within this LayeredTileSet. Each tile stores its source ID, so changing one may make tiles invalid."));
+			scenes_collection_source_inspector->add_custom_property_description("LayeredTileSetScenesCollectionProxyObject", "name", TTR("The human-readable name for the scene collection. Use a descriptive name here for organizational purposes (such as \"obstacles\", \"decoration\", etc.)."));
 
 			tile_inspector->edit(tile_proxy_object);
-			tile_inspector->add_custom_property_description("SceneTileProxyObject", "id", TTR("ID of the scene tile in the collection. Each painted tile has associated ID, so changing this property may cause your TileMaps to not display properly."));
-			tile_inspector->add_custom_property_description("SceneTileProxyObject", "scene", TTR("Absolute path to the scene associated with this tile."));
-			tile_inspector->add_custom_property_description("SceneTileProxyObject", "display_placeholder", TTR("If [code]true[/code], a placeholder marker will be displayed on top of the scene's preview. The marker is displayed anyway if the scene has no valid preview."));
+			tile_inspector->add_custom_property_description("LayeredSceneTileProxyObject", "id", TTR("ID of the scene tile in the collection. Each painted tile has associated ID, so changing this property may cause your LayeredTileMaps to not display properly."));
+			tile_inspector->add_custom_property_description("LayeredSceneTileProxyObject", "scene", TTR("Absolute path to the scene associated with this tile."));
+			tile_inspector->add_custom_property_description("LayeredSceneTileProxyObject", "display_placeholder", TTR("If [code]true[/code], a placeholder marker will be displayed on top of the scene's preview. The marker is displayed anyway if the scene has no valid preview."));
 		} break;
 
 		case NOTIFICATION_THEME_CHANGED: {
@@ -400,7 +400,7 @@ void TileSetScenesCollectionSourceEditor::_notification(int p_what) {
 	}
 }
 
-void TileSetScenesCollectionSourceEditor::edit(Ref<TileSet> p_tile_set, TileSetScenesCollectionSource *p_tile_set_scenes_collection_source, int p_source_id) {
+void LayeredTileSetScenesCollectionSourceEditor::edit(Ref<LayeredTileSet> p_tile_set, LayeredTileSetScenesCollectionSource *p_tile_set_scenes_collection_source, int p_source_id) {
 	ERR_FAIL_COND(!p_tile_set.is_valid());
 	ERR_FAIL_NULL(p_tile_set_scenes_collection_source);
 	ERR_FAIL_COND(p_source_id < 0);
@@ -417,7 +417,7 @@ void TileSetScenesCollectionSourceEditor::edit(Ref<TileSet> p_tile_set, TileSetS
 
 	// Remove listener for old objects.
 	if (tile_set_scenes_collection_source) {
-		tile_set_scenes_collection_source->disconnect_changed(callable_mp(this, &TileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed));
+		tile_set_scenes_collection_source->disconnect_changed(callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed));
 	}
 
 	// Change the edited object.
@@ -437,7 +437,7 @@ void TileSetScenesCollectionSourceEditor::edit(Ref<TileSet> p_tile_set, TileSetS
 
 	// Add the listener again.
 	if (tile_set_scenes_collection_source) {
-		tile_set_scenes_collection_source->connect_changed(callable_mp(this, &TileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed));
+		tile_set_scenes_collection_source->connect_changed(callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed));
 	}
 
 	// Update everything.
@@ -447,7 +447,7 @@ void TileSetScenesCollectionSourceEditor::edit(Ref<TileSet> p_tile_set, TileSetS
 	_update_tile_inspector();
 }
 
-void TileSetScenesCollectionSourceEditor::_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
+void LayeredTileSetScenesCollectionSourceEditor::_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
 	if (!_can_drop_data_fw(p_point, p_data, p_from)) {
 		return;
 	}
@@ -474,7 +474,7 @@ void TileSetScenesCollectionSourceEditor::_drop_data_fw(const Point2 &p_point, c
 	}
 }
 
-bool TileSetScenesCollectionSourceEditor::_can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
+bool LayeredTileSetScenesCollectionSourceEditor::_can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
 	if (p_from == scene_tiles_list) {
 		Dictionary d = p_data;
 
@@ -504,13 +504,13 @@ bool TileSetScenesCollectionSourceEditor::_can_drop_data_fw(const Point2 &p_poin
 	return false;
 }
 
-void TileSetScenesCollectionSourceEditor::_bind_methods() {
+void LayeredTileSetScenesCollectionSourceEditor::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("source_id_changed", PropertyInfo(Variant::INT, "source_id")));
 
-	ClassDB::bind_method(D_METHOD("_scene_thumbnail_done"), &TileSetScenesCollectionSourceEditor::_scene_thumbnail_done);
+	ClassDB::bind_method(D_METHOD("_scene_thumbnail_done"), &LayeredTileSetScenesCollectionSourceEditor::_scene_thumbnail_done);
 }
 
-TileSetScenesCollectionSourceEditor::TileSetScenesCollectionSourceEditor() {
+LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionSourceEditor() {
 	// -- Right side --
 	HSplitContainer *split_container_right_side = memnew(HSplitContainer);
 	split_container_right_side->set_h_size_flags(SIZE_EXPAND_FILL);
@@ -531,13 +531,13 @@ TileSetScenesCollectionSourceEditor::TileSetScenesCollectionSourceEditor() {
 	scenes_collection_source_inspector_label->set_text(TTR("Scenes collection properties:"));
 	middle_vbox_container->add_child(scenes_collection_source_inspector_label);
 
-	scenes_collection_source_proxy_object = memnew(TileSetScenesCollectionProxyObject());
-	scenes_collection_source_proxy_object->connect("changed", callable_mp(this, &TileSetScenesCollectionSourceEditor::_scenes_collection_source_proxy_object_changed));
+	scenes_collection_source_proxy_object = memnew(LayeredTileSetScenesCollectionProxyObject());
+	scenes_collection_source_proxy_object->connect("changed", callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_scenes_collection_source_proxy_object_changed));
 
 	scenes_collection_source_inspector = memnew(EditorInspector);
 	scenes_collection_source_inspector->set_vertical_scroll_mode(ScrollContainer::SCROLL_MODE_DISABLED);
 	scenes_collection_source_inspector->set_use_doc_hints(true);
-	scenes_collection_source_inspector->add_inspector_plugin(memnew(TileSourceInspectorPlugin));
+	scenes_collection_source_inspector->add_inspector_plugin(memnew(LayeredTileSourceInspectorPlugin));
 	middle_vbox_container->add_child(scenes_collection_source_inspector);
 
 	// Tile inspector.
@@ -546,9 +546,9 @@ TileSetScenesCollectionSourceEditor::TileSetScenesCollectionSourceEditor() {
 	tile_inspector_label->hide();
 	middle_vbox_container->add_child(tile_inspector_label);
 
-	tile_proxy_object = memnew(SceneTileProxyObject(this));
-	tile_proxy_object->connect("changed", callable_mp(this, &TileSetScenesCollectionSourceEditor::_update_scenes_list).unbind(1));
-	tile_proxy_object->connect("changed", callable_mp(this, &TileSetScenesCollectionSourceEditor::_update_action_buttons).unbind(1));
+	tile_proxy_object = memnew(LayeredSceneTileProxyObject(this));
+	tile_proxy_object->connect("changed", callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_update_scenes_list).unbind(1));
+	tile_proxy_object->connect("changed", callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_update_action_buttons).unbind(1));
 
 	tile_inspector = memnew(EditorInspector);
 	tile_inspector->set_vertical_scroll_mode(ScrollContainer::SCROLL_MODE_DISABLED);
@@ -564,10 +564,10 @@ TileSetScenesCollectionSourceEditor::TileSetScenesCollectionSourceEditor() {
 	scene_tiles_list->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	scene_tiles_list->set_h_size_flags(SIZE_EXPAND_FILL);
 	scene_tiles_list->set_v_size_flags(SIZE_EXPAND_FILL);
-	SET_DRAG_FORWARDING_CDU(scene_tiles_list, TileSetScenesCollectionSourceEditor);
-	scene_tiles_list->connect("item_selected", callable_mp(this, &TileSetScenesCollectionSourceEditor::_update_tile_inspector).unbind(1));
-	scene_tiles_list->connect("item_selected", callable_mp(this, &TileSetScenesCollectionSourceEditor::_update_action_buttons).unbind(1));
-	scene_tiles_list->connect("item_activated", callable_mp(this, &TileSetScenesCollectionSourceEditor::_scenes_list_item_activated));
+	SET_DRAG_FORWARDING_CDU(scene_tiles_list, LayeredTileSetScenesCollectionSourceEditor);
+	scene_tiles_list->connect("item_selected", callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_update_tile_inspector).unbind(1));
+	scene_tiles_list->connect("item_selected", callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_update_action_buttons).unbind(1));
+	scene_tiles_list->connect("item_activated", callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_scenes_list_item_activated));
 	scene_tiles_list->set_texture_filter(CanvasItem::TEXTURE_FILTER_NEAREST);
 	right_vbox_container->add_child(scene_tiles_list);
 
@@ -576,17 +576,17 @@ TileSetScenesCollectionSourceEditor::TileSetScenesCollectionSourceEditor() {
 
 	scene_tile_add_button = memnew(Button);
 	scene_tile_add_button->set_theme_type_variation("FlatButton");
-	scene_tile_add_button->connect("pressed", callable_mp(this, &TileSetScenesCollectionSourceEditor::_source_add_pressed));
+	scene_tile_add_button->connect("pressed", callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_source_add_pressed));
 	scenes_bottom_actions->add_child(scene_tile_add_button);
 
 	scene_tile_delete_button = memnew(Button);
 	scene_tile_delete_button->set_theme_type_variation("FlatButton");
 	scene_tile_delete_button->set_disabled(true);
-	scene_tile_delete_button->connect("pressed", callable_mp(this, &TileSetScenesCollectionSourceEditor::_source_delete_pressed));
+	scene_tile_delete_button->connect("pressed", callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_source_delete_pressed));
 	scenes_bottom_actions->add_child(scene_tile_delete_button);
 }
 
-TileSetScenesCollectionSourceEditor::~TileSetScenesCollectionSourceEditor() {
+LayeredTileSetScenesCollectionSourceEditor::~LayeredTileSetScenesCollectionSourceEditor() {
 	memdelete(scenes_collection_source_proxy_object);
 	memdelete(tile_proxy_object);
 }

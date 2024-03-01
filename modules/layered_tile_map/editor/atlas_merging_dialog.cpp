@@ -43,7 +43,7 @@ void AtlasMergingDialog::_property_changed(const StringName &p_property, const V
 	_set(p_property, p_value);
 }
 
-void AtlasMergingDialog::_generate_merged(const Vector<Ref<TileSetAtlasSource>> &p_atlas_sources, int p_max_columns) {
+void AtlasMergingDialog::_generate_merged(const Vector<Ref<LayeredTileSetAtlasSource>> &p_atlas_sources, int p_max_columns) {
 	merged.instantiate();
 	merged_mapping.clear();
 
@@ -53,7 +53,7 @@ void AtlasMergingDialog::_generate_merged(const Vector<Ref<TileSetAtlasSource>> 
 		// Compute the new texture region size.
 		Vector2i new_texture_region_size;
 		for (int source_index = 0; source_index < p_atlas_sources.size(); source_index++) {
-			const Ref<TileSetAtlasSource> &atlas_source = p_atlas_sources[source_index];
+			const Ref<LayeredTileSetAtlasSource> &atlas_source = p_atlas_sources[source_index];
 			new_texture_region_size = new_texture_region_size.max(atlas_source->get_texture_region_size());
 		}
 
@@ -61,7 +61,7 @@ void AtlasMergingDialog::_generate_merged(const Vector<Ref<TileSetAtlasSource>> 
 		Vector2i atlas_offset;
 		int line_height = 0;
 		for (int source_index = 0; source_index < p_atlas_sources.size(); source_index++) {
-			const Ref<TileSetAtlasSource> &atlas_source = p_atlas_sources[source_index];
+			const Ref<LayeredTileSetAtlasSource> &atlas_source = p_atlas_sources[source_index];
 			Ref<Image> input_image = atlas_source->get_texture()->get_image();
 			if (input_image->get_format() != Image::FORMAT_RGBA8) {
 				input_image->convert(Image::FORMAT_RGBA8);
@@ -110,9 +110,9 @@ void AtlasMergingDialog::_generate_merged(const Vector<Ref<TileSetAtlasSource>> 
 		merged->set_texture(ImageTexture::create_from_image(output_image));
 		merged->set_texture_region_size(new_texture_region_size);
 
-		// Copy the tiles to the merged TileSetAtlasSource.
+		// Copy the tiles to the merged LayeredTileSetAtlasSource.
 		for (int source_index = 0; source_index < p_atlas_sources.size(); source_index++) {
-			const Ref<TileSetAtlasSource> &atlas_source = p_atlas_sources[source_index];
+			const Ref<LayeredTileSetAtlasSource> &atlas_source = p_atlas_sources[source_index];
 			for (KeyValue<Vector2i, Vector2i> tile_mapping : merged_mapping[source_index]) {
 				// Create tiles and alternatives, then copy their properties.
 				for (int alternative_index = 0; alternative_index < atlas_source->get_alternative_tiles_count(tile_mapping.key); alternative_index++) {
@@ -157,7 +157,7 @@ void AtlasMergingDialog::_generate_merged(const Vector<Ref<TileSetAtlasSource>> 
 void AtlasMergingDialog::_update_texture() {
 	Vector<int> selected = atlas_merging_atlases_list->get_selected_items();
 	if (selected.size() >= 2) {
-		Vector<Ref<TileSetAtlasSource>> to_merge;
+		Vector<Ref<LayeredTileSetAtlasSource>> to_merge;
 		for (int i = 0; i < selected.size(); i++) {
 			int source_id = atlas_merging_atlases_list->get_item_metadata(selected[i]);
 			to_merge.push_back(tile_set->get_source(source_id));
@@ -169,7 +169,7 @@ void AtlasMergingDialog::_update_texture() {
 		get_ok_button()->set_disabled(false);
 		merge_button->set_disabled(false);
 	} else {
-		_generate_merged(Vector<Ref<TileSetAtlasSource>>(), next_line_after_column);
+		_generate_merged(Vector<Ref<LayeredTileSetAtlasSource>>(), next_line_after_column);
 		preview->set_texture(Ref<Texture2D>());
 		preview->hide();
 		select_2_atlases_label->show();
@@ -190,7 +190,7 @@ void AtlasMergingDialog::_merge_confirmed(const String &p_path) {
 	merged->set_texture(new_texture_resource);
 
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
-	undo_redo->create_action(TTR("Merge TileSetAtlasSource"));
+	undo_redo->create_action(TTR("Merge LayeredTileSetAtlasSource"));
 	int next_id = tile_set->get_next_source_id();
 	undo_redo->add_do_method(*tile_set, "add_source", merged, next_id);
 	undo_redo->add_undo_method(*tile_set, "remove_source", next_id);
@@ -200,7 +200,7 @@ void AtlasMergingDialog::_merge_confirmed(const String &p_path) {
 		Vector<int> selected = atlas_merging_atlases_list->get_selected_items();
 		for (int i = 0; i < selected.size(); i++) {
 			int source_id = atlas_merging_atlases_list->get_item_metadata(selected[i]);
-			Ref<TileSetAtlasSource> tas = tile_set->get_source(source_id);
+			Ref<LayeredTileSetAtlasSource> tas = tile_set->get_source(source_id);
 			undo_redo->add_do_method(*tile_set, "remove_source", source_id);
 			undo_redo->add_undo_method(*tile_set, "add_source", tas, source_id);
 
@@ -270,14 +270,14 @@ void AtlasMergingDialog::_notification(int p_what) {
 	}
 }
 
-void AtlasMergingDialog::update_tile_set(Ref<TileSet> p_tile_set) {
+void AtlasMergingDialog::update_tile_set(Ref<LayeredTileSet> p_tile_set) {
 	ERR_FAIL_COND(!p_tile_set.is_valid());
 	tile_set = p_tile_set;
 
 	atlas_merging_atlases_list->clear();
 	for (int i = 0; i < p_tile_set->get_source_count(); i++) {
 		int source_id = p_tile_set->get_source_id(i);
-		Ref<TileSetAtlasSource> atlas_source = p_tile_set->get_source(source_id);
+		Ref<LayeredTileSetAtlasSource> atlas_source = p_tile_set->get_source(source_id);
 		if (atlas_source.is_valid()) {
 			Ref<Texture2D> texture = atlas_source->get_texture();
 			if (texture.is_valid()) {

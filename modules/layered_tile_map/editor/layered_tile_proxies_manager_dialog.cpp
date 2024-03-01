@@ -39,7 +39,7 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
 
-void TileProxiesManagerDialog::_right_clicked(int p_item, Vector2 p_local_mouse_pos, MouseButton p_mouse_button_index, Object *p_item_list) {
+void LayeredTileProxiesManagerDialog::_right_clicked(int p_item, Vector2 p_local_mouse_pos, MouseButton p_mouse_button_index, Object *p_item_list) {
 	if (p_mouse_button_index != MouseButton::RIGHT) {
 		return;
 	}
@@ -50,14 +50,14 @@ void TileProxiesManagerDialog::_right_clicked(int p_item, Vector2 p_local_mouse_
 	popup_menu->popup();
 }
 
-void TileProxiesManagerDialog::_menu_id_pressed(int p_id) {
+void LayeredTileProxiesManagerDialog::_menu_id_pressed(int p_id) {
 	if (p_id == 0) {
 		// Delete.
 		_delete_selected_bindings();
 	}
 }
 
-void TileProxiesManagerDialog::_delete_selected_bindings() {
+void LayeredTileProxiesManagerDialog::_delete_selected_bindings() {
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
 	undo_redo->create_action(TTR("Remove Tile Proxies"));
 
@@ -91,7 +91,7 @@ void TileProxiesManagerDialog::_delete_selected_bindings() {
 	commited_actions_count += 1;
 }
 
-void TileProxiesManagerDialog::_update_lists() {
+void LayeredTileProxiesManagerDialog::_update_lists() {
 	source_level_list->clear();
 	coords_level_list->clear();
 	alternative_level_list->clear();
@@ -121,19 +121,19 @@ void TileProxiesManagerDialog::_update_lists() {
 	}
 }
 
-void TileProxiesManagerDialog::_update_enabled_property_editors() {
-	if (from.source_id == TileSet::INVALID_SOURCE) {
-		from.set_atlas_coords(TileSetSource::INVALID_ATLAS_COORDS);
-		to.set_atlas_coords(TileSetSource::INVALID_ATLAS_COORDS);
-		from.alternative_tile = TileSetSource::INVALID_TILE_ALTERNATIVE;
-		to.alternative_tile = TileSetSource::INVALID_TILE_ALTERNATIVE;
+void LayeredTileProxiesManagerDialog::_update_enabled_property_editors() {
+	if (from.source_id == LayeredTileSet::INVALID_SOURCE) {
+		from.set_atlas_coords(LayeredTileSetSource::INVALID_ATLAS_COORDS);
+		to.set_atlas_coords(LayeredTileSetSource::INVALID_ATLAS_COORDS);
+		from.alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE;
+		to.alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE;
 		coords_from_property_editor->hide();
 		coords_to_property_editor->hide();
 		alternative_from_property_editor->hide();
 		alternative_to_property_editor->hide();
 	} else if (from.get_atlas_coords().x == -1 || from.get_atlas_coords().y == -1) {
-		from.alternative_tile = TileSetSource::INVALID_TILE_ALTERNATIVE;
-		to.alternative_tile = TileSetSource::INVALID_TILE_ALTERNATIVE;
+		from.alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE;
+		to.alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE;
 		coords_from_property_editor->show();
 		coords_to_property_editor->show();
 		alternative_from_property_editor->hide();
@@ -153,17 +153,17 @@ void TileProxiesManagerDialog::_update_enabled_property_editors() {
 	alternative_to_property_editor->update_property();
 }
 
-void TileProxiesManagerDialog::_property_changed(const String &p_path, const Variant &p_value, const String &p_name, bool p_changing) {
+void LayeredTileProxiesManagerDialog::_property_changed(const String &p_path, const Variant &p_value, const String &p_name, bool p_changing) {
 	_set(p_path, p_value);
 }
 
-void TileProxiesManagerDialog::_add_button_pressed() {
+void LayeredTileProxiesManagerDialog::_add_button_pressed() {
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
-	if (from.source_id != TileSet::INVALID_SOURCE && to.source_id != TileSet::INVALID_SOURCE) {
+	if (from.source_id != LayeredTileSet::INVALID_SOURCE && to.source_id != LayeredTileSet::INVALID_SOURCE) {
 		Vector2i from_coords = from.get_atlas_coords();
 		Vector2i to_coords = to.get_atlas_coords();
 		if (from_coords.x >= 0 && from_coords.y >= 0 && to_coords.x >= 0 && to_coords.y >= 0) {
-			if (from.alternative_tile != TileSetSource::INVALID_TILE_ALTERNATIVE && to.alternative_tile != TileSetSource::INVALID_TILE_ALTERNATIVE) {
+			if (from.alternative_tile != LayeredTileSetSource::INVALID_TILE_ALTERNATIVE && to.alternative_tile != LayeredTileSetSource::INVALID_TILE_ALTERNATIVE) {
 				undo_redo->create_action(TTR("Create Alternative-level Tile Proxy"));
 				undo_redo->add_do_method(*tile_set, "set_alternative_level_tile_proxy", from.source_id, from.get_atlas_coords(), from.alternative_tile, to.source_id, to.get_atlas_coords(), to.alternative_tile);
 				if (tile_set->has_alternative_level_tile_proxy(from.source_id, from.get_atlas_coords(), from.alternative_tile)) {
@@ -198,7 +198,7 @@ void TileProxiesManagerDialog::_add_button_pressed() {
 	}
 }
 
-void TileProxiesManagerDialog::_clear_invalid_button_pressed() {
+void LayeredTileProxiesManagerDialog::_clear_invalid_button_pressed() {
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
 	undo_redo->create_action(TTR("Delete All Invalid Tile Proxies"));
 
@@ -226,7 +226,7 @@ void TileProxiesManagerDialog::_clear_invalid_button_pressed() {
 	undo_redo->commit_action();
 }
 
-void TileProxiesManagerDialog::_clear_all_button_pressed() {
+void LayeredTileProxiesManagerDialog::_clear_all_button_pressed() {
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
 	undo_redo->create_action(TTR("Delete All Tile Proxies"));
 
@@ -254,7 +254,7 @@ void TileProxiesManagerDialog::_clear_all_button_pressed() {
 	undo_redo->commit_action();
 }
 
-bool TileProxiesManagerDialog::_set(const StringName &p_name, const Variant &p_value) {
+bool LayeredTileProxiesManagerDialog::_set(const StringName &p_name, const Variant &p_value) {
 	if (p_name == "from_source") {
 		from.source_id = MAX(int(p_value), -1);
 	} else if (p_name == "from_coords") {
@@ -274,7 +274,7 @@ bool TileProxiesManagerDialog::_set(const StringName &p_name, const Variant &p_v
 	return true;
 }
 
-bool TileProxiesManagerDialog::_get(const StringName &p_name, Variant &r_ret) const {
+bool LayeredTileProxiesManagerDialog::_get(const StringName &p_name, Variant &r_ret) const {
 	if (p_name == "from_source") {
 		r_ret = from.source_id;
 	} else if (p_name == "from_coords") {
@@ -293,7 +293,7 @@ bool TileProxiesManagerDialog::_get(const StringName &p_name, Variant &r_ret) co
 	return true;
 }
 
-void TileProxiesManagerDialog::_unhandled_key_input(Ref<InputEvent> p_event) {
+void LayeredTileProxiesManagerDialog::_unhandled_key_input(Ref<InputEvent> p_event) {
 	ERR_FAIL_COND(p_event.is_null());
 
 	if (p_event->is_pressed() && !p_event->is_echo() && (Object::cast_to<InputEventKey>(p_event.ptr()) || Object::cast_to<InputEventJoypadButton>(p_event.ptr()) || Object::cast_to<InputEventAction>(*p_event))) {
@@ -307,7 +307,7 @@ void TileProxiesManagerDialog::_unhandled_key_input(Ref<InputEvent> p_event) {
 	}
 }
 
-void TileProxiesManagerDialog::cancel_pressed() {
+void LayeredTileProxiesManagerDialog::cancel_pressed() {
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
 	for (int i = 0; i < commited_actions_count; i++) {
 		undo_redo->undo();
@@ -315,19 +315,19 @@ void TileProxiesManagerDialog::cancel_pressed() {
 	commited_actions_count = 0;
 }
 
-void TileProxiesManagerDialog::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_update_lists"), &TileProxiesManagerDialog::_update_lists);
-	ClassDB::bind_method(D_METHOD("_unhandled_key_input"), &TileProxiesManagerDialog::_unhandled_key_input);
+void LayeredTileProxiesManagerDialog::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_update_lists"), &LayeredTileProxiesManagerDialog::_update_lists);
+	ClassDB::bind_method(D_METHOD("_unhandled_key_input"), &LayeredTileProxiesManagerDialog::_unhandled_key_input);
 }
 
-void TileProxiesManagerDialog::update_tile_set(Ref<TileSet> p_tile_set) {
+void LayeredTileProxiesManagerDialog::update_tile_set(Ref<LayeredTileSet> p_tile_set) {
 	ERR_FAIL_COND(!p_tile_set.is_valid());
 	tile_set = p_tile_set;
 	commited_actions_count = 0;
 	_update_lists();
 }
 
-TileProxiesManagerDialog::TileProxiesManagerDialog() {
+LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	// Tile proxy management window.
 	set_title(TTR("Tile Proxies Management"));
 	set_process_unhandled_key_input(true);
@@ -350,7 +350,7 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	source_level_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	source_level_list->set_select_mode(ItemList::SELECT_MULTI);
 	source_level_list->set_allow_rmb_select(true);
-	source_level_list->connect("item_clicked", callable_mp(this, &TileProxiesManagerDialog::_right_clicked).bind(source_level_list));
+	source_level_list->connect("item_clicked", callable_mp(this, &LayeredTileProxiesManagerDialog::_right_clicked).bind(source_level_list));
 	vbox_container->add_child(source_level_list);
 
 	Label *coords_level_label = memnew(Label);
@@ -362,7 +362,7 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	coords_level_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	coords_level_list->set_select_mode(ItemList::SELECT_MULTI);
 	coords_level_list->set_allow_rmb_select(true);
-	coords_level_list->connect("item_clicked", callable_mp(this, &TileProxiesManagerDialog::_right_clicked).bind(coords_level_list));
+	coords_level_list->connect("item_clicked", callable_mp(this, &LayeredTileProxiesManagerDialog::_right_clicked).bind(coords_level_list));
 	vbox_container->add_child(coords_level_list);
 
 	Label *alternative_level_label = memnew(Label);
@@ -374,12 +374,12 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	alternative_level_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	alternative_level_list->set_select_mode(ItemList::SELECT_MULTI);
 	alternative_level_list->set_allow_rmb_select(true);
-	alternative_level_list->connect("item_clicked", callable_mp(this, &TileProxiesManagerDialog::_right_clicked).bind(alternative_level_list));
+	alternative_level_list->connect("item_clicked", callable_mp(this, &LayeredTileProxiesManagerDialog::_right_clicked).bind(alternative_level_list));
 	vbox_container->add_child(alternative_level_list);
 
 	popup_menu = memnew(PopupMenu);
 	popup_menu->add_shortcut(ED_GET_SHORTCUT("ui_text_delete"));
-	popup_menu->connect("id_pressed", callable_mp(this, &TileProxiesManagerDialog::_menu_id_pressed));
+	popup_menu->connect("id_pressed", callable_mp(this, &LayeredTileProxiesManagerDialog::_menu_id_pressed));
 	add_child(popup_menu);
 
 	// Add proxy panel.
@@ -401,7 +401,7 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	source_from_property_editor = memnew(EditorPropertyInteger);
 	source_from_property_editor->set_label(TTR("From Source"));
 	source_from_property_editor->set_object_and_property(this, "from_source");
-	source_from_property_editor->connect("property_changed", callable_mp(this, &TileProxiesManagerDialog::_property_changed));
+	source_from_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
 	source_from_property_editor->set_selectable(false);
 	source_from_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	source_from_property_editor->setup(-1, 99999, 1, false, true, false);
@@ -410,7 +410,7 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	coords_from_property_editor = memnew(EditorPropertyVector2i);
 	coords_from_property_editor->set_label(TTR("From Coords"));
 	coords_from_property_editor->set_object_and_property(this, "from_coords");
-	coords_from_property_editor->connect("property_changed", callable_mp(this, &TileProxiesManagerDialog::_property_changed));
+	coords_from_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
 	coords_from_property_editor->set_selectable(false);
 	coords_from_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	coords_from_property_editor->setup(-1, 99999, true);
@@ -420,7 +420,7 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	alternative_from_property_editor = memnew(EditorPropertyInteger);
 	alternative_from_property_editor->set_label(TTR("From Alternative"));
 	alternative_from_property_editor->set_object_and_property(this, "from_alternative");
-	alternative_from_property_editor->connect("property_changed", callable_mp(this, &TileProxiesManagerDialog::_property_changed));
+	alternative_from_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
 	alternative_from_property_editor->set_selectable(false);
 	alternative_from_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	alternative_from_property_editor->setup(-1, 99999, 1, false, true, false);
@@ -435,7 +435,7 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	source_to_property_editor = memnew(EditorPropertyInteger);
 	source_to_property_editor->set_label(TTR("To Source"));
 	source_to_property_editor->set_object_and_property(this, "to_source");
-	source_to_property_editor->connect("property_changed", callable_mp(this, &TileProxiesManagerDialog::_property_changed));
+	source_to_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
 	source_to_property_editor->set_selectable(false);
 	source_to_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	source_to_property_editor->setup(-1, 99999, 1, false, true, false);
@@ -444,7 +444,7 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	coords_to_property_editor = memnew(EditorPropertyVector2i);
 	coords_to_property_editor->set_label(TTR("To Coords"));
 	coords_to_property_editor->set_object_and_property(this, "to_coords");
-	coords_to_property_editor->connect("property_changed", callable_mp(this, &TileProxiesManagerDialog::_property_changed));
+	coords_to_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
 	coords_to_property_editor->set_selectable(false);
 	coords_to_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	coords_to_property_editor->setup(-1, 99999, true);
@@ -454,7 +454,7 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	alternative_to_property_editor = memnew(EditorPropertyInteger);
 	alternative_to_property_editor->set_label(TTR("To Alternative"));
 	alternative_to_property_editor->set_object_and_property(this, "to_alternative");
-	alternative_to_property_editor->connect("property_changed", callable_mp(this, &TileProxiesManagerDialog::_property_changed));
+	alternative_to_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
 	alternative_to_property_editor->set_selectable(false);
 	alternative_to_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	alternative_to_property_editor->setup(-1, 99999, 1, false, true, false);
@@ -464,7 +464,7 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	Button *add_button = memnew(Button);
 	add_button->set_text(TTR("Add"));
 	add_button->set_h_size_flags(Control::SIZE_SHRINK_CENTER);
-	add_button->connect("pressed", callable_mp(this, &TileProxiesManagerDialog::_add_button_pressed));
+	add_button->connect("pressed", callable_mp(this, &LayeredTileProxiesManagerDialog::_add_button_pressed));
 	vbox_container->add_child(add_button);
 
 	h_separator = memnew(HSeparator);
@@ -481,13 +481,13 @@ TileProxiesManagerDialog::TileProxiesManagerDialog() {
 	Button *clear_invalid_button = memnew(Button);
 	clear_invalid_button->set_text(TTR("Clear Invalid"));
 	clear_invalid_button->set_h_size_flags(Control::SIZE_SHRINK_CENTER);
-	clear_invalid_button->connect("pressed", callable_mp(this, &TileProxiesManagerDialog::_clear_invalid_button_pressed));
+	clear_invalid_button->connect("pressed", callable_mp(this, &LayeredTileProxiesManagerDialog::_clear_invalid_button_pressed));
 	hboxcontainer->add_child(clear_invalid_button);
 
 	Button *clear_all_button = memnew(Button);
 	clear_all_button->set_text(TTR("Clear All"));
 	clear_all_button->set_h_size_flags(Control::SIZE_SHRINK_CENTER);
-	clear_all_button->connect("pressed", callable_mp(this, &TileProxiesManagerDialog::_clear_all_button_pressed));
+	clear_all_button->connect("pressed", callable_mp(this, &LayeredTileProxiesManagerDialog::_clear_all_button_pressed));
 	hboxcontainer->add_child(clear_all_button);
 
 	h_separator = memnew(HSeparator);

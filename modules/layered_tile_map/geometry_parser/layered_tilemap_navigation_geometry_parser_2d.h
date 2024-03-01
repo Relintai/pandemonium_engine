@@ -34,7 +34,7 @@
 
 #include "scene/2d/navigation_geometry_parser_2d.h"
 
-class TileMap2DNavigationGeometryParser2D : public NavigationGeometryParser2D {
+class LayeredTileMap2DNavigationGeometryParser2D : public NavigationGeometryParser2D {
 public:
 	virtual bool parses_node(Node *p_node);
 

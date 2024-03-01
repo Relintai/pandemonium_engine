@@ -50,13 +50,13 @@
 	ERR_FAIL_INDEX_V(layer, (int)layers.size(), err_value);       \
 	return layers[layer]->function(__VA_ARGS__);
 
-void TileMap::_emit_changed() {
+void LayeredTileMap::_emit_changed() {
 	emit_signal(CoreStringNames::get_singleton()->changed);
 }
 
-void TileMap::_notification(int p_what) {
+void LayeredTileMap::_notification(int p_what) {
 	switch (p_what) {
-		case TileMap::NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
+		case LayeredTileMap::NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
 			// This is only executed when collision_animatable is enabled.
 
 			bool in_editor = false;
@@ -72,7 +72,7 @@ void TileMap::_notification(int p_what) {
 			}
 		} break;
 
-		case TileMap::NOTIFICATION_LOCAL_TRANSFORM_CHANGED: {
+		case LayeredTileMap::NOTIFICATION_LOCAL_TRANSFORM_CHANGED: {
 			// This is only executed when collision_animatable is enabled.
 
 			bool in_editor = false;
@@ -95,33 +95,33 @@ void TileMap::_notification(int p_what) {
 
 #ifndef DISABLE_DEPRECATED
 // Deprecated methods.
-void TileMap::force_update(int p_layer) {
+void LayeredTileMap::force_update(int p_layer) {
 	notify_runtime_tile_data_update(p_layer);
 	update_internals();
 }
 #endif
 
-void TileMap::set_rendering_quadrant_size(int p_size) {
-	ERR_FAIL_COND_MSG(p_size < 1, "TileMapQuadrant size cannot be smaller than 1.");
+void LayeredTileMap::set_rendering_quadrant_size(int p_size) {
+	ERR_FAIL_COND_MSG(p_size < 1, "LayeredTileMapQuadrant size cannot be smaller than 1.");
 
 	rendering_quadrant_size = p_size;
-	for (TileMapLayer *layer : layers) {
+	for (LayeredTileMapLayer *layer : layers) {
 		layer->set_rendering_quadrant_size(p_size);
 	}
 	_emit_changed();
 }
 
-int TileMap::get_rendering_quadrant_size() const {
+int LayeredTileMap::get_rendering_quadrant_size() const {
 	return rendering_quadrant_size;
 }
 
-void TileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<TileSet> p_tile_set, int p_atlas_source_id, const Vector2i &p_atlas_coords, int p_alternative_tile, int p_frame, Color p_modulation, const TileData *p_tile_data_override, real_t p_normalized_animation_offset) {
+void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<LayeredTileSet> p_tile_set, int p_atlas_source_id, const Vector2i &p_atlas_coords, int p_alternative_tile, int p_frame, Color p_modulation, const TileData *p_tile_data_override, real_t p_normalized_animation_offset) {
 	ERR_FAIL_COND(!p_tile_set.is_valid());
 	ERR_FAIL_COND(!p_tile_set->has_source(p_atlas_source_id));
 	ERR_FAIL_COND(!p_tile_set->get_source(p_atlas_source_id)->has_tile(p_atlas_coords));
 	ERR_FAIL_COND(!p_tile_set->get_source(p_atlas_source_id)->has_alternative_tile(p_atlas_coords, p_alternative_tile));
-	TileSetSource *source = *p_tile_set->get_source(p_atlas_source_id);
-	TileSetAtlasSource *atlas_source = Object::cast_to<TileSetAtlasSource>(source);
+	LayeredTileSetSource *source = *p_tile_set->get_source(p_atlas_source_id);
+	LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 	if (atlas_source) {
 		// Check for the frame.
 		if (p_frame >= 0) {
@@ -155,18 +155,18 @@ void TileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<
 		dest_rect.size.x += FP_ADJUST;
 		dest_rect.size.y += FP_ADJUST;
 
-		bool transpose = tile_data->get_transpose() ^ bool(p_alternative_tile & TileSetAtlasSource::TRANSFORM_TRANSPOSE);
+		bool transpose = tile_data->get_transpose() ^ bool(p_alternative_tile & LayeredTileSetAtlasSource::TRANSFORM_TRANSPOSE);
 		if (transpose) {
 			dest_rect.position = (p_position - Vector2(dest_rect.size.y, dest_rect.size.x) / 2 - tile_offset);
 		} else {
 			dest_rect.position = (p_position - dest_rect.size / 2 - tile_offset);
 		}
 
-		if (tile_data->get_flip_h() ^ bool(p_alternative_tile & TileSetAtlasSource::TRANSFORM_FLIP_H)) {
+		if (tile_data->get_flip_h() ^ bool(p_alternative_tile & LayeredTileSetAtlasSource::TRANSFORM_FLIP_H)) {
 			dest_rect.size.x = -dest_rect.size.x;
 		}
 
-		if (tile_data->get_flip_v() ^ bool(p_alternative_tile & TileSetAtlasSource::TRANSFORM_FLIP_V)) {
+		if (tile_data->get_flip_v() ^ bool(p_alternative_tile & LayeredTileSetAtlasSource::TRANSFORM_FLIP_V)) {
 			dest_rect.size.y = -dest_rect.size.y;
 		}
 
@@ -200,11 +200,11 @@ void TileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<
 	}
 }
 
-int TileMap::get_layers_count() const {
+int LayeredTileMap::get_layers_count() const {
 	return layers.size();
 }
 
-void TileMap::add_layer(int p_to_pos) {
+void LayeredTileMap::add_layer(int p_to_pos) {
 	if (p_to_pos < 0) {
 		p_to_pos = layers.size() + p_to_pos + 1;
 	}
@@ -212,7 +212,7 @@ void TileMap::add_layer(int p_to_pos) {
 	ERR_FAIL_INDEX(p_to_pos, (int)layers.size() + 1);
 
 	// Must clear before adding the layer.
-	TileMapLayer *new_layer = memnew(TileMapLayer);
+	LayeredTileMapLayer *new_layer = memnew(LayeredTileMapLayer);
 	layers.insert(p_to_pos, new_layer);
 	add_child(new_layer, false, INTERNAL_MODE_FRONT);
 	new_layer->set_name(vformat("Layer%d", p_to_pos));
@@ -220,7 +220,7 @@ void TileMap::add_layer(int p_to_pos) {
 	for (uint32_t i = 0; i < layers.size(); i++) {
 		layers[i]->set_as_tile_map_internal_node(i);
 	}
-	new_layer->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &TileMap::_emit_changed));
+	new_layer->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileMap::_emit_changed));
 
 	notify_property_list_changed();
 
@@ -229,12 +229,12 @@ void TileMap::add_layer(int p_to_pos) {
 	update_configuration_warnings();
 }
 
-void TileMap::move_layer(int p_layer, int p_to_pos) {
+void LayeredTileMap::move_layer(int p_layer, int p_to_pos) {
 	ERR_FAIL_INDEX(p_layer, (int)layers.size());
 	ERR_FAIL_INDEX(p_to_pos, (int)layers.size() + 1);
 
 	// Clear before shuffling layers.
-	TileMapLayer *layer = layers[p_layer];
+	LayeredTileMapLayer *layer = layers[p_layer];
 	layers.insert(p_to_pos, layer);
 	layers.remove_at(p_to_pos < p_layer ? p_layer + 1 : p_layer);
 	for (uint32_t i = 0; i < layers.size(); i++) {
@@ -248,7 +248,7 @@ void TileMap::move_layer(int p_layer, int p_to_pos) {
 	update_configuration_warnings();
 }
 
-void TileMap::remove_layer(int p_layer) {
+void LayeredTileMap::remove_layer(int p_layer) {
 	ERR_FAIL_INDEX(p_layer, (int)layers.size());
 
 	// Clear before removing the layer.
@@ -264,199 +264,199 @@ void TileMap::remove_layer(int p_layer) {
 	update_configuration_warnings();
 }
 
-void TileMap::set_layer_name(int p_layer, String p_name) {
+void LayeredTileMap::set_layer_name(int p_layer, String p_name) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_name, p_name);
 }
 
-String TileMap::get_layer_name(int p_layer) const {
+String LayeredTileMap::get_layer_name(int p_layer) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, "", get_name);
 }
 
-void TileMap::set_layer_enabled(int p_layer, bool p_enabled) {
+void LayeredTileMap::set_layer_enabled(int p_layer, bool p_enabled) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_enabled, p_enabled);
 }
 
-bool TileMap::is_layer_enabled(int p_layer) const {
+bool LayeredTileMap::is_layer_enabled(int p_layer) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, false, is_enabled);
 }
 
-void TileMap::set_layer_modulate(int p_layer, Color p_modulate) {
+void LayeredTileMap::set_layer_modulate(int p_layer, Color p_modulate) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_modulate, p_modulate);
 }
 
-Color TileMap::get_layer_modulate(int p_layer) const {
+Color LayeredTileMap::get_layer_modulate(int p_layer) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, Color(), get_modulate);
 }
 
-void TileMap::set_layer_y_sort_enabled(int p_layer, bool p_y_sort_enabled) {
+void LayeredTileMap::set_layer_y_sort_enabled(int p_layer, bool p_y_sort_enabled) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_y_sort_enabled, p_y_sort_enabled);
 }
 
-bool TileMap::is_layer_y_sort_enabled(int p_layer) const {
+bool LayeredTileMap::is_layer_y_sort_enabled(int p_layer) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, false, is_y_sort_enabled);
 }
 
-void TileMap::set_layer_y_sort_origin(int p_layer, int p_y_sort_origin) {
+void LayeredTileMap::set_layer_y_sort_origin(int p_layer, int p_y_sort_origin) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_y_sort_origin, p_y_sort_origin);
 }
 
-int TileMap::get_layer_y_sort_origin(int p_layer) const {
+int LayeredTileMap::get_layer_y_sort_origin(int p_layer) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, 0, get_y_sort_origin);
 }
 
-void TileMap::set_layer_z_index(int p_layer, int p_z_index) {
+void LayeredTileMap::set_layer_z_index(int p_layer, int p_z_index) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_z_index, p_z_index);
 }
 
-int TileMap::get_layer_z_index(int p_layer) const {
+int LayeredTileMap::get_layer_z_index(int p_layer) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, 0, get_z_index);
 }
 
-void TileMap::set_layer_navigation_enabled(int p_layer, bool p_enabled) {
+void LayeredTileMap::set_layer_navigation_enabled(int p_layer, bool p_enabled) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_navigation_enabled, p_enabled);
 }
 
-bool TileMap::is_layer_navigation_enabled(int p_layer) const {
+bool LayeredTileMap::is_layer_navigation_enabled(int p_layer) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, false, is_navigation_enabled);
 }
 
-void TileMap::set_layer_navigation_map(int p_layer, RID p_map) {
+void LayeredTileMap::set_layer_navigation_map(int p_layer, RID p_map) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_navigation_map, p_map);
 }
 
-RID TileMap::get_layer_navigation_map(int p_layer) const {
+RID LayeredTileMap::get_layer_navigation_map(int p_layer) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, RID(), get_navigation_map);
 }
 
-void TileMap::set_collision_animatable(bool p_collision_animatable) {
+void LayeredTileMap::set_collision_animatable(bool p_collision_animatable) {
 	if (collision_animatable == p_collision_animatable) {
 		return;
 	}
 	collision_animatable = p_collision_animatable;
 	set_notify_local_transform(p_collision_animatable);
 	set_physics_process_internal(p_collision_animatable);
-	for (TileMapLayer *layer : layers) {
+	for (LayeredTileMapLayer *layer : layers) {
 		layer->set_use_kinematic_bodies(layer);
 	}
 }
 
-bool TileMap::is_collision_animatable() const {
+bool LayeredTileMap::is_collision_animatable() const {
 	return collision_animatable;
 }
 
-void TileMap::set_collision_visibility_mode(TileMap::VisibilityMode p_show_collision) {
+void LayeredTileMap::set_collision_visibility_mode(LayeredTileMap::VisibilityMode p_show_collision) {
 	if (collision_visibility_mode == p_show_collision) {
 		return;
 	}
 	collision_visibility_mode = p_show_collision;
-	for (TileMapLayer *layer : layers) {
-		layer->set_collision_visibility_mode(TileMapLayer::VisibilityMode(p_show_collision));
+	for (LayeredTileMapLayer *layer : layers) {
+		layer->set_collision_visibility_mode(LayeredTileMapLayer::VisibilityMode(p_show_collision));
 	}
 	_emit_changed();
 }
 
-TileMap::VisibilityMode TileMap::get_collision_visibility_mode() const {
+LayeredTileMap::VisibilityMode LayeredTileMap::get_collision_visibility_mode() const {
 	return collision_visibility_mode;
 }
 
-void TileMap::set_navigation_visibility_mode(TileMap::VisibilityMode p_show_navigation) {
+void LayeredTileMap::set_navigation_visibility_mode(LayeredTileMap::VisibilityMode p_show_navigation) {
 	if (navigation_visibility_mode == p_show_navigation) {
 		return;
 	}
 	navigation_visibility_mode = p_show_navigation;
-	for (TileMapLayer *layer : layers) {
-		layer->set_navigation_visibility_mode(TileMapLayer::VisibilityMode(p_show_navigation));
+	for (LayeredTileMapLayer *layer : layers) {
+		layer->set_navigation_visibility_mode(LayeredTileMapLayer::VisibilityMode(p_show_navigation));
 	}
 	_emit_changed();
 }
 
-TileMap::VisibilityMode TileMap::get_navigation_visibility_mode() const {
+LayeredTileMap::VisibilityMode LayeredTileMap::get_navigation_visibility_mode() const {
 	return navigation_visibility_mode;
 }
 
-void TileMap::set_y_sort_enabled(bool p_enable) {
+void LayeredTileMap::set_y_sort_enabled(bool p_enable) {
 	if (is_y_sort_enabled() == p_enable) {
 		return;
 	}
 	Node2D::set_y_sort_enabled(p_enable);
-	for (TileMapLayer *layer : layers) {
+	for (LayeredTileMapLayer *layer : layers) {
 		layer->set_y_sort_enabled(p_enable);
 	}
 	_emit_changed();
 	update_configuration_warnings();
 }
 
-void TileMap::set_cell(int p_layer, const Vector2i &p_coords, int p_source_id, const Vector2i p_atlas_coords, int p_alternative_tile) {
+void LayeredTileMap::set_cell(int p_layer, const Vector2i &p_coords, int p_source_id, const Vector2i p_atlas_coords, int p_alternative_tile) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_cell, p_coords, p_source_id, p_atlas_coords, p_alternative_tile);
 }
 
-void TileMap::erase_cell(int p_layer, const Vector2i &p_coords) {
-	TILEMAP_CALL_FOR_LAYER(p_layer, set_cell, p_coords, TileSet::INVALID_SOURCE, TileSetSource::INVALID_ATLAS_COORDS, TileSetSource::INVALID_TILE_ALTERNATIVE);
+void LayeredTileMap::erase_cell(int p_layer, const Vector2i &p_coords) {
+	TILEMAP_CALL_FOR_LAYER(p_layer, set_cell, p_coords, LayeredTileSet::INVALID_SOURCE, LayeredTileSetSource::INVALID_ATLAS_COORDS, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
 }
 
-int TileMap::get_cell_source_id(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
-	TILEMAP_CALL_FOR_LAYER_V(p_layer, TileSet::INVALID_SOURCE, get_cell_source_id, p_coords, p_use_proxies);
+int LayeredTileMap::get_cell_source_id(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
+	TILEMAP_CALL_FOR_LAYER_V(p_layer, LayeredTileSet::INVALID_SOURCE, get_cell_source_id, p_coords, p_use_proxies);
 }
 
-Vector2i TileMap::get_cell_atlas_coords(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
-	TILEMAP_CALL_FOR_LAYER_V(p_layer, TileSetSource::INVALID_ATLAS_COORDS, get_cell_atlas_coords, p_coords, p_use_proxies);
+Vector2i LayeredTileMap::get_cell_atlas_coords(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
+	TILEMAP_CALL_FOR_LAYER_V(p_layer, LayeredTileSetSource::INVALID_ATLAS_COORDS, get_cell_atlas_coords, p_coords, p_use_proxies);
 }
 
-int TileMap::get_cell_alternative_tile(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
-	TILEMAP_CALL_FOR_LAYER_V(p_layer, TileSetSource::INVALID_TILE_ALTERNATIVE, get_cell_alternative_tile, p_coords, p_use_proxies);
+int LayeredTileMap::get_cell_alternative_tile(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
+	TILEMAP_CALL_FOR_LAYER_V(p_layer, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE, get_cell_alternative_tile, p_coords, p_use_proxies);
 }
 
-TileData *TileMap::get_cell_tile_data(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
+TileData *LayeredTileMap::get_cell_tile_data(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, nullptr, get_cell_tile_data, p_coords, p_use_proxies);
 }
 
-Ref<TileMapPattern> TileMap::get_pattern(int p_layer, TypedArray<Vector2i> p_coords_array) {
-	TILEMAP_CALL_FOR_LAYER_V(p_layer, Ref<TileMapPattern>(), get_pattern, p_coords_array);
+Ref<LayeredTileMapPattern> LayeredTileMap::get_pattern(int p_layer, TypedArray<Vector2i> p_coords_array) {
+	TILEMAP_CALL_FOR_LAYER_V(p_layer, Ref<LayeredTileMapPattern>(), get_pattern, p_coords_array);
 }
 
-Vector2i TileMap::map_pattern(const Vector2i &p_position_in_tilemap, const Vector2i &p_coords_in_pattern, Ref<TileMapPattern> p_pattern) {
+Vector2i LayeredTileMap::map_pattern(const Vector2i &p_position_in_tilemap, const Vector2i &p_coords_in_pattern, Ref<LayeredTileMapPattern> p_pattern) {
 	ERR_FAIL_COND_V(!tile_set.is_valid(), Vector2i());
 	return tile_set->map_pattern(p_position_in_tilemap, p_coords_in_pattern, p_pattern);
 }
 
-void TileMap::set_pattern(int p_layer, const Vector2i &p_position, const Ref<TileMapPattern> p_pattern) {
+void LayeredTileMap::set_pattern(int p_layer, const Vector2i &p_position, const Ref<LayeredTileMapPattern> p_pattern) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_pattern, p_position, p_pattern);
 }
 
-HashMap<Vector2i, TileSet::TerrainsPattern> TileMap::terrain_fill_constraints(int p_layer, const Vector<Vector2i> &p_to_replace, int p_terrain_set, const RBSet<TerrainConstraint> &p_constraints) {
-	HashMap<Vector2i, TileSet::TerrainsPattern> err_value;
+HashMap<Vector2i, LayeredTileSet::TerrainsPattern> LayeredTileMap::terrain_fill_constraints(int p_layer, const Vector<Vector2i> &p_to_replace, int p_terrain_set, const RBSet<TerrainConstraint> &p_constraints) {
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> err_value;
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, err_value, terrain_fill_constraints, p_to_replace, p_terrain_set, p_constraints);
 }
 
-HashMap<Vector2i, TileSet::TerrainsPattern> TileMap::terrain_fill_connect(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
-	HashMap<Vector2i, TileSet::TerrainsPattern> err_value;
+HashMap<Vector2i, LayeredTileSet::TerrainsPattern> LayeredTileMap::terrain_fill_connect(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> err_value;
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, err_value, terrain_fill_connect, p_coords_array, p_terrain_set, p_terrain, p_ignore_empty_terrains);
 }
 
-HashMap<Vector2i, TileSet::TerrainsPattern> TileMap::terrain_fill_path(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
-	HashMap<Vector2i, TileSet::TerrainsPattern> err_value;
+HashMap<Vector2i, LayeredTileSet::TerrainsPattern> LayeredTileMap::terrain_fill_path(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> err_value;
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, err_value, terrain_fill_path, p_coords_array, p_terrain_set, p_terrain, p_ignore_empty_terrains);
 }
 
-HashMap<Vector2i, TileSet::TerrainsPattern> TileMap::terrain_fill_pattern(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, TileSet::TerrainsPattern p_terrains_pattern, bool p_ignore_empty_terrains) {
-	HashMap<Vector2i, TileSet::TerrainsPattern> err_value;
+HashMap<Vector2i, LayeredTileSet::TerrainsPattern> LayeredTileMap::terrain_fill_pattern(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, LayeredTileSet::TerrainsPattern p_terrains_pattern, bool p_ignore_empty_terrains) {
+	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> err_value;
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, err_value, terrain_fill_pattern, p_coords_array, p_terrain_set, p_terrains_pattern, p_ignore_empty_terrains);
 }
 
-void TileMap::set_cells_terrain_connect(int p_layer, TypedArray<Vector2i> p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
+void LayeredTileMap::set_cells_terrain_connect(int p_layer, TypedArray<Vector2i> p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_cells_terrain_connect, p_cells, p_terrain_set, p_terrain, p_ignore_empty_terrains);
 }
 
-void TileMap::set_cells_terrain_path(int p_layer, TypedArray<Vector2i> p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
+void LayeredTileMap::set_cells_terrain_path(int p_layer, TypedArray<Vector2i> p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_cells_terrain_path, p_path, p_terrain_set, p_terrain, p_ignore_empty_terrains);
 }
 
-TileMapCell TileMap::get_cell(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
-	TILEMAP_CALL_FOR_LAYER_V(p_layer, TileMapCell(), get_cell, p_coords, p_use_proxies);
+LayeredTileMapCell LayeredTileMap::get_cell(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
+	TILEMAP_CALL_FOR_LAYER_V(p_layer, LayeredTileMapCell(), get_cell, p_coords, p_use_proxies);
 }
 
-Vector2i TileMap::get_coords_for_body_rid(RID p_physics_body) {
-	for (const TileMapLayer *layer : layers) {
+Vector2i LayeredTileMap::get_coords_for_body_rid(RID p_physics_body) {
+	for (const LayeredTileMapLayer *layer : layers) {
 		if (layer->has_body_rid(p_physics_body)) {
 			return layer->get_coords_for_body_rid(p_physics_body);
 		}
@@ -464,7 +464,7 @@ Vector2i TileMap::get_coords_for_body_rid(RID p_physics_body) {
 	ERR_FAIL_V_MSG(Vector2i(), vformat("No tiles for the given body RID %d.", p_physics_body.get_id()));
 }
 
-int TileMap::get_layer_for_body_rid(RID p_physics_body) {
+int LayeredTileMap::get_layer_for_body_rid(RID p_physics_body) {
 	for (uint32_t i = 0; i < layers.size(); i++) {
 		if (layers[i]->has_body_rid(p_physics_body)) {
 			return i;
@@ -473,40 +473,40 @@ int TileMap::get_layer_for_body_rid(RID p_physics_body) {
 	ERR_FAIL_V_MSG(-1, vformat("No tiles for the given body RID %d.", p_physics_body.get_id()));
 }
 
-void TileMap::fix_invalid_tiles() {
-	for (TileMapLayer *layer : layers) {
+void LayeredTileMap::fix_invalid_tiles() {
+	for (LayeredTileMapLayer *layer : layers) {
 		layer->fix_invalid_tiles();
 	}
 }
 
-void TileMap::clear_layer(int p_layer) {
+void LayeredTileMap::clear_layer(int p_layer) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, clear)
 }
 
-void TileMap::clear() {
-	for (TileMapLayer *layer : layers) {
+void LayeredTileMap::clear() {
+	for (LayeredTileMapLayer *layer : layers) {
 		layer->clear();
 	}
 }
 
-void TileMap::update_internals() {
-	for (TileMapLayer *layer : layers) {
+void LayeredTileMap::update_internals() {
+	for (LayeredTileMapLayer *layer : layers) {
 		layer->update_internals();
 	}
 }
 
-void TileMap::notify_runtime_tile_data_update(int p_layer) {
+void LayeredTileMap::notify_runtime_tile_data_update(int p_layer) {
 	if (p_layer >= 0) {
 		TILEMAP_CALL_FOR_LAYER(p_layer, notify_runtime_tile_data_update);
 	} else {
-		for (TileMapLayer *layer : layers) {
+		for (LayeredTileMapLayer *layer : layers) {
 			layer->notify_runtime_tile_data_update();
 		}
 	}
 }
 
 #ifdef TOOLS_ENABLED
-Rect2 TileMap::_edit_get_rect() const {
+Rect2 LayeredTileMap::_edit_get_rect() const {
 	// Return the visible rect of the tilemap.
 	if (layers.is_empty()) {
 		return Rect2();
@@ -520,16 +520,16 @@ Rect2 TileMap::_edit_get_rect() const {
 		rect = rect.merge(layers[i]->get_rect(changed));
 		any_changed |= changed;
 	}
-	const_cast<TileMap *>(this)->item_rect_changed(any_changed);
+	const_cast<LayeredTileMap *>(this)->item_rect_changed(any_changed);
 	return rect;
 }
 #endif
 
-bool TileMap::_set(const StringName &p_name, const Variant &p_value) {
+bool LayeredTileMap::_set(const StringName &p_name, const Variant &p_value) {
 	Vector<String> components = String(p_name).split("/", true, 2);
 	if (p_name == "format") {
 		if (p_value.get_type() == Variant::INT) {
-			format = (TileMapDataFormat)(p_value.operator int64_t()); // Set format used for loading.
+			format = (LayeredTileMapDataFormat)(p_value.operator int64_t()); // Set format used for loading.
 			return true;
 		}
 	}
@@ -537,11 +537,11 @@ bool TileMap::_set(const StringName &p_name, const Variant &p_value) {
 	else if (p_name == "tile_data") { // Kept for compatibility reasons.
 		if (p_value.is_array()) {
 			if (layers.size() == 0) {
-				TileMapLayer *new_layer = memnew(TileMapLayer);
+				LayeredTileMapLayer *new_layer = memnew(LayeredTileMapLayer);
 				add_child(new_layer, false, INTERNAL_MODE_FRONT);
 				new_layer->set_as_tile_map_internal_node(0);
 				new_layer->set_name("Layer0");
-				new_layer->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &TileMap::_emit_changed));
+				new_layer->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileMap::_emit_changed));
 				layers.push_back(new_layer);
 			}
 			layers[0]->set_tile_data(format, p_value);
@@ -562,11 +562,11 @@ bool TileMap::_set(const StringName &p_name, const Variant &p_value) {
 
 		if (index >= (int)layers.size()) {
 			while (index >= (int)layers.size()) {
-				TileMapLayer *new_layer = memnew(TileMapLayer);
+				LayeredTileMapLayer *new_layer = memnew(LayeredTileMapLayer);
 				add_child(new_layer, false, INTERNAL_MODE_FRONT);
 				new_layer->set_as_tile_map_internal_node(index);
 				new_layer->set_name(vformat("Layer%d", index));
-				new_layer->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &TileMap::_emit_changed));
+				new_layer->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileMap::_emit_changed));
 				layers.push_back(new_layer);
 			}
 
@@ -607,10 +607,10 @@ bool TileMap::_set(const StringName &p_name, const Variant &p_value) {
 	return false;
 }
 
-bool TileMap::_get(const StringName &p_name, Variant &r_ret) const {
+bool LayeredTileMap::_get(const StringName &p_name, Variant &r_ret) const {
 	Vector<String> components = String(p_name).split("/", true, 2);
 	if (p_name == "format") {
-		r_ret = TileMapDataFormat::FORMAT_MAX - 1; // When saving, always save highest format.
+		r_ret = LayeredTileMapDataFormat::FORMAT_MAX - 1; // When saving, always save highest format.
 		return true;
 	}
 #ifndef DISABLE_DEPRECATED
@@ -656,7 +656,7 @@ bool TileMap::_get(const StringName &p_name, Variant &r_ret) const {
 	return false;
 }
 
-void TileMap::_get_property_list(List<PropertyInfo> *p_list) const {
+void LayeredTileMap::_get_property_list(List<PropertyInfo> *p_list) const {
 	p_list->push_back(PropertyInfo(Variant::INT, "format", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR | PROPERTY_USAGE_INTERNAL));
 	p_list->push_back(PropertyInfo(Variant::NIL, "Layers", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
 
@@ -680,7 +680,7 @@ void TileMap::_get_property_list(List<PropertyInfo> *p_list) const {
 #undef MAKE_LAYER_PROPERTY
 }
 
-bool TileMap::_property_can_revert(const StringName &p_name) const {
+bool LayeredTileMap::_property_can_revert(const StringName &p_name) const {
 	Vector<String> components = String(p_name).split("/", true, 2);
 	if (components.size() == 2 && components[0].begins_with("layer_")) {
 		int index = components[0].trim_prefix("layer_").to_int();
@@ -708,7 +708,7 @@ bool TileMap::_property_can_revert(const StringName &p_name) const {
 	return false;
 }
 
-bool TileMap::_property_get_revert(const StringName &p_name, Variant &r_property) const {
+bool LayeredTileMap::_property_get_revert(const StringName &p_name, Variant &r_property) const {
 	Vector<String> components = String(p_name).split("/", true, 2);
 	if (components.size() == 2 && components[0].begins_with("layer_")) {
 		int index = components[0].trim_prefix("layer_").to_int();
@@ -743,39 +743,39 @@ bool TileMap::_property_get_revert(const StringName &p_name, Variant &r_property
 	return false;
 }
 
-Vector2 TileMap::map_to_local(const Vector2i &p_pos) const {
+Vector2 LayeredTileMap::map_to_local(const Vector2i &p_pos) const {
 	ERR_FAIL_COND_V(!tile_set.is_valid(), Vector2());
 	return tile_set->map_to_local(p_pos);
 }
 
-Vector2i TileMap::local_to_map(const Vector2 &p_pos) const {
+Vector2i LayeredTileMap::local_to_map(const Vector2 &p_pos) const {
 	ERR_FAIL_COND_V(!tile_set.is_valid(), Vector2i());
 	return tile_set->local_to_map(p_pos);
 }
 
-bool TileMap::is_existing_neighbor(TileSet::CellNeighbor p_cell_neighbor) const {
+bool LayeredTileMap::is_existing_neighbor(LayeredTileSet::CellNeighbor p_cell_neighbor) const {
 	ERR_FAIL_COND_V(!tile_set.is_valid(), false);
 	return tile_set->is_existing_neighbor(p_cell_neighbor);
 }
 
-Vector2i TileMap::get_neighbor_cell(const Vector2i &p_coords, TileSet::CellNeighbor p_cell_neighbor) const {
+Vector2i LayeredTileMap::get_neighbor_cell(const Vector2i &p_coords, LayeredTileSet::CellNeighbor p_cell_neighbor) const {
 	ERR_FAIL_COND_V(!tile_set.is_valid(), Vector2i());
 	return tile_set->get_neighbor_cell(p_coords, p_cell_neighbor);
 }
 
-TypedArray<Vector2i> TileMap::get_used_cells(int p_layer) const {
+TypedArray<Vector2i> LayeredTileMap::get_used_cells(int p_layer) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, TypedArray<Vector2i>(), get_used_cells);
 }
 
-TypedArray<Vector2i> TileMap::get_used_cells_by_id(int p_layer, int p_source_id, const Vector2i p_atlas_coords, int p_alternative_tile) const {
+TypedArray<Vector2i> LayeredTileMap::get_used_cells_by_id(int p_layer, int p_source_id, const Vector2i p_atlas_coords, int p_alternative_tile) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, TypedArray<Vector2i>(), get_used_cells_by_id, p_source_id, p_atlas_coords, p_alternative_tile);
 }
 
-Rect2i TileMap::get_used_rect() const {
+Rect2i LayeredTileMap::get_used_rect() const {
 	// Return the visible rect of the tilemap.
 	bool first = true;
 	Rect2i rect = Rect2i();
-	for (const TileMapLayer *layer : layers) {
+	for (const LayeredTileMapLayer *layer : layers) {
 		Rect2i layer_rect = layer->get_used_rect();
 		if (layer_rect == Rect2i()) {
 			continue;
@@ -792,39 +792,39 @@ Rect2i TileMap::get_used_rect() const {
 
 // --- Override some methods of the CanvasItem class to pass the changes to the quadrants CanvasItems ---
 
-void TileMap::set_light_mask(int p_light_mask) {
+void LayeredTileMap::set_light_mask(int p_light_mask) {
 	// Set light mask for occlusion and applies it to all layers too.
 	CanvasItem::set_light_mask(p_light_mask);
-	for (TileMapLayer *layer : layers) {
+	for (LayeredTileMapLayer *layer : layers) {
 		layer->set_light_mask(p_light_mask);
 	}
 }
 
-void TileMap::set_self_modulate(const Color &p_self_modulate) {
+void LayeredTileMap::set_self_modulate(const Color &p_self_modulate) {
 	// Set self_modulation and applies it to all layers too.
 	CanvasItem::set_self_modulate(p_self_modulate);
-	for (TileMapLayer *layer : layers) {
+	for (LayeredTileMapLayer *layer : layers) {
 		layer->set_self_modulate(p_self_modulate);
 	}
 }
 
-void TileMap::set_texture_filter(TextureFilter p_texture_filter) {
+void LayeredTileMap::set_texture_filter(TextureFilter p_texture_filter) {
 	// Set a default texture filter and applies it to all layers too.
 	CanvasItem::set_texture_filter(p_texture_filter);
-	for (TileMapLayer *layer : layers) {
+	for (LayeredTileMapLayer *layer : layers) {
 		layer->set_texture_filter(p_texture_filter);
 	}
 }
 
-void TileMap::set_texture_repeat(CanvasItem::TextureRepeat p_texture_repeat) {
+void LayeredTileMap::set_texture_repeat(CanvasItem::TextureRepeat p_texture_repeat) {
 	// Set a default texture repeat and applies it to all layers too.
 	CanvasItem::set_texture_repeat(p_texture_repeat);
-	for (TileMapLayer *layer : layers) {
+	for (LayeredTileMapLayer *layer : layers) {
 		layer->set_texture_repeat(p_texture_repeat);
 	}
 }
 
-TypedArray<Vector2i> TileMap::get_surrounding_cells(const Vector2i &p_coords) {
+TypedArray<Vector2i> LayeredTileMap::get_surrounding_cells(const Vector2i &p_coords) {
 	if (!tile_set.is_valid()) {
 		return TypedArray<Vector2i>();
 	}
@@ -832,19 +832,19 @@ TypedArray<Vector2i> TileMap::get_surrounding_cells(const Vector2i &p_coords) {
 	return tile_set->get_surrounding_cells(p_coords);
 }
 
-PackedStringArray TileMap::get_configuration_warnings() const {
+PackedStringArray LayeredTileMap::get_configuration_warnings() const {
 	PackedStringArray warnings = Node::get_configuration_warnings();
 
 	// Retrieve the set of Z index values with a Y-sorted layer.
 	RBSet<int> y_sorted_z_index;
-	for (const TileMapLayer *layer : layers) {
+	for (const LayeredTileMapLayer *layer : layers) {
 		if (layer->is_y_sort_enabled()) {
 			y_sorted_z_index.insert(layer->get_z_index());
 		}
 	}
 
 	// Check if we have a non-sorted layer in a Z-index with a Y-sorted layer.
-	for (const TileMapLayer *layer : layers) {
+	for (const LayeredTileMapLayer *layer : layers) {
 		if (!layer->is_y_sort_enabled() && y_sorted_z_index.has(layer->get_z_index())) {
 			warnings.push_back(RTR("A Y-sorted layer has the same Z-index value as a not Y-sorted layer.\nThis may lead to unwanted behaviors, as a layer that is not Y-sorted will be Y-sorted as a whole with tiles from Y-sorted layers."));
 			break;
@@ -853,31 +853,31 @@ PackedStringArray TileMap::get_configuration_warnings() const {
 
 	if (!is_y_sort_enabled()) {
 		// Check if Y-sort is enabled on a layer but not on the node.
-		for (const TileMapLayer *layer : layers) {
+		for (const LayeredTileMapLayer *layer : layers) {
 			if (layer->is_y_sort_enabled()) {
-				warnings.push_back(RTR("A TileMap layer is set as Y-sorted, but Y-sort is not enabled on the TileMap node itself."));
+				warnings.push_back(RTR("A LayeredTileMap layer is set as Y-sorted, but Y-sort is not enabled on the LayeredTileMap node itself."));
 				break;
 			}
 		}
 	} else {
 		// Check if Y-sort is enabled on the node, but not on any of the layers.
 		bool need_warning = true;
-		for (const TileMapLayer *layer : layers) {
+		for (const LayeredTileMapLayer *layer : layers) {
 			if (layer->is_y_sort_enabled()) {
 				need_warning = false;
 				break;
 			}
 		}
 		if (need_warning) {
-			warnings.push_back(RTR("The TileMap node is set as Y-sorted, but Y-sort is not enabled on any of the TileMap's layers.\nThis may lead to unwanted behaviors, as a layer that is not Y-sorted will be Y-sorted as a whole."));
+			warnings.push_back(RTR("The LayeredTileMap node is set as Y-sorted, but Y-sort is not enabled on any of the LayeredTileMap's layers.\nThis may lead to unwanted behaviors, as a layer that is not Y-sorted will be Y-sorted as a whole."));
 		}
 	}
 
 	// Check if we are in isometric mode without Y-sort enabled.
-	if (tile_set.is_valid() && tile_set->get_tile_shape() == TileSet::TILE_SHAPE_ISOMETRIC) {
+	if (tile_set.is_valid() && tile_set->get_tile_shape() == LayeredTileSet::TILE_SHAPE_ISOMETRIC) {
 		bool warn = !is_y_sort_enabled();
 		if (!warn) {
-			for (const TileMapLayer *layer : layers) {
+			for (const LayeredTileMapLayer *layer : layers) {
 				if (!layer->is_y_sort_enabled()) {
 					warn = true;
 					break;
@@ -886,86 +886,86 @@ PackedStringArray TileMap::get_configuration_warnings() const {
 		}
 
 		if (warn) {
-			warnings.push_back(RTR("Isometric TileSet will likely not look as intended without Y-sort enabled for the TileMap and all of its layers."));
+			warnings.push_back(RTR("Isometric LayeredTileSet will likely not look as intended without Y-sort enabled for the LayeredTileMap and all of its layers."));
 		}
 	}
 
 	return warnings;
 }
 
-void TileMap::_bind_methods() {
+void LayeredTileMap::_bind_methods() {
 #ifndef DISABLE_DEPRECATED
-	ClassDB::bind_method(D_METHOD("set_navigation_map", "layer", "map"), &TileMap::set_layer_navigation_map);
-	ClassDB::bind_method(D_METHOD("get_navigation_map", "layer"), &TileMap::get_layer_navigation_map);
-	ClassDB::bind_method(D_METHOD("force_update", "layer"), &TileMap::force_update, DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("set_navigation_map", "layer", "map"), &LayeredTileMap::set_layer_navigation_map);
+	ClassDB::bind_method(D_METHOD("get_navigation_map", "layer"), &LayeredTileMap::get_layer_navigation_map);
+	ClassDB::bind_method(D_METHOD("force_update", "layer"), &LayeredTileMap::force_update, DEFVAL(-1));
 #endif // DISABLE_DEPRECATED
 
-	ClassDB::bind_method(D_METHOD("set_rendering_quadrant_size", "size"), &TileMap::set_rendering_quadrant_size);
-	ClassDB::bind_method(D_METHOD("get_rendering_quadrant_size"), &TileMap::get_rendering_quadrant_size);
+	ClassDB::bind_method(D_METHOD("set_rendering_quadrant_size", "size"), &LayeredTileMap::set_rendering_quadrant_size);
+	ClassDB::bind_method(D_METHOD("get_rendering_quadrant_size"), &LayeredTileMap::get_rendering_quadrant_size);
 
-	ClassDB::bind_method(D_METHOD("get_layers_count"), &TileMap::get_layers_count);
-	ClassDB::bind_method(D_METHOD("add_layer", "to_position"), &TileMap::add_layer);
-	ClassDB::bind_method(D_METHOD("move_layer", "layer", "to_position"), &TileMap::move_layer);
-	ClassDB::bind_method(D_METHOD("remove_layer", "layer"), &TileMap::remove_layer);
-	ClassDB::bind_method(D_METHOD("set_layer_name", "layer", "name"), &TileMap::set_layer_name);
-	ClassDB::bind_method(D_METHOD("get_layer_name", "layer"), &TileMap::get_layer_name);
-	ClassDB::bind_method(D_METHOD("set_layer_enabled", "layer", "enabled"), &TileMap::set_layer_enabled);
-	ClassDB::bind_method(D_METHOD("is_layer_enabled", "layer"), &TileMap::is_layer_enabled);
-	ClassDB::bind_method(D_METHOD("set_layer_modulate", "layer", "modulate"), &TileMap::set_layer_modulate);
-	ClassDB::bind_method(D_METHOD("get_layer_modulate", "layer"), &TileMap::get_layer_modulate);
-	ClassDB::bind_method(D_METHOD("set_layer_y_sort_enabled", "layer", "y_sort_enabled"), &TileMap::set_layer_y_sort_enabled);
-	ClassDB::bind_method(D_METHOD("is_layer_y_sort_enabled", "layer"), &TileMap::is_layer_y_sort_enabled);
-	ClassDB::bind_method(D_METHOD("set_layer_y_sort_origin", "layer", "y_sort_origin"), &TileMap::set_layer_y_sort_origin);
-	ClassDB::bind_method(D_METHOD("get_layer_y_sort_origin", "layer"), &TileMap::get_layer_y_sort_origin);
-	ClassDB::bind_method(D_METHOD("set_layer_z_index", "layer", "z_index"), &TileMap::set_layer_z_index);
-	ClassDB::bind_method(D_METHOD("get_layer_z_index", "layer"), &TileMap::get_layer_z_index);
-	ClassDB::bind_method(D_METHOD("set_layer_navigation_enabled", "layer", "enabled"), &TileMap::set_layer_navigation_enabled);
-	ClassDB::bind_method(D_METHOD("is_layer_navigation_enabled", "layer"), &TileMap::is_layer_navigation_enabled);
-	ClassDB::bind_method(D_METHOD("set_layer_navigation_map", "layer", "map"), &TileMap::set_layer_navigation_map);
-	ClassDB::bind_method(D_METHOD("get_layer_navigation_map", "layer"), &TileMap::get_layer_navigation_map);
+	ClassDB::bind_method(D_METHOD("get_layers_count"), &LayeredTileMap::get_layers_count);
+	ClassDB::bind_method(D_METHOD("add_layer", "to_position"), &LayeredTileMap::add_layer);
+	ClassDB::bind_method(D_METHOD("move_layer", "layer", "to_position"), &LayeredTileMap::move_layer);
+	ClassDB::bind_method(D_METHOD("remove_layer", "layer"), &LayeredTileMap::remove_layer);
+	ClassDB::bind_method(D_METHOD("set_layer_name", "layer", "name"), &LayeredTileMap::set_layer_name);
+	ClassDB::bind_method(D_METHOD("get_layer_name", "layer"), &LayeredTileMap::get_layer_name);
+	ClassDB::bind_method(D_METHOD("set_layer_enabled", "layer", "enabled"), &LayeredTileMap::set_layer_enabled);
+	ClassDB::bind_method(D_METHOD("is_layer_enabled", "layer"), &LayeredTileMap::is_layer_enabled);
+	ClassDB::bind_method(D_METHOD("set_layer_modulate", "layer", "modulate"), &LayeredTileMap::set_layer_modulate);
+	ClassDB::bind_method(D_METHOD("get_layer_modulate", "layer"), &LayeredTileMap::get_layer_modulate);
+	ClassDB::bind_method(D_METHOD("set_layer_y_sort_enabled", "layer", "y_sort_enabled"), &LayeredTileMap::set_layer_y_sort_enabled);
+	ClassDB::bind_method(D_METHOD("is_layer_y_sort_enabled", "layer"), &LayeredTileMap::is_layer_y_sort_enabled);
+	ClassDB::bind_method(D_METHOD("set_layer_y_sort_origin", "layer", "y_sort_origin"), &LayeredTileMap::set_layer_y_sort_origin);
+	ClassDB::bind_method(D_METHOD("get_layer_y_sort_origin", "layer"), &LayeredTileMap::get_layer_y_sort_origin);
+	ClassDB::bind_method(D_METHOD("set_layer_z_index", "layer", "z_index"), &LayeredTileMap::set_layer_z_index);
+	ClassDB::bind_method(D_METHOD("get_layer_z_index", "layer"), &LayeredTileMap::get_layer_z_index);
+	ClassDB::bind_method(D_METHOD("set_layer_navigation_enabled", "layer", "enabled"), &LayeredTileMap::set_layer_navigation_enabled);
+	ClassDB::bind_method(D_METHOD("is_layer_navigation_enabled", "layer"), &LayeredTileMap::is_layer_navigation_enabled);
+	ClassDB::bind_method(D_METHOD("set_layer_navigation_map", "layer", "map"), &LayeredTileMap::set_layer_navigation_map);
+	ClassDB::bind_method(D_METHOD("get_layer_navigation_map", "layer"), &LayeredTileMap::get_layer_navigation_map);
 
-	ClassDB::bind_method(D_METHOD("set_collision_animatable", "enabled"), &TileMap::set_collision_animatable);
-	ClassDB::bind_method(D_METHOD("is_collision_animatable"), &TileMap::is_collision_animatable);
-	ClassDB::bind_method(D_METHOD("set_collision_visibility_mode", "collision_visibility_mode"), &TileMap::set_collision_visibility_mode);
-	ClassDB::bind_method(D_METHOD("get_collision_visibility_mode"), &TileMap::get_collision_visibility_mode);
+	ClassDB::bind_method(D_METHOD("set_collision_animatable", "enabled"), &LayeredTileMap::set_collision_animatable);
+	ClassDB::bind_method(D_METHOD("is_collision_animatable"), &LayeredTileMap::is_collision_animatable);
+	ClassDB::bind_method(D_METHOD("set_collision_visibility_mode", "collision_visibility_mode"), &LayeredTileMap::set_collision_visibility_mode);
+	ClassDB::bind_method(D_METHOD("get_collision_visibility_mode"), &LayeredTileMap::get_collision_visibility_mode);
 
-	ClassDB::bind_method(D_METHOD("set_navigation_visibility_mode", "navigation_visibility_mode"), &TileMap::set_navigation_visibility_mode);
-	ClassDB::bind_method(D_METHOD("get_navigation_visibility_mode"), &TileMap::get_navigation_visibility_mode);
+	ClassDB::bind_method(D_METHOD("set_navigation_visibility_mode", "navigation_visibility_mode"), &LayeredTileMap::set_navigation_visibility_mode);
+	ClassDB::bind_method(D_METHOD("get_navigation_visibility_mode"), &LayeredTileMap::get_navigation_visibility_mode);
 
-	ClassDB::bind_method(D_METHOD("set_cell", "layer", "coords", "source_id", "atlas_coords", "alternative_tile"), &TileMap::set_cell, DEFVAL(TileSet::INVALID_SOURCE), DEFVAL(TileSetSource::INVALID_ATLAS_COORDS), DEFVAL(0));
-	ClassDB::bind_method(D_METHOD("erase_cell", "layer", "coords"), &TileMap::erase_cell);
-	ClassDB::bind_method(D_METHOD("get_cell_source_id", "layer", "coords", "use_proxies"), &TileMap::get_cell_source_id, DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("get_cell_atlas_coords", "layer", "coords", "use_proxies"), &TileMap::get_cell_atlas_coords, DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("get_cell_alternative_tile", "layer", "coords", "use_proxies"), &TileMap::get_cell_alternative_tile, DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("get_cell_tile_data", "layer", "coords", "use_proxies"), &TileMap::get_cell_tile_data, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("set_cell", "layer", "coords", "source_id", "atlas_coords", "alternative_tile"), &LayeredTileMap::set_cell, DEFVAL(LayeredTileSet::INVALID_SOURCE), DEFVAL(LayeredTileSetSource::INVALID_ATLAS_COORDS), DEFVAL(0));
+	ClassDB::bind_method(D_METHOD("erase_cell", "layer", "coords"), &LayeredTileMap::erase_cell);
+	ClassDB::bind_method(D_METHOD("get_cell_source_id", "layer", "coords", "use_proxies"), &LayeredTileMap::get_cell_source_id, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("get_cell_atlas_coords", "layer", "coords", "use_proxies"), &LayeredTileMap::get_cell_atlas_coords, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("get_cell_alternative_tile", "layer", "coords", "use_proxies"), &LayeredTileMap::get_cell_alternative_tile, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("get_cell_tile_data", "layer", "coords", "use_proxies"), &LayeredTileMap::get_cell_tile_data, DEFVAL(false));
 
-	ClassDB::bind_method(D_METHOD("get_coords_for_body_rid", "body"), &TileMap::get_coords_for_body_rid);
-	ClassDB::bind_method(D_METHOD("get_layer_for_body_rid", "body"), &TileMap::get_layer_for_body_rid);
+	ClassDB::bind_method(D_METHOD("get_coords_for_body_rid", "body"), &LayeredTileMap::get_coords_for_body_rid);
+	ClassDB::bind_method(D_METHOD("get_layer_for_body_rid", "body"), &LayeredTileMap::get_layer_for_body_rid);
 
-	ClassDB::bind_method(D_METHOD("get_pattern", "layer", "coords_array"), &TileMap::get_pattern);
-	ClassDB::bind_method(D_METHOD("map_pattern", "position_in_tilemap", "coords_in_pattern", "pattern"), &TileMap::map_pattern);
-	ClassDB::bind_method(D_METHOD("set_pattern", "layer", "position", "pattern"), &TileMap::set_pattern);
+	ClassDB::bind_method(D_METHOD("get_pattern", "layer", "coords_array"), &LayeredTileMap::get_pattern);
+	ClassDB::bind_method(D_METHOD("map_pattern", "position_in_tilemap", "coords_in_pattern", "pattern"), &LayeredTileMap::map_pattern);
+	ClassDB::bind_method(D_METHOD("set_pattern", "layer", "position", "pattern"), &LayeredTileMap::set_pattern);
 
-	ClassDB::bind_method(D_METHOD("set_cells_terrain_connect", "layer", "cells", "terrain_set", "terrain", "ignore_empty_terrains"), &TileMap::set_cells_terrain_connect, DEFVAL(true));
-	ClassDB::bind_method(D_METHOD("set_cells_terrain_path", "layer", "path", "terrain_set", "terrain", "ignore_empty_terrains"), &TileMap::set_cells_terrain_path, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("set_cells_terrain_connect", "layer", "cells", "terrain_set", "terrain", "ignore_empty_terrains"), &LayeredTileMap::set_cells_terrain_connect, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("set_cells_terrain_path", "layer", "path", "terrain_set", "terrain", "ignore_empty_terrains"), &LayeredTileMap::set_cells_terrain_path, DEFVAL(true));
 
-	ClassDB::bind_method(D_METHOD("fix_invalid_tiles"), &TileMap::fix_invalid_tiles);
-	ClassDB::bind_method(D_METHOD("clear_layer", "layer"), &TileMap::clear_layer);
-	ClassDB::bind_method(D_METHOD("clear"), &TileMap::clear);
+	ClassDB::bind_method(D_METHOD("fix_invalid_tiles"), &LayeredTileMap::fix_invalid_tiles);
+	ClassDB::bind_method(D_METHOD("clear_layer", "layer"), &LayeredTileMap::clear_layer);
+	ClassDB::bind_method(D_METHOD("clear"), &LayeredTileMap::clear);
 
-	ClassDB::bind_method(D_METHOD("update_internals"), &TileMap::update_internals);
-	ClassDB::bind_method(D_METHOD("notify_runtime_tile_data_update", "layer"), &TileMap::notify_runtime_tile_data_update, DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("update_internals"), &LayeredTileMap::update_internals);
+	ClassDB::bind_method(D_METHOD("notify_runtime_tile_data_update", "layer"), &LayeredTileMap::notify_runtime_tile_data_update, DEFVAL(-1));
 
-	ClassDB::bind_method(D_METHOD("get_surrounding_cells", "coords"), &TileMap::get_surrounding_cells);
+	ClassDB::bind_method(D_METHOD("get_surrounding_cells", "coords"), &LayeredTileMap::get_surrounding_cells);
 
-	ClassDB::bind_method(D_METHOD("get_used_cells", "layer"), &TileMap::get_used_cells);
-	ClassDB::bind_method(D_METHOD("get_used_cells_by_id", "layer", "source_id", "atlas_coords", "alternative_tile"), &TileMap::get_used_cells_by_id, DEFVAL(TileSet::INVALID_SOURCE), DEFVAL(TileSetSource::INVALID_ATLAS_COORDS), DEFVAL(TileSetSource::INVALID_TILE_ALTERNATIVE));
-	ClassDB::bind_method(D_METHOD("get_used_rect"), &TileMap::get_used_rect);
+	ClassDB::bind_method(D_METHOD("get_used_cells", "layer"), &LayeredTileMap::get_used_cells);
+	ClassDB::bind_method(D_METHOD("get_used_cells_by_id", "layer", "source_id", "atlas_coords", "alternative_tile"), &LayeredTileMap::get_used_cells_by_id, DEFVAL(LayeredTileSet::INVALID_SOURCE), DEFVAL(LayeredTileSetSource::INVALID_ATLAS_COORDS), DEFVAL(LayeredTileSetSource::INVALID_TILE_ALTERNATIVE));
+	ClassDB::bind_method(D_METHOD("get_used_rect"), &LayeredTileMap::get_used_rect);
 
-	ClassDB::bind_method(D_METHOD("map_to_local", "map_position"), &TileMap::map_to_local);
-	ClassDB::bind_method(D_METHOD("local_to_map", "local_position"), &TileMap::local_to_map);
+	ClassDB::bind_method(D_METHOD("map_to_local", "map_position"), &LayeredTileMap::map_to_local);
+	ClassDB::bind_method(D_METHOD("local_to_map", "local_position"), &LayeredTileMap::local_to_map);
 
-	ClassDB::bind_method(D_METHOD("get_neighbor_cell", "coords", "neighbor"), &TileMap::get_neighbor_cell);
+	ClassDB::bind_method(D_METHOD("get_neighbor_cell", "coords", "neighbor"), &LayeredTileMap::get_neighbor_cell);
 
 	GDVIRTUAL_BIND(_use_tile_data_runtime_update, "layer", "coords");
 	GDVIRTUAL_BIND(_tile_data_runtime_update, "layer", "coords", "tile_data");
@@ -977,7 +977,7 @@ void TileMap::_bind_methods() {
 
 	ADD_ARRAY("layers", "layer_");
 
-	ADD_PROPERTY_DEFAULT("format", TileMapDataFormat::FORMAT_1);
+	ADD_PROPERTY_DEFAULT("format", LayeredTileMapDataFormat::FORMAT_1);
 
 	ADD_SIGNAL(MethodInfo(CoreStringNames::get_singleton()->changed));
 
@@ -986,17 +986,17 @@ void TileMap::_bind_methods() {
 	BIND_ENUM_CONSTANT(VISIBILITY_MODE_FORCE_SHOW);
 }
 
-TileMap::TileMap() {
-	TileMapLayer *new_layer = memnew(TileMapLayer);
+LayeredTileMap::LayeredTileMap() {
+	LayeredTileMapLayer *new_layer = memnew(LayeredTileMapLayer);
 	add_child(new_layer, false, INTERNAL_MODE_FRONT);
 	new_layer->set_as_tile_map_internal_node(0);
 	new_layer->set_name("Layer0");
-	new_layer->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &TileMap::_emit_changed));
+	new_layer->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileMap::_emit_changed));
 	layers.push_back(new_layer);
-	default_layer = memnew(TileMapLayer);
+	default_layer = memnew(LayeredTileMapLayer);
 }
 
-TileMap::~TileMap() {
+LayeredTileMap::~LayeredTileMap() {
 	memdelete(default_layer);
 }
 

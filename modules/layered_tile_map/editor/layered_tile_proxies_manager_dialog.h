@@ -40,15 +40,15 @@
 class EditorPropertyVector2i;
 class EditorUndoRedoManager;
 
-class TileProxiesManagerDialog : public ConfirmationDialog {
-	GDCLASS(TileProxiesManagerDialog, ConfirmationDialog);
+class LayeredTileProxiesManagerDialog : public ConfirmationDialog {
+	GDCLASS(LayeredTileProxiesManagerDialog, ConfirmationDialog);
 
 private:
 	int commited_actions_count = 0;
-	Ref<TileSet> tile_set;
+	Ref<LayeredTileSet> tile_set;
 
-	TileMapCell from;
-	TileMapCell to;
+	LayeredTileMapCell from;
+	LayeredTileMapCell to;
 
 	// GUI
 	ItemList *source_level_list = nullptr;
@@ -82,9 +82,9 @@ protected:
 	static void _bind_methods();
 
 public:
-	void update_tile_set(Ref<TileSet> p_tile_set);
+	void update_tile_set(Ref<LayeredTileSet> p_tile_set);
 
-	TileProxiesManagerDialog();
+	LayeredTileProxiesManagerDialog();
 };
 
 #endif // TILE_PROXIES_MANAGER_DIALOG_H

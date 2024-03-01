@@ -46,15 +46,15 @@ class SplitContainer;
 class EditorFileDialog;
 class EditorInspectorPlugin;
 
-class TileSetEditor : public Control {
-	GDCLASS(TileSetEditor, Control);
+class LayeredTileSetEditor : public Control {
+	GDCLASS(LayeredTileSetEditor, Control);
 
-	static TileSetEditor *singleton;
+	static LayeredTileSetEditor *singleton;
 
 private:
 	bool read_only = false;
 
-	Ref<TileSet> tile_set;
+	Ref<LayeredTileSet> tile_set;
 	bool tile_set_changed_needs_update = false;
 	HSplitContainer *split_container = nullptr;
 
@@ -64,8 +64,8 @@ private:
 
 	// Tiles.
 	Label *no_source_selected_label = nullptr;
-	TileSetAtlasSourceEditor *tile_set_atlas_source_editor = nullptr;
-	TileSetScenesCollectionSourceEditor *tile_set_scenes_collection_source_editor = nullptr;
+	LayeredTileSetAtlasSourceEditor *tile_set_atlas_source_editor = nullptr;
+	LayeredTileSetScenesCollectionSourceEditor *tile_set_scenes_collection_source_editor = nullptr;
 
 	void _drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from);
 	bool _can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const;
@@ -88,7 +88,7 @@ private:
 
 	EditorFileDialog *texture_file_dialog = nullptr;
 	AtlasMergingDialog *atlas_merging_dialog = nullptr;
-	TileProxiesManagerDialog *tile_proxies_manager_dialog = nullptr;
+	LayeredTileProxiesManagerDialog *tile_proxies_manager_dialog = nullptr;
 
 	bool first_edit = true;
 
@@ -96,7 +96,7 @@ private:
 	ItemList *patterns_item_list = nullptr;
 	Label *patterns_help_label = nullptr;
 	void _patterns_item_list_gui_input(const Ref<InputEvent> &p_event);
-	void _pattern_preview_done(Ref<TileMapPattern> p_pattern, Ref<Texture2D> p_texture);
+	void _pattern_preview_done(Ref<LayeredTileMapPattern> p_pattern, Ref<Texture2D> p_texture);
 	bool select_last_pattern = false;
 	void _update_patterns_list();
 
@@ -116,19 +116,19 @@ protected:
 	void _notification(int p_what);
 
 public:
-	_FORCE_INLINE_ static TileSetEditor *get_singleton() { return singleton; }
+	_FORCE_INLINE_ static LayeredTileSetEditor *get_singleton() { return singleton; }
 
-	void edit(Ref<TileSet> p_tile_set);
+	void edit(Ref<LayeredTileSet> p_tile_set);
 
 	void add_expanded_editor(Control *p_editor);
 	void remove_expanded_editor();
 	void register_split(SplitContainer *p_split);
 
-	TileSetEditor();
+	LayeredTileSetEditor();
 };
 
-class TileSourceInspectorPlugin : public EditorInspectorPlugin {
-	GDCLASS(TileSourceInspectorPlugin, EditorInspectorPlugin);
+class LayeredTileSourceInspectorPlugin : public EditorInspectorPlugin {
+	GDCLASS(LayeredTileSourceInspectorPlugin, EditorInspectorPlugin);
 
 	AcceptDialog *id_edit_dialog = nullptr;
 	Label *id_label = nullptr;

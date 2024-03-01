@@ -42,13 +42,13 @@
 
 class ViewPanner;
 
-class TileAtlasView : public Control {
-	GDCLASS(TileAtlasView, Control);
+class LayeredTileAtlasView : public Control {
+	GDCLASS(LayeredTileAtlasView, Control);
 
 private:
-	TileSet *tile_set = nullptr;
-	TileSetAtlasSource *tile_set_atlas_source = nullptr;
-	int source_id = TileSet::INVALID_SOURCE;
+	LayeredTileSet *tile_set = nullptr;
+	LayeredTileSetAtlasSource *tile_set_atlas_source = nullptr;
+	int source_id = LayeredTileSet::INVALID_SOURCE;
 
 	enum DragType {
 		DRAG_TYPE_NONE,
@@ -128,7 +128,7 @@ protected:
 
 public:
 	// Global.
-	void set_atlas_source(TileSet *p_tile_set, TileSetAtlasSource *p_tile_set_atlas_source, int p_source_id);
+	void set_atlas_source(LayeredTileSet *p_tile_set, LayeredTileSetAtlasSource *p_tile_set_atlas_source, int p_source_id);
 
 	float get_zoom() const;
 	void set_transform(float p_zoom, Vector2i p_panning);
@@ -168,8 +168,8 @@ public:
 	// Redraw everything.
 	void queue_redraw();
 
-	TileAtlasView();
-	~TileAtlasView();
+	LayeredTileAtlasView();
+	~LayeredTileAtlasView();
 };
 
 #endif // TILE_ATLAS_VIEW_H

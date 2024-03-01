@@ -7,8 +7,8 @@ def configure(env):
 
 def get_doc_classes():
     return [
-        "TileMap",
-        "TileSet"
+        "LayeredTileMap",
+        "LayeredTileSet"
     ]
 
 def get_doc_path():

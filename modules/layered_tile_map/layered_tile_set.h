@@ -48,18 +48,18 @@
 #include "scene/resources/shader.h"
 #endif
 
-class TileMap;
-class TileSetSource;
-class TileSetAtlasSource;
+class LayeredTileMap;
+class LayeredTileSetSource;
+class LayeredTileSetAtlasSource;
 class TileData;
 
 // Forward-declare the plugins.
-class TileSetPlugin;
-class TileSetPluginAtlasRendering;
-class TileSetPluginAtlasPhysics;
-class TileSetPluginAtlasNavigation;
+class LayeredTileSetPlugin;
+class LayeredTileSetPluginAtlasRendering;
+class LayeredTileSetPluginAtlasPhysics;
+class LayeredTileSetPluginAtlasNavigation;
 
-union TileMapCell {
+union LayeredTileMapCell {
 	struct {
 		int16_t source_id;
 		int16_t coord_x;
@@ -69,11 +69,11 @@ union TileMapCell {
 
 	uint64_t _u64t;
 
-	static uint32_t hash(const TileMapCell &p_hash) {
+	static uint32_t hash(const LayeredTileMapCell &p_hash) {
 		return hash_one_uint64(p_hash._u64t);
 	}
 
-	TileMapCell(int p_source_id = -1, Vector2i p_atlas_coords = Vector2i(-1, -1), int p_alternative_tile = -1) { // default are INVALID_SOURCE, INVALID_ATLAS_COORDS, INVALID_TILE_ALTERNATIVE
+	LayeredTileMapCell(int p_source_id = -1, Vector2i p_atlas_coords = Vector2i(-1, -1), int p_alternative_tile = -1) { // default are INVALID_SOURCE, INVALID_ATLAS_COORDS, INVALID_TILE_ALTERNATIVE
 		source_id = p_source_id;
 		set_atlas_coords(p_atlas_coords);
 		alternative_tile = p_alternative_tile;
@@ -88,7 +88,7 @@ union TileMapCell {
 		coord_y = r_coords.y;
 	}
 
-	bool operator<(const TileMapCell &p_other) const {
+	bool operator<(const LayeredTileMapCell &p_other) const {
 		if (source_id == p_other.source_id) {
 			if (coord_x == p_other.coord_x) {
 				if (coord_y == p_other.coord_y) {
@@ -104,19 +104,19 @@ union TileMapCell {
 		}
 	}
 
-	bool operator!=(const TileMapCell &p_other) const {
+	bool operator!=(const LayeredTileMapCell &p_other) const {
 		return !(source_id == p_other.source_id && coord_x == p_other.coord_x && coord_y == p_other.coord_y && alternative_tile == p_other.alternative_tile);
 	}
-	bool operator==(const TileMapCell &p_other) const {
+	bool operator==(const LayeredTileMapCell &p_other) const {
 		return source_id == p_other.source_id && coord_x == p_other.coord_x && coord_y == p_other.coord_y && alternative_tile == p_other.alternative_tile;
 	}
 };
 
-class TileMapPattern : public Resource {
-	GDCLASS(TileMapPattern, Resource);
+class LayeredTileMapPattern : public Resource {
+	GDCLASS(LayeredTileMapPattern, Resource);
 
 	Size2i size;
-	HashMap<Vector2i, TileMapCell> pattern;
+	HashMap<Vector2i, LayeredTileMapCell> pattern;
 
 	void _set_tile_data(const Vector<int> &p_data);
 	Vector<int> _get_tile_data() const;
@@ -136,7 +136,7 @@ public:
 	Vector2i get_cell_atlas_coords(const Vector2i &p_coords) const;
 	int get_cell_alternative_tile(const Vector2i &p_coords) const;
 
-	const HashMap<Vector2i, TileMapCell> &get_pattern() const { return pattern; }
+	const HashMap<Vector2i, LayeredTileMapCell> &get_pattern() const { return pattern; }
 	TypedArray<Vector2i> get_used_cells() const;
 
 	Size2i get_size() const;
@@ -146,8 +146,8 @@ public:
 	void clear();
 };
 
-class TileSet : public Resource {
-	GDCLASS(TileSet, Resource);
+class LayeredTileSet : public Resource {
+	GDCLASS(LayeredTileSet, Resource);
 
 #ifndef DISABLE_DEPRECATED
 private:
@@ -266,8 +266,8 @@ public:
 	class TerrainsPattern {
 		bool valid = false;
 		int terrain = -1;
-		int bits[TileSet::CELL_NEIGHBOR_MAX];
-		bool is_valid_bit[TileSet::CELL_NEIGHBOR_MAX];
+		int bits[LayeredTileSet::CELL_NEIGHBOR_MAX];
+		bool is_valid_bit[LayeredTileSet::CELL_NEIGHBOR_MAX];
 
 		int not_empty_terrains_count = 0;
 
@@ -284,13 +284,13 @@ public:
 		void set_terrain(int p_terrain);
 		int get_terrain() const;
 
-		void set_terrain_peering_bit(TileSet::CellNeighbor p_peering_bit, int p_terrain);
-		int get_terrain_peering_bit(TileSet::CellNeighbor p_peering_bit) const;
+		void set_terrain_peering_bit(LayeredTileSet::CellNeighbor p_peering_bit, int p_terrain);
+		int get_terrain_peering_bit(LayeredTileSet::CellNeighbor p_peering_bit) const;
 
 		void from_array(Array p_terrains);
 		Array as_array() const;
 
-		TerrainsPattern(const TileSet *p_tile_set, int p_terrain_set);
+		TerrainsPattern(const LayeredTileSet *p_tile_set, int p_terrain_set);
 		TerrainsPattern() {}
 	};
 
@@ -301,7 +301,7 @@ protected:
 	void _validate_property(PropertyInfo &p_property) const;
 
 private:
-	// --- TileSet data ---
+	// --- LayeredTileSet data ---
 	// Basic shape and layout.
 	TileShape tile_shape = TILE_SHAPE_SQUARE;
 	TileLayout tile_layout = TILE_LAYOUT_STACKED;
@@ -343,7 +343,7 @@ private:
 	HashMap<TerrainMode, HashMap<CellNeighbor, Ref<ArrayMesh>>> terrain_peering_bits_meshes;
 	bool terrain_bits_meshes_dirty = true;
 
-	LocalVector<RBMap<TileSet::TerrainsPattern, RBSet<TileMapCell>>> per_terrain_pattern_tiles; // Cached data.
+	LocalVector<RBMap<LayeredTileSet::TerrainsPattern, RBSet<LayeredTileMapCell>>> per_terrain_pattern_tiles; // Cached data.
 	bool terrains_cache_dirty = true;
 	void _update_terrains_cache();
 
@@ -362,12 +362,12 @@ private:
 	HashMap<String, int> custom_data_layers_by_name;
 
 	// Per Atlas source data.
-	HashMap<int, Ref<TileSetSource>> sources;
+	HashMap<int, Ref<LayeredTileSetSource>> sources;
 	Vector<int> source_ids;
 	int next_source_id = 0;
 	// ---------------------
 
-	LocalVector<Ref<TileMapPattern>> patterns;
+	LocalVector<Ref<LayeredTileMapPattern>> patterns;
 
 	void _compute_next_source_id();
 	void _source_changed();
@@ -379,28 +379,28 @@ private:
 
 	// Helpers
 	Vector<Point2> _get_square_terrain_polygon(Vector2i p_size);
-	Vector<Point2> _get_square_corner_or_side_terrain_peering_bit_polygon(Vector2i p_size, TileSet::CellNeighbor p_bit);
-	Vector<Point2> _get_square_corner_terrain_peering_bit_polygon(Vector2i p_size, TileSet::CellNeighbor p_bit);
-	Vector<Point2> _get_square_side_terrain_peering_bit_polygon(Vector2i p_size, TileSet::CellNeighbor p_bit);
+	Vector<Point2> _get_square_corner_or_side_terrain_peering_bit_polygon(Vector2i p_size, LayeredTileSet::CellNeighbor p_bit);
+	Vector<Point2> _get_square_corner_terrain_peering_bit_polygon(Vector2i p_size, LayeredTileSet::CellNeighbor p_bit);
+	Vector<Point2> _get_square_side_terrain_peering_bit_polygon(Vector2i p_size, LayeredTileSet::CellNeighbor p_bit);
 
 	Vector<Point2> _get_isometric_terrain_polygon(Vector2i p_size);
-	Vector<Point2> _get_isometric_corner_or_side_terrain_peering_bit_polygon(Vector2i p_size, TileSet::CellNeighbor p_bit);
-	Vector<Point2> _get_isometric_corner_terrain_peering_bit_polygon(Vector2i p_size, TileSet::CellNeighbor p_bit);
-	Vector<Point2> _get_isometric_side_terrain_peering_bit_polygon(Vector2i p_size, TileSet::CellNeighbor p_bit);
+	Vector<Point2> _get_isometric_corner_or_side_terrain_peering_bit_polygon(Vector2i p_size, LayeredTileSet::CellNeighbor p_bit);
+	Vector<Point2> _get_isometric_corner_terrain_peering_bit_polygon(Vector2i p_size, LayeredTileSet::CellNeighbor p_bit);
+	Vector<Point2> _get_isometric_side_terrain_peering_bit_polygon(Vector2i p_size, LayeredTileSet::CellNeighbor p_bit);
 
-	Vector<Point2> _get_half_offset_terrain_polygon(Vector2i p_size, float p_overlap, TileSet::TileOffsetAxis p_offset_axis);
-	Vector<Point2> _get_half_offset_corner_or_side_terrain_peering_bit_polygon(Vector2i p_size, float p_overlap, TileSet::TileOffsetAxis p_offset_axis, TileSet::CellNeighbor p_bit);
-	Vector<Point2> _get_half_offset_corner_terrain_peering_bit_polygon(Vector2i p_size, float p_overlap, TileSet::TileOffsetAxis p_offset_axis, TileSet::CellNeighbor p_bit);
-	Vector<Point2> _get_half_offset_side_terrain_peering_bit_polygon(Vector2i p_size, float p_overlap, TileSet::TileOffsetAxis p_offset_axis, TileSet::CellNeighbor p_bit);
+	Vector<Point2> _get_half_offset_terrain_polygon(Vector2i p_size, float p_overlap, LayeredTileSet::TileOffsetAxis p_offset_axis);
+	Vector<Point2> _get_half_offset_corner_or_side_terrain_peering_bit_polygon(Vector2i p_size, float p_overlap, LayeredTileSet::TileOffsetAxis p_offset_axis, LayeredTileSet::CellNeighbor p_bit);
+	Vector<Point2> _get_half_offset_corner_terrain_peering_bit_polygon(Vector2i p_size, float p_overlap, LayeredTileSet::TileOffsetAxis p_offset_axis, LayeredTileSet::CellNeighbor p_bit);
+	Vector<Point2> _get_half_offset_side_terrain_peering_bit_polygon(Vector2i p_size, float p_overlap, LayeredTileSet::TileOffsetAxis p_offset_axis, LayeredTileSet::CellNeighbor p_bit);
 
 protected:
 	static void _bind_methods();
 
 public:
 	// --- Plugins ---
-	Vector<TileSetPlugin *> get_tile_set_atlas_plugins() const;
+	Vector<LayeredTileSetPlugin *> get_tile_set_atlas_plugins() const;
 
-	// --- Accessors for TileSet data ---
+	// --- Accessors for LayeredTileSet data ---
 
 	// -- Shape and layout --
 	void set_tile_shape(TileShape p_shape);
@@ -416,12 +416,12 @@ public:
 	int get_next_source_id() const;
 	int get_source_count() const;
 	int get_source_id(int p_index) const;
-	int add_source(Ref<TileSetSource> p_tile_set_source, int p_source_id_override = -1);
+	int add_source(Ref<LayeredTileSetSource> p_tile_set_source, int p_source_id_override = -1);
 	void set_source_id(int p_source_id, int p_new_id);
 	void remove_source(int p_source_id);
-	void remove_source_ptr(TileSetSource *p_tile_set_source); // Not exposed
+	void remove_source_ptr(LayeredTileSetSource *p_tile_set_source); // Not exposed
 	bool has_source(int p_source_id) const;
-	Ref<TileSetSource> get_source(int p_source_id) const;
+	Ref<LayeredTileSetSource> get_source(int p_source_id) const;
 
 	// Rendering
 	void set_uv_clipping(bool p_uv_clipping);
@@ -465,8 +465,8 @@ public:
 	String get_terrain_name(int p_terrain_set, int p_terrain_index) const;
 	void set_terrain_color(int p_terrain_set, int p_terrain_index, Color p_color);
 	Color get_terrain_color(int p_terrain_set, int p_terrain_index) const;
-	bool is_valid_terrain_peering_bit_for_mode(TileSet::TerrainMode p_terrain_mode, TileSet::CellNeighbor p_peering_bit) const;
-	bool is_valid_terrain_peering_bit(int p_terrain_set, TileSet::CellNeighbor p_peering_bit) const;
+	bool is_valid_terrain_peering_bit_for_mode(LayeredTileSet::TerrainMode p_terrain_mode, LayeredTileSet::CellNeighbor p_peering_bit) const;
+	bool is_valid_terrain_peering_bit(int p_terrain_set, LayeredTileSet::CellNeighbor p_peering_bit) const;
 
 	// Navigation
 	int get_navigation_layers_count() const;
@@ -515,31 +515,31 @@ public:
 	void clear_tile_proxies();
 
 	// Patterns.
-	int add_pattern(Ref<TileMapPattern> p_pattern, int p_index = -1);
-	Ref<TileMapPattern> get_pattern(int p_index);
+	int add_pattern(Ref<LayeredTileMapPattern> p_pattern, int p_index = -1);
+	Ref<LayeredTileMapPattern> get_pattern(int p_index);
 	void remove_pattern(int p_index);
 	int get_patterns_count();
 
 	// Terrains.
 	RBSet<TerrainsPattern> get_terrains_pattern_set(int p_terrain_set);
-	RBSet<TileMapCell> get_tiles_for_terrains_pattern(int p_terrain_set, TerrainsPattern p_terrain_tile_pattern);
-	TileMapCell get_random_tile_from_terrains_pattern(int p_terrain_set, TerrainsPattern p_terrain_tile_pattern);
+	RBSet<LayeredTileMapCell> get_tiles_for_terrains_pattern(int p_terrain_set, TerrainsPattern p_terrain_tile_pattern);
+	LayeredTileMapCell get_random_tile_from_terrains_pattern(int p_terrain_set, TerrainsPattern p_terrain_tile_pattern);
 
 	// Helpers
 	Vector<Vector2> get_tile_shape_polygon() const;
 	void draw_tile_shape(CanvasItem *p_canvas_item, Transform2D p_transform, Color p_color, bool p_filled = false, Ref<Texture2D> p_texture = Ref<Texture2D>()) const;
 
-	// Used by TileMap/TileMapLayer
+	// Used by LayeredTileMap/LayeredTileMapLayer
 	Vector2 map_to_local(const Vector2i &p_pos) const;
 	Vector2i local_to_map(const Vector2 &p_pos) const;
-	bool is_existing_neighbor(TileSet::CellNeighbor p_cell_neighbor) const;
-	Vector2i get_neighbor_cell(const Vector2i &p_coords, TileSet::CellNeighbor p_cell_neighbor) const;
+	bool is_existing_neighbor(LayeredTileSet::CellNeighbor p_cell_neighbor) const;
+	Vector2i get_neighbor_cell(const Vector2i &p_coords, LayeredTileSet::CellNeighbor p_cell_neighbor) const;
 	TypedArray<Vector2i> get_surrounding_cells(const Vector2i &p_coords) const;
-	Vector2i map_pattern(const Vector2i &p_position_in_tilemap, const Vector2i &p_coords_in_pattern, Ref<TileMapPattern> p_pattern) const;
+	Vector2i map_pattern(const Vector2i &p_position_in_tilemap, const Vector2i &p_coords_in_pattern, Ref<LayeredTileMapPattern> p_pattern) const;
 	void draw_cells_outline(CanvasItem *p_canvas_item, const RBSet<Vector2i> &p_cells, Color p_color, Transform2D p_transform = Transform2D()) const;
 
 	Vector<Point2> get_terrain_polygon(int p_terrain_set);
-	Vector<Point2> get_terrain_peering_bit_polygon(int p_terrain_set, TileSet::CellNeighbor p_bit);
+	Vector<Point2> get_terrain_peering_bit_polygon(int p_terrain_set, LayeredTileSet::CellNeighbor p_bit);
 	void draw_terrains(CanvasItem *p_canvas_item, Transform2D p_transform, const TileData *p_tile_data);
 	Vector<Vector<Ref<Texture2D>>> generate_terrains_icons(Size2i p_size);
 
@@ -547,17 +547,17 @@ public:
 	virtual void reset_state() override;
 
 	// Helpers.
-	static Vector2i transform_coords_layout(const Vector2i &p_coords, TileSet::TileOffsetAxis p_offset_axis, TileSet::TileLayout p_from_layout, TileSet::TileLayout p_to_layout);
+	static Vector2i transform_coords_layout(const Vector2i &p_coords, LayeredTileSet::TileOffsetAxis p_offset_axis, LayeredTileSet::TileLayout p_from_layout, LayeredTileSet::TileLayout p_to_layout);
 
-	TileSet();
-	~TileSet();
+	LayeredTileSet();
+	~LayeredTileSet();
 };
 
-class TileSetSource : public Resource {
-	GDCLASS(TileSetSource, Resource);
+class LayeredTileSetSource : public Resource {
+	GDCLASS(LayeredTileSetSource, Resource);
 
 protected:
-	const TileSet *tile_set = nullptr;
+	const LayeredTileSet *tile_set = nullptr;
 
 	static void _bind_methods();
 
@@ -566,8 +566,8 @@ public:
 	static const int INVALID_TILE_ALTERNATIVE; // -1;
 
 	// Not exposed.
-	virtual void set_tile_set(const TileSet *p_tile_set);
-	TileSet *get_tile_set() const;
+	virtual void set_tile_set(const LayeredTileSet *p_tile_set);
+	LayeredTileSet *get_tile_set() const;
 	virtual void notify_tile_data_properties_should_change(){};
 	virtual void add_occlusion_layer(int p_index){};
 	virtual void move_occlusion_layer(int p_from_index, int p_to_pos){};
@@ -600,8 +600,8 @@ public:
 	virtual bool has_alternative_tile(const Vector2i p_atlas_coords, int p_alternative_tile) const = 0;
 };
 
-class TileSetAtlasSource : public TileSetSource {
-	GDCLASS(TileSetAtlasSource, TileSetSource);
+class LayeredTileSetAtlasSource : public LayeredTileSetSource {
+	GDCLASS(LayeredTileSetAtlasSource, LayeredTileSetSource);
 
 public:
 	enum TileAnimationMode {
@@ -625,7 +625,7 @@ private:
 		int animation_columns = 0;
 		Vector2i animation_separation;
 		real_t animation_speed = 1.0;
-		TileSetAtlasSource::TileAnimationMode animation_mode = TILE_ANIMATION_MODE_DEFAULT;
+		LayeredTileSetAtlasSource::TileAnimationMode animation_mode = TILE_ANIMATION_MODE_DEFAULT;
 		LocalVector<real_t> animation_frames_durations;
 
 		// Alternatives
@@ -667,8 +667,8 @@ protected:
 
 public:
 	// Not exposed.
-	virtual void set_tile_set(const TileSet *p_tile_set) override;
-	const TileSet *get_tile_set() const;
+	virtual void set_tile_set(const LayeredTileSet *p_tile_set) override;
+	const LayeredTileSet *get_tile_set() const;
 	virtual void notify_tile_data_properties_should_change() override;
 	virtual void add_occlusion_layer(int p_index) override;
 	virtual void move_occlusion_layer(int p_from_index, int p_to_pos) override;
@@ -729,8 +729,8 @@ public:
 	Vector2i get_tile_animation_separation(const Vector2i p_atlas_coords) const;
 	void set_tile_animation_speed(const Vector2i p_atlas_coords, real_t p_speed);
 	real_t get_tile_animation_speed(const Vector2i p_atlas_coords) const;
-	void set_tile_animation_mode(const Vector2i p_atlas_coords, const TileSetAtlasSource::TileAnimationMode p_mode);
-	TileSetAtlasSource::TileAnimationMode get_tile_animation_mode(const Vector2i p_atlas_coords) const;
+	void set_tile_animation_mode(const Vector2i p_atlas_coords, const LayeredTileSetAtlasSource::TileAnimationMode p_mode);
+	LayeredTileSetAtlasSource::TileAnimationMode get_tile_animation_mode(const Vector2i p_atlas_coords) const;
 	void set_tile_animation_frames_count(const Vector2i p_atlas_coords, int p_frames_count);
 	int get_tile_animation_frames_count(const Vector2i p_atlas_coords) const;
 	void set_tile_animation_frame_duration(const Vector2i p_atlas_coords, int p_frame_index, real_t p_duration);
@@ -761,11 +761,11 @@ public:
 	Ref<Texture2D> get_runtime_texture() const;
 	Rect2i get_runtime_tile_texture_region(Vector2i p_atlas_coords, int p_frame = 0) const;
 
-	~TileSetAtlasSource();
+	~LayeredTileSetAtlasSource();
 };
 
-class TileSetScenesCollectionSource : public TileSetSource {
-	GDCLASS(TileSetScenesCollectionSource, TileSetSource);
+class LayeredTileSetScenesCollectionSource : public LayeredTileSetSource {
+	GDCLASS(LayeredTileSetScenesCollectionSource, LayeredTileSetSource);
 
 private:
 	struct SceneData {
@@ -814,7 +814,7 @@ class TileData : public Object {
 	GDCLASS(TileData, Object);
 
 private:
-	const TileSet *tile_set = nullptr;
+	const LayeredTileSet *tile_set = nullptr;
 	bool allow_transform = true;
 
 	// Rendering
@@ -882,7 +882,7 @@ protected:
 
 public:
 	// Not exposed.
-	void set_tile_set(const TileSet *p_tile_set);
+	void set_tile_set(const LayeredTileSet *p_tile_set);
 	void notify_tile_data_properties_should_change();
 	void add_occlusion_layer(int p_index);
 	void move_occlusion_layer(int p_from_index, int p_to_pos);
@@ -953,11 +953,11 @@ public:
 	int get_terrain_set() const;
 	void set_terrain(int p_terrain_id);
 	int get_terrain() const;
-	void set_terrain_peering_bit(TileSet::CellNeighbor p_peering_bit, int p_terrain_id);
-	int get_terrain_peering_bit(TileSet::CellNeighbor p_peering_bit) const;
-	bool is_valid_terrain_peering_bit(TileSet::CellNeighbor p_peering_bit) const;
+	void set_terrain_peering_bit(LayeredTileSet::CellNeighbor p_peering_bit, int p_terrain_id);
+	int get_terrain_peering_bit(LayeredTileSet::CellNeighbor p_peering_bit) const;
+	bool is_valid_terrain_peering_bit(LayeredTileSet::CellNeighbor p_peering_bit) const;
 
-	TileSet::TerrainsPattern get_terrains_pattern() const; // Not exposed.
+	LayeredTileSet::TerrainsPattern get_terrains_pattern() const; // Not exposed.
 
 	// Navigation
 	void set_navigation_polygon(int p_layer_id, Ref<NavigationPolygon> p_navigation_polygon);
@@ -977,12 +977,12 @@ public:
 	static PackedVector2Array get_transformed_vertices(const PackedVector2Array &p_vertices, bool p_flip_h, bool p_flip_v, bool p_transpose);
 };
 
-VARIANT_ENUM_CAST(TileSet::CellNeighbor);
-VARIANT_ENUM_CAST(TileSet::TerrainMode);
-VARIANT_ENUM_CAST(TileSet::TileShape);
-VARIANT_ENUM_CAST(TileSet::TileLayout);
-VARIANT_ENUM_CAST(TileSet::TileOffsetAxis);
+VARIANT_ENUM_CAST(LayeredTileSet::CellNeighbor);
+VARIANT_ENUM_CAST(LayeredTileSet::TerrainMode);
+VARIANT_ENUM_CAST(LayeredTileSet::TileShape);
+VARIANT_ENUM_CAST(LayeredTileSet::TileLayout);
+VARIANT_ENUM_CAST(LayeredTileSet::TileOffsetAxis);
 
-VARIANT_ENUM_CAST(TileSetAtlasSource::TileAnimationMode);
+VARIANT_ENUM_CAST(LayeredTileSetAtlasSource::TileAnimationMode);
 
 #endif // TILE_SET_H

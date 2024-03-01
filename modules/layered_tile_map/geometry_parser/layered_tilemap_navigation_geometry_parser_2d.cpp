@@ -40,17 +40,17 @@
 
 #include "modules/modules_enabled.gen.h"
 
-bool TileMap2DNavigationGeometryParser2D::parses_node(Node *p_node) {
-	return (Object::cast_to<TileMap>(p_node) != nullptr);
+bool LayeredTileMap2DNavigationGeometryParser2D::parses_node(Node *p_node) {
+	return (Object::cast_to<LayeredTileMap>(p_node) != nullptr);
 }
 
-void TileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {
-	TileMap *tilemap = Object::cast_to<TileMap>(p_node);
+void LayeredTileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {
+	LayeredTileMap *tilemap = Object::cast_to<LayeredTileMap>(p_node);
 	//NavigationPolygon::ParsedGeometryType parsed_geometry_type = p_navigation_polygon->get_parsed_geometry_type();
 	//uint32_t navigation_polygon_collision_mask = p_navigation_polygon->get_collision_mask();
 
 	if (tilemap) {
-		Ref<TileSet> tile_set = tilemap->get_tileset();
+		Ref<LayeredTileSet> tile_set = tilemap->get_tileset();
 		if (!tile_set.is_valid()) {
 			return;
 		}
@@ -102,13 +102,13 @@ void TileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Navig
 	}
 }
 
-bool TileMap2DNavigationGeometryParser2D::parses_node(Node *p_node) {
-	return (Object::cast_to<TileMap>(p_node) != nullptr);
+bool LayeredTileMap2DNavigationGeometryParser2D::parses_node(Node *p_node) {
+	return (Object::cast_to<LayeredTileMap>(p_node) != nullptr);
 }
 
-void TileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {
+void LayeredTileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<NavigationPolygon> p_navigation_polygon, Ref<NavigationMeshSourceGeometryData2D> p_source_geometry) {
 #ifdef CLIPPER_ENABLED
-	TileMap *tilemap = Object::cast_to<TileMap>(p_node);
+	LayeredTileMap *tilemap = Object::cast_to<LayeredTileMap>(p_node);
 	NavigationPolygon::ParsedGeometryType parsed_geometry_type = p_navigation_polygon->get_parsed_geometry_type();
 	uint32_t navigation_polygon_collision_mask = p_navigation_polygon->get_collision_mask();
 
@@ -119,7 +119,7 @@ void TileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Ref<Navig
 
 		int tilemap_layer = 0; // only main tile map layer is supported
 
-		Ref<TileSet> tile_set = tilemap->get_tileset();
+		Ref<LayeredTileSet> tile_set = tilemap->get_tileset();
 		if (!tile_set.is_valid()) {
 			return;
 		}

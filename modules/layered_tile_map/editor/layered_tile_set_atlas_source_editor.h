@@ -39,18 +39,18 @@
 #include "scene/resources/2d/tile_set.h"
 
 class Popup;
-class TileSet;
+class LayeredTileSet;
 class Tree;
 class VSeparator;
 
-class TileSetAtlasSourceEditor : public HSplitContainer {
-	GDCLASS(TileSetAtlasSourceEditor, HSplitContainer);
+class LayeredTileSetAtlasSourceEditor : public HSplitContainer {
+	GDCLASS(LayeredTileSetAtlasSourceEditor, HSplitContainer);
 
 public:
 	// A class to store which tiles are selected.
 	struct TileSelection {
-		Vector2i tile = TileSetSource::INVALID_ATLAS_COORDS;
-		int alternative = TileSetSource::INVALID_TILE_ALTERNATIVE;
+		Vector2i tile = LayeredTileSetSource::INVALID_ATLAS_COORDS;
+		int alternative = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE;
 
 		bool operator<(const TileSelection &p_other) const {
 			if (tile == p_other.tile) {
@@ -62,13 +62,13 @@ public:
 	};
 
 	// -- Proxy object for an atlas source, needed by the inspector --
-	class TileSetAtlasSourceProxyObject : public Object {
-		GDCLASS(TileSetAtlasSourceProxyObject, Object);
+	class LayeredTileSetAtlasSourceProxyObject : public Object {
+		GDCLASS(LayeredTileSetAtlasSourceProxyObject, Object);
 
 	private:
-		Ref<TileSet> tile_set;
-		Ref<TileSetAtlasSource> tile_set_atlas_source;
-		int source_id = TileSet::INVALID_SOURCE;
+		Ref<LayeredTileSet> tile_set;
+		Ref<LayeredTileSetAtlasSource> tile_set_atlas_source;
+		int source_id = LayeredTileSet::INVALID_SOURCE;
 
 	protected:
 		bool _set(const StringName &p_name, const Variant &p_value);
@@ -80,18 +80,18 @@ public:
 		void set_id(int p_id);
 		int get_id() const;
 
-		void edit(Ref<TileSet> p_tile_set, Ref<TileSetAtlasSource> p_tile_set_atlas_source, int p_source_id);
-		Ref<TileSetAtlasSource> get_edited() { return tile_set_atlas_source; };
+		void edit(Ref<LayeredTileSet> p_tile_set, Ref<LayeredTileSetAtlasSource> p_tile_set_atlas_source, int p_source_id);
+		Ref<LayeredTileSetAtlasSource> get_edited() { return tile_set_atlas_source; };
 	};
 
 	// -- Proxy object for a tile, needed by the inspector --
-	class AtlasTileProxyObject : public Object {
-		GDCLASS(AtlasTileProxyObject, Object);
+	class LayeredAtlasTileProxyObject : public Object {
+		GDCLASS(LayeredAtlasTileProxyObject, Object);
 
 	private:
-		TileSetAtlasSourceEditor *tiles_set_atlas_source_editor = nullptr;
+		LayeredTileSetAtlasSourceEditor *tiles_set_atlas_source_editor = nullptr;
 
-		Ref<TileSetAtlasSource> tile_set_atlas_source;
+		Ref<LayeredTileSetAtlasSource> tile_set_atlas_source;
 		RBSet<TileSelection> tiles = RBSet<TileSelection>();
 
 	protected:
@@ -102,32 +102,32 @@ public:
 		static void _bind_methods();
 
 	public:
-		Ref<TileSetAtlasSource> get_edited_tile_set_atlas_source() const { return tile_set_atlas_source; };
+		Ref<LayeredTileSetAtlasSource> get_edited_tile_set_atlas_source() const { return tile_set_atlas_source; };
 		RBSet<TileSelection> get_edited_tiles() const { return tiles; };
 
 		// Update the proxyed object.
-		void edit(Ref<TileSetAtlasSource> p_tile_set_atlas_source, const RBSet<TileSelection> &p_tiles = RBSet<TileSelection>());
+		void edit(Ref<LayeredTileSetAtlasSource> p_tile_set_atlas_source, const RBSet<TileSelection> &p_tiles = RBSet<TileSelection>());
 
-		AtlasTileProxyObject(TileSetAtlasSourceEditor *p_tiles_set_atlas_source_editor) {
+		LayeredAtlasTileProxyObject(LayeredTileSetAtlasSourceEditor *p_tiles_set_atlas_source_editor) {
 			tiles_set_atlas_source_editor = p_tiles_set_atlas_source_editor;
 		}
 	};
 
-	class TileAtlasControl : public Control {
-		TileSetAtlasSourceEditor *editor = nullptr;
+	class LayeredTileAtlasControl : public Control {
+		LayeredTileSetAtlasSourceEditor *editor = nullptr;
 
 	public:
 		virtual CursorShape get_cursor_shape(const Point2 &p_pos) const override;
-		TileAtlasControl(TileSetAtlasSourceEditor *p_editor) { editor = p_editor; }
+		LayeredTileAtlasControl(LayeredTileSetAtlasSourceEditor *p_editor) { editor = p_editor; }
 	};
-	friend class TileAtlasControl;
+	friend class LayeredTileAtlasControl;
 
 private:
 	bool read_only = false;
 
-	Ref<TileSet> tile_set;
-	TileSetAtlasSource *tile_set_atlas_source = nullptr;
-	int tile_set_atlas_source_id = TileSet::INVALID_SOURCE;
+	Ref<LayeredTileSet> tile_set;
+	LayeredTileSetAtlasSource *tile_set_atlas_source = nullptr;
+	int tile_set_atlas_source_id = LayeredTileSet::INVALID_SOURCE;
 	Ref<Texture2D> atlas_source_texture;
 
 	bool tile_set_changed_needs_update = false;
@@ -145,22 +145,22 @@ private:
 	// -- Tile data editors --
 	String current_property;
 	Control *current_tile_data_editor_toolbar = nullptr;
-	HashMap<String, TileDataEditor *> tile_data_editors;
-	TileDataEditor *current_tile_data_editor = nullptr;
+	HashMap<String, LayeredTileDataEditor *> tile_data_editors;
+	LayeredTileDataEditor *current_tile_data_editor = nullptr;
 	void _tile_data_editors_tree_selected();
 
 	// -- Inspector --
-	AtlasTileProxyObject *tile_proxy_object = nullptr;
+	LayeredAtlasTileProxyObject *tile_proxy_object = nullptr;
 	EditorInspector *tile_inspector = nullptr;
 	Label *tile_inspector_no_tile_selected_label = nullptr;
 	String selected_property;
 	void _inspector_property_selected(const String &p_property);
 
-	TileSetAtlasSourceProxyObject *atlas_source_proxy_object = nullptr;
+	LayeredTileSetAtlasSourceProxyObject *atlas_source_proxy_object = nullptr;
 	EditorInspector *atlas_source_inspector = nullptr;
 
 	// -- Atlas view --
-	TileAtlasView *tile_atlas_view = nullptr;
+	LayeredTileAtlasView *tile_atlas_view = nullptr;
 	VBoxContainer *tile_create_help = nullptr;
 
 	// Dragging
@@ -197,7 +197,7 @@ private:
 	RBSet<Vector2i> drag_modified_tiles;
 	void _end_dragging();
 
-	HashMap<Vector2i, List<const PropertyInfo *>> _group_properties_per_tiles(const List<PropertyInfo> &r_list, const TileSetAtlasSource *p_atlas);
+	HashMap<Vector2i, List<const PropertyInfo *>> _group_properties_per_tiles(const List<PropertyInfo> &r_list, const LayeredTileSetAtlasSource *p_atlas);
 
 	// Popup functions.
 	enum MenuOptions {
@@ -210,7 +210,7 @@ private:
 		ADVANCED_CLEANUP_TILES,
 	};
 	Vector2i menu_option_coords;
-	int menu_option_alternative = TileSetSource::INVALID_TILE_ALTERNATIVE;
+	int menu_option_alternative = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE;
 	void _menu_option(int p_option);
 
 	// Tool buttons.
@@ -234,7 +234,7 @@ private:
 	Array _get_selection_as_array();
 
 	// A control on the tile atlas to draw and handle input events.
-	Vector2i hovered_base_tile_coords = TileSetSource::INVALID_ATLAS_COORDS;
+	Vector2i hovered_base_tile_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS;
 
 	PopupMenu *base_tile_popup_menu = nullptr;
 	PopupMenu *empty_base_tile_popup_menu = nullptr;
@@ -249,7 +249,7 @@ private:
 	void _tile_atlas_view_transform_changed();
 
 	// A control over the alternative tiles.
-	Vector3i hovered_alternative_tile_coords = Vector3i(TileSetSource::INVALID_ATLAS_COORDS.x, TileSetSource::INVALID_ATLAS_COORDS.y, TileSetSource::INVALID_TILE_ALTERNATIVE);
+	Vector3i hovered_alternative_tile_coords = Vector3i(LayeredTileSetSource::INVALID_ATLAS_COORDS.x, LayeredTileSetSource::INVALID_ATLAS_COORDS.y, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
 
 	PopupMenu *alternative_tile_popup_menu = nullptr;
 	Control *alternative_tiles_control = nullptr;
@@ -276,7 +276,7 @@ private:
 	void _auto_remove_tiles();
 	void _cancel_auto_create_tiles();
 	AcceptDialog *confirm_auto_create_tiles = nullptr;
-	Vector<Ref<TileSetAtlasSource>> atlases_to_auto_create_tiles;
+	Vector<Ref<LayeredTileSetAtlasSource>> atlases_to_auto_create_tiles;
 	Vector2i _get_drag_offset_tile_coords(const Vector2i &p_offset) const;
 
 	void _update_source_texture();
@@ -297,11 +297,11 @@ protected:
 	virtual void shortcut_input(const Ref<InputEvent> &p_event) override;
 
 public:
-	void edit(Ref<TileSet> p_tile_set, TileSetAtlasSource *p_tile_set_source, int p_source_id);
-	void init_new_atlases(const Vector<Ref<TileSetAtlasSource>> &p_atlases);
+	void edit(Ref<LayeredTileSet> p_tile_set, LayeredTileSetAtlasSource *p_tile_set_source, int p_source_id);
+	void init_new_atlases(const Vector<Ref<LayeredTileSetAtlasSource>> &p_atlases);
 
-	TileSetAtlasSourceEditor();
-	~TileSetAtlasSourceEditor();
+	LayeredTileSetAtlasSourceEditor();
+	~LayeredTileSetAtlasSourceEditor();
 };
 
 class EditorPropertyTilePolygon : public EditorProperty {

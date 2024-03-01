@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TileSet" inherits="Resource" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="LayeredTileSet" inherits="Resource" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		Tile library for tilemaps.
 	</brief_description>
 	<description>
-		A TileSet is a library of tiles for a [TileMap]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
-		Tiles can either be from a [TileSetAtlasSource], which renders tiles out of a texture with support for physics, navigation, etc., or from a [TileSetScenesCollectionSource], which exposes scene-based tiles.
+		A LayeredTileSet is a library of tiles for a [LayeredTileMap]. A LayeredTileSet handles a list of [LayeredTileSetSource], each of them storing a set of tiles.
+		Tiles can either be from a [LayeredTileSetAtlasSource], which renders tiles out of a texture with support for physics, navigation, etc., or from a [LayeredTileSetScenesCollectionSource], which exposes scene-based tiles.
 		Tiles are referenced by using three IDs: their source ID, their atlas coordinates ID, and their alternative tile ID.
-		A TileSet can be configured so that its tiles expose more or fewer properties. To do so, the TileSet resources use property layers, which you can add or remove depending on your needs.
-		For example, adding a physics layer allows giving collision shapes to your tiles. Each layer has dedicated properties (physics layer and mask), so you may add several TileSet physics layers for each type of collision you need.
+		A LayeredTileSet can be configured so that its tiles expose more or fewer properties. To do so, the LayeredTileSet resources use property layers, which you can add or remove depending on your needs.
+		For example, adding a physics layer allows giving collision shapes to your tiles. Each layer has dedicated properties (physics layer and mask), so you may add several LayeredTileSet physics layers for each type of collision you need.
 		See the functions to add new layers for more information.
 	</description>
 	<tutorials>
@@ -25,7 +25,7 @@
 			<return type="void" />
 			<param index="0" name="to_position" type="int" default="-1" />
 			<description>
-				Adds a custom data layer to the TileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
+				Adds a custom data layer to the LayeredTileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 				Custom data layers allow assigning custom properties to atlas tiles.
 			</description>
 		</method>
@@ -33,7 +33,7 @@
 			<return type="void" />
 			<param index="0" name="to_position" type="int" default="-1" />
 			<description>
-				Adds a navigation layer to the TileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
+				Adds a navigation layer to the LayeredTileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 				Navigation layers allow assigning a navigable area to atlas tiles.
 			</description>
 		</method>
@@ -41,34 +41,34 @@
 			<return type="void" />
 			<param index="0" name="to_position" type="int" default="-1" />
 			<description>
-				Adds an occlusion layer to the TileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
+				Adds an occlusion layer to the LayeredTileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 				Occlusion layers allow assigning occlusion polygons to atlas tiles.
 			</description>
 		</method>
 		<method name="add_pattern">
 			<return type="int" />
-			<param index="0" name="pattern" type="TileMapPattern" />
+			<param index="0" name="pattern" type="LayeredTileMapPattern" />
 			<param index="1" name="index" type="int" default="-1" />
 			<description>
-				Adds a [TileMapPattern] to be stored in the TileSet resource. If provided, insert it at the given [param index].
+				Adds a [LayeredTileMapPattern] to be stored in the LayeredTileSet resource. If provided, insert it at the given [param index].
 			</description>
 		</method>
 		<method name="add_physics_layer">
 			<return type="void" />
 			<param index="0" name="to_position" type="int" default="-1" />
 			<description>
-				Adds a physics layer to the TileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
+				Adds a physics layer to the LayeredTileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 				Physics layers allow assigning collision polygons to atlas tiles.
 			</description>
 		</method>
 		<method name="add_source">
 			<return type="int" />
-			<param index="0" name="source" type="TileSetSource" />
+			<param index="0" name="source" type="LayeredTileSetSource" />
 			<param index="1" name="atlas_source_id_override" type="int" default="-1" />
 			<description>
-				Adds a [TileSetSource] to the TileSet. If [param atlas_source_id_override] is not -1, also set its source ID. Otherwise, a unique identifier is automatically generated.
+				Adds a [LayeredTileSetSource] to the LayeredTileSet. If [param atlas_source_id_override] is not -1, also set its source ID. Otherwise, a unique identifier is automatically generated.
 				The function returns the added source ID or -1 if the source could not be added.
-				[b]Warning:[/b] A source cannot belong to two TileSets at the same time. If the added source was attached to another [TileSet], it will be removed from that one.
+				[b]Warning:[/b] A source cannot belong to two LayeredTileSets at the same time. If the added source was attached to another [LayeredTileSet], it will be removed from that one.
 			</description>
 		</method>
 		<method name="add_terrain">
@@ -105,7 +105,7 @@
 			<param index="2" name="alternative_from" type="int" />
 			<description>
 				Returns the alternative-level proxy for the given identifiers. The returned array contains the three proxie's target identifiers (source ID, atlas coords ID and alternative tile ID).
-				If the TileSet has no proxy for the given identifiers, returns an empty Array.
+				If the LayeredTileSet has no proxy for the given identifiers, returns an empty Array.
 			</description>
 		</method>
 		<method name="get_coords_level_tile_proxy">
@@ -114,7 +114,7 @@
 			<param index="1" name="coords_from" type="Vector2i" />
 			<description>
 				Returns the coordinate-level proxy for the given identifiers. The returned array contains the two target identifiers of the proxy (source ID and atlas coordinates ID).
-				If the TileSet has no proxy for the given identifiers, returns an empty Array.
+				If the LayeredTileSet has no proxy for the given identifiers, returns an empty Array.
 			</description>
 		</method>
 		<method name="get_custom_data_layer_by_name" qualifiers="const">
@@ -149,14 +149,14 @@
 			<param index="0" name="layer_index" type="int" />
 			<param index="1" name="layer_number" type="int" />
 			<description>
-				Returns whether or not the specified navigation layer of the TileSet navigation data layer identified by the given [param layer_index] is enabled, given a navigation_layers [param layer_number] between 1 and 32.
+				Returns whether or not the specified navigation layer of the LayeredTileSet navigation data layer identified by the given [param layer_index] is enabled, given a navigation_layers [param layer_number] between 1 and 32.
 			</description>
 		</method>
 		<method name="get_navigation_layer_layers" qualifiers="const">
 			<return type="int" />
 			<param index="0" name="layer_index" type="int" />
 			<description>
-				Returns the navigation layers (as in the Navigation server) of the given TileSet navigation layer.
+				Returns the navigation layers (as in the Navigation server) of the given LayeredTileSet navigation layer.
 			</description>
 		</method>
 		<method name="get_navigation_layers_count" qualifiers="const">
@@ -192,37 +192,37 @@
 			</description>
 		</method>
 		<method name="get_pattern">
-			<return type="TileMapPattern" />
+			<return type="LayeredTileMapPattern" />
 			<param index="0" name="index" type="int" default="-1" />
 			<description>
-				Returns the [TileMapPattern] at the given [param index].
+				Returns the [LayeredTileMapPattern] at the given [param index].
 			</description>
 		</method>
 		<method name="get_patterns_count">
 			<return type="int" />
 			<description>
-				Returns the number of [TileMapPattern] this tile set handles.
+				Returns the number of [LayeredTileMapPattern] this tile set handles.
 			</description>
 		</method>
 		<method name="get_physics_layer_collision_layer" qualifiers="const">
 			<return type="int" />
 			<param index="0" name="layer_index" type="int" />
 			<description>
-				Returns the collision layer (as in the physics server) bodies on the given TileSet's physics layer are in.
+				Returns the collision layer (as in the physics server) bodies on the given LayeredTileSet's physics layer are in.
 			</description>
 		</method>
 		<method name="get_physics_layer_collision_mask" qualifiers="const">
 			<return type="int" />
 			<param index="0" name="layer_index" type="int" />
 			<description>
-				Returns the collision mask of bodies on the given TileSet's physics layer.
+				Returns the collision mask of bodies on the given LayeredTileSet's physics layer.
 			</description>
 		</method>
 		<method name="get_physics_layer_physics_material" qualifiers="const">
 			<return type="PhysicsMaterial" />
 			<param index="0" name="layer_index" type="int" />
 			<description>
-				Returns the physics material of bodies on the given TileSet's physics layer.
+				Returns the physics material of bodies on the given LayeredTileSet's physics layer.
 			</description>
 		</method>
 		<method name="get_physics_layers_count" qualifiers="const">
@@ -232,16 +232,16 @@
 			</description>
 		</method>
 		<method name="get_source" qualifiers="const">
-			<return type="TileSetSource" />
+			<return type="LayeredTileSetSource" />
 			<param index="0" name="source_id" type="int" />
 			<description>
-				Returns the [TileSetSource] with ID [param source_id].
+				Returns the [LayeredTileSetSource] with ID [param source_id].
 			</description>
 		</method>
 		<method name="get_source_count" qualifiers="const">
 			<return type="int" />
 			<description>
-				Returns the number of [TileSetSource] in this TileSet.
+				Returns the number of [LayeredTileSetSource] in this LayeredTileSet.
 			</description>
 		</method>
 		<method name="get_source_id" qualifiers="const">
@@ -256,7 +256,7 @@
 			<param index="0" name="source_from" type="int" />
 			<description>
 				Returns the source-level proxy for the given source identifier.
-				If the TileSet has no proxy for the given identifier, returns -1.
+				If the LayeredTileSet has no proxy for the given identifier, returns -1.
 			</description>
 		</method>
 		<method name="get_terrain_color" qualifiers="const">
@@ -276,7 +276,7 @@
 			</description>
 		</method>
 		<method name="get_terrain_set_mode" qualifiers="const">
-			<return type="int" enum="TileSet.TerrainMode" />
+			<return type="int" enum="LayeredTileSet.TerrainMode" />
 			<param index="0" name="terrain_set" type="int" />
 			<description>
 				Returns a terrain set mode.
@@ -316,7 +316,7 @@
 			<return type="bool" />
 			<param index="0" name="source_id" type="int" />
 			<description>
-				Returns if this TileSet has a source for the given source ID.
+				Returns if this LayeredTileSet has a source for the given source ID.
 			</description>
 		</method>
 		<method name="has_source_level_tile_proxy">
@@ -428,7 +428,7 @@
 			<return type="void" />
 			<param index="0" name="index" type="int" />
 			<description>
-				Remove the [TileMapPattern] at the given index.
+				Remove the [LayeredTileMapPattern] at the given index.
 			</description>
 		</method>
 		<method name="remove_physics_layer">
@@ -477,8 +477,8 @@
 			<param index="5" name="alternative_to" type="int" />
 			<description>
 				Create an alternative-level proxy for the given identifiers. A proxy will map set of tile identifiers to another set of identifiers.
-				This can be used to replace a tile in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target tile when one is available.
-				Proxied tiles can be automatically replaced in TileMap nodes using the editor.
+				This can be used to replace a tile in all LayeredTileMaps using this LayeredTileSet, as LayeredTileMap nodes will find and use the proxy's target tile when one is available.
+				Proxied tiles can be automatically replaced in LayeredTileMap nodes using the editor.
 			</description>
 		</method>
 		<method name="set_coords_level_tile_proxy">
@@ -489,8 +489,8 @@
 			<param index="3" name="coords_to" type="Vector2i" />
 			<description>
 				Creates a coordinates-level proxy for the given identifiers. A proxy will map set of tile identifiers to another set of identifiers. The alternative tile ID is kept the same when using coordinates-level proxies.
-				This can be used to replace a tile in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target tile when one is available.
-				Proxied tiles can be automatically replaced in TileMap nodes using the editor.
+				This can be used to replace a tile in all LayeredTileMaps using this LayeredTileSet, as LayeredTileMap nodes will find and use the proxy's target tile when one is available.
+				Proxied tiles can be automatically replaced in LayeredTileMap nodes using the editor.
 			</description>
 		</method>
 		<method name="set_custom_data_layer_name">
@@ -515,7 +515,7 @@
 			<param index="1" name="layer_number" type="int" />
 			<param index="2" name="value" type="bool" />
 			<description>
-				Based on [param value], enables or disables the specified navigation layer of the TileSet navigation data layer identified by the given [param layer_index], given a navigation_layers [param layer_number] between 1 and 32.
+				Based on [param value], enables or disables the specified navigation layer of the LayeredTileSet navigation data layer identified by the given [param layer_index], given a navigation_layers [param layer_number] between 1 and 32.
 			</description>
 		</method>
 		<method name="set_navigation_layer_layers">
@@ -523,7 +523,7 @@
 			<param index="0" name="layer_index" type="int" />
 			<param index="1" name="layers" type="int" />
 			<description>
-				Sets the navigation layers (as in the navigation server) for navigation regions in the given TileSet navigation layer.
+				Sets the navigation layers (as in the navigation server) for navigation regions in the given LayeredTileSet navigation layer.
 			</description>
 		</method>
 		<method name="set_occlusion_layer_light_mask">
@@ -531,7 +531,7 @@
 			<param index="0" name="layer_index" type="int" />
 			<param index="1" name="light_mask" type="int" />
 			<description>
-				Sets the occlusion layer (as in the rendering server) for occluders in the given TileSet occlusion layer.
+				Sets the occlusion layer (as in the rendering server) for occluders in the given LayeredTileSet occlusion layer.
 			</description>
 		</method>
 		<method name="set_occlusion_layer_sdf_collision">
@@ -539,7 +539,7 @@
 			<param index="0" name="layer_index" type="int" />
 			<param index="1" name="sdf_collision" type="bool" />
 			<description>
-				Enables or disables SDF collision for occluders in the given TileSet occlusion layer.
+				Enables or disables SDF collision for occluders in the given LayeredTileSet occlusion layer.
 			</description>
 		</method>
 		<method name="set_physics_layer_collision_layer">
@@ -547,7 +547,7 @@
 			<param index="0" name="layer_index" type="int" />
 			<param index="1" name="layer" type="int" />
 			<description>
-				Sets the physics layer (as in the physics server) for bodies in the given TileSet physics layer.
+				Sets the physics layer (as in the physics server) for bodies in the given LayeredTileSet physics layer.
 			</description>
 		</method>
 		<method name="set_physics_layer_collision_mask">
@@ -555,7 +555,7 @@
 			<param index="0" name="layer_index" type="int" />
 			<param index="1" name="mask" type="int" />
 			<description>
-				Sets the physics layer (as in the physics server) for bodies in the given TileSet physics layer.
+				Sets the physics layer (as in the physics server) for bodies in the given LayeredTileSet physics layer.
 			</description>
 		</method>
 		<method name="set_physics_layer_physics_material">
@@ -563,7 +563,7 @@
 			<param index="0" name="layer_index" type="int" />
 			<param index="1" name="physics_material" type="PhysicsMaterial" />
 			<description>
-				Sets the physics material for bodies in the given TileSet physics layer.
+				Sets the physics material for bodies in the given LayeredTileSet physics layer.
 			</description>
 		</method>
 		<method name="set_source_id">
@@ -580,8 +580,8 @@
 			<param index="1" name="source_to" type="int" />
 			<description>
 				Creates a source-level proxy for the given source ID. A proxy will map set of tile identifiers to another set of identifiers. Both the atlas coordinates ID and the alternative tile ID are kept the same when using source-level proxies.
-				This can be used to replace a source in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target source when one is available.
-				Proxied tiles can be automatically replaced in TileMap nodes using the editor.
+				This can be used to replace a source in all LayeredTileMaps using this LayeredTileSet, as LayeredTileMap nodes will find and use the proxy's target source when one is available.
+				Proxied tiles can be automatically replaced in LayeredTileMap nodes using the editor.
 			</description>
 		</method>
 		<method name="set_terrain_color">
@@ -590,7 +590,7 @@
 			<param index="1" name="terrain_index" type="int" />
 			<param index="2" name="color" type="Color" />
 			<description>
-				Sets a terrain's color. This color is used for identifying the different terrains in the TileSet editor.
+				Sets a terrain's color. This color is used for identifying the different terrains in the LayeredTileSet editor.
 			</description>
 		</method>
 		<method name="set_terrain_name">
@@ -605,20 +605,20 @@
 		<method name="set_terrain_set_mode">
 			<return type="void" />
 			<param index="0" name="terrain_set" type="int" />
-			<param index="1" name="mode" type="int" enum="TileSet.TerrainMode" />
+			<param index="1" name="mode" type="int" enum="LayeredTileSet.TerrainMode" />
 			<description>
 				Sets a terrain mode. Each mode determines which bits of a tile shape is used to match the neighboring tiles' terrains.
 			</description>
 		</method>
 	</methods>
 	<members>
-		<member name="tile_layout" type="int" setter="set_tile_layout" getter="get_tile_layout" enum="TileSet.TileLayout" default="0">
-			For all half-offset shapes (Isometric, Hexagonal and Half-Offset square), changes the way tiles are indexed in the TileMap grid.
+		<member name="tile_layout" type="int" setter="set_tile_layout" getter="get_tile_layout" enum="LayeredTileSet.TileLayout" default="0">
+			For all half-offset shapes (Isometric, Hexagonal and Half-Offset square), changes the way tiles are indexed in the LayeredTileMap grid.
 		</member>
-		<member name="tile_offset_axis" type="int" setter="set_tile_offset_axis" getter="get_tile_offset_axis" enum="TileSet.TileOffsetAxis" default="0">
+		<member name="tile_offset_axis" type="int" setter="set_tile_offset_axis" getter="get_tile_offset_axis" enum="LayeredTileSet.TileOffsetAxis" default="0">
 			For all half-offset shapes (Isometric, Hexagonal and Half-Offset square), determines the offset axis.
 		</member>
-		<member name="tile_shape" type="int" setter="set_tile_shape" getter="get_tile_shape" enum="TileSet.TileShape" default="0">
+		<member name="tile_shape" type="int" setter="set_tile_shape" getter="get_tile_shape" enum="LayeredTileSet.TileShape" default="0">
 			The tile shape.
 		</member>
 		<member name="tile_size" type="Vector2i" setter="set_tile_size" getter="get_tile_size" default="Vector2i(16, 16)">
@@ -634,7 +634,7 @@
 		</constant>
 		<constant name="TILE_SHAPE_ISOMETRIC" value="1" enum="TileShape">
 			Diamond tile shape (for isometric look).
-			[b]Note:[/b] Isometric [TileSet] works best if [TileMap] and all its layers have Y-sort enabled.
+			[b]Note:[/b] Isometric [LayeredTileSet] works best if [LayeredTileMap] and all its layers have Y-sort enabled.
 		</constant>
 		<constant name="TILE_SHAPE_HALF_OFFSET_SQUARE" value="2" enum="TileShape">
 			Rectangular tile shape with one row/column out of two offset by half a tile.

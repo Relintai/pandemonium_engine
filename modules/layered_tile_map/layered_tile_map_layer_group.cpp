@@ -37,10 +37,10 @@
 
 #ifdef TOOLS_ENABLED
 
-void TileMapLayerGroup::_cleanup_selected_layers() {
+void LayeredTileMapLayerGroup::_cleanup_selected_layers() {
 	for (int i = 0; i < selected_layers.size(); i++) {
 		const String name = selected_layers[i];
-		TileMapLayer *layer = Object::cast_to<TileMapLayer>(get_node_or_null(name));
+		LayeredTileMapLayer *layer = Object::cast_to<LayeredTileMapLayer>(get_node_or_null(name));
 		if (!layer) {
 			selected_layers.remove_at(i);
 			i--;
@@ -50,11 +50,11 @@ void TileMapLayerGroup::_cleanup_selected_layers() {
 
 #endif // TOOLS_ENABLED
 
-void TileMapLayerGroup::_tile_set_changed() {
+void LayeredTileMapLayerGroup::_tile_set_changed() {
 	for (int i = 0; i < get_child_count(); i++) {
-		TileMapLayer *layer = Object::cast_to<TileMapLayer>(get_child(i));
+		LayeredTileMapLayer *layer = Object::cast_to<LayeredTileMapLayer>(get_child(i));
 		if (layer) {
-			layer->notify_tile_map_layer_group_change(TileMapLayer::DIRTY_FLAGS_LAYER_GROUP_TILE_SET);
+			layer->notify_tile_map_layer_group_change(LayeredTileMapLayer::DIRTY_FLAGS_LAYER_GROUP_TILE_SET);
 		}
 	}
 
@@ -63,24 +63,24 @@ void TileMapLayerGroup::_tile_set_changed() {
 
 #ifdef TOOLS_ENABLED
 
-void TileMapLayerGroup::set_selected_layers(Vector<StringName> p_layer_names) {
+void LayeredTileMapLayerGroup::set_selected_layers(Vector<StringName> p_layer_names) {
 	selected_layers = p_layer_names;
 	_cleanup_selected_layers();
 
 	// Update the layers modulation.
 	for (int i = 0; i < get_child_count(); i++) {
-		TileMapLayer *layer = Object::cast_to<TileMapLayer>(get_child(i));
+		LayeredTileMapLayer *layer = Object::cast_to<LayeredTileMapLayer>(get_child(i));
 		if (layer) {
-			layer->notify_tile_map_layer_group_change(TileMapLayer::DIRTY_FLAGS_LAYER_GROUP_SELECTED_LAYERS);
+			layer->notify_tile_map_layer_group_change(LayeredTileMapLayer::DIRTY_FLAGS_LAYER_GROUP_SELECTED_LAYERS);
 		}
 	}
 }
 
-Vector<StringName> TileMapLayerGroup::get_selected_layers() const {
+Vector<StringName> LayeredTileMapLayerGroup::get_selected_layers() const {
 	return selected_layers;
 }
 
-void TileMapLayerGroup::set_highlight_selected_layer(bool p_highlight_selected_layer) {
+void LayeredTileMapLayerGroup::set_highlight_selected_layer(bool p_highlight_selected_layer) {
 	if (highlight_selected_layer == p_highlight_selected_layer) {
 		return;
 	}
@@ -88,62 +88,62 @@ void TileMapLayerGroup::set_highlight_selected_layer(bool p_highlight_selected_l
 	highlight_selected_layer = p_highlight_selected_layer;
 
 	for (int i = 0; i < get_child_count(); i++) {
-		TileMapLayer *layer = Object::cast_to<TileMapLayer>(get_child(i));
+		LayeredTileMapLayer *layer = Object::cast_to<LayeredTileMapLayer>(get_child(i));
 		if (layer) {
-			layer->notify_tile_map_layer_group_change(TileMapLayer::DIRTY_FLAGS_LAYER_GROUP_HIGHLIGHT_SELECTED);
+			layer->notify_tile_map_layer_group_change(LayeredTileMapLayer::DIRTY_FLAGS_LAYER_GROUP_HIGHLIGHT_SELECTED);
 		}
 	}
 }
 
-bool TileMapLayerGroup::is_highlighting_selected_layer() const {
+bool LayeredTileMapLayerGroup::is_highlighting_selected_layer() const {
 	return highlight_selected_layer;
 }
 
 #endif // TOOLS_ENABLED
 
-void TileMapLayerGroup::remove_child_notify(Node *p_child) {
+void LayeredTileMapLayerGroup::remove_child_notify(Node *p_child) {
 #ifdef TOOLS_ENABLED
 	_cleanup_selected_layers();
 #endif // TOOLS_ENABLED
 }
 
-void TileMapLayerGroup::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("set_tileset", "tileset"), &TileMapLayerGroup::set_tileset);
-	ClassDB::bind_method(D_METHOD("get_tileset"), &TileMapLayerGroup::get_tileset);
+void LayeredTileMapLayerGroup::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_tileset", "tileset"), &LayeredTileMapLayerGroup::set_tileset);
+	ClassDB::bind_method(D_METHOD("get_tileset"), &LayeredTileMapLayerGroup::get_tileset);
 
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tile_set", PROPERTY_HINT_RESOURCE_TYPE, "TileSet"), "set_tileset", "get_tileset");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tile_set", PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileSet"), "set_tileset", "get_tileset");
 }
 
-void TileMapLayerGroup::set_tileset(const Ref<TileSet> &p_tileset) {
+void LayeredTileMapLayerGroup::set_tileset(const Ref<LayeredTileSet> &p_tileset) {
 	if (p_tileset == tile_set) {
 		return;
 	}
 
 	// Set the tileset, registering to its changes.
 	if (tile_set.is_valid()) {
-		tile_set->disconnect_changed(callable_mp(this, &TileMapLayerGroup::_tile_set_changed));
+		tile_set->disconnect_changed(callable_mp(this, &LayeredTileMapLayerGroup::_tile_set_changed));
 	}
 
 	tile_set = p_tileset;
 
 	if (tile_set.is_valid()) {
-		tile_set->connect_changed(callable_mp(this, &TileMapLayerGroup::_tile_set_changed));
+		tile_set->connect_changed(callable_mp(this, &LayeredTileMapLayerGroup::_tile_set_changed));
 	}
 
 	for (int i = 0; i < get_child_count(); i++) {
-		TileMapLayer *layer = Object::cast_to<TileMapLayer>(get_child(i));
+		LayeredTileMapLayer *layer = Object::cast_to<LayeredTileMapLayer>(get_child(i));
 		if (layer) {
-			layer->notify_tile_map_layer_group_change(TileMapLayer::DIRTY_FLAGS_LAYER_GROUP_TILE_SET);
+			layer->notify_tile_map_layer_group_change(LayeredTileMapLayer::DIRTY_FLAGS_LAYER_GROUP_TILE_SET);
 		}
 	}
 }
 
-Ref<TileSet> TileMapLayerGroup::get_tileset() const {
+Ref<LayeredTileSet> LayeredTileMapLayerGroup::get_tileset() const {
 	return tile_set;
 }
 
-TileMapLayerGroup::~TileMapLayerGroup() {
+LayeredTileMapLayerGroup::~LayeredTileMapLayerGroup() {
 	if (tile_set.is_valid()) {
-		tile_set->disconnect_changed(callable_mp(this, &TileMapLayerGroup::_tile_set_changed));
+		tile_set->disconnect_changed(callable_mp(this, &LayeredTileMapLayerGroup::_tile_set_changed));
 	}
 }

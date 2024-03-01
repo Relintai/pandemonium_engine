@@ -51,25 +51,25 @@
 #include "scene/resources/2d/tile_set.h"
 #include "scene/resources/image_texture.h"
 
-TilesEditorUtils *TilesEditorUtils::singleton = nullptr;
-TileMapEditorPlugin *tile_map_plugin_singleton = nullptr;
-TileSetEditorPlugin *tile_set_plugin_singleton = nullptr;
+LayeredTilesEditorUtils *LayeredTilesEditorUtils::singleton = nullptr;
+LayeredTileMapEditorPlugin *tile_map_plugin_singleton = nullptr;
+LayeredTileSetEditorPlugin *tile_set_plugin_singleton = nullptr;
 
-void TilesEditorUtils::_preview_frame_started() {
-	RS::get_singleton()->request_frame_drawn_callback(callable_mp(const_cast<TilesEditorUtils *>(this), &TilesEditorUtils::_pattern_preview_done));
+void LayeredTilesEditorUtils::_preview_frame_started() {
+	RS::get_singleton()->request_frame_drawn_callback(callable_mp(const_cast<LayeredTilesEditorUtils *>(this), &LayeredTilesEditorUtils::_pattern_preview_done));
 }
 
-void TilesEditorUtils::_pattern_preview_done() {
+void LayeredTilesEditorUtils::_pattern_preview_done() {
 	pattern_preview_done.post();
 }
 
-void TilesEditorUtils::_thread_func(void *ud) {
-	TilesEditorUtils *te = static_cast<TilesEditorUtils *>(ud);
+void LayeredTilesEditorUtils::_thread_func(void *ud) {
+	LayeredTilesEditorUtils *te = static_cast<LayeredTilesEditorUtils *>(ud);
 	set_current_thread_safe_for_nodes(true);
 	te->_thread();
 }
 
-void TilesEditorUtils::_thread() {
+void LayeredTilesEditorUtils::_thread() {
 	pattern_thread_exited.clear();
 	while (!pattern_thread_exit.is_set()) {
 		pattern_preview_sem.wait();
@@ -94,7 +94,7 @@ void TilesEditorUtils::_thread() {
 				viewport->set_transparent_background(true);
 				viewport->set_update_mode(SubViewport::UPDATE_ONCE);
 
-				TileMap *tile_map = memnew(TileMap);
+				LayeredTileMap *tile_map = memnew(LayeredTileMap);
 				tile_map->set_tileset(item.tile_set);
 				tile_map->set_pattern(0, Vector2(), item.pattern);
 				viewport->add_child(tile_map);
@@ -109,7 +109,7 @@ void TilesEditorUtils::_thread() {
 					encompassing_rect.expand_to(world_pos);
 
 					// Texture.
-					Ref<TileSetAtlasSource> atlas_source = item.tile_set->get_source(tile_map->get_cell_source_id(0, cell));
+					Ref<LayeredTileSetAtlasSource> atlas_source = item.tile_set->get_source(tile_map->get_cell_source_id(0, cell));
 					if (atlas_source.is_valid()) {
 						Vector2i coords = tile_map->get_cell_atlas_coords(0, cell);
 						int alternative = tile_map->get_cell_alternative_tile(0, cell);
@@ -129,7 +129,7 @@ void TilesEditorUtils::_thread() {
 				// Add the viewport at the last moment to avoid rendering too early.
 				callable_mp((Node *)EditorNode::get_singleton(), &Node::add_child).call_deferred(viewport, false, Node::INTERNAL_MODE_DISABLED);
 
-				RS::get_singleton()->connect(SNAME("frame_pre_draw"), callable_mp(const_cast<TilesEditorUtils *>(this), &TilesEditorUtils::_preview_frame_started), Object::CONNECT_ONE_SHOT);
+				RS::get_singleton()->connect(SNAME("frame_pre_draw"), callable_mp(const_cast<LayeredTilesEditorUtils *>(this), &LayeredTilesEditorUtils::_preview_frame_started), Object::CONNECT_ONE_SHOT);
 
 				pattern_preview_done.wait();
 
@@ -145,7 +145,7 @@ void TilesEditorUtils::_thread() {
 	pattern_thread_exited.set();
 }
 
-void TilesEditorUtils::queue_pattern_preview(Ref<TileSet> p_tile_set, Ref<TileMapPattern> p_pattern, Callable p_callback) {
+void LayeredTilesEditorUtils::queue_pattern_preview(Ref<LayeredTileSet> p_tile_set, Ref<LayeredTileMapPattern> p_pattern, Callable p_callback) {
 	ERR_FAIL_COND(!p_tile_set.is_valid());
 	ERR_FAIL_COND(!p_pattern.is_valid());
 	{
@@ -155,11 +155,11 @@ void TilesEditorUtils::queue_pattern_preview(Ref<TileSet> p_tile_set, Ref<TileMa
 	pattern_preview_sem.post();
 }
 
-void TilesEditorUtils::set_sources_lists_current(int p_current) {
+void LayeredTilesEditorUtils::set_sources_lists_current(int p_current) {
 	atlas_sources_lists_current = p_current;
 }
 
-void TilesEditorUtils::synchronize_sources_list(Object *p_current_list, Object *p_current_sort_button) {
+void LayeredTilesEditorUtils::synchronize_sources_list(Object *p_current_list, Object *p_current_sort_button) {
 	ItemList *item_list = Object::cast_to<ItemList>(p_current_list);
 	MenuButton *sorting_button = Object::cast_to<MenuButton>(p_current_sort_button);
 	ERR_FAIL_NULL(item_list);
@@ -187,13 +187,13 @@ void TilesEditorUtils::synchronize_sources_list(Object *p_current_list, Object *
 	}
 }
 
-void TilesEditorUtils::set_atlas_view_transform(float p_zoom, Vector2 p_scroll) {
+void LayeredTilesEditorUtils::set_atlas_view_transform(float p_zoom, Vector2 p_scroll) {
 	atlas_view_zoom = p_zoom;
 	atlas_view_scroll = p_scroll;
 }
 
-void TilesEditorUtils::synchronize_atlas_view(Object *p_current) {
-	TileAtlasView *tile_atlas_view = Object::cast_to<TileAtlasView>(p_current);
+void LayeredTilesEditorUtils::synchronize_atlas_view(Object *p_current) {
+	LayeredTileAtlasView *tile_atlas_view = Object::cast_to<LayeredTileAtlasView>(p_current);
 	ERR_FAIL_NULL(tile_atlas_view);
 
 	if (tile_atlas_view->is_visible_in_tree()) {
@@ -201,11 +201,11 @@ void TilesEditorUtils::synchronize_atlas_view(Object *p_current) {
 	}
 }
 
-void TilesEditorUtils::set_sorting_option(int p_option) {
+void LayeredTilesEditorUtils::set_sorting_option(int p_option) {
 	source_sort = p_option;
 }
 
-List<int> TilesEditorUtils::get_sorted_sources(const Ref<TileSet> p_tile_set) const {
+List<int> LayeredTilesEditorUtils::get_sorted_sources(const Ref<LayeredTileSet> p_tile_set) const {
 	SourceNameComparator::tile_set = p_tile_set;
 	List<int> source_ids;
 
@@ -233,20 +233,20 @@ List<int> TilesEditorUtils::get_sorted_sources(const Ref<TileSet> p_tile_set) co
 	return source_ids;
 }
 
-Ref<TileSet> TilesEditorUtils::SourceNameComparator::tile_set;
+Ref<LayeredTileSet> LayeredTilesEditorUtils::SourceNameComparator::tile_set;
 
-bool TilesEditorUtils::SourceNameComparator::operator()(const int &p_a, const int &p_b) const {
+bool LayeredTilesEditorUtils::SourceNameComparator::operator()(const int &p_a, const int &p_b) const {
 	String name_a;
 	String name_b;
 
 	{
-		TileSetSource *source = *tile_set->get_source(p_a);
+		LayeredTileSetSource *source = *tile_set->get_source(p_a);
 
 		if (!source->get_name().is_empty()) {
 			name_a = source->get_name();
 		}
 
-		TileSetAtlasSource *atlas_source = Object::cast_to<TileSetAtlasSource>(source);
+		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 		if (atlas_source) {
 			Ref<Texture2D> texture = atlas_source->get_texture();
 			if (name_a.is_empty() && texture.is_valid()) {
@@ -260,13 +260,13 @@ bool TilesEditorUtils::SourceNameComparator::operator()(const int &p_a, const in
 	}
 
 	{
-		TileSetSource *source = *tile_set->get_source(p_b);
+		LayeredTileSetSource *source = *tile_set->get_source(p_b);
 
 		if (!source->get_name().is_empty()) {
 			name_b = source->get_name();
 		}
 
-		TileSetAtlasSource *atlas_source = Object::cast_to<TileSetAtlasSource>(source);
+		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 		if (atlas_source) {
 			Ref<Texture2D> texture = atlas_source->get_texture();
 			if (name_b.is_empty() && texture.is_valid()) {
@@ -282,12 +282,12 @@ bool TilesEditorUtils::SourceNameComparator::operator()(const int &p_a, const in
 	return NaturalNoCaseComparator()(name_a, name_b);
 }
 
-void TilesEditorUtils::display_tile_set_editor_panel() {
+void LayeredTilesEditorUtils::display_tile_set_editor_panel() {
 	tile_map_plugin_singleton->hide_editor();
 	tile_set_plugin_singleton->make_visible(true);
 }
 
-void TilesEditorUtils::draw_selection_rect(CanvasItem *p_ci, const Rect2 &p_rect, const Color &p_color) {
+void LayeredTilesEditorUtils::draw_selection_rect(CanvasItem *p_ci, const Rect2 &p_rect, const Color &p_color) {
 	Ref<Texture2D> selection_texture = EditorNode::get_singleton()->get_editor_theme()->get_icon(SNAME("TileSelection"), EditorStringName(EditorIcons));
 
 	real_t scale = p_ci->get_global_transform().get_scale().x * 0.5;
@@ -298,13 +298,13 @@ void TilesEditorUtils::draw_selection_rect(CanvasItem *p_ci, const Rect2 &p_rect
 	p_ci->draw_set_transform_matrix(Transform2D());
 }
 
-TilesEditorUtils::TilesEditorUtils() {
+LayeredTilesEditorUtils::LayeredTilesEditorUtils() {
 	singleton = this;
 	// Pattern preview generation thread.
 	pattern_preview_thread.start(_thread_func, this);
 }
 
-TilesEditorUtils::~TilesEditorUtils() {
+LayeredTilesEditorUtils::~LayeredTilesEditorUtils() {
 	if (pattern_preview_thread.is_started()) {
 		pattern_thread_exit.set();
 		pattern_preview_sem.post();
@@ -317,26 +317,26 @@ TilesEditorUtils::~TilesEditorUtils() {
 	singleton = nullptr;
 }
 
-void TileMapEditorPlugin::_tile_map_layer_changed() {
+void LayeredTileMapEditorPlugin::_tile_map_layer_changed() {
 	if (tile_map_changed_needs_update) {
 		return;
 	}
 	tile_map_changed_needs_update = true;
-	callable_mp(this, &TileMapEditorPlugin::_update_tile_map).call_deferred();
+	callable_mp(this, &LayeredTileMapEditorPlugin::_update_tile_map).call_deferred();
 }
 
-void TileMapEditorPlugin::_tile_map_layer_removed() {
-	// Workaround for TileMap, making sure the editor stays open when you delete the currently edited layer.
-	TileMap *tile_map = Object::cast_to<TileMap>(ObjectDB::get_instance(tile_map_group_id));
+void LayeredTileMapEditorPlugin::_tile_map_layer_removed() {
+	// Workaround for LayeredTileMap, making sure the editor stays open when you delete the currently edited layer.
+	LayeredTileMap *tile_map = Object::cast_to<LayeredTileMap>(ObjectDB::get_instance(tile_map_group_id));
 	if (tile_map) {
 		edit(tile_map);
 	}
 }
 
-void TileMapEditorPlugin::_update_tile_map() {
-	TileMapLayer *edited_layer = Object::cast_to<TileMapLayer>(ObjectDB::get_instance(tile_map_layer_id));
+void LayeredTileMapEditorPlugin::_update_tile_map() {
+	LayeredTileMapLayer *edited_layer = Object::cast_to<LayeredTileMapLayer>(ObjectDB::get_instance(tile_map_layer_id));
 	if (edited_layer) {
-		Ref<TileSet> tile_set = edited_layer->get_effective_tile_set();
+		Ref<LayeredTileSet> tile_set = edited_layer->get_effective_tile_set();
 		if (tile_set.is_valid() && tile_set_id != tile_set->get_instance_id()) {
 			tile_set_plugin_singleton->edit(tile_set.ptr());
 			tile_set_plugin_singleton->make_visible(true);
@@ -350,24 +350,24 @@ void TileMapEditorPlugin::_update_tile_map() {
 	tile_map_changed_needs_update = false;
 }
 
-void TileMapEditorPlugin::_select_layer(const StringName &p_name) {
-	TileMapLayer *edited_layer = Object::cast_to<TileMapLayer>(ObjectDB::get_instance(tile_map_layer_id));
+void LayeredTileMapEditorPlugin::_select_layer(const StringName &p_name) {
+	LayeredTileMapLayer *edited_layer = Object::cast_to<LayeredTileMapLayer>(ObjectDB::get_instance(tile_map_layer_id));
 	ERR_FAIL_NULL(edited_layer);
 
 	Node *parent = edited_layer->get_parent();
 	ERR_FAIL_NULL(parent);
 
-	TileMapLayer *new_layer = Object::cast_to<TileMapLayer>(parent->get_node_or_null(String(p_name)));
+	LayeredTileMapLayer *new_layer = Object::cast_to<LayeredTileMapLayer>(parent->get_node_or_null(String(p_name)));
 	edit(new_layer);
 }
 
-void TileMapEditorPlugin::_edit_tile_map_layer(TileMapLayer *p_tile_map_layer) {
+void LayeredTileMapEditorPlugin::_edit_tile_map_layer(LayeredTileMapLayer *p_tile_map_layer) {
 	ERR_FAIL_NULL(p_tile_map_layer);
 
 	editor->edit(p_tile_map_layer);
 
-	// Update the selected layers in the TileMapLayerGroup parent node.
-	TileMapLayerGroup *tile_map_layer_group = Object::cast_to<TileMapLayerGroup>(p_tile_map_layer->get_parent());
+	// Update the selected layers in the LayeredTileMapLayerGroup parent node.
+	LayeredTileMapLayerGroup *tile_map_layer_group = Object::cast_to<LayeredTileMapLayerGroup>(p_tile_map_layer->get_parent());
 	if (tile_map_layer_group) {
 		Vector<StringName> selected;
 		selected.push_back(p_tile_map_layer->get_name());
@@ -376,17 +376,17 @@ void TileMapEditorPlugin::_edit_tile_map_layer(TileMapLayer *p_tile_map_layer) {
 
 	// Update the object IDs.
 	tile_map_layer_id = p_tile_map_layer->get_instance_id();
-	p_tile_map_layer->connect("changed", callable_mp(this, &TileMapEditorPlugin::_tile_map_layer_changed));
-	p_tile_map_layer->connect("tree_exited", callable_mp(this, &TileMapEditorPlugin::_tile_map_layer_removed));
+	p_tile_map_layer->connect("changed", callable_mp(this, &LayeredTileMapEditorPlugin::_tile_map_layer_changed));
+	p_tile_map_layer->connect("tree_exited", callable_mp(this, &LayeredTileMapEditorPlugin::_tile_map_layer_removed));
 	if (tile_map_layer_group) {
 		tile_map_group_id = tile_map_layer_group->get_instance_id();
-		tile_map_layer_group->connect("child_entered_tree", callable_mp(editor, &TileMapLayerEditor::update_layers_selector).unbind(1));
-		tile_map_layer_group->connect("child_exiting_tree", callable_mp(editor, &TileMapLayerEditor::update_layers_selector).unbind(1));
-		tile_map_layer_group->connect("child_order_changed", callable_mp(editor, &TileMapLayerEditor::update_layers_selector));
+		tile_map_layer_group->connect("child_entered_tree", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector).unbind(1));
+		tile_map_layer_group->connect("child_exiting_tree", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector).unbind(1));
+		tile_map_layer_group->connect("child_order_changed", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector));
 	}
 
 	// Update the edited tileset.
-	Ref<TileSet> tile_set = p_tile_map_layer->get_effective_tile_set();
+	Ref<LayeredTileSet> tile_set = p_tile_map_layer->get_effective_tile_set();
 	if (tile_set.is_valid()) {
 		tile_set_plugin_singleton->edit(tile_set.ptr());
 		tile_set_plugin_singleton->make_visible(true);
@@ -397,20 +397,20 @@ void TileMapEditorPlugin::_edit_tile_map_layer(TileMapLayer *p_tile_map_layer) {
 	}
 }
 
-void TileMapEditorPlugin::_edit_tile_map_layer_group(TileMapLayerGroup *p_tile_map_layer_group) {
+void LayeredTileMapEditorPlugin::_edit_tile_map_layer_group(LayeredTileMapLayerGroup *p_tile_map_layer_group) {
 	ERR_FAIL_NULL(p_tile_map_layer_group);
 
 	Vector<StringName> selected_layers = p_tile_map_layer_group->get_selected_layers();
 
-	TileMapLayer *selected_layer = nullptr;
+	LayeredTileMapLayer *selected_layer = nullptr;
 	if (selected_layers.size() > 0) {
 		// Edit the selected layer.
-		selected_layer = Object::cast_to<TileMapLayer>(p_tile_map_layer_group->get_node_or_null(String(selected_layers[0])));
+		selected_layer = Object::cast_to<LayeredTileMapLayer>(p_tile_map_layer_group->get_node_or_null(String(selected_layers[0])));
 	}
 	if (!selected_layer) {
 		// Edit the first layer found.
 		for (int i = 0; i < p_tile_map_layer_group->get_child_count(); i++) {
-			selected_layer = Object::cast_to<TileMapLayer>(p_tile_map_layer_group->get_child(i));
+			selected_layer = Object::cast_to<LayeredTileMapLayer>(p_tile_map_layer_group->get_child(i));
 			if (selected_layer) {
 				break;
 			}
@@ -424,32 +424,32 @@ void TileMapEditorPlugin::_edit_tile_map_layer_group(TileMapLayerGroup *p_tile_m
 	}
 }
 
-void TileMapEditorPlugin::_notification(int p_notification) {
+void LayeredTileMapEditorPlugin::_notification(int p_notification) {
 	if (p_notification == NOTIFICATION_EXIT_TREE) {
-		get_tree()->queue_delete(TilesEditorUtils::get_singleton());
+		get_tree()->queue_delete(LayeredTilesEditorUtils::get_singleton());
 	}
 }
 
-void TileMapEditorPlugin::edit(Object *p_object) {
-	TileMapLayer *edited_layer = Object::cast_to<TileMapLayer>(ObjectDB::get_instance(tile_map_layer_id));
+void LayeredTileMapEditorPlugin::edit(Object *p_object) {
+	LayeredTileMapLayer *edited_layer = Object::cast_to<LayeredTileMapLayer>(ObjectDB::get_instance(tile_map_layer_id));
 	if (edited_layer) {
-		edited_layer->disconnect("changed", callable_mp(this, &TileMapEditorPlugin::_tile_map_layer_changed));
-		edited_layer->disconnect("tree_exited", callable_mp(this, &TileMapEditorPlugin::_tile_map_layer_removed));
+		edited_layer->disconnect("changed", callable_mp(this, &LayeredTileMapEditorPlugin::_tile_map_layer_changed));
+		edited_layer->disconnect("tree_exited", callable_mp(this, &LayeredTileMapEditorPlugin::_tile_map_layer_removed));
 	}
 
-	TileMapLayerGroup *tile_map_group = Object::cast_to<TileMapLayerGroup>(ObjectDB::get_instance(tile_map_group_id));
+	LayeredTileMapLayerGroup *tile_map_group = Object::cast_to<LayeredTileMapLayerGroup>(ObjectDB::get_instance(tile_map_group_id));
 	if (tile_map_group) {
-		tile_map_group->disconnect("child_entered_tree", callable_mp(editor, &TileMapLayerEditor::update_layers_selector).unbind(1));
-		tile_map_group->disconnect("child_exiting_tree", callable_mp(editor, &TileMapLayerEditor::update_layers_selector).unbind(1));
-		tile_map_group->disconnect("child_order_changed", callable_mp(editor, &TileMapLayerEditor::update_layers_selector));
+		tile_map_group->disconnect("child_entered_tree", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector).unbind(1));
+		tile_map_group->disconnect("child_exiting_tree", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector).unbind(1));
+		tile_map_group->disconnect("child_order_changed", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector));
 	}
 
 	tile_map_group_id = ObjectID();
 	tile_map_layer_id = ObjectID();
 	tile_set_id = ObjectID();
 
-	TileMapLayerGroup *tile_map_layer_group = Object::cast_to<TileMap>(p_object);
-	TileMapLayer *tile_map_layer = Object::cast_to<TileMapLayer>(p_object);
+	LayeredTileMapLayerGroup *tile_map_layer_group = Object::cast_to<LayeredTileMap>(p_object);
+	LayeredTileMapLayer *tile_map_layer = Object::cast_to<LayeredTileMapLayer>(p_object);
 	if (tile_map_layer_group) {
 		_edit_tile_map_layer_group(tile_map_layer_group);
 	} else if (tile_map_layer) {
@@ -457,7 +457,7 @@ void TileMapEditorPlugin::edit(Object *p_object) {
 	} else {
 		// Deselect the layer in the group.
 		if (edited_layer) {
-			tile_map_layer_group = Object::cast_to<TileMapLayerGroup>(edited_layer->get_parent());
+			tile_map_layer_group = Object::cast_to<LayeredTileMapLayerGroup>(edited_layer->get_parent());
 			if (tile_map_layer_group) {
 				tile_map_layer_group->set_selected_layers(Vector<StringName>());
 			}
@@ -465,11 +465,11 @@ void TileMapEditorPlugin::edit(Object *p_object) {
 	}
 }
 
-bool TileMapEditorPlugin::handles(Object *p_object) const {
-	return Object::cast_to<TileMapLayer>(p_object) != nullptr || Object::cast_to<TileMapLayerGroup>(p_object) != nullptr;
+bool LayeredTileMapEditorPlugin::handles(Object *p_object) const {
+	return Object::cast_to<LayeredTileMapLayer>(p_object) != nullptr || Object::cast_to<LayeredTileMapLayerGroup>(p_object) != nullptr;
 }
 
-void TileMapEditorPlugin::make_visible(bool p_visible) {
+void LayeredTileMapEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
 		button->show();
 		EditorNode::get_bottom_panel()->make_item_visible(editor);
@@ -481,47 +481,47 @@ void TileMapEditorPlugin::make_visible(bool p_visible) {
 	}
 }
 
-bool TileMapEditorPlugin::forward_canvas_gui_input(const Ref<InputEvent> &p_event) {
+bool LayeredTileMapEditorPlugin::forward_canvas_gui_input(const Ref<InputEvent> &p_event) {
 	return editor->forward_canvas_gui_input(p_event);
 }
 
-void TileMapEditorPlugin::forward_canvas_draw_over_viewport(Control *p_overlay) {
+void LayeredTileMapEditorPlugin::forward_canvas_draw_over_viewport(Control *p_overlay) {
 	editor->forward_canvas_draw_over_viewport(p_overlay);
 }
 
-void TileMapEditorPlugin::hide_editor() {
+void LayeredTileMapEditorPlugin::hide_editor() {
 	if (editor->is_visible_in_tree()) {
 		EditorNode::get_bottom_panel()->hide_bottom_panel();
 	}
 }
 
-bool TileMapEditorPlugin::is_editor_visible() const {
+bool LayeredTileMapEditorPlugin::is_editor_visible() const {
 	return editor->is_visible_in_tree();
 }
 
-TileMapEditorPlugin::TileMapEditorPlugin() {
-	if (!TilesEditorUtils::get_singleton()) {
-		memnew(TilesEditorUtils);
+LayeredTileMapEditorPlugin::LayeredTileMapEditorPlugin() {
+	if (!LayeredTilesEditorUtils::get_singleton()) {
+		memnew(LayeredTilesEditorUtils);
 	}
 	tile_map_plugin_singleton = this;
 
-	editor = memnew(TileMapLayerEditor);
+	editor = memnew(LayeredTileMapLayerEditor);
 	editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	editor->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	editor->set_custom_minimum_size(Size2(0, 200) * EDSCALE);
-	editor->connect("change_selected_layer_request", callable_mp(this, &TileMapEditorPlugin::_select_layer));
+	editor->connect("change_selected_layer_request", callable_mp(this, &LayeredTileMapEditorPlugin::_select_layer));
 	editor->hide();
 
-	button = EditorNode::get_bottom_panel()->add_item(TTR("TileMap"), editor);
+	button = EditorNode::get_bottom_panel()->add_item(TTR("LayeredTileMap"), editor);
 	button->hide();
 }
 
-TileMapEditorPlugin::~TileMapEditorPlugin() {
+LayeredTileMapEditorPlugin::~LayeredTileMapEditorPlugin() {
 	tile_map_plugin_singleton = nullptr;
 }
 
-void TileSetEditorPlugin::edit(Object *p_object) {
-	editor->edit(Ref<TileSet>(p_object));
+void LayeredTileSetEditorPlugin::edit(Object *p_object) {
+	editor->edit(Ref<LayeredTileSet>(p_object));
 	if (p_object) {
 		edited_tileset = p_object->get_instance_id();
 	} else {
@@ -529,11 +529,11 @@ void TileSetEditorPlugin::edit(Object *p_object) {
 	}
 }
 
-bool TileSetEditorPlugin::handles(Object *p_object) const {
-	return Object::cast_to<TileSet>(p_object) != nullptr;
+bool LayeredTileSetEditorPlugin::handles(Object *p_object) const {
+	return Object::cast_to<LayeredTileSet>(p_object) != nullptr;
 }
 
-void TileSetEditorPlugin::make_visible(bool p_visible) {
+void LayeredTileSetEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
 		button->show();
 		if (!tile_map_plugin_singleton->is_editor_visible()) {
@@ -547,26 +547,26 @@ void TileSetEditorPlugin::make_visible(bool p_visible) {
 	}
 }
 
-ObjectID TileSetEditorPlugin::get_edited_tileset() const {
+ObjectID LayeredTileSetEditorPlugin::get_edited_tileset() const {
 	return edited_tileset;
 }
 
-TileSetEditorPlugin::TileSetEditorPlugin() {
-	if (!TilesEditorUtils::get_singleton()) {
-		memnew(TilesEditorUtils);
+LayeredTileSetEditorPlugin::LayeredTileSetEditorPlugin() {
+	if (!LayeredTilesEditorUtils::get_singleton()) {
+		memnew(LayeredTilesEditorUtils);
 	}
 	tile_set_plugin_singleton = this;
 
-	editor = memnew(TileSetEditor);
+	editor = memnew(LayeredTileSetEditor);
 	editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	editor->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	editor->set_custom_minimum_size(Size2(0, 200) * EDSCALE);
 	editor->hide();
 
-	button = EditorNode::get_bottom_panel()->add_item(TTR("TileSet"), editor);
+	button = EditorNode::get_bottom_panel()->add_item(TTR("LayeredTileSet"), editor);
 	button->hide();
 }
 
-TileSetEditorPlugin::~TileSetEditorPlugin() {
+LayeredTileSetEditorPlugin::~LayeredTileSetEditorPlugin() {
 	tile_set_plugin_singleton = nullptr;
 }

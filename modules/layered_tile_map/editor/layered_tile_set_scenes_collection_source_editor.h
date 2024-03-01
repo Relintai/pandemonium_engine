@@ -41,17 +41,17 @@ class ItemList;
 class Label;
 class EditorFileDialog;
 
-class TileSetScenesCollectionSourceEditor : public HBoxContainer {
-	GDCLASS(TileSetScenesCollectionSourceEditor, HBoxContainer);
+class LayeredTileSetScenesCollectionSourceEditor : public HBoxContainer {
+	GDCLASS(LayeredTileSetScenesCollectionSourceEditor, HBoxContainer);
 
 private:
 	// -- Proxy object for an atlas source, needed by the inspector --
-	class TileSetScenesCollectionProxyObject : public Object {
-		GDCLASS(TileSetScenesCollectionProxyObject, Object);
+	class LayeredTileSetScenesCollectionProxyObject : public Object {
+		GDCLASS(LayeredTileSetScenesCollectionProxyObject, Object);
 
 	private:
-		Ref<TileSet> tile_set;
-		TileSetScenesCollectionSource *tile_set_scenes_collection_source = nullptr;
+		Ref<LayeredTileSet> tile_set;
+		LayeredTileSetScenesCollectionSource *tile_set_scenes_collection_source = nullptr;
 		int source_id = -1;
 
 	protected:
@@ -64,17 +64,17 @@ private:
 		void set_id(int p_id);
 		int get_id();
 
-		void edit(Ref<TileSet> p_tile_set, TileSetScenesCollectionSource *p_tile_set_scenes_collection_source, int p_source_id);
+		void edit(Ref<LayeredTileSet> p_tile_set, LayeredTileSetScenesCollectionSource *p_tile_set_scenes_collection_source, int p_source_id);
 	};
 
 	// -- Proxy object for a tile, needed by the inspector --
-	class SceneTileProxyObject : public Object {
-		GDCLASS(SceneTileProxyObject, Object);
+	class LayeredSceneTileProxyObject : public Object {
+		GDCLASS(LayeredSceneTileProxyObject, Object);
 
 	private:
-		TileSetScenesCollectionSourceEditor *tile_set_scenes_collection_source_editor = nullptr;
+		LayeredTileSetScenesCollectionSourceEditor *tile_set_scenes_collection_source_editor = nullptr;
 
-		TileSetScenesCollectionSource *tile_set_scenes_collection_source = nullptr;
+		LayeredTileSetScenesCollectionSource *tile_set_scenes_collection_source = nullptr;
 		int source_id;
 		int scene_id;
 
@@ -87,9 +87,9 @@ private:
 
 	public:
 		// Update the proxyed object.
-		void edit(TileSetScenesCollectionSource *p_tile_set_atlas_source, int p_scene_id);
+		void edit(LayeredTileSetScenesCollectionSource *p_tile_set_atlas_source, int p_scene_id);
 
-		SceneTileProxyObject(TileSetScenesCollectionSourceEditor *p_tiles_set_scenes_collection_source_editor) {
+		LayeredSceneTileProxyObject(LayeredTileSetScenesCollectionSourceEditor *p_tiles_set_scenes_collection_source_editor) {
 			tile_set_scenes_collection_source_editor = p_tiles_set_scenes_collection_source_editor;
 		}
 	};
@@ -97,19 +97,19 @@ private:
 private:
 	bool read_only = false;
 
-	Ref<TileSet> tile_set;
-	TileSetScenesCollectionSource *tile_set_scenes_collection_source = nullptr;
+	Ref<LayeredTileSet> tile_set;
+	LayeredTileSetScenesCollectionSource *tile_set_scenes_collection_source = nullptr;
 	int tile_set_source_id = -1;
 
 	bool tile_set_scenes_collection_source_changed_needs_update = false;
 
 	// Source inspector.
-	TileSetScenesCollectionProxyObject *scenes_collection_source_proxy_object = nullptr;
+	LayeredTileSetScenesCollectionProxyObject *scenes_collection_source_proxy_object = nullptr;
 	Label *scenes_collection_source_inspector_label = nullptr;
 	EditorInspector *scenes_collection_source_inspector = nullptr;
 
 	// Tile inspector.
-	SceneTileProxyObject *tile_proxy_object = nullptr;
+	LayeredSceneTileProxyObject *tile_proxy_object = nullptr;
 	Label *tile_inspector_label = nullptr;
 	EditorInspector *tile_inspector = nullptr;
 
@@ -141,9 +141,9 @@ protected:
 	static void _bind_methods();
 
 public:
-	void edit(Ref<TileSet> p_tile_set, TileSetScenesCollectionSource *p_tile_set_scenes_collection_source, int p_source_id);
-	TileSetScenesCollectionSourceEditor();
-	~TileSetScenesCollectionSourceEditor();
+	void edit(Ref<LayeredTileSet> p_tile_set, LayeredTileSetScenesCollectionSource *p_tile_set_scenes_collection_source, int p_source_id);
+	LayeredTileSetScenesCollectionSourceEditor();
+	~LayeredTileSetScenesCollectionSourceEditor();
 };
 
 #endif // TILE_SET_SCENES_COLLECTION_SOURCE_EDITOR_H
