@@ -1,3 +1,5 @@
+#ifndef TILE_SET_SCENES_COLLECTION_SOURCE_EDITOR_H
+#define TILE_SET_SCENES_COLLECTION_SOURCE_EDITOR_H
 /**************************************************************************/
 /*  tile_set_scenes_collection_source_editor.h                            */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILE_SET_SCENES_COLLECTION_SOURCE_EDITOR_H
-#define TILE_SET_SCENES_COLLECTION_SOURCE_EDITOR_H
+
+
 
 #include "editor/editor_inspector.h"
 #include "scene/gui/box_container.h"

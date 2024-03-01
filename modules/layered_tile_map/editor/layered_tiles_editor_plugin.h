@@ -1,3 +1,5 @@
+#ifndef TILES_EDITOR_PLUGIN_H
+#define TILES_EDITOR_PLUGIN_H
 /**************************************************************************/
 /*  tiles_editor_plugin.h                                                 */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILES_EDITOR_PLUGIN_H
-#define TILES_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_plugin.h"
 #include "scene/gui/box_container.h"

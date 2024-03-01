@@ -1,3 +1,5 @@
+#ifndef TILE_PROXIES_MANAGER_DIALOG_H
+#define TILE_PROXIES_MANAGER_DIALOG_H
 /**************************************************************************/
 /*  tile_proxies_manager_dialog.h                                         */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILE_PROXIES_MANAGER_DIALOG_H
-#define TILE_PROXIES_MANAGER_DIALOG_H
+
+
 
 #include "editor/editor_properties.h"
 #include "scene/2d/tile_map.h"

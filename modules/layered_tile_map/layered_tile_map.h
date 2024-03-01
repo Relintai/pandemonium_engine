@@ -1,3 +1,5 @@
+#ifndef TILE_MAP_H
+#define TILE_MAP_H
 /**************************************************************************/
 /*  tile_map.h                                                            */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILE_MAP_H
-#define TILE_MAP_H
+
+
 
 #include "scene/2d/tile_map_layer_group.h"
 #include "scene/resources/2d/tile_set.h"

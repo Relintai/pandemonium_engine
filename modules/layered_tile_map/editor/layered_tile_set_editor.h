@@ -1,3 +1,5 @@
+#ifndef TILE_SET_EDITOR_H
+#define TILE_SET_EDITOR_H
 /**************************************************************************/
 /*  tile_set_editor.h                                                     */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILE_SET_EDITOR_H
-#define TILE_SET_EDITOR_H
+
+
 
 #include "atlas_merging_dialog.h"
 #include "scene/gui/tab_bar.h"

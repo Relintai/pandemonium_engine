@@ -1,3 +1,5 @@
+#ifndef TILE_ATLAS_VIEW_H
+#define TILE_ATLAS_VIEW_H
 /**************************************************************************/
 /*  tile_atlas_view.h                                                     */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILE_ATLAS_VIEW_H
-#define TILE_ATLAS_VIEW_H
+
+
 
 #include "editor/gui/editor_zoom_widget.h"
 #include "scene/gui/box_container.h"

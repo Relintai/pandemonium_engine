@@ -1,3 +1,5 @@
+#ifndef TILE_SET_H
+#define TILE_SET_H
 /**************************************************************************/
 /*  tile_set.h                                                            */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILE_SET_H
-#define TILE_SET_H
+
+
 
 #include "core/io/resource.h"
 #include "core/object/object.h"

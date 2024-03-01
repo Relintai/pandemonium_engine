@@ -1,3 +1,5 @@
+#ifndef TILE_SET_ATLAS_SOURCE_EDITOR_H
+#define TILE_SET_ATLAS_SOURCE_EDITOR_H
 /**************************************************************************/
 /*  tile_set_atlas_source_editor.h                                        */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILE_SET_ATLAS_SOURCE_EDITOR_H
-#define TILE_SET_ATLAS_SOURCE_EDITOR_H
+
+
 
 #include "tile_atlas_view.h"
 #include "tile_data_editors.h"

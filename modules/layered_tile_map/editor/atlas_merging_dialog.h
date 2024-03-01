@@ -1,3 +1,5 @@
+#ifndef ATLAS_MERGING_DIALOG_H
+#define ATLAS_MERGING_DIALOG_H
 /**************************************************************************/
 /*  atlas_merging_dialog.h                                                */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef ATLAS_MERGING_DIALOG_H
-#define ATLAS_MERGING_DIALOG_H
+
+
 
 #include "editor/editor_properties.h"
 #include "scene/gui/dialogs.h"

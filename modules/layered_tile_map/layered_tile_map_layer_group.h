@@ -1,3 +1,5 @@
+#ifndef TILE_MAP_LAYER_GROUP_H
+#define TILE_MAP_LAYER_GROUP_H
 /**************************************************************************/
 /*  tile_map_layer_group.h                                                */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILE_MAP_LAYER_GROUP_H
-#define TILE_MAP_LAYER_GROUP_H
+
+
 
 #include "scene/2d/node_2d.h"
 

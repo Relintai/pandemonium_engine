@@ -1,3 +1,5 @@
+#ifndef TILE_MAP_LAYER_EDITOR_H
+#define TILE_MAP_LAYER_EDITOR_H
 /**************************************************************************/
 /*  tile_map_layer_editor.h                                               */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILE_MAP_LAYER_EDITOR_H
-#define TILE_MAP_LAYER_EDITOR_H
+
+
 
 #include "tile_atlas_view.h"
 

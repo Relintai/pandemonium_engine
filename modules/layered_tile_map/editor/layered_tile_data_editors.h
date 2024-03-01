@@ -1,3 +1,5 @@
+#ifndef TILE_DATA_EDITORS_H
+#define TILE_DATA_EDITORS_H
 /**************************************************************************/
 /*  tile_data_editors.h                                                   */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TILE_DATA_EDITORS_H
-#define TILE_DATA_EDITORS_H
+
+
 
 #include "tile_atlas_view.h"
 
