@@ -7,8 +7,14 @@ def configure(env):
 
 def get_doc_classes():
     return [
+        "LayeredTileData",
         "LayeredTileMap",
-        "LayeredTileSet"
+        "LayeredTileMapLayerGroup",
+        "LayeredTileMapPattern",
+        "LayeredTileSet",
+        "LayeredTileSetAtlasSource",
+        "LayeredTileSetScenesCollectionSource",
+        "LayeredTileSetSource",
     ]
 
 def get_doc_path():

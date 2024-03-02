@@ -1,11 +1,11 @@
 Import('env')
+Import("env_modules")
 
-env.add_source_files(env.modules_sources,"register_types.cpp")
-env.add_source_files(env.modules_sources,"tile_map.cpp")
-env.add_source_files(env.modules_sources,"tile_set.cpp")
-env.add_source_files(env.modules_sources, "geometry_parser/*.cpp")
+env_layered_tile_map = env_modules.Clone()
+
+env_layered_tile_map.add_source_files(env.modules_sources, "geometry_parser/*.cpp")
+env_layered_tile_map.add_source_files(env.modules_sources, "*.cpp")
 
 if env["tools"]:
-    env.add_source_files(env.modules_sources, "tile_map_editor_plugin.cpp")
-    env.add_source_files(env.modules_sources, "tile_set_editor_plugin.cpp")
+    env.add_source_files(env.modules_sources, "editor/*.cpp")
 
