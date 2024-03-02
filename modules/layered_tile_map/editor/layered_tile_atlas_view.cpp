@@ -62,7 +62,7 @@ void LayeredTileAtlasView::_zoom_callback(float p_zoom_factor, Vector2 p_origin,
 Size2i LayeredTileAtlasView::_compute_base_tiles_control_size() {
 	// Update the texture.
 	Vector2i size;
-	Ref<Texture2D> texture = tile_set_atlas_source->get_texture();
+	Ref<Texture> texture = tile_set_atlas_source->get_texture();
 	if (texture.is_valid()) {
 		size = texture->get_size();
 	}
@@ -100,7 +100,7 @@ void LayeredTileAtlasView::_update_zoom_and_panning(bool p_zoom_on_mouse_pos) {
 	alternative_tiles_root_control->set_custom_minimum_size(Vector2(alternative_tiles_control_size) * zoom);
 
 	// Set the texture for the base tiles.
-	Ref<Texture2D> texture = tile_set_atlas_source->get_texture();
+	Ref<Texture> texture = tile_set_atlas_source->get_texture();
 
 	// Set the scales.
 	if (base_tiles_control_size.x > 0 && base_tiles_control_size.y > 0) {
@@ -170,7 +170,7 @@ void LayeredTileAtlasView::_base_tiles_root_control_gui_input(const Ref<InputEve
 }
 
 void LayeredTileAtlasView::_draw_base_tiles() {
-	Ref<Texture2D> texture = tile_set_atlas_source->get_texture();
+	Ref<Texture> texture = tile_set_atlas_source->get_texture();
 	if (texture.is_valid()) {
 		Vector2i margins = tile_set_atlas_source->get_margins();
 		Vector2i separation = tile_set_atlas_source->get_separation();
@@ -315,7 +315,7 @@ void LayeredTileAtlasView::_clear_material_canvas_items() {
 }
 
 void LayeredTileAtlasView::_draw_base_tiles_texture_grid() {
-	Ref<Texture2D> texture = tile_set_atlas_source->get_texture();
+	Ref<Texture> texture = tile_set_atlas_source->get_texture();
 	if (texture.is_valid()) {
 		Vector2i margins = tile_set_atlas_source->get_margins();
 		Vector2i separation = tile_set_atlas_source->get_separation();
@@ -384,7 +384,7 @@ void LayeredTileAtlasView::_alternative_tiles_root_control_gui_input(const Ref<I
 
 void LayeredTileAtlasView::_draw_alternatives() {
 	// Draw the alternative tiles.
-	Ref<Texture2D> texture = tile_set_atlas_source->get_texture();
+	Ref<Texture> texture = tile_set_atlas_source->get_texture();
 	if (texture.is_valid()) {
 		Vector2 current_pos;
 		for (int i = 0; i < tile_set_atlas_source->get_tiles_count(); i++) {
@@ -486,7 +486,7 @@ void LayeredTileAtlasView::set_padding(Side p_side, int p_padding) {
 }
 
 Vector2i LayeredTileAtlasView::get_atlas_tile_coords_at_pos(const Vector2 p_pos, bool p_clamp) const {
-	Ref<Texture2D> texture = tile_set_atlas_source->get_texture();
+	Ref<Texture> texture = tile_set_atlas_source->get_texture();
 	if (!texture.is_valid()) {
 		return LayeredTileSetSource::INVALID_ATLAS_COORDS;
 	}

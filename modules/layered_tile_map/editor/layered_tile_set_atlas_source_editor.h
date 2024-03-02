@@ -117,7 +117,7 @@ public:
 		LayeredTileSetAtlasSourceEditor *editor = nullptr;
 
 	public:
-		virtual CursorShape get_cursor_shape(const Point2 &p_pos) const override;
+		virtual CursorShape get_cursor_shape(const Point2 &p_pos) const;
 		LayeredTileAtlasControl(LayeredTileSetAtlasSourceEditor *p_editor) { editor = p_editor; }
 	};
 	friend class LayeredTileAtlasControl;
@@ -128,7 +128,7 @@ private:
 	Ref<LayeredTileSet> tile_set;
 	LayeredTileSetAtlasSource *tile_set_atlas_source = nullptr;
 	int tile_set_atlas_source_id = LayeredTileSet::INVALID_SOURCE;
-	Ref<Texture2D> atlas_source_texture;
+	Ref<Texture> atlas_source_texture;
 
 	bool tile_set_changed_needs_update = false;
 
@@ -238,8 +238,8 @@ private:
 
 	PopupMenu *base_tile_popup_menu = nullptr;
 	PopupMenu *empty_base_tile_popup_menu = nullptr;
-	Ref<Texture2D> resize_handle;
-	Ref<Texture2D> resize_handle_disabled;
+	Ref<Texture> resize_handle;
+	Ref<Texture> resize_handle_disabled;
 	Control *tile_atlas_control = nullptr;
 	Control *tile_atlas_control_unscaled = nullptr;
 	void _tile_atlas_control_draw();
@@ -294,7 +294,7 @@ protected:
 	static void _bind_methods();
 
 	// -- input events --
-	virtual void shortcut_input(const Ref<InputEvent> &p_event) override;
+	virtual void shortcut_input(const Ref<InputEvent> &p_event);
 
 public:
 	void edit(Ref<LayeredTileSet> p_tile_set, LayeredTileSetAtlasSource *p_tile_set_source, int p_source_id);
@@ -317,7 +317,7 @@ class EditorPropertyTilePolygon : public EditorProperty {
 	void _polygons_changed();
 
 public:
-	virtual void update_property() override;
+	virtual void update_property();
 	void setup_single_mode(const StringName &p_property, const String &p_base_type);
 	void setup_multiple_mode(const StringName &p_property, const StringName &p_count_property, const String &p_element_pattern, const String &p_base_type);
 	EditorPropertyTilePolygon();
@@ -330,8 +330,8 @@ class EditorInspectorPluginTileData : public EditorInspectorPlugin {
 	void _polygons_changed(Object *p_generic_tile_polygon_editor, Object *p_object, const String &p_path);
 
 public:
-	virtual bool can_handle(Object *p_object) override;
-	virtual bool parse_property(Object *p_object, const Variant::Type p_type, const String &p_path, const PropertyHint p_hint, const String &p_hint_text, const BitField<PropertyUsageFlags> p_usage, const bool p_wide = false) override;
+	virtual bool can_handle(Object *p_object);
+	virtual bool parse_property(Object *p_object, const Variant::Type p_type, const String &p_path, const PropertyHint p_hint, const String &p_hint_text, const BitField<PropertyUsageFlags> p_usage, const bool p_wide = false);
 };
 
 #endif // TILE_SET_ATLAS_SOURCE_EDITOR_H

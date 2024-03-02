@@ -914,7 +914,7 @@ void LayeredTileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_draw() {
 	}
 
 	RID ci = tile_data_editor_dropdown_button->get_canvas_item();
-	Ref<Texture2D> arrow = Control::get_theme_icon(SNAME("arrow"), SNAME("OptionButton"));
+	Ref<Texture> arrow = Control::get_theme_icon(SNAME("arrow"), SNAME("OptionButton"));
 	Color clr = Color(1, 1, 1);
 	if (get_theme_constant(SNAME("modulate_arrow"))) {
 		switch (tile_data_editor_dropdown_button->get_draw_mode()) {
@@ -2184,7 +2184,7 @@ void LayeredTileSetAtlasSourceEditor::edit(Ref<LayeredTileSet> p_tile_set, Layer
 		tile_set_atlas_source->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_source_texture));
 		if (atlas_source_texture.is_valid()) {
 			atlas_source_texture->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles));
-			atlas_source_texture = Ref<Texture2D>();
+			atlas_source_texture = Ref<Texture>();
 		}
 	}
 
@@ -2244,7 +2244,7 @@ void LayeredTileSetAtlasSourceEditor::_update_source_texture() {
 
 	if (atlas_source_texture.is_valid()) {
 		atlas_source_texture->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles));
-		atlas_source_texture = Ref<Texture2D>();
+		atlas_source_texture = Ref<Texture>();
 	}
 
 	if (!tile_set_atlas_source || tile_set_atlas_source->get_texture().is_null()) {
@@ -2295,7 +2295,7 @@ void LayeredTileSetAtlasSourceEditor::_cleanup_outside_tiles() {
 void LayeredTileSetAtlasSourceEditor::_auto_create_tiles() {
 	for (Ref<LayeredTileSetAtlasSource> &atlas_source : atlases_to_auto_create_tiles) {
 		if (atlas_source.is_valid()) {
-			Ref<Texture2D> texture = atlas_source->get_texture();
+			Ref<Texture> texture = atlas_source->get_texture();
 			if (texture.is_valid()) {
 				Vector2i margins = atlas_source->get_margins();
 				Vector2i separation = atlas_source->get_separation();
@@ -2348,7 +2348,7 @@ void LayeredTileSetAtlasSourceEditor::_auto_remove_tiles() {
 		return;
 	}
 
-	Ref<Texture2D> texture = tile_set_atlas_source->get_texture();
+	Ref<Texture> texture = tile_set_atlas_source->get_texture();
 	if (texture.is_valid()) {
 		Vector2i margins = tile_set_atlas_source->get_margins();
 		Vector2i separation = tile_set_atlas_source->get_separation();

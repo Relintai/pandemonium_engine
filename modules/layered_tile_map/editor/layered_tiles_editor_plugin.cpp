@@ -99,7 +99,7 @@ void LayeredTilesEditorUtils::_thread() {
 				tile_map->set_pattern(0, Vector2(), item.pattern);
 				viewport->add_child(tile_map);
 
-				TypedArray<Vector2i> used_cells = tile_map->get_used_cells(0);
+				PoolVector2iArray used_cells = tile_map->get_used_cells(0);
 
 				Rect2 encompassing_rect;
 				encompassing_rect.set_position(tile_map->map_to_local(used_cells[0]));
@@ -248,7 +248,7 @@ bool LayeredTilesEditorUtils::SourceNameComparator::operator()(const int &p_a, c
 
 		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 		if (atlas_source) {
-			Ref<Texture2D> texture = atlas_source->get_texture();
+			Ref<Texture> texture = atlas_source->get_texture();
 			if (name_a.is_empty() && texture.is_valid()) {
 				name_a = texture->get_path().get_file();
 			}
@@ -268,7 +268,7 @@ bool LayeredTilesEditorUtils::SourceNameComparator::operator()(const int &p_a, c
 
 		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 		if (atlas_source) {
-			Ref<Texture2D> texture = atlas_source->get_texture();
+			Ref<Texture> texture = atlas_source->get_texture();
 			if (name_b.is_empty() && texture.is_valid()) {
 				name_b = texture->get_path().get_file();
 			}
@@ -288,7 +288,7 @@ void LayeredTilesEditorUtils::display_tile_set_editor_panel() {
 }
 
 void LayeredTilesEditorUtils::draw_selection_rect(CanvasItem *p_ci, const Rect2 &p_rect, const Color &p_color) {
-	Ref<Texture2D> selection_texture = EditorNode::get_singleton()->get_editor_theme()->get_icon(SNAME("TileSelection"), EditorStringName(EditorIcons));
+	Ref<Texture> selection_texture = EditorNode::get_singleton()->get_editor_theme()->get_icon(SNAME("TileSelection"), EditorStringName(EditorIcons));
 
 	real_t scale = p_ci->get_global_transform().get_scale().x * 0.5;
 	p_ci->draw_set_transform(p_rect.position, 0, Vector2(1, 1) / scale);

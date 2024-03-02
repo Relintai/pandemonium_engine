@@ -51,7 +51,7 @@ private:
 protected:
 	Ref<LayeredTileSet> tile_set;
 
-	virtual void remove_child_notify(Node *p_child) override;
+	virtual void remove_child_notify(Node *p_child);
 
 	static void _bind_methods();
 

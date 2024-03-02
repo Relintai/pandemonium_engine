@@ -155,8 +155,8 @@ private:
 	RBSet<Vector2i> tile_map_selection;
 	Ref<LayeredTileMapPattern> tile_map_clipboard;
 	Ref<LayeredTileMapPattern> selection_pattern;
-	void _set_tile_map_selection(const TypedArray<Vector2i> &p_selection);
-	TypedArray<Vector2i> _get_tile_map_selection() const;
+	void _set_tile_map_selection(const PoolVector2iArray &p_selection);
+	PoolVector2iArray _get_tile_map_selection() const;
 
 	RBSet<LayeredTileMapCell> tile_set_selection;
 
@@ -180,7 +180,7 @@ private:
 	ItemList *sources_list = nullptr;
 	MenuButton *source_sort_button = nullptr;
 
-	Ref<Texture2D> missing_atlas_texture_icon;
+	Ref<Texture> missing_atlas_texture_icon;
 	void _update_tile_set_sources_list();
 
 	void _update_source_display();
@@ -210,7 +210,7 @@ private:
 	ItemList *scene_tiles_list = nullptr;
 
 	void _update_scenes_collection_view();
-	void _scene_thumbnail_done(const String &p_path, const Ref<Texture2D> &p_preview, const Ref<Texture2D> &p_small_preview, const Variant &p_ud);
+	void _scene_thumbnail_done(const String &p_path, const Ref<Texture> &p_preview, const Ref<Texture> &p_small_preview, const Variant &p_ud);
 	void _scenes_list_multi_selected(int p_index, bool p_selected);
 	void _scenes_list_lmb_empty_clicked(const Vector2 &p_pos, MouseButton p_mouse_button_index);
 
@@ -219,7 +219,7 @@ private:
 	ItemList *patterns_item_list = nullptr;
 	Label *patterns_help_label = nullptr;
 	void _patterns_item_list_gui_input(const Ref<InputEvent> &p_event);
-	void _pattern_preview_done(Ref<LayeredTileMapPattern> p_pattern, Ref<Texture2D> p_texture);
+	void _pattern_preview_done(Ref<LayeredTileMapPattern> p_pattern, Ref<Texture> p_texture);
 	bool select_last_pattern = false;
 	void _update_patterns_list();
 
@@ -228,17 +228,17 @@ private:
 	List<BaseButton *> viewport_shortcut_buttons;
 
 	// Update callback
-	virtual void tile_set_changed() override;
+	virtual void tile_set_changed();
 
 protected:
 	static void _bind_methods();
 
 public:
-	virtual Vector<TabData> get_tabs() const override;
-	virtual bool forward_canvas_gui_input(const Ref<InputEvent> &p_event) override;
-	virtual void forward_canvas_draw_over_viewport(Control *p_overlay) override;
+	virtual Vector<TabData> get_tabs() const;
+	virtual bool forward_canvas_gui_input(const Ref<InputEvent> &p_event);
+	virtual void forward_canvas_draw_over_viewport(Control *p_overlay);
 
-	virtual void edit(ObjectID p_tile_map_layer_id) override;
+	virtual void edit(ObjectID p_tile_map_layer_id);
 
 	LayeredTileMapLayerEditorTilesPlugin();
 	~LayeredTileMapLayerEditorTilesPlugin();
@@ -323,14 +323,14 @@ private:
 	void _update_theme();
 
 	// Update callback
-	virtual void tile_set_changed() override;
+	virtual void tile_set_changed();
 
 public:
-	virtual Vector<TabData> get_tabs() const override;
-	virtual bool forward_canvas_gui_input(const Ref<InputEvent> &p_event) override;
-	virtual void forward_canvas_draw_over_viewport(Control *p_overlay) override;
+	virtual Vector<TabData> get_tabs() const;
+	virtual bool forward_canvas_gui_input(const Ref<InputEvent> &p_event);
+	virtual void forward_canvas_draw_over_viewport(Control *p_overlay);
 
-	virtual void edit(ObjectID p_tile_map_layer_id) override;
+	virtual void edit(ObjectID p_tile_map_layer_id);
 
 	LayeredTileMapLayerEditorTerrainsPlugin();
 	~LayeredTileMapLayerEditorTerrainsPlugin();
@@ -371,8 +371,8 @@ private:
 	void _update_bottom_panel();
 
 	// LayeredTileMap.
-	Ref<Texture2D> missing_tile_texture;
-	Ref<Texture2D> warning_pattern_texture;
+	Ref<Texture> missing_tile_texture;
+	Ref<Texture> warning_pattern_texture;
 
 	// CallBack.
 	void _tile_map_layer_changed();

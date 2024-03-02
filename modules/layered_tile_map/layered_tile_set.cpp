@@ -144,9 +144,9 @@ int LayeredTileMapPattern::get_cell_alternative_tile(const Vector2i &p_coords) c
 	return pattern[p_coords].alternative_tile;
 }
 
-TypedArray<Vector2i> LayeredTileMapPattern::get_used_cells() const {
+PoolVector2iArray LayeredTileMapPattern::get_used_cells() const {
 	// Returns the cells used in the tilemap.
-	TypedArray<Vector2i> a;
+	PoolVector2iArray a;
 	a.resize(pattern.size());
 	int i = 0;
 	for (const KeyValue<Vector2i, LayeredTileMapCell> &E : pattern) {
@@ -1519,7 +1519,7 @@ Vector<Vector2> LayeredTileSet::get_tile_shape_polygon() const {
 	return points;
 }
 
-void LayeredTileSet::draw_tile_shape(CanvasItem *p_canvas_item, Transform2D p_transform, Color p_color, bool p_filled, Ref<Texture2D> p_texture) const {
+void LayeredTileSet::draw_tile_shape(CanvasItem *p_canvas_item, Transform2D p_transform, Color p_color, bool p_filled, Ref<Texture> p_texture) const {
 	if (tile_meshes_dirty) {
 		Vector<Vector2> shape = get_tile_shape_polygon();
 		Vector<Vector2> uvs;
@@ -1559,7 +1559,7 @@ void LayeredTileSet::draw_tile_shape(CanvasItem *p_canvas_item, Transform2D p_tr
 	if (p_filled) {
 		p_canvas_item->draw_mesh(tile_filled_mesh, p_texture, p_transform, p_color);
 	} else {
-		p_canvas_item->draw_mesh(tile_lines_mesh, Ref<Texture2D>(), p_transform, p_color);
+		p_canvas_item->draw_mesh(tile_lines_mesh, Ref<Texture>(), p_transform, p_color);
 	}
 }
 
@@ -2165,8 +2165,8 @@ Vector2i LayeredTileSet::get_neighbor_cell(const Vector2i &p_coords, LayeredTile
 	}
 }
 
-TypedArray<Vector2i> LayeredTileSet::get_surrounding_cells(const Vector2i &p_coords) const {
-	TypedArray<Vector2i> around;
+PoolVector2iArray LayeredTileSet::get_surrounding_cells(const Vector2i &p_coords) const {
+	PoolVector2iArray around;
 	if (tile_shape == LayeredTileSet::TILE_SHAPE_SQUARE) {
 		around.push_back(get_neighbor_cell(p_coords, LayeredTileSet::CELL_NEIGHBOR_RIGHT_SIDE));
 		around.push_back(get_neighbor_cell(p_coords, LayeredTileSet::CELL_NEIGHBOR_BOTTOM_SIDE));
@@ -2453,7 +2453,7 @@ void LayeredTileSet::draw_terrains(CanvasItem *p_canvas_item, Transform2D p_tran
 	if (terrain_id >= 0) {
 		Color color = get_terrain_color(terrain_set, terrain_id);
 		color.a = TERRAIN_ALPHA;
-		p_canvas_item->draw_mesh(terrain_meshes[terrain_mode], Ref<Texture2D>(), Transform2D(), color);
+		p_canvas_item->draw_mesh(terrain_meshes[terrain_mode], Ref<Texture>(), Transform2D(), color);
 	}
 
 	for (int i = 0; i < LayeredTileSet::CELL_NEIGHBOR_MAX; i++) {
@@ -2463,22 +2463,22 @@ void LayeredTileSet::draw_terrains(CanvasItem *p_canvas_item, Transform2D p_tran
 			if (terrain_id >= 0) {
 				Color color = get_terrain_color(terrain_set, terrain_id);
 				color.a = TERRAIN_ALPHA;
-				p_canvas_item->draw_mesh(terrain_peering_bits_meshes[terrain_mode][bit], Ref<Texture2D>(), Transform2D(), color);
+				p_canvas_item->draw_mesh(terrain_peering_bits_meshes[terrain_mode][bit], Ref<Texture>(), Transform2D(), color);
 			}
 		}
 	}
 	RenderingServer::get_singleton()->canvas_item_add_set_transform(p_canvas_item->get_canvas_item(), Transform2D());
 }
 
-Vector<Vector<Ref<Texture2D>>> LayeredTileSet::generate_terrains_icons(Size2i p_size) {
+Vector<Vector<Ref<Texture>>> LayeredTileSet::generate_terrains_icons(Size2i p_size) {
 	// Counts the number of matching terrain tiles and find the best matching icon.
 	struct Count {
 		int count = 0;
 		float probability = 0.0;
-		Ref<Texture2D> texture;
+		Ref<Texture> texture;
 		Rect2i region;
 	};
-	Vector<Vector<Ref<Texture2D>>> output;
+	Vector<Vector<Ref<Texture>>> output;
 	LocalVector<LocalVector<Count>> counts;
 	output.resize(get_terrain_sets_count());
 	counts.resize(get_terrain_sets_count());
@@ -2501,7 +2501,7 @@ Vector<Vector<Ref<Texture2D>>> LayeredTileSet::generate_terrains_icons(Size2i p_
 					TileData *tile_data = atlas_source->get_tile_data(tile_id, alternative_id);
 					int terrain_set = tile_data->get_terrain_set();
 					if (terrain_set >= 0) {
-						ERR_FAIL_INDEX_V(terrain_set, get_terrain_sets_count(), Vector<Vector<Ref<Texture2D>>>());
+						ERR_FAIL_INDEX_V(terrain_set, get_terrain_sets_count(), Vector<Vector<Ref<Texture>>>());
 
 						LocalVector<int> bit_counts;
 						bit_counts.resize(get_terrains_count(terrain_set));
@@ -2546,7 +2546,7 @@ Vector<Vector<Ref<Texture2D>>> LayeredTileSet::generate_terrains_icons(Size2i p_
 			dst_image.instantiate();
 			if (counts[terrain_set][terrain].count > 0) {
 				// Get the best tile.
-				Ref<Texture2D> src_texture = counts[terrain_set][terrain].texture;
+				Ref<Texture> src_texture = counts[terrain_set][terrain].texture;
 				ERR_FAIL_COND_V(src_texture.is_null(), output);
 				Ref<Image> src_image = src_texture->get_image();
 				ERR_FAIL_COND_V(src_image.is_null(), output);
@@ -4629,7 +4629,7 @@ void LayeredTileSetAtlasSource::reset_state() {
 	_queue_update_padded_texture();
 }
 
-void LayeredTileSetAtlasSource::set_texture(Ref<Texture2D> p_texture) {
+void LayeredTileSetAtlasSource::set_texture(Ref<Texture> p_texture) {
 	if (texture.is_valid()) {
 		texture->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSource::_queue_update_padded_texture));
 	}
@@ -4644,7 +4644,7 @@ void LayeredTileSetAtlasSource::set_texture(Ref<Texture2D> p_texture) {
 	emit_changed();
 }
 
-Ref<Texture2D> LayeredTileSetAtlasSource::get_texture() const {
+Ref<Texture> LayeredTileSetAtlasSource::get_texture() const {
 	return texture;
 }
 
@@ -4710,7 +4710,7 @@ bool LayeredTileSetAtlasSource::get_use_texture_padding() const {
 }
 
 Vector2i LayeredTileSetAtlasSource::get_atlas_grid_size() const {
-	Ref<Texture2D> txt = get_texture();
+	Ref<Texture> txt = get_texture();
 	if (!txt.is_valid()) {
 		return Vector2i();
 	}
@@ -5228,7 +5228,7 @@ void LayeredTileSetAtlasSource::clear_tiles_outside_texture() {
 	}
 }
 
-PackedVector2Array LayeredTileSetAtlasSource::get_tiles_to_be_removed_on_change(Ref<Texture2D> p_texture, Vector2i p_margins, Vector2i p_separation, Vector2i p_texture_region_size) {
+PackedVector2Array LayeredTileSetAtlasSource::get_tiles_to_be_removed_on_change(Ref<Texture> p_texture, Vector2i p_margins, Vector2i p_separation, Vector2i p_texture_region_size) {
 	ERR_FAIL_COND_V(p_margins.x < 0 || p_margins.y < 0, PackedVector2Array());
 	ERR_FAIL_COND_V(p_separation.x < 0 || p_separation.y < 0, PackedVector2Array());
 	ERR_FAIL_COND_V(p_texture_region_size.x <= 0 || p_texture_region_size.y <= 0, PackedVector2Array());
@@ -5286,7 +5286,7 @@ int LayeredTileSetAtlasSource::alternative_no_transform(int p_alternative_id) {
 }
 
 // Getters for texture and tile region (padded or not)
-Ref<Texture2D> LayeredTileSetAtlasSource::get_runtime_texture() const {
+Ref<Texture> LayeredTileSetAtlasSource::get_runtime_texture() const {
 	if (use_texture_padding) {
 		return padded_texture;
 	} else {
@@ -5574,7 +5574,7 @@ void LayeredTileSetAtlasSource::_queue_update_padded_texture() {
 	callable_mp(this, &LayeredTileSetAtlasSource::_update_padded_texture).call_deferred();
 }
 
-Ref<ImageTexture> LayeredTileSetAtlasSource::_create_padded_image_texture(const Ref<Texture2D> &p_source) {
+Ref<ImageTexture> LayeredTileSetAtlasSource::_create_padded_image_texture(const Ref<Texture> &p_source) {
 	ERR_FAIL_COND_V(p_source.is_null(), Ref<ImageTexture>());
 
 	Ref<Image> src_image = p_source->get_image();
@@ -5646,7 +5646,7 @@ void LayeredTileSetAtlasSource::_update_padded_texture() {
 	if (src_canvas_texture.is_valid()) {
 		// Use all textures.
 		// Diffuse
-		Ref<Texture2D> src = src_canvas_texture->get_diffuse_texture();
+		Ref<Texture> src = src_canvas_texture->get_diffuse_texture();
 		Ref<ImageTexture> image_texture;
 		if (src.is_valid()) {
 			padded_texture->set_diffuse_texture(_create_padded_image_texture(src));

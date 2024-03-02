@@ -103,7 +103,7 @@ protected:
 
 public:
 #ifdef TOOLS_ENABLED
-	virtual Rect2 _edit_get_rect() const override;
+	virtual Rect2 _edit_get_rect() const;
 #endif
 
 #ifndef DISABLE_DEPRECATED
@@ -158,7 +158,7 @@ public:
 	TileData *get_cell_tile_data(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
 
 	// Patterns.
-	Ref<LayeredTileMapPattern> get_pattern(int p_layer, TypedArray<Vector2i> p_coords_array);
+	Ref<LayeredTileMapPattern> get_pattern(int p_layer, PoolVector2iArray p_coords_array);
 	Vector2i map_pattern(const Vector2i &p_position_in_tilemap, const Vector2i &p_coords_in_pattern, Ref<LayeredTileMapPattern> p_pattern);
 	void set_pattern(int p_layer, const Vector2i &p_position, const Ref<LayeredTileMapPattern> p_pattern);
 
@@ -169,29 +169,29 @@ public:
 	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> terrain_fill_pattern(int p_layer, const Vector<Vector2i> &p_coords_array, int p_terrain_set, LayeredTileSet::TerrainsPattern p_terrains_pattern, bool p_ignore_empty_terrains = true);
 
 	// Terrains (exposed).
-	void set_cells_terrain_connect(int p_layer, TypedArray<Vector2i> p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
-	void set_cells_terrain_path(int p_layer, TypedArray<Vector2i> p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
+	void set_cells_terrain_connect(int p_layer, PoolVector2iArray p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
+	void set_cells_terrain_path(int p_layer, PoolVector2iArray p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
 
 	// Not exposed to users.
 	LayeredTileMapCell get_cell(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
 	int get_effective_quadrant_size(int p_layer) const;
 
-	virtual void set_y_sort_enabled(bool p_enable) override;
+	virtual void set_y_sort_enabled(bool p_enable);
 
 	Vector2 map_to_local(const Vector2i &p_pos) const;
 	Vector2i local_to_map(const Vector2 &p_pos) const;
 	bool is_existing_neighbor(LayeredTileSet::CellNeighbor p_cell_neighbor) const;
 	Vector2i get_neighbor_cell(const Vector2i &p_coords, LayeredTileSet::CellNeighbor p_cell_neighbor) const;
 
-	TypedArray<Vector2i> get_used_cells(int p_layer) const;
-	TypedArray<Vector2i> get_used_cells_by_id(int p_layer, int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE) const;
+	PoolVector2iArray get_used_cells(int p_layer) const;
+	PoolVector2iArray get_used_cells_by_id(int p_layer, int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE) const;
 	Rect2i get_used_rect() const;
 
 	// Override some methods of the CanvasItem class to pass the changes to the quadrants CanvasItems.
-	virtual void set_light_mask(int p_light_mask) override;
-	virtual void set_self_modulate(const Color &p_self_modulate) override;
-	virtual void set_texture_filter(CanvasItem::TextureFilter p_texture_filter) override;
-	virtual void set_texture_repeat(CanvasItem::TextureRepeat p_texture_repeat) override;
+	virtual void set_light_mask(int p_light_mask);
+	virtual void set_self_modulate(const Color &p_self_modulate);
+	virtual void set_texture_filter(CanvasItem::TextureFilter p_texture_filter);
+	virtual void set_texture_repeat(CanvasItem::TextureRepeat p_texture_repeat);
 
 	// For finding tiles from collision.
 	Vector2i get_coords_for_body_rid(RID p_physics_body);
@@ -210,14 +210,14 @@ public:
 	void notify_runtime_tile_data_update(int p_layer = -1);
 
 	// Helpers?
-	TypedArray<Vector2i> get_surrounding_cells(const Vector2i &p_coords);
+	PoolVector2iArray get_surrounding_cells(const Vector2i &p_coords);
 
 	// Virtual function to modify the TileData at runtime.
 	GDVIRTUAL2R(bool, _use_tile_data_runtime_update, int, Vector2i);
 	GDVIRTUAL3(_tile_data_runtime_update, int, Vector2i, TileData *);
 
 	// Configuration warnings.
-	PackedStringArray get_configuration_warnings() const override;
+	PackedStringArray get_configuration_warnings() const;
 
 	LayeredTileMap();
 	~LayeredTileMap();

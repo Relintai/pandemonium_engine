@@ -129,7 +129,7 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 		}
 
 		// Get the texture.
-		Ref<Texture2D> tex = atlas_source->get_runtime_texture();
+		Ref<Texture> tex = atlas_source->get_runtime_texture();
 		if (!tex.is_valid()) {
 			return;
 		}
@@ -410,7 +410,7 @@ TileData *LayeredTileMap::get_cell_tile_data(int p_layer, const Vector2i &p_coor
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, nullptr, get_cell_tile_data, p_coords, p_use_proxies);
 }
 
-Ref<LayeredTileMapPattern> LayeredTileMap::get_pattern(int p_layer, TypedArray<Vector2i> p_coords_array) {
+Ref<LayeredTileMapPattern> LayeredTileMap::get_pattern(int p_layer, PoolVector2iArray p_coords_array) {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, Ref<LayeredTileMapPattern>(), get_pattern, p_coords_array);
 }
 
@@ -443,11 +443,11 @@ HashMap<Vector2i, LayeredTileSet::TerrainsPattern> LayeredTileMap::terrain_fill_
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, err_value, terrain_fill_pattern, p_coords_array, p_terrain_set, p_terrains_pattern, p_ignore_empty_terrains);
 }
 
-void LayeredTileMap::set_cells_terrain_connect(int p_layer, TypedArray<Vector2i> p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
+void LayeredTileMap::set_cells_terrain_connect(int p_layer, PoolVector2iArray p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_cells_terrain_connect, p_cells, p_terrain_set, p_terrain, p_ignore_empty_terrains);
 }
 
-void LayeredTileMap::set_cells_terrain_path(int p_layer, TypedArray<Vector2i> p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
+void LayeredTileMap::set_cells_terrain_path(int p_layer, PoolVector2iArray p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_cells_terrain_path, p_path, p_terrain_set, p_terrain, p_ignore_empty_terrains);
 }
 
@@ -763,12 +763,12 @@ Vector2i LayeredTileMap::get_neighbor_cell(const Vector2i &p_coords, LayeredTile
 	return tile_set->get_neighbor_cell(p_coords, p_cell_neighbor);
 }
 
-TypedArray<Vector2i> LayeredTileMap::get_used_cells(int p_layer) const {
-	TILEMAP_CALL_FOR_LAYER_V(p_layer, TypedArray<Vector2i>(), get_used_cells);
+PoolVector2iArray LayeredTileMap::get_used_cells(int p_layer) const {
+	TILEMAP_CALL_FOR_LAYER_V(p_layer, PoolVector2iArray(), get_used_cells);
 }
 
-TypedArray<Vector2i> LayeredTileMap::get_used_cells_by_id(int p_layer, int p_source_id, const Vector2i p_atlas_coords, int p_alternative_tile) const {
-	TILEMAP_CALL_FOR_LAYER_V(p_layer, TypedArray<Vector2i>(), get_used_cells_by_id, p_source_id, p_atlas_coords, p_alternative_tile);
+PoolVector2iArray LayeredTileMap::get_used_cells_by_id(int p_layer, int p_source_id, const Vector2i p_atlas_coords, int p_alternative_tile) const {
+	TILEMAP_CALL_FOR_LAYER_V(p_layer, PoolVector2iArray(), get_used_cells_by_id, p_source_id, p_atlas_coords, p_alternative_tile);
 }
 
 Rect2i LayeredTileMap::get_used_rect() const {
@@ -824,9 +824,9 @@ void LayeredTileMap::set_texture_repeat(CanvasItem::TextureRepeat p_texture_repe
 	}
 }
 
-TypedArray<Vector2i> LayeredTileMap::get_surrounding_cells(const Vector2i &p_coords) {
+PoolVector2iArray LayeredTileMap::get_surrounding_cells(const Vector2i &p_coords) {
 	if (!tile_set.is_valid()) {
-		return TypedArray<Vector2i>();
+		return PoolVector2iArray();
 	}
 
 	return tile_set->get_surrounding_cells(p_coords);

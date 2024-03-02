@@ -2341,7 +2341,7 @@ void LayeredTileMapLayer::clear() {
 	used_rect_cache_dirty = true;
 }
 
-Ref<LayeredTileMapPattern> LayeredTileMapLayer::get_pattern(TypedArray<Vector2i> p_coords_array) {
+Ref<LayeredTileMapPattern> LayeredTileMapLayer::get_pattern(PoolVector2iArray p_coords_array) {
 	const Ref<LayeredTileSet> &tile_set = get_effective_tile_set();
 	ERR_FAIL_COND_V(!tile_set.is_valid(), nullptr);
 
@@ -2400,14 +2400,14 @@ void LayeredTileMapLayer::set_pattern(const Vector2i &p_position, const Ref<Laye
 	ERR_FAIL_COND(tile_set.is_null());
 	ERR_FAIL_COND(p_pattern.is_null());
 
-	TypedArray<Vector2i> used_cells = p_pattern->get_used_cells();
+	PoolVector2iArray used_cells = p_pattern->get_used_cells();
 	for (int i = 0; i < used_cells.size(); i++) {
 		Vector2i coords = tile_set->map_pattern(p_position, used_cells[i], p_pattern);
 		set_cell(coords, p_pattern->get_cell_source_id(used_cells[i]), p_pattern->get_cell_atlas_coords(used_cells[i]), p_pattern->get_cell_alternative_tile(used_cells[i]));
 	}
 }
 
-void LayeredTileMapLayer::set_cells_terrain_connect(TypedArray<Vector2i> p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
+void LayeredTileMapLayer::set_cells_terrain_connect(PoolVector2iArray p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
 	const Ref<LayeredTileSet> &tile_set = get_effective_tile_set();
 	ERR_FAIL_COND(!tile_set.is_valid());
 	ERR_FAIL_INDEX(p_terrain_set, tile_set->get_terrain_sets_count());
@@ -2447,7 +2447,7 @@ void LayeredTileMapLayer::set_cells_terrain_connect(TypedArray<Vector2i> p_cells
 	}
 }
 
-void LayeredTileMapLayer::set_cells_terrain_path(TypedArray<Vector2i> p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
+void LayeredTileMapLayer::set_cells_terrain_path(PoolVector2iArray p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
 	const Ref<LayeredTileSet> &tile_set = get_effective_tile_set();
 	ERR_FAIL_COND(!tile_set.is_valid());
 	ERR_FAIL_INDEX(p_terrain_set, tile_set->get_terrain_sets_count());
@@ -2488,9 +2488,9 @@ void LayeredTileMapLayer::set_cells_terrain_path(TypedArray<Vector2i> p_path, in
 	}
 }
 
-TypedArray<Vector2i> LayeredTileMapLayer::get_used_cells() const {
+PoolVector2iArray LayeredTileMapLayer::get_used_cells() const {
 	// Returns the cells used in the tilemap.
-	TypedArray<Vector2i> a;
+	PoolVector2iArray a;
 	for (const KeyValue<Vector2i, CellData> &E : tile_map) {
 		const LayeredTileMapCell &c = E.value.cell;
 		if (c.source_id == LayeredTileSet::INVALID_SOURCE) {
@@ -2502,9 +2502,9 @@ TypedArray<Vector2i> LayeredTileMapLayer::get_used_cells() const {
 	return a;
 }
 
-TypedArray<Vector2i> LayeredTileMapLayer::get_used_cells_by_id(int p_source_id, const Vector2i p_atlas_coords, int p_alternative_tile) const {
+PoolVector2iArray LayeredTileMapLayer::get_used_cells_by_id(int p_source_id, const Vector2i p_atlas_coords, int p_alternative_tile) const {
 	// Returns the cells used in the tilemap.
-	TypedArray<Vector2i> a;
+	PoolVector2iArray a;
 	for (const KeyValue<Vector2i, CellData> &E : tile_map) {
 		const LayeredTileMapCell &c = E.value.cell;
 		if (c.source_id == LayeredTileSet::INVALID_SOURCE) {

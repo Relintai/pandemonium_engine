@@ -70,9 +70,9 @@ private:
 	void _merge_confirmed(const String &p_path);
 
 protected:
-	virtual void ok_pressed() override;
-	virtual void cancel_pressed() override;
-	virtual void custom_action(const String &) override;
+	virtual void ok_pressed();
+	virtual void cancel_pressed();
+	virtual void custom_action(const String &);
 
 	bool _set(const StringName &p_name, const Variant &p_value);
 	bool _get(const StringName &p_name, Variant &r_ret) const;

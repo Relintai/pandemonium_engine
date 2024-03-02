@@ -170,7 +170,7 @@ void AtlasMergingDialog::_update_texture() {
 		merge_button->set_disabled(false);
 	} else {
 		_generate_merged(Vector<Ref<LayeredTileSetAtlasSource>>(), next_line_after_column);
-		preview->set_texture(Ref<Texture2D>());
+		preview->set_texture(Ref<Texture>());
 		preview->hide();
 		select_2_atlases_label->show();
 		get_ok_button()->set_disabled(true);
@@ -186,7 +186,7 @@ void AtlasMergingDialog::_merge_confirmed(const String &p_path) {
 
 	ResourceLoader::import(p_path);
 
-	Ref<Texture2D> new_texture_resource = ResourceLoader::load(p_path, "Texture2D");
+	Ref<Texture> new_texture_resource = ResourceLoader::load(p_path, "Texture2D");
 	merged->set_texture(new_texture_resource);
 
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
@@ -279,7 +279,7 @@ void AtlasMergingDialog::update_tile_set(Ref<LayeredTileSet> p_tile_set) {
 		int source_id = p_tile_set->get_source_id(i);
 		Ref<LayeredTileSetAtlasSource> atlas_source = p_tile_set->get_source(source_id);
 		if (atlas_source.is_valid()) {
-			Ref<Texture2D> texture = atlas_source->get_texture();
+			Ref<Texture> texture = atlas_source->get_texture();
 			if (texture.is_valid()) {
 				String item_text = vformat(TTR("%s (ID: %d)"), texture->get_path().get_file(), source_id);
 				atlas_merging_atlases_list->add_item(item_text, texture);

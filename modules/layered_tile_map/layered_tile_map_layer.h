@@ -397,29 +397,29 @@ public:
 	void clear();
 
 	// Patterns.
-	Ref<LayeredTileMapPattern> get_pattern(TypedArray<Vector2i> p_coords_array);
+	Ref<LayeredTileMapPattern> get_pattern(PoolVector2iArray p_coords_array);
 	void set_pattern(const Vector2i &p_position, const Ref<LayeredTileMapPattern> p_pattern);
 
 	// Terrains.
-	void set_cells_terrain_connect(TypedArray<Vector2i> p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
-	void set_cells_terrain_path(TypedArray<Vector2i> p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
+	void set_cells_terrain_connect(PoolVector2iArray p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
+	void set_cells_terrain_path(PoolVector2iArray p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
 
 	// Cells usage.
-	TypedArray<Vector2i> get_used_cells() const;
-	TypedArray<Vector2i> get_used_cells_by_id(int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE) const;
+	PoolVector2iArray get_used_cells() const;
+	PoolVector2iArray get_used_cells_by_id(int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE) const;
 	Rect2i get_used_rect() const;
 
 	// Layer properties.
 	void set_enabled(bool p_enabled);
 	bool is_enabled() const;
-	virtual void set_self_modulate(const Color &p_self_modulate) override;
-	virtual void set_y_sort_enabled(bool p_y_sort_enabled) override;
+	virtual void set_self_modulate(const Color &p_self_modulate);
+	virtual void set_y_sort_enabled(bool p_y_sort_enabled);
 	void set_y_sort_origin(int p_y_sort_origin);
 	int get_y_sort_origin() const;
-	virtual void set_z_index(int p_z_index) override;
-	virtual void set_light_mask(int p_light_mask) override;
-	virtual void set_texture_filter(CanvasItem::TextureFilter p_texture_filter) override;
-	virtual void set_texture_repeat(CanvasItem::TextureRepeat p_texture_repeat) override;
+	virtual void set_z_index(int p_z_index);
+	virtual void set_light_mask(int p_light_mask);
+	virtual void set_texture_filter(CanvasItem::TextureFilter p_texture_filter);
+	virtual void set_texture_repeat(CanvasItem::TextureRepeat p_texture_repeat);
 	void set_rendering_quadrant_size(int p_size);
 	int get_rendering_quadrant_size() const;
 

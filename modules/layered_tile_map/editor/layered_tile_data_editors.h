@@ -142,7 +142,7 @@ private:
 	Button *button_center_view = nullptr;
 	Vector2 panning;
 
-	Ref<Texture2D> background_texture;
+	Ref<Texture> background_texture;
 	Rect2 background_region;
 	Vector2 background_offset;
 	bool background_h_flip = false;
@@ -183,7 +183,7 @@ public:
 	void set_use_undo_redo(bool p_use_undo_redo);
 
 	void set_tile_set(Ref<LayeredTileSet> p_tile_set);
-	void set_background(Ref<Texture2D> p_texture, Rect2 p_region = Rect2(), Vector2 p_offset = Vector2(), bool p_flip_h = false, bool p_flip_v = false, bool p_transpose = false, Color p_modulate = Color(1.0, 1.0, 1.0, 0.0));
+	void set_background(Ref<Texture> p_texture, Rect2 p_region = Rect2(), Vector2 p_offset = Vector2(), bool p_flip_h = false, bool p_flip_v = false, bool p_transpose = false, Color p_modulate = Color(1.0, 1.0, 1.0, 0.0));
 
 	int get_polygon_count();
 	int add_polygon(const Vector<Point2> &p_polygon, int p_index = -1);
@@ -207,8 +207,8 @@ private:
 	Button *picker_button = nullptr;
 
 	// UI
-	Ref<Texture2D> tile_bool_checked;
-	Ref<Texture2D> tile_bool_unchecked;
+	Ref<Texture> tile_bool_checked;
+	Ref<Texture> tile_bool_unchecked;
 	Label *label = nullptr;
 
 	EditorProperty *property_editor = nullptr;
@@ -243,11 +243,11 @@ protected:
 
 public:
 	virtual Control *get_toolbar() override { return toolbar; };
-	virtual void forward_draw_over_atlas(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform) override;
-	virtual void forward_draw_over_alternatives(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform) override;
-	virtual void forward_painting_atlas_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event) override;
-	virtual void forward_painting_alternatives_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event) override;
-	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false) override;
+	virtual void forward_draw_over_atlas(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform);
+	virtual void forward_draw_over_alternatives(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform);
+	virtual void forward_painting_atlas_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event);
+	virtual void forward_painting_alternatives_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event);
+	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
 
 	void setup_property_editor(Variant::Type p_type, const String &p_property, const String &p_label = "", const Variant &p_default_value = Variant());
 	Variant::Type get_property_type();
@@ -260,21 +260,21 @@ class TileDataTextureOriginEditor : public TileDataDefaultEditor {
 	GDCLASS(TileDataTextureOriginEditor, TileDataDefaultEditor);
 
 public:
-	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false) override;
+	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
 };
 
 class TileDataPositionEditor : public TileDataDefaultEditor {
 	GDCLASS(TileDataPositionEditor, TileDataDefaultEditor);
 
 public:
-	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false) override;
+	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
 };
 
 class TileDataYSortEditor : public TileDataDefaultEditor {
 	GDCLASS(TileDataYSortEditor, TileDataDefaultEditor);
 
 public:
-	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false) override;
+	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
 };
 
 class TileDataOcclusionShapeEditor : public TileDataDefaultEditor {
@@ -288,19 +288,19 @@ private:
 
 	void _polygon_changed(const PackedVector2Array &p_polygon);
 
-	virtual Variant _get_painted_value() override;
-	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile) override;
-	virtual void _set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value) override;
-	virtual Variant _get_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile) override;
-	virtual void _setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value) override;
+	virtual Variant _get_painted_value();
+	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
+	virtual void _set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value);
+	virtual Variant _get_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
+	virtual void _setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value);
 
 protected:
-	virtual void _tile_set_changed() override;
+	virtual void _tile_set_changed();
 
 	void _notification(int p_what);
 
 public:
-	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false) override;
+	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
 
 	void set_occlusion_layer(int p_occlusion_layer) { occlusion_layer = p_occlusion_layer; }
 
@@ -321,19 +321,19 @@ class TileDataCollisionEditor : public TileDataDefaultEditor {
 	void _property_selected(const StringName &p_path, int p_focusable);
 	void _polygons_changed();
 
-	virtual Variant _get_painted_value() override;
-	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile) override;
-	virtual void _set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value) override;
-	virtual Variant _get_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile) override;
-	virtual void _setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value) override;
+	virtual Variant _get_painted_value();
+	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
+	virtual void _set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value);
+	virtual Variant _get_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
+	virtual void _setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value);
 
 protected:
-	virtual void _tile_set_changed() override;
+	virtual void _tile_set_changed();
 
 	void _notification(int p_what);
 
 public:
-	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false) override;
+	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
 
 	void set_physics_layer(int p_physics_layer) { physics_layer = p_physics_layer; }
 
@@ -374,17 +374,17 @@ private:
 	void _update_terrain_selector();
 
 protected:
-	virtual void _tile_set_changed() override;
+	virtual void _tile_set_changed();
 
 	void _notification(int p_what);
 
 public:
 	virtual Control *get_toolbar() override { return toolbar; };
-	virtual void forward_draw_over_atlas(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform) override;
-	virtual void forward_draw_over_alternatives(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform) override;
-	virtual void forward_painting_atlas_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event) override;
-	virtual void forward_painting_alternatives_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event) override;
-	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false) override;
+	virtual void forward_draw_over_atlas(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform);
+	virtual void forward_draw_over_alternatives(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform);
+	virtual void forward_painting_atlas_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event);
+	virtual void forward_painting_alternatives_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event);
+	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
 
 	TileDataTerrainsEditor();
 	~TileDataTerrainsEditor();
@@ -402,19 +402,19 @@ private:
 
 	void _polygon_changed(const PackedVector2Array &p_polygon);
 
-	virtual Variant _get_painted_value() override;
-	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile) override;
-	virtual void _set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value) override;
-	virtual Variant _get_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile) override;
-	virtual void _setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value) override;
+	virtual Variant _get_painted_value();
+	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
+	virtual void _set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value);
+	virtual Variant _get_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
+	virtual void _setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value);
 
 protected:
-	virtual void _tile_set_changed() override;
+	virtual void _tile_set_changed();
 
 	void _notification(int p_what);
 
 public:
-	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false) override;
+	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
 
 	void set_navigation_layer(int p_navigation_layer) { navigation_layer = p_navigation_layer; }
 

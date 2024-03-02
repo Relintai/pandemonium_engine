@@ -134,12 +134,12 @@ protected:
 	void _notification(int p_notification);
 
 public:
-	virtual void edit(Object *p_object) override;
-	virtual bool handles(Object *p_object) const override;
-	virtual void make_visible(bool p_visible) override;
+	virtual void edit(Object *p_object);
+	virtual bool handles(Object *p_object) const;
+	virtual void make_visible(bool p_visible);
 
-	virtual bool forward_canvas_gui_input(const Ref<InputEvent> &p_event) override;
-	virtual void forward_canvas_draw_over_viewport(Control *p_overlay) override;
+	virtual bool forward_canvas_gui_input(const Ref<InputEvent> &p_event);
+	virtual void forward_canvas_draw_over_viewport(Control *p_overlay);
 
 	void hide_editor();
 	bool is_editor_visible() const;
@@ -157,9 +157,9 @@ class LayeredTileSetEditorPlugin : public EditorPlugin {
 	ObjectID edited_tileset;
 
 public:
-	virtual void edit(Object *p_object) override;
-	virtual bool handles(Object *p_object) const override;
-	virtual void make_visible(bool p_visible) override;
+	virtual void edit(Object *p_object);
+	virtual bool handles(Object *p_object) const;
+	virtual void make_visible(bool p_visible);
 
 	ObjectID get_edited_tileset() const;
 

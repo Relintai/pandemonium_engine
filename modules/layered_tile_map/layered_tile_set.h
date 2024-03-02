@@ -140,7 +140,7 @@ public:
 	int get_cell_alternative_tile(const Vector2i &p_coords) const;
 
 	const HashMap<Vector2i, LayeredTileMapCell> &get_pattern() const { return pattern; }
-	TypedArray<Vector2i> get_used_cells() const;
+	PoolVector2iArray get_used_cells() const;
 
 	Size2i get_size() const;
 	void set_size(const Size2i &p_size);
@@ -164,7 +164,7 @@ private:
 
 	struct CompatibilityTileData {
 		String name;
-		Ref<Texture2D> texture;
+		Ref<Texture> texture;
 		Vector2 tex_offset;
 		Ref<Material> material;
 		Rect2 region;
@@ -530,24 +530,24 @@ public:
 
 	// Helpers
 	Vector<Vector2> get_tile_shape_polygon() const;
-	void draw_tile_shape(CanvasItem *p_canvas_item, Transform2D p_transform, Color p_color, bool p_filled = false, Ref<Texture2D> p_texture = Ref<Texture2D>()) const;
+	void draw_tile_shape(CanvasItem *p_canvas_item, Transform2D p_transform, Color p_color, bool p_filled = false, Ref<Texture> p_texture = Ref<Texture>()) const;
 
 	// Used by LayeredTileMap/LayeredTileMapLayer
 	Vector2 map_to_local(const Vector2i &p_pos) const;
 	Vector2i local_to_map(const Vector2 &p_pos) const;
 	bool is_existing_neighbor(LayeredTileSet::CellNeighbor p_cell_neighbor) const;
 	Vector2i get_neighbor_cell(const Vector2i &p_coords, LayeredTileSet::CellNeighbor p_cell_neighbor) const;
-	TypedArray<Vector2i> get_surrounding_cells(const Vector2i &p_coords) const;
+	PoolVector2iArray get_surrounding_cells(const Vector2i &p_coords) const;
 	Vector2i map_pattern(const Vector2i &p_position_in_tilemap, const Vector2i &p_coords_in_pattern, Ref<LayeredTileMapPattern> p_pattern) const;
 	void draw_cells_outline(CanvasItem *p_canvas_item, const RBSet<Vector2i> &p_cells, Color p_color, Transform2D p_transform = Transform2D()) const;
 
 	Vector<Point2> get_terrain_polygon(int p_terrain_set);
 	Vector<Point2> get_terrain_peering_bit_polygon(int p_terrain_set, LayeredTileSet::CellNeighbor p_bit);
 	void draw_terrains(CanvasItem *p_canvas_item, Transform2D p_transform, const TileData *p_tile_data);
-	Vector<Vector<Ref<Texture2D>>> generate_terrains_icons(Size2i p_size);
+	Vector<Vector<Ref<Texture>>> generate_terrains_icons(Size2i p_size);
 
 	// Resource management
-	virtual void reset_state() override;
+	virtual void reset_state();
 
 	// Helpers.
 	static Vector2i transform_coords_layout(const Vector2i &p_coords, LayeredTileSet::TileOffsetAxis p_offset_axis, LayeredTileSet::TileLayout p_from_layout, LayeredTileSet::TileLayout p_to_layout);
@@ -590,7 +590,7 @@ public:
 	virtual void add_custom_data_layer(int p_index){};
 	virtual void move_custom_data_layer(int p_from_index, int p_to_pos){};
 	virtual void remove_custom_data_layer(int p_index){};
-	virtual void reset_state() override;
+	virtual void reset_state();
 
 	// Tiles.
 	virtual int get_tiles_count() const = 0;
@@ -637,7 +637,7 @@ private:
 		int next_alternative_id = 1;
 	};
 
-	Ref<Texture2D> texture;
+	Ref<Texture> texture;
 	Vector2i margins;
 	Vector2i separation;
 	Size2i texture_region_size = Size2i(16, 16);
@@ -658,7 +658,7 @@ private:
 	Ref<CanvasTexture> padded_texture;
 	bool padded_texture_needs_update = false;
 	void _queue_update_padded_texture();
-	Ref<ImageTexture> _create_padded_image_texture(const Ref<Texture2D> &p_source);
+	Ref<ImageTexture> _create_padded_image_texture(const Ref<Texture> &p_source);
 	void _update_padded_texture();
 
 protected:
@@ -670,32 +670,32 @@ protected:
 
 public:
 	// Not exposed.
-	virtual void set_tile_set(const LayeredTileSet *p_tile_set) override;
+	virtual void set_tile_set(const LayeredTileSet *p_tile_set);
 	const LayeredTileSet *get_tile_set() const;
-	virtual void notify_tile_data_properties_should_change() override;
-	virtual void add_occlusion_layer(int p_index) override;
-	virtual void move_occlusion_layer(int p_from_index, int p_to_pos) override;
-	virtual void remove_occlusion_layer(int p_index) override;
-	virtual void add_physics_layer(int p_index) override;
-	virtual void move_physics_layer(int p_from_index, int p_to_pos) override;
-	virtual void remove_physics_layer(int p_index) override;
-	virtual void add_terrain_set(int p_index) override;
-	virtual void move_terrain_set(int p_from_index, int p_to_pos) override;
-	virtual void remove_terrain_set(int p_index) override;
-	virtual void add_terrain(int p_terrain_set, int p_index) override;
-	virtual void move_terrain(int p_terrain_set, int p_from_index, int p_to_pos) override;
-	virtual void remove_terrain(int p_terrain_set, int p_index) override;
-	virtual void add_navigation_layer(int p_index) override;
-	virtual void move_navigation_layer(int p_from_index, int p_to_pos) override;
-	virtual void remove_navigation_layer(int p_index) override;
-	virtual void add_custom_data_layer(int p_index) override;
-	virtual void move_custom_data_layer(int p_from_index, int p_to_pos) override;
-	virtual void remove_custom_data_layer(int p_index) override;
-	virtual void reset_state() override;
+	virtual void notify_tile_data_properties_should_change();
+	virtual void add_occlusion_layer(int p_index);
+	virtual void move_occlusion_layer(int p_from_index, int p_to_pos);
+	virtual void remove_occlusion_layer(int p_index);
+	virtual void add_physics_layer(int p_index);
+	virtual void move_physics_layer(int p_from_index, int p_to_pos);
+	virtual void remove_physics_layer(int p_index);
+	virtual void add_terrain_set(int p_index);
+	virtual void move_terrain_set(int p_from_index, int p_to_pos);
+	virtual void remove_terrain_set(int p_index);
+	virtual void add_terrain(int p_terrain_set, int p_index);
+	virtual void move_terrain(int p_terrain_set, int p_from_index, int p_to_pos);
+	virtual void remove_terrain(int p_terrain_set, int p_index);
+	virtual void add_navigation_layer(int p_index);
+	virtual void move_navigation_layer(int p_from_index, int p_to_pos);
+	virtual void remove_navigation_layer(int p_index);
+	virtual void add_custom_data_layer(int p_index);
+	virtual void move_custom_data_layer(int p_from_index, int p_to_pos);
+	virtual void remove_custom_data_layer(int p_index);
+	virtual void reset_state();
 
 	// Base properties.
-	void set_texture(Ref<Texture2D> p_texture);
-	Ref<Texture2D> get_texture() const;
+	void set_texture(Ref<Texture> p_texture);
+	Ref<Texture> get_texture() const;
 	void set_margins(Vector2i p_margins);
 	Vector2i get_margins() const;
 	void set_separation(Vector2i p_separation);
@@ -710,15 +710,15 @@ public:
 	// Base tiles.
 	void create_tile(const Vector2i p_atlas_coords, const Vector2i p_size = Vector2i(1, 1));
 	void remove_tile(Vector2i p_atlas_coords);
-	virtual bool has_tile(Vector2i p_atlas_coords) const override;
+	virtual bool has_tile(Vector2i p_atlas_coords) const;
 	void move_tile_in_atlas(Vector2i p_atlas_coords, Vector2i p_new_atlas_coords = INVALID_ATLAS_COORDS, Vector2i p_new_size = Vector2i(-1, -1));
 	Vector2i get_tile_size_in_atlas(Vector2i p_atlas_coords) const;
 
-	virtual int get_tiles_count() const override;
-	virtual Vector2i get_tile_id(int p_index) const override;
+	virtual int get_tiles_count() const;
+	virtual Vector2i get_tile_id(int p_index) const;
 
 	bool has_room_for_tile(Vector2i p_atlas_coords, Vector2i p_size, int p_animation_columns, Vector2i p_animation_separation, int p_frames_count, Vector2i p_ignored_tile = INVALID_ATLAS_COORDS) const;
-	PackedVector2Array get_tiles_to_be_removed_on_change(Ref<Texture2D> p_texture, Vector2i p_margins, Vector2i p_separation, Vector2i p_texture_region_size);
+	PackedVector2Array get_tiles_to_be_removed_on_change(Ref<Texture> p_texture, Vector2i p_margins, Vector2i p_separation, Vector2i p_texture_region_size);
 	Vector2i get_tile_at_coords(Vector2i p_atlas_coords) const;
 
 	bool has_tiles_outside_texture() const;
@@ -744,11 +744,11 @@ public:
 	int create_alternative_tile(const Vector2i p_atlas_coords, int p_alternative_id_override = -1);
 	void remove_alternative_tile(const Vector2i p_atlas_coords, int p_alternative_tile);
 	void set_alternative_tile_id(const Vector2i p_atlas_coords, int p_alternative_tile, int p_new_id);
-	virtual bool has_alternative_tile(const Vector2i p_atlas_coords, int p_alternative_tile) const override;
+	virtual bool has_alternative_tile(const Vector2i p_atlas_coords, int p_alternative_tile) const;
 	int get_next_alternative_tile_id(const Vector2i p_atlas_coords) const;
 
-	virtual int get_alternative_tiles_count(const Vector2i p_atlas_coords) const override;
-	virtual int get_alternative_tile_id(const Vector2i p_atlas_coords, int p_index) const override;
+	virtual int get_alternative_tiles_count(const Vector2i p_atlas_coords) const;
+	virtual int get_alternative_tile_id(const Vector2i p_atlas_coords, int p_index) const;
 
 	// Get data associated to a tile.
 	TileData *get_tile_data(const Vector2i p_atlas_coords, int p_alternative_tile) const;
@@ -761,7 +761,7 @@ public:
 	static int alternative_no_transform(int p_alternative_id);
 
 	// Getters for texture and tile region (padded or not)
-	Ref<Texture2D> get_runtime_texture() const;
+	Ref<Texture> get_runtime_texture() const;
 	Rect2i get_runtime_tile_texture_region(Vector2i p_atlas_coords, int p_frame = 0) const;
 
 	~LayeredTileSetAtlasSource();
@@ -790,14 +790,14 @@ protected:
 
 public:
 	// Tiles.
-	int get_tiles_count() const override;
-	Vector2i get_tile_id(int p_tile_index) const override;
-	bool has_tile(Vector2i p_atlas_coords) const override;
+	int get_tiles_count() const;
+	Vector2i get_tile_id(int p_tile_index) const;
+	bool has_tile(Vector2i p_atlas_coords) const;
 
 	// Alternative tiles.
-	int get_alternative_tiles_count(const Vector2i p_atlas_coords) const override;
-	int get_alternative_tile_id(const Vector2i p_atlas_coords, int p_index) const override;
-	bool has_alternative_tile(const Vector2i p_atlas_coords, int p_alternative_tile) const override;
+	int get_alternative_tiles_count(const Vector2i p_atlas_coords) const;
+	int get_alternative_tile_id(const Vector2i p_atlas_coords, int p_index) const;
+	bool has_alternative_tile(const Vector2i p_atlas_coords, int p_alternative_tile) const;
 
 	// Scenes accessors. Lot are similar to "Alternative tiles".
 	int get_scene_tiles_count() { return get_alternative_tiles_count(Vector2i()); }

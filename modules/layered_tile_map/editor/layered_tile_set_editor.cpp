@@ -105,7 +105,7 @@ void LayeredTileSetEditor::_load_texture_files(const Vector<String> &p_paths) {
 	Vector<Ref<LayeredTileSetAtlasSource>> atlases;
 
 	for (const String &p_path : p_paths) {
-		Ref<Texture2D> texture = ResourceLoader::load(p_path);
+		Ref<Texture> texture = ResourceLoader::load(p_path);
 
 		if (texture.is_null()) {
 			EditorNode::get_singleton()->show_warning(TTR("Invalid texture selected."));
@@ -166,7 +166,7 @@ void LayeredTileSetEditor::_update_sources_list(int force_selected_id) {
 	for (const int &source_id : source_ids) {
 		LayeredTileSetSource *source = *tile_set->get_source(source_id);
 
-		Ref<Texture2D> texture;
+		Ref<Texture> texture;
 		String item_text;
 
 		// Common to all type of sources.
@@ -424,7 +424,7 @@ void LayeredTileSetEditor::_patterns_item_list_gui_input(const Ref<InputEvent> &
 	}
 }
 
-void LayeredTileSetEditor::_pattern_preview_done(Ref<LayeredTileMapPattern> p_pattern, Ref<Texture2D> p_texture) {
+void LayeredTileSetEditor::_pattern_preview_done(Ref<LayeredTileMapPattern> p_pattern, Ref<Texture> p_texture) {
 	// TODO optimize ?
 	for (int i = 0; i < patterns_item_list->get_item_count(); i++) {
 		if (patterns_item_list->get_item_metadata(i) == p_pattern) {

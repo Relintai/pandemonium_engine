@@ -135,8 +135,8 @@ void GenericTilePolygonEditor::_base_control_draw() {
 	real_t grab_threshold = EDITOR_GET("editors/polygon_editor/point_grab_radius");
 
 	Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
-	const Ref<Texture2D> handle = get_editor_theme_icon(SNAME("EditorPathSharpHandle"));
-	const Ref<Texture2D> add_handle = get_editor_theme_icon(SNAME("EditorHandleAdd"));
+	const Ref<Texture> handle = get_editor_theme_icon(SNAME("EditorPathSharpHandle"));
+	const Ref<Texture> add_handle = get_editor_theme_icon(SNAME("EditorHandleAdd"));
 	const Ref<StyleBox> focus_stylebox = get_theme_stylebox(SNAME("Focus"), EditorStringName(EditorStyles));
 
 	// Draw the focus rectangle.
@@ -737,7 +737,7 @@ void GenericTilePolygonEditor::set_tile_set(Ref<LayeredTileSet> p_tile_set) {
 	_zoom_changed();
 }
 
-void GenericTilePolygonEditor::set_background(Ref<Texture2D> p_texture, Rect2 p_region, Vector2 p_offset, bool p_flip_h, bool p_flip_v, bool p_transpose, Color p_modulate) {
+void GenericTilePolygonEditor::set_background(Ref<Texture> p_texture, Rect2 p_region, Vector2 p_offset, bool p_flip_h, bool p_flip_v, bool p_transpose, Color p_modulate) {
 	background_texture = p_texture;
 	background_region = p_region;
 	background_offset = p_offset;
@@ -1205,7 +1205,7 @@ void TileDataDefaultEditor::draw_over_tile(CanvasItem *p_canvas_item, Transform2
 
 	Vector2 texture_origin = tile_data->get_texture_origin();
 	if (value.get_type() == Variant::BOOL) {
-		Ref<Texture2D> texture = (bool)value ? tile_bool_checked : tile_bool_unchecked;
+		Ref<Texture> texture = (bool)value ? tile_bool_checked : tile_bool_unchecked;
 		int size = MIN(tile_set->get_tile_size().x, tile_set->get_tile_size().y) / 3;
 		Rect2 rect = p_transform.xform(Rect2(Vector2(-size / 2, -size / 2) - texture_origin, Vector2(size, size)));
 		p_canvas_item->draw_texture_rect(texture, rect);
@@ -1343,7 +1343,7 @@ void TileDataTextureOriginEditor::draw_over_tile(CanvasItem *p_canvas_item, Tran
 	}
 
 	if (atlas_source->is_position_in_tile_texture_region(p_cell.get_atlas_coords(), p_cell.alternative_tile, Vector2())) {
-		Ref<Texture2D> position_icon = LayeredTileSetEditor::get_singleton()->get_editor_theme_icon(SNAME("EditorPosition"));
+		Ref<Texture> position_icon = LayeredTileSetEditor::get_singleton()->get_editor_theme_icon(SNAME("EditorPosition"));
 		p_canvas_item->draw_texture(position_icon, p_transform.xform(Vector2()) - (position_icon->get_size() / 2), color);
 	} else {
 		Ref<Font> font = LayeredTileSetEditor::get_singleton()->get_theme_font(SNAME("bold"), EditorStringName(EditorFonts));
@@ -1373,7 +1373,7 @@ void TileDataPositionEditor::draw_over_tile(CanvasItem *p_canvas_item, Transform
 		Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 		color = selection_color;
 	}
-	Ref<Texture2D> position_icon = LayeredTileSetEditor::get_singleton()->get_editor_theme_icon(SNAME("EditorPosition"));
+	Ref<Texture> position_icon = LayeredTileSetEditor::get_singleton()->get_editor_theme_icon(SNAME("EditorPosition"));
 	p_canvas_item->draw_texture(position_icon, p_transform.xform(Vector2(value)) - position_icon->get_size() / 2, color);
 }
 
@@ -1391,7 +1391,7 @@ void TileDataYSortEditor::draw_over_tile(CanvasItem *p_canvas_item, Transform2D 
 	LayeredTileSetSource *source = *(tile_set->get_source(p_cell.source_id));
 	LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 	if (atlas_source->is_position_in_tile_texture_region(p_cell.get_atlas_coords(), p_cell.alternative_tile, Vector2(0, tile_data->get_y_sort_origin()))) {
-		Ref<Texture2D> position_icon = LayeredTileSetEditor::get_singleton()->get_editor_theme_icon(SNAME("EditorPosition"));
+		Ref<Texture> position_icon = LayeredTileSetEditor::get_singleton()->get_editor_theme_icon(SNAME("EditorPosition"));
 		p_canvas_item->draw_texture(position_icon, p_transform.xform(Vector2(0, tile_data->get_y_sort_origin())) - position_icon->get_size() / 2, color);
 	} else {
 		Ref<Font> font = LayeredTileSetEditor::get_singleton()->get_theme_font(SNAME("bold"), EditorStringName(EditorFonts));
@@ -1742,7 +1742,7 @@ void TileDataCollisionEditor::draw_over_tile(CanvasItem *p_canvas_item, Transfor
 
 	RenderingServer::get_singleton()->canvas_item_add_set_transform(p_canvas_item->get_canvas_item(), p_transform);
 
-	Ref<Texture2D> one_way_icon = get_editor_theme_icon(SNAME("OneWayTile"));
+	Ref<Texture> one_way_icon = get_editor_theme_icon(SNAME("OneWayTile"));
 	for (int i = 0; i < tile_data->get_collision_polygons_count(physics_layer); i++) {
 		Vector<Vector2> polygon = tile_data->get_collision_polygon_points(physics_layer, i);
 		if (polygon.size() < 3) {
@@ -1787,7 +1787,7 @@ void TileDataTerrainsEditor::_update_terrain_selector() {
 		terrain_property_editor->hide();
 	} else {
 		options.clear();
-		Vector<Vector<Ref<Texture2D>>> icons = tile_set->generate_terrains_icons(Size2(16, 16) * EDSCALE);
+		Vector<Vector<Ref<Texture>>> icons = tile_set->generate_terrains_icons(Size2(16, 16) * EDSCALE);
 		options.push_back(String(TTR("No terrain")) + String(":-1"));
 		for (int i = 0; i < tile_set->get_terrains_count(terrain_set); i++) {
 			String name = tile_set->get_terrain_name(terrain_set, i);

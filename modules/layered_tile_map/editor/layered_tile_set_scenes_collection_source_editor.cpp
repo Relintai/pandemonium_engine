@@ -225,7 +225,7 @@ void LayeredTileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_sou
 	tile_set_scenes_collection_source_changed_needs_update = true;
 }
 
-void LayeredTileSetScenesCollectionSourceEditor::_scene_thumbnail_done(const String &p_path, const Ref<Texture2D> &p_preview, const Ref<Texture2D> &p_small_preview, const Variant &p_ud) {
+void LayeredTileSetScenesCollectionSourceEditor::_scene_thumbnail_done(const String &p_path, const Ref<Texture> &p_preview, const Ref<Texture> &p_small_preview, const Variant &p_ud) {
 	int index = p_ud;
 
 	if (index >= 0 && index < scene_tiles_list->get_item_count()) {

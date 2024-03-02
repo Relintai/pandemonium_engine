@@ -132,7 +132,7 @@ void LayeredTileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Re
 		}
 
 		const Transform2D tilemap_xform = tilemap->get_transform();
-		TypedArray<Vector2i> used_cells = tilemap->get_used_cells(tilemap_layer);
+		PoolVector2iArray used_cells = tilemap->get_used_cells(tilemap_layer);
 
 		for (int used_cell_index = 0; used_cell_index < used_cells.size(); used_cell_index++) {
 			const Vector2i &cell = used_cells[used_cell_index];

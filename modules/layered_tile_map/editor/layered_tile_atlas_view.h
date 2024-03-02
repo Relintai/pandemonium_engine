@@ -63,7 +63,7 @@ private:
 	void _update_zoom_and_panning(bool p_zoom_on_mouse_pos = false);
 	void _zoom_widget_changed();
 	void _center_view();
-	virtual void gui_input(const Ref<InputEvent> &p_event) override;
+	virtual void gui_input(const Ref<InputEvent> &p_event);
 
 	Ref<ViewPanner> panner;
 	void _pan_callback(Vector2 p_scroll_vec, Ref<InputEvent> p_event);
@@ -116,12 +116,12 @@ private:
 	Size2i _compute_alternative_tiles_control_size();
 
 	struct ThemeCache {
-		Ref<Texture2D> center_view_icon;
-		Ref<Texture2D> checkerboard;
+		Ref<Texture> center_view_icon;
+		Ref<Texture> checkerboard;
 	} theme_cache;
 
 protected:
-	virtual void _update_theme_item_cache() override;
+	virtual void _update_theme_item_cache();
 
 	void _notification(int p_what);
 	static void _bind_methods();
