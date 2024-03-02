@@ -160,7 +160,7 @@ void LayeredTileMapLayer::_debug_quadrants_update_cell(CellData &r_cell_data, Se
 	if (!debug_quadrant_map.has(quadrant_coords)) {
 		// Create a new quadrant and add it to the quadrant map.
 		Ref<DebugQuadrant> new_quadrant;
-		new_quadrant.instantiate();
+		new_quadrant.instance();
 		new_quadrant->quadrant_coords = quadrant_coords;
 		debug_quadrant_map[quadrant_coords] = new_quadrant;
 	}
@@ -502,7 +502,7 @@ void LayeredTileMapLayer::_rendering_quadrants_update_cell(CellData &r_cell_data
 			rendering_quadrant = rendering_quadrant_map[quadrant_coords];
 		} else {
 			// Create a new rendering quadrant.
-			rendering_quadrant.instantiate();
+			rendering_quadrant.instance();
 			rendering_quadrant->quadrant_coords = quadrant_coords;
 			rendering_quadrant->canvas_items_position = canvas_items_position;
 			rendering_quadrant_map[quadrant_coords] = rendering_quadrant;
@@ -1271,7 +1271,7 @@ void LayeredTileMapLayer::_scenes_update_cell(CellData &r_cell_data) {
 			if (scenes_collection_source) {
 				Ref<PackedScene> packed_scene = scenes_collection_source->get_scene_tile_scene(c.alternative_tile);
 				if (packed_scene.is_valid()) {
-					Node *scene = packed_scene->instantiate();
+					Node *scene = packed_scene->instance();
 					Control *scene_as_control = Object::cast_to<Control>(scene);
 					Node2D *scene_as_node2d = Object::cast_to<Node2D>(scene);
 					if (scene_as_control) {
@@ -2346,7 +2346,7 @@ Ref<LayeredTileMapPattern> LayeredTileMapLayer::get_pattern(PoolVector2iArray p_
 	ERR_FAIL_COND_V(!tile_set.is_valid(), nullptr);
 
 	Ref<LayeredTileMapPattern> output;
-	output.instantiate();
+	output.instance();
 	if (p_coords_array.empty()) {
 		return output;
 	}

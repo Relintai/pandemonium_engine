@@ -417,7 +417,7 @@ void LayeredTileSetScenesCollectionSourceEditor::edit(Ref<LayeredTileSet> p_tile
 
 	// Remove listener for old objects.
 	if (tile_set_scenes_collection_source) {
-		tile_set_scenes_collection_source->disconnect_changed(callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed));
+		tile_set_scenes_collection_source->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed));
 	}
 
 	// Change the edited object.
@@ -437,7 +437,7 @@ void LayeredTileSetScenesCollectionSourceEditor::edit(Ref<LayeredTileSet> p_tile
 
 	// Add the listener again.
 	if (tile_set_scenes_collection_source) {
-		tile_set_scenes_collection_source->connect_changed(callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed));
+		tile_set_scenes_collection_source->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed));
 	}
 
 	// Update everything.

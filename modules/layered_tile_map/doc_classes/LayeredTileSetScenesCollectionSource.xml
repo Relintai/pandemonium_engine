@@ -4,8 +4,8 @@
 		Exposes a set of scenes as tiles for a [LayeredTileSet] resource.
 	</brief_description>
 	<description>
-		When placed on a [LayeredTileMap], tiles from [LayeredTileSetScenesCollectionSource] will automatically instantiate an associated scene at the cell's position in the LayeredTileMap.
-		Scenes are instantiated as children of the [LayeredTileMap] when it enters the tree. If you add/remove a scene tile in the [LayeredTileMap] that is already inside the tree, the [LayeredTileMap] will automatically instantiate/free the scene accordingly.
+		When placed on a [LayeredTileMap], tiles from [LayeredTileSetScenesCollectionSource] will automatically instance an associated scene at the cell's position in the LayeredTileMap.
+		Scenes are instanced as children of the [LayeredTileMap] when it enters the tree. If you add/remove a scene tile in the [LayeredTileMap] that is already inside the tree, the [LayeredTileMap] will automatically instance/free the scene accordingly.
 	</description>
 	<tutorials>
 	</tutorials>

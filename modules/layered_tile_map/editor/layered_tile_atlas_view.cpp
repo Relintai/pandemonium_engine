@@ -593,7 +593,7 @@ void LayeredTileAtlasView::_notification(int p_what) {
 }
 
 void LayeredTileAtlasView::_bind_methods() {
-	ADD_SIGNAL(MethodInfo("transform_changed", PropertyInfo(Variant::FLOAT, "zoom"), PropertyInfo(Variant::VECTOR2, "scroll")));
+	ADD_SIGNAL(MethodInfo("transform_changed", PropertyInfo(Variant::REAL, "zoom"), PropertyInfo(Variant::VECTOR2, "scroll")));
 }
 
 LayeredTileAtlasView::LayeredTileAtlasView() {
@@ -622,7 +622,7 @@ LayeredTileAtlasView::LayeredTileAtlasView() {
 	button_center_view->set_tooltip_text(TTR("Center View"));
 	add_child(button_center_view);
 
-	panner.instantiate();
+	panner.instance();
 	panner->set_callbacks(callable_mp(this, &LayeredTileAtlasView::_pan_callback), callable_mp(this, &LayeredTileAtlasView::_zoom_callback));
 	panner->set_enable_rmb(true);
 

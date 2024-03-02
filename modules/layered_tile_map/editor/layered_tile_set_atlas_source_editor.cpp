@@ -275,7 +275,7 @@ bool LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_set(const St
 			property_list_changed_notify();
 			emit_signal(SNAME("changed"), "animation_separation");
 			return true;
-		} else if (components.size() == 2 && components[0].begins_with("animation_frame_") && components[0].trim_prefix("animation_frame_").is_valid_int()) {
+		} else if (components.size() == 2 && components[0].begins_with("animation_frame_") && components[0].trim_prefix("animation_frame_").is_valid_integer()) {
 			for (TileSelection tile : tiles) {
 				int frame = components[0].trim_prefix("animation_frame_").to_int();
 				if (frame < 0 || frame >= tile_set_atlas_source->get_tile_animation_frames_count(tile.tile)) {
@@ -367,7 +367,7 @@ bool LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_get(const St
 		} else if (p_name == "animation_frames_count") {
 			r_ret = tile_set_atlas_source->get_tile_animation_frames_count(coords);
 			return true;
-		} else if (components.size() == 2 && components[0].begins_with("animation_frame_") && components[0].trim_prefix("animation_frame_").is_valid_int()) {
+		} else if (components.size() == 2 && components[0].begins_with("animation_frame_") && components[0].trim_prefix("animation_frame_").is_valid_integer()) {
 			int frame = components[0].trim_prefix("animation_frame_").to_int();
 			if (components[1] == "duration") {
 				if (frame < 0 || frame >= tile_set_atlas_source->get_tile_animation_frames_count(coords)) {
@@ -431,15 +431,15 @@ void LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_get_property
 		p_list->push_back(PropertyInfo(Variant::NIL, GNAME("Animation", "animation_"), PROPERTY_HINT_NONE, "animation_", PROPERTY_USAGE_GROUP));
 		p_list->push_back(PropertyInfo(Variant::INT, PNAME("animation_columns")));
 		p_list->push_back(PropertyInfo(Variant::VECTOR2I, PNAME("animation_separation")));
-		p_list->push_back(PropertyInfo(Variant::FLOAT, PNAME("animation_speed")));
+		p_list->push_back(PropertyInfo(Variant::REAL, PNAME("animation_speed")));
 		p_list->push_back(PropertyInfo(Variant::INT, PNAME("animation_mode"), PROPERTY_HINT_ENUM, "Default,Random Start Times"));
 		p_list->push_back(PropertyInfo(Variant::INT, PNAME("animation_frames_count"), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_ARRAY, "Frames,animation_frame_"));
 		// Not optimal, but returns value for the first tile. This is similar to what MultiNodeEdit does.
 		if (tile_set_atlas_source->get_tile_animation_frames_count(tiles.front()->get().tile) == 1) {
-			p_list->push_back(PropertyInfo(Variant::FLOAT, "animation_frame_0/duration", PROPERTY_HINT_NONE, "suffix:s", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_READ_ONLY));
+			p_list->push_back(PropertyInfo(Variant::REAL, "animation_frame_0/duration", PROPERTY_HINT_NONE, "suffix:s", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_READ_ONLY));
 		} else {
 			for (int i = 0; i < tile_set_atlas_source->get_tile_animation_frames_count(tiles.front()->get().tile); i++) {
-				p_list->push_back(PropertyInfo(Variant::FLOAT, vformat("animation_frame_%d/%s", i, PNAME("duration")), PROPERTY_HINT_NONE, "suffix:s"));
+				p_list->push_back(PropertyInfo(Variant::REAL, vformat("animation_frame_%d/%s", i, PNAME("duration")), PROPERTY_HINT_NONE, "suffix:s"));
 			}
 		}
 	}
@@ -730,7 +730,7 @@ void LayeredTileSetAtlasSourceEditor::_update_tile_data_editors() {
 	if (!tile_data_editors.has("probability")) {
 		TileDataDefaultEditor *tile_data_probability_editor = memnew(TileDataDefaultEditor());
 		tile_data_probability_editor->hide();
-		tile_data_probability_editor->setup_property_editor(Variant::FLOAT, "probability", "", 1.0);
+		tile_data_probability_editor->setup_property_editor(Variant::REAL, "probability", "", 1.0);
 		tile_data_probability_editor->connect("needs_redraw", callable_mp((CanvasItem *)tile_atlas_control_unscaled, &Control::queue_redraw));
 		tile_data_probability_editor->connect("needs_redraw", callable_mp((CanvasItem *)alternative_tiles_control_unscaled, &Control::queue_redraw));
 		tile_data_editors["probability"] = tile_data_probability_editor;
@@ -1104,7 +1104,7 @@ void LayeredTileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<In
 				last_base_tiles_coords = last_base_tiles_coords.max(Vector2i(0, 0)).min(grid_size - Vector2i(1, 1));
 				new_base_tiles_coords = new_base_tiles_coords.max(Vector2i(0, 0)).min(grid_size - Vector2i(1, 1));
 
-				Vector<Point2i> line = Geometry2D::bresenham_line(last_base_tiles_coords, new_base_tiles_coords);
+				Vector<Point2i> line = Geometry::bresenham_line(last_base_tiles_coords, new_base_tiles_coords);
 				for (int i = 0; i < line.size(); i++) {
 					if (tile_set_atlas_source->get_tile_at_coords(line[i]) == LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 						tile_set_atlas_source->create_tile(line[i]);
@@ -1119,7 +1119,7 @@ void LayeredTileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<In
 				last_base_tiles_coords = last_base_tiles_coords.max(Vector2i(0, 0)).min(grid_size - Vector2i(1, 1));
 				new_base_tiles_coords = new_base_tiles_coords.max(Vector2i(0, 0)).min(grid_size - Vector2i(1, 1));
 
-				Vector<Point2i> line = Geometry2D::bresenham_line(last_base_tiles_coords, new_base_tiles_coords);
+				Vector<Point2i> line = Geometry::bresenham_line(last_base_tiles_coords, new_base_tiles_coords);
 				for (int i = 0; i < line.size(); i++) {
 					Vector2i base_tile_coords = tile_set_atlas_source->get_tile_at_coords(line[i]);
 					if (base_tile_coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
@@ -1584,7 +1584,7 @@ HashMap<Vector2i, List<const PropertyInfo *>> LayeredTileSetAtlasSourceEditor::_
 		Vector<String> components = String(E_property->get().name).split("/", true, 1);
 		if (components.size() >= 1) {
 			Vector<String> coord_arr = components[0].split(":");
-			if (coord_arr.size() == 2 && coord_arr[0].is_valid_int() && coord_arr[1].is_valid_int()) {
+			if (coord_arr.size() == 2 && coord_arr[0].is_valid_integer() && coord_arr[1].is_valid_integer()) {
 				Vector2i coords = Vector2i(coord_arr[0].to_int(), coord_arr[1].to_int());
 				per_tile[coords].push_back(&(E_property->get()));
 			}
@@ -1634,7 +1634,7 @@ void LayeredTileSetAtlasSourceEditor::_menu_option(int p_option) {
 					if (per_tile.has(selected.tile)) {
 						for (List<const PropertyInfo *>::Element *E_property = per_tile[selected.tile].front(); E_property; E_property = E_property->next()) {
 							Vector<String> components = E_property->get()->name.split("/", true, 2);
-							if (components.size() >= 2 && components[1].is_valid_int() && components[1].to_int() == selected.alternative) {
+							if (components.size() >= 2 && components[1].is_valid_integer() && components[1].to_int() == selected.alternative) {
 								String property = E_property->get()->name;
 								Variant value = tile_set_atlas_source->get(property);
 								if (value.get_type() != Variant::NIL) {
@@ -2093,7 +2093,7 @@ void LayeredTileSetAtlasSourceEditor::_tile_alternatives_control_unscaled_draw()
 void LayeredTileSetAtlasSourceEditor::_tile_set_changed() {
 	if (tile_set->get_source_count() == 0) {
 		// No sources, so nothing to do here anymore.
-		tile_set->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
+		tile_set->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
 		tile_set = Ref<LayeredTileSet>();
 		return;
 	}
@@ -2177,13 +2177,13 @@ void LayeredTileSetAtlasSourceEditor::edit(Ref<LayeredTileSet> p_tile_set, Layer
 
 	// Remove listener for old objects.
 	if (tile_set.is_valid()) {
-		tile_set->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
+		tile_set->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
 	}
 
 	if (tile_set_atlas_source) {
-		tile_set_atlas_source->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_source_texture));
+		tile_set_atlas_source->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_source_texture));
 		if (atlas_source_texture.is_valid()) {
-			atlas_source_texture->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles));
+			atlas_source_texture->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles));
 			atlas_source_texture = Ref<Texture>();
 		}
 	}
@@ -2200,11 +2200,11 @@ void LayeredTileSetAtlasSourceEditor::edit(Ref<LayeredTileSet> p_tile_set, Layer
 	read_only = new_read_only_state;
 
 	if (tile_set.is_valid()) {
-		tile_set->connect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
+		tile_set->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
 	}
 
 	if (tile_set_atlas_source) {
-		tile_set_atlas_source->connect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_source_texture));
+		tile_set_atlas_source->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_source_texture));
 		_update_source_texture();
 	}
 
@@ -2243,7 +2243,7 @@ void LayeredTileSetAtlasSourceEditor::_update_source_texture() {
 	}
 
 	if (atlas_source_texture.is_valid()) {
-		atlas_source_texture->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles));
+		atlas_source_texture->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles));
 		atlas_source_texture = Ref<Texture>();
 	}
 
@@ -2251,7 +2251,7 @@ void LayeredTileSetAtlasSourceEditor::_update_source_texture() {
 		return;
 	}
 	atlas_source_texture = tile_set_atlas_source->get_texture();
-	atlas_source_texture->connect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles), CONNECT_DEFERRED);
+	atlas_source_texture->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetAtlasSourceEditor::_check_outside_tiles), CONNECT_DEFERRED);
 	_check_outside_tiles();
 }
 
@@ -2510,7 +2510,7 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	add_child(middle_vbox_container);
 
 	// -- Toolbox --
-	tools_button_group.instantiate();
+	tools_button_group.instance();
 	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_fix_selected_and_hovered_tiles).unbind(1));
 	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_tile_id_label).unbind(1));
 	tools_button_group->connect("pressed", callable_mp(this, &LayeredTileSetAtlasSourceEditor::_update_atlas_source_inspector).unbind(1));
@@ -2741,7 +2741,7 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 
 	// Inspector plugin.
 	Ref<EditorInspectorPluginTileData> tile_data_inspector_plugin;
-	tile_data_inspector_plugin.instantiate();
+	tile_data_inspector_plugin.instance();
 	EditorInspector::add_inspector_plugin(tile_data_inspector_plugin);
 }
 
@@ -2752,7 +2752,7 @@ LayeredTileSetAtlasSourceEditor::~LayeredTileSetAtlasSourceEditor() {
 	// Remove listener for old objects, so the LayeredTileSet doesn't
 	// try to call the destroyed LayeredTileSetAtlasSourceEditor.
 	if (tile_set.is_valid()) {
-		tile_set->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
+		tile_set->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetAtlasSourceEditor::_tile_set_changed));
 	}
 }
 
@@ -2774,18 +2774,18 @@ void EditorPropertyTilePolygon::_polygons_changed() {
 			// Single OccluderPolygon2D.
 			Ref<OccluderPolygon2D> occluder;
 			if (generic_tile_polygon_editor->get_polygon_count() >= 1) {
-				occluder.instantiate();
+				occluder.instance();
 				occluder->set_polygon(generic_tile_polygon_editor->get_polygon(0));
 			}
 			emit_changed(get_edited_property(), occluder);
 		} else if (base_type == "NavigationPolygon") {
 			Ref<NavigationPolygon> navigation_polygon;
 			if (generic_tile_polygon_editor->get_polygon_count() >= 1) {
-				navigation_polygon.instantiate();
+				navigation_polygon.instance();
 
 				if (generic_tile_polygon_editor->get_polygon_count() > 0) {
 					Ref<NavigationMeshSourceGeometryData2D> source_geometry_data;
-					source_geometry_data.instantiate();
+					source_geometry_data.instance();
 					for (int i = 0; i < generic_tile_polygon_editor->get_polygon_count(); i++) {
 						Vector<Vector2> polygon = generic_tile_polygon_editor->get_polygon(i);
 						navigation_polygon->add_outline(polygon);
@@ -2899,7 +2899,7 @@ bool EditorInspectorPluginTileData::can_handle(Object *p_object) {
 
 bool EditorInspectorPluginTileData::parse_property(Object *p_object, const Variant::Type p_type, const String &p_path, const PropertyHint p_hint, const String &p_hint_text, const BitField<PropertyUsageFlags> p_usage, const bool p_wide) {
 	Vector<String> components = String(p_path).split("/", true, 2);
-	if (components.size() == 2 && components[0].begins_with("occlusion_layer_") && components[0].trim_prefix("occlusion_layer_").is_valid_int()) {
+	if (components.size() == 2 && components[0].begins_with("occlusion_layer_") && components[0].trim_prefix("occlusion_layer_").is_valid_integer()) {
 		// Occlusion layers.
 		int layer_index = components[0].trim_prefix("occlusion_layer_").to_int();
 		ERR_FAIL_COND_V(layer_index < 0, false);
@@ -2909,7 +2909,7 @@ bool EditorInspectorPluginTileData::parse_property(Object *p_object, const Varia
 			add_property_editor(p_path, ep);
 			return true;
 		}
-	} else if (components.size() >= 2 && components[0].begins_with("physics_layer_") && components[0].trim_prefix("physics_layer_").is_valid_int()) {
+	} else if (components.size() >= 2 && components[0].begins_with("physics_layer_") && components[0].trim_prefix("physics_layer_").is_valid_integer()) {
 		// Physics layers.
 		int layer_index = components[0].trim_prefix("physics_layer_").to_int();
 		ERR_FAIL_COND_V(layer_index < 0, false);
@@ -2924,14 +2924,14 @@ bool EditorInspectorPluginTileData::parse_property(Object *p_object, const Varia
 			}
 			add_property_editor_for_multiple_properties("Polygons", properties, ep);
 			return true;
-		} else if (components.size() == 3 && components[1].begins_with("polygon_") && components[1].trim_prefix("polygon_").is_valid_int()) {
+		} else if (components.size() == 3 && components[1].begins_with("polygon_") && components[1].trim_prefix("polygon_").is_valid_integer()) {
 			int polygon_index = components[1].trim_prefix("polygon_").to_int();
 			ERR_FAIL_COND_V(polygon_index < 0, false);
 			if (components[2] == "points") {
 				return true;
 			}
 		}
-	} else if (components.size() == 2 && components[0].begins_with("navigation_layer_") && components[0].trim_prefix("navigation_layer_").is_valid_int()) {
+	} else if (components.size() == 2 && components[0].begins_with("navigation_layer_") && components[0].trim_prefix("navigation_layer_").is_valid_integer()) {
 		// Navigation layers.
 		int layer_index = components[0].trim_prefix("navigation_layer_").to_int();
 		ERR_FAIL_COND_V(layer_index < 0, false);

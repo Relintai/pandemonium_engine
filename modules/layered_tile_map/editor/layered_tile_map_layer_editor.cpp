@@ -498,7 +498,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_scenes_list_lmb_empty_clicked(const 
 	scene_tiles_list->deselect_all();
 	tile_set_selection.clear();
 	tile_map_selection.clear();
-	selection_pattern.instantiate();
+	selection_pattern.instance();
 	_update_selection_pattern_from_tileset_tiles_selection();
 }
 
@@ -548,7 +548,7 @@ bool LayeredTileMapLayerEditorTilesPlugin::forward_canvas_gui_input(const Ref<In
 	if (ED_IS_SHORTCUT("tiles_editor/cut", p_event) || ED_IS_SHORTCUT("tiles_editor/copy", p_event)) {
 		// Fill in the clipboard.
 		if (!tile_map_selection.empty()) {
-			tile_map_clipboard.instantiate();
+			tile_map_clipboard.instance();
 			PoolVector2iArray coords_array;
 			for (const Vector2i &E : tile_map_selection) {
 				coords_array.push_back(E);
@@ -1081,7 +1081,7 @@ HashMap<Vector2i, LayeredTileMapCell> LayeredTileMapLayerEditorTilesPlugin::_dra
 
 	// Get or create the pattern.
 	Ref<LayeredTileMapPattern> erase_pattern;
-	erase_pattern.instantiate();
+	erase_pattern.instance();
 	erase_pattern->set_cell(Vector2i(0, 0), LayeredTileSet::INVALID_SOURCE, LayeredTileSetSource::INVALID_ATLAS_COORDS, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
 	Ref<LayeredTileMapPattern> pattern = p_erase ? erase_pattern : selection_pattern;
 
@@ -1134,7 +1134,7 @@ HashMap<Vector2i, LayeredTileMapCell> LayeredTileMapLayerEditorTilesPlugin::_dra
 
 	// Get or create the pattern.
 	Ref<LayeredTileMapPattern> erase_pattern;
-	erase_pattern.instantiate();
+	erase_pattern.instance();
 	erase_pattern->set_cell(Vector2i(0, 0), LayeredTileSet::INVALID_SOURCE, LayeredTileSetSource::INVALID_ATLAS_COORDS, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
 	Ref<LayeredTileMapPattern> pattern = p_erase ? erase_pattern : selection_pattern;
 
@@ -1191,7 +1191,7 @@ HashMap<Vector2i, LayeredTileMapCell> LayeredTileMapLayerEditorTilesPlugin::_dra
 
 	// Get or create the pattern.
 	Ref<LayeredTileMapPattern> erase_pattern;
-	erase_pattern.instantiate();
+	erase_pattern.instance();
 	erase_pattern->set_cell(Vector2i(0, 0), LayeredTileSet::INVALID_SOURCE, LayeredTileSetSource::INVALID_ATLAS_COORDS, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
 	Ref<LayeredTileMapPattern> pattern = p_erase ? erase_pattern : selection_pattern;
 
@@ -1508,7 +1508,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_apply_transform(int p_type) {
 	}
 
 	Ref<LayeredTileMapPattern> transformed_pattern;
-	transformed_pattern.instantiate();
+	transformed_pattern.instance();
 	bool keep_shape = selection_pattern->get_size() == Vector2i(1, 1);
 
 	Vector2i size = selection_pattern->get_size();
@@ -1599,7 +1599,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_fix_selected_and_hovered() {
 		tile_set_selection.clear();
 		patterns_item_list->deselect_all();
 		tile_map_selection.clear();
-		selection_pattern.instantiate();
+		selection_pattern.instance();
 		return;
 	}
 	Ref<LayeredTileSet> tile_set = edited_layer->get_effective_tile_set();
@@ -1610,7 +1610,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_fix_selected_and_hovered() {
 		tile_set_selection.clear();
 		patterns_item_list->deselect_all();
 		tile_map_selection.clear();
-		selection_pattern.instantiate();
+		selection_pattern.instance();
 		return;
 	}
 
@@ -1622,7 +1622,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_fix_selected_and_hovered() {
 		tile_set_selection.clear();
 		patterns_item_list->deselect_all();
 		tile_map_selection.clear();
-		selection_pattern.instantiate();
+		selection_pattern.instance();
 		return;
 	}
 
@@ -1694,7 +1694,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_selection_pattern_from_tilema
 		return;
 	}
 
-	selection_pattern.instantiate();
+	selection_pattern.instance();
 
 	PoolVector2iArray coords_array;
 	for (const Vector2i &E : tile_map_selection) {
@@ -1719,7 +1719,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_selection_pattern_from_tilese
 	tile_map_selection.clear();
 
 	// Clear the selected pattern.
-	selection_pattern.instantiate();
+	selection_pattern.instance();
 
 	// Group per source.
 	HashMap<int, List<const LayeredTileMapCell *>> per_source;
@@ -1793,7 +1793,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_selection_pattern_from_tilese
 	tile_map_selection.clear();
 
 	// Clear the selected pattern.
-	selection_pattern.instantiate();
+	selection_pattern.instance();
 
 	if (patterns_item_list->get_selected_items().size() >= 1) {
 		selection_pattern = patterns_item_list->get_item_metadata(patterns_item_list->get_selected_items()[0]);
@@ -2172,7 +2172,7 @@ void LayeredTileMapLayerEditorTilesPlugin::edit(ObjectID p_tile_map_layer_id) {
 		tile_set_selection.clear();
 		patterns_item_list->deselect_all();
 		tile_map_selection.clear();
-		selection_pattern.instantiate();
+		selection_pattern.instance();
 	}
 
 	edited_tile_map_layer_id = p_tile_map_layer_id;
@@ -2191,15 +2191,15 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	ED_SHORTCUT("tiles_editor/delete", TTR("Delete"), Key::KEY_DELETE);
 
 	// --- Initialize references ---
-	tile_map_clipboard.instantiate();
-	selection_pattern.instantiate();
+	tile_map_clipboard.instance();
+	selection_pattern.instance();
 
 	// --- Toolbar ---
 	toolbar = memnew(HBoxContainer);
 
 	HBoxContainer *tilemap_tiles_tools_buttons = memnew(HBoxContainer);
 
-	tool_buttons_group.instantiate();
+	tool_buttons_group.instance();
 
 	select_tool_button = memnew(Button);
 	select_tool_button->set_theme_type_variation("FlatButton");
@@ -3543,7 +3543,7 @@ LayeredTileMapLayerEditorTerrainsPlugin::LayeredTileMapLayerEditorTerrainsPlugin
 
 	HBoxContainer *tilemap_tiles_tools_buttons = memnew(HBoxContainer);
 
-	tool_buttons_group.instantiate();
+	tool_buttons_group.instance();
 
 	paint_tool_button = memnew(Button);
 	paint_tool_button->set_theme_type_variation("FlatButton");
@@ -3739,7 +3739,7 @@ Vector<Vector2i> LayeredTileMapLayerEditor::get_line(const LayeredTileMapLayer *
 	ERR_FAIL_COND_V(tile_set.is_null(), Vector<Vector2i>());
 
 	if (tile_set->get_tile_shape() == LayeredTileSet::TILE_SHAPE_SQUARE) {
-		return Geometry2D::bresenham_line(p_from_cell, p_to_cell);
+		return Geometry::bresenham_line(p_from_cell, p_to_cell);
 	} else {
 		// Adapt the bresenham line algorithm to half-offset shapes.
 		// See this blog post: http://zvold.blogspot.com/2010/01/bresenhams-line-drawing-algorithm-on_26.html

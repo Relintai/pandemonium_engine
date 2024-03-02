@@ -530,7 +530,7 @@ public:
 
 	// Helpers
 	Vector<Vector2> get_tile_shape_polygon() const;
-	void draw_tile_shape(CanvasItem *p_canvas_item, Transform2D p_transform, Color p_color, bool p_filled = false, Ref<Texture> p_texture = Ref<Texture>()) const;
+	void draw_tile_shape(CanvasItem *p_canvas_item, Transform2D p_transform, Color p_color, bool p_filled = false, Ref<Texture> p_texture = Ref<Texture>());
 
 	// Used by LayeredTileMap/LayeredTileMapLayer
 	Vector2 map_to_local(const Vector2i &p_pos) const;
@@ -813,8 +813,8 @@ public:
 	int get_next_scene_tile_id() const;
 };
 
-class TileData : public Object {
-	GDCLASS(TileData, Object);
+class LayeredTileData : public Object {
+	GDCLASS(LayeredTileData, Object);
 
 private:
 	const LayeredTileSet *tile_set = nullptr;
@@ -909,7 +909,7 @@ public:
 	bool is_allowing_transform() const;
 
 	// To duplicate a TileData object, needed for runtiume update.
-	TileData *duplicate();
+	LayeredTileData *duplicate();
 
 	// Rendering
 	void set_flip_h(bool p_flip_h);

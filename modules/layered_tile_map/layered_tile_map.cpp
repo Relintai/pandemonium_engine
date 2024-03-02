@@ -554,7 +554,7 @@ bool LayeredTileMap::_set(const StringName &p_name, const Variant &p_value) {
 		return true;
 	}
 #endif // DISABLE_DEPRECATED
-	else if (components.size() == 2 && components[0].begins_with("layer_") && components[0].trim_prefix("layer_").is_valid_int()) {
+	else if (components.size() == 2 && components[0].begins_with("layer_") && components[0].trim_prefix("layer_").is_valid_integer()) {
 		int index = components[0].trim_prefix("layer_").to_int();
 		if (index < 0) {
 			return false;
@@ -619,7 +619,7 @@ bool LayeredTileMap::_get(const StringName &p_name, Variant &r_ret) const {
 		return true;
 	}
 #endif
-	else if (components.size() == 2 && components[0].begins_with("layer_") && components[0].trim_prefix("layer_").is_valid_int()) {
+	else if (components.size() == 2 && components[0].begins_with("layer_") && components[0].trim_prefix("layer_").is_valid_integer()) {
 		int index = components[0].trim_prefix("layer_").to_int();
 		if (index < 0 || index >= (int)layers.size()) {
 			return false;

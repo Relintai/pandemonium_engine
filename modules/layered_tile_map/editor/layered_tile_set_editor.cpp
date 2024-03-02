@@ -479,7 +479,7 @@ void LayeredTileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Obj
 		end = ed_tile_set->get_physics_layers_count();
 	} else if (p_array_prefix == "terrain_set_") {
 		end = ed_tile_set->get_terrain_sets_count();
-	} else if (components.size() >= 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_int() && components[1] == "terrain_") {
+	} else if (components.size() >= 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_integer() && components[1] == "terrain_") {
 		int terrain_set = components[0].trim_prefix("terrain_set_").to_int();
 		end = ed_tile_set->get_terrains_count(terrain_set);
 	} else if (p_array_prefix == "navigation_layer_") {
@@ -520,7 +520,7 @@ void LayeredTileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Obj
 		if (p_from_index < 0) {
 			undo_redo_man->add_undo_method(ed_tile_set, "remove_terrain_set", p_to_pos < 0 ? ed_tile_set->get_terrain_sets_count() : p_to_pos);
 		}
-	} else if (components.size() >= 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_int() && components[1] == "terrain_") {
+	} else if (components.size() >= 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_integer() && components[1] == "terrain_") {
 		int terrain_set = components[0].trim_prefix("terrain_set_").to_int();
 		if (p_from_index < 0) {
 			undo_redo_man->add_undo_method(ed_tile_set, "remove_terrain", terrain_set, p_to_pos < 0 ? ed_tile_set->get_terrains_count(terrain_set) : p_to_pos);
@@ -594,7 +594,7 @@ void LayeredTileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Obj
 								}
 							}
 						}
-					} else if (components.size() >= 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_int() && components[1] == "terrain_") {
+					} else if (components.size() >= 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_integer() && components[1] == "terrain_") {
 						for (int terrain_index = 0; terrain_index < LayeredTileSet::CELL_NEIGHBOR_MAX; terrain_index++) {
 							LayeredTileSet::CellNeighbor bit = LayeredTileSet::CellNeighbor(terrain_index);
 							if (tile_data->is_valid_terrain_peering_bit(bit)) {
@@ -641,7 +641,7 @@ void LayeredTileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Obj
 		} else {
 			undo_redo_man->add_do_method(ed_tile_set, "move_terrain_set", p_from_index, p_to_pos);
 		}
-	} else if (components.size() >= 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_int() && components[1] == "terrain_") {
+	} else if (components.size() >= 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_integer() && components[1] == "terrain_") {
 		int terrain_set = components[0].trim_prefix("terrain_set_").to_int();
 		if (p_from_index < 0) {
 			undo_redo_man->add_do_method(ed_tile_set, "add_terrain", terrain_set, p_to_pos);
@@ -689,7 +689,7 @@ void LayeredTileSetEditor::_undo_redo_inspector_callback(Object *p_undo_redo, Ob
 						TileData *tile_data = tas->get_tile_data(tile_id, alternative_id);
 						ERR_FAIL_NULL(tile_data);
 
-						if (components.size() == 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_int() && components[1] == "mode") {
+						if (components.size() == 2 && components[0].begins_with("terrain_set_") && components[0].trim_prefix("terrain_set_").is_valid_integer() && components[1] == "mode") {
 							ADD_UNDO(tile_data, "terrain_set");
 							ADD_UNDO(tile_data, "terrain");
 							for (int l = 0; l < LayeredTileSet::CELL_NEIGHBOR_MAX; l++) {
@@ -698,8 +698,8 @@ void LayeredTileSetEditor::_undo_redo_inspector_callback(Object *p_undo_redo, Ob
 									ADD_UNDO(tile_data, "terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[l]));
 								}
 							}
-						} else if (components.size() == 2 && components[0].begins_with("custom_data_layer_") && components[0].trim_prefix("custom_data_layer_").is_valid_int() && components[1] == "type") {
-							int custom_data_layer = components[0].trim_prefix("custom_data_layer_").is_valid_int();
+						} else if (components.size() == 2 && components[0].begins_with("custom_data_layer_") && components[0].trim_prefix("custom_data_layer_").is_valid_integer() && components[1] == "type") {
+							int custom_data_layer = components[0].trim_prefix("custom_data_layer_").is_valid_integer();
 							ADD_UNDO(tile_data, vformat("custom_data_%d", custom_data_layer));
 						}
 					}
@@ -722,7 +722,7 @@ void LayeredTileSetEditor::edit(Ref<LayeredTileSet> p_tile_set) {
 
 	// Remove listener.
 	if (tile_set.is_valid()) {
-		tile_set->disconnect_changed(callable_mp(this, &LayeredTileSetEditor::_tile_set_changed));
+		tile_set->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetEditor::_tile_set_changed));
 	}
 
 	// Change the edited object.
@@ -737,7 +737,7 @@ void LayeredTileSetEditor::edit(Ref<LayeredTileSet> p_tile_set) {
 		sources_advanced_menu_button->set_disabled(read_only);
 		source_sort_button->set_disabled(read_only);
 
-		tile_set->connect_changed(callable_mp(this, &LayeredTileSetEditor::_tile_set_changed));
+		tile_set->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileSetEditor::_tile_set_changed));
 		if (first_edit) {
 			first_edit = false;
 			_set_source_sort(EditorSettings::get_singleton()->get_project_metadata("editor_metadata", "tile_source_sort", 0));
