@@ -29,17 +29,19 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tilemap_navigation_geometry_parser_2d.h"
+#include "layered_tilemap_navigation_geometry_parser_2d.h"
 
 //#include "scene/2d/tile_map.h"
 
-#include "modules/tile_map/tile_map.h"
-#include "modules/tile_map/tile_set.h"
+#include "../layered_tile_map.h"
+#include "../layered_tile_set.h"
+
 #include "scene/resources/navigation_2d/navigation_mesh_source_geometry_data_2d.h"
 #include "scene/resources/navigation_2d/navigation_polygon.h"
 
 #include "modules/modules_enabled.gen.h"
 
+/*
 bool LayeredTileMap2DNavigationGeometryParser2D::parses_node(Node *p_node) {
 	return (Object::cast_to<LayeredTileMap>(p_node) != nullptr);
 }
@@ -83,24 +85,11 @@ void LayeredTileMap2DNavigationGeometryParser2D::parse_geometry(Node *p_node, Re
 					p_source_geometry->_add_traversable_outline(traversable_outline_new);
 				}
 			}
-
-			/*
-			TODO
-			if (parsed_geometry_type != NavigationPolygon::PARSED_GEOMETRY_MESH_INSTANCES && (tilemap->get_collision_layer() & navigation_polygon_collision_mask)) {
-				for (int collision_polygon_index = 0; collision_polygon_index < tile_set->tile_get_shape_count(cell_id); collision_polygon_index++) {
-					Vector<Vector2> obstruction_outline = tile_set->get_collision_polygon_points(collision_polygon_index);
-
-					for (int obstruction_outline_index = 0; obstruction_outline_index < obstruction_outline.size(); obstruction_outline_index++) {
-						obstruction_outline.write[obstruction_outline_index] = tile_transform_offset.xform(obstruction_outline[obstruction_outline_index]);
-					}
-
-					p_source_geometry->_add_obstruction_outline(obstruction_outline);
-				}
-			}
-			*/
 		}
 	}
 }
+
+*/
 
 bool LayeredTileMap2DNavigationGeometryParser2D::parses_node(Node *p_node) {
 	return (Object::cast_to<LayeredTileMap>(p_node) != nullptr);

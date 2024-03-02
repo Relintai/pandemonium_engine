@@ -50,7 +50,7 @@
 				Returns whether the pattern has a tile at the given coordinates.
 			</description>
 		</method>
-		<method name="is_empty" qualifiers="const">
+		<method name="empty" qualifiers="const">
 			<return type="bool" />
 			<description>
 				Returns whether the pattern is empty or not.

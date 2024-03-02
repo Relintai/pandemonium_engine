@@ -129,7 +129,7 @@ void LayeredTileSetEditor::_load_texture_files(const Vector<String> &p_paths) {
 		atlases.append(atlas_source);
 	}
 
-	if (!atlases.is_empty()) {
+	if (!atlases.empty()) {
 		tile_set_atlas_source_editor->init_new_atlases(atlases);
 	}
 
@@ -170,7 +170,7 @@ void LayeredTileSetEditor::_update_sources_list(int force_selected_id) {
 		String item_text;
 
 		// Common to all type of sources.
-		if (!source->get_name().is_empty()) {
+		if (!source->get_name().empty()) {
 			item_text = source->get_name();
 		}
 
@@ -178,7 +178,7 @@ void LayeredTileSetEditor::_update_sources_list(int force_selected_id) {
 		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 		if (atlas_source) {
 			texture = atlas_source->get_texture();
-			if (item_text.is_empty()) {
+			if (item_text.empty()) {
 				if (texture.is_valid()) {
 					item_text = texture->get_path().get_file();
 				} else {
@@ -191,7 +191,7 @@ void LayeredTileSetEditor::_update_sources_list(int force_selected_id) {
 		LayeredTileSetScenesCollectionSource *scene_collection_source = Object::cast_to<LayeredTileSetScenesCollectionSource>(source);
 		if (scene_collection_source) {
 			texture = get_editor_theme_icon(SNAME("PackedScene"));
-			if (item_text.is_empty()) {
+			if (item_text.empty()) {
 				if (scene_collection_source->get_scene_tiles_count() > 0) {
 					item_text = vformat(TTR("Scene Collection Source (ID: %d)"), source_id);
 				} else {
@@ -201,7 +201,7 @@ void LayeredTileSetEditor::_update_sources_list(int force_selected_id) {
 		}
 
 		// Use default if not valid.
-		if (item_text.is_empty()) {
+		if (item_text.empty()) {
 			item_text = vformat(TTR("Unknown Type Source (ID: %d)"), source_id);
 		}
 		if (!texture.is_valid()) {

@@ -25,7 +25,7 @@
 			</description>
 		</method>
 		<method name="get_collision_polygon_points" qualifiers="const">
-			<return type="PackedVector2Array" />
+			<return type="PoolVector2Array" />
 			<param index="0" name="layer_id" type="int" />
 			<param index="1" name="polygon_index" type="int" />
 			<description>
@@ -134,7 +134,7 @@
 			<return type="void" />
 			<param index="0" name="layer_id" type="int" />
 			<param index="1" name="polygon_index" type="int" />
-			<param index="2" name="polygon" type="PackedVector2Array" />
+			<param index="2" name="polygon" type="PoolVector2Array" />
 			<description>
 				Sets the points of the polygon at index [param polygon_index] for LayeredTileSet physics layer with index [param layer_id].
 			</description>

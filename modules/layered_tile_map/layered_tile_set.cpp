@@ -34,6 +34,7 @@
 
 #include "core/containers/local_vector.h"
 #include "core/containers/rb_set.h"
+#include "core/core_string_names.h"
 #include "core/io/marshalls.h"
 #include "core/math/geometry.h"
 #include "scene/main/control.h"
@@ -75,7 +76,7 @@ void LayeredTileMapPattern::_set_tile_data(const Vector<int> &p_data) {
 		uint16_t alternative_tile = decode_uint16(&local[10]);
 		set_cell(Vector2i(x, y), source_id, Vector2i(atlas_coords_x, atlas_coords_y), alternative_tile);
 	}
-	emit_signal(SNAME("changed"));
+	emit_signal("changed");
 }
 
 Vector<int> LayeredTileMapPattern::_get_tile_data() const {
@@ -87,14 +88,15 @@ Vector<int> LayeredTileMapPattern::_get_tile_data() const {
 	// Save in highest format
 
 	int idx = 0;
-	for (const KeyValue<Vector2i, LayeredTileMapCell> &E : pattern) {
+
+	for (const HashMap<Vector2i, LayeredTileMapCell>::Element *E = pattern.front(); E; E = E->next) {
 		uint8_t *ptr = (uint8_t *)&w[idx];
-		encode_uint16((int16_t)(E.key.x), &ptr[0]);
-		encode_uint16((int16_t)(E.key.y), &ptr[2]);
-		encode_uint16(E.value.source_id, &ptr[4]);
-		encode_uint16(E.value.coord_x, &ptr[6]);
-		encode_uint16(E.value.coord_y, &ptr[8]);
-		encode_uint16(E.value.alternative_tile, &ptr[10]);
+		encode_uint16((int16_t)(E->key().x), &ptr[0]);
+		encode_uint16((int16_t)(E->key().y), &ptr[2]);
+		encode_uint16(E->value().source_id, &ptr[4]);
+		encode_uint16(E->value().coord_x, &ptr[6]);
+		encode_uint16(E->value().coord_y, &ptr[8]);
+		encode_uint16(E->value().alternative_tile, &ptr[10]);
 		idx += 3;
 	}
 
@@ -119,8 +121,8 @@ void LayeredTileMapPattern::remove_cell(const Vector2i &p_coords, bool p_update_
 	pattern.erase(p_coords);
 	if (p_update_size) {
 		size = Size2i();
-		for (const KeyValue<Vector2i, LayeredTileMapCell> &E : pattern) {
-			size = size.max(E.key + Vector2i(1, 1));
+		for (const HashMap<Vector2i, LayeredTileMapCell>::Element *E = pattern.front(); E; E = E->next) {
+			size = size.max(E->key() + Vector2i(1, 1));
 		}
 	}
 	emit_changed();
@@ -149,8 +151,8 @@ PoolVector2iArray LayeredTileMapPattern::get_used_cells() const {
 	PoolVector2iArray a;
 	a.resize(pattern.size());
 	int i = 0;
-	for (const KeyValue<Vector2i, LayeredTileMapCell> &E : pattern) {
-		Vector2i p(E.key.x, E.key.y);
+	for (const HashMap<Vector2i, LayeredTileMapCell>::Element *E = pattern.front(); E; E = E->next) {
+		Vector2i p(E->key().x, E->key().y);
 		a[i++] = p;
 	}
 
@@ -162,8 +164,8 @@ Size2i LayeredTileMapPattern::get_size() const {
 }
 
 void LayeredTileMapPattern::set_size(const Size2i &p_size) {
-	for (const KeyValue<Vector2i, LayeredTileMapCell> &E : pattern) {
-		Vector2i coords = E.key;
+	for (const HashMap<Vector2i, LayeredTileMapCell>::Element *E = pattern.front(); E; E = E->next) {
+		Vector2i coords = E->key();
 		if (p_size.x <= coords.x || p_size.y <= coords.y) {
 			ERR_FAIL_MSG(vformat("Cannot set pattern size to %s, it contains a tile at %s. Size can only be increased.", p_size, coords));
 		};
@@ -173,8 +175,8 @@ void LayeredTileMapPattern::set_size(const Size2i &p_size) {
 	emit_changed();
 }
 
-bool LayeredTileMapPattern::is_empty() const {
-	return pattern.is_empty();
+bool LayeredTileMapPattern::empty() const {
+	return pattern.empty();
 };
 
 void LayeredTileMapPattern::clear() {
@@ -203,7 +205,7 @@ bool LayeredTileMapPattern::_get(const StringName &p_name, Variant &r_ret) const
 }
 
 void LayeredTileMapPattern::_get_property_list(List<PropertyInfo> *p_list) const {
-	p_list->push_back(PropertyInfo(Variant::OBJECT, "tile_data", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR | PROPERTY_USAGE_INTERNAL));
+	p_list->push_back(PropertyInfo(Variant::OBJECT, "tile_data", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 }
 
 void LayeredTileMapPattern::_bind_methods() {
@@ -217,7 +219,7 @@ void LayeredTileMapPattern::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_used_cells"), &LayeredTileMapPattern::get_used_cells);
 	ClassDB::bind_method(D_METHOD("get_size"), &LayeredTileMapPattern::get_size);
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &LayeredTileMapPattern::set_size);
-	ClassDB::bind_method(D_METHOD("is_empty"), &LayeredTileMapPattern::is_empty);
+	ClassDB::bind_method(D_METHOD("empty"), &LayeredTileMapPattern::empty);
 }
 
 /////////////////////////////// LayeredTileSet //////////////////////////////////////
@@ -328,35 +330,35 @@ LayeredTileSet::TerrainsPattern::TerrainsPattern(const LayeredTileSet *p_tile_se
 const int LayeredTileSet::INVALID_SOURCE = -1;
 
 const char *LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[] = {
-	PNAME("right_side"),
-	PNAME("right_corner"),
-	PNAME("bottom_right_side"),
-	PNAME("bottom_right_corner"),
-	PNAME("bottom_side"),
-	PNAME("bottom_corner"),
-	PNAME("bottom_left_side"),
-	PNAME("bottom_left_corner"),
-	PNAME("left_side"),
-	PNAME("left_corner"),
-	PNAME("top_left_side"),
-	PNAME("top_left_corner"),
-	PNAME("top_side"),
-	PNAME("top_corner"),
-	PNAME("top_right_side"),
-	PNAME("top_right_corner"),
+	"right_side",
+	"right_corner",
+	"bottom_right_side",
+	"bottom_right_corner",
+	"bottom_side",
+	"bottom_corner",
+	"bottom_left_side",
+	"bottom_left_corner",
+	"left_side",
+	"left_corner",
+	"top_left_side",
+	"top_left_corner",
+	"top_side",
+	"top_corner",
+	"top_right_side",
+	"top_right_corner",
 };
 
 // -- Shape and layout --
 void LayeredTileSet::set_tile_shape(LayeredTileSet::TileShape p_shape) {
 	tile_shape = p_shape;
 
-	for (KeyValue<int, Ref<LayeredTileSetSource>> &E_source : sources) {
-		E_source.value->notify_tile_data_properties_should_change();
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *E_source = sources.front(); E_source; E_source = E_source->next) {
+		E_source->value()->notify_tile_data_properties_should_change();
 	}
 
 	terrain_bits_meshes_dirty = true;
 	tile_meshes_dirty = true;
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 LayeredTileSet::TileShape LayeredTileSet::get_tile_shape() const {
@@ -374,8 +376,8 @@ LayeredTileSet::TileLayout LayeredTileSet::get_tile_layout() const {
 void LayeredTileSet::set_tile_offset_axis(LayeredTileSet::TileOffsetAxis p_alignment) {
 	tile_offset_axis = p_alignment;
 
-	for (KeyValue<int, Ref<LayeredTileSetSource>> &E_source : sources) {
-		E_source.value->notify_tile_data_properties_should_change();
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *E_source = sources.front(); E_source; E_source = E_source->next) {
+		E_source->value()->notify_tile_data_properties_should_change();
 	}
 
 	terrain_bits_meshes_dirty = true;
@@ -405,12 +407,13 @@ void LayeredTileSet::_update_terrains_cache() {
 	if (terrains_cache_dirty) {
 		// Organizes tiles into structures.
 		per_terrain_pattern_tiles.resize(terrain_sets.size());
-		for (RBMap<LayeredTileSet::TerrainsPattern, RBSet<LayeredTileMapCell>> &tiles : per_terrain_pattern_tiles) {
-			tiles.clear();
+
+		for (int i = 0; i < per_terrain_pattern_tiles.size(); ++i) {
+			per_terrain_pattern_tiles[i].clear();
 		}
 
-		for (const KeyValue<int, Ref<LayeredTileSetSource>> &kv : sources) {
-			Ref<LayeredTileSetSource> source = kv.value;
+		for (const HashMap<int, Ref<LayeredTileSetSource>>::Element *kv = sources.front(); kv; kv = kv->next) {
+			Ref<LayeredTileSetSource> source = kv->value();
 			Ref<LayeredTileSetAtlasSource> atlas_source = source;
 			if (atlas_source.is_valid()) {
 				for (int tile_index = 0; tile_index < source->get_tiles_count(); tile_index++) {
@@ -423,7 +426,7 @@ void LayeredTileSet::_update_terrains_cache() {
 						int terrain_set = tile_data->get_terrain_set();
 						if (terrain_set >= 0) {
 							LayeredTileMapCell cell;
-							cell.source_id = kv.key;
+							cell.source_id = kv->key();
 							cell.set_atlas_coords(tile_id);
 							cell.alternative_tile = alternative_id;
 
@@ -488,7 +491,7 @@ int LayeredTileSet::add_source(Ref<LayeredTileSetSource> p_tile_set_source, int 
 	p_tile_set_source->set_tile_set(this);
 	_compute_next_source_id();
 
-	sources[new_source_id]->connect_changed(callable_mp(this, &LayeredTileSet::_source_changed));
+	sources[new_source_id]->connect(CoreStringNames::get_singleton()->changed, this, "_source_changed");
 
 	terrains_cache_dirty = true;
 	emit_changed();
@@ -499,7 +502,7 @@ int LayeredTileSet::add_source(Ref<LayeredTileSetSource> p_tile_set_source, int 
 void LayeredTileSet::remove_source(int p_source_id) {
 	ERR_FAIL_COND_MSG(!sources.has(p_source_id), vformat("Cannot remove LayeredTileSet atlas source. No tileset atlas source with id %d.", p_source_id));
 
-	sources[p_source_id]->disconnect_changed(callable_mp(this, &LayeredTileSet::_source_changed));
+	sources[p_source_id]->connect(CoreStringNames::get_singleton()->changed, this, "_source_changed");
 
 	sources[p_source_id]->set_tile_set(nullptr);
 	sources.erase(p_source_id);
@@ -511,9 +514,9 @@ void LayeredTileSet::remove_source(int p_source_id) {
 }
 
 void LayeredTileSet::remove_source_ptr(LayeredTileSetSource *p_tile_set_source) {
-	for (const KeyValue<int, Ref<LayeredTileSetSource>> &kv : sources) {
-		if (kv.value.ptr() == p_tile_set_source) {
-			remove_source(kv.key);
+	for (const HashMap<int, Ref<LayeredTileSetSource>>::Element *kv = sources.front(); kv; kv = kv->next) {
+		if (kv->value().ptr() == p_tile_set_source) {
+			remove_source(kv->key());
 			return;
 		}
 	}
@@ -585,11 +588,11 @@ void LayeredTileSet::add_occlusion_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, occlusion_layers.size() + 1);
 	occlusion_layers.insert(p_index, OcclusionLayer());
 
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->add_occlusion_layer(p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->add_occlusion_layer(p_index);
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 
@@ -597,21 +600,24 @@ void LayeredTileSet::move_occlusion_layer(int p_from_index, int p_to_pos) {
 	ERR_FAIL_INDEX(p_from_index, occlusion_layers.size());
 	ERR_FAIL_INDEX(p_to_pos, occlusion_layers.size() + 1);
 	occlusion_layers.insert(p_to_pos, occlusion_layers[p_from_index]);
-	occlusion_layers.remove_at(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->move_occlusion_layer(p_from_index, p_to_pos);
+	occlusion_layers.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->move_occlusion_layer(p_from_index, p_to_pos);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 
 void LayeredTileSet::remove_occlusion_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, occlusion_layers.size());
-	occlusion_layers.remove_at(p_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->remove_occlusion_layer(p_index);
+
+	occlusion_layers.remove(p_index);
+
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->remove_occlusion_layer(p_index);
 	}
-	notify_property_list_changed();
+
+	property_list_changed_notify();
 	emit_changed();
 }
 
@@ -648,11 +654,11 @@ void LayeredTileSet::add_physics_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, physics_layers.size() + 1);
 	physics_layers.insert(p_index, PhysicsLayer());
 
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->add_physics_layer(p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->add_physics_layer(p_index);
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 
@@ -660,21 +666,21 @@ void LayeredTileSet::move_physics_layer(int p_from_index, int p_to_pos) {
 	ERR_FAIL_INDEX(p_from_index, physics_layers.size());
 	ERR_FAIL_INDEX(p_to_pos, physics_layers.size() + 1);
 	physics_layers.insert(p_to_pos, physics_layers[p_from_index]);
-	physics_layers.remove_at(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->move_physics_layer(p_from_index, p_to_pos);
+	physics_layers.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->move_physics_layer(p_from_index, p_to_pos);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 
 void LayeredTileSet::remove_physics_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, physics_layers.size());
-	physics_layers.remove_at(p_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->remove_physics_layer(p_index);
+	physics_layers.remove(p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->remove_physics_layer(p_index);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 
@@ -722,11 +728,11 @@ void LayeredTileSet::add_terrain_set(int p_index) {
 	ERR_FAIL_INDEX(p_index, terrain_sets.size() + 1);
 	terrain_sets.insert(p_index, TerrainSet());
 
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->add_terrain_set(p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->add_terrain_set(p_index);
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 	terrains_cache_dirty = true;
 	emit_changed();
 }
@@ -735,22 +741,22 @@ void LayeredTileSet::move_terrain_set(int p_from_index, int p_to_pos) {
 	ERR_FAIL_INDEX(p_from_index, terrain_sets.size());
 	ERR_FAIL_INDEX(p_to_pos, terrain_sets.size() + 1);
 	terrain_sets.insert(p_to_pos, terrain_sets[p_from_index]);
-	terrain_sets.remove_at(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->move_terrain_set(p_from_index, p_to_pos);
+	terrain_sets.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->move_terrain_set(p_from_index, p_to_pos);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 	terrains_cache_dirty = true;
 	emit_changed();
 }
 
 void LayeredTileSet::remove_terrain_set(int p_index) {
 	ERR_FAIL_INDEX(p_index, terrain_sets.size());
-	terrain_sets.remove_at(p_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->remove_terrain_set(p_index);
+	terrain_sets.remove(p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->remove_terrain_set(p_index);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 	terrains_cache_dirty = true;
 	emit_changed();
 }
@@ -758,11 +764,11 @@ void LayeredTileSet::remove_terrain_set(int p_index) {
 void LayeredTileSet::set_terrain_set_mode(int p_terrain_set, TerrainMode p_terrain_mode) {
 	ERR_FAIL_INDEX(p_terrain_set, terrain_sets.size());
 	terrain_sets.write[p_terrain_set].mode = p_terrain_mode;
-	for (KeyValue<int, Ref<LayeredTileSetSource>> &E_source : sources) {
-		E_source.value->notify_tile_data_properties_should_change();
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *E_source = sources.front(); E_source; E_source = E_source->next) {
+		E_source->value()->notify_tile_data_properties_should_change();
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 	terrains_cache_dirty = true;
 	emit_changed();
 }
@@ -793,11 +799,11 @@ void LayeredTileSet::add_terrain(int p_terrain_set, int p_index) {
 	terrains.write[p_index].color = c;
 	terrains.write[p_index].name = String(vformat("Terrain %d", p_index));
 
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->add_terrain(p_terrain_set, p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->add_terrain(p_terrain_set, p_index);
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 	terrains_cache_dirty = true;
 	emit_changed();
 }
@@ -809,11 +815,11 @@ void LayeredTileSet::move_terrain(int p_terrain_set, int p_from_index, int p_to_
 	ERR_FAIL_INDEX(p_from_index, terrains.size());
 	ERR_FAIL_INDEX(p_to_pos, terrains.size() + 1);
 	terrains.insert(p_to_pos, terrains[p_from_index]);
-	terrains.remove_at(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->move_terrain(p_terrain_set, p_from_index, p_to_pos);
+	terrains.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->move_terrain(p_terrain_set, p_from_index, p_to_pos);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 	terrains_cache_dirty = true;
 	emit_changed();
 }
@@ -823,11 +829,11 @@ void LayeredTileSet::remove_terrain(int p_terrain_set, int p_index) {
 	Vector<Terrain> &terrains = terrain_sets.write[p_terrain_set].terrains;
 
 	ERR_FAIL_INDEX(p_index, terrains.size());
-	terrains.remove_at(p_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->remove_terrain(p_terrain_set, p_index);
+	terrains.remove(p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->remove_terrain(p_terrain_set, p_index);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 	terrains_cache_dirty = true;
 	emit_changed();
 }
@@ -966,11 +972,11 @@ void LayeredTileSet::add_navigation_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, navigation_layers.size() + 1);
 	navigation_layers.insert(p_index, NavigationLayer());
 
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->add_navigation_layer(p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->add_navigation_layer(p_index);
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 
@@ -978,21 +984,21 @@ void LayeredTileSet::move_navigation_layer(int p_from_index, int p_to_pos) {
 	ERR_FAIL_INDEX(p_from_index, navigation_layers.size());
 	ERR_FAIL_INDEX(p_to_pos, navigation_layers.size() + 1);
 	navigation_layers.insert(p_to_pos, navigation_layers[p_from_index]);
-	navigation_layers.remove_at(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->move_navigation_layer(p_from_index, p_to_pos);
+	navigation_layers.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->move_navigation_layer(p_from_index, p_to_pos);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 
 void LayeredTileSet::remove_navigation_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, navigation_layers.size());
-	navigation_layers.remove_at(p_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->remove_navigation_layer(p_index);
+	navigation_layers.remove(p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->remove_navigation_layer(p_index);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 
@@ -1041,11 +1047,11 @@ void LayeredTileSet::add_custom_data_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, custom_data_layers.size() + 1);
 	custom_data_layers.insert(p_index, CustomDataLayer());
 
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->add_custom_data_layer(p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->add_custom_data_layer(p_index);
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 
@@ -1053,32 +1059,34 @@ void LayeredTileSet::move_custom_data_layer(int p_from_index, int p_to_pos) {
 	ERR_FAIL_INDEX(p_from_index, custom_data_layers.size());
 	ERR_FAIL_INDEX(p_to_pos, custom_data_layers.size() + 1);
 	custom_data_layers.insert(p_to_pos, custom_data_layers[p_from_index]);
-	custom_data_layers.remove_at(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->move_custom_data_layer(p_from_index, p_to_pos);
+	custom_data_layers.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->move_custom_data_layer(p_from_index, p_to_pos);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_changed();
 }
 
 void LayeredTileSet::remove_custom_data_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, custom_data_layers.size());
-	custom_data_layers.remove_at(p_index);
+	custom_data_layers.remove(p_index);
 
 	String to_erase;
-	for (KeyValue<String, int> &E : custom_data_layers_by_name) {
-		if (E.value == p_index) {
-			to_erase = E.key;
-		} else if (E.value > p_index) {
-			E.value--;
+
+	for (HashMap<String, int>::Element *E = custom_data_layers_by_name.front(); E; E = E->next) {
+		if (E->value() == p_index) {
+			to_erase = E->key();
+		} else if (E->value() > p_index) {
+			E->value()--;
 		}
 	}
 	custom_data_layers_by_name.erase(to_erase);
 
-	for (KeyValue<int, Ref<LayeredTileSetSource>> source : sources) {
-		source.value->remove_custom_data_layer(p_index);
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->remove_custom_data_layer(p_index);
 	}
-	notify_property_list_changed();
+	
+	property_list_changed_notify();
 	emit_changed();
 }
 
@@ -1094,7 +1102,7 @@ void LayeredTileSet::set_custom_data_layer_name(int p_layer_id, String p_value) 
 	ERR_FAIL_INDEX(p_layer_id, custom_data_layers.size());
 
 	// Exit if another property has the same name.
-	if (!p_value.is_empty()) {
+	if (!p_value.empty()) {
 		for (int other_layer_id = 0; other_layer_id < get_custom_data_layers_count(); other_layer_id++) {
 			if (other_layer_id != p_layer_id && get_custom_data_layer_name(other_layer_id) == p_value) {
 				ERR_FAIL_MSG(vformat("There is already a custom property named %s", p_value));
@@ -1102,7 +1110,7 @@ void LayeredTileSet::set_custom_data_layer_name(int p_layer_id, String p_value) 
 		}
 	}
 
-	if (p_value.is_empty() && custom_data_layers_by_name.has(p_value)) {
+	if (p_value.empty() && custom_data_layers_by_name.has(p_value)) {
 		custom_data_layers_by_name.erase(p_value);
 	} else {
 		custom_data_layers_by_name[p_value] = p_layer_id;
@@ -1121,8 +1129,8 @@ void LayeredTileSet::set_custom_data_layer_type(int p_layer_id, Variant::Type p_
 	ERR_FAIL_INDEX(p_layer_id, custom_data_layers.size());
 	custom_data_layers.write[p_layer_id].type = p_value;
 
-	for (KeyValue<int, Ref<LayeredTileSetSource>> &E_source : sources) {
-		E_source.value->notify_tile_data_properties_should_change();
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *E_source = sources.front(); E_source; E_source = E_source->next) {
+		E_source->value()->notify_tile_data_properties_should_change();
 	}
 
 	emit_changed();
@@ -1383,7 +1391,7 @@ void LayeredTileSet::clear_tile_proxies() {
 
 int LayeredTileSet::add_pattern(Ref<LayeredTileMapPattern> p_pattern, int p_index) {
 	ERR_FAIL_COND_V(!p_pattern.is_valid(), -1);
-	ERR_FAIL_COND_V_MSG(p_pattern->is_empty(), -1, "Cannot add an empty pattern to the LayeredTileSet.");
+	ERR_FAIL_COND_V_MSG(p_pattern->empty(), -1, "Cannot add an empty pattern to the LayeredTileSet.");
 	for (const Ref<LayeredTileMapPattern> &pattern : patterns) {
 		ERR_FAIL_COND_V_MSG(pattern == p_pattern, -1, "LayeredTileSet has already this pattern.");
 	}
@@ -1403,7 +1411,7 @@ Ref<LayeredTileMapPattern> LayeredTileSet::get_pattern(int p_index) {
 
 void LayeredTileSet::remove_pattern(int p_index) {
 	ERR_FAIL_INDEX(p_index, (int)patterns.size());
-	patterns.remove_at(p_index);
+	patterns.remove(p_index);
 	emit_changed();
 }
 
@@ -3251,7 +3259,7 @@ void LayeredTileSet::reset_state() {
 	}
 	compatibility_data.clear();
 #endif // DISABLE_DEPRECATED
-	while (!source_ids.is_empty()) {
+	while (!source_ids.empty()) {
 		remove_source(source_ids[0]);
 	}
 
@@ -4239,6 +4247,8 @@ void LayeredTileSet::_validate_property(PropertyInfo &p_property) const {
 }
 
 void LayeredTileSet::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_source_changed"), &LayeredTileSet::_source_changed);
+
 	// Sources management.
 	ClassDB::bind_method(D_METHOD("get_next_source_id"), &LayeredTileSet::get_next_source_id);
 	ClassDB::bind_method(D_METHOD("add_source", "source", "atlas_source_id_override"), &LayeredTileSet::add_source, DEFVAL(LayeredTileSet::INVALID_SOURCE));
@@ -4414,7 +4424,7 @@ LayeredTileSet::~LayeredTileSet() {
 		memdelete(E.value);
 	}
 #endif // DISABLE_DEPRECATED
-	while (!source_ids.is_empty()) {
+	while (!source_ids.empty()) {
 		remove_source(source_ids[0]);
 	}
 }
@@ -4971,7 +4981,7 @@ void LayeredTileSetAtlasSource::create_tile(const Vector2i p_atlas_coords, const
 	tad.alternatives[0]->set_tile_set(tile_set);
 	tad.alternatives[0]->set_allow_transform(false);
 	tad.alternatives[0]->connect("changed", callable_mp((Resource *)this, &LayeredTileSetAtlasSource::emit_changed));
-	tad.alternatives[0]->notify_property_list_changed();
+	tad.alternatives[0]->property_list_changed_notify();
 	tad.alternatives_ids.push_back(0);
 
 	// Create and resize the tile.
@@ -5115,7 +5125,7 @@ void LayeredTileSetAtlasSource::set_tile_animation_frames_count(const Vector2i p
 	_create_coords_mapping_cache(p_atlas_coords);
 	_queue_update_padded_texture();
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 
 	emit_signal(SNAME("changed"));
 }
@@ -5228,10 +5238,10 @@ void LayeredTileSetAtlasSource::clear_tiles_outside_texture() {
 	}
 }
 
-PackedVector2Array LayeredTileSetAtlasSource::get_tiles_to_be_removed_on_change(Ref<Texture> p_texture, Vector2i p_margins, Vector2i p_separation, Vector2i p_texture_region_size) {
-	ERR_FAIL_COND_V(p_margins.x < 0 || p_margins.y < 0, PackedVector2Array());
-	ERR_FAIL_COND_V(p_separation.x < 0 || p_separation.y < 0, PackedVector2Array());
-	ERR_FAIL_COND_V(p_texture_region_size.x <= 0 || p_texture_region_size.y <= 0, PackedVector2Array());
+PoolVector2Array LayeredTileSetAtlasSource::get_tiles_to_be_removed_on_change(Ref<Texture> p_texture, Vector2i p_margins, Vector2i p_separation, Vector2i p_texture_region_size) {
+	ERR_FAIL_COND_V(p_margins.x < 0 || p_margins.y < 0, PoolVector2Array());
+	ERR_FAIL_COND_V(p_separation.x < 0 || p_separation.y < 0, PoolVector2Array());
+	ERR_FAIL_COND_V(p_texture_region_size.x <= 0 || p_texture_region_size.y <= 0, PoolVector2Array());
 
 	// Compute the new atlas grid size.
 	Size2 new_grid_size;
@@ -5355,7 +5365,7 @@ int LayeredTileSetAtlasSource::create_alternative_tile(const Vector2i p_atlas_co
 	tiles[p_atlas_coords].alternatives[new_alternative_id]->set_tile_set(tile_set);
 	tiles[p_atlas_coords].alternatives[new_alternative_id]->set_allow_transform(true);
 	tiles[p_atlas_coords].alternatives[new_alternative_id]->connect("changed", callable_mp((Resource *)this, &LayeredTileSetAtlasSource::emit_changed));
-	tiles[p_atlas_coords].alternatives[new_alternative_id]->notify_property_list_changed();
+	tiles[p_atlas_coords].alternatives[new_alternative_id]->property_list_changed_notify();
 	tiles[p_atlas_coords].alternatives_ids.push_back(new_alternative_id);
 	tiles[p_atlas_coords].alternatives_ids.sort();
 	_compute_next_alternative_id(p_atlas_coords);
@@ -5630,7 +5640,7 @@ void LayeredTileSetAtlasSource::_update_padded_texture() {
 		padded_texture->disconnect_changed(callable_mp(this, &LayeredTileSetAtlasSource::_queue_update_padded_texture));
 	}
 
-	padded_texture = Ref<CanvasTexture>();
+	padded_texture = Ref<Texture>();
 
 	if (texture.is_null()) {
 		return;
@@ -5642,7 +5652,7 @@ void LayeredTileSetAtlasSource::_update_padded_texture() {
 
 	padded_texture.instantiate();
 
-	Ref<CanvasTexture> src_canvas_texture = texture;
+	Ref<Texture> src_canvas_texture = texture;
 	if (src_canvas_texture.is_valid()) {
 		// Use all textures.
 		// Diffuse
@@ -5755,14 +5765,14 @@ void LayeredTileSetScenesCollectionSource::set_scene_tile_scene(int p_id, Ref<Pa
 		// Check if it extends CanvasItem.
 		Ref<SceneState> scene_state = p_packed_scene->get_state();
 		String type;
-		while (scene_state.is_valid() && type.is_empty()) {
+		while (scene_state.is_valid() && type.empty()) {
 			// Make sure we have a root node. Supposed to be at 0 index because find_node_by_path() does not seem to work.
 			ERR_FAIL_COND(scene_state->get_node_count() < 1);
 
 			type = scene_state->get_node_type(0);
 			scene_state = scene_state->get_base_scene_state();
 		}
-		ERR_FAIL_COND_EDMSG(type.is_empty(), vformat("Invalid PackedScene for LayeredTileSetScenesCollectionSource: %s. Could not get the type of the root node.", p_packed_scene->get_path()));
+		ERR_FAIL_COND_EDMSG(type.empty(), vformat("Invalid PackedScene for LayeredTileSetScenesCollectionSource: %s. Could not get the type of the root node.", p_packed_scene->get_path()));
 		bool extends_correct_class = ClassDB::is_parent_class(type, "CanvasItem");
 		ERR_FAIL_COND_EDMSG(!extends_correct_class, vformat("Invalid PackedScene for LayeredTileSetScenesCollectionSource: %s. Root node should extend CanvasItem. Found %s instead.", p_packed_scene->get_path(), type));
 
@@ -5906,7 +5916,7 @@ void TileData::notify_tile_data_properties_should_change() {
 		}
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_signal(SNAME("changed"));
 }
 
@@ -5922,12 +5932,12 @@ void TileData::move_occlusion_layer(int p_from_index, int p_to_pos) {
 	ERR_FAIL_INDEX(p_from_index, occluders.size());
 	ERR_FAIL_INDEX(p_to_pos, occluders.size() + 1);
 	occluders.insert(p_to_pos, occluders[p_from_index]);
-	occluders.remove_at(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+	occluders.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
 }
 
 void TileData::remove_occlusion_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, occluders.size());
-	occluders.remove_at(p_index);
+	occluders.remove(p_index);
 }
 
 void TileData::add_physics_layer(int p_to_pos) {
@@ -5942,12 +5952,12 @@ void TileData::move_physics_layer(int p_from_index, int p_to_pos) {
 	ERR_FAIL_INDEX(p_from_index, physics.size());
 	ERR_FAIL_INDEX(p_to_pos, physics.size() + 1);
 	physics.insert(p_to_pos, physics[p_from_index]);
-	physics.remove_at(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+	physics.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
 }
 
 void TileData::remove_physics_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, physics.size());
-	physics.remove_at(p_index);
+	physics.remove(p_index);
 }
 
 void TileData::add_terrain_set(int p_to_pos) {
@@ -6037,12 +6047,12 @@ void TileData::move_navigation_layer(int p_from_index, int p_to_pos) {
 	ERR_FAIL_INDEX(p_from_index, navigation.size());
 	ERR_FAIL_INDEX(p_to_pos, navigation.size() + 1);
 	navigation.insert(p_to_pos, navigation[p_from_index]);
-	navigation.remove_at(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+	navigation.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
 }
 
 void TileData::remove_navigation_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, navigation.size());
-	navigation.remove_at(p_index);
+	navigation.remove(p_index);
 }
 
 void TileData::add_custom_data_layer(int p_to_pos) {
@@ -6057,12 +6067,12 @@ void TileData::move_custom_data_layer(int p_from_index, int p_to_pos) {
 	ERR_FAIL_INDEX(p_from_index, custom_data.size());
 	ERR_FAIL_INDEX(p_to_pos, custom_data.size() + 1);
 	custom_data.insert(p_to_pos, custom_data[p_from_index]);
-	custom_data.remove_at(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+	custom_data.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
 }
 
 void TileData::remove_custom_data_layer(int p_index) {
 	ERR_FAIL_INDEX(p_index, custom_data.size());
-	custom_data.remove_at(p_index);
+	custom_data.remove(p_index);
 }
 
 void TileData::set_allow_transform(bool p_allow_transform) {
@@ -6237,7 +6247,7 @@ void TileData::set_collision_polygons_count(int p_layer_id, int p_polygons_count
 		return;
 	}
 	physics.write[p_layer_id].polygons.resize(p_polygons_count);
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_signal(SNAME("changed"));
 }
 
@@ -6255,7 +6265,7 @@ void TileData::add_collision_polygon(int p_layer_id) {
 void TileData::remove_collision_polygon(int p_layer_id, int p_polygon_index) {
 	ERR_FAIL_INDEX(p_layer_id, physics.size());
 	ERR_FAIL_INDEX(p_polygon_index, physics[p_layer_id].polygons.size());
-	physics.write[p_layer_id].polygons.remove_at(p_polygon_index);
+	physics.write[p_layer_id].polygons.remove(p_polygon_index);
 	emit_signal(SNAME("changed"));
 }
 
@@ -6266,12 +6276,12 @@ void TileData::set_collision_polygon_points(int p_layer_id, int p_polygon_index,
 
 	TileData::PhysicsLayerTileData::PolygonShapeTileData &polygon_shape_tile_data = physics.write[p_layer_id].polygons.write[p_polygon_index];
 
-	if (p_polygon.is_empty()) {
+	if (p_polygon.empty()) {
 		polygon_shape_tile_data.shapes.clear();
 	} else {
 		// Decompose into convex shapes.
 		Vector<Vector<Vector2>> decomp = Geometry2D::decompose_polygon_in_convex(p_polygon);
-		ERR_FAIL_COND_MSG(decomp.is_empty(), "Could not decompose the polygon into convex shapes.");
+		ERR_FAIL_COND_MSG(decomp.empty(), "Could not decompose the polygon into convex shapes.");
 
 		polygon_shape_tile_data.shapes.resize(decomp.size());
 		for (int i = 0; i < decomp.size(); i++) {
@@ -6370,7 +6380,7 @@ void TileData::set_terrain_set(int p_terrain_set) {
 		}
 	}
 	terrain_set = p_terrain_set;
-	notify_property_list_changed();
+	property_list_changed_notify();
 	emit_signal(SNAME("changed"));
 }
 
@@ -6455,11 +6465,11 @@ Ref<NavigationPolygon> TileData::get_navigation_polygon(int p_layer_id, bool p_f
 		Ref<NavigationPolygon> transformed_polygon;
 		transformed_polygon.instantiate();
 
-		PackedVector2Array new_points = get_transformed_vertices(layer_tile_data.navigation_polygon->get_vertices(), p_flip_h, p_flip_v, p_transpose);
+		PoolVector2Array new_points = get_transformed_vertices(layer_tile_data.navigation_polygon->get_vertices(), p_flip_h, p_flip_v, p_transpose);
 		transformed_polygon->set_vertices(new_points);
 
 		for (int i = 0; i < layer_tile_data.navigation_polygon->get_outline_count(); i++) {
-			PackedVector2Array new_outline = get_transformed_vertices(layer_tile_data.navigation_polygon->get_outline(i), p_flip_h, p_flip_v, p_transpose);
+			PoolVector2Array new_outline = get_transformed_vertices(layer_tile_data.navigation_polygon->get_outline(i), p_flip_h, p_flip_v, p_transpose);
 			transformed_polygon->add_outline(new_outline);
 		}
 
@@ -6513,11 +6523,11 @@ Variant TileData::get_custom_data_by_layer_id(int p_layer_id) const {
 	return custom_data[p_layer_id];
 }
 
-PackedVector2Array TileData::get_transformed_vertices(const PackedVector2Array &p_vertices, bool p_flip_h, bool p_flip_v, bool p_transpose) {
+PoolVector2Array TileData::get_transformed_vertices(const PoolVector2Array &p_vertices, bool p_flip_h, bool p_flip_v, bool p_transpose) {
 	const Vector2 *r = p_vertices.ptr();
 	int size = p_vertices.size();
 
-	PackedVector2Array new_points;
+	PoolVector2Array new_points;
 	new_points.resize(size);
 	Vector2 *w = new_points.ptrw();
 
@@ -6786,7 +6796,7 @@ void TileData::_get_property_list(List<PropertyInfo> *p_list) const {
 			for (int j = 0; j < physics[i].polygons.size(); j++) {
 				// physics_layer_%d/points
 				property_info = PropertyInfo(Variant::ARRAY, vformat("physics_layer_%d/polygon_%d/%s", i, j, PNAME("points")), PROPERTY_HINT_ARRAY_TYPE, "Vector2", PROPERTY_USAGE_DEFAULT);
-				if (physics[i].polygons[j].polygon.is_empty()) {
+				if (physics[i].polygons[j].polygon.empty()) {
 					property_info.usage ^= PROPERTY_USAGE_STORAGE;
 				}
 				p_list->push_back(property_info);

@@ -1118,7 +1118,7 @@ void LayeredTileMapLayer::_navigation_draw_cell_debug(const RID &p_canvas_item, 
 	}
 
 	// Check if the navigation is used.
-	if (r_cell_data.navigation_regions.is_empty()) {
+	if (r_cell_data.navigation_regions.empty()) {
 		return;
 	}
 
@@ -1458,7 +1458,7 @@ LayeredTileSet::TerrainsPattern LayeredTileMapLayer::_get_best_terrain_pattern_f
 	// Returns all tiles compatible with the given constraints.
 	RBMap<LayeredTileSet::TerrainsPattern, int> terrain_pattern_score;
 	RBSet<LayeredTileSet::TerrainsPattern> pattern_set = tile_set->get_terrains_pattern_set(p_terrain_set);
-	ERR_FAIL_COND_V(pattern_set.is_empty(), LayeredTileSet::TerrainsPattern());
+	ERR_FAIL_COND_V(pattern_set.empty(), LayeredTileSet::TerrainsPattern());
 	for (LayeredTileSet::TerrainsPattern &terrain_pattern : pattern_set) {
 		int score = 0;
 
@@ -2347,7 +2347,7 @@ Ref<LayeredTileMapPattern> LayeredTileMapLayer::get_pattern(PoolVector2iArray p_
 
 	Ref<LayeredTileMapPattern> output;
 	output.instantiate();
-	if (p_coords_array.is_empty()) {
+	if (p_coords_array.empty()) {
 		return output;
 	}
 

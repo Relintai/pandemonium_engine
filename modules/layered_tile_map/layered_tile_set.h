@@ -44,7 +44,7 @@
 #include "scene/resources/navigation_2d/navigation_polygon.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/physics_material.h"
-#include "scene/resources/shapes_2d/concave_polygon_shape_2d.h"
+#include "scene/resources/shapes_2d/convex_polygon_shape_2d.h"
 #include "scene/resources/texture.h"
 
 #ifndef DISABLE_DEPRECATED
@@ -54,7 +54,7 @@
 class LayeredTileMap;
 class LayeredTileSetSource;
 class LayeredTileSetAtlasSource;
-class TileData;
+class LayeredTileData;
 
 // Forward-declare the plugins.
 class LayeredTileSetPlugin;
@@ -144,7 +144,7 @@ public:
 
 	Size2i get_size() const;
 	void set_size(const Size2i &p_size);
-	bool is_empty() const;
+	bool empty() const;
 
 	void clear();
 };
@@ -543,7 +543,7 @@ public:
 
 	Vector<Point2> get_terrain_polygon(int p_terrain_set);
 	Vector<Point2> get_terrain_peering_bit_polygon(int p_terrain_set, LayeredTileSet::CellNeighbor p_bit);
-	void draw_terrains(CanvasItem *p_canvas_item, Transform2D p_transform, const TileData *p_tile_data);
+	void draw_terrains(CanvasItem *p_canvas_item, Transform2D p_transform, const LayeredTileData *p_tile_data);
 	Vector<Vector<Ref<Texture>>> generate_terrains_icons(Size2i p_size);
 
 	// Resource management
@@ -632,7 +632,7 @@ private:
 		LocalVector<real_t> animation_frames_durations;
 
 		// Alternatives
-		HashMap<int, TileData *> alternatives;
+		HashMap<int, LayeredTileData *> alternatives;
 		Vector<int> alternatives_ids;
 		int next_alternative_id = 1;
 	};
@@ -646,8 +646,8 @@ private:
 	Vector<Vector2i> tiles_ids;
 	HashMap<Vector2i, Vector2i> _coords_mapping_cache; // Maps any coordinate to the including tile
 
-	TileData *_get_atlas_tile_data(Vector2i p_atlas_coords, int p_alternative_tile);
-	const TileData *_get_atlas_tile_data(Vector2i p_atlas_coords, int p_alternative_tile) const;
+	LayeredTileData *_get_atlas_tile_data(Vector2i p_atlas_coords, int p_alternative_tile);
+	const LayeredTileData *_get_atlas_tile_data(Vector2i p_atlas_coords, int p_alternative_tile) const;
 
 	void _compute_next_alternative_id(const Vector2i p_atlas_coords);
 
@@ -655,7 +655,7 @@ private:
 	void _create_coords_mapping_cache(Vector2i p_atlas_coords);
 
 	bool use_texture_padding = true;
-	Ref<CanvasTexture> padded_texture;
+	Ref<Texture> padded_texture;
 	bool padded_texture_needs_update = false;
 	void _queue_update_padded_texture();
 	Ref<ImageTexture> _create_padded_image_texture(const Ref<Texture> &p_source);
@@ -718,7 +718,7 @@ public:
 	virtual Vector2i get_tile_id(int p_index) const;
 
 	bool has_room_for_tile(Vector2i p_atlas_coords, Vector2i p_size, int p_animation_columns, Vector2i p_animation_separation, int p_frames_count, Vector2i p_ignored_tile = INVALID_ATLAS_COORDS) const;
-	PackedVector2Array get_tiles_to_be_removed_on_change(Ref<Texture> p_texture, Vector2i p_margins, Vector2i p_separation, Vector2i p_texture_region_size);
+	PoolVector2Array get_tiles_to_be_removed_on_change(Ref<Texture> p_texture, Vector2i p_margins, Vector2i p_separation, Vector2i p_texture_region_size);
 	Vector2i get_tile_at_coords(Vector2i p_atlas_coords) const;
 
 	bool has_tiles_outside_texture() const;
@@ -977,7 +977,7 @@ public:
 	Variant get_custom_data_by_layer_id(int p_layer_id) const;
 
 	// Polygons.
-	static PackedVector2Array get_transformed_vertices(const PackedVector2Array &p_vertices, bool p_flip_h, bool p_flip_v, bool p_transpose);
+	static PoolVector2Array get_transformed_vertices(const PoolVector2Array &p_vertices, bool p_flip_h, bool p_flip_v, bool p_transpose);
 };
 
 VARIANT_ENUM_CAST(LayeredTileSet::CellNeighbor);

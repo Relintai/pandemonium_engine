@@ -42,7 +42,7 @@ void LayeredTileMapLayerGroup::_cleanup_selected_layers() {
 		const String name = selected_layers[i];
 		LayeredTileMapLayer *layer = Object::cast_to<LayeredTileMapLayer>(get_node_or_null(name));
 		if (!layer) {
-			selected_layers.remove_at(i);
+			selected_layers.remove(i);
 			i--;
 		}
 	}

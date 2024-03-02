@@ -145,7 +145,7 @@
 			</description>
 		</method>
 		<method name="get_tiles_to_be_removed_on_change">
-			<return type="PackedVector2Array" />
+			<return type="PoolVector2Array" />
 			<param index="0" name="texture" type="Texture2D" />
 			<param index="1" name="margins" type="Vector2i" />
 			<param index="2" name="separation" type="Vector2i" />

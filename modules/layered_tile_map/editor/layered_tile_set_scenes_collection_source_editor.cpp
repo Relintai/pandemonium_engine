@@ -118,7 +118,7 @@ void LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionP
 
 	// Disconnect to changes.
 	if (tile_set_scenes_collection_source) {
-		tile_set_scenes_collection_source->disconnect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::notify_property_list_changed));
+		tile_set_scenes_collection_source->disconnect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::property_list_changed_notify));
 	}
 
 	tile_set = p_tile_set;
@@ -127,12 +127,12 @@ void LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionP
 
 	// Connect to changes.
 	if (tile_set_scenes_collection_source) {
-		if (!tile_set_scenes_collection_source->is_connected(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::notify_property_list_changed))) {
-			tile_set_scenes_collection_source->connect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::notify_property_list_changed));
+		if (!tile_set_scenes_collection_source->is_connected(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::property_list_changed_notify))) {
+			tile_set_scenes_collection_source->connect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::property_list_changed_notify));
 		}
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 // -- Proxy object used by the tile inspector --
@@ -208,7 +208,7 @@ void LayeredTileSetScenesCollectionSourceEditor::LayeredSceneTileProxyObject::ed
 	tile_set_scenes_collection_source = p_tile_set_scenes_collection_source;
 	scene_id = p_scene_id;
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 void LayeredTileSetScenesCollectionSourceEditor::LayeredSceneTileProxyObject::_bind_methods() {
@@ -270,7 +270,7 @@ void LayeredTileSetScenesCollectionSourceEditor::_scene_file_selected(const Stri
 
 void LayeredTileSetScenesCollectionSourceEditor::_source_delete_pressed() {
 	Vector<int> selected_indices = scene_tiles_list->get_selected_items();
-	ERR_FAIL_COND(selected_indices.is_empty());
+	ERR_FAIL_COND(selected_indices.empty());
 	int scene_id = scene_tiles_list->get_item_metadata(selected_indices[0]);
 
 	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();

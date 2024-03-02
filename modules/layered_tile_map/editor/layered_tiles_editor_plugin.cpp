@@ -86,7 +86,7 @@ void LayeredTilesEditorUtils::_thread() {
 			thumbnail_size *= EDSCALE;
 			Vector2 thumbnail_size2 = Vector2(thumbnail_size, thumbnail_size);
 
-			if (item.pattern.is_valid() && !item.pattern->is_empty()) {
+			if (item.pattern.is_valid() && !item.pattern->empty()) {
 				// Generate the pattern preview
 				SubViewport *viewport = memnew(SubViewport);
 				viewport->set_size(thumbnail_size2);
@@ -242,19 +242,19 @@ bool LayeredTilesEditorUtils::SourceNameComparator::operator()(const int &p_a, c
 	{
 		LayeredTileSetSource *source = *tile_set->get_source(p_a);
 
-		if (!source->get_name().is_empty()) {
+		if (!source->get_name().empty()) {
 			name_a = source->get_name();
 		}
 
 		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 		if (atlas_source) {
 			Ref<Texture> texture = atlas_source->get_texture();
-			if (name_a.is_empty() && texture.is_valid()) {
+			if (name_a.empty() && texture.is_valid()) {
 				name_a = texture->get_path().get_file();
 			}
 		}
 
-		if (name_a.is_empty()) {
+		if (name_a.empty()) {
 			name_a = itos(p_a);
 		}
 	}
@@ -262,19 +262,19 @@ bool LayeredTilesEditorUtils::SourceNameComparator::operator()(const int &p_a, c
 	{
 		LayeredTileSetSource *source = *tile_set->get_source(p_b);
 
-		if (!source->get_name().is_empty()) {
+		if (!source->get_name().empty()) {
 			name_b = source->get_name();
 		}
 
 		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 		if (atlas_source) {
 			Ref<Texture> texture = atlas_source->get_texture();
-			if (name_b.is_empty() && texture.is_valid()) {
+			if (name_b.empty() && texture.is_valid()) {
 				name_b = texture->get_path().get_file();
 			}
 		}
 
-		if (name_b.is_empty()) {
+		if (name_b.empty()) {
 			name_b = itos(p_b);
 		}
 	}

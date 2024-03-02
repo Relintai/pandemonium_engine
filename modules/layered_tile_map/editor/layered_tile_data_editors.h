@@ -115,7 +115,7 @@ private:
 	int drag_polygon_index = 0;
 	int drag_point_index = 0;
 	Vector2 drag_last_pos;
-	PackedVector2Array drag_old_polygon;
+	PoolVector2Array drag_old_polygon;
 
 	HBoxContainer *toolbar = nullptr;
 	Ref<ButtonGroup> tools_button_group;
@@ -286,7 +286,7 @@ private:
 	// UI
 	GenericTilePolygonEditor *polygon_editor = nullptr;
 
-	void _polygon_changed(const PackedVector2Array &p_polygon);
+	void _polygon_changed(const PoolVector2Array &p_polygon);
 
 	virtual Variant _get_painted_value();
 	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
@@ -395,12 +395,12 @@ class TileDataNavigationEditor : public TileDataDefaultEditor {
 
 private:
 	int navigation_layer = -1;
-	PackedVector2Array navigation_polygon;
+	PoolVector2Array navigation_polygon;
 
 	// UI
 	GenericTilePolygonEditor *polygon_editor = nullptr;
 
-	void _polygon_changed(const PackedVector2Array &p_polygon);
+	void _polygon_changed(const PoolVector2Array &p_polygon);
 
 	virtual Variant _get_painted_value();
 	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);

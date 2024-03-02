@@ -183,7 +183,7 @@ void GenericTilePolygonEditor::_base_control_draw() {
 	// Draw the polygons.
 	for (const Vector<Vector2> &polygon : polygons) {
 		Color color = polygon_color;
-		if (!in_creation_polygon.is_empty()) {
+		if (!in_creation_polygon.empty()) {
 			color = color.darkened(0.3);
 		}
 		color.a = 0.5;
@@ -198,7 +198,7 @@ void GenericTilePolygonEditor::_base_control_draw() {
 	}
 
 	// Draw the polygon in creation.
-	if (!in_creation_polygon.is_empty()) {
+	if (!in_creation_polygon.empty()) {
 		for (int i = 0; i < in_creation_polygon.size() - 1; i++) {
 			base_control->draw_line(in_creation_polygon[i], in_creation_polygon[i + 1], Color(1.0, 1.0, 1.0));
 		}
@@ -209,7 +209,7 @@ void GenericTilePolygonEditor::_base_control_draw() {
 	_snap_to_tile_shape(in_creation_point, in_creation_distance, grab_threshold / editor_zoom_widget->get_zoom());
 	_snap_point(in_creation_point);
 
-	if (drag_type == DRAG_TYPE_CREATE_POINT && !in_creation_polygon.is_empty()) {
+	if (drag_type == DRAG_TYPE_CREATE_POINT && !in_creation_polygon.empty()) {
 		base_control->draw_line(in_creation_polygon[in_creation_polygon.size() - 1], in_creation_point, Color(1.0, 1.0, 1.0));
 	}
 
@@ -225,7 +225,7 @@ void GenericTilePolygonEditor::_base_control_draw() {
 	}
 
 	base_control->draw_set_transform_matrix(Transform2D());
-	if (!in_creation_polygon.is_empty()) {
+	if (!in_creation_polygon.empty()) {
 		for (int i = 0; i < in_creation_polygon.size(); i++) {
 			base_control->draw_texture(handle, xform.xform(in_creation_polygon[i]) - handle->get_size() / 2);
 		}
@@ -294,7 +294,7 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 			undo_redo->add_do_method(base_control, "queue_redraw");
 			undo_redo->add_do_method(this, "emit_signal", "polygons_changed");
 			undo_redo->add_undo_method(this, "clear_polygons");
-			for (const PackedVector2Array &poly : polygons) {
+			for (const PoolVector2Array &poly : polygons) {
 				undo_redo->add_undo_method(this, "add_polygon", poly);
 			}
 			undo_redo->add_undo_method(base_control, "queue_redraw");
@@ -307,7 +307,7 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 			undo_redo->add_do_method(base_control, "queue_redraw");
 			undo_redo->add_do_method(this, "emit_signal", "polygons_changed");
 			undo_redo->add_undo_method(this, "clear_polygons");
-			for (const PackedVector2Array &polygon : polygons) {
+			for (const PoolVector2Array &polygon : polygons) {
 				undo_redo->add_undo_method(this, "add_polygon", polygon);
 			}
 			undo_redo->add_undo_method(base_control, "queue_redraw");
@@ -582,8 +582,8 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 					int closest_point;
 					_grab_polygon_point(mb->get_position(), xform, closest_polygon, closest_point);
 					if (closest_polygon >= 0) {
-						PackedVector2Array old_polygon = polygons[closest_polygon];
-						polygons[closest_polygon].remove_at(closest_point);
+						PoolVector2Array old_polygon = polygons[closest_polygon];
+						polygons[closest_polygon].remove(closest_point);
 						undo_redo->create_action(TTR("Edit Polygons"));
 						if (polygons[closest_polygon].size() < 3) {
 							remove_polygon(closest_polygon);
@@ -627,8 +627,8 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 					int closest_point;
 					_grab_polygon_point(mb->get_position(), xform, closest_polygon, closest_point);
 					if (closest_polygon >= 0) {
-						PackedVector2Array old_polygon = polygons[closest_polygon];
-						polygons[closest_polygon].remove_at(closest_point);
+						PoolVector2Array old_polygon = polygons[closest_polygon];
+						polygons[closest_polygon].remove(closest_point);
 						undo_redo->create_action(TTR("Edit Polygons"));
 						if (polygons[closest_polygon].size() < 3) {
 							remove_polygon(closest_polygon);
@@ -771,7 +771,7 @@ int GenericTilePolygonEditor::add_polygon(const Vector<Point2> &p_polygon, int p
 
 void GenericTilePolygonEditor::remove_polygon(int p_index) {
 	ERR_FAIL_INDEX(p_index, (int)polygons.size());
-	polygons.remove_at(p_index);
+	polygons.remove(p_index);
 
 	if (polygons.size() == 0) {
 		button_create->set_pressed(true);
@@ -1253,7 +1253,7 @@ void TileDataDefaultEditor::draw_over_tile(CanvasItem *p_canvas_item, Transform2
 }
 
 void TileDataDefaultEditor::setup_property_editor(Variant::Type p_type, const String &p_property, const String &p_label, const Variant &p_default_value) {
-	ERR_FAIL_COND_MSG(!property.is_empty(), "Cannot setup TileDataDefaultEditor twice");
+	ERR_FAIL_COND_MSG(!property.empty(), "Cannot setup TileDataDefaultEditor twice");
 	property = p_property;
 	property_type = p_type;
 
@@ -1278,7 +1278,7 @@ void TileDataDefaultEditor::setup_property_editor(Variant::Type p_type, const St
 	// Create and setup the property editor.
 	property_editor = EditorInspectorDefaultPlugin::get_editor_for_property(dummy_object, p_type, p_property, PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT);
 	property_editor->set_object_and_property(dummy_object, p_property);
-	if (p_label.is_empty()) {
+	if (p_label.empty()) {
 		property_editor->set_label(EditorPropertyNameProcessor::get_singleton()->process_name(p_property, EditorPropertyNameProcessor::get_default_inspector_style()));
 	} else {
 		property_editor->set_label(p_label);
@@ -1752,7 +1752,7 @@ void TileDataCollisionEditor::draw_over_tile(CanvasItem *p_canvas_item, Transfor
 		p_canvas_item->draw_polygon(polygon, color);
 
 		if (tile_data->is_collision_polygon_one_way(physics_layer, i)) {
-			PackedVector2Array uvs;
+			PoolVector2Array uvs;
 			uvs.resize(polygon.size());
 			Vector2 size_1 = Vector2(1, 1) / tile_set->get_tile_size();
 
@@ -1791,7 +1791,7 @@ void TileDataTerrainsEditor::_update_terrain_selector() {
 		options.push_back(String(TTR("No terrain")) + String(":-1"));
 		for (int i = 0; i < tile_set->get_terrains_count(terrain_set); i++) {
 			String name = tile_set->get_terrain_name(terrain_set, i);
-			if (name.is_empty()) {
+			if (name.empty()) {
 				options.push_back(vformat("Terrain %d", i));
 			} else {
 				options.push_back(name);
@@ -2003,7 +2003,7 @@ void TileDataTerrainsEditor::forward_draw_over_atlas(LayeredTileAtlasView *p_til
 			for (int j = 0; j < polygon.size(); j++) {
 				polygon.write[j] += position;
 			}
-			if (!Geometry2D::intersect_polygons(polygon, mouse_pos_rect_polygon).is_empty()) {
+			if (!Geometry2D::intersect_polygons(polygon, mouse_pos_rect_polygon).empty()) {
 				// Draw terrain.
 				p_canvas_item->draw_polygon(polygon, color);
 			}
@@ -2015,7 +2015,7 @@ void TileDataTerrainsEditor::forward_draw_over_atlas(LayeredTileAtlasView *p_til
 					for (int j = 0; j < polygon.size(); j++) {
 						polygon.write[j] += position;
 					}
-					if (!Geometry2D::intersect_polygons(polygon, mouse_pos_rect_polygon).is_empty()) {
+					if (!Geometry2D::intersect_polygons(polygon, mouse_pos_rect_polygon).empty()) {
 						// Draw bit.
 						p_canvas_item->draw_polygon(polygon, color);
 					}
@@ -2483,7 +2483,7 @@ void TileDataTerrainsEditor::forward_painting_atlas_gui_input(LayeredTileAtlasVi
 						for (int j = 0; j < polygon.size(); j++) {
 							polygon.write[j] += position;
 						}
-						if (!Geometry2D::intersect_polygons(polygon, mouse_pos_rect_polygon).is_empty()) {
+						if (!Geometry2D::intersect_polygons(polygon, mouse_pos_rect_polygon).empty()) {
 							// Draw terrain.
 							undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrain", coords.x, coords.y, E.alternative_tile), terrain);
 							undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrain", coords.x, coords.y, E.alternative_tile), tile_data->get_terrain());
@@ -2496,7 +2496,7 @@ void TileDataTerrainsEditor::forward_painting_atlas_gui_input(LayeredTileAtlasVi
 								for (int j = 0; j < polygon.size(); j++) {
 									polygon.write[j] += position;
 								}
-								if (!Geometry2D::intersect_polygons(polygon, mouse_pos_rect_polygon).is_empty()) {
+								if (!Geometry2D::intersect_polygons(polygon, mouse_pos_rect_polygon).empty()) {
 									// Draw bit.
 									undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[i]), coords.x, coords.y, E.alternative_tile), terrain);
 									undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[i]), coords.x, coords.y, E.alternative_tile), tile_data->get_terrain_peering_bit(bit));

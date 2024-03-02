@@ -222,7 +222,7 @@ void LayeredTileMap::add_layer(int p_to_pos) {
 	}
 	new_layer->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileMap::_emit_changed));
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 
 	_emit_changed();
 
@@ -236,12 +236,12 @@ void LayeredTileMap::move_layer(int p_layer, int p_to_pos) {
 	// Clear before shuffling layers.
 	LayeredTileMapLayer *layer = layers[p_layer];
 	layers.insert(p_to_pos, layer);
-	layers.remove_at(p_to_pos < p_layer ? p_layer + 1 : p_layer);
+	layers.remove(p_to_pos < p_layer ? p_layer + 1 : p_layer);
 	for (uint32_t i = 0; i < layers.size(); i++) {
 		move_child(layers[i], i);
 		layers[i]->set_as_tile_map_internal_node(i);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 
 	_emit_changed();
 
@@ -253,11 +253,11 @@ void LayeredTileMap::remove_layer(int p_layer) {
 
 	// Clear before removing the layer.
 	layers[p_layer]->queue_free();
-	layers.remove_at(p_layer);
+	layers.remove(p_layer);
 	for (uint32_t i = 0; i < layers.size(); i++) {
 		layers[i]->set_as_tile_map_internal_node(i);
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 
 	_emit_changed();
 
@@ -508,7 +508,7 @@ void LayeredTileMap::notify_runtime_tile_data_update(int p_layer) {
 #ifdef TOOLS_ENABLED
 Rect2 LayeredTileMap::_edit_get_rect() const {
 	// Return the visible rect of the tilemap.
-	if (layers.is_empty()) {
+	if (layers.empty()) {
 		return Rect2();
 	}
 
@@ -570,7 +570,7 @@ bool LayeredTileMap::_set(const StringName &p_name, const Variant &p_value) {
 				layers.push_back(new_layer);
 			}
 
-			notify_property_list_changed();
+			property_list_changed_notify();
 			_emit_changed();
 			update_configuration_warnings();
 		}

@@ -189,7 +189,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_tile_set_sources_list() {
 		String item_text;
 
 		// Common to all type of sources.
-		if (!source->get_name().is_empty()) {
+		if (!source->get_name().empty()) {
 			item_text = source->get_name();
 		}
 
@@ -197,7 +197,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_tile_set_sources_list() {
 		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 		if (atlas_source) {
 			texture = atlas_source->get_texture();
-			if (item_text.is_empty()) {
+			if (item_text.empty()) {
 				if (texture.is_valid()) {
 					item_text = texture->get_path().get_file();
 				} else {
@@ -210,7 +210,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_tile_set_sources_list() {
 		LayeredTileSetScenesCollectionSource *scene_collection_source = Object::cast_to<LayeredTileSetScenesCollectionSource>(source);
 		if (scene_collection_source) {
 			texture = tiles_bottom_panel->get_editor_theme_icon(SNAME("PackedScene"));
-			if (item_text.is_empty()) {
+			if (item_text.empty()) {
 				if (scene_collection_source->get_scene_tiles_count() > 0) {
 					item_text = vformat(TTR("Scene Collection Source (ID: %d)"), source_id);
 				} else {
@@ -220,7 +220,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_tile_set_sources_list() {
 		}
 
 		// Use default if not valid.
-		if (item_text.is_empty()) {
+		if (item_text.empty()) {
 			item_text = vformat(TTR("Unknown Type Source (ID: %d)"), source_id);
 		}
 		if (!texture.is_valid()) {
@@ -547,7 +547,7 @@ bool LayeredTileMapLayerEditorTilesPlugin::forward_canvas_gui_input(const Ref<In
 	// Shortcuts
 	if (ED_IS_SHORTCUT("tiles_editor/cut", p_event) || ED_IS_SHORTCUT("tiles_editor/copy", p_event)) {
 		// Fill in the clipboard.
-		if (!tile_map_selection.is_empty()) {
+		if (!tile_map_selection.empty()) {
 			tile_map_clipboard.instantiate();
 			PoolVector2iArray coords_array;
 			for (const Vector2i &E : tile_map_selection) {
@@ -558,7 +558,7 @@ bool LayeredTileMapLayerEditorTilesPlugin::forward_canvas_gui_input(const Ref<In
 
 		if (ED_IS_SHORTCUT("tiles_editor/cut", p_event)) {
 			// Delete selected tiles.
-			if (!tile_map_selection.is_empty()) {
+			if (!tile_map_selection.empty()) {
 				EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
 				undo_redo->create_action(TTR("Delete tiles"));
 				for (const Vector2i &coords : tile_map_selection) {
@@ -590,7 +590,7 @@ bool LayeredTileMapLayerEditorTilesPlugin::forward_canvas_gui_input(const Ref<In
 	}
 	if (ED_IS_SHORTCUT("tiles_editor/delete", p_event)) {
 		// Delete selected tiles.
-		if (!tile_map_selection.is_empty()) {
+		if (!tile_map_selection.empty()) {
 			EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
 			undo_redo->create_action(TTR("Delete tiles"));
 			for (const Vector2i &coords : tile_map_selection) {
@@ -848,7 +848,7 @@ void LayeredTileMapLayerEditorTilesPlugin::forward_canvas_draw_over_viewport(Con
 			if (!(patterns_item_list->is_visible_in_tree() && patterns_item_list->has_point(patterns_item_list->get_local_mouse_position()))) {
 				// Preview when moving.
 				Vector2i top_left;
-				if (!tile_map_selection.is_empty()) {
+				if (!tile_map_selection.empty()) {
 					top_left = tile_map_selection.front()->get();
 				}
 				for (const Vector2i &E : tile_map_selection) {
@@ -897,7 +897,7 @@ void LayeredTileMapLayerEditorTilesPlugin::forward_canvas_draw_over_viewport(Con
 			}
 
 			// Expand the grid if needed
-			if (expand_grid && !preview.is_empty()) {
+			if (expand_grid && !preview.empty()) {
 				drawn_grid_rect = Rect2i(preview.begin()->key, Vector2i(0, 0));
 				for (const KeyValue<Vector2i, LayeredTileMapCell> &E : preview) {
 					drawn_grid_rect.expand_to(E.key);
@@ -906,7 +906,7 @@ void LayeredTileMapLayerEditorTilesPlugin::forward_canvas_draw_over_viewport(Con
 			}
 		}
 
-		if (!preview.is_empty()) {
+		if (!preview.empty()) {
 			const int fading = 5;
 
 			// Draw the lines of the grid behind the preview.
@@ -1086,7 +1086,7 @@ HashMap<Vector2i, LayeredTileMapCell> LayeredTileMapLayerEditorTilesPlugin::_dra
 	Ref<LayeredTileMapPattern> pattern = p_erase ? erase_pattern : selection_pattern;
 
 	HashMap<Vector2i, LayeredTileMapCell> output;
-	if (!pattern->is_empty()) {
+	if (!pattern->empty()) {
 		// Paint the tiles on the tile map.
 		if (!p_erase && random_tile_toggle->is_pressed()) {
 			// Paint a random tile.
@@ -1139,7 +1139,7 @@ HashMap<Vector2i, LayeredTileMapCell> LayeredTileMapLayerEditorTilesPlugin::_dra
 	Ref<LayeredTileMapPattern> pattern = p_erase ? erase_pattern : selection_pattern;
 
 	HashMap<Vector2i, LayeredTileMapCell> err_output;
-	ERR_FAIL_COND_V(pattern->is_empty(), err_output);
+	ERR_FAIL_COND_V(pattern->empty(), err_output);
 
 	// Compute the offset to align things to the bottom or right.
 	bool aligned_right = p_end_cell.x < p_start_cell.x;
@@ -1147,7 +1147,7 @@ HashMap<Vector2i, LayeredTileMapCell> LayeredTileMapLayerEditorTilesPlugin::_dra
 	Vector2i offset = Vector2i(aligned_right ? -(pattern->get_size().x - (rect.get_size().x % pattern->get_size().x)) : 0, valigned_bottom ? -(pattern->get_size().y - (rect.get_size().y % pattern->get_size().y)) : 0);
 
 	HashMap<Vector2i, LayeredTileMapCell> output;
-	if (!pattern->is_empty()) {
+	if (!pattern->empty()) {
 		if (!p_erase && random_tile_toggle->is_pressed()) {
 			// Paint a random tile.
 			for (int x = 0; x < rect.size.x; x++) {
@@ -1195,7 +1195,7 @@ HashMap<Vector2i, LayeredTileMapCell> LayeredTileMapLayerEditorTilesPlugin::_dra
 	erase_pattern->set_cell(Vector2i(0, 0), LayeredTileSet::INVALID_SOURCE, LayeredTileSetSource::INVALID_ATLAS_COORDS, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
 	Ref<LayeredTileMapPattern> pattern = p_erase ? erase_pattern : selection_pattern;
 
-	if (!pattern->is_empty()) {
+	if (!pattern->empty()) {
 		LayeredTileMapCell source_cell = edited_layer->get_cell(p_coords);
 
 		// If we are filling empty tiles, compute the tilemap boundaries.
@@ -1209,7 +1209,7 @@ HashMap<Vector2i, LayeredTileMapCell> LayeredTileMapLayerEditorTilesPlugin::_dra
 			RBSet<Vector2i> already_checked;
 			List<Vector2i> to_check;
 			to_check.push_back(p_coords);
-			while (!to_check.is_empty()) {
+			while (!to_check.empty()) {
 				Vector2i coords = to_check.back()->get();
 				to_check.pop_back();
 				if (!already_checked.has(coords)) {
@@ -1351,7 +1351,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_stop_dragging() {
 			} else {
 				// Get the top-left cell.
 				Vector2i top_left;
-				if (!tile_map_selection.is_empty()) {
+				if (!tile_map_selection.empty()) {
 					top_left = tile_map_selection.front()->get();
 				}
 				for (const Vector2i &E : tile_map_selection) {
@@ -1439,7 +1439,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_stop_dragging() {
 			}
 
 			Ref<LayeredTileMapPattern> new_selection_pattern = edited_layer->get_pattern(coords_array);
-			if (!new_selection_pattern->is_empty()) {
+			if (!new_selection_pattern->empty()) {
 				selection_pattern = new_selection_pattern;
 				_update_tileset_selection_from_selection_pattern();
 			}
@@ -1503,7 +1503,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_stop_dragging() {
 }
 
 void LayeredTileMapLayerEditorTilesPlugin::_apply_transform(int p_type) {
-	if (selection_pattern.is_null() || selection_pattern->is_empty()) {
+	if (selection_pattern.is_null() || selection_pattern->empty()) {
 		return;
 	}
 
@@ -1650,7 +1650,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_fix_selected_and_hovered() {
 		E = N;
 	}
 
-	if (!tile_map_selection.is_empty()) {
+	if (!tile_map_selection.empty()) {
 		_update_selection_pattern_from_tilemap_selection();
 	} else if (tiles_bottom_panel->is_visible_in_tree()) {
 		_update_selection_pattern_from_tileset_tiles_selection();
@@ -2722,7 +2722,7 @@ RBSet<Vector2i> LayeredTileMapLayerEditorTerrainsPlugin::_get_cells_for_bucket_f
 		RBSet<Vector2i> already_checked;
 		List<Vector2i> to_check;
 		to_check.push_back(p_coords);
-		while (!to_check.is_empty()) {
+		while (!to_check.empty()) {
 			Vector2i coords = to_check.back()->get();
 			to_check.pop_back();
 			if (!already_checked.has(coords)) {
@@ -3216,7 +3216,7 @@ void LayeredTileMapLayerEditorTerrainsPlugin::forward_canvas_draw_over_viewport(
 			}
 
 			// Expand the grid if needed
-			if (expand_grid && !preview.is_empty()) {
+			if (expand_grid && !preview.empty()) {
 				drawn_grid_rect = Rect2i(preview.front()->get(), Vector2i(1, 1));
 				for (const Vector2i &E : preview) {
 					drawn_grid_rect.expand_to(E);
@@ -3224,7 +3224,7 @@ void LayeredTileMapLayerEditorTerrainsPlugin::forward_canvas_draw_over_viewport(
 			}
 		}
 
-		if (!preview.is_empty()) {
+		if (!preview.empty()) {
 			const int fading = 5;
 
 			// Draw the lines of the grid behind the preview.

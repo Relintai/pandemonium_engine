@@ -136,7 +136,7 @@ void LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::edit
 
 	// Disconnect to changes.
 	if (tile_set_atlas_source.is_valid()) {
-		tile_set_atlas_source->disconnect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::notify_property_list_changed));
+		tile_set_atlas_source->disconnect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::property_list_changed_notify));
 	}
 
 	tile_set = p_tile_set;
@@ -145,12 +145,12 @@ void LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::edit
 
 	// Connect to changes.
 	if (tile_set_atlas_source.is_valid()) {
-		if (!tile_set_atlas_source->is_connected(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::notify_property_list_changed))) {
-			tile_set_atlas_source->connect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::notify_property_list_changed));
+		if (!tile_set_atlas_source->is_connected(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::property_list_changed_notify))) {
+			tile_set_atlas_source->connect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::property_list_changed_notify));
 		}
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 // -- Proxy object used by the tile inspector --
@@ -272,7 +272,7 @@ bool LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_set(const St
 					tile_set_atlas_source->set_tile_animation_frames_count(tile.tile, frame_count);
 				}
 			}
-			notify_property_list_changed();
+			property_list_changed_notify();
 			emit_signal(SNAME("changed"), "animation_separation");
 			return true;
 		} else if (components.size() == 2 && components[0].begins_with("animation_frame_") && components[0].trim_prefix("animation_frame_").is_valid_int()) {
@@ -510,7 +510,7 @@ void LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_get_property
 
 void LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::edit(Ref<LayeredTileSetAtlasSource> p_tile_set_atlas_source, const RBSet<TileSelection> &p_tiles) {
 	ERR_FAIL_COND(!p_tile_set_atlas_source.is_valid());
-	ERR_FAIL_COND(p_tiles.is_empty());
+	ERR_FAIL_COND(p_tiles.empty());
 	for (const TileSelection &E : p_tiles) {
 		ERR_FAIL_COND(E.tile == LayeredTileSetSource::INVALID_ATLAS_COORDS);
 		ERR_FAIL_COND(E.alternative < 0);
@@ -523,8 +523,8 @@ void LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::edit(Ref<Laye
 
 		if (tile_set_atlas_source.is_valid() && tile_set_atlas_source->has_tile(coords) && tile_set_atlas_source->has_alternative_tile(coords, alternative)) {
 			TileData *tile_data = tile_set_atlas_source->get_tile_data(coords, alternative);
-			if (tile_data->is_connected(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::notify_property_list_changed))) {
-				tile_data->disconnect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::notify_property_list_changed));
+			if (tile_data->is_connected(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::property_list_changed_notify))) {
+				tile_data->disconnect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::property_list_changed_notify));
 			}
 		}
 	}
@@ -539,13 +539,13 @@ void LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::edit(Ref<Laye
 
 		if (tile_set_atlas_source->has_tile(coords) && tile_set_atlas_source->has_alternative_tile(coords, alternative)) {
 			TileData *tile_data = tile_set_atlas_source->get_tile_data(coords, alternative);
-			if (!tile_data->is_connected(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::notify_property_list_changed))) {
-				tile_data->connect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::notify_property_list_changed));
+			if (!tile_data->is_connected(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::property_list_changed_notify))) {
+				tile_data->connect(CoreStringNames::get_singleton()->property_list_changed, callable_mp((Object *)this, &Object::property_list_changed_notify));
 			}
 		}
 	}
 
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 void LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_bind_methods() {
@@ -606,11 +606,11 @@ void LayeredTileSetAtlasSourceEditor::_update_atlas_source_inspector() {
 void LayeredTileSetAtlasSourceEditor::_update_tile_inspector() {
 	// Update visibility.
 	if (tools_button_group->get_pressed_button() == tool_select_button) {
-		if (!selection.is_empty()) {
+		if (!selection.empty()) {
 			tile_proxy_object->edit(tile_set_atlas_source, selection);
 		}
-		tile_inspector->set_visible(!selection.is_empty());
-		tile_inspector_no_tile_selected_label->set_visible(selection.is_empty());
+		tile_inspector->set_visible(!selection.empty());
+		tile_inspector_no_tile_selected_label->set_visible(selection.empty());
 	} else {
 		tile_inspector->hide();
 		tile_inspector_no_tile_selected_label->hide();
@@ -801,7 +801,7 @@ void LayeredTileSetAtlasSourceEditor::_update_tile_data_editors() {
 		String prop_name = tile_set->get_custom_data_layer_name(i);
 		Variant::Type prop_type = tile_set->get_custom_data_layer_type(i);
 
-		if (prop_name.is_empty()) {
+		if (prop_name.empty()) {
 			ADD_TILE_DATA_EDITOR(group, vformat(TTR("Custom Data %d"), i), editor_name);
 		} else {
 			ADD_TILE_DATA_EDITOR(group, prop_name, editor_name);
@@ -873,7 +873,7 @@ void LayeredTileSetAtlasSourceEditor::_update_tile_data_editors() {
 void LayeredTileSetAtlasSourceEditor::_update_current_tile_data_editor() {
 	// Find the property to use.
 	String property;
-	if (tools_button_group->get_pressed_button() == tool_select_button && tile_inspector->is_visible() && !tile_inspector->get_selected_path().is_empty()) {
+	if (tools_button_group->get_pressed_button() == tool_select_button && tile_inspector->is_visible() && !tile_inspector->get_selected_path().empty()) {
 		Vector<String> components = tile_inspector->get_selected_path().split("/");
 		if (components.size() >= 1) {
 			property = components[0];
@@ -1695,7 +1695,7 @@ void LayeredTileSetAtlasSourceEditor::_menu_option(int p_option) {
 void LayeredTileSetAtlasSourceEditor::shortcut_input(const Ref<InputEvent> &p_event) {
 	// Check for shortcuts.
 	if (ED_IS_SHORTCUT("tiles_editor/delete_tile", p_event)) {
-		if (tools_button_group->get_pressed_button() == tool_select_button && !selection.is_empty()) {
+		if (tools_button_group->get_pressed_button() == tool_select_button && !selection.empty()) {
 			_menu_option(TILE_DELETE);
 			accept_event();
 		}
@@ -2769,7 +2769,7 @@ void EditorPropertyTilePolygon::_add_focusable_children(Node *p_node) {
 }
 
 void EditorPropertyTilePolygon::_polygons_changed() {
-	if (String(count_property).is_empty()) {
+	if (String(count_property).empty()) {
 		if (base_type == "OccluderPolygon2D") {
 			// Single OccluderPolygon2D.
 			Ref<OccluderPolygon2D> occluder;
@@ -2800,7 +2800,7 @@ void EditorPropertyTilePolygon::_polygons_changed() {
 			emit_changed(get_edited_property(), navigation_polygon);
 		}
 	} else {
-		if (base_type.is_empty()) {
+		if (base_type.empty()) {
 			// Multiple array of vertices.
 			Vector<String> changed_properties;
 			Array values;
@@ -2819,7 +2819,7 @@ void EditorPropertyTilePolygon::_polygons_changed() {
 void EditorPropertyTilePolygon::update_property() {
 	LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject *atlas_tile_proxy_object = Object::cast_to<LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject>(get_edited_object());
 	ERR_FAIL_NULL(atlas_tile_proxy_object);
-	ERR_FAIL_COND(atlas_tile_proxy_object->get_edited_tiles().is_empty());
+	ERR_FAIL_COND(atlas_tile_proxy_object->get_edited_tiles().empty());
 
 	Ref<LayeredTileSetAtlasSource> tile_set_atlas_source = atlas_tile_proxy_object->get_edited_tile_set_atlas_source();
 	generic_tile_polygon_editor->set_tile_set(Ref<LayeredTileSet>(tile_set_atlas_source->get_tile_set()));
@@ -2833,7 +2833,7 @@ void EditorPropertyTilePolygon::update_property() {
 	// Reset the polygons.
 	generic_tile_polygon_editor->clear_polygons();
 
-	if (String(count_property).is_empty()) {
+	if (String(count_property).empty()) {
 		if (base_type == "OccluderPolygon2D") {
 			// Single OccluderPolygon2D.
 			Ref<OccluderPolygon2D> occluder = get_edited_property_value();
@@ -2853,7 +2853,7 @@ void EditorPropertyTilePolygon::update_property() {
 		}
 	} else {
 		int count = get_edited_object()->get(count_property);
-		if (base_type.is_empty()) {
+		if (base_type.empty()) {
 			// Multiple array of vertices.
 			generic_tile_polygon_editor->clear_polygons();
 			for (int i = 0; i < count; i++) {
