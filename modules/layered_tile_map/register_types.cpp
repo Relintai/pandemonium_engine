@@ -43,7 +43,7 @@
 #include "editor/layered_tiles_editor_plugin.h"
 #endif
 
-void register_tile_map_types(ModuleRegistrationLevel p_level) {
+void register_layered_tile_map_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 		ClassDB::register_class<LayeredTileData>();
 		ClassDB::register_class<LayeredTileMap>();
@@ -65,5 +65,5 @@ void register_tile_map_types(ModuleRegistrationLevel p_level) {
 #endif
 }
 
-void unregister_tile_map_types(ModuleRegistrationLevel p_level) {
+void unregister_layered_tile_map_types(ModuleRegistrationLevel p_level) {
 }

@@ -34,7 +34,7 @@
 
 #include "modules/register_module_types.h"
 
-void register_tile_map_types(ModuleRegistrationLevel p_level);
-void unregister_tile_map_types(ModuleRegistrationLevel p_level);
+void register_layered_tile_map_types(ModuleRegistrationLevel p_level);
+void unregister_layered_tile_map_types(ModuleRegistrationLevel p_level);
 
 #endif
