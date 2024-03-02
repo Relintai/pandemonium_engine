@@ -114,9 +114,7 @@ enum PropertyUsageFlags {
 	PROPERTY_USAGE_INTERNATIONALIZED = 1 << 6, //hint for internationalized strings
 	PROPERTY_USAGE_GROUP = 1 << 7, //used for grouping props in the editor
 	PROPERTY_USAGE_CATEGORY = 1 << 8,
-	// FIXME: Drop in 4.0, possibly reorder other flags?
-	// Those below are deprecated thanks to ClassDB's now class value cache
-	//PROPERTY_USAGE_STORE_IF_NONZERO = 1 << 9, //only store if nonzero //512
+	PROPERTY_USAGE_ARRAY = 1 << 9, // Used in the inspector to group properties as elements of an array.
 	//PROPERTY_USAGE_STORE_IF_NONONE = 1 << 10, //only store if false //1024
 	PROPERTY_USAGE_NO_INSTANCE_STATE = 1 << 11,
 	PROPERTY_USAGE_RESTART_IF_CHANGED = 1 << 12,
@@ -144,6 +142,10 @@ enum PropertyUsageFlags {
 #define ADD_PROPERTYI(m_property, m_setter, m_getter, m_index) ClassDB::add_property(get_class_static(), m_property, _scs_create(m_setter), _scs_create(m_getter), m_index)
 #define ADD_PROPERTY_DEFAULT(m_property, m_default) ClassDB::set_property_default_value(get_class_static(), m_property, m_default)
 #define ADD_GROUP(m_name, m_prefix) ClassDB::add_property_group(get_class_static(), m_name, m_prefix)
+
+#define ADD_ARRAY_COUNT(m_label, m_count_property, m_count_property_setter, m_count_property_getter, m_prefix) ClassDB::add_property_array_count(get_class_static(), m_label, m_count_property, _scs_create(m_count_property_setter), _scs_create(m_count_property_getter), m_prefix)
+#define ADD_ARRAY_COUNT_WITH_USAGE_FLAGS(m_label, m_count_property, m_count_property_setter, m_count_property_getter, m_prefix, m_property_usage_flags) ClassDB::add_property_array_count(get_class_static(), m_label, m_count_property, _scs_create(m_count_property_setter), _scs_create(m_count_property_getter), m_prefix, m_property_usage_flags)
+#define ADD_ARRAY(m_array_path, m_prefix) ClassDB::add_property_array(get_class_static(), m_array_path, m_prefix)
 
 struct PropertyInfo {
 	Variant::Type type;

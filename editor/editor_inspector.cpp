@@ -55,15 +55,21 @@
 #include "editor_settings.h"
 #include "multi_node_edit.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/dialogs.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
+#include "scene/gui/margin_container.h"
+#include "scene/gui/panel_container.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/gui/scroll_bar.h"
+#include "scene/gui/texture_rect.h"
 #include "scene/main/canvas_item.h"
 #include "scene/main/node.h"
 #include "scene/main/property_utils.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
 #include "scene/resources/font/font.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/style_box.h"
@@ -1028,6 +1034,7 @@ EditorInspectorCategory::EditorInspectorCategory() {
 void EditorInspectorSection::_test_unfold() {
 	if (!vbox_added) {
 		add_child(vbox);
+		move_child(vbox, 0);
 		vbox_added = true;
 	}
 }
@@ -1059,6 +1066,9 @@ int EditorInspectorSection::_get_header_height() {
 
 void EditorInspectorSection::_notification(int p_what) {
 	switch (p_what) {
+		case NOTIFICATION_THEME_CHANGED: {
+			minimum_size_changed();
+		} break;
 		case NOTIFICATION_SORT_CHILDREN: {
 			Size2 size = get_size();
 			Point2 offset;
@@ -1149,6 +1159,7 @@ void EditorInspectorSection::setup(const String &p_section, const String &p_labe
 
 	if (!foldable && !vbox_added) {
 		add_child(vbox);
+		move_child(vbox, 0);
 		vbox_added = true;
 	}
 
@@ -1209,7 +1220,7 @@ void EditorInspectorSection::fold() {
 	}
 
 	if (!vbox_added) {
-		return; //kinda pointless
+		return;
 	}
 
 	object->editor_set_section_unfold(section, false);
@@ -1236,6 +1247,748 @@ EditorInspectorSection::~EditorInspectorSection() {
 	if (!vbox_added) {
 		memdelete(vbox);
 	}
+}
+
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+
+int EditorInspectorArray::_get_array_count() {
+	if (mode == MODE_USE_MOVE_ARRAY_ELEMENT_FUNCTION) {
+		List<PropertyInfo> object_property_list;
+		object->get_property_list(&object_property_list);
+		return _extract_properties_as_array(object_property_list).size();
+	} else if (mode == MODE_USE_COUNT_PROPERTY) {
+		bool valid;
+		int count = object->get(count_property, &valid);
+		ERR_FAIL_COND_V_MSG(!valid, 0, vformat("%s is not a valid property to be used as array count.", count_property));
+		return count;
+	}
+	return 0;
+}
+
+void EditorInspectorArray::_add_button_pressed() {
+	_move_element(-1, -1);
+}
+
+void EditorInspectorArray::_first_page_button_pressed() {
+	emit_signal("page_change_request", 0);
+}
+
+void EditorInspectorArray::_prev_page_button_pressed() {
+	emit_signal("page_change_request", MAX(0, page - 1));
+}
+
+void EditorInspectorArray::_page_line_edit_text_submitted(String p_text) {
+	if (p_text.is_valid_integer()) {
+		int new_page = p_text.to_int() - 1;
+		new_page = MIN(MAX(0, new_page), max_page);
+		page_line_edit->set_text(Variant(new_page));
+		emit_signal("page_change_request", new_page);
+	} else {
+		page_line_edit->set_text(Variant(page));
+	}
+}
+
+void EditorInspectorArray::_next_page_button_pressed() {
+	emit_signal("page_change_request", MIN(max_page, page + 1));
+}
+
+void EditorInspectorArray::_last_page_button_pressed() {
+	emit_signal("page_change_request", max_page);
+}
+
+void EditorInspectorArray::_rmb_popup_id_pressed(int p_id) {
+	switch (p_id) {
+		case OPTION_MOVE_UP:
+			if (popup_array_index_pressed > 0) {
+				_move_element(popup_array_index_pressed, popup_array_index_pressed - 1);
+			}
+			break;
+		case OPTION_MOVE_DOWN:
+			if (popup_array_index_pressed < count - 1) {
+				_move_element(popup_array_index_pressed, popup_array_index_pressed + 2);
+			}
+			break;
+		case OPTION_NEW_BEFORE:
+			_move_element(-1, popup_array_index_pressed);
+			break;
+		case OPTION_NEW_AFTER:
+			_move_element(-1, popup_array_index_pressed + 1);
+			break;
+		case OPTION_REMOVE:
+			_move_element(popup_array_index_pressed, -1);
+			break;
+		case OPTION_CLEAR_ARRAY:
+			_clear_array();
+			break;
+		case OPTION_RESIZE_ARRAY:
+			new_size = count;
+			new_size_line_edit->set_text(Variant(new_size));
+			resize_dialog->get_ok()->set_disabled(true);
+			resize_dialog->popup_centered();
+			new_size_line_edit->grab_focus();
+			new_size_line_edit->select_all();
+			break;
+		default:
+			break;
+	}
+}
+
+void EditorInspectorArray::_control_dropping_draw() {
+	int drop_position = _drop_position();
+
+	if (dropping && drop_position >= 0) {
+		Vector2 from;
+		Vector2 to;
+		if (drop_position < elements_vbox->get_child_count()) {
+			Transform2D xform = Object::cast_to<Control>(elements_vbox->get_child(drop_position))->get_transform();
+			from = xform.xform(Vector2());
+			to = xform.xform(Vector2(elements_vbox->get_size().x, 0));
+		} else {
+			Control *child = Object::cast_to<Control>(elements_vbox->get_child(drop_position - 1));
+			Transform2D xform = child->get_transform();
+			from = xform.xform(Vector2(0, child->get_size().y));
+			to = xform.xform(Vector2(elements_vbox->get_size().x, child->get_size().y));
+		}
+		Color color = get_theme_color("accent_color", "Editor");
+		control_dropping->draw_line(from, to, color, 2);
+	}
+}
+
+void EditorInspectorArray::_vbox_visibility_changed() {
+	control_dropping->set_visible(vbox->is_visible_in_tree());
+}
+
+void EditorInspectorArray::_panel_draw(int p_index) {
+	ERR_FAIL_INDEX(p_index, (int)array_elements.size());
+
+	Ref<StyleBox> style = get_theme_stylebox("Focus", "EditorStyles");
+	if (!style.is_valid()) {
+		return;
+	}
+	if (array_elements[p_index].panel->has_focus()) {
+		array_elements[p_index].panel->draw_style_box(style, Rect2(Vector2(), array_elements[p_index].panel->get_size()));
+	}
+}
+
+void EditorInspectorArray::_panel_gui_input(Ref<InputEvent> p_event, int p_index) {
+	ERR_FAIL_INDEX(p_index, (int)array_elements.size());
+
+	Ref<InputEventKey> key_ref = p_event;
+	if (key_ref.is_valid()) {
+		const InputEventKey &key = **key_ref;
+
+		if (array_elements[p_index].panel->has_focus() && key.is_pressed() && key.get_scancode() == KEY_DELETE) {
+			_move_element(begin_array_index + p_index, -1);
+			array_elements[p_index].panel->accept_event();
+		}
+	}
+
+	Ref<InputEventMouseButton> mb = p_event;
+	if (mb.is_valid()) {
+		if (mb->get_button_index() == BUTTON_RIGHT) {
+			popup_array_index_pressed = begin_array_index + p_index;
+			rmb_popup->set_item_disabled(OPTION_MOVE_UP, popup_array_index_pressed == 0);
+			rmb_popup->set_item_disabled(OPTION_MOVE_DOWN, popup_array_index_pressed == count - 1);
+			rmb_popup->set_position(mb->get_global_position());
+			rmb_popup->set_size(Vector2());
+			rmb_popup->popup();
+		}
+	}
+}
+
+void EditorInspectorArray::_move_element(int p_element_index, int p_to_pos) {
+	String action_name;
+	if (p_element_index < 0) {
+		action_name = vformat("Add element to property array with prefix %s.", array_element_prefix);
+	} else if (p_to_pos < 0) {
+		action_name = vformat("Remove element %d from property array with prefix %s.", p_element_index, array_element_prefix);
+	} else {
+		action_name = vformat("Move element %d to position %d in property array with prefix %s.", p_element_index, p_to_pos, array_element_prefix);
+	}
+	undo_redo->create_action(action_name);
+	if (mode == MODE_USE_MOVE_ARRAY_ELEMENT_FUNCTION) {
+		// Call the function.
+		Ref<FuncRef> move_function = EditorNode::get_singleton()->get_editor_data().get_move_array_element_function(object->get_class_name());
+
+		if (move_function.is_valid()) {
+			Variant args[] = { (Object *)undo_redo, object, array_element_prefix, p_element_index, p_to_pos };
+			const Variant *args_p[] = { &args[0], &args[1], &args[2], &args[3], &args[4] };
+			Variant::CallError call_error;
+			move_function->call_func(args_p, 5, call_error);
+		} else {
+			WARN_PRINT(vformat("Could not find a function to move arrays elements for class %s. Register a move element function using EditorData::add_move_array_element_function", object->get_class_name()));
+		}
+	} else if (mode == MODE_USE_COUNT_PROPERTY) {
+		ERR_FAIL_COND(p_to_pos < -1 || p_to_pos > count);
+		List<PropertyInfo> object_property_list;
+		object->get_property_list(&object_property_list);
+
+		Array properties_as_array = _extract_properties_as_array(object_property_list);
+		properties_as_array.resize(count);
+
+		// For undoing things
+		undo_redo->add_undo_property(object, count_property, properties_as_array.size());
+		for (int i = 0; i < (int)properties_as_array.size(); i++) {
+			Dictionary d = Dictionary(properties_as_array[i]);
+			Array keys = d.keys();
+			for (int j = 0; j < keys.size(); j++) {
+				String key = keys[j];
+				undo_redo->add_undo_property(object, vformat(key, i), d[key]);
+			}
+		}
+
+		if (p_element_index < 0) {
+			// Add an element.
+			properties_as_array.insert(p_to_pos < 0 ? properties_as_array.size() : p_to_pos, Dictionary());
+		} else if (p_to_pos < 0) {
+			// Delete the element.
+			properties_as_array.remove(p_element_index);
+		} else {
+			// Move the element.
+			properties_as_array.insert(p_to_pos, properties_as_array[p_element_index].duplicate());
+			properties_as_array.remove(p_to_pos < p_element_index ? p_element_index + 1 : p_element_index);
+		}
+
+		// Change the array size then set the properties.
+		undo_redo->add_do_property(object, count_property, properties_as_array.size());
+		for (int i = 0; i < (int)properties_as_array.size(); i++) {
+			Dictionary d = properties_as_array[i];
+			Array keys = d.keys();
+			for (int j = 0; j < keys.size(); j++) {
+				String key = keys[j];
+				undo_redo->add_do_property(object, vformat(key, i), d[key]);
+			}
+		}
+	}
+	undo_redo->commit_action();
+
+	// Handle page change and update counts.
+	if (p_element_index < 0) {
+		int added_index = p_to_pos < 0 ? count : p_to_pos;
+		emit_signal("page_change_request", added_index / page_lenght);
+		count += 1;
+	} else if (p_to_pos < 0) {
+		count -= 1;
+		if (page == max_page && (MAX(0, count - 1) / page_lenght != max_page)) {
+			emit_signal("page_change_request", max_page - 1);
+		}
+	}
+	begin_array_index = page * page_lenght;
+	end_array_index = MIN(count, (page + 1) * page_lenght);
+	max_page = MAX(0, count - 1) / page_lenght;
+}
+
+void EditorInspectorArray::_clear_array() {
+	undo_redo->create_action(vformat("Clear property array with prefix %s.", array_element_prefix));
+	if (mode == MODE_USE_MOVE_ARRAY_ELEMENT_FUNCTION) {
+		for (int i = count - 1; i >= 0; i--) {
+			// Call the function.
+			Ref<FuncRef> move_function = EditorNode::get_singleton()->get_editor_data().get_move_array_element_function(object->get_class_name());
+			if (move_function.is_valid()) {
+				Variant args[] = { (Object *)undo_redo, object, array_element_prefix, i, -1 };
+				const Variant *args_p[] = { &args[0], &args[1], &args[2], &args[3], &args[4] };
+				Variant::CallError call_error;
+				move_function->call_func(args_p, 5, call_error);
+			} else {
+				WARN_PRINT(vformat("Could not find a function to move arrays elements for class %s. Register a move element function using EditorData::add_move_array_element_function", object->get_class_name()));
+			}
+		}
+	} else if (mode == MODE_USE_COUNT_PROPERTY) {
+		List<PropertyInfo> object_property_list;
+		object->get_property_list(&object_property_list);
+
+		Array properties_as_array = _extract_properties_as_array(object_property_list);
+		properties_as_array.resize(count);
+
+		// For undoing things
+		undo_redo->add_undo_property(object, count_property, count);
+		for (int i = 0; i < (int)properties_as_array.size(); i++) {
+			Dictionary d = Dictionary(properties_as_array[i]);
+			Array keys = d.keys();
+			for (int j = 0; j < keys.size(); j++) {
+				String key = keys[j];
+				undo_redo->add_undo_property(object, vformat(key, i), d[key]);
+			}
+		}
+
+		// Change the array size then set the properties.
+		undo_redo->add_do_property(object, count_property, 0);
+	}
+	undo_redo->commit_action();
+
+	// Handle page change and update counts.
+	emit_signal("page_change_request", 0);
+	count = 0;
+	begin_array_index = 0;
+	end_array_index = 0;
+	max_page = 0;
+}
+
+void EditorInspectorArray::_resize_array(int p_size) {
+	ERR_FAIL_COND(p_size < 0);
+	if (p_size == count) {
+		return;
+	}
+
+	undo_redo->create_action(vformat("Resize property array with prefix %s.", array_element_prefix));
+	if (p_size > count) {
+		if (mode == MODE_USE_MOVE_ARRAY_ELEMENT_FUNCTION) {
+			for (int i = count; i < p_size; i++) {
+				// Call the function.
+				Ref<FuncRef> move_function = EditorNode::get_singleton()->get_editor_data().get_move_array_element_function(object->get_class_name());
+				if (move_function.is_valid()) {
+					Variant args[] = { (Object *)undo_redo, object, array_element_prefix, -1, -1 };
+					const Variant *args_p[] = { &args[0], &args[1], &args[2], &args[3], &args[4] };
+					Variant::CallError call_error;
+					move_function->call_func(args_p, 5, call_error);
+				} else {
+					WARN_PRINT(vformat("Could not find a function to move arrays elements for class %s. Register a move element function using EditorData::add_move_array_element_function", object->get_class_name()));
+				}
+			}
+		} else if (mode == MODE_USE_COUNT_PROPERTY) {
+			undo_redo->add_undo_property(object, count_property, count);
+			undo_redo->add_do_property(object, count_property, p_size);
+		}
+	} else {
+		if (mode == MODE_USE_MOVE_ARRAY_ELEMENT_FUNCTION) {
+			for (int i = count - 1; i > p_size - 1; i--) {
+				// Call the function.
+				Ref<FuncRef> move_function = EditorNode::get_singleton()->get_editor_data().get_move_array_element_function(object->get_class_name());
+				if (move_function.is_valid()) {
+					Variant args[] = { (Object *)undo_redo, object, array_element_prefix, i, -1 };
+					const Variant *args_p[] = { &args[0], &args[1], &args[2], &args[3], &args[4] };
+					Variant::CallError call_error;
+					move_function->call_func(args_p, 5, call_error);
+				} else {
+					WARN_PRINT(vformat("Could not find a function to move arrays elements for class %s. Register a move element function using EditorData::add_move_array_element_function", object->get_class_name()));
+				}
+			}
+		} else if (mode == MODE_USE_COUNT_PROPERTY) {
+			List<PropertyInfo> object_property_list;
+			object->get_property_list(&object_property_list);
+
+			Array properties_as_array = _extract_properties_as_array(object_property_list);
+			properties_as_array.resize(count);
+
+			// For undoing things
+			undo_redo->add_undo_property(object, count_property, count);
+			for (int i = count - 1; i > p_size - 1; i--) {
+				Dictionary d = Dictionary(properties_as_array[i]);
+				Array keys = d.keys();
+				for (int j = 0; j < keys.size(); j++) {
+					String key = keys[j];
+					undo_redo->add_undo_property(object, vformat(key, i), d[key]);
+				}
+			}
+
+			// Change the array size then set the properties.
+			undo_redo->add_do_property(object, count_property, p_size);
+		}
+	}
+	undo_redo->commit_action();
+
+	// Handle page change and update counts.
+	emit_signal("page_change_request", 0);
+	/*
+	count = 0;
+	begin_array_index = 0;
+	end_array_index = 0;
+	max_page = 0;
+	*/
+}
+
+Array EditorInspectorArray::_extract_properties_as_array(const List<PropertyInfo> &p_list) {
+	Array output;
+
+	for (const List<PropertyInfo>::Element *E = p_list.front(); E; E = E->next()) {
+		const PropertyInfo &pi = E->get();
+
+		if (pi.name.begins_with(array_element_prefix)) {
+			String str = pi.name.trim_prefix(array_element_prefix);
+
+			int to_char_index = 0;
+			while (to_char_index < str.length()) {
+				if (str[to_char_index] < '0' || str[to_char_index] > '9') {
+					break;
+				}
+				to_char_index++;
+			}
+			if (to_char_index > 0) {
+				int array_index = str.left(to_char_index).to_int();
+				Error error = OK;
+				if (array_index >= output.size()) {
+					error = output.resize(array_index + 1);
+				}
+				if (error == OK) {
+					String format_string = String(array_element_prefix) + "%d" + str.substr(to_char_index);
+					Dictionary dict = output[array_index];
+					dict[format_string] = object->get(pi.name);
+					output[array_index] = dict;
+				} else {
+					WARN_PRINT(vformat("Array element %s has an index too high. Array allocaiton failed.", pi.name));
+				}
+			}
+		}
+	}
+	return output;
+}
+
+int EditorInspectorArray::_drop_position() const {
+	for (int i = 0; i < (int)array_elements.size(); i++) {
+		const ArrayElement &ae = array_elements[i];
+
+		Size2 size = ae.panel->get_size();
+		Vector2 mp = ae.panel->get_local_mouse_position();
+
+		if (Rect2(Vector2(), size).has_point(mp)) {
+			if (mp.y < size.y / 2) {
+				return i;
+			} else {
+				return i + 1;
+			}
+		}
+	}
+	return -1;
+}
+
+void EditorInspectorArray::_new_size_line_edit_text_changed(String p_text) {
+	bool valid = false;
+
+	if (p_text.is_valid_integer()) {
+		int val = p_text.to_int();
+		if (val > 0 && val != count) {
+			valid = true;
+		}
+	}
+
+	resize_dialog->get_ok()->set_disabled(!valid);
+}
+
+void EditorInspectorArray::_new_size_line_edit_text_submitted(String p_text) {
+	bool valid = false;
+
+	if (p_text.is_valid_integer()) {
+		int val = p_text.to_int();
+		if (val > 0 && val != count) {
+			new_size = val;
+			valid = true;
+		}
+	}
+
+	if (valid) {
+		resize_dialog->hide();
+		_resize_array(new_size);
+	} else {
+		new_size_line_edit->set_text(Variant(new_size));
+	}
+}
+
+void EditorInspectorArray::_resize_dialog_confirmed() {
+	_new_size_line_edit_text_submitted(new_size_line_edit->get_text());
+}
+
+void EditorInspectorArray::_setup() {
+	// Setup counts.
+	count = _get_array_count();
+	begin_array_index = page * page_lenght;
+	end_array_index = MIN(count, (page + 1) * page_lenght);
+	max_page = MAX(0, count - 1) / page_lenght;
+	array_elements.resize(MAX(0, end_array_index - begin_array_index));
+	if (page < 0 || page > max_page) {
+		WARN_PRINT(vformat("Invalid page number %d", page));
+		page = CLAMP(page, 0, max_page);
+	}
+
+	for (int i = 0; i < (int)array_elements.size(); i++) {
+		ArrayElement &ae = array_elements[i];
+
+		// Panel and its hbox.
+		ae.panel = memnew(PanelContainer);
+		ae.panel->set_focus_mode(FOCUS_ALL);
+		ae.panel->set_mouse_filter(MOUSE_FILTER_PASS);
+		ae.panel->set_drag_forwarding(this);
+		ae.panel->set_meta("index", begin_array_index + i);
+		ae.panel->set_tooltip(vformat(TTR("Element %d: %s%d*"), i, array_element_prefix, i));
+		ae.panel->connect("focus_entered", ae.panel, "update");
+		ae.panel->connect("focus_exited", ae.panel, "update");
+		ae.panel->connect("draw", this, "_panel_draw", varray(i));
+		ae.panel->connect("gui_input", this, "_panel_gui_input", varray(i));
+		ae.panel->add_theme_style_override("panel", i % 2 ? odd_style : even_style);
+		elements_vbox->add_child(ae.panel);
+
+		ae.margin = memnew(MarginContainer);
+		ae.margin->set_mouse_filter(MOUSE_FILTER_PASS);
+		if (is_inside_tree()) {
+			Size2 min_size = get_theme_stylebox("Focus", "EditorStyles")->get_minimum_size();
+			ae.margin->add_theme_constant_override("margin_left", min_size.x / 2);
+			ae.margin->add_theme_constant_override("margin_top", min_size.y / 2);
+			ae.margin->add_theme_constant_override("margin_right", min_size.x / 2);
+			ae.margin->add_theme_constant_override("margin_bottom", min_size.y / 2);
+		}
+		ae.panel->add_child(ae.margin);
+
+		ae.hbox = memnew(HBoxContainer);
+		ae.hbox->set_h_size_flags(SIZE_EXPAND_FILL);
+		ae.hbox->set_v_size_flags(SIZE_EXPAND_FILL);
+		ae.margin->add_child(ae.hbox);
+
+		// Move button.
+		ae.move_texture_rect = memnew(TextureRect);
+		ae.move_texture_rect->set_stretch_mode(TextureRect::STRETCH_KEEP_CENTERED);
+		if (is_inside_tree()) {
+			ae.move_texture_rect->set_texture(get_theme_icon("TripleBar", "EditorIcons"));
+		}
+		ae.hbox->add_child(ae.move_texture_rect);
+
+		// Right vbox.
+		ae.vbox = memnew(VBoxContainer);
+		ae.vbox->set_h_size_flags(SIZE_EXPAND_FILL);
+		ae.vbox->set_v_size_flags(SIZE_EXPAND_FILL);
+		ae.hbox->add_child(ae.vbox);
+	}
+
+	// Hide/show the add button.
+	add_button->set_visible(page == max_page);
+
+	if (max_page == 0) {
+		hbox_pagination->hide();
+	} else {
+		// Update buttons.
+		first_page_button->set_disabled(page == 0);
+		prev_page_button->set_disabled(page == 0);
+		next_page_button->set_disabled(page == max_page);
+		last_page_button->set_disabled(page == max_page);
+
+		// Update page number and page count.
+		page_line_edit->set_text(vformat("%d", page + 1));
+		page_count_label->set_text(vformat("/ %d", max_page + 1));
+	}
+}
+
+Variant EditorInspectorArray::get_drag_data_fw(const Point2 &p_point, Control *p_from) {
+	int index = p_from->get_meta("index");
+	Dictionary dict;
+	dict["type"] = "property_array_element";
+	dict["property_array_prefix"] = array_element_prefix;
+	dict["index"] = index;
+
+	return dict;
+}
+
+void EditorInspectorArray::drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
+	Dictionary dict = p_data;
+
+	int to_drop = dict["index"];
+	int drop_position = _drop_position();
+	if (drop_position < 0) {
+		return;
+	}
+	_move_element(to_drop, begin_array_index + drop_position);
+}
+
+bool EditorInspectorArray::can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
+	// First, update drawing.
+	control_dropping->update();
+
+	if (p_data.get_type() != Variant::DICTIONARY) {
+		return false;
+	}
+	Dictionary dict = p_data;
+	int drop_position = _drop_position();
+	if (!dict.has("type") || dict["type"] != "property_array_element" || String(dict["property_array_prefix"]) != array_element_prefix || drop_position < 0) {
+		return false;
+	}
+
+	// Check in dropping at the given index does indeed move the item.
+	int moved_array_index = (int)dict["index"];
+	int drop_array_index = begin_array_index + drop_position;
+
+	return drop_array_index != moved_array_index && drop_array_index - 1 != moved_array_index;
+}
+
+void EditorInspectorArray::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE:
+		case NOTIFICATION_THEME_CHANGED: {
+			Color color = get_theme_color("dark_color_1", "Editor");
+			odd_style->set_bg_color(color.lightened(0.15));
+			even_style->set_bg_color(color.darkened(0.15));
+
+			for (int i = 0; i < (int)array_elements.size(); i++) {
+				ArrayElement &ae = array_elements[i];
+				ae.move_texture_rect->set_texture(get_theme_icon("TripleBar", "EditorIcons"));
+
+				Size2 min_size = get_theme_stylebox("Focus", "EditorStyles")->get_minimum_size();
+				ae.margin->add_theme_constant_override("margin_left", min_size.x / 2);
+				ae.margin->add_theme_constant_override("margin_top", min_size.y / 2);
+				ae.margin->add_theme_constant_override("margin_right", min_size.x / 2);
+				ae.margin->add_theme_constant_override("margin_bottom", min_size.y / 2);
+			}
+
+			add_button->set_icon(get_theme_icon("Add", "EditorIcons"));
+			first_page_button->set_icon(get_theme_icon("PageFirst", "EditorIcons"));
+			prev_page_button->set_icon(get_theme_icon("PagePrevious", "EditorIcons"));
+			next_page_button->set_icon(get_theme_icon("PageNext", "EditorIcons"));
+			last_page_button->set_icon(get_theme_icon("PageLast", "EditorIcons"));
+			minimum_size_changed();
+		} break;
+		case NOTIFICATION_DRAG_BEGIN: {
+			Dictionary dict = get_viewport()->gui_get_drag_data();
+			if (dict.has("type") && dict["type"] == "property_array_element" && String(dict["property_array_prefix"]) == array_element_prefix) {
+				dropping = true;
+				control_dropping->update();
+			}
+		} break;
+		case NOTIFICATION_DRAG_END: {
+			if (dropping) {
+				dropping = false;
+				control_dropping->update();
+			}
+		} break;
+	}
+}
+
+void EditorInspectorArray::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_get_drag_data_fw"), &EditorInspectorArray::get_drag_data_fw);
+	ClassDB::bind_method(D_METHOD("_can_drop_data_fw"), &EditorInspectorArray::can_drop_data_fw);
+	ClassDB::bind_method(D_METHOD("_drop_data_fw"), &EditorInspectorArray::drop_data_fw);
+
+	ClassDB::bind_method(D_METHOD("_panel_draw"), &EditorInspectorArray::_panel_draw);
+	ClassDB::bind_method(D_METHOD("_rmb_popup_id_pressed"), &EditorInspectorArray::_rmb_popup_id_pressed);
+	ClassDB::bind_method(D_METHOD("_add_button_pressed"), &EditorInspectorArray::_add_button_pressed);
+	ClassDB::bind_method(D_METHOD("_first_page_button_pressed"), &EditorInspectorArray::_first_page_button_pressed);
+	ClassDB::bind_method(D_METHOD("_prev_page_button_pressed"), &EditorInspectorArray::_prev_page_button_pressed);
+	ClassDB::bind_method(D_METHOD("_page_line_edit_text_submitted"), &EditorInspectorArray::_page_line_edit_text_submitted);
+	ClassDB::bind_method(D_METHOD("_next_page_button_pressed"), &EditorInspectorArray::_next_page_button_pressed);
+	ClassDB::bind_method(D_METHOD("_last_page_button_pressed"), &EditorInspectorArray::_last_page_button_pressed);
+	ClassDB::bind_method(D_METHOD("_control_dropping_draw"), &EditorInspectorArray::_control_dropping_draw);
+	ClassDB::bind_method(D_METHOD("_resize_dialog_confirmed"), &EditorInspectorArray::_resize_dialog_confirmed);
+	ClassDB::bind_method(D_METHOD("_new_size_line_edit_text_changed"), &EditorInspectorArray::_new_size_line_edit_text_changed);
+	ClassDB::bind_method(D_METHOD("_new_size_line_edit_text_submitted"), &EditorInspectorArray::_new_size_line_edit_text_submitted);
+	ClassDB::bind_method(D_METHOD("_vbox_visibility_changed"), &EditorInspectorArray::_vbox_visibility_changed);
+
+	ADD_SIGNAL(MethodInfo("page_change_request"));
+}
+
+void EditorInspectorArray::set_undo_redo(UndoRedo *p_undo_redo) {
+	undo_redo = p_undo_redo;
+}
+
+void EditorInspectorArray::setup_with_move_element_function(Object *p_object, String p_label, const StringName &p_array_element_prefix, int p_page, const Color &p_bg_color, bool p_foldable) {
+	count_property = "";
+	mode = MODE_USE_MOVE_ARRAY_ELEMENT_FUNCTION;
+	array_element_prefix = p_array_element_prefix;
+	page = p_page;
+
+	EditorInspectorSection::setup(String(p_array_element_prefix) + "_array", p_label, p_object, p_bg_color, p_foldable);
+
+	_setup();
+}
+
+void EditorInspectorArray::setup_with_count_property(Object *p_object, String p_label, const StringName &p_count_property, const StringName &p_array_element_prefix, int p_page, const Color &p_bg_color, bool p_foldable) {
+	count_property = p_count_property;
+	mode = MODE_USE_COUNT_PROPERTY;
+	array_element_prefix = p_array_element_prefix;
+	page = p_page;
+
+	EditorInspectorSection::setup(String(count_property) + "_array", p_label, p_object, p_bg_color, p_foldable);
+
+	_setup();
+}
+
+VBoxContainer *EditorInspectorArray::get_vbox(int p_index) {
+	if (p_index >= begin_array_index && p_index < end_array_index) {
+		return array_elements[p_index - begin_array_index].vbox;
+	} else if (p_index < 0) {
+		return vbox;
+	} else {
+		return nullptr;
+	}
+}
+
+EditorInspectorArray::EditorInspectorArray() {
+	set_mouse_filter(Control::MOUSE_FILTER_STOP);
+
+	odd_style.instance();
+	even_style.instance();
+
+	rmb_popup = memnew(PopupMenu);
+	rmb_popup->add_item(TTR("Move Up"), OPTION_MOVE_UP);
+	rmb_popup->add_item(TTR("Move Down"), OPTION_MOVE_DOWN);
+	rmb_popup->add_separator();
+	rmb_popup->add_item(TTR("Insert New Before"), OPTION_NEW_BEFORE);
+	rmb_popup->add_item(TTR("Insert New After"), OPTION_NEW_AFTER);
+	rmb_popup->add_separator();
+	rmb_popup->add_item(TTR("Remove"), OPTION_REMOVE);
+	rmb_popup->add_separator();
+	rmb_popup->add_item(TTR("Clear Array"), OPTION_CLEAR_ARRAY);
+	rmb_popup->add_item(TTR("Resize Array..."), OPTION_RESIZE_ARRAY);
+	rmb_popup->connect("id_pressed", this, "_rmb_popup_id_pressed");
+	add_child(rmb_popup);
+
+	elements_vbox = memnew(VBoxContainer);
+	elements_vbox->add_theme_constant_override("separation", 0);
+	vbox->add_child(elements_vbox);
+
+	add_button = memnew(Button);
+	add_button->set_text(TTR("Add Element"));
+	add_button->set_text_align(Button::ALIGN_CENTER);
+	add_button->connect("pressed", this, "_add_button_pressed");
+	vbox->add_child(add_button);
+
+	hbox_pagination = memnew(HBoxContainer);
+	hbox_pagination->set_h_size_flags(SIZE_EXPAND_FILL);
+	hbox_pagination->set_alignment(HBoxContainer::ALIGN_CENTER);
+	vbox->add_child(hbox_pagination);
+
+	first_page_button = memnew(Button);
+	first_page_button->set_flat(true);
+	first_page_button->connect("pressed", this, "_first_page_button_pressed");
+	hbox_pagination->add_child(first_page_button);
+
+	prev_page_button = memnew(Button);
+	prev_page_button->set_flat(true);
+	prev_page_button->connect("pressed", this, "_prev_page_button_pressed");
+	hbox_pagination->add_child(prev_page_button);
+
+	page_line_edit = memnew(LineEdit);
+	page_line_edit->connect("text_submitted", this, "_page_line_edit_text_submitted");
+	page_line_edit->add_theme_constant_override("minimum_character_width", 2);
+	hbox_pagination->add_child(page_line_edit);
+
+	page_count_label = memnew(Label);
+	hbox_pagination->add_child(page_count_label);
+	next_page_button = memnew(Button);
+	next_page_button->set_flat(true);
+	next_page_button->connect("pressed", this, "_next_page_button_pressed");
+	hbox_pagination->add_child(next_page_button);
+
+	last_page_button = memnew(Button);
+	last_page_button->set_flat(true);
+	last_page_button->connect("pressed", this, "_last_page_button_pressed");
+	hbox_pagination->add_child(last_page_button);
+
+	control_dropping = memnew(Control);
+	control_dropping->connect("draw", this, "_control_dropping_draw");
+	control_dropping->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	add_child(control_dropping);
+
+	resize_dialog = memnew(AcceptDialog);
+	resize_dialog->set_title(TTRC("Resize Array"));
+	resize_dialog->add_cancel();
+	resize_dialog->connect("confirmed", this, "_resize_dialog_confirmed");
+	add_child(resize_dialog);
+
+	VBoxContainer *resize_dialog_vbox = memnew(VBoxContainer);
+	resize_dialog->add_child(resize_dialog_vbox);
+
+	new_size_line_edit = memnew(LineEdit);
+	new_size_line_edit->connect("text_changed", this, "_new_size_line_edit_text_changed");
+	new_size_line_edit->connect("text_submitted", this, "_new_size_line_edit_text_submitted");
+	resize_dialog_vbox->add_margin_child(TTRC("New Size:"), new_size_line_edit);
+
+	vbox->connect("visibility_changed", this, "_vbox_visibility_changed");
 }
 
 ////////////////////////////////////////////////

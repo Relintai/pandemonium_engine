@@ -333,7 +333,8 @@ void DocData::generate(bool p_basic_types) {
 				continue;
 			}
 
-			if (E->get().usage & PROPERTY_USAGE_GROUP || E->get().usage & PROPERTY_USAGE_CATEGORY || E->get().usage & PROPERTY_USAGE_INTERNAL) {
+			if (E->get().usage & PROPERTY_USAGE_GROUP || E->get().usage & PROPERTY_USAGE_CATEGORY ||
+					E->get().usage & PROPERTY_USAGE_INTERNAL || (E->get().type == Variant::NIL && E->get().usage & PROPERTY_USAGE_ARRAY)) {
 				continue;
 			}
 

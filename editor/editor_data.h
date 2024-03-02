@@ -42,6 +42,7 @@
 #include "core/containers/rb_map.h"
 #include "core/containers/rb_set.h"
 #include "core/containers/vector.h"
+#include "core/object/func_ref.h"
 #include "core/object/object_id.h"
 #include "core/object/reference.h"
 #include "core/object/script_language.h"
@@ -161,6 +162,8 @@ private:
 	List<PropertyData> clipboard;
 	UndoRedo undo_redo;
 
+	RBMap<StringName, Ref<FuncRef>> move_element_functions;
+
 	Vector<EditedScene> edited_scene;
 	int current_edited_scene;
 
@@ -190,6 +193,11 @@ public:
 
 	int get_editor_plugin_count() const;
 	EditorPlugin *get_editor_plugin(int p_idx);
+
+	// Function should have this signature: void (Object* undo_redo, Object *modified_object, String array_prefix, int element_index, int new_position)
+	void add_move_array_element_function(const StringName &p_class, const Ref<FuncRef> &p_funcref);
+	void remove_move_array_element_function(const StringName &p_class);
+	Ref<FuncRef> get_move_array_element_function(const StringName &p_class) const;
 
 	UndoRedo &get_undo_redo();
 

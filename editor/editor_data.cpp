@@ -445,6 +445,22 @@ UndoRedo &EditorData::get_undo_redo() {
 	return undo_redo;
 }
 
+void EditorData::add_move_array_element_function(const StringName &p_class, const Ref<FuncRef> &p_funcref) {
+	move_element_functions.insert(p_class, p_funcref);
+}
+
+void EditorData::remove_move_array_element_function(const StringName &p_class) {
+	move_element_functions.erase(p_class);
+}
+
+Ref<FuncRef> EditorData::get_move_array_element_function(const StringName &p_class) const {
+	if (move_element_functions.has(p_class)) {
+		return move_element_functions[p_class];
+	}
+
+	return Ref<FuncRef>();
+}
+
 void EditorData::remove_editor_plugin(EditorPlugin *p_plugin) {
 	p_plugin->undo_redo = nullptr;
 	editor_plugins.erase(p_plugin);
