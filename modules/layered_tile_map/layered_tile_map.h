@@ -113,7 +113,7 @@ public:
 	void set_rendering_quadrant_size(int p_size);
 	int get_rendering_quadrant_size() const;
 
-	static void draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<LayeredTileSet> p_tile_set, int p_atlas_source_id, const Vector2i &p_atlas_coords, int p_alternative_tile, int p_frame = -1, Color p_modulation = Color(1.0, 1.0, 1.0, 1.0), const TileData *p_tile_data_override = nullptr, real_t p_normalized_animation_offset = 0.0);
+	static void draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<LayeredTileSet> p_tile_set, int p_atlas_source_id, const Vector2i &p_atlas_coords, int p_alternative_tile, int p_frame = -1, Color p_modulation = Color(1.0, 1.0, 1.0, 1.0), const LayeredTileData *p_tile_data_override = nullptr, real_t p_normalized_animation_offset = 0.0);
 
 	// Layers management.
 	int get_layers_count() const;
@@ -155,7 +155,7 @@ public:
 	Vector2i get_cell_atlas_coords(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
 	int get_cell_alternative_tile(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
 	// Helper method to make accessing the data easier.
-	TileData *get_cell_tile_data(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
+	LayeredTileData *get_cell_tile_data(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;
 
 	// Patterns.
 	Ref<LayeredTileMapPattern> get_pattern(int p_layer, PoolVector2iArray p_coords_array);
@@ -212,12 +212,12 @@ public:
 	// Helpers?
 	PoolVector2iArray get_surrounding_cells(const Vector2i &p_coords);
 
-	// Virtual function to modify the TileData at runtime.
+	// Virtual function to modify the LayeredTileData at runtime.
 	GDVIRTUAL2R(bool, _use_tile_data_runtime_update, int, Vector2i);
-	GDVIRTUAL3(_tile_data_runtime_update, int, Vector2i, TileData *);
+	GDVIRTUAL3(_tile_data_runtime_update, int, Vector2i, LayeredTileData *);
 
 	// Configuration warnings.
-	PackedStringArray get_configuration_warnings() const;
+	PoolStringArray get_configuration_warnings() const;
 
 	LayeredTileMap();
 	~LayeredTileMap();

@@ -33,12 +33,12 @@
 
 #include "core/core_string_names.h"
 #include "core/io/marshalls.h"
-#include "scene/gui/control.h"
+#include "scene/main/control.h"
 #include "scene/resources/world_2d.h"
-#include "servers/navigation_server_2d.h"
+#include "servers/navigation_2d_server.h"
 
 #ifdef DEBUG_ENABLED
-#include "servers/navigation_server_3d.h"
+#include "servers/navigation_server.h"
 #endif // DEBUG_ENABLED
 
 #ifdef DEBUG_ENABLED
@@ -297,7 +297,7 @@ void LayeredTileMapLayer::_rendering_update() {
 					LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(*tile_set->get_source(cell_data.cell.source_id));
 
 					// Get the tile data.
-					const TileData *tile_data;
+					const LayeredTileData *tile_data;
 					if (cell_data.runtime_tile_data_cache) {
 						tile_data = cell_data.runtime_tile_data_cache;
 					} else {
@@ -469,7 +469,7 @@ void LayeredTileMapLayer::_rendering_quadrants_update_cell(CellData &r_cell_data
 		LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 		if (atlas_source && atlas_source->has_tile(r_cell_data.cell.get_atlas_coords()) && atlas_source->has_alternative_tile(r_cell_data.cell.get_atlas_coords(), r_cell_data.cell.alternative_tile)) {
 			is_valid = true;
-			const TileData *tile_data;
+			const LayeredTileData *tile_data;
 			if (r_cell_data.runtime_tile_data_cache) {
 				tile_data = r_cell_data.runtime_tile_data_cache;
 			} else {
@@ -577,7 +577,7 @@ void LayeredTileMapLayer::_rendering_occluders_update_cell(CellData &r_cell_data
 			LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 			if (atlas_source) {
 				// Get the tile data.
-				const TileData *tile_data;
+				const LayeredTileData *tile_data;
 				if (r_cell_data.runtime_tile_data_cache) {
 					tile_data = r_cell_data.runtime_tile_data_cache;
 				} else {
@@ -773,7 +773,7 @@ void LayeredTileMapLayer::_physics_update_cell(CellData &r_cell_data) {
 		if (source->has_tile(c.get_atlas_coords()) && source->has_alternative_tile(c.get_atlas_coords(), c.alternative_tile)) {
 			LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 			if (atlas_source) {
-				const TileData *tile_data;
+				const LayeredTileData *tile_data;
 				if (r_cell_data.runtime_tile_data_cache) {
 					tile_data = r_cell_data.runtime_tile_data_cache;
 				} else {
@@ -1038,7 +1038,7 @@ void LayeredTileMapLayer::_navigation_update_cell(CellData &r_cell_data) {
 		if (source->has_tile(c.get_atlas_coords()) && source->has_alternative_tile(c.get_atlas_coords(), c.alternative_tile)) {
 			LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 			if (atlas_source) {
-				const TileData *tile_data;
+				const LayeredTileData *tile_data;
 				if (r_cell_data.runtime_tile_data_cache) {
 					tile_data = r_cell_data.runtime_tile_data_cache;
 				} else {
@@ -1144,7 +1144,7 @@ void LayeredTileMapLayer::_navigation_draw_cell_debug(const RID &p_canvas_item, 
 		if (source->has_tile(c.get_atlas_coords()) && source->has_alternative_tile(c.get_atlas_coords(), c.alternative_tile)) {
 			LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 			if (atlas_source) {
-				const TileData *tile_data;
+				const LayeredTileData *tile_data;
 				if (r_cell_data.runtime_tile_data_cache) {
 					tile_data = r_cell_data.runtime_tile_data_cache;
 				} else {
@@ -1394,10 +1394,10 @@ void LayeredTileMapLayer::_build_runtime_update_tile_data_for_cell(CellData &r_c
 				if (p_use_tilemap_for_runtime) {
 					// Compatibility with LayeredTileMap.
 					if (tile_map_node->GDVIRTUAL_CALL(_use_tile_data_runtime_update, layer_index_in_tile_map_node, r_cell_data.coords, ret) && ret) {
-						TileData *tile_data = atlas_source->get_tile_data(c.get_atlas_coords(), c.alternative_tile);
+						LayeredTileData *tile_data = atlas_source->get_tile_data(c.get_atlas_coords(), c.alternative_tile);
 
-						// Create the runtime TileData.
-						TileData *tile_data_runtime_use = tile_data->duplicate();
+						// Create the runtime LayeredTileData.
+						LayeredTileData *tile_data_runtime_use = tile_data->duplicate();
 						tile_data_runtime_use->set_allow_transform(true);
 						r_cell_data.runtime_tile_data_cache = tile_data_runtime_use;
 
@@ -1409,10 +1409,10 @@ void LayeredTileMapLayer::_build_runtime_update_tile_data_for_cell(CellData &r_c
 					}
 				} else {
 					if (GDVIRTUAL_CALL(_use_tile_data_runtime_update, r_cell_data.coords, ret) && ret) {
-						TileData *tile_data = atlas_source->get_tile_data(c.get_atlas_coords(), c.alternative_tile);
+						LayeredTileData *tile_data = atlas_source->get_tile_data(c.get_atlas_coords(), c.alternative_tile);
 
-						// Create the runtime TileData.
-						TileData *tile_data_runtime_use = tile_data->duplicate();
+						// Create the runtime LayeredTileData.
+						LayeredTileData *tile_data_runtime_use = tile_data->duplicate();
 						tile_data_runtime_use->set_allow_transform(true);
 						r_cell_data.runtime_tile_data_cache = tile_data_runtime_use;
 
@@ -1559,13 +1559,13 @@ RBSet<TerrainConstraint> LayeredTileMapLayer::_get_terrain_constraints_from_pain
 		// Count the number of occurrences per terrain.
 		HashMap<Vector2i, LayeredTileSet::CellNeighbor> overlapping_terrain_bits = E_constraint.get_overlapping_coords_and_peering_bits();
 		for (const KeyValue<Vector2i, LayeredTileSet::CellNeighbor> &E_overlapping : overlapping_terrain_bits) {
-			TileData *neighbor_tile_data = nullptr;
+			LayeredTileData *neighbor_tile_data = nullptr;
 			LayeredTileMapCell neighbor_cell = get_cell(E_overlapping.key);
 			if (neighbor_cell.source_id != LayeredTileSet::INVALID_SOURCE) {
 				Ref<LayeredTileSetSource> source = tile_set->get_source(neighbor_cell.source_id);
 				Ref<LayeredTileSetAtlasSource> atlas_source = source;
 				if (atlas_source.is_valid()) {
-					TileData *tile_data = atlas_source->get_tile_data(neighbor_cell.get_atlas_coords(), neighbor_cell.alternative_tile);
+					LayeredTileData *tile_data = atlas_source->get_tile_data(neighbor_cell.get_atlas_coords(), neighbor_cell.alternative_tile);
 					if (tile_data && tile_data->get_terrain_set() == p_terrain_set) {
 						neighbor_tile_data = tile_data;
 					}
@@ -1601,7 +1601,7 @@ RBSet<TerrainConstraint> LayeredTileMapLayer::_get_terrain_constraints_from_pain
 
 	// Add the centers as constraints.
 	for (Vector2i E_coords : p_painted) {
-		TileData *tile_data = nullptr;
+		LayeredTileData *tile_data = nullptr;
 		LayeredTileMapCell cell = get_cell(E_coords);
 		if (cell.source_id != LayeredTileSet::INVALID_SOURCE) {
 			Ref<LayeredTileSetSource> source = tile_set->get_source(cell.source_id);
@@ -1658,7 +1658,7 @@ void LayeredTileMapLayer::_deferred_internal_update() {
 }
 
 void LayeredTileMapLayer::_internal_update() {
-	// Find TileData that need a runtime modification.
+	// Find LayeredTileData that need a runtime modification.
 	// This may add cells to the dirty list if a runtime modification has been notified.
 	_build_runtime_update_tile_data();
 
@@ -1818,7 +1818,7 @@ HashMap<Vector2i, LayeredTileSet::TerrainsPattern> LayeredTileMapLayer::terrain_
 			LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 			if (atlas_source) {
 				// Get tile data.
-				TileData *tile_data = atlas_source->get_tile_data(cell.get_atlas_coords(), cell.alternative_tile);
+				LayeredTileData *tile_data = atlas_source->get_tile_data(cell.get_atlas_coords(), cell.alternative_tile);
 				if (tile_data && tile_data->get_terrain_set() == p_terrain_set) {
 					current_pattern = tile_data->get_terrains_pattern();
 				}
@@ -1880,7 +1880,7 @@ HashMap<Vector2i, LayeredTileSet::TerrainsPattern> LayeredTileMapLayer::terrain_
 			connect = true;
 		} else {
 			// Get the center bit of the cell.
-			TileData *tile_data = nullptr;
+			LayeredTileData *tile_data = nullptr;
 			LayeredTileMapCell cell = get_cell(coords);
 			if (cell.source_id != LayeredTileSet::INVALID_SOURCE) {
 				Ref<LayeredTileSetSource> source = tile_set->get_source(cell.source_id);
@@ -2318,7 +2318,7 @@ int LayeredTileMapLayer::get_cell_alternative_tile(const Vector2i &p_coords, boo
 	return E->value.cell.alternative_tile;
 }
 
-TileData *LayeredTileMapLayer::get_cell_tile_data(const Vector2i &p_coords, bool p_use_proxies) const {
+LayeredTileData *LayeredTileMapLayer::get_cell_tile_data(const Vector2i &p_coords, bool p_use_proxies) const {
 	int source_id = get_cell_source_id(p_coords, p_use_proxies);
 	if (source_id == LayeredTileSet::INVALID_SOURCE) {
 		return nullptr;
@@ -2433,7 +2433,7 @@ void LayeredTileMapLayer::set_cells_terrain_connect(PoolVector2iArray p_cells, i
 				LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 				if (atlas_source) {
 					// Get tile data.
-					TileData *tile_data = atlas_source->get_tile_data(cell.get_atlas_coords(), cell.alternative_tile);
+					LayeredTileData *tile_data = atlas_source->get_tile_data(cell.get_atlas_coords(), cell.alternative_tile);
 					if (tile_data && tile_data->get_terrain_set() == p_terrain_set) {
 						in_map_terrain_pattern = tile_data->get_terrains_pattern();
 					}
@@ -2474,7 +2474,7 @@ void LayeredTileMapLayer::set_cells_terrain_path(PoolVector2iArray p_path, int p
 				LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 				if (atlas_source) {
 					// Get tile data.
-					TileData *tile_data = atlas_source->get_tile_data(cell.get_atlas_coords(), cell.alternative_tile);
+					LayeredTileData *tile_data = atlas_source->get_tile_data(cell.get_atlas_coords(), cell.alternative_tile);
 					if (tile_data && tile_data->get_terrain_set() == p_terrain_set) {
 						in_map_terrain_pattern = tile_data->get_terrains_pattern();
 					}

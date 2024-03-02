@@ -33,7 +33,7 @@
 /*************************************************************************/
 
 #include "layered_tile_set.h"
-#include "scene/2d/tile_map.h"
+#include "layered_tile_map.h"
 
 class LayeredTileSetAtlasSource;
 
@@ -115,8 +115,8 @@ struct CellData {
 	// Scenes.
 	String scene;
 
-	// Runtime TileData cache.
-	TileData *runtime_tile_data_cache = nullptr;
+	// Runtime LayeredTileData cache.
+	LayeredTileData *runtime_tile_data_cache = nullptr;
 
 	// List elements.
 	SelfList<CellData> dirty_list_element;
@@ -164,8 +164,8 @@ struct CellDataYSortedComparator {
 };
 
 #ifdef DEBUG_ENABLED
-class DebugQuadrant : public RefCounted {
-	GDCLASS(DebugQuadrant, RefCounted);
+class DebugQuadrant : public Reference {
+	GDCLASS(DebugQuadrant, Reference);
 
 public:
 	Vector2i quadrant_coords;
@@ -184,8 +184,8 @@ public:
 };
 #endif // DEBUG_ENABLED
 
-class RenderingQuadrant : public RefCounted {
-	GDCLASS(RenderingQuadrant, RefCounted);
+class RenderingQuadrant : public Reference {
+	GDCLASS(RenderingQuadrant, Reference);
 
 public:
 	struct CoordsWorldComparator {
@@ -393,7 +393,7 @@ public:
 	int get_cell_source_id(const Vector2i &p_coords, bool p_use_proxies = false) const;
 	Vector2i get_cell_atlas_coords(const Vector2i &p_coords, bool p_use_proxies = false) const;
 	int get_cell_alternative_tile(const Vector2i &p_coords, bool p_use_proxies = false) const;
-	TileData *get_cell_tile_data(const Vector2i &p_coords, bool p_use_proxies = false) const; // Helper method to make accessing the data easier.
+	LayeredTileData *get_cell_tile_data(const Vector2i &p_coords, bool p_use_proxies = false) const; // Helper method to make accessing the data easier.
 	void clear();
 
 	// Patterns.
@@ -445,9 +445,9 @@ public:
 	// Helper.
 	Ref<LayeredTileSet> get_effective_tile_set() const;
 
-	// Virtual function to modify the TileData at runtime.
+	// Virtual function to modify the LayeredTileData at runtime.
 	GDVIRTUAL1R(bool, _use_tile_data_runtime_update, Vector2i);
-	GDVIRTUAL2(_tile_data_runtime_update, Vector2i, TileData *);
+	GDVIRTUAL2(_tile_data_runtime_update, Vector2i, LayeredTileData *);
 	// ---
 
 	LayeredTileMapLayer();

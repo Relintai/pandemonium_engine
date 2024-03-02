@@ -33,7 +33,7 @@
 
 #include "core/core_string_names.h"
 #include "layered_tile_map_layer.h"
-#include "scene/resources/2d/tile_set.h"
+#include "layered_tile_set.h"
 
 #ifdef TOOLS_ENABLED
 

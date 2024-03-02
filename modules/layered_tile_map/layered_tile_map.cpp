@@ -33,8 +33,8 @@
 #include "layered_tile_map.compat.inc"
 
 #include "core/core_string_names.h"
-#include "scene/2d/tile_map_layer.h"
-#include "scene/gui/control.h"
+#include "layered_tile_map_layer.h"
+#include "scene/main/control.h"
 
 #define TILEMAP_CALL_FOR_LAYER(layer, function, ...) \
 	if (layer < 0) {                                 \
@@ -105,7 +105,10 @@ void LayeredTileMap::set_rendering_quadrant_size(int p_size) {
 	ERR_FAIL_COND_MSG(p_size < 1, "LayeredTileMapQuadrant size cannot be smaller than 1.");
 
 	rendering_quadrant_size = p_size;
-	for (LayeredTileMapLayer *layer : layers) {
+
+	for (uint32_t i = 0; i < layers.size(); ++i) {
+		LayeredTileMapLayer *layer = layers[i];
+
 		layer->set_rendering_quadrant_size(p_size);
 	}
 	_emit_changed();
@@ -115,7 +118,7 @@ int LayeredTileMap::get_rendering_quadrant_size() const {
 	return rendering_quadrant_size;
 }
 
-void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<LayeredTileSet> p_tile_set, int p_atlas_source_id, const Vector2i &p_atlas_coords, int p_alternative_tile, int p_frame, Color p_modulation, const TileData *p_tile_data_override, real_t p_normalized_animation_offset) {
+void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<LayeredTileSet> p_tile_set, int p_atlas_source_id, const Vector2i &p_atlas_coords, int p_alternative_tile, int p_frame, Color p_modulation, const LayeredTileData *p_tile_data_override, real_t p_normalized_animation_offset) {
 	ERR_FAIL_COND(!p_tile_set.is_valid());
 	ERR_FAIL_COND(!p_tile_set->has_source(p_atlas_source_id));
 	ERR_FAIL_COND(!p_tile_set->get_source(p_atlas_source_id)->has_tile(p_atlas_coords));
@@ -141,7 +144,7 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 		}
 
 		// Get tile data.
-		const TileData *tile_data = p_tile_data_override ? p_tile_data_override : atlas_source->get_tile_data(p_atlas_coords, p_alternative_tile);
+		const LayeredTileData *tile_data = p_tile_data_override ? p_tile_data_override : atlas_source->get_tile_data(p_atlas_coords, p_alternative_tile);
 
 		// Get the tile modulation.
 		Color modulate = tile_data->get_modulate() * p_modulation;
@@ -173,10 +176,10 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 		// Draw the tile.
 		if (p_frame >= 0) {
 			Rect2i source_rect = atlas_source->get_runtime_tile_texture_region(p_atlas_coords, p_frame);
-			tex->draw_rect_region(p_canvas_item, dest_rect, source_rect, modulate, transpose, p_tile_set->is_uv_clipping());
+			tex->draw_rect_region(p_canvas_item, dest_rect, source_rect, modulate, transpose, Ref<Texture>(), p_tile_set->is_uv_clipping());
 		} else if (atlas_source->get_tile_animation_frames_count(p_atlas_coords) == 1) {
 			Rect2i source_rect = atlas_source->get_runtime_tile_texture_region(p_atlas_coords, 0);
-			tex->draw_rect_region(p_canvas_item, dest_rect, source_rect, modulate, transpose, p_tile_set->is_uv_clipping());
+			tex->draw_rect_region(p_canvas_item, dest_rect, source_rect, modulate, transpose, Ref<Texture>(), p_tile_set->is_uv_clipping());
 		} else {
 			real_t speed = atlas_source->get_tile_animation_speed(p_atlas_coords);
 			real_t animation_duration = atlas_source->get_tile_animation_total_duration(p_atlas_coords) / speed;
@@ -191,7 +194,7 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 				RenderingServer::get_singleton()->canvas_item_add_animation_slice(p_canvas_item, animation_duration, slice_start, slice_end, animation_offset);
 
 				Rect2i source_rect = atlas_source->get_runtime_tile_texture_region(p_atlas_coords, frame);
-				tex->draw_rect_region(p_canvas_item, dest_rect, source_rect, modulate, transpose, p_tile_set->is_uv_clipping());
+				tex->draw_rect_region(p_canvas_item, dest_rect, source_rect, modulate, transpose, Ref<Texture>(), p_tile_set->is_uv_clipping());
 
 				time_unscaled += frame_duration_unscaled;
 			}
@@ -406,7 +409,7 @@ int LayeredTileMap::get_cell_alternative_tile(int p_layer, const Vector2i &p_coo
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE, get_cell_alternative_tile, p_coords, p_use_proxies);
 }
 
-TileData *LayeredTileMap::get_cell_tile_data(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
+LayeredTileData *LayeredTileMap::get_cell_tile_data(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, nullptr, get_cell_tile_data, p_coords, p_use_proxies);
 }
 
@@ -832,8 +835,8 @@ PoolVector2iArray LayeredTileMap::get_surrounding_cells(const Vector2i &p_coords
 	return tile_set->get_surrounding_cells(p_coords);
 }
 
-PackedStringArray LayeredTileMap::get_configuration_warnings() const {
-	PackedStringArray warnings = Node::get_configuration_warnings();
+PoolStringArray LayeredTileMap::get_configuration_warnings() const {
+	PoolStringArray warnings = Node::get_configuration_warnings();
 
 	// Retrieve the set of Z index values with a Y-sorted layer.
 	RBSet<int> y_sorted_z_index;
