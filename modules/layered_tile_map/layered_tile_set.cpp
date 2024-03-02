@@ -3592,7 +3592,7 @@ void LayeredTileSet::_compatibility_conversion() {
 							compatibility_tilemap_mapping[E->key()][key_array] = value_array;
 							compatibility_tilemap_mapping_tile_modes[E->key()] = COMPATIBILITY_TILE_MODE_ATLAS_TILE;
 
-							TileData *tile_data = atlas_source->get_tile_data(coords, alternative_tile);
+							LayeredTileData *tile_data = atlas_source->get_tile_data(coords, alternative_tile);
 
 							tile_data->set_flip_h(flip_h);
 							tile_data->set_flip_v(flip_v);
@@ -3605,9 +3605,9 @@ void LayeredTileSet::_compatibility_conversion() {
 									add_occlusion_layer();
 								}
 								Ref<OccluderPolygon2D> occluder = ctd->autotile_occluder_map[coords]->duplicate();
-								Vector<Vector2> polygon = ctd->occluder->get_polygon();
+								PoolVector<Vector2> polygon = ctd->occluder->get_polygon();
 								for (int index = 0; index < polygon.size(); index++) {
-									polygon.write[index] = xform.xform(polygon[index] - ctd->region.get_size() / 2.0);
+									polygon.set(index, xform.xform(polygon[index] - ctd->region.get_size() / 2.0));
 								}
 								occluder->set_polygon(polygon);
 								tile_data->set_occluder(0, occluder);
@@ -3617,9 +3617,9 @@ void LayeredTileSet::_compatibility_conversion() {
 									add_navigation_layer();
 								}
 								Ref<NavigationPolygon> navigation = ctd->autotile_navpoly_map[coords]->duplicate();
-								Vector<Vector2> vertices = navigation->get_vertices();
+								PoolVector<Vector2> vertices = navigation->get_vertices();
 								for (int index = 0; index < vertices.size(); index++) {
-									vertices.write[index] = xform.xform(vertices[index] - ctd->region.get_size() / 2.0);
+									vertices.set(index, xform.xform(vertices[index] - ctd->region.get_size() / 2.0));
 								}
 								navigation->set_vertices(vertices);
 								tile_data->set_navigation_polygon(0, navigation);
@@ -3692,18 +3692,21 @@ void LayeredTileSet::_compatibility_conversion() {
 	// Update the LayeredTileSet tile_size according to the most common size found.
 	Vector2i max_size = get_tile_size();
 	int max_count = 0;
-	for (KeyValue<Vector2i, int> kv : compatibility_size_count) {
-		if (kv.value > max_count) {
-			max_size = kv.key;
-			max_count = kv.value;
+
+	for (HashMap<Vector2i, int>::Element *kv = compatibility_size_count.front(); kv; kv = kv->next) {
+		if (kv->value() > max_count) {
+			max_size = kv->key();
+			max_count = kv->value();
 		}
 	}
+
 	set_tile_size(max_size);
 
 	// Reset compatibility data (besides the histogram counts)
 	for (const HashMap<int, CompatibilityTileData *>::Element *E = compatibility_data.front(); E; E = E->next) {
-		memdelete(E.value);
+		memdelete(E->value());
 	}
+
 	compatibility_data = HashMap<int, CompatibilityTileData *>();
 }
 
@@ -3755,12 +3758,13 @@ bool LayeredTileSet::_set(const StringName &p_name, const Variant &p_value) {
 
 		// Get or create the compatibility object
 		CompatibilityTileData *ctd;
-		HashMap<int, CompatibilityTileData *>::Iterator E = compatibility_data.find(id);
+		HashMap<int, CompatibilityTileData *>::Element *E = compatibility_data.find(id);
+
 		if (!E) {
 			ctd = memnew(CompatibilityTileData);
 			compatibility_data.insert(id, ctd);
 		} else {
-			ctd = E->value;
+			ctd = E->value();
 		}
 
 		if (components.size() < 2) {
@@ -4202,7 +4206,8 @@ bool LayeredTileSet::_get(const StringName &p_name, Variant &r_ret) const {
 void LayeredTileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 	PropertyInfo property_info;
 	// Rendering.
-	p_list->push_back(PropertyInfo(Variant::NIL, GNAME("Rendering", ""), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+	p_list->push_back(PropertyInfo(Variant::NIL, "Rendering", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+
 	for (int i = 0; i < occlusion_layers.size(); i++) {
 		p_list->push_back(PropertyInfo(Variant::INT, vformat("occlusion_layer_%d/light_mask", i), PROPERTY_HINT_LAYERS_2D_RENDER));
 
@@ -4215,7 +4220,8 @@ void LayeredTileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 	}
 
 	// Physics.
-	p_list->push_back(PropertyInfo(Variant::NIL, GNAME("Physics", ""), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+	p_list->push_back(PropertyInfo(Variant::NIL, "Physics", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+
 	for (int i = 0; i < physics_layers.size(); i++) {
 		p_list->push_back(PropertyInfo(Variant::INT, vformat("physics_layer_%d/collision_layer", i), PROPERTY_HINT_LAYERS_2D_PHYSICS));
 
@@ -4235,7 +4241,8 @@ void LayeredTileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 	}
 
 	// Terrains.
-	p_list->push_back(PropertyInfo(Variant::NIL, GNAME("Terrains", ""), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+	p_list->push_back(PropertyInfo(Variant::NIL, "Terrains", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+
 	for (int terrain_set_index = 0; terrain_set_index < terrain_sets.size(); terrain_set_index++) {
 		p_list->push_back(PropertyInfo(Variant::INT, vformat("terrain_set_%d/mode", terrain_set_index), PROPERTY_HINT_ENUM, "Match Corners and Sides,Match Corners,Match Sides"));
 		p_list->push_back(PropertyInfo(Variant::NIL, vformat("terrain_set_%d/terrains", terrain_set_index), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_ARRAY, vformat("terrain_set_%d/terrain_", terrain_set_index)));
@@ -4246,7 +4253,8 @@ void LayeredTileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 	}
 
 	// Navigation.
-	p_list->push_back(PropertyInfo(Variant::NIL, GNAME("Navigation", ""), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+	p_list->push_back(PropertyInfo(Variant::NIL, "Navigation", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+
 	for (int i = 0; i < navigation_layers.size(); i++) {
 		p_list->push_back(PropertyInfo(Variant::INT, vformat("navigation_layer_%d/layers", i), PROPERTY_HINT_LAYERS_2D_NAVIGATION));
 	}
@@ -4256,7 +4264,8 @@ void LayeredTileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 	for (int i = 1; i < Variant::VARIANT_MAX; i++) {
 		argt += "," + Variant::get_type_name(Variant::Type(i));
 	}
-	p_list->push_back(PropertyInfo(Variant::NIL, GNAME("Custom Data", ""), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+	p_list->push_back(PropertyInfo(Variant::NIL, "Custom Data", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+
 	for (int i = 0; i < custom_data_layers.size(); i++) {
 		p_list->push_back(PropertyInfo(Variant::STRING, vformat("custom_data_layer_%d/name", i)));
 		p_list->push_back(PropertyInfo(Variant::INT, vformat("custom_data_layer_%d/type", i), PROPERTY_HINT_ENUM, argt));
@@ -4264,20 +4273,22 @@ void LayeredTileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 
 	// Sources.
 	// Note: sources have to be listed in at the end as some TileData rely on the LayeredTileSet properties being initialized first.
-	for (const KeyValue<int, Ref<LayeredTileSetSource>> &E_source : sources) {
-		p_list->push_back(PropertyInfo(Variant::OBJECT, vformat("sources/%d", E_source.key), PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileSetAtlasSource", PROPERTY_USAGE_NO_EDITOR | PROPERTY_USAGE_ALWAYS_DUPLICATE));
+
+	for (const HashMap<int, Ref<LayeredTileSetSource>>::Element *E_source = sources.front(); E_source; E_source = E_source->next) {
+		p_list->push_back(PropertyInfo(Variant::OBJECT, vformat("sources/%d", E_source->key()), PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileSetAtlasSource", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE));
 	}
 
 	// Tile Proxies.
 	// Note: proxies need to be set after sources are set.
-	p_list->push_back(PropertyInfo(Variant::NIL, GNAME("Tile Proxies", ""), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
-	p_list->push_back(PropertyInfo(Variant::ARRAY, PNAME("tile_proxies/source_level"), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR));
-	p_list->push_back(PropertyInfo(Variant::ARRAY, PNAME("tile_proxies/coords_level"), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR));
-	p_list->push_back(PropertyInfo(Variant::ARRAY, PNAME("tile_proxies/alternative_level"), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR));
+	p_list->push_back(PropertyInfo(Variant::NIL, "Tile Proxies", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+
+	p_list->push_back(PropertyInfo(Variant::ARRAY, "tile_proxies/source_level", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
+	p_list->push_back(PropertyInfo(Variant::ARRAY, "tile_proxies/coords_level", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
+	p_list->push_back(PropertyInfo(Variant::ARRAY, "tile_proxies/alternative_level", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 
 	// Patterns.
 	for (unsigned int pattern_index = 0; pattern_index < patterns.size(); pattern_index++) {
-		p_list->push_back(PropertyInfo(Variant::OBJECT, vformat("pattern_%d", pattern_index), PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileMapPattern", PROPERTY_USAGE_NO_EDITOR));
+		p_list->push_back(PropertyInfo(Variant::OBJECT, vformat("pattern_%d", pattern_index), PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileMapPattern", PROPERTY_USAGE_NOEDITOR));
 	}
 }
 
@@ -4464,7 +4475,7 @@ LayeredTileSet::LayeredTileSet() {
 LayeredTileSet::~LayeredTileSet() {
 #ifndef DISABLE_DEPRECATED
 	for (const HashMap<int, CompatibilityTileData *>::Element *E = compatibility_data.front(); E; E = E->next) {
-		memdelete(E.value);
+		memdelete(E->value());
 	}
 #endif // DISABLE_DEPRECATED
 	while (!source_ids.empty()) {
@@ -4928,42 +4939,42 @@ void LayeredTileSetAtlasSource::_get_property_list(List<PropertyInfo> *p_list) c
 		List<PropertyInfo> tile_property_list;
 
 		// size_in_atlas
-		property_info = PropertyInfo(Variant::VECTOR2I, "size_in_atlas", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR);
+		property_info = PropertyInfo(Variant::VECTOR2I, "size_in_atlas", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR);
 		if (E_tile.value.size_in_atlas == Vector2i(1, 1)) {
 			property_info.usage ^= PROPERTY_USAGE_STORAGE;
 		}
 		tile_property_list.push_back(property_info);
 
 		// next_alternative_id
-		property_info = PropertyInfo(Variant::INT, "next_alternative_id", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR);
+		property_info = PropertyInfo(Variant::INT, "next_alternative_id", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR);
 		if (E_tile.value.next_alternative_id == 1) {
 			property_info.usage ^= PROPERTY_USAGE_STORAGE;
 		}
 		tile_property_list.push_back(property_info);
 
 		// animation_columns.
-		property_info = PropertyInfo(Variant::INT, "animation_columns", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR);
+		property_info = PropertyInfo(Variant::INT, "animation_columns", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR);
 		if (E_tile.value.animation_columns == 0) {
 			property_info.usage ^= PROPERTY_USAGE_STORAGE;
 		}
 		tile_property_list.push_back(property_info);
 
 		// animation_separation.
-		property_info = PropertyInfo(Variant::INT, "animation_separation", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR);
+		property_info = PropertyInfo(Variant::INT, "animation_separation", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR);
 		if (E_tile.value.animation_separation == Vector2i()) {
 			property_info.usage ^= PROPERTY_USAGE_STORAGE;
 		}
 		tile_property_list.push_back(property_info);
 
 		// animation_speed.
-		property_info = PropertyInfo(Variant::REAL, "animation_speed", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR);
+		property_info = PropertyInfo(Variant::REAL, "animation_speed", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR);
 		if (E_tile.value.animation_speed == 1.0) {
 			property_info.usage ^= PROPERTY_USAGE_STORAGE;
 		}
 		tile_property_list.push_back(property_info);
 
 		// animation_mode.
-		property_info = PropertyInfo(Variant::INT, "animation_mode", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR);
+		property_info = PropertyInfo(Variant::INT, "animation_mode", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR);
 		if (E_tile.value.animation_mode == TILE_ANIMATION_MODE_DEFAULT) {
 			property_info.usage ^= PROPERTY_USAGE_STORAGE;
 		}
@@ -4975,7 +4986,7 @@ void LayeredTileSetAtlasSource::_get_property_list(List<PropertyInfo> *p_list) c
 		// animation_frame_*.
 		bool store_durations = tiles[E_tile.key].animation_frames_durations.size() >= 2;
 		for (int i = 0; i < (int)tiles[E_tile.key].animation_frames_durations.size(); i++) {
-			property_info = PropertyInfo(Variant::REAL, vformat("animation_frame_%d/duration", i), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR);
+			property_info = PropertyInfo(Variant::REAL, vformat("animation_frame_%d/duration", i), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR);
 			if (!store_durations) {
 				property_info.usage ^= PROPERTY_USAGE_STORAGE;
 			}
@@ -4984,7 +4995,7 @@ void LayeredTileSetAtlasSource::_get_property_list(List<PropertyInfo> *p_list) c
 
 		for (const KeyValue<int, TileData *> &E_alternative : E_tile.value.alternatives) {
 			// Add a dummy property to show the alternative exists.
-			tile_property_list.push_back(PropertyInfo(Variant::INT, vformat("%d", E_alternative.key), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR));
+			tile_property_list.push_back(PropertyInfo(Variant::INT, vformat("%d", E_alternative.key), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 
 			// Get the alternative tile's properties and append them to the list of properties.
 			List<PropertyInfo> alternative_property_list;
@@ -5493,11 +5504,11 @@ void LayeredTileSetAtlasSource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_use_texture_padding", "use_texture_padding"), &LayeredTileSetAtlasSource::set_use_texture_padding);
 	ClassDB::bind_method(D_METHOD("get_use_texture_padding"), &LayeredTileSetAtlasSource::get_use_texture_padding);
 
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture2D", PROPERTY_USAGE_NO_EDITOR), "set_texture", "get_texture");
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "margins", PROPERTY_HINT_NONE, "suffix:px", PROPERTY_USAGE_NO_EDITOR), "set_margins", "get_margins");
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "separation", PROPERTY_HINT_NONE, "suffix:px", PROPERTY_USAGE_NO_EDITOR), "set_separation", "get_separation");
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "texture_region_size", PROPERTY_HINT_NONE, "suffix:px", PROPERTY_USAGE_NO_EDITOR), "set_texture_region_size", "get_texture_region_size");
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_texture_padding", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR), "set_use_texture_padding", "get_use_texture_padding");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture2D", PROPERTY_USAGE_NOEDITOR), "set_texture", "get_texture");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "margins", PROPERTY_HINT_NONE, "suffix:px", PROPERTY_USAGE_NOEDITOR), "set_margins", "get_margins");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "separation", PROPERTY_HINT_NONE, "suffix:px", PROPERTY_USAGE_NOEDITOR), "set_separation", "get_separation");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "texture_region_size", PROPERTY_HINT_NONE, "suffix:px", PROPERTY_USAGE_NOEDITOR), "set_texture_region_size", "get_texture_region_size");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_texture_padding", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR), "set_use_texture_padding", "get_use_texture_padding");
 
 	// Base tiles
 	ClassDB::bind_method(D_METHOD("create_tile", "atlas_coords", "size"), &LayeredTileSetAtlasSource::create_tile, DEFVAL(Vector2i(1, 1)));

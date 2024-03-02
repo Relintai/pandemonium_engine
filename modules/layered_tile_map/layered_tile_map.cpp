@@ -701,7 +701,7 @@ bool LayeredTileMap::_get(const StringName &p_name, Variant &r_ret) const {
 }
 
 void LayeredTileMap::_get_property_list(List<PropertyInfo> *p_list) const {
-	p_list->push_back(PropertyInfo(Variant::INT, "format", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR | PROPERTY_USAGE_INTERNAL));
+	p_list->push_back(PropertyInfo(Variant::INT, "format", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 	p_list->push_back(PropertyInfo(Variant::NIL, "Layers", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
 
 #define MAKE_LAYER_PROPERTY(m_type, m_name, m_hint)                                                                                                                                                      \
@@ -718,7 +718,7 @@ void LayeredTileMap::_get_property_list(List<PropertyInfo> *p_list) const {
 		MAKE_LAYER_PROPERTY(Variant::INT, "y_sort_origin", "suffix:px");
 		MAKE_LAYER_PROPERTY(Variant::INT, "z_index", "");
 		MAKE_LAYER_PROPERTY(Variant::BOOL, "navigation_enabled", "");
-		p_list->push_back(PropertyInfo(Variant::OBJECT, vformat("layer_%d/tile_data", i), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR));
+		p_list->push_back(PropertyInfo(Variant::OBJECT, vformat("layer_%d/tile_data", i), PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 	}
 
 #undef MAKE_LAYER_PROPERTY
