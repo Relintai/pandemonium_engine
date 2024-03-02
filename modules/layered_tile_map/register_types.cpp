@@ -31,21 +31,28 @@
 
 #include "register_types.h"
 
-#include "geometry_parser/tilemap_navigation_geometry_parser_2d.h"
+#include "geometry_parser/layered_tilemap_navigation_geometry_parser_2d.h"
 #include "servers/navigation/navigation_mesh_generator.h"
 
-#include "tile_map.h"
-#include "tile_set.h"
+#include "layered_tile_map_layer_group.h"
+#include "layered_tile_map_layer.h"
+#include "layered_tile_map.h"
+#include "layered_tile_set.h"
 
 #ifdef TOOLS_ENABLED
-#include "tile_map_editor_plugin.h"
-#include "tile_set_editor_plugin.h"
+#include "editor/layered_tiles_editor_plugin.h"
 #endif
 
 void register_tile_map_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
+		ClassDB::register_class<LayeredTileData>();
 		ClassDB::register_class<LayeredTileMap>();
+		ClassDB::register_class<LayeredTileMapLayerGroup>();
+		ClassDB::register_class<LayeredTileMapPattern>();
 		ClassDB::register_class<LayeredTileSet>();
+		ClassDB::register_class<LayeredTileSetAtlasSource>();
+		ClassDB::register_class<LayeredTileSetScenesCollectionSource>();
+		ClassDB::register_class<LayeredTileSetSource>();
 
 		NavigationMeshGenerator::get_singleton()->register_geometry_parser_2d(memnew(LayeredTileMap2DNavigationGeometryParser2D));
 	}
