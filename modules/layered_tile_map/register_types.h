@@ -1,5 +1,5 @@
-#ifndef TILE_MAP_REGISTER_TYPES_H
-#define TILE_MAP_REGISTER_TYPES_H
+#ifndef LAYERED_TILE_MAP_REGISTER_TYPES_H
+#define LAYERED_TILE_MAP_REGISTER_TYPES_H
 
 /*************************************************************************/
 /*  register_types.h                                                     */
