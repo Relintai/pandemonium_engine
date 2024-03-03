@@ -91,16 +91,6 @@ protected:
 	void _notification(int p_what);
 	static void _bind_methods();
 
-#ifndef DISABLE_DEPRECATED
-	Rect2i _get_used_rect_bind_compat_78328();
-	void _set_quadrant_size_compat_81070(int p_quadrant_size);
-	int _get_quadrant_size_compat_81070() const;
-	VisibilityMode _get_collision_visibility_mode_bind_compat_87115();
-	VisibilityMode _get_navigation_visibility_mode_bind_compat_87115();
-
-	static void _bind_compatibility_methods();
-#endif
-
 public:
 #ifdef TOOLS_ENABLED
 	virtual Rect2 _edit_get_rect() const;
@@ -190,8 +180,6 @@ public:
 	// Override some methods of the CanvasItem class to pass the changes to the quadrants CanvasItems.
 	virtual void set_light_mask(int p_light_mask);
 	virtual void set_self_modulate(const Color &p_self_modulate);
-	virtual void set_texture_filter(CanvasItem::TextureFilter p_texture_filter);
-	virtual void set_texture_repeat(CanvasItem::TextureRepeat p_texture_repeat);
 
 	// For finding tiles from collision.
 	Vector2i get_coords_for_body_rid(RID p_physics_body);
@@ -213,11 +201,14 @@ public:
 	PoolVector2iArray get_surrounding_cells(const Vector2i &p_coords);
 
 	// Virtual function to modify the LayeredTileData at runtime.
-	GDVIRTUAL2R(bool, _use_tile_data_runtime_update, int, Vector2i);
-	GDVIRTUAL3(_tile_data_runtime_update, int, Vector2i, LayeredTileData *);
+	bool use_tile_data_runtime_update(const int p_layer, const Vector2i &p_pos);
+	void tile_data_runtime_update(const int p_layer, const Vector2i &p_pos, LayeredTileData *p_tile_data);
+
+	virtual bool _use_tile_data_runtime_update(const int p_layer, const Vector2i &p_pos);
+	virtual void _tile_data_runtime_update(const int p_layer, const Vector2i &p_pos, LayeredTileData *p_tile_data);
 
 	// Configuration warnings.
-	PoolStringArray get_configuration_warnings() const;
+	String get_configuration_warning() const;
 
 	LayeredTileMap();
 	~LayeredTileMap();

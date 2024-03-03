@@ -58,7 +58,7 @@ void LayeredTileMapLayerGroup::_tile_set_changed() {
 		}
 	}
 
-	update_configuration_warnings();
+	update_configuration_warning();
 }
 
 #ifdef TOOLS_ENABLED

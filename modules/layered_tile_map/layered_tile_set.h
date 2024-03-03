@@ -530,7 +530,7 @@ public:
 
 	// Helpers
 	Vector<Vector2> get_tile_shape_polygon() const;
-	void draw_tile_shape(CanvasItem *p_canvas_item, Transform2D p_transform, Color p_color, bool p_filled = false, Ref<Texture> p_texture = Ref<Texture>());
+	void draw_tile_shape(CanvasItem *p_canvas_item, Transform2D p_transform, Color p_color, bool p_filled = false, Ref<Texture> p_texture = Ref<Texture>(), Ref<Texture> p_normal_texture = Ref<Texture>());
 
 	// Used by LayeredTileMap/LayeredTileMapLayer
 	Vector2 map_to_local(const Vector2i &p_pos) const;
@@ -638,6 +638,7 @@ private:
 	};
 
 	Ref<Texture> texture;
+	Ref<Texture> normal_texture;
 	Vector2i margins;
 	Vector2i separation;
 	Size2i texture_region_size = Size2i(16, 16);
@@ -656,6 +657,7 @@ private:
 
 	bool use_texture_padding = true;
 	Ref<Texture> padded_texture;
+	Ref<Texture> padded_normal_texture;
 	bool padded_texture_needs_update = false;
 	void _queue_update_padded_texture();
 	Ref<ImageTexture> _create_padded_image_texture(const Ref<Texture> &p_source);
@@ -751,7 +753,7 @@ public:
 	virtual int get_alternative_tile_id(const Vector2i p_atlas_coords, int p_index) const;
 
 	// Get data associated to a tile.
-	TileData *get_tile_data(const Vector2i p_atlas_coords, int p_alternative_tile) const;
+	LayeredTileData *get_tile_data(const Vector2i p_atlas_coords, int p_alternative_tile) const;
 
 	// Helpers.
 	Vector2i get_atlas_grid_size() const;
@@ -875,13 +877,6 @@ protected:
 	bool _get(const StringName &p_name, Variant &r_ret) const;
 	void _get_property_list(List<PropertyInfo> *p_list) const;
 	static void _bind_methods();
-
-#ifndef DISABLE_DEPRECATED
-	Ref<NavigationPolygon> _get_navigation_polygon_bind_compat_84660(int p_layer_id) const;
-	Ref<OccluderPolygon2D> _get_occluder_bind_compat_84660(int p_layer_id) const;
-
-	static void _bind_compatibility_methods();
-#endif
 
 public:
 	// Not exposed.

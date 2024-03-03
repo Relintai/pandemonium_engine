@@ -34,6 +34,7 @@
 
 #include "layered_tile_set.h"
 #include "layered_tile_map.h"
+#include "scene/2d/y_sort.h"
 
 class LayeredTileSetAtlasSource;
 
@@ -215,8 +216,8 @@ public:
 	}
 };
 
-class LayeredTileMapLayer : public Node2D {
-	GDCLASS(LayeredTileMapLayer, Node2D);
+class LayeredTileMapLayer : public YSort {
+	GDCLASS(LayeredTileMapLayer, YSort);
 
 public:
 	enum VisibilityMode {

@@ -2559,7 +2559,7 @@ void LayeredTileMapLayer::set_enabled(bool p_enabled) {
 	emit_signal(CoreStringNames::get_singleton()->changed);
 
 	if (tile_map_node) {
-		tile_map_node->update_configuration_warnings();
+		tile_map_node->update_configuration_warning();
 	}
 }
 
@@ -2587,7 +2587,7 @@ void LayeredTileMapLayer::set_y_sort_enabled(bool p_y_sort_enabled) {
 	emit_signal(CoreStringNames::get_singleton()->changed);
 
 	if (tile_map_node) {
-		tile_map_node->update_configuration_warnings();
+		tile_map_node->update_configuration_warning();
 	}
 	_update_notify_local_transform();
 }
@@ -2616,7 +2616,7 @@ void LayeredTileMapLayer::set_z_index(int p_z_index) {
 	emit_signal(CoreStringNames::get_singleton()->changed);
 
 	if (tile_map_node) {
-		tile_map_node->update_configuration_warnings();
+		tile_map_node->update_configuration_warning();
 	}
 }
 

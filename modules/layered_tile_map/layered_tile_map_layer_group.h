@@ -32,12 +32,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/main/node_2d.h"
+#include "scene/2d/y_sort.h"
 
 class LayeredTileSet;
 
-class LayeredTileMapLayerGroup : public Node2D {
-	GDCLASS(LayeredTileMapLayerGroup, Node2D);
+class LayeredTileMapLayerGroup : public YSort {
+	GDCLASS(LayeredTileMapLayerGroup, YSort);
 
 private:
 	mutable Vector<StringName> selected_layers;
