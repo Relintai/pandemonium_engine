@@ -419,8 +419,6 @@ public:
 	int get_y_sort_origin() const;
 	virtual void set_z_index(int p_z_index);
 	virtual void set_light_mask(int p_light_mask);
-	virtual void set_texture_filter(CanvasItem::TextureFilter p_texture_filter);
-	virtual void set_texture_repeat(CanvasItem::TextureRepeat p_texture_repeat);
 	void set_rendering_quadrant_size(int p_size);
 	int get_rendering_quadrant_size() const;
 
@@ -447,8 +445,9 @@ public:
 	Ref<LayeredTileSet> get_effective_tile_set() const;
 
 	// Virtual function to modify the LayeredTileData at runtime.
-	GDVIRTUAL1R(bool, _use_tile_data_runtime_update, Vector2i);
-	GDVIRTUAL2(_tile_data_runtime_update, Vector2i, LayeredTileData *);
+	bool use_tile_data_runtime_update(const Vector2i &p_coords);
+	void tile_data_runtime_update(const Vector2i &p_coords, LayeredTileData *p_tile_data);
+
 	// ---
 
 	LayeredTileMapLayer();

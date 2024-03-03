@@ -892,17 +892,11 @@ PoolVector2iArray LayeredTileMap::get_surrounding_cells(const Vector2i &p_coords
 	return tile_set->get_surrounding_cells(p_coords);
 }
 
-bool LayeredTileMap::use_tile_data_runtime_update(const int p_layer, const Vector2i &p_pos) {
-	return call("_use_tile_data_runtime_update", p_layer, p_pos);
+bool LayeredTileMap::use_tile_data_runtime_update(const int p_layer, const Vector2i &p_coords) {
+	return call("_use_tile_data_runtime_update", p_layer, p_coords);
 }
-void LayeredTileMap::tile_data_runtime_update(const int p_layer, const Vector2i &p_pos, LayeredTileData *p_tile_data) {
-	call("_tile_data_runtime_update", p_layer, p_pos, p_tile_data);
-}
-
-bool LayeredTileMap::_use_tile_data_runtime_update(const int p_layer, const Vector2i &p_pos) {
-	return false;
-}
-void LayeredTileMap::_tile_data_runtime_update(const int p_layer, const Vector2i &p_pos, LayeredTileData *p_tile_data) {
+void LayeredTileMap::tile_data_runtime_update(const int p_layer, const Vector2i &p_coords, LayeredTileData *p_tile_data) {
+	call("_tile_data_runtime_update", p_layer, p_coords, p_tile_data);
 }
 
 String LayeredTileMap::get_configuration_warning() const {
@@ -1052,18 +1046,15 @@ void LayeredTileMap::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_use_tile_data_runtime_update",
 			PropertyInfo(Variant::INT, "layer"),
-			PropertyInfo(Variant::VECTOR2I, "pos")));
+			PropertyInfo(Variant::VECTOR2I, "coords")));
 
 	BIND_VMETHOD(MethodInfo("_tile_data_runtime_update",
 			PropertyInfo(Variant::INT, "layer"),
-			PropertyInfo(Variant::VECTOR2I, "pos"),
+			PropertyInfo(Variant::VECTOR2I, "coords"),
 			PropertyInfo(Variant::OBJECT, "tile_data", PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileData")));
 
-	ClassDB::bind_method(D_METHOD("use_tile_data_runtime_update", "layer", "pos"), &LayeredTileMap::use_tile_data_runtime_update);
-	ClassDB::bind_method(D_METHOD("tile_data_runtime_update", "layer", "pos", "tile_data"), &LayeredTileMap::tile_data_runtime_update);
-
-	ClassDB::bind_method(D_METHOD("_use_tile_data_runtime_update", "layer", "pos"), &LayeredTileMap::_use_tile_data_runtime_update);
-	ClassDB::bind_method(D_METHOD("_tile_data_runtime_update", "layer", "pos", "tile_data"), &LayeredTileMap::_tile_data_runtime_update);
+	ClassDB::bind_method(D_METHOD("use_tile_data_runtime_update", "layer", "coords"), &LayeredTileMap::use_tile_data_runtime_update);
+	ClassDB::bind_method(D_METHOD("tile_data_runtime_update", "layer", "coords", "tile_data"), &LayeredTileMap::tile_data_runtime_update);
 
 	ClassDB::bind_method(D_METHOD("_emit_changed"), &LayeredTileMap::_emit_changed);
 

@@ -201,11 +201,8 @@ public:
 	PoolVector2iArray get_surrounding_cells(const Vector2i &p_coords);
 
 	// Virtual function to modify the LayeredTileData at runtime.
-	bool use_tile_data_runtime_update(const int p_layer, const Vector2i &p_pos);
-	void tile_data_runtime_update(const int p_layer, const Vector2i &p_pos, LayeredTileData *p_tile_data);
-
-	virtual bool _use_tile_data_runtime_update(const int p_layer, const Vector2i &p_pos);
-	virtual void _tile_data_runtime_update(const int p_layer, const Vector2i &p_pos, LayeredTileData *p_tile_data);
+	bool use_tile_data_runtime_update(const int p_layer, const Vector2i &p_coords);
+	void tile_data_runtime_update(const int p_layer, const Vector2i &p_coords, LayeredTileData *p_tile_data);
 
 	// Configuration warnings.
 	String get_configuration_warning() const;

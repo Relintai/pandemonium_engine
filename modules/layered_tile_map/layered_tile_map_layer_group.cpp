@@ -112,6 +112,8 @@ void LayeredTileMapLayerGroup::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_tileset"), &LayeredTileMapLayerGroup::get_tileset);
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tile_set", PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileSet"), "set_tileset", "get_tileset");
+
+	ClassDB::bind_method(D_METHOD("_tile_set_changed"), &LayeredTileMapLayerGroup::_tile_set_changed);
 }
 
 void LayeredTileMapLayerGroup::set_tileset(const Ref<LayeredTileSet> &p_tileset) {
@@ -121,13 +123,13 @@ void LayeredTileMapLayerGroup::set_tileset(const Ref<LayeredTileSet> &p_tileset)
 
 	// Set the tileset, registering to its changes.
 	if (tile_set.is_valid()) {
-		tile_set->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileMapLayerGroup::_tile_set_changed));
+		tile_set->disconnect(CoreStringNames::get_singleton()->changed, this, "_tile_set_changed");
 	}
 
 	tile_set = p_tileset;
 
 	if (tile_set.is_valid()) {
-		tile_set->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileMapLayerGroup::_tile_set_changed));
+		tile_set->connect(CoreStringNames::get_singleton()->changed, this, "_tile_set_changed");
 	}
 
 	for (int i = 0; i < get_child_count(); i++) {
@@ -144,6 +146,6 @@ Ref<LayeredTileSet> LayeredTileMapLayerGroup::get_tileset() const {
 
 LayeredTileMapLayerGroup::~LayeredTileMapLayerGroup() {
 	if (tile_set.is_valid()) {
-		tile_set->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileMapLayerGroup::_tile_set_changed));
+		tile_set->disconnect(CoreStringNames::get_singleton()->changed, this, "_tile_set_changed");
 	}
 }
