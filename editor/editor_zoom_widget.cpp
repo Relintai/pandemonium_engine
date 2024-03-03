@@ -73,10 +73,48 @@ float EditorZoomWidget::get_zoom() {
 }
 
 void EditorZoomWidget::set_zoom(float p_zoom) {
-	if (p_zoom > 0 && p_zoom != zoom) {
-		zoom = p_zoom;
-		_update_zoom_label();
+	if (zoom_limits_enabled) {
+		float new_zoom = CLAMP(p_zoom, min_zoom, max_zoom);
+
+		if (new_zoom != zoom) {
+			zoom = new_zoom;
+			_update_zoom_label();
+		}
+	} else {
+		if (p_zoom > 0 && p_zoom != zoom) {
+			zoom = p_zoom;
+			_update_zoom_label();
+		}
 	}
+}
+
+float EditorZoomWidget::get_min_zoom() {
+	return min_zoom;
+}
+
+float EditorZoomWidget::get_max_zoom() {
+	return max_zoom;
+}
+
+void EditorZoomWidget::setup_zoom_limits(float p_min, float p_max) {
+	ERR_FAIL_COND(p_min < 0 || p_min > p_max);
+
+	zoom_limits_enabled = true;
+
+	min_zoom = p_min;
+	max_zoom = p_max;
+
+	if (zoom > max_zoom) {
+		set_zoom(max_zoom);
+		emit_signal("zoom_changed", zoom);
+	} else if (zoom < min_zoom) {
+		set_zoom(min_zoom);
+		emit_signal("zoom_changed", zoom);
+	}
+}
+
+void EditorZoomWidget::set_enable_zoom_limits(bool p_enabled) {
+	zoom_limits_enabled = p_enabled;
 }
 
 void EditorZoomWidget::set_zoom_by_increments(int p_increment_count, bool p_integer_only) {
@@ -168,6 +206,12 @@ void EditorZoomWidget::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("zoom_changed", PropertyInfo(Variant::REAL, "zoom")));
 }
 
+void EditorZoomWidget::set_shortcut_context(Node *p_node) const {
+	zoom_minus->set_shortcut_context(p_node);
+	zoom_plus->set_shortcut_context(p_node);
+	zoom_reset->set_shortcut_context(p_node);
+}
+
 EditorZoomWidget::EditorZoomWidget() {
 	// Zoom buttons
 	zoom_minus = memnew(Button);
@@ -175,7 +219,7 @@ EditorZoomWidget::EditorZoomWidget() {
 	add_child(zoom_minus);
 	zoom_minus->connect("pressed", this, "_button_zoom_minus");
 	zoom_minus->set_shortcut(ED_SHORTCUT("canvas_item_editor/zoom_minus", TTR("Zoom Out"), KEY_MASK_CMD | KEY_MINUS));
-	//zoom_minus->set_shortcut_context(this);
+	zoom_minus->set_shortcut_context(this);
 	zoom_minus->set_focus_mode(FOCUS_NONE);
 
 	zoom_reset = memnew(Button);
@@ -186,7 +230,7 @@ EditorZoomWidget::EditorZoomWidget() {
 	zoom_reset->add_theme_color_override("font_color", Color(1, 1, 1));
 	zoom_reset->connect("pressed", this, "_button_zoom_reset");
 	zoom_reset->set_shortcut(ED_SHORTCUT("canvas_item_editor/zoom_reset", TTR("Zoom Reset"), KEY_MASK_CMD | KEY_0));
-	//zoom_reset->set_shortcut_context(this);
+	zoom_reset->set_shortcut_context(this);
 	zoom_reset->set_focus_mode(FOCUS_NONE);
 	zoom_reset->set_text_align(Button::ALIGN_CENTER);
 
@@ -198,7 +242,7 @@ EditorZoomWidget::EditorZoomWidget() {
 	add_child(zoom_plus);
 	zoom_plus->connect("pressed", this, "_button_zoom_plus");
 	zoom_plus->set_shortcut(ED_SHORTCUT("canvas_item_editor/zoom_plus", TTR("Zoom In"), KEY_MASK_CMD | KEY_EQUAL)); // Usually direct access key for PLUS
-	//zoom_plus->set_shortcut_context(this);
+	zoom_plus->set_shortcut_context(this);
 	zoom_plus->set_focus_mode(FOCUS_NONE);
 
 	_update_zoom_label();
