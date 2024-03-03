@@ -103,6 +103,11 @@ public:
 	Variant min() const;
 	Variant max() const;
 
+	bool operator<(const Array &p_array) const;
+	bool operator<=(const Array &p_array) const;
+	bool operator>(const Array &p_array) const;
+	bool operator>=(const Array &p_array) const;
+
 	const void *id() const;
 
 	Array(const Array &p_from);
