@@ -41,6 +41,8 @@
 #include "scene/resources/texture.h"
 #include "servers/navigation_2d_server.h"
 
+#include "core/object/method_bind_ext.gen.inc"
+
 /////////////////////////////// LayeredTileMapPattern //////////////////////////////////////
 
 void LayeredTileMapPattern::_set_tile_data(const Vector<int> &p_data) {
@@ -408,7 +410,7 @@ void LayeredTileSet::_update_terrains_cache() {
 		// Organizes tiles into structures.
 		per_terrain_pattern_tiles.resize(terrain_sets.size());
 
-		for (int i = 0; i < per_terrain_pattern_tiles.size(); ++i) {
+		for (uint32_t i = 0; i < per_terrain_pattern_tiles.size(); ++i) {
 			per_terrain_pattern_tiles[i].clear();
 		}
 
@@ -5734,8 +5736,8 @@ void LayeredTileSetAtlasSource::_update_padded_texture() {
 		padded_texture->disconnect(CoreStringNames::get_singleton()->changed, this, "_queue_update_padded_texture");
 	}
 
-	padded_texture = Ref<Texture>();
-	padded_normal_texture = Ref<Texture>();
+	padded_texture.unref();
+	padded_normal_texture.unref();
 
 	if (texture.is_null()) {
 		return;
@@ -5747,14 +5749,10 @@ void LayeredTileSetAtlasSource::_update_padded_texture() {
 
 	if (texture.is_valid()) {
 		padded_texture = _create_padded_image_texture(texture);
-	} else {
-		padded_texture.instance();
 	}
 
 	if (normal_texture.is_valid()) {
 		padded_normal_texture = _create_padded_image_texture(normal_texture);
-	} else {
-		padded_normal_texture.instance();
 	}
 
 	padded_texture->connect(CoreStringNames::get_singleton()->changed, this, "_queue_update_padded_texture");

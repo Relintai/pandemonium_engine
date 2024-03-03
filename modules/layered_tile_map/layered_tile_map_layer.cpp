@@ -1416,8 +1416,6 @@ void LayeredTileMapLayer::_build_runtime_update_tile_data_for_cell(CellData &r_c
 		if (source->has_tile(c.get_atlas_coords()) && source->has_alternative_tile(c.get_atlas_coords(), c.alternative_tile)) {
 			LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 			if (atlas_source) {
-				bool ret = false;
-
 				if (p_use_tilemap_for_runtime) {
 					// Compatibility with LayeredTileMap.
 					if (tile_map_node->use_tile_data_runtime_update(layer_index_in_tile_map_node, r_cell_data.coords)) {
@@ -1783,8 +1781,8 @@ void LayeredTileMapLayer::_bind_methods() {
 			PropertyInfo(Variant::VECTOR2I, "coords"),
 			PropertyInfo(Variant::OBJECT, "tile_data", PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileData")));
 
-	ClassDB::bind_method(D_METHOD("use_tile_data_runtime_update", "coords"), &LayeredTileMapLayer::use_tile_data_runtime_update);
-	ClassDB::bind_method(D_METHOD("tile_data_runtime_update", "coords", "tile_data"), &LayeredTileMapLayer::tile_data_runtime_update);
+	//ClassDB::bind_method(D_METHOD("use_tile_data_runtime_update", "coords"), &LayeredTileMapLayer::use_tile_data_runtime_update);
+	//ClassDB::bind_method(D_METHOD("tile_data_runtime_update", "coords", "tile_data"), &LayeredTileMapLayer::tile_data_runtime_update_bind);
 
 	ClassDB::bind_method(D_METHOD("_deferred_internal_update"), &LayeredTileMapLayer::_deferred_internal_update);
 	ClassDB::bind_method(D_METHOD("_renamed"), &LayeredTileMapLayer::_renamed);

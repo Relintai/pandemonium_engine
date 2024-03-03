@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_atlas_view.h"
+#include "layered_tile_atlas_view.h"
 
 #include "../layered_tile_map.h"
 #include "editor/editor_properties.h"
@@ -54,7 +54,7 @@ private:
 
 protected:
 	Ref<LayeredTileSet> tile_set;
-	TileData *_get_tile_data(LayeredTileMapCell p_cell);
+	LayeredTileData *_get_tile_data(LayeredTileMapCell p_cell);
 	virtual void _tile_set_changed(){};
 
 	static void _bind_methods();

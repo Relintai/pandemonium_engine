@@ -810,7 +810,7 @@ LayeredTileSetEditor::LayeredTileSetEditor() {
 
 	VBoxContainer *main_vb = memnew(VBoxContainer);
 	add_child(main_vb);
-	main_vb->set_anchors_and_offsets_preset(PRESET_FULL_RECT);
+	main_vb->set_anchors_and_margins_preset(PRESET_WIDE);
 
 	// TabBar.
 	tabs_bar = memnew(TabBar);
@@ -844,7 +844,7 @@ LayeredTileSetEditor::LayeredTileSetEditor() {
 	source_sort_button = memnew(MenuButton);
 	source_sort_button->set_flat(false);
 	source_sort_button->set_theme_type_variation("FlatButton");
-	source_sort_button->set_tooltip_text(TTR("Sort Sources"));
+	source_sort_button->set_tooltip(TTR("Sort Sources"));
 
 	PopupMenu *p = source_sort_button->get_popup();
 	p->connect("id_pressed", callable_mp(this, &LayeredTileSetEditor::_set_source_sort));
@@ -912,8 +912,8 @@ LayeredTileSetEditor::LayeredTileSetEditor() {
 	no_source_selected_label->set_text(TTR("No LayeredTileSet source selected. Select or create a LayeredTileSet source.\nYou can create a new source by using the Add button on the left or by dropping a tileset texture onto the source list."));
 	no_source_selected_label->set_h_size_flags(SIZE_EXPAND_FILL);
 	no_source_selected_label->set_v_size_flags(SIZE_EXPAND_FILL);
-	no_source_selected_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
-	no_source_selected_label->set_vertical_alignment(VERTICAL_ALIGNMENT_CENTER);
+	no_source_selected_label->set_align(Label::ALIGN_CENTER);
+	no_source_selected_label->set_valign(Label::VALIGN_CENTER);
 	split_container_right_side->add_child(no_source_selected_label);
 
 	// Atlases editor.
@@ -948,14 +948,14 @@ LayeredTileSetEditor::LayeredTileSetEditor() {
 
 	patterns_help_label = memnew(Label);
 	patterns_help_label->set_text(TTR("Add new patterns in the LayeredTileMap editing mode."));
-	patterns_help_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
-	patterns_help_label->set_anchors_and_offsets_preset(Control::PRESET_CENTER);
+	patterns_help_label->set_align(Label::ALIGN_CENTER);
+	patterns_help_label->set_anchors_and_margins_preset(Control::PRESET_CENTER);
 	patterns_item_list->add_child(patterns_help_label);
 
 	// Expanded editor
 	expanded_area = memnew(PanelContainer);
 	add_child(expanded_area);
-	expanded_area->set_anchors_and_offsets_preset(PRESET_LEFT_WIDE);
+	expanded_area->set_anchors_and_margins_preset(PRESET_LEFT_WIDE);
 	expanded_area->hide();
 
 	// Registers UndoRedo inspector callback.

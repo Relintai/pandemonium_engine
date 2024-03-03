@@ -31,10 +31,13 @@
 
 #include "atlas_merging_dialog.h"
 
-#include "editor/editor_properties_vector.h"
-#include "editor/editor_undo_redo_manager.h"
-#include "editor/gui/editor_file_dialog.h"
-#include "editor/themes/editor_scale.h"
+#include "core/object/undo_redo.h"
+#include "editor/editor_file_dialog.h"
+#include "editor/editor_node.h"
+#include "editor/editor_properties.h"
+#include "editor/editor_scale.h"
+#include "scene/gui/button.h"
+#include "scene/gui/label.h"
 #include "scene/gui/split_container.h"
 #include "scene/main/control.h"
 #include "scene/resources/texture.h"
@@ -48,7 +51,9 @@ void AtlasMergingDialog::_generate_merged(const Vector<Ref<LayeredTileSetAtlasSo
 	merged_mapping.clear();
 
 	if (p_atlas_sources.size() >= 2) {
-		Ref<Image> output_image = Image::create_empty(1, 1, false, Image::FORMAT_RGBA8);
+		Ref<Image> output_image;
+		output_image.instance();
+		output_image->create(1, 1, false, Image::FORMAT_RGBA8);
 
 		// Compute the new texture region size.
 		Vector2i new_texture_region_size;
@@ -62,7 +67,7 @@ void AtlasMergingDialog::_generate_merged(const Vector<Ref<LayeredTileSetAtlasSo
 		int line_height = 0;
 		for (int source_index = 0; source_index < p_atlas_sources.size(); source_index++) {
 			const Ref<LayeredTileSetAtlasSource> &atlas_source = p_atlas_sources[source_index];
-			Ref<Image> input_image = atlas_source->get_texture()->get_image();
+			Ref<Image> input_image = atlas_source->get_texture()->get_data();
 			if (input_image->get_format() != Image::FORMAT_RGBA8) {
 				input_image->convert(Image::FORMAT_RGBA8);
 			}
@@ -107,37 +112,46 @@ void AtlasMergingDialog::_generate_merged(const Vector<Ref<LayeredTileSetAtlasSo
 		}
 
 		merged->set_name(p_atlas_sources[0]->get_name());
-		merged->set_texture(ImageTexture::create_from_image(output_image));
+
+		Ref<ImageTexture> oit;
+		oit.instance();
+		oit->create_from_image(output_image);
+
+		merged->set_texture(oit);
 		merged->set_texture_region_size(new_texture_region_size);
 
 		// Copy the tiles to the merged LayeredTileSetAtlasSource.
 		for (int source_index = 0; source_index < p_atlas_sources.size(); source_index++) {
 			const Ref<LayeredTileSetAtlasSource> &atlas_source = p_atlas_sources[source_index];
-			for (KeyValue<Vector2i, Vector2i> tile_mapping : merged_mapping[source_index]) {
+
+			for (HashMap<Vector2i, Vector2i>::Element *tile_mapping = merged_mapping[source_index].front(); tile_mapping; tile_mapping = tile_mapping->next) {
 				// Create tiles and alternatives, then copy their properties.
-				for (int alternative_index = 0; alternative_index < atlas_source->get_alternative_tiles_count(tile_mapping.key); alternative_index++) {
-					int alternative_id = atlas_source->get_alternative_tile_id(tile_mapping.key, alternative_index);
+				for (int alternative_index = 0; alternative_index < atlas_source->get_alternative_tiles_count(tile_mapping->key()); alternative_index++) {
+					int alternative_id = atlas_source->get_alternative_tile_id(tile_mapping->key(), alternative_index);
 					int changed_id = -1;
 					if (alternative_id == 0) {
-						merged->create_tile(tile_mapping.value, atlas_source->get_tile_size_in_atlas(tile_mapping.key));
-						int count = atlas_source->get_tile_animation_frames_count(tile_mapping.key);
-						merged->set_tile_animation_frames_count(tile_mapping.value, count);
+						merged->create_tile(tile_mapping->value(), atlas_source->get_tile_size_in_atlas(tile_mapping->key()));
+						int count = atlas_source->get_tile_animation_frames_count(tile_mapping->key());
+						merged->set_tile_animation_frames_count(tile_mapping->value(), count);
 						for (int i = 0; i < count; i++) {
-							merged->set_tile_animation_frame_duration(tile_mapping.value, i, atlas_source->get_tile_animation_frame_duration(tile_mapping.key, i));
+							merged->set_tile_animation_frame_duration(tile_mapping->value(), i, atlas_source->get_tile_animation_frame_duration(tile_mapping->key(), i));
 						}
-						merged->set_tile_animation_speed(tile_mapping.value, atlas_source->get_tile_animation_speed(tile_mapping.key));
-						merged->set_tile_animation_mode(tile_mapping.value, atlas_source->get_tile_animation_mode(tile_mapping.key));
+						merged->set_tile_animation_speed(tile_mapping->value(), atlas_source->get_tile_animation_speed(tile_mapping->key()));
+						merged->set_tile_animation_mode(tile_mapping->value(), atlas_source->get_tile_animation_mode(tile_mapping->key()));
 					} else {
-						changed_id = merged->create_alternative_tile(tile_mapping.value, alternative_index);
+						changed_id = merged->create_alternative_tile(tile_mapping->value(), alternative_index);
 					}
 
 					// Copy the properties.
-					TileData *src_tile_data = atlas_source->get_tile_data(tile_mapping.key, alternative_id);
+					LayeredTileData *src_tile_data = atlas_source->get_tile_data(tile_mapping->key(), alternative_id);
 					List<PropertyInfo> properties;
 					src_tile_data->get_property_list(&properties);
 
-					TileData *dst_tile_data = merged->get_tile_data(tile_mapping.value, changed_id == -1 ? alternative_id : changed_id);
-					for (PropertyInfo property : properties) {
+					LayeredTileData *dst_tile_data = merged->get_tile_data(tile_mapping->value(), changed_id == -1 ? alternative_id : changed_id);
+
+					for (List<PropertyInfo>::Element *E = properties.front(); E; E = E->next()) {
+						PropertyInfo &property = E->get();
+
 						if (!(property.usage & PROPERTY_USAGE_STORAGE)) {
 							continue;
 						}
@@ -166,14 +180,14 @@ void AtlasMergingDialog::_update_texture() {
 		preview->set_texture(merged->get_texture());
 		preview->show();
 		select_2_atlases_label->hide();
-		get_ok_button()->set_disabled(false);
+		get_ok()->set_disabled(false);
 		merge_button->set_disabled(false);
 	} else {
 		_generate_merged(Vector<Ref<LayeredTileSetAtlasSource>>(), next_line_after_column);
 		preview->set_texture(Ref<Texture>());
 		preview->hide();
 		select_2_atlases_label->show();
-		get_ok_button()->set_disabled(true);
+		get_ok()->set_disabled(true);
 		merge_button->set_disabled(true);
 	}
 }
@@ -182,14 +196,15 @@ void AtlasMergingDialog::_merge_confirmed(const String &p_path) {
 	ERR_FAIL_COND(!merged.is_valid());
 
 	Ref<ImageTexture> output_image_texture = merged->get_texture();
-	output_image_texture->get_image()->save_png(p_path);
+	output_image_texture->get_data()->save_png(p_path);
 
 	ResourceLoader::import(p_path);
 
 	Ref<Texture> new_texture_resource = ResourceLoader::load(p_path, "Texture2D");
 	merged->set_texture(new_texture_resource);
 
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
+
 	undo_redo->create_action(TTR("Merge LayeredTileSetAtlasSource"));
 	int next_id = tile_set->get_next_source_id();
 	undo_redo->add_do_method(*tile_set, "add_source", merged, next_id);
@@ -223,13 +238,17 @@ void AtlasMergingDialog::_merge_confirmed(const String &p_path) {
 	hide();
 }
 
+void AtlasMergingDialog::_atlases_list_multi_selected(int p_index, bool p_selected) {
+	_update_texture();
+}
+
 void AtlasMergingDialog::ok_pressed() {
 	delete_original_atlases = false;
-	editor_file_dialog->popup_file_dialog();
+	editor_file_dialog->popup_centered_ratio();
 }
 
 void AtlasMergingDialog::cancel_pressed() {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	for (int i = 0; i < commited_actions_count; i++) {
 		undo_redo->undo();
 	}
@@ -239,7 +258,7 @@ void AtlasMergingDialog::cancel_pressed() {
 void AtlasMergingDialog::custom_action(const String &p_action) {
 	if (p_action == "merge") {
 		delete_original_atlases = true;
-		editor_file_dialog->popup_file_dialog();
+		editor_file_dialog->popup_centered_ratio();
 	}
 }
 
@@ -270,6 +289,13 @@ void AtlasMergingDialog::_notification(int p_what) {
 	}
 }
 
+void AtlasMergingDialog::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_property_changed"), &AtlasMergingDialog::_property_changed);
+	ClassDB::bind_method(D_METHOD("_update_texture"), &AtlasMergingDialog::_update_texture);
+	ClassDB::bind_method(D_METHOD("_merge_confirmed"), &AtlasMergingDialog::_merge_confirmed);
+	ClassDB::bind_method(D_METHOD("_atlases_list_multi_selected"), &AtlasMergingDialog::_atlases_list_multi_selected);
+}
+
 void AtlasMergingDialog::update_tile_set(Ref<LayeredTileSet> p_tile_set) {
 	ERR_FAIL_COND(!p_tile_set.is_valid());
 	tile_set = p_tile_set;
@@ -288,7 +314,7 @@ void AtlasMergingDialog::update_tile_set(Ref<LayeredTileSet> p_tile_set) {
 		}
 	}
 
-	get_ok_button()->set_disabled(true);
+	get_ok()->set_disabled(true);
 	merge_button->set_disabled(true);
 
 	commited_actions_count = 0;
@@ -300,8 +326,8 @@ AtlasMergingDialog::AtlasMergingDialog() {
 	set_hide_on_ok(false);
 
 	// Ok buttons
-	set_ok_button_text(TTR("Merge (Keep original Atlases)"));
-	get_ok_button()->set_disabled(true);
+	get_ok()->set_text(TTR("Merge (Keep original Atlases)"));
+	get_ok()->set_disabled(true);
 	merge_button = add_button(TTR("Merge"), true, "merge");
 	merge_button->set_disabled(true);
 
@@ -312,19 +338,16 @@ AtlasMergingDialog::AtlasMergingDialog() {
 
 	// Atlas sources item list.
 	atlas_merging_atlases_list = memnew(ItemList);
-	atlas_merging_atlases_list->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	atlas_merging_atlases_list->set_fixed_icon_size(Size2(60, 60) * EDSCALE);
 	atlas_merging_atlases_list->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	atlas_merging_atlases_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	atlas_merging_atlases_list->set_texture_filter(CanvasItem::TEXTURE_FILTER_NEAREST_WITH_MIPMAPS);
 	atlas_merging_atlases_list->set_custom_minimum_size(Size2(100, 200));
 	atlas_merging_atlases_list->set_select_mode(ItemList::SELECT_MULTI);
-	atlas_merging_atlases_list->connect("multi_selected", callable_mp(this, &AtlasMergingDialog::_update_texture).unbind(2));
+	atlas_merging_atlases_list->connect("multi_selected", this, "_atlases_list_multi_selected");
 	atlas_merging_h_split_container->add_child(atlas_merging_atlases_list);
 
 	VBoxContainer *atlas_merging_right_panel = memnew(VBoxContainer);
 	atlas_merging_right_panel->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-	atlas_merging_right_panel->set_texture_filter(CanvasItem::TEXTURE_FILTER_NEAREST_WITH_MIPMAPS);
 	atlas_merging_h_split_container->add_child(atlas_merging_right_panel);
 
 	// Settings.
@@ -336,7 +359,7 @@ AtlasMergingDialog::AtlasMergingDialog() {
 	columns_editor_property->set_label(TTR("Next Line After Column"));
 	columns_editor_property->set_object_and_property(this, "next_line_after_column");
 	columns_editor_property->update_property();
-	columns_editor_property->connect("property_changed", callable_mp(this, &AtlasMergingDialog::_property_changed));
+	columns_editor_property->connect("property_changed", this, "_property_changed");
 	atlas_merging_right_panel->add_child(columns_editor_property);
 
 	// Preview.
@@ -347,7 +370,7 @@ AtlasMergingDialog::AtlasMergingDialog() {
 	preview = memnew(TextureRect);
 	preview->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	preview->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	preview->set_expand_mode(TextureRect::EXPAND_IGNORE_SIZE);
+	//preview->set_expand_mode(TextureRect::EXPAND_IGNORE_SIZE);
 	preview->hide();
 	preview->set_stretch_mode(TextureRect::STRETCH_KEEP_ASPECT_CENTERED);
 	atlas_merging_right_panel->add_child(preview);
@@ -355,15 +378,15 @@ AtlasMergingDialog::AtlasMergingDialog() {
 	select_2_atlases_label = memnew(Label);
 	select_2_atlases_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	select_2_atlases_label->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	select_2_atlases_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
-	select_2_atlases_label->set_vertical_alignment(VERTICAL_ALIGNMENT_CENTER);
+	select_2_atlases_label->set_align(Label::ALIGN_CENTER);
+	select_2_atlases_label->set_valign(Label::VALIGN_CENTER);
 	select_2_atlases_label->set_text(TTR("Please select two atlases or more."));
 	atlas_merging_right_panel->add_child(select_2_atlases_label);
 
 	// The file dialog to choose the texture path.
 	editor_file_dialog = memnew(EditorFileDialog);
-	editor_file_dialog->set_file_mode(EditorFileDialog::FILE_MODE_SAVE_FILE);
+	editor_file_dialog->set_mode(EditorFileDialog::MODE_SAVE_FILE);
 	editor_file_dialog->add_filter("*.png");
-	editor_file_dialog->connect("file_selected", callable_mp(this, &AtlasMergingDialog::_merge_confirmed));
+	editor_file_dialog->connect("file_selected", this, "_merge_confirmed");
 	add_child(editor_file_dialog);
 }

@@ -68,6 +68,7 @@ private:
 	void _generate_merged(const Vector<Ref<LayeredTileSetAtlasSource>> &p_atlas_sources, int p_max_columns);
 	void _update_texture();
 	void _merge_confirmed(const String &p_path);
+	void _atlases_list_multi_selected(int p_index, bool p_selected);
 
 protected:
 	virtual void ok_pressed();
@@ -78,6 +79,7 @@ protected:
 	bool _get(const StringName &p_name, Variant &r_ret) const;
 
 	void _notification(int p_what);
+	static void _bind_methods();
 
 public:
 	void update_tile_set(Ref<LayeredTileSet> p_tile_set);

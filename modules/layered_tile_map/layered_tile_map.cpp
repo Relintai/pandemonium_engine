@@ -1053,8 +1053,8 @@ void LayeredTileMap::_bind_methods() {
 			PropertyInfo(Variant::VECTOR2I, "coords"),
 			PropertyInfo(Variant::OBJECT, "tile_data", PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileData")));
 
-	ClassDB::bind_method(D_METHOD("use_tile_data_runtime_update", "layer", "coords"), &LayeredTileMap::use_tile_data_runtime_update);
-	ClassDB::bind_method(D_METHOD("tile_data_runtime_update", "layer", "coords", "tile_data"), &LayeredTileMap::tile_data_runtime_update);
+	//ClassDB::bind_method(D_METHOD("use_tile_data_runtime_update", "layer", "coords"), &LayeredTileMap::use_tile_data_runtime_update);
+	//ClassDB::bind_method(D_METHOD("tile_data_runtime_update", "layer", "coords", "tile_data"), &LayeredTileMap::tile_data_runtime_update);
 
 	ClassDB::bind_method(D_METHOD("_emit_changed"), &LayeredTileMap::_emit_changed);
 

@@ -29,13 +29,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_atlas_view.h"
+#include "layered_tile_atlas_view.h"
 
+#include "../layered_tile_map.h"
 #include "core/input/input.h"
 #include "core/os/keyboard.h"
+#include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
-#include "editor/themes/editor_scale.h"
-#include "scene/2d/tile_map.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/panel.h"
@@ -50,13 +50,13 @@ void LayeredTileAtlasView::gui_input(const Ref<InputEvent> &p_event) {
 void LayeredTileAtlasView::_pan_callback(Vector2 p_scroll_vec, Ref<InputEvent> p_event) {
 	panning += p_scroll_vec;
 	_update_zoom_and_panning(true);
-	emit_signal(SNAME("transform_changed"), zoom_widget->get_zoom(), panning);
+	emit_signal("transform_changed", zoom_widget->get_zoom(), panning);
 }
 
 void LayeredTileAtlasView::_zoom_callback(float p_zoom_factor, Vector2 p_origin, Ref<InputEvent> p_event) {
 	zoom_widget->set_zoom(zoom_widget->get_zoom() * p_zoom_factor);
 	_update_zoom_and_panning(true);
-	emit_signal(SNAME("transform_changed"), zoom_widget->get_zoom(), panning);
+	emit_signal("transform_changed", zoom_widget->get_zoom(), panning);
 }
 
 Size2i LayeredTileAtlasView::_compute_base_tiles_control_size() {
@@ -133,7 +133,8 @@ void LayeredTileAtlasView::_update_zoom_and_panning(bool p_zoom_on_mouse_pos) {
 		// Center of panel.
 		panning = panning * zoom / previous_zoom;
 	}
-	button_center_view->set_disabled(panning.is_zero_approx());
+
+	button_center_view->set_disabled(panning.is_equal_approx(Vector2()));
 
 	previous_zoom = zoom;
 
@@ -141,20 +142,20 @@ void LayeredTileAtlasView::_update_zoom_and_panning(bool p_zoom_on_mouse_pos) {
 	center_container->set_size(center_container->get_minimum_size());
 }
 
-void LayeredTileAtlasView::_zoom_widget_changed() {
+void LayeredTileAtlasView::_zoom_widget_changed(float val) {
 	_update_zoom_and_panning();
-	emit_signal(SNAME("transform_changed"), zoom_widget->get_zoom(), panning);
+	emit_signal("transform_changed", zoom_widget->get_zoom(), panning);
 }
 
 void LayeredTileAtlasView::_center_view() {
 	panning = Vector2();
 	button_center_view->set_disabled(true);
 	_update_zoom_and_panning();
-	emit_signal(SNAME("transform_changed"), zoom_widget->get_zoom(), panning);
+	emit_signal("transform_changed", zoom_widget->get_zoom(), panning);
 }
 
 void LayeredTileAtlasView::_base_tiles_root_control_gui_input(const Ref<InputEvent> &p_event) {
-	base_tiles_root_control->set_tooltip_text("");
+	base_tiles_root_control->set_tooltip("");
 
 	Ref<InputEventMouseMotion> mm = p_event;
 	if (mm.is_valid()) {
@@ -163,7 +164,7 @@ void LayeredTileAtlasView::_base_tiles_root_control_gui_input(const Ref<InputEve
 		if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 			coords = tile_set_atlas_source->get_tile_at_coords(coords);
 			if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
-				base_tiles_root_control->set_tooltip_text(vformat(TTR("Source: %d\nAtlas coordinates: %s\nAlternative: 0"), source_id, coords));
+				base_tiles_root_control->set_tooltip(vformat(TTR("Source: %d\nAtlas coordinates: %s\nAlternative: 0"), source_id, coords));
 			}
 		}
 	}
@@ -287,7 +288,7 @@ void LayeredTileAtlasView::_draw_base_tiles() {
 	}
 }
 
-RID LayeredTileAtlasView::_get_canvas_item_to_draw(const TileData *p_for_data, const CanvasItem *p_base_item, HashMap<Ref<Material>, RID> &p_material_map) {
+RID LayeredTileAtlasView::_get_canvas_item_to_draw(const LayeredTileData *p_for_data, const CanvasItem *p_base_item, HashMap<Ref<Material>, RID> &p_material_map) {
 	Ref<Material> mat = p_for_data->get_material();
 	if (mat.is_null()) {
 		return p_base_item->get_canvas_item();
@@ -303,13 +304,13 @@ RID LayeredTileAtlasView::_get_canvas_item_to_draw(const TileData *p_for_data, c
 }
 
 void LayeredTileAtlasView::_clear_material_canvas_items() {
-	for (KeyValue<Ref<Material>, RID> kv : material_tiles_draw) {
-		RS::get_singleton()->free(kv.value);
+	for (HashMap<Ref<Material>, RID>::Element *kv = material_tiles_draw.front(); kv; kv = kv->next) {
+		RS::get_singleton()->free(kv->value());
 	}
 	material_tiles_draw.clear();
 
-	for (KeyValue<Ref<Material>, RID> kv : material_alternatives_draw) {
-		RS::get_singleton()->free(kv.value);
+	for (HashMap<Ref<Material>, RID>::Element *kv = material_alternatives_draw.front(); kv; kv = kv->next) {
+		RS::get_singleton()->free(kv->value());
 	}
 	material_alternatives_draw.clear();
 }
@@ -368,7 +369,7 @@ void LayeredTileAtlasView::_draw_base_tiles_shape_grid() {
 }
 
 void LayeredTileAtlasView::_alternative_tiles_root_control_gui_input(const Ref<InputEvent> &p_event) {
-	alternative_tiles_root_control->set_tooltip_text("");
+	alternative_tiles_root_control->set_tooltip("");
 
 	Ref<InputEventMouseMotion> mm = p_event;
 	if (mm.is_valid()) {
@@ -377,7 +378,7 @@ void LayeredTileAtlasView::_alternative_tiles_root_control_gui_input(const Ref<I
 		Vector2i coords = Vector2i(coords3.x, coords3.y);
 		int alternative_id = coords3.z;
 		if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS && alternative_id != LayeredTileSetSource::INVALID_TILE_ALTERNATIVE) {
-			alternative_tiles_root_control->set_tooltip_text(vformat(TTR("Source: %d\nAtlas coordinates: %s\nAlternative: %d"), source_id, coords, alternative_id));
+			alternative_tiles_root_control->set_tooltip(vformat(TTR("Source: %d\nAtlas coordinates: %s\nAlternative: %d"), source_id, coords, alternative_id));
 		}
 	}
 }
@@ -395,7 +396,7 @@ void LayeredTileAtlasView::_draw_alternatives() {
 			int alternatives_count = tile_set_atlas_source->get_alternative_tiles_count(atlas_coords);
 			for (int j = 1; j < alternatives_count; j++) {
 				int alternative_id = tile_set_atlas_source->get_alternative_tile_id(atlas_coords, j);
-				TileData *tile_data = tile_set_atlas_source->get_tile_data(atlas_coords, alternative_id);
+				LayeredTileData *tile_data = tile_set_atlas_source->get_tile_data(atlas_coords, alternative_id);
 				bool transposed = tile_data->get_transpose();
 
 				// Different materials need to be drawn with different CanvasItems.
@@ -462,12 +463,12 @@ void LayeredTileAtlasView::set_atlas_source(LayeredTileSet *p_tile_set, LayeredT
 	alternative_tiles_drawing_root->set_size(_compute_alternative_tiles_control_size());
 
 	// Update.
-	base_tiles_draw->queue_redraw();
-	base_tiles_texture_grid->queue_redraw();
-	base_tiles_shape_grid->queue_redraw();
-	alternatives_draw->queue_redraw();
-	background_left->queue_redraw();
-	background_right->queue_redraw();
+	base_tiles_draw->update();
+	base_tiles_texture_grid->update();
+	base_tiles_shape_grid->update();
+	alternatives_draw->update();
+	background_left->update();
+	background_right->update();
 }
 
 float LayeredTileAtlasView::get_zoom() const {
@@ -520,7 +521,7 @@ void LayeredTileAtlasView::_update_alternative_tiles_rect_cache() {
 		int line_height = 0;
 		for (int j = 1; j < alternatives_count; j++) {
 			int alternative_id = tile_set_atlas_source->get_alternative_tile_id(tile_id, j);
-			TileData *tile_data = tile_set_atlas_source->get_tile_data(tile_id, alternative_id);
+			LayeredTileData *tile_data = tile_set_atlas_source->get_tile_data(tile_id, alternative_id);
 			bool transposed = tile_data->get_transpose();
 			current.size = transposed ? Vector2i(texture_region_size.y, texture_region_size.x) : texture_region_size;
 
@@ -540,10 +541,10 @@ void LayeredTileAtlasView::_update_alternative_tiles_rect_cache() {
 }
 
 Vector3i LayeredTileAtlasView::get_alternative_tile_at_pos(const Vector2 p_pos) const {
-	for (const KeyValue<Vector2, HashMap<int, Rect2i>> &E_coords : alternative_tiles_rect_cache) {
-		for (const KeyValue<int, Rect2i> &E_alternative : E_coords.value) {
-			if (E_alternative.value.has_point(p_pos)) {
-				return Vector3i(E_coords.key.x, E_coords.key.y, E_alternative.key);
+	for (const HashMap<Vector2, HashMap<int, Rect2i>>::Element *E_coords = alternative_tiles_rect_cache.front(); E_coords; E_coords = E_coords->next) {
+		for (const HashMap<int, Rect2i>::Element *E_alternative = E_coords->value().front(); E_alternative; E_alternative = E_alternative->next) {
+			if (E_alternative->value().has_point(p_pos)) {
+				return Vector3i(E_coords->key().x, E_coords->key().y, E_alternative->key());
 			}
 		}
 	}
@@ -558,79 +559,82 @@ Rect2i LayeredTileAtlasView::get_alternative_tile_rect(const Vector2i p_coords, 
 	return alternative_tiles_rect_cache[p_coords][p_alternative_tile];
 }
 
-void LayeredTileAtlasView::queue_redraw() {
-	base_tiles_draw->queue_redraw();
-	base_tiles_texture_grid->queue_redraw();
-	base_tiles_shape_grid->queue_redraw();
-	alternatives_draw->queue_redraw();
-	background_left->queue_redraw();
-	background_right->queue_redraw();
-}
-
-void LayeredTileAtlasView::_update_theme_item_cache() {
-	Control::_update_theme_item_cache();
-
-	theme_cache.center_view_icon = get_editor_theme_icon(SNAME("CenterView"));
-	theme_cache.checkerboard = get_editor_theme_icon(SNAME("Checkerboard"));
+void LayeredTileAtlasView::update() {
+	base_tiles_draw->update();
+	base_tiles_texture_grid->update();
+	base_tiles_shape_grid->update();
+	alternatives_draw->update();
+	background_left->update();
+	background_right->update();
 }
 
 void LayeredTileAtlasView::_notification(int p_what) {
 	switch (p_what) {
-		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
-			if (!EditorSettings::get_singleton()->check_changed_settings_in_group("editors/panning")) {
-				break;
-			}
-			[[fallthrough]];
-		}
+		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED:
 		case NOTIFICATION_ENTER_TREE: {
 			panner->setup((ViewPanner::ControlScheme)EDITOR_GET("editors/panning/sub_editors_panning_scheme").operator int(), ED_GET_SHORTCUT("canvas_item_editor/pan_view"), bool(EDITOR_GET("editors/panning/simple_panning")));
 		} break;
 
 		case NOTIFICATION_THEME_CHANGED: {
+			theme_cache.center_view_icon = get_theme_icon("CenterView", "EditorIcons");
+			theme_cache.checkerboard = get_theme_icon("Checkerboard", "EditorIcons");
 			button_center_view->set_icon(theme_cache.center_view_icon);
+
 		} break;
 	}
 }
 
 void LayeredTileAtlasView::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("transform_changed", PropertyInfo(Variant::REAL, "zoom"), PropertyInfo(Variant::VECTOR2, "scroll")));
+
+	ClassDB::bind_method(D_METHOD("_zoom_widget_changed"), &LayeredTileAtlasView::_zoom_widget_changed);
+	ClassDB::bind_method(D_METHOD("_center_view"), &LayeredTileAtlasView::_center_view);
+	ClassDB::bind_method(D_METHOD("_zoom_callback"), &LayeredTileAtlasView::_zoom_callback);
+	ClassDB::bind_method(D_METHOD("gui_input"), &LayeredTileAtlasView::gui_input);
+	ClassDB::bind_method(D_METHOD("_base_tiles_root_control_gui_input"), &LayeredTileAtlasView::_base_tiles_root_control_gui_input);
+	ClassDB::bind_method(D_METHOD("_draw_background_left"), &LayeredTileAtlasView::_draw_background_left);
+	ClassDB::bind_method(D_METHOD("_draw_base_tiles"), &LayeredTileAtlasView::_draw_base_tiles);
+	ClassDB::bind_method(D_METHOD("_draw_base_tiles_texture_grid"), &LayeredTileAtlasView::_draw_base_tiles_texture_grid);
+	ClassDB::bind_method(D_METHOD("_draw_base_tiles_shape_grid"), &LayeredTileAtlasView::_draw_base_tiles_shape_grid);
+	ClassDB::bind_method(D_METHOD("_alternative_tiles_root_control_gui_input"), &LayeredTileAtlasView::_alternative_tiles_root_control_gui_input);
+	ClassDB::bind_method(D_METHOD("_draw_background_right"), &LayeredTileAtlasView::_draw_background_right);
+	ClassDB::bind_method(D_METHOD("_draw_alternatives"), &LayeredTileAtlasView::_draw_alternatives);
 }
 
 LayeredTileAtlasView::LayeredTileAtlasView() {
-	set_texture_filter(CanvasItem::TEXTURE_FILTER_NEAREST);
-
 	Panel *panel = memnew(Panel);
 	panel->set_clip_contents(true);
 	panel->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
-	panel->set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
+	panel->set_anchors_and_margins_preset(Control::PRESET_WIDE);
 	panel->set_h_size_flags(SIZE_EXPAND_FILL);
 	panel->set_v_size_flags(SIZE_EXPAND_FILL);
 	add_child(panel);
 
 	zoom_widget = memnew(EditorZoomWidget);
 	add_child(zoom_widget);
-	zoom_widget->set_anchors_and_offsets_preset(Control::PRESET_TOP_LEFT, Control::PRESET_MODE_MINSIZE, 2 * EDSCALE);
-	zoom_widget->connect("zoom_changed", callable_mp(this, &LayeredTileAtlasView::_zoom_widget_changed).unbind(1));
+	zoom_widget->set_anchors_and_margins_preset(Control::PRESET_TOP_LEFT, Control::PRESET_MODE_MINSIZE, 2 * EDSCALE);
+	zoom_widget->connect("zoom_changed", this, "_zoom_widget_changed");
 	zoom_widget->set_shortcut_context(this);
 
 	button_center_view = memnew(Button);
-	button_center_view->set_anchors_and_offsets_preset(Control::PRESET_TOP_RIGHT, Control::PRESET_MODE_MINSIZE, 5);
-	button_center_view->set_grow_direction_preset(Control::PRESET_TOP_RIGHT);
-	button_center_view->connect("pressed", callable_mp(this, &LayeredTileAtlasView::_center_view));
+	button_center_view->set_anchors_and_margins_preset(Control::PRESET_TOP_RIGHT, Control::PRESET_MODE_MINSIZE, 5);
+	//button_center_view->set_grow_direction_preset(Control::PRESET_TOP_RIGHT);
+	button_center_view->connect("pressed", this, "_center_view");
 	button_center_view->set_flat(true);
 	button_center_view->set_disabled(true);
-	button_center_view->set_tooltip_text(TTR("Center View"));
+	button_center_view->set_tooltip(TTR("Center View"));
 	add_child(button_center_view);
 
 	panner.instance();
-	panner->set_callbacks(callable_mp(this, &LayeredTileAtlasView::_pan_callback), callable_mp(this, &LayeredTileAtlasView::_zoom_callback));
+	panner->connect("panned", this, "_pan_callback");
+	panner->connect("zoomed", this, "_zoom_callback");
 	panner->set_enable_rmb(true);
 
 	center_container = memnew(CenterContainer);
 	center_container->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 	center_container->set_anchors_preset(Control::PRESET_CENTER);
-	center_container->connect("gui_input", callable_mp(this, &LayeredTileAtlasView::gui_input));
-	center_container->connect("focus_exited", callable_mp(panner.ptr(), &ViewPanner::release_pan_key));
+	center_container->connect("gui_input", this, "gui_input");
+	center_container->connect("focus_exited", panner.ptr(), "release_pan_key");
 	center_container->set_focus_mode(FOCUS_CLICK);
 	panel->add_child(center_container);
 
@@ -660,74 +664,70 @@ LayeredTileAtlasView::LayeredTileAtlasView() {
 	Label *base_tile_label = memnew(Label);
 	base_tile_label->set_mouse_filter(Control::MOUSE_FILTER_PASS);
 	base_tile_label->set_text(TTR("Base Tiles"));
-	base_tile_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
+	base_tile_label->set_align(Label::ALIGN_CENTER);
 	left_vbox->add_child(base_tile_label);
 
 	base_tiles_root_control = memnew(Control);
 	base_tiles_root_control->set_mouse_filter(Control::MOUSE_FILTER_PASS);
 	base_tiles_root_control->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	base_tiles_root_control->connect("gui_input", callable_mp(this, &LayeredTileAtlasView::_base_tiles_root_control_gui_input));
+	base_tiles_root_control->connect("gui_input", this, "_base_tiles_root_control_gui_input");
 	left_vbox->add_child(base_tiles_root_control);
 
 	background_left = memnew(Control);
 	background_left->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
-	background_left->set_anchors_and_offsets_preset(Control::PRESET_TOP_LEFT);
-	background_left->set_texture_repeat(TextureRepeat::TEXTURE_REPEAT_ENABLED);
-	background_left->connect("draw", callable_mp(this, &LayeredTileAtlasView::_draw_background_left));
+	background_left->set_anchors_and_margins_preset(Control::PRESET_TOP_LEFT);
+	background_left->connect("draw", this, "_draw_background_left");
 	base_tiles_root_control->add_child(background_left);
 
 	base_tiles_drawing_root = memnew(Control);
 	base_tiles_drawing_root->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
-	base_tiles_drawing_root->set_texture_filter(TEXTURE_FILTER_NEAREST);
 	base_tiles_root_control->add_child(base_tiles_drawing_root);
 
 	base_tiles_draw = memnew(Control);
 	base_tiles_draw->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
-	base_tiles_draw->set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
-	base_tiles_draw->connect("draw", callable_mp(this, &LayeredTileAtlasView::_draw_base_tiles));
+	base_tiles_draw->set_anchors_and_margins_preset(Control::PRESET_WIDE);
+	base_tiles_draw->connect("draw", this, "_draw_base_tiles");
 	base_tiles_drawing_root->add_child(base_tiles_draw);
 
 	base_tiles_texture_grid = memnew(Control);
 	base_tiles_texture_grid->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
-	base_tiles_texture_grid->set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
-	base_tiles_texture_grid->connect("draw", callable_mp(this, &LayeredTileAtlasView::_draw_base_tiles_texture_grid));
+	base_tiles_texture_grid->set_anchors_and_margins_preset(Control::PRESET_WIDE);
+	base_tiles_texture_grid->connect("draw", this, "_draw_base_tiles_texture_grid");
 	base_tiles_drawing_root->add_child(base_tiles_texture_grid);
 
 	base_tiles_shape_grid = memnew(Control);
 	base_tiles_shape_grid->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
-	base_tiles_shape_grid->set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
-	base_tiles_shape_grid->connect("draw", callable_mp(this, &LayeredTileAtlasView::_draw_base_tiles_shape_grid));
+	base_tiles_shape_grid->set_anchors_and_margins_preset(Control::PRESET_WIDE);
+	base_tiles_shape_grid->connect("draw", this, "_draw_base_tiles_shape_grid");
 	base_tiles_drawing_root->add_child(base_tiles_shape_grid);
 
 	// Alternative tiles.
 	Label *alternative_tiles_label = memnew(Label);
 	alternative_tiles_label->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 	alternative_tiles_label->set_text(TTR("Alternative Tiles"));
-	alternative_tiles_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
+	alternative_tiles_label->set_align(Label::ALIGN_CENTER);
 	right_vbox->add_child(alternative_tiles_label);
 
 	alternative_tiles_root_control = memnew(Control);
 	alternative_tiles_root_control->set_mouse_filter(Control::MOUSE_FILTER_PASS);
 	alternative_tiles_root_control->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	alternative_tiles_root_control->connect("gui_input", callable_mp(this, &LayeredTileAtlasView::_alternative_tiles_root_control_gui_input));
+	alternative_tiles_root_control->connect("gui_input", this, "_alternative_tiles_root_control_gui_input");
 	right_vbox->add_child(alternative_tiles_root_control);
 
 	background_right = memnew(Control);
 	background_right->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
-	background_right->set_anchors_and_offsets_preset(Control::PRESET_TOP_LEFT);
-	background_right->set_texture_repeat(TextureRepeat::TEXTURE_REPEAT_ENABLED);
-	background_right->connect("draw", callable_mp(this, &LayeredTileAtlasView::_draw_background_right));
+	background_right->set_anchors_and_margins_preset(Control::PRESET_TOP_LEFT);
+	background_right->connect("draw", this, "_draw_background_right");
 	alternative_tiles_root_control->add_child(background_right);
 
 	alternative_tiles_drawing_root = memnew(Control);
 	alternative_tiles_drawing_root->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
-	alternative_tiles_drawing_root->set_texture_filter(TEXTURE_FILTER_NEAREST);
 	alternative_tiles_root_control->add_child(alternative_tiles_drawing_root);
 
 	alternatives_draw = memnew(Control);
 	alternatives_draw->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
-	alternatives_draw->set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
-	alternatives_draw->connect("draw", callable_mp(this, &LayeredTileAtlasView::_draw_alternatives));
+	alternatives_draw->set_anchors_and_margins_preset(Control::PRESET_WIDE);
+	alternatives_draw->connect("draw", this, "_draw_alternatives");
 	alternative_tiles_drawing_root->add_child(alternatives_draw);
 }
 

@@ -33,7 +33,8 @@
 /*************************************************************************/
 
 #include "../layered_tile_set.h"
-#include "editor/gui/editor_zoom_widget.h"
+
+#include "editor/editor_zoom_widget.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/center_container.h"
@@ -61,7 +62,7 @@ private:
 	CenterContainer *center_container = nullptr;
 	Vector2 panning;
 	void _update_zoom_and_panning(bool p_zoom_on_mouse_pos = false);
-	void _zoom_widget_changed();
+	void _zoom_widget_changed(float val);
 	void _center_view();
 	virtual void gui_input(const Ref<InputEvent> &p_event);
 
@@ -93,7 +94,7 @@ private:
 	HashMap<Ref<Material>, RID> material_tiles_draw;
 	HashMap<Ref<Material>, RID> material_alternatives_draw;
 	void _draw_base_tiles();
-	RID _get_canvas_item_to_draw(const TileData *p_for_data, const CanvasItem *p_base_item, HashMap<Ref<Material>, RID> &p_material_map);
+	RID _get_canvas_item_to_draw(const LayeredTileData *p_for_data, const CanvasItem *p_base_item, HashMap<Ref<Material>, RID> &p_material_map);
 	void _clear_material_canvas_items();
 
 	Control *base_tiles_texture_grid = nullptr;
@@ -121,8 +122,6 @@ private:
 	} theme_cache;
 
 protected:
-	virtual void _update_theme_item_cache();
-
 	void _notification(int p_what);
 	static void _bind_methods();
 
@@ -147,7 +146,7 @@ public:
 		} else {
 			base_tiles_root_control->add_child(p_control);
 		}
-		p_control->set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
+		p_control->set_anchors_and_margins_preset(Control::PRESET_WIDE);
 		p_control->set_mouse_filter(Control::MOUSE_FILTER_PASS);
 	};
 
@@ -161,12 +160,12 @@ public:
 		} else {
 			alternative_tiles_root_control->add_child(p_control);
 		}
-		p_control->set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
+		p_control->set_anchors_and_margins_preset(Control::PRESET_WIDE);
 		p_control->set_mouse_filter(Control::MOUSE_FILTER_PASS);
 	};
 
 	// Redraw everything.
-	void queue_redraw();
+	void update();
 
 	LayeredTileAtlasView();
 	~LayeredTileAtlasView();

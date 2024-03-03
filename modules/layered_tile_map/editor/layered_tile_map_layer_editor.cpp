@@ -135,11 +135,11 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_transform_buttons() {
 void LayeredTileMapLayerEditorTilesPlugin::_set_transform_buttons_state(const Vector<Button *> &p_enabled_buttons, const Vector<Button *> &p_disabled_buttons, const String &p_why_disabled) {
 	for (Button *button : p_enabled_buttons) {
 		button->set_disabled(false);
-		button->set_tooltip_text("");
+		button->set_tooltip("");
 	}
 	for (Button *button : p_disabled_buttons) {
 		button->set_disabled(true);
-		button->set_tooltip_text(p_why_disabled);
+		button->set_tooltip(p_why_disabled);
 	}
 }
 
@@ -393,7 +393,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_atlas_view() {
 
 	tile_atlas_view->set_atlas_source(*tile_set, atlas_source, source_id);
 	LayeredTilesEditorUtils::get_singleton()->synchronize_atlas_view(tile_atlas_view);
-	tile_atlas_control->queue_redraw();
+	tile_atlas_control->update();
 }
 
 void LayeredTileMapLayerEditorTilesPlugin::_update_scenes_collection_view() {
@@ -1812,8 +1812,8 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_tileset_selection_from_select
 		}
 	}
 	_update_source_display();
-	tile_atlas_control->queue_redraw();
-	alternative_tiles_control->queue_redraw();
+	tile_atlas_control->update();
+	alternative_tiles_control->update();
 	_update_transform_buttons();
 }
 
@@ -1893,7 +1893,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_tile_atlas_control_mouse_exited() {
 	hovered_tile.source_id = LayeredTileSet::INVALID_SOURCE;
 	hovered_tile.set_atlas_coords(LayeredTileSetSource::INVALID_ATLAS_COORDS);
 	hovered_tile.alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE;
-	tile_atlas_control->queue_redraw();
+	tile_atlas_control->update();
 }
 
 void LayeredTileMapLayerEditorTilesPlugin::_tile_atlas_control_gui_input(const Ref<InputEvent> &p_event) {
@@ -1937,8 +1937,8 @@ void LayeredTileMapLayerEditorTilesPlugin::_tile_atlas_control_gui_input(const R
 
 	Ref<InputEventMouseMotion> mm = p_event;
 	if (mm.is_valid()) {
-		tile_atlas_control->queue_redraw();
-		alternative_tiles_control->queue_redraw();
+		tile_atlas_control->update();
+		alternative_tiles_control->update();
 	}
 
 	Ref<InputEventMouseButton> mb = p_event;
@@ -1998,7 +1998,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_tile_atlas_control_gui_input(const R
 			}
 			tile_set_dragging_selection = false;
 		}
-		tile_atlas_control->queue_redraw();
+		tile_atlas_control->update();
 	}
 }
 
@@ -2051,7 +2051,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_tile_alternatives_control_mouse_exit
 	hovered_tile.source_id = LayeredTileSet::INVALID_SOURCE;
 	hovered_tile.set_atlas_coords(LayeredTileSetSource::INVALID_ATLAS_COORDS);
 	hovered_tile.alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE;
-	alternative_tiles_control->queue_redraw();
+	alternative_tiles_control->update();
 }
 
 void LayeredTileMapLayerEditorTilesPlugin::_tile_alternatives_control_gui_input(const Ref<InputEvent> &p_event) {
@@ -2094,8 +2094,8 @@ void LayeredTileMapLayerEditorTilesPlugin::_tile_alternatives_control_gui_input(
 
 	Ref<InputEventMouseMotion> mm = p_event;
 	if (mm.is_valid()) {
-		tile_atlas_control->queue_redraw();
-		alternative_tiles_control->queue_redraw();
+		tile_atlas_control->update();
+		alternative_tiles_control->update();
 	}
 
 	Ref<InputEventMouseButton> mb = p_event;
@@ -2115,8 +2115,8 @@ void LayeredTileMapLayerEditorTilesPlugin::_tile_alternatives_control_gui_input(
 			}
 			_update_selection_pattern_from_tileset_tiles_selection();
 		}
-		tile_atlas_control->queue_redraw();
-		alternative_tiles_control->queue_redraw();
+		tile_atlas_control->update();
+		alternative_tiles_control->update();
 	}
 }
 
@@ -2215,7 +2215,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	paint_tool_button->set_toggle_mode(true);
 	paint_tool_button->set_button_group(tool_buttons_group);
 	paint_tool_button->set_shortcut(ED_SHORTCUT("tiles_editor/paint_tool", TTR("Paint"), Key::D));
-	paint_tool_button->set_tooltip_text(TTR("Shift: Draw line.") + "\n" + keycode_get_string((Key)KeyModifierMask::CMD_OR_CTRL) + TTR("Shift: Draw rectangle."));
+	paint_tool_button->set_tooltip(TTR("Shift: Draw line.") + "\n" + keycode_get_string((Key)KeyModifierMask::CMD_OR_CTRL) + TTR("Shift: Draw rectangle."));
 	paint_tool_button->connect("pressed", callable_mp(this, &LayeredTileMapLayerEditorTilesPlugin::_update_toolbar));
 	tilemap_tiles_tools_buttons->add_child(paint_tool_button);
 	viewport_shortcut_buttons.push_back(paint_tool_button);
@@ -2262,7 +2262,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	picker_button->set_toggle_mode(true);
 	picker_button->set_shortcut(ED_SHORTCUT("tiles_editor/picker", TTR("Picker"), Key::P));
 	Key key = (OS::get_singleton()->has_feature("macos") || OS::get_singleton()->has_feature("web_macos") || OS::get_singleton()->has_feature("web_ios")) ? Key::META : Key::CTRL;
-	picker_button->set_tooltip_text(vformat(TTR("Alternatively hold %s with other tools to pick tile."), find_keycode_name(key)));
+	picker_button->set_tooltip(vformat(TTR("Alternatively hold %s with other tools to pick tile."), find_keycode_name(key)));
 	picker_button->connect("pressed", callable_mp(CanvasItemEditor::get_singleton(), &CanvasItemEditor::update_viewport));
 	tools_settings->add_child(picker_button);
 	viewport_shortcut_buttons.push_back(picker_button);
@@ -2272,7 +2272,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	erase_button->set_theme_type_variation("FlatButton");
 	erase_button->set_toggle_mode(true);
 	erase_button->set_shortcut(ED_SHORTCUT("tiles_editor/eraser", TTR("Eraser"), Key::E));
-	erase_button->set_tooltip_text(TTR("Alternatively use RMB to erase tiles."));
+	erase_button->set_tooltip(TTR("Alternatively use RMB to erase tiles."));
 	erase_button->connect("pressed", callable_mp(CanvasItemEditor::get_singleton(), &CanvasItemEditor::update_viewport));
 	tools_settings->add_child(erase_button);
 	viewport_shortcut_buttons.push_back(erase_button);
@@ -2325,7 +2325,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	random_tile_toggle = memnew(Button);
 	random_tile_toggle->set_theme_type_variation("FlatButton");
 	random_tile_toggle->set_toggle_mode(true);
-	random_tile_toggle->set_tooltip_text(TTR("Place Random Tile"));
+	random_tile_toggle->set_tooltip(TTR("Place Random Tile"));
 	random_tile_toggle->connect("toggled", callable_mp(this, &LayeredTileMapLayerEditorTilesPlugin::_on_random_tile_checkbox_toggled));
 	tools_settings->add_child(random_tile_toggle);
 
@@ -2333,7 +2333,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	scatter_controls_container = memnew(HBoxContainer);
 
 	scatter_label = memnew(Label);
-	scatter_label->set_tooltip_text(TTR("Modifies the chance of painting nothing instead of a randomly selected tile."));
+	scatter_label->set_tooltip(TTR("Modifies the chance of painting nothing instead of a randomly selected tile."));
 	scatter_label->set_text(TTR("Scattering:"));
 	scatter_controls_container->add_child(scatter_label);
 
@@ -2341,7 +2341,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	scatter_spinbox->set_min(0.0);
 	scatter_spinbox->set_max(1000);
 	scatter_spinbox->set_step(0.001);
-	scatter_spinbox->set_tooltip_text(TTR("Modifies the chance of painting nothing instead of a randomly selected tile."));
+	scatter_spinbox->set_tooltip(TTR("Modifies the chance of painting nothing instead of a randomly selected tile."));
 	scatter_spinbox->get_line_edit()->add_theme_constant_override("minimum_character_width", 4);
 	scatter_spinbox->connect("value_changed", callable_mp(this, &LayeredTileMapLayerEditorTilesPlugin::_on_scattering_spinbox_changed));
 	scatter_controls_container->add_child(scatter_spinbox);
@@ -2367,8 +2367,8 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	missing_source_label->set_text(TTR("This LayeredTileMap's LayeredTileSet has no source configured. Go to the LayeredTileSet bottom panel to add one."));
 	missing_source_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	missing_source_label->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	missing_source_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
-	missing_source_label->set_vertical_alignment(VERTICAL_ALIGNMENT_CENTER);
+	missing_source_label->set_align(Label::ALIGN_CENTER);
+	missing_source_label->set_valign(Label::VALIGN_CENTER);
 	missing_source_label->hide();
 	tiles_bottom_panel->add_child(missing_source_label);
 
@@ -2390,7 +2390,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	source_sort_button = memnew(MenuButton);
 	source_sort_button->set_flat(false);
 	source_sort_button->set_theme_type_variation("FlatMenuButton");
-	source_sort_button->set_tooltip_text(TTR("Sort sources"));
+	source_sort_button->set_tooltip(TTR("Sort sources"));
 
 	PopupMenu *p = source_sort_button->get_popup();
 	p->connect("id_pressed", callable_mp(this, &LayeredTileMapLayerEditorTilesPlugin::_set_source_sort));
@@ -2456,8 +2456,8 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	invalid_source_label->set_text(TTR("Invalid source selected."));
 	invalid_source_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	invalid_source_label->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	invalid_source_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
-	invalid_source_label->set_vertical_alignment(VERTICAL_ALIGNMENT_CENTER);
+	invalid_source_label->set_align(Label::ALIGN_CENTER);
+	invalid_source_label->set_valign(Label::VALIGN_CENTER);
 	invalid_source_label->hide();
 	atlas_sources_split_container->add_child(invalid_source_label);
 
@@ -2483,8 +2483,8 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 
 	patterns_help_label = memnew(Label);
 	patterns_help_label->set_text(TTR("Drag and drop or paste a LayeredTileMap selection here to store a pattern."));
-	patterns_help_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
-	patterns_help_label->set_anchors_and_offsets_preset(Control::PRESET_CENTER);
+	patterns_help_label->set_align(Label::ALIGN_CENTER);
+	patterns_help_label->set_anchors_and_margins_preset(Control::PRESET_CENTER);
 	patterns_item_list->add_child(patterns_help_label);
 
 	// Update.
@@ -3832,7 +3832,7 @@ void LayeredTileMapLayerEditor::_tab_changed(int p_tab_id) {
 	}
 
 	// Graphical update.
-	tabs_data[tabs_bar->get_current_tab()].panel->queue_redraw();
+	tabs_data[tabs_bar->get_current_tab()].panel->update();
 	CanvasItemEditor::get_singleton()->update_viewport();
 }
 
@@ -4214,7 +4214,7 @@ LayeredTileMapLayerEditor::LayeredTileMapLayerEditor() {
 	layers_selection_button = memnew(OptionButton);
 	layers_selection_button->set_custom_minimum_size(Size2(200, 0));
 	layers_selection_button->set_text_overrun_behavior(TextServer::OVERRUN_TRIM_ELLIPSIS);
-	layers_selection_button->set_tooltip_text(TTR("LayeredTileMap Layers"));
+	layers_selection_button->set_tooltip(TTR("LayeredTileMap Layers"));
 	layers_selection_button->connect("item_selected", callable_mp(this, &LayeredTileMapLayerEditor::_layers_selection_item_selected));
 	tile_map_toolbar->add_child(layers_selection_button);
 
@@ -4223,7 +4223,7 @@ LayeredTileMapLayerEditor::LayeredTileMapLayerEditor() {
 	toggle_highlight_selected_layer_button->set_toggle_mode(true);
 	toggle_highlight_selected_layer_button->set_pressed(true);
 	toggle_highlight_selected_layer_button->connect("toggled", callable_mp(this, &LayeredTileMapLayerEditor::_highlight_selected_layer_button_toggled));
-	toggle_highlight_selected_layer_button->set_tooltip_text(TTR("Highlight Selected LayeredTileMap Layer"));
+	toggle_highlight_selected_layer_button->set_tooltip(TTR("Highlight Selected LayeredTileMap Layer"));
 	tile_map_toolbar->add_child(toggle_highlight_selected_layer_button);
 
 	tile_map_toolbar->add_child(memnew(VSeparator));
@@ -4232,7 +4232,7 @@ LayeredTileMapLayerEditor::LayeredTileMapLayerEditor() {
 	toggle_grid_button = memnew(Button);
 	toggle_grid_button->set_theme_type_variation("FlatButton");
 	toggle_grid_button->set_toggle_mode(true);
-	toggle_grid_button->set_tooltip_text(TTR("Toggle grid visibility."));
+	toggle_grid_button->set_tooltip(TTR("Toggle grid visibility."));
 	toggle_grid_button->connect("toggled", callable_mp(this, &LayeredTileMapLayerEditor::_on_grid_toggled));
 	tile_map_toolbar->add_child(toggle_grid_button);
 
@@ -4248,8 +4248,8 @@ LayeredTileMapLayerEditor::LayeredTileMapLayerEditor() {
 	missing_tileset_label->set_text(TTR("The edited LayeredTileMap node has no LayeredTileSet resource.\nCreate or load a LayeredTileSet resource in the Tile Set property in the inspector."));
 	missing_tileset_label->set_h_size_flags(SIZE_EXPAND_FILL);
 	missing_tileset_label->set_v_size_flags(SIZE_EXPAND_FILL);
-	missing_tileset_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
-	missing_tileset_label->set_vertical_alignment(VERTICAL_ALIGNMENT_CENTER);
+	missing_tileset_label->set_align(Label::ALIGN_CENTER);
+	missing_tileset_label->set_valign(Label::VALIGN_CENTER);
 	missing_tileset_label->hide();
 	add_child(missing_tileset_label);
 
