@@ -36,12 +36,12 @@
 #include "editor/editor_inspector.h"
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
-#include "editor/editor_string_names.h"
-#include "editor/editor_undo_redo_manager.h"
-#include "editor/gui/editor_toaster.h"
-#include "editor/plugins/tiles/tile_set_editor.h"
+
+#include "layered_tile_set_editor.h"
 #include "editor/progress_dialog.h"
-#include "editor/themes/editor_scale.h"
+#include "editor/editor_scale.h"
+
+#include "core/object/undo_redo.h"
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
@@ -52,7 +52,7 @@
 #include "scene/main/control.h"
 
 #include "core/core_string_names.h"
-#include "core/math/geometry_2d.h"
+#include "core/math/geometry.h"
 #include "core/os/keyboard.h"
 
 #include "servers/navigation_2d_server.h"
@@ -758,7 +758,7 @@ void LayeredTileSetAtlasSourceEditor::_update_tile_data_editors() {
 
 	if (tile_set->get_physics_layers_count() == 0) {
 		item = tile_data_editors_tree->create_item(group);
-		item->set_icon(0, get_editor_theme_icon("Info"));
+		item->set_icon(0, get_theme_icon("Info"), "EditorIcons");
 		item->set_icon_modulate(0, disabled_color);
 		item->set_text(0, TTR("No physics layers"));
 		item->set_tooltip(0, TTR("Create and customize physics layers in the inspector of the LayeredTileSet resource."));
@@ -786,7 +786,7 @@ void LayeredTileSetAtlasSourceEditor::_update_tile_data_editors() {
 
 	if (tile_set->get_navigation_layers_count() == 0) {
 		item = tile_data_editors_tree->create_item(group);
-		item->set_icon(0, get_editor_theme_icon("Info"));
+		item->set_icon(0, get_theme_icon("Info"), "EditorIcons");
 		item->set_icon_modulate(0, disabled_color);
 		item->set_text(0, TTR("No navigation layers"));
 		item->set_tooltip(0, TTR("Create and customize navigation layers in the inspector of the LayeredTileSet resource."));
@@ -829,7 +829,7 @@ void LayeredTileSetAtlasSourceEditor::_update_tile_data_editors() {
 
 	if (tile_set->get_custom_data_layers_count() == 0) {
 		item = tile_data_editors_tree->create_item(group);
-		item->set_icon(0, get_editor_theme_icon("Info"));
+		item->set_icon(0, get_theme_icon("Info"), "EditorIcons");
 		item->set_icon_modulate(0, disabled_color);
 		item->set_text(0, TTR("No custom data layers"));
 		item->set_tooltip(0, TTR("Create and customize custom data layers in the inspector of the LayeredTileSet resource."));
@@ -998,7 +998,7 @@ void LayeredTileSetAtlasSourceEditor::_update_atlas_view() {
 			// Create and position the button.
 			Button *button = memnew(Button);
 			button->set_flat(true);
-			button->set_icon(get_editor_theme_icon(SNAME("Add")));
+			button->set_icon(get_theme_icon(SNAME("Add"), "EditorIcons"));
 			button->add_theme_style_override("normal", memnew(StyleBoxEmpty));
 			button->add_theme_style_override("hover", memnew(StyleBoxEmpty));
 			button->add_theme_style_override("focus", memnew(StyleBoxEmpty));
@@ -1363,7 +1363,7 @@ void LayeredTileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<In
 }
 
 void LayeredTileSetAtlasSourceEditor::_end_dragging() {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	switch (drag_type) {
 		case DRAG_TYPE_CREATE_TILES:
 			undo_redo->create_action(TTR("Create tiles"));
@@ -1594,7 +1594,7 @@ HashMap<Vector2i, List<const PropertyInfo *>> LayeredTileSetAtlasSourceEditor::_
 }
 
 void LayeredTileSetAtlasSourceEditor::_menu_option(int p_option) {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 
 	switch (p_option) {
 		case TILE_DELETE: {
@@ -2117,14 +2117,14 @@ void LayeredTileSetAtlasSourceEditor::_atlas_source_proxy_object_changed(const S
 }
 
 void LayeredTileSetAtlasSourceEditor::_undo_redo_inspector_callback(Object *p_undo_redo, Object *p_edited, const String &p_property, const Variant &p_new_value) {
-	EditorUndoRedoManager *undo_redo_man = Object::cast_to<EditorUndoRedoManager>(p_undo_redo);
-	ERR_FAIL_NULL(undo_redo_man);
+	UndoRedo *undo_redo = Object::cast_to<UndoRedo>(p_undo_redo);
+	ERR_FAIL_NULL(undo_redo);
 
-#define ADD_UNDO(obj, property) undo_redo_man->add_undo_property(obj, property, obj->get(property));
+#define ADD_UNDO(obj, property) undo_redo->add_undo_property(obj, property, obj->get(property));
 
 	LayeredAtlasTileProxyObject *tile_data_proxy = Object::cast_to<LayeredAtlasTileProxyObject>(p_edited);
 	if (tile_data_proxy) {
-		UndoRedo *internal_undo_redo = undo_redo_man->get_history_for_object(tile_data_proxy).undo_redo;
+		UndoRedo *internal_undo_redo = undo_redo->get_history_for_object(tile_data_proxy).undo_redo;
 		internal_undo_redo->start_force_keep_in_merge_ends();
 
 		Vector<String> components = String(p_property).split("/", true, 2);
@@ -2269,7 +2269,7 @@ void LayeredTileSetAtlasSourceEditor::_cleanup_outside_tiles() {
 	HashMap<Vector2i, List<const PropertyInfo *>> per_tile = _group_properties_per_tiles(list, tile_set_atlas_source);
 	Vector<Vector2i> tiles_outside = tile_set_atlas_source->get_tiles_outside_texture();
 
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->create_action(TTR("Remove Tiles Outside the Texture"));
 
 	undo_redo->add_do_method(tile_set_atlas_source, "clear_tiles_outside_texture");
@@ -2301,7 +2301,7 @@ void LayeredTileSetAtlasSourceEditor::_auto_create_tiles() {
 				Vector2i separation = atlas_source->get_separation();
 				Vector2i texture_region_size = atlas_source->get_texture_region_size();
 				Size2i grid_size = atlas_source->get_atlas_grid_size();
-				EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+				UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 				undo_redo->create_action(TTR("Create tiles in non-transparent texture regions"));
 				for (int y = 0; y < grid_size.y; y++) {
 					for (int x = 0; x < grid_size.x; x++) {
@@ -2355,7 +2355,7 @@ void LayeredTileSetAtlasSourceEditor::_auto_remove_tiles() {
 		Vector2i texture_region_size = tile_set_atlas_source->get_texture_region_size();
 		Vector2i grid_size = tile_set_atlas_source->get_atlas_grid_size();
 
-		EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+		UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 		undo_redo->create_action(TTR("Remove tiles in fully transparent texture regions"));
 
 		List<PropertyInfo> list;
@@ -2438,16 +2438,16 @@ void LayeredTileSetAtlasSourceEditor::_notification(int p_what) {
 		} break;
 
 		case NOTIFICATION_THEME_CHANGED: {
-			tool_setup_atlas_source_button->set_icon(get_editor_theme_icon(SNAME("Tools")));
-			tool_select_button->set_icon(get_editor_theme_icon(SNAME("ToolSelect")));
-			tool_paint_button->set_icon(get_editor_theme_icon(SNAME("Paint")));
+			tool_setup_atlas_source_button->set_icon(get_theme_icon(SNAME("Tools"), "EditorIcons"));
+			tool_select_button->set_icon(get_theme_icon(SNAME("ToolSelect"), "EditorIcons"));
+			tool_paint_button->set_icon(get_theme_icon(SNAME("Paint"), "EditorIcons"));
 
-			tools_settings_erase_button->set_icon(get_editor_theme_icon(SNAME("Eraser")));
-			tool_advanced_menu_button->set_icon(get_editor_theme_icon(SNAME("GuiTabMenuHl")));
-			outside_tiles_warning->set_texture(get_editor_theme_icon(SNAME("StatusWarning")));
+			tools_settings_erase_button->set_icon(get_theme_icon(SNAME("Eraser"), "EditorIcons"));
+			tool_advanced_menu_button->set_icon(get_theme_icon(SNAME("GuiTabMenuHl"), "EditorIcons"));
+			outside_tiles_warning->set_texture(get_theme_icon(SNAME("StatusWarning"), "EditorIcons"));
 
-			resize_handle = get_editor_theme_icon(SNAME("EditorHandle"));
-			resize_handle_disabled = get_editor_theme_icon(SNAME("EditorHandleDisabled"));
+			resize_handle = get_theme_icon(SNAME("EditorHandle"), "EditorIcons");
+			resize_handle_disabled = get_theme_icon(SNAME("EditorHandleDisabled"), "EditorIcons");
 		} break;
 
 		case NOTIFICATION_INTERNAL_PROCESS: {

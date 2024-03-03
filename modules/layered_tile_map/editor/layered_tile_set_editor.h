@@ -37,7 +37,8 @@
 #include "layered_tile_proxies_manager_dialog.h"
 #include "layered_tile_set_atlas_source_editor.h"
 #include "layered_tile_set_scenes_collection_source_editor.h"
-#include "scene/gui/tab_bar.h"
+
+#include "scene/gui/tabs.h"
 
 class AcceptDialog;
 class SpinBox;
@@ -58,9 +59,9 @@ private:
 	bool tile_set_changed_needs_update = false;
 	HSplitContainer *split_container = nullptr;
 
-	// TabBar.
+	// Tabs.
 	HBoxContainer *tile_set_toolbar = nullptr;
-	TabBar *tabs_bar = nullptr;
+	Tabs *tabs_bar = nullptr;
 
 	// Tiles.
 	Label *no_source_selected_label = nullptr;

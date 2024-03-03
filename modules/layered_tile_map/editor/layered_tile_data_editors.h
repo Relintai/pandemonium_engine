@@ -42,7 +42,6 @@
 class Label;
 class MenuButton;
 class SpinBox;
-class EditorUndoRedoManager;
 
 class LayeredTileDataEditor : public VBoxContainer {
 	GDCLASS(LayeredTileDataEditor, VBoxContainer);
@@ -115,7 +114,7 @@ private:
 	int drag_polygon_index = 0;
 	int drag_point_index = 0;
 	Vector2 drag_last_pos;
-	PoolVector2Array drag_old_polygon;
+	Vector<Point2> drag_old_polygon;
 
 	HBoxContainer *toolbar = nullptr;
 	Ref<ButtonGroup> tools_button_group;

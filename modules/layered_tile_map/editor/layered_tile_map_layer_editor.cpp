@@ -35,10 +35,11 @@
 
 #include "editor/editor_node.h"
 #include "editor/editor_resource_preview.h"
+#include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
-#include "editor/editor_undo_redo_manager.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
-#include "editor/themes/editor_scale.h"
+
+#include "core/object/undo_redo.h"
 
 #include "../layered_tile_map_layer.h"
 #include "scene/2d/camera_2d.h"
@@ -209,7 +210,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_tile_set_sources_list() {
 		// Scene collection source.
 		LayeredTileSetScenesCollectionSource *scene_collection_source = Object::cast_to<LayeredTileSetScenesCollectionSource>(source);
 		if (scene_collection_source) {
-			texture = tiles_bottom_panel->get_editor_theme_icon(SNAME("PackedScene"));
+			texture = tiles_bottom_panel->get_theme_icon(SNAME("PackedScene"), "EditorIcons");
 			if (item_text.empty()) {
 				if (scene_collection_source->get_scene_tiles_count() > 0) {
 					item_text = vformat(TTR("Scene Collection Source (ID: %d)"), source_id);
@@ -311,7 +312,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_patterns_item_list_gui_input(const R
 	if (ED_IS_SHORTCUT("tiles_editor/paste", p_event) && p_event->is_pressed() && !p_event->is_echo()) {
 		select_last_pattern = true;
 		int new_pattern_index = tile_set->get_patterns_count();
-		EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+		UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 		undo_redo->create_action(TTR("Add LayeredTileSet pattern"));
 		undo_redo->add_do_method(*tile_set, "add_pattern", tile_map_clipboard, new_pattern_index);
 		undo_redo->add_undo_method(*tile_set, "remove_pattern", new_pattern_index);
@@ -321,7 +322,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_patterns_item_list_gui_input(const R
 
 	if (ED_IS_SHORTCUT("tiles_editor/delete", p_event) && p_event->is_pressed() && !p_event->is_echo()) {
 		Vector<int> selected = patterns_item_list->get_selected_items();
-		EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+		UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 		undo_redo->create_action(TTR("Remove LayeredTileSet patterns"));
 		for (int i = 0; i < selected.size(); i++) {
 			int pattern_index = selected[i];
@@ -427,7 +428,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_scenes_collection_view() {
 			Variant udata = i;
 			EditorResourcePreview::get_singleton()->queue_edited_resource_preview(scene, this, "_scene_thumbnail_done", udata);
 		} else {
-			item_index = scene_tiles_list->add_item(TTR("Tile with Invalid Scene"), tiles_bottom_panel->get_editor_theme_icon(SNAME("PackedScene")));
+			item_index = scene_tiles_list->add_item(TTR("Tile with Invalid Scene"), tiles_bottom_panel->get_theme_icon(SNAME("PackedScene"), "EditorIcons"));
 		}
 		scene_tiles_list->set_item_metadata(item_index, scene_id);
 
@@ -503,23 +504,23 @@ void LayeredTileMapLayerEditorTilesPlugin::_scenes_list_lmb_empty_clicked(const 
 }
 
 void LayeredTileMapLayerEditorTilesPlugin::_update_theme() {
-	source_sort_button->set_icon(tiles_bottom_panel->get_editor_theme_icon(SNAME("Sort")));
-	select_tool_button->set_icon(tiles_bottom_panel->get_editor_theme_icon(SNAME("ToolSelect")));
-	paint_tool_button->set_icon(tiles_bottom_panel->get_editor_theme_icon(SNAME("Edit")));
-	line_tool_button->set_icon(tiles_bottom_panel->get_editor_theme_icon(SNAME("Line")));
-	rect_tool_button->set_icon(tiles_bottom_panel->get_editor_theme_icon(SNAME("Rectangle")));
-	bucket_tool_button->set_icon(tiles_bottom_panel->get_editor_theme_icon(SNAME("Bucket")));
+	source_sort_button->set_icon(tiles_bottom_panel->get_theme_icon(SNAME("Sort"), "EditorIcons"));
+	select_tool_button->set_icon(tiles_bottom_panel->get_theme_icon(SNAME("ToolSelect"), "EditorIcons"));
+	paint_tool_button->set_icon(tiles_bottom_panel->get_theme_icon(SNAME("Edit"), "EditorIcons"));
+	line_tool_button->set_icon(tiles_bottom_panel->get_theme_icon(SNAME("Line"), "EditorIcons"));
+	rect_tool_button->set_icon(tiles_bottom_panel->get_theme_icon(SNAME("Rectangle"), "EditorIcons"));
+	bucket_tool_button->set_icon(tiles_bottom_panel->get_theme_icon(SNAME("Bucket"), "EditorIcons"));
 
-	picker_button->set_icon(tiles_bottom_panel->get_editor_theme_icon(SNAME("ColorPick")));
-	erase_button->set_icon(tiles_bottom_panel->get_editor_theme_icon(SNAME("Eraser")));
-	random_tile_toggle->set_icon(tiles_bottom_panel->get_editor_theme_icon(SNAME("RandomNumberGenerator")));
+	picker_button->set_icon(tiles_bottom_panel->get_theme_icon(SNAME("ColorPick"), "EditorIcons"));
+	erase_button->set_icon(tiles_bottom_panel->get_theme_icon(SNAME("Eraser"), "EditorIcons"));
+	random_tile_toggle->set_icon(tiles_bottom_panel->get_theme_icon(SNAME("RandomNumberGenerator"), "EditorIcons"));
 
-	transform_button_rotate_left->set_icon(tiles_bottom_panel->get_editor_theme_icon("RotateLeft"));
-	transform_button_rotate_right->set_icon(tiles_bottom_panel->get_editor_theme_icon("RotateRight"));
-	transform_button_flip_h->set_icon(tiles_bottom_panel->get_editor_theme_icon("MirrorX"));
-	transform_button_flip_v->set_icon(tiles_bottom_panel->get_editor_theme_icon("MirrorY"));
+	transform_button_rotate_left->set_icon(tiles_bottom_panel->get_theme_icon("RotateLeft"), "EditorIcons");
+	transform_button_rotate_right->set_icon(tiles_bottom_panel->get_theme_icon("RotateRight"), "EditorIcons");
+	transform_button_flip_h->set_icon(tiles_bottom_panel->get_theme_icon("MirrorX"), "EditorIcons");
+	transform_button_flip_v->set_icon(tiles_bottom_panel->get_theme_icon("MirrorY"), "EditorIcons");
 
-	missing_atlas_texture_icon = tiles_bottom_panel->get_editor_theme_icon(SNAME("LayeredTileSet"));
+	missing_atlas_texture_icon = tiles_bottom_panel->get_theme_icon(SNAME("LayeredTileSet"), "EditorIcons");
 	_update_tile_set_sources_list();
 }
 
@@ -559,7 +560,7 @@ bool LayeredTileMapLayerEditorTilesPlugin::forward_canvas_gui_input(const Ref<In
 		if (ED_IS_SHORTCUT("tiles_editor/cut", p_event)) {
 			// Delete selected tiles.
 			if (!tile_map_selection.empty()) {
-				EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+				UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 				undo_redo->create_action(TTR("Delete tiles"));
 				for (const Vector2i &coords : tile_map_selection) {
 					undo_redo->add_do_method(edited_layer, "set_cell", coords, LayeredTileSet::INVALID_SOURCE, LayeredTileSetSource::INVALID_ATLAS_COORDS, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
@@ -591,7 +592,7 @@ bool LayeredTileMapLayerEditorTilesPlugin::forward_canvas_gui_input(const Ref<In
 	if (ED_IS_SHORTCUT("tiles_editor/delete", p_event)) {
 		// Delete selected tiles.
 		if (!tile_map_selection.empty()) {
-			EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+			UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 			undo_redo->create_action(TTR("Delete tiles"));
 			for (const Vector2i &coords : tile_map_selection) {
 				undo_redo->add_do_method(edited_layer, "set_cell", coords, LayeredTileSet::INVALID_SOURCE, LayeredTileSetSource::INVALID_ATLAS_COORDS, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
@@ -1302,7 +1303,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_stop_dragging() {
 	Transform2D xform = CanvasItemEditor::get_singleton()->get_canvas_transform() * edited_layer->get_global_transform_with_canvas();
 	Vector2 mpos = xform.affine_inverse().xform(CanvasItemEditor::get_singleton()->get_viewport_control()->get_local_mouse_position());
 
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	switch (drag_type) {
 		case DRAG_TYPE_SELECT: {
 			undo_redo->create_action(TTR("Change selection"));
@@ -2836,7 +2837,7 @@ void LayeredTileMapLayerEditorTerrainsPlugin::_stop_dragging() {
 	Transform2D xform = CanvasItemEditor::get_singleton()->get_canvas_transform() * edited_layer->get_global_transform_with_canvas();
 	Vector2 mpos = xform.affine_inverse().xform(CanvasItemEditor::get_singleton()->get_viewport_control()->get_local_mouse_position());
 
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	switch (drag_type) {
 		case DRAG_TYPE_PICK: {
 			Vector2i coords = tile_set->local_to_map(mpos);
@@ -3355,13 +3356,13 @@ void LayeredTileMapLayerEditorTerrainsPlugin::_update_terrains_tree() {
 		TreeItem *terrain_set_tree_item = terrains_tree->create_item();
 		String matches;
 		if (tile_set->get_terrain_set_mode(terrain_set_index) == LayeredTileSet::TERRAIN_MODE_MATCH_CORNERS_AND_SIDES) {
-			terrain_set_tree_item->set_icon(0, main_vbox_container->get_editor_theme_icon(SNAME("TerrainMatchCornersAndSides")));
+			terrain_set_tree_item->set_icon(0, main_vbox_container->get_theme_icon(SNAME("TerrainMatchCornersAndSides"), "EditorIcons"));
 			matches = String(TTR("Matches Corners and Sides"));
 		} else if (tile_set->get_terrain_set_mode(terrain_set_index) == LayeredTileSet::TERRAIN_MODE_MATCH_CORNERS) {
-			terrain_set_tree_item->set_icon(0, main_vbox_container->get_editor_theme_icon(SNAME("TerrainMatchCorners")));
+			terrain_set_tree_item->set_icon(0, main_vbox_container->get_theme_icon(SNAME("TerrainMatchCorners"), "EditorIcons"));
 			matches = String(TTR("Matches Corners Only"));
 		} else {
-			terrain_set_tree_item->set_icon(0, main_vbox_container->get_editor_theme_icon(SNAME("TerrainMatchSides")));
+			terrain_set_tree_item->set_icon(0, main_vbox_container->get_theme_icon(SNAME("TerrainMatchSides"), "EditorIcons"));
 			matches = String(TTR("Matches Sides Only"));
 		}
 		terrain_set_tree_item->set_text(0, vformat(TTR("Terrain Set %d (%s)"), terrain_set_index, matches));
@@ -3404,13 +3405,13 @@ void LayeredTileMapLayerEditorTerrainsPlugin::_update_tiles_list() {
 		ERR_FAIL_INDEX(sel_terrain_id, tile_set->get_terrains_count(sel_terrain_set));
 
 		// Add the two first generic modes
-		int item_index = terrains_tile_list->add_icon_item(main_vbox_container->get_editor_theme_icon(SNAME("TerrainConnect")));
+		int item_index = terrains_tile_list->add_icon_item(main_vbox_container->get_theme_icon(SNAME("TerrainConnect"), "EditorIcons"));
 		terrains_tile_list->set_item_tooltip(item_index, TTR("Connect mode: paints a terrain, then connects it with the surrounding tiles with the same terrain."));
 		Dictionary list_metadata_dict;
 		list_metadata_dict["type"] = SELECTED_TYPE_CONNECT;
 		terrains_tile_list->set_item_metadata(item_index, list_metadata_dict);
 
-		item_index = terrains_tile_list->add_icon_item(main_vbox_container->get_editor_theme_icon(SNAME("TerrainPath")));
+		item_index = terrains_tile_list->add_icon_item(main_vbox_container->get_theme_icon(SNAME("TerrainPath"), "EditorIcons"));
 		terrains_tile_list->set_item_tooltip(item_index, TTR("Path mode: paints a terrain, then connects it to the previous tile painted within the same stroke."));
 		list_metadata_dict = Dictionary();
 		list_metadata_dict["type"] = SELECTED_TYPE_PATH;
@@ -3483,13 +3484,13 @@ void LayeredTileMapLayerEditorTerrainsPlugin::_update_tiles_list() {
 }
 
 void LayeredTileMapLayerEditorTerrainsPlugin::_update_theme() {
-	paint_tool_button->set_icon(main_vbox_container->get_editor_theme_icon(SNAME("Edit")));
-	line_tool_button->set_icon(main_vbox_container->get_editor_theme_icon(SNAME("Line")));
-	rect_tool_button->set_icon(main_vbox_container->get_editor_theme_icon(SNAME("Rectangle")));
-	bucket_tool_button->set_icon(main_vbox_container->get_editor_theme_icon(SNAME("Bucket")));
+	paint_tool_button->set_icon(main_vbox_container->get_theme_icon(SNAME("Edit"), "EditorIcons"));
+	line_tool_button->set_icon(main_vbox_container->get_theme_icon(SNAME("Line"), "EditorIcons"));
+	rect_tool_button->set_icon(main_vbox_container->get_theme_icon(SNAME("Rectangle"), "EditorIcons"));
+	bucket_tool_button->set_icon(main_vbox_container->get_theme_icon(SNAME("Bucket"), "EditorIcons"));
 
-	picker_button->set_icon(main_vbox_container->get_editor_theme_icon(SNAME("ColorPick")));
-	erase_button->set_icon(main_vbox_container->get_editor_theme_icon(SNAME("Eraser")));
+	picker_button->set_icon(main_vbox_container->get_theme_icon(SNAME("ColorPick"), "EditorIcons"));
+	erase_button->set_icon(main_vbox_container->get_theme_icon(SNAME("Eraser"), "EditorIcons"));
 
 	_update_tiles_list();
 }
@@ -3631,12 +3632,12 @@ LayeredTileMapLayer *LayeredTileMapLayerEditor::_get_edited_layer() const {
 void LayeredTileMapLayerEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_THEME_CHANGED: {
-			missing_tile_texture = get_editor_theme_icon(SNAME("StatusWarning"));
-			warning_pattern_texture = get_editor_theme_icon(SNAME("WarningPattern"));
-			advanced_menu_button->set_icon(get_editor_theme_icon(SNAME("Tools")));
-			toggle_grid_button->set_icon(get_editor_theme_icon(SNAME("Grid")));
+			missing_tile_texture = get_theme_icon(SNAME("StatusWarning"), "EditorIcons");
+			warning_pattern_texture = get_theme_icon(SNAME("WarningPattern"), "EditorIcons");
+			advanced_menu_button->set_icon(get_theme_icon(SNAME("Tools"), "EditorIcons"));
+			toggle_grid_button->set_icon(get_theme_icon(SNAME("Grid"), "EditorIcons"));
 			toggle_grid_button->set_pressed(EDITOR_GET("editors/tiles_editor/display_grid"));
-			toggle_highlight_selected_layer_button->set_icon(get_editor_theme_icon(SNAME("LayeredTileMapHighlightSelected")));
+			toggle_highlight_selected_layer_button->set_icon(get_theme_icon(SNAME("LayeredTileMapHighlightSelected"), "EditorIcons"));
 		} break;
 
 		case NOTIFICATION_INTERNAL_PROCESS: {
@@ -3693,7 +3694,7 @@ void LayeredTileMapLayerEditor::_advanced_menu_button_id_pressed(int p_id) {
 	}
 
 	if (p_id == 0) { // Replace Tile Proxies
-		EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+		UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 		undo_redo->create_action(TTR("Replace Tiles with Proxies"));
 		PoolVector2iArray used_cells = edited_layer->get_used_cells();
 		for (int i = 0; i < used_cells.size(); i++) {
@@ -3876,8 +3877,8 @@ void LayeredTileMapLayerEditor::_update_highlighting_toggle() {
 }
 
 void LayeredTileMapLayerEditor::_move_tile_map_array_element(Object *p_undo_redo, Object *p_edited, const String &p_array_prefix, int p_from_index, int p_to_pos) {
-	EditorUndoRedoManager *undo_redo_man = Object::cast_to<EditorUndoRedoManager>(p_undo_redo);
-	ERR_FAIL_NULL(undo_redo_man);
+	UndoRedo *undo_redo = Object::cast_to<UndoRedo>(p_undo_redo);
+	ERR_FAIL_NULL(undo_redo);
 
 	LayeredTileMap *tile_map = Object::cast_to<LayeredTileMap>(p_edited);
 	if (!tile_map) {
@@ -3908,12 +3909,12 @@ void LayeredTileMapLayerEditor::_move_tile_map_array_element(Object *p_undo_redo
 		end = MIN(MAX(p_from_index, p_to_pos) + 1, end);
 	}
 
-#define ADD_UNDO(obj, property) undo_redo_man->add_undo_property(obj, property, obj->get(property));
+#define ADD_UNDO(obj, property) undo_redo->add_undo_property(obj, property, obj->get(property));
 	// Save layers' properties.
 	if (p_from_index < 0) {
-		undo_redo_man->add_undo_method(tile_map, "remove_layer", p_to_pos < 0 ? tile_map->get_layers_count() : p_to_pos);
+		undo_redo->add_undo_method(tile_map, "remove_layer", p_to_pos < 0 ? tile_map->get_layers_count() : p_to_pos);
 	} else if (p_to_pos < 0) {
-		undo_redo_man->add_undo_method(tile_map, "add_layer", p_from_index);
+		undo_redo->add_undo_method(tile_map, "add_layer", p_from_index);
 	}
 
 	List<PropertyInfo> properties;
@@ -3939,11 +3940,11 @@ void LayeredTileMapLayerEditor::_move_tile_map_array_element(Object *p_undo_redo
 #undef ADD_UNDO
 
 	if (p_from_index < 0) {
-		undo_redo_man->add_do_method(tile_map, "add_layer", p_to_pos);
+		undo_redo->add_do_method(tile_map, "add_layer", p_to_pos);
 	} else if (p_to_pos < 0) {
-		undo_redo_man->add_do_method(tile_map, "remove_layer", p_from_index);
+		undo_redo->add_do_method(tile_map, "remove_layer", p_from_index);
 	} else {
-		undo_redo_man->add_do_method(tile_map, "move_layer", p_from_index, p_to_pos);
+		undo_redo->add_do_method(tile_map, "move_layer", p_from_index, p_to_pos);
 	}
 }
 
@@ -4175,8 +4176,8 @@ LayeredTileMapLayerEditor::LayeredTileMapLayerEditor() {
 	tile_map_editor_plugins.push_back(memnew(LayeredTileMapLayerEditorTilesPlugin));
 	tile_map_editor_plugins.push_back(memnew(LayeredTileMapLayerEditorTerrainsPlugin));
 
-	// TabBar.
-	tabs_bar = memnew(TabBar);
+	// Tabs.
+	tabs_bar = memnew(Tabs);
 	tabs_bar->set_clip_tabs(false);
 	for (int plugin_index = 0; plugin_index < tile_map_editor_plugins.size(); plugin_index++) {
 		Vector<LayeredTileMapLayerSubEditorPlugin::TabData> tabs_vector = tile_map_editor_plugins[plugin_index]->get_tabs();

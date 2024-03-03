@@ -33,19 +33,21 @@
 
 #include "layered_tile_set_editor.h"
 
+#include "core/core_string_names.h"
 #include "core/math/geometry.h"
 #include "core/os/keyboard.h"
 
 #include "editor/editor_node.h"
 #include "editor/editor_properties.h"
 #include "editor/editor_settings.h"
-#include "editor/editor_string_names.h"
-#include "editor/editor_undo_redo_manager.h"
-#include "editor/themes/editor_scale.h"
+
+#include "core/object/undo_redo.h"
+#include "editor/editor_scale.h"
 
 #include "scene/gui/label.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/option_button.h"
+#include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
 #include "scene/main/control.h"
@@ -54,7 +56,8 @@
 
 void LayeredTileDataEditor::_tile_set_changed_plan_update() {
 	_tile_set_changed_update_needed = true;
-	callable_mp(this, &LayeredTileDataEditor::_tile_set_changed_deferred_update).call_deferred();
+
+	call_deferred("_tile_set_changed_deferred_update");
 }
 
 void LayeredTileDataEditor::_tile_set_changed_deferred_update() {
@@ -64,11 +67,11 @@ void LayeredTileDataEditor::_tile_set_changed_deferred_update() {
 	}
 }
 
-TileData *LayeredTileDataEditor::_get_tile_data(LayeredTileMapCell p_cell) {
+LayeredTileData *LayeredTileDataEditor::_get_tile_data(LayeredTileMapCell p_cell) {
 	ERR_FAIL_COND_V(!tile_set.is_valid(), nullptr);
 	ERR_FAIL_COND_V(!tile_set->has_source(p_cell.source_id), nullptr);
 
-	TileData *td = nullptr;
+	LayeredTileData *td = nullptr;
 	LayeredTileSetSource *source = *tile_set->get_source(p_cell.source_id);
 	LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 	if (atlas_source) {
@@ -82,15 +85,18 @@ TileData *LayeredTileDataEditor::_get_tile_data(LayeredTileMapCell p_cell) {
 
 void LayeredTileDataEditor::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("needs_redraw"));
+
+	ClassDB::bind_method(D_METHOD("_tile_set_changed_deferred_update"), &LayeredTileDataEditor::_tile_set_changed_deferred_update);
+	ClassDB::bind_method(D_METHOD("_tile_set_changed_plan_update"), &LayeredTileDataEditor::_tile_set_changed_plan_update);
 }
 
 void LayeredTileDataEditor::set_tile_set(Ref<LayeredTileSet> p_tile_set) {
 	if (tile_set.is_valid()) {
-		tile_set->disconnect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileDataEditor::_tile_set_changed_plan_update));
+		tile_set->disconnect(CoreStringNames::get_singleton()->changed, this, "_tile_set_changed_plan_update");
 	}
 	tile_set = p_tile_set;
 	if (tile_set.is_valid()) {
-		tile_set->connect(CoreStringNames::get_singleton()->changed, callable_mp(this, &LayeredTileDataEditor::_tile_set_changed_plan_update));
+		tile_set->connect(CoreStringNames::get_singleton()->changed, this, "_tile_set_changed_plan_update");
 	}
 	_tile_set_changed_plan_update();
 }
@@ -135,9 +141,9 @@ void GenericTilePolygonEditor::_base_control_draw() {
 	real_t grab_threshold = EDITOR_GET("editors/polygon_editor/point_grab_radius");
 
 	Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
-	const Ref<Texture> handle = get_editor_theme_icon(SNAME("EditorPathSharpHandle"));
-	const Ref<Texture> add_handle = get_editor_theme_icon(SNAME("EditorHandleAdd"));
-	const Ref<StyleBox> focus_stylebox = get_theme_stylebox(SNAME("Focus"), EditorStringName(EditorStyles));
+	const Ref<Texture> handle = get_theme_icon("EditorPathSharpHandle", "EditorIcons");
+	const Ref<Texture> add_handle = get_theme_icon("EditorHandleAdd", "EditorIcons");
+	const Ref<StyleBox> focus_stylebox = get_theme_stylebox("Focus", "EditorStyles");
 
 	// Draw the focus rectangle.
 	if (base_control->has_focus()) {
@@ -181,7 +187,9 @@ void GenericTilePolygonEditor::_base_control_draw() {
 	}
 
 	// Draw the polygons.
-	for (const Vector<Vector2> &polygon : polygons) {
+	for (uint32_t i = 0; i < polygons.size(); ++i) {
+		const Vector<Vector2> &polygon = polygons[i];
+
 		Color color = polygon_color;
 		if (!in_creation_polygon.empty()) {
 			color = color.darkened(0.3);
@@ -241,11 +249,10 @@ void GenericTilePolygonEditor::_base_control_draw() {
 
 	// Draw the text on top of the selected point.
 	if (tinted_polygon_index >= 0) {
-		Ref<Font> font = get_theme_font(SNAME("font"), SNAME("Label"));
-		int font_size = get_theme_font_size(SNAME("font_size"), SNAME("Label"));
+		Ref<Font> font = get_theme_font("font", "Label");
 		String text = multiple_polygon_mode ? vformat("%d:%d", tinted_polygon_index, tinted_point_index) : vformat("%d", tinted_point_index);
-		Size2 text_size = font->get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size);
-		base_control->draw_string(font, xform.xform(polygons[tinted_polygon_index][tinted_point_index]) - text_size * 0.5, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(1.0, 1.0, 1.0, 0.5));
+		Size2 text_size = font->get_string_size(text);
+		base_control->draw_string(font, xform.xform(polygons[tinted_polygon_index][tinted_point_index]) - text_size * 0.5, text, Color(1.0, 1.0, 1.0, 0.5));
 	}
 
 	if (drag_type == DRAG_TYPE_CREATE_POINT) {
@@ -274,13 +281,7 @@ void GenericTilePolygonEditor::_zoom_changed() {
 }
 
 void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
-	EditorUndoRedoManager *undo_redo;
-	if (use_undo_redo) {
-		undo_redo = EditorUndoRedoManager::get_singleton();
-	} else {
-		// This nice hack allows for discarding undo actions without making code too complex.
-		undo_redo = memnew(EditorUndoRedoManager);
-	}
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 
 	switch (p_item_pressed) {
 		case RESET_TO_DEFAULT_TILE: {
@@ -294,12 +295,14 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 			undo_redo->add_do_method(base_control, "update");
 			undo_redo->add_do_method(this, "emit_signal", "polygons_changed");
 			undo_redo->add_undo_method(this, "clear_polygons");
-			for (const PoolVector2Array &poly : polygons) {
+
+			for (uint32_t i = 0; i < polygons.size(); ++i) {
+				const Vector<Vector2> &poly = polygons[i];
 				undo_redo->add_undo_method(this, "add_polygon", poly);
 			}
 			undo_redo->add_undo_method(base_control, "update");
 			undo_redo->add_undo_method(this, "emit_signal", "polygons_changed");
-			undo_redo->commit_action(true);
+			undo_redo->commit_action();
 		} break;
 		case CLEAR_TILE: {
 			undo_redo->create_action(TTR("Clear Polygons"));
@@ -307,12 +310,13 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 			undo_redo->add_do_method(base_control, "update");
 			undo_redo->add_do_method(this, "emit_signal", "polygons_changed");
 			undo_redo->add_undo_method(this, "clear_polygons");
-			for (const PoolVector2Array &polygon : polygons) {
+			for (uint32_t i = 0; i < polygons.size(); ++i) {
+				const Vector<Vector2> &polygon = polygons[i];
 				undo_redo->add_undo_method(this, "add_polygon", polygon);
 			}
 			undo_redo->add_undo_method(base_control, "update");
 			undo_redo->add_undo_method(this, "emit_signal", "polygons_changed");
-			undo_redo->commit_action(true);
+			undo_redo->commit_action();
 		} break;
 		case ROTATE_RIGHT:
 		case ROTATE_LEFT:
@@ -336,7 +340,12 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 			}
 			for (unsigned int i = 0; i < polygons.size(); i++) {
 				Vector<Point2> new_polygon;
-				for (const Vector2 &vec : polygons[i]) {
+
+				const Vector<Point2> &polygon_i = polygons[i];
+
+				for (int j = 0; j < polygon_i.size(); ++j) {
+					const Vector2 &vec = polygon_i[j];
+
 					Vector2 point = vec;
 					switch (p_item_pressed) {
 						case ROTATE_RIGHT: {
@@ -365,7 +374,7 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 			}
 			undo_redo->add_undo_method(base_control, "update");
 			undo_redo->add_undo_method(this, "emit_signal", "polygons_changed");
-			undo_redo->commit_action(true);
+			undo_redo->commit_action();
 		} break;
 		default:
 			break;
@@ -405,7 +414,7 @@ void GenericTilePolygonEditor::_grab_polygon_segment_point(Vector2 p_pos, const 
 		const Vector<Vector2> &polygon = polygons[i];
 		for (int j = 0; j < polygon.size(); j++) {
 			Vector2 segment[2] = { polygon[j], polygon[(j + 1) % polygon.size()] };
-			Vector2 closest_point = Geometry::get_closest_point_to_segment(point, segment);
+			Vector2 closest_point = Geometry::get_closest_point_to_segment_2d(point, segment);
 			float distance = closest_point.distance_to(point);
 			if (distance < grab_threshold / editor_zoom_widget->get_zoom() && distance < closest_distance) {
 				r_polygon_index = i;
@@ -441,7 +450,7 @@ void GenericTilePolygonEditor::_snap_to_tile_shape(Point2 &r_point, float &r_cur
 	if (!snapped) {
 		for (int i = 0; i < polygon.size(); i++) {
 			Point2 segment[2] = { polygon[i], polygon[(i + 1) % polygon.size()] };
-			Point2 point = Geometry::get_closest_point_to_segment(r_point, segment);
+			Point2 point = Geometry::get_closest_point_to_segment_2d(r_point, segment);
 			float distance = r_point.distance_to(point);
 			if (distance < p_snap_dist && distance < r_current_snapped_dist) {
 				snapped_point = point;
@@ -470,13 +479,7 @@ void GenericTilePolygonEditor::_snap_point(Point2 &r_point) {
 }
 
 void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) {
-	EditorUndoRedoManager *undo_redo;
-	if (use_undo_redo) {
-		undo_redo = EditorUndoRedoManager::get_singleton();
-	} else {
-		// This nice hack allows for discarding undo actions without making code too complex.
-		undo_redo = memnew(EditorUndoRedoManager);
-	}
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 
 	real_t grab_threshold = EDITOR_GET("editors/polygon_editor/point_grab_radius");
 
@@ -502,7 +505,7 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 		} else if (drag_type == DRAG_TYPE_PAN) {
 			panning += mm->get_position() - drag_last_pos;
 			drag_last_pos = mm->get_position();
-			button_center_view->set_disabled(panning.is_zero_approx());
+			button_center_view->set_disabled(panning.is_equal_approx(Vector2()));
 		} else {
 			// Update hovered point.
 			_grab_polygon_point(mm->get_position(), xform, hovered_polygon_index, hovered_point_index);
@@ -516,15 +519,15 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 
 	Ref<InputEventMouseButton> mb = p_event;
 	if (mb.is_valid()) {
-		if (mb->get_button_index() == MouseButton::WHEEL_UP && mb->is_command_or_control_pressed()) {
+		if (mb->get_button_index() == BUTTON_WHEEL_UP && mb->get_command()) {
 			editor_zoom_widget->set_zoom_by_increments(1);
 			_zoom_changed();
 			accept_event();
-		} else if (mb->get_button_index() == MouseButton::WHEEL_DOWN && mb->is_command_or_control_pressed()) {
+		} else if (mb->get_button_index() == BUTTON_WHEEL_DOWN && mb->get_command()) {
 			editor_zoom_widget->set_zoom_by_increments(-1);
 			_zoom_changed();
 			accept_event();
-		} else if (mb->get_button_index() == MouseButton::LEFT) {
+		} else if (mb->get_button_index() == BUTTON_LEFT) {
 			if (mb->is_pressed()) {
 				if (tools_button_group->get_pressed_button() != button_create) {
 					in_creation_polygon.clear();
@@ -548,8 +551,8 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 						undo_redo->add_do_method(base_control, "update");
 						undo_redo->add_undo_method(this, "remove_polygon", added);
 						undo_redo->add_undo_method(base_control, "update");
-						undo_redo->commit_action(false);
-						emit_signal(SNAME("polygons_changed"));
+						undo_redo->commit_action();
+						emit_signal("polygons_changed");
 					} else {
 						// Create a new point.
 						drag_type = DRAG_TYPE_CREATE_POINT;
@@ -582,7 +585,7 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 					int closest_point;
 					_grab_polygon_point(mb->get_position(), xform, closest_polygon, closest_point);
 					if (closest_polygon >= 0) {
-						PoolVector2Array old_polygon = polygons[closest_polygon];
+						Vector<Point2> old_polygon = polygons[closest_polygon];
 						polygons[closest_polygon].remove(closest_point);
 						undo_redo->create_action(TTR("Edit Polygons"));
 						if (polygons[closest_polygon].size() < 3) {
@@ -595,8 +598,8 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 						}
 						undo_redo->add_do_method(base_control, "update");
 						undo_redo->add_undo_method(base_control, "update");
-						undo_redo->commit_action(false);
-						emit_signal(SNAME("polygons_changed"));
+						undo_redo->commit_action();
+						emit_signal("polygons_changed");
 					}
 				}
 			} else {
@@ -606,8 +609,8 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 					undo_redo->add_do_method(base_control, "update");
 					undo_redo->add_undo_method(this, "set_polygon", drag_polygon_index, drag_old_polygon);
 					undo_redo->add_undo_method(base_control, "update");
-					undo_redo->commit_action(false);
-					emit_signal(SNAME("polygons_changed"));
+					undo_redo->commit_action();
+					emit_signal("polygons_changed");
 				} else if (drag_type == DRAG_TYPE_CREATE_POINT) {
 					Point2 point = xform.affine_inverse().xform(mb->get_position());
 					float distance = grab_threshold * 2;
@@ -619,7 +622,7 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 				drag_point_index = -1;
 			}
 
-		} else if (mb->get_button_index() == MouseButton::RIGHT) {
+		} else if (mb->get_button_index() == BUTTON_RIGHT) {
 			if (mb->is_pressed()) {
 				if (tools_button_group->get_pressed_button() == button_edit) {
 					// Remove point or pan.
@@ -627,7 +630,7 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 					int closest_point;
 					_grab_polygon_point(mb->get_position(), xform, closest_polygon, closest_point);
 					if (closest_polygon >= 0) {
-						PoolVector2Array old_polygon = polygons[closest_polygon];
+						Vector<Point2> old_polygon = polygons[closest_polygon];
 						polygons[closest_polygon].remove(closest_point);
 						undo_redo->create_action(TTR("Edit Polygons"));
 						if (polygons[closest_polygon].size() < 3) {
@@ -640,8 +643,8 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 						}
 						undo_redo->add_do_method(base_control, "update");
 						undo_redo->add_undo_method(base_control, "update");
-						undo_redo->commit_action(false);
-						emit_signal(SNAME("polygons_changed"));
+						undo_redo->commit_action();
+						emit_signal("polygons_changed");
 						drag_type = DRAG_TYPE_NONE;
 					} else {
 						drag_type = DRAG_TYPE_PAN;
@@ -654,7 +657,7 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 			} else {
 				drag_type = DRAG_TYPE_NONE;
 			}
-		} else if (mb->get_button_index() == MouseButton::MIDDLE) {
+		} else if (mb->get_button_index() == BUTTON_MIDDLE) {
 			if (mb->is_pressed()) {
 				drag_type = DRAG_TYPE_PAN;
 				drag_last_pos = mb->get_position();
@@ -721,6 +724,7 @@ void GenericTilePolygonEditor::set_tile_set(Ref<LayeredTileSet> p_tile_set) {
 		editor_zoom_widget->set_zoom_by_increments(6, false);
 		float current_zoom = editor_zoom_widget->get_zoom();
 		zoomed_tile = current_zoom * tile_set->get_tile_size();
+
 		if (Math::is_equal_approx(current_zoom, editor_zoom_widget->get_max_zoom())) {
 			break;
 		}
@@ -729,6 +733,7 @@ void GenericTilePolygonEditor::set_tile_set(Ref<LayeredTileSet> p_tile_set) {
 		editor_zoom_widget->set_zoom_by_increments(-6, false);
 		float current_zoom = editor_zoom_widget->get_zoom();
 		zoomed_tile = current_zoom * tile_set->get_tile_size();
+
 		if (Math::is_equal_approx(current_zoom, editor_zoom_widget->get_min_zoom())) {
 			break;
 		}
@@ -814,22 +819,22 @@ void GenericTilePolygonEditor::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_THEME_CHANGED: {
-			button_expand->set_icon(get_editor_theme_icon(SNAME("DistractionFree")));
-			button_create->set_icon(get_editor_theme_icon(SNAME("CurveCreate")));
-			button_edit->set_icon(get_editor_theme_icon(SNAME("CurveEdit")));
-			button_delete->set_icon(get_editor_theme_icon(SNAME("CurveDelete")));
-			button_center_view->set_icon(get_editor_theme_icon(SNAME("CenterView")));
-			button_advanced_menu->set_icon(get_editor_theme_icon(SNAME("GuiTabMenuHl")));
-			button_pixel_snap->get_popup()->set_item_icon(0, get_editor_theme_icon(SNAME("SnapDisable")));
-			button_pixel_snap->get_popup()->set_item_icon(1, get_editor_theme_icon(SNAME("Snap")));
-			button_pixel_snap->get_popup()->set_item_icon(2, get_editor_theme_icon(SNAME("SnapGrid")));
+			button_expand->set_icon(get_theme_icon("DistractionFree", "EditorIcons"));
+			button_create->set_icon(get_theme_icon("CurveCreate", "EditorIcons"));
+			button_edit->set_icon(get_theme_icon("CurveEdit", "EditorIcons"));
+			button_delete->set_icon(get_theme_icon("CurveDelete", "EditorIcons"));
+			button_center_view->set_icon(get_theme_icon("CenterView", "EditorIcons"));
+			button_advanced_menu->set_icon(get_theme_icon("GuiTabMenuHl", "EditorIcons"));
+			button_pixel_snap->get_popup()->set_item_icon(0, get_theme_icon("SnapDisable", "EditorIcons"));
+			button_pixel_snap->get_popup()->set_item_icon(1, get_theme_icon("Snap", "EditorIcons"));
+			button_pixel_snap->get_popup()->set_item_icon(2, get_theme_icon("SnapGrid", "EditorIcons"));
 			button_pixel_snap->set_icon(button_pixel_snap->get_popup()->get_item_icon(current_snap_option));
 
 			PopupMenu *p = button_advanced_menu->get_popup();
-			p->set_item_icon(p->get_item_index(ROTATE_RIGHT), get_editor_theme_icon(SNAME("RotateRight")));
-			p->set_item_icon(p->get_item_index(ROTATE_LEFT), get_editor_theme_icon(SNAME("RotateLeft")));
-			p->set_item_icon(p->get_item_index(FLIP_HORIZONTALLY), get_editor_theme_icon(SNAME("MirrorX")));
-			p->set_item_icon(p->get_item_index(FLIP_VERTICALLY), get_editor_theme_icon(SNAME("MirrorY")));
+			p->set_item_icon(p->get_item_index(ROTATE_RIGHT), get_theme_icon("RotateRight", "EditorIcons"));
+			p->set_item_icon(p->get_item_index(ROTATE_LEFT), get_theme_icon("RotateLeft", "EditorIcons"));
+			p->set_item_icon(p->get_item_index(FLIP_HORIZONTALLY), get_theme_icon("MirrorX", "EditorIcons"));
+			p->set_item_icon(p->get_item_index(FLIP_VERTICALLY), get_theme_icon("MirrorY", "EditorIcons"));
 		} break;
 	}
 }
@@ -841,6 +846,8 @@ void GenericTilePolygonEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("clear_polygons"), &GenericTilePolygonEditor::clear_polygons);
 	ClassDB::bind_method(D_METHOD("set_polygon", "index", "polygon"), &GenericTilePolygonEditor::set_polygon);
 	ClassDB::bind_method(D_METHOD("get_polygon", "index"), &GenericTilePolygonEditor::get_polygon);
+
+	ClassDB::bind_method(D_METHOD("_toggle_expand"), &GenericTilePolygonEditor::_toggle_expand);
 
 	ADD_SIGNAL(MethodInfo("polygons_changed"));
 }
@@ -856,7 +863,7 @@ GenericTilePolygonEditor::GenericTilePolygonEditor() {
 	button_expand->set_toggle_mode(true);
 	button_expand->set_pressed(false);
 	button_expand->set_tooltip(TTR("Expand editor"));
-	button_expand->connect("toggled", callable_mp(this, &GenericTilePolygonEditor::_toggle_expand));
+	button_expand->connect("toggled", this, "_toggle_expand");
 	toolbar->add_child(button_expand);
 
 	toolbar->add_child(memnew(VSeparator));
@@ -990,7 +997,7 @@ Variant TileDataDefaultEditor::_get_value(LayeredTileSetAtlasSource *p_tile_set_
 }
 
 void TileDataDefaultEditor::_setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value) {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	for (const KeyValue<LayeredTileMapCell, Variant> &E : p_previous_values) {
 		Vector2i coords = E.key.get_atlas_coords();
 		undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/%s", coords.x, coords.y, E.key.alternative_tile, property), E.value);
@@ -1059,7 +1066,7 @@ void TileDataDefaultEditor::forward_painting_atlas_gui_input(LayeredTileAtlasVie
 		}
 	}
 
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	Ref<InputEventMouseButton> mb = p_event;
 	if (mb.is_valid()) {
 		if (mb->get_button_index() == MouseButton::LEFT) {
@@ -1183,7 +1190,7 @@ void TileDataDefaultEditor::forward_painting_alternatives_gui_input(LayeredTileA
 					drag_last_pos = mb->get_position();
 				}
 			} else {
-				EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+				UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 				undo_redo->create_action(TTR("Painting Tiles Property"));
 				_setup_undo_redo_action(p_tile_set_atlas_source, drag_modified, drag_painted_value);
 				undo_redo->commit_action(false);
@@ -1293,9 +1300,9 @@ void TileDataDefaultEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
-			picker_button->set_icon(get_editor_theme_icon(SNAME("ColorPick")));
-			tile_bool_checked = get_editor_theme_icon(SNAME("TileChecked"));
-			tile_bool_unchecked = get_editor_theme_icon(SNAME("TileUnchecked"));
+			picker_button->set_icon(get_theme_icon(SNAME("ColorPick"), "EditorIcons"));
+			tile_bool_checked = get_theme_icon(SNAME("TileChecked"), "EditorIcons");
+			tile_bool_unchecked = get_theme_icon(SNAME("TileUnchecked"), "EditorIcons");
 		} break;
 	}
 }
@@ -1343,7 +1350,7 @@ void TileDataTextureOriginEditor::draw_over_tile(CanvasItem *p_canvas_item, Tran
 	}
 
 	if (atlas_source->is_position_in_tile_texture_region(p_cell.get_atlas_coords(), p_cell.alternative_tile, Vector2())) {
-		Ref<Texture> position_icon = LayeredTileSetEditor::get_singleton()->get_editor_theme_icon(SNAME("EditorPosition"));
+		Ref<Texture> position_icon = LayeredTileSetEditor::get_singleton()->get_theme_icon(SNAME("EditorPosition"), "EditorIcons");
 		p_canvas_item->draw_texture(position_icon, p_transform.xform(Vector2()) - (position_icon->get_size() / 2), color);
 	} else {
 		Ref<Font> font = LayeredTileSetEditor::get_singleton()->get_theme_font(SNAME("bold"), EditorStringName(EditorFonts));
@@ -1373,7 +1380,7 @@ void TileDataPositionEditor::draw_over_tile(CanvasItem *p_canvas_item, Transform
 		Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 		color = selection_color;
 	}
-	Ref<Texture> position_icon = LayeredTileSetEditor::get_singleton()->get_editor_theme_icon(SNAME("EditorPosition"));
+	Ref<Texture> position_icon = LayeredTileSetEditor::get_singleton()->get_theme_icon(SNAME("EditorPosition"), "EditorIcons");
 	p_canvas_item->draw_texture(position_icon, p_transform.xform(Vector2(value)) - position_icon->get_size() / 2, color);
 }
 
@@ -1391,7 +1398,7 @@ void TileDataYSortEditor::draw_over_tile(CanvasItem *p_canvas_item, Transform2D 
 	LayeredTileSetSource *source = *(tile_set->get_source(p_cell.source_id));
 	LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
 	if (atlas_source->is_position_in_tile_texture_region(p_cell.get_atlas_coords(), p_cell.alternative_tile, Vector2(0, tile_data->get_y_sort_origin()))) {
-		Ref<Texture> position_icon = LayeredTileSetEditor::get_singleton()->get_editor_theme_icon(SNAME("EditorPosition"));
+		Ref<Texture> position_icon = LayeredTileSetEditor::get_singleton()->get_theme_icon(SNAME("EditorPosition"), "EditorIcons");
 		p_canvas_item->draw_texture(position_icon, p_transform.xform(Vector2(0, tile_data->get_y_sort_origin())) - position_icon->get_size() / 2, color);
 	} else {
 		Ref<Font> font = LayeredTileSetEditor::get_singleton()->get_theme_font(SNAME("bold"), EditorStringName(EditorFonts));
@@ -1464,7 +1471,7 @@ Variant TileDataOcclusionShapeEditor::_get_value(LayeredTileSetAtlasSource *p_ti
 }
 
 void TileDataOcclusionShapeEditor::_setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value) {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	for (const KeyValue<LayeredTileMapCell, Variant> &E : p_previous_values) {
 		Vector2i coords = E.key.get_atlas_coords();
 		undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/occlusion_layer_%d/polygon", coords.x, coords.y, E.key.alternative_tile, occlusion_layer), E.value);
@@ -1644,7 +1651,7 @@ Variant TileDataCollisionEditor::_get_value(LayeredTileSetAtlasSource *p_tile_se
 
 void TileDataCollisionEditor::_setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value) {
 	Dictionary new_dict = p_new_value;
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	for (const KeyValue<LayeredTileMapCell, Variant> &E : p_previous_values) {
 		Vector2i coords = E.key.get_atlas_coords();
 
@@ -1742,7 +1749,7 @@ void TileDataCollisionEditor::draw_over_tile(CanvasItem *p_canvas_item, Transfor
 
 	RenderingServer::get_singleton()->canvas_item_add_set_transform(p_canvas_item->get_canvas_item(), p_transform);
 
-	Ref<Texture> one_way_icon = get_editor_theme_icon(SNAME("OneWayTile"));
+	Ref<Texture> one_way_icon = get_theme_icon(SNAME("OneWayTile"), "EditorIcons");
 	for (int i = 0; i < tile_data->get_collision_polygons_count(physics_layer); i++) {
 		Vector<Vector2> polygon = tile_data->get_collision_polygon_points(physics_layer, i);
 		if (polygon.size() < 3) {
@@ -2352,7 +2359,7 @@ void TileDataTerrainsEditor::forward_painting_atlas_gui_input(LayeredTileAtlasVi
 					}
 				}
 			} else {
-				EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+				UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 				if (drag_type == DRAG_TYPE_PAINT_TERRAIN_SET_RECT) {
 					Rect2i rect;
 					rect.set_position(p_tile_atlas_view->get_atlas_tile_coords_at_pos(drag_start_pos, true));
@@ -2725,7 +2732,7 @@ void TileDataTerrainsEditor::forward_painting_alternatives_gui_input(LayeredTile
 					}
 				}
 			} else {
-				EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+				UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 				if (drag_type == DRAG_TYPE_PAINT_TERRAIN_SET) {
 					undo_redo->create_action(TTR("Painting Tiles Property"));
 					for (KeyValue<LayeredTileMapCell, Variant> &E : drag_modified) {
@@ -2785,7 +2792,7 @@ void TileDataTerrainsEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
-			picker_button->set_icon(get_editor_theme_icon(SNAME("ColorPick")));
+			picker_button->set_icon(get_theme_icon(SNAME("ColorPick"), "EditorIcons"));
 		} break;
 	}
 }
@@ -2880,7 +2887,7 @@ Variant TileDataNavigationEditor::_get_value(LayeredTileSetAtlasSource *p_tile_s
 }
 
 void TileDataNavigationEditor::_setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value) {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	for (const KeyValue<LayeredTileMapCell, Variant> &E : p_previous_values) {
 		Vector2i coords = E.key.get_atlas_coords();
 		undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/navigation_layer_%d/polygon", coords.x, coords.y, E.key.alternative_tile, navigation_layer), E.value);

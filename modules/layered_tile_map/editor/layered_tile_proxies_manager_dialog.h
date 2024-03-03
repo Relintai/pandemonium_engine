@@ -38,7 +38,6 @@
 #include "scene/gui/item_list.h"
 
 class EditorPropertyVector2i;
-class EditorUndoRedoManager;
 
 class LayeredTileProxiesManagerDialog : public ConfirmationDialog {
 	GDCLASS(LayeredTileProxiesManagerDialog, ConfirmationDialog);

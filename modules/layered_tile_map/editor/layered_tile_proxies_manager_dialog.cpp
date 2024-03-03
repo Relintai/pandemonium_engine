@@ -31,13 +31,15 @@
 
 #include "layered_tile_proxies_manager_dialog.h"
 
-#include "editor/editor_properties_vector.h"
+#include "editor/editor_properties.h"
+
 #include "editor/editor_settings.h"
-#include "editor/editor_undo_redo_manager.h"
-#include "editor/themes/editor_scale.h"
+#include "editor/editor_scale.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
+
+#include "core/object/undo_redo.h"
 
 void LayeredTileProxiesManagerDialog::_right_clicked(int p_item, Vector2 p_local_mouse_pos, MouseButton p_mouse_button_index, Object *p_item_list) {
 	if (p_mouse_button_index != MouseButton::RIGHT) {
@@ -58,7 +60,7 @@ void LayeredTileProxiesManagerDialog::_menu_id_pressed(int p_id) {
 }
 
 void LayeredTileProxiesManagerDialog::_delete_selected_bindings() {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->create_action(TTR("Remove Tile Proxies"));
 
 	Vector<int> source_level_selected = source_level_list->get_selected_items();
@@ -158,7 +160,7 @@ void LayeredTileProxiesManagerDialog::_property_changed(const String &p_path, co
 }
 
 void LayeredTileProxiesManagerDialog::_add_button_pressed() {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	if (from.source_id != LayeredTileSet::INVALID_SOURCE && to.source_id != LayeredTileSet::INVALID_SOURCE) {
 		Vector2i from_coords = from.get_atlas_coords();
 		Vector2i to_coords = to.get_atlas_coords();
@@ -199,7 +201,7 @@ void LayeredTileProxiesManagerDialog::_add_button_pressed() {
 }
 
 void LayeredTileProxiesManagerDialog::_clear_invalid_button_pressed() {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->create_action(TTR("Delete All Invalid Tile Proxies"));
 
 	undo_redo->add_do_method(*tile_set, "cleanup_invalid_tile_proxies");
@@ -227,7 +229,7 @@ void LayeredTileProxiesManagerDialog::_clear_invalid_button_pressed() {
 }
 
 void LayeredTileProxiesManagerDialog::_clear_all_button_pressed() {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->create_action(TTR("Delete All Tile Proxies"));
 
 	undo_redo->add_do_method(*tile_set, "clear_tile_proxies");
@@ -308,7 +310,7 @@ void LayeredTileProxiesManagerDialog::_unhandled_key_input(Ref<InputEvent> p_eve
 }
 
 void LayeredTileProxiesManagerDialog::cancel_pressed() {
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	for (int i = 0; i < commited_actions_count; i++) {
 		undo_redo->undo();
 	}

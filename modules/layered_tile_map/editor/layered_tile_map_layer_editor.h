@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tile_atlas_view.h"
+#include "layered_tile_atlas_view.h"
 
 #include "../layered_tile_map.h"
 #include "core/os/thread.h"
@@ -46,7 +46,7 @@
 #include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/split_container.h"
-#include "scene/gui/tab_bar.h"
+#include "scene/gui/tabs.h"
 #include "scene/gui/tree.h"
 
 class LayeredTileMapLayerEditor;
@@ -167,7 +167,7 @@ private:
 	void _update_fix_selected_and_hovered();
 	void _fix_invalid_tiles_in_tile_map_selection();
 
-	void patterns_item_list_empty_clicked(const Vector2 &p_pos, MouseButton p_mouse_button_index);
+	void patterns_item_list_empty_clicked(const Vector2 &p_pos, int p_mouse_button_index);
 
 	///// Bottom panel common ////
 	void _tab_changed();
@@ -212,7 +212,7 @@ private:
 	void _update_scenes_collection_view();
 	void _scene_thumbnail_done(const String &p_path, const Ref<Texture> &p_preview, const Ref<Texture> &p_small_preview, const Variant &p_ud);
 	void _scenes_list_multi_selected(int p_index, bool p_selected);
-	void _scenes_list_lmb_empty_clicked(const Vector2 &p_pos, MouseButton p_mouse_button_index);
+	void _scenes_list_lmb_empty_clicked(const Vector2 &p_pos, int p_mouse_button_index);
 
 	///// Bottom panel patterns ////
 	VBoxContainer *patterns_bottom_panel = nullptr;
@@ -365,7 +365,7 @@ private:
 
 	// Bottom panel.
 	Label *missing_tileset_label = nullptr;
-	TabBar *tabs_bar = nullptr;
+	Tabs *tabs_bar = nullptr;
 	LocalVector<LayeredTileMapLayerSubEditorPlugin::TabData> tabs_data;
 	LocalVector<LayeredTileMapLayerSubEditorPlugin *> tabs_plugins;
 	void _update_bottom_panel();

@@ -35,10 +35,13 @@
 #include "editor/editor_node.h"
 #include "editor/editor_resource_preview.h"
 #include "editor/editor_settings.h"
-#include "editor/editor_undo_redo_manager.h"
-#include "editor/gui/editor_file_dialog.h"
-#include "editor/plugins/tiles/tile_set_editor.h"
-#include "editor/themes/editor_scale.h"
+
+#include "core/object/undo_redo.h"
+
+#include "editor/editor_file_dialog.h"
+#include "layered_tile_set_editor.h"
+
+#include "editor/editor_scale.h"
 
 #include "scene/gui/button.h"
 #include "scene/gui/item_list.h"
@@ -258,7 +261,7 @@ void LayeredTileSetScenesCollectionSourceEditor::_scene_file_selected(const Stri
 	Ref<PackedScene> scene = ResourceLoader::load(p_path);
 
 	int scene_id = tile_set_scenes_collection_source->get_next_scene_tile_id();
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->create_action(TTR("Add a Scene Tile"));
 	undo_redo->add_do_method(tile_set_scenes_collection_source, "create_scene_tile", scene, scene_id);
 	undo_redo->add_undo_method(tile_set_scenes_collection_source, "remove_scene_tile", scene_id);
@@ -273,7 +276,7 @@ void LayeredTileSetScenesCollectionSourceEditor::_source_delete_pressed() {
 	ERR_FAIL_COND(selected_indices.empty());
 	int scene_id = scene_tiles_list->get_item_metadata(selected_indices[0]);
 
-	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 	undo_redo->create_action(TTR("Remove a Scene Tile"));
 	undo_redo->add_do_method(tile_set_scenes_collection_source, "remove_scene_tile", scene_id);
 	undo_redo->add_undo_method(tile_set_scenes_collection_source, "create_scene_tile", tile_set_scenes_collection_source->get_scene_tile_scene(scene_id), scene_id);
@@ -333,7 +336,7 @@ void LayeredTileSetScenesCollectionSourceEditor::_update_scenes_list() {
 			Variant udata = i;
 			EditorResourcePreview::get_singleton()->queue_edited_resource_preview(scene, this, "_scene_thumbnail_done", udata);
 		} else {
-			item_index = scene_tiles_list->add_item(TTR("Tile with Invalid Scene"), get_editor_theme_icon(SNAME("PackedScene")));
+			item_index = scene_tiles_list->add_item(TTR("Tile with Invalid Scene"), get_theme_icon(SNAME("PackedScene"), "EditorIcons"));
 		}
 		scene_tiles_list->set_item_metadata(item_index, scene_id);
 
@@ -370,8 +373,8 @@ void LayeredTileSetScenesCollectionSourceEditor::_notification(int p_what) {
 		} break;
 
 		case NOTIFICATION_THEME_CHANGED: {
-			scene_tile_add_button->set_icon(get_editor_theme_icon(SNAME("Add")));
-			scene_tile_delete_button->set_icon(get_editor_theme_icon(SNAME("Remove")));
+			scene_tile_add_button->set_icon(get_theme_icon(SNAME("Add"), "EditorIcons"));
+			scene_tile_delete_button->set_icon(get_theme_icon(SNAME("Remove"), "EditorIcons"));
 			_update_scenes_list();
 		} break;
 
@@ -460,7 +463,7 @@ void LayeredTileSetScenesCollectionSourceEditor::_drop_data_fw(const Point2 &p_p
 			Ref<PackedScene> resource = ResourceLoader::load(files[i]);
 			if (resource.is_valid()) {
 				int scene_id = tile_set_scenes_collection_source->get_next_scene_tile_id();
-				EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+				UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 				undo_redo->create_action(TTR("Add a Scene Tile"));
 				undo_redo->add_do_method(tile_set_scenes_collection_source, "create_scene_tile", resource, scene_id);
 				undo_redo->add_undo_method(tile_set_scenes_collection_source, "remove_scene_tile", scene_id);
