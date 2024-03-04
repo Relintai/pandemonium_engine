@@ -898,6 +898,19 @@ public:
 		return (intersections & 1);
 	}
 
+	static bool is_segment_intersecting_polygon(const Vector2 &p_from, const Vector2 &p_to, const Vector<Vector2> &p_polygon) {
+		int c = p_polygon.size();
+		const Vector2 *p = p_polygon.ptr();
+		for (int i = 0; i < c; i++) {
+			const Vector2 &v1 = p[i];
+			const Vector2 &v2 = p[(i + 1) % c];
+			if (segment_intersects_segment_2d(p_from, p_to, v1, v2, nullptr)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	static PoolVector<PoolVector<Face3>> separate_objects(PoolVector<Face3> p_array);
 
 	// Create a "wrap" that encloses the given geometry.

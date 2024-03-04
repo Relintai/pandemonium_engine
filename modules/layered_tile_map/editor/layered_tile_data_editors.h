@@ -168,6 +168,8 @@ private:
 	void _set_snap_option(int p_index);
 	void _store_snap_options();
 	void _toggle_expand(bool p_expand);
+	void _snap_subdivision_value_changed(real_t p_value);
+	void _editor_zoom_widget_zoom_changed(real_t p_value);
 
 	void _snap_to_tile_shape(Point2 &r_point, float &r_current_snapped_dist, float p_snap_dist);
 	void _snap_point(Point2 &r_point);
@@ -224,7 +226,7 @@ private:
 	HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> drag_modified;
 	Variant drag_painted_value;
 
-	void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field);
+	void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing = false);
 
 protected:
 	DummyObject *dummy_object = memnew(DummyObject);
@@ -233,6 +235,7 @@ protected:
 	String property;
 	Variant::Type property_type;
 	void _notification(int p_what);
+	static void _bind_methods();
 
 	virtual Variant _get_painted_value();
 	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
@@ -316,7 +319,7 @@ class TileDataCollisionEditor : public TileDataDefaultEditor {
 	DummyObject *dummy_object = memnew(DummyObject);
 	HashMap<StringName, EditorProperty *> property_editors;
 
-	void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field);
+	void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing = false);
 	void _property_selected(const StringName &p_path, int p_focusable);
 	void _polygons_changed();
 
@@ -330,6 +333,7 @@ protected:
 	virtual void _tile_set_changed();
 
 	void _notification(int p_what);
+	static void _bind_methods();
 
 public:
 	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
@@ -368,7 +372,7 @@ private:
 	EditorPropertyEnum *terrain_set_property_editor = nullptr;
 	EditorPropertyEnum *terrain_property_editor = nullptr;
 
-	void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field);
+	void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing = false);
 
 	void _update_terrain_selector();
 
@@ -376,6 +380,7 @@ protected:
 	virtual void _tile_set_changed();
 
 	void _notification(int p_what);
+	static void _bind_methods();
 
 public:
 	virtual Control *get_toolbar() override { return toolbar; };
