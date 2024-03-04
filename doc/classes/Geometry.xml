@@ -9,7 +9,7 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="brenzenham_line">
+		<method name="bresenham_line">
 			<return type="PoolVector2iArray" />
 			<argument index="0" name="x0" type="int" />
 			<argument index="1" name="x1" type="int" />

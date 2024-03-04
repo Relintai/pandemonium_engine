@@ -514,7 +514,7 @@ public:
 
 	Dictionary make_atlas(const Vector<Size2> &p_rects);
 
-	PoolVector2iArray brenzenham_line(int x0, int x1, int y0, int y1);
+	PoolVector2iArray bresenham_line(int x0, int x1, int y0, int y1);
 
 	_Geometry();
 };

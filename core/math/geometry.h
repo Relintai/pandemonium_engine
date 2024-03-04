@@ -1045,7 +1045,7 @@ public:
 	static bool convex_hull_intersects_convex_hull(const Plane *p_planes_a, int p_plane_count_a, const Plane *p_planes_b, int p_plane_count_b);
 	static real_t calculate_convex_hull_volume(const Geometry::MeshData &p_md);
 
-	static _FORCE_INLINE_ Vector<Point2i> brenzenham_line(int x0, int x1, int y0, int y1) {
+	static _FORCE_INLINE_ Vector<Point2i> bresenham_line(int x0, int x1, int y0, int y1) {
 		Vector<Point2i> points;
 
 		float dx = ABS(x1 - x0);
@@ -1088,7 +1088,7 @@ public:
 		return points;
 	}
 
-	static _FORCE_INLINE_ PoolVector2iArray brenzenham_line_pv(int x0, int x1, int y0, int y1) {
+	static _FORCE_INLINE_ PoolVector2iArray bresenham_line_pv(int x0, int x1, int y0, int y1) {
 		PoolVector2iArray points;
 
 		float dx = ABS(x1 - x0);
