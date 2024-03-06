@@ -698,6 +698,10 @@ public:
 	// Base properties.
 	void set_texture(Ref<Texture> p_texture);
 	Ref<Texture> get_texture() const;
+
+	void set_normal_texture(Ref<Texture> p_texture);
+	Ref<Texture> get_normal_texture() const;
+
 	void set_margins(Vector2i p_margins);
 	Vector2i get_margins() const;
 	void set_separation(Vector2i p_separation);

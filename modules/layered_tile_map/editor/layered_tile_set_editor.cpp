@@ -90,7 +90,7 @@ bool LayeredTileSetEditor::_can_drop_data_fw(const Point2 &p_point, const Varian
 			for (int i = 0; i < files.size(); i++) {
 				String ftype = EditorFileSystem::get_singleton()->get_file_type(files[i]);
 
-				if (!ClassDB::is_parent_class(ftype, "Texture2D")) {
+				if (!ClassDB::is_parent_class(ftype, "Texture")) {
 					return false;
 				}
 			}
@@ -304,7 +304,7 @@ void LayeredTileSetEditor::_source_add_id_pressed(int p_id_pressed) {
 				texture_file_dialog->connect("files_selected", callable_mp(this, &LayeredTileSetEditor::_load_texture_files));
 
 				List<String> extensions;
-				ResourceLoader::get_recognized_extensions_for_type("Texture2D", &extensions);
+				ResourceLoader::get_recognized_extensions_for_type("Texture", &extensions);
 				for (const String &E : extensions) {
 					texture_file_dialog->add_filter("*." + E, E.to_upper());
 				}

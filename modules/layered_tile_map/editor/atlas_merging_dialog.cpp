@@ -200,7 +200,7 @@ void AtlasMergingDialog::_merge_confirmed(const String &p_path) {
 
 	ResourceLoader::import(p_path);
 
-	Ref<Texture> new_texture_resource = ResourceLoader::load(p_path, "Texture2D");
+	Ref<Texture> new_texture_resource = ResourceLoader::load(p_path, "Texture");
 	merged->set_texture(new_texture_resource);
 
 	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();

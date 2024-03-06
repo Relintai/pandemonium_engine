@@ -50,7 +50,7 @@
 			</description>
 		</method>
 		<method name="get_runtime_texture" qualifiers="const">
-			<return type="Texture2D" />
+			<return type="Texture" />
 			<description>
 				If [member use_texture_padding] is [code]false[/code], returns [member texture]. Otherwise, returns and internal [ImageTexture] created that includes the padding.
 			</description>
@@ -146,7 +146,7 @@
 		</method>
 		<method name="get_tiles_to_be_removed_on_change">
 			<return type="PoolVector2Array" />
-			<param index="0" name="texture" type="Texture2D" />
+			<param index="0" name="texture" type="Texture" />
 			<param index="1" name="margins" type="Vector2i" />
 			<param index="2" name="separation" type="Vector2i" />
 			<param index="3" name="texture_region_size" type="Vector2i" />
@@ -266,7 +266,7 @@
 		<member name="separation" type="Vector2i" setter="set_separation" getter="get_separation" default="Vector2i(0, 0)">
 			Separation, in pixels, between each tile texture region of the grid.
 		</member>
-		<member name="texture" type="Texture2D" setter="set_texture" getter="get_texture">
+		<member name="texture" type="Texture" setter="set_texture" getter="get_texture">
 			The atlas texture.
 		</member>
 		<member name="texture_region_size" type="Vector2i" setter="set_texture_region_size" getter="get_texture_region_size" default="Vector2i(16, 16)">

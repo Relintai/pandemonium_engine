@@ -4715,6 +4715,13 @@ Ref<Texture> LayeredTileSetAtlasSource::get_texture() const {
 	return texture;
 }
 
+void LayeredTileSetAtlasSource::set_normal_texture(Ref<Texture> p_texture) {
+	normal_texture = p_texture;
+}
+Ref<Texture> LayeredTileSetAtlasSource::get_normal_texture() const {
+	return normal_texture;
+}
+
 void LayeredTileSetAtlasSource::set_margins(Vector2i p_margins) {
 	if (p_margins.x < 0 || p_margins.y < 0) {
 		WARN_PRINT("Atlas source margins should be positive.");
@@ -5526,6 +5533,10 @@ LayeredTileData *LayeredTileSetAtlasSource::get_tile_data(const Vector2i p_atlas
 void LayeredTileSetAtlasSource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_texture", "texture"), &LayeredTileSetAtlasSource::set_texture);
 	ClassDB::bind_method(D_METHOD("get_texture"), &LayeredTileSetAtlasSource::get_texture);
+
+	ClassDB::bind_method(D_METHOD("set_normal_texture", "texture"), &LayeredTileSetAtlasSource::set_normal_texture);
+	ClassDB::bind_method(D_METHOD("get_normal_texture"), &LayeredTileSetAtlasSource::get_normal_texture);
+
 	ClassDB::bind_method(D_METHOD("set_margins", "margins"), &LayeredTileSetAtlasSource::set_margins);
 	ClassDB::bind_method(D_METHOD("get_margins"), &LayeredTileSetAtlasSource::get_margins);
 	ClassDB::bind_method(D_METHOD("set_separation", "separation"), &LayeredTileSetAtlasSource::set_separation);
@@ -5535,7 +5546,8 @@ void LayeredTileSetAtlasSource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_use_texture_padding", "use_texture_padding"), &LayeredTileSetAtlasSource::set_use_texture_padding);
 	ClassDB::bind_method(D_METHOD("get_use_texture_padding"), &LayeredTileSetAtlasSource::get_use_texture_padding);
 
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture2D", PROPERTY_USAGE_NOEDITOR), "set_texture", "get_texture");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture", PROPERTY_USAGE_NOEDITOR), "set_texture", "get_texture");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "normal_texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture", PROPERTY_USAGE_NOEDITOR), "set_normal_texture", "get_normal_texture");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "margins", PROPERTY_HINT_NONE, "suffix:px", PROPERTY_USAGE_NOEDITOR), "set_margins", "get_margins");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "separation", PROPERTY_HINT_NONE, "suffix:px", PROPERTY_USAGE_NOEDITOR), "set_separation", "get_separation");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "texture_region_size", PROPERTY_HINT_NONE, "suffix:px", PROPERTY_USAGE_NOEDITOR), "set_texture_region_size", "get_texture_region_size");

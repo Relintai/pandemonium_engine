@@ -119,7 +119,9 @@ private:
 
 	void _update_toolbar();
 	void _update_transform_buttons();
-	void _set_transform_buttons_state(const Vector<Button *> &p_enabled_buttons, const Vector<Button *> &p_disabled_buttons, const String &p_why_disabled);
+
+	void _set_transform_button_state_enabled(Button *p_button);
+	void _set_transform_button_state_disabled(Button *p_button, const String &p_why_disabled);
 
 	///// Tilemap editing. /////
 	bool has_mouse = false;
