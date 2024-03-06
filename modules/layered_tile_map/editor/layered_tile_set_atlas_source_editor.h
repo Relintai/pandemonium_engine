@@ -248,7 +248,7 @@ private:
 	void _tile_atlas_control_unscaled_draw();
 	void _tile_atlas_control_mouse_exited();
 	void _tile_atlas_control_gui_input(const Ref<InputEvent> &p_event);
-	void _tile_atlas_view_transform_changed();
+	void _tile_atlas_view_transform_changed(real_t p_zoom = 0, Vector2 p_scroll = Vector2());
 
 	// A control over the alternative tiles.
 	Vector3i hovered_alternative_tile_coords = Vector3i(LayeredTileSetSource::INVALID_ATLAS_COORDS.x, LayeredTileSetSource::INVALID_ATLAS_COORDS.y, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE);
@@ -277,7 +277,7 @@ private:
 	void _auto_create_tiles();
 	void _auto_remove_tiles();
 	void _cancel_auto_create_tiles();
-	AcceptDialog *confirm_auto_create_tiles = nullptr;
+	ConfirmationDialog *confirm_auto_create_tiles = nullptr;
 	Vector<Ref<LayeredTileSetAtlasSource>> atlases_to_auto_create_tiles;
 	Vector2i _get_drag_offset_tile_coords(const Vector2i &p_offset) const;
 
@@ -292,6 +292,8 @@ private:
 	void _undo_redo_inspector_callback(Object *p_undo_redo, Object *p_edited, const String &p_property, const Variant &p_new_value);
 
 protected:
+	void _tools_button_group_pressed();
+
 	void _notification(int p_what);
 	static void _bind_methods();
 
@@ -323,6 +325,9 @@ public:
 	void setup_single_mode(const StringName &p_property, const String &p_base_type);
 	void setup_multiple_mode(const StringName &p_property, const StringName &p_count_property, const String &p_element_pattern, const String &p_base_type);
 	EditorPropertyTilePolygon();
+
+protected:
+	static void _bind_methods();
 };
 
 class EditorInspectorPluginTileData : public EditorInspectorPlugin {
