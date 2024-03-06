@@ -71,6 +71,8 @@ public:
 		int source_id = LayeredTileSet::INVALID_SOURCE;
 
 	protected:
+		void _changed_callback(Object *p_changed, const char *p_prop);
+
 		bool _set(const StringName &p_name, const Variant &p_value);
 		bool _get(const StringName &p_name, Variant &r_ret) const;
 		void _get_property_list(List<PropertyInfo> *p_list) const;
@@ -331,7 +333,7 @@ class EditorInspectorPluginTileData : public EditorInspectorPlugin {
 
 public:
 	virtual bool can_handle(Object *p_object);
-	virtual bool parse_property(Object *p_object, const Variant::Type p_type, const String &p_path, const PropertyHint p_hint, const String &p_hint_text, const BitField<PropertyUsageFlags> p_usage, const bool p_wide = false);
+	virtual bool parse_property(Object *p_object, Variant::Type p_type, const String &p_path, PropertyHint p_hint, const String &p_hint_text, int p_usage);
 };
 
 #endif // TILE_SET_ATLAS_SOURCE_EDITOR_H

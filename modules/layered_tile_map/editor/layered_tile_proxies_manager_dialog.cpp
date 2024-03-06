@@ -33,21 +33,24 @@
 
 #include "editor/editor_properties.h"
 
-#include "editor/editor_settings.h"
 #include "editor/editor_scale.h"
+#include "editor/editor_settings.h"
 #include "scene/gui/dialogs.h"
+#include "scene/gui/label.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
 
+#include "editor/editor_node.h"
+
 #include "core/object/undo_redo.h"
 
-void LayeredTileProxiesManagerDialog::_right_clicked(int p_item, Vector2 p_local_mouse_pos, MouseButton p_mouse_button_index, Object *p_item_list) {
-	if (p_mouse_button_index != MouseButton::RIGHT) {
+void LayeredTileProxiesManagerDialog::_right_clicked(int p_item, Vector2 p_local_mouse_pos, int p_mouse_button_index, Object *p_item_list) {
+	if (p_mouse_button_index != BUTTON_RIGHT) {
 		return;
 	}
 
 	ItemList *item_list = Object::cast_to<ItemList>(p_item_list);
-	popup_menu->reset_size();
+	popup_menu->set_size(Size2());
 	popup_menu->set_position(get_position() + item_list->get_global_mouse_position());
 	popup_menu->popup();
 }
@@ -102,7 +105,8 @@ void LayeredTileProxiesManagerDialog::_update_lists() {
 	for (int i = 0; i < proxies.size(); i++) {
 		Array proxy = proxies[i];
 		String text = vformat("%s", proxy[0]).rpad(5) + "-> " + vformat("%s", proxy[1]);
-		int id = source_level_list->add_item(text);
+		source_level_list->add_item(text);
+		int id = source_level_list->get_item_count() - 1;
 		source_level_list->set_item_metadata(id, proxy[0]);
 	}
 
@@ -110,7 +114,8 @@ void LayeredTileProxiesManagerDialog::_update_lists() {
 	for (int i = 0; i < proxies.size(); i++) {
 		Array proxy = proxies[i];
 		String text = vformat("%s, %s", proxy[0], proxy[1]).rpad(17) + "-> " + vformat("%s, %s", proxy[2], proxy[3]);
-		int id = coords_level_list->add_item(text);
+		coords_level_list->add_item(text);
+		int id = coords_level_list->get_item_count() - 1;
 		coords_level_list->set_item_metadata(id, proxy.slice(0, 2));
 	}
 
@@ -118,7 +123,8 @@ void LayeredTileProxiesManagerDialog::_update_lists() {
 	for (int i = 0; i < proxies.size(); i++) {
 		Array proxy = proxies[i];
 		String text = vformat("%s, %s, %s", proxy[0], proxy[1], proxy[2]).rpad(24) + "-> " + vformat("%s, %s, %s", proxy[3], proxy[4], proxy[5]);
-		int id = alternative_level_list->add_item(text);
+		alternative_level_list->add_item(text);
+		int id = alternative_level_list->get_item_count() - 1;
 		alternative_level_list->set_item_metadata(id, proxy.slice(0, 3));
 	}
 }
@@ -260,13 +266,17 @@ bool LayeredTileProxiesManagerDialog::_set(const StringName &p_name, const Varia
 	if (p_name == "from_source") {
 		from.source_id = MAX(int(p_value), -1);
 	} else if (p_name == "from_coords") {
-		from.set_atlas_coords(Vector2i(p_value).max(Vector2i(-1, -1)));
+		Vector2i v = p_value;
+
+		from.set_atlas_coords(v.max(Vector2i(-1, -1)));
 	} else if (p_name == "from_alternative") {
 		from.alternative_tile = MAX(int(p_value), -1);
 	} else if (p_name == "to_source") {
 		to.source_id = MAX(int(p_value), 0);
 	} else if (p_name == "to_coords") {
-		to.set_atlas_coords(Vector2i(p_value).max(Vector2i(0, 0)));
+		Vector2i v = p_value;
+
+		to.set_atlas_coords(v.max(Vector2i(0, 0)));
 	} else if (p_name == "to_alternative") {
 		to.alternative_tile = MAX(int(p_value), 0);
 	} else {
@@ -304,7 +314,7 @@ void LayeredTileProxiesManagerDialog::_unhandled_key_input(Ref<InputEvent> p_eve
 		}
 
 		if (popup_menu->activate_item_by_event(p_event, false)) {
-			set_input_as_handled();
+			get_tree()->set_input_as_handled();
 		}
 	}
 }
@@ -320,6 +330,12 @@ void LayeredTileProxiesManagerDialog::cancel_pressed() {
 void LayeredTileProxiesManagerDialog::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_update_lists"), &LayeredTileProxiesManagerDialog::_update_lists);
 	ClassDB::bind_method(D_METHOD("_unhandled_key_input"), &LayeredTileProxiesManagerDialog::_unhandled_key_input);
+	ClassDB::bind_method(D_METHOD("_right_clicked"), &LayeredTileProxiesManagerDialog::_right_clicked);
+	ClassDB::bind_method(D_METHOD("_menu_id_pressed"), &LayeredTileProxiesManagerDialog::_menu_id_pressed);
+	ClassDB::bind_method(D_METHOD("_property_changed"), &LayeredTileProxiesManagerDialog::_property_changed);
+	ClassDB::bind_method(D_METHOD("_add_button_pressed"), &LayeredTileProxiesManagerDialog::_add_button_pressed);
+	ClassDB::bind_method(D_METHOD("_clear_invalid_button_pressed"), &LayeredTileProxiesManagerDialog::_clear_invalid_button_pressed);
+	ClassDB::bind_method(D_METHOD("_clear_all_button_pressed"), &LayeredTileProxiesManagerDialog::_clear_all_button_pressed);
 }
 
 void LayeredTileProxiesManagerDialog::update_tile_set(Ref<LayeredTileSet> p_tile_set) {
@@ -348,11 +364,10 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	vbox_container->add_child(source_level_label);
 
 	source_level_list = memnew(ItemList);
-	source_level_list->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	source_level_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	source_level_list->set_select_mode(ItemList::SELECT_MULTI);
 	source_level_list->set_allow_rmb_select(true);
-	source_level_list->connect("item_clicked", callable_mp(this, &LayeredTileProxiesManagerDialog::_right_clicked).bind(source_level_list));
+	source_level_list->connect("item_clicked", this, "_right_clicked", varray(source_level_list));
 	vbox_container->add_child(source_level_list);
 
 	Label *coords_level_label = memnew(Label);
@@ -360,11 +375,10 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	vbox_container->add_child(coords_level_label);
 
 	coords_level_list = memnew(ItemList);
-	coords_level_list->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	coords_level_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	coords_level_list->set_select_mode(ItemList::SELECT_MULTI);
 	coords_level_list->set_allow_rmb_select(true);
-	coords_level_list->connect("item_clicked", callable_mp(this, &LayeredTileProxiesManagerDialog::_right_clicked).bind(coords_level_list));
+	coords_level_list->connect("item_clicked", this, "_right_clicked", varray(coords_level_list));
 	vbox_container->add_child(coords_level_list);
 
 	Label *alternative_level_label = memnew(Label);
@@ -372,16 +386,15 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	vbox_container->add_child(alternative_level_label);
 
 	alternative_level_list = memnew(ItemList);
-	alternative_level_list->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	alternative_level_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	alternative_level_list->set_select_mode(ItemList::SELECT_MULTI);
 	alternative_level_list->set_allow_rmb_select(true);
-	alternative_level_list->connect("item_clicked", callable_mp(this, &LayeredTileProxiesManagerDialog::_right_clicked).bind(alternative_level_list));
+	alternative_level_list->connect("item_clicked", this, "_right_clicked", varray(alternative_level_list));
 	vbox_container->add_child(alternative_level_list);
 
 	popup_menu = memnew(PopupMenu);
 	popup_menu->add_shortcut(ED_GET_SHORTCUT("ui_text_delete"));
-	popup_menu->connect("id_pressed", callable_mp(this, &LayeredTileProxiesManagerDialog::_menu_id_pressed));
+	popup_menu->connect("id_pressed", this, "_menu_id_pressed");
 	add_child(popup_menu);
 
 	// Add proxy panel.
@@ -403,16 +416,16 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	source_from_property_editor = memnew(EditorPropertyInteger);
 	source_from_property_editor->set_label(TTR("From Source"));
 	source_from_property_editor->set_object_and_property(this, "from_source");
-	source_from_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
+	source_from_property_editor->connect("property_changed", this, "_property_changed");
 	source_from_property_editor->set_selectable(false);
 	source_from_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-	source_from_property_editor->setup(-1, 99999, 1, false, true, false);
+	source_from_property_editor->setup(-1, 99999, 1, true, false);
 	vboxcontainer_from->add_child(source_from_property_editor);
 
 	coords_from_property_editor = memnew(EditorPropertyVector2i);
 	coords_from_property_editor->set_label(TTR("From Coords"));
 	coords_from_property_editor->set_object_and_property(this, "from_coords");
-	coords_from_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
+	coords_from_property_editor->connect("property_changed", this, "_property_changed");
 	coords_from_property_editor->set_selectable(false);
 	coords_from_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	coords_from_property_editor->setup(-1, 99999, true);
@@ -422,10 +435,11 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	alternative_from_property_editor = memnew(EditorPropertyInteger);
 	alternative_from_property_editor->set_label(TTR("From Alternative"));
 	alternative_from_property_editor->set_object_and_property(this, "from_alternative");
-	alternative_from_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
+	alternative_from_property_editor->connect("property_changed", this, "_property_changed");
 	alternative_from_property_editor->set_selectable(false);
 	alternative_from_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-	alternative_from_property_editor->setup(-1, 99999, 1, false, true, false);
+	alternative_from_property_editor->setup(-1, 99999, 1, true, false);
+	void setup(int64_t p_min, int64_t p_max, int64_t p_step, bool p_allow_greater, bool p_allow_lesser);
 	alternative_from_property_editor->hide();
 	vboxcontainer_from->add_child(alternative_from_property_editor);
 
@@ -437,16 +451,16 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	source_to_property_editor = memnew(EditorPropertyInteger);
 	source_to_property_editor->set_label(TTR("To Source"));
 	source_to_property_editor->set_object_and_property(this, "to_source");
-	source_to_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
+	source_to_property_editor->connect("property_changed", this, "_property_changed");
 	source_to_property_editor->set_selectable(false);
 	source_to_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-	source_to_property_editor->setup(-1, 99999, 1, false, true, false);
+	source_to_property_editor->setup(-1, 99999, 1, true, false);
 	vboxcontainer_to->add_child(source_to_property_editor);
 
 	coords_to_property_editor = memnew(EditorPropertyVector2i);
 	coords_to_property_editor->set_label(TTR("To Coords"));
 	coords_to_property_editor->set_object_and_property(this, "to_coords");
-	coords_to_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
+	coords_to_property_editor->connect("property_changed", this, "_property_changed");
 	coords_to_property_editor->set_selectable(false);
 	coords_to_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	coords_to_property_editor->setup(-1, 99999, true);
@@ -456,17 +470,17 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	alternative_to_property_editor = memnew(EditorPropertyInteger);
 	alternative_to_property_editor->set_label(TTR("To Alternative"));
 	alternative_to_property_editor->set_object_and_property(this, "to_alternative");
-	alternative_to_property_editor->connect("property_changed", callable_mp(this, &LayeredTileProxiesManagerDialog::_property_changed));
+	alternative_to_property_editor->connect("property_changed", this, "_property_changed");
 	alternative_to_property_editor->set_selectable(false);
 	alternative_to_property_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-	alternative_to_property_editor->setup(-1, 99999, 1, false, true, false);
+	alternative_to_property_editor->setup(-1, 99999, 1, true, false);
 	alternative_to_property_editor->hide();
 	vboxcontainer_to->add_child(alternative_to_property_editor);
 
 	Button *add_button = memnew(Button);
 	add_button->set_text(TTR("Add"));
 	add_button->set_h_size_flags(Control::SIZE_SHRINK_CENTER);
-	add_button->connect("pressed", callable_mp(this, &LayeredTileProxiesManagerDialog::_add_button_pressed));
+	add_button->connect("pressed", this, "_add_button_pressed");
 	vbox_container->add_child(add_button);
 
 	h_separator = memnew(HSeparator);
@@ -483,13 +497,13 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	Button *clear_invalid_button = memnew(Button);
 	clear_invalid_button->set_text(TTR("Clear Invalid"));
 	clear_invalid_button->set_h_size_flags(Control::SIZE_SHRINK_CENTER);
-	clear_invalid_button->connect("pressed", callable_mp(this, &LayeredTileProxiesManagerDialog::_clear_invalid_button_pressed));
+	clear_invalid_button->connect("pressed", this, "_clear_invalid_button_pressed");
 	hboxcontainer->add_child(clear_invalid_button);
 
 	Button *clear_all_button = memnew(Button);
 	clear_all_button->set_text(TTR("Clear All"));
 	clear_all_button->set_h_size_flags(Control::SIZE_SHRINK_CENTER);
-	clear_all_button->connect("pressed", callable_mp(this, &LayeredTileProxiesManagerDialog::_clear_all_button_pressed));
+	clear_all_button->connect("pressed", this, "_clear_all_button_pressed");
 	hboxcontainer->add_child(clear_all_button);
 
 	h_separator = memnew(HSeparator);

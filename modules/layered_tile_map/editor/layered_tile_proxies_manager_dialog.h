@@ -62,7 +62,7 @@ private:
 	EditorPropertyInteger *alternative_to_property_editor = nullptr;
 
 	PopupMenu *popup_menu = nullptr;
-	void _right_clicked(int p_item, Vector2 p_local_mouse_pos, MouseButton p_mouse_button_index, Object *p_item_list);
+	void _right_clicked(int p_item, Vector2 p_local_mouse_pos, int p_mouse_button_index, Object *p_item_list);
 	void _menu_id_pressed(int p_id);
 	void _delete_selected_bindings();
 	void _update_lists();

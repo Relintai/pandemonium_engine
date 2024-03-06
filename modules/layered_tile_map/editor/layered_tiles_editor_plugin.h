@@ -109,6 +109,9 @@ public:
 
 	LayeredTilesEditorUtils();
 	~LayeredTilesEditorUtils();
+
+protected:
+	static void _bind_methods();
 };
 
 class LayeredTileMapEditorPlugin : public EditorPlugin {

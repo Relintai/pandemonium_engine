@@ -208,6 +208,10 @@ private:
 	void _update_atlas_view();
 	void _set_source_sort(int p_sort);
 
+	void _patterns_item_list_item_activated(int item);
+	void _sources_list_item_selected(int item);
+	void _sources_list_item_activated(int item);
+
 	// Scenes collection sources.
 	ItemList *scene_tiles_list = nullptr;
 
@@ -336,6 +340,9 @@ public:
 
 	LayeredTileMapLayerEditorTerrainsPlugin();
 	~LayeredTileMapLayerEditorTerrainsPlugin();
+
+protected:
+	static void _bind_methods();
 };
 
 class LayeredTileMapLayerEditor : public VBoxContainer {

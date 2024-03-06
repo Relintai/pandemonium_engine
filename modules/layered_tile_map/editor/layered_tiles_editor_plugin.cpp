@@ -39,9 +39,9 @@
 #include "../layered_tile_map_layer.h"
 #include "../layered_tile_set.h"
 #include "editor/editor_node.h"
+#include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
-#include "editor/editor_scale.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/separator.h"
@@ -312,6 +312,13 @@ LayeredTilesEditorUtils::~LayeredTilesEditorUtils() {
 		pattern_preview_thread.wait_to_finish();
 	}
 	singleton = nullptr;
+}
+
+void LayeredTilesEditorUtils::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_sources_lists_current"), &LayeredTilesEditorUtils::set_sources_lists_current);
+	ClassDB::bind_method(D_METHOD("display_tile_set_editor_panel"), &LayeredTilesEditorUtils::display_tile_set_editor_panel);
+	ClassDB::bind_method(D_METHOD("synchronize_sources_list"), &LayeredTilesEditorUtils::synchronize_sources_list);
+	ClassDB::bind_method(D_METHOD("set_atlas_view_transform"), &LayeredTilesEditorUtils::set_atlas_view_transform);
 }
 
 void LayeredTileMapEditorPlugin::_tile_map_layer_changed() {
