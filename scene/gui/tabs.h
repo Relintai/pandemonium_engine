@@ -81,6 +81,7 @@ private:
 	int current;
 	int previous;
 	TabAlign tab_align;
+	bool clip_tabs;
 	int rb_hover;
 	bool rb_pressing;
 
@@ -134,6 +135,9 @@ public:
 
 	void set_tab_align(TabAlign p_align);
 	TabAlign get_tab_align() const;
+
+	void set_clip_tabs(bool p_clip_tabs);
+	bool get_clip_tabs() const;
 
 	void move_tab(int from, int to);
 

@@ -80,7 +80,10 @@ Size2 Tabs::get_minimum_size() const {
 		}
 	}
 
-	ms.width = 0; // TODO: should make this optional.
+	if (clip_tabs) {
+		ms.width = 0;
+	}
+
 	return ms;
 }
 
@@ -94,14 +97,14 @@ void Tabs::_gui_input(const Ref<InputEvent> &p_event) {
 			Ref<Texture> incr = get_theme_icon("increment");
 			Ref<Texture> decr = get_theme_icon("decrement");
 
-			int limit = get_size().width - incr->get_width() - decr->get_width();
+			int limit_minus_buttons = get_size().width - incr->get_width() - decr->get_width();
 
-			if (pos.x > limit + decr->get_width()) {
+			if (pos.x > limit_minus_buttons + decr->get_width()) {
 				if (highlight_arrow != 1) {
 					highlight_arrow = 1;
 					update();
 				}
-			} else if (pos.x > limit) {
+			} else if (pos.x > limit_minus_buttons) {
 				if (highlight_arrow != 0) {
 					highlight_arrow = 0;
 					update();
@@ -166,7 +169,7 @@ void Tabs::_gui_input(const Ref<InputEvent> &p_event) {
 				Ref<Texture> incr = get_theme_icon("increment");
 				Ref<Texture> decr = get_theme_icon("decrement");
 
-				int limit = get_size().width - incr->get_width() - decr->get_width();
+				int limit = get_size().width - incr->get_size().width - decr->get_size().width;
 
 				if (pos.x > limit + decr->get_width()) {
 					if (missing_right) {
@@ -272,7 +275,8 @@ void Tabs::_notification(int p_what) {
 			Ref<Texture> incr_hl = get_theme_icon("increment_highlight");
 			Ref<Texture> decr_hl = get_theme_icon("decrement_highlight");
 
-			int limit = get_size().width - incr->get_size().width - decr->get_size().width;
+			int limit = get_size().width;
+			int limit_minus_buttons = get_size().width - incr->get_width() - decr->get_width();
 
 			missing_right = false;
 
@@ -299,7 +303,8 @@ void Tabs::_notification(int p_what) {
 					col = color_bg;
 				}
 
-				if (w + lsize > limit) {
+				int new_width = w + lsize;
+				if (new_width > limit || (i < tabs.size() - 1 && new_width > limit_minus_buttons)) { // For the last tab, we accept if the tab covers the buttons.
 					max_drawn_tab = i - 1;
 					missing_right = true;
 					break;
@@ -380,15 +385,15 @@ void Tabs::_notification(int p_what) {
 				int vofs = (get_size().height - incr->get_size().height) / 2;
 
 				if (offset > 0) {
-					draw_texture(highlight_arrow == 0 ? decr_hl : decr, Point2(limit, vofs));
+					draw_texture(highlight_arrow == 0 ? decr_hl : decr, Point2(limit_minus_buttons, vofs));
 				} else {
-					draw_texture(decr, Point2(limit, vofs), Color(1, 1, 1, 0.5));
+					draw_texture(decr, Point2(limit_minus_buttons, vofs), Color(1, 1, 1, 0.5));
 				}
 
 				if (missing_right) {
-					draw_texture(highlight_arrow == 1 ? incr_hl : incr, Point2(limit + decr->get_size().width, vofs));
+					draw_texture(highlight_arrow == 1 ? incr_hl : incr, Point2(limit_minus_buttons + decr->get_size().width, vofs));
 				} else {
-					draw_texture(incr, Point2(limit + decr->get_size().width, vofs), Color(1, 1, 1, 0.5));
+					draw_texture(incr, Point2(limit_minus_buttons + decr->get_size().width, vofs), Color(1, 1, 1, 0.5));
 				}
 
 				buttons_visible = true;
@@ -549,7 +554,8 @@ void Tabs::_update_cache() {
 	Ref<Font> font = get_theme_font("font");
 	Ref<Texture> incr = get_theme_icon("increment");
 	Ref<Texture> decr = get_theme_icon("decrement");
-	int limit = get_size().width - incr->get_width() - decr->get_width();
+
+	int limit_minus_buttons = get_size().width - incr->get_width() - decr->get_width();
 
 	int w = 0;
 	int mw = 0;
@@ -568,7 +574,7 @@ void Tabs::_update_cache() {
 	}
 	int m_width = min_width;
 	if (count_resize > 0) {
-		m_width = MAX((limit - size_fixed) / count_resize, min_width);
+		m_width = MAX((limit_minus_buttons - size_fixed) / count_resize, min_width);
 	}
 	for (int i = 0; i < tabs.size(); i++) {
 		if (i < offset) {
@@ -584,7 +590,7 @@ void Tabs::_update_cache() {
 		}
 		int lsize = tabs[i].size_cache;
 		int slen = tabs[i].size_text;
-		if (min_width > 0 && mw > limit && i != current) {
+		if (min_width > 0 && mw > limit_minus_buttons && i != current) {
 			if (lsize > m_width) {
 				slen = m_width - (sb->get_margin(MARGIN_LEFT) + sb->get_margin(MARGIN_RIGHT));
 				if (tabs[i].icon.is_valid()) {
@@ -790,6 +796,19 @@ Tabs::TabAlign Tabs::get_tab_align() const {
 	return tab_align;
 }
 
+void Tabs::set_clip_tabs(bool p_clip_tabs) {
+	if (clip_tabs == p_clip_tabs) {
+		return;
+	}
+	clip_tabs = p_clip_tabs;
+	update();
+	minimum_size_changed();
+}
+
+bool Tabs::get_clip_tabs() const {
+	return clip_tabs;
+}
+
 void Tabs::move_tab(int from, int to) {
 	if (from == to) {
 		return;
@@ -857,7 +876,8 @@ void Tabs::_ensure_no_over_offset() {
 	Ref<Texture> incr = get_theme_icon("increment");
 	Ref<Texture> decr = get_theme_icon("decrement");
 
-	int limit = get_size().width - incr->get_width() - decr->get_width();
+	int limit = get_size().width;
+	int limit_minus_buttons = get_size().width - incr->get_width() - decr->get_width();
 
 	while (offset > 0) {
 		int total_w = 0;
@@ -869,7 +889,7 @@ void Tabs::_ensure_no_over_offset() {
 			total_w += tabs[i].size_cache;
 		}
 
-		if (total_w < limit) {
+		if ((buttons_visible && total_w < limit_minus_buttons) || total_w < limit) { // For the last tab, we accept if the tab covers the buttons.
 			offset--;
 			update();
 		} else {
@@ -886,11 +906,13 @@ void Tabs::ensure_tab_visible(int p_idx) {
 	if (tabs.size() == 0) {
 		return;
 	}
+
 	ERR_FAIL_INDEX(p_idx, tabs.size());
 
 	if (p_idx == offset) {
 		return;
 	}
+
 	if (p_idx < offset) {
 		offset = p_idx;
 		update();
@@ -900,9 +922,13 @@ void Tabs::ensure_tab_visible(int p_idx) {
 	int prev_offset = offset;
 	Ref<Texture> incr = get_theme_icon("increment");
 	Ref<Texture> decr = get_theme_icon("decrement");
-	int limit = get_size().width - incr->get_width() - decr->get_width();
+
+	int limit = get_size().width;
+	int limit_minus_buttons = get_size().width - incr->get_width() - decr->get_width();
+
 	for (int i = offset; i <= p_idx; i++) {
-		if (tabs[i].ofs_cache + tabs[i].size_cache > limit) {
+		int total_w = tabs[i].ofs_cache + tabs[i].size_cache;
+		if (total_w > limit || (buttons_visible && total_w > limit_minus_buttons)) {
 			offset++;
 		}
 	}
@@ -984,6 +1010,8 @@ void Tabs::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_tab", "title", "icon"), &Tabs::add_tab, DEFVAL(""), DEFVAL(Ref<Texture>()));
 	ClassDB::bind_method(D_METHOD("set_tab_align", "align"), &Tabs::set_tab_align);
 	ClassDB::bind_method(D_METHOD("get_tab_align"), &Tabs::get_tab_align);
+	ClassDB::bind_method(D_METHOD("set_clip_tabs", "clip_tabs"), &Tabs::set_clip_tabs);
+	ClassDB::bind_method(D_METHOD("get_clip_tabs"), &Tabs::get_clip_tabs);
 	ClassDB::bind_method(D_METHOD("get_tab_offset"), &Tabs::get_tab_offset);
 	ClassDB::bind_method(D_METHOD("get_offset_buttons_visible"), &Tabs::get_offset_buttons_visible);
 	ClassDB::bind_method(D_METHOD("ensure_tab_visible", "idx"), &Tabs::ensure_tab_visible);
@@ -1010,6 +1038,7 @@ void Tabs::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_tab", PROPERTY_HINT_RANGE, "-1,4096,1", PROPERTY_USAGE_EDITOR), "set_current_tab", "get_current_tab");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "tab_align", PROPERTY_HINT_ENUM, "Left,Center,Right"), "set_tab_align", "get_tab_align");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "clip_tabs"), "set_clip_tabs", "get_clip_tabs");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "tab_close_display_policy", PROPERTY_HINT_ENUM, "Show Never,Show Active Only,Show Always"), "set_tab_close_display_policy", "get_tab_close_display_policy");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scrolling_enabled"), "set_scrolling_enabled", "get_scrolling_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "drag_to_rearrange_enabled"), "set_drag_to_rearrange_enabled", "get_drag_to_rearrange_enabled");
@@ -1030,6 +1059,7 @@ Tabs::Tabs() {
 	previous = 0;
 	tab_align = ALIGN_CENTER;
 	rb_hover = -1;
+	clip_tabs = true;
 	rb_pressing = false;
 	highlight_arrow = -1;
 
