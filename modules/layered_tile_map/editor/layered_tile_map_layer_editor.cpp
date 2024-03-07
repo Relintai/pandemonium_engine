@@ -47,6 +47,8 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/split_container.h"
 
+#include "theme_changed_notifier.h"
+
 #include "core/containers/hash_set.h"
 #include "core/input/input.h"
 #include "core/math/geometry.h"
@@ -2451,13 +2453,18 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 
 	// --- Bottom panel tiles ---
 	tiles_bottom_panel = memnew(VBoxContainer);
+
+	tiles_bottom_panel->connect("visibility_changed", this, "_stop_dragging");
+	tiles_bottom_panel->connect("visibility_changed", this, "_tab_changed");
+	tiles_bottom_panel->set_name(TTR("Tiles"));
+
 	// FIXME: This can trigger theme updates when the nodes that we want to update are not yet available.
 	// The toolbar should be extracted to a dedicated control and theme updates should be handled through
 	// the notification.
 	//tiles_bottom_panel->connect("theme_changed", this, "_update_theme");
-	tiles_bottom_panel->connect("visibility_changed", this, "_stop_dragging");
-	tiles_bottom_panel->connect("visibility_changed", this, "_tab_changed");
-	tiles_bottom_panel->set_name(TTR("Tiles"));
+	ThemeChangedNotifier *theme_changed_notifier = memnew(ThemeChangedNotifier);
+	theme_changed_notifier->connect("theme_changed", this, "_update_theme");
+	tiles_bottom_panel->add_child(theme_changed_notifier);
 
 	missing_source_label = memnew(Label);
 	missing_source_label->set_text(TTR("This LayeredTileMap's LayeredTileSet has no source configured. Go to the LayeredTileSet bottom panel to add one."));
@@ -3612,11 +3619,14 @@ void LayeredTileMapLayerEditorTerrainsPlugin::edit(ObjectID p_edited_tile_map_la
 
 LayeredTileMapLayerEditorTerrainsPlugin::LayeredTileMapLayerEditorTerrainsPlugin() {
 	main_vbox_container = memnew(VBoxContainer);
+	main_vbox_container->set_name(TTR("Terrains"));
+
 	// FIXME: This can trigger theme updates when the nodes that we want to update are not yet available.
 	// The toolbar should be extracted to a dedicated control and theme updates should be handled through
 	// the notification.
-	//main_vbox_container->connect("theme_changed", this, "_update_theme");
-	main_vbox_container->set_name(TTR("Terrains"));
+	ThemeChangedNotifier *theme_changed_notifier = memnew(ThemeChangedNotifier);
+	theme_changed_notifier->connect("theme_changed", this, "_update_theme");
+	main_vbox_container->add_child(theme_changed_notifier);
 
 	HSplitContainer *tilemap_tab_terrains = memnew(HSplitContainer);
 	tilemap_tab_terrains->set_h_size_flags(Control::SIZE_EXPAND_FILL);
