@@ -52,6 +52,8 @@
 class LayeredTileMapLayerEditor;
 
 class LayeredTileMapLayerSubEditorPlugin : public Object {
+	GDCLASS(LayeredTileMapLayerSubEditorPlugin, Object);
+
 protected:
 	ObjectID edited_tile_map_layer_id;
 	LayeredTileMapLayer *_get_edited_layer() const;
