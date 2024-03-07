@@ -293,7 +293,7 @@ private:
 	void _undo_redo_inspector_callback(Object *p_undo_redo, Object *p_edited, const String &p_property, const Variant &p_new_value);
 
 protected:
-	void _tools_button_group_pressed();
+	void _tools_button_group_pressed(Object *p_button);
 
 	void _notification(int p_what);
 	static void _bind_methods();

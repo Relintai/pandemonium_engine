@@ -2521,7 +2521,7 @@ void LayeredTileSetAtlasSourceEditor::_notification(int p_what) {
 	}
 }
 
-void LayeredTileSetAtlasSourceEditor::_tools_button_group_pressed() {
+void LayeredTileSetAtlasSourceEditor::_tools_button_group_pressed(Object *p_button) {
 	_update_fix_selected_and_hovered_tiles();
 	_update_tile_id_label();
 	_update_atlas_source_inspector();
