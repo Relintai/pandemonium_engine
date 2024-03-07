@@ -850,8 +850,7 @@ LayeredTileSetEditor::LayeredTileSetEditor() {
 
 	// Tabs.
 	tabs_bar = memnew(Tabs);
-	tabs_bar->set_tab_align(Tabs::ALIGN_CENTER);
-	//tabs_bar->set_clip_tabs(false);
+	tabs_bar->set_clip_tabs(false);
 	tabs_bar->add_tab(TTR("Tiles"));
 	tabs_bar->add_tab(TTR("Patterns"));
 	tabs_bar->connect("tab_changed", this, "_tab_changed");
