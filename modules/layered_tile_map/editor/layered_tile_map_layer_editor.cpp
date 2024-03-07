@@ -2529,7 +2529,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	atlas_sources_split_container->add_child(tile_atlas_view);
 
 	tile_atlas_control = memnew(Control);
-	tile_atlas_control->connect("draw", this, "set_atlas_view_transform");
+	tile_atlas_control->connect("draw", this, "_tile_atlas_control_draw");
 	tile_atlas_control->connect("mouse_exited", this, "_tile_atlas_control_mouse_exited");
 	tile_atlas_control->connect("gui_input", this, "_tile_atlas_control_gui_input");
 	tile_atlas_view->add_control_over_atlas_tiles(tile_atlas_control);
