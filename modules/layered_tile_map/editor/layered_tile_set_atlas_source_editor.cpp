@@ -47,6 +47,7 @@
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
+#include "scene/gui/dialogs.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
@@ -178,7 +179,7 @@ bool LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_set(const St
 		if (alternative == 0) {
 			Vector<String> components = String(p_name).split("/", true, 2);
 			if (p_name == "atlas_coords") {
-				Vector2i as_vector2i = Vector2i(p_value);
+				Vector2i as_vector2i = p_value;
 				bool has_room_for_tile = tile_set_atlas_source->has_room_for_tile(as_vector2i, tile_set_atlas_source->get_tile_size_in_atlas(coords), tile_set_atlas_source->get_tile_animation_columns(coords), tile_set_atlas_source->get_tile_animation_separation(coords), tile_set_atlas_source->get_tile_animation_frames_count(coords), coords);
 				ERR_FAIL_COND_V_MSG(!has_room_for_tile, false, "Cannot move the tile, invalid coordinates or not enough room in the atlas for the tile and its animation frames.");
 
@@ -194,7 +195,7 @@ bool LayeredTileSetAtlasSourceEditor::LayeredAtlasTileProxyObject::_set(const St
 				emit_signal("changed", "atlas_coords");
 				return true;
 			} else if (p_name == "size_in_atlas") {
-				Vector2i as_vector2i = Vector2i(p_value);
+				Vector2i as_vector2i = p_value;
 				bool has_room_for_tile = tile_set_atlas_source->has_room_for_tile(coords, as_vector2i, tile_set_atlas_source->get_tile_animation_columns(coords), tile_set_atlas_source->get_tile_animation_separation(coords), tile_set_atlas_source->get_tile_animation_frames_count(coords), coords);
 				ERR_FAIL_COND_V_MSG(!has_room_for_tile, false, "Invalid size or not enough room in the atlas for the tile.");
 				tile_set_atlas_source->move_tile_in_atlas(coords, LayeredTileSetSource::INVALID_ATLAS_COORDS, as_vector2i);

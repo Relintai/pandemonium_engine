@@ -55,6 +55,8 @@ private:
 		int source_id = -1;
 
 	protected:
+		void _changed_callback(Object *p_changed, const char *p_prop);
+
 		bool _set(const StringName &p_name, const Variant &p_value);
 		bool _get(const StringName &p_name, Variant &r_ret) const;
 		void _get_property_list(List<PropertyInfo> *p_list) const;
@@ -95,8 +97,6 @@ private:
 	};
 
 private:
-	bool read_only = false;
-
 	Ref<LayeredTileSet> tile_set;
 	LayeredTileSetScenesCollectionSource *tile_set_scenes_collection_source = nullptr;
 	int tile_set_source_id = -1;
@@ -135,6 +135,9 @@ private:
 
 	void _drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from);
 	bool _can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const;
+	
+	void _tile_proxy_object_changed(const String &p_what);
+	void _scene_tiles_list_item_selected(int p_index);
 
 protected:
 	void _notification(int p_what);

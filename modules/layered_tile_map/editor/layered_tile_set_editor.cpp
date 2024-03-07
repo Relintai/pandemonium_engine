@@ -472,7 +472,13 @@ void LayeredTileSetEditor::_update_patterns_list() {
 		int id = patterns_item_list->get_item_count() - 1;
 		patterns_item_list->set_item_metadata(id, tile_set->get_pattern(i));
 		patterns_item_list->set_item_tooltip(id, vformat(TTR("Index: %d"), i));
-		LayeredTilesEditorUtils::get_singleton()->queue_pattern_preview(tile_set, tile_set->get_pattern(i), this, "_pattern_preview_done");
+
+		Ref<FuncRef> fref;
+		fref.instance();
+		fref->set_instance(this);
+		fref->set_function("_pattern_preview_done");
+
+		LayeredTilesEditorUtils::get_singleton()->queue_pattern_preview(tile_set, tile_set->get_pattern(i), fref);
 	}
 
 	// Update the label visibility.

@@ -42,6 +42,7 @@ class Popup;
 class LayeredTileSet;
 class Tree;
 class VSeparator;
+class ConfirmationDialog;
 
 class LayeredTileSetAtlasSourceEditor : public HSplitContainer {
 	GDCLASS(LayeredTileSetAtlasSourceEditor, HSplitContainer);

@@ -3773,6 +3773,8 @@ void LayeredTileMapLayerEditor::_notification(int p_what) {
 void LayeredTileMapLayerEditor::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("change_selected_layer_request", PropertyInfo(Variant::STRING_NAME, "layer_name")));
 
+	ClassDB::bind_method(D_METHOD("update_layers_selector"), &LayeredTileMapLayerEditor::update_layers_selector);
+
 	ClassDB::bind_method(D_METHOD("_tile_map_layer_changed"), &LayeredTileMapLayerEditor::_tile_map_layer_changed);
 	ClassDB::bind_method(D_METHOD("_tab_changed"), &LayeredTileMapLayerEditor::_tab_changed);
 	ClassDB::bind_method(D_METHOD("_layers_selection_item_selected"), &LayeredTileMapLayerEditor::_layers_selection_item_selected);

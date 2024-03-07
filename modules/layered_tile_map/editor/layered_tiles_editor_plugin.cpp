@@ -44,8 +44,10 @@
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
+#include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
 #include "scene/main/control.h"
+#include "scene/main/viewport.h"
 #include "scene/resources/texture.h"
 
 LayeredTilesEditorUtils *LayeredTilesEditorUtils::singleton = nullptr;
@@ -53,16 +55,15 @@ LayeredTileMapEditorPlugin *tile_map_plugin_singleton = nullptr;
 LayeredTileSetEditorPlugin *tile_set_plugin_singleton = nullptr;
 
 void LayeredTilesEditorUtils::_preview_frame_started() {
-	RS::get_singleton()->request_frame_drawn_callback(callable_mp(const_cast<LayeredTilesEditorUtils *>(this), &LayeredTilesEditorUtils::_pattern_preview_done));
+	RS::get_singleton()->request_frame_drawn_callback(this, "_pattern_preview_done", Variant());
 }
 
-void LayeredTilesEditorUtils::_pattern_preview_done() {
+void LayeredTilesEditorUtils::_pattern_preview_done(const Variant &p_userdata) {
 	pattern_preview_done.post();
 }
 
 void LayeredTilesEditorUtils::_thread_func(void *ud) {
 	LayeredTilesEditorUtils *te = static_cast<LayeredTilesEditorUtils *>(ud);
-	set_current_thread_safe_for_nodes(true);
 	te->_thread();
 }
 
@@ -85,11 +86,11 @@ void LayeredTilesEditorUtils::_thread() {
 
 			if (item.pattern.is_valid() && !item.pattern->empty()) {
 				// Generate the pattern preview
-				SubViewport *viewport = memnew(SubViewport);
+				Viewport *viewport = memnew(Viewport);
 				viewport->set_size(thumbnail_size2);
 				viewport->set_disable_input(true);
 				viewport->set_transparent_background(true);
-				viewport->set_update_mode(SubViewport::UPDATE_ONCE);
+				viewport->set_update_mode(Viewport::UPDATE_ONCE);
 
 				LayeredTileMap *tile_map = memnew(LayeredTileMap);
 				tile_map->set_tileset(item.tile_set);
@@ -124,31 +125,43 @@ void LayeredTilesEditorUtils::_thread() {
 				tile_map->set_position(-(scale * encompassing_rect.get_center()) + thumbnail_size2 / 2);
 
 				// Add the viewport at the last moment to avoid rendering too early.
-				callable_mp((Node *)EditorNode::get_singleton(), &Node::add_child).call_deferred(viewport, false, Node::INTERNAL_MODE_DISABLED);
 
-				RS::get_singleton()->connect(SNAME("frame_pre_draw"), callable_mp(const_cast<LayeredTilesEditorUtils *>(this), &LayeredTilesEditorUtils::_preview_frame_started), Object::CONNECT_ONE_SHOT);
+				EditorNode::get_singleton()->call_deferred("add_child", viewport);
+
+				RS::get_singleton()->connect("frame_pre_draw", this, "_preview_frame_started", varray(), Object::CONNECT_ONESHOT);
 
 				pattern_preview_done.wait();
 
-				Ref<Image> image = viewport->get_texture()->get_image();
+				Ref<Image> image = viewport->get_texture()->get_data();
 
 				// Find the index for the given pattern. TODO: optimize.
-				item.callback.call(item.pattern, ImageTexture::create_from_image(image));
+				Ref<ImageTexture> tex;
+				tex.instance();
+				tex->create_from_image(image);
 
-				viewport->queue_free();
+				Array arr;
+
+				arr.push_back(item.pattern);
+				arr.push_back(tex);
+
+				item.callback->call_funcv(arr);
+
+				viewport->queue_delete();
 			}
 		}
 	}
 	pattern_thread_exited.set();
 }
 
-void LayeredTilesEditorUtils::queue_pattern_preview(Ref<LayeredTileSet> p_tile_set, Ref<LayeredTileMapPattern> p_pattern, Callable p_callback) {
+void LayeredTilesEditorUtils::queue_pattern_preview(Ref<LayeredTileSet> p_tile_set, Ref<LayeredTileMapPattern> p_pattern, Ref<FuncRef> p_callback) {
 	ERR_FAIL_COND(!p_tile_set.is_valid());
 	ERR_FAIL_COND(!p_pattern.is_valid());
+
 	{
 		MutexLock lock(pattern_preview_mutex);
 		pattern_preview_queue.push_back({ p_tile_set, p_pattern, p_callback });
 	}
+
 	pattern_preview_sem.post();
 }
 
@@ -171,15 +184,15 @@ void LayeredTilesEditorUtils::synchronize_sources_list(Object *p_current_list, O
 	if (item_list->is_visible_in_tree()) {
 		// Make sure the selection is not overwritten after sorting.
 		int atlas_sources_lists_current_mem = atlas_sources_lists_current;
-		item_list->emit_signal(SNAME("sort_request"));
+		item_list->emit_signal("sort_request");
 		atlas_sources_lists_current = atlas_sources_lists_current_mem;
 
 		if (atlas_sources_lists_current < 0 || atlas_sources_lists_current >= item_list->get_item_count()) {
-			item_list->deselect_all();
+			item_list->unselect_all();
 		} else {
 			item_list->set_current(atlas_sources_lists_current);
 			item_list->ensure_current_is_visible();
-			item_list->emit_signal(SNAME("item_selected"), atlas_sources_lists_current);
+			item_list->emit_signal("item_selected", atlas_sources_lists_current);
 		}
 	}
 }
@@ -213,14 +226,14 @@ List<int> LayeredTilesEditorUtils::get_sorted_sources(const Ref<LayeredTileSet> 
 	switch (source_sort) {
 		case SOURCE_SORT_ID_REVERSE:
 			// Already sorted.
-			source_ids.reverse();
+			source_ids.invert();
 			break;
 		case SOURCE_SORT_NAME:
 			source_ids.sort_custom<SourceNameComparator>();
 			break;
 		case SOURCE_SORT_NAME_REVERSE:
 			source_ids.sort_custom<SourceNameComparator>();
-			source_ids.reverse();
+			source_ids.invert();
 			break;
 		default: // SOURCE_SORT_ID
 			break;
@@ -285,7 +298,7 @@ void LayeredTilesEditorUtils::display_tile_set_editor_panel() {
 }
 
 void LayeredTilesEditorUtils::draw_selection_rect(CanvasItem *p_ci, const Rect2 &p_rect, const Color &p_color) {
-	Ref<Texture> selection_texture = EditorNode::get_singleton()->get_editor_theme()->get_icon(SNAME("TileSelection"), EditorStringName(EditorIcons));
+	Ref<Texture> selection_texture = EditorNode::get_singleton()->get_editor_theme()->get_icon("TileSelection", "EditorIcons");
 
 	real_t scale = p_ci->get_global_transform().get_scale().x * 0.5;
 	p_ci->draw_set_transform(p_rect.position, 0, Vector2(1, 1) / scale);
@@ -319,6 +332,8 @@ void LayeredTilesEditorUtils::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("display_tile_set_editor_panel"), &LayeredTilesEditorUtils::display_tile_set_editor_panel);
 	ClassDB::bind_method(D_METHOD("synchronize_sources_list"), &LayeredTilesEditorUtils::synchronize_sources_list);
 	ClassDB::bind_method(D_METHOD("set_atlas_view_transform"), &LayeredTilesEditorUtils::set_atlas_view_transform);
+	ClassDB::bind_method(D_METHOD("_pattern_preview_done"), &LayeredTilesEditorUtils::_pattern_preview_done);
+	ClassDB::bind_method(D_METHOD("_preview_frame_started"), &LayeredTilesEditorUtils::_preview_frame_started);
 }
 
 void LayeredTileMapEditorPlugin::_tile_map_layer_changed() {
@@ -326,7 +341,8 @@ void LayeredTileMapEditorPlugin::_tile_map_layer_changed() {
 		return;
 	}
 	tile_map_changed_needs_update = true;
-	callable_mp(this, &LayeredTileMapEditorPlugin::_update_tile_map).call_deferred();
+
+	call_deferred("_update_tile_map");
 }
 
 void LayeredTileMapEditorPlugin::_tile_map_layer_removed() {
@@ -380,13 +396,14 @@ void LayeredTileMapEditorPlugin::_edit_tile_map_layer(LayeredTileMapLayer *p_til
 
 	// Update the object IDs.
 	tile_map_layer_id = p_tile_map_layer->get_instance_id();
-	p_tile_map_layer->connect("changed", callable_mp(this, &LayeredTileMapEditorPlugin::_tile_map_layer_changed));
-	p_tile_map_layer->connect("tree_exited", callable_mp(this, &LayeredTileMapEditorPlugin::_tile_map_layer_removed));
+	p_tile_map_layer->connect("changed", this, "_tile_map_layer_changed");
+	p_tile_map_layer->connect("tree_exited", this, "_tile_map_layer_removed");
+
 	if (tile_map_layer_group) {
 		tile_map_group_id = tile_map_layer_group->get_instance_id();
-		tile_map_layer_group->connect("child_entered_tree", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector).unbind(1));
-		tile_map_layer_group->connect("child_exiting_tree", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector).unbind(1));
-		tile_map_layer_group->connect("child_order_changed", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector));
+		tile_map_layer_group->connect("child_entered_tree", this, "_tile_map_group_child_tree_changed");
+		tile_map_layer_group->connect("child_exiting_tree", this, "_tile_map_group_child_tree_changed");
+		tile_map_layer_group->connect("child_order_changed", editor, "update_layers_selector");
 	}
 
 	// Update the edited tileset.
@@ -434,18 +451,30 @@ void LayeredTileMapEditorPlugin::_notification(int p_notification) {
 	}
 }
 
+void LayeredTileMapEditorPlugin::_tile_map_group_child_tree_changed(Node *p_node) {
+	editor->update_layers_selector();
+}
+
+void LayeredTileMapEditorPlugin::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_tile_map_layer_changed"), &LayeredTileMapEditorPlugin::_tile_map_layer_changed);
+	ClassDB::bind_method(D_METHOD("_tile_map_layer_removed"), &LayeredTileMapEditorPlugin::_tile_map_layer_removed);
+	ClassDB::bind_method(D_METHOD("_tile_map_group_child_tree_changed"), &LayeredTileMapEditorPlugin::_tile_map_group_child_tree_changed);
+	ClassDB::bind_method(D_METHOD("_update_tile_map"), &LayeredTileMapEditorPlugin::_update_tile_map);
+	ClassDB::bind_method(D_METHOD("_select_layer"), &LayeredTileMapEditorPlugin::_select_layer);
+}
+
 void LayeredTileMapEditorPlugin::edit(Object *p_object) {
 	LayeredTileMapLayer *edited_layer = Object::cast_to<LayeredTileMapLayer>(ObjectDB::get_instance(tile_map_layer_id));
 	if (edited_layer) {
-		edited_layer->disconnect("changed", callable_mp(this, &LayeredTileMapEditorPlugin::_tile_map_layer_changed));
-		edited_layer->disconnect("tree_exited", callable_mp(this, &LayeredTileMapEditorPlugin::_tile_map_layer_removed));
+		edited_layer->disconnect("changed", this, "_tile_map_layer_changed");
+		edited_layer->disconnect("tree_exited", this, "_tile_map_layer_removed");
 	}
 
 	LayeredTileMapLayerGroup *tile_map_group = Object::cast_to<LayeredTileMapLayerGroup>(ObjectDB::get_instance(tile_map_group_id));
 	if (tile_map_group) {
-		tile_map_group->disconnect("child_entered_tree", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector).unbind(1));
-		tile_map_group->disconnect("child_exiting_tree", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector).unbind(1));
-		tile_map_group->disconnect("child_order_changed", callable_mp(editor, &LayeredTileMapLayerEditor::update_layers_selector));
+		tile_map_group->disconnect("child_entered_tree", this, "_tile_map_group_child_tree_changed");
+		tile_map_group->disconnect("child_exiting_tree", this, "_tile_map_group_child_tree_changed");
+		tile_map_group->disconnect("child_order_changed", editor, "update_layers_selector");
 	}
 
 	tile_map_group_id = ObjectID();
@@ -476,11 +505,11 @@ bool LayeredTileMapEditorPlugin::handles(Object *p_object) const {
 void LayeredTileMapEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
 		button->show();
-		EditorNode::get_bottom_panel()->make_item_visible(editor);
+		EditorNode::get_singleton()->make_bottom_panel_item_visible(editor);
 	} else {
 		button->hide();
 		if (editor->is_visible_in_tree()) {
-			EditorNode::get_bottom_panel()->hide_bottom_panel();
+			EditorNode::get_singleton()->hide_bottom_panel();
 		}
 	}
 }
@@ -495,7 +524,7 @@ void LayeredTileMapEditorPlugin::forward_canvas_draw_over_viewport(Control *p_ov
 
 void LayeredTileMapEditorPlugin::hide_editor() {
 	if (editor->is_visible_in_tree()) {
-		EditorNode::get_bottom_panel()->hide_bottom_panel();
+		EditorNode::get_singleton()->hide_bottom_panel();
 	}
 }
 
@@ -503,7 +532,7 @@ bool LayeredTileMapEditorPlugin::is_editor_visible() const {
 	return editor->is_visible_in_tree();
 }
 
-LayeredTileMapEditorPlugin::LayeredTileMapEditorPlugin() {
+LayeredTileMapEditorPlugin::LayeredTileMapEditorPlugin(EditorNode *p_node) {
 	if (!LayeredTilesEditorUtils::get_singleton()) {
 		memnew(LayeredTilesEditorUtils);
 	}
@@ -513,10 +542,10 @@ LayeredTileMapEditorPlugin::LayeredTileMapEditorPlugin() {
 	editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	editor->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	editor->set_custom_minimum_size(Size2(0, 200) * EDSCALE);
-	editor->connect("change_selected_layer_request", callable_mp(this, &LayeredTileMapEditorPlugin::_select_layer));
+	editor->connect("change_selected_layer_request", this, "_select_layer");
 	editor->hide();
 
-	button = EditorNode::get_bottom_panel()->add_item(TTR("LayeredTileMap"), editor);
+	button = EditorNode::get_singleton()->add_bottom_panel_item(TTR("LayeredTileMap"), editor);
 	button->hide();
 }
 
@@ -541,12 +570,12 @@ void LayeredTileSetEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
 		button->show();
 		if (!tile_map_plugin_singleton->is_editor_visible()) {
-			EditorNode::get_bottom_panel()->make_item_visible(editor);
+			EditorNode::get_singleton()->make_bottom_panel_item_visible(editor);
 		}
 	} else {
 		button->hide();
 		if (editor->is_visible_in_tree()) {
-			EditorNode::get_bottom_panel()->hide_bottom_panel();
+			EditorNode::get_singleton()->hide_bottom_panel();
 		}
 	}
 }
@@ -555,7 +584,7 @@ ObjectID LayeredTileSetEditorPlugin::get_edited_tileset() const {
 	return edited_tileset;
 }
 
-LayeredTileSetEditorPlugin::LayeredTileSetEditorPlugin() {
+LayeredTileSetEditorPlugin::LayeredTileSetEditorPlugin(EditorNode *p_node) {
 	if (!LayeredTilesEditorUtils::get_singleton()) {
 		memnew(LayeredTilesEditorUtils);
 	}
@@ -567,7 +596,7 @@ LayeredTileSetEditorPlugin::LayeredTileSetEditorPlugin() {
 	editor->set_custom_minimum_size(Size2(0, 200) * EDSCALE);
 	editor->hide();
 
-	button = EditorNode::get_bottom_panel()->add_item(TTR("LayeredTileSet"), editor);
+	button = EditorNode::get_singleton()->add_bottom_panel_item(TTR("LayeredTileSet"), editor);
 	button->hide();
 }
 

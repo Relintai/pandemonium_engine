@@ -52,7 +52,7 @@ void register_layered_tile_map_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<LayeredTileSet>();
 		ClassDB::register_class<LayeredTileSetAtlasSource>();
 		ClassDB::register_class<LayeredTileSetScenesCollectionSource>();
-		ClassDB::register_class<LayeredTileSetSource>();
+		ClassDB::register_virtual_class<LayeredTileSetSource>();
 
 		NavigationMeshGenerator::get_singleton()->register_geometry_parser_2d(memnew(LayeredTileMap2DNavigationGeometryParser2D));
 	}

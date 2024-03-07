@@ -35,6 +35,10 @@
 #include "editor/editor_plugin.h"
 #include "scene/gui/box_container.h"
 
+#include "core/os/semaphore.h"
+
+#include "core/object/func_ref.h"
+
 #include "layered_tile_atlas_view.h"
 #include "layered_tile_map_layer_editor.h"
 #include "layered_tile_set_editor.h"
@@ -71,7 +75,7 @@ private:
 	struct QueueItem {
 		Ref<LayeredTileSet> tile_set;
 		Ref<LayeredTileMapPattern> pattern;
-		Callable callback;
+		Ref<FuncRef> callback;
 	};
 	List<QueueItem> pattern_preview_queue;
 	Mutex pattern_preview_mutex;
@@ -81,7 +85,7 @@ private:
 	SafeFlag pattern_thread_exited;
 	Semaphore pattern_preview_done;
 	void _preview_frame_started();
-	void _pattern_preview_done();
+	void _pattern_preview_done(const Variant &p_userdata);
 	static void _thread_func(void *ud);
 	void _thread();
 
@@ -89,7 +93,7 @@ public:
 	_FORCE_INLINE_ static LayeredTilesEditorUtils *get_singleton() { return singleton; }
 
 	// Pattern preview API.
-	void queue_pattern_preview(Ref<LayeredTileSet> p_tile_set, Ref<LayeredTileMapPattern> p_pattern, Callable p_callback);
+	void queue_pattern_preview(Ref<LayeredTileSet> p_tile_set, Ref<LayeredTileMapPattern> p_pattern, Ref<FuncRef> p_callback);
 
 	// To synchronize the atlas sources lists.
 	void set_sources_lists_current(int p_current);
@@ -133,8 +137,12 @@ class LayeredTileMapEditorPlugin : public EditorPlugin {
 	void _edit_tile_map_layer(LayeredTileMapLayer *p_tile_map_layer);
 	void _edit_tile_map_layer_group(LayeredTileMapLayerGroup *p_tile_map_layer_group);
 
+	void _tile_map_group_child_tree_changed(Node *p_node);
+
 protected:
 	void _notification(int p_notification);
+
+	static void _bind_methods();
 
 public:
 	virtual void edit(Object *p_object);
@@ -147,7 +155,7 @@ public:
 	void hide_editor();
 	bool is_editor_visible() const;
 
-	LayeredTileMapEditorPlugin();
+	LayeredTileMapEditorPlugin(EditorNode *p_node);
 	~LayeredTileMapEditorPlugin();
 };
 
@@ -166,7 +174,7 @@ public:
 
 	ObjectID get_edited_tileset() const;
 
-	LayeredTileSetEditorPlugin();
+	LayeredTileSetEditorPlugin(EditorNode *p_node);
 	~LayeredTileSetEditorPlugin();
 };
 
