@@ -320,7 +320,7 @@ void LayeredTileSetEditor::_source_add_id_pressed(int p_id_pressed) {
 					texture_file_dialog->add_filter("*." + E->get() + ";" + E->get().to_upper());
 				}
 			}
-			texture_file_dialog->popup_centered();
+			texture_file_dialog->popup_centered_ratio();
 		} break;
 		case 1: {
 			int source_id = tile_set->get_next_source_id();
