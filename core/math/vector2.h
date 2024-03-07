@@ -37,6 +37,7 @@
 #include "core/error/error_macros.h"
 
 class String;
+struct Vector2i;
 
 struct _NO_DISCARD_CLASS_ Vector2 {
 	static const int AXIS_COUNT = 2;
@@ -180,6 +181,7 @@ struct _NO_DISCARD_CLASS_ Vector2 {
 	real_t aspect() const { return width / height; }
 
 	operator String() const;
+	operator Vector2i() const;
 
 	_FORCE_INLINE_ Vector2(real_t p_x, real_t p_y) {
 		x = p_x;

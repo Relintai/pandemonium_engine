@@ -129,10 +129,6 @@ struct _NO_DISCARD_CLASS_ Vector2i {
 	operator String() const;
 	operator Vector2() const { return Vector2(x, y); }
 
-	inline Vector2i(const Vector2 &p_vec2) {
-		x = (int)p_vec2.x;
-		y = (int)p_vec2.y;
-	}
 	inline Vector2i(int p_x, int p_y) {
 		x = p_x;
 		y = p_y;

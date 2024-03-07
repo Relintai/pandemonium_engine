@@ -32,6 +32,7 @@
 #include "vector2.h"
 
 #include "core/string/ustring.h"
+#include "vector2i.h"
 
 real_t Vector2::angle() const {
 	return Math::atan2(y, x);
@@ -173,4 +174,8 @@ bool Vector2::is_equal_approx(const Vector2 &p_v) const {
 
 Vector2::operator String() const {
 	return "(" + String::num_real(x) + ", " + String::num_real(y) + ")";
+}
+
+Vector2::operator Vector2i() const {
+	return Vector2i(x, y);
 }
