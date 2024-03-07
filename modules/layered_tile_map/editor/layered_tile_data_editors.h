@@ -244,7 +244,7 @@ protected:
 	virtual void _setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value);
 
 public:
-	virtual Control *get_toolbar() override { return toolbar; };
+	virtual Control *get_toolbar() { return toolbar; };
 	virtual void forward_draw_over_atlas(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform);
 	virtual void forward_draw_over_alternatives(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform);
 	virtual void forward_painting_atlas_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event);
@@ -383,7 +383,7 @@ protected:
 	static void _bind_methods();
 
 public:
-	virtual Control *get_toolbar() override { return toolbar; };
+	virtual Control *get_toolbar() { return toolbar; };
 	virtual void forward_draw_over_atlas(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform);
 	virtual void forward_draw_over_alternatives(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform);
 	virtual void forward_painting_atlas_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event);
