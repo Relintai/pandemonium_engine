@@ -33,6 +33,7 @@
 
 #include "editor/editor_properties.h"
 
+#include "core/os/keyboard.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "scene/gui/dialogs.h"
@@ -44,11 +45,7 @@
 
 #include "core/object/undo_redo.h"
 
-void LayeredTileProxiesManagerDialog::_right_clicked(int p_item, Vector2 p_local_mouse_pos, int p_mouse_button_index, Object *p_item_list) {
-	if (p_mouse_button_index != BUTTON_RIGHT) {
-		return;
-	}
-
+void LayeredTileProxiesManagerDialog::_right_clicked(int p_item, Vector2 p_local_mouse_pos, Object *p_item_list) {
 	ItemList *item_list = Object::cast_to<ItemList>(p_item_list);
 	popup_menu->set_size(Size2());
 	popup_menu->set_position(get_position() + item_list->get_global_mouse_position());
@@ -367,7 +364,7 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	source_level_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	source_level_list->set_select_mode(ItemList::SELECT_MULTI);
 	source_level_list->set_allow_rmb_select(true);
-	source_level_list->connect("item_clicked", this, "_right_clicked", varray(source_level_list));
+	source_level_list->connect("item_rmb_selected", this, "_right_clicked", varray(source_level_list));
 	vbox_container->add_child(source_level_list);
 
 	Label *coords_level_label = memnew(Label);
@@ -378,7 +375,7 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	coords_level_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	coords_level_list->set_select_mode(ItemList::SELECT_MULTI);
 	coords_level_list->set_allow_rmb_select(true);
-	coords_level_list->connect("item_clicked", this, "_right_clicked", varray(coords_level_list));
+	coords_level_list->connect("item_rmb_selected", this, "_right_clicked", varray(coords_level_list));
 	vbox_container->add_child(coords_level_list);
 
 	Label *alternative_level_label = memnew(Label);
@@ -389,11 +386,11 @@ LayeredTileProxiesManagerDialog::LayeredTileProxiesManagerDialog() {
 	alternative_level_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	alternative_level_list->set_select_mode(ItemList::SELECT_MULTI);
 	alternative_level_list->set_allow_rmb_select(true);
-	alternative_level_list->connect("item_clicked", this, "_right_clicked", varray(alternative_level_list));
+	alternative_level_list->connect("item_rmb_selected", this, "_right_clicked", varray(alternative_level_list));
 	vbox_container->add_child(alternative_level_list);
 
 	popup_menu = memnew(PopupMenu);
-	popup_menu->add_shortcut(ED_GET_SHORTCUT("ui_text_delete"));
+	popup_menu->add_shortcut(ED_SHORTCUT("layered_tiles_editor/delete", TTR("Delete"), KEY_DELETE));
 	popup_menu->connect("id_pressed", this, "_menu_id_pressed");
 	add_child(popup_menu);
 

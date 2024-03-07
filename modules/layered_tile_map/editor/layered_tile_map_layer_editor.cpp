@@ -324,7 +324,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_patterns_item_list_gui_input(const R
 		return;
 	}
 
-	if (ED_IS_SHORTCUT("tiles_editor/paste", p_event) && p_event->is_pressed() && !p_event->is_echo()) {
+	if (ED_IS_SHORTCUT("layered_tiles_editor/paste", p_event) && p_event->is_pressed() && !p_event->is_echo()) {
 		select_last_pattern = true;
 		int new_pattern_index = tile_set->get_patterns_count();
 		UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
@@ -335,7 +335,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_patterns_item_list_gui_input(const R
 		patterns_item_list->accept_event();
 	}
 
-	if (ED_IS_SHORTCUT("tiles_editor/delete", p_event) && p_event->is_pressed() && !p_event->is_echo()) {
+	if (ED_IS_SHORTCUT("layered_tiles_editor/delete", p_event) && p_event->is_pressed() && !p_event->is_echo()) {
 		Vector<int> selected = patterns_item_list->get_selected_items();
 		UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 		undo_redo->create_action(TTR("Remove LayeredTileSet patterns"));
@@ -516,11 +516,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_scenes_list_multi_selected(int p_ind
 	_update_selection_pattern_from_tileset_tiles_selection();
 }
 
-void LayeredTileMapLayerEditorTilesPlugin::_scenes_list_lmb_empty_clicked(const Vector2 &p_pos, int p_mouse_button_index) {
-	if (p_mouse_button_index != BUTTON_LEFT) {
-		return;
-	}
-
+void LayeredTileMapLayerEditorTilesPlugin::_scenes_list_lmb_empty_clicked() {
 	scene_tiles_list->unselect_all();
 	tile_set_selection.clear();
 	tile_map_selection.clear();
@@ -571,7 +567,7 @@ bool LayeredTileMapLayerEditorTilesPlugin::forward_canvas_gui_input(const Ref<In
 	}
 
 	// Shortcuts
-	if (ED_IS_SHORTCUT("tiles_editor/cut", p_event) || ED_IS_SHORTCUT("tiles_editor/copy", p_event)) {
+	if (ED_IS_SHORTCUT("layered_tiles_editor/cut", p_event) || ED_IS_SHORTCUT("layered_tiles_editor/copy", p_event)) {
 		// Fill in the clipboard.
 		if (!tile_map_selection.empty()) {
 			tile_map_clipboard.instance();
@@ -584,7 +580,7 @@ bool LayeredTileMapLayerEditorTilesPlugin::forward_canvas_gui_input(const Ref<In
 			tile_map_clipboard = edited_layer->get_pattern(coords_array);
 		}
 
-		if (ED_IS_SHORTCUT("tiles_editor/cut", p_event)) {
+		if (ED_IS_SHORTCUT("layered_tiles_editor/cut", p_event)) {
 			// Delete selected tiles.
 			if (!tile_map_selection.empty()) {
 				UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
@@ -606,21 +602,21 @@ bool LayeredTileMapLayerEditorTilesPlugin::forward_canvas_gui_input(const Ref<In
 
 		return true;
 	}
-	if (ED_IS_SHORTCUT("tiles_editor/paste", p_event)) {
+	if (ED_IS_SHORTCUT("layered_tiles_editor/paste", p_event)) {
 		if (drag_type == DRAG_TYPE_NONE) {
 			drag_type = DRAG_TYPE_CLIPBOARD_PASTE;
 		}
 		CanvasItemEditor::get_singleton()->update_viewport();
 		return true;
 	}
-	if (ED_IS_SHORTCUT("tiles_editor/cancel", p_event)) {
+	if (ED_IS_SHORTCUT("layered_tiles_editor/cancel", p_event)) {
 		if (drag_type == DRAG_TYPE_CLIPBOARD_PASTE) {
 			drag_type = DRAG_TYPE_NONE;
 			CanvasItemEditor::get_singleton()->update_viewport();
 			return true;
 		}
 	}
-	if (ED_IS_SHORTCUT("tiles_editor/delete", p_event)) {
+	if (ED_IS_SHORTCUT("layered_tiles_editor/delete", p_event)) {
 		// Delete selected tiles.
 		if (!tile_map_selection.empty()) {
 			UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
@@ -844,7 +840,7 @@ void LayeredTileMapLayerEditorTilesPlugin::forward_canvas_draw_over_viewport(Con
 		if (drag_type == DRAG_TYPE_MOVE || (drag_type == DRAG_TYPE_SELECT && !Input::get_singleton()->is_key_pressed(KEY_META) && !Input::get_singleton()->is_key_pressed(KEY_SHIFT))) {
 			// Do nothing.
 		} else {
-			Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+			Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 			Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 			tile_set->draw_cells_outline(p_overlay, tile_map_selection, selection_color, xform);
 		}
@@ -952,9 +948,9 @@ void LayeredTileMapLayerEditorTilesPlugin::forward_canvas_draw_over_viewport(Con
 			const int fading = 5;
 
 			// Draw the lines of the grid behind the preview.
-			bool display_grid = EDITOR_GET("editors/tiles_editor/display_grid");
+			bool display_grid = EDITOR_GET("editors/layered_tiles_editor/display_grid");
 			if (display_grid) {
-				Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+				Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 				if (drawn_grid_rect.size.x > 0 && drawn_grid_rect.size.y > 0) {
 					drawn_grid_rect = drawn_grid_rect.grow(fading);
 					for (int x = drawn_grid_rect.position.x; x < (drawn_grid_rect.position.x + drawn_grid_rect.size.x); x++) {
@@ -1734,10 +1730,8 @@ void LayeredTileMapLayerEditorTilesPlugin::_fix_invalid_tiles_in_tile_map_select
 		tile_map_selection.erase(cell);
 	}
 }
-void LayeredTileMapLayerEditorTilesPlugin::patterns_item_list_empty_clicked(const Vector2 &p_pos, int p_mouse_button_index) {
-	if (p_mouse_button_index == BUTTON_LEFT) {
-		_update_selection_pattern_from_tileset_pattern_selection();
-	}
+void LayeredTileMapLayerEditorTilesPlugin::patterns_item_list_empty_clicked() {
+	_update_selection_pattern_from_tileset_pattern_selection();
 }
 
 void LayeredTileMapLayerEditorTilesPlugin::_update_selection_pattern_from_tilemap_selection() {
@@ -1906,7 +1900,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_tile_atlas_control_draw() {
 	}
 
 	// Draw the selection.
-	Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+	Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 	Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 	for (const RBSet<LayeredTileMapCell>::Element *E = tile_set_selection.front(); E; E = E->next()) {
 		if (E->get().source_id == source_id && E->get().alternative_tile == 0) {
@@ -2247,7 +2241,6 @@ void LayeredTileMapLayerEditorTilesPlugin::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_tile_alternatives_control_gui_input"), &LayeredTileMapLayerEditorTilesPlugin::_tile_alternatives_control_gui_input);
 	ClassDB::bind_method(D_METHOD("_scenes_list_multi_selected"), &LayeredTileMapLayerEditorTilesPlugin::_scenes_list_multi_selected);
 	ClassDB::bind_method(D_METHOD("_scenes_list_lmb_empty_clicked"), &LayeredTileMapLayerEditorTilesPlugin::_scenes_list_lmb_empty_clicked);
-	ClassDB::bind_method(D_METHOD("_tab_changed"), &LayeredTileMapLayerEditorTilesPlugin::_tab_changed);
 	ClassDB::bind_method(D_METHOD("_patterns_item_list_gui_input"), &LayeredTileMapLayerEditorTilesPlugin::_patterns_item_list_gui_input);
 	ClassDB::bind_method(D_METHOD("patterns_item_list_empty_clicked"), &LayeredTileMapLayerEditorTilesPlugin::patterns_item_list_empty_clicked);
 	ClassDB::bind_method(D_METHOD("_update_tile_set_sources_list"), &LayeredTileMapLayerEditorTilesPlugin::_update_tile_set_sources_list);
@@ -2287,11 +2280,11 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	CanvasItemEditor::get_singleton()->get_viewport_control()->connect("mouse_exited", this, "_mouse_exited_viewport");
 
 	// --- Shortcuts ---
-	ED_SHORTCUT("tiles_editor/cut", TTR("Cut"), KEY_MASK_CMD | KEY_X);
-	ED_SHORTCUT("tiles_editor/copy", TTR("Copy"), KEY_MASK_CMD | KEY_C);
-	ED_SHORTCUT("tiles_editor/paste", TTR("Paste"), KEY_MASK_CMD | KEY_V);
-	ED_SHORTCUT("tiles_editor/cancel", TTR("Cancel"), KEY_ESCAPE);
-	ED_SHORTCUT("tiles_editor/delete", TTR("Delete"), KEY_DELETE);
+	ED_SHORTCUT("layered_tiles_editor/cut", TTR("Cut"), KEY_MASK_CMD | KEY_X);
+	ED_SHORTCUT("layered_tiles_editor/copy", TTR("Copy"), KEY_MASK_CMD | KEY_C);
+	ED_SHORTCUT("layered_tiles_editor/paste", TTR("Paste"), KEY_MASK_CMD | KEY_V);
+	ED_SHORTCUT("layered_tiles_editor/cancel", TTR("Cancel"), KEY_ESCAPE);
+	ED_SHORTCUT("layered_tiles_editor/delete", TTR("Delete"), KEY_DELETE);
 
 	// --- Initialize references ---
 	tile_map_clipboard.instance();
@@ -2308,7 +2301,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	select_tool_button->set_theme_type_variation("FlatButton");
 	select_tool_button->set_toggle_mode(true);
 	select_tool_button->set_button_group(tool_buttons_group);
-	select_tool_button->set_shortcut(ED_SHORTCUT("tiles_editor/selection_tool", TTR("Selection"), KEY_S));
+	select_tool_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/selection_tool", TTR("Selection"), KEY_S));
 	select_tool_button->connect("pressed", this, "_update_toolbar");
 	tilemap_tiles_tools_buttons->add_child(select_tool_button);
 	viewport_shortcut_buttons.push_back(select_tool_button);
@@ -2317,7 +2310,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	paint_tool_button->set_theme_type_variation("FlatButton");
 	paint_tool_button->set_toggle_mode(true);
 	paint_tool_button->set_button_group(tool_buttons_group);
-	paint_tool_button->set_shortcut(ED_SHORTCUT("tiles_editor/paint_tool", TTR("Paint"), KEY_D));
+	paint_tool_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/paint_tool", TTR("Paint"), KEY_D));
 	paint_tool_button->set_tooltip(TTR("Shift: Draw line.") + "\n" + keycode_get_string(KEY_MASK_CMD) + TTR("Shift: Draw rectangle."));
 	paint_tool_button->connect("pressed", this, "_update_toolbar");
 	tilemap_tiles_tools_buttons->add_child(paint_tool_button);
@@ -2328,7 +2321,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	line_tool_button->set_toggle_mode(true);
 	line_tool_button->set_button_group(tool_buttons_group);
 	// TRANSLATORS: This refers to the line tool in the tilemap editor.
-	line_tool_button->set_shortcut(ED_SHORTCUT("tiles_editor/line_tool", TTR("Line", "Tool"), KEY_L));
+	line_tool_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/line_tool", TTR("Line", "Tool"), KEY_L));
 	line_tool_button->connect("pressed", this, "_update_toolbar");
 	tilemap_tiles_tools_buttons->add_child(line_tool_button);
 	viewport_shortcut_buttons.push_back(line_tool_button);
@@ -2337,7 +2330,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	rect_tool_button->set_theme_type_variation("FlatButton");
 	rect_tool_button->set_toggle_mode(true);
 	rect_tool_button->set_button_group(tool_buttons_group);
-	rect_tool_button->set_shortcut(ED_SHORTCUT("tiles_editor/rect_tool", TTR("Rect"), KEY_R));
+	rect_tool_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/rect_tool", TTR("Rect"), KEY_R));
 	rect_tool_button->connect("pressed", this, "_update_toolbar");
 	tilemap_tiles_tools_buttons->add_child(rect_tool_button);
 	viewport_shortcut_buttons.push_back(rect_tool_button);
@@ -2346,7 +2339,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	bucket_tool_button->set_theme_type_variation("FlatButton");
 	bucket_tool_button->set_toggle_mode(true);
 	bucket_tool_button->set_button_group(tool_buttons_group);
-	bucket_tool_button->set_shortcut(ED_SHORTCUT("tiles_editor/bucket_tool", TTR("Bucket"), KEY_B));
+	bucket_tool_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/bucket_tool", TTR("Bucket"), KEY_B));
 	bucket_tool_button->connect("pressed", this, "_update_toolbar");
 	tilemap_tiles_tools_buttons->add_child(bucket_tool_button);
 	toolbar->add_child(tilemap_tiles_tools_buttons);
@@ -2363,7 +2356,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	picker_button = memnew(Button);
 	picker_button->set_theme_type_variation("FlatButton");
 	picker_button->set_toggle_mode(true);
-	picker_button->set_shortcut(ED_SHORTCUT("tiles_editor/picker", TTR("Picker"), KEY_P));
+	picker_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/picker", TTR("Picker"), KEY_P));
 	int key = (OS::get_singleton()->has_feature("macos") || OS::get_singleton()->has_feature("web_macos") || OS::get_singleton()->has_feature("web_ios")) ? KEY_META : KEY_CONTROL;
 	picker_button->set_tooltip(vformat(TTR("Alternatively hold %s with other tools to pick tile."), find_keycode_name(key)));
 	picker_button->connect("pressed", CanvasItemEditor::get_singleton(), "update_viewport");
@@ -2374,7 +2367,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	erase_button = memnew(Button);
 	erase_button->set_theme_type_variation("FlatButton");
 	erase_button->set_toggle_mode(true);
-	erase_button->set_shortcut(ED_SHORTCUT("tiles_editor/eraser", TTR("Eraser"), KEY_E));
+	erase_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/eraser", TTR("Eraser"), KEY_E));
 	erase_button->set_tooltip(TTR("Alternatively use RMB to erase tiles."));
 	erase_button->connect("pressed", CanvasItemEditor::get_singleton(), "update_viewport");
 	tools_settings->add_child(erase_button);
@@ -2387,28 +2380,28 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 
 	transform_button_rotate_left = memnew(Button);
 	transform_button_rotate_left->set_theme_type_variation("FlatButton");
-	transform_button_rotate_left->set_shortcut(ED_SHORTCUT("tiles_editor/rotate_tile_left", TTR("Rotate Tile Left"), KEY_Z));
+	transform_button_rotate_left->set_shortcut(ED_SHORTCUT("layered_tiles_editor/rotate_tile_left", TTR("Rotate Tile Left"), KEY_Z));
 	transform_toolbar->add_child(transform_button_rotate_left);
 	transform_button_rotate_left->connect("pressed", this, "_apply_transform", varray(TRANSFORM_ROTATE_LEFT));
 	viewport_shortcut_buttons.push_back(transform_button_rotate_left);
 
 	transform_button_rotate_right = memnew(Button);
 	transform_button_rotate_right->set_theme_type_variation("FlatButton");
-	transform_button_rotate_right->set_shortcut(ED_SHORTCUT("tiles_editor/rotate_tile_right", TTR("Rotate Tile Right"), KEY_X));
+	transform_button_rotate_right->set_shortcut(ED_SHORTCUT("layered_tiles_editor/rotate_tile_right", TTR("Rotate Tile Right"), KEY_X));
 	transform_toolbar->add_child(transform_button_rotate_right);
 	transform_button_rotate_right->connect("pressed", this, "_apply_transform", varray(TRANSFORM_ROTATE_RIGHT));
 	viewport_shortcut_buttons.push_back(transform_button_rotate_right);
 
 	transform_button_flip_h = memnew(Button);
 	transform_button_flip_h->set_theme_type_variation("FlatButton");
-	transform_button_flip_h->set_shortcut(ED_SHORTCUT("tiles_editor/flip_tile_horizontal", TTR("Flip Tile Horizontally"), KEY_C));
+	transform_button_flip_h->set_shortcut(ED_SHORTCUT("layered_tiles_editor/flip_tile_horizontal", TTR("Flip Tile Horizontally"), KEY_C));
 	transform_toolbar->add_child(transform_button_flip_h);
 	transform_button_flip_h->connect("pressed", this, "_apply_transform", varray(TRANSFORM_FLIP_H));
 	viewport_shortcut_buttons.push_back(transform_button_flip_h);
 
 	transform_button_flip_v = memnew(Button);
 	transform_button_flip_v->set_theme_type_variation("FlatButton");
-	transform_button_flip_v->set_shortcut(ED_SHORTCUT("tiles_editor/flip_tile_vertical", TTR("Flip Tile Vertically"), KEY_V));
+	transform_button_flip_v->set_shortcut(ED_SHORTCUT("layered_tiles_editor/flip_tile_vertical", TTR("Flip Tile Vertically"), KEY_V));
 	transform_toolbar->add_child(transform_button_flip_v);
 	transform_button_flip_v->connect("pressed", this, "_apply_transform", varray(TRANSFORM_FLIP_V));
 	viewport_shortcut_buttons.push_back(transform_button_flip_v);
@@ -2461,7 +2454,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	// FIXME: This can trigger theme updates when the nodes that we want to update are not yet available.
 	// The toolbar should be extracted to a dedicated control and theme updates should be handled through
 	// the notification.
-	tiles_bottom_panel->connect("theme_changed", this, "_update_theme");
+	//tiles_bottom_panel->connect("theme_changed", this, "_update_theme");
 	tiles_bottom_panel->connect("visibility_changed", this, "_stop_dragging");
 	tiles_bottom_panel->connect("visibility_changed", this, "_tab_changed");
 	tiles_bottom_panel->set_name(TTR("Tiles"));
@@ -2511,7 +2504,6 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	sources_list->set_stretch_ratio(0.25);
 	sources_list->set_custom_minimum_size(Size2(70, 0) * EDSCALE);
 	sources_list->connect("item_selected", this, "_sources_list_item_selected");
-	sources_list->connect("item_selected", this, "_sources_list_item_selected");
 	sources_list->connect("item_selected", LayeredTilesEditorUtils::get_singleton(), "set_sources_lists_current");
 	sources_list->connect("item_activated", this, "_sources_list_item_activated");
 	sources_list->connect("visibility_changed", LayeredTilesEditorUtils::get_singleton(), "synchronize_sources_list", varray(sources_list, source_sort_button));
@@ -2547,7 +2539,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	scene_tiles_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	scene_tiles_list->set_select_mode(ItemList::SELECT_MULTI);
 	scene_tiles_list->connect("multi_selected", this, "_scenes_list_multi_selected");
-	scene_tiles_list->connect("empty_clicked", this, "_scenes_list_lmb_empty_clicked");
+	scene_tiles_list->connect("nothing_selected", this, "_scenes_list_lmb_empty_clicked");
 	atlas_sources_split_container->add_child(scene_tiles_list);
 
 	// Invalid source label.
@@ -2576,7 +2568,7 @@ LayeredTileMapLayerEditorTilesPlugin::LayeredTileMapLayerEditorTilesPlugin() {
 	patterns_item_list->connect("gui_input", this, "_patterns_item_list_gui_input");
 	patterns_item_list->connect("item_selected", this, "_patterns_item_list_item_activated");
 	patterns_item_list->connect("item_activated", this, "_patterns_item_list_item_activated");
-	patterns_item_list->connect("empty_clicked", this, "patterns_item_list_empty_clicked");
+	patterns_item_list->connect("nothing_selected", this, "patterns_item_list_empty_clicked");
 	patterns_bottom_panel->add_child(patterns_item_list);
 
 	patterns_help_label = memnew(Label);
@@ -3332,9 +3324,9 @@ void LayeredTileMapLayerEditorTerrainsPlugin::forward_canvas_draw_over_viewport(
 			const int fading = 5;
 
 			// Draw the lines of the grid behind the preview.
-			bool display_grid = EDITOR_GET("editors/tiles_editor/display_grid");
+			bool display_grid = EDITOR_GET("editors/layered_tiles_editor/display_grid");
 			if (display_grid) {
-				Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+				Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 				if (drawn_grid_rect.size.x > 0 && drawn_grid_rect.size.y > 0) {
 					drawn_grid_rect = drawn_grid_rect.grow(fading);
 					for (int x = drawn_grid_rect.position.x; x < (drawn_grid_rect.position.x + drawn_grid_rect.size.x); x++) {
@@ -3623,7 +3615,7 @@ LayeredTileMapLayerEditorTerrainsPlugin::LayeredTileMapLayerEditorTerrainsPlugin
 	// FIXME: This can trigger theme updates when the nodes that we want to update are not yet available.
 	// The toolbar should be extracted to a dedicated control and theme updates should be handled through
 	// the notification.
-	main_vbox_container->connect("theme_changed", this, "_update_theme");
+	//main_vbox_container->connect("theme_changed", this, "_update_theme");
 	main_vbox_container->set_name(TTR("Terrains"));
 
 	HSplitContainer *tilemap_tab_terrains = memnew(HSplitContainer);
@@ -3658,7 +3650,7 @@ LayeredTileMapLayerEditorTerrainsPlugin::LayeredTileMapLayerEditorTerrainsPlugin
 	paint_tool_button->set_toggle_mode(true);
 	paint_tool_button->set_button_group(tool_buttons_group);
 	paint_tool_button->set_pressed(true);
-	paint_tool_button->set_shortcut(ED_SHORTCUT("tiles_editor/paint_tool", TTR("Paint"), KEY_D));
+	paint_tool_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/paint_tool", TTR("Paint"), KEY_D));
 	paint_tool_button->connect("pressed", this, "_update_toolbar");
 	tilemap_tiles_tools_buttons->add_child(paint_tool_button);
 	viewport_shortcut_buttons.push_back(paint_tool_button);
@@ -3667,7 +3659,7 @@ LayeredTileMapLayerEditorTerrainsPlugin::LayeredTileMapLayerEditorTerrainsPlugin
 	line_tool_button->set_theme_type_variation("FlatButton");
 	line_tool_button->set_toggle_mode(true);
 	line_tool_button->set_button_group(tool_buttons_group);
-	line_tool_button->set_shortcut(ED_SHORTCUT("tiles_editor/line_tool", TTR("Line"), KEY_L));
+	line_tool_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/line_tool", TTR("Line"), KEY_L));
 	line_tool_button->connect("pressed", this, "_update_toolbar");
 	tilemap_tiles_tools_buttons->add_child(line_tool_button);
 	viewport_shortcut_buttons.push_back(line_tool_button);
@@ -3676,7 +3668,7 @@ LayeredTileMapLayerEditorTerrainsPlugin::LayeredTileMapLayerEditorTerrainsPlugin
 	rect_tool_button->set_theme_type_variation("FlatButton");
 	rect_tool_button->set_toggle_mode(true);
 	rect_tool_button->set_button_group(tool_buttons_group);
-	rect_tool_button->set_shortcut(ED_SHORTCUT("tiles_editor/rect_tool", TTR("Rect"), KEY_R));
+	rect_tool_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/rect_tool", TTR("Rect"), KEY_R));
 	rect_tool_button->connect("pressed", this, "_update_toolbar");
 	tilemap_tiles_tools_buttons->add_child(rect_tool_button);
 	viewport_shortcut_buttons.push_back(rect_tool_button);
@@ -3685,7 +3677,7 @@ LayeredTileMapLayerEditorTerrainsPlugin::LayeredTileMapLayerEditorTerrainsPlugin
 	bucket_tool_button->set_theme_type_variation("FlatButton");
 	bucket_tool_button->set_toggle_mode(true);
 	bucket_tool_button->set_button_group(tool_buttons_group);
-	bucket_tool_button->set_shortcut(ED_SHORTCUT("tiles_editor/bucket_tool", TTR("Bucket"), KEY_B));
+	bucket_tool_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/bucket_tool", TTR("Bucket"), KEY_B));
 	bucket_tool_button->connect("pressed", this, "_update_toolbar");
 	tilemap_tiles_tools_buttons->add_child(bucket_tool_button);
 	viewport_shortcut_buttons.push_back(bucket_tool_button);
@@ -3703,7 +3695,7 @@ LayeredTileMapLayerEditorTerrainsPlugin::LayeredTileMapLayerEditorTerrainsPlugin
 	picker_button = memnew(Button);
 	picker_button->set_theme_type_variation("FlatButton");
 	picker_button->set_toggle_mode(true);
-	picker_button->set_shortcut(ED_SHORTCUT("tiles_editor/picker", TTR("Picker"), KEY_P));
+	picker_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/picker", TTR("Picker"), KEY_P));
 	picker_button->connect("pressed", CanvasItemEditor::get_singleton(), "update_viewport");
 	tools_settings->add_child(picker_button);
 	viewport_shortcut_buttons.push_back(picker_button);
@@ -3712,7 +3704,7 @@ LayeredTileMapLayerEditorTerrainsPlugin::LayeredTileMapLayerEditorTerrainsPlugin
 	erase_button = memnew(Button);
 	erase_button->set_theme_type_variation("FlatButton");
 	erase_button->set_toggle_mode(true);
-	erase_button->set_shortcut(ED_SHORTCUT("tiles_editor/eraser", TTR("Eraser"), KEY_E));
+	erase_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/eraser", TTR("Eraser"), KEY_E));
 	erase_button->connect("pressed", CanvasItemEditor::get_singleton(), "update_viewport");
 	tools_settings->add_child(erase_button);
 	viewport_shortcut_buttons.push_back(erase_button);
@@ -3749,8 +3741,9 @@ void LayeredTileMapLayerEditor::_notification(int p_what) {
 			warning_pattern_texture = get_theme_icon("WarningPattern", "EditorIcons");
 			advanced_menu_button->set_icon(get_theme_icon("Tools", "EditorIcons"));
 			toggle_grid_button->set_icon(get_theme_icon("Grid", "EditorIcons"));
-			toggle_grid_button->set_pressed(EDITOR_GET("editors/tiles_editor/display_grid"));
+			toggle_grid_button->set_pressed(EDITOR_GET("editors/layered_tiles_editor/display_grid"));
 			toggle_highlight_selected_layer_button->set_icon(get_theme_icon("LayeredTileMapHighlightSelected", "EditorIcons"));
+
 		} break;
 
 		case NOTIFICATION_INTERNAL_PROCESS: {
@@ -3765,7 +3758,7 @@ void LayeredTileMapLayerEditor::_notification(int p_what) {
 		} break;
 
 		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
-			toggle_grid_button->set_pressed_no_signal(EDITOR_GET("editors/tiles_editor/display_grid"));
+			toggle_grid_button->set_pressed_no_signal(EDITOR_GET("editors/layered_tiles_editor/display_grid"));
 		} break;
 	}
 }
@@ -3785,8 +3778,11 @@ void LayeredTileMapLayerEditor::_bind_methods() {
 }
 
 void LayeredTileMapLayerEditor::_on_grid_toggled(bool p_pressed) {
-	EditorSettings::get_singleton()->set("editors/tiles_editor/display_grid", p_pressed);
-	CanvasItemEditor::get_singleton()->update_viewport();
+	EditorSettings::get_singleton()->set("editors/layered_tiles_editor/display_grid", p_pressed);
+
+	if (is_inside_tree()) {
+		CanvasItemEditor::get_singleton()->update_viewport();
+	}
 }
 
 void LayeredTileMapLayerEditor::_layers_selection_item_selected(int p_index) {
@@ -3963,7 +3959,10 @@ void LayeredTileMapLayerEditor::_tab_changed(int p_tab_id) {
 
 	// Graphical update.
 	tabs_data[tabs_bar->get_current_tab()].panel->update();
-	CanvasItemEditor::get_singleton()->update_viewport();
+
+	if (is_inside_tree()) {
+		CanvasItemEditor::get_singleton()->update_viewport();
+	}
 }
 
 void LayeredTileMapLayerEditor::_layers_select_next_or_previous(bool p_next) {
@@ -4081,12 +4080,12 @@ void LayeredTileMapLayerEditor::_move_tile_map_array_element(Object *p_undo_redo
 }
 
 bool LayeredTileMapLayerEditor::forward_canvas_gui_input(const Ref<InputEvent> &p_event) {
-	if (ED_IS_SHORTCUT("tiles_editor/select_next_layer", p_event) && p_event->is_pressed()) {
+	if (ED_IS_SHORTCUT("layered_tiles_editor/select_next_layer", p_event) && p_event->is_pressed()) {
 		_layers_select_next_or_previous(true);
 		return true;
 	}
 
-	if (ED_IS_SHORTCUT("tiles_editor/select_previous_layer", p_event) && p_event->is_pressed()) {
+	if (ED_IS_SHORTCUT("layered_tiles_editor/select_previous_layer", p_event) && p_event->is_pressed()) {
 		_layers_select_next_or_previous(false);
 		return true;
 	}
@@ -4190,9 +4189,9 @@ void LayeredTileMapLayerEditor::forward_canvas_draw_over_viewport(Control *p_ove
 	}
 
 	// Draw the grid.
-	bool display_grid = EDITOR_GET("editors/tiles_editor/display_grid");
+	bool display_grid = EDITOR_GET("editors/layered_tiles_editor/display_grid");
 	if (display_grid) {
-		Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+		Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 		for (int x = displayed_rect.position.x; x < (displayed_rect.position.x + displayed_rect.size.x); x++) {
 			for (int y = displayed_rect.position.y; y < (displayed_rect.position.y + displayed_rect.size.y); y++) {
 				Vector2i pos_in_rect = Vector2i(x, y) - displayed_rect.position;
@@ -4301,8 +4300,8 @@ LayeredTileMapLayerEditor::LayeredTileMapLayerEditor() {
 	set_process_internal(true);
 
 	// Shortcuts.
-	ED_SHORTCUT("tiles_editor/select_next_layer", TTR("Select Next Tile Map Layer"), KEY_PAGEDOWN);
-	ED_SHORTCUT("tiles_editor/select_previous_layer", TTR("Select Previous Tile Map Layer"), KEY_PAGEUP);
+	ED_SHORTCUT("layered_tiles_editor/select_next_layer", TTR("Select Next Tile Map Layer"), KEY_PAGEDOWN);
+	ED_SHORTCUT("layered_tiles_editor/select_previous_layer", TTR("Select Previous Tile Map Layer"), KEY_PAGEUP);
 
 	// LayeredTileMap editor plugins
 	tile_map_editor_plugins.push_back(memnew(LayeredTileMapLayerEditorTilesPlugin));

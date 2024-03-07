@@ -144,9 +144,9 @@ void DummyObject::clear_dummy_properties() {
 void GenericTilePolygonEditor::_base_control_draw() {
 	ERR_FAIL_COND(!tile_set.is_valid());
 
-	real_t grab_threshold = EDITOR_GET("editors/polygon_editor/point_grab_radius");
+	real_t grab_threshold = EDITOR_GET("editors/poly_editor/point_grab_radius");
 
-	Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+	Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 	const Ref<Texture> handle = get_theme_icon("EditorPathSharpHandle", "EditorIcons");
 	const Ref<Texture> add_handle = get_theme_icon("EditorHandleAdd", "EditorIcons");
 	const Ref<StyleBox> focus_stylebox = get_theme_stylebox("Focus", "EditorStyles");
@@ -392,7 +392,7 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 }
 
 void GenericTilePolygonEditor::_grab_polygon_point(Vector2 p_pos, const Transform2D &p_polygon_xform, int &r_polygon_index, int &r_point_index) {
-	const real_t grab_threshold = EDITOR_GET("editors/polygon_editor/point_grab_radius");
+	const real_t grab_threshold = EDITOR_GET("editors/poly_editor/point_grab_radius");
 	r_polygon_index = -1;
 	r_point_index = -1;
 	float closest_distance = grab_threshold + 1.0;
@@ -410,7 +410,7 @@ void GenericTilePolygonEditor::_grab_polygon_point(Vector2 p_pos, const Transfor
 }
 
 void GenericTilePolygonEditor::_grab_polygon_segment_point(Vector2 p_pos, const Transform2D &p_polygon_xform, int &r_polygon_index, int &r_segment_index, Vector2 &r_point) {
-	const real_t grab_threshold = EDITOR_GET("editors/polygon_editor/point_grab_radius");
+	const real_t grab_threshold = EDITOR_GET("editors/poly_editor/point_grab_radius");
 
 	Point2 point = p_polygon_xform.affine_inverse().xform(p_pos);
 	r_polygon_index = -1;
@@ -487,7 +487,7 @@ void GenericTilePolygonEditor::_snap_point(Point2 &r_point) {
 void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) {
 	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 
-	real_t grab_threshold = EDITOR_GET("editors/polygon_editor/point_grab_radius");
+	real_t grab_threshold = EDITOR_GET("editors/poly_editor/point_grab_radius");
 
 	hovered_polygon_index = -1;
 	hovered_point_index = -1;
@@ -1029,7 +1029,7 @@ void TileDataDefaultEditor::_setup_undo_redo_action(LayeredTileSetAtlasSource *p
 
 void TileDataDefaultEditor::forward_draw_over_atlas(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_set_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform) {
 	if (drag_type == DRAG_TYPE_PAINT_RECT) {
-		Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+		Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 		Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 
 		p_canvas_item->draw_set_transform_matrix(p_transform);
@@ -1267,7 +1267,7 @@ void TileDataDefaultEditor::draw_over_tile(CanvasItem *p_canvas_item, Transform2
 
 		Color color = Color(1, 1, 1);
 		if (p_selected) {
-			Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+			Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 			Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 			selection_color.set_v(0.9);
 			color = selection_color;
@@ -1350,7 +1350,7 @@ TileDataDefaultEditor::TileDataDefaultEditor() {
 	picker_button = memnew(Button);
 	picker_button->set_theme_type_variation("FlatButton");
 	picker_button->set_toggle_mode(true);
-	picker_button->set_shortcut(ED_SHORTCUT("tiles_editor/picker", TTR("Picker"), KEY_P));
+	picker_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/picker", TTR("Picker"), KEY_P));
 	toolbar->add_child(picker_button);
 }
 
@@ -1366,7 +1366,7 @@ void TileDataTextureOriginEditor::draw_over_tile(CanvasItem *p_canvas_item, Tran
 	Vector2i tile_set_tile_size = tile_set->get_tile_size();
 	Color color = Color(1.0, 1.0, 1.0);
 	if (p_selected) {
-		Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+		Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 		Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 		color = selection_color;
 	}
@@ -1407,7 +1407,7 @@ void TileDataPositionEditor::draw_over_tile(CanvasItem *p_canvas_item, Transform
 
 	Color color = Color(1.0, 1.0, 1.0);
 	if (p_selected) {
-		Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+		Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 		Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 		color = selection_color;
 	}
@@ -1421,7 +1421,7 @@ void TileDataYSortEditor::draw_over_tile(CanvasItem *p_canvas_item, Transform2D 
 
 	Color color = Color(1.0, 1.0, 1.0);
 	if (p_selected) {
-		Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+		Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 		Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 		color = selection_color;
 	}
@@ -1445,7 +1445,7 @@ void TileDataOcclusionShapeEditor::draw_over_tile(CanvasItem *p_canvas_item, Tra
 	LayeredTileData *tile_data = _get_tile_data(p_cell);
 	ERR_FAIL_NULL(tile_data);
 
-	Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+	Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 	Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 	Color color = grid_color.darkened(0.2);
 	if (p_selected) {
@@ -1777,7 +1777,7 @@ void TileDataCollisionEditor::draw_over_tile(CanvasItem *p_canvas_item, Transfor
 	// Draw all shapes.
 	Vector<Color> color;
 	if (p_selected) {
-		Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+		Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 		Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 		selection_color.a = 0.7;
 		color.push_back(selection_color);
@@ -1968,7 +1968,7 @@ void TileDataTerrainsEditor::forward_draw_over_atlas(LayeredTileAtlasView *p_til
 
 	if (drag_type == DRAG_TYPE_PAINT_TERRAIN_SET_RECT) {
 		// Draw selection rectangle.
-		Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+		Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 		Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 
 		p_canvas_item->draw_set_transform_matrix(p_transform);
@@ -2862,7 +2862,7 @@ TileDataTerrainsEditor::TileDataTerrainsEditor() {
 	picker_button = memnew(Button);
 	picker_button->set_theme_type_variation("FlatButton");
 	picker_button->set_toggle_mode(true);
-	picker_button->set_shortcut(ED_SHORTCUT("tiles_editor/picker", TTR("Picker"), KEY_P));
+	picker_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/picker", TTR("Picker"), KEY_P));
 	toolbar->add_child(picker_button);
 
 	// Setup
@@ -2989,7 +2989,7 @@ void TileDataNavigationEditor::draw_over_tile(CanvasItem *p_canvas_item, Transfo
 		color = Navigation2DServer::get_singleton()->get_debug_navigation_geometry_face_color();
 #endif // DEBUG_ENABLED
 		if (p_selected) {
-			Color grid_color = EDITOR_GET("editors/tiles_editor/grid_color");
+			Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 			Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 			selection_color.a = 0.7;
 			color = selection_color;

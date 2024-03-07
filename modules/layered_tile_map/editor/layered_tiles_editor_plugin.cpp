@@ -585,9 +585,13 @@ ObjectID LayeredTileSetEditorPlugin::get_edited_tileset() const {
 }
 
 LayeredTileSetEditorPlugin::LayeredTileSetEditorPlugin(EditorNode *p_node) {
+	EDITOR_DEF("editors/layered_tiles_editor/display_grid", true);
+	EDITOR_DEF("editors/layered_tiles_editor/grid_color", Color(1.0, 0.5, 0.2, 0.5));
+
 	if (!LayeredTilesEditorUtils::get_singleton()) {
 		memnew(LayeredTilesEditorUtils);
 	}
+
 	tile_set_plugin_singleton = this;
 
 	editor = memnew(LayeredTileSetEditor);

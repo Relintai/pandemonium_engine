@@ -1730,7 +1730,7 @@ void LayeredTileSetAtlasSourceEditor::_menu_option(int p_option) {
 
 void LayeredTileSetAtlasSourceEditor::shortcut_input(const Ref<InputEvent> &p_event) {
 	// Check for shortcuts.
-	if (ED_IS_SHORTCUT("tiles_editor/delete_tile", p_event)) {
+	if (ED_IS_SHORTCUT("layered_tiles_editor/delete_tile", p_event)) {
 		if (tools_button_group->get_pressed_button() == tool_select_button && !selection.empty()) {
 			_menu_option(TILE_DELETE);
 			accept_event();
@@ -2681,7 +2681,7 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	tools_settings_erase_button = memnew(Button);
 	tools_settings_erase_button->set_theme_type_variation("FlatButton");
 	tools_settings_erase_button->set_toggle_mode(true);
-	tools_settings_erase_button->set_shortcut(ED_SHORTCUT("tiles_editor/eraser", TTR("Eraser"), KEY_E));
+	tools_settings_erase_button->set_shortcut(ED_SHORTCUT("layered_tiles_editor/eraser", TTR("Eraser"), KEY_E));
 	tools_settings_erase_button->set_shortcut_context(this);
 	tool_settings->add_child(tools_settings_erase_button);
 
@@ -2743,7 +2743,7 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	tile_create_help->set_position(pos);
 
 	base_tile_popup_menu = memnew(PopupMenu);
-	base_tile_popup_menu->add_shortcut(ED_SHORTCUT("tiles_editor/delete", TTR("Delete"), KEY_DELETE), TILE_DELETE);
+	base_tile_popup_menu->add_shortcut(ED_SHORTCUT("layered_tiles_editor/delete", TTR("Delete"), KEY_DELETE), TILE_DELETE);
 	base_tile_popup_menu->add_item(TTR("Create an Alternative Tile"), TILE_CREATE_ALTERNATIVE);
 	base_tile_popup_menu->connect("id_pressed", this, "_menu_option");
 	tile_atlas_view->add_child(base_tile_popup_menu);
@@ -2765,7 +2765,7 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	tile_atlas_control_unscaled->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 
 	alternative_tile_popup_menu = memnew(PopupMenu);
-	alternative_tile_popup_menu->add_shortcut(ED_SHORTCUT("tiles_editor/delete_tile", TTR("Delete"), KEY_DELETE), TILE_DELETE);
+	alternative_tile_popup_menu->add_shortcut(ED_SHORTCUT("layered_tiles_editor/delete_tile", TTR("Delete"), KEY_DELETE), TILE_DELETE);
 	alternative_tile_popup_menu->connect("id_pressed", this, "_menu_option");
 	tile_atlas_view->add_child(alternative_tile_popup_menu);
 
@@ -2789,7 +2789,7 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	confirm_auto_create_tiles->get_ok()->set_text(TTR("Yes"));
 	confirm_auto_create_tiles->get_cancel()->set_text(TTR("No"));
 	confirm_auto_create_tiles->connect("confirmed", this, "_auto_create_tiles");
-	confirm_auto_create_tiles->connect("canceled", this, "_cancel_auto_create_tiles");
+	confirm_auto_create_tiles->get_cancel()->connect("pressed", this, "_cancel_auto_create_tiles");
 	add_child(confirm_auto_create_tiles);
 
 	// Inspector plugin.

@@ -438,7 +438,7 @@ void LayeredTileSetEditor::_notification(int p_what) {
 void LayeredTileSetEditor::_patterns_item_list_gui_input(const Ref<InputEvent> &p_event) {
 	ERR_FAIL_COND(!tile_set.is_valid());
 
-	if (ED_IS_SHORTCUT("tiles_editor/delete", p_event) && p_event->is_pressed() && !p_event->is_echo()) {
+	if (ED_IS_SHORTCUT("layered_tiles_editor/delete", p_event) && p_event->is_pressed() && !p_event->is_echo()) {
 		Vector<int> selected = patterns_item_list->get_selected_items();
 		UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
 		undo_redo->create_action(TTR("Remove LayeredTileSet patterns"));
@@ -804,7 +804,7 @@ void LayeredTileSetEditor::add_expanded_editor(Control *p_editor) {
 	expanded_area->show();
 	expanded_area->set_size(Vector2(parent_container->get_global_rect().get_end().x - expanded_area->get_global_position().x, expanded_area->get_size().y));
 
-	for (int i = 0; i < disable_on_expand.size(); ++i) {
+	for (uint32_t i = 0; i < disable_on_expand.size(); ++i) {
 		SplitContainer *split = disable_on_expand[i];
 
 		split->set_dragger_visibility(SplitContainer::DRAGGER_HIDDEN);
@@ -828,7 +828,7 @@ void LayeredTileSetEditor::remove_expanded_editor() {
 	expanded_editor_parent = ObjectID();
 	expanded_area->hide();
 
-	for (int i = 0; i < disable_on_expand.size(); ++i) {
+	for (uint32_t i = 0; i < disable_on_expand.size(); ++i) {
 		SplitContainer *split = disable_on_expand[i];
 
 		split->set_dragger_visibility(SplitContainer::DRAGGER_VISIBLE);
@@ -898,7 +898,7 @@ LayeredTileSetEditor::LayeredTileSetEditor() {
 	sources_list->connect("item_selected", LayeredTilesEditorUtils::get_singleton(), "set_sources_lists_current");
 	sources_list->connect("visibility_changed", LayeredTilesEditorUtils::get_singleton(), "synchronize_sources_list", varray(sources_list, source_sort_button));
 	sources_list->add_user_signal(MethodInfo("sort_request"));
-	sources_list->connect("sort_request", this, "_update_sources_list");
+	sources_list->connect("sort_request", this, "_update_sources_list", varray(-1));
 
 	sources_list->set_drag_forwarding(this);
 
