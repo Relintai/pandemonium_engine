@@ -461,7 +461,7 @@ class EditorInspector : public ScrollContainer {
 
 	void _property_changed(const String &p_path, const Variant &p_value, const String &p_name = "", bool changing = false);
 	void _property_changed_update_all(const String &p_path, const Variant &p_value, const String &p_name = "", bool p_changing = false);
-	void _multiple_properties_changed(Vector<String> p_paths, Array p_values);
+	void _multiple_properties_changed(Vector<String> p_paths, Array p_values, bool p_changing = false);
 	void _property_keyed(const String &p_path, bool p_advance);
 	void _property_keyed_with_value(const String &p_path, const Variant &p_value, bool p_advance);
 	void _property_checked(const String &p_path, bool p_checked);
@@ -472,6 +472,9 @@ class EditorInspector : public ScrollContainer {
 	void _object_id_selected(const String &p_path, ObjectID p_id);
 
 	void _node_removed(Node *p_node);
+
+	RBMap<StringName, int> per_array_page;
+	void _page_change_request(int p_new_page, const StringName &p_array_prefix);
 
 	void _changed_callback(Object *p_changed, const char *p_prop);
 	void _edit_request_change(Object *p_object, const String &p_prop);

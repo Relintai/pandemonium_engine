@@ -1854,6 +1854,8 @@ void EditorInspectorArray::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_can_drop_data_fw"), &EditorInspectorArray::can_drop_data_fw);
 	ClassDB::bind_method(D_METHOD("_drop_data_fw"), &EditorInspectorArray::drop_data_fw);
 
+	ClassDB::bind_method(D_METHOD("_panel_gui_input"), &EditorInspectorArray::_panel_gui_input);
+
 	ClassDB::bind_method(D_METHOD("_panel_draw"), &EditorInspectorArray::_panel_draw);
 	ClassDB::bind_method(D_METHOD("_rmb_popup_id_pressed"), &EditorInspectorArray::_rmb_popup_id_pressed);
 	ClassDB::bind_method(D_METHOD("_add_button_pressed"), &EditorInspectorArray::_add_button_pressed);
@@ -1953,7 +1955,7 @@ EditorInspectorArray::EditorInspectorArray() {
 	hbox_pagination->add_child(prev_page_button);
 
 	page_line_edit = memnew(LineEdit);
-	page_line_edit->connect("text_submitted", this, "_page_line_edit_text_submitted");
+	page_line_edit->connect("text_entered", this, "_page_line_edit_text_submitted");
 	page_line_edit->add_theme_constant_override("minimum_character_width", 2);
 	hbox_pagination->add_child(page_line_edit);
 
@@ -1985,7 +1987,7 @@ EditorInspectorArray::EditorInspectorArray() {
 
 	new_size_line_edit = memnew(LineEdit);
 	new_size_line_edit->connect("text_changed", this, "_new_size_line_edit_text_changed");
-	new_size_line_edit->connect("text_submitted", this, "_new_size_line_edit_text_submitted");
+	new_size_line_edit->connect("text_entered", this, "_new_size_line_edit_text_submitted");
 	resize_dialog_vbox->add_margin_child(TTRC("New Size:"), new_size_line_edit);
 
 	vbox->connect("visibility_changed", this, "_vbox_visibility_changed");
@@ -2153,17 +2155,17 @@ void EditorInspector::update_tree() {
 		valid_plugins.push_back(inspector_plugins[i]);
 	}
 
+	// Decide if properties should be drawn in red.
 	bool draw_red = false;
 
 	{
 		Node *nod = Object::cast_to<Node>(object);
 		Node *es = EditorNode::get_singleton()->get_edited_scene();
 		if (nod && es != nod && nod->get_owner() != es) {
+			// Draw in red edited nodes that are not in the currently edited scene.
 			draw_red = true;
 		}
 	}
-
-	//	TreeItem *current_category = NULL;
 
 	String filter = search_box ? search_box->get_text() : "";
 	String group;
@@ -2173,31 +2175,33 @@ void EditorInspector::update_tree() {
 	List<PropertyInfo> plist;
 	object->get_property_list(&plist, true);
 
-	HashMap<String, VBoxContainer *> item_path;
-	RBMap<VBoxContainer *, EditorInspectorSection *> section_map;
-
-	item_path[""] = main_vbox;
+	RBMap<VBoxContainer *, HashMap<String, VBoxContainer *>> vbox_per_path;
+	RBMap<String, EditorInspectorArray *> editor_inspector_array_per_prefix;
 
 	Color sscolor = get_theme_color("prop_subsection", "Editor");
 
+	// Get the lists of editors to add the beginning.
 	for (List<Ref<EditorInspectorPlugin>>::Element *E = valid_plugins.front(); E; E = E->next()) {
 		Ref<EditorInspectorPlugin> ped = E->get();
 		ped->parse_begin(object);
 		_parse_added_editors(main_vbox, ped);
 	}
 
-	for (List<PropertyInfo>::Element *I = plist.front(); I; I = I->next()) {
-		PropertyInfo &p = I->get();
+	// Get the lists of editors for properties.
+	for (List<PropertyInfo>::Element *E_property = plist.front(); E_property; E_property = E_property->next()) {
+		PropertyInfo &p = E_property->get();
 
 		//make sure the property can be edited
 
 		if (p.usage & PROPERTY_USAGE_GROUP) {
+			// Setup a property group.
 			group = p.name;
 			group_base = p.hint_string;
 
 			continue;
 
 		} else if (p.usage & PROPERTY_USAGE_CATEGORY) {
+			// Setup a property category.
 			group = "";
 			group_base = "";
 
@@ -2205,9 +2209,10 @@ void EditorInspector::update_tree() {
 				continue;
 			}
 
-			List<PropertyInfo>::Element *N = I->next();
+			// Iterate over remaining properties. If no properties in category, skip the category.
+			List<PropertyInfo>::Element *N = E_property->next();
 			bool valid = true;
-			//if no properties in category, skip
+
 			while (N) {
 				if (N->get().usage & PROPERTY_USAGE_EDITOR) {
 					break;
@@ -2219,9 +2224,10 @@ void EditorInspector::update_tree() {
 				N = N->next();
 			}
 			if (!valid) {
-				continue; //empty, ignore
+				continue; // Empty, ignore it.
 			}
 
+			// Create an EditorInspectorCategory and add it to the inspector.
 			EditorInspectorCategory *category = memnew(EditorInspectorCategory);
 			main_vbox->add_child(category);
 			category_vbox = nullptr; //reset
@@ -2232,6 +2238,7 @@ void EditorInspector::update_tree() {
 
 			category->bg_color = get_theme_color("prop_category", "Editor");
 			if (use_doc_hints) {
+				// Sets the category tooltip to show documentation.
 				StringName type2 = p.name;
 				if (!class_descr_cache.has(type2)) {
 					String descr;
@@ -2246,6 +2253,7 @@ void EditorInspector::update_tree() {
 				category->set_tooltip(p.name + "::" + (class_descr_cache[type2] == "" ? "" : class_descr_cache[type2]));
 			}
 
+			// Add editors at the start of a category.
 			for (List<Ref<EditorInspectorPlugin>>::Element *E = valid_plugins.front(); E; E = E->next()) {
 				Ref<EditorInspectorPlugin> ped = E->get();
 				ped->parse_category(object, p.name);
@@ -2255,111 +2263,181 @@ void EditorInspector::update_tree() {
 			continue;
 
 		} else if (!(p.usage & PROPERTY_USAGE_EDITOR)) {
+			// Ignore properties that are not supposed to be in the inspector.
 			continue;
 		}
 
 		if (p.usage & PROPERTY_USAGE_HIGH_END_GFX && RS::get_singleton()->is_low_end()) {
-			continue; //do not show this property in low end gfx
-		}
-
-		if (p.name == "script" && (hide_script || bool(object->call("_hide_script_from_inspector")))) {
+			//do not show this property in low end gfx
 			continue;
 		}
 
-		String basename = p.name;
-		if (group != "") {
-			if (group_base != "") {
-				if (basename.begins_with(group_base)) {
-					basename = basename.replace_first(group_base, "");
-				} else if (group_base.begins_with(basename)) {
-					//keep it, this is used pretty often
-				} else {
-					group = ""; //no longer using group base, clear
+		if (p.name == "script" && (hide_script || bool(object->call("_hide_script_from_inspector")))) {
+			// Script should go into its own category.
+			continue;
+		}
+
+		// Get the path for property.
+		String path = p.name;
+
+		// First check if we have an array that fits the prefix.
+		String array_prefix = "";
+		int array_index = -1;
+		for (RBMap<String, EditorInspectorArray *>::Element *E = editor_inspector_array_per_prefix.front(); E; E = E->next()) {
+			if (p.name.begins_with(E->key()) && E->key().length() > array_prefix.length()) {
+				array_prefix = E->key();
+			}
+		}
+
+		if (!array_prefix.empty()) {
+			path = path.trim_prefix(array_prefix);
+			int char_index = path.find("/");
+			if (char_index >= 0) {
+				path = path.right(-char_index - 1);
+			} else {
+				path = vformat(TTR("Element %s"), array_index);
+			}
+		} else {
+			// Check if we exit or not a group. If there is a prefix, remove it from the property label string.
+			if (group != "") {
+				if (group_base != "") {
+					if (path.begins_with(group_base)) {
+						path = path.replace_first(group_base, "");
+					} else if (group_base.begins_with(path)) {
+						//keep it, this is used pretty often
+					} else {
+						group = ""; //no longer using group base, clear
+					}
 				}
 			}
+
+			if (group != "") {
+				path = group + "/" + path;
+			}
 		}
 
-		if (group != "") {
-			basename = group + "/" + basename;
-		}
-
-		String name = (basename.find("/") != -1) ? basename.right(basename.rfind("/") + 1) : basename;
+		// Get the property label's string.
+		String property_label_string = (path.find("/") != -1) ? path.right(path.rfind("/") + 1) : path;
 
 		if (capitalize_paths) {
-			int dot = name.find(".");
+			int dot = property_label_string.find(".");
 			if (dot != -1) {
-				String ov = name.right(dot);
-				name = name.substr(0, dot);
-				name = EditorPropertyNameProcessor::get_singleton()->process_name(name);
-				name += ov;
+				String ov = property_label_string.right(dot);
+				property_label_string = property_label_string.substr(0, dot);
+				property_label_string = EditorPropertyNameProcessor::get_singleton()->process_name(property_label_string);
+				property_label_string += ov;
 
 			} else {
-				name = EditorPropertyNameProcessor::get_singleton()->process_name(name);
+				property_label_string = EditorPropertyNameProcessor::get_singleton()->process_name(property_label_string);
 			}
 		}
 
-		String path = basename.left(basename.rfind("/"));
+		// Remove the property from the path.
+		int idx = path.rfind("/");
+		if (idx > -1) {
+			path = path.left(idx);
+		} else {
+			path = "";
+		}
 
+		// Ignore properties that do not fit the filter.
 		if (use_filter && filter != "") {
-			String cat = path;
-
-			if (capitalize_paths) {
-				cat = EditorPropertyNameProcessor::get_singleton()->process_name(cat);
-			}
-
-			if (!filter.is_subsequence_ofi(cat) && !filter.is_subsequence_ofi(name) && property_prefix.to_lower().find(filter.to_lower()) == -1) {
+			if (!filter.is_subsequence_ofi(path) && !filter.is_subsequence_ofi(property_label_string) && property_prefix.to_lower().find(filter.to_lower()) == -1) {
 				continue;
 			}
 		}
 
+		// Recreate the category vbox if it was reset.
 		if (category_vbox == nullptr) {
 			category_vbox = memnew(VBoxContainer);
 			main_vbox->add_child(category_vbox);
 		}
 
-		VBoxContainer *current_vbox = main_vbox;
-
-		{
-			String acc_path = "";
-			int level = 1;
-			for (int i = 0; i < path.get_slice_count("/"); i++) {
-				String path_name = path.get_slice("/", i);
-				if (i > 0) {
-					acc_path += "/";
-				}
-				acc_path += path_name;
-				if (!item_path.has(acc_path)) {
-					EditorInspectorSection *section = memnew(EditorInspectorSection);
-					current_vbox->add_child(section);
-					sections.push_back(section);
-
-					String label = path_name;
-					if (capitalize_paths) {
-						label = EditorPropertyNameProcessor::get_singleton()->process_name(label);
-					}
-
-					Color c = sscolor;
-					c.a /= level;
-					section->setup(acc_path, label, object, c, use_folding);
-					section->set_tooltip(EditorPropertyNameProcessor::get_singleton()->make_tooltip_for_name(path_name));
-
-					VBoxContainer *vb = section->get_vbox();
-					item_path[acc_path] = vb;
-					section_map[vb] = section;
-				}
-				current_vbox = item_path[acc_path];
-				level = (MIN(level + 1, 4));
-			}
-
-			if (current_vbox == main_vbox) {
-				//do not add directly to the main vbox, given it has no spacing
-				if (category_vbox == nullptr) {
-					category_vbox = memnew(VBoxContainer);
-				}
-				current_vbox = category_vbox;
-			}
+		// Find the correct section/vbox to add the property editor to.
+		VBoxContainer *root_vbox = array_prefix.empty() ? main_vbox : editor_inspector_array_per_prefix[array_prefix]->get_vbox(array_index);
+		if (!root_vbox) {
+			continue;
 		}
 
+		if (!vbox_per_path.has(root_vbox)) {
+			vbox_per_path[root_vbox] = HashMap<String, VBoxContainer *>();
+			vbox_per_path[root_vbox][""] = root_vbox;
+		}
+
+		VBoxContainer *current_vbox = root_vbox;
+		String acc_path = "";
+		int level = 1;
+
+		Vector<String> components = path.split("/");
+		for (int i = 0; i < components.size(); i++) {
+			String component = components[i];
+			acc_path += (i > 0) ? "/" + component : component;
+
+			if (!vbox_per_path[root_vbox].has(acc_path)) {
+				// If the section does not exists, create it.
+				EditorInspectorSection *section = memnew(EditorInspectorSection);
+				current_vbox->add_child(section);
+				sections.push_back(section);
+
+				if (capitalize_paths) {
+					component = component.capitalize();
+				}
+
+				Color c = sscolor;
+				c.a /= level;
+				section->setup(acc_path, component, object, c, use_folding);
+				section->set_tooltip(EditorPropertyNameProcessor::get_singleton()->make_tooltip_for_name(acc_path));
+
+				vbox_per_path[root_vbox][acc_path] = section->get_vbox();
+			}
+
+			current_vbox = vbox_per_path[root_vbox][acc_path];
+			level = (MIN(level + 1, 4));
+		}
+
+		// If we did not find a section to add the property to, add it to the category vbox instead (the category vbox handles margins correctly).
+		if (current_vbox == main_vbox) {
+			current_vbox = category_vbox;
+		}
+
+		// Check if the property is an array counter, if so create a dedicated array editor for the array.
+		if (p.usage & PROPERTY_USAGE_ARRAY) {
+			EditorInspectorArray *editor_inspector_array = nullptr;
+			StringName array_element_prefix;
+			Color c = sscolor;
+			c.a /= level;
+			if (p.type == Variant::NIL) {
+				// Setup the array to use a method to create/move/delete elements.
+				array_element_prefix = p.class_name;
+				editor_inspector_array = memnew(EditorInspectorArray);
+
+				String array_label = (path.find("/") != -1) ? path.substr(path.rfind("/") + 1) : path;
+				array_label = property_label_string.capitalize();
+				int page = per_array_page.has(array_element_prefix) ? per_array_page[array_element_prefix] : 0;
+				editor_inspector_array->setup_with_move_element_function(object, array_label, array_element_prefix, page, c, use_folding);
+				editor_inspector_array->connect("page_change_request", this, "_page_change_request", varray(array_element_prefix));
+				editor_inspector_array->set_undo_redo(undo_redo);
+			} else if (p.type == Variant::INT) {
+				// Setup the array to use the count property and built-in functions to create/move/delete elements.
+				Vector<String> class_name_components = String(p.class_name).split(",");
+				if (class_name_components.size() == 2) {
+					array_element_prefix = class_name_components[1];
+					editor_inspector_array = memnew(EditorInspectorArray);
+					int page = per_array_page.has(array_element_prefix) ? per_array_page[array_element_prefix] : 0;
+					editor_inspector_array->setup_with_count_property(object, class_name_components[0], p.name, array_element_prefix, page, c, use_folding);
+					editor_inspector_array->connect("page_change_request", this, "_page_change_request", varray(array_element_prefix));
+					editor_inspector_array->set_undo_redo(undo_redo);
+				}
+			}
+
+			if (editor_inspector_array) {
+				current_vbox->add_child(editor_inspector_array);
+				editor_inspector_array_per_prefix[array_element_prefix] = editor_inspector_array;
+			}
+			continue;
+		}
+
+		// Checkable and checked properties.
 		bool checkable = false;
 		bool checked = false;
 		if (p.usage & PROPERTY_USAGE_CHECKABLE) {
@@ -2367,6 +2445,7 @@ void EditorInspector::update_tree() {
 			checked = p.usage & PROPERTY_USAGE_CHECKED;
 		}
 
+		// Mark properties that would require an editor restart (mostly when editing editor settings).
 		if (p.usage & PROPERTY_USAGE_RESTART_IF_CHANGED) {
 			restart_request_props.insert(p.name);
 		}
@@ -2374,6 +2453,9 @@ void EditorInspector::update_tree() {
 		String doc_hint;
 
 		if (use_doc_hints) {
+			// Build the doc hint, to use as tooltip.
+
+			// Get the class name.
 			StringName classname = object->get_class_name();
 			if (object_class != String()) {
 				classname = object_class;
@@ -2385,6 +2467,7 @@ void EditorInspector::update_tree() {
 			String descr;
 			bool found = false;
 
+			// Search for the property description in the cache.
 			RBMap<StringName, RBMap<StringName, String>>::Element *E = descr_cache.find(classname);
 			if (E) {
 				RBMap<StringName, String>::Element *F = E->get().find(propname);
@@ -2395,6 +2478,7 @@ void EditorInspector::update_tree() {
 			}
 
 			if (!found) {
+				// Build the property description String and add it to the cache.
 				DocData *dd = EditorHelp::get_doc_data();
 				RBMap<String, DocData::ClassDoc>::Element *F = dd->class_list.find(classname);
 				while (F && descr == String()) {
@@ -2428,18 +2512,19 @@ void EditorInspector::update_tree() {
 			doc_hint = descr;
 		}
 
+		// Seach for the inspector plugin that will handle the properties. Then add the correct property editor to it.
 		for (List<Ref<EditorInspectorPlugin>>::Element *E = valid_plugins.front(); E; E = E->next()) {
 			Ref<EditorInspectorPlugin> ped = E->get();
 			bool exclusive = ped->parse_property(object, p.type, p.name, p.hint, p.hint_string, p.usage);
 
-			List<EditorInspectorPlugin::AddedEditor> editors = ped->added_editors; //make a copy, since plugins may be used again in a sub-inspector
+			List<EditorInspectorPlugin::AddedEditor> editors = ped->added_editors; // Make a copy, since plugins may be used again in a sub-inspector
 			ped->added_editors.clear();
 
 			for (List<EditorInspectorPlugin::AddedEditor>::Element *F = editors.front(); F; F = F->next()) {
 				EditorProperty *ep = Object::cast_to<EditorProperty>(F->get().property_editor);
 
 				if (ep) {
-					//set all this before the control gets the ENTER_TREE notification
+					// Set all this before the control gets the ENTER_TREE notification
 					ep->object = object;
 
 					if (F->get().properties.size()) {
@@ -2455,8 +2540,9 @@ void EditorInspector::update_tree() {
 							ep->set_label(F->get().label);
 						} else {
 							//use existing one
-							ep->set_label(name);
+							ep->set_label(property_label_string);
 						}
+
 						for (int i = 0; i < F->get().properties.size(); i++) {
 							String prop = F->get().properties[i];
 
@@ -2478,6 +2564,7 @@ void EditorInspector::update_tree() {
 				current_vbox->add_child(F->get().property_editor);
 
 				if (ep) {
+					// Eventually, set other properties/signals after the property editor got added to the tree.
 					ep->connect("property_changed", this, "_property_changed");
 					if (p.usage & PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED) {
 						ep->connect("property_changed", this, "_property_changed_update_all", varray(), CONNECT_DEFERRED);
@@ -2506,18 +2593,18 @@ void EditorInspector::update_tree() {
 			}
 
 			if (exclusive) {
+				// If we know the plugin is exclusive, we don't need to go through other plugins.
 				break;
 			}
 		}
 	}
 
+	// Get the lists of to add at the end.
 	for (List<Ref<EditorInspectorPlugin>>::Element *E = valid_plugins.front(); E; E = E->next()) {
 		Ref<EditorInspectorPlugin> ped = E->get();
 		ped->parse_end();
 		_parse_added_editors(main_vbox, ped);
 	}
-
-	//see if this property exists and should be kept
 }
 void EditorInspector::update_property(const String &p_prop) {
 	if (!editor_property_map.has(p_prop)) {
@@ -2561,6 +2648,8 @@ void EditorInspector::edit(Object *p_object) {
 		_clear();
 		object->remove_change_receptor(this);
 	}
+
+	per_array_page.clear();
 
 	object = p_object;
 
@@ -2701,6 +2790,15 @@ Variant EditorInspector::get_property_clipboard() const {
 	return property_clipboard;
 }
 
+void EditorInspector::_page_change_request(int p_new_page, const StringName &p_array_prefix) {
+	int prev_page = per_array_page.has(p_array_prefix) ? per_array_page[p_array_prefix] : 0;
+	int new_page = MAX(0, p_new_page);
+	if (new_page != prev_page) {
+		per_array_page[p_array_prefix] = new_page;
+		update_tree_pending = true;
+	}
+}
+
 void EditorInspector::_edit_request_change(Object *p_object, const String &p_property) {
 	if (object != p_object) { //may be undoing/redoing for a non edited object, so ignore
 		return;
@@ -2800,7 +2898,7 @@ void EditorInspector::_property_changed_update_all(const String &p_path, const V
 	update_tree();
 }
 
-void EditorInspector::_multiple_properties_changed(Vector<String> p_paths, Array p_values) {
+void EditorInspector::_multiple_properties_changed(Vector<String> p_paths, Array p_values, bool p_changing) {
 	ERR_FAIL_COND(p_paths.size() == 0 || p_values.size() == 0);
 	ERR_FAIL_COND(p_paths.size() != p_values.size());
 	String names;
@@ -2817,9 +2915,13 @@ void EditorInspector::_multiple_properties_changed(Vector<String> p_paths, Array
 			emit_signal("restart_requested");
 		}
 	}
-	changing++;
+	if (p_changing) {
+		changing++;
+	}
 	undo_redo->commit_action();
-	changing--;
+	if (p_changing) {
+		changing--;
+	}
 }
 
 void EditorInspector::_property_keyed(const String &p_path, bool p_advance) {
@@ -3036,6 +3138,7 @@ void EditorInspector::_bind_methods() {
 	ClassDB::bind_method("_property_changed", &EditorInspector::_property_changed, DEFVAL(""), DEFVAL(false));
 	ClassDB::bind_method("_multiple_properties_changed", &EditorInspector::_multiple_properties_changed);
 	ClassDB::bind_method("_property_changed_update_all", &EditorInspector::_property_changed_update_all);
+	ClassDB::bind_method("_page_change_request", &EditorInspector::_page_change_request);
 
 	ClassDB::bind_method("_edit_request_change", &EditorInspector::_edit_request_change);
 	ClassDB::bind_method("_node_removed", &EditorInspector::_node_removed);
