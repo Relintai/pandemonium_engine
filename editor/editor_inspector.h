@@ -67,6 +67,7 @@ class MarginContainer;
 class HBoxContainer;
 class PanelContainer;
 class TextureRect;
+class SpinBox;
 
 class EditorPropertyRevert {
 public:
@@ -314,8 +315,7 @@ class EditorInspectorArray : public EditorInspectorSection {
 	Button *add_button;
 
 	AcceptDialog *resize_dialog;
-	int new_size = 0;
-	LineEdit *new_size_line_edit;
+	SpinBox *new_size_spin_box = nullptr;
 
 	// Pagination
 	int page_length = 5;
@@ -396,8 +396,8 @@ class EditorInspectorArray : public EditorInspectorSection {
 	Array _extract_properties_as_array(const List<PropertyInfo> &p_list);
 	int _drop_position() const;
 
-	void _new_size_line_edit_text_changed(String p_text);
-	void _new_size_line_edit_text_submitted(String p_text);
+	void _new_size_spin_box_value_changed(float p_value);
+	void _new_size_spin_box_text_submitted(String p_text);
 	void _resize_dialog_confirmed();
 
 	void _update_elements_visibility();

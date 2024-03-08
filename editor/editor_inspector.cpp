@@ -64,6 +64,7 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/gui/scroll_bar.h"
+#include "scene/gui/spin_box.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/main/canvas_item.h"
 #include "scene/main/node.h"
@@ -1322,12 +1323,11 @@ void EditorInspectorArray::_rmb_popup_id_pressed(int p_id) {
 			_clear_array();
 			break;
 		case OPTION_RESIZE_ARRAY:
-			new_size = count;
-			new_size_line_edit->set_text(Variant(new_size));
+			new_size_spin_box->set_value(count);
 			resize_dialog->get_ok()->set_disabled(true);
 			resize_dialog->popup_centered();
-			new_size_line_edit->grab_focus();
-			new_size_line_edit->select_all();
+			new_size_spin_box->get_line_edit()->grab_focus();
+			new_size_spin_box->get_line_edit()->select_all();
 			break;
 		default:
 			break;
@@ -1722,40 +1722,21 @@ int EditorInspectorArray::_drop_position() const {
 	return -1;
 }
 
-void EditorInspectorArray::_new_size_line_edit_text_changed(String p_text) {
-	bool valid = false;
-
-	if (p_text.is_valid_integer()) {
-		int val = p_text.to_int();
-		if (val > 0 && val != count) {
-			valid = true;
-		}
-	}
-
-	resize_dialog->get_ok()->set_disabled(!valid);
-}
-
-void EditorInspectorArray::_new_size_line_edit_text_submitted(String p_text) {
-	bool valid = false;
-
-	if (p_text.is_valid_integer()) {
-		int val = p_text.to_int();
-		if (val > 0 && val != count) {
-			new_size = val;
-			valid = true;
-		}
-	}
-
-	if (valid) {
-		resize_dialog->hide();
-		_resize_array(new_size);
-	} else {
-		new_size_line_edit->set_text(Variant(new_size));
-	}
-}
-
 void EditorInspectorArray::_resize_dialog_confirmed() {
-	_new_size_line_edit_text_submitted(new_size_line_edit->get_text());
+	if (int(new_size_spin_box->get_value()) == count) {
+		return;
+	}
+
+	resize_dialog->hide();
+	_resize_array(int(new_size_spin_box->get_value()));
+}
+
+void EditorInspectorArray::_new_size_spin_box_value_changed(float p_value) {
+	resize_dialog->get_ok()->set_disabled(int(p_value) == count);
+}
+
+void EditorInspectorArray::_new_size_spin_box_text_submitted(String p_text) {
+	_resize_dialog_confirmed();
 }
 
 void EditorInspectorArray::_setup() {
@@ -1991,8 +1972,8 @@ void EditorInspectorArray::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_last_page_button_pressed"), &EditorInspectorArray::_last_page_button_pressed);
 	ClassDB::bind_method(D_METHOD("_control_dropping_draw"), &EditorInspectorArray::_control_dropping_draw);
 	ClassDB::bind_method(D_METHOD("_resize_dialog_confirmed"), &EditorInspectorArray::_resize_dialog_confirmed);
-	ClassDB::bind_method(D_METHOD("_new_size_line_edit_text_changed"), &EditorInspectorArray::_new_size_line_edit_text_changed);
-	ClassDB::bind_method(D_METHOD("_new_size_line_edit_text_submitted"), &EditorInspectorArray::_new_size_line_edit_text_submitted);
+	ClassDB::bind_method(D_METHOD("_new_size_spin_box_value_changed"), &EditorInspectorArray::_new_size_spin_box_value_changed);
+	ClassDB::bind_method(D_METHOD("_new_size_spin_box_text_submitted"), &EditorInspectorArray::_new_size_spin_box_text_submitted);
 	ClassDB::bind_method(D_METHOD("_vbox_visibility_changed"), &EditorInspectorArray::_vbox_visibility_changed);
 
 	ClassDB::bind_method(D_METHOD("_remove_item"), &EditorInspectorArray::_remove_item);
@@ -2120,10 +2101,11 @@ EditorInspectorArray::EditorInspectorArray() {
 	VBoxContainer *resize_dialog_vbox = memnew(VBoxContainer);
 	resize_dialog->add_child(resize_dialog_vbox);
 
-	new_size_line_edit = memnew(LineEdit);
-	new_size_line_edit->connect("text_changed", this, "_new_size_line_edit_text_changed");
-	new_size_line_edit->connect("text_entered", this, "_new_size_line_edit_text_submitted");
-	resize_dialog_vbox->add_margin_child(TTRC("New Size:"), new_size_line_edit);
+	new_size_spin_box = memnew(SpinBox);
+	new_size_spin_box->set_max(16384);
+	new_size_spin_box->connect("value_changed", this, "_new_size_spin_box_value_changed");
+	new_size_spin_box->get_line_edit()->connect("text_entered", this, "_new_size_spin_box_text_submitted");
+	resize_dialog_vbox->add_margin_child(TTRC("New Size:"), new_size_spin_box);
 
 	vbox->connect("visibility_changed", this, "_vbox_visibility_changed");
 }
