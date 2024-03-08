@@ -351,7 +351,7 @@ void LayeredTileSetScenesCollectionSourceEditor::_update_scenes_list() {
 	}
 	if (scene_tiles_list->get_item_count() == 0) {
 		scene_tiles_list->add_item(TTR("Drag and drop scenes here or use the Add button."));
-		scene_tiles_list->set_item_disabled(-1, true);
+		scene_tiles_list->set_item_disabled(scene_tiles_list->get_item_count() - 1, true);
 	}
 
 	// Reselect if needed.

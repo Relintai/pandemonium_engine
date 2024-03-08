@@ -246,7 +246,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_tile_set_sources_list() {
 		}
 
 		sources_list->add_item(item_text, texture);
-		sources_list->set_item_metadata(-1, source_id);
+		sources_list->set_item_metadata(sources_list->get_item_count() - 1, source_id);
 	}
 
 	if (sources_list->get_item_count() > 0) {
@@ -466,7 +466,7 @@ void LayeredTileMapLayerEditorTilesPlugin::_update_scenes_collection_view() {
 	}
 	if (scene_tiles_list->get_item_count() == 0) {
 		scene_tiles_list->add_item(TTR("The selected scene collection source has no scenes. Add scenes in the LayeredTileSet bottom tab."));
-		scene_tiles_list->set_item_disabled(-1, true);
+		scene_tiles_list->set_item_disabled(scene_tiles_list->get_item_count() - 1, true);
 	}
 
 	// Icon size update.
