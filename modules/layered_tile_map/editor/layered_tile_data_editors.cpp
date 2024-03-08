@@ -1727,7 +1727,6 @@ void TileDataCollisionEditor::_notification(int p_what) {
 }
 
 void TileDataCollisionEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_property_value_changed"), &TileDataCollisionEditor::_property_value_changed);
 	ClassDB::bind_method(D_METHOD("_property_selected"), &TileDataCollisionEditor::_property_selected);
 	ClassDB::bind_method(D_METHOD("_polygons_changed"), &TileDataCollisionEditor::_polygons_changed);
 }
