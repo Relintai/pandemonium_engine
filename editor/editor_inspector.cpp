@@ -2290,6 +2290,23 @@ void EditorInspector::update_tree() {
 		}
 
 		if (!array_prefix.empty()) {
+			// If we have an array element, find the according index in array.
+			String str = p.name.trim_prefix(array_prefix);
+			int to_char_index = 0;
+			while (to_char_index < str.length()) {
+				if (str[to_char_index] < '0' || str[to_char_index] > '9') {
+					break;
+				}
+				to_char_index++;
+			}
+			if (to_char_index > 0) {
+				array_index = str.left(to_char_index).to_int();
+			} else {
+				array_prefix = "";
+			}
+		}
+
+		if (!array_prefix.empty()) {
 			path = path.trim_prefix(array_prefix);
 			int char_index = path.find("/");
 			if (char_index >= 0) {
