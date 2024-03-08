@@ -1850,9 +1850,9 @@ void EditorInspectorArray::_notification(int p_what) {
 }
 
 void EditorInspectorArray::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_get_drag_data_fw"), &EditorInspectorArray::get_drag_data_fw);
-	ClassDB::bind_method(D_METHOD("_can_drop_data_fw"), &EditorInspectorArray::can_drop_data_fw);
-	ClassDB::bind_method(D_METHOD("_drop_data_fw"), &EditorInspectorArray::drop_data_fw);
+	ClassDB::bind_method(D_METHOD("get_drag_data_fw"), &EditorInspectorArray::get_drag_data_fw);
+	ClassDB::bind_method(D_METHOD("can_drop_data_fw"), &EditorInspectorArray::can_drop_data_fw);
+	ClassDB::bind_method(D_METHOD("drop_data_fw"), &EditorInspectorArray::drop_data_fw);
 
 	ClassDB::bind_method(D_METHOD("_panel_gui_input"), &EditorInspectorArray::_panel_gui_input);
 
