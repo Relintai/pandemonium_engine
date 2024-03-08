@@ -1792,8 +1792,10 @@ void EditorInspectorArray::_setup() {
 		ae.panel->set_focus_mode(FOCUS_ALL);
 		ae.panel->set_mouse_filter(MOUSE_FILTER_PASS);
 		ae.panel->set_drag_forwarding(this);
-		ae.panel->set_meta("index", begin_array_index + i);
-		ae.panel->set_tooltip(vformat(TTR("Element %d: %s%d*"), i, array_element_prefix, i));
+
+		int element_position = begin_array_index + i;
+		ae.panel->set_meta("index", element_position);
+		ae.panel->set_tooltip(vformat(TTR("Element %d: %s%d*"), element_position, array_element_prefix, element_position));
 		ae.panel->connect("focus_entered", ae.panel, "update");
 		ae.panel->connect("focus_exited", ae.panel, "update");
 		ae.panel->connect("draw", this, "_panel_draw", varray(i));
@@ -1835,7 +1837,7 @@ void EditorInspectorArray::_setup() {
 			ae.number->set_custom_minimum_size(Size2(numbers_min_w, 0));
 			ae.number->set_align(Label::ALIGN_RIGHT);
 			ae.number->set_valign(Label::VALIGN_CENTER);
-			ae.number->set_text(itos(begin_array_index + i));
+			ae.number->set_text(itos(element_position));
 			ae.hbox->add_child(ae.number);
 		}
 
@@ -1848,7 +1850,7 @@ void EditorInspectorArray::_setup() {
 		ae.erase = memnew(Button);
 		ae.erase->set_icon(get_theme_icon("Remove", "EditorIcons"));
 		ae.erase->set_v_size_flags(SIZE_SHRINK_CENTER);
-		ae.erase->connect("pressed", this, "_remove_item", varray(begin_array_index + i));
+		ae.erase->connect("pressed", this, "_remove_item", varray(element_position));
 		ae.hbox->add_child(ae.erase);
 	}
 
