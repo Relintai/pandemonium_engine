@@ -2249,7 +2249,7 @@ void EditorInspector::_parse_added_editors(VBoxContainer *current_vbox, Ref<Edit
 	ped->added_editors.clear();
 }
 
-void EditorInspector::update_tree() {
+void EditorInspector::_update_tree() {
 	//to update properly if all is refreshed
 	StringName current_selected = property_selected;
 	int current_focusable = -1;
@@ -2786,6 +2786,11 @@ void EditorInspector::update_tree() {
 		_parse_added_editors(main_vbox, ped);
 	}
 }
+
+void EditorInspector::update_tree() {
+	update_tree_pending = true;
+}
+
 void EditorInspector::update_property(const String &p_prop) {
 	if (!editor_property_map.has(p_prop)) {
 		return;
@@ -3021,7 +3026,7 @@ void EditorInspector::_edit_set(const String &p_name, const Variant &p_value, bo
 	} else {
 		undo_redo->create_action(vformat(TTR("Set %s"), p_name), UndoRedo::MERGE_ENDS);
 		undo_redo->add_do_property(object, p_name, p_value);
-		
+
 		bool valid = false;
 		Variant value = object->get(p_name, &valid);
 		if (valid) {
@@ -3261,9 +3266,10 @@ void EditorInspector::_notification(int p_what) {
 		changing++;
 
 		if (update_tree_pending) {
-			update_tree();
 			update_tree_pending = false;
 			pending.clear();
+
+			_update_tree();
 
 		} else {
 			while (pending.size()) {
