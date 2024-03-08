@@ -504,7 +504,7 @@ int LayeredTileSet::add_source(Ref<LayeredTileSetSource> p_tile_set_source, int 
 void LayeredTileSet::remove_source(int p_source_id) {
 	ERR_FAIL_COND_MSG(!sources.has(p_source_id), vformat("Cannot remove LayeredTileSet atlas source. No tileset atlas source with id %d.", p_source_id));
 
-	sources[p_source_id]->connect(CoreStringNames::get_singleton()->changed, this, "_source_changed");
+	sources[p_source_id]->disconnect(CoreStringNames::get_singleton()->changed, this, "_source_changed");
 
 	sources[p_source_id]->set_tile_set(nullptr);
 	sources.erase(p_source_id);
