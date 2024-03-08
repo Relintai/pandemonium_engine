@@ -97,18 +97,12 @@
 
 #include "editor_script_editor.h"
 
-static bool _is_built_in_script(Script *p_script) {
-	String path = p_script->get_path();
-
-	return path.find("::") != -1;
-}
-
 void EditorScriptEditorPlugin::edit(Object *p_object) {
 	if (Object::cast_to<Script>(p_object)) {
 		Script *p_script = Object::cast_to<Script>(p_object);
 		String res_path = p_script->get_path().get_slice("::", 0);
 
-		if (_is_built_in_script(p_script)) {
+		if (p_script->is_built_in()) {
 			if (ResourceLoader::get_resource_type(res_path) == "PackedScene") {
 				if (!EditorNode::get_singleton()->is_scene_open(res_path)) {
 					EditorNode::get_singleton()->load_scene(res_path);

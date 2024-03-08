@@ -640,7 +640,7 @@ void EditorScriptEditor::_update_modified_scripts_for_external_editor(Ref<Script
 			continue;
 		}
 
-		if (script->get_path() == "" || script->get_path().find("local://") != -1 || script->get_path().find("::") != -1) {
+		if (script->is_built_in()) {
 			continue; //internal script, who cares, though weird
 		}
 

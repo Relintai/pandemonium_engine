@@ -101,12 +101,6 @@
 #include "shader_editor/shader_editor_plugin.h"
 #endif
 
-static bool _is_built_in_script(Script *p_script) {
-	String path = p_script->get_path();
-
-	return path.find("::") != -1;
-}
-
 class EditorScriptCodeCompletionCache : public ScriptCodeCompletionCache {
 	struct Cache {
 		uint64_t time_loaded;
@@ -496,7 +490,7 @@ void EditorScriptEditor::_close_tab(int p_idx, bool p_save, bool p_history_back)
 		Ref<Script> script = current->get_edited_resource();
 		if (p_save) {
 			// Do not try to save internal scripts
-			if (!script.is_valid() || !(script->get_path() == "" || script->get_path().find("local://") != -1 || script->get_path().find("::") != -1)) {
+			if (!script.is_valid() || !(script->is_built_in())) {
 				save_current_script();
 			}
 		}
@@ -633,7 +627,7 @@ void EditorScriptEditor::_resave_scripts(const String &p_str) {
 
 		RES script = se->get_edited_resource();
 
-		if (script->get_path() == "" || script->get_path().find("local://") != -1 || script->get_path().find("::") != -1) {
+		if (script->is_built_in()) {
 			continue; //internal script, who cares
 		}
 
@@ -674,7 +668,7 @@ void EditorScriptEditor::reload_scripts() {
 
 		RES edited_res = se->get_edited_resource();
 
-		if (edited_res->get_path() == "" || edited_res->get_path().find("local://") != -1 || edited_res->get_path().find("::") != -1) {
+		if (edited_res->is_built_in()) {
 			continue; //internal script, who cares
 		}
 
@@ -781,7 +775,7 @@ bool EditorScriptEditor::_test_script_times_on_disk(RES p_for_script) {
 				continue;
 			}
 
-			if (edited_res->get_path() == "" || edited_res->get_path().find("local://") != -1 || edited_res->get_path().find("::") != -1) {
+			if (edited_res->is_built_in()) {
 				continue; //internal script, who cares
 			}
 
@@ -1439,7 +1433,7 @@ void EditorScriptEditor::close_builtin_scripts_from_scene(const String &p_scene)
 				continue;
 			}
 
-			if (script->get_path().find("::") != -1 && script->get_path().begins_with(p_scene)) { //is an internal script and belongs to scene being closed
+			if (script->is_built_in() && script->get_path().begins_with(p_scene)) { //is an internal script and belongs to scene being closed
 				_close_tab(i, false);
 				i--;
 			}
@@ -2224,7 +2218,7 @@ void EditorScriptEditor::save_all_scripts() {
 			se->apply_code();
 		}
 
-		if (edited_res->get_path() != "" && edited_res->get_path().find("local://") == -1 && edited_res->get_path().find("::") == -1) {
+		if (!edited_res->is_built_in()) {
 			Ref<TextFile> text_file = edited_res;
 			if (text_file != nullptr) {
 				_save_text_file(text_file, text_file->get_path());
@@ -2314,7 +2308,7 @@ void EditorScriptEditor::_add_callback(Object *p_obj, const String &p_function, 
 		script_list->select(script_list->find_metadata(i));
 
 		// Save the current script so the changes can be picked up by an external editor.
-		if (!_is_built_in_script(script.ptr())) { // But only if it's not built-in script.
+		if (!script.ptr()->is_built_in()) { // But only if it's not built-in script.
 			save_current_script();
 		}
 
