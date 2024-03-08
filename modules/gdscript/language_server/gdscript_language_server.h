@@ -48,6 +48,7 @@ class GDScriptLanguageServer : public EditorPlugin {
 	String host;
 	int port;
 	bool enabled;
+	int poll_limit_usec;
 
 	static void thread_main(void *p_userdata);
 
