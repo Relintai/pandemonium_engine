@@ -634,7 +634,7 @@ LayeredTileAtlasView::LayeredTileAtlasView() {
 	center_container = memnew(CenterContainer);
 	center_container->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 	center_container->set_anchors_preset(Control::PRESET_CENTER);
-	center_container->connect("gui_input", this, "gui_input");
+	center_container->connect("gui_input", this, "_gui_input");
 	center_container->connect("focus_exited", panner.ptr(), "release_pan_key");
 	center_container->set_focus_mode(FOCUS_CLICK);
 	panel->add_child(center_container);
