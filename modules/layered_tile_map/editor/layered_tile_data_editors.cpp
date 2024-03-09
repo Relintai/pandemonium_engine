@@ -545,9 +545,7 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 						if (!multiple_polygon_mode) {
 							clear_polygons();
 						}
-						int added = add_polygon(in_creation_polygon);
-
-						in_creation_polygon.clear();
+						
 						button_edit->set_pressed(true);
 						undo_redo->create_action(TTR("Edit Polygons"));
 						if (!multiple_polygon_mode) {
@@ -555,10 +553,12 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 						}
 						undo_redo->add_do_method(this, "add_polygon", in_creation_polygon);
 						undo_redo->add_do_method(base_control, "update");
-						undo_redo->add_undo_method(this, "remove_polygon", added);
+						undo_redo->add_undo_method(this, "remove_last_polygon");
 						undo_redo->add_undo_method(base_control, "update");
 						undo_redo->commit_action();
 						emit_signal("polygons_changed");
+						
+						in_creation_polygon.clear();
 					} else {
 						// Create a new point.
 						drag_type = DRAG_TYPE_CREATE_POINT;
@@ -795,6 +795,10 @@ void GenericTilePolygonEditor::remove_polygon(int p_index) {
 	base_control->update();
 }
 
+void GenericTilePolygonEditor::remove_last_polygon() {
+	remove_polygon(polygons.size() - 1);
+}
+
 void GenericTilePolygonEditor::clear_polygons() {
 	polygons.clear();
 	base_control->update();
@@ -854,6 +858,7 @@ void GenericTilePolygonEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_polygon_count"), &GenericTilePolygonEditor::get_polygon_count);
 	ClassDB::bind_method(D_METHOD("add_polygon", "polygon", "index"), &GenericTilePolygonEditor::add_polygon, DEFVAL(-1));
 	ClassDB::bind_method(D_METHOD("remove_polygon", "index"), &GenericTilePolygonEditor::remove_polygon);
+	ClassDB::bind_method(D_METHOD("remove_last_polygon"), &GenericTilePolygonEditor::remove_last_polygon);
 	ClassDB::bind_method(D_METHOD("clear_polygons"), &GenericTilePolygonEditor::clear_polygons);
 	ClassDB::bind_method(D_METHOD("set_polygon", "index", "polygon"), &GenericTilePolygonEditor::set_polygon);
 	ClassDB::bind_method(D_METHOD("get_polygon", "index"), &GenericTilePolygonEditor::get_polygon);

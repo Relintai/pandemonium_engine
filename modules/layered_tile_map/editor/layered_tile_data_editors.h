@@ -189,6 +189,7 @@ public:
 	int get_polygon_count();
 	int add_polygon(const Vector<Point2> &p_polygon, int p_index = -1);
 	void remove_polygon(int p_index);
+	void remove_last_polygon();
 	void clear_polygons();
 	void set_polygon(int p_polygon_index, const Vector<Point2> &p_polygon);
 	Vector<Point2> get_polygon(int p_polygon_index);
