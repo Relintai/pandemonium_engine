@@ -3527,7 +3527,7 @@ void LayeredTileMapLayerEditorTerrainsPlugin::_update_tiles_list() {
 		terrains_tile_list->set_item_metadata(item_index, list_metadata_dict);
 
 		terrains_tile_list->add_icon_item(main_vbox_container->get_theme_icon("TerrainPath", "EditorIcons"));
-		item_index = terrains_tile_list->get_item_count();
+		item_index = terrains_tile_list->get_item_count() - 1;
 		terrains_tile_list->set_item_tooltip(item_index, TTR("Path mode: paints a terrain, then connects it to the previous tile painted within the same stroke."));
 		list_metadata_dict = Dictionary();
 		list_metadata_dict["type"] = SELECTED_TYPE_PATH;
