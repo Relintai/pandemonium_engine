@@ -154,9 +154,9 @@ PoolVector2iArray LayeredTileMapPattern::get_used_cells() const {
 	a.resize(pattern.size());
 	PoolVector2iArray::Write w = a.write();
 	Vector2i *wptr = w.ptr();
-	
+
 	int i = 0;
-	
+
 	for (const HashMap<Vector2i, LayeredTileMapCell>::Element *E = pattern.front(); E; E = E->next) {
 		wptr[i++] = E->key();
 	}
@@ -2578,6 +2578,7 @@ Vector<Vector<Ref<Texture>>> LayeredTileSet::generate_terrains_icons(Size2i p_si
 		for (int terrain = 0; terrain < get_terrains_count(terrain_set); terrain++) {
 			Ref<Image> dst_image;
 			dst_image.instance();
+
 			if (counts[terrain_set][terrain].count > 0) {
 				// Get the best tile.
 				Ref<Texture> src_texture = counts[terrain_set][terrain].texture;
@@ -2592,8 +2593,12 @@ Vector<Vector<Ref<Texture>>> LayeredTileSet::generate_terrains_icons(Size2i p_si
 				dst_image->resize(p_size.x, p_size.y, Image::INTERPOLATE_NEAREST);
 			} else {
 				dst_image->create(1, 1, false, Image::FORMAT_RGBA8);
+				
+				dst_image->lock();
 				dst_image->set_pixel(0, 0, get_terrain_color(terrain_set, terrain));
+				dst_image->unlock();
 			}
+
 			Ref<ImageTexture> icon;
 			icon.instance();
 			icon->create_from_image(dst_image);
@@ -5704,7 +5709,7 @@ Ref<ImageTexture> LayeredTileSetAtlasSource::_create_padded_image_texture(const 
 	Ref<Image> image;
 	image.instance();
 	image->create(size.x, size.y, false, src_image->get_format());
-	
+
 	src_image->lock();
 	image->lock();
 
@@ -5737,7 +5742,7 @@ Ref<ImageTexture> LayeredTileSetAtlasSource::_create_padded_image_texture(const 
 			image->blit_rect(*src_image, Rect2i(src_rect.position + Vector2i(src_rect.size.x - 1, src_rect.size.y - 1), Vector2i(1, 1)), base_pos + Vector2i(src_rect.size.x, src_rect.size.y));
 		}
 	}
-	
+
 	image->unlock();
 	src_image->unlock();
 
