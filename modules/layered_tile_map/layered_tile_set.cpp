@@ -5701,6 +5701,9 @@ Ref<ImageTexture> LayeredTileSetAtlasSource::_create_padded_image_texture(const 
 	Ref<Image> image;
 	image.instance();
 	image->create(size.x, size.y, false, src_image->get_format());
+	
+	src_image->lock();
+	image->lock();
 
 	for (HashMap<Vector2i, TileAlternativesData>::Element *kv = tiles.front(); kv; kv = kv->next) {
 		for (int frame = 0; frame < (int)kv->value().animation_frames_durations.size(); frame++) {
@@ -5731,6 +5734,9 @@ Ref<ImageTexture> LayeredTileSetAtlasSource::_create_padded_image_texture(const 
 			image->blit_rect(*src_image, Rect2i(src_rect.position + Vector2i(src_rect.size.x - 1, src_rect.size.y - 1), Vector2i(1, 1)), base_pos + Vector2i(src_rect.size.x, src_rect.size.y));
 		}
 	}
+	
+	image->unlock();
+	src_image->unlock();
 
 	Ref<ImageTexture> tex;
 	tex.instance();
