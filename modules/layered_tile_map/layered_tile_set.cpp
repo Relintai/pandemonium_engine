@@ -5597,6 +5597,7 @@ void LayeredTileSetAtlasSource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_runtime_tile_texture_region", "atlas_coords", "frame"), &LayeredTileSetAtlasSource::get_runtime_tile_texture_region);
 
 	ClassDB::bind_method(D_METHOD("_queue_update_padded_texture"), &LayeredTileSetAtlasSource::_queue_update_padded_texture);
+	ClassDB::bind_method(D_METHOD("_update_padded_texture"), &LayeredTileSetAtlasSource::_update_padded_texture);
 
 	BIND_ENUM_CONSTANT(TILE_ANIMATION_MODE_DEFAULT)
 	BIND_ENUM_CONSTANT(TILE_ANIMATION_MODE_RANDOM_START_TIMES)
