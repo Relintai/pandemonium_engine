@@ -64,7 +64,7 @@ private:
 	void _update_zoom_and_panning(bool p_zoom_on_mouse_pos = false);
 	void _zoom_widget_changed(float val);
 	void _center_view();
-	virtual void gui_input(const Ref<InputEvent> &p_event);
+	virtual void _gui_input(const Ref<InputEvent> &p_event);
 
 	Ref<ViewPanner> panner;
 	void _pan_callback(Vector2 p_scroll_vec, Ref<InputEvent> p_event);

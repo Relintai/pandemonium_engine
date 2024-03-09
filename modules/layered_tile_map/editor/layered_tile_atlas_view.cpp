@@ -41,7 +41,7 @@
 #include "scene/gui/panel.h"
 #include "scene/gui/view_panner.h"
 
-void LayeredTileAtlasView::gui_input(const Ref<InputEvent> &p_event) {
+void LayeredTileAtlasView::_gui_input(const Ref<InputEvent> &p_event) {
 	if (panner->gui_input(p_event)) {
 		accept_event();
 	}
@@ -572,7 +572,7 @@ void LayeredTileAtlasView::_notification(int p_what) {
 	switch (p_what) {
 		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED:
 		case NOTIFICATION_ENTER_TREE: {
-			//panner->setup((ViewPanner::ControlScheme)EDITOR_GET("editors/panning/sub_editors_panning_scheme").operator int(), ED_GET_SHORTCUT("canvas_item_editor/pan_view"), bool(EDITOR_GET("editors/panning/simple_panning")));
+			panner->setup(ViewPanner::SCROLL_ZOOMS, ED_GET_SHORTCUT("canvas_item_editor/pan_view"), false);
 		} break;
 
 		case NOTIFICATION_THEME_CHANGED: {
@@ -590,7 +590,8 @@ void LayeredTileAtlasView::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_zoom_widget_changed"), &LayeredTileAtlasView::_zoom_widget_changed);
 	ClassDB::bind_method(D_METHOD("_center_view"), &LayeredTileAtlasView::_center_view);
 	ClassDB::bind_method(D_METHOD("_zoom_callback"), &LayeredTileAtlasView::_zoom_callback);
-	ClassDB::bind_method(D_METHOD("gui_input"), &LayeredTileAtlasView::gui_input);
+	ClassDB::bind_method(D_METHOD("_pan_callback"), &LayeredTileAtlasView::_pan_callback);
+	ClassDB::bind_method(D_METHOD("_gui_input"), &LayeredTileAtlasView::_gui_input);
 	ClassDB::bind_method(D_METHOD("_base_tiles_root_control_gui_input"), &LayeredTileAtlasView::_base_tiles_root_control_gui_input);
 	ClassDB::bind_method(D_METHOD("_draw_background_left"), &LayeredTileAtlasView::_draw_background_left);
 	ClassDB::bind_method(D_METHOD("_draw_base_tiles"), &LayeredTileAtlasView::_draw_base_tiles);
