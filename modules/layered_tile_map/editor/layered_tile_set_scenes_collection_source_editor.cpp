@@ -446,8 +446,8 @@ void LayeredTileSetScenesCollectionSourceEditor::edit(Ref<LayeredTileSet> p_tile
 	_update_tile_inspector();
 }
 
-void LayeredTileSetScenesCollectionSourceEditor::_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
-	if (!_can_drop_data_fw(p_point, p_data, p_from)) {
+void LayeredTileSetScenesCollectionSourceEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
+	if (!can_drop_data_fw(p_point, p_data, p_from)) {
 		return;
 	}
 
@@ -473,7 +473,7 @@ void LayeredTileSetScenesCollectionSourceEditor::_drop_data_fw(const Point2 &p_p
 	}
 }
 
-bool LayeredTileSetScenesCollectionSourceEditor::_can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
+bool LayeredTileSetScenesCollectionSourceEditor::can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
 	if (p_from == scene_tiles_list) {
 		Dictionary d = p_data;
 
@@ -520,8 +520,8 @@ void LayeredTileSetScenesCollectionSourceEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_scene_file_selected"), &LayeredTileSetScenesCollectionSourceEditor::_scene_file_selected);
 
 	ClassDB::bind_method(D_METHOD("_tile_set_scenes_collection_source_changed"), &LayeredTileSetScenesCollectionSourceEditor::_tile_set_scenes_collection_source_changed);
-	ClassDB::bind_method(D_METHOD("_drop_data_fw"), &LayeredTileSetScenesCollectionSourceEditor::_drop_data_fw);
-	ClassDB::bind_method(D_METHOD("_can_drop_data_fw"), &LayeredTileSetScenesCollectionSourceEditor::_can_drop_data_fw);
+	ClassDB::bind_method(D_METHOD("drop_data_fw"), &LayeredTileSetScenesCollectionSourceEditor::drop_data_fw);
+	ClassDB::bind_method(D_METHOD("can_drop_data_fw"), &LayeredTileSetScenesCollectionSourceEditor::can_drop_data_fw);
 	ClassDB::bind_method(D_METHOD("_scenes_collection_source_proxy_object_changed"), &LayeredTileSetScenesCollectionSourceEditor::_scenes_collection_source_proxy_object_changed);
 
 	ClassDB::bind_method(D_METHOD("_tile_proxy_object_changed"), &LayeredTileSetScenesCollectionSourceEditor::_tile_proxy_object_changed);

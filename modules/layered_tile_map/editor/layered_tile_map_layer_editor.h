@@ -58,6 +58,8 @@ protected:
 	ObjectID edited_tile_map_layer_id;
 	LayeredTileMapLayer *_get_edited_layer() const;
 
+	static void _bind_methods();
+
 public:
 	struct TabData {
 		Control *toolbar = nullptr;

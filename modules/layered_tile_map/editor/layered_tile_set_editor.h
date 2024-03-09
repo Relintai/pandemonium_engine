@@ -68,8 +68,8 @@ private:
 	LayeredTileSetAtlasSourceEditor *tile_set_atlas_source_editor = nullptr;
 	LayeredTileSetScenesCollectionSourceEditor *tile_set_scenes_collection_source_editor = nullptr;
 
-	void _drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from);
-	bool _can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const;
+	void drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from);
+	bool can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const;
 	void _load_texture_files(const Vector<String> &p_paths);
 
 	void _update_sources_list(int force_selected_id = -1);

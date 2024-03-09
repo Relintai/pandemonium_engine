@@ -58,6 +58,9 @@ LayeredTileMapLayer *LayeredTileMapLayerSubEditorPlugin::_get_edited_layer() con
 	return Object::cast_to<LayeredTileMapLayer>(ObjectDB::get_instance(edited_tile_map_layer_id));
 }
 
+void LayeredTileMapLayerSubEditorPlugin::_bind_methods() {
+}
+
 void LayeredTileMapLayerEditorTilesPlugin::tile_set_changed() {
 	_update_fix_selected_and_hovered();
 	_update_tile_set_sources_list();

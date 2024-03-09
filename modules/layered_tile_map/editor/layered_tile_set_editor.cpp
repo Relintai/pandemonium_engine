@@ -55,10 +55,10 @@
 
 LayeredTileSetEditor *LayeredTileSetEditor::singleton = nullptr;
 
-void LayeredTileSetEditor::_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
+void LayeredTileSetEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
 	ERR_FAIL_COND(!tile_set.is_valid());
 
-	if (!_can_drop_data_fw(p_point, p_data, p_from)) {
+	if (!can_drop_data_fw(p_point, p_data, p_from)) {
 		return;
 	}
 
@@ -70,7 +70,7 @@ void LayeredTileSetEditor::_drop_data_fw(const Point2 &p_point, const Variant &p
 	}
 }
 
-bool LayeredTileSetEditor::_can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
+bool LayeredTileSetEditor::can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
 	ERR_FAIL_COND_V(!tile_set.is_valid(), false);
 
 	if (read_only) {
@@ -379,8 +379,8 @@ void LayeredTileSetEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_pattern_preview_done"), &LayeredTileSetEditor::_pattern_preview_done);
 	ClassDB::bind_method(D_METHOD("_tab_changed"), &LayeredTileSetEditor::_tab_changed);
 
-	ClassDB::bind_method(D_METHOD("_drop_data_fw"), &LayeredTileSetEditor::_drop_data_fw);
-	ClassDB::bind_method(D_METHOD("_can_drop_data_fw"), &LayeredTileSetEditor::_can_drop_data_fw);
+	ClassDB::bind_method(D_METHOD("drop_data_fw"), &LayeredTileSetEditor::drop_data_fw);
+	ClassDB::bind_method(D_METHOD("can_drop_data_fw"), &LayeredTileSetEditor::can_drop_data_fw);
 
 	ClassDB::bind_method(D_METHOD("_set_source_sort"), &LayeredTileSetEditor::_set_source_sort);
 	ClassDB::bind_method(D_METHOD("_source_selected"), &LayeredTileSetEditor::_source_selected);
