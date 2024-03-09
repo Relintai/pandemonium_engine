@@ -152,10 +152,13 @@ PoolVector2iArray LayeredTileMapPattern::get_used_cells() const {
 	// Returns the cells used in the tilemap.
 	PoolVector2iArray a;
 	a.resize(pattern.size());
+	PoolVector2iArray::Write w = a.write();
+	Vector2i *wptr = w.ptr();
+	
 	int i = 0;
+	
 	for (const HashMap<Vector2i, LayeredTileMapCell>::Element *E = pattern.front(); E; E = E->next) {
-		Vector2i p(E->key().x, E->key().y);
-		a[i++] = p;
+		wptr[i++] = E->key();
 	}
 
 	return a;

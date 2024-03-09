@@ -900,8 +900,10 @@ void LayeredTileMapLayerEditorTilesPlugin::forward_canvas_draw_over_viewport(Con
 
 				PoolVector2iArray selection_used_cells = selection_pattern->get_used_cells();
 				for (int i = 0; i < selection_used_cells.size(); i++) {
-					Vector2i coords = tile_set->map_pattern(offset + top_left, selection_used_cells[i], selection_pattern);
-					preview[coords] = LayeredTileMapCell(selection_pattern->get_cell_source_id(selection_used_cells[i]), selection_pattern->get_cell_atlas_coords(selection_used_cells[i]), selection_pattern->get_cell_alternative_tile(selection_used_cells[i]));
+					Vector2i cc = selection_used_cells[i];
+					Vector2i coords = tile_set->map_pattern(offset + top_left, cc, selection_pattern);
+
+					preview[coords] = LayeredTileMapCell(selection_pattern->get_cell_source_id(cc), selection_pattern->get_cell_atlas_coords(cc), selection_pattern->get_cell_alternative_tile(cc));
 				}
 			}
 		} else if (drag_type == DRAG_TYPE_CLIPBOARD_PASTE) {
@@ -1139,19 +1141,23 @@ HashMap<Vector2i, LayeredTileMapCell> LayeredTileMapLayerEditorTilesPlugin::_dra
 		} else {
 			// Paint the pattern.
 			// If we paint several tiles, we virtually move the mouse as if it was in the center of the "brush"
-			Vector2 mouse_offset = (Vector2(pattern->get_size()) / 2.0 - Vector2(0.5, 0.5)) * tile_set->get_tile_size();
+			Vector2i pattern_size = pattern->get_size();
+			Vector2 mouse_offset = (Vector2(pattern_size) / 2.0 - Vector2(0.5, 0.5)) * tile_set->get_tile_size();
 			Vector2i last_hovered_cell = tile_set->local_to_map(p_from_mouse_pos - mouse_offset);
 			Vector2i new_hovered_cell = tile_set->local_to_map(p_to_mouse_pos - mouse_offset);
 			Vector2i drag_start_cell = tile_set->local_to_map(p_start_drag_mouse_pos - mouse_offset);
 
 			PoolVector2iArray used_cells = pattern->get_used_cells();
-			Vector2i offset = Vector2i(Math::posmod(drag_start_cell.x, pattern->get_size().x), Math::posmod(drag_start_cell.y, pattern->get_size().y)); // Note: no posmodv for Vector2i for now. Meh.s
-			Vector<Vector2i> line = LayeredTileMapLayerEditor::get_line(edited_layer, (last_hovered_cell - offset) / pattern->get_size(), (new_hovered_cell - offset) / pattern->get_size());
+
+			Vector2i offset = Vector2i(Math::posmod(drag_start_cell.x, pattern_size.x), Math::posmod(drag_start_cell.y, pattern_size.y)); // Note: no posmodv for Vector2i for now. Meh.s
+			Vector<Vector2i> line = LayeredTileMapLayerEditor::get_line(edited_layer, (last_hovered_cell - offset) / pattern_size, (new_hovered_cell - offset) / pattern_size);
 			for (int i = 0; i < line.size(); i++) {
-				Vector2i top_left = line[i] * pattern->get_size() + offset;
+				Vector2i top_left = line[i] * pattern_size + offset;
 				for (int j = 0; j < used_cells.size(); j++) {
-					Vector2i coords = tile_set->map_pattern(top_left, used_cells[j], pattern);
-					output.insert(coords, LayeredTileMapCell(pattern->get_cell_source_id(used_cells[j]), pattern->get_cell_atlas_coords(used_cells[j]), pattern->get_cell_alternative_tile(used_cells[j])));
+					Vector2i cc = used_cells[j];
+					Vector2i coords = tile_set->map_pattern(top_left, cc, pattern);
+
+					output.insert(coords, LayeredTileMapCell(pattern->get_cell_source_id(cc), pattern->get_cell_atlas_coords(cc), pattern->get_cell_alternative_tile(cc)));
 				}
 			}
 		}
