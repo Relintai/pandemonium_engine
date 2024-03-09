@@ -5693,6 +5693,7 @@ Ref<ImageTexture> LayeredTileSetAtlasSource::_create_padded_image_texture(const 
 	if (src_image.is_null()) {
 		Ref<ImageTexture> ret;
 		ret.instance();
+		ret->set_flags(p_source->get_flags());
 		return ret;
 	}
 
@@ -5733,7 +5734,7 @@ Ref<ImageTexture> LayeredTileSetAtlasSource::_create_padded_image_texture(const 
 
 	Ref<ImageTexture> tex;
 	tex.instance();
-	tex->create_from_image(image);
+	tex->create_from_image(image, p_source->get_flags());
 
 	return tex;
 }
