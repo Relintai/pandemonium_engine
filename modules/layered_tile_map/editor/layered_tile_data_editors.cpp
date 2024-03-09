@@ -674,10 +674,6 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 	}
 
 	base_control->update();
-
-	if (!use_undo_redo) {
-		memdelete(undo_redo);
-	}
 }
 
 void GenericTilePolygonEditor::_set_snap_option(int p_index) {
