@@ -58,13 +58,14 @@ public:
 
 	virtual HTTPServerEnums::HTTPMethod get_method() const;
 
-	virtual void parse_files();
 	virtual int get_file_count() const;
 	virtual String get_file_file_name(const int index) const;
 	virtual String get_file_key(const int index) const;
-	virtual int get_file_length(const int index) const;
+	virtual uint64_t get_file_length(const int index) const;
 	virtual PoolByteArray get_file_data(const int index) const;
 	virtual String get_file_data_str(const int index) const;
+	virtual Error move_file(const int index, const String &p_dest_file);
+	virtual bool is_file_moved(const int index) const;
 
 	virtual String get_parameter(const String &key) const;
 	virtual String get_post_parameter(const String &key) const;
@@ -93,7 +94,8 @@ public:
 	void set_parser_path(const String &value);
 	void set_host(const String &value);
 
-	void add_file(const String &key, const String &file_name, const PoolByteArray &data);
+	void add_file_memory(const String &key, const String &file_name, const PoolByteArray &data);
+	void add_file_temp_file(const String &key, const String &file_name, const String &path);
 
 	void add_cookie_data(const String &key, const String &value);
 
@@ -121,9 +123,22 @@ protected:
 	String _host;
 
 	struct FileEntry {
+		enum FileEntryType {
+			FILE_ENTRY_TYPE_MEMORY = 0,
+			FILE_ENTRY_TYPE_TEMP_FILE = 0,
+		};
+
+		mutable bool moved;
+
+		FileEntryType type;
 		String file_name;
 		PoolByteArray data;
 		String key; //form name key
+		mutable String path;
+
+		FileEntry() {
+			moved = false;
+		}
 	};
 
 	Vector<FileEntry> _files;

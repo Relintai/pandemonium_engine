@@ -61,11 +61,10 @@ public:
 
 	HTTPServerEnums::HTTPMethod get_method() const;
 
-	void parse_files();
 	int get_file_count() const;
 	String get_file_file_name(const int index) const;
 	String get_file_key(const int index) const;
-	int get_file_length(const int index) const;
+	uint64_t get_file_length(const int index) const;
 	PoolByteArray get_file_data(const int index) const;
 	String get_file_data_str(const int index) const;
 

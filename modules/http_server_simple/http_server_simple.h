@@ -46,6 +46,8 @@
 
 #include "modules/web/http/http_server_enums.h"
 
+#include "web_server_simple.h"
+
 class HTTPParser;
 class WebServerSimple;
 class WebServerRequest;
@@ -77,8 +79,6 @@ public:
 
 	WebServerSimple *_web_server;
 	HTTPServerSimple *_http_server;
-
-	uint64_t max_request_size;
 
 	bool use_ssl = false;
 	Ref<CryptoKey> key;
@@ -126,6 +126,10 @@ public:
 	WebServerSimple *_web_server;
 
 	uint64_t max_request_size;
+	uint64_t request_max_file_upload_size;
+	
+	WebServerSimple::FileUploadStoreType upload_file_store_type;
+	String upload_temp_file_store_path;
 
 	RBMap<StringName, String> mimes;
 

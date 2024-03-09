@@ -586,7 +586,6 @@ HTTPServerConnection::HTTPServerConnection() {
 	_timeout_usec = 20 * 1000 * 1000;
 
 	_http_parser.instance();
-	_http_parser->max_request_size = max_request_size;
 	time = 0;
 
 	memset(req_buf, 0, sizeof(req_buf));
@@ -681,8 +680,10 @@ void HTTPServerSimple::poll() {
 		connection->_web_server = _web_server;
 		connection->_http_server = this;
 
-		connection->max_request_size = max_request_size;
 		connection->_http_parser->max_request_size = max_request_size;
+		connection->_http_parser->request_max_file_upload_size = request_max_file_upload_size;
+		connection->_http_parser->upload_file_store_type = upload_file_store_type;
+		connection->_http_parser->upload_temp_file_store_path = upload_temp_file_store_path;
 
 		connection->use_ssl = use_ssl;
 		connection->key = key;
@@ -842,6 +843,9 @@ HTTPServerSimple::HTTPServerSimple() {
 
 	server.instance();
 	stop();
+
+	max_request_size = 0;
+	request_max_file_upload_size = 0;
 }
 
 HTTPServerSimple::~HTTPServerSimple() {

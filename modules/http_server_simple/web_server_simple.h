@@ -56,6 +56,12 @@ public:
 		MAX_REQUEST_SIZE_TYPE_GIGA_BYTE = 3,
 	};
 
+	enum FileUploadStoreType {
+		FILE_UPLOAD_STORE_TYPE_MEMORY = 0,
+		FILE_UPLOAD_STORE_TYPE_TEMP_FILES,
+		//FILE_UPLOAD_STORE_TYPE_TEMP_FILES_SORTED_FOLDERS -> Use a hash as file name, and sort them into folders like /ab/cd/abcd... TODO
+	};
+
 	int get_bind_port();
 	void set_bind_port(const int val);
 
@@ -86,14 +92,25 @@ public:
 	MaxRequestSizeTypes get_max_request_size_type();
 	void set_max_request_size_type(const MaxRequestSizeTypes val);
 
-	// Note, that the implementation is extremely simple for now.
-	// This includes the entire request header, including file uploads,
-	// as right now uploaded files are stored in memory,
-	// so this will not change until temp files are implemented.
-	// (A big file upload / request can eat all the ram in a server!)
+	// This includes the entire request header,
+	// including file uploads (only if they are stored in memory) because
+	// then a big file upload / request can eat all the ram in a server!
 	// Also 0 means 0, not unlimited -> This should NOT change (Reason: line above).
 	int get_max_request_size();
 	void set_max_request_size(const int val);
+
+	FileUploadStoreType upload_get_file_store_type();
+	void upload_set_file_store_type(const FileUploadStoreType val);
+
+	String upload_get_temp_file_store_path();
+	void upload_set_temp_file_store_path(const String &val);
+
+	// Total, not per file (less room for misconfigurations). Only relevant if FILE_UPLOAD_STORE_TYPE_TEMP_FILES.
+	MaxRequestSizeTypes upload_get_request_max_file_size_type();
+	void upload_set_request_max_file_size_type(const MaxRequestSizeTypes val);
+
+	int upload_get_request_max_file_size();
+	void upload_set_request_max_file_size(const int val);
 
 	void add_mime_type(const String &file_extension, const String &mime_type);
 	void remove_mime_type(const String &file_extension);
@@ -110,7 +127,9 @@ public:
 
 protected:
 	void _apply_max_request_size_type();
+	void _apply_request_max_file_upload_size_type();
 
+	void _validate_property(PropertyInfo &property) const;
 	void _notification(int p_what);
 
 	static void _bind_methods();
@@ -120,7 +139,6 @@ protected:
 
 	bool _start_on_ready;
 
-	//TODO add binds to set path
 	bool _use_ssl;
 	String _ssl_key;
 	String _ssl_cert;
@@ -134,6 +152,11 @@ protected:
 	MaxRequestSizeTypes _max_request_size_type;
 	int _max_request_size;
 
+	FileUploadStoreType _upload_file_store_type;
+	String _upload_temp_file_store_path;
+	MaxRequestSizeTypes _upload_request_max_file_size_type;
+	int _upload_request_max_file_size;
+
 	Ref<HTTPServerSimple> _server;
 	bool _server_quit;
 	Mutex _server_lock;
@@ -144,5 +167,6 @@ protected:
 };
 
 VARIANT_ENUM_CAST(WebServerSimple::MaxRequestSizeTypes);
+VARIANT_ENUM_CAST(WebServerSimple::FileUploadStoreType);
 
 #endif

@@ -44,9 +44,6 @@ HTTPServerEnums::HTTPMethod WebServerRequestScriptable::get_method() const {
 	return static_cast<HTTPServerEnums::HTTPMethod>(m);
 }
 
-void WebServerRequestScriptable::parse_files() {
-	call("_parse_files");
-}
 int WebServerRequestScriptable::get_file_count() const {
 	return const_cast<WebServerRequestScriptable *>(this)->call("_get_file_count");
 }
@@ -56,7 +53,7 @@ String WebServerRequestScriptable::get_file_file_name(const int index) const {
 String WebServerRequestScriptable::get_file_key(const int index) const {
 	return const_cast<WebServerRequestScriptable *>(this)->call("_get_file_key", index);
 }
-int WebServerRequestScriptable::get_file_length(const int index) const {
+uint64_t WebServerRequestScriptable::get_file_length(const int index) const {
 	return const_cast<WebServerRequestScriptable *>(this)->call("_get_file_length", index);
 }
 PoolByteArray WebServerRequestScriptable::get_file_data(const int index) const {
@@ -64,6 +61,12 @@ PoolByteArray WebServerRequestScriptable::get_file_data(const int index) const {
 }
 String WebServerRequestScriptable::get_file_data_str(const int index) const {
 	return const_cast<WebServerRequestScriptable *>(this)->call("_get_file_data_str", index);
+}
+Error WebServerRequestScriptable::move_file(const int index, const String &p_dest_file) {
+	return (Error)(int)call("_move_file", index, p_dest_file);
+}
+bool WebServerRequestScriptable::is_file_moved(const int index) const {
+	return const_cast<WebServerRequestScriptable *>(this)->call("_is_file_moved", index);
 }
 
 String WebServerRequestScriptable::get_parameter(const String &key) const {
@@ -155,8 +158,6 @@ HTTPServerEnums::HTTPMethod WebServerRequestScriptable::_get_method() const {
 	return HTTPServerEnums::HTTP_METHOD_GET;
 }
 
-void WebServerRequestScriptable::_parse_files() {
-}
 int WebServerRequestScriptable::_get_file_count() const {
 	return 0;
 }
@@ -174,6 +175,12 @@ PoolByteArray WebServerRequestScriptable::_get_file_data(const int index) const 
 }
 String WebServerRequestScriptable::_get_file_data_str(const int index) const {
 	return String();
+}
+Error WebServerRequestScriptable::_move_file(const int index, const String &p_dest_file) {
+	return ERR_PRINTER_ON_FIRE;
+}
+bool WebServerRequestScriptable::_is_file_moved(const int index) const {
+	return true;
 }
 
 String WebServerRequestScriptable::_get_parameter(const String &key) const {
@@ -295,13 +302,14 @@ void WebServerRequestScriptable::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo(Variant::INT, "_get_method"));
 
-	BIND_VMETHOD(MethodInfo("_parse_files"));
 	BIND_VMETHOD(MethodInfo(Variant::INT, "_get_file_count"));
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_get_file_file_name", PropertyInfo(Variant::INT, "index")));
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_get_file_key", PropertyInfo(Variant::INT, "index")));
 	BIND_VMETHOD(MethodInfo(Variant::INT, "_get_file_length", PropertyInfo(Variant::INT, "index")));
 	BIND_VMETHOD(MethodInfo(Variant::POOL_BYTE_ARRAY, "_get_file_data", PropertyInfo(Variant::INT, "index")));
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_get_file_data_str", PropertyInfo(Variant::INT, "index")));
+	BIND_VMETHOD(MethodInfo(Variant::INT, "_move_file", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::STRING, "dest_file")));
+	BIND_VMETHOD(MethodInfo(Variant::BOOL, "_is_file_moved", PropertyInfo(Variant::INT, "index")));
 
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_get_parameter", PropertyInfo(Variant::STRING, "key")));
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "_get_post_parameter", PropertyInfo(Variant::STRING, "key")));
@@ -336,13 +344,14 @@ void WebServerRequestScriptable::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_get_method"), &WebServerRequestScriptable::_get_method);
 
-	ClassDB::bind_method(D_METHOD("_parse_files"), &WebServerRequestScriptable::_parse_files);
 	ClassDB::bind_method(D_METHOD("_get_file_count"), &WebServerRequestScriptable::_get_file_count);
 	ClassDB::bind_method(D_METHOD("_get_file_file_name", "index"), &WebServerRequestScriptable::_get_file_file_name);
 	ClassDB::bind_method(D_METHOD("_get_file_key", "index"), &WebServerRequestScriptable::_get_file_key);
 	ClassDB::bind_method(D_METHOD("_get_file_length", "index"), &WebServerRequestScriptable::_get_file_length);
 	ClassDB::bind_method(D_METHOD("_get_file_data", "index"), &WebServerRequestScriptable::_get_file_data);
 	ClassDB::bind_method(D_METHOD("_get_file_data_str", "index"), &WebServerRequestScriptable::_get_file_data_str);
+	ClassDB::bind_method(D_METHOD("_move_file", "index", "dest_file"), &WebServerRequestScriptable::_move_file);
+	ClassDB::bind_method(D_METHOD("_is_file_moved", "index"), &WebServerRequestScriptable::_is_file_moved);
 
 	ClassDB::bind_method(D_METHOD("_get_parameter", "key"), &WebServerRequestScriptable::_get_parameter);
 	ClassDB::bind_method(D_METHOD("_get_post_parameter", "key"), &WebServerRequestScriptable::_get_post_parameter);

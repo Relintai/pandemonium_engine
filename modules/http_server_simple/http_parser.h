@@ -34,8 +34,11 @@
 
 #include "core/containers/vector.h"
 #include "core/string/ustring.h"
+#include "core/os/file_access.h"
 
 #include "core/object/reference.h"
+
+#include "web_server_simple.h"
 
 class SimpleWebServerRequest;
 struct http_parser;
@@ -54,6 +57,10 @@ public:
 	};
 
 	uint64_t max_request_size;
+	uint64_t request_max_file_upload_size;
+
+	WebServerSimple::FileUploadStoreType upload_file_store_type;
+	String upload_temp_file_store_path;
 
 	Ref<SimpleWebServerRequest> get_next_request();
 	int get_request_count() const;
@@ -76,6 +83,10 @@ protected:
 	String _partial_data;
 
 	uint64_t _current_request_size;
+	uint64_t _current_upload_files_size;
+	
+	String _upload_file_full_path;
+	FileAccess *_upload_file_access;
 
 	Ref<SimpleWebServerRequest> _request;
 	Vector<Ref<SimpleWebServerRequest>> _requests;

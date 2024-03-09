@@ -110,13 +110,14 @@ public:
 
 	virtual HTTPServerEnums::HTTPMethod get_method() const;
 
-	virtual void parse_files();
 	virtual int get_file_count() const;
 	virtual String get_file_file_name(const int index) const;
 	virtual String get_file_key(const int index) const;
-	virtual int get_file_length(const int index) const;
+	virtual uint64_t get_file_length(const int index) const;
 	virtual PoolByteArray get_file_data(const int index) const;
 	virtual String get_file_data_str(const int index) const;
+	virtual Error move_file(const int index, const String &p_dest_file);
+	virtual bool is_file_moved(const int index) const;
 
 	virtual String get_parameter(const String &key) const;
 	virtual String get_post_parameter(const String &key) const;

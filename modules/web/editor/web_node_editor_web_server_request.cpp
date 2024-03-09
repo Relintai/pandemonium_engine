@@ -45,8 +45,6 @@ HTTPServerEnums::HTTPMethod WebNodeEditorWebServerRequest::get_method() const {
 	return HTTPServerEnums::HTTP_METHOD_GET;
 }
 
-void WebNodeEditorWebServerRequest::parse_files() {
-}
 int WebNodeEditorWebServerRequest::get_file_count() const {
 	return 0;
 }
@@ -56,7 +54,7 @@ String WebNodeEditorWebServerRequest::get_file_file_name(const int index) const 
 String WebNodeEditorWebServerRequest::get_file_key(const int index) const {
 	return "";
 }
-int WebNodeEditorWebServerRequest::get_file_length(const int index) const {
+uint64_t WebNodeEditorWebServerRequest::get_file_length(const int index) const {
 	return 0;
 }
 PoolByteArray WebNodeEditorWebServerRequest::get_file_data(const int index) const {

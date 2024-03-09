@@ -43,6 +43,8 @@
 #include "http_server_simple.h"
 #include "modules/web/http/web_permission.h"
 
+#include "core/os/dir_access.h"
+
 String SimpleWebServerRequest::get_cookie(const String &key) {
 	for (int i = 0; i < _cookies.size(); ++i) {
 		const CookieData &d = _cookies[i];
@@ -58,8 +60,6 @@ HTTPServerEnums::HTTPMethod SimpleWebServerRequest::get_method() const {
 	return _method;
 }
 
-void SimpleWebServerRequest::parse_files() {
-}
 int SimpleWebServerRequest::get_file_count() const {
 	return _files.size();
 }
@@ -73,26 +73,122 @@ String SimpleWebServerRequest::get_file_key(const int index) const {
 
 	return _files[index].file_name;
 }
-int SimpleWebServerRequest::get_file_length(const int index) const {
+uint64_t SimpleWebServerRequest::get_file_length(const int index) const {
 	ERR_FAIL_INDEX_V(index, _files.size(), 0);
 
-	return _files[index].data.size();
+	const FileEntry &e = _files[index];
+
+	if (e.type == FileEntry::FILE_ENTRY_TYPE_MEMORY) {
+		return e.data.size();
+	}
+
+	Error err;
+	FileAccess *fa = FileAccess::open(e.path, FileAccess::READ, &err);
+
+	ERR_FAIL_NULL_V(fa, 0);
+
+	if (err != OK) {
+		memdelete(fa);
+		return 0;
+	}
+
+	uint64_t len = fa->get_len();
+
+	memdelete(fa);
+
+	return len;
 }
 PoolByteArray SimpleWebServerRequest::get_file_data(const int index) const {
 	ERR_FAIL_INDEX_V(index, _files.size(), PoolByteArray());
 
-	return _files[index].data;
+	const FileEntry &e = _files[index];
+
+	if (e.type == FileEntry::FILE_ENTRY_TYPE_MEMORY) {
+		return e.data;
+	}
+
+	Error err;
+	FileAccess *f = FileAccess::open(e.path, FileAccess::READ, &err);
+	if (!f) {
+		ERR_FAIL_V_MSG(PoolByteArray(), "Can't open file from path '" + String(e.path) + "'.");
+	}
+
+	PoolByteArray data;
+	data.resize(f->get_len());
+	PoolByteArray::Write w = data.write();
+	uint8_t *dptr = w.ptr();
+
+	f->get_buffer(dptr, data.size());
+	memdelete(f);
+
+	return data;
 }
 String SimpleWebServerRequest::get_file_data_str(const int index) const {
 	ERR_FAIL_INDEX_V(index, _files.size(), "");
 
-	PoolByteArray::Read r = _files[index].data.read();
+	const FileEntry &e = _files[index];
 
-	String ret = reinterpret_cast<const char *>(r.ptr());
+	if (e.type == FileEntry::FILE_ENTRY_TYPE_MEMORY) {
+		PoolByteArray::Read r = _files[index].data.read();
 
-	r.release();
+		String ret = reinterpret_cast<const char *>(r.ptr());
 
-	return ret;
+		r.release();
+
+		return ret;
+	}
+
+	Error err;
+	String data = FileAccess::get_file_as_string(e.path, &err);
+
+	ERR_FAIL_COND_V_MSG(err != OK, "", vformat("Error accessing file! Error: %d", err));
+
+	return data;
+}
+Error SimpleWebServerRequest::move_file(const int index, const String &p_dest_file) {
+	ERR_FAIL_INDEX_V(index, _files.size(), ERR_INVALID_PARAMETER);
+
+	DirAccess *dir = DirAccess::create_for_path(p_dest_file.get_base_dir());
+
+	if (!dir) {
+		return ERR_FILE_BAD_PATH;
+	}
+
+	if (dir->file_exists(p_dest_file)) {
+		return ERR_ALREADY_IN_USE;
+	}
+
+	const FileEntry &e = _files[index];
+
+	if (e.type == FileEntry::FILE_ENTRY_TYPE_MEMORY) {
+		memdelete(dir);
+
+		Error err;
+		FileAccess *f = FileAccess::open(e.path, FileAccess::WRITE, &err);
+		if (!f) {
+			return ERR_FILE_BAD_PATH;
+		}
+
+		PoolByteArray::Read r = e.data.read();
+		const uint8_t *rptr = r.ptr();
+
+		f->store_buffer(rptr, e.data.size());
+
+		return OK;
+	}
+
+	dir->rename(e.path, p_dest_file);
+	memdelete(dir);
+
+	e.moved = true;
+	e.path = p_dest_file;
+
+	return OK;
+}
+bool SimpleWebServerRequest::is_file_moved(const int index) const {
+	ERR_FAIL_INDEX_V(index, _files.size(), true);
+
+	return _files[index].moved;
 }
 
 String SimpleWebServerRequest::get_parameter(const String &key) const {
@@ -271,11 +367,22 @@ void SimpleWebServerRequest::set_host(const String &value) {
 	_host = value;
 }
 
-void SimpleWebServerRequest::add_file(const String &key, const String &file_name, const PoolByteArray &data) {
+void SimpleWebServerRequest::add_file_memory(const String &key, const String &file_name, const PoolByteArray &data) {
 	FileEntry e;
+	e.type = FileEntry::FILE_ENTRY_TYPE_MEMORY;
 	e.key = key;
 	e.file_name = file_name;
 	e.data = data;
+
+	_files.push_back(e);
+}
+
+void SimpleWebServerRequest::add_file_temp_file(const String &key, const String &file_name, const String &path) {
+	FileEntry e;
+	e.type = FileEntry::FILE_ENTRY_TYPE_TEMP_FILE;
+	e.key = key;
+	e.file_name = file_name;
+	e.path = path;
 
 	_files.push_back(e);
 }
@@ -303,6 +410,20 @@ SimpleWebServerRequest::SimpleWebServerRequest() {
 }
 
 SimpleWebServerRequest::~SimpleWebServerRequest() {
+	for (int i = 0; i < _files.size(); ++i) {
+		const FileEntry &e = _files[i];
+
+		if (e.type == FileEntry::FILE_ENTRY_TYPE_TEMP_FILE) {
+			if (!e.moved && !e.path.empty()) {
+				DirAccess *d = DirAccess::create_for_path(e.path.get_base_dir());
+
+				if (d) {
+					d->remove(e.path);
+					memdelete(d);
+				}
+			}
+		}
+	}
 }
 
 void SimpleWebServerRequest::_bind_methods() {

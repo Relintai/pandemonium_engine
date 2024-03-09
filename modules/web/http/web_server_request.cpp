@@ -246,8 +246,6 @@ HTTPServerEnums::HTTPMethod WebServerRequest::get_method() const {
 	return HTTPServerEnums::HTTP_METHOD_GET;
 }
 
-void WebServerRequest::parse_files() {
-}
 int WebServerRequest::get_file_count() const {
 	return 0;
 }
@@ -257,7 +255,7 @@ String WebServerRequest::get_file_file_name(const int index) const {
 String WebServerRequest::get_file_key(const int index) const {
 	return String();
 }
-int WebServerRequest::get_file_length(const int index) const {
+uint64_t WebServerRequest::get_file_length(const int index) const {
 	return 0;
 }
 PoolByteArray WebServerRequest::get_file_data(const int index) const {
@@ -265,6 +263,12 @@ PoolByteArray WebServerRequest::get_file_data(const int index) const {
 }
 String WebServerRequest::get_file_data_str(const int index) const {
 	return String();
+}
+Error WebServerRequest::move_file(const int index, const String &p_dest_file) {
+	return ERR_PRINTER_ON_FIRE;
+}
+bool WebServerRequest::is_file_moved(const int index) const {
+	return true;
 }
 
 String WebServerRequest::get_parameter(const String &key) const {
@@ -646,13 +650,14 @@ void WebServerRequest::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_method"), &WebServerRequest::get_method);
 
-	ClassDB::bind_method(D_METHOD("parse_files"), &WebServerRequest::parse_files);
 	ClassDB::bind_method(D_METHOD("get_file_count"), &WebServerRequest::get_file_count);
 	ClassDB::bind_method(D_METHOD("get_file_file_name", "index"), &WebServerRequest::get_file_file_name);
 	ClassDB::bind_method(D_METHOD("get_file_key", "index"), &WebServerRequest::get_file_key);
 	ClassDB::bind_method(D_METHOD("get_file_length", "index"), &WebServerRequest::get_file_length);
 	ClassDB::bind_method(D_METHOD("get_file_data", "index"), &WebServerRequest::get_file_data);
 	ClassDB::bind_method(D_METHOD("get_file_data_str", "index"), &WebServerRequest::get_file_data_str);
+	ClassDB::bind_method(D_METHOD("move_file", "index", "dest_file"), &WebServerRequest::move_file);
+	ClassDB::bind_method(D_METHOD("is_file_moved", "index"), &WebServerRequest::is_file_moved);
 
 	ClassDB::bind_method(D_METHOD("get_parameter", "key"), &WebServerRequest::get_parameter);
 	ClassDB::bind_method(D_METHOD("get_post_parameter", "key"), &WebServerRequest::get_post_parameter);

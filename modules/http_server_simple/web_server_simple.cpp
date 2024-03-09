@@ -129,6 +129,37 @@ void WebServerSimple::set_max_request_size(const int val) {
 	_apply_max_request_size_type();
 }
 
+WebServerSimple::FileUploadStoreType WebServerSimple::upload_get_file_store_type() {
+	return _upload_file_store_type;
+}
+void WebServerSimple::upload_set_file_store_type(const FileUploadStoreType val) {
+	_upload_file_store_type = val;
+	property_list_changed_notify();
+}
+
+String WebServerSimple::upload_get_temp_file_store_path() {
+	return _upload_temp_file_store_path;
+}
+void WebServerSimple::upload_set_temp_file_store_path(const String &val) {
+	_upload_temp_file_store_path = val;
+}
+
+WebServerSimple::MaxRequestSizeTypes WebServerSimple::upload_get_request_max_file_size_type() {
+	return _upload_request_max_file_size_type;
+}
+void WebServerSimple::upload_set_request_max_file_size_type(const MaxRequestSizeTypes val) {
+	_upload_request_max_file_size_type = val;
+	_apply_request_max_file_upload_size_type();
+}
+
+int WebServerSimple::upload_get_request_max_file_size() {
+	return _upload_request_max_file_size;
+}
+void WebServerSimple::upload_set_request_max_file_size(const int val) {
+	_upload_request_max_file_size = val;
+	_apply_request_max_file_upload_size_type();
+}
+
 void WebServerSimple::add_mime_type(const String &file_extension, const String &mime_type) {
 	_server->mimes[file_extension] = mime_type;
 }
@@ -144,6 +175,9 @@ void WebServerSimple::_start() {
 	ERR_FAIL_COND(_running);
 
 	WebServer::_start();
+
+	_server->upload_file_store_type = _upload_file_store_type;
+	_server->upload_temp_file_store_path = _upload_temp_file_store_path.path_ensure_end_slash();
 
 	if (!OS::get_singleton()->can_use_threads()) {
 		_server->_use_worker_threads = false;
@@ -231,6 +265,11 @@ WebServerSimple::WebServerSimple() {
 	_max_request_size_type = MAX_REQUEST_SIZE_TYPE_MEGA_BYTE;
 	_max_request_size = 3;
 
+	_upload_file_store_type = FILE_UPLOAD_STORE_TYPE_MEMORY;
+	_upload_temp_file_store_path = "user://http_temp_files/";
+	_upload_request_max_file_size_type = MAX_REQUEST_SIZE_TYPE_MEGA_BYTE;
+	_upload_request_max_file_size = 10;
+
 	_bind_port = 8080;
 	_bind_host = "0.0.0.0";
 
@@ -251,6 +290,7 @@ WebServerSimple::WebServerSimple() {
 	_server->_web_server = this;
 
 	_apply_max_request_size_type();
+	_apply_request_max_file_upload_size_type();
 }
 
 WebServerSimple::~WebServerSimple() {
@@ -265,6 +305,22 @@ WebServerSimple::~WebServerSimple() {
 
 void WebServerSimple::_apply_max_request_size_type() {
 	_server->max_request_size = (static_cast<uint64_t>(1) << (10 * static_cast<uint64_t>(_max_request_size_type))) * static_cast<uint64_t>(_max_request_size);
+}
+
+void WebServerSimple::_apply_request_max_file_upload_size_type() {
+	_server->request_max_file_upload_size = (static_cast<uint64_t>(1) << (10 * static_cast<uint64_t>(_upload_request_max_file_size_type))) * static_cast<uint64_t>(_upload_request_max_file_size);
+}
+
+void WebServerSimple::_validate_property(PropertyInfo &property) const {
+	if (_upload_file_store_type == FILE_UPLOAD_STORE_TYPE_MEMORY) {
+		if (property.name.begins_with("upload_")) {
+			if (property.name == "upload_file_store_type") {
+				return;
+			}
+
+			property.usage = 0;
+		}
+	}
 }
 
 void WebServerSimple::_notification(int p_what) {
@@ -331,6 +387,24 @@ void WebServerSimple::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_max_request_size", "val"), &WebServerSimple::set_max_request_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_request_size"), "set_max_request_size", "get_max_request_size");
 
+	ADD_GROUP("Upload", "upload_");
+
+	ClassDB::bind_method(D_METHOD("upload_get_file_store_type"), &WebServerSimple::upload_get_file_store_type);
+	ClassDB::bind_method(D_METHOD("upload_set_file_store_type", "val"), &WebServerSimple::upload_set_file_store_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "upload_file_store_type", PROPERTY_HINT_ENUM, "Memory,Temp Files"), "upload_set_file_store_type", "upload_get_file_store_type");
+
+	ClassDB::bind_method(D_METHOD("upload_get_temp_file_store_path"), &WebServerSimple::upload_get_temp_file_store_path);
+	ClassDB::bind_method(D_METHOD("upload_set_temp_file_store_path", "val"), &WebServerSimple::upload_set_temp_file_store_path);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "upload_temp_file_store_path"), "upload_set_temp_file_store_path", "upload_get_temp_file_store_path");
+
+	ClassDB::bind_method(D_METHOD("upload_get_request_max_file_size_type"), &WebServerSimple::upload_get_request_max_file_size_type);
+	ClassDB::bind_method(D_METHOD("upload_set_request_max_file_size_type", "val"), &WebServerSimple::upload_set_request_max_file_size_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "upload_request_max_file_size_type", PROPERTY_HINT_ENUM, "B,KB,MB,GB"), "upload_set_request_max_file_size_type", "upload_get_request_max_file_size_type");
+
+	ClassDB::bind_method(D_METHOD("upload_get_request_max_file_size"), &WebServerSimple::upload_get_request_max_file_size);
+	ClassDB::bind_method(D_METHOD("upload_set_request_max_file_size", "val"), &WebServerSimple::upload_set_request_max_file_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "upload_request_max_file_size"), "upload_set_request_max_file_size", "upload_get_request_max_file_size");
+
 	ClassDB::bind_method(D_METHOD("add_mime_type", "file_extension", "mime_type"), &WebServerSimple::add_mime_type);
 	ClassDB::bind_method(D_METHOD("remove_mime_type", "file_extension"), &WebServerSimple::remove_mime_type);
 
@@ -340,6 +414,9 @@ void WebServerSimple::_bind_methods() {
 	BIND_ENUM_CONSTANT(MAX_REQUEST_SIZE_TYPE_KILO_BYTE);
 	BIND_ENUM_CONSTANT(MAX_REQUEST_SIZE_TYPE_MEGA_BYTE);
 	BIND_ENUM_CONSTANT(MAX_REQUEST_SIZE_TYPE_GIGA_BYTE);
+
+	BIND_ENUM_CONSTANT(FILE_UPLOAD_STORE_TYPE_MEMORY);
+	BIND_ENUM_CONSTANT(FILE_UPLOAD_STORE_TYPE_TEMP_FILES);
 }
 
 void WebServerSimple::_server_thread_poll(void *data) {

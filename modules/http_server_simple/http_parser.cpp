@@ -34,6 +34,8 @@
 #include "./http_parser/http_parser.h"
 #include "./multipart_parser_c/multipart_parser.h"
 #include "core/log/logger.h"
+#include "core/os/dir_access.h"
+#include "core/os/os.h"
 
 #include "modules/web/http/web_server_request.h"
 
@@ -97,7 +99,13 @@ int HTTPParser::read_from_buffer(const char *p_buffer, const int p_data_length) 
 HTTPParser::HTTPParser() {
 	// Should always get set from the outside, if it remains 0 it's a bug.
 	max_request_size = 0;
+	request_max_file_upload_size = 0;
+	upload_file_store_type = WebServerSimple::FILE_UPLOAD_STORE_TYPE_MEMORY;
+
+	_upload_file_access = NULL;
+
 	_current_request_size = 0;
+	_current_upload_files_size = 0;
 
 	_is_ready = false;
 	_content_type = REQUEST_CONTENT_URLENCODED;
@@ -140,6 +148,20 @@ HTTPParser::~HTTPParser() {
 	memdelete(parser);
 	memdelete(settings);
 	parser = nullptr;
+
+	if (_upload_file_access) {
+		String path = _upload_file_access->get_path();
+		_upload_file_access->close();
+		memdelete(_upload_file_access);
+		_upload_file_access = NULL;
+
+		DirAccess *d = DirAccess::create_for_path(path.get_base_dir());
+
+		if (d) {
+			d->remove(path);
+			memdelete(d);
+		}
+	}
 }
 
 void HTTPParser::_bind_methods() {
@@ -169,6 +191,7 @@ void HTTPParser::_process_multipart_header_value(const String &val) {
 
 				if (_multipart_form_name.length() >= 2 && _multipart_form_name.begins_with("\"") && _multipart_form_name.ends_with("\"")) {
 					_multipart_form_name.remove(0);
+					//TODO check if this should be _multipart_form_name.remove(_multipart_form_name.length() - 1);
 					_multipart_form_name.remove(_multipart_form_name.size() - 1);
 				}
 			} else if (kk == "filename") {
@@ -178,7 +201,54 @@ void HTTPParser::_process_multipart_header_value(const String &val) {
 
 				if (_multipart_form_name.length() >= 2 && _multipart_form_name.begins_with("\"") && _multipart_form_name.ends_with("\"")) {
 					_multipart_form_name.remove(0);
+					//TODO check if this should be _multipart_form_name.remove(_multipart_form_name.length() - 1);
 					_multipart_form_name.remove(_multipart_form_name.size() - 1);
+				}
+
+				if (upload_file_store_type == WebServerSimple::FILE_UPLOAD_STORE_TYPE_TEMP_FILES) {
+					if (_upload_file_access) {
+						ERR_PRINT("BUG! if (_upload_file_access) is true!");
+						_upload_file_access->close();
+						memdelete(_upload_file_access);
+						_upload_file_access = NULL;
+					}
+
+					DirAccess *da = DirAccess::create_for_path(upload_temp_file_store_path);
+
+					if (!da) {
+						// NO fallback!
+						ERR_PRINT("upload_file_store_type == FILE_UPLOAD_STORE_TYPE_TEMP_FILES, but temp file path cannot be opened! Sending Error!");
+						_error = true;
+						return;
+					}
+
+					// Just use OS::Time for now. These names are internal, and if the file is not copied out it will get deleted automatically.
+					// If filename exists just add values
+					String fbase_name = upload_temp_file_store_path + itos(OS::get_singleton()->get_unix_time()) + "_" + itos(OS::get_singleton()->get_ticks_usec());
+
+					String fname = fbase_name;
+					int fcounter = 0;
+
+					while (da->file_exists(fname) && fcounter < 100) {
+						fname = fbase_name + "_" + itos(fcounter);
+						++fcounter;
+					}
+
+					memdelete(da);
+
+					Error err;
+					_upload_file_access = FileAccess::open(fname, FileAccess::WRITE, &err);
+
+					if (err != OK) {
+						ERR_PRINT(vformat("upload_file_store_type == FILE_UPLOAD_STORE_TYPE_TEMP_FILES, but temp file cannot be opened! Sending Error! Error: %d, FileName: %s", itos(err), fname));
+						_error = true;
+
+						if (_upload_file_access) {
+							memdelete(_upload_file_access);
+						}
+					}
+
+					_upload_file_full_path = fname;
 				}
 			}
 		}
@@ -576,12 +646,38 @@ int HTTPParser::on_multipart_part_data_cb(const char *at, size_t length) {
 	ERR_PRINT("on_multipart_part_data_cb");
 #endif
 
-	int l = static_cast<int>(length);
-	int mfdofs = _multipart_form_data.size();
-	_multipart_form_data.resize(mfdofs + length);
-	char *w = _multipart_form_data.ptrw();
-	for (int i = 0; i < l; ++i) {
-		w[mfdofs++] = at[i];
+	if (_upload_file_access) {
+		_upload_file_access->store_buffer((const uint8_t *)at, (uint64_t)length);
+
+		_current_upload_files_size += length;
+
+		if (_current_upload_files_size >= request_max_file_upload_size) {
+			_error = true;
+
+#if PROTOCOL_ERROR_LOGGING_ENABLED
+			PLOG_ERR("_current_upload_files_size >= request_max_file_upload_size");
+#endif
+
+			_upload_file_access->close();
+			memdelete(_upload_file_access);
+			_upload_file_access = NULL;
+
+			DirAccess *d = DirAccess::create_for_path(_upload_file_full_path.get_base_dir());
+
+			if (d) {
+				d->remove(_upload_file_full_path);
+				memdelete(d);
+			}
+		}
+
+	} else {
+		int l = static_cast<int>(length);
+		int mfdofs = _multipart_form_data.size();
+		_multipart_form_data.resize(mfdofs + length);
+		char *w = _multipart_form_data.ptrw();
+		for (int i = 0; i < l; ++i) {
+			w[mfdofs++] = at[i];
+		}
 	}
 
 	return 0;
@@ -606,19 +702,27 @@ int HTTPParser::on_multipart_part_data_end_cb() {
 #endif
 
 	if (_multipart_form_is_file) {
-		if (_multipart_form_data.size() > 0) {
-			PoolByteArray file_data;
-			int len = _multipart_form_data.size();
-			file_data.resize(len);
-			PoolByteArray::Write w = file_data.write();
-			const char *r = _multipart_form_data.ptr();
-			for (int i = 0; i < len; i++) {
-				w[i] = r[i];
+		if (_upload_file_access) {
+			_upload_file_access->close();
+			memdelete(_upload_file_access);
+			_upload_file_access = NULL;
+
+			_request->add_file_temp_file(_multipart_form_name, _multipart_form_filename, _upload_file_full_path);
+		} else {
+			if (_multipart_form_data.size() > 0) {
+				PoolByteArray file_data;
+				int len = _multipart_form_data.size();
+				file_data.resize(len);
+				PoolByteArray::Write w = file_data.write();
+				const char *r = _multipart_form_data.ptr();
+				for (int i = 0; i < len; i++) {
+					w[i] = r[i];
+				}
+
+				w.release();
+
+				_request->add_file_memory(_multipart_form_name, _multipart_form_filename, file_data);
 			}
-
-			w.release();
-
-			_request->add_file(_multipart_form_name, _multipart_form_filename, file_data);
 		}
 	} else {
 		String s = String::utf8(_multipart_form_data.ptr(), _multipart_form_data.size());
