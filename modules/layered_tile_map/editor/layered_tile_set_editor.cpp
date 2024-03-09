@@ -820,7 +820,7 @@ void LayeredTileSetEditor::remove_expanded_editor() {
 	if (original_parent) {
 		expanded_editor->remove_meta("reparented");
 		expanded_editor->get_parent()->remove_child(expanded_editor);
-		expanded_area->add_child(original_parent);
+		original_parent->add_child(expanded_editor);
 	} else {
 		expanded_editor->queue_delete();
 	}
