@@ -69,6 +69,13 @@ bool FileCache::wwwroot_has_file(const String &file_path) {
 
 	String fp = _wwwroot_abs + file_path;
 
+	fp = fp.simplify_path();
+
+	// Don't allow going outside wwwroot
+	if (!fp.begins_with(_wwwroot_abs)) {
+		return false;
+	}
+
 	if (!FileAccess::exists(fp)) {
 		return false;
 	}
@@ -92,7 +99,7 @@ bool FileCache::wwwroot_has_file(const String &file_path) {
 	String absp = f->get_path_absolute();
 	memdelete(f);
 
-	//likely a directory walking attempt. e.g. ../../../../../etc/passwd
+	// likely a directory walking attempt. e.g. ../../../../../etc/passwd
 	if (!absp.begins_with(_wwwroot_abs)) {
 		return false;
 	}
@@ -106,6 +113,13 @@ String FileCache::wwwroot_get_file_abspath(const String &file_path) {
 	}
 
 	String fp = _wwwroot_abs + file_path;
+
+	fp = fp.simplify_path();
+
+	// Don't allow going outside wwwroot
+	if (!fp.begins_with(_wwwroot_abs)) {
+		return String();
+	}
 
 	if (!FileAccess::exists(fp)) {
 		return String();
@@ -136,6 +150,19 @@ String FileCache::wwwroot_get_file_abspath(const String &file_path) {
 	}
 
 	return absp;
+}
+
+String FileCache::wwwroot_get_simplified_abs_path(const String &file_path) {
+	String fp = _wwwroot_abs + file_path;
+
+	fp = fp.simplify_path();
+
+	// Don't allow going outside wwwroot
+	if (!fp.begins_with(_wwwroot_abs)) {
+		return String();
+	}
+
+	return fp;
 }
 
 bool FileCache::get_cached_body(const String &path, String *body) {
@@ -263,6 +290,8 @@ void FileCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("wwwroot_has_file", "file_path"), &FileCache::wwwroot_has_file);
 	ClassDB::bind_method(D_METHOD("wwwroot_get_file_abspath", "file_path"), &FileCache::wwwroot_get_file_abspath);
+
+	ClassDB::bind_method(D_METHOD("wwwroot_get_simplified_abs_path", "file_path"), &FileCache::wwwroot_get_simplified_abs_path);
 
 	ClassDB::bind_method(D_METHOD("get_cached_body", "path"), &FileCache::get_cached_body_bind);
 	ClassDB::bind_method(D_METHOD("has_cached_body", "path"), &FileCache::has_cached_body);
