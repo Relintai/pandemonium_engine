@@ -84,13 +84,15 @@ int HTTPParser::read_from_buffer(const char *p_buffer, const int p_data_length) 
 
 	parsed_bytes = static_cast<int>(http_parser_execute(parser, settings, p_buffer, p_data_length));
 
-	_current_request_size += parsed_bytes;
+	if (!_upload_file_access) {
+		_current_request_size += parsed_bytes;
 
-	if (_current_request_size >= max_request_size) {
-		_error = true;
+		if (_current_request_size >= max_request_size) {
+			_error = true;
 #if PROTOCOL_ERROR_LOGGING_ENABLED
-		PLOG_ERR("_current_request_size >= max_request_size");
+			PLOG_ERR("_current_request_size >= max_request_size");
 #endif
+		}
 	}
 
 	return parsed_bytes;
