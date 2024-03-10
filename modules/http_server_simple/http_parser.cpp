@@ -152,15 +152,14 @@ HTTPParser::~HTTPParser() {
 	parser = nullptr;
 
 	if (_upload_file_access) {
-		String path = _upload_file_access->get_path();
 		_upload_file_access->close();
 		memdelete(_upload_file_access);
 		_upload_file_access = NULL;
 
-		DirAccess *d = DirAccess::create_for_path(path.get_base_dir());
+		DirAccess *d = DirAccess::create_for_path(_upload_file_full_path.get_base_dir());
 
 		if (d) {
-			d->remove(path);
+			d->remove(_upload_file_full_path);
 			memdelete(d);
 		}
 	}
