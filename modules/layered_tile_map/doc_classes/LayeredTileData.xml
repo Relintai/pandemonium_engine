@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TileData" inherits="Object" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="LayeredTileData" inherits="Object" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		Settings for a single tile in a [LayeredTileSet].
 	</brief_description>
 	<description>
-		[TileData] object represents a single tile in a [LayeredTileSet]. It is usually edited using the tileset editor, but it can be modified at runtime using [method LayeredTileMap._tile_data_runtime_update].
+		[LayeredTileData] object represents a single tile in a [LayeredTileSet]. It is usually edited using the tileset editor, but it can be modified at runtime using [method LayeredTileMap._tile_data_runtime_update].
 	</description>
 	<tutorials>
 	</tutorials>
 	<methods>
 		<method name="add_collision_polygon">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
+			<argument index="0" name="layer_id" type="int" />
 			<description>
 				Adds a collision polygon to the tile on the given LayeredTileSet physics layer.
 			</description>
 		</method>
 		<method name="get_collision_polygon_one_way_margin" qualifiers="const">
 			<return type="float" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="polygon_index" type="int" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="polygon_index" type="int" />
 			<description>
 				Returns the one-way margin (for one-way platforms) of the polygon at index [param polygon_index] for LayeredTileSet physics layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="get_collision_polygon_points" qualifiers="const">
 			<return type="PoolVector2Array" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="polygon_index" type="int" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="polygon_index" type="int" />
 			<description>
 				Returns the points of the polygon at index [param polygon_index] for LayeredTileSet physics layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="get_collision_polygons_count" qualifiers="const">
 			<return type="int" />
-			<param index="0" name="layer_id" type="int" />
+			<argument index="0" name="layer_id" type="int" />
 			<description>
 				Returns how many polygons the tile has for LayeredTileSet physics layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="get_constant_angular_velocity" qualifiers="const">
 			<return type="float" />
-			<param index="0" name="layer_id" type="int" />
+			<argument index="0" name="layer_id" type="int" />
 			<description>
 				Returns the constant angular velocity applied to objects colliding with this tile.
 			</description>
 		</method>
 		<method name="get_constant_linear_velocity" qualifiers="const">
 			<return type="Vector2" />
-			<param index="0" name="layer_id" type="int" />
+			<argument index="0" name="layer_id" type="int" />
 			<description>
 				Returns the constant linear velocity applied to objects colliding with this tile.
 			</description>
 		</method>
 		<method name="get_custom_data" qualifiers="const">
 			<return type="Variant" />
-			<param index="0" name="layer_name" type="String" />
+			<argument index="0" name="layer_name" type="String" />
 			<description>
 				Returns the custom data value for custom data layer named [param layer_name].
 			</description>
 		</method>
 		<method name="get_custom_data_by_layer_id" qualifiers="const">
 			<return type="Variant" />
-			<param index="0" name="layer_id" type="int" />
+			<argument index="0" name="layer_id" type="int" />
 			<description>
 				Returns the custom data value for custom data layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="get_navigation_polygon" qualifiers="const">
 			<return type="NavigationPolygon" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="flip_h" type="bool" default="false" />
-			<param index="2" name="flip_v" type="bool" default="false" />
-			<param index="3" name="transpose" type="bool" default="false" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="flip_h" type="bool" default="false" />
+			<argument index="2" name="flip_v" type="bool" default="false" />
+			<argument index="3" name="transpose" type="bool" default="false" />
 			<description>
 				Returns the navigation polygon of the tile for the LayeredTileSet navigation layer with index [param layer_id].
 				[param flip_h], [param flip_v], and [param transpose] allow transforming the returned polygon.
@@ -80,10 +80,10 @@
 		</method>
 		<method name="get_occluder" qualifiers="const">
 			<return type="OccluderPolygon2D" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="flip_h" type="bool" default="false" />
-			<param index="2" name="flip_v" type="bool" default="false" />
-			<param index="3" name="transpose" type="bool" default="false" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="flip_h" type="bool" default="false" />
+			<argument index="2" name="flip_v" type="bool" default="false" />
+			<argument index="3" name="transpose" type="bool" default="false" />
 			<description>
 				Returns the occluder polygon of the tile for the LayeredTileSet occlusion layer with index [param layer_id].
 				[param flip_h], [param flip_v], and [param transpose] allow transforming the returned polygon.
@@ -91,114 +91,114 @@
 		</method>
 		<method name="get_terrain_peering_bit" qualifiers="const">
 			<return type="int" />
-			<param index="0" name="peering_bit" type="int" enum="LayeredTileSet.CellNeighbor" />
+			<argument index="0" name="peering_bit" type="int" enum="LayeredTileSet.CellNeighbor" />
 			<description>
 				Returns the tile's terrain bit for the given [param peering_bit] direction.
 			</description>
 		</method>
 		<method name="is_collision_polygon_one_way" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="polygon_index" type="int" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="polygon_index" type="int" />
 			<description>
 				Returns whether one-way collisions are enabled for the polygon at index [param polygon_index] for LayeredTileSet physics layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="remove_collision_polygon">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="polygon_index" type="int" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="polygon_index" type="int" />
 			<description>
 				Removes the polygon at index [param polygon_index] for LayeredTileSet physics layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="set_collision_polygon_one_way">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="polygon_index" type="int" />
-			<param index="2" name="one_way" type="bool" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="polygon_index" type="int" />
+			<argument index="2" name="one_way" type="bool" />
 			<description>
 				Enables/disables one-way collisions on the polygon at index [param polygon_index] for LayeredTileSet physics layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="set_collision_polygon_one_way_margin">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="polygon_index" type="int" />
-			<param index="2" name="one_way_margin" type="float" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="polygon_index" type="int" />
+			<argument index="2" name="one_way_margin" type="float" />
 			<description>
 				Enables/disables one-way collisions on the polygon at index [param polygon_index] for LayeredTileSet physics layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="set_collision_polygon_points">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="polygon_index" type="int" />
-			<param index="2" name="polygon" type="PoolVector2Array" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="polygon_index" type="int" />
+			<argument index="2" name="polygon" type="PoolVector2Array" />
 			<description>
 				Sets the points of the polygon at index [param polygon_index] for LayeredTileSet physics layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="set_collision_polygons_count">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="polygons_count" type="int" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="polygons_count" type="int" />
 			<description>
 				Sets the polygons count for LayeredTileSet physics layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="set_constant_angular_velocity">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="velocity" type="float" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="velocity" type="float" />
 			<description>
 				Sets the constant angular velocity. This does not rotate the tile. This angular velocity is applied to objects colliding with this tile.
 			</description>
 		</method>
 		<method name="set_constant_linear_velocity">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="velocity" type="Vector2" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="velocity" type="Vector2" />
 			<description>
 				Sets the constant linear velocity. This does not move the tile. This linear velocity is applied to objects colliding with this tile. This is useful to create conveyor belts.
 			</description>
 		</method>
 		<method name="set_custom_data">
 			<return type="void" />
-			<param index="0" name="layer_name" type="String" />
-			<param index="1" name="value" type="Variant" />
+			<argument index="0" name="layer_name" type="String" />
+			<argument index="1" name="value" type="Variant" />
 			<description>
 				Sets the tile's custom data value for the LayeredTileSet custom data layer with name [param layer_name].
 			</description>
 		</method>
 		<method name="set_custom_data_by_layer_id">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="value" type="Variant" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="value" type="Variant" />
 			<description>
 				Sets the tile's custom data value for the LayeredTileSet custom data layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="set_navigation_polygon">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="navigation_polygon" type="NavigationPolygon" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="navigation_polygon" type="NavigationPolygon" />
 			<description>
 				Sets the navigation polygon for the LayeredTileSet navigation layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="set_occluder">
 			<return type="void" />
-			<param index="0" name="layer_id" type="int" />
-			<param index="1" name="occluder_polygon" type="OccluderPolygon2D" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="occluder_polygon" type="OccluderPolygon2D" />
 			<description>
 				Sets the occluder for the LayeredTileSet occlusion layer with index [param layer_id].
 			</description>
 		</method>
 		<method name="set_terrain_peering_bit">
 			<return type="void" />
-			<param index="0" name="peering_bit" type="int" enum="LayeredTileSet.CellNeighbor" />
-			<param index="1" name="terrain" type="int" />
+			<argument index="0" name="peering_bit" type="int" enum="LayeredTileSet.CellNeighbor" />
+			<argument index="1" name="terrain" type="int" />
 			<description>
 				Sets the tile's terrain bit for the given [param peering_bit] direction.
 			</description>
@@ -212,7 +212,7 @@
 			If [code]true[/code], the tile will have its texture flipped vertically.
 		</member>
 		<member name="material" type="Material" setter="set_material" getter="get_material">
-			The [Material] to use for this [TileData]. This can be a [CanvasItemMaterial] to use the default shader, or a [ShaderMaterial] to use a custom shader.
+			The [Material] to use for this [LayeredTileData]. This can be a [CanvasItemMaterial] to use the default shader, or a [ShaderMaterial] to use a custom shader.
 		</member>
 		<member name="modulate" type="Color" setter="set_modulate" getter="get_modulate" default="Color(1, 1, 1, 1)" keywords="color, colour">
 			Color modulation of the tile.
