@@ -1774,7 +1774,7 @@ void LayeredTileMapLayer::_notification(int p_what) {
 void LayeredTileMapLayer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_cell", "coords", "source_id", "atlas_coords", "alternative_tile"), &LayeredTileMapLayer::set_cell, DEFVAL(LayeredTileSet::INVALID_SOURCE), DEFVAL(LayeredTileSetSource::INVALID_ATLAS_COORDS), DEFVAL(0));
 
-	BIND_VMETHOD(MethodInfo("_use_tile_data_runtime_update",
+	BIND_VMETHOD(MethodInfo(Variant::BOOL, "_use_tile_data_runtime_update",
 			PropertyInfo(Variant::VECTOR2I, "coords")));
 
 	BIND_VMETHOD(MethodInfo("_tile_data_runtime_update",

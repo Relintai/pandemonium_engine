@@ -1044,7 +1044,7 @@ void LayeredTileMap::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_neighbor_cell", "coords", "neighbor"), &LayeredTileMap::get_neighbor_cell);
 
-	BIND_VMETHOD(MethodInfo("_use_tile_data_runtime_update",
+	BIND_VMETHOD(MethodInfo(Variant::BOOL, "_use_tile_data_runtime_update",
 			PropertyInfo(Variant::INT, "layer"),
 			PropertyInfo(Variant::VECTOR2I, "coords")));
 
