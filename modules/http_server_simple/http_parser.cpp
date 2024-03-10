@@ -194,8 +194,7 @@ void HTTPParser::_process_multipart_header_value(const String &val) {
 
 				if (_multipart_form_name.length() >= 2 && _multipart_form_name.begins_with("\"") && _multipart_form_name.ends_with("\"")) {
 					_multipart_form_name.remove(0);
-					//TODO check if this should be _multipart_form_name.remove(_multipart_form_name.length() - 1);
-					_multipart_form_name.remove(_multipart_form_name.size() - 1);
+					_multipart_form_name.remove(_multipart_form_name.length() - 1);
 				}
 			} else if (kk == "filename") {
 				_multipart_form_filename = vs.get_slicec('=', 1);
@@ -204,8 +203,7 @@ void HTTPParser::_process_multipart_header_value(const String &val) {
 
 				if (_multipart_form_name.length() >= 2 && _multipart_form_name.begins_with("\"") && _multipart_form_name.ends_with("\"")) {
 					_multipart_form_name.remove(0);
-					//TODO check if this should be _multipart_form_name.remove(_multipart_form_name.length() - 1);
-					_multipart_form_name.remove(_multipart_form_name.size() - 1);
+					_multipart_form_name.remove(_multipart_form_name.length() - 1);
 				}
 
 				if (upload_file_store_type == WebServerSimple::FILE_UPLOAD_STORE_TYPE_TEMP_FILES) {
