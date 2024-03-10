@@ -38,7 +38,7 @@
 			</description>
 		</method>
 		<method name="get_used_cells" qualifiers="const">
-			<return type="Vector2i[]" />
+			<return type="PoolVector2iArray" />
 			<description>
 				Returns the list of used cell coordinates in the pattern.
 			</description>

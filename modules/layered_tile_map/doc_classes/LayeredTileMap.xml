@@ -214,21 +214,21 @@
 		<method name="get_pattern">
 			<return type="LayeredTileMapPattern" />
 			<argument index="0" name="layer" type="int" />
-			<argument index="1" name="coords_array" type="Vector2i[]" />
+			<argument index="1" name="coords_array" type="PoolVector2iArray" />
 			<description>
 				Creates a new [LayeredTileMapPattern] from the given layer and set of cells.
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
 		<method name="get_surrounding_cells">
-			<return type="Vector2i[]" />
+			<return type="PoolVector2iArray" />
 			<argument index="0" name="coords" type="Vector2i" />
 			<description>
 				Returns the list of all neighbourings cells to the one at [param coords].
 			</description>
 		</method>
 		<method name="get_used_cells" qualifiers="const">
-			<return type="Vector2i[]" />
+			<return type="PoolVector2iArray" />
 			<argument index="0" name="layer" type="int" />
 			<description>
 				Returns a [Vector2i] array with the positions of all cells containing a tile in the given layer. A cell is considered empty if its source identifier equals -1, its atlas coordinates identifiers is [code]Vector2(-1, -1)[/code] and its alternative identifier is -1.
@@ -236,7 +236,7 @@
 			</description>
 		</method>
 		<method name="get_used_cells_by_id" qualifiers="const">
-			<return type="Vector2i[]" />
+			<return type="PoolVector2iArray" />
 			<argument index="0" name="layer" type="int" />
 			<argument index="1" name="source_id" type="int" default="-1" />
 			<argument index="2" name="atlas_coords" type="Vector2i" default="Vector2i(-1, -1)" />
@@ -345,7 +345,7 @@
 		<method name="set_cells_terrain_connect">
 			<return type="void" />
 			<argument index="0" name="layer" type="int" />
-			<argument index="1" name="cells" type="Vector2i[]" />
+			<argument index="1" name="cells" type="PoolVector2iArray" />
 			<argument index="2" name="terrain_set" type="int" />
 			<argument index="3" name="terrain" type="int" />
 			<argument index="4" name="ignore_empty_terrains" type="bool" default="true" />
@@ -359,7 +359,7 @@
 		<method name="set_cells_terrain_path">
 			<return type="void" />
 			<argument index="0" name="layer" type="int" />
-			<argument index="1" name="path" type="Vector2i[]" />
+			<argument index="1" name="path" type="PoolVector2iArray" />
 			<argument index="2" name="terrain_set" type="int" />
 			<argument index="3" name="terrain" type="int" />
 			<argument index="4" name="ignore_empty_terrains" type="bool" default="true" />
