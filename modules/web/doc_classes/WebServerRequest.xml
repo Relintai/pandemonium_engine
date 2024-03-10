@@ -316,10 +316,20 @@
 				Returns whether the active session has a csrf token or not.
 			</description>
 		</method>
-		<method name="parse_files">
-			<return type="void" />
+		<method name="is_file_moved" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="index" type="int" />
 			<description>
-				Some WebSerber implementations might need a call to this in order to process files in multipart forms. Don't call it manually, these implementations need to call it when needed.
+				Returns whether a file contained in the request has been moved or not.
+			</description>
+		</method>
+		<method name="move_file">
+			<return type="int" enum="Error" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="dest_file" type="String" />
+			<argument index="2" name="force" type="bool" default="false" />
+			<description>
+				moves a file contained in the request to the specified destination. If the destionation file exists it will not be overwritten unless force is true.
 			</description>
 		</method>
 		<method name="parser_get_path">

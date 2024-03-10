@@ -41,6 +41,14 @@
 		</member>
 		<member name="start_on_ready" type="bool" setter="set_start_on_ready" getter="get_start_on_ready" default="false">
 		</member>
+		<member name="upload_file_store_type" type="int" setter="upload_set_file_store_type" getter="upload_get_file_store_type" enum="WebServerSimple.FileUploadStoreType" default="0">
+		</member>
+		<member name="upload_request_max_file_size" type="int" setter="upload_set_request_max_file_size" getter="upload_get_request_max_file_size">
+		</member>
+		<member name="upload_request_max_file_size_type" type="int" setter="upload_set_request_max_file_size_type" getter="upload_get_request_max_file_size_type" enum="WebServerSimple.MaxRequestSizeTypes">
+		</member>
+		<member name="upload_temp_file_store_path" type="String" setter="upload_set_temp_file_store_path" getter="upload_get_temp_file_store_path">
+		</member>
 		<member name="use_poll_thread" type="bool" setter="set_use_poll_thread" getter="get_use_poll_thread" default="true">
 		</member>
 		<member name="use_ssl" type="bool" setter="set_use_ssl" getter="get_use_ssl" default="false">
@@ -58,6 +66,10 @@
 		<constant name="MAX_REQUEST_SIZE_TYPE_MEGA_BYTE" value="2" enum="MaxRequestSizeTypes">
 		</constant>
 		<constant name="MAX_REQUEST_SIZE_TYPE_GIGA_BYTE" value="3" enum="MaxRequestSizeTypes">
+		</constant>
+		<constant name="FILE_UPLOAD_STORE_TYPE_MEMORY" value="0" enum="FileUploadStoreType">
+		</constant>
+		<constant name="FILE_UPLOAD_STORE_TYPE_TEMP_FILES" value="1" enum="FileUploadStoreType">
 		</constant>
 	</constants>
 </class>

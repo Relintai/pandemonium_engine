@@ -117,8 +117,17 @@
 			<description>
 			</description>
 		</method>
-		<method name="_parse_files" qualifiers="virtual">
-			<return type="void" />
+		<method name="_is_file_moved" qualifiers="virtual">
+			<return type="bool" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_move_file" qualifiers="virtual">
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="dest_file" type="String" />
+			<argument index="2" name="force" type="bool" />
 			<description>
 			</description>
 		</method>
