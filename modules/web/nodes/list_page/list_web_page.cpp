@@ -260,8 +260,8 @@ void ListWebPage::_notification(const int what) {
 	}
 }
 
-ListWebPage::ListWebPage() :
-		WebNode() {
+ListWebPage::ListWebPage() {
+	paginate = true;
 	max_visible_navigation_links = 6;
 	entry_per_page = 4;
 	main_div_class = "list_page";
