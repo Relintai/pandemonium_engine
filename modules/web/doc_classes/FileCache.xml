@@ -52,7 +52,7 @@
 			<description>
 				Returns the absolute path to a file if it exists in the given [member wwwroot]. If it doesn't exists returns an empty [String].
 				Guards against directory traversal.
-				Note: file path should be the url you want to access the file with, including lead slash. e.g. http://127.0.0.1/a/b/d.jpg -> /a/b/d.jpg
+				Note: file path should be the url you want to access the file with, including lead slash. e.g. http://127.0.0.1/a/b/d.jpg -&gt; /a/b/d.jpg
 			</description>
 		</method>
 		<method name="wwwroot_get_simplified_abs_path">
@@ -61,7 +61,7 @@
 			<description>
 				Returns the absolute path to a file in the given [member wwwroot]. Does not checks if the file exists or not. Returns an empty [String] on error.
 				Guards against directory traversal.
-				Note: file path should be the url you want to access the file with, including lead slash. e.g. http://127.0.0.1/a/b/d.jpg -> /a/b/d.jpg
+				Note: file path should be the url you want to access the file with, including lead slash. e.g. http://127.0.0.1/a/b/d.jpg -&gt; /a/b/d.jpg
 			</description>
 		</method>
 		<method name="wwwroot_has_file">
@@ -70,7 +70,7 @@
 			<description>
 				Check whether a file exists in the given [member wwwroot].
 				Guards against directory traversal.
-				Note: file path should be the url you want to access the file with, including lead slash. e.g. http://127.0.0.1/a/b/d.jpg -> /a/b/d.jpg
+				Note: file path should be the url you want to access the file with, including lead slash. e.g. http://127.0.0.1/a/b/d.jpg -&gt; /a/b/d.jpg
 			</description>
 		</method>
 	</methods>

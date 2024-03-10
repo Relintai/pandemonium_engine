@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="LayeredTileData" inherits="Object" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="LayeredTileData" inherits="Object" version="4.3">
 	<brief_description>
 		Settings for a single tile in a [LayeredTileSet].
 	</brief_description>
@@ -214,7 +214,7 @@
 		<member name="material" type="Material" setter="set_material" getter="get_material">
 			The [Material] to use for this [LayeredTileData]. This can be a [CanvasItemMaterial] to use the default shader, or a [ShaderMaterial] to use a custom shader.
 		</member>
-		<member name="modulate" type="Color" setter="set_modulate" getter="get_modulate" default="Color(1, 1, 1, 1)" keywords="color, colour">
+		<member name="modulate" type="Color" setter="set_modulate" getter="get_modulate" default="Color( 1, 1, 1, 1 )">
 			Color modulation of the tile.
 		</member>
 		<member name="probability" type="float" setter="set_probability" getter="get_probability" default="1.0">
@@ -226,7 +226,7 @@
 		<member name="terrain_set" type="int" setter="set_terrain_set" getter="get_terrain_set" default="-1">
 			ID of the terrain set that the tile uses.
 		</member>
-		<member name="texture_origin" type="Vector2i" setter="set_texture_origin" getter="get_texture_origin" default="Vector2i(0, 0)">
+		<member name="texture_origin" type="Vector2i" setter="set_texture_origin" getter="get_texture_origin" default="Vector2i( 0, 0 )">
 			Offsets the position of where the tile is drawn.
 		</member>
 		<member name="transpose" type="bool" setter="set_transpose" getter="get_transpose" default="false">
@@ -246,4 +246,6 @@
 			</description>
 		</signal>
 	</signals>
+	<constants>
+	</constants>
 </class>

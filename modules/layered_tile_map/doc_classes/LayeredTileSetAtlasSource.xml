@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="LayeredTileSetAtlasSource" inherits="LayeredTileSetSource" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="LayeredTileSetAtlasSource" inherits="LayeredTileSetSource" version="4.3">
 	<brief_description>
 		Exposes a 2D atlas texture as a set of tiles for a [LayeredTileSet] resource.
 	</brief_description>
@@ -31,7 +31,7 @@
 		<method name="create_tile">
 			<return type="void" />
 			<argument index="0" name="atlas_coords" type="Vector2i" />
-			<argument index="1" name="size" type="Vector2i" default="Vector2i(1, 1)" />
+			<argument index="1" name="size" type="Vector2i" default="Vector2i( 1, 1 )" />
 			<description>
 				Creates a new tile at coordinates [param atlas_coords] with the given [param size].
 			</description>
@@ -161,7 +161,7 @@
 			<argument index="2" name="animation_columns" type="int" />
 			<argument index="3" name="animation_separation" type="Vector2i" />
 			<argument index="4" name="frames_count" type="int" />
-			<argument index="5" name="ignored_tile" type="Vector2i" default="Vector2i(-1, -1)" />
+			<argument index="5" name="ignored_tile" type="Vector2i" default="Vector2i( -1, -1 )" />
 			<description>
 				Returns whether there is enough room in an atlas to create/modify a tile with the given properties. If [param ignored_tile] is provided, act as is the given tile was not present in the atlas. This may be used when you want to modify a tile's properties.
 			</description>
@@ -175,8 +175,8 @@
 		<method name="move_tile_in_atlas">
 			<return type="void" />
 			<argument index="0" name="atlas_coords" type="Vector2i" />
-			<argument index="1" name="new_atlas_coords" type="Vector2i" default="Vector2i(-1, -1)" />
-			<argument index="2" name="new_size" type="Vector2i" default="Vector2i(-1, -1)" />
+			<argument index="1" name="new_atlas_coords" type="Vector2i" default="Vector2i( -1, -1 )" />
+			<argument index="2" name="new_size" type="Vector2i" default="Vector2i( -1, -1 )" />
 			<description>
 				Move the tile and its alternatives at the [param atlas_coords] coordinates to the [param new_atlas_coords] coordinates with the [param new_size] size. This functions will fail if a tile is already present in the given area.
 				If [param new_atlas_coords] is [code]Vector2i(-1, -1)[/code], keeps the tile's coordinates. If [param new_size] is [code]Vector2i(-1, -1)[/code], keeps the tile's size.
@@ -260,16 +260,18 @@
 		</method>
 	</methods>
 	<members>
-		<member name="margins" type="Vector2i" setter="set_margins" getter="get_margins" default="Vector2i(0, 0)">
+		<member name="margins" type="Vector2i" setter="set_margins" getter="get_margins" default="Vector2i( 0, 0 )">
 			Margins, in pixels, to offset the origin of the grid in the texture.
 		</member>
-		<member name="separation" type="Vector2i" setter="set_separation" getter="get_separation" default="Vector2i(0, 0)">
+		<member name="normal_texture" type="Texture" setter="set_normal_texture" getter="get_normal_texture">
+		</member>
+		<member name="separation" type="Vector2i" setter="set_separation" getter="get_separation" default="Vector2i( 0, 0 )">
 			Separation, in pixels, between each tile texture region of the grid.
 		</member>
 		<member name="texture" type="Texture" setter="set_texture" getter="get_texture">
 			The atlas texture.
 		</member>
-		<member name="texture_region_size" type="Vector2i" setter="set_texture_region_size" getter="get_texture_region_size" default="Vector2i(16, 16)">
+		<member name="texture_region_size" type="Vector2i" setter="set_texture_region_size" getter="get_texture_region_size" default="Vector2i( 16, 16 )">
 			The base tile size in the texture (in pixel). This size must be bigger than the LayeredTileSet's [code]tile_size[/code] value.
 		</member>
 		<member name="use_texture_padding" type="bool" setter="set_use_texture_padding" getter="get_use_texture_padding" default="true">
