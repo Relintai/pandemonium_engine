@@ -264,7 +264,7 @@ PoolByteArray WebServerRequest::get_file_data(const int index) const {
 String WebServerRequest::get_file_data_str(const int index) const {
 	return String();
 }
-Error WebServerRequest::move_file(const int index, const String &p_dest_file) {
+Error WebServerRequest::move_file(const int index, const String &p_dest_file, const bool p_force) {
 	return ERR_PRINTER_ON_FIRE;
 }
 bool WebServerRequest::is_file_moved(const int index) const {
@@ -656,7 +656,7 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_file_length", "index"), &WebServerRequest::get_file_length);
 	ClassDB::bind_method(D_METHOD("get_file_data", "index"), &WebServerRequest::get_file_data);
 	ClassDB::bind_method(D_METHOD("get_file_data_str", "index"), &WebServerRequest::get_file_data_str);
-	ClassDB::bind_method(D_METHOD("move_file", "index", "dest_file"), &WebServerRequest::move_file);
+	ClassDB::bind_method(D_METHOD("move_file", "index", "dest_file", "force"), &WebServerRequest::move_file, DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("is_file_moved", "index"), &WebServerRequest::is_file_moved);
 
 	ClassDB::bind_method(D_METHOD("get_parameter", "key"), &WebServerRequest::get_parameter);

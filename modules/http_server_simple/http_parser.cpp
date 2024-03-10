@@ -74,6 +74,8 @@ void HTTPParser::reset() {
 	_is_ready = false;
 	_content_type = REQUEST_CONTENT_URLENCODED;
 	_error = false;
+	_current_upload_files_size = 0;
+	_current_request_size = 0;
 	_request.unref();
 	_requests.clear();
 }
@@ -246,6 +248,7 @@ void HTTPParser::_process_multipart_header_value(const String &val) {
 
 						if (_upload_file_access) {
 							memdelete(_upload_file_access);
+							_upload_file_access = NULL;
 						}
 					}
 
@@ -309,6 +312,7 @@ int HTTPParser::on_message_begin() {
 	}
 
 	_current_request_size = 0;
+	_current_upload_files_size = 0;
 
 	_in_header = true;
 	_content_type = REQUEST_CONTENT_URLENCODED;

@@ -64,7 +64,7 @@ public:
 	virtual uint64_t get_file_length(const int index) const;
 	virtual PoolByteArray get_file_data(const int index) const;
 	virtual String get_file_data_str(const int index) const;
-	virtual Error move_file(const int index, const String &p_dest_file);
+	virtual Error move_file(const int index, const String &p_dest_file, const bool p_force = false);
 	virtual bool is_file_moved(const int index) const;
 
 	virtual String get_parameter(const String &key) const;
@@ -125,7 +125,7 @@ protected:
 	struct FileEntry {
 		enum FileEntryType {
 			FILE_ENTRY_TYPE_MEMORY = 0,
-			FILE_ENTRY_TYPE_TEMP_FILE = 0,
+			FILE_ENTRY_TYPE_TEMP_FILE,
 		};
 
 		mutable bool moved;

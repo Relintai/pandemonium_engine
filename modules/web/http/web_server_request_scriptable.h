@@ -63,7 +63,7 @@ public:
 	virtual uint64_t get_file_length(const int index) const;
 	virtual PoolByteArray get_file_data(const int index) const;
 	virtual String get_file_data_str(const int index) const;
-	virtual Error move_file(const int index, const String &p_dest_file);
+	virtual Error move_file(const int index, const String &p_dest_file, const bool p_force = false);
 	virtual bool is_file_moved(const int index) const;
 
 	virtual String get_parameter(const String &key) const;
@@ -105,7 +105,7 @@ public:
 	virtual int _get_file_length(const int index) const;
 	virtual PoolByteArray _get_file_data(const int index) const;
 	virtual String _get_file_data_str(const int index) const;
-	virtual Error _move_file(const int index, const String &p_dest_file);
+	virtual Error _move_file(const int index, const String &p_dest_file, const bool p_force);
 	virtual bool _is_file_moved(const int index) const;
 
 	virtual String _get_parameter(const String &key) const;

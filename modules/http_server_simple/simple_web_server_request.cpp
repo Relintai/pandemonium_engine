@@ -145,28 +145,34 @@ String SimpleWebServerRequest::get_file_data_str(const int index) const {
 
 	return data;
 }
-Error SimpleWebServerRequest::move_file(const int index, const String &p_dest_file) {
+Error SimpleWebServerRequest::move_file(const int index, const String &p_dest_file, const bool p_force) {
 	ERR_FAIL_INDEX_V(index, _files.size(), ERR_INVALID_PARAMETER);
 
-	DirAccess *dir = DirAccess::create_for_path(p_dest_file.get_base_dir());
+	String base_dir = p_dest_file.get_base_dir();
+	String file_name = p_dest_file.get_file();
+
+	DirAccess *dir = DirAccess::create_for_path(base_dir);
 
 	if (!dir) {
 		return ERR_FILE_BAD_PATH;
 	}
 
-	if (dir->file_exists(p_dest_file)) {
-		return ERR_ALREADY_IN_USE;
+	if (!p_force) {
+		if (dir->file_exists(file_name)) {
+			return ERR_ALREADY_IN_USE;
+		}
 	}
+
+	memdelete(dir);
+	dir = NULL;
 
 	const FileEntry &e = _files[index];
 
 	if (e.type == FileEntry::FILE_ENTRY_TYPE_MEMORY) {
-		memdelete(dir);
-
 		Error err;
-		FileAccess *f = FileAccess::open(e.path, FileAccess::WRITE, &err);
+		FileAccess *f = FileAccess::open(p_dest_file, FileAccess::WRITE, &err);
 		if (!f) {
-			return ERR_FILE_BAD_PATH;
+			return err;
 		}
 
 		PoolByteArray::Read r = e.data.read();
@@ -177,13 +183,19 @@ Error SimpleWebServerRequest::move_file(const int index, const String &p_dest_fi
 		return OK;
 	}
 
-	dir->rename(e.path, p_dest_file);
+	dir = DirAccess::create_for_path(e.path);
+	ERR_FAIL_COND_V_MSG(!dir->file_exists(e.path), ERR_DOES_NOT_EXIST, "Original temp file does not exist. BUG!");
+
+	Error err = dir->rename(e.path, p_dest_file);
+
 	memdelete(dir);
 
-	e.moved = true;
-	e.path = p_dest_file;
+	if (err == OK) {
+		e.moved = true;
+		e.path = p_dest_file;
+	}
 
-	return OK;
+	return err;
 }
 bool SimpleWebServerRequest::is_file_moved(const int index) const {
 	ERR_FAIL_INDEX_V(index, _files.size(), true);
