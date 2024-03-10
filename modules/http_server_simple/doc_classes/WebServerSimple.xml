@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="WebServerSimple" inherits="WebServer" version="4.3">
 	<brief_description>
+		Default [WebServer] implementation.
 	</brief_description>
 	<description>
+		Default [WebServer] implementation.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,64 +14,93 @@
 			<argument index="0" name="file_extension" type="String" />
 			<argument index="1" name="mime_type" type="String" />
 			<description>
+				Adds a mime type to the server. Mime types are used by browsers to better display contents.
 			</description>
 		</method>
 		<method name="is_running" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Check whether the server is running or not.
 			</description>
 		</method>
 		<method name="remove_mime_type">
 			<return type="void" />
 			<argument index="0" name="file_extension" type="String" />
 			<description>
+				Removes a mime type from the server.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="bind_host" type="String" setter="set_bind_host" getter="get_bind_host" default="&quot;0.0.0.0&quot;">
+			What ip to bind to (use).
 		</member>
 		<member name="bind_port" type="int" setter="set_bind_port" getter="get_bind_port" default="8080">
+			What port to bind to (use).
 		</member>
 		<member name="max_request_size" type="int" setter="set_max_request_size" getter="get_max_request_size" default="3">
+			The maximum allowed request size. 
+			This includes the entire request header, including file uploads (only if they are stored in memory) because then a big file upload or request can eat all the ram in a server!
+			Also 0 means 0, not unlimited. This should NOT change (Reason: line above).
 		</member>
 		<member name="max_request_size_type" type="int" setter="set_max_request_size_type" getter="get_max_request_size_type" enum="WebServerSimple.MaxRequestSizeTypes" default="2">
+			The type of [member max_request_size].
 		</member>
 		<member name="ssl_cert" type="String" setter="set_ssl_cert" getter="get_ssl_cert" default="&quot;&quot;">
+			Path to your ssl certificate.
 		</member>
 		<member name="ssl_key" type="String" setter="set_ssl_key" getter="get_ssl_key" default="&quot;&quot;">
+			Path to your ssl key.
 		</member>
 		<member name="start_on_ready" type="bool" setter="set_start_on_ready" getter="get_start_on_ready" default="false">
+			Whether to start the server when it enters the [SceneTree].
 		</member>
 		<member name="upload_file_store_type" type="int" setter="upload_set_file_store_type" getter="upload_get_file_store_type" enum="WebServerSimple.FileUploadStoreType" default="0">
+			How the server stores the data uploaded as files.
 		</member>
 		<member name="upload_request_max_file_size" type="int" setter="upload_set_request_max_file_size" getter="upload_get_request_max_file_size">
+			The file upload limit per request. Total, not per file (less room for misconfigurations).
+			Only relevant if [member upload_file_store_type] == FILE_UPLOAD_STORE_TYPE_TEMP_FILES.
 		</member>
 		<member name="upload_request_max_file_size_type" type="int" setter="upload_set_request_max_file_size_type" getter="upload_get_request_max_file_size_type" enum="WebServerSimple.MaxRequestSizeTypes">
+			The type of [member upload_request_max_file_size].
+			Only relevant if [member upload_file_store_type] == FILE_UPLOAD_STORE_TYPE_TEMP_FILES.
 		</member>
 		<member name="upload_temp_file_store_path" type="String" setter="upload_set_temp_file_store_path" getter="upload_get_temp_file_store_path">
+			Where to store temporary files.
+			Only relevant if [member upload_file_store_type] == FILE_UPLOAD_STORE_TYPE_TEMP_FILES.
 		</member>
 		<member name="use_poll_thread" type="bool" setter="set_use_poll_thread" getter="get_use_poll_thread" default="true">
+			Whether to use a separate thread for polling the server socket or not.
 		</member>
 		<member name="use_ssl" type="bool" setter="set_use_ssl" getter="get_use_ssl" default="false">
+			Whether to use ssl or not. if [member ssl_cert] and [member ssl_key] is not set, the server will generate them for you.
 		</member>
 		<member name="use_worker_threads" type="bool" setter="set_use_worker_threads" getter="get_use_worker_threads" default="true">
+			Whether to use a separate worker threads for handling requests or not.
 		</member>
 		<member name="worker_thread_count" type="int" setter="set_worker_thread_count" getter="get_worker_thread_count" default="4">
+			How many worker threads to use when [member use_worker_threads] is enabled.
 		</member>
 	</members>
 	<constants>
 		<constant name="MAX_REQUEST_SIZE_TYPE_BYTE" value="0" enum="MaxRequestSizeTypes">
+			Byte.
 		</constant>
 		<constant name="MAX_REQUEST_SIZE_TYPE_KILO_BYTE" value="1" enum="MaxRequestSizeTypes">
+			Kilo Byte.
 		</constant>
 		<constant name="MAX_REQUEST_SIZE_TYPE_MEGA_BYTE" value="2" enum="MaxRequestSizeTypes">
+			Mega Byte.
 		</constant>
 		<constant name="MAX_REQUEST_SIZE_TYPE_GIGA_BYTE" value="3" enum="MaxRequestSizeTypes">
+			Giga Byte.
 		</constant>
 		<constant name="FILE_UPLOAD_STORE_TYPE_MEMORY" value="0" enum="FileUploadStoreType">
+			Store uploaded files directly in memory.
 		</constant>
 		<constant name="FILE_UPLOAD_STORE_TYPE_TEMP_FILES" value="1" enum="FileUploadStoreType">
+			Store uploaded files as temporary files on disk.
 		</constant>
 	</constants>
 </class>
