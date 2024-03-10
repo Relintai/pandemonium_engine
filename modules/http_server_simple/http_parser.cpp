@@ -197,9 +197,14 @@ void HTTPParser::_process_multipart_header_value(const String &val) {
 					_multipart_form_name.remove(_multipart_form_name.length() - 1);
 				}
 			} else if (kk == "filename") {
-				_multipart_form_filename = vs.get_slicec('=', 1);
-				_multipart_form_filename = _multipart_form_filename.replace("\"", "");
 				_multipart_form_is_file = true;
+
+				_multipart_form_filename = vs.get_slicec('=', 1);
+
+				if (_multipart_form_filename.length() >= 2 && _multipart_form_filename.begins_with("\"") && _multipart_form_filename.ends_with("\"")) {
+					_multipart_form_filename.remove(0);
+					_multipart_form_filename.remove(_multipart_form_filename.length() - 1);
+				}
 
 				if (_multipart_form_name.length() >= 2 && _multipart_form_name.begins_with("\"") && _multipart_form_name.ends_with("\"")) {
 					_multipart_form_name.remove(0);
@@ -635,7 +640,7 @@ int HTTPParser::on_multipart_header_field_cb(const char *at, size_t length) {
 }
 int HTTPParser::on_multipart_header_value_cb(const char *at, size_t length) {
 	String s = String::utf8(at, length);
-
+	
 	_process_multipart_header_value(s);
 
 #if MULTIPART_MESSAGE_DEBUG
