@@ -612,6 +612,22 @@ Error HTTPServerSimple::listen(int p_port, IP_Address p_address, bool p_use_ssl,
 	_ssl_key_file = p_ssl_key;
 	_ssl_cert_file = p_ssl_cert;
 
+	if (upload_file_store_type == WebServerSimple::FILE_UPLOAD_STORE_TYPE_TEMP_FILES) {
+		DirAccess *dir = DirAccess::create_for_path(upload_temp_file_store_path);
+
+		ERR_FAIL_COND_V(!dir, ERR_FILE_CANT_WRITE);
+
+		Error err = OK;
+
+		if (!dir->dir_exists(upload_temp_file_store_path)) {
+			err = dir->make_dir_recursive(upload_temp_file_store_path);
+		}
+
+		memdelete(dir);
+
+		ERR_FAIL_COND_V_MSG(err != OK, ERR_FILE_CANT_WRITE, vformat("Cannot create temporary files directory for uploads! Error: %d", err));
+	}
+
 	if (use_ssl) {
 		Ref<Crypto> crypto = Crypto::create();
 		if (crypto.is_null()) {
