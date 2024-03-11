@@ -465,6 +465,8 @@ private:
 	void _scroll_moved(float p_value);
 	HScrollBar *h_scroll;
 	VScrollBar *v_scroll;
+	bool h_scroll_enabled;
+	bool v_scroll_enabled;
 
 	Size2 get_internal_min_size() const;
 	void update_cache();
@@ -592,6 +594,11 @@ public:
 
 	Point2 get_scroll() const;
 	void scroll_to_item(TreeItem *p_item);
+
+	void set_h_scroll_enabled(bool p_enable);
+	bool is_h_scroll_enabled() const;
+	void set_v_scroll_enabled(bool p_enable);
+	bool is_v_scroll_enabled() const;
 
 	void set_cursor_can_exit_tree(bool p_enable);
 	bool can_cursor_exit_tree() const;

@@ -2764,6 +2764,13 @@ Size2 Tree::get_internal_min_size() const {
 void Tree::update_scrollbars() {
 	Size2 size = get_size();
 
+	int tbh;
+	if (show_column_titles) {
+		tbh = _get_title_button_height();
+	} else {
+		tbh = 0;
+	}
+
 	Size2 hmin = h_scroll->get_combined_minimum_size();
 	Size2 vmin = v_scroll->get_combined_minimum_size();
 
@@ -2773,27 +2780,38 @@ void Tree::update_scrollbars() {
 	h_scroll->set_begin(Point2(0, size.height - hmin.height));
 	h_scroll->set_end(Point2(size.width - vmin.width, size.height));
 
-	Size2 min = get_internal_min_size();
-	const real_t tree_content_height = size.height - hmin.height - _get_title_button_height();
+	Size2 internal_min_size = get_internal_min_size();
 
-	if (min.height < tree_content_height) {
-		v_scroll->hide();
-		cache.offset.y = 0;
-	} else {
-		v_scroll->show();
-		v_scroll->set_max(min.height);
-		v_scroll->set_page(tree_content_height);
-		cache.offset.y = v_scroll->get_value();
+	bool display_vscroll = internal_min_size.height + cache.bg->get_margin(MARGIN_TOP) > size.height;
+	bool display_hscroll = internal_min_size.width + cache.bg->get_margin(MARGIN_LEFT) > size.width;
+	for (int i = 0; i < 2; i++) {
+		// Check twice, as both values are dependent on each other.
+		if (display_hscroll) {
+			display_vscroll = internal_min_size.height + cache.bg->get_margin(MARGIN_TOP) + hmin.height > size.height;
+		}
+		if (display_vscroll) {
+			display_hscroll = internal_min_size.width + cache.bg->get_margin(MARGIN_LEFT) + vmin.width > size.width;
+		}
 	}
 
-	if (min.width < size.width - vmin.width) {
-		h_scroll->hide();
-		cache.offset.x = 0;
+	if (display_vscroll) {
+		v_scroll->show();
+		v_scroll->set_max(internal_min_size.height);
+		v_scroll->set_page(size.height - hmin.height - tbh);
+		cache.offset.y = v_scroll->get_value();
 	} else {
+		v_scroll->hide();
+		cache.offset.y = 0;
+	}
+
+	if (display_hscroll) {
 		h_scroll->show();
-		h_scroll->set_max(min.width);
+		h_scroll->set_max(internal_min_size.width);
 		h_scroll->set_page(size.width - vmin.width);
 		cache.offset.x = h_scroll->get_value();
+	} else {
+		h_scroll->hide();
+		cache.offset.x = 0;
 	}
 }
 
@@ -2962,7 +2980,17 @@ void Tree::_notification(int p_what) {
 }
 
 Size2 Tree::get_minimum_size() const {
-	return Size2(1, 1);
+	if (h_scroll_enabled && v_scroll_enabled) {
+		return Size2();
+	} else {
+		Vector2 min_size = get_internal_min_size();
+		Ref<StyleBox> bg = cache.bg;
+		if (bg.is_valid()) {
+			min_size.x += bg->get_margin(MARGIN_LEFT) + bg->get_margin(MARGIN_RIGHT);
+			min_size.y += bg->get_margin(MARGIN_TOP) + bg->get_margin(MARGIN_BOTTOM);
+		}
+		return Vector2(h_scroll_enabled ? 0 : min_size.x, v_scroll_enabled ? 0 : min_size.y);
+	}
 }
 
 TreeItem *Tree::create_item(TreeItem *p_parent, int p_idx) {
@@ -3460,6 +3488,24 @@ void Tree::scroll_to_item(TreeItem *p_item) {
 	}
 }
 
+void Tree::set_h_scroll_enabled(bool p_enable) {
+	h_scroll_enabled = p_enable;
+	minimum_size_changed();
+}
+
+bool Tree::is_h_scroll_enabled() const {
+	return h_scroll_enabled;
+}
+
+void Tree::set_v_scroll_enabled(bool p_enable) {
+	v_scroll_enabled = p_enable;
+	minimum_size_changed();
+}
+
+bool Tree::is_v_scroll_enabled() const {
+	return v_scroll_enabled;
+}
+
 TreeItem *Tree::_search_item_text(TreeItem *p_at, const String &p_find, int *r_col, bool p_selectable, bool p_backwards) {
 	TreeItem *from = p_at;
 	TreeItem *loop = nullptr; // Safe-guard against infinite loop.
@@ -3880,6 +3926,12 @@ void Tree::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_scroll"), &Tree::get_scroll);
 	ClassDB::bind_method(D_METHOD("scroll_to_item", "item"), &Tree::_scroll_to_item);
 
+	ClassDB::bind_method(D_METHOD("set_h_scroll_enabled", "h_scroll"), &Tree::set_h_scroll_enabled);
+	ClassDB::bind_method(D_METHOD("is_h_scroll_enabled"), &Tree::is_h_scroll_enabled);
+
+	ClassDB::bind_method(D_METHOD("set_v_scroll_enabled", "h_scroll"), &Tree::set_v_scroll_enabled);
+	ClassDB::bind_method(D_METHOD("is_v_scroll_enabled"), &Tree::is_v_scroll_enabled);
+
 	ClassDB::bind_method(D_METHOD("set_hide_folding", "hide"), &Tree::set_hide_folding);
 	ClassDB::bind_method(D_METHOD("is_folding_hidden"), &Tree::is_folding_hidden);
 
@@ -3904,6 +3956,8 @@ void Tree::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "hide_root"), "set_hide_root", "is_root_hidden");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "drop_mode_flags", PROPERTY_HINT_FLAGS, "On Item,In between"), "set_drop_mode_flags", "get_drop_mode_flags");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "select_mode", PROPERTY_HINT_ENUM, "Single,Row,Multi"), "set_select_mode", "get_select_mode");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scroll_horizontal_enabled"), "set_h_scroll_enabled", "is_h_scroll_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scroll_vertical_enabled"), "set_v_scroll_enabled", "is_v_scroll_enabled");
 
 	ADD_SIGNAL(MethodInfo("item_selected"));
 	ADD_SIGNAL(MethodInfo("cell_selected"));
@@ -3963,6 +4017,8 @@ Tree::Tree() {
 
 	h_scroll = memnew(HScrollBar);
 	v_scroll = memnew(VScrollBar);
+	h_scroll_enabled = true;
+	v_scroll_enabled = true;
 
 	add_child(h_scroll);
 	add_child(v_scroll);
