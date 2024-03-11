@@ -269,6 +269,32 @@
 				Adds a textured rect to the [CanvasItem]'s draw commands.
 			</description>
 		</method>
+		<method name="canvas_item_add_texture_rect_animation">
+			<return type="void" />
+			<argument index="0" name="item" type="RID" />
+			<argument index="1" name="animation_data" type="Array" />
+			<description>
+				Add texture rect regions as an animation to the [CanvasItem]'s draw commands.
+				You need to pass an Array of Arrays, the inner Arrays are the frames. The 0th argument is the frame time, the rest are the arguments of [member canvas_item_add_texture_rect_region] in order.
+				This Animation might lag behind by a frame sometimes, using it is not recommended for highly precise gameplay related things, it's more suited for decorations.
+				The Array should like this:
+				[code]
+				[
+				    [
+				        0.2, # real_t frame_time = d[0];
+				        Rect2(0, 0, 1, 1), # Rect2 tex_rect = d[1]; //const Rect2 &p_rect
+				        RID(), # rect->texture = d[2]; //RID p_texture
+				        Rect2(0, 0, 1, 1), # Rect2 tex_src_rect = d[3]; //const Rect2 &p_src_rect
+				        Color(1, 1, 1), # rect->modulate = d[4]; //const Color &p_modulate = Color(1, 1, 1)
+				        false, # bool transpose = d[5]; //bool p_transpose = false
+				        RID(), # rect->normal_map = d[6]; //RID p_normal_map = RID()
+				        false, # bool clip_uv = d[7]; //bool p_clip_uv = false
+				    ],
+				    # ... More Frames
+				][/code]
+				
+			</description>
+		</method>
 		<method name="canvas_item_add_texture_rect_region">
 			<return type="void" />
 			<argument index="0" name="item" type="RID" />
