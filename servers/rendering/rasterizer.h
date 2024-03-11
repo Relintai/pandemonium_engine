@@ -682,6 +682,7 @@ public:
 				TYPE_TRANSFORM,
 				TYPE_CLIP_IGNORE,
 				TYPE_MULTIRECT,
+				TYPE_RECT_ANIMATION,
 			};
 
 			virtual bool contains_reference(const RID &p_rid) const { return false; }
@@ -848,6 +849,52 @@ public:
 			CommandClipIgnore() {
 				type = TYPE_CLIP_IGNORE;
 				ignore = false;
+			}
+		};
+
+		struct CommandRectAnimation : public Command {
+			// Make sure to always add 1 allocated element into the Vectors!
+			Vector<CommandRect *> rects;
+			Vector<real_t> times;
+			int current;
+			real_t time_elapsed;
+			real_t total_time;
+
+			const CommandRect *get_command_rect() const {
+				CRASH_BAD_INDEX(current, rects.size());
+
+				return rects[current];
+			}
+
+			CommandRect *get_command_rect() {
+				CRASH_BAD_INDEX(current, rects.size());
+
+				return rects.write[current];
+			}
+
+			void update(real_t p_delta) {
+				time_elapsed += p_delta;
+				
+				while (time_elapsed >= total_time) {
+					time_elapsed -= total_time;
+				}
+
+				real_t next_frame_time = 0;
+				for (int i = 0; i < times.size(); ++i) {
+					next_frame_time += times[i];
+
+					if (next_frame_time > time_elapsed) {
+						current = i;
+						break;
+					}
+				}
+			}
+
+			CommandRectAnimation() {
+				current = 0;
+				time_elapsed = 0;
+				total_time = 0;
+				type = TYPE_RECT_ANIMATION;
 			}
 		};
 
@@ -1047,8 +1094,11 @@ public:
 						found_xform = true;
 						continue;
 					} break;
-
 					case Item::Command::TYPE_CLIP_IGNORE: {
+					} break;
+					case Item::Command::TYPE_RECT_ANIMATION: {
+						const Item::CommandRectAnimation *crectanim = static_cast<const Item::CommandRectAnimation *>(c);
+						r = crectanim->get_command_rect()->rect;
 					} break;
 				}
 

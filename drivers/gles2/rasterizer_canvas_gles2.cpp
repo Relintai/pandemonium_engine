@@ -390,6 +390,7 @@ void RasterizerCanvasGLES2::render_batches(Item *p_current_clip, bool &r_reclip,
 						} break;
 
 						case Item::Command::TYPE_RECT: {
+							// If anything changes also update Item::Command::TYPE_RECT_ANIMATION
 							Item::CommandRect *r = static_cast<Item::CommandRect *>(command);
 
 							glDisableVertexAttribArray(RS::ARRAY_COLOR);
@@ -874,7 +875,7 @@ void RasterizerCanvasGLES2::render_batches(Item *p_current_clip, bool &r_reclip,
 								Size2 texpixel_size(1.0 / texture->width, 1.0 / texture->height);
 								state.canvas_shader.set_uniform(CanvasShaderGLES2::COLOR_TEXPIXEL_SIZE, texpixel_size);
 							}
-							
+
 							state.canvas_shader.set_uniform(CanvasShaderGLES2::MODELVIEW_MATRIX, state.uniforms.modelview_matrix * mesh->transform);
 							state.canvas_shader.set_uniform(CanvasShaderGLES2::FINAL_MODULATE, state.uniforms.final_modulate * mesh->modulate);
 
@@ -921,7 +922,7 @@ void RasterizerCanvasGLES2::render_batches(Item *p_current_clip, bool &r_reclip,
 									glDisableVertexAttribArray(j);
 								}
 							}
-							
+
 							state.canvas_shader.set_uniform(CanvasShaderGLES2::MODELVIEW_MATRIX, state.uniforms.modelview_matrix);
 							state.canvas_shader.set_uniform(CanvasShaderGLES2::FINAL_MODULATE, state.uniforms.final_modulate);
 
@@ -1183,6 +1184,253 @@ void RasterizerCanvasGLES2::render_batches(Item *p_current_clip, bool &r_reclip,
 									}
 								}
 							}
+
+						} break;
+
+						case Item::Command::TYPE_RECT_ANIMATION: {
+							// Should probably move this to a method maybe
+							RasterizerCanvas::Item::CommandRectAnimation *rectanim = static_cast<RasterizerCanvas::Item::CommandRectAnimation *>(command);
+							RasterizerCanvas::Item::CommandRect *r = rectanim->get_command_rect();
+
+							// Update here. Even though this way the animation can lag 1 frame behind sometimes,
+							// but doing it here is the simplest, without heavy changes to batching.
+							// Since this type of animation is more fitting to just small tilemap
+							rectanim->update(static_cast<real_t>(storage->frame.delta));
+
+							// If we are rendering an animation, send redraw request
+							RenderingServerRaster::redraw_request(false);
+
+							glDisableVertexAttribArray(RS::ARRAY_COLOR);
+							glVertexAttrib4fv(RS::ARRAY_COLOR, r->modulate.components);
+
+							bool can_tile = true;
+							if (r->texture.is_valid() && r->flags & CANVAS_RECT_TILE && !storage->config.support_npot_repeat_mipmap) {
+								// workaround for when setting tiling does not work due to hardware limitation
+
+								RasterizerStorageGLES2::Texture *texture = storage->texture_owner.getornull(r->texture);
+
+								if (texture) {
+									texture = texture->get_ptr();
+
+									if (next_power_of_2(texture->alloc_width) != (unsigned int)texture->alloc_width && next_power_of_2(texture->alloc_height) != (unsigned int)texture->alloc_height) {
+										state.canvas_shader.set_conditional(CanvasShaderGLES2::USE_FORCE_REPEAT, true);
+										can_tile = false;
+									}
+								}
+							}
+
+							// On some widespread Nvidia cards, the normal draw method can produce some
+							// flickering in draw_rect and especially TileMap rendering (tiles randomly flicker).
+							// See GH-9913.
+							// To work it around, we use a simpler draw method which does not flicker, but gives
+							// a non negligible performance hit, so it's opt-in (GH-24466).
+							if (use_nvidia_rect_workaround) {
+								// are we using normal maps, if so we want to use light angle
+								bool send_light_angles = false;
+
+								// only need to use light angles when normal mapping
+								// otherwise we can use the default shader
+								if (state.current_normal != RID()) {
+									send_light_angles = true;
+								}
+
+								_set_texture_rect_mode(false, send_light_angles);
+
+								if (state.canvas_shader.bind()) {
+									_set_uniforms();
+									state.canvas_shader.use_material((void *)p_material);
+								}
+
+								Vector2 points[4] = {
+									r->rect.position,
+									r->rect.position + Vector2(r->rect.size.x, 0.0),
+									r->rect.position + r->rect.size,
+									r->rect.position + Vector2(0.0, r->rect.size.y),
+								};
+
+								if (r->rect.size.x < 0) {
+									SWAP(points[0], points[1]);
+									SWAP(points[2], points[3]);
+								}
+								if (r->rect.size.y < 0) {
+									SWAP(points[0], points[3]);
+									SWAP(points[1], points[2]);
+								}
+
+								RasterizerStorageGLES2::Texture *texture = _bind_canvas_texture(r->texture, r->normal_map);
+
+								if (texture) {
+									Size2 texpixel_size(1.0 / texture->width, 1.0 / texture->height);
+
+									Rect2 src_rect = (r->flags & CANVAS_RECT_REGION) ? Rect2(r->source.position * texpixel_size, r->source.size * texpixel_size) : Rect2(0, 0, 1, 1);
+
+									Vector2 uvs[4] = {
+										src_rect.position,
+										src_rect.position + Vector2(src_rect.size.x, 0.0),
+										src_rect.position + src_rect.size,
+										src_rect.position + Vector2(0.0, src_rect.size.y),
+									};
+
+									// for encoding in light angle
+									bool flip_h = false;
+									bool flip_v = false;
+
+									if (r->flags & CANVAS_RECT_TRANSPOSE) {
+										SWAP(uvs[1], uvs[3]);
+									}
+
+									if (r->flags & CANVAS_RECT_FLIP_H) {
+										SWAP(uvs[0], uvs[1]);
+										SWAP(uvs[2], uvs[3]);
+										flip_h = true;
+										flip_v = !flip_v;
+									}
+									if (r->flags & CANVAS_RECT_FLIP_V) {
+										SWAP(uvs[0], uvs[3]);
+										SWAP(uvs[1], uvs[2]);
+										flip_v = !flip_v;
+									}
+
+									state.canvas_shader.set_uniform(CanvasShaderGLES2::COLOR_TEXPIXEL_SIZE, texpixel_size);
+
+									bool untile = false;
+
+									if (can_tile && r->flags & CANVAS_RECT_TILE && !(texture->flags & RS::TEXTURE_FLAG_REPEAT)) {
+										glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+										glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+										untile = true;
+									}
+
+									if (send_light_angles) {
+										// for single rects, there is no need to fully utilize the light angle,
+										// we only need it to encode flips (horz and vert). But the shader can be reused with
+										// batching in which case the angle encodes the transform as well as
+										// the flips.
+										// Note transpose is NYI. I don't think it worked either with the non-nvidia method.
+
+										// if horizontal flip, angle is 180
+										float angle = 0.0f;
+										if (flip_h) {
+											angle = Math_PI;
+										}
+
+										// add 1 (to take care of zero floating point error with sign)
+										angle += 1.0f;
+
+										// flip if necessary
+										if (flip_v) {
+											angle *= -1.0f;
+										}
+
+										// light angle must be sent for each vert, instead as a single uniform in the uniform draw method
+										// this has the benefit of enabling batching with light angles.
+										float light_angles[4] = { angle, angle, angle, angle };
+
+										_draw_gui_primitive(4, points, nullptr, uvs, light_angles);
+									} else {
+										_draw_gui_primitive(4, points, nullptr, uvs);
+									}
+
+									if (untile) {
+										glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+										glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+									}
+								} else {
+									static const Vector2 uvs[4] = {
+										Vector2(0.0, 0.0),
+										Vector2(0.0, 1.0),
+										Vector2(1.0, 1.0),
+										Vector2(1.0, 0.0),
+									};
+
+									state.canvas_shader.set_uniform(CanvasShaderGLES2::COLOR_TEXPIXEL_SIZE, Vector2());
+									_draw_gui_primitive(4, points, nullptr, uvs);
+								}
+
+							} else {
+								// This branch is better for performance, but can produce flicker on Nvidia, see above comment.
+								_bind_quad_buffer();
+
+								_set_texture_rect_mode(true);
+
+								if (state.canvas_shader.bind()) {
+									_set_uniforms();
+									state.canvas_shader.use_material((void *)p_material);
+								}
+
+								RasterizerStorageGLES2::Texture *tex = _bind_canvas_texture(r->texture, r->normal_map);
+
+								if (!tex) {
+									Rect2 dst_rect = Rect2(r->rect.position, r->rect.size);
+
+									if (dst_rect.size.width < 0) {
+										dst_rect.position.x += dst_rect.size.width;
+										dst_rect.size.width *= -1;
+									}
+									if (dst_rect.size.height < 0) {
+										dst_rect.position.y += dst_rect.size.height;
+										dst_rect.size.height *= -1;
+									}
+
+									state.canvas_shader.set_uniform(CanvasShaderGLES2::DST_RECT, Color(dst_rect.position.x, dst_rect.position.y, dst_rect.size.x, dst_rect.size.y));
+									state.canvas_shader.set_uniform(CanvasShaderGLES2::SRC_RECT, Color(0, 0, 1, 1));
+
+									glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+									storage->info.render._2d_draw_call_count++;
+								} else {
+									bool untile = false;
+
+									if (can_tile && r->flags & CANVAS_RECT_TILE && !(tex->flags & RS::TEXTURE_FLAG_REPEAT)) {
+										glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+										glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+										untile = true;
+									}
+
+									Size2 texpixel_size(1.0 / tex->width, 1.0 / tex->height);
+									Rect2 src_rect = (r->flags & CANVAS_RECT_REGION) ? Rect2(r->source.position * texpixel_size, r->source.size * texpixel_size) : Rect2(0, 0, 1, 1);
+
+									Rect2 dst_rect = Rect2(r->rect.position, r->rect.size);
+
+									if (dst_rect.size.width < 0) {
+										dst_rect.position.x += dst_rect.size.width;
+										dst_rect.size.width *= -1;
+									}
+									if (dst_rect.size.height < 0) {
+										dst_rect.position.y += dst_rect.size.height;
+										dst_rect.size.height *= -1;
+									}
+
+									if (r->flags & CANVAS_RECT_FLIP_H) {
+										src_rect.size.x *= -1;
+									}
+
+									if (r->flags & CANVAS_RECT_FLIP_V) {
+										src_rect.size.y *= -1;
+									}
+
+									if (r->flags & CANVAS_RECT_TRANSPOSE) {
+										dst_rect.size.x *= -1; // Encoding in the dst_rect.z uniform
+									}
+
+									state.canvas_shader.set_uniform(CanvasShaderGLES2::COLOR_TEXPIXEL_SIZE, texpixel_size);
+
+									state.canvas_shader.set_uniform(CanvasShaderGLES2::DST_RECT, Color(dst_rect.position.x, dst_rect.position.y, dst_rect.size.x, dst_rect.size.y));
+									state.canvas_shader.set_uniform(CanvasShaderGLES2::SRC_RECT, Color(src_rect.position.x, src_rect.position.y, src_rect.size.x, src_rect.size.y));
+
+									glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+									storage->info.render._2d_draw_call_count++;
+
+									if (untile) {
+										glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+										glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+									}
+								}
+
+								glBindBuffer(GL_ARRAY_BUFFER, 0);
+								glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+							}
+
+							state.canvas_shader.set_conditional(CanvasShaderGLES2::USE_FORCE_REPEAT, false);
 
 						} break;
 
@@ -2398,4 +2646,16 @@ void RasterizerCanvasGLES2::initialize() {
 
 RasterizerCanvasGLES2::RasterizerCanvasGLES2() {
 	batch_constructor();
+}
+
+void RasterizerCanvasGLES2::_update_texture_rect_animation(RasterizerCanvas::Item::CommandRectAnimation *p_item) {
+	RasterizerCanvas::Item::CommandRectAnimation *rectanim = static_cast<RasterizerCanvas::Item::CommandRectAnimation *>(p_item);
+
+	// Update here. Even though this way the animation can lag 1 frame behind sometimes,
+	// but doing it here is the simplest, without heavy changes to batching.
+	// Since this type of animation is more fitting to just small tilemap
+	rectanim->update(static_cast<real_t>(storage->frame.delta));
+
+	// If we are rendering an animation, send redraw request
+	RenderingServerRaster::redraw_request(false);
 }

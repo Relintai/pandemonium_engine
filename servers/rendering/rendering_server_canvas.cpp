@@ -1512,6 +1512,91 @@ void RenderingServerCanvas::canvas_item_add_multimesh(RID p_item, RID p_mesh, RI
 	}
 }
 
+void RenderingServerCanvas::canvas_item_add_texture_rect_animation(RID p_item, const Array &p_animation_data) {
+	// Important!
+	if (p_animation_data.size() == 0) {
+		return;
+	}
+
+	Item *canvas_item = canvas_item_owner.getornull(p_item);
+	ERR_FAIL_COND(!canvas_item);
+
+	// Note Item::CommandRectAnimations need at least one item set. The way the logic is set up this will always happen.
+	Item::CommandRectAnimation *ra = memnew(Item::CommandRectAnimation);
+	ERR_FAIL_COND(!ra);
+
+	//void canvas_item_add_texture_rect_region(RID p_item, const Rect2 &p_rect, RID p_texture, const Rect2 &p_src_rect,
+	//const Color &p_modulate = Color(1, 1, 1), bool p_transpose = false, RID p_normal_map = RID(), bool p_clip_uv = false);
+	
+	real_t total_frame_time = 0;
+
+	for (int i = 0; i < p_animation_data.size(); ++i) {
+		Array d = p_animation_data[i];
+
+		if (d.size() < 8) {
+			bool need_to_set_default_color = d.size() < 5;
+
+			d.resize(8);
+
+			if (need_to_set_default_color) {
+				d[4] = Color(1, 1, 1);
+			}
+		}
+
+		Item::CommandRect *rect = memnew(Item::CommandRect);
+		ERR_FAIL_COND(!rect);
+		
+		real_t frame_time = d[0];
+		total_frame_time += frame_time;
+		Rect2 tex_rect = d[1]; //const Rect2 &p_rect
+		rect->rect = tex_rect;
+		rect->texture = d[2]; //RID p_texture
+		Rect2 tex_src_rect = d[3]; //const Rect2 &p_src_rect
+		rect->source = tex_src_rect;
+		rect->modulate = d[4]; //const Color &p_modulate = Color(1, 1, 1)
+		bool transpose = d[5]; //bool p_transpose = false
+		rect->normal_map = d[6]; //RID p_normal_map = RID()
+		bool clip_uv = d[7]; //bool p_clip_uv = false
+
+		rect->flags = RasterizerCanvas::CANVAS_RECT_REGION;
+
+		if (tex_rect.size.x < 0) {
+			rect->flags |= RasterizerCanvas::CANVAS_RECT_FLIP_H;
+			rect->rect.size.x = -rect->rect.size.x;
+		}
+		if (tex_src_rect.size.x < 0) {
+			rect->flags ^= RasterizerCanvas::CANVAS_RECT_FLIP_H;
+			rect->source.size.x = -rect->source.size.x;
+		}
+		if (tex_rect.size.y < 0) {
+			rect->flags |= RasterizerCanvas::CANVAS_RECT_FLIP_V;
+			rect->rect.size.y = -rect->rect.size.y;
+		}
+		if (tex_src_rect.size.y < 0) {
+			rect->flags ^= RasterizerCanvas::CANVAS_RECT_FLIP_V;
+			rect->source.size.y = -rect->source.size.y;
+		}
+
+		if (transpose) {
+			rect->flags |= RasterizerCanvas::CANVAS_RECT_TRANSPOSE;
+			SWAP(rect->rect.size.x, rect->rect.size.y);
+		}
+
+		if (clip_uv) {
+			rect->flags |= RasterizerCanvas::CANVAS_RECT_CLIP_UV;
+		}
+		
+		ra->rects.push_back(rect);
+		ra->times.push_back(frame_time);
+	}
+	
+	ra->total_time = total_frame_time;
+
+	canvas_item->rect_dirty = true;
+	canvas_item->commands.push_back(ra);
+	_make_bound_dirty(canvas_item);
+}
+
 void RenderingServerCanvas::canvas_item_add_clip_ignore(RID p_item, bool p_ignore) {
 	Item *canvas_item = canvas_item_owner.getornull(p_item);
 	ERR_FAIL_COND(!canvas_item);

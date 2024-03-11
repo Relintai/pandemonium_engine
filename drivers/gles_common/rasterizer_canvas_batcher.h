@@ -699,6 +699,10 @@ public:
 		return bdata.vertices.request();
 	}
 
+
+protected:
+	virtual void _update_texture_rect_animation(RasterizerCanvas::Item::CommandRectAnimation *p_item) {}
+
 protected:
 	// no need to compile these in in release, they are unneeded outside the editor and only add to executable size
 #if defined(TOOLS_ENABLED) && defined(DEBUG_ENABLED)
@@ -1959,7 +1963,8 @@ bool C_PREAMBLE::_prefill_rect(RasterizerCanvas::Item::CommandRect *rect, FillSt
 			int command_num_next = command_num + 1;
 			if (command_num_next < command_count) {
 				RasterizerCanvas::Item::Command *command_next = commands[command_num_next];
-				if ((command_next->type != RasterizerCanvas::Item::Command::TYPE_RECT) && (command_next->type != RasterizerCanvas::Item::Command::TYPE_TRANSFORM)) {
+				if ((command_next->type != RasterizerCanvas::Item::Command::TYPE_RECT && command_next->type != RasterizerCanvas::Item::Command::TYPE_RECT_ANIMATION) &&
+						(command_next->type != RasterizerCanvas::Item::Command::TYPE_TRANSFORM)) {
 					is_single_rect = true;
 				}
 			} else {
@@ -2874,6 +2879,34 @@ PREAMBLE(bool)::prefill_joined_item(FillState &r_fill_state, int &r_command_star
 #endif
 
 			} break;
+
+			case RasterizerCanvas::Item::Command::TYPE_RECT_ANIMATION: {
+				RasterizerCanvas::Item::CommandRectAnimation *rectanim = static_cast<RasterizerCanvas::Item::CommandRectAnimation *>(command);
+				RasterizerCanvas::Item::CommandRect *rect = rectanim->get_command_rect();
+
+				// Update here. Even though this way the animation can lag 1 frame behind sometimes,
+				// but doing it here is the simplest, without heavy changes to batching.
+				// Since this type of animation is more fitting to just small tilemap
+				_update_texture_rect_animation(rectanim);
+
+				// unoptimized - could this be done once per batch / batch texture?
+				bool send_light_angles = rect->normal_map != RID();
+
+				bool buffer_full = false;
+
+				// the template params must be explicit for compilation,
+				// this forces building the multiple versions of the function.
+				if (send_light_angles) {
+					buffer_full = _prefill_rect<true>(rect, r_fill_state, r_command_start, command_num, command_count, commands, p_item, multiply_final_modulate);
+				} else {
+					buffer_full = _prefill_rect<false>(rect, r_fill_state, r_command_start, command_num, command_count, commands, p_item, multiply_final_modulate);
+				}
+
+				if (buffer_full) {
+					return true;
+				}
+
+			} break;
 		}
 	}
 
@@ -3215,7 +3248,7 @@ PREAMBLE(bool)::_sort_items_match(const BSortItem &p_a, const BSortItem &p_b) co
 	//		return false;
 
 	const RasterizerCanvas::Item::Command &cb = *b->commands[0];
-	if ((cb.type != RasterizerCanvas::Item::Command::TYPE_RECT) && (cb.type != RasterizerCanvas::Item::Command::TYPE_MULTIRECT)) {
+	if ((cb.type != RasterizerCanvas::Item::Command::TYPE_RECT) && (cb.type != RasterizerCanvas::Item::Command::TYPE_MULTIRECT) && (cb.type != RasterizerCanvas::Item::Command::TYPE_RECT_ANIMATION)) {
 		return false;
 	}
 
@@ -3278,7 +3311,7 @@ PREAMBLE(bool)::sort_items_from(int p_start) {
 		return false;
 	}
 	const RasterizerCanvas::Item::Command &command_start = *start.item->commands[0];
-	if ((command_start.type != RasterizerCanvas::Item::Command::TYPE_RECT) && (command_start.type != RasterizerCanvas::Item::Command::TYPE_MULTIRECT)) {
+	if ((command_start.type != RasterizerCanvas::Item::Command::TYPE_RECT) && (command_start.type != RasterizerCanvas::Item::Command::TYPE_MULTIRECT) && (command_start.type != RasterizerCanvas::Item::Command::TYPE_RECT_ANIMATION)) {
 		return false;
 	}
 
@@ -3681,6 +3714,11 @@ PREAMBLE(bool)::_detect_item_batch_break(RenderItemState &r_ris, RasterizerCanva
 				} break;
 				case RasterizerCanvas::Item::Command::TYPE_TRANSFORM: {
 					// compatible with all types
+				} break;
+				case RasterizerCanvas::Item::Command::TYPE_RECT_ANIMATION: {
+					if (_disallow_item_join_if_batch_types_too_different(r_ris, RasterizerStorageCommon::BTF_RECT)) {
+						return true;
+					}
 				} break;
 			} // switch
 

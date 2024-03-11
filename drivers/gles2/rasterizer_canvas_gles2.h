@@ -69,6 +69,9 @@ private:
 public:
 	void initialize();
 	RasterizerCanvasGLES2();
+	
+protected:
+	virtual void _update_texture_rect_animation(RasterizerCanvas::Item::CommandRectAnimation *p_item);
 };
 
 #endif // RASTERIZERCANVASGLES2_H
