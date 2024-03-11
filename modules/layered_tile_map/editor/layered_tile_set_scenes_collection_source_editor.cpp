@@ -539,6 +539,7 @@ LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionSource
 
 	// Middle panel.
 	ScrollContainer *middle_panel = memnew(ScrollContainer);
+	middle_panel->set_v_size_flags(SIZE_EXPAND_FILL);
 	middle_panel->set_enable_h_scroll(false);
 	middle_panel->set_custom_minimum_size(Size2(200, 0) * EDSCALE);
 	split_container_right_side->add_child(middle_panel);
@@ -557,6 +558,7 @@ LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionSource
 
 	scenes_collection_source_inspector = memnew(EditorInspector);
 	scenes_collection_source_inspector->set_enable_h_scroll(false);
+	scenes_collection_source_inspector->set_enable_v_scroll(false);
 	scenes_collection_source_inspector->set_use_doc_hints(true);
 	scenes_collection_source_inspector->add_inspector_plugin(memnew(LayeredTileSourceInspectorPlugin));
 	middle_vbox_container->add_child(scenes_collection_source_inspector);
@@ -572,6 +574,7 @@ LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionSource
 
 	tile_inspector = memnew(EditorInspector);
 	tile_inspector->set_enable_v_scroll(false);
+	tile_inspector->set_enable_h_scroll(false);
 	tile_inspector->set_use_doc_hints(true);
 	tile_inspector->set_use_folding(true);
 	middle_vbox_container->add_child(tile_inspector);
