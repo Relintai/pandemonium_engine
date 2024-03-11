@@ -181,65 +181,46 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 			Rect2i source_rect = atlas_source->get_runtime_tile_texture_region(p_atlas_coords, 0);
 			tex->draw_rect_region(p_canvas_item, dest_rect, source_rect, modulate, transpose, Ref<Texture>(), p_tile_set->is_uv_clipping());
 		} else {
-			// RenderingServer::get_singleton()->canvas_item_add_animation_slice is implemented here in godot4:
-			// https://github.com/godotengine/godot/commit/94d31ac327a8fe6ff7c007b34cb25772bf96d17e
-
-			// RenderingServer::get_singleton()->canvas_item_add_animation_slice in godot4 is actually pretty clever
-			// But this implementation will be relatively easy to break due to the canvas batcher
-			// It would likely work with the code below, but it would be available to scripting too.
-
-			// Possible solution #1
-
-			// So I think it would make a lot more sense to do it in a different way, after the module is working.
-
-			// The api could look like:
-			// RenderingServer::get_singleton()->canvas_item_add_animated_sprite(RID ci, const Array &p_animation_data);
-			// p_animation_data:
-			// [i + 0]: duration
-			// [i + 1]: dest_rect
-			// [i + 2]: source_rect
-			// [i + 3]: modulate
-			// [i + 4]: transpose
-			// [i + 5]: normal
-			// [i + 6]: is_uv_clipping
-			// [i + 7]: Ref<Texture>
-
-			// This could create a new Command. It's internal data could be updated automatically when processing batches.
-			// This would make the api impossible to break in different cases.
-			// Also it would be simple to use for other things.
-
-			// Possible solution #2
-
-			// Handle animated tile updates here
-			// solution #1 is likely easier
-
-			// Possible solution #3
-
-			// Add more canvas items and show/hide them as necessary
-			// solution #1 is likely easier
-
-			ERR_PRINT("TODO Reimplement tile animations!");
-
-			/*
 			real_t speed = atlas_source->get_tile_animation_speed(p_atlas_coords);
-			real_t animation_duration = atlas_source->get_tile_animation_total_duration(p_atlas_coords) / speed;
-			real_t animation_offset = p_normalized_animation_offset * animation_duration;
-			// Accumulate durations unaffected by the speed to avoid accumulating floating point division errors.
-			// Aka do `sum(duration[i]) / speed` instead of `sum(duration[i] / speed)`.
-			real_t time_unscaled = 0.0;
+
+			Array anim_data;
+			
 			for (int frame = 0; frame < atlas_source->get_tile_animation_frames_count(p_atlas_coords); frame++) {
-				real_t frame_duration_unscaled = atlas_source->get_tile_animation_frame_duration(p_atlas_coords, frame);
-				real_t slice_start = time_unscaled / speed;
-				real_t slice_end = (time_unscaled + frame_duration_unscaled) / speed;
-				RenderingServer::get_singleton()->canvas_item_add_animation_slice(p_canvas_item, animation_duration, slice_start, slice_end, animation_offset);
-
+				real_t frame_duration_scaled = atlas_source->get_tile_animation_frame_duration(p_atlas_coords, frame) * speed;
+				
+				RID tex_rid = tex.is_valid() ? tex->get_rid() : RID();
+				//RID normal_rid = p_normal_map.is_valid() ? p_normal_map->get_rid() : RID();
+				RID normal_rid = RID();
+				
 				Rect2i source_rect = atlas_source->get_runtime_tile_texture_region(p_atlas_coords, frame);
-				tex->draw_rect_region(p_canvas_item, dest_rect, source_rect, modulate, transpose, Ref<Texture>(), p_tile_set->is_uv_clipping());
+				
+				//tex->draw_rect_region(p_canvas_item, dest_rect, source_rect, modulate, transpose, Ref<Texture>(), p_tile_set->is_uv_clipping());
+				
+				Array d;
+				d.resize(8);
+				
+				//real_t frame_time = d[0];
+				//Rect2 tex_rect = d[1]; //const Rect2 &p_rect
+				//rect->texture = d[2]; //RID p_texture
+				//Rect2 tex_src_rect = d[3]; //const Rect2 &p_src_rect
+				//rect->modulate = d[4]; //const Color &p_modulate = Color(1, 1, 1)
+				//bool transpose = d[5]; //bool p_transpose = false
+				//rect->normal_map = d[6]; //RID p_normal_map = RID()
+				//bool clip_uv = d[7]; //bool p_clip_uv = false
+				
+				d[0] = frame_duration_scaled;
+				d[1] = dest_rect;
+				d[2] = tex_rid;
+				d[3] = source_rect;
+				d[4] = modulate;
+				d[5] = transpose;
+				d[6] = normal_rid;
+				d[7] = p_tile_set->is_uv_clipping();
 
-				time_unscaled += frame_duration_unscaled;
+				anim_data.push_back(d);
 			}
-			RenderingServer::get_singleton()->canvas_item_add_animation_slice(p_canvas_item, 1.0, 0.0, 1.0, 0.0);
-			*/
+			
+			RenderingServer::get_singleton()->canvas_item_add_texture_rect_animation(p_canvas_item, anim_data);
 		}
 	}
 }
