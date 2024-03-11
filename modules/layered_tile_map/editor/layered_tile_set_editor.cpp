@@ -1013,6 +1013,7 @@ void LayeredTileSourceInspectorPlugin::_show_id_edit_dialog(Object *p_for_source
 
 		Label *label = memnew(Label(TTR("Warning: Modifying a source ID will result in all LayeredTileMaps using that source to reference an invalid source instead. This may result in unexpected data loss. Change this ID carefully.")));
 		label->set_autowrap(true);
+		label->set_custom_minimum_size(Vector2(400, 0) * EDSCALE);
 		vbox->add_child(label);
 
 		id_input = memnew(SpinBox);
@@ -1023,7 +1024,9 @@ void LayeredTileSourceInspectorPlugin::_show_id_edit_dialog(Object *p_for_source
 	}
 	edited_source = p_for_source;
 	id_input->set_value(p_for_source->get("id"));
-	id_edit_dialog->popup_centered(Vector2i(400, 0) * EDSCALE);
+	
+	//id_edit_dialog->popup_centered(Vector2i(400, 0) * EDSCALE);
+	id_edit_dialog->popup_centered();
 
 	id_input->get_line_edit()->call_deferred("grab_focus");
 }
