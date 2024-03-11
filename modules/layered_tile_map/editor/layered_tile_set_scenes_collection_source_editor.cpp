@@ -561,6 +561,7 @@ LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionSource
 	scenes_collection_source_inspector->set_enable_h_scroll(false);
 	scenes_collection_source_inspector->set_enable_v_scroll(false);
 	scenes_collection_source_inspector->set_use_doc_hints(true);
+	scenes_collection_source_inspector->set_undo_redo(EditorNode::get_singleton()->get_undo_redo());
 	scenes_collection_source_inspector->add_inspector_plugin(memnew(LayeredTileSourceInspectorPlugin));
 	middle_vbox_container->add_child(scenes_collection_source_inspector);
 
@@ -578,6 +579,7 @@ LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionSource
 	tile_inspector->set_enable_h_scroll(false);
 	tile_inspector->set_use_doc_hints(true);
 	tile_inspector->set_use_folding(true);
+	tile_inspector->set_undo_redo(EditorNode::get_singleton()->get_undo_redo());
 	middle_vbox_container->add_child(tile_inspector);
 
 	// Scenes list.

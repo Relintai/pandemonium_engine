@@ -2615,6 +2615,7 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	tile_inspector->set_use_doc_hints(true);
 	tile_inspector->set_use_folding(true);
 	tile_inspector->connect("property_selected", this, "_inspector_property_selected");
+	tile_inspector->set_undo_redo(EditorNode::get_singleton()->get_undo_redo());
 	middle_vbox_container->add_child(tile_inspector);
 
 	tile_inspector_no_tile_selected_label = memnew(Label);
@@ -2665,6 +2666,7 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	atlas_source_inspector->set_v_size_flags(SIZE_EXPAND_FILL);
 	atlas_source_inspector->set_show_categories(true);
 	atlas_source_inspector->set_use_doc_hints(true);
+	atlas_source_inspector->set_undo_redo(EditorNode::get_singleton()->get_undo_redo());
 	atlas_source_inspector->add_inspector_plugin(memnew(LayeredTileSourceInspectorPlugin));
 	middle_vbox_container->add_child(atlas_source_inspector);
 
