@@ -39,6 +39,8 @@
 #include "rendering_server_raster.h"
 #include "rendering_server_viewport.h"
 
+#include "core/math/random_pcg.h"
+
 static const int z_range = RS::CANVAS_ITEM_Z_MAX - RS::CANVAS_ITEM_Z_MIN + 1;
 
 void RenderingServerCanvas::_render_canvas_item_tree(Item *p_canvas_item, const Transform2D &p_transform, const Rect2 &p_clip_rect, const Color &p_modulate, RasterizerCanvas::Light *p_lights) {
@@ -1512,7 +1514,7 @@ void RenderingServerCanvas::canvas_item_add_multimesh(RID p_item, RID p_mesh, RI
 	}
 }
 
-void RenderingServerCanvas::canvas_item_add_texture_rect_animation(RID p_item, const Array &p_animation_data) {
+void RenderingServerCanvas::canvas_item_add_texture_rect_animation(RID p_item, const Array &p_animation_data, const bool p_randomize_start_time) {
 	// Important!
 	if (p_animation_data.size() == 0) {
 		return;
@@ -1591,6 +1593,12 @@ void RenderingServerCanvas::canvas_item_add_texture_rect_animation(RID p_item, c
 	}
 	
 	ra->total_time = total_frame_time;
+	
+	if (p_randomize_start_time) {
+		RandomPCG r;
+		r.randomize();
+		ra->time_elapsed = r.randf() * ra->total_time;
+	}
 
 	canvas_item->rect_dirty = true;
 	canvas_item->commands.push_back(ra);
