@@ -979,13 +979,14 @@ void LayeredTileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_draw() {
 
 void LayeredTileSetAtlasSourceEditor::_tile_data_editor_dropdown_button_pressed() {
 	Size2 size = tile_data_editor_dropdown_button->get_size();
+	Size2 ts = tile_data_editors_tree->get_size();
 	tile_data_editors_popup->set_position(tile_data_editor_dropdown_button->get_global_position() + Size2(0, size.height * get_global_transform().get_scale().y));
-	tile_data_editors_popup->set_size(Size2(size.width, 0));
+	tile_data_editors_popup->set_size(Size2(size.width, ts.height) * get_global_transform().get_scale());
 	tile_data_editors_popup->popup();
 }
 
 void LayeredTileSetAtlasSourceEditor::_tile_data_editors_tree_selected() {
-	call_deferred("hide");
+	tile_data_editors_popup->call_deferred("hide");
 	_update_current_tile_data_editor();
 	tile_atlas_control->update();
 	tile_atlas_control_unscaled->update();
@@ -2647,8 +2648,8 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	tile_data_editors_tree = memnew(Tree);
 	tile_data_editors_tree->set_hide_root(true);
 	tile_data_editors_tree->set_anchors_and_margins_preset(Control::PRESET_WIDE);
-	//tile_data_editors_tree->set_h_scroll_enabled(false);
-	//tile_data_editors_tree->set_v_scroll_enabled(false);
+	tile_data_editors_tree->set_h_scroll_enabled(false);
+	tile_data_editors_tree->set_v_scroll_enabled(false);
 	tile_data_editors_tree->connect("item_selected", this, "_tile_data_editors_tree_selected");
 	tile_data_editors_popup->add_child(tile_data_editors_tree);
 
