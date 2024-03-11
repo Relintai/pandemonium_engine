@@ -1508,6 +1508,7 @@ LayeredTileMapCell LayeredTileSet::get_random_tile_from_terrains_pattern(int p_t
 	ERR_FAIL_V(LayeredTileMapCell());
 }
 
+
 Vector<Vector2> LayeredTileSet::get_tile_shape_polygon() const {
 	Vector<Vector2> points;
 	if (tile_shape == LayeredTileSet::TILE_SHAPE_SQUARE) {
@@ -2593,7 +2594,7 @@ Vector<Vector<Ref<Texture>>> LayeredTileSet::generate_terrains_icons(Size2i p_si
 				dst_image->resize(p_size.x, p_size.y, Image::INTERPOLATE_NEAREST);
 			} else {
 				dst_image->create(1, 1, false, Image::FORMAT_RGBA8);
-				
+
 				dst_image->lock();
 				dst_image->set_pixel(0, 0, get_terrain_color(terrain_set, terrain));
 				dst_image->unlock();

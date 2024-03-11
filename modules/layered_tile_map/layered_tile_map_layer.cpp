@@ -358,7 +358,25 @@ void LayeredTileMapLayer::_rendering_update() {
 					}
 
 					// Drawing the tile in the canvas item.
+
+					//RAO
+#ifdef MODULE_FASTNOISE_ENABLED
+					if (_rao_noise.is_valid()) {
+						float col = (static_cast<float>(cell_data.rao) / 255.0) * _rao_strength;
+
+						Color modulate = get_modulate();
+						Color self_modulate = get_self_modulate();
+
+						Color m = Color(modulate.r * self_modulate.r - col, modulate.g * self_modulate.g - col, modulate.b * self_modulate.b - col, modulate.a * self_modulate.a);
+
+						LayeredTileMap::draw_tile(ci, local_tile_pos - rendering_quadrant->canvas_items_position, tile_set, cell_data.cell.source_id, cell_data.cell.get_atlas_coords(), cell_data.cell.alternative_tile, -1, m, tile_data, random_animation_offset);
+					} else {
+						LayeredTileMap::draw_tile(ci, local_tile_pos - rendering_quadrant->canvas_items_position, tile_set, cell_data.cell.source_id, cell_data.cell.get_atlas_coords(), cell_data.cell.alternative_tile, -1, get_self_modulate(), tile_data, random_animation_offset);
+					}
+#else
 					LayeredTileMap::draw_tile(ci, local_tile_pos - rendering_quadrant->canvas_items_position, tile_set, cell_data.cell.source_id, cell_data.cell.get_atlas_coords(), cell_data.cell.alternative_tile, -1, get_self_modulate(), tile_data, random_animation_offset);
+
+#endif
 				}
 			} else {
 				// Free the quadrant.
@@ -407,6 +425,8 @@ void LayeredTileMapLayer::_rendering_update() {
 
 				for (List<RID>::Element *ci = rendering_quadrant->canvas_items.front(); ci; ci = ci->next()) {
 					rs->canvas_item_set_light_mask(ci->get(), get_light_mask());
+
+					rs->canvas_item_set_self_modulate(ci->get(), get_self_modulate());
 					rs->canvas_item_set_self_modulate(ci->get(), get_self_modulate());
 				}
 			}
@@ -502,6 +522,16 @@ void LayeredTileMapLayer::_rendering_quadrants_update_cell(CellData &r_cell_data
 					coords.y > 0 ? coords.y / rendering_quadrant_size : (coords.y - (rendering_quadrant_size - 1)) / rendering_quadrant_size);
 			canvas_items_position = tile_set->map_to_local(rendering_quadrant_size * quadrant_coords);
 		}
+
+#ifdef MODULE_FASTNOISE_ENABLED
+		if (dirty.flags[DIRTY_FLAGS_LAYER_RAO]) {
+			if (_rao_noise.is_valid()) {
+				r_cell_data.rao = static_cast<uint8_t>(static_cast<int>(CLAMP(_rao_noise->get_noise_2d(r_cell_data.coords.x, r_cell_data.coords.y), 0, 1) * 255.0) % 255);
+			} else {
+				r_cell_data.rao = 0;
+			}
+		}
+#endif
 
 		Ref<RenderingQuadrant> rendering_quadrant;
 		if (rendering_quadrant_map.has(quadrant_coords)) {
@@ -2802,6 +2832,35 @@ LayeredTileMapLayer::VisibilityMode LayeredTileMapLayer::get_navigation_visibili
 	return navigation_visibility_mode;
 }
 
+//RAO
+#ifdef MODULE_FASTNOISE_ENABLED
+Ref<FastNoise> LayeredTileMapLayer::get_rao_noise() {
+	return _rao_noise;
+}
+void LayeredTileMapLayer::set_rao_noise(const Ref<FastNoise> &noise) {
+	// Don't check if they are the same!
+	_rao_noise = noise;
+
+	dirty.flags[DIRTY_FLAGS_LAYER_RAO] = true;
+
+	_queue_internal_update();
+	emit_signal(CoreStringNames::get_singleton()->changed);
+}
+
+void LayeredTileMapLayer::set_rao_strength(const real_t p_strength) {
+	_rao_strength = p_strength;
+
+	dirty.flags[DIRTY_FLAGS_LAYER_RAO] = true;
+
+	_queue_internal_update();
+	emit_signal(CoreStringNames::get_singleton()->changed);
+}
+real_t LayeredTileMapLayer::get_rao_strength() const {
+	return _rao_strength;
+}
+
+#endif
+
 void LayeredTileMapLayer::fix_invalid_tiles() {
 	Ref<LayeredTileSet> tileset = get_effective_tile_set();
 	ERR_FAIL_COND_MSG(tileset.is_null(), "Cannot call fix_invalid_tiles() on a LayeredTileMap without a valid LayeredTileSet.");
@@ -2845,6 +2904,10 @@ void LayeredTileMapLayer::tile_data_runtime_update(const Vector2i &p_coords, Lay
 
 LayeredTileMapLayer::LayeredTileMapLayer() {
 	set_notify_transform(true);
+
+#ifdef MODULE_FASTNOISE_ENABLED
+	_rao_strength = 0.3;
+#endif
 }
 
 LayeredTileMapLayer::~LayeredTileMapLayer() {

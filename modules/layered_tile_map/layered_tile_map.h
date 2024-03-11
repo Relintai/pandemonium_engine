@@ -35,6 +35,13 @@
 #include "layered_tile_map_layer_group.h"
 #include "layered_tile_set.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_FASTNOISE_ENABLED
+#include "modules/fastnoise/fastnoise_noise_params.h"
+#include "modules/fastnoise/noise.h"
+#endif
+
 class Control;
 class LayeredTileMapLayer;
 class TerrainConstraint;
@@ -78,6 +85,15 @@ private:
 	// Transforms for collision_animatable.
 	Transform2D last_valid_transform;
 	Transform2D new_transform;
+
+	//RAO
+#ifdef MODULE_FASTNOISE_ENABLED
+	bool _use_rao;
+	real_t _rao_strength;
+	Ref<FastnoiseNoiseParams> _noise_params;
+
+	Ref<FastNoise> _rao_noise;
+#endif
 
 	void _emit_changed();
 
@@ -161,6 +177,20 @@ public:
 	// Terrains (exposed).
 	void set_cells_terrain_connect(int p_layer, PoolVector2iArray p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
 	void set_cells_terrain_path(int p_layer, PoolVector2iArray p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
+
+	//RAO
+#ifdef MODULE_FASTNOISE_ENABLED
+	void rao_set_use(bool p_rao);
+	bool rao_get_use() const;
+	
+	void rao_set_strength(const real_t p_strength);
+	real_t rao_get_strength() const;
+
+	void rao_set_noise_params(const Ref<FastnoiseNoiseParams> &noise);
+	Ref<FastnoiseNoiseParams> rao_get_noise_params();
+
+	void rao_setup_noise(Ref<FastNoise> noise);
+#endif
 
 	// Not exposed to users.
 	LayeredTileMapCell get_cell(int p_layer, const Vector2i &p_coords, bool p_use_proxies = false) const;

@@ -32,9 +32,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "layered_tile_set.h"
 #include "layered_tile_map.h"
+#include "layered_tile_set.h"
 #include "scene/2d/y_sort.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_FASTNOISE_ENABLED
+#include "../fastnoise/noise.h"
+#endif
 
 class LayeredTileSetAtlasSource;
 
@@ -98,6 +104,10 @@ class RenderingQuadrant;
 struct CellData {
 	Vector2i coords;
 	LayeredTileMapCell cell;
+
+#ifdef MODULE_FASTNOISE_ENABLED
+	uint8_t rao;
+#endif
 
 	// Debug.
 	SelfList<CellData> debug_quadrant_list_element;
@@ -247,6 +257,10 @@ public:
 		DIRTY_FLAGS_LAYER_NAVIGATION_VISIBILITY_MODE,
 		DIRTY_FLAGS_LAYER_RUNTIME_UPDATE,
 
+#ifdef MODULE_FASTNOISE_ENABLED
+		DIRTY_FLAGS_LAYER_RAO,
+#endif
+
 		DIRTY_FLAGS_LAYER_INDEX_IN_TILE_MAP_NODE, // For compatibility.
 
 		DIRTY_FLAGS_LAYER_GROUP_SELECTED_LAYERS,
@@ -276,6 +290,12 @@ private:
 	// For keeping compatibility with LayeredTileMap.
 	LayeredTileMap *tile_map_node = nullptr;
 	int layer_index_in_tile_map_node = -1;
+
+	//RAO
+#ifdef MODULE_FASTNOISE_ENABLED
+	real_t _rao_strength;
+	Ref<FastNoise> _rao_noise;
+#endif
 
 	// Dirty flag. Allows knowing what was modified since the last update.
 	struct {
@@ -433,6 +453,15 @@ public:
 	RID get_navigation_map() const;
 	void set_navigation_visibility_mode(VisibilityMode p_show_navigation);
 	VisibilityMode get_navigation_visibility_mode() const;
+
+	//RAO
+#ifdef MODULE_FASTNOISE_ENABLED
+	Ref<FastNoise> get_rao_noise();
+	void set_rao_noise(const Ref<FastNoise> &noise);
+
+	void set_rao_strength(const real_t p_strength);
+	real_t get_rao_strength() const;
+#endif
 
 	// Fixing and clearing methods.
 	void fix_invalid_tiles();

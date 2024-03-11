@@ -184,21 +184,21 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 			real_t speed = atlas_source->get_tile_animation_speed(p_atlas_coords);
 
 			Array anim_data;
-			
+
 			for (int frame = 0; frame < atlas_source->get_tile_animation_frames_count(p_atlas_coords); frame++) {
 				real_t frame_duration_scaled = atlas_source->get_tile_animation_frame_duration(p_atlas_coords, frame) * speed;
-				
+
 				RID tex_rid = tex.is_valid() ? tex->get_rid() : RID();
 				//RID normal_rid = p_normal_map.is_valid() ? p_normal_map->get_rid() : RID();
 				RID normal_rid = RID();
-				
+
 				Rect2i source_rect = atlas_source->get_runtime_tile_texture_region(p_atlas_coords, frame);
-				
+
 				//tex->draw_rect_region(p_canvas_item, dest_rect, source_rect, modulate, transpose, Ref<Texture>(), p_tile_set->is_uv_clipping());
-				
+
 				Array d;
 				d.resize(8);
-				
+
 				//real_t frame_time = d[0];
 				//Rect2 tex_rect = d[1]; //const Rect2 &p_rect
 				//rect->texture = d[2]; //RID p_texture
@@ -207,7 +207,7 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 				//bool transpose = d[5]; //bool p_transpose = false
 				//rect->normal_map = d[6]; //RID p_normal_map = RID()
 				//bool clip_uv = d[7]; //bool p_clip_uv = false
-				
+
 				d[0] = frame_duration_scaled;
 				d[1] = dest_rect;
 				d[2] = tex_rid;
@@ -219,9 +219,9 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 
 				anim_data.push_back(d);
 			}
-			
+
 			bool random_start_time = atlas_source->get_tile_animation_mode(p_atlas_coords) == LayeredTileSetAtlasSource::TILE_ANIMATION_MODE_RANDOM_START_TIMES;
-			
+
 			RenderingServer::get_singleton()->canvas_item_add_texture_rect_animation(p_canvas_item, anim_data, random_start_time);
 		}
 	}
@@ -495,6 +495,106 @@ void LayeredTileMap::set_cells_terrain_connect(int p_layer, PoolVector2iArray p_
 void LayeredTileMap::set_cells_terrain_path(int p_layer, PoolVector2iArray p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_cells_terrain_path, p_path, p_terrain_set, p_terrain, p_ignore_empty_terrains);
 }
+
+//RAO
+#ifdef MODULE_FASTNOISE_ENABLED
+void LayeredTileMap::rao_set_use(bool p_rao) {
+	if (_use_rao == p_rao) {
+		return;
+	}
+
+	_use_rao = p_rao;
+
+	if (!_use_rao) {
+		for (uint32_t i = 0; i < layers.size(); ++i) {
+			LayeredTileMapLayer *layer = layers[i];
+
+			layer->set_rao_noise(Ref<FastNoise>());
+		}
+
+	} else {
+		if (_noise_params.is_valid()) {
+			if (!_rao_noise.is_valid()) {
+				_rao_noise.instance();
+			}
+
+			rao_setup_noise(_rao_noise);
+		} else {
+			_rao_noise.unref();
+		}
+
+		for (uint32_t i = 0; i < layers.size(); ++i) {
+			LayeredTileMapLayer *layer = layers[i];
+
+			layer->set_rao_noise(_rao_noise);
+		}
+	}
+
+	_emit_changed();
+}
+bool LayeredTileMap::rao_get_use() const {
+	return _use_rao;
+}
+
+void LayeredTileMap::rao_set_noise_params(const Ref<FastnoiseNoiseParams> &noise) {
+	if (_noise_params == noise) {
+		return;
+	}
+
+	_noise_params = noise;
+
+	if (!_use_rao) {
+		for (uint32_t i = 0; i < layers.size(); ++i) {
+			LayeredTileMapLayer *layer = layers[i];
+
+			layer->set_rao_noise(Ref<FastNoise>());
+		}
+	} else {
+		if (_noise_params.is_valid()) {
+			if (!_rao_noise.is_valid()) {
+				_rao_noise.instance();
+			}
+
+			rao_setup_noise(_rao_noise);
+		} else {
+			_rao_noise.unref();
+		}
+
+		for (uint32_t i = 0; i < layers.size(); ++i) {
+			LayeredTileMapLayer *layer = layers[i];
+
+			layer->set_rao_noise(_rao_noise);
+		}
+	}
+
+	_emit_changed();
+}
+
+void LayeredTileMap::rao_set_strength(const real_t p_strength) {
+	_rao_strength = p_strength;
+
+	for (uint32_t i = 0; i < layers.size(); ++i) {
+		LayeredTileMapLayer *layer = layers[i];
+
+		layer->set_rao_strength(p_strength);
+	}
+
+	_emit_changed();
+}
+real_t LayeredTileMap::rao_get_strength() const {
+	return _rao_strength;
+}
+
+Ref<FastnoiseNoiseParams> LayeredTileMap::rao_get_noise_params() {
+	return _noise_params;
+}
+
+void LayeredTileMap::rao_setup_noise(Ref<FastNoise> noise) {
+	if (_noise_params.is_valid()) {
+		_noise_params->setup_noise(noise);
+	}
+}
+#endif
 
 LayeredTileMapCell LayeredTileMap::get_cell(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
 	TILEMAP_CALL_FOR_LAYER_V(p_layer, LayeredTileMapCell(), get_cell, p_coords, p_use_proxies);
@@ -1046,6 +1146,23 @@ void LayeredTileMap::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_visibility_mode", PROPERTY_HINT_ENUM, "Default,Force Show,Force Hide"), "set_collision_visibility_mode", "get_collision_visibility_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_visibility_mode", PROPERTY_HINT_ENUM, "Default,Force Show,Force Hide"), "set_navigation_visibility_mode", "get_navigation_visibility_mode");
 
+	//RAO
+#ifdef MODULE_FASTNOISE_ENABLED
+	ADD_GROUP("RAO", "rao");
+
+	ClassDB::bind_method(D_METHOD("rao_set_use", "value"), &LayeredTileMap::rao_set_use);
+	ClassDB::bind_method(D_METHOD("rao_get_use"), &LayeredTileMap::rao_get_use);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "rao_use"), "rao_set_use", "rao_get_use");
+
+	ClassDB::bind_method(D_METHOD("rao_set_strength", "value"), &LayeredTileMap::rao_set_strength);
+	ClassDB::bind_method(D_METHOD("rao_get_strength"), &LayeredTileMap::rao_get_strength);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "rao_strength"), "rao_set_strength", "rao_get_strength");
+
+	ClassDB::bind_method(D_METHOD("rao_set_noise_params", "noise"), &LayeredTileMap::rao_set_noise_params);
+	ClassDB::bind_method(D_METHOD("rao_get_noise_params"), &LayeredTileMap::rao_get_noise_params);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "rao_noise", PROPERTY_HINT_RESOURCE_TYPE, "FastnoiseNoiseParams"), "rao_set_noise_params", "rao_get_noise_params");
+#endif
+
 	ADD_ARRAY("layers", "layer_");
 
 	ADD_PROPERTY_DEFAULT("format", LayeredTileMapDataFormat::FORMAT_1);
@@ -1066,6 +1183,11 @@ LayeredTileMap::LayeredTileMap() {
 	new_layer->connect(CoreStringNames::get_singleton()->changed, this, "_emit_changed");
 	layers.push_back(new_layer);
 	default_layer = memnew(LayeredTileMapLayer);
+
+#ifdef MODULE_FASTNOISE_ENABLED
+	_use_rao = true;
+	_rao_strength = 0.3;
+#endif
 }
 
 LayeredTileMap::~LayeredTileMap() {
