@@ -529,6 +529,7 @@ void LayeredTileSetScenesCollectionSourceEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_scenes_list_item_activated"), &LayeredTileSetScenesCollectionSourceEditor::_scenes_list_item_activated);
 	ClassDB::bind_method(D_METHOD("_source_add_pressed"), &LayeredTileSetScenesCollectionSourceEditor::_source_add_pressed);
 	ClassDB::bind_method(D_METHOD("_source_delete_pressed"), &LayeredTileSetScenesCollectionSourceEditor::_source_delete_pressed);
+	ClassDB::bind_method(D_METHOD("_scene_tiles_list_item_selected"), &LayeredTileSetScenesCollectionSourceEditor::_scene_tiles_list_item_selected);
 }
 
 LayeredTileSetScenesCollectionSourceEditor::LayeredTileSetScenesCollectionSourceEditor() {
