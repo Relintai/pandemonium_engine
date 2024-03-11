@@ -896,6 +896,12 @@ public:
 				total_time = 0;
 				type = TYPE_RECT_ANIMATION;
 			}
+			
+			~CommandRectAnimation() {
+				for (int i = 0; i < rects.size(); ++i) {
+					memdelete(rects[i]);
+				}
+			}
 		};
 
 		struct ViewportRender {
