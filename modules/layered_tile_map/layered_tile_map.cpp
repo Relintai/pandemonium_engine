@@ -220,7 +220,9 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 				anim_data.push_back(d);
 			}
 			
-			RenderingServer::get_singleton()->canvas_item_add_texture_rect_animation(p_canvas_item, anim_data);
+			bool random_start_time = atlas_source->get_tile_animation_mode(p_atlas_coords) == LayeredTileSetAtlasSource::TILE_ANIMATION_MODE_RANDOM_START_TIMES;
+			
+			RenderingServer::get_singleton()->canvas_item_add_texture_rect_animation(p_canvas_item, anim_data, random_start_time);
 		}
 	}
 }
