@@ -545,7 +545,7 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 						if (!multiple_polygon_mode) {
 							clear_polygons();
 						}
-						
+
 						button_edit->set_pressed(true);
 						undo_redo->create_action(TTR("Edit Polygons"));
 						if (!multiple_polygon_mode) {
@@ -557,7 +557,7 @@ void GenericTilePolygonEditor::_base_control_gui_input(Ref<InputEvent> p_event) 
 						undo_redo->add_undo_method(base_control, "update");
 						undo_redo->commit_action();
 						emit_signal("polygons_changed");
-						
+
 						in_creation_polygon.clear();
 					} else {
 						// Create a new point.
@@ -2477,13 +2477,17 @@ void TileDataTerrainsEditor::forward_painting_atlas_gui_input(LayeredTileAtlasVi
 					for (HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell>::Element *E = drag_modified.front(); E; E = E->next) {
 						Dictionary dict = E->value();
 						Vector2i coords = E->key().get_atlas_coords();
+
+						LayeredTileData *tile_data = p_tile_set_atlas_source->get_tile_data(coords, E->key().alternative_tile);
+
 						undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrain", coords.x, coords.y, E->key().alternative_tile), terrain);
 						undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrain", coords.x, coords.y, E->key().alternative_tile), dict["terrain"]);
 						Array array = dict["terrain_peering_bits"];
+
 						for (int i = 0; i < array.size(); i++) {
 							LayeredTileSet::CellNeighbor bit = LayeredTileSet::CellNeighbor(i);
 							if (tile_set->is_valid_terrain_peering_bit(terrain_set, bit)) {
-								undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[i]), coords.x, coords.y, E->key().alternative_tile), terrain);
+								undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[i]), coords.x, coords.y, E->key().alternative_tile), tile_data->get_terrain_peering_bit(bit));
 							}
 							if (tile_set->is_valid_terrain_peering_bit(dict["terrain_set"], bit)) {
 								undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[i]), coords.x, coords.y, E->key().alternative_tile), array[i]);
@@ -2528,6 +2532,7 @@ void TileDataTerrainsEditor::forward_painting_atlas_gui_input(LayeredTileAtlasVi
 					mouse_pos_rect_polygon.push_back(Vector2(drag_start_pos.x, mb->get_position().y));
 
 					undo_redo->create_action(TTR("Painting Terrain"));
+
 					for (const RBSet<LayeredTileMapCell>::Element *E = edited.front(); E; E = E->next()) {
 						Vector2i coords = E->get().get_atlas_coords();
 						LayeredTileData *tile_data = p_tile_set_atlas_source->get_tile_data(coords, 0);
@@ -2810,13 +2815,16 @@ void TileDataTerrainsEditor::forward_painting_alternatives_gui_input(LayeredTile
 					for (HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell>::Element *E = drag_modified.front(); E; E = E->next) {
 						Dictionary dict = E->value();
 						Vector2i coords = E->key().get_atlas_coords();
+
+						LayeredTileData *tile_data = p_tile_set_atlas_source->get_tile_data(coords, E->key().alternative_tile);
+
 						undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrain", coords.x, coords.y, E->key().alternative_tile), terrain);
 						undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrain", coords.x, coords.y, E->key().alternative_tile), dict["terrain"]);
 						Array array = dict["terrain_peering_bits"];
 						for (int i = 0; i < array.size(); i++) {
 							LayeredTileSet::CellNeighbor bit = LayeredTileSet::CellNeighbor(i);
 							if (tile_set->is_valid_terrain_peering_bit(terrain_set, bit)) {
-								undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[i]), coords.x, coords.y, E->key().alternative_tile), terrain);
+								undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[i]), coords.x, coords.y, E->key().alternative_tile), tile_data->get_terrain_peering_bit(bit));
 							}
 							if (tile_set->is_valid_terrain_peering_bit(dict["terrain_set"], bit)) {
 								undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/terrains_peering_bit/" + String(LayeredTileSet::CELL_NEIGHBOR_ENUM_TO_TEXT[i]), coords.x, coords.y, E->key().alternative_tile), array[i]);
