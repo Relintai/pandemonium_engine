@@ -897,10 +897,13 @@ public:
 				type = TYPE_RECT_ANIMATION;
 			}
 			
-			~CommandRectAnimation() {
+			virtual ~CommandRectAnimation() {
 				for (int i = 0; i < rects.size(); ++i) {
 					memdelete(rects[i]);
 				}
+				
+				rects.clear();
+				times.clear();
 			}
 		};
 
