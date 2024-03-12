@@ -711,6 +711,7 @@ void EditorPropertyEnum::update_property() {
 }
 
 void EditorPropertyEnum::setup(const Vector<String> &p_options) {
+	options->clear();
 	int64_t current_val = 0;
 	for (int i = 0; i < p_options.size(); i++) {
 		Vector<String> text_split = p_options[i].split(":");
