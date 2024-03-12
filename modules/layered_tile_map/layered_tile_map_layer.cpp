@@ -223,7 +223,11 @@ void LayeredTileMapLayer::_rendering_update() {
 	// Check if anything changed that might change the quadrant shape.
 	// If so, recreate everything.
 	bool quandrant_shape_changed = dirty.flags[DIRTY_FLAGS_LAYER_RENDERING_QUADRANT_SIZE] ||
-			(is_sort_enabled() && (dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ENABLED] || dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ORIGIN] || dirty.flags[DIRTY_FLAGS_LAYER_LOCAL_TRANSFORM] || dirty.flags[DIRTY_FLAGS_LAYER_GROUP_TILE_SET]));
+			(is_sort_enabled() && (dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ENABLED] || dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ORIGIN] || dirty.flags[DIRTY_FLAGS_LAYER_LOCAL_TRANSFORM] || dirty.flags[DIRTY_FLAGS_LAYER_GROUP_TILE_SET]
+#ifdef MODULE_FASTNOISE_ENABLED
+										  || dirty.flags[DIRTY_FLAGS_LAYER_RAO]
+#endif
+										  ));
 
 	// Free all quadrants.
 	if (forced_cleanup || quandrant_shape_changed) {
