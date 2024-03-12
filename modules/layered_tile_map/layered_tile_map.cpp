@@ -185,6 +185,8 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 
 			Array anim_data;
 
+			real_t total_animation_time = 0;
+
 			for (int frame = 0; frame < atlas_source->get_tile_animation_frames_count(p_atlas_coords); frame++) {
 				real_t frame_duration_scaled = atlas_source->get_tile_animation_frame_duration(p_atlas_coords, frame) * speed;
 
@@ -209,6 +211,7 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 				//bool clip_uv = d[7]; //bool p_clip_uv = false
 
 				d[0] = frame_duration_scaled;
+				total_animation_time += frame_duration_scaled;
 				d[1] = dest_rect;
 				d[2] = tex_rid;
 				d[3] = source_rect;
@@ -220,9 +223,7 @@ void LayeredTileMap::draw_tile(RID p_canvas_item, const Vector2 &p_position, con
 				anim_data.push_back(d);
 			}
 
-			bool random_start_time = atlas_source->get_tile_animation_mode(p_atlas_coords) == LayeredTileSetAtlasSource::TILE_ANIMATION_MODE_RANDOM_START_TIMES;
-
-			RenderingServer::get_singleton()->canvas_item_add_texture_rect_animation(p_canvas_item, anim_data, random_start_time);
+			RenderingServer::get_singleton()->canvas_item_add_texture_rect_animation(p_canvas_item, anim_data, total_animation_time * p_normalized_animation_offset);
 		}
 	}
 }

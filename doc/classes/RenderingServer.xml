@@ -273,7 +273,7 @@
 			<return type="void" />
 			<argument index="0" name="item" type="RID" />
 			<argument index="1" name="animation_data" type="Array" />
-			<argument index="2" name="randomize_start_time" type="bool" default="false" />
+			<argument index="2" name="start_time" type="float" default="0.0" />
 			<description>
 				Add texture rect regions as an animation to the [CanvasItem]'s draw commands.
 				You need to pass an Array of Arrays, the inner Arrays are the frames. The 0th argument is the frame time, the rest are the arguments of [member canvas_item_add_texture_rect_region] in order.
