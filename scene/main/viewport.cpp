@@ -1718,7 +1718,7 @@ Control *Viewport::_gui_find_control_at_pos(CanvasItem *p_node, const Point2 &p_
 
 	Control *c = Object::cast_to<Control>(p_node);
 
-	if (!c || !c->clips_input() || c->has_point(matrix.affine_inverse().xform(p_global))) {
+	if (!c || !c->is_clipping_contents() || c->has_point(matrix.affine_inverse().xform(p_global))) {
 		for (int i = p_node->get_child_count() - 1; i >= 0; i--) {
 			if (p_node == gui.tooltip_popup) {
 				continue;

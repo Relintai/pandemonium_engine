@@ -35,10 +35,6 @@
 #include "scene/main/viewport.h"
 #include "scroll_bar.h"
 
-bool ScrollContainer::clips_input() const {
-	return true;
-}
-
 Size2 ScrollContainer::get_minimum_size() const {
 	Ref<StyleBox> sb = get_theme_stylebox("bg");
 	Size2 min_size;
