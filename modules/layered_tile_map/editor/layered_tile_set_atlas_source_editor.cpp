@@ -1239,7 +1239,7 @@ void LayeredTileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<In
 					if (tools_button_group->get_pressed_button() == tool_setup_atlas_source_button) {
 						if (tools_settings_erase_button->is_pressed()) {
 							// Erasing
-							if (mb->get_metakey() || mb->get_shift()) {
+							if (mb->get_control() || mb->get_shift()) {
 								// Remove tiles using rect.
 
 								// Setup the dragging info.
@@ -1278,7 +1278,7 @@ void LayeredTileSetAtlasSourceEditor::_tile_atlas_control_gui_input(const Ref<In
 									// Create a tile.
 									tile_set_atlas_source->create_tile(coords);
 								}
-							} else if (mb->get_metakey()) {
+							} else if (mb->get_control()) {
 								// Create tiles using rect.
 								drag_type = DRAG_TYPE_CREATE_TILES_USING_RECT;
 								drag_start_mouse_pos = mouse_local_pos;

@@ -1097,14 +1097,14 @@ void TileDataDefaultEditor::forward_painting_atlas_gui_input(LayeredTileAtlasVie
 	if (mb.is_valid()) {
 		if (mb->get_button_index() == BUTTON_LEFT) {
 			if (mb->is_pressed()) {
-				if (picker_button->is_pressed() || (mb->get_metakey() && !mb->get_shift())) {
+				if (picker_button->is_pressed() || (mb->get_control() && !mb->get_shift())) {
 					Vector2i coords = p_tile_atlas_view->get_atlas_tile_coords_at_pos(mb->get_position(), true);
 					coords = p_tile_set_atlas_source->get_tile_at_coords(coords);
 					if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
 						_set_painted_value(p_tile_set_atlas_source, coords, 0);
 						picker_button->set_pressed(false);
 					}
-				} else if (mb->get_metakey() && mb->get_shift()) {
+				} else if (mb->get_control() && mb->get_shift()) {
 					drag_type = DRAG_TYPE_PAINT_RECT;
 					drag_modified.clear();
 					drag_painted_value = _get_painted_value();
@@ -2263,7 +2263,7 @@ void TileDataTerrainsEditor::forward_painting_atlas_gui_input(LayeredTileAtlasVi
 	if (mb.is_valid()) {
 		if (mb->get_button_index() == BUTTON_LEFT || mb->get_button_index() == BUTTON_RIGHT) {
 			if (mb->is_pressed()) {
-				if (picker_button->is_pressed() || (mb->get_metakey() && !mb->get_shift())) {
+				if (picker_button->is_pressed() || (mb->get_control() && !mb->get_shift())) {
 					Vector2i coords = p_tile_atlas_view->get_atlas_tile_coords_at_pos(mb->get_position());
 					coords = p_tile_set_atlas_source->get_tile_at_coords(coords);
 					if (coords != LayeredTileSetSource::INVALID_ATLAS_COORDS) {
@@ -2306,7 +2306,7 @@ void TileDataTerrainsEditor::forward_painting_atlas_gui_input(LayeredTileAtlasVi
 						if (mb->get_button_index() == BUTTON_RIGHT) {
 							terrain_set = -1;
 						}
-						if (mb->get_metakey() && mb->get_shift()) {
+						if (mb->get_control() && mb->get_shift()) {
 							// Paint terrain set with rect.
 							drag_type = DRAG_TYPE_PAINT_TERRAIN_SET_RECT;
 							drag_modified.clear();
@@ -2347,7 +2347,7 @@ void TileDataTerrainsEditor::forward_painting_atlas_gui_input(LayeredTileAtlasVi
 						if (mb->get_button_index() == BUTTON_RIGHT) {
 							terrain = -1;
 						}
-						if (mb->get_metakey() && mb->get_shift()) {
+						if (mb->get_control() && mb->get_shift()) {
 							// Paint terrain bits with rect.
 							drag_type = DRAG_TYPE_PAINT_TERRAIN_BITS_RECT;
 							drag_modified.clear();

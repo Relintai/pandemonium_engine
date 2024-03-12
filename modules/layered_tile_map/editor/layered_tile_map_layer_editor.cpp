@@ -731,7 +731,7 @@ bool LayeredTileMapLayerEditorTilesPlugin::forward_canvas_gui_input(const Ref<In
 					}
 				} else if (tool_buttons_group->get_pressed_button() == select_tool_button) {
 					drag_start_mouse_pos = mpos;
-					if (tile_map_selection.has(tile_set->local_to_map(drag_start_mouse_pos)) && !mb->get_shift() && !mb->get_metakey()) {
+					if (tile_map_selection.has(tile_set->local_to_map(drag_start_mouse_pos)) && !mb->get_shift() && !mb->get_control()) {
 						// Move the selection
 						_update_selection_pattern_from_tilemap_selection(); // Make sure the pattern is up to date before moving.
 						drag_type = DRAG_TYPE_MOVE;
