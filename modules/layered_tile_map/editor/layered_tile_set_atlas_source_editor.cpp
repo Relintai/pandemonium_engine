@@ -1029,15 +1029,18 @@ void LayeredTileSetAtlasSourceEditor::_update_atlas_view() {
 			// Create and position the button.
 			Button *button = memnew(Button);
 			button->set_flat(true);
+			button->set_expand_icon(true);
 			button->set_icon(get_theme_icon("Add", "EditorIcons"));
 			button->add_theme_style_override("normal", memnew(StyleBoxEmpty));
 			button->add_theme_style_override("hover", memnew(StyleBoxEmpty));
 			button->add_theme_style_override("focus", memnew(StyleBoxEmpty));
 			button->add_theme_style_override("pressed", memnew(StyleBoxEmpty));
+			button->add_theme_style_override("disabled", memnew(StyleBoxEmpty));
+			button->add_theme_font_override("font", memnew(BitmapFont));
 			button->connect("pressed", tile_set_atlas_source, "create_alternative_tile", varray(tile_id, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE));
 			button->set_position(Vector2(pos.x, pos.y + (y_increment - texture_region_base_size.y) / 2.0));
 			button->set_size(Vector2(texture_region_base_size_min, texture_region_base_size_min));
-			button->set_expand_icon(true);
+			ERR_PRINT(String(Variant(Vector2(texture_region_base_size_min, texture_region_base_size_min))));
 			alternative_tiles_control->add_child(button);
 
 			pos.y += y_increment;
