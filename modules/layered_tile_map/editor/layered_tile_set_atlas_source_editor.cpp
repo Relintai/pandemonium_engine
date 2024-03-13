@@ -1040,7 +1040,6 @@ void LayeredTileSetAtlasSourceEditor::_update_atlas_view() {
 			button->connect("pressed", tile_set_atlas_source, "create_alternative_tile", varray(tile_id, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE));
 			button->set_position(Vector2(pos.x, pos.y + (y_increment - texture_region_base_size.y) / 2.0));
 			button->set_size(Vector2(texture_region_base_size_min, texture_region_base_size_min));
-			ERR_PRINT(String(Variant(Vector2(texture_region_base_size_min, texture_region_base_size_min))));
 			alternative_tiles_control->add_child(button);
 
 			pos.y += y_increment;
