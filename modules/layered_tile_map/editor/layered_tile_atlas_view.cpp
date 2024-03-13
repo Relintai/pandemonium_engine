@@ -618,8 +618,9 @@ LayeredTileAtlasView::LayeredTileAtlasView() {
 	zoom_widget->set_shortcut_context(this);
 
 	button_center_view = memnew(Button);
-	button_center_view->set_anchors_and_margins_preset(Control::PRESET_TOP_RIGHT, Control::PRESET_MODE_MINSIZE, 5);
-	//button_center_view->set_grow_direction_preset(Control::PRESET_TOP_RIGHT);
+	button_center_view->set_anchors_and_margins_preset(Control::PRESET_TOP_RIGHT, Control::PRESET_MODE_MINSIZE, 2 * EDSCALE);
+	button_center_view->set_h_grow_direction(GrowDirection::GROW_DIRECTION_BEGIN);
+	button_center_view->set_v_grow_direction(GrowDirection::GROW_DIRECTION_END);
 	button_center_view->connect("pressed", this, "_center_view");
 	button_center_view->set_flat(true);
 	button_center_view->set_disabled(true);
