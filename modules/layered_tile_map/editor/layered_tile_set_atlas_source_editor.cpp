@@ -2028,7 +2028,8 @@ void LayeredTileSetAtlasSourceEditor::_tile_alternatives_control_gui_input(const
 						selected = selection.front()->get();
 						menu_option_coords = selected.tile;
 						menu_option_alternative = selected.alternative;
-						alternative_tile_popup_menu->popup(Rect2i(get_global_transform().xform(get_local_mouse_position()), Size2i()));
+						alternative_tile_popup_menu->set_position(get_global_transform().xform(get_local_mouse_position()));
+						alternative_tile_popup_menu->popup();
 					}
 				}
 
