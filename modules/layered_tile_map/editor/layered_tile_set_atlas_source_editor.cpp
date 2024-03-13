@@ -2746,9 +2746,8 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	tile_create_help->add_child(help_label);
 
 	tile_create_help->set_anchors_and_margins_preset(Control::PRESET_BOTTOM_LEFT, Control::PRESET_MODE_MINSIZE);
-	Vector2 pos = tile_create_help->get_position();
-	pos.y -= 8 * EDSCALE;
-	tile_create_help->set_position(pos);
+	tile_create_help->set_h_grow_direction(GrowDirection::GROW_DIRECTION_END);
+	tile_create_help->set_v_grow_direction(GrowDirection::GROW_DIRECTION_BEGIN);
 
 	base_tile_popup_menu = memnew(PopupMenu);
 	base_tile_popup_menu->add_shortcut(ED_SHORTCUT("layered_tiles_editor/delete", TTR("Delete"), KEY_DELETE), TILE_DELETE);
