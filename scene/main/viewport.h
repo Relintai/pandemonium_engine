@@ -296,6 +296,9 @@ public:
 	void set_handle_input_locally(bool p_enable);
 	bool is_handling_input_locally() const;
 
+	void set_gui_scale_tooltips(bool p_enable);
+	bool is_gui_scaling_tooltips() const;
+
 	bool gui_is_dragging() const;
 	bool gui_is_drag_successful() const;
 
@@ -486,6 +489,7 @@ private:
 		int canvas_sort_index; //for sorting items with canvas as root
 		bool dragging;
 		bool drag_successful;
+		bool scale_tooltips;
 
 		GUI();
 	} gui;

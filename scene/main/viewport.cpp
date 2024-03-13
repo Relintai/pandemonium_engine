@@ -200,6 +200,7 @@ Viewport::GUI::GUI() {
 	tooltip_label = nullptr;
 	subwindow_visibility_dirty = false;
 	subwindow_order_dirty = false;
+	scale_tooltips = false;
 }
 
 /////////////////////////////////////
@@ -1536,7 +1537,7 @@ void Viewport::_gui_show_tooltip() {
 	tooltip_owner->add_child(gui.tooltip_popup);
 	gui.tooltip_popup->force_parent_owned();
 	gui.tooltip_popup->set_as_toplevel(true);
-	if (gui.tooltip_control) { // Avoids crash when rapidly switching controls.
+	if (gui.scale_tooltips && gui.tooltip_control) { // Avoids crash when rapidly switching controls.
 		gui.tooltip_popup->set_scale(gui.tooltip_control->get_global_transform().get_scale());
 	}
 
@@ -3122,6 +3123,13 @@ bool Viewport::is_handling_input_locally() const {
 	return handle_input_locally;
 }
 
+void Viewport::set_gui_scale_tooltips(bool p_enable) {
+	gui.scale_tooltips = p_enable;
+}
+bool Viewport::is_gui_scaling_tooltips() const {
+	return gui.scale_tooltips;
+}
+
 void Viewport::_validate_property(PropertyInfo &property) const {
 	if (RenderingServer::get_singleton()->is_low_end() && (property.name == "hdr" || property.name == "use_32_bpc_depth")) {
 		property.usage = PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL;
@@ -3237,6 +3245,9 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_handle_input_locally", "enable"), &Viewport::set_handle_input_locally);
 	ClassDB::bind_method(D_METHOD("is_handling_input_locally"), &Viewport::is_handling_input_locally);
 
+	ClassDB::bind_method(D_METHOD("set_gui_scale_tooltips", "enable"), &Viewport::set_gui_scale_tooltips);
+	ClassDB::bind_method(D_METHOD("is_gui_scaling_tooltips"), &Viewport::is_gui_scaling_tooltips);
+
 	ClassDB::bind_method(D_METHOD("gui_set_root_order_dirty"), &Viewport::gui_set_root_order_dirty);
 	ClassDB::bind_method(D_METHOD("canvas_parent_mark_dirty", "node"), &Viewport::canvas_parent_mark_dirty);
 
@@ -3251,6 +3262,7 @@ void Viewport::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "transparent_bg"), "set_transparent_background", "has_transparent_background");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "handle_input_locally"), "set_handle_input_locally", "is_handling_input_locally");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "gui_scale_tooltips"), "set_gui_scale_tooltips", "is_gui_scaling_tooltips");
 	ADD_GROUP("Rendering", "");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "msaa", PROPERTY_HINT_ENUM, "Disabled,2x,4x,8x,16x,AndroidVR 2x,AndroidVR 4x"), "set_msaa", "get_msaa");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "fxaa"), "set_use_fxaa", "get_use_fxaa");
