@@ -356,9 +356,11 @@ void World3D::move_cameras_into(Ref<World3D> target) {
 }
 
 void World::notify_saving(bool p_active) {
+#ifndef _3D_DISABLED
 	if (lod_manager) {
 		lod_manager->notify_saving(p_active);
 	}
+#endif
 }
 
 void World3D::_bind_methods() {
