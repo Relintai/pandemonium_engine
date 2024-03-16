@@ -1676,7 +1676,7 @@ void RenderingServerCanvas::canvas_item_set_skeleton_relative_xform(RID p_item, 
 }
 
 // Useful especially for origin shifting.
-void RenderingServerCanvas::canvas_item_transform_physics_interpolation(RID p_item, Transform2D p_transform) {
+void RenderingServerCanvas::canvas_item_transform_physics_interpolation(RID p_item, const Transform2D &p_transform) {
 	Item *canvas_item = canvas_item_owner.getornull(p_item);
 	ERR_FAIL_COND(!canvas_item);
 	canvas_item->xform_prev = p_transform * canvas_item->xform_prev;
@@ -1707,7 +1707,7 @@ void RenderingServerCanvas::canvas_light_reset_physics_interpolation(RID p_light
 	clight->xform_prev = clight->xform_curr;
 }
 
-void RenderingServerCanvas::canvas_light_transform_physics_interpolation(RID p_light, Transform2D p_transform) {
+void RenderingServerCanvas::canvas_light_transform_physics_interpolation(RID p_light, const Transform2D &p_transform) {
 	RasterizerCanvas::Light *clight = canvas_light_owner.get(p_light);
 	ERR_FAIL_COND(!clight);
 	clight->xform_prev = p_transform * clight->xform_prev;
@@ -1726,7 +1726,7 @@ void RenderingServerCanvas::canvas_light_occluder_reset_physics_interpolation(RI
 	occluder->xform_prev = occluder->xform_curr;
 }
 
-void RenderingServerCanvas::canvas_light_occluder_transform_physics_interpolation(RID p_occluder, Transform2D p_transform) {
+void RenderingServerCanvas::canvas_light_occluder_transform_physics_interpolation(RID p_occluder, const Transform2D &p_transform) {
 	RasterizerCanvas::LightOccluderInstance *occluder = canvas_light_occluder_owner.get(p_occluder);
 	ERR_FAIL_COND(!occluder);
 	occluder->xform_prev = p_transform * occluder->xform_prev;
