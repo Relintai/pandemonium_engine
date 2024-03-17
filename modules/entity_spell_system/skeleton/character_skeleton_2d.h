@@ -36,7 +36,7 @@
 #include "core/string/node_path.h"
 #include "core/string/ustring.h"
 
-#include "scene/main/node_2d.h"
+#include "scene/2d/y_sort.h"
 
 #include "scene/main/node.h"
 
@@ -54,8 +54,8 @@
 
 class ModelVisual;
 
-class CharacterSkeleton2D : public Node2D {
-	GDCLASS(CharacterSkeleton2D, Node2D);
+class CharacterSkeleton2D : public YSort {
+	GDCLASS(CharacterSkeleton2D, YSort);
 
 public:
 	int get_entity_type() const;
