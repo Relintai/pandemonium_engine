@@ -754,6 +754,7 @@ void LayeredTileMapLayer::_physics_notification(int p_what) {
 	Physics2DServer *ps = Physics2DServer::get_singleton();
 
 	switch (p_what) {
+		case NOTIFICATION_LOCAL_TRANSFORM_CHANGED:
 		case NOTIFICATION_TRANSFORM_CHANGED:
 			// Move the collisison shapes along with the LayeredTileMap.
 			if (is_inside_tree() && tile_set.is_valid()) {
@@ -789,6 +790,7 @@ void LayeredTileMapLayer::_physics_notification(int p_what) {
 					}
 				}
 			}
+			break;
 	}
 }
 
@@ -852,7 +854,7 @@ void LayeredTileMapLayer::_physics_update_cell(CellData &r_cell_data) {
 					Ref<PhysicsMaterial> physics_material = tile_set->get_physics_layer_physics_material(tile_set_physics_layer);
 					uint32_t physics_layer = tile_set->get_physics_layer_collision_layer(tile_set_physics_layer);
 					uint32_t physics_mask = tile_set->get_physics_layer_collision_mask(tile_set_physics_layer);
-
+					
 					RID body = r_cell_data.bodies[tile_set_physics_layer];
 					if (tile_data->get_collision_polygons_count(tile_set_physics_layer) == 0) {
 						// No body needed, free it if it exists.
@@ -1694,11 +1696,6 @@ void LayeredTileMapLayer::_renamed() {
 
 void LayeredTileMapLayer::_update_notify_local_transform() {
 	bool notify = is_using_kinematic_bodies() || is_sort_enabled();
-	if (!notify) {
-		if (is_sort_enabled()) {
-			notify = true;
-		}
-	}
 	set_notify_local_transform(notify);
 }
 
