@@ -1,8 +1,8 @@
-#ifndef PROP_DATA_STATIC_BODY_H
-#define PROP_DATA_STATIC_BODY_H
+#ifndef PROP_DATA_MERGE_GROUP_H
+#define PROP_DATA_MERGE_GROUP_H
 
 /*************************************************************************/
-/*  prop_data_static_body.h                                              */
+/*  prop_data_merge_group.h                                              */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,36 +32,30 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "prop_data_collision_object.h"
+#include "core/math/vector3.h"
+#include "prop_data_entry.h"
 
-class PhysicsMaterial;
+#include "prop_data_prop.h"
 
-class PropDataStaticBody : public PropDataCollisionObject {
-	GDCLASS(PropDataStaticBody, PropDataCollisionObject);
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
+#include "../../texture_packer/texture_packer.h"
+#endif
+
+class PropDataMergeGroup : public PropDataProp {
+	GDCLASS(PropDataMergeGroup, PropDataProp);
 
 public:
-	Ref<PhysicsMaterial> get_physics_material_override() const;
-	void set_physics_material_override(const Ref<PhysicsMaterial> &p_material);
-
-	Vector3 get_constant_linear_velocity() const;
-	void set_constant_linear_velocity(const Vector3 &p_value);
-
-	Vector3 get_constant_angular_velocity() const;
-	void set_constant_angular_velocity(const Vector3 &p_value);
-
 	bool _processor_handles(Node *node);
 	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
-	Node *_processor_get_node_for(const Transform &transform);
-
-	PropDataStaticBody();
-	~PropDataStaticBody();
+	bool _processor_evaluate_children();
+	
+	PropDataMergeGroup();
+	~PropDataMergeGroup();
 
 protected:
 	static void _bind_methods();
-
-	Ref<PhysicsMaterial> _physics_material_override;
-	Vector3 _constant_linear_velocity;
-	Vector3 _constant_angular_velocity;
 };
 
 #endif

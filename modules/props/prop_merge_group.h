@@ -1,8 +1,8 @@
-#ifndef PROP_DATA_STATIC_BODY_H
-#define PROP_DATA_STATIC_BODY_H
+#ifndef PROP_MERGE_GROUP_H
+#define PROP_MERGE_GROUP_H
 
 /*************************************************************************/
-/*  prop_data_static_body.h                                              */
+/*  prop_merge_group.h                                                   */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,36 +32,22 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "prop_data_collision_object.h"
+#include "scene/main/spatial.h"
 
-class PhysicsMaterial;
+#include "core/math/vector3.h"
 
-class PropDataStaticBody : public PropDataCollisionObject {
-	GDCLASS(PropDataStaticBody, PropDataCollisionObject);
+#include "props/prop_data.h"
+#include "scene/resources/packed_scene.h"
+
+class PropMergeGroup : public Spatial {
+	GDCLASS(PropMergeGroup, Spatial);
 
 public:
-	Ref<PhysicsMaterial> get_physics_material_override() const;
-	void set_physics_material_override(const Ref<PhysicsMaterial> &p_material);
-
-	Vector3 get_constant_linear_velocity() const;
-	void set_constant_linear_velocity(const Vector3 &p_value);
-
-	Vector3 get_constant_angular_velocity() const;
-	void set_constant_angular_velocity(const Vector3 &p_value);
-
-	bool _processor_handles(Node *node);
-	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
-	Node *_processor_get_node_for(const Transform &transform);
-
-	PropDataStaticBody();
-	~PropDataStaticBody();
+	PropMergeGroup();
+	~PropMergeGroup();
 
 protected:
 	static void _bind_methods();
-
-	Ref<PhysicsMaterial> _physics_material_override;
-	Vector3 _constant_linear_velocity;
-	Vector3 _constant_angular_velocity;
 };
 
 #endif

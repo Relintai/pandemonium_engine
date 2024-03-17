@@ -19,6 +19,7 @@ def get_doc_classes():
         "PropData",
         "PropDataCollisionObject",
         "PropDataStaticBody",
+        "PropDataMergeGroup",
 
         "TiledWall",
         "TiledWallData",
@@ -33,6 +34,7 @@ def get_doc_classes():
         "PropMeshUtils",
 
         "PropSceneInstance",
+        "PropMergeGroup",
 
         "PropUtils",
 

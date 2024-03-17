@@ -74,13 +74,15 @@ bool PropDataProp::_processor_handles(Node *node) {
 void PropDataProp::_processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform) {
 	PropInstance *i = Object::cast_to<PropInstance>(node);
 
-	ERR_FAIL_COND(!i);
+	if (i) {
+		Ref<PropDataProp> l;
+		l.instance();
+		l->set_prop(i->get_prop_data());
+		l->set_transform(transform * i->get_transform());
+		prop_data->add_prop(l);
 
-	Ref<PropDataProp> l;
-	l.instance();
-	l->set_prop(i->get_prop_data());
-	l->set_transform(transform * i->get_transform());
-	prop_data->add_prop(l);
+		return;
+	}
 }
 
 Node *PropDataProp::_processor_get_node_for(const Transform &transform) {
@@ -96,6 +98,7 @@ PropDataProp::PropDataProp() {
 	_snap_to_mesh = false;
 	_snap_axis = Vector3(0, 1, 0);
 }
+
 PropDataProp::~PropDataProp() {
 	if (_prop.is_valid())
 		_prop.unref();

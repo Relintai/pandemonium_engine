@@ -23,6 +23,7 @@ sources = [
     "props/prop_data_tiled_wall.cpp",
     "props/prop_data_collision_object.cpp",
     "props/prop_data_static_body.cpp",
+    "props/prop_data_merge_group.cpp",
 
     "clutter/ground_clutter.cpp",
     "clutter/ground_clutter_foliage.cpp",
@@ -32,6 +33,7 @@ sources = [
     "prop_ess_entity.cpp",
     "prop_instance_job.cpp",
     "prop_instance_prop_job.cpp",
+    "prop_merge_group.cpp",
 
     "prop_scene_instance.cpp",
 

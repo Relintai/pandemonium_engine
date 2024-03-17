@@ -1,8 +1,5 @@
-#ifndef PROP_DATA_STATIC_BODY_H
-#define PROP_DATA_STATIC_BODY_H
-
 /*************************************************************************/
-/*  prop_data_static_body.h                                              */
+/*  prop_data_merge_group.cpp                                            */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,36 +29,49 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "prop_data_collision_object.h"
+#include "prop_data_merge_group.h"
 
-class PhysicsMaterial;
+#include "../prop_instance.h"
+#include "../prop_merge_group.h"
+#include "../singleton/prop_utils.h"
+#include "prop_data.h"
 
-class PropDataStaticBody : public PropDataCollisionObject {
-	GDCLASS(PropDataStaticBody, PropDataCollisionObject);
+#include "modules/modules_enabled.gen.h"
 
-public:
-	Ref<PhysicsMaterial> get_physics_material_override() const;
-	void set_physics_material_override(const Ref<PhysicsMaterial> &p_material);
+bool PropDataMergeGroup::_processor_handles(Node *node) {
+	PropMergeGroup *g = Object::cast_to<PropMergeGroup>(node);
 
-	Vector3 get_constant_linear_velocity() const;
-	void set_constant_linear_velocity(const Vector3 &p_value);
+	return g;
+}
 
-	Vector3 get_constant_angular_velocity() const;
-	void set_constant_angular_velocity(const Vector3 &p_value);
+void PropDataMergeGroup::_processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform) {
+	PropMergeGroup *g = Object::cast_to<PropMergeGroup>(node);
 
-	bool _processor_handles(Node *node);
-	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
-	Node *_processor_get_node_for(const Transform &transform);
+	if (g) {
+		Ref<PropData> d;
+		d.instance();
 
-	PropDataStaticBody();
-	~PropDataStaticBody();
+		for (int i = 0; i < g->get_child_count(); ++i) {
+			PropUtils::get_singleton()->_convert_tree(d, g->get_child(i), Transform());
+		}
 
-protected:
-	static void _bind_methods();
+		Ref<PropDataMergeGroup> l;
+		l.instance();
+		l->set_prop(d);
+		l->set_transform(transform * g->get_transform());
+		prop_data->add_prop(l);
+	}
+}
 
-	Ref<PhysicsMaterial> _physics_material_override;
-	Vector3 _constant_linear_velocity;
-	Vector3 _constant_angular_velocity;
-};
+bool PropDataMergeGroup::_processor_evaluate_children() {
+	return false;
+}
 
-#endif
+PropDataMergeGroup::PropDataMergeGroup() {
+}
+
+PropDataMergeGroup::~PropDataMergeGroup() {
+}
+
+void PropDataMergeGroup::_bind_methods() {
+}

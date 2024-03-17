@@ -40,6 +40,7 @@
 #include "props/prop_data_collision_object.h"
 #include "props/prop_data_entry.h"
 #include "props/prop_data_light.h"
+#include "props/prop_data_merge_group.h"
 #include "props/prop_data_prop.h"
 #include "props/prop_data_scene.h"
 #include "props/prop_data_static_body.h"
@@ -53,6 +54,7 @@
 #include "prop_ess_entity.h"
 #include "prop_instance.h"
 #include "prop_instance_merger.h"
+#include "prop_merge_group.h"
 
 #include "prop_instance_job.h"
 #include "prop_instance_prop_job.h"
@@ -107,6 +109,7 @@ void register_props_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<PropDataTiledWall>();
 		ClassDB::register_class<PropDataCollisionObject>();
 		ClassDB::register_class<PropDataStaticBody>();
+		ClassDB::register_class<PropDataMergeGroup>();
 
 		ClassDB::register_class<PropDataPortal>();
 
@@ -127,6 +130,7 @@ void register_props_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<PropTextureJob>();
 
 		ClassDB::register_class<PropSceneInstance>();
+		ClassDB::register_class<PropMergeGroup>();
 
 		ClassDB::register_class<PropMaterialCache>();
 
@@ -151,6 +155,9 @@ void register_props_types(ModuleRegistrationLevel p_level) {
 
 		Ref<PropDataStaticBody> static_body_processor = Ref<PropDataStaticBody>(memnew(PropDataStaticBody));
 		PropUtils::add_processor(static_body_processor);
+
+		Ref<PropDataMergeGroup> merge_group_processor = Ref<PropDataMergeGroup>(memnew(PropDataMergeGroup));
+		PropUtils::add_processor(merge_group_processor);
 	}
 
 #ifdef TOOLS_ENABLED
