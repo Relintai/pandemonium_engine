@@ -1161,7 +1161,7 @@ void LayeredTileMap::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("rao_set_noise_params", "noise"), &LayeredTileMap::rao_set_noise_params);
 	ClassDB::bind_method(D_METHOD("rao_get_noise_params"), &LayeredTileMap::rao_get_noise_params);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "rao_noise", PROPERTY_HINT_RESOURCE_TYPE, "FastnoiseNoiseParams"), "rao_set_noise_params", "rao_get_noise_params");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "rao_noise_params", PROPERTY_HINT_RESOURCE_TYPE, "FastnoiseNoiseParams"), "rao_set_noise_params", "rao_get_noise_params");
 #endif
 
 	ADD_ARRAY("layers", "layer_");
