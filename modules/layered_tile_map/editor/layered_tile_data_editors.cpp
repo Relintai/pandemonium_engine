@@ -385,10 +385,6 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 		default:
 			break;
 	}
-
-	if (!use_undo_redo) {
-		memdelete(undo_redo);
-	}
 }
 
 void GenericTilePolygonEditor::_grab_polygon_point(Vector2 p_pos, const Transform2D &p_polygon_xform, int &r_polygon_index, int &r_point_index) {
