@@ -193,6 +193,8 @@
 		<member name="gui_disable_input" type="bool" setter="set_disable_input" getter="is_input_disabled" default="false">
 			If [code]true[/code], the viewport will not receive input events.
 		</member>
+		<member name="gui_scale_tooltips" type="bool" setter="set_gui_scale_tooltips" getter="is_gui_scaling_tooltips" default="false">
+		</member>
 		<member name="gui_snap_controls_to_pixels" type="bool" setter="set_snap_controls_to_pixels" getter="is_snap_controls_to_pixels_enabled" default="true">
 			If [code]true[/code], the GUI controls on the viewport will lay pixel perfectly.
 		</member>

@@ -483,6 +483,12 @@
 		<member name="navigation_visibility_mode" type="int" setter="set_navigation_visibility_mode" getter="get_navigation_visibility_mode" enum="LayeredTileMap.VisibilityMode" default="0">
 			Show or hide the LayeredTileMap's navigation meshes. If set to [constant VISIBILITY_MODE_DEFAULT], this depends on the show navigation debug settings.
 		</member>
+		<member name="rao_noise_params" type="FastnoiseNoiseParams" setter="rao_set_noise_params" getter="rao_get_noise_params">
+		</member>
+		<member name="rao_strength" type="float" setter="rao_set_strength" getter="rao_get_strength" default="0.3">
+		</member>
+		<member name="rao_use" type="bool" setter="rao_set_use" getter="rao_get_use" default="true">
+		</member>
 		<member name="rendering_quadrant_size" type="int" setter="set_rendering_quadrant_size" getter="get_rendering_quadrant_size" default="16">
 			The LayeredTileMap's quadrant size. A quadrant is a group of tiles to be drawn together on a single canvas item, for optimization purposes. [member rendering_quadrant_size] defines the length of a square's side, in the map's coordinate system, that forms the quadrant. Thus, the default quandrant size groups together [code]16 * 16 = 256[/code] tiles.
 			The quadrant size does not apply on Y-sorted layers, as tiles are be grouped by Y position instead in that case.
