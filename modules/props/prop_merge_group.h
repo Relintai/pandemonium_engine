@@ -39,15 +39,32 @@
 #include "props/prop_data.h"
 #include "scene/resources/packed_scene.h"
 
+class Material;
+
 class PropMergeGroup : public Spatial {
 	GDCLASS(PropMergeGroup, Spatial);
 
 public:
+	///Materials
+	Ref<Material> material_get(const int index);
+	void material_add(const Ref<Material> &value);
+	int material_get_num() const;
+	void materials_clear();
+
+	Vector<Variant> materials_get();
+	void materials_set(const Vector<Variant> &materials);
+
+	bool get_is_merger();
+	void set_is_merger(bool value);
+	
 	PropMergeGroup();
 	~PropMergeGroup();
 
 protected:
 	static void _bind_methods();
+	
+	bool _is_merger;
+	Vector<Ref<Material>> _materials;
 };
 
 #endif

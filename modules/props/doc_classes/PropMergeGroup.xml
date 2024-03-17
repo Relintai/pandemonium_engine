@@ -7,7 +7,35 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="material_add">
+			<return type="void" />
+			<argument index="0" name="value" type="Material" />
+			<description>
+			</description>
+		</method>
+		<method name="material_get">
+			<return type="Material" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_get_num" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="materials_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 	</methods>
+	<members>
+		<member name="is_merger" type="bool" setter="set_is_merger" getter="get_is_merger" default="false">
+		</member>
+		<member name="materials" type="Array" setter="materials_set" getter="materials_get" default="[  ]">
+		</member>
+	</members>
 	<constants>
 	</constants>
 </class>

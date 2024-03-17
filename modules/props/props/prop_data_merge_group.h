@@ -50,7 +50,7 @@ public:
 	bool _processor_handles(Node *node);
 	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
 	bool _processor_evaluate_children();
-	
+
 	PropDataMergeGroup();
 	~PropDataMergeGroup();
 

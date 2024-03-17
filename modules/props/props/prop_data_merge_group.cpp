@@ -59,6 +59,9 @@ void PropDataMergeGroup::_processor_process(Ref<PropData> prop_data, Node *node,
 		l.instance();
 		l->set_prop(d);
 		l->set_transform(transform * g->get_transform());
+		l->materials_set(g->materials_get());
+		l->set_is_merger(g->get_is_merger());
+
 		prop_data->add_prop(l);
 	}
 }
