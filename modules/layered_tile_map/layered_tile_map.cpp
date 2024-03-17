@@ -370,7 +370,7 @@ void LayeredTileMap::set_collision_animatable(bool p_collision_animatable) {
 	for (uint32_t i = 0; i < layers.size(); ++i) {
 		LayeredTileMapLayer *layer = layers[i];
 
-		layer->set_use_kinematic_bodies(layer);
+		layer->set_use_kinematic_bodies(p_collision_animatable);
 	}
 }
 
