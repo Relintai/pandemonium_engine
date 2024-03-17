@@ -158,8 +158,8 @@ void EditorQuickOpen::_parse_fs(EditorFileSystemDirectory *efsd, Vector<Pair<Str
 			if (ed.class_equals_or_inherits(class_name, base_types[j]) && search_text.is_subsequence_ofi(file)) {
 				Pair<String, Ref<Texture>> pair;
 				pair.first = file;
-				StringName icon_name = search_options->has_theme_icon(file_type, ei) ? file_type : ot;
-				pair.second = search_options->get_theme_icon(icon_name, ei);
+				//StringName icon_name = search_options->has_theme_icon(file_type, ei) ? file_type : ot;
+				//pair.second = search_options->get_theme_icon(icon_name, ei);
 				list.push_back(pair);
 
 				// Stop testing base types as soon as we got a match.
@@ -207,15 +207,16 @@ void EditorQuickOpen::_update_search() {
 	search_options->clear();
 	TreeItem *root = search_options->create_item();
 	EditorFileSystemDirectory *efsd = EditorFileSystem::get_singleton()->get_filesystem();
+	
 	Vector<Pair<String, Ref<Texture>>> list;
 
 	_parse_fs(efsd, list);
-	list = _sort_fs(list);
+	//list = _sort_fs(list);
 
 	for (int i = 0; i < list.size(); i++) {
 		TreeItem *ti = search_options->create_item(root);
 		ti->set_text(0, list[i].first);
-		ti->set_icon(0, list[i].second);
+		//ti->set_icon(0, list[i].second);
 	}
 
 	if (root->get_children()) {
