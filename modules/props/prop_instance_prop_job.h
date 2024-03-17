@@ -128,9 +128,7 @@ protected:
 		Transform transform;
 		bool owns_shape;
 
-		CollisionShapeEntry() {
-			owns_shape = false;
-		}
+		CollisionShapeEntry();
 	};
 
 	Ref<PropMaterialCache> _material_cache;

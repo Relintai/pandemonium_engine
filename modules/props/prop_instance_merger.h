@@ -43,6 +43,7 @@
 #include "props/prop_data.h"
 
 class MeshDataInstance;
+class Shape;
 
 class PropInstanceMerger : public PropInstance {
 	GDCLASS(PropInstanceMerger, PropInstance);
@@ -143,9 +144,7 @@ protected:
 		RID shape_rid;
 		bool owns_shape;
 
-		ColliderBody() {
-			owns_shape = false;
-		}
+		ColliderBody();
 	};
 
 	struct MeshEntry {

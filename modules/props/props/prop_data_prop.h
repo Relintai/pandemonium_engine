@@ -43,12 +43,26 @@
 #include "../../texture_packer/texture_packer.h"
 #endif
 
+class Material;
+
 class PropDataProp : public PropDataEntry {
 	GDCLASS(PropDataProp, PropDataEntry);
 
 public:
 	Ref<PropData> get_prop() const;
 	void set_prop(const Ref<PropData> value);
+
+	///Materials
+	Ref<Material> material_get(const int index);
+	void material_add(const Ref<Material> &value);
+	int material_get_num() const;
+	void materials_clear();
+
+	Vector<Variant> materials_get();
+	void materials_set(const Vector<Variant> &materials);
+
+	bool get_is_merger();
+	void set_is_merger(bool value);
 
 	bool get_snap_to_mesh();
 	void set_snap_to_mesh(bool value);
@@ -71,9 +85,11 @@ protected:
 	static void _bind_methods();
 
 private:
+	bool _is_merger;
 	bool _snap_to_mesh;
 	Vector3 _snap_axis;
 	Ref<PropData> _prop;
+	Vector<Ref<Material>> _materials;
 };
 
 #endif

@@ -763,3 +763,7 @@ void PropInstancePropJob::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_physics_process", "delta"), &PropInstancePropJob::_physics_process);
 }
+
+PropInstancePropJob::CollisionShapeEntry::CollisionShapeEntry() {
+	owns_shape = false;
+}

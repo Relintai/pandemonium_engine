@@ -1033,3 +1033,7 @@ void PropInstanceMerger::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("free_meshes"), &PropInstanceMerger::free_meshes);
 	ClassDB::bind_method(D_METHOD("free_colliders"), &PropInstanceMerger::free_colliders);
 }
+
+PropInstanceMerger::ColliderBody::ColliderBody() {
+	owns_shape = false;
+}
