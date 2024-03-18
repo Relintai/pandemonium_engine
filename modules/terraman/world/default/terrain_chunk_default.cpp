@@ -758,7 +758,7 @@ void TerrainChunkDefault::_bake_light(Ref<TerrainLight> light) {
 	ERR_FAIL_COND(!light.is_valid());
 
 	Color color = light->get_color();
-	int size = light->get_size();
+	int size = light->get_range();
 
 	int local_x = light->get_world_position_x() - (_position_x * _size_x);
 	int local_y = light->get_world_position_y();

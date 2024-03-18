@@ -638,7 +638,7 @@ void VoxelMesher::bake_lights(MeshInstance *node, Vector<Ref<VoxelLight>> &light
 
 			Vector3 value = cv * (NdotL / (1.0 + dist2));
 
-			value *= light->get_size();
+			value *= light->get_range();
 			v_lightDiffuse += value;
 
 			/*

@@ -644,7 +644,7 @@ void TerrainMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &l
 
 			Vector3 value = cv * (NdotL / (1.0 + dist2));
 
-			value *= light->get_size();
+			value *= light->get_range();
 			v_lightDiffuse += value;
 
 			/*

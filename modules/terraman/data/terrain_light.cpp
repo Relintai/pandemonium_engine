@@ -49,22 +49,73 @@ void TerrainLight::set_world_position(const int x, const int y, const int z) {
 	_world_position_z = z;
 }
 
-_FORCE_INLINE_ Color TerrainLight::get_color() const {
+real_t TerrainLight::get_range() const {
+	return _range;
+}
+void TerrainLight::set_range(const real_t value) {
+	_range = value;
+}
+
+real_t TerrainLight::get_attenuation() const {
+	return _attenuation;
+}
+void TerrainLight::set_attenuation(const real_t value) {
+	_attenuation = value;
+}
+
+Color TerrainLight::get_color() const {
 	return _color;
 }
-void TerrainLight::set_color(const Color &color) {
-	_color = color;
+void TerrainLight::set_color(const Color value) {
+	_color = value;
 }
 
-_FORCE_INLINE_ float TerrainLight::get_size() const {
-	return _size;
+real_t TerrainLight::get_energy() const {
+	return _energy;
 }
-void TerrainLight::set_size(const float size) {
-	_size = size;
+void TerrainLight::set_energy(const real_t value) {
+	_energy = value;
 }
+
+real_t TerrainLight::get_indirect_energy() const {
+	return _indirect_energy;
+}
+void TerrainLight::set_indirect_energy(const real_t value) {
+	_indirect_energy = value;
+}
+
+bool TerrainLight::get_negative() const {
+	return _negative;
+}
+void TerrainLight::set_negative(const bool value) {
+	_negative = value;
+}
+
+real_t TerrainLight::get_specular() const {
+	return _specular;
+}
+void TerrainLight::set_specular(const real_t value) {
+	_specular = value;
+}
+
+#ifndef DISABLE_DEPRECATED
+bool TerrainLight::_set(const StringName &p_name, const Variant &p_value) {
+	// Convert to range
+	if (p_name == "light_size") {
+		set_range(p_value);
+	}
+
+	return false;
+}
+#endif
 
 TerrainLight::TerrainLight() {
-	_size = 0;
+	_range = 0;
+	_attenuation = 0;
+	_energy = 0;
+	_indirect_energy = 0;
+	_negative = false;
+	_specular = 0;
 }
 
 TerrainLight::~TerrainLight() {
@@ -76,11 +127,31 @@ void TerrainLight::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_world_position_z"), &TerrainLight::get_world_position_z);
 	ClassDB::bind_method(D_METHOD("set_world_position", "x", "y", "z"), &TerrainLight::set_world_position);
 
-	ClassDB::bind_method(D_METHOD("get_color"), &TerrainLight::get_color);
-	ClassDB::bind_method(D_METHOD("set_color"), &TerrainLight::set_color);
-	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");
+	ClassDB::bind_method(D_METHOD("get_range"), &TerrainLight::get_range);
+	ClassDB::bind_method(D_METHOD("set_range", "value"), &TerrainLight::set_range);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "light_range"), "set_range", "get_range");
 
-	ClassDB::bind_method(D_METHOD("get_size"), &TerrainLight::get_size);
-	ClassDB::bind_method(D_METHOD("set_size"), &TerrainLight::set_size);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "size"), "set_size", "get_size");
+	ClassDB::bind_method(D_METHOD("get_attenuation"), &TerrainLight::get_attenuation);
+	ClassDB::bind_method(D_METHOD("set_attenuation", "value"), &TerrainLight::set_attenuation);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "light_attenuation"), "set_attenuation", "get_attenuation");
+
+	ClassDB::bind_method(D_METHOD("get_color"), &TerrainLight::get_color);
+	ClassDB::bind_method(D_METHOD("set_color", "value"), &TerrainLight::set_color);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "light_color"), "set_color", "get_color");
+
+	ClassDB::bind_method(D_METHOD("get_energy"), &TerrainLight::get_energy);
+	ClassDB::bind_method(D_METHOD("set_energy", "value"), &TerrainLight::set_energy);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "light_energy"), "set_energy", "get_energy");
+
+	ClassDB::bind_method(D_METHOD("get_indirect_energy"), &TerrainLight::get_indirect_energy);
+	ClassDB::bind_method(D_METHOD("set_indirect_energy", "value"), &TerrainLight::set_indirect_energy);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "light_indirect_energy"), "set_indirect_energy", "get_indirect_energy");
+
+	ClassDB::bind_method(D_METHOD("get_negative"), &TerrainLight::get_negative);
+	ClassDB::bind_method(D_METHOD("set_negative", "value"), &TerrainLight::set_negative);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "light_negative"), "set_negative", "get_negative");
+
+	ClassDB::bind_method(D_METHOD("get_specular"), &TerrainLight::get_specular);
+	ClassDB::bind_method(D_METHOD("set_specular", "value"), &TerrainLight::set_specular);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "light_specular"), "set_specular", "get_specular");
 }

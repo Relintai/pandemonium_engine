@@ -32,9 +32,19 @@
 		</method>
 	</methods>
 	<members>
-		<member name="color" type="Color" setter="set_color" getter="get_color" default="Color( 0, 0, 0, 1 )">
+		<member name="light_attenuation" type="float" setter="set_attenuation" getter="get_attenuation" default="0.0">
 		</member>
-		<member name="size" type="float" setter="set_size" getter="get_size" default="0.0">
+		<member name="light_color" type="Color" setter="set_color" getter="get_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="light_energy" type="float" setter="set_energy" getter="get_energy" default="0.0">
+		</member>
+		<member name="light_indirect_energy" type="float" setter="set_indirect_energy" getter="get_indirect_energy" default="0.0">
+		</member>
+		<member name="light_negative" type="bool" setter="set_negative" getter="get_negative" default="false">
+		</member>
+		<member name="light_range" type="float" setter="set_range" getter="get_range" default="0.0">
+		</member>
+		<member name="light_specular" type="float" setter="set_specular" getter="get_specular" default="0.0">
 		</member>
 	</members>
 	<constants>

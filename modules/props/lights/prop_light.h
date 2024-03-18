@@ -43,23 +43,47 @@ public:
 	Vector3 get_position();
 	void set_position(const Vector3 &pos);
 
-	Color get_color() const;
-	void set_color(const Color &color);
+	real_t get_range() const;
+	void set_range(const real_t value);
 
-	float get_size() const;
-	void set_size(const float strength);
+	real_t get_attenuation() const;
+	void set_attenuation(const real_t value);
+
+	Color get_color() const;
+	void set_color(const Color value);
+
+	real_t get_energy() const;
+	void set_energy(const real_t value);
+
+	real_t get_indirect_energy() const;
+	void set_indirect_energy(const real_t value);
+
+	bool get_negative() const;
+	void set_negative(const bool value);
+
+	real_t get_specular() const;
+	void set_specular(const real_t value);
 
 	PropLight();
 	~PropLight();
 
 private:
+#ifndef DISABLE_DEPRECATED
+	bool _set(const StringName &p_name, const Variant &p_value);
+#endif
+
 	static void _bind_methods();
 
 private:
 	Vector3 _position;
 
+	real_t _range;
+	real_t _attenuation;
 	Color _color;
-	int _size;
+	real_t _energy;
+	real_t _indirect_energy;
+	bool _negative;
+	real_t _specular;
 };
 
 #endif

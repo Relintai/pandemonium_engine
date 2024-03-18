@@ -671,8 +671,13 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 			light.instance();
 
 			light->set_world_position(wp.x / get_voxel_scale(), wp.y / get_voxel_scale(), wp.z / get_voxel_scale());
+			light->set_range(light_data->get_light_range());
+			light->set_attenuation(light_data->get_light_attenuation());
 			light->set_color(light_data->get_light_color());
-			light->set_size(light_data->get_light_size());
+			light->set_energy(light_data->get_light_energy());
+			light->set_indirect_energy(light_data->get_light_indirect_energy());
+			light->set_negative(light_data->get_light_negative());
+			light->set_specular(light_data->get_light_specular());
 
 			light_add(light);
 

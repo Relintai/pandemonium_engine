@@ -40,11 +40,26 @@ class PropDataLight : public PropDataEntry {
 	GDCLASS(PropDataLight, PropDataEntry);
 
 public:
+	real_t get_light_range() const;
+	void set_light_range(const real_t value);
+
+	real_t get_light_attenuation() const;
+	void set_light_attenuation(const real_t value);
+
 	Color get_light_color() const;
 	void set_light_color(const Color value);
 
-	int get_light_size() const;
-	void set_light_size(const int value);
+	real_t get_light_energy() const;
+	void set_light_energy(const real_t value);
+
+	real_t get_light_indirect_energy() const;
+	void set_light_indirect_energy(const real_t value);
+
+	bool get_light_negative() const;
+	void set_light_negative(const bool value);
+
+	real_t get_light_specular() const;
+	void set_light_specular(const real_t value);
 
 	bool _processor_handles(Node *node);
 	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
@@ -54,11 +69,20 @@ public:
 	~PropDataLight();
 
 protected:
+#ifndef DISABLE_DEPRECATED
+	bool _set(const StringName &p_name, const Variant &p_value);
+#endif
+
 	static void _bind_methods();
 
 private:
+	real_t _light_range;
+	real_t _light_attenuation;
 	Color _light_color;
-	int _light_size;
+	real_t _light_energy;
+	real_t _light_indirect_energy;
+	bool _light_negative;
+	real_t _light_specular;
 };
 
 #endif

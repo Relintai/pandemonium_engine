@@ -710,8 +710,13 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 			Vector3 v = t.xform(Vector3());
 
 			light->set_position(v);
+			light->set_range(light_data->get_light_range());
+			light->set_attenuation(light_data->get_light_attenuation());
 			light->set_color(light_data->get_light_color());
-			light->set_size(light_data->get_light_size());
+			light->set_energy(light_data->get_light_energy());
+			light->set_indirect_energy(light_data->get_light_indirect_energy());
+			light->set_negative(light_data->get_light_negative());
+			light->set_specular(light_data->get_light_specular());
 
 			_job->add_light(light);
 

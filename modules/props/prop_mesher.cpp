@@ -1013,7 +1013,7 @@ Color PropMesher::get_light_color_at(const Vector3 &position, const Vector3 &nor
 
 		Vector3 value = cv * (NdotL / (1.0 + dist2));
 
-		value *= light->get_size();
+		value *= light->get_range();
 		v_lightDiffuse += value;
 
 		/*
@@ -1227,7 +1227,7 @@ void PropMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &ligh
 
 			Vector3 value = cv * (NdotL / (1.0 + dist2));
 
-			value *= light->get_size();
+			value *= light->get_range();
 			v_lightDiffuse += value;
 
 			/*
