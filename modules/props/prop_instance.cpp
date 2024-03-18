@@ -230,8 +230,14 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 		if (light_data.is_valid()) {
 			OmniLight *light = memnew(OmniLight);
 			add_child(light);
-			light->set_color(light_data->get_light_color());
+
 			light->set_param(Light::PARAM_RANGE, light_data->get_light_range());
+			light->set_param(Light::PARAM_ATTENUATION, light_data->get_light_attenuation());
+			light->set_color(light_data->get_light_color());
+			light->set_param(Light::PARAM_ENERGY, light_data->get_light_energy());
+			light->set_param(Light::PARAM_INDIRECT_ENERGY, light_data->get_light_indirect_energy());
+			light->set_negative(light_data->get_light_negative());
+			light->set_param(Light::PARAM_SPECULAR, light_data->get_light_specular());
 			light->set_transform(t);
 
 			continue;
