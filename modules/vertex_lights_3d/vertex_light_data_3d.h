@@ -1,5 +1,8 @@
+#ifndef VERTEX_LIGHT_DATA_3D_H
+#define VERTEX_LIGHT_DATA_3D_H
+
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  vertex_light_data_3d.h.h                                             */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,15 +32,55 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
+#include "core/containers/vector.h"
+#include "core/math/color.h"
+#include "core/object/reference.h"
+#include "core/math/transform.h"
 
-#include "vertex_light_data_3d.h"
+class VertexLightData3D : public Reference {
+	GDCLASS(VertexLightData3D, Reference);
 
-void register_vertex_lights_3d_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<VertexLightData3D>();
-	}
-}
+public:
+	Transform get_transform() const;
+	void set_transform(const Transform &p_transform);
 
-void unregister_vertex_lights_3d_types(ModuleRegistrationLevel p_level) {
-}
+	real_t get_range() const;
+	void set_range(const real_t value);
+
+	real_t get_attenuation() const;
+	void set_attenuation(const real_t value);
+
+	Color get_color() const;
+	void set_color(const Color value);
+
+	real_t get_energy() const;
+	void set_energy(const real_t value);
+
+	real_t get_indirect_energy() const;
+	void set_indirect_energy(const real_t value);
+
+	bool get_negative() const;
+	void set_negative(const bool value);
+
+	real_t get_specular() const;
+	void set_specular(const real_t value);
+
+	VertexLightData3D();
+	~VertexLightData3D();
+
+private:
+	static void _bind_methods();
+
+private:
+	Transform _transform;
+
+	real_t _range;
+	real_t _attenuation;
+	Color _color;
+	real_t _energy;
+	real_t _indirect_energy;
+	bool _negative;
+	real_t _specular;
+};
+
+#endif

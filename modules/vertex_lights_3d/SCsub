@@ -5,4 +5,4 @@ Import('env')
 module_env = env.Clone()
 
 module_env.add_source_files(env.modules_sources,"register_types.cpp")
-
+module_env.add_source_files(env.modules_sources,"vertex_light_data_3d.cpp")
