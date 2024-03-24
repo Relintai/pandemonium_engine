@@ -47,6 +47,7 @@ class World2D : public Resource {
 	RID canvas;
 	RID space;
 	RID navigation_map;
+	RID vertex_lights_2d_map;
 
 	SpatialIndexer2D *indexer;
 
@@ -70,6 +71,9 @@ public:
 	RID get_canvas();
 	RID get_space();
 	RID get_navigation_map() const;
+
+	// TODO Maybe World should have a callback on creation?
+	RID get_vertex_lights_2d_map();
 
 	Physics2DDirectSpaceState *get_direct_space_state();
 

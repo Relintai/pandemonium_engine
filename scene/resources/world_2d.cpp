@@ -40,6 +40,12 @@
 #include "servers/physics_2d_server.h"
 #include "servers/rendering_server.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+#include "modules/vertex_lights_2d/vertex_lights_2d_server.h"
+#endif
+
 struct SpatialIndexer2D {
 	struct CellRef {
 		int ref;
@@ -333,6 +339,10 @@ RID World2D::get_navigation_map() const {
 	return navigation_map;
 }
 
+RID World2D::get_vertex_lights_2d_map() {
+	return vertex_lights_2d_map;
+}
+
 void World2D::get_world_list(List<World *> *r_worlds) {
 	for (RBMap<World *, SpatialIndexer2D::WorldData>::Element *E = indexer->worlds.front(); E; E = E->next()) {
 		r_worlds->push_back(E->key());
@@ -353,6 +363,7 @@ void World2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_canvas"), &World2D::get_canvas);
 	ClassDB::bind_method(D_METHOD("get_space"), &World2D::get_space);
 	ClassDB::bind_method(D_METHOD("get_navigation_map"), &World2D::get_navigation_map);
+	ClassDB::bind_method(D_METHOD("get_vertex_lights_2d_map"), &World2D::get_vertex_lights_2d_map);
 
 	ClassDB::bind_method(D_METHOD("get_direct_space_state"), &World2D::get_direct_space_state);
 
@@ -369,6 +380,10 @@ Physics2DDirectSpaceState *World2D::get_direct_space_state() {
 World2D::World2D() {
 	canvas = RID_PRIME(RenderingServer::get_singleton()->canvas_create());
 	space = RID_PRIME(Physics2DServer::get_singleton()->space_create());
+
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	vertex_lights_2d_map = RID_PRIME(VertexLights2DServer::get_singleton()->map_create());
+#endif
 
 	//set space2D to be more friendly with pixels than meters, by adjusting some constants
 	Physics2DServer::get_singleton()->space_set_active(space, true);

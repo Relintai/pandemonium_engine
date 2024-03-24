@@ -33,6 +33,8 @@
 
 #include "core/config/engine.h"
 
+#include "scene/resources/world_2d.h"
+
 bool VertexLight2D::get_is_enabled() {
 	return _enabled;
 }
@@ -89,7 +91,7 @@ void VertexLight2D::set_item_cull_mask(const int p_item_cull_mask) {
 
 VertexLight2D::VertexLight2D() {
 	_vertex_light = RID_PRIME(VertexLights2DServer::get_singleton()->light_create());
-	
+
 	_enabled = true;
 	_color = Color(1, 1, 1, 1);
 	_item_cull_mask = 1;
@@ -105,6 +107,19 @@ VertexLight2D::~VertexLight2D() {
 
 void VertexLight2D::_notification(int p_what) {
 	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE: {
+			Ref<World2D> world = get_world_2d();
+			ERR_FAIL_COND(!world.is_valid());
+			RID map = world->get_vertex_lights_2d_map();
+			VertexLights2DServer::get_singleton()->light_set_map(_vertex_light, map);
+
+			_update_light_visibility();
+		} break;
+		case NOTIFICATION_EXIT_TREE: {
+			VertexLights2DServer::get_singleton()->light_set_map(_vertex_light, RID());
+
+			_update_light_visibility();
+		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			VertexLights2DServer::get_singleton()->light_set_position(_vertex_light, get_global_transform().get_origin());
 		} break;
