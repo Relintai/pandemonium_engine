@@ -36,6 +36,8 @@ Color VertexLight2D::get_color() {
 }
 void VertexLight2D::set_color(const Color &p_color) {
 	_color = p_color;
+	
+	VertexLights2DServer::get_singleton()->light_set_color(_vertex_light, _color);
 }
 
 VertexLight2D::VertexLight2DMode VertexLight2D::get_mode() {
@@ -43,6 +45,8 @@ VertexLight2D::VertexLight2DMode VertexLight2D::get_mode() {
 }
 void VertexLight2D::set_mode(const VertexLight2D::VertexLight2DMode p_mode) {
 	_mode = p_mode;
+	
+	VertexLights2DServer::get_singleton()->light_set_mode(_vertex_light, (VertexLights2DServer::VertexLight2DMode)_mode);
 }
 
 Vector2i VertexLight2D::get_z_range() {
@@ -50,6 +54,8 @@ Vector2i VertexLight2D::get_z_range() {
 }
 void VertexLight2D::set_z_range(const Vector2i &p_z_range) {
 	_z_range = p_z_range;
+	
+	VertexLights2DServer::get_singleton()->light_set_z_range(_vertex_light, _z_range);
 }
 
 Vector2i VertexLight2D::get_layer_range() {
@@ -57,6 +63,8 @@ Vector2i VertexLight2D::get_layer_range() {
 }
 void VertexLight2D::set_layer_range(const Vector2i &p_layer_range) {
 	_layer_range = p_layer_range;
+	
+	VertexLights2DServer::get_singleton()->light_set_layer_range(_vertex_light, _layer_range);
 }
 
 int VertexLight2D::get_item_cull_mask() {
@@ -64,6 +72,8 @@ int VertexLight2D::get_item_cull_mask() {
 }
 void VertexLight2D::set_item_cull_mask(const int p_item_cull_mask) {
 	_item_cull_mask = p_item_cull_mask;
+	
+	VertexLights2DServer::get_singleton()->light_set_item_cull_mask(_vertex_light, _item_cull_mask);
 }
 
 VertexLight2D::VertexLight2D() {
