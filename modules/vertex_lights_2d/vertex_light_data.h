@@ -47,6 +47,7 @@ class VertexLightData2D;
 
 class VertexLightData2D : public RID_Data {
 public:
+	bool enabled;
 	Vector2 position;
 	Color color;
 	VertexLights2DServer::VertexLight2DMode mode;
@@ -62,7 +63,8 @@ public:
 	VertexLightData2D() {
 		map = NULL;
 		quadrant = NULL;
-
+		
+		enabled = true;
 		color = Color(1, 1, 1, 1);
 		item_cull_mask = 1;
 		z_range = Vector2i(-1024, 1024);

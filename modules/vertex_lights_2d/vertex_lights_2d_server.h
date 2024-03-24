@@ -76,6 +76,9 @@ public:
 
 	RID light_get_map(RID p_light);
 	void light_set_map(RID p_light, RID p_map);
+	
+	bool light_get_is_enabled(RID p_light);
+	void light_set_enabled(RID p_light, const bool p_enabled);
 
 	Vector2 light_get_position(RID p_light);
 	void light_set_position(RID p_light, const Vector2 &p_position);

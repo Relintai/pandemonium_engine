@@ -52,6 +52,9 @@ public:
 		//VERTEX_LIGHT_2D_MODE_MASK = VertexLights2DServer::VERTEX_LIGHT_2D_MODE_MASK
 	};
 
+	bool get_is_enabled();
+	void set_enabled(const bool p_enabled);
+
 	Color get_color();
 	void set_color(const Color &p_color);
 
@@ -72,11 +75,14 @@ public:
 
 protected:
 	void _notification(int p_what);
+	
+	void _update_light_visibility();
 
 	static void _bind_methods();
 
 	RID _vertex_light;
-
+	
+	bool _enabled;
 	Color _color;
 	VertexLight2DMode _mode;
 	Vector2i _z_range;

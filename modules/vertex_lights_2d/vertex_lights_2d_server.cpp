@@ -124,6 +124,19 @@ void VertexLights2DServer::light_set_map(RID p_light, RID p_map) {
 	}
 }
 
+bool VertexLights2DServer::light_get_is_enabled(RID p_light) {
+	const VertexLightData2D *light = light_owner.getornull(p_light);
+	ERR_FAIL_COND_V(light == NULL, false);
+
+	return light->enabled;
+}
+void VertexLights2DServer::light_set_enabled(RID p_light, const bool p_enabled) {
+	VertexLightData2D *light = light_owner.getornull(p_light);
+	ERR_FAIL_COND(light == NULL);
+
+	light->enabled = p_enabled;
+}
+
 Vector2 VertexLights2DServer::light_get_position(RID p_light) {
 	const VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND_V(light == NULL, Vector2());
@@ -230,7 +243,7 @@ void VertexLights2DServer::free(RID p_rid) {
 		if (light->map) {
 			light->map->remove_light(light);
 		}
-		
+
 		light->self = RID();
 
 		light_owner.free(p_rid);
@@ -273,6 +286,9 @@ void VertexLights2DServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("light_get_map", "light"), &VertexLights2DServer::light_get_map);
 	ClassDB::bind_method(D_METHOD("light_set_map", "light", "map"), &VertexLights2DServer::light_set_map);
+
+	ClassDB::bind_method(D_METHOD("light_get_is_enabled", "light"), &VertexLights2DServer::light_get_is_enabled);
+	ClassDB::bind_method(D_METHOD("light_set_enabled", "light", "enabled"), &VertexLights2DServer::light_set_enabled);
 
 	ClassDB::bind_method(D_METHOD("light_get_position", "light"), &VertexLights2DServer::light_get_position);
 	ClassDB::bind_method(D_METHOD("light_set_position", "light", "position"), &VertexLights2DServer::light_set_position);

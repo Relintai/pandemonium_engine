@@ -31,6 +31,17 @@
 
 #include "vertex_light_2d.h"
 
+#include "core/config/engine.h"
+
+bool VertexLight2D::get_is_enabled() {
+	return _enabled;
+}
+void VertexLight2D::set_enabled(const bool p_enabled) {
+	_enabled = p_enabled;
+
+	_update_light_visibility();
+}
+
 Color VertexLight2D::get_color() {
 	return _color;
 }
@@ -78,7 +89,8 @@ void VertexLight2D::set_item_cull_mask(const int p_item_cull_mask) {
 
 VertexLight2D::VertexLight2D() {
 	_vertex_light = RID_PRIME(VertexLights2DServer::get_singleton()->light_create());
-
+	
+	_enabled = true;
 	_color = Color(1, 1, 1, 1);
 	_item_cull_mask = 1;
 	_z_range = Vector2i(-1024, 1024);
@@ -96,10 +108,25 @@ void VertexLight2D::_notification(int p_what) {
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			VertexLights2DServer::get_singleton()->light_set_position(_vertex_light, get_global_transform().get_origin());
 		} break;
+		case NOTIFICATION_VISIBILITY_CHANGED: {
+			_update_light_visibility();
+		} break;
 	}
 }
 
+void VertexLight2D::_update_light_visibility() {
+	if (!is_inside_tree()) {
+		return;
+	}
+
+	VertexLights2DServer::get_singleton()->light_set_enabled(_vertex_light, _enabled && is_visible_in_tree());
+}
+
 void VertexLight2D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_is_enabled"), &VertexLight2D::get_is_enabled);
+	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &VertexLight2D::set_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "get_is_enabled");
+
 	ClassDB::bind_method(D_METHOD("get_color"), &VertexLight2D::get_color);
 	ClassDB::bind_method(D_METHOD("set_color", "color"), &VertexLight2D::set_color);
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");
