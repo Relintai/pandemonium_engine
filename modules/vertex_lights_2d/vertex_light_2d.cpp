@@ -69,6 +69,7 @@ void VertexLight2D::set_item_cull_mask(const int p_item_cull_mask) {
 VertexLight2D::VertexLight2D() {
 	_vertex_light = RID_PRIME(VertexLights2DServer::get_singleton()->light_create());
 
+	_color = Color(1, 1, 1, 1);
 	_item_cull_mask = 1;
 	_z_range = Vector2i(-1024, 1024);
 	_mode = VERTEX_LIGHT_2D_MODE_ADD;
