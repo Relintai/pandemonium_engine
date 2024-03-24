@@ -43,7 +43,6 @@ class VertexLightMap2D;
 class VertexLightQuadrant2D;
 class VertexLightData2D;
 
-
 class VertexLights2D : public Object {
 	GDCLASS(VertexLights2D, Object);
 
@@ -55,31 +54,50 @@ public:
 		//VERTEX_LIGHT_2D_MODE_MASK
 	};
 
-	/*
-	Transform get_transform() const;
-	void set_transform(const Transform &p_transform);
+	// Defaults
+	
+	Vector2i get_default_quadrant_size() const;
+	void set_default_quadrant_size(const Vector2i &p_size);
 
-	real_t get_range() const;
-	void set_range(const real_t value);
+	// Maps
+	
+	RID map_create();
 
-	real_t get_attenuation() const;
-	void set_attenuation(const real_t value);
+	Vector2i map_get_quadrant_size(RID p_map) const;
+	void map_set_quadrant_size(RID p_map, const Vector2i &p_size);
 
-	Color get_color() const;
-	void set_color(const Color value);
+	Array map_get_lights(RID p_map) const;
+	
+	void map_clear(RID p_map);
 
-	real_t get_energy() const;
-	void set_energy(const real_t value);
+	// Lights
+	
+	RID light_create();
 
-	real_t get_indirect_energy() const;
-	void set_indirect_energy(const real_t value);
+	RID light_get_map(RID p_light);
+	void light_set_map(RID p_light, RID p_map);
 
-	bool get_negative() const;
-	void set_negative(const bool value);
+	Vector2 light_get_position(RID p_light);
+	void light_set_position(RID p_light, const Vector2 &p_position);
 
-	real_t get_specular() const;
-	void set_specular(const real_t value);
-	*/
+	Color light_get_color(RID p_light);
+	void light_set_color(RID p_light, const Color &p_color);
+
+	VertexLights2D::VertexLight2DMode light_get_mode(RID p_light);
+	void light_set_mode(RID p_light, const VertexLights2D::VertexLight2DMode p_mode);
+
+	Vector2i light_get_z_range(RID p_light);
+	void light_set_z_range(RID p_light, const Vector2i &p_z_range);
+
+	Vector2i light_get_layer_range(RID p_light);
+	void light_set_layer_range(RID p_light, const Vector2i &p_layer_range);
+
+	int light_get_item_cull_mask(RID p_light);
+	void light_set_item_cull_mask(RID p_light, const int p_item_cull_mask);
+
+	// Rest
+
+	void free(RID p_rid);
 
 	_FORCE_INLINE_ static VertexLights2D *get_singleton() {
 		return _self;
@@ -92,9 +110,8 @@ protected:
 	static void _bind_methods();
 
 	mutable RID_Owner<VertexLightMap2D> map_owner;
-	mutable RID_Owner<VertexLightQuadrant2D> quadrant_owner;
-	mutable RID_Owner<VertexLightData2D> light_data_owner;
-	
+	mutable RID_Owner<VertexLightData2D> light_owner;
+
 	Vector2i _default_quadrant_size;
 
 	static VertexLights2D *_self;

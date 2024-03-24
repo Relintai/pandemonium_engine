@@ -119,6 +119,8 @@
 		</member>
 		<member name="UserDB" type="UserDB" setter="" getter="">
 		</member>
+		<member name="VertexLights2D" type="VertexLights2D" setter="" getter="">
+		</member>
 	</members>
 	<constants>
 		<constant name="MARGIN_LEFT" value="0" enum="Margin">

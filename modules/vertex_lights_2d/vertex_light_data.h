@@ -33,6 +33,7 @@
 /*************************************************************************/
 
 #include "core/containers/hash_map.h"
+#include "core/containers/list.h"
 #include "core/containers/rid.h"
 #include "core/containers/vector.h"
 #include "core/math/color.h"
@@ -52,23 +53,31 @@ public:
 	Vector2i z_range;
 	Vector2i layer_range;
 	int item_cull_mask;
-	
+
 	VertexLightMap2D *map;
 	VertexLightQuadrant2D *quadrant;
 
+	RID self;
+
 	VertexLightData2D() {
-		item_cull_mask = 1;
 		map = NULL;
 		quadrant = NULL;
+
+		item_cull_mask = 1;
+		z_range = Vector2i(-1024, 1024);
+		mode = VertexLights2D::VERTEX_LIGHT_2D_MODE_ADD;
 	}
 };
 
-class VertexLightQuadrant2D : public RID_Data {
+class VertexLightQuadrant2D {
 public:
+	Vector2i position;
 	LocalVector<VertexLightData2D *> lights;
-	
+
 	VertexLightMap2D *map;
-	
+
+	void get_lights(List<VertexLightData2D *> *p_lights);
+
 	VertexLightQuadrant2D() {
 		map = NULL;
 	}
@@ -78,6 +87,29 @@ class VertexLightMap2D : public RID_Data {
 public:
 	HashMap<Vector2i, VertexLightQuadrant2D *> quadrants;
 	Vector2i quadrant_size;
+
+	RID self;
+
+	void recreate_quadrants();
+
+	void get_lights(List<VertexLightData2D *> *p_lights);
+
+	void add_light(VertexLightData2D *p_light);
+	void remove_light(VertexLightData2D *p_light);
+
+	VertexLightQuadrant2D *get_quadrant_for_position(const Vector2 &p_position);
+
+	void set_light_position(VertexLightData2D *p_light, const Vector2 &p_position);
+
+	void clear();
+
+	_FORCE_INLINE_ Vector2i to_quadrant_position(const Vector2 &p_position) {
+		return Vector2i(p_position.x / quadrant_size.x, p_position.y / quadrant_size.y);
+	}
+
+	_FORCE_INLINE_ Vector2 to_position(const Vector2i &p_quadrant_position) {
+		return Vector2(p_quadrant_position.x * quadrant_size.x, p_quadrant_position.y * quadrant_size.y);
+	}
 };
 
 #endif

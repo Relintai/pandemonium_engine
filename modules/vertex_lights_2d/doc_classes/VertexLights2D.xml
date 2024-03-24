@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VertexLights2D" inherits="Object" version="4.3">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="free">
+			<return type="void" />
+			<argument index="0" name="rid" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="get_default_quadrant_size" qualifiers="const">
+			<return type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="light_create">
+			<return type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get_color">
+			<return type="Color" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get_item_cull_mask">
+			<return type="int" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get_layer_range">
+			<return type="Vector2i" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get_map">
+			<return type="RID" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get_mode">
+			<return type="int" enum="VertexLights2D.VertexLight2DMode" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get_position">
+			<return type="Vector2" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get_z_range">
+			<return type="Vector2i" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="light_set_color">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="light_set_item_cull_mask">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="item_cull_mask" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="light_set_layer_range">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="layer_range" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="light_set_map">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="map" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="light_set_mode">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="mode" type="int" enum="VertexLights2D.VertexLight2DMode" />
+			<description>
+			</description>
+		</method>
+		<method name="light_set_position">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="position" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="light_set_z_range">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="z_range" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="map_clear">
+			<return type="void" />
+			<argument index="0" name="map" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="map_create">
+			<return type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="map_get_lights" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="map" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="map_get_quadrant_size" qualifiers="const">
+			<return type="Vector2i" />
+			<argument index="0" name="map" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="map_set_quadrant_size">
+			<return type="void" />
+			<argument index="0" name="map" type="RID" />
+			<argument index="1" name="size" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="set_default_quadrant_size">
+			<return type="void" />
+			<argument index="0" name="size" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="VERTEX_LIGHT_2D_MODE_ADD" value="0" enum="VertexLight2DMode">
+		</constant>
+		<constant name="VERTEX_LIGHT_2D_MODE_SUB" value="1" enum="VertexLight2DMode">
+		</constant>
+		<constant name="VERTEX_LIGHT_2D_MODE_MIX" value="2" enum="VertexLight2DMode">
+		</constant>
+	</constants>
+</class>

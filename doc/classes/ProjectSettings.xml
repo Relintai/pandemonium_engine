@@ -2121,6 +2121,8 @@
 		</member>
 		<member name="thread_pool/use_threads" type="bool" setter="" getter="" default="true">
 		</member>
+		<member name="vertex_lights_2d/default_quadrant_size" type="Vector2i" setter="" getter="" default="Vector2i( 256, 256 )">
+		</member>
 		<member name="world/2d/cell_size" type="int" setter="" getter="" default="100">
 			Cell size used for the 2D hash grid that [VisibilityNotifier2D] uses (in pixels).
 		</member>
