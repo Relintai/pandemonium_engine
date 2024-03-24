@@ -31,6 +31,10 @@
 
 #include "vertex_lights_2d.h"
 
+#include "core/config/project_settings.h"
+
+#include "vertex_light_data.h"
+
 /*
 Transform VertexLights2D::get_transform() const {
 	return _transform;
@@ -93,6 +97,9 @@ VertexLights2D::VertexLights2D() {
 	ERR_FAIL_COND(_self);
 
 	_self = this;
+	
+	GLOBAL_DEF("vertex_lights_2d/default_quadrant_size", Vector2i(256, 256));
+	_default_quadrant_size = GLOBAL_GET("vertex_lights_2d/default_quadrant_size");
 }
 
 VertexLights2D::~VertexLights2D() {

@@ -1,8 +1,8 @@
-#ifndef VERTEX_LIGHTS_2D_H
-#define VERTEX_LIGHTS_2D_H
+#ifndef VERTEX_LIGHT_DATA_H
+#define VERTEX_LIGHT_DATA_H
 
 /*************************************************************************/
-/*  vertex_lights_2d.h                                                   */
+/*  vertex_light_data.h                                                  */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,74 +32,52 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/object/object.h"
-
 #include "core/containers/hash_map.h"
+#include "core/containers/rid.h"
 #include "core/containers/vector.h"
 #include "core/math/color.h"
 #include "core/math/vector2i.h"
+
+#include "vertex_lights_2d.h"
 
 class VertexLightMap2D;
 class VertexLightQuadrant2D;
 class VertexLightData2D;
 
-
-class VertexLights2D : public Object {
-	GDCLASS(VertexLights2D, Object);
-
+class VertexLightData2D : public RID_Data {
 public:
-	enum VertexLight2DMode {
-		VERTEX_LIGHT_2D_MODE_ADD = 0,
-		VERTEX_LIGHT_2D_MODE_SUB,
-		VERTEX_LIGHT_2D_MODE_MIX,
-		//VERTEX_LIGHT_2D_MODE_MASK
-	};
-
-	/*
-	Transform get_transform() const;
-	void set_transform(const Transform &p_transform);
-
-	real_t get_range() const;
-	void set_range(const real_t value);
-
-	real_t get_attenuation() const;
-	void set_attenuation(const real_t value);
-
-	Color get_color() const;
-	void set_color(const Color value);
-
-	real_t get_energy() const;
-	void set_energy(const real_t value);
-
-	real_t get_indirect_energy() const;
-	void set_indirect_energy(const real_t value);
-
-	bool get_negative() const;
-	void set_negative(const bool value);
-
-	real_t get_specular() const;
-	void set_specular(const real_t value);
-	*/
-
-	_FORCE_INLINE_ static VertexLights2D *get_singleton() {
-		return _self;
-	}
-
-	VertexLights2D();
-	~VertexLights2D();
-
-protected:
-	static void _bind_methods();
-
-	mutable RID_Owner<VertexLightMap2D> map_owner;
-	mutable RID_Owner<VertexLightQuadrant2D> quadrant_owner;
-	mutable RID_Owner<VertexLightData2D> light_data_owner;
+	Vector2 position;
+	Color color;
+	VertexLights2D::VertexLight2DMode mode;
+	Vector2i z_range;
+	Vector2i layer_range;
+	int item_cull_mask;
 	
-	Vector2i _default_quadrant_size;
+	VertexLightMap2D *map;
+	VertexLightQuadrant2D *quadrant;
 
-	static VertexLights2D *_self;
+	VertexLightData2D() {
+		item_cull_mask = 1;
+		map = NULL;
+		quadrant = NULL;
+	}
 };
 
-VARIANT_ENUM_CAST(VertexLights2D::VertexLight2DMode);
+class VertexLightQuadrant2D : public RID_Data {
+public:
+	LocalVector<VertexLightData2D *> lights;
+	
+	VertexLightMap2D *map;
+	
+	VertexLightQuadrant2D() {
+		map = NULL;
+	}
+};
+
+class VertexLightMap2D : public RID_Data {
+public:
+	HashMap<Vector2i, VertexLightQuadrant2D *> quadrants;
+	Vector2i quadrant_size;
+};
 
 #endif
