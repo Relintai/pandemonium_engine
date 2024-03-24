@@ -39,7 +39,7 @@
 #include "core/math/color.h"
 #include "core/math/vector2i.h"
 
-#include "vertex_lights_2d.h"
+#include "vertex_lights_2d_server.h"
 
 class VertexLightMap2D;
 class VertexLightQuadrant2D;
@@ -49,7 +49,7 @@ class VertexLightData2D : public RID_Data {
 public:
 	Vector2 position;
 	Color color;
-	VertexLights2D::VertexLight2DMode mode;
+	VertexLights2DServer::VertexLight2DMode mode;
 	Vector2i z_range;
 	Vector2i layer_range;
 	int item_cull_mask;
@@ -65,7 +65,7 @@ public:
 
 		item_cull_mask = 1;
 		z_range = Vector2i(-1024, 1024);
-		mode = VertexLights2D::VERTEX_LIGHT_2D_MODE_ADD;
+		mode = VertexLights2DServer::VERTEX_LIGHT_2D_MODE_ADD;
 	}
 };
 

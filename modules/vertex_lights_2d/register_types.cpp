@@ -33,22 +33,22 @@
 
 #include "core/config/engine.h"
 
-#include "vertex_lights_2d.h"
+#include "vertex_lights_2d_server.h"
 
-VertexLights2D *vertex_lights_2d = NULL;
+VertexLights2DServer *vertex_lights_2d_server = NULL;
 
 void register_vertex_lights_2d_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		vertex_lights_2d = memnew(VertexLights2D);
-		ClassDB::register_class<VertexLights2D>();
-		Engine::get_singleton()->add_singleton(Engine::Singleton("VertexLights2D", VertexLights2D::get_singleton()));
+		vertex_lights_2d_server = memnew(VertexLights2DServer);
+		ClassDB::register_class<VertexLights2DServer>();
+		Engine::get_singleton()->add_singleton(Engine::Singleton("VertexLights2DServer", VertexLights2DServer::get_singleton()));
 	}
 }
 
 void unregister_vertex_lights_2d_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		if (vertex_lights_2d) {
-			memdelete(vertex_lights_2d);
+		if (vertex_lights_2d_server) {
+			memdelete(vertex_lights_2d_server);
 		}
 	}
 }

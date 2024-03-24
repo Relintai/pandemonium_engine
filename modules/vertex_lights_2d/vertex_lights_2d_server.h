@@ -1,5 +1,5 @@
-#ifndef VERTEX_LIGHTS_2D_H
-#define VERTEX_LIGHTS_2D_H
+#ifndef VERTEX_LIGHT_2D_SERVER_H
+#define VERTEX_LIGHT_2D_SERVER_H
 
 /*************************************************************************/
 /*  vertex_lights_2d.h                                                   */
@@ -43,8 +43,8 @@ class VertexLightMap2D;
 class VertexLightQuadrant2D;
 class VertexLightData2D;
 
-class VertexLights2D : public Object {
-	GDCLASS(VertexLights2D, Object);
+class VertexLights2DServer : public Object {
+	GDCLASS(VertexLights2DServer, Object);
 
 public:
 	enum VertexLight2DMode {
@@ -83,8 +83,8 @@ public:
 	Color light_get_color(RID p_light);
 	void light_set_color(RID p_light, const Color &p_color);
 
-	VertexLights2D::VertexLight2DMode light_get_mode(RID p_light);
-	void light_set_mode(RID p_light, const VertexLights2D::VertexLight2DMode p_mode);
+	VertexLights2DServer::VertexLight2DMode light_get_mode(RID p_light);
+	void light_set_mode(RID p_light, const VertexLights2DServer::VertexLight2DMode p_mode);
 
 	Vector2i light_get_z_range(RID p_light);
 	void light_set_z_range(RID p_light, const Vector2i &p_z_range);
@@ -99,12 +99,12 @@ public:
 
 	void free(RID p_rid);
 
-	_FORCE_INLINE_ static VertexLights2D *get_singleton() {
+	_FORCE_INLINE_ static VertexLights2DServer *get_singleton() {
 		return _self;
 	}
 
-	VertexLights2D();
-	~VertexLights2D();
+	VertexLights2DServer();
+	~VertexLights2DServer();
 
 protected:
 	static void _bind_methods();
@@ -114,9 +114,9 @@ protected:
 
 	Vector2i _default_quadrant_size;
 
-	static VertexLights2D *_self;
+	static VertexLights2DServer *_self;
 };
 
-VARIANT_ENUM_CAST(VertexLights2D::VertexLight2DMode);
+VARIANT_ENUM_CAST(VertexLights2DServer::VertexLight2DMode);
 
 #endif

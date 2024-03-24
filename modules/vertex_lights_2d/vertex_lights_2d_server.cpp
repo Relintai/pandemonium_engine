@@ -29,35 +29,35 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "vertex_lights_2d.h"
+#include "vertex_lights_2d_server.h"
 
 #include "core/config/project_settings.h"
 
 #include "vertex_light_data.h"
 
 // Defaults
-Vector2i VertexLights2D::get_default_quadrant_size() const {
+Vector2i VertexLights2DServer::get_default_quadrant_size() const {
 	return _default_quadrant_size;
 }
-void VertexLights2D::set_default_quadrant_size(const Vector2i &p_size) {
+void VertexLights2DServer::set_default_quadrant_size(const Vector2i &p_size) {
 	_default_quadrant_size = p_size;
 }
 
 // Maps
-RID VertexLights2D::map_create() {
+RID VertexLights2DServer::map_create() {
 	VertexLightMap2D *map = memnew(VertexLightMap2D);
 	RID rid = map_owner.make_rid(map);
 	map->self = rid;
 	return rid;
 }
 
-Vector2i VertexLights2D::map_get_quadrant_size(RID p_map) const {
+Vector2i VertexLights2DServer::map_get_quadrant_size(RID p_map) const {
 	const VertexLightMap2D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND_V(map == NULL, Vector2i());
 
 	return map->quadrant_size;
 }
-void VertexLights2D::map_set_quadrant_size(RID p_map, const Vector2i &p_size) {
+void VertexLights2DServer::map_set_quadrant_size(RID p_map, const Vector2i &p_size) {
 	VertexLightMap2D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND(map == NULL);
 
@@ -65,7 +65,7 @@ void VertexLights2D::map_set_quadrant_size(RID p_map, const Vector2i &p_size) {
 	map->recreate_quadrants();
 }
 
-Array VertexLights2D::map_get_lights(RID p_map) const {
+Array VertexLights2DServer::map_get_lights(RID p_map) const {
 	VertexLightMap2D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND_V(map == NULL, Array());
 
@@ -84,7 +84,7 @@ Array VertexLights2D::map_get_lights(RID p_map) const {
 	return arr;
 }
 
-void VertexLights2D::map_clear(RID p_map) {
+void VertexLights2DServer::map_clear(RID p_map) {
 	VertexLightMap2D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND(map == NULL);
 
@@ -92,14 +92,14 @@ void VertexLights2D::map_clear(RID p_map) {
 }
 
 // Lights
-RID VertexLights2D::light_create() {
+RID VertexLights2DServer::light_create() {
 	VertexLightData2D *light = memnew(VertexLightData2D);
 	RID rid = light_owner.make_rid(light);
 	light->self = rid;
 	return rid;
 }
 
-RID VertexLights2D::light_get_map(RID p_light) {
+RID VertexLights2DServer::light_get_map(RID p_light) {
 	const VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND_V(light == NULL, RID());
 
@@ -109,7 +109,7 @@ RID VertexLights2D::light_get_map(RID p_light) {
 
 	return light->map->self;
 }
-void VertexLights2D::light_set_map(RID p_light, RID p_map) {
+void VertexLights2DServer::light_set_map(RID p_light, RID p_map) {
 	VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
 
@@ -124,13 +124,13 @@ void VertexLights2D::light_set_map(RID p_light, RID p_map) {
 	}
 }
 
-Vector2 VertexLights2D::light_get_position(RID p_light) {
+Vector2 VertexLights2DServer::light_get_position(RID p_light) {
 	const VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND_V(light == NULL, Vector2());
 
 	return light->position;
 }
-void VertexLights2D::light_set_position(RID p_light, const Vector2 &p_position) {
+void VertexLights2DServer::light_set_position(RID p_light, const Vector2 &p_position) {
 	VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
 
@@ -143,65 +143,65 @@ void VertexLights2D::light_set_position(RID p_light, const Vector2 &p_position) 
 	light->position = p_position;
 }
 
-Color VertexLights2D::light_get_color(RID p_light) {
+Color VertexLights2DServer::light_get_color(RID p_light) {
 	const VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND_V(light == NULL, Color());
 
 	return light->color;
 }
-void VertexLights2D::light_set_color(RID p_light, const Color &p_color) {
+void VertexLights2DServer::light_set_color(RID p_light, const Color &p_color) {
 	VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
 
 	light->color = p_color;
 }
 
-VertexLights2D::VertexLight2DMode VertexLights2D::light_get_mode(RID p_light) {
+VertexLights2DServer::VertexLight2DMode VertexLights2DServer::light_get_mode(RID p_light) {
 	const VertexLightData2D *light = light_owner.getornull(p_light);
-	ERR_FAIL_COND_V(light == NULL, VertexLights2D::VERTEX_LIGHT_2D_MODE_ADD);
+	ERR_FAIL_COND_V(light == NULL, VertexLights2DServer::VERTEX_LIGHT_2D_MODE_ADD);
 
 	return light->mode;
 }
-void VertexLights2D::light_set_mode(RID p_light, const VertexLights2D::VertexLight2DMode p_mode) {
+void VertexLights2DServer::light_set_mode(RID p_light, const VertexLights2DServer::VertexLight2DMode p_mode) {
 	VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
 
 	light->mode = p_mode;
 }
 
-Vector2i VertexLights2D::light_get_z_range(RID p_light) {
+Vector2i VertexLights2DServer::light_get_z_range(RID p_light) {
 	const VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND_V(light == NULL, Vector2i());
 
 	return light->z_range;
 }
-void VertexLights2D::light_set_z_range(RID p_light, const Vector2i &p_z_range) {
+void VertexLights2DServer::light_set_z_range(RID p_light, const Vector2i &p_z_range) {
 	VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
 
 	light->z_range = p_z_range;
 }
 
-Vector2i VertexLights2D::light_get_layer_range(RID p_light) {
+Vector2i VertexLights2DServer::light_get_layer_range(RID p_light) {
 	const VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND_V(light == NULL, Vector2i());
 
 	return light->layer_range;
 }
-void VertexLights2D::light_set_layer_range(RID p_light, const Vector2i &p_layer_range) {
+void VertexLights2DServer::light_set_layer_range(RID p_light, const Vector2i &p_layer_range) {
 	VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
 
 	light->layer_range = p_layer_range;
 }
 
-int VertexLights2D::light_get_item_cull_mask(RID p_light) {
+int VertexLights2DServer::light_get_item_cull_mask(RID p_light) {
 	const VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND_V(light == NULL, 0);
 
 	return light->item_cull_mask;
 }
-void VertexLights2D::light_set_item_cull_mask(RID p_light, const int p_item_cull_mask) {
+void VertexLights2DServer::light_set_item_cull_mask(RID p_light, const int p_item_cull_mask) {
 	VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
 
@@ -210,7 +210,7 @@ void VertexLights2D::light_set_item_cull_mask(RID p_light, const int p_item_cull
 
 // Rest
 
-void VertexLights2D::free(RID p_rid) {
+void VertexLights2DServer::free(RID p_rid) {
 	if (!p_rid.is_valid()) {
 		ERR_FAIL_MSG("Invalid RID.");
 		return;
@@ -241,7 +241,7 @@ void VertexLights2D::free(RID p_rid) {
 	}
 }
 
-VertexLights2D::VertexLights2D() {
+VertexLights2DServer::VertexLights2DServer() {
 	ERR_FAIL_COND(_self);
 
 	_self = this;
@@ -250,55 +250,55 @@ VertexLights2D::VertexLights2D() {
 	_default_quadrant_size = GLOBAL_GET("vertex_lights_2d/default_quadrant_size");
 }
 
-VertexLights2D::~VertexLights2D() {
+VertexLights2DServer::~VertexLights2DServer() {
 	_self = NULL;
 }
 
-void VertexLights2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_default_quadrant_size"), &VertexLights2D::get_default_quadrant_size);
-	ClassDB::bind_method(D_METHOD("set_default_quadrant_size", "size"), &VertexLights2D::set_default_quadrant_size);
+void VertexLights2DServer::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_default_quadrant_size"), &VertexLights2DServer::get_default_quadrant_size);
+	ClassDB::bind_method(D_METHOD("set_default_quadrant_size", "size"), &VertexLights2DServer::set_default_quadrant_size);
 
-	ClassDB::bind_method(D_METHOD("map_create"), &VertexLights2D::map_create);
+	ClassDB::bind_method(D_METHOD("map_create"), &VertexLights2DServer::map_create);
 
-	ClassDB::bind_method(D_METHOD("map_get_quadrant_size", "map"), &VertexLights2D::map_get_quadrant_size);
-	ClassDB::bind_method(D_METHOD("map_set_quadrant_size", "map", "size"), &VertexLights2D::map_set_quadrant_size);
+	ClassDB::bind_method(D_METHOD("map_get_quadrant_size", "map"), &VertexLights2DServer::map_get_quadrant_size);
+	ClassDB::bind_method(D_METHOD("map_set_quadrant_size", "map", "size"), &VertexLights2DServer::map_set_quadrant_size);
 
-	ClassDB::bind_method(D_METHOD("map_get_lights", "map"), &VertexLights2D::map_get_lights);
+	ClassDB::bind_method(D_METHOD("map_get_lights", "map"), &VertexLights2DServer::map_get_lights);
 
-	ClassDB::bind_method(D_METHOD("map_clear", "map"), &VertexLights2D::map_clear);
+	ClassDB::bind_method(D_METHOD("map_clear", "map"), &VertexLights2DServer::map_clear);
 
 	// Lights
 
-	ClassDB::bind_method(D_METHOD("light_create"), &VertexLights2D::light_create);
+	ClassDB::bind_method(D_METHOD("light_create"), &VertexLights2DServer::light_create);
 
-	ClassDB::bind_method(D_METHOD("light_get_map", "light"), &VertexLights2D::light_get_map);
-	ClassDB::bind_method(D_METHOD("light_set_map", "light", "map"), &VertexLights2D::light_set_map);
+	ClassDB::bind_method(D_METHOD("light_get_map", "light"), &VertexLights2DServer::light_get_map);
+	ClassDB::bind_method(D_METHOD("light_set_map", "light", "map"), &VertexLights2DServer::light_set_map);
 
-	ClassDB::bind_method(D_METHOD("light_get_position", "light"), &VertexLights2D::light_get_position);
-	ClassDB::bind_method(D_METHOD("light_set_position", "light", "position"), &VertexLights2D::light_set_position);
+	ClassDB::bind_method(D_METHOD("light_get_position", "light"), &VertexLights2DServer::light_get_position);
+	ClassDB::bind_method(D_METHOD("light_set_position", "light", "position"), &VertexLights2DServer::light_set_position);
 
-	ClassDB::bind_method(D_METHOD("light_get_color", "light"), &VertexLights2D::light_get_color);
-	ClassDB::bind_method(D_METHOD("light_set_color", "light", "color"), &VertexLights2D::light_set_color);
+	ClassDB::bind_method(D_METHOD("light_get_color", "light"), &VertexLights2DServer::light_get_color);
+	ClassDB::bind_method(D_METHOD("light_set_color", "light", "color"), &VertexLights2DServer::light_set_color);
 
-	ClassDB::bind_method(D_METHOD("light_get_mode", "light"), &VertexLights2D::light_get_mode);
-	ClassDB::bind_method(D_METHOD("light_set_mode", "light", "mode"), &VertexLights2D::light_set_mode);
+	ClassDB::bind_method(D_METHOD("light_get_mode", "light"), &VertexLights2DServer::light_get_mode);
+	ClassDB::bind_method(D_METHOD("light_set_mode", "light", "mode"), &VertexLights2DServer::light_set_mode);
 
-	ClassDB::bind_method(D_METHOD("light_get_z_range", "light"), &VertexLights2D::light_get_z_range);
-	ClassDB::bind_method(D_METHOD("light_set_z_range", "light", "z_range"), &VertexLights2D::light_set_z_range);
+	ClassDB::bind_method(D_METHOD("light_get_z_range", "light"), &VertexLights2DServer::light_get_z_range);
+	ClassDB::bind_method(D_METHOD("light_set_z_range", "light", "z_range"), &VertexLights2DServer::light_set_z_range);
 
-	ClassDB::bind_method(D_METHOD("light_get_layer_range", "light"), &VertexLights2D::light_get_layer_range);
-	ClassDB::bind_method(D_METHOD("light_set_layer_range", "light", "layer_range"), &VertexLights2D::light_set_layer_range);
+	ClassDB::bind_method(D_METHOD("light_get_layer_range", "light"), &VertexLights2DServer::light_get_layer_range);
+	ClassDB::bind_method(D_METHOD("light_set_layer_range", "light", "layer_range"), &VertexLights2DServer::light_set_layer_range);
 
-	ClassDB::bind_method(D_METHOD("light_get_item_cull_mask", "light"), &VertexLights2D::light_get_item_cull_mask);
-	ClassDB::bind_method(D_METHOD("light_set_item_cull_mask", "light", "item_cull_mask"), &VertexLights2D::light_set_item_cull_mask);
+	ClassDB::bind_method(D_METHOD("light_get_item_cull_mask", "light"), &VertexLights2DServer::light_get_item_cull_mask);
+	ClassDB::bind_method(D_METHOD("light_set_item_cull_mask", "light", "item_cull_mask"), &VertexLights2DServer::light_set_item_cull_mask);
 
 	// Rest
 
-	ClassDB::bind_method(D_METHOD("free", "rid"), &VertexLights2D::free);
+	ClassDB::bind_method(D_METHOD("free", "rid"), &VertexLights2DServer::free);
 
 	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_ADD);
 	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_SUB);
 	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_MIX);
 }
 
-VertexLights2D *VertexLights2D::_self = NULL;
+VertexLights2DServer *VertexLights2DServer::_self = NULL;
