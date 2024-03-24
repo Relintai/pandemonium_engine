@@ -1,0 +1,105 @@
+/*************************************************************************/
+/*  vertex_light_2d.cpp                                                  */
+/*************************************************************************/
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
+/*************************************************************************/
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
+#include "vertex_light_2d.h"
+
+Color VertexLight2D::get_color() {
+	return _color;
+}
+void VertexLight2D::set_color(const Color &p_color) {
+	_color = p_color;
+}
+
+VertexLight2D::VertexLight2DMode VertexLight2D::get_mode() {
+	return _mode;
+}
+void VertexLight2D::set_mode(const VertexLight2D::VertexLight2DMode p_mode) {
+	_mode = p_mode;
+}
+
+Vector2i VertexLight2D::get_z_range() {
+	return _z_range;
+}
+void VertexLight2D::set_z_range(const Vector2i &p_z_range) {
+	_z_range = p_z_range;
+}
+
+Vector2i VertexLight2D::get_layer_range() {
+	return _layer_range;
+}
+void VertexLight2D::set_layer_range(const Vector2i &p_layer_range) {
+	_layer_range = p_layer_range;
+}
+
+int VertexLight2D::get_item_cull_mask() {
+	return _item_cull_mask;
+}
+void VertexLight2D::set_item_cull_mask(const int p_item_cull_mask) {
+	_item_cull_mask = p_item_cull_mask;
+}
+
+VertexLight2D::VertexLight2D() {
+	_vertex_light = RID_PRIME(VertexLights2DServer::get_singleton()->light_create());
+
+	_item_cull_mask = 1;
+	_z_range = Vector2i(-1024, 1024);
+	_mode = VERTEX_LIGHT_2D_MODE_ADD;
+}
+
+VertexLight2D::~VertexLight2D() {
+	VertexLights2DServer::get_singleton()->free(_vertex_light);
+}
+
+void VertexLight2D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_color"), &VertexLight2D::get_color);
+	ClassDB::bind_method(D_METHOD("set_color", "color"), &VertexLight2D::set_color);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");
+
+	ClassDB::bind_method(D_METHOD("get_mode"), &VertexLight2D::get_mode);
+	ClassDB::bind_method(D_METHOD("set_mode", "mode"), &VertexLight2D::set_mode);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "mode", PROPERTY_HINT_ENUM, "Add,Sub,Mix,Mask"), "set_mode", "get_mode");
+
+	ClassDB::bind_method(D_METHOD("get_z_range"), &VertexLight2D::get_z_range);
+	ClassDB::bind_method(D_METHOD("set_z_range", "z_range"), &VertexLight2D::set_z_range);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "z_range", PROPERTY_HINT_RANGE, itos(RS::CANVAS_ITEM_Z_MIN) + "," + itos(RS::CANVAS_ITEM_Z_MAX) + ",1"), "set_z_range", "get_z_range");
+
+	ClassDB::bind_method(D_METHOD("get_layer_range"), &VertexLight2D::get_layer_range);
+	ClassDB::bind_method(D_METHOD("set_layer_range", "layer_range"), &VertexLight2D::set_layer_range);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "layer_range", PROPERTY_HINT_RANGE, "-512,512,1"), "set_layer_range", "get_layer_range");
+
+	ClassDB::bind_method(D_METHOD("get_item_cull_mask"), &VertexLight2D::get_item_cull_mask);
+	ClassDB::bind_method(D_METHOD("set_item_cull_mask", "item_cull_mask"), &VertexLight2D::set_item_cull_mask);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "item_cull_mask", PROPERTY_HINT_LAYERS_2D_RENDER), "set_item_cull_mask", "get_item_cull_mask");
+
+	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_ADD);
+	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_SUB);
+	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_MIX);
+}

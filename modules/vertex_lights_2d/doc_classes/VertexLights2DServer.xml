@@ -48,7 +48,7 @@
 			</description>
 		</method>
 		<method name="light_get_mode">
-			<return type="int" enum="VertexLights2D.VertexLight2DMode" />
+			<return type="int" enum="VertexLights2DServer.VertexLight2DMode" />
 			<argument index="0" name="light" type="RID" />
 			<description>
 			</description>
@@ -96,7 +96,7 @@
 		<method name="light_set_mode">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="mode" type="int" enum="VertexLights2D.VertexLight2DMode" />
+			<argument index="1" name="mode" type="int" enum="VertexLights2DServer.VertexLight2DMode" />
 			<description>
 			</description>
 		</method>

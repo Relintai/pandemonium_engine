@@ -1,5 +1,8 @@
+#ifndef VERTEX_LIGHT_2D_H
+#define VERTEX_LIGHT_2D_H
+
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  vertex_2d.h                                                    */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,33 +32,56 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
+#include "scene/main/node_2d.h"
 
-#include "core/config/engine.h"
+#include "core/containers/hash_map.h"
+#include "core/containers/vector.h"
+#include "core/math/color.h"
+#include "core/math/vector2i.h"
 
 #include "vertex_lights_2d_server.h"
-#include "vertex_light_2d.h"
 
-VertexLights2DServer *vertex_lights_2d_server = NULL;
+class VertexLight2D : public Node2D {
+	GDCLASS(VertexLight2D, Node2D);
 
-void register_vertex_lights_2d_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		vertex_lights_2d_server = memnew(VertexLights2DServer);
-		ClassDB::register_class<VertexLights2DServer>();
-		Engine::get_singleton()->add_singleton(Engine::Singleton("VertexLights2DServer", VertexLights2DServer::get_singleton()));
-	}
-	
-	
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<VertexLight2D>();
-	}
-	
-}
+public:
+	enum VertexLight2DMode {
+		VERTEX_LIGHT_2D_MODE_ADD = VertexLights2DServer::VERTEX_LIGHT_2D_MODE_ADD,
+		VERTEX_LIGHT_2D_MODE_SUB = VertexLights2DServer::VERTEX_LIGHT_2D_MODE_SUB,
+		VERTEX_LIGHT_2D_MODE_MIX = VertexLights2DServer::VERTEX_LIGHT_2D_MODE_MIX,
+		//VERTEX_LIGHT_2D_MODE_MASK = VertexLights2DServer::VERTEX_LIGHT_2D_MODE_MASK
+	};
 
-void unregister_vertex_lights_2d_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		if (vertex_lights_2d_server) {
-			memdelete(vertex_lights_2d_server);
-		}
-	}
-}
+	Color get_color();
+	void set_color(const Color &p_color);
+
+	VertexLight2D::VertexLight2DMode get_mode();
+	void set_mode(const VertexLight2D::VertexLight2DMode p_mode);
+
+	Vector2i get_z_range();
+	void set_z_range(const Vector2i &p_z_range);
+
+	Vector2i get_layer_range();
+	void set_layer_range(const Vector2i &p_layer_range);
+
+	int get_item_cull_mask();
+	void set_item_cull_mask(const int p_item_cull_mask);
+
+	VertexLight2D();
+	~VertexLight2D();
+
+protected:
+	static void _bind_methods();
+
+	RID _vertex_light;
+
+	Color _color;
+	VertexLight2DMode _mode;
+	Vector2i _z_range;
+	Vector2i _layer_range;
+	int _item_cull_mask;
+};
+
+VARIANT_ENUM_CAST(VertexLight2D::VertexLight2DMode);
+
+#endif

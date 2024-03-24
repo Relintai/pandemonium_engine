@@ -11,6 +11,7 @@ def configure(env):
 def get_doc_classes():
     return [
         "VertexLights2DServer",
+        "VertexLight2D",
     ]
 
 def get_doc_path():

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VertexLight2D" inherits="Node2D" version="4.3">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="color" type="Color" setter="set_color" getter="get_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="item_cull_mask" type="int" setter="set_item_cull_mask" getter="get_item_cull_mask" default="1">
+		</member>
+		<member name="layer_range" type="Vector2i" setter="set_layer_range" getter="get_layer_range" default="Vector2i( 0, 0 )">
+		</member>
+		<member name="mode" type="int" setter="set_mode" getter="get_mode" enum="VertexLight2D.VertexLight2DMode" default="0">
+		</member>
+		<member name="z_range" type="Vector2i" setter="set_z_range" getter="get_z_range" default="Vector2i( -1024, 1024 )">
+		</member>
+	</members>
+	<constants>
+		<constant name="VERTEX_LIGHT_2D_MODE_ADD" value="0" enum="VertexLight2DMode">
+		</constant>
+		<constant name="VERTEX_LIGHT_2D_MODE_SUB" value="1" enum="VertexLight2DMode">
+		</constant>
+		<constant name="VERTEX_LIGHT_2D_MODE_MIX" value="2" enum="VertexLight2DMode">
+		</constant>
+	</constants>
+</class>
