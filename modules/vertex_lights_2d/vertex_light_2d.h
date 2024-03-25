@@ -55,6 +55,12 @@ public:
 	bool get_is_enabled();
 	void set_enabled(const bool p_enabled);
 
+	Vector2i get_range();
+	void set_range(const Vector2i &p_range);
+
+	real_t get_attenuation();
+	void set_attenuation(const real_t p_attenuation);
+
 	Color get_color();
 	void set_color(const Color &p_color);
 
@@ -75,14 +81,16 @@ public:
 
 protected:
 	void _notification(int p_what);
-	
+
 	void _update_light_visibility();
 
 	static void _bind_methods();
 
 	RID _vertex_light;
-	
+
 	bool _enabled;
+	Vector2i _range;
+	real_t _attenuation;
 	Color _color;
 	VertexLight2DMode _mode;
 	Vector2i _z_range;

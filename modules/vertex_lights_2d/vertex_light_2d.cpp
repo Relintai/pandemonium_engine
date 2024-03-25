@@ -44,6 +44,24 @@ void VertexLight2D::set_enabled(const bool p_enabled) {
 	_update_light_visibility();
 }
 
+Vector2i VertexLight2D::get_range() {
+	return _range;
+}
+void VertexLight2D::set_range(const Vector2i &p_range) {
+	_range = p_range;
+
+	VertexLights2DServer::get_singleton()->light_set_z_range(_vertex_light, _range);
+}
+
+real_t VertexLight2D::get_attenuation() {
+	return _attenuation;
+}
+void VertexLight2D::set_attenuation(const real_t p_attenuation) {
+	_attenuation = p_attenuation;
+
+	VertexLights2DServer::get_singleton()->light_set_attenuation(_vertex_light, _attenuation);
+}
+
 Color VertexLight2D::get_color() {
 	return _color;
 }
@@ -93,6 +111,8 @@ VertexLight2D::VertexLight2D() {
 	_vertex_light = RID_PRIME(VertexLights2DServer::get_singleton()->light_create());
 
 	_enabled = true;
+	_range = Vector2i(32, 32);
+	_attenuation = 1;
 	_color = Color(1, 1, 1, 1);
 	_item_cull_mask = 1;
 	_z_range = Vector2i(-1024, 1024);
@@ -142,13 +162,22 @@ void VertexLight2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &VertexLight2D::set_enabled);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "get_is_enabled");
 
+	ClassDB::bind_method(D_METHOD("get_range"), &VertexLight2D::get_range);
+	ClassDB::bind_method(D_METHOD("set_range", "range"), &VertexLight2D::set_range);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "range"), "set_range", "get_range");
+
+	ClassDB::bind_method(D_METHOD("get_attenuation"), &VertexLight2D::get_attenuation);
+	ClassDB::bind_method(D_METHOD("set_attenuation", "attenuation"), &VertexLight2D::set_attenuation);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "attenuation", PROPERTY_HINT_EXP_EASING, "attenuation"), "set_attenuation", "get_attenuation");
+
 	ClassDB::bind_method(D_METHOD("get_color"), &VertexLight2D::get_color);
 	ClassDB::bind_method(D_METHOD("set_color", "color"), &VertexLight2D::set_color);
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");
 
 	ClassDB::bind_method(D_METHOD("get_mode"), &VertexLight2D::get_mode);
 	ClassDB::bind_method(D_METHOD("set_mode", "mode"), &VertexLight2D::set_mode);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "mode", PROPERTY_HINT_ENUM, "Add,Sub,Mix,Mask"), "set_mode", "get_mode");
+	//,Mask
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "mode", PROPERTY_HINT_ENUM, "Add,Sub,Mix"), "set_mode", "get_mode");
 
 	ClassDB::bind_method(D_METHOD("get_z_range"), &VertexLight2D::get_z_range);
 	ClassDB::bind_method(D_METHOD("set_z_range", "z_range"), &VertexLight2D::set_z_range);

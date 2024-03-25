@@ -154,6 +154,32 @@ void VertexLights2DServer::light_set_position(RID p_light, const Vector2 &p_posi
 	light->position = p_position;
 }
 
+Vector2i VertexLights2DServer::light_get_range(RID p_light) {
+	const VertexLightData2D *light = light_owner.getornull(p_light);
+	ERR_FAIL_COND_V(light == NULL, Vector2i());
+
+	return light->range;
+}
+void VertexLights2DServer::light_set_range(RID p_light, const Vector2i &p_range) {
+	VertexLightData2D *light = light_owner.getornull(p_light);
+	ERR_FAIL_COND(light == NULL);
+
+	light->range = p_range;
+}
+
+real_t VertexLights2DServer::light_get_attenuation(RID p_light) {
+	const VertexLightData2D *light = light_owner.getornull(p_light);
+	ERR_FAIL_COND_V(light == NULL, 0);
+
+	return light->attenuation;
+}
+void VertexLights2DServer::light_set_attenuation(RID p_light, const real_t p_attenuation) {
+	VertexLightData2D *light = light_owner.getornull(p_light);
+	ERR_FAIL_COND(light == NULL);
+
+	light->attenuation = p_attenuation;
+}
+
 Color VertexLights2DServer::light_get_color(RID p_light) {
 	const VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND_V(light == NULL, Color());
@@ -290,6 +316,12 @@ void VertexLights2DServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("light_get_position", "light"), &VertexLights2DServer::light_get_position);
 	ClassDB::bind_method(D_METHOD("light_set_position", "light", "position"), &VertexLights2DServer::light_set_position);
+
+	ClassDB::bind_method(D_METHOD("light_get_range", "light"), &VertexLights2DServer::light_get_range);
+	ClassDB::bind_method(D_METHOD("light_set_range", "light", "range"), &VertexLights2DServer::light_set_range);
+
+	ClassDB::bind_method(D_METHOD("light_get_attenuation", "light"), &VertexLights2DServer::light_get_attenuation);
+	ClassDB::bind_method(D_METHOD("light_set_attenuation", "light", "attenuation"), &VertexLights2DServer::light_set_attenuation);
 
 	ClassDB::bind_method(D_METHOD("light_get_color", "light"), &VertexLights2DServer::light_get_color);
 	ClassDB::bind_method(D_METHOD("light_set_color", "light", "color"), &VertexLights2DServer::light_set_color);

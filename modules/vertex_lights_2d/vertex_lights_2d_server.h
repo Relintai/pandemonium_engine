@@ -81,6 +81,12 @@ public:
 	Vector2 light_get_position(RID p_light);
 	void light_set_position(RID p_light, const Vector2 &p_position);
 
+	Vector2i light_get_range(RID p_light);
+	void light_set_range(RID p_light, const Vector2i &p_range);
+	
+	real_t light_get_attenuation(RID p_light);
+	void light_set_attenuation(RID p_light, const real_t p_attenuation);
+
 	Color light_get_color(RID p_light);
 	void light_set_color(RID p_light, const Color &p_color);
 
@@ -95,6 +101,8 @@ public:
 
 	int light_get_item_cull_mask(RID p_light);
 	void light_set_item_cull_mask(RID p_light, const int p_item_cull_mask);
+
+	// Sampling
 
 	// Rest
 
@@ -118,6 +126,8 @@ protected:
 	public:
 		bool enabled;
 		Vector2 position;
+		Vector2i range;
+		real_t attenuation;
 		Color color;
 		VertexLights2DServer::VertexLight2DMode mode;
 		Vector2i z_range;
@@ -134,6 +144,8 @@ protected:
 			quadrant = NULL;
 
 			enabled = true;
+			range = Vector2i(32, 32);
+			attenuation = 1;
 			color = Color(1, 1, 1, 1);
 			item_cull_mask = 1;
 			z_range = Vector2i(-1024, 1024);
