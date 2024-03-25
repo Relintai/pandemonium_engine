@@ -409,5 +409,10 @@ World2D::~World2D() {
 	RenderingServer::get_singleton()->free(canvas);
 	Physics2DServer::get_singleton()->free(space);
 	Navigation2DServer::get_singleton()->free(navigation_map);
+
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	VertexLights2DServer::get_singleton()->free(vertex_lights_2d_map);
+#endif
+
 	memdelete(indexer);
 }
