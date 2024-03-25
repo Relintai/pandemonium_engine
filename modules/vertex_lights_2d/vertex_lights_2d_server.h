@@ -35,13 +35,11 @@
 #include "core/object/object.h"
 
 #include "core/containers/hash_map.h"
+#include "core/containers/list.h"
+#include "core/containers/rid.h"
 #include "core/containers/vector.h"
 #include "core/math/color.h"
 #include "core/math/vector2i.h"
-
-class VertexLightMap2D;
-class VertexLightQuadrant2D;
-class VertexLightData2D;
 
 class VertexLights2DServer : public Object {
 	GDCLASS(VertexLights2DServer, Object);
@@ -55,28 +53,28 @@ public:
 	};
 
 	// Defaults
-	
+
 	Vector2i get_default_quadrant_size() const;
 	void set_default_quadrant_size(const Vector2i &p_size);
 
 	// Maps
-	
+
 	RID map_create();
 
 	Vector2i map_get_quadrant_size(RID p_map) const;
 	void map_set_quadrant_size(RID p_map, const Vector2i &p_size);
 
 	Array map_get_lights(RID p_map) const;
-	
+
 	void map_clear(RID p_map);
 
 	// Lights
-	
+
 	RID light_create();
 
 	RID light_get_map(RID p_light);
 	void light_set_map(RID p_light, RID p_map);
-	
+
 	bool light_get_is_enabled(RID p_light);
 	void light_set_enabled(RID p_light, const bool p_enabled);
 
@@ -111,6 +109,80 @@ public:
 
 protected:
 	static void _bind_methods();
+
+	class VertexLightMap2D;
+	class VertexLightQuadrant2D;
+	class VertexLightData2D;
+
+	class VertexLightData2D : public RID_Data {
+	public:
+		bool enabled;
+		Vector2 position;
+		Color color;
+		VertexLights2DServer::VertexLight2DMode mode;
+		Vector2i z_range;
+		Vector2i layer_range;
+		int item_cull_mask;
+
+		VertexLightMap2D *map;
+		VertexLightQuadrant2D *quadrant;
+
+		RID self;
+
+		VertexLightData2D() {
+			map = NULL;
+			quadrant = NULL;
+
+			enabled = true;
+			color = Color(1, 1, 1, 1);
+			item_cull_mask = 1;
+			z_range = Vector2i(-1024, 1024);
+			mode = VertexLights2DServer::VERTEX_LIGHT_2D_MODE_ADD;
+		}
+	};
+
+	class VertexLightQuadrant2D {
+	public:
+		Vector2i position;
+		LocalVector<VertexLightData2D *> lights;
+
+		VertexLightMap2D *map;
+
+		void get_lights(List<VertexLightData2D *> *p_lights);
+
+		VertexLightQuadrant2D() {
+			map = NULL;
+		}
+	};
+
+	class VertexLightMap2D : public RID_Data {
+	public:
+		HashMap<Vector2i, VertexLightQuadrant2D *> quadrants;
+		Vector2i quadrant_size;
+
+		RID self;
+
+		void recreate_quadrants();
+
+		void get_lights(List<VertexLightData2D *> *p_lights);
+
+		void add_light(VertexLightData2D *p_light);
+		void remove_light(VertexLightData2D *p_light);
+
+		VertexLightQuadrant2D *get_quadrant_for_position(const Vector2 &p_position);
+
+		void set_light_position(VertexLightData2D *p_light, const Vector2 &p_position);
+
+		void clear();
+
+		_FORCE_INLINE_ Vector2i to_quadrant_position(const Vector2 &p_position) {
+			return Vector2i(p_position.x / quadrant_size.x, p_position.y / quadrant_size.y);
+		}
+
+		_FORCE_INLINE_ Vector2 to_position(const Vector2i &p_quadrant_position) {
+			return Vector2(p_quadrant_position.x * quadrant_size.x, p_quadrant_position.y * quadrant_size.y);
+		}
+	};
 
 	mutable RID_Owner<VertexLightMap2D> map_owner;
 	mutable RID_Owner<VertexLightData2D> light_owner;

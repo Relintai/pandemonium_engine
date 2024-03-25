@@ -33,8 +33,6 @@
 
 #include "core/config/project_settings.h"
 
-#include "vertex_light_data.h"
-
 // Defaults
 Vector2i VertexLights2DServer::get_default_quadrant_size() const {
 	return _default_quadrant_size;

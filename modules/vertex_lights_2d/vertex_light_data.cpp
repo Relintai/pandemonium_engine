@@ -29,11 +29,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "vertex_light_data.h"
+#include "vertex_lights_2d_server.h"
 
 //VertexLightQuadrant2D
 
-void VertexLightQuadrant2D::get_lights(List<VertexLightData2D *> *p_lights) {
+void VertexLights2DServer::VertexLightQuadrant2D::get_lights(List<VertexLightData2D *> *p_lights) {
 	for (uint32_t i = 0; i < lights.size(); ++i) {
 		p_lights->push_back(lights[i]);
 	}
@@ -41,7 +41,7 @@ void VertexLightQuadrant2D::get_lights(List<VertexLightData2D *> *p_lights) {
 
 //VertexLightMap2D
 
-void VertexLightMap2D::recreate_quadrants() {
+void VertexLights2DServer::VertexLightMap2D::recreate_quadrants() {
 	List<VertexLightData2D *> lights;
 	get_lights(&lights);
 
@@ -57,13 +57,13 @@ void VertexLightMap2D::recreate_quadrants() {
 	}
 }
 
-void VertexLightMap2D::get_lights(List<VertexLightData2D *> *p_lights) {
+void VertexLights2DServer::VertexLightMap2D::get_lights(List<VertexLightData2D *> *p_lights) {
 	for (HashMap<Vector2i, VertexLightQuadrant2D *>::Element *E = quadrants.front(); E; E = E->next) {
 		E->value()->get_lights(p_lights);
 	}
 }
 
-void VertexLightMap2D::add_light(VertexLightData2D *p_light) {
+void VertexLights2DServer::VertexLightMap2D::add_light(VertexLightData2D *p_light) {
 	VertexLightQuadrant2D *quadrant = get_quadrant_for_position(p_light->position);
 
 	p_light->map = this;
@@ -71,7 +71,7 @@ void VertexLightMap2D::add_light(VertexLightData2D *p_light) {
 
 	quadrant->lights.push_back(p_light);
 }
-void VertexLightMap2D::remove_light(VertexLightData2D *p_light) {
+void VertexLights2DServer::VertexLightMap2D::remove_light(VertexLightData2D *p_light) {
 	p_light->map = NULL;
 
 	VertexLightQuadrant2D *quadrant = p_light->quadrant;
@@ -89,7 +89,7 @@ void VertexLightMap2D::remove_light(VertexLightData2D *p_light) {
 	}
 }
 
-VertexLightQuadrant2D *VertexLightMap2D::get_quadrant_for_position(const Vector2 &p_position) {
+VertexLights2DServer::VertexLightQuadrant2D *VertexLights2DServer::VertexLightMap2D::get_quadrant_for_position(const Vector2 &p_position) {
 	Vector2i quadrant_position = to_quadrant_position(p_position);
 
 	if (!quadrants.has(quadrant_position)) {
@@ -102,12 +102,12 @@ VertexLightQuadrant2D *VertexLightMap2D::get_quadrant_for_position(const Vector2
 	return quadrants[quadrant_position];
 }
 
-void VertexLightMap2D::set_light_position(VertexLightData2D *p_light, const Vector2 &p_position) {
+void VertexLights2DServer::VertexLightMap2D::set_light_position(VertexLightData2D *p_light, const Vector2 &p_position) {
 	remove_light(p_light);
 	add_light(p_light);
 }
 
-void VertexLightMap2D::clear() {
+void VertexLights2DServer::VertexLightMap2D::clear() {
 	List<VertexLightData2D *> lights;
 	get_lights(&lights);
 
