@@ -376,8 +376,11 @@ void LayeredTileMapLayer::_rendering_update() {
 
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
 					if (_use_vertex_lights) {
-						//self_modulate = self_modulate.blend(cell_data.vertex_light_color);
-						self_modulate = cell_data.vertex_light_color;
+						self_modulate = self_modulate.blend(cell_data.vertex_light_color);
+						//self_modulate = self_modulate.clamp();
+						//self_modulate = cell_data.vertex_light_color;
+						//self_modulate += cell_data.vertex_light_color;
+						//self_modulate = self_modulate.clamp();
 					}
 #endif
 
