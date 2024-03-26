@@ -160,6 +160,7 @@ protected:
 			color = Color(1, 1, 1, 1);
 			item_cull_mask = 1;
 			z_range = Vector2i(-1024, 1024);
+			layer_range = Vector2i(-512, 512);
 			mode = VertexLights2DServer::VERTEX_LIGHT_2D_MODE_ADD;
 		}
 	};
