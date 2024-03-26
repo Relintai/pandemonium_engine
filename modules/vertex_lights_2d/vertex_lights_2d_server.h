@@ -64,6 +64,9 @@ public:
 
 	Vector2i map_get_quadrant_size(RID p_map) const;
 	void map_set_quadrant_size(RID p_map, const Vector2i &p_size);
+	
+	Color map_get_base_color(RID p_map) const;
+	void map_set_base_color(RID p_map, const Color &p_base_color);
 
 	Array map_get_lights(RID p_map) const;
 
@@ -185,6 +188,7 @@ protected:
 	public:
 		HashMap<Vector2i, VertexLightQuadrant2D *> quadrants;
 		Vector2i quadrant_size;
+		Color base_color;
 
 		RID self;
 

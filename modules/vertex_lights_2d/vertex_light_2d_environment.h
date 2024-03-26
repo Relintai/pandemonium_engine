@@ -1,5 +1,8 @@
+#ifndef VERTEX_LIGHT_2D_ENVIRONMENT_H
+#define VERTEX_LIGHT_2D_ENVIRONMENT_H
+
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  vertex_2d.h                                                    */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,35 +32,35 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
+#include "scene/main/node_2d.h"
 
-#include "core/config/engine.h"
+#include "core/containers/hash_map.h"
+#include "core/containers/vector.h"
+#include "core/math/color.h"
+#include "core/math/vector2i.h"
 
-#include "vertex_light_2d.h"
-#include "vertex_light_2d_environment.h"
-#include "vertex_lights_2d_server.h"
+class VertexLight2DEnvironment : public Node2D {
+	GDCLASS(VertexLight2DEnvironment, Node2D);
 
-VertexLights2DServer *vertex_lights_2d_server = NULL;
+public:
+	bool get_is_enabled();
+	void set_enabled(const bool p_enabled);
 
-void register_vertex_lights_2d_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		vertex_lights_2d_server = memnew(VertexLights2DServer);
-		ClassDB::register_class<VertexLights2DServer>();
-		Engine::get_singleton()->add_singleton(Engine::Singleton("VertexLights2DServer", VertexLights2DServer::get_singleton()));
-	} else if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<VertexLight2D>();
-		ClassDB::register_class<VertexLight2DEnvironment>();
-	} else if (p_level == MODULE_REGISTRATION_LEVEL_FINALIZE) {
-		vertex_lights_2d_server->init();
-	}
-}
+	Color get_color();
+	void set_color(const Color &p_color);
 
-void unregister_vertex_lights_2d_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		if (vertex_lights_2d_server) {
-			memdelete(vertex_lights_2d_server);
-		} else if (p_level == MODULE_REGISTRATION_LEVEL_FINALIZE) {
-			vertex_lights_2d_server->finalize();
-		}
-	}
-}
+	VertexLight2DEnvironment();
+	~VertexLight2DEnvironment();
+
+protected:
+	void _notification(int p_what);
+
+	void _update_light_visibility();
+
+	static void _bind_methods();
+
+	bool _enabled;
+	Color _color;
+};
+
+#endif

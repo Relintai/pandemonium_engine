@@ -68,6 +68,22 @@ void VertexLights2DServer::map_set_quadrant_size(RID p_map, const Vector2i &p_si
 	_map_changed(map);
 }
 
+Color VertexLights2DServer::map_get_base_color(RID p_map) const {
+	const VertexLightMap2D *map = map_owner.getornull(p_map);
+	ERR_FAIL_COND_V(map == NULL, Color());
+
+	return map->base_color;
+}
+void VertexLights2DServer::map_set_base_color(RID p_map, const Color &p_base_color) {
+	VertexLightMap2D *map = map_owner.getornull(p_map);
+	ERR_FAIL_COND(map == NULL);
+
+	map->base_color = p_base_color;
+
+	_map_changed(map);
+}
+
+
 Array VertexLights2DServer::map_get_lights(RID p_map) const {
 	VertexLightMap2D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND_V(map == NULL, Array());
@@ -361,6 +377,9 @@ void VertexLights2DServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("map_get_quadrant_size", "map"), &VertexLights2DServer::map_get_quadrant_size);
 	ClassDB::bind_method(D_METHOD("map_set_quadrant_size", "map", "size"), &VertexLights2DServer::map_set_quadrant_size);
+	
+	ClassDB::bind_method(D_METHOD("map_get_base_color", "map"), &VertexLights2DServer::map_get_base_color);
+	ClassDB::bind_method(D_METHOD("map_set_base_color", "map", "base_color"), &VertexLights2DServer::map_set_base_color);
 
 	ClassDB::bind_method(D_METHOD("map_get_lights", "map"), &VertexLights2DServer::map_get_lights);
 

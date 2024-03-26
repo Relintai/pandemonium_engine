@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  vertex_light_2d.cpp                                                  */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,35 +29,68 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
+#include "vertex_light_2d_environment.h"
 
 #include "core/config/engine.h"
 
-#include "vertex_light_2d.h"
-#include "vertex_light_2d_environment.h"
+#include "scene/resources/world_2d.h"
+
 #include "vertex_lights_2d_server.h"
 
-VertexLights2DServer *vertex_lights_2d_server = NULL;
+bool VertexLight2DEnvironment::get_is_enabled() {
+	return _enabled;
+}
+void VertexLight2DEnvironment::set_enabled(const bool p_enabled) {
+	_enabled = p_enabled;
 
-void register_vertex_lights_2d_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		vertex_lights_2d_server = memnew(VertexLights2DServer);
-		ClassDB::register_class<VertexLights2DServer>();
-		Engine::get_singleton()->add_singleton(Engine::Singleton("VertexLights2DServer", VertexLights2DServer::get_singleton()));
-	} else if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<VertexLight2D>();
-		ClassDB::register_class<VertexLight2DEnvironment>();
-	} else if (p_level == MODULE_REGISTRATION_LEVEL_FINALIZE) {
-		vertex_lights_2d_server->init();
+	_update_light_visibility();
+}
+
+Color VertexLight2DEnvironment::get_color() {
+	return _color;
+}
+void VertexLight2DEnvironment::set_color(const Color &p_color) {
+	_color = p_color;
+
+	_update_light_visibility();
+}
+
+VertexLight2DEnvironment::VertexLight2DEnvironment() {
+	_enabled = true;
+}
+
+VertexLight2DEnvironment::~VertexLight2DEnvironment() {
+}
+
+void VertexLight2DEnvironment::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE: {
+			_update_light_visibility();
+		} break;
+		case NOTIFICATION_VISIBILITY_CHANGED: {
+			_update_light_visibility();
+		} break;
 	}
 }
 
-void unregister_vertex_lights_2d_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		if (vertex_lights_2d_server) {
-			memdelete(vertex_lights_2d_server);
-		} else if (p_level == MODULE_REGISTRATION_LEVEL_FINALIZE) {
-			vertex_lights_2d_server->finalize();
-		}
+void VertexLight2DEnvironment::_update_light_visibility() {
+	if (!is_inside_tree() || !_enabled || !is_visible_in_tree()) {
+		return;
 	}
+
+	Ref<World2D> world = get_world_2d();
+	ERR_FAIL_COND(!world.is_valid());
+	RID map = world->get_vertex_lights_2d_map();
+
+	VertexLights2DServer::get_singleton()->map_set_base_color(map, _color);
+}
+
+void VertexLight2DEnvironment::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_is_enabled"), &VertexLight2DEnvironment::get_is_enabled);
+	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &VertexLight2DEnvironment::set_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "get_is_enabled");
+
+	ClassDB::bind_method(D_METHOD("get_color"), &VertexLight2DEnvironment::get_color);
+	ClassDB::bind_method(D_METHOD("set_color", "color"), &VertexLight2DEnvironment::set_color);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");
 }

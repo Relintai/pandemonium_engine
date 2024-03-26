@@ -186,7 +186,7 @@ void VertexLights2DServer::VertexLightMap2D::clear() {
 }
 
 Color VertexLights2DServer::VertexLightMap2D::sample_light(const Vector2 &p_position, const int p_item_cull_mask, const int p_layer) {
-	Color c = Color();
+	Color c = base_color;
 
 	Vector2i quadrant_position = to_quadrant_position(p_position);
 	

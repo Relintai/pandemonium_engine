@@ -12,6 +12,7 @@ def get_doc_classes():
     return [
         "VertexLights2DServer",
         "VertexLight2D",
+        "VertexLight2DEnvironment",
     ]
 
 def get_doc_path():
