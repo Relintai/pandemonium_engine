@@ -86,6 +86,11 @@ private:
 	Transform2D last_valid_transform;
 	Transform2D new_transform;
 
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	bool _use_vertex_lights;
+#endif
+
 	//RAO
 #ifdef MODULE_FASTNOISE_ENABLED
 	bool _use_rao;
@@ -177,6 +182,12 @@ public:
 	// Terrains (exposed).
 	void set_cells_terrain_connect(int p_layer, PoolVector2iArray p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
 	void set_cells_terrain_path(int p_layer, PoolVector2iArray p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
+
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	void set_use_vertex_lights(const bool p_use);
+	bool get_use_vertex_lights() const;
+#endif
 
 	//RAO
 #ifdef MODULE_FASTNOISE_ENABLED

@@ -43,6 +43,10 @@
 #include "servers/navigation_server.h"
 #endif // DEBUG_ENABLED
 
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+#include "modules/vertex_lights_2d/vertex_lights_2d_server.h"
+#endif
+
 #ifdef DEBUG_ENABLED
 /////////////////////////////// Debug //////////////////////////////////////////
 constexpr int TILE_MAP_DEBUG_QUADRANT_SIZE = 16;
@@ -224,6 +228,11 @@ void LayeredTileMapLayer::_rendering_update() {
 	// If so, recreate everything.
 	bool quandrant_shape_changed = dirty.flags[DIRTY_FLAGS_LAYER_RENDERING_QUADRANT_SIZE] ||
 			(is_sort_enabled() && (dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ENABLED] || dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ORIGIN] || dirty.flags[DIRTY_FLAGS_LAYER_LOCAL_TRANSFORM] || dirty.flags[DIRTY_FLAGS_LAYER_GROUP_TILE_SET]
+
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+										  || dirty.flags[DIRTY_FLAGS_LAYER_VERTEX_LIGHTS]
+#endif
+
 #ifdef MODULE_FASTNOISE_ENABLED
 										  || dirty.flags[DIRTY_FLAGS_LAYER_RAO]
 #endif
@@ -363,24 +372,27 @@ void LayeredTileMapLayer::_rendering_update() {
 
 					// Drawing the tile in the canvas item.
 
+					Color self_modulate = get_self_modulate();
+
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+					if (_use_vertex_lights) {
+						//self_modulate = self_modulate.blend(cell_data.vertex_light_color);
+						self_modulate = cell_data.vertex_light_color;
+					}
+#endif
+
 					//RAO
 #ifdef MODULE_FASTNOISE_ENABLED
 					if (_rao_noise.is_valid()) {
 						float col = (static_cast<float>(cell_data.rao) / 255.0) * _rao_strength;
 
 						Color modulate = get_modulate();
-						Color self_modulate = get_self_modulate();
 
-						Color m = Color(modulate.r * self_modulate.r - col, modulate.g * self_modulate.g - col, modulate.b * self_modulate.b - col, modulate.a * self_modulate.a);
-
-						LayeredTileMap::draw_tile(ci, local_tile_pos - rendering_quadrant->canvas_items_position, tile_set, cell_data.cell.source_id, cell_data.cell.get_atlas_coords(), cell_data.cell.alternative_tile, -1, m, tile_data, random_animation_offset);
-					} else {
-						LayeredTileMap::draw_tile(ci, local_tile_pos - rendering_quadrant->canvas_items_position, tile_set, cell_data.cell.source_id, cell_data.cell.get_atlas_coords(), cell_data.cell.alternative_tile, -1, get_self_modulate(), tile_data, random_animation_offset);
+						self_modulate = Color(modulate.r * self_modulate.r - col, modulate.g * self_modulate.g - col, modulate.b * self_modulate.b - col, modulate.a * self_modulate.a);
 					}
-#else
-					LayeredTileMap::draw_tile(ci, local_tile_pos - rendering_quadrant->canvas_items_position, tile_set, cell_data.cell.source_id, cell_data.cell.get_atlas_coords(), cell_data.cell.alternative_tile, -1, get_self_modulate(), tile_data, random_animation_offset);
-
 #endif
+
+					LayeredTileMap::draw_tile(ci, local_tile_pos - rendering_quadrant->canvas_items_position, tile_set, cell_data.cell.source_id, cell_data.cell.get_atlas_coords(), cell_data.cell.alternative_tile, -1, self_modulate, tile_data, random_animation_offset);
 				}
 			} else {
 				// Free the quadrant.
@@ -533,6 +545,27 @@ void LayeredTileMapLayer::_rendering_quadrants_update_cell(CellData &r_cell_data
 				r_cell_data.rao = static_cast<uint8_t>(static_cast<int>(CLAMP(_rao_noise->get_noise_2d(r_cell_data.coords.x, r_cell_data.coords.y), 0, 1) * 255.0) % 255);
 			} else {
 				r_cell_data.rao = 0;
+			}
+		}
+#endif
+
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+		if (dirty.flags[DIRTY_FLAGS_LAYER_VERTEX_LIGHTS]) {
+			if (_use_vertex_lights) {
+				Ref<World2D> world_2d = get_world_2d();
+
+				if (world_2d.is_valid()) {
+					RID vertex_light_map_rid = world_2d->get_vertex_lights_2d_map();
+
+					const Vector2 local_tile_pos = tile_set->map_to_local(r_cell_data.coords);
+
+					r_cell_data.vertex_light_color = VertexLights2DServer::get_singleton()->sample_light(vertex_light_map_rid, to_global(local_tile_pos));
+				} else {
+					r_cell_data.vertex_light_color = Color(1, 1, 1, 1);
+				}
+
+			} else {
+				r_cell_data.vertex_light_color = Color(1, 1, 1, 1);
 			}
 		}
 #endif
@@ -854,7 +887,7 @@ void LayeredTileMapLayer::_physics_update_cell(CellData &r_cell_data) {
 					Ref<PhysicsMaterial> physics_material = tile_set->get_physics_layer_physics_material(tile_set_physics_layer);
 					uint32_t physics_layer = tile_set->get_physics_layer_collision_layer(tile_set_physics_layer);
 					uint32_t physics_mask = tile_set->get_physics_layer_collision_mask(tile_set_physics_layer);
-					
+
 					RID body = r_cell_data.bodies[tile_set_physics_layer];
 					if (tile_data->get_collision_polygons_count(tile_set_physics_layer) == 0) {
 						// No body needed, free it if it exists.
@@ -1762,6 +1795,15 @@ void LayeredTileMapLayer::_internal_update() {
 	dirty.cell_list.clear();
 }
 
+//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+void LayeredTileMapLayer::_on_vertex_lights_map_changed(RID map) {
+	dirty.flags[DIRTY_FLAGS_LAYER_VERTEX_LIGHTS] = true;
+	_queue_internal_update();
+	emit_signal(CoreStringNames::get_singleton()->changed);
+}
+#endif
+
 void LayeredTileMapLayer::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_POSTINITIALIZE: {
@@ -1819,6 +1861,11 @@ void LayeredTileMapLayer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_renamed"), &LayeredTileMapLayer::_renamed);
 
 	ADD_SIGNAL(MethodInfo(CoreStringNames::get_singleton()->changed));
+	
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	ClassDB::bind_method(D_METHOD("_on_vertex_lights_map_changed"), &LayeredTileMapLayer::_on_vertex_lights_map_changed);
+#endif
 }
 
 void LayeredTileMapLayer::set_as_tile_map_internal_node(int p_index) {
@@ -2833,6 +2880,31 @@ LayeredTileMapLayer::VisibilityMode LayeredTileMapLayer::get_navigation_visibili
 	return navigation_visibility_mode;
 }
 
+//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+void LayeredTileMapLayer::set_use_vertex_lights(const bool p_use) {
+	_use_vertex_lights = p_use;
+
+	dirty.flags[DIRTY_FLAGS_LAYER_VERTEX_LIGHTS] = true;
+
+	if (_use_vertex_lights) {
+		if (!VertexLights2DServer::get_singleton()->is_connected("map_changed", this, "_on_vertex_lights_map_changed")) {
+			VertexLights2DServer::get_singleton()->connect("map_changed", this, "_on_vertex_lights_map_changed");
+		}
+	} else {
+		if (VertexLights2DServer::get_singleton()->is_connected("map_changed", this, "_on_vertex_lights_map_changed")) {
+			VertexLights2DServer::get_singleton()->disconnect("map_changed", this, "_on_vertex_lights_map_changed");
+		}
+	}
+
+	_queue_internal_update();
+	emit_signal(CoreStringNames::get_singleton()->changed);
+}
+bool LayeredTileMapLayer::get_use_vertex_lights() const {
+	return _use_vertex_lights;
+}
+#endif
+
 //RAO
 #ifdef MODULE_FASTNOISE_ENABLED
 Ref<FastNoise> LayeredTileMapLayer::get_rao_noise() {
@@ -2905,6 +2977,11 @@ void LayeredTileMapLayer::tile_data_runtime_update(const Vector2i &p_coords, Lay
 
 LayeredTileMapLayer::LayeredTileMapLayer() {
 	set_notify_transform(true);
+
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	_use_vertex_lights = false;
+#endif
 
 #ifdef MODULE_FASTNOISE_ENABLED
 	_rao_strength = 0.3;

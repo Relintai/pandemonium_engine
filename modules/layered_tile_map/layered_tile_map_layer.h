@@ -109,6 +109,11 @@ struct CellData {
 	uint8_t rao;
 #endif
 
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	Color vertex_light_color;
+#endif
+
 	// Debug.
 	SelfList<CellData> debug_quadrant_list_element;
 
@@ -257,6 +262,11 @@ public:
 		DIRTY_FLAGS_LAYER_NAVIGATION_VISIBILITY_MODE,
 		DIRTY_FLAGS_LAYER_RUNTIME_UPDATE,
 
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+		DIRTY_FLAGS_LAYER_VERTEX_LIGHTS,
+#endif
+
 #ifdef MODULE_FASTNOISE_ENABLED
 		DIRTY_FLAGS_LAYER_RAO,
 #endif
@@ -290,6 +300,11 @@ private:
 	// For keeping compatibility with LayeredTileMap.
 	LayeredTileMap *tile_map_node = nullptr;
 	int layer_index_in_tile_map_node = -1;
+
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	bool _use_vertex_lights;
+#endif
 
 	//RAO
 #ifdef MODULE_FASTNOISE_ENABLED
@@ -377,6 +392,11 @@ private:
 	void _queue_internal_update();
 	void _deferred_internal_update();
 	void _internal_update();
+	
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	void _on_vertex_lights_map_changed(RID map);
+#endif
 
 protected:
 	void _notification(int p_what);
@@ -453,6 +473,12 @@ public:
 	RID get_navigation_map() const;
 	void set_navigation_visibility_mode(VisibilityMode p_show_navigation);
 	VisibilityMode get_navigation_visibility_mode() const;
+
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	void set_use_vertex_lights(const bool p_use);
+	bool get_use_vertex_lights() const;
+#endif
 
 	//RAO
 #ifdef MODULE_FASTNOISE_ENABLED

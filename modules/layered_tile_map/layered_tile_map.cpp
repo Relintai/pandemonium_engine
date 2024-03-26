@@ -497,6 +497,24 @@ void LayeredTileMap::set_cells_terrain_path(int p_layer, PoolVector2iArray p_pat
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_cells_terrain_path, p_path, p_terrain_set, p_terrain, p_ignore_empty_terrains);
 }
 
+//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+void LayeredTileMap::set_use_vertex_lights(const bool p_use) {
+	_use_vertex_lights = p_use;
+
+	for (uint32_t i = 0; i < layers.size(); ++i) {
+		LayeredTileMapLayer *layer = layers[i];
+
+		layer->set_use_vertex_lights(_use_vertex_lights);
+	}
+
+	_emit_changed();
+}
+bool LayeredTileMap::get_use_vertex_lights() const {
+	return _use_vertex_lights;
+}
+#endif
+
 //RAO
 #ifdef MODULE_FASTNOISE_ENABLED
 void LayeredTileMap::rao_set_use(bool p_rao) {
@@ -1147,6 +1165,13 @@ void LayeredTileMap::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_visibility_mode", PROPERTY_HINT_ENUM, "Default,Force Show,Force Hide"), "set_collision_visibility_mode", "get_collision_visibility_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_visibility_mode", PROPERTY_HINT_ENUM, "Default,Force Show,Force Hide"), "set_navigation_visibility_mode", "get_navigation_visibility_mode");
 
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	ClassDB::bind_method(D_METHOD("set_use_vertex_lights", "value"), &LayeredTileMap::set_use_vertex_lights);
+	ClassDB::bind_method(D_METHOD("get_use_vertex_lights"), &LayeredTileMap::get_use_vertex_lights);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_vertex_lights"), "set_use_vertex_lights", "get_use_vertex_lights");
+#endif
+
 	//RAO
 #ifdef MODULE_FASTNOISE_ENABLED
 	ADD_GROUP("RAO", "rao");
@@ -1184,6 +1209,11 @@ LayeredTileMap::LayeredTileMap() {
 	new_layer->connect(CoreStringNames::get_singleton()->changed, this, "_emit_changed");
 	layers.push_back(new_layer);
 	default_layer = memnew(LayeredTileMapLayer);
+
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	_use_vertex_lights = false;
+#endif
 
 #ifdef MODULE_FASTNOISE_ENABLED
 	_use_rao = true;
