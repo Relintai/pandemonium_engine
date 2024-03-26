@@ -48,6 +48,7 @@ RID VertexLights2DServer::map_create() {
 	VertexLightMap2D *map = memnew(VertexLightMap2D);
 	RID rid = map_owner.make_rid(map);
 	map->self = rid;
+	map->quadrant_size = _default_quadrant_size;
 	return rid;
 }
 
