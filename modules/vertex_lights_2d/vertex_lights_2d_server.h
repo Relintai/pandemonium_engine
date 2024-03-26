@@ -35,6 +35,7 @@
 #include "core/object/object.h"
 
 #include "core/containers/hash_map.h"
+#include "core/containers/hash_set.h"
 #include "core/containers/list.h"
 #include "core/containers/rid.h"
 #include "core/containers/vector.h"
@@ -110,6 +111,10 @@ public:
 
 	void free(RID p_rid);
 
+	void init();
+	void finalize();
+	void flush_notifications();
+
 	_FORCE_INLINE_ static VertexLights2DServer *get_singleton() {
 		return _self;
 	}
@@ -118,6 +123,10 @@ public:
 	~VertexLights2DServer();
 
 protected:
+	static void _scene_tree_idle_callback() {
+		VertexLights2DServer::get_singleton()->flush_notifications();
+	}
+
 	static void _bind_methods();
 
 	class VertexLightMap2D;
@@ -163,7 +172,7 @@ protected:
 		VertexLightMap2D *map;
 
 		void get_lights(List<VertexLightData2D *> *p_lights);
-		
+
 		Color sample_light(const Color &p_current_color, const Vector2 &p_local_position, const int p_item_cull_mask, const int p_layer);
 
 		VertexLightQuadrant2D() {
@@ -190,7 +199,7 @@ protected:
 		void set_light_position(VertexLightData2D *p_light, const Vector2 &p_position);
 
 		void clear();
-		
+
 		Color sample_light(const Vector2 &p_position, const int p_item_cull_mask = 1, const int p_layer = 0);
 
 		_FORCE_INLINE_ Vector2i to_quadrant_position(const Vector2 &p_position) {
@@ -202,10 +211,26 @@ protected:
 		}
 	};
 
+	_FORCE_INLINE_ void _light_changed(const VertexLightData2D *p_light) const {
+		if (p_light && p_light->map) {
+			_changed_maps.insert(p_light->map->self);
+		}
+	}
+
+	_FORCE_INLINE_ void _map_changed(const VertexLightMap2D *p_map) const {
+		if (p_map) {
+			_changed_maps.insert(p_map->self);
+		}
+	}
+
 	mutable RID_Owner<VertexLightMap2D> map_owner;
 	mutable RID_Owner<VertexLightData2D> light_owner;
 
 	Vector2i _default_quadrant_size;
+
+	// Maybe an api could be adde that's per quadrant
+	mutable HashSet<RID> _changed_maps;
+	StringName _map_changed_name;
 
 	static VertexLights2DServer *_self;
 };

@@ -33,6 +33,8 @@
 
 #include "core/config/project_settings.h"
 
+#include "scene/main/scene_tree.h"
+
 // Defaults
 Vector2i VertexLights2DServer::get_default_quadrant_size() const {
 	return _default_quadrant_size;
@@ -61,6 +63,8 @@ void VertexLights2DServer::map_set_quadrant_size(RID p_map, const Vector2i &p_si
 
 	map->quadrant_size = p_size;
 	map->recreate_quadrants();
+
+	_map_changed(map);
 }
 
 Array VertexLights2DServer::map_get_lights(RID p_map) const {
@@ -87,6 +91,8 @@ void VertexLights2DServer::map_clear(RID p_map) {
 	ERR_FAIL_COND(map == NULL);
 
 	map->clear();
+
+	_map_changed(map);
 }
 
 // Lights
@@ -114,11 +120,13 @@ void VertexLights2DServer::light_set_map(RID p_light, RID p_map) {
 	VertexLightMap2D *map = map_owner.getornull(p_map);
 
 	if (light->map) {
+		_light_changed(light);
 		light->map->remove_light(light);
 	}
 
 	if (map) {
 		map->add_light(light);
+		_light_changed(light);
 	}
 }
 
@@ -133,6 +141,8 @@ void VertexLights2DServer::light_set_enabled(RID p_light, const bool p_enabled) 
 	ERR_FAIL_COND(light == NULL);
 
 	light->enabled = p_enabled;
+
+	_light_changed(light);
 }
 
 Vector2 VertexLights2DServer::light_get_position(RID p_light) {
@@ -152,6 +162,8 @@ void VertexLights2DServer::light_set_position(RID p_light, const Vector2 &p_posi
 	}
 
 	light->position = p_position;
+
+	_light_changed(light);
 }
 
 Vector2i VertexLights2DServer::light_get_range(RID p_light) {
@@ -165,6 +177,8 @@ void VertexLights2DServer::light_set_range(RID p_light, const Vector2i &p_range)
 	ERR_FAIL_COND(light == NULL);
 
 	light->range = p_range;
+
+	_light_changed(light);
 }
 
 real_t VertexLights2DServer::light_get_attenuation(RID p_light) {
@@ -178,6 +192,8 @@ void VertexLights2DServer::light_set_attenuation(RID p_light, const real_t p_att
 	ERR_FAIL_COND(light == NULL);
 
 	light->attenuation = p_attenuation;
+
+	_light_changed(light);
 }
 
 Color VertexLights2DServer::light_get_color(RID p_light) {
@@ -191,6 +207,8 @@ void VertexLights2DServer::light_set_color(RID p_light, const Color &p_color) {
 	ERR_FAIL_COND(light == NULL);
 
 	light->color = p_color;
+
+	_light_changed(light);
 }
 
 VertexLights2DServer::VertexLight2DMode VertexLights2DServer::light_get_mode(RID p_light) {
@@ -204,6 +222,8 @@ void VertexLights2DServer::light_set_mode(RID p_light, const VertexLights2DServe
 	ERR_FAIL_COND(light == NULL);
 
 	light->mode = p_mode;
+
+	_light_changed(light);
 }
 
 Vector2i VertexLights2DServer::light_get_z_range(RID p_light) {
@@ -217,6 +237,8 @@ void VertexLights2DServer::light_set_z_range(RID p_light, const Vector2i &p_z_ra
 	ERR_FAIL_COND(light == NULL);
 
 	light->z_range = p_z_range;
+
+	_light_changed(light);
 }
 
 Vector2i VertexLights2DServer::light_get_layer_range(RID p_light) {
@@ -230,6 +252,8 @@ void VertexLights2DServer::light_set_layer_range(RID p_light, const Vector2i &p_
 	ERR_FAIL_COND(light == NULL);
 
 	light->layer_range = p_layer_range;
+
+	_light_changed(light);
 }
 
 int VertexLights2DServer::light_get_item_cull_mask(RID p_light) {
@@ -243,6 +267,8 @@ void VertexLights2DServer::light_set_item_cull_mask(RID p_light, const int p_ite
 	ERR_FAIL_COND(light == NULL);
 
 	light->item_cull_mask = p_item_cull_mask;
+
+	_light_changed(light);
 }
 
 // Sampling
@@ -250,7 +276,7 @@ void VertexLights2DServer::light_set_item_cull_mask(RID p_light, const int p_ite
 Color VertexLights2DServer::sample_light(RID p_map, const Vector2 &p_position, const int p_item_cull_mask, const int p_layer) {
 	VertexLightMap2D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND_V(map == NULL, Color());
-	
+
 	return map->sample_light(p_position, p_item_cull_mask, p_layer);
 }
 
@@ -274,6 +300,7 @@ void VertexLights2DServer::free(RID p_rid) {
 		VertexLightData2D *light = light_owner.get(p_rid);
 
 		if (light->map) {
+			_light_changed(light);
 			light->map->remove_light(light);
 		}
 
@@ -287,6 +314,23 @@ void VertexLights2DServer::free(RID p_rid) {
 	}
 }
 
+void VertexLights2DServer::init() {
+	if (SceneTree::get_singleton()) {
+		SceneTree::get_singleton()->add_idle_callback(VertexLights2DServer::_scene_tree_idle_callback);
+	}
+}
+
+void VertexLights2DServer::finalize() {
+}
+
+void VertexLights2DServer::flush_notifications() {
+	for (HashSet<RID>::Iterator iter = _changed_maps.begin(); iter; ++iter) {
+		emit_signal(_map_changed_name, iter.key());
+	}
+
+	_changed_maps.clear();
+}
+
 VertexLights2DServer::VertexLights2DServer() {
 	ERR_FAIL_COND(_self);
 
@@ -294,6 +338,8 @@ VertexLights2DServer::VertexLights2DServer() {
 
 	GLOBAL_DEF("vertex_lights_2d/default_quadrant_size", Vector2i(256, 256));
 	_default_quadrant_size = GLOBAL_GET("vertex_lights_2d/default_quadrant_size");
+
+	_map_changed_name = "map_changed";
 }
 
 VertexLights2DServer::~VertexLights2DServer() {
@@ -301,6 +347,8 @@ VertexLights2DServer::~VertexLights2DServer() {
 }
 
 void VertexLights2DServer::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
+
 	ClassDB::bind_method(D_METHOD("get_default_quadrant_size"), &VertexLights2DServer::get_default_quadrant_size);
 	ClassDB::bind_method(D_METHOD("set_default_quadrant_size", "size"), &VertexLights2DServer::set_default_quadrant_size);
 
@@ -346,14 +394,16 @@ void VertexLights2DServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("light_get_item_cull_mask", "light"), &VertexLights2DServer::light_get_item_cull_mask);
 	ClassDB::bind_method(D_METHOD("light_set_item_cull_mask", "light", "item_cull_mask"), &VertexLights2DServer::light_set_item_cull_mask);
-	
+
 	// Sampling
-	
+
 	ClassDB::bind_method(D_METHOD("sample_light", "map", "position", "item_cull_mask", "layer"), &VertexLights2DServer::sample_light, DEFVAL(1), DEFVAL(0));
 
 	// Rest
 
 	ClassDB::bind_method(D_METHOD("free", "rid"), &VertexLights2DServer::free);
+
+	ClassDB::bind_method(D_METHOD("flush_notifications"), &VertexLights2DServer::flush_notifications);
 
 	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_ADD);
 	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_SUB);
