@@ -50,7 +50,7 @@ Vector2i VertexLight2D::get_range() {
 void VertexLight2D::set_range(const Vector2i &p_range) {
 	_range = p_range;
 
-	VertexLights2DServer::get_singleton()->light_set_z_range(_vertex_light, _range);
+	VertexLights2DServer::get_singleton()->light_set_range(_vertex_light, _range);
 }
 
 real_t VertexLight2D::get_attenuation() {
@@ -116,6 +116,7 @@ VertexLight2D::VertexLight2D() {
 	_color = Color(1, 1, 1, 1);
 	_item_cull_mask = 1;
 	_z_range = Vector2i(-1024, 1024);
+	_layer_range = Vector2i(-512, 512);
 	_mode = VERTEX_LIGHT_2D_MODE_ADD;
 
 	set_notify_transform(true);
@@ -132,6 +133,8 @@ void VertexLight2D::_notification(int p_what) {
 			ERR_FAIL_COND(!world.is_valid());
 			RID map = world->get_vertex_lights_2d_map();
 			VertexLights2DServer::get_singleton()->light_set_map(_vertex_light, map);
+			
+			VertexLights2DServer::get_singleton()->light_set_position(_vertex_light, get_global_transform().get_origin());
 
 			_update_light_visibility();
 		} break;
