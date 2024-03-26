@@ -245,6 +245,15 @@ void VertexLights2DServer::light_set_item_cull_mask(RID p_light, const int p_ite
 	light->item_cull_mask = p_item_cull_mask;
 }
 
+// Sampling
+
+Color VertexLights2DServer::sample_light(RID p_map, const Vector2 &p_position, const int p_item_cull_mask, const int p_layer) {
+	VertexLightMap2D *map = map_owner.getornull(p_map);
+	ERR_FAIL_COND_V(map == NULL, Color());
+	
+	return map->sample_light(p_position, p_item_cull_mask, p_layer);
+}
+
 // Rest
 
 void VertexLights2DServer::free(RID p_rid) {
@@ -337,6 +346,10 @@ void VertexLights2DServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("light_get_item_cull_mask", "light"), &VertexLights2DServer::light_get_item_cull_mask);
 	ClassDB::bind_method(D_METHOD("light_set_item_cull_mask", "light", "item_cull_mask"), &VertexLights2DServer::light_set_item_cull_mask);
+	
+	// Sampling
+	
+	ClassDB::bind_method(D_METHOD("sample_light", "map", "position", "item_cull_mask", "layer"), &VertexLights2DServer::sample_light, DEFVAL(1), DEFVAL(0));
 
 	// Rest
 

@@ -39,6 +39,61 @@ void VertexLights2DServer::VertexLightQuadrant2D::get_lights(List<VertexLightDat
 	}
 }
 
+Color VertexLights2DServer::VertexLightQuadrant2D::sample_light(const Color &p_current_color, const Vector2 &p_position, const int p_item_cull_mask, const int p_layer) {
+	Color c = p_current_color;
+
+	for (uint32_t i = 0; i < lights.size(); ++i) {
+		VertexLightData2D *l = lights[i];
+		
+		if (!l->enabled) {
+			continue;
+		}
+
+		if (l->range.x == 0 || l->range.y == 0) {
+			continue;
+		}
+
+		if ((l->item_cull_mask & p_item_cull_mask) == 0) {
+			continue;
+		}
+
+		if (p_layer < l->z_range.x || p_layer > l->z_range.y) {
+			continue;
+		}
+
+		Vector2 light_to_pos = p_position - l->position;
+
+		Vector2 light_to_pos_normal_space = light_to_pos;
+		light_to_pos_normal_space.x /= static_cast<real_t>(l->range.x);
+		light_to_pos_normal_space.y /= static_cast<real_t>(l->range.y);
+
+		real_t ltpnsl = light_to_pos_normal_space.length();
+
+		// Position is outside the light's range.
+		if (ltpnsl >= 1) {
+			continue;
+		}
+
+		real_t attenuation = pow(1.0 - ltpnsl, l->attenuation);
+
+		Color ac = l->color * attenuation;
+
+		switch (l->mode) {
+			case VertexLights2DServer::VERTEX_LIGHT_2D_MODE_ADD: {
+				c += ac;
+			} break;
+			case VertexLights2DServer::VERTEX_LIGHT_2D_MODE_SUB: {
+				c -= ac;
+			} break;
+			case VertexLights2DServer::VERTEX_LIGHT_2D_MODE_MIX: {
+				c = c.blend(ac);
+			} break;
+		}
+	}
+
+	return c;
+}
+
 //VertexLightMap2D
 
 void VertexLights2DServer::VertexLightMap2D::recreate_quadrants() {
@@ -123,4 +178,24 @@ void VertexLights2DServer::VertexLightMap2D::clear() {
 		l->map = NULL;
 		l->quadrant = NULL;
 	}
+}
+
+Color VertexLights2DServer::VertexLightMap2D::sample_light(const Vector2 &p_position, const int p_item_cull_mask, const int p_layer) {
+	Color c = Color();
+
+	Vector2i quadrant_position = to_quadrant_position(p_position);
+
+	for (int x = quadrant_position.x - 1; x <= quadrant_position.x + 1; ++x) {
+		for (int y = quadrant_position.y - 1; y <= quadrant_position.y + 1; ++y) {
+			Vector2i qp = Vector2i(x, y);
+
+			if (quadrants.has(qp)) {
+				VertexLightQuadrant2D *q = quadrants[qp];
+
+				c = q->sample_light(c, p_position, p_item_cull_mask, p_layer);
+			}
+		}
+	}
+
+	return c;
 }
