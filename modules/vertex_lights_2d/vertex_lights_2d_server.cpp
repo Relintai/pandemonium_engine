@@ -139,6 +139,10 @@ bool VertexLights2DServer::light_get_is_enabled(RID p_light) {
 void VertexLights2DServer::light_set_enabled(RID p_light, const bool p_enabled) {
 	VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
+	
+	if (light->enabled == p_enabled) {
+		return;
+	}
 
 	light->enabled = p_enabled;
 
