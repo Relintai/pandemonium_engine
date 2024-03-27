@@ -9,13 +9,19 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="color" type="Color" setter="set_color" getter="get_color" default="Color( 0, 0, 0, 1 )">
+		<member name="attenuation" type="float" setter="set_attenuation" getter="get_attenuation" default="1.0">
+		</member>
+		<member name="color" type="Color" setter="set_color" getter="get_color" default="Color( 1, 1, 1, 1 )">
+		</member>
+		<member name="enabled" type="bool" setter="set_enabled" getter="get_is_enabled" default="true">
 		</member>
 		<member name="item_cull_mask" type="int" setter="set_item_cull_mask" getter="get_item_cull_mask" default="1">
 		</member>
-		<member name="layer_range" type="Vector2i" setter="set_layer_range" getter="get_layer_range" default="Vector2i( 0, 0 )">
+		<member name="layer_range" type="Vector2i" setter="set_layer_range" getter="get_layer_range" default="Vector2i( -512, 512 )">
 		</member>
 		<member name="mode" type="int" setter="set_mode" getter="get_mode" enum="VertexLight2D.VertexLight2DMode" default="0">
+		</member>
+		<member name="range" type="Vector2i" setter="set_range" getter="get_range" default="Vector2i( 32, 32 )">
 		</member>
 		<member name="z_range" type="Vector2i" setter="set_z_range" getter="get_z_range" default="Vector2i( -1024, 1024 )">
 		</member>

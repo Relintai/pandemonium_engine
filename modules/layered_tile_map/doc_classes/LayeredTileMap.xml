@@ -494,6 +494,8 @@
 			The quadrant size does not apply on Y-sorted layers, as tiles are be grouped by Y position instead in that case.
 			[b]Note:[/b] As quadrants are created according to the map's coordinate system, the quadrant's "square shape" might not look like square in the LayeredTileMap's local coordinate system.
 		</member>
+		<member name="use_vertex_lights" type="bool" setter="set_use_vertex_lights" getter="get_use_vertex_lights" default="false">
+		</member>
 	</members>
 	<signals>
 		<signal name="changed">

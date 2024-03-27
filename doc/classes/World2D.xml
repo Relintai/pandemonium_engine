@@ -10,6 +10,11 @@
 		<link>$DOCS_URL/tutorials/physics/ray-casting.md</link>
 	</tutorials>
 	<methods>
+		<method name="get_vertex_lights_2d_map">
+			<return type="RID" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
 		<member name="canvas" type="RID" setter="" getter="get_canvas">

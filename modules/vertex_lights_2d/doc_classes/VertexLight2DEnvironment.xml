@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VertexLight2DEnvironment" inherits="Node2D" version="4.3">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="color" type="Color" setter="set_color" getter="get_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="enabled" type="bool" setter="set_enabled" getter="get_is_enabled" default="true">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>
