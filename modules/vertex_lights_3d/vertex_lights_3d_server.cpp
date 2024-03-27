@@ -36,11 +36,11 @@
 #include "scene/main/scene_tree.h"
 
 // Defaults
-Vector3i VertexLights3DServer::get_default_quadrant_size() const {
-	return _default_quadrant_size;
+Vector3i VertexLights3DServer::get_default_octant_size() const {
+	return _default_octant_size;
 }
-void VertexLights3DServer::set_default_quadrant_size(const Vector3i &p_size) {
-	_default_quadrant_size = p_size;
+void VertexLights3DServer::set_default_octant_size(const Vector3i &p_size) {
+	_default_octant_size = p_size;
 }
 
 // Maps
@@ -48,22 +48,22 @@ RID VertexLights3DServer::map_create() {
 	VertexLightMap3D *map = memnew(VertexLightMap3D);
 	RID rid = map_owner.make_rid(map);
 	map->self = rid;
-	map->quadrant_size = _default_quadrant_size;
+	map->octant_size = _default_octant_size;
 	return rid;
 }
 
-Vector3i VertexLights3DServer::map_get_quadrant_size(RID p_map) const {
+Vector3i VertexLights3DServer::map_get_octant_size(RID p_map) const {
 	const VertexLightMap3D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND_V(map == NULL, Vector3i());
 
-	return map->quadrant_size;
+	return map->octant_size;
 }
-void VertexLights3DServer::map_set_quadrant_size(RID p_map, const Vector3i &p_size) {
+void VertexLights3DServer::map_set_octant_size(RID p_map, const Vector3i &p_size) {
 	VertexLightMap3D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND(map == NULL);
 
-	map->quadrant_size = p_size;
-	map->recreate_quadrants();
+	map->octant_size = p_size;
+	map->recreate_octants();
 
 	_map_changed(map);
 }
@@ -176,7 +176,7 @@ void VertexLights3DServer::light_set_position(RID p_light, const Vector3 &p_posi
 	ERR_FAIL_COND(light == NULL);
 
 	if (light->map) {
-		// This ensure the light gets moved to the proper quadrant
+		// This ensure the light gets moved to the proper octant
 		light->map->set_light_position(light, p_position);
 		_light_changed(light);
 		return;
@@ -345,8 +345,8 @@ VertexLights3DServer::VertexLights3DServer() {
 
 	_self = this;
 
-	GLOBAL_DEF("vertex_lights_3d/default_quadrant_size", Vector3i(32, 32, 32));
-	_default_quadrant_size = GLOBAL_GET("vertex_lights_3d/default_quadrant_size");
+	GLOBAL_DEF("vertex_lights_3d/default_octant_size", Vector3i(32, 32, 32));
+	_default_octant_size = GLOBAL_GET("vertex_lights_3d/default_octant_size");
 
 	_map_changed_name = "map_changed";
 }
@@ -358,13 +358,13 @@ VertexLights3DServer::~VertexLights3DServer() {
 void VertexLights3DServer::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
 
-	ClassDB::bind_method(D_METHOD("get_default_quadrant_size"), &VertexLights3DServer::get_default_quadrant_size);
-	ClassDB::bind_method(D_METHOD("set_default_quadrant_size", "size"), &VertexLights3DServer::set_default_quadrant_size);
+	ClassDB::bind_method(D_METHOD("get_default_octant_size"), &VertexLights3DServer::get_default_octant_size);
+	ClassDB::bind_method(D_METHOD("set_default_octant_size", "size"), &VertexLights3DServer::set_default_octant_size);
 
 	ClassDB::bind_method(D_METHOD("map_create"), &VertexLights3DServer::map_create);
 
-	ClassDB::bind_method(D_METHOD("map_get_quadrant_size", "map"), &VertexLights3DServer::map_get_quadrant_size);
-	ClassDB::bind_method(D_METHOD("map_set_quadrant_size", "map", "size"), &VertexLights3DServer::map_set_quadrant_size);
+	ClassDB::bind_method(D_METHOD("map_get_octant_size", "map"), &VertexLights3DServer::map_get_octant_size);
+	ClassDB::bind_method(D_METHOD("map_set_octant_size", "map", "size"), &VertexLights3DServer::map_set_octant_size);
 
 	ClassDB::bind_method(D_METHOD("map_get_base_color", "map"), &VertexLights3DServer::map_get_base_color);
 	ClassDB::bind_method(D_METHOD("map_set_base_color", "map", "base_color"), &VertexLights3DServer::map_set_base_color);

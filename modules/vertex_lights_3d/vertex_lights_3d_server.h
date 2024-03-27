@@ -55,15 +55,15 @@ public:
 
 	// Defaults
 
-	Vector3i get_default_quadrant_size() const;
-	void set_default_quadrant_size(const Vector3i &p_size);
+	Vector3i get_default_octant_size() const;
+	void set_default_octant_size(const Vector3i &p_size);
 
 	// Maps
 
 	RID map_create();
 
-	Vector3i map_get_quadrant_size(RID p_map) const;
-	void map_set_quadrant_size(RID p_map, const Vector3i &p_size);
+	Vector3i map_get_octant_size(RID p_map) const;
+	void map_set_octant_size(RID p_map, const Vector3i &p_size);
 	
 	Color map_get_base_color(RID p_map) const;
 	void map_set_base_color(RID p_map, const Color &p_base_color);
@@ -140,13 +140,13 @@ protected:
 		int item_cull_mask;
 
 		VertexLightMap3D *map;
-		VertexLightQuadrant3D *quadrant;
+		VertexLightQuadrant3D *octant;
 
 		RID self;
 
 		VertexLightData3D() {
 			map = NULL;
-			quadrant = NULL;
+			octant = NULL;
 
 			enabled = true;
 			range = 5;
@@ -176,20 +176,20 @@ protected:
 
 	class VertexLightMap3D : public RID_Data {
 	public:
-		HashMap<Vector3i, VertexLightQuadrant3D *> quadrants;
-		Vector3i quadrant_size;
+		HashMap<Vector3i, VertexLightQuadrant3D *> octants;
+		Vector3i octant_size;
 		Color base_color;
 
 		RID self;
 
-		void recreate_quadrants();
+		void recreate_octants();
 
 		void get_lights(List<VertexLightData3D *> *p_lights);
 
 		void add_light(VertexLightData3D *p_light);
 		void remove_light(VertexLightData3D *p_light);
 
-		VertexLightQuadrant3D *get_quadrant_for_position(const Vector3 &p_position);
+		VertexLightQuadrant3D *get_octant_for_position(const Vector3 &p_position);
 
 		void set_light_position(VertexLightData3D *p_light, const Vector3 &p_position);
 
@@ -198,12 +198,12 @@ protected:
 		Color sample_light_value(const Vector3 &p_position, const int p_item_cull_mask);
 		Color sample_light(const Vector3 &p_position, const Vector3 &p_normal, const int p_item_cull_mask);
 
-		_FORCE_INLINE_ Vector3i to_quadrant_position(const Vector3 &p_position) {
-			return Vector3i(p_position.x / quadrant_size.x, p_position.y / quadrant_size.y, p_position.z / quadrant_size.z);
+		_FORCE_INLINE_ Vector3i to_octant_position(const Vector3 &p_position) {
+			return Vector3i(p_position.x / octant_size.x, p_position.y / octant_size.y, p_position.z / octant_size.z);
 		}
 
-		_FORCE_INLINE_ Vector3 to_position(const Vector3i &p_quadrant_position) {
-			return Vector3(p_quadrant_position.x * quadrant_size.x, p_quadrant_position.y * quadrant_size.y, p_quadrant_position.z * quadrant_size.z);
+		_FORCE_INLINE_ Vector3 to_position(const Vector3i &p_octant_position) {
+			return Vector3(p_octant_position.x * octant_size.x, p_octant_position.y * octant_size.y, p_octant_position.z * octant_size.z);
 		}
 	};
 
@@ -228,9 +228,9 @@ protected:
 	mutable RID_Owner<VertexLightMap3D> map_owner;
 	mutable RID_Owner<VertexLightData3D> light_owner;
 
-	Vector3i _default_quadrant_size;
+	Vector3i _default_octant_size;
 
-	// Maybe an api could be adde that's per quadrant
+	// Maybe an api could be adde that's per octant
 	mutable HashSet<RID> _changed_maps;
 	StringName _map_changed_name;
 

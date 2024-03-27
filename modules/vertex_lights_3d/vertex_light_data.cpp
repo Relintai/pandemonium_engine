@@ -150,15 +150,15 @@ Color VertexLights3DServer::VertexLightQuadrant3D::sample_light(const Color &p_c
 
 //VertexLightMap3D
 
-void VertexLights3DServer::VertexLightMap3D::recreate_quadrants() {
+void VertexLights3DServer::VertexLightMap3D::recreate_octants() {
 	List<VertexLightData3D *> lights;
 	get_lights(&lights);
 
-	for (HashMap<Vector3i, VertexLightQuadrant3D *>::Element *E = quadrants.front(); E; E = E->next) {
+	for (HashMap<Vector3i, VertexLightQuadrant3D *>::Element *E = octants.front(); E; E = E->next) {
 		memdelete(E->value());
 	}
 
-	quadrants.clear();
+	octants.clear();
 
 	for (List<VertexLightData3D *>::Element *E = lights.front(); E; E = E->next()) {
 		VertexLightData3D *l = E->get();
@@ -167,48 +167,48 @@ void VertexLights3DServer::VertexLightMap3D::recreate_quadrants() {
 }
 
 void VertexLights3DServer::VertexLightMap3D::get_lights(List<VertexLightData3D *> *p_lights) {
-	for (HashMap<Vector3i, VertexLightQuadrant3D *>::Element *E = quadrants.front(); E; E = E->next) {
+	for (HashMap<Vector3i, VertexLightQuadrant3D *>::Element *E = octants.front(); E; E = E->next) {
 		E->value()->get_lights(p_lights);
 	}
 }
 
 void VertexLights3DServer::VertexLightMap3D::add_light(VertexLightData3D *p_light) {
-	VertexLightQuadrant3D *quadrant = get_quadrant_for_position(p_light->position);
+	VertexLightQuadrant3D *octant = get_octant_for_position(p_light->position);
 
 	p_light->map = this;
-	p_light->quadrant = quadrant;
+	p_light->octant = octant;
 
-	quadrant->lights.push_back(p_light);
+	octant->lights.push_back(p_light);
 }
 void VertexLights3DServer::VertexLightMap3D::remove_light(VertexLightData3D *p_light) {
 	p_light->map = NULL;
 
-	VertexLightQuadrant3D *quadrant = p_light->quadrant;
+	VertexLightQuadrant3D *octant = p_light->octant;
 
 	// Quadrant wan not updated properly somewhere!
-	ERR_FAIL_NULL(quadrant);
+	ERR_FAIL_NULL(octant);
 
-	quadrant->lights.erase(p_light);
-	p_light->quadrant = NULL;
+	octant->lights.erase(p_light);
+	p_light->octant = NULL;
 
-	if (quadrant->lights.size() == 0) {
-		quadrants.erase(quadrant->position);
+	if (octant->lights.size() == 0) {
+		octants.erase(octant->position);
 
-		memdelete(quadrant);
+		memdelete(octant);
 	}
 }
 
-VertexLights3DServer::VertexLightQuadrant3D *VertexLights3DServer::VertexLightMap3D::get_quadrant_for_position(const Vector3 &p_position) {
-	Vector3i quadrant_position = to_quadrant_position(p_position);
+VertexLights3DServer::VertexLightQuadrant3D *VertexLights3DServer::VertexLightMap3D::get_octant_for_position(const Vector3 &p_position) {
+	Vector3i octant_position = to_octant_position(p_position);
 
-	if (!quadrants.has(quadrant_position)) {
-		VertexLightQuadrant3D *quadrant = memnew(VertexLightQuadrant3D);
-		quadrant->position = quadrant_position;
-		quadrants[quadrant_position] = quadrant;
-		return quadrant;
+	if (!octants.has(octant_position)) {
+		VertexLightQuadrant3D *octant = memnew(VertexLightQuadrant3D);
+		octant->position = octant_position;
+		octants[octant_position] = octant;
+		return octant;
 	}
 
-	return quadrants[quadrant_position];
+	return octants[octant_position];
 }
 
 void VertexLights3DServer::VertexLightMap3D::set_light_position(VertexLightData3D *p_light, const Vector3 &p_position) {
@@ -221,32 +221,32 @@ void VertexLights3DServer::VertexLightMap3D::clear() {
 	List<VertexLightData3D *> lights;
 	get_lights(&lights);
 
-	for (HashMap<Vector3i, VertexLightQuadrant3D *>::Element *E = quadrants.front(); E; E = E->next) {
+	for (HashMap<Vector3i, VertexLightQuadrant3D *>::Element *E = octants.front(); E; E = E->next) {
 		memdelete(E->value());
 	}
 
-	quadrants.clear();
+	octants.clear();
 
 	for (List<VertexLightData3D *>::Element *E = lights.front(); E; E = E->next()) {
 		VertexLightData3D *l = E->get();
 
 		l->map = NULL;
-		l->quadrant = NULL;
+		l->octant = NULL;
 	}
 }
 
 Color VertexLights3DServer::VertexLightMap3D::sample_light_value(const Vector3 &p_position, const int p_item_cull_mask) {
 	Color c = base_color;
 
-	Vector3i quadrant_position = to_quadrant_position(p_position);
+	Vector3i octant_position = to_octant_position(p_position);
 
-	for (int x = quadrant_position.x - 1; x <= quadrant_position.x + 1; ++x) {
-		for (int y = quadrant_position.y - 1; y <= quadrant_position.y + 1; ++y) {
-			for (int z = quadrant_position.z - 1; z <= quadrant_position.z + 1; ++z) {
+	for (int x = octant_position.x - 1; x <= octant_position.x + 1; ++x) {
+		for (int y = octant_position.y - 1; y <= octant_position.y + 1; ++y) {
+			for (int z = octant_position.z - 1; z <= octant_position.z + 1; ++z) {
 				Vector3i qp = Vector3i(x, y, z);
 
-				if (quadrants.has(qp)) {
-					VertexLightQuadrant3D *q = quadrants[qp];
+				if (octants.has(qp)) {
+					VertexLightQuadrant3D *q = octants[qp];
 
 					c = q->sample_light_value(c, p_position, p_item_cull_mask);
 				}
@@ -260,15 +260,15 @@ Color VertexLights3DServer::VertexLightMap3D::sample_light_value(const Vector3 &
 Color VertexLights3DServer::VertexLightMap3D::sample_light(const Vector3 &p_position, const Vector3 &p_normal, const int p_item_cull_mask) {
 	Color c = base_color;
 
-	Vector3i quadrant_position = to_quadrant_position(p_position);
+	Vector3i octant_position = to_octant_position(p_position);
 
-	for (int x = quadrant_position.x - 1; x <= quadrant_position.x + 1; ++x) {
-		for (int y = quadrant_position.y - 1; y <= quadrant_position.y + 1; ++y) {
-			for (int z = quadrant_position.z - 1; z <= quadrant_position.z + 1; ++z) {
+	for (int x = octant_position.x - 1; x <= octant_position.x + 1; ++x) {
+		for (int y = octant_position.y - 1; y <= octant_position.y + 1; ++y) {
+			for (int z = octant_position.z - 1; z <= octant_position.z + 1; ++z) {
 				Vector3i qp = Vector3i(x, y, z);
 
-				if (quadrants.has(qp)) {
-					VertexLightQuadrant3D *q = quadrants[qp];
+				if (octants.has(qp)) {
+					VertexLightQuadrant3D *q = octants[qp];
 
 					c = q->sample_light(c, p_position, p_normal, p_item_cull_mask);
 				}

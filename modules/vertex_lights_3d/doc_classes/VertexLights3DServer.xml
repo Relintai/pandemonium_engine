@@ -9,7 +9,7 @@
 		After adding lights, you can use [member sample_light] to sample lighting at a specified point in the map's space, then use the resulting [Color] to either further modifty the albedo color in your shader, or you can bake vertex colors of your meshes.
 		The drawback of this method is that it's more expensive change lights.
 		Note that you can use the normal 3D lighting system on top of this if you need dynamic lights (like [OmniLight]). That system is better suited for that purpose.
-		Currently this class stores lights inside quadrants. Their optimal size should be a bit more than the radius of the biggest light you want to have.
+		Currently this class stores lights inside octants. Their optimal size should be a bit more than the radius of the biggest light you want to have.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -27,10 +27,10 @@
 				Frees an allocated resource.
 			</description>
 		</method>
-		<method name="get_default_quadrant_size" qualifiers="const">
+		<method name="get_default_octant_size" qualifiers="const">
 			<return type="Vector3i" />
 			<description>
-				Get the default internal quadrant size.
+				Get the default internal octant size.
 			</description>
 		</method>
 		<method name="light_create">
@@ -186,11 +186,11 @@
 				Returns all lights in a map.
 			</description>
 		</method>
-		<method name="map_get_quadrant_size" qualifiers="const">
+		<method name="map_get_octant_size" qualifiers="const">
 			<return type="Vector3i" />
 			<argument index="0" name="map" type="RID" />
 			<description>
-				Returns a map's quadrant size.
+				Returns a map's octant size.
 			</description>
 		</method>
 		<method name="map_set_base_color">
@@ -201,7 +201,7 @@
 				Sets the base color of a map.
 			</description>
 		</method>
-		<method name="map_set_quadrant_size">
+		<method name="map_set_octant_size">
 			<return type="void" />
 			<argument index="0" name="map" type="RID" />
 			<argument index="1" name="size" type="Vector3i" />
@@ -227,7 +227,7 @@
 				Sample the lighing information at a specific position.
 			</description>
 		</method>
-		<method name="set_default_quadrant_size">
+		<method name="set_default_octant_size">
 			<return type="void" />
 			<argument index="0" name="size" type="Vector3i" />
 			<description>
