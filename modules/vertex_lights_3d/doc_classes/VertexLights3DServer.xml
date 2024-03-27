@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VertexLights3DServer" inherits="Object" version="4.3">
+	<brief_description>
+		A server that provides a way to store static lights that can be used to bake lighting information into mesh vertex data, or [CanvasItem]'s color modulation.
+	</brief_description>
+	<description>
+		A server that provides a way to store static lights that can be used to bake lighting information into mesh vertex data, or [CanvasItem]'s color modulation.
+		With this class extremely complex light information can be stored and used with no additional cost on the GPU side.
+		After adding lights, you can use [member sample_light] to sample lighting at a specified point in the map's space, then use the resulting [Color] to either further modifty the modulate property of [CanvasItem]s, or you can render meshes using this color in you custom _draw methods.
+		The drawback of this method is that it's more expensive change lights.
+		Note that you can use the normal 3D lighting system on top of this if you need dynamic lights (like [Light3D]). That system is better suited for that purpose.
+		Currently this class stores lights inside quadrants. Their optimal size should be a bit more than the radius of the biggest light you want to have.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="flush_notifications">
+			<return type="void" />
+			<description>
+				Flushes map changed notifications. This will get called automatically.
+			</description>
+		</method>
+		<method name="free">
+			<return type="void" />
+			<argument index="0" name="rid" type="RID" />
+			<description>
+				Frees an allocated resource.
+			</description>
+		</method>
+		<method name="get_default_quadrant_size" qualifiers="const">
+			<return type="Vector2i" />
+			<description>
+				Get the default internal quadrant size.
+			</description>
+		</method>
+		<method name="light_create">
+			<return type="RID" />
+			<description>
+				Create a light.
+			</description>
+		</method>
+		<method name="light_get_attenuation">
+			<return type="float" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+				Get a light's attenuation property.
+			</description>
+		</method>
+		<method name="light_get_color">
+			<return type="Color" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+				Get a light's color property.
+			</description>
+		</method>
+		<method name="light_get_is_enabled">
+			<return type="bool" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+				Get a light's enabled property.
+			</description>
+		</method>
+		<method name="light_get_item_cull_mask">
+			<return type="int" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+				Get a light's item cull mask property.
+			</description>
+		</method>
+		<method name="light_get_layer_range">
+			<return type="Vector2i" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+				Get a light's layer range property.
+			</description>
+		</method>
+		<method name="light_get_map">
+			<return type="RID" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+				Get a light's map.
+			</description>
+		</method>
+		<method name="light_get_mode">
+			<return type="int" enum="VertexLights3DServer.VertexLight3DMode" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+				Get a light's mix mode.
+			</description>
+		</method>
+		<method name="light_get_position">
+			<return type="Vector2" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+				Get a light's position.
+			</description>
+		</method>
+		<method name="light_get_range">
+			<return type="Vector2i" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+				Get a light's range.
+			</description>
+		</method>
+		<method name="light_get_z_range">
+			<return type="Vector2i" />
+			<argument index="0" name="light" type="RID" />
+			<description>
+				Get a light's z range property.
+			</description>
+		</method>
+		<method name="light_set_attenuation">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="attenuation" type="float" />
+			<description>
+				Set a light's attenuation property.
+			</description>
+		</method>
+		<method name="light_set_color">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="color" type="Color" />
+			<description>
+				Set a light's color property.
+			</description>
+		</method>
+		<method name="light_set_enabled">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="enabled" type="bool" />
+			<description>
+				Set a light's enabled property.
+			</description>
+		</method>
+		<method name="light_set_item_cull_mask">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="item_cull_mask" type="int" />
+			<description>
+				Set a light's item cull mask property.
+			</description>
+		</method>
+		<method name="light_set_layer_range">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="layer_range" type="Vector2i" />
+			<description>
+				Set a light's layer range property.
+			</description>
+		</method>
+		<method name="light_set_map">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="map" type="RID" />
+			<description>
+				Set a light's map.
+			</description>
+		</method>
+		<method name="light_set_mode">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="mode" type="int" enum="VertexLights3DServer.VertexLight3DMode" />
+			<description>
+				Set a light's mix mode.
+			</description>
+		</method>
+		<method name="light_set_position">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="position" type="Vector2" />
+			<description>
+				Set a light's position.
+			</description>
+		</method>
+		<method name="light_set_range">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="range" type="Vector2i" />
+			<description>
+				Set a light's range.
+			</description>
+		</method>
+		<method name="light_set_z_range">
+			<return type="void" />
+			<argument index="0" name="light" type="RID" />
+			<argument index="1" name="z_range" type="Vector2i" />
+			<description>
+				Set a light's z range property.
+			</description>
+		</method>
+		<method name="map_clear">
+			<return type="void" />
+			<argument index="0" name="map" type="RID" />
+			<description>
+				Clears a map of all lights.
+			</description>
+		</method>
+		<method name="map_create">
+			<return type="RID" />
+			<description>
+				Creates a map.
+			</description>
+		</method>
+		<method name="map_get_base_color" qualifiers="const">
+			<return type="Color" />
+			<argument index="0" name="map" type="RID" />
+			<description>
+				Returns the base color of a map.
+			</description>
+		</method>
+		<method name="map_get_lights" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="map" type="RID" />
+			<description>
+				Returns all lights in a map.
+			</description>
+		</method>
+		<method name="map_get_quadrant_size" qualifiers="const">
+			<return type="Vector2i" />
+			<argument index="0" name="map" type="RID" />
+			<description>
+				Returns a map's quadrant size.
+			</description>
+		</method>
+		<method name="map_set_base_color">
+			<return type="void" />
+			<argument index="0" name="map" type="RID" />
+			<argument index="1" name="base_color" type="Color" />
+			<description>
+				Sets the base color of a map.
+			</description>
+		</method>
+		<method name="map_set_quadrant_size">
+			<return type="void" />
+			<argument index="0" name="map" type="RID" />
+			<argument index="1" name="size" type="Vector2i" />
+			<description>
+				Sets a map's quadrant size.
+			</description>
+		</method>
+		<method name="sample_light">
+			<return type="Color" />
+			<argument index="0" name="map" type="RID" />
+			<argument index="1" name="position" type="Vector2" />
+			<argument index="2" name="item_cull_mask" type="int" default="1" />
+			<argument index="3" name="layer" type="int" default="0" />
+			<argument index="4" name="z_index" type="int" default="0" />
+			<description>
+				Sample the lighing information at a specific position.
+			</description>
+		</method>
+		<method name="set_default_quadrant_size">
+			<return type="void" />
+			<argument index="0" name="size" type="Vector2i" />
+			<description>
+				Set the default internal quadrant size.
+			</description>
+		</method>
+	</methods>
+	<signals>
+		<signal name="map_changed">
+			<argument index="0" name="map" type="RID" />
+			<description>
+				Emitted after a map changed (only once per frame).
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="VERTEX_LIGHT_3D_MODE_ADD" value="0" enum="VertexLight3DMode">
+			The light's color gets added to the resulting colors.
+		</constant>
+		<constant name="VERTEX_LIGHT_3D_MODE_SUB" value="1" enum="VertexLight3DMode">
+			The light's color gets substracted to the resulting colors.
+		</constant>
+		<constant name="VERTEX_LIGHT_3D_MODE_MIX" value="2" enum="VertexLight3DMode">
+			The light's color gets blended with the resulting colors.
+		</constant>
+	</constants>
+</class>

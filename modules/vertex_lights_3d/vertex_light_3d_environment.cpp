@@ -1,8 +1,5 @@
-#ifndef VERTEX_LIGHT_DATA_3D_H
-#define VERTEX_LIGHT_DATA_3D_H
-
 /*************************************************************************/
-/*  vertex_light_data_3d.h.h                                             */
+/*  vertex_light_3d.cpp                                                  */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,55 +29,68 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/vector.h"
-#include "core/math/color.h"
-#include "core/object/reference.h"
-#include "core/math/transform.h"
+#include "vertex_light_3d_environment.h"
 
-class VertexLightData3D : public Reference {
-	GDCLASS(VertexLightData3D, Reference);
+#include "core/config/engine.h"
 
-public:
-	Transform get_transform() const;
-	void set_transform(const Transform &p_transform);
+#include "scene/resources/world_2d.h"
 
-	real_t get_range() const;
-	void set_range(const real_t value);
+#include "vertex_lights_3d_server.h"
 
-	real_t get_attenuation() const;
-	void set_attenuation(const real_t value);
+bool VertexLight3DEnvironment::get_is_enabled() {
+	return _enabled;
+}
+void VertexLight3DEnvironment::set_enabled(const bool p_enabled) {
+	_enabled = p_enabled;
 
-	Color get_color() const;
-	void set_color(const Color value);
+	_update_light_visibility();
+}
 
-	real_t get_energy() const;
-	void set_energy(const real_t value);
+Color VertexLight3DEnvironment::get_color() {
+	return _color;
+}
+void VertexLight3DEnvironment::set_color(const Color &p_color) {
+	_color = p_color;
 
-	real_t get_indirect_energy() const;
-	void set_indirect_energy(const real_t value);
+	_update_light_visibility();
+}
 
-	bool get_negative() const;
-	void set_negative(const bool value);
+VertexLight3DEnvironment::VertexLight3DEnvironment() {
+	_enabled = true;
+}
 
-	real_t get_specular() const;
-	void set_specular(const real_t value);
+VertexLight3DEnvironment::~VertexLight3DEnvironment() {
+}
 
-	VertexLightData3D();
-	~VertexLightData3D();
+void VertexLight3DEnvironment::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE: {
+			_update_light_visibility();
+		} break;
+		case NOTIFICATION_VISIBILITY_CHANGED: {
+			_update_light_visibility();
+		} break;
+	}
+}
 
-private:
-	static void _bind_methods();
+void VertexLight3DEnvironment::_update_light_visibility() {
+	if (!is_inside_tree() || !_enabled || !is_visible_in_tree()) {
+		return;
+	}
 
-private:
-	Transform _transform;
+	Ref<World2D> world = get_world_2d();
+	ERR_FAIL_COND(!world.is_valid());
+	RID map = world->get_vertex_lights_2d_map();
 
-	real_t _range;
-	real_t _attenuation;
-	Color _color;
-	real_t _energy;
-	real_t _indirect_energy;
-	bool _negative;
-	real_t _specular;
-};
+	VertexLights3DServer::get_singleton()->map_set_base_color(map, _color);
+}
 
-#endif
+void VertexLight3DEnvironment::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_is_enabled"), &VertexLight3DEnvironment::get_is_enabled);
+	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &VertexLight3DEnvironment::set_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "get_is_enabled");
+
+	ClassDB::bind_method(D_METHOD("get_color"), &VertexLight3DEnvironment::get_color);
+	ClassDB::bind_method(D_METHOD("set_color", "color"), &VertexLight3DEnvironment::set_color);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");
+}

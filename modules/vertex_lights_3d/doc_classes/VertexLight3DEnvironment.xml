@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VertexLight3DEnvironment" inherits="Node3D" version="4.3">
+	<brief_description>
+		A [Node3D] that manages a map's base color in [VertexLights3DServer].
+	</brief_description>
+	<description>
+		A [Node3D] that manages a map's base color in [VertexLights3DServer].
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="color" type="Color" setter="set_color" getter="get_color" default="Color( 0, 0, 0, 1 )">
+			The base color.
+		</member>
+		<member name="enabled" type="bool" setter="set_enabled" getter="get_is_enabled" default="true">
+			Whether this [VertexLight3DEnvironment] is actively managing the base color or not.
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

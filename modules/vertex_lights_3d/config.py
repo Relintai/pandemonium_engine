@@ -1,7 +1,7 @@
 
 
 def can_build(env, platform):
-  return False
+  return True
 
 
 def configure(env):
@@ -10,7 +10,9 @@ def configure(env):
 
 def get_doc_classes():
     return [
-        "VertexLightData3D",
+        "VertexLights3DServer",
+        "VertexLight3D",
+        "VertexLight3DEnvironment",
     ]
 
 def get_doc_path():
