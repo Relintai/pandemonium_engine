@@ -19,13 +19,16 @@
 			The [ClassDB] singleton.
 		</member>
 		<member name="DatabaseManager" type="DatabaseManager" setter="" getter="">
+			The [DatabaseManager] singleton.
 		</member>
 		<member name="ESS" type="ESS" setter="" getter="">
+			The [ESS] singleton.
 		</member>
 		<member name="Engine" type="Engine" setter="" getter="">
 			The [Engine] singleton.
 		</member>
 		<member name="GSAIUtils" type="GSAIUtils" setter="" getter="">
+			The [GSAIUtils] singleton.
 		</member>
 		<member name="Geometry" type="Geometry" setter="" getter="">
 			The [Geometry] singleton.
@@ -51,11 +54,13 @@
 			[b]Note:[/b] Only implemented on HTML5.
 		</member>
 		<member name="MMAlgos" type="MMAlgos" setter="" getter="">
+			The [MMAlgos] singleton.
 		</member>
 		<member name="Marshalls" type="Marshalls" setter="" getter="">
 			The [Marshalls] singleton.
 		</member>
 		<member name="MeshUtils" type="MeshUtils" setter="" getter="">
+			The [MeshUtils] singleton.
 		</member>
 		<member name="Navigation2DServer" type="Navigation2DServer" setter="" getter="">
 			The [Navigation2DServer] singleton.
@@ -70,6 +75,7 @@
 			The [OS] singleton.
 		</member>
 		<member name="PLogger" type="PLogger" setter="" getter="">
+			The [PLogger] singleton.
 		</member>
 		<member name="Performance" type="Performance" setter="" getter="">
 			The [Performance] singleton.
@@ -81,17 +87,22 @@
 			The [PhysicsServer] singleton.
 		</member>
 		<member name="ProfileManager" type="ProfileManager" setter="" getter="">
+			The [ProfileManager] singleton.
 		</member>
 		<member name="ProjectSettings" type="ProjectSettings" setter="" getter="">
 			The [ProjectSettings] singleton.
 		</member>
 		<member name="Prop2DCache" type="Prop2DCache" setter="" getter="">
+			The [Prop2DCache] singleton.
 		</member>
 		<member name="Prop2DUtils" type="Prop2DUtils" setter="" getter="">
+			The [Prop2DUtils] singleton.
 		</member>
 		<member name="PropCache" type="PropCache" setter="" getter="">
+			The [PropCache] singleton.
 		</member>
 		<member name="PropUtils" type="PropUtils" setter="" getter="">
+			The [PropUtils] singleton.
 		</member>
 		<member name="RenderingServer" type="RenderingServer" setter="" getter="">
 			The [RenderingServer] singleton.
@@ -103,11 +114,13 @@
 			The [ResourceSaver] singleton.
 		</member>
 		<member name="SceneSynchronizerDebugger" type="Node" setter="" getter="">
+			The [SceneSynchronizerDebugger] singleton.
 		</member>
 		<member name="ScriptServer" type="ScriptServer" setter="" getter="">
 			The [ScriptServer] singleton.
 		</member>
 		<member name="ThreadPool" type="ThreadPool" setter="" getter="">
+			The [ThreadPool] singleton.
 		</member>
 		<member name="Time" type="Time" setter="" getter="">
 			The [Time] singleton.
@@ -116,10 +129,13 @@
 			The [TranslationServer] singleton.
 		</member>
 		<member name="UnitTestDB" type="UnitTestDB" setter="" getter="">
+			The [UnitTestDB] singleton.
 		</member>
 		<member name="UserDB" type="UserDB" setter="" getter="">
+			The [UserDB] singleton.
 		</member>
 		<member name="VertexLights2DServer" type="VertexLights2DServer" setter="" getter="">
+			The [VertexLights2DServer] singleton.
 		</member>
 	</members>
 	<constants>
@@ -136,12 +152,16 @@
 			Bottom margin, usually used for [Control] or [StyleBox]-derived classes.
 		</constant>
 		<constant name="SIDE_LEFT" value="0" enum="Side">
+			Left side.
 		</constant>
 		<constant name="SIDE_TOP" value="1" enum="Side">
+			Top side.
 		</constant>
 		<constant name="SIDE_RIGHT" value="2" enum="Side">
+			Right side.
 		</constant>
 		<constant name="SIDE_BOTTOM" value="3" enum="Side">
+			Bottom side.
 		</constant>
 		<constant name="CORNER_TOP_LEFT" value="0" enum="Corner">
 			Top-left corner.
