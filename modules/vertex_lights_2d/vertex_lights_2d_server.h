@@ -113,9 +113,8 @@ public:
 	// Rest
 
 	void free(RID p_rid);
-
+	
 	void init();
-	void finalize();
 	void flush_notifications();
 
 	_FORCE_INLINE_ static VertexLights2DServer *get_singleton() {
@@ -126,9 +125,8 @@ public:
 	~VertexLights2DServer();
 
 protected:
-	static void _scene_tree_idle_callback() {
-		VertexLights2DServer::get_singleton()->flush_notifications();
-	}
+	void register_update();
+	void unregister_update();
 
 	static void _bind_methods();
 

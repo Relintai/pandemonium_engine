@@ -83,7 +83,6 @@ void VertexLights2DServer::map_set_base_color(RID p_map, const Color &p_base_col
 	_map_changed(map);
 }
 
-
 Array VertexLights2DServer::map_get_lights(RID p_map) const {
 	VertexLightMap2D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND_V(map == NULL, Array());
@@ -156,7 +155,7 @@ bool VertexLights2DServer::light_get_is_enabled(RID p_light) {
 void VertexLights2DServer::light_set_enabled(RID p_light, const bool p_enabled) {
 	VertexLightData2D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
-	
+
 	if (light->enabled == p_enabled) {
 		return;
 	}
@@ -336,12 +335,23 @@ void VertexLights2DServer::free(RID p_rid) {
 }
 
 void VertexLights2DServer::init() {
+	call_deferred("_register_update");
+}
+
+void VertexLights2DServer::register_update() {
 	if (SceneTree::get_singleton()) {
-		SceneTree::get_singleton()->add_idle_callback(VertexLights2DServer::_scene_tree_idle_callback);
+		if (!SceneTree::get_singleton()->is_connected("idle_frame", this, "flush_notifications")) {
+			SceneTree::get_singleton()->connect("idle_frame", this, "flush_notifications");
+		}
 	}
 }
 
-void VertexLights2DServer::finalize() {
+void VertexLights2DServer::unregister_update() {
+	if (SceneTree::get_singleton()) {
+		if (SceneTree::get_singleton()->is_connected("idle_frame", this, "flush_notifications")) {
+			SceneTree::get_singleton()->disconnect("idle_frame", this, "flush_notifications");
+		}
+	}
 }
 
 void VertexLights2DServer::flush_notifications() {
@@ -377,7 +387,7 @@ void VertexLights2DServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("map_get_quadrant_size", "map"), &VertexLights2DServer::map_get_quadrant_size);
 	ClassDB::bind_method(D_METHOD("map_set_quadrant_size", "map", "size"), &VertexLights2DServer::map_set_quadrant_size);
-	
+
 	ClassDB::bind_method(D_METHOD("map_get_base_color", "map"), &VertexLights2DServer::map_get_base_color);
 	ClassDB::bind_method(D_METHOD("map_set_base_color", "map", "base_color"), &VertexLights2DServer::map_set_base_color);
 
@@ -427,6 +437,7 @@ void VertexLights2DServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("free", "rid"), &VertexLights2DServer::free);
 
+	ClassDB::bind_method(D_METHOD("_register_update"), &VertexLights2DServer::register_update);
 	ClassDB::bind_method(D_METHOD("flush_notifications"), &VertexLights2DServer::flush_notifications);
 
 	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_ADD);

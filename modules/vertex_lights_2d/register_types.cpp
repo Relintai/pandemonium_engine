@@ -56,8 +56,6 @@ void unregister_vertex_lights_2d_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
 		if (vertex_lights_2d_server) {
 			memdelete(vertex_lights_2d_server);
-		} else if (p_level == MODULE_REGISTRATION_LEVEL_FINALIZE) {
-			vertex_lights_2d_server->finalize();
 		}
 	}
 }
