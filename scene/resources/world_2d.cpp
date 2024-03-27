@@ -371,6 +371,7 @@ void World2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::RID, "space", PROPERTY_HINT_NONE, "", 0), "", "get_space");
 	ADD_PROPERTY(PropertyInfo(Variant::RID, "navigation_map", PROPERTY_HINT_NONE, "", 0), "", "get_navigation_map");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "direct_space_state", PROPERTY_HINT_RESOURCE_TYPE, "Physics2DDirectSpaceState", 0), "", "get_direct_space_state");
+	ADD_PROPERTY(PropertyInfo(Variant::RID, "vertex_lights_2d_map", PROPERTY_HINT_NONE, "", 0), "", "get_vertex_lights_2d_map");
 }
 
 Physics2DDirectSpaceState *World2D::get_direct_space_state() {

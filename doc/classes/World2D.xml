@@ -10,11 +10,6 @@
 		<link>$DOCS_URL/tutorials/physics/ray-casting.md</link>
 	</tutorials>
 	<methods>
-		<method name="get_vertex_lights_2d_map">
-			<return type="RID" />
-			<description>
-			</description>
-		</method>
 	</methods>
 	<members>
 		<member name="canvas" type="RID" setter="" getter="get_canvas">
@@ -28,6 +23,9 @@
 		</member>
 		<member name="space" type="RID" setter="" getter="get_space">
 			The [RID] of this world's physics space resource. Used by the [Physics2DServer] for 2D physics, treating it as both a space and an area.
+		</member>
+		<member name="vertex_lights_2d_map" type="RID" setter="" getter="get_vertex_lights_2d_map">
+			The [RID] of this world's vertex light 2d space resource. Used by the [VertexLights2DServer] for static 2D lights. If the vertex lights 2d module is not enabled this will just return an empty RID.
 		</member>
 	</members>
 	<constants>
