@@ -108,7 +108,7 @@ public:
 
 	// Sampling
 
-	Color sample_light(RID p_map, const Vector2 &p_position, const int p_item_cull_mask = 1, const int p_layer = 0);
+	Color sample_light(RID p_map, const Vector2 &p_position, const int p_item_cull_mask = 1, const int p_layer = 0, const int p_z_index = 0);
 
 	// Rest
 
@@ -175,7 +175,7 @@ protected:
 
 		void get_lights(List<VertexLightData2D *> *p_lights);
 
-		Color sample_light(const Color &p_current_color, const Vector2 &p_local_position, const int p_item_cull_mask, const int p_layer);
+		Color sample_light(const Color &p_current_color, const Vector2 &p_local_position, const int p_item_cull_mask, const int p_layer, const int p_z_index);
 
 		VertexLightQuadrant2D() {
 			map = NULL;
@@ -203,7 +203,7 @@ protected:
 
 		void clear();
 
-		Color sample_light(const Vector2 &p_position, const int p_item_cull_mask = 1, const int p_layer = 0);
+		Color sample_light(const Vector2 &p_position, const int p_item_cull_mask = 1, const int p_layer = 0, const int p_z_index = 0);
 
 		_FORCE_INLINE_ Vector2i to_quadrant_position(const Vector2 &p_position) {
 			return Vector2i(p_position.x / quadrant_size.x, p_position.y / quadrant_size.y);

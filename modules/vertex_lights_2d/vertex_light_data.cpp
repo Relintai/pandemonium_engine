@@ -39,7 +39,7 @@ void VertexLights2DServer::VertexLightQuadrant2D::get_lights(List<VertexLightDat
 	}
 }
 
-Color VertexLights2DServer::VertexLightQuadrant2D::sample_light(const Color &p_current_color, const Vector2 &p_position, const int p_item_cull_mask, const int p_layer) {
+Color VertexLights2DServer::VertexLightQuadrant2D::sample_light(const Color &p_current_color, const Vector2 &p_position, const int p_item_cull_mask, const int p_layer, const int p_z_index) {
 	Color c = p_current_color;
 
 	for (uint32_t i = 0; i < lights.size(); ++i) {
@@ -61,7 +61,9 @@ Color VertexLights2DServer::VertexLightQuadrant2D::sample_light(const Color &p_c
 			continue;
 		}
 		
-		//TODO z_range
+		if (p_z_index < l->z_range.x || p_z_index > l->z_range.y) {
+			continue;
+		}
 		
 		Vector2 light_to_pos = p_position - l->position;
 		
@@ -185,7 +187,7 @@ void VertexLights2DServer::VertexLightMap2D::clear() {
 	}
 }
 
-Color VertexLights2DServer::VertexLightMap2D::sample_light(const Vector2 &p_position, const int p_item_cull_mask, const int p_layer) {
+Color VertexLights2DServer::VertexLightMap2D::sample_light(const Vector2 &p_position, const int p_item_cull_mask, const int p_layer, const int p_z_index) {
 	Color c = base_color;
 
 	Vector2i quadrant_position = to_quadrant_position(p_position);
@@ -197,7 +199,7 @@ Color VertexLights2DServer::VertexLightMap2D::sample_light(const Vector2 &p_posi
 			if (quadrants.has(qp)) {
 				VertexLightQuadrant2D *q = quadrants[qp];
 				
-				c = q->sample_light(c, p_position, p_item_cull_mask, p_layer);
+				c = q->sample_light(c, p_position, p_item_cull_mask, p_layer, p_z_index);
 			}
 		}
 	}
