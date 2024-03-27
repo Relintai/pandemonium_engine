@@ -178,6 +178,7 @@ void VertexLights2DServer::light_set_position(RID p_light, const Vector2 &p_posi
 	if (light->map) {
 		// This ensure the light gets moved to the proper quadrant
 		light->map->set_light_position(light, p_position);
+		_light_changed(light);
 		return;
 	}
 
