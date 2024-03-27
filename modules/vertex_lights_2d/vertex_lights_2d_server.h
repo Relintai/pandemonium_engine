@@ -215,6 +215,12 @@ protected:
 	};
 
 	_FORCE_INLINE_ void _light_changed(const VertexLightData2D *p_light) const {
+		if (p_light && p_light->enabled && p_light->map) {
+			_changed_maps.insert(p_light->map->self);
+		}
+	}
+	
+	_FORCE_INLINE_ void _light_enabled_changed(const VertexLightData2D *p_light) const {
 		if (p_light && p_light->map) {
 			_changed_maps.insert(p_light->map->self);
 		}

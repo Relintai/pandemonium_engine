@@ -162,7 +162,7 @@ void VertexLights2DServer::light_set_enabled(RID p_light, const bool p_enabled) 
 
 	light->enabled = p_enabled;
 
-	_light_changed(light);
+	_light_enabled_changed(light);
 }
 
 Vector2 VertexLights2DServer::light_get_position(RID p_light) {
