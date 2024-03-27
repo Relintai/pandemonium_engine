@@ -39,6 +39,12 @@
 #include "scene/main/scene_string_names.h"
 #include "servers/navigation_server.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+#include "modules/vertex_lights_3d/vertex_lights_3d_server.h"
+#endif
+
 struct SpatialIndexer {
 	Octree<VisibilityNotifier> octree;
 
@@ -267,6 +273,10 @@ RID World3D::get_navigation_map() const {
 	return navigation_map;
 }
 
+RID World3D::get_vertex_lights_3d_map() {
+	return vertex_lights_3d_map;
+}
+
 void World3D::set_environment(const Ref<Environment3D> &p_environment) {
 	if (environment == p_environment) {
 		return;
@@ -333,22 +343,30 @@ void World3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_space"), &World3D::get_space);
 	ClassDB::bind_method(D_METHOD("get_scenario"), &World3D::get_scenario);
 	ClassDB::bind_method(D_METHOD("get_navigation_map"), &World3D::get_navigation_map);
+	ClassDB::bind_method(D_METHOD("get_vertex_lights_3d_map"), &World3D::get_vertex_lights_3d_map);
+
 	ClassDB::bind_method(D_METHOD("set_environment", "env"), &World3D::set_environment);
 	ClassDB::bind_method(D_METHOD("get_environment"), &World3D::get_environment);
 	ClassDB::bind_method(D_METHOD("set_fallback_environment", "env"), &World3D::set_fallback_environment);
 	ClassDB::bind_method(D_METHOD("get_fallback_environment"), &World3D::get_fallback_environment);
 	ClassDB::bind_method(D_METHOD("get_direct_space_state"), &World3D::get_direct_space_state);
+
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment3D"), "set_environment", "get_environment");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fallback_environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment3D"), "set_fallback_environment", "get_fallback_environment");
 	ADD_PROPERTY(PropertyInfo(Variant::RID, "space", PROPERTY_HINT_NONE, "", 0), "", "get_space");
 	ADD_PROPERTY(PropertyInfo(Variant::RID, "scenario", PROPERTY_HINT_NONE, "", 0), "", "get_scenario");
 	ADD_PROPERTY(PropertyInfo(Variant::RID, "navigation_map", PROPERTY_HINT_NONE, "", 0), "", "get_navigation_map");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "direct_space_state", PROPERTY_HINT_RESOURCE_TYPE, "PhysicsDirectSpaceState", 0), "", "get_direct_space_state");
+	ADD_PROPERTY(PropertyInfo(Variant::RID, "vertex_lights_3d_map", PROPERTY_HINT_NONE, "", 0), "", "get_vertex_lights_3d_map");
 }
 
 World3D::World3D() {
 	space = RID_PRIME(PhysicsServer::get_singleton()->space_create());
 	scenario = RID_PRIME(RenderingServer::get_singleton()->scenario_create());
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	vertex_lights_3d_map = RID_PRIME(VertexLights3DServer::get_singleton()->map_create());
+#endif
 
 	PhysicsServer::get_singleton()->space_set_active(space, true);
 	PhysicsServer::get_singleton()->area_set_param(space, PhysicsServer::AREA_PARAM_GRAVITY, GLOBAL_DEF("physics/3d/default_gravity", 9.8));
@@ -379,6 +397,10 @@ World3D::~World3D() {
 	PhysicsServer::get_singleton()->free(space);
 	RenderingServer::get_singleton()->free(scenario);
 	NavigationServer::get_singleton()->free(navigation_map);
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	VertexLights3DServer::get_singleton()->free(vertex_lights_3d_map);
+#endif
 
 #ifndef _3D_DISABLED
 	memdelete(indexer);

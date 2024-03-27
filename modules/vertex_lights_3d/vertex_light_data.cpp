@@ -39,17 +39,17 @@ void VertexLights3DServer::VertexLightQuadrant3D::get_lights(List<VertexLightDat
 	}
 }
 
-Color VertexLights3DServer::VertexLightQuadrant3D::sample_light(const Color &p_current_color, const Vector2 &p_position, const int p_item_cull_mask, const int p_layer, const int p_z_index) {
+Color VertexLights3DServer::VertexLightQuadrant3D::sample_light_value(const Color &p_current_color, const Vector3 &p_position, const int p_item_cull_mask) {
 	Color c = p_current_color;
 
 	for (uint32_t i = 0; i < lights.size(); ++i) {
 		VertexLightData3D *l = lights[i];
-		
+
 		if (!l->enabled) {
 			continue;
 		}
 
-		if (l->range.x == 0 || l->range.y == 0) {
+		if (l->range == 0) {
 			continue;
 		}
 
@@ -57,19 +57,13 @@ Color VertexLights3DServer::VertexLightQuadrant3D::sample_light(const Color &p_c
 			continue;
 		}
 
-		if (p_layer < l->layer_range.x || p_layer > l->layer_range.y) {
-			continue;
-		}
-		
-		if (p_z_index < l->z_range.x || p_z_index > l->z_range.y) {
-			continue;
-		}
-		
-		Vector2 light_to_pos = p_position - l->position;
-		
-		Vector2 light_to_pos_normal_space = light_to_pos;
-		light_to_pos_normal_space.x /= static_cast<real_t>(l->range.x);
-		light_to_pos_normal_space.y /= static_cast<real_t>(l->range.y);
+
+		Vector3 light_to_pos = p_position - l->position;
+
+		Vector3 light_to_pos_normal_space = light_to_pos;
+		light_to_pos_normal_space.x /= l->range;
+		light_to_pos_normal_space.y /= l->range;
+		light_to_pos_normal_space.z /= l->range;
 
 		real_t ltpnsl = light_to_pos_normal_space.length();
 
@@ -77,7 +71,7 @@ Color VertexLights3DServer::VertexLightQuadrant3D::sample_light(const Color &p_c
 		if (ltpnsl >= 1) {
 			continue;
 		}
-		
+
 		real_t attenuation = pow(1.0 - ltpnsl, l->attenuation);
 
 		Color ac = l->color * attenuation;
@@ -93,10 +87,64 @@ Color VertexLights3DServer::VertexLightQuadrant3D::sample_light(const Color &p_c
 				c = c.blend(ac);
 			} break;
 		}
-		
+
 		c = c.clamp();
 	}
-	
+
+	return c;
+}
+
+Color VertexLights3DServer::VertexLightQuadrant3D::sample_light(const Color &p_current_color, const Vector3 &p_position, const Vector3 &p_normal, const int p_item_cull_mask) {
+	Color c = p_current_color;
+
+	for (uint32_t i = 0; i < lights.size(); ++i) {
+		VertexLightData3D *l = lights[i];
+
+		if (!l->enabled) {
+			continue;
+		}
+
+		if (l->range == 0) {
+			continue;
+		}
+
+		if ((l->item_cull_mask & p_item_cull_mask) == 0) {
+			continue;
+		}
+
+		Vector3 light_to_pos = p_position - l->position;
+
+		Vector3 light_to_pos_normal_space = light_to_pos;
+		light_to_pos_normal_space.x /= l->range;
+		light_to_pos_normal_space.y /= l->range;
+		light_to_pos_normal_space.z /= l->range;
+
+		real_t ltpnsl = light_to_pos_normal_space.length();
+
+		// Position is outside the light's range.
+		if (ltpnsl >= 1) {
+			continue;
+		}
+
+		real_t attenuation = pow(1.0 - ltpnsl, l->attenuation);
+
+		Color ac = l->color * attenuation;
+
+		switch (l->mode) {
+			case VertexLights3DServer::VERTEX_LIGHT_3D_MODE_ADD: {
+				c += ac;
+			} break;
+			case VertexLights3DServer::VERTEX_LIGHT_3D_MODE_SUB: {
+				c -= ac;
+			} break;
+			case VertexLights3DServer::VERTEX_LIGHT_3D_MODE_MIX: {
+				c = c.blend(ac);
+			} break;
+		}
+
+		c = c.clamp();
+	}
+
 	return c;
 }
 
@@ -106,7 +154,7 @@ void VertexLights3DServer::VertexLightMap3D::recreate_quadrants() {
 	List<VertexLightData3D *> lights;
 	get_lights(&lights);
 
-	for (HashMap<Vector2i, VertexLightQuadrant3D *>::Element *E = quadrants.front(); E; E = E->next) {
+	for (HashMap<Vector3i, VertexLightQuadrant3D *>::Element *E = quadrants.front(); E; E = E->next) {
 		memdelete(E->value());
 	}
 
@@ -119,7 +167,7 @@ void VertexLights3DServer::VertexLightMap3D::recreate_quadrants() {
 }
 
 void VertexLights3DServer::VertexLightMap3D::get_lights(List<VertexLightData3D *> *p_lights) {
-	for (HashMap<Vector2i, VertexLightQuadrant3D *>::Element *E = quadrants.front(); E; E = E->next) {
+	for (HashMap<Vector3i, VertexLightQuadrant3D *>::Element *E = quadrants.front(); E; E = E->next) {
 		E->value()->get_lights(p_lights);
 	}
 }
@@ -150,8 +198,8 @@ void VertexLights3DServer::VertexLightMap3D::remove_light(VertexLightData3D *p_l
 	}
 }
 
-VertexLights3DServer::VertexLightQuadrant3D *VertexLights3DServer::VertexLightMap3D::get_quadrant_for_position(const Vector2 &p_position) {
-	Vector2i quadrant_position = to_quadrant_position(p_position);
+VertexLights3DServer::VertexLightQuadrant3D *VertexLights3DServer::VertexLightMap3D::get_quadrant_for_position(const Vector3 &p_position) {
+	Vector3i quadrant_position = to_quadrant_position(p_position);
 
 	if (!quadrants.has(quadrant_position)) {
 		VertexLightQuadrant3D *quadrant = memnew(VertexLightQuadrant3D);
@@ -163,7 +211,7 @@ VertexLights3DServer::VertexLightQuadrant3D *VertexLights3DServer::VertexLightMa
 	return quadrants[quadrant_position];
 }
 
-void VertexLights3DServer::VertexLightMap3D::set_light_position(VertexLightData3D *p_light, const Vector2 &p_position) {
+void VertexLights3DServer::VertexLightMap3D::set_light_position(VertexLightData3D *p_light, const Vector3 &p_position) {
 	remove_light(p_light);
 	p_light->position = p_position;
 	add_light(p_light);
@@ -173,7 +221,7 @@ void VertexLights3DServer::VertexLightMap3D::clear() {
 	List<VertexLightData3D *> lights;
 	get_lights(&lights);
 
-	for (HashMap<Vector2i, VertexLightQuadrant3D *>::Element *E = quadrants.front(); E; E = E->next) {
+	for (HashMap<Vector3i, VertexLightQuadrant3D *>::Element *E = quadrants.front(); E; E = E->next) {
 		memdelete(E->value());
 	}
 
@@ -187,19 +235,43 @@ void VertexLights3DServer::VertexLightMap3D::clear() {
 	}
 }
 
-Color VertexLights3DServer::VertexLightMap3D::sample_light(const Vector2 &p_position, const int p_item_cull_mask, const int p_layer, const int p_z_index) {
+Color VertexLights3DServer::VertexLightMap3D::sample_light_value(const Vector3 &p_position, const int p_item_cull_mask) {
 	Color c = base_color;
 
-	Vector2i quadrant_position = to_quadrant_position(p_position);
-	
+	Vector3i quadrant_position = to_quadrant_position(p_position);
+
 	for (int x = quadrant_position.x - 1; x <= quadrant_position.x + 1; ++x) {
 		for (int y = quadrant_position.y - 1; y <= quadrant_position.y + 1; ++y) {
-			Vector2i qp = Vector2i(x, y);
+			for (int z = quadrant_position.z - 1; z <= quadrant_position.z + 1; ++z) {
+				Vector3i qp = Vector3i(x, y, z);
 
-			if (quadrants.has(qp)) {
-				VertexLightQuadrant3D *q = quadrants[qp];
-				
-				c = q->sample_light(c, p_position, p_item_cull_mask, p_layer, p_z_index);
+				if (quadrants.has(qp)) {
+					VertexLightQuadrant3D *q = quadrants[qp];
+
+					c = q->sample_light_value(c, p_position, p_item_cull_mask);
+				}
+			}
+		}
+	}
+
+	return c;
+}
+
+Color VertexLights3DServer::VertexLightMap3D::sample_light(const Vector3 &p_position, const Vector3 &p_normal, const int p_item_cull_mask) {
+	Color c = base_color;
+
+	Vector3i quadrant_position = to_quadrant_position(p_position);
+
+	for (int x = quadrant_position.x - 1; x <= quadrant_position.x + 1; ++x) {
+		for (int y = quadrant_position.y - 1; y <= quadrant_position.y + 1; ++y) {
+			for (int z = quadrant_position.z - 1; z <= quadrant_position.z + 1; ++z) {
+				Vector3i qp = Vector3i(x, y, z);
+
+				if (quadrants.has(qp)) {
+					VertexLightQuadrant3D *q = quadrants[qp];
+
+					c = q->sample_light(c, p_position, p_normal, p_item_cull_mask);
+				}
 			}
 		}
 	}

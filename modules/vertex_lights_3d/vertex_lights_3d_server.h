@@ -40,7 +40,7 @@
 #include "core/containers/rid.h"
 #include "core/containers/vector.h"
 #include "core/math/color.h"
-#include "core/math/vector2i.h"
+#include "core/math/vector3i.h"
 
 class VertexLights3DServer : public Object {
 	GDCLASS(VertexLights3DServer, Object);
@@ -55,15 +55,15 @@ public:
 
 	// Defaults
 
-	Vector2i get_default_quadrant_size() const;
-	void set_default_quadrant_size(const Vector2i &p_size);
+	Vector3i get_default_quadrant_size() const;
+	void set_default_quadrant_size(const Vector3i &p_size);
 
 	// Maps
 
 	RID map_create();
 
-	Vector2i map_get_quadrant_size(RID p_map) const;
-	void map_set_quadrant_size(RID p_map, const Vector2i &p_size);
+	Vector3i map_get_quadrant_size(RID p_map) const;
+	void map_set_quadrant_size(RID p_map, const Vector3i &p_size);
 	
 	Color map_get_base_color(RID p_map) const;
 	void map_set_base_color(RID p_map, const Color &p_base_color);
@@ -82,11 +82,11 @@ public:
 	bool light_get_is_enabled(RID p_light);
 	void light_set_enabled(RID p_light, const bool p_enabled);
 
-	Vector2 light_get_position(RID p_light);
-	void light_set_position(RID p_light, const Vector2 &p_position);
+	Vector3 light_get_position(RID p_light);
+	void light_set_position(RID p_light, const Vector3 &p_position);
 
-	Vector2i light_get_range(RID p_light);
-	void light_set_range(RID p_light, const Vector2i &p_range);
+	real_t light_get_range(RID p_light);
+	void light_set_range(RID p_light, const real_t p_range);
 
 	real_t light_get_attenuation(RID p_light);
 	void light_set_attenuation(RID p_light, const real_t p_attenuation);
@@ -97,18 +97,13 @@ public:
 	VertexLights3DServer::VertexLight3DMode light_get_mode(RID p_light);
 	void light_set_mode(RID p_light, const VertexLights3DServer::VertexLight3DMode p_mode);
 
-	Vector2i light_get_z_range(RID p_light);
-	void light_set_z_range(RID p_light, const Vector2i &p_z_range);
-
-	Vector2i light_get_layer_range(RID p_light);
-	void light_set_layer_range(RID p_light, const Vector2i &p_layer_range);
-
 	int light_get_item_cull_mask(RID p_light);
 	void light_set_item_cull_mask(RID p_light, const int p_item_cull_mask);
 
 	// Sampling
 
-	Color sample_light(RID p_map, const Vector2 &p_position, const int p_item_cull_mask = 1, const int p_layer = 0, const int p_z_index = 0);
+	Color sample_light_value(RID p_map, const Vector3 &p_position, const int p_item_cull_mask = 1);
+	Color sample_light(RID p_map, const Vector3 &p_position, const Vector3 &p_normal, const int p_item_cull_mask = 1);
 
 	// Rest
 
@@ -137,13 +132,11 @@ protected:
 	class VertexLightData3D : public RID_Data {
 	public:
 		bool enabled;
-		Vector2 position;
-		Vector2i range;
+		Vector3 position;
+		real_t range;
 		real_t attenuation;
 		Color color;
 		VertexLights3DServer::VertexLight3DMode mode;
-		Vector2i z_range;
-		Vector2i layer_range;
 		int item_cull_mask;
 
 		VertexLightMap3D *map;
@@ -156,26 +149,25 @@ protected:
 			quadrant = NULL;
 
 			enabled = true;
-			range = Vector2i(32, 32);
+			range = 5;
 			attenuation = 1;
 			color = Color(1, 1, 1, 1);
 			item_cull_mask = 1;
-			z_range = Vector2i(-1024, 1024);
-			layer_range = Vector2i(-512, 512);
 			mode = VertexLights3DServer::VERTEX_LIGHT_3D_MODE_ADD;
 		}
 	};
 
 	class VertexLightQuadrant3D {
 	public:
-		Vector2i position;
+		Vector3i position;
 		LocalVector<VertexLightData3D *> lights;
 
 		VertexLightMap3D *map;
 
 		void get_lights(List<VertexLightData3D *> *p_lights);
 
-		Color sample_light(const Color &p_current_color, const Vector2 &p_local_position, const int p_item_cull_mask, const int p_layer, const int p_z_index);
+		Color sample_light_value(const Color &p_current_color, const Vector3 &p_position, const int p_item_cull_mask);
+		Color sample_light(const Color &p_current_color, const Vector3 &p_position, const Vector3 &p_normal, const int p_item_cull_mask);
 
 		VertexLightQuadrant3D() {
 			map = NULL;
@@ -184,8 +176,8 @@ protected:
 
 	class VertexLightMap3D : public RID_Data {
 	public:
-		HashMap<Vector2i, VertexLightQuadrant3D *> quadrants;
-		Vector2i quadrant_size;
+		HashMap<Vector3i, VertexLightQuadrant3D *> quadrants;
+		Vector3i quadrant_size;
 		Color base_color;
 
 		RID self;
@@ -197,20 +189,21 @@ protected:
 		void add_light(VertexLightData3D *p_light);
 		void remove_light(VertexLightData3D *p_light);
 
-		VertexLightQuadrant3D *get_quadrant_for_position(const Vector2 &p_position);
+		VertexLightQuadrant3D *get_quadrant_for_position(const Vector3 &p_position);
 
-		void set_light_position(VertexLightData3D *p_light, const Vector2 &p_position);
+		void set_light_position(VertexLightData3D *p_light, const Vector3 &p_position);
 
 		void clear();
 
-		Color sample_light(const Vector2 &p_position, const int p_item_cull_mask = 1, const int p_layer = 0, const int p_z_index = 0);
+		Color sample_light_value(const Vector3 &p_position, const int p_item_cull_mask);
+		Color sample_light(const Vector3 &p_position, const Vector3 &p_normal, const int p_item_cull_mask);
 
-		_FORCE_INLINE_ Vector2i to_quadrant_position(const Vector2 &p_position) {
-			return Vector2i(p_position.x / quadrant_size.x, p_position.y / quadrant_size.y);
+		_FORCE_INLINE_ Vector3i to_quadrant_position(const Vector3 &p_position) {
+			return Vector3i(p_position.x / quadrant_size.x, p_position.y / quadrant_size.y, p_position.z / quadrant_size.z);
 		}
 
-		_FORCE_INLINE_ Vector2 to_position(const Vector2i &p_quadrant_position) {
-			return Vector2(p_quadrant_position.x * quadrant_size.x, p_quadrant_position.y * quadrant_size.y);
+		_FORCE_INLINE_ Vector3 to_position(const Vector3i &p_quadrant_position) {
+			return Vector3(p_quadrant_position.x * quadrant_size.x, p_quadrant_position.y * quadrant_size.y, p_quadrant_position.z * quadrant_size.z);
 		}
 	};
 
@@ -235,7 +228,7 @@ protected:
 	mutable RID_Owner<VertexLightMap3D> map_owner;
 	mutable RID_Owner<VertexLightData3D> light_owner;
 
-	Vector2i _default_quadrant_size;
+	Vector3i _default_quadrant_size;
 
 	// Maybe an api could be adde that's per quadrant
 	mutable HashSet<RID> _changed_maps;

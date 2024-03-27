@@ -32,15 +32,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/main/node_2d.h"
+#include "scene/main/spatial.h"
 
 #include "core/containers/hash_map.h"
 #include "core/containers/vector.h"
 #include "core/math/color.h"
 #include "core/math/vector2i.h"
 
-class VertexLight3DEnvironment : public Node2D {
-	GDCLASS(VertexLight3DEnvironment, Node2D);
+class VertexLight3DEnvironment : public Spatial {
+	GDCLASS(VertexLight3DEnvironment, Spatial);
 
 public:
 	bool get_is_enabled();

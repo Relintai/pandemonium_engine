@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/main/node_2d.h"
+#include "scene/main/spatial.h"
 
 #include "core/containers/hash_map.h"
 #include "core/containers/vector.h"
@@ -41,8 +41,8 @@
 
 #include "vertex_lights_3d_server.h"
 
-class VertexLight3D : public Node2D {
-	GDCLASS(VertexLight3D, Node2D);
+class VertexLight3D : public Spatial {
+	GDCLASS(VertexLight3D, Spatial);
 
 public:
 	enum VertexLight3DMode {
@@ -55,8 +55,8 @@ public:
 	bool get_is_enabled();
 	void set_enabled(const bool p_enabled);
 
-	Vector2i get_range();
-	void set_range(const Vector2i &p_range);
+	real_t get_range();
+	void set_range(const real_t p_range);
 
 	real_t get_attenuation();
 	void set_attenuation(const real_t p_attenuation);
@@ -66,12 +66,6 @@ public:
 
 	VertexLight3D::VertexLight3DMode get_mode();
 	void set_mode(const VertexLight3D::VertexLight3DMode p_mode);
-
-	Vector2i get_z_range();
-	void set_z_range(const Vector2i &p_z_range);
-
-	Vector2i get_layer_range();
-	void set_layer_range(const Vector2i &p_layer_range);
 
 	int get_item_cull_mask();
 	void set_item_cull_mask(const int p_item_cull_mask);
@@ -89,12 +83,10 @@ protected:
 	RID _vertex_light;
 
 	bool _enabled;
-	Vector2i _range;
+	real_t _range;
 	real_t _attenuation;
 	Color _color;
 	VertexLight3DMode _mode;
-	Vector2i _z_range;
-	Vector2i _layer_range;
 	int _item_cull_mask;
 };
 

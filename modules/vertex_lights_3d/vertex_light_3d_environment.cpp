@@ -33,7 +33,7 @@
 
 #include "core/config/engine.h"
 
-#include "scene/resources/world_2d.h"
+#include "scene/resources/world_3d.h"
 
 #include "vertex_lights_3d_server.h"
 
@@ -78,9 +78,9 @@ void VertexLight3DEnvironment::_update_light_visibility() {
 		return;
 	}
 
-	Ref<World2D> world = get_world_2d();
+	Ref<World3D> world = get_world_3d();
 	ERR_FAIL_COND(!world.is_valid());
-	RID map = world->get_vertex_lights_2d_map();
+	RID map = world->get_vertex_lights_3d_map();
 
 	VertexLights3DServer::get_singleton()->map_set_base_color(map, _color);
 }

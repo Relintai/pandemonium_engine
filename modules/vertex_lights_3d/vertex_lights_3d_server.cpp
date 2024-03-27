@@ -36,10 +36,10 @@
 #include "scene/main/scene_tree.h"
 
 // Defaults
-Vector2i VertexLights3DServer::get_default_quadrant_size() const {
+Vector3i VertexLights3DServer::get_default_quadrant_size() const {
 	return _default_quadrant_size;
 }
-void VertexLights3DServer::set_default_quadrant_size(const Vector2i &p_size) {
+void VertexLights3DServer::set_default_quadrant_size(const Vector3i &p_size) {
 	_default_quadrant_size = p_size;
 }
 
@@ -52,13 +52,13 @@ RID VertexLights3DServer::map_create() {
 	return rid;
 }
 
-Vector2i VertexLights3DServer::map_get_quadrant_size(RID p_map) const {
+Vector3i VertexLights3DServer::map_get_quadrant_size(RID p_map) const {
 	const VertexLightMap3D *map = map_owner.getornull(p_map);
-	ERR_FAIL_COND_V(map == NULL, Vector2i());
+	ERR_FAIL_COND_V(map == NULL, Vector3i());
 
 	return map->quadrant_size;
 }
-void VertexLights3DServer::map_set_quadrant_size(RID p_map, const Vector2i &p_size) {
+void VertexLights3DServer::map_set_quadrant_size(RID p_map, const Vector3i &p_size) {
 	VertexLightMap3D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND(map == NULL);
 
@@ -165,13 +165,13 @@ void VertexLights3DServer::light_set_enabled(RID p_light, const bool p_enabled) 
 	_light_enabled_changed(light);
 }
 
-Vector2 VertexLights3DServer::light_get_position(RID p_light) {
+Vector3 VertexLights3DServer::light_get_position(RID p_light) {
 	const VertexLightData3D *light = light_owner.getornull(p_light);
-	ERR_FAIL_COND_V(light == NULL, Vector2());
+	ERR_FAIL_COND_V(light == NULL, Vector3());
 
 	return light->position;
 }
-void VertexLights3DServer::light_set_position(RID p_light, const Vector2 &p_position) {
+void VertexLights3DServer::light_set_position(RID p_light, const Vector3 &p_position) {
 	VertexLightData3D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
 
@@ -187,13 +187,13 @@ void VertexLights3DServer::light_set_position(RID p_light, const Vector2 &p_posi
 	_light_changed(light);
 }
 
-Vector2i VertexLights3DServer::light_get_range(RID p_light) {
+real_t VertexLights3DServer::light_get_range(RID p_light) {
 	const VertexLightData3D *light = light_owner.getornull(p_light);
-	ERR_FAIL_COND_V(light == NULL, Vector2i());
+	ERR_FAIL_COND_V(light == NULL, 0);
 
 	return light->range;
 }
-void VertexLights3DServer::light_set_range(RID p_light, const Vector2i &p_range) {
+void VertexLights3DServer::light_set_range(RID p_light, const real_t p_range) {
 	VertexLightData3D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND(light == NULL);
 
@@ -247,36 +247,6 @@ void VertexLights3DServer::light_set_mode(RID p_light, const VertexLights3DServe
 	_light_changed(light);
 }
 
-Vector2i VertexLights3DServer::light_get_z_range(RID p_light) {
-	const VertexLightData3D *light = light_owner.getornull(p_light);
-	ERR_FAIL_COND_V(light == NULL, Vector2i());
-
-	return light->z_range;
-}
-void VertexLights3DServer::light_set_z_range(RID p_light, const Vector2i &p_z_range) {
-	VertexLightData3D *light = light_owner.getornull(p_light);
-	ERR_FAIL_COND(light == NULL);
-
-	light->z_range = p_z_range;
-
-	_light_changed(light);
-}
-
-Vector2i VertexLights3DServer::light_get_layer_range(RID p_light) {
-	const VertexLightData3D *light = light_owner.getornull(p_light);
-	ERR_FAIL_COND_V(light == NULL, Vector2i());
-
-	return light->layer_range;
-}
-void VertexLights3DServer::light_set_layer_range(RID p_light, const Vector2i &p_layer_range) {
-	VertexLightData3D *light = light_owner.getornull(p_light);
-	ERR_FAIL_COND(light == NULL);
-
-	light->layer_range = p_layer_range;
-
-	_light_changed(light);
-}
-
 int VertexLights3DServer::light_get_item_cull_mask(RID p_light) {
 	const VertexLightData3D *light = light_owner.getornull(p_light);
 	ERR_FAIL_COND_V(light == NULL, 0);
@@ -294,11 +264,18 @@ void VertexLights3DServer::light_set_item_cull_mask(RID p_light, const int p_ite
 
 // Sampling
 
-Color VertexLights3DServer::sample_light(RID p_map, const Vector2 &p_position, const int p_item_cull_mask, const int p_layer, const int p_z_index) {
+Color VertexLights3DServer::sample_light_value(RID p_map, const Vector3 &p_position, const int p_item_cull_mask) {
 	VertexLightMap3D *map = map_owner.getornull(p_map);
 	ERR_FAIL_COND_V(map == NULL, Color());
 
-	return map->sample_light(p_position, p_item_cull_mask, p_layer, p_z_index);
+	return map->sample_light_value(p_position, p_item_cull_mask);
+}
+
+Color VertexLights3DServer::sample_light(RID p_map, const Vector3 &p_position, const Vector3 &p_normal, const int p_item_cull_mask) {
+	VertexLightMap3D *map = map_owner.getornull(p_map);
+	ERR_FAIL_COND_V(map == NULL, Color());
+
+	return map->sample_light(p_position, p_normal, p_item_cull_mask);
 }
 
 // Rest
@@ -368,7 +345,7 @@ VertexLights3DServer::VertexLights3DServer() {
 
 	_self = this;
 
-	GLOBAL_DEF("vertex_lights_3d/default_quadrant_size", Vector2i(256, 256));
+	GLOBAL_DEF("vertex_lights_3d/default_quadrant_size", Vector3i(32, 32, 32));
 	_default_quadrant_size = GLOBAL_GET("vertex_lights_3d/default_quadrant_size");
 
 	_map_changed_name = "map_changed";
@@ -421,18 +398,13 @@ void VertexLights3DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("light_get_mode", "light"), &VertexLights3DServer::light_get_mode);
 	ClassDB::bind_method(D_METHOD("light_set_mode", "light", "mode"), &VertexLights3DServer::light_set_mode);
 
-	ClassDB::bind_method(D_METHOD("light_get_z_range", "light"), &VertexLights3DServer::light_get_z_range);
-	ClassDB::bind_method(D_METHOD("light_set_z_range", "light", "z_range"), &VertexLights3DServer::light_set_z_range);
-
-	ClassDB::bind_method(D_METHOD("light_get_layer_range", "light"), &VertexLights3DServer::light_get_layer_range);
-	ClassDB::bind_method(D_METHOD("light_set_layer_range", "light", "layer_range"), &VertexLights3DServer::light_set_layer_range);
-
 	ClassDB::bind_method(D_METHOD("light_get_item_cull_mask", "light"), &VertexLights3DServer::light_get_item_cull_mask);
 	ClassDB::bind_method(D_METHOD("light_set_item_cull_mask", "light", "item_cull_mask"), &VertexLights3DServer::light_set_item_cull_mask);
 
 	// Sampling
 
-	ClassDB::bind_method(D_METHOD("sample_light", "map", "position", "item_cull_mask", "layer", "z_index"), &VertexLights3DServer::sample_light, DEFVAL(1), DEFVAL(0), DEFVAL(0));
+	ClassDB::bind_method(D_METHOD("sample_light_value", "map", "position", "item_cull_mask"), &VertexLights3DServer::sample_light_value, DEFVAL(1));
+	ClassDB::bind_method(D_METHOD("sample_light", "map", "position", "normal", "item_cull_mask"), &VertexLights3DServer::sample_light, DEFVAL(1));
 
 	// Rest, DEFVAL(0)
 

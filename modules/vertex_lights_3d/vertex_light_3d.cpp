@@ -33,7 +33,7 @@
 
 #include "core/config/engine.h"
 
-#include "scene/resources/world_2d.h"
+#include "scene/resources/world_3d.h"
 
 bool VertexLight3D::get_is_enabled() {
 	return _enabled;
@@ -44,10 +44,10 @@ void VertexLight3D::set_enabled(const bool p_enabled) {
 	_update_light_visibility();
 }
 
-Vector2i VertexLight3D::get_range() {
+real_t VertexLight3D::get_range() {
 	return _range;
 }
-void VertexLight3D::set_range(const Vector2i &p_range) {
+void VertexLight3D::set_range(const real_t p_range) {
 	_range = p_range;
 
 	VertexLights3DServer::get_singleton()->light_set_range(_vertex_light, _range);
@@ -80,24 +80,6 @@ void VertexLight3D::set_mode(const VertexLight3D::VertexLight3DMode p_mode) {
 	VertexLights3DServer::get_singleton()->light_set_mode(_vertex_light, (VertexLights3DServer::VertexLight3DMode)_mode);
 }
 
-Vector2i VertexLight3D::get_z_range() {
-	return _z_range;
-}
-void VertexLight3D::set_z_range(const Vector2i &p_z_range) {
-	_z_range = p_z_range;
-
-	VertexLights3DServer::get_singleton()->light_set_z_range(_vertex_light, _z_range);
-}
-
-Vector2i VertexLight3D::get_layer_range() {
-	return _layer_range;
-}
-void VertexLight3D::set_layer_range(const Vector2i &p_layer_range) {
-	_layer_range = p_layer_range;
-
-	VertexLights3DServer::get_singleton()->light_set_layer_range(_vertex_light, _layer_range);
-}
-
 int VertexLight3D::get_item_cull_mask() {
 	return _item_cull_mask;
 }
@@ -111,12 +93,10 @@ VertexLight3D::VertexLight3D() {
 	_vertex_light = RID_PRIME(VertexLights3DServer::get_singleton()->light_create());
 
 	_enabled = true;
-	_range = Vector2i(32, 32);
+	_range = 5;
 	_attenuation = 1;
 	_color = Color(1, 1, 1, 1);
 	_item_cull_mask = 1;
-	_z_range = Vector2i(-1024, 1024);
-	_layer_range = Vector2i(-512, 512);
 	_mode = VERTEX_LIGHT_3D_MODE_ADD;
 
 	set_notify_transform(true);
@@ -129,9 +109,9 @@ VertexLight3D::~VertexLight3D() {
 void VertexLight3D::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
-			Ref<World2D> world = get_world_2d();
+			Ref<World3D> world = get_world_3d();
 			ERR_FAIL_COND(!world.is_valid());
-			RID map = world->get_vertex_lights_2d_map();
+			RID map = world->get_vertex_lights_3d_map();
 			VertexLights3DServer::get_singleton()->light_set_map(_vertex_light, map);
 			
 			VertexLights3DServer::get_singleton()->light_set_position(_vertex_light, get_global_transform().get_origin());
@@ -167,7 +147,7 @@ void VertexLight3D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_range"), &VertexLight3D::get_range);
 	ClassDB::bind_method(D_METHOD("set_range", "range"), &VertexLight3D::set_range);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "range"), "set_range", "get_range");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "range"), "set_range", "get_range");
 
 	ClassDB::bind_method(D_METHOD("get_attenuation"), &VertexLight3D::get_attenuation);
 	ClassDB::bind_method(D_METHOD("set_attenuation", "attenuation"), &VertexLight3D::set_attenuation);
@@ -181,14 +161,6 @@ void VertexLight3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_mode", "mode"), &VertexLight3D::set_mode);
 	//,Mask
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "mode", PROPERTY_HINT_ENUM, "Add,Sub,Mix"), "set_mode", "get_mode");
-
-	ClassDB::bind_method(D_METHOD("get_z_range"), &VertexLight3D::get_z_range);
-	ClassDB::bind_method(D_METHOD("set_z_range", "z_range"), &VertexLight3D::set_z_range);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "z_range", PROPERTY_HINT_RANGE, itos(RS::CANVAS_ITEM_Z_MIN) + "," + itos(RS::CANVAS_ITEM_Z_MAX) + ",1"), "set_z_range", "get_z_range");
-
-	ClassDB::bind_method(D_METHOD("get_layer_range"), &VertexLight3D::get_layer_range);
-	ClassDB::bind_method(D_METHOD("set_layer_range", "layer_range"), &VertexLight3D::set_layer_range);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "layer_range", PROPERTY_HINT_RANGE, "-512,512,1"), "set_layer_range", "get_layer_range");
 
 	ClassDB::bind_method(D_METHOD("get_item_cull_mask"), &VertexLight3D::get_item_cull_mask);
 	ClassDB::bind_method(D_METHOD("set_item_cull_mask", "item_cull_mask"), &VertexLight3D::set_item_cull_mask);

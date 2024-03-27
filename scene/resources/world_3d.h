@@ -49,6 +49,7 @@ private:
 	RID space;
 	RID scenario;
 	RID navigation_map;
+	RID vertex_lights_3d_map;
 	SpatialIndexer *indexer;
 	Ref<Environment3D> environment;
 	Ref<Environment3D> fallback_environment;
@@ -74,6 +75,9 @@ public:
 	RID get_space() const;
 	RID get_scenario() const;
 	RID get_navigation_map() const;
+	
+	// TODO Maybe World should have a callback on creation?
+	RID get_vertex_lights_3d_map();
 
 	void set_environment(const Ref<Environment3D> &p_environment);
 	Ref<Environment3D> get_environment() const;
