@@ -23,11 +23,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="53"
-     inkscape:cx="8"
-     inkscape:cy="8"
+     inkscape:cx="8.0188679"
+     inkscape:cy="8.009434"
      inkscape:window-width="1920"
-     inkscape:window-height="1052"
-     inkscape:window-x="1920"
+     inkscape:window-height="1023"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg4" />
@@ -35,7 +35,7 @@
      fill="none"
      stroke="#e0e0e0"
      id="g4"
-     style="stroke:#a5b7f3;stroke-opacity:0.98823529">
+     style="stroke:#fc9c9c;stroke-opacity:0.99607843">
     <circle
        cx="8"
        cy="8"
@@ -44,24 +44,24 @@
        stroke-linejoin="round"
        stroke-width="2"
        id="circle1"
-       style="stroke:#a5b7f3;stroke-opacity:0.98823529" />
+       style="stroke:#fc9c9c;stroke-opacity:0.99607843" />
     <g
        stroke-width="1.5"
        transform="translate(0 -1036.4)"
        id="g3"
-       style="stroke:#a5b7f3;stroke-opacity:0.98823529">
+       style="stroke:#fc9c9c;stroke-opacity:0.99607843">
       <path
          d="m2 1044.4c4.5932 1.582 8.3985 1.0627 12 0"
          id="path1"
-         style="stroke:#a5b7f3;stroke-opacity:0.98823529" />
+         style="stroke:#fc9c9c;stroke-opacity:0.99607843" />
       <path
          d="m8 1038.4c-3 4-3 8 0 12"
          id="path2"
-         style="stroke:#a5b7f3;stroke-opacity:0.98823529" />
+         style="stroke:#fc9c9c;stroke-opacity:0.99607843" />
       <path
          d="m8 1038.4c3 4 3 8 0 12"
          id="path3"
-         style="stroke:#a5b7f3;stroke-opacity:0.98823529" />
+         style="stroke:#fc9c9c;stroke-opacity:0.99607843" />
     </g>
   </g>
   <g
