@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VertexLight2DEnvironment" inherits="Node2D" version="4.3">
 	<brief_description>
+		A [Node2D] that manages a map's base color in [VertexLights2DServer].
 	</brief_description>
 	<description>
+		A [Node2D] that manages a map's base color in [VertexLights2DServer].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,8 +12,10 @@
 	</methods>
 	<members>
 		<member name="color" type="Color" setter="set_color" getter="get_color" default="Color( 0, 0, 0, 1 )">
+			The base color.
 		</member>
 		<member name="enabled" type="bool" setter="set_enabled" getter="get_is_enabled" default="true">
+			Whether this [VertexLight2DEnvironment] is actively managing the base color or not.
 		</member>
 	</members>
 	<constants>
