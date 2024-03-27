@@ -2124,7 +2124,8 @@
 		<member name="vertex_lights_2d/default_quadrant_size" type="Vector2i" setter="" getter="" default="Vector2i( 256, 256 )">
 			The default internal quadrant size of the [VertexLights2DServer] singleton.
 		</member>
-		<member name="vertex_lights_3d/default_quadrant_size" type="Vector3i" setter="" getter="" default="Vector3i( 32, 32, 32 )">
+		<member name="vertex_lights_3d/default_octant_size" type="Vector3i" setter="" getter="" default="Vector3i( 32, 32, 32 )">
+			The default internal octant size of the [VertexLights2DServer] singleton.
 		</member>
 		<member name="world/2d/cell_size" type="int" setter="" getter="" default="100">
 			Cell size used for the 2D hash grid that [VisibilityNotifier2D] uses (in pixels).
