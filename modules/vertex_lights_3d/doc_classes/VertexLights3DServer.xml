@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VertexLights3DServer" inherits="Object" version="4.3">
 	<brief_description>
-		A server that provides a way to store static lights that can be used to bake lighting information into mesh vertex data, or [CanvasItem]'s color modulation.
+		A server that provides a way to store static lights that can be used to bake lighting information into mesh vertex data, or [SpatialMaterial]'s albedo modulation.
 	</brief_description>
 	<description>
-		A server that provides a way to store static lights that can be used to bake lighting information into mesh vertex data, or [CanvasItem]'s color modulation.
+		A server that provides a way to store static lights that can be used to bake lighting information into mesh vertex data, or [SpatialMaterial]'s albedo modulation.
 		With this class extremely complex light information can be stored and used with no additional cost on the GPU side.
-		After adding lights, you can use [member sample_light] to sample lighting at a specified point in the map's space, then use the resulting [Color] to either further modifty the modulate property of [CanvasItem]s, or you can render meshes using this color in you custom _draw methods.
+		After adding lights, you can use [member sample_light] to sample lighting at a specified point in the map's space, then use the resulting [Color] to either further modifty the albedo color in your shader, or you can bake vertex colors of your meshes.
 		The drawback of this method is that it's more expensive change lights.
-		Note that you can use the normal 3D lighting system on top of this if you need dynamic lights (like [Light3D]). That system is better suited for that purpose.
+		Note that you can use the normal 3D lighting system on top of this if you need dynamic lights (like [OmniLight]). That system is better suited for that purpose.
 		Currently this class stores lights inside quadrants. Their optimal size should be a bit more than the radius of the biggest light you want to have.
 	</description>
 	<tutorials>
@@ -28,7 +28,7 @@
 			</description>
 		</method>
 		<method name="get_default_quadrant_size" qualifiers="const">
-			<return type="Vector2i" />
+			<return type="Vector3i" />
 			<description>
 				Get the default internal quadrant size.
 			</description>
@@ -67,13 +67,6 @@
 				Get a light's item cull mask property.
 			</description>
 		</method>
-		<method name="light_get_layer_range">
-			<return type="Vector2i" />
-			<argument index="0" name="light" type="RID" />
-			<description>
-				Get a light's layer range property.
-			</description>
-		</method>
 		<method name="light_get_map">
 			<return type="RID" />
 			<argument index="0" name="light" type="RID" />
@@ -89,24 +82,17 @@
 			</description>
 		</method>
 		<method name="light_get_position">
-			<return type="Vector2" />
+			<return type="Vector3" />
 			<argument index="0" name="light" type="RID" />
 			<description>
 				Get a light's position.
 			</description>
 		</method>
 		<method name="light_get_range">
-			<return type="Vector2i" />
+			<return type="float" />
 			<argument index="0" name="light" type="RID" />
 			<description>
 				Get a light's range.
-			</description>
-		</method>
-		<method name="light_get_z_range">
-			<return type="Vector2i" />
-			<argument index="0" name="light" type="RID" />
-			<description>
-				Get a light's z range property.
 			</description>
 		</method>
 		<method name="light_set_attenuation">
@@ -141,14 +127,6 @@
 				Set a light's item cull mask property.
 			</description>
 		</method>
-		<method name="light_set_layer_range">
-			<return type="void" />
-			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="layer_range" type="Vector2i" />
-			<description>
-				Set a light's layer range property.
-			</description>
-		</method>
 		<method name="light_set_map">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
@@ -168,7 +146,7 @@
 		<method name="light_set_position">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="position" type="Vector2" />
+			<argument index="1" name="position" type="Vector3" />
 			<description>
 				Set a light's position.
 			</description>
@@ -176,17 +154,9 @@
 		<method name="light_set_range">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="range" type="Vector2i" />
+			<argument index="1" name="range" type="float" />
 			<description>
 				Set a light's range.
-			</description>
-		</method>
-		<method name="light_set_z_range">
-			<return type="void" />
-			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="z_range" type="Vector2i" />
-			<description>
-				Set a light's z range property.
 			</description>
 		</method>
 		<method name="map_clear">
@@ -217,7 +187,7 @@
 			</description>
 		</method>
 		<method name="map_get_quadrant_size" qualifiers="const">
-			<return type="Vector2i" />
+			<return type="Vector3i" />
 			<argument index="0" name="map" type="RID" />
 			<description>
 				Returns a map's quadrant size.
@@ -234,27 +204,33 @@
 		<method name="map_set_quadrant_size">
 			<return type="void" />
 			<argument index="0" name="map" type="RID" />
-			<argument index="1" name="size" type="Vector2i" />
+			<argument index="1" name="size" type="Vector3i" />
 			<description>
-				Sets a map's quadrant size.
 			</description>
 		</method>
 		<method name="sample_light">
 			<return type="Color" />
 			<argument index="0" name="map" type="RID" />
-			<argument index="1" name="position" type="Vector2" />
+			<argument index="1" name="position" type="Vector3" />
+			<argument index="2" name="normal" type="Vector3" />
+			<argument index="3" name="item_cull_mask" type="int" default="1" />
+			<description>
+				Sample the lighing information at a specific position with the specified normal.
+			</description>
+		</method>
+		<method name="sample_light_value">
+			<return type="Color" />
+			<argument index="0" name="map" type="RID" />
+			<argument index="1" name="position" type="Vector3" />
 			<argument index="2" name="item_cull_mask" type="int" default="1" />
-			<argument index="3" name="layer" type="int" default="0" />
-			<argument index="4" name="z_index" type="int" default="0" />
 			<description>
 				Sample the lighing information at a specific position.
 			</description>
 		</method>
 		<method name="set_default_quadrant_size">
 			<return type="void" />
-			<argument index="0" name="size" type="Vector2i" />
+			<argument index="0" name="size" type="Vector3i" />
 			<description>
-				Set the default internal quadrant size.
 			</description>
 		</method>
 	</methods>

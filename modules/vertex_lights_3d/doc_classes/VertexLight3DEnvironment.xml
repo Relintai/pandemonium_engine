@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="VertexLight3DEnvironment" inherits="Node3D" version="4.3">
+<class name="VertexLight3DEnvironment" inherits="Spatial" version="4.3">
 	<brief_description>
-		A [Node3D] that manages a map's base color in [VertexLights3DServer].
+		A [Spatial] that manages a map's base color in [VertexLights3DServer].
 	</brief_description>
 	<description>
-		A [Node3D] that manages a map's base color in [VertexLights3DServer].
+		A [Spatial] that manages a map's base color in [VertexLights3DServer].
 	</description>
 	<tutorials>
 	</tutorials>

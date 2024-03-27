@@ -30,6 +30,9 @@
 		<member name="space" type="RID" setter="" getter="get_space">
 			The World's physics space.
 		</member>
+		<member name="vertex_lights_3d_map" type="RID" setter="" getter="get_vertex_lights_3d_map">
+			The [RID] of this world's vertex light 3d space resource. Used by the [VertexLights3DServer] for static 3D lights. If the vertex lights 3d module is not enabled this will just return an empty RID.
+		</member>
 	</members>
 	<constants>
 	</constants>

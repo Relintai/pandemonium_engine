@@ -137,6 +137,9 @@
 		<member name="VertexLights2DServer" type="VertexLights2DServer" setter="" getter="">
 			The [VertexLights2DServer] singleton.
 		</member>
+		<member name="VertexLights3DServer" type="VertexLights3DServer" setter="" getter="">
+			The [VertexLights3DServer] singleton.
+		</member>
 	</members>
 	<constants>
 		<constant name="MARGIN_LEFT" value="0" enum="Margin">

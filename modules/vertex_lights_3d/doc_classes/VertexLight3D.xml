@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="VertexLight3D" inherits="Node3D" version="4.3">
+<class name="VertexLight3D" inherits="Spatial" version="4.3">
 	<brief_description>
-		A [Node3D] that manages a light in [VertexLights3DServer].
+		A [Spatial] that manages a light in [VertexLights3DServer].
 	</brief_description>
 	<description>
-		A [Node3D] that manages a light in [VertexLights3DServer].
+		A [Spatial] that manages a light in [VertexLights3DServer].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -23,17 +23,11 @@
 		<member name="item_cull_mask" type="int" setter="set_item_cull_mask" getter="get_item_cull_mask" default="1">
 			The light's item cull mask.
 		</member>
-		<member name="layer_range" type="Vector2i" setter="set_layer_range" getter="get_layer_range" default="Vector2i( -512, 512 )">
-			The light's layer range.
-		</member>
 		<member name="mode" type="int" setter="set_mode" getter="get_mode" enum="VertexLight3D.VertexLight3DMode" default="0">
 			The light's mode.
 		</member>
-		<member name="range" type="Vector2i" setter="set_range" getter="get_range" default="Vector2i( 32, 32 )">
+		<member name="range" type="float" setter="set_range" getter="get_range" default="5.0">
 			The light's range.
-		</member>
-		<member name="z_range" type="Vector2i" setter="set_z_range" getter="get_z_range" default="Vector2i( -1024, 1024 )">
-			The light's z range.
 		</member>
 	</members>
 	<constants>
