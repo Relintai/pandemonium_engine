@@ -1230,7 +1230,7 @@ String LayeredTileMap::get_configuration_warning() const {
 		}
 	} else {
 		// Check if Y-sort is enabled on the node, but not on any of the layers.
-		bool need_warning = true;
+		bool need_warning = layers.size() > 0;
 		for (uint32_t i = 0; i < layers.size(); ++i) {
 			const LayeredTileMapLayer *layer = layers[i];
 
