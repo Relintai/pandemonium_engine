@@ -59,11 +59,11 @@ Vector2i LayeredTileMapLayer::_coords_to_debug_quadrant_coords(const Vector2i &p
 			p_coords.y > 0 ? p_coords.y / TILE_MAP_DEBUG_QUADRANT_SIZE : (p_coords.y - (TILE_MAP_DEBUG_QUADRANT_SIZE - 1)) / TILE_MAP_DEBUG_QUADRANT_SIZE);
 }
 
-void LayeredTileMapLayer::_debug_update() {
+void LayeredTileMapLayer::_debug_update(bool p_force_cleanup) {
 	RenderingServer *rs = RenderingServer::get_singleton();
 
 	// Check if we should cleanup everything.
-	bool forced_cleanup = in_destructor || !enabled || !tile_set.is_valid() || !is_visible_in_tree();
+	bool forced_cleanup = p_force_cleanup || !enabled || !tile_set.is_valid() || !is_visible_in_tree();
 
 	if (forced_cleanup) {
 		for (HashMap<Vector2i, Ref<DebugQuadrant>>::Element *kv = debug_quadrant_map.front(); kv; kv = kv->next) {
@@ -187,11 +187,11 @@ void LayeredTileMapLayer::_debug_quadrants_update_cell(CellData &r_cell_data, Se
 #endif // DEBUG_ENABLED
 
 /////////////////////////////// Rendering //////////////////////////////////////
-void LayeredTileMapLayer::_rendering_update() {
+void LayeredTileMapLayer::_rendering_update(bool p_force_cleanup) {
 	RenderingServer *rs = RenderingServer::get_singleton();
 
 	// Check if we should cleanup everything.
-	bool forced_cleanup = in_destructor || !enabled || !tile_set.is_valid() || !is_visible_in_tree();
+	bool forced_cleanup = p_force_cleanup || !enabled || !tile_set.is_valid() || !is_visible_in_tree();
 
 	// ----------- Layer level processing -----------
 	if (!forced_cleanup) {
@@ -738,9 +738,9 @@ void LayeredTileMapLayer::_rendering_draw_cell_debug(const RID &p_canvas_item, c
 
 /////////////////////////////// Physics //////////////////////////////////////
 
-void LayeredTileMapLayer::_physics_update() {
+void LayeredTileMapLayer::_physics_update(bool p_force_cleanup) {
 	// Check if we should cleanup everything.
-	bool forced_cleanup = in_destructor || !enabled || !collision_enabled || !is_inside_tree() || !tile_set.is_valid();
+	bool forced_cleanup = p_force_cleanup || !enabled || !collision_enabled || !is_inside_tree() || !tile_set.is_valid();
 	if (forced_cleanup) {
 		// Clean everything.
 		for (HashMap<Vector2i, CellData>::Element *kv = tile_map_layer_data.front(); kv; kv = kv->next) {
@@ -1000,12 +1000,12 @@ void LayeredTileMapLayer::_physics_draw_cell_debug(const RID &p_canvas_item, con
 
 /////////////////////////////// Navigation //////////////////////////////////////
 
-void LayeredTileMapLayer::_navigation_update() {
+void LayeredTileMapLayer::_navigation_update(bool p_force_cleanup) {
 	ERR_FAIL_NULL(Navigation2DServer::get_singleton());
 	Navigation2DServer *ns = Navigation2DServer::get_singleton();
 
 	// Check if we should cleanup everything.
-	bool forced_cleanup = in_destructor || !enabled || !navigation_enabled || !is_inside_tree() || !tile_set.is_valid();
+	bool forced_cleanup = p_force_cleanup || !enabled || !navigation_enabled || !is_inside_tree() || !tile_set.is_valid();
 
 	// ----------- Layer level processing -----------
 	// All this processing is kept for compatibility with the LayeredTileMap node.
@@ -1277,9 +1277,9 @@ void LayeredTileMapLayer::_navigation_draw_cell_debug(const RID &p_canvas_item, 
 
 /////////////////////////////// Scenes //////////////////////////////////////
 
-void LayeredTileMapLayer::_scenes_update() {
+void LayeredTileMapLayer::_scenes_update(bool p_force_cleanup) {
 	// Check if we should cleanup everything.
-	bool forced_cleanup = in_destructor || !enabled || !is_inside_tree() || !tile_set.is_valid();
+	bool forced_cleanup = p_force_cleanup || !enabled || !is_inside_tree() || !tile_set.is_valid();
 
 	if (forced_cleanup) {
 		// Clean everything.
@@ -1410,9 +1410,9 @@ void LayeredTileMapLayer::_scenes_draw_cell_debug(const RID &p_canvas_item, cons
 
 /////////////////////////////////////////////////////////////////////
 
-void LayeredTileMapLayer::_build_runtime_update_tile_data() {
+void LayeredTileMapLayer::_build_runtime_update_tile_data(bool p_force_cleanup) {
 	// Check if we should cleanup everything.
-	bool forced_cleanup = in_destructor || !enabled || !tile_set.is_valid() || !is_visible_in_tree();
+	bool forced_cleanup = p_force_cleanup || !enabled || !tile_set.is_valid() || !is_visible_in_tree();
 	if (!forced_cleanup) {
 		bool valid_runtime_update = has_method("_use_tile_data_runtime_update") && has_method("_tile_data_runtime_update");
 		bool valid_runtime_update_for_tilemap = tile_map_node && tile_map_node->has_method("_use_tile_data_runtime_update") && tile_map_node->has_method("_tile_data_runtime_update"); // For keeping compatibility.
@@ -1720,23 +1720,21 @@ void LayeredTileMapLayer::_deferred_internal_update() {
 	}
 
 	// Update dirty quadrants on layers.
-	_internal_update();
-
-	pending_update = false;
+	_internal_update(false);
 }
 
-void LayeredTileMapLayer::_internal_update() {
+void LayeredTileMapLayer::_internal_update(bool p_force_cleanup) {
 	// Find LayeredTileData that need a runtime modification.
 	// This may add cells to the dirty list if a runtime modification has been notified.
-	_build_runtime_update_tile_data();
+	_build_runtime_update_tile_data(p_force_cleanup);
 
 	// Update all subsystems.
-	_rendering_update();
-	_physics_update();
-	_navigation_update();
-	_scenes_update();
+	_rendering_update(p_force_cleanup);
+	_physics_update(p_force_cleanup);
+	_navigation_update(p_force_cleanup);
+	_scenes_update(p_force_cleanup);
 #ifdef DEBUG_ENABLED
-	_debug_update();
+	_debug_update(p_force_cleanup);
 #endif // DEBUG_ENABLED
 
 	_clear_runtime_update_tile_data();
@@ -1763,6 +1761,8 @@ void LayeredTileMapLayer::_internal_update() {
 
 	// Clear the dirty cells list.
 	dirty.cell_list.clear();
+	
+	pending_update = false;
 }
 
 //VertexLights2D
@@ -1788,8 +1788,8 @@ void LayeredTileMapLayer::_notification(int p_what) {
 
 		case NOTIFICATION_EXIT_TREE: {
 			dirty.flags[DIRTY_FLAGS_LAYER_IN_TREE] = true;
-			// Update immediately on exiting.
-			update_internals();
+			// Update immediately on exiting, and force cleanup.
+			_internal_update(true);
 		} break;
 
 		case NOTIFICATION_ENTER_CANVAS: {
@@ -1799,8 +1799,8 @@ void LayeredTileMapLayer::_notification(int p_what) {
 
 		case NOTIFICATION_EXIT_CANVAS: {
 			dirty.flags[DIRTY_FLAGS_LAYER_IN_CANVAS] = true;
-			// Update immediately on exiting.
-			update_internals();
+			// Update immediately on exiting, and force cleanup.
+			_internal_update(true);
 		} break;
 
 		case NOTIFICATION_VISIBILITY_CHANGED: {
@@ -2633,8 +2633,7 @@ Vector2i LayeredTileMapLayer::get_coords_for_body_rid(RID p_physics_body) const 
 }
 
 void LayeredTileMapLayer::update_internals() {
-	pending_update = true;
-	_deferred_internal_update();
+	_internal_update(false);
 }
 
 void LayeredTileMapLayer::notify_runtime_tile_data_update() {
@@ -3034,9 +3033,8 @@ LayeredTileMapLayer::LayeredTileMapLayer() {
 }
 
 LayeredTileMapLayer::~LayeredTileMapLayer() {
-	in_destructor = true;
 	clear();
-	_internal_update();
+	_internal_update(true);
 }
 
 HashMap<Vector2i, LayeredTileSet::CellNeighbor> TerrainConstraint::get_overlapping_coords_and_peering_bits() const {
