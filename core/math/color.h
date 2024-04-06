@@ -76,14 +76,14 @@ struct _NO_DISCARD_CLASS_ Color {
 	void operator-=(const Color &p_color);
 
 	Color operator*(const Color &p_color) const;
-	Color operator*(const real_t &rvalue) const;
+	Color operator*(const real_t rvalue) const;
 	void operator*=(const Color &p_color);
-	void operator*=(const real_t &rvalue);
+	void operator*=(const real_t rvalue);
 
 	Color operator/(const Color &p_color) const;
-	Color operator/(const real_t &rvalue) const;
+	Color operator/(const real_t rvalue) const;
 	void operator/=(const Color &p_color);
-	void operator/=(const real_t &rvalue);
+	void operator/=(const real_t rvalue);
 
 	bool is_equal_approx(const Color &p_color) const;
 

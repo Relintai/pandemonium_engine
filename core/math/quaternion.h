@@ -75,15 +75,15 @@ struct _NO_DISCARD_CLASS_ Quaternion {
 	void set_euler(const Vector3 &p_euler) { set_euler_yxz(p_euler); };
 	Vector3 get_euler() const { return get_euler_yxz(); };
 
-	Quaternion slerp(const Quaternion &p_to, const real_t &p_weight) const;
-	Quaternion slerpni(const Quaternion &p_to, const real_t &p_weight) const;
-	Quaternion cubic_slerp(const Quaternion &p_b, const Quaternion &p_pre_a, const Quaternion &p_post_b, const real_t &p_weight) const;
-	Quaternion spherical_cubic_interpolate(const Quaternion &p_b, const Quaternion &p_pre_a, const Quaternion &p_post_b, const real_t &p_weight) const;
+	Quaternion slerp(const Quaternion &p_to, const real_t p_weight) const;
+	Quaternion slerpni(const Quaternion &p_to, const real_t p_weight) const;
+	Quaternion cubic_slerp(const Quaternion &p_b, const Quaternion &p_pre_a, const Quaternion &p_post_b, const real_t p_weight) const;
+	Quaternion spherical_cubic_interpolate(const Quaternion &p_b, const Quaternion &p_pre_a, const Quaternion &p_post_b, const real_t p_weight) const;
 
 	Vector3 get_axis() const;
 	float get_angle() const;
 
-	void set_axis_angle(const Vector3 &axis, const real_t &angle);
+	void set_axis_angle(const Vector3 &axis, const real_t angle);
 	_FORCE_INLINE_ void get_axis_angle(Vector3 &r_axis, real_t &r_angle) const {
 		r_angle = 2 * Math::acos(w);
 		real_t r = ((real_t)1) / Math::sqrt(1 - w * w);
@@ -113,13 +113,13 @@ struct _NO_DISCARD_CLASS_ Quaternion {
 
 	_FORCE_INLINE_ void operator+=(const Quaternion &p_q);
 	_FORCE_INLINE_ void operator-=(const Quaternion &p_q);
-	_FORCE_INLINE_ void operator*=(const real_t &s);
-	_FORCE_INLINE_ void operator/=(const real_t &s);
+	_FORCE_INLINE_ void operator*=(const real_t s);
+	_FORCE_INLINE_ void operator/=(const real_t s);
 	_FORCE_INLINE_ Quaternion operator+(const Quaternion &q2) const;
 	_FORCE_INLINE_ Quaternion operator-(const Quaternion &q2) const;
 	_FORCE_INLINE_ Quaternion operator-() const;
-	_FORCE_INLINE_ Quaternion operator*(const real_t &s) const;
-	_FORCE_INLINE_ Quaternion operator/(const real_t &s) const;
+	_FORCE_INLINE_ Quaternion operator*(const real_t s) const;
+	_FORCE_INLINE_ Quaternion operator/(const real_t s) const;
 
 	_FORCE_INLINE_ bool operator==(const Quaternion &p_quat) const;
 	_FORCE_INLINE_ bool operator!=(const Quaternion &p_quat) const;
@@ -138,7 +138,7 @@ struct _NO_DISCARD_CLASS_ Quaternion {
 			z(p_z),
 			w(p_w) {
 	}
-	Quaternion(const Vector3 &axis, const real_t &angle) {
+	Quaternion(const Vector3 &axis, const real_t angle) {
 		set_axis_angle(axis, angle);
 	}
 
@@ -211,14 +211,14 @@ void Quaternion::operator-=(const Quaternion &p_q) {
 	w -= p_q.w;
 }
 
-void Quaternion::operator*=(const real_t &s) {
+void Quaternion::operator*=(const real_t s) {
 	x *= s;
 	y *= s;
 	z *= s;
 	w *= s;
 }
 
-void Quaternion::operator/=(const real_t &s) {
+void Quaternion::operator/=(const real_t s) {
 	*this *= 1 / s;
 }
 
@@ -237,11 +237,11 @@ Quaternion Quaternion::operator-() const {
 	return Quaternion(-q2.x, -q2.y, -q2.z, -q2.w);
 }
 
-Quaternion Quaternion::operator*(const real_t &s) const {
+Quaternion Quaternion::operator*(const real_t s) const {
 	return Quaternion(x * s, y * s, z * s, w * s);
 }
 
-Quaternion Quaternion::operator/(const real_t &s) const {
+Quaternion Quaternion::operator/(const real_t s) const {
 	return *this * (1 / s);
 }
 

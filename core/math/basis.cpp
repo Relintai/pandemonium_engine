@@ -1062,7 +1062,7 @@ void Basis::set_diagonal(const Vector3 &p_diag) {
 	rows[2][2] = p_diag.z;
 }
 
-Basis Basis::slerp(const Basis &p_to, const real_t &p_weight) const {
+Basis Basis::slerp(const Basis &p_to, const real_t p_weight) const {
 	//consider scale
 	Quaternion from(*this);
 	Quaternion to(p_to);

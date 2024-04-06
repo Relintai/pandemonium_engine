@@ -175,8 +175,8 @@ struct _NO_DISCARD_CLASS_ Basis {
 	bool is_diagonal() const;
 	bool is_rotation() const;
 
-	Basis slerp(const Basis &p_to, const real_t &p_weight) const;
-	_FORCE_INLINE_ Basis lerp(const Basis &p_to, const real_t &p_weight) const;
+	Basis slerp(const Basis &p_to, const real_t p_weight) const;
+	_FORCE_INLINE_ Basis lerp(const Basis &p_to, const real_t p_weight) const;
 	void rotate_sh(real_t *p_values);
 
 	operator String() const;
@@ -393,7 +393,7 @@ real_t Basis::determinant() const {
 			rows[2][0] * (rows[0][1] * rows[1][2] - rows[1][1] * rows[0][2]);
 }
 
-Basis Basis::lerp(const Basis &p_to, const real_t &p_weight) const {
+Basis Basis::lerp(const Basis &p_to, const real_t p_weight) const {
 	Basis b;
 	b.rows[0] = rows[0].linear_interpolate(p_to.rows[0], p_weight);
 	b.rows[1] = rows[1].linear_interpolate(p_to.rows[1], p_weight);
