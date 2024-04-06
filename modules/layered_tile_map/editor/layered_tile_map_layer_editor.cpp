@@ -1915,7 +1915,8 @@ void LayeredTileMapLayerEditorTilesPlugin::_tile_atlas_control_draw() {
 	Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
 	Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
 	for (const RBSet<LayeredTileMapCell>::Element *E = tile_set_selection.front(); E; E = E->next()) {
-		if (E->get().source_id == source_id && E->get().alternative_tile == 0) {
+		int16_t untransformed_alternative_id = E->get().alternative_tile & LayeredTileSetAtlasSource::UNTRANSFORM_MASK;
+		if (E->get().source_id == source_id && untransformed_alternative_id == 0) {
 			for (int frame = 0; frame < atlas->get_tile_animation_frames_count(E->get().get_atlas_coords()); frame++) {
 				Color color = selection_color;
 				if (frame > 0) {
@@ -2099,8 +2100,9 @@ void LayeredTileMapLayerEditorTilesPlugin::_tile_alternatives_control_draw() {
 
 	// Draw the selection.
 	for (const RBSet<LayeredTileMapCell>::Element *E = tile_set_selection.front(); E; E = E->next()) {
-		if (E->get().source_id == source_id && E->get().get_atlas_coords() != LayeredTileSetSource::INVALID_ATLAS_COORDS && E->get().alternative_tile > 0) {
-			Rect2i rect = tile_atlas_view->get_alternative_tile_rect(E->get().get_atlas_coords(), E->get().alternative_tile);
+		int16_t untransformed_alternative_id = E->get().alternative_tile & LayeredTileSetAtlasSource::UNTRANSFORM_MASK;
+		if (E->get().source_id == source_id && E->get().get_atlas_coords() != LayeredTileSetSource::INVALID_ATLAS_COORDS && untransformed_alternative_id > 0) {
+			Rect2i rect = tile_atlas_view->get_alternative_tile_rect(E->get().get_atlas_coords(), untransformed_alternative_id);
 			if (rect != Rect2i()) {
 				LayeredTilesEditorUtils::draw_selection_rect(alternative_tiles_control, rect);
 			}
