@@ -447,6 +447,12 @@ void LayeredTileMap::remove_layer(int p_layer) {
 	update_configuration_warning();
 }
 
+LayeredTileMapLayer *LayeredTileMap::get_layer(const int p_layer) const {
+	ERR_FAIL_INDEX_V(p_layer, (int)layers.size(), NULL);
+
+	return layers[p_layer];
+}
+
 void LayeredTileMap::set_layer_name(int p_layer, String p_name) {
 	TILEMAP_CALL_FOR_LAYER(p_layer, set_name, p_name);
 }
@@ -1277,6 +1283,8 @@ void LayeredTileMap::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_layer", "to_position"), &LayeredTileMap::add_layer);
 	ClassDB::bind_method(D_METHOD("move_layer", "layer", "to_position"), &LayeredTileMap::move_layer);
 	ClassDB::bind_method(D_METHOD("remove_layer", "layer"), &LayeredTileMap::remove_layer);
+	ClassDB::bind_method(D_METHOD("get_layer", "layer"), &LayeredTileMap::get_layer);
+	
 	ClassDB::bind_method(D_METHOD("set_layer_name", "layer", "name"), &LayeredTileMap::set_layer_name);
 	ClassDB::bind_method(D_METHOD("get_layer_name", "layer"), &LayeredTileMap::get_layer_name);
 	ClassDB::bind_method(D_METHOD("set_layer_enabled", "layer", "enabled"), &LayeredTileMap::set_layer_enabled);

@@ -142,6 +142,7 @@ public:
 	void add_layer(int p_to_pos);
 	void move_layer(int p_layer, int p_to_pos);
 	void remove_layer(int p_layer);
+	LayeredTileMapLayer *get_layer(const int p_layer) const;
 
 	void set_layer_name(int p_layer, String p_name);
 	String get_layer_name(int p_layer) const;
