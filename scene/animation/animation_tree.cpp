@@ -949,11 +949,7 @@ void AnimationTree::_process_graph(float p_delta) {
 
 				TrackCache **track_pp = track_cache.getptr(path);
 				ERR_CONTINUE(!track_pp);
-
 				TrackCache *track = *track_pp;
-				if (track->type != a->track_get_type(i)) {
-					continue; //may happen should not
-				}
 
 				track->root_motion = root_motion_track == path;
 
