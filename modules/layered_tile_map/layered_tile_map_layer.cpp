@@ -1902,6 +1902,31 @@ void LayeredTileMapLayer::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "is_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tile_set", PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileSet"), "set_tile_set", "get_tile_set");
+	
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	ClassDB::bind_method(D_METHOD("set_use_vertex_lights", "value"), &LayeredTileMapLayer::set_use_vertex_lights);
+	ClassDB::bind_method(D_METHOD("get_use_vertex_lights"), &LayeredTileMapLayer::get_use_vertex_lights);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_vertex_lights"), "set_use_vertex_lights", "get_use_vertex_lights");
+#endif
+
+	//RAO
+#ifdef MODULE_FASTNOISE_ENABLED
+	ADD_GROUP("RAO", "rao");
+
+	ClassDB::bind_method(D_METHOD("rao_set_use", "value"), &LayeredTileMapLayer::rao_set_use);
+	ClassDB::bind_method(D_METHOD("rao_get_use"), &LayeredTileMapLayer::rao_get_use);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "rao_use"), "rao_set_use", "rao_get_use");
+
+	ClassDB::bind_method(D_METHOD("rao_set_strength", "value"), &LayeredTileMapLayer::rao_set_strength);
+	ClassDB::bind_method(D_METHOD("rao_get_strength"), &LayeredTileMapLayer::rao_get_strength);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "rao_strength"), "rao_set_strength", "rao_get_strength");
+
+	ClassDB::bind_method(D_METHOD("rao_set_noise_params", "noise"), &LayeredTileMapLayer::rao_set_noise_params);
+	ClassDB::bind_method(D_METHOD("rao_get_noise_params"), &LayeredTileMapLayer::rao_get_noise_params);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "rao_noise_params", PROPERTY_HINT_RESOURCE_TYPE, "FastnoiseNoiseParams"), "rao_set_noise_params", "rao_get_noise_params");
+#endif
+	
 	ADD_GROUP("Rendering", "");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "y_sort_origin"), "set_y_sort_origin", "get_y_sort_origin");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rendering_quadrant_size"), "set_rendering_quadrant_size", "get_rendering_quadrant_size");
@@ -2985,12 +3010,61 @@ bool LayeredTileMapLayer::get_use_vertex_lights() const {
 
 //RAO
 #ifdef MODULE_FASTNOISE_ENABLED
-Ref<FastNoise> LayeredTileMapLayer::get_rao_noise() {
-	return _rao_noise;
+
+void LayeredTileMapLayer::rao_set_use(bool p_rao) {
+	if (_use_rao == p_rao) {
+		return;
+	}
+
+	_use_rao = p_rao;
+
+	if (!_use_rao) {
+		rao_set_noise(Ref<FastNoise>());
+	} else {
+		if (_noise_params.is_valid()) {
+			if (!_rao_noise.is_valid()) {
+				_rao_noise.instance();
+			}
+
+			rao_setup_noise(_rao_noise);
+		} else {
+			_rao_noise.unref();
+		}
+
+		rao_set_noise(_rao_noise);
+	}
+
+	dirty.flags[DIRTY_FLAGS_LAYER_RAO] = true;
+
+	_queue_internal_update();
+	emit_signal(CoreStringNames::get_singleton()->changed);
 }
-void LayeredTileMapLayer::set_rao_noise(const Ref<FastNoise> &noise) {
-	// Don't check if they are the same!
-	_rao_noise = noise;
+bool LayeredTileMapLayer::rao_get_use() const {
+	return _use_rao;
+}
+
+void LayeredTileMapLayer::rao_set_noise_params(const Ref<FastnoiseNoiseParams> &noise) {
+	if (_noise_params == noise) {
+		return;
+	}
+
+	_noise_params = noise;
+
+	if (!_use_rao) {
+		rao_set_noise(Ref<FastNoise>());
+	} else {
+		if (_noise_params.is_valid()) {
+			if (!_rao_noise.is_valid()) {
+				_rao_noise.instance();
+			}
+
+			rao_setup_noise(_rao_noise);
+		} else {
+			_rao_noise.unref();
+		}
+
+		rao_set_noise(_rao_noise);
+	}
 
 	dirty.flags[DIRTY_FLAGS_LAYER_RAO] = true;
 
@@ -2998,7 +3072,7 @@ void LayeredTileMapLayer::set_rao_noise(const Ref<FastNoise> &noise) {
 	emit_signal(CoreStringNames::get_singleton()->changed);
 }
 
-void LayeredTileMapLayer::set_rao_strength(const real_t p_strength) {
+void LayeredTileMapLayer::rao_set_strength(const real_t p_strength) {
 	_rao_strength = p_strength;
 
 	dirty.flags[DIRTY_FLAGS_LAYER_RAO] = true;
@@ -3006,8 +3080,31 @@ void LayeredTileMapLayer::set_rao_strength(const real_t p_strength) {
 	_queue_internal_update();
 	emit_signal(CoreStringNames::get_singleton()->changed);
 }
-real_t LayeredTileMapLayer::get_rao_strength() const {
+real_t LayeredTileMapLayer::rao_get_strength() const {
 	return _rao_strength;
+}
+
+Ref<FastnoiseNoiseParams> LayeredTileMapLayer::rao_get_noise_params() {
+	return _noise_params;
+}
+
+void LayeredTileMapLayer::rao_setup_noise(Ref<FastNoise> noise) {
+	if (_noise_params.is_valid()) {
+		_noise_params->setup_noise(noise);
+	}
+}
+
+Ref<FastNoise> LayeredTileMapLayer::rao_get_noise() {
+	return _rao_noise;
+}
+void LayeredTileMapLayer::rao_set_noise(const Ref<FastNoise> &noise) {
+	// Don't check if they are the same!
+	_rao_noise = noise;
+
+	dirty.flags[DIRTY_FLAGS_LAYER_RAO] = true;
+
+	_queue_internal_update();
+	emit_signal(CoreStringNames::get_singleton()->changed);
 }
 
 #endif
@@ -3028,6 +3125,7 @@ LayeredTileMapLayer::LayeredTileMapLayer() {
 #endif
 
 #ifdef MODULE_FASTNOISE_ENABLED
+	_use_rao = true;
 	_rao_strength = 0.3;
 #endif
 }

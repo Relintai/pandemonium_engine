@@ -210,8 +210,6 @@ public:
 
 	void rao_set_noise_params(const Ref<FastnoiseNoiseParams> &noise);
 	Ref<FastnoiseNoiseParams> rao_get_noise_params();
-
-	void rao_setup_noise(Ref<FastNoise> noise);
 #endif
 
 	// Not exposed to users.

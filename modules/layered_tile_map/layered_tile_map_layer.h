@@ -38,7 +38,8 @@
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_FASTNOISE_ENABLED
-#include "../fastnoise/noise.h"
+#include "modules/fastnoise/fastnoise_noise_params.h"
+#include "modules/fastnoise/noise.h"
 #endif
 
 class LayeredTileSetAtlasSource;
@@ -330,7 +331,10 @@ private:
 
 	//RAO
 #ifdef MODULE_FASTNOISE_ENABLED
+	bool _use_rao;
 	real_t _rao_strength;
+	Ref<FastnoiseNoiseParams> _noise_params;
+
 	Ref<FastNoise> _rao_noise;
 #endif
 
@@ -530,7 +534,6 @@ public:
 	bool use_tile_data_runtime_update(const Vector2i &p_coords);
 	void tile_data_runtime_update(const Vector2i &p_coords, LayeredTileData *p_tile_data);
 
-
 	//VertexLights2D
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
 	void set_use_vertex_lights(const bool p_use);
@@ -539,11 +542,19 @@ public:
 
 	//RAO
 #ifdef MODULE_FASTNOISE_ENABLED
-	Ref<FastNoise> get_rao_noise();
-	void set_rao_noise(const Ref<FastNoise> &noise);
+	void rao_set_use(bool p_rao);
+	bool rao_get_use() const;
+	
+	void rao_set_strength(const real_t p_strength);
+	real_t rao_get_strength() const;
 
-	void set_rao_strength(const real_t p_strength);
-	real_t get_rao_strength() const;
+	void rao_set_noise_params(const Ref<FastnoiseNoiseParams> &noise);
+	Ref<FastnoiseNoiseParams> rao_get_noise_params();
+
+	void rao_setup_noise(Ref<FastNoise> noise);
+	
+	Ref<FastNoise> rao_get_noise();
+	void rao_set_noise(const Ref<FastNoise> &noise);
 #endif
 	
 	LayeredTileMapLayer();

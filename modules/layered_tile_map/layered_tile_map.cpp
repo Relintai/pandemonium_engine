@@ -383,6 +383,17 @@ void LayeredTileMap::add_layer(int p_to_pos) {
 	move_child(new_layer, 0);
 	new_layer->set_name(vformat("Layer%d", p_to_pos));
 	new_layer->set_tile_set(tile_set);
+	
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	new_layer->set_use_vertex_lights(get_use_vertex_lights());
+#endif
+
+#ifdef MODULE_FASTNOISE_ENABLED
+	new_layer->rao_set_use(rao_get_use());
+	new_layer->rao_set_strength(rao_get_strength());
+	new_layer->rao_set_noise_params(rao_get_noise_params());
+#endif
+	
 	move_child(new_layer, p_to_pos);
 	for (uint32_t i = 0; i < layers.size(); i++) {
 		layers[i]->set_as_tile_map_internal_node(i);
@@ -731,29 +742,10 @@ void LayeredTileMap::rao_set_use(bool p_rao) {
 
 	_use_rao = p_rao;
 
-	if (!_use_rao) {
-		for (uint32_t i = 0; i < layers.size(); ++i) {
-			LayeredTileMapLayer *layer = layers[i];
+	for (uint32_t i = 0; i < layers.size(); ++i) {
+		LayeredTileMapLayer *layer = layers[i];
 
-			layer->set_rao_noise(Ref<FastNoise>());
-		}
-
-	} else {
-		if (_noise_params.is_valid()) {
-			if (!_rao_noise.is_valid()) {
-				_rao_noise.instance();
-			}
-
-			rao_setup_noise(_rao_noise);
-		} else {
-			_rao_noise.unref();
-		}
-
-		for (uint32_t i = 0; i < layers.size(); ++i) {
-			LayeredTileMapLayer *layer = layers[i];
-
-			layer->set_rao_noise(_rao_noise);
-		}
+		layer->rao_set_use(_use_rao);
 	}
 
 	_emit_changed();
@@ -769,31 +761,17 @@ void LayeredTileMap::rao_set_noise_params(const Ref<FastnoiseNoiseParams> &noise
 
 	_noise_params = noise;
 
-	if (!_use_rao) {
-		for (uint32_t i = 0; i < layers.size(); ++i) {
-			LayeredTileMapLayer *layer = layers[i];
+	for (uint32_t i = 0; i < layers.size(); ++i) {
+		LayeredTileMapLayer *layer = layers[i];
 
-			layer->set_rao_noise(Ref<FastNoise>());
-		}
-	} else {
-		if (_noise_params.is_valid()) {
-			if (!_rao_noise.is_valid()) {
-				_rao_noise.instance();
-			}
-
-			rao_setup_noise(_rao_noise);
-		} else {
-			_rao_noise.unref();
-		}
-
-		for (uint32_t i = 0; i < layers.size(); ++i) {
-			LayeredTileMapLayer *layer = layers[i];
-
-			layer->set_rao_noise(_rao_noise);
-		}
+		layer->rao_set_noise_params(noise);
 	}
 
 	_emit_changed();
+}
+
+Ref<FastnoiseNoiseParams> LayeredTileMap::rao_get_noise_params() {
+	return _noise_params;
 }
 
 void LayeredTileMap::rao_set_strength(const real_t p_strength) {
@@ -802,7 +780,7 @@ void LayeredTileMap::rao_set_strength(const real_t p_strength) {
 	for (uint32_t i = 0; i < layers.size(); ++i) {
 		LayeredTileMapLayer *layer = layers[i];
 
-		layer->set_rao_strength(p_strength);
+		layer->rao_set_strength(p_strength);
 	}
 
 	_emit_changed();
@@ -811,15 +789,6 @@ real_t LayeredTileMap::rao_get_strength() const {
 	return _rao_strength;
 }
 
-Ref<FastnoiseNoiseParams> LayeredTileMap::rao_get_noise_params() {
-	return _noise_params;
-}
-
-void LayeredTileMap::rao_setup_noise(Ref<FastNoise> noise) {
-	if (_noise_params.is_valid()) {
-		_noise_params->setup_noise(noise);
-	}
-}
 #endif
 
 LayeredTileMapCell LayeredTileMap::get_cell(int p_layer, const Vector2i &p_coords, bool p_use_proxies) const {
