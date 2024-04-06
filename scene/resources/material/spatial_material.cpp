@@ -113,6 +113,7 @@ void SpatialMaterial::init_shaders() {
 	shader_names->texture_names[TEXTURE_DETAIL_MASK] = "texture_detail_mask";
 	shader_names->texture_names[TEXTURE_DETAIL_ALBEDO] = "texture_detail_albedo";
 	shader_names->texture_names[TEXTURE_DETAIL_NORMAL] = "texture_detail_normal";
+	shader_names->texture_names[TEXTURE_ORM] = "texture_orm";
 }
 
 HashMap<uint64_t, Ref<SpatialMaterial>> SpatialMaterial::materials_for_2d;
@@ -286,15 +287,31 @@ void SpatialMaterial::_update_shader() {
 	code += "uniform float roughness : hint_range(0,1);\n";
 	code += "uniform float point_size : hint_range(0,128);\n";
 
-	if (textures[TEXTURE_METALLIC] != nullptr) {
-		code += "uniform sampler2D texture_metallic : hint_white;\n";
-		code += "uniform vec4 metallic_texture_channel;\n";
+	if (orm) {
+		if (textures[TEXTURE_ORM] != nullptr) {
+			code += "uniform sampler2D texture_orm : hint_white;\n";
+			if (features[FEATURE_AMBIENT_OCCLUSION]) {
+				code += "uniform float ao_light_affect;\n";
+			}
+		}
+	} else {
+		if (textures[TEXTURE_METALLIC] != nullptr) {
+			code += "uniform sampler2D texture_metallic : hint_white;\n";
+			code += "uniform vec4 metallic_texture_channel;\n";
+		}
+
+		if (textures[TEXTURE_ROUGHNESS] != nullptr) {
+			code += "uniform sampler2D texture_roughness : hint_white;\n";
+			code += "uniform vec4 roughness_texture_channel;\n";
+		}
+
+		if (features[FEATURE_AMBIENT_OCCLUSION]) {
+			code += "uniform sampler2D texture_ambient_occlusion : hint_white;\n";
+			code += "uniform vec4 ao_texture_channel;\n";
+			code += "uniform float ao_light_affect;\n";
+		}
 	}
 
-	if (textures[TEXTURE_ROUGHNESS] != nullptr) {
-		code += "uniform sampler2D texture_roughness : hint_white;\n";
-		code += "uniform vec4 roughness_texture_channel;\n";
-	}
 	if (billboard_mode == BILLBOARD_PARTICLES) {
 		code += "uniform int particles_anim_h_frames;\n";
 		code += "uniform int particles_anim_v_frames;\n";
@@ -330,11 +347,6 @@ void SpatialMaterial::_update_shader() {
 	if (features[FEATURE_ANISOTROPY]) {
 		code += "uniform float anisotropy_ratio : hint_range(0,256);\n";
 		code += "uniform sampler2D texture_flowmap : hint_aniso;\n";
-	}
-	if (features[FEATURE_AMBIENT_OCCLUSION]) {
-		code += "uniform sampler2D texture_ambient_occlusion : hint_white;\n";
-		code += "uniform vec4 ao_texture_channel;\n";
-		code += "uniform float ao_light_affect;\n";
 	}
 
 	if (features[FEATURE_DETAIL]) {
@@ -593,26 +605,75 @@ void SpatialMaterial::_update_shader() {
 	}
 	code += "\tALBEDO = albedo.rgb * albedo_tex.rgb;\n";
 
-	if (textures[TEXTURE_METALLIC] != nullptr) {
-		if (flags[FLAG_UV1_USE_TRIPLANAR]) {
-			code += "\tfloat metallic_tex = dot(triplanar_texture(texture_metallic,uv1_power_normal,uv1_triplanar_pos),metallic_texture_channel);\n";
-		} else {
-			code += "\tfloat metallic_tex = dot(texture(texture_metallic,base_uv),metallic_texture_channel);\n";
-		}
-		code += "\tMETALLIC = metallic_tex * metallic;\n";
-	} else {
-		code += "\tMETALLIC = metallic;\n";
-	}
 
-	if (textures[TEXTURE_ROUGHNESS] != nullptr) {
-		if (flags[FLAG_UV1_USE_TRIPLANAR]) {
-			code += "\tfloat roughness_tex = dot(triplanar_texture(texture_roughness,uv1_power_normal,uv1_triplanar_pos),roughness_texture_channel);\n";
+	if (orm) {
+		if (textures[TEXTURE_ORM] != nullptr) {
+			if (flags[FLAG_UV1_USE_TRIPLANAR]) {
+				code += "\tvec4 orm_tex = triplanar_texture(texture_orm,uv1_power_normal,uv1_triplanar_pos);\n";
+			} else {
+				code += "\tvec4 orm_tex = texture(texture_orm,base_uv);\n";
+			}
+			code += "\tMETALLIC = orm_tex.b;\n";
+			code += "\tROUGHNESS = orm_tex.g;\n";
 		} else {
-			code += "\tfloat roughness_tex = dot(texture(texture_roughness,base_uv),roughness_texture_channel);\n";
+			code += "\tMETALLIC = metallic;\n";
+			code += "\tROUGHNESS = roughness;\n";
 		}
-		code += "\tROUGHNESS = roughness_tex * roughness;\n";
+
+		// AO
+		if (features[FEATURE_AMBIENT_OCCLUSION]) {
+			if (flags[FLAG_AO_ON_UV2]) {
+				if (flags[FLAG_UV2_USE_TRIPLANAR]) {
+					code += "\tAO = triplanar_texture(texture_orm,uv2_power_normal,uv2_triplanar_pos).r;\n";
+				} else {
+					code += "\tAO = texture(texture_orm,base_uv2).r;\n";
+				}
+			} else {
+				code += "\tAO = orm_tex.r;\n";
+			}
+
+			code += "\tAO_LIGHT_AFFECT = ao_light_affect;\n";
+		}
 	} else {
-		code += "\tROUGHNESS = roughness;\n";
+		if (textures[TEXTURE_METALLIC] != nullptr) {
+			if (flags[FLAG_UV1_USE_TRIPLANAR]) {
+				code += "\tfloat metallic_tex = dot(triplanar_texture(texture_metallic,uv1_power_normal,uv1_triplanar_pos),metallic_texture_channel);\n";
+			} else {
+				code += "\tfloat metallic_tex = dot(texture(texture_metallic,base_uv),metallic_texture_channel);\n";
+			}
+			code += "\tMETALLIC = metallic_tex * metallic;\n";
+		} else {
+			code += "\tMETALLIC = metallic;\n";
+		}
+
+		if (textures[TEXTURE_ROUGHNESS] != nullptr) {
+			if (flags[FLAG_UV1_USE_TRIPLANAR]) {
+				code += "\tfloat roughness_tex = dot(triplanar_texture(texture_roughness,uv1_power_normal,uv1_triplanar_pos),roughness_texture_channel);\n";
+			} else {
+				code += "\tfloat roughness_tex = dot(texture(texture_roughness,base_uv),roughness_texture_channel);\n";
+			}
+			code += "\tROUGHNESS = roughness_tex * roughness;\n";
+		} else {
+			code += "\tROUGHNESS = roughness;\n";
+		}
+
+		if (features[FEATURE_AMBIENT_OCCLUSION]) {
+			if (flags[FLAG_AO_ON_UV2]) {
+				if (flags[FLAG_UV2_USE_TRIPLANAR]) {
+					code += "\tAO = dot(triplanar_texture(texture_ambient_occlusion,uv2_power_normal,uv2_triplanar_pos),ao_texture_channel);\n";
+				} else {
+					code += "\tAO = dot(texture(texture_ambient_occlusion,base_uv2),ao_texture_channel);\n";
+				}
+			} else {
+				if (flags[FLAG_UV1_USE_TRIPLANAR]) {
+					code += "\tAO = dot(triplanar_texture(texture_ambient_occlusion,uv1_power_normal,uv1_triplanar_pos),ao_texture_channel);\n";
+				} else {
+					code += "\tAO = dot(texture(texture_ambient_occlusion,base_uv),ao_texture_channel);\n";
+				}
+			}
+
+			code += "\tAO_LIGHT_AFFECT = ao_light_affect;\n";
+		}
 	}
 
 	code += "\tSPECULAR = specular;\n";
@@ -733,24 +794,6 @@ void SpatialMaterial::_update_shader() {
 		}
 		code += "\tANISOTROPY = anisotropy_ratio*anisotropy_tex.b;\n";
 		code += "\tANISOTROPY_FLOW = anisotropy_tex.rg*2.0-1.0;\n";
-	}
-
-	if (features[FEATURE_AMBIENT_OCCLUSION]) {
-		if (flags[FLAG_AO_ON_UV2]) {
-			if (flags[FLAG_UV2_USE_TRIPLANAR]) {
-				code += "\tAO = dot(triplanar_texture(texture_ambient_occlusion,uv2_power_normal,uv2_triplanar_pos),ao_texture_channel);\n";
-			} else {
-				code += "\tAO = dot(texture(texture_ambient_occlusion,base_uv2),ao_texture_channel);\n";
-			}
-		} else {
-			if (flags[FLAG_UV1_USE_TRIPLANAR]) {
-				code += "\tAO = dot(triplanar_texture(texture_ambient_occlusion,uv1_power_normal,uv1_triplanar_pos),ao_texture_channel);\n";
-			} else {
-				code += "\tAO = dot(texture(texture_ambient_occlusion,base_uv),ao_texture_channel);\n";
-			}
-		}
-
-		code += "\tAO_LIGHT_AFFECT = ao_light_affect;\n";
 	}
 
 	if (features[FEATURE_SUBSURACE_SCATTERING]) {
@@ -1261,6 +1304,20 @@ void SpatialMaterial::_validate_property(PropertyInfo &property) const {
 		}
 
 		if (property.name.begins_with("transmission")) {
+			property.usage = 0;
+		}
+	}
+
+	if (orm) {
+		if (property.name == "shading_mode") {
+			// Vertex not supported in ORM mode, since no individual roughness.
+			property.hint_string = "Unshaded,Per-Pixel";
+		}
+		if (property.name.begins_with("roughness") || property.name.begins_with("metallic") || property.name.begins_with("ao_texture")) {
+			property.usage = 0;
+		}
+	} else {
+		if (property.name == "orm_texture") {
 			property.usage = 0;
 		}
 	}
@@ -1857,6 +1914,9 @@ void SpatialMaterial::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "albedo_color"), "set_albedo", "get_albedo");
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "albedo_texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_texture", "get_texture", TEXTURE_ALBEDO);
 
+	ADD_GROUP("ORM", "orm_");
+	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "orm_texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_texture", "get_texture", TEXTURE_ORM);
+
 	ADD_GROUP("Metallic", "metallic_");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "metallic", PROPERTY_HINT_RANGE, "0,1,0.01"), "set_metallic", "get_metallic");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "metallic_specular", PROPERTY_HINT_RANGE, "0,1,0.01"), "set_specular", "get_specular");
@@ -2067,8 +2127,10 @@ void SpatialMaterial::_bind_methods() {
 	BIND_ENUM_CONSTANT(ASYNC_MODE_HIDDEN);
 }
 
-SpatialMaterial::SpatialMaterial() :
+SpatialMaterial::SpatialMaterial(bool p_orm) :
 		element(this) {
+	orm = p_orm;
+
 	// Initialize to the same values as the shader
 	set_albedo(Color(1.0, 1.0, 1.0, 1.0));
 	set_specular(0.5);

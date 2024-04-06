@@ -62,6 +62,7 @@ public:
 		TEXTURE_DETAIL_MASK,
 		TEXTURE_DETAIL_ALBEDO,
 		TEXTURE_DETAIL_NORMAL,
+		TEXTURE_ORM,
 		TEXTURE_MAX
 
 	};
@@ -311,6 +312,7 @@ private:
 	_FORCE_INLINE_ bool _is_shader_dirty() const;
 
 	bool is_initialized = false;
+	bool orm;
 	Color albedo;
 	float specular;
 	float metallic;
@@ -578,7 +580,7 @@ public:
 
 	virtual Shader::Mode get_shader_mode() const;
 
-	SpatialMaterial();
+	SpatialMaterial(bool p_orm = false);
 	virtual ~SpatialMaterial();
 };
 
@@ -598,5 +600,12 @@ VARIANT_ENUM_CAST(SpatialMaterial::DistanceFadeMode)
 VARIANT_ENUM_CAST(SpatialMaterial::AsyncMode)
 
 //////////////////////
+
+class ORMSpatialMaterial : public SpatialMaterial {
+	GDCLASS(ORMSpatialMaterial, SpatialMaterial)
+public:
+	ORMSpatialMaterial() :
+			SpatialMaterial(true) {}
+};
 
 #endif
