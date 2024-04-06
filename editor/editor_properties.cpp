@@ -419,7 +419,7 @@ void EditorPropertyLocale::setup(const String &p_hint_text) {
 
 void EditorPropertyLocale::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		locale_edit->set_icon(get_icon("Translation", "EditorIcons"));
+		locale_edit->set_icon(get_theme_icon("Translation", "EditorIcons"));
 	}
 }
 

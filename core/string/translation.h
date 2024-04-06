@@ -99,16 +99,16 @@ class TranslationServer : public Object {
 		String name;
 		String script;
 		String default_country;
-		Set<String> supported_countries;
+		RBSet<String> supported_countries;
 	};
 	static Vector<LocaleScriptInfo> locale_script_info;
 
-	static Map<String, String> language_map;
-	static Map<String, String> script_map;
-	static Map<String, String> locale_rename_map;
-	static Map<String, String> country_name_map;
-	static Map<String, String> country_rename_map;
-	static Map<String, String> variant_map;
+	static RBMap<String, String> language_map;
+	static RBMap<String, String> script_map;
+	static RBMap<String, String> locale_rename_map;
+	static RBMap<String, String> country_name_map;
+	static RBMap<String, String> country_rename_map;
+	static RBMap<String, String> variant_map;
 
 	void init_locale_info();
 

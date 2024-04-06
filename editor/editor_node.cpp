@@ -1438,12 +1438,12 @@ void EditorNode::_find_node_types(Node *p_node, int &count_2d, int &count_3d) {
 void EditorNode::_save_scene_with_preview(String p_file, int p_idx) {
 	EditorProgress save("save", TTR("Saving Scene"), 4);
 
-	Ref<World> edited_world;
+	Ref<World3D> edited_world;
 
 	if (editor_data.get_edited_scene_root() != nullptr) {
 		// Allow a generic mechanism for the engine to make changes prior, and after saving.
 		if (editor_data.get_edited_scene_root()->get_tree() && editor_data.get_edited_scene_root()->get_tree()->get_root()) {
-			edited_world = editor_data.get_edited_scene_root()->get_tree()->get_root()->get_world();
+			edited_world = editor_data.get_edited_scene_root()->get_tree()->get_root()->get_world_3d();
 			if (edited_world.is_valid()) {
 				edited_world->notify_saving(true);
 			}

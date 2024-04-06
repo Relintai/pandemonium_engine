@@ -30,21 +30,14 @@
 
 #include "editor_locale_dialog.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"
 #include "scene/gui/check_button.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/tree.h"
-
-static _FORCE_INLINE_ bool is_ascii_upper_case(char32_t c) {
-	return (c >= 'A' && c <= 'Z');
-}
-
-static _FORCE_INLINE_ bool is_ascii_lower_case(char32_t c) {
-	return (c >= 'a' && c <= 'z');
-}
+#include "scene/gui/label.h"
 
 void EditorLocaleDialog::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_filter_mode_changed"), &EditorLocaleDialog::_filter_mode_changed);

@@ -32,10 +32,11 @@
 
 #include "core/config/engine.h"
 #include "scene/3d/visual_instance.h"
+#include "scene/resources/world_3d.h"
 
 void LOD::_lod_register() {
 	if (!data.registered) {
-		Ref<World> world = get_world();
+		Ref<World3D> world = get_world_3d();
 		ERR_FAIL_COND(!world.is_valid());
 		world->_register_lod(this, data.queue_id);
 		data.registered = true;
@@ -44,7 +45,7 @@ void LOD::_lod_register() {
 
 void LOD::_lod_unregister() {
 	if (data.registered) {
-		Ref<World> world = get_world();
+		Ref<World3D> world = get_world_3d();
 		ERR_FAIL_COND(!world.is_valid());
 		world->_unregister_lod(this, data.queue_id);
 		data.registered = false;
@@ -104,7 +105,7 @@ void LOD::set_lod_priority(int p_priority) {
 	if (is_inside_tree()) {
 		// If already in the world, we must remove the LOD
 		// and re-add in a different queue.
-		Ref<World> world = get_world();
+		Ref<World3D> world = get_world_3d();
 		ERR_FAIL_COND(!world.is_valid());
 		world->_unregister_lod(this, data.queue_id);
 

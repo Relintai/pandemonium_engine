@@ -241,13 +241,13 @@ void World3D::_remove_camera(Camera *p_camera) {
 #endif
 }
 
-void World::_register_lod(LOD *p_lod, uint32_t p_queue_id) {
+void World3D::_register_lod(LOD *p_lod, uint32_t p_queue_id) {
 #ifndef _3D_DISABLED
 	lod_manager->register_lod(p_lod, p_queue_id);
 #endif
 }
 
-void World::_unregister_lod(LOD *p_lod, uint32_t p_queue_id) {
+void World3D::_unregister_lod(LOD *p_lod, uint32_t p_queue_id) {
 #ifndef _3D_DISABLED
 	lod_manager->unregister_lod(p_lod, p_queue_id);
 #endif
@@ -355,7 +355,7 @@ void World3D::move_cameras_into(Ref<World3D> target) {
 	}
 }
 
-void World::notify_saving(bool p_active) {
+void World3D::notify_saving(bool p_active) {
 #ifndef _3D_DISABLED
 	if (lod_manager) {
 		lod_manager->notify_saving(p_active);

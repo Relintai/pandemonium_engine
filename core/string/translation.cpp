@@ -174,22 +174,14 @@ StringName ContextTranslation::get_context_message(const StringName &p_src_text,
 
 ///////////////////////////////////////////////
 
-static _FORCE_INLINE_ bool is_ascii_upper_case(char32_t c) {
-	return (c >= 'A' && c <= 'Z');
-}
-
-static _FORCE_INLINE_ bool is_ascii_lower_case(char32_t c) {
-	return (c >= 'a' && c <= 'z');
-}
-
 Vector<TranslationServer::LocaleScriptInfo> TranslationServer::locale_script_info;
 
-Map<String, String> TranslationServer::language_map;
-Map<String, String> TranslationServer::script_map;
-Map<String, String> TranslationServer::locale_rename_map;
-Map<String, String> TranslationServer::country_name_map;
-Map<String, String> TranslationServer::variant_map;
-Map<String, String> TranslationServer::country_rename_map;
+RBMap<String, String> TranslationServer::language_map;
+RBMap<String, String> TranslationServer::script_map;
+RBMap<String, String> TranslationServer::locale_rename_map;
+RBMap<String, String> TranslationServer::country_name_map;
+RBMap<String, String> TranslationServer::variant_map;
+RBMap<String, String> TranslationServer::country_rename_map;
 
 void TranslationServer::init_locale_info() {
 	// Init locale info.
@@ -421,7 +413,7 @@ String TranslationServer::get_locale_name(const String &p_locale) const {
 Vector<String> TranslationServer::get_all_languages() const {
 	Vector<String> languages;
 
-	for (Map<String, String>::Element *E = language_map.front(); E; E = E->next()) {
+	for (RBMap<String, String>::Element *E = language_map.front(); E; E = E->next()) {
 		languages.push_back(E->key());
 	}
 
@@ -435,7 +427,7 @@ String TranslationServer::get_language_name(const String &p_language) const {
 Vector<String> TranslationServer::get_all_scripts() const {
 	Vector<String> scripts;
 
-	for (Map<String, String>::Element *E = script_map.front(); E; E = E->next()) {
+	for (RBMap<String, String>::Element *E = script_map.front(); E; E = E->next()) {
 		scripts.push_back(E->key());
 	}
 
@@ -449,7 +441,7 @@ String TranslationServer::get_script_name(const String &p_script) const {
 Vector<String> TranslationServer::get_all_countries() const {
 	Vector<String> countries;
 
-	for (Map<String, String>::Element *E = country_name_map.front(); E; E = E->next()) {
+	for (RBMap<String, String>::Element *E = country_name_map.front(); E; E = E->next()) {
 		countries.push_back(E->key());
 	}
 
@@ -476,7 +468,7 @@ String TranslationServer::get_locale() const {
 
 Array TranslationServer::get_loaded_locales() const {
 	Array locales;
-	for (Set<Ref<Translation>>::Element *E = translations.front(); E; E = E->next()) {
+	for (RBSet<Ref<Translation>>::Element *E = translations.front(); E; E = E->next()) {
 		const Ref<Translation> &t = E->get();
 		ERR_FAIL_COND_V(t.is_null(), Array());
 		String l = t->get_locale();
@@ -574,7 +566,7 @@ StringName TranslationServer::translate_to(const StringName &p_message, const St
 	// same language code).
 
 	StringName res;
-	String lang = get_language_code(p_locale);
+	String lang = standardize_locale(p_locale);
 	bool near_match = false;
 
 	for (const RBSet<Ref<Translation>>::Element *E = translations.front(); E; E = E->next()) {
@@ -587,7 +579,7 @@ StringName TranslationServer::translate_to(const StringName &p_message, const St
 			if (near_match) {
 				continue; // Only near-match once, but keep looking for exact matches.
 			}
-			if (get_language_code(l) != lang) {
+			if (standardize_locale(l) != lang) {
 				continue; // Language code does not match.
 			}
 		}
