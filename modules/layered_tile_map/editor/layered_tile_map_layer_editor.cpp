@@ -3794,16 +3794,17 @@ void LayeredTileMapLayerEditor::_update_tile_map_layers_in_scene_list_cache() {
 
 void LayeredTileMapLayerEditor::_node_change(Node *p_node) {
 	if (!layers_in_scene_list_cache_needs_update &&  Engine::get_singleton()->is_editor_hint() &&
-			is_inside_tree() && get_tree()->get_edited_scene_root() &&
-			get_tree()->get_edited_scene_root()->get_parent()->is_a_parent_of(this) &&
+			p_node->is_inside_tree() && p_node->get_tree()->get_edited_scene_root() &&
+			p_node->get_tree()->get_edited_scene_root()->get_parent()->is_a_parent_of(p_node) &&
 			Object::cast_to<LayeredTileMapLayer>(p_node)) {
+			
 		layers_in_scene_list_cache_needs_update = true;
 	}
 }
 
 void LayeredTileMapLayerEditor::_notification(int p_what) {
 	switch (p_what) {
-	case NOTIFICATION_READY: {
+		case NOTIFICATION_READY: {
 			get_tree()->connect("node_added", this, "_node_change");
 			get_tree()->connect("node_removed", this, "_node_change");
 		} break;
@@ -3873,6 +3874,12 @@ void LayeredTileMapLayerEditor::_select_next_layer_pressed() {
 }
 
 void LayeredTileMapLayerEditor::_select_all_layers_pressed() {
+	_update_tile_map_layers_in_scene_list_cache();
+
+	if (tile_map_layers_in_scene_cache.size() == 0) {
+		return;
+	}
+	
 	EditorNode *en = EditorNode::get_singleton();
 	Node *edited_scene_root = en->get_edited_scene();
 	ERR_FAIL_NULL(edited_scene_root);
@@ -4264,6 +4271,12 @@ void LayeredTileMapLayerEditor::_tab_changed(int p_tab_id) {
 }
 
 void LayeredTileMapLayerEditor::_layers_select_next_or_previous(bool p_next) {
+	_update_tile_map_layers_in_scene_list_cache();
+
+	if (tile_map_layers_in_scene_cache.size() == 0) {
+		return;
+	}
+
 	const LayeredTileMapLayer *edited_layer = _get_edited_layer();
 	if (!edited_layer) {
 		return;
