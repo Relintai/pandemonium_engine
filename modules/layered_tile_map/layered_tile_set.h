@@ -524,9 +524,9 @@ public:
 	int get_patterns_count();
 
 	// Terrains.
-	RBSet<TerrainsPattern> get_terrains_pattern_set(int p_terrain_set);
-	RBSet<LayeredTileMapCell> get_tiles_for_terrains_pattern(int p_terrain_set, TerrainsPattern p_terrain_tile_pattern);
-	LayeredTileMapCell get_random_tile_from_terrains_pattern(int p_terrain_set, TerrainsPattern p_terrain_tile_pattern);
+	RBSet<TerrainsPattern> get_terrains_pattern_set(int p_terrain_set) const;
+	RBSet<LayeredTileMapCell> get_tiles_for_terrains_pattern(int p_terrain_set, TerrainsPattern p_terrain_tile_pattern) const;
+	LayeredTileMapCell get_random_tile_from_terrains_pattern(int p_terrain_set, TerrainsPattern p_terrain_tile_pattern) const;
 
 	// Helpers
 	Vector<Vector2> get_tile_shape_polygon() const;

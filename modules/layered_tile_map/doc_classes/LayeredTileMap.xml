@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="LayeredTileMap" inherits="LayeredTileMapLayerGroup" version="4.3">
+<class name="LayeredTileMap" inherits="Node2D" version="4.3">
 	<brief_description>
 		Node for 2D tile-based maps.
 	</brief_description>
@@ -89,7 +89,8 @@
 			<argument index="1" name="coords" type="Vector2i" />
 			<argument index="2" name="use_proxies" type="bool" default="false" />
 			<description>
-				Returns the tile alternative ID of the cell on layer [param layer] at [param coords]. If [param use_proxies] is [code]false[/code], ignores the [LayeredTileSet]'s tile proxies, returning the raw alternative identifier. See [method LayeredTileSet.map_tile_proxy].
+				Returns the tile alternative ID of the cell on layer [param layer] at [param coords].
+				If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw alternative identifier. See [method TileSet.map_tile_proxy].
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -99,7 +100,8 @@
 			<argument index="1" name="coords" type="Vector2i" />
 			<argument index="2" name="use_proxies" type="bool" default="false" />
 			<description>
-				Returns the tile atlas coordinates ID of the cell on layer [param layer] at coordinates [param coords]. If [param use_proxies] is [code]false[/code], ignores the [LayeredTileSet]'s tile proxies, returning the raw alternative identifier. See [method LayeredTileSet.map_tile_proxy].
+				Returns the tile atlas coordinates ID of the cell on layer [param layer] at coordinates [param coords]. Returns [code]Vector2i(-1, -1)[/code] if the cell does not exist.
+				If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw atlas coordinate identifier. See [method TileSet.map_tile_proxy].
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -110,7 +112,7 @@
 			<argument index="2" name="use_proxies" type="bool" default="false" />
 			<description>
 				Returns the tile source ID of the cell on layer [param layer] at coordinates [param coords]. Returns [code]-1[/code] if the cell does not exist.
-				If [param use_proxies] is [code]false[/code], ignores the [LayeredTileSet]'s tile proxies, returning the raw alternative identifier. See [method LayeredTileSet.map_tile_proxy].
+				If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw source identifier. See [method TileSet.map_tile_proxy].
 				If [param layer] is negative, the layers are accessed from the last one.
 			</description>
 		</method>
@@ -122,7 +124,6 @@
 			<description>
 				Returns the [LayeredTileData] object associated with the given cell, or [code]null[/code] if the cell does not exist or is not a [LayeredTileSetAtlasSource].
 				If [param layer] is negative, the layers are accessed from the last one.
-				If [param use_proxies] is [code]false[/code], ignores the [LayeredTileSet]'s tile proxies, returning the raw alternative identifier. See [method LayeredTileSet.map_tile_proxy].
 				[codeblock]
 				func get_clicked_tile_power():
 				    var clicked_cell = tile_map.local_to_map(tile_map.get_local_mouse_position())
@@ -132,6 +133,7 @@
 				    else:
 				        return 0
 				[/codeblock]
+				If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies. See [method TileSet.map_tile_proxy].
 			</description>
 		</method>
 		<method name="get_coords_for_body_rid">
@@ -482,6 +484,9 @@
 		</member>
 		<member name="navigation_visibility_mode" type="int" setter="set_navigation_visibility_mode" getter="get_navigation_visibility_mode" enum="LayeredTileMap.VisibilityMode" default="0">
 			Show or hide the LayeredTileMap's navigation meshes. If set to [constant VISIBILITY_MODE_DEFAULT], this depends on the show navigation debug settings.
+		</member>
+		<member name="tile_set" type="TileSet" setter="set_tileset" getter="get_tileset">
+			The [TileSet] used by this [TileMap]. The textures, collisions, and additional behavior of all available tiles are stored here.
 		</member>
 		<member name="rao_noise_params" type="FastnoiseNoiseParams" setter="rao_set_noise_params" getter="rao_get_noise_params">
 		</member>

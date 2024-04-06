@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "layered_tile_map_layer_group.h"
+#include "layered_tile_map_layer.h"
 #include "layered_tile_set.h"
 
 #include "modules/modules_enabled.gen.h"
@@ -47,14 +47,14 @@ class LayeredTileMapLayer;
 class TerrainConstraint;
 
 enum LayeredTileMapDataFormat {
-	FORMAT_1 = 0,
-	FORMAT_2,
-	FORMAT_3,
-	FORMAT_MAX,
+	TILE_MAP_DATA_FORMAT_1 = 0,
+	TILE_MAP_DATA_FORMAT_2,
+	TILE_MAP_DATA_FORMAT_3,
+	TILE_MAP_DATA_FORMAT_MAX,
 };
 
-class LayeredTileMap : public LayeredTileMapLayerGroup {
-	GDCLASS(LayeredTileMap, LayeredTileMapLayerGroup)
+class LayeredTileMap : public YSort {
+	GDCLASS(LayeredTileMap, YSort)
 
 public:
 	// Kept for compatibility, but should use LayeredTileMapLayer::VisibilityMode instead.
@@ -68,11 +68,12 @@ private:
 	friend class LayeredTileSetPlugin;
 
 	// A compatibility enum to specify how is the data if formatted.
-	mutable LayeredTileMapDataFormat format = LayeredTileMapDataFormat::FORMAT_3;
+	mutable LayeredTileMapDataFormat format = LayeredTileMapDataFormat::TILE_MAP_DATA_FORMAT_3;
 
 	static constexpr float FP_ADJUST = 0.00001;
 
 	// Properties.
+	Ref<LayeredTileSet> tile_set;
 	int rendering_quadrant_size = 16;
 	bool collision_animatable = false;
 	VisibilityMode collision_visibility_mode = VISIBILITY_MODE_DEFAULT;
@@ -100,7 +101,13 @@ private:
 	Ref<FastNoise> _rao_noise;
 #endif
 
+	void _tile_set_changed();
+
 	void _emit_changed();
+	
+	// Kept for compatibility with TileMap. With TileMapLayers as individual nodes, the format is stored directly in the array.
+	void _set_tile_map_data_using_compatibility_format(int p_layer, LayeredTileMapDataFormat p_format, const Vector<int> &p_data);
+	Vector<int> _get_tile_map_data_using_compatibility_format(int p_layer) const;
 
 protected:
 	bool _set(const StringName &p_name, const Variant &p_value);
@@ -125,6 +132,10 @@ public:
 	int get_rendering_quadrant_size() const;
 
 	static void draw_tile(RID p_canvas_item, const Vector2 &p_position, const Ref<LayeredTileSet> p_tile_set, int p_atlas_source_id, const Vector2i &p_atlas_coords, int p_alternative_tile, int p_frame = -1, Color p_modulation = Color(1.0, 1.0, 1.0, 1.0), const LayeredTileData *p_tile_data_override = nullptr, real_t p_normalized_animation_offset = 0.0);
+
+	// Accessors.
+	void set_tileset(const Ref<LayeredTileSet> &p_tileset);
+	Ref<LayeredTileSet> get_tileset() const;
 
 	// Layers management.
 	int get_layers_count() const;
@@ -229,6 +240,11 @@ public:
 
 	// Fixing and clearing methods.
 	void fix_invalid_tiles();
+
+#ifdef TOOLS_ENABLED
+	// Moving layers outside of TileMap.
+	LayeredTileMapLayer *duplicate_layer_from_internal(int p_layer);
+#endif // TOOLS_ENABLED
 
 	// Clears tiles from a given layer.
 	void clear_layer(int p_layer);

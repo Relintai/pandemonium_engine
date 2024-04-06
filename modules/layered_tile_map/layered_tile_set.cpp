@@ -1433,10 +1433,10 @@ int LayeredTileSet::get_patterns_count() {
 	return patterns.size();
 }
 
-RBSet<LayeredTileSet::TerrainsPattern> LayeredTileSet::get_terrains_pattern_set(int p_terrain_set) {
+RBSet<LayeredTileSet::TerrainsPattern> LayeredTileSet::get_terrains_pattern_set(int p_terrain_set) const {
 	ERR_FAIL_INDEX_V(p_terrain_set, terrain_sets.size(), RBSet<LayeredTileSet::TerrainsPattern>());
 
-	_update_terrains_cache();
+	const_cast<LayeredTileSet*>(this)->_update_terrains_cache();
 
 	RBSet<LayeredTileSet::TerrainsPattern> output;
 
@@ -1449,17 +1449,18 @@ RBSet<LayeredTileSet::TerrainsPattern> LayeredTileSet::get_terrains_pattern_set(
 	return output;
 }
 
-RBSet<LayeredTileMapCell> LayeredTileSet::get_tiles_for_terrains_pattern(int p_terrain_set, TerrainsPattern p_terrain_tile_pattern) {
+RBSet<LayeredTileMapCell> LayeredTileSet::get_tiles_for_terrains_pattern(int p_terrain_set, TerrainsPattern p_terrain_tile_pattern) const {
 	ERR_FAIL_INDEX_V(p_terrain_set, terrain_sets.size(), RBSet<LayeredTileMapCell>());
 
-	_update_terrains_cache();
+	const_cast<LayeredTileSet*>(this)->_update_terrains_cache();
 
 	return per_terrain_pattern_tiles[p_terrain_set][p_terrain_tile_pattern];
 }
 
-LayeredTileMapCell LayeredTileSet::get_random_tile_from_terrains_pattern(int p_terrain_set, LayeredTileSet::TerrainsPattern p_terrain_tile_pattern) {
+LayeredTileMapCell LayeredTileSet::get_random_tile_from_terrains_pattern(int p_terrain_set, LayeredTileSet::TerrainsPattern p_terrain_tile_pattern) const {
 	ERR_FAIL_INDEX_V(p_terrain_set, terrain_sets.size(), LayeredTileMapCell());
-	_update_terrains_cache();
+	
+	const_cast<LayeredTileSet*>(this)->_update_terrains_cache();
 
 	// Count the sum of probabilities.
 	double sum = 0.0;

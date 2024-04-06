@@ -32,7 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "layered_tile_map.h"
 #include "layered_tile_set.h"
 #include "scene/2d/y_sort.h"
 
@@ -43,6 +42,12 @@
 #endif
 
 class LayeredTileSetAtlasSource;
+class LayeredTileMap;
+
+enum LayeredTileMapLayerDataFormat {
+	LAYERED_TILE_MAP_LAYER_DATA_FORMAT_0 = 0,
+	LAYERED_TILE_MAP_LAYER_DATA_FORMAT_MAX,
+};
 
 class TerrainConstraint {
 private:
@@ -235,14 +240,21 @@ class LayeredTileMapLayer : public YSort {
 	GDCLASS(LayeredTileMapLayer, YSort);
 
 public:
-	enum VisibilityMode {
-		VISIBILITY_MODE_DEFAULT,
-		VISIBILITY_MODE_FORCE_SHOW,
-		VISIBILITY_MODE_FORCE_HIDE,
+	enum HighlightMode {
+		HIGHLIGHT_MODE_DEFAULT,
+		HIGHLIGHT_MODE_ABOVE,
+		HIGHLIGHT_MODE_BELOW,
+	};
+
+	enum DebugVisibilityMode {
+		DEBUG_VISIBILITY_MODE_DEFAULT,
+		DEBUG_VISIBILITY_MODE_FORCE_SHOW,
+		DEBUG_VISIBILITY_MODE_FORCE_HIDE,
 	};
 
 	enum DirtyFlags {
 		DIRTY_FLAGS_LAYER_ENABLED = 0,
+		
 		DIRTY_FLAGS_LAYER_IN_TREE,
 		DIRTY_FLAGS_LAYER_IN_CANVAS,
 		DIRTY_FLAGS_LAYER_LOCAL_TRANSFORM,
@@ -255,6 +267,7 @@ public:
 		DIRTY_FLAGS_LAYER_TEXTURE_FILTER,
 		DIRTY_FLAGS_LAYER_TEXTURE_REPEAT,
 		DIRTY_FLAGS_LAYER_RENDERING_QUADRANT_SIZE,
+		DIRTY_FLAGS_LAYER_COLLISION_ENABLED,
 		DIRTY_FLAGS_LAYER_USE_KINEMATIC_BODIES,
 		DIRTY_FLAGS_LAYER_COLLISION_VISIBILITY_MODE,
 		DIRTY_FLAGS_LAYER_NAVIGATION_ENABLED,
@@ -275,23 +288,32 @@ public:
 
 		DIRTY_FLAGS_LAYER_GROUP_SELECTED_LAYERS,
 		DIRTY_FLAGS_LAYER_GROUP_HIGHLIGHT_SELECTED,
-		DIRTY_FLAGS_LAYER_GROUP_TILE_SET,
+		
+		DIRTY_FLAGS_TILE_SET,
 
 		DIRTY_FLAGS_MAX,
 	};
 
 private:
-	// Exposed properties.
+	// Properties.
+	HashMap<Vector2i, CellData> tile_map_layer_data;
+	
 	bool enabled = true;
+	
+	Ref<LayeredTileSet> tile_set;
+
+	HighlightMode highlight_mode = HIGHLIGHT_MODE_DEFAULT;
+	
 	int y_sort_origin = 0;
 	int rendering_quadrant_size = 16;
-
+	
+	bool collision_enabled = true;
 	bool use_kinematic_bodies = false;
-	VisibilityMode collision_visibility_mode = VISIBILITY_MODE_DEFAULT;
+	DebugVisibilityMode collision_visibility_mode = DEBUG_VISIBILITY_MODE_DEFAULT;
 
 	bool navigation_enabled = true;
 	RID navigation_map_override;
-	VisibilityMode navigation_visibility_mode = VISIBILITY_MODE_DEFAULT;
+	DebugVisibilityMode navigation_visibility_mode = DEBUG_VISIBILITY_MODE_DEFAULT;
 
 	// Internal.
 	HashMap<Vector2i, CellData> tile_map;
@@ -385,6 +407,8 @@ private:
 	RBSet<TerrainConstraint> _get_terrain_constraints_from_added_pattern(const Vector2i &p_position, int p_terrain_set, LayeredTileSet::TerrainsPattern p_terrains_pattern) const;
 	RBSet<TerrainConstraint> _get_terrain_constraints_from_painted_cells_list(const RBSet<Vector2i> &p_painted, int p_terrain_set, bool p_ignore_empty_terrains) const;
 
+	void _tile_set_changed();
+
 	void _renamed();
 	void _update_notify_local_transform();
 
@@ -400,11 +424,19 @@ private:
 
 protected:
 	void _notification(int p_what);
+	
 	static void _bind_methods();
 
 public:
 	// LayeredTileMap node.
 	void set_as_tile_map_internal_node(int p_index);
+	
+	int get_index_in_tile_map() const {
+		return layer_index_in_tile_map_node;
+	}
+	const HashMap<Vector2i, CellData> &get_tile_map_layer_data() const {
+		return tile_map_layer_data;
+	}
 
 	// Rect caching.
 	Rect2 get_rect(bool &r_changed) const;
@@ -416,26 +448,26 @@ public:
 	HashMap<Vector2i, LayeredTileSet::TerrainsPattern> terrain_fill_pattern(const Vector<Vector2i> &p_coords_array, int p_terrain_set, LayeredTileSet::TerrainsPattern p_terrains_pattern, bool p_ignore_empty_terrains = true) const; // Not exposed.
 
 	// Not exposed to users.
-	LayeredTileMapCell get_cell(const Vector2i &p_coords, bool p_use_proxies = false) const;
+	LayeredTileMapCell get_cell(const Vector2i &p_coords) const;
 
-	// For LayeredTileMap node's use.
-	void set_tile_data(LayeredTileMapDataFormat p_format, const Vector<int> &p_data);
-	Vector<int> get_tile_data() const;
-	void notify_tile_map_layer_group_change(DirtyFlags p_what);
+	////////////// Exposed functions //////////////
 
-	void update_internals();
-	void notify_runtime_tile_data_update();
-
-	// --- Exposed in LayeredTileMap ---
-	// Cells manipulation.
-	void set_cell(const Vector2i &p_coords, int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = 0);
+	// --- Cells manipulation ---
+	// Generic cells manipulations and data access.
+	void set_cell(const Vector2i &p_coords, int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i &p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = 0);
 	void erase_cell(const Vector2i &p_coords);
 
-	int get_cell_source_id(const Vector2i &p_coords, bool p_use_proxies = false) const;
-	Vector2i get_cell_atlas_coords(const Vector2i &p_coords, bool p_use_proxies = false) const;
-	int get_cell_alternative_tile(const Vector2i &p_coords, bool p_use_proxies = false) const;
-	LayeredTileData *get_cell_tile_data(const Vector2i &p_coords, bool p_use_proxies = false) const; // Helper method to make accessing the data easier.
+	void fix_invalid_tiles();
 	void clear();
+	
+	int get_cell_source_id(const Vector2i &p_coords) const;
+	Vector2i get_cell_atlas_coords(const Vector2i &p_coords) const;
+	int get_cell_alternative_tile(const Vector2i &p_coords) const;
+	LayeredTileData *get_cell_tile_data(const Vector2i &p_coords) const; // Helper method to make accessing the data easier.
+
+	PoolVector2iArray get_used_cells() const;
+	PoolVector2iArray get_used_cells_by_id(int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i &p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE) const;
+	Rect2i get_used_rect() const;
 
 	// Patterns.
 	Ref<LayeredTileMapPattern> get_pattern(PoolVector2iArray p_coords_array);
@@ -445,14 +477,33 @@ public:
 	void set_cells_terrain_connect(PoolVector2iArray p_cells, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
 	void set_cells_terrain_path(PoolVector2iArray p_path, int p_terrain_set, int p_terrain, bool p_ignore_empty_terrains = true);
 
-	// Cells usage.
-	PoolVector2iArray get_used_cells() const;
-	PoolVector2iArray get_used_cells_by_id(int p_source_id = LayeredTileSet::INVALID_SOURCE, const Vector2i p_atlas_coords = LayeredTileSetSource::INVALID_ATLAS_COORDS, int p_alternative_tile = LayeredTileSetSource::INVALID_TILE_ALTERNATIVE) const;
-	Rect2i get_used_rect() const;
+	// --- Physics helpers ---
+	bool has_body_rid(RID p_physics_body) const;
+	Vector2i get_coords_for_body_rid(RID p_physics_body) const; // For finding tiles from collision.
 
-	// Layer properties.
+	// --- Runtime ---
+	void update_internals();
+	void notify_runtime_tile_data_update();
+
+	// --- Shortcuts to methods defined in TileSet ---
+	Vector2i map_pattern(const Vector2i &p_position_in_tilemap, const Vector2i &p_coords_in_pattern, Ref<LayeredTileMapPattern> p_pattern);
+	PoolVector2iArray get_surrounding_cells(const Vector2i &p_coords);
+	Vector2i get_neighbor_cell(const Vector2i &p_coords, LayeredTileSet::CellNeighbor p_cell_neighbor) const;
+	Vector2 map_to_local(const Vector2i &p_pos) const;
+	Vector2i local_to_map(const Vector2 &p_pos) const;
+
+	// --- Accessors ---
+	void set_tile_map_data_from_array(const Vector<uint8_t> &p_data);
+	Vector<uint8_t> get_tile_map_data_as_array() const;
+
 	void set_enabled(bool p_enabled);
 	bool is_enabled() const;
+	void set_tile_set(const Ref<LayeredTileSet> &p_tile_set);
+	Ref<LayeredTileSet> get_tile_set() const;
+
+	void set_highlight_mode(HighlightMode p_highlight_mode);
+	HighlightMode get_highlight_mode() const;
+	
 	virtual void set_self_modulate(const Color &p_self_modulate);
 	virtual void set_y_sort_enabled(bool p_y_sort_enabled);
 	void set_y_sort_origin(int p_y_sort_origin);
@@ -462,17 +513,24 @@ public:
 	void set_rendering_quadrant_size(int p_size);
 	int get_rendering_quadrant_size() const;
 
+	void set_collision_enabled(bool p_enabled);
+	bool is_collision_enabled() const;
 	void set_use_kinematic_bodies(bool p_use_kinematic_bodies);
 	bool is_using_kinematic_bodies() const;
-	void set_collision_visibility_mode(VisibilityMode p_show_collision);
-	VisibilityMode get_collision_visibility_mode() const;
+	void set_collision_visibility_mode(DebugVisibilityMode p_show_collision);
+	DebugVisibilityMode get_collision_visibility_mode() const;
 
 	void set_navigation_enabled(bool p_enabled);
 	bool is_navigation_enabled() const;
 	void set_navigation_map(RID p_map);
 	RID get_navigation_map() const;
-	void set_navigation_visibility_mode(VisibilityMode p_show_navigation);
-	VisibilityMode get_navigation_visibility_mode() const;
+	void set_navigation_visibility_mode(DebugVisibilityMode p_show_navigation);
+	DebugVisibilityMode get_navigation_visibility_mode() const;
+	
+	// Virtual function to modify the LayeredTileData at runtime.
+	bool use_tile_data_runtime_update(const Vector2i &p_coords);
+	void tile_data_runtime_update(const Vector2i &p_coords, LayeredTileData *p_tile_data);
+
 
 	//VertexLights2D
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
@@ -488,25 +546,11 @@ public:
 	void set_rao_strength(const real_t p_strength);
 	real_t get_rao_strength() const;
 #endif
-
-	// Fixing and clearing methods.
-	void fix_invalid_tiles();
-
-	// Find coords for body.
-	bool has_body_rid(RID p_physics_body) const;
-	Vector2i get_coords_for_body_rid(RID p_physics_body) const; // For finding tiles from collision.
-
-	// Helper.
-	Ref<LayeredTileSet> get_effective_tile_set() const;
-
-	// Virtual function to modify the LayeredTileData at runtime.
-	bool use_tile_data_runtime_update(const Vector2i &p_coords);
-	void tile_data_runtime_update(const Vector2i &p_coords, LayeredTileData *p_tile_data);
-
-	// ---
-
+	
 	LayeredTileMapLayer();
 	~LayeredTileMapLayer();
 };
+
+VARIANT_ENUM_CAST(LayeredTileMapLayer::DebugVisibilityMode);
 
 #endif // TILE_MAP_LAYER_H

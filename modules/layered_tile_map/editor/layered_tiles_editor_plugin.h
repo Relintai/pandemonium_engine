@@ -134,10 +134,8 @@ class LayeredTileMapEditorPlugin : public EditorPlugin {
 	void _update_tile_map();
 	void _select_layer(const StringName &p_name);
 
-	void _edit_tile_map_layer(LayeredTileMapLayer *p_tile_map_layer);
-	void _edit_tile_map_layer_group(LayeredTileMapLayerGroup *p_tile_map_layer_group);
-
-	void _tile_map_group_child_tree_changed(Node *p_node);
+	void _edit_tile_map_layer(LayeredTileMapLayer *p_tile_map_layer, bool p_show_layer_selector);
+	void _edit_tile_map(LayeredTileMap *p_tile_map);
 
 protected:
 	void _notification(int p_notification);
