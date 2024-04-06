@@ -2292,7 +2292,7 @@ void LayeredTileMapLayerEditorTilesPlugin::edit(ObjectID p_tile_map_layer_id) {
 		tile_map_selection.clear();
 		selection_pattern.instance();
 	}
-
+	
 	edited_tile_map_layer_id = p_tile_map_layer_id;
 }
 
@@ -3807,6 +3807,8 @@ void LayeredTileMapLayerEditor::_notification(int p_what) {
 		case NOTIFICATION_READY: {
 			get_tree()->connect("node_added", this, "_node_change");
 			get_tree()->connect("node_removed", this, "_node_change");
+			
+			layers_in_scene_list_cache_needs_update = true;
 		} break;
 		
 		case NOTIFICATION_THEME_CHANGED: {
@@ -4271,12 +4273,6 @@ void LayeredTileMapLayerEditor::_tab_changed(int p_tab_id) {
 }
 
 void LayeredTileMapLayerEditor::_layers_select_next_or_previous(bool p_next) {
-	_update_tile_map_layers_in_scene_list_cache();
-
-	if (tile_map_layers_in_scene_cache.size() == 0) {
-		return;
-	}
-
 	const LayeredTileMapLayer *edited_layer = _get_edited_layer();
 	if (!edited_layer) {
 		return;
@@ -4292,10 +4288,11 @@ void LayeredTileMapLayerEditor::_layers_select_next_or_previous(bool p_next) {
 	if (edited_layer->get_index_in_tile_map() >= 0) {
 		// Part of a TileMap.
 		LayeredTileMap *tile_map = Object::cast_to<LayeredTileMap>(edited_layer->get_parent());
-		new_selected_layer = Object::cast_to<LayeredTileMapLayer>(tile_map->get_child(Math::posmod(edited_layer->get_index_in_tile_map() + inc, tile_map->get_layers_count())));
+		new_selected_layer = tile_map->get_layer(Math::posmod(edited_layer->get_index_in_tile_map() + inc, tile_map->get_layers_count()));
 	} else {
 		// Individual layer.
 		_update_tile_map_layers_in_scene_list_cache();
+		
 		int edited_index = -1;
 		for (int i = 0; i < tile_map_layers_in_scene_cache.size(); i++) {
 			if (tile_map_layers_in_scene_cache[i] == edited_layer) {
@@ -4314,6 +4311,7 @@ void LayeredTileMapLayerEditor::_layers_select_next_or_previous(bool p_next) {
 		en->get_editor_selection()->clear();
 		en->get_editor_selection()->add_node(new_selected_layer);
 	} else {
+		
 		edit(new_selected_layer);
 	}
 }
