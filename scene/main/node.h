@@ -547,6 +547,7 @@ public:
 	}
 	void reset_physics_interpolation();
 
+	bool is_node_ready() const;
 	void request_ready();
 
 	static void print_stray_nodes();
