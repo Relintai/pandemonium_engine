@@ -317,7 +317,6 @@ private:
 	DebugVisibilityMode navigation_visibility_mode = DEBUG_VISIBILITY_MODE_DEFAULT;
 
 	// Internal.
-	HashMap<Vector2i, CellData> tile_map;
 	bool pending_update = false;
 
 	// For keeping compatibility with LayeredTileMap.

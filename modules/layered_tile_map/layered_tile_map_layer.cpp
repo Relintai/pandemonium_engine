@@ -2370,7 +2370,7 @@ void LayeredTileMapLayer::fix_invalid_tiles() {
 	ERR_FAIL_COND_MSG(tile_set.is_null(), "Cannot call fix_invalid_tiles() on a LayeredTileMap without a valid LayeredTileSet.");
 
 	RBSet<Vector2i> coords;
-	for (const HashMap<Vector2i, CellData>::Element *E = tile_map.front(); E; E = E->next) {
+	for (const HashMap<Vector2i, CellData>::Element *E = tile_map_layer_data.front(); E; E = E->next) {
 		LayeredTileSetSource *source = *tile_set->get_source(E->value().cell.source_id);
 		if (!source || !source->has_tile(E->value().cell.get_atlas_coords()) || !source->has_alternative_tile(E->value().cell.get_atlas_coords(), E->value().cell.alternative_tile)) {
 			coords.insert(E->key());
@@ -2384,7 +2384,7 @@ void LayeredTileMapLayer::fix_invalid_tiles() {
 
 void LayeredTileMapLayer::clear() {
 	// Remove all tiles.
-	for (HashMap<Vector2i, CellData>::Element *kv = tile_map.front(); kv; kv = kv->next) {
+	for (HashMap<Vector2i, CellData>::Element *kv = tile_map_layer_data.front(); kv; kv = kv->next) {
 		erase_cell(kv->key());
 	}
 	used_rect_cache_dirty = true;
@@ -2414,7 +2414,7 @@ Vector2i LayeredTileMapLayer::get_cell_atlas_coords(const Vector2i &p_coords) co
 
 int LayeredTileMapLayer::get_cell_alternative_tile(const Vector2i &p_coords) const {
 	// Get a cell source id from position.
-	const HashMap<Vector2i, CellData>::Element *E = tile_map.find(p_coords);
+	const HashMap<Vector2i, CellData>::Element *E = tile_map_layer_data.find(p_coords);
 
 	if (!E) {
 		return LayeredTileSetSource::INVALID_TILE_ALTERNATIVE;
@@ -2440,7 +2440,7 @@ LayeredTileData *LayeredTileMapLayer::get_cell_tile_data(const Vector2i &p_coord
 PoolVector2iArray LayeredTileMapLayer::get_used_cells() const {
 	// Returns the cells used in the tilemap.
 	PoolVector2iArray a;
-	for (const HashMap<Vector2i, CellData>::Element *E = tile_map.front(); E; E = E->next) {
+	for (const HashMap<Vector2i, CellData>::Element *E = tile_map_layer_data.front(); E; E = E->next) {
 		const LayeredTileMapCell &c = E->value().cell;
 		if (c.source_id == LayeredTileSet::INVALID_SOURCE) {
 			continue;
@@ -2454,7 +2454,7 @@ PoolVector2iArray LayeredTileMapLayer::get_used_cells() const {
 PoolVector2iArray LayeredTileMapLayer::get_used_cells_by_id(int p_source_id, const Vector2i &p_atlas_coords, int p_alternative_tile) const {
 	// Returns the cells used in the tilemap.
 	PoolVector2iArray a;
-	for (const HashMap<Vector2i, CellData>::Element *E = tile_map.front(); E; E = E->next) {
+	for (const HashMap<Vector2i, CellData>::Element *E = tile_map_layer_data.front(); E; E = E->next) {
 		const LayeredTileMapCell &c = E->value().cell;
 		if (c.source_id == LayeredTileSet::INVALID_SOURCE) {
 			continue;
@@ -2475,7 +2475,7 @@ Rect2i LayeredTileMapLayer::get_used_rect() const {
 		used_rect_cache = Rect2i();
 
 		bool first = true;
-		for (const HashMap<Vector2i, CellData>::Element *E = tile_map.front(); E; E = E->next) {
+		for (const HashMap<Vector2i, CellData>::Element *E = tile_map_layer_data.front(); E; E = E->next) {
 			const LayeredTileMapCell &c = E->value().cell;
 			if (c.source_id == LayeredTileSet::INVALID_SOURCE) {
 				continue;
