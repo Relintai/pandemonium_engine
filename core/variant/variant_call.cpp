@@ -547,6 +547,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM1R(Vector2, bounce);
 	VCALL_LOCALMEM1R(Vector2, reflect);
 	VCALL_LOCALMEM1R(Vector2, is_equal_approx);
+	VCALL_LOCALMEM0R(Vector2, is_zero_approx);
 	VCALL_LOCALMEM0R(Vector2, angle);
 	VCALL_LOCALMEM1(Vector2, set_rotation);
 	VCALL_LOCALMEM0R(Vector2, abs);
@@ -682,6 +683,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM1R(Vector3, reflect);
 	VCALL_LOCALMEM1R(Vector3, is_equal_approx);
 	VCALL_LOCALMEM2R(Vector3, is_equal_approxt);
+	VCALL_LOCALMEM0R(Vector3, is_zero_approx);
 
 	VCALL_LOCALMEM2(Vector3i, set_axis);
 	VCALL_LOCALMEM1R(Vector3i, get_axis);
@@ -2657,6 +2659,7 @@ void register_variant_methods() {
 	ADDFUNC1R(VECTOR2, VECTOR2, Vector2, bounce, VECTOR2, "n", varray());
 	ADDFUNC1R(VECTOR2, VECTOR2, Vector2, reflect, VECTOR2, "n", varray());
 	ADDFUNC1R(VECTOR2, BOOL, Vector2, is_equal_approx, VECTOR2, "v", varray());
+	ADDFUNC0R(VECTOR2, BOOL, Vector2, is_zero_approx, varray());
 	ADDFUNC0R(VECTOR2, REAL, Vector2, angle, varray());
 	ADDFUNC1(VECTOR2, NIL, Vector2, set_rotation, REAL, "radians", varray());
 	ADDFUNC0R(VECTOR2, VECTOR2, Vector2, abs, varray());
@@ -2781,6 +2784,7 @@ void register_variant_methods() {
 	ADDFUNC1R(VECTOR3, VECTOR3, Vector3, reflect, VECTOR3, "n", varray());
 	ADDFUNC1R(VECTOR3, BOOL, Vector3, is_equal_approx, VECTOR3, "v", varray());
 	ADDFUNC2R(VECTOR3, BOOL, Vector3, is_equal_approxt, VECTOR3, "v", REAL, "tolerance", varray());
+	ADDFUNC0R(VECTOR3, BOOL, Vector3, is_zero_approx, varray());
 
 	ADDFUNC2(VECTOR3I, NIL, Vector3i, set_axis, INT, "axis", INT, "value", varray());
 	ADDFUNC1R(VECTOR3I, INT, Vector3i, get_axis, INT, "axis", varray());
