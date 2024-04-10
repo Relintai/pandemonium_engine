@@ -809,6 +809,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(Quaternion, get_angle);
 	VCALL_LOCALMEM2(Quaternion, set_axis_angle);
 	VCALL_LOCALMEM1R(Quaternion, xform);
+	VCALL_LOCALMEM2R(Quaternion, set_shortest_arc);
 
 	VCALL_LOCALMEM0R(Color, to_rgba32);
 	VCALL_LOCALMEM0R(Color, to_argb32);
@@ -2891,6 +2892,7 @@ void register_variant_methods() {
 	ADDFUNC0R(QUATERNION, REAL, Quaternion, get_angle, varray());
 	ADDFUNC2(QUATERNION, NIL, Quaternion, set_axis_angle, VECTOR3, "axis", REAL, "angle", varray());
 	ADDFUNC1R(QUATERNION, VECTOR3, Quaternion, xform, VECTOR3, "v", varray());
+	ADDFUNC2R(QUATERNION, BOOL, Quaternion, set_shortest_arc, VECTOR3, "from", VECTOR3, "to", varray());
 
 	ADDFUNC0R(COLOR, INT, Color, to_rgba32, varray());
 	ADDFUNC0R(COLOR, INT, Color, to_argb32, varray());
