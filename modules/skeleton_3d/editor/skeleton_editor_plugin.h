@@ -120,7 +120,9 @@ class SkeletonEditor : public VBoxContainer {
 		SKELETON_OPTION_CREATE_PHYSICAL_SKELETON,
 		SKELETON_OPTION_ADD_BONE,
 		SKELETON_OPTION_REMOVE_BONE,
-		SKELETON_OPTION_RENAME_BONE
+		SKELETON_OPTION_RENAME_BONE,
+		SKELETON_OPTION_COPY_POSE,
+		SKELETON_OPTION_PASTE_POSE,
 	};
 
 	struct BoneInfo {
@@ -245,6 +247,11 @@ public:
 	void _add_bone_callback();
 	void _remove_bone_callback();
 	void _rename_bone_callback();
+	
+	void copy_pose();
+	void paste_pose();
+	
+	Vector<Transform> _pose_clipboard;
 
 	void create_bone_tool_popups();
 	static void _bind_tool_popup_methods();

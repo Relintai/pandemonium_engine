@@ -315,6 +315,12 @@ void SkeletonEditor::_on_click_skeleton_option(int p_skeleton_option) {
 		case SKELETON_OPTION_RENAME_BONE: {
 			rename_bone();
 		} break;
+		case SKELETON_OPTION_COPY_POSE: {
+			copy_pose();
+		} break;
+		case SKELETON_OPTION_PASTE_POSE: {
+			paste_pose();
+		} break;
 	}
 }
 
@@ -710,10 +716,15 @@ void SkeletonEditor::create_editors() {
 	p->add_shortcut(ED_SHORTCUT("skeleton_3d_editor/init_selected_poses", TTR("Init selected Poses")), SKELETON_OPTION_INIT_SELECTED_POSES);
 	p->add_shortcut(ED_SHORTCUT("skeleton_3d_editor/all_poses_to_rests", TTR("Apply all poses to rests")), SKELETON_OPTION_ALL_POSES_TO_RESTS);
 	p->add_shortcut(ED_SHORTCUT("skeleton_3d_editor/selected_poses_to_rests", TTR("Apply selected poses to rests")), SKELETON_OPTION_SELECTED_POSES_TO_RESTS);
+	p->add_separator();
 	p->add_shortcut(ED_SHORTCUT("skeleton_3d_editor/create_physical_skeleton", TTR("Create physical skeleton")), SKELETON_OPTION_CREATE_PHYSICAL_SKELETON);
+	p->add_separator();
 	p->add_shortcut(ED_SHORTCUT("skeleton_3d_editor/add_bone", TTR("Add bone")), SKELETON_OPTION_ADD_BONE);
 	p->add_shortcut(ED_SHORTCUT("skeleton_3d_editor/rename_bone", TTR("Rename bone")), SKELETON_OPTION_RENAME_BONE);
 	p->add_shortcut(ED_SHORTCUT("skeleton_3d_editor/remove_bone", TTR("Remove bone")), SKELETON_OPTION_REMOVE_BONE);
+	p->add_separator();
+	p->add_shortcut(ED_SHORTCUT("skeleton_3d_editor/copy_pose", TTR("Copy Pose")), SKELETON_OPTION_COPY_POSE);
+	p->add_shortcut(ED_SHORTCUT("skeleton_3d_editor/paste_pose", TTR("Paste Pose")), SKELETON_OPTION_PASTE_POSE);
 
 	skeleton_options->get_popup()->connect("id_pressed", this, "_on_click_skeleton_option");
 	set_bone_options_enabled(false);
@@ -1201,6 +1212,30 @@ void SkeletonEditor::_rename_bone_callback() {
 	skeleton->set_bone_name(skeleton->get_selected_bone(), _bone_rename_line_edit->get_text());
 
 	update_joint_tree();
+}
+
+void SkeletonEditor::copy_pose() {
+	if (!skeleton) {
+		return;
+	}
+	
+	_pose_clipboard.clear();
+
+	for (int i = 0; i < skeleton->get_bone_count(); ++i) {
+		Transform pose = skeleton->get_bone_pose(i);
+		_pose_clipboard.push_back(pose);
+	}
+}
+void SkeletonEditor::paste_pose() {
+	if (!skeleton) {
+		return;
+	}
+	
+	ERR_FAIL_COND(skeleton->get_bone_count() != _pose_clipboard.size());
+	
+	for (int i = 0; i < skeleton->get_bone_count(); ++i) {
+		skeleton->set_bone_pose(i, _pose_clipboard[i]);
+	}
 }
 
 void SkeletonEditor::create_bone_tool_popups() {
