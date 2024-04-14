@@ -706,6 +706,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(Vector4, max_axis);
 	VCALL_LOCALMEM0R(Vector4, length_squared);
 	VCALL_LOCALMEM1R(Vector4, is_equal_approx);
+	VCALL_LOCALMEM0R(Vector4, is_zero_approx);
 	VCALL_LOCALMEM0R(Vector4, length);
 	VCALL_LOCALMEM0(Vector4, normalize);
 	VCALL_LOCALMEM0R(Vector4, normalized);
@@ -2807,6 +2808,7 @@ void register_variant_methods() {
 	ADDFUNC0R(VECTOR4, INT, Vector4, max_axis, varray());
 	ADDFUNC0R(VECTOR4, REAL, Vector4, length_squared, varray());
 	ADDFUNC1R(VECTOR4, BOOL, Vector4, is_equal_approx, VECTOR4, "v", varray());
+	ADDFUNC0R(VECTOR4, BOOL, Vector4, is_zero_approx, varray());
 	ADDFUNC0R(VECTOR4, REAL, Vector4, length, varray());
 	ADDFUNC0(VECTOR4, NIL, Vector4, normalize, varray());
 	ADDFUNC0R(VECTOR4, VECTOR4, Vector4, normalized, varray());
