@@ -36,8 +36,9 @@
 #include "core/os/dir_access.h"
 #include "core/version.h"
 
-//version 2: changed names for basis, aabb, poolvectors, etc.
-#define FORMAT_VERSION 2
+// Version 2: changed names for basis, aabb, poolvectors, etc.
+// Version 3: PoolByteArray is now stored as base64 encoded.
+#define FORMAT_VERSION 3
 
 #include "core/os/dir_access.h"
 #include "core/version.h"
