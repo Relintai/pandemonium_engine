@@ -2152,7 +2152,7 @@ const Variant *GDScriptParser::_try_to_find_constant_value_for_expression(const 
 		return &(static_cast<const ConstantNode *>(p_expr)->value);
 	} else if (p_expr->type == Node::TYPE_IDENTIFIER) {
 		const StringName &name = static_cast<const IdentifierNode *>(p_expr)->name;
-		const Map<StringName, ClassNode::Constant>::Element *element =
+		const RBMap<StringName, ClassNode::Constant>::Element *element =
 				current_class->constant_expressions.find(name);
 		if (element) {
 			Node *cn_exp = element->value().expression;
@@ -2175,7 +2175,7 @@ const Variant *GDScriptParser::_try_to_find_constant_value_for_expression(const 
 
 			const StringName &enum_name = static_cast<const IdentifierNode *>(op_args[0])->name;
 			const StringName &const_name = static_cast<const IdentifierNode *>(op_args[1])->name;
-			Map<StringName, ClassNode::Constant>::Element *element =
+			RBMap<StringName, ClassNode::Constant>::Element *element =
 					current_class->constant_expressions.find(enum_name);
 			if (element) {
 				Node *cn_exp = element->value().expression;
