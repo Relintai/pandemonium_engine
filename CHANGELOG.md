@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
-- Backported everything up to and including https://github.com/godotengine/godot/commit/b3f93ad127cc2a840b253f397ce135fd10dc666c Merge commit: https://github.com/godotengine/godot/commit/1a9b5b7c991bdf8771a595eb249f3a44a4499f83
+- Backported everything up to and including https://github.com/godotengine/godot/commit/ed952f82bd0c7d6e94657bac988ff8f14e335e5f Merge commit: https://github.com/godotengine/godot/commit/a885e8322db5f85bb56f1e4b3400161e2c21afd0
 
 ## [4.2.1]
 
