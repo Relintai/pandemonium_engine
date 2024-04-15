@@ -96,7 +96,7 @@ public:
 
 	void load_all();
 
-	//Stats
+	// Stats
 	String stat_get_string() const;
 	void stat_set_string(const String &stat_enum_string);
 
@@ -114,8 +114,12 @@ public:
 
 	int stat_get_main_stat_count() const;
 	void stat_set_main_stat_count(const int index);
+	
+	// Entity Resources
+	real_t entity_resource_get_base_world_speed() const;
+	void entity_resource_set_base_world_speed(const real_t value);
 
-	//Equipslots
+	// Equipslots
 	String equip_slot_get_string() const;
 	void equip_slot_set_string(const String &equip_slot_enum_string);
 
@@ -131,7 +135,7 @@ public:
 	PoolStringArray equip_slots_get() const;
 	void equip_slots_set(const PoolStringArray &array);
 
-	//Skeletons
+	// Skeletons
 	String entity_types_get() const;
 	void entity_types_set(const String &value);
 
@@ -147,14 +151,14 @@ public:
 	PoolStringArray skeletons_bone_attachment_points_get() const;
 	void skeletons_bone_attachment_points_set(const PoolStringArray &value);
 
-	//Other
+	// Other
 	String model_visual_groups_get() const;
 	void model_visual_groups_set(const String &value);
 
 	String texture_layers_get() const;
 	void texture_layers_set(const String &value);
 
-	//Diminishing Returns
+	// Diminishing Returns
 	String dminishing_return_categories_get() const;
 	void dminishing_return_categories_set(const String &value);
 
@@ -164,7 +168,7 @@ public:
 	int dminishing_return_steps_get() const;
 	void dminishing_return_steps_set(const int value);
 
-	//Levels/XP
+	// Levels/XP
 	int get_max_character_level() const;
 	int get_max_class_level() const;
 
@@ -254,6 +258,9 @@ private:
 
 	String _stat_enum_string;
 	int _stat_main_stat_count;
+	
+	// Entity Resources
+	real_t _entity_resource_base_world_speed;
 
 	//Equipslots
 	Vector<StringName> _equip_slot_id_to_name;
