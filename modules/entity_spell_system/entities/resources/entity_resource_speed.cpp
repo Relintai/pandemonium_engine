@@ -43,15 +43,17 @@ void EntityResourceSpeed::_init() {
 
 	ERR_FAIL_COND(!ESS::get_singleton());
 
-	if (ESS::get_singleton()->stat_is_property("Speed"))
+	if (ESS::get_singleton()->stat_is_property("Speed")) {
 		speed_stat_id = ESS::get_singleton()->stat_get_id("Speed");
+	}
 }
 void EntityResourceSpeed::_ons_added(Node *entity) {
 	refresh();
 }
 void EntityResourceSpeed::_notification_sstat_changed(int statid, float current) {
-	if (statid == speed_stat_id)
+	if (statid == speed_stat_id) {
 		refresh();
+	}
 }
 void EntityResourceSpeed::refresh() {
 	ERR_FAIL_COND(get_owner() == NULL);
