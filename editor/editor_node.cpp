@@ -6922,6 +6922,9 @@ EditorNode::EditorNode() {
 	dock_slot[DOCK_SLOT_RIGHT_BL]->hide();
 	dock_slot[DOCK_SLOT_RIGHT_UR]->hide();
 	dock_slot[DOCK_SLOT_RIGHT_BR]->hide();
+	if (filesystem_dock_mode == static_cast<int>(FileSystemDock::DOCK_MODE_BOTTOM_BAR)) {
+		dock_slot[DOCK_SLOT_LEFT_BR]->hide();
+	}
 	left_l_vsplit->hide();
 	right_r_vsplit->hide();
 
