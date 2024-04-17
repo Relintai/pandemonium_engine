@@ -272,3 +272,52 @@ https://github.com/godotengine/godot/pull/87588
 ## Cleanup TODOs
 
 Cleanup this file, lots of things are already done.
+
+# New
+
+Use StringBuilder where it's better. Especially in HTMLBuilder, and in the database module. Maybe in WebServerRequest. Etc...
+
+Add back lightmaps as a module and implement them for the gles2 backend.
+
+Implement a deque and replace std::deque in the NetworkSynchronizer.
+
+Implement in-editor Viewport previews. Should be relatively trivial using World Overrides. Will likely need lots of small changes to work properly even with scene tab changes etc.
+
+RenderingServer agnostic particle system. Then eventually normal particle system could be added back as GPUParticles.
+
+Make the old gles3 renderer available as a separate module. Would need a different name, as it's not the same as the gles2 renderer.
+
+Rename the gles2 renderer to something better. (Maybe only in-engine)
+
+Fix the renderer select thing in the project manager. Also make it a dropdown so more backend can be added without messing with it.
+
+Add an extension api to the RenderingServer so it doesn't directly need to have all the methods that are backend specific.
+
+Figure out a simpler way to implement multi window support (compared to godot4) (especially for popups) without messing with the object hierarchy at all.
+Also somehow make it not compilcate the codebase at all.
+(Likely doable, since it would be just an another rendered wiewport, and everything would work without any changes)
+Maybe an another set of popups could be added that try to open themselves in windows. Could be a module.
+
+Expand all, and collapse all button to the scene tree in the editor.
+
+Set up for the site a VPS, instead of it just being a redirect.
+Also make it look acceptable at least.
+Also finish cleanin up the docs, and host them.
+Also create a nices theme for them.
+
+Backport the new renderers as modules from godot4? I bet it wouldn't be that hard. Or maybe just one (eventually) as a proof of concept.
+
+Gte rid of the server platform and make the dummy drivers selectable in any build (like in godot4).
+Also make the renderer backends togglable during compile time. So server would becom a build preset.
+
+Reorganize this file, and append difficulty to tasks.
+
+Lost of classes miss docs, do those.
+
+A bit more modularization. Would be cool to be able to compile the engine even without the SceneTree, without the 2d toolkit and without the gui toolkit, 
+and maybe without servers (= core alone) with a custom main.cpp (no #ifdefs everywhere, and no messing around with the build system,
+just a flag could make scons not include all thos scsubs. Mostly for advanced and special use cases).
+
+
+Finish the unit test module. Make a gui for it. One control, that could be added to the tree to see progress.
+
