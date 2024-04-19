@@ -77,7 +77,7 @@ void ImagePickerButton::_on_ImagePicker_pressed() {
 	dialog = memnew(MatMakerFileDialog);
 	add_child(dialog);
 	dialog->set_custom_minimum_size(Vector2(500, 500));
-	dialog->set_access(FileDialog::ACCESS_FILESYSTEM);
+	dialog->set_access(FileDialog::ACCESS_RESOURCES);
 	dialog->set_mode(FileDialog::MODE_OPEN_FILE);
 	dialog->add_filter("*.bmp;BMP Image");
 	dialog->add_filter("*.exr;EXR Image");
