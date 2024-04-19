@@ -3247,21 +3247,45 @@ PREAMBLE(bool)::_sort_items_match(const BSortItem &p_a, const BSortItem &p_b) co
 	//	if (a->commands.size() != 1)
 	//		return false;
 
+
+	// p_a's type is already checked outside to be these
+	//const RasterizerCanvas::Item::Command &cb = *b->commands[0];
+	//if ((cb.type != RasterizerCanvas::Item::Command::TYPE_RECT) && (cb.type != RasterizerCanvas::Item::Command::TYPE_MULTIRECT) && (cb.type != RasterizerCanvas::Item::Command::TYPE_RECT_ANIMATION)) {
+	//	return false;
+	//}
+	
+	const RasterizerCanvas::Item::Command &ca = *a->commands[0];
 	const RasterizerCanvas::Item::Command &cb = *b->commands[0];
-	if ((cb.type != RasterizerCanvas::Item::Command::TYPE_RECT) && (cb.type != RasterizerCanvas::Item::Command::TYPE_MULTIRECT) && (cb.type != RasterizerCanvas::Item::Command::TYPE_RECT_ANIMATION)) {
+	
+	if ((ca.type != cb.type)) {
 		return false;
 	}
 
-	const RasterizerCanvas::Item::Command &ca = *a->commands[0];
 	// tested outside function
-	//	if (ca.type != Item::Command::TYPE_RECT)
+	//	if (ca.type != Item::Command::TYPE_RECT || ...)
 	//		return false;
 
-	const RasterizerCanvas::Item::CommandRect *rect_a = static_cast<const RasterizerCanvas::Item::CommandRect *>(&ca);
-	const RasterizerCanvas::Item::CommandRect *rect_b = static_cast<const RasterizerCanvas::Item::CommandRect *>(&cb);
-
-	if (rect_a->texture != rect_b->texture) {
-		return false;
+	if (ca.type == RasterizerCanvas::Item::Command::TYPE_RECT) {
+		const RasterizerCanvas::Item::CommandRect *rect_a = static_cast<const RasterizerCanvas::Item::CommandRect *>(&ca);
+		const RasterizerCanvas::Item::CommandRect *rect_b = static_cast<const RasterizerCanvas::Item::CommandRect *>(&cb);
+	
+		if (rect_a->texture != rect_b->texture) {
+			return false;
+		}
+	} else if (ca.type == RasterizerCanvas::Item::Command::TYPE_MULTIRECT) {
+		const RasterizerCanvas::Item::CommandMultiRect *rect_a = static_cast<const RasterizerCanvas::Item::CommandMultiRect *>(&ca);
+		const RasterizerCanvas::Item::CommandMultiRect *rect_b = static_cast<const RasterizerCanvas::Item::CommandMultiRect *>(&cb);
+	
+		if (rect_a->texture != rect_b->texture) {
+			return false;
+		}
+	} else if (ca.type == RasterizerCanvas::Item::Command::TYPE_RECT_ANIMATION) {
+		const RasterizerCanvas::Item::CommandRectAnimation *rect_a = static_cast<const RasterizerCanvas::Item::CommandRectAnimation *>(&ca);
+		const RasterizerCanvas::Item::CommandRectAnimation *rect_b = static_cast<const RasterizerCanvas::Item::CommandRectAnimation *>(&cb);
+	
+		if (rect_a->get_command_rect()->texture != rect_b->get_command_rect()->texture) {
+			return false;
+		}
 	}
 
 	/* ALTERNATIVE APPROACH NOT LIMITED TO RECTS
