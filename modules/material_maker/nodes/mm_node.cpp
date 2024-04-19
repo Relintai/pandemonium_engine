@@ -195,7 +195,8 @@ void MMNode::register_input_property(const Ref<MMNodeUniversalProperty> &p_prop)
 	if (!prop->is_connected("changed", this, "on_input_property_changed")) {
 		prop->connect("changed", this, "on_input_property_changed");
 	}
-
+	
+	input_properties.erase(prop);
 	input_properties.push_back(prop);
 }
 
@@ -217,6 +218,8 @@ void MMNode::register_output_property(const Ref<MMNodeUniversalProperty> &p_prop
 	Ref<MMNodeUniversalProperty> prop = p_prop;
 
 	prop->set_owner(this);
+	
+	output_properties.erase(prop);
 	output_properties.push_back(prop);
 }
 
@@ -266,11 +269,11 @@ void MMNode::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_input_properties"), &MMNode::get_input_properties);
 	ClassDB::bind_method(D_METHOD("set_input_properties", "value"), &MMNode::set_input_properties);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "input_properties", PROPERTY_HINT_NONE, "23/20:MMNodeUniversalProperty", PROPERTY_USAGE_DEFAULT, "MMNodeUniversalProperty"), "set_input_properties", "get_input_properties");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "input_properties", PROPERTY_HINT_NONE, "23/20:MMNodeUniversalProperty", PROPERTY_USAGE_EDITOR, "MMNodeUniversalProperty"), "set_input_properties", "get_input_properties");
 
 	ClassDB::bind_method(D_METHOD("get_output_properties"), &MMNode::get_output_properties);
 	ClassDB::bind_method(D_METHOD("set_output_properties", "value"), &MMNode::set_output_properties);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "output_properties", PROPERTY_HINT_NONE, "23/20:MMNodeUniversalProperty", PROPERTY_USAGE_DEFAULT, "MMNodeUniversalProperty"), "set_output_properties", "get_output_properties");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "output_properties", PROPERTY_HINT_NONE, "23/20:MMNodeUniversalProperty", PROPERTY_USAGE_EDITOR, "MMNodeUniversalProperty"), "set_output_properties", "get_output_properties");
 
 	ClassDB::bind_method(D_METHOD("get_properties_initialized"), &MMNode::get_properties_initialized);
 	ClassDB::bind_method(D_METHOD("set_properties_initialized", "value"), &MMNode::set_properties_initialized);
