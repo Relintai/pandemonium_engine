@@ -51,14 +51,14 @@ String MMImage::get_image_path() {
 
 void MMImage::set_image_path(const String &val) {
 	image_path = val;
-	Ref<MMImage> img;
-	img.instance();
-
+	Ref<Image> img;
+	
 	if (image_path != "") {
+		img.instance();
 		ImageLoader::load_image(image_path, img);
 	}
 
-	image->set_value(img);
+	image->set_default_value(img);
 	set_dirty(true);
 }
 
