@@ -221,9 +221,11 @@ def generateBuildTasks(String flavor = "template") {
                 tasks += "copy${capitalizedTarget}BinaryToBin"
             } else {
                 // Copy the generated editor apk to the bin directory.
-                tasks += "copyEditor${capitalizedTarget}ApkToBin"
+                //tasks += "copyEditor${capitalizedTarget}ApkToBin"
                 // Copy the generated editor aab to the bin directory.
-                tasks += "copyEditor${capitalizedTarget}AabToBin"
+                //tasks += "copyEditor${capitalizedTarget}AabToBin"
+
+                tasks += "copyEditor${capitalizedTarget}BinaryToBin"
             }
 
         } else {
