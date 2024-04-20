@@ -22,9 +22,9 @@ $podman_build -t pandemonium-windows:${img_version} -f Dockerfile.windows . 2>&1
 $podman_build -t pandemonium-javascript:${img_version} -f Dockerfile.javascript . 2>&1 | tee logs/javascript.log
 $podman_build -t pandemonium-android:${img_version} -f Dockerfile.android . 2>&1 | tee logs/android.log
 
-XCODE_SDK=13.3.1
-OSX_SDK=12.3
-IOS_SDK=15.4
+XCODE_SDK=15.2
+OSX_SDK=14.2
+IOS_SDK=17.2
 if [ ! -e files/MacOSX${OSX_SDK}.sdk.tar.xz ] || [ ! -e files/iPhoneOS${IOS_SDK}.sdk.tar.xz ] || [ ! -e files/iPhoneSimulator${IOS_SDK}.sdk.tar.xz ]; then
   if [ ! -e files/Xcode_${XCODE_SDK}.xip ]; then
     echo "files/Xcode_${XCODE_SDK}.xip is required. It can be downloaded from https://developer.apple.com/download/more/ with a valid apple ID."

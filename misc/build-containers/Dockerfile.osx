@@ -1,17 +1,23 @@
 ARG img_version
 FROM pandemonium-fedora:${img_version}
 
-# Todo: This osxcross link is temporary, until a github url change is fixed in osxcross master.
+ENV OSX_SDK=14.2
 
 RUN dnf -y install --setopt=install_weak_deps=False \
-      automake autoconf bzip2-devel cmake gcc gcc-c++ libicu-devel libtool libxml2-devel openssl-devel yasm && \
-    git clone --progress https://github.com/Relintai/osxcross.git && \
+      automake autoconf bzip2-devel cmake gcc gcc-c++ libdispatch libicu-devel libtool \
+      libxml2-devel openssl-devel uuid-devel yasm && \
+    git clone --progress https://github.com/tpoechtrager/osxcross && \
     cd /root/osxcross && \
-    git checkout 7be19917bba24a9129838d7f0cca49944cd48388 && \
-    ln -s /root/files/MacOSX12.3.sdk.tar.xz /root/osxcross/tarballs && \
+    git checkout ff8d100f3f026b4ffbe4ce96d8aac4ce06f1278b && \
+    curl -LO https://github.com/tpoechtrager/osxcross/pull/415.patch && \
+    git apply 415.patch && \
+    ln -s /root/files/MacOSX${OSX_SDK}.sdk.tar.xz /root/osxcross/tarballs && \
     export UNATTENDED=1 && \
-    # Custom build to ensure we have Clang version matching Xcode SDK.
-    CLANG_VERSION=13.0.1 ENABLE_CLANG_INSTALL=1 INSTALLPREFIX=/usr ./build_clang.sh && \
+    export SDK_VERSION=${OSX_SDK} && \
+    # Custom build Apple Clang to ensure compatibility.
+    # Find the equivalent LLVM version for the SDK from:
+    # https://en.wikipedia.org/wiki/Xcode#Toolchain_versions
+    CLANG_VERSION=16.0.0 ENABLE_CLANG_INSTALL=1 INSTALLPREFIX=/usr ./build_apple_clang.sh && \
     ./build.sh && \
     ./build_compiler_rt.sh && \
     rm -rf /root/osxcross/build

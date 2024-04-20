@@ -1,11 +1,9 @@
 ARG img_version
 FROM pandemonium-fedora:${img_version}
 
-ENV EMSCRIPTEN_VERSION=3.1.14
+ENV EMSCRIPTEN_VERSION=3.1.53
 
-RUN dnf -y install --setopt=install_weak_deps=False \
-      java-openjdk && \
-    git clone --branch ${EMSCRIPTEN_VERSION} --progress https://github.com/emscripten-core/emsdk emsdk && \
+RUN git clone --branch ${EMSCRIPTEN_VERSION} --progress https://github.com/emscripten-core/emsdk && \
     emsdk/emsdk install ${EMSCRIPTEN_VERSION} && \
     emsdk/emsdk activate ${EMSCRIPTEN_VERSION}
 
