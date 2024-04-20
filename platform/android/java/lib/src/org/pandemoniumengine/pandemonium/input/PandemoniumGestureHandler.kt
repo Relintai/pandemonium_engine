@@ -212,7 +212,7 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 	}
 
 	override fun onScroll(
-		originEvent: MotionEvent,
+		originEvent: MotionEvent?,
 		terminusEvent: MotionEvent,
 		distanceX: Float,
 		distanceY: Float
@@ -220,13 +220,15 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 		if (scaleInProgress) {
 			if (dragInProgress) {
 				// Cancel the drag
-				PandemoniumInputHandler.handleMotionEvent(
-					originEvent.source,
-					MotionEvent.ACTION_CANCEL,
-					originEvent.buttonState,
-					originEvent.x,
-					originEvent.y
-				)
+				if (originEvent != null) {
+					PandemoniumInputHandler.handleMotionEvent(
+						originEvent.source,
+						MotionEvent.ACTION_CANCEL,
+						originEvent.buttonState,
+						originEvent.x,
+						originEvent.y
+					)
+				}
 				dragInProgress = false
 			}
 		}
