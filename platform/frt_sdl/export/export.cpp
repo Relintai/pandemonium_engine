@@ -33,7 +33,7 @@
 
 #include "core/os/file_access.h"
 #include "editor/editor_export.h"
-#include "platform/frt/logo.gen.h"
+#include "platform/frt_sdl/logo.gen.h"
 #include "scene/resources/texture.h"
 
 
@@ -385,7 +385,7 @@ void register_frt_sdl_exporter() {
 	Ref<EditorExportPlatformFRTSDL> platform;
 	platform.instance();
 
-	Ref<Image> img = memnew(Image(_frt_logo));
+	Ref<Image> img = memnew(Image(_frt_sdl_logo));
 	Ref<ImageTexture> logo;
 	logo.instance();
 	logo->create_from_image(img);
