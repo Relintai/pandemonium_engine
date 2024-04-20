@@ -1402,14 +1402,6 @@ void LayeredTileMap::_bind_methods() {
 }
 
 LayeredTileMap::LayeredTileMap() {
-	LayeredTileMapLayer *new_layer = memnew(LayeredTileMapLayer);
-	add_child(new_layer);
-	move_child(new_layer, 0);
-	new_layer->set_as_tile_map_internal_node(0);
-	new_layer->set_name("Layer0");
-	new_layer->set_tile_set(tile_set);
-	new_layer->connect(CoreStringNames::get_singleton()->changed, this, "_emit_changed");
-	layers.push_back(new_layer);
 	default_layer = memnew(LayeredTileMapLayer);
 
 	//VertexLights2D
