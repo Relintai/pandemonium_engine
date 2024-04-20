@@ -21,6 +21,8 @@ android {
         manifestPlaceholders = [pandemoniumLibraryVersion: getPandemoniumLibraryVersionName()]
     }
 
+    namespace = "org.pandemoniumengine.pandemonium"
+
     compileOptions {
         sourceCompatibility versions.javaVersion
         targetCompatibility versions.javaVersion
