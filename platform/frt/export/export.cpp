@@ -76,7 +76,6 @@ public:
 	virtual Error prepare_template(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags);
 	virtual Error modify_template(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags) { return OK; }
 	virtual Error export_project_data(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags);
-	virtual Error fixup_embedded_pck(const String &p_path, int64_t p_embedded_start, int64_t p_embedded_size);
 
 	void set_extension(const String &p_extension, const String &p_feature_key = "default");
 	void set_name(const String &p_name);
@@ -138,8 +137,6 @@ void EditorExportPlatformFRT::get_export_options(List<ExportOption> *r_options) 
 	// so instead we hack the few needed changes here with `get_os_name()` checks.
 
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "binary_format/architecture", PROPERTY_HINT_ENUM, "arm32v6,arm32v7,arm64v8"), "arm32v6"));
-
-	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "binary_format/embed_pck"), false));
 
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/bptc"), false));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/s3tc"), true));
@@ -268,33 +265,14 @@ Error EditorExportPlatformFRT::prepare_template(const Ref<EditorExportPreset> &p
 
 Error EditorExportPlatformFRT::export_project_data(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags) {
 	String pck_path;
-	if (p_preset->get("binary_format/embed_pck")) {
-		pck_path = p_path;
-	} else {
-		pck_path = p_path.get_basename() + ".pck";
-	}
+
+	pck_path = p_path.get_basename() + ".pck";
 
 	Vector<SharedObject> so_files;
 
 	int64_t embedded_pos;
 	int64_t embedded_size;
-	Error err = save_pack(p_preset, pck_path, &so_files, p_preset->get("binary_format/embed_pck"), &embedded_pos, &embedded_size);
-	if (err == OK && p_preset->get("binary_format/embed_pck")) {
-		if (embedded_size >= 0x100000000) {
-			bool use64;
-			const String &arch = get_preset_arch(p_preset);
-			use64 = (arch == "arm64v8");
-
-			if (!use64) {
-				add_message(EXPORT_MESSAGE_ERROR, TTR("PCK Embedding"), TTR("On 32-bit exports the embedded PCK cannot be bigger than 4 GiB."));
-				return ERR_INVALID_PARAMETER;
-			}
-		}
-
-		
-
-		err = fixup_embedded_pck(p_path, embedded_pos, embedded_size);
-	}
+	Error err = save_pack(p_preset, pck_path, &so_files, false, &embedded_pos, &embedded_size);
 
 	if (err == OK && !so_files.empty()) {
 		// If shared object files, copy them.
@@ -401,118 +379,6 @@ void EditorExportPlatformFRT::set_chmod_flags(int p_flags) {
 
 EditorExportPlatformFRT::EditorExportPlatformFRT() {
 	chmod_flags = -1;
-}
-
-Error EditorExportPlatformFRT::fixup_embedded_pck(const String &p_path, int64_t p_embedded_start, int64_t p_embedded_size) {
-	// Patch the header of the "pck" section in the ELF file so that it corresponds to the embedded data
-
-	FileAccess *f = FileAccess::open(p_path, FileAccess::READ_WRITE);
-	if (!f) {
-		add_message(EXPORT_MESSAGE_ERROR, TTR("PCK Embedding"), vformat(TTR("Failed to open executable file \"%s\"."), p_path));
-		return ERR_CANT_OPEN;
-	}
-
-	// Read and check ELF magic number
-	{
-		uint32_t magic = f->get_32();
-		if (magic != 0x464c457f) { // 0x7F + "ELF"
-			f->close();
-			add_message(EXPORT_MESSAGE_ERROR, TTR("PCK Embedding"), TTR("Executable file header corrupted."));
-			return ERR_FILE_CORRUPT;
-		}
-	}
-
-	// Read program architecture bits from class field
-
-	int bits = f->get_8() * 32;
-
-	if (bits == 32 && p_embedded_size >= 0x100000000) {
-		f->close();
-		add_message(EXPORT_MESSAGE_ERROR, TTR("PCK Embedding"), TTR("32-bit executables cannot have embedded data >= 4 GiB."));
-		return ERR_INVALID_DATA;
-	}
-
-	// Get info about the section header table
-
-	int64_t section_table_pos;
-	int64_t section_header_size;
-	if (bits == 32) {
-		section_header_size = 40;
-		f->seek(0x20);
-		section_table_pos = f->get_32();
-		f->seek(0x30);
-	} else { // 64
-		section_header_size = 64;
-		f->seek(0x28);
-		section_table_pos = f->get_64();
-		f->seek(0x3c);
-	}
-	int num_sections = f->get_16();
-	int string_section_idx = f->get_16();
-
-	// Load the strings table
-	uint8_t *strings;
-	{
-		// Jump to the strings section header
-		f->seek(section_table_pos + string_section_idx * section_header_size);
-
-		// Read strings data size and offset
-		int64_t string_data_pos;
-		int64_t string_data_size;
-		if (bits == 32) {
-			f->seek(f->get_position() + 0x10);
-			string_data_pos = f->get_32();
-			string_data_size = f->get_32();
-		} else { // 64
-			f->seek(f->get_position() + 0x18);
-			string_data_pos = f->get_64();
-			string_data_size = f->get_64();
-		}
-
-		// Read strings data
-		f->seek(string_data_pos);
-		strings = (uint8_t *)memalloc(string_data_size);
-		if (!strings) {
-			f->close();
-			return ERR_OUT_OF_MEMORY;
-		}
-		f->get_buffer(strings, string_data_size);
-	}
-
-	// Search for the "pck" section
-
-	bool found = false;
-	for (int i = 0; i < num_sections; ++i) {
-		int64_t section_header_pos = section_table_pos + i * section_header_size;
-		f->seek(section_header_pos);
-
-		uint32_t name_offset = f->get_32();
-		if (strcmp((char *)strings + name_offset, "pck") == 0) {
-			// "pck" section found, let's patch!
-
-			if (bits == 32) {
-				f->seek(section_header_pos + 0x10);
-				f->store_32(p_embedded_start);
-				f->store_32(p_embedded_size);
-			} else { // 64
-				f->seek(section_header_pos + 0x18);
-				f->store_64(p_embedded_start);
-				f->store_64(p_embedded_size);
-			}
-
-			found = true;
-			break;
-		}
-	}
-
-	memfree(strings);
-	f->close();
-
-	if (!found) {
-		add_message(EXPORT_MESSAGE_ERROR, TTR("PCK Embedding"), TTR("Executable \"pck\" section not found."));
-		return ERR_FILE_CORRUPT;
-	}
-	return OK;
 }
 
 void register_frt_exporter() {
