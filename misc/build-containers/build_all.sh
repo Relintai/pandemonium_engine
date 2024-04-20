@@ -17,13 +17,11 @@ if [[ -z "${OFFICIAL}" ]]; then
 fi
 
 # Windows Build
-docker run ${custom_envvars} \
-	-v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
-	-v ${project_root}:/root/project \
-	-w /root/project pandemonium-windows:${img_version} \
-	bash /root/engine_build_scripts/windows.sh "$@" 2>&1 | tee logs/windows.log
-
-exit 1
+#docker run ${custom_envvars} \
+#	-v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+#	-v ${project_root}:/root/project \
+#	-w /root/project pandemonium-windows:${img_version} \
+#	bash /root/engine_build_scripts/windows.sh "$@" 2>&1 | tee logs/windows.log
 
 # Linux Build
 docker run ${custom_envvars} \
@@ -31,6 +29,8 @@ docker run ${custom_envvars} \
         -v ${project_root}:/root/project \
         -w /root/project pandemonium-linux:${img_version} \
         bash /root/engine_build_scripts/linux.sh "$@" 2>&1 | tee logs/linux.log
+
+exit 1
 
 # Javascript editor
 docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk/emsdk_env.sh;scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript "$@"' . 2>&1 | tee logs/javascript_ed.log
@@ -103,17 +103,20 @@ files=(
   "pandemonium.windows.opt.tools.32.exe"
 
   # Linux
-  "pandemonium.x11.opt.64"
-  "pandemonium.x11.opt.debug.64"
-  "pandemonium.x11.opt.pi4"
-
   "pandemonium.x11.opt.32"
-  "pandemonium.x11.opt.debug.32"
-  "pandemonium.x11.opt.pi4"
+  "pandemonium.x11.opt.64"
+  "pandemonium.x11.opt.arm"
+  "pandemonium.x11.opt.arm64"
 
-  "pandemonium.x11.opt.tools.64"
+  "pandemonium.x11.opt.debug.32"
+  "pandemonium.x11.opt.debug.64"
+  "pandemonium.x11.opt.debug.arm"
+  "pandemonium.x11.opt.debug.arm64"
+
   "pandemonium.x11.opt.tools.32"
-  "pandemonium.x11.opt.tools.pi4"
+  "pandemonium.x11.opt.tools.64"
+  "pandemonium.x11.opt.tools.arm"
+  "pandemonium.x11.opt.tools.arm64"
 
   # Server (Linux) - template
   "pandemonium_server.x11.opt.64"
