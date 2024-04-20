@@ -3,6 +3,8 @@ FROM pandemonium-fedora:${img_version}
 
 ENV OSX_SDK=14.2
 
+COPY files/* /root/files/
+
 RUN dnf -y install --setopt=install_weak_deps=False \
       automake autoconf bzip2-devel cmake gcc gcc-c++ libdispatch libicu-devel libtool \
       libxml2-devel openssl-devel uuid-devel yasm && \
@@ -20,7 +22,7 @@ RUN dnf -y install --setopt=install_weak_deps=False \
     CLANG_VERSION=16.0.0 ENABLE_CLANG_INSTALL=1 INSTALLPREFIX=/usr ./build_apple_clang.sh && \
     ./build.sh && \
     ./build_compiler_rt.sh && \
-    rm -rf /root/osxcross/build
+    rm -rf /root/osxcross/build && rm -rf /root/files
 
 ENV OSXCROSS_ROOT=/root/osxcross
 ENV PATH="/root/osxcross/target/bin:${PATH}"

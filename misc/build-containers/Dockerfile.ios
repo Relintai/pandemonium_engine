@@ -1,6 +1,8 @@
 ARG img_version
 FROM pandemonium-osx:${img_version}
 
+COPY files/* /root/files/
+
 ENV IOS_SDK=17.2
 
 RUN dnf -y install --setopt=install_weak_deps=False \
@@ -30,7 +32,7 @@ RUN dnf -y install --setopt=install_weak_deps=False \
     mkdir /root/ioscross/x86_64_sim/usr && \
     ln -s /root/ioscross/x86_64_sim/bin /root/ioscross/x86_64_sim/usr/bin && \
     cd /root && \
-    rm -rf /root/cctools-port
+    rm -rf /root/cctools-port && rm -rf /root/files
 
 ENV OSXCROSS_IOS=not_nothing
 ENV IOSCROSS_ROOT=/root/ioscross
