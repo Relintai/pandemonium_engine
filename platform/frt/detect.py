@@ -86,6 +86,7 @@ def configure(env):
 	if env['frt_cross'] != 'no':
 		if env['frt_cross'] == 'auto':
 			triple = {
+				'arm32v6': 'arm-linux-gnueabihf',
 				'arm32v7': 'arm-linux-gnueabihf',
 				'arm64v8': 'aarch64-linux-gnu',
 			}[env['frt_arch']]
