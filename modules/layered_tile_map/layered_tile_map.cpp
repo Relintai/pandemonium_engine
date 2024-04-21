@@ -33,9 +33,9 @@
 
 #include "core/config/engine.h"
 #include "core/core_string_names.h"
+#include "core/io/marshalls.h"
 #include "layered_tile_map_layer.h"
 #include "scene/main/control.h"
-#include "core/io/marshalls.h"
 
 #define TILEMAP_CALL_FOR_LAYER(layer, function, ...) \
 	if (layer < 0) {                                 \
@@ -383,7 +383,7 @@ void LayeredTileMap::add_layer(int p_to_pos) {
 	move_child(new_layer, 0);
 	new_layer->set_name(vformat("Layer%d", p_to_pos));
 	new_layer->set_tile_set(tile_set);
-	
+
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
 	new_layer->set_use_vertex_lights(get_use_vertex_lights());
 #endif
@@ -393,7 +393,7 @@ void LayeredTileMap::add_layer(int p_to_pos) {
 	new_layer->rao_set_strength(rao_get_strength());
 	new_layer->rao_set_noise_params(rao_get_noise_params());
 #endif
-	
+
 	move_child(new_layer, p_to_pos);
 	for (uint32_t i = 0; i < layers.size(); i++) {
 		layers[i]->set_as_tile_map_internal_node(i);
@@ -436,7 +436,7 @@ void LayeredTileMap::remove_layer(int p_layer) {
 	layers.remove(p_layer);
 	remove_child(removed);
 	removed->queue_delete();
-	
+
 	for (uint32_t i = 0; i < layers.size(); i++) {
 		layers[i]->set_as_tile_map_internal_node(i);
 	}
@@ -1284,7 +1284,7 @@ void LayeredTileMap::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("move_layer", "layer", "to_position"), &LayeredTileMap::move_layer);
 	ClassDB::bind_method(D_METHOD("remove_layer", "layer"), &LayeredTileMap::remove_layer);
 	ClassDB::bind_method(D_METHOD("get_layer", "layer"), &LayeredTileMap::get_layer);
-	
+
 	ClassDB::bind_method(D_METHOD("set_layer_name", "layer", "name"), &LayeredTileMap::set_layer_name);
 	ClassDB::bind_method(D_METHOD("get_layer_name", "layer"), &LayeredTileMap::get_layer_name);
 	ClassDB::bind_method(D_METHOD("set_layer_enabled", "layer", "enabled"), &LayeredTileMap::set_layer_enabled);
@@ -1359,7 +1359,7 @@ void LayeredTileMap::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_emit_changed"), &LayeredTileMap::_emit_changed);
 	ClassDB::bind_method(D_METHOD("_tile_set_changed"), &LayeredTileMap::_tile_set_changed);
-	
+
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tile_set", PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileSet"), "set_tileset", "get_tileset");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rendering_quadrant_size", PROPERTY_HINT_RANGE, "1,128,1"), "set_rendering_quadrant_size", "get_rendering_quadrant_size");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "collision_animatable"), "set_collision_animatable", "is_collision_animatable");

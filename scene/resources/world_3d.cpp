@@ -364,8 +364,6 @@ void World3D::notify_saving(bool p_active) {
 }
 
 void World3D::_bind_methods() {
-
-
 	ClassDB::bind_method(D_METHOD("get_space"), &World3D::get_space);
 	ClassDB::bind_method(D_METHOD("get_scenario"), &World3D::get_scenario);
 	ClassDB::bind_method(D_METHOD("get_navigation_map"), &World3D::get_navigation_map);

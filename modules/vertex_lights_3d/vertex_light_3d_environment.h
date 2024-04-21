@@ -2,7 +2,7 @@
 #define VERTEX_LIGHT_3D_ENVIRONMENT_H
 
 /*************************************************************************/
-/*  vertex_3d.h                                                    */
+/*  vertex_light_3d_environment.h                                        */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */

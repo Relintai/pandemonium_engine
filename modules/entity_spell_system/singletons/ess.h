@@ -114,7 +114,7 @@ public:
 
 	int stat_get_main_stat_count() const;
 	void stat_set_main_stat_count(const int index);
-	
+
 	// Entity Resources
 	real_t entity_resource_get_base_world_speed() const;
 	void entity_resource_set_base_world_speed(const real_t value);
@@ -258,7 +258,7 @@ private:
 
 	String _stat_enum_string;
 	int _stat_main_stat_count;
-	
+
 	// Entity Resources
 	real_t _entity_resource_base_world_speed;
 

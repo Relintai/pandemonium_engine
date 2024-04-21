@@ -44,7 +44,7 @@ Color VertexLights2DServer::VertexLightQuadrant2D::sample_light(const Color &p_c
 
 	for (uint32_t i = 0; i < lights.size(); ++i) {
 		VertexLightData2D *l = lights[i];
-		
+
 		if (!l->enabled) {
 			continue;
 		}
@@ -60,13 +60,13 @@ Color VertexLights2DServer::VertexLightQuadrant2D::sample_light(const Color &p_c
 		if (p_layer < l->layer_range.x || p_layer > l->layer_range.y) {
 			continue;
 		}
-		
+
 		if (p_z_index < l->z_range.x || p_z_index > l->z_range.y) {
 			continue;
 		}
-		
+
 		Vector2 light_to_pos = p_position - l->position;
-		
+
 		Vector2 light_to_pos_normal_space = light_to_pos;
 		light_to_pos_normal_space.x /= static_cast<real_t>(l->range.x);
 		light_to_pos_normal_space.y /= static_cast<real_t>(l->range.y);
@@ -77,7 +77,7 @@ Color VertexLights2DServer::VertexLightQuadrant2D::sample_light(const Color &p_c
 		if (ltpnsl >= 1) {
 			continue;
 		}
-		
+
 		real_t attenuation = pow(1.0 - ltpnsl, l->attenuation);
 
 		Color ac = l->color * attenuation;
@@ -93,10 +93,10 @@ Color VertexLights2DServer::VertexLightQuadrant2D::sample_light(const Color &p_c
 				c = c.blend(ac);
 			} break;
 		}
-		
+
 		c = c.clamp();
 	}
-	
+
 	return c;
 }
 
@@ -191,14 +191,14 @@ Color VertexLights2DServer::VertexLightMap2D::sample_light(const Vector2 &p_posi
 	Color c = base_color;
 
 	Vector2i quadrant_position = to_quadrant_position(p_position);
-	
+
 	for (int x = quadrant_position.x - 1; x <= quadrant_position.x + 1; ++x) {
 		for (int y = quadrant_position.y - 1; y <= quadrant_position.y + 1; ++y) {
 			Vector2i qp = Vector2i(x, y);
 
 			if (quadrants.has(qp)) {
 				VertexLightQuadrant2D *q = quadrants[qp];
-				
+
 				c = q->sample_light(c, p_position, p_item_cull_mask, p_layer, p_z_index);
 			}
 		}

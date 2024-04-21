@@ -52,7 +52,7 @@ String MMImage::get_image_path() {
 void MMImage::set_image_path(const String &val) {
 	image_path = val;
 	Ref<Image> img;
-	
+
 	if (image_path != "") {
 		img.instance();
 		ImageLoader::load_image(image_path, img);

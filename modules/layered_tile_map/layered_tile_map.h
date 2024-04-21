@@ -104,7 +104,7 @@ private:
 	void _tile_set_changed();
 
 	void _emit_changed();
-	
+
 	// Kept for compatibility with TileMap. With TileMapLayers as individual nodes, the format is stored directly in the array.
 	void _set_tile_map_data_using_compatibility_format(int p_layer, LayeredTileMapDataFormat p_format, const Vector<int> &p_data);
 	Vector<int> _get_tile_map_data_using_compatibility_format(int p_layer) const;
@@ -205,7 +205,7 @@ public:
 #ifdef MODULE_FASTNOISE_ENABLED
 	void rao_set_use(bool p_rao);
 	bool rao_get_use() const;
-	
+
 	void rao_set_strength(const real_t p_strength);
 	real_t rao_get_strength() const;
 

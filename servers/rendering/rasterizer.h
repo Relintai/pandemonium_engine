@@ -874,7 +874,7 @@ public:
 
 			void update(real_t p_delta) {
 				time_elapsed += p_delta;
-				
+
 				while (time_elapsed >= total_time) {
 					time_elapsed -= total_time;
 				}
@@ -896,12 +896,12 @@ public:
 				total_time = 0;
 				type = TYPE_RECT_ANIMATION;
 			}
-			
+
 			virtual ~CommandRectAnimation() {
 				for (int i = 0; i < rects.size(); ++i) {
 					memdelete(rects[i]);
 				}
-				
+
 				rects.clear();
 				times.clear();
 			}

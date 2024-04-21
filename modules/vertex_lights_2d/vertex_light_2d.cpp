@@ -133,7 +133,7 @@ void VertexLight2D::_notification(int p_what) {
 			ERR_FAIL_COND(!world.is_valid());
 			RID map = world->get_vertex_lights_2d_map();
 			VertexLights2DServer::get_singleton()->light_set_map(_vertex_light, map);
-			
+
 			VertexLights2DServer::get_singleton()->light_set_position(_vertex_light, get_global_transform().get_origin());
 
 			_update_light_visibility();

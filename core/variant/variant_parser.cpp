@@ -1951,7 +1951,7 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			int len = data.size();
 			PoolVector<uint8_t>::Read r = data.read();
 			const uint8_t *ptr = r.ptr();
-			
+
 			if (data.size() > 0) {
 				p_store_string_func(p_store_string_ud, "\"");
 				p_store_string_func(p_store_string_ud, CryptoCore::b64_encode_str(ptr, len));

@@ -1218,7 +1218,7 @@ void SkeletonEditor::copy_pose() {
 	if (!skeleton) {
 		return;
 	}
-	
+
 	_pose_clipboard.clear();
 
 	for (int i = 0; i < skeleton->get_bone_count(); ++i) {
@@ -1230,9 +1230,9 @@ void SkeletonEditor::paste_pose() {
 	if (!skeleton) {
 		return;
 	}
-	
+
 	ERR_FAIL_COND(skeleton->get_bone_count() != _pose_clipboard.size());
-	
+
 	for (int i = 0; i < skeleton->get_bone_count(); ++i) {
 		skeleton->set_bone_pose(i, _pose_clipboard[i]);
 	}

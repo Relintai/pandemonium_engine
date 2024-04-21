@@ -1761,7 +1761,7 @@ void LayeredTileMapLayer::_internal_update(bool p_force_cleanup) {
 
 	// Clear the dirty cells list.
 	dirty.cell_list.clear();
-	
+
 	pending_update = false;
 }
 
@@ -1883,7 +1883,6 @@ void LayeredTileMapLayer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_navigation_visibility_mode", "show_navigation"), &LayeredTileMapLayer::set_navigation_visibility_mode);
 	ClassDB::bind_method(D_METHOD("get_navigation_visibility_mode"), &LayeredTileMapLayer::get_navigation_visibility_mode);
 
-
 	BIND_VMETHOD(MethodInfo(Variant::BOOL, "_use_tile_data_runtime_update",
 			PropertyInfo(Variant::VECTOR2I, "coords")));
 
@@ -1897,12 +1896,12 @@ void LayeredTileMapLayer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_deferred_internal_update"), &LayeredTileMapLayer::_deferred_internal_update);
 	ClassDB::bind_method(D_METHOD("_renamed"), &LayeredTileMapLayer::_renamed);
 	ClassDB::bind_method(D_METHOD("_tile_set_changed"), &LayeredTileMapLayer::_tile_set_changed);
-	
+
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_BYTE_ARRAY, "tile_map_data", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR), "set_tile_map_data_from_array", "get_tile_map_data_as_array");
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "is_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tile_set", PROPERTY_HINT_RESOURCE_TYPE, "LayeredTileSet"), "set_tile_set", "get_tile_set");
-	
+
 	//VertexLights2D
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
 	ClassDB::bind_method(D_METHOD("set_use_vertex_lights", "value"), &LayeredTileMapLayer::set_use_vertex_lights);
@@ -1926,7 +1925,7 @@ void LayeredTileMapLayer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("rao_get_noise_params"), &LayeredTileMapLayer::rao_get_noise_params);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "rao_noise_params", PROPERTY_HINT_RESOURCE_TYPE, "FastnoiseNoiseParams"), "rao_set_noise_params", "rao_get_noise_params");
 #endif
-	
+
 	ADD_GROUP("Rendering", "");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "y_sort_origin"), "set_y_sort_origin", "get_y_sort_origin");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rendering_quadrant_size"), "set_rendering_quadrant_size", "get_rendering_quadrant_size");
@@ -1939,12 +1938,12 @@ void LayeredTileMapLayer::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_visibility_mode", PROPERTY_HINT_ENUM, "Default,Force Show,Force Hide"), "set_navigation_visibility_mode", "get_navigation_visibility_mode");
 
 	ADD_SIGNAL(MethodInfo(CoreStringNames::get_singleton()->changed));
-	
+
 //VertexLights2D
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
 	ClassDB::bind_method(D_METHOD("_on_vertex_lights_map_changed"), &LayeredTileMapLayer::_on_vertex_lights_map_changed);
 #endif
-	
+
 	ADD_PROPERTY_DEFAULT("tile_map_data_format", LayeredTileMapLayerDataFormat::LAYERED_TILE_MAP_LAYER_DATA_FORMAT_0);
 
 	BIND_ENUM_CONSTANT(DEBUG_VISIBILITY_MODE_DEFAULT);
@@ -2307,7 +2306,7 @@ HashMap<Vector2i, LayeredTileSet::TerrainsPattern> LayeredTileMapLayer::terrain_
 }
 
 LayeredTileMapCell LayeredTileMapLayer::get_cell(const Vector2i &p_coords) const {
-	const HashMap<Vector2i, CellData>::Element* E = tile_map_layer_data.find(p_coords);
+	const HashMap<Vector2i, CellData>::Element *E = tile_map_layer_data.find(p_coords);
 
 	if (!E) {
 		return LayeredTileMapCell();
@@ -2497,7 +2496,6 @@ Rect2i LayeredTileMapLayer::get_used_rect() const {
 
 	return used_rect_cache;
 }
-
 
 Ref<LayeredTileMapPattern> LayeredTileMapLayer::get_pattern(PoolVector2iArray p_coords_array) {
 	ERR_FAIL_COND_V(!tile_set.is_valid(), nullptr);

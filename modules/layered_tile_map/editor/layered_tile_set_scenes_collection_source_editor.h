@@ -135,7 +135,7 @@ private:
 
 	void drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from);
 	bool can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const;
-	
+
 	void _tile_proxy_object_changed(const String &p_what);
 	void _scene_tiles_list_item_selected(int p_index);
 

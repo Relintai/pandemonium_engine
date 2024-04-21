@@ -262,7 +262,7 @@ void ESS::stat_set_main_stat_count(const int index) {
 }
 
 // Entity Resources
-real_t ESS::entity_resource_get_base_world_speed() const  {
+real_t ESS::entity_resource_get_base_world_speed() const {
 	return _entity_resource_base_world_speed;
 }
 void ESS::entity_resource_set_base_world_speed(const real_t value) {
@@ -763,7 +763,7 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("stat_get_main_stat_count"), &ESS::stat_get_main_stat_count);
 	ClassDB::bind_method(D_METHOD("stat_set_main_stat_count", "index"), &ESS::stat_set_main_stat_count);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "main_stat_count"), "stat_set_main_stat_count", "stat_get_main_stat_count");
-	
+
 	// Entity Resources
 	ClassDB::bind_method(D_METHOD("entity_resource_get_base_world_speed"), &ESS::entity_resource_get_base_world_speed);
 	ClassDB::bind_method(D_METHOD("entity_resource_set_base_world_speed", "index"), &ESS::entity_resource_set_base_world_speed);
@@ -905,7 +905,7 @@ ESS::ESS() {
 
 	stat_set_string(GLOBAL_DEF("ess/enums/stats", "Agility,Strength,Stamina,Intellect,Spirit,Health,Speed,Global Cooldown,Haste"));
 	_stat_main_stat_count = GLOBAL_DEF("ess/enums/main_stat_count", 5);
-	
+
 	_entity_resource_base_world_speed = GLOBAL_DEF("ess/entity_resources/base_world_speed", 100);
 
 	equip_slot_set_string(GLOBAL_DEF("ess/enums/equip_slots", "Head,Neck,Shoulder,Chest,Gloves,Belt,Legs,Feet,Ring_1,Ring_2,Trinket_1,Trinket_2,Main_Hand,Off_Hand"));

@@ -195,7 +195,7 @@ void MMNode::register_input_property(const Ref<MMNodeUniversalProperty> &p_prop)
 	if (!prop->is_connected("changed", this, "on_input_property_changed")) {
 		prop->connect("changed", this, "on_input_property_changed");
 	}
-	
+
 	input_properties.erase(prop);
 	input_properties.push_back(prop);
 }
@@ -218,7 +218,7 @@ void MMNode::register_output_property(const Ref<MMNodeUniversalProperty> &p_prop
 	Ref<MMNodeUniversalProperty> prop = p_prop;
 
 	prop->set_owner(this);
-	
+
 	output_properties.erase(prop);
 	output_properties.push_back(prop);
 }

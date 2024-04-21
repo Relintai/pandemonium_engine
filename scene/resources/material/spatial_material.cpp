@@ -605,7 +605,6 @@ void SpatialMaterial::_update_shader() {
 	}
 	code += "\tALBEDO = albedo.rgb * albedo_tex.rgb;\n";
 
-
 	if (orm) {
 		if (textures[TEXTURE_ORM] != nullptr) {
 			if (flags[FLAG_UV1_USE_TRIPLANAR]) {

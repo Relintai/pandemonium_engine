@@ -41,6 +41,7 @@
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
+#include "editor/multi_node_edit.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
@@ -49,7 +50,6 @@
 #include "scene/main/control.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/texture.h"
-#include "editor/multi_node_edit.h"
 
 LayeredTilesEditorUtils *LayeredTilesEditorUtils::singleton = nullptr;
 LayeredTileMapEditorPlugin *tile_map_plugin_singleton = nullptr;
@@ -376,7 +376,7 @@ void LayeredTileMapEditorPlugin::_select_layer(const StringName &p_name) {
 	ERR_FAIL_NULL(edited_layer);
 
 	Node *parent = edited_layer->get_parent();
-	
+
 	if (parent) {
 		LayeredTileMapLayer *new_layer = Object::cast_to<LayeredTileMapLayer>(parent->get_node_or_null(String(p_name)));
 		edit(new_layer);
@@ -387,7 +387,7 @@ void LayeredTileMapEditorPlugin::_edit_tile_map_layer(LayeredTileMapLayer *p_til
 	ERR_FAIL_NULL(p_tile_map_layer);
 
 	editor->edit(p_tile_map_layer);
-	
+
 	editor->set_show_layer_selector(p_show_layer_selector);
 
 	// Update the object IDs.
@@ -445,12 +445,12 @@ void LayeredTileMapEditorPlugin::edit(Object *p_object) {
 
 	LayeredTileMap *tile_map = Object::cast_to<LayeredTileMap>(p_object);
 	LayeredTileMapLayer *tile_map_layer = Object::cast_to<LayeredTileMapLayer>(p_object);
-	
+
 	MultiNodeEdit *multi_node_edit = Object::cast_to<MultiNodeEdit>(p_object);
 	if (tile_map) {
 		_edit_tile_map(tile_map);
 	} else if (tile_map_layer) {
-	_edit_tile_map_layer(tile_map_layer, false);
+		_edit_tile_map_layer(tile_map_layer, false);
 	} else if (multi_node_edit) {
 		editor->edit(multi_node_edit);
 	} else {

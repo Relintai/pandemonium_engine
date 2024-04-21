@@ -364,7 +364,7 @@ void Skeleton::_notification(int p_what) {
 			if (modification_stack.is_valid()) {
 				execute_modifications(get_process_delta_time(), SkeletonModificationStack3D::EXECUTION_MODE::execution_mode_process);
 			}
-			
+
 			if (dirty) {
 				_notification(NOTIFICATION_UPDATE_SKELETON);
 			}

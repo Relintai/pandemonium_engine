@@ -56,13 +56,13 @@ public:
 
 	bool get_is_merger();
 	void set_is_merger(bool value);
-	
+
 	PropMergeGroup();
 	~PropMergeGroup();
 
 protected:
 	static void _bind_methods();
-	
+
 	bool _is_merger;
 	Vector<Ref<Material>> _materials;
 };

@@ -34,8 +34,8 @@
 #include "geometry_parser/layered_tilemap_navigation_geometry_parser_2d.h"
 #include "servers/navigation/navigation_mesh_generator.h"
 
-#include "layered_tile_map_layer.h"
 #include "layered_tile_map.h"
+#include "layered_tile_map_layer.h"
 #include "layered_tile_set.h"
 
 #ifdef TOOLS_ENABLED

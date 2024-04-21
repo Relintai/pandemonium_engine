@@ -2,7 +2,7 @@
 #define VERTEX_LIGHT_2D_SERVER_H
 
 /*************************************************************************/
-/*  vertex_lights_2d.h                                                   */
+/*  vertex_lights_2d_server.h                                            */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -64,7 +64,7 @@ public:
 
 	Vector2i map_get_quadrant_size(RID p_map) const;
 	void map_set_quadrant_size(RID p_map, const Vector2i &p_size);
-	
+
 	Color map_get_base_color(RID p_map) const;
 	void map_set_base_color(RID p_map, const Color &p_base_color);
 
@@ -113,7 +113,7 @@ public:
 	// Rest
 
 	void free(RID p_rid);
-	
+
 	void init();
 	void flush_notifications();
 
@@ -219,7 +219,7 @@ protected:
 			_changed_maps.insert(p_light->map->self);
 		}
 	}
-	
+
 	_FORCE_INLINE_ void _light_enabled_changed(const VertexLightData2D *p_light) const {
 		if (p_light && p_light->map) {
 			_changed_maps.insert(p_light->map->self);

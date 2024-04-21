@@ -1024,7 +1024,7 @@ void LayeredTileSourceInspectorPlugin::_show_id_edit_dialog(Object *p_for_source
 	}
 	edited_source = p_for_source;
 	id_input->set_value(p_for_source->get("id"));
-	
+
 	//id_edit_dialog->popup_centered(Vector2i(400, 0) * EDSCALE);
 	id_edit_dialog->popup_centered();
 

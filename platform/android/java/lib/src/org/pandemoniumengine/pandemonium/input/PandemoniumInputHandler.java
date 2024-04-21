@@ -501,7 +501,7 @@ public class PandemoniumInputHandler implements InputManager.InputDeviceListener
 			verticalFactor = event.getAxisValue(MotionEvent.AXIS_VSCROLL);
 			horizontalFactor = event.getAxisValue(MotionEvent.AXIS_HSCROLL);
 		}
-		
+
 		boolean sourceMouseRelative = false;
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 			sourceMouseRelative = event.isFromSource(InputDevice.SOURCE_MOUSE_RELATIVE);

@@ -57,7 +57,7 @@ public:
 	//e.g. http://127.0.0.1/a/b/d.jpg -> /a/b/d.jpg
 	bool wwwroot_has_file(const String &file_path);
 	String wwwroot_get_file_abspath(const String &file_path);
-	
+
 	String wwwroot_get_simplified_abs_path(const String &file_path);
 
 	bool get_cached_body(const String &path, String *body);

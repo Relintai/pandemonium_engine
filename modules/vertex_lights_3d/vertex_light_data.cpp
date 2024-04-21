@@ -57,7 +57,6 @@ Color VertexLights3DServer::VertexLightQuadrant3D::sample_light_value(const Colo
 			continue;
 		}
 
-
 		Vector3 light_to_pos = p_position - l->position;
 
 		Vector3 light_to_pos_normal_space = light_to_pos;

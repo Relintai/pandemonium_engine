@@ -618,7 +618,7 @@ public:
 		TRANSFORM_FLIP_V = 1 << 13,
 		TRANSFORM_TRANSPOSE = 1 << 14,
 	};
-	
+
 	static const int16_t UNTRANSFORM_MASK = ~(LayeredTileSetAtlasSource::TRANSFORM_FLIP_H + LayeredTileSetAtlasSource::TRANSFORM_FLIP_V + LayeredTileSetAtlasSource::TRANSFORM_TRANSPOSE);
 
 private:

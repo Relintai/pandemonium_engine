@@ -83,7 +83,7 @@ public:
 	RID get_space() const;
 	RID get_scenario() const;
 	RID get_navigation_map() const;
-	
+
 	// TODO Maybe World should have a callback on creation?
 	RID get_vertex_lights_3d_map();
 

@@ -247,10 +247,10 @@ public:
 	void _add_bone_callback();
 	void _remove_bone_callback();
 	void _rename_bone_callback();
-	
+
 	void copy_pose();
 	void paste_pose();
-	
+
 	Vector<Transform> _pose_clipboard;
 
 	void create_bone_tool_popups();

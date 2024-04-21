@@ -455,7 +455,7 @@ Array CharacterSkeleton2D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 
 CharacterSkeleton2D::CharacterSkeleton2D() {
 	set_sort_enabled(false);
-	
+
 	_model_dirty = false;
 	_model_index = 0;
 	_entity_type = 0;

@@ -36,7 +36,6 @@
 #include "platform/frt_sdl/logo.gen.h"
 #include "scene/resources/texture.h"
 
-
 class EditorExportPlatformFRTSDL : public EditorExportPlatform {
 	GDCLASS(EditorExportPlatformFRTSDL, EditorExportPlatform);
 
@@ -102,7 +101,6 @@ public:
 
 	EditorExportPlatformFRTSDL();
 };
-
 
 //////////
 
@@ -338,7 +336,7 @@ String EditorExportPlatformFRTSDL::get_preset_arch(const Ref<EditorExportPreset>
 
 	if (arch != "arm32v6" && arch != "arm32v7" && arch != "arm64v8") {
 		ERR_PRINT(vformat("Invalid value \"%s\" for \"binary_format/architecture\" in export preset \"%s\". Defaulting to \"arm32v6\".",
-				arch, 
+				arch,
 				p_preset->get_name()));
 
 		arch = "arm32v6";

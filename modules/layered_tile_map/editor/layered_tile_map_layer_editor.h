@@ -369,7 +369,7 @@ private:
 
 	// Toolbar.
 	HFlowContainer *tile_map_toolbar = nullptr;
-	
+
 	bool show_layers_selector = false;
 
 	HBoxContainer *layer_selection_hbox = nullptr;
@@ -390,7 +390,7 @@ private:
 
 	Button *toggle_grid_button = nullptr;
 	void _on_grid_toggled(bool p_pressed);
-	
+
 	enum {
 		ADVANCED_MENU_REPLACE_WITH_PROXIES,
 		ADVANCED_MENU_EXTRACT_TILE_MAP_LAYERS,

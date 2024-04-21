@@ -127,7 +127,7 @@ public:
 
 	uint64_t max_request_size;
 	uint64_t request_max_file_upload_size;
-	
+
 	WebServerSimple::FileUploadStoreType upload_file_store_type;
 	String upload_temp_file_store_path;
 

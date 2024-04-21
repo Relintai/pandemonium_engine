@@ -36,7 +36,6 @@
 #include "platform/frt/logo.gen.h"
 #include "scene/resources/texture.h"
 
-
 class EditorExportPlatformFRT : public EditorExportPlatform {
 	GDCLASS(EditorExportPlatformFRT, EditorExportPlatform);
 
@@ -102,7 +101,6 @@ public:
 
 	EditorExportPlatformFRT();
 };
-
 
 //////////
 
@@ -338,8 +336,8 @@ String EditorExportPlatformFRT::get_preset_arch(const Ref<EditorExportPreset> &p
 
 	if (arch != "arm32v6" && arch != "arm32v7" && arch != "arm64v8") {
 		ERR_PRINT(vformat("Invalid value \"%s\" for \"binary_format/architecture\" in export preset \"%s\". Defaulting to \"arm32v6\".",
-				arch, 
-				p_preset->get_name()));
+						  arch,
+						  p_preset->get_name()));
 
 		arch = "arm32v6";
 	}
@@ -352,9 +350,9 @@ void EditorExportPlatformFRT::add_platform_feature(const String &p_feature) {
 }
 
 void EditorExportPlatformFRT::get_platform_features(List<String> *r_features) {
-	r_features->push_back("pc"); //all pcs support "pc"
-	r_features->push_back("s3tc"); //all pcs support "s3tc" compression
-	r_features->push_back(get_os_name()); //OS name is a feature
+	r_features->push_back("pc"); // all pcs support "pc"
+	r_features->push_back("s3tc"); // all pcs support "s3tc" compression
+	r_features->push_back(get_os_name()); // OS name is a feature
 
 	for (RBSet<String>::Element *E = extra_features.front(); E; E = E->next()) {
 		r_features->push_back(E->get());

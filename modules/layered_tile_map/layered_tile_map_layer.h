@@ -255,7 +255,7 @@ public:
 
 	enum DirtyFlags {
 		DIRTY_FLAGS_LAYER_ENABLED = 0,
-		
+
 		DIRTY_FLAGS_LAYER_IN_TREE,
 		DIRTY_FLAGS_LAYER_IN_CANVAS,
 		DIRTY_FLAGS_LAYER_LOCAL_TRANSFORM,
@@ -289,7 +289,7 @@ public:
 
 		DIRTY_FLAGS_LAYER_GROUP_SELECTED_LAYERS,
 		DIRTY_FLAGS_LAYER_GROUP_HIGHLIGHT_SELECTED,
-		
+
 		DIRTY_FLAGS_TILE_SET,
 
 		DIRTY_FLAGS_MAX,
@@ -298,16 +298,16 @@ public:
 private:
 	// Properties.
 	HashMap<Vector2i, CellData> tile_map_layer_data;
-	
+
 	bool enabled = true;
-	
+
 	Ref<LayeredTileSet> tile_set;
 
 	HighlightMode highlight_mode = HIGHLIGHT_MODE_DEFAULT;
-	
+
 	int y_sort_origin = 0;
 	int rendering_quadrant_size = 16;
-	
+
 	bool collision_enabled = true;
 	bool use_kinematic_bodies = false;
 	DebugVisibilityMode collision_visibility_mode = DEBUG_VISIBILITY_MODE_DEFAULT;
@@ -418,7 +418,7 @@ private:
 	void _queue_internal_update();
 	void _deferred_internal_update();
 	void _internal_update(bool p_force_cleanup);
-	
+
 	//VertexLights2D
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
 	void _on_vertex_lights_map_changed(RID map);
@@ -426,13 +426,13 @@ private:
 
 protected:
 	void _notification(int p_what);
-	
+
 	static void _bind_methods();
 
 public:
 	// LayeredTileMap node.
 	void set_as_tile_map_internal_node(int p_index);
-	
+
 	int get_index_in_tile_map() const {
 		return layer_index_in_tile_map_node;
 	}
@@ -461,7 +461,7 @@ public:
 
 	void fix_invalid_tiles();
 	void clear();
-	
+
 	int get_cell_source_id(const Vector2i &p_coords) const;
 	Vector2i get_cell_atlas_coords(const Vector2i &p_coords) const;
 	int get_cell_alternative_tile(const Vector2i &p_coords) const;
@@ -505,7 +505,7 @@ public:
 
 	void set_highlight_mode(HighlightMode p_highlight_mode);
 	HighlightMode get_highlight_mode() const;
-	
+
 	virtual void set_self_modulate(const Color &p_self_modulate);
 	virtual void set_y_sort_enabled(bool p_y_sort_enabled);
 	void set_y_sort_origin(int p_y_sort_origin);
@@ -528,7 +528,7 @@ public:
 	RID get_navigation_map() const;
 	void set_navigation_visibility_mode(DebugVisibilityMode p_show_navigation);
 	DebugVisibilityMode get_navigation_visibility_mode() const;
-	
+
 	// Virtual function to modify the LayeredTileData at runtime.
 	bool use_tile_data_runtime_update(const Vector2i &p_coords);
 	void tile_data_runtime_update(const Vector2i &p_coords, LayeredTileData *p_tile_data);
@@ -543,7 +543,7 @@ public:
 #ifdef MODULE_FASTNOISE_ENABLED
 	void rao_set_use(bool p_rao);
 	bool rao_get_use() const;
-	
+
 	void rao_set_strength(const real_t p_strength);
 	real_t rao_get_strength() const;
 
@@ -551,11 +551,11 @@ public:
 	Ref<FastnoiseNoiseParams> rao_get_noise_params();
 
 	void rao_setup_noise(Ref<FastNoise> noise);
-	
+
 	Ref<FastNoise> rao_get_noise();
 	void rao_set_noise(const Ref<FastNoise> &noise);
 #endif
-	
+
 	LayeredTileMapLayer();
 	~LayeredTileMapLayer();
 };

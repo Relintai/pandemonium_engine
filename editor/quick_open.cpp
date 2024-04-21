@@ -207,7 +207,7 @@ void EditorQuickOpen::_update_search() {
 	search_options->clear();
 	TreeItem *root = search_options->create_item();
 	EditorFileSystemDirectory *efsd = EditorFileSystem::get_singleton()->get_filesystem();
-	
+
 	Vector<Pair<String, Ref<Texture>>> list;
 
 	_parse_fs(efsd, list);
