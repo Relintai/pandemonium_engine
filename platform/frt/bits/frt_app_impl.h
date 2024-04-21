@@ -59,6 +59,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../frt.h"
+
 namespace frt {
 
 void fatal(const char *format, ...) {

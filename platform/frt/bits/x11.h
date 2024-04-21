@@ -58,6 +58,8 @@
 
 #include "dl/x11.gen.h"
 
+#include "../frt.h"
+
 namespace frt {
 
 class X11Context;

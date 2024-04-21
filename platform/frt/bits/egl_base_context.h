@@ -56,6 +56,8 @@
 
 #include "dl/egl.gen.h"
 
+#include "../frt.h"
+
 namespace frt {
 
 class EGLBaseContext {
