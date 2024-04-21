@@ -55,11 +55,26 @@ fi
 
 
 # iOS Build
+#docker run ${custom_envvars} \
+#       -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+#       -v ${project_root}:/root/project \
+#       -w /root/project pandemonium-ios:${img_version} \
+#       bash /root/engine_build_scripts/ios.sh "$@" 2>&1 | tee logs/ios.log
+
+
+# FRT Build arm64
+#docker run ${custom_envvars} \
+#        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+#        -v ${project_root}:/root/project \
+#        -w /root/project pandemonium-frt-arm64v8:${img_version} \
+#        bash /root/engine_build_scripts/frt_arm64.sh "$@" 2>&1 | tee logs/frt_arm64.log
+
+# FRT Build arm32
 docker run ${custom_envvars} \
-       -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
-       -v ${project_root}:/root/project \
-       -w /root/project pandemonium-ios:${img_version} \
-       bash /root/engine_build_scripts/ios.sh "$@" 2>&1 | tee logs/ios.log
+        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+        -v ${project_root}:/root/project \
+        -w /root/project pandemonium-frt-arm32v7:${img_version} \
+        bash /root/engine_build_scripts/frt_arm32.sh "$@" 2>&1 | tee logs/frt_arm32.log
 
 # Check files
 
