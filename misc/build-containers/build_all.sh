@@ -47,22 +47,23 @@ fi
 #       bash /root/engine_build_scripts/android.sh "$@" 2>&1 | tee logs/android.log
  
 # OSX Build
+#docker run ${custom_envvars} \
+#       -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+#       -v ${project_root}:/root/project \
+#       -w /root/project pandemonium-osx:${img_version} \
+#       bash /root/engine_build_scripts/osx.sh "$@" 2>&1 | tee logs/osx.log
+
+
+# iOS Build
 docker run ${custom_envvars} \
        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
        -v ${project_root}:/root/project \
-       -w /root/project pandemonium-osx:${img_version} \
-       bash /root/engine_build_scripts/osx.sh "$@" 2>&1 | tee logs/osx.log
-
-
-
-exit 1
-
-#ios
-#docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-ios:${img_version} scons bir_strip "$@" . 2>&1 | tee logs/bir.log
-
-# docker run ${custom_envvars} -v ${project_root}:/root/project -i -w /root/project -t pandemonium-windows:${img_version} scons bew "$@"
+       -w /root/project pandemonium-ios:${img_version} \
+       bash /root/engine_build_scripts/ios.sh "$@" 2>&1 | tee logs/ios.log
 
 # Check files
+
+exit 1
 
 cd ./bin/
 
@@ -135,6 +136,13 @@ files=(
 
   "pandemonium.osx.opt.tools.arm64"
   "pandemonium.osx.opt.tools.x86_64"
+
+  # iOS
+  "libpandemonium.iphone.opt.arm64.a"
+  "libpandemonium.iphone.opt.debug.arm64.a"
+
+  "libpandemonium.iphone.opt.debug.x86_64.simulator.a"
+  "libpandemonium.iphone.opt.x86_64.simulator.a"
 )
 
 error=0
