@@ -5,5 +5,6 @@ RUN dpkg --add-architecture armhf && apt-get update && apt-get install -y -q \
  crossbuild-essential-armhf
 
 RUN apt-get install -y -q \
- libstdc++-11-dev:armhf libsdl2-dev:armhf libgbm-dev:armhf libsamplerate0-dev:armhf
+  libstdc++-11-dev:armhf libsdl2-dev:armhf libgbm-dev:armhf libsamplerate0-dev:armhf \
+  libx11-dev:armhf libgles2-mesa-dev:armhf libasound2-dev:armhf libfreetype6-dev:armhf libudev-dev:armhf  zlib1g-dev:armhf
 

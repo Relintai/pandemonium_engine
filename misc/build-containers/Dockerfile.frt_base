@@ -8,6 +8,4 @@ apt-get install --no-install-recommends -y -q \
  git-core vim-nox wget less nvi tmux lynx
 
 RUN apt-get install -y -q \
- build-essential clang llvm lld python3-pip cmake ninja-build scons meson
-
-
+ build-essential clang llvm lld python3-pip cmake ninja-build scons meson pkg-config
