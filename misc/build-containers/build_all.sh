@@ -166,6 +166,24 @@ files=(
 
   "libpandemonium.iphone.opt.debug.x86_64.simulator.a"
   "libpandemonium.iphone.opt.x86_64.simulator.a"
+
+  # FRT
+  "pandemonium.frt.opt.arm32v6"
+  "pandemonium.frt.opt.arm32v7"
+  "pandemonium.frt.opt.arm64v8"
+
+  "pandemonium.frt.opt.debug.arm32v6"
+  "pandemonium.frt.opt.debug.arm32v7"
+  "pandemonium.frt.opt.debug.arm64v8"
+
+  # FRT SDL
+  "pandemonium.frt_sdl.opt.arm32v6"
+  "pandemonium.frt_sdl.opt.arm32v7"
+  "pandemonium.frt_sdl.opt.arm64v8"
+
+  "pandemonium.frt_sdl.opt.debug.arm32v6"
+  "pandemonium.frt_sdl.opt.debug.arm32v7"
+  "pandemonium.frt_sdl.opt.debug.arm64v8"
 )
 
 error=0
