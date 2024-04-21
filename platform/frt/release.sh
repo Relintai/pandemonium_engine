@@ -41,7 +41,7 @@ release() {
 	local bin
 	[ -d releases ] || return
 	bin=releases/frt_${fver}_${tag}_${arch}.bin
-	cp tag_$tag/bin/godot.frt.opt$extrasuffix.$arch $bin
+	cp tag_$tag/bin/pandemonium.frt.opt$extrasuffix.$arch $bin
 	$stripcmd $bin
 }
 

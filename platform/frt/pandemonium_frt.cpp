@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  godot_frt.cpp                                                        */
+/*  pandemonium_frt.cpp                                                        */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-// godot_frt.cpp
+// pandemonium_frt.cpp
 /*
  * FRT - A Godot platform targeting single board computers
  * Copyright (c) 2017-2019  Emanuele Fornara

@@ -25,4 +25,4 @@ if os.path.isfile('/opt/vc/include/bcm_host.h'):
 if os.path.isfile('/usr/include/libdrm/drm.h'):
 	frt_env.Append(CCFLAGS=["-I/usr/include/libdrm"])
 
-frt_env.Program('#bin/godot', ['godot_frt.cpp', 'os_frt.cpp', 'frt_options.cpp'] + env['FRT_MODULES'])
+frt_env.Program('#bin/pandemonium', ['pandemonium_frt.cpp', 'os_frt.cpp', 'frt_options.cpp'] + env['FRT_MODULES'])

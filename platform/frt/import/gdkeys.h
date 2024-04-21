@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-// imported from godot (core/os/keyboard.h), adding prefixes to avoid
+// imported from pandemonium (core/os/keyboard.h), adding prefixes to avoid
 // clashes with the linux input api
 
 enum { GD_SPKEY = (1 << 24) };

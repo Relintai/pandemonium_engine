@@ -85,7 +85,7 @@ void show_param_list() {
 
 void usage(const char *program_name, int code = 1) {
 	printf("\n"
-		   "usage: %s [godot args] [--frt [options] [param=value...]]\n"
+		   "usage: %s [pandemonium args] [--frt [options] [param=value...]]\n"
 		   "\n"
 		   "options:\n"
 		   "  -v                  show version and exit\n"
