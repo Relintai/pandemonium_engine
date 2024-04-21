@@ -104,11 +104,14 @@ files=(
   "pandemonium.frt_sdl.opt.debug.arm32v7"
   "pandemonium.frt_sdl.opt.debug.arm64v8"
 
-  # OSX - Editor
+  # OSX - final editor
   "Pandemonium.app.zip"
 
-  # OSX - export templates
+  # OSX - final export templates
   "osx.zip"
+
+  # IOS - final template
+  "iphone.zip"
 )
 
 error=0
