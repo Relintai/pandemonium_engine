@@ -56,6 +56,8 @@
 
 #include "../import/gdkeys.h"
 
+#include "../frt.h"
+
 namespace frt {
 
 class MouseVirtual : public Mouse, public EventDispatcher {
