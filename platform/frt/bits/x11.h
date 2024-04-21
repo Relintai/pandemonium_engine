@@ -57,6 +57,8 @@
 #include <stdlib.h>
 
 #include "dl/x11.gen.h"
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
 
 #include "../frt.h"
 
