@@ -13,43 +13,43 @@ export PATH="${GODOT_SDK_LINUX_X86_64}/bin:${BASE_PATH}"
 #mv -f bin/pandemonium.x11.opt.tools.armv7 bin/pandemonium.x11.opt.tools.pi4
 
 # Linux editor 64 bit
-scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 "$@" . 2>&1 | tee logs/linux_ed_64.log
+scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 "$@"
 
 # Linux templates 64 bit
-scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 "$@" . 2>&1 | tee logs/linux_template_rd_64.log
-scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=64 "$@" . 2>&1 | tee logs/linux_template_r_64.log
+scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 "$@"
+scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=64 "$@"
 
 # Linux headless (editor) 64bit
-scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=server bits=64 "$@" . 2>&1 | tee logs/headless.log
+scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=server bits=64 "$@"
 
 # Linux server (templates) 64bit
-scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=server bits=64 "$@" . 2>&1 | tee logs/server_rd.log
-scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=server bits=64 "$@" . 2>&1 | tee logs/server_d.log
+scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=server bits=64 "$@"
+scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=server bits=64 "$@"
 
 export PATH="${GODOT_SDK_LINUX_X86_32}/bin:${BASE_PATH}"
 
 # Linux editor 32 bit
-scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 "$@" . 2>&1 | tee logs/linux_ed_32.log
+scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 "$@"
 
 # Linux templates 32 bit
-scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 "$@" . 2>&1 | tee logs/linux_template_rd_32.log
-scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=32 "$@" . 2>&1 | tee logs/linux_template_r_32.log
+scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 "$@"
+scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=32 "$@"
 
 export PATH="${GODOT_SDK_LINUX_ARM64}/bin:${BASE_PATH}"
 
 # Linux editor arm64
-scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm64 "$@" . 2>&1 | tee logs/linux_ed_arm64.log
+scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm64 "$@"
 
 # Linux templates arm64
-scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm64 "$@" . 2>&1 | tee logs/linux_template_rd_arm64.log
-scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 arch=arm64 "$@" . 2>&1 | tee logs/linux_template_r_arm64.log
+scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm64 "$@"
+scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 arch=arm64 "$@"
 
 export PATH="${GODOT_SDK_LINUX_ARM32}/bin:${BASE_PATH}"
 
 # Linux editor arm
-scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm "$@" . 2>&1 | tee logs/linux_ed_arm.log
+scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm "$@"
 
 # Linux templates arm
-scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm "$@" . 2>&1 | tee logs/linux_template_rd_arm.log
-scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 arch=arm "$@" . 2>&1 | tee logs/linux_template_r_arm.log
+scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm "$@"
+scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 arch=arm "$@"
 
