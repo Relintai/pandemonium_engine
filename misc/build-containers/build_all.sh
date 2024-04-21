@@ -125,6 +125,17 @@ files=(
   "pandemonium_server.x11.opt.tools.arm"
   "pandemonium_server.x11.opt.tools.arm64"
 
+  # HTTP Server (Linux)
+  "pandemonium_http_server.x11.opt.32"
+  "pandemonium_http_server.x11.opt.64"
+  "pandemonium_http_server.x11.opt.arm"
+  "pandemonium_http_server.x11.opt.arm64"
+
+  "pandemonium_http_server.x11.opt.debug.32"
+  "pandemonium_http_server.x11.opt.debug.64"
+  "pandemonium_http_server.x11.opt.debug.arm"
+  "pandemonium_http_server.x11.opt.debug.arm64"
+
   # JS
   "pandemonium.javascript.opt.zip"
   "pandemonium.javascript.opt.debug.zip"
