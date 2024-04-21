@@ -743,9 +743,9 @@ int Node::seen_by_get_count() {
 void Node::_propagate_pause_change_notification(int p_notification) {
 	notification(p_notification);
 
-	for (int i = 0; i < data.children.size(); i++) {
-		if (data.children[i]->data.pause_mode == PAUSE_MODE_INHERIT) {
-			data.children[i]->_propagate_pause_change_notification(p_notification);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		if (E->value()->data.pause_mode == PAUSE_MODE_INHERIT) {
+			E->value()->_propagate_pause_change_notification(p_notification);
 		}
 	}
 }
