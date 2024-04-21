@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="LayeredTileMapLayer" inherits="Node2D" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="LayeredTileMapLayer" inherits="YSort" version="4.3">
 	<brief_description>
 		Node for 2D tile-based maps.
 	</brief_description>
@@ -132,7 +132,7 @@
 		<method name="get_used_cells_by_id" qualifiers="const">
 			<return type="PoolVector2iArray" />
 			<argument index="0" name="source_id" type="int" default="-1" />
-			<argument index="1" name="atlas_coords" type="Vector2i" default="Vector2i(-1, -1)" />
+			<argument index="1" name="atlas_coords" type="Vector2i" default="Vector2i( -1, -1 )" />
 			<argument index="2" name="alternative_tile" type="int" default="-1" />
 			<description>
 				Returns a [Vector2i] array with the positions of all cells containing a tile. Tiles may be filtered according to their source ([param source_id]), their atlas coordinates ([param atlas_coords]), or alternative id ([param alternative_tile]).
@@ -189,7 +189,7 @@
 			<return type="void" />
 			<argument index="0" name="coords" type="Vector2i" />
 			<argument index="1" name="source_id" type="int" default="-1" />
-			<argument index="2" name="atlas_coords" type="Vector2i" default="Vector2i(-1, -1)" />
+			<argument index="2" name="atlas_coords" type="Vector2i" default="Vector2i( -1, -1 )" />
 			<argument index="3" name="alternative_tile" type="int" default="0" />
 			<description>
 				Sets the tile identifiers for the cell at coordinates [param coords]. Each tile of the [LayeredTileSet] is identified using three parts:
@@ -263,12 +263,18 @@
 		<member name="navigation_visibility_mode" type="int" setter="set_navigation_visibility_mode" getter="get_navigation_visibility_mode" enum="LayeredTileMapLayer.DebugVisibilityMode" default="0">
 			Show or hide the [LayeredTileMapLayer]'s navigation meshes. If set to [constant DEBUG_VISIBILITY_MODE_DEFAULT], this depends on the show navigation debug settings.
 		</member>
+		<member name="rao_noise_params" type="FastnoiseNoiseParams" setter="rao_set_noise_params" getter="rao_get_noise_params">
+		</member>
+		<member name="rao_strength" type="float" setter="rao_set_strength" getter="rao_get_strength" default="0.3">
+		</member>
+		<member name="rao_use" type="bool" setter="rao_set_use" getter="rao_get_use" default="true">
+		</member>
 		<member name="rendering_quadrant_size" type="int" setter="set_rendering_quadrant_size" getter="get_rendering_quadrant_size" default="16">
 			The [LayeredTileMapLayer]'s quadrant size. A quadrant is a group of tiles to be drawn together on a single canvas item, for optimization purposes. [member rendering_quadrant_size] defines the length of a square's side, in the map's coordinate system, that forms the quadrant. Thus, the default quandrant size groups together [code]16 * 16 = 256[/code] tiles.
 			The quadrant size does not apply on a Y-sorted [LayeredTileMapLayer], as tiles are be grouped by Y position instead in that case.
 			[b]Note:[/b] As quadrants are created according to the map's coordinate system, the quadrant's "square shape" might not look like square in the [LayeredTileMapLayer]'s local coordinate system.
 		</member>
-		<member name="tile_map_data" type="PoolByteArray" setter="set_tile_map_data_from_array" getter="get_tile_map_data_as_array" default="PoolByteArray(0, 0)">
+		<member name="tile_map_data" type="PoolByteArray" setter="set_tile_map_data_from_array" getter="get_tile_map_data_as_array" default="PoolByteArray( &quot;AAA=&quot; )">
 			The raw tile map data as a byte array.
 		</member>
 		<member name="tile_set" type="LayeredTileSet" setter="set_tile_set" getter="get_tile_set">
@@ -276,6 +282,8 @@
 		</member>
 		<member name="use_kinematic_bodies" type="bool" setter="set_use_kinematic_bodies" getter="is_using_kinematic_bodies" default="false">
 			If [code]true[/code], this [LayeredTileMapLayer] collision shapes will be instantiated as kinematic bodies. This can be needed for moving [LayeredTileMapLayer] nodes (i.e. moving platforms).
+		</member>
+		<member name="use_vertex_lights" type="bool" setter="set_use_vertex_lights" getter="get_use_vertex_lights" default="false">
 		</member>
 		<member name="y_sort_origin" type="int" setter="set_y_sort_origin" getter="get_y_sort_origin" default="0">
 			This Y-sort origin value is added to each tile's Y-sort origin value. This allows, for example, to fake a different height level. This can be useful for top-down view games.

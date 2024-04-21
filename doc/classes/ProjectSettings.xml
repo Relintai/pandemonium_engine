@@ -672,6 +672,8 @@
 		</member>
 		<member name="ess/data/ess_resource_db_path" type="String" setter="" getter="" default="&quot;&quot;">
 		</member>
+		<member name="ess/entity_resources/base_world_speed" type="int" setter="" getter="" default="100">
+		</member>
 		<member name="ess/enums/dminishing_return_categories" type="String" setter="" getter="" default="&quot;Stun,Sleep,Disorient&quot;">
 		</member>
 		<member name="ess/enums/dminishing_return_length" type="float" setter="" getter="" default="15.0">

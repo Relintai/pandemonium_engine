@@ -246,6 +246,8 @@
 		</member>
 		<member name="default_ess_material_cache_class" type="StringName" setter="set_default_ess_material_cache_class" getter="get_default_ess_material_cache_class" default="@&quot;ESSMaterialCachePCM&quot;">
 		</member>
+		<member name="entity_resource_base_world_speed" type="float" setter="entity_resource_set_base_world_speed" getter="entity_resource_get_base_world_speed" default="100.0">
+		</member>
 		<member name="entity_spawner" type="ESSEntitySpawner" setter="set_entity_spawner" getter="get_entity_spawner">
 		</member>
 		<member name="entity_types" type="String" setter="entity_types_set" getter="entity_types_get" default="&quot;None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object&quot;">
