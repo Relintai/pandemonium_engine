@@ -49,7 +49,8 @@ def configure_lto(env):
 
 def configure_arch(env):
 	if env['frt_arch'] == 'arm32v6':
-		env.Append(CCFLAGS=['-march=armv6', '-mfpu=vfp', '-mfloat-abi=hard'])
+		#env.Append(CCFLAGS=['-march=armv6', '-mfpu=vfp', '-mfloat-abi=hard'])
+		env.Append(CCFLAGS=['-marm', '-mfpu=vfp', '-mfloat-abi=hard'])
 		env.extra_suffix += '.arm32v6'
 	elif env['frt_arch'] == 'arm32v7':
 		env.Append(CCFLAGS=['-march=armv7-a', '-mfpu=neon-vfpv4', '-mfloat-abi=hard'])
