@@ -17,57 +17,55 @@ if [[ -z "${OFFICIAL}" ]]; then
 fi
 
 # Windows Build
-#docker run ${custom_envvars} \
-#	-v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
-#	-v ${project_root}:/root/project \
-#	-w /root/project pandemonium-windows:${img_version} \
-#	bash /root/engine_build_scripts/windows.sh "$@" 2>&1 | tee logs/windows.log
+docker run ${custom_envvars} \
+	      -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+	      -v ${project_root}:/root/project \
+	      -w /root/project pandemonium-windows:${img_version} \
+	      bash /root/engine_build_scripts/windows.sh "$@" 2>&1 | tee logs/windows.log
 
 # Linux Build
-#docker run ${custom_envvars} \
-#        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
-#        -v ${project_root}:/root/project \
-#        -w /root/project pandemonium-linux:${img_version} \
-#        bash /root/engine_build_scripts/linux.sh "$@" 2>&1 | tee logs/linux.log
-
+docker run ${custom_envvars} \
+        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+        -v ${project_root}:/root/project \
+        -w /root/project pandemonium-linux:${img_version} \
+        bash /root/engine_build_scripts/linux.sh "$@" 2>&1 | tee logs/linux.log
 
 # Javascript Build
-#docker run ${custom_envvars} \
-#        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
-#        -v ${project_root}:/root/project \
-#        -w /root/project pandemonium-javascript:${img_version} \
-#        bash /root/engine_build_scripts/javascript.sh "$@" 2>&1 | tee logs/javascript.log
-
+docker run ${custom_envvars} \
+        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+        -v ${project_root}:/root/project \
+        -w /root/project pandemonium-javascript:${img_version} \
+        bash /root/engine_build_scripts/javascript.sh "$@" 2>&1 | tee logs/javascript.log
 
 # Android Build
-#docker run ${custom_envvars} \
-#       -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
-#       -v ${project_root}:/root/project \
-#       -w /root/project pandemonium-android:${img_version} \
-#       bash /root/engine_build_scripts/android.sh "$@" 2>&1 | tee logs/android.log
+docker run ${custom_envvars} \
+        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+        -v ${project_root}:/root/project \
+        -w /root/project pandemonium-android:${img_version} \
+        bash /root/engine_build_scripts/android.sh "$@" 2>&1 | tee logs/android.log
  
 # OSX Build
-#docker run ${custom_envvars} \
-#       -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
-#       -v ${project_root}:/root/project \
-#       -w /root/project pandemonium-osx:${img_version} \
-#       bash /root/engine_build_scripts/osx.sh "$@" 2>&1 | tee logs/osx.log
+docker run ${custom_envvars} \
+        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+        -v ${project_root}:/root/project \
+        -w /root/project pandemonium-osx:${img_version} \
+        bash /root/engine_build_scripts/osx.sh "$@" 2>&1 | tee logs/osx.log
 
 
 # iOS Build
-#docker run ${custom_envvars} \
-#       -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
-#       -v ${project_root}:/root/project \
-#       -w /root/project pandemonium-ios:${img_version} \
-#       bash /root/engine_build_scripts/ios.sh "$@" 2>&1 | tee logs/ios.log
+docker run ${custom_envvars} \
+        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+        -v ${project_root}:/root/project \
+        -w /root/project pandemonium-ios:${img_version} \
+        bash /root/engine_build_scripts/ios.sh "$@" 2>&1 | tee logs/ios.log
 
 
 # FRT Build arm64
-#docker run ${custom_envvars} \
-#        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
-#        -v ${project_root}:/root/project \
-#        -w /root/project pandemonium-frt-arm64:${img_version} \
-#        bash /root/engine_build_scripts/frt_arm64.sh "$@" 2>&1 | tee logs/frt_arm64.log
+docker run ${custom_envvars} \
+        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+        -v ${project_root}:/root/project \
+        -w /root/project pandemonium-frt-arm64:${img_version} \
+        bash /root/engine_build_scripts/frt_arm64.sh "$@" 2>&1 | tee logs/frt_arm64.log
 
 # FRT Build arm32
 docker run ${custom_envvars} \
@@ -77,8 +75,6 @@ docker run ${custom_envvars} \
         bash /root/engine_build_scripts/frt_arm32.sh "$@" 2>&1 | tee logs/frt_arm32.log
 
 # Check files
-
-exit 1
 
 cd ./bin/
 
