@@ -166,7 +166,7 @@ void Portal::_notification(int p_what) {
 			ERR_FAIL_COND(get_world_3d().is_null());
 
 			// Defer full creation of the visual server portal to when the editor portal is in the scene tree.
-			RenderingServer::get_singleton()->portal_set_scenario(_portal_rid, get_world()->get_scenario());
+			RenderingServer::get_singleton()->portal_set_scenario(_portal_rid, get_world_3d()->get_scenario());
 
 			// Update any components in visual server that require the scenario to be set.
 			RenderingServer::get_singleton()->portal_set_active(_portal_rid, _settings_active);
