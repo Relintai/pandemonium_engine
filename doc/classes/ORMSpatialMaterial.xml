@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ORMSpatialMaterial" inherits="SpatialMaterial" version="4.3">
+	<brief_description>
+		ORM 3D rendering material, based on [SpatialMaterial].
+	</brief_description>
+	<description>
+		This is a variant of the SpatialMaterial that uses an ORM texture to store AO, roughness and metallic information.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<constants>
+	</constants>
+</class>
