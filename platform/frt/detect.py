@@ -102,6 +102,8 @@ def configure(env):
 	else:
 		pkg_config = 'pkg-config'
 
+	env.ParseConfig(pkg_config + " x11 --cflags --libs")
+
 	env.Append(CCFLAGS=['-pipe'])
 	env.Append(LINKFLAGS=['-pipe'])
 
