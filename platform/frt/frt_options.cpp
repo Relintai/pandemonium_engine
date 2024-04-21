@@ -107,7 +107,7 @@ void parse_frt_param(const char *name, const char *value) {
 	}
 	Value &v = p->value;
 	switch (v.t) {
-		case Value::Bool:
+		case Value::BOOL:
 			if (!strcmp(value, "true")) {
 				v.u.b = true;
 			} else if (!strcmp(value, "false")) {
@@ -117,13 +117,13 @@ void parse_frt_param(const char *name, const char *value) {
 				exit(1);
 			}
 			break;
-		case Value::Int:
+		case Value::INT:
 			v.u.i = atoi(value);
 			break;
-		case Value::Float:
+		case Value::FLOAT:
 			v.u.f = (float)atof(value);
 			break;
-		case Value::String:
+		case Value::STRING:
 			v.u.s = value;
 			break;
 	}

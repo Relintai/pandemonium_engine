@@ -283,16 +283,16 @@ public:
 			p->source = Param::ProjectSettings;
 			Value &v = p->value;
 			switch (v.t) {
-				case Value::Bool:
+				case Value::BOOL:
 					v.u.b = bool(project_settings->get(name));
 					break;
-				case Value::Int:
+				case Value::INT:
 					v.u.i = int(project_settings->get(name));
 					break;
-				case Value::Float:
+				case Value::FLOAT:
 					v.u.f = float(project_settings->get(name));
 					break;
-				case Value::String: {
+				case Value::STRING: {
 					String s = String(project_settings->get(name));
 					v.u.s = strdup(s.ascii());
 					// TODO: keep track and dealloc string copy
