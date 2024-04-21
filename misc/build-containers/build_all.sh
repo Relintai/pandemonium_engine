@@ -24,24 +24,21 @@ fi
 #	bash /root/engine_build_scripts/windows.sh "$@" 2>&1 | tee logs/windows.log
 
 # Linux Build
+#docker run ${custom_envvars} \
+#        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+#        -v ${project_root}:/root/project \
+#        -w /root/project pandemonium-linux:${img_version} \
+#        bash /root/engine_build_scripts/linux.sh "$@" 2>&1 | tee logs/linux.log
+
+
+# Javascript Build
 docker run ${custom_envvars} \
         -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
         -v ${project_root}:/root/project \
-        -w /root/project pandemonium-linux:${img_version} \
-        bash /root/engine_build_scripts/linux.sh "$@" 2>&1 | tee logs/linux.log
+        -w /root/project pandemonium-javascript:${img_version} \
+        bash /root/engine_build_scripts/javascript.sh "$@" 2>&1 | tee logs/javascript.log
 
 exit 1
-
-# Javascript editor
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk/emsdk_env.sh;scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript "$@"' . 2>&1 | tee logs/javascript_ed.log
-
-# Javascript templates normal
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk/emsdk_env.sh;scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=javascript "$@"' . 2>&1 | tee logs/javascript_rd.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk/emsdk_env.sh;scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=javascript "$@"' . 2>&1 | tee logs/javascript_r.log
-
-# Javascript templates threads
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk/emsdk_env.sh;scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript "$@"' . 2>&1 | tee logs/javascript_rd_threads.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk/emsdk_env.sh;scons tools=no target=release custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript "$@"' . 2>&1 | tee logs/javascript_r_threads.log
 
 # Android editor
 docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=armv7 "$@" . 2>&1 | tee logs/android_editor_armv7.log
@@ -134,6 +131,9 @@ files=(
   "pandemonium.javascript.opt.debug.threads.zip"
 
   "pandemonium.javascript.opt.tools.threads.zip"
+
+  "pandemonium.javascript.opt.gdnative.zip"
+  "pandemonium.javascript.opt.debug.gdnative.zip"
 
   # Android
   "android_source.zip"
