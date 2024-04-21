@@ -19,10 +19,10 @@ scons production=yes tools=yes target=release_debug custom_modules_shared=no deb
 scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 "$@"
 scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=64 "$@"
 
-# Linux headless (editor) 64bit
+# Linux headless (editor) 64 bit
 scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=server bits=64 "$@"
 
-# Linux server (templates) 64bit
+# Linux server (templates) 64 bit
 scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=server bits=64 "$@"
 scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=server bits=64 "$@"
 
@@ -35,6 +35,13 @@ scons production=yes tools=yes target=release_debug custom_modules_shared=no deb
 scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 "$@"
 scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=32 "$@"
 
+# Linux headless (editor) 32 bit
+scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=server bits=32 "$@"
+
+# Linux server (templates) 32 bit
+scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=server bits=32 "$@"
+scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=server bits=32 "$@"
+
 export PATH="${GODOT_SDK_LINUX_ARM64}/bin:${BASE_PATH}"
 
 # Linux editor arm64
@@ -44,6 +51,13 @@ scons production=yes tools=yes target=release_debug custom_modules_shared=no deb
 scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm64 "$@"
 scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 arch=arm64 "$@"
 
+# Linux headless (editor) arm64
+scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=server arch=arm64 "$@"
+
+# Linux server (templates) arm64
+scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=server arch=arm64 "$@"
+scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=server arch=arm64 "$@"
+
 export PATH="${GODOT_SDK_LINUX_ARM32}/bin:${BASE_PATH}"
 
 # Linux editor arm
@@ -52,4 +66,11 @@ scons production=yes tools=yes target=release_debug custom_modules_shared=no deb
 # Linux templates arm
 scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm "$@"
 scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 arch=arm "$@"
+
+# Linux headless (editor) arm
+scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=server arch=arm "$@"
+
+# Linux server (templates) arm
+scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=server arch=arm "$@"
+scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=server arch=arm "$@"
 

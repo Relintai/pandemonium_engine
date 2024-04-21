@@ -109,13 +109,21 @@ files=(
   "pandemonium.x11.opt.tools.arm"
   "pandemonium.x11.opt.tools.arm64"
 
-  # Server (Linux) - template
+  # Server (Linux)
+  "pandemonium_server.x11.opt.32"
   "pandemonium_server.x11.opt.64"
+  "pandemonium_server.x11.opt.arm"
+  "pandemonium_server.x11.opt.arm64"
+
+  "pandemonium_server.x11.opt.debug.32"
   "pandemonium_server.x11.opt.debug.64"
+  "pandemonium_server.x11.opt.debug.arm"
+  "pandemonium_server.x11.opt.debug.arm64"
 
-  # Headless (Linux) - editor
-
+  "pandemonium_server.x11.opt.tools.32"
   "pandemonium_server.x11.opt.tools.64"
+  "pandemonium_server.x11.opt.tools.arm"
+  "pandemonium_server.x11.opt.tools.arm64"
 
   # JS
   "pandemonium.javascript.opt.zip"
