@@ -4,7 +4,214 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
+Nothing yet.
+
+## [4.3.0]
+
+Highlights:
+
+- Backported the new TileMap from Godot4. Every class from it has been prefixed with the word `Layered`, so look for the `LayeredTileMap` class. The old `TileMap` is still available without any breakages.
+- Created a new VertexLights2D module.
+- Created a new VertexLights3D module.
+- Better LOD support due to a change from godot3.x.
+- Backported PROPERTY_USAGE_ARRAY from Godot 4.
+- Fixed, set up exporter and export templates for the FRT and FRT SDL platforms (it's for `SBC`s).
+- Fixed IOS export template .
+- Now WebServerSimple can also use temporary files for uploads.
+- Added a simple HTML Templating solution. See the HTMLTemplate and HTMLTemplateData classes and [this demo](https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap_templated).
+- Build containers and release setup rework.
+- ... and many more 
+
+Breaking changes:
+
+- Android dependencies had to be updated, unfortunately this raises the required java version to 17. On the flip side hovewer there is a new editor java home setting, and also the JAVA_HOME environment variable gets picked up.
+- Build containers now use docker instead of podman.
+- Removed parse_files() from WebServerRequest. It's doesn't work well with how the http protocol works. It did not do anything. If you called it just remove that call.
+
+### Added
+
+- Added FRT and FRT SDL build containers.
+- New icon for frt sdl.
+- Added an exporter for frt_sdl.
+- Added a separate exporter for FRT.
+- Added entity_resource_base_world_speed property to the ESS singleton.
+- Also add is_zero_approx() to Vector4.
+- Added copy pose and paste pose tools to the skeleton editor. Also added separators to it's dropdown menu.
+- Make RAO and VertexLights2D work with the new LayeredTileMap setup.
+- Created a new VertexLights2D module.
+- Created a new VertexLights3D module.
+- Added exp2 to the Math singleton.
+- Added Material and merger support for PropDataMergeGroup.
+- Added Material support for PropDataProp.
+- Added a new PropDataMergeGroup Node for props.
+- Implemented RAO for LayeredTileMaps.
+- Added a new canvas_item_add_texture_rect_animation() method to the RenderingServer.
+- Proper docs for WebServerSimple.
+- Updated docs for FileCache.
+- Added optional force parameter to WebServerRequest::move_file(). Also various fixes and improvements to the new upload temp file system.
+- Added new wwwroot_get_simplified_abs_path() helper to FileCache. Also improved the other path helper methods.
+- Now WebServerSimple can also use temporary files for uploads.
+- Added move_file() and is_file_moved()  helper methods to WebServerRequest.
+- Added docs for String::substr_index().
+- Added more file formats to the Text Editor's Save Dialog.
+- Added HTMLTemplate and HTMLTemplateData classes.
+- Added a new method to Expression so it can be used with multiple threads simultenously.
+
+### Fixed
+
+- Fix crossbuilding libtheora on the server platform.
+- Fixed building FRT.
+- Fixed building FRT SDL.
+- IOS build scripts.
+- Fix MMImage.
+- Hide the FileSystemDock's empty dock slot when it's in bottom bar mode by default.
+- Use internal process for updating a dirty skeleton instead of the MessageQueue. This fixes BoneAttachments being a frame late.
+- Sync NativeScript's PROPERTY_USAGE flags with Object's.
+- Fix 2d mesh transforms and colors.
+- Various doc fixes.
+- Fix 2 off-by-one errors.
+- Fix incorrect clipping in String::substr_index().
+- Use String's length() instead of size().
+- Fix class link in the docs for SMTPClient.
+
+### Changed
+
+- Moved the old frt build containers.
+- Renamed the build container folders.
+- Renamed uwp's exporter's folder so it's not in the editor while that platform cannot yet be built.
+- Reworked the build containers and the in-container build scripts.
+- Added an exported for the server platform.
+- In-container build script cleanups.
+- Build containers now use docker instead of podman.
+- Updated the build containers based on godot's.
+- Now the input_properties and output_properties property won't get saved directly in MMNode (this was the original intent, nothing should change other than MMMaterial files should be a bit smaller now.). They are still visible in the editor.  Also make sure an MMNodeUniversalProperty can only be registered once.
+- Make mat maker's image picker button's dialog use resources.
+- Fix error found by static analysis tools.
+- Improved Light setup in PropInstance.
+- Added more properties to PropDataLight and other light helper classes.
+- Now CharacterSkeleton2D inherits from YSort. It disables sorting by default, so the default behaviour won't change.
+- Now tooltips won't get scaled to their original control's scale anymore by default. Added a new gui_scale_tooltips property to Viewport to be able to use the previous behaviour when it's desired.
+- Removed clips_input() method and _clips_input() virtual method from Control. Made clip_contents to also have an input clipping effect, since I couldn't think any single instance where keeping them separated would be useful. This fixes LayeredTileMap's editors clipping input while being invisible, and likely other smaller issues.
+- Now EditorPropertyEnums can be setup multiple times.
+- Improve multipart filename handling a bit.
+- Now SimpleWebServerRequest Only count request size when not writing to a file.
+- get_file_length() in WebServerRequest now returns uint64_t.
+- Updated sample module_config.py.
+- Use bitshifts for all property usage flags.
+- Use PROPERTY_HINT_BUTTON in UserManagerStatic instead of a bool.
+- Now PROPERTY_HINT_BUTTON adds the property's name as the called method's first parameter.
+
+### Removed
+
+- Removed parse_files() from WebServerRequest. It's doesn't work well with how the http protocol works.
+- Removed Vector2i(Vector2) constructor, added a Vector2i conversion operator to Vector2 instead. This solves ambigous Variant to Vector2i conversion errors.
+
+### Backports
+
 - Backported everything up to and including https://github.com/godotengine/godot/commit/90cf873979a0e5b13a2cbc97eb077ee9266e48a5 Merge commit: https://github.com/godotengine/godot/commit/a73715cf55d6709655ae9563e0f6e4f4b12b9955
+
+#### Godot3
+
+- Fix AudioStreamPlayer not paused on pause mode change Fixes #58543.
+- Add option to toggle visibility of position gizmos in 2D editor.
+- Portals - defer setting active in `VisualServer` until enter tree `set_portal_active()` was being called loading packed scenes prior to entering the tree, visual server portals had not been fully created at this point hence the call was being ignored with an error flagged. This PR defers the call until after entering the tree.
+- Add option `modules_enabled_by_default` and minimal CI build.
+- Fix physics on_floor_body crash Physics body previously stored the RID of a collision object and accessed it on the next frame, leading to a crash if the object had been deleted. This PR stores the ObjectID in addition to the RID, and checks the object still exists prior to access.
+- Store ObjectID instead of pointer for KinematicCollision owner
+- Fix SceneTree not respecting virtual process methods
+- Don't error multiple times when trying to load missing default bus layout
+- Backported Update Android dependencies for the project
+  Update Java version from 11 to 17
+  Update Android gradle plugin version from 7.2.1 to 8.2.0
+  Update gradle version from 7.4.2 to 8.2
+  Update target SDK from 33 to 34
+  Update build tools version from 33.0.2 to 34.0.0
+  Update kotlin version from 1.7.0 to 1.9.20
+  Update Android fragment version from 1.3.6 to 1.6.2
+  Update AndroidX window version from 1.0.0 to 1.2.0
+  Update Nexus plugin version from 1.1.0 to 1.3.0
+  m4gr3d
+  https://github.com/godotengine/godot/commit/eba77be573793243a91322c7eb8e345695c3b813
+  Unfortunately this raises the required java version to 17. On the flip side hovewer there is a new editor java home setting, and also the JAVA_HOME environment variable gets picked up.
+- Add is_zero_approx methods to Vector{2,3}
+- Check duplicate keys in dictionary literals: enums and const variables
+  Check identifiers (const variables and unnamed enums) and named
+  enums when parsing dictionary literals whether the keys are not
+  duplicated.
+  In case of duplicate key is encountered, highlight the line with it 
+  and print error message:
+  `Duplicate key "foo" found in Dictionary literal`
+  This commit is a logical continuation of the commit dab73c7 which
+  implemented such checks only for literal keys (which fixed #7034).
+  Apart from that, this commit also fixes the issue with the error
+  message itself, which was shown one line below the duplicated key
+  in case it was the last one in the dictionary literal and there
+  was no hanging comma.
+  Also, the format of the error message has been changed so that now
+  the error message also contains the value of the key which is duplicated.
+  Instead of `Duplicate key found in Dictionary literal`, it now prints
+  `Duplicate key "<value>" found in Dictionary literal`
+- Tighter shadow culling - fix light colinear to frustum edge
+  In rare situations if a light is placed near colinear to a frustum edge, the extra culling plane derived can have an inaccurate normal due to floating point error.
+  This PR detects colinear triangles, and prevents adding a culling plane in this situation.
+- Add Node.is_node_ready
+- nanosvg: Sync with upstream 93ce879
+  https://github.com/memononen/nanosvg/commit/93ce879dc4c04a3ef1758428ec80083c38610b1f
+- Backported ORMSpatialMaterial from Godot 3.x without any breaking changes.
+- FIXED: Trying to connect inexistent signal text_submitted.
+- Backport locale selection improvements.
+- Fix building with `disable_3d`
+- Fix SceneTree dock filter crash. The filter was crashing for two reasons: 1) Deleting a child invalidated the iteration of children 2) Child was accessed after deletion
+- Rotary input for 3.x
+- Fix GodotEditText white box showing during game load
+- Discrete Level of Detail
+  Add scene side discrete level of detail.
+  New node `LOD` for UI, and `LODManager` within `World` for automatically updating child visibilities based on distance from cameras.
+- Remove deprecated LaunchImages support and switch to Storyboard by default.
+- Fix finding AnimationPlayer in scene import
+  The scene importer always assumed that the AnimationPlayer is called
+  "AnimationPlayer".
+  This is not always true: for example the GLTF importer just creates an
+  AnimationPlayer with the default name, which may be "animation_player",
+  depending on the project settings.
+  This fix instead chooses the first node that is an AnimationPlayer, and
+  warns if there is more than one.
+- Physics Interpolation 2D - fix light and light occluder resetting
+  It turns out `NOTIFICATION_TRANSFORM_CHANGED` is deferred for these nodes, which can mean the transform is not set in the `VisualServer` until after the reset has been sent, even if the transform is set before the reset in script. This prevented the reset from acting correctly.
+  Here we explicitly set the transform prior to each reset, to ensure the `VisualServer` is up to date.
+- Optimize `AnimationTree::_process_graph()` Removes redundant lookups on HashMap.
+- Allow automatic provisioning in iOS when using development signature. Implements https://github.com/godotengine/godot/pull/86748/files in 3.x.
+- Physics Interpolation 2D - change transform API to use const ref
+- GDNative: Fix Linux arm32 warning about ignored sysv_abi attribute
+- Add a `get_or_add` method to Dictionary
+- Fix `Mesh::get_face_count()`
+  This fixes a minor bug whereby facecount was actually returning the facecount * 3.
+  There were no major problems from this, but it did mean the optional threshold poly count used when merging was out by a factor of 3.
+
+#### Godot4
+
+- Backported from godot4: Save PackedByteArrays as base64 encoded. - groud https://github.com/godotengine/godot/commit/de5073519eb8085a1b0f9736a44dfe3e4ae1c561
+- Backported from godot4: [TileMap] Fix forcing cleanup on exiting tree/canvas - AThousandShips https://github.com/godotengine/godot/commit/09edece17d837f13f23aab13a546fe3e97a6c223
+- Backported from godot4: Fixes "no cached rect" errors in TileMapLayer editor - groud https://github.com/godotengine/godot/commit/c928273c6c74dbbe3a21f9978ffdfa3fb03ea547
+- Backported from godot4: Correctly update TileMapLayer highlighting when disabling it - groud https://github.com/godotengine/godot/commit/256a6713f22d56b4a42703919f1e4718b95de9e6
+- Backported from Godot4: Expose TileMapLayer - groud https://github.com/godotengine/godot/commit/3cd4b2859c9d715459325b070643773b47472324
+- Backported dome of the codestyle improvements to math types from https://github.com/godotengine/godot/commit/3fb36bf395f2cc03ca8bb060d0afdb412c0855b4 .
+- Backported from Godot4: Allow disabling scrolling in Tree. - groud https://github.com/godotengine/godot/commit/b2dddc3c82e166cdca715e7f66eebf21be79f134
+- Backpoered from Godot 4: Add is_built_in() method to Resource. - KoBeWi https://github.com/godotengine/godot/commit/e393c2a7348d96587e15af17c72ebeff719d4be3
+- Backported from godot4: Use a SpinBox in the inspector array resize dialog. - fire-forge https://github.com/godotengine/godot/commit/d6188b46328bbfde3e7e97174e4a7fca05c90b20
+- Backported from godot 4:  Reduce contrast in inspector array element backgrounds. - fire-forge, reduz https://github.com/godotengine/godot/commit/f26414762f33c660083078d3e1d10bbf6e1039a3
+- Backported from godot4:  Defer EditorInspector::update_tree to the process stage to improve performance `EditorInspector::update_tree` is expensive, so defer the call to the process phase to prevent multiple calls in a single frame (when switching scene tabs). - Rindbee https://github.com/godotengine/godot/commit/f352c30ad59dc50d13bb979a63271b668fc39c5b
+- Bakcported a change to the EditorInspector from: Implement polygons editors in the tiles selection mode - groud https://github.com/godotengine/godot/commit/cec004adf08fc57cd1d27408ee5b67637355f2e6
+- Backported from godot4: Fix property array tooltip shows wrong ID on later pages. Also do some cleanup, use`element_position` instead of `begin_array_index + i` - jsjtxietian https://github.com/godotengine/godot/commit/d4ac65bc48aeda1e22a78c017110951a6aa4444b
+- Backported parts of: Clean-up array editing - reduz https://github.com/godotengine/godot/commit/0351a0908f87e0a67a2a81500275388a4c62ddfe And: Fixup array property inspector. - rburing https://github.com/godotengine/godot/commit/4a59188898284e583e66c3a5c9cd3969730ad2d4
+- Backported from Godot4: Implement Tabs minimum size. - groud https://github.com/godotengine/godot/commit/898a2a7cf3e39c37840749581e7683f37a3e011c
+- Backported min and max zoom setting to the EditorZoomWidget from godot 4.
+- Backported comparison operators to Array from godot4.
+- Backported PROPERTY_USAGE_ARRAY from Godot 4. Reused one of the old deprecated property usage flags for it. Original commit: Implement properties arrays in the Inspector. - groud https://github.com/godotengine/godot/commit/4bd7700e89f4476a3b2c76e7bed4263a111b3c09
+- Backported goodies to SelfList from Godot4.
+- Backported ViewPanner from Godot4. It also got bindings, now inherited from Resource, and is registered in the ClassDB.
+- Backported create_reference() helper methods for InputEvents from godot 4.
+- Backported godot 4's tilemap as a new layered tilemap module.
 
 ## [4.2.1]
 
