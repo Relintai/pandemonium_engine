@@ -33,6 +33,6 @@ $docker_build -t pandemonium-osx:${img_version} -f Dockerfile.osx . 2>&1 | tee l
 $docker_build -t pandemonium-ios:${img_version} -f Dockerfile.ios . 2>&1 | tee logs/ios.log
 
 docker build -t pandemonium-frt-base:${img_version} -f Dockerfile.frt_base . 2>&1 | tee logs/frt_base.log
-$docker_build -t pandemonium-frt-arm32v7:${img_version} -f Dockerfile.frt_arm32v7 . 2>&1 | tee logs/frt_arm32v7.log
-$docker_build -t pandemonium-frt-arm64v8:${img_version} -f Dockerfile.frt_arm64v8 . 2>&1 | tee logs/frt_arm64v8.log
+$docker_build -t pandemonium-frt-arm32:${img_version} -f Dockerfile.frt_arm32 . 2>&1 | tee logs/frt_arm32.log
+$docker_build -t pandemonium-frt-arm64:${img_version} -f Dockerfile.frt_arm64 . 2>&1 | tee logs/frt_arm64.log
 
