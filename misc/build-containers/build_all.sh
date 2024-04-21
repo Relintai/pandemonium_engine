@@ -32,37 +32,22 @@ fi
 
 
 # Javascript Build
-docker run ${custom_envvars} \
-        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
-        -v ${project_root}:/root/project \
-        -w /root/project pandemonium-javascript:${img_version} \
-        bash /root/engine_build_scripts/javascript.sh "$@" 2>&1 | tee logs/javascript.log
+#docker run ${custom_envvars} \
+#        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+#        -v ${project_root}:/root/project \
+#        -w /root/project pandemonium-javascript:${img_version} \
+#        bash /root/engine_build_scripts/javascript.sh "$@" 2>&1 | tee logs/javascript.log
+
+
+ # Android Build
+ docker run ${custom_envvars} \
+       -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+       -v ${project_root}:/root/project \
+       -w /root/project pandemonium-android:${img_version} \
+       bash /root/engine_build_scripts/android.sh "$@" 2>&1 | tee logs/android.log
+ 
 
 exit 1
-
-# Android editor
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=armv7 "$@" . 2>&1 | tee logs/android_editor_armv7.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=arm64v8 "$@" . 2>&1 | tee logs/android_editor_arm64v8.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=x86 "$@" . 2>&1 | tee logs/android_editor_x86.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=x86_64 "$@" . 2>&1 | tee logs/android_editor_x86_64.log
-
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} bash -c 'cd platform/android/java/;./gradlew generatePandemoniumEditor' . 2>&1 | tee logs/android_editor_assemble.log
-
-# Android templates release_debug
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=armv7 "$@" . 2>&1 | tee logs/android_template_rd_armv7.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=arm64v8 "$@" . 2>&1 | tee logs/android_template_rd_arm64v8.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=x86 "$@" . 2>&1 | tee logs/android_template_rd_x86.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=x86_64 "$@" . 2>&1 | tee logs/android_template_rd_x86_64.log
-
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} bash -c 'cd platform/android/java/;./gradlew generatePandemoniumTemplates' . 2>&1 | tee logs/android_template_rd_assemble.log
-
-# Android templates release
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=android android_arch=armv7 "$@" . 2>&1 | tee logs/android_template_r_armv7.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=android android_arch=arm64v8 "$@" . 2>&1 | tee logs/android_template_r_arm64v8.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=android android_arch=x86 "$@" . 2>&1 | tee logs/android_template_r_x86.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=android android_arch=x86_64 "$@" . 2>&1 | tee logs/android_template_r_x86_64.log
-
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} bash -c 'cd platform/android/java/;./gradlew generatePandemoniumTemplates' . 2>&1 | tee logs/android_template_r_assemble.log
 
 # OSX editor
 docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_editor_x86_64.log
@@ -141,6 +126,7 @@ files=(
   "android_release.apk"
   "android_editor.apk"
   "pandemonium-lib.release.aar"
+  "pandemonium-lib.debug.aar"
 
   # OSX
   "pandemonium.osx.opt.arm64"
