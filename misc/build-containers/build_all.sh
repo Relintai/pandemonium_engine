@@ -39,30 +39,23 @@ fi
 #        bash /root/engine_build_scripts/javascript.sh "$@" 2>&1 | tee logs/javascript.log
 
 
- # Android Build
- docker run ${custom_envvars} \
+# Android Build
+#docker run ${custom_envvars} \
+#       -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+#       -v ${project_root}:/root/project \
+#       -w /root/project pandemonium-android:${img_version} \
+#       bash /root/engine_build_scripts/android.sh "$@" 2>&1 | tee logs/android.log
+ 
+# OSX Build
+docker run ${custom_envvars} \
        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
        -v ${project_root}:/root/project \
-       -w /root/project pandemonium-android:${img_version} \
-       bash /root/engine_build_scripts/android.sh "$@" 2>&1 | tee logs/android.log
- 
+       -w /root/project pandemonium-osx:${img_version} \
+       bash /root/engine_build_scripts/osx.sh "$@" 2>&1 | tee logs/osx.log
+
+
 
 exit 1
-
-# OSX editor
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_editor_x86_64.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=arm64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/sx_editor_arm64.log
-
-# OSX templates release_debug
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_template_rd_x86_64.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=arm64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_template_rd_arm64.log
-
-# OSX templates release
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_template_r_x86_64.log
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=osx arch=arm64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_template_r_arm64.log
-
-# OSX lipo
-docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project/misc/osx pandemonium-osx:${img_version} bash -c ./lipo.sh
 
 #ios
 #docker run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-ios:${img_version} scons bir_strip "$@" . 2>&1 | tee logs/bir.log
@@ -129,16 +122,18 @@ files=(
   "pandemonium-lib.debug.aar"
 
   # OSX
-  "pandemonium.osx.opt.arm64"
   "pandemonium.osx.opt.universal"
+  "pandemonium.osx.opt.debug.universal"
+  "pandemonium.osx.opt.tools.universal"
+
+  # Note: These are not needed in the final release, only the universals.
+  "pandemonium.osx.opt.arm64"
   "pandemonium.osx.opt.x86_64"
 
   "pandemonium.osx.opt.debug.arm64"
-  "pandemonium.osx.opt.debug.universal"
   "pandemonium.osx.opt.debug.x86_64"
 
   "pandemonium.osx.opt.tools.arm64"
-  "pandemonium.osx.opt.tools.universal"
   "pandemonium.osx.opt.tools.x86_64"
 )
 

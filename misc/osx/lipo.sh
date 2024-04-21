@@ -1,4 +1,4 @@
-export STRIP="x86_64-apple-darwin21.4-strip -u -r" 
+export STRIP="x86_64-apple-darwin23.3-strip -u -r" 
 
 # Tools
 lipo -create  ../../bin/pandemonium.osx.opt.tools.x86_64 ../../bin/pandemonium.osx.opt.tools.arm64 -output ../../bin/pandemonium.osx.opt.tools.universal
