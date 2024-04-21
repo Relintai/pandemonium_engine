@@ -13,8 +13,8 @@
 	<methods>
 		<method name="_tile_data_runtime_update" qualifiers="virtual">
 			<return type="void" />
-			<param index="0" name="coords" type="Vector2i" />
-			<param index="1" name="tile_data" type="TileData" />
+			<argument index="0" name="coords" type="Vector2i" />
+			<argument index="1" name="tile_data" type="TileData" />
 			<description>
 				Called with a [TileData] object about to be used internally by the [TileMapLayer], allowing its modification at runtime.
 				This method is only called if [method _use_tile_data_runtime_update] is implemented and returns [code]true[/code] for the given tile [param coords].
@@ -24,7 +24,7 @@
 		</method>
 		<method name="_use_tile_data_runtime_update" qualifiers="virtual">
 			<return type="bool" />
-			<param index="0" name="coords" type="Vector2i" />
+			<argument index="0" name="coords" type="Vector2i" />
 			<description>
 				Should return [code]true[/code] if the tile at coordinates [param coords] requires a runtime update.
 				[b]Warning:[/b] Make sure this function only returns [code]true[/code] when needed. Any tile processed at runtime without a need for it will imply a significant performance penalty.
@@ -39,7 +39,7 @@
 		</method>
 		<method name="erase_cell">
 			<return type="void" />
-			<param index="0" name="coords" type="Vector2i" />
+			<argument index="0" name="coords" type="Vector2i" />
 			<description>
 				Erases the cell at coordinates [param coords].
 			</description>
@@ -52,28 +52,28 @@
 		</method>
 		<method name="get_cell_alternative_tile" qualifiers="const">
 			<return type="int" />
-			<param index="0" name="coords" type="Vector2i" />
+			<argument index="0" name="coords" type="Vector2i" />
 			<description>
 				Returns the tile alternative ID of the cell at coordinates [param coords].
 			</description>
 		</method>
 		<method name="get_cell_atlas_coords" qualifiers="const">
 			<return type="Vector2i" />
-			<param index="0" name="coords" type="Vector2i" />
+			<argument index="0" name="coords" type="Vector2i" />
 			<description>
 				Returns the tile atlas coordinates ID of the cell at coordinates [param coords]. Returns [code]Vector2i(-1, -1)[/code] if the cell does not exist.
 			</description>
 		</method>
 		<method name="get_cell_source_id" qualifiers="const">
 			<return type="int" />
-			<param index="0" name="coords" type="Vector2i" />
+			<argument index="0" name="coords" type="Vector2i" />
 			<description>
 				Returns the tile source ID of the cell at coordinates [param coords]. Returns [code]-1[/code] if the cell does not exist.
 			</description>
 		</method>
 		<method name="get_cell_tile_data" qualifiers="const">
 			<return type="TileData" />
-			<param index="0" name="coords" type="Vector2i" />
+			<argument index="0" name="coords" type="Vector2i" />
 			<description>
 				Returns the [TileData] object associated with the given cell, or [code]null[/code] if the cell does not exist or is not a [TileSetAtlasSource].
 				[codeblock]
@@ -89,7 +89,7 @@
 		</method>
 		<method name="get_coords_for_body_rid" qualifiers="const">
 			<return type="Vector2i" />
-			<param index="0" name="body" type="RID" />
+			<argument index="0" name="body" type="RID" />
 			<description>
 				Returns the coordinates of the tile for given physics body [RID]. Such an [RID] can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 			</description>
@@ -103,22 +103,22 @@
 		</method>
 		<method name="get_neighbor_cell" qualifiers="const">
 			<return type="Vector2i" />
-			<param index="0" name="coords" type="Vector2i" />
-			<param index="1" name="neighbor" type="int" enum="TileSet.CellNeighbor" />
+			<argument index="0" name="coords" type="Vector2i" />
+			<argument index="1" name="neighbor" type="int" enum="TileSet.CellNeighbor" />
 			<description>
 				Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
 			</description>
 		</method>
 		<method name="get_pattern">
 			<return type="TileMapPattern" />
-			<param index="0" name="coords_array" type="PoolVector2iArray" />
+			<argument index="0" name="coords_array" type="PoolVector2iArray" />
 			<description>
 				Creates and returns a new [TileMapPattern] from the given array of cells. See also [method set_pattern].
 			</description>
 		</method>
 		<method name="get_surrounding_cells">
 			<return type="PoolVector2iArray" />
-			<param index="0" name="coords" type="Vector2i" />
+			<argument index="0" name="coords" type="Vector2i" />
 			<description>
 				Returns the list of all neighboring cells to the one at [param coords].
 			</description>
@@ -131,9 +131,9 @@
 		</method>
 		<method name="get_used_cells_by_id" qualifiers="const">
 			<return type="PoolVector2iArray" />
-			<param index="0" name="source_id" type="int" default="-1" />
-			<param index="1" name="atlas_coords" type="Vector2i" default="Vector2i(-1, -1)" />
-			<param index="2" name="alternative_tile" type="int" default="-1" />
+			<argument index="0" name="source_id" type="int" default="-1" />
+			<argument index="1" name="atlas_coords" type="Vector2i" default="Vector2i(-1, -1)" />
+			<argument index="2" name="alternative_tile" type="int" default="-1" />
 			<description>
 				Returns a [Vector2i] array with the positions of all cells containing a tile. Tiles may be filtered according to their source ([param source_id]), their atlas coordinates ([param atlas_coords]), or alternative id ([param alternative_tile]).
 				If a parameter has its value set to the default one, this parameter is not used to filter a cell. Thus, if all parameters have their respective default values, this method returns the same result as [method get_used_cells].
@@ -148,30 +148,30 @@
 		</method>
 		<method name="has_body_rid" qualifiers="const">
 			<return type="bool" />
-			<param index="0" name="body" type="RID" />
+			<argument index="0" name="body" type="RID" />
 			<description>
 				Returns whether the provided [param body] [RID] belongs to one of this [TileMapLayer]'s cells.
 			</description>
 		</method>
 		<method name="local_to_map" qualifiers="const">
 			<return type="Vector2i" />
-			<param index="0" name="local_position" type="Vector2" />
+			<argument index="0" name="local_position" type="Vector2" />
 			<description>
 				Returns the map coordinates of the cell containing the given [param local_position]. If [param local_position] is in global coordinates, consider using [method Node2D.to_local] before passing it to this method. See also [method map_to_local].
 			</description>
 		</method>
 		<method name="map_pattern">
 			<return type="Vector2i" />
-			<param index="0" name="position_in_tilemap" type="Vector2i" />
-			<param index="1" name="coords_in_pattern" type="Vector2i" />
-			<param index="2" name="pattern" type="TileMapPattern" />
+			<argument index="0" name="position_in_tilemap" type="Vector2i" />
+			<argument index="1" name="coords_in_pattern" type="Vector2i" />
+			<argument index="2" name="pattern" type="TileMapPattern" />
 			<description>
 				Returns for the given coordinates [param coords_in_pattern] in a [TileMapPattern] the corresponding cell coordinates if the pattern was pasted at the [param position_in_tilemap] coordinates (see [method set_pattern]). This mapping is required as in half-offset tile shapes, the mapping might not work by calculating [code]position_in_tile_map + coords_in_pattern[/code].
 			</description>
 		</method>
 		<method name="map_to_local" qualifiers="const">
 			<return type="Vector2" />
-			<param index="0" name="map_position" type="Vector2i" />
+			<argument index="0" name="map_position" type="Vector2i" />
 			<description>
 				Returns the centered position of a cell in the [TileMapLayer]'s local coordinate space. To convert the returned value into global coordinates, use [method Node2D.to_global]. See also [method local_to_map].
 				[b]Note:[/b] This may not correspond to the visual position of the tile, i.e. it ignores the [member TileData.texture_origin] property of individual tiles.
@@ -187,10 +187,10 @@
 		</method>
 		<method name="set_cell">
 			<return type="void" />
-			<param index="0" name="coords" type="Vector2i" />
-			<param index="1" name="source_id" type="int" default="-1" />
-			<param index="2" name="atlas_coords" type="Vector2i" default="Vector2i(-1, -1)" />
-			<param index="3" name="alternative_tile" type="int" default="0" />
+			<argument index="0" name="coords" type="Vector2i" />
+			<argument index="1" name="source_id" type="int" default="-1" />
+			<argument index="2" name="atlas_coords" type="Vector2i" default="Vector2i(-1, -1)" />
+			<argument index="3" name="alternative_tile" type="int" default="0" />
 			<description>
 				Sets the tile identifiers for the cell at coordinates [param coords]. Each tile of the [TileSet] is identified using three parts:
 				- The source identifier [param source_id] identifies a [TileSetSource] identifier. See [method TileSet.set_source_id],
@@ -201,10 +201,10 @@
 		</method>
 		<method name="set_cells_terrain_connect">
 			<return type="void" />
-			<param index="0" name="cells" type="PoolVector2iArray" />
-			<param index="1" name="terrain_set" type="int" />
-			<param index="2" name="terrain" type="int" />
-			<param index="3" name="ignore_empty_terrains" type="bool" default="true" />
+			<argument index="0" name="cells" type="PoolVector2iArray" />
+			<argument index="1" name="terrain_set" type="int" />
+			<argument index="2" name="terrain" type="int" />
+			<argument index="3" name="ignore_empty_terrains" type="bool" default="true" />
 			<description>
 				Update all the cells in the [param cells] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. If an updated cell has the same terrain as one of its neighboring cells, this function tries to join the two. This function might update neighboring tiles if needed to create correct terrain transitions.
 				If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
@@ -213,10 +213,10 @@
 		</method>
 		<method name="set_cells_terrain_path">
 			<return type="void" />
-			<param index="0" name="path" type="PoolVector2iArray" />
-			<param index="1" name="terrain_set" type="int" />
-			<param index="2" name="terrain" type="int" />
-			<param index="3" name="ignore_empty_terrains" type="bool" default="true" />
+			<argument index="0" name="path" type="PoolVector2iArray" />
+			<argument index="1" name="terrain_set" type="int" />
+			<argument index="2" name="terrain" type="int" />
+			<argument index="3" name="ignore_empty_terrains" type="bool" default="true" />
 			<description>
 				Update all the cells in the [param path] coordinates array so that they use the given [param terrain] for the given [param terrain_set]. The function will also connect two successive cell in the path with the same terrain. This function might update neighboring tiles if needed to create correct terrain transitions.
 				If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
@@ -225,15 +225,15 @@
 		</method>
 		<method name="set_navigation_map">
 			<return type="void" />
-			<param index="0" name="map" type="RID" />
+			<argument index="0" name="map" type="RID" />
 			<description>
 				Sets a custom [param map] as a [NavigationServer2D] navigation map. If not set, uses the default [World2D] navigation map instead.
 			</description>
 		</method>
 		<method name="set_pattern">
 			<return type="void" />
-			<param index="0" name="position" type="Vector2i" />
-			<param index="1" name="pattern" type="TileMapPattern" />
+			<argument index="0" name="position" type="Vector2i" />
+			<argument index="1" name="pattern" type="TileMapPattern" />
 			<description>
 				Pastes the [TileMapPattern] at the given [param position] in the tile map. See also [method get_pattern].
 			</description>
@@ -268,7 +268,7 @@
 			The quadrant size does not apply on a Y-sorted [TileMapLayer], as tiles are be grouped by Y position instead in that case.
 			[b]Note:[/b] As quadrants are created according to the map's coordinate system, the quadrant's "square shape" might not look like square in the [TileMapLayer]'s local coordinate system.
 		</member>
-		<member name="tile_map_data" type="PackedByteArray" setter="set_tile_map_data_from_array" getter="get_tile_map_data_as_array" default="PackedByteArray(0, 0)">
+		<member name="tile_map_data" type="PoolByteArray" setter="set_tile_map_data_from_array" getter="get_tile_map_data_as_array" default="PoolByteArray(0, 0)">
 			The raw tile map data as a byte array.
 		</member>
 		<member name="tile_set" type="TileSet" setter="set_tile_set" getter="get_tile_set">
