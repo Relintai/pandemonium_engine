@@ -549,7 +549,7 @@ void MarkdownRenderer::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_renderer_callback", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "MarkdownRendererCustomRendererCallback")));
 
-	ClassDB::bind_method(D_METHOD("renderer_callback", "data"), &MarkdownRenderer::renderer_callback);
+	//ClassDB::bind_method(D_METHOD("renderer_callback", "data"), &MarkdownRenderer::renderer_callback);
 	ClassDB::bind_method(D_METHOD("_renderer_callback", "data"), &MarkdownRenderer::_renderer_callback);
 
 	BIND_ENUM_CONSTANT(RENDER_TYPE_HTML);
