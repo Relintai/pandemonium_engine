@@ -49,7 +49,7 @@
 			Toc level.
 		</member>
 		<member name="use_smartypants" type="bool" setter="set_use_smartypants" getter="get_use_smartypants" default="false">
-			Whether to use smartypants or not. SmartyPants translates plain ASCII punctuation characters into “smart” typographic punctuation HTML entities. 
+			Whether to use smartypants or not. SmartyPants translates plain ASCII punctuation characters into “smart” typographic punctuation HTML entities.
 		</member>
 	</members>
 	<constants>
