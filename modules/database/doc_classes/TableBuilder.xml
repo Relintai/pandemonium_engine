@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TableBuilder" inherits="Reference" version="4.3">
+<class name="TableBuilder" inherits="Reference" version="4.4">
 	<brief_description>
 		A class that helps you with building and running database backend specific sql for creating / altering / deleting tables.
 	</brief_description>

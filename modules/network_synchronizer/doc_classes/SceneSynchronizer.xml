@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SceneSynchronizer" inherits="Node" version="4.3">
+<class name="SceneSynchronizer" inherits="Node" version="4.4">
 	<brief_description>
 		The `SceneSynchronizer` is used to synchronize all the peers using server authoritative networking model.
 	</brief_description>

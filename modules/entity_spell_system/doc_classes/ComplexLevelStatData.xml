@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ComplexLevelStatData" inherits="LevelStatData" version="4.3">
+<class name="ComplexLevelStatData" inherits="LevelStatData" version="4.4">
 	<brief_description>
 		Per level stat information for an [Entity].
 	</brief_description>

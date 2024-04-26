@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="MarkdownRenderer" inherits="Reference" version="4.3">
+<class name="MarkdownRenderer" inherits="Reference" version="4.4">
 	<brief_description>
 		Renders markdown as HTML.
 	</brief_description>
@@ -9,9 +9,27 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="_renderer_callback" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="MarkdownRendererCustomRendererCallback" />
+			<description>
+			</description>
+		</method>
+		<method name="render">
+			<return type="String" />
+			<argument index="0" name="markdown" type="String" />
+			<description>
+			</description>
+		</method>
 		<method name="render_to_html">
 			<return type="String" />
 			<argument index="0" name="markdown" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="renderer_callback">
+			<return type="void" />
+			<argument index="0" name="data" type="MarkdownRendererCustomRendererCallback" />
 			<description>
 			</description>
 		</method>
@@ -34,6 +52,8 @@
 		<constant name="RENDER_TYPE_HTML" value="0" enum="RenderType">
 		</constant>
 		<constant name="RENDER_TYPE_HTML_TOC" value="1" enum="RenderType">
+		</constant>
+		<constant name="RENDERER_TYPE_CUSTOM" value="2" enum="RenderType">
 		</constant>
 		<constant name="HTML_FLAG_SKIP_HTML" value="1" enum="HTMLFlags">
 		</constant>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="LayeredTileSetSource" inherits="Resource" version="4.3">
+<class name="LayeredTileSetSource" inherits="Resource" version="4.4">
 	<brief_description>
 		Exposes a set of tiles for a [LayeredTileSet] resource.
 	</brief_description>

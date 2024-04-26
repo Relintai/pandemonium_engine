@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GSAICohesion" inherits="GSAIGroupBehavior" version="4.3">
+<class name="GSAICohesion" inherits="GSAIGroupBehavior" version="4.4">
 	<brief_description>
 		Calculates an acceleration that attempts to move the agent towards the center of mass of the agents in the area defined by the GSAIProximity.
 	</brief_description>

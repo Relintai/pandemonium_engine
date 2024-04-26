@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WorldEnvironment3D" inherits="Node" version="4.3">
+<class name="WorldEnvironment3D" inherits="Node" version="4.4">
 	<brief_description>
 		Default environment properties for the entire scene (post-processing effects, lighting and background settings).
 	</brief_description>

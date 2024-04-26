@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MarkdownRendererCustomRendererCallback" inherits="Reference" version="4.4">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="alt" type="String" setter="set_alt" getter="get_alt" default="&quot;&quot;">
+		</member>
+		<member name="auto_link_type" type="int" setter="set_auto_link_type" getter="get_auto_link_type" enum="MarkdownRendererCustomRendererCallback.AutolinkType" default="0">
+		</member>
+		<member name="callback_type" type="int" setter="set_callback_type" getter="get_callback_type" enum="MarkdownRendererCustomRendererCallback.CallbackType" default="0">
+		</member>
+		<member name="content" type="String" setter="set_content" getter="get_content" default="&quot;&quot;">
+		</member>
+		<member name="display_mode" type="int" setter="set_display_mode" getter="get_display_mode" default="0">
+		</member>
+		<member name="inline_render" type="int" setter="set_inline_render" getter="get_inline_render" default="0">
+		</member>
+		<member name="lang" type="String" setter="set_lang" getter="get_lang" default="&quot;&quot;">
+		</member>
+		<member name="level" type="int" setter="set_level" getter="get_level" default="0">
+		</member>
+		<member name="link" type="String" setter="set_link" getter="get_link" default="&quot;&quot;">
+		</member>
+		<member name="list_flags" type="int" setter="set_list_flags" getter="get_list_flags" default="0">
+		</member>
+		<member name="num" type="int" setter="set_num" getter="get_num" default="0">
+		</member>
+		<member name="result" type="String" setter="set_result" getter="get_result" default="&quot;&quot;">
+		</member>
+		<member name="result_code" type="int" setter="set_result_code" getter="get_result_code" default="1">
+		</member>
+		<member name="table_flags" type="int" setter="set_table_flags" getter="get_table_flags" default="0">
+		</member>
+		<member name="text" type="String" setter="set_text" getter="get_text" default="&quot;&quot;">
+		</member>
+		<member name="title" type="String" setter="set_title" getter="get_title" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+		<constant name="CALLBACK_BLOCKCODE" value="0" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_BLOCKQUOTE" value="1" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_HEADER" value="2" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_HRULE" value="3" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_LIST" value="4" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_LISTITEM" value="5" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_PARAGRAPH" value="6" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_TABLE" value="7" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_TABLE_HEADER" value="8" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_TABLE_BODY" value="9" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_TABLE_ROW" value="10" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_TABLE_CELL" value="11" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_FOOTNOTES" value="12" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_FOOTNOTE_DEF" value="13" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_BLOCKHTML" value="14" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_AUTOLINK" value="15" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_CODESPAN" value="16" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_DOUBLE_EMPHASIS" value="17" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_EMPHASIS" value="18" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_UNDERLINE" value="19" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_HIGHLIGHT" value="20" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_QUOTE" value="21" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_IMAGE" value="22" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_LINEBREAK" value="23" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_LINK" value="24" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_TRIPLE_EMPHASIS" value="25" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_STRIKETHROUGH" value="26" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_SUPERSCRIPT" value="27" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_FOOTNOTE_REF" value="28" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_MATH" value="29" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_RAW_HTML" value="30" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_ENTITY" value="31" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_NORMAL_TEXT" value="32" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_DOC_HEADER" value="33" enum="CallbackType">
+		</constant>
+		<constant name="CALLBACK_DOC_FOOTER" value="34" enum="CallbackType">
+		</constant>
+		<constant name="LIST_FLAG_ORDERED" value="1" enum="ListFlags">
+		</constant>
+		<constant name="LIST_FLAG_LI_BLOCK" value="2" enum="ListFlags">
+		</constant>
+		<constant name="TABLE_FLAG_ALIGN_LEFT" value="1" enum="TableFlags">
+		</constant>
+		<constant name="TABLE_FLAG_ALIGN_RIGHT" value="2" enum="TableFlags">
+		</constant>
+		<constant name="TABLE_FLAG_ALIGN_CENTER" value="3" enum="TableFlags">
+		</constant>
+		<constant name="TABLE_FLAG_ALIGNMASK" value="3" enum="TableFlags">
+		</constant>
+		<constant name="TABLE_FLAG_HEADER" value="4" enum="TableFlags">
+		</constant>
+		<constant name="AUTOLINK_TYPE_NONE" value="0" enum="AutolinkType">
+		</constant>
+		<constant name="AUTOLINK_TYPE_NORMAL" value="1" enum="AutolinkType">
+		</constant>
+		<constant name="AUTOLINK_TYPE_EMAIL" value="2" enum="AutolinkType">
+		</constant>
+	</constants>
+</class>
