@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="MarkdownRendererCustomRendererCallback" inherits="Reference" version="4.4">
 	<brief_description>
+		Helper class used by [MarkdownRenderer].
 	</brief_description>
 	<description>
+		Helper class used by [MarkdownRenderer].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,128 +12,189 @@
 	</methods>
 	<members>
 		<member name="alt" type="String" setter="set_alt" getter="get_alt" default="&quot;&quot;">
+			Alt text.
 		</member>
 		<member name="auto_link_type" type="int" setter="set_auto_link_type" getter="get_auto_link_type" enum="MarkdownRendererCustomRendererCallback.AutolinkType" default="0">
+			Auto link type.
 		</member>
 		<member name="callback_type" type="int" setter="set_callback_type" getter="get_callback_type" enum="MarkdownRendererCustomRendererCallback.CallbackType" default="0">
+			Callback type.
 		</member>
 		<member name="content" type="String" setter="set_content" getter="get_content" default="&quot;&quot;">
+			Content.
 		</member>
 		<member name="display_mode" type="int" setter="set_display_mode" getter="get_display_mode" default="0">
+			Display mode.
 		</member>
 		<member name="inline_render" type="int" setter="set_inline_render" getter="get_inline_render" default="0">
+			Inline render.
 		</member>
 		<member name="lang" type="String" setter="set_lang" getter="get_lang" default="&quot;&quot;">
+			Lang.
 		</member>
 		<member name="level" type="int" setter="set_level" getter="get_level" default="0">
+			Lebel.
 		</member>
 		<member name="link" type="String" setter="set_link" getter="get_link" default="&quot;&quot;">
+			Link.
 		</member>
 		<member name="list_flags" type="int" setter="set_list_flags" getter="get_list_flags" default="0">
+			List Flags.
 		</member>
 		<member name="num" type="int" setter="set_num" getter="get_num" default="0">
+			Num.
 		</member>
 		<member name="result" type="String" setter="set_result" getter="get_result" default="&quot;&quot;">
+			Set this to send the renderer the resulting text.
 		</member>
 		<member name="result_code" type="int" setter="set_result_code" getter="get_result_code" default="1">
+			Result code. Some of the [member callback_type]s use it.
 		</member>
 		<member name="table_flags" type="int" setter="set_table_flags" getter="get_table_flags" default="0">
+			Table flags.
 		</member>
 		<member name="text" type="String" setter="set_text" getter="get_text" default="&quot;&quot;">
+			Text.
 		</member>
 		<member name="title" type="String" setter="set_title" getter="get_title" default="&quot;&quot;">
+			Title.
 		</member>
 	</members>
 	<constants>
 		<constant name="CALLBACK_BLOCKCODE" value="0" enum="CallbackType">
+			Blockcode callback. Sets [member text], [member lang].
 		</constant>
 		<constant name="CALLBACK_BLOCKQUOTE" value="1" enum="CallbackType">
+			Blockquote callback. Sets [member content].
 		</constant>
 		<constant name="CALLBACK_HEADER" value="2" enum="CallbackType">
+			Header callback. Sets [member content], [member level].
 		</constant>
 		<constant name="CALLBACK_HRULE" value="3" enum="CallbackType">
+			Hrule callback. No properties.
 		</constant>
 		<constant name="CALLBACK_LIST" value="4" enum="CallbackType">
+			List callback. Sets [member content], [member flags].
 		</constant>
 		<constant name="CALLBACK_LISTITEM" value="5" enum="CallbackType">
+			Listitem callback. Sets [member content], [member flags].
 		</constant>
 		<constant name="CALLBACK_PARAGRAPH" value="6" enum="CallbackType">
+			Paragraph callback. Sets [member content].
 		</constant>
 		<constant name="CALLBACK_TABLE" value="7" enum="CallbackType">
+			Table callback. Sets [member content].
 		</constant>
 		<constant name="CALLBACK_TABLE_HEADER" value="8" enum="CallbackType">
+			Table Header callback. Sets [member content].
 		</constant>
 		<constant name="CALLBACK_TABLE_BODY" value="9" enum="CallbackType">
+			Table Body callback. Sets [member content].
 		</constant>
 		<constant name="CALLBACK_TABLE_ROW" value="10" enum="CallbackType">
+			table_row callback. Sets [member content].
 		</constant>
 		<constant name="CALLBACK_TABLE_CELL" value="11" enum="CallbackType">
+			Table Cell callback. Sets [member content], [member flags].
 		</constant>
 		<constant name="CALLBACK_FOOTNOTES" value="12" enum="CallbackType">
+			Footnotes callback. Sets [member content].
 		</constant>
 		<constant name="CALLBACK_FOOTNOTE_DEF" value="13" enum="CallbackType">
+			Footnote Def callback. Sets [member content], [member num].
 		</constant>
 		<constant name="CALLBACK_BLOCKHTML" value="14" enum="CallbackType">
+			Blockhtml callback. Sets [member text].
 		</constant>
 		<constant name="CALLBACK_AUTOLINK" value="15" enum="CallbackType">
+			Autolink callback. Sets [member link], [member type]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_CODESPAN" value="16" enum="CallbackType">
+			Codespan callback. Sets [member text]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_DOUBLE_EMPHASIS" value="17" enum="CallbackType">
+			Double Emphasis callback. Sets [member content]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_EMPHASIS" value="18" enum="CallbackType">
+			Emphasis callback. Sets [member content]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_UNDERLINE" value="19" enum="CallbackType">
+			Underline callback. Sets [member content]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_HIGHLIGHT" value="20" enum="CallbackType">
+			Highlight callback. Sets [member content]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_QUOTE" value="21" enum="CallbackType">
+			Quote callback. Sets [member content]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_IMAGE" value="22" enum="CallbackType">
+			Image callback. Sets [member link], [member title], [member alt]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_LINEBREAK" value="23" enum="CallbackType">
+			Linebreak callback. No properties. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_LINK" value="24" enum="CallbackType">
+			Link callback. Sets [member content], [member link], [member title]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_TRIPLE_EMPHASIS" value="25" enum="CallbackType">
+			Triple Emphasis callback. Sets [member content]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_STRIKETHROUGH" value="26" enum="CallbackType">
+			Strikethrough callback. Sets [member content]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_SUPERSCRIPT" value="27" enum="CallbackType">
+			Superscript callback. Sets [member content]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_FOOTNOTE_REF" value="28" enum="CallbackType">
+			Footnote Ref callback. Sets [member num]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_MATH" value="29" enum="CallbackType">
+			Math callback. Sets [member text], [member displaymode]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_RAW_HTML" value="30" enum="CallbackType">
+			Raw html callback. Sets [member text]. Uses [member result_code]. If set to 0 just copies input to output.
 		</constant>
 		<constant name="CALLBACK_ENTITY" value="31" enum="CallbackType">
+			Entity callback. Sets [member text].
 		</constant>
 		<constant name="CALLBACK_NORMAL_TEXT" value="32" enum="CallbackType">
+			Normal Text callback. Sets [member text].
 		</constant>
 		<constant name="CALLBACK_DOC_HEADER" value="33" enum="CallbackType">
+			Doc Header callback. Sets [member inline_render].
 		</constant>
 		<constant name="CALLBACK_DOC_FOOTER" value="34" enum="CallbackType">
+			Doc Footer callback. Sets [member inline_render].
 		</constant>
 		<constant name="LIST_FLAG_ORDERED" value="1" enum="ListFlags">
+			Ordered list.
 		</constant>
 		<constant name="LIST_FLAG_LI_BLOCK" value="2" enum="ListFlags">
+			li block.
 		</constant>
 		<constant name="TABLE_FLAG_ALIGN_LEFT" value="1" enum="TableFlags">
+			Left algin.
 		</constant>
 		<constant name="TABLE_FLAG_ALIGN_RIGHT" value="2" enum="TableFlags">
+			Right align.
 		</constant>
 		<constant name="TABLE_FLAG_ALIGN_CENTER" value="3" enum="TableFlags">
+			Center align.
 		</constant>
 		<constant name="TABLE_FLAG_ALIGNMASK" value="3" enum="TableFlags">
+			Align mask.
 		</constant>
 		<constant name="TABLE_FLAG_HEADER" value="4" enum="TableFlags">
+			Header flag.
 		</constant>
 		<constant name="AUTOLINK_TYPE_NONE" value="0" enum="AutolinkType">
+			No autolink.
 		</constant>
 		<constant name="AUTOLINK_TYPE_NORMAL" value="1" enum="AutolinkType">
+			Normal autolink.
 		</constant>
 		<constant name="AUTOLINK_TYPE_EMAIL" value="2" enum="AutolinkType">
+			Email autolink.
 		</constant>
 	</constants>
 </class>

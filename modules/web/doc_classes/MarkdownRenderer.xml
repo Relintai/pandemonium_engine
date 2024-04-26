@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="MarkdownRenderer" inherits="Reference" version="4.4">
 	<brief_description>
-		Renders markdown as HTML.
+		Renders markdown.
 	</brief_description>
 	<description>
-		Renders markdown as HTML.
+		Renders markdown (by defautl as HTML).
+		Rendering logic can be customized by overriding [member _renderer_callback] and setting [member render_type] to [member RENDERER_TYPE_CUSTOM].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -13,83 +14,107 @@
 			<return type="void" />
 			<argument index="0" name="data" type="MarkdownRendererCustomRendererCallback" />
 			<description>
+				If you use RENDERER_TYPE_CUSTOM, this is the callback thay you are expected to implement.
 			</description>
 		</method>
 		<method name="render">
 			<return type="String" />
 			<argument index="0" name="markdown" type="String" />
 			<description>
+				Render a markdown document.
 			</description>
 		</method>
 		<method name="render_to_html">
 			<return type="String" />
 			<argument index="0" name="markdown" type="String" />
 			<description>
-			</description>
-		</method>
-		<method name="renderer_callback">
-			<return type="void" />
-			<argument index="0" name="data" type="MarkdownRendererCustomRendererCallback" />
-			<description>
+				Deprecated. Use [member render] instead (it's the same).
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="html_flags" type="int" setter="set_html_flags" getter="get_html_flags" default="0">
+			HTML render flags to use.
 		</member>
 		<member name="markdown_extensions" type="int" setter="set_markdown_extensions" getter="get_markdown_extensions" default="1051">
+			Enabled markdown extensions.
 		</member>
 		<member name="max_nesting" type="int" setter="set_max_nesting" getter="get_max_nesting" default="16">
+			Maximum nesting.
 		</member>
 		<member name="render_type" type="int" setter="set_render_type" getter="get_render_type" enum="MarkdownRenderer.RenderType" default="0">
+			Renderer type.
 		</member>
 		<member name="toc_level" type="int" setter="set_toc_level" getter="get_toc_level" default="0">
+			Toc level.
 		</member>
 		<member name="use_smartypants" type="bool" setter="set_use_smartypants" getter="get_use_smartypants" default="false">
+			Whether to use smartypants or not. SmartyPants translates plain ASCII punctuation characters into “smart” typographic punctuation HTML entities. 
 		</member>
 	</members>
 	<constants>
 		<constant name="RENDER_TYPE_HTML" value="0" enum="RenderType">
+			Full html renderer.
 		</constant>
 		<constant name="RENDER_TYPE_HTML_TOC" value="1" enum="RenderType">
+			Toc html renderer.
 		</constant>
 		<constant name="RENDERER_TYPE_CUSTOM" value="2" enum="RenderType">
+			Custom renderer. When rendering the [member _renderer_callback] virtual method will be called for every entity.
 		</constant>
 		<constant name="HTML_FLAG_SKIP_HTML" value="1" enum="HTMLFlags">
+			Skip html.
 		</constant>
 		<constant name="HTML_FLAG_ESCAPE" value="2" enum="HTMLFlags">
+			Escape html.
 		</constant>
 		<constant name="HTML_FLAG_HARD_WRAP" value="4" enum="HTMLFlags">
+			Hard wrap html.
 		</constant>
 		<constant name="HTML_FLAG_USE_XHTML" value="8" enum="HTMLFlags">
+			Use XHTML.
 		</constant>
 		<constant name="EXTENSION_TABLES" value="1" enum="MarkdownExtensions">
+			Tables extension.
 		</constant>
 		<constant name="EXTENSION_FENCED_CODE" value="2" enum="MarkdownExtensions">
+			Fenced code extension.
 		</constant>
 		<constant name="EXTENSION_FOOTNOTES" value="4" enum="MarkdownExtensions">
+			Footnotes extension.
 		</constant>
 		<constant name="EXTENSION_AUTOLINK" value="8" enum="MarkdownExtensions">
+			Autolink extension.
 		</constant>
 		<constant name="EXTENSION_STRKIETHROUGH" value="16" enum="MarkdownExtensions">
+			Strikethrough extension.
 		</constant>
 		<constant name="EXTENSION_UNDERLINE" value="32" enum="MarkdownExtensions">
+			Underline extension.
 		</constant>
 		<constant name="EXTENSION_HIGHLIGHT" value="64" enum="MarkdownExtensions">
+			Highlight extension.
 		</constant>
 		<constant name="EXTENSION_QUOTE" value="128" enum="MarkdownExtensions">
+			Quote extension.
 		</constant>
 		<constant name="EXTENSION_SUPERSCRIPT" value="256" enum="MarkdownExtensions">
+			Superscript extension.
 		</constant>
 		<constant name="EXTENSION_MATH" value="512" enum="MarkdownExtensions">
+			Math extension.
 		</constant>
 		<constant name="EXTENSION_NO_INTRA_EMPHASIS" value="1024" enum="MarkdownExtensions">
+			No intra emphasis extension.
 		</constant>
 		<constant name="EXTENSION_SPACE_HEADERS" value="2048" enum="MarkdownExtensions">
+			Space headers extension.
 		</constant>
 		<constant name="EXTENSION_MATH_EXPLICIT" value="4096" enum="MarkdownExtensions">
+			Math explicit extension.
 		</constant>
 		<constant name="EXTENSION_DISABLE_INDENTED_CODE" value="8192" enum="MarkdownExtensions">
+			Disable indented code extension.
 		</constant>
 	</constants>
 </class>
