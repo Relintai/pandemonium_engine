@@ -122,6 +122,7 @@ void register_web_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<BBCodeParser>();
 
 		ClassDB::register_class<MarkdownRenderer>();
+		ClassDB::register_class<MarkdownRendererCustomRendererCallback>();
 
 		ClassDB::register_class<FileCache>();
 

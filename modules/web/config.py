@@ -63,6 +63,7 @@ def get_doc_classes():
 	    "BBCodeParser",
 
 	    "MarkdownRenderer",
+		"MarkdownRendererCustomRendererCallback",
 
         "StaticWebPage",
         "StaticWebPageFile",
