@@ -411,7 +411,13 @@ void SQLite3QueryBuilder::run_query() {
 Ref<PreparedStatement> SQLite3QueryBuilder::create_prepared_statement() {
 	ERR_FAIL_COND_V(!_connection.is_valid(), Ref<PreparedStatement>());
 
-	return _connection->create_prepared_statement();
+	Ref<PreparedStatement> stmt = _connection->create_prepared_statement();
+
+	if (stmt.is_valid()) {
+		stmt->set_sql(get_result());
+	}
+
+	return stmt;
 }
 
 QueryBuilder *SQLite3QueryBuilder::select_last_insert_id() {
