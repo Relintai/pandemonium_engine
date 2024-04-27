@@ -13,12 +13,15 @@ struct sqlite3;
 
 class SQLite3DatabaseConnection : public DatabaseConnection {
 public:
+	friend class SQLite3PreparedStatement;
+
 	Error database_connect(const String &connection_str);
 	Ref<QueryResult> query(const String &query);
 	void query_run(const String &query);
 
 	Ref<QueryBuilder> get_query_builder();
 	Ref<TableBuilder> get_table_builder();
+	Ref<PreparedStatement> create_prepared_statement();
 
 	String escape(const String &str);
 	void escape_to(const String &str, String *to);

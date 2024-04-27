@@ -3,6 +3,7 @@
 #include "sqlite3_connection.h"
 #include "sqlite3_database.h"
 #include "sqlite3_query_result.h"
+#include "sqlite3_prepared_statement.h"
 
 QueryBuilder *SQLite3QueryBuilder::select() {
 	query_result += "SELECT ";
@@ -213,7 +214,7 @@ QueryBuilder *SQLite3QueryBuilder::sets() {
 }
 QueryBuilder *SQLite3QueryBuilder::cset() {
 	ERR_FAIL_COND_V(query_result.length() <= 2, this);
-	
+
 	query_result[query_result.length() - 2] = ' ';
 
 	return this;
@@ -345,20 +346,6 @@ String SQLite3QueryBuilder::escape(const String &params) {
 	return _connection->escape(params);
 }
 
-QueryBuilder *SQLite3QueryBuilder::prepare() {
-	return this;
-}
-
-QueryBuilder *SQLite3QueryBuilder::set_param(const int index, const String &value) {
-	return this;
-}
-QueryBuilder *SQLite3QueryBuilder::set_param(const int index, const int value) {
-	return this;
-}
-QueryBuilder *SQLite3QueryBuilder::set_param(const int index, const float value) {
-	return this;
-}
-
 QueryBuilder *SQLite3QueryBuilder::end_command() {
 	query_result += ";";
 
@@ -383,6 +370,12 @@ void SQLite3QueryBuilder::run_query() {
 	}
 
 	_connection->query_run(query_result);
+}
+
+Ref<PreparedStatement> SQLite3QueryBuilder::create_prepared_statement() {
+	ERR_FAIL_COND_V(!_connection.is_valid(), Ref<PreparedStatement>());
+
+	return _connection->create_prepared_statement();
 }
 
 QueryBuilder *SQLite3QueryBuilder::select_last_insert_id() {

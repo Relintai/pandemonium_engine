@@ -40,19 +40,10 @@ void PreparedStatement::set_sql(const String &p_sql) {
 	_sql = p_sql;
 }
 
-Error PreparedStatement::finalize() {
-	return FAILED;
-}
-
-Ref<DatabaseConnection> PreparedStatement::get_connection() const {
-	return _connection;
-}
-
 PreparedStatement::PreparedStatement() {
 }
 
 PreparedStatement::~PreparedStatement() {
-	finalize();
 }
 
 void PreparedStatement::_bind_methods() {
@@ -98,7 +89,6 @@ void PreparedStatement::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("column_int", "index"), &PreparedStatement::column_int);
 	ClassDB::bind_method(D_METHOD("column_int64", "index"), &PreparedStatement::column_int64);
 	ClassDB::bind_method(D_METHOD("column_text", "index"), &PreparedStatement::column_text);
-	ClassDB::bind_method(D_METHOD("column_bytes", "index"), &PreparedStatement::column_bytes);
 	ClassDB::bind_method(D_METHOD("column_value", "index"), &PreparedStatement::column_value);
 
 	ClassDB::bind_method(D_METHOD("column_count"), &PreparedStatement::column_count);
@@ -111,7 +101,18 @@ void PreparedStatement::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("reset"), &PreparedStatement::reset);
 	ClassDB::bind_method(D_METHOD("finalize"), &PreparedStatement::finalize);
 
-	ClassDB::bind_method(D_METHOD("is_busy"), &PreparedStatement::is_busy);
-
 	ClassDB::bind_method(D_METHOD("get_connection"), &PreparedStatement::get_connection);
+
+	BIND_ENUM_CONSTANT(TYPE_NULL);
+	BIND_ENUM_CONSTANT(TYPE_BLOB);
+	BIND_ENUM_CONSTANT(TYPE_FLOAT);
+	BIND_ENUM_CONSTANT(TYPE_DOUBLE);
+	BIND_ENUM_CONSTANT(TYPE_INT);
+	BIND_ENUM_CONSTANT(TYPE_INT64);
+	BIND_ENUM_CONSTANT(TYPE_TEXT);
+	BIND_ENUM_CONSTANT(TYPE_VARCHAR);
+	BIND_ENUM_CONSTANT(TYPE_VALUE);
+	BIND_ENUM_CONSTANT(TYPE_BYTES);
+	BIND_ENUM_CONSTANT(TYPE_TYPE);
+	BIND_ENUM_CONSTANT(TYPE_UNKNOWN);
 }

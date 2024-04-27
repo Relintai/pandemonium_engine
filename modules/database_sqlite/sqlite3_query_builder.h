@@ -77,15 +77,12 @@ public:
 
 	String escape(const String &params);
 
-	QueryBuilder *prepare();
-	QueryBuilder *set_param(const int index, const String &value);
-	QueryBuilder *set_param(const int index, const int value);
-	QueryBuilder *set_param(const int index, const float value);
-
 	QueryBuilder *end_command();
 
 	Ref<QueryResult> run();
 	void run_query();
+
+	Ref<PreparedStatement> create_prepared_statement();
 
 	SQLite3QueryBuilder();
 	~SQLite3QueryBuilder();

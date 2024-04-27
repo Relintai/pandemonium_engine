@@ -2,6 +2,7 @@
 
 #include "core/string/print_string.h"
 #include "core/string/ustring.h"
+#include "sqlite3_prepared_statement.h"
 #include "sqlite3_query_builder.h"
 #include "sqlite3_query_result.h"
 #include "sqlite3_table_builder.h"
@@ -20,6 +21,14 @@ Ref<QueryBuilder> SQLite3DatabaseConnection::get_query_builder() {
 
 Ref<TableBuilder> SQLite3DatabaseConnection::get_table_builder() {
 	Ref<SQLite3TableBuilder> b;
+	b.instance();
+	b->_connection.reference_ptr(this);
+
+	return b;
+}
+
+Ref<PreparedStatement> SQLite3DatabaseConnection::create_prepared_statement() {
+	Ref<SQLite3PreparedStatement> b;
 	b.instance();
 	b->_connection.reference_ptr(this);
 

@@ -42,6 +42,21 @@ class PreparedStatement : public Reference {
 	GDCLASS(PreparedStatement, Reference);
 
 public:
+	enum Type {
+		TYPE_NULL,
+		TYPE_BLOB,
+		TYPE_FLOAT,
+		TYPE_DOUBLE,
+		TYPE_INT,
+		TYPE_INT64,
+		TYPE_TEXT,
+		TYPE_VARCHAR,
+		TYPE_VALUE,
+		TYPE_BYTES,
+		TYPE_TYPE,
+		TYPE_UNKNOWN,
+	};
+
 	String get_sql();
 	void set_sql(const String &p_sql);
 
@@ -68,8 +83,8 @@ public:
 
 	// Querying
 	virtual String column_name(const int p_index) = 0;
-	virtual Error column_decltype(const int p_index) = 0;
-	virtual Error column_type(const int p_index) = 0;
+	virtual String column_decltype(const int p_index) = 0;
+	virtual Type column_type(const int p_index) = 0;
 
 	virtual String column_database_name(const int p_index) = 0;
 	virtual String column_table_name(const int p_index) = 0;
@@ -81,7 +96,6 @@ public:
 	virtual int64_t column_int(const int p_index) = 0;
 	virtual int column_int64(const int p_index) = 0;
 	virtual String column_text(const int p_index) = 0;
-	virtual Vector<uint8_t> column_bytes(const int p_index) = 0;
 	virtual Variant column_value(const int p_index) = 0;
 
 	virtual int column_count() = 0;
@@ -91,11 +105,9 @@ public:
 	virtual Error step() = 0;
 	virtual int data_count() = 0;
 	virtual Error reset() = 0;
-	virtual Error finalize();
+	virtual Error finalize() = 0;
 
-	virtual bool is_busy() = 0;
-
-	Ref<DatabaseConnection> get_connection() const;
+	virtual Ref<DatabaseConnection> get_connection() const = 0;
 
 	PreparedStatement();
 	virtual ~PreparedStatement();
@@ -104,8 +116,8 @@ protected:
 	static void _bind_methods();
 
 	String _sql;
-
-	Ref<DatabaseConnection> _connection;
 };
+
+VARIANT_ENUM_CAST(PreparedStatement::Type);
 
 #endif
