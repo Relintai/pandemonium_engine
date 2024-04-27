@@ -132,6 +132,10 @@ Ref<QueryResult> TableBuilder::run() {
 void TableBuilder::run_query() {
 }
 
+void TableBuilder::clear() {
+	result.clear();
+}
+
 void TableBuilder::print() {
 	//printf("%s\n", result.get_data());
 	print_error(result);

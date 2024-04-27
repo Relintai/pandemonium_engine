@@ -77,12 +77,12 @@ public:
 	virtual Ref<QueryResult> run();
 	virtual void run_query();
 
+	void clear();
+
 	void print();
 
 	TableBuilder();
 	virtual ~TableBuilder();
-
-	String result;
 
 protected:
 	static void _bind_methods();
@@ -114,6 +114,8 @@ protected:
 
 	Ref<TableBuilder> _foreign_key_bind(const String &name);
 	Ref<TableBuilder> _references_bind(const String &table, const String &name);
+
+	String result;
 };
 
 #endif
