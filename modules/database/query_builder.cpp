@@ -106,26 +106,31 @@ QueryBuilder *QueryBuilder::values(const String &params_str) {
 QueryBuilder *QueryBuilder::val() {
 	return this;
 }
-
 QueryBuilder *QueryBuilder::vals(const String &param) {
 	return nval(escape(param));
 }
-
 QueryBuilder *QueryBuilder::vals(const char *param) {
 	return this;
 }
-
 QueryBuilder *QueryBuilder::vali(const int param) {
 	return this;
 }
 QueryBuilder *QueryBuilder::valb(const bool param) {
 	return this;
 }
-
 QueryBuilder *QueryBuilder::valf(const float param) {
 	return this;
 }
 QueryBuilder *QueryBuilder::vald(const double param) {
+	return this;
+}
+QueryBuilder *QueryBuilder::valph() {
+	return this;
+}
+QueryBuilder *QueryBuilder::valphi(const String &p_id) {
+	return this;
+}
+QueryBuilder *QueryBuilder::valphr(const String &p_raw_id) {
 	return this;
 }
 
@@ -157,6 +162,15 @@ QueryBuilder *QueryBuilder::setpf(const String &col, const float param) {
 QueryBuilder *QueryBuilder::setpd(const String &col, const double param) {
 	return this;
 }
+QueryBuilder *QueryBuilder::setph(const String &col) {
+	return this;
+}
+QueryBuilder *QueryBuilder::setphi(const String &col, const String &p_id) {
+	return this;
+}
+QueryBuilder *QueryBuilder::setphr(const String &col, const String &p_raw_id) {
+	return this;
+}
 
 QueryBuilder *QueryBuilder::wps(const String &col, const String &param) {
 	return nwp(col, escape(param));
@@ -168,6 +182,15 @@ QueryBuilder *QueryBuilder::wpi(const String &col, const int param) {
 	return this;
 }
 QueryBuilder *QueryBuilder::wpb(const String &col, const bool param) {
+	return this;
+}
+QueryBuilder *QueryBuilder::wph(const String &col) {
+	return this;
+}
+QueryBuilder *QueryBuilder::wphi(const String &col, const String &p_id) {
+	return this;
+}
+QueryBuilder *QueryBuilder::wphr(const String &col, const String &p_raw_id) {
 	return this;
 }
 
@@ -370,6 +393,9 @@ void QueryBuilder::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("valb", "param"), &QueryBuilder::_valb_bind);
 	ClassDB::bind_method(D_METHOD("valf", "param"), &QueryBuilder::_valf_bind);
 	ClassDB::bind_method(D_METHOD("vald", "param"), &QueryBuilder::_vald_bind);
+	ClassDB::bind_method(D_METHOD("valph"), &QueryBuilder::_valph_bind);
+	ClassDB::bind_method(D_METHOD("valphi", "id"), &QueryBuilder::_valphi_bind);
+	ClassDB::bind_method(D_METHOD("valphr", "raw_id"), &QueryBuilder::_valphr_bind);
 
 	ClassDB::bind_method(D_METHOD("like", "str"), &QueryBuilder::_like_bind, "");
 	ClassDB::bind_method(D_METHOD("sets"), &QueryBuilder::_sets_bind);
@@ -380,10 +406,16 @@ void QueryBuilder::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setpb", "col", "param"), &QueryBuilder::_setpb_bind);
 	ClassDB::bind_method(D_METHOD("setpf", "col", "param"), &QueryBuilder::_setpf_bind);
 	ClassDB::bind_method(D_METHOD("setpd", "col", "param"), &QueryBuilder::_setpd_bind);
+	ClassDB::bind_method(D_METHOD("setph", "col"), &QueryBuilder::_setph_bind);
+	ClassDB::bind_method(D_METHOD("setphi", "col", "id"), &QueryBuilder::_setphi_bind);
+	ClassDB::bind_method(D_METHOD("setphr", "col", "raw_id"), &QueryBuilder::_setphr_bind);
 
 	ClassDB::bind_method(D_METHOD("wps", "col", "param"), &QueryBuilder::_wps_bind);
 	ClassDB::bind_method(D_METHOD("wpi", "col", "param"), &QueryBuilder::_wpi_bind);
 	ClassDB::bind_method(D_METHOD("wpb", "col", "param"), &QueryBuilder::_wpb_bind);
+	ClassDB::bind_method(D_METHOD("wph", "col"), &QueryBuilder::_wph_bind);
+	ClassDB::bind_method(D_METHOD("wphi", "col", "id"), &QueryBuilder::_wphi_bind);
+	ClassDB::bind_method(D_METHOD("wphr", "col", "raw_id"), &QueryBuilder::_wphr_bind);
 
 	ClassDB::bind_method(D_METHOD("nselect", "params"), &QueryBuilder::_nselect_bind);
 	ClassDB::bind_method(D_METHOD("nupdate", "params"), &QueryBuilder::_nupdate_bind);
@@ -500,6 +532,15 @@ Ref<QueryBuilder> QueryBuilder::_valf_bind(const float param) {
 Ref<QueryBuilder> QueryBuilder::_vald_bind(const double param) {
 	return Ref<QueryBuilder>(vald(param));
 }
+Ref<QueryBuilder> QueryBuilder::_valph_bind() {
+	return Ref<QueryBuilder>(valph());
+}
+Ref<QueryBuilder> QueryBuilder::_valphi_bind(const String &p_id) {
+	return Ref<QueryBuilder>(valphi(p_id));
+}
+Ref<QueryBuilder> QueryBuilder::_valphr_bind(const String &p_raw_id) {
+	return Ref<QueryBuilder>(valphr(p_raw_id));
+}
 
 Ref<QueryBuilder> QueryBuilder::_like_bind(const String &str) {
 	return Ref<QueryBuilder>(like(str));
@@ -527,6 +568,15 @@ Ref<QueryBuilder> QueryBuilder::_setpf_bind(const String &col, const float param
 Ref<QueryBuilder> QueryBuilder::_setpd_bind(const String &col, const double param) {
 	return Ref<QueryBuilder>(setpd(col, param));
 }
+Ref<QueryBuilder> QueryBuilder::_setph_bind(const String &col) {
+	return Ref<QueryBuilder>(setph(col));
+}
+Ref<QueryBuilder> QueryBuilder::_setphi_bind(const String &col, const String &p_id) {
+	return Ref<QueryBuilder>(setphi(col, p_id));
+}
+Ref<QueryBuilder> QueryBuilder::_setphr_bind(const String &col, const String &p_raw_id) {
+	return Ref<QueryBuilder>(setphr(col, p_raw_id));
+}
 
 Ref<QueryBuilder> QueryBuilder::_wps_bind(const String &col, const String &param) {
 	return Ref<QueryBuilder>(wps(col, param));
@@ -536,6 +586,15 @@ Ref<QueryBuilder> QueryBuilder::_wpi_bind(const String &col, const int param) {
 }
 Ref<QueryBuilder> QueryBuilder::_wpb_bind(const String &col, const bool param) {
 	return Ref<QueryBuilder>(wpb(col, param));
+}
+Ref<QueryBuilder> QueryBuilder::_wph_bind(const String &col) {
+	return Ref<QueryBuilder>(wph(col));
+}
+Ref<QueryBuilder> QueryBuilder::_wphi_bind(const String &col, const String &p_id) {
+	return Ref<QueryBuilder>(wphi(col, p_id));
+}
+Ref<QueryBuilder> QueryBuilder::_wphr_bind(const String &col, const String &p_raw_id) {
+	return Ref<QueryBuilder>(wphr(col, p_raw_id));
 }
 
 Ref<QueryBuilder> QueryBuilder::_nselect_bind(const String &params) {

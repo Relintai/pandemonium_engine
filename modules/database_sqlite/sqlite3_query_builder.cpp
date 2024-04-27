@@ -208,6 +208,24 @@ QueryBuilder *SQLite3QueryBuilder::vald(const double param) {
 
 	return this;
 }
+QueryBuilder *SQLite3QueryBuilder::valph() {
+	psph();
+	query_result += ", ";
+
+	return this;
+}
+QueryBuilder *SQLite3QueryBuilder::valphi(const String &p_id) {
+	psphi(p_id);
+	query_result += ", ";
+
+	return this;
+}
+QueryBuilder *SQLite3QueryBuilder::valphr(const String &p_raw_id) {
+	psphi(p_raw_id);
+	query_result += ", ";
+
+	return this;
+}
 
 QueryBuilder *SQLite3QueryBuilder::nlike(const String &str) {
 	query_result += "LIKE '";
@@ -285,6 +303,30 @@ QueryBuilder *SQLite3QueryBuilder::setpd(const String &col, const double param) 
 
 	return this;
 }
+QueryBuilder *SQLite3QueryBuilder::setph(const String &col) {
+	query_result += col;
+	query_result += "=";
+	psph();
+	query_result += ", ";
+
+	return this;
+}
+QueryBuilder *SQLite3QueryBuilder::setphi(const String &col, const String &p_id) {
+	query_result += col;
+	query_result += "=";
+	psphi(p_id);
+	query_result += ", ";
+
+	return this;
+}
+QueryBuilder *SQLite3QueryBuilder::setphr(const String &col, const String &p_raw_id) {
+	query_result += col;
+	query_result += "=";
+	psphr(p_raw_id);
+	query_result += ", ";
+
+	return this;
+}
 
 QueryBuilder *SQLite3QueryBuilder::nwp(const String &col, const String &param) {
 	query_result += col;
@@ -318,6 +360,30 @@ QueryBuilder *SQLite3QueryBuilder::wpb(const String &col, const bool param) {
 		query_result += col;
 		query_result += "=0 ";
 	}
+
+	return this;
+}
+QueryBuilder *SQLite3QueryBuilder::wph(const String &col) {
+	query_result += col;
+	query_result += "='";
+	psph();
+	query_result += "' ";
+
+	return this;
+}
+QueryBuilder *SQLite3QueryBuilder::wphi(const String &col, const String &p_id) {
+	query_result += col;
+	query_result += "='";
+	psphi(p_id);
+	query_result += "' ";
+
+	return this;
+}
+QueryBuilder *SQLite3QueryBuilder::wphr(const String &col, const String &p_raw_id) {
+	query_result += col;
+	query_result += "='";
+	psphr(p_raw_id);
+	query_result += "' ";
 
 	return this;
 }

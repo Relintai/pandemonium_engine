@@ -32,8 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/string/ustring.h"
 #include "core/string/string_builder.h"
+#include "core/string/ustring.h"
 
 #include "core/object/reference.h"
 
@@ -79,6 +79,9 @@ public:
 	virtual QueryBuilder *valb(const bool param);
 	virtual QueryBuilder *valf(const float param);
 	virtual QueryBuilder *vald(const double param);
+	virtual QueryBuilder *valph();
+	virtual QueryBuilder *valphi(const String &p_id);
+	virtual QueryBuilder *valphr(const String &p_raw_id);
 
 	virtual QueryBuilder *like(const String &str = "");
 
@@ -92,11 +95,18 @@ public:
 	virtual QueryBuilder *setpb(const String &col, const bool param);
 	virtual QueryBuilder *setpf(const String &col, const float param);
 	virtual QueryBuilder *setpd(const String &col, const double param);
+	virtual QueryBuilder *setph(const String &col);
+	virtual QueryBuilder *setphi(const String &col, const String &p_id);
+	virtual QueryBuilder *setphr(const String &col, const String &p_raw_id);
 
+	// Where param helpers
 	virtual QueryBuilder *wps(const String &col, const String &param);
 	virtual QueryBuilder *wps(const String &col, const char *param);
 	virtual QueryBuilder *wpi(const String &col, const int param);
 	virtual QueryBuilder *wpb(const String &col, const bool param);
+	virtual QueryBuilder *wph(const String &col);
+	virtual QueryBuilder *wphi(const String &col, const String &p_id);
+	virtual QueryBuilder *wphr(const String &col, const String &p_raw_id);
 
 	virtual QueryBuilder *nselect(const String &params);
 	virtual QueryBuilder *nupdate(const String &params);
@@ -184,6 +194,9 @@ protected:
 	Ref<QueryBuilder> _valb_bind(const bool param);
 	Ref<QueryBuilder> _valf_bind(const float param);
 	Ref<QueryBuilder> _vald_bind(const double param);
+	Ref<QueryBuilder> _valph_bind();
+	Ref<QueryBuilder> _valphi_bind(const String &p_id);
+	Ref<QueryBuilder> _valphr_bind(const String &p_raw_id);
 
 	Ref<QueryBuilder> _like_bind(const String &str);
 
@@ -195,10 +208,16 @@ protected:
 	Ref<QueryBuilder> _setpb_bind(const String &col, const bool param);
 	Ref<QueryBuilder> _setpf_bind(const String &col, const float param);
 	Ref<QueryBuilder> _setpd_bind(const String &col, const double param);
+	Ref<QueryBuilder> _setph_bind(const String &col);
+	Ref<QueryBuilder> _setphi_bind(const String &col, const String &p_id);
+	Ref<QueryBuilder> _setphr_bind(const String &col, const String &p_raw_id);
 
 	Ref<QueryBuilder> _wps_bind(const String &col, const String &param);
 	Ref<QueryBuilder> _wpi_bind(const String &col, const int param);
 	Ref<QueryBuilder> _wpb_bind(const String &col, const bool param);
+	Ref<QueryBuilder> _wph_bind(const String &col);
+	Ref<QueryBuilder> _wphi_bind(const String &col, const String &p_id);
+	Ref<QueryBuilder> _wphr_bind(const String &col, const String &p_raw_id);
 
 	Ref<QueryBuilder> _nselect_bind(const String &params);
 	Ref<QueryBuilder> _nupdate_bind(const String &params);
