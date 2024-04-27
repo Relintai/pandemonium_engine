@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="DatabaseConnection" inherits="Reference" version="4.4">
 	<brief_description>
+		Represents a connection to a database server.
 	</brief_description>
 	<description>
+		Represents a connection to a database server.
+		Don't create these directly, use the [code]get_connection()[/code] method in [Database] to get one.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,56 +13,69 @@
 		<method name="create_prepared_statement">
 			<return type="PreparedStatement" />
 			<description>
+				Creates a [PreparedStatement] for use with this database connection.
 			</description>
 		</method>
 		<method name="database_connect">
 			<return type="int" enum="Error" />
 			<argument index="0" name="connection_str" type="String" />
 			<description>
+				Connect to the database. The backend will automatically call this.
 			</description>
 		</method>
 		<method name="ensure_version_table_exists">
 			<return type="void" />
 			<description>
+				Ensures that a table that contains the database's verison exists for compatibility checks.
 			</description>
 		</method>
 		<method name="escape">
 			<return type="String" />
 			<argument index="0" name="str" type="String" />
 			<description>
+				Escapes the given [String] using the database backend's excape method.
+				Use it on user input for sanitization.
+				Note that [QueryBuilder] does this where necessary automatically.
+				Also note that when using [PreparedStatement]s this is not needed.
 			</description>
 		</method>
 		<method name="get_owner">
 			<return type="Database" />
 			<description>
+				Returns the owner [Database].
 			</description>
 		</method>
 		<method name="get_query_builder">
 			<return type="QueryBuilder" />
 			<description>
+				Returns a new [QueryBuilder] that is properly set up for this connection.
 			</description>
 		</method>
 		<method name="get_table_builder">
 			<return type="TableBuilder" />
 			<description>
+				Returns a new [TableBuilder] that is properly set up for this connection.
 			</description>
 		</method>
 		<method name="get_table_version">
 			<return type="int" />
 			<argument index="0" name="table" type="String" />
 			<description>
+				Returns the current table version. This can be used to determine database compatibility, or for example whether to run migrations or not during startup.
 			</description>
 		</method>
 		<method name="query">
 			<return type="QueryResult" />
 			<argument index="0" name="query" type="String" />
 			<description>
+				Run a query. Use the resulting[QueryResult] object to read data from the database.
 			</description>
 		</method>
 		<method name="query_run">
 			<return type="void" />
 			<argument index="0" name="query" type="String" />
 			<description>
+				Run a query.
 			</description>
 		</method>
 		<method name="set_table_version">
@@ -67,6 +83,7 @@
 			<argument index="0" name="table" type="String" />
 			<argument index="1" name="version" type="int" />
 			<description>
+				Sets the current table version.
 			</description>
 		</method>
 	</methods>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="DatabaseSingleThreaded" inherits="Database" version="4.4">
 	<brief_description>
+		Contains helper methods for single threaded database systems on the c++ side.
 	</brief_description>
 	<description>
+		Contains helper methods for single threaded database systems on the c++ side.
 	</description>
 	<tutorials>
 	</tutorials>

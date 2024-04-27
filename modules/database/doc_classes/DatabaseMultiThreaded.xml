@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="DatabaseMultiThreaded" inherits="Database" version="4.4">
 	<brief_description>
+		Contains helper methods for multi threaded database systems on the c++ side. Don't use it directly.
 	</brief_description>
 	<description>
+		Contains helper methods for multi threaded database systems on the c++ side. Don't use it directly.
 	</description>
 	<tutorials>
 	</tutorials>

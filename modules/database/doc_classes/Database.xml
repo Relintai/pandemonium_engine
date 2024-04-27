@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="Database" inherits="Reference" version="4.4">
 	<brief_description>
+		Represents a database.
 	</brief_description>
 	<description>
+		Represents a database.
+		Classes inherited from it implement communication with database systems.
+		See [SQLite3Database] for an example.
+		Currently only an sqlite backend is available, however communication with other systems (like MySQL, or PostgreSQL) can be implemented without too much hassle using engine modules.
 	</description>
 	<tutorials>
+		<link title="Simple Database Demo Project">https://github.com/Relintai/pandemonium_demo_projects/tree/master/database/database_simple</link>
+		<link title="Prepared Statement Database Demo Project">https://github.com/Relintai/pandemonium_demo_projects/tree/master/database/prepared_statements</link>
+		<link title="Web Demo Projects">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web</link>
 	</tutorials>
 	<methods>
 		<method name="get_connection">
 			<return type="DatabaseConnection" />
 			<description>
+				Returns a [DatabaseConnection] object which can be used to run queries on the database.
+				Always get a new one, don't store it, as the database backend might give different ones depending on certain factors (like calling threads) for faster operation.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="connection_string" type="String" setter="set_connection_string" getter="get_connection_string" default="&quot;&quot;">
+			Connection string used by the backend.
 		</member>
 	</members>
 	<constants>

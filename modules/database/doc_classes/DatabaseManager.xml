@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="DatabaseManager" inherits="Object" version="4.4">
 	<brief_description>
+		Database Manager Singleton.
 	</brief_description>
 	<description>
+		Database Manager Singleton.
+		Stores database connections that need to be accessible throughout the application.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,32 +15,38 @@
 			<argument index="0" name="db" type="Database" />
 			<argument index="1" name="set_as_default" type="bool" default="true" />
 			<description>
+				Add a Database. If [code]set_as_default[/code] is true it will be set as default, which means it will be set to the [member ddb] property.
 			</description>
 		</method>
 		<method name="get_database">
 			<return type="Database" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns a Database.
 			</description>
 		</method>
 		<method name="get_database_count">
 			<return type="int" />
 			<description>
+				Returns how many databases are stored in the singleton.
 			</description>
 		</method>
 		<method name="get_databases">
 			<return type="Array" />
 			<description>
+				Returns all Databases.
 			</description>
 		</method>
 		<method name="initialized">
 			<return type="void" />
 			<description>
+				Calls the [code]initialized[/code] signal.
 			</description>
 		</method>
 		<method name="load">
 			<return type="void" />
 			<description>
+				Not implemented currently. Will likely load databases from ProjectSettings.
 			</description>
 		</method>
 		<method name="migrate">
@@ -46,6 +55,7 @@
 			<argument index="1" name="should_seed" type="bool" />
 			<argument index="2" name="pseed" type="int" />
 			<description>
+				Calls the [member migration] signal.
 			</description>
 		</method>
 		<method name="remove_database">
@@ -53,31 +63,37 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="unset_if_default" type="bool" default="true" />
 			<description>
+				Removes a Database.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="ddb" type="Database" setter="set_ddb" getter="get_ddb">
+			The default database.
 		</member>
 	</members>
 	<signals>
 		<signal name="database_added">
 			<argument index="0" name="db" type="Database" />
 			<description>
+				Emitted when a [Database] is added.
 			</description>
 		</signal>
 		<signal name="database_removed">
 			<argument index="0" name="db" type="Database" />
 			<description>
+				Emitted when a [Database] is removed.
 			</description>
 		</signal>
 		<signal name="default_database_changed">
 			<argument index="0" name="db" type="Database" />
 			<description>
+				Emitted when default database is changed.
 			</description>
 		</signal>
 		<signal name="initialized">
 			<description>
+				Can be emitted using the [member initialized] method after the database connections are set up.
 			</description>
 		</signal>
 		<signal name="migration">
@@ -85,6 +101,7 @@
 			<argument index="1" name="should_seed" type="bool" />
 			<argument index="2" name="pseed" type="int" />
 			<description>
+				Can be emitted using the [member migrate] method when the databse structure needs to be updated (or created).
 			</description>
 		</signal>
 	</signals>

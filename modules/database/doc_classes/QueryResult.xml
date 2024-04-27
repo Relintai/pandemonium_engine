@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="QueryResult" inherits="Reference" version="4.4">
 	<brief_description>
+		Read the result from a query that were run on a [Database].
 	</brief_description>
 	<description>
+		Read the result from a query that were run on a [Database].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,51 +13,60 @@
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Gets a [String] value from the index-th cell.
 			</description>
 		</method>
 		<method name="get_cell_bool">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Gets a bool value from the index-th cell.
 			</description>
 		</method>
 		<method name="get_cell_double">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Gets a double value from the index-th cell.
 			</description>
 		</method>
 		<method name="get_cell_float">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Gets a float value from the index-th cell.
 			</description>
 		</method>
 		<method name="get_cell_int">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Gets a int value from the index-th cell.
 			</description>
 		</method>
 		<method name="get_error_message">
 			<return type="String" />
 			<description>
+				Returns the current error message (if any).
 			</description>
 		</method>
 		<method name="get_last_insert_rowid">
 			<return type="int" />
 			<description>
+				Returns the last inserted row's id. On some database backends this needs to be requested in the query to be available.
 			</description>
 		</method>
 		<method name="is_cell_null">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Is the given cell null.
 			</description>
 		</method>
 		<method name="next_row">
 			<return type="bool" />
 			<description>
+				Read the next row. Returns true if success, false if no more rows available.
 			</description>
 		</method>
 	</methods>

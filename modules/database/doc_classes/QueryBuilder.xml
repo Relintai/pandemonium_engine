@@ -390,18 +390,36 @@
 		<method name="psph">
 			<return type="QueryBuilder" />
 			<description>
+				Adds a placeholder for prepared statements statement. (psph = Prepared Statement PlaceHolder)
+				Equivalent to:
+				[codeblock]
+				result += "?";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="psphi">
 			<return type="QueryBuilder" />
 			<argument index="0" name="id" type="String" />
 			<description>
+				Adds a placeholder with id for prepared statements statement.
+				Equivalent to:
+				[codeblock]
+				if (id.is_valid_unsigned_integer()):
+					result += "?" + id;
+				else:
+					result += ":" + id;
+				[/codeblock]
 			</description>
 		</method>
 		<method name="psphr">
 			<return type="QueryBuilder" />
 			<argument index="0" name="raw_id" type="String" />
 			<description>
+				Adds a raw placeholder for prepared statements statement.
+				Equivalent to:
+				[codeblock]
+				result += raw_id;
+				[/codeblock]
 			</description>
 		</method>
 		<method name="reset">
@@ -484,6 +502,14 @@
 			<return type="QueryBuilder" />
 			<argument index="0" name="col" type="String" />
 			<description>
+				Add a prepared statement placeholder parameter to [code]UPDATE[/code] statements.
+				Equivalent to:
+				[codeblock]
+				result += col;
+				result += "=";
+				psph();
+				result += ", ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="setphi">
@@ -491,6 +517,14 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="id" type="String" />
 			<description>
+				Add a prepared statement with id placeholder parameter to [code]UPDATE[/code] statements.
+				Equivalent to:
+				[codeblock]
+				result += col;
+				result += "=";
+				psphi(id);
+				result += ", ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="setphr">
@@ -498,6 +532,14 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="raw_id" type="String" />
 			<description>
+				Add a raw prepared statement placeholder parameter to [code]UPDATE[/code] statements.
+				Equivalent to:
+				[codeblock]
+				result += col;
+				result += "=";
+				psphr(raw_id);
+				result += ", ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="setpi">
@@ -611,18 +653,36 @@
 		<method name="valph">
 			<return type="QueryBuilder" />
 			<description>
+				Add a prepared statement placeholder parameter to a [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				psph();
+				result += ", ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="valphi">
 			<return type="QueryBuilder" />
 			<argument index="0" name="id" type="String" />
 			<description>
+				Add a prepared statement with id placeholder parameter to a [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				psphi(id);
+				result += ", ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="valphr">
 			<return type="QueryBuilder" />
 			<argument index="0" name="raw_id" type="String" />
 			<description>
+				Add a raw prepared statement placeholder parameter to a [code]VALUES[/code] statement.
+				Equivalent to:
+				[codeblock]
+				psphi(raw_id);
+				result += ", ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="vals">
@@ -700,6 +760,14 @@
 			<return type="QueryBuilder" />
 			<argument index="0" name="col" type="String" />
 			<description>
+				Add a prepared statement placeholder parameter to a [code]WHERE[/code] statement. (wpb = where param bool)
+				Equivalent to:
+				[codeblock]
+				result += col;
+				result += "=";
+				psph();
+				result += " ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="wphi">
@@ -707,6 +775,14 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="id" type="String" />
 			<description>
+				Add a prepared statement with id placeholder parameter to a [code]WHERE[/code] statement. (wpb = where param bool)
+				Equivalent to:
+				[codeblock]
+				result += col;
+				result += "=";
+				psphi(id);
+				result += " ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="wphr">
@@ -714,6 +790,14 @@
 			<argument index="0" name="col" type="String" />
 			<argument index="1" name="raw_id" type="String" />
 			<description>
+				Add a raw prepared statement placeholder parameter to a [code]WHERE[/code] statement. (wpb = where param bool)
+				Equivalent to:
+				[codeblock]
+				result += col;
+				result += "=";
+				psphr(raw_id);
+				result += " ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="wpi">

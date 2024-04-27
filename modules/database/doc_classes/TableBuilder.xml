@@ -204,6 +204,7 @@
 		<method name="reset">
 			<return type="void" />
 			<description>
+				Resets the result.
 			</description>
 		</method>
 		<method name="run">
