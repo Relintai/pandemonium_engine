@@ -459,6 +459,10 @@ Error SQLite3PreparedStatement::step() {
 
 	int res = sqlite3_step(_prepared_statement);
 
+	if (res == SQLITE_ROW) {
+		return OK;
+	}
+
 	if (res != SQLITE_OK) {
 		return FAILED;
 	}
