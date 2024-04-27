@@ -1,8 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="PreparedStatement" inherits="Reference" version="4.4">
 	<brief_description>
+		Represents a prepared statement for use with a [Database].
 	</brief_description>
 	<description>
+		Represents a prepared statement for use with a [Database].
+		Prepared statements are compiled and parametrized sql statements which can be used repeatedly.
+		[PreparedStatement]s are an alternative to [QueryBuilder].
+		Prepared statements comes with a lot of added security, as SQL injection attacks doesn't work with them (as long as you use their parameters). However note that [QueryBuilder] will escape string parameters which expect to have user input in the for you too, so if you use [QueryBuilder] yuo should also be safe.
+		Performance can differ compared to normal queries, but it seems like it depends on a lot of factors, so you will have to banchmark it yourself for heavy queries. It can be faster or slower.
+		A prepared statement looks similar:
+		[code]INSERT INTO table VALUES(?, ?, ?, ?);[/code]
+		And then you can substitute values into the [code]?[/code]-s.
+		Usge example:
+		[code]
+			var qb : QueryBuilder = DatabaseManager.ddb.get_connection().get_query_builder()
+			var ps : PreparedStatement = qb.create_prepared_statement()
+
+			ps.sql = "INSERT INTO 'data_table' VALUES(?, ?, ?, ?);"
+			ps.prepare()
+			
+			print("Inserting 10 values!")
+			
+			for i in range(10):
+				ps.reset()
+				
+				ps.bind_text(1, "vc" + str(randi()))
+				ps.bind_text(2, "text" + str(randi()))
+				ps.bind_int(3, randi())
+				ps.bind_double(4, randf() * 100000)
+				ps.step()
+		[/code]
+		Usge example using [QueryBuilder]:
+		[code]
+			var qb : QueryBuilder = DatabaseManager.ddb.get_connection().get_query_builder()
+			qb.insert("data_table", "data_varchar,data_text,data_int,data_double").values()
+			qb.valph().valph().valph().valph().cvalues()
+			qb.end_command()
+			
+			var ps : PreparedStatement = qb.create_prepared_statement()
+			ps.prepare()
+			
+			print("Inserting 10 values!")
+			
+			for i in range(10):
+				ps.reset()
+				
+				ps.bind_text(1, "vc" + str(randi()))
+				ps.bind_text(2, "text" + str(randi()))
+				ps.bind_int(3, randi())
+				ps.bind_double(4, randf() * 100000)
+				ps.step()
+		[/code]
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,6 +61,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="PoolByteArray" />
 			<description>
+				Bind a blob to the index-th parameter. (Indexed from 1)
 			</description>
 		</method>
 		<method name="bind_double">
@@ -19,6 +69,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Bind a double to the index-th parameter. (Indexed from 1)
 			</description>
 		</method>
 		<method name="bind_float">
@@ -26,6 +77,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Bind a float to the index-th parameter. (Indexed from 1)
 			</description>
 		</method>
 		<method name="bind_int">
@@ -33,6 +85,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Bind an int to the index-th parameter. (Indexed from 1)
 			</description>
 		</method>
 		<method name="bind_int64">
@@ -40,29 +93,36 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Bind a 64bit int to the index-th parameter. (Indexed from 1)
 			</description>
 		</method>
 		<method name="bind_null">
 			<return type="int" enum="Error" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Bind null to the index-th parameter. (Indexed from 1)
 			</description>
 		</method>
 		<method name="bind_parameter_count">
 			<return type="int" />
 			<description>
+				The bindable parameter count in a query.
 			</description>
 		</method>
 		<method name="bind_parameter_index">
 			<return type="int" />
 			<argument index="0" name="name" type="String" />
 			<description>
+				Some database backends support naming bind parameters using a special syntax.
+				Use this method to get back the index of a named parameter.
 			</description>
 		</method>
 		<method name="bind_parameter_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Some database backends support naming bind parameters using a special syntax.
+				Use this method to get back the name of a parameter from it's index.
 			</description>
 		</method>
 		<method name="bind_text">
@@ -70,6 +130,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="String" />
 			<description>
+				Bind a [String] to the index-th parameter. (Indexed from 1)
 			</description>
 		</method>
 		<method name="bind_value">
@@ -77,6 +138,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="Variant" />
 			<description>
+				Bind a [Variant] to the index-th parameter. This mwthod will call other bind methods based on the value's type. (Indexed from 1)
 			</description>
 		</method>
 		<method name="bind_zeroblob">
@@ -84,165 +146,203 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="num" type="int" />
 			<description>
+				Bind an empty blob with the size of num to the index-th parameter. (Indexed from 1)
 			</description>
 		</method>
 		<method name="clear_bindings">
 			<return type="int" enum="Error" />
 			<description>
+				Clear all bound parameters, effectively setting their values back to null.
 			</description>
 		</method>
 		<method name="column_blob">
 			<return type="PoolByteArray" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Read a blob from the index-th column. (Indexed from 0)
 			</description>
 		</method>
 		<method name="column_count">
 			<return type="int" />
 			<description>
+				Return the number of columns in the result set.
 			</description>
 		</method>
 		<method name="column_database_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the database's name from which the column is from if the database backend supports it.
 			</description>
 		</method>
 		<method name="column_decltype">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the declared type of the given column.
 			</description>
 		</method>
 		<method name="column_double">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Read a blob from the index-th column. (Indexed from 0)
 			</description>
 		</method>
 		<method name="column_float">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Read a blob from the index-th column. (Indexed from 0)
 			</description>
 		</method>
 		<method name="column_int">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Read a blob from the index-th column. (Indexed from 0)
 			</description>
 		</method>
 		<method name="column_int64">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Read a blob from the index-th column. (Indexed from 0)
 			</description>
 		</method>
 		<method name="column_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Read a blob from the index-th column. (Indexed from 0)
 			</description>
 		</method>
 		<method name="column_origin_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the column's origin name if the database backend supports it.
 			</description>
 		</method>
 		<method name="column_table_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the column's table name if the database backend supports it.
 			</description>
 		</method>
 		<method name="column_text">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Read a blob from the index-th column. (Indexed from 0)
 			</description>
 		</method>
 		<method name="column_type">
 			<return type="int" enum="PreparedStatement.Type" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the column's type.
 			</description>
 		</method>
 		<method name="column_value">
 			<return type="Variant" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Read a [Variant] from the index-th column. (Indexed from 0)
 			</description>
 		</method>
 		<method name="data_count">
 			<return type="int" />
 			<description>
+				Returns the number of columns in the current row.
 			</description>
 		</method>
 		<method name="finalize">
 			<return type="int" enum="Error" />
 			<description>
+				Free the query from the database system. The destructor calls this automatically.
 			</description>
 		</method>
 		<method name="get_connection" qualifiers="const">
 			<return type="DatabaseConnection" />
 			<description>
+				Returns the owner connection.
 			</description>
 		</method>
 		<method name="get_expanded_sql">
 			<return type="String" />
 			<description>
+				Returns the expanded version of the original sql, if the database backend supports it.
 			</description>
 		</method>
 		<method name="get_normalized_sql">
 			<return type="String" />
 			<description>
+				Returns the normalized version of the original sql, if the database backend supports it.
 			</description>
 		</method>
 		<method name="prepare">
 			<return type="int" enum="Error" />
 			<description>
+				Compiles the sql query in [member sql].
+				You need to call this before trying to use your query. Subsequent calls update the stored query on the database server.
 			</description>
 		</method>
 		<method name="reset">
 			<return type="int" enum="Error" />
 			<description>
+				Reset the query. Call this before trying to use it again with different parameters.
 			</description>
 		</method>
 		<method name="step">
 			<return type="int" enum="Error" />
 			<description>
+				Step the query. When calling this the first time it runs the query. Subsequent calls read rows.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="sql" type="String" setter="set_sql" getter="get_sql">
+			The sql statement to send to the database.
 		</member>
 	</members>
 	<constants>
 		<constant name="TYPE_NULL" value="0" enum="Type">
+			NULL type.
 		</constant>
 		<constant name="TYPE_BLOB" value="1" enum="Type">
+			BLOB type.
 		</constant>
 		<constant name="TYPE_FLOAT" value="2" enum="Type">
+			FLOAT type.
 		</constant>
 		<constant name="TYPE_DOUBLE" value="3" enum="Type">
+			DOUBLE type.
 		</constant>
 		<constant name="TYPE_INT" value="4" enum="Type">
+			INT type.
 		</constant>
 		<constant name="TYPE_INT64" value="5" enum="Type">
+			INT64 type.
 		</constant>
 		<constant name="TYPE_TEXT" value="6" enum="Type">
+			TEXT type.
 		</constant>
 		<constant name="TYPE_VARCHAR" value="7" enum="Type">
+			VARCHAR type.
 		</constant>
 		<constant name="TYPE_VALUE" value="8" enum="Type">
+			VALUE type.
 		</constant>
 		<constant name="TYPE_BYTES" value="9" enum="Type">
+			BYTES type.
 		</constant>
 		<constant name="TYPE_TYPE" value="10" enum="Type">
+			TYPE type.
 		</constant>
 		<constant name="TYPE_UNKNOWN" value="11" enum="Type">
+			UNKNOWN type.
 		</constant>
 	</constants>
 </class>
