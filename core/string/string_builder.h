@@ -50,6 +50,12 @@ public:
 	StringBuilder &append(const String &p_string);
 	StringBuilder &append(const char *p_cstring);
 
+	void clear();
+
+	_FORCE_INLINE_ uint32_t length() {
+		return string_length;
+	}
+
 	_FORCE_INLINE_ StringBuilder &operator+(const String &p_string) {
 		return append(p_string);
 	}

@@ -57,6 +57,13 @@ StringBuilder &StringBuilder::append(const char *p_cstring) {
 	return *this;
 }
 
+void StringBuilder::clear() {
+	string_length = 0;
+	strings.clear();
+	c_strings.clear();
+	appended_strings.clear();
+}
+
 String StringBuilder::as_string() const {
 	if (string_length == 0) {
 		return "";
