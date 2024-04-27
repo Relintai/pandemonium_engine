@@ -28,11 +28,12 @@ Ref<TableBuilder> SQLite3DatabaseConnection::get_table_builder() {
 
 Error SQLite3DatabaseConnection::database_connect(const String &connection_str) {
 	int ret = sqlite3_config(SQLITE_CONFIG_SERIALIZED);
-	//if (ret != SQLITE_OK) {
-		//ERR_PRINT("SQLITE3 multithreading is not supported!\n");
-	//}
 
-	//CharString cstr = connection_str.ascii();
+	if (ret != SQLITE_OK) {
+		ERR_PRINT(vformat("SQLITE3 sqlite3_config failed! code: %d !", ret));
+		return FAILED;
+	}
+
 	CharString cstr = connection_str.utf8();
 
 	ret = sqlite3_open(cstr.get_data(), &conn);
@@ -62,7 +63,7 @@ void SQLite3DatabaseConnection::query_run(const String &query) {
 	if (sqlite3_exec(conn, q.get_data(), NULL, NULL, &err_msg) != SQLITE_OK) {
 		ERR_PRINT("SQLite3Database::query_run error:");
 		ERR_PRINT("Query: " + query);
-		ERR_PRINT("Error: " + String(err_msg));
+		ERR_PRINT("Error: " + String::utf8(err_msg));
 		sqlite3_free(err_msg);
 	}
 }
@@ -75,7 +76,7 @@ String SQLite3DatabaseConnection::escape(const String &str) {
 	ret = sqlite3_mprintf("%q", q.get_data());
 
 	if (ret) {
-		String res(ret);
+		String res = String::utf8(ret);
 
 		sqlite3_free(ret);
 
@@ -90,7 +91,7 @@ void SQLite3DatabaseConnection::escape_to(const String &str, String *to) {
 	ret = sqlite3_mprintf("%q", str.utf8().get_data());
 
 	if (ret) {
-		to->operator=(ret);
+		to->operator=(String::utf8(ret));
 
 		sqlite3_free(ret);
 	}
