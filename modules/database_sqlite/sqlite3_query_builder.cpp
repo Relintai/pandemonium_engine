@@ -2,8 +2,8 @@
 
 #include "sqlite3_connection.h"
 #include "sqlite3_database.h"
-#include "sqlite3_query_result.h"
 #include "sqlite3_prepared_statement.h"
+#include "sqlite3_query_result.h"
 
 QueryBuilder *SQLite3QueryBuilder::select() {
 	query_result += "SELECT ";
@@ -336,6 +336,27 @@ QueryBuilder *SQLite3QueryBuilder::lor() {
 
 QueryBuilder *SQLite3QueryBuilder::wildcard() {
 	query_result += "%";
+
+	return this;
+}
+
+// Prepared statement placeholders
+QueryBuilder *SQLite3QueryBuilder::psph() {
+	query_result += "?";
+
+	return this;
+}
+QueryBuilder *SQLite3QueryBuilder::psphi(const String &p_id) {
+	if (p_id.is_valid_unsigned_integer()) {
+		query_result += "?" + p_id;
+	} else {
+		query_result += ":" + p_id;
+	}
+
+	return this;
+}
+QueryBuilder *SQLite3QueryBuilder::psphr(const String &p_raw_id) {
+	query_result += p_raw_id;
 
 	return this;
 }

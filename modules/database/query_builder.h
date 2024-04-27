@@ -129,6 +129,11 @@ public:
 
 	virtual QueryBuilder *wildcard();
 
+	// Prepared statement placeholders
+	virtual QueryBuilder *psph();
+	virtual QueryBuilder *psphi(const String &p_id);
+	virtual QueryBuilder *psphr(const String &p_raw_id);
+
 	virtual QueryBuilder *w(const String &str);
 	virtual QueryBuilder *ew(const String &str);
 
@@ -228,15 +233,15 @@ protected:
 
 	Ref<QueryBuilder> _wildcard_bind();
 
+	// Prepared statement placeholders
+	Ref<QueryBuilder> _psph_bind();
+	Ref<QueryBuilder> _psphi_bind(const String &p_id);
+	Ref<QueryBuilder> _psphr_bind(const String &p_raw_id);
+	
 	Ref<QueryBuilder> _w_bind(const String &str);
 	Ref<QueryBuilder> _ew_bind(const String &str);
 
 	Ref<QueryBuilder> _select_last_insert_id_bind();
-
-	Ref<QueryBuilder> _prepare_bind();
-	Ref<QueryBuilder> _set_params_bind(const int index, const String &value);
-	Ref<QueryBuilder> _set_parami_bind(const int index, const int value);
-	Ref<QueryBuilder> _set_paramf_bind(const int index, const float value);
 
 	Ref<QueryBuilder> _end_command_bind();
 

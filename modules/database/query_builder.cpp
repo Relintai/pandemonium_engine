@@ -31,8 +31,8 @@
 
 #include "query_builder.h"
 
-#include "query_result.h"
 #include "prepared_statement.h"
+#include "query_result.h"
 
 String QueryBuilder::get_result() {
 	return query_result;
@@ -274,6 +274,17 @@ QueryBuilder *QueryBuilder::wildcard() {
 	return this;
 }
 
+// Prepared statement placeholders
+QueryBuilder *QueryBuilder::psph() {
+	return this;
+}
+QueryBuilder *QueryBuilder::psphi(const String &p_id) {
+	return this;
+}
+QueryBuilder *QueryBuilder::psphr(const String &p_raw_id) {
+	return this;
+}
+
 QueryBuilder *QueryBuilder::w(const String &str) {
 	query_result += str;
 
@@ -395,6 +406,11 @@ void QueryBuilder::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("lor"), &QueryBuilder::_lor_bind);
 
 	ClassDB::bind_method(D_METHOD("wildcard"), &QueryBuilder::_wildcard_bind);
+
+	// Prepared statement placeholders
+	ClassDB::bind_method(D_METHOD("psph"), &QueryBuilder::_psph_bind);
+	ClassDB::bind_method(D_METHOD("psphi", "id"), &QueryBuilder::_psphi_bind);
+	ClassDB::bind_method(D_METHOD("psphr", "raw_id"), &QueryBuilder::_psphr_bind);
 
 	ClassDB::bind_method(D_METHOD("w", "str"), &QueryBuilder::_w_bind);
 	ClassDB::bind_method(D_METHOD("ew", "str"), &QueryBuilder::_ew_bind);
@@ -590,6 +606,17 @@ Ref<QueryBuilder> QueryBuilder::_lor_bind() {
 
 Ref<QueryBuilder> QueryBuilder::_wildcard_bind() {
 	return Ref<QueryBuilder>(wildcard());
+}
+
+// Prepared statement placeholders
+Ref<QueryBuilder> QueryBuilder::_psph_bind() {
+	return Ref<QueryBuilder>(psph());
+}
+Ref<QueryBuilder> QueryBuilder::_psphi_bind(const String &p_id) {
+	return Ref<QueryBuilder>(psphi(p_id));
+}
+Ref<QueryBuilder> QueryBuilder::_psphr_bind(const String &p_raw_id) {
+	return Ref<QueryBuilder>(psphr(p_raw_id));
 }
 
 Ref<QueryBuilder> QueryBuilder::_w_bind(const String &str) {

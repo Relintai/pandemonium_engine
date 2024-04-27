@@ -73,6 +73,11 @@ public:
 
 	QueryBuilder *wildcard();
 
+	// Prepared statement placeholders
+	virtual QueryBuilder *psph();
+	virtual QueryBuilder *psphi(const String &p_id);
+	virtual QueryBuilder *psphr(const String &p_raw_id);
+
 	QueryBuilder *select_last_insert_id();
 
 	String escape(const String &params);
