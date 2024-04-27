@@ -155,8 +155,6 @@ public:
 	QueryBuilder();
 	virtual ~QueryBuilder();
 
-	String query_result;
-
 protected:
 	static void _bind_methods();
 
@@ -237,7 +235,7 @@ protected:
 	Ref<QueryBuilder> _psph_bind();
 	Ref<QueryBuilder> _psphi_bind(const String &p_id);
 	Ref<QueryBuilder> _psphr_bind(const String &p_raw_id);
-	
+
 	Ref<QueryBuilder> _w_bind(const String &str);
 	Ref<QueryBuilder> _ew_bind(const String &str);
 
@@ -246,6 +244,8 @@ protected:
 	Ref<QueryBuilder> _end_command_bind();
 
 	Ref<QueryBuilder> _reset_bind();
+
+	String query_result;
 };
 
 #endif
