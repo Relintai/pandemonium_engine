@@ -35,10 +35,11 @@
 #include "query_result.h"
 
 String TableBuilder::get_result() {
-	return result;
+	return result.as_string();
 }
 void TableBuilder::set_result(const String &val) {
-	result = val;
+	result.clear();
+	result.append(val);
 }
 
 TableBuilder *TableBuilder::create_table(const String &name) {

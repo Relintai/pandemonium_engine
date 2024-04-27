@@ -33,6 +33,7 @@
 /*************************************************************************/
 
 #include "core/string/ustring.h"
+#include "core/string/string_builder.h"
 
 #include "core/object/reference.h"
 
@@ -115,7 +116,7 @@ protected:
 	Ref<TableBuilder> _foreign_key_bind(const String &name);
 	Ref<TableBuilder> _references_bind(const String &table, const String &name);
 
-	String result;
+	StringBuilder result;
 };
 
 #endif
