@@ -26,7 +26,7 @@ Ref<TableBuilder> SQLite3DatabaseConnection::get_table_builder() {
 	return b;
 }
 
-void SQLite3DatabaseConnection::database_connect(const String &connection_str) {
+Error SQLite3DatabaseConnection::database_connect(const String &connection_str) {
 	int ret = sqlite3_config(SQLITE_CONFIG_SERIALIZED);
 	//if (ret != SQLITE_OK) {
 		//ERR_PRINT("SQLITE3 multithreading is not supported!\n");
@@ -39,7 +39,10 @@ void SQLite3DatabaseConnection::database_connect(const String &connection_str) {
 
 	if (ret != SQLITE_OK) {
 		ERR_PRINT(vformat("SQLITE3 database_connect failed! code: %d !", ret));
+		return FAILED;
 	}
+
+	return OK;
 }
 
 Ref<QueryResult> SQLite3DatabaseConnection::query(const String &query) {

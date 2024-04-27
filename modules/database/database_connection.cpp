@@ -36,7 +36,8 @@
 #include "query_result.h"
 #include "table_builder.h"
 
-void DatabaseConnection::database_connect(const String &connection_str) {
+Error DatabaseConnection::database_connect(const String &connection_str) {
+	return ERR_PRINTER_ON_FIRE;
 }
 
 Ref<QueryResult> DatabaseConnection::query(const String &query) {

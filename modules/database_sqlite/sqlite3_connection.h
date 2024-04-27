@@ -13,7 +13,7 @@ struct sqlite3;
 
 class SQLite3DatabaseConnection : public DatabaseConnection {
 public:
-	void database_connect(const String &connection_str);
+	Error database_connect(const String &connection_str);
 	Ref<QueryResult> query(const String &query);
 	void query_run(const String &query);
 
