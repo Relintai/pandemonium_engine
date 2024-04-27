@@ -33,6 +33,7 @@
 /*************************************************************************/
 
 #include "core/string/ustring.h"
+#include "core/string/string_builder.h"
 
 #include "core/object/reference.h"
 
@@ -245,7 +246,7 @@ protected:
 
 	Ref<QueryBuilder> _reset_bind();
 
-	String query_result;
+	StringBuilder query_result;
 };
 
 #endif

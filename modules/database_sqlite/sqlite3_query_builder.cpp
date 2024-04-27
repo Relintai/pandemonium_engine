@@ -24,7 +24,12 @@ QueryBuilder *SQLite3QueryBuilder::del() {
 QueryBuilder *SQLite3QueryBuilder::cvalues() {
 	ERR_FAIL_COND_V(query_result.length() <= 2, this);
 
-	query_result[query_result.length() - 2] = ' ';
+	String qr = query_result.as_string();
+
+	qr[qr.length() - 2] = ' ';
+
+	query_result.clear();
+	query_result.append(qr);
 	query_result += ") ";
 
 	return this;
@@ -32,7 +37,12 @@ QueryBuilder *SQLite3QueryBuilder::cvalues() {
 QueryBuilder *SQLite3QueryBuilder::next_value() {
 	ERR_FAIL_COND_V(query_result.length() <= 2, this);
 
-	query_result[query_result.length() - 2] = ' ';
+	String qr = query_result.as_string();
+
+	qr[qr.length() - 2] = ' ';
+
+	query_result.clear();
+	query_result.append(qr);
 	query_result += "), (";
 
 	return this;
@@ -215,7 +225,12 @@ QueryBuilder *SQLite3QueryBuilder::sets() {
 QueryBuilder *SQLite3QueryBuilder::cset() {
 	ERR_FAIL_COND_V(query_result.length() <= 2, this);
 
-	query_result[query_result.length() - 2] = ' ';
+	String qr = query_result.as_string();
+
+	qr[qr.length() - 2] = ' ';
+
+	query_result.clear();
+	query_result.append(qr);
 
 	return this;
 }

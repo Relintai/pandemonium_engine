@@ -38,7 +38,8 @@ String QueryBuilder::get_result() {
 	return query_result;
 }
 void QueryBuilder::set_result(const String &val) {
-	query_result = val;
+	query_result.clear();
+	query_result.append(val);
 }
 
 QueryBuilder *QueryBuilder::select() {
@@ -235,7 +236,12 @@ QueryBuilder *QueryBuilder::order_by(const String &col) {
 QueryBuilder *QueryBuilder::corder_by() {
 	ERR_FAIL_COND_V(query_result.length() <= 2, this);
 
-	query_result[query_result.length() - 2] = ' ';
+	String qr = query_result.as_string();
+
+	qr[qr.length() - 2] = ' ';
+
+	query_result.clear();
+	query_result.append(qr);
 
 	return this;
 }
@@ -307,7 +313,7 @@ QueryBuilder *QueryBuilder::end_command() {
 }
 
 QueryBuilder *QueryBuilder::reset() {
-	query_result = "";
+	query_result.clear();
 
 	return this;
 }
