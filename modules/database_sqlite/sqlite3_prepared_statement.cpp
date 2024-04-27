@@ -136,7 +136,8 @@ Error SQLite3PreparedStatement::bind_text(const int p_index, const String &p_val
 
 	CharString cs = p_value.utf8();
 
-	int res = sqlite3_bind_text(_prepared_statement, p_index, cs.get_data(), cs.size(), SQLITE_TRANSIENT);
+	//cs.size() - 1 -> Don't send the null terminator, as then the text will be interpreted as blob
+	int res = sqlite3_bind_text(_prepared_statement, p_index, cs.get_data(), cs.size() - 1, SQLITE_TRANSIENT);
 
 	if (res != SQLITE_OK) {
 		return FAILED;
