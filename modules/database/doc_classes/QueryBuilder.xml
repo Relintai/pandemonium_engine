@@ -53,6 +53,11 @@
 				Closes the current [code]ORDER BY[/code] statement. (Usually by removing the last [code],[/code]).
 			</description>
 		</method>
+		<method name="create_prepared_statement">
+			<return type="PreparedStatement" />
+			<description>
+			</description>
+		</method>
 		<method name="cset">
 			<return type="QueryBuilder" />
 			<description>
@@ -382,10 +387,21 @@
 				[/codeblock]
 			</description>
 		</method>
-		<method name="prepare">
+		<method name="psph">
 			<return type="QueryBuilder" />
 			<description>
-				Part of the unfinished prepared statement api.
+			</description>
+		</method>
+		<method name="psphi">
+			<return type="QueryBuilder" />
+			<argument index="0" name="id" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="psphr">
+			<return type="QueryBuilder" />
+			<argument index="0" name="raw_id" type="String" />
+			<description>
 			</description>
 		</method>
 		<method name="reset">
@@ -425,30 +441,6 @@
 				Adds a statement to select and return the last inserted row's id.
 			</description>
 		</method>
-		<method name="set_paramf">
-			<return type="QueryBuilder" />
-			<argument index="0" name="index" type="int" />
-			<argument index="1" name="value" type="float" />
-			<description>
-				Part of the unfinished prepared statement api.
-			</description>
-		</method>
-		<method name="set_parami">
-			<return type="QueryBuilder" />
-			<argument index="0" name="index" type="int" />
-			<argument index="1" name="value" type="int" />
-			<description>
-				Part of the unfinished prepared statement api.
-			</description>
-		</method>
-		<method name="set_params">
-			<return type="QueryBuilder" />
-			<argument index="0" name="index" type="int" />
-			<argument index="1" name="value" type="String" />
-			<description>
-				Part of the unfinished prepared statement api.
-			</description>
-		</method>
 		<method name="setpb">
 			<return type="QueryBuilder" />
 			<argument index="0" name="col" type="String" />
@@ -486,6 +478,26 @@
 				[codeblock]
 				result += col + "=" + str(param) + ", "
 				[/codeblock]
+			</description>
+		</method>
+		<method name="setph">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="setphi">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="id" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="setphr">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="raw_id" type="String" />
+			<description>
 			</description>
 		</method>
 		<method name="setpi">
@@ -596,6 +608,23 @@
 				[/codeblock]
 			</description>
 		</method>
+		<method name="valph">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="valphi">
+			<return type="QueryBuilder" />
+			<argument index="0" name="id" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="valphr">
+			<return type="QueryBuilder" />
+			<argument index="0" name="raw_id" type="String" />
+			<description>
+			</description>
+		</method>
 		<method name="vals">
 			<return type="QueryBuilder" />
 			<argument index="0" name="param" type="String" />
@@ -665,6 +694,26 @@
 				else:
 				    result += col + "=0 "
 				[/codeblock]
+			</description>
+		</method>
+		<method name="wph">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="wphi">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="id" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="wphr">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="raw_id" type="String" />
+			<description>
 			</description>
 		</method>
 		<method name="wpi">

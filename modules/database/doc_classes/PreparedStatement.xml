@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PreparedStatement" inherits="Reference" version="4.4">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="bind_blob">
+			<return type="int" enum="Error" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_double">
+			<return type="int" enum="Error" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_float">
+			<return type="int" enum="Error" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_int">
+			<return type="int" enum="Error" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_int64">
+			<return type="int" enum="Error" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_null">
+			<return type="int" enum="Error" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_parameter_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_parameter_index">
+			<return type="int" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_parameter_name">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_text">
+			<return type="int" enum="Error" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_value">
+			<return type="int" enum="Error" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="bind_zeroblob">
+			<return type="int" enum="Error" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="num" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_bindings">
+			<return type="int" enum="Error" />
+			<description>
+			</description>
+		</method>
+		<method name="column_blob">
+			<return type="PoolByteArray" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_database_name">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_decltype">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_double">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_float">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_int">
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_int64">
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_name">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_origin_name">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_table_name">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_text">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_type">
+			<return type="int" enum="PreparedStatement.Type" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="column_value">
+			<return type="Variant" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="data_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="finalize">
+			<return type="int" enum="Error" />
+			<description>
+			</description>
+		</method>
+		<method name="get_connection" qualifiers="const">
+			<return type="DatabaseConnection" />
+			<description>
+			</description>
+		</method>
+		<method name="get_expanded_sql">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_normalized_sql">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="prepare">
+			<return type="int" enum="Error" />
+			<description>
+			</description>
+		</method>
+		<method name="reset">
+			<return type="int" enum="Error" />
+			<description>
+			</description>
+		</method>
+		<method name="step">
+			<return type="int" enum="Error" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="sql" type="String" setter="set_sql" getter="get_sql">
+		</member>
+	</members>
+	<constants>
+		<constant name="TYPE_NULL" value="0" enum="Type">
+		</constant>
+		<constant name="TYPE_BLOB" value="1" enum="Type">
+		</constant>
+		<constant name="TYPE_FLOAT" value="2" enum="Type">
+		</constant>
+		<constant name="TYPE_DOUBLE" value="3" enum="Type">
+		</constant>
+		<constant name="TYPE_INT" value="4" enum="Type">
+		</constant>
+		<constant name="TYPE_INT64" value="5" enum="Type">
+		</constant>
+		<constant name="TYPE_TEXT" value="6" enum="Type">
+		</constant>
+		<constant name="TYPE_VARCHAR" value="7" enum="Type">
+		</constant>
+		<constant name="TYPE_VALUE" value="8" enum="Type">
+		</constant>
+		<constant name="TYPE_BYTES" value="9" enum="Type">
+		</constant>
+		<constant name="TYPE_TYPE" value="10" enum="Type">
+		</constant>
+		<constant name="TYPE_UNKNOWN" value="11" enum="Type">
+		</constant>
+	</constants>
+</class>

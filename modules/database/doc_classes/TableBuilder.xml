@@ -201,6 +201,11 @@
 				result += "REFERENCES " + table + " (" + name + ") ";
 			</description>
 		</method>
+		<method name="reset">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 		<method name="run">
 			<return type="QueryResult" />
 			<description>

@@ -7,8 +7,13 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="create_prepared_statement">
+			<return type="PreparedStatement" />
+			<description>
+			</description>
+		</method>
 		<method name="database_connect">
-			<return type="void" />
+			<return type="int" enum="Error" />
 			<argument index="0" name="connection_str" type="String" />
 			<description>
 			</description>
