@@ -40,6 +40,7 @@ class QueryBuilder;
 class TableBuilder;
 class QueryResult;
 class Database;
+class PreparedStatement;
 
 class DatabaseConnection : public Reference {
 	GDCLASS(DatabaseConnection, Reference);
@@ -51,6 +52,7 @@ public:
 
 	virtual Ref<QueryBuilder> get_query_builder();
 	virtual Ref<TableBuilder> get_table_builder();
+	virtual Ref<PreparedStatement> create_prepared_statement();
 
 	virtual String escape(const String &str);
 	virtual void escape_to(const String &str, String *to);

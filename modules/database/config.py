@@ -18,6 +18,7 @@ def get_doc_classes():
 	    "QueryBuilder",
 	    "QueryResult",
 	    "TableBuilder",
+		"PreparedStatement",
     ]
 
 def get_doc_path():

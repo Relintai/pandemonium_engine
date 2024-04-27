@@ -31,8 +31,6 @@
 
 #include "query_result.h"
 
-#include <sstream>
-
 bool QueryResult::next_row() {
 	return false;
 }

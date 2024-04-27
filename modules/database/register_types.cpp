@@ -39,6 +39,7 @@
 #include "query_builder.h"
 #include "query_result.h"
 #include "table_builder.h"
+#include "prepared_statement.h"
 
 #include "core/config/engine.h"
 
@@ -59,6 +60,7 @@ void register_database_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<QueryBuilder>();
 		ClassDB::register_class<QueryResult>();
 		ClassDB::register_class<TableBuilder>();
+		ClassDB::register_virtual_class<PreparedStatement>();
 	}
 }
 

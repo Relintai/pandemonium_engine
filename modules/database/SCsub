@@ -16,6 +16,7 @@ sources = [
     "query_builder.cpp",
     "query_result.cpp",
     "table_builder.cpp",
+    "prepared_statement.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

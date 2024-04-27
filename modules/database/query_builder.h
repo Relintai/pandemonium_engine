@@ -37,6 +37,7 @@
 #include "core/object/reference.h"
 
 class QueryResult;
+class PreparedStatement;
 
 //methods that start with an e escape their params.
 
@@ -135,17 +136,14 @@ public:
 
 	virtual String escape(const String &params);
 
-	virtual QueryBuilder *prepare();
-	virtual QueryBuilder *set_params(const int index, const String &value);
-	virtual QueryBuilder *set_parami(const int index, const int value);
-	virtual QueryBuilder *set_paramf(const int index, const float value);
-
 	virtual QueryBuilder *end_command();
 
 	virtual QueryBuilder *reset();
 
 	virtual Ref<QueryResult> run();
 	virtual void run_query();
+
+	virtual Ref<PreparedStatement> create_prepared_statement();
 
 	void print();
 

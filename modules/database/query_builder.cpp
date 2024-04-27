@@ -32,6 +32,7 @@
 #include "query_builder.h"
 
 #include "query_result.h"
+#include "prepared_statement.h"
 
 String QueryBuilder::get_result() {
 	return query_result;
@@ -290,19 +291,6 @@ String QueryBuilder::escape(const String &params) {
 	return params;
 }
 
-QueryBuilder *QueryBuilder::prepare() {
-	return this;
-}
-QueryBuilder *QueryBuilder::set_params(const int index, const String &value) {
-	return this;
-}
-QueryBuilder *QueryBuilder::set_parami(const int index, const int value) {
-	return this;
-}
-QueryBuilder *QueryBuilder::set_paramf(const int index, const float value) {
-	return this;
-}
-
 QueryBuilder *QueryBuilder::end_command() {
 	return this;
 }
@@ -318,6 +306,10 @@ Ref<QueryResult> QueryBuilder::run() {
 }
 
 void QueryBuilder::run_query() {
+}
+
+Ref<PreparedStatement> QueryBuilder::create_prepared_statement() {
+	return Ref<PreparedStatement>();
 }
 
 void QueryBuilder::print() {
@@ -411,17 +403,14 @@ void QueryBuilder::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("escape", "param"), &QueryBuilder::escape);
 
-	ClassDB::bind_method(D_METHOD("prepare"), &QueryBuilder::_prepare_bind);
-	ClassDB::bind_method(D_METHOD("set_params", "index", "value"), &QueryBuilder::_set_params_bind);
-	ClassDB::bind_method(D_METHOD("set_parami", "index", "value"), &QueryBuilder::_set_parami_bind);
-	ClassDB::bind_method(D_METHOD("set_paramf", "index", "value"), &QueryBuilder::_set_paramf_bind);
-
 	ClassDB::bind_method(D_METHOD("end_command"), &QueryBuilder::_end_command_bind);
 
 	ClassDB::bind_method(D_METHOD("reset"), &QueryBuilder::_reset_bind);
 
 	ClassDB::bind_method(D_METHOD("run"), &QueryBuilder::run);
 	ClassDB::bind_method(D_METHOD("run_query"), &QueryBuilder::run_query);
+
+	ClassDB::bind_method(D_METHOD("create_prepared_statement"), &QueryBuilder::create_prepared_statement);
 }
 
 Ref<QueryBuilder> QueryBuilder::_cvalues_bind() {
@@ -612,19 +601,6 @@ Ref<QueryBuilder> QueryBuilder::_ew_bind(const String &str) {
 
 Ref<QueryBuilder> QueryBuilder::_select_last_insert_id_bind() {
 	return Ref<QueryBuilder>(select_last_insert_id());
-}
-
-Ref<QueryBuilder> QueryBuilder::_prepare_bind() {
-	return Ref<QueryBuilder>(prepare());
-}
-Ref<QueryBuilder> QueryBuilder::_set_params_bind(const int index, const String &value) {
-	return Ref<QueryBuilder>(set_params(index, value));
-}
-Ref<QueryBuilder> QueryBuilder::_set_parami_bind(const int index, const int value) {
-	return Ref<QueryBuilder>(set_parami(index, value));
-}
-Ref<QueryBuilder> QueryBuilder::_set_paramf_bind(const int index, const float value) {
-	return Ref<QueryBuilder>(set_paramf(index, value));
 }
 
 Ref<QueryBuilder> QueryBuilder::_end_command_bind() {

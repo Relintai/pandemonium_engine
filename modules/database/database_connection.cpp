@@ -32,6 +32,7 @@
 #include "database_connection.h"
 
 #include "database.h"
+#include "prepared_statement.h"
 #include "query_builder.h"
 #include "query_result.h"
 #include "table_builder.h"
@@ -47,11 +48,15 @@ void DatabaseConnection::query_run(const String &query) {
 }
 
 Ref<QueryBuilder> DatabaseConnection::get_query_builder() {
-	return Ref<QueryBuilder>(new QueryBuilder());
+	return Ref<QueryBuilder>();
 }
 
 Ref<TableBuilder> DatabaseConnection::get_table_builder() {
-	return Ref<TableBuilder>(new TableBuilder());
+	return Ref<TableBuilder>();
+}
+
+Ref<PreparedStatement> DatabaseConnection::create_prepared_statement() {
+	return Ref<PreparedStatement>();
 }
 
 String DatabaseConnection::escape(const String &str) {
@@ -99,6 +104,7 @@ void DatabaseConnection::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_query_builder"), &DatabaseConnection::get_query_builder);
 	ClassDB::bind_method(D_METHOD("get_table_builder"), &DatabaseConnection::get_table_builder);
+	ClassDB::bind_method(D_METHOD("create_prepared_statement"), &DatabaseConnection::create_prepared_statement);
 
 	ClassDB::bind_method(D_METHOD("escape", "str"), &DatabaseConnection::escape);
 
