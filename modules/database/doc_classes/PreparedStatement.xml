@@ -23,13 +23,13 @@
 			print("Inserting 10 values!")
 			
 			for i in range(10):
-				ps.reset()
+			    ps.reset()
 				
-				ps.bind_text(1, "vc" + str(randi()))
-				ps.bind_text(2, "text" + str(randi()))
-				ps.bind_int(3, randi())
-				ps.bind_double(4, randf() * 100000)
-				ps.step()
+			    ps.bind_text(1, "vc" + str(randi()))
+			    ps.bind_text(2, "text" + str(randi()))
+			    ps.bind_int(3, randi())
+			    ps.bind_double(4, randf() * 100000)
+			    ps.step()
 		[/code]
 		Usge example using [QueryBuilder]:
 		[code]
@@ -44,13 +44,13 @@
 			print("Inserting 10 values!")
 			
 			for i in range(10):
-				ps.reset()
+			    ps.reset()
 				
-				ps.bind_text(1, "vc" + str(randi()))
-				ps.bind_text(2, "text" + str(randi()))
-				ps.bind_int(3, randi())
-				ps.bind_double(4, randf() * 100000)
-				ps.step()
+			    ps.bind_text(1, "vc" + str(randi()))
+			    ps.bind_text(2, "text" + str(randi()))
+			    ps.bind_int(3, randi())
+			    ps.bind_double(4, randf() * 100000)
+			    ps.step()
 		[/code]
 	</description>
 	<tutorials>
