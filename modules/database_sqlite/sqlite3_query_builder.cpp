@@ -365,25 +365,25 @@ QueryBuilder *SQLite3QueryBuilder::wpb(const String &col, const bool param) {
 }
 QueryBuilder *SQLite3QueryBuilder::wph(const String &col) {
 	query_result += col;
-	query_result += "='";
+	query_result += "=";
 	psph();
-	query_result += "' ";
+	query_result += " ";
 
 	return this;
 }
 QueryBuilder *SQLite3QueryBuilder::wphi(const String &col, const String &p_id) {
 	query_result += col;
-	query_result += "='";
+	query_result += "=";
 	psphi(p_id);
-	query_result += "' ";
+	query_result += " ";
 
 	return this;
 }
 QueryBuilder *SQLite3QueryBuilder::wphr(const String &col, const String &p_raw_id) {
 	query_result += col;
-	query_result += "='";
+	query_result += "=";
 	psphr(p_raw_id);
-	query_result += "' ";
+	query_result += " ";
 
 	return this;
 }
