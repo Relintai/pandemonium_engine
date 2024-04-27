@@ -78,7 +78,7 @@ public:
 	virtual Ref<QueryResult> run();
 	virtual void run_query();
 
-	void clear();
+	void reset();
 
 	void print();
 

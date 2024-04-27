@@ -251,7 +251,7 @@ void HTTPSessionManagerDB::_create_table() {
 	// tb->print();
 	tb->run_query();
 
-	tb->clear();
+	tb->reset();
 
 	tb->create_table(_database_data_table_name);
 	tb->integer("session_db_id")->not_null()->next_row();

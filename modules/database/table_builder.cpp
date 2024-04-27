@@ -133,7 +133,7 @@ Ref<QueryResult> TableBuilder::run() {
 void TableBuilder::run_query() {
 }
 
-void TableBuilder::clear() {
+void TableBuilder::reset() {
 	result.clear();
 }
 
@@ -182,6 +182,8 @@ void TableBuilder::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("run"), &TableBuilder::run);
 	ClassDB::bind_method(D_METHOD("run_query"), &TableBuilder::run_query);
+
+	ClassDB::bind_method(D_METHOD("reset"), &TableBuilder::reset);
 }
 
 Ref<TableBuilder> TableBuilder::_create_table_bind(const String &name) {
