@@ -336,7 +336,11 @@ bool WebNode::try_route_request_to_children(Ref<WebServerRequest> request) {
 	} else {
 		String main_route = request->get_current_path_segment();
 
-		handler = _node_route_map[main_route];
+		WebNode **v = _node_route_map.getptr(main_route);
+
+		if (v) {
+			handler = *v;
+		}
 	}
 
 	_handler_map_lock.read_unlock();
@@ -369,7 +373,12 @@ WebNode *WebNode::get_request_handler_child(Ref<WebServerRequest> request) {
 		handler = _index_node;
 	} else {
 		const String &main_route = request->get_current_path_segment();
-		handler = _node_route_map[main_route];
+
+		WebNode **v = _node_route_map.getptr(main_route);
+
+		if (v) {
+			handler = *v;
+		}
 	}
 
 	_handler_map_lock.read_unlock();
@@ -400,7 +409,7 @@ void WebNode::build_handler_map() {
 
 			_index_node = c;
 		} else {
-			ERR_CONTINUE_MSG(_node_route_map[uri_segment], "You have multiple of the same uri! URI: " + uri_segment);
+			ERR_CONTINUE_MSG(_node_route_map.has(uri_segment), "You have multiple of the same uri! URI: " + uri_segment);
 
 			_node_route_map[uri_segment] = c;
 		}
