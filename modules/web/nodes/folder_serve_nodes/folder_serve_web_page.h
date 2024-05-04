@@ -52,6 +52,8 @@ public:
 	String get_serve_folder();
 	void set_serve_folder(const String &val);
 
+	Ref<FileCache> get_file_cache() const;
+
 	void _handle_request_main(Ref<WebServerRequest> request);
 
 	virtual void load();

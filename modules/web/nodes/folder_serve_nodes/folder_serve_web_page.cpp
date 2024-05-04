@@ -42,6 +42,10 @@ void FolderServeWebPage::set_serve_folder(const String &val) {
 	_serve_folder = val;
 }
 
+Ref<FileCache> FolderServeWebPage::get_file_cache() const {
+	return _file_cache;
+}
+
 void FolderServeWebPage::_handle_request_main(Ref<WebServerRequest> request) {
 	if (_web_permission.is_valid()) {
 		if (_web_permission->activate(request)) {
@@ -99,6 +103,8 @@ void FolderServeWebPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_serve_folder"), &FolderServeWebPage::get_serve_folder);
 	ClassDB::bind_method(D_METHOD("set_serve_folder", "val"), &FolderServeWebPage::set_serve_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "serve_folder"), "set_serve_folder", "get_serve_folder");
+
+	ClassDB::bind_method(D_METHOD("get_file_cache"), &FolderServeWebPage::get_file_cache);
 
 	ClassDB::bind_method(D_METHOD("load"), &FolderServeWebPage::load);
 }
