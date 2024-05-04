@@ -58,7 +58,7 @@ void WebNode::set_uri_segment(const String &val) {
 }
 
 String WebNode::get_full_uri(const bool slash_at_the_end) {
-	// Special case for WebRoots for ease of use
+	// Special case for index nodes for ease of use
 	if (_uri_segment == "/") {
 		if (slash_at_the_end) {
 			return _uri_segment;
@@ -124,6 +124,13 @@ void WebNode::set_routing_enabled(const bool value) {
 			build_handler_map();
 		}
 	}
+}
+
+bool WebNode::get_send_unmatched_request_to_index() const {
+	return _send_unmatched_request_to_index;
+}
+void WebNode::set_send_unmatched_request_to_index(const bool val) {
+	_send_unmatched_request_to_index = val;
 }
 
 #ifdef MODULE_DATABASE_ENABLED
@@ -342,6 +349,13 @@ bool WebNode::try_route_request_to_children(Ref<WebServerRequest> request) {
 	_handler_map_lock.read_unlock();
 
 	if (!handler) {
+		if (_send_unmatched_request_to_index && _index_node) {
+			// Don't push path here!
+			// request->push_path();
+			_index_node->handle_request_main(request);
+			return true;
+		}
+
 		return false;
 	}
 
@@ -497,6 +511,8 @@ WebNode::WebNode() {
 	//#endif
 
 	_routing_enabled = true;
+	_send_unmatched_request_to_index = false;
+
 	_index_node = nullptr;
 
 #ifdef MODULE_DATABASE_ENABLED
@@ -525,6 +541,10 @@ void WebNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_routing_enabled"), &WebNode::get_routing_enabled);
 	ClassDB::bind_method(D_METHOD("set_routing_enabled", "val"), &WebNode::set_routing_enabled);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "routing_enabled"), "set_routing_enabled", "get_routing_enabled");
+
+	ClassDB::bind_method(D_METHOD("get_send_unmatched_request_to_index"), &WebNode::get_send_unmatched_request_to_index);
+	ClassDB::bind_method(D_METHOD("set_send_unmatched_request_to_index", "val"), &WebNode::set_send_unmatched_request_to_index);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "send_unmatched_request_to_index"), "set_send_unmatched_request_to_index", "get_send_unmatched_request_to_index");
 
 #ifdef MODULE_DATABASE_ENABLED
 	ClassDB::bind_method(D_METHOD("get_database_table_name"), &WebNode::get_database_table_name);
