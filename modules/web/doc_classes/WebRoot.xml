@@ -5,7 +5,8 @@
 	<description>
 		It adds some functionality over [WebNode]s that you need for functional websites, like wwwroot handling, Middleware support, and also requests can register themselves to be notified in case they need to do some special tasks.
 		When a request is received, WebRoot goes through all it's registered [WebServerMiddleware] in order, and call their on_before_handle_request_main() method. If it returns true that means the middleware ended up handling that request, which means the request should not be processed further. This usually means that the Middleware sent an error.
-		If none of the [WebServerMiddleware]s handled the request, then routing begins. At first it will check if the request matches a file from the given wwwroot, if not, then it will use the default [WebNode] routing, except the only difference, is that if a [WebRoot]s has a [WebNode] child with it's uri_segment set to "/" (without quotes), that will be used as the root [WebNode], instead of itself.
+		If none of the [WebServerMiddleware]s handled the request, then routing begins. At first it will check if the request matches a file from the given wwwroot, if not, then it will use the default [WebNode] routing.
+		Note that if any [WebNode]s has a [WebNode] child with it's uri_segment set to "/" (without quotes), that will be used as the root [WebNode], instead of itself.
 	</description>
 	<tutorials>
 	</tutorials>
