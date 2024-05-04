@@ -73,9 +73,6 @@ public:
 	bool get_routing_enabled();
 	void set_routing_enabled(const bool value);
 
-	bool get_send_unmatched_request_to_index() const;
-	void set_send_unmatched_request_to_index(const bool val);
-
 #ifdef MODULE_DATABASE_ENABLED
 	String get_database_table_name();
 	void set_database_table_name(const String &val);
@@ -154,7 +151,6 @@ protected:
 #endif
 
 	bool _routing_enabled;
-	bool _send_unmatched_request_to_index;
 	WebNode *_index_node;
 	HashMap<String, WebNode *> _node_route_map;
 	RWLock _handler_map_lock;

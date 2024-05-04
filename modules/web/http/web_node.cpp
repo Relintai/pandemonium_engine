@@ -126,13 +126,6 @@ void WebNode::set_routing_enabled(const bool value) {
 	}
 }
 
-bool WebNode::get_send_unmatched_request_to_index() const {
-	return _send_unmatched_request_to_index;
-}
-void WebNode::set_send_unmatched_request_to_index(const bool val) {
-	_send_unmatched_request_to_index = val;
-}
-
 #ifdef MODULE_DATABASE_ENABLED
 
 String WebNode::get_database_table_name() {
@@ -349,7 +342,7 @@ bool WebNode::try_route_request_to_children(Ref<WebServerRequest> request) {
 	_handler_map_lock.read_unlock();
 
 	if (!handler) {
-		if (_send_unmatched_request_to_index && _index_node) {
+		if (_index_node) {
 			// Don't push path here!
 			// request->push_path();
 			_index_node->handle_request_main(request);
@@ -511,7 +504,6 @@ WebNode::WebNode() {
 	//#endif
 
 	_routing_enabled = true;
-	_send_unmatched_request_to_index = false;
 
 	_index_node = nullptr;
 
@@ -541,10 +533,6 @@ void WebNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_routing_enabled"), &WebNode::get_routing_enabled);
 	ClassDB::bind_method(D_METHOD("set_routing_enabled", "val"), &WebNode::set_routing_enabled);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "routing_enabled"), "set_routing_enabled", "get_routing_enabled");
-
-	ClassDB::bind_method(D_METHOD("get_send_unmatched_request_to_index"), &WebNode::get_send_unmatched_request_to_index);
-	ClassDB::bind_method(D_METHOD("set_send_unmatched_request_to_index", "val"), &WebNode::set_send_unmatched_request_to_index);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "send_unmatched_request_to_index"), "set_send_unmatched_request_to_index", "get_send_unmatched_request_to_index");
 
 #ifdef MODULE_DATABASE_ENABLED
 	ClassDB::bind_method(D_METHOD("get_database_table_name"), &WebNode::get_database_table_name);
