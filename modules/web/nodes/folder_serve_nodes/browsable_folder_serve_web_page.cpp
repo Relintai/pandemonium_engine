@@ -140,10 +140,6 @@ void BrowsableFolderServeWebPage::render_dir_page(const String &dir_uri, const V
 
 	String uri = get_full_uri(false);
 
-	if (uri == "/") {
-		uri = "";
-	}
-
 	b.div("file_list");
 	{
 		if (!top_level) {

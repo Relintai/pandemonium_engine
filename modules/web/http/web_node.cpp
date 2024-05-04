@@ -58,6 +58,15 @@ void WebNode::set_uri_segment(const String &val) {
 }
 
 String WebNode::get_full_uri(const bool slash_at_the_end) {
+	// Special case for WebRoots for ease of use
+	if (_uri_segment == "/") {
+		if (slash_at_the_end) {
+			return _uri_segment;
+		} else {
+			return String();
+		}
+	}
+
 	if (slash_at_the_end) {
 		return get_full_uri_parent(true) + _uri_segment + "/";
 	} else {
