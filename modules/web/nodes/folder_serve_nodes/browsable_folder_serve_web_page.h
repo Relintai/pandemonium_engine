@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/vector.h"
+#include "core/containers/hash_map.h"
 #include "core/string/ustring.h"
 
 #include "folder_serve_web_page.h"
@@ -76,12 +76,7 @@ protected:
 
 	bool _should_render_menu;
 
-	struct BFSNEntry {
-		String uri;
-		String data;
-	};
-
-	Vector<BFSNEntry> _folder_indexes;
+	HashMap<String, String> _folder_indexes;
 	String _index;
 };
 

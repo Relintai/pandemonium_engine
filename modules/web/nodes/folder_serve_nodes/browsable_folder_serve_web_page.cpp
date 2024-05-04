@@ -51,21 +51,19 @@ void BrowsableFolderServeWebPage::set_should_render_menu(const bool &val) {
 void BrowsableFolderServeWebPage::_handle_request(Ref<WebServerRequest> request) {
 	String file_name = request->get_path(true, false);
 
-	for (int i = 0; i < _folder_indexes.size(); ++i) {
-		const BFSNEntry &e = _folder_indexes[i];
+	String *data = _folder_indexes.getptr(file_name);
 
-		if (e.uri == file_name) {
-			if (_should_render_menu) {
-				render_menu(request);
-			}
-
-			request->body += e.data;
-			request->compile_and_send_body();
-			return;
-		}
+	if (!data) {
+		request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
+		return;
 	}
 
-	request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
+	if (_should_render_menu) {
+		render_menu(request);
+	}
+
+	request->body += *data;
+	request->compile_and_send_body();
 }
 
 void BrowsableFolderServeWebPage::_render_index(Ref<WebServerRequest> request) {
@@ -106,7 +104,7 @@ void BrowsableFolderServeWebPage::evaluate_dir(const String &path, const bool to
 
 	String file = dir->get_next();
 
-	while (file != "") {
+	while (!file.empty()) {
 		String np = path.append_path(file);
 		String nnp = np.substr(serve_folder.length(), np.length() - serve_folder.length());
 
@@ -168,11 +166,7 @@ void BrowsableFolderServeWebPage::render_dir_page(const String &dir_uri, const V
 	}
 	b.cdiv();
 
-	BFSNEntry e;
-	e.uri = dir_uri;
-	e.data = b.result;
-
-	_folder_indexes.push_back(e);
+	_folder_indexes[dir_uri] = b.result;
 
 	if (dir_uri == "/") {
 		_index = b.result;
