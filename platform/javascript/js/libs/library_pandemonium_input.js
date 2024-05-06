@@ -29,6 +29,119 @@
 /*************************************************************************/
 
 /*
+ * IME API helper.
+ */
+
+const PandemoniumIME = {
+	$PandemoniumIME__deps: ['$PandemoniumRuntime', '$PandemoniumEventListeners'],
+	$PandemoniumIME__postset: 'PandemoniumOS.atexit(function(resolve, reject) { PandemoniumIME.clear(); resolve(); });',
+	$PandemoniumIME: {
+		ime: null,
+		active: false,
+
+		getModifiers: function (evt) {
+			return (evt.shiftKey + 0) + ((evt.altKey + 0) << 1) + ((evt.ctrlKey + 0) << 2) + ((evt.metaKey + 0) << 3);
+		},
+
+		ime_active: function (active) {
+			function focus_timer() {
+				PandemoniumIME.active = true;
+				PandemoniumIME.ime.focus();
+			}
+
+			if (PandemoniumIME.ime) {
+				if (active) {
+					PandemoniumIME.ime.style.display = 'block';
+					setInterval(focus_timer, 100);
+				} else {
+					PandemoniumIME.ime.style.display = 'none';
+					PandemoniumConfig.canvas.focus();
+					PandemoniumIME.active = false;
+				}
+			}
+		},
+
+		ime_position: function (x, y) {
+			if (PandemoniumIME.ime) {
+				const canvas = PandemoniumConfig.canvas;
+				const rect = canvas.getBoundingClientRect();
+				const rw = canvas.width / rect.width;
+				const rh = canvas.height / rect.height;
+				const clx = (x / rw) + rect.x;
+				const cly = (y / rh) + rect.y;
+
+				PandemoniumIME.ime.style.left = `${clx}px`;
+				PandemoniumIME.ime.style.top = `${cly}px`;
+			}
+		},
+
+		init: function (ime_cb, key_cb, code, key) {
+			function key_event_cb(pressed, evt) {
+				const modifiers = PandemoniumIME.getModifiers(evt);
+				PandemoniumRuntime.stringToHeap(evt.code, code, 32);
+				PandemoniumRuntime.stringToHeap(evt.key, key, 32);
+				key_cb(pressed, evt.repeat, modifiers);
+				evt.preventDefault();
+			}
+			function ime_event_cb(event) {
+				if (PandemoniumIME.ime) {
+					if (event.type === 'compositionstart') {
+						ime_cb(0, null);
+						PandemoniumIME.ime.innerHTML = '';
+					} else if (event.type === 'compositionupdate') {
+						const ptr = PandemoniumRuntime.allocString(event.data);
+						ime_cb(1, ptr);
+						PandemoniumRuntime.free(ptr);
+					} else if (event.type === 'compositionend') {
+						const ptr = PandemoniumRuntime.allocString(event.data);
+						ime_cb(2, ptr);
+						PandemoniumRuntime.free(ptr);
+						PandemoniumIME.ime.innerHTML = '';
+					}
+				}
+			}
+
+			const ime = document.createElement('div');
+			ime.className = 'ime';
+			ime.style.background = 'none';
+			ime.style.opacity = 0.0;
+			ime.style.position = 'fixed';
+			ime.style.textAlign = 'left';
+			ime.style.fontSize = '1px';
+			ime.style.left = '0px';
+			ime.style.top = '0px';
+			ime.style.width = '100%';
+			ime.style.height = '40px';
+			ime.style.display = 'none';
+			ime.contentEditable = 'true';
+
+			PandemoniumEventListeners.add(ime, 'compositionstart', ime_event_cb, false);
+			PandemoniumEventListeners.add(ime, 'compositionupdate', ime_event_cb, false);
+			PandemoniumEventListeners.add(ime, 'compositionend', ime_event_cb, false);
+			PandemoniumEventListeners.add(ime, 'keydown', key_event_cb.bind(null, 1), false);
+			PandemoniumEventListeners.add(ime, 'keyup', key_event_cb.bind(null, 0), false);
+
+			ime.onblur = function () {
+				this.style.display = 'none';
+				PandemoniumConfig.canvas.focus();
+				PandemoniumIME.active = false;
+			};
+
+			PandemoniumConfig.canvas.parentElement.appendChild(ime);
+			PandemoniumIME.ime = ime;
+		},
+
+		clear: function () {
+			if (PandemoniumIME.ime) {
+				PandemoniumIME.ime.remove();
+				PandemoniumIME.ime = null;
+			}
+		},
+	},
+};
+mergeInto(LibraryManager.library, PandemoniumIME);
+
+/*
  * Gamepad API helper.
  */
 const PandemoniumInputGamepads = {
@@ -339,7 +452,7 @@ mergeInto(LibraryManager.library, PandemoniumInputDragDrop);
  * Pandemonium exposed input functions.
  */
 const PandemoniumInput = {
-    $PandemoniumInput__deps: ['$PandemoniumRuntime', '$PandemoniumConfig', '$PandemoniumEventListeners', '$PandemoniumInputGamepads', '$PandemoniumInputDragDrop'],
+    $PandemoniumInput__deps: ['$PandemoniumRuntime', '$PandemoniumConfig', '$PandemoniumEventListeners', '$PandemoniumInputGamepads', '$PandemoniumInputDragDrop', '$PandemoniumIME'],
     $PandemoniumInput: {
         getModifiers: function(evt) {
             return (evt.shiftKey + 0) + ((evt.altKey + 0) << 1) + ((evt.ctrlKey + 0) << 2) + ((evt.metaKey + 0) << 3);
@@ -462,6 +575,35 @@ const PandemoniumInput = {
         PandemoniumEventListeners.add(PandemoniumConfig.canvas, 'keyup', key_cb.bind(null, 0), false);
     },
 
+	  /*
+	   * IME API
+	   */
+	  pandemonium_js_set_ime_active__proxy: 'sync',
+	  pandemonium_js_set_ime_active__sig: 'vi',
+	  pandemonium_js_set_ime_active: function (p_active) {
+		  PandemoniumIME.ime_active(p_active);
+	  },
+
+	  pandemonium_js_set_ime_position__proxy: 'sync',
+	  pandemonium_js_set_ime_position__sig: 'vii',
+	  pandemonium_js_set_ime_position: function (p_x, p_y) {
+		  PandemoniumIME.ime_position(p_x, p_y);
+	  },
+
+	  pandemonium_js_set_ime_cb__proxy: 'sync',
+	  pandemonium_js_set_ime_cb__sig: 'viiii',
+	  pandemonium_js_set_ime_cb: function (p_ime_cb, p_key_cb, code, key) {
+		  const ime_cb = PandemoniumRuntime.get_func(p_ime_cb);
+		  const key_cb = PandemoniumRuntime.get_func(p_key_cb);
+		  PandemoniumIME.init(ime_cb, key_cb, code, key);
+	  },
+
+	  pandemonium_js_is_ime_focused__proxy: 'sync',
+	  pandemonium_js_is_ime_focused__sig: 'i',
+	  pandemonium_js_is_ime_focused: function () {
+		  return PandemoniumIME.active;
+	  },
+
     /*
      * Gamepad API
      */
@@ -544,7 +686,7 @@ const PandemoniumInput = {
     pandemonium_js_input_vibrate_handheld__sig: 'vi',
     pandemonium_js_input_vibrate_handheld: function(p_duration_ms) {
         if (typeof navigator.vibrate !== 'function') {
-            GodotRuntime.print('This browser does not support vibration.');
+            PandemoniumRuntime.print('This browser does not support vibration.');
         } else {
             navigator.vibrate(p_duration_ms);
         }

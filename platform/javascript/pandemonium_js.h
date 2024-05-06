@@ -61,6 +61,12 @@ extern void pandemonium_js_input_touch_cb(void (*p_callback)(int p_type, int p_c
 extern void pandemonium_js_input_key_cb(void (*p_callback)(int p_type, int p_repeat, int p_modifiers), char r_code[32], char r_key[32]);
 extern void pandemonium_js_input_vibrate_handheld(int p_duration_ms);
 
+// IME
+extern void pandemonium_js_set_ime_active(int p_active);
+extern void pandemonium_js_set_ime_position(int p_x, int p_y);
+extern void pandemonium_js_set_ime_cb(void (*p_input)(int p_type, const char *p_text), void (*p_callback)(int p_type, int p_repeat, int p_modifiers), char r_code[32], char r_key[32]);
+extern int pandemonium_js_is_ime_focused();
+
 // Input gamepad
 extern void pandemonium_js_input_gamepad_cb(void (*p_on_change)(int p_index, int p_connected, const char *p_id, const char *p_guid));
 extern int pandemonium_js_input_gamepad_sample();
