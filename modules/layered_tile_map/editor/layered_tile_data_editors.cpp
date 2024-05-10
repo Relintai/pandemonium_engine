@@ -94,6 +94,7 @@ void LayeredTileDataEditor::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_tile_set_changed_deferred_update"), &LayeredTileDataEditor::_tile_set_changed_deferred_update);
 	ClassDB::bind_method(D_METHOD("_tile_set_changed_plan_update"), &LayeredTileDataEditor::_tile_set_changed_plan_update);
+	ClassDB::bind_method(D_METHOD("_tile_set_changed"), &LayeredTileDataEditor::_tile_set_changed);
 }
 
 void LayeredTileDataEditor::set_tile_set(Ref<LayeredTileSet> p_tile_set) {
