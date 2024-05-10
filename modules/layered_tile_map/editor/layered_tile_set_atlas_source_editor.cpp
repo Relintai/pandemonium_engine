@@ -2627,6 +2627,7 @@ LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceEditor() {
 	tile_inspector_no_tile_selected_label->set_v_size_flags(SIZE_EXPAND | SIZE_SHRINK_CENTER);
 	tile_inspector_no_tile_selected_label->set_align(Label::ALIGN_CENTER);
 	tile_inspector_no_tile_selected_label->set_text(TTR("No tiles selected.\nSelect one or more tiles from the palette to edit its properties."));
+	tile_inspector_no_tile_selected_label->set_autowrap(true);
 	middle_vbox_container->add_child(tile_inspector_no_tile_selected_label);
 
 	// Property values palette.
