@@ -216,7 +216,10 @@ void LayeredTileMapLayer::_rendering_update(bool p_force_cleanup) {
 	// Check if anything changed that might change the quadrant shape.
 	// If so, recreate everything.
 	bool quandrant_shape_changed = dirty.flags[DIRTY_FLAGS_LAYER_RENDERING_QUADRANT_SIZE] ||
-			(is_sort_enabled() && (dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ENABLED] || dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ORIGIN] || dirty.flags[DIRTY_FLAGS_LAYER_LOCAL_TRANSFORM] || dirty.flags[DIRTY_FLAGS_TILE_SET]
+			((is_sort_enabled() && (dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ENABLED])) || 
+			dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ORIGIN] || 
+			dirty.flags[DIRTY_FLAGS_LAYER_LOCAL_TRANSFORM] || 
+			dirty.flags[DIRTY_FLAGS_TILE_SET]
 
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
 										  || dirty.flags[DIRTY_FLAGS_LAYER_VERTEX_LIGHTS]
@@ -225,7 +228,7 @@ void LayeredTileMapLayer::_rendering_update(bool p_force_cleanup) {
 #ifdef MODULE_FASTNOISE_ENABLED
 										  || dirty.flags[DIRTY_FLAGS_LAYER_RAO]
 #endif
-										  ));
+										  );
 
 	// Free all quadrants.
 	if (forced_cleanup || quandrant_shape_changed) {
@@ -375,12 +378,14 @@ void LayeredTileMapLayer::_rendering_update(bool p_force_cleanup) {
 
 					//RAO
 #ifdef MODULE_FASTNOISE_ENABLED
-					if (_rao_noise.is_valid()) {
-						float col = (static_cast<float>(cell_data.rao) / 255.0) * _rao_strength;
+					if (_use_rao) {
+						if (_rao_noise.is_valid()) {
+							float col = (static_cast<float>(cell_data.rao) / 255.0) * _rao_strength;
 
-						Color modulate = get_modulate();
+							Color modulate = get_modulate();
 
-						self_modulate = Color(modulate.r * self_modulate.r - col, modulate.g * self_modulate.g - col, modulate.b * self_modulate.b - col, modulate.a * self_modulate.a);
+							self_modulate = Color(modulate.r * self_modulate.r - col, modulate.g * self_modulate.g - col, modulate.b * self_modulate.b - col, modulate.a * self_modulate.a);
+						}
 					}
 #endif
 
@@ -529,8 +534,12 @@ void LayeredTileMapLayer::_rendering_quadrants_update_cell(CellData &r_cell_data
 
 #ifdef MODULE_FASTNOISE_ENABLED
 		if (dirty.flags[DIRTY_FLAGS_LAYER_RAO]) {
-			if (_rao_noise.is_valid()) {
-				r_cell_data.rao = static_cast<uint8_t>(static_cast<int>(CLAMP(_rao_noise->get_noise_2d(r_cell_data.coords.x, r_cell_data.coords.y), 0, 1) * 255.0) % 255);
+			if (_use_rao) {
+				if (_rao_noise.is_valid()) {
+					r_cell_data.rao = static_cast<uint8_t>(static_cast<int>(CLAMP(_rao_noise->get_noise_2d(r_cell_data.coords.x, r_cell_data.coords.y), 0, 1) * 255.0));
+				} else {
+					r_cell_data.rao = 0;
+				}
 			} else {
 				r_cell_data.rao = 0;
 			}
@@ -2339,6 +2348,33 @@ void LayeredTileMapLayer::set_cell(const Vector2i &p_coords, int p_source_id, co
 		// Insert a new cell in the tile map.
 		CellData new_cell_data;
 		new_cell_data.coords = pk;
+
+#ifdef MODULE_FASTNOISE_ENABLED
+		new_cell_data.rao = 0;
+
+		if (_use_rao) {
+			if (_rao_noise.is_valid()) {
+				new_cell_data.rao = static_cast<uint8_t>(static_cast<int>(CLAMP(_rao_noise->get_noise_2d(pk.x, pk.y), 0, 1) * 255.0));
+			}
+		}
+#endif
+
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+		new_cell_data.vertex_light_color = Color(1, 1, 1, 1);
+
+		if (_use_vertex_lights) {
+			Ref<World2D> world_2d = get_world_2d();
+
+			if (world_2d.is_valid()) {
+				RID vertex_light_map_rid = world_2d->get_vertex_lights_2d_map();
+
+				const Vector2 local_tile_pos = tile_set->map_to_local(new_cell_data.coords);
+
+				new_cell_data.vertex_light_color = VertexLights2DServer::get_singleton()->sample_light(vertex_light_map_rid, to_global(local_tile_pos));
+			}
+		}
+#endif
+
 		E = tile_map_layer_data.insert(pk, new_cell_data);
 	} else {
 		if (E->value().cell.source_id == source_id && E->value().cell.get_atlas_coords() == atlas_coords && E->value().cell.alternative_tile == alternative_tile) {
@@ -2983,6 +3019,10 @@ LayeredTileMapLayer::DebugVisibilityMode LayeredTileMapLayer::get_navigation_vis
 //VertexLights2D
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
 void LayeredTileMapLayer::set_use_vertex_lights(const bool p_use) {
+	if (_use_vertex_lights == p_use) {
+		return;
+	}
+
 	_use_vertex_lights = p_use;
 
 	dirty.flags[DIRTY_FLAGS_LAYER_VERTEX_LIGHTS] = true;

@@ -156,6 +156,14 @@ struct CellData {
 		navigation_regions = p_other.navigation_regions;
 		scene = p_other.scene;
 		runtime_tile_data_cache = p_other.runtime_tile_data_cache;
+
+#ifdef MODULE_FASTNOISE_ENABLED
+		rao = p_other.rao;
+#endif
+
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+		vertex_light_color = p_other.vertex_light_color;
+#endif
 	}
 
 	CellData(const CellData &p_other) :
@@ -169,6 +177,14 @@ struct CellData {
 		navigation_regions = p_other.navigation_regions;
 		scene = p_other.scene;
 		runtime_tile_data_cache = p_other.runtime_tile_data_cache;
+
+#ifdef MODULE_FASTNOISE_ENABLED
+		rao = p_other.rao;
+#endif
+
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+		vertex_light_color = p_other.vertex_light_color;
+#endif
 	}
 
 	CellData() :
