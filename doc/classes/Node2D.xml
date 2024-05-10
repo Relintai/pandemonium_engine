@@ -132,6 +132,9 @@
 		<member name="z_index" type="int" setter="set_z_index" getter="get_z_index" default="0">
 			Z index. Controls the order in which the nodes render. A node with a higher Z index will display in front of others. Must be between [constant RenderingServer.CANVAS_ITEM_Z_MIN] and [constant RenderingServer.CANVAS_ITEM_Z_MAX] (inclusive).
 		</member>
+		<member name="sort_enabled" type="bool" setter="set_sort_enabled" getter="is_sort_enabled" default="true">
+			If [code]true[/code], child nodes are sorted, otherwise sorting is disabled.
+		</member>
 	</members>
 	<constants>
 	</constants>

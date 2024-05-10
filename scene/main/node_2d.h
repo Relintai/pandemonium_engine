@@ -52,6 +52,8 @@ class Node2D : public CanvasItem {
 	void _update_xform_values();
 
 protected:
+	bool _sort_enabled;
+
 	void _notification(int p_notification);
 	static void _bind_methods();
 
@@ -113,6 +115,9 @@ public:
 
 	void set_z_as_relative(bool p_enabled);
 	bool is_z_relative() const;
+
+	void set_sort_enabled(bool p_enabled);
+	bool is_sort_enabled() const;
 
 	Transform2D get_relative_transform_to_parent(const Node *p_parent) const;
 

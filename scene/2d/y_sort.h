@@ -36,12 +36,8 @@
 
 class YSort : public Node2D {
 	GDCLASS(YSort, Node2D);
-	bool sort_enabled;
-	static void _bind_methods();
 
 public:
-	void set_sort_enabled(bool p_enabled);
-	bool is_sort_enabled() const;
 	YSort();
 };
 
