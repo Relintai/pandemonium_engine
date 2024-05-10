@@ -435,7 +435,6 @@ void LayeredTileMapLayer::_rendering_update(bool p_force_cleanup) {
 					rs->canvas_item_set_light_mask(ci->get(), get_light_mask());
 
 					rs->canvas_item_set_self_modulate(ci->get(), get_self_modulate());
-					rs->canvas_item_set_self_modulate(ci->get(), get_self_modulate());
 				}
 			}
 		}
