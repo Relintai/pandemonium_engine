@@ -67,7 +67,6 @@ void RenderingServerRaster::_draw_margins() {
 
 void RenderingServerRaster::free(RID p_rid) {
 	if (!p_rid.is_valid()) {
-		ERR_FAIL_MSG("Invalid RID.");
 		return;
 	}
 
