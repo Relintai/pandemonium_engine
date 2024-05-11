@@ -3317,4 +3317,24 @@ void TileDataAvoidanceEditor::draw_over_tile(CanvasItem *p_canvas_item, Transfor
 
 	RenderingServer::get_singleton()->canvas_item_add_polygon(p_canvas_item->get_canvas_item(), verts, colors);
 	RenderingServer::get_singleton()->canvas_item_add_set_transform(p_canvas_item->get_canvas_item(), Transform2D());
+
+	real_t radius = tile_data->get_avoidance_radius(avoidance_layer);
+	Vector2i position = tile_data->get_avoidance_position(avoidance_layer);
+
+	color = Color(1.0, 1.0, 1.0);
+	if (p_selected) {
+		Color grid_color = EDITOR_GET("editors/layered_tiles_editor/grid_color");
+		Color selection_color = Color().from_hsv(Math::fposmod(grid_color.get_h() + 0.5, 1.0), grid_color.get_s(), grid_color.get_v(), 1.0);
+		color = selection_color;
+	}
+	Ref<Texture> position_icon = LayeredTileSetEditor::get_singleton()->get_theme_icon("EditorPosition", "EditorIcons");
+	p_canvas_item->draw_texture(position_icon, p_transform.xform(Vector2(position)) - position_icon->get_size() / 2, color);
+
+#ifdef DEBUG_ENABLED
+	color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_obstacles_radius_color();
+#else
+	color = Color(1.0, 0.5, 0.0, 0.25);
+#endif // DEBUG_ENABLED
+
+	p_canvas_item->draw_circle(p_transform.xform(Vector2(position)), radius * p_transform.get_scale().x, color);
 }
