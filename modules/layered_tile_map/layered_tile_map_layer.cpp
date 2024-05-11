@@ -1543,6 +1543,154 @@ void LayeredTileMapLayer::_scenes_draw_cell_debug(const RID &p_canvas_item, cons
 }
 #endif // DEBUG_ENABLED
 
+////////////////////////// VertexLights2D ///////////////////////////////////////////
+
+//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+
+void LayeredTileMapLayer::_vertex_light_update(bool p_force_cleanup) {
+	// Check if we should cleanup everything.
+	bool forced_cleanup = p_force_cleanup || !enabled || !_use_vertex_lights || !is_inside_tree() || !tile_set.is_valid();
+
+	// ----------- regions processing -----------
+	if (forced_cleanup) {
+		// Clean everything.
+		for (HashMap<Vector2i, CellData>::Element *kv = tile_map_layer_data.front(); kv; kv = kv->next) {
+			_vertex_light_clear_cell(kv->value());
+		}
+	} else {
+		if (_vertex_lights_was_cleaned_up || dirty.flags[DIRTY_FLAGS_TILE_SET]) {
+			// Update all cells.
+			for (HashMap<Vector2i, CellData>::Element *kv = tile_map_layer_data.front(); kv; kv = kv->next) {
+				_vertex_light_update_cell(kv->value());
+			}
+		} else {
+			// Update dirty cells.
+			for (SelfList<CellData> *cell_data_list_element = dirty.cell_list.first(); cell_data_list_element; cell_data_list_element = cell_data_list_element->next()) {
+				CellData &cell_data = *cell_data_list_element->self();
+				_vertex_light_update_cell(cell_data);
+			}
+		}
+	}
+
+	// -----------
+	// Mark the navigation state as up to date.
+	_vertex_lights_was_cleaned_up = forced_cleanup;
+}
+
+void LayeredTileMapLayer::_vertex_light_notification(int p_what) {
+	if (p_what == NOTIFICATION_TRANSFORM_CHANGED) {
+		VertexLights2DServer *vls = VertexLights2DServer::get_singleton();
+
+		if (tile_set.is_valid()) {
+			Transform2D tilemap_xform = get_global_transform();
+
+			for (HashMap<Vector2i, CellData>::Element *kv = tile_map_layer_data.front(); kv; kv = kv->next) {
+				const CellData &cell_data = kv->value();
+
+				Transform2D tile_transform;
+				tile_transform.set_origin(tile_set->map_to_local(kv->key()));
+
+				Transform2D ctf = tilemap_xform * tile_transform;
+				Vector2 pos = ctf.xform(Vector2());
+
+				// Update navigation regions transform.
+
+				const RID &light = cell_data.vertex_light;
+
+				if (light.is_valid()) {
+					vls->light_set_position(light, pos);
+				}
+			}
+		}
+	}
+}
+
+void LayeredTileMapLayer::_vertex_light_clear_cell(CellData &r_cell_data) {
+	VertexLights2DServer *vls = VertexLights2DServer::get_singleton();
+
+	// Clear
+	const RID &light = r_cell_data.vertex_light;
+
+	if (light.is_valid()) {
+		vls->light_set_map(light, RID());
+		vls->free(light);
+	}
+
+	r_cell_data.vertex_light = RID();
+}
+
+void LayeredTileMapLayer::_vertex_light_update_cell(CellData &r_cell_data) {
+	VertexLights2DServer *vls = VertexLights2DServer::get_singleton();
+
+	RID light_map = get_world_2d()->get_vertex_lights_2d_map();
+	ERR_FAIL_COND(!light_map.is_valid());
+
+	// Get the navigation polygons and create regions.
+	LayeredTileMapCell &c = r_cell_data.cell;
+
+	LayeredTileSetSource *source;
+	if (tile_set->has_source(c.source_id)) {
+		source = *tile_set->get_source(c.source_id);
+
+		if (source->has_tile(c.get_atlas_coords()) && source->has_alternative_tile(c.get_atlas_coords(), c.alternative_tile)) {
+			LayeredTileSetAtlasSource *atlas_source = Object::cast_to<LayeredTileSetAtlasSource>(source);
+			if (atlas_source) {
+				const LayeredTileData *tile_data;
+				if (r_cell_data.runtime_tile_data_cache) {
+					tile_data = r_cell_data.runtime_tile_data_cache;
+				} else {
+					tile_data = atlas_source->get_tile_data(c.get_atlas_coords(), c.alternative_tile);
+				}
+
+				RID &light = r_cell_data.vertex_light;
+
+				bool enabled = tile_data->get_vertex_light_is_enabled();
+
+				if (enabled) {
+					// Create or update regions.
+					if (!light.is_valid()) {
+						light = vls->light_create();
+					}
+
+					vls->light_set_map(light, light_map);
+					vls->light_set_range(light, tile_data->get_vertex_light_range());
+					vls->light_set_attenuation(light, tile_data->get_vertex_light_attenuation());
+					vls->light_set_color(light, tile_data->get_vertex_light_color());
+					vls->light_set_mode(light, (VertexLights2DServer::VertexLight2DMode)tile_data->get_vertex_light_mode());
+					vls->light_set_z_range(light, tile_data->get_vertex_light_z_range());
+					vls->light_set_layer_range(light, tile_data->get_vertex_light_layer_range());
+					vls->light_set_item_cull_mask(light, tile_data->get_vertex_light_item_cull_mask());
+
+					const Vector2 local_tile_pos = tile_set->map_to_local(r_cell_data.coords);
+					vls->light_set_position(light, to_global(local_tile_pos));
+
+				} else {
+					// Clear region.
+					if (light.is_valid()) {
+						vls->light_set_map(light, RID());
+						vls->free(light);
+						light = RID();
+					}
+				}
+
+				return;
+			}
+		}
+	}
+
+	// If we did not return earlier, clear the cell.
+	_vertex_light_clear_cell(r_cell_data);
+}
+
+#ifdef DEBUG_ENABLED
+void LayeredTileMapLayer::_vertex_light_draw_cell_debug(const RID &p_canvas_item, const Vector2 &p_quadrant_pos, const CellData &r_cell_data) {
+	//TODO
+}
+#endif // DEBUG_ENABLED
+
+#endif
+
 /////////////////////////////////////////////////////////////////////
 
 void LayeredTileMapLayer::_build_runtime_update_tile_data(bool p_force_cleanup) {
@@ -1863,6 +2011,11 @@ void LayeredTileMapLayer::_internal_update(bool p_force_cleanup) {
 	// This may add cells to the dirty list if a runtime modification has been notified.
 	_build_runtime_update_tile_data(p_force_cleanup);
 
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	_vertex_light_update(p_force_cleanup);
+#endif
+
 	// Update all subsystems.
 	_rendering_update(p_force_cleanup);
 	_physics_update(p_force_cleanup);
@@ -1943,6 +2096,11 @@ void LayeredTileMapLayer::_notification(int p_what) {
 			_queue_internal_update();
 		} break;
 	}
+
+		//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	_vertex_light_notification(p_what);
+#endif
 
 	_rendering_notification(p_what);
 	_physics_notification(p_what);

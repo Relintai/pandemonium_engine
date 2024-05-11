@@ -118,6 +118,7 @@ struct CellData {
 	//VertexLights2D
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
 	Color vertex_light_color;
+	RID vertex_light;
 #endif
 
 	// Debug.
@@ -424,6 +425,18 @@ private:
 #ifdef DEBUG_ENABLED
 	void _scenes_draw_cell_debug(const RID &p_canvas_item, const Vector2 &p_quadrant_pos, const CellData &r_cell_data);
 #endif // DEBUG_ENABLED
+
+	//VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	bool _vertex_lights_was_cleaned_up = false;
+	void _vertex_light_update(bool p_force_cleanup);
+	void _vertex_light_notification(int p_what);
+	void _vertex_light_clear_cell(CellData &r_cell_data);
+	void _vertex_light_update_cell(CellData &r_cell_data);
+#ifdef DEBUG_ENABLED
+	void _vertex_light_draw_cell_debug(const RID &p_canvas_item, const Vector2 &p_quadrant_pos, const CellData &r_cell_data);
+#endif // DEBUG_ENABLED
+#endif
 
 	// Terrains.
 	LayeredTileSet::TerrainsPattern _get_best_terrain_pattern_for_constraints(int p_terrain_set, const Vector2i &p_position, const RBSet<TerrainConstraint> &p_constraints, LayeredTileSet::TerrainsPattern p_current_pattern) const;

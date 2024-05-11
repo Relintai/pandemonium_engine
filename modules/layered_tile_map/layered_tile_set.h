@@ -1066,31 +1066,31 @@ public:
 
 	// VertexLights2D
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
-	bool get_vertex_light_is_enabled();
+	bool get_vertex_light_is_enabled() const;
 	void set_vertex_light_enabled(const bool p_enabled);
 
-	Vector2i get_vertex_light_position();
+	Vector2i get_vertex_light_position() const;
 	void set_vertex_light_position(const Vector2i &p_position);
 
-	Vector2i get_vertex_light_range();
+	Vector2i get_vertex_light_range() const;
 	void set_vertex_light_range(const Vector2i &p_range);
 
-	real_t get_vertex_light_attenuation();
+	real_t get_vertex_light_attenuation() const;
 	void set_vertex_light_attenuation(const real_t p_attenuation);
 
-	Color get_vertex_light_color();
+	Color get_vertex_light_color() const;
 	void set_vertex_light_color(const Color &p_color);
 
-	VertexLight2DMode get_vertex_light_mode();
+	VertexLight2DMode get_vertex_light_mode() const;
 	void set_vertex_light_mode(const VertexLight2DMode p_mode);
 
-	Vector2i get_vertex_light_z_range();
+	Vector2i get_vertex_light_z_range() const;
 	void set_vertex_light_z_range(const Vector2i &p_z_range);
 
-	Vector2i get_vertex_light_layer_range();
+	Vector2i get_vertex_light_layer_range() const;
 	void set_vertex_light_layer_range(const Vector2i &p_layer_range);
 
-	int get_vertex_light_item_cull_mask();
+	int get_vertex_light_item_cull_mask() const;
 	void set_vertex_light_item_cull_mask(const int p_item_cull_mask);
 #endif
 

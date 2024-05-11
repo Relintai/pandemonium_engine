@@ -6847,7 +6847,7 @@ Vector<Vector2> LayeredTileData::get_transformed_avoidance_polygon(int p_layer_i
 
 // VertexLights2D
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
-bool LayeredTileData::get_vertex_light_is_enabled() {
+bool LayeredTileData::get_vertex_light_is_enabled() const {
 	return _vertex_light.enabled;
 }
 void LayeredTileData::set_vertex_light_enabled(const bool p_enabled) {
@@ -6855,7 +6855,7 @@ void LayeredTileData::set_vertex_light_enabled(const bool p_enabled) {
 	emit_signal("changed");
 }
 
-Vector2i LayeredTileData::get_vertex_light_position() {
+Vector2i LayeredTileData::get_vertex_light_position() const {
 	return _vertex_light.position;
 }
 void LayeredTileData::set_vertex_light_position(const Vector2i &p_position) {
@@ -6863,7 +6863,7 @@ void LayeredTileData::set_vertex_light_position(const Vector2i &p_position) {
 	emit_signal("changed");
 }
 
-Vector2i LayeredTileData::get_vertex_light_range() {
+Vector2i LayeredTileData::get_vertex_light_range() const {
 	return _vertex_light.range;
 }
 void LayeredTileData::set_vertex_light_range(const Vector2i &p_range) {
@@ -6871,7 +6871,7 @@ void LayeredTileData::set_vertex_light_range(const Vector2i &p_range) {
 	emit_signal("changed");
 }
 
-real_t LayeredTileData::get_vertex_light_attenuation() {
+real_t LayeredTileData::get_vertex_light_attenuation() const {
 	return _vertex_light.attenuation;
 }
 void LayeredTileData::set_vertex_light_attenuation(const real_t p_attenuation) {
@@ -6879,7 +6879,7 @@ void LayeredTileData::set_vertex_light_attenuation(const real_t p_attenuation) {
 	emit_signal("changed");
 }
 
-Color LayeredTileData::get_vertex_light_color() {
+Color LayeredTileData::get_vertex_light_color() const {
 	return _vertex_light.color;
 }
 void LayeredTileData::set_vertex_light_color(const Color &p_color) {
@@ -6887,7 +6887,7 @@ void LayeredTileData::set_vertex_light_color(const Color &p_color) {
 	emit_signal("changed");
 }
 
-LayeredTileData::VertexLight2DMode LayeredTileData::get_vertex_light_mode() {
+LayeredTileData::VertexLight2DMode LayeredTileData::get_vertex_light_mode() const {
 	return _vertex_light.mode;
 }
 void LayeredTileData::set_vertex_light_mode(const LayeredTileData::VertexLight2DMode p_mode) {
@@ -6895,7 +6895,7 @@ void LayeredTileData::set_vertex_light_mode(const LayeredTileData::VertexLight2D
 	emit_signal("changed");
 }
 
-Vector2i LayeredTileData::get_vertex_light_z_range() {
+Vector2i LayeredTileData::get_vertex_light_z_range() const {
 	return _vertex_light.z_range;
 }
 void LayeredTileData::set_vertex_light_z_range(const Vector2i &p_z_range) {
@@ -6903,7 +6903,7 @@ void LayeredTileData::set_vertex_light_z_range(const Vector2i &p_z_range) {
 	emit_signal("changed");
 }
 
-Vector2i LayeredTileData::get_vertex_light_layer_range() {
+Vector2i LayeredTileData::get_vertex_light_layer_range() const {
 	return _vertex_light.layer_range;
 }
 void LayeredTileData::set_vertex_light_layer_range(const Vector2i &p_layer_range) {
@@ -6911,7 +6911,7 @@ void LayeredTileData::set_vertex_light_layer_range(const Vector2i &p_layer_range
 	emit_signal("changed");
 }
 
-int LayeredTileData::get_vertex_light_item_cull_mask() {
+int LayeredTileData::get_vertex_light_item_cull_mask() const {
 	return _vertex_light.item_cull_mask;
 }
 void LayeredTileData::set_vertex_light_item_cull_mask(const int p_item_cull_mask) {
