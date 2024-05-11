@@ -6782,14 +6782,14 @@ real_t LayeredTileData::get_avoidance_radius(int p_layer_id) const {
 	return avoidance[p_layer_id].radius;
 }
 
-void LayeredTileData::set_avoidance_position(int p_layer_id, const Vector2 &p_position) {
+void LayeredTileData::set_avoidance_position(int p_layer_id, const Vector2i &p_position) {
 	ERR_FAIL_INDEX(p_layer_id, avoidance.size());
 	avoidance.write[p_layer_id].position = p_position;
 	emit_signal("changed");
 }
 
-Vector2 LayeredTileData::get_avoidance_position(int p_layer_id) const {
-	ERR_FAIL_INDEX_V(p_layer_id, avoidance.size(), Vector2());
+Vector2i LayeredTileData::get_avoidance_position(int p_layer_id) const {
+	ERR_FAIL_INDEX_V(p_layer_id, avoidance.size(), Vector2i());
 	return avoidance[p_layer_id].position;
 }
 
@@ -7215,7 +7215,7 @@ void LayeredTileData::_get_property_list(List<PropertyInfo> *p_list) const {
 			property_info = PropertyInfo(Variant::REAL, vformat("avoidance_layer_%d/%s", i, "radius"));
 			p_list->push_back(property_info);
 
-			property_info = PropertyInfo(Variant::VECTOR2, vformat("avoidance_layer_%d/%s", i, "position"));
+			property_info = PropertyInfo(Variant::VECTOR2I, vformat("avoidance_layer_%d/%s", i, "position"));
 			p_list->push_back(property_info);
 
 			property_info = PropertyInfo(Variant::POOL_VECTOR2_ARRAY, vformat("avoidance_layer_%d/%s", i, "polygon"));
