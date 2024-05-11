@@ -2859,6 +2859,14 @@ void EditorPropertyTilePolygon::_polygons_changed() {
 				}
 			}
 			emit_changed(get_edited_property(), navigation_polygon);
+		} else if (base_type == "Vector") {
+			Vector<Vector2> result;
+
+			if (generic_tile_polygon_editor->get_polygon_count() >= 1) {
+				result = generic_tile_polygon_editor->get_polygon(0);
+			}
+
+			emit_changed(get_edited_property(), result);
 		}
 	} else {
 		if (base_type.empty()) {
@@ -2910,6 +2918,14 @@ void EditorPropertyTilePolygon::update_property() {
 				for (int i = 0; i < navigation_polygon->get_outline_count(); i++) {
 					generic_tile_polygon_editor->add_polygon(Variant(navigation_polygon->get_outline(i)));
 				}
+			}
+		} else if (base_type == "Vector") {
+			// Single PoolVector2Array
+			Vector<Vector2> polygon = get_edited_object()->get(get_edited_property());
+			generic_tile_polygon_editor->clear_polygons();
+
+			if (polygon.size() > 0) {
+				generic_tile_polygon_editor->add_polygon(polygon);
 			}
 		}
 	} else {
@@ -3003,6 +3019,16 @@ bool EditorInspectorPluginTileData::parse_property(Object *p_object, Variant::Ty
 		if (components[1] == "polygon") {
 			EditorPropertyTilePolygon *ep = memnew(EditorPropertyTilePolygon);
 			ep->setup_single_mode(p_path, "NavigationPolygon");
+			add_property_editor(p_path, ep);
+			return true;
+		}
+	} else if (components.size() == 2 && components[0].begins_with("avoidance_layer_") && components[0].trim_prefix("avoidance_layer_").is_valid_integer()) {
+		// Avoidance layers.
+		int layer_index = components[0].trim_prefix("avoidance_layer_").to_int();
+		ERR_FAIL_COND_V(layer_index < 0, false);
+		if (components[1] == "polygon") {
+			EditorPropertyTilePolygon *ep = memnew(EditorPropertyTilePolygon);
+			ep->setup_single_mode(p_path, "Vector");
 			add_property_editor(p_path, ep);
 			return true;
 		}

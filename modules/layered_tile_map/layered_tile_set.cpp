@@ -1040,6 +1040,87 @@ bool LayeredTileSet::get_navigation_layer_layer_value(int p_layer_index, int p_l
 	return get_navigation_layer_layers(p_layer_index) & (1 << (p_layer_number - 1));
 }
 
+// Avoidance
+int LayeredTileSet::get_avoidance_layers_count() const {
+	return avoidance_layers.size();
+}
+
+void LayeredTileSet::add_avoidance_layer(int p_index) {
+	if (p_index < 0) {
+		p_index = avoidance_layers.size();
+	}
+	ERR_FAIL_INDEX(p_index, avoidance_layers.size() + 1);
+	avoidance_layers.insert(p_index, AvoidanceLayer());
+
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->add_avoidance_layer(p_index);
+	}
+
+	property_list_changed_notify();
+	emit_changed();
+}
+
+void LayeredTileSet::move_avoidance_layer(int p_from_index, int p_to_pos) {
+	ERR_FAIL_INDEX(p_from_index, avoidance_layers.size());
+	ERR_FAIL_INDEX(p_to_pos, avoidance_layers.size() + 1);
+
+	avoidance_layers.insert(p_to_pos, avoidance_layers[p_from_index]);
+	avoidance_layers.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->move_avoidance_layer(p_from_index, p_to_pos);
+	}
+
+	property_list_changed_notify();
+	emit_changed();
+}
+
+void LayeredTileSet::remove_avoidance_layer(int p_index) {
+	ERR_FAIL_INDEX(p_index, avoidance_layers.size());
+
+	avoidance_layers.remove(p_index);
+
+	for (HashMap<int, Ref<LayeredTileSetSource>>::Element *source = sources.front(); source; source = source->next) {
+		source->value()->remove_avoidance_layer(p_index);
+	}
+
+	property_list_changed_notify();
+	emit_changed();
+}
+
+void LayeredTileSet::set_avoidance_layer_layers(int p_layer_index, uint32_t p_layers) {
+	ERR_FAIL_INDEX(p_layer_index, avoidance_layers.size());
+	avoidance_layers.write[p_layer_index].layers = p_layers;
+	emit_changed();
+}
+
+uint32_t LayeredTileSet::get_avoidance_layer_layers(int p_layer_index) const {
+	ERR_FAIL_INDEX_V(p_layer_index, avoidance_layers.size(), 0);
+	return avoidance_layers[p_layer_index].layers;
+}
+
+void LayeredTileSet::set_avoidance_layer_layer_value(int p_layer_index, int p_layer_number, bool p_value) {
+	ERR_FAIL_COND_MSG(p_layer_number < 1, "Navigation layer number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_MSG(p_layer_number > 32, "Navigation layer number must be between 1 and 32 inclusive.");
+
+	uint32_t _avoidance_layers = get_avoidance_layer_layers(p_layer_index);
+
+	if (p_value) {
+		_avoidance_layers |= 1 << (p_layer_number - 1);
+	} else {
+		_avoidance_layers &= ~(1 << (p_layer_number - 1));
+	}
+
+	set_avoidance_layer_layers(p_layer_index, _avoidance_layers);
+}
+
+bool LayeredTileSet::get_avoidance_layer_layer_value(int p_layer_index, int p_layer_number) const {
+	ERR_FAIL_COND_V_MSG(p_layer_number < 1, false, "Navigation layer number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_V_MSG(p_layer_number > 32, false, "Navigation layer number must be between 1 and 32 inclusive.");
+
+	return get_avoidance_layer_layers(p_layer_index) & (1 << (p_layer_number - 1));
+}
+
 // Custom data.
 int LayeredTileSet::get_custom_data_layers_count() const {
 	return custom_data_layers.size();
@@ -3296,6 +3377,9 @@ void LayeredTileSet::reset_state() {
 	// Navigation
 	navigation_layers.clear();
 
+	// Navigation
+	avoidance_layers.clear();
+
 	custom_data_layers.clear();
 	custom_data_layers_by_name.clear();
 
@@ -3520,6 +3604,8 @@ void LayeredTileSet::_compatibility_conversion() {
 						navigation->set_vertices(vertices);
 						tile_data->set_navigation_polygon(0, navigation);
 					}
+
+					// No avoidance support in old format
 
 					tile_data->set_z_index(ctd->z_index);
 
@@ -4019,6 +4105,18 @@ bool LayeredTileSet::_set(const StringName &p_name, const Variant &p_value) {
 				set_navigation_layer_layers(index, p_value);
 				return true;
 			}
+		} else if (components.size() == 2 && components[0].begins_with("avoidance_layer_") && components[0].trim_prefix("avoidance_layer_").is_valid_integer()) {
+			// Navigation layers.
+			int index = components[0].trim_prefix("avoidance_layer_").to_int();
+			ERR_FAIL_COND_V(index < 0, false);
+			if (components[1] == "layers") {
+				ERR_FAIL_COND_V(p_value.get_type() != Variant::INT, false);
+				while (index >= avoidance_layers.size()) {
+					add_avoidance_layer();
+				}
+				set_avoidance_layer_layers(index, p_value);
+				return true;
+			}
 		} else if (components.size() == 2 && components[0].begins_with("custom_data_layer_") && components[0].trim_prefix("custom_data_layer_").is_valid_integer()) {
 			// Custom data layers.
 			int index = components[0].trim_prefix("custom_data_layer_").to_int();
@@ -4151,6 +4249,16 @@ bool LayeredTileSet::_get(const StringName &p_name, Variant &r_ret) const {
 			r_ret = get_navigation_layer_layers(index);
 			return true;
 		}
+	} else if (components.size() == 2 && components[0].begins_with("avoidance_layer_") && components[0].trim_prefix("avoidance_layer_").is_valid_integer()) {
+		// avoidance layers.
+		int index = components[0].trim_prefix("avoidance_layer_").to_int();
+		if (index < 0 || index >= avoidance_layers.size()) {
+			return false;
+		}
+		if (components[1] == "layers") {
+			r_ret = get_avoidance_layer_layers(index);
+			return true;
+		}
 	} else if (components.size() == 2 && components[0].begins_with("custom_data_layer_") && components[0].trim_prefix("custom_data_layer_").is_valid_integer()) {
 		// Custom data layers.
 		int index = components[0].trim_prefix("custom_data_layer_").to_int();
@@ -4267,6 +4375,13 @@ void LayeredTileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 
 	for (int i = 0; i < navigation_layers.size(); i++) {
 		p_list->push_back(PropertyInfo(Variant::INT, vformat("navigation_layer_%d/layers", i), PROPERTY_HINT_LAYERS_2D_NAVIGATION));
+	}
+
+	// Avoidance.
+	p_list->push_back(PropertyInfo(Variant::NIL, "Avoidance", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+
+	for (int i = 0; i < avoidance_layers.size(); i++) {
+		p_list->push_back(PropertyInfo(Variant::INT, vformat("avoidance_layer_%d/layers", i), PROPERTY_HINT_LAYERS_AVOIDANCE));
 	}
 
 	// Custom data.
@@ -4392,6 +4507,16 @@ void LayeredTileSet::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_navigation_layer_layer_value", "layer_index", "layer_number", "value"), &LayeredTileSet::set_navigation_layer_layer_value);
 	ClassDB::bind_method(D_METHOD("get_navigation_layer_layer_value", "layer_index", "layer_number"), &LayeredTileSet::get_navigation_layer_layer_value);
 
+	// Avoidance
+	ClassDB::bind_method(D_METHOD("get_avoidance_layers_count"), &LayeredTileSet::get_avoidance_layers_count);
+	ClassDB::bind_method(D_METHOD("add_avoidance_layer", "to_position"), &LayeredTileSet::add_avoidance_layer, DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("move_avoidance_layer", "layer_index", "to_position"), &LayeredTileSet::move_avoidance_layer);
+	ClassDB::bind_method(D_METHOD("remove_avoidance_layer", "layer_index"), &LayeredTileSet::remove_avoidance_layer);
+	ClassDB::bind_method(D_METHOD("set_avoidance_layer_layers", "layer_index", "layers"), &LayeredTileSet::set_avoidance_layer_layers);
+	ClassDB::bind_method(D_METHOD("get_avoidance_layer_layers", "layer_index"), &LayeredTileSet::get_avoidance_layer_layers);
+	ClassDB::bind_method(D_METHOD("set_avoidance_layer_layer_value", "layer_index", "layer_number", "value"), &LayeredTileSet::set_avoidance_layer_layer_value);
+	ClassDB::bind_method(D_METHOD("get_avoidance_layer_layer_value", "layer_index", "layer_number"), &LayeredTileSet::get_avoidance_layer_layer_value);
+
 	// Custom data
 	ClassDB::bind_method(D_METHOD("get_custom_data_layers_count"), &LayeredTileSet::get_custom_data_layers_count);
 	ClassDB::bind_method(D_METHOD("add_custom_data_layer", "to_position"), &LayeredTileSet::add_custom_data_layer, DEFVAL(-1));
@@ -4438,6 +4563,7 @@ void LayeredTileSet::_bind_methods() {
 	ADD_ARRAY("physics_layers", "physics_layer_");
 	ADD_ARRAY("terrain_sets", "terrain_set_");
 	ADD_ARRAY("navigation_layers", "navigation_layer_");
+	ADD_ARRAY("avoidance_layers", "avoidance_layer_");
 	ADD_ARRAY("custom_data_layers", "custom_data_layer_");
 
 	// -- Enum binding --
@@ -4663,6 +4789,30 @@ void LayeredTileSetAtlasSource::remove_navigation_layer(int p_index) {
 	for (HashMap<Vector2i, TileAlternativesData>::Element *E_tile = tiles.front(); E_tile; E_tile = E_tile->next) {
 		for (HashMap<int, LayeredTileData *>::Element *E_alternative = E_tile->value().alternatives.front(); E_alternative; E_alternative = E_alternative->next) {
 			E_alternative->value()->remove_navigation_layer(p_index);
+		}
+	}
+}
+
+void LayeredTileSetAtlasSource::add_avoidance_layer(int p_to_pos) {
+	for (HashMap<Vector2i, TileAlternativesData>::Element *E_tile = tiles.front(); E_tile; E_tile = E_tile->next) {
+		for (HashMap<int, LayeredTileData *>::Element *E_alternative = E_tile->value().alternatives.front(); E_alternative; E_alternative = E_alternative->next) {
+			E_alternative->value()->add_avoidance_layer(p_to_pos);
+		}
+	}
+}
+
+void LayeredTileSetAtlasSource::move_avoidance_layer(int p_from_index, int p_to_pos) {
+	for (HashMap<Vector2i, TileAlternativesData>::Element *E_tile = tiles.front(); E_tile; E_tile = E_tile->next) {
+		for (HashMap<int, LayeredTileData *>::Element *E_alternative = E_tile->value().alternatives.front(); E_alternative; E_alternative = E_alternative->next) {
+			E_alternative->value()->move_avoidance_layer(p_from_index, p_to_pos);
+		}
+	}
+}
+
+void LayeredTileSetAtlasSource::remove_avoidance_layer(int p_index) {
+	for (HashMap<Vector2i, TileAlternativesData>::Element *E_tile = tiles.front(); E_tile; E_tile = E_tile->next) {
+		for (HashMap<int, LayeredTileData *>::Element *E_alternative = E_tile->value().alternatives.front(); E_alternative; E_alternative = E_alternative->next) {
+			E_alternative->value()->remove_avoidance_layer(p_index);
 		}
 	}
 }
@@ -6004,6 +6154,8 @@ void LayeredTileData::notify_tile_data_properties_should_change() {
 	}
 	navigation.resize(tile_set->get_navigation_layers_count());
 
+	avoidance.resize(tile_set->get_avoidance_layers_count());
+
 	// Convert custom data to the new type.
 	custom_data.resize(tile_set->get_custom_data_layers_count());
 	for (int i = 0; i < custom_data.size(); i++) {
@@ -6159,6 +6311,26 @@ void LayeredTileData::remove_navigation_layer(int p_index) {
 	navigation.remove(p_index);
 }
 
+void LayeredTileData::add_avoidance_layer(int p_to_pos) {
+	if (p_to_pos < 0) {
+		p_to_pos = avoidance.size();
+	}
+	ERR_FAIL_INDEX(p_to_pos, avoidance.size() + 1);
+	avoidance.insert(p_to_pos, AvoidanceLayerTileData());
+}
+
+void LayeredTileData::move_avoidance_layer(int p_from_index, int p_to_pos) {
+	ERR_FAIL_INDEX(p_from_index, avoidance.size());
+	ERR_FAIL_INDEX(p_to_pos, avoidance.size() + 1);
+	avoidance.insert(p_to_pos, avoidance[p_from_index]);
+	avoidance.remove(p_to_pos < p_from_index ? p_from_index + 1 : p_from_index);
+}
+
+void LayeredTileData::remove_avoidance_layer(int p_index) {
+	ERR_FAIL_INDEX(p_index, avoidance.size());
+	avoidance.remove(p_index);
+}
+
 void LayeredTileData::add_custom_data_layer(int p_to_pos) {
 	if (p_to_pos < 0) {
 		p_to_pos = custom_data.size();
@@ -6210,6 +6382,8 @@ LayeredTileData *LayeredTileData::duplicate() {
 	memcpy(output->terrain_peering_bits, terrain_peering_bits, 16 * sizeof(int));
 	// Navigation
 	output->navigation = navigation;
+	// Avoidance
+	output->avoidance = avoidance;
 	// Misc
 	output->probability = probability;
 	// Custom data
@@ -6596,6 +6770,32 @@ Ref<NavigationPolygon> LayeredTileData::get_navigation_polygon(int p_layer_id, b
 	}
 }
 
+// Avoidance
+void LayeredTileData::set_avoidance_radius(int p_layer_id, const real_t p_radius) {
+	ERR_FAIL_INDEX(p_layer_id, avoidance.size());
+	avoidance.write[p_layer_id].radius = p_radius;
+	emit_signal("changed");
+}
+
+real_t LayeredTileData::get_avoidance_radius(int p_layer_id) const {
+	ERR_FAIL_INDEX_V(p_layer_id, avoidance.size(), 0);
+	return avoidance[p_layer_id].radius;
+}
+
+void LayeredTileData::set_avoidance_polygon_points(int p_layer_id, Vector<Vector2> p_polygon) {
+	ERR_FAIL_INDEX(p_layer_id, avoidance.size());
+	ERR_FAIL_COND_MSG(p_polygon.size() != 0 && p_polygon.size() < 3, "Invalid polygon. Needs either 0 or more than 3 points.");
+
+	avoidance.write[p_layer_id].polygon = p_polygon;
+
+	emit_signal("changed");
+}
+
+Vector<Vector2> LayeredTileData::get_avoidance_polygon_points(int p_layer_id) const {
+	ERR_FAIL_INDEX_V(p_layer_id, physics.size(), Vector<Vector2>());
+	return avoidance[p_layer_id].polygon;
+}
+
 // Misc
 void LayeredTileData::set_probability(float p_probability) {
 	ERR_FAIL_COND(p_probability < 0.0);
@@ -6760,6 +6960,27 @@ bool LayeredTileData::_set(const StringName &p_name, const Variant &p_value) {
 			set_navigation_polygon(layer_index, polygon);
 			return true;
 		}
+	} else if (components.size() == 2 && components[0].begins_with("avoidance_layer_") && components[0].trim_prefix("avoidance_layer_").is_valid_integer()) {
+		// Avoidance layers.
+		int layer_index = components[0].trim_prefix("avoidance_layer_").to_int();
+		ERR_FAIL_COND_V(layer_index < 0, false);
+
+		if (layer_index >= avoidance.size()) {
+			if (tile_set) {
+				return false;
+			} else {
+				avoidance.resize(layer_index + 1);
+			}
+		}
+		if (components[1] == "radius") {
+			set_avoidance_radius(layer_index, p_value);
+			return true;
+		} else if (components[1] == "polygon") {
+			Vector<Vector2> polygon = p_value;
+			set_avoidance_polygon_points(layer_index, polygon);
+			return true;
+		}
+
 	} else if (components.size() == 2 && components[0] == "terrains_peering_bit") {
 		// Terrains.
 		for (int i = 0; i < LayeredTileSet::CELL_NEIGHBOR_MAX; i++) {
@@ -6868,6 +7089,20 @@ bool LayeredTileData::_get(const StringName &p_name, Variant &r_ret) const {
 				r_ret = get_navigation_polygon(layer_index);
 				return true;
 			}
+		} else if (components.size() == 2 && components[0].begins_with("avoidance_layer_") && components[0].trim_prefix("avoidance_layer_").is_valid_integer()) {
+			// Occlusion layers.
+			int layer_index = components[0].trim_prefix("avoidance_layer_").to_int();
+			ERR_FAIL_COND_V(layer_index < 0, false);
+			if (layer_index >= avoidance.size()) {
+				return false;
+			}
+			if (components[1] == "radius") {
+				r_ret = get_avoidance_radius(layer_index);
+				return true;
+			} else if (components[1] == "polygon") {
+				r_ret = get_avoidance_polygon_points(layer_index);
+				return true;
+			}
 		} else if (components.size() == 1 && components[0].begins_with("custom_data_") && components[0].trim_prefix("custom_data_").is_valid_integer()) {
 			// Custom data layers.
 			int layer_index = components[0].trim_prefix("custom_data_").to_int();
@@ -6957,6 +7192,21 @@ void LayeredTileData::_get_property_list(List<PropertyInfo> *p_list) const {
 			p_list->push_back(property_info);
 		}
 
+		// Avoidance layers.
+		p_list->push_back(PropertyInfo(Variant::NIL, "Avoidance", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
+		for (int i = 0; i < avoidance.size(); i++) {
+			property_info = PropertyInfo(Variant::REAL, vformat("avoidance_layer_%d/%s", i, "radius"));
+			p_list->push_back(property_info);
+
+			property_info = PropertyInfo(Variant::POOL_VECTOR2_ARRAY, vformat("avoidance_layer_%d/%s", i, "polygon"));
+
+			if (avoidance[i].polygon.empty()) {
+				property_info.usage ^= PROPERTY_USAGE_STORAGE;
+			}
+
+			p_list->push_back(property_info);
+		}
+
 		// Custom data layers.
 		p_list->push_back(PropertyInfo(Variant::NIL, "Custom Data", PROPERTY_HINT_NONE, "custom_data_", PROPERTY_USAGE_GROUP));
 		for (int i = 0; i < custom_data.size(); i++) {
@@ -7021,6 +7271,13 @@ void LayeredTileData::_bind_methods() {
 	// Navigation
 	ClassDB::bind_method(D_METHOD("set_navigation_polygon", "layer_id", "navigation_polygon"), &LayeredTileData::set_navigation_polygon);
 	ClassDB::bind_method(D_METHOD("get_navigation_polygon", "layer_id", "flip_h", "flip_v", "transpose"), &LayeredTileData::get_navigation_polygon, DEFVAL(false), DEFVAL(false), DEFVAL(false));
+
+	// Avoidance
+	ClassDB::bind_method(D_METHOD("set_avoidance_radius", "layer_id", "radius"), &LayeredTileData::set_avoidance_radius);
+	ClassDB::bind_method(D_METHOD("get_avoidance_radius", "layer_id"), &LayeredTileData::get_avoidance_radius);
+
+	ClassDB::bind_method(D_METHOD("set_avoidance_polygon_points", "layer_id", "polygon"), &LayeredTileData::set_avoidance_polygon_points);
+	ClassDB::bind_method(D_METHOD("get_avoidance_polygon_points", "layer_id"), &LayeredTileData::get_avoidance_polygon_points);
 
 	// Misc.
 	ClassDB::bind_method(D_METHOD("set_probability", "probability"), &LayeredTileData::set_probability);

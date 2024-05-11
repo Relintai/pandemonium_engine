@@ -356,6 +356,12 @@ private:
 	};
 	Vector<NavigationLayer> navigation_layers;
 
+	// Avoidance
+	struct AvoidanceLayer {
+		uint32_t layers = 1;
+	};
+	Vector<AvoidanceLayer> avoidance_layers;
+
 	// CustomData
 	struct CustomDataLayer {
 		String name;
@@ -481,6 +487,16 @@ public:
 	void set_navigation_layer_layer_value(int p_layer_index, int p_layer_number, bool p_value);
 	bool get_navigation_layer_layer_value(int p_layer_index, int p_layer_number) const;
 
+	// Avoidance
+	int get_avoidance_layers_count() const;
+	void add_avoidance_layer(int p_index = -1);
+	void move_avoidance_layer(int p_from_index, int p_to_pos);
+	void remove_avoidance_layer(int p_index);
+	void set_avoidance_layer_layers(int p_layer_index, uint32_t p_layers);
+	uint32_t get_avoidance_layer_layers(int p_layer_index) const;
+	void set_avoidance_layer_layer_value(int p_layer_index, int p_layer_number, bool p_value);
+	bool get_avoidance_layer_layer_value(int p_layer_index, int p_layer_number) const;
+
 	// Custom data
 	int get_custom_data_layers_count() const;
 	void add_custom_data_layer(int p_index = -1);
@@ -571,25 +587,37 @@ public:
 	// Not exposed.
 	virtual void set_tile_set(const LayeredTileSet *p_tile_set);
 	LayeredTileSet *get_tile_set() const;
+
 	virtual void notify_tile_data_properties_should_change(){};
+
 	virtual void add_occlusion_layer(int p_index){};
 	virtual void move_occlusion_layer(int p_from_index, int p_to_pos){};
 	virtual void remove_occlusion_layer(int p_index){};
+
 	virtual void add_physics_layer(int p_index){};
 	virtual void move_physics_layer(int p_from_index, int p_to_pos){};
 	virtual void remove_physics_layer(int p_index){};
+
 	virtual void add_terrain_set(int p_index){};
 	virtual void move_terrain_set(int p_from_index, int p_to_pos){};
 	virtual void remove_terrain_set(int p_index){};
+
 	virtual void add_terrain(int p_terrain_set, int p_index){};
 	virtual void move_terrain(int p_terrain_set, int p_from_index, int p_to_pos){};
 	virtual void remove_terrain(int p_terrain_set, int p_index){};
+
 	virtual void add_navigation_layer(int p_index){};
 	virtual void move_navigation_layer(int p_from_index, int p_to_pos){};
 	virtual void remove_navigation_layer(int p_index){};
+
+	virtual void add_avoidance_layer(int p_index){};
+	virtual void move_avoidance_layer(int p_from_index, int p_to_pos){};
+	virtual void remove_avoidance_layer(int p_index){};
+
 	virtual void add_custom_data_layer(int p_index){};
 	virtual void move_custom_data_layer(int p_from_index, int p_to_pos){};
 	virtual void remove_custom_data_layer(int p_index){};
+
 	virtual void reset_state();
 
 	// Tiles.
@@ -676,25 +704,37 @@ public:
 	// Not exposed.
 	virtual void set_tile_set(const LayeredTileSet *p_tile_set);
 	const LayeredTileSet *get_tile_set() const;
+
 	virtual void notify_tile_data_properties_should_change();
+
 	virtual void add_occlusion_layer(int p_index);
 	virtual void move_occlusion_layer(int p_from_index, int p_to_pos);
 	virtual void remove_occlusion_layer(int p_index);
+
 	virtual void add_physics_layer(int p_index);
 	virtual void move_physics_layer(int p_from_index, int p_to_pos);
 	virtual void remove_physics_layer(int p_index);
+
 	virtual void add_terrain_set(int p_index);
 	virtual void move_terrain_set(int p_from_index, int p_to_pos);
 	virtual void remove_terrain_set(int p_index);
+
 	virtual void add_terrain(int p_terrain_set, int p_index);
 	virtual void move_terrain(int p_terrain_set, int p_from_index, int p_to_pos);
 	virtual void remove_terrain(int p_terrain_set, int p_index);
+
 	virtual void add_navigation_layer(int p_index);
 	virtual void move_navigation_layer(int p_from_index, int p_to_pos);
 	virtual void remove_navigation_layer(int p_index);
+
+	virtual void add_avoidance_layer(int p_index);
+	virtual void move_avoidance_layer(int p_from_index, int p_to_pos);
+	virtual void remove_avoidance_layer(int p_index);
+
 	virtual void add_custom_data_layer(int p_index);
 	virtual void move_custom_data_layer(int p_from_index, int p_to_pos);
 	virtual void remove_custom_data_layer(int p_index);
+
 	virtual void reset_state();
 
 	// Base properties.
@@ -872,6 +912,13 @@ private:
 	};
 	Vector<NavigationLayerTileData> navigation;
 
+	// Navigation Obstacles (Avoidance)
+	struct AvoidanceLayerTileData {
+		Vector<Vector2> polygon;
+		real_t radius = 0.0;
+	};
+	Vector<AvoidanceLayerTileData> avoidance;
+
 	// Misc
 	double probability = 1.0;
 
@@ -888,24 +935,35 @@ public:
 	// Not exposed.
 	void set_tile_set(const LayeredTileSet *p_tile_set);
 	void notify_tile_data_properties_should_change();
+
 	void add_occlusion_layer(int p_index);
 	void move_occlusion_layer(int p_from_index, int p_to_pos);
 	void remove_occlusion_layer(int p_index);
+
 	void add_physics_layer(int p_index);
 	void move_physics_layer(int p_from_index, int p_to_pos);
 	void remove_physics_layer(int p_index);
+
 	void add_terrain_set(int p_index);
 	void move_terrain_set(int p_from_index, int p_to_pos);
 	void remove_terrain_set(int p_index);
+
 	void add_terrain(int p_terrain_set, int p_index);
 	void move_terrain(int p_terrain_set, int p_from_index, int p_to_pos);
 	void remove_terrain(int p_terrain_set, int p_index);
+
 	void add_navigation_layer(int p_index);
 	void move_navigation_layer(int p_from_index, int p_to_pos);
 	void remove_navigation_layer(int p_index);
+
+	void add_avoidance_layer(int p_index);
+	void move_avoidance_layer(int p_from_index, int p_to_pos);
+	void remove_avoidance_layer(int p_index);
+
 	void add_custom_data_layer(int p_index);
 	void move_custom_data_layer(int p_from_index, int p_to_pos);
 	void remove_custom_data_layer(int p_index);
+
 	void set_allow_transform(bool p_allow_transform);
 	bool is_allowing_transform() const;
 
@@ -966,6 +1024,12 @@ public:
 	// Navigation
 	void set_navigation_polygon(int p_layer_id, Ref<NavigationPolygon> p_navigation_polygon);
 	Ref<NavigationPolygon> get_navigation_polygon(int p_layer_id, bool p_flip_h = false, bool p_flip_v = false, bool p_transpose = false) const;
+
+	// Avoidance
+	void set_avoidance_radius(int p_layer_id, const real_t p_radius);
+	real_t get_avoidance_radius(int p_layer_id) const;
+	void set_avoidance_polygon_points(int p_layer_id, Vector<Vector2> p_polygon);
+	Vector<Vector2> get_avoidance_polygon_points(int p_layer_id) const;
 
 	// Misc
 	void set_probability(float p_probability);

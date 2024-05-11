@@ -519,6 +519,8 @@ void LayeredTileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Obj
 		end = ed_tile_set->get_terrains_count(terrain_set);
 	} else if (p_array_prefix == "navigation_layer_") {
 		end = ed_tile_set->get_navigation_layers_count();
+	} else if (p_array_prefix == "avoidance_layer_") {
+		end = ed_tile_set->get_avoidance_layers_count();
 	} else if (p_array_prefix == "custom_data_layer_") {
 		end = ed_tile_set->get_custom_data_layers_count();
 	} else {
@@ -563,6 +565,10 @@ void LayeredTileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Obj
 	} else if (p_array_prefix == "navigation_layer_") {
 		if (p_from_index < 0) {
 			undo_redo->add_undo_method(ed_tile_set, "remove_navigation_layer", p_to_pos < 0 ? ed_tile_set->get_navigation_layers_count() : p_to_pos);
+		}
+	} else if (p_array_prefix == "avoidance_layer_") {
+		if (p_from_index < 0) {
+			undo_redo->add_undo_method(ed_tile_set, "remove_avoidance_layer", p_to_pos < 0 ? ed_tile_set->get_avoidance_layers_count() : p_to_pos);
 		}
 	} else if (p_array_prefix == "custom_data_layer_") {
 		if (p_from_index < 0) {
@@ -643,6 +649,11 @@ void LayeredTileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Obj
 						for (int layer_index = begin; layer_index < end; layer_index++) {
 							ADD_UNDO(tile_data, vformat("navigation_layer_%d/polygon", layer_index));
 						}
+					} else if (p_array_prefix == "avoidance_layer_") {
+						for (int layer_index = begin; layer_index < end; layer_index++) {
+							ADD_UNDO(tile_data, vformat("avoidance_layer_%d/radius", layer_index));
+							ADD_UNDO(tile_data, vformat("avoidance_layer_%d/polygon", layer_index));
+						}
 					} else if (p_array_prefix == "custom_data_layer_") {
 						for (int layer_index = begin; layer_index < end; layer_index++) {
 							ADD_UNDO(tile_data, vformat("custom_data_%d", layer_index));
@@ -695,6 +706,14 @@ void LayeredTileSetEditor::_move_tile_set_array_element(Object *p_undo_redo, Obj
 			undo_redo->add_do_method(ed_tile_set, "remove_navigation_layer", p_from_index);
 		} else {
 			undo_redo->add_do_method(ed_tile_set, "move_navigation_layer", p_from_index, p_to_pos);
+		}
+	} else if (p_array_prefix == "avoidance_layer_") {
+		if (p_from_index < 0) {
+			undo_redo->add_do_method(ed_tile_set, "add_avoidance_layer", p_to_pos);
+		} else if (p_to_pos < 0) {
+			undo_redo->add_do_method(ed_tile_set, "remove_avoidance_layer", p_from_index);
+		} else {
+			undo_redo->add_do_method(ed_tile_set, "move_avoidance_layer", p_from_index, p_to_pos);
 		}
 	} else if (p_array_prefix == "custom_data_layer_") {
 		if (p_from_index < 0) {
