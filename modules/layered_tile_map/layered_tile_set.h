@@ -916,6 +916,7 @@ private:
 	struct AvoidanceLayerTileData {
 		Vector<Vector2> polygon;
 		real_t radius = 0.0;
+		Vector2 position;
 	};
 	Vector<AvoidanceLayerTileData> avoidance;
 
@@ -1028,6 +1029,8 @@ public:
 	// Avoidance
 	void set_avoidance_radius(int p_layer_id, const real_t p_radius);
 	real_t get_avoidance_radius(int p_layer_id) const;
+	void set_avoidance_position(int p_layer_id, const Vector2 &p_position);
+	Vector2 get_avoidance_position(int p_layer_id) const;
 	void set_avoidance_polygon_points(int p_layer_id, Vector<Vector2> p_polygon);
 	Vector<Vector2> get_avoidance_polygon_points(int p_layer_id) const;
 

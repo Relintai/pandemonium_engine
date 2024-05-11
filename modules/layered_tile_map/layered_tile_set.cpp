@@ -6782,6 +6782,17 @@ real_t LayeredTileData::get_avoidance_radius(int p_layer_id) const {
 	return avoidance[p_layer_id].radius;
 }
 
+void LayeredTileData::set_avoidance_position(int p_layer_id, const Vector2 &p_position) {
+	ERR_FAIL_INDEX(p_layer_id, avoidance.size());
+	avoidance.write[p_layer_id].position = p_position;
+	emit_signal("changed");
+}
+
+Vector2 LayeredTileData::get_avoidance_position(int p_layer_id) const {
+	ERR_FAIL_INDEX_V(p_layer_id, avoidance.size(), Vector2());
+	return avoidance[p_layer_id].position;
+}
+
 void LayeredTileData::set_avoidance_polygon_points(int p_layer_id, Vector<Vector2> p_polygon) {
 	ERR_FAIL_INDEX(p_layer_id, avoidance.size());
 	ERR_FAIL_COND_MSG(p_polygon.size() != 0 && p_polygon.size() < 3, "Invalid polygon. Needs either 0 or more than 3 points.");
@@ -6975,6 +6986,9 @@ bool LayeredTileData::_set(const StringName &p_name, const Variant &p_value) {
 		if (components[1] == "radius") {
 			set_avoidance_radius(layer_index, p_value);
 			return true;
+		} else if (components[1] == "position") {
+			set_avoidance_position(layer_index, p_value);
+			return true;
 		} else if (components[1] == "polygon") {
 			Vector<Vector2> polygon = p_value;
 			set_avoidance_polygon_points(layer_index, polygon);
@@ -7099,6 +7113,9 @@ bool LayeredTileData::_get(const StringName &p_name, Variant &r_ret) const {
 			if (components[1] == "radius") {
 				r_ret = get_avoidance_radius(layer_index);
 				return true;
+			} else if (components[1] == "position") {
+				r_ret = get_avoidance_position(layer_index);
+				return true;
 			} else if (components[1] == "polygon") {
 				r_ret = get_avoidance_polygon_points(layer_index);
 				return true;
@@ -7198,6 +7215,9 @@ void LayeredTileData::_get_property_list(List<PropertyInfo> *p_list) const {
 			property_info = PropertyInfo(Variant::REAL, vformat("avoidance_layer_%d/%s", i, "radius"));
 			p_list->push_back(property_info);
 
+			property_info = PropertyInfo(Variant::VECTOR2, vformat("avoidance_layer_%d/%s", i, "position"));
+			p_list->push_back(property_info);
+
 			property_info = PropertyInfo(Variant::POOL_VECTOR2_ARRAY, vformat("avoidance_layer_%d/%s", i, "polygon"));
 
 			if (avoidance[i].polygon.empty()) {
@@ -7275,6 +7295,9 @@ void LayeredTileData::_bind_methods() {
 	// Avoidance
 	ClassDB::bind_method(D_METHOD("set_avoidance_radius", "layer_id", "radius"), &LayeredTileData::set_avoidance_radius);
 	ClassDB::bind_method(D_METHOD("get_avoidance_radius", "layer_id"), &LayeredTileData::get_avoidance_radius);
+
+	ClassDB::bind_method(D_METHOD("set_avoidance_position", "layer_id", "position"), &LayeredTileData::set_avoidance_position);
+	ClassDB::bind_method(D_METHOD("get_avoidance_position", "layer_id"), &LayeredTileData::get_avoidance_position);
 
 	ClassDB::bind_method(D_METHOD("set_avoidance_polygon_points", "layer_id", "polygon"), &LayeredTileData::set_avoidance_polygon_points);
 	ClassDB::bind_method(D_METHOD("get_avoidance_polygon_points", "layer_id"), &LayeredTileData::get_avoidance_polygon_points);
