@@ -3260,7 +3260,7 @@ TileDataAvoidanceEditor::TileDataAvoidanceEditor() {
 	property_editors["radius"] = radius_editor;
 
 	EditorProperty *position_editor = EditorInspector::instantiate_property_editor(dummy_object, Variant::VECTOR2I, "position", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT);
-	position_editor->set_object_and_property(dummy_object, "linear_velocity");
+	position_editor->set_object_and_property(dummy_object, "position");
 	position_editor->set_label("position");
 	position_editor->connect("property_changed", this, "_property_value_changed");
 	position_editor->connect("selected", this, "_property_selected");
