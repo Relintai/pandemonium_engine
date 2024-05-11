@@ -476,6 +476,7 @@ void Node2D::_bind_methods() {
 	ADD_GROUP("Sort", "sort_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "sort_enabled"), "set_sort_enabled", "is_sort_enabled");
 
+	ADD_GROUP("Toplevel", "");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "toplevel"), "set_as_toplevel", "is_set_as_toplevel");
 }
 
