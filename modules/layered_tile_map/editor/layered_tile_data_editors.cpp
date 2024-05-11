@@ -3336,5 +3336,7 @@ void TileDataAvoidanceEditor::draw_over_tile(CanvasItem *p_canvas_item, Transfor
 	color = Color(1.0, 0.5, 0.0, 0.25);
 #endif // DEBUG_ENABLED
 
-	p_canvas_item->draw_circle(p_transform.xform(Vector2(position)), radius * p_transform.get_scale().x, color);
+	if (radius > 0.0) {
+		p_canvas_item->draw_circle(p_transform.xform(Vector2(position)), radius * p_transform.get_scale().x, color);
+	}
 }
