@@ -158,6 +158,7 @@ private:
 		ROTATE_LEFT,
 		FLIP_HORIZONTALLY,
 		FLIP_VERTICALLY,
+		FLIP_WINDING_ORDER,
 	};
 
 	void _base_control_draw();

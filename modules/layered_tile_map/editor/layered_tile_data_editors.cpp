@@ -328,7 +328,8 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 		case ROTATE_RIGHT:
 		case ROTATE_LEFT:
 		case FLIP_HORIZONTALLY:
-		case FLIP_VERTICALLY: {
+		case FLIP_VERTICALLY: 
+		case FLIP_WINDING_ORDER: {
 			switch (p_item_pressed) {
 				case ROTATE_RIGHT: {
 					undo_redo->create_action(TTR("Rotate Polygons Right"));
@@ -342,37 +343,55 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 				case FLIP_VERTICALLY: {
 					undo_redo->create_action(TTR("Flip Polygons Vertically"));
 				} break;
+				case FLIP_WINDING_ORDER: {
+					undo_redo->create_action(TTR("Flip Polygons Winding Order"));
+				} break;
 				default:
 					break;
 			}
-			for (unsigned int i = 0; i < polygons.size(); i++) {
-				Vector<Point2> new_polygon;
+			if (p_item_pressed != FLIP_WINDING_ORDER) {
+				for (unsigned int i = 0; i < polygons.size(); i++) {
+					Vector<Point2> new_polygon;
 
-				const Vector<Point2> &polygon_i = polygons[i];
+					const Vector<Point2> &polygon_i = polygons[i];
 
-				for (int j = 0; j < polygon_i.size(); ++j) {
-					const Vector2 &vec = polygon_i[j];
+					for (int j = 0; j < polygon_i.size(); ++j) {
+						const Vector2 &vec = polygon_i[j];
 
-					Vector2 point = vec;
-					switch (p_item_pressed) {
-						case ROTATE_RIGHT: {
-							point = Vector2(-point.y, point.x);
-						} break;
-						case ROTATE_LEFT: {
-							point = Vector2(point.y, -point.x);
-						} break;
-						case FLIP_HORIZONTALLY: {
-							point = Vector2(-point.x, point.y);
-						} break;
-						case FLIP_VERTICALLY: {
-							point = Vector2(point.x, -point.y);
-						} break;
-						default:
-							break;
+						Vector2 point = vec;
+						switch (p_item_pressed) {
+							case ROTATE_RIGHT: {
+								point = Vector2(-point.y, point.x);
+							} break;
+							case ROTATE_LEFT: {
+								point = Vector2(point.y, -point.x);
+							} break;
+							case FLIP_HORIZONTALLY: {
+								point = Vector2(-point.x, point.y);
+							} break;
+							case FLIP_VERTICALLY: {
+								point = Vector2(point.x, -point.y);
+							} break;
+							default:
+								break;
+						}
+						new_polygon.push_back(point);
 					}
-					new_polygon.push_back(point);
+					undo_redo->add_do_method(this, "set_polygon", i, new_polygon);
 				}
-				undo_redo->add_do_method(this, "set_polygon", i, new_polygon);
+			} else {
+				for (unsigned int i = 0; i < polygons.size(); i++) {
+					Vector<Point2> new_polygon;
+
+					const Vector<Point2> &polygon_i = polygons[i];
+
+					for (int j = polygon_i.size() - 1; j >= 0; --j) {
+						const Vector2 &vec = polygon_i[j];
+						new_polygon.push_back(vec);
+					}
+
+					undo_redo->add_do_method(this, "set_polygon", i, new_polygon);
+				}
 			}
 			undo_redo->add_do_method(base_control, "update");
 			undo_redo->add_do_method(this, "emit_signal", "polygons_changed");
@@ -847,6 +866,7 @@ void GenericTilePolygonEditor::_notification(int p_what) {
 			p->set_item_icon(p->get_item_index(ROTATE_LEFT), get_theme_icon("RotateLeft", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(FLIP_HORIZONTALLY), get_theme_icon("MirrorX", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(FLIP_VERTICALLY), get_theme_icon("MirrorY", "EditorIcons"));
+			p->set_item_icon(p->get_item_index(FLIP_WINDING_ORDER), get_theme_icon("PolygonPathFinder", "EditorIcons"));
 		} break;
 	}
 }
@@ -922,6 +942,7 @@ GenericTilePolygonEditor::GenericTilePolygonEditor() {
 	button_advanced_menu->get_popup()->add_item(TTR("Rotate Left"), ROTATE_LEFT, KEY_E);
 	button_advanced_menu->get_popup()->add_item(TTR("Flip Horizontally"), FLIP_HORIZONTALLY, KEY_H);
 	button_advanced_menu->get_popup()->add_item(TTR("Flip Vertically"), FLIP_VERTICALLY, KEY_V);
+	button_advanced_menu->get_popup()->add_item(TTR("Flip Winding Order"), FLIP_WINDING_ORDER, KEY_O);
 	button_advanced_menu->get_popup()->connect("id_pressed", this, "_advanced_menu_item_pressed");
 	button_advanced_menu->set_focus_mode(FOCUS_ALL);
 	toolbar->add_child(button_advanced_menu);
