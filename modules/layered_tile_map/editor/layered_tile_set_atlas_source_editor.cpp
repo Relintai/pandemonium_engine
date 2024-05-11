@@ -830,7 +830,7 @@ void LayeredTileSetAtlasSourceEditor::_update_tile_data_editors() {
 	// --- Avoidance ---
 	ADD_TILE_DATA_EDITOR_GROUP(TTR("Avoidance"));
 	for (int i = 0; i < tile_set->get_avoidance_layers_count(); i++) {
-		ADD_TILE_DATA_EDITOR(group, vformat(TTR("Navigation Layer %d"), i), vformat("avoidance_layer_%d", i));
+		ADD_TILE_DATA_EDITOR(group, vformat(TTR("Avoidance Layer %d"), i), vformat("avoidance_layer_%d", i));
 		if (!tile_data_editors.has(vformat("avoidance_layer_%d", i))) {
 			TileDataAvoidanceEditor *tile_data_avoidance_editor = memnew(TileDataAvoidanceEditor());
 			tile_data_avoidance_editor->hide();
