@@ -328,7 +328,7 @@ void GenericTilePolygonEditor::_advanced_menu_item_pressed(int p_item_pressed) {
 		case ROTATE_RIGHT:
 		case ROTATE_LEFT:
 		case FLIP_HORIZONTALLY:
-		case FLIP_VERTICALLY: 
+		case FLIP_VERTICALLY:
 		case FLIP_WINDING_ORDER: {
 			switch (p_item_pressed) {
 				case ROTATE_RIGHT: {
@@ -3045,5 +3045,276 @@ void TileDataNavigationEditor::draw_over_tile(CanvasItem *p_canvas_item, Transfo
 		}
 	}
 
+	RenderingServer::get_singleton()->canvas_item_add_set_transform(p_canvas_item->get_canvas_item(), Transform2D());
+}
+
+////  ======   TileDataAvoidanceEditor   ======
+
+void TileDataAvoidanceEditor::_property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing) {
+	dummy_object->set(p_property, p_value);
+}
+
+void TileDataAvoidanceEditor::_property_selected(const StringName &p_path, int p_focusable) {
+	// Deselect all other properties
+
+	for (HashMap<StringName, EditorProperty *>::Element *editor = property_editors.front(); editor; editor = editor->next) {
+		if (editor->key() != p_path) {
+			editor->value()->deselect();
+		}
+	}
+}
+
+void TileDataAvoidanceEditor::_polygon_changed() {
+	// Update the dummy object properties and their editors.
+
+	StringName radius_property = "radius";
+	StringName position_property = "position";
+	//StringName polygon_property = "polygon";
+
+	if (!dummy_object->has_dummy_property(radius_property)) {
+		dummy_object->add_dummy_property(radius_property);
+		dummy_object->set(radius_property, 0.0);
+	}
+
+	if (!dummy_object->has_dummy_property(position_property)) {
+		dummy_object->add_dummy_property(position_property);
+		dummy_object->set(position_property, Vector2i());
+	}
+
+	if (!property_editors.has(radius_property)) {
+		EditorProperty *radius_property_editor = EditorInspector::instantiate_property_editor(dummy_object, Variant::REAL, radius_property, PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT);
+		radius_property_editor->set_object_and_property(dummy_object, radius_property);
+		radius_property_editor->set_label(radius_property);
+		radius_property_editor->connect("property_changed", this, "_property_value_changed");
+		radius_property_editor->connect("selected", this, "_property_selected");
+		radius_property_editor->set_tooltip(radius_property_editor->get_edited_property());
+		radius_property_editor->update_property();
+		add_child(radius_property_editor);
+		property_editors[radius_property] = radius_property_editor;
+	}
+
+	if (!property_editors.has(position_property)) {
+		EditorProperty *position_property_editor = EditorInspector::instantiate_property_editor(dummy_object, Variant::VECTOR2I, position_property, PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT);
+		position_property_editor->set_object_and_property(dummy_object, position_property);
+		position_property_editor->set_label(position_property);
+		position_property_editor->connect("property_changed", this, "_property_value_changed");
+		position_property_editor->connect("selected", this, "_property_selected");
+		position_property_editor->set_tooltip(position_property_editor->get_edited_property());
+		position_property_editor->update_property();
+		add_child(position_property_editor);
+		property_editors[position_property] = position_property_editor;
+	}
+}
+
+Variant TileDataAvoidanceEditor::_get_painted_value() {
+	Dictionary dict;
+	dict["radius"] = dummy_object->get("radius");
+	dict["position"] = dummy_object->get("position");
+
+	if (polygon_editor->get_polygon_count() > 0) {
+		ERR_FAIL_COND_V(polygon_editor->get_polygon(0).size() < 3, Variant());
+
+		dict["polygon"] = polygon_editor->get_polygon(0);
+	}
+
+	return dict;
+}
+
+void TileDataAvoidanceEditor::_set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile) {
+	LayeredTileData *tile_data = p_tile_set_atlas_source->get_tile_data(p_coords, p_alternative_tile);
+	ERR_FAIL_NULL(tile_data);
+
+	Vector<Vector2> polygon = tile_data->get_avoidance_polygon_points(avoidance_layer);
+	polygon_editor->clear_polygons();
+
+	if (polygon.size() > 0) {
+		polygon_editor->add_polygon(Variant(polygon));
+
+		update_polygon_color(polygon);
+	}
+
+	_polygon_changed();
+	dummy_object->set("radius", tile_data->get_avoidance_radius(avoidance_layer));
+	dummy_object->set("position", tile_data->get_avoidance_position(avoidance_layer));
+
+	for (const HashMap<StringName, EditorProperty *>::Element *E = property_editors.front(); E; E = E->next) {
+		E->value()->update_property();
+	}
+
+	polygon_editor->set_background(p_tile_set_atlas_source->get_texture(), p_tile_set_atlas_source->get_tile_texture_region(p_coords), tile_data->get_texture_origin(), tile_data->get_flip_h(), tile_data->get_flip_v(), tile_data->get_transpose(), tile_data->get_modulate());
+}
+
+void TileDataAvoidanceEditor::_set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value) {
+	LayeredTileData *tile_data = p_tile_set_atlas_source->get_tile_data(p_coords, p_alternative_tile);
+	ERR_FAIL_NULL(tile_data);
+
+	Dictionary dict = p_value;
+	tile_data->set_avoidance_radius(avoidance_layer, dict["radius"]);
+	tile_data->set_avoidance_position(avoidance_layer, dict["position"]);
+
+	Vector<Vector2> polygon = dict["polygon"];
+	tile_data->set_avoidance_polygon_points(avoidance_layer, polygon);
+
+	update_polygon_color(polygon);
+
+	polygon_editor->set_background(p_tile_set_atlas_source->get_texture(), p_tile_set_atlas_source->get_tile_texture_region(p_coords), tile_data->get_texture_origin(), tile_data->get_flip_h(), tile_data->get_flip_v(), tile_data->get_transpose(), tile_data->get_modulate());
+}
+
+Variant TileDataAvoidanceEditor::_get_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile) {
+	LayeredTileData *tile_data = p_tile_set_atlas_source->get_tile_data(p_coords, p_alternative_tile);
+	ERR_FAIL_NULL_V(tile_data, Variant());
+
+	Dictionary dict;
+	dict["radius"] = tile_data->get_avoidance_radius(avoidance_layer);
+	dict["position"] = tile_data->get_avoidance_position(avoidance_layer);
+	dict["polygon"] = tile_data->get_avoidance_polygon_points(avoidance_layer);
+
+	return dict;
+}
+
+void TileDataAvoidanceEditor::_setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value) {
+	Dictionary new_dict = p_new_value;
+
+	UndoRedo *undo_redo = EditorNode::get_singleton()->get_undo_redo();
+
+	for (const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell>::Element *E = p_previous_values.front(); E; E = E->next) {
+		Vector2i coords = E->key().get_atlas_coords();
+		Dictionary old_dict = E->value();
+
+		undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/avoidance_layer_%d/radius", coords.x, coords.y, E->key().alternative_tile, avoidance_layer), old_dict["radius"]);
+		undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/avoidance_layer_%d/radius", coords.x, coords.y, E->key().alternative_tile, avoidance_layer), new_dict["radius"]);
+
+		undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/avoidance_layer_%d/position", coords.x, coords.y, E->key().alternative_tile, avoidance_layer), old_dict["position"]);
+		undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/avoidance_layer_%d/position", coords.x, coords.y, E->key().alternative_tile, avoidance_layer), new_dict["position"]);
+
+		undo_redo->add_undo_property(p_tile_set_atlas_source, vformat("%d:%d/%d/avoidance_layer_%d/polygon", coords.x, coords.y, E->key().alternative_tile, avoidance_layer), old_dict["polygon"]);
+		undo_redo->add_do_property(p_tile_set_atlas_source, vformat("%d:%d/%d/avoidance_layer_%d/polygon", coords.x, coords.y, E->key().alternative_tile, avoidance_layer), new_dict["polygon"]);
+	}
+}
+
+void TileDataAvoidanceEditor::update_polygon_color(const Vector<Vector2> &polygon) {
+	if (polygon.size() < 3) {
+		return;
+	}
+
+	bool obstacle_pushes_inward = Geometry::is_polygon_clockwise(polygon);
+
+	Color color;
+
+#ifdef DEBUG_ENABLED
+	if (obstacle_pushes_inward) {
+		color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushin_face_color();
+	} else {
+		color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushout_face_color();
+	}
+#else
+	if (obstacle_pushes_inward) {
+		color = Color(1.0, 0.0, 0.0, 0.5);
+	} else {
+		color = Color(1.0, 1.0, 0.0, 0.5);
+	}
+#endif // DEBUG_ENABLED
+
+	polygon_editor->set_polygons_color(color);
+}
+
+void TileDataAvoidanceEditor::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_property_selected"), &TileDataAvoidanceEditor::_property_selected);
+	ClassDB::bind_method(D_METHOD("_polygon_changed"), &TileDataAvoidanceEditor::_polygon_changed);
+}
+
+void TileDataAvoidanceEditor::_tile_set_changed() {
+	polygon_editor->set_tile_set(tile_set);
+	_polygon_changed();
+}
+
+void TileDataAvoidanceEditor::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE: {
+#ifdef DEBUG_ENABLED
+			polygon_editor->set_polygons_color(Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushout_face_color());
+#endif // DEBUG_ENABLED
+		} break;
+	}
+}
+
+TileDataAvoidanceEditor::TileDataAvoidanceEditor() {
+	polygon_editor = memnew(GenericTilePolygonEditor);
+	polygon_editor->set_multiple_polygon_mode(false);
+	polygon_editor->connect("polygons_changed", this, "_polygon_changed");
+	add_child(polygon_editor);
+
+	dummy_object->add_dummy_property("radius");
+	dummy_object->set("radius", 0.0);
+	dummy_object->add_dummy_property("position");
+	dummy_object->set("position", Vector2i());
+
+	EditorProperty *radius_editor = EditorInspector::instantiate_property_editor(dummy_object, Variant::REAL, "radius", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT);
+	radius_editor->set_object_and_property(dummy_object, "radius");
+	radius_editor->set_label("radius");
+	radius_editor->connect("property_changed", this, "_property_value_changed");
+	radius_editor->connect("selected", this, "_property_selected");
+	radius_editor->set_tooltip(radius_editor->get_edited_property());
+	radius_editor->update_property();
+	add_child(radius_editor);
+	property_editors["radius"] = radius_editor;
+
+	EditorProperty *position_editor = EditorInspector::instantiate_property_editor(dummy_object, Variant::VECTOR2I, "position", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT);
+	position_editor->set_object_and_property(dummy_object, "linear_velocity");
+	position_editor->set_label("position");
+	position_editor->connect("property_changed", this, "_property_value_changed");
+	position_editor->connect("selected", this, "_property_selected");
+	position_editor->set_tooltip(position_editor->get_edited_property());
+	position_editor->update_property();
+	add_child(position_editor);
+	property_editors["position"] = position_editor;
+
+	_polygon_changed();
+}
+
+TileDataAvoidanceEditor::~TileDataAvoidanceEditor() {
+	memdelete(dummy_object);
+}
+
+void TileDataAvoidanceEditor::draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected) {
+	LayeredTileData *tile_data = _get_tile_data(p_cell);
+	ERR_FAIL_NULL(tile_data);
+
+	// Draw all shapes.
+	RenderingServer::get_singleton()->canvas_item_add_set_transform(p_canvas_item->get_canvas_item(), p_transform);
+
+	Vector<Vector2> verts = tile_data->get_avoidance_polygon_points(avoidance_layer);
+
+	if (verts.size() < 3) {
+		return;
+	}
+
+	bool obstacle_pushes_inward = Geometry::is_polygon_clockwise(verts);
+
+	Color color;
+
+#ifdef DEBUG_ENABLED
+	if (obstacle_pushes_inward) {
+		color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushin_face_color();
+	} else {
+		color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushout_face_color();
+	}
+#else
+	if (obstacle_pushes_inward) {
+		color = Color(1.0, 0.0, 0.0, 0.5);
+	} else {
+		color = Color(1.0, 1.0, 0.0, 0.5);
+	}
+#endif // DEBUG_ENABLED
+
+	if (p_selected) {
+		color = color.lightened(0.5);
+		//color.a += 0.2;
+	}
+
+	Vector<Color> colors;
+	colors.push_back(color);
+
+	RenderingServer::get_singleton()->canvas_item_add_polygon(p_canvas_item->get_canvas_item(), verts, colors);
 	RenderingServer::get_singleton()->canvas_item_add_set_transform(p_canvas_item->get_canvas_item(), Transform2D());
 }

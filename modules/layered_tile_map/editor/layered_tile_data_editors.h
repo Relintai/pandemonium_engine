@@ -228,9 +228,9 @@ private:
 	HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> drag_modified;
 	Variant drag_painted_value;
 
-	void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing = false);
-
 protected:
+	virtual void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing = false);
+
 	DummyObject *dummy_object = memnew(DummyObject);
 
 	StringName type;
@@ -290,8 +290,6 @@ private:
 	// UI
 	GenericTilePolygonEditor *polygon_editor = nullptr;
 
-	void _polygon_changed(const PoolVector2Array &p_polygon);
-
 	virtual Variant _get_painted_value();
 	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
 	virtual void _set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value);
@@ -321,17 +319,16 @@ class TileDataCollisionEditor : public TileDataDefaultEditor {
 	DummyObject *dummy_object = memnew(DummyObject);
 	HashMap<StringName, EditorProperty *> property_editors;
 
-	void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing = false);
-	void _property_selected(const StringName &p_path, int p_focusable);
-	void _polygons_changed();
-
+protected:
 	virtual Variant _get_painted_value();
 	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
 	virtual void _set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value);
 	virtual Variant _get_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
 	virtual void _setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value);
 
-protected:
+	virtual void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing = false);
+	virtual void _property_selected(const StringName &p_path, int p_focusable);
+	virtual void _polygons_changed();
 	virtual void _tile_set_changed();
 
 	void _notification(int p_what);
@@ -374,11 +371,11 @@ private:
 	EditorPropertyEnum *terrain_set_property_editor = nullptr;
 	EditorPropertyEnum *terrain_property_editor = nullptr;
 
-	void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing = false);
+protected:
+	virtual void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing = false);
 
 	void _update_terrain_selector();
 
-protected:
 	virtual void _tile_set_changed();
 
 	void _notification(int p_what);
@@ -406,8 +403,6 @@ private:
 	// UI
 	GenericTilePolygonEditor *polygon_editor = nullptr;
 
-	void _polygon_changed(const PoolVector2Array &p_polygon);
-
 	virtual Variant _get_painted_value();
 	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
 	virtual void _set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value);
@@ -425,6 +420,46 @@ public:
 	void set_navigation_layer(int p_navigation_layer) { navigation_layer = p_navigation_layer; }
 
 	TileDataNavigationEditor();
+};
+
+class TileDataAvoidanceEditor : public TileDataDefaultEditor {
+	GDCLASS(TileDataAvoidanceEditor, TileDataDefaultEditor);
+
+private:
+	int avoidance_layer = -1;
+	PoolVector2Array avoidance_polygon;
+
+	// UI
+	GenericTilePolygonEditor *polygon_editor = nullptr;
+	DummyObject *dummy_object = memnew(DummyObject);
+	HashMap<StringName, EditorProperty *> property_editors;
+
+protected:
+	void _property_value_changed(const StringName &p_property, const Variant &p_value, const StringName &p_field, bool p_changing = false);
+	void _property_selected(const StringName &p_path, int p_focusable);
+	void _polygon_changed();
+
+	virtual Variant _get_painted_value();
+	virtual void _set_painted_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
+	virtual void _set_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile, const Variant &p_value);
+	virtual Variant _get_value(LayeredTileSetAtlasSource *p_tile_set_atlas_source, Vector2 p_coords, int p_alternative_tile);
+	virtual void _setup_undo_redo_action(LayeredTileSetAtlasSource *p_tile_set_atlas_source, const HashMap<LayeredTileMapCell, Variant, LayeredTileMapCell> &p_previous_values, const Variant &p_new_value);
+
+	void update_polygon_color(const Vector<Vector2> &polygon);
+
+	static void _bind_methods();
+
+	virtual void _tile_set_changed();
+
+	void _notification(int p_what);
+
+public:
+	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
+
+	void set_avoidance_layer(int p_avoidance_layer) { avoidance_layer = p_avoidance_layer; }
+
+	TileDataAvoidanceEditor();
+	~TileDataAvoidanceEditor();
 };
 
 #endif // TILE_DATA_EDITORS_H

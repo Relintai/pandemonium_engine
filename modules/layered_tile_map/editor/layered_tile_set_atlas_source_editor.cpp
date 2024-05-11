@@ -827,6 +827,34 @@ void LayeredTileSetAtlasSourceEditor::_update_tile_data_editors() {
 		item->set_custom_color(0, disabled_color);
 	}
 
+	// --- Avoidance ---
+	ADD_TILE_DATA_EDITOR_GROUP(TTR("Avoidance"));
+	for (int i = 0; i < tile_set->get_avoidance_layers_count(); i++) {
+		ADD_TILE_DATA_EDITOR(group, vformat(TTR("Navigation Layer %d"), i), vformat("avoidance_layer_%d", i));
+		if (!tile_data_editors.has(vformat("avoidance_layer_%d", i))) {
+			TileDataAvoidanceEditor *tile_data_avoidance_editor = memnew(TileDataAvoidanceEditor());
+			tile_data_avoidance_editor->hide();
+			tile_data_avoidance_editor->set_avoidance_layer(i);
+			tile_data_avoidance_editor->connect("needs_redraw", tile_atlas_control_unscaled, "update");
+			tile_data_avoidance_editor->connect("needs_redraw", alternative_tiles_control_unscaled, "update");
+			tile_data_editors[vformat("avoidance_layer_%d", i)] = tile_data_avoidance_editor;
+		}
+	}
+	for (int i = tile_set->get_avoidance_layers_count(); tile_data_editors.has(vformat("avoidance_layer_%d", i)); i++) {
+		tile_data_editors[vformat("avoidance_layer_%d", i)]->queue_delete();
+		tile_data_editors.erase(vformat("avoidance_layer_%d", i));
+	}
+
+	if (tile_set->get_avoidance_layers_count() == 0) {
+		item = tile_data_editors_tree->create_item(group);
+		item->set_icon(0, get_theme_icon("Info", "EditorIcons"));
+		item->set_icon_modulate(0, disabled_color);
+		item->set_text(0, TTR("No avoidance layers"));
+		item->set_tooltip(0, TTR("Create and customize avoidance layers in the inspector of the LayeredTileSet resource."));
+		item->set_selectable(0, false);
+		item->set_custom_color(0, disabled_color);
+	}
+
 	// --- Custom Data ---
 	ADD_TILE_DATA_EDITOR_GROUP(TTR("Custom Data"));
 	for (int i = 0; i < tile_set->get_custom_data_layers_count(); i++) {
