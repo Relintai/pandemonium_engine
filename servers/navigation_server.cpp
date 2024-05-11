@@ -248,7 +248,7 @@ NavigationServer::NavigationServer() {
 
 	_debug_navigation_avoidance_agents_radius_color = GLOBAL_DEF("debug/shapes/avoidance/agents_radius_color", Color(1.0, 1.0, 0.0, 0.25));
 	_debug_navigation_avoidance_obstacles_radius_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_radius_color", Color(1.0, 0.5, 0.0, 0.25));
-	_debug_navigation_avoidance_static_obstacle_pushin_face_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_static_face_pushin_color", Color(1.0, 0.0, 0.0, 0.0));
+	_debug_navigation_avoidance_static_obstacle_pushin_face_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_static_face_pushin_color", Color(1.0, 0.0, 0.0, 0.5));
 	_debug_navigation_avoidance_static_obstacle_pushin_edge_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_static_edge_pushin_color", Color(1.0, 0.0, 0.0, 1.0));
 	_debug_navigation_avoidance_static_obstacle_pushout_face_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_static_face_pushout_color", Color(1.0, 1.0, 0.0, 0.5));
 	_debug_navigation_avoidance_static_obstacle_pushout_edge_color = GLOBAL_DEF("debug/shapes/avoidance/obstacles_static_edge_pushout_color", Color(1.0, 1.0, 0.0, 1.0));
