@@ -51,6 +51,8 @@
 #include "scene/resources/shader.h"
 #endif
 
+#include "modules/modules_enabled.gen.h"
+
 class LayeredTileMap;
 class LayeredTileSetSource;
 class LayeredTileSetAtlasSource;
@@ -864,6 +866,17 @@ public:
 class LayeredTileData : public Object {
 	GDCLASS(LayeredTileData, Object);
 
+public:
+	// VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	enum VertexLight2DMode {
+		VERTEX_LIGHT_2D_MODE_ADD = 0, //VertexLights2DServer::VERTEX_LIGHT_2D_MODE_ADD,
+		VERTEX_LIGHT_2D_MODE_SUB = 1, //VertexLights2DServer::VERTEX_LIGHT_2D_MODE_SUB,
+		VERTEX_LIGHT_2D_MODE_MIX = 2, //VertexLights2DServer::VERTEX_LIGHT_2D_MODE_MIX,
+		//VERTEX_LIGHT_2D_MODE_MASK = VertexLights2DServer::VERTEX_LIGHT_2D_MODE_MASK
+	};
+#endif
+
 private:
 	const LayeredTileSet *tile_set = nullptr;
 	bool allow_transform = true;
@@ -919,6 +932,21 @@ private:
 		Vector2i position;
 	};
 	Vector<AvoidanceLayerTileData> avoidance;
+
+	// VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	struct {
+		bool enabled;
+		Vector2i position;
+		Vector2i range;
+		real_t attenuation;
+		Color color;
+		VertexLight2DMode mode;
+		Vector2i z_range;
+		Vector2i layer_range;
+		int item_cull_mask;
+	} _vertex_light;
+#endif
 
 	// Misc
 	double probability = 1.0;
@@ -1036,6 +1064,36 @@ public:
 
 	Vector<Vector2> get_transformed_avoidance_polygon(int p_layer_id, bool p_flip_h = false, bool p_flip_v = false, bool p_transpose = false) const;
 
+	// VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	bool get_vertex_light_is_enabled();
+	void set_vertex_light_enabled(const bool p_enabled);
+
+	Vector2i get_vertex_light_position();
+	void set_vertex_light_position(const Vector2i &p_position);
+
+	Vector2i get_vertex_light_range();
+	void set_vertex_light_range(const Vector2i &p_range);
+
+	real_t get_vertex_light_attenuation();
+	void set_vertex_light_attenuation(const real_t p_attenuation);
+
+	Color get_vertex_light_color();
+	void set_vertex_light_color(const Color &p_color);
+
+	VertexLight2DMode get_vertex_light_mode();
+	void set_vertex_light_mode(const VertexLight2DMode p_mode);
+
+	Vector2i get_vertex_light_z_range();
+	void set_vertex_light_z_range(const Vector2i &p_z_range);
+
+	Vector2i get_vertex_light_layer_range();
+	void set_vertex_light_layer_range(const Vector2i &p_layer_range);
+
+	int get_vertex_light_item_cull_mask();
+	void set_vertex_light_item_cull_mask(const int p_item_cull_mask);
+#endif
+
 	// Misc
 	void set_probability(float p_probability);
 	float get_probability() const;
@@ -1048,6 +1106,8 @@ public:
 
 	// Polygons.
 	static PoolVector2Array get_transformed_vertices(const PoolVector2Array &p_vertices, bool p_flip_h, bool p_flip_v, bool p_transpose);
+
+	LayeredTileData();
 };
 
 VARIANT_ENUM_CAST(LayeredTileSet::CellNeighbor);
@@ -1057,5 +1117,10 @@ VARIANT_ENUM_CAST(LayeredTileSet::TileLayout);
 VARIANT_ENUM_CAST(LayeredTileSet::TileOffsetAxis);
 
 VARIANT_ENUM_CAST(LayeredTileSetAtlasSource::TileAnimationMode);
+
+// VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+VARIANT_ENUM_CAST(LayeredTileData::VertexLight2DMode);
+#endif
 
 #endif // TILE_SET_H

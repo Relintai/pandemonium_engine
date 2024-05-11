@@ -6389,6 +6389,11 @@ LayeredTileData *LayeredTileData::duplicate() {
 	// Custom data
 	output->custom_data = custom_data;
 
+	// VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	output->_vertex_light = _vertex_light;
+#endif
+
 	return output;
 }
 
@@ -6839,6 +6844,81 @@ Vector<Vector2> LayeredTileData::get_transformed_avoidance_polygon(int p_layer_i
 
 	return transformed_polygon;
 }
+
+// VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+bool LayeredTileData::get_vertex_light_is_enabled() {
+	return _vertex_light.enabled;
+}
+void LayeredTileData::set_vertex_light_enabled(const bool p_enabled) {
+	_vertex_light.enabled = p_enabled;
+	emit_signal("changed");
+}
+
+Vector2i LayeredTileData::get_vertex_light_position() {
+	return _vertex_light.position;
+}
+void LayeredTileData::set_vertex_light_position(const Vector2i &p_position) {
+	_vertex_light.position = p_position;
+	emit_signal("changed");
+}
+
+Vector2i LayeredTileData::get_vertex_light_range() {
+	return _vertex_light.range;
+}
+void LayeredTileData::set_vertex_light_range(const Vector2i &p_range) {
+	_vertex_light.range = p_range;
+	emit_signal("changed");
+}
+
+real_t LayeredTileData::get_vertex_light_attenuation() {
+	return _vertex_light.attenuation;
+}
+void LayeredTileData::set_vertex_light_attenuation(const real_t p_attenuation) {
+	_vertex_light.attenuation = p_attenuation;
+	emit_signal("changed");
+}
+
+Color LayeredTileData::get_vertex_light_color() {
+	return _vertex_light.color;
+}
+void LayeredTileData::set_vertex_light_color(const Color &p_color) {
+	_vertex_light.color = p_color;
+	emit_signal("changed");
+}
+
+LayeredTileData::VertexLight2DMode LayeredTileData::get_vertex_light_mode() {
+	return _vertex_light.mode;
+}
+void LayeredTileData::set_vertex_light_mode(const LayeredTileData::VertexLight2DMode p_mode) {
+	_vertex_light.mode = p_mode;
+	emit_signal("changed");
+}
+
+Vector2i LayeredTileData::get_vertex_light_z_range() {
+	return _vertex_light.z_range;
+}
+void LayeredTileData::set_vertex_light_z_range(const Vector2i &p_z_range) {
+	_vertex_light.z_range = p_z_range;
+	emit_signal("changed");
+}
+
+Vector2i LayeredTileData::get_vertex_light_layer_range() {
+	return _vertex_light.layer_range;
+}
+void LayeredTileData::set_vertex_light_layer_range(const Vector2i &p_layer_range) {
+	_vertex_light.layer_range = p_layer_range;
+	emit_signal("changed");
+}
+
+int LayeredTileData::get_vertex_light_item_cull_mask() {
+	return _vertex_light.item_cull_mask;
+}
+void LayeredTileData::set_vertex_light_item_cull_mask(const int p_item_cull_mask) {
+	_vertex_light.item_cull_mask = p_item_cull_mask;
+	emit_signal("changed");
+}
+#endif
 
 // Misc
 void LayeredTileData::set_probability(float p_probability) {
@@ -7363,4 +7443,64 @@ void LayeredTileData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "probability"), "set_probability", "get_probability");
 
 	ADD_SIGNAL(MethodInfo("changed"));
+
+	// VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	ADD_GROUP("VertexLight2D", "vertex_light_");
+
+	ClassDB::bind_method(D_METHOD("get_vertex_light_is_enabled"), &LayeredTileData::get_vertex_light_is_enabled);
+	ClassDB::bind_method(D_METHOD("set_vertex_light_enabled", "enabled"), &LayeredTileData::set_vertex_light_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "vertex_light_enabled"), "set_vertex_light_enabled", "get_vertex_light_is_enabled");
+
+	ClassDB::bind_method(D_METHOD("get_vertex_light_position"), &LayeredTileData::get_vertex_light_position);
+	ClassDB::bind_method(D_METHOD("set_vertex_light_position", "layer_range"), &LayeredTileData::set_vertex_light_position);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "vertex_light_position", PROPERTY_HINT_RANGE, "-512,512,1"), "set_vertex_light_position", "get_vertex_light_position");
+
+	ClassDB::bind_method(D_METHOD("get_vertex_light_range"), &LayeredTileData::get_vertex_light_range);
+	ClassDB::bind_method(D_METHOD("set_vertex_light_range", "range"), &LayeredTileData::set_vertex_light_range);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "vertex_light_range"), "set_vertex_light_range", "get_vertex_light_range");
+
+	ClassDB::bind_method(D_METHOD("get_vertex_light_attenuation"), &LayeredTileData::get_vertex_light_attenuation);
+	ClassDB::bind_method(D_METHOD("set_vertex_light_attenuation", "attenuation"), &LayeredTileData::set_vertex_light_attenuation);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "vertex_light_attenuation", PROPERTY_HINT_EXP_EASING, "attenuation"), "set_vertex_light_attenuation", "get_vertex_light_attenuation");
+
+	ClassDB::bind_method(D_METHOD("get_vertex_light_color"), &LayeredTileData::get_vertex_light_color);
+	ClassDB::bind_method(D_METHOD("set_vertex_light_color", "color"), &LayeredTileData::set_vertex_light_color);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "vertex_light_color"), "set_vertex_light_color", "get_vertex_light_color");
+
+	ClassDB::bind_method(D_METHOD("get_vertex_light_mode"), &LayeredTileData::get_vertex_light_mode);
+	ClassDB::bind_method(D_METHOD("set_vertex_light_mode", "mode"), &LayeredTileData::set_vertex_light_mode);
+	//,Mask
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "vertex_light_mode", PROPERTY_HINT_ENUM, "Add,Sub,Mix"), "set_vertex_light_mode", "get_vertex_light_mode");
+
+	ClassDB::bind_method(D_METHOD("get_vertex_light_z_range"), &LayeredTileData::get_vertex_light_z_range);
+	ClassDB::bind_method(D_METHOD("set_vertex_light_z_range", "vertex_light_z_range"), &LayeredTileData::set_vertex_light_z_range);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "vertex_light_z_range", PROPERTY_HINT_RANGE, itos(RS::CANVAS_ITEM_Z_MIN) + "," + itos(RS::CANVAS_ITEM_Z_MAX) + ",1"), "set_vertex_light_z_range", "get_vertex_light_z_range");
+
+	ClassDB::bind_method(D_METHOD("get_vertex_light_layer_range"), &LayeredTileData::get_vertex_light_layer_range);
+	ClassDB::bind_method(D_METHOD("set_vertex_light_layer_range", "layer_range"), &LayeredTileData::set_vertex_light_layer_range);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "vertex_light_layer_range", PROPERTY_HINT_RANGE, "-512,512,1"), "set_vertex_light_layer_range", "get_vertex_light_layer_range");
+
+	ClassDB::bind_method(D_METHOD("get_vertex_light_item_cull_mask"), &LayeredTileData::get_vertex_light_item_cull_mask);
+	ClassDB::bind_method(D_METHOD("set_vertex_light_item_cull_mask", "item_cull_mask"), &LayeredTileData::set_vertex_light_item_cull_mask);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "vertex_light_item_cull_mask", PROPERTY_HINT_LAYERS_2D_RENDER), "set_vertex_light_item_cull_mask", "get_vertex_light_item_cull_mask");
+
+	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_ADD);
+	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_SUB);
+	BIND_ENUM_CONSTANT(VERTEX_LIGHT_2D_MODE_MIX);
+#endif
+}
+
+LayeredTileData::LayeredTileData() {
+	// VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	_vertex_light.enabled = false;
+	_vertex_light.range = Vector2i(32, 32);
+	_vertex_light.attenuation = 1;
+	_vertex_light.color = Color(1, 1, 1, 1);
+	_vertex_light.item_cull_mask = 1;
+	_vertex_light.z_range = Vector2i(-1024, 1024);
+	_vertex_light.layer_range = Vector2i(-512, 512);
+	_vertex_light.mode = VERTEX_LIGHT_2D_MODE_ADD;
+#endif
 }
