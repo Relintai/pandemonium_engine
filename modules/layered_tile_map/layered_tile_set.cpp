@@ -6807,6 +6807,39 @@ Vector<Vector2> LayeredTileData::get_avoidance_polygon_points(int p_layer_id) co
 	return avoidance[p_layer_id].polygon;
 }
 
+Vector<Vector2> LayeredTileData::get_transformed_avoidance_polygon(int p_layer_id, bool p_flip_h, bool p_flip_v, bool p_transpose) const {
+	ERR_FAIL_INDEX_V(p_layer_id, physics.size(), Vector<Vector2>());
+
+	const Vector<Vector2> &polygon = avoidance[p_layer_id].polygon;
+
+	const Vector2 *r = polygon.ptr();
+	int size = polygon.size();
+
+	Vector<Vector2> transformed_polygon;
+	transformed_polygon.resize(polygon.size());
+
+	Vector2 *w = transformed_polygon.ptrw();
+
+	for (int i = 0; i < size; i++) {
+		Vector2 v;
+		if (p_transpose) {
+			v = Vector2(r[i].y, r[i].x);
+		} else {
+			v = r[i];
+		}
+
+		if (p_flip_h) {
+			v.x *= -1;
+		}
+		if (p_flip_v) {
+			v.y *= -1;
+		}
+		w[i] = v;
+	}
+
+	return transformed_polygon;
+}
+
 // Misc
 void LayeredTileData::set_probability(float p_probability) {
 	ERR_FAIL_COND(p_probability < 0.0);

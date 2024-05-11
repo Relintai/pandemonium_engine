@@ -216,19 +216,19 @@ void LayeredTileMapLayer::_rendering_update(bool p_force_cleanup) {
 	// Check if anything changed that might change the quadrant shape.
 	// If so, recreate everything.
 	bool quandrant_shape_changed = dirty.flags[DIRTY_FLAGS_LAYER_RENDERING_QUADRANT_SIZE] ||
-			((is_sort_enabled() && (dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ENABLED])) || 
-			dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ORIGIN] || 
-			dirty.flags[DIRTY_FLAGS_LAYER_LOCAL_TRANSFORM] || 
-			dirty.flags[DIRTY_FLAGS_TILE_SET]
+			((is_sort_enabled() && (dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ENABLED])) ||
+					dirty.flags[DIRTY_FLAGS_LAYER_Y_SORT_ORIGIN] ||
+					dirty.flags[DIRTY_FLAGS_LAYER_LOCAL_TRANSFORM] ||
+					dirty.flags[DIRTY_FLAGS_TILE_SET]
 
 #ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
-										  || dirty.flags[DIRTY_FLAGS_LAYER_VERTEX_LIGHTS]
+					|| dirty.flags[DIRTY_FLAGS_LAYER_VERTEX_LIGHTS]
 #endif
 
 #ifdef MODULE_FASTNOISE_ENABLED
-										  || dirty.flags[DIRTY_FLAGS_LAYER_RAO]
+					|| dirty.flags[DIRTY_FLAGS_LAYER_RAO]
 #endif
-										  );
+			);
 
 	// Free all quadrants.
 	if (forced_cleanup || quandrant_shape_changed) {
@@ -1071,6 +1071,13 @@ void LayeredTileMapLayer::_navigation_notification(int p_what) {
 			Transform2D tilemap_xform = get_global_transform();
 			for (HashMap<Vector2i, CellData>::Element *kv = tile_map_layer_data.front(); kv; kv = kv->next) {
 				const CellData &cell_data = kv->value();
+
+				Transform2D tile_transform;
+				tile_transform.set_origin(tile_set->map_to_local(kv->key()));
+
+				Transform2D ctf = tilemap_xform * tile_transform;
+				Vector2 pos = ctf.xform(Vector2());
+
 				// Update navigation regions transform.
 				for (uint32_t i = 0; i < cell_data.navigation_regions.size(); ++i) {
 					const RID &region = cell_data.navigation_regions[i];
@@ -1079,9 +1086,18 @@ void LayeredTileMapLayer::_navigation_notification(int p_what) {
 						continue;
 					}
 
-					Transform2D tile_transform;
-					tile_transform.set_origin(tile_set->map_to_local(kv->key()));
-					Navigation2DServer::get_singleton()->region_set_transform(region, tilemap_xform * tile_transform);
+					Navigation2DServer::get_singleton()->region_set_transform(region, ctf);
+				}
+
+				// Update navigation obstacle transform.
+				for (uint32_t i = 0; i < cell_data.obstacles.size(); ++i) {
+					const RID &obstacle = cell_data.obstacles[i];
+
+					if (!obstacle.is_valid()) {
+						continue;
+					}
+
+					Navigation2DServer::get_singleton()->obstacle_set_position(obstacle, pos);
 				}
 			}
 		}
@@ -1099,6 +1115,16 @@ void LayeredTileMapLayer::_navigation_clear_cell(CellData &r_cell_data) {
 		}
 	}
 	r_cell_data.navigation_regions.clear();
+
+	// Clear navigation obstacles.
+	for (uint32_t i = 0; i < r_cell_data.obstacles.size(); i++) {
+		const RID &obstacle = r_cell_data.obstacles[i];
+		if (obstacle.is_valid()) {
+			ns->obstacle_set_map(obstacle, RID());
+			ns->free(obstacle);
+		}
+	}
+	r_cell_data.obstacles.clear();
 }
 
 void LayeredTileMapLayer::_navigation_update_cell(CellData &r_cell_data) {
@@ -1164,6 +1190,46 @@ void LayeredTileMapLayer::_navigation_update_cell(CellData &r_cell_data) {
 							ns->region_set_map(region, RID());
 							ns->free(region);
 							region = RID();
+						}
+					}
+				}
+
+				// Free unused obstacles then resize the obstacles array.
+				for (uint32_t i = tile_set->get_avoidance_layers_count(); i < r_cell_data.obstacles.size(); i++) {
+					RID &obstacle = r_cell_data.obstacles[i];
+					if (obstacle.is_valid()) {
+						ns->obstacle_set_map(obstacle, RID());
+						ns->free(obstacle);
+						obstacle = RID();
+					}
+				}
+				r_cell_data.obstacles.resize(tile_set->get_avoidance_layers_count());
+
+				// Create, update or clear obstacles.
+				for (uint32_t avoidance_layer_index = 0; avoidance_layer_index < r_cell_data.obstacles.size(); avoidance_layer_index++) {
+					Vector<Vector2> polygon = tile_data->get_transformed_avoidance_polygon(avoidance_layer_index, flip_h, flip_v, transpose);
+
+					RID &obstacle = r_cell_data.obstacles[avoidance_layer_index];
+
+					if (polygon.size() >= 3) {
+						// Create or update regions.
+						Vector2 pos = tile_set->map_to_local(r_cell_data.coords);
+
+						if (!obstacle.is_valid()) {
+							obstacle = ns->obstacle_create();
+						}
+
+						ns->obstacle_set_map(obstacle, navigation_map);
+						ns->obstacle_set_vertices(obstacle, polygon);
+						ns->obstacle_set_radius(obstacle, tile_data->get_avoidance_radius(avoidance_layer_index));
+						ns->obstacle_set_position(obstacle, pos + tile_data->get_avoidance_position(avoidance_layer_index));
+						ns->obstacle_set_avoidance_layers(obstacle, tile_set->get_avoidance_layer_layers(avoidance_layer_index));
+					} else {
+						// Clear region.
+						if (obstacle.is_valid()) {
+							ns->obstacle_set_map(obstacle, RID());
+							ns->free(obstacle);
+							obstacle = RID();
 						}
 					}
 				}
@@ -1275,6 +1341,59 @@ void LayeredTileMapLayer::_navigation_draw_cell_debug(const RID &p_canvas_item, 
 								rs->canvas_item_add_polyline(p_canvas_item, debug_polygon_vertices, debug_edge_colors);
 							}
 						}
+					}
+				}
+
+				if (r_cell_data.obstacles.empty()) {
+					return;
+				}
+
+				Color pushin_face_color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushin_face_color();
+				Color pushout_face_color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushout_face_color();
+				Color pushin_edge_color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushin_edge_color();
+				Color pushout_edge_color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushout_edge_color();
+
+				for (int layer_index = 0; layer_index < tile_set->get_avoidance_layers_count(); layer_index++) {
+					bool flip_h = (c.alternative_tile & LayeredTileSetAtlasSource::TRANSFORM_FLIP_H);
+					bool flip_v = (c.alternative_tile & LayeredTileSetAtlasSource::TRANSFORM_FLIP_V);
+					bool transpose = (c.alternative_tile & LayeredTileSetAtlasSource::TRANSFORM_TRANSPOSE);
+
+					Vector<Vector2> polygon = tile_data->get_transformed_avoidance_polygon(layer_index, flip_h, flip_v, transpose);
+
+					if (polygon.size() >= 3) {
+						bool obstacle_pushes_inward = Geometry::is_polygon_clockwise(polygon);
+
+						Color debug_static_obstacle_face_color;
+
+						if (obstacle_pushes_inward) {
+							debug_static_obstacle_face_color = pushin_face_color;
+						} else {
+							debug_static_obstacle_face_color = pushout_face_color;
+						}
+
+						Vector<Color> debug_obstacle_polygon_colors;
+						debug_obstacle_polygon_colors.resize(polygon.size());
+						debug_obstacle_polygon_colors.fill(debug_static_obstacle_face_color);
+
+						RS::get_singleton()->canvas_item_add_polygon(p_canvas_item, polygon, debug_obstacle_polygon_colors);
+
+						Color debug_static_obstacle_edge_color;
+
+						if (obstacle_pushes_inward) {
+							debug_static_obstacle_edge_color = pushin_edge_color;
+						} else {
+							debug_static_obstacle_edge_color = pushout_edge_color;
+						}
+
+						Vector<Vector2> debug_obstacle_line_vertices = polygon;
+						debug_obstacle_line_vertices.push_back(debug_obstacle_line_vertices[0]);
+						debug_obstacle_line_vertices.resize(debug_obstacle_line_vertices.size());
+
+						Vector<Color> debug_obstacle_line_colors;
+						debug_obstacle_line_colors.resize(debug_obstacle_line_vertices.size());
+						debug_obstacle_line_colors.fill(debug_static_obstacle_edge_color);
+
+						RS::get_singleton()->canvas_item_add_polyline(p_canvas_item, debug_obstacle_line_vertices, debug_obstacle_line_colors, 4.0);
 					}
 				}
 			}

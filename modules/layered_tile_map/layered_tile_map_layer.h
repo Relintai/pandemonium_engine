@@ -134,6 +134,9 @@ struct CellData {
 	// Navigation.
 	LocalVector<RID> navigation_regions;
 
+	// Avoidance.
+	LocalVector<RID> obstacles;
+
 	// Scenes.
 	String scene;
 
@@ -154,6 +157,7 @@ struct CellData {
 		occluders = p_other.occluders;
 		bodies = p_other.bodies;
 		navigation_regions = p_other.navigation_regions;
+		obstacles = p_other.obstacles;
 		scene = p_other.scene;
 		runtime_tile_data_cache = p_other.runtime_tile_data_cache;
 
@@ -175,6 +179,7 @@ struct CellData {
 		occluders = p_other.occluders;
 		bodies = p_other.bodies;
 		navigation_regions = p_other.navigation_regions;
+		obstacles = p_other.obstacles;
 		scene = p_other.scene;
 		runtime_tile_data_cache = p_other.runtime_tile_data_cache;
 

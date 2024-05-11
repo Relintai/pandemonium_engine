@@ -1034,6 +1034,8 @@ public:
 	void set_avoidance_polygon_points(int p_layer_id, Vector<Vector2> p_polygon);
 	Vector<Vector2> get_avoidance_polygon_points(int p_layer_id) const;
 
+	Vector<Vector2> get_transformed_avoidance_polygon(int p_layer_id, bool p_flip_h = false, bool p_flip_v = false, bool p_transpose = false) const;
+
 	// Misc
 	void set_probability(float p_probability);
 	float get_probability() const;
