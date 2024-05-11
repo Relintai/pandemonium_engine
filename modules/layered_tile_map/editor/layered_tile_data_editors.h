@@ -253,7 +253,7 @@ public:
 	virtual void forward_painting_alternatives_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event);
 	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false);
 
-	void setup_property_editor(Variant::Type p_type, const String &p_property, const String &p_label = "", const Variant &p_default_value = Variant());
+	void setup_property_editor(Variant::Type p_type, const String &p_property, const String &p_label = "", const Variant &p_default_value = Variant(), PropertyHint p_hint = PROPERTY_HINT_NONE, const String &p_hint_text = "", int p_usage = PROPERTY_USAGE_DEFAULT);
 	Variant::Type get_property_type();
 
 	TileDataDefaultEditor();

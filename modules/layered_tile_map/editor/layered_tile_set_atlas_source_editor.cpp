@@ -64,6 +64,8 @@
 
 #include "servers/navigation_2d_server.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #include <limits.h>
 
 void LayeredTileSetAtlasSourceEditor::LayeredTileSetAtlasSourceProxyObject::set_id(int p_id) {
@@ -899,6 +901,101 @@ void LayeredTileSetAtlasSourceEditor::_update_tile_data_editors() {
 	}
 
 	//tile_data_editors_tree->update_minimum_size();
+
+	// VertexLights2D
+#ifdef MODULE_VERTEX_LIGHTS_2D_ENABLED
+	ADD_TILE_DATA_EDITOR_GROUP(TTR("VertexLight2D"));
+
+	ADD_TILE_DATA_EDITOR(group, TTR("Enabled"), "vertex_light_enabled");
+	if (!tile_data_editors.has("vertex_light_enabled")) {
+		TileDataDefaultEditor *tde = memnew(TileDataDefaultEditor());
+		tde->hide();
+		tde->setup_property_editor(Variant::BOOL, "vertex_light_enabled");
+		tde->connect("needs_redraw", tile_atlas_control_unscaled, "update");
+		tde->connect("needs_redraw", alternative_tiles_control_unscaled, "update");
+		tile_data_editors["vertex_light_enabled"] = tde;
+	}
+
+	ADD_TILE_DATA_EDITOR(group, TTR("Position"), "vertex_light_position");
+	if (!tile_data_editors.has("vertex_light_position")) {
+		TileDataPositionEditor *tde = memnew(TileDataPositionEditor);
+		tde->hide();
+		tde->setup_property_editor(Variant::VECTOR2I, "vertex_light_position");
+		tde->connect("needs_redraw", tile_atlas_control_unscaled, "update");
+		tde->connect("needs_redraw", alternative_tiles_control_unscaled, "update");
+		tile_data_editors["vertex_light_position"] = tde;
+	}
+
+	ADD_TILE_DATA_EDITOR(group, TTR("Range"), "vertex_light_range");
+	if (!tile_data_editors.has("vertex_light_range")) {
+		TileDataDefaultEditor *tde = memnew(TileDataDefaultEditor());
+		tde->hide();
+		tde->setup_property_editor(Variant::VECTOR2I, "vertex_light_range", "", Vector2i(32, 32));
+		tde->connect("needs_redraw", tile_atlas_control_unscaled, "update");
+		tde->connect("needs_redraw", alternative_tiles_control_unscaled, "update");
+		tile_data_editors["vertex_light_range"] = tde;
+	}
+
+	ADD_TILE_DATA_EDITOR(group, TTR("Attenuation"), "vertex_light_attenuation");
+	if (!tile_data_editors.has("vertex_light_attenuation")) {
+		TileDataDefaultEditor *tde = memnew(TileDataDefaultEditor());
+		tde->hide();
+		tde->setup_property_editor(Variant::REAL, "vertex_light_attenuation", "", 1, PROPERTY_HINT_EXP_EASING, "attenuation");
+		tde->connect("needs_redraw", tile_atlas_control_unscaled, "update");
+		tde->connect("needs_redraw", alternative_tiles_control_unscaled, "update");
+		tile_data_editors["vertex_light_attenuation"] = tde;
+	}
+
+	ADD_TILE_DATA_EDITOR(group, TTR("Color"), "vertex_light_color");
+	if (!tile_data_editors.has("vertex_light_color")) {
+		TileDataDefaultEditor *tde = memnew(TileDataDefaultEditor());
+		tde->hide();
+		tde->setup_property_editor(Variant::COLOR, "vertex_light_color", "", Color(1, 1, 1, 1));
+		tde->connect("needs_redraw", tile_atlas_control_unscaled, "update");
+		tde->connect("needs_redraw", alternative_tiles_control_unscaled, "update");
+		tile_data_editors["vertex_light_color"] = tde;
+	}
+
+	ADD_TILE_DATA_EDITOR(group, TTR("Light Mode"), "set_vertex_light_mode");
+	if (!tile_data_editors.has("set_vertex_light_mode")) {
+		TileDataDefaultEditor *tde = memnew(TileDataDefaultEditor());
+		tde->hide();
+		tde->setup_property_editor(Variant::INT, "set_vertex_light_mode", "", 0, PROPERTY_HINT_ENUM, "Add,Sub,Mix");
+		tde->connect("needs_redraw", tile_atlas_control_unscaled, "update");
+		tde->connect("needs_redraw", alternative_tiles_control_unscaled, "update");
+		tile_data_editors["set_vertex_light_mode"] = tde;
+	}
+
+	ADD_TILE_DATA_EDITOR(group, TTR("Z Range"), "vertex_light_z_range");
+	if (!tile_data_editors.has("vertex_light_z_range")) {
+		TileDataDefaultEditor *tde = memnew(TileDataDefaultEditor());
+		tde->hide();
+		tde->setup_property_editor(Variant::VECTOR2I, "vertex_light_z_range", "", Vector2i(-1024, 1024), PROPERTY_HINT_RANGE, itos(RS::CANVAS_ITEM_Z_MIN) + "," + itos(RS::CANVAS_ITEM_Z_MAX) + ",1");
+		tde->connect("needs_redraw", tile_atlas_control_unscaled, "update");
+		tde->connect("needs_redraw", alternative_tiles_control_unscaled, "update");
+		tile_data_editors["vertex_light_z_range"] = tde;
+	}
+
+	ADD_TILE_DATA_EDITOR(group, TTR("Layer Range"), "vertex_light_layer_range");
+	if (!tile_data_editors.has("vertex_light_layer_range")) {
+		TileDataDefaultEditor *tde = memnew(TileDataDefaultEditor());
+		tde->hide();
+		tde->setup_property_editor(Variant::VECTOR2I, "vertex_light_layer_range", "", Vector2i(-512, 512), PROPERTY_HINT_RANGE, "-512,512,1");
+		tde->connect("needs_redraw", tile_atlas_control_unscaled, "update");
+		tde->connect("needs_redraw", alternative_tiles_control_unscaled, "update");
+		tile_data_editors["vertex_light_layer_range"] = tde;
+	}
+
+	ADD_TILE_DATA_EDITOR(group, TTR("Item Cull Mask"), "vertex_light_item_cull_mask");
+	if (!tile_data_editors.has("vertex_light_item_cull_mask")) {
+		TileDataDefaultEditor *tde = memnew(TileDataDefaultEditor());
+		tde->hide();
+		tde->setup_property_editor(Variant::INT, "vertex_light_item_cull_mask", "", 1, PROPERTY_HINT_LAYERS_2D_RENDER);
+		tde->connect("needs_redraw", tile_atlas_control_unscaled, "update");
+		tde->connect("needs_redraw", alternative_tiles_control_unscaled, "update");
+		tile_data_editors["vertex_light_item_cull_mask"] = tde;
+	}
+#endif
 
 #undef ADD_TILE_DATA_EDITOR_GROUP
 #undef ADD_TILE_DATA_EDITOR
