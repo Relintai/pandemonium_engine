@@ -1352,6 +1352,7 @@ void LayeredTileMapLayer::_navigation_draw_cell_debug(const RID &p_canvas_item, 
 				Color pushout_face_color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushout_face_color();
 				Color pushin_edge_color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushin_edge_color();
 				Color pushout_edge_color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_static_obstacle_pushout_edge_color();
+				Color debug_radius_color = Navigation2DServer::get_singleton()->get_debug_navigation_avoidance_obstacles_radius_color();
 
 				for (int layer_index = 0; layer_index < tile_set->get_avoidance_layers_count(); layer_index++) {
 					bool flip_h = (c.alternative_tile & LayeredTileSetAtlasSource::TRANSFORM_FLIP_H);
@@ -1394,6 +1395,13 @@ void LayeredTileMapLayer::_navigation_draw_cell_debug(const RID &p_canvas_item, 
 						debug_obstacle_line_colors.fill(debug_static_obstacle_edge_color);
 
 						RS::get_singleton()->canvas_item_add_polyline(p_canvas_item, debug_obstacle_line_vertices, debug_obstacle_line_colors, 4.0);
+					}
+
+					real_t radius = tile_data->get_avoidance_radius(layer_index);
+					Vector2i position = tile_data->get_avoidance_position(layer_index);
+
+					if (radius > 0.0) {
+						RS::get_singleton()->canvas_item_add_circle(p_canvas_item, position, radius, debug_radius_color);
 					}
 				}
 			}
