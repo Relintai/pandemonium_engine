@@ -131,6 +131,8 @@ void WebRoot::_handle_request_main(Ref<WebServerRequest> request) {
 }
 
 void WebRoot::_handle_error_send_request(Ref<WebServerRequest> request, const int error_code) {
+	request->set_status_code(static_cast<HTTPServerEnums::HTTPStatusCode>(error_code));
+
 	if (error_code == HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND) {
 		request->compiled_body = "<html><body>404 :(</body></html>";
 
