@@ -77,10 +77,10 @@ void VisualInstance::set_instance_use_identity_transform(bool p_enable) {
 	if (is_inside_tree()) {
 		if (p_enable) {
 			// want to make sure instance is using identity transform
-			RenderingServer::get_singleton()->instance_set_transform(instance, get_global_transform());
+			RenderingServer::get_singleton()->instance_set_transform(instance, Transform());
 		} else {
 			// want to make sure instance is up to date
-			RenderingServer::get_singleton()->instance_set_transform(instance, Transform());
+			RenderingServer::get_singleton()->instance_set_transform(instance, get_global_transform());
 		}
 	}
 }
