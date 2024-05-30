@@ -84,6 +84,19 @@
 				Returns the drag data from the GUI, that was previously returned by [method Control.get_drag_data].
 			</description>
 		</method>
+		<method name="gui_get_focus_owner" qualifiers="const">
+			<return type="Control" />
+			<description>
+				Returns the [Control] having the focus within this viewport. If no [Control] has the focus, returns [code]null[/code].
+			</description>
+		</method>
+		<method name="gui_get_hovered_control" qualifiers="const">
+			<return type="Control" />
+			<description>
+				Returns the [Control] that the mouse is currently hovering over in this viewport. If no [Control] has the cursor, returns [code]null[/code].
+				Typically the leaf [Control] node or deepest level of the subtree which claims hover. This is very useful when used together with [method Node.is_a_parent_of] to find if the mouse is within a control tree.
+			</description>
+		</method>
 		<method name="gui_has_modal_stack" qualifiers="const">
 			<return type="bool" />
 			<description>
@@ -106,6 +119,10 @@
 		<method name="gui_set_root_order_dirty">
 			<return type="void" />
 			<description>
+		<method name="gui_release_focus">
+			<return type="void" />
+			<description>
+				Removes the focus from the currently focused [Control] within this viewport. If no [Control] has the focus, does nothing.
 			</description>
 		</method>
 		<method name="input">
