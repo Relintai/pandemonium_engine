@@ -355,6 +355,13 @@ void RasterizerStorage::multimesh_instance_set_transform(RID p_multimesh, int p_
 			ptr[11] = t.origin.z;
 
 			_multimesh_add_to_interpolation_lists(p_multimesh, *mmi);
+
+#if defined(DEBUG_ENABLED) && defined(TOOLS_ENABLED)
+			if (!Engine::get_singleton()->is_in_physics_frame()) {
+				PHYSICS_INTERPOLATION_WARNING("Interpolated MultiMesh triggered from outside physics process");
+			}
+#endif
+
 			return;
 		}
 	}
@@ -506,6 +513,12 @@ void RasterizerStorage::multimesh_set_as_bulk_array_interpolated(RID p_multimesh
 		mmi->_data_prev = p_array_prev;
 		mmi->_data_curr = p_array;
 		_multimesh_add_to_interpolation_lists(p_multimesh, *mmi);
+
+#if defined(DEBUG_ENABLED) && defined(TOOLS_ENABLED)
+		if (!Engine::get_singleton()->is_in_physics_frame()) {
+			PHYSICS_INTERPOLATION_WARNING("Interpolated MultiMesh triggered from outside physics process");
+		}
+#endif
 	}
 }
 
@@ -517,6 +530,13 @@ void RasterizerStorage::multimesh_set_as_bulk_array(RID p_multimesh, const PoolV
 
 			mmi->_data_curr = p_array;
 			_multimesh_add_to_interpolation_lists(p_multimesh, *mmi);
+
+#if defined(DEBUG_ENABLED) && defined(TOOLS_ENABLED)
+			if (!Engine::get_singleton()->is_in_physics_frame()) {
+				PHYSICS_INTERPOLATION_WARNING("Interpolated MultiMesh triggered from outside physics process");
+			}
+#endif
+
 			return;
 		}
 	}

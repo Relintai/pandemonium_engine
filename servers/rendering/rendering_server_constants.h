@@ -54,6 +54,9 @@
 // This is expensive.
 // #define RENDERING_SERVER_CANVAS_CHECK_BOUNDS
 
+// Uncomment this define to produce debugging output for physics interpolation.
+// #define VISUAL_SERVER_DEBUG_PHYSICS_INTERPOLATION
+
 #endif // DEV_ENABLED
 
 #endif // RENDERING_SERVER_CONSTANTS_H
