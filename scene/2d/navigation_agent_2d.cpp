@@ -308,7 +308,7 @@ NavigationAgent2D::NavigationAgent2D() {
 	target_position_submitted = false;
 
 	nav_path_index = 0;
-	update_frame_id = 0;
+	update_frame_id = UINT32_MAX;
 
 	agent = Navigation2DServer::get_singleton()->agent_create();
 

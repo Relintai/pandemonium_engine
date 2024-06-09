@@ -93,7 +93,7 @@ class NavigationAgent2D : public Node {
 
 	bool target_reached;
 	bool navigation_finished;
-	// No initialized on purpose
+
 	uint32_t update_frame_id;
 
 	bool debug_enabled;
