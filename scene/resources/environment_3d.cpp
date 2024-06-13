@@ -487,7 +487,7 @@ float Environment3D::get_ssao_edge_sharpness() const {
 
 void Environment3D::set_glow_enabled(bool p_enabled) {
 	glow_enabled = p_enabled;
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+	_update_glow();
 	_change_notify();
 }
 
@@ -504,7 +504,7 @@ void Environment3D::set_glow_level(int p_level, bool p_enabled) {
 		glow_levels &= ~(1 << p_level);
 	}
 
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+	_update_glow();
 }
 bool Environment3D::is_glow_level_enabled(int p_level) const {
 	ERR_FAIL_INDEX_V(p_level, RS::MAX_GLOW_LEVELS, false);
@@ -515,7 +515,7 @@ bool Environment3D::is_glow_level_enabled(int p_level) const {
 void Environment3D::set_glow_intensity(float p_intensity) {
 	glow_intensity = p_intensity;
 
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+	_update_glow();
 }
 float Environment3D::get_glow_intensity() const {
 	return glow_intensity;
@@ -523,7 +523,8 @@ float Environment3D::get_glow_intensity() const {
 
 void Environment3D::set_glow_strength(float p_strength) {
 	glow_strength = p_strength;
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+
+	_update_glow();
 }
 float Environment3D::get_glow_strength() const {
 	return glow_strength;
@@ -532,7 +533,7 @@ float Environment3D::get_glow_strength() const {
 void Environment3D::set_glow_bloom(float p_threshold) {
 	glow_bloom = p_threshold;
 
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+	_update_glow();
 }
 float Environment3D::get_glow_bloom() const {
 	return glow_bloom;
@@ -541,7 +542,7 @@ float Environment3D::get_glow_bloom() const {
 void Environment3D::set_glow_blend_mode(GlowBlendMode p_mode) {
 	glow_blend_mode = p_mode;
 
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+	_update_glow();
 }
 Environment3D::GlowBlendMode Environment3D::get_glow_blend_mode() const {
 	return glow_blend_mode;
@@ -550,7 +551,7 @@ Environment3D::GlowBlendMode Environment3D::get_glow_blend_mode() const {
 void Environment3D::set_glow_hdr_bleed_threshold(float p_threshold) {
 	glow_hdr_bleed_threshold = p_threshold;
 
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+	_update_glow();
 }
 float Environment3D::get_glow_hdr_bleed_threshold() const {
 	return glow_hdr_bleed_threshold;
@@ -559,7 +560,7 @@ float Environment3D::get_glow_hdr_bleed_threshold() const {
 void Environment3D::set_glow_hdr_luminance_cap(float p_amount) {
 	glow_hdr_luminance_cap = p_amount;
 
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+	_update_glow();
 }
 float Environment3D::get_glow_hdr_luminance_cap() const {
 	return glow_hdr_luminance_cap;
@@ -568,7 +569,7 @@ float Environment3D::get_glow_hdr_luminance_cap() const {
 void Environment3D::set_glow_hdr_bleed_scale(float p_scale) {
 	glow_hdr_bleed_scale = p_scale;
 
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+	_update_glow();
 }
 float Environment3D::get_glow_hdr_bleed_scale() const {
 	return glow_hdr_bleed_scale;
@@ -576,7 +577,8 @@ float Environment3D::get_glow_hdr_bleed_scale() const {
 
 void Environment3D::set_glow_bicubic_upscale(bool p_enable) {
 	glow_bicubic_upscale = p_enable;
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+
+	_update_glow();
 }
 
 bool Environment3D::is_glow_bicubic_upscale_enabled() const {
@@ -585,11 +587,57 @@ bool Environment3D::is_glow_bicubic_upscale_enabled() const {
 
 void Environment3D::set_glow_high_quality(bool p_enable) {
 	glow_high_quality = p_enable;
-	RS::get_singleton()->environment_set_glow(environment, glow_enabled, glow_levels, glow_intensity, glow_strength, glow_bloom, RS::Environment3DGlowBlendMode(glow_blend_mode), glow_hdr_bleed_threshold, glow_hdr_bleed_scale, glow_hdr_luminance_cap, glow_bicubic_upscale, glow_high_quality);
+
+	_update_glow();
 }
 
 bool Environment3D::is_glow_high_quality_enabled() const {
 	return glow_high_quality;
+}
+
+void Environment3D::set_glow_map_strength(float p_glow_map_strength) {
+	glow_map_strength = p_glow_map_strength;
+	_update_glow_map();
+}
+
+float Environment3D::get_glow_map_strength() const {
+	return glow_map_strength;
+}
+
+void Environment3D::set_glow_map(Ref<Texture> p_glow_map) {
+	glow_map = p_glow_map;
+	_update_glow_map();
+}
+
+Ref<Texture> Environment3D::get_glow_map() const {
+	return glow_map;
+}
+
+void Environment3D::_update_glow() {
+	RS::get_singleton()->environment_set_glow(
+			environment,
+			glow_enabled,
+			glow_levels,
+			glow_intensity,
+			glow_strength,
+			glow_bloom,
+			RS::Environment3DGlowBlendMode(glow_blend_mode),
+			glow_hdr_bleed_threshold,
+			glow_hdr_bleed_scale,
+			glow_hdr_luminance_cap,
+			glow_bicubic_upscale,
+			glow_high_quality);
+}
+
+void Environment3D::_update_glow_map() {
+	float _glow_map_strength = 0.0f;
+	RID glow_map_rid;
+	if (glow_map.is_valid()) {
+		glow_map_rid = glow_map->get_rid();
+		_glow_map_strength = glow_map_strength;
+	}
+
+	RS::get_singleton()->environment_set_glow_map(environment, _glow_map_strength, glow_map_rid);
 }
 
 void Environment3D::set_dof_blur_far_enabled(bool p_enable) {
@@ -1086,6 +1134,12 @@ void Environment3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_glow_high_quality", "enabled"), &Environment3D::set_glow_high_quality);
 	ClassDB::bind_method(D_METHOD("is_glow_high_quality_enabled"), &Environment3D::is_glow_high_quality_enabled);
 
+	ClassDB::bind_method(D_METHOD("set_glow_map_strength", "strength"), &Environment3D::set_glow_map_strength);
+	ClassDB::bind_method(D_METHOD("get_glow_map_strength"), &Environment3D::get_glow_map_strength);
+
+	ClassDB::bind_method(D_METHOD("set_glow_map", "mode"), &Environment3D::set_glow_map);
+	ClassDB::bind_method(D_METHOD("get_glow_map"), &Environment3D::get_glow_map);
+
 	ADD_GROUP("Glow", "glow_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "glow_enabled"), "set_glow_enabled", "is_glow_enabled");
 	ADD_PROPERTYI(PropertyInfo(Variant::BOOL, "glow_levels/1"), "set_glow_level", "is_glow_level_enabled", 0);
@@ -1105,6 +1159,8 @@ void Environment3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "glow_hdr_scale", PROPERTY_HINT_RANGE, "0.0,4.0,0.01"), "set_glow_hdr_bleed_scale", "get_glow_hdr_bleed_scale");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "glow_bicubic_upscale"), "set_glow_bicubic_upscale", "is_glow_bicubic_upscale_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "glow_high_quality"), "set_glow_high_quality", "is_glow_high_quality_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "glow_map_strength", PROPERTY_HINT_RANGE, "0.0,1.0,0.01"), "set_glow_map_strength", "get_glow_map_strength");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "glow_map", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_glow_map", "get_glow_map");
 
 	ClassDB::bind_method(D_METHOD("set_adjustment_enable", "enabled"), &Environment3D::set_adjustment_enable);
 	ClassDB::bind_method(D_METHOD("is_adjustment_enabled"), &Environment3D::is_adjustment_enabled);
@@ -1229,6 +1285,7 @@ Environment3D::Environment3D() :
 	glow_hdr_bleed_scale = 2.0;
 	glow_bicubic_upscale = false;
 	glow_high_quality = false;
+	glow_map_strength = 0.8f;
 
 	dof_blur_far_enabled = false;
 	dof_blur_far_distance = 10;
@@ -1268,3 +1325,4 @@ Environment3D::Environment3D() :
 Environment3D::~Environment3D() {
 	RS::get_singleton()->free(environment);
 }
+
