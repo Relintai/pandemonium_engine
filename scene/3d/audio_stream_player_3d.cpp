@@ -124,6 +124,9 @@ void AudioStreamPlayer3D::_calc_output_vol(const Vector3 &source_dir, real_t tig
 	real_t volumes[7];
 	spcap.calculate(source_dir, tightness, speaker_count, volumes);
 
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+
 	switch (AudioServer::get_singleton()->get_speaker_mode()) {
 		case AudioServer::SPEAKER_SURROUND_71:
 			output.vol[3].l = volumes[5]; // side-left
@@ -141,6 +144,8 @@ void AudioStreamPlayer3D::_calc_output_vol(const Vector3 &source_dir, real_t tig
 			output.vol[0].r = volumes[1]; // front-right
 			output.vol[0].l = volumes[0]; // front-left
 	}
+
+	#pragma GCC diagnostic pop
 }
 
 void AudioStreamPlayer3D::_mix_audio() {
