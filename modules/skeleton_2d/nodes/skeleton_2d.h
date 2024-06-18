@@ -144,12 +144,23 @@ class Skeleton2D : public Node2D {
 
 	Ref<SkeletonModificationStack2D> modification_stack;
 
+	void _update_process_mode();
+	void _ensure_update_interpolation_data();
+
+	struct InterpolationData {
+		Transform2D xform_curr;
+		Transform2D xform_prev;
+		uint32_t last_update_physics_tick = UINT32_MAX;
+	} _interpolation_data;
+
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
 	bool _set(const StringName &p_path, const Variant &p_value);
 	bool _get(const StringName &p_path, Variant &r_ret) const;
 	void _get_property_list(List<PropertyInfo> *p_list) const;
+
+	virtual void _physics_interpolated_changed();
 
 public:
 	int get_bone_count() const;
