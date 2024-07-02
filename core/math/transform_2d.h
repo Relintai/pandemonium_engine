@@ -132,7 +132,13 @@ struct _NO_DISCARD_CLASS_ Transform2D {
 	void operator*=(const real_t p_val);
 	Transform2D operator*(const real_t p_val) const;
 
-	Transform2D interpolate_with(const Transform2D &p_transform, real_t p_c) const;
+	Transform2D interpolate_with(const Transform2D &p_transform, real_t p_c) const {
+		return Transform2D(
+				Math::lerp_angle(get_rotation(), p_transform.get_rotation(), p_c),
+				get_scale().linear_interpolate(p_transform.get_scale(), p_c),
+				Math::lerp_angle(get_skew(), p_transform.get_skew(), p_c),
+				get_origin().linear_interpolate(p_transform.get_origin(), p_c));
+	}
 
 	_FORCE_INLINE_ Vector2 basis_xform(const Vector2 &p_vec) const;
 	_FORCE_INLINE_ Vector2 basis_xform_inv(const Vector2 &p_vec) const;

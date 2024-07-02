@@ -295,41 +295,6 @@ real_t Transform2D::basis_determinant() const {
 	return columns[0].x * columns[1].y - columns[0].y * columns[1].x;
 }
 
-Transform2D Transform2D::interpolate_with(const Transform2D &p_transform, real_t p_c) const {
-	//extract parameters
-	Vector2 p1 = get_origin();
-	Vector2 p2 = p_transform.get_origin();
-
-	real_t r1 = get_rotation();
-	real_t r2 = p_transform.get_rotation();
-
-	Size2 s1 = get_scale();
-	Size2 s2 = p_transform.get_scale();
-
-	//slerp rotation
-	Vector2 v1(Math::cos(r1), Math::sin(r1));
-	Vector2 v2(Math::cos(r2), Math::sin(r2));
-
-	real_t dot = v1.dot(v2);
-
-	dot = CLAMP(dot, -1, 1);
-
-	Vector2 v;
-
-	if (dot > 0.9995f) {
-		v = Vector2::linear_interpolate(v1, v2, p_c).normalized(); //linearly interpolate to avoid numerical precision issues
-	} else {
-		real_t angle = p_c * Math::acos(dot);
-		Vector2 v3 = (v2 - v1 * dot).normalized();
-		v = v1 * Math::cos(angle) + v3 * Math::sin(angle);
-	}
-
-	//construct matrix
-	Transform2D res(Math::atan2(v.y, v.x), Vector2::linear_interpolate(p1, p2, p_c));
-	res.scale_basis(Vector2::linear_interpolate(s1, s2, p_c));
-	return res;
-}
-
 Transform2D::operator String() const {
 	return "[X: " + columns[0].operator String() +
 			", Y: " + columns[1].operator String() +
