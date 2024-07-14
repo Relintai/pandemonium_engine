@@ -1028,9 +1028,9 @@ bool TileMapEditor::forward_gui_input(const Ref<InputEvent> &p_event) {
 		// Keep track internally of which mouse buttons are pressed
 		// so we can disallow changing tool.
 		if (mb->is_pressed()) {
-			_mouse_buttons_pressed |= mb->get_button_index();
+			_mouse_buttons_pressed |= (1 << mb->get_button_index());
 		} else {
-			_mouse_buttons_pressed &= ~mb->get_button_index();
+			_mouse_buttons_pressed &= ~(1 << mb->get_button_index());
 		}
 
 		if (mb->get_button_index() == BUTTON_LEFT) {
@@ -1947,6 +1947,8 @@ TileMapEditor::TileMapEditor(EditorNode *p_editor) {
 	canvas_item_editor_viewport = nullptr;
 	editor = p_editor;
 	undo_redo = EditorNode::get_undo_redo();
+
+	_mouse_buttons_pressed = 0;
 
 	tool = TOOL_NONE;
 	selection_active = false;
