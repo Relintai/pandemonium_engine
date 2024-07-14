@@ -95,6 +95,7 @@
 #include "scene/resources/font/font.h"
 #include "scene/resources/gradient.h"
 #include "scene/resources/mesh/surface_tool.h"
+#include "scene/resources/mesh/multimesh.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/shapes/shape.h"
