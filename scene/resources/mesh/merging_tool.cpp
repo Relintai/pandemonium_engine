@@ -239,7 +239,7 @@ bool MergingTool::is_mergeable_with(const MeshInstance &p_mi, const MeshInstance
 	if (p_mi.get_material_override() != p_other.get_material_override()) {
 		return false;
 	}
-	/*
+
 	if (p_mi.get_flag(GeometryInstance::FLAG_USE_BAKED_LIGHT) != p_other.get_flag(GeometryInstance::FLAG_USE_BAKED_LIGHT)) {
 		return false;
 	}
@@ -249,7 +249,7 @@ bool MergingTool::is_mergeable_with(const MeshInstance &p_mi, const MeshInstance
 	if (p_mi.get_lightmap_scale() != p_other.get_lightmap_scale()) {
 		return false;
 	}
-	*/
+
 
 	if (p_check_surface_material_match) {
 		Ref<Mesh> rmesh_a = p_mi.get_mesh();
@@ -1038,7 +1038,7 @@ void MergingTool::_copy_geometry_instance_settings(const GeometryInstance &p_sou
 	r_dest.set_material_overlay(p_source.get_material_overlay());
 	r_dest.set_material_override(p_source.get_material_override());
 	r_dest.set_cast_shadows_setting(p_source.get_cast_shadows_setting());
-	//r_dest.set_flag(GeometryInstance::FLAG_USE_BAKED_LIGHT, p_source.get_flag(GeometryInstance::FLAG_USE_BAKED_LIGHT));
+	r_dest.set_flag(GeometryInstance::FLAG_USE_BAKED_LIGHT, p_source.get_flag(GeometryInstance::FLAG_USE_BAKED_LIGHT));
 
 	r_dest.set_portal_mode(p_source.get_portal_mode());
 	r_dest.set_include_in_bound(p_source.get_include_in_bound());

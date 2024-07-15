@@ -956,6 +956,7 @@ public:
 
 		uint32_t cull_mask;
 
+		RS::LightBakeMode bake_mode;
 		RS::LightOmniShadowMode omni_shadow_mode;
 		RS::LightOmniShadowDetail omni_shadow_detail;
 
@@ -979,6 +980,7 @@ public:
 	virtual void light_set_negative(RID p_light, bool p_enable);
 	virtual void light_set_cull_mask(RID p_light, uint32_t p_mask);
 	virtual void light_set_reverse_cull_face_mode(RID p_light, bool p_enabled);
+	virtual void light_set_bake_mode(RID p_light, RS::LightBakeMode p_bake_mode);
 
 	virtual void light_omni_set_shadow_mode(RID p_light, RS::LightOmniShadowMode p_mode);
 	virtual void light_omni_set_shadow_detail(RID p_light, RS::LightOmniShadowDetail p_detail);
@@ -998,6 +1000,7 @@ public:
 	virtual RS::LightType light_get_type(RID p_light) const;
 	virtual float light_get_param(RID p_light, RS::LightParam p_param);
 	virtual Color light_get_color(RID p_light);
+	virtual RS::LightBakeMode light_get_bake_mode(RID p_light);
 
 	virtual AABB light_get_aabb(RID p_light) const;
 	virtual uint64_t light_get_version(RID p_light) const;

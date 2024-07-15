@@ -261,7 +261,7 @@ void GeometryInstance::set_generate_lightmap(bool p_enabled) {
 	generate_lightmap = p_enabled;
 }
 
-bool GeometryInstance::get_generate_lightmap() {
+bool GeometryInstance::get_generate_lightmap() const {
 	return generate_lightmap;
 }
 

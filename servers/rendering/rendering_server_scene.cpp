@@ -1727,6 +1727,10 @@ void RenderingServerScene::instance_geometry_set_flag(RID p_instance, RS::Instan
 	ERR_FAIL_COND(!instance);
 
 	switch (p_flags) {
+		case RS::INSTANCE_FLAG_USE_BAKED_LIGHT: {
+			instance->baked_light = p_enabled;
+
+		} break;
 		case RS::INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE: {
 			instance->redraw_if_visible = p_enabled;
 

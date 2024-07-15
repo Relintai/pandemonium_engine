@@ -185,6 +185,9 @@ SceneStringNames::SceneStringNames() {
 	_im_update = StaticCString::create("_im_update");
 	_queue_update = StaticCString::create("_queue_update");
 
+	baked_light_changed = StaticCString::create("baked_light_changed");
+	_baked_light_changed = StaticCString::create("_baked_light_changed");
+
 	_mouse_enter = StaticCString::create("_mouse_enter");
 	_mouse_exit = StaticCString::create("_mouse_exit");
 

@@ -466,6 +466,7 @@ public:
 
 		List<PairInfo> geometries;
 
+		Instance *baked_light;
 		int32_t previous_room_id_hint;
 
 	private:
@@ -519,6 +520,7 @@ public:
 
 			D = nullptr;
 			last_version = 0;
+			baked_light = nullptr;
 			previous_room_id_hint = -1;
 		}
 	};

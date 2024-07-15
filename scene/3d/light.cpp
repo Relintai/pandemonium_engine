@@ -135,6 +135,16 @@ PoolVector<Face3> Light::get_faces(uint32_t p_usage_flags) const {
 	return PoolVector<Face3>();
 }
 
+void Light::set_bake_mode(BakeMode p_mode) {
+	bake_mode = p_mode;
+	RS::get_singleton()->light_set_bake_mode(light, RS::LightBakeMode(bake_mode));
+	_change_notify();
+}
+
+Light::BakeMode Light::get_bake_mode() const {
+	return bake_mode;
+}
+
 void Light::owner_changed_notify() {
 	// For cases where owner changes _after_ entering tree (as example, editor editing).
 	_update_visibility();
@@ -189,6 +199,10 @@ void Light::_validate_property(PropertyInfo &property) const {
 	if (RenderingServer::get_singleton()->is_low_end() && property.name == "shadow_contact") {
 		property.usage = PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL;
 	}
+
+	if (bake_mode != BAKE_ALL && property.name == "light_size") {
+		property.usage = PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL;
+	}
 }
 
 void Light::_bind_methods() {
@@ -216,6 +230,9 @@ void Light::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_shadow_color", "shadow_color"), &Light::set_shadow_color);
 	ClassDB::bind_method(D_METHOD("get_shadow_color"), &Light::get_shadow_color);
 
+	ClassDB::bind_method(D_METHOD("set_bake_mode", "bake_mode"), &Light::set_bake_mode);
+	ClassDB::bind_method(D_METHOD("get_bake_mode"), &Light::get_bake_mode);
+
 	ADD_GROUP("Light", "light_");
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "light_color", PROPERTY_HINT_COLOR_NO_ALPHA), "set_color", "get_color");
 	ADD_PROPERTYI(PropertyInfo(Variant::REAL, "light_energy", PROPERTY_HINT_RANGE, "0,16,0.001,or_greater"), "set_param", "get_param", PARAM_ENERGY);
@@ -223,6 +240,7 @@ void Light::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::REAL, "light_size", PROPERTY_HINT_RANGE, "0,1,0.001,or_greater"), "set_param", "get_param", PARAM_SIZE);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "light_negative"), "set_negative", "is_negative");
 	ADD_PROPERTYI(PropertyInfo(Variant::REAL, "light_specular", PROPERTY_HINT_RANGE, "0,16,0.001,or_greater"), "set_param", "get_param", PARAM_SPECULAR);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "light_bake_mode", PROPERTY_HINT_ENUM, "Disable,Indirect Only,All (Direct + Indirect)"), "set_bake_mode", "get_bake_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "light_cull_mask", PROPERTY_HINT_LAYERS_3D_RENDER), "set_cull_mask", "get_cull_mask");
 	ADD_GROUP("Shadow", "shadow_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "shadow_enabled"), "set_shadow", "has_shadow");
@@ -251,6 +269,10 @@ void Light::_bind_methods() {
 	BIND_ENUM_CONSTANT(PARAM_SHADOW_BIAS);
 	BIND_ENUM_CONSTANT(PARAM_SHADOW_BIAS_SPLIT_SCALE);
 	BIND_ENUM_CONSTANT(PARAM_MAX);
+
+	BIND_ENUM_CONSTANT(BAKE_DISABLED);
+	BIND_ENUM_CONSTANT(BAKE_INDIRECT);
+	BIND_ENUM_CONSTANT(BAKE_ALL);
 }
 
 Light::Light(RenderingServer::LightType p_type) {
@@ -272,6 +294,7 @@ Light::Light(RenderingServer::LightType p_type) {
 	RS::get_singleton()->instance_set_base(get_instance(), light);
 
 	reverse_cull = false;
+	bake_mode = BAKE_INDIRECT;
 
 	editor_only = false;
 	set_color(Color(1, 1, 1, 1));

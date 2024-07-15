@@ -4255,6 +4255,7 @@ RID RasterizerStorageGLES2::light_create(RS::LightType p_type) {
 	light->directional_blend_splits = false;
 	light->directional_range_mode = RS::LIGHT_DIRECTIONAL_SHADOW_DEPTH_RANGE_STABLE;
 	light->reverse_cull = false;
+	light->bake_mode = RS::LIGHT_BAKE_INDIRECT;
 	light->version = 0;
 
 	return light_owner.make_rid(light);
@@ -4337,6 +4338,16 @@ void RasterizerStorageGLES2::light_set_reverse_cull_face_mode(RID p_light, bool 
 	ERR_FAIL_COND(!light);
 
 	light->reverse_cull = p_enabled;
+
+	light->version++;
+	light->instance_change_notify(true, false);
+}
+
+void RasterizerStorageGLES2::light_set_bake_mode(RID p_light, RS::LightBakeMode p_bake_mode) {
+	Light *light = light_owner.getornull(p_light);
+	ERR_FAIL_COND(!light);
+
+	light->bake_mode = p_bake_mode;
 
 	light->version++;
 	light->instance_change_notify(true, false);
@@ -4435,6 +4446,13 @@ Color RasterizerStorageGLES2::light_get_color(RID p_light) {
 	ERR_FAIL_COND_V(!light, Color());
 
 	return light->color;
+}
+
+RS::LightBakeMode RasterizerStorageGLES2::light_get_bake_mode(RID p_light) {
+	Light *light = light_owner.getornull(p_light);
+	ERR_FAIL_COND_V(!light, RS::LightBakeMode::LIGHT_BAKE_DISABLED);
+
+	return light->bake_mode;
 }
 
 bool RasterizerStorageGLES2::light_has_shadow(RID p_light) const {
