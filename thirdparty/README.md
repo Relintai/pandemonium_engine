@@ -33,6 +33,26 @@ Files extracted from upstream source:
 
 - all .cpp, .h, and .txt files in ConvectionKernels/
 
+
+## embree
+
+- Upstream: https://github.com/embree/embree
+- Version: 3.13.5 (698442324ccddd11725fb8875275dc1384f7fb40, 2022)
+- License: Apache 2.0
+
+Files extracted from upstream:
+
+- All cpp files listed in `modules/raycast/godot_update_embree.py`
+- All header files in the directories listed in `modules/raycast/godot_update_embree.py`
+
+The `modules/raycast/godot_update_embree.py` script can be used to pull the
+relevant files from the latest Embree release and apply some automatic changes.
+
+Some changes have been made in order to remove exceptions and fix minor build errors.
+They are marked with `// -- GODOT start --` and `// -- GODOT end --`
+comments. Apply the patches in the `patches/` folder when syncing on newer upstream
+commits.
+
 ## enet
 
 - Upstream: https://github.com/lsalzman/enet

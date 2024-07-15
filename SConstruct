@@ -195,6 +195,8 @@ opts.Add(BoolVariable("builtin_zstd", "Use the built-in Zstd library", True))
 
 # TODO this should go to the xatlas_unwrap module
 opts.Add(BoolVariable("builtin_xatlas", "Use the built-in xatlas library", True))
+# TODO this should go to the raycast module
+opts.Add(BoolVariable("builtin_embree", "Use the built-in Embree library", True))
 
 # Compilation environment setup
 opts.Add("CXX", "C++ compiler")
