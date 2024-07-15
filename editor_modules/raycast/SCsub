@@ -103,9 +103,16 @@ if env["builtin_embree"]:
                 "-fno-tree-vectorize",
                 "-fvisibility=hidden",
                 "-fvisibility-inlines-hidden",
-                "-frtti" # embree needs it
             ]
         )
+    
+
+    if not env.msvc:
+        env_thirdparty["CXXFLAGS"].remove("-fno-rtti")
+        env_thirdparty.Append(CXXFLAGS=["-frtti"])
+    else:
+        env_thirdparty["CXXFLAGS"].remove("/GR-")
+        env_thirdparty.Append(CXXFLAGS=["/GR"])
 
     env.modules_sources += thirdparty_obj
 

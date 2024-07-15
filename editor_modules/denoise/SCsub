@@ -124,7 +124,13 @@ env.modules_sources += thirdparty_obj
 if env["platform"] == "windows" and not env.msvc:
     env_thirdparty.Append(CPPFLAGS=["-mstackrealign"])
 
-env_thirdparty.Append(CPPFLAGS=["-frtti"])
+
+if not env.msvc:
+    env_thirdparty["CXXFLAGS"].remove("-fno-rtti")
+    env_thirdparty.Append(CXXFLAGS=["-frtti"])
+else:
+    env_thirdparty["CXXFLAGS"].remove("/GR-")
+    env_thirdparty.Append(CXXFLAGS=["/GR"])
 
 weights_in_path = thirdparty_dir + "weights/rtlightmap_hdr.tza"
 weights_out_path = thirdparty_dir + "weights/rtlightmap_hdr.gen.cpp"
