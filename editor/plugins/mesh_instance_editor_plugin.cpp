@@ -292,14 +292,13 @@ void MeshInstanceEditor::_menu_option(int p_option) {
 				err_dialog->popup_centered_minsize();
 				return;
 			}
-			/*
+
 			Error err = mesh2->lightmap_unwrap(node->get_global_transform());
 			if (err != OK) {
 				err_dialog->set_text(TTR("UV Unwrap failed, mesh may not be manifold?"));
 				err_dialog->popup_centered_minsize();
 				return;
 			}
-			*/
 
 		} break;
 		case MENU_OPTION_DEBUG_UV1: {
