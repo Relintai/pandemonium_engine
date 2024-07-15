@@ -37,6 +37,9 @@
 #include "core/version_generated.gen.h"
 #include "dir_access_osx.h"
 #include "drivers/gles2/rasterizer_gles2.h"
+#ifndef GLES3_DISABLED
+#include "drivers/gles3/rasterizer_gles3.h"
+#endif
 #include "main/main.h"
 #include "scene/resources/texture.h"
 #include "servers/rendering/rendering_server_raster.h"
@@ -1758,7 +1761,15 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 
 	/*** END OSX INITIALIZATION ***/
 
+#ifndef GLES3_DISABLED
+	bool gles3 = true;
+	if (p_video_driver == VIDEO_DRIVER_GLES2) {
+		gles3 = false;
+	}
+#else
 	bool gles2 = true;
+#endif
+
 	//if (p_video_driver == VIDEO_DRIVER_GLES2) {
 	//	gles3 = false;
 	//}
@@ -1767,6 +1778,33 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	bool gl_initialization_error = false;
 
 	while (true) {
+#ifndef GLES3_DISABLED
+		if (gles3) {
+			if (RasterizerGLES3::is_viable() == OK) {
+				RasterizerGLES3::register_config();
+				RasterizerGLES3::make_current();
+				break;
+			} else {
+				if (GLOBAL_GET("rendering/quality/driver/fallback_to_gles2") || editor) {
+					p_video_driver = VIDEO_DRIVER_GLES2;
+					gles3 = false;
+					continue;
+				} else {
+					gl_initialization_error = true;
+					break;
+				}
+			}
+		} else {
+			if (RasterizerGLES2::is_viable() == OK) {
+				RasterizerGLES2::register_config();
+				RasterizerGLES2::make_current();
+				break;
+			} else {
+				gl_initialization_error = true;
+				break;
+			}
+		}
+#else
 		if (gles2) {
 			if (RasterizerGLES2::is_viable() == OK) {
 				RasterizerGLES2::register_config();
@@ -1779,6 +1817,7 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 		} else {
 			break;
 		}
+#endif
 	}
 
 	if (gl_initialization_error) {

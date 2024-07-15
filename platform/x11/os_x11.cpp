@@ -36,6 +36,9 @@
 #include "core/string/print_string.h"
 #include "detect_prime.h"
 #include "drivers/gles2/rasterizer_gles2.h"
+#ifndef GLES3_DISABLED
+#include "drivers/gles3/rasterizer_gles3.h"
+#endif
 #include "key_mapping_x11.h"
 #include "main/main.h"
 #include "scene/resources/texture.h"
@@ -304,14 +307,18 @@ Error OS_X11::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 		}
 	}
 
+#ifndef GLES3_DISABLED
+	ContextGL_X11::ContextType opengl_api_type = ContextGL_X11::GLES_3_0_COMPATIBLE;
+
+	if (p_video_driver == VIDEO_DRIVER_GLES2) {
+		opengl_api_type = ContextGL_X11::GLES_2_0_COMPATIBLE;
+	}
+
+	bool editor = Engine::get_singleton()->is_editor_hint();
+#else
 	ContextGL_X11::ContextType opengl_api_type = ContextGL_X11::GLES_2_0_COMPATIBLE;
+#endif
 
-	//if (p_video_driver == VIDEO_DRIVER_GLES2) {
-	//	opengl_api_type = ContextGL_X11::GLES_2_0_COMPATIBLE;
-	//}
-
-	//bool editor = Engine::get_singleton()->is_editor_hint();
-	//p_video_driver = VIDEO_DRIVER_GLES2;
 	bool gl_initialization_error = false;
 
 	context_gl = nullptr;
@@ -328,6 +335,24 @@ Error OS_X11::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	}
 
 	while (true) {
+#ifndef GLES3_DISABLED
+		if (opengl_api_type == ContextGL_X11::GLES_3_0_COMPATIBLE) {
+			if (RasterizerGLES3::is_viable() == OK) {
+				RasterizerGLES3::register_config();
+				RasterizerGLES3::make_current();
+				break;
+			} else {
+				if (GLOBAL_GET("rendering/quality/driver/fallback_to_gles2") || editor) {
+					p_video_driver = VIDEO_DRIVER_GLES2;
+					opengl_api_type = ContextGL_X11::GLES_2_0_COMPATIBLE;
+					continue;
+				} else {
+					gl_initialization_error = true;
+					break;
+				}
+			}
+		}
+#endif
 		if (opengl_api_type == ContextGL_X11::GLES_2_0_COMPATIBLE) {
 			if (RasterizerGLES2::is_viable() == OK) {
 				RasterizerGLES2::register_config();

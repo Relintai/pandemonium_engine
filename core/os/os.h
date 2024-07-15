@@ -196,6 +196,9 @@ public:
 	// This should be customizable
 	enum VideoDriver {
 		VIDEO_DRIVER_GLES2,
+#ifndef GLES3_DISABLED
+		VIDEO_DRIVER_GLES3,
+#endif
 		VIDEO_DRIVER_MAX,
 	};
 

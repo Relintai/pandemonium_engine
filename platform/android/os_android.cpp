@@ -34,6 +34,9 @@
 #include "core/config/project_settings.h"
 #include "core/variant/array.h"
 #include "drivers/gles2/rasterizer_gles2.h"
+#ifndef GLES3_DISABLED
+#include "drivers/gles3/rasterizer_gles3.h"
+#endif
 #include "drivers/unix/dir_access_unix.h"
 #include "drivers/unix/file_access_unix.h"
 #include "main/main.h"
@@ -91,6 +94,10 @@ const char *OS_Android::get_video_driver_name(int p_driver) const {
 	switch (p_driver) {
 		case VIDEO_DRIVER_GLES2:
 			return "GLES2";
+#ifndef GLES3_DISABLED
+		case VIDEO_DRIVER_GLES3:
+			return "GLES3";
+#endif
 	}
 	ERR_FAIL_V_MSG(NULL, "Invalid video driver index: " + itos(p_driver) + ".");
 }
@@ -143,12 +150,42 @@ int OS_Android::get_current_video_driver() const {
 }
 
 Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver) {
-	//bool use_gl3 = pandemonium_java->get_gles_version_code() >= 0x00030000;
-	//use_gl3 = use_gl3 && (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3");
+#ifndef GLES3_DISABLED
+	bool use_gl3 = pandemonium_java->get_gles_version_code() >= 0x00030000;
+	use_gl3 = use_gl3 && (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3");
+#else
 	bool use_gl2 = (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES2");
+#endif
 	bool gl_initialization_error = false;
 
 	while (true) {
+		#ifndef GLES3_DISABLED
+		if (use_gl3) {
+			if (RasterizerGLES3::is_viable() == OK) {
+				RasterizerGLES3::register_config();
+				RasterizerGLES3::make_current();
+				break;
+			} else {
+				if (GLOBAL_GET("rendering/quality/driver/fallback_to_gles2")) {
+					p_video_driver = VIDEO_DRIVER_GLES2;
+					use_gl3 = false;
+					continue;
+				} else {
+					gl_initialization_error = true;
+					break;
+				}
+			}
+		} else {
+			if (RasterizerGLES2::is_viable() == OK) {
+				RasterizerGLES2::register_config();
+				RasterizerGLES2::make_current();
+				break;
+			} else {
+				gl_initialization_error = true;
+				break;
+			}
+		}
+		#else
 		if (use_gl2) {
 			if (RasterizerGLES2::is_viable() == OK) {
 				pandemonium_java->gfx_init(true);
@@ -162,6 +199,7 @@ Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int
 		} else {
 			break;
 		}
+		#endif
 	}
 
 	transparency_enabled = p_desired.layered;

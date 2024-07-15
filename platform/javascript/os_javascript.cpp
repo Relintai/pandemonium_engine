@@ -33,6 +33,9 @@
 
 #include "core/io/json.h"
 #include "drivers/gles2/rasterizer_gles2.h"
+#ifndef GLES3_DISABLED
+#include "drivers/gles3/rasterizer_gles3.h"
+#endif
 #include "drivers/unix/dir_access_unix.h"
 #include "drivers/unix/file_access_unix.h"
 #include "main/main.h"
@@ -757,6 +760,10 @@ const char *OS_JavaScript::get_video_driver_name(int p_driver) const {
 	switch (p_driver) {
 		case VIDEO_DRIVER_GLES2:
 			return "GLES2";
+#ifndef GLES3_DISABLED
+			case VIDEO_DRIVER_GLES3:
+				return "GLES3";
+#endif
 	}
 	ERR_FAIL_V_MSG(NULL, "Invalid video driver index: " + itos(p_driver) + ".");
 }
@@ -820,7 +827,16 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 		set_window_per_pixel_transparency_enabled(true);
 	}
 
+
+#ifndef GLES3_DISABLED
+	bool gles3 = true;
+	if (p_video_driver == VIDEO_DRIVER_GLES2) {
+		gles3 = false;
+	}
+#else
 	bool gles2 = true;
+#endif
+
 	//if (p_video_driver == VIDEO_DRIVER_GLES2) {
 	//	gles3 = true;
 	//}
@@ -828,6 +844,35 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 	bool gl_initialization_error = false;
 
 	while (true) {
+#ifndef GLES3_DISABLED
+		if (gles3) {
+			if (pandemonium_js_display_has_webgl(2) && RasterizerGLES3::is_viable() == OK) {
+				attributes.majorVersion = 2;
+				RasterizerGLES3::register_config();
+				RasterizerGLES3::make_current();
+				break;
+			} else {
+				if (GLOBAL_GET("rendering/quality/driver/fallback_to_gles2")) {
+					p_video_driver = VIDEO_DRIVER_GLES2;
+					gles3 = false;
+					continue;
+				} else {
+					gl_initialization_error = true;
+					break;
+				}
+			}
+		} else {
+			if (pandemonium_js_display_has_webgl(1) && RasterizerGLES2::is_viable() == OK) {
+				attributes.majorVersion = 1;
+				RasterizerGLES2::register_config();
+				RasterizerGLES2::make_current();
+				break;
+			} else {
+				gl_initialization_error = true;
+				break;
+			}
+		}
+#else
 		if (gles2) {
 			if (pandemonium_js_display_has_webgl(1) && RasterizerGLES2::is_viable() == OK) {
 				attributes.majorVersion = 1;
@@ -841,6 +886,7 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 		} else {
 			break;
 		}
+#endif
 	}
 
 	webgl_ctx = emscripten_webgl_create_context(canvas_id, &attributes);

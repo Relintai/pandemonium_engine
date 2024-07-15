@@ -110,6 +110,9 @@ protected:
 public:
 	enum VideoDriver {
 		VIDEO_DRIVER_GLES2,
+#ifndef GLES3_DISABLED
+		VIDEO_DRIVER_GLES3,
+#endif
 	};
 
 	enum PowerState {

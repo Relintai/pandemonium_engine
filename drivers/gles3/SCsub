@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+
+Import("env")
+
+if not env["disable_gles3"]:
+    env.add_source_files(env.drivers_sources, "*.cpp")
+
+    SConscript("shaders/SCsub")

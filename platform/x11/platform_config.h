@@ -46,3 +46,6 @@
 #endif
 
 #define GLES2_INCLUDE_H "thirdparty/glad/glad/glad.h"
+#ifndef GLES3_DISABLED
+#define GLES3_INCLUDE_H "thirdparty/glad/glad/glad.h"
+#endif

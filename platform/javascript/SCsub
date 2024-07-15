@@ -26,6 +26,9 @@ javascript_files = [
     "api/javascript_tools_editor_plugin.cpp",
 ]
 
+if not env["disable_gles3"]:
+    javascript_files += "pandemonium_webgl2.cpp"
+
 sys_env = env.Clone()
 sys_env.AddJSLibraries(
     [

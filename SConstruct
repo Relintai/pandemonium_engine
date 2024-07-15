@@ -155,6 +155,7 @@ opts.Add(
         False,
     )
 )
+opts.Add(BoolVariable("disable_gles3", "Disable the gles3 video driver.", True))
 opts.Add(BoolVariable("disable_3d", "Disable 3D nodes for a smaller executable", False))
 opts.Add(BoolVariable("disable_advanced_gui", "Disable advanced GUI nodes and behaviors", False))
 opts.Add(BoolVariable("modules_enabled_by_default", "If no, disable all modules except ones explicitly enabled", True))
@@ -699,6 +700,9 @@ if selected_platform in platform_list:
     if env["tools"]:
         env.Append(CPPDEFINES=["TOOLS_ENABLED"])
 
+    if env["disable_gles3"]:                                                                                                                                
+        env.Append(CPPDEFINES=["GLES3_DISABLED"]) 
+
     if env["disable_3d"]:
         if env["tools"]:
             print(
@@ -708,6 +712,7 @@ if selected_platform in platform_list:
             sys.exit(255)
         else:
             env.Append(CPPDEFINES=["_3D_DISABLED"])
+
 
     if env["disable_advanced_gui"]:
         if env["tools"]:
@@ -725,6 +730,15 @@ if selected_platform in platform_list:
         methods.no_verbose(sys, env)
 
     if not env["platform"] == "server":
+        if not env["disable_gles3"]:
+            env.Append(
+                BUILDERS={
+                    "GLES3_GLSL": env.Builder(
+                        action=run_in_subprocess(gles_builders.build_gles3_headers), suffix="glsl.gen.h", src_suffix=".glsl"
+                    )
+                }
+            )
+
         env.Append(
             BUILDERS={
                 "GLES2_GLSL": env.Builder(

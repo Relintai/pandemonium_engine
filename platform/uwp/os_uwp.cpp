@@ -34,6 +34,9 @@
 #include "core/config/project_settings.h"
 #include "core/io/marshalls.h"
 #include "drivers/gles2/rasterizer_gles2.h"
+#ifndef GLES3_DISABLED
+#include "drivers/gles3/rasterizer_gles3.h"
+#endif
 #include "drivers/unix/ip_unix.h"
 #include "drivers/unix/net_socket_posix.h"
 #include "drivers/windows/dir_access_windows.h"
@@ -165,9 +168,11 @@ Error OS_UWP::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 
 	ContextEGL_UWP::Driver opengl_api_type = ContextEGL_UWP::GLES_2_0;
 
+#ifndef GLES3_DISABLED
 	if (p_video_driver == VIDEO_DRIVER_GLES2) {
 		opengl_api_type = ContextEGL_UWP::GLES_2_0;
 	}
+#endif
 
 	bool gl_initialization_error = false;
 
@@ -195,6 +200,8 @@ Error OS_UWP::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	}
 
 	while (true) {
+
+#ifndef GLES3_DISABLED
 		if (opengl_api_type == ContextEGL_UWP::GLES_3_0) {
 			if (RasterizerGLES3::is_viable() == OK) {
 				RasterizerGLES3::register_config();
@@ -211,6 +218,7 @@ Error OS_UWP::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 				}
 			}
 		}
+#endif
 
 		if (opengl_api_type == ContextEGL_UWP::GLES_2_0) {
 			if (RasterizerGLES2::is_viable() == OK) {
