@@ -4649,6 +4649,127 @@ int RasterizerStorageGLES2::reflection_probe_get_resolution(RID p_probe) const {
 	return reflection_probe->resolution;
 }
 
+///////
+
+RID RasterizerStorageGLES2::lightmap_capture_create() {
+	LightmapCapture *capture = memnew(LightmapCapture);
+	return lightmap_capture_data_owner.make_rid(capture);
+}
+
+void RasterizerStorageGLES2::lightmap_capture_set_bounds(RID p_capture, const AABB &p_bounds) {
+	LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND(!capture);
+	capture->bounds = p_bounds;
+	capture->instance_change_notify(true, false);
+}
+AABB RasterizerStorageGLES2::lightmap_capture_get_bounds(RID p_capture) const {
+	const LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND_V(!capture, AABB());
+	return capture->bounds;
+}
+void RasterizerStorageGLES2::lightmap_capture_set_octree(RID p_capture, const PoolVector<uint8_t> &p_octree) {
+	LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND(!capture);
+
+	ERR_FAIL_COND(p_octree.size() == 0 || (p_octree.size() % sizeof(LightmapCaptureOctree)) != 0);
+
+	capture->octree.resize(p_octree.size() / sizeof(LightmapCaptureOctree));
+	if (p_octree.size()) {
+		PoolVector<LightmapCaptureOctree>::Write w = capture->octree.write();
+		PoolVector<uint8_t>::Read r = p_octree.read();
+		memcpy(w.ptr(), r.ptr(), p_octree.size());
+	}
+	capture->instance_change_notify(true, false);
+}
+PoolVector<uint8_t> RasterizerStorageGLES2::lightmap_capture_get_octree(RID p_capture) const {
+	const LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND_V(!capture, PoolVector<uint8_t>());
+
+	if (capture->octree.size() == 0) {
+		return PoolVector<uint8_t>();
+	}
+
+	PoolVector<uint8_t> ret;
+	ret.resize(capture->octree.size() * sizeof(LightmapCaptureOctree));
+	{
+		PoolVector<LightmapCaptureOctree>::Read r = capture->octree.read();
+		PoolVector<uint8_t>::Write w = ret.write();
+		memcpy(w.ptr(), r.ptr(), ret.size());
+	}
+
+	return ret;
+}
+
+void RasterizerStorageGLES2::lightmap_capture_set_octree_cell_transform(RID p_capture, const Transform &p_xform) {
+	LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND(!capture);
+	capture->cell_xform = p_xform;
+}
+
+Transform RasterizerStorageGLES2::lightmap_capture_get_octree_cell_transform(RID p_capture) const {
+	const LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND_V(!capture, Transform());
+	return capture->cell_xform;
+}
+
+void RasterizerStorageGLES2::lightmap_capture_set_octree_cell_subdiv(RID p_capture, int p_subdiv) {
+	LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND(!capture);
+	capture->cell_subdiv = p_subdiv;
+}
+
+int RasterizerStorageGLES2::lightmap_capture_get_octree_cell_subdiv(RID p_capture) const {
+	const LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND_V(!capture, 0);
+	return capture->cell_subdiv;
+}
+
+void RasterizerStorageGLES2::lightmap_capture_set_energy(RID p_capture, float p_energy) {
+	LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND(!capture);
+	capture->energy = p_energy;
+
+	if (!capture->update_list.in_list()) {
+		capture_update_list.add(&capture->update_list);
+	}
+}
+
+float RasterizerStorageGLES2::lightmap_capture_get_energy(RID p_capture) const {
+	const LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND_V(!capture, 0);
+	return capture->energy;
+}
+
+void RasterizerStorageGLES2::lightmap_capture_set_interior(RID p_capture, bool p_interior) {
+	LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND(!capture);
+	capture->interior = p_interior;
+
+	if (!capture->update_list.in_list()) {
+		capture_update_list.add(&capture->update_list);
+	}
+}
+
+bool RasterizerStorageGLES2::lightmap_capture_is_interior(RID p_capture) const {
+	const LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND_V(!capture, false);
+	return capture->interior;
+}
+
+void RasterizerStorageGLES2::update_dirty_captures() {
+	while (capture_update_list.first()) {
+		LightmapCapture *capture = capture_update_list.first()->self();
+		capture->instance_change_notify(false, true);
+		capture_update_list.remove(capture_update_list.first());
+	}
+}
+
+const PoolVector<RasterizerStorage::LightmapCaptureOctree> *RasterizerStorageGLES2::lightmap_capture_get_octree_ptr(RID p_capture) const {
+	const LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
+	ERR_FAIL_COND_V(!capture, nullptr);
+	return &capture->octree;
+}
+
 ////////
 
 void RasterizerStorageGLES2::instance_add_skeleton(RID p_skeleton, RasterizerScene::InstanceBase *p_instance) {
@@ -4688,6 +4809,10 @@ void RasterizerStorageGLES2::instance_add_dependency(RID p_base, RasterizerScene
 			inst = light_owner.getornull(p_base);
 			ERR_FAIL_COND(!inst);
 		} break;
+		case RS::INSTANCE_LIGHTMAP_CAPTURE: {
+			inst = lightmap_capture_data_owner.getornull(p_base);
+			ERR_FAIL_COND(!inst);
+		} break;
 		default: {
 			ERR_FAIL();
 		}
@@ -4718,6 +4843,10 @@ void RasterizerStorageGLES2::instance_remove_dependency(RID p_base, RasterizerSc
 		} break;
 		case RS::INSTANCE_LIGHT: {
 			inst = light_owner.getornull(p_base);
+			ERR_FAIL_COND(!inst);
+		} break;
+		case RS::INSTANCE_LIGHTMAP_CAPTURE: {
+			inst = lightmap_capture_data_owner.getornull(p_base);
 			ERR_FAIL_COND(!inst);
 		} break;
 		default: {
@@ -5626,6 +5755,8 @@ RS::InstanceType RasterizerStorageGLES2::get_base_type(RID p_rid) const {
 		return RS::INSTANCE_IMMEDIATE;
 	} else if (reflection_probe_owner.owns(p_rid)) {
 		return RS::INSTANCE_REFLECTION_PROBE;
+	} else if (lightmap_capture_data_owner.owns(p_rid)) {
+		return RS::INSTANCE_LIGHTMAP_CAPTURE;
 	} else {
 		return RS::INSTANCE_NONE;
 	}
@@ -5816,6 +5947,15 @@ bool RasterizerStorageGLES2::free(RID p_rid) {
 		memdelete(reflection_probe);
 
 		return true;
+	} else if (lightmap_capture_data_owner.owns(p_rid)) {
+		// delete the texture
+		LightmapCapture *lightmap_capture = lightmap_capture_data_owner.get(p_rid);
+		lightmap_capture->instance_remove_deps();
+
+		lightmap_capture_data_owner.free(p_rid);
+		memdelete(lightmap_capture);
+		return true;
+
 	} else if (canvas_occluder_owner.owns(p_rid)) {
 		CanvasOccluder *co = canvas_occluder_owner.get(p_rid);
 		if (co->index_id) {
@@ -6341,6 +6481,9 @@ void RasterizerStorageGLES2::initialize() {
 
 	config.force_vertex_shading = GLOBAL_GET("rendering/quality/shading/force_vertex_shading");
 	config.use_fast_texture_filter = GLOBAL_GET("rendering/quality/filters/use_nearest_mipmap_filter");
+	GLOBAL_DEF_RST("rendering/quality/lightmapping/use_bicubic_sampling", true);
+	GLOBAL_DEF_RST("rendering/quality/lightmapping/use_bicubic_sampling.mobile", false);
+	config.use_lightmap_filter_bicubic = GLOBAL_GET("rendering/quality/lightmapping/use_bicubic_sampling");
 
 	config.use_physical_light_attenuation = GLOBAL_GET("rendering/quality/shading/use_physical_light_attenuation");
 
@@ -6372,6 +6515,7 @@ void RasterizerStorageGLES2::update_dirty_resources() {
 	update_dirty_blend_shapes();
 	update_dirty_skeletons();
 	update_dirty_multimeshes();
+	update_dirty_captures();
 }
 
 RasterizerStorageGLES2::RasterizerStorageGLES2() {

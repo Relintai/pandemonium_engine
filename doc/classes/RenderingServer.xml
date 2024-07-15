@@ -3292,10 +3292,13 @@
 		<constant name="INSTANCE_GEOMETRY_MASK" value="14" enum="InstanceType">
 			A combination of the flags of geometry instances (mesh, multimesh, immediate and particles).
 		</constant>
-		<constant name="INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE" value="0" enum="InstanceFlags">
+		<constant name="INSTANCE_FLAG_USE_BAKED_LIGHT" value="1" enum="InstanceFlags">                                                                                                     
+  		Allows the instance to be used in baked lighting.                                                                                                                                
+  	</constant>
+		<constant name="INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE" value="2" enum="InstanceFlags">
 			When set, manually requests to draw geometry on next frame.
 		</constant>
-		<constant name="INSTANCE_FLAG_MAX" value="1" enum="InstanceFlags">
+		<constant name="INSTANCE_FLAG_MAX" value="2" enum="InstanceFlags">
 			Represents the size of the [enum InstanceFlags] enum.
 		</constant>
 		<constant name="SHADOW_CASTING_SETTING_OFF" value="0" enum="ShadowCastingSetting">

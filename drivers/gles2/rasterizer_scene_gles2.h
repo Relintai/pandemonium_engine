@@ -558,6 +558,8 @@ public:
 	enum LightMode {
 		LIGHTMODE_NORMAL,
 		LIGHTMODE_UNSHADED,
+		LIGHTMODE_LIGHTMAP,
+		LIGHTMODE_LIGHTMAP_CAPTURE,
 	};
 
 	struct RenderList {

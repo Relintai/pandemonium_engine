@@ -2023,6 +2023,19 @@ void RenderingServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("reflection_probe_set_enable_shadows", "probe", "enable"), &RenderingServer::reflection_probe_set_enable_shadows);
 	ClassDB::bind_method(D_METHOD("reflection_probe_set_cull_mask", "probe", "layers"), &RenderingServer::reflection_probe_set_cull_mask);
 
+	ClassDB::bind_method(D_METHOD("lightmap_capture_create"), &RenderingServer::lightmap_capture_create);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_set_bounds", "capture", "bounds"), &RenderingServer::lightmap_capture_set_bounds);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_get_bounds", "capture"), &RenderingServer::lightmap_capture_get_bounds);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_set_octree", "capture", "octree"), &RenderingServer::lightmap_capture_set_octree);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_set_octree_cell_transform", "capture", "xform"), &RenderingServer::lightmap_capture_set_octree_cell_transform);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_get_octree_cell_transform", "capture"), &RenderingServer::lightmap_capture_get_octree_cell_transform);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_set_octree_cell_subdiv", "capture", "subdiv"), &RenderingServer::lightmap_capture_set_octree_cell_subdiv);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_get_octree_cell_subdiv", "capture"), &RenderingServer::lightmap_capture_get_octree_cell_subdiv);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_get_octree", "capture"), &RenderingServer::lightmap_capture_get_octree);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_set_energy", "capture", "energy"), &RenderingServer::lightmap_capture_set_energy);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_get_energy", "capture"), &RenderingServer::lightmap_capture_get_energy);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_set_interior", "capture", "interior"), &RenderingServer::lightmap_capture_set_interior);
+	ClassDB::bind_method(D_METHOD("lightmap_capture_is_interior", "capture"), &RenderingServer::lightmap_capture_is_interior);
 #endif
 
 	ClassDB::bind_method(D_METHOD("camera_create"), &RenderingServer::camera_create);
@@ -2111,6 +2124,7 @@ void RenderingServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("instance_set_blend_shape_weight", "instance", "shape", "weight"), &RenderingServer::instance_set_blend_shape_weight);
 	ClassDB::bind_method(D_METHOD("instance_set_surface_material", "instance", "surface", "material"), &RenderingServer::instance_set_surface_material);
 	ClassDB::bind_method(D_METHOD("instance_set_visible", "instance", "visible"), &RenderingServer::instance_set_visible);
+	ClassDB::bind_method(D_METHOD("instance_set_use_lightmap", "instance", "lightmap_instance", "lightmap", "lightmap_slice", "lightmap_uv_rect"), &RenderingServer::instance_set_use_lightmap, DEFVAL(-1), DEFVAL(Rect2(0, 0, 1, 1)));
 	ClassDB::bind_method(D_METHOD("instance_set_custom_aabb", "instance", "aabb"), &RenderingServer::instance_set_custom_aabb);
 	ClassDB::bind_method(D_METHOD("instance_attach_skeleton", "instance", "skeleton"), &RenderingServer::instance_attach_skeleton);
 	ClassDB::bind_method(D_METHOD("instance_set_exterior", "instance", "enabled"), &RenderingServer::instance_set_exterior);
@@ -2403,9 +2417,11 @@ void RenderingServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(INSTANCE_IMMEDIATE);
 	BIND_ENUM_CONSTANT(INSTANCE_LIGHT);
 	BIND_ENUM_CONSTANT(INSTANCE_REFLECTION_PROBE);
+	BIND_ENUM_CONSTANT(INSTANCE_LIGHTMAP_CAPTURE);
 	BIND_ENUM_CONSTANT(INSTANCE_MAX);
 	BIND_ENUM_CONSTANT(INSTANCE_GEOMETRY_MASK);
 
+	BIND_ENUM_CONSTANT(INSTANCE_FLAG_USE_BAKED_LIGHT);
 	BIND_ENUM_CONSTANT(INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE);
 	BIND_ENUM_CONSTANT(INSTANCE_FLAG_MAX);
 

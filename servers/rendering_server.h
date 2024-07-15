@@ -526,6 +526,22 @@ public:
 	virtual void reflection_probe_set_cull_mask(RID p_probe, uint32_t p_layers) = 0;
 	virtual void reflection_probe_set_resolution(RID p_probe, int p_resolution) = 0;
 
+	/* LIGHTMAP CAPTURE */
+
+	virtual RID lightmap_capture_create() = 0;
+	virtual void lightmap_capture_set_bounds(RID p_capture, const AABB &p_bounds) = 0;
+	virtual AABB lightmap_capture_get_bounds(RID p_capture) const = 0;
+	virtual void lightmap_capture_set_octree(RID p_capture, const PoolVector<uint8_t> &p_octree) = 0;
+	virtual void lightmap_capture_set_octree_cell_transform(RID p_capture, const Transform &p_xform) = 0;
+	virtual Transform lightmap_capture_get_octree_cell_transform(RID p_capture) const = 0;
+	virtual void lightmap_capture_set_octree_cell_subdiv(RID p_capture, int p_subdiv) = 0;
+	virtual int lightmap_capture_get_octree_cell_subdiv(RID p_capture) const = 0;
+	virtual PoolVector<uint8_t> lightmap_capture_get_octree(RID p_capture) const = 0;
+	virtual void lightmap_capture_set_energy(RID p_capture, float p_energy) = 0;
+	virtual float lightmap_capture_get_energy(RID p_capture) const = 0;
+	virtual void lightmap_capture_set_interior(RID p_capture, bool p_interior) = 0;
+	virtual bool lightmap_capture_is_interior(RID p_capture) const = 0;
+
 	/* CAMERA API */
 
 	virtual RID camera_create() = 0;
@@ -757,6 +773,7 @@ public:
 		INSTANCE_IMMEDIATE,
 		INSTANCE_LIGHT,
 		INSTANCE_REFLECTION_PROBE,
+		INSTANCE_LIGHTMAP_CAPTURE,
 		INSTANCE_MAX,
 
 		INSTANCE_GEOMETRY_MASK = (1 << INSTANCE_MESH) | (1 << INSTANCE_MULTIMESH) | (1 << INSTANCE_IMMEDIATE)
@@ -777,6 +794,8 @@ public:
 	virtual void instance_set_blend_shape_weight(RID p_instance, int p_shape, float p_weight) = 0;
 	virtual void instance_set_surface_material(RID p_instance, int p_surface, RID p_material) = 0;
 	virtual void instance_set_visible(RID p_instance, bool p_visible) = 0;
+
+	virtual void instance_set_use_lightmap(RID p_instance, RID p_lightmap_instance, RID p_lightmap, int p_lightmap_slice, const Rect2 &p_lightmap_uv_rect) = 0;
 
 	virtual void instance_set_custom_aabb(RID p_instance, AABB aabb) = 0;
 
@@ -874,7 +893,8 @@ public:
 	Array _instances_cull_convex_bind(const Array &p_convex, RID p_scenario = RID()) const;
 
 	enum InstanceFlags {
-		INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE,
+		INSTANCE_FLAG_USE_BAKED_LIGHT,
+ 		INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE,
 		INSTANCE_FLAG_MAX
 	};
 

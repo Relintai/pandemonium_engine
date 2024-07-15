@@ -64,10 +64,13 @@
 			Will only show the shadows casted from this object.
 			In other words, the actual mesh will not be visible, only the shadows casted from the mesh will be.
 		</constant>
-		<constant name="FLAG_DRAW_NEXT_FRAME_IF_VISIBLE" value="0" enum="Flags">
+		<constant name="FLAG_USE_BAKED_LIGHT" value="0" enum="Flags">                                                                                                                       
+   		Will allow the GeometryInstance to be used when baking lights using a [GIProbe] or [BakedLightmap].                                                                               
+   	</constant>
+		<constant name="FLAG_DRAW_NEXT_FRAME_IF_VISIBLE" value="1" enum="Flags">
 			Unused in this class, exposed for consistency with [enum RenderingServer.InstanceFlags].
 		</constant>
-		<constant name="FLAG_MAX" value="1" enum="Flags">
+		<constant name="FLAG_MAX" value="2" enum="Flags">
 			Represents the size of the [enum Flags] enum.
 		</constant>
 	</constants>

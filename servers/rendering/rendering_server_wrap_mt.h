@@ -283,6 +283,24 @@ public:
 	FUNC2(reflection_probe_set_cull_mask, RID, uint32_t)
 	FUNC2(reflection_probe_set_resolution, RID, int)
 
+	/* LIGHTMAP CAPTURE */
+
+	FUNCRID(lightmap_capture)
+
+	FUNC2(lightmap_capture_set_bounds, RID, const AABB &)
+	FUNC1RC(AABB, lightmap_capture_get_bounds, RID)
+
+	FUNC2(lightmap_capture_set_octree, RID, const PoolVector<uint8_t> &)
+	FUNC1RC(PoolVector<uint8_t>, lightmap_capture_get_octree, RID)
+	FUNC2(lightmap_capture_set_octree_cell_transform, RID, const Transform &)
+	FUNC1RC(Transform, lightmap_capture_get_octree_cell_transform, RID)
+	FUNC2(lightmap_capture_set_octree_cell_subdiv, RID, int)
+	FUNC1RC(int, lightmap_capture_get_octree_cell_subdiv, RID)
+	FUNC2(lightmap_capture_set_energy, RID, float)
+	FUNC1RC(float, lightmap_capture_get_energy, RID)
+	FUNC2(lightmap_capture_set_interior, RID, bool)
+	FUNC1RC(bool, lightmap_capture_is_interior, RID)
+
 	/* CAMERA API */
 
 	FUNCRID(camera)
@@ -397,6 +415,7 @@ public:
 	FUNC3(instance_set_blend_shape_weight, RID, int, float)
 	FUNC3(instance_set_surface_material, RID, int, RID)
 	FUNC2(instance_set_visible, RID, bool)
+	FUNC5(instance_set_use_lightmap, RID, RID, RID, int, const Rect2 &)
 
 	FUNC2(instance_set_custom_aabb, RID, AABB)
 

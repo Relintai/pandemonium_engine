@@ -46,6 +46,7 @@ class Mesh : public Resource {
 
 	mutable Ref<TriangleMesh> triangle_mesh; //cached
 	mutable Vector<Vector3> debug_lines;
+	Size2i lightmap_size_hint;
 
 protected:
 	static void _bind_methods();
@@ -168,6 +169,9 @@ public:
 
 	virtual AABB get_aabb() const = 0;
 	virtual void set_storage_mode(StorageMode p_storage_mode);
+
+	void set_lightmap_size_hint(const Vector2i &p_size);
+	Size2i get_lightmap_size_hint() const;
 
 	void clear_cache() const;
 

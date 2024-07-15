@@ -257,6 +257,23 @@ Ref<Material> GeometryInstance::get_material_overlay() const {
 	return material_overlay;
 }
 
+void GeometryInstance::set_generate_lightmap(bool p_enabled) {
+	generate_lightmap = p_enabled;
+}
+
+bool GeometryInstance::get_generate_lightmap() {
+	return generate_lightmap;
+}
+
+void GeometryInstance::set_lightmap_scale(LightmapScale p_scale) {
+	ERR_FAIL_INDEX(p_scale, LIGHTMAP_SCALE_MAX);
+	lightmap_scale = p_scale;
+}
+
+GeometryInstance::LightmapScale GeometryInstance::get_lightmap_scale() const {
+	return lightmap_scale;
+}
+
 void GeometryInstance::_notification(int p_what) {
 }
 
@@ -317,6 +334,12 @@ void GeometryInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_cast_shadows_setting", "shadow_casting_setting"), &GeometryInstance::set_cast_shadows_setting);
 	ClassDB::bind_method(D_METHOD("get_cast_shadows_setting"), &GeometryInstance::get_cast_shadows_setting);
 
+	ClassDB::bind_method(D_METHOD("set_generate_lightmap", "enabled"), &GeometryInstance::set_generate_lightmap);
+	ClassDB::bind_method(D_METHOD("get_generate_lightmap"), &GeometryInstance::get_generate_lightmap);
+
+	ClassDB::bind_method(D_METHOD("set_lightmap_scale", "scale"), &GeometryInstance::set_lightmap_scale);
+	ClassDB::bind_method(D_METHOD("get_lightmap_scale"), &GeometryInstance::get_lightmap_scale);
+
 	ClassDB::bind_method(D_METHOD("set_extra_cull_margin", "margin"), &GeometryInstance::set_extra_cull_margin);
 	ClassDB::bind_method(D_METHOD("get_extra_cull_margin"), &GeometryInstance::get_extra_cull_margin);
 
@@ -330,13 +353,25 @@ void GeometryInstance::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cast_shadow", PROPERTY_HINT_ENUM, "Off,On,Double-Sided,Shadows Only"), "set_cast_shadows_setting", "get_cast_shadows_setting");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "extra_cull_margin", PROPERTY_HINT_RANGE, "0,16384,0.01"), "set_extra_cull_margin", "get_extra_cull_margin");
 
+	ADD_GROUP("Baked Light", "");
+	ADD_PROPERTYI(PropertyInfo(Variant::BOOL, "use_in_baked_light"), "set_flag", "get_flag", FLAG_USE_BAKED_LIGHT);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "generate_lightmap"), "set_generate_lightmap", "get_generate_lightmap");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "lightmap_scale", PROPERTY_HINT_ENUM, "1x,2x,4x,8x"), "set_lightmap_scale", "get_lightmap_scale");
+
 	//ADD_SIGNAL( MethodInfo("visibility_changed"));
+
+	BIND_ENUM_CONSTANT(LIGHTMAP_SCALE_1X);
+	BIND_ENUM_CONSTANT(LIGHTMAP_SCALE_2X);
+	BIND_ENUM_CONSTANT(LIGHTMAP_SCALE_4X);
+	BIND_ENUM_CONSTANT(LIGHTMAP_SCALE_8X);
+	BIND_ENUM_CONSTANT(LIGHTMAP_SCALE_MAX);
 
 	BIND_ENUM_CONSTANT(SHADOW_CASTING_SETTING_OFF);
 	BIND_ENUM_CONSTANT(SHADOW_CASTING_SETTING_ON);
 	BIND_ENUM_CONSTANT(SHADOW_CASTING_SETTING_DOUBLE_SIDED);
 	BIND_ENUM_CONSTANT(SHADOW_CASTING_SETTING_SHADOWS_ONLY);
 
+	BIND_ENUM_CONSTANT(FLAG_USE_BAKED_LIGHT);
 	BIND_ENUM_CONSTANT(FLAG_DRAW_NEXT_FRAME_IF_VISIBLE);
 	BIND_ENUM_CONSTANT(FLAG_MAX);
 }
@@ -348,4 +383,6 @@ GeometryInstance::GeometryInstance() {
 
 	shadow_casting_setting = SHADOW_CASTING_SETTING_ON;
 	extra_cull_margin = 0;
+	generate_lightmap = true;
+	lightmap_scale = LightmapScale::LIGHTMAP_SCALE_1X;
 }

@@ -118,6 +118,7 @@ public:
 		bool mirror : 1;
 		bool receive_shadows : 1;
 		bool visible : 1;
+		bool baked_light : 1; //this flag is only to know if it actually did use baked light
 		bool redraw_if_visible : 1;
 
 		bool on_interpolate_list : 1;
@@ -134,6 +135,12 @@ public:
 
 		SelfList<InstanceBase> dependency_item;
 
+		InstanceBase *lightmap_capture;
+		RID lightmap;
+		Vector<Color> lightmap_capture_data; //in a array (12 values) to avoid wasting space if unused. Alpha is unused, but needed to send to shader
+		int lightmap_slice;
+		Rect2 lightmap_uv_rect;
+
 		virtual void base_removed() = 0;
 		virtual void base_changed(bool p_aabb, bool p_materials) = 0;
 		InstanceBase() :
@@ -144,7 +151,11 @@ public:
 			visible = true;
 			depth_layer = 0;
 			layer_mask = 1;
+			baked_light = false;
 			redraw_if_visible = false;
+			lightmap_capture = nullptr;
+			lightmap_slice = -1;
+			lightmap_uv_rect = Rect2(0, 0, 1, 1);
 			on_interpolate_list = false;
 			on_interpolate_transform_list = false;
 			interpolated = true;
@@ -503,6 +514,33 @@ public:
 
 	virtual void instance_add_dependency(RID p_base, RasterizerScene::InstanceBase *p_instance) = 0;
 	virtual void instance_remove_dependency(RID p_base, RasterizerScene::InstanceBase *p_instance) = 0;
+
+	/* LIGHTMAP CAPTURE */
+
+	struct LightmapCaptureOctree {
+		enum {
+			CHILD_EMPTY = 0xFFFFFFFF
+		};
+
+		uint16_t light[6][3]; //anisotropic light
+		float alpha;
+		uint32_t children[8];
+	};
+
+	virtual RID lightmap_capture_create() = 0;
+	virtual void lightmap_capture_set_bounds(RID p_capture, const AABB &p_bounds) = 0;
+	virtual AABB lightmap_capture_get_bounds(RID p_capture) const = 0;
+	virtual void lightmap_capture_set_octree(RID p_capture, const PoolVector<uint8_t> &p_octree) = 0;
+	virtual PoolVector<uint8_t> lightmap_capture_get_octree(RID p_capture) const = 0;
+	virtual void lightmap_capture_set_octree_cell_transform(RID p_capture, const Transform &p_xform) = 0;
+	virtual Transform lightmap_capture_get_octree_cell_transform(RID p_capture) const = 0;
+	virtual void lightmap_capture_set_octree_cell_subdiv(RID p_capture, int p_subdiv) = 0;
+	virtual int lightmap_capture_get_octree_cell_subdiv(RID p_capture) const = 0;
+	virtual void lightmap_capture_set_energy(RID p_capture, float p_energy) = 0;
+	virtual float lightmap_capture_get_energy(RID p_capture) const = 0;
+	virtual void lightmap_capture_set_interior(RID p_capture, bool p_interior) = 0;
+	virtual bool lightmap_capture_is_interior(RID p_capture) const = 0;
+	virtual const PoolVector<LightmapCaptureOctree> *lightmap_capture_get_octree_ptr(RID p_capture) const = 0;
 
 	/* RENDER TARGET */
 

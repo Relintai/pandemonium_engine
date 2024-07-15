@@ -204,6 +204,10 @@ bool ResourceImporterScene::get_option_visibility(const String &p_option, const 
 		return false;
 	}
 
+	if (p_option == "meshes/lightmap_texel_size" && int(p_options["meshes/light_baking"]) < 2) {
+		return false;
+	}
+
 	return true;
 }
 

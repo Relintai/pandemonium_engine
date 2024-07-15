@@ -60,6 +60,7 @@ public:
 		bool use_fast_texture_filter;
 		bool use_anisotropic_filter;
 		bool use_skeleton_software;
+		bool use_lightmap_filter_bicubic;
 		bool use_physical_light_attenuation;
 
 		int max_vertex_texture_image_units;
@@ -1047,6 +1048,48 @@ public:
 	virtual Vector3 reflection_probe_get_origin_offset(RID p_probe) const;
 	virtual float reflection_probe_get_origin_max_distance(RID p_probe) const;
 	virtual bool reflection_probe_renders_shadows(RID p_probe) const;
+
+	/* LIGHTMAP */
+
+	struct LightmapCapture : public Instantiable {
+		PoolVector<LightmapCaptureOctree> octree;
+		AABB bounds;
+		Transform cell_xform;
+		int cell_subdiv;
+		float energy;
+		bool interior;
+
+		SelfList<LightmapCapture> update_list;
+
+		LightmapCapture() :
+				update_list(this) {
+			energy = 1.0;
+			cell_subdiv = 1;
+			interior = false;
+		}
+	};
+
+	SelfList<LightmapCapture>::List capture_update_list;
+
+	void update_dirty_captures();
+
+	mutable RID_Owner<LightmapCapture> lightmap_capture_data_owner;
+
+	virtual RID lightmap_capture_create();
+	virtual void lightmap_capture_set_bounds(RID p_capture, const AABB &p_bounds);
+	virtual AABB lightmap_capture_get_bounds(RID p_capture) const;
+	virtual void lightmap_capture_set_octree(RID p_capture, const PoolVector<uint8_t> &p_octree);
+	virtual PoolVector<uint8_t> lightmap_capture_get_octree(RID p_capture) const;
+	virtual void lightmap_capture_set_octree_cell_transform(RID p_capture, const Transform &p_xform);
+	virtual Transform lightmap_capture_get_octree_cell_transform(RID p_capture) const;
+	virtual void lightmap_capture_set_octree_cell_subdiv(RID p_capture, int p_subdiv);
+	virtual int lightmap_capture_get_octree_cell_subdiv(RID p_capture) const;
+	virtual void lightmap_capture_set_energy(RID p_capture, float p_energy);
+	virtual float lightmap_capture_get_energy(RID p_capture) const;
+	virtual void lightmap_capture_set_interior(RID p_capture, bool p_interior);
+	virtual bool lightmap_capture_is_interior(RID p_capture) const;
+
+	virtual const PoolVector<LightmapCaptureOctree> *lightmap_capture_get_octree_ptr(RID p_capture) const;
 
 	/* INSTANCE */
 
