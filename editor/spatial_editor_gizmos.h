@@ -453,6 +453,23 @@ public:
 	ReflectionProbeGizmoPlugin();
 };
 
+class BakedIndirectLightGizmoPlugin : public EditorSpatialGizmoPlugin {
+	GDCLASS(BakedIndirectLightGizmoPlugin, EditorSpatialGizmoPlugin);
+
+public:
+	bool has_gizmo(Spatial *p_spatial);
+	String get_gizmo_name() const;
+	int get_priority() const;
+	void redraw(EditorSpatialGizmo *p_gizmo);
+
+	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
+
+	BakedIndirectLightGizmoPlugin();
+};
+
 class CollisionObjectGizmoPlugin : public EditorSpatialGizmoPlugin {
 	GDCLASS(CollisionObjectGizmoPlugin, EditorSpatialGizmoPlugin);
 

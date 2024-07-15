@@ -72,6 +72,7 @@
 #include "scene/2d/y_sort.h"
 #include "scene/3d/label_3d.h"
 #include "scene/3d/world_environment_3d.h"
+#include "scene/3d/baked_lightmap.h"
 #include "scene/animation/animation_blend_space_1d.h"
 #include "scene/animation/animation_blend_space_2d.h"
 #include "scene/animation/animation_blend_tree.h"
@@ -459,6 +460,8 @@ void register_scene_types() {
 	ClassDB::register_class<OmniLight>();
 	ClassDB::register_class<SpotLight>();
 	ClassDB::register_class<ReflectionProbe>();
+	ClassDB::register_class<BakedLightmap>();
+	ClassDB::register_class<BakedLightmapData>();
 	ClassDB::register_class<CPUParticles>();
 	ClassDB::register_class<Position3D>();
 	ClassDB::register_class<NavigationMeshInstance>();

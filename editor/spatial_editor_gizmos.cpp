@@ -56,6 +56,7 @@
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
 #include "scene/3d/audio_stream_player_3d.h"
+#include "scene/3d/baked_lightmap.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/collision_object.h"
 #include "scene/3d/collision_polygon.h"
@@ -2840,6 +2841,135 @@ void ReflectionProbeGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	if (p_gizmo->is_selected()) {
 		Ref<Material> solid_material = get_material("reflection_probe_solid_material", p_gizmo);
 		p_gizmo->add_solid_box(solid_material, probe->get_extents() * 2.0);
+	}
+
+	p_gizmo->add_unscaled_billboard(icon, 0.05);
+	p_gizmo->add_handles(handles, get_material("handles"));
+}
+
+////
+
+BakedIndirectLightGizmoPlugin::BakedIndirectLightGizmoPlugin() {
+	Color gizmo_color = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/baked_indirect_light", Color(0.5, 0.6, 1));
+
+	create_material("baked_indirect_light_material", gizmo_color);
+
+	gizmo_color.a = 0.1;
+	create_material("baked_indirect_light_internal_material", gizmo_color);
+
+	create_icon_material("baked_indirect_light_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoBakedLightmap", "EditorIcons"));
+	create_handle_material("handles");
+}
+
+String BakedIndirectLightGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
+	switch (p_id) {
+		case 0:
+			return "Extents X";
+		case 1:
+			return "Extents Y";
+		case 2:
+			return "Extents Z";
+	}
+
+	return "";
+}
+Variant BakedIndirectLightGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
+	BakedLightmap *baker = Object::cast_to<BakedLightmap>(p_gizmo->get_spatial_node());
+	return baker->get_extents();
+}
+void BakedIndirectLightGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
+	BakedLightmap *baker = Object::cast_to<BakedLightmap>(p_gizmo->get_spatial_node());
+
+	Transform gt = baker->get_global_transform();
+	Transform gi = gt.affine_inverse();
+
+	Vector3 extents = baker->get_extents();
+
+	Vector3 ray_from = p_camera->project_ray_origin(p_point);
+	Vector3 ray_dir = p_camera->project_ray_normal(p_point);
+
+	Vector3 sg[2] = { gi.xform(ray_from), gi.xform(ray_from + ray_dir * 16384) };
+
+	Vector3 axis;
+	axis[p_id] = 1.0;
+
+	Vector3 ra, rb;
+	Geometry::get_closest_points_between_segments(Vector3(), axis * 16384, sg[0], sg[1], ra, rb);
+	float d = ra[p_id];
+	if (SpatialEditor::get_singleton()->is_snap_enabled()) {
+		d = Math::stepify(d, SpatialEditor::get_singleton()->get_translate_snap());
+	}
+
+	if (d < 0.001) {
+		d = 0.001;
+	}
+
+	extents[p_id] = d;
+	baker->set_extents(extents);
+}
+
+void BakedIndirectLightGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
+	BakedLightmap *baker = Object::cast_to<BakedLightmap>(p_gizmo->get_spatial_node());
+
+	Vector3 restore = p_restore;
+
+	if (p_cancel) {
+		baker->set_extents(restore);
+		return;
+	}
+
+	UndoRedo *ur = SpatialEditor::get_singleton()->get_undo_redo();
+	ur->create_action(TTR("Change Probe Extents"));
+	ur->add_do_method(baker, "set_extents", baker->get_extents());
+	ur->add_undo_method(baker, "set_extents", restore);
+	ur->commit_action();
+}
+
+bool BakedIndirectLightGizmoPlugin::has_gizmo(Spatial *p_spatial) {
+	return Object::cast_to<BakedLightmap>(p_spatial) != nullptr;
+}
+
+String BakedIndirectLightGizmoPlugin::get_gizmo_name() const {
+	return "BakedLightmap";
+}
+
+int BakedIndirectLightGizmoPlugin::get_priority() const {
+	return -1;
+}
+
+void BakedIndirectLightGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
+	BakedLightmap *baker = Object::cast_to<BakedLightmap>(p_gizmo->get_spatial_node());
+
+	Ref<Material> material = get_material("baked_indirect_light_material", p_gizmo);
+	Ref<Material> icon = get_material("baked_indirect_light_icon", p_gizmo);
+	Ref<Material> material_internal = get_material("baked_indirect_light_internal_material", p_gizmo);
+
+	p_gizmo->clear();
+
+	Vector<Vector3> lines;
+	Vector3 extents = baker->get_extents();
+
+	AABB aabb = AABB(-extents, extents * 2);
+
+	for (int i = 0; i < 12; i++) {
+		Vector3 a, b;
+		aabb.get_edge(i, a, b);
+		lines.push_back(a);
+		lines.push_back(b);
+	}
+
+	p_gizmo->add_lines(lines, material);
+
+	Vector<Vector3> handles;
+
+	for (int i = 0; i < 3; i++) {
+		Vector3 ax;
+		ax[i] = aabb.position[i] + aabb.size[i];
+		handles.push_back(ax);
+	}
+
+	if (p_gizmo->is_selected()) {
+		p_gizmo->add_solid_box(material_internal, aabb.get_size());
 	}
 
 	p_gizmo->add_unscaled_billboard(icon, 0.05);
