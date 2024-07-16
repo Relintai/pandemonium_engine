@@ -27,7 +27,7 @@ javascript_files = [
 ]
 
 if not env["disable_gles3"]:
-    javascript_files += "pandemonium_webgl2.cpp"
+    javascript_files.append("pandemonium_webgl2.cpp")
 
 sys_env = env.Clone()
 sys_env.AddJSLibraries(
