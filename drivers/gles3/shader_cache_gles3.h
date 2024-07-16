@@ -1,3 +1,5 @@
+#ifndef SHADER_CACHE_GLES3_H
+#define SHADER_CACHE_GLES3_H
 /*************************************************************************/
 /*  shader_cache_gles3.h                                                 */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHADER_CACHE_GLES3_H
-#define SHADER_CACHE_GLES3_H
+
+
 
 #include "core/containers/local_vector.h"
 #include "core/object/reference.h"

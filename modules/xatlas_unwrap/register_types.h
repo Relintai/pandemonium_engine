@@ -1,3 +1,5 @@
+#ifndef XATLAS_UNWRAP_REGISTER_TYPES_H
+#define XATLAS_UNWRAP_REGISTER_TYPES_H
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef XATLAS_UNWRAP_REGISTER_TYPES_H
-#define XATLAS_UNWRAP_REGISTER_TYPES_H
+
+
 
 #include "modules/register_module_types.h"
 

@@ -1,3 +1,5 @@
+#ifndef RASTERIZER_STORAGE_GLES3_H
+#define RASTERIZER_STORAGE_GLES3_H
 /*************************************************************************/
 /*  rasterizer_storage_gles3.h                                           */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RASTERIZER_STORAGE_GLES3_H
-#define RASTERIZER_STORAGE_GLES3_H
+
+
 
 #include "core/containers/bitfield_dynamic.h"
 #include "core/containers/self_list.h"

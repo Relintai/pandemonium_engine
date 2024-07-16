@@ -1,3 +1,5 @@
+#ifndef UWP_EXPORT_H
+#define UWP_EXPORT_H
 /*************************************************************************/
 /*  export.h                                                             */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef UWP_EXPORT_H
-#define UWP_EXPORT_H
+
+
 
 void register_uwp_exporter();
 

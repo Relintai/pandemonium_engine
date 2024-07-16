@@ -1,3 +1,5 @@
+#ifndef SHADER_GLES3_H
+#define SHADER_GLES3_H
 /*************************************************************************/
 /*  shader_gles3.h                                                       */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHADER_GLES3_H
-#define SHADER_GLES3_H
+
+
 
 #include "core/containers/hash_map.h"
 #include "core/containers/local_vector.h"

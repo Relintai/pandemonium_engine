@@ -1,3 +1,5 @@
+#ifndef LIGHTMAPPER_CPU_H
+#define LIGHTMAPPER_CPU_H
 /*************************************************************************/
 /*  lightmapper_cpu.h                                                    */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LIGHTMAPPER_CPU_H
-#define LIGHTMAPPER_CPU_H
+
+
 
 #include "core/containers/local_vector.h"
 #include "scene/3d/lightmapper.h"

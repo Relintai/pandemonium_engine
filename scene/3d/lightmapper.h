@@ -1,3 +1,5 @@
+#ifndef LIGHTMAPPER_H
+#define LIGHTMAPPER_H
 /*************************************************************************/
 /*  lightmapper.h                                                        */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LIGHTMAPPER_H
-#define LIGHTMAPPER_H
+
+
 
 #include "scene/resources/mesh/mesh.h"
 

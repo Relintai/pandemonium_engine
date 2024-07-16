@@ -1,3 +1,5 @@
+#ifndef GI_PROBE_EDITOR_PLUGIN_H
+#define GI_PROBE_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  gi_probe_editor_plugin.h                                             */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GI_PROBE_EDITOR_PLUGIN_H
-#define GI_PROBE_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_plugin.h"
 

@@ -1,3 +1,5 @@
+#ifndef LIGHTMAP_DENOISER_H
+#define LIGHTMAP_DENOISER_H
 /*************************************************************************/
 /*  lightmap_denoiser.h                                                  */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LIGHTMAP_DENOISER_H
-#define LIGHTMAP_DENOISER_H
+
+
 
 #include "core/object/class_db.h"
 #include "scene/3d/lightmapper.h"

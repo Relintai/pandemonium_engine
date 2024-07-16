@@ -1,3 +1,5 @@
+#ifndef SHADER_COMPILER_GLES3_H
+#define SHADER_COMPILER_GLES3_H
 /*************************************************************************/
 /*  shader_compiler_gles3.h                                              */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHADER_COMPILER_GLES3_H
-#define SHADER_COMPILER_GLES3_H
+
+
 
 #include "core/containers/pair.h"
 #include "servers/rendering/shader_language.h"

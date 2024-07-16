@@ -1,3 +1,5 @@
+#ifndef GI_PROBE_H
+#define GI_PROBE_H
 /*************************************************************************/
 /*  gi_probe.h                                                           */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GI_PROBE_H
-#define GI_PROBE_H
+
+
 
 #include "multimesh_instance.h"
 #include "scene/3d/visual_instance.h"

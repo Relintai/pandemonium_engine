@@ -1,3 +1,5 @@
+#ifndef BAKED_LIGHTMAP_H
+#define BAKED_LIGHTMAP_H
 /*************************************************************************/
 /*  baked_lightmap.h                                                     */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BAKED_LIGHTMAP_H
-#define BAKED_LIGHTMAP_H
+
+
 
 #include "core/containers/local_vector.h"
 #include "multimesh_instance.h"

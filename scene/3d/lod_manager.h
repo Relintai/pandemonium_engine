@@ -1,3 +1,5 @@
+#ifndef LOD_MANAGER_H
+#define LOD_MANAGER_H
 /*************************************************************************/
 /*  lod_manager.h                                                        */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LOD_MANAGER_H
-#define LOD_MANAGER_H
+
+
 
 #include "core/containers/local_vector.h"
 #include "core/os/mutex.h"

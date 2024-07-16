@@ -1,3 +1,5 @@
+#ifndef PARTICLES_H
+#define PARTICLES_H
 /*************************************************************************/
 /*  gpu_particles.h                                                      */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PARTICLES_H
-#define PARTICLES_H
+
+
 
 #include "core/containers/rid.h"
 #include "scene/3d/visual_instance.h"

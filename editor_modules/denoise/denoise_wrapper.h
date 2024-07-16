@@ -1,3 +1,5 @@
+#ifndef DENOISE_WRAPPER_H
+#define DENOISE_WRAPPER_H
 /*************************************************************************/
 /*  denoise_wrapper.h                                                    */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DENOISE_WRAPPER_H
-#define DENOISE_WRAPPER_H
+
+
 
 void *oidn_denoiser_init();
 bool oidn_denoise(void *device, float *p_floats, int p_width, int p_height);

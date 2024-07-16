@@ -1,3 +1,5 @@
+#ifndef PARTICLES_2D_H
+#define PARTICLES_2D_H
 /*************************************************************************/
 /*  gpu_particles_2d.h                                                   */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PARTICLES_2D_H
-#define PARTICLES_2D_H
+
+
 
 #include "core/containers/rid.h"
 #include "scene/main/node_2d.h"
