@@ -32,5 +32,5 @@
 #include <alloca.h>
 
 #ifndef GLES3_DISABLED
-#define GLES3_INCLUDE_H "platform/javascript/godot_webgl2.h"
+#define GLES3_INCLUDE_H "platform/javascript/pandemonium_webgl2.h"
 #endif
