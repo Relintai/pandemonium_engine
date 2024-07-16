@@ -761,8 +761,8 @@ const char *OS_JavaScript::get_video_driver_name(int p_driver) const {
 		case VIDEO_DRIVER_GLES2:
 			return "GLES2";
 #ifndef GLES3_DISABLED
-			case VIDEO_DRIVER_GLES3:
-				return "GLES3";
+		case VIDEO_DRIVER_GLES3:
+			return "GLES3";
 #endif
 	}
 	ERR_FAIL_V_MSG(NULL, "Invalid video driver index: " + itos(p_driver) + ".");
@@ -826,7 +826,6 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 	if (p_desired.layered) {
 		set_window_per_pixel_transparency_enabled(true);
 	}
-
 
 #ifndef GLES3_DISABLED
 	bool gles3 = true;

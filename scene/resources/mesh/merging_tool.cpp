@@ -250,7 +250,6 @@ bool MergingTool::is_mergeable_with(const MeshInstance &p_mi, const MeshInstance
 		return false;
 	}
 
-
 	if (p_check_surface_material_match) {
 		Ref<Mesh> rmesh_a = p_mi.get_mesh();
 		Ref<Mesh> rmesh_b = p_other.get_mesh();

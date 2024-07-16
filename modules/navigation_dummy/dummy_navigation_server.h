@@ -153,11 +153,11 @@ public:
 	virtual void obstacle_set_vertices(RID p_obstacle, const Vector<Vector3> &p_vertices) {}
 	virtual void obstacle_set_avoidance_layers(RID p_obstacle, uint32_t p_layers) {}
 
-	virtual void free(RID p_object){};
+	virtual void free(RID p_object) {};
 
-	virtual void set_active(bool p_active){};
+	virtual void set_active(bool p_active) {};
 
-	virtual void process(real_t delta_time){};
+	virtual void process(real_t delta_time) {};
 
 	virtual int get_process_info(ProcessInfo p_info) const { return 0; };
 

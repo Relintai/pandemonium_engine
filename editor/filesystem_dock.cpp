@@ -2116,7 +2116,7 @@ void FileSystemDock::on_editor_save_and_restart() {
 		set_split_mode(new_split_mode);
 
 		if (split_box->get_split_offset() < 100 * EDSCALE) {
-				split_box->set_split_offset(100 * EDSCALE);
+			split_box->set_split_offset(100 * EDSCALE);
 		}
 	}
 }

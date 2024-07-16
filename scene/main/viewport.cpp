@@ -174,14 +174,14 @@ class TooltipPanel : public PanelContainer {
 	GDCLASS(TooltipPanel, PanelContainer);
 
 public:
-	TooltipPanel(){};
+	TooltipPanel() {};
 };
 
 class TooltipLabel : public Label {
 	GDCLASS(TooltipLabel, Label);
 
 public:
-	TooltipLabel(){};
+	TooltipLabel() {};
 };
 
 /////////////////////////////////////

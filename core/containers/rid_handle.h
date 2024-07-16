@@ -235,7 +235,7 @@ public:
 		g_rid_database.handle_free(p_rid);
 	}
 
-	void get_owned_list(List<RID> *p_owned){
+	void get_owned_list(List<RID> *p_owned) {
 #ifdef DEBUG_ENABLED
 
 #endif

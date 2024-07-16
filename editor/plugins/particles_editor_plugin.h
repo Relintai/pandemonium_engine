@@ -133,5 +133,4 @@ public:
 	~GPUParticlesEditorPlugin();
 };
 
-
 #endif // PARTICLES_EDITOR_PLUGIN_H

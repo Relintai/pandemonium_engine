@@ -920,7 +920,7 @@ public:
 		l->set_text(TTR("Lower visual quality\nSome features not available\nWorks on most hardware\nRecommended for web games"));
 		rvb->add_child(l);
 
-		#ifndef GLES3_DISABLED
+#ifndef GLES3_DISABLED
 
 		rvb->add_child(memnew(HSeparator));
 
@@ -940,7 +940,7 @@ public:
 		l->set_text(TTR("Higher visual quality\nAll features available\nIncompatible with older hardware\nNot recommended for web games"));
 		rvb->add_child(l);
 
-		#endif
+#endif
 
 		l = memnew(Label);
 		l->set_text(TTR("Renderer can be changed later, but scenes may need to be adjusted."));

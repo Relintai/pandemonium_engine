@@ -4474,4 +4474,3 @@ RenderingServerScene::~RenderingServerScene() {
 		light_culler = nullptr;
 	}
 }
-

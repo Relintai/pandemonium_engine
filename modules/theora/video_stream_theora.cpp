@@ -578,7 +578,7 @@ bool VideoStreamPlaybackTheora::is_paused() const {
 	return paused;
 };
 
-void VideoStreamPlaybackTheora::set_loop(bool p_enable){
+void VideoStreamPlaybackTheora::set_loop(bool p_enable) {
 
 };
 

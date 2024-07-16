@@ -51,7 +51,6 @@ void warn(const char *format, ...);
 #if __cplusplus >= 201103L
 [[noreturn]]
 #endif
-void
-fatal(const char *format, ...);
+void fatal(const char *format, ...);
 
 } // namespace frt

@@ -99,7 +99,7 @@ public:
 
 	TerrainConstraint(Ref<LayeredTileSet> p_tile_set, const Vector2i &p_position, int p_terrain); // For the center terrain bit
 	TerrainConstraint(Ref<LayeredTileSet> p_tile_set, const Vector2i &p_position, const LayeredTileSet::CellNeighbor &p_bit, int p_terrain); // For peering bits
-	TerrainConstraint(){};
+	TerrainConstraint() {};
 };
 
 #ifdef DEBUG_ENABLED

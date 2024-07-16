@@ -1,3 +1,34 @@
+/*************************************************************************/
+/*  xatlas.h                                                             */
+/*************************************************************************/
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
+/*************************************************************************/
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
 /*
 MIT License
 
@@ -36,8 +67,7 @@ Copyright NVIDIA Corporation 2006 -- Ignacio Castano <icastano@nvidia.com>
 
 namespace xatlas {
 
-enum class ChartType
-{
+enum class ChartType {
 	Planar,
 	Ortho,
 	LSCM,
@@ -46,8 +76,7 @@ enum class ChartType
 };
 
 // A group of connected faces, belonging to a single atlas.
-struct Chart
-{
+struct Chart {
 	uint32_t *faceArray;
 	uint32_t atlasIndex; // Sub-atlas index.
 	uint32_t faceCount;
@@ -56,8 +85,7 @@ struct Chart
 };
 
 // Output vertex.
-struct Vertex
-{
+struct Vertex {
 	int32_t atlasIndex; // Sub-atlas index. -1 if the vertex doesn't exist in any atlas.
 	int32_t chartIndex; // -1 if the vertex doesn't exist in any chart.
 	float uv[2]; // Not normalized - values are in Atlas width and height range.
@@ -65,8 +93,7 @@ struct Vertex
 };
 
 // Output mesh.
-struct Mesh
-{
+struct Mesh {
 	Chart *chartArray;
 	uint32_t *indexArray;
 	Vertex *vertexArray;
@@ -81,8 +108,7 @@ static const uint32_t kImageIsBilinearBit = 0x40000000;
 static const uint32_t kImageIsPaddingBit = 0x20000000;
 
 // Empty on creation. Populated after charts are packed.
-struct Atlas
-{
+struct Atlas {
 	uint32_t *image;
 	Mesh *meshes; // The output meshes, corresponding to each AddMesh call.
 	float *utilization; // Normalized atlas texel utilization array. E.g. a value of 0.8 means 20% empty space. atlasCount in length.
@@ -99,15 +125,13 @@ Atlas *Create();
 
 void Destroy(Atlas *atlas);
 
-enum class IndexFormat
-{
+enum class IndexFormat {
 	UInt16,
 	UInt32
 };
 
 // Input mesh declaration.
-struct MeshDecl
-{
+struct MeshDecl {
 	const void *vertexPositionData = nullptr;
 	const void *vertexNormalData = nullptr; // optional
 	const void *vertexUvData = nullptr; // optional. The input UVs are provided as a hint to the chart generator.
@@ -138,8 +162,7 @@ struct MeshDecl
 	float epsilon = 1.192092896e-07F;
 };
 
-enum class AddMeshError
-{
+enum class AddMeshError {
 	Success, // No error.
 	Error, // Unspecified error.
 	IndexOutOfRange, // An index is >= MeshDecl vertexCount.
@@ -153,8 +176,7 @@ AddMeshError AddMesh(Atlas *atlas, const MeshDecl &meshDecl, uint32_t meshCountH
 // Wait for AddMesh async processing to finish. ComputeCharts / Generate call this internally.
 void AddMeshJoin(Atlas *atlas);
 
-struct UvMeshDecl
-{
+struct UvMeshDecl {
 	const void *vertexUvData = nullptr;
 	const void *indexData = nullptr; // optional
 	const uint32_t *faceMaterialData = nullptr; // Optional. Overlapping UVs should be assigned a different material. Must be indexCount / 3 in length.
@@ -170,8 +192,7 @@ AddMeshError AddUvMesh(Atlas *atlas, const UvMeshDecl &decl);
 // Custom parameterization function. texcoords initial values are an orthogonal parameterization.
 typedef void (*ParameterizeFunc)(const float *positions, float *texcoords, uint32_t vertexCount, const uint32_t *indices, uint32_t indexCount);
 
-struct ChartOptions
-{
+struct ChartOptions {
 	ParameterizeFunc paramFunc = nullptr;
 
 	float maxChartArea = 0.0f; // Don't grow charts to be larger than this. 0 means no limit.
@@ -194,8 +215,7 @@ struct ChartOptions
 // Call after all AddMesh calls. Can be called multiple times to recompute charts with different options.
 void ComputeCharts(Atlas *atlas, ChartOptions options = ChartOptions());
 
-struct PackOptions
-{
+struct PackOptions {
 	// Charts larger than this will be scaled down. 0 means no limit.
 	uint32_t maxChartSize = 0;
 
@@ -238,8 +258,7 @@ void PackCharts(Atlas *atlas, PackOptions packOptions = PackOptions());
 void Generate(Atlas *atlas, ChartOptions chartOptions = ChartOptions(), PackOptions packOptions = PackOptions());
 
 // Progress tracking.
-enum class ProgressCategory
-{
+enum class ProgressCategory {
 	AddMesh,
 	ComputeCharts,
 	PackCharts,

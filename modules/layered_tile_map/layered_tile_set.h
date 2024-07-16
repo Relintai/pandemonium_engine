@@ -590,35 +590,35 @@ public:
 	virtual void set_tile_set(const LayeredTileSet *p_tile_set);
 	LayeredTileSet *get_tile_set() const;
 
-	virtual void notify_tile_data_properties_should_change(){};
+	virtual void notify_tile_data_properties_should_change() {};
 
-	virtual void add_occlusion_layer(int p_index){};
-	virtual void move_occlusion_layer(int p_from_index, int p_to_pos){};
-	virtual void remove_occlusion_layer(int p_index){};
+	virtual void add_occlusion_layer(int p_index) {};
+	virtual void move_occlusion_layer(int p_from_index, int p_to_pos) {};
+	virtual void remove_occlusion_layer(int p_index) {};
 
-	virtual void add_physics_layer(int p_index){};
-	virtual void move_physics_layer(int p_from_index, int p_to_pos){};
-	virtual void remove_physics_layer(int p_index){};
+	virtual void add_physics_layer(int p_index) {};
+	virtual void move_physics_layer(int p_from_index, int p_to_pos) {};
+	virtual void remove_physics_layer(int p_index) {};
 
-	virtual void add_terrain_set(int p_index){};
-	virtual void move_terrain_set(int p_from_index, int p_to_pos){};
-	virtual void remove_terrain_set(int p_index){};
+	virtual void add_terrain_set(int p_index) {};
+	virtual void move_terrain_set(int p_from_index, int p_to_pos) {};
+	virtual void remove_terrain_set(int p_index) {};
 
-	virtual void add_terrain(int p_terrain_set, int p_index){};
-	virtual void move_terrain(int p_terrain_set, int p_from_index, int p_to_pos){};
-	virtual void remove_terrain(int p_terrain_set, int p_index){};
+	virtual void add_terrain(int p_terrain_set, int p_index) {};
+	virtual void move_terrain(int p_terrain_set, int p_from_index, int p_to_pos) {};
+	virtual void remove_terrain(int p_terrain_set, int p_index) {};
 
-	virtual void add_navigation_layer(int p_index){};
-	virtual void move_navigation_layer(int p_from_index, int p_to_pos){};
-	virtual void remove_navigation_layer(int p_index){};
+	virtual void add_navigation_layer(int p_index) {};
+	virtual void move_navigation_layer(int p_from_index, int p_to_pos) {};
+	virtual void remove_navigation_layer(int p_index) {};
 
-	virtual void add_avoidance_layer(int p_index){};
-	virtual void move_avoidance_layer(int p_from_index, int p_to_pos){};
-	virtual void remove_avoidance_layer(int p_index){};
+	virtual void add_avoidance_layer(int p_index) {};
+	virtual void move_avoidance_layer(int p_from_index, int p_to_pos) {};
+	virtual void remove_avoidance_layer(int p_index) {};
 
-	virtual void add_custom_data_layer(int p_index){};
-	virtual void move_custom_data_layer(int p_from_index, int p_to_pos){};
-	virtual void remove_custom_data_layer(int p_index){};
+	virtual void add_custom_data_layer(int p_index) {};
+	virtual void move_custom_data_layer(int p_from_index, int p_to_pos) {};
+	virtual void remove_custom_data_layer(int p_index) {};
 
 	virtual void reset_state();
 

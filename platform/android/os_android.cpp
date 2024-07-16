@@ -159,7 +159,7 @@ Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int
 	bool gl_initialization_error = false;
 
 	while (true) {
-		#ifndef GLES3_DISABLED
+#ifndef GLES3_DISABLED
 		if (use_gl3) {
 			if (RasterizerGLES3::is_viable() == OK) {
 				RasterizerGLES3::register_config();
@@ -185,7 +185,7 @@ Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int
 				break;
 			}
 		}
-		#else
+#else
 		if (use_gl2) {
 			if (RasterizerGLES2::is_viable() == OK) {
 				pandemonium_java->gfx_init(true);
@@ -199,7 +199,7 @@ Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int
 		} else {
 			break;
 		}
-		#endif
+#endif
 	}
 
 	transparency_enabled = p_desired.layered;

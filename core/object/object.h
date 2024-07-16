@@ -542,7 +542,7 @@ protected:
 		return false;
 	};
 	virtual void _get_property_listv(List<PropertyInfo> *p_list, bool p_reversed) const {};
-	virtual void _notificationv(int p_notification, bool p_reversed){};
+	virtual void _notificationv(int p_notification, bool p_reversed) {};
 
 	static String _get_category() {
 		return "";
@@ -555,7 +555,7 @@ protected:
 		return false;
 	};
 	void _get_property_list(List<PropertyInfo> *p_list) const {};
-	void _notification(int p_notification){};
+	void _notification(int p_notification) {};
 
 	_FORCE_INLINE_ static void (*_get_bind_methods())() {
 		return &Object::_bind_methods;
@@ -604,7 +604,7 @@ protected:
 
 public: //should be protected, but bug in clang++
 	static void initialize_class();
-	_FORCE_INLINE_ static void register_custom_data_to_otdb(){};
+	_FORCE_INLINE_ static void register_custom_data_to_otdb() {};
 
 public:
 #ifdef TOOLS_ENABLED

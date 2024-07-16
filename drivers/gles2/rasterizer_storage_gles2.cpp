@@ -6731,4 +6731,3 @@ RasterizerStorageGLES2::RasterizerStorageGLES2() {
 	RasterizerStorageGLES2::system_fbo = 0;
 	config.should_orphan = true;
 }
-

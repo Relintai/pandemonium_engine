@@ -193,7 +193,7 @@ public:
 		return _cowdata.get_m(pos).value;
 	}
 
-	_FORCE_INLINE_ VMap(){};
+	_FORCE_INLINE_ VMap() {};
 	_FORCE_INLINE_ VMap(const VMap &p_from) { _cowdata._ref(p_from._cowdata); }
 	inline VMap &operator=(const VMap &p_from) {
 		_cowdata._ref(p_from._cowdata);

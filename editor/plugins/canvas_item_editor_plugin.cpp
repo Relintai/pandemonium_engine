@@ -65,8 +65,8 @@
 #include "editor/plugins/animation_player_editor_plugin.h"
 #include "editor/scene_tree_dock.h"
 #include "editor/script_editor_debugger.h"
-#include "scene/2d/light_2d.h"
 #include "scene/2d/gpu_particles_2d.h"
+#include "scene/2d/light_2d.h"
 #include "scene/2d/polygon_2d.h"
 #include "scene/main/node_2d.h"
 

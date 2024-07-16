@@ -54,7 +54,7 @@ private:
 protected:
 	Ref<LayeredTileSet> tile_set;
 	LayeredTileData *_get_tile_data(LayeredTileMapCell p_cell);
-	virtual void _tile_set_changed(){};
+	virtual void _tile_set_changed() {};
 
 	static void _bind_methods();
 
@@ -63,13 +63,13 @@ public:
 
 	// Input to handle painting.
 	virtual Control *get_toolbar() { return nullptr; };
-	virtual void forward_draw_over_atlas(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform){};
-	virtual void forward_draw_over_alternatives(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform){};
-	virtual void forward_painting_atlas_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event){};
-	virtual void forward_painting_alternatives_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event){};
+	virtual void forward_draw_over_atlas(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform) {};
+	virtual void forward_draw_over_alternatives(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform) {};
+	virtual void forward_painting_atlas_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event) {};
+	virtual void forward_painting_alternatives_gui_input(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_atlas_source, const Ref<InputEvent> &p_event) {};
 
 	// Used to draw the tile data property value over a tile.
-	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false){};
+	virtual void draw_over_tile(CanvasItem *p_canvas_item, Transform2D p_transform, LayeredTileMapCell p_cell, bool p_selected = false) {};
 };
 
 class DummyObject : public Object {

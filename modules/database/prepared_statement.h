@@ -2,7 +2,7 @@
 #define PREPARED_STATEMENT_H
 
 /*************************************************************************/
-/*  query_result.h                                                       */
+/*  prepared_statement.h                                                 */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */

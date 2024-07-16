@@ -1083,7 +1083,7 @@ void TileDataDefaultEditor::forward_draw_over_atlas(LayeredTileAtlasView *p_tile
 	}
 };
 
-void TileDataDefaultEditor::forward_draw_over_alternatives(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_set_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform){
+void TileDataDefaultEditor::forward_draw_over_alternatives(LayeredTileAtlasView *p_tile_atlas_view, LayeredTileSetAtlasSource *p_tile_set_atlas_source, CanvasItem *p_canvas_item, Transform2D p_transform) {
 
 };
 

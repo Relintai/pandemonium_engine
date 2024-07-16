@@ -63,6 +63,7 @@
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/cpu_particles.h"
 #include "scene/3d/gi_probe.h"
+#include "scene/3d/gpu_particles.h"
 #include "scene/3d/label_3d.h"
 #include "scene/3d/light.h"
 #include "scene/3d/listener.h"
@@ -83,7 +84,6 @@
 #include "scene/3d/sprite_3d.h"
 #include "scene/3d/vehicle_body.h"
 #include "scene/3d/visibility_notifier.h"
-#include "scene/3d/gpu_particles.h"
 #include "scene/main/control.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
@@ -3183,7 +3183,6 @@ void GIProbeGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	p_gizmo->add_unscaled_billboard(icon, 0.05);
 	p_gizmo->add_handles(handles, get_material("handles"));
 }
-
 
 ////
 

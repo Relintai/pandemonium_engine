@@ -990,8 +990,6 @@ void RasterizerSceneGLES2::gi_probe_instance_set_transform_to_data(RID p_probe, 
 void RasterizerSceneGLES2::gi_probe_instance_set_bounds(RID p_probe, const Vector3 &p_bounds) {
 }
 
-
-
 ////////////////////////////
 ////////////////////////////
 ////////////////////////////

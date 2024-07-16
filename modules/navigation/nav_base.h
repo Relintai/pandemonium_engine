@@ -69,7 +69,7 @@ public:
 		enter_cost = 0.0;
 		travel_cost = 1.0;
 	};
-	virtual ~NavBase(){};
+	virtual ~NavBase() {};
 };
 
 #endif // NAV_BASE_H

@@ -880,8 +880,8 @@ const char *OS::get_video_driver_name(int p_driver) const {
 		case VIDEO_DRIVER_GLES2:
 			return "GLES2";
 #ifndef GLES3_DISABLED
-    	case VIDEO_DRIVER_GLES3:
-				return "GLES3";
+		case VIDEO_DRIVER_GLES3:
+			return "GLES3";
 #endif
 		default:
 			return "GLES2";

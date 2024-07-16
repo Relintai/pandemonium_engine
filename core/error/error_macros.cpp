@@ -36,8 +36,8 @@
 #include "core/string/ustring.h"
 
 #if defined(DEBUG_ENABLED) && defined(TOOLS_ENABLED)
-#include "scene/main/node.h"
 #include "core/config/project_settings.h"
+#include "scene/main/node.h"
 #endif
 
 static ErrorHandlerList *error_handler_list = nullptr;

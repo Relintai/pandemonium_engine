@@ -34,9 +34,8 @@
 #include "../resources/skeleton_modification_2d.h"
 #include "../resources/skeleton_modification_stack_2d.h"
 #include "core/config/engine.h"
-#include "scene/main/scene_string_names.h"
-#include "core/config/engine.h"
 #include "core/math/transform_interpolator.h"
+#include "scene/main/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_data.h"
@@ -748,7 +747,6 @@ void Skeleton2D::_notification(int p_what) {
 #endif // TOOLS_ENABLED
 	}
 }
-
 
 RID Skeleton2D::get_skeleton() const {
 	return skeleton;

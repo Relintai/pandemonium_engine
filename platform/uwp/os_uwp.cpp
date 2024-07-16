@@ -200,7 +200,6 @@ Error OS_UWP::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	}
 
 	while (true) {
-
 #ifndef GLES3_DISABLED
 		if (opengl_api_type == ContextEGL_UWP::GLES_3_0) {
 			if (RasterizerGLES3::is_viable() == OK) {

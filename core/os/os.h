@@ -156,10 +156,10 @@ public:
 
 	static OS *get_singleton();
 
-	virtual void global_menu_add_item(const String &p_menu, const String &p_label, const Variant &p_signal, const Variant &p_meta){};
-	virtual void global_menu_add_separator(const String &p_menu){};
-	virtual void global_menu_remove_item(const String &p_menu, int p_idx){};
-	virtual void global_menu_clear(const String &p_menu){};
+	virtual void global_menu_add_item(const String &p_menu, const String &p_label, const Variant &p_signal, const Variant &p_meta) {};
+	virtual void global_menu_add_separator(const String &p_menu) {};
+	virtual void global_menu_remove_item(const String &p_menu, int p_idx) {};
+	virtual void global_menu_clear(const String &p_menu) {};
 
 	void print_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, Logger::ErrorType p_type = Logger::ERR_ERROR);
 	void print(const char *p_format, ...) _PRINTF_FORMAT_ATTRIBUTE_2_3;
@@ -182,7 +182,7 @@ public:
 	virtual Point2 get_mouse_position() const = 0;
 	virtual int get_mouse_button_state() const = 0;
 	virtual void set_window_title(const String &p_title) = 0;
-	virtual void set_window_mouse_passthrough(const PoolVector2Array &p_region){};
+	virtual void set_window_mouse_passthrough(const PoolVector2Array &p_region) {};
 
 	virtual void set_clipboard(const String &p_text);
 	virtual String get_clipboard() const;
@@ -215,7 +215,7 @@ public:
 	virtual int get_tablet_driver_count() const { return 0; };
 	virtual String get_tablet_driver_name(int p_driver) const { return ""; };
 	virtual String get_current_tablet_driver() const { return ""; };
-	virtual void set_current_tablet_driver(const String &p_driver){};
+	virtual void set_current_tablet_driver(const String &p_driver) {};
 
 	virtual PoolStringArray get_connected_midi_inputs();
 	virtual void open_midi_inputs();
@@ -653,7 +653,7 @@ public:
 	virtual int get_power_seconds_left();
 	virtual int get_power_percent_left();
 
-	virtual void force_process_input(){};
+	virtual void force_process_input() {};
 	bool has_feature(const String &p_feature);
 
 	void set_has_server_feature_callback(HasServerFeatureCallback p_callback);

@@ -560,8 +560,6 @@ public:
 	virtual void gi_probe_instance_set_transform_to_data(RID p_probe, const Transform &p_xform);
 	virtual void gi_probe_instance_set_bounds(RID p_probe, const Vector3 &p_bounds);
 
-
-
 	/* RENDER LIST */
 
 	enum LightMode {

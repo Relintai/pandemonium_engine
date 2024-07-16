@@ -1042,7 +1042,6 @@ vec4 texture2D_bicubic(sampler2D tex, vec2 uv) {
 uniform mediump vec4 lightmap_captures[12];
 #endif
 
-
 #ifdef USE_RADIANCE_MAP
 
 uniform samplerCube radiance_map; // texunit:-2

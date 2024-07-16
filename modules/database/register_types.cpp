@@ -36,10 +36,10 @@
 #include "database_manager.h"
 #include "database_multi_threaded.h"
 #include "database_single_threaded.h"
+#include "prepared_statement.h"
 #include "query_builder.h"
 #include "query_result.h"
 #include "table_builder.h"
-#include "prepared_statement.h"
 
 #include "core/config/engine.h"
 

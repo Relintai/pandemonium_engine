@@ -49,20 +49,20 @@
 #include "core/variant/variant.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"
+#include "editor/plugins/spatial_editor_plugin.h"
 #include "editor/scene_tree_editor.h"
+#include "scene/3d/cpu_particles.h"
+#include "scene/3d/gpu_particles.h"
 #include "scene/3d/visual_instance.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/option_button.h"
-#include "scene/gui/spin_box.h"
 #include "scene/gui/popup_menu.h"
+#include "scene/gui/spin_box.h"
 #include "scene/main/node.h"
 #include "scene/main/spatial.h"
-#include "scene/3d/gpu_particles.h"
-#include "scene/3d/cpu_particles.h"
 #include "scene/resources/material/particles_material.h"
-#include "editor/plugins/spatial_editor_plugin.h"
 
 bool ParticlesEditorBase::_generate(PoolVector<Vector3> &points, PoolVector<Vector3> &normals) {
 	bool use_normals = emission_fill->get_selected() == 1;
@@ -528,4 +528,3 @@ GPUParticlesEditorPlugin::GPUParticlesEditorPlugin(EditorNode *p_node) {
 
 GPUParticlesEditorPlugin::~GPUParticlesEditorPlugin() {
 }
-

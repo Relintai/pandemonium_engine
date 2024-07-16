@@ -32,8 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/os/safe_refcount.h"
 #include "core/object/object_id.h"
+#include "core/os/safe_refcount.h"
 #include "core/typedefs.h"
 
 /**
@@ -573,4 +573,3 @@ void _physics_interpolation_warning(const char *p_function, const char *p_file, 
 	_physics_interpolation_warning(FUNCTION_STR, __FILE__, __LINE__, UINT64_MAX, m_string)
 
 #endif // ERROR_MACROS_H
-

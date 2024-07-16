@@ -205,14 +205,14 @@ ResourceFormatPVR::ResourceFormatPVR() {
 #define BLK_X_2BPP 8
 #define BLK_X_4BPP 4
 
-#define WRAP_COORD(Val, Size) ((Val) & ((Size)-1))
+#define WRAP_COORD(Val, Size) ((Val) & ((Size) - 1))
 
 /*
 	Define an expression to either wrap or clamp large or small vals to the
 	legal coordinate range
 */
 #define LIMIT_COORD(Val, Size, p_tiled) \
-	((p_tiled) ? WRAP_COORD((Val), (Size)) : CLAMP((Val), 0, (Size)-1))
+	((p_tiled) ? WRAP_COORD((Val), (Size)) : CLAMP((Val), 0, (Size) - 1))
 
 struct PVRTCBlock {
 	//blocks are 64 bits

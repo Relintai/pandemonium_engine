@@ -38,9 +38,9 @@ struct CompatObjectID {
 	uint64_t id;
 
 	CompatObjectID() :
-			id(0){};
+			id(0) {};
 	CompatObjectID(uint64_t p_id) :
-			id(p_id){};
+			id(p_id) {};
 
 	operator uint64_t() const { return id; }
 

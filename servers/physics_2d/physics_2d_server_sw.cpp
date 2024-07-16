@@ -1346,6 +1346,6 @@ Physics2DServerSW::Physics2DServerSW() {
 	flushing_queries = false;
 };
 
-Physics2DServerSW::~Physics2DServerSW(){
+Physics2DServerSW::~Physics2DServerSW() {
 
 };

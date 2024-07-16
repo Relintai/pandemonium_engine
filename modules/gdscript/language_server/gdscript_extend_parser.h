@@ -37,7 +37,7 @@
 #include "lsp.hpp"
 
 #ifndef LINE_NUMBER_TO_INDEX
-#define LINE_NUMBER_TO_INDEX(p_line) ((p_line)-1)
+#define LINE_NUMBER_TO_INDEX(p_line) ((p_line) - 1)
 #endif
 
 #ifndef SYMBOL_SEPERATOR
