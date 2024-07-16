@@ -53,6 +53,7 @@
 #include "editor_property_name_processor.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
+#include "filesystem_dock.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/label.h"
@@ -403,6 +404,7 @@ void EditorSettingsDialog::_focus_current_search_box() {
 }
 
 void EditorSettingsDialog::_editor_restart() {
+	EditorNode::get_singleton()->get_filesystem_dock()->on_editor_save_and_restart();
 	EditorNode::get_singleton()->save_all_scenes();
 	EditorNode::get_singleton()->restart_editor();
 }

@@ -391,6 +391,8 @@ public:
 	void ensure_visible();
 	void set_bottom_panel_tool_button(ToolButton *fs_button);
 
+	void on_editor_save_and_restart();
+
 	FileSystemDock(EditorNode *p_editor);
 	~FileSystemDock();
 };

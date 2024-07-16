@@ -402,6 +402,9 @@ void FileSystemDock::_notification(int p_what) {
 
 			set_file_list_display_mode(FileSystemDock::FILE_LIST_DISPLAY_LIST);
 
+			SplitMode new_split_mode = SplitMode(int(EditorSettings::get_singleton()->get("docks/filesystem/split_mode")));
+			set_split_mode(new_split_mode);
+
 			_update_display_mode();
 
 			if (EditorFileSystem::get_singleton()->is_scanning()) {
@@ -2107,6 +2110,17 @@ void FileSystemDock::set_bottom_panel_tool_button(ToolButton *fs_button) {
 	bottom_panel_tool_button = fs_button;
 }
 
+void FileSystemDock::on_editor_save_and_restart() {
+	SplitMode new_split_mode = SplitMode(int(EditorSettings::get_singleton()->get("docks/filesystem/split_mode")));
+	if (new_split_mode != split_mode) {
+		set_split_mode(new_split_mode);
+
+		if (split_box->get_split_offset() < 100 * EDSCALE) {
+				split_box->set_split_offset(100 * EDSCALE);
+		}
+	}
+}
+
 Variant FileSystemDock::get_drag_data_fw(const Point2 &p_point, Control *p_from) {
 	bool all_favorites = true;
 	bool all_not_favorites = true;
@@ -2904,7 +2918,12 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 #endif
 	ED_SHORTCUT("filesystem_dock/open_search", TTR("Focus the search box"), KEY_MASK_CMD | KEY_F);
 
-	bool wide = static_cast<SplitMode>(static_cast<int>(EDITOR_GET("docks/filesystem/dock_mode")));
+	dock_mode = static_cast<DockMode>(static_cast<int>(EDITOR_GET("docks/filesystem/dock_mode")));
+	applied_dock_mode = static_cast<DockMode>(static_cast<int>(EDITOR_GET("docks/filesystem/dock_mode")));
+
+	split_mode = static_cast<SplitMode>(static_cast<int>(EDITOR_GET("docks/filesystem/split_mode")));
+
+	bool wide = split_mode == SPLIT_MODE_VERTICAL;
 
 	VBoxContainer *top_vbc = memnew(VBoxContainer);
 	add_child(top_vbc);
@@ -3113,11 +3132,9 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	if (wide) {
 		display_mode = DISPLAY_MODE_SPLIT;
 		old_display_mode = DISPLAY_MODE_SPLIT;
-		split_mode = SPLIT_MODE_VERTICAL;
 	} else {
 		display_mode = DISPLAY_MODE_TREE_ONLY;
 		old_display_mode = DISPLAY_MODE_TREE_ONLY;
-		split_mode = SPLIT_MODE_HORIZONTAL;
 	}
 
 	set_split_mode(split_mode);
@@ -3129,9 +3146,6 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	file_list_display_mode = FILE_LIST_DISPLAY_THUMBNAILS;
 
 	always_show_folders = false;
-
-	dock_mode = DOCK_MODE_DOCK;
-	applied_dock_mode = DOCK_MODE_DOCK;
 }
 
 FileSystemDock::~FileSystemDock() {
