@@ -37,7 +37,7 @@
 class ToolBoutton;
 class GIProbe;
 class EditorNode;
-class EditorProgress;
+struct EditorProgress;
 
 class GIProbeEditorPlugin : public EditorPlugin {
 	GDCLASS(GIProbeEditorPlugin, EditorPlugin);
