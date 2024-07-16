@@ -1,5 +1,6 @@
 #ifndef GI_PROBE_H
 #define GI_PROBE_H
+
 /*************************************************************************/
 /*  gi_probe.h                                                           */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "multimesh_instance.h"
 #include "scene/3d/visual_instance.h"

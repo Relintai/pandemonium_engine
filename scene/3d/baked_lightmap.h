@@ -1,5 +1,6 @@
 #ifndef BAKED_LIGHTMAP_H
 #define BAKED_LIGHTMAP_H
+
 /*************************************************************************/
 /*  baked_lightmap.h                                                     */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "core/containers/local_vector.h"
 #include "multimesh_instance.h"

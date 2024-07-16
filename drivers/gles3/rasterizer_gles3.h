@@ -1,5 +1,6 @@
 #ifndef RASTERIZER_GLES3_H
 #define RASTERIZER_GLES3_H
+
 /*************************************************************************/
 /*  rasterizer_gles3.h                                                   */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "rasterizer_canvas_gles3.h"
 #include "rasterizer_scene_gles3.h"

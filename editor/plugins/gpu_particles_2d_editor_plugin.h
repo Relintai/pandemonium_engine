@@ -1,5 +1,6 @@
 #ifndef PARTICLES_2D_EDITOR_PLUGIN_H
 #define PARTICLES_2D_EDITOR_PLUGIN_H
+
 /*************************************************************************/
 /*  gpu_particles_2d_editor_plugin.h                                     */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

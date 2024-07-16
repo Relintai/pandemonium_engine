@@ -1,5 +1,6 @@
 #ifndef RASTERIZER_SCENE_GLES3_H
 #define RASTERIZER_SCENE_GLES3_H
+
 /*************************************************************************/
 /*  rasterizer_scene_gles3.h                                             */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 /* Must come before shaders or the Windows build fails... */
 #include "rasterizer_storage_gles3.h"

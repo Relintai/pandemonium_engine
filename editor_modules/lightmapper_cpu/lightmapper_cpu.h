@@ -1,5 +1,6 @@
 #ifndef LIGHTMAPPER_CPU_H
 #define LIGHTMAPPER_CPU_H
+
 /*************************************************************************/
 /*  lightmapper_cpu.h                                                    */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "core/containers/local_vector.h"
 #include "scene/3d/lightmapper.h"

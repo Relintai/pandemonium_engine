@@ -1,5 +1,6 @@
 #ifndef LOD_MANAGER_H
 #define LOD_MANAGER_H
+
 /*************************************************************************/
 /*  lod_manager.h                                                        */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "core/containers/local_vector.h"
 #include "core/os/mutex.h"

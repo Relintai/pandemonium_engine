@@ -1,5 +1,6 @@
 #ifndef GI_PROBE_EDITOR_PLUGIN_H
 #define GI_PROBE_EDITOR_PLUGIN_H
+
 /*************************************************************************/
 /*  gi_probe_editor_plugin.h                                             */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "editor/editor_plugin.h"
 

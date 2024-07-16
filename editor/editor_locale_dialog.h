@@ -1,5 +1,6 @@
 #ifndef EDITOR_LOCALE_DIALOG_H
 #define EDITOR_LOCALE_DIALOG_H
+
 /*************************************************************************/
 /*  editor_locale_dialog.h                                               */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "core/string/translation.h"
 #include "scene/gui/dialogs.h"

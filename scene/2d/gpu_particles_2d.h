@@ -1,5 +1,6 @@
 #ifndef PARTICLES_2D_H
 #define PARTICLES_2D_H
+
 /*************************************************************************/
 /*  gpu_particles_2d.h                                                   */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "core/containers/rid.h"
 #include "scene/main/node_2d.h"

@@ -1,5 +1,6 @@
 #ifndef RASTERIZER_STORAGE_GLES3_H
 #define RASTERIZER_STORAGE_GLES3_H
+
 /*************************************************************************/
 /*  rasterizer_storage_gles3.h                                           */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "core/containers/bitfield_dynamic.h"
 #include "core/containers/self_list.h"

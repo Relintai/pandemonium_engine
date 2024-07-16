@@ -1,5 +1,6 @@
 #ifndef SHADER_GLES3_H
 #define SHADER_GLES3_H
+
 /*************************************************************************/
 /*  shader_gles3.h                                                       */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "core/containers/hash_map.h"
 #include "core/containers/local_vector.h"

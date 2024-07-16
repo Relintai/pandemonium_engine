@@ -1,5 +1,6 @@
 #ifndef LIGHTMAPPER_H
 #define LIGHTMAPPER_H
+
 /*************************************************************************/
 /*  lightmapper.h                                                        */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "scene/resources/mesh/mesh.h"
 
