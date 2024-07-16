@@ -56,7 +56,7 @@ String GDScriptLanguage::_get_processed_template(const String &p_template, const
 	String processed_template = p_template;
 
 #ifdef TOOLS_ENABLED
-	if (EDITOR_DEF("text_editor/completion/add_type_hints", false)) {
+	if (EDITOR_DEF("text_editor/completion/add_type_hints", true)) {
 		processed_template = processed_template.replace("%INT_TYPE%", ": int");
 		processed_template = processed_template.replace("%STRING_TYPE%", ": String");
 		processed_template = processed_template.replace("%FLOAT_TYPE%", ": float");

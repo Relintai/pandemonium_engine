@@ -350,7 +350,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	// With very low FPS limits, the editor can take a small while to become usable after being focused again,
 	// so this should be used at the user's discretion.
 	hints["interface/editor/unfocused_low_processor_mode_sleep_usec"] = PropertyInfo(Variant::REAL, "interface/editor/unfocused_low_processor_mode_sleep_usec", PROPERTY_HINT_RANGE, "1,1000000,1", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);
-	_initial_set("interface/editor/separate_distraction_mode", false);
+	_initial_set("interface/editor/separate_distraction_mode", true);
 	_initial_set("interface/editor/automatically_open_screenshots", true);
 	_initial_set("interface/editor/save_each_scene_on_quit", true); // Regression
 	_initial_set("interface/editor/quit_confirmation", true);
@@ -430,10 +430,10 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	hints["docks/filesystem/thumbnail_size"] = PropertyInfo(Variant::INT, "docks/filesystem/thumbnail_size", PROPERTY_HINT_RANGE, "32,128,16");
 	_initial_set("docks/filesystem/always_show_folders", true);
 
-	_initial_set("docks/filesystem/dock_mode", 0);
+	_initial_set("docks/filesystem/dock_mode", 1);
 	hints["docks/filesystem/dock_mode"] = PropertyInfo(Variant::INT, "docks/filesystem/dock_mode", PROPERTY_HINT_ENUM, "Dock,Bottom Bar", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);
 
-	_initial_set("docks/filesystem/split_mode", 0);
+	_initial_set("docks/filesystem/split_mode", 1);
 	hints["docks/filesystem/split_mode"] = PropertyInfo(Variant::INT, "docks/filesystem/split_mode", PROPERTY_HINT_ENUM, "Horizontal,Vertical", PROPERTY_USAGE_DEFAULT);
 
 	// Property editor
@@ -504,7 +504,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	// Cursor
 	_initial_set("text_editor/cursor/scroll_past_end_of_file", false);
 	_initial_set("text_editor/cursor/block_caret", false);
-	_initial_set("text_editor/cursor/caret_blink", true);
+	_initial_set("text_editor/cursor/caret_blink", false);
 	_initial_set("text_editor/cursor/caret_blink_speed", 0.5);
 	hints["text_editor/cursor/caret_blink_speed"] = PropertyInfo(Variant::REAL, "text_editor/cursor/caret_blink_speed", PROPERTY_HINT_RANGE, "0.1, 10, 0.01");
 	_initial_set("text_editor/cursor/right_click_moves_caret", true);

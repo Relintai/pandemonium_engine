@@ -6180,11 +6180,11 @@ EditorNode::EditorNode() {
 	EDITOR_DEF("interface/editor/quit_confirmation", true);
 	EDITOR_DEF("interface/editor/update_continuously", false);
 
-#if defined(ANDROID_ENABLED) || defined(JAVASCRIPT_ENABLED)
 	EDITOR_DEF("interface/editor/show_update_spinner", true);
+
+#if defined(ANDROID_ENABLED) || defined(JAVASCRIPT_ENABLED)
 	EDITOR_DEF("interface/editor/update_vital_only", true);
 #else
-	EDITOR_DEF("interface/editor/show_update_spinner", false);
 	EDITOR_DEF("interface/editor/update_vital_only", false);
 #endif
 
@@ -6198,20 +6198,20 @@ EditorNode::EditorNode() {
 		EditorSettings::get_singleton()->set("", file_changed_action);
 	}
 
-	EDITOR_DEF("interface/editor/hide_main_screen_plugin_names", false);
+	EDITOR_DEF("interface/editor/hide_main_screen_plugin_names", true);
 
 	AudioServer::get_singleton()->set_enabled(!EDITOR_DEF_RST("interface/audio/muting/mute_driver", false));
 	AudioDriverManager::set_mute_sensitivity(AudioDriverManager::MUTE_FLAG_SILENCE, EDITOR_DEF_RST("interface/audio/muting/mute_on_silence", true));
 	AudioDriverManager::set_mute_sensitivity(AudioDriverManager::MUTE_FLAG_PAUSED, EDITOR_DEF_RST("interface/audio/muting/mute_on_pause", true));
 	AudioDriverManager::set_mute_sensitivity(AudioDriverManager::MUTE_FLAG_FOCUS_LOSS, EDITOR_DEF_RST("interface/audio/muting/mute_on_focus_loss", true));
 
-	EDITOR_DEF_RST("interface/scene_tabs/restore_scenes_on_load", false);
+	EDITOR_DEF_RST("interface/scene_tabs/restore_scenes_on_load", true);
 	EDITOR_DEF_RST("interface/scene_tabs/show_thumbnail_on_hover", true);
 
 	EDITOR_DEF_RST("interface/inspector/capitalize_properties", true);
 	EDITOR_DEF_RST("interface/inspector/default_float_step", 0.001);
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::REAL, "interface/inspector/default_float_step", PROPERTY_HINT_RANGE, "0,1,0"));
-	EDITOR_DEF_RST("interface/inspector/disable_folding", false);
+	EDITOR_DEF_RST("interface/inspector/disable_folding", true);
 	EDITOR_DEF_RST("interface/inspector/auto_unfold_foreign_scenes", true);
 	EDITOR_DEF("interface/inspector/horizontal_vector2_editing", false);
 	EDITOR_DEF("interface/inspector/horizontal_vector_types_editing", true);
