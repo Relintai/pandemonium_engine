@@ -518,6 +518,43 @@ public:
 	virtual void instance_add_dependency(RID p_base, RasterizerScene::InstanceBase *p_instance) = 0;
 	virtual void instance_remove_dependency(RID p_base, RasterizerScene::InstanceBase *p_instance) = 0;
 
+	/* PARTICLES */
+
+	virtual RID particles_create() = 0;
+
+	virtual void particles_set_emitting(RID p_particles, bool p_emitting) = 0;
+	virtual bool particles_get_emitting(RID p_particles) = 0;
+
+	virtual void particles_set_amount(RID p_particles, int p_amount) = 0;
+	virtual void particles_set_lifetime(RID p_particles, float p_lifetime) = 0;
+	virtual void particles_set_one_shot(RID p_particles, bool p_one_shot) = 0;
+	virtual void particles_set_pre_process_time(RID p_particles, float p_time) = 0;
+	virtual void particles_set_explosiveness_ratio(RID p_particles, float p_ratio) = 0;
+	virtual void particles_set_randomness_ratio(RID p_particles, float p_ratio) = 0;
+	virtual void particles_set_custom_aabb(RID p_particles, const AABB &p_aabb) = 0;
+	virtual void particles_set_speed_scale(RID p_particles, float p_scale) = 0;
+	virtual void particles_set_use_local_coordinates(RID p_particles, bool p_enable) = 0;
+	virtual void particles_set_process_material(RID p_particles, RID p_material) = 0;
+	virtual void particles_set_fixed_fps(RID p_particles, int p_fps) = 0;
+	virtual void particles_set_fractional_delta(RID p_particles, bool p_enable) = 0;
+	virtual void particles_restart(RID p_particles) = 0;
+
+	virtual bool particles_is_inactive(RID p_particles) const = 0;
+
+	virtual void particles_set_draw_order(RID p_particles, RS::ParticlesDrawOrder p_order) = 0;
+
+	virtual void particles_set_draw_passes(RID p_particles, int p_count) = 0;
+	virtual void particles_set_draw_pass_mesh(RID p_particles, int p_pass, RID p_mesh) = 0;
+
+	virtual void particles_request_process(RID p_particles) = 0;
+	virtual AABB particles_get_current_aabb(RID p_particles) = 0;
+	virtual AABB particles_get_aabb(RID p_particles) const = 0;
+
+	virtual void particles_set_emission_transform(RID p_particles, const Transform &p_transform) = 0;
+
+	virtual int particles_get_draw_passes(RID p_particles) const = 0;
+	virtual RID particles_get_draw_pass_mesh(RID p_particles, int p_pass) const = 0;
+
 	/* LIGHTMAP CAPTURE */
 
 	struct LightmapCaptureOctree {
@@ -720,6 +757,7 @@ public:
 				TYPE_POLYGON,
 				TYPE_MESH,
 				TYPE_MULTIMESH,
+				TYPE_PARTICLES,
 				TYPE_CIRCLE,
 				TYPE_TRANSFORM,
 				TYPE_CLIP_IGNORE,
@@ -872,6 +910,13 @@ public:
 					RasterizerStorage::base_singleton->multimesh_attach_canvas_item(multimesh, canvas_item, false);
 				}
 			}
+		};
+
+		struct CommandParticles : public Command {
+			RID particles;
+			RID texture;
+			RID normal_map;
+			CommandParticles() { type = TYPE_PARTICLES; }
 		};
 
 		struct CommandCircle : public Command {
@@ -1132,6 +1177,14 @@ public:
 						AABB aabb = RasterizerStorage::base_singleton->multimesh_get_aabb(multimesh->multimesh);
 
 						r = Rect2(aabb.position.x, aabb.position.y, aabb.size.x, aabb.size.y);
+
+					} break;
+					case Item::Command::TYPE_PARTICLES: {
+						const Item::CommandParticles *particles_cmd = static_cast<const Item::CommandParticles *>(c);
+						if (particles_cmd->particles.is_valid()) {
+							AABB aabb = RasterizerStorage::base_singleton->particles_get_aabb(particles_cmd->particles);
+							r = Rect2(aabb.position.x, aabb.position.y, aabb.size.x, aabb.size.y);
+						}
 
 					} break;
 					case Item::Command::TYPE_CIRCLE: {

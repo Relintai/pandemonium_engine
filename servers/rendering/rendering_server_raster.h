@@ -360,6 +360,36 @@ public:
 	BIND2(reflection_probe_set_cull_mask, RID, uint32_t)
 	BIND2(reflection_probe_set_resolution, RID, int)
 
+	/* PARTICLES */
+
+	BIND0R(RID, particles_create)
+
+	BIND2(particles_set_emitting, RID, bool)
+	BIND1R(bool, particles_get_emitting, RID)
+	BIND2(particles_set_amount, RID, int)
+	BIND2(particles_set_lifetime, RID, float)
+	BIND2(particles_set_one_shot, RID, bool)
+	BIND2(particles_set_pre_process_time, RID, float)
+	BIND2(particles_set_explosiveness_ratio, RID, float)
+	BIND2(particles_set_randomness_ratio, RID, float)
+	BIND2(particles_set_custom_aabb, RID, const AABB &)
+	BIND2(particles_set_speed_scale, RID, float)
+	BIND2(particles_set_use_local_coordinates, RID, bool)
+	BIND2(particles_set_process_material, RID, RID)
+	BIND2(particles_set_fixed_fps, RID, int)
+	BIND2(particles_set_fractional_delta, RID, bool)
+	BIND1R(bool, particles_is_inactive, RID)
+	BIND1(particles_request_process, RID)
+	BIND1(particles_restart, RID)
+
+	BIND2(particles_set_draw_order, RID, RS::ParticlesDrawOrder)
+
+	BIND2(particles_set_draw_passes, RID, int)
+	BIND3(particles_set_draw_pass_mesh, RID, int, RID)
+
+	BIND1R(AABB, particles_get_current_aabb, RID)
+	BIND2(particles_set_emission_transform, RID, const Transform &)
+
 	/* LIGHTMAP CAPTURE */
 
 	BIND0R(RID, lightmap_capture_create)
@@ -630,6 +660,7 @@ public:
 	BIND12(canvas_item_add_triangle_array, RID, const Vector<int> &, const Vector<Point2> &, const Vector<Color> &, const Vector<Point2> &, const Vector<int> &, const Vector<float> &, RID, int, RID, bool, bool)
 	BIND6(canvas_item_add_mesh, RID, const RID &, const Transform2D &, const Color &, RID, RID)
 	BIND4(canvas_item_add_multimesh, RID, RID, RID, RID)
+ 	BIND4(canvas_item_add_particles, RID, RID, RID, RID)
 	BIND3(canvas_item_add_texture_rect_animation, RID, const Array &, const real_t)
 
 	BIND2(canvas_item_add_set_transform, RID, const Transform2D &)

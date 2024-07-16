@@ -324,7 +324,7 @@ void RenderingServerCanvas::_finalize_and_merge_local_bound_to_branch(Item *p_ca
 		if (p_canvas_item->use_identity_xform) {
 			// This is incredibly inefficient, but should only occur for e.g. CPUParticles2D,
 			// and is difficult to avoid because global transform is not usually kept track of
-			// in VisualServer (only final transform which is combinated with camera, and that
+			// in RenderingServer (only final transform which is combinated with camera, and that
 			// is only calculated on render, so is no use for culling purposes).
 			Transform2D global_xform = _calculate_item_global_xform(p_canvas_item);
 			this_rect = global_xform.affine_inverse().xform(this_rect);
@@ -1489,6 +1489,24 @@ void RenderingServerCanvas::canvas_item_add_mesh(RID p_item, const RID &p_mesh, 
 	m->modulate = p_modulate;
 
 	canvas_item->commands.push_back(m);
+	_make_bound_dirty(canvas_item);
+}
+
+void RenderingServerCanvas::canvas_item_add_particles(RID p_item, RID p_particles, RID p_texture, RID p_normal) {
+	Item *canvas_item = canvas_item_owner.getornull(p_item);
+	ERR_FAIL_COND(!canvas_item);
+
+	Item::CommandParticles *part = memnew(Item::CommandParticles);
+	ERR_FAIL_COND(!part);
+	part->particles = p_particles;
+	part->texture = p_texture;
+	part->normal_map = p_normal;
+
+	//take the chance and request processing for them, at least once until they become visible again
+	RSG::storage->particles_request_process(p_particles);
+
+	canvas_item->rect_dirty = true;
+	canvas_item->commands.push_back(part);
 	_make_bound_dirty(canvas_item);
 }
 

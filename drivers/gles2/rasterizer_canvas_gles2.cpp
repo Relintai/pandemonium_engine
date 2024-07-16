@@ -1159,6 +1159,10 @@ void RasterizerCanvasGLES2::render_batches(Item *p_current_clip, bool &r_reclip,
 							state.uniforms.extra_matrix = transform->xform;
 							state.canvas_shader.set_uniform(CanvasShaderGLES2::EXTRA_MATRIX, state.uniforms.extra_matrix);
 						} break;
+
+						case Item::Command::TYPE_PARTICLES: {
+						} break;
+
 						case Item::Command::TYPE_CLIP_IGNORE: {
 							Item::CommandClipIgnore *ci = static_cast<Item::CommandClipIgnore *>(command);
 							if (p_current_clip) {

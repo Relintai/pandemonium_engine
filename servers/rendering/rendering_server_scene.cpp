@@ -542,7 +542,8 @@ void RenderingServerScene::instance_set_base(RID p_instance, RID p_base) {
 			} break;
 			case RS::INSTANCE_MESH:
 			case RS::INSTANCE_MULTIMESH:
-			case RS::INSTANCE_IMMEDIATE: {
+			case RS::INSTANCE_IMMEDIATE:
+			case RS::INSTANCE_PARTICLES: {
 				InstanceGeometryData *geom = memnew(InstanceGeometryData);
 				instance->base_data = geom;
 				if (instance->base_type == RS::INSTANCE_MESH) {
@@ -1012,7 +1013,7 @@ void RenderingServerScene::instance_set_visible(RID p_instance, bool p_visible) 
 	}
 }
 inline bool is_geometry_instance(RenderingServer::InstanceType p_type) {
-	return p_type == RS::INSTANCE_MESH || p_type == RS::INSTANCE_MULTIMESH || p_type == RS::INSTANCE_IMMEDIATE;
+	return p_type == RS::INSTANCE_MESH || p_type == RS::INSTANCE_MULTIMESH || p_type == RS::INSTANCE_IMMEDIATE || p_type == RS::INSTANCE_PARTICLES;
 }
 
 void RenderingServerScene::instance_set_use_lightmap(RID p_instance, RID p_lightmap_instance, RID p_lightmap, int p_lightmap_slice, const Rect2 &p_lightmap_uv_rect) {
@@ -1810,6 +1811,10 @@ void RenderingServerScene::_update_instance(Instance *p_instance) {
 		}
 	}
 
+	if (p_instance->base_type == RS::INSTANCE_PARTICLES) {
+		RSG::storage->particles_set_emission_transform(p_instance->base, *instance_xform);
+	}
+
 	if (p_instance->aabb.has_no_surface()) {
 		return;
 	}
@@ -1904,6 +1909,14 @@ void RenderingServerScene::_update_instance_aabb(Instance *p_instance) {
 				new_aabb = *p_instance->custom_aabb;
 			} else {
 				new_aabb = RSG::storage->immediate_get_aabb(p_instance->base);
+			}
+
+		} break;
+		case RenderingServer::INSTANCE_PARTICLES: {
+			if (p_instance->custom_aabb) {
+				new_aabb = *p_instance->custom_aabb;
+			} else {
+				new_aabb = RSG::storage->particles_get_aabb(p_instance->base);
 			}
 
 		} break;
@@ -2029,6 +2042,38 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 
 					if (mat.is_valid() && RSG::storage->material_is_animated(mat)) {
 						is_animated = true;
+					}
+				} else if (p_instance->base_type == RS::INSTANCE_PARTICLES) {
+					bool cast_shadows = false;
+
+					int dp = RSG::storage->particles_get_draw_passes(p_instance->base);
+
+					for (int i = 0; i < dp; i++) {
+						RID mesh = RSG::storage->particles_get_draw_pass_mesh(p_instance->base, i);
+						if (!mesh.is_valid()) {
+							continue;
+						}
+
+						int sc = RSG::storage->mesh_get_surface_count(mesh);
+						for (int j = 0; j < sc; j++) {
+							RID mat = RSG::storage->mesh_surface_get_material(mesh, j);
+
+							if (!mat.is_valid()) {
+								cast_shadows = true;
+							} else {
+								if (RSG::storage->material_casts_shadows(mat)) {
+									cast_shadows = true;
+								}
+
+								if (RSG::storage->material_is_animated(mat)) {
+									is_animated = true;
+								}
+							}
+						}
+					}
+
+					if (!cast_shadows) {
+						can_cast_shadows = false;
 					}
 				}
 			}
@@ -2888,6 +2933,20 @@ void RenderingServerScene::_prepare_scene(const Transform p_cam_transform, const
 
 			if (ins->redraw_if_visible) {
 				RenderingServerRaster::redraw_request(false);
+			}
+
+			if (ins->base_type == RS::INSTANCE_PARTICLES) {
+				//particles visible? process them
+				if (RSG::storage->particles_is_inactive(ins->base)) {
+					//but if nothing is going on, don't do it.
+					keep = false;
+				} else {
+					if (OS::get_singleton()->is_update_pending(true)) {
+						RSG::storage->particles_request_process(ins->base);
+						//particles visible? request redraw
+						RenderingServerRaster::redraw_request(false);
+					}
+				}
 			}
 
 			if (geom->lighting_dirty) {

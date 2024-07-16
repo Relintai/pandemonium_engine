@@ -284,6 +284,36 @@ public:
 	FUNC2(reflection_probe_set_cull_mask, RID, uint32_t)
 	FUNC2(reflection_probe_set_resolution, RID, int)
 
+	/* PARTICLES */
+
+	FUNCRID(particles)
+
+	FUNC2(particles_set_emitting, RID, bool)
+	FUNC1R(bool, particles_get_emitting, RID)
+	FUNC2(particles_set_amount, RID, int)
+	FUNC2(particles_set_lifetime, RID, float)
+	FUNC2(particles_set_one_shot, RID, bool)
+	FUNC2(particles_set_pre_process_time, RID, float)
+	FUNC2(particles_set_explosiveness_ratio, RID, float)
+	FUNC2(particles_set_randomness_ratio, RID, float)
+	FUNC2(particles_set_custom_aabb, RID, const AABB &)
+	FUNC2(particles_set_speed_scale, RID, float)
+	FUNC2(particles_set_use_local_coordinates, RID, bool)
+	FUNC2(particles_set_process_material, RID, RID)
+	FUNC2(particles_set_fixed_fps, RID, int)
+	FUNC2(particles_set_fractional_delta, RID, bool)
+	FUNC1R(bool, particles_is_inactive, RID)
+	FUNC1(particles_request_process, RID)
+	FUNC1(particles_restart, RID)
+
+	FUNC2(particles_set_draw_order, RID, RS::ParticlesDrawOrder)
+
+	FUNC2(particles_set_draw_passes, RID, int)
+	FUNC3(particles_set_draw_pass_mesh, RID, int, RID)
+	FUNC2(particles_set_emission_transform, RID, const Transform &)
+
+	FUNC1R(AABB, particles_get_current_aabb, RID)
+
 	/* LIGHTMAP CAPTURE */
 
 	FUNCRID(lightmap_capture)
@@ -536,6 +566,7 @@ public:
 	FUNC12(canvas_item_add_triangle_array, RID, const Vector<int> &, const Vector<Point2> &, const Vector<Color> &, const Vector<Point2> &, const Vector<int> &, const Vector<float> &, RID, int, RID, bool, bool)
 	FUNC6(canvas_item_add_mesh, RID, const RID &, const Transform2D &, const Color &, RID, RID)
 	FUNC4(canvas_item_add_multimesh, RID, RID, RID, RID)
+	FUNC4(canvas_item_add_particles, RID, RID, RID, RID)
 	FUNC2(canvas_item_add_set_transform, RID, const Transform2D &)
 	FUNC2(canvas_item_add_clip_ignore, RID, bool)
 	FUNC2(canvas_item_set_sort_children_by_y, RID, bool)
