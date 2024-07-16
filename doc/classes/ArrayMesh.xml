@@ -75,6 +75,13 @@
 				Returns the name of the blend shape at this index.
 			</description>
 		</method>
+		<method name="lightmap_unwrap">
+			<return type="int" enum="Error" />
+			<argument index="0" name="transform" type="Transform" />
+			<argument index="1" name="texel_size" type="float" />
+			<description>
+			</description>
+		</method>
 		<method name="regen_normalmaps">
 			<return type="void" />
 			<description>

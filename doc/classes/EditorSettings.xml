@@ -281,6 +281,8 @@
 		<member name="editors/3d/grid_yz_plane" type="bool" setter="" getter="">
 			If [code]true[/code], render the grid on an YZ plane. This can be useful for 3D side-scrolling games.
 		</member>
+		<member name="editors/3d/lightmap_baking_number_of_cpu_threads" type="int" setter="" getter="">
+		</member>
 		<member name="editors/3d/navigation/emulate_3_button_mouse" type="bool" setter="" getter="">
 			If [code]true[/code], enables 3-button mouse emulation mode. This is useful on laptops when using a trackpad.
 			When 3-button mouse emulation mode is enabled, the pan, zoom and orbit modifiers can always be used in the 3D editor viewport, even when not holding down any mouse button.

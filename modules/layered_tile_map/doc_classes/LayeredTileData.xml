@@ -16,6 +16,24 @@
 				Adds a collision polygon to the tile on the given LayeredTileSet physics layer.
 			</description>
 		</method>
+		<method name="get_avoidance_polygon_points" qualifiers="const">
+			<return type="PoolVector2Array" />
+			<argument index="0" name="layer_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_avoidance_position" qualifiers="const">
+			<return type="Vector2i" />
+			<argument index="0" name="layer_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_avoidance_radius" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="layer_id" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_collision_polygon_one_way_margin" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="layer_id" type="int" />
@@ -110,6 +128,27 @@
 			<argument index="1" name="polygon_index" type="int" />
 			<description>
 				Removes the polygon at index [param polygon_index] for LayeredTileSet physics layer with index [param layer_id].
+			</description>
+		</method>
+		<method name="set_avoidance_polygon_points">
+			<return type="void" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="polygon" type="PoolVector2Array" />
+			<description>
+			</description>
+		</method>
+		<method name="set_avoidance_position">
+			<return type="void" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="position" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="set_avoidance_radius">
+			<return type="void" />
+			<argument index="0" name="layer_id" type="int" />
+			<argument index="1" name="radius" type="float" />
+			<description>
 			</description>
 		</method>
 		<method name="set_collision_polygon_one_way">
@@ -232,6 +271,24 @@
 		<member name="transpose" type="bool" setter="set_transpose" getter="get_transpose" default="false">
 			If [code]true[/code], the tile will display transposed, i.e. with horizontal and vertical texture UVs swapped.
 		</member>
+		<member name="vertex_light_attenuation" type="float" setter="set_vertex_light_attenuation" getter="get_vertex_light_attenuation" default="1.0">
+		</member>
+		<member name="vertex_light_color" type="Color" setter="set_vertex_light_color" getter="get_vertex_light_color" default="Color( 1, 1, 1, 1 )">
+		</member>
+		<member name="vertex_light_enabled" type="bool" setter="set_vertex_light_enabled" getter="get_vertex_light_is_enabled" default="false">
+		</member>
+		<member name="vertex_light_item_cull_mask" type="int" setter="set_vertex_light_item_cull_mask" getter="get_vertex_light_item_cull_mask" default="1">
+		</member>
+		<member name="vertex_light_layer_range" type="Vector2i" setter="set_vertex_light_layer_range" getter="get_vertex_light_layer_range" default="Vector2i( -512, 512 )">
+		</member>
+		<member name="vertex_light_mode" type="int" setter="set_vertex_light_mode" getter="get_vertex_light_mode" enum="LayeredTileData.VertexLight2DMode" default="0">
+		</member>
+		<member name="vertex_light_position" type="Vector2i" setter="set_vertex_light_position" getter="get_vertex_light_position" default="Vector2i( 0, 0 )">
+		</member>
+		<member name="vertex_light_range" type="Vector2i" setter="set_vertex_light_range" getter="get_vertex_light_range" default="Vector2i( 32, 32 )">
+		</member>
+		<member name="vertex_light_z_range" type="Vector2i" setter="set_vertex_light_z_range" getter="get_vertex_light_z_range" default="Vector2i( -1024, 1024 )">
+		</member>
 		<member name="y_sort_origin" type="int" setter="set_y_sort_origin" getter="get_y_sort_origin" default="0">
 			Vertical point of the tile used for determining y-sorted order.
 		</member>
@@ -247,5 +304,11 @@
 		</signal>
 	</signals>
 	<constants>
+		<constant name="VERTEX_LIGHT_2D_MODE_ADD" value="0" enum="VertexLight2DMode">
+		</constant>
+		<constant name="VERTEX_LIGHT_2D_MODE_SUB" value="1" enum="VertexLight2DMode">
+		</constant>
+		<constant name="VERTEX_LIGHT_2D_MODE_MIX" value="2" enum="VertexLight2DMode">
+		</constant>
 	</constants>
 </class>

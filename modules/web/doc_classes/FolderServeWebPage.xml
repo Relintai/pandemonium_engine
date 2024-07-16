@@ -21,6 +21,11 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="get_file_cache" qualifiers="const">
+			<return type="FileCache" />
+			<description>
+			</description>
+		</method>
 		<method name="load">
 			<return type="void" />
 			<description>

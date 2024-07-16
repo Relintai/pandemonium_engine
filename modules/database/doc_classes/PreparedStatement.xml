@@ -19,12 +19,12 @@
 
 			ps.sql = "INSERT INTO 'data_table' VALUES(?, ?, ?, ?);"
 			ps.prepare()
-			
+
 			print("Inserting 10 values!")
-			
+
 			for i in range(10):
 			    ps.reset()
-				
+
 			    ps.bind_text(1, "vc" + str(randi()))
 			    ps.bind_text(2, "text" + str(randi()))
 			    ps.bind_int(3, randi())
@@ -37,15 +37,15 @@
 			qb.insert("data_table", "data_varchar,data_text,data_int,data_double").values()
 			qb.valph().valph().valph().valph().cvalues()
 			qb.end_command()
-			
+
 			var ps : PreparedStatement = qb.create_prepared_statement()
 			ps.prepare()
-			
+
 			print("Inserting 10 values!")
-			
+
 			for i in range(10):
 			    ps.reset()
-				
+
 			    ps.bind_text(1, "vc" + str(randi()))
 			    ps.bind_text(2, "text" + str(randi()))
 			    ps.bind_int(3, randi())

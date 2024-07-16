@@ -12,6 +12,12 @@
 		<link>$DOCS_URL/tutorials/2d/particle_systems_2d.md</link>
 	</tutorials>
 	<methods>
+		<method name="convert_from_particles">
+			<return type="void" />
+			<argument index="0" name="particles" type="Node" />
+			<description>
+			</description>
+		</method>
 		<method name="get_param" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="param" type="int" enum="CPUParticles2D.Parameter" />
