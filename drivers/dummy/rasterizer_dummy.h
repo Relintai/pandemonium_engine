@@ -572,7 +572,7 @@ public:
 	void particles_set_fractional_delta(RID p_particles, bool p_enable) {}
 	void particles_restart(RID p_particles) {}
 
-	void particles_set_draw_order(RID p_particles, VS::ParticlesDrawOrder p_order) {}
+	void particles_set_draw_order(RID p_particles, RS::ParticlesDrawOrder p_order) {}
 
 	void particles_set_draw_passes(RID p_particles, int p_count) {}
 	void particles_set_draw_pass_mesh(RID p_particles, int p_pass, RID p_mesh) {}
