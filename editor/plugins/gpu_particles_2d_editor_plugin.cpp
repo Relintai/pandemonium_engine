@@ -28,14 +28,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#include "particles_2d_editor_plugin.h"
+#include "gpu_particles_2d_editor_plugin.h"
 
 #include "canvas_item_editor_plugin.h"
 #include "core/io/image_loader.h"
 #include "scene/2d/cpu_particles_2d.h"
 #include "scene/gui/separator.h"
 #include "scene/resources/material/particles_material.h"
-#include "scene/2d/particles_2d.h"
+#include "scene/2d/gpu_particles_2d.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/file_dialog.h"
 #include "editor/editor_file_dialog.h"

@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#include "particles_2d.h"
+#include "gpu_particles_2d.h"
 
 #include "core/os/os.h"
 #include "scene/resources/material/particles_material.h"
