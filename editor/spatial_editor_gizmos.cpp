@@ -82,6 +82,7 @@
 #include "scene/3d/sprite_3d.h"
 #include "scene/3d/vehicle_body.h"
 #include "scene/3d/visibility_notifier.h"
+#include "scene/3d/gpu_particles.h"
 #include "scene/main/control.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
@@ -2656,6 +2657,169 @@ bool CPUParticlesGizmoPlugin::is_selectable_when_hidden() const {
 
 void CPUParticlesGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	Ref<Material> icon = get_material("particles_icon", p_gizmo);
+	p_gizmo->add_unscaled_billboard(icon, 0.05);
+}
+
+////
+
+GPUParticlesGizmoPlugin::GPUParticlesGizmoPlugin() {
+	Color gizmo_color = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/particles", Color(0.8, 0.7, 0.4));
+	create_material("particles_material", gizmo_color);
+	gizmo_color.a = 0.1;
+	create_material("particles_solid_material", gizmo_color);
+	create_icon_material("particles_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoParticles", "EditorIcons"));
+	create_handle_material("handles");
+}
+
+bool GPUParticlesGizmoPlugin::has_gizmo(Spatial *p_spatial) {
+	return Object::cast_to<GPUParticles>(p_spatial) != nullptr;
+}
+
+String GPUParticlesGizmoPlugin::get_gizmo_name() const {
+	return "GPUParticles";
+}
+
+int GPUParticlesGizmoPlugin::get_priority() const {
+	return -1;
+}
+
+bool GPUParticlesGizmoPlugin::is_selectable_when_hidden() const {
+	return true;
+}
+
+String GPUParticlesGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
+	switch (p_id) {
+		case 0:
+			return "Size X";
+		case 1:
+			return "Size Y";
+		case 2:
+			return "Size Z";
+		case 3:
+			return "Pos X";
+		case 4:
+			return "Pos Y";
+		case 5:
+			return "Pos Z";
+	}
+
+	return "";
+}
+Variant GPUParticlesGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
+	GPUParticles *particles = Object::cast_to<GPUParticles>(p_gizmo->get_spatial_node());
+	return particles->get_visibility_aabb();
+}
+void GPUParticlesGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
+	GPUParticles *particles = Object::cast_to<GPUParticles>(p_gizmo->get_spatial_node());
+
+	Transform gt = particles->get_global_transform();
+	Transform gi = gt.affine_inverse();
+
+	bool move = p_id >= 3;
+	p_id = p_id % 3;
+
+	AABB aabb = particles->get_visibility_aabb();
+	Vector3 ray_from = p_camera->project_ray_origin(p_point);
+	Vector3 ray_dir = p_camera->project_ray_normal(p_point);
+
+	Vector3 sg[2] = { gi.xform(ray_from), gi.xform(ray_from + ray_dir * 4096) };
+
+	Vector3 ofs = aabb.position + aabb.size * 0.5;
+
+	Vector3 axis;
+	axis[p_id] = 1.0;
+
+	if (move) {
+		Vector3 ra, rb;
+		Geometry::get_closest_points_between_segments(ofs - axis * 4096, ofs + axis * 4096, sg[0], sg[1], ra, rb);
+
+		float d = ra[p_id];
+		if (SpatialEditor::get_singleton()->is_snap_enabled()) {
+			d = Math::stepify(d, SpatialEditor::get_singleton()->get_translate_snap());
+		}
+
+		aabb.position[p_id] = d - 1.0 - aabb.size[p_id] * 0.5;
+		particles->set_visibility_aabb(aabb);
+
+	} else {
+		Vector3 ra, rb;
+		Geometry::get_closest_points_between_segments(ofs, ofs + axis * 4096, sg[0], sg[1], ra, rb);
+
+		float d = ra[p_id] - ofs[p_id];
+		if (SpatialEditor::get_singleton()->is_snap_enabled()) {
+			d = Math::stepify(d, SpatialEditor::get_singleton()->get_translate_snap());
+		}
+
+		if (d < 0.001) {
+			d = 0.001;
+		}
+		//resize
+		aabb.position[p_id] = (aabb.position[p_id] + aabb.size[p_id] * 0.5) - d;
+		aabb.size[p_id] = d * 2;
+		particles->set_visibility_aabb(aabb);
+	}
+}
+
+void GPUParticlesGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
+	GPUParticles *particles = Object::cast_to<GPUParticles>(p_gizmo->get_spatial_node());
+
+	if (p_cancel) {
+		particles->set_visibility_aabb(p_restore);
+		return;
+	}
+
+	UndoRedo *ur = SpatialEditor::get_singleton()->get_undo_redo();
+	ur->create_action(TTR("Change Particles AABB"));
+	ur->add_do_method(particles, "set_visibility_aabb", particles->get_visibility_aabb());
+	ur->add_undo_method(particles, "set_visibility_aabb", p_restore);
+	ur->commit_action();
+}
+
+void GPUParticlesGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
+	GPUParticles *particles = Object::cast_to<GPUParticles>(p_gizmo->get_spatial_node());
+
+	p_gizmo->clear();
+
+	Vector<Vector3> lines;
+	AABB aabb = particles->get_visibility_aabb();
+
+	for (int i = 0; i < 12; i++) {
+		Vector3 a, b;
+		aabb.get_edge(i, a, b);
+		lines.push_back(a);
+		lines.push_back(b);
+	}
+
+	Vector<Vector3> handles;
+
+	for (int i = 0; i < 3; i++) {
+		Vector3 ax;
+		ax[i] = aabb.position[i] + aabb.size[i];
+		ax[(i + 1) % 3] = aabb.position[(i + 1) % 3] + aabb.size[(i + 1) % 3] * 0.5;
+		ax[(i + 2) % 3] = aabb.position[(i + 2) % 3] + aabb.size[(i + 2) % 3] * 0.5;
+		handles.push_back(ax);
+	}
+
+	Vector3 center = aabb.position + aabb.size * 0.5;
+	for (int i = 0; i < 3; i++) {
+		Vector3 ax;
+		ax[i] = 1.0;
+		handles.push_back(center + ax);
+		lines.push_back(center);
+		lines.push_back(center + ax);
+	}
+
+	Ref<Material> material = get_material("particles_material", p_gizmo);
+	Ref<Material> icon = get_material("particles_icon", p_gizmo);
+
+	p_gizmo->add_lines(lines, material);
+
+	if (p_gizmo->is_selected()) {
+		Ref<Material> solid_material = get_material("particles_solid_material", p_gizmo);
+		p_gizmo->add_solid_box(solid_material, aabb.get_size(), aabb.get_position() + aabb.get_size() / 2.0);
+	}
+
+	p_gizmo->add_handles(handles, get_material("handles"));
 	p_gizmo->add_unscaled_billboard(icon, 0.05);
 }
 

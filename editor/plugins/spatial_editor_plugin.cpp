@@ -7186,6 +7186,7 @@ void SpatialEditor::_register_all_gizmos() {
 	add_gizmo_plugin(Ref<SpringArmSpatialGizmoPlugin>(memnew(SpringArmSpatialGizmoPlugin)));
 	add_gizmo_plugin(Ref<VehicleWheelSpatialGizmoPlugin>(memnew(VehicleWheelSpatialGizmoPlugin)));
 	add_gizmo_plugin(Ref<VisibilityNotifierGizmoPlugin>(memnew(VisibilityNotifierGizmoPlugin)));
+	add_gizmo_plugin(Ref<GPUParticlesGizmoPlugin>(memnew(GPUParticlesGizmoPlugin)));
 	add_gizmo_plugin(Ref<CPUParticlesGizmoPlugin>(memnew(CPUParticlesGizmoPlugin)));
 	add_gizmo_plugin(Ref<ReflectionProbeGizmoPlugin>(memnew(ReflectionProbeGizmoPlugin)));
 	add_gizmo_plugin(Ref<BakedIndirectLightGizmoPlugin>(memnew(BakedIndirectLightGizmoPlugin)));

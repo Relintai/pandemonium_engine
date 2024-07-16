@@ -110,8 +110,7 @@ void GPUParticles2DEditorPlugin::_menu_callback(int p_idx) {
 		} break;
 		case MENU_OPTION_CONVERT_TO_CPU_PARTICLES: {
 			CPUParticles2D *cpu_particles = memnew(CPUParticles2D);
-			//TODO
-			//cpu_particles->convert_from_particles(particles);
+			cpu_particles->convert_from_particles(particles);
 			cpu_particles->set_name(particles->get_name());
 			cpu_particles->set_transform(particles->get_transform());
 			cpu_particles->set_visible(particles->is_visible());

@@ -44,6 +44,7 @@
 #include "room_group.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
+#include "scene/3d/gpu_particles.h"
 #include "scene/3d/sprite_3d.h"
 #include "scene/resources/mesh/multimesh.h"
 #include "scene/resources/world_3d.h"
@@ -1869,13 +1870,11 @@ bool RoomManager::_bound_findpoints_geom_instance(GeometryInstance *p_gi, Vector
 	}
 
 	// Particles have a "visibility aabb" we can use for this
-	/*
-	Particles *particles = Object::cast_to<Particles>(p_gi);
+	GPUParticles *particles = Object::cast_to<GPUParticles>(p_gi);
 	if (particles) {
 		r_aabb = particles->get_global_transform().xform(particles->get_visibility_aabb());
 		return true;
 	}
-	*/
 
 	// Fallback path for geometry that is not recognised
 	// (including CPUParticles, which will need to rely on an expansion margin)

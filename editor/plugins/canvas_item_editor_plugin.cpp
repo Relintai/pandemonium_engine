@@ -66,6 +66,7 @@
 #include "editor/scene_tree_dock.h"
 #include "editor/script_editor_debugger.h"
 #include "scene/2d/light_2d.h"
+#include "scene/2d/gpu_particles_2d.h"
 #include "scene/2d/polygon_2d.h"
 #include "scene/main/node_2d.h"
 
@@ -6141,6 +6142,8 @@ void CanvasItemEditorViewport::_perform_drop_data() {
 				Node *child;
 				if (default_type == "Light2D") {
 					child = memnew(Light2D);
+				} else if (default_type == "GPUParticles2D") {
+					child = memnew(GPUParticles2D);
 				} else if (default_type == "Polygon2D") {
 					child = memnew(Polygon2D);
 				} else if (default_type == "TouchScreenButton") {

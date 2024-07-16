@@ -134,6 +134,8 @@
 #include "editor/plugins/navigation_obstacle_2d_editor_plugin.h"
 #include "editor/plugins/navigation_obstacle_3d_editor_plugin.h"
 #include "editor/plugins/packed_scene_editor_plugin.h"
+#include "editor/plugins/gpu_particles_2d_editor_plugin.h"
+#include "editor/plugins/particles_editor_plugin.h"
 #include "editor/plugins/path_2d_editor_plugin.h"
 #include "editor/plugins/path_editor_plugin.h"
 #include "editor/plugins/polygon_2d_editor_plugin.h"
@@ -7164,6 +7166,7 @@ EditorNode::EditorNode() {
 	add_editor_plugin(memnew(AnimationTreeEditorPlugin(this)));
 	add_editor_plugin(memnew(StyleBoxEditorPlugin(this)));
 	add_editor_plugin(memnew(SpriteEditorPlugin(this)));
+	add_editor_plugin(memnew(GPUParticlesEditorPlugin(this)));
 	add_editor_plugin(memnew(CPUParticles2DEditorPlugin(this)));
 	add_editor_plugin(memnew(CPUParticlesEditorPlugin(this)));
 	add_editor_plugin(memnew(ResourcePreloaderEditorPlugin(this)));
@@ -7173,6 +7176,7 @@ EditorNode::EditorNode() {
 	add_editor_plugin(memnew(SpriteFramesEditorPlugin(this)));
 	add_editor_plugin(memnew(TextureRegionEditorPlugin(this)));
 	add_editor_plugin(memnew(BakedLightmapEditorPlugin(this)));
+	add_editor_plugin(memnew(GPUParticles2DEditorPlugin(this)));
 	add_editor_plugin(memnew(RoomManagerEditorPlugin(this)));
 	add_editor_plugin(memnew(RoomEditorPlugin(this)));
 	add_editor_plugin(memnew(OccluderEditorPlugin(this)));

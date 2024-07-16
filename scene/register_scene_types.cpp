@@ -59,6 +59,7 @@
 #include "scene/2d/navigation_polygon_instance.h"
 #include "scene/2d/parallax_background.h"
 #include "scene/2d/parallax_layer.h"
+#include "scene/2d/gpu_particles_2d.h"
 #include "scene/2d/path_2d.h"
 #include "scene/2d/physics_body_2d.h"
 #include "scene/2d/polygon_2d.h"
@@ -213,6 +214,7 @@
 #include "scene/3d/navigation_obstacle.h"
 #include "scene/3d/occluder.h"
 #include "scene/3d/path.h"
+#include "scene/3d/gpu_particles.h"
 #include "scene/3d/physics_body.h"
 #include "scene/3d/physics_joint.h"
 #include "scene/3d/portal.h"
@@ -460,6 +462,7 @@ void register_scene_types() {
 	ClassDB::register_class<OmniLight>();
 	ClassDB::register_class<SpotLight>();
 	ClassDB::register_class<ReflectionProbe>();
+	ClassDB::register_class<GPUParticles>();
 	ClassDB::register_class<BakedLightmap>();
 	ClassDB::register_class<BakedLightmapData>();
 	ClassDB::register_class<CPUParticles>();
@@ -536,6 +539,7 @@ void register_scene_types() {
 	CanvasItemMaterial::init_shaders();
 	ClassDB::register_class<Node2D>();
 	ClassDB::register_class<CPUParticles2D>();
+	ClassDB::register_class<GPUParticles2D>();
 	//ClassDB::register_class<ParticleAttractor2D>();
 	ClassDB::register_class<Sprite>();
 	//ClassDB::register_type<ViewportSprite>();
