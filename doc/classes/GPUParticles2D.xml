@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Particles2D" inherits="Node2D" version="3.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="GPUParticles2D" inherits="Node2D" version="3.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		GPU-based 2D particle emitter.
 	</brief_description>
 	<description>
-		2D particle node used to create a variety of particle systems and effects. [Particles2D] features an emitter that generates some number of particles at a given rate.
+		2D particle node used to create a variety of particle systems and effects. [GPUParticles2D] features an emitter that generates some number of particles at a given rate.
 		Use the [code]process_material[/code] property to add a [ParticlesMaterial] to configure particle appearance and behavior. Alternatively, you can add a [ShaderMaterial] which will be applied to all particles.
-		[b]Note:[/b] [Particles2D] only work when using the GLES3 renderer. If using the GLES2 renderer, use [CPUParticles2D] instead. You can convert [Particles2D] to [CPUParticles2D] by selecting the node, clicking the [b]Particles[/b] menu at the top of the 2D editor viewport then choosing [b]Convert to CPUParticles2D[/b].
-		[b]Note:[/b] On macOS, [Particles2D] rendering is much slower than [CPUParticles2D] due to transform feedback being implemented on the CPU instead of the GPU. Consider using [CPUParticles2D] instead when targeting macOS.
-		[b]Note:[/b] After working on a Particles node, remember to update its [member visibility_rect] by selecting it, clicking the [b]Particles[/b] menu at the top of the 2D editor viewport then choose [b]Generate Visibility Rect[/b]. Otherwise, particles may suddenly disappear depending on the camera position and angle.
-		[b]Note:[/b] Unlike [CPUParticles2D], [Particles2D] currently ignore the texture region defined in [AtlasTexture]s.
+		[b]Note:[/b] [GPUParticles2D] only work when using the GLES3 renderer. If using the GLES2 renderer, use [CPUParticles2D] instead. You can convert [GPUParticles2D] to [CPUParticles2D] by selecting the node, clicking the [b]GPUParticles[/b] menu at the top of the 2D editor viewport then choosing [b]Convert to CPUParticles2D[/b].
+		[b]Note:[/b] On macOS, [GPUParticles2D] rendering is much slower than [CPUParticles2D] due to transform feedback being implemented on the CPU instead of the GPU. Consider using [CPUParticles2D] instead when targeting macOS.
+		[b]Note:[/b] After working on a GPUParticles node, remember to update its [member visibility_rect] by selecting it, clicking the [b]GPUParticles[/b] menu at the top of the 2D editor viewport then choose [b]Generate Visibility Rect[/b]. Otherwise, particles may suddenly disappear depending on the camera position and angle.
+		[b]Note:[/b] Unlike [CPUParticles2D], [GPUParticles2D] currently ignore the texture region defined in [AtlasTexture]s.
 	</description>
 	<tutorials>
 		<link title="Particle systems (2D)">$DOCS_URL/tutorials/2d/particle_systems_2d.html</link>
-		<link title="2D Particles Demo">https://godotengine.org/asset-library/asset/118</link>
-		<link title="2D Dodge The Creeps Demo (uses GPUParticles2D for the trail behind the player)">https://godotengine.org/asset-library/asset/515</link>
+		<link title="2D GPUParticles Demo">https://godotengine.org/asset-library/asset/118</link>
+		<link title="2D Dodge The Creeps Demo (uses GPUGPUParticles2D for the trail behind the player)">https://godotengine.org/asset-library/asset/515</link>
 	</tutorials>
 	<methods>
 		<method name="capture_rect" qualifiers="const">
@@ -36,7 +36,7 @@
 			The number of particles emitted in one emission cycle (corresponding to the [member lifetime]).
 			[b]Note:[/b] Changing [member amount] will reset the particle emission, therefore removing all particles that were already emitted before changing [member amount].
 		</member>
-		<member name="draw_order" type="int" setter="set_draw_order" getter="get_draw_order" enum="Particles2D.DrawOrder" default="0">
+		<member name="draw_order" type="int" setter="set_draw_order" getter="get_draw_order" enum="GPUParticles2D.DrawOrder" default="0">
 			Particle draw order. Uses [enum DrawOrder] values.
 		</member>
 		<member name="emitting" type="bool" setter="set_emitting" getter="is_emitting" default="true">
@@ -81,7 +81,7 @@
 		</member>
 		<member name="visibility_rect" type="Rect2" setter="set_visibility_rect" getter="get_visibility_rect" default="Rect2( -100, -100, 200, 200 )">
 			The [Rect2] that determines the node's region which needs to be visible on screen for the particle system to be active.
-			Grow the rect if particles suddenly appear/disappear when the node enters/exits the screen. The [Rect2] can be grown via code or with the [b]Particles → Generate Visibility Rect[/b] editor tool.
+			Grow the rect if particles suddenly appear/disappear when the node enters/exits the screen. The [Rect2] can be grown via code or with the [b]GPUParticles → Generate Visibility Rect[/b] editor tool.
 		</member>
 	</members>
 	<signals>
@@ -94,10 +94,10 @@
 	</signals>
 	<constants>
 		<constant name="DRAW_ORDER_INDEX" value="0" enum="DrawOrder">
-			Particles are drawn in the order emitted.
+			GPUParticles are drawn in the order emitted.
 		</constant>
 		<constant name="DRAW_ORDER_LIFETIME" value="1" enum="DrawOrder">
-			Particles are drawn in order of remaining lifetime.
+			GPUParticles are drawn in order of remaining lifetime.
 		</constant>
 	</constants>
 </class>
