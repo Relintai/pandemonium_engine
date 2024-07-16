@@ -34,6 +34,10 @@ while IFS= read -rd '' f; do
         continue
     elif [[ "$f" == "modules/smtp"* ]]; then
         continue
+    elif [[ "$f" == "editor_modules/denoise/oidn"* ]]; then
+        continue
+    elif [[ "$f" == "editor_modules/raycast/embree"* ]]; then
+        continue
     elif [[ "$f" == "platform/android/java/lib/src/com/google"* ]]; then
         continue
     elif [[ "$f" == *"-so_wrap."* ]]; then
