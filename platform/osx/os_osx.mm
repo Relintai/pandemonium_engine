@@ -1766,15 +1766,12 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	if (p_video_driver == VIDEO_DRIVER_GLES2) {
 		gles3 = false;
 	}
+
+	bool editor = Engine::get_singleton()->is_editor_hint();
 #else
 	bool gles2 = true;
 #endif
 
-	//if (p_video_driver == VIDEO_DRIVER_GLES2) {
-	//	gles3 = false;
-	//}
-
-	//bool editor = Engine::get_singleton()->is_editor_hint();
 	bool gl_initialization_error = false;
 
 	while (true) {
