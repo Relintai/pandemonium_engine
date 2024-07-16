@@ -113,6 +113,7 @@ void RenderingServerRaster::draw(bool p_swap_buffers, double frame_step) {
 	RSG::scene->update_dirty_instances(); //update scene stuff
 
 	RSG::viewport->draw_viewports();
+	RSG::scene->render_probes();
 	_draw_margins();
 	RSG::rasterizer->end_frame(p_swap_buffers);
 

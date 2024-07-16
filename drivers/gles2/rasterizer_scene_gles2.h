@@ -553,6 +553,15 @@ public:
 	int render_directional_lights;
 	int render_light_instance_count;
 
+	/* REFLECTION INSTANCE */
+
+	virtual RID gi_probe_instance_create();
+	virtual void gi_probe_instance_set_light_data(RID p_probe, RID p_base, RID p_data);
+	virtual void gi_probe_instance_set_transform_to_data(RID p_probe, const Transform &p_xform);
+	virtual void gi_probe_instance_set_bounds(RID p_probe, const Vector3 &p_bounds);
+
+
+
 	/* RENDER LIST */
 
 	enum LightMode {

@@ -7189,6 +7189,7 @@ void SpatialEditor::_register_all_gizmos() {
 	add_gizmo_plugin(Ref<GPUParticlesGizmoPlugin>(memnew(GPUParticlesGizmoPlugin)));
 	add_gizmo_plugin(Ref<CPUParticlesGizmoPlugin>(memnew(CPUParticlesGizmoPlugin)));
 	add_gizmo_plugin(Ref<ReflectionProbeGizmoPlugin>(memnew(ReflectionProbeGizmoPlugin)));
+	add_gizmo_plugin(Ref<GIProbeGizmoPlugin>(memnew(GIProbeGizmoPlugin)));
 	add_gizmo_plugin(Ref<BakedIndirectLightGizmoPlugin>(memnew(BakedIndirectLightGizmoPlugin)));
 	add_gizmo_plugin(Ref<CollisionObjectGizmoPlugin>(memnew(CollisionObjectGizmoPlugin)));
 	add_gizmo_plugin(Ref<CollisionShapeSpatialGizmoPlugin>(memnew(CollisionShapeSpatialGizmoPlugin)));

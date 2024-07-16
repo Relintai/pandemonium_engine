@@ -535,6 +535,43 @@ public:
 	virtual void reflection_probe_set_cull_mask(RID p_probe, uint32_t p_layers) = 0;
 	virtual void reflection_probe_set_resolution(RID p_probe, int p_resolution) = 0;
 
+	/* GI PROBE API */
+
+	virtual RID gi_probe_create() = 0;
+
+	virtual void gi_probe_set_bounds(RID p_probe, const AABB &p_bounds) = 0;
+	virtual AABB gi_probe_get_bounds(RID p_probe) const = 0;
+
+	virtual void gi_probe_set_cell_size(RID p_probe, float p_range) = 0;
+	virtual float gi_probe_get_cell_size(RID p_probe) const = 0;
+
+	virtual void gi_probe_set_to_cell_xform(RID p_probe, const Transform &p_xform) = 0;
+	virtual Transform gi_probe_get_to_cell_xform(RID p_probe) const = 0;
+
+	virtual void gi_probe_set_dynamic_data(RID p_probe, const PoolVector<int> &p_data) = 0;
+	virtual PoolVector<int> gi_probe_get_dynamic_data(RID p_probe) const = 0;
+
+	virtual void gi_probe_set_dynamic_range(RID p_probe, int p_range) = 0;
+	virtual int gi_probe_get_dynamic_range(RID p_probe) const = 0;
+
+	virtual void gi_probe_set_energy(RID p_probe, float p_range) = 0;
+	virtual float gi_probe_get_energy(RID p_probe) const = 0;
+
+	virtual void gi_probe_set_bias(RID p_probe, float p_range) = 0;
+	virtual float gi_probe_get_bias(RID p_probe) const = 0;
+
+	virtual void gi_probe_set_normal_bias(RID p_probe, float p_range) = 0;
+	virtual float gi_probe_get_normal_bias(RID p_probe) const = 0;
+
+	virtual void gi_probe_set_propagation(RID p_probe, float p_range) = 0;
+	virtual float gi_probe_get_propagation(RID p_probe) const = 0;
+
+	virtual void gi_probe_set_interior(RID p_probe, bool p_enable) = 0;
+	virtual bool gi_probe_is_interior(RID p_probe) const = 0;
+
+	virtual void gi_probe_set_compress(RID p_probe, bool p_enable) = 0;
+	virtual bool gi_probe_is_compressed(RID p_probe) const = 0;
+
 	/* LIGHTMAP CAPTURE */
 
 	virtual RID lightmap_capture_create() = 0;
@@ -820,6 +857,7 @@ public:
 		INSTANCE_PARTICLES,
 		INSTANCE_LIGHT,
 		INSTANCE_REFLECTION_PROBE,
+		INSTANCE_GI_PROBE,
 		INSTANCE_LIGHTMAP_CAPTURE,
 		INSTANCE_MAX,
 

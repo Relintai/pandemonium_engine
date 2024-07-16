@@ -62,6 +62,7 @@
 #include "scene/3d/collision_polygon.h"
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/cpu_particles.h"
+#include "scene/3d/gi_probe.h"
 #include "scene/3d/label_3d.h"
 #include "scene/3d/light.h"
 #include "scene/3d/listener.h"
@@ -3010,6 +3011,179 @@ void ReflectionProbeGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	p_gizmo->add_unscaled_billboard(icon, 0.05);
 	p_gizmo->add_handles(handles, get_material("handles"));
 }
+
+////
+
+GIProbeGizmoPlugin::GIProbeGizmoPlugin() {
+	Color gizmo_color = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/gi_probe", Color(0.5, 1, 0.6));
+
+	create_material("gi_probe_material", gizmo_color);
+
+	gizmo_color.a = 0.5;
+	create_material("gi_probe_internal_material", gizmo_color);
+
+	gizmo_color.a = 0.1;
+	create_material("gi_probe_solid_material", gizmo_color);
+
+	create_icon_material("gi_probe_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoGIProbe", "EditorIcons"));
+	create_handle_material("handles");
+}
+
+bool GIProbeGizmoPlugin::has_gizmo(Spatial *p_spatial) {
+	return Object::cast_to<GIProbe>(p_spatial) != nullptr;
+}
+
+String GIProbeGizmoPlugin::get_gizmo_name() const {
+	return "GIProbe";
+}
+
+int GIProbeGizmoPlugin::get_priority() const {
+	return -1;
+}
+
+String GIProbeGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondar) const {
+	switch (p_id) {
+		case 0:
+			return "Extents X";
+		case 1:
+			return "Extents Y";
+		case 2:
+			return "Extents Z";
+	}
+
+	return "";
+}
+Variant GIProbeGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondar) const {
+	GIProbe *probe = Object::cast_to<GIProbe>(p_gizmo->get_spatial_node());
+	return probe->get_extents();
+}
+void GIProbeGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondar, Camera *p_camera, const Point2 &p_point) {
+	GIProbe *probe = Object::cast_to<GIProbe>(p_gizmo->get_spatial_node());
+
+	Transform gt = probe->get_global_transform();
+	Transform gi = gt.affine_inverse();
+
+	Vector3 extents = probe->get_extents();
+
+	Vector3 ray_from = p_camera->project_ray_origin(p_point);
+	Vector3 ray_dir = p_camera->project_ray_normal(p_point);
+
+	Vector3 sg[2] = { gi.xform(ray_from), gi.xform(ray_from + ray_dir * 16384) };
+
+	Vector3 axis;
+	axis[p_id] = 1.0;
+
+	Vector3 ra, rb;
+	Geometry::get_closest_points_between_segments(Vector3(), axis * 16384, sg[0], sg[1], ra, rb);
+	float d = ra[p_id];
+	if (SpatialEditor::get_singleton()->is_snap_enabled()) {
+		d = Math::stepify(d, SpatialEditor::get_singleton()->get_translate_snap());
+	}
+
+	if (d < 0.001) {
+		d = 0.001;
+	}
+
+	extents[p_id] = d;
+	probe->set_extents(extents);
+}
+
+void GIProbeGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondar, const Variant &p_restore, bool p_cancel) {
+	GIProbe *probe = Object::cast_to<GIProbe>(p_gizmo->get_spatial_node());
+
+	Vector3 restore = p_restore;
+
+	if (p_cancel) {
+		probe->set_extents(restore);
+		return;
+	}
+
+	UndoRedo *ur = SpatialEditor::get_singleton()->get_undo_redo();
+	ur->create_action(TTR("Change Probe Extents"));
+	ur->add_do_method(probe, "set_extents", probe->get_extents());
+	ur->add_undo_method(probe, "set_extents", restore);
+	ur->commit_action();
+}
+
+void GIProbeGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
+	GIProbe *probe = Object::cast_to<GIProbe>(p_gizmo->get_spatial_node());
+
+	Ref<Material> material = get_material("gi_probe_material", p_gizmo);
+	Ref<Material> icon = get_material("gi_probe_icon", p_gizmo);
+	Ref<Material> material_internal = get_material("gi_probe_internal_material", p_gizmo);
+
+	p_gizmo->clear();
+
+	Vector<Vector3> lines;
+	Vector3 extents = probe->get_extents();
+
+	static const int subdivs[GIProbe::SUBDIV_MAX] = { 64, 128, 256, 512 };
+
+	AABB aabb = AABB(-extents, extents * 2);
+	int subdiv = subdivs[probe->get_subdiv()];
+	float cell_size = aabb.get_longest_axis_size() / subdiv;
+
+	for (int i = 0; i < 12; i++) {
+		Vector3 a, b;
+		aabb.get_edge(i, a, b);
+		lines.push_back(a);
+		lines.push_back(b);
+	}
+
+	p_gizmo->add_lines(lines, material);
+
+	lines.clear();
+
+	for (int i = 1; i < subdiv; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (cell_size * i > aabb.size[j]) {
+				continue;
+			}
+
+			int j_n1 = (j + 1) % 3;
+			int j_n2 = (j + 2) % 3;
+
+			for (int k = 0; k < 4; k++) {
+				Vector3 from = aabb.position, to = aabb.position;
+				from[j] += cell_size * i;
+				to[j] += cell_size * i;
+
+				if (k & 1) {
+					to[j_n1] += aabb.size[j_n1];
+				} else {
+					to[j_n2] += aabb.size[j_n2];
+				}
+
+				if (k & 2) {
+					from[j_n1] += aabb.size[j_n1];
+					from[j_n2] += aabb.size[j_n2];
+				}
+
+				lines.push_back(from);
+				lines.push_back(to);
+			}
+		}
+	}
+
+	p_gizmo->add_lines(lines, material_internal);
+
+	Vector<Vector3> handles;
+
+	for (int i = 0; i < 3; i++) {
+		Vector3 ax;
+		ax[i] = aabb.position[i] + aabb.size[i];
+		handles.push_back(ax);
+	}
+
+	if (p_gizmo->is_selected()) {
+		Ref<Material> solid_material = get_material("gi_probe_solid_material", p_gizmo);
+		p_gizmo->add_solid_box(solid_material, aabb.get_size());
+	}
+
+	p_gizmo->add_unscaled_billboard(icon, 0.05);
+	p_gizmo->add_handles(handles, get_material("handles"));
+}
+
 
 ////
 

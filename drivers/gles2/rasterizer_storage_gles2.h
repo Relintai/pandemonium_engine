@@ -1091,6 +1091,48 @@ public:
 
 	virtual bool particles_is_inactive(RID p_particles) const;
 
+	/* GI PROBE API */
+
+	virtual RID gi_probe_create();
+
+	virtual void gi_probe_set_bounds(RID p_probe, const AABB &p_bounds);
+	virtual AABB gi_probe_get_bounds(RID p_probe) const;
+
+	virtual void gi_probe_set_cell_size(RID p_probe, float p_size);
+	virtual float gi_probe_get_cell_size(RID p_probe) const;
+
+	virtual void gi_probe_set_to_cell_xform(RID p_probe, const Transform &p_xform);
+	virtual Transform gi_probe_get_to_cell_xform(RID p_probe) const;
+
+	virtual void gi_probe_set_dynamic_data(RID p_probe, const PoolVector<int> &p_data);
+	virtual PoolVector<int> gi_probe_get_dynamic_data(RID p_probe) const;
+
+	virtual void gi_probe_set_dynamic_range(RID p_probe, int p_range);
+	virtual int gi_probe_get_dynamic_range(RID p_probe) const;
+
+	virtual void gi_probe_set_energy(RID p_probe, float p_range);
+	virtual float gi_probe_get_energy(RID p_probe) const;
+
+	virtual void gi_probe_set_bias(RID p_probe, float p_range);
+	virtual float gi_probe_get_bias(RID p_probe) const;
+
+	virtual void gi_probe_set_normal_bias(RID p_probe, float p_range);
+	virtual float gi_probe_get_normal_bias(RID p_probe) const;
+
+	virtual void gi_probe_set_propagation(RID p_probe, float p_range);
+	virtual float gi_probe_get_propagation(RID p_probe) const;
+
+	virtual void gi_probe_set_interior(RID p_probe, bool p_enable);
+	virtual bool gi_probe_is_interior(RID p_probe) const;
+
+	virtual void gi_probe_set_compress(RID p_probe, bool p_enable);
+	virtual bool gi_probe_is_compressed(RID p_probe) const;
+
+	virtual uint32_t gi_probe_get_version(RID p_probe);
+
+	virtual RID gi_probe_dynamic_data_create(int p_width, int p_height, int p_depth, GIProbeCompression p_compression);
+	virtual void gi_probe_dynamic_data_update(RID p_gi_probe_data, int p_depth_slice, int p_slice_count, int p_mipmap, const void *p_data);
+
 	/* LIGHTMAP */
 
 	struct LightmapCapture : public Instantiable {

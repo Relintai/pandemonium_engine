@@ -2024,6 +2024,30 @@ void RenderingServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("reflection_probe_set_enable_shadows", "probe", "enable"), &RenderingServer::reflection_probe_set_enable_shadows);
 	ClassDB::bind_method(D_METHOD("reflection_probe_set_cull_mask", "probe", "layers"), &RenderingServer::reflection_probe_set_cull_mask);
 
+	ClassDB::bind_method(D_METHOD("gi_probe_create"), &RenderingServer::gi_probe_create);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_bounds", "probe", "bounds"), &RenderingServer::gi_probe_set_bounds);
+	ClassDB::bind_method(D_METHOD("gi_probe_get_bounds", "probe"), &RenderingServer::gi_probe_get_bounds);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_cell_size", "probe", "range"), &RenderingServer::gi_probe_set_cell_size);
+	ClassDB::bind_method(D_METHOD("gi_probe_get_cell_size", "probe"), &RenderingServer::gi_probe_get_cell_size);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_to_cell_xform", "probe", "xform"), &RenderingServer::gi_probe_set_to_cell_xform);
+	ClassDB::bind_method(D_METHOD("gi_probe_get_to_cell_xform", "probe"), &RenderingServer::gi_probe_get_to_cell_xform);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_dynamic_data", "probe", "data"), &RenderingServer::gi_probe_set_dynamic_data);
+	ClassDB::bind_method(D_METHOD("gi_probe_get_dynamic_data", "probe"), &RenderingServer::gi_probe_get_dynamic_data);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_dynamic_range", "probe", "range"), &RenderingServer::gi_probe_set_dynamic_range);
+	ClassDB::bind_method(D_METHOD("gi_probe_get_dynamic_range", "probe"), &RenderingServer::gi_probe_get_dynamic_range);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_energy", "probe", "energy"), &RenderingServer::gi_probe_set_energy);
+	ClassDB::bind_method(D_METHOD("gi_probe_get_energy", "probe"), &RenderingServer::gi_probe_get_energy);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_bias", "probe", "bias"), &RenderingServer::gi_probe_set_bias);
+	ClassDB::bind_method(D_METHOD("gi_probe_get_bias", "probe"), &RenderingServer::gi_probe_get_bias);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_normal_bias", "probe", "bias"), &RenderingServer::gi_probe_set_normal_bias);
+	ClassDB::bind_method(D_METHOD("gi_probe_get_normal_bias", "probe"), &RenderingServer::gi_probe_get_normal_bias);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_propagation", "probe", "propagation"), &RenderingServer::gi_probe_set_propagation);
+	ClassDB::bind_method(D_METHOD("gi_probe_get_propagation", "probe"), &RenderingServer::gi_probe_get_propagation);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_interior", "probe", "enable"), &RenderingServer::gi_probe_set_interior);
+	ClassDB::bind_method(D_METHOD("gi_probe_is_interior", "probe"), &RenderingServer::gi_probe_is_interior);
+	ClassDB::bind_method(D_METHOD("gi_probe_set_compress", "probe", "enable"), &RenderingServer::gi_probe_set_compress);
+	ClassDB::bind_method(D_METHOD("gi_probe_is_compressed", "probe"), &RenderingServer::gi_probe_is_compressed);
+
 	ClassDB::bind_method(D_METHOD("lightmap_capture_create"), &RenderingServer::lightmap_capture_create);
 	ClassDB::bind_method(D_METHOD("lightmap_capture_set_bounds", "capture", "bounds"), &RenderingServer::lightmap_capture_set_bounds);
 	ClassDB::bind_method(D_METHOD("lightmap_capture_get_bounds", "capture"), &RenderingServer::lightmap_capture_get_bounds);
@@ -2448,6 +2472,7 @@ void RenderingServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(INSTANCE_PARTICLES);
 	BIND_ENUM_CONSTANT(INSTANCE_LIGHT);
 	BIND_ENUM_CONSTANT(INSTANCE_REFLECTION_PROBE);
+	BIND_ENUM_CONSTANT(INSTANCE_GI_PROBE);
 	BIND_ENUM_CONSTANT(INSTANCE_LIGHTMAP_CAPTURE);
 	BIND_ENUM_CONSTANT(INSTANCE_MAX);
 	BIND_ENUM_CONSTANT(INSTANCE_GEOMETRY_MASK);
