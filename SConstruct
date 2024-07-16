@@ -155,7 +155,7 @@ opts.Add(
         False,
     )
 )
-opts.Add(BoolVariable("disable_gles3", "Disable the gles3 video driver.", True))
+opts.Add(BoolVariable("disable_gles3", "Disable the gles3 video driver.", False))
 opts.Add(BoolVariable("disable_3d", "Disable 3D nodes for a smaller executable", False))
 opts.Add(BoolVariable("disable_advanced_gui", "Disable advanced GUI nodes and behaviors", False))
 opts.Add(BoolVariable("modules_enabled_by_default", "If no, disable all modules except ones explicitly enabled", True))

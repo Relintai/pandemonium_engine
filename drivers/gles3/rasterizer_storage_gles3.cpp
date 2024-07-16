@@ -2917,8 +2917,8 @@ _FORCE_INLINE_ static void _fill_std140_variant_ubo_value(ShaderLanguage::DataTy
 				gui[1] = v.position.y;
 				gui[2] = v.size.x;
 				gui[3] = v.size.y;
-			} else if (value.get_type() == Variant::QUAT) {
-				Quat v = value;
+			} else if (value.get_type() == Variant::QUATERNION) {
+				Quaternion v = value;
 
 				gui[0] = v.x;
 				gui[1] = v.y;
@@ -2938,12 +2938,12 @@ _FORCE_INLINE_ static void _fill_std140_variant_ubo_value(ShaderLanguage::DataTy
 			GLfloat *gui = (GLfloat *)data;
 
 			//in std140 members of mat2 are treated as vec4s
-			gui[0] = v.elements[0][0];
-			gui[1] = v.elements[0][1];
+			gui[0] = v.columns[0][0];
+			gui[1] = v.columns[0][1];
 			gui[2] = 0;
 			gui[3] = 0;
-			gui[4] = v.elements[1][0];
-			gui[5] = v.elements[1][1];
+			gui[4] = v.columns[1][0];
+			gui[5] = v.columns[1][1];
 			gui[6] = 0;
 			gui[7] = 0;
 		} break;
@@ -2951,34 +2951,34 @@ _FORCE_INLINE_ static void _fill_std140_variant_ubo_value(ShaderLanguage::DataTy
 			Basis v = value;
 			GLfloat *gui = (GLfloat *)data;
 
-			gui[0] = v.elements[0][0];
-			gui[1] = v.elements[1][0];
-			gui[2] = v.elements[2][0];
+			gui[0] = v.rows[0][0];
+			gui[1] = v.rows[1][0];
+			gui[2] = v.rows[2][0];
 			gui[3] = 0;
-			gui[4] = v.elements[0][1];
-			gui[5] = v.elements[1][1];
-			gui[6] = v.elements[2][1];
+			gui[4] = v.rows[0][1];
+			gui[5] = v.rows[1][1];
+			gui[6] = v.rows[2][1];
 			gui[7] = 0;
-			gui[8] = v.elements[0][2];
-			gui[9] = v.elements[1][2];
-			gui[10] = v.elements[2][2];
+			gui[8] = v.rows[0][2];
+			gui[9] = v.rows[1][2];
+			gui[10] = v.rows[2][2];
 			gui[11] = 0;
 		} break;
 		case ShaderLanguage::TYPE_MAT4: {
 			Transform v = value;
 			GLfloat *gui = (GLfloat *)data;
 
-			gui[0] = v.basis.elements[0][0];
-			gui[1] = v.basis.elements[1][0];
-			gui[2] = v.basis.elements[2][0];
+			gui[0] = v.basis.rows[0][0];
+			gui[1] = v.basis.rows[1][0];
+			gui[2] = v.basis.rows[2][0];
 			gui[3] = 0;
-			gui[4] = v.basis.elements[0][1];
-			gui[5] = v.basis.elements[1][1];
-			gui[6] = v.basis.elements[2][1];
+			gui[4] = v.basis.rows[0][1];
+			gui[5] = v.basis.rows[1][1];
+			gui[6] = v.basis.rows[2][1];
 			gui[7] = 0;
-			gui[8] = v.basis.elements[0][2];
-			gui[9] = v.basis.elements[1][2];
-			gui[10] = v.basis.elements[2][2];
+			gui[8] = v.basis.rows[0][2];
+			gui[9] = v.basis.rows[1][2];
+			gui[10] = v.basis.rows[2][2];
 			gui[11] = 0;
 			gui[12] = v.origin.x;
 			gui[13] = v.origin.y;
@@ -4666,17 +4666,17 @@ void RasterizerStorageGLES3::_multimesh_instance_set_transform(RID p_multimesh, 
 	int stride = multimesh->color_floats + multimesh->xform_floats + multimesh->custom_data_floats;
 	float *dataptr = &multimesh->data.write[stride * p_index];
 
-	dataptr[0] = p_transform.basis.elements[0][0];
-	dataptr[1] = p_transform.basis.elements[0][1];
-	dataptr[2] = p_transform.basis.elements[0][2];
+	dataptr[0] = p_transform.basis.rows[0][0];
+	dataptr[1] = p_transform.basis.rows[0][1];
+	dataptr[2] = p_transform.basis.rows[0][2];
 	dataptr[3] = p_transform.origin.x;
-	dataptr[4] = p_transform.basis.elements[1][0];
-	dataptr[5] = p_transform.basis.elements[1][1];
-	dataptr[6] = p_transform.basis.elements[1][2];
+	dataptr[4] = p_transform.basis.rows[1][0];
+	dataptr[5] = p_transform.basis.rows[1][1];
+	dataptr[6] = p_transform.basis.rows[1][2];
 	dataptr[7] = p_transform.origin.y;
-	dataptr[8] = p_transform.basis.elements[2][0];
-	dataptr[9] = p_transform.basis.elements[2][1];
-	dataptr[10] = p_transform.basis.elements[2][2];
+	dataptr[8] = p_transform.basis.rows[2][0];
+	dataptr[9] = p_transform.basis.rows[2][1];
+	dataptr[10] = p_transform.basis.rows[2][2];
 	dataptr[11] = p_transform.origin.z;
 
 	multimesh->dirty_data = true;
@@ -4696,14 +4696,14 @@ void RasterizerStorageGLES3::_multimesh_instance_set_transform_2d(RID p_multimes
 	int stride = multimesh->color_floats + multimesh->xform_floats + multimesh->custom_data_floats;
 	float *dataptr = &multimesh->data.write[stride * p_index];
 
-	dataptr[0] = p_transform.elements[0][0];
-	dataptr[1] = p_transform.elements[1][0];
+	dataptr[0] = p_transform.columns[0][0];
+	dataptr[1] = p_transform.columns[1][0];
 	dataptr[2] = 0;
-	dataptr[3] = p_transform.elements[2][0];
-	dataptr[4] = p_transform.elements[0][1];
-	dataptr[5] = p_transform.elements[1][1];
+	dataptr[3] = p_transform.columns[2][0];
+	dataptr[4] = p_transform.columns[0][1];
+	dataptr[5] = p_transform.columns[1][1];
 	dataptr[6] = 0;
-	dataptr[7] = p_transform.elements[2][1];
+	dataptr[7] = p_transform.columns[2][1];
 
 	multimesh->dirty_data = true;
 	multimesh->dirty_aabb = true;
@@ -4793,17 +4793,17 @@ Transform RasterizerStorageGLES3::_multimesh_instance_get_transform(RID p_multim
 
 	Transform xform;
 
-	xform.basis.elements[0][0] = dataptr[0];
-	xform.basis.elements[0][1] = dataptr[1];
-	xform.basis.elements[0][2] = dataptr[2];
+	xform.basis.rows[0][0] = dataptr[0];
+	xform.basis.rows[0][1] = dataptr[1];
+	xform.basis.rows[0][2] = dataptr[2];
 	xform.origin.x = dataptr[3];
-	xform.basis.elements[1][0] = dataptr[4];
-	xform.basis.elements[1][1] = dataptr[5];
-	xform.basis.elements[1][2] = dataptr[6];
+	xform.basis.rows[1][0] = dataptr[4];
+	xform.basis.rows[1][1] = dataptr[5];
+	xform.basis.rows[1][2] = dataptr[6];
 	xform.origin.y = dataptr[7];
-	xform.basis.elements[2][0] = dataptr[8];
-	xform.basis.elements[2][1] = dataptr[9];
-	xform.basis.elements[2][2] = dataptr[10];
+	xform.basis.rows[2][0] = dataptr[8];
+	xform.basis.rows[2][1] = dataptr[9];
+	xform.basis.rows[2][2] = dataptr[10];
 	xform.origin.z = dataptr[11];
 
 	return xform;
@@ -4819,12 +4819,12 @@ Transform2D RasterizerStorageGLES3::_multimesh_instance_get_transform_2d(RID p_m
 
 	Transform2D xform;
 
-	xform.elements[0][0] = dataptr[0];
-	xform.elements[1][0] = dataptr[1];
-	xform.elements[2][0] = dataptr[3];
-	xform.elements[0][1] = dataptr[4];
-	xform.elements[1][1] = dataptr[5];
-	xform.elements[2][1] = dataptr[7];
+	xform.columns[0][0] = dataptr[0];
+	xform.columns[1][0] = dataptr[1];
+	xform.columns[2][0] = dataptr[3];
+	xform.columns[0][1] = dataptr[4];
+	xform.columns[1][1] = dataptr[5];
+	xform.columns[2][1] = dataptr[7];
 
 	return xform;
 }
@@ -5017,17 +5017,17 @@ void RasterizerStorageGLES3::update_dirty_multimeshes() {
 					float *dataptr = &data[i];
 					Transform xform;
 
-					xform.basis.elements[0][0] = dataptr[0];
-					xform.basis.elements[0][1] = dataptr[1];
-					xform.basis.elements[0][2] = dataptr[2];
+					xform.basis.rows[0][0] = dataptr[0];
+					xform.basis.rows[0][1] = dataptr[1];
+					xform.basis.rows[0][2] = dataptr[2];
 					xform.origin.x = dataptr[3];
-					xform.basis.elements[1][0] = dataptr[4];
-					xform.basis.elements[1][1] = dataptr[5];
-					xform.basis.elements[1][2] = dataptr[6];
+					xform.basis.rows[1][0] = dataptr[4];
+					xform.basis.rows[1][1] = dataptr[5];
+					xform.basis.rows[1][2] = dataptr[6];
 					xform.origin.y = dataptr[7];
-					xform.basis.elements[2][0] = dataptr[8];
-					xform.basis.elements[2][1] = dataptr[9];
-					xform.basis.elements[2][2] = dataptr[10];
+					xform.basis.rows[2][0] = dataptr[8];
+					xform.basis.rows[2][1] = dataptr[9];
+					xform.basis.rows[2][2] = dataptr[10];
 					xform.origin.z = dataptr[11];
 
 					AABB laabb = xform.xform(mesh_aabb);
@@ -5046,7 +5046,7 @@ void RasterizerStorageGLES3::update_dirty_multimeshes() {
 			int num_linked = multimesh->linked_canvas_items.size();
 			for (int n = 0; n < num_linked; n++) {
 				const RID &rid = multimesh->linked_canvas_items[n];
-				VSG::canvas->_canvas_item_invalidate_local_bound(rid);
+				RSG::canvas->_canvas_item_invalidate_local_bound(rid);
 			}
 		}
 		multimesh->dirty_aabb = false;
@@ -5402,7 +5402,7 @@ void RasterizerStorageGLES3::update_dirty_skeletons() {
 		int num_linked = skeleton->linked_canvas_items.size();
 		for (int n = 0; n < num_linked; n++) {
 			const RID &rid = skeleton->linked_canvas_items[n];
-			VSG::canvas->_canvas_item_invalidate_local_bound(rid);
+			RSG::canvas->_canvas_item_invalidate_local_bound(rid);
 		}
 
 		ele = ele->next();
@@ -5547,7 +5547,7 @@ void RasterizerStorageGLES3::light_set_reverse_cull_face_mode(RID p_light, bool 
 }
 
 void RasterizerStorageGLES3::light_set_use_gi(RID p_light, bool p_enabled) {
-	WARN_DEPRECATED_MSG("'RenderingServer.light_set_use_gi' is deprecated and will be removed in a future version. Use 'VisualServer.light_set_bake_mode' instead.");
+	WARN_DEPRECATED_MSG("'RenderingServer.light_set_use_gi' is deprecated and will be removed in a future version. Use 'RenderingServer.light_set_bake_mode' instead.");
 	light_set_bake_mode(p_light, p_enabled ? RS::LightBakeMode::LIGHT_BAKE_INDIRECT : RS::LightBakeMode::LIGHT_BAKE_DISABLED);
 }
 
@@ -7927,7 +7927,7 @@ bool RasterizerStorageGLES3::free(RID p_rid) {
 		int num_linked = multimesh->linked_canvas_items.size();
 		for (int n = 0; n < num_linked; n++) {
 			const RID &rid = multimesh->linked_canvas_items[n];
-			VSG::canvas->_canvas_item_remove_references(rid, p_rid);
+			RSG::canvas->_canvas_item_remove_references(rid, p_rid);
 		}
 
 		// delete the texture

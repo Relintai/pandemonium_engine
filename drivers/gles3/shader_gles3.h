@@ -34,6 +34,7 @@
 #include "core/containers/hash_map.h"
 #include "core/containers/local_vector.h"
 #include "core/containers/rb_map.h"
+#include "core/containers/og_hash_map.h"
 #include "core/math/projection.h"
 #include "core/os/safe_refcount.h"
 #include "core/containers/self_list.h"
@@ -231,7 +232,7 @@ private:
 	};
 
 	//this should use a way more cachefriendly version..
-	HashMap<VersionKey, Version, VersionKeyHash> version_map;
+	OGHashMap<VersionKey, Version, VersionKeyHash> version_map;
 
 	HashMap<uint32_t, CustomCode> custom_code_map;
 	uint32_t last_custom_code;

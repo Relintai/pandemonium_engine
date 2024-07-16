@@ -1202,7 +1202,7 @@ public:
 		bool use_local_coords;
 		RID process_material;
 
-		ParticlesDrawOrder draw_order;
+		RS::ParticlesDrawOrder draw_order;
 
 		Vector<RID> draw_passes;
 
@@ -1246,7 +1246,7 @@ public:
 				restart_request(false),
 				custom_aabb(AABB(Vector3(-4, -4, -4), Vector3(8, 8, 8))),
 				use_local_coords(true),
-				draw_order(PARTICLES_DRAW_ORDER_INDEX),
+				draw_order(RS::PARTICLES_DRAW_ORDER_INDEX),
 				histories_enabled(false),
 				particle_element(this),
 				prev_ticks(0),
@@ -1297,7 +1297,7 @@ public:
 	virtual void particles_set_fractional_delta(RID p_particles, bool p_enable);
 	virtual void particles_restart(RID p_particles);
 
-	virtual void particles_set_draw_order(RID p_particles, ParticlesDrawOrder p_order);
+	virtual void particles_set_draw_order(RID p_particles, RS::ParticlesDrawOrder p_order);
 
 	virtual void particles_set_draw_passes(RID p_particles, int p_passes);
 	virtual void particles_set_draw_pass_mesh(RID p_particles, int p_pass, RID p_mesh);

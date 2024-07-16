@@ -52,17 +52,17 @@ const GLenum RasterizerSceneGLES3::_cube_side_enum[6] = {
 };
 
 void RasterizerSceneGLES3::store_transform(const Transform &p_mtx, float *p_array) {
-	p_array[0] = p_mtx.basis.elements[0][0];
-	p_array[1] = p_mtx.basis.elements[1][0];
-	p_array[2] = p_mtx.basis.elements[2][0];
+	p_array[0] = p_mtx.basis.rows[0][0];
+	p_array[1] = p_mtx.basis.rows[1][0];
+	p_array[2] = p_mtx.basis.rows[2][0];
 	p_array[3] = 0;
-	p_array[4] = p_mtx.basis.elements[0][1];
-	p_array[5] = p_mtx.basis.elements[1][1];
-	p_array[6] = p_mtx.basis.elements[2][1];
+	p_array[4] = p_mtx.basis.rows[0][1];
+	p_array[5] = p_mtx.basis.rows[1][1];
+	p_array[6] = p_mtx.basis.rows[2][1];
 	p_array[7] = 0;
-	p_array[8] = p_mtx.basis.elements[0][2];
-	p_array[9] = p_mtx.basis.elements[1][2];
-	p_array[10] = p_mtx.basis.elements[2][2];
+	p_array[8] = p_mtx.basis.rows[0][2];
+	p_array[9] = p_mtx.basis.rows[1][2];
+	p_array[10] = p_mtx.basis.rows[2][2];
 	p_array[11] = 0;
 	p_array[12] = p_mtx.origin.x;
 	p_array[13] = p_mtx.origin.y;
@@ -3444,7 +3444,7 @@ void RasterizerSceneGLES3::_render_mrts(Environment3D *env, const Projection &p_
 	if (state.used_sss) { //sss enabled
 		//copy diffuse while performing sss
 
-		Plane p = p_cam_projection.xform4(Plane(1, 0, -1, 1));
+		Plane p = p_cam_projection.xform(Plane(1, 0, -1, 1));
 		p.normal /= p.d;
 		float unit_size = p.normal.x;
 

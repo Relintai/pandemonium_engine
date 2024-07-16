@@ -170,7 +170,7 @@ ShaderCacheGLES3::ShaderCacheGLES3() {
 	storage_size = (int)GLOBAL_GET("rendering/gles3/shaders/shader_cache_size_mb") * 1024 * 1024;
 
 	storage_da = DirAccess::create(DirAccess::ACCESS_FILESYSTEM);
-	storage_path = OS::get_singleton()->get_cache_path().plus_file(OS::get_singleton()->get_godot_dir_name()).plus_file("shaders");
+	storage_path = OS::get_singleton()->get_cache_path().plus_file(OS::get_singleton()->get_pandemonium_dir_name()).plus_file("shaders");
 
 	print_verbose("Shader cache path: " + storage_path);
 	if (storage_da->make_dir_recursive(storage_path) != OK) {
