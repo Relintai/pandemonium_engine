@@ -885,13 +885,17 @@ public:
 
 		// rasterizer selection
 		rasterizer_container = memnew(VBoxContainer);
+		rasterizer_container->set_h_size_flags(SIZE_EXPAND_FILL);
 		vb->add_child(rasterizer_container);
+
 		l = memnew(Label);
 		l->set_text(TTR("Renderer:"));
 		rasterizer_container->add_child(l);
-		Container *rshb = memnew(HBoxContainer);
-		rasterizer_container->add_child(rshb);
 		rasterizer_button_group.instance();
+
+		VBoxContainer *rvb = memnew(VBoxContainer);
+		rvb->set_h_size_flags(SIZE_EXPAND_FILL);
+		rasterizer_container->add_child(rvb);
 
 		// Enable GLES3 by default as it's the default value for the project setting.
 #ifndef SERVER_ENABLED
@@ -906,18 +910,11 @@ public:
 		bool gles3_viable = false;
 #endif
 
-		Container *rvb = memnew(VBoxContainer);
-		rvb->set_h_size_flags(SIZE_EXPAND_FILL);
-		rshb->add_child(rvb);
-
-		rvb = memnew(VBoxContainer);
-		rvb->set_h_size_flags(SIZE_EXPAND_FILL);
-		rshb->add_child(rvb);
 		Button *rs_button = memnew(CheckBox);
 		rs_button->set_button_group(rasterizer_button_group);
 		rs_button->set_text(TTR("OpenGL ES 2.0"));
 		rs_button->set_meta("driver_name", "GLES2");
-		rs_button->set_pressed(!gles3_viable);
+		rs_button->set_pressed(true);
 		rvb->add_child(rs_button);
 		l = memnew(Label);
 		l->set_text(TTR("Lower visual quality\nSome features not available\nWorks on most hardware\nRecommended for web games"));
@@ -925,16 +922,14 @@ public:
 
 		#ifndef GLES3_DISABLED
 
-		rshb->add_child(memnew(VSeparator));
+		rvb->add_child(memnew(HSeparator));
 
 		rs_button = memnew(CheckBox);
 		rs_button->set_button_group(rasterizer_button_group);
 		rs_button->set_text(TTR("OpenGL ES 3.0"));
 		rs_button->set_meta("driver_name", "GLES3");
 		rvb->add_child(rs_button);
-		if (gles3_viable) {
-			rs_button->set_pressed(true);
-		} else {
+		if (!gles3_viable) {
 			// If GLES3 can't be used, don't let users shoot themselves in the foot.
 			rs_button->set_disabled(true);
 			l = memnew(Label);
