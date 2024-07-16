@@ -38,7 +38,7 @@
 #include "core/config/engine.h"
 #endif
 
-void Particles2D::set_emitting(bool p_emitting) {
+void GPUParticles2D::set_emitting(bool p_emitting) {
 	// Do not return even if `p_emitting == emitting` because `emitting` is just an approximation.
 
 	if (p_emitting && one_shot) {
@@ -65,18 +65,18 @@ void Particles2D::set_emitting(bool p_emitting) {
 	RS::get_singleton()->particles_set_emitting(particles, p_emitting);
 }
 
-void Particles2D::set_amount(int p_amount) {
+void GPUParticles2D::set_amount(int p_amount) {
 	ERR_FAIL_COND_MSG(p_amount < 1, "Amount of particles cannot be smaller than 1.");
 	amount = p_amount;
 	RS::get_singleton()->particles_set_amount(particles, amount);
 }
-void Particles2D::set_lifetime(float p_lifetime) {
-	ERR_FAIL_COND_MSG(p_lifetime <= 0, "Particles lifetime must be greater than 0.");
+void GPUParticles2D::set_lifetime(float p_lifetime) {
+	ERR_FAIL_COND_MSG(p_lifetime <= 0, "GPUParticles lifetime must be greater than 0.");
 	lifetime = p_lifetime;
 	RS::get_singleton()->particles_set_lifetime(particles, lifetime);
 }
 
-void Particles2D::set_one_shot(bool p_enable) {
+void GPUParticles2D::set_one_shot(bool p_enable) {
 	one_shot = p_enable;
 	RS::get_singleton()->particles_set_one_shot(particles, one_shot);
 
@@ -91,19 +91,19 @@ void Particles2D::set_one_shot(bool p_enable) {
 		set_process_internal(false);
 	}
 }
-void Particles2D::set_pre_process_time(float p_time) {
+void GPUParticles2D::set_pre_process_time(float p_time) {
 	pre_process_time = p_time;
 	RS::get_singleton()->particles_set_pre_process_time(particles, pre_process_time);
 }
-void Particles2D::set_explosiveness_ratio(float p_ratio) {
+void GPUParticles2D::set_explosiveness_ratio(float p_ratio) {
 	explosiveness_ratio = p_ratio;
 	RS::get_singleton()->particles_set_explosiveness_ratio(particles, explosiveness_ratio);
 }
-void Particles2D::set_randomness_ratio(float p_ratio) {
+void GPUParticles2D::set_randomness_ratio(float p_ratio) {
 	randomness_ratio = p_ratio;
 	RS::get_singleton()->particles_set_randomness_ratio(particles, randomness_ratio);
 }
-void Particles2D::set_visibility_rect(const Rect2 &p_visibility_rect) {
+void GPUParticles2D::set_visibility_rect(const Rect2 &p_visibility_rect) {
 	visibility_rect = p_visibility_rect;
 	AABB aabb;
 	aabb.position.x = p_visibility_rect.position.x;
@@ -116,7 +116,7 @@ void Particles2D::set_visibility_rect(const Rect2 &p_visibility_rect) {
 	_change_notify("visibility_rect");
 	update();
 }
-void Particles2D::set_use_local_coordinates(bool p_enable) {
+void GPUParticles2D::set_use_local_coordinates(bool p_enable) {
 	local_coords = p_enable;
 	RS::get_singleton()->particles_set_use_local_coordinates(particles, local_coords);
 	set_notify_transform(!p_enable);
@@ -125,7 +125,7 @@ void Particles2D::set_use_local_coordinates(bool p_enable) {
 	}
 }
 
-void Particles2D::_update_particle_emission_transform() {
+void GPUParticles2D::_update_particle_emission_transform() {
 	Transform2D xf2d = get_global_transform();
 	Transform xf;
 	xf.basis.set_axis(0, Vector3(xf2d.get_axis(0).x, xf2d.get_axis(0).y, 0));
@@ -135,7 +135,7 @@ void Particles2D::_update_particle_emission_transform() {
 	RS::get_singleton()->particles_set_emission_transform(particles, xf);
 }
 
-void Particles2D::set_process_material(const Ref<Material> &p_material) {
+void GPUParticles2D::set_process_material(const Ref<Material> &p_material) {
 	process_material = p_material;
 	Ref<ParticlesMaterial> pm = p_material;
 	if (pm.is_valid() && !pm->get_flag(ParticlesMaterial::FLAG_DISABLE_Z) && pm->get_gravity() == Vector3(0, -9.8, 0)) {
@@ -152,82 +152,82 @@ void Particles2D::set_process_material(const Ref<Material> &p_material) {
 	update_configuration_warning();
 }
 
-void Particles2D::set_speed_scale(float p_scale) {
+void GPUParticles2D::set_speed_scale(float p_scale) {
 	speed_scale = p_scale;
 	RS::get_singleton()->particles_set_speed_scale(particles, p_scale);
 }
 
 #ifdef TOOLS_ENABLED
-void Particles2D::set_show_visibility_rect(bool p_show_visibility_rect) {
+void GPUParticles2D::set_show_visibility_rect(bool p_show_visibility_rect) {
 	show_visibility_rect = p_show_visibility_rect;
 	update();
 }
 #endif
 
-bool Particles2D::is_emitting() const {
+bool GPUParticles2D::is_emitting() const {
 	return emitting;
 }
-int Particles2D::get_amount() const {
+int GPUParticles2D::get_amount() const {
 	return amount;
 }
-float Particles2D::get_lifetime() const {
+float GPUParticles2D::get_lifetime() const {
 	return lifetime;
 }
 
-bool Particles2D::get_one_shot() const {
+bool GPUParticles2D::get_one_shot() const {
 	return one_shot;
 }
-float Particles2D::get_pre_process_time() const {
+float GPUParticles2D::get_pre_process_time() const {
 	return pre_process_time;
 }
-float Particles2D::get_explosiveness_ratio() const {
+float GPUParticles2D::get_explosiveness_ratio() const {
 	return explosiveness_ratio;
 }
-float Particles2D::get_randomness_ratio() const {
+float GPUParticles2D::get_randomness_ratio() const {
 	return randomness_ratio;
 }
-Rect2 Particles2D::get_visibility_rect() const {
+Rect2 GPUParticles2D::get_visibility_rect() const {
 	return visibility_rect;
 }
-bool Particles2D::get_use_local_coordinates() const {
+bool GPUParticles2D::get_use_local_coordinates() const {
 	return local_coords;
 }
-Ref<Material> Particles2D::get_process_material() const {
+Ref<Material> GPUParticles2D::get_process_material() const {
 	return process_material;
 }
 
-float Particles2D::get_speed_scale() const {
+float GPUParticles2D::get_speed_scale() const {
 	return speed_scale;
 }
 
-void Particles2D::set_draw_order(DrawOrder p_order) {
+void GPUParticles2D::set_draw_order(DrawOrder p_order) {
 	draw_order = p_order;
 	RS::get_singleton()->particles_set_draw_order(particles, RS::ParticlesDrawOrder(p_order));
 }
 
-Particles2D::DrawOrder Particles2D::get_draw_order() const {
+GPUParticles2D::DrawOrder GPUParticles2D::get_draw_order() const {
 	return draw_order;
 }
 
-void Particles2D::set_fixed_fps(int p_count) {
+void GPUParticles2D::set_fixed_fps(int p_count) {
 	fixed_fps = p_count;
 	RS::get_singleton()->particles_set_fixed_fps(particles, p_count);
 }
 
-int Particles2D::get_fixed_fps() const {
+int GPUParticles2D::get_fixed_fps() const {
 	return fixed_fps;
 }
 
-void Particles2D::set_fractional_delta(bool p_enable) {
+void GPUParticles2D::set_fractional_delta(bool p_enable) {
 	fractional_delta = p_enable;
 	RS::get_singleton()->particles_set_fractional_delta(particles, p_enable);
 }
 
-bool Particles2D::get_fractional_delta() const {
+bool GPUParticles2D::get_fractional_delta() const {
 	return fractional_delta;
 }
 
-String Particles2D::get_configuration_warning() const {
+String GPUParticles2D::get_configuration_warning() const {
 	String warning = Node2D::get_configuration_warning();
 
 	if (OS::get_singleton()->get_current_video_driver() == OS::VIDEO_DRIVER_GLES2) {
@@ -243,7 +243,7 @@ String Particles2D::get_configuration_warning() const {
 		warning += "\n\n";
 	}
 
-	warning += "- " + TTR("On macOS, Particles2D rendering is much slower than CPUParticles2D due to transform feedback being implemented on the CPU instead of the GPU.\nConsider using CPUParticles2D instead when targeting macOS.\nYou can use the \"Convert to CPUParticles2D\" toolbar option for this purpose.");
+	warning += "- " + TTR("On macOS, GPUParticles2D rendering is much slower than CPUParticles2D due to transform feedback being implemented on the CPU instead of the GPU.\nConsider using CPUParticles2D instead when targeting macOS.\nYou can use the \"Convert to CPUParticles2D\" toolbar option for this purpose.");
 #endif
 
 	if (process_material.is_null()) {
@@ -262,7 +262,7 @@ String Particles2D::get_configuration_warning() const {
 				if (warning != String()) {
 					warning += "\n\n";
 				}
-				warning += "- " + TTR("Particles2D animation requires the usage of a CanvasItemMaterial with \"Particles Animation\" enabled.");
+				warning += "- " + TTR("GPUParticles2D animation requires the usage of a CanvasItemMaterial with \"GPUParticles Animation\" enabled.");
 			}
 		}
 	}
@@ -270,7 +270,7 @@ String Particles2D::get_configuration_warning() const {
 	return warning;
 }
 
-Rect2 Particles2D::capture_rect() const {
+Rect2 GPUParticles2D::capture_rect() const {
 	AABB aabb = RS::get_singleton()->particles_get_current_aabb(particles);
 	Rect2 r;
 	r.position.x = aabb.position.x;
@@ -280,28 +280,28 @@ Rect2 Particles2D::capture_rect() const {
 	return r;
 }
 
-void Particles2D::set_texture(const Ref<Texture> &p_texture) {
+void GPUParticles2D::set_texture(const Ref<Texture> &p_texture) {
 	texture = p_texture;
 	update();
 }
 
-Ref<Texture> Particles2D::get_texture() const {
+Ref<Texture> GPUParticles2D::get_texture() const {
 	return texture;
 }
 
-void Particles2D::set_normal_map(const Ref<Texture> &p_normal_map) {
+void GPUParticles2D::set_normal_map(const Ref<Texture> &p_normal_map) {
 	normal_map = p_normal_map;
 	update();
 }
 
-Ref<Texture> Particles2D::get_normal_map() const {
+Ref<Texture> GPUParticles2D::get_normal_map() const {
 	return normal_map;
 }
 
-void Particles2D::_validate_property(PropertyInfo &property) const {
+void GPUParticles2D::_validate_property(PropertyInfo &property) const {
 }
 
-void Particles2D::restart() {
+void GPUParticles2D::restart() {
 	RS::get_singleton()->particles_restart(particles);
 	RS::get_singleton()->particles_set_emitting(particles, true);
 
@@ -316,7 +316,7 @@ void Particles2D::restart() {
 	}
 }
 
-void Particles2D::_notification(int p_what) {
+void GPUParticles2D::_notification(int p_what) {
 	if (p_what == NOTIFICATION_DRAW) {
 		RID texture_rid;
 		if (texture.is_valid()) {
@@ -370,47 +370,47 @@ void Particles2D::_notification(int p_what) {
 	}
 }
 
-void Particles2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("set_emitting", "emitting"), &Particles2D::set_emitting);
-	ClassDB::bind_method(D_METHOD("set_amount", "amount"), &Particles2D::set_amount);
-	ClassDB::bind_method(D_METHOD("set_lifetime", "secs"), &Particles2D::set_lifetime);
-	ClassDB::bind_method(D_METHOD("set_one_shot", "secs"), &Particles2D::set_one_shot);
-	ClassDB::bind_method(D_METHOD("set_pre_process_time", "secs"), &Particles2D::set_pre_process_time);
-	ClassDB::bind_method(D_METHOD("set_explosiveness_ratio", "ratio"), &Particles2D::set_explosiveness_ratio);
-	ClassDB::bind_method(D_METHOD("set_randomness_ratio", "ratio"), &Particles2D::set_randomness_ratio);
-	ClassDB::bind_method(D_METHOD("set_visibility_rect", "visibility_rect"), &Particles2D::set_visibility_rect);
-	ClassDB::bind_method(D_METHOD("set_use_local_coordinates", "enable"), &Particles2D::set_use_local_coordinates);
-	ClassDB::bind_method(D_METHOD("set_fixed_fps", "fps"), &Particles2D::set_fixed_fps);
-	ClassDB::bind_method(D_METHOD("set_fractional_delta", "enable"), &Particles2D::set_fractional_delta);
-	ClassDB::bind_method(D_METHOD("set_process_material", "material"), &Particles2D::set_process_material);
-	ClassDB::bind_method(D_METHOD("set_speed_scale", "scale"), &Particles2D::set_speed_scale);
+void GPUParticles2D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_emitting", "emitting"), &GPUParticles2D::set_emitting);
+	ClassDB::bind_method(D_METHOD("set_amount", "amount"), &GPUParticles2D::set_amount);
+	ClassDB::bind_method(D_METHOD("set_lifetime", "secs"), &GPUParticles2D::set_lifetime);
+	ClassDB::bind_method(D_METHOD("set_one_shot", "secs"), &GPUParticles2D::set_one_shot);
+	ClassDB::bind_method(D_METHOD("set_pre_process_time", "secs"), &GPUParticles2D::set_pre_process_time);
+	ClassDB::bind_method(D_METHOD("set_explosiveness_ratio", "ratio"), &GPUParticles2D::set_explosiveness_ratio);
+	ClassDB::bind_method(D_METHOD("set_randomness_ratio", "ratio"), &GPUParticles2D::set_randomness_ratio);
+	ClassDB::bind_method(D_METHOD("set_visibility_rect", "visibility_rect"), &GPUParticles2D::set_visibility_rect);
+	ClassDB::bind_method(D_METHOD("set_use_local_coordinates", "enable"), &GPUParticles2D::set_use_local_coordinates);
+	ClassDB::bind_method(D_METHOD("set_fixed_fps", "fps"), &GPUParticles2D::set_fixed_fps);
+	ClassDB::bind_method(D_METHOD("set_fractional_delta", "enable"), &GPUParticles2D::set_fractional_delta);
+	ClassDB::bind_method(D_METHOD("set_process_material", "material"), &GPUParticles2D::set_process_material);
+	ClassDB::bind_method(D_METHOD("set_speed_scale", "scale"), &GPUParticles2D::set_speed_scale);
 
-	ClassDB::bind_method(D_METHOD("is_emitting"), &Particles2D::is_emitting);
-	ClassDB::bind_method(D_METHOD("get_amount"), &Particles2D::get_amount);
-	ClassDB::bind_method(D_METHOD("get_lifetime"), &Particles2D::get_lifetime);
-	ClassDB::bind_method(D_METHOD("get_one_shot"), &Particles2D::get_one_shot);
-	ClassDB::bind_method(D_METHOD("get_pre_process_time"), &Particles2D::get_pre_process_time);
-	ClassDB::bind_method(D_METHOD("get_explosiveness_ratio"), &Particles2D::get_explosiveness_ratio);
-	ClassDB::bind_method(D_METHOD("get_randomness_ratio"), &Particles2D::get_randomness_ratio);
-	ClassDB::bind_method(D_METHOD("get_visibility_rect"), &Particles2D::get_visibility_rect);
-	ClassDB::bind_method(D_METHOD("get_use_local_coordinates"), &Particles2D::get_use_local_coordinates);
-	ClassDB::bind_method(D_METHOD("get_fixed_fps"), &Particles2D::get_fixed_fps);
-	ClassDB::bind_method(D_METHOD("get_fractional_delta"), &Particles2D::get_fractional_delta);
-	ClassDB::bind_method(D_METHOD("get_process_material"), &Particles2D::get_process_material);
-	ClassDB::bind_method(D_METHOD("get_speed_scale"), &Particles2D::get_speed_scale);
+	ClassDB::bind_method(D_METHOD("is_emitting"), &GPUParticles2D::is_emitting);
+	ClassDB::bind_method(D_METHOD("get_amount"), &GPUParticles2D::get_amount);
+	ClassDB::bind_method(D_METHOD("get_lifetime"), &GPUParticles2D::get_lifetime);
+	ClassDB::bind_method(D_METHOD("get_one_shot"), &GPUParticles2D::get_one_shot);
+	ClassDB::bind_method(D_METHOD("get_pre_process_time"), &GPUParticles2D::get_pre_process_time);
+	ClassDB::bind_method(D_METHOD("get_explosiveness_ratio"), &GPUParticles2D::get_explosiveness_ratio);
+	ClassDB::bind_method(D_METHOD("get_randomness_ratio"), &GPUParticles2D::get_randomness_ratio);
+	ClassDB::bind_method(D_METHOD("get_visibility_rect"), &GPUParticles2D::get_visibility_rect);
+	ClassDB::bind_method(D_METHOD("get_use_local_coordinates"), &GPUParticles2D::get_use_local_coordinates);
+	ClassDB::bind_method(D_METHOD("get_fixed_fps"), &GPUParticles2D::get_fixed_fps);
+	ClassDB::bind_method(D_METHOD("get_fractional_delta"), &GPUParticles2D::get_fractional_delta);
+	ClassDB::bind_method(D_METHOD("get_process_material"), &GPUParticles2D::get_process_material);
+	ClassDB::bind_method(D_METHOD("get_speed_scale"), &GPUParticles2D::get_speed_scale);
 
-	ClassDB::bind_method(D_METHOD("set_draw_order", "order"), &Particles2D::set_draw_order);
-	ClassDB::bind_method(D_METHOD("get_draw_order"), &Particles2D::get_draw_order);
+	ClassDB::bind_method(D_METHOD("set_draw_order", "order"), &GPUParticles2D::set_draw_order);
+	ClassDB::bind_method(D_METHOD("get_draw_order"), &GPUParticles2D::get_draw_order);
 
-	ClassDB::bind_method(D_METHOD("set_texture", "texture"), &Particles2D::set_texture);
-	ClassDB::bind_method(D_METHOD("get_texture"), &Particles2D::get_texture);
+	ClassDB::bind_method(D_METHOD("set_texture", "texture"), &GPUParticles2D::set_texture);
+	ClassDB::bind_method(D_METHOD("get_texture"), &GPUParticles2D::get_texture);
 
-	ClassDB::bind_method(D_METHOD("set_normal_map", "texture"), &Particles2D::set_normal_map);
-	ClassDB::bind_method(D_METHOD("get_normal_map"), &Particles2D::get_normal_map);
+	ClassDB::bind_method(D_METHOD("set_normal_map", "texture"), &GPUParticles2D::set_normal_map);
+	ClassDB::bind_method(D_METHOD("get_normal_map"), &GPUParticles2D::get_normal_map);
 
-	ClassDB::bind_method(D_METHOD("capture_rect"), &Particles2D::capture_rect);
+	ClassDB::bind_method(D_METHOD("capture_rect"), &GPUParticles2D::capture_rect);
 
-	ClassDB::bind_method(D_METHOD("restart"), &Particles2D::restart);
+	ClassDB::bind_method(D_METHOD("restart"), &GPUParticles2D::restart);
 
 	ADD_SIGNAL(MethodInfo("finished"));
 
@@ -439,7 +439,7 @@ void Particles2D::_bind_methods() {
 	BIND_ENUM_CONSTANT(DRAW_ORDER_LIFETIME);
 }
 
-Particles2D::Particles2D() {
+GPUParticles2D::GPUParticles2D() {
 	particles = RID_PRIME(RS::get_singleton()->particles_create());
 
 	one_shot = false; // Needed so that set_emitting doesn't access uninitialized values
@@ -461,7 +461,7 @@ Particles2D::Particles2D() {
 #endif
 }
 
-Particles2D::~Particles2D() {
+GPUParticles2D::~GPUParticles2D() {
 	if (particles.is_valid()) {
 		RS::get_singleton()->free(particles);
 	}

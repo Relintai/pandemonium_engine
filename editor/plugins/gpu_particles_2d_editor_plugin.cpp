@@ -44,15 +44,15 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/spin_box.h"
 
-void Particles2DEditorPlugin::edit(Object *p_object) {
-	particles = Object::cast_to<Particles2D>(p_object);
+void GPUParticles2DEditorPlugin::edit(Object *p_object) {
+	particles = Object::cast_to<GPUParticles2D>(p_object);
 }
 
-bool Particles2DEditorPlugin::handles(Object *p_object) const {
-	return p_object->is_class("Particles2D");
+bool GPUParticles2DEditorPlugin::handles(Object *p_object) const {
+	return p_object->is_class("GPUParticles2D");
 }
 
-void Particles2DEditorPlugin::make_visible(bool p_visible) {
+void GPUParticles2DEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
 		toolbar->show();
 	} else {
@@ -60,12 +60,12 @@ void Particles2DEditorPlugin::make_visible(bool p_visible) {
 	}
 }
 
-void Particles2DEditorPlugin::_file_selected(const String &p_file) {
+void GPUParticles2DEditorPlugin::_file_selected(const String &p_file) {
 	source_emission_file = p_file;
 	emission_mask->popup_centered_minsize();
 }
 
-void Particles2DEditorPlugin::_selection_changed() {
+void GPUParticles2DEditorPlugin::_selection_changed() {
 	List<Node *> selected_nodes = editor->get_editor_selection()->get_selected_node_list();
 
 	if (selected_particles.empty() && selected_nodes.empty()) {
@@ -79,7 +79,7 @@ void Particles2DEditorPlugin::_selection_changed() {
 	selected_particles.clear();
 
 	for (int i = 0; i < selected_nodes.size(); i++) {
-		Particles2D *selected_particle = Object::cast_to<Particles2D>(selected_nodes[i]);
+		GPUParticles2D *selected_particle = Object::cast_to<GPUParticles2D>(selected_nodes[i]);
 		if (selected_particle != nullptr) {
 			selected_particle->set_show_visibility_rect(true);
 			selected_particles.push_back(selected_particle);
@@ -87,7 +87,7 @@ void Particles2DEditorPlugin::_selection_changed() {
 	}
 }
 
-void Particles2DEditorPlugin::_menu_callback(int p_idx) {
+void GPUParticles2DEditorPlugin::_menu_callback(int p_idx) {
 	switch (p_idx) {
 		case MENU_GENERATE_VISIBILITY_RECT: {
 			// Add one second to the default generation lifetime, since the progress is updated every second.
@@ -133,7 +133,7 @@ void Particles2DEditorPlugin::_menu_callback(int p_idx) {
 	}
 }
 
-void Particles2DEditorPlugin::_generate_visibility_rect() {
+void GPUParticles2DEditorPlugin::_generate_visibility_rect() {
 	float time = generate_seconds->get_value();
 
 	float running = 0.0;
@@ -172,7 +172,7 @@ void Particles2DEditorPlugin::_generate_visibility_rect() {
 	undo_redo->commit_action();
 }
 
-void Particles2DEditorPlugin::_generate_emission_mask() {
+void GPUParticles2DEditorPlugin::_generate_emission_mask() {
 	Ref<ParticlesMaterial> pm = particles->get_process_material();
 	if (!pm.is_valid()) {
 		EditorNode::get_singleton()->show_warning(TTR("Can only set point into a ParticlesMaterial process material"));
@@ -360,24 +360,24 @@ void Particles2DEditorPlugin::_generate_emission_mask() {
 	}
 }
 
-void Particles2DEditorPlugin::_notification(int p_what) {
+void GPUParticles2DEditorPlugin::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE) {
 		menu->get_popup()->connect("id_pressed", this, "_menu_callback");
-		menu->set_icon(menu->get_popup()->get_theme_icon("Particles2D", "EditorIcons"));
+		menu->set_icon(menu->get_popup()->get_theme_icon("GPUParticles2D", "EditorIcons"));
 		file->connect("file_selected", this, "_file_selected");
 		EditorNode::get_singleton()->get_editor_selection()->connect("selection_changed", this, "_selection_changed");
 	}
 }
 
-void Particles2DEditorPlugin::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_menu_callback"), &Particles2DEditorPlugin::_menu_callback);
-	ClassDB::bind_method(D_METHOD("_file_selected"), &Particles2DEditorPlugin::_file_selected);
-	ClassDB::bind_method(D_METHOD("_selection_changed"), &Particles2DEditorPlugin::_selection_changed);
-	ClassDB::bind_method(D_METHOD("_generate_visibility_rect"), &Particles2DEditorPlugin::_generate_visibility_rect);
-	ClassDB::bind_method(D_METHOD("_generate_emission_mask"), &Particles2DEditorPlugin::_generate_emission_mask);
+void GPUParticles2DEditorPlugin::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_menu_callback"), &GPUParticles2DEditorPlugin::_menu_callback);
+	ClassDB::bind_method(D_METHOD("_file_selected"), &GPUParticles2DEditorPlugin::_file_selected);
+	ClassDB::bind_method(D_METHOD("_selection_changed"), &GPUParticles2DEditorPlugin::_selection_changed);
+	ClassDB::bind_method(D_METHOD("_generate_visibility_rect"), &GPUParticles2DEditorPlugin::_generate_visibility_rect);
+	ClassDB::bind_method(D_METHOD("_generate_emission_mask"), &GPUParticles2DEditorPlugin::_generate_emission_mask);
 }
 
-Particles2DEditorPlugin::Particles2DEditorPlugin(EditorNode *p_node) {
+GPUParticles2DEditorPlugin::GPUParticles2DEditorPlugin(EditorNode *p_node) {
 	particles = nullptr;
 	editor = p_node;
 	undo_redo = editor->get_undo_redo();
@@ -397,7 +397,7 @@ Particles2DEditorPlugin::Particles2DEditorPlugin(EditorNode *p_node) {
 	menu->get_popup()->add_item(TTR("Convert to CPUParticles2D"), MENU_OPTION_CONVERT_TO_CPU_PARTICLES);
 	menu->get_popup()->add_separator();
 	menu->get_popup()->add_item(TTR("Restart"), MENU_RESTART);
-	menu->set_text(TTR("Particles"));
+	menu->set_text(TTR("GPUParticles"));
 	menu->set_switch_on_hover(true);
 	toolbar->add_child(menu);
 
@@ -449,5 +449,5 @@ Particles2DEditorPlugin::Particles2DEditorPlugin(EditorNode *p_node) {
 	emission_mask->connect("confirmed", this, "_generate_emission_mask");
 }
 
-Particles2DEditorPlugin::~Particles2DEditorPlugin() {
+GPUParticles2DEditorPlugin::~GPUParticles2DEditorPlugin() {
 }

@@ -35,9 +35,9 @@
 #include "scene/3d/visual_instance.h"
 #include "scene/resources/material/material.h"
 
-class Particles : public GeometryInstance {
+class GPUParticles : public GeometryInstance {
 private:
-	GDCLASS(Particles, GeometryInstance);
+	GDCLASS(GPUParticles, GeometryInstance);
 
 public:
 	enum DrawOrder {
@@ -131,10 +131,10 @@ public:
 	void restart();
 
 	AABB capture_aabb() const;
-	Particles();
-	~Particles();
+	GPUParticles();
+	~GPUParticles();
 };
 
-VARIANT_ENUM_CAST(Particles::DrawOrder)
+VARIANT_ENUM_CAST(GPUParticles::DrawOrder)
 
 #endif // PARTICLES_H

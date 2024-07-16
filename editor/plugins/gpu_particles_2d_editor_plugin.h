@@ -37,10 +37,10 @@
 
 class SpinBox;
 class EditorFileDialog;
-class Particles2D;
+class GPUParticles2D;
 
-class Particles2DEditorPlugin : public EditorPlugin {
-	GDCLASS(Particles2DEditorPlugin, EditorPlugin);
+class GPUParticles2DEditorPlugin : public EditorPlugin {
+	GDCLASS(GPUParticles2DEditorPlugin, EditorPlugin);
 
 	enum {
 
@@ -57,8 +57,8 @@ class Particles2DEditorPlugin : public EditorPlugin {
 		EMISSION_MODE_BORDER_DIRECTED
 	};
 
-	Particles2D *particles;
-	List<Particles2D *> selected_particles;
+	GPUParticles2D *particles;
+	List<GPUParticles2D *> selected_particles;
 
 	EditorFileDialog *file;
 	EditorNode *editor;
@@ -89,14 +89,14 @@ protected:
 	static void _bind_methods();
 
 public:
-	virtual String get_name() const { return "Particles2D"; }
+	virtual String get_name() const { return "GPUParticles2D"; }
 	bool has_main_screen() const { return false; }
 	virtual void edit(Object *p_object);
 	virtual bool handles(Object *p_object) const;
 	virtual void make_visible(bool p_visible);
 
-	Particles2DEditorPlugin(EditorNode *p_node);
-	~Particles2DEditorPlugin();
+	GPUParticles2DEditorPlugin(EditorNode *p_node);
+	~GPUParticles2DEditorPlugin();
 };
 
 #endif // PARTICLES_2D_EDITOR_PLUGIN_H

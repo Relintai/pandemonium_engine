@@ -35,9 +35,9 @@
 #include "scene/main/node_2d.h"
 #include "scene/resources/texture.h"
 
-class Particles2D : public Node2D {
+class GPUParticles2D : public Node2D {
 private:
-	GDCLASS(Particles2D, Node2D);
+	GDCLASS(GPUParticles2D, Node2D);
 
 public:
 	enum DrawOrder {
@@ -133,10 +133,10 @@ public:
 
 	void restart();
 	Rect2 capture_rect() const;
-	Particles2D();
-	~Particles2D();
+	GPUParticles2D();
+	~GPUParticles2D();
 };
 
-VARIANT_ENUM_CAST(Particles2D::DrawOrder)
+VARIANT_ENUM_CAST(GPUParticles2D::DrawOrder)
 
 #endif // PARTICLES_2D_H
