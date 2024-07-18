@@ -49,7 +49,7 @@ int Sqlite3QueryResult::run_query_finished(void *data, int argc, char **argv, ch
 		Cell c;
 
 		if (argv[i]) {
-			c.data = argv[i];
+			c.data = String::utf8(argv[i]);
 		} else {
 			c.null = true;
 		}
