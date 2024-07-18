@@ -348,6 +348,7 @@ void UserManagerDB::_update_table(const int p_current_table_version) {
 }
 
 void UserManagerDB::_create_default_entries(const int p_seed) {
+	/*
 	Ref<User> user;
 	user = create_user();
 
@@ -366,6 +367,7 @@ void UserManagerDB::_create_default_entries(const int p_seed) {
 
 	user->create_password("Password");
 	user->save();
+	*/
 }
 
 void UserManagerDB::migrate(const bool p_clear, const bool p_should_seed, const int p_seed) {
