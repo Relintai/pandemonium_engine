@@ -1,4 +1,4 @@
-/*************************************************************************/
+//
 /*  user_web_page.cpp                                                    */
 /*************************************************************************/
 /*                         This file is part of:                         */
@@ -77,11 +77,11 @@ void UserWebPage::set_logged_in_error_code(const int val) {
 	_logged_in_error_code = val;
 }
 
-bool UserWebPage::get_render_menu() {
-	return _render_menu;
+bool UserWebPage::get_should_render_menu() {
+	return _should_render_menu;
 }
-void UserWebPage::set_render_menu(const bool val) {
-	_render_menu = val;
+void UserWebPage::set_should_render_menu(const bool val) {
+	_should_render_menu = val;
 }
 
 void UserWebPage::_handle_request(Ref<WebServerRequest> request) {
@@ -111,7 +111,7 @@ void UserWebPage::handle_not_logged_in(Ref<WebServerRequest> request) {
 void UserWebPage::_handle_not_logged_in(Ref<WebServerRequest> request) {
 	switch (_logged_out_render_type) {
 		case RENDER_TYPE_RENDER:
-			if (_render_menu) {
+			if (_should_render_menu) {
 				render_menu(request);
 			}
 
@@ -136,7 +136,7 @@ void UserWebPage::handle_logged_in(Ref<WebServerRequest> request) {
 void UserWebPage::_handle_logged_in(Ref<WebServerRequest> request) {
 	switch (_logged_in_render_type) {
 		case RENDER_TYPE_RENDER:
-			if (_render_menu) {
+			if (_should_render_menu) {
 				render_menu(request);
 			}
 
@@ -161,11 +161,21 @@ UserWebPage::UserWebPage() {
 	_logged_in_render_type = RENDER_TYPE_RENDER;
 	_logged_in_error_code = 404;
 
-	_render_menu = true;
+	_should_render_menu = true;
 }
 
 UserWebPage::~UserWebPage() {
 }
+
+#ifndef DISABLE_DEPRECATED
+bool UserWebPage::_set(const StringName &p_name, const Variant &p_value) {
+	if (p_name == "render_menu") {
+		_should_render_menu = p_value;
+		return true;
+	}
+	return false;
+}
+#endif // DISABLE_DEPRECATED
 
 void UserWebPage::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_render_user_page", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::DICTIONARY, "data")));
@@ -194,9 +204,9 @@ void UserWebPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_logged_in_error_code", "val"), &UserWebPage::set_logged_in_error_code);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "logged_in_error_code"), "set_logged_in_error_code", "get_logged_in_error_code");
 
-	ClassDB::bind_method(D_METHOD("get_render_menu"), &UserWebPage::get_render_menu);
-	ClassDB::bind_method(D_METHOD("set_render_menu", "val"), &UserWebPage::set_render_menu);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "render_menu"), "set_render_menu", "get_render_menu");
+	ClassDB::bind_method(D_METHOD("get_should_render_menu"), &UserWebPage::get_should_render_menu);
+	ClassDB::bind_method(D_METHOD("set_should_render_menu", "val"), &UserWebPage::set_should_render_menu);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "should_render_menu"), "set_should_render_menu", "get_should_render_menu");
 
 	BIND_VMETHOD(MethodInfo("_handle_not_logged_in", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
 	ClassDB::bind_method(D_METHOD("handle_not_logged_in", "request"), &UserWebPage::handle_not_logged_in);

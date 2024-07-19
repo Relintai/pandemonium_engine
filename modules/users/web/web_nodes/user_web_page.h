@@ -68,8 +68,8 @@ public:
 	int get_logged_in_error_code();
 	void set_logged_in_error_code(const int val);
 
-	bool get_render_menu();
-	void set_render_menu(const bool val);
+	bool get_should_render_menu();
+	void set_should_render_menu(const bool val);
 
 	void _handle_request(Ref<WebServerRequest> request);
 	void _render_index(Ref<WebServerRequest> request);
@@ -84,9 +84,13 @@ public:
 	~UserWebPage();
 
 protected:
+#ifndef DISABLE_DEPRECATED
+	bool _set(const StringName &p_name, const Variant &p_value);
+#endif // DISABLE_DEPRECATED
+
 	static void _bind_methods();
 
-	bool _render_menu;
+	bool _should_render_menu;
 
 	RenderType _logged_out_render_type;
 	String _logged_out_redirect_url;
