@@ -32,8 +32,8 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Pandemonium build cache
-        uses: ./.github/actions/pandemonium-cache
+      - name: Restore Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache-restore
         continue-on-error: true
 
       - name: Setup python and scons
@@ -54,6 +54,10 @@ jobs:
           platform: android
           target: release
           tools: false
+
+      - name: Save Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache-save
+        continue-on-error: true
 
       - name: Generate Pandemonium templates
         run: |

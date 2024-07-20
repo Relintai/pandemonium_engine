@@ -31,8 +31,8 @@ jobs:
         run: |
           emcc -v
 
-      - name: Setup Pandemonium build cache
-        uses: ./.github/actions/pandemonium-cache
+      - name: Restore Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache-restore
         continue-on-error: true
 
       - name: Setup python and scons
@@ -45,6 +45,10 @@ jobs:
           platform: javascript
           target: release
           tools: false
+
+      - name: Save Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache-save
+        continue-on-error: true
 
       - name: Upload artifact
         uses: ./.github/actions/upload-artifact

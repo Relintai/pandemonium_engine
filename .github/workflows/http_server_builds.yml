@@ -45,8 +45,8 @@ jobs:
               libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev \
               libdbus-1-dev libudev-dev libxi-dev libxrandr-dev yasm xvfb wget unzip
 
-      - name: Setup Pandemonium build cache
-        uses: ./.github/actions/pandemonium-cache
+      - name: Restore Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache-restore
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
@@ -61,6 +61,10 @@ jobs:
           platform: server
           target: ${{ matrix.target }}
           tools: ${{ matrix.tools }}
+      
+      - name: Save Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache-save
+        continue-on-error: true
 
       - name: Prepare artifact
         if: ${{ matrix.artifact }}

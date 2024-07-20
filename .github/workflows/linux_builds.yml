@@ -61,8 +61,8 @@ jobs:
           sudo rm -rf /usr/local/lib/android
           echo "Disk usage after:" && df -h
 
-      - name: Setup Pandemonium build cache
-        uses: ./.github/actions/pandemonium-cache
+      - name: Restore Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache-restore
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
@@ -77,6 +77,10 @@ jobs:
           platform: linuxbsd
           target: ${{ matrix.target }}
           tools: ${{ matrix.tools }}
+
+      - name: Save Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache-save
+        continue-on-error: true
 
       - name: Prepare artifact
         if: ${{ matrix.artifact }}

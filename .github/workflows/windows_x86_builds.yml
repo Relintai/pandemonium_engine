@@ -36,8 +36,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Pandemonium build cache
-        uses: ./.github/actions/pandemonium-cache
+      - name: Restore Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache-restore
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
@@ -58,6 +58,10 @@ jobs:
           target: ${{ matrix.target }}
           tools: ${{ matrix.tools }}
 
+      - name: Save Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache-save
+        continue-on-error: true
+        
       - name: Prepare artifact
         run: |
           Remove-Item bin/* -Include *.exp,*.lib,*.pdb -Force

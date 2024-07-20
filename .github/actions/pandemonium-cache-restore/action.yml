@@ -1,5 +1,5 @@
-name: Setup Pandemonium build cache
-description: Setup Pandemonium build cache.
+name: Restore Pandemonium build cache
+description: Restore Pandemonium build cache.
 inputs:
   cache-name:
     description: The cache base name (job name by default).
@@ -10,9 +10,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    # Upload cache on completion and check it out now
-    - name: Load .scons_cache directory
-      uses: actions/cache@v4
+    - name: Restore .scons_cache directory
+      uses: actions/cache/restore@v4
       with:
         path: ${{inputs.scons-cache}}
         key: ${{inputs.cache-name}}-${{env.PANDEMONIUM_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
