@@ -345,7 +345,6 @@ public:
 		context_gl = env->video->create_the_gl_context(gl_version, view);
 		context_gl->initialize();
 
-
 #ifndef GLES3_DISABLED
 		if (video_driver == VIDEO_DRIVER_GLES3) {
 			RasterizerGLES3::register_config();
