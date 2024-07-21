@@ -40,8 +40,14 @@
 #include "sdl2_adapter.h"
 #include "sdl2_godot_mapping.h"
 
+#ifndef GLES3_DISABLED
+#include "drivers/gles3/rasterizer_gles3.h"
+
+#define FRT_DL_SKIP
 #include "drivers/gles2/rasterizer_gles2.h"
-//#define FRT_DL_SKIP
+#else
+#include "drivers/gles2/rasterizer_gles2.h"
+#endif
 
 #include "core/string/print_string.h"
 #include "drivers/unix/os_unix.h"
@@ -119,6 +125,9 @@ class Godot3_OS : public OS_Unix, public EventHandler {
 private:
 	enum {
 		VIDEO_DRIVER_GLES2,
+#ifndef GLES3_DISABLED
+		VIDEO_DRIVER_GLES3
+#endif
 	};
 	MainLoop *main_loop_;
 	VideoMode video_mode_;
@@ -127,11 +136,21 @@ private:
 	int video_driver_;
 	RenderingServer *rendering_server_;
 	void init_video() {
-		//if (video_driver_ == VIDEO_DRIVER_GLES2) {
+#ifndef GLES3_DISABLED
+		if (video_driver_ == VIDEO_DRIVER_GLES2) {
+			frt_resolve_symbols_gles2(get_proc_address);
+			RasterizerGLES2::register_config();
+			RasterizerGLES2::make_current();
+		} else {
+			frt_resolve_symbols_gles3(get_proc_address);
+			RasterizerGLES3::register_config();
+			RasterizerGLES3::make_current();
+		}
+#else
 		frt_resolve_symbols_gles2(get_proc_address);
 		RasterizerGLES2::register_config();
 		RasterizerGLES2::make_current();
-		//}
+#endif
 		rendering_server_ = memnew(RenderingServerRaster);
 		rendering_server_->init();
 	}
@@ -190,9 +209,17 @@ public: // OS
 	}
 #endif
 	const char *get_video_driver_name(int driver) const FRT_OVERRIDE {
+#ifndef GLES3_DISABLED
+		return driver == VIDEO_DRIVER_GLES3 ? "GLES3" : "GLES2";
+#else
 		return "GLES2";
+#endif
 	}
 	bool _check_internal_feature_support(const String &feature) FRT_OVERRIDE {
+#ifndef GLES3_DISABLED
+		if (video_driver_ == VIDEO_DRIVER_GLES3 && feature == "etc2")
+			return true;
+#endif
 		return feature == "mobile" || feature == "etc";
 	}
 	String get_config_path() const FRT_OVERRIDE {

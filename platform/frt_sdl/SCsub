@@ -22,13 +22,13 @@ for dl in Glob('dl/*.dl'):
 	env.DLH(str(dl))
 	env.DLCPP(str(dl))
 
-env.Depends('platform_config.h', 'dl/gles2.gen.h')
-env.Depends('platform_config.h', 'dl/gles2.gen.cc')
+for libname in ['gles2', 'gles3']:
+	env.Depends('platform_config.h', 'dl/' + libname + '.gen.h')
 
 frt_env = env.Clone()
 frt_env.ParseConfig(env['FRT_PKG_CONFIG'] + ' sdl2 --cflags --libs')
 
-common_sources = [ 'frt_exe.cc', 'frt.cc', 'frt_godot3.cc', 'dl/gles2.gen.cc' ]
+common_sources = [ 'frt_exe.cc', 'frt.cc', 'frt_godot3.cc', 'dl/gles2.gen.cc', 'dl/gles3.gen.cc' ]
 
 std = env['frt_std']
 
