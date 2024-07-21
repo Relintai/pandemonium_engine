@@ -90,11 +90,11 @@
 
 #ifndef GLES3_DISABLED
 #include "drivers/gles3/rasterizer_gles3.h"
-#endif
 
 #define FRT_DL_SKIP
-#include "drivers/gles2/rasterizer_gles2.h"
+#endif
 
+#include "drivers/gles2/rasterizer_gles2.h"
 
 typedef AudioDriverManager AudioDriverManagerSW;
 typedef AudioDriver AudioDriverSW;
