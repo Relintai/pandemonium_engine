@@ -4,7 +4,254 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
+- Nothing yet.
+
+## [4.4.0]
+
+Highlights:
+
+- Tweaks to editor defaults.
+- Added back lightmaps, gpu based particles (GPUParticle) and GIProbes.
+- Added back the gles3 renderer (can be turned off compile time).
+- LayeredTileMaps got VertexLight2D management, and navigation obstacle support.
+- Implemented prepared statements for the database module.
+- The markdown renderer is now scriptable.
+
+Breaking changes:
+
+- Always defer unmatched requests in WebNodes to index nodes if they are available.
+- Tweak WebNode::get_full_uri() to give back the output what you'd normally assume when the uri segment is "/" under a WebRoot.
+- Renamed the render_menu property in UserWebPage to should_render_menu, as there is a render_menu method in WebNode.
+- Don't create any accounts by default in the UserManagerDB::_create_default_entries() virtual method.
+- Hide result String in TableBuilder. Also add reset() method to it. (c++ only)
+- Made query_result in QueryBuilder protected. (c++ only)
+
+### Added
+
+#### Core
+
+- Added more helper methods to StringBuilder.
+
+#### Scene
+
+- Added a group for the toplevel property in Node2D.
+- Moved the y_sort property from YSort to Node2D. Node2d has it off by default while YSort has it on by default.
+
+#### Rendering
+
+- Added back the GLES3 renderer. Unlike in godot it can be disabled compile time.
+- Added back GIProbes.
+- Added back the gpu based particles. Renamed Particle to GPUParticle and Particle2D to GPUParticle2D.
+- Added back lightmaps.
+
+#### Modules
+
+- Added back the denoise module, with oidn built in.
+- Added back the lightmapper_cpu module.
+- Added back the raycast module with embree built in.
+- Added back the scene side lighmapper classes.
+- Added back the xatlas_unwrap module. Also moved xatlas into it so it's not in the thirdparty folder.
+
+##### Database
+
+- Finish missing docs for the rest of the database module.
+- Added more helper methods to deal with prepared statements to QueryBuilder.
+- Renamed clear to reset in TableBuilder.
+- Added virtual methods to QueryBuilder for adding prepared statement placeholders.
+- Setup prepared statement support for the database module.
+
+##### Database SQLite
+
+- Prepared statements for the sqlite database backend.
+
+##### LayeredTileMaps
+
+- Implemented VertexLight2D management support to LayeredTileMapLayers.
+- VertexLight2D support for LayeredTileSetAtlasSourceEditor.
+- Added VertexLight2D support to LayeredTileData.
+- Implement debug drawing avoidance radius in LayeredTileMapLayer.
+- Implement navigation obstacle support for LayeredTileMapLayers.
+- Added avoidance position property to LayeredTileData.
+- Added flip winding order tool to GenericTilePolygonEditor.
+- Implemented Obstacle for LayeredTileSets.
+
+##### Web
+
+- Docs for the markdown renderer.
+- Added the ability to script the rendering of the MarkdownRenderer. Also added a new render() method equivalent to render_to_html().
+
+### Fixed
+
+#### Core
+
+- Don't access a Message's memory after calling it's destructor in MessageQueue. (Even though the way the code works currently this was not really a bug, but it can easily become one.)
+- Fix size mismatch warning.
+- Remove unnecessary template parameters from constructors and desctuctors.
+
+#### Scene
+
+- Fix the type of the rotation tracks in AnimationTrackKeyEdit.
+
+#### Servers
+
+- Don't error in RenderingServerRaster::free() if the supplied RID is just invalid.
+
+#### Editor
+
+- Improvements to the filesystem dock.
+- Improved the renderer selector when creating a new project.
+
+#### Modules
+
+##### Database
+
+- Fix text binds being interpreted as blobs.
+
+##### GDScript
+
+- Update theme item names for pandemonium.
+
+##### LayeredTileMaps
+
+- Fixed rao and vertex lights for newly added cells. Also fixed re-generating the tilemap cells in many cases. Also small improvements.
+- Remove duplicate call.
+- Bind _tile_set_changed in LayeredTileDataEditor.
+
+##### Web
+
+- Set the status code in WebRoot::_handle_error_send_request().
+- Optimize _node_route_map's usage in WebNode.
+- Fixed docs, index node support has been moved from WebRoots to WebNodes a while ago.
+- Use HashMap in BrowsableFolderServeWebPage, as the bug that was preventing this was already fixed quite a while ago.
+- Don't expose renderer_callback() for scripting.
+
+#### Utilities
+
+- Updated the clang format script.
+
+### Changed
+
+#### Editor
+
+- Tweaks to the editor defaults.
+
+#### Modules
+
+##### Database
+
+- Use StringBuilder in TableBuilder aswell.
+- QueryBuilder now uses a StringBuilder internally.
+- Hide result String in TableBuilder. Also add reset() method to it.
+- Made query_result in QueryBuilder protected.
+- DatabaseConnection::database_connect() now returns Error.
+
+##### Database SQLite
+
+- Fix getting utf-8 texts from Sqlite3QueryResult.
+
+##### GDScript
+
+- Disabled the unused argument warning by default.
+
+##### LayeredTileMaps
+
+- Turn autowrap on on LayeredTileSetAtlasSourceEditor's tile_inspector_no_tile_selected_label.
+
+##### Users
+
+- Don't create any accounts in UserManagerDB::_create_default_entries().
+
+##### Web
+
+- Always defer unmatched requests to index nodes if they are available.
+- Expose FileCache in FolderServeWebPage to scripts.
+- Tweak WebNode::get_full_uri() to give back the output what you'd normally assume when the uri segment is "/" under a WebRoot.
+- Renamed the render_menu property in UserWebPage to should_render_menu, as there is a render_menu method in WebNode.
+
+### Backports
+
 - Backported everything up to and including https://github.com/godotengine/godot/commit/1cf50364c116acab4f86b70c2fd559475d60e198 Merge commit: https://github.com/godotengine/godot/commit/2cc5ca43ef68382c94d963bd9336ad8efea6adae
+
+#### Godot3
+
+- Backported: [CI] Upload build cache before running tests. - AThousandShips https://github.com/godotengine/godot/commit/078210bce16b9d7e4109db938560ad17c28a10c7
+- Fix `PopupMenu` size calculations not taking into account control/canvas scale
+- fix lost old callback when continuous call requestRenderAndNotify
+- Backport DirectionalLight `fade_start` property to `3.x`:
+  Implement shadow fading when using the Orthogonal shadow mode (like in `master`).
+  This allows customizing the distance at which directional shadows start to fade away. Shadow fading will also always start at the same distance now, regardless of the current shadow mode in use.
+  This is useful for enclosed levels to prevent shadows from fading at all with a well-tuned maximum distance.
+  The default fade start value (0.8) results in fading happening later in the distance compared to the previous behavior, where fading started from the last shadow split distance (0.6 in PSSM 4 Splits and 0.1 in PSSM 2 Splits).
+- Fix physics tick count in `Input.action_press` and `Input.action_release` The physics tick count was not yet updated there.
+- Use unztell64 in FileAccessZIP to ensure 64 bit return (cherry picked from commit efccebd3db90d7baf0947cd02612ab987ab87868)
+- doc: Fix cherry-pick mistake for Vector3.cross description
+- Add POST_NOTIFICATIONS permission to the list of permissions available in the Export dialog (cherry picked from commit 739190ca2b7f1b67a78eff33154a4bfd1964f5c4)
+- Clarify the behavior of `Vector2/3.cross` and mention parallel vectors (cherry picked from commit 47a8033698b14c8a7bb25867198c1371382e3398)
+- Always look for unique node names in owner if not found in owned nodes (cherry picked from commit 95ced4bbdcea4d8e225e235fc120c4ebd72f443d)
+- Enabled secure restorable state. (cherry picked from commit 84380a94f776c8c1e7786d2eb3fb811789f42639)
+- miniupnpc: Disable socket timeout on Windows, matching upstream Fixes #88471. (cherry picked from commit f695de7c68e373088175f8f3b1650f11a27be7aa)
+- Add support for PCK embedding section with non GNU-ld linkers. (cherry picked from commit 625c4bdacef4173f94200632362e25e537ad5d21)
+- Physics Interpolation - refactor client interpolation pump
+  * Move client interpolation pump to earlier in the iteration before 3D physics synced
+  * Allow `get_global_transform_interpolated()` to prime the client interpolation inside a physics tick
+- Physics Interpolation - refactor `Camera` and fix `get_camera_transform()`
+  * Moves 3D Camera interpolation scene side.
+  * Automatically switches `get_camera_transform()` to report interpolated transform during `_process()`.
+  * Fixes `ClippedCamera` to work with physics interpolation.
+- Physics Interpolation - Fix 2D skinning
+  2D skinning required the interpolated skeleton base transform to be updated when using interpolation.
+- Fix `spatial_editor_plugin` enum
+  * The `view_mesh_stats` feature introduced a new enum value `VIEW_SLECTED_INFO` within the unnamed `VIEW` enum.
+  * This turns out to be saved somehow, which means the view settings can get out of sync when reloading the project in an older version of the editor.
+  * The solution is simply to move the new value to the end of the enum so there are no conflicts.
+- Editor 3D view mesh stats
+  Similar to information window, add a small optional window to display face count and other stats.
+- Add IME input support.
+- Add support for privacy manifest configuration.
+- Extend iOS plugins to support Swift runtime
+- Update actions.
+- Web: Bump closure compiler spec to ECMASCRIPT_2021 Fixes #88008. (cherry picked from commit d29b0d90e0d735eee860b977c57cb75423d7a9ba)
+- Fix emscripten 3.1.51 breaking change about `*glGetProcAddress()` (cherry picked from commit 5922ac0fb11105da67d28847b60a521406a77cdb)
+- Add `WASM_BIGINT` linker flag to the web build (cherry picked from commit 3ae524fa9e42828183f8046f6f33b945475bb052)
+- Fix gradle build errors when the build path contains non-ASCII characters (cherry picked from commit f1887a30f35dafac405014ef5ca6e3d76b4da960)
+- Add basic Emacs .gitignore entries (cherry picked from commit 2696fee3c6b08cd9645a61ebf08b84fd70be5a72)
+- Sync controller mappings DB with SDL 2 community repo Synced with mdqinc/SDL_GameControllerDB@5b4efa3a2015552cec4cb809169d29615202e9f2 (cherry picked from commit 1da02fa7be4ace876a53802d19711ec7037d94f3)
+- Sync controller mappings DB with SDL 2 community repo Synced with mdqinc/SDL_GameControllerDB@4c9b8dace8378e22474556e0259d02b59ea55484 (cherry picked from commit 6772047e5077b3bfe1f81cd24c128f02b904c20e)
+- enet: Sync with upstream commit c44b7d0 https://github.com/lsalzman/enet/commit/c44b7d0f7ff21edb702745e4c019d0537928c373 (cherry picked from commit 360a1a456818fce75a444c17bafb9c7b510dbc20)
+- certs: Sync with Mozilla bundle as of Mar 11, 2024 https://github.com/bagder/ca-bundle/commit/c5a419971b1bec220368c619aaafd0b818aa119f (cherry picked from commit fd61a42e0420c80481960a4071275f429186862b)
+- mbedtls: Update to upstream version 2.28.8 (cherry picked from commit 915ca4dd456f959e4d4fd4e385715f3f0d48e77d)
+- libpng: Update to 1.6.43 (cherry picked from commit 41268d7faa05888f0067679fa3374138de2f073b)
+- tinyexr: Update to 1.0.8 (cherry picked from commit ab14dec952f0210448b6a2575cc0f73e7a074440)
+- miniupnpc: Update to 2.2.7 No change for the files we include. (cherry picked from commit afe64bb517a83faf931bc13094220f85f6789f82)
+- miniupnpc: Update to version 2.2.6 (cherry picked from commit 72b80b3cdfb90dbaad3ebe445eb7a3002f97471a)
+- Physics interpolation - Zero server side multimesh data To prevent possibility of use of uninitialized data.
+- Tighter light culling - fix directional lights colinear case Exactly the same fix as done already for non-directional lights.
+- Don't define NO_EDITOR_SPLASH in export templates
+- Fix typo in @GlobalScope.xml "inteters" instead of "integers"
+- Fix long category name display in Inspector
+- Fix Viewport interpolation mode Viewport interpolation mode is a special case, which should be set to ON instead of INHERIT.
+- Physics Interpolation - Fix `VisualInstance::set_instance_use_identity_transform()` The logic for updating the `VisualServer` with the transform was the wrong way around.
+- Fix fragcolor write locations in scene shaders
+- Tight shadow culling - increase epsilon to prevent flickering Near colinear triangles were still causing inaccuracy in culling planes, so the threshold for colinearity is bumped up.
+- Fix theme item parameter completion
+- SCons: Fix Windows/MinGW TypeError with recent SCons Fixes #86484.
+- Add range hint for ViewportContainer.stretch_shrink
+- GDNative: Fix Linux riscv warning about ignored `sysv_abi`
+- Optimize Editor `_init_grid()` Use static `LocalVectors` instead of `PoolVectors` for temporaries.
+- ImageTexture - document workaround for mipmap generation
+- Mesh merging - refactor to be backward compatible for CPU / GPU storage Allows the old `merge_meshes()` function to work from the editor.
+- Fix physics tick counter The counter is now incremented at the start of a physics tick rather than the end.
+- Physics Interpolation - Fix `Transform2D::interpolate_with()` Ports the `interpolate_with()` routine from 4.x which works correctly with skew.
+- Fix AtlasTexture::draw_rect flipping for non-zero margin
+- Fix type hints in GLTFDocumentExtension virtual methods
+- Fix TabContainer not updating content rect after toggling tab icon
+- Backport fix documentation about body_shape_index
+- FIXED: Locale fallback selector doesn't appear in project options.
+- Tilemap editor - prevent changing tool when mouse buttons pressed 
+  Changing tool when painting prevented the corresponding commit of undo action when the mouse button was released. This led to undo actions getting out of sync and the undo system breaking the editor.
+  This PR simply prevents changing tool while mouse buttons are pressed, and prevents the above scenario.
+- Allow LSP to process multiple messages per poll (cherry-picked from commit e2485044a1b33628e6149d4f930b6fe065743c9d)
+
 
 ## [4.3.0]
 
