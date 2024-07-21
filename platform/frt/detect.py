@@ -186,4 +186,7 @@ def configure(env):
 
 	env.Append(FRT_MODULES=['dl/gles2.gen.cpp'])
 
+	if not env["disable_gles3"]:
+		env.Append(FRT_MODULES=['dl/gles3.gen.cpp'])
+
 	env.Append(LIBS=['dl'])

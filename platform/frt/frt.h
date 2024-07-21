@@ -269,7 +269,13 @@ struct InputModifierState {
 #ifdef FRT_TEST
 #define FRT_GLES_VERSION 2
 #else
+
+#ifndef GLES3_DISABLED
+#define FRT_GLES_VERSION 3
+#else
 #define FRT_GLES_VERSION 2
+#endif
+
 #endif // FRT_TEST
 
 #endif // FRT_H

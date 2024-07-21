@@ -77,13 +77,25 @@
 #include "servers/rendering/rendering_server_raster.h"
 #include "servers/rendering_server.h"
 
+#ifndef GLES3_DISABLED
+#define VIDEO_DRIVER_GLES2 0
+#define VIDEO_DRIVER_GLES3 1
+#define VIDEO_DRIVER_COUNT 2
+#else
 #define VIDEO_DRIVER_GLES2 0
 #define VIDEO_DRIVER_COUNT 1
+#endif
 
 #include "platform/x11/joypad_linux.h"
 
-// #define FRT_DL_SKIP
+#ifndef GLES3_DISABLED
+#include "drivers/gles3/rasterizer_gles3.h"
+#endif
+
+#define FRT_DL_SKIP
 #include "drivers/gles2/rasterizer_gles2.h"
+
+
 typedef AudioDriverManager AudioDriverManagerSW;
 typedef AudioDriver AudioDriverSW;
 #define set_mouse_pos set_mouse_position
@@ -194,7 +206,14 @@ public:
 	int get_video_driver_count() const { return VIDEO_DRIVER_COUNT; }
 	int get_current_video_driver() const { return current_video_driver; }
 	const char *get_video_driver_name(int driver) const {
+#ifndef GLES3_DISABLED
+		if (driver == VIDEO_DRIVER_GLES3)
+			return "GLES3";
+		else
+			return "GLES2";
+#else
 		return "GLES2";
+#endif
 	}
 	OS::VideoMode get_default_video_mode() const {
 		return OS::VideoMode(screen_size.x, screen_size.y, true, false, true);
@@ -208,6 +227,10 @@ public:
 		return driver_->get_name();
 	}
 	bool _check_internal_feature_support(const String &feature) {
+#ifndef GLES3_DISABLED
+		if (current_video_driver == VIDEO_DRIVER_GLES3 && feature == "etc2")
+			return true;
+#endif
 		return feature == "pc" || feature == "etc";
 	}
 
@@ -314,13 +337,30 @@ public:
 		current_videomode = desired;
 		main_loop = 0;
 		Vec2 view(current_videomode.width, current_videomode.height);
+#ifndef GLES3_DISABLED
+		int gl_version = video_driver == VIDEO_DRIVER_GLES3 ? 3 : 2;
+#else
 		int gl_version = video_driver == 2;
+#endif
 		context_gl = env->video->create_the_gl_context(gl_version, view);
 		context_gl->initialize();
 
+
+#ifndef GLES3_DISABLED
+		if (video_driver == VIDEO_DRIVER_GLES3) {
+			RasterizerGLES3::register_config();
+			RasterizerGLES3::make_current();
+			current_video_driver = VIDEO_DRIVER_GLES3;
+		} else {
+			RasterizerGLES2::register_config();
+			RasterizerGLES2::make_current();
+			current_video_driver = VIDEO_DRIVER_GLES2;
+		}
+#else
 		RasterizerGLES2::register_config();
 		RasterizerGLES2::make_current();
 		current_video_driver = VIDEO_DRIVER_GLES2;
+#endif
 
 		rendering_server = memnew(RenderingServerRaster);
 

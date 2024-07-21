@@ -77,6 +77,18 @@ static const char *lib(const char *s) {
 #define FRT_DL_SKIP
 #include "dl/gles2.gen.h"
 
+#ifndef GLES3_DISABLED
+#if FRT_GLES_VERSION == 3
+#include "dl/gles3.gen.h"
+#endif
+#endif
+
 static bool frt_load_gles(int version) {
+#ifndef GLES3_DISABLED
+#if FRT_GLES_VERSION == 3
+	if (version == 3)
+		return frt_load_gles3(lib("libGLESv2.so.2"));
+#endif
+#endif
 	return frt_load_gles2(lib("libGLESv2.so.2"));
 }
