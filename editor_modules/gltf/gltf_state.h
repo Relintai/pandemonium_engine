@@ -79,6 +79,7 @@ class GLTFState : public Resource {
 	Vector<Ref<GLTFTextureSampler>> texture_samplers;
 	Ref<GLTFTextureSampler> default_texture_sampler;
 	Vector<Ref<Image>> images;
+	RBMap<GLTFImageIndex, String> external_images_paths;
 	RBMap<GLTFTextureIndex, Ref<Texture>> texture_cache;
 	Vector<String> extensions_used;
 	Vector<String> extensions_required;
