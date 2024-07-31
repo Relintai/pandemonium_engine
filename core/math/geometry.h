@@ -1057,6 +1057,7 @@ public:
 	static Vector<Vector3> compute_convex_mesh_points(const Plane *p_planes, int p_plane_count, real_t p_epsilon = CMP_EPSILON);
 	static bool convex_hull_intersects_convex_hull(const Plane *p_planes_a, int p_plane_count_a, const Plane *p_planes_b, int p_plane_count_b);
 	static real_t calculate_convex_hull_volume(const Geometry::MeshData &p_md);
+	static bool verify_indices(const int *p_indices, int p_num_indices, int p_num_vertices);
 
 	static _FORCE_INLINE_ Vector<Point2i> bresenham_line(int x0, int x1, int y0, int y1) {
 		Vector<Point2i> points;
