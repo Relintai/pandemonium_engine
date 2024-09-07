@@ -71,12 +71,12 @@ void OS_JavaScript::request_quit_callback() {
 
 bool OS_JavaScript::tts_is_speaking() const {
 	ERR_FAIL_COND_V_MSG(!tts, false, "Enable the \"audio/general/text_to_speech\" project setting to use text-to-speech.");
-	return godot_js_tts_is_speaking();
+	return pandemonium_js_tts_is_speaking();
 }
 
 bool OS_JavaScript::tts_is_paused() const {
 	ERR_FAIL_COND_V_MSG(!tts, false, "Enable the \"audio/general/text_to_speech\" project setting to use text-to-speech.");
-	return godot_js_tts_is_paused();
+	return pandemonium_js_tts_is_paused();
 }
 
 void OS_JavaScript::update_voices_callback(int p_size, const char **p_voice) {
@@ -95,7 +95,7 @@ void OS_JavaScript::update_voices_callback(int p_size, const char **p_voice) {
 
 Array OS_JavaScript::tts_get_voices() const {
 	ERR_FAIL_COND_V_MSG(!tts, Array(), "Enable the \"audio/general/text_to_speech\" project setting to use text-to-speech.");
-	godot_js_tts_get_voices(update_voices_callback);
+	pandemonium_js_tts_get_voices(update_voices_callback);
 	return voices;
 }
 
@@ -113,17 +113,17 @@ void OS_JavaScript::tts_speak(const String &p_text, const String &p_voice, int p
 	CharString string = p_text.utf8();
 	utterance_ids[p_utterance_id] = string;
 
-	godot_js_tts_speak(string.get_data(), p_voice.utf8().get_data(), CLAMP(p_volume, 0, 100), CLAMP(p_pitch, 0.f, 2.f), CLAMP(p_rate, 0.1f, 10.f), p_utterance_id, OS_JavaScript::_js_utterance_callback);
+	pandemonium_js_tts_speak(string.get_data(), p_voice.utf8().get_data(), CLAMP(p_volume, 0, 100), CLAMP(p_pitch, 0.f, 2.f), CLAMP(p_rate, 0.1f, 10.f), p_utterance_id, OS_JavaScript::_js_utterance_callback);
 }
 
 void OS_JavaScript::tts_pause() {
 	ERR_FAIL_COND_MSG(!tts, "Enable the \"audio/general/text_to_speech\" project setting to use text-to-speech.");
-	godot_js_tts_pause();
+	pandemonium_js_tts_pause();
 }
 
 void OS_JavaScript::tts_resume() {
 	ERR_FAIL_COND_MSG(!tts, "Enable the \"audio/general/text_to_speech\" project setting to use text-to-speech.");
-	godot_js_tts_resume();
+	pandemonium_js_tts_resume();
 }
 
 void OS_JavaScript::tts_stop() {
@@ -132,7 +132,7 @@ void OS_JavaScript::tts_stop() {
 		tts_post_utterance_event(OS::TTS_UTTERANCE_CANCELED, E->key());
 	}
 	utterance_ids.clear();
-	godot_js_tts_stop();
+	pandemonium_js_tts_stop();
 }
 
 void OS_JavaScript::_js_utterance_callback(int p_event, int p_id, int p_pos) {
