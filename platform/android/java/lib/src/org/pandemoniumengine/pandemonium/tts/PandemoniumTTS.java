@@ -188,7 +188,7 @@ public class PandemoniumTTS extends UtteranceProgressListener {
 	 * Initialize synth and query.
 	 */
 	public void init() {
-		synth = new TextToSpeech(p_activity, null);
+		synth = new TextToSpeech(activity, null);
 		queue = new LinkedList<PandemoniumUtterance>();
 
 		synth.setOnUtteranceProgressListener(this);
