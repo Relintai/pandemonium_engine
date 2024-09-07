@@ -100,7 +100,7 @@ private:
 	bool idb_is_syncing;
 	bool pwa_is_waiting;
 
-	Map<int, CharString> utterance_ids;
+	RBMap<int, CharString> utterance_ids;
 	Array voices;
 
 	static void fullscreen_change_callback(int p_fullscreen);
