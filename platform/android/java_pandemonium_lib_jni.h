@@ -41,7 +41,7 @@ extern "C" {
 
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion);
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ondestroy(JNIEnv *env, jclass clazz);
-JNIEXPORT jboolean JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline);
+JNIEXPORT jboolean JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline, jobject p_godot_tts);
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_resize(JNIEnv *env, jclass clazz, jint width, jint height);
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_newcontext(JNIEnv *env, jclass clazz);
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ttsCallback(JNIEnv *env, jclass clazz, jint event, jint id, jint pos);

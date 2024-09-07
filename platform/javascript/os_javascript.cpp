@@ -128,7 +128,7 @@ void OS_JavaScript::tts_resume() {
 
 void OS_JavaScript::tts_stop() {
 	ERR_FAIL_COND_MSG(!tts, "Enable the \"audio/general/text_to_speech\" project setting to use text-to-speech.");
-	for (Map<int, CharString>::Element *E = utterance_ids.front(); E; E = E->next()) {
+	for (RBMap<int, CharString>::Element *E = utterance_ids.front(); E; E = E->next()) {
 		tts_post_utterance_event(OS::TTS_UTTERANCE_CANCELED, E->key());
 	}
 	utterance_ids.clear();
