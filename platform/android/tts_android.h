@@ -31,9 +31,9 @@
 #ifndef TTS_ANDROID_H
 #define TTS_ANDROID_H
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/os/os.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include <jni.h>
 

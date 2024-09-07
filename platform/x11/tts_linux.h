@@ -31,13 +31,13 @@
 #ifndef TTS_LINUX_H
 #define TTS_LINUX_H
 
-#include "core/array.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/variant/array.h"
+#include "core/containers/list.h"
+#include "core/containers/rb_map.h"
 #include "core/os/os.h"
 #include "core/os/thread.h"
 #include "core/os/thread_safe.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "speechd-so_wrap.h"
 

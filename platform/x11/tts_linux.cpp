@@ -30,7 +30,7 @@
 
 #include "tts_linux.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 TTS_Linux *TTS_Linux::singleton = nullptr;
 

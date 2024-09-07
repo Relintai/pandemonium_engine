@@ -31,11 +31,11 @@
 #ifndef TTS_WINDOWS_H
 #define TTS_WINDOWS_H
 
-#include "core/array.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/variant/array.h"
+#include "core/containers/list.h"
+#include "core/containers/rb_map.h"
 #include "core/os/os.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include <objbase.h>
 #include <sapi.h>
