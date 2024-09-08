@@ -4,7 +4,7 @@
 
 #include "servers/rendering_server.h"
 
-void ProceduralTree3DMesh::_update() const {
+void ProceduralTreeMesh::_update() const {
 	Array arr;
 	arr.resize(RS::ARRAY_MAX);
 
@@ -38,24 +38,24 @@ void ProceduralTree3DMesh::_update() const {
 
 	clear_cache();
 
-	const_cast<ProceduralTree3DMesh *>(this)->emit_changed();
+	const_cast<ProceduralTreeMesh *>(this)->emit_changed();
 }
 
-void ProceduralTree3DMesh::_request_update() {
+void ProceduralTreeMesh::_request_update() {
 	if (pending_request) {
 		return;
 	}
 	_update();
 }
 
-int ProceduralTree3DMesh::get_surface_count() const {
+int ProceduralTreeMesh::get_surface_count() const {
 	if (pending_request) {
 		_update();
 	}
 	return TREE_SURFACE_COUNT;
 }
 
-int ProceduralTree3DMesh::surface_get_array_len(int p_idx) const {
+int ProceduralTreeMesh::surface_get_array_len(int p_idx) const {
 	ERR_FAIL_INDEX_V(p_idx, TREE_SURFACE_COUNT, -1);
 	if (pending_request) {
 		_update();
@@ -64,7 +64,7 @@ int ProceduralTree3DMesh::surface_get_array_len(int p_idx) const {
 	return RenderingServer::get_singleton()->mesh_surface_get_array_len(mesh, p_idx);
 }
 
-int ProceduralTree3DMesh::surface_get_array_index_len(int p_idx) const {
+int ProceduralTreeMesh::surface_get_array_index_len(int p_idx) const {
 	ERR_FAIL_INDEX_V(p_idx, TREE_SURFACE_COUNT, -1);
 	if (pending_request) {
 		_update();
@@ -73,7 +73,7 @@ int ProceduralTree3DMesh::surface_get_array_index_len(int p_idx) const {
 	return RenderingServer::get_singleton()->mesh_surface_get_array_index_len(mesh, p_idx);
 }
 
-Array ProceduralTree3DMesh::surface_get_arrays(int p_surface) const {
+Array ProceduralTreeMesh::surface_get_arrays(int p_surface) const {
 	ERR_FAIL_INDEX_V(p_surface, TREE_SURFACE_COUNT, Array());
 	if (pending_request) {
 		_update();
@@ -82,7 +82,7 @@ Array ProceduralTree3DMesh::surface_get_arrays(int p_surface) const {
 	return RenderingServer::get_singleton()->mesh_surface_get_arrays(mesh, p_surface);
 }
 
-Array ProceduralTree3DMesh::surface_get_blend_shape_arrays(int p_surface) const {
+Array ProceduralTreeMesh::surface_get_blend_shape_arrays(int p_surface) const {
 	ERR_FAIL_INDEX_V(p_surface, TREE_SURFACE_COUNT, Array());
 	if (pending_request) {
 		_update();
@@ -91,7 +91,7 @@ Array ProceduralTree3DMesh::surface_get_blend_shape_arrays(int p_surface) const 
 	return Array();
 }
 
-uint32_t ProceduralTree3DMesh::surface_get_format(int p_idx) const {
+uint32_t ProceduralTreeMesh::surface_get_format(int p_idx) const {
 	ERR_FAIL_INDEX_V(p_idx, TREE_SURFACE_COUNT, 0);
 	if (pending_request) {
 		_update();
@@ -100,11 +100,11 @@ uint32_t ProceduralTree3DMesh::surface_get_format(int p_idx) const {
 	return RenderingServer::get_singleton()->mesh_surface_get_format(mesh, p_idx);
 }
 
-Mesh::PrimitiveType ProceduralTree3DMesh::surface_get_primitive_type(int p_idx) const {
+Mesh::PrimitiveType ProceduralTreeMesh::surface_get_primitive_type(int p_idx) const {
 	return Mesh::PRIMITIVE_TRIANGLES;
 }
 
-void ProceduralTree3DMesh::surface_set_material(int p_idx, const Ref<Material> &p_material) {
+void ProceduralTreeMesh::surface_set_material(int p_idx, const Ref<Material> &p_material) {
 	ERR_FAIL_INDEX(p_idx, TREE_SURFACE_COUNT);
 
 	switch (p_idx) {
@@ -120,24 +120,24 @@ void ProceduralTree3DMesh::surface_set_material(int p_idx, const Ref<Material> &
 	}
 }
 
-Ref<Material> ProceduralTree3DMesh::surface_get_material(int p_idx) const {
+Ref<Material> ProceduralTreeMesh::surface_get_material(int p_idx) const {
 	ERR_FAIL_INDEX_V(p_idx, TREE_SURFACE_COUNT, nullptr);
 
 	return _surfaces[p_idx].material;
 }
 
-int ProceduralTree3DMesh::get_blend_shape_count() const {
+int ProceduralTreeMesh::get_blend_shape_count() const {
 	return 0;
 }
 
-StringName ProceduralTree3DMesh::get_blend_shape_name(int p_index) const {
+StringName ProceduralTreeMesh::get_blend_shape_name(int p_index) const {
 	return StringName();
 }
 
-void ProceduralTree3DMesh::set_blend_shape_name(int p_index, const StringName &p_name) {
+void ProceduralTreeMesh::set_blend_shape_name(int p_index, const StringName &p_name) {
 }
 
-AABB ProceduralTree3DMesh::get_aabb() const {
+AABB ProceduralTreeMesh::get_aabb() const {
 	if (pending_request) {
 		_update();
 	}
@@ -145,14 +145,14 @@ AABB ProceduralTree3DMesh::get_aabb() const {
 	return aabb;
 }
 
-RID ProceduralTree3DMesh::get_rid() const {
+RID ProceduralTreeMesh::get_rid() const {
 	if (pending_request) {
 		_update();
 	}
 	return mesh;
 }
 
-void ProceduralTree3DMesh::set_trunk_material(const Ref<Material> &p_material) {
+void ProceduralTreeMesh::set_trunk_material(const Ref<Material> &p_material) {
 	_surfaces[TREE_SURFACE_TRUNK].material = p_material;
 	if (!pending_request) {
 		// just apply it, else it'll happen when _update is called.
@@ -162,12 +162,12 @@ void ProceduralTree3DMesh::set_trunk_material(const Ref<Material> &p_material) {
 	};
 }
 
-Ref<Material> ProceduralTree3DMesh::get_trunk_material() const {
+Ref<Material> ProceduralTreeMesh::get_trunk_material() const {
 	return _surfaces[TREE_SURFACE_TRUNK].material;
 }
 
 
-void ProceduralTree3DMesh::set_twig_material(const Ref<Material> &p_material) {
+void ProceduralTreeMesh::set_twig_material(const Ref<Material> &p_material) {
 	_surfaces[TREE_SURFACE_TWIG].material = p_material;
 	if (!pending_request) {
 		// just apply it, else it'll happen when _update is called.
@@ -177,12 +177,12 @@ void ProceduralTree3DMesh::set_twig_material(const Ref<Material> &p_material) {
 	};
 }
 
-Ref<Material> ProceduralTree3DMesh::get_twig_material() const {
+Ref<Material> ProceduralTreeMesh::get_twig_material() const {
 	return _surfaces[TREE_SURFACE_TWIG].material;
 }
 
 
-Array ProceduralTree3DMesh::get_mesh_arrays() const {
+Array ProceduralTreeMesh::get_mesh_arrays() const {
 	Array arr;
 
 	for (int i = 0; i < TREE_SURFACE_COUNT; ++i) {
@@ -192,17 +192,17 @@ Array ProceduralTree3DMesh::get_mesh_arrays() const {
 	return arr;
 }
 
-void ProceduralTree3DMesh::set_custom_aabb(const AABB &p_custom) {
+void ProceduralTreeMesh::set_custom_aabb(const AABB &p_custom) {
 	custom_aabb = p_custom;
 	RS::get_singleton()->mesh_set_custom_aabb(mesh, custom_aabb);
 	emit_changed();
 }
 
-AABB ProceduralTree3DMesh::get_custom_aabb() const {
+AABB ProceduralTreeMesh::get_custom_aabb() const {
 	return custom_aabb;
 }
 
-ProceduralTree3DMesh::ProceduralTree3DMesh() {
+ProceduralTreeMesh::ProceduralTreeMesh() {
 	// defaults
 	mesh = RID_PRIME(RenderingServer::get_singleton()->mesh_create());
 
@@ -210,23 +210,23 @@ ProceduralTree3DMesh::ProceduralTree3DMesh() {
 	pending_request = true;
 }
 
-ProceduralTree3DMesh::~ProceduralTree3DMesh() {
+ProceduralTreeMesh::~ProceduralTreeMesh() {
 	RenderingServer::get_singleton()->free(mesh);
 }
 
-void ProceduralTree3DMesh::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_update"), &ProceduralTree3DMesh::_update);
+void ProceduralTreeMesh::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_update"), &ProceduralTreeMesh::_update);
 
-	ClassDB::bind_method(D_METHOD("set_trunk_material", "material"), &ProceduralTree3DMesh::set_trunk_material);
-	ClassDB::bind_method(D_METHOD("get_trunk_material"), &ProceduralTree3DMesh::get_trunk_material);
+	ClassDB::bind_method(D_METHOD("set_trunk_material", "material"), &ProceduralTreeMesh::set_trunk_material);
+	ClassDB::bind_method(D_METHOD("get_trunk_material"), &ProceduralTreeMesh::get_trunk_material);
 
-	ClassDB::bind_method(D_METHOD("set_twig_material", "material"), &ProceduralTree3DMesh::set_twig_material);
-	ClassDB::bind_method(D_METHOD("get_twig_material"), &ProceduralTree3DMesh::get_twig_material);
+	ClassDB::bind_method(D_METHOD("set_twig_material", "material"), &ProceduralTreeMesh::set_twig_material);
+	ClassDB::bind_method(D_METHOD("get_twig_material"), &ProceduralTreeMesh::get_twig_material);
 
-	ClassDB::bind_method(D_METHOD("get_mesh_arrays"), &ProceduralTree3DMesh::get_mesh_arrays);
+	ClassDB::bind_method(D_METHOD("get_mesh_arrays"), &ProceduralTreeMesh::get_mesh_arrays);
 
-	ClassDB::bind_method(D_METHOD("set_custom_aabb", "aabb"), &ProceduralTree3DMesh::set_custom_aabb);
-	ClassDB::bind_method(D_METHOD("get_custom_aabb"), &ProceduralTree3DMesh::get_custom_aabb);
+	ClassDB::bind_method(D_METHOD("set_custom_aabb", "aabb"), &ProceduralTreeMesh::set_custom_aabb);
+	ClassDB::bind_method(D_METHOD("get_custom_aabb"), &ProceduralTreeMesh::get_custom_aabb);
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "trunk_material", PROPERTY_HINT_RESOURCE_TYPE, "SpatialMaterial,ShaderMaterial"), "set_trunk_material", "get_trunk_material");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "twig_material", PROPERTY_HINT_RESOURCE_TYPE, "SpatialMaterial,ShaderMaterial"), "set_twig_material", "get_twig_material");

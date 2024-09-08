@@ -3,8 +3,8 @@
 
 #include "scene/resources/mesh/mesh.h"
 
-class ProceduralTree3DMesh : public Mesh {
-	GDCLASS(ProceduralTree3DMesh, Mesh);
+class ProceduralTreeMesh : public Mesh {
+	GDCLASS(ProceduralTreeMesh, Mesh);
 
 public:
 	enum TreeSurfaces {
@@ -39,8 +39,8 @@ public:
 	void set_custom_aabb(const AABB &p_custom);
 	AABB get_custom_aabb() const;
 
-	ProceduralTree3DMesh();
-	~ProceduralTree3DMesh();
+	ProceduralTreeMesh();
+	~ProceduralTreeMesh();
 
 protected:
 	static void _bind_methods();
@@ -63,6 +63,6 @@ private:
 	void _update() const;
 };
 
-VARIANT_ENUM_CAST(ProceduralTree3DMesh::TreeSurfaces);
+VARIANT_ENUM_CAST(ProceduralTreeMesh::TreeSurfaces);
 
 #endif
