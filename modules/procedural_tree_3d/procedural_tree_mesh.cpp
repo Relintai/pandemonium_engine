@@ -291,8 +291,8 @@ void ProceduralTreeMesh::_update() const {
 
 				int ind = i * 3;
 
-				iw[ind] = tface.x;
-				iw[ind + 1] = tface.y;
+				iw[ind] = tface.y;
+				iw[ind + 1] = tface.x;
 				iw[ind + 2] = tface.z;
 			}
 		}
@@ -363,8 +363,8 @@ void ProceduralTreeMesh::_update() const {
 
 				int ind = i * 3;
 
-				iw[ind] = tface.x;
-				iw[ind + 1] = tface.y;
+				iw[ind] = tface.y;
+				iw[ind + 1] = tface.x;
 				iw[ind + 2] = tface.z;
 			}
 		}
