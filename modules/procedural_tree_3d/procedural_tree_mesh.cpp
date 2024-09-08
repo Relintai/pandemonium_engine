@@ -14,6 +14,7 @@ int ProceduralTreeMesh::get_seed() const {
 }
 void ProceduralTreeMesh::set_seed(const int p_value) {
 	_seed = p_value;
+	_request_update();
 }
 
 int ProceduralTreeMesh::get_branch_segments() const {
@@ -21,6 +22,7 @@ int ProceduralTreeMesh::get_branch_segments() const {
 }
 void ProceduralTreeMesh::set_branch_segments(const int p_value) {
 	_branch_segments = p_value;
+	_request_update();
 }
 
 int ProceduralTreeMesh::get_branch_levels() const {
@@ -28,6 +30,7 @@ int ProceduralTreeMesh::get_branch_levels() const {
 }
 void ProceduralTreeMesh::set_branch_levels(const int p_value) {
 	_branch_levels = p_value;
+	_request_update();
 }
 
 int ProceduralTreeMesh::get_trunk_forks() const {
@@ -35,6 +38,7 @@ int ProceduralTreeMesh::get_trunk_forks() const {
 }
 void ProceduralTreeMesh::set_trunk_forks(const int p_value) {
 	_trunk_forks = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::get_texture_v_multiplier() const {
@@ -42,6 +46,7 @@ float ProceduralTreeMesh::get_texture_v_multiplier() const {
 }
 void ProceduralTreeMesh::set_texture_v_multiplier(const float p_value) {
 	_texture_v_multiplier = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::get_twig_scale() const {
@@ -49,6 +54,7 @@ float ProceduralTreeMesh::get_twig_scale() const {
 }
 void ProceduralTreeMesh::set_twig_scale(const float p_value) {
 	_twig_scale = p_value;
+	_request_update();
 }
 
 // Branching
@@ -57,6 +63,7 @@ float ProceduralTreeMesh::branching_get_initial_length() const {
 }
 void ProceduralTreeMesh::branching_set_initial_length(const float p_value) {
 	_branching_initial_length = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::branching_get_length_falloff_rate() const {
@@ -64,6 +71,7 @@ float ProceduralTreeMesh::branching_get_length_falloff_rate() const {
 }
 void ProceduralTreeMesh::branching_set_length_falloff_rate(const float p_value) {
 	_branching_length_falloff_rate = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::branching_get_length_falloff_power() const {
@@ -71,6 +79,7 @@ float ProceduralTreeMesh::branching_get_length_falloff_power() const {
 }
 void ProceduralTreeMesh::branching_set_length_falloff_power(const float p_value) {
 	_branching_length_falloff_power = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::branching_get_max_clumping() const {
@@ -78,6 +87,7 @@ float ProceduralTreeMesh::branching_get_max_clumping() const {
 }
 void ProceduralTreeMesh::branching_set_max_clumping(const float p_value) {
 	_branching_max_clumping = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::branching_get_min_clumping() const {
@@ -85,6 +95,7 @@ float ProceduralTreeMesh::branching_get_min_clumping() const {
 }
 void ProceduralTreeMesh::branching_set_min_clumping(const float p_value) {
 	_branching_min_clumping = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::branching_get_symmetry() const {
@@ -92,6 +103,7 @@ float ProceduralTreeMesh::branching_get_symmetry() const {
 }
 void ProceduralTreeMesh::branching_set_symmetry(const float p_value) {
 	_branching_symmetry = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::branching_get_droop() const {
@@ -99,6 +111,7 @@ float ProceduralTreeMesh::branching_get_droop() const {
 }
 void ProceduralTreeMesh::branching_set_droop(const float p_value) {
 	_branching_droop = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::branching_get_growth() const {
@@ -106,6 +119,7 @@ float ProceduralTreeMesh::branching_get_growth() const {
 }
 void ProceduralTreeMesh::branching_set_growth(const float p_value) {
 	_branching_growth = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::branching_get_sweep() const {
@@ -113,6 +127,7 @@ float ProceduralTreeMesh::branching_get_sweep() const {
 }
 void ProceduralTreeMesh::branching_set_sweep(const float p_value) {
 	_branching_sweep = p_value;
+	_request_update();
 }
 
 // Trunk
@@ -121,6 +136,7 @@ float ProceduralTreeMesh::trunk_get_radius() const {
 }
 void ProceduralTreeMesh::trunk_set_radius(const float p_value) {
 	_trunk_radius = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::trunk_get_radius_falloff() const {
@@ -128,6 +144,7 @@ float ProceduralTreeMesh::trunk_get_radius_falloff() const {
 }
 void ProceduralTreeMesh::trunk_set_radius_falloff(const float p_value) {
 	_trunk_radius_falloff = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::trunk_get_climb_rate() const {
@@ -135,6 +152,7 @@ float ProceduralTreeMesh::trunk_get_climb_rate() const {
 }
 void ProceduralTreeMesh::trunk_set_climb_rate(const float p_value) {
 	_trunk_climb_rate = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::trunk_get_kink() const {
@@ -142,6 +160,7 @@ float ProceduralTreeMesh::trunk_get_kink() const {
 }
 void ProceduralTreeMesh::trunk_set_kink(const float p_value) {
 	_trunk_kink = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::trunk_get_taper_rate() const {
@@ -149,6 +168,7 @@ float ProceduralTreeMesh::trunk_get_taper_rate() const {
 }
 void ProceduralTreeMesh::trunk_set_taper_rate(const float p_value) {
 	_trunk_taper_rate = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::trunk_get_twists() const {
@@ -156,6 +176,7 @@ float ProceduralTreeMesh::trunk_get_twists() const {
 }
 void ProceduralTreeMesh::trunk_set_twists(const float p_value) {
 	_trunk_twists = p_value;
+	_request_update();
 }
 
 float ProceduralTreeMesh::trunk_get_length() const {
@@ -163,6 +184,7 @@ float ProceduralTreeMesh::trunk_get_length() const {
 }
 void ProceduralTreeMesh::trunk_set_length(const float p_value) {
 	_trunk_length = p_value;
+	_request_update();
 }
 
 void ProceduralTreeMesh::_update() const {
