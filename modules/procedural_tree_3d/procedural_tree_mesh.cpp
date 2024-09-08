@@ -1,5 +1,6 @@
 
 #include "procedural_tree_mesh.h"
+#include "core/object/class_db.h"
 #include "core/object/object.h"
 
 #include "servers/rendering_server.h"
@@ -232,4 +233,8 @@ void ProceduralTreeMesh::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "twig_material", PROPERTY_HINT_RESOURCE_TYPE, "SpatialMaterial,ShaderMaterial"), "set_twig_material", "get_twig_material");
 
 	ADD_PROPERTY(PropertyInfo(Variant::AABB, "custom_aabb", PROPERTY_HINT_NONE, ""), "set_custom_aabb", "get_custom_aabb");
+
+	BIND_ENUM_CONSTANT(TREE_SURFACE_TRUNK);
+	BIND_ENUM_CONSTANT(TREE_SURFACE_TWIG);
+	BIND_ENUM_CONSTANT(TREE_SURFACE_COUNT);
 }
