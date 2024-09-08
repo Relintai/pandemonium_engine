@@ -31,8 +31,8 @@
 
 #include "os_javascript.h"
 
-#include "core/io/json.h"
 #include "core/config/project_settings.h"
+#include "core/io/json.h"
 #include "drivers/gles2/rasterizer_gles2.h"
 #ifndef GLES3_DISABLED
 #include "drivers/gles3/rasterizer_gles3.h"

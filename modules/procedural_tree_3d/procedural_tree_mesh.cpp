@@ -1,3 +1,33 @@
+/*************************************************************************/
+/*  procedural_tree_mesh.cpp                                             */
+/*************************************************************************/
+/*                         This file is part of:                         */
+/*                          PANDEMONIUM ENGINE                           */
+/*             https://github.com/Relintai/pandemonium_engine            */
+/*************************************************************************/
+/* Copyright (c) 2022-present Péter Magyar.                              */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
 
 #include "procedural_tree_mesh.h"
 #include "core/containers/pool_vector.h"
@@ -221,7 +251,6 @@ void ProceduralTreeMesh::set_flip_twig_mesh_faces(const bool p_value) {
 }
 
 void ProceduralTreeMesh::_update() const {
-
 	RenderingServer::get_singleton()->mesh_clear(mesh);
 
 	for (int i = 0; i < TREE_SURFACE_COUNT; ++i) {
@@ -307,7 +336,7 @@ void ProceduralTreeMesh::_update() const {
 			}
 		}
 
-	  PoolVector<int> indices;
+		PoolVector<int> indices;
 
 		int face_count = tree.mTwigFaceCount;
 
@@ -343,7 +372,7 @@ void ProceduralTreeMesh::_update() const {
 			PoolVector<Vector3>::Read r = verts.read();
 
 			if (vert_count > 0) {
-					aabb.position = r[0];
+				aabb.position = r[0];
 			}
 
 			for (int i = 1; i < vert_count; ++i) {
@@ -405,7 +434,7 @@ void ProceduralTreeMesh::_update() const {
 			}
 		}
 
-	  PoolVector<int> indices;
+		PoolVector<int> indices;
 
 		int face_count = tree.mFaceCount;
 
@@ -445,7 +474,7 @@ void ProceduralTreeMesh::_update() const {
 			}
 
 			for (int i = 0; i < vert_count; ++i) {
-					aabb.expand_to(r[i]);
+				aabb.expand_to(r[i]);
 			}
 		}
 
@@ -455,7 +484,6 @@ void ProceduralTreeMesh::_update() const {
 		arr[RS::ARRAY_TEX_UV] = uvs;
 		arr[RS::ARRAY_NORMAL] = normals;
 		arr[RS::ARRAY_INDEX] = indices;
-
 
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 		int sc = RenderingServer::get_singleton()->mesh_get_surface_count(mesh) - 1;
@@ -742,7 +770,7 @@ ProceduralTreeMesh::~ProceduralTreeMesh() {
 }
 
 void ProceduralTreeMesh::_bind_methods() {
-  ADD_GROUP("General", "");
+	ADD_GROUP("General", "");
 	ClassDB::bind_method(D_METHOD("get_seed"), &ProceduralTreeMesh::get_seed);
 	ClassDB::bind_method(D_METHOD("set_seed", "value"), &ProceduralTreeMesh::set_seed);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "seed"), "set_seed", "get_seed");
@@ -767,7 +795,7 @@ void ProceduralTreeMesh::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_twig_scale", "value"), &ProceduralTreeMesh::set_twig_scale);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "twig_scale", PROPERTY_HINT_RANGE, "0.01,2,0.01"), "set_twig_scale", "get_twig_scale");
 
-  ADD_GROUP("Branching", "branching");
+	ADD_GROUP("Branching", "branching");
 	ClassDB::bind_method(D_METHOD("branching_get_initial_length"), &ProceduralTreeMesh::branching_get_initial_length);
 	ClassDB::bind_method(D_METHOD("branching_set_initial_length", "value"), &ProceduralTreeMesh::branching_set_initial_length);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_initial_length", PROPERTY_HINT_RANGE, "0.01,5,0.001"), "branching_set_initial_length", "branching_get_initial_length");
@@ -804,7 +832,7 @@ void ProceduralTreeMesh::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("branching_set_sweep", "value"), &ProceduralTreeMesh::branching_set_sweep);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_sweep", PROPERTY_HINT_RANGE, "-1,1,0.001"), "branching_set_sweep", "branching_get_sweep");
 
-  ADD_GROUP("Trunk", "trunk");
+	ADD_GROUP("Trunk", "trunk");
 	ClassDB::bind_method(D_METHOD("trunk_get_radius"), &ProceduralTreeMesh::trunk_get_radius);
 	ClassDB::bind_method(D_METHOD("trunk_set_radius", "value"), &ProceduralTreeMesh::trunk_set_radius);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_radius", PROPERTY_HINT_RANGE, "0.01,0.5,0.001"), "trunk_set_radius", "trunk_get_radius");
@@ -833,7 +861,7 @@ void ProceduralTreeMesh::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("trunk_set_length", "value"), &ProceduralTreeMesh::trunk_set_length);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_length", PROPERTY_HINT_RANGE, "0.01,50,0.001"), "trunk_set_length", "trunk_get_length");
 
-  ADD_GROUP("Mesh", "");
+	ADD_GROUP("Mesh", "");
 
 	ClassDB::bind_method(D_METHOD("_update"), &ProceduralTreeMesh::_update);
 
