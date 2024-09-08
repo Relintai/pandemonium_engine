@@ -49,116 +49,116 @@ void ProceduralTreeMesh::set_twig_scale(const float p_value) {
 }
 
 // Branching
-float ProceduralTreeMesh::get_initial_length() const {
-	return _initial_length;
+float ProceduralTreeMesh::branching_get_initial_length() const {
+	return _branching_initial_length;
 }
-void ProceduralTreeMesh::set_initial_length(const float p_value) {
-	_initial_length = p_value;
-}
-
-float ProceduralTreeMesh::get_length_falloff_rate() const {
-	return _length_falloff_rate;
-}
-void ProceduralTreeMesh::set_length_falloff_rate(const float p_value) {
-	_length_falloff_rate = p_value;
+void ProceduralTreeMesh::branching_set_initial_length(const float p_value) {
+	_branching_initial_length = p_value;
 }
 
-float ProceduralTreeMesh::get_length_falloff_power() const {
-	return _length_falloff_power;
+float ProceduralTreeMesh::branching_get_length_falloff_rate() const {
+	return _branching_length_falloff_rate;
 }
-void ProceduralTreeMesh::set_length_falloff_power(const float p_value) {
-	_length_falloff_power = p_value;
-}
-
-float ProceduralTreeMesh::get_max_clumping() const {
-	return _max_clumping;
-}
-void ProceduralTreeMesh::set_max_clumping(const float p_value) {
-	_max_clumping = p_value;
+void ProceduralTreeMesh::branching_set_length_falloff_rate(const float p_value) {
+	_branching_length_falloff_rate = p_value;
 }
 
-float ProceduralTreeMesh::get_min_clumping() const {
-	return _min_clumping;
+float ProceduralTreeMesh::branching_get_length_falloff_power() const {
+	return _branching_length_falloff_power;
 }
-void ProceduralTreeMesh::set_min_clumping(const float p_value) {
-	_min_clumping = p_value;
-}
-
-float ProceduralTreeMesh::get_symmetry() const {
-	return _symmetry;
-}
-void ProceduralTreeMesh::set_symmetry(const float p_value) {
-	_symmetry = p_value;
+void ProceduralTreeMesh::branching_set_length_falloff_power(const float p_value) {
+	_branching_length_falloff_power = p_value;
 }
 
-float ProceduralTreeMesh::get_droop() const {
-	return _droop;
+float ProceduralTreeMesh::branching_get_max_clumping() const {
+	return _branching_max_clumping;
 }
-void ProceduralTreeMesh::set_droop(const float p_value) {
-	_droop = p_value;
-}
-
-float ProceduralTreeMesh::get_growth() const {
-	return _growth;
-}
-void ProceduralTreeMesh::set_growth(const float p_value) {
-	_growth = p_value;
+void ProceduralTreeMesh::branching_set_max_clumping(const float p_value) {
+	_branching_max_clumping = p_value;
 }
 
-float ProceduralTreeMesh::get_sweep() const {
-	return _sweep;
+float ProceduralTreeMesh::branching_get_min_clumping() const {
+	return _branching_min_clumping;
 }
-void ProceduralTreeMesh::set_sweep(const float p_value) {
-	_sweep = p_value;
+void ProceduralTreeMesh::branching_set_min_clumping(const float p_value) {
+	_branching_min_clumping = p_value;
+}
+
+float ProceduralTreeMesh::branching_get_symmetry() const {
+	return _branching_symmetry;
+}
+void ProceduralTreeMesh::branching_set_symmetry(const float p_value) {
+	_branching_symmetry = p_value;
+}
+
+float ProceduralTreeMesh::branching_get_droop() const {
+	return _branching_droop;
+}
+void ProceduralTreeMesh::branching_set_droop(const float p_value) {
+	_branching_droop = p_value;
+}
+
+float ProceduralTreeMesh::branching_get_growth() const {
+	return _branching_growth;
+}
+void ProceduralTreeMesh::branching_set_growth(const float p_value) {
+	_branching_growth = p_value;
+}
+
+float ProceduralTreeMesh::branching_get_sweep() const {
+	return _branching_sweep;
+}
+void ProceduralTreeMesh::branching_set_sweep(const float p_value) {
+	_branching_sweep = p_value;
 }
 
 // Trunk
-float ProceduralTreeMesh::get_trunk_radius() const {
+float ProceduralTreeMesh::trunk_get_radius() const {
 	return _trunk_radius;
 }
-void ProceduralTreeMesh::set_trunk_radius(const float p_value) {
+void ProceduralTreeMesh::trunk_set_radius(const float p_value) {
 	_trunk_radius = p_value;
 }
 
-float ProceduralTreeMesh::get_radius_falloff() const {
-	return _radius_falloff;
+float ProceduralTreeMesh::trunk_get_radius_falloff() const {
+	return _trunk_radius_falloff;
 }
-void ProceduralTreeMesh::set_radius_falloff(const float p_value) {
-	_radius_falloff = p_value;
-}
-
-float ProceduralTreeMesh::get_climb_rate() const {
-	return _climb_rate;
-}
-void ProceduralTreeMesh::set_climb_rate(const float p_value) {
-	_climb_rate = p_value;
+void ProceduralTreeMesh::trunk_set_radius_falloff(const float p_value) {
+	_trunk_radius_falloff = p_value;
 }
 
-float ProceduralTreeMesh::get_kink() const {
-	return _kink;
+float ProceduralTreeMesh::trunk_get_climb_rate() const {
+	return _trunk_climb_rate;
 }
-void ProceduralTreeMesh::set_kink(const float p_value) {
-	_kink = p_value;
-}
-
-float ProceduralTreeMesh::get_taper_rate() const {
-	return _taper_rate;
-}
-void ProceduralTreeMesh::set_taper_rate(const float p_value) {
-	_taper_rate = p_value;
+void ProceduralTreeMesh::trunk_set_climb_rate(const float p_value) {
+	_trunk_climb_rate = p_value;
 }
 
-float ProceduralTreeMesh::get_twists() const {
-	return _twists;
+float ProceduralTreeMesh::trunk_get_kink() const {
+	return _trunk_kink;
 }
-void ProceduralTreeMesh::set_twists(const float p_value) {
-	_twists = p_value;
+void ProceduralTreeMesh::trunk_set_kink(const float p_value) {
+	_trunk_kink = p_value;
 }
 
-float ProceduralTreeMesh::get_trunk_length() const {
+float ProceduralTreeMesh::trunk_get_taper_rate() const {
+	return _trunk_taper_rate;
+}
+void ProceduralTreeMesh::trunk_set_taper_rate(const float p_value) {
+	_trunk_taper_rate = p_value;
+}
+
+float ProceduralTreeMesh::trunk_get_twists() const {
+	return _trunk_twists;
+}
+void ProceduralTreeMesh::trunk_set_twists(const float p_value) {
+	_trunk_twists = p_value;
+}
+
+float ProceduralTreeMesh::trunk_get_length() const {
 	return _trunk_length;
 }
-void ProceduralTreeMesh::set_trunk_length(const float p_value) {
+void ProceduralTreeMesh::trunk_set_length(const float p_value) {
 	_trunk_length = p_value;
 }
 
@@ -374,23 +374,23 @@ ProceduralTreeMesh::ProceduralTreeMesh() {
 	_texture_v_multiplier = 0.36;
 
 	// Branching
-	_initial_length = 0.49;
-	_length_falloff_rate = 0.85;
-	_length_falloff_power = 0.99;
-	_max_clumping = 0.454;
-	_min_clumping = 0.404;
-	_symmetry = 2.45;
-	_droop = -0.1;
-	_growth = 0.235;
-	_sweep = 0.01;
+	_branching_initial_length = 0.49;
+	_branching_length_falloff_rate = 0.85;
+	_branching_length_falloff_power = 0.99;
+	_branching_max_clumping = 0.454;
+	_branching_min_clumping = 0.404;
+	_branching_symmetry = 2.45;
+	_branching_droop = -0.1;
+	_branching_growth = 0.235;
+	_branching_sweep = 0.01;
 
 	// Trunk
 	_trunk_radius = 0.139;
-	_radius_falloff = 0.73;
-	_climb_rate = 0.371;
-	_kink = 0.093;
-	_taper_rate = 0.947;
-	_twists = 3.02;
+	_trunk_radius_falloff = 0.73;
+	_trunk_climb_rate = 0.371;
+	_trunk_kink = 0.093;
+	_trunk_taper_rate = 0.947;
+	_trunk_twists = 3.02;
 	_trunk_length = 2.4;
 }
 
@@ -424,71 +424,71 @@ void ProceduralTreeMesh::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_twig_scale", "value"), &ProceduralTreeMesh::set_twig_scale);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "twig_scale"), "set_twig_scale", "get_twig_scale");
 
-  ADD_GROUP("Branching", "");
-	ClassDB::bind_method(D_METHOD("get_initial_length"), &ProceduralTreeMesh::get_initial_length);
-	ClassDB::bind_method(D_METHOD("set_initial_length", "value"), &ProceduralTreeMesh::set_initial_length);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "initial_length"), "set_initial_length", "get_initial_length");
+  ADD_GROUP("Branching", "branching");
+	ClassDB::bind_method(D_METHOD("branching_get_initial_length"), &ProceduralTreeMesh::branching_get_initial_length);
+	ClassDB::bind_method(D_METHOD("branching_set_initial_length", "value"), &ProceduralTreeMesh::branching_set_initial_length);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_initial_length"), "branching_set_initial_length", "branching_get_initial_length");
 
-	ClassDB::bind_method(D_METHOD("get_length_falloff_rate"), &ProceduralTreeMesh::get_length_falloff_rate);
-	ClassDB::bind_method(D_METHOD("set_length_falloff_rate", "value"), &ProceduralTreeMesh::set_length_falloff_rate);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "length_falloff_rate"), "set_length_falloff_rate", "get_length_falloff_rate");
+	ClassDB::bind_method(D_METHOD("branching_get_length_falloff_rate"), &ProceduralTreeMesh::branching_get_length_falloff_rate);
+	ClassDB::bind_method(D_METHOD("branching_set_length_falloff_rate", "value"), &ProceduralTreeMesh::branching_set_length_falloff_rate);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_length_falloff_rate"), "branching_set_length_falloff_rate", "branching_get_length_falloff_rate");
 
-	ClassDB::bind_method(D_METHOD("get_length_falloff_power"), &ProceduralTreeMesh::get_length_falloff_power);
-	ClassDB::bind_method(D_METHOD("set_length_falloff_power", "value"), &ProceduralTreeMesh::set_length_falloff_power);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "length_falloff_power"), "set_length_falloff_power", "get_length_falloff_power");
+	ClassDB::bind_method(D_METHOD("branching_get_length_falloff_power"), &ProceduralTreeMesh::branching_get_length_falloff_power);
+	ClassDB::bind_method(D_METHOD("branching_set_length_falloff_power", "value"), &ProceduralTreeMesh::branching_set_length_falloff_power);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_length_falloff_power"), "branching_set_length_falloff_power", "branching_get_length_falloff_power");
 
-	ClassDB::bind_method(D_METHOD("get_max_clumping"), &ProceduralTreeMesh::get_max_clumping);
-	ClassDB::bind_method(D_METHOD("set_max_clumping", "value"), &ProceduralTreeMesh::set_max_clumping);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "max_clumping"), "set_max_clumping", "get_max_clumping");
+	ClassDB::bind_method(D_METHOD("branching_get_max_clumping"), &ProceduralTreeMesh::branching_get_max_clumping);
+	ClassDB::bind_method(D_METHOD("branching_set_max_clumping", "value"), &ProceduralTreeMesh::branching_set_max_clumping);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_max_clumping"), "branching_set_max_clumping", "branching_get_max_clumping");
 
-	ClassDB::bind_method(D_METHOD("get_min_clumping"), &ProceduralTreeMesh::get_min_clumping);
-	ClassDB::bind_method(D_METHOD("set_min_clumping", "value"), &ProceduralTreeMesh::set_min_clumping);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "min_clumping"), "set_min_clumping", "get_min_clumping");
+	ClassDB::bind_method(D_METHOD("branching_get_min_clumping"), &ProceduralTreeMesh::branching_get_min_clumping);
+	ClassDB::bind_method(D_METHOD("branching_set_min_clumping", "value"), &ProceduralTreeMesh::branching_set_min_clumping);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_min_clumping"), "branching_set_min_clumping", "branching_get_min_clumping");
 
-	ClassDB::bind_method(D_METHOD("get_symmetry"), &ProceduralTreeMesh::get_symmetry);
-	ClassDB::bind_method(D_METHOD("set_symmetry", "value"), &ProceduralTreeMesh::set_symmetry);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "symmetry"), "set_symmetry", "get_symmetry");
+	ClassDB::bind_method(D_METHOD("branching_get_symmetry"), &ProceduralTreeMesh::branching_get_symmetry);
+	ClassDB::bind_method(D_METHOD("branching_set_symmetry", "value"), &ProceduralTreeMesh::branching_set_symmetry);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_symmetry"), "branching_set_symmetry", "branching_get_symmetry");
 
-	ClassDB::bind_method(D_METHOD("get_droop"), &ProceduralTreeMesh::get_droop);
-	ClassDB::bind_method(D_METHOD("set_droop", "value"), &ProceduralTreeMesh::set_droop);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "droop"), "set_droop", "get_droop");
+	ClassDB::bind_method(D_METHOD("branching_get_droop"), &ProceduralTreeMesh::branching_get_droop);
+	ClassDB::bind_method(D_METHOD("branching_set_droop", "value"), &ProceduralTreeMesh::branching_set_droop);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_droop"), "branching_set_droop", "branching_get_droop");
 
-	ClassDB::bind_method(D_METHOD("get_growth"), &ProceduralTreeMesh::get_growth);
-	ClassDB::bind_method(D_METHOD("set_growth", "value"), &ProceduralTreeMesh::set_growth);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "growth"), "set_growth", "get_growth");
+	ClassDB::bind_method(D_METHOD("branching_get_growth"), &ProceduralTreeMesh::branching_get_growth);
+	ClassDB::bind_method(D_METHOD("branching_set_growth", "value"), &ProceduralTreeMesh::branching_set_growth);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_growth"), "branching_set_growth", "branching_get_growth");
 
-	ClassDB::bind_method(D_METHOD("get_sweep"), &ProceduralTreeMesh::get_sweep);
-	ClassDB::bind_method(D_METHOD("set_sweep", "value"), &ProceduralTreeMesh::set_sweep);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "sweep"), "set_sweep", "get_sweep");
+	ClassDB::bind_method(D_METHOD("branching_get_sweep"), &ProceduralTreeMesh::branching_get_sweep);
+	ClassDB::bind_method(D_METHOD("branching_set_sweep", "value"), &ProceduralTreeMesh::branching_set_sweep);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "branching_sweep"), "branching_set_sweep", "branching_get_sweep");
 
-  ADD_GROUP("Trunk", "");
-	ClassDB::bind_method(D_METHOD("get_trunk_radius"), &ProceduralTreeMesh::get_trunk_radius);
-	ClassDB::bind_method(D_METHOD("set_trunk_radius", "value"), &ProceduralTreeMesh::set_trunk_radius);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_radius"), "set_trunk_radius", "get_trunk_radius");
+  ADD_GROUP("Trunk", "trunk");
+	ClassDB::bind_method(D_METHOD("trunk_get_radius"), &ProceduralTreeMesh::trunk_get_radius);
+	ClassDB::bind_method(D_METHOD("trunk_set_radius", "value"), &ProceduralTreeMesh::trunk_set_radius);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_radius"), "trunk_set_radius", "trunk_get_radius");
 
-	ClassDB::bind_method(D_METHOD("get_radius_falloff"), &ProceduralTreeMesh::get_radius_falloff);
-	ClassDB::bind_method(D_METHOD("set_radius_falloff", "value"), &ProceduralTreeMesh::set_radius_falloff);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "radius_falloff"), "set_radius_falloff", "get_radius_falloff");
+	ClassDB::bind_method(D_METHOD("trunk_get_radius_falloff"), &ProceduralTreeMesh::trunk_get_radius_falloff);
+	ClassDB::bind_method(D_METHOD("trunk_set_radius_falloff", "value"), &ProceduralTreeMesh::trunk_set_radius_falloff);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_radius_falloff"), "trunk_set_radius_falloff", "trunk_get_radius_falloff");
 
-	ClassDB::bind_method(D_METHOD("get_climb_rate"), &ProceduralTreeMesh::get_climb_rate);
-	ClassDB::bind_method(D_METHOD("set_climb_rate", "value"), &ProceduralTreeMesh::set_climb_rate);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "climb_rate"), "set_climb_rate", "get_climb_rate");
+	ClassDB::bind_method(D_METHOD("trunk_get_climb_rate"), &ProceduralTreeMesh::trunk_get_climb_rate);
+	ClassDB::bind_method(D_METHOD("trunk_set_climb_rate", "value"), &ProceduralTreeMesh::trunk_set_climb_rate);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_climb_rate"), "trunk_set_climb_rate", "trunk_get_climb_rate");
 
-	ClassDB::bind_method(D_METHOD("get_kink"), &ProceduralTreeMesh::get_kink);
-	ClassDB::bind_method(D_METHOD("set_kink", "value"), &ProceduralTreeMesh::set_kink);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "kink"), "set_kink", "get_kink");
+	ClassDB::bind_method(D_METHOD("trunk_get_kink"), &ProceduralTreeMesh::trunk_get_kink);
+	ClassDB::bind_method(D_METHOD("trunk_set_kink", "value"), &ProceduralTreeMesh::trunk_set_kink);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_kink"), "trunk_set_kink", "trunk_get_kink");
 
-	ClassDB::bind_method(D_METHOD("get_taper_rate"), &ProceduralTreeMesh::get_taper_rate);
-	ClassDB::bind_method(D_METHOD("set_taper_rate", "value"), &ProceduralTreeMesh::set_taper_rate);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "taper_rate"), "set_taper_rate", "get_taper_rate");
+	ClassDB::bind_method(D_METHOD("trunk_get_taper_rate"), &ProceduralTreeMesh::trunk_get_taper_rate);
+	ClassDB::bind_method(D_METHOD("trunk_set_taper_rate", "value"), &ProceduralTreeMesh::trunk_set_taper_rate);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_taper_rate"), "trunk_set_taper_rate", "trunk_get_taper_rate");
 
-	ClassDB::bind_method(D_METHOD("get_twists"), &ProceduralTreeMesh::get_twists);
-	ClassDB::bind_method(D_METHOD("set_twists", "value"), &ProceduralTreeMesh::set_twists);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "twists"), "set_twists", "get_twists");
+	ClassDB::bind_method(D_METHOD("trunk_get_twists"), &ProceduralTreeMesh::trunk_get_twists);
+	ClassDB::bind_method(D_METHOD("trunk_set_twists", "value"), &ProceduralTreeMesh::trunk_set_twists);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_twists"), "trunk_set_twists", "trunk_get_twists");
 
-	ClassDB::bind_method(D_METHOD("get_trunk_length"), &ProceduralTreeMesh::get_trunk_length);
-	ClassDB::bind_method(D_METHOD("set_trunk_length", "value"), &ProceduralTreeMesh::set_trunk_length);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_length"), "set_trunk_length", "get_trunk_length");
+	ClassDB::bind_method(D_METHOD("trunk_get_length"), &ProceduralTreeMesh::trunk_get_length);
+	ClassDB::bind_method(D_METHOD("trunk_set_length", "value"), &ProceduralTreeMesh::trunk_set_length);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_length"), "trunk_set_length", "trunk_get_length");
 
   ADD_GROUP("Mesh", "");
 

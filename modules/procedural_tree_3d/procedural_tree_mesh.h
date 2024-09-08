@@ -27,54 +27,54 @@ public:
 	void set_twig_scale(const float p_value);
 
 	// Branching
-	float get_initial_length() const;
-	void set_initial_length(const float p_value);
+	float branching_get_initial_length() const;
+	void branching_set_initial_length(const float p_value);
 
-	float get_length_falloff_rate() const;
-	void set_length_falloff_rate(const float p_value);
+	float branching_get_length_falloff_rate() const;
+	void branching_set_length_falloff_rate(const float p_value);
 
-	float get_length_falloff_power() const;
-	void set_length_falloff_power(const float p_value);
+	float branching_get_length_falloff_power() const;
+	void branching_set_length_falloff_power(const float p_value);
 
-	float get_max_clumping() const;
-	void set_max_clumping(const float p_value);
+	float branching_get_max_clumping() const;
+	void branching_set_max_clumping(const float p_value);
 
-	float get_min_clumping() const;
-	void set_min_clumping(const float p_value);
+	float branching_get_min_clumping() const;
+	void branching_set_min_clumping(const float p_value);
 
-	float get_symmetry() const;
-	void set_symmetry(const float p_value);
+	float branching_get_symmetry() const;
+	void branching_set_symmetry(const float p_value);
 
-	float get_droop() const;
-	void set_droop(const float p_value);
+	float branching_get_droop() const;
+	void branching_set_droop(const float p_value);
 
-	float get_growth() const;
-	void set_growth(const float p_value);
+	float branching_get_growth() const;
+	void branching_set_growth(const float p_value);
 
-	float get_sweep() const;
-	void set_sweep(const float p_value);
+	float branching_get_sweep() const;
+	void branching_set_sweep(const float p_value);
 
 	// Trunk
-	float get_trunk_radius() const;
-	void set_trunk_radius(const float p_value);
+	float trunk_get_radius() const;
+	void trunk_set_radius(const float p_value);
 
-	float get_radius_falloff() const;
-	void set_radius_falloff(const float p_value);
+	float trunk_get_radius_falloff() const;
+	void trunk_set_radius_falloff(const float p_value);
 
-	float get_climb_rate() const;
-	void set_climb_rate(const float p_value);
+	float trunk_get_climb_rate() const;
+	void trunk_set_climb_rate(const float p_value);
 
-	float get_kink() const;
-	void set_kink(const float p_value);
+	float trunk_get_kink() const;
+	void trunk_set_kink(const float p_value);
 
-	float get_taper_rate() const;
-	void set_taper_rate(const float p_value);
+	float trunk_get_taper_rate() const;
+	void trunk_set_taper_rate(const float p_value);
 
-	float get_twists() const;
-	void set_twists(const float p_value);
+	float trunk_get_twists() const;
+	void trunk_set_twists(const float p_value);
 
-	float get_trunk_length() const;
-	void set_trunk_length(const float p_value);
+	float trunk_get_length() const;
+	void trunk_set_length(const float p_value);
 
 public:
 	enum TreeSurfaces {
@@ -127,23 +127,23 @@ private:
 	float _twig_scale; //mProperties.mTwigScale
 
 	// Branching
-	float _initial_length; //mProperties.mInitialBranchLength
-	float _length_falloff_rate; //mProperties.mLengthFalloffFactor
-	float _length_falloff_power; //mProperties.mLengthFalloffPower
-	float _max_clumping; //mProperties.mClumpMax
-	float _min_clumping; //mProperties.mClumpMin
-	float _symmetry; //mProperties.mBranchFactor
-	float _droop; //mProperties.mDropAmount
-	float _growth; //mProperties.mGrowAmount
-	float _sweep; //mProperties.mSweepAmount
+	float _branching_initial_length; //mProperties.mInitialBranchLength
+	float _branching_length_falloff_rate; //mProperties.mLengthFalloffFactor
+	float _branching_length_falloff_power; //mProperties.mLengthFalloffPower
+	float _branching_max_clumping; //mProperties.mClumpMax
+	float _branching_min_clumping; //mProperties.mClumpMin
+	float _branching_symmetry; //mProperties.mBranchFactor
+	float _branching_droop; //mProperties.mDropAmount
+	float _branching_growth; //mProperties.mGrowAmount
+	float _branching_sweep; //mProperties.mSweepAmount
 
 	// Trunk
 	float _trunk_radius; //mProperties.mMaxRadius
-	float _radius_falloff; //mProperties.mRadiusFalloffRate
-	float _climb_rate; //mProperties.mClimbRate
-	float _kink; //mProperties.mTrunkKink
-	float _taper_rate; //mProperties.mTaperRate
-	float _twists; //mProperties.mTwistRate
+	float _trunk_radius_falloff; //mProperties.mRadiusFalloffRate
+	float _trunk_climb_rate; //mProperties.mClimbRate
+	float _trunk_kink; //mProperties.mTrunkKink
+	float _trunk_taper_rate; //mProperties.mTaperRate
+	float _trunk_twists; //mProperties.mTwistRate
 	float _trunk_length; //mProperties.mTrunkLength
 
 private:
