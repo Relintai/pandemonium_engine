@@ -659,7 +659,7 @@ void ProceduralTreeMesh::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("trunk_get_length"), &ProceduralTreeMesh::trunk_get_length);
 	ClassDB::bind_method(D_METHOD("trunk_set_length", "value"), &ProceduralTreeMesh::trunk_set_length);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_length", PROPERTY_HINT_RANGE, "0.01,5,0.001"), "trunk_set_length", "trunk_get_length");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "trunk_length", PROPERTY_HINT_RANGE, "0.01,50,0.001"), "trunk_set_length", "trunk_get_length");
 
   ADD_GROUP("Mesh", "");
 
