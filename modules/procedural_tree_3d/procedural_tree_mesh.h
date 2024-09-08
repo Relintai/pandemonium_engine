@@ -76,6 +76,13 @@ public:
 	float trunk_get_length() const;
 	void trunk_set_length(const float p_value);
 
+	// Meshes
+	bool get_enable_branch_mesh() const;
+	void set_enable_branch_mesh(const bool p_value);
+
+	bool get_enable_twig_mesh() const;
+	void set_enable_twig_mesh(const bool p_value);
+
 public:
 	enum TreeSurfaces {
 		TREE_SURFACE_TWIG = 0,
@@ -146,14 +153,23 @@ private:
 	float _trunk_twists; //mProperties.mTwistRate
 	float _trunk_length; //mProperties.mTrunkLength
 
+	// Meshes
+	bool _enable_branch_mesh;
+	bool _enable_twig_mesh;
+
 private:
 	RID mesh;
 
 	struct TreeSurface {
+		int surface_index;
 		Ref<Material> material;
+
+		TreeSurface() {
+			surface_index = -1;
+		}
 	};
 
-	TreeSurface _surfaces[TREE_SURFACE_COUNT];
+	mutable TreeSurface _surfaces[TREE_SURFACE_COUNT];
 
 	mutable AABB aabb;
 	AABB custom_aabb;

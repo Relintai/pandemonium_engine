@@ -187,7 +187,36 @@ void ProceduralTreeMesh::trunk_set_length(const float p_value) {
 	_request_update();
 }
 
+// Meshes
+bool ProceduralTreeMesh::get_enable_branch_mesh() const {
+	return _enable_branch_mesh;
+}
+void ProceduralTreeMesh::set_enable_branch_mesh(const bool p_value) {
+	_enable_branch_mesh = p_value;
+	_request_update();
+}
+
+bool ProceduralTreeMesh::get_enable_twig_mesh() const {
+	return _enable_twig_mesh;
+}
+void ProceduralTreeMesh::set_enable_twig_mesh(const bool p_value) {
+	_enable_twig_mesh = p_value;
+	_request_update();
+}
+
 void ProceduralTreeMesh::_update() const {
+
+	RenderingServer::get_singleton()->mesh_clear(mesh);
+
+	for (int i = 0; i < TREE_SURFACE_COUNT; ++i) {
+		_surfaces[i].surface_index = -1;
+	}
+
+	aabb = AABB();
+
+	if (!_enable_branch_mesh && !_enable_twig_mesh) {
+		return;
+	}
 
 	Proctree::Tree tree;
 
@@ -221,12 +250,7 @@ void ProceduralTreeMesh::_update() const {
 
 	tree.generate();
 
-
-	RenderingServer::get_singleton()->mesh_clear(mesh);
-
-	aabb = AABB();
-
-	{
+	if (_enable_twig_mesh) {
 		int vert_count = tree.mTwigVertCount;
 
 		PoolVector<Vector2> uvs;
@@ -275,12 +299,13 @@ void ProceduralTreeMesh::_update() const {
 
 		{
 			PoolVector<Vector3>::Read r = verts.read();
-			for (int i = 0; i < vert_count; i++) {
-				if (i == 0) {
-					aabb.position = r[i];
-				} else {
-					aabb.expand_to(r[i]);
-				}
+
+			if (vert_count > 0) {
+					aabb.position = r[0];
+			}
+
+			for (int i = 1; i < vert_count; ++i) {
+				aabb.expand_to(r[i]);
 			}
 		}
 
@@ -292,10 +317,12 @@ void ProceduralTreeMesh::_update() const {
 		arr[RS::ARRAY_INDEX] = indices;
 
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
-		RenderingServer::get_singleton()->mesh_surface_set_material(mesh, TREE_SURFACE_TWIG, _surfaces[TREE_SURFACE_TWIG].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TWIG].material->get_rid());
+		int sc = RenderingServer::get_singleton()->mesh_get_surface_count(mesh) - 1;
+		_surfaces[TREE_SURFACE_TWIG].surface_index = sc;
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh, sc, _surfaces[TREE_SURFACE_TWIG].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TWIG].material->get_rid());
 	}
 
-	{
+	if (_enable_branch_mesh) {
 		int vert_count = tree.mVertCount;
 
 		PoolVector<Vector2> uvs;
@@ -344,12 +371,13 @@ void ProceduralTreeMesh::_update() const {
 
 		{
 			PoolVector<Vector3>::Read r = verts.read();
-			for (int i = 0; i < vert_count; i++) {
-				//if (i == 0) {
-				//	aabb.position = r[i];
-				//} else {
+
+			if (!_enable_twig_mesh && vert_count > 0) {
+				aabb.position = r[0];
+			}
+
+			for (int i = 0; i < vert_count; ++i) {
 					aabb.expand_to(r[i]);
-				//}
 			}
 		}
 
@@ -359,8 +387,12 @@ void ProceduralTreeMesh::_update() const {
 		arr[RS::ARRAY_TEX_UV] = uvs;
 		arr[RS::ARRAY_NORMAL] = normals;
 		arr[RS::ARRAY_INDEX] = indices;
+
+
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
-		RenderingServer::get_singleton()->mesh_surface_set_material(mesh, TREE_SURFACE_TRUNK, _surfaces[TREE_SURFACE_TRUNK].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TRUNK].material->get_rid());
+		int sc = RenderingServer::get_singleton()->mesh_get_surface_count(mesh) - 1;
+		_surfaces[TREE_SURFACE_TRUNK].surface_index = sc;
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh, sc, _surfaces[TREE_SURFACE_TRUNK].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TRUNK].material->get_rid());
 	}
 
 	pending_request = false;
@@ -390,7 +422,13 @@ int ProceduralTreeMesh::surface_get_array_len(int p_idx) const {
 		_update();
 	}
 
-	return RenderingServer::get_singleton()->mesh_surface_get_array_len(mesh, p_idx);
+	int si = _surfaces[p_idx].surface_index;
+
+	if (si == -1) {
+		return 0;
+	}
+
+	return RenderingServer::get_singleton()->mesh_surface_get_array_len(mesh, si);
 }
 
 int ProceduralTreeMesh::surface_get_array_index_len(int p_idx) const {
@@ -399,7 +437,13 @@ int ProceduralTreeMesh::surface_get_array_index_len(int p_idx) const {
 		_update();
 	}
 
-	return RenderingServer::get_singleton()->mesh_surface_get_array_index_len(mesh, p_idx);
+	int si = _surfaces[p_idx].surface_index;
+
+	if (si == -1) {
+		return 0;
+	}
+
+	return RenderingServer::get_singleton()->mesh_surface_get_array_index_len(mesh, si);
 }
 
 Array ProceduralTreeMesh::surface_get_arrays(int p_surface) const {
@@ -408,7 +452,13 @@ Array ProceduralTreeMesh::surface_get_arrays(int p_surface) const {
 		_update();
 	}
 
-	return RenderingServer::get_singleton()->mesh_surface_get_arrays(mesh, p_surface);
+	int si = _surfaces[p_surface].surface_index;
+
+	if (si == -1) {
+		return Array();
+	}
+
+	return RenderingServer::get_singleton()->mesh_surface_get_arrays(mesh, si);
 }
 
 Array ProceduralTreeMesh::surface_get_blend_shape_arrays(int p_surface) const {
@@ -426,7 +476,13 @@ uint32_t ProceduralTreeMesh::surface_get_format(int p_idx) const {
 		_update();
 	}
 
-	return RenderingServer::get_singleton()->mesh_surface_get_format(mesh, p_idx);
+	int si = _surfaces[p_idx].surface_index;
+
+	if (si == -1) {
+		return 0;
+	}
+
+	return RenderingServer::get_singleton()->mesh_surface_get_format(mesh, si);
 }
 
 Mesh::PrimitiveType ProceduralTreeMesh::surface_get_primitive_type(int p_idx) const {
@@ -484,8 +540,13 @@ RID ProceduralTreeMesh::get_rid() const {
 void ProceduralTreeMesh::set_twig_material(const Ref<Material> &p_material) {
 	_surfaces[TREE_SURFACE_TWIG].material = p_material;
 	if (!pending_request) {
-		// just apply it, else it'll happen when _update is called.
-		RenderingServer::get_singleton()->mesh_surface_set_material(mesh, TREE_SURFACE_TWIG, _surfaces[TREE_SURFACE_TWIG].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TWIG].material->get_rid());
+		int si = _surfaces[TREE_SURFACE_TWIG].surface_index;
+
+		if (si != -1) {
+			// just apply it, else it'll happen when _update is called.
+			RenderingServer::get_singleton()->mesh_surface_set_material(mesh, si, _surfaces[TREE_SURFACE_TWIG].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TWIG].material->get_rid());
+		}
+
 		_change_notify();
 		emit_changed();
 	};
@@ -498,8 +559,13 @@ Ref<Material> ProceduralTreeMesh::get_twig_material() const {
 void ProceduralTreeMesh::set_trunk_material(const Ref<Material> &p_material) {
 	_surfaces[TREE_SURFACE_TRUNK].material = p_material;
 	if (!pending_request) {
-		// just apply it, else it'll happen when _update is called.
-		RenderingServer::get_singleton()->mesh_surface_set_material(mesh, TREE_SURFACE_TRUNK, _surfaces[TREE_SURFACE_TRUNK].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TRUNK].material->get_rid());
+		int si = _surfaces[TREE_SURFACE_TWIG].surface_index;
+
+		if (si != -1) {
+			// just apply it, else it'll happen when _update is called.
+			RenderingServer::get_singleton()->mesh_surface_set_material(mesh, si, _surfaces[TREE_SURFACE_TRUNK].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TRUNK].material->get_rid());
+		}
+
 		_change_notify();
 		emit_changed();
 	};
@@ -513,6 +579,13 @@ Array ProceduralTreeMesh::get_mesh_arrays() const {
 	Array arr;
 
 	for (int i = 0; i < TREE_SURFACE_COUNT; ++i) {
+		int si = _surfaces[i].surface_index;
+
+		if (si == -1) {
+			arr.push_back(Array());
+			continue;
+		}
+
 		arr.push_back(surface_get_arrays(i));
 	}
 
@@ -563,6 +636,9 @@ ProceduralTreeMesh::ProceduralTreeMesh() {
 	_trunk_taper_rate = 0.947;
 	_trunk_twists = 3.02;
 	_trunk_length = 2.4;
+
+	_enable_branch_mesh = true;
+	_enable_twig_mesh = true;
 }
 
 ProceduralTreeMesh::~ProceduralTreeMesh() {
@@ -675,6 +751,14 @@ void ProceduralTreeMesh::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_custom_aabb", "aabb"), &ProceduralTreeMesh::set_custom_aabb);
 	ClassDB::bind_method(D_METHOD("get_custom_aabb"), &ProceduralTreeMesh::get_custom_aabb);
+
+	ClassDB::bind_method(D_METHOD("get_enable_branch_mesh"), &ProceduralTreeMesh::get_enable_branch_mesh);
+	ClassDB::bind_method(D_METHOD("set_enable_branch_mesh", "value"), &ProceduralTreeMesh::set_enable_branch_mesh);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enable_branch_mesh"), "set_enable_branch_mesh", "get_enable_branch_mesh");
+
+	ClassDB::bind_method(D_METHOD("get_enable_twig_mesh"), &ProceduralTreeMesh::get_enable_twig_mesh);
+	ClassDB::bind_method(D_METHOD("set_enable_twig_mesh", "value"), &ProceduralTreeMesh::set_enable_twig_mesh);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enable_twig_mesh"), "set_enable_twig_mesh", "get_enable_twig_mesh");
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "twig_material", PROPERTY_HINT_RESOURCE_TYPE, "SpatialMaterial,ShaderMaterial"), "set_twig_material", "get_twig_material");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "trunk_material", PROPERTY_HINT_RESOURCE_TYPE, "SpatialMaterial,ShaderMaterial"), "set_trunk_material", "get_trunk_material");
