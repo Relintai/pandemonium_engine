@@ -1,5 +1,5 @@
 
-#include "procedural_tree_3d_mesh.h"
+#include "procedural_tree_mesh.h"
 #include "core/object/object.h"
 
 #include "servers/rendering_server.h"

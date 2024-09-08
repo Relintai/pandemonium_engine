@@ -8,7 +8,7 @@ sources = [
     "register_types.cpp",
 
     "proctree/proctree.cpp",
-    "procedural_tree_3d_mesh.cpp",
+    "procedural_tree_mesh.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
