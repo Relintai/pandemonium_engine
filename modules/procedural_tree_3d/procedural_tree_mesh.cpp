@@ -204,6 +204,22 @@ void ProceduralTreeMesh::set_enable_twig_mesh(const bool p_value) {
 	_request_update();
 }
 
+bool ProceduralTreeMesh::get_flip_branch_mesh_faces() const {
+	return _flip_branch_mesh_faces;
+}
+void ProceduralTreeMesh::set_flip_branch_mesh_faces(const bool p_value) {
+	_flip_branch_mesh_faces = p_value;
+	_request_update();
+}
+
+bool ProceduralTreeMesh::get_flip_twig_mesh_faces() const {
+	return _flip_twig_mesh_faces;
+}
+void ProceduralTreeMesh::set_flip_twig_mesh_faces(const bool p_value) {
+	_flip_twig_mesh_faces = p_value;
+	_request_update();
+}
+
 void ProceduralTreeMesh::_update() const {
 
 	RenderingServer::get_singleton()->mesh_clear(mesh);
@@ -261,7 +277,7 @@ void ProceduralTreeMesh::_update() const {
 		normals.resize(vert_count);
 		verts.resize(vert_count);
 
-		{
+		if (!_flip_twig_mesh_faces) {
 			PoolVector<Vector2>::Write uvw = uvs.write();
 			PoolVector<Vector3>::Write nw = normals.write();
 			PoolVector<Vector3>::Write vw = verts.write();
@@ -275,6 +291,20 @@ void ProceduralTreeMesh::_update() const {
 				nw[i] = Vector3(tnormal.x, tnormal.y, tnormal.z);
 				vw[i] = Vector3(tvert.x, tvert.y, tvert.z);
 			}
+		} else {
+			PoolVector<Vector2>::Write uvw = uvs.write();
+			PoolVector<Vector3>::Write nw = normals.write();
+			PoolVector<Vector3>::Write vw = verts.write();
+
+			for (int i = 0; i < vert_count; ++i) {
+				Proctree::fvec2 tuv = tree.mTwigUV[i];
+				Proctree::fvec3 tnormal = tree.mTwigNormal[i];
+				Proctree::fvec3 tvert = tree.mTwigVert[i];
+
+				uvw[i] = Vector2(tuv.u, tuv.v);
+				nw[i] = -Vector3(tnormal.x, tnormal.y, tnormal.z);
+				vw[i] = Vector3(tvert.x, tvert.y, tvert.z);
+			}
 		}
 
 	  PoolVector<int> indices;
@@ -283,7 +313,7 @@ void ProceduralTreeMesh::_update() const {
 
 		indices.resize(face_count * 3);
 
-		{
+		if (!_flip_twig_mesh_faces) {
 			PoolVector<int>::Write iw = indices.write();
 
 			for (int i = 0; i < face_count; ++i) {
@@ -293,6 +323,18 @@ void ProceduralTreeMesh::_update() const {
 
 				iw[ind] = tface.y;
 				iw[ind + 1] = tface.x;
+				iw[ind + 2] = tface.z;
+			}
+		} else {
+			PoolVector<int>::Write iw = indices.write();
+
+			for (int i = 0; i < face_count; ++i) {
+				Proctree::ivec3 tface = tree.mTwigFace[i];
+
+				int ind = i * 3;
+
+				iw[ind] = tface.x;
+				iw[ind + 1] = tface.y;
 				iw[ind + 2] = tface.z;
 			}
 		}
@@ -333,7 +375,7 @@ void ProceduralTreeMesh::_update() const {
 		normals.resize(vert_count);
 		verts.resize(vert_count);
 
-		{
+		if (!_flip_branch_mesh_faces) {
 			PoolVector<Vector2>::Write uvw = uvs.write();
 			PoolVector<Vector3>::Write nw = normals.write();
 			PoolVector<Vector3>::Write vw = verts.write();
@@ -347,6 +389,20 @@ void ProceduralTreeMesh::_update() const {
 				nw[i] = Vector3(tnormal.x, tnormal.y, tnormal.z);
 				vw[i] = Vector3(tvert.x, tvert.y, tvert.z);
 			}
+		} else {
+			PoolVector<Vector2>::Write uvw = uvs.write();
+			PoolVector<Vector3>::Write nw = normals.write();
+			PoolVector<Vector3>::Write vw = verts.write();
+
+			for (int i = 0; i < vert_count; ++i) {
+				Proctree::fvec2 tuv = tree.mUV[i];
+				Proctree::fvec3 tnormal = tree.mNormal[i];
+				Proctree::fvec3 tvert = tree.mVert[i];
+
+				uvw[i] = Vector2(tuv.u, tuv.v);
+				nw[i] = -Vector3(tnormal.x, tnormal.y, tnormal.z);
+				vw[i] = Vector3(tvert.x, tvert.y, tvert.z);
+			}
 		}
 
 	  PoolVector<int> indices;
@@ -355,7 +411,7 @@ void ProceduralTreeMesh::_update() const {
 
 		indices.resize(face_count * 3);
 
-		{
+		if (!_flip_branch_mesh_faces) {
 			PoolVector<int>::Write iw = indices.write();
 
 			for (int i = 0; i < face_count; ++i) {
@@ -365,6 +421,18 @@ void ProceduralTreeMesh::_update() const {
 
 				iw[ind] = tface.y;
 				iw[ind + 1] = tface.x;
+				iw[ind + 2] = tface.z;
+			}
+		} else {
+			PoolVector<int>::Write iw = indices.write();
+
+			for (int i = 0; i < face_count; ++i) {
+				Proctree::ivec3 tface = tree.mFace[i];
+
+				int ind = i * 3;
+
+				iw[ind] = tface.x;
+				iw[ind + 1] = tface.y;
 				iw[ind + 2] = tface.z;
 			}
 		}
@@ -639,6 +707,9 @@ ProceduralTreeMesh::ProceduralTreeMesh() {
 
 	_enable_branch_mesh = true;
 	_enable_twig_mesh = true;
+
+	_flip_branch_mesh_faces = false;
+	_flip_twig_mesh_faces = false;
 }
 
 ProceduralTreeMesh::~ProceduralTreeMesh() {
@@ -759,6 +830,14 @@ void ProceduralTreeMesh::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_enable_twig_mesh"), &ProceduralTreeMesh::get_enable_twig_mesh);
 	ClassDB::bind_method(D_METHOD("set_enable_twig_mesh", "value"), &ProceduralTreeMesh::set_enable_twig_mesh);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enable_twig_mesh"), "set_enable_twig_mesh", "get_enable_twig_mesh");
+
+	ClassDB::bind_method(D_METHOD("get_flip_branch_mesh_faces"), &ProceduralTreeMesh::get_flip_branch_mesh_faces);
+	ClassDB::bind_method(D_METHOD("set_flip_branch_mesh_faces", "value"), &ProceduralTreeMesh::set_flip_branch_mesh_faces);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_branch_mesh_faces"), "set_flip_branch_mesh_faces", "get_flip_branch_mesh_faces");
+
+	ClassDB::bind_method(D_METHOD("get_flip_twig_mesh_faces"), &ProceduralTreeMesh::get_flip_twig_mesh_faces);
+	ClassDB::bind_method(D_METHOD("set_flip_twig_mesh_faces", "value"), &ProceduralTreeMesh::set_flip_twig_mesh_faces);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_twig_mesh_faces"), "set_flip_twig_mesh_faces", "get_flip_twig_mesh_faces");
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "twig_material", PROPERTY_HINT_RESOURCE_TYPE, "SpatialMaterial,ShaderMaterial"), "set_twig_material", "get_twig_material");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "trunk_material", PROPERTY_HINT_RESOURCE_TYPE, "SpatialMaterial,ShaderMaterial"), "set_trunk_material", "get_trunk_material");

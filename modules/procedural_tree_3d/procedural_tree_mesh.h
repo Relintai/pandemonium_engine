@@ -83,6 +83,12 @@ public:
 	bool get_enable_twig_mesh() const;
 	void set_enable_twig_mesh(const bool p_value);
 
+	bool get_flip_branch_mesh_faces() const;
+	void set_flip_branch_mesh_faces(const bool p_value);
+
+	bool get_flip_twig_mesh_faces() const;
+	void set_flip_twig_mesh_faces(const bool p_value);
+
 public:
 	enum TreeSurfaces {
 		TREE_SURFACE_TWIG = 0,
@@ -156,6 +162,9 @@ private:
 	// Meshes
 	bool _enable_branch_mesh;
 	bool _enable_twig_mesh;
+
+	bool _flip_branch_mesh_faces;
+	bool _flip_twig_mesh_faces;
 
 private:
 	RID mesh;
