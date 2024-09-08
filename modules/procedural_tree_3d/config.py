@@ -9,7 +9,7 @@ def configure(env):
 
 def get_doc_classes():
     return [
-        "ProceduralTree3D",
+        "ProceduralTree3DMesh",
     ]
 
 def get_doc_path():
