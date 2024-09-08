@@ -1,5 +1,5 @@
 
-#include "procedural_tree_3d.h"
+#include "procedural_tree_3d_mesh.h"
 
 ProceduralTree3D::ProceduralTree3D() {
 }
