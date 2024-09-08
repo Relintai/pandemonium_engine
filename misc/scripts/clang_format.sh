@@ -34,6 +34,8 @@ while IFS= read -rd '' f; do
         continue
     elif [[ "$f" == "modules/smtp"* ]]; then
         continue
+    elif [[ "$f" == "modules/procedural_tree_3d/proctree"* ]]; then
+        continue
     elif [[ "$f" == "editor_modules/denoise/oidn"* ]]; then
         continue
     elif [[ "$f" == "editor_modules/raycast/embree"* ]]; then
