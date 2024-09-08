@@ -109,7 +109,7 @@ namespace Proctree
 		//v std::cos(T) + (axis x v) * std::sin(T) + axis*(axis . v)(1-std::cos(T)
 		float cosr = std::cos(aAngle);
 		float sinr = std::sin(aAngle);
-		return add(add(scaleVec(aVec, cosr), scaleVec(cross(aAxis, aVec), sinr)), 
+		return add(add(scaleVec(aVec, cosr), scaleVec(cross(aAxis, aVec), sinr)),
 			           scaleVec(aAxis, dot(aAxis, aVec) * (1 - cosr)));
 	}
 
@@ -449,7 +449,7 @@ namespace Proctree
 		int badverts = 0;
 
 		// step 1: find bad verts
-		// - If edge's U coordinate delta is over 0.5, texture has wrapped around. 
+		// - If edge's U coordinate delta is over 0.5, texture has wrapped around.
 		// - The vertex that has zero U is the wrong one
 		// - Care needs to be taken not to tag bad vertex more than once.
 
@@ -518,7 +518,7 @@ namespace Proctree
 				}
 			}
 		}
-		
+
 		// step 2: allocate more space for our new duplicate verts
 
 		fvec3 *nvert = new fvec3[mVertCount + badverts];
@@ -537,7 +537,7 @@ namespace Proctree
 		mUV = nuv;
 
 		// step 3: populate duplicate verts - otherwise identical except for U=1 instead of 0
-		
+
 		for (i = 0; i < badverts; i++)
 		{
 			mVert[mVertCount + i] = mVert[badverttable[i]];
@@ -547,12 +547,12 @@ namespace Proctree
 		}
 
 		// step 4: fix faces
-		
+
 		for (i = 0; i < mFaceCount; i++)
 		{
 			// x/y edges (vertex 0 and 1)
 			if ((std::fabs(mUV[mFace[i].x].u - mUV[mFace[i].y].u) > 0.5f) && (mUV[mFace[i].x].u == 0 || mUV[mFace[i].y].u == 0))
-			{				
+			{
 				int found = 0, j;
 				for (j = 0; j < badverts; j++)
 				{
@@ -598,7 +598,7 @@ namespace Proctree
 				if (mUV[mFace[i].y].u == 0)
 					mFace[i].y = mVertCount + found;
 				if (mUV[mFace[i].z].u == 0)
-					mFace[i].z = mVertCount + found;				
+					mFace[i].z = mVertCount + found;
 			}
 		}
 
@@ -774,24 +774,24 @@ namespace Proctree
 
 			for (i = 0; i < segments; i++)
 			{
-				int v1 = aBranch->mChild0->mRing0[i];
-				int v2 = aBranch->mRing1[(i + segOffset0 + 1) % segments];
-				int v3 = aBranch->mRing1[(i + segOffset0) % segments];
-				int v4 = aBranch->mChild0->mRing0[(i + 1) % segments];
+				int lv1 = aBranch->mChild0->mRing0[i];
+				int lv2 = aBranch->mRing1[(i + segOffset0 + 1) % segments];
+				int lv3 = aBranch->mRing1[(i + segOffset0) % segments];
+				int lv4 = aBranch->mChild0->mRing0[(i + 1) % segments];
 				ivec3 a;
-				a = { v1, v4, v3 };
+				a = { lv1, lv4, lv3 };
 				mFace[mFaceCount++] = (a);
-				a = { v4, v2, v3 };
+				a = { lv4, lv2, lv3 };
 				mFace[mFaceCount++] = (a);
 
-				v1 = aBranch->mChild1->mRing0[i];
-				v2 = aBranch->mRing2[(i + segOffset1 + 1) % segments];
-				v3 = aBranch->mRing2[(i + segOffset1) % segments];
-				v4 = aBranch->mChild1->mRing0[(i + 1) % segments];
+				lv1 = aBranch->mChild1->mRing0[i];
+				lv2 = aBranch->mRing2[(i + segOffset1 + 1) % segments];
+				lv3 = aBranch->mRing2[(i + segOffset1) % segments];
+				lv4 = aBranch->mChild1->mRing0[(i + 1) % segments];
 
-				a = { v1, v2, v3 };
+				a = { lv1, lv2, lv3 };
 				mFace[mFaceCount++] = (a);
-				a = { v1, v4, v2 };
+				a = { lv1, lv4, lv2 };
 				mFace[mFaceCount++] = (a);
 
 				float len1 = length(sub(mVert[aBranch->mChild0->mRing0[i]], mVert[aBranch->mRing1[(i + segOffset0) % segments]])) * UVScale;
@@ -868,8 +868,8 @@ namespace Proctree
 			mTwigVert[mTwigVertCount++] = (add(add(aBranch->mHead, scaleVec(tangent, mProperties.mTwigScale)), scaleVec(binormal, -aBranch->mLength)));
 
 			mTwigFace[mTwigFaceCount++] = { vert1, vert2, vert3 };
-			mTwigFace[mTwigFaceCount++] = { vert4, vert1, vert3 };			
-			mTwigFace[mTwigFaceCount++] = { vert6, vert7, vert8 };			
+			mTwigFace[mTwigFaceCount++] = { vert4, vert1, vert3 };
+			mTwigFace[mTwigFaceCount++] = { vert6, vert7, vert8 };
 			mTwigFace[mTwigFaceCount++] = { vert6, vert8, vert5 };
 
 			fvec3 normal = normalize(cross(sub(mTwigVert[vert1], mTwigVert[vert3]), sub(mTwigVert[vert2], mTwigVert[vert3])));
@@ -999,8 +999,8 @@ namespace Proctree
 				aBranch->mRing1[ring1count++] = mVertCount;
 				mVert[mVertCount++] = (add(centerloc, scaleVec(vec, aRadius * scale)));
 			}
-			aBranch->mRing1[ring1count++] = linch0; 
-			aBranch->mRing2[ring2count++] = linch1; 
+			aBranch->mRing1[ring1count++] = linch0;
+			aBranch->mRing2[ring2count++] = linch1;
 			start = mVertCount - 1;
 			for (i = 1; i < segments / 2; i++)
 			{
