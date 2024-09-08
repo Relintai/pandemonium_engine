@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PagedArticlesWebPage" inherits="WebNode" version="4.4">
+<class name="PagedArticlesWebPage" inherits="WebNode" version="4.5">
 	<brief_description>
 		The [PagedArticlesWebPage] class creates [PagedArticleWebPage] for all folders found inside [code]folder[/code].
 	</brief_description>

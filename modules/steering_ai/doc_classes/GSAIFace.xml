@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GSAIFace" inherits="GSAIMatchOrientation" version="4.4">
+<class name="GSAIFace" inherits="GSAIMatchOrientation" version="4.5">
 	<brief_description>
 		Calculates angular acceleration to rotate a target to face its target's position. The behavior attemps to arrive with zero remaining angular velocity.
 	</brief_description>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GSAISeek" inherits="GSAISteeringBehavior" version="4.4">
+<class name="GSAISeek" inherits="GSAISteeringBehavior" version="4.5">
 	<brief_description>
 		Calculates an acceleration to take an agent to a target agent's position directly.
 	</brief_description>

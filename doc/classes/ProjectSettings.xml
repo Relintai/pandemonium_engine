@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ProjectSettings" inherits="Object" version="4.4">
+<class name="ProjectSettings" inherits="Object" version="4.5">
 	<brief_description>
 		Contains global variables accessible from everywhere.
 	</brief_description>
@@ -430,7 +430,7 @@
 		<member name="debug/gdscript/warnings/unsafe_property_access" type="bool" setter="" getter="" default="false">
 			If [code]true[/code], enables warnings when accessing a property whose presence is not guaranteed at compile-time in the class.
 		</member>
-		<member name="debug/gdscript/warnings/unused_argument" type="bool" setter="" getter="" default="true">
+		<member name="debug/gdscript/warnings/unused_argument" type="bool" setter="" getter="" default="false">
 			If [code]true[/code], enables warnings when a function parameter is unused.
 		</member>
 		<member name="debug/gdscript/warnings/unused_class_variable" type="bool" setter="" getter="" default="false">

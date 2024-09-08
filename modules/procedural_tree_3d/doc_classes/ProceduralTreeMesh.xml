@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ProceduralTreeMesh" inherits="Mesh" version="4.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_mesh_arrays" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="to_array_mesh" qualifiers="const">
+			<return type="ArrayMesh" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="branch_levels" type="int" setter="set_branch_levels" getter="get_branch_levels" default="5">
+		</member>
+		<member name="branch_segments" type="int" setter="set_branch_segments" getter="get_branch_segments" default="6">
+		</member>
+		<member name="branching_droop" type="float" setter="branching_set_droop" getter="branching_get_droop" default="-0.1">
+		</member>
+		<member name="branching_growth" type="float" setter="branching_set_growth" getter="branching_get_growth" default="0.235">
+		</member>
+		<member name="branching_initial_length" type="float" setter="branching_set_initial_length" getter="branching_get_initial_length" default="0.49">
+		</member>
+		<member name="branching_length_falloff_power" type="float" setter="branching_set_length_falloff_power" getter="branching_get_length_falloff_power" default="0.99">
+		</member>
+		<member name="branching_length_falloff_rate" type="float" setter="branching_set_length_falloff_rate" getter="branching_get_length_falloff_rate" default="0.85">
+		</member>
+		<member name="branching_max_clumping" type="float" setter="branching_set_max_clumping" getter="branching_get_max_clumping" default="0.454">
+		</member>
+		<member name="branching_min_clumping" type="float" setter="branching_set_min_clumping" getter="branching_get_min_clumping" default="0.404">
+		</member>
+		<member name="branching_sweep" type="float" setter="branching_set_sweep" getter="branching_get_sweep" default="0.01">
+		</member>
+		<member name="branching_symmetry" type="float" setter="branching_set_symmetry" getter="branching_get_symmetry" default="2.45">
+		</member>
+		<member name="custom_aabb" type="AABB" setter="set_custom_aabb" getter="get_custom_aabb" default="AABB( 0, 0, 0, 0, 0, 0 )">
+		</member>
+		<member name="enable_branch_mesh" type="bool" setter="set_enable_branch_mesh" getter="get_enable_branch_mesh" default="true">
+		</member>
+		<member name="enable_twig_mesh" type="bool" setter="set_enable_twig_mesh" getter="get_enable_twig_mesh" default="true">
+		</member>
+		<member name="flip_branch_mesh_faces" type="bool" setter="set_flip_branch_mesh_faces" getter="get_flip_branch_mesh_faces" default="false">
+		</member>
+		<member name="flip_twig_mesh_faces" type="bool" setter="set_flip_twig_mesh_faces" getter="get_flip_twig_mesh_faces" default="false">
+		</member>
+		<member name="seed" type="int" setter="set_seed" getter="get_seed" default="262">
+		</member>
+		<member name="texture_v_multiplier" type="float" setter="set_texture_v_multiplier" getter="get_texture_v_multiplier" default="0.36">
+		</member>
+		<member name="trunk_climb_rate" type="float" setter="trunk_set_climb_rate" getter="trunk_get_climb_rate" default="0.371">
+		</member>
+		<member name="trunk_forks" type="int" setter="set_trunk_forks" getter="get_trunk_forks" default="5">
+		</member>
+		<member name="trunk_kink" type="float" setter="trunk_set_kink" getter="trunk_get_kink" default="0.093">
+		</member>
+		<member name="trunk_length" type="float" setter="trunk_set_length" getter="trunk_get_length" default="2.4">
+		</member>
+		<member name="trunk_material" type="Material" setter="set_trunk_material" getter="get_trunk_material">
+		</member>
+		<member name="trunk_radius" type="float" setter="trunk_set_radius" getter="trunk_get_radius" default="0.139">
+		</member>
+		<member name="trunk_radius_falloff" type="float" setter="trunk_set_radius_falloff" getter="trunk_get_radius_falloff" default="0.73">
+		</member>
+		<member name="trunk_taper_rate" type="float" setter="trunk_set_taper_rate" getter="trunk_get_taper_rate" default="0.947">
+		</member>
+		<member name="trunk_twists" type="float" setter="trunk_set_twists" getter="trunk_get_twists" default="3.02">
+		</member>
+		<member name="twig_material" type="Material" setter="set_twig_material" getter="get_twig_material">
+		</member>
+		<member name="twig_scale" type="float" setter="set_twig_scale" getter="get_twig_scale" default="0.39">
+		</member>
+	</members>
+	<constants>
+		<constant name="TREE_SURFACE_TRUNK" value="1" enum="TreeSurfaces">
+		</constant>
+		<constant name="TREE_SURFACE_TWIG" value="0" enum="TreeSurfaces">
+		</constant>
+		<constant name="TREE_SURFACE_COUNT" value="2" enum="TreeSurfaces">
+		</constant>
+	</constants>
+</class>

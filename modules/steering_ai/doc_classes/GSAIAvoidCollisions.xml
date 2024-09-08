@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GSAIAvoidCollisions" inherits="GSAIGroupBehavior" version="4.4">
+<class name="GSAIAvoidCollisions" inherits="GSAIGroupBehavior" version="4.5">
 	<brief_description>
 		Steers the agent to avoid obstacles in its path. Approximates obstacles as spheres.
 	</brief_description>

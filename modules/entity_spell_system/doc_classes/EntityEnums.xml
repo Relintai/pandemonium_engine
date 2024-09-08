@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityEnums" inherits="Object" version="4.4">
+<class name="EntityEnums" inherits="Object" version="4.5">
 	<brief_description>
 		Contains lots of general-use enums for entities.
 	</brief_description>

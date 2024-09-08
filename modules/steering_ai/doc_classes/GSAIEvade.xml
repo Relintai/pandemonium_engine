@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GSAIEvade" inherits="GSAIPursue" version="4.4">
+<class name="GSAIEvade" inherits="GSAIPursue" version="4.5">
 	<brief_description>
 		Calculates acceleration to take an agent away from where a target agent is moving.
 	</brief_description>

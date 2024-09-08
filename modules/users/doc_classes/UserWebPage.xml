@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="UserWebPage" inherits="WebNode" version="4.4">
+<class name="UserWebPage" inherits="WebNode" version="4.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -54,7 +54,7 @@
 		</member>
 		<member name="logged_out_render_type" type="int" setter="set_logged_out_render_type" getter="get_logged_out_render_type" enum="UserWebPage.RenderType" default="2">
 		</member>
-		<member name="render_menu" type="bool" setter="set_render_menu" getter="get_render_menu" default="true">
+		<member name="should_render_menu" type="bool" setter="set_should_render_menu" getter="get_should_render_menu" default="true">
 		</member>
 	</members>
 	<constants>

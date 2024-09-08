@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GSAISpecializedAgent" inherits="GSAISteeringAgent" version="4.4">
+<class name="GSAISpecializedAgent" inherits="GSAISteeringAgent" version="4.5">
 	<brief_description>
 		A base class for a specialized steering agent that updates itself every frame so the user does not have to. All other specialized agents derive from this.
 	</brief_description>

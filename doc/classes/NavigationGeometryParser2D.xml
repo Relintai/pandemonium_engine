@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationGeometryParser2D" inherits="Reference" version="4.4">
+<class name="NavigationGeometryParser2D" inherits="Reference" version="4.5">
 	<brief_description>
 		Parser to contribute a node's geometry data for [NavigationPolygon] baking.
 	</brief_description>

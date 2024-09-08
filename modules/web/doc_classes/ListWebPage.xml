@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ListWebPage" inherits="WebNode" version="4.4">
+<class name="ListWebPage" inherits="WebNode" version="4.5">
 	<brief_description>
 		The ListPage WebNode can be pointed to a folder using it's folder variable, and then it will load all files in that folder, process them as markdown in alphabetical order, and put them onto a page, one after the other. It also supports pagination.
 	</brief_description>
