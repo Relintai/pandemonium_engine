@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ProceduralTreeMesh" inherits="Mesh" version="4.5">
 	<brief_description>
+		A class that can generate trees procedurally.
 	</brief_description>
 	<description>
+		A mesh based procedural tree generator class.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,11 +12,13 @@
 		<method name="get_mesh_arrays" qualifiers="const">
 			<return type="Array" />
 			<description>
+				Returns the mesh data as an Array. It will have up to 2 Arrays inside. Those contain the actual data which can be added as surfaces to an another mesh.
 			</description>
 		</method>
 		<method name="to_array_mesh" qualifiers="const">
 			<return type="ArrayMesh" />
 			<description>
+				Creates and return an equivalent ArrayMesh.
 			</description>
 		</method>
 	</methods>
@@ -42,16 +46,22 @@
 		<member name="branching_symmetry" type="float" setter="branching_set_symmetry" getter="branching_get_symmetry" default="2.45">
 		</member>
 		<member name="custom_aabb" type="AABB" setter="set_custom_aabb" getter="get_custom_aabb" default="AABB( 0, 0, 0, 0, 0, 0 )">
+			A custom AABB can be set with this property.
 		</member>
 		<member name="enable_branch_mesh" type="bool" setter="set_enable_branch_mesh" getter="get_enable_branch_mesh" default="true">
+			Whether to enable the branches mesh.
 		</member>
 		<member name="enable_twig_mesh" type="bool" setter="set_enable_twig_mesh" getter="get_enable_twig_mesh" default="true">
+			Whenther to enable the twigs mesh.
 		</member>
 		<member name="flip_branch_mesh_faces" type="bool" setter="set_flip_branch_mesh_faces" getter="get_flip_branch_mesh_faces" default="false">
+			Whether to flip the branch mesh's faces.
 		</member>
 		<member name="flip_twig_mesh_faces" type="bool" setter="set_flip_twig_mesh_faces" getter="get_flip_twig_mesh_faces" default="false">
+			Whether to flip the twig mesh's faces.
 		</member>
 		<member name="seed" type="int" setter="set_seed" getter="get_seed" default="262">
+			The seed for the random number generator.
 		</member>
 		<member name="texture_v_multiplier" type="float" setter="set_texture_v_multiplier" getter="get_texture_v_multiplier" default="0.36">
 		</member>
@@ -74,16 +84,21 @@
 		<member name="trunk_twists" type="float" setter="trunk_set_twists" getter="trunk_get_twists" default="3.02">
 		</member>
 		<member name="twig_material" type="Material" setter="set_twig_material" getter="get_twig_material">
+			The material of the twigs.
 		</member>
 		<member name="twig_scale" type="float" setter="set_twig_scale" getter="get_twig_scale" default="0.39">
+			The scale of the twigs.
 		</member>
 	</members>
 	<constants>
 		<constant name="TREE_SURFACE_TRUNK" value="1" enum="TreeSurfaces">
+			The tree trunk's surface id.
 		</constant>
 		<constant name="TREE_SURFACE_TWIG" value="0" enum="TreeSurfaces">
+			The tree twig's surface id.
 		</constant>
 		<constant name="TREE_SURFACE_COUNT" value="2" enum="TreeSurfaces">
+			How many surfaces the class holds.
 		</constant>
 	</constants>
 </class>
