@@ -117,10 +117,11 @@ public:
 	void set_trunk_material(const Ref<Material> &p_material);
 	Ref<Material> get_trunk_material() const;
 
-	Array get_mesh_arrays() const;
-
 	void set_custom_aabb(const AABB &p_custom);
 	AABB get_custom_aabb() const;
+
+	Array get_mesh_arrays() const;
+	Ref<ArrayMesh> to_array_mesh() const;
 
 	ProceduralTreeMesh();
 	~ProceduralTreeMesh();

@@ -643,6 +643,16 @@ Ref<Material> ProceduralTreeMesh::get_trunk_material() const {
 	return _surfaces[TREE_SURFACE_TRUNK].material;
 }
 
+void ProceduralTreeMesh::set_custom_aabb(const AABB &p_custom) {
+	custom_aabb = p_custom;
+	RS::get_singleton()->mesh_set_custom_aabb(mesh, custom_aabb);
+	emit_changed();
+}
+
+AABB ProceduralTreeMesh::get_custom_aabb() const {
+	return custom_aabb;
+}
+
 Array ProceduralTreeMesh::get_mesh_arrays() const {
 	Array arr;
 
@@ -660,14 +670,29 @@ Array ProceduralTreeMesh::get_mesh_arrays() const {
 	return arr;
 }
 
-void ProceduralTreeMesh::set_custom_aabb(const AABB &p_custom) {
-	custom_aabb = p_custom;
-	RS::get_singleton()->mesh_set_custom_aabb(mesh, custom_aabb);
-	emit_changed();
-}
+Ref<ArrayMesh> ProceduralTreeMesh::to_array_mesh() const {
+	Ref<ArrayMesh> mesh;
+	mesh.instance();
 
-AABB ProceduralTreeMesh::get_custom_aabb() const {
-	return custom_aabb;
+	if (!_enable_twig_mesh && !_enable_branch_mesh) {
+		return mesh;
+	}
+
+	for (int i = 0; i < TREE_SURFACE_COUNT; ++i) {
+		int si = _surfaces[i].surface_index;
+
+		if (si == -1) {
+			continue;
+		}
+
+		Array arr = surface_get_arrays(i);
+
+		mesh->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, arr);
+		int msi = mesh->get_surface_count() - 1;
+		mesh->surface_set_material(msi, surface_get_material(i));
+	}
+
+	return mesh;
 }
 
 ProceduralTreeMesh::ProceduralTreeMesh() {
@@ -818,8 +843,6 @@ void ProceduralTreeMesh::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_trunk_material", "material"), &ProceduralTreeMesh::set_trunk_material);
 	ClassDB::bind_method(D_METHOD("get_trunk_material"), &ProceduralTreeMesh::get_trunk_material);
 
-	ClassDB::bind_method(D_METHOD("get_mesh_arrays"), &ProceduralTreeMesh::get_mesh_arrays);
-
 	ClassDB::bind_method(D_METHOD("set_custom_aabb", "aabb"), &ProceduralTreeMesh::set_custom_aabb);
 	ClassDB::bind_method(D_METHOD("get_custom_aabb"), &ProceduralTreeMesh::get_custom_aabb);
 
@@ -843,6 +866,9 @@ void ProceduralTreeMesh::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "trunk_material", PROPERTY_HINT_RESOURCE_TYPE, "SpatialMaterial,ShaderMaterial"), "set_trunk_material", "get_trunk_material");
 
 	ADD_PROPERTY(PropertyInfo(Variant::AABB, "custom_aabb", PROPERTY_HINT_NONE, ""), "set_custom_aabb", "get_custom_aabb");
+
+	ClassDB::bind_method(D_METHOD("get_mesh_arrays"), &ProceduralTreeMesh::get_mesh_arrays);
+	ClassDB::bind_method(D_METHOD("to_array_mesh"), &ProceduralTreeMesh::to_array_mesh);
 
 	BIND_ENUM_CONSTANT(TREE_SURFACE_TRUNK);
 	BIND_ENUM_CONSTANT(TREE_SURFACE_TWIG);
