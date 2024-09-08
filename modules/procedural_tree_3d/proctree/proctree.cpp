@@ -30,6 +30,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include "proctree.h"
 
+#include "core/math/math_funcs.h"
+
 #ifndef M_PI
 #define M_PI 3.1415926535897932384626433832795f
 #endif
@@ -107,8 +109,8 @@ namespace Proctree
 	fvec3 vecAxisAngle(fvec3 aVec, fvec3 aAxis, float aAngle)
 	{
 		//v std::cos(T) + (axis x v) * std::sin(T) + axis*(axis . v)(1-std::cos(T)
-		float cosr = std::cos(aAngle);
-		float sinr = std::sin(aAngle);
+		float cosr = Math::cos(aAngle);
+		float sinr = Math::sin(aAngle);
 		return add(add(scaleVec(aVec, cosr), scaleVec(cross(aAxis, aVec), sinr)),
 			           scaleVec(aAxis, dot(aAxis, aVec) * (1 - cosr)));
 	}
@@ -205,7 +207,7 @@ namespace Proctree
 		{
 			aFixed = (float)mRseed++;
 		}
-		return std::abs(std::cos(aFixed + aFixed * aFixed));
+		return Math::abs(Math::cos(aFixed + aFixed * aFixed));
 	}
 
 
@@ -293,7 +295,7 @@ namespace Proctree
 		if (aSteps > 0)
 		{
 			float angle = aSteps / (float)aProperties.mTreeSteps * 2 * M_PI * aProperties.mTwistRate;
-			a = { std::sin(angle), r, std::cos(angle) };
+			a = { Math::sin(angle), r, Math::cos(angle) };
 			newdir2 = normalize(a);
 		}
 
@@ -456,7 +458,7 @@ namespace Proctree
 		for (i = 0; i < mFaceCount; i++)
 		{
 			// x/y edges (vertex 0 and 1)
-			if ((std::fabs(mUV[mFace[i].x].u - mUV[mFace[i].y].u) > 0.5f) && (mUV[mFace[i].x].u == 0 || mUV[mFace[i].y].u == 0))
+			if ((Math::abs(mUV[mFace[i].x].u - mUV[mFace[i].y].u) > 0.5f) && (mUV[mFace[i].x].u == 0 || mUV[mFace[i].y].u == 0))
 			{
 				int found = 0, j;
 				for (j = 0; j < badverts; j++)
@@ -477,7 +479,7 @@ namespace Proctree
 			}
 
 			// x/z edges (vertex 0 and 2)
-			if ((std::fabs(mUV[mFace[i].x].u - mUV[mFace[i].z].u) > 0.5f) && (mUV[mFace[i].x].u == 0 || mUV[mFace[i].z].u == 0))
+			if ((Math::abs(mUV[mFace[i].x].u - mUV[mFace[i].z].u) > 0.5f) && (mUV[mFace[i].x].u == 0 || mUV[mFace[i].z].u == 0))
 			{
 				int found = 0, j;
 				for (j = 0; j < badverts; j++)
@@ -498,7 +500,7 @@ namespace Proctree
 			}
 
 			// y/z edges (vertex 1 and 2)
-			if ((std::fabs(mUV[mFace[i].y].u - mUV[mFace[i].z].u) > 0.5f) && (mUV[mFace[i].y].u == 0 || mUV[mFace[i].z].u == 0))
+			if ((Math::abs(mUV[mFace[i].y].u - mUV[mFace[i].z].u) > 0.5f) && (mUV[mFace[i].y].u == 0 || mUV[mFace[i].z].u == 0))
 			{
 				int found = 0, j;
 				for (j = 0; j < badverts; j++)
@@ -551,7 +553,7 @@ namespace Proctree
 		for (i = 0; i < mFaceCount; i++)
 		{
 			// x/y edges (vertex 0 and 1)
-			if ((std::fabs(mUV[mFace[i].x].u - mUV[mFace[i].y].u) > 0.5f) && (mUV[mFace[i].x].u == 0 || mUV[mFace[i].y].u == 0))
+			if ((Math::abs(mUV[mFace[i].x].u - mUV[mFace[i].y].u) > 0.5f) && (mUV[mFace[i].x].u == 0 || mUV[mFace[i].y].u == 0))
 			{
 				int found = 0, j;
 				for (j = 0; j < badverts; j++)
@@ -568,7 +570,7 @@ namespace Proctree
 			}
 
 			// x/z edges (vertex 0 and 2)
-			if ((std::fabs(mUV[mFace[i].x].u - mUV[mFace[i].z].u) > 0.5f) && (mUV[mFace[i].x].u == 0 || mUV[mFace[i].z].u == 0))
+			if ((Math::abs(mUV[mFace[i].x].u - mUV[mFace[i].z].u) > 0.5f) && (mUV[mFace[i].x].u == 0 || mUV[mFace[i].z].u == 0))
 			{
 				int found = 0, j;
 				for (j = 0; j < badverts; j++)
@@ -585,7 +587,7 @@ namespace Proctree
 			}
 
 			// y/z edges (vertex 1 and 2)
-			if ((std::fabs(mUV[mFace[i].y].u - mUV[mFace[i].z].u) > 0.5f) && (mUV[mFace[i].y].u == 0 || mUV[mFace[i].z].u == 0))
+			if ((Math::abs(mUV[mFace[i].y].u - mUV[mFace[i].z].u) > 0.5f) && (mUV[mFace[i].y].u == 0 || mUV[mFace[i].z].u == 0))
 			{
 				int found = 0, j;
 				for (j = 0; j < badverts; j++)
@@ -714,7 +716,7 @@ namespace Proctree
 			fvec3 tangent = normalize(cross(sub(aBranch->mChild0->mHead, aBranch->mHead), sub(aBranch->mChild1->mHead, aBranch->mHead)));
 			fvec3 normal = normalize(aBranch->mHead);
 			fvec3 left = { -1, 0, 0 };
-			float angle = std::acos(dot(tangent, left));
+			float angle = Math::acos(dot(tangent, left));
 			if (dot(cross(left, tangent), normal) > 0)
 			{
 				angle = 2 * M_PI - angle;
