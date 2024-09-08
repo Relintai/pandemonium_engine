@@ -559,7 +559,7 @@ Ref<Material> ProceduralTreeMesh::get_twig_material() const {
 void ProceduralTreeMesh::set_trunk_material(const Ref<Material> &p_material) {
 	_surfaces[TREE_SURFACE_TRUNK].material = p_material;
 	if (!pending_request) {
-		int si = _surfaces[TREE_SURFACE_TWIG].surface_index;
+		int si = _surfaces[TREE_SURFACE_TRUNK].surface_index;
 
 		if (si != -1) {
 			// just apply it, else it'll happen when _update is called.
