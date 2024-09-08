@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="16"
+   viewBox="0 0 16 16"
+   width="16"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="icon_procedural_tree_mesh.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="49"
+     inkscape:cx="7.3571429"
+     inkscape:cy="7.9897959"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <rect
+     style="fill:#ffd684;fill-opacity:1;stroke:none;stroke-width:4.65415;stroke-linejoin:bevel;stroke-dasharray:18.6166, 4.65415;stroke-opacity:0.996078;paint-order:markers fill stroke"
+     id="rect1"
+     width="2.4563036"
+     height="9.7247725"
+     x="7.0518723"
+     y="5.4469242" />
+  <ellipse
+     style="fill:#ffd684;fill-opacity:1;stroke:none;stroke-width:5.08;stroke-linejoin:bevel;stroke-dasharray:20.32, 5.08;stroke-opacity:0.996078;paint-order:markers fill stroke"
+     id="path2"
+     cx="5.6010218"
+     cy="6.7772074"
+     rx="3.2223897"
+     ry="3.3137562" />
+  <ellipse
+     style="fill:#ffd684;fill-opacity:1;stroke:none;stroke-width:5.08;stroke-linejoin:bevel;stroke-dasharray:20.32, 5.08;stroke-opacity:0.996078;paint-order:markers fill stroke"
+     id="path3"
+     cx="8.1142969"
+     cy="4.3577085"
+     rx="3.4525869"
+     ry="3.6655207" />
+  <ellipse
+     style="fill:#ffd684;fill-opacity:1;stroke:none;stroke-width:5.08;stroke-linejoin:bevel;stroke-dasharray:20.32, 5.08;stroke-opacity:0.996078;paint-order:markers fill stroke"
+     id="path4"
+     cx="10.438892"
+     cy="7.0697117"
+     rx="3.3988187"
+     ry="3.5559146" />
+</svg>
