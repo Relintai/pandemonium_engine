@@ -1,9 +1,12 @@
 
 #include "procedural_tree_mesh.h"
+#include "core/containers/pool_vector.h"
 #include "core/object/class_db.h"
 #include "core/object/object.h"
 
 #include "servers/rendering_server.h"
+
+#include "proctree/proctree.h"
 
 // General
 int ProceduralTreeMesh::get_seed() const {
@@ -163,34 +166,180 @@ void ProceduralTreeMesh::trunk_set_length(const float p_value) {
 }
 
 void ProceduralTreeMesh::_update() const {
-	Array arr;
-	arr.resize(RS::ARRAY_MAX);
 
-	PoolVector<Vector3> points = arr[RS::ARRAY_VERTEX];
+	Proctree::Tree tree;
 
-	aabb = AABB();
+	// Grneral
+	tree.mProperties.mSeed = _seed;
+	tree.mProperties.mSegments = _branch_segments;
+	tree.mProperties.mLevels = _branch_levels;
+	tree.mProperties.mTreeSteps = _trunk_forks;
+	tree.mProperties.mVMultiplier = _texture_v_multiplier;
+	tree.mProperties.mTwigScale = _twig_scale;
 
-	int pc = points.size();
-	ERR_FAIL_COND(pc == 0);
-	{
-		PoolVector<Vector3>::Read r = points.read();
-		for (int i = 0; i < pc; i++) {
-			if (i == 0) {
-				aabb.position = r[i];
-			} else {
-				aabb.expand_to(r[i]);
-			}
-		}
-	}
+	// Branching
+	tree.mProperties.mInitialBranchLength = _branching_initial_length;
+	tree.mProperties.mLengthFalloffFactor = _branching_length_falloff_rate;
+	tree.mProperties.mLengthFalloffPower = _branching_length_falloff_power;
+	tree.mProperties.mClumpMax = _branching_max_clumping;
+	tree.mProperties.mClumpMin = _branching_min_clumping;
+	tree.mProperties.mBranchFactor = _branching_symmetry;
+	tree.mProperties.mDropAmount = _branching_droop;
+	tree.mProperties.mGrowAmount = _branching_growth;
+	tree.mProperties.mSweepAmount = _branching_sweep;
+
+	// Trunk
+	tree.mProperties.mMaxRadius = _trunk_radius;
+	tree.mProperties.mRadiusFalloffRate = _trunk_radius_falloff;
+	tree.mProperties.mClimbRate = _trunk_climb_rate;
+	tree.mProperties.mTrunkKink = _trunk_kink;
+	tree.mProperties.mTaperRate = _trunk_taper_rate;
+	tree.mProperties.mTwistRate = _trunk_twists;
+	tree.mProperties.mTrunkLength = _trunk_length;
+
+	tree.generate();
+
 
 	RenderingServer::get_singleton()->mesh_clear(mesh);
 
-	// in with the new
-	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
-	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
+	aabb = AABB();
 
-	RenderingServer::get_singleton()->mesh_surface_set_material(mesh, TREE_SURFACE_TWIG, _surfaces[TREE_SURFACE_TWIG].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TWIG].material->get_rid());
-	RenderingServer::get_singleton()->mesh_surface_set_material(mesh, TREE_SURFACE_TRUNK, _surfaces[TREE_SURFACE_TRUNK].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TRUNK].material->get_rid());
+	{
+		int vert_count = tree.mTwigVertCount;
+
+		PoolVector<Vector2> uvs;
+		PoolVector<Vector3> normals;
+		PoolVector<Vector3> verts;
+
+		uvs.resize(vert_count);
+		normals.resize(vert_count);
+		verts.resize(vert_count);
+
+		{
+			PoolVector<Vector2>::Write uvw = uvs.write();
+			PoolVector<Vector3>::Write nw = normals.write();
+			PoolVector<Vector3>::Write vw = verts.write();
+
+			for (int i = 0; i < vert_count; ++i) {
+				Proctree::fvec2 tuv = tree.mTwigUV[i];
+				Proctree::fvec3 tnormal = tree.mTwigNormal[i];
+				Proctree::fvec3 tvert = tree.mTwigVert[i];
+
+				uvw[i] = Vector2(tuv.u, tuv.v);
+				nw[i] = Vector3(tnormal.x, tnormal.y, tnormal.z);
+				vw[i] = Vector3(tvert.x, tvert.y, tvert.z);
+			}
+		}
+
+	  PoolVector<int> indices;
+
+		int face_count = tree.mTwigFaceCount;
+
+		indices.resize(face_count * 3);
+
+		{
+			PoolVector<int>::Write iw = indices.write();
+
+			for (int i = 0; i < face_count; ++i) {
+				Proctree::ivec3 tface = tree.mTwigFace[i];
+
+				int ind = i * 3;
+
+				iw[ind] = tface.x;
+				iw[ind + 1] = tface.y;
+				iw[ind + 2] = tface.z;
+			}
+		}
+
+		{
+			PoolVector<Vector3>::Read r = verts.read();
+			for (int i = 0; i < vert_count; i++) {
+				if (i == 0) {
+					aabb.position = r[i];
+				} else {
+					aabb.expand_to(r[i]);
+				}
+			}
+		}
+
+		Array arr;
+		arr.resize(RS::ARRAY_MAX);
+		arr[RS::ARRAY_VERTEX] = verts;
+		arr[RS::ARRAY_TEX_UV] = uvs;
+		arr[RS::ARRAY_NORMAL] = normals;
+		arr[RS::ARRAY_INDEX] = indices;
+
+		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh, TREE_SURFACE_TWIG, _surfaces[TREE_SURFACE_TWIG].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TWIG].material->get_rid());
+	}
+
+	{
+		int vert_count = tree.mVertCount;
+
+		PoolVector<Vector2> uvs;
+		PoolVector<Vector3> normals;
+		PoolVector<Vector3> verts;
+
+		uvs.resize(vert_count);
+		normals.resize(vert_count);
+		verts.resize(vert_count);
+
+		{
+			PoolVector<Vector2>::Write uvw = uvs.write();
+			PoolVector<Vector3>::Write nw = normals.write();
+			PoolVector<Vector3>::Write vw = verts.write();
+
+			for (int i = 0; i < vert_count; ++i) {
+				Proctree::fvec2 tuv = tree.mUV[i];
+				Proctree::fvec3 tnormal = tree.mNormal[i];
+				Proctree::fvec3 tvert = tree.mVert[i];
+
+				uvw[i] = Vector2(tuv.u, tuv.v);
+				nw[i] = Vector3(tnormal.x, tnormal.y, tnormal.z);
+				vw[i] = Vector3(tvert.x, tvert.y, tvert.z);
+			}
+		}
+
+	  PoolVector<int> indices;
+
+		int face_count = tree.mFaceCount;
+
+		indices.resize(face_count * 3);
+
+		{
+			PoolVector<int>::Write iw = indices.write();
+
+			for (int i = 0; i < face_count; ++i) {
+				Proctree::ivec3 tface = tree.mFace[i];
+
+				int ind = i * 3;
+
+				iw[ind] = tface.x;
+				iw[ind + 1] = tface.y;
+				iw[ind + 2] = tface.z;
+			}
+		}
+
+		{
+			PoolVector<Vector3>::Read r = verts.read();
+			for (int i = 0; i < vert_count; i++) {
+				//if (i == 0) {
+				//	aabb.position = r[i];
+				//} else {
+					aabb.expand_to(r[i]);
+				//}
+			}
+		}
+
+		Array arr;
+		arr.resize(RS::ARRAY_MAX);
+		arr[RS::ARRAY_VERTEX] = verts;
+		arr[RS::ARRAY_TEX_UV] = uvs;
+		arr[RS::ARRAY_NORMAL] = normals;
+		arr[RS::ARRAY_INDEX] = indices;
+		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh, TREE_SURFACE_TRUNK, _surfaces[TREE_SURFACE_TRUNK].material.is_null() ? RID() : _surfaces[TREE_SURFACE_TRUNK].material->get_rid());
+	}
 
 	pending_request = false;
 
