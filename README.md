@@ -25,7 +25,9 @@ Windows), mobile platforms (Android, iOS), as well as Web-based platforms
 
 Pandemonium is completely free and open source under the very permissive [MIT license](https://godotengine.org/license).
 No strings attached, no royalties, nothing. The users' games are theirs, down
-to the last line of engine code. Godot's development is fully independent and
+to the last line of engine code.
+
+Godot's development is fully independent and
 community-driven, empowering users to help shape their engine to match their
 expectations. It is supported by the [Software Freedom Conservancy](https://sfconservancy.org/)
 not-for-profit.
