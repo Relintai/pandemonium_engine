@@ -643,7 +643,6 @@ void EditorNode::_notification(int p_what) {
 			PopupMenu *p = help_menu->get_popup();
 			p->set_item_icon(p->get_item_index(HELP_SEARCH), gui_base->get_theme_icon("HelpSearch", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_PANDEMONIUM_DOCS), gui_base->get_theme_icon("ExternalLink", "EditorIcons"));
-			p->set_item_icon(p->get_item_index(HELP_GODOT_DOCS), gui_base->get_theme_icon("ExternalLink", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_REPORT_A_BUG), gui_base->get_theme_icon("ExternalLink", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_ABOUT), gui_base->get_theme_icon("Pandemonium", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT), gui_base->get_theme_icon("Heart", "EditorIcons"));
@@ -2914,10 +2913,6 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 			emit_signal("request_help_search", "");
 		} break;
 		case HELP_PANDEMONIUM_DOCS: {
-			OS::get_singleton()->shell_open("https://github.com/Relintai/pandemonium_engine/tree/master/doc/engine"
-											"/");
-		} break;
-		case HELP_GODOT_DOCS: {
 			OS::get_singleton()->shell_open(VERSION_DOCS_URL "/");
 		} break;
 		case HELP_REPORT_A_BUG: {
@@ -6746,7 +6741,6 @@ EditorNode::EditorNode() {
 #endif
 	p->add_separator();
 	p->add_icon_shortcut(gui_base->get_theme_icon("ExternalLink", "EditorIcons"), ED_SHORTCUT("editor/online_docs", TTR("Online Documentation")), HELP_PANDEMONIUM_DOCS);
-	p->add_icon_shortcut(gui_base->get_theme_icon("ExternalLink", "EditorIcons"), ED_SHORTCUT("editor/pandemonium_online_docs", TTR("Pandemonium Online Documentation")), HELP_GODOT_DOCS);
 	p->add_icon_shortcut(gui_base->get_theme_icon("ExternalLink", "EditorIcons"), ED_SHORTCUT("editor/report_a_bug", TTR("Report a Bug")), HELP_REPORT_A_BUG);
 	p->add_separator();
 	p->add_icon_shortcut(gui_base->get_theme_icon("Pandemonium", "EditorIcons"), ED_SHORTCUT("editor/about", TTR("About Pandemonium")), HELP_ABOUT);
