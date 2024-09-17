@@ -400,7 +400,7 @@ void FileSystemDock::_notification(int p_what) {
 
 			always_show_folders = bool(EditorSettings::get_singleton()->get("docks/filesystem/always_show_folders"));
 
-			set_file_list_display_mode(FileSystemDock::FILE_LIST_DISPLAY_LIST);
+			set_file_list_display_mode(FileSystemDock::FILE_LIST_DISPLAY_THUMBNAILS);
 
 			SplitMode new_split_mode = SplitMode(int(EditorSettings::get_singleton()->get("docks/filesystem/split_mode")));
 			set_split_mode(new_split_mode);
@@ -450,6 +450,7 @@ void FileSystemDock::_notification(int p_what) {
 			button_toggle_display_mode->set_icon(get_theme_icon("Panels2", ei));
 			button_hist_next->set_icon(get_theme_icon("Forward", ei));
 			button_hist_prev->set_icon(get_theme_icon("Back", ei));
+
 			if (file_list_display_mode == FILE_LIST_DISPLAY_LIST) {
 				button_file_list_display_mode->set_icon(get_theme_icon("FileThumbnail", "EditorIcons"));
 			} else {
@@ -3143,7 +3144,7 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 
 	split_box->set_split_offset(200 * EDSCALE);
 
-	file_list_display_mode = FILE_LIST_DISPLAY_THUMBNAILS;
+	file_list_display_mode = FILE_LIST_DISPLAY_LIST;
 
 	always_show_folders = false;
 }
