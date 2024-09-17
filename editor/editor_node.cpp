@@ -645,7 +645,7 @@ void EditorNode::_notification(int p_what) {
 			p->set_item_icon(p->get_item_index(HELP_PANDEMONIUM_DOCS), gui_base->get_theme_icon("ExternalLink", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_REPORT_A_BUG), gui_base->get_theme_icon("ExternalLink", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_ABOUT), gui_base->get_theme_icon("Pandemonium", "EditorIcons"));
-			p->set_item_icon(p->get_item_index(HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT), gui_base->get_theme_icon("Heart", "EditorIcons"));
+			//p->set_item_icon(p->get_item_index(HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT), gui_base->get_theme_icon("Heart", "EditorIcons"));
 
 			if (EDITOR_GET("interface/editor/hide_main_screen_plugin_names")) {
 				for (int i = 0; i < main_editor_buttons.size(); ++i) {
@@ -2921,9 +2921,9 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 		case HELP_ABOUT: {
 			about->popup_centered_minsize(Size2(780, 500) * EDSCALE);
 		} break;
-		case HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT: {
-			OS::get_singleton()->shell_open("https://github.com/Relintai/pandemonium_engine");
-		} break;
+		//case HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT: {
+			//OS::get_singleton()->shell_open("https://github.com/Relintai/pandemonium_engine");
+		//} break;
 
 		case SET_VIDEO_DRIVER_SAVE_AND_RESTART: {
 			ProjectSettings::get_singleton()->set("rendering/quality/driver/driver_name", video_driver_request);
@@ -6744,7 +6744,7 @@ EditorNode::EditorNode() {
 	p->add_icon_shortcut(gui_base->get_theme_icon("ExternalLink", "EditorIcons"), ED_SHORTCUT("editor/report_a_bug", TTR("Report a Bug")), HELP_REPORT_A_BUG);
 	p->add_separator();
 	p->add_icon_shortcut(gui_base->get_theme_icon("Pandemonium", "EditorIcons"), ED_SHORTCUT("editor/about", TTR("About Pandemonium")), HELP_ABOUT);
-	p->add_icon_shortcut(gui_base->get_theme_icon("Heart", "EditorIcons"), ED_SHORTCUT("editor/support_development", TTR("Support Pandemonium Development")), HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT);
+	//p->add_icon_shortcut(gui_base->get_theme_icon("Heart", "EditorIcons"), ED_SHORTCUT("editor/support_development", TTR("Support Pandemonium Development")), HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT);
 
 	HBoxContainer *play_hb = memnew(HBoxContainer);
 	menu_hb->add_child(play_hb);
