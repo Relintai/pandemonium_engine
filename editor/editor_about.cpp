@@ -201,6 +201,7 @@ EditorAbout::EditorAbout() {
 
 	// Donors
 
+	/*
 	List<String> donor_sections;
 	donor_sections.push_back(TTR("Platinum Sponsors"));
 	donor_sections.push_back(TTR("Gold Sponsors"));
@@ -214,6 +215,7 @@ EditorAbout::EditorAbout() {
 		DONORS_SPONSOR_SILVER, DONORS_SPONSOR_BRONZE, DONORS_SPONSOR_MINI,
 		DONORS_GOLD, DONORS_SILVER, DONORS_BRONZE };
 	tc->add_child(_populate_list(TTR("Donors"), donor_sections, donor_src, 3));
+	*/
 
 	// License
 
