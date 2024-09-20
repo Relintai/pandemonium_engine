@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Prop2DDataTiledWall2D" inherits="Prop2DDataEntry" version="4.5">
+<class name="Prop2DDataTiledWall2D" inherits="Prop2DDataEntry">
 	<brief_description>
 	</brief_description>
 	<description>

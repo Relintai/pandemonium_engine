@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="LayeredTileMapPattern" inherits="Resource" version="4.5">
+<class name="LayeredTileMapPattern" inherits="Resource">
 	<brief_description>
 		Holds a pattern to be copied from or pasted into [LayeredTileMap]s.
 	</brief_description>

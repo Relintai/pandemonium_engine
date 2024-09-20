@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationMeshGenerator" inherits="Object" version="4.5">
+<class name="NavigationMeshGenerator" inherits="Object">
 	<brief_description>
 		Server for navigation mesh baking and source geometry parsing.
 	</brief_description>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="RWLock" inherits="Reference" version="4.5">
+<class name="RWLock" inherits="Reference">
 	<brief_description>
 		A Read Write Lock.
 	</brief_description>

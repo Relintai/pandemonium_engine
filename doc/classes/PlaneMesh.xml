@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PlaneMesh" inherits="PrimitiveMesh" version="4.5">
+<class name="PlaneMesh" inherits="PrimitiveMesh">
 	<brief_description>
 		Class representing a planar [PrimitiveMesh].
 	</brief_description>

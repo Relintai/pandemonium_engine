@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GSAIPath" inherits="Reference" version="4.5">
+<class name="GSAIPath" inherits="Reference">
 	<brief_description>
 		Represents a path made up of Vector3 waypoints, split into segments path follow behaviors can use.
 	</brief_description>

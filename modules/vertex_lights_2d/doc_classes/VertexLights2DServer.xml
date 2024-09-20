@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="VertexLights2DServer" inherits="Object" version="4.5">
+<class name="VertexLights2DServer" inherits="Object">
 	<brief_description>
 		A server that provides a way to store static lights that can be used to bake lighting information into mesh vertex data, or [CanvasItem]'s color modulation.
 	</brief_description>

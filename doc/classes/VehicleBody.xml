@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="VehicleBody" inherits="RigidBody" version="4.5">
+<class name="VehicleBody" inherits="RigidBody">
 	<brief_description>
 		Physics body that simulates the behavior of a car.
 	</brief_description>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WebServerSimple" inherits="WebServer" version="4.5">
+<class name="WebServerSimple" inherits="WebServer">
 	<brief_description>
 		Default [WebServer] implementation.
 	</brief_description>

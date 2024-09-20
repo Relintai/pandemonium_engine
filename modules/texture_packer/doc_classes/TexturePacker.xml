@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TexturePacker" inherits="Reference" version="4.5">
+<class name="TexturePacker" inherits="Reference">
 	<brief_description>
 		A class, that can merge textures.
 	</brief_description>

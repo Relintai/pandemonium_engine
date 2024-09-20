@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="StaticWebPageFile" inherits="StaticWebPage" version="4.5">
+<class name="StaticWebPageFile" inherits="StaticWebPage">
 	<brief_description>
 		A [StaticWebPage] that loads a file to [StaticWebPage]'s [code]data[/code] property when entering the [SceneTree].
 	</brief_description>

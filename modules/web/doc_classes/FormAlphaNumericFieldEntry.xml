@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="FormAlphaNumericFieldEntry" inherits="FormFieldEntry" version="4.5">
+<class name="FormAlphaNumericFieldEntry" inherits="FormFieldEntry">
 	<brief_description>
 	</brief_description>
 	<description>

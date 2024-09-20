@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SubProcess" inherits="Reference" version="4.5">
+<class name="SubProcess" inherits="Reference">
 	<brief_description>
 		Run and manage sub processes.
 	</brief_description>

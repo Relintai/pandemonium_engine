@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="QueryBuilder" inherits="Reference" version="4.5">
+<class name="QueryBuilder" inherits="Reference">
 	<brief_description>
 		A class that helps you with building and running database backend specific sql safely.
 	</brief_description>

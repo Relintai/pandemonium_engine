@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="QueryResult" inherits="Reference" version="4.5">
+<class name="QueryResult" inherits="Reference">
 	<brief_description>
 		Read the result from a query that were run on a [Database].
 	</brief_description>

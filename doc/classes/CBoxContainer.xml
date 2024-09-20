@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="CBoxContainer" inherits="BoxContainer" version="4.5">
+<class name="CBoxContainer" inherits="BoxContainer">
 	<brief_description>
 		Horizontal or vertical box container.
 	</brief_description>

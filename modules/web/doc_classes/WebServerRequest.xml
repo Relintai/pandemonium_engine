@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WebServerRequest" inherits="Reference" version="4.5">
+<class name="WebServerRequest" inherits="Reference">
 	<brief_description>
 		The [WebServerRequest] class represents one incoming HTTP request. It also contains the proper helper methods for sending a response.
 	</brief_description>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GSAIUtils" inherits="Object" version="4.5">
+<class name="GSAIUtils" inherits="Object">
 	<brief_description>
 		Math and vector utility functions.
 	</brief_description>

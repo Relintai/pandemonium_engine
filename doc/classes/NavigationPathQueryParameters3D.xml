@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationPathQueryParameters3D" inherits="Reference" version="4.5">
+<class name="NavigationPathQueryParameters3D" inherits="Reference">
 	<brief_description>
 		Provides parameters for 3D navigation path queries.
 	</brief_description>

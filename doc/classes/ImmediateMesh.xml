@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ImmediateMesh" inherits="Mesh" version="4.5">
+<class name="ImmediateMesh" inherits="Mesh">
 	<brief_description>
 	</brief_description>
 	<description>
