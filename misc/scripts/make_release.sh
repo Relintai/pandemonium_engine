@@ -159,8 +159,7 @@ cp -r bin/Pandemonium.app release/temp/pandemonium_v${version_snake_cased}_stabl
 
 mkdir release/temp/pandemonium_v${version_snake_cased}_source
 
-# Warn if a file is over a megabyte. Used to catch big temporary files that would slip through outherwise
-python ./misc/scripts_app/copy_repos.py . ./release/temp/pandemonium_v${version_snake_cased}_source 1048576
+python ./misc/scripts_app/copy_repos.py . ./release/temp/pandemonium_v${version_snake_cased}_source 
 
 # ==== Create version.txt for the export templates ====
 

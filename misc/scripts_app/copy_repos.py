@@ -85,9 +85,47 @@ def copytree(src, dst, warn = 0):
 
             shutil.copy2(sp, dp)
 
+# Deprecated
 def copy_repository(data, target_folder, clone_path):
     copytree(os.path.abspath(clone_path + data[1] + '/' + data[2]), os.path.abspath(target_folder + data[1]))
 
+clone_command = 'git clone -s {0} {1}'
+
+def copy_repository_with_git(target_folder, dest_folder):
+    if target_folder[-1] != "/":
+        target_folder += "/"
+
+    if dest_folder[-1] != "/":
+        dest_folder += "/"
+
+    print("Copying over " + target_folder + " to " + dest_folder + " using git.")
+
+    if not os.path.isdir(target_folder + ".git"):
+        print("Error! Target folder is not a git repository!")
+        return
+
+    if os.path.isdir(dest_folder):
+        shutil.rmtree(dest_folder, onerror=onerror)
+
+    
+    os.makedirs(dest_folder)
+
+    cwd = os.getcwd()
+
+    subprocess.call(clone_command.format(target_folder, dest_folder), shell=True)
+
+    os.chdir(target_folder)
+    git_rev = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
+
+    os.chdir(cwd)
+    os.chdir(dest_folder)
+
+    subprocess.call('git checkout ' + git_rev, shell=True)
+    subprocess.call('git clean -f -d', shell=True)
+    subprocess.call('git reset', shell=True)
+    subprocess.call('git reset --hard', shell=True)
+
+    shutil.rmtree(dest_folder + ".git", onerror=onerror)
 
 #copy_repository(rep, './game/addons/', '.' + module_clone_path)
 
@@ -104,7 +142,7 @@ if len(sys.argv) == 3 or len(sys.argv) == 4:
     src_dir = os.path.abspath(src_dir)
     dst_dir = os.path.abspath(dst_dir)
 
-    copytree(src_dir, dst_dir, warn)
+    copy_repository_with_git(src_dir, dst_dir)
 
 
 else:
