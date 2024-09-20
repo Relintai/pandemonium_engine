@@ -12,6 +12,7 @@ Highlights:
 
 - New Procedural Tree 3D Module. Adds a new 'ProceduralTreeMesh' Mesh class that can generate trees procedurally. It uses https://github.com/jarikomppa/proctree .
 - Backported text-to-speech support.
+- Now the releases include a gdnative headers zip.
 
 Breaking changes:
 
@@ -28,6 +29,12 @@ Breaking changes:
 ##### Procedural Tree 3D
 
 - New Procedural Tree 3D Module. Adds a new 'ProceduralTreeMesh' Mesh class that can generate trees procedurally. It uses https://github.com/jarikomppa/proctree .
+
+#### Release
+
+- Now the releases include a gdnative headers zip.
+- Reworked the copy_repos script to use git locally to make a copy from the local engine tree.
+- Copy gdnative headers helper script.
 
 ### Fixed
 
