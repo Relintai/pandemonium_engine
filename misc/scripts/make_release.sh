@@ -29,6 +29,7 @@ mkdir release/temp
 mkdir release/temp/templates
 mkdir release/temp/templates_server
 mkdir release/temp/templates_sbc
+mkdir release/temp/gdnative_headers_v${version_snake_cased}
 
 # ==== Copy Normal Templates ====
 
@@ -167,6 +168,24 @@ python ./misc/scripts_app/copy_repos.py . ./release/temp/pandemonium_v${version_
 ./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_server/version.txt
 ./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_sbc/version.txt
 
+# ==== GDNative headers
+
+# Copy GDNative includes
+
+cp -r ./release/temp/pandemonium_v${version_snake_cased}_source/modules/gdnative/include/*  release/temp/gdnative_headers_v${version_snake_cased}/
+
+# Copy gdnative_api.json
+
+cp ./release/temp/pandemonium_v${version_snake_cased}_source/modules/gdnative/gdnative_api.json release/temp/gdnative_headers_v${version_snake_cased}/gdnative_api.json
+
+# Copy gdnative_api_struct.gen.h
+
+cp bin/gdnative_api_struct.gen.h release/temp/gdnative_headers_v${version_snake_cased}/gdnative_api_struct.gen.h
+
+# Generate JSON dump of the Pandemonium API for GDNative bindings.
+
+./bin/pandemonium.x11.opt.tools.64 --gdnative-generate-json-api release/temp/gdnative_headers_v${version_snake_cased}/api.json
+
 # ==== Zip everything ====
 
 cd release/temp
@@ -176,6 +195,10 @@ cd release/temp
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates.zip  ./templates/*
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_server.zip  ./templates_server/*
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_sbc.zip  ./templates_sbc/*
+
+# GDNative headers
+
+zip -q -r ../pandemonium_v${version_snake_cased}_stable_gdnative_headers.zip  ./gdnative_headers_v${version_snake_cased}/*
 
 # == Editors ==
 
