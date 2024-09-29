@@ -616,7 +616,7 @@ void RasterizerStorageGLES3::texture_allocate(RID p_texture, int p_width, int p_
 			texture->images.resize(1);
 		} break;
 		case RS::TEXTURE_TYPE_EXTERNAL: {
-#ifdef ANDROID_ENABLED
+#ifdef ANDROID_ENABLED || defined(VITA_ENABLED)
 			texture->target = _GL_TEXTURE_EXTERNAL_OES;
 #else
 			texture->target = GL_TEXTURE_2D;

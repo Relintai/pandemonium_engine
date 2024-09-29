@@ -31,7 +31,7 @@
 
 #include "dir_access_osx.h"
 
-#if defined(UNIX_ENABLED) || defined(LIBC_FILEIO_ENABLED)
+#if defined(UNIX_ENABLED) || defined(LIBC_FILEIO_ENABLED) || defined(VITA_ENABLED)
 
 #include <errno.h>
 

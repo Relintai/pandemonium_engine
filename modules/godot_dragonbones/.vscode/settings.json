@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        ".clang-uml": "bat",
+        "list": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp"
+    }
+}

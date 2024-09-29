@@ -41,7 +41,7 @@
 #include <stdint.h>
 #include <winsock2.h>
 #endif
-#if defined(UNIX_ENABLED) || defined(ENET_UNIX_ENABLED)
+#if defined(UNIX_ENABLED) || defined(ENET_UNIX_ENABLED) || defined(VITA_ENABLED)
 #include <arpa/inet.h>
 #endif
 

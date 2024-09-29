@@ -46,6 +46,11 @@
 #include <sys/statvfs.h>
 #endif
 
+#ifdef VITA_ENABLED
+#include <psp2/appmgr.h>
+#include <psp2/io/stat.h>
+#endif
+
 #ifdef HAVE_MNTENT
 #include <mntent.h>
 #endif
@@ -136,6 +141,10 @@ String DirAccessUnix::get_next() {
 	// the type is a link, in that case we want to resolve the link to
 	// known if it points to a directory. stat() will resolve the link
 	// for us.
+#ifdef VITA_ENABLED
+#define SCE_SO_ISDIR(m) (((m)&SCE_SO_IFMT) == SCE_SO_IFDIR)
+	_cisdir = SCE_SO_ISDIR(entry->d_stat.st_attr);
+#else
 	if (entry->d_type == DT_UNKNOWN || entry->d_type == DT_LNK) {
 		String f = current_dir.plus_file(fname);
 
@@ -148,6 +157,7 @@ String DirAccessUnix::get_next() {
 	} else {
 		_cisdir = (entry->d_type == DT_DIR);
 	}
+#endif
 
 	_cishidden = is_hidden(fname);
 
@@ -396,6 +406,9 @@ Error DirAccessUnix::remove(String p_path) {
 }
 
 bool DirAccessUnix::is_link(String p_file) {
+#ifdef VITA_ENABLED
+	return false;
+#else
 	if (p_file.is_rel_path())
 		p_file = get_current_dir().plus_file(p_file);
 
@@ -406,9 +419,13 @@ bool DirAccessUnix::is_link(String p_file) {
 		return FAILED;
 
 	return S_ISLNK(flags.st_mode);
+#endif
 }
 
 String DirAccessUnix::read_link(String p_file) {
+#ifdef VITA_ENABLED
+	return p_file;
+#else
 	if (p_file.is_rel_path())
 		p_file = get_current_dir().plus_file(p_file);
 
@@ -422,9 +439,13 @@ String DirAccessUnix::read_link(String p_file) {
 		link.parse_utf8(buf, len);
 	}
 	return link;
+#endif
 }
 
 Error DirAccessUnix::create_link(String p_source, String p_target) {
+#ifdef VITA_ENABLED
+	return FAILED;
+#else
 	if (p_target.is_rel_path())
 		p_target = get_current_dir().plus_file(p_target);
 
@@ -436,6 +457,7 @@ Error DirAccessUnix::create_link(String p_source, String p_target) {
 	} else {
 		return FAILED;
 	}
+#endif
 }
 
 uint64_t DirAccessUnix::get_space_left() {

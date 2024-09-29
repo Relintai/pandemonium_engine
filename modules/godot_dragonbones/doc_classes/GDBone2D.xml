@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GDBone2D" inherits="Bone2D" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_bone_animation_position">
+			<return type="Vector2" />
+			<description>
+				Get Vector2 of bone position
+			</description>
+		</method>
+		<method name="get_bone_global_position">
+			<return type="Vector2" />
+			<description>
+				Get global position of bones Vector 2D
+			</description>
+		</method>
+		<method name="get_bone_global_rotation">
+			<return type="float" />
+			<description>
+				Get float of bone rotation global
+			</description>
+		</method>
+		<method name="get_bone_global_scale">
+			<return type="Vector2" />
+			<description>
+				Get scale of global bone
+			</description>
+		</method>
+		<method name="get_bone_name">
+			<return type="String" />
+			<description>
+				Get bone name
+			</description>
+		</method>
+		<method name="get_bone_offset_position">
+			<return type="Vector2" />
+			<description>
+				Get bone offset pos
+			</description>
+		</method>
+		<method name="get_bone_origin_position">
+			<return type="Vector2" />
+			<description>
+				Get bone origin position Vec2D
+			</description>
+		</method>
+		<method name="get_bone_position">
+			<return type="Vector2" />
+			<description>
+				Get bone bone position in 2D
+			</description>
+		</method>
+		<method name="get_bone_rotation">
+			<return type="float" />
+			<description>
+				Get bone rotation float
+			</description>
+		</method>
+		<method name="get_bone_scale">
+			<return type="Vector2" />
+			<description>
+				Get bone scale 2D vec
+			</description>
+		</method>
+		<method name="has_data">
+			<return type="bool" />
+			<description>
+				Check bone has data
+			</description>
+		</method>
+		<method name="set_bone_global_position">
+			<return type="void" />
+			<argument index="0" name="new_position" type="Vector2" />
+			<description>
+				Set bone global pos from Vec 2D
+			</description>
+		</method>
+		<method name="set_bone_global_rotation">
+			<return type="void" />
+			<argument index="0" name="deg_in_rad" type="float" />
+			<description>
+				Set bone global rotation from float
+			</description>
+		</method>
+		<method name="set_bone_global_scale">
+			<return type="void" />
+			<argument index="0" name="new_scale" type="Vector2" />
+			<description>
+				Set bone global scale from Vec 2D
+			</description>
+		</method>
+		<method name="set_bone_position">
+			<return type="void" />
+			<argument index="0" name="new_position" type="Vector2" />
+			<description>
+				Set bone pos from Vec2D
+			</description>
+		</method>
+		<method name="set_bone_rotation">
+			<return type="void" />
+			<argument index="0" name="deg_in_rad" type="float" />
+			<description>
+				Set bone rotation in deg radian
+			</description>
+		</method>
+		<method name="set_bone_scale">
+			<return type="void" />
+			<argument index="0" name="new_scale" type="Vector2" />
+			<description>
+				Set bone scale from Vec2D
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

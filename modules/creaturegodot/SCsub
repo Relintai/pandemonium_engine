@@ -1,0 +1,20 @@
+# SCsub
+Import('env')
+Import('env_modules')
+
+env_mymodule = env.Clone()
+env_mymodule.Append(CPPDEFINES=['_USE_MATH_DEFINES', 'GLM_FORCE_RADIANS'])
+env_mymodule.Append(CPPPATH='#modules/creaturegodot') # Added to find headers
+env_mymodule.Append(CPPPATH='#modules/creaturegodot/glm')
+env_mymodule.Append(CPPPATH='#modules/creaturegodot/gason')
+
+if env['p'] != 'windows':
+	#env_mymodule.Append(CXXFLAGS=['-O2', '-std=c++11'])
+	env_mymodule.add_source_files(env.modules_sources,"*.cpp") # just add all cpp files to the build
+	env_mymodule.add_source_files(env.modules_sources,"./gason/*.cpp") # just add all cpp files to the build
+else:
+	env_mymodule.add_source_files(env.modules_sources,"*.cpp")
+	env_mymodule.add_source_files(env.modules_sources,"./gason/*.cpp") # just add all cpp files to the build
+
+Export('env_modules')
+Export('env')

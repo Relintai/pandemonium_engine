@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GDDragonBones" inherits="GDOwnerNode" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="cycle_next_item_in_slot">
+			<return type="void" />
+			<argument index="0" name="_slot_name" type="String" />
+			<description>
+				Cycles to the next item in slot. If last in slot, will turn off the slot.
+			</description>
+		</method>
+		<method name="cycle_previous_item_in_slot">
+			<return type="void" />
+			<argument index="0" name="_slot_name" type="String" />
+			<description>
+				Cycles to the previous item in slot. If first in slot, will turn off the slot.
+			</description>
+		</method>
+		<method name="fade_in">
+			<return type="void" />
+			<argument index="0" name="anim_name" type="String" />
+			<argument index="1" name="time" type="float" />
+			<argument index="2" name="loop" type="int" />
+			<argument index="3" name="layer" type="int" />
+			<argument index="4" name="group" type="String" />
+			<argument index="5" name="fade_out_mode" type="int" enum="GDArmatureDisplay.AnimFadeOutMode" />
+			<description>
+				Set fade in mode for animation_name with time and loop for layer and group
+			</description>
+		</method>
+		<method name="fade_out">
+			<return type="void" />
+			<argument index="0" name="anim_name" type="String" />
+			<description>
+				Set fade out for animation name
+			</description>
+		</method>
+		<method name="get_armature">
+			<return type="GDArmatureDisplay" />
+			<description>
+				Get armature Display object
+			</description>
+		</method>
+		<method name="get_current_animation" qualifiers="const">
+			<return type="String" />
+			<description>
+				Get the most recently set animation. (current animation if only 1 layer playing).
+			</description>
+		</method>
+		<method name="get_current_animation_on_layer" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="_layer" type="int" />
+			<description>
+				Get the animation playing on the requested layer (layer_number).
+			</description>
+		</method>
+		<method name="get_slot_display_color_multiplier">
+			<return type="Color" />
+			<argument index="0" name="_slot_name" type="String" />
+			<description>
+				Get the current color multiplier applied to the slot (slot_name).
+			</description>
+		</method>
+		<method name="get_slot_display_index">
+			<return type="int" />
+			<argument index="0" name="_slot_name" type="String" />
+			<description>
+				Get the slot's current display index from slot_name.
+			</description>
+		</method>
+		<method name="get_total_items_in_slot">
+			<return type="int" />
+			<argument index="0" name="_slot_name" type="String" />
+			<description>
+				Get the total number of items in the slot.
+			</description>
+		</method>
+		<method name="has">
+			<return type="bool" />
+			<argument index="0" name="name" type="String" />
+			<description>
+				Does the animation exist
+			</description>
+		</method>
+		<method name="has_slot" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="_slot_name" type="String" />
+			<description>
+				Check if having slot_name
+			</description>
+		</method>
+		<method name="is_active" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="play_from_progress">
+			<return type="void" />
+			<argument index="0" name="_f_progress" type="float" />
+			<description>
+				Play this animation from process for GD Bones
+			</description>
+		</method>
+		<method name="play_from_time">
+			<return type="void" />
+			<argument index="0" name="_f_time" type="float" />
+			<description>
+				Play this animation from time
+			</description>
+		</method>
+		<method name="play_new_animation">
+			<return type="void" />
+			<argument index="0" name="_str_anim" type="String" />
+			<argument index="1" name="_num_times" type="int" />
+			<description>
+				Force play specified animation (animation_name) from start with loop_count. Will destroy blend settings.
+			</description>
+		</method>
+		<method name="play_new_animation_from_progress">
+			<return type="void" />
+			<argument index="0" name="_str_anim" type="String" />
+			<argument index="1" name="_num_times" type="int" />
+			<argument index="2" name="_f_progress" type="float" />
+			<description>
+				Force play specified animation from progress. Will destroy blend settings.
+			</description>
+		</method>
+		<method name="play_new_animation_from_time">
+			<return type="void" />
+			<argument index="0" name="_str_anim" type="String" />
+			<argument index="1" name="_num_times" type="int" />
+			<argument index="2" name="_f_time" type="float" />
+			<description>
+				Play a new animation from time with loop option
+			</description>
+		</method>
+		<method name="reset">
+			<return type="void" />
+			<description>
+				Reset the animation
+			</description>
+		</method>
+		<method name="set_active">
+			<return type="void" />
+			<argument index="0" name="active" type="bool" />
+			<description>
+				Active the animation mode
+			</description>
+		</method>
+		<method name="set_all_slots_by_item_name">
+			<return type="void" />
+			<argument index="0" name="_item_name" type="String" />
+			<description>
+				Will set all slots to item_name.None will hide all slots.Will not affect slots with only 1 item. Heavy function. Call sparingly.
+			</description>
+		</method>
+		<method name="set_slot_by_item_name">
+			<return type="void" />
+			<argument index="0" name="_slot_name" type="String" />
+			<argument index="1" name="_item_name" type="String" />
+			<description>
+				Will set slot to item_name.
+			</description>
+		</method>
+		<method name="set_slot_display_color_multiplier">
+			<return type="void" />
+			<argument index="0" name="_slot_name" type="String" />
+			<argument index="1" name="_color" type="Color" />
+			<description>
+				Applies the specified Color as a modifier to the slot
+			</description>
+		</method>
+		<method name="set_slot_display_index">
+			<return type="void" />
+			<argument index="0" name="_slot_name" type="String" />
+			<argument index="1" name="_index" type="int" />
+			<description>
+				Change the slot's display to the specified display_index.
+			</description>
+		</method>
+		<method name="stop">
+			<return type="void" />
+			<argument index="0" name="_b_all" type="bool" />
+			<description>
+				Stops specified animation
+			</description>
+		</method>
+		<method name="stop_all">
+			<return type="void" />
+			<description>
+				Stop all animation
+			</description>
+		</method>
+		<method name="tell">
+			<return type="float" />
+			<description>
+				Tell the animation
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="childs use this material" type="bool" setter="set_inherit_material" getter="is_material_inherited" default="true">
+		</member>
+		<member name="debug" type="bool" setter="set_debug" getter="is_debug" default="false">
+		</member>
+		<member name="flipX" type="bool" setter="flip_x" getter="is_fliped_x" default="false">
+		</member>
+		<member name="flipY" type="bool" setter="flip_y" getter="is_fliped_y" default="false">
+		</member>
+		<member name="current_play" type="bool" setter="play" getter="is_playing" default="false">
+		</member>
+		<member name="current_mode" type="int" setter="set_animation_process_mode" getter="get_animation_process_mode" enum="GDArmatureDisplay.AnimMode" default="1">
+		</member>
+		<member name="current_progress" type="float" setter="seek" getter="get_progress" default="0.0">
+		</member>
+		<member name="current_speed" type="float" setter="set_speed" getter="get_speed" default="1.0">
+		</member>
+		<member name="resource" type="GDDragonBonesResource" setter="set_resource" getter="get_resource">
+		</member>
+		<member name="texture" type="Texture" setter="set_texture" getter="get_texture">
+		</member>
+	</members>
+	<signals>
+		<signal name="dragon_anim_complete">
+			<argument index="0" name="anim" type="String" />
+			<description>
+				Return animation complete
+			</description>
+		</signal>
+		<signal name="dragon_anim_event">
+			<argument index="0" name="event" type="Dictionary" />
+			<description>
+				Return animation event
+			</description>
+		</signal>
+		<signal name="dragon_anim_loop_complete">
+			<argument index="0" name="anim" type="String" />
+			<description>
+				Return the loop is complete
+			</description>
+		</signal>
+		<signal name="dragon_anim_snd_event">
+			<argument index="0" name="anim" type="String" />
+			<argument index="1" name="ev" type="String" />
+			<description>
+				Animation and event
+			</description>
+		</signal>
+		<signal name="dragon_anim_start">
+			<argument index="0" name="anim" type="String" />
+			<description>
+				Animation starts or not
+			</description>
+		</signal>
+		<signal name="dragon_fade_in">
+			<argument index="0" name="anim" type="String" />
+			<description>
+				Start fade in or not
+			</description>
+		</signal>
+		<signal name="dragon_fade_in_complete">
+			<argument index="0" name="anim" type="String" />
+			<description>
+				Fade in complete or not
+			</description>
+		</signal>
+		<signal name="dragon_fade_out">
+			<argument index="0" name="anim" type="String" />
+			<description>
+				Fade out or not
+			</description>
+		</signal>
+		<signal name="dragon_fade_out_complete">
+			<argument index="0" name="anim" type="String" />
+			<description>
+				Fade out complete
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

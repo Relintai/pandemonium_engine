@@ -26,7 +26,7 @@ SConscript("winmidi/SCsub")
 if env["platform"] != "server":
     SConscript("gles2/SCsub")
 
-    if not env["disable_gles3"]:
+    if env["platform"] != "vita":
         SConscript("gles3/SCsub")
 
     SConscript("gles_common/SCsub")

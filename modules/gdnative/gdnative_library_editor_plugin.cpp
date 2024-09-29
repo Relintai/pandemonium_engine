@@ -337,6 +337,12 @@ GDNativeLibraryEditor::GDNativeLibraryEditor() {
 		// Frameworks is actually a folder with files.
 		platform_ios.library_extension = "*.framework; Framework, *.xcframework; Binary Framework, *.a; Static Library, *.dylib; Dynamic Library";
 		platforms["iOS"] = platform_ios;
+
+		NativePlatformConfig platform_vita;
+		platform_vita.name = "PlayStation Vita";
+		platform_vita.entries.push_back("armv7");
+		platform_vita.library_extension = "*.suprx";
+		platforms["Vita"] = platform_vita;
 	}
 
 	VBoxContainer *container = memnew(VBoxContainer);

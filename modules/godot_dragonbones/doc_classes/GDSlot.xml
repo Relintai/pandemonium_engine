@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GDSlot" inherits="Node" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_child_armature">
+			<return type="GDDisplay" />
+			<description>
+			</description>
+		</method>
+		<method name="get_display_color_multiplier">
+			<return type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="get_display_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_display_index">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_slot_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="next_display">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="previous_display">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="set_display_by_name">
+			<return type="void" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_display_color_multiplier">
+			<return type="void" />
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="set_display_index">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

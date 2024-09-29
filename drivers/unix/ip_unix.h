@@ -34,7 +34,7 @@
 
 #include "core/io/ip.h"
 
-#if defined(UNIX_ENABLED) || defined(WINDOWS_ENABLED)
+#if defined(UNIX_ENABLED) || defined(WINDOWS_ENABLED) || defined(VITA_ENABLED)
 
 class IP_Unix : public IP {
 	GDCLASS(IP_Unix, IP);

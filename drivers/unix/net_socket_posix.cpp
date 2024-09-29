@@ -32,7 +32,7 @@
 #include "net_socket_posix.h"
 
 #ifndef UNIX_SOCKET_UNAVAILABLE
-#if defined(UNIX_ENABLED)
+#if defined(UNIX_ENABLED) || defined(VITA_ENABLED)
 
 #include <errno.h>
 #include <netdb.h>
@@ -51,7 +51,9 @@
 #include <netinet/in.h>
 
 #include <sys/socket.h>
-#ifdef JAVASCRIPT_ENABLED
+#if defined(JAVASCRIPT_ENABLED) || defined(VITA_ENABLED)
+#define IPPROTO_IPV6 41
+#define IPV6_V6ONLY 26
 #include <arpa/inet.h>
 #endif
 
@@ -98,6 +100,7 @@
 
 size_t NetSocketPosix::_set_addr_storage(struct sockaddr_storage *p_addr, const IP_Address &p_ip, uint16_t p_port, IP::Type p_ip_type) {
 	memset(p_addr, 0, sizeof(struct sockaddr_storage));
+#ifndef VITA_ENABLED
 	if (p_ip_type == IP::TYPE_IPV6 || p_ip_type == IP::TYPE_ANY) { // IPv6 socket
 
 		// IPv6 only socket with IPv4 address
@@ -112,8 +115,9 @@ size_t NetSocketPosix::_set_addr_storage(struct sockaddr_storage *p_addr, const 
 			addr6->sin6_addr = in6addr_any;
 		}
 		return sizeof(sockaddr_in6);
-	} else { // IPv4 socket
-
+	} else
+#endif
+	{ // IPv4 socket
 		// IPv4 socket with IPv6 address
 		ERR_FAIL_COND_V(!p_ip.is_wildcard() && !p_ip.is_ipv4(), 0);
 
@@ -277,11 +281,13 @@ _FORCE_INLINE_ Error NetSocketPosix::_change_multicast_group(IP_Address p_ip, St
 		memcpy(&greq.imr_interface, if_ip.get_ipv4(), 4);
 		ret = setsockopt(_sock, level, sock_opt, (const char *)&greq, sizeof(greq));
 	} else {
+#ifndef VITA_ENABLED
 		struct ipv6_mreq greq;
 		int sock_opt = p_add ? IPV6_ADD_MEMBERSHIP : IPV6_DROP_MEMBERSHIP;
 		memcpy(&greq.ipv6mr_multiaddr, p_ip.get_ipv6(), 16);
 		greq.ipv6mr_interface = if_v6id;
 		ret = setsockopt(_sock, level, sock_opt, (const char *)&greq, sizeof(greq));
+#endif // VITA_ENABLED
 	}
 	ERR_FAIL_COND_V(ret != 0, FAILED);
 
@@ -659,6 +665,9 @@ void NetSocketPosix::set_blocking_enabled(bool p_enabled) {
 #if defined(WINDOWS_ENABLED) || defined(NO_FCNTL)
 	unsigned long par = p_enabled ? 0 : 1;
 	ret = SOCK_IOCTL(_sock, FIONBIO, &par);
+#elif defined(VITA_ENABLED)
+	int par = p_enabled ? 0 : 1;
+	ret = ::setsockopt(_sock, SOL_SOCKET, SO_NONBLOCK, &par, sizeof(int));
 #else
 	int opts = fcntl(_sock, F_GETFL);
 	if (p_enabled) {
@@ -725,9 +734,13 @@ bool NetSocketPosix::is_open() const {
 
 int NetSocketPosix::get_available_bytes() const {
 	ERR_FAIL_COND_V(!is_open(), -1);
-
+#if defined(VITA_ENABLED)
+	ssize_t ret = ::recv(_sock, NULL, 0, MSG_PEEK);
+	ssize_t len = ret;
+#else
 	unsigned long len;
 	int ret = SOCK_IOCTL(_sock, FIONREAD, &len);
+#endif
 	if (ret == -1) {
 		_get_socket_error();
 		print_verbose("Error when checking available bytes on socket.");

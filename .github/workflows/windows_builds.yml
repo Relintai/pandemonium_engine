@@ -3,10 +3,10 @@ on: [push, pull_request]
 
 # Global Settings
 # SCONS_CACHE for windows must be set in the build environment
-#werror=yes
 env:
-  PANDEMONIUM_BASE_BRANCH: master
-  SCONSFLAGS: verbose=yes warnings=all debug_symbols=no
+  # Only used for the cache key. Increment version to force clean build.
+  GODOT_BASE_BRANCH: 3.x
+  SCONSFLAGS: verbose=yes warnings=all werror=no debug_symbols=no disable_gles3=False
   SCONS_CACHE_MSVC_CONFIG: true
 
 concurrency:
@@ -26,7 +26,7 @@ jobs:
             cache-name: windows-editor
             target: release_debug
             tools: true
-            bin: "./bin/pandemonium.windows.opt.tools.64.exe"
+            bin: "./bin/godot.windows.opt.tools.64.exe"
 
           - name: Template (target=release, tools=no)
             cache-name: windows-template
@@ -36,25 +36,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore Pandemonium build cache
-        uses: ./.github/actions/pandemonium-cache-restore
+      - name: Restore Godot build cache
+        uses: ./.github/actions/godot-cache-restore
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
       - name: Setup python and scons
-        uses: ./.github/actions/pandemonium-deps
+        uses: ./.github/actions/godot-deps
+
+      - name: Setup MSVC problem matcher
+        uses: ammaraskar/msvc-problem-matcher@master
 
       - name: Compilation
-        uses: ./.github/actions/pandemonium-build
+        uses: ./.github/actions/godot-build
         with:
           sconsflags: ${{ env.SCONSFLAGS }}
           platform: windows
           target: ${{ matrix.target }}
           tools: ${{ matrix.tools }}
 
-      - name: Save Pandemonium build cache
-        uses: ./.github/actions/pandemonium-cache-save
+      - name: Save Godot build cache
+        uses: ./.github/actions/godot-cache-save
+        with:
+          cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
       - name: Prepare artifact

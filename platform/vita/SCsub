@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+Import("env")
+files = [
+    "os_vita.cpp",
+    "godot_vita.cpp",
+    "context_egl_vita.cpp",
+    "joypad_vita.cpp",
+    "audio_driver_vita.cpp",
+]
+
+prog = env.add_program("#temp-build/godot", files)
+build_target = env["target"]
+env.Append(
+    BUILDERS={
+        "VitaELF": Builder(action=env["VITASDK_BIN"] + "vita-elf-create $SOURCE $TARGET"),
+        "VitaEBOOT": Builder(action=env["VITASDK_BIN"] + "vita-make-fself -c -na $SOURCE $TARGET"),
+    }
+)
+stripped_elf_path = "#temp-build/vita_" + env["target"] + "_stripped"
+env.Command(
+    stripped_elf_path, prog, [Copy("$TARGET", "$SOURCE"), env["VITASDK_BIN"] + "arm-vita-eabi-strip -g $TARGET"]
+)
+env.VitaELF("#temp-build/vita_" + env["target"] + ".velf", stripped_elf_path)
+env.VitaEBOOT("#temp-build/eboot.bin", "#temp-build/vita_" + env["target"] + ".velf")
+
+env.Command(
+    "#temp-build/vita_release/eboot.bin",
+    "#temp-build/eboot.bin",
+    [
+        Copy("$TARGET", "$SOURCE"),
+    ],
+)
+env.Command(
+    "#temp-build/vita_release/",
+    "#platform/vita/app/",
+    [
+        Copy("$TARGET", "$SOURCE"),
+    ],
+)
+env.Command(
+    "#bin/vita_release.zip",
+    "#temp-build/vita_release",
+    [
+        "cd $SOURCE && zip -r ../../$TARGET .",
+    ],
+)

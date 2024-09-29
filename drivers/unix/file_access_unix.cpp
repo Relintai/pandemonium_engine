@@ -280,6 +280,7 @@ bool FileAccessUnix::file_exists(const String &p_path) {
 		return false;
 	}
 
+#ifndef VITA_ENABLED
 #ifdef UNIX_ENABLED
 	// See if we have access to the file
 	if (access(filename.utf8().get_data(), F_OK)) {
@@ -288,6 +289,7 @@ bool FileAccessUnix::file_exists(const String &p_path) {
 #else
 	if (_access(filename.utf8().get_data(), 4) == -1)
 		return false;
+#endif
 #endif
 
 	// See if this is a regular file

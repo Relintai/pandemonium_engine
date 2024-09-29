@@ -77,6 +77,10 @@
 #include <GLES2/gl2ext.h>
 #include <GLES2/gl2platform.h>
 
+#ifdef VITA_ENABLED
+#include <psp2/types.h>
+#endif
+
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #endif
