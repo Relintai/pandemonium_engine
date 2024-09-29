@@ -62,7 +62,7 @@ ended up writing lots of custom things.
 
 ### Binary downloads
 
-You can download binaries from the github actions tab [[here]](https://github.com/Relintai/pandemonium_engine), 
+You can download binaries from the github actions tab [[here]](https://github.com/Relintai/pandemonium_engine/actions), 
 or the releases tab [[here]](https://github.com/Relintai/pandemonium_engine/releases).
 
 ### Compiling from source
