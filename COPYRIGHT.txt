@@ -53,7 +53,7 @@ Files: ./icon.png
  ./logo.png
  ./logo.svg
 Comment: Pandemonium Engine logo
-Copyright: 2022/present, Péter Magyar.
+Copyright: 2022-present, Péter Magyar.
  2017, Andrea Calabró.
 License: CC-BY-4.0
 
