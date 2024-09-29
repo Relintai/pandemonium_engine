@@ -37,15 +37,15 @@
 -----------------------------------------------------------------------
 
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Godot Engine
-Upstream-Contact: Rémi Verschelde <contact@godotengine.org>
-Source: https://github.com/godotengine/godot
+Upstream-Name: Pandemonium Engine
+Upstream-Contact: Péter Magyar <relintai@protonmail.com>
+Source: https://github.com/Relintai/pandemonium_engine
 
 Files: *
 Comment: Pandemonium Engine
-Copyright: 2007-2022, Juan Linietsky, Ariel Manzur.
+Copyright: 2022-present, Péter Magyar.
  2014-2022, Godot Engine contributors.
- 2022-2023, Péter Magyar.
+ 2007-2022, Juan Linietsky, Ariel Manzur.
 License: Expat
 
 Files: ./icon.png
@@ -53,8 +53,8 @@ Files: ./icon.png
  ./logo.png
  ./logo.svg
 Comment: Pandemonium Engine logo
-Copyright: 2017, Andrea Calabró.
- 2022, Péter Magyar.
+Copyright: 2022/present, Péter Magyar.
+ 2017, Andrea Calabró.
 License: CC-BY-4.0
 
 Files: ./core/math/convex_hull.cpp
