@@ -290,6 +290,8 @@ struct _NO_DISCARD_CLASS_ Basis {
 	static Basis create_from_scale(const Vector3 &p_scale);
 
 	Basis looking_at(const Vector3 &p_target, const Vector3 &p_up = Vector3(0, 1, 0));
+	void set_look_at(const Vector3 &p_target, const Vector3 &p_up = Vector3(0, 1, 0));
+
 	Basis from_scale(const Vector3 &p_scale);
 
 	operator Quaternion() const { return get_quaternion(); }
