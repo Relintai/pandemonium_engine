@@ -239,6 +239,13 @@ Basis Basis::create_from_scale(const Vector3 &p_scale) {
 	return Basis(p_scale.x, 0, 0, 0, p_scale.y, 0, 0, 0, p_scale.z);
 }
 
+Basis Basis::looking_at(const Vector3 &p_target, const Vector3 &p_up) {
+	return Basis::create_looking_at(p_target, p_up);
+}
+Basis Basis::from_scale(const Vector3 &p_scale) {
+	return Basis::create_from_scale(p_scale);
+}
+
 // Multiplies the matrix from left by the scaling matrix: M -> S.M
 // See the comment for Basis::rotated for further explanation.
 void Basis::scale(const Vector3 &p_scale) {
