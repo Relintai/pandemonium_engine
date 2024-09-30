@@ -76,9 +76,9 @@ void GDAPI pandemonium_transform_rotate(pandemonium_transform *p_self, const pan
 void GDAPI pandemonium_transform_rotate_local(pandemonium_transform *p_self, const pandemonium_vector3 *p_axis, pandemonium_real p_phi);
 void GDAPI pandemonium_transform_rotate_basis(pandemonium_transform *p_self, const pandemonium_vector3 *p_axis, pandemonium_real p_phi);
 
-void GDAPI pandemonium_transform_set_look_at(pandemonium_transform *p_self, const pandemonium_vector3 *p_eye, const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up);
+void GDAPI pandemonium_transform_set_look_at(pandemonium_transform *p_self, const pandemonium_vector3 *p_eye, const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up, const pandemonium_bool p_use_model_front);
 
-pandemonium_transform GDAPI pandemonium_transform_looking_at(const pandemonium_transform *p_self, const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up);
+pandemonium_transform GDAPI pandemonium_transform_looking_at(const pandemonium_transform *p_self, const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up, const pandemonium_bool p_use_model_front);
 
 void GDAPI pandemonium_transform_scale(pandemonium_transform *p_self, const pandemonium_vector3 *p_scale);
 pandemonium_transform GDAPI pandemonium_transform_scaled(const pandemonium_transform *p_self, const pandemonium_vector3 *p_scale);

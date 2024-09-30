@@ -691,12 +691,21 @@ pandemonium_vector3 GDAPI pandemonium_basis_xform_normal(const pandemonium_basis
 	return dest;
 }
 
-pandemonium_basis GDAPI pandemonium_basis_looking_at(const pandemonium_vector3 *p_target) {
+pandemonium_basis GDAPI pandemonium_basis_looking_at(const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up, const pandemonium_bool p_use_model_front) {
 	pandemonium_basis dest;
 	const Vector3 *target = (const Vector3 *)p_target;
-	*((Basis *)&dest) = Basis::create_looking_at(*target);
+	const Vector3 *up = (const Vector3 *)p_up;
+	*((Basis *)&dest) = Basis::create_looking_at(*target, *up, p_use_model_front);
 	return dest;
 }
+
+void GDAPI pandemonium_basis_set_look_at(pandemonium_basis *p_self, const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up, const pandemonium_bool p_use_model_front) {
+	Basis *self = (Basis *)p_self;
+	const Vector3 *target = (const Vector3 *)p_target;
+	const Vector3 *up = (const Vector3 *)p_up;
+	self->set_look_at(*target, *up, p_use_model_front);
+}
+
 pandemonium_basis GDAPI pandemonium_basis_looking_at_up(const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up) {
 	pandemonium_basis dest;
 	const Vector3 *target = (const Vector3 *)p_target;

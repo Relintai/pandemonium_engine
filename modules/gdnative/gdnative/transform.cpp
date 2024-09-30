@@ -94,20 +94,20 @@ void GDAPI pandemonium_transform_rotate_basis(pandemonium_transform *p_self, con
 	self->rotate_basis(*axis, p_phi);
 }
 
-void GDAPI pandemonium_transform_set_look_at(pandemonium_transform *p_self, const pandemonium_vector3 *p_eye, const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up) {
+void GDAPI pandemonium_transform_set_look_at(pandemonium_transform *p_self, const pandemonium_vector3 *p_eye, const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up, const pandemonium_bool p_use_model_front) {
 	Transform *self = (Transform *)p_self;
 	const Vector3 *eye = (const Vector3 *)p_eye;
 	const Vector3 *target = (const Vector3 *)p_target;
 	const Vector3 *up = (const Vector3 *)p_up;
-	self->set_look_at(*eye, *target, *up);
+	self->set_look_at(*eye, *target, *up, p_use_model_front);
 }
 
-pandemonium_transform GDAPI pandemonium_transform_looking_at(const pandemonium_transform *p_self, const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up) {
+pandemonium_transform GDAPI pandemonium_transform_looking_at(const pandemonium_transform *p_self, const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up, const pandemonium_bool p_use_model_front) {
 	pandemonium_transform dest;
 	const Transform *self = (const Transform *)p_self;
 	const Vector3 *target = (const Vector3 *)p_target;
 	const Vector3 *up = (const Vector3 *)p_up;
-	*((Transform *)&dest) = self->looking_at(*target, *up);
+	*((Transform *)&dest) = self->looking_at(*target, *up, p_use_model_front);
 	return dest;
 }
 

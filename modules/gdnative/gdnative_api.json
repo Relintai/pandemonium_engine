@@ -1699,7 +1699,19 @@
                 "name": "pandemonium_basis_looking_at",
                 "return_type": "pandemonium_basis",
                 "arguments": [
-                    ["const pandemonium_vector3 *", "p_target"]
+                    ["const pandemonium_vector3 *", "p_target"],
+                    ["const pandemonium_vector3 *", "p_up"],
+                    ["const pandemonium_bool", "p_use_model_front"]
+                ]
+            },
+            {
+                "name": "pandemonium_basis_set_look_at",
+                "return_type": "void",
+                "arguments": [
+                    ["pandemonium_basis *", "p_self"],
+                    ["const pandemonium_vector3 *", "p_target"],
+                    ["const pandemonium_vector3 *", "p_up"],
+                    ["const pandemonium_bool", "p_use_model_front"]
                 ]
             },
             {
@@ -6733,7 +6745,8 @@
                     ["pandemonium_transform *", "p_self"],
                     ["const pandemonium_vector3 *", "p_eye"],
                     ["const pandemonium_vector3 *", "p_target"],
-                    ["const pandemonium_vector3 *", "p_up"]
+                    ["const pandemonium_vector3 *", "p_up"],
+                    ["const pandemonium_bool", "p_use_model_front"]
                 ]
             },
             {
@@ -6742,7 +6755,8 @@
                 "arguments": [
                     ["const pandemonium_transform *", "p_self"],
                     ["const pandemonium_vector3 *", "p_target"],
-                    ["const pandemonium_vector3 *", "p_up"]
+                    ["const pandemonium_vector3 *", "p_up"],
+                    ["const pandemonium_bool", "p_use_model_front"]
                 ]
             },
             {
