@@ -82,14 +82,14 @@ void Transform::rotate_basis(const Vector3 &p_axis, real_t p_phi) {
 	basis.rotate(p_axis, p_phi);
 }
 
-void Transform::set_look_at(const Vector3 &p_eye, const Vector3 &p_target, const Vector3 &p_up) {
-	basis = Basis::create_looking_at(p_target - p_eye, p_up);
+void Transform::set_look_at(const Vector3 &p_eye, const Vector3 &p_target, const Vector3 &p_up, bool p_use_model_front) {
+	basis = Basis::create_looking_at(p_target - p_eye, p_up, p_use_model_front);
 	origin = p_eye;
 }
 
-Transform Transform::looking_at(const Vector3 &p_target, const Vector3 &p_up) const {
+Transform Transform::looking_at(const Vector3 &p_target, const Vector3 &p_up, bool p_use_model_front) const {
 	Transform t = *this;
-	t.set_look_at(origin, p_target, p_up);
+	t.set_look_at(origin, p_target, p_up,p_use_model_front);
 	return t;
 }
 

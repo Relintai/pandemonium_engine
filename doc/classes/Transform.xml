@@ -104,8 +104,9 @@
 			<return type="Transform" />
 			<argument index="0" name="target" type="Vector3" />
 			<argument index="1" name="up" type="Vector3" />
+			<argument index="2" name="use_model_front" type="bool" default="false" />
 			<description>
-				Returns a copy of the transform rotated such that its -Z axis points towards the [code]target[/code] position.
+				Returns a copy of the transform rotated such that its (-Z, [constant Vector3.FORWARD]) axis points towards the [code]target[/code] position. If the [param use_model_front] options is specified, then the model is oriented in reverse, towards the model front axis (+Z, [constant Vector3.MODEL_FRONT]), which is more useful for orienting 3D models.
 				The transform will first be rotated around the given [code]up[/code] vector, and then fully aligned to the target by a further rotation around an axis perpendicular to both the [code]target[/code] and [code]up[/code] vectors.
 				Operations take place in global space.
 			</description>

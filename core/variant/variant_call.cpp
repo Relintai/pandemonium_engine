@@ -1541,6 +1541,8 @@ struct _VariantCall {
 	VCALL_PTR0R(Basis, orthogonalized);
 	VCALL_PTR0R(Basis, is_symmetric);
 	VCALL_PTR0R(Basis, diagonalize);
+	VCALL_PTR3R(Basis, looking_at);
+	VCALL_PTR3(Basis, set_look_at);
 
 	static void _call_Basis_xform(Variant &r_ret, Variant &p_self, const Variant **p_args) {
 		switch (p_args[0]->type) {
@@ -3375,6 +3377,8 @@ void register_variant_methods() {
 	ADDFUNC0R(BASIS, BASIS, Basis, orthogonalized, varray());
 	ADDFUNC0R(BASIS, BOOL, Basis, is_symmetric, varray());
 	ADDFUNC0R(BASIS, BASIS, Basis, diagonalize, varray());
+	ADDFUNC3R(BASIS, BASIS, Basis, looking_at, VECTOR3, "target", VECTOR3, "up", BOOL, "use_model_front", varray(Vector3(0, 1, 0), false));
+	ADDFUNC3(BASIS, NIL, Basis, set_look_at, VECTOR3, "target", VECTOR3, "up", BOOL, "use_model_front", varray(Vector3(0, 1, 0), false));
 	ADDFUNC1R(BASIS, VECTOR3, Basis, xform, NIL, "v3_or_v3i", varray());
 	ADDFUNC1R(BASIS, VECTOR3, Basis, xform_inv, NIL, "v3_or_v3i", varray());
 
@@ -3387,8 +3391,8 @@ void register_variant_methods() {
 	ADDFUNC2(TRANSFORM, NIL, Transform, rotate, VECTOR3, "axis", REAL, "phi", varray());
 	ADDFUNC2(TRANSFORM, NIL, Transform, rotate_local, VECTOR3, "axis", REAL, "phi", varray());
 	ADDFUNC2(TRANSFORM, NIL, Transform, rotate_basis, VECTOR3, "axis", REAL, "phi", varray());
-	ADDFUNC3(TRANSFORM, NIL, Transform, set_look_at, VECTOR3, "eye", VECTOR3, "target", VECTOR3, "up", varray());
-	ADDFUNC2R(TRANSFORM, TRANSFORM, Transform, looking_at, VECTOR3, "target", VECTOR3, "up", varray());
+	ADDFUNC4(TRANSFORM, NIL, Transform, set_look_at, VECTOR3, "eye", VECTOR3, "target", VECTOR3, "up", BOOL, "use_model_front", varray(false));
+	ADDFUNC3R(TRANSFORM, TRANSFORM, Transform, looking_at, VECTOR3, "target", VECTOR3, "up", BOOL, "use_model_front", varray(false));
 	ADDFUNC1(TRANSFORM, NIL, Transform, scale, VECTOR3, "scale", varray());
 	ADDFUNC1R(TRANSFORM, TRANSFORM, Transform, scaled, VECTOR3, "scale", varray());
 	ADDFUNC1R(TRANSFORM, TRANSFORM, Transform, scaled_local, VECTOR3, "scale", varray());
@@ -3529,6 +3533,13 @@ void register_variant_methods() {
 	_VariantCall::add_variant_constant(Variant::VECTOR3, "DOWN", Vector3(0, -1, 0));
 	_VariantCall::add_variant_constant(Variant::VECTOR3, "FORWARD", Vector3(0, 0, -1));
 	_VariantCall::add_variant_constant(Variant::VECTOR3, "BACK", Vector3(0, 0, 1));
+
+	_VariantCall::add_variant_constant(Variant::VECTOR3, "MODEL_LEFT", Vector3(1, 0, 0));
+	_VariantCall::add_variant_constant(Variant::VECTOR3, "MODEL_RIGHT", Vector3(-1, 0, 0));
+	_VariantCall::add_variant_constant(Variant::VECTOR3, "MODEL_TOP", Vector3(0, 1, 0));
+	_VariantCall::add_variant_constant(Variant::VECTOR3, "MODEL_BOTTOM", Vector3(0, -1, 0));
+	_VariantCall::add_variant_constant(Variant::VECTOR3, "MODEL_FRONT", Vector3(0, 0, 1));
+	_VariantCall::add_variant_constant(Variant::VECTOR3, "MODEL_REAR", Vector3(0, 0, -1));
 
 	_VariantCall::add_constant(Variant::VECTOR3I, "AXIS_X", Vector3i::AXIS_X);
 	_VariantCall::add_constant(Variant::VECTOR3I, "AXIS_Y", Vector3i::AXIS_Y);
