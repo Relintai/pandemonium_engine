@@ -213,9 +213,9 @@ pandemonium_basis GDAPI pandemonium_basis_get_normal_xform_basis(const pandemoni
 pandemonium_vector3 GDAPI pandemonium_basis_xform_normal_fast(const pandemonium_basis *p_self, const pandemonium_vector3 *p_vector);
 pandemonium_vector3 GDAPI pandemonium_basis_xform_normal(const pandemonium_basis *p_self, const pandemonium_vector3 *p_vector);
 
-pandemonium_basis GDAPI pandemonium_basis_create_looking_at(const pandemonium_vector3 *p_target);
+pandemonium_basis GDAPI pandemonium_basis_looking_at(const pandemonium_vector3 *p_target);
 pandemonium_basis GDAPI pandemonium_basis_looking_at_up(const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up);
-pandemonium_basis GDAPI pandemonium_basis_create_from_scale(const pandemonium_vector3 *p_scale);
+pandemonium_basis GDAPI pandemonium_basis_from_scale(const pandemonium_vector3 *p_scale);
 
 // p_elements is a pointer to an array of 3 (!!) vector3
 void GDAPI pandemonium_basis_get_elements(const pandemonium_basis *p_self, pandemonium_vector3 *p_elements);
