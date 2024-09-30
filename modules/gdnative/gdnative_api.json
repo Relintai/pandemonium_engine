@@ -1696,7 +1696,7 @@
                 ]
             },
             {
-                "name": "pandemonium_basis_looking_at",
+                "name": "pandemonium_basis_create_looking_at",
                 "return_type": "pandemonium_basis",
                 "arguments": [
                     ["const pandemonium_vector3 *", "p_target"]
@@ -1711,7 +1711,7 @@
                 ]
             },
             {
-                "name": "pandemonium_basis_from_scale",
+                "name": "pandemonium_basis_create_from_scale",
                 "return_type": "pandemonium_basis",
                 "arguments": [
                     ["const pandemonium_vector3 *", "p_scale"]

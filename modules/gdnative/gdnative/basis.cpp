@@ -691,23 +691,23 @@ pandemonium_vector3 GDAPI pandemonium_basis_xform_normal(const pandemonium_basis
 	return dest;
 }
 
-pandemonium_basis GDAPI pandemonium_basis_looking_at(const pandemonium_vector3 *p_target) {
+pandemonium_basis GDAPI pandemonium_basis_create_looking_at(const pandemonium_vector3 *p_target) {
 	pandemonium_basis dest;
 	const Vector3 *target = (const Vector3 *)p_target;
-	*((Basis *)&dest) = Basis::looking_at(*target);
+	*((Basis *)&dest) = Basis::create_looking_at(*target);
 	return dest;
 }
 pandemonium_basis GDAPI pandemonium_basis_looking_at_up(const pandemonium_vector3 *p_target, const pandemonium_vector3 *p_up) {
 	pandemonium_basis dest;
 	const Vector3 *target = (const Vector3 *)p_target;
 	const Vector3 *up = (const Vector3 *)p_up;
-	*((Basis *)&dest) = Basis::looking_at(*target, *up);
+	*((Basis *)&dest) = Basis::create_looking_at(*target, *up);
 	return dest;
 }
-pandemonium_basis GDAPI pandemonium_basis_from_scale(const pandemonium_vector3 *p_scale) {
+pandemonium_basis GDAPI pandemonium_basis_create_from_scale(const pandemonium_vector3 *p_scale) {
 	pandemonium_basis dest;
 	const Vector3 *scale = (const Vector3 *)p_scale;
-	*((Basis *)&dest) = Basis::from_scale(*scale);
+	*((Basis *)&dest) = Basis::create_from_scale(*scale);
 	return dest;
 }
 

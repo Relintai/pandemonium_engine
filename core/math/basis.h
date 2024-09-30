@@ -286,8 +286,8 @@ struct _NO_DISCARD_CLASS_ Basis {
 	// only be used in cases of single normals, or when the basis changes each time.
 	Vector3 xform_normal(const Vector3 &p_vector) const { return get_normal_xform_basis().xform_normal_fast(p_vector); }
 
-	static Basis looking_at(const Vector3 &p_target, const Vector3 &p_up = Vector3(0, 1, 0));
-	static Basis from_scale(const Vector3 &p_scale);
+	static Basis create_looking_at(const Vector3 &p_target, const Vector3 &p_up = Vector3(0, 1, 0));
+	static Basis create_from_scale(const Vector3 &p_scale);
 
 	operator Quaternion() const { return get_quaternion(); }
 
