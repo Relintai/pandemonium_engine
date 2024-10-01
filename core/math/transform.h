@@ -55,8 +55,8 @@ struct _NO_DISCARD_CLASS_ Transform {
 	void rotate_local(const Vector3 &p_axis, real_t p_phi);
 	void rotate_basis(const Vector3 &p_axis, real_t p_phi);
 
-	void set_look_at(const Vector3 &p_eye, const Vector3 &p_target, const Vector3 &p_up);
-	Transform looking_at(const Vector3 &p_target, const Vector3 &p_up) const;
+	void set_look_at(const Vector3 &p_eye, const Vector3 &p_target, const Vector3 &p_up, bool p_use_model_front = false);
+	Transform looking_at(const Vector3 &p_target, const Vector3 &p_up, bool p_use_model_front = false) const;
 
 	void scale(const Vector3 &p_scale);
 	Transform scaled(const Vector3 &p_scale) const;

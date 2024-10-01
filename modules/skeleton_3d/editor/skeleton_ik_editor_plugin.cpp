@@ -52,24 +52,18 @@ void SkeletonIKEditorPlugin::_play() {
 		skeleton_ik->start();
 	} else {
 		skeleton_ik->stop();
-		skeleton_ik->get_parent_skeleton()->clear_bones_global_pose_override();
 	}
 }
 
 void SkeletonIKEditorPlugin::edit(Object *p_object) {
-	if (p_object != skeleton_ik) {
-		if (skeleton_ik) {
-			play_btn->set_pressed(false);
-			_play();
-		}
-	}
-
 	SkeletonIK *s = Object::cast_to<SkeletonIK>(p_object);
 	if (!s) {
 		return;
 	}
 
 	skeleton_ik = s;
+
+	play_btn->set_pressed(skeleton_ik->is_running());
 }
 
 bool SkeletonIKEditorPlugin::handles(Object *p_object) const {

@@ -900,22 +900,20 @@ void Spatial::set_identity() {
 	set_transform(Transform());
 }
 
-void Spatial::look_at(const Vector3 &p_target, const Vector3 &p_up) {
+void Spatial::look_at(const Vector3 &p_target, const Vector3 &p_up, bool p_use_model_front) {
 	Vector3 origin(get_global_transform().origin);
-	look_at_from_position(origin, p_target, p_up);
+	look_at_from_position(origin, p_target, p_up, p_use_model_front);
 }
 
-void Spatial::look_at_from_position(const Vector3 &p_pos, const Vector3 &p_target, const Vector3 &p_up) {
+void Spatial::look_at_from_position(const Vector3 &p_pos, const Vector3 &p_target, const Vector3 &p_up, bool p_use_model_front) {
 	ERR_FAIL_COND_MSG(p_pos == p_target, "Node origin and target are in the same position, look_at() failed.");
 	ERR_FAIL_COND_MSG(p_up == Vector3(), "The up vector can't be zero, look_at() failed.");
 	ERR_FAIL_COND_MSG(p_up.cross(p_target - p_pos) == Vector3(), "Up vector and direction between node origin and target are aligned, look_at() failed.");
 
-	Transform lookat;
-	lookat.origin = p_pos;
-
-	Vector3 original_scale(get_scale());
-	lookat = lookat.looking_at(p_target, p_up);
-	set_global_transform(lookat);
+	Vector3 forward = p_target - p_pos;
+	Basis lookat_basis = Basis::create_looking_at(forward, p_up, p_use_model_front);
+	Vector3 original_scale = get_scale();
+	set_global_transform(Transform(lookat_basis, p_pos));
 	set_scale(original_scale);
 }
 
@@ -1048,8 +1046,8 @@ void Spatial::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("orthonormalize"), &Spatial::orthonormalize);
 	ClassDB::bind_method(D_METHOD("set_identity"), &Spatial::set_identity);
 
-	ClassDB::bind_method(D_METHOD("look_at", "target", "up"), &Spatial::look_at);
-	ClassDB::bind_method(D_METHOD("look_at_from_position", "position", "target", "up"), &Spatial::look_at_from_position);
+	ClassDB::bind_method(D_METHOD("look_at", "target", "up", "use_model_front"), &Spatial::look_at, DEFVAL(Vector3(0, 1, 0)), DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("look_at_from_position", "position", "target", "up", "use_model_front"), &Spatial::look_at_from_position, DEFVAL(Vector3(0, 1, 0)), DEFVAL(false));
 
 	ClassDB::bind_method(D_METHOD("set_merging_mode", "mode"), &Spatial::set_merging_mode);
 	ClassDB::bind_method(D_METHOD("get_merging_mode"), &Spatial::get_merging_mode);
