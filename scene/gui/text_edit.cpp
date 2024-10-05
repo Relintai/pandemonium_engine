@@ -6051,7 +6051,7 @@ int TextEdit::get_indent_level(int p_line) const {
 
 bool TextEdit::is_line_comment(int p_line) const {
 	// Checks to see if this line is the start of a comment.
-	ERR_FAIL_INDEX_V(p_line, text.size(), false);
+	// ERR_FAIL_INDEX_V(p_line, text.size(), false);
 
 	int line_length = text[p_line].size();
 	for (int i = 0; i < line_length - 1; i++) {
