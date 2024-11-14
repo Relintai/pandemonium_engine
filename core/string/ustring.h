@@ -569,6 +569,7 @@ public:
 	String(const char *p_str);
 	String(const wchar_t *p_str);
 	String(const CharType *p_str);
+	String(const Char16String &p_str);
 	String(const char *p_str, int p_clip_to_len);
 	String(const wchar_t *p_str, int p_clip_to_len);
 	String(const CharType *p_str, int p_clip_to_len);

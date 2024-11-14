@@ -5161,6 +5161,10 @@ String::String(const CharType *p_str) {
 	copy_from(p_str);
 }
 
+String::String(const Char16String &p_str) {
+	copy_from(p_str.ptr());
+}
+
 String::String(const char *p_str, int p_clip_to_len) {
 	copy_from(p_str, p_clip_to_len);
 }
