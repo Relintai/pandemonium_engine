@@ -583,6 +583,7 @@ private:
 	void copy_from(const char *p_cstr, const int p_clip_to);
 	void copy_from(const wchar_t *p_cstr);
 	void copy_from(const wchar_t *p_cstr, const int p_clip_to);
+	void copy_from(const Char16String &p_str);
 	void copy_from(const CharType *p_cstr);
 	void copy_from(const CharType *p_cstr, const int p_clip_to);
 

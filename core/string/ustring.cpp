@@ -331,6 +331,10 @@ void String::copy_from(const wchar_t *p_cstr, const int p_clip_to) {
 #endif
 }
 
+void String::copy_from(const Char16String &p_str) {
+	parse_utf16(p_str.ptr());
+}
+
 void String::copy_from(const CharType &p_char) {
 	if (p_char == 0) {
 #if PRINT_UNICODE_ERRORS
@@ -5162,7 +5166,7 @@ String::String(const CharType *p_str) {
 }
 
 String::String(const Char16String &p_str) {
-	copy_from(p_str.ptr());
+	copy_from(p_str);
 }
 
 String::String(const char *p_str, int p_clip_to_len) {
