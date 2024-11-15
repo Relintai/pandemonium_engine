@@ -1,0 +1,26 @@
+From ad572cdfdb2cac970aa1dd291583b72b7f89f9fb Mon Sep 17 00:00:00 2001
+From: Relintai <relintai@protonmail.com>
+Date: Thu, 14 Nov 2024 20:07:24 +0100
+Subject: [PATCH] Reapply SQLITE_NO_FCHOWN Pandemonium sqlite patch.
+
+---
+ modules/database_sqlite/sqlite/sqlite3.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/modules/database_sqlite/sqlite/sqlite3.c b/modules/database_sqlite/sqlite/sqlite3.c
+index 2886d04ae..9918449b9 100644
+--- a/modules/database_sqlite/sqlite/sqlite3.c
++++ b/modules/database_sqlite/sqlite/sqlite3.c
+@@ -168,7 +168,9 @@
+ #else
+ /* This is not VxWorks. */
+ #define OS_VXWORKS 0
++#ifndef SQLITE_NO_FCHOWN
+ #define HAVE_FCHOWN 1
++#endif
+ #define HAVE_READLINK 1
+ #define HAVE_LSTAT 1
+ #endif /* defined(_WRS_KERNEL) */
+-- 
+2.47.0
+

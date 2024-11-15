@@ -451,6 +451,7 @@ public:
 	FUNC6(environment_set_dof_blur_near, RID, bool, float, float, float, Environment3DDOFBlurQuality)
 	FUNC6(environment_set_dof_blur_far, RID, bool, float, float, float, Environment3DDOFBlurQuality)
 	FUNC12(environment_set_glow, RID, bool, int, float, float, float, Environment3DGlowBlendMode, float, float, float, bool, bool)
+	FUNC3(environment_set_glow_map, RID, float, RID)
 
 	FUNC9(environment_set_tonemap, RID, Environment3DToneMapper, float, float, bool, float, float, float, float)
 
