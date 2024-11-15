@@ -1,0 +1,56 @@
+name: 📊 Static Checks
+on: [push, pull_request]
+
+concurrency:
+  group: ci-${{github.actor}}-${{github.head_ref || github.run_number}}-${{github.ref}}-static
+  cancel-in-progress: true
+
+jobs:
+  static-checks:
+    name: Static Checks (clang-format, black format, file format, documentation checks)
+    runs-on: "ubuntu-24.04"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          # Azure repositories are flaky, remove them.
+          sudo rm -f /etc/apt/sources.list.d/{azure,microsoft}*
+          sudo apt-get update
+          sudo apt-get install -qq dos2unix libxml2-utils python3-pip moreutils
+          sudo update-alternatives --remove-all clang-format || true
+          sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-16 100
+          sudo pip3 install black==24.10.0 pygments
+
+      # This needs to happen before Python and npm execution; it must happen before any extra files are written.
+      - name: .gitignore checks (gitignore_check.sh)
+        run: |
+          bash ./misc/scripts/gitignore_check.sh
+
+      - name: File formatting checks (file_format.sh)
+        run: |
+          bash ./misc/scripts/file_format.sh
+
+      - name: Style checks via clang-format (clang_format.sh)
+        run: |
+          bash ./misc/scripts/clang_format.sh
+
+      - name: Python style checks via black (black_format.sh)
+        run: |
+          bash ./misc/scripts/black_format.sh
+
+      - name: JavaScript style and documentation checks via ESLint and JSDoc
+        run: |
+          cd platform/javascript
+          npm ci
+          npm run lint
+          npm run docs -- -d dry-run
+
+      - name: Documentation checks
+        run: |
+          doc/tools/make_rst.py --dry-run doc/classes modules
+
+      - name: Style checks via clang-format (clang_format.sh)
+        run: |
+          bash ./misc/scripts/clang_format.sh

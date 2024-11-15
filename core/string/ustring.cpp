@@ -331,6 +331,10 @@ void String::copy_from(const wchar_t *p_cstr, const int p_clip_to) {
 #endif
 }
 
+void String::copy_from(const Char16String &p_str) {
+	parse_utf16(p_str.ptr());
+}
+
 void String::copy_from(const CharType &p_char) {
 	if (p_char == 0) {
 #if PRINT_UNICODE_ERRORS
@@ -2731,13 +2735,16 @@ Vector<float> String::split_floats(const String &p_splitter, bool p_allow_empty)
 	int from = 0;
 	int len = length();
 
+	String buffer = *this;
 	while (true) {
 		int end = find(p_splitter, from);
 		if (end < 0) {
 			end = len;
 		}
 		if (p_allow_empty || (end > from)) {
-			ret.push_back(String::to_double(&get_data()[from]));
+			buffer[end] = 0;
+			ret.push_back(String::to_double(&buffer.get_data()[from]));
+			buffer[end] = _cowdata.get(end);
 		}
 
 		if (end == len) {
@@ -2755,6 +2762,7 @@ Vector<float> String::split_floats_mk(const Vector<String> &p_splitters, bool p_
 	int from = 0;
 	int len = length();
 
+	String buffer = *this;
 	while (true) {
 		int idx;
 		int end = findmk(p_splitters, from, &idx);
@@ -2766,7 +2774,9 @@ Vector<float> String::split_floats_mk(const Vector<String> &p_splitters, bool p_
 		}
 
 		if (p_allow_empty || (end > from)) {
-			ret.push_back(String::to_double(&get_data()[from]));
+			buffer[end] = 0;
+			ret.push_back(String::to_double(&buffer.get_data()[from]));
+			buffer[end] = _cowdata.get(end);
 		}
 
 		if (end == len) {
@@ -5152,6 +5162,10 @@ String::String(const wchar_t *p_str) {
 }
 
 String::String(const CharType *p_str) {
+	copy_from(p_str);
+}
+
+String::String(const Char16String &p_str) {
 	copy_from(p_str);
 }
 
