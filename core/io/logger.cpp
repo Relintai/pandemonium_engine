@@ -62,8 +62,8 @@ void Logger::set_flush_stdout_on_print(bool value) {
 	_flush_stdout_on_print = value;
 }
 
-void Logger::log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type) {
-	if (!should_log(true)) {
+void Logger::log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type, bool p_force) {
+	if (!p_force && !should_log(true)) {
 		return;
 	}
 
@@ -98,27 +98,19 @@ void Logger::log_error(const char *p_function, const char *p_file, int p_line, c
 }
 
 void Logger::logf(const char *p_format, ...) {
-	if (!should_log(false)) {
-		return;
-	}
-
 	va_list argp;
 	va_start(argp, p_format);
 
-	logv(p_format, argp, false);
+	logv(p_format, argp, false, false);
 
 	va_end(argp);
 }
 
 void Logger::logf_error(const char *p_format, ...) {
-	if (!should_log(true)) {
-		return;
-	}
-
 	va_list argp;
 	va_start(argp, p_format);
 
-	logv(p_format, argp, true);
+	logv(p_format, argp, true, false);
 
 	va_end(argp);
 }
@@ -202,8 +194,8 @@ RotatedFileLogger::RotatedFileLogger(const String &p_base_path, int p_max_files)
 	rotate_file();
 }
 
-void RotatedFileLogger::logv(const char *p_format, va_list p_list, bool p_err) {
-	if (!should_log(p_err)) {
+void RotatedFileLogger::logv(const char *p_format, va_list p_list, bool p_err, bool p_force) {
+	if (!p_force && !should_log(p_err)) {
 		return;
 	}
 
@@ -237,8 +229,8 @@ RotatedFileLogger::~RotatedFileLogger() {
 	close_file();
 }
 
-void StdLogger::logv(const char *p_format, va_list p_list, bool p_err) {
-	if (!should_log(p_err)) {
+void StdLogger::logv(const char *p_format, va_list p_list, bool p_err, bool p_force) {
+	if (!p_force && !should_log(p_err)) {
 		return;
 	}
 
@@ -260,26 +252,26 @@ CompositeLogger::CompositeLogger(Vector<Logger *> p_loggers) :
 		loggers(p_loggers) {
 }
 
-void CompositeLogger::logv(const char *p_format, va_list p_list, bool p_err) {
-	if (!should_log(p_err)) {
+void CompositeLogger::logv(const char *p_format, va_list p_list, bool p_err, bool p_force) {
+	if (!p_force && !should_log(p_err)) {
 		return;
 	}
 
 	for (int i = 0; i < loggers.size(); ++i) {
 		va_list list_copy;
 		va_copy(list_copy, p_list);
-		loggers[i]->logv(p_format, list_copy, p_err);
+		loggers[i]->logv(p_format, list_copy, p_err, p_force);
 		va_end(list_copy);
 	}
 }
 
-void CompositeLogger::log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type) {
-	if (!should_log(true)) {
+void CompositeLogger::log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type, bool p_force) {
+	if (!p_force && !should_log(true)) {
 		return;
 	}
 
 	for (int i = 0; i < loggers.size(); ++i) {
-		loggers[i]->log_error(p_function, p_file, p_line, p_code, p_rationale, p_type);
+		loggers[i]->log_error(p_function, p_file, p_line, p_code, p_rationale, p_type, p_force);
 	}
 }
 

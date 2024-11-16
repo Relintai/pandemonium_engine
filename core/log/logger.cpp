@@ -282,7 +282,7 @@ void PLogger::do_log_trace(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_trace(str);
 	} else {
-		print_line(str);
+		force_print_line(str);
 	}
 }
 
@@ -290,7 +290,7 @@ void PLogger::do_log_message(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_message(str);
 	} else {
-		print_line(str);
+		force_print_line(str);
 	}
 }
 
@@ -298,7 +298,7 @@ void PLogger::do_log_warning(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_warning(str);
 	} else {
-		print_line(str);
+		force_print_line(str);
 	}
 }
 
@@ -306,8 +306,7 @@ void PLogger::do_log_error(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_error(str);
 	} else {
-		ERR_PRINT(str);
-		//print_error(str);
+		force_print_error(str);
 	}
 }
 
