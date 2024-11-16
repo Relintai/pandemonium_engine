@@ -278,6 +278,67 @@ void PLogger::log_error(const char *p_function, const char *p_file, int p_line, 
 	do_log_error(s);
 }
 
+void PLogger::log_important(const String &str) {
+	if (_log_level > LOG_LEVEL_IMPORTANT) {
+		return;
+	}
+
+	String s;
+	s += "I ";
+	s += str;
+	//s += "\n";
+
+	do_log_important(s);
+}
+void PLogger::log_important(const char *str) {
+	if (_log_level > LOG_LEVEL_IMPORTANT) {
+		return;
+	}
+
+	String s;
+	s += "I ";
+	s += str;
+	//s += "\n";
+
+	do_log_important(s);
+}
+void PLogger::log_important(const char *p_function, const char *p_file, int p_line, const char *str) {
+	if (_log_level > LOG_LEVEL_IMPORTANT) {
+		return;
+	}
+
+	String s;
+	s += "I | ";
+	s += p_file;
+	s += "::";
+	s += p_function;
+	s += ":";
+	s += String::num(p_line);
+	s += " | ";
+	s += str;
+	//s += "\n";
+
+	do_log_important(s);
+}
+void PLogger::log_important(const char *p_function, const char *p_file, int p_line, const String &str) {
+	if (_log_level > LOG_LEVEL_IMPORTANT) {
+		return;
+	}
+
+	String s;
+	s += "I | ";
+	s += p_file;
+	s += "::";
+	s += p_function;
+	s += ":";
+	s += String::num(p_line);
+	s += " | ";
+	s += str;
+	//s += "\n";
+
+	do_log_important(s);
+}
+
 void PLogger::do_log_trace(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_trace(str);
@@ -305,6 +366,14 @@ void PLogger::do_log_warning(const String &str) {
 void PLogger::do_log_error(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_error(str);
+	} else {
+		force_print_error(str);
+	}
+}
+
+void PLogger::do_log_important(const String &str) {
+	if (_backend.is_valid()) {
+		_backend->log_important(str);
 	} else {
 		force_print_error(str);
 	}

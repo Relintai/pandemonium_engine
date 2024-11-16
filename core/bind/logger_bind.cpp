@@ -56,6 +56,10 @@ void _PLogger::log_error(const String &str) {
 	PLogger::log_error(str);
 }
 
+void _PLogger::log_important(const String &str) {
+	PLogger::log_important(str);
+}
+
 _PLogger::LogLevel _PLogger::get_log_level() {
 	return static_cast<LogLevel>(static_cast<int>(PLogger::get_log_level()));
 }
@@ -83,6 +87,7 @@ void _PLogger::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("log_message", "str"), &_PLogger::log_message);
 	ClassDB::bind_method(D_METHOD("log_warning", "str"), &_PLogger::log_warning);
 	ClassDB::bind_method(D_METHOD("log_error", "str"), &_PLogger::log_error);
+	ClassDB::bind_method(D_METHOD("log_important", "str"), &_PLogger::log_important);
 
 	ClassDB::bind_method(D_METHOD("get_log_level"), &_PLogger::get_log_level);
 	ClassDB::bind_method(D_METHOD("set_log_level", "log_level"), &_PLogger::set_log_level);
@@ -92,6 +97,7 @@ void _PLogger::_bind_methods() {
 	BIND_ENUM_CONSTANT(LOG_LEVEL_MESSAGE);
 	BIND_ENUM_CONSTANT(LOG_LEVEL_WARNING);
 	BIND_ENUM_CONSTANT(LOG_LEVEL_ERROR);
+	BIND_ENUM_CONSTANT(LOG_LEVEL_IMPORTANT);
 	BIND_ENUM_CONSTANT(LOG_LEVEL_NONE);
 }
 

@@ -48,6 +48,7 @@ public:
 		LOG_LEVEL_MESSAGE,
 		LOG_LEVEL_WARNING,
 		LOG_LEVEL_ERROR,
+		LOG_LEVEL_IMPORTANT,
 		LOG_LEVEL_NONE,
 	};
 
@@ -58,6 +59,7 @@ public:
 	void log_message(const String &str);
 	void log_warning(const String &str);
 	void log_error(const String &str);
+	void log_important(const String &str);
 
 	LogLevel get_log_level();
 	void set_log_level(const LogLevel p_log_level);
