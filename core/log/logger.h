@@ -54,6 +54,9 @@ class String;
 #define PLOG_IMPORTANT(str) \
 	PLogger::log_important(__FUNCTION__, __FILE__, __LINE__, str);
 
+#define PLOG_CUSTOM(category, level, str) \
+	PLogger::log_important(category, level, __FUNCTION__, __FILE__, __LINE__, str);
+
 class PLogger : public Object {
 public:
 	enum LogLevel {
@@ -89,6 +92,11 @@ public:
 	static void log_important(const char *str);
 	static void log_important(const char *p_function, const char *p_file, int p_line, const char *str);
 	static void log_important(const char *p_function, const char *p_file, int p_line, const String &str);
+
+	static void log_custom(const StringName &p_category, const int p_level, const String &p_str);
+	static void log_custom(const StringName &p_category, const int p_level, const char *str);
+	static void log_custom(const StringName &p_category, const int p_level, const char *p_function, const char *p_file, int p_line, const char *str);
+	static void log_custom(const StringName &p_category, const int p_level, const char *p_function, const char *p_file, int p_line, const String &str);
 
 	static void do_log_trace(const String &str);
 	static void do_log_message(const String &str);

@@ -60,6 +60,7 @@ public:
 	void log_warning(const String &str);
 	void log_error(const String &str);
 	void log_important(const String &str);
+	void log_custom(const StringName &p_category, const int p_level, const String &str);
 
 	LogLevel get_log_level();
 	void set_log_level(const LogLevel p_log_level);
