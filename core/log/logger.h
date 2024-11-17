@@ -55,7 +55,7 @@ class String;
 	PLogger::log_important(__FUNCTION__, __FILE__, __LINE__, str);
 
 #define PLOG_CUSTOM(category, level, str) \
-	PLogger::log_important(category, level, __FUNCTION__, __FILE__, __LINE__, str);
+	PLogger::log_custom(category, level, __FUNCTION__, __FILE__, __LINE__, str);
 
 class PLogger : public Object {
 public:
