@@ -246,6 +246,28 @@ void OS::printerr(const char *p_format, ...) {
 	va_end(argp);
 };
 
+void OS::log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, Logger::ErrorType p_type) {
+	_logger->log_error(p_function, p_file, p_line, p_code, p_rationale, p_type, true);
+}
+
+void OS::log(const char *p_format, ...) {
+	va_list argp;
+	va_start(argp, p_format);
+
+	_logger->logv(p_format, argp, false, true);
+
+	va_end(argp);
+};
+
+void OS::logerr(const char *p_format, ...) {
+	va_list argp;
+	va_start(argp, p_format);
+
+	_logger->logv(p_format, argp, true, true);
+
+	va_end(argp);
+};
+
 void OS::set_keep_screen_on(bool p_enabled) {
 	_keep_screen_on = p_enabled;
 }

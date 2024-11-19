@@ -78,6 +78,7 @@ void print_line(String p_string) {
 	OS::get_singleton()->print("%s\n", p_string.utf8().get_data());
 
 	_global_lock();
+
 	PrintHandlerList *l = print_handler_list;
 	while (l) {
 		l->printfunc(l->userdata, p_string, false);
@@ -95,6 +96,7 @@ void print_error(String p_string) {
 	OS::get_singleton()->printerr("%s\n", p_string.utf8().get_data());
 
 	_global_lock();
+
 	PrintHandlerList *l = print_handler_list;
 	while (l) {
 		l->printfunc(l->userdata, p_string, true);
@@ -109,3 +111,32 @@ void print_verbose(String p_string) {
 		print_line(p_string);
 	}
 }
+
+void force_print_line(String p_string) {
+	OS::get_singleton()->log("%s\n", p_string.utf8().get_data());
+
+	_global_lock();
+
+	PrintHandlerList *l = print_handler_list;
+	while (l) {
+		l->printfunc(l->userdata, p_string, false);
+		l = l->next;
+	}
+
+	_global_unlock();
+}
+
+void force_print_error(String p_string) {
+	OS::get_singleton()->logerr("%s\n", p_string.utf8().get_data());
+
+	_global_lock();
+
+	PrintHandlerList *l = print_handler_list;
+	while (l) {
+		l->printfunc(l->userdata, p_string, true);
+		l = l->next;
+	}
+
+	_global_unlock();
+}
+

@@ -521,8 +521,8 @@ String OS_Unix::get_executable_path() const {
 #endif
 }
 
-void UnixTerminalLogger::log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type) {
-	if (!should_log(true)) {
+void UnixTerminalLogger::log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type, bool p_force) {
+	if (!p_force && !should_log(true)) {
 		return;
 	}
 

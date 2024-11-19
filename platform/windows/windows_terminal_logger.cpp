@@ -37,8 +37,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-void WindowsTerminalLogger::logv(const char *p_format, va_list p_list, bool p_err) {
-	if (!should_log(p_err)) {
+void WindowsTerminalLogger::logv(const char *p_format, va_list p_list, bool p_err, bool p_force) {
+	if (!p_force && !should_log(p_err)) {
 		return;
 	}
 
@@ -73,8 +73,8 @@ void WindowsTerminalLogger::logv(const char *p_format, va_list p_list, bool p_er
 #endif
 }
 
-void WindowsTerminalLogger::log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type) {
-	if (!should_log(true)) {
+void WindowsTerminalLogger::log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type, bool p_force) {
+	if (!p_force && !should_log(true)) {
 		return;
 	}
 

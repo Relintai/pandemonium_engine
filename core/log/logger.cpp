@@ -42,7 +42,6 @@ void PLogger::log_trace(const String &str) {
 	String s;
 	s += "T ";
 	s += str;
-	//s += "\n";
 
 	do_log_trace(s);
 }
@@ -54,7 +53,6 @@ void PLogger::log_trace(const char *str) {
 	String s;
 	s += "T ";
 	s += str;
-	//s += "\n";
 
 	do_log_trace(s);
 }
@@ -72,7 +70,6 @@ void PLogger::log_trace(const char *p_function, const char *p_file, int p_line, 
 	s += String::num(p_line);
 	s += " | ";
 	s += str;
-	//s += "\n";
 
 	do_log_trace(s);
 }
@@ -90,7 +87,6 @@ void PLogger::log_trace(const char *p_function, const char *p_file, int p_line, 
 	s += String::num(p_line);
 	s += " | ";
 	s += str;
-	//s += "\n";
 
 	do_log_trace(s);
 }
@@ -103,7 +99,6 @@ void PLogger::log_message(const String &str) {
 	String s;
 	s += "M ";
 	s += str;
-	//s += "\n";
 
 	do_log_message(s);
 }
@@ -115,7 +110,6 @@ void PLogger::log_message(const char *str) {
 	String s;
 	s += "M ";
 	s += str;
-	//s += "\n";
 
 	do_log_message(s);
 }
@@ -133,7 +127,6 @@ void PLogger::log_message(const char *p_function, const char *p_file, int p_line
 	s += String::num(p_line);
 	s += " | ";
 	s += str;
-	//s += "\n";
 
 	do_log_message(s);
 }
@@ -151,7 +144,6 @@ void PLogger::log_message(const char *p_function, const char *p_file, int p_line
 	s += String::num(p_line);
 	s += " | ";
 	s += str;
-	//s += "\n";
 
 	do_log_message(s);
 }
@@ -164,7 +156,6 @@ void PLogger::log_warning(const String &str) {
 	String s;
 	s += "W ";
 	s += str;
-	//s += "\n";
 
 	do_log_warning(s);
 }
@@ -176,7 +167,6 @@ void PLogger::log_warning(const char *str) {
 	String s;
 	s += "W ";
 	s += str;
-	//s += "\n";
 
 	do_log_warning(s);
 }
@@ -194,7 +184,6 @@ void PLogger::log_warning(const char *p_function, const char *p_file, int p_line
 	s += String::num(p_line);
 	s += " | ";
 	s += str;
-	//s += "\n";
 
 	do_log_warning(s);
 }
@@ -212,7 +201,6 @@ void PLogger::log_warning(const char *p_function, const char *p_file, int p_line
 	s += String::num(p_line);
 	s += " | ";
 	s += str;
-	//s += "\n";
 
 	do_log_warning(s);
 }
@@ -225,7 +213,6 @@ void PLogger::log_error(const String &str) {
 	String s;
 	s += "E ";
 	s += str;
-	//s += "\n";
 
 	do_log_error(s);
 }
@@ -237,7 +224,6 @@ void PLogger::log_error(const char *str) {
 	String s;
 	s += "E ";
 	s += str;
-	//s += "\n";
 
 	do_log_error(s);
 }
@@ -255,7 +241,6 @@ void PLogger::log_error(const char *p_function, const char *p_file, int p_line, 
 	s += String::num(p_line);
 	s += " | ";
 	s += str;
-	//s += "\n";
 
 	do_log_error(s);
 }
@@ -273,16 +258,197 @@ void PLogger::log_error(const char *p_function, const char *p_file, int p_line, 
 	s += String::num(p_line);
 	s += " | ";
 	s += str;
-	//s += "\n";
 
 	do_log_error(s);
+}
+
+void PLogger::log_important(const String &str) {
+	if (_log_level > LOG_LEVEL_IMPORTANT) {
+		return;
+	}
+
+	String s;
+	s += "I ";
+	s += str;
+
+	do_log_important(s);
+}
+void PLogger::log_important(const char *str) {
+	if (_log_level > LOG_LEVEL_IMPORTANT) {
+		return;
+	}
+
+	String s;
+	s += "I ";
+	s += str;
+
+	do_log_important(s);
+}
+void PLogger::log_important(const char *p_function, const char *p_file, int p_line, const char *str) {
+	if (_log_level > LOG_LEVEL_IMPORTANT) {
+		return;
+	}
+
+	String s;
+	s += "I | ";
+	s += p_file;
+	s += "::";
+	s += p_function;
+	s += ":";
+	s += String::num(p_line);
+	s += " | ";
+	s += str;
+
+	do_log_important(s);
+}
+void PLogger::log_important(const char *p_function, const char *p_file, int p_line, const String &str) {
+	if (_log_level > LOG_LEVEL_IMPORTANT) {
+		return;
+	}
+
+	String s;
+	s += "I | ";
+	s += p_file;
+	s += "::";
+	s += p_function;
+	s += ":";
+	s += String::num(p_line);
+	s += " | ";
+	s += str;
+
+	do_log_important(s);
+}
+
+void PLogger::log_custom(const StringName &p_category, const int p_level, const String &str) {
+	if (_backend.is_valid()) {
+		_backend->log_custom(p_category, p_level, str);
+		return;
+	}
+
+	if (_log_level > p_level) {
+		return;
+	}
+
+	String s;
+	s += p_category;
+	s += " : ";
+	s += String::num(p_level);
+	s += " | ";
+	s += str;
+
+	if (p_level < LOG_LEVEL_ERROR) {
+		force_print_line(s);
+	} else {
+		force_print_error(s);
+	}
+}
+void PLogger::log_custom(const StringName &p_category, const int p_level, const char *str) {
+	if (_backend.is_valid()) {
+		_backend->log_custom(p_category, p_level, str);
+		return;
+	}
+
+	if (_log_level > p_level) {
+		return;
+	}
+
+	String s;
+	s += p_category;
+	s += " : ";
+	s += String::num(p_level);
+	s += " | ";
+	s += str;
+
+	if (p_level < LOG_LEVEL_ERROR) {
+		force_print_line(s);
+	} else {
+		force_print_error(s);
+	}
+}
+void PLogger::log_custom(const StringName &p_category, const int p_level, const char *p_function, const char *p_file, int p_line, const char *str) {
+	if (_backend.is_valid()) {
+
+		String s;
+		s += p_file;
+		s += "::";
+		s += p_function;
+		s += ":";
+		s += String::num(p_line);
+		s += " | ";
+		s += str;
+
+		_backend->log_custom(p_category, p_level, s);
+		return;
+	}
+
+	if (_log_level > p_level) {
+		return;
+	}
+
+	String s;
+	s += p_category;
+	s += " : ";
+	s += String::num(p_level);
+	s += " | ";
+	s += p_file;
+	s += "::";
+	s += p_function;
+	s += ":";
+	s += String::num(p_line);
+	s += " | ";
+	s += str;
+
+	if (p_level < LOG_LEVEL_ERROR) {
+		force_print_line(s);
+	} else {
+		force_print_error(s);
+	}
+}
+void PLogger::log_custom(const StringName &p_category, const int p_level, const char *p_function, const char *p_file, int p_line, const String &str) {
+	if (_backend.is_valid()) {
+
+		String s;
+		s += p_file;
+		s += "::";
+		s += p_function;
+		s += ":";
+		s += String::num(p_line);
+		s += " | ";
+		s += str;
+
+		_backend->log_custom(p_category, p_level, s);
+		return;
+	}
+
+	if (_log_level > p_level) {
+		return;
+	}
+
+	String s;
+	s += p_category;
+	s += " : ";
+	s += String::num(p_level);
+	s += " | ";
+	s += p_file;
+	s += "::";
+	s += p_function;
+	s += ":";
+	s += String::num(p_line);
+	s += " | ";
+	s += str;
+
+	if (p_level < LOG_LEVEL_ERROR) {
+		force_print_line(s);
+	} else {
+		force_print_error(s);
+	}
 }
 
 void PLogger::do_log_trace(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_trace(str);
 	} else {
-		print_line(str);
+		force_print_line(str);
 	}
 }
 
@@ -290,7 +456,7 @@ void PLogger::do_log_message(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_message(str);
 	} else {
-		print_line(str);
+		force_print_line(str);
 	}
 }
 
@@ -298,7 +464,7 @@ void PLogger::do_log_warning(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_warning(str);
 	} else {
-		print_line(str);
+		force_print_line(str);
 	}
 }
 
@@ -306,8 +472,15 @@ void PLogger::do_log_error(const String &str) {
 	if (_backend.is_valid()) {
 		_backend->log_error(str);
 	} else {
-		ERR_PRINT(str);
-		//print_error(str);
+		force_print_error(str);
+	}
+}
+
+void PLogger::do_log_important(const String &str) {
+	if (_backend.is_valid()) {
+		_backend->log_important(str);
+	} else {
+		force_print_error(str);
 	}
 }
 
