@@ -50,8 +50,6 @@ public:
 	//get_user_id
 	//get_user_index
 	//get_user_count
-	//get_users
-	//get_users_bind
 	//delete_user_id
 	//delete_user_index
 	//delete_user_name
@@ -68,6 +66,8 @@ public:
 
 	bool is_username_taken(const String &user_name);
 	bool is_email_taken(const String &email);
+
+	Array get_all_users();
 
 	UserManager *get_user_manager();
 	void set_user_manager(UserManager *um);

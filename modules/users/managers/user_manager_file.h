@@ -59,7 +59,8 @@ public:
 	bool _is_username_taken(const String &user_name);
 	bool _is_email_taken(const String &email);
 
-	Vector<Ref<User>> get_all();
+	Vector<Ref<User>> get_all_as_vector();
+	Array _get_all_users();
 
 	UserManagerFile();
 	~UserManagerFile();
