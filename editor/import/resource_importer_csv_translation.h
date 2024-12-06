@@ -43,6 +43,7 @@ public:
 	virtual void get_recognized_extensions(List<String> *p_extensions) const;
 	virtual String get_save_extension() const;
 	virtual String get_resource_type() const;
+	virtual bool use_on_initial_import() const { return false; }
 
 	virtual int get_preset_count() const;
 	virtual String get_preset_name(int p_idx) const;
