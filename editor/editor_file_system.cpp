@@ -1806,6 +1806,30 @@ void EditorFileSystem::_reimport_file(const String &p_file) {
 		}
 	}
 
+	if (load_default && !importer->use_on_initial_import()) {
+		FileAccess *f = FileAccess::open(p_file + ".import", FileAccess::WRITE);
+		ERR_FAIL_COND_MSG(!f, "Cannot open file from path '" + p_file + ".import'.");
+
+		f->store_line("[remap]");
+		f->store_line("");
+		f->store_line("importer=\"keep\"");
+		f->store_line("");
+
+		f->close();
+		memdelete(f);
+
+		//update modified times, to avoid reimport
+		fs->files[cpos]->modified_time = FileAccess::get_modified_time(p_file);
+		fs->files[cpos]->import_modified_time = FileAccess::get_modified_time(p_file + ".import");
+		fs->files[cpos]->deps.clear();
+		fs->files[cpos]->type = "";
+		fs->files[cpos]->import_valid = false;
+
+		EditorResourcePreview::get_singleton()->check_for_invalidation(p_file);
+
+		return;
+	}
+
 	//mix with default params, in case a parameter is missing
 
 	List<ResourceImporter::ImportOption> opts;
