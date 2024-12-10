@@ -211,6 +211,7 @@
 			<argument index="0" name="eye" type="Vector3" />
 			<argument index="1" name="target" type="Vector3" />
 			<argument index="2" name="up" type="Vector3" />
+			<argument index="3" name="use_model_front" type="bool" default="false" />
 			<description>
 			</description>
 		</method>

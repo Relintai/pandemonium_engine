@@ -36,6 +36,11 @@
 				Returns true if the active [WebPermission] has view permission for this session. It you don't have a [WebPermission] set, all perissions are enabled for every user.
 			</description>
 		</method>
+		<method name="clear_locale_from_cookie">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 		<method name="compile_and_send_body">
 			<return type="void" />
 			<description>
@@ -170,6 +175,11 @@
 			<return type="String" />
 			<description>
 				Returns the host which was present in the request header.
+			</description>
+		</method>
+		<method name="get_locale" qualifiers="const">
+			<return type="StringName" />
+			<description>
 			</description>
 		</method>
 		<method name="get_method" qualifiers="const">
@@ -316,11 +326,21 @@
 				Returns whether the active session has a csrf token or not.
 			</description>
 		</method>
+		<method name="has_locale" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
 		<method name="is_file_moved" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Returns whether a file contained in the request has been moved or not.
+			</description>
+		</method>
+		<method name="load_locale_from_cookie">
+			<return type="void" />
+			<description>
 			</description>
 		</method>
 		<method name="move_file">
@@ -384,6 +404,11 @@
 				Helper method that adds a [WebServerCookie], which will ask client to delete the cookie denoted by [code]key[/code] after being sent.
 			</description>
 		</method>
+		<method name="save_locale_as_cookie">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 		<method name="send">
 			<return type="void" />
 			<description>
@@ -430,6 +455,12 @@
 			<return type="void" />
 			<argument index="0" name="key" type="String" />
 			<argument index="1" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_locale">
+			<return type="void" />
+			<argument index="0" name="locale" type="StringName" />
 			<description>
 			</description>
 		</method>

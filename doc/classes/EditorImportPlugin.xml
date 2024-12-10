@@ -143,6 +143,11 @@
 				This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
 			</description>
 		</method>
+		<method name="use_on_initial_import" qualifiers="virtual">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<constants>
 	</constants>
