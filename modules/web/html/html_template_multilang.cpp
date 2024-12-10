@@ -32,6 +32,8 @@
 #include "html_template_multilang.h"
 #include "core/object/object.h"
 
+#include "modules/web/http/web_server_request.h"
+
 Ref<HTMLTemplate> HTMLTemplateMultilang::get_template_for_locale(const StringName &p_locale) {
 	Ref<HTMLTemplate> *t = _locales.getptr(p_locale);
 	Ref<HTMLTemplate> ht;
@@ -79,9 +81,27 @@ void HTMLTemplateMultilang::set_locales(const Dictionary &p_dict) {
 }
 
 String HTMLTemplateMultilang::_render(const Ref<WebServerRequest> &p_request, const Dictionary &p_data) {
+	if (p_request.is_valid()) {
+		StringName locale = p_request->get_locale();
+
+		if (locale == StringName()) {
+			return HTMLTemplate::_render(p_request, p_data);
+		}
+
+		Ref<HTMLTemplate> *tp = _locales.getptr(locale);
+
+		if (tp) {
+			return (*tp)->render(p_request, p_data);
+		}
+	}
+
 	const Variant *pp = p_data.getptr("locale");
 	if (pp) {
 		StringName locale = *pp;
+
+		if (locale == StringName()) {
+			return HTMLTemplate::_render(p_request, p_data);
+		}
 
 		Ref<HTMLTemplate> *tp = _locales.getptr(locale);
 
