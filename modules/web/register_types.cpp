@@ -40,6 +40,7 @@
 #include "html/html_builder_bind.h"
 #include "html/html_parser.h"
 #include "html/html_template.h"
+#include "html/html_template_multilang.h"
 #include "html/html_template_data.h"
 #include "html/markdown_renderer.h"
 #include "html/paginator.h"
@@ -93,6 +94,7 @@ void register_web_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<_HTMLTag>();
 
 		ClassDB::register_class<HTMLTemplate>();
+		ClassDB::register_class<HTMLTemplateMultilang>();
 		ClassDB::register_class<HTMLTemplateData>();
 
 		ClassDB::register_class<HTMLPaginator>();
