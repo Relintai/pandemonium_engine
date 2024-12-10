@@ -91,6 +91,14 @@ public:
 	void set_csrf_token(const String &value);
 	bool validate_csrf_token();
 
+	bool has_locale() const;
+	StringName get_locale() const;
+	void set_locale(const StringName &p_locale);
+
+	void save_locale_as_cookie();
+	void load_locale_from_cookie();
+	void clear_locale_from_cookie();
+
 	virtual String get_cookie(const String &key);
 
 	void response_add_cookie(const Ref<WebServerCookie> &cookie);
@@ -199,6 +207,8 @@ protected:
 	int _permissions;
 
 	Ref<HTTPSession> _session;
+
+	StringName _locale;
 
 	bool _connection_closed;
 
