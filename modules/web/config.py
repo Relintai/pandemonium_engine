@@ -15,7 +15,6 @@ def get_doc_classes():
 
         "HTTPServerEnums",
         "WebServerCookie",
-	    "CSRFTokenWebServerMiddleware",
 	    "HTTPSession",
 	    "HTTPSessionManager",
 	    "SessionSetupWebServerMiddleware",
@@ -27,6 +26,9 @@ def get_doc_classes():
 	    "WebServerMiddleware",
 	    "WebServerRequest",
 		"WebServerRequestScriptable",
+
+        "CSRFTokenWebServerMiddleware",
+        "LocaleSetupWebServerMiddleware",
 
         #"HTTPParser",
         #"HTTPWriter",
@@ -57,6 +59,7 @@ def get_doc_classes():
 	    
 	    "HTMLTemplate",
 	    "HTMLTemplateData",
+        "HTMLTemplateMultilang",
 
     	"BBCodeParserAttribute",
 	    "BBCodeParserTag",
