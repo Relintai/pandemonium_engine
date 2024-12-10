@@ -207,5 +207,11 @@ void HTMLTemplateMultilang::_get_property_list(List<PropertyInfo> *p_list) const
 }
 
 void HTMLTemplateMultilang::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_template_for_locale", "locale"), &HTMLTemplateMultilang::get_template_for_locale);
+	ClassDB::bind_method(D_METHOD("set_template_for_locale", "locale", "template"), &HTMLTemplateMultilang::set_template_for_locale);
+
+	ClassDB::bind_method(D_METHOD("get_locales"), &HTMLTemplateMultilang::get_locales);
+	ClassDB::bind_method(D_METHOD("set_locales", "locales"), &HTMLTemplateMultilang::set_locales);
+
 	ClassDB::bind_method(D_METHOD("_on_editor_new_locale_button_pressed"), &HTMLTemplateMultilang::_on_editor_new_locale_button_pressed);
 }
