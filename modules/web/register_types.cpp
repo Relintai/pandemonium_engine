@@ -130,7 +130,6 @@ void register_web_types(ModuleRegistrationLevel p_level) {
 
 		ClassDB::register_class<HTTPServerEnums>();
 
-		ClassDB::register_class<CSRFTokenWebServerMiddleware>();
 		ClassDB::register_class<HTTPSession>();
 		ClassDB::register_class<HTTPSessionManager>();
 		ClassDB::register_class<SessionSetupWebServerMiddleware>();
@@ -142,6 +141,9 @@ void register_web_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<WebServerMiddleware>();
 		ClassDB::register_class<WebServerRequest>();
 		ClassDB::register_class<WebServerRequestScriptable>();
+
+		ClassDB::register_class<CSRFTokenWebServerMiddleware>();
+		ClassDB::register_class<LocaleSetupWebServerMiddleware>();
 
 		ClassDB::register_class<StaticWebPage>();
 		ClassDB::register_class<StaticWebPageFile>();

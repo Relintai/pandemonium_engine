@@ -31,6 +31,7 @@
 
 #include "web_server_middleware.h"
 
+#include "core/os/os.h"
 #include "web_server_request.h"
 
 bool WebServerMiddleware::on_before_handle_request_main(Ref<WebServerRequest> request) {
@@ -53,4 +54,15 @@ void WebServerMiddleware::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("on_before_handle_request_main", "request"), &WebServerMiddleware::on_before_handle_request_main);
 
 	ClassDB::bind_method(D_METHOD("_on_before_handle_request_main", "request"), &WebServerMiddleware::_on_before_handle_request_main);
+}
+
+// LocaleSetupWebServerMiddleware
+
+bool LocaleSetupWebServerMiddleware::_on_before_handle_request_main(Ref<WebServerRequest> request) {
+	request->load_locale_from_cookie();
+
+	return false;
+}
+
+void LocaleSetupWebServerMiddleware::_bind_methods() {
 }
