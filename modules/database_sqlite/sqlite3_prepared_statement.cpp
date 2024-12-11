@@ -448,6 +448,8 @@ int SQLite3PreparedStatement::get_last_insert_rowid() {
 Error SQLite3PreparedStatement::prepare() {
 	ERR_FAIL_COND_V(!_connection.is_valid(), FAILED);
 
+	_current_column_index = 0;
+
 	CharString cs = _sql.utf8();
 
 	int res = sqlite3_prepare_v2(_connection->conn, cs.get_data(), cs.size(), &_prepared_statement, NULL);
@@ -462,6 +464,8 @@ Error SQLite3PreparedStatement::step() {
 	if (!_prepared_statement) {
 		return ERR_UNCONFIGURED;
 	}
+
+	_current_column_index = 0;
 
 	int res = sqlite3_step(_prepared_statement);
 
@@ -487,6 +491,8 @@ Error SQLite3PreparedStatement::reset() {
 		return ERR_UNCONFIGURED;
 	}
 
+	_current_column_index = 0;
+
 	int res = sqlite3_reset(_prepared_statement);
 
 	if (res != SQLITE_OK) {
@@ -499,6 +505,8 @@ Error SQLite3PreparedStatement::finalize() {
 	if (!_prepared_statement) {
 		return OK;
 	}
+
+	_current_column_index = 0;
 
 	sqlite3_finalize(_prepared_statement);
 
