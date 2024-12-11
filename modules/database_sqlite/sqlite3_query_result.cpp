@@ -1,6 +1,7 @@
 #include "sqlite3_query_result.h"
 
 #include "./sqlite/sqlite3.h"
+#include "core/error/error_macros.h"
 #include "core/string/print_string.h"
 #include "core/string/ustring.h"
 #include <cstdio>
@@ -16,10 +17,16 @@ int Sqlite3QueryResult::get_stored_row_count() {
 }
 
 String Sqlite3QueryResult::get_cell(const int index) {
+	ERR_FAIL_INDEX_V(current_row, rows.size(), String());
+	ERR_FAIL_INDEX_V(index, rows[current_row]->cells.size(), String());
+
 	return rows[current_row]->cells[index].data;
 }
 
 bool Sqlite3QueryResult::is_cell_null(const int index) {
+	ERR_FAIL_INDEX_V(current_row, rows.size(), true);
+	ERR_FAIL_INDEX_V(index, rows[current_row]->cells.size(), true);
+
 	return rows[current_row]->cells[index].null;
 }
 
