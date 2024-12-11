@@ -13,8 +13,11 @@ class Sqlite3QueryResult : public QueryResult {
 
 public:
 	bool next_row();
+	int get_stored_row_count();
+
 	String get_cell(const int index);
 	bool is_cell_null(const int index);
+	int get_cell_count();
 	int get_last_insert_rowid();
 	String get_error_message();
 

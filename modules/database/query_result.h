@@ -41,6 +41,7 @@ class QueryResult : public Reference {
 
 public:
 	virtual bool next_row();
+	virtual int get_stored_row_count();
 
 	virtual String get_cell(const int index);
 	virtual bool get_cell_bool(const int index);
@@ -49,6 +50,7 @@ public:
 	virtual double get_cell_double(const int index);
 
 	virtual bool is_cell_null(const int index);
+	virtual int get_cell_count();
 
 	int get_current_cell_index() const;
 	void set_current_cell_index(const int p_index);

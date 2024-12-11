@@ -11,12 +11,24 @@ bool Sqlite3QueryResult::next_row() {
 	return ++current_row < rows.size();
 }
 
+int Sqlite3QueryResult::get_stored_row_count() {
+	return rows.size();
+}
+
 String Sqlite3QueryResult::get_cell(const int index) {
 	return rows[current_row]->cells[index].data;
 }
 
 bool Sqlite3QueryResult::is_cell_null(const int index) {
 	return rows[current_row]->cells[index].null;
+}
+
+int Sqlite3QueryResult::get_cell_count() {
+	if (current_row < 0 || rows.size() >= current_row) {
+		return 0;
+	}
+
+	return rows[current_row]->cells.size();
 }
 
 int Sqlite3QueryResult::get_last_insert_rowid() {

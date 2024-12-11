@@ -37,6 +37,10 @@ bool QueryResult::next_row() {
 	return false;
 }
 
+int QueryResult::get_stored_row_count() {
+	return 0;
+}
+
 String QueryResult::get_cell(const int index) {
 	return String();
 }
@@ -70,6 +74,10 @@ double QueryResult::get_cell_double(const int index) {
 
 bool QueryResult::is_cell_null(const int index) {
 	return true;
+}
+
+int QueryResult::get_cell_count() {
+	return 0;
 }
 
 int QueryResult::get_current_cell_index() const {
@@ -115,6 +123,7 @@ QueryResult::~QueryResult() {
 
 void QueryResult::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("next_row"), &QueryResult::next_row);
+	ClassDB::bind_method(D_METHOD("get_stored_row_count"), &QueryResult::get_stored_row_count);
 
 	ClassDB::bind_method(D_METHOD("get_cell", "index"), &QueryResult::get_cell);
 	ClassDB::bind_method(D_METHOD("get_cell_bool", "index"), &QueryResult::get_cell_bool);
@@ -123,6 +132,7 @@ void QueryResult::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_cell_double", "index"), &QueryResult::get_cell_double);
 
 	ClassDB::bind_method(D_METHOD("is_cell_null", "index"), &QueryResult::is_cell_null);
+	ClassDB::bind_method(D_METHOD("get_cell_count"), &QueryResult::get_cell_count);
 
 	ClassDB::bind_method(D_METHOD("get_current_cell_index"), &QueryResult::get_current_cell_index);
 	ClassDB::bind_method(D_METHOD("set_current_cell_index", "index"), &QueryResult::set_current_cell_index);
