@@ -50,6 +50,16 @@ public:
 
 	virtual bool is_cell_null(const int index);
 
+	int get_current_cell_index() const;
+	void set_current_cell_index(const int p_index);
+
+	String get_next_cell();
+	bool get_next_cell_bool();
+	int get_next_cell_int();
+	float get_next_cell_float();
+	double get_next_cell_double();
+	bool is_next_cell_null();
+
 	virtual int get_last_insert_rowid();
 
 	virtual String get_error_message();
@@ -59,6 +69,8 @@ public:
 
 protected:
 	static void _bind_methods();
+
+	int _current_cell_index;
 };
 
 #endif

@@ -6,6 +6,8 @@
 #include <cstdio>
 
 bool Sqlite3QueryResult::next_row() {
+	_current_cell_index = 0;
+
 	return ++current_row < rows.size();
 }
 

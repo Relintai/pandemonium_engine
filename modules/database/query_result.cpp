@@ -32,6 +32,8 @@
 #include "query_result.h"
 
 bool QueryResult::next_row() {
+	_current_cell_index = 0;
+
 	return false;
 }
 
@@ -70,6 +72,32 @@ bool QueryResult::is_cell_null(const int index) {
 	return true;
 }
 
+int QueryResult::get_current_cell_index() const {
+	return  _current_cell_index;
+}
+void QueryResult::set_current_cell_index(const int p_index) {
+	_current_cell_index = p_index;
+}
+
+String QueryResult::get_next_cell() {
+	return get_cell(_current_cell_index++);
+}
+bool QueryResult::get_next_cell_bool() {
+	return get_cell_bool(_current_cell_index++);
+}
+int QueryResult::get_next_cell_int() {
+	return get_cell_int(_current_cell_index++);
+}
+float QueryResult::get_next_cell_float() {
+	return get_cell_float(_current_cell_index++);
+}
+double QueryResult::get_next_cell_double() {
+	return get_cell_double(_current_cell_index++);
+}
+bool QueryResult::is_next_cell_null() {
+	return is_cell_null(_current_cell_index++);
+}
+
 int QueryResult::get_last_insert_rowid() {
 	return 0;
 }
@@ -79,6 +107,7 @@ String QueryResult::get_error_message() {
 }
 
 QueryResult::QueryResult() {
+	_current_cell_index = 0;
 }
 
 QueryResult::~QueryResult() {
@@ -94,6 +123,17 @@ void QueryResult::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_cell_double", "index"), &QueryResult::get_cell_double);
 
 	ClassDB::bind_method(D_METHOD("is_cell_null", "index"), &QueryResult::is_cell_null);
+
+	ClassDB::bind_method(D_METHOD("get_current_cell_index"), &QueryResult::get_current_cell_index);
+	ClassDB::bind_method(D_METHOD("set_current_cell_index", "index"), &QueryResult::set_current_cell_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_cell_index"), "set_current_cell_index", "get_current_cell_index");
+
+	ClassDB::bind_method(D_METHOD("get_next_cell"), &QueryResult::get_next_cell);
+	ClassDB::bind_method(D_METHOD("get_next_cell_bool"), &QueryResult::get_next_cell_bool);
+	ClassDB::bind_method(D_METHOD("get_next_cell_int"), &QueryResult::get_next_cell_int);
+	ClassDB::bind_method(D_METHOD("get_next_cell_float"), &QueryResult::get_next_cell_float);
+	ClassDB::bind_method(D_METHOD("get_next_cell_double"), &QueryResult::get_next_cell_double);
+	ClassDB::bind_method(D_METHOD("is_next_cell_null"), &QueryResult::is_next_cell_null);
 
 	ClassDB::bind_method(D_METHOD("get_last_insert_rowid"), &QueryResult::get_last_insert_rowid);
 
