@@ -100,6 +100,8 @@ public:
 
 	virtual int column_count() = 0;
 
+	virtual int get_last_insert_rowid() = 0;
+
 	// Control
 	virtual Error prepare() = 0;
 	virtual Error step() = 0;

@@ -438,6 +438,12 @@ int SQLite3PreparedStatement::column_count() {
 	return sqlite3_column_count(_prepared_statement);
 }
 
+int SQLite3PreparedStatement::get_last_insert_rowid() {
+	ERR_FAIL_COND_V(!_connection.is_valid(), 0);
+
+	return sqlite3_last_insert_rowid(_connection->conn);
+}
+
 // Control
 Error SQLite3PreparedStatement::prepare() {
 	ERR_FAIL_COND_V(!_connection.is_valid(), FAILED);

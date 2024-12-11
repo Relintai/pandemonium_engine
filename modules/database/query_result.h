@@ -41,6 +41,7 @@ class QueryResult : public Reference {
 
 public:
 	virtual bool next_row();
+
 	virtual String get_cell(const int index);
 	virtual bool get_cell_bool(const int index);
 	virtual int get_cell_int(const int index);

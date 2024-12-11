@@ -93,6 +93,8 @@ void PreparedStatement::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("column_count"), &PreparedStatement::column_count);
 
+	ClassDB::bind_method(D_METHOD("get_last_insert_rowid"), &PreparedStatement::get_last_insert_rowid);
+
 	// Control
 
 	ClassDB::bind_method(D_METHOD("prepare"), &PreparedStatement::prepare);

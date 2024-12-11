@@ -84,6 +84,8 @@ public:
 
 	virtual int column_count();
 
+	virtual int get_last_insert_rowid();
+
 	// Control
 	virtual Error prepare();
 	virtual Error step();
