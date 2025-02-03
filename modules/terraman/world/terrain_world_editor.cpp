@@ -224,7 +224,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_add_button->connect("button_up", this, "_on_tool_button_pressed");
 
-	_add_button->set_shortcut(ED_SHORTCUT("voxelman_world_editor/add_mode", "Add Mode", KEY_A));
+	_add_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/add_mode", "Add Mode", KEY_A));
 	spatial_editor_hb->add_child(_add_button);
 
 	_remove_button = memnew(ToolButton);
@@ -235,7 +235,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_remove_button->connect("button_up", this, "_on_tool_button_pressed");
 
-	_remove_button->set_shortcut(ED_SHORTCUT("voxelman_world_editor/remove_mode", "Remove Mode", KEY_S));
+	_remove_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/remove_mode", "Remove Mode", KEY_S));
 	spatial_editor_hb->add_child(_remove_button);
 
 	_insert_button = memnew(ToolButton);
@@ -243,7 +243,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_insert_button->connect("button_up", this, "_on_insert_block_at_camera_button_pressed");
 
-	_insert_button->set_shortcut(ED_SHORTCUT("voxelman_world_editor/instert_block_at_camera", "Insert at camera", KEY_B));
+	_insert_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/instert_block_at_camera", "Insert at camera", KEY_B));
 	spatial_editor_hb->add_child(_insert_button);
 
 	set_custom_minimum_size(Size2(200 * EDSCALE, 0));
@@ -354,7 +354,7 @@ void TerrainWorldEditor::_bind_methods() {
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {
 	if (p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
-		switch ((int)EditorSettings::get_singleton()->get("editors/voxelman/editor_side")) {
+		switch ((int)EditorSettings::get_singleton()->get("editors/terrain/editor_side")) {
 			case 0: { // Left.
 				SpatialEditor::get_singleton()->move_control_to_left_panel(voxel_world_editor);
 			} break;
@@ -394,11 +394,11 @@ void TerrainWorldEditorPlugin::make_visible(bool p_visible) {
 TerrainWorldEditorPlugin::TerrainWorldEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
-	EDITOR_DEF("editors/voxelman/editor_side", 1);
-	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "editors/voxelman/editor_side", PROPERTY_HINT_ENUM, "Left,Right"));
+	EDITOR_DEF("editors/terrain/editor_side", 1);
+	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "editors/terrain/editor_side", PROPERTY_HINT_ENUM, "Left,Right"));
 
 	voxel_world_editor = memnew(TerrainWorldEditor(editor));
-	switch ((int)EditorSettings::get_singleton()->get("editors/voxelman/editor_side")) {
+	switch ((int)EditorSettings::get_singleton()->get("editors/terrain/editor_side")) {
 		case 0: { // Left.
 			add_control_to_container(CONTAINER_SPATIAL_EDITOR_SIDE_LEFT, voxel_world_editor);
 		} break;
