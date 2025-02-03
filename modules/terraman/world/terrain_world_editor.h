@@ -35,6 +35,8 @@
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 
+#include "scene/gui/box_container.h"
+#include "scene/gui/flow_container.h"
 #include "scene/gui/panel_container.h"
 
 class TerrainWorld;
@@ -48,6 +50,11 @@ public:
 	enum TerrainWorldEditorToolMode {
 		TOOL_MODE_ADD = 0,
 		TOOL_MODE_REMOVE,
+		TOOL_MODE_ISOLEVEL_BRUSH,
+		TOOL_MODE_PAINT_BRUSH,
+		TOOL_MODE_PAINT_PICKER,
+		//TOOL_MODE_DELETE_BRUSH, //Sets data in channel to 0
+		// TODO object manipulation tools.
 	};
 
 public:
@@ -60,7 +67,6 @@ public:
 	TerrainWorldEditor(EditorNode *p_editor);
 	~TerrainWorldEditor();
 
-	HBoxContainer *spatial_editor_hb;
 
 protected:
 	static void _bind_methods();
@@ -73,12 +79,36 @@ protected:
 	void _on_isolevel_slider_value_changed(float value);
 
 private:
+	//enum BrushType {
+	//	BRUSH_TYPE_CIRCLE = 0,
+	//	BRUSH_TYPE_SQUARE
+	//};
+
+	enum IsolevelBrushType {
+		ISOLEVEL_BRUSH_TYPE_ADD = 0,
+		ISOLEVEL_BRUSH_TYPE_SUBSTRACT,
+		ISOLEVEL_BRUSH_TYPE_SET,
+		ISOLEVEL_BRUSH_TYPE_SMOOTH, // Icon: Blend
+	};
+
+	bool _picker_mode;
+	bool _brush_allow_create_chunks;
+	float _brush_size;
+	float _brush_smoothness;
+	//BrushType _brush_type;
+	IsolevelBrushType _isolevel_brush_type;
+
+private:
+	HFlowContainer *_tool_button_container;
+	VBoxContainer *_add_remove_tool_container;
+
 	VBoxContainer *_surfaces_vbox_container;
 	Ref<ButtonGroup> _surfaces_button_group;
 
 	Ref<ButtonGroup> _tool_button_group;
 
 	TerrainWorldEditorToolMode _tool_mode;
+	TerrainWorldEditorToolMode _previous_tool_mode;
 	TerrainWorld *_world;
 
 	HSlider *_isolevel_slider;
@@ -95,6 +125,9 @@ private:
 	ToolButton *_add_button;
 	ToolButton *_remove_button;
 	ToolButton *_insert_button;
+	ToolButton *_isolevel_brush_button;
+	ToolButton *_paint_brush_button;
+	ToolButton *_paint_picker_button;
 };
 
 class TerrainWorldEditorPlugin : public EditorPlugin {

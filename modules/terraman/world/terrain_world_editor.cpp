@@ -35,6 +35,7 @@
 #include "editor/editor_settings.h"
 
 #include "scene/gui/box_container.h"
+#include "scene/gui/flow_container.h"
 #include "scene/main/control.h"
 #include "terrain_world.h"
 
@@ -52,6 +53,7 @@
 #include "core/input/input.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
+#include "scene/gui/label.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/slider.h"
@@ -200,6 +202,13 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_channel_isolevel = -1;
 	_editor = NULL;
 	_tool_mode = TOOL_MODE_ADD;
+
+	_picker_mode = false;
+	_brush_allow_create_chunks = true;
+	_brush_size = 10;
+	_brush_smoothness = 10;
+	//_brush_type = BRUSH_TYPE_CIRCLE;
+	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
 }
 TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_world = NULL;
@@ -208,20 +217,26 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_current_isolevel = 255;
 	_channel_isolevel = -1;
 
+	_picker_mode = false;
+	_brush_allow_create_chunks = true;
+	_brush_size = 10;
+	_brush_smoothness = 10;
+	//_brush_type = BRUSH_TYPE_CIRCLE;
+	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
+
 	_editor = p_editor;
 	_tool_mode = TOOL_MODE_ADD;
+
+	set_custom_minimum_size(Size2(200 * EDSCALE, 0));
 
 	VBoxContainer *main_container = memnew(VBoxContainer);
 	main_container->set_h_size_flags(SIZE_EXPAND_FILL);
 	main_container->set_v_size_flags(SIZE_EXPAND_FILL);
 	add_child(main_container);
 
-	spatial_editor_hb = memnew(HBoxContainer);
-	spatial_editor_hb->set_h_size_flags(SIZE_EXPAND_FILL);
-	spatial_editor_hb->set_alignment(BoxContainer::ALIGN_BEGIN);
-	main_container->add_child(spatial_editor_hb);
-
-	main_container->add_child(memnew(HSeparator));
+	_tool_button_container = memnew(HFlowContainer);
+	_tool_button_container->set_h_size_flags(SIZE_EXPAND_FILL);
+	main_container->add_child(_tool_button_container);
 
 	_tool_button_group.instance();
 
@@ -231,32 +246,59 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_add_button->set_pressed(true);
 	_add_button->set_button_group(_tool_button_group);
 	_add_button->set_meta("tool_mode", TOOL_MODE_ADD);
-
 	_add_button->connect("button_up", this, "_on_tool_button_pressed");
-
 	_add_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/add_mode", "Add Mode", KEY_A));
-	spatial_editor_hb->add_child(_add_button);
+	_tool_button_container->add_child(_add_button);
 
 	_remove_button = memnew(ToolButton);
 	//_remove_button->set_text("Remove");
 	_remove_button->set_toggle_mode(true);
 	_remove_button->set_button_group(_tool_button_group);
 	_remove_button->set_meta("tool_mode", TOOL_MODE_REMOVE);
-
 	_remove_button->connect("button_up", this, "_on_tool_button_pressed");
-
 	_remove_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/remove_mode", "Remove Mode", KEY_S));
-	spatial_editor_hb->add_child(_remove_button);
+	_tool_button_container->add_child(_remove_button);
+
+	_isolevel_brush_button = memnew(ToolButton);
+	_isolevel_brush_button->set_toggle_mode(true);
+	_isolevel_brush_button->set_button_group(_tool_button_group);
+	_isolevel_brush_button->set_meta("tool_mode", TOOL_MODE_ISOLEVEL_BRUSH);
+	_isolevel_brush_button->connect("button_up", this, "_on_tool_button_pressed");
+	_isolevel_brush_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush", "Isolevel Brush", KEY_I));
+	_tool_button_container->add_child(_isolevel_brush_button);
+
+	_paint_brush_button = memnew(ToolButton);
+	_paint_brush_button->set_toggle_mode(true);
+	_paint_brush_button->set_button_group(_tool_button_group);
+	_paint_brush_button->set_meta("tool_mode", TOOL_MODE_PAINT_BRUSH);
+	_paint_brush_button->connect("button_up", this, "_on_tool_button_pressed");
+	_paint_brush_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/paint_brush", "Paint Brush", KEY_P));
+	_tool_button_container->add_child(_paint_brush_button);
+
+	_paint_picker_button = memnew(ToolButton);
+	_paint_picker_button->set_toggle_mode(true);
+	_paint_picker_button->set_button_group(_tool_button_group);
+	_paint_picker_button->set_meta("tool_mode", TOOL_MODE_PAINT_PICKER);
+	_paint_picker_button->connect("button_up", this, "_on_tool_button_pressed");
+	_paint_picker_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/paint_picker", "Paint Picker", KEY_L));
+	_tool_button_container->add_child(_paint_picker_button);
+
+	main_container->add_child(memnew(HSeparator));
+
+	_add_remove_tool_container = memnew(VBoxContainer);
+	main_container->add_child(_add_remove_tool_container);
+
+	main_container->add_child(memnew(HSeparator));
 
 	_insert_button = memnew(ToolButton);
 	//_insert_button->set_text("Insert");
-
 	_insert_button->connect("button_up", this, "_on_insert_block_at_camera_button_pressed");
-
 	_insert_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/instert_block_at_camera", "Insert at camera", KEY_B));
-	spatial_editor_hb->add_child(_insert_button);
+	_add_remove_tool_container->add_child(_insert_button);
 
-	set_custom_minimum_size(Size2(200 * EDSCALE, 0));
+	Label *isolevel_slider_label = memnew(Label);
+	isolevel_slider_label->set_text(TTR("Isolevel"));
+	_add_remove_tool_container->add_child(isolevel_slider_label);
 
 	_isolevel_slider = memnew(HSlider);
 	_isolevel_slider->set_min(1);
@@ -265,10 +307,8 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_slider->set_v_size_flags(SIZE_EXPAND_FILL);
 	_isolevel_slider->set_h_size_flags(SIZE_EXPAND_FILL);
 	_isolevel_slider->set_tooltip(TTR("Isolevel"));
-	spatial_editor_hb->add_child(_isolevel_slider);
-
+	_add_remove_tool_container->add_child(_isolevel_slider);
 	_isolevel_slider->connect("value_changed", this, "_on_isolevel_slider_value_changed");
-
 	_isolevel_slider->hide();
 
 	ScrollContainer *scs = memnew(ScrollContainer);
@@ -296,6 +336,9 @@ void TerrainWorldEditor::_notification(int p_what) {
 			_add_button->set_icon(get_theme_icon("Add", "EditorIcons"));
 			_remove_button->set_icon(get_theme_icon("Remove", "EditorIcons"));
 			_insert_button->set_icon(get_theme_icon("InsertBefore", "EditorIcons"));
+			_isolevel_brush_button->set_icon(get_theme_icon("CanvasItem", "EditorIcons"));
+			_paint_brush_button->set_icon(get_theme_icon("CanvasItemShader", "EditorIcons"));
+			_paint_picker_button->set_icon(get_theme_icon("ColorPick", "EditorIcons"));
 		} break;
 	}
 }
@@ -317,7 +360,26 @@ void TerrainWorldEditor::_on_tool_button_pressed() {
 	BaseButton *button = _tool_button_group->get_pressed_button();
 
 	if (button) {
+		_previous_tool_mode = _tool_mode;
 		_tool_mode = static_cast<TerrainWorldEditorToolMode>(static_cast<int>(button->get_meta("tool_mode")));
+	}
+
+	switch (_tool_mode) {
+		case TOOL_MODE_ADD:
+		case TOOL_MODE_REMOVE:
+			_add_remove_tool_container->show();
+			break;
+		case TOOL_MODE_PAINT_BRUSH:
+			_add_remove_tool_container->hide();
+			break;
+		case TOOL_MODE_ISOLEVEL_BRUSH:
+			_add_remove_tool_container->hide();
+			break;
+		case TOOL_MODE_PAINT_PICKER:
+			_add_remove_tool_container->hide();
+			break;
+		default:
+			break;
 	}
 }
 
