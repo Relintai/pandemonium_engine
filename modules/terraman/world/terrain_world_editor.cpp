@@ -118,7 +118,7 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::do_input_action(Camera *p_camera
 			mode_add = false;
 		}
 
-		_world->set_terrain_with_tool(mode_add, res.position, res.normal, selected_terrain, isolevel);
+		_world->set_voxel_with_tool(mode_add, res.position, res.normal, selected_terrain, isolevel);
 
 		return EditorPlugin::AFTER_GUI_INPUT_STOP;
 	}
@@ -333,10 +333,10 @@ void TerrainWorldEditor::_on_insert_block_at_camera_button_pressed() {
 	selected_terrain = _selected_type + 1;
 
 	if (_channel_isolevel == -1) {
-		_world->set_terrain_at_world_position(pos, selected_terrain, channel);
+		_world->set_voxel_at_world_position(pos, selected_terrain, channel);
 	} else {
-		_world->set_terrain_at_world_position(pos, selected_terrain, channel, false);
-		_world->set_terrain_at_world_position(pos, _current_isolevel, _channel_isolevel);
+		_world->set_voxel_at_world_position(pos, selected_terrain, channel, false);
+		_world->set_voxel_at_world_position(pos, _current_isolevel, _channel_isolevel);
 	}
 }
 
