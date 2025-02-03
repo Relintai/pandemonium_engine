@@ -91,7 +91,7 @@ private:
 		ISOLEVEL_BRUSH_TYPE_SMOOTH, // Icon: Blend
 	};
 
-	bool _picker_mode;
+	bool _isolevel_picker_mode;
 	bool _brush_allow_create_chunks;
 	float _brush_size;
 	float _brush_smoothness;

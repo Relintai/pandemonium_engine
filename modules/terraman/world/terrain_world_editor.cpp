@@ -203,7 +203,7 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_editor = NULL;
 	_tool_mode = TOOL_MODE_ADD;
 
-	_picker_mode = false;
+	_isolevel_picker_mode = false;
 	_brush_allow_create_chunks = true;
 	_brush_size = 10;
 	_brush_smoothness = 10;
@@ -217,7 +217,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_current_isolevel = 255;
 	_channel_isolevel = -1;
 
-	_picker_mode = false;
+	_isolevel_picker_mode = false;
 	_brush_allow_create_chunks = true;
 	_brush_size = 10;
 	_brush_smoothness = 10;
