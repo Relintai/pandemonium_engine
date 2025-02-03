@@ -98,7 +98,7 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::do_input_action(Camera *p_camera
 	PhysicsDirectSpaceState::RayResult res;
 
 	if (ss->intersect_ray(from, to, res)) {
-		int selected_voxel = 0;
+		int selected_terrain = 0;
 		int channel = 0;
 
 		channel = _channel_type;
@@ -110,15 +110,15 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::do_input_action(Camera *p_camera
 		bool mode_add = false;
 
 		if (_tool_mode == TOOL_MODE_ADD) {
-			selected_voxel = _selected_type + 1;
+			selected_terrain = _selected_type + 1;
 			mode_add = true;
 		} else if (_tool_mode == TOOL_MODE_REMOVE) {
-			selected_voxel = 0;
+			selected_terrain = 0;
 			isolevel = 0;
 			mode_add = false;
 		}
 
-		_world->set_voxel_with_tool(mode_add, res.position, res.normal, selected_voxel, isolevel);
+		_world->set_terrain_with_tool(mode_add, res.position, res.normal, selected_terrain, isolevel);
 
 		return EditorPlugin::AFTER_GUI_INPUT_STOP;
 	}
@@ -311,7 +311,7 @@ void TerrainWorldEditor::_on_tool_button_pressed() {
 }
 
 void TerrainWorldEditor::_on_insert_block_at_camera_button_pressed() {
-	int selected_voxel = 0;
+	int selected_terrain = 0;
 	int channel = 0;
 
 	channel = _channel_type;
@@ -330,13 +330,13 @@ void TerrainWorldEditor::_on_insert_block_at_camera_button_pressed() {
 		return;
 
 	Vector3 pos = cam->get_transform().origin;
-	selected_voxel = _selected_type + 1;
+	selected_terrain = _selected_type + 1;
 
 	if (_channel_isolevel == -1) {
-		_world->set_voxel_at_world_position(pos, selected_voxel, channel);
+		_world->set_terrain_at_world_position(pos, selected_terrain, channel);
 	} else {
-		_world->set_voxel_at_world_position(pos, selected_voxel, channel, false);
-		_world->set_voxel_at_world_position(pos, _current_isolevel, _channel_isolevel);
+		_world->set_terrain_at_world_position(pos, selected_terrain, channel, false);
+		_world->set_terrain_at_world_position(pos, _current_isolevel, _channel_isolevel);
 	}
 }
 
@@ -356,17 +356,17 @@ void TerrainWorldEditorPlugin::_notification(int p_what) {
 	if (p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
 		switch ((int)EditorSettings::get_singleton()->get("editors/terrain/editor_side")) {
 			case 0: { // Left.
-				SpatialEditor::get_singleton()->move_control_to_left_panel(voxel_world_editor);
+				SpatialEditor::get_singleton()->move_control_to_left_panel(terrain_world_editor);
 			} break;
 			case 1: { // Right.
-				SpatialEditor::get_singleton()->move_control_to_right_panel(voxel_world_editor);
+				SpatialEditor::get_singleton()->move_control_to_right_panel(terrain_world_editor);
 			} break;
 		}
 	}
 }
 
 void TerrainWorldEditorPlugin::edit(Object *p_object) {
-	voxel_world_editor->edit(Object::cast_to<TerrainWorld>(p_object));
+	terrain_world_editor->edit(Object::cast_to<TerrainWorld>(p_object));
 }
 
 bool TerrainWorldEditorPlugin::handles(Object *p_object) const {
@@ -380,14 +380,14 @@ bool TerrainWorldEditorPlugin::handles(Object *p_object) const {
 
 void TerrainWorldEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
-		voxel_world_editor->show();
-		voxel_world_editor->spatial_editor_hb->show();
-		voxel_world_editor->set_process(true);
+		terrain_world_editor->show();
+		terrain_world_editor->spatial_editor_hb->show();
+		terrain_world_editor->set_process(true);
 	} else {
-		voxel_world_editor->spatial_editor_hb->hide();
-		voxel_world_editor->hide();
-		voxel_world_editor->edit(NULL);
-		voxel_world_editor->set_process(false);
+		terrain_world_editor->spatial_editor_hb->hide();
+		terrain_world_editor->hide();
+		terrain_world_editor->edit(NULL);
+		terrain_world_editor->set_process(false);
 	}
 }
 
@@ -397,13 +397,13 @@ TerrainWorldEditorPlugin::TerrainWorldEditorPlugin(EditorNode *p_node) {
 	EDITOR_DEF("editors/terrain/editor_side", 1);
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "editors/terrain/editor_side", PROPERTY_HINT_ENUM, "Left,Right"));
 
-	voxel_world_editor = memnew(TerrainWorldEditor(editor));
+	terrain_world_editor = memnew(TerrainWorldEditor(editor));
 	switch ((int)EditorSettings::get_singleton()->get("editors/terrain/editor_side")) {
 		case 0: { // Left.
-			add_control_to_container(CONTAINER_SPATIAL_EDITOR_SIDE_LEFT, voxel_world_editor);
+			add_control_to_container(CONTAINER_SPATIAL_EDITOR_SIDE_LEFT, terrain_world_editor);
 		} break;
 		case 1: { // Right.
-			add_control_to_container(CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, voxel_world_editor);
+			add_control_to_container(CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, terrain_world_editor);
 		} break;
 	}
 	make_visible(false);

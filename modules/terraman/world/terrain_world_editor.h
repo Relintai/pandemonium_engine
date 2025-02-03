@@ -100,15 +100,15 @@ private:
 class TerrainWorldEditorPlugin : public EditorPlugin {
 	GDCLASS(TerrainWorldEditorPlugin, EditorPlugin);
 
-	TerrainWorldEditor *voxel_world_editor;
+	TerrainWorldEditor *terrain_world_editor;
 	EditorNode *editor;
 
 protected:
 	void _notification(int p_what);
 
 public:
-	bool forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) { return voxel_world_editor->forward_spatial_input_event(p_camera, p_event); }
-	virtual EditorPlugin::AfterGUIInput forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event) { return voxel_world_editor->forward_spatial_input_event(p_camera, p_event); }
+	bool forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) { return terrain_world_editor->forward_spatial_input_event(p_camera, p_event); }
+	virtual EditorPlugin::AfterGUIInput forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event) { return terrain_world_editor->forward_spatial_input_event(p_camera, p_event); }
 	virtual String get_name() const { return "TerrainWorldEditor"; }
 	bool has_main_screen() const { return false; }
 	virtual void edit(Object *p_object);
