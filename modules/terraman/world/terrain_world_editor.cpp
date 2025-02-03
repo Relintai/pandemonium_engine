@@ -34,6 +34,8 @@
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 
+#include "scene/gui/box_container.h"
+#include "scene/main/control.h"
 #include "terrain_world.h"
 
 #include "core/os/keyboard.h"
@@ -153,18 +155,21 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 
 	Ref<TerrainLibrary> library = _world->get_library();
 
-	if (!library.is_valid())
+	if (!library.is_valid()) {
 		return;
+	}
 
-	if (!library->get_initialized())
+	if (!library->get_initialized()) {
 		library->refresh_rects();
+	}
 
 	bool f = false;
 	for (int i = 0; i < library->terra_surface_get_num(); ++i) {
 		Ref<TerrainSurface> surface = library->terra_surface_get(i);
 
-		if (!surface.is_valid())
+		if (!surface.is_valid()) {
 			continue;
+		}
 
 		String text = String::num(i) + " - " + surface->get_name();
 
@@ -206,12 +211,17 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_editor = p_editor;
 	_tool_mode = TOOL_MODE_ADD;
 
+	VBoxContainer *main_container = memnew(VBoxContainer);
+	main_container->set_h_size_flags(SIZE_EXPAND_FILL);
+	main_container->set_v_size_flags(SIZE_EXPAND_FILL);
+	add_child(main_container);
+
 	spatial_editor_hb = memnew(HBoxContainer);
 	spatial_editor_hb->set_h_size_flags(SIZE_EXPAND_FILL);
 	spatial_editor_hb->set_alignment(BoxContainer::ALIGN_BEGIN);
-	SpatialEditor::get_singleton()->add_control_to_menu_panel(spatial_editor_hb);
+	main_container->add_child(spatial_editor_hb);
 
-	spatial_editor_hb->add_child(memnew(VSeparator));
+	main_container->add_child(memnew(HSeparator));
 
 	_tool_button_group.instance();
 
@@ -264,7 +274,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	scs->set_h_size_flags(SIZE_EXPAND_FILL);
 	scs->set_v_size_flags(SIZE_EXPAND_FILL);
 	scs->set_name("Surfaces");
-	add_child(scs);
+	main_container->add_child(scs);
 
 	_surfaces_vbox_container = memnew(VBoxContainer);
 	scs->add_child(_surfaces_vbox_container);
@@ -381,10 +391,8 @@ bool TerrainWorldEditorPlugin::handles(Object *p_object) const {
 void TerrainWorldEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
 		terrain_world_editor->show();
-		terrain_world_editor->spatial_editor_hb->show();
 		terrain_world_editor->set_process(true);
 	} else {
-		terrain_world_editor->spatial_editor_hb->hide();
 		terrain_world_editor->hide();
 		terrain_world_editor->edit(NULL);
 		terrain_world_editor->set_process(false);
