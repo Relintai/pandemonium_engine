@@ -260,10 +260,11 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_isolevel_slider = memnew(HSlider);
 	_isolevel_slider->set_min(1);
-	_isolevel_slider->set_max(255);
 	_isolevel_slider->set_value(_current_isolevel);
 	_isolevel_slider->set_custom_minimum_size(Size2(50 * EDSCALE, 0));
 	_isolevel_slider->set_v_size_flags(SIZE_EXPAND_FILL);
+	_isolevel_slider->set_h_size_flags(SIZE_EXPAND_FILL);
+	_isolevel_slider->set_tooltip(TTR("Isolevel"));
 	spatial_editor_hb->add_child(_isolevel_slider);
 
 	_isolevel_slider->connect("value_changed", this, "_on_isolevel_slider_value_changed");
