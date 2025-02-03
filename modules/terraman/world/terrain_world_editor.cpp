@@ -215,36 +215,36 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_tool_button_group.instance();
 
-	ToolButton *add_button = memnew(ToolButton);
-	add_button->set_text("Add");
-	add_button->set_toggle_mode(true);
-	add_button->set_pressed(true);
-	add_button->set_button_group(_tool_button_group);
-	add_button->set_meta("tool_mode", TOOL_MODE_ADD);
+	_add_button = memnew(ToolButton);
+	//_add_button->set_text("Add");
+	_add_button->set_toggle_mode(true);
+	_add_button->set_pressed(true);
+	_add_button->set_button_group(_tool_button_group);
+	_add_button->set_meta("tool_mode", TOOL_MODE_ADD);
 
-	add_button->connect("button_up", this, "_on_tool_button_pressed");
+	_add_button->connect("button_up", this, "_on_tool_button_pressed");
 
-	add_button->set_shortcut(ED_SHORTCUT("voxelman_world_editor/add_mode", "Add Mode", KEY_A));
-	spatial_editor_hb->add_child(add_button);
+	_add_button->set_shortcut(ED_SHORTCUT("voxelman_world_editor/add_mode", "Add Mode", KEY_A));
+	spatial_editor_hb->add_child(_add_button);
 
-	ToolButton *remove_button = memnew(ToolButton);
-	remove_button->set_text("Remove");
-	remove_button->set_toggle_mode(true);
-	remove_button->set_button_group(_tool_button_group);
-	remove_button->set_meta("tool_mode", TOOL_MODE_REMOVE);
+	_remove_button = memnew(ToolButton);
+	//_remove_button->set_text("Remove");
+	_remove_button->set_toggle_mode(true);
+	_remove_button->set_button_group(_tool_button_group);
+	_remove_button->set_meta("tool_mode", TOOL_MODE_REMOVE);
 
-	remove_button->connect("button_up", this, "_on_tool_button_pressed");
+	_remove_button->connect("button_up", this, "_on_tool_button_pressed");
 
-	remove_button->set_shortcut(ED_SHORTCUT("voxelman_world_editor/remove_mode", "Remove Mode", KEY_S));
-	spatial_editor_hb->add_child(remove_button);
+	_remove_button->set_shortcut(ED_SHORTCUT("voxelman_world_editor/remove_mode", "Remove Mode", KEY_S));
+	spatial_editor_hb->add_child(_remove_button);
 
-	ToolButton *insert_buton = memnew(ToolButton);
-	insert_buton->set_text("Insert");
+	_insert_button = memnew(ToolButton);
+	//_insert_button->set_text("Insert");
 
-	insert_buton->connect("button_up", this, "_on_insert_block_at_camera_button_pressed");
+	_insert_button->connect("button_up", this, "_on_insert_block_at_camera_button_pressed");
 
-	insert_buton->set_shortcut(ED_SHORTCUT("voxelman_world_editor/instert_block_at_camera", "Insert at camera", KEY_B));
-	spatial_editor_hb->add_child(insert_buton);
+	_insert_button->set_shortcut(ED_SHORTCUT("voxelman_world_editor/instert_block_at_camera", "Insert at camera", KEY_B));
+	spatial_editor_hb->add_child(_insert_button);
 
 	set_custom_minimum_size(Size2(200 * EDSCALE, 0));
 
@@ -276,6 +276,17 @@ TerrainWorldEditor::~TerrainWorldEditor() {
 	_world = NULL;
 
 	_surfaces_button_group.unref();
+}
+
+void TerrainWorldEditor::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE:
+		case NOTIFICATION_THEME_CHANGED: {
+			_add_button->set_icon(get_theme_icon("Add", "EditorIcons"));
+			_remove_button->set_icon(get_theme_icon("Remove", "EditorIcons"));
+			_insert_button->set_icon(get_theme_icon("InsertBefore", "EditorIcons"));
+		} break;
+	}
 }
 
 void TerrainWorldEditor::_node_removed(Node *p_node) {

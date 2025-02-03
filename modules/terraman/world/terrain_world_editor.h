@@ -64,7 +64,9 @@ public:
 
 protected:
 	static void _bind_methods();
+	void _notification(int p_what);
 	void _node_removed(Node *p_node);
+
 	void _on_surface_button_pressed();
 	void _on_tool_button_pressed();
 	void _on_insert_block_at_camera_button_pressed();
@@ -89,6 +91,10 @@ private:
 
 	int _channel_type;
 	int _channel_isolevel;
+
+	ToolButton *_add_button;
+	ToolButton *_remove_button;
+	ToolButton *_insert_button;
 };
 
 class TerrainWorldEditorPlugin : public EditorPlugin {
