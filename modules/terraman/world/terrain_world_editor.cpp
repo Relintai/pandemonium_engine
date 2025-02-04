@@ -31,6 +31,9 @@
 
 #include "terrain_world_editor.h"
 
+#include "core/error/error_macros.h"
+#include "core/math/plane.h"
+
 #include "editor/editor_plugin.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
@@ -70,26 +73,65 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 		return EditorPlugin::AFTER_GUI_INPUT_PASS;
 	}
 
+	Ref<InputEventMouseMotion> mm = p_event;
+
+	if (mm.is_valid()) {
+		if (!_mouse_down) {
+			return EditorPlugin::AFTER_GUI_INPUT_PASS;
+		}
+
+		switch (_tool_mode) {
+			case TOOL_MODE_ADD:
+			case TOOL_MODE_REMOVE: {
+			} break;
+			case TOOL_MODE_ISOLEVEL_BRUSH: {
+				Vector3 position;
+				Vector3 normal;
+
+				if (get_draw_world_coordinate(p_camera, Point2(mm->get_position().x, mm->get_position().y), position, normal)) {
+					isolevel_brush_draw(position);
+				}
+			} break;
+			case TOOL_MODE_PAINT_BRUSH: {
+			} break;
+			case TOOL_MODE_PAINT_PICKER: {
+			} break;
+		}
+
+		return EditorPlugin::AFTER_GUI_INPUT_STOP;
+	}
+
 	Ref<InputEventMouseButton> mb = p_event;
 
 	if (mb.is_valid()) {
 		if (mb->is_pressed()) {
 			if (mb->get_button_index() == BUTTON_LEFT) {
-				_mouse_down = true;
-
 				switch (_tool_mode) {
 					case TOOL_MODE_ADD:
 					case TOOL_MODE_REMOVE:
 						return do_add_remove_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
-					case TOOL_MODE_ISOLEVEL_BRUSH:
-						break;
-					case TOOL_MODE_PAINT_BRUSH:
-						break;
-					case TOOL_MODE_PAINT_PICKER:
-						break;
+					case TOOL_MODE_ISOLEVEL_BRUSH: {
+						Vector3 position;
+						Vector3 normal;
+
+						if (get_draw_world_coordinate(p_camera, Point2(mb->get_position().x, mb->get_position().y), position, normal)) {
+							_mouse_down = true;
+
+							isolevel_brush_draw(position);
+
+							return EditorPlugin::AFTER_GUI_INPUT_STOP;
+						} else {
+							return EditorPlugin::AFTER_GUI_INPUT_PASS;
+						}
+
+					} break;
+					case TOOL_MODE_PAINT_BRUSH: {
+					} break;
+					case TOOL_MODE_PAINT_PICKER: {
+					} break;
 				}
 
-				return EditorPlugin::AFTER_GUI_INPUT_STOP;
+				return EditorPlugin::AFTER_GUI_INPUT_PASS;
 			} else {
 				return EditorPlugin::AFTER_GUI_INPUT_PASS;
 			}
@@ -176,6 +218,100 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::do_add_remove_action(Camera *p_c
 	}
 
 	return EditorPlugin::AFTER_GUI_INPUT_PASS;
+}
+
+bool TerrainWorldEditor::get_draw_world_coordinate(Camera *p_camera, const Point2 &p_point, Vector3 &r_position, Vector3 &r_normal) {
+	Camera *camera = p_camera;
+	Vector3 from = camera->project_ray_origin(p_point);
+	Vector3 to = from + camera->project_ray_normal(p_point) * 10000;
+	Transform local_xform = _world->get_global_transform().affine_inverse();
+
+	from = local_xform.xform(from);
+	to = local_xform.xform(to);
+
+	PhysicsDirectSpaceState *ss = _world->get_world_3d()->get_direct_space_state();
+
+	PhysicsDirectSpaceState::RayResult res;
+
+	if (ss->intersect_ray(from, to, res)) {
+		r_position = res.position;
+		r_normal = res.normal;
+
+		return true;
+	}
+
+	Vector3 intersection;
+	Plane xz_plane(Vector3(), Vector3(0, 1, 0));
+	if (xz_plane.intersects_ray(from, to, &intersection)) {
+		r_normal = Vector3(0, 1, 0);
+		r_position = intersection;
+
+		return true;
+	}
+
+	return false;
+}
+
+void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
+	if (_isolevel_brush_size == 0) {
+		return;
+	}
+
+	if (_isolevel_brush_channel == -1) {
+		return;
+	}
+
+	Vector2i wdp = _world->world_position_to_world_data_position(p_world_position);
+
+	int ilbh = _isolevel_brush_size / 2;
+	// Value will likely need more fine tuning.
+	float s = 10.0 * _isolevel_brush_strength;
+
+	_undo_redo->create_action("Isolevel Brush Draw");
+
+	// TODO use a proper circle drawing algorithm.
+	for (int x = -ilbh; x < ilbh; ++x) {
+		for (int y = -ilbh; y < ilbh; ++y) {
+			float l = Vector2(x, y).length();
+
+			if (l > ilbh) {
+				continue;
+			}
+
+			Vector2i vwp = wdp + Vector2i(x, y);
+
+			uint8_t orig_val = _world->get_voxel_at_world_data_position(vwp, _isolevel_brush_channel);
+			int pil = orig_val;
+
+			Vector2 tv = Vector2(ilbh - ABS(x), ilbh - ABS(y));
+			float t = tv.length() / (float)ilbh;
+
+			float sl = Math::lerp(0, s, t * _isolevel_brush_smoothness);
+
+			float npil = 0;
+
+			switch (_isolevel_brush_type) {
+				case ISOLEVEL_BRUSH_TYPE_ADD: {
+					npil = pil + sl;
+				} break;
+				case ISOLEVEL_BRUSH_TYPE_SUBSTRACT: {
+					npil = pil - sl;
+				} break;
+				case ISOLEVEL_BRUSH_TYPE_SET: {
+					npil = _isolevel_brush_strength * 255.0;
+				} break;
+			}
+
+			npil = CLAMP(npil, 0, 255);
+
+			uint8_t new_val = static_cast<uint8_t>(npil);
+
+			_undo_redo->add_do_method(_world, "set_voxel_at_world_data_position", vwp, new_val, true, _isolevel_brush_allow_create_chunks);
+			_undo_redo->add_undo_method(_world, "set_voxel_at_world_data_position", vwp, orig_val, true, _isolevel_brush_allow_create_chunks);
+		}
+	}
+
+	_undo_redo->commit_action();
 }
 
 void TerrainWorldEditor::edit(TerrainWorld *p_world) {
@@ -268,8 +404,8 @@ TerrainWorldEditor::TerrainWorldEditor() {
 
 	_isolevel_brush_channel = -1;
 	_isolevel_brush_size = 10;
-	_isolevel_brush_strength = 25;
-	_isolevel_brush_smoothness = 10;
+	_isolevel_brush_strength = 0.25;
+	_isolevel_brush_smoothness = 0.5;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
 	_isolevel_brush_allow_create_chunks = false;
@@ -289,8 +425,8 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_isolevel_brush_channel = -1;
 	_isolevel_brush_size = 10;
-	_isolevel_brush_strength = 25;
-	_isolevel_brush_smoothness = 10;
+	_isolevel_brush_strength = 0.25;
+	_isolevel_brush_smoothness = 0.5;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
 	_isolevel_brush_allow_create_chunks = false;
@@ -423,13 +559,13 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_type_set_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_type_set", "Isolevel Brush Type Set", KEY_J));
 	isolevel_brush_flow_container->add_child(_isolevel_brush_type_set_button);
 
-	_isolevel_brush_type_smooth_button = memnew(ToolButton);
-	_isolevel_brush_type_smooth_button->set_toggle_mode(true);
-	_isolevel_brush_type_smooth_button->set_button_group(_isolevel_brush_tool_button_group);
-	_isolevel_brush_type_smooth_button->set_meta("type", ISOLEVEL_BRUSH_TYPE_SMOOTH);
-	_isolevel_brush_type_smooth_button->connect("button_up", this, "_on_isolevel_brush_tool_button_pressed");
-	_isolevel_brush_type_smooth_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_type_smooth", "Isolevel Brush Type Smooth", KEY_K));
-	isolevel_brush_flow_container->add_child(_isolevel_brush_type_smooth_button);
+	//_isolevel_brush_type_smooth_button = memnew(ToolButton);
+	//_isolevel_brush_type_smooth_button->set_toggle_mode(true);
+	//_isolevel_brush_type_smooth_button->set_button_group(_isolevel_brush_tool_button_group);
+	//_isolevel_brush_type_smooth_button->set_meta("type", ISOLEVEL_BRUSH_TYPE_SMOOTH);
+	//_isolevel_brush_type_smooth_button->connect("button_up", this, "_on_isolevel_brush_tool_button_pressed");
+	//_isolevel_brush_type_smooth_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_type_smooth", "Isolevel Brush Type Smooth", KEY_K));
+	//isolevel_brush_flow_container->add_child(_isolevel_brush_type_smooth_button);
 
 	_isolevel_brush_allow_creating_chunks_button = memnew(ToolButton);
 	_isolevel_brush_allow_creating_chunks_button->set_toggle_mode(true);
@@ -443,7 +579,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_isolevel_brush_size_slider = memnew(HSlider);
 	_isolevel_brush_size_slider->set_min(1);
-	_isolevel_brush_size_slider->set_max(250);
+	_isolevel_brush_size_slider->set_max(100);
 	_isolevel_brush_size_slider->set_value(_isolevel_brush_size);
 	_isolevel_brush_size_slider->set_v_size_flags(SIZE_EXPAND_FILL);
 	_isolevel_brush_size_slider->set_tooltip(TTR("Brush Size"));
@@ -455,8 +591,9 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_tool_container->add_child(isolevel_brush_strength_label);
 
 	_isolevel_brush_strength_slider = memnew(HSlider);
-	_isolevel_brush_strength_slider->set_min(0);
-	_isolevel_brush_strength_slider->set_max(100);
+	_isolevel_brush_strength_slider->set_min(0.01);
+	_isolevel_brush_strength_slider->set_max(1);
+	_isolevel_brush_strength_slider->set_step(0);
 	_isolevel_brush_strength_slider->set_value(_isolevel_brush_strength);
 	_isolevel_brush_strength_slider->set_v_size_flags(SIZE_EXPAND_FILL);
 	_isolevel_brush_strength_slider->set_tooltip(TTR("Brush Strength"));
@@ -468,8 +605,9 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_tool_container->add_child(isolevel_brush_smoothness_label);
 
 	_isolevel_brush_smoothness_slider = memnew(HSlider);
-	_isolevel_brush_smoothness_slider->set_min(1);
-	_isolevel_brush_smoothness_slider->set_max(250);
+	_isolevel_brush_smoothness_slider->set_min(0.01);
+	_isolevel_brush_smoothness_slider->set_max(1);
+	_isolevel_brush_smoothness_slider->set_step(0);
 	_isolevel_brush_smoothness_slider->set_value(_isolevel_brush_smoothness);
 	_isolevel_brush_smoothness_slider->set_v_size_flags(SIZE_EXPAND_FILL);
 	_isolevel_brush_smoothness_slider->set_tooltip(TTR("Brush Smoothness"));
@@ -524,7 +662,7 @@ void TerrainWorldEditor::_notification(int p_what) {
 			_isolevel_brush_type_add_button->set_icon(get_theme_icon("MoveUp", "EditorIcons"));
 			_isolevel_brush_type_substract_button->set_icon(get_theme_icon("MoveDown", "EditorIcons"));
 			_isolevel_brush_type_set_button->set_icon(get_theme_icon("CanvasLayer", "EditorIcons"));
-			_isolevel_brush_type_smooth_button->set_icon(get_theme_icon("Blend", "EditorIcons"));
+			//_isolevel_brush_type_smooth_button->set_icon(get_theme_icon("Blend", "EditorIcons"));
 			_isolevel_brush_allow_creating_chunks_button->set_icon(get_theme_icon("Add", "EditorIcons"));
 		} break;
 	}

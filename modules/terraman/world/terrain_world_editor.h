@@ -63,6 +63,8 @@ public:
 
 	void edit(TerrainWorld *p_world);
 	EditorPlugin::AfterGUIInput do_add_remove_action(Camera *p_camera, const Point2 &p_point, bool p_click);
+	bool get_draw_world_coordinate(Camera *p_camera, const Point2 &p_point, Vector3 &r_position, Vector3 &r_normal);
+	void isolevel_brush_draw(const Vector3 &p_world_position);
 
 	TerrainWorldEditor();
 	TerrainWorldEditor(EditorNode *p_editor);
@@ -98,7 +100,7 @@ private:
 		ISOLEVEL_BRUSH_TYPE_ADD = 0,
 		ISOLEVEL_BRUSH_TYPE_SUBSTRACT,
 		ISOLEVEL_BRUSH_TYPE_SET,
-		ISOLEVEL_BRUSH_TYPE_SMOOTH,
+		//ISOLEVEL_BRUSH_TYPE_SMOOTH,
 	};
 
 	bool _isolevel_picker_mode;
@@ -145,7 +147,7 @@ private:
 	ToolButton *_isolevel_brush_type_add_button;
 	ToolButton *_isolevel_brush_type_substract_button;
 	ToolButton *_isolevel_brush_type_set_button;
-	ToolButton *_isolevel_brush_type_smooth_button;
+	//ToolButton *_isolevel_brush_type_smooth_button;
 	ToolButton *_isolevel_brush_allow_creating_chunks_button;
 	HSlider *_isolevel_brush_size_slider;
 	HSlider *_isolevel_brush_strength_slider;
