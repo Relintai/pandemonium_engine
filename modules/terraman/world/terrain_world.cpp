@@ -865,6 +865,166 @@ Ref<TerrainChunk> TerrainWorld::get_or_create_chunk_at_world_position(const Vect
 	return chunk_get_or_create(x, z);
 }
 
+Vector2i TerrainWorld::world_position_to_world_data_position(const Vector3 &world_position) {
+	Vector3 pos = world_position / get_voxel_scale();
+
+	return Vector2i(pos.x, pos.z);
+}
+uint8_t TerrainWorld::get_voxel_at_world_data_position(const Vector2i &world_data_position, const int channel_index) {
+	// TODO rework this so it works directly with ints.
+
+	Vector2 pos = world_data_position;
+
+	//Note: floor is needed to handle negative numbers properly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int z = static_cast<int>(Math::floor(pos.y / get_chunk_size_z()));
+
+	int bx = static_cast<int>(Math::floor(pos.x)) % get_chunk_size_x();
+	int bz = static_cast<int>(Math::floor(pos.y)) % get_chunk_size_z();
+
+	if (bx < 0) {
+		bx += get_chunk_size_x();
+	}
+
+	if (bz < 0) {
+		bz += get_chunk_size_z();
+	}
+
+	Ref<TerrainChunk> chunk = chunk_get(x, z);
+
+	if (chunk.is_valid()) {
+		return chunk->get_voxel(bx, bz, channel_index);
+	}
+
+	return 0;
+}
+void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_position, const uint8_t data, const int channel_index, const bool rebuild, const bool allow_creating_chunks) {
+	// TODO rework this so it works directly with ints.
+
+	Vector2 pos = world_data_position;
+
+	//Note: floor is needed to handle negative numbers properly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int z = static_cast<int>(Math::floor(pos.y / get_chunk_size_z()));
+
+	int bx = static_cast<int>(Math::floor(pos.x)) % get_chunk_size_x();
+	int bz = static_cast<int>(Math::floor(pos.y)) % get_chunk_size_z();
+
+	if (bx < 0) {
+		bx += get_chunk_size_x();
+	}
+
+	if (bz < 0) {
+		bz += get_chunk_size_z();
+	}
+
+	Ref<TerrainChunk> chunk;
+
+	if (get_data_margin_end() > 0) {
+		if (bx == 0) {
+			if (allow_creating_chunks) {
+				chunk = chunk_get_or_create(x - 1, z);
+			} else {
+				chunk = chunk_get(x - 1, z);
+			}
+
+			if (chunk.is_valid()) {
+				chunk->set_voxel(data, get_chunk_size_x(), bz, channel_index);
+
+				if (rebuild) {
+					chunk->build();
+				}
+			}
+		}
+
+		if (bz == 0) {
+			if (allow_creating_chunks) {
+				chunk = chunk_get_or_create(x, z - 1);
+			} else {
+				chunk = chunk_get(x, z - 1);
+			}
+
+			if (chunk.is_valid()) {
+				chunk->set_voxel(data, bx, get_chunk_size_z(), channel_index);
+
+				if (rebuild) {
+					chunk->build();
+				}
+			}
+		}
+	}
+
+	if (get_data_margin_start() > 0) {
+		if (bx == get_chunk_size_x() - 1) {
+			if (allow_creating_chunks) {
+				chunk = chunk_get_or_create(x + 1, z);
+			} else {
+				chunk = chunk_get(x + 1, z);
+			}
+
+			if (chunk.is_valid()) {
+				chunk->set_voxel(data, -1, bz, channel_index);
+
+				if (rebuild) {
+					chunk->build();
+				}
+			}
+		}
+
+		if (bz == get_chunk_size_z() - 1) {
+			if (allow_creating_chunks) {
+				chunk = chunk_get_or_create(x, z + 1);
+			} else {
+				chunk = chunk_get(x, z + 1);
+			}
+
+			if (chunk.is_valid()) {
+				chunk->set_voxel(data, bx, -1, channel_index);
+
+				if (rebuild) {
+					chunk->build();
+				}
+			}
+		}
+	}
+
+	if (allow_creating_chunks) {
+		chunk = chunk_get_or_create(x, z);
+	} else {
+		chunk = chunk_get(x, z);
+	}
+
+	if (chunk.is_valid()) {
+		chunk->set_voxel(data, bx, bz, channel_index);
+
+		if (rebuild) {
+			chunk->build();
+		}
+	}
+}
+Ref<TerrainChunk> TerrainWorld::get_chunk_at_world_data_position(const Vector2i &world_data_position) {
+	// TODO rework this so it works directly with ints.
+
+	Vector2 pos = world_data_position;
+
+	//Note: floor is needed to handle negative numbers proiberly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int z = static_cast<int>(Math::floor(pos.y / get_chunk_size_z()));
+
+	return chunk_get(x, z);
+}
+Ref<TerrainChunk> TerrainWorld::get_or_create_chunk_at_world_data_position(const Vector2i &world_data_position) {
+	// TODO rework this so it works directly with ints.
+
+	Vector2 pos = world_data_position;
+
+	//Note: floor is needed to handle negative numbers proiberly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int z = static_cast<int>(Math::floor(pos.y / get_chunk_size_z()));
+
+	return chunk_get_or_create(x, z);
+}
+
 int TerrainWorld::get_channel_index_info(const TerrainWorld::ChannelTypeInfo channel_type) {
 	return call("_get_channel_index_info", channel_type);
 }
@@ -1235,6 +1395,12 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_voxel_at_world_position", "world_position", "data", "channel_index", "rebuild"), &TerrainWorld::set_voxel_at_world_position, DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_position", "world_position"), &TerrainWorld::get_chunk_at_world_position);
 	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_position", "world_position"), &TerrainWorld::get_or_create_chunk_at_world_position);
+
+	ClassDB::bind_method(D_METHOD("world_position_to_world_data_position", "world_position"), &TerrainWorld::world_position_to_world_data_position);
+	ClassDB::bind_method(D_METHOD("get_voxel_at_world_data_position", "world_data_position", "channel_index"), &TerrainWorld::get_voxel_at_world_data_position);
+	ClassDB::bind_method(D_METHOD("set_voxel_at_world_data_position", "world_data_position", "data", "channel_index", "rebuild", "allow_creating_chunks "), &TerrainWorld::set_voxel_at_world_data_position, DEFVAL(true), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("get_chunk_at_world_data_position", "world_data_position"), &TerrainWorld::get_chunk_at_world_data_position);
+	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_data_position", "world_data_position"), &TerrainWorld::get_or_create_chunk_at_world_data_position);
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"), "_get_channel_index_info", PropertyInfo(Variant::INT, "channel_type", PROPERTY_HINT_ENUM, BINDING_STRING_CHANNEL_TYPE_INFO)));
 
