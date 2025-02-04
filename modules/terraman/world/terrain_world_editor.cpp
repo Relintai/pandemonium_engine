@@ -140,8 +140,10 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 	_channel_isolevel = _world->get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_ISOLEVEL);
 
 	if (_channel_isolevel == -1) {
+		_add_remove_isolevel_slider_label->hide();
 		_add_remove_isolevel_slider->hide();
 	} else {
+		_add_remove_isolevel_slider_label->show();
 		_add_remove_isolevel_slider->show();
 	}
 
@@ -205,8 +207,8 @@ TerrainWorldEditor::TerrainWorldEditor() {
 
 	_isolevel_picker_mode = false;
 	_brush_allow_create_chunks = true;
-	_brush_size = 10;
-	_brush_smoothness = 10;
+	_isolevel_brush_size = 10;
+	_isolevel_brush_smoothness = 10;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
 }
@@ -219,8 +221,8 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_isolevel_picker_mode = false;
 	_brush_allow_create_chunks = true;
-	_brush_size = 10;
-	_brush_smoothness = 10;
+	_isolevel_brush_size = 10;
+	_isolevel_brush_smoothness = 10;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
 
@@ -288,7 +290,9 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_add_remove_tool_container = memnew(VBoxContainer);
 	main_container->add_child(_add_remove_tool_container);
 
-	main_container->add_child(memnew(HSeparator));
+	Label *add_remove_tool_label = memnew(Label);
+	add_remove_tool_label->set_text(TTR("Add / Remove Tool"));
+	_add_remove_tool_container->add_child(add_remove_tool_label);
 
 	_insert_button = memnew(ToolButton);
 	//_insert_button->set_text("Insert");
@@ -296,9 +300,9 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_insert_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/instert_block_at_camera", "Insert at camera", KEY_B));
 	_add_remove_tool_container->add_child(_insert_button);
 
-	Label *isolevel_slider_label = memnew(Label);
-	isolevel_slider_label->set_text(TTR("Isolevel"));
-	_add_remove_tool_container->add_child(isolevel_slider_label);
+	_add_remove_isolevel_slider_label = memnew(Label);
+	_add_remove_isolevel_slider_label->set_text(TTR("Isolevel"));
+	_add_remove_tool_container->add_child(_add_remove_isolevel_slider_label);
 
 	_add_remove_isolevel_slider = memnew(HSlider);
 	_add_remove_isolevel_slider->set_min(1);
@@ -311,6 +315,83 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_add_remove_isolevel_slider->connect("value_changed", this, "_on_add_remove_isolevel_slider_value_changed");
 	_add_remove_isolevel_slider->hide();
 
+	// Isolevel Brush
+	_isolevel_brush_tool_container = memnew(VBoxContainer);
+	_isolevel_brush_tool_container->hide();
+	main_container->add_child(_isolevel_brush_tool_container);
+
+	_isolevel_brush_tool_button_group.instance();
+
+	Label *isolevel_brush_label = memnew(Label);
+	isolevel_brush_label->set_text(TTR("Isolevel Brush"));
+	_isolevel_brush_tool_container->add_child(isolevel_brush_label);
+
+	HFlowContainer *isolevel_brush_flow_container = memnew(HFlowContainer);
+	_isolevel_brush_tool_container->add_child(isolevel_brush_flow_container);
+
+	_isolevel_brush_type_add_button = memnew(ToolButton);
+	_isolevel_brush_type_add_button->set_toggle_mode(true);
+	_isolevel_brush_type_add_button->set_button_group(_isolevel_brush_tool_button_group);
+	_isolevel_brush_type_add_button->set_meta("type", ISOLEVEL_BRUSH_TYPE_ADD);
+	_isolevel_brush_type_add_button->connect("button_up", this, "_on_isolevel_brush_tool_button_pressed");
+	_isolevel_brush_type_add_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_type_add", "Isolevel Brush Type Add", KEY_G));
+	_isolevel_brush_type_add_button->set_pressed(true);
+	isolevel_brush_flow_container->add_child(_isolevel_brush_type_add_button);
+
+	_isolevel_brush_type_substract_button = memnew(ToolButton);
+	_isolevel_brush_type_substract_button->set_toggle_mode(true);
+	_isolevel_brush_type_substract_button->set_button_group(_isolevel_brush_tool_button_group);
+	_isolevel_brush_type_substract_button->set_meta("type", ISOLEVEL_BRUSH_TYPE_SUBSTRACT);
+	_isolevel_brush_type_substract_button->connect("button_up", this, "_on_isolevel_brush_tool_button_pressed");
+	_isolevel_brush_type_substract_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_type_substract", "Isolevel Brush Type Substract", KEY_H));
+	isolevel_brush_flow_container->add_child(_isolevel_brush_type_substract_button);
+
+	_isolevel_brush_type_set_button = memnew(ToolButton);
+	_isolevel_brush_type_set_button->set_toggle_mode(true);
+	_isolevel_brush_type_set_button->set_button_group(_isolevel_brush_tool_button_group);
+	_isolevel_brush_type_set_button->set_meta("type", ISOLEVEL_BRUSH_TYPE_SET);
+	_isolevel_brush_type_set_button->connect("button_up", this, "_on_isolevel_brush_tool_button_pressed");
+	_isolevel_brush_type_set_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_type_set", "Isolevel Brush Type Set", KEY_J));
+	isolevel_brush_flow_container->add_child(_isolevel_brush_type_set_button);
+
+	_isolevel_brush_type_smooth_button = memnew(ToolButton);
+	_isolevel_brush_type_smooth_button->set_toggle_mode(true);
+	_isolevel_brush_type_smooth_button->set_button_group(_isolevel_brush_tool_button_group);
+	_isolevel_brush_type_smooth_button->set_meta("type", ISOLEVEL_BRUSH_TYPE_SMOOTH);
+	_isolevel_brush_type_smooth_button->connect("button_up", this, "_on_isolevel_brush_tool_button_pressed");
+	_isolevel_brush_type_smooth_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_type_smooth", "Isolevel Brush Type Smooth", KEY_K));
+	isolevel_brush_flow_container->add_child(_isolevel_brush_type_smooth_button);
+
+	Label *isolevel_brush_size_label = memnew(Label);
+	isolevel_brush_size_label->set_text(TTR("Size"));
+	_isolevel_brush_tool_container->add_child(isolevel_brush_size_label);
+
+	_isolevel_brush_size_slider = memnew(HSlider);
+	_isolevel_brush_size_slider->set_min(1);
+	_isolevel_brush_size_slider->set_max(250);
+	_isolevel_brush_size_slider->set_value(_isolevel_brush_size);
+	_isolevel_brush_size_slider->set_v_size_flags(SIZE_EXPAND_FILL);
+	_isolevel_brush_size_slider->set_tooltip(TTR("Brush Size"));
+	_isolevel_brush_size_slider->connect("value_changed", this, "_on_isolevel_brush_size_slider_changed");
+	_isolevel_brush_tool_container->add_child(_isolevel_brush_size_slider);
+
+	Label *isolevel_brush_smoothness_label = memnew(Label);
+	isolevel_brush_smoothness_label->set_text(TTR("Smoothness"));
+	_isolevel_brush_tool_container->add_child(isolevel_brush_smoothness_label);
+
+	_isolevel_brush_smoothness_slider = memnew(HSlider);
+	_isolevel_brush_smoothness_slider->set_min(1);
+	_isolevel_brush_smoothness_slider->set_max(250);
+	_isolevel_brush_smoothness_slider->set_value(_isolevel_brush_smoothness);
+	_isolevel_brush_smoothness_slider->set_v_size_flags(SIZE_EXPAND_FILL);
+	_isolevel_brush_smoothness_slider->set_tooltip(TTR("Brush Smoothness"));
+	_isolevel_brush_smoothness_slider->connect("value_changed", this, "_on_isolevel_brush_smoothness_slider_changed");
+	_isolevel_brush_tool_container->add_child(_isolevel_brush_smoothness_slider);
+
+	// Surface Selector Separator
+	main_container->add_child(memnew(HSeparator));
+
+	// Surface selector
 	ScrollContainer *scs = memnew(ScrollContainer);
 	scs->set_h_size_flags(SIZE_EXPAND_FILL);
 	scs->set_v_size_flags(SIZE_EXPAND_FILL);
@@ -339,6 +420,12 @@ void TerrainWorldEditor::_notification(int p_what) {
 			_isolevel_brush_button->set_icon(get_theme_icon("CanvasItem", "EditorIcons"));
 			_paint_brush_button->set_icon(get_theme_icon("CanvasItemShader", "EditorIcons"));
 			_paint_picker_button->set_icon(get_theme_icon("ColorPick", "EditorIcons"));
+
+			// Isolevel Brush
+			_isolevel_brush_type_add_button->set_icon(get_theme_icon("MoveUp", "EditorIcons"));
+			_isolevel_brush_type_substract_button->set_icon(get_theme_icon("MoveDown", "EditorIcons"));
+			_isolevel_brush_type_set_button->set_icon(get_theme_icon("CanvasLayer", "EditorIcons"));
+			_isolevel_brush_type_smooth_button->set_icon(get_theme_icon("Blend", "EditorIcons"));
 		} break;
 	}
 }
@@ -369,15 +456,19 @@ void TerrainWorldEditor::_on_tool_button_pressed() {
 		case TOOL_MODE_ADD:
 		case TOOL_MODE_REMOVE:
 			_add_remove_tool_container->show();
+			_isolevel_brush_tool_container->hide();
 			break;
 		case TOOL_MODE_PAINT_BRUSH:
 			_add_remove_tool_container->hide();
+			_isolevel_brush_tool_container->hide();
 			break;
 		case TOOL_MODE_ISOLEVEL_BRUSH:
 			_add_remove_tool_container->hide();
+			_isolevel_brush_tool_container->show();
 			break;
 		case TOOL_MODE_PAINT_PICKER:
 			_add_remove_tool_container->hide();
+			_isolevel_brush_tool_container->hide();
 			break;
 		default:
 			break;
@@ -418,12 +509,30 @@ void TerrainWorldEditor::_on_add_remove_isolevel_slider_value_changed(float valu
 	_add_remove_current_isolevel = value;
 }
 
+void TerrainWorldEditor::_on_isolevel_brush_tool_button_pressed() {
+	BaseButton *button = _isolevel_brush_tool_button_group->get_pressed_button();
+
+	if (button) {
+		_isolevel_brush_type = static_cast<IsolevelBrushType>(static_cast<int>(button->get_meta("type")));
+	}
+}
+
+void TerrainWorldEditor::_on_isolevel_brush_size_slider_changed(float value) {
+	_isolevel_brush_size = value;
+}
+void TerrainWorldEditor::_on_isolevel_brush_smoothness_slider_changed(float value) {
+	_isolevel_brush_smoothness = value;
+}
+
 void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_node_removed", &TerrainWorldEditor::_node_removed);
 	ClassDB::bind_method("_on_surface_button_pressed", &TerrainWorldEditor::_on_surface_button_pressed);
 	ClassDB::bind_method("_on_tool_button_pressed", &TerrainWorldEditor::_on_tool_button_pressed);
 	ClassDB::bind_method("_on_insert_block_at_camera_button_pressed", &TerrainWorldEditor::_on_insert_block_at_camera_button_pressed);
 	ClassDB::bind_method("_on_add_remove_isolevel_slider_value_changed", &TerrainWorldEditor::_on_add_remove_isolevel_slider_value_changed);
+	ClassDB::bind_method("_on_isolevel_brush_tool_button_pressed", &TerrainWorldEditor::_on_isolevel_brush_tool_button_pressed);
+	ClassDB::bind_method("_on_isolevel_brush_size_slider_changed", &TerrainWorldEditor::_on_isolevel_brush_size_slider_changed);
+	ClassDB::bind_method("_on_isolevel_brush_smoothness_slider_changed", &TerrainWorldEditor::_on_isolevel_brush_smoothness_slider_changed);
 }
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {

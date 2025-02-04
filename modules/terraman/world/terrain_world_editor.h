@@ -67,7 +67,6 @@ public:
 	TerrainWorldEditor(EditorNode *p_editor);
 	~TerrainWorldEditor();
 
-
 protected:
 	static void _bind_methods();
 	void _notification(int p_what);
@@ -77,6 +76,9 @@ protected:
 	void _on_tool_button_pressed();
 	void _on_insert_block_at_camera_button_pressed();
 	void _on_add_remove_isolevel_slider_value_changed(float value);
+	void _on_isolevel_brush_tool_button_pressed();
+	void _on_isolevel_brush_size_slider_changed(float value);
+	void _on_isolevel_brush_smoothness_slider_changed(float value);
 
 private:
 	//enum BrushType {
@@ -87,14 +89,16 @@ private:
 	enum IsolevelBrushType {
 		ISOLEVEL_BRUSH_TYPE_ADD = 0,
 		ISOLEVEL_BRUSH_TYPE_SUBSTRACT,
-		ISOLEVEL_BRUSH_TYPE_SET, // Icon CanvasLayer
-		ISOLEVEL_BRUSH_TYPE_SMOOTH, // Icon: Blend
+		ISOLEVEL_BRUSH_TYPE_SET,
+		ISOLEVEL_BRUSH_TYPE_SMOOTH,
 	};
 
-	bool _isolevel_picker_mode;
 	bool _brush_allow_create_chunks;
-	float _brush_size;
-	float _brush_smoothness;
+
+	bool _isolevel_picker_mode;
+
+	float _isolevel_brush_size;
+	float _isolevel_brush_smoothness;
 	//BrushType _brush_type;
 	IsolevelBrushType _isolevel_brush_type;
 
@@ -122,11 +126,19 @@ private:
 	Ref<ButtonGroup> _tool_button_group;
 
 	VBoxContainer *_add_remove_tool_container;
+	Label *_add_remove_isolevel_slider_label;
 	HSlider *_add_remove_isolevel_slider;
 	int _add_remove_current_isolevel;
 	ToolButton *_insert_button;
 
 	VBoxContainer *_isolevel_brush_tool_container;
+	Ref<ButtonGroup> _isolevel_brush_tool_button_group;
+	ToolButton *_isolevel_brush_type_add_button;
+	ToolButton *_isolevel_brush_type_substract_button;
+	ToolButton *_isolevel_brush_type_set_button;
+	ToolButton *_isolevel_brush_type_smooth_button;
+	HSlider *_isolevel_brush_size_slider;
+	HSlider *_isolevel_brush_smoothness_slider;
 
 	VBoxContainer *_paint_brush_tool_container;
 
