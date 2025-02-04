@@ -65,6 +65,7 @@ public:
 	EditorPlugin::AfterGUIInput do_add_remove_action(Camera *p_camera, const Point2 &p_point, bool p_click);
 	bool get_draw_world_coordinate(Camera *p_camera, const Point2 &p_point, Vector3 &r_position, Vector3 &r_normal);
 	void isolevel_brush_draw(const Vector3 &p_world_position);
+	void paint_brush_draw(const Vector3 &p_world_position);
 
 	TerrainWorldEditor();
 	TerrainWorldEditor(EditorNode *p_editor);
@@ -85,6 +86,10 @@ protected:
 	void _on_isolevel_brush_smoothness_slider_changed(float value);
 	void _on_isolevel_brush_channel_select_sb_changed(int value);
 	void _on_isolevel_brush_allow_creating_chunks_selected();
+
+	void _on_paint_brush_allow_creating_chunks_selected();
+	void _on_paint_brush_size_slider_changed(float value);
+	void _on_paint_brush_channel_select_sb_changed(int value);
 
 private:
 	UndoRedo *_undo_redo;
@@ -112,6 +117,13 @@ private:
 	//BrushType _brush_type;
 	IsolevelBrushType _isolevel_brush_type;
 	bool _isolevel_brush_allow_create_chunks;
+
+private:
+	bool _paint_brush_picker_mode;
+
+	int _paint_brush_channel;
+	float _paint_brush_size;
+	bool _paint_brush_allow_create_chunks;
 
 private:
 	TerrainWorld *_world;
@@ -155,6 +167,9 @@ private:
 	SpinBox *_isolevel_brush_channel_select_sb;
 
 	VBoxContainer *_paint_brush_tool_container;
+	ToolButton *_paint_brush_allow_creating_chunks_button;
+	HSlider *_paint_brush_size_slider;
+	SpinBox *_paint_brush_channel_select_sb;
 
 	VBoxContainer *_paint_picker_tool_container;
 
