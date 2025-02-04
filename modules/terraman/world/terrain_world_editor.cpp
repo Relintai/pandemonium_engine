@@ -36,6 +36,7 @@
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/flow_container.h"
+#include "scene/gui/option_button.h"
 #include "scene/main/control.h"
 #include "terrain_world.h"
 
@@ -53,10 +54,13 @@
 #include "core/input/input.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/flow_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/slider.h"
+#include "scene/gui/spin_box.h"
 
 EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {
@@ -131,10 +135,15 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::do_input_action(Camera *p_camera
 }
 
 void TerrainWorldEditor::edit(TerrainWorld *p_world) {
+	if (_world == p_world) {
+		return;
+	}
+
 	_world = p_world;
 
-	if (!_world)
+	if (!_world) {
 		return;
+	}
 
 	_channel_type = _world->get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_TYPE);
 	_channel_isolevel = _world->get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_ISOLEVEL);
@@ -146,6 +155,9 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 		_add_remove_isolevel_slider_label->show();
 		_add_remove_isolevel_slider->show();
 	}
+
+	_isolevel_brush_channel_select_sb->set_value(_channel_isolevel);
+	_isolevel_brush_channel = _channel_isolevel;
 
 	spatial_editor = Object::cast_to<SpatialEditorPlugin>(_editor->get_editor_plugin_screen());
 
@@ -206,6 +218,8 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_tool_mode = TOOL_MODE_ADD;
 
 	_isolevel_picker_mode = false;
+
+	_isolevel_brush_channel = -1;
 	_brush_allow_create_chunks = true;
 	_isolevel_brush_size = 10;
 	_isolevel_brush_smoothness = 10;
@@ -220,6 +234,8 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_channel_isolevel = -1;
 
 	_isolevel_picker_mode = false;
+
+	_isolevel_brush_channel = -1;
 	_brush_allow_create_chunks = true;
 	_isolevel_brush_size = 10;
 	_isolevel_brush_smoothness = 10;
@@ -388,6 +404,17 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_smoothness_slider->connect("value_changed", this, "_on_isolevel_brush_smoothness_slider_changed");
 	_isolevel_brush_tool_container->add_child(_isolevel_brush_smoothness_slider);
 
+	// Isolevel Brush Channel Select Dropdown
+	Label *isolevel_brush_channel_label = memnew(Label);
+	isolevel_brush_channel_label->set_text(TTR("Channel"));
+	_isolevel_brush_tool_container->add_child(isolevel_brush_channel_label);
+
+	_isolevel_brush_channel_select_sb = memnew(SpinBox);
+	_isolevel_brush_channel_select_sb->set_v_size_flags(SIZE_EXPAND_FILL);
+	_isolevel_brush_channel_select_sb->set_tooltip(TTR("Isolevel Channel"));
+	_isolevel_brush_channel_select_sb->connect("value_changed", this, "_on_isolevel_brush_channel_select_sb_changed");
+	_isolevel_brush_tool_container->add_child(_isolevel_brush_channel_select_sb);
+
 	// Surface Selector Separator
 	main_container->add_child(memnew(HSeparator));
 
@@ -524,6 +551,10 @@ void TerrainWorldEditor::_on_isolevel_brush_smoothness_slider_changed(float valu
 	_isolevel_brush_smoothness = value;
 }
 
+void TerrainWorldEditor::_on_isolevel_brush_channel_select_sb_changed(int value) {
+	_isolevel_brush_channel = value;
+}
+
 void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_node_removed", &TerrainWorldEditor::_node_removed);
 	ClassDB::bind_method("_on_surface_button_pressed", &TerrainWorldEditor::_on_surface_button_pressed);
@@ -533,6 +564,7 @@ void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_on_isolevel_brush_tool_button_pressed", &TerrainWorldEditor::_on_isolevel_brush_tool_button_pressed);
 	ClassDB::bind_method("_on_isolevel_brush_size_slider_changed", &TerrainWorldEditor::_on_isolevel_brush_size_slider_changed);
 	ClassDB::bind_method("_on_isolevel_brush_smoothness_slider_changed", &TerrainWorldEditor::_on_isolevel_brush_smoothness_slider_changed);
+	ClassDB::bind_method("_on_isolevel_brush_channel_select_sb_changed", &TerrainWorldEditor::_on_isolevel_brush_channel_select_sb_changed);
 }
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {

@@ -35,13 +35,14 @@
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 
-#include "scene/gui/box_container.h"
-#include "scene/gui/flow_container.h"
 #include "scene/gui/panel_container.h"
 
 class TerrainWorld;
 class SpatialEditorPlugin;
 class HSlider;
+class BoxContainer;
+class HFlowContainer;
+class SpinBox;
 
 class TerrainWorldEditor : public PanelContainer {
 	GDCLASS(TerrainWorldEditor, PanelContainer);
@@ -79,6 +80,7 @@ protected:
 	void _on_isolevel_brush_tool_button_pressed();
 	void _on_isolevel_brush_size_slider_changed(float value);
 	void _on_isolevel_brush_smoothness_slider_changed(float value);
+	void _on_isolevel_brush_channel_select_sb_changed(int value);
 
 private:
 	//enum BrushType {
@@ -97,6 +99,7 @@ private:
 
 	bool _isolevel_picker_mode;
 
+	int _isolevel_brush_channel;
 	float _isolevel_brush_size;
 	float _isolevel_brush_smoothness;
 	//BrushType _brush_type;
@@ -139,6 +142,7 @@ private:
 	ToolButton *_isolevel_brush_type_smooth_button;
 	HSlider *_isolevel_brush_size_slider;
 	HSlider *_isolevel_brush_smoothness_slider;
+	SpinBox *_isolevel_brush_channel_select_sb;
 
 	VBoxContainer *_paint_brush_tool_container;
 
