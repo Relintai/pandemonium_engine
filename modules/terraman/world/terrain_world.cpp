@@ -516,26 +516,6 @@ int TerrainWorld::_get_channel_index_info(const TerrainWorld::ChannelTypeInfo ch
 	return -1;
 }
 
-void TerrainWorld::_set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel) {
-	Vector3 pos;
-
-	if (mode_add) {
-		pos = (hit_position + (Vector3(0.1, 0.1, 0.1) * hit_normal * get_voxel_scale()));
-	} else {
-		pos = (hit_position + (Vector3(0.1, 0.1, 0.1) * -hit_normal * get_voxel_scale()));
-	}
-
-	int channel_type = get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_TYPE);
-	int channel_isolevel = get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_ISOLEVEL);
-
-	if (channel_isolevel == -1) {
-		set_voxel_at_world_position(pos, selected_voxel, channel_type);
-	} else {
-		set_voxel_at_world_position(pos, selected_voxel, channel_type, false);
-		set_voxel_at_world_position(pos, isolevel, channel_isolevel);
-	}
-}
-
 bool TerrainWorld::can_chunk_do_build_step() {
 	if (_max_frame_chunk_build_steps == 0) {
 		return true;
@@ -883,10 +863,6 @@ Ref<TerrainChunk> TerrainWorld::get_or_create_chunk_at_world_position(const Vect
 	int z = static_cast<int>(Math::floor(pos.z / get_chunk_size_z()));
 
 	return chunk_get_or_create(x, z);
-}
-
-void TerrainWorld::set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel) {
-	call("_set_voxel_with_tool", mode_add, hit_position, hit_normal, selected_voxel, isolevel);
 }
 
 int TerrainWorld::get_channel_index_info(const TerrainWorld::ChannelTypeInfo channel_type) {
@@ -1266,16 +1242,6 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_get_channel_index_info", "channel_type"), &TerrainWorld::_get_channel_index_info);
 
 	ClassDB::bind_method(D_METHOD("get_editor_camera"), &TerrainWorld::get_editor_camera);
-
-	BIND_VMETHOD(MethodInfo("_set_voxel_with_tool",
-			PropertyInfo(Variant::BOOL, "mode_add"),
-			PropertyInfo(Variant::VECTOR3, "hit_position"),
-			PropertyInfo(Variant::VECTOR3, "hit_normal"),
-			PropertyInfo(Variant::INT, "selected_voxel"),
-			PropertyInfo(Variant::INT, "isolevel")));
-
-	ClassDB::bind_method(D_METHOD("set_voxel_with_tool", "mode_add", "hit_position", "hit_normal", "selected_voxel", "isolevel"), &TerrainWorld::set_voxel_with_tool);
-	ClassDB::bind_method(D_METHOD("_set_voxel_with_tool", "mode_add", "hit_position", "hit_normal", "selected_voxel", "isolevel"), &TerrainWorld::_set_voxel_with_tool);
 
 	BIND_ENUM_CONSTANT(CHANNEL_TYPE_INFO_TYPE);
 	BIND_ENUM_CONSTANT(CHANNEL_TYPE_INFO_ISOLEVEL);

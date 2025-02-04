@@ -192,7 +192,6 @@ public:
 	void set_voxel_at_world_position(const Vector3 &world_position, const uint8_t data, const int channel_index, const bool rebuild = true);
 	Ref<TerrainChunk> get_chunk_at_world_position(const Vector3 &world_position);
 	Ref<TerrainChunk> get_or_create_chunk_at_world_position(const Vector3 &world_position);
-	void set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
 
 	int get_channel_index_info(const ChannelTypeInfo channel_type);
 
@@ -205,7 +204,6 @@ protected:
 	virtual void _generate_chunk(Ref<TerrainChunk> chunk);
 	virtual Ref<TerrainChunk> _create_chunk(int x, int z, Ref<TerrainChunk> p_chunk);
 	virtual int _get_channel_index_info(const ChannelTypeInfo channel_type);
-	virtual void _set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
 
 	virtual void _notification(int p_what);
 	static void _bind_methods();
