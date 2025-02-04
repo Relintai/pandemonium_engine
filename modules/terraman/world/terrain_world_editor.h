@@ -76,7 +76,7 @@ protected:
 	void _on_surface_button_pressed();
 	void _on_tool_button_pressed();
 	void _on_insert_block_at_camera_button_pressed();
-	void _on_isolevel_slider_value_changed(float value);
+	void _on_add_remove_isolevel_slider_value_changed(float value);
 
 private:
 	//enum BrushType {
@@ -87,7 +87,7 @@ private:
 	enum IsolevelBrushType {
 		ISOLEVEL_BRUSH_TYPE_ADD = 0,
 		ISOLEVEL_BRUSH_TYPE_SUBSTRACT,
-		ISOLEVEL_BRUSH_TYPE_SET,
+		ISOLEVEL_BRUSH_TYPE_SET, // Icon CanvasLayer
 		ISOLEVEL_BRUSH_TYPE_SMOOTH, // Icon: Blend
 	};
 
@@ -99,22 +99,9 @@ private:
 	IsolevelBrushType _isolevel_brush_type;
 
 private:
-	HFlowContainer *_tool_button_container;
-	VBoxContainer *_add_remove_tool_container;
-
-	VBoxContainer *_surfaces_vbox_container;
-	Ref<ButtonGroup> _surfaces_button_group;
-
-	Ref<ButtonGroup> _tool_button_group;
-
-	TerrainWorldEditorToolMode _tool_mode;
-	TerrainWorldEditorToolMode _previous_tool_mode;
 	TerrainWorld *_world;
 
-	HSlider *_isolevel_slider;
-
 	int _selected_type;
-	int _current_isolevel;
 
 	SpatialEditorPlugin *spatial_editor;
 	EditorNode *_editor;
@@ -122,12 +109,31 @@ private:
 	int _channel_type;
 	int _channel_isolevel;
 
+	TerrainWorldEditorToolMode _tool_mode;
+	TerrainWorldEditorToolMode _previous_tool_mode;
+
 	ToolButton *_add_button;
 	ToolButton *_remove_button;
-	ToolButton *_insert_button;
 	ToolButton *_isolevel_brush_button;
 	ToolButton *_paint_brush_button;
 	ToolButton *_paint_picker_button;
+
+	HFlowContainer *_tool_button_container;
+	Ref<ButtonGroup> _tool_button_group;
+
+	VBoxContainer *_add_remove_tool_container;
+	HSlider *_add_remove_isolevel_slider;
+	int _add_remove_current_isolevel;
+	ToolButton *_insert_button;
+
+	VBoxContainer *_isolevel_brush_tool_container;
+
+	VBoxContainer *_paint_brush_tool_container;
+
+	VBoxContainer *_paint_picker_tool_container;
+
+	VBoxContainer *_surfaces_vbox_container;
+	Ref<ButtonGroup> _surfaces_button_group;
 };
 
 class TerrainWorldEditorPlugin : public EditorPlugin {

@@ -110,7 +110,7 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::do_input_action(Camera *p_camera
 		if (channel == -1)
 			return EditorPlugin::AFTER_GUI_INPUT_PASS;
 
-		int isolevel = _current_isolevel;
+		int isolevel = _add_remove_current_isolevel;
 		bool mode_add = false;
 
 		if (_tool_mode == TOOL_MODE_ADD) {
@@ -140,9 +140,9 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 	_channel_isolevel = _world->get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_ISOLEVEL);
 
 	if (_channel_isolevel == -1) {
-		_isolevel_slider->hide();
+		_add_remove_isolevel_slider->hide();
 	} else {
-		_isolevel_slider->show();
+		_add_remove_isolevel_slider->show();
 	}
 
 	spatial_editor = Object::cast_to<SpatialEditorPlugin>(_editor->get_editor_plugin_screen());
@@ -198,7 +198,7 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_world = NULL;
 	_selected_type = 0;
 	_channel_type = -1;
-	_current_isolevel = 255;
+	_add_remove_current_isolevel = 255;
 	_channel_isolevel = -1;
 	_editor = NULL;
 	_tool_mode = TOOL_MODE_ADD;
@@ -214,7 +214,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_world = NULL;
 	_selected_type = 0;
 	_channel_type = -1;
-	_current_isolevel = 255;
+	_add_remove_current_isolevel = 255;
 	_channel_isolevel = -1;
 
 	_isolevel_picker_mode = false;
@@ -300,16 +300,16 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	isolevel_slider_label->set_text(TTR("Isolevel"));
 	_add_remove_tool_container->add_child(isolevel_slider_label);
 
-	_isolevel_slider = memnew(HSlider);
-	_isolevel_slider->set_min(1);
-	_isolevel_slider->set_value(_current_isolevel);
-	_isolevel_slider->set_custom_minimum_size(Size2(50 * EDSCALE, 0));
-	_isolevel_slider->set_v_size_flags(SIZE_EXPAND_FILL);
-	_isolevel_slider->set_h_size_flags(SIZE_EXPAND_FILL);
-	_isolevel_slider->set_tooltip(TTR("Isolevel"));
-	_add_remove_tool_container->add_child(_isolevel_slider);
-	_isolevel_slider->connect("value_changed", this, "_on_isolevel_slider_value_changed");
-	_isolevel_slider->hide();
+	_add_remove_isolevel_slider = memnew(HSlider);
+	_add_remove_isolevel_slider->set_min(1);
+	_add_remove_isolevel_slider->set_value(_add_remove_current_isolevel);
+	_add_remove_isolevel_slider->set_custom_minimum_size(Size2(50 * EDSCALE, 0));
+	_add_remove_isolevel_slider->set_v_size_flags(SIZE_EXPAND_FILL);
+	_add_remove_isolevel_slider->set_h_size_flags(SIZE_EXPAND_FILL);
+	_add_remove_isolevel_slider->set_tooltip(TTR("Isolevel"));
+	_add_remove_tool_container->add_child(_add_remove_isolevel_slider);
+	_add_remove_isolevel_slider->connect("value_changed", this, "_on_add_remove_isolevel_slider_value_changed");
+	_add_remove_isolevel_slider->hide();
 
 	ScrollContainer *scs = memnew(ScrollContainer);
 	scs->set_h_size_flags(SIZE_EXPAND_FILL);
@@ -344,8 +344,9 @@ void TerrainWorldEditor::_notification(int p_what) {
 }
 
 void TerrainWorldEditor::_node_removed(Node *p_node) {
-	if (p_node == _world)
+	if (p_node == _world) {
 		_world = NULL;
+	}
 }
 
 void TerrainWorldEditor::_on_surface_button_pressed() {
@@ -409,12 +410,12 @@ void TerrainWorldEditor::_on_insert_block_at_camera_button_pressed() {
 		_world->set_voxel_at_world_position(pos, selected_terrain, channel);
 	} else {
 		_world->set_voxel_at_world_position(pos, selected_terrain, channel, false);
-		_world->set_voxel_at_world_position(pos, _current_isolevel, _channel_isolevel);
+		_world->set_voxel_at_world_position(pos, _add_remove_current_isolevel, _channel_isolevel);
 	}
 }
 
-void TerrainWorldEditor::_on_isolevel_slider_value_changed(float value) {
-	_current_isolevel = value;
+void TerrainWorldEditor::_on_add_remove_isolevel_slider_value_changed(float value) {
+	_add_remove_current_isolevel = value;
 }
 
 void TerrainWorldEditor::_bind_methods() {
@@ -422,7 +423,7 @@ void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_on_surface_button_pressed", &TerrainWorldEditor::_on_surface_button_pressed);
 	ClassDB::bind_method("_on_tool_button_pressed", &TerrainWorldEditor::_on_tool_button_pressed);
 	ClassDB::bind_method("_on_insert_block_at_camera_button_pressed", &TerrainWorldEditor::_on_insert_block_at_camera_button_pressed);
-	ClassDB::bind_method("_on_isolevel_slider_value_changed", &TerrainWorldEditor::_on_isolevel_slider_value_changed);
+	ClassDB::bind_method("_on_add_remove_isolevel_slider_value_changed", &TerrainWorldEditor::_on_add_remove_isolevel_slider_value_changed);
 }
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {
@@ -443,8 +444,9 @@ void TerrainWorldEditorPlugin::edit(Object *p_object) {
 }
 
 bool TerrainWorldEditorPlugin::handles(Object *p_object) const {
-	if (!p_object->is_class("TerrainWorld"))
+	if (!p_object->is_class("TerrainWorld")) {
 		return false;
+	}
 
 	TerrainWorld *w = Object::cast_to<TerrainWorld>(p_object);
 
