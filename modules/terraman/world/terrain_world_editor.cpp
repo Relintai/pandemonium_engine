@@ -268,6 +268,7 @@ TerrainWorldEditor::TerrainWorldEditor() {
 
 	_isolevel_brush_channel = -1;
 	_isolevel_brush_size = 10;
+	_isolevel_brush_strength = 25;
 	_isolevel_brush_smoothness = 10;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
@@ -288,6 +289,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_isolevel_brush_channel = -1;
 	_isolevel_brush_size = 10;
+	_isolevel_brush_strength = 25;
 	_isolevel_brush_smoothness = 10;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
@@ -447,6 +449,19 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_size_slider->set_tooltip(TTR("Brush Size"));
 	_isolevel_brush_size_slider->connect("value_changed", this, "_on_isolevel_brush_size_slider_changed");
 	_isolevel_brush_tool_container->add_child(_isolevel_brush_size_slider);
+
+	Label *isolevel_brush_strength_label = memnew(Label);
+	isolevel_brush_strength_label->set_text(TTR("Strength"));
+	_isolevel_brush_tool_container->add_child(isolevel_brush_strength_label);
+
+	_isolevel_brush_strength_slider = memnew(HSlider);
+	_isolevel_brush_strength_slider->set_min(0);
+	_isolevel_brush_strength_slider->set_max(100);
+	_isolevel_brush_strength_slider->set_value(_isolevel_brush_strength);
+	_isolevel_brush_strength_slider->set_v_size_flags(SIZE_EXPAND_FILL);
+	_isolevel_brush_strength_slider->set_tooltip(TTR("Brush Strength"));
+	_isolevel_brush_strength_slider->connect("value_changed", this, "_on_isolevel_brush_strength_slider_changed");
+	_isolevel_brush_tool_container->add_child(_isolevel_brush_strength_slider);
 
 	Label *isolevel_brush_smoothness_label = memnew(Label);
 	isolevel_brush_smoothness_label->set_text(TTR("Smoothness"));
@@ -619,6 +634,9 @@ void TerrainWorldEditor::_on_isolevel_brush_tool_button_pressed() {
 void TerrainWorldEditor::_on_isolevel_brush_size_slider_changed(float value) {
 	_isolevel_brush_size = value;
 }
+void TerrainWorldEditor::_on_isolevel_brush_strength_slider_changed(float value) {
+	_isolevel_brush_strength = value;
+}
 void TerrainWorldEditor::_on_isolevel_brush_smoothness_slider_changed(float value) {
 	_isolevel_brush_smoothness = value;
 }
@@ -639,6 +657,7 @@ void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_on_add_remove_isolevel_slider_value_changed", &TerrainWorldEditor::_on_add_remove_isolevel_slider_value_changed);
 	ClassDB::bind_method("_on_isolevel_brush_tool_button_pressed", &TerrainWorldEditor::_on_isolevel_brush_tool_button_pressed);
 	ClassDB::bind_method("_on_isolevel_brush_size_slider_changed", &TerrainWorldEditor::_on_isolevel_brush_size_slider_changed);
+	ClassDB::bind_method("_on_isolevel_brush_strength_slider_changed", &TerrainWorldEditor::_on_isolevel_brush_strength_slider_changed);
 	ClassDB::bind_method("_on_isolevel_brush_smoothness_slider_changed", &TerrainWorldEditor::_on_isolevel_brush_smoothness_slider_changed);
 	ClassDB::bind_method("_on_isolevel_brush_channel_select_sb_changed", &TerrainWorldEditor::_on_isolevel_brush_channel_select_sb_changed);
 	ClassDB::bind_method("_on_isolevel_brush_allow_creating_chunks_selected", &TerrainWorldEditor::_on_isolevel_brush_allow_creating_chunks_selected);

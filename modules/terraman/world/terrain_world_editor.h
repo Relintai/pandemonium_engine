@@ -79,6 +79,7 @@ protected:
 	void _on_add_remove_isolevel_slider_value_changed(float value);
 	void _on_isolevel_brush_tool_button_pressed();
 	void _on_isolevel_brush_size_slider_changed(float value);
+	void _on_isolevel_brush_strength_slider_changed(float value);
 	void _on_isolevel_brush_smoothness_slider_changed(float value);
 	void _on_isolevel_brush_channel_select_sb_changed(int value);
 	void _on_isolevel_brush_allow_creating_chunks_selected();
@@ -104,6 +105,7 @@ private:
 
 	int _isolevel_brush_channel;
 	float _isolevel_brush_size;
+	float _isolevel_brush_strength;
 	float _isolevel_brush_smoothness;
 	//BrushType _brush_type;
 	IsolevelBrushType _isolevel_brush_type;
@@ -146,6 +148,7 @@ private:
 	ToolButton *_isolevel_brush_type_smooth_button;
 	ToolButton *_isolevel_brush_allow_creating_chunks_button;
 	HSlider *_isolevel_brush_size_slider;
+	HSlider *_isolevel_brush_strength_slider;
 	HSlider *_isolevel_brush_smoothness_slider;
 	SpinBox *_isolevel_brush_channel_select_sb;
 
