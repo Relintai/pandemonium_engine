@@ -267,11 +267,11 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_isolevel_picker_mode = false;
 
 	_isolevel_brush_channel = -1;
-	_brush_allow_create_chunks = true;
 	_isolevel_brush_size = 10;
 	_isolevel_brush_smoothness = 10;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
+	_isolevel_brush_allow_create_chunks = false;
 }
 TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_undo_redo = EditorNode::get_undo_redo();
@@ -287,11 +287,11 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_picker_mode = false;
 
 	_isolevel_brush_channel = -1;
-	_brush_allow_create_chunks = true;
 	_isolevel_brush_size = 10;
 	_isolevel_brush_smoothness = 10;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
+	_isolevel_brush_allow_create_chunks = false;
 
 	_editor = p_editor;
 	_tool_mode = TOOL_MODE_ADD;
@@ -429,6 +429,12 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_type_smooth_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_type_smooth", "Isolevel Brush Type Smooth", KEY_K));
 	isolevel_brush_flow_container->add_child(_isolevel_brush_type_smooth_button);
 
+	_isolevel_brush_allow_creating_chunks_button = memnew(ToolButton);
+	_isolevel_brush_allow_creating_chunks_button->set_toggle_mode(true);
+	_isolevel_brush_allow_creating_chunks_button->connect("button_up", this, "_on_isolevel_brush_allow_creating_chunks_selected");
+	_isolevel_brush_allow_creating_chunks_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_allow_creating_chunks", "Isolevel Brush Allow Chunk Creation", KEY_L));
+	isolevel_brush_flow_container->add_child(_isolevel_brush_allow_creating_chunks_button);
+
 	Label *isolevel_brush_size_label = memnew(Label);
 	isolevel_brush_size_label->set_text(TTR("Size"));
 	_isolevel_brush_tool_container->add_child(isolevel_brush_size_label);
@@ -504,6 +510,7 @@ void TerrainWorldEditor::_notification(int p_what) {
 			_isolevel_brush_type_substract_button->set_icon(get_theme_icon("MoveDown", "EditorIcons"));
 			_isolevel_brush_type_set_button->set_icon(get_theme_icon("CanvasLayer", "EditorIcons"));
 			_isolevel_brush_type_smooth_button->set_icon(get_theme_icon("Blend", "EditorIcons"));
+			_isolevel_brush_allow_creating_chunks_button->set_icon(get_theme_icon("Add", "EditorIcons"));
 		} break;
 	}
 }
@@ -620,6 +627,10 @@ void TerrainWorldEditor::_on_isolevel_brush_channel_select_sb_changed(int value)
 	_isolevel_brush_channel = value;
 }
 
+void TerrainWorldEditor::_on_isolevel_brush_allow_creating_chunks_selected() {
+	_isolevel_brush_allow_create_chunks = _isolevel_brush_allow_creating_chunks_button->is_pressed();
+}
+
 void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_node_removed", &TerrainWorldEditor::_node_removed);
 	ClassDB::bind_method("_on_surface_button_pressed", &TerrainWorldEditor::_on_surface_button_pressed);
@@ -630,6 +641,7 @@ void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_on_isolevel_brush_size_slider_changed", &TerrainWorldEditor::_on_isolevel_brush_size_slider_changed);
 	ClassDB::bind_method("_on_isolevel_brush_smoothness_slider_changed", &TerrainWorldEditor::_on_isolevel_brush_smoothness_slider_changed);
 	ClassDB::bind_method("_on_isolevel_brush_channel_select_sb_changed", &TerrainWorldEditor::_on_isolevel_brush_channel_select_sb_changed);
+	ClassDB::bind_method("_on_isolevel_brush_allow_creating_chunks_selected", &TerrainWorldEditor::_on_isolevel_brush_allow_creating_chunks_selected);
 }
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {

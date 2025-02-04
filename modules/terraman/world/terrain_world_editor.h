@@ -81,6 +81,7 @@ protected:
 	void _on_isolevel_brush_size_slider_changed(float value);
 	void _on_isolevel_brush_smoothness_slider_changed(float value);
 	void _on_isolevel_brush_channel_select_sb_changed(int value);
+	void _on_isolevel_brush_allow_creating_chunks_selected();
 
 private:
 	UndoRedo *_undo_redo;
@@ -99,8 +100,6 @@ private:
 		ISOLEVEL_BRUSH_TYPE_SMOOTH,
 	};
 
-	bool _brush_allow_create_chunks;
-
 	bool _isolevel_picker_mode;
 
 	int _isolevel_brush_channel;
@@ -108,6 +107,7 @@ private:
 	float _isolevel_brush_smoothness;
 	//BrushType _brush_type;
 	IsolevelBrushType _isolevel_brush_type;
+	bool _isolevel_brush_allow_create_chunks;
 
 private:
 	TerrainWorld *_world;
@@ -144,6 +144,7 @@ private:
 	ToolButton *_isolevel_brush_type_substract_button;
 	ToolButton *_isolevel_brush_type_set_button;
 	ToolButton *_isolevel_brush_type_smooth_button;
+	ToolButton *_isolevel_brush_allow_creating_chunks_button;
 	HSlider *_isolevel_brush_size_slider;
 	HSlider *_isolevel_brush_smoothness_slider;
 	SpinBox *_isolevel_brush_channel_select_sb;
