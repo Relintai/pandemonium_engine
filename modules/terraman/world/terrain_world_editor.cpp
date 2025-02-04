@@ -37,7 +37,6 @@
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/flow_container.h"
-#include "scene/gui/option_button.h"
 #include "scene/main/control.h"
 #include "terrain_world.h"
 
@@ -50,9 +49,6 @@
 #include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
 
-#include "../defines.h"
-
-#include "core/input/input.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
 #include "scene/gui/box_container.h"
