@@ -31,6 +31,7 @@
 
 #include "terrain_world_editor.h"
 
+#include "editor/editor_plugin.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 
@@ -67,32 +68,51 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 		return EditorPlugin::AFTER_GUI_INPUT_PASS;
 	}
 
+	Ref<TerrainLibrary> lib = _world->get_library();
+
+	if (!lib.is_valid()) {
+		return EditorPlugin::AFTER_GUI_INPUT_PASS;
+	}
+
 	Ref<InputEventMouseButton> mb = p_event;
 
 	if (mb.is_valid()) {
 		if (mb->is_pressed()) {
-			Ref<TerrainLibrary> lib = _world->get_library();
-
-			if (!lib.is_valid())
-				return EditorPlugin::AFTER_GUI_INPUT_PASS;
-
 			if (mb->get_button_index() == BUTTON_LEFT) {
-				return do_input_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
+				_mouse_down = true;
+
+				switch (_tool_mode) {
+					case TOOL_MODE_ADD:
+					case TOOL_MODE_REMOVE:
+						return do_add_remove_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
+					case TOOL_MODE_ISOLEVEL_BRUSH:
+						break;
+					case TOOL_MODE_PAINT_BRUSH:
+						break;
+					case TOOL_MODE_PAINT_PICKER:
+						break;
+				}
+
+				return EditorPlugin::AFTER_GUI_INPUT_STOP;
 			} else {
 				return EditorPlugin::AFTER_GUI_INPUT_PASS;
 			}
-
-			//return do_input_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
+		} else {
+			if (mb->get_button_index() == BUTTON_LEFT) {
+				_mouse_down = false;
+				return EditorPlugin::AFTER_GUI_INPUT_STOP;
+			}
 		}
+	}
+
+	if (_mouse_down) {
+		return EditorPlugin::AFTER_GUI_INPUT_STOP;
 	}
 
 	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }
 
-EditorPlugin::AfterGUIInput TerrainWorldEditor::do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click) {
-	if (!spatial_editor || !_world || !_world->is_inside_world())
-		return EditorPlugin::AFTER_GUI_INPUT_PASS;
-
+EditorPlugin::AfterGUIInput TerrainWorldEditor::do_add_remove_action(Camera *p_camera, const Point2 &p_point, bool p_click) {
 	Camera *camera = p_camera;
 	Vector3 from = camera->project_ray_origin(p_point);
 	Vector3 to = from + camera->project_ray_normal(p_point) * 10000;
@@ -111,8 +131,9 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::do_input_action(Camera *p_camera
 
 		channel = _channel_type;
 
-		if (channel == -1)
+		if (channel == -1) {
 			return EditorPlugin::AFTER_GUI_INPUT_PASS;
+		}
 
 		int isolevel = _add_remove_current_isolevel;
 		bool mode_add = false;
@@ -120,13 +141,40 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::do_input_action(Camera *p_camera
 		if (_tool_mode == TOOL_MODE_ADD) {
 			selected_terrain = _selected_type + 1;
 			mode_add = true;
+			_undo_redo->create_action("Add terrain voxel.");
 		} else if (_tool_mode == TOOL_MODE_REMOVE) {
 			selected_terrain = 0;
 			isolevel = 0;
 			mode_add = false;
+			_undo_redo->create_action("Remove terrain voxel.");
 		}
 
-		_world->set_voxel_with_tool(mode_add, res.position, res.normal, selected_terrain, isolevel);
+		Vector3 pos;
+
+		if (mode_add) {
+			pos = (res.position + (Vector3(0.1, 0.1, 0.1) * res.normal * _world->get_voxel_scale()));
+		} else {
+			pos = (res.position + (Vector3(0.1, 0.1, 0.1) * -res.normal * _world->get_voxel_scale()));
+		}
+
+		uint8_t prev_terrain = _world->get_voxel_at_world_position(pos, _channel_type);
+		uint8_t prev_isolevel = 0;
+
+		if (_channel_isolevel != -1) {
+			prev_isolevel = _world->get_voxel_at_world_position(pos, _channel_isolevel);
+		}
+
+		if (_channel_isolevel == -1) {
+			_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, selected_terrain, _channel_type);
+			_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_terrain, _channel_type);
+		} else {
+			_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, selected_terrain, _channel_type, false);
+			_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, isolevel, _channel_isolevel);
+			_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_terrain, _channel_type, false);
+			_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_isolevel, _channel_isolevel);
+		}
+
+		_undo_redo->commit_action();
 
 		return EditorPlugin::AFTER_GUI_INPUT_STOP;
 	}
@@ -209,6 +257,7 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 }
 
 TerrainWorldEditor::TerrainWorldEditor() {
+	_undo_redo = NULL;
 	_world = NULL;
 	_selected_type = 0;
 	_channel_type = -1;
@@ -216,6 +265,8 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_channel_isolevel = -1;
 	_editor = NULL;
 	_tool_mode = TOOL_MODE_ADD;
+
+	_mouse_down = false;
 
 	_isolevel_picker_mode = false;
 
@@ -227,11 +278,15 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
 }
 TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
+	_undo_redo = EditorNode::get_undo_redo();
+
 	_world = NULL;
 	_selected_type = 0;
 	_channel_type = -1;
 	_add_remove_current_isolevel = 255;
 	_channel_isolevel = -1;
+
+	_mouse_down = false;
 
 	_isolevel_picker_mode = false;
 
@@ -524,12 +579,26 @@ void TerrainWorldEditor::_on_insert_block_at_camera_button_pressed() {
 	Vector3 pos = cam->get_transform().origin;
 	selected_terrain = _selected_type + 1;
 
-	if (_channel_isolevel == -1) {
-		_world->set_voxel_at_world_position(pos, selected_terrain, channel);
-	} else {
-		_world->set_voxel_at_world_position(pos, selected_terrain, channel, false);
-		_world->set_voxel_at_world_position(pos, _add_remove_current_isolevel, _channel_isolevel);
+	_undo_redo->create_action("Insert terrain voxel at camera.");
+
+	uint8_t prev_terrain = _world->get_voxel_at_world_position(pos, _channel_type);
+	uint8_t prev_isolevel = 0;
+
+	if (_channel_isolevel != -1) {
+		prev_isolevel = _world->get_voxel_at_world_position(pos, _channel_isolevel);
 	}
+
+	if (_channel_isolevel == -1) {
+		_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, selected_terrain, channel);
+		_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_terrain, channel);
+	} else {
+		_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, selected_terrain, channel, false);
+		_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, _add_remove_current_isolevel, _channel_isolevel);
+		_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_terrain, channel, false);
+		_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_isolevel, _channel_isolevel);
+	}
+
+	_undo_redo->commit_action();
 }
 
 void TerrainWorldEditor::_on_add_remove_isolevel_slider_value_changed(float value) {

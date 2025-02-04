@@ -62,7 +62,7 @@ public:
 	EditorPlugin::AfterGUIInput forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event);
 
 	void edit(TerrainWorld *p_world);
-	EditorPlugin::AfterGUIInput do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click);
+	EditorPlugin::AfterGUIInput do_add_remove_action(Camera *p_camera, const Point2 &p_point, bool p_click);
 
 	TerrainWorldEditor();
 	TerrainWorldEditor(EditorNode *p_editor);
@@ -81,6 +81,10 @@ protected:
 	void _on_isolevel_brush_size_slider_changed(float value);
 	void _on_isolevel_brush_smoothness_slider_changed(float value);
 	void _on_isolevel_brush_channel_select_sb_changed(int value);
+
+private:
+	UndoRedo *_undo_redo;
+	bool _mouse_down;
 
 private:
 	//enum BrushType {
