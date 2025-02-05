@@ -78,6 +78,13 @@ public:
 protected:
 	Ref<TerrainWorldGizmo> get_gizmo_from(TerrainWorld *w);
 
+	// Used by UndoRedo
+	void apply_data(const Array &p_data);
+	void create_undo_point(const String &p_action, const int p_channel, const bool p_allow_create_chunks);
+	String _current_action;
+	HashMap<Vector2i, uint8_t> _original_data;
+	HashMap<Vector2i, uint8_t> _current_data;
+
 protected:
 	static void _bind_methods();
 	void _notification(int p_what);

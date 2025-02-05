@@ -178,6 +178,8 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 						if (get_draw_world_coordinate(p_camera, Point2(mb->get_position().x, mb->get_position().y), position, normal)) {
 							_mouse_down = true;
 
+							_current_action = "Isolevel Brush Draw";
+
 							isolevel_brush_draw(position);
 
 							_gizmo->visible = true;
@@ -199,6 +201,8 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 
 						if (get_draw_world_coordinate(p_camera, Point2(mb->get_position().x, mb->get_position().y), position, normal)) {
 							_mouse_down = true;
+
+							_current_action = "Paint Brush Draw";
 
 							paint_brush_draw(position);
 
@@ -226,7 +230,22 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 			}
 		} else {
 			if (mb->get_button_index() == BUTTON_LEFT) {
+				switch (_tool_mode) {
+					case TOOL_MODE_ADD:
+					case TOOL_MODE_REMOVE:
+						break;
+					case TOOL_MODE_ISOLEVEL_BRUSH: {
+						create_undo_point(_current_action, _isolevel_brush_channel, _isolevel_brush_allow_creating_chunks_button);
+					} break;
+					case TOOL_MODE_PAINT_BRUSH: {
+						create_undo_point(_current_action, _paint_brush_channel, _paint_brush_allow_creating_chunks_button);
+					} break;
+					case TOOL_MODE_PAINT_PICKER: {
+					} break;
+				}
+
 				_mouse_down = false;
+
 				return EditorPlugin::AFTER_GUI_INPUT_STOP;
 			}
 		}
@@ -356,8 +375,6 @@ void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
 	// Value will likely need more fine tuning.
 	float s = 10.0 * _isolevel_brush_strength;
 
-	_undo_redo->create_action("Isolevel Brush Draw");
-
 	// TODO use a proper circle drawing algorithm.
 	for (int x = -ilbh; x < ilbh; ++x) {
 		for (int y = -ilbh; y < ilbh; ++y) {
@@ -395,12 +412,15 @@ void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
 
 			uint8_t new_val = static_cast<uint8_t>(npil);
 
-			_undo_redo->add_do_method(_world, "set_voxel_at_world_data_position", vwp, new_val, _isolevel_brush_channel, true, _isolevel_brush_allow_create_chunks);
-			_undo_redo->add_undo_method(_world, "set_voxel_at_world_data_position", vwp, orig_val, _isolevel_brush_channel, true, _isolevel_brush_allow_create_chunks);
+			_world->set_voxel_at_world_data_position(vwp, new_val, _isolevel_brush_channel, true, _isolevel_brush_allow_create_chunks);
+
+			if (!_original_data.has(vwp)) {
+				_original_data[vwp] = orig_val;
+			}
+
+			_current_data[vwp] = new_val;
 		}
 	}
-
-	_undo_redo->commit_action();
 }
 
 void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
@@ -420,8 +440,6 @@ void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
 	selected_terrain = _selected_type + 1;
 	uint8_t new_val = static_cast<uint8_t>(selected_terrain);
 
-	_undo_redo->create_action("Paint Brush Draw");
-
 	// TODO use a proper circle drawing algorithm.
 	for (int x = -ilbh; x < ilbh; ++x) {
 		for (int y = -ilbh; y < ilbh; ++y) {
@@ -435,12 +453,15 @@ void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
 
 			uint8_t orig_val = _world->get_voxel_at_world_data_position(vwp, _paint_brush_channel);
 
-			_undo_redo->add_do_method(_world, "set_voxel_at_world_data_position", vwp, new_val, _paint_brush_channel, true, _paint_brush_allow_create_chunks);
-			_undo_redo->add_undo_method(_world, "set_voxel_at_world_data_position", vwp, orig_val, _paint_brush_channel, true, _paint_brush_allow_create_chunks);
+			_world->set_voxel_at_world_data_position(vwp, new_val, _paint_brush_channel, true, _paint_brush_allow_create_chunks);
+
+			if (!_original_data.has(vwp)) {
+				_original_data[vwp] = orig_val;
+			}
+
+			_current_data[vwp] = new_val;
 		}
 	}
-
-	_undo_redo->commit_action();
 }
 
 void TerrainWorldEditor::edit(TerrainWorld *p_world) {
@@ -892,6 +913,72 @@ Ref<TerrainWorldGizmo> TerrainWorldEditor::get_gizmo_from(TerrainWorld *w) {
 	return Ref<TerrainWorldGizmo>();
 }
 
+void TerrainWorldEditor::apply_data(const Array &p_data) {
+	ERR_FAIL_COND(p_data.size() != 4);
+
+	ObjectID wid = p_data[0];
+
+	TerrainWorld *world = Object::cast_to<TerrainWorld>(ObjectDB::get_instance(wid));
+
+	if (!world) {
+		return;
+	}
+
+	int channel = p_data[1];
+	bool allow_create_chunks = p_data[2];
+	Array data = p_data[3];
+
+	for (int i = 0; i < data.size(); i += 2) {
+		Vector2i pos = data[i];
+		uint8_t d = data[i + 1];
+
+		_world->set_voxel_at_world_data_position(pos, d, channel, true, allow_create_chunks);
+	}
+}
+
+void TerrainWorldEditor::create_undo_point(const String &p_action, const int p_channel, const bool p_allow_create_chunks) {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID wid = _world->get_instance_id();
+
+	Array arr_do;
+	arr_do.push_back(wid);
+	arr_do.push_back(p_channel);
+	arr_do.push_back(p_allow_create_chunks);
+
+	Array arr_undo;
+	arr_undo.push_back(wid);
+	arr_undo.push_back(p_channel);
+	arr_undo.push_back(p_allow_create_chunks);
+
+	Array arr_do_data;
+
+	for (HashMap<Vector2i, uint8_t>::Element *E = _current_data.front(); E; E = E->next) {
+		arr_do_data.push_back(E->key());
+		arr_do_data.push_back(E->value());
+	}
+
+	Array arr_undo_data;
+
+	for (HashMap<Vector2i, uint8_t>::Element *E = _original_data.front(); E; E = E->next) {
+		arr_undo_data.push_back(E->key());
+		arr_undo_data.push_back(E->value());
+	}
+
+	arr_do.push_back(arr_do_data);
+	arr_undo.push_back(arr_undo_data);
+
+	_undo_redo->create_action(p_action);
+	_undo_redo->add_do_method(this, "apply_data", arr_do);
+	_undo_redo->add_undo_method(this, "apply_data", arr_undo);
+	_undo_redo->commit_action();
+
+	_original_data.clear();
+	_current_data.clear();
+}
+
 void TerrainWorldEditor::_on_surface_button_pressed() {
 	BaseButton *button = _surfaces_button_group->get_pressed_button();
 
@@ -1040,6 +1127,7 @@ void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_on_paint_brush_allow_creating_chunks_selected", &TerrainWorldEditor::_on_paint_brush_allow_creating_chunks_selected);
 	ClassDB::bind_method("_on_paint_brush_size_slider_changed", &TerrainWorldEditor::_on_paint_brush_size_slider_changed);
 	ClassDB::bind_method("_on_paint_brush_channel_select_sb_changed", &TerrainWorldEditor::_on_paint_brush_channel_select_sb_changed);
+	ClassDB::bind_method("apply_data", &TerrainWorldEditor::apply_data);
 }
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {
