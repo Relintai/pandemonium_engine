@@ -38,7 +38,7 @@
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 
-#include "modules/terraman/editor/terraman_gizmo_plugin.h"
+#include "terrain_world_gizmo_plugin.h"
 
 #include "../world/terrain_world.h"
 #include "scene/gui/box_container.h"

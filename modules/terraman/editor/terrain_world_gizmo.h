@@ -2,7 +2,7 @@
 #define TERRAMAN_GIZMO_H
 
 /*************************************************************************/
-/*  terraman_gizmo.h                                                     */
+/*  terrain_world_gizmo.h                                                */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -34,8 +34,6 @@
 
 #include "editor/spatial_editor_gizmos.h"
 
-#include "core/variant/variant.h"
-
 class Camera;
 class MeshDataResource;
 class MDREDMeshOutline;
@@ -43,8 +41,8 @@ class InputEvent;
 class EditorPlugin;
 class UndoRedo;
 
-class TerramanGizmo : public EditorSpatialGizmo {
-	GDCLASS(TerramanGizmo, EditorSpatialGizmo);
+class TerrainWorldGizmo : public EditorSpatialGizmo {
+	GDCLASS(TerrainWorldGizmo, EditorSpatialGizmo);
 
 public:
 	void set_visible(const bool visible);
@@ -55,8 +53,8 @@ public:
 	void redraw();
 	void apply();
 
-	TerramanGizmo();
-	~TerramanGizmo();
+	TerrainWorldGizmo();
+	~TerrainWorldGizmo();
 
 	PoolVector3Array _vertices;
 	PoolIntArray _indices;

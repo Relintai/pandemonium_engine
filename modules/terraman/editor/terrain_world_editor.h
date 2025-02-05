@@ -43,7 +43,7 @@ class HSlider;
 class BoxContainer;
 class HFlowContainer;
 class SpinBox;
-class TerramanGizmoPlugin;
+class TerrainWorldGizmoPlugin;
 
 class TerrainWorldEditor : public PanelContainer {
 	GDCLASS(TerrainWorldEditor, PanelContainer);
@@ -183,7 +183,7 @@ class TerrainWorldEditorPlugin : public EditorPlugin {
 
 	TerrainWorldEditor *terrain_world_editor;
 	EditorNode *editor;
-	Ref<TerramanGizmoPlugin> gizmo_plugin;
+	Ref<TerrainWorldGizmoPlugin> gizmo_plugin;
 
 protected:
 	void _notification(int p_what);

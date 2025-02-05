@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  terrmana_gizmo_plugin.cpp                                            */
+/*  terrain_world_gizmo.cpp                                              */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,48 +29,72 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "terraman_gizmo_plugin.h"
+#include "terrain_world_gizmo.h"
 
-#include "../world/terrain_world.h"
-#include "terrain_world_editor.h"
-#include "terraman_gizmo.h"
+#include "editor/editor_node.h"
+#include "scene/3d/camera.h"
 
-String TerramanGizmoPlugin::get_gizmo_name() const {
-	return "TerramanGizmo";
-}
-int TerramanGizmoPlugin::get_priority() const {
-	return 100;
-}
-bool TerramanGizmoPlugin::is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_idx, bool p_secondary) const {
-	return EditorSpatialGizmoPlugin::is_handle_highlighted(p_gizmo, p_idx, p_secondary);
+void TerrainWorldGizmo::set_visible(const bool visible) {
+	_visible = visible;
+	redraw();
 }
 
-Ref<EditorSpatialGizmo> TerramanGizmoPlugin::create_gizmo(Spatial *p_spatial) {
-	TerrainWorld *world = Object::cast_to<TerrainWorld>(p_spatial);
+void TerrainWorldGizmo::set_editor_plugin(EditorPlugin *editor_plugin) {
+	_editor_plugin = editor_plugin;
 
-	if (world) {
-		Ref<TerramanGizmo> gizmo;
-		gizmo.instance();
+	_undo_redo = EditorNode::get_undo_redo();
+}
 
-		gizmo->set_editor_plugin(plugin);
-		gizmo->set_spatial_node(p_spatial);
+void TerrainWorldGizmo::set_handle(int index, bool secondary, Camera *camera, const Point2 &point) {
+}
 
-		return gizmo;
-	} else {
-		return Ref<EditorSpatialGizmo>();
+void TerrainWorldGizmo::redraw() {
+	clear();
+
+	if (!_visible) {
+		return;
 	}
+
+	if (!get_plugin().is_valid()) {
+		return;
+	}
+	/*
+
+	Ref<SpatialMaterial> handles_material = get_plugin()->get_material("handles", Ref<EditorSpatialGizmo>(this));
+	Ref<SpatialMaterial> material = get_plugin()->get_material("main", Ref<EditorSpatialGizmo>(this));
+	Ref<SpatialMaterial> seam_material = get_plugin()->get_material("seam", Ref<EditorSpatialGizmo>(this));
+
+	_mesh_outline_generator->setup(_mdr);
+
+	if (selection_mode == SELECTION_MODE_EDGE) {
+		_mesh_outline_generator->generate_mark_edges(visual_indicator_outline, visual_indicator_handle);
+	} else if (selection_mode == SELECTION_MODE_FACE) {
+		_mesh_outline_generator->generate_mark_faces(visual_indicator_outline, visual_indicator_handle);
+	} else {
+		_mesh_outline_generator->generate(visual_indicator_outline, visual_indicator_handle);
+	}
+
+	if (visual_indicator_outline || visual_indicator_handle) {
+		add_lines(_mesh_outline_generator->lines, material, false);
+	}
+
+	if (visual_indicator_seam) {
+		add_lines(_mesh_outline_generator->seam_lines, seam_material, false);
+	}
+	*/
+}
+void TerrainWorldGizmo::apply() {
 }
 
-TerramanGizmoPlugin::TerramanGizmoPlugin() {
-	plugin = nullptr;
+TerrainWorldGizmo::TerrainWorldGizmo() {
+	_editor_plugin = nullptr;
+	_undo_redo = nullptr;
 
-	create_material("main", Color(0.7, 0.7, 0.7));
-	create_material("seam", Color(1, 0, 0), false, true);
-	create_handle_material("handles");
+	_visible = false;
 }
 
-TerramanGizmoPlugin::~TerramanGizmoPlugin() {
+TerrainWorldGizmo::~TerrainWorldGizmo() {
 }
 
-void TerramanGizmoPlugin::_bind_methods() {
+void TerrainWorldGizmo::_bind_methods() {
 }

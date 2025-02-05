@@ -1,5 +1,8 @@
+#ifndef TERRAMAN_GIZMO_PLUGIN_H
+#define TERRAMAN_GIZMO_PLUGIN_H
+
 /*************************************************************************/
-/*  terraman_gizmo.cpp                                                   */
+/*  terrain_world_gizmo_plugin.h                                         */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,73 +32,27 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "terraman_gizmo.h"
+#include "editor/spatial_editor_gizmos.h"
 
-#include "editor/editor_node.h"
-#include "editor/editor_settings.h"
-#include "scene/3d/camera.h"
+class TerrainWorldEditorPlugin;
 
-void TerramanGizmo::set_visible(const bool visible) {
-	_visible = visible;
-	redraw();
-}
+class TerrainWorldGizmoPlugin : public EditorSpatialGizmoPlugin {
+	GDCLASS(TerrainWorldGizmoPlugin, EditorSpatialGizmoPlugin);
 
-void TerramanGizmo::set_editor_plugin(EditorPlugin *editor_plugin) {
-	_editor_plugin = editor_plugin;
+public:
+	void _init();
+	String get_gizmo_name() const;
+	int get_priority() const;
+	bool is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_idx, bool p_secondary) const;
 
-	_undo_redo = EditorNode::get_undo_redo();
-}
+	TerrainWorldGizmoPlugin();
+	~TerrainWorldGizmoPlugin();
 
-void TerramanGizmo::set_handle(int index, bool secondary, Camera *camera, const Point2 &point) {
-}
+	TerrainWorldEditorPlugin *plugin;
 
-void TerramanGizmo::redraw() {
-	clear();
+protected:
+	Ref<EditorSpatialGizmo> create_gizmo(Spatial *p_spatial);
+	static void _bind_methods();
+};
 
-	if (!_visible) {
-		return;
-	}
-
-	if (!get_plugin().is_valid()) {
-		return;
-	}
-	/*
-
-	Ref<SpatialMaterial> handles_material = get_plugin()->get_material("handles", Ref<EditorSpatialGizmo>(this));
-	Ref<SpatialMaterial> material = get_plugin()->get_material("main", Ref<EditorSpatialGizmo>(this));
-	Ref<SpatialMaterial> seam_material = get_plugin()->get_material("seam", Ref<EditorSpatialGizmo>(this));
-
-	_mesh_outline_generator->setup(_mdr);
-
-	if (selection_mode == SELECTION_MODE_EDGE) {
-		_mesh_outline_generator->generate_mark_edges(visual_indicator_outline, visual_indicator_handle);
-	} else if (selection_mode == SELECTION_MODE_FACE) {
-		_mesh_outline_generator->generate_mark_faces(visual_indicator_outline, visual_indicator_handle);
-	} else {
-		_mesh_outline_generator->generate(visual_indicator_outline, visual_indicator_handle);
-	}
-
-	if (visual_indicator_outline || visual_indicator_handle) {
-		add_lines(_mesh_outline_generator->lines, material, false);
-	}
-
-	if (visual_indicator_seam) {
-		add_lines(_mesh_outline_generator->seam_lines, seam_material, false);
-	}
-	*/
-}
-void TerramanGizmo::apply() {
-}
-
-TerramanGizmo::TerramanGizmo() {
-	_editor_plugin = nullptr;
-	_undo_redo = nullptr;
-
-	_visible = false;
-}
-
-TerramanGizmo::~TerramanGizmo() {
-}
-
-void TerramanGizmo::_bind_methods() {
-}
+#endif

@@ -1,8 +1,5 @@
-#ifndef TERRAMAN_GIZMO_PLUGIN_H
-#define TERRAMAN_GIZMO_PLUGIN_H
-
 /*************************************************************************/
-/*  terraman_gizmo_plugin.h                                              */
+/*  terrain_world_gizmo_plugin.cpp                                       */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,27 +29,48 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/spatial_editor_gizmos.h"
+#include "terrain_world_gizmo_plugin.h"
 
-class TerrainWorldEditorPlugin;
+#include "../world/terrain_world.h"
+#include "terrain_world_editor.h"
+#include "terrain_world_gizmo.h"
 
-class TerramanGizmoPlugin : public EditorSpatialGizmoPlugin {
-	GDCLASS(TerramanGizmoPlugin, EditorSpatialGizmoPlugin);
+String TerrainWorldGizmoPlugin::get_gizmo_name() const {
+	return "TerrainWorldGizmo";
+}
+int TerrainWorldGizmoPlugin::get_priority() const {
+	return 100;
+}
+bool TerrainWorldGizmoPlugin::is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_idx, bool p_secondary) const {
+	return EditorSpatialGizmoPlugin::is_handle_highlighted(p_gizmo, p_idx, p_secondary);
+}
 
-public:
-	void _init();
-	String get_gizmo_name() const;
-	int get_priority() const;
-	bool is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_idx, bool p_secondary) const;
+Ref<EditorSpatialGizmo> TerrainWorldGizmoPlugin::create_gizmo(Spatial *p_spatial) {
+	TerrainWorld *world = Object::cast_to<TerrainWorld>(p_spatial);
 
-	TerramanGizmoPlugin();
-	~TerramanGizmoPlugin();
+	if (world) {
+		Ref<TerrainWorldGizmo> gizmo;
+		gizmo.instance();
 
-	TerrainWorldEditorPlugin *plugin;
+		gizmo->set_editor_plugin(plugin);
+		gizmo->set_spatial_node(p_spatial);
 
-protected:
-	Ref<EditorSpatialGizmo> create_gizmo(Spatial *p_spatial);
-	static void _bind_methods();
-};
+		return gizmo;
+	} else {
+		return Ref<EditorSpatialGizmo>();
+	}
+}
 
-#endif
+TerrainWorldGizmoPlugin::TerrainWorldGizmoPlugin() {
+	plugin = nullptr;
+
+	create_material("main", Color(0.7, 0.7, 0.7));
+	create_material("seam", Color(1, 0, 0), false, true);
+	create_handle_material("handles");
+}
+
+TerrainWorldGizmoPlugin::~TerrainWorldGizmoPlugin() {
+}
+
+void TerrainWorldGizmoPlugin::_bind_methods() {
+}
