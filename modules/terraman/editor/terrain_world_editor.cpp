@@ -38,6 +38,7 @@
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 
+#include "terrain_world_gizmo.h"
 #include "terrain_world_gizmo_plugin.h"
 
 #include "../world/terrain_world.h"
@@ -79,6 +80,42 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 
 	if (mm.is_valid()) {
 		if (!_mouse_down) {
+			switch (_tool_mode) {
+				case TOOL_MODE_ADD:
+				case TOOL_MODE_REMOVE: {
+				} break;
+				case TOOL_MODE_ISOLEVEL_BRUSH: {
+					Vector3 position;
+					Vector3 normal;
+
+					if (get_draw_world_coordinate(p_camera, Point2(mm->get_position().x, mm->get_position().y), position, normal)) {
+						_gizmo->visible = true;
+						_gizmo->drawing = false;
+						_gizmo->position = position;
+						_gizmo->refresh_lines(_world);
+					} else {
+						_gizmo->visible = false;
+						_gizmo->redraw();
+					}
+				} break;
+				case TOOL_MODE_PAINT_BRUSH: {
+					Vector3 position;
+					Vector3 normal;
+
+					if (get_draw_world_coordinate(p_camera, Point2(mm->get_position().x, mm->get_position().y), position, normal)) {
+						_gizmo->visible = true;
+						_gizmo->drawing = false;
+						_gizmo->position = position;
+						_gizmo->refresh_lines(_world);
+					} else {
+						_gizmo->visible = false;
+						_gizmo->redraw();
+					}
+				} break;
+				case TOOL_MODE_PAINT_PICKER: {
+				} break;
+			}
+
 			return EditorPlugin::AFTER_GUI_INPUT_PASS;
 		}
 
@@ -92,6 +129,14 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 
 				if (get_draw_world_coordinate(p_camera, Point2(mm->get_position().x, mm->get_position().y), position, normal)) {
 					isolevel_brush_draw(position);
+
+					_gizmo->visible = true;
+					_gizmo->drawing = true;
+					_gizmo->position = position;
+					_gizmo->refresh_lines(_world);
+				} else {
+					_gizmo->visible = false;
+					_gizmo->redraw();
 				}
 			} break;
 			case TOOL_MODE_PAINT_BRUSH: {
@@ -100,6 +145,14 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 
 				if (get_draw_world_coordinate(p_camera, Point2(mm->get_position().x, mm->get_position().y), position, normal)) {
 					paint_brush_draw(position);
+
+					_gizmo->visible = true;
+					_gizmo->drawing = true;
+					_gizmo->position = position;
+					_gizmo->refresh_lines(_world);
+				} else {
+					_gizmo->visible = false;
+					_gizmo->redraw();
 				}
 			} break;
 			case TOOL_MODE_PAINT_PICKER: {
@@ -127,8 +180,16 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 
 							isolevel_brush_draw(position);
 
+							_gizmo->visible = true;
+							_gizmo->drawing = true;
+							_gizmo->position = position;
+							_gizmo->refresh_lines(_world);
+
 							return EditorPlugin::AFTER_GUI_INPUT_STOP;
 						} else {
+							_gizmo->visible = false;
+							_gizmo->redraw();
+
 							return EditorPlugin::AFTER_GUI_INPUT_PASS;
 						}
 					} break;
@@ -141,8 +202,16 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 
 							paint_brush_draw(position);
 
+							_gizmo->visible = true;
+							_gizmo->drawing = true;
+							_gizmo->position = position;
+							_gizmo->refresh_lines(_world);
+
 							return EditorPlugin::AFTER_GUI_INPUT_STOP;
 						} else {
+							_gizmo->visible = false;
+							_gizmo->redraw();
+
 							return EditorPlugin::AFTER_GUI_INPUT_PASS;
 						}
 
@@ -379,11 +448,18 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 		return;
 	}
 
+	if (_gizmo.is_valid()) {
+		_gizmo->visible = false;
+		_gizmo->redraw();
+	}
+
 	_world = p_world;
 
 	if (!_world) {
 		return;
 	}
+
+	_gizmo = get_gizmo_from(_world);
 
 	_channel_type = _world->get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_TYPE);
 	_channel_isolevel = _world->get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_ISOLEVEL);
@@ -794,7 +870,26 @@ void TerrainWorldEditor::_notification(int p_what) {
 void TerrainWorldEditor::_node_removed(Node *p_node) {
 	if (p_node == _world) {
 		_world = NULL;
+		_gizmo.unref();
 	}
+}
+
+Ref<TerrainWorldGizmo> TerrainWorldEditor::get_gizmo_from(TerrainWorld *w) {
+	if (!w) {
+		return Ref<TerrainWorldGizmo>();
+	}
+
+	Vector<Ref<SpatialGizmo>> gizmos = w->get_gizmos();
+
+	for (int i = 0; i < gizmos.size(); ++i) {
+		Ref<TerrainWorldGizmo> g = gizmos[i];
+
+		if (g.is_valid()) {
+			return g;
+		}
+	}
+
+	return Ref<TerrainWorldGizmo>();
 }
 
 void TerrainWorldEditor::_on_surface_button_pressed() {
@@ -807,6 +902,9 @@ void TerrainWorldEditor::_on_surface_button_pressed() {
 
 void TerrainWorldEditor::_on_tool_button_pressed() {
 	BaseButton *button = _tool_button_group->get_pressed_button();
+
+	_gizmo->visible = false;
+	_gizmo->redraw();
 
 	if (button) {
 		_previous_tool_mode = _tool_mode;
@@ -821,11 +919,13 @@ void TerrainWorldEditor::_on_tool_button_pressed() {
 			_paint_brush_tool_container->hide();
 			break;
 		case TOOL_MODE_PAINT_BRUSH:
+			_gizmo->size = _paint_brush_size;
 			_add_remove_tool_container->hide();
 			_isolevel_brush_tool_container->hide();
 			_paint_brush_tool_container->show();
 			break;
 		case TOOL_MODE_ISOLEVEL_BRUSH:
+			_gizmo->size = _isolevel_brush_size;
 			_add_remove_tool_container->hide();
 			_isolevel_brush_tool_container->show();
 			_paint_brush_tool_container->hide();
@@ -956,6 +1056,12 @@ void TerrainWorldEditorPlugin::_notification(int p_what) {
 }
 
 void TerrainWorldEditorPlugin::edit(Object *p_object) {
+	TerrainWorld *ow = terrain_world_editor->get_edited_world();
+
+	if (p_object == ow) {
+		return;
+	}
+
 	terrain_world_editor->edit(Object::cast_to<TerrainWorld>(p_object));
 }
 

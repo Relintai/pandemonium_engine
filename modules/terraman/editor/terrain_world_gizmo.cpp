@@ -31,13 +31,14 @@
 
 #include "terrain_world_gizmo.h"
 
+#include "core/math/math_defs.h"
 #include "editor/editor_node.h"
 #include "scene/3d/camera.h"
+#include "scene/main/world.h"
+#include "scene/resources/world_3d.h"
+#include "servers/physics_server.h"
 
-void TerrainWorldGizmo::set_visible(const bool visible) {
-	_visible = visible;
-	redraw();
-}
+#include "../world/terrain_world.h"
 
 void TerrainWorldGizmo::set_editor_plugin(EditorPlugin *editor_plugin) {
 	_editor_plugin = editor_plugin;
@@ -51,46 +52,85 @@ void TerrainWorldGizmo::set_handle(int index, bool secondary, Camera *camera, co
 void TerrainWorldGizmo::redraw() {
 	clear();
 
-	if (!_visible) {
+	if (!visible) {
 		return;
 	}
 
 	if (!get_plugin().is_valid()) {
 		return;
 	}
-	/*
 
-	Ref<SpatialMaterial> handles_material = get_plugin()->get_material("handles", Ref<EditorSpatialGizmo>(this));
-	Ref<SpatialMaterial> material = get_plugin()->get_material("main", Ref<EditorSpatialGizmo>(this));
-	Ref<SpatialMaterial> seam_material = get_plugin()->get_material("seam", Ref<EditorSpatialGizmo>(this));
+	if (_lines.size() == 0) {
+		return;
+	}
 
-	_mesh_outline_generator->setup(_mdr);
+	Ref<SpatialMaterial> material;
 
-	if (selection_mode == SELECTION_MODE_EDGE) {
-		_mesh_outline_generator->generate_mark_edges(visual_indicator_outline, visual_indicator_handle);
-	} else if (selection_mode == SELECTION_MODE_FACE) {
-		_mesh_outline_generator->generate_mark_faces(visual_indicator_outline, visual_indicator_handle);
+	if (drawing) {
+		material = get_plugin()->get_material("drawing", Ref<EditorSpatialGizmo>(this));
 	} else {
-		_mesh_outline_generator->generate(visual_indicator_outline, visual_indicator_handle);
+		material = get_plugin()->get_material("main", Ref<EditorSpatialGizmo>(this));
 	}
 
-	if (visual_indicator_outline || visual_indicator_handle) {
-		add_lines(_mesh_outline_generator->lines, material, false);
-	}
-
-	if (visual_indicator_seam) {
-		add_lines(_mesh_outline_generator->seam_lines, seam_material, false);
-	}
-	*/
+	add_lines(_lines, material);
 }
 void TerrainWorldGizmo::apply() {
+}
+
+void TerrainWorldGizmo::refresh_lines(TerrainWorld *world) {
+	//Transform local_xform = world->get_global_transform().affine_inverse();
+
+	PhysicsDirectSpaceState *ss = world->get_world_3d()->get_direct_space_state();
+
+	Vector3 from;
+	Vector3 to;
+	PhysicsDirectSpaceState::RayResult res;
+
+	_lines.clear();
+	_points.clear();
+
+	float voxel_scale = world->get_voxel_scale();
+	Vector3 vsv = Vector3(voxel_scale, voxel_scale, voxel_scale);
+
+	for (int i = 0; i < 10; ++i) {
+		from = Vector3(Math::sin((Math_PI * 2.0 / 10.0) * (float)i) * size, 1000, Math::cos((Math_PI * 2.0 / 10.0) * (float)i) * size) * vsv;
+		to = Vector3(from.x, -from.y, from.z);
+
+		from += position;
+		to += position;
+
+		//from = local_xform.xform(from);
+		//to = local_xform.xform(to);
+
+		Vector3 p;
+
+		if (ss->intersect_ray(from, to, res)) {
+			p = res.position + res.normal.limit_length(0.1);
+		} else {
+			p = Vector3(from.x, 0, from.z);
+		}
+
+		_points.push_back(p);
+	}
+
+	for (int i = 1; i < _points.size(); ++i) {
+		_lines.push_back(_points[i - 1]);
+		_lines.push_back(_points[i]);
+	}
+
+	_lines.push_back(_points[_points.size() - 1]);
+	_lines.push_back(_points[0]);
+
+	redraw();
 }
 
 TerrainWorldGizmo::TerrainWorldGizmo() {
 	_editor_plugin = nullptr;
 	_undo_redo = nullptr;
 
-	_visible = false;
+	visible = false;
+	drawing = false;
+	size = 10;
 }
 
 TerrainWorldGizmo::~TerrainWorldGizmo() {

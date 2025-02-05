@@ -37,6 +37,7 @@
 
 #include "scene/gui/panel_container.h"
 
+class TerrainWorldGizmo;
 class TerrainWorld;
 class SpatialEditorPlugin;
 class HSlider;
@@ -60,6 +61,8 @@ public:
 	};
 
 public:
+	TerrainWorld *get_edited_world() { return _world; }
+
 	EditorPlugin::AfterGUIInput forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event);
 
 	void edit(TerrainWorld *p_world);
@@ -71,6 +74,9 @@ public:
 	TerrainWorldEditor();
 	TerrainWorldEditor(EditorNode *p_editor);
 	~TerrainWorldEditor();
+
+protected:
+	Ref<TerrainWorldGizmo> get_gizmo_from(TerrainWorld *w);
 
 protected:
 	static void _bind_methods();
@@ -128,6 +134,7 @@ private:
 
 private:
 	TerrainWorld *_world;
+	Ref<TerrainWorldGizmo> _gizmo;
 
 	int _selected_type;
 

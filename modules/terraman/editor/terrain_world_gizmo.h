@@ -40,12 +40,16 @@ class MDREDMeshOutline;
 class InputEvent;
 class EditorPlugin;
 class UndoRedo;
+class TerrainWorld;
 
 class TerrainWorldGizmo : public EditorSpatialGizmo {
 	GDCLASS(TerrainWorldGizmo, EditorSpatialGizmo);
 
 public:
-	void set_visible(const bool visible);
+	bool visible;
+	bool drawing;
+	Vector3 position;
+	float size;
 
 	void set_editor_plugin(EditorPlugin *editor_plugin);
 
@@ -53,19 +57,19 @@ public:
 	void redraw();
 	void apply();
 
+	void refresh_lines(TerrainWorld *world);
+
 	TerrainWorldGizmo();
 	~TerrainWorldGizmo();
-
-	PoolVector3Array _vertices;
-	PoolIntArray _indices;
 
 	EditorPlugin *_editor_plugin;
 	UndoRedo *_undo_redo;
 
-	bool _visible;
-
 protected:
 	static void _bind_methods();
+
+	Vector<Vector3> _points;
+	Vector<Vector3> _lines;
 };
 
 #endif

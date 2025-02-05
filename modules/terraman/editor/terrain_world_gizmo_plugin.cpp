@@ -65,8 +65,7 @@ TerrainWorldGizmoPlugin::TerrainWorldGizmoPlugin() {
 	plugin = nullptr;
 
 	create_material("main", Color(0.7, 0.7, 0.7));
-	create_material("seam", Color(1, 0, 0), false, true);
-	create_handle_material("handles");
+	create_material("drawing", Color(1, 0, 0));
 }
 
 TerrainWorldGizmoPlugin::~TerrainWorldGizmoPlugin() {
