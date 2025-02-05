@@ -38,10 +38,12 @@
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 
+#include "modules/terraman/editor/terraman_gizmo_plugin.h"
+
+#include "../world/terrain_world.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/flow_container.h"
 #include "scene/main/control.h"
-#include "../world/terrain_world.h"
 
 #include "core/os/keyboard.h"
 
@@ -980,6 +982,11 @@ void TerrainWorldEditorPlugin::make_visible(bool p_visible) {
 
 TerrainWorldEditorPlugin::TerrainWorldEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
+
+	gizmo_plugin.instance();
+	gizmo_plugin->plugin = this;
+
+	add_spatial_gizmo_plugin(gizmo_plugin);
 
 	EDITOR_DEF("editors/terrain/editor_side", 1);
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "editors/terrain/editor_side", PROPERTY_HINT_ENUM, "Left,Right"));

@@ -49,6 +49,8 @@ sources = [
 
 if env["tools"]:
     sources.append("editor/terrain_world_editor.cpp")
+    sources.append("editor/terraman_gizmo.cpp")
+    sources.append("editor/terraman_gizmo_plugin.cpp")
 
 if env["module_texture_packer_enabled"]:
     sources.append("library/terrain_library_merger.cpp")
