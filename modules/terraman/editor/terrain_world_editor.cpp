@@ -482,6 +482,20 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 
 	_gizmo = get_gizmo_from(_world);
 
+	switch (_tool_mode) {
+		case TOOL_MODE_ADD:
+		case TOOL_MODE_REMOVE:
+			break;
+		case TOOL_MODE_ISOLEVEL_BRUSH: {
+			_gizmo->size = _isolevel_brush_size;
+		} break;
+		case TOOL_MODE_PAINT_BRUSH: {
+			_gizmo->size = _paint_brush_size;
+		} break;
+		case TOOL_MODE_PAINT_PICKER: {
+		} break;
+	}
+
 	_channel_type = _world->get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_TYPE);
 	_channel_isolevel = _world->get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_ISOLEVEL);
 
@@ -1085,6 +1099,10 @@ void TerrainWorldEditor::_on_isolevel_brush_tool_button_pressed() {
 
 void TerrainWorldEditor::_on_isolevel_brush_size_slider_changed(float value) {
 	_isolevel_brush_size = value;
+
+	if (_gizmo.is_valid()) {
+		_gizmo->size = _isolevel_brush_size;
+	}
 }
 void TerrainWorldEditor::_on_isolevel_brush_strength_slider_changed(float value) {
 	_isolevel_brush_strength = value;
@@ -1106,6 +1124,10 @@ void TerrainWorldEditor::_on_paint_brush_allow_creating_chunks_selected() {
 }
 void TerrainWorldEditor::_on_paint_brush_size_slider_changed(float value) {
 	_paint_brush_size = value;
+
+	if (_gizmo.is_valid()) {
+		_gizmo->size = _paint_brush_size;
+	}
 }
 void TerrainWorldEditor::_on_paint_brush_channel_select_sb_changed(int value) {
 	_paint_brush_channel = value;
@@ -1194,7 +1216,8 @@ TerrainWorldEditorPlugin::TerrainWorldEditorPlugin(EditorNode *p_node) {
 			add_control_to_container(CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, terrain_world_editor);
 		} break;
 	}
-	make_visible(false);
+
+	TerrainWorldEditorPlugin::make_visible(false);
 }
 
 TerrainWorldEditorPlugin::~TerrainWorldEditorPlugin() {
