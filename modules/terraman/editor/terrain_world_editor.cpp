@@ -41,11 +41,11 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/flow_container.h"
 #include "scene/main/control.h"
-#include "terrain_world.h"
+#include "../world/terrain_world.h"
 
 #include "core/os/keyboard.h"
 
-#include "terrain_chunk.h"
+#include "../world/terrain_chunk.h"
 
 #include "../library/terrain_library.h"
 #include "../library/terrain_surface.h"

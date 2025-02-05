@@ -64,7 +64,9 @@
 
 #include "areas/terrain_world_area.h"
 
-#include "world/terrain_world_editor.h"
+#ifdef TOOLS_ENABLED
+#include "editor/terrain_world_editor.h"
+#endif
 
 #include "meshers/blocky/terrain_mesher_blocky.h"
 
