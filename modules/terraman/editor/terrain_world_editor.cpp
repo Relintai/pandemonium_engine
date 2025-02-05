@@ -482,6 +482,10 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 
 	_gizmo = get_gizmo_from(_world);
 
+	if (!_gizmo.is_valid()) {
+		return;
+	}
+
 	switch (_tool_mode) {
 		case TOOL_MODE_ADD:
 		case TOOL_MODE_REMOVE:
