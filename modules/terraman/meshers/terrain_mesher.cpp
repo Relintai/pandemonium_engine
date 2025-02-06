@@ -290,8 +290,9 @@ void TerrainMesher::build_mesh_into(RID mesh) {
 
 	RS::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 
-	if (_material.is_valid())
+	if (_material.is_valid()) {
 		RS::get_singleton()->mesh_surface_set_material(mesh, 0, _library->material_lod_get(0)->get_rid());
+	}
 }
 
 void TerrainMesher::generate_normals(bool p_flip) {
