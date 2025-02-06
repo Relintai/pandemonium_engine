@@ -331,17 +331,6 @@ void TerrainTerrainJob::phase_terrain_mesh() {
 			//allocate
 			if (count > 0)
 				chunk->meshes_create(TerrainChunkDefault::MESH_INDEX_TERRAIN, count);
-
-		} else {
-			//we have the meshes, just clear
-			int count = chunk->mesh_rid_get_count(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH);
-
-			for (int i = 0; i < count; ++i) {
-				mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, i);
-
-				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-					RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-			}
 		}
 	}
 
@@ -399,12 +388,13 @@ void TerrainTerrainJob::phase_terrain_mesh() {
 				mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_LIQUID, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, 0);
 			}
 
-			if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-				RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-
 			if (should_return()) {
 				return;
 			}
+		}
+
+		if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+			RS::get_singleton()->mesh_clear(mesh_rid);
 		}
 
 		RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
@@ -506,6 +496,10 @@ void TerrainTerrainJob::step_type_normal() {
 
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
+
 	RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
@@ -543,6 +537,10 @@ void TerrainTerrainJob::step_type_normal_lod() {
 
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
+
 	RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
@@ -567,6 +565,10 @@ void TerrainTerrainJob::step_type_drop_uv2() {
 
 	temp_mesh_arr[RenderingServer::ARRAY_TEX_UV2] = Variant();
 
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
+
 	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
@@ -590,6 +592,10 @@ void TerrainTerrainJob::step_type_merge_verts() {
 
 	Ref<TerrainChunkDefault> chunk = _chunk;
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
+
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
 
 	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
@@ -635,6 +641,10 @@ void TerrainTerrainJob::step_type_bake_texture() {
 
 		RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
+		if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+			RS::get_singleton()->mesh_clear(mesh_rid);
+		}
+
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 		if (lmat.is_valid()) {
@@ -661,6 +671,10 @@ void TerrainTerrainJob::step_type_simplify_mesh() {
 		temp_mesh_arr = fqms->get_arrays();
 
 		RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
+
+		if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+			RS::get_singleton()->mesh_clear(mesh_rid);
+		}
 
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
