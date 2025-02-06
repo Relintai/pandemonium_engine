@@ -31,6 +31,8 @@
 
 #include "terrain_world.h"
 
+#include "core/containers/hash_set.h"
+
 #include "core/object/message_queue.h"
 #include "terrain_chunk.h"
 #include "terrain_structure.h"
@@ -1035,6 +1037,120 @@ Ref<TerrainChunk> TerrainWorld::get_or_create_chunk_at_world_data_position(const
 	return chunk_get_or_create(x, z);
 }
 
+void TerrainWorld::set_voxels_at_world_data_position(const Array &p_data, const int p_channel_index, const bool p_immediate_build, const bool p_allow_creating_chunks) {
+	ERR_FAIL_COND(p_data.size() % 2 != 0);
+
+	// TODO rework this so it works directly with ints.
+
+	HashSet<Ref<TerrainChunk>> chunks_to_rebuild;
+
+	for (int i = 0; i < p_data.size(); i += 2) {
+		Vector2i world_data_position = p_data[i];
+		uint8_t value = p_data[i + 1];
+
+		Vector2 pos = world_data_position;
+
+		//Note: floor is needed to handle negative numbers properly
+		int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+		int z = static_cast<int>(Math::floor(pos.y / get_chunk_size_z()));
+
+		int bx = static_cast<int>(Math::floor(pos.x)) % get_chunk_size_x();
+		int bz = static_cast<int>(Math::floor(pos.y)) % get_chunk_size_z();
+
+		if (bx < 0) {
+			bx += get_chunk_size_x();
+		}
+
+		if (bz < 0) {
+			bz += get_chunk_size_z();
+		}
+
+		Ref<TerrainChunk> chunk;
+
+		if (get_data_margin_end() > 0) {
+			if (bx == 0) {
+				if (p_allow_creating_chunks) {
+					chunk = chunk_get_or_create(x - 1, z);
+				} else {
+					chunk = chunk_get(x - 1, z);
+				}
+
+				if (chunk.is_valid()) {
+					chunk->set_voxel(value, get_chunk_size_x(), bz, p_channel_index);
+
+					chunks_to_rebuild.insert(chunk);
+				}
+			}
+
+			if (bz == 0) {
+				if (p_allow_creating_chunks) {
+					chunk = chunk_get_or_create(x, z - 1);
+				} else {
+					chunk = chunk_get(x, z - 1);
+				}
+
+				if (chunk.is_valid()) {
+					chunk->set_voxel(value, bx, get_chunk_size_z(), p_channel_index);
+
+					chunks_to_rebuild.insert(chunk);
+				}
+			}
+		}
+
+		if (get_data_margin_start() > 0) {
+			if (bx == get_chunk_size_x() - 1) {
+				if (p_allow_creating_chunks) {
+					chunk = chunk_get_or_create(x + 1, z);
+				} else {
+					chunk = chunk_get(x + 1, z);
+				}
+
+				if (chunk.is_valid()) {
+					chunk->set_voxel(value, -1, bz, p_channel_index);
+
+					chunks_to_rebuild.insert(chunk);
+				}
+			}
+
+			if (bz == get_chunk_size_z() - 1) {
+				if (p_allow_creating_chunks) {
+					chunk = chunk_get_or_create(x, z + 1);
+				} else {
+					chunk = chunk_get(x, z + 1);
+				}
+
+				if (chunk.is_valid()) {
+					chunk->set_voxel(value, bx, -1, p_channel_index);
+
+					chunks_to_rebuild.insert(chunk);
+				}
+			}
+		}
+
+		if (p_allow_creating_chunks) {
+			chunk = chunk_get_or_create(x, z);
+		} else {
+			chunk = chunk_get(x, z);
+		}
+
+		if (chunk.is_valid()) {
+			chunk->set_voxel(value, bx, bz, p_channel_index);
+
+			chunks_to_rebuild.insert(chunk);
+		}
+	}
+
+	for (HashSet<Ref<TerrainChunk>>::Iterator iter = chunks_to_rebuild.begin(); iter.valid(); iter.next()) {
+		Ref<TerrainChunk> chunk = iter.key();
+
+		if (p_immediate_build) {
+			chunk->build_immediate();
+		} else {
+			chunk->build();
+		}
+	}
+}
+
 int TerrainWorld::get_channel_index_info(const TerrainWorld::ChannelTypeInfo channel_type) {
 	return call("_get_channel_index_info", channel_type);
 }
@@ -1411,6 +1527,7 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_voxel_at_world_data_position", "world_data_position", "data", "channel_index", "rebuild", "allow_creating_chunks "), &TerrainWorld::set_voxel_at_world_data_position, DEFVAL(true), DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_data_position", "world_data_position"), &TerrainWorld::get_chunk_at_world_data_position);
 	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_data_position", "world_data_position"), &TerrainWorld::get_or_create_chunk_at_world_data_position);
+	ClassDB::bind_method(D_METHOD("set_voxels_at_world_data_position", "data", "channel_index", "immediate_build", "allow_creating_chunks"), &TerrainWorld::set_voxels_at_world_data_position, DEFVAL(false), DEFVAL(true));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"), "_get_channel_index_info", PropertyInfo(Variant::INT, "channel_type", PROPERTY_HINT_ENUM, BINDING_STRING_CHANNEL_TYPE_INFO)));
 

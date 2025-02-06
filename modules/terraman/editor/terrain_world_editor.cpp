@@ -375,6 +375,8 @@ void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
 	// Value will likely need more fine tuning.
 	float s = 10.0 * _isolevel_brush_strength;
 
+	Array draw_data;
+
 	// TODO use a proper circle drawing algorithm.
 	for (int x = -ilbh; x < ilbh; ++x) {
 		for (int y = -ilbh; y < ilbh; ++y) {
@@ -412,7 +414,8 @@ void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
 
 			uint8_t new_val = static_cast<uint8_t>(npil);
 
-			_world->set_voxel_at_world_data_position(vwp, new_val, _isolevel_brush_channel, true, _isolevel_brush_allow_create_chunks);
+			draw_data.push_back(vwp);
+			draw_data.push_back(new_val);
 
 			if (!_original_data.has(vwp)) {
 				_original_data[vwp] = orig_val;
@@ -421,6 +424,8 @@ void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
 			_current_data[vwp] = new_val;
 		}
 	}
+
+	_world->set_voxels_at_world_data_position(draw_data, _isolevel_brush_channel, true, _isolevel_brush_allow_create_chunks);
 }
 
 void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
@@ -440,6 +445,8 @@ void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
 	selected_terrain = _selected_type + 1;
 	uint8_t new_val = static_cast<uint8_t>(selected_terrain);
 
+	Array draw_data;
+
 	// TODO use a proper circle drawing algorithm.
 	for (int x = -ilbh; x < ilbh; ++x) {
 		for (int y = -ilbh; y < ilbh; ++y) {
@@ -453,7 +460,8 @@ void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
 
 			uint8_t orig_val = _world->get_voxel_at_world_data_position(vwp, _paint_brush_channel);
 
-			_world->set_voxel_at_world_data_position(vwp, new_val, _paint_brush_channel, true, _paint_brush_allow_create_chunks);
+			draw_data.push_back(vwp);
+			draw_data.push_back(new_val);
 
 			if (!_original_data.has(vwp)) {
 				_original_data[vwp] = orig_val;
@@ -462,6 +470,8 @@ void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
 			_current_data[vwp] = new_val;
 		}
 	}
+
+	_world->set_voxels_at_world_data_position(draw_data, _paint_brush_channel, true, _paint_brush_allow_create_chunks);
 }
 
 void TerrainWorldEditor::edit(TerrainWorld *p_world) {
@@ -946,12 +956,7 @@ void TerrainWorldEditor::apply_data(const Array &p_data) {
 	bool allow_create_chunks = p_data[2];
 	Array data = p_data[3];
 
-	for (int i = 0; i < data.size(); i += 2) {
-		Vector2i pos = data[i];
-		uint8_t d = data[i + 1];
-
-		_world->set_voxel_at_world_data_position(pos, d, channel, true, allow_create_chunks);
-	}
+	_world->set_voxels_at_world_data_position(data, channel, true, allow_create_chunks);
 }
 
 void TerrainWorldEditor::create_undo_point(const String &p_action, const int p_channel, const bool p_allow_create_chunks) {

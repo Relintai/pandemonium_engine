@@ -198,6 +198,7 @@ public:
 	void set_voxel_at_world_data_position(const Vector2i &world_data_position, const uint8_t data, const int channel_index, const bool p_immediate_build = true, const bool allow_creating_chunks = true);
 	Ref<TerrainChunk> get_chunk_at_world_data_position(const Vector2i &world_data_position);
 	Ref<TerrainChunk> get_or_create_chunk_at_world_data_position(const Vector2i &world_data_position);
+	void set_voxels_at_world_data_position(const Array &p_data, const int p_channel_index, const bool p_immediate_build = false, const bool p_allow_creating_chunks = true);
 
 	int get_channel_index_info(const ChannelTypeInfo channel_type);
 
