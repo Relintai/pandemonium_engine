@@ -71,11 +71,18 @@ void TerrainChunk::set_visible(const bool value) {
 	visibility_changed(value);
 }
 
-_FORCE_INLINE_ bool TerrainChunk::get_is_generating() const {
+bool TerrainChunk::get_is_generating() const {
 	return _is_generating;
 }
-_FORCE_INLINE_ void TerrainChunk::set_is_generating(const bool value) {
+void TerrainChunk::set_is_generating(const bool value) {
 	_is_generating = value;
+}
+
+bool TerrainChunk::get_is_immediate_build() const {
+	return _is_immediate_build;
+}
+void TerrainChunk::set_is_immediate_build(const bool value) {
+	_is_immediate_build = value;
 }
 
 bool TerrainChunk::is_build_aborted() const {
@@ -313,7 +320,11 @@ void TerrainChunk::job_next() {
 	j->set_complete(false);
 
 	if (j->get_build_phase_type() == TerrainJob::BUILD_PHASE_TYPE_NORMAL) {
-		ThreadPool::get_singleton()->add_job(j);
+		if (!_is_immediate_build) {
+			ThreadPool::get_singleton()->add_job(j);
+		} else {
+			j->execute();
+		}
 	}
 }
 Ref<TerrainJob> TerrainChunk::job_get_current() {
@@ -679,6 +690,14 @@ void TerrainChunk::build() {
 	call("_build");
 }
 
+void TerrainChunk::build_immediate() {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
+	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
+	ERR_FAIL_COND(!is_in_tree());
+
+	call("_build_immediate");
+}
+
 void TerrainChunk::_build() {
 	if (get_is_generating()) {
 		_queued_generation = true;
@@ -686,6 +705,19 @@ void TerrainChunk::_build() {
 	}
 
 	_is_generating = true;
+	_is_immediate_build = false;
+
+	job_next();
+}
+
+void TerrainChunk::_build_immediate() {
+	if (get_is_generating()) {
+		_queued_generation = true;
+		return;
+	}
+
+	_is_generating = true;
+	_is_immediate_build = true;
 
 	job_next();
 }
@@ -1096,6 +1128,7 @@ TerrainChunk::TerrainChunk() {
 	_is_visible = true;
 
 	_is_generating = false;
+	_is_immediate_build = false;
 	_dirty = false;
 	_state = TERRAIN_CHUNK_STATE_OK;
 
@@ -1366,6 +1399,10 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_is_generating", "value"), &TerrainChunk::set_is_generating);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_generating", PROPERTY_HINT_NONE, "", 0), "set_is_generating", "get_is_generating");
 
+	ClassDB::bind_method(D_METHOD("get_is_immediate_build"), &TerrainChunk::get_is_immediate_build);
+	ClassDB::bind_method(D_METHOD("set_is_immediate_build", "value"), &TerrainChunk::set_is_immediate_build);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_immediate_build", PROPERTY_HINT_NONE, "", 0), "set_is_immediate_build", "get_is_immediate_build");
+
 	ClassDB::bind_method(D_METHOD("is_build_aborted"), &TerrainChunk::is_build_aborted);
 
 	ClassDB::bind_method(D_METHOD("get_dirty"), &TerrainChunk::get_dirty);
@@ -1565,6 +1602,10 @@ void TerrainChunk::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_build"));
 	ClassDB::bind_method(D_METHOD("build"), &TerrainChunk::build);
 	ClassDB::bind_method(D_METHOD("_build"), &TerrainChunk::_build);
+
+	BIND_VMETHOD(MethodInfo("_build_immediate"));
+	ClassDB::bind_method(D_METHOD("build_immediate"), &TerrainChunk::build_immediate);
+	ClassDB::bind_method(D_METHOD("_build_immediate"), &TerrainChunk::_build_immediate);
 
 	ClassDB::bind_method(D_METHOD("get_global_transform"), &TerrainChunk::get_global_transform);
 	ClassDB::bind_method(D_METHOD("to_local", "global"), &TerrainChunk::to_local);

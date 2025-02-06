@@ -89,6 +89,9 @@ public:
 	bool get_is_generating() const;
 	void set_is_generating(const bool value);
 
+	bool get_is_immediate_build() const;
+	void set_is_immediate_build(const bool value);
+
 	bool is_build_aborted() const;
 
 	bool is_in_tree() const;
@@ -216,11 +219,13 @@ public:
 
 	//Meshing
 	void build();
+	void build_immediate();
 	void clear();
 	void finalize_build();
 	void cancel_build();
 
-	void _build();
+	virtual void _build();
+	virtual void _build_immediate();
 
 	//light Baking
 	void bake_lights();
@@ -354,6 +359,7 @@ protected:
 	bool _is_visible;
 
 	bool _is_generating;
+	bool _is_immediate_build;
 	bool _dirty;
 	int _state;
 
