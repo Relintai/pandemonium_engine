@@ -898,7 +898,7 @@ uint8_t TerrainWorld::get_voxel_at_world_data_position(const Vector2i &world_dat
 
 	return 0;
 }
-void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_position, const uint8_t data, const int channel_index, const bool rebuild, const bool allow_creating_chunks) {
+void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_position, const uint8_t data, const int channel_index, const bool p_immediate_build, const bool allow_creating_chunks) {
 	// TODO rework this so it works directly with ints.
 
 	Vector2 pos = world_data_position;
@@ -931,7 +931,9 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 			if (chunk.is_valid()) {
 				chunk->set_voxel(data, get_chunk_size_x(), bz, channel_index);
 
-				if (rebuild) {
+				if (p_immediate_build) {
+					chunk->build_immediate();
+				} else {
 					chunk->build();
 				}
 			}
@@ -947,7 +949,9 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 			if (chunk.is_valid()) {
 				chunk->set_voxel(data, bx, get_chunk_size_z(), channel_index);
 
-				if (rebuild) {
+				if (p_immediate_build) {
+					chunk->build_immediate();
+				} else {
 					chunk->build();
 				}
 			}
@@ -965,7 +969,9 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 			if (chunk.is_valid()) {
 				chunk->set_voxel(data, -1, bz, channel_index);
 
-				if (rebuild) {
+				if (p_immediate_build) {
+					chunk->build_immediate();
+				} else {
 					chunk->build();
 				}
 			}
@@ -981,7 +987,9 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 			if (chunk.is_valid()) {
 				chunk->set_voxel(data, bx, -1, channel_index);
 
-				if (rebuild) {
+				if (p_immediate_build) {
+					chunk->build_immediate();
+				} else {
 					chunk->build();
 				}
 			}
@@ -997,7 +1005,9 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 	if (chunk.is_valid()) {
 		chunk->set_voxel(data, bx, bz, channel_index);
 
-		if (rebuild) {
+		if (p_immediate_build) {
+			chunk->build_immediate();
+		} else {
 			chunk->build();
 		}
 	}
