@@ -42,9 +42,11 @@
 void TerrainLightJob::phase_light() {
 	Ref<TerrainChunkDefault> chunk = _chunk;
 
-	if ((chunk->get_build_flags() & TerrainChunkDefault::BUILD_FLAG_GENERATE_AO) != 0)
-		if (!chunk->channel_get(TerrainChunkDefault::DEFAULT_CHANNEL_AO))
+	if ((chunk->get_build_flags() & TerrainChunkDefault::BUILD_FLAG_GENERATE_AO) != 0) {
+		if (!chunk->channel_get(TerrainChunkDefault::DEFAULT_CHANNEL_AO)) {
 			generate_ao();
+		}
+	}
 
 	bool gr = (chunk->get_build_flags() & TerrainChunkDefault::BUILD_FLAG_AUTO_GENERATE_RAO) != 0;
 
@@ -58,22 +60,25 @@ void TerrainLightJob::phase_light() {
 	if (bl && should_do()) {
 		chunk->clear_baked_lights();
 
-		if (should_return())
+		if (should_return()) {
 			return;
+		}
 	}
 
 	if (gr && should_do()) {
 		generate_random_ao(chunk->get_voxel_world()->get_current_seed());
 
-		if (should_return())
+		if (should_return()) {
 			return;
+		}
 	}
 
 	if (bl && should_do()) {
 		chunk->bake_lights();
 
-		if (should_return())
+		if (should_return()) {
 			return;
+		}
 	}
 
 	reset_stages();
