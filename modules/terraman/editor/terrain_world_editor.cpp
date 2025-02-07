@@ -394,7 +394,7 @@ void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
 			Vector2 tv = Vector2(ilbh - ABS(x), ilbh - ABS(y));
 			float t = tv.length() / (float)ilbh;
 
-			float sl = Math::lerp(0, s, CLAMP(t + _isolevel_brush_smoothness, 0, 1));
+			float sl = Math::lerp(0, s, CLAMP(t + 1 - _isolevel_brush_smoothness, 0, 1));
 
 			float npil = 0;
 
