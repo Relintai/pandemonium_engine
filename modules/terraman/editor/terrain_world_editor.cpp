@@ -593,7 +593,7 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_isolevel_brush_channel = -1;
 	_isolevel_brush_size = 10;
 	_isolevel_brush_strength = 0.25;
-	_isolevel_brush_smoothness = 0.5;
+	_isolevel_brush_smoothness = 1;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
 	_isolevel_brush_allow_create_chunks = true;
@@ -620,7 +620,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_channel = -1;
 	_isolevel_brush_size = 10;
 	_isolevel_brush_strength = 0.25;
-	_isolevel_brush_smoothness = 0.5;
+	_isolevel_brush_smoothness = 1;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
 	_isolevel_brush_allow_create_chunks = true;
