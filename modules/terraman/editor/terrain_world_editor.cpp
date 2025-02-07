@@ -596,13 +596,13 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_isolevel_brush_smoothness = 1;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
-	_isolevel_brush_allow_create_chunks = true;
+	_isolevel_brush_allow_create_chunks = false;
 
 	_paint_brush_picker_mode = false;
 
 	_paint_brush_channel = -1;
 	_paint_brush_size = 10;
-	_paint_brush_allow_create_chunks = true;
+	_paint_brush_allow_create_chunks = false;
 }
 TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_undo_redo = EditorNode::get_undo_redo();
@@ -623,13 +623,13 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_smoothness = 1;
 	//_brush_type = BRUSH_TYPE_CIRCLE;
 	_isolevel_brush_type = ISOLEVEL_BRUSH_TYPE_ADD;
-	_isolevel_brush_allow_create_chunks = true;
+	_isolevel_brush_allow_create_chunks = false;
 
 	_paint_brush_picker_mode = false;
 
 	_paint_brush_channel = -1;
 	_paint_brush_size = 10;
-	_paint_brush_allow_create_chunks = true;
+	_paint_brush_allow_create_chunks = false;
 
 	_editor = p_editor;
 	_tool_mode = TOOL_MODE_ADD;
@@ -771,7 +771,6 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_isolevel_brush_allow_creating_chunks_button = memnew(ToolButton);
 	_isolevel_brush_allow_creating_chunks_button->set_toggle_mode(true);
-	_isolevel_brush_allow_creating_chunks_button->set_pressed(true);
 	_isolevel_brush_allow_creating_chunks_button->connect("button_up", this, "_on_isolevel_brush_allow_creating_chunks_selected");
 	_isolevel_brush_allow_creating_chunks_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_allow_creating_chunks", "Isolevel Brush Allow Chunk Creation", KEY_L));
 	isolevel_brush_flow_container->add_child(_isolevel_brush_allow_creating_chunks_button);
@@ -842,7 +841,6 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	_paint_brush_allow_creating_chunks_button = memnew(ToolButton);
 	_paint_brush_allow_creating_chunks_button->set_toggle_mode(true);
-	_paint_brush_allow_creating_chunks_button->set_pressed(true);
 	_paint_brush_allow_creating_chunks_button->connect("button_up", this, "_on_paint_brush_allow_creating_chunks_selected");
 	_paint_brush_allow_creating_chunks_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/paint_brush_allow_creating_chunks", "Paint Brush Allow Chunk Creation", KEY_L));
 	_paint_brush_tool_container->add_child(_paint_brush_allow_creating_chunks_button);
