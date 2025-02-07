@@ -307,8 +307,9 @@ void TerrainTerrainJob::phase_terrain_mesh() {
 			}
 
 			//allocate
-			if (count > 0)
+			if (count > 0) {
 				chunk->meshes_create(TerrainChunkDefault::MESH_INDEX_TERRAIN, count);
+			}
 		}
 	}
 
@@ -438,6 +439,7 @@ void TerrainTerrainJob::_reset() {
 	ERR_FAIL_COND(!_mesher.is_valid());
 
 	_mesher->set_voxel_scale(_chunk->get_voxel_scale());
+	_mesher->set_lod_index(0);
 
 	Ref<TerrainChunkDefault> chunk = _chunk;
 	Ref<TerrainMesherDefault> md = _mesher;
@@ -458,8 +460,9 @@ void TerrainTerrainJob::_reset() {
 }
 
 void TerrainTerrainJob::_physics_process(float delta) {
-	if (_phase == 4)
+	if (_phase == 4) {
 		phase_physics_process();
+	}
 }
 
 void TerrainTerrainJob::step_type_normal() {
