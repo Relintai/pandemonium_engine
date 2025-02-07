@@ -794,7 +794,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_tool_container->add_child(isolevel_brush_strength_label);
 
 	_isolevel_brush_strength_slider = memnew(HSlider);
-	_isolevel_brush_strength_slider->set_min(0.01);
+	_isolevel_brush_strength_slider->set_min(0);
 	_isolevel_brush_strength_slider->set_max(1);
 	_isolevel_brush_strength_slider->set_step(0);
 	_isolevel_brush_strength_slider->set_value(_isolevel_brush_strength);
@@ -808,7 +808,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_tool_container->add_child(isolevel_brush_smoothness_label);
 
 	_isolevel_brush_smoothness_slider = memnew(HSlider);
-	_isolevel_brush_smoothness_slider->set_min(0.01);
+	_isolevel_brush_smoothness_slider->set_min(0);
 	_isolevel_brush_smoothness_slider->set_max(1);
 	_isolevel_brush_smoothness_slider->set_step(0);
 	_isolevel_brush_smoothness_slider->set_value(_isolevel_brush_smoothness);
