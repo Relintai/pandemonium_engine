@@ -69,6 +69,12 @@ void TerrainLibraryMergerPCM::_material_cache_get_key(Ref<TerrainChunk> chunk) {
 		return;
 	}
 
+	int old_key = 0;
+
+	if (chunk->material_cache_key_has()) {
+		old_key = chunk->material_cache_key_get();
+	}
+
 	Vector<uint8_t> surfaces;
 
 	uint32_t size = chunk->get_data_size();
@@ -98,6 +104,10 @@ void TerrainLibraryMergerPCM::_material_cache_get_key(Ref<TerrainChunk> chunk) {
 		chunk->material_cache_key_set(0);
 		chunk->material_cache_key_has_set(false);
 
+		if (old_key != 0) {
+			material_cache_unref(old_key);
+		}
+
 		return;
 	}
 
@@ -111,8 +121,17 @@ void TerrainLibraryMergerPCM::_material_cache_get_key(Ref<TerrainChunk> chunk) {
 
 	int hash = static_cast<int>(hstr.hash());
 
+	if (old_key != 0 && old_key == hash) {
+		chunk->material_cache_key_invalid_set(false);
+		return;
+	}
+
 	chunk->material_cache_key_set(hash);
 	chunk->material_cache_key_has_set(true);
+
+	if (old_key != 0) {
+		material_cache_unref(old_key);
+	}
 
 	_material_cache_mutex.lock();
 
@@ -198,7 +217,7 @@ void TerrainLibraryMergerPCM::_material_cache_unref(const int key) {
 		// This is needed, because when duplicating materials the RenderingServer apparently
 		// needs synchronization with the main thread. So if _material_cache_unref holds the mutex
 		// and is duplicating the materials, trying to get the lock from the main thread will deadlock
-		// the game. This can happen when chungs are spawned and despawned really fast.
+		// the game. This can happen when chunks are spawned and despawned really fast.
 		// E.g. when flying around in the editor.
 		MessageQueue::get_singleton()->push_call(this, "_material_cache_unref", key, 1);
 		return;
@@ -237,6 +256,12 @@ void TerrainLibraryMergerPCM::_liquid_material_cache_get_key(Ref<TerrainChunk> c
 		return;
 	}
 
+	int old_key = 0;
+
+	if (chunk->liquid_material_cache_key_has()) {
+		old_key = chunk->liquid_material_cache_key_get();
+	}
+
 	Vector<uint8_t> surfaces;
 
 	uint32_t size = chunk->get_data_size();
@@ -266,6 +291,10 @@ void TerrainLibraryMergerPCM::_liquid_material_cache_get_key(Ref<TerrainChunk> c
 		chunk->liquid_material_cache_key_set(0);
 		chunk->liquid_material_cache_key_has_set(false);
 
+		if (old_key != 0) {
+			liquid_material_cache_unref(old_key);
+		}
+
 		return;
 	}
 
@@ -279,8 +308,17 @@ void TerrainLibraryMergerPCM::_liquid_material_cache_get_key(Ref<TerrainChunk> c
 
 	int hash = static_cast<int>(hstr.hash());
 
+	if (old_key != 0 && old_key == hash) {
+		chunk->liquid_material_cache_key_invalid_set(false);
+		return;
+	}
+
 	chunk->liquid_material_cache_key_set(hash);
 	chunk->liquid_material_cache_key_has_set(true);
+
+	if (old_key != 0) {
+		liquid_material_cache_unref(old_key);
+	}
 
 	_liquid_material_cache_mutex.lock();
 
@@ -397,6 +435,12 @@ void TerrainLibraryMergerPCM::_liquid_material_cache_unref(const int key) {
 
 //Props
 void TerrainLibraryMergerPCM::_prop_material_cache_get_key(Ref<TerrainChunk> chunk) {
+	int old_key = 0;
+
+	if (chunk->prop_material_cache_key_has()) {
+		old_key = chunk->prop_material_cache_key_get();
+	}
+
 	Vector<uint64_t> props;
 
 	/*
@@ -454,6 +498,10 @@ void TerrainLibraryMergerPCM::_prop_material_cache_get_key(Ref<TerrainChunk> chu
 		chunk->prop_material_cache_key_set(0);
 		chunk->prop_material_cache_key_has_set(false);
 
+		if (old_key != 0) {
+			prop_material_cache_unref(old_key);
+		}
+
 		return;
 	}
 
@@ -467,8 +515,17 @@ void TerrainLibraryMergerPCM::_prop_material_cache_get_key(Ref<TerrainChunk> chu
 
 	int hash = static_cast<int>(hstr.hash());
 
+	if (old_key != 0 && old_key == hash) {
+		chunk->prop_material_cache_key_invalid_set(false);
+		return;
+	}
+
 	chunk->prop_material_cache_key_set(hash);
 	chunk->prop_material_cache_key_has_set(true);
+
+	if (old_key != 0) {
+		prop_material_cache_unref(old_key);
+	}
 
 	_prop_material_cache_mutex.lock();
 

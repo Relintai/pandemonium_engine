@@ -113,34 +113,12 @@ void TerrainTerrainJob::phase_library_setup() {
 	}
 
 	if (lib->supports_caching()) {
-		if (!_chunk->material_cache_key_has()) {
+		if (!_chunk->material_cache_key_has() || _chunk->material_cache_key_invalid_get()) {
 			lib->material_cache_get_key(_chunk);
-		} else {
-			Ref<TerrainMaterialCache> cache = lib->material_cache_get(_chunk->material_cache_key_get());
-
-			if (cache.is_valid()) {
-				//Note: without threadpool and threading none of this can happen, as cache will get initialized the first time a thread requests it!
-				while (!cache->get_initialized()) {
-					//Means it's currently merging the atlases on a different thread.
-					//Let's just wait
-					OS::get_singleton()->delay_usec(100);
-				}
-			}
 		}
 
-		if (!_chunk->liquid_material_cache_key_has()) {
+		if (!_chunk->liquid_material_cache_key_has() || _chunk->liquid_material_cache_key_invalid_get()) {
 			lib->liquid_material_cache_get_key(_chunk);
-		} else {
-			Ref<TerrainMaterialCache> cache = lib->liquid_material_cache_get(_chunk->liquid_material_cache_key_get());
-
-			if (cache.is_valid()) {
-				//Note: without threadpool and threading none of this can happen, as cache will get initialized the first time a thread requests it!
-				while (!cache->get_initialized()) {
-					//Means it's currently merging the atlases on a different thread.
-					//Let's just wait
-					OS::get_singleton()->delay_usec(100);
-				}
-			}
 		}
 	}
 

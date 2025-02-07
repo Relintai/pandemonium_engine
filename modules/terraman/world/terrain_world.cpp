@@ -1037,7 +1037,7 @@ Ref<TerrainChunk> TerrainWorld::get_or_create_chunk_at_world_data_position(const
 	return chunk_get_or_create(x, z);
 }
 
-void TerrainWorld::set_voxels_at_world_data_position(const Array &p_data, const int p_channel_index, const bool p_immediate_build, const bool p_allow_creating_chunks) {
+void TerrainWorld::set_voxels_at_world_data_position(const Array &p_data, const int p_channel_index, const bool p_immediate_build, const bool p_allow_creating_chunks, const bool p_invalidate_texture_caches) {
 	ERR_FAIL_COND(p_data.size() % 2 != 0);
 
 	// TODO rework this so it works directly with ints.
@@ -1142,6 +1142,11 @@ void TerrainWorld::set_voxels_at_world_data_position(const Array &p_data, const 
 
 	for (HashSet<Ref<TerrainChunk>>::Iterator iter = chunks_to_rebuild.begin(); iter.valid(); iter.next()) {
 		Ref<TerrainChunk> chunk = iter.key();
+
+		if (p_invalidate_texture_caches) {
+			chunk->material_cache_key_invalid_set(true);
+			chunk->liquid_material_cache_key_invalid_set(true);
+		}
 
 		if (p_immediate_build) {
 			chunk->build_immediate();
@@ -1527,7 +1532,7 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_voxel_at_world_data_position", "world_data_position", "data", "channel_index", "rebuild", "allow_creating_chunks "), &TerrainWorld::set_voxel_at_world_data_position, DEFVAL(true), DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_data_position", "world_data_position"), &TerrainWorld::get_chunk_at_world_data_position);
 	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_data_position", "world_data_position"), &TerrainWorld::get_or_create_chunk_at_world_data_position);
-	ClassDB::bind_method(D_METHOD("set_voxels_at_world_data_position", "data", "channel_index", "immediate_build", "allow_creating_chunks"), &TerrainWorld::set_voxels_at_world_data_position, DEFVAL(false), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("set_voxels_at_world_data_position", "data", "channel_index", "immediate_build", "allow_creating_chunks", "invalidate_texture_caches"), &TerrainWorld::set_voxels_at_world_data_position, DEFVAL(false), DEFVAL(true), DEFVAL(true));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"), "_get_channel_index_info", PropertyInfo(Variant::INT, "channel_type", PROPERTY_HINT_ENUM, BINDING_STRING_CHANNEL_TYPE_INFO)));
 

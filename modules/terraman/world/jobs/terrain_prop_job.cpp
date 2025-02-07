@@ -354,7 +354,7 @@ void TerrainPropJob::phase_setup() {
 	}
 
 	if (library->supports_caching()) {
-		if (!_chunk->prop_material_cache_key_has()) {
+		if (!_chunk->prop_material_cache_key_has() || _chunk->prop_material_cache_key_invalid_get()) {
 			library->prop_material_cache_get_key(_chunk);
 
 			if (!_chunk->prop_material_cache_key_has()) {
@@ -365,13 +365,6 @@ void TerrainPropJob::phase_setup() {
 		}
 
 		Ref<TerrainMaterialCache> cache = library->prop_material_cache_get(_chunk->prop_material_cache_key_get());
-
-		//Note: without threadpool and threading none of this can happen, as cache will get initialized the first time a thread requests it!
-		while (!cache->get_initialized()) {
-			//Means it's currently merging the atlases on a different thread.
-			//Let's just wait
-			OS::get_singleton()->delay_usec(100);
-		}
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		for (int i = 0; i < _chunk->mesh_data_resource_get_count(); ++i) {

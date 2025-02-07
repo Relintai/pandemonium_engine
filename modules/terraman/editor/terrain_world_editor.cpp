@@ -425,7 +425,7 @@ void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
 		}
 	}
 
-	_world->set_voxels_at_world_data_position(draw_data, _isolevel_brush_channel, true, _isolevel_brush_allow_create_chunks);
+	_world->set_voxels_at_world_data_position(draw_data, _isolevel_brush_channel, true, _isolevel_brush_allow_create_chunks, false);
 }
 
 void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
@@ -471,7 +471,7 @@ void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
 		}
 	}
 
-	_world->set_voxels_at_world_data_position(draw_data, _paint_brush_channel, true, _paint_brush_allow_create_chunks);
+	_world->set_voxels_at_world_data_position(draw_data, _paint_brush_channel, true, _paint_brush_allow_create_chunks, true);
 }
 
 void TerrainWorldEditor::edit(TerrainWorld *p_world) {
