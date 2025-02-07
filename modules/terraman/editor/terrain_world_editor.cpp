@@ -715,6 +715,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	// Add Remove tool
 	_add_remove_tool_container = memnew(VBoxContainer);
+	_add_remove_tool_container->hide();
 	main_container->add_child(_add_remove_tool_container);
 
 	_add_single_label = memnew(Label);
@@ -749,7 +750,6 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	// Isolevel Brush
 	_isolevel_brush_tool_container = memnew(VBoxContainer);
-	_isolevel_brush_tool_container->hide();
 	main_container->add_child(_isolevel_brush_tool_container);
 
 	_isolevel_brush_tool_button_group.instance();
