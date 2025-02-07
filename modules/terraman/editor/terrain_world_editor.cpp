@@ -655,7 +655,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_add_button->set_button_group(_tool_button_group);
 	_add_button->set_meta("tool_mode", TOOL_MODE_ADD);
 	_add_button->connect("button_up", this, "_on_tool_button_pressed");
-	_add_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/add_mode", "Add Mode", KEY_A));
+	_add_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/add_single_mode", "Add Single Voxel Mode", KEY_A));
 	_tool_button_container->add_child(_add_button);
 
 	_remove_button = memnew(ToolButton);
@@ -664,7 +664,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_remove_button->set_button_group(_tool_button_group);
 	_remove_button->set_meta("tool_mode", TOOL_MODE_REMOVE);
 	_remove_button->connect("button_up", this, "_on_tool_button_pressed");
-	_remove_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/remove_mode", "Remove Mode", KEY_S));
+	_remove_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/remove_single_mode", "Remove Single Voxel Mode", KEY_S));
 	_tool_button_container->add_child(_remove_button);
 
 	_isolevel_brush_button = memnew(ToolButton);
@@ -697,9 +697,14 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_add_remove_tool_container = memnew(VBoxContainer);
 	main_container->add_child(_add_remove_tool_container);
 
-	Label *add_remove_tool_label = memnew(Label);
-	add_remove_tool_label->set_text(TTR("Add / Remove Tool"));
-	_add_remove_tool_container->add_child(add_remove_tool_label);
+	_add_single_label = memnew(Label);
+	_add_single_label->set_text(TTR("Add Single Tool"));
+	_add_remove_tool_container->add_child(_add_single_label);
+
+	_remove_single_label = memnew(Label);
+	_remove_single_label->set_text(TTR("Remove Single Tool"));
+	_remove_single_label->hide();
+	_add_remove_tool_container->add_child(_remove_single_label);
 
 	_insert_button = memnew(ToolButton);
 	//_insert_button->set_text("Insert");
@@ -1021,7 +1026,15 @@ void TerrainWorldEditor::_on_tool_button_pressed() {
 
 	switch (_tool_mode) {
 		case TOOL_MODE_ADD:
+			_add_single_label->show();
+			_remove_single_label->hide();
+			_add_remove_tool_container->show();
+			_isolevel_brush_tool_container->hide();
+			_paint_brush_tool_container->hide();
+			break;
 		case TOOL_MODE_REMOVE:
+			_add_single_label->hide();
+			_remove_single_label->show();
 			_add_remove_tool_container->show();
 			_isolevel_brush_tool_container->hide();
 			_paint_brush_tool_container->hide();

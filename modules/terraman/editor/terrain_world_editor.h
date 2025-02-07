@@ -164,6 +164,8 @@ private:
 	Ref<ButtonGroup> _tool_button_group;
 
 	VBoxContainer *_add_remove_tool_container;
+	Label *_add_single_label;
+	Label *_remove_single_label;
 	Label *_add_remove_isolevel_slider_label;
 	HSlider *_add_remove_isolevel_slider;
 	int _add_remove_current_isolevel;
