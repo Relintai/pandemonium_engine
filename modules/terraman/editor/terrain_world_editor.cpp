@@ -116,6 +116,8 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 				} break;
 				case TOOL_MODE_SPAWN_BRUSH: {
 				} break;
+				case TOOL_MODE_CHUNK_REMOVE: {
+				} break;
 			}
 
 			return EditorPlugin::AFTER_GUI_INPUT_PASS;
@@ -160,6 +162,8 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 			case TOOL_MODE_PAINT_PICKER: {
 			} break;
 			case TOOL_MODE_SPAWN_BRUSH: {
+			} break;
+			case TOOL_MODE_CHUNK_REMOVE: {
 			} break;
 		}
 
@@ -228,6 +232,8 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 					} break;
 					case TOOL_MODE_SPAWN_BRUSH: {
 					} break;
+					case TOOL_MODE_CHUNK_REMOVE: {
+					} break;
 				}
 
 				return EditorPlugin::AFTER_GUI_INPUT_PASS;
@@ -249,6 +255,8 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 					case TOOL_MODE_PAINT_PICKER: {
 					} break;
 					case TOOL_MODE_SPAWN_BRUSH: {
+					} break;
+					case TOOL_MODE_CHUNK_REMOVE: {
 					} break;
 				}
 
@@ -518,6 +526,8 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 		} break;
 		case TOOL_MODE_SPAWN_BRUSH: {
 		} break;
+		case TOOL_MODE_CHUNK_REMOVE: {
+		} break;
 	}
 
 	_channel_type = _world->get_channel_index_info(TerrainWorld::CHANNEL_TYPE_INFO_TYPE);
@@ -692,6 +702,14 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_paint_picker_button->connect("button_up", this, "_on_tool_button_pressed");
 	_paint_picker_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/paint_picker", "Paint Picker", KEY_L));
 	_tool_button_container->add_child(_paint_picker_button);
+
+	_chunk_remove_button = memnew(ToolButton);
+	_chunk_remove_button->set_toggle_mode(true);
+	_chunk_remove_button->set_button_group(_tool_button_group);
+	_chunk_remove_button->set_meta("tool_mode", TOOL_MODE_CHUNK_REMOVE);
+	_chunk_remove_button->connect("button_up", this, "_on_tool_button_pressed");
+	_chunk_remove_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/chunk_remove", "Chunk Remove", KEY_U));
+	_tool_button_container->add_child(_chunk_remove_button);
 
 	_add_button = memnew(ToolButton);
 	//_add_button->set_text("Add");
@@ -939,6 +957,8 @@ void TerrainWorldEditor::_notification(int p_what) {
 			// Spawn Brush
 			_spawn_brush_button->set_icon(get_theme_icon("AssetLib", "EditorIcons"));
 
+			// Chunk Remove
+			_chunk_remove_button->set_icon(get_theme_icon("Clear", "EditorIcons"));
 		} break;
 	}
 }
@@ -1081,6 +1101,8 @@ void TerrainWorldEditor::_on_tool_button_pressed() {
 			_paint_brush_tool_container->hide();
 			break;
 		case TOOL_MODE_SPAWN_BRUSH:
+			break;
+		case TOOL_MODE_CHUNK_REMOVE:
 			break;
 		default:
 			break;

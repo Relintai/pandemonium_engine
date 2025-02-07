@@ -57,6 +57,7 @@ public:
 		TOOL_MODE_PAINT_BRUSH,
 		TOOL_MODE_PAINT_PICKER,
 		TOOL_MODE_SPAWN_BRUSH,
+		TOOL_MODE_CHUNK_REMOVE,
 		//TOOL_MODE_DELETE_BRUSH, //Sets data in channel to 0
 		// TODO object manipulation tools.
 	};
@@ -161,6 +162,7 @@ private:
 	ToolButton *_paint_brush_button;
 	ToolButton *_paint_picker_button;
 	ToolButton *_spawn_brush_button;
+	ToolButton *_chunk_remove_button;
 
 	HFlowContainer *_tool_button_container;
 	Ref<ButtonGroup> _tool_button_group;
