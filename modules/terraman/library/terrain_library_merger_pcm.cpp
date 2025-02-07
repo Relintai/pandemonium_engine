@@ -174,11 +174,10 @@ void TerrainLibraryMergerPCM::_material_cache_get_key(Ref<TerrainChunk> chunk) {
 
 	_material_cache[hash] = cache;
 
-	//unlock here, so if a different thread need the cache it will be able to immediately access the materials and surfaces when it gets it.
-	_material_cache_mutex.unlock();
-
 	//this will generate the atlases
 	cache->refresh_rects();
+
+	_material_cache_mutex.unlock();
 }
 
 Ref<TerrainMaterialCache> TerrainLibraryMergerPCM::_material_cache_get(const int key) {
