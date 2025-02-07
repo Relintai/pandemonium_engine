@@ -584,7 +584,8 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_add_remove_current_isolevel = 255;
 	_channel_isolevel = -1;
 	_editor = NULL;
-	_tool_mode = TOOL_MODE_ADD;
+	_tool_mode = TOOL_MODE_ISOLEVEL_BRUSH;
+	_previous_tool_mode = _tool_mode;
 
 	_mouse_down = false;
 
@@ -632,7 +633,8 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_paint_brush_allow_create_chunks = false;
 
 	_editor = p_editor;
-	_tool_mode = TOOL_MODE_ADD;
+	_tool_mode = TOOL_MODE_ISOLEVEL_BRUSH;
+	_previous_tool_mode = _tool_mode;
 
 	set_custom_minimum_size(Size2(200 * EDSCALE, 0));
 
@@ -648,27 +650,9 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_tool_button_group.instance();
 
 	// Main buttons
-	_add_button = memnew(ToolButton);
-	//_add_button->set_text("Add");
-	_add_button->set_toggle_mode(true);
-	_add_button->set_pressed(true);
-	_add_button->set_button_group(_tool_button_group);
-	_add_button->set_meta("tool_mode", TOOL_MODE_ADD);
-	_add_button->connect("button_up", this, "_on_tool_button_pressed");
-	_add_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/add_single_mode", "Add Single Voxel Mode", KEY_A));
-	_tool_button_container->add_child(_add_button);
-
-	_remove_button = memnew(ToolButton);
-	//_remove_button->set_text("Remove");
-	_remove_button->set_toggle_mode(true);
-	_remove_button->set_button_group(_tool_button_group);
-	_remove_button->set_meta("tool_mode", TOOL_MODE_REMOVE);
-	_remove_button->connect("button_up", this, "_on_tool_button_pressed");
-	_remove_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/remove_single_mode", "Remove Single Voxel Mode", KEY_S));
-	_tool_button_container->add_child(_remove_button);
-
 	_isolevel_brush_button = memnew(ToolButton);
 	_isolevel_brush_button->set_toggle_mode(true);
+	_isolevel_brush_button->set_pressed(true);
 	_isolevel_brush_button->set_button_group(_tool_button_group);
 	_isolevel_brush_button->set_meta("tool_mode", TOOL_MODE_ISOLEVEL_BRUSH);
 	_isolevel_brush_button->connect("button_up", this, "_on_tool_button_pressed");
@@ -690,6 +674,24 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_paint_picker_button->connect("button_up", this, "_on_tool_button_pressed");
 	_paint_picker_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/paint_picker", "Paint Picker", KEY_L));
 	_tool_button_container->add_child(_paint_picker_button);
+
+	_add_button = memnew(ToolButton);
+	//_add_button->set_text("Add");
+	_add_button->set_toggle_mode(true);
+	_add_button->set_button_group(_tool_button_group);
+	_add_button->set_meta("tool_mode", TOOL_MODE_ADD);
+	_add_button->connect("button_up", this, "_on_tool_button_pressed");
+	_add_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/add_single_mode", "Add Single Voxel Mode", KEY_A));
+	_tool_button_container->add_child(_add_button);
+
+	_remove_button = memnew(ToolButton);
+	//_remove_button->set_text("Remove");
+	_remove_button->set_toggle_mode(true);
+	_remove_button->set_button_group(_tool_button_group);
+	_remove_button->set_meta("tool_mode", TOOL_MODE_REMOVE);
+	_remove_button->connect("button_up", this, "_on_tool_button_pressed");
+	_remove_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/remove_single_mode", "Remove Single Voxel Mode", KEY_S));
+	_tool_button_container->add_child(_remove_button);
 
 	main_container->add_child(memnew(HSeparator));
 
