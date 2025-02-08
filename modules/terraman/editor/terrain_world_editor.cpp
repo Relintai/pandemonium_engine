@@ -113,8 +113,32 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 					// Ignore
 				} break;
 				case TOOL_MODE_CHUNK_SPAWN_BRUSH: {
+					Vector3 position;
+					Vector3 normal;
+
+					if (get_draw_world_coordinate(p_camera, Point2(mm->get_position().x, mm->get_position().y), position, normal)) {
+						_gizmo->visible = true;
+						_gizmo->drawing = false;
+						_gizmo->position = position;
+						_gizmo->refresh_lines(_world);
+					} else {
+						_gizmo->visible = false;
+						_gizmo->redraw();
+					}
 				} break;
 				case TOOL_MODE_CHUNK_REMOVE_BRUSH: {
+					Vector3 position;
+					Vector3 normal;
+
+					if (get_draw_world_coordinate(p_camera, Point2(mm->get_position().x, mm->get_position().y), position, normal)) {
+						_gizmo->visible = true;
+						_gizmo->drawing = false;
+						_gizmo->position = position;
+						_gizmo->refresh_lines(_world);
+					} else {
+						_gizmo->visible = false;
+						_gizmo->redraw();
+					}
 				} break;
 			}
 
@@ -158,8 +182,36 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 				// Ignore
 			} break;
 			case TOOL_MODE_CHUNK_SPAWN_BRUSH: {
+				Vector3 position;
+				Vector3 normal;
+
+				if (get_draw_world_coordinate(p_camera, Point2(mm->get_position().x, mm->get_position().y), position, normal)) {
+					chunk_spawn_brush_draw(position);
+
+					_gizmo->visible = true;
+					_gizmo->drawing = true;
+					_gizmo->position = position;
+					_gizmo->refresh_lines(_world);
+				} else {
+					_gizmo->visible = false;
+					_gizmo->redraw();
+				}
 			} break;
 			case TOOL_MODE_CHUNK_REMOVE_BRUSH: {
+				Vector3 position;
+				Vector3 normal;
+
+				if (get_draw_world_coordinate(p_camera, Point2(mm->get_position().x, mm->get_position().y), position, normal)) {
+					chunk_remove_brush_draw(position);
+
+					_gizmo->visible = true;
+					_gizmo->drawing = true;
+					_gizmo->position = position;
+					_gizmo->refresh_lines(_world);
+				} else {
+					_gizmo->visible = false;
+					_gizmo->redraw();
+				}
 			} break;
 		}
 
@@ -224,8 +276,48 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 						_mouse_down = true;
 					} break;
 					case TOOL_MODE_CHUNK_SPAWN_BRUSH: {
+						Vector3 position;
+						Vector3 normal;
+
+						if (get_draw_world_coordinate(p_camera, Point2(mb->get_position().x, mb->get_position().y), position, normal)) {
+							_mouse_down = true;
+
+							chunk_spawn_brush_draw(position);
+
+							_gizmo->visible = true;
+							_gizmo->drawing = true;
+							_gizmo->position = position;
+							_gizmo->refresh_lines(_world);
+
+							return EditorPlugin::AFTER_GUI_INPUT_STOP;
+						} else {
+							_gizmo->visible = false;
+							_gizmo->redraw();
+
+							return EditorPlugin::AFTER_GUI_INPUT_PASS;
+						}
 					} break;
 					case TOOL_MODE_CHUNK_REMOVE_BRUSH: {
+						Vector3 position;
+						Vector3 normal;
+
+						if (get_draw_world_coordinate(p_camera, Point2(mb->get_position().x, mb->get_position().y), position, normal)) {
+							_mouse_down = true;
+
+							chunk_remove_brush_draw(position);
+
+							_gizmo->visible = true;
+							_gizmo->drawing = true;
+							_gizmo->position = position;
+							_gizmo->refresh_lines(_world);
+
+							return EditorPlugin::AFTER_GUI_INPUT_STOP;
+						} else {
+							_gizmo->visible = false;
+							_gizmo->redraw();
+
+							return EditorPlugin::AFTER_GUI_INPUT_PASS;
+						}
 					} break;
 				}
 
@@ -251,8 +343,10 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 						}
 					} break;
 					case TOOL_MODE_CHUNK_SPAWN_BRUSH: {
+						create_chunk_created_undo_point();
 					} break;
 					case TOOL_MODE_CHUNK_REMOVE_BRUSH: {
+						create_chunk_removed_undo_point();
 					} break;
 				}
 
@@ -446,6 +540,79 @@ void TerrainWorldEditor::paint_pick(const Vector3 &p_world_position) {
 				_paint_brush_button->set_pressed(true);
 				return;
 			}
+		}
+	}
+}
+
+void TerrainWorldEditor::chunk_spawn_brush_draw(const Vector3 &p_world_position) {
+	if (_chunk_spawn_brush_size == 0) {
+		return;
+	}
+
+	Vector2i wdp = _world->world_position_to_world_data_position(p_world_position);
+
+	int ilbh = _paint_brush_size / 2;
+
+	// TODO use a proper circle drawing algorithm.
+	for (int x = -ilbh; x < ilbh; ++x) {
+		for (int y = -ilbh; y < ilbh; ++y) {
+			float l = Vector2(x, y).length();
+
+			if (l > ilbh) {
+				continue;
+			}
+
+			Vector2i vwp = wdp + Vector2i(x, y);
+
+			Vector2i chunk_pos = _world->world_data_position_to_chunk_position(vwp);
+
+			if (_created_chunks.has(chunk_pos)) {
+				continue;
+			}
+
+			Ref<TerrainChunk> chunk = _world->chunk_get(chunk_pos.x, chunk_pos.y);
+
+			if (chunk.is_valid()) {
+				continue;
+			}
+
+			chunk = _world->chunk_create(chunk_pos.x, chunk_pos.y);
+
+			_created_chunks[chunk_pos] = chunk;
+		}
+	}
+}
+
+void TerrainWorldEditor::chunk_remove_brush_draw(const Vector3 &p_world_position) {
+	if (_chunk_spawn_brush_size == 0) {
+		return;
+	}
+
+	Vector2i wdp = _world->world_position_to_world_data_position(p_world_position);
+
+	int ilbh = _paint_brush_size / 2;
+
+	// TODO use a proper circle drawing algorithm.
+	for (int x = -ilbh; x < ilbh; ++x) {
+		for (int y = -ilbh; y < ilbh; ++y) {
+			float l = Vector2(x, y).length();
+
+			if (l > ilbh) {
+				continue;
+			}
+
+			Vector2i vwp = wdp + Vector2i(x, y);
+
+			Vector2i chunk_pos = _world->world_data_position_to_chunk_position(vwp);
+
+			Ref<TerrainChunk> chunk = _world->chunk_get(chunk_pos.x, chunk_pos.y);
+
+			if (!chunk.is_valid()) {
+				continue;
+			}
+
+			_removed_chunks[chunk_pos] = chunk;
+			_world->chunk_remove(chunk_pos.x, chunk_pos.y);
 		}
 	}
 }
@@ -1007,6 +1174,98 @@ void TerrainWorldEditor::apply_data(const Array &p_data) {
 	_world->set_voxels_at_world_data_position(data, channel, true, allow_create_chunks);
 }
 
+void TerrainWorldEditor::do_chunk_added_action(const Array &p_data) {
+	ERR_FAIL_COND(p_data.size() != 2);
+
+	ObjectID wid = p_data[0];
+
+	TerrainWorld *world = Object::cast_to<TerrainWorld>(ObjectDB::get_instance(wid));
+
+	if (!world) {
+		return;
+	}
+
+	Array data = p_data[1];
+
+	for (int i = 0; i < data.size(); i += 2) {
+		Vector2i chunk_position = data[i];
+		Ref<TerrainChunk> chunk = Ref<TerrainChunk>(data[i + 1]);
+
+		if (!world->chunk_has(chunk_position.x, chunk_position.y)) {
+			world->chunk_add(chunk, chunk_position.x, chunk_position.y);
+		}
+	}
+}
+
+void TerrainWorldEditor::undo_chunk_added_action(const Array &p_data) {
+	ERR_FAIL_COND(p_data.size() != 2);
+
+	ObjectID wid = p_data[0];
+
+	TerrainWorld *world = Object::cast_to<TerrainWorld>(ObjectDB::get_instance(wid));
+
+	if (!world) {
+		return;
+	}
+
+	Array data = p_data[1];
+
+	for (int i = 0; i < data.size(); i += 2) {
+		Vector2i chunk_position = data[i];
+		Ref<TerrainChunk> chunk = Ref<TerrainChunk>(data[i + 1]);
+
+		if (world->chunk_has(chunk_position.x, chunk_position.y)) {
+			world->chunk_remove(chunk_position.x, chunk_position.y);
+		}
+	}
+}
+
+void TerrainWorldEditor::do_chunk_removed_action(const Array &p_data) {
+	ERR_FAIL_COND(p_data.size() != 2);
+
+	ObjectID wid = p_data[0];
+
+	TerrainWorld *world = Object::cast_to<TerrainWorld>(ObjectDB::get_instance(wid));
+
+	if (!world) {
+		return;
+	}
+
+	Array data = p_data[1];
+
+	for (int i = 0; i < data.size(); i += 2) {
+		Vector2i chunk_position = data[i];
+		Ref<TerrainChunk> chunk = Ref<TerrainChunk>(data[i + 1]);
+
+		if (world->chunk_has(chunk_position.x, chunk_position.y)) {
+			world->chunk_remove(chunk_position.x, chunk_position.y);
+		}
+	}
+}
+
+void TerrainWorldEditor::undo_chunk_removed_action(const Array &p_data) {
+	ERR_FAIL_COND(p_data.size() != 2);
+
+	ObjectID wid = p_data[0];
+
+	TerrainWorld *world = Object::cast_to<TerrainWorld>(ObjectDB::get_instance(wid));
+
+	if (!world) {
+		return;
+	}
+
+	Array data = p_data[1];
+
+	for (int i = 0; i < data.size(); i += 2) {
+		Vector2i chunk_position = data[i];
+		Ref<TerrainChunk> chunk = Ref<TerrainChunk>(data[i + 1]);
+
+		if (!world->chunk_has(chunk_position.x, chunk_position.y)) {
+			world->chunk_add(chunk, chunk_position.x, chunk_position.y);
+		}
+	}
+}
+
 void TerrainWorldEditor::create_undo_point(const String &p_action, const int p_channel, const bool p_allow_create_chunks) {
 	if (!_world) {
 		return;
@@ -1042,12 +1301,88 @@ void TerrainWorldEditor::create_undo_point(const String &p_action, const int p_c
 	arr_undo.push_back(arr_undo_data);
 
 	_undo_redo->create_action(p_action);
-	_undo_redo->add_do_method(this, "apply_data", arr_do);
-	_undo_redo->add_undo_method(this, "apply_data", arr_undo);
+	_undo_redo->add_do_method(this, "apply_chunk_data", arr_do);
+	_undo_redo->add_undo_method(this, "apply_chunk_data", arr_undo);
 	_undo_redo->commit_action();
 
 	_original_data.clear();
 	_current_data.clear();
+}
+
+void TerrainWorldEditor::create_chunk_created_undo_point() {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID wid = _world->get_instance_id();
+
+	Array arr_do;
+	arr_do.push_back(wid);
+
+	Array arr_undo;
+	arr_undo.push_back(wid);
+
+	Array arr_do_data;
+
+	for (HashMap<Vector2i, Ref<TerrainChunk>>::Element *E = _created_chunks.front(); E; E = E->next) {
+		arr_do_data.push_back(E->key());
+		arr_do_data.push_back(E->value().get_ref_ptr());
+	}
+
+	Array arr_undo_data;
+
+	for (HashMap<Vector2i, Ref<TerrainChunk>>::Element *E = _created_chunks.front(); E; E = E->next) {
+		arr_undo_data.push_back(E->key());
+		arr_undo_data.push_back(E->value().get_ref_ptr());
+	}
+
+	arr_do.push_back(arr_do_data);
+	arr_undo.push_back(arr_undo_data);
+
+	_undo_redo->create_action("Chunk Spawn Brush Draw");
+	_undo_redo->add_do_method(this, "do_chunk_added_action", arr_do);
+	_undo_redo->add_undo_method(this, "undo_chunk_added_action", arr_undo);
+	_undo_redo->commit_action();
+
+	_created_chunks.clear();
+}
+
+void TerrainWorldEditor::create_chunk_removed_undo_point() {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID wid = _world->get_instance_id();
+
+	Array arr_do;
+	arr_do.push_back(wid);
+
+	Array arr_undo;
+	arr_undo.push_back(wid);
+
+	Array arr_do_data;
+
+	for (HashMap<Vector2i, Ref<TerrainChunk>>::Element *E = _removed_chunks.front(); E; E = E->next) {
+		arr_do_data.push_back(E->key());
+		arr_do_data.push_back(E->value().get_ref_ptr());
+	}
+
+	Array arr_undo_data;
+
+	for (HashMap<Vector2i, Ref<TerrainChunk>>::Element *E = _removed_chunks.front(); E; E = E->next) {
+		arr_undo_data.push_back(E->key());
+		arr_undo_data.push_back(E->value().get_ref_ptr());
+	}
+
+	arr_do.push_back(arr_do_data);
+	arr_undo.push_back(arr_undo_data);
+
+	_undo_redo->create_action("Chunk Remove Brush Draw");
+	_undo_redo->add_do_method(this, "do_chunk_removed_action", arr_do);
+	_undo_redo->add_undo_method(this, "undo_chunk_removed_action", arr_undo);
+	_undo_redo->commit_action();
+
+	_removed_chunks.clear();
 }
 
 void TerrainWorldEditor::_on_surface_button_pressed(Object *p_button) {
@@ -1260,6 +1595,11 @@ void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_on_chunk_remove_brush_size_slider_changed", &TerrainWorldEditor::_on_chunk_remove_brush_size_slider_changed);
 
 	ClassDB::bind_method("apply_data", &TerrainWorldEditor::apply_data);
+
+	ClassDB::bind_method("do_chunk_added_action", &TerrainWorldEditor::do_chunk_added_action);
+	ClassDB::bind_method("undo_chunk_added_action", &TerrainWorldEditor::undo_chunk_added_action);
+	ClassDB::bind_method("do_chunk_removed_action", &TerrainWorldEditor::do_chunk_removed_action);
+	ClassDB::bind_method("undo_chunk_removed_action", &TerrainWorldEditor::undo_chunk_removed_action);
 }
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {

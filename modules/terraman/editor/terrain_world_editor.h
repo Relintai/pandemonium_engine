@@ -45,6 +45,7 @@ class BoxContainer;
 class HFlowContainer;
 class SpinBox;
 class TerrainWorldGizmoPlugin;
+class TerrainChunk;
 
 class TerrainWorldEditor : public PanelContainer {
 	GDCLASS(TerrainWorldEditor, PanelContainer);
@@ -69,6 +70,8 @@ public:
 	void isolevel_brush_draw(const Vector3 &p_world_position);
 	void paint_brush_draw(const Vector3 &p_world_position);
 	void paint_pick(const Vector3 &p_world_position);
+	void chunk_spawn_brush_draw(const Vector3 &p_world_position);
+	void chunk_remove_brush_draw(const Vector3 &p_world_position);
 
 	TerrainWorldEditor();
 	TerrainWorldEditor(EditorNode *p_editor);
@@ -79,10 +82,20 @@ protected:
 
 	// Used by UndoRedo
 	void apply_data(const Array &p_data);
+	void do_chunk_added_action(const Array &p_data);
+	void undo_chunk_added_action(const Array &p_data);
+	void do_chunk_removed_action(const Array &p_data);
+	void undo_chunk_removed_action(const Array &p_data);
+
 	void create_undo_point(const String &p_action, const int p_channel, const bool p_allow_create_chunks);
+	void create_chunk_removed_undo_point();
+	void create_chunk_created_undo_point();
+
 	String _current_action;
 	HashMap<Vector2i, uint8_t> _original_data;
 	HashMap<Vector2i, uint8_t> _current_data;
+	HashMap<Vector2i, Ref<TerrainChunk>> _created_chunks;
+	HashMap<Vector2i, Ref<TerrainChunk>> _removed_chunks;
 
 protected:
 	static void _bind_methods();
