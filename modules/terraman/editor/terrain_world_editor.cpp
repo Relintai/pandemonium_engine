@@ -1301,8 +1301,8 @@ void TerrainWorldEditor::create_undo_point(const String &p_action, const int p_c
 	arr_undo.push_back(arr_undo_data);
 
 	_undo_redo->create_action(p_action);
-	_undo_redo->add_do_method(this, "apply_chunk_data", arr_do);
-	_undo_redo->add_undo_method(this, "apply_chunk_data", arr_undo);
+	_undo_redo->add_do_method(this, "apply_data", arr_do);
+	_undo_redo->add_undo_method(this, "apply_data", arr_undo);
 	_undo_redo->commit_action();
 
 	_original_data.clear();
