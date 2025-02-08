@@ -329,10 +329,10 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 			if (mb->get_button_index() == BUTTON_LEFT) {
 				switch (_tool_mode) {
 					case TOOL_MODE_ISOLEVEL_BRUSH: {
-						create_undo_point(_current_action, _isolevel_brush_channel, _isolevel_brush_allow_creating_chunks_button);
+						create_undo_point(_current_action, _isolevel_brush_channel, _isolevel_brush_allow_create_chunks);
 					} break;
 					case TOOL_MODE_PAINT_BRUSH: {
-						create_undo_point(_current_action, _paint_brush_channel, _paint_brush_allow_creating_chunks_button);
+						create_undo_point(_current_action, _paint_brush_channel, _paint_brush_allow_create_chunks);
 					} break;
 					case TOOL_MODE_PAINT_PICKER: {
 						Vector3 position;

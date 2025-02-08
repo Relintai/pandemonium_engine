@@ -82,6 +82,7 @@ protected:
 
 	// Used by UndoRedo
 	void apply_data(const Array &p_data);
+	
 	void do_chunk_added_action(const Array &p_data);
 	void undo_chunk_added_action(const Array &p_data);
 	void do_chunk_removed_action(const Array &p_data);
