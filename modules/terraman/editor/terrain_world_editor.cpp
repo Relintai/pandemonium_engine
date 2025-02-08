@@ -588,7 +588,6 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 
 	_surfaces_vbox_container->add_child(button);
 
-
 	bool f = false;
 	for (int i = 0; i < library->terra_surface_get_num(); ++i) {
 		Ref<TerrainSurface> surface = library->terra_surface_get(i);
@@ -956,6 +955,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	main_container->add_child(scs);
 
 	_surfaces_vbox_container = memnew(VBoxContainer);
+	_surfaces_vbox_container->hide();
 	scs->add_child(_surfaces_vbox_container);
 	_surfaces_vbox_container->set_h_size_flags(SIZE_EXPAND_FILL);
 
@@ -1111,6 +1111,7 @@ void TerrainWorldEditor::_on_tool_button_pressed() {
 			_add_remove_tool_container->show();
 			_isolevel_brush_tool_container->hide();
 			_paint_brush_tool_container->hide();
+			_surfaces_vbox_container->hide();
 			break;
 		case TOOL_MODE_REMOVE:
 			_add_single_label->hide();
@@ -1118,23 +1119,27 @@ void TerrainWorldEditor::_on_tool_button_pressed() {
 			_add_remove_tool_container->show();
 			_isolevel_brush_tool_container->hide();
 			_paint_brush_tool_container->hide();
+			_surfaces_vbox_container->hide();
 			break;
 		case TOOL_MODE_PAINT_BRUSH:
 			_gizmo->size = _paint_brush_size;
 			_add_remove_tool_container->hide();
 			_isolevel_brush_tool_container->hide();
 			_paint_brush_tool_container->show();
+			_surfaces_vbox_container->show();
 			break;
 		case TOOL_MODE_ISOLEVEL_BRUSH:
 			_gizmo->size = _isolevel_brush_size;
 			_add_remove_tool_container->hide();
 			_isolevel_brush_tool_container->show();
 			_paint_brush_tool_container->hide();
+			_surfaces_vbox_container->hide();
 			break;
 		case TOOL_MODE_PAINT_PICKER:
 			_add_remove_tool_container->hide();
 			_isolevel_brush_tool_container->hide();
 			_paint_brush_tool_container->hide();
+			_surfaces_vbox_container->hide();
 			break;
 		case TOOL_MODE_SPAWN_BRUSH:
 			break;
