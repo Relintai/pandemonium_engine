@@ -889,6 +889,18 @@ Vector2i TerrainWorld::world_position_to_chunk_position(const Vector3 &p_world_p
 	return Vector2i(x, z);
 }
 
+Vector2i TerrainWorld::world_data_position_to_chunk_position(const Vector2i &p_world_data_position) {
+	// TODO rework this so it works directly with ints.
+
+	Vector2 pos = p_world_data_position;
+
+	//Note: floor is needed to handle negative numbers properly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int z = static_cast<int>(Math::floor(pos.y / get_chunk_size_z()));
+
+	return Vector2i(x, z);
+}
+
 Vector2i TerrainWorld::world_position_to_world_data_position(const Vector3 &world_position) {
 	Vector3 pos = world_position / get_voxel_scale();
 
@@ -1586,6 +1598,7 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_position", "world_position"), &TerrainWorld::get_chunk_at_world_position);
 	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_position", "world_position"), &TerrainWorld::get_or_create_chunk_at_world_position);
 	ClassDB::bind_method(D_METHOD("world_position_to_chunk_position", "world_position"), &TerrainWorld::world_position_to_chunk_position);
+	ClassDB::bind_method(D_METHOD("world_data_position_to_chunk_position", "world_data_position"), &TerrainWorld::world_data_position_to_chunk_position);
 
 	ClassDB::bind_method(D_METHOD("world_position_to_world_data_position", "world_position"), &TerrainWorld::world_position_to_world_data_position);
 	ClassDB::bind_method(D_METHOD("get_voxel_at_world_data_position", "world_data_position", "channel_index"), &TerrainWorld::get_voxel_at_world_data_position);
