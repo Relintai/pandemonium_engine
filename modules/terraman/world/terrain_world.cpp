@@ -296,6 +296,8 @@ void TerrainWorld::chunk_add(Ref<TerrainChunk> chunk, const int x, const int z) 
 	}
 
 	emit_signal("chunk_added", chunk);
+
+	chunk->build();
 }
 bool TerrainWorld::chunk_has(const int x, const int z) const {
 	return _chunks.has(IntPos(x, z));
