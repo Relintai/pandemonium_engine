@@ -576,6 +576,19 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 		library->refresh_rects();
 	}
 
+	Button *button = memnew(Button);
+	button->set_text(TTR("Erase"));
+	button->set_text_align(Button::ALIGN_LEFT);
+	button->set_meta("index", -1);
+	button->set_toggle_mode(true);
+	button->set_button_group(_surfaces_button_group);
+	button->set_h_size_flags(SIZE_EXPAND_FILL);
+	button->set_pressed(true);
+	button->connect("button_up", this, "_on_surface_button_pressed");
+
+	_surfaces_vbox_container->add_child(button);
+
+
 	bool f = false;
 	for (int i = 0; i < library->terra_surface_get_num(); ++i) {
 		Ref<TerrainSurface> surface = library->terra_surface_get(i);
@@ -586,7 +599,7 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 
 		String text = String::num(i) + " - " + surface->get_name();
 
-		Button *button = memnew(Button);
+		button = memnew(Button);
 		button->set_text(text);
 		button->set_text_align(Button::ALIGN_LEFT);
 		button->set_meta("index", i);
@@ -608,7 +621,7 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 TerrainWorldEditor::TerrainWorldEditor() {
 	_undo_redo = NULL;
 	_world = NULL;
-	_selected_type = 0;
+	_selected_type = -1;
 	_channel_type = -1;
 	_add_remove_current_isolevel = 255;
 	_channel_isolevel = -1;
@@ -638,7 +651,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_undo_redo = EditorNode::get_undo_redo();
 
 	_world = NULL;
-	_selected_type = 0;
+	_selected_type = -1;
 	_channel_type = -1;
 	_add_remove_current_isolevel = 255;
 	_channel_isolevel = -1;
