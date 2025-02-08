@@ -105,6 +105,9 @@ protected:
 	void _on_paint_brush_size_slider_changed(float value);
 	void _on_paint_brush_channel_select_sb_changed(int value);
 
+	void _on_chunk_spawn_brush_size_slider_changed(float value);
+	void _on_chunk_remove_brush_size_slider_changed(float value);
+
 private:
 	UndoRedo *_undo_redo;
 	bool _mouse_down;
@@ -136,6 +139,10 @@ private:
 	int _paint_brush_channel;
 	float _paint_brush_size;
 	bool _paint_brush_allow_create_chunks;
+
+private:
+	float _chunk_spawn_brush_size;
+	float _chunk_remove_brush_size;
 
 private:
 	TerrainWorld *_world;
@@ -186,6 +193,12 @@ private:
 	VBoxContainer *_paint_picker_tool_container;
 	Label *_paint_picker_tool_label;
 	Label *_paint_picker_channel_label;
+
+	VBoxContainer *_chunk_spawn_brush_tool_container;
+	HSlider *_chunk_spawn_brush_size_slider;
+
+	VBoxContainer *_chunk_remove_brush_tool_container;
+	HSlider *_chunk_remove_brush_size_slider;
 };
 
 class TerrainWorldEditorPlugin : public EditorPlugin {

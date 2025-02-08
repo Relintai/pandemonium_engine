@@ -482,8 +482,10 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 		case TOOL_MODE_PAINT_PICKER: {
 		} break;
 		case TOOL_MODE_CHUNK_SPAWN_BRUSH: {
+			_gizmo->size = _chunk_spawn_brush_size;
 		} break;
 		case TOOL_MODE_CHUNK_REMOVE_BRUSH: {
+			_gizmo->size = _chunk_remove_brush_size;
 		} break;
 	}
 
@@ -590,6 +592,9 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_paint_brush_channel = -1;
 	_paint_brush_size = 10;
 	_paint_brush_allow_create_chunks = false;
+
+	_chunk_spawn_brush_size = 10;
+	_chunk_remove_brush_size = 10;
 }
 TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_undo_redo = EditorNode::get_undo_redo();
@@ -620,6 +625,9 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_editor = p_editor;
 	_tool_mode = TOOL_MODE_ISOLEVEL_BRUSH;
 	_previous_tool_mode = _tool_mode;
+
+	_chunk_spawn_brush_size = 10;
+	_chunk_remove_brush_size = 10;
 
 	set_custom_minimum_size(Size2(200 * EDSCALE, 0));
 
@@ -857,6 +865,52 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_paint_picker_channel_label->set_align(Label::ALIGN_CENTER);
 	_paint_picker_tool_container->add_child(_paint_picker_channel_label);
 
+	// Chunk Spawn Brush Tool
+	_chunk_spawn_brush_tool_container = memnew(VBoxContainer);
+	_chunk_spawn_brush_tool_container->hide();
+	main_container->add_child(_chunk_spawn_brush_tool_container);
+
+	Label *chunk_spawn_brush_label = memnew(Label);
+	chunk_spawn_brush_label->set_align(Label::ALIGN_CENTER);
+	chunk_spawn_brush_label->set_text(TTR("Chunk Spawn Brush"));
+	_chunk_spawn_brush_tool_container->add_child(chunk_spawn_brush_label);
+
+	Label *chunk_spawn_brush_size_label = memnew(Label);
+	chunk_spawn_brush_size_label->set_text(TTR("Size"));
+	_chunk_spawn_brush_tool_container->add_child(chunk_spawn_brush_size_label);
+
+	_chunk_spawn_brush_size_slider = memnew(HSlider);
+	_chunk_spawn_brush_size_slider->set_min(1);
+	_chunk_spawn_brush_size_slider->set_max(100);
+	_chunk_spawn_brush_size_slider->set_value(_chunk_spawn_brush_size);
+	_chunk_spawn_brush_size_slider->set_v_size_flags(SIZE_EXPAND_FILL);
+	_chunk_spawn_brush_size_slider->set_tooltip(TTR("Brush Size"));
+	_chunk_spawn_brush_size_slider->connect("value_changed", this, "_on_chunk_spawn_brush_size_slider_changed");
+	_chunk_spawn_brush_tool_container->add_child(_chunk_spawn_brush_size_slider);
+
+	// Chunk Remove Brush Tool
+	_chunk_remove_brush_tool_container = memnew(VBoxContainer);
+	_chunk_remove_brush_tool_container->hide();
+	main_container->add_child(_chunk_remove_brush_tool_container);
+
+	Label *chunk_remove_brush_label = memnew(Label);
+	chunk_remove_brush_label->set_align(Label::ALIGN_CENTER);
+	chunk_remove_brush_label->set_text(TTR("Chunk Remove Brush"));
+	_chunk_remove_brush_tool_container->add_child(chunk_remove_brush_label);
+
+	Label *chunk_remove_brush_size_label = memnew(Label);
+	chunk_remove_brush_size_label->set_text(TTR("Size"));
+	_chunk_remove_brush_tool_container->add_child(chunk_remove_brush_size_label);
+
+	_chunk_remove_brush_size_slider = memnew(HSlider);
+	_chunk_remove_brush_size_slider->set_min(1);
+	_chunk_remove_brush_size_slider->set_max(100);
+	_chunk_remove_brush_size_slider->set_value(_chunk_remove_brush_size);
+	_chunk_remove_brush_size_slider->set_v_size_flags(SIZE_EXPAND_FILL);
+	_chunk_remove_brush_size_slider->set_tooltip(TTR("Brush Size"));
+	_chunk_remove_brush_size_slider->connect("value_changed", this, "_on_chunk_remove_brush_size_slider_changed");
+	_chunk_remove_brush_tool_container->add_child(_chunk_remove_brush_size_slider);
+
 	// Surface Selector Separator
 	main_container->add_child(memnew(HSeparator));
 
@@ -1028,6 +1082,8 @@ void TerrainWorldEditor::_on_tool_button_pressed(Object *p_button) {
 			_paint_brush_tool_container->show();
 			_surfaces_vbox_container->show();
 			_paint_picker_tool_container->hide();
+			_chunk_spawn_brush_tool_container->hide();
+			_chunk_remove_brush_tool_container->hide();
 
 			break;
 		case TOOL_MODE_ISOLEVEL_BRUSH:
@@ -1037,6 +1093,8 @@ void TerrainWorldEditor::_on_tool_button_pressed(Object *p_button) {
 			_paint_brush_tool_container->hide();
 			_surfaces_vbox_container->hide();
 			_paint_picker_tool_container->hide();
+			_chunk_spawn_brush_tool_container->hide();
+			_chunk_remove_brush_tool_container->hide();
 
 			break;
 		case TOOL_MODE_PAINT_PICKER:
@@ -1047,6 +1105,8 @@ void TerrainWorldEditor::_on_tool_button_pressed(Object *p_button) {
 			_paint_brush_tool_container->hide();
 			_surfaces_vbox_container->hide();
 			_paint_picker_tool_container->show();
+			_chunk_spawn_brush_tool_container->hide();
+			_chunk_remove_brush_tool_container->hide();
 
 			if (_previous_tool_mode == TOOL_MODE_ISOLEVEL_BRUSH) {
 				_paint_picker_tool_label->set_text(TTR("Isolevel Brush"));
@@ -1059,13 +1119,25 @@ void TerrainWorldEditor::_on_tool_button_pressed(Object *p_button) {
 
 			break;
 		case TOOL_MODE_CHUNK_SPAWN_BRUSH:
-			_gizmo->visible = false;
-			_gizmo->redraw();
+			_gizmo->size = _chunk_spawn_brush_size;
+
+			_isolevel_brush_tool_container->hide();
+			_paint_brush_tool_container->hide();
+			_surfaces_vbox_container->hide();
+			_paint_picker_tool_container->hide();
+			_chunk_spawn_brush_tool_container->show();
+			_chunk_remove_brush_tool_container->hide();
 
 			break;
 		case TOOL_MODE_CHUNK_REMOVE_BRUSH:
-			_gizmo->visible = false;
-			_gizmo->redraw();
+			_gizmo->size = _chunk_remove_brush_size;
+
+			_isolevel_brush_tool_container->hide();
+			_paint_brush_tool_container->hide();
+			_surfaces_vbox_container->hide();
+			_paint_picker_tool_container->hide();
+			_chunk_spawn_brush_tool_container->hide();
+			_chunk_remove_brush_tool_container->show();
 
 			break;
 		default:
@@ -1150,6 +1222,21 @@ void TerrainWorldEditor::_on_paint_brush_channel_select_sb_changed(int value) {
 	_paint_brush_channel = value;
 }
 
+void TerrainWorldEditor::_on_chunk_spawn_brush_size_slider_changed(float value) {
+	_chunk_spawn_brush_size = value;
+
+	if (_gizmo.is_valid()) {
+		_gizmo->size = _chunk_spawn_brush_size;
+	}
+}
+void TerrainWorldEditor::_on_chunk_remove_brush_size_slider_changed(float value) {
+	_chunk_remove_brush_size = value;
+
+	if (_gizmo.is_valid()) {
+		_gizmo->size = _chunk_remove_brush_size;
+	}
+}
+
 void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_node_removed", &TerrainWorldEditor::_node_removed);
 
@@ -1168,6 +1255,9 @@ void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_on_paint_brush_allow_creating_chunks_selected", &TerrainWorldEditor::_on_paint_brush_allow_creating_chunks_selected);
 	ClassDB::bind_method("_on_paint_brush_size_slider_changed", &TerrainWorldEditor::_on_paint_brush_size_slider_changed);
 	ClassDB::bind_method("_on_paint_brush_channel_select_sb_changed", &TerrainWorldEditor::_on_paint_brush_channel_select_sb_changed);
+
+	ClassDB::bind_method("_on_chunk_spawn_brush_size_slider_changed", &TerrainWorldEditor::_on_chunk_spawn_brush_size_slider_changed);
+	ClassDB::bind_method("_on_chunk_remove_brush_size_slider_changed", &TerrainWorldEditor::_on_chunk_remove_brush_size_slider_changed);
 
 	ClassDB::bind_method("apply_data", &TerrainWorldEditor::apply_data);
 }
