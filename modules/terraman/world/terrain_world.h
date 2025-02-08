@@ -192,6 +192,7 @@ public:
 	void set_voxel_at_world_position(const Vector3 &world_position, const uint8_t data, const int channel_index, const bool rebuild = true);
 	Ref<TerrainChunk> get_chunk_at_world_position(const Vector3 &world_position);
 	Ref<TerrainChunk> get_or_create_chunk_at_world_position(const Vector3 &world_position);
+	Vector2i world_position_to_chunk_position(const Vector3 &p_world_position);
 
 	Vector2i world_position_to_world_data_position(const Vector3 &world_position);
 	uint8_t get_voxel_at_world_data_position(const Vector2i &world_data_position, const int channel_index);
