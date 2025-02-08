@@ -179,10 +179,12 @@ private:
 	HSlider *_paint_brush_size_slider;
 	SpinBox *_paint_brush_channel_select_sb;
 
-	VBoxContainer *_paint_picker_tool_container;
-
 	VBoxContainer *_surfaces_vbox_container;
 	Ref<ButtonGroup> _surfaces_button_group;
+
+	VBoxContainer *_paint_picker_tool_container;
+	Label *_paint_picker_tool_label;
+	Label *_paint_picker_channel_label;
 };
 
 class TerrainWorldEditorPlugin : public EditorPlugin {

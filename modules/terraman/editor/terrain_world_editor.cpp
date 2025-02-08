@@ -796,6 +796,32 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_paint_brush_channel_select_sb->connect("value_changed", this, "_on_paint_brush_channel_select_sb_changed");
 	_paint_brush_tool_container->add_child(_paint_brush_channel_select_sb);
 
+	// Paint Picker Tool
+	_paint_picker_tool_container = memnew(VBoxContainer);
+	_paint_picker_tool_container->hide();
+	main_container->add_child(_paint_picker_tool_container);
+
+	Label *paint_picker_label = memnew(Label);
+	paint_picker_label->set_text(TTR("Paint Picker"));
+	paint_picker_label->set_align(Label::ALIGN_CENTER);
+	_paint_picker_tool_container->add_child(paint_picker_label);
+
+	paint_picker_label = memnew(Label);
+	paint_picker_label->set_text(TTR("Target Tool:"));
+	_paint_picker_tool_container->add_child(paint_picker_label);
+
+	_paint_picker_tool_label = memnew(Label);
+	_paint_picker_tool_label->set_align(Label::ALIGN_CENTER);
+	_paint_picker_tool_container->add_child(_paint_picker_tool_label);
+
+	paint_picker_label = memnew(Label);
+	paint_picker_label->set_text(TTR("Target Channel:"));
+	_paint_picker_tool_container->add_child(paint_picker_label);
+
+	_paint_picker_channel_label = memnew(Label);
+	_paint_picker_channel_label->set_align(Label::ALIGN_CENTER);
+	_paint_picker_tool_container->add_child(_paint_picker_channel_label);
+
 	// Surface Selector Separator
 	main_container->add_child(memnew(HSeparator));
 
@@ -945,37 +971,71 @@ void TerrainWorldEditor::_on_surface_button_pressed() {
 void TerrainWorldEditor::_on_tool_button_pressed() {
 	BaseButton *button = _tool_button_group->get_pressed_button();
 
-	_gizmo->visible = false;
-	_gizmo->redraw();
-
-	if (button) {
-		_previous_tool_mode = _tool_mode;
-		_tool_mode = static_cast<TerrainWorldEditorToolMode>(static_cast<int>(button->get_meta("tool_mode")));
+	if (!button) {
+		return;
 	}
+
+	TerrainWorldEditorToolMode new_mode = static_cast<TerrainWorldEditorToolMode>(static_cast<int>(button->get_meta("tool_mode")));
+
+	if (new_mode == _tool_mode) {
+		return;
+	}
+
+	_previous_tool_mode = _tool_mode;
+	_tool_mode = new_mode;
 
 	switch (_tool_mode) {
 		case TOOL_MODE_PAINT_BRUSH:
 			_gizmo->size = _paint_brush_size;
+
 			_isolevel_brush_tool_container->hide();
 			_paint_brush_tool_container->show();
 			_surfaces_vbox_container->show();
+			_paint_picker_tool_container->hide();
+
 			break;
 		case TOOL_MODE_ISOLEVEL_BRUSH:
 			_gizmo->size = _isolevel_brush_size;
+
 			_isolevel_brush_tool_container->show();
 			_paint_brush_tool_container->hide();
 			_surfaces_vbox_container->hide();
+			_paint_picker_tool_container->hide();
+
 			break;
 		case TOOL_MODE_PAINT_PICKER:
+			_gizmo->visible = false;
+			_gizmo->redraw();
+
 			_isolevel_brush_tool_container->hide();
 			_paint_brush_tool_container->hide();
 			_surfaces_vbox_container->hide();
+			_paint_picker_tool_container->show();
+
+			if (_previous_tool_mode == TOOL_MODE_ISOLEVEL_BRUSH) {
+				_paint_picker_tool_label->set_text(TTR("Isolevel Brush"));
+				_paint_picker_channel_label->set_text(String::num(_isolevel_brush_channel));
+
+			} else {
+				_paint_picker_tool_label->set_text(TTR("Paint Brush"));
+				_paint_picker_channel_label->set_text(String::num(_paint_brush_channel));
+			}
+
 			break;
 		case TOOL_MODE_SPAWN_BRUSH:
+			_gizmo->visible = false;
+			_gizmo->redraw();
+
 			break;
 		case TOOL_MODE_CHUNK_REMOVE:
+			_gizmo->visible = false;
+			_gizmo->redraw();
+
 			break;
 		default:
+			_gizmo->visible = false;
+			_gizmo->redraw();
+
 			break;
 	}
 }
