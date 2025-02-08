@@ -68,6 +68,7 @@ public:
 	bool get_draw_world_coordinate(Camera *p_camera, const Point2 &p_point, Vector3 &r_position, Vector3 &r_normal);
 	void isolevel_brush_draw(const Vector3 &p_world_position);
 	void paint_brush_draw(const Vector3 &p_world_position);
+	void paint_pick(const Vector3 &p_world_position);
 
 	TerrainWorldEditor();
 	TerrainWorldEditor(EditorNode *p_editor);
@@ -88,19 +89,19 @@ protected:
 	void _notification(int p_what);
 	void _node_removed(Node *p_node);
 
-	void _on_surface_button_pressed();
-	void _on_tool_button_pressed();
+	void _on_surface_button_pressed(Object *p_button);
+	void _on_tool_button_pressed(Object *p_button);
 
-	void _on_isolevel_brush_tool_button_pressed();
+	void _on_isolevel_brush_tool_button_pressed(Object *p_button);
 	void _on_isolevel_brush_size_slider_changed(float value);
 	void _on_isolevel_brush_strength_slider_changed(float value);
 	void _on_isolevel_brush_smoothness_slider_changed(float value);
 	void _on_isolevel_brush_channel_select_sb_changed(int value);
-	void _on_isolevel_brush_allow_creating_chunks_selected();
-	void _on_isolevel_brush_liquid_mode_selected();
+	void _on_isolevel_brush_allow_creating_chunks_selected(bool p_on);
+	void _on_isolevel_brush_liquid_mode_selected(bool p_on);
 
-	void _on_paint_brush_liquid_mode_selected();
-	void _on_paint_brush_allow_creating_chunks_selected();
+	void _on_paint_brush_liquid_mode_selected(bool p_on);
+	void _on_paint_brush_allow_creating_chunks_selected(bool p_on);
 	void _on_paint_brush_size_slider_changed(float value);
 	void _on_paint_brush_channel_select_sb_changed(int value);
 
