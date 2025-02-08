@@ -613,14 +613,6 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_paint_brush_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/paint_brush", "Paint Brush", KEY_P));
 	_tool_button_container->add_child(_paint_brush_button);
 
-	_spawn_brush_button = memnew(ToolButton);
-	_spawn_brush_button->set_toggle_mode(true);
-	_spawn_brush_button->set_button_group(_tool_button_group);
-	_spawn_brush_button->set_meta("tool_mode", TOOL_MODE_SPAWN_BRUSH);
-	_spawn_brush_button->connect("button_up", this, "_on_tool_button_pressed");
-	_spawn_brush_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/spawn_brush", "Spawn Brush", KEY_M));
-	_tool_button_container->add_child(_spawn_brush_button);
-
 	_paint_picker_button = memnew(ToolButton);
 	_paint_picker_button->set_toggle_mode(true);
 	_paint_picker_button->set_button_group(_tool_button_group);
@@ -628,6 +620,14 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_paint_picker_button->connect("button_up", this, "_on_tool_button_pressed");
 	_paint_picker_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/paint_picker", "Paint Picker", KEY_L));
 	_tool_button_container->add_child(_paint_picker_button);
+
+	_spawn_brush_button = memnew(ToolButton);
+	_spawn_brush_button->set_toggle_mode(true);
+	_spawn_brush_button->set_button_group(_tool_button_group);
+	_spawn_brush_button->set_meta("tool_mode", TOOL_MODE_SPAWN_BRUSH);
+	_spawn_brush_button->connect("button_up", this, "_on_tool_button_pressed");
+	_spawn_brush_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/spawn_brush", "Spawn Brush", KEY_M));
+	_tool_button_container->add_child(_spawn_brush_button);
 
 	_chunk_remove_button = memnew(ToolButton);
 	_chunk_remove_button->set_toggle_mode(true);
