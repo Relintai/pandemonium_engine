@@ -647,6 +647,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	Label *isolevel_brush_label = memnew(Label);
 	isolevel_brush_label->set_text(TTR("Isolevel Brush"));
+	isolevel_brush_label->set_align(Label::ALIGN_CENTER);
 	_isolevel_brush_tool_container->add_child(isolevel_brush_label);
 
 	HFlowContainer *isolevel_brush_flow_container = memnew(HFlowContainer);
@@ -755,6 +756,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	main_container->add_child(_paint_brush_tool_container);
 
 	Label *paint_brush_label = memnew(Label);
+	paint_brush_label->set_align(Label::ALIGN_CENTER);
 	paint_brush_label->set_text(TTR("Paint Brush"));
 	_paint_brush_tool_container->add_child(paint_brush_label);
 
