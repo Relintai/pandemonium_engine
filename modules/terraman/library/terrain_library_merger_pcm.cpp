@@ -172,6 +172,11 @@ void TerrainLibraryMergerPCM::_material_cache_get_key(Ref<TerrainChunk> chunk) {
 			continue;
 		}
 
+		if (unlikely(_engine_quitting)) {
+			_material_cache_mutex.unlock();
+			return;
+		}
+
 		Ref<TerrainSurfaceMerger> nms = ms->duplicate();
 		nms->set_library(Ref<TerrainLibraryMergerPCM>(this));
 		nms->set_id(s);
@@ -184,6 +189,11 @@ void TerrainLibraryMergerPCM::_material_cache_get_key(Ref<TerrainChunk> chunk) {
 
 		if (!m.is_valid()) {
 			continue;
+		}
+
+		if (unlikely(_engine_quitting)) {
+			_material_cache_mutex.unlock();
+			return;
 		}
 
 		Ref<Material> nm = m->duplicate();
@@ -359,6 +369,11 @@ void TerrainLibraryMergerPCM::_liquid_material_cache_get_key(Ref<TerrainChunk> c
 			continue;
 		}
 
+		if (unlikely(_engine_quitting)) {
+			_liquid_material_cache_mutex.unlock();
+			return;
+		}
+
 		Ref<TerrainSurfaceMerger> nms = ms->duplicate();
 		nms->set_library(Ref<TerrainLibraryMergerPCM>(this));
 		nms->set_id(s);
@@ -371,6 +386,11 @@ void TerrainLibraryMergerPCM::_liquid_material_cache_get_key(Ref<TerrainChunk> c
 
 		if (!m.is_valid()) {
 			continue;
+		}
+
+		if (unlikely(_engine_quitting)) {
+			_liquid_material_cache_mutex.unlock();
+			return;
 		}
 
 		Ref<Material> nm = m->duplicate();
@@ -558,6 +578,11 @@ void TerrainLibraryMergerPCM::_prop_material_cache_get_key(Ref<TerrainChunk> chu
 
 		if (!m.is_valid()) {
 			continue;
+		}
+
+		if (unlikely(_engine_quitting)) {
+			_prop_material_cache_mutex.unlock();
+			return;
 		}
 
 		Ref<Material> nm = m->duplicate();
@@ -972,6 +997,8 @@ void TerrainLibraryMergerPCM::_setup_material_albedo(const int material_index, c
 }
 
 TerrainLibraryMergerPCM::TerrainLibraryMergerPCM() {
+	_engine_quitting = false;
+
 	_packer.instance();
 
 	_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
@@ -1045,6 +1072,14 @@ bool TerrainLibraryMergerPCM::process_prop_textures(Ref<PropData> prop) {
 	return false;
 }
 #endif
+
+void TerrainLibraryMergerPCM::_notification(int p_what) {
+	switch (p_what) {
+		case MainLoop::NOTIFICATION_QUITTING: {
+			_engine_quitting = true;
+		} break;
+	}
+}
 
 void TerrainLibraryMergerPCM::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_texture_flags"), &TerrainLibraryMergerPCM::get_texture_flags);
