@@ -51,14 +51,11 @@ class TerrainWorldEditor : public PanelContainer {
 
 public:
 	enum TerrainWorldEditorToolMode {
-		TOOL_MODE_ADD = 0,
-		TOOL_MODE_REMOVE,
-		TOOL_MODE_ISOLEVEL_BRUSH,
+		TOOL_MODE_ISOLEVEL_BRUSH = 0,
 		TOOL_MODE_PAINT_BRUSH,
 		TOOL_MODE_PAINT_PICKER,
 		TOOL_MODE_SPAWN_BRUSH,
 		TOOL_MODE_CHUNK_REMOVE,
-		//TOOL_MODE_DELETE_BRUSH, //Sets data in channel to 0
 		// TODO object manipulation tools.
 	};
 
@@ -68,7 +65,6 @@ public:
 	EditorPlugin::AfterGUIInput forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event);
 
 	void edit(TerrainWorld *p_world);
-	EditorPlugin::AfterGUIInput do_add_remove_action(Camera *p_camera, const Point2 &p_point, bool p_click);
 	bool get_draw_world_coordinate(Camera *p_camera, const Point2 &p_point, Vector3 &r_position, Vector3 &r_normal);
 	void isolevel_brush_draw(const Vector3 &p_world_position);
 	void paint_brush_draw(const Vector3 &p_world_position);
@@ -94,8 +90,7 @@ protected:
 
 	void _on_surface_button_pressed();
 	void _on_tool_button_pressed();
-	void _on_insert_block_at_camera_button_pressed();
-	void _on_add_remove_isolevel_slider_value_changed(float value);
+
 	void _on_isolevel_brush_tool_button_pressed();
 	void _on_isolevel_brush_size_slider_changed(float value);
 	void _on_isolevel_brush_strength_slider_changed(float value);
@@ -156,8 +151,6 @@ private:
 	TerrainWorldEditorToolMode _tool_mode;
 	TerrainWorldEditorToolMode _previous_tool_mode;
 
-	ToolButton *_add_button;
-	ToolButton *_remove_button;
 	ToolButton *_isolevel_brush_button;
 	ToolButton *_paint_brush_button;
 	ToolButton *_paint_picker_button;
@@ -166,14 +159,6 @@ private:
 
 	HFlowContainer *_tool_button_container;
 	Ref<ButtonGroup> _tool_button_group;
-
-	VBoxContainer *_add_remove_tool_container;
-	Label *_add_single_label;
-	Label *_remove_single_label;
-	Label *_add_remove_isolevel_slider_label;
-	HSlider *_add_remove_isolevel_slider;
-	int _add_remove_current_isolevel;
-	ToolButton *_insert_button;
 
 	VBoxContainer *_isolevel_brush_tool_container;
 	Ref<ButtonGroup> _isolevel_brush_tool_button_group;

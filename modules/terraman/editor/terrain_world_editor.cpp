@@ -81,9 +81,6 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 	if (mm.is_valid()) {
 		if (!_mouse_down) {
 			switch (_tool_mode) {
-				case TOOL_MODE_ADD:
-				case TOOL_MODE_REMOVE: {
-				} break;
 				case TOOL_MODE_ISOLEVEL_BRUSH: {
 					Vector3 position;
 					Vector3 normal;
@@ -124,9 +121,6 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 		}
 
 		switch (_tool_mode) {
-			case TOOL_MODE_ADD:
-			case TOOL_MODE_REMOVE: {
-			} break;
 			case TOOL_MODE_ISOLEVEL_BRUSH: {
 				Vector3 position;
 				Vector3 normal;
@@ -176,9 +170,6 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 		if (mb->is_pressed()) {
 			if (mb->get_button_index() == BUTTON_LEFT) {
 				switch (_tool_mode) {
-					case TOOL_MODE_ADD:
-					case TOOL_MODE_REMOVE:
-						return do_add_remove_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
 					case TOOL_MODE_ISOLEVEL_BRUSH: {
 						Vector3 position;
 						Vector3 normal;
@@ -243,9 +234,6 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 		} else {
 			if (mb->get_button_index() == BUTTON_LEFT) {
 				switch (_tool_mode) {
-					case TOOL_MODE_ADD:
-					case TOOL_MODE_REMOVE:
-						break;
 					case TOOL_MODE_ISOLEVEL_BRUSH: {
 						create_undo_point(_current_action, _isolevel_brush_channel, _isolevel_brush_allow_creating_chunks_button);
 					} break;
@@ -268,76 +256,6 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 	}
 
 	if (_mouse_down) {
-		return EditorPlugin::AFTER_GUI_INPUT_STOP;
-	}
-
-	return EditorPlugin::AFTER_GUI_INPUT_PASS;
-}
-
-EditorPlugin::AfterGUIInput TerrainWorldEditor::do_add_remove_action(Camera *p_camera, const Point2 &p_point, bool p_click) {
-	Camera *camera = p_camera;
-	Vector3 from = camera->project_ray_origin(p_point);
-	Vector3 to = from + camera->project_ray_normal(p_point) * 10000;
-	Transform local_xform = _world->get_global_transform().affine_inverse();
-
-	from = local_xform.xform(from);
-	to = local_xform.xform(to);
-
-	PhysicsDirectSpaceState *ss = _world->get_world_3d()->get_direct_space_state();
-
-	PhysicsDirectSpaceState::RayResult res;
-
-	if (ss->intersect_ray(from, to, res)) {
-		int selected_terrain = 0;
-		int channel = 0;
-
-		channel = _channel_type;
-
-		if (channel == -1) {
-			return EditorPlugin::AFTER_GUI_INPUT_PASS;
-		}
-
-		int isolevel = _add_remove_current_isolevel;
-		bool mode_add = false;
-
-		if (_tool_mode == TOOL_MODE_ADD) {
-			selected_terrain = _selected_type + 1;
-			mode_add = true;
-			_undo_redo->create_action("Add terrain voxel.");
-		} else if (_tool_mode == TOOL_MODE_REMOVE) {
-			selected_terrain = 0;
-			isolevel = 0;
-			mode_add = false;
-			_undo_redo->create_action("Remove terrain voxel.");
-		}
-
-		Vector3 pos;
-
-		if (mode_add) {
-			pos = (res.position + (Vector3(0.1, 0.1, 0.1) * res.normal * _world->get_voxel_scale()));
-		} else {
-			pos = (res.position + (Vector3(0.1, 0.1, 0.1) * -res.normal * _world->get_voxel_scale()));
-		}
-
-		uint8_t prev_terrain = _world->get_voxel_at_world_position(pos, _channel_type);
-		uint8_t prev_isolevel = 0;
-
-		if (_channel_isolevel != -1) {
-			prev_isolevel = _world->get_voxel_at_world_position(pos, _channel_isolevel);
-		}
-
-		if (_channel_isolevel == -1) {
-			_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, selected_terrain, _channel_type);
-			_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_terrain, _channel_type);
-		} else {
-			_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, selected_terrain, _channel_type, false);
-			_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, isolevel, _channel_isolevel);
-			_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_terrain, _channel_type, false);
-			_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_isolevel, _channel_isolevel);
-		}
-
-		_undo_redo->commit_action();
-
 		return EditorPlugin::AFTER_GUI_INPUT_STOP;
 	}
 
@@ -513,9 +431,6 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 	}
 
 	switch (_tool_mode) {
-		case TOOL_MODE_ADD:
-		case TOOL_MODE_REMOVE:
-			break;
 		case TOOL_MODE_ISOLEVEL_BRUSH: {
 			_gizmo->size = _isolevel_brush_size;
 		} break;
@@ -544,14 +459,6 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 
 	_paint_brush_channel = _channel_type;
 	_paint_brush_channel_select_sb->set_value(_paint_brush_channel);
-
-	if (_channel_isolevel == -1) {
-		_add_remove_isolevel_slider_label->hide();
-		_add_remove_isolevel_slider->hide();
-	} else {
-		_add_remove_isolevel_slider_label->show();
-		_add_remove_isolevel_slider->show();
-	}
 
 	_isolevel_brush_channel_select_sb->set_value(_channel_isolevel);
 	_isolevel_brush_channel = _channel_isolevel;
@@ -622,7 +529,6 @@ TerrainWorldEditor::TerrainWorldEditor() {
 	_world = NULL;
 	_selected_type = -1;
 	_channel_type = -1;
-	_add_remove_current_isolevel = 255;
 	_channel_isolevel = -1;
 	_editor = NULL;
 	_tool_mode = TOOL_MODE_ISOLEVEL_BRUSH;
@@ -652,7 +558,6 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_world = NULL;
 	_selected_type = -1;
 	_channel_type = -1;
-	_add_remove_current_isolevel = 255;
 	_channel_isolevel = -1;
 
 	_mouse_down = false;
@@ -732,60 +637,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_chunk_remove_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/chunk_remove", "Chunk Remove", KEY_U));
 	_tool_button_container->add_child(_chunk_remove_button);
 
-	_add_button = memnew(ToolButton);
-	//_add_button->set_text("Add");
-	_add_button->set_toggle_mode(true);
-	_add_button->set_button_group(_tool_button_group);
-	_add_button->set_meta("tool_mode", TOOL_MODE_ADD);
-	_add_button->connect("button_up", this, "_on_tool_button_pressed");
-	_add_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/add_single_mode", "Add Single Voxel Mode", KEY_A));
-	_tool_button_container->add_child(_add_button);
-
-	_remove_button = memnew(ToolButton);
-	//_remove_button->set_text("Remove");
-	_remove_button->set_toggle_mode(true);
-	_remove_button->set_button_group(_tool_button_group);
-	_remove_button->set_meta("tool_mode", TOOL_MODE_REMOVE);
-	_remove_button->connect("button_up", this, "_on_tool_button_pressed");
-	_remove_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/remove_single_mode", "Remove Single Voxel Mode", KEY_S));
-	_tool_button_container->add_child(_remove_button);
-
 	main_container->add_child(memnew(HSeparator));
-
-	// Add Remove tool
-	_add_remove_tool_container = memnew(VBoxContainer);
-	_add_remove_tool_container->hide();
-	main_container->add_child(_add_remove_tool_container);
-
-	_add_single_label = memnew(Label);
-	_add_single_label->set_text(TTR("Add Single Tool"));
-	_add_remove_tool_container->add_child(_add_single_label);
-
-	_remove_single_label = memnew(Label);
-	_remove_single_label->set_text(TTR("Remove Single Tool"));
-	_remove_single_label->hide();
-	_add_remove_tool_container->add_child(_remove_single_label);
-
-	_insert_button = memnew(ToolButton);
-	//_insert_button->set_text("Insert");
-	_insert_button->connect("button_up", this, "_on_insert_block_at_camera_button_pressed");
-	_insert_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/instert_block_at_camera", "Insert at camera", KEY_B));
-	_add_remove_tool_container->add_child(_insert_button);
-
-	_add_remove_isolevel_slider_label = memnew(Label);
-	_add_remove_isolevel_slider_label->set_text(TTR("Isolevel"));
-	_add_remove_tool_container->add_child(_add_remove_isolevel_slider_label);
-
-	_add_remove_isolevel_slider = memnew(HSlider);
-	_add_remove_isolevel_slider->set_min(1);
-	_add_remove_isolevel_slider->set_value(_add_remove_current_isolevel);
-	_add_remove_isolevel_slider->set_custom_minimum_size(Size2(50 * EDSCALE, 0));
-	_add_remove_isolevel_slider->set_v_size_flags(SIZE_EXPAND_FILL);
-	_add_remove_isolevel_slider->set_h_size_flags(SIZE_EXPAND_FILL);
-	_add_remove_isolevel_slider->set_tooltip(TTR("Isolevel"));
-	_add_remove_tool_container->add_child(_add_remove_isolevel_slider);
-	_add_remove_isolevel_slider->connect("value_changed", this, "_on_add_remove_isolevel_slider_value_changed");
-	_add_remove_isolevel_slider->hide();
 
 	// Isolevel Brush
 	_isolevel_brush_tool_container = memnew(VBoxContainer);
@@ -971,9 +823,6 @@ void TerrainWorldEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
-			_add_button->set_icon(get_theme_icon("Add", "EditorIcons"));
-			_remove_button->set_icon(get_theme_icon("Remove", "EditorIcons"));
-			_insert_button->set_icon(get_theme_icon("InsertBefore", "EditorIcons"));
 			_isolevel_brush_button->set_icon(get_theme_icon("CanvasItem", "EditorIcons"));
 			_paint_brush_button->set_icon(get_theme_icon("CanvasItemShader", "EditorIcons"));
 			_paint_picker_button->set_icon(get_theme_icon("ColorPick", "EditorIcons"));
@@ -1105,38 +954,19 @@ void TerrainWorldEditor::_on_tool_button_pressed() {
 	}
 
 	switch (_tool_mode) {
-		case TOOL_MODE_ADD:
-			_add_single_label->show();
-			_remove_single_label->hide();
-			_add_remove_tool_container->show();
-			_isolevel_brush_tool_container->hide();
-			_paint_brush_tool_container->hide();
-			_surfaces_vbox_container->hide();
-			break;
-		case TOOL_MODE_REMOVE:
-			_add_single_label->hide();
-			_remove_single_label->show();
-			_add_remove_tool_container->show();
-			_isolevel_brush_tool_container->hide();
-			_paint_brush_tool_container->hide();
-			_surfaces_vbox_container->hide();
-			break;
 		case TOOL_MODE_PAINT_BRUSH:
 			_gizmo->size = _paint_brush_size;
-			_add_remove_tool_container->hide();
 			_isolevel_brush_tool_container->hide();
 			_paint_brush_tool_container->show();
 			_surfaces_vbox_container->show();
 			break;
 		case TOOL_MODE_ISOLEVEL_BRUSH:
 			_gizmo->size = _isolevel_brush_size;
-			_add_remove_tool_container->hide();
 			_isolevel_brush_tool_container->show();
 			_paint_brush_tool_container->hide();
 			_surfaces_vbox_container->hide();
 			break;
 		case TOOL_MODE_PAINT_PICKER:
-			_add_remove_tool_container->hide();
 			_isolevel_brush_tool_container->hide();
 			_paint_brush_tool_container->hide();
 			_surfaces_vbox_container->hide();
@@ -1148,54 +978,6 @@ void TerrainWorldEditor::_on_tool_button_pressed() {
 		default:
 			break;
 	}
-}
-
-void TerrainWorldEditor::_on_insert_block_at_camera_button_pressed() {
-	int selected_terrain = 0;
-	int channel = 0;
-
-	channel = _channel_type;
-
-	if (channel == -1)
-		return;
-
-	SpatialEditorViewport *vp = SpatialEditor::get_singleton()->get_editor_viewport(0);
-
-	if (!vp)
-		return;
-
-	Camera *cam = vp->get_camera();
-
-	if (!cam)
-		return;
-
-	Vector3 pos = cam->get_transform().origin;
-	selected_terrain = _selected_type + 1;
-
-	_undo_redo->create_action("Insert terrain voxel at camera.");
-
-	uint8_t prev_terrain = _world->get_voxel_at_world_position(pos, _channel_type);
-	uint8_t prev_isolevel = 0;
-
-	if (_channel_isolevel != -1) {
-		prev_isolevel = _world->get_voxel_at_world_position(pos, _channel_isolevel);
-	}
-
-	if (_channel_isolevel == -1) {
-		_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, selected_terrain, channel);
-		_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_terrain, channel);
-	} else {
-		_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, selected_terrain, channel, false);
-		_undo_redo->add_do_method(_world, "set_voxel_at_world_position", pos, _add_remove_current_isolevel, _channel_isolevel);
-		_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_terrain, channel, false);
-		_undo_redo->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_isolevel, _channel_isolevel);
-	}
-
-	_undo_redo->commit_action();
-}
-
-void TerrainWorldEditor::_on_add_remove_isolevel_slider_value_changed(float value) {
-	_add_remove_current_isolevel = value;
 }
 
 void TerrainWorldEditor::_on_isolevel_brush_tool_button_pressed() {
@@ -1277,9 +1059,6 @@ void TerrainWorldEditor::_bind_methods() {
 
 	ClassDB::bind_method("_on_surface_button_pressed", &TerrainWorldEditor::_on_surface_button_pressed);
 	ClassDB::bind_method("_on_tool_button_pressed", &TerrainWorldEditor::_on_tool_button_pressed);
-
-	ClassDB::bind_method("_on_insert_block_at_camera_button_pressed", &TerrainWorldEditor::_on_insert_block_at_camera_button_pressed);
-	ClassDB::bind_method("_on_add_remove_isolevel_slider_value_changed", &TerrainWorldEditor::_on_add_remove_isolevel_slider_value_changed);
 
 	ClassDB::bind_method("_on_isolevel_brush_tool_button_pressed", &TerrainWorldEditor::_on_isolevel_brush_tool_button_pressed);
 	ClassDB::bind_method("_on_isolevel_brush_size_slider_changed", &TerrainWorldEditor::_on_isolevel_brush_size_slider_changed);
