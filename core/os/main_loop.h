@@ -62,6 +62,7 @@ public:
 		NOTIFICATION_OS_IME_UPDATE = 1013,
 		NOTIFICATION_APP_RESUMED = 1014,
 		NOTIFICATION_APP_PAUSED = 1015,
+		NOTIFICATION_QUITTING = 1016,
 	};
 
 	virtual void input_event(const Ref<InputEvent> &p_event);

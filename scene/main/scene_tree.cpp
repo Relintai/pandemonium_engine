@@ -879,6 +879,8 @@ void SceneTree::quit(int p_exit_code) {
 	}
 
 	_quit = true;
+
+	notification(NOTIFICATION_QUITTING);
 }
 
 void SceneTree::_notification(int p_notification) {
@@ -888,6 +890,7 @@ void SceneTree::_notification(int p_notification) {
 
 			if (accept_quit) {
 				_quit = true;
+				get_root()->propagate_notification(NOTIFICATION_QUITTING);
 				break;
 			}
 		} break;
@@ -897,6 +900,7 @@ void SceneTree::_notification(int p_notification) {
 
 			if (quit_on_go_back) {
 				_quit = true;
+				get_root()->propagate_notification(NOTIFICATION_QUITTING);
 				break;
 			}
 		} break;
@@ -948,7 +952,9 @@ void SceneTree::_notification(int p_notification) {
 		case NOTIFICATION_CRASH: {
 			get_root()->propagate_notification(p_notification);
 		} break;
-
+		case NOTIFICATION_QUITTING: {
+			get_root()->propagate_notification(p_notification);
+		} break;
 		default:
 			break;
 	};
