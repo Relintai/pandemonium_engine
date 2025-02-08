@@ -102,7 +102,9 @@ protected:
 	void _on_isolevel_brush_smoothness_slider_changed(float value);
 	void _on_isolevel_brush_channel_select_sb_changed(int value);
 	void _on_isolevel_brush_allow_creating_chunks_selected();
+	void _on_isolevel_brush_liquid_mode_selected();
 
+	void _on_paint_brush_liquid_mode_selected();
 	void _on_paint_brush_allow_creating_chunks_selected();
 	void _on_paint_brush_size_slider_changed(float value);
 	void _on_paint_brush_channel_select_sb_changed(int value);
@@ -124,8 +126,7 @@ private:
 		//ISOLEVEL_BRUSH_TYPE_SMOOTH,
 	};
 
-	bool _isolevel_picker_mode;
-
+	bool _isolevel_brush_liquid_mode;
 	int _isolevel_brush_channel;
 	float _isolevel_brush_size;
 	float _isolevel_brush_strength;
@@ -135,8 +136,7 @@ private:
 	bool _isolevel_brush_allow_create_chunks;
 
 private:
-	bool _paint_brush_picker_mode;
-
+	bool _paint_brush_liquid_mode;
 	int _paint_brush_channel;
 	float _paint_brush_size;
 	bool _paint_brush_allow_create_chunks;
@@ -181,6 +181,7 @@ private:
 	ToolButton *_isolevel_brush_type_substract_button;
 	ToolButton *_isolevel_brush_type_set_button;
 	//ToolButton *_isolevel_brush_type_smooth_button;
+	ToolButton *_isolevel_brush_liquid_mode_button;
 	ToolButton *_isolevel_brush_allow_creating_chunks_button;
 	HSlider *_isolevel_brush_size_slider;
 	HSlider *_isolevel_brush_strength_slider;
@@ -188,6 +189,7 @@ private:
 	SpinBox *_isolevel_brush_channel_select_sb;
 
 	VBoxContainer *_paint_brush_tool_container;
+	ToolButton *_paint_brush_liquid_mode_button;
 	ToolButton *_paint_brush_allow_creating_chunks_button;
 	HSlider *_paint_brush_size_slider;
 	SpinBox *_paint_brush_channel_select_sb;
