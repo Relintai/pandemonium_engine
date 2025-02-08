@@ -1250,6 +1250,9 @@ void TerrainChunk::_exit_tree() {
 	if (_library.is_valid() && _library->supports_caching()) {
 		if (material_cache_key_has()) {
 			_library->material_cache_unref(material_cache_key_get());
+
+			material_cache_key_set(0);
+			material_cache_key_has_set(false);
 		}
 	}
 }
