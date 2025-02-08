@@ -765,13 +765,13 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_paint_brush_liquid_mode_button->set_toggle_mode(true);
 	_paint_brush_liquid_mode_button->connect("button_up", this, "_on_paint_brush_liquid_mode_selected");
 	_paint_brush_liquid_mode_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/paint_brush_liquid_mode", "Paint Brush Liquid Mode", KEY_L));
-	_paint_brush_tool_container->add_child(_paint_brush_liquid_mode_button);
+	paint_brush_flow_container->add_child(_paint_brush_liquid_mode_button);
 
 	_paint_brush_allow_creating_chunks_button = memnew(ToolButton);
 	_paint_brush_allow_creating_chunks_button->set_toggle_mode(true);
 	_paint_brush_allow_creating_chunks_button->connect("button_up", this, "_on_paint_brush_allow_creating_chunks_selected");
 	_paint_brush_allow_creating_chunks_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/paint_brush_allow_creating_chunks", "Paint Brush Allow Chunk Creation", KEY_L));
-	_paint_brush_tool_container->add_child(_paint_brush_allow_creating_chunks_button);
+	paint_brush_flow_container->add_child(_paint_brush_allow_creating_chunks_button);
 
 	Label *paint_brush_size_label = memnew(Label);
 	paint_brush_size_label->set_text(TTR("Size"));
