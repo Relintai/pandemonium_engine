@@ -54,8 +54,8 @@ public:
 		TOOL_MODE_ISOLEVEL_BRUSH = 0,
 		TOOL_MODE_PAINT_BRUSH,
 		TOOL_MODE_PAINT_PICKER,
-		TOOL_MODE_SPAWN_BRUSH,
-		TOOL_MODE_CHUNK_REMOVE,
+		TOOL_MODE_CHUNK_SPAWN_BRUSH,
+		TOOL_MODE_CHUNK_REMOVE_BRUSH,
 		// TODO object manipulation tools.
 	};
 
@@ -155,8 +155,8 @@ private:
 	ToolButton *_isolevel_brush_button;
 	ToolButton *_paint_brush_button;
 	ToolButton *_paint_picker_button;
-	ToolButton *_spawn_brush_button;
-	ToolButton *_chunk_remove_button;
+	ToolButton *_chunk_spawn_brush_button;
+	ToolButton *_chunk_remove_brush_button;
 
 	HFlowContainer *_tool_button_container;
 	Ref<ButtonGroup> _tool_button_group;
