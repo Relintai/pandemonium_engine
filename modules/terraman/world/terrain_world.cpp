@@ -639,6 +639,8 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 				sp->set_transform(t);
 			}
 
+			// TODO store this in a chunk, and manage loading/unloading it with it
+
 			continue;
 		}
 
@@ -658,6 +660,8 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 			light->set_specular(light_data->get_light_specular());
 
 			light_add(light);
+
+			// TODO store this in a chunk, and manage loading/unloading it with it
 
 			continue;
 		}

@@ -251,6 +251,9 @@ public:
 	int prop_get_count() const;
 	void prop_remove(const int index);
 	void props_clear();
+
+	Array props_get();
+	void props_set(const Array &p_props);
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
@@ -278,6 +281,9 @@ public:
 	int mesh_data_resource_get_count() const;
 	void mesh_data_resource_remove(const int index);
 	void mesh_data_resource_clear();
+
+	Array mesh_data_resources_get();
+	void mesh_data_resources_set(const Array &p_mesh_data_resources);
 #endif
 
 	//Colliders

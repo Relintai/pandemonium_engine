@@ -833,6 +833,35 @@ void TerrainChunk::prop_remove(const int index) {
 void TerrainChunk::props_clear() {
 	_props.clear();
 }
+
+Array TerrainChunk::props_get() {
+	Array ret;
+
+	for (int i = 0; i < _props.size(); i++) {
+		Array prop_data;
+
+		prop_data.push_back(_props[i].transform);
+		prop_data.push_back(_props[i].prop.get_ref_ptr());
+
+		ret.push_back(prop_data);
+	}
+
+	return ret;
+}
+void TerrainChunk::props_set(const Array &p_props) {
+	props_clear();
+
+	for (int i = 0; i < p_props.size(); ++i) {
+		Array prop_data = p_props[i];
+
+		ERR_CONTINUE(prop_data.size() != 2);
+
+		Transform transform = prop_data[0];
+		Ref<PropData> prop = Ref<PropData>(prop_data[1]);
+
+		prop_add(transform, prop);
+	}
+}
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
@@ -993,6 +1022,42 @@ void TerrainChunk::mesh_data_resource_remove(const int index) {
 }
 void TerrainChunk::mesh_data_resource_clear() {
 	_mesh_data_resources.clear();
+}
+
+Array TerrainChunk::mesh_data_resources_get() {
+	Array ret;
+
+	for (int i = 0; i < _mesh_data_resources.size(); i++) {
+		MeshDataResourceEntry e = _mesh_data_resources[i];
+
+		Array mdr_data;
+
+		mdr_data.push_back(e.mesh.get_ref_ptr());
+		mdr_data.push_back(e.texture);
+		mdr_data.push_back(e.color);
+		mdr_data.push_back(e.transform);
+
+		ret.push_back(mdr_data);
+	}
+
+	return ret;
+}
+
+void TerrainChunk::mesh_data_resources_set(const Array &p_mesh_data_resources) {
+	mesh_data_resource_clear();
+
+	for (int i = 0; i < p_mesh_data_resources.size(); ++i) {
+		Array mdr_data = p_mesh_data_resources[i];
+
+		ERR_CONTINUE(mdr_data.size() != 4);
+
+		Ref<MeshDataResource> mesh = Ref<MeshDataResource>(mdr_data[0]);
+		Ref<Texture> texture = Ref<Texture>(mdr_data[1]);
+		Color color = mdr_data[2];
+		Transform transform = mdr_data[3];
+
+		mesh_data_resource_add(transform, mesh, texture, color, false);
+	}
 }
 
 #endif
@@ -1609,6 +1674,10 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("prop_get_count"), &TerrainChunk::prop_get_count);
 	ClassDB::bind_method(D_METHOD("prop_remove", "index"), &TerrainChunk::prop_remove);
 	ClassDB::bind_method(D_METHOD("props_clear"), &TerrainChunk::props_clear);
+
+	ClassDB::bind_method(D_METHOD("props_get"), &TerrainChunk::props_get);
+	ClassDB::bind_method(D_METHOD("props_set"), &TerrainChunk::props_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props"), "props_set", "props_get");
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
@@ -1636,6 +1705,10 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_get_count"), &TerrainChunk::mesh_data_resource_get_count);
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_remove", "index"), &TerrainChunk::mesh_data_resource_remove);
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_clear"), &TerrainChunk::mesh_data_resource_clear);
+
+	ClassDB::bind_method(D_METHOD("mesh_data_resources_get"), &TerrainChunk::mesh_data_resources_get);
+	ClassDB::bind_method(D_METHOD("mesh_data_resources_set"), &TerrainChunk::mesh_data_resources_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "mesh_data_resources"), "mesh_data_resources_set", "mesh_data_resources_get");
 #endif
 
 	ClassDB::bind_method(D_METHOD("collider_add", "local_transform", "shape", "shape_rid", "body"), &TerrainChunk::collider_add, DEFVAL(RID()), DEFVAL(RID()));
