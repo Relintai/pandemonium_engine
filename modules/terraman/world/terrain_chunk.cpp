@@ -661,6 +661,113 @@ _FORCE_INLINE_ int TerrainChunk::get_data_size() const {
 	return _data_size_x * _data_size_z;
 }
 
+//Lights
+void TerrainChunk::light_add(Ref<TerrainLight> p_light) {
+	if (!p_light.is_valid()) {
+		return;
+	}
+
+	p_light->set_has_owner_chunk(true);
+	p_light->set_owner_chunk_position(Vector2i(_position_x, _position_z));
+	p_light->connect("light_moved", this, "_on_light_moved");
+
+	_lights.push_back(p_light);
+
+	TerrainWorld *world = get_voxel_world();
+
+	if (ObjectDB::instance_validate(world)) {
+		world->world_light_added(p_light);
+	}
+}
+bool TerrainChunk::light_remove(Ref<TerrainLight> p_light) {
+	if (!p_light.is_valid()) {
+		return false;
+	}
+
+	if (_lights.erase(p_light)) {
+		p_light->set_has_owner_chunk(false);
+		p_light->disconnect("light_moved", this, "_on_light_moved");
+
+		TerrainWorld *world = get_voxel_world();
+
+		if (ObjectDB::instance_validate(world)) {
+			world->world_light_removed(p_light);
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool TerrainChunk::light_has(const Ref<TerrainLight> &p_light) {
+	return _lights.find(p_light) != -1;
+}
+
+Ref<TerrainLight> TerrainChunk::light_get_index(const int index) {
+	ERR_FAIL_INDEX_V(index, _lights.size(), Ref<TerrainLight>());
+
+	return _lights.get(index);
+}
+void TerrainChunk::light_remove_index(const int index) {
+	ERR_FAIL_INDEX(index, _lights.size());
+
+	Ref<TerrainLight> light = _lights[index];
+
+	TerrainWorld *world = get_voxel_world();
+
+	if (ObjectDB::instance_validate(world)) {
+		world->world_light_removed(light);
+	}
+}
+int TerrainChunk::light_get_count() const {
+	return _lights.size();
+}
+void TerrainChunk::lights_clear() {
+	TerrainWorld *world = get_voxel_world();
+
+	if (!ObjectDB::instance_validate(world)) {
+		world = NULL;
+	}
+
+	for (int i = 0; i < _lights.size(); ++i) {
+		Ref<TerrainLight> light = _lights[i];
+
+		if (!light.is_valid()) {
+			continue;
+		}
+
+		light->set_has_owner_chunk(false);
+
+		if (world) {
+			world->world_light_removed(light);
+		}
+	}
+
+	_lights.clear();
+}
+
+Vector<Variant> TerrainChunk::lights_get() {
+	VARIANT_ARRAY_GET(_lights);
+}
+void TerrainChunk::lights_set(const Vector<Variant> &chunks) {
+	lights_clear();
+
+	for (int i = 0; i < chunks.size(); ++i) {
+		Ref<TerrainLight> light = Ref<TerrainLight>(chunks[i]);
+
+		light_add(light);
+	}
+}
+
+void TerrainChunk::_on_light_moved(const Ref<TerrainLight> &p_light) {
+	TerrainWorld *world = get_voxel_world();
+
+	if (ObjectDB::instance_validate(world)) {
+		world->world_light_moved(p_light);
+	}
+}
+
 //Terra Structures
 
 Ref<TerrainStructure> TerrainChunk::voxel_structure_get(const int index) const {
@@ -1295,6 +1402,8 @@ TerrainChunk::~TerrainChunk() {
 	_colliders.clear();
 
 	_jobs.clear();
+
+	_lights.clear();
 }
 
 void TerrainChunk::_enter_tree() {
@@ -1654,6 +1763,23 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_data_index", "x", "z"), &TerrainChunk::get_data_index);
 	ClassDB::bind_method(D_METHOD("get_data_size"), &TerrainChunk::get_data_size);
 
+	// Lights
+	ClassDB::bind_method(D_METHOD("light_add", "light"), &TerrainChunk::light_add);
+	ClassDB::bind_method(D_METHOD("light_remove", "light"), &TerrainChunk::light_remove);
+	ClassDB::bind_method(D_METHOD("light_has", "light"), &TerrainChunk::light_has);
+
+	ClassDB::bind_method(D_METHOD("light_get_index", "index"), &TerrainChunk::light_get_index);
+	ClassDB::bind_method(D_METHOD("light_remove_index", "index"), &TerrainChunk::light_remove_index);
+	ClassDB::bind_method(D_METHOD("light_get_count"), &TerrainChunk::light_get_count);
+	ClassDB::bind_method(D_METHOD("lights_clear"), &TerrainChunk::lights_clear);
+
+	ClassDB::bind_method(D_METHOD("lights_get"), &TerrainChunk::lights_get);
+	ClassDB::bind_method(D_METHOD("lights_set", "chunks"), &TerrainChunk::lights_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "lights", PROPERTY_HINT_NONE, "23/20:TerrainLight", PROPERTY_USAGE_DEFAULT, "TerrainLight"), "lights_set", "lights_get");
+
+	ClassDB::bind_method(D_METHOD("_on_light_moved"), &TerrainChunk::_on_light_moved);
+
+	// Structures
 	ClassDB::bind_method(D_METHOD("voxel_structure_get", "index"), &TerrainChunk::voxel_structure_get);
 	ClassDB::bind_method(D_METHOD("voxel_structure_add", "structure"), &TerrainChunk::voxel_structure_add);
 	ClassDB::bind_method(D_METHOD("voxel_structure_remove", "structure"), &TerrainChunk::voxel_structure_remove);

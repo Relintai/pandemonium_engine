@@ -217,6 +217,21 @@ public:
 	int get_data_index(const int x, const int z) const;
 	int get_data_size() const;
 
+	//Lights
+	void light_add(Ref<TerrainLight> p_light);
+	bool light_remove(Ref<TerrainLight> p_light);
+	bool light_has(const Ref<TerrainLight> &p_light);
+
+	Ref<TerrainLight> light_get_index(const int index);
+	void light_remove_index(const int index);
+	int light_get_count() const;
+	void lights_clear();
+
+	Vector<Variant> lights_get();
+	void lights_set(const Vector<Variant> &chunks);
+
+	void _on_light_moved(const Ref<TerrainLight> &p_light);
+
 	//Terra Structures
 	Ref<TerrainStructure> voxel_structure_get(const int index) const;
 	void voxel_structure_add(const Ref<TerrainStructure> &structure);
@@ -420,6 +435,8 @@ protected:
 	Vector<Ref<TerrainJob>> _jobs;
 
 	Ref<TerrainLibrary> _library;
+
+	Vector<Ref<TerrainLight>> _lights;
 
 	Vector<Ref<TerrainStructure>> _voxel_structures;
 

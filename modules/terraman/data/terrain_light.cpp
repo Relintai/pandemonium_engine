@@ -31,22 +31,31 @@
 
 #include "terrain_light.h"
 
-_FORCE_INLINE_ int TerrainLight::get_world_position_x() const {
-	return _world_position_x;
+bool TerrainLight::get_has_owner_chunk() const {
+	return _has_owner_chunk;
 }
-_FORCE_INLINE_ int TerrainLight::get_world_position_y() const {
-	return _world_position_y;
+void TerrainLight::set_has_owner_chunk(const bool p_value) {
+	_has_owner_chunk = p_value;
 }
-_FORCE_INLINE_ int TerrainLight::get_world_position_z() const {
-	return _world_position_z;
+
+Vector2i TerrainLight::get_owner_chunk_position() const {
+	return _owner_chunk_position;
 }
-Vector3 TerrainLight::get_world_position() {
-	return Vector3(_world_position_x, _world_position_y, _world_position_z);
+void TerrainLight::set_owner_chunk_position(const Vector2i &p_owner_chunk_position) {
+	_owner_chunk_position = p_owner_chunk_position;
 }
-void TerrainLight::set_world_position(const int x, const int y, const int z) {
-	_world_position_x = x;
-	_world_position_y = y;
-	_world_position_z = z;
+
+Vector3i TerrainLight::get_world_data_position() const {
+	return _world_data_position;
+}
+void TerrainLight::set_world_data_position(const Vector3i &p_world_data_position) {
+	if (_world_data_position == p_world_data_position) {
+		return;
+	}
+
+	_world_data_position = p_world_data_position;
+
+	emit_signal("light_moved", Ref<TerrainLight>(this));
 }
 
 real_t TerrainLight::get_range() const {
@@ -98,17 +107,6 @@ void TerrainLight::set_specular(const real_t value) {
 	_specular = value;
 }
 
-#ifndef DISABLE_DEPRECATED
-bool TerrainLight::_set(const StringName &p_name, const Variant &p_value) {
-	// Convert to range
-	if (p_name == "light_size") {
-		set_range(p_value);
-	}
-
-	return false;
-}
-#endif
-
 TerrainLight::TerrainLight() {
 	_range = 0;
 	_attenuation = 0;
@@ -122,10 +120,19 @@ TerrainLight::~TerrainLight() {
 }
 
 void TerrainLight::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_world_position_x"), &TerrainLight::get_world_position_x);
-	ClassDB::bind_method(D_METHOD("get_world_position_y"), &TerrainLight::get_world_position_y);
-	ClassDB::bind_method(D_METHOD("get_world_position_z"), &TerrainLight::get_world_position_z);
-	ClassDB::bind_method(D_METHOD("set_world_position", "x", "y", "z"), &TerrainLight::set_world_position);
+	ADD_SIGNAL(MethodInfo("light_moved", PropertyInfo(Variant::OBJECT, "light", PROPERTY_HINT_RESOURCE_TYPE, "TerrainLight")));
+
+	ClassDB::bind_method(D_METHOD("get_has_owner_chunk"), &TerrainLight::get_has_owner_chunk);
+	ClassDB::bind_method(D_METHOD("set_has_owner_chunk", "value"), &TerrainLight::set_has_owner_chunk);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_owner_chunk"), "set_has_owner_chunk", "get_has_owner_chunk");
+
+	ClassDB::bind_method(D_METHOD("get_owner_chunk_position"), &TerrainLight::get_owner_chunk_position);
+	ClassDB::bind_method(D_METHOD("set_owner_chunk_position", "world_data_position"), &TerrainLight::set_owner_chunk_position);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "owner_chunk_position"), "set_owner_chunk_position", "get_owner_chunk_position");
+
+	ClassDB::bind_method(D_METHOD("get_world_data_position"), &TerrainLight::get_world_data_position);
+	ClassDB::bind_method(D_METHOD("set_world_data_position", "world_data_position"), &TerrainLight::set_world_data_position);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3I, "world_data_position"), "set_world_data_position", "get_world_data_position");
 
 	ClassDB::bind_method(D_METHOD("get_range"), &TerrainLight::get_range);
 	ClassDB::bind_method(D_METHOD("set_range", "value"), &TerrainLight::set_range);

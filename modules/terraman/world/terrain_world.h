@@ -181,13 +181,12 @@ public:
 
 	//Lights
 	void light_add(const Ref<TerrainLight> &light);
-	Ref<TerrainLight> light_get(const int index);
-	void light_remove(const int index);
-	int light_get_count() const;
+	void light_remove(const Ref<TerrainLight> &light);
 	void lights_clear();
 
-	Vector<Variant> lights_get();
-	void lights_set(const Vector<Variant> &chunks);
+	void world_light_added(const Ref<TerrainLight> &light);
+	void world_light_removed(const Ref<TerrainLight> &light);
+	void world_light_moved(const Ref<TerrainLight> &light);
 
 	//Helpers
 	uint8_t get_voxel_at_world_position(const Vector3 &world_position, const int channel_index);
@@ -281,8 +280,6 @@ private:
 	Vector<Ref<TerrainChunk>> _generating;
 	int _max_frame_chunk_build_steps;
 	int _num_frame_chunk_build_steps;
-
-	Vector<Ref<TerrainLight>> _lights;
 };
 
 _FORCE_INLINE_ bool operator==(const TerrainWorld::IntPos &a, const TerrainWorld::IntPos &b) {

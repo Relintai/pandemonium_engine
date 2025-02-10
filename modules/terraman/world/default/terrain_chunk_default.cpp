@@ -679,8 +679,10 @@ void TerrainChunkDefault::draw_debug_voxel_lights() {
 	for (int i = 0; i < _lights.size(); ++i) {
 		Ref<TerrainLight> v = _lights[i];
 
-		int pos_x = v->get_world_position_x() - (_size_x * _position_x);
-		int pos_z = v->get_world_position_z() - (_size_z * _position_z);
+		Vector3i light_pos = v->get_world_data_position();
+
+		int pos_x = light_pos.x - (_size_x * _position_x);
+		int pos_z = light_pos.z - (_size_z * _position_z);
 
 		draw_cross_voxels_fill(Vector3(pos_x, 0, pos_z), 1.0);
 	}
@@ -760,9 +762,11 @@ void TerrainChunkDefault::_bake_light(Ref<TerrainLight> light) {
 	Color color = light->get_color();
 	int size = light->get_range();
 
-	int local_x = light->get_world_position_x() - (_position_x * _size_x);
-	int local_y = light->get_world_position_y();
-	int local_z = light->get_world_position_z() - (_position_z * _size_z);
+	Vector3i light_pos = light->get_world_data_position();
+
+	int local_x = light_pos.x - (_position_x * _size_x);
+	int local_y = light_pos.y;
+	int local_z = light_pos.z - (_position_z * _size_z);
 
 	ERR_FAIL_COND(size < 0);
 

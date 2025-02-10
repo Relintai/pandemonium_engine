@@ -626,7 +626,8 @@ void TerrainMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &l
 		for (int i = 0; i < lights.size(); ++i) {
 			Ref<TerrainLight> light = lights.get(i);
 
-			Vector3 lightDir = light->get_world_position() - vertex;
+			Vector3 light_world_position = light->get_world_data_position();
+			Vector3 lightDir = light_world_position - vertex;
 
 			float dist2 = lightDir.dot(lightDir);
 			//inverse sqrt

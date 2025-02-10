@@ -40,14 +40,14 @@ class TerrainLight : public Reference {
 	GDCLASS(TerrainLight, Reference);
 
 public:
-	int get_world_position_x() const;
-	int get_world_position_y() const;
-	int get_world_position_z() const;
-	Vector3 get_world_position();
-	void set_world_position(const int x, const int y, const int z);
+	bool get_has_owner_chunk() const;
+	void set_has_owner_chunk(const bool p_value);
 
-	Vector3 get_position();
-	void set_position(const Vector3 &pos);
+	Vector2i get_owner_chunk_position() const;
+	void set_owner_chunk_position(const Vector2i &p_owner_chunk_position);
+
+	Vector3i get_world_data_position() const;
+	void set_world_data_position(const Vector3i &p_world_data_position);
 
 	real_t get_range() const;
 	void set_range(const real_t value);
@@ -74,20 +74,13 @@ public:
 	~TerrainLight();
 
 private:
-#ifndef DISABLE_DEPRECATED
-	bool _set(const StringName &p_name, const Variant &p_value);
-#endif
-
 	static void _bind_methods();
 
 private:
-	int _chunk_position_x;
-	int _chunk_position_y;
-	int _chunk_position_z;
+	bool _has_owner_chunk;
+	Vector2i _owner_chunk_position;
 
-	int _world_position_x;
-	int _world_position_y;
-	int _world_position_z;
+	Vector3i _world_data_position;
 
 	real_t _range;
 	real_t _attenuation;

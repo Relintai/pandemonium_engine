@@ -650,7 +650,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 			Ref<TerrainLight> light;
 			light.instance();
 
-			light->set_world_position(wp.x / get_voxel_scale(), wp.y / get_voxel_scale(), wp.z / get_voxel_scale());
+			light->set_world_data_position(Vector3i(wp.x / get_voxel_scale(), wp.y / get_voxel_scale(), wp.z / get_voxel_scale()));
 			light->set_range(light_data->get_light_range());
 			light->set_attenuation(light_data->get_light_attenuation());
 			light->set_color(light_data->get_light_color());
@@ -691,8 +691,44 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 
 //Lights
 void TerrainWorld::light_add(const Ref<TerrainLight> &light) {
-	_lights.push_back(light);
+	if (!light.is_valid()) {
+		return;
+	}
 
+	Vector3i light_world_data_position = light->get_world_data_position();
+
+	Ref<TerrainChunk> chunk = get_or_create_chunk_at_world_data_position(Vector2i(light_world_data_position.x, light_world_data_position.z));
+
+	ERR_FAIL_COND(!chunk.is_valid());
+
+	chunk->light_add(light);
+}
+void TerrainWorld::light_remove(const Ref<TerrainLight> &light) {
+	if (!light.is_valid()) {
+		return;
+	}
+
+	Vector3i light_world_data_position = light->get_world_data_position();
+
+	Ref<TerrainChunk> chunk = get_chunk_at_world_data_position(Vector2i(light_world_data_position.x, light_world_data_position.z));
+
+	if (!chunk.is_valid()) {
+		return;
+	}
+
+	chunk->light_remove(light);
+}
+void TerrainWorld::lights_clear() {
+	for (int i = 0; i < _chunks_vector.size(); ++i) {
+		Ref<TerrainChunk> chunk = _chunks_vector[i];
+
+		if (chunk.is_valid()) {
+			chunk->lights_clear();
+		}
+	}
+}
+
+void TerrainWorld::world_light_added(const Ref<TerrainLight> &light) {
 	for (int i = 0; i < _chunks_vector.size(); ++i) {
 		Ref<TerrainChunk> chunk = _chunks_vector[i];
 
@@ -701,16 +737,7 @@ void TerrainWorld::light_add(const Ref<TerrainLight> &light) {
 		}
 	}
 }
-Ref<TerrainLight> TerrainWorld::light_get(const int index) {
-	ERR_FAIL_INDEX_V(index, _lights.size(), Ref<TerrainLight>());
-
-	return _lights.get(index);
-}
-void TerrainWorld::light_remove(const int index) {
-	ERR_FAIL_INDEX(index, _lights.size());
-
-	Ref<TerrainLight> light = _lights[index];
-
+void TerrainWorld::world_light_removed(const Ref<TerrainLight> &light) {
 	for (int i = 0; i < _chunks_vector.size(); ++i) {
 		Ref<TerrainChunk> chunk = _chunks_vector[i];
 
@@ -719,40 +746,10 @@ void TerrainWorld::light_remove(const int index) {
 		}
 	}
 }
-int TerrainWorld::light_get_count() const {
-	return _lights.size();
-}
-void TerrainWorld::lights_clear() {
-	for (int i = 0; i < _lights.size(); ++i) {
-		Ref<TerrainLight> light = _lights[i];
-
-		if (!light.is_valid()) {
-			continue;
-		}
-
-		for (int j = 0; j < _chunks_vector.size(); ++j) {
-			Ref<TerrainChunk> chunk = _chunks_vector[j];
-
-			if (chunk.is_valid()) {
-				chunk->world_light_removed(light);
-			}
-		}
-	}
-
-	_lights.clear();
-}
-
-Vector<Variant> TerrainWorld::lights_get() {
-	VARIANT_ARRAY_GET(_lights);
-}
-void TerrainWorld::lights_set(const Vector<Variant> &chunks) {
-	lights_clear();
-
-	for (int i = 0; i < chunks.size(); ++i) {
-		Ref<TerrainLight> light = Ref<TerrainLight>(chunks[i]);
-
-		light_add(light);
-	}
+void TerrainWorld::world_light_moved(const Ref<TerrainLight> &light) {
+	// TODO better implementation
+	light_remove(light);
+	light_add(light);
 }
 
 uint8_t TerrainWorld::get_voxel_at_world_position(const Vector3 &world_position, const int channel_index) {
@@ -1281,8 +1278,6 @@ TerrainWorld ::~TerrainWorld() {
 
 	_generation_queue.clear();
 	_generating.clear();
-
-	_lights.clear();
 }
 
 void TerrainWorld::_generate_chunk(Ref<TerrainChunk> chunk) {
@@ -1583,14 +1578,9 @@ void TerrainWorld::_bind_methods() {
 #endif
 
 	//Lights
-	ClassDB::bind_method(D_METHOD("light_add", "light"), &TerrainWorld::light_add);
-	ClassDB::bind_method(D_METHOD("light_get", "index"), &TerrainWorld::light_get);
-	ClassDB::bind_method(D_METHOD("light_remove", "index"), &TerrainWorld::light_remove);
-	ClassDB::bind_method(D_METHOD("light_get_count"), &TerrainWorld::light_get_count);
+	ClassDB::bind_method(D_METHOD("light_add", "chunk"), &TerrainWorld::light_add);
+	ClassDB::bind_method(D_METHOD("light_remove", "chunk"), &TerrainWorld::light_remove);
 	ClassDB::bind_method(D_METHOD("lights_clear"), &TerrainWorld::lights_clear);
-
-	ClassDB::bind_method(D_METHOD("lights_get"), &TerrainWorld::lights_get);
-	ClassDB::bind_method(D_METHOD("lights_set", "chunks"), &TerrainWorld::lights_set);
 
 	ClassDB::bind_method(D_METHOD("get_voxel_at_world_position", "world_position", "channel_index"), &TerrainWorld::get_voxel_at_world_position);
 	ClassDB::bind_method(D_METHOD("set_voxel_at_world_position", "world_position", "data", "channel_index", "rebuild"), &TerrainWorld::set_voxel_at_world_position, DEFVAL(true));

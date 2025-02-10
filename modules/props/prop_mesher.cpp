@@ -1208,7 +1208,8 @@ void PropMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &ligh
 		for (int i = 0; i < lights.size(); ++i) {
 			Ref<TerrainLight> light = lights.get(i);
 
-			Vector3 lightDir = light->get_world_position() - vertex;
+			Vector3 light_pos = light->get_world_data_position();
+			Vector3 lightDir = light_pos - vertex;
 
 			float dist2 = lightDir.dot(lightDir);
 			//inverse sqrt
