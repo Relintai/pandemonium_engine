@@ -291,6 +291,14 @@ void TerrainWorld::chunk_add(Ref<TerrainChunk> chunk, const int x, const int z) 
 		chunk->enter_tree();
 	}
 
+	for (int i = 0; i < chunk->light_get_count(); ++i) {
+		Ref<TerrainLight> light = chunk->light_get_index(i);
+
+		if (light.is_valid()) {
+			world_light_added(light);
+		}
+	}
+
 	if (has_method("_chunk_added")) {
 		call("_chunk_added", chunk);
 	}
@@ -335,6 +343,14 @@ Ref<TerrainChunk> TerrainWorld::chunk_remove(const int x, const int z) {
 		chunk->cancel_build();
 	}
 
+	for (int i = 0; i < chunk->light_get_count(); ++i) {
+		Ref<TerrainLight> light = chunk->light_get_index(i);
+
+		if (light.is_valid()) {
+			world_light_removed(light);
+		}
+	}
+
 	//never remove from this here
 	//_generating.erase(chunk);
 
@@ -356,6 +372,14 @@ Ref<TerrainChunk> TerrainWorld::chunk_remove_index(const int index) {
 
 	if (chunk->get_is_generating()) {
 		chunk->cancel_build();
+	}
+
+	for (int i = 0; i < chunk->light_get_count(); ++i) {
+		Ref<TerrainLight> light = chunk->light_get_index(i);
+
+		if (light.is_valid()) {
+			world_light_removed(light);
+		}
 	}
 
 	//never remove from this here
@@ -395,6 +419,8 @@ void TerrainWorld::chunks_clear() {
 			chunk->cancel_build();
 		}
 	}
+
+	// Ignoring lights here should be fine
 
 	//never remove from this here
 	//_generating.clear();
@@ -485,6 +511,14 @@ void TerrainWorld::chunks_set(const Vector<Variant> &chunks) {
 
 			if (chunk->get_is_generating()) {
 				chunk->cancel_build();
+			}
+
+			for (int j = 0; j < chunk->light_get_count(); ++j) {
+				Ref<TerrainLight> light = chunk->light_get_index(j);
+
+				if (light.is_valid()) {
+					world_light_removed(light);
+				}
 			}
 
 			//never remove from this here
