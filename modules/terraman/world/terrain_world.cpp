@@ -457,11 +457,14 @@ Ref<TerrainChunk> TerrainWorld::_create_chunk(const int x, const int z, Ref<Terr
 void TerrainWorld::chunk_generate(Ref<TerrainChunk> chunk) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
-	if (has_method("_prepare_chunk_for_generation")) {
-		call("_prepare_chunk_for_generation", chunk);
-	}
+	if (!chunk->get_is_terrain_generated()) {
+		if (has_method("_prepare_chunk_for_generation")) {
+			call("_prepare_chunk_for_generation", chunk);
+		}
 
-	call("_generate_chunk", chunk);
+		call("_generate_chunk", chunk);
+		chunk->set_is_terrain_generated(true);
+	}
 
 	chunk->build();
 }
