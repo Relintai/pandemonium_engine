@@ -613,6 +613,16 @@ int TerrainWorld::generation_get_size() const {
 	return _generating.size();
 }
 
+void TerrainWorld::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform, const Node *p_node, const bool p_original) {
+	ERR_FAIL_COND(!p_scene.is_valid());
+
+	Vector3 wp;
+	wp = p_transform.xform(wp);
+	Ref<TerrainChunk> chunk = get_or_create_chunk_at_world_position(wp);
+
+	chunk->scene_add(p_scene, p_transform, p_node, p_original);
+}
+
 #ifdef MODULE_PROPS_ENABLED
 void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale, const bool p_original) {
 	ERR_FAIL_COND(!prop.is_valid());
@@ -673,7 +683,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 				sp->set_transform(t);
 			}
 
-			// TODO store this in a chunk, and manage loading/unloading it with it
+			chunk->scene_add(sc, t, n, false);
 
 			continue;
 		}
@@ -1605,6 +1615,8 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("can_chunk_do_build_step"), &TerrainWorld::can_chunk_do_build_step);
 	ClassDB::bind_method(D_METHOD("is_position_walkable", "position"), &TerrainWorld::is_position_walkable);
 	ClassDB::bind_method(D_METHOD("on_chunk_mesh_generation_finished", "chunk"), &TerrainWorld::on_chunk_mesh_generation_finished);
+
+	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &TerrainWorld::scene_add, DEFVAL(Transform()), DEFVAL(NULL), DEFVAL(true));
 
 #ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "original"), &TerrainWorld::prop_add, DEFVAL(true), DEFVAL(true));
