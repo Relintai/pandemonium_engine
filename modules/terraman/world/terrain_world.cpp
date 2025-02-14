@@ -1616,7 +1616,7 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_position_walkable", "position"), &TerrainWorld::is_position_walkable);
 	ClassDB::bind_method(D_METHOD("on_chunk_mesh_generation_finished", "chunk"), &TerrainWorld::on_chunk_mesh_generation_finished);
 
-	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &TerrainWorld::scene_add, DEFVAL(Transform()), DEFVAL(NULL), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &TerrainWorld::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true));
 
 #ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "original"), &TerrainWorld::prop_add, DEFVAL(true), DEFVAL(true));

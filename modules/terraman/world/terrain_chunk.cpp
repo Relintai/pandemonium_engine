@@ -2072,7 +2072,7 @@ void TerrainChunk::_bind_methods() {
 
 	//Scenes
 
-	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &TerrainChunk::scene_add, DEFVAL(Transform()), DEFVAL(0), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &TerrainChunk::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true));
 
 	ClassDB::bind_method(D_METHOD("scene_get", "index"), &TerrainChunk::scene_get);
 	ClassDB::bind_method(D_METHOD("scene_set", "index", "scene"), &TerrainChunk::scene_set);
