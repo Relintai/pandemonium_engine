@@ -714,7 +714,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 
 			chunk_local_tform.origin = chunk->to_local(chunk_local_tform.origin);
 
-			chunk->mesh_data_resource_add(chunk_local_tform, mdr, mesh_data->get_texture(), Color(1, 1, 1, 1), false);
+			chunk->mesh_data_resource_add(chunk_local_tform, mdr, mesh_data->get_texture(), Color(1, 1, 1, 1), false, false);
 
 			continue;
 		}
