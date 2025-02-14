@@ -170,16 +170,17 @@ void TerrainLight::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_owner_type"), &TerrainLight::get_owner_type);
 	ClassDB::bind_method(D_METHOD("set_owner_type", "value"), &TerrainLight::set_owner_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "owner_type", PROPERTY_HINT_ENUM,
-						 "None"
+
+	String owner_type_hint = "None";
+
 #ifdef MODULE_PROPS_ENABLED
-						 ",Prop"
+	owner_type_hint += ",Prop";
 #endif
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
-						 ",Vertex Light 3D"
+	owner_type_hint += ",Vertex Light 3D";
 #endif
-						 ),
-			"set_owner_type", "get_owner_type");
+
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "owner_type", PROPERTY_HINT_ENUM, owner_type_hint), "set_owner_type", "get_owner_type");
 
 	ClassDB::bind_method(D_METHOD("get_has_owner_chunk"), &TerrainLight::get_has_owner_chunk);
 	ClassDB::bind_method(D_METHOD("set_has_owner_chunk", "value"), &TerrainLight::set_has_owner_chunk);
