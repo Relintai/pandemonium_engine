@@ -869,6 +869,97 @@ void TerrainChunk::voxel_structures_set(const Vector<Variant> &structures) {
 	}
 }
 
+//Scenes
+
+void TerrainChunk::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform, const bool p_original) {
+	ERR_FAIL_COND(!p_scene.is_valid());
+
+	SceneDataStore s;
+	s.original = p_original;
+	s.transform = p_transform;
+	s.scene = p_scene;
+
+	_scenes.push_back(s);
+}
+
+Ref<PackedScene> TerrainChunk::scene_get(int index) {
+	ERR_FAIL_INDEX_V(index, _scenes.size(), Ref<PackedScene>());
+
+	return _scenes.get(index).scene;
+}
+void TerrainChunk::scene_set(const int index, const Ref<PackedScene> &p_scene) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	_scenes.write[index].scene = p_scene;
+}
+
+Transform TerrainChunk::scene_get_transform(const int index) {
+	ERR_FAIL_INDEX_V(index, _scenes.size(), Transform());
+
+	return _scenes.get(index).transform;
+}
+void TerrainChunk::scene_set_transform(const int index, const Transform &p_transform) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	_scenes.write[index].transform = p_transform;
+}
+
+bool TerrainChunk::scene_get_is_original(const int index) {
+	ERR_FAIL_INDEX_V(index, _scenes.size(), false);
+
+	return _scenes.get(index).original;
+}
+void TerrainChunk::scene_set_is_original(const int index, const bool p_original) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	_scenes.write[index].original = p_original;
+}
+
+int TerrainChunk::scene_get_count() const {
+	return _scenes.size();
+}
+void TerrainChunk::scene_remove(const int index) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	_scenes.remove(index);
+}
+void TerrainChunk::scenes_clear() {
+	_scenes.clear();
+}
+
+Array TerrainChunk::scenes_get() {
+	Array ret;
+
+	for (int i = 0; i < _scenes.size(); i++) {
+		Array prop_data;
+
+		prop_data.push_back(_scenes[i].original);
+		prop_data.push_back(_scenes[i].transform);
+		prop_data.push_back(_scenes[i].scene.get_ref_ptr());
+
+		ret.push_back(prop_data);
+	}
+
+	return ret;
+}
+void TerrainChunk::scenes_set(const Array &p_scenes) {
+	props_clear();
+
+	for (int i = 0; i < p_scenes.size(); ++i) {
+		Array scene_data = p_scenes[i];
+
+		ERR_CONTINUE(scene_data.size() != 3);
+
+		bool original = scene_data[0];
+		Transform transform = scene_data[1];
+		Ref<PackedScene> scene = Ref<PackedScene>(scene_data[2]);
+
+		scene_add(scene, transform, original);
+	}
+}
+
+//Meshing
+
 void TerrainChunk::build() {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
 	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
@@ -956,12 +1047,12 @@ void TerrainChunk::clear_baked_lights() {
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void TerrainChunk::prop_add(const Transform &tarnsform, const Ref<PropData> &prop, const bool p_original) {
+void TerrainChunk::prop_add(const Transform &transform, const Ref<PropData> &prop, const bool p_original) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	PropDataStore s;
 	s.original = p_original;
-	s.transform = tarnsform;
+	s.transform = transform;
 	s.prop = prop;
 
 	_props.push_back(s);
@@ -978,12 +1069,12 @@ void TerrainChunk::prop_set(const int index, const Ref<PropData> &p_prop) {
 	_props.write[index].prop = p_prop;
 }
 
-Transform TerrainChunk::prop_get_tarnsform(const int index) {
+Transform TerrainChunk::prop_get_transform(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Transform());
 
 	return _props.get(index).transform;
 }
-void TerrainChunk::prop_set_tarnsform(const int index, const Transform &p_transform) {
+void TerrainChunk::prop_set_transform(const int index, const Transform &p_transform) {
 	ERR_FAIL_INDEX(index, _props.size());
 
 	_props.write[index].transform = p_transform;
@@ -1884,16 +1975,37 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("voxel_structures_set"), &TerrainChunk::voxel_structures_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "23/20:TerrainStructure", PROPERTY_USAGE_DEFAULT, "TerrainStructure"), "voxel_structures_set", "voxel_structures_get");
 
-	//Meshes
+	//Scenes
+
+	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "original"), &TerrainChunk::scene_add, DEFVAL(Transform()), DEFVAL(true));
+
+	ClassDB::bind_method(D_METHOD("scene_get", "index"), &TerrainChunk::scene_get);
+	ClassDB::bind_method(D_METHOD("scene_set", "index", "scene"), &TerrainChunk::scene_set);
+
+	ClassDB::bind_method(D_METHOD("scene_get_transform", "index"), &TerrainChunk::scene_get_transform);
+	ClassDB::bind_method(D_METHOD("scene_set_transform", "index", "transform"), &TerrainChunk::scene_set_transform);
+
+	ClassDB::bind_method(D_METHOD("scene_get_is_original", "index"), &TerrainChunk::scene_get_is_original);
+	ClassDB::bind_method(D_METHOD("scene_set_is_original", "index", "original"), &TerrainChunk::scene_set_is_original);
+
+	ClassDB::bind_method(D_METHOD("scene_get_count"), &TerrainChunk::scene_get_count);
+	ClassDB::bind_method(D_METHOD("scene_remove", "index"), &TerrainChunk::scene_remove);
+	ClassDB::bind_method(D_METHOD("scenes_clear"), &TerrainChunk::scenes_clear);
+
+	ClassDB::bind_method(D_METHOD("scenes_get"), &TerrainChunk::scenes_get);
+	ClassDB::bind_method(D_METHOD("scenes_set"), &TerrainChunk::scenes_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scenes"), "scenes_set", "scenes_get");
+
+	//Props
 
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::bind_method(D_METHOD("prop_add", "prop", "original"), &TerrainChunk::prop_add, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "original"), &TerrainChunk::prop_add, DEFVAL(true));
 
 	ClassDB::bind_method(D_METHOD("prop_get", "index"), &TerrainChunk::prop_get);
 	ClassDB::bind_method(D_METHOD("prop_set", "index", "prop"), &TerrainChunk::prop_set);
 
-	ClassDB::bind_method(D_METHOD("prop_get_tarnsform", "index"), &TerrainChunk::prop_get_tarnsform);
-	ClassDB::bind_method(D_METHOD("prop_set_tarnsform", "index", "transform"), &TerrainChunk::prop_set_tarnsform);
+	ClassDB::bind_method(D_METHOD("prop_get_transform", "index"), &TerrainChunk::prop_get_transform);
+	ClassDB::bind_method(D_METHOD("prop_set_transform", "index", "transform"), &TerrainChunk::prop_set_transform);
 
 	ClassDB::bind_method(D_METHOD("prop_get_is_original", "index"), &TerrainChunk::prop_get_is_original);
 	ClassDB::bind_method(D_METHOD("prop_set_is_original", "index", "original"), &TerrainChunk::prop_set_is_original);
@@ -1906,6 +2018,8 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("props_set"), &TerrainChunk::props_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props"), "props_set", "props_get");
 #endif
+
+	//Meshes
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_addv", "local_data_pos", "mesh", "texture", "color", "apply_voxel_scale"), &TerrainChunk::mesh_data_resource_addv, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true));

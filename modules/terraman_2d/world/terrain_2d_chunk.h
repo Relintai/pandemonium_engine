@@ -271,9 +271,9 @@ public:
 	void clear_baked_lights();
 
 #ifdef MODULE_PROPS_2D_ENABLED
-	void prop_add(const Transform2D &tarnsform, const Ref<Prop2DData> &prop);
+	void prop_add(const Transform2D &transform, const Ref<Prop2DData> &prop);
 	Ref<Prop2DData> prop_get(const int index);
-	Transform2D prop_get_tarnsform(const int index);
+	Transform2D prop_get_transform(const int index);
 	int prop_get_count() const;
 	void prop_remove(const int index);
 	void props_clear();

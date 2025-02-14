@@ -144,7 +144,7 @@ void VoxelPropJob::phase_physics_process() {
 #ifdef MODULE_PROPS_ENABLED
 	for (int i = 0; i < chunk->prop_get_count(); ++i) {
 		Ref<PropData> prop = chunk->prop_get(i);
-		Transform prop_transform = chunk->prop_get_tarnsform(i);
+		Transform prop_transform = chunk->prop_get_transform(i);
 		Transform chunk_prop_local_tform = prop_transform;
 		chunk_prop_local_tform.origin = chunk->to_local(chunk_prop_local_tform.origin);
 

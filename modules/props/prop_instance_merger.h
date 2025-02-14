@@ -122,7 +122,7 @@ public:
 	virtual void _build();
 	virtual void _build_finished();
 
-	void _prop_preprocess(Transform tarnsform, const Ref<PropData> &prop);
+	void _prop_preprocess(Transform transform, const Ref<PropData> &prop);
 
 	void collision_layer_changed();
 	void collision_mask_changed();

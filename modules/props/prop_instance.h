@@ -69,8 +69,8 @@ public:
 	virtual void _build();
 	virtual void _build_finished();
 
-	void prop_preprocess(Transform tarnsform, const Ref<PropData> &prop);
-	virtual void _prop_preprocess(Transform tarnsform, const Ref<PropData> &prop);
+	void prop_preprocess(Transform transform, const Ref<PropData> &prop);
+	virtual void _prop_preprocess(Transform transform, const Ref<PropData> &prop);
 
 	PropInstance();
 	~PropInstance();
