@@ -944,12 +944,22 @@ void TerrainChunk::scene_set_node(const int index, const Node *p_node) {
 int TerrainChunk::scene_get_count() const {
 	return _scenes.size();
 }
-void TerrainChunk::scene_remove(const int index) {
+void TerrainChunk::scene_remove(const int index, const bool p_queue_free) {
 	ERR_FAIL_INDEX(index, _scenes.size());
+
+	if (p_queue_free) {
+		scene_queue_free(index);
+	}
 
 	_scenes.remove(index);
 }
-void TerrainChunk::scenes_clear() {
+void TerrainChunk::scenes_clear(const bool p_queue_free) {
+	if (p_queue_free) {
+		for (int i = 0; i < _scenes.size(); ++i) {
+			scene_queue_free(i);
+		}
+	}
+
 	_scenes.clear();
 }
 
@@ -2077,8 +2087,8 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("scene_set_node", "index", "node"), &TerrainChunk::scene_set_node);
 
 	ClassDB::bind_method(D_METHOD("scene_get_count"), &TerrainChunk::scene_get_count);
-	ClassDB::bind_method(D_METHOD("scene_remove", "index"), &TerrainChunk::scene_remove);
-	ClassDB::bind_method(D_METHOD("scenes_clear"), &TerrainChunk::scenes_clear);
+	ClassDB::bind_method(D_METHOD("scene_remove", "index", "queue_free"), &TerrainChunk::scene_remove, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("scenes_clear", "queue_free"), &TerrainChunk::scenes_clear, DEFVAL(true));
 
 	ClassDB::bind_method(D_METHOD("scene_instance", "index"), &TerrainChunk::scene_instance);
 	ClassDB::bind_method(D_METHOD("scene_queue_free", "index"), &TerrainChunk::scene_queue_free);

@@ -263,8 +263,9 @@ public:
 	void scene_set_node(const int index, const Node *p_node);
 
 	int scene_get_count() const;
-	void scene_remove(const int index);
-	void scenes_clear();
+
+	void scene_remove(const int index, const bool p_queue_free = true);
+	void scenes_clear(const bool p_queue_free = true);
 
 	void scene_instance(const int index);
 	void scene_queue_free(const int index);
