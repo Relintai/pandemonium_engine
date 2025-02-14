@@ -1008,13 +1008,13 @@ Array TerrainChunk::scenes_get() {
 	Array ret;
 
 	for (int i = 0; i < _scenes.size(); i++) {
-		Array prop_data;
+		Array scene_data;
 
-		prop_data.push_back(_scenes[i].original);
-		prop_data.push_back(_scenes[i].transform);
-		prop_data.push_back(_scenes[i].scene.get_ref_ptr());
+		scene_data.push_back(_scenes[i].original);
+		scene_data.push_back(_scenes[i].transform);
+		scene_data.push_back(_scenes[i].scene.get_ref_ptr());
 
-		ret.push_back(prop_data);
+		ret.push_back(scene_data);
 	}
 
 	return ret;
