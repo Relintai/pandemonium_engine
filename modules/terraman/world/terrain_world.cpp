@@ -614,7 +614,7 @@ int TerrainWorld::generation_get_size() const {
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale, const bool p_owner) {
+void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale, const bool p_original) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	if (apply_voxel_scale) {
@@ -625,7 +625,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 	wp = transform.xform(wp);
 	Ref<TerrainChunk> chunk = get_or_create_chunk_at_world_position(wp);
 
-	chunk->prop_add(transform, prop, p_owner);
+	chunk->prop_add(transform, prop, p_original);
 
 	int count = prop->get_prop_count();
 	for (int i = 0; i < count; ++i) {
@@ -1608,7 +1608,7 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("on_chunk_mesh_generation_finished", "chunk"), &TerrainWorld::on_chunk_mesh_generation_finished);
 
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "owner"), &TerrainWorld::prop_add, DEFVAL(true), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "original"), &TerrainWorld::prop_add, DEFVAL(true), DEFVAL(true));
 #endif
 
 	//Lights

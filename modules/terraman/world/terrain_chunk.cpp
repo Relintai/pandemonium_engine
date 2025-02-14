@@ -910,11 +910,11 @@ void TerrainChunk::clear_baked_lights() {
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void TerrainChunk::prop_add(const Transform &tarnsform, const Ref<PropData> &prop, const bool p_owner) {
+void TerrainChunk::prop_add(const Transform &tarnsform, const Ref<PropData> &prop, const bool p_original) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	PropDataStore s;
-	s.owner = p_owner;
+	s.original = p_original;
 	s.transform = tarnsform;
 	s.prop = prop;
 
@@ -943,15 +943,15 @@ void TerrainChunk::prop_set_tarnsform(const int index, const Transform &p_transf
 	_props.write[index].transform = p_transform;
 }
 
-bool TerrainChunk::prop_get_is_owner(const int index) {
+bool TerrainChunk::prop_get_is_original(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), false);
 
-	return _props.get(index).owner;
+	return _props.get(index).original;
 }
-void TerrainChunk::prop_set_is_owner(const int index, const bool p_owner) {
+void TerrainChunk::prop_set_is_original(const int index, const bool p_original) {
 	ERR_FAIL_INDEX(index, _props.size());
 
-	_props.write[index].owner = p_owner;
+	_props.write[index].original = p_original;
 }
 
 int TerrainChunk::prop_get_count() const {
@@ -972,7 +972,7 @@ Array TerrainChunk::props_get() {
 	for (int i = 0; i < _props.size(); i++) {
 		Array prop_data;
 
-		prop_data.push_back(_props[i].owner);
+		prop_data.push_back(_props[i].original);
 		prop_data.push_back(_props[i].transform);
 		prop_data.push_back(_props[i].prop.get_ref_ptr());
 
@@ -989,11 +989,11 @@ void TerrainChunk::props_set(const Array &p_props) {
 
 		ERR_CONTINUE(prop_data.size() != 3);
 
-		bool owner = prop_data[0];
+		bool original = prop_data[0];
 		Transform transform = prop_data[1];
 		Ref<PropData> prop = Ref<PropData>(prop_data[2]);
 
-		prop_add(transform, prop, owner);
+		prop_add(transform, prop, original);
 	}
 }
 #endif
@@ -1822,7 +1822,7 @@ void TerrainChunk::_bind_methods() {
 	//Meshes
 
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::bind_method(D_METHOD("prop_add", "prop", "owner"), &TerrainChunk::prop_add, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("prop_add", "prop", "original"), &TerrainChunk::prop_add, DEFVAL(true));
 
 	ClassDB::bind_method(D_METHOD("prop_get", "index"), &TerrainChunk::prop_get);
 	ClassDB::bind_method(D_METHOD("prop_set", "index", "prop"), &TerrainChunk::prop_set);
@@ -1830,8 +1830,8 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("prop_get_tarnsform", "index"), &TerrainChunk::prop_get_tarnsform);
 	ClassDB::bind_method(D_METHOD("prop_set_tarnsform", "index", "transform"), &TerrainChunk::prop_set_tarnsform);
 
-	ClassDB::bind_method(D_METHOD("prop_get_is_owner", "index"), &TerrainChunk::prop_get_is_owner);
-	ClassDB::bind_method(D_METHOD("prop_set_is_owner", "index", "owner"), &TerrainChunk::prop_set_is_owner);
+	ClassDB::bind_method(D_METHOD("prop_get_is_original", "index"), &TerrainChunk::prop_get_is_original);
+	ClassDB::bind_method(D_METHOD("prop_set_is_original", "index", "original"), &TerrainChunk::prop_set_is_original);
 
 	ClassDB::bind_method(D_METHOD("prop_get_count"), &TerrainChunk::prop_get_count);
 	ClassDB::bind_method(D_METHOD("prop_remove", "index"), &TerrainChunk::prop_remove);

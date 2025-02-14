@@ -260,7 +260,7 @@ public:
 	void clear_baked_lights();
 
 #ifdef MODULE_PROPS_ENABLED
-	void prop_add(const Transform &tarnsform, const Ref<PropData> &prop, const bool p_owner = true);
+	void prop_add(const Transform &tarnsform, const Ref<PropData> &prop, const bool p_original = true);
 
 	Ref<PropData> prop_get(const int index);
 	void prop_set(const int index, const Ref<PropData> &p_prop);
@@ -268,8 +268,8 @@ public:
 	Transform prop_get_tarnsform(const int index);
 	void prop_set_tarnsform(const int index, const Transform &p_transform);
 
-	bool prop_get_is_owner(const int index);
-	void prop_set_is_owner(const int index, const bool p_owner);
+	bool prop_get_is_original(const int index);
+	void prop_set_is_original(const int index, const bool p_original);
 
 	int prop_get_count() const;
 	void prop_remove(const int index);
@@ -361,7 +361,7 @@ protected:
 protected:
 #ifdef MODULE_PROPS_ENABLED
 	struct PropDataStore {
-		bool owner;
+		bool original;
 		Transform transform;
 		Ref<PropData> prop;
 	};
