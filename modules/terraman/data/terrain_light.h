@@ -85,6 +85,9 @@ public:
 	real_t get_specular() const;
 	void set_specular(const real_t value);
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &p_data);
+
 	TerrainLight();
 	~TerrainLight();
 

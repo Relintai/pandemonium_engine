@@ -114,6 +114,43 @@ void TerrainLight::set_specular(const real_t value) {
 	_specular = value;
 }
 
+Dictionary TerrainLight::to_dict() {
+	Dictionary data;
+
+	data["owner_type"] = _owner_type;
+
+	data["has_owner_chunk"] = _has_owner_chunk;
+	data["owner_chunk_position"] = _owner_chunk_position;
+
+	data["world_data_position"] = _world_data_position;
+
+	data["range"] = _range;
+	data["attenuation"] = _attenuation;
+	data["color"] = _color;
+	data["energy"] = _energy;
+	data["indirect_energy"] = _indirect_energy;
+	data["negative"] = _negative;
+	data["specular"] = _specular;
+
+	return data;
+}
+void TerrainLight::from_dict(const Dictionary &p_data) {
+	_owner_type = (OwnerType)((int)p_data["owner_type"]);
+
+	_has_owner_chunk = p_data["has_owner_chunk"];
+	_owner_chunk_position = p_data["owner_chunk_position"];
+
+	_world_data_position = p_data["world_data_position"];
+
+	_range = p_data["range"];
+	_attenuation = p_data["attenuation"];
+	_color = p_data["color"];
+	_energy = p_data["energy"];
+	_indirect_energy = p_data["indirect_energy"];
+	_negative = p_data["negative"];
+	_specular = p_data["specular"];
+}
+
 TerrainLight::TerrainLight() {
 	_owner_type = OWNER_TYPE_NONE;
 	_has_owner_chunk = false;
@@ -183,6 +220,9 @@ void TerrainLight::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_specular"), &TerrainLight::get_specular);
 	ClassDB::bind_method(D_METHOD("set_specular", "value"), &TerrainLight::set_specular);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "light_specular"), "set_specular", "get_specular");
+
+	ClassDB::bind_method(D_METHOD("to_dict"), &TerrainLight::to_dict);
+	ClassDB::bind_method(D_METHOD("from_dict", "data"), &TerrainLight::from_dict);
 
 	BIND_ENUM_CONSTANT(OWNER_TYPE_NONE);
 #ifdef MODULE_PROPS_ENABLED
