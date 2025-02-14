@@ -34,12 +34,12 @@
 
 #include "core/containers/vector.h"
 #include "core/math/color.h"
-#include "core/object/reference.h"
+#include "core/object/resource.h"
 
 #include "modules/modules_enabled.gen.h"
 
-class TerrainLight : public Reference {
-	GDCLASS(TerrainLight, Reference);
+class TerrainLight : public Resource {
+	GDCLASS(TerrainLight, Resource);
 
 public:
 	enum OwnerType {
