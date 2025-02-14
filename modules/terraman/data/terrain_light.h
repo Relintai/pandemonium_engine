@@ -36,10 +36,25 @@
 #include "core/math/color.h"
 #include "core/object/reference.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class TerrainLight : public Reference {
 	GDCLASS(TerrainLight, Reference);
 
 public:
+	enum OwnerType {
+		OWNER_TYPE_NONE = 0,
+#ifdef MODULE_PROPS_ENABLED
+		OWNER_TYPE_PROP,
+#endif
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+		OWNER_TYPE_VERTEX_LIGHT_3D,
+#endif
+	};
+
+	OwnerType get_owner_type() const;
+	void set_owner_type(const OwnerType p_value);
+
 	bool get_has_owner_chunk() const;
 	void set_has_owner_chunk(const bool p_value);
 
@@ -77,6 +92,8 @@ private:
 	static void _bind_methods();
 
 private:
+	OwnerType _owner_type;
+
 	bool _has_owner_chunk;
 	Vector2i _owner_chunk_position;
 
@@ -90,5 +107,7 @@ private:
 	bool _negative;
 	real_t _specular;
 };
+
+VARIANT_ENUM_CAST(TerrainLight::OwnerType);
 
 #endif

@@ -31,6 +31,13 @@
 
 #include "terrain_light.h"
 
+TerrainLight::OwnerType TerrainLight::get_owner_type() const {
+	return _owner_type;
+}
+void TerrainLight::set_owner_type(const OwnerType p_value) {
+	_owner_type = p_value;
+}
+
 bool TerrainLight::get_has_owner_chunk() const {
 	return _has_owner_chunk;
 }
@@ -108,6 +115,8 @@ void TerrainLight::set_specular(const real_t value) {
 }
 
 TerrainLight::TerrainLight() {
+	_owner_type = OWNER_TYPE_NONE;
+	_has_owner_chunk = false;
 	_range = 0;
 	_attenuation = 0;
 	_energy = 0;
@@ -121,6 +130,19 @@ TerrainLight::~TerrainLight() {
 
 void TerrainLight::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("light_moved", PropertyInfo(Variant::OBJECT, "light", PROPERTY_HINT_RESOURCE_TYPE, "TerrainLight")));
+
+	ClassDB::bind_method(D_METHOD("get_owner_type"), &TerrainLight::get_owner_type);
+	ClassDB::bind_method(D_METHOD("set_owner_type", "value"), &TerrainLight::set_owner_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "owner_type", PROPERTY_HINT_ENUM,
+						 "None"
+#ifdef MODULE_PROPS_ENABLED
+						 ",Prop"
+#endif
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+						 ",Vertex Light 3D"
+#endif
+						 ),
+			"set_owner_type", "get_owner_type");
 
 	ClassDB::bind_method(D_METHOD("get_has_owner_chunk"), &TerrainLight::get_has_owner_chunk);
 	ClassDB::bind_method(D_METHOD("set_has_owner_chunk", "value"), &TerrainLight::set_has_owner_chunk);
@@ -161,4 +183,12 @@ void TerrainLight::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_specular"), &TerrainLight::get_specular);
 	ClassDB::bind_method(D_METHOD("set_specular", "value"), &TerrainLight::set_specular);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "light_specular"), "set_specular", "get_specular");
+
+	BIND_ENUM_CONSTANT(OWNER_TYPE_NONE);
+#ifdef MODULE_PROPS_ENABLED
+	BIND_ENUM_CONSTANT(OWNER_TYPE_PROP);
+#endif
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	BIND_ENUM_CONSTANT(OWNER_TYPE_VERTEX_LIGHT_3D);
+#endif
 }
