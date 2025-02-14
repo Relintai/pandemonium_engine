@@ -752,11 +752,55 @@ void TerrainChunk::lights_clear() {
 Vector<Variant> TerrainChunk::lights_get() {
 	VARIANT_ARRAY_GET(_lights);
 }
-void TerrainChunk::lights_set(const Vector<Variant> &chunks) {
+void TerrainChunk::lights_set(const Vector<Variant> &p_lights) {
 	lights_clear();
 
-	for (int i = 0; i < chunks.size(); ++i) {
-		Ref<TerrainLight> light = Ref<TerrainLight>(chunks[i]);
+	for (int i = 0; i < p_lights.size(); ++i) {
+		Ref<TerrainLight> light = Ref<TerrainLight>(p_lights[i]);
+
+		light_add(light);
+	}
+}
+
+Vector<Variant> TerrainChunk::owned_lights_get() {
+	Vector<Variant> r;
+	for (int i = 0; i < _lights.size(); i++) {
+		Ref<TerrainLight> l = _lights[i];
+
+		if (!l.is_valid()) {
+			continue;
+		}
+
+		if (l->get_owner_type() != TerrainLight::OWNER_TYPE_NONE) {
+			continue;
+		}
+
+		r.push_back(_lights[i].get_ref_ptr());
+	}
+	return r;
+}
+void TerrainChunk::owned_lights_set(const Vector<Variant> &p_lights) {
+	for (int i = 0; i < _lights.size(); ++i) {
+		Ref<TerrainLight> l = _lights[i];
+
+		if (!l.is_valid()) {
+			continue;
+		}
+
+		if (l->get_owner_type() != TerrainLight::OWNER_TYPE_NONE) {
+			continue;
+		}
+
+		light_remove_index(i);
+		--i;
+	}
+
+	for (int i = 0; i < p_lights.size(); ++i) {
+		Ref<TerrainLight> light = Ref<TerrainLight>(p_lights[i]);
+
+		if (!light.is_valid()) {
+			continue;
+		}
 
 		light_add(light);
 	}
@@ -1819,7 +1863,11 @@ void TerrainChunk::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("lights_get"), &TerrainChunk::lights_get);
 	ClassDB::bind_method(D_METHOD("lights_set", "chunks"), &TerrainChunk::lights_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "lights", PROPERTY_HINT_NONE, "23/20:TerrainLight", PROPERTY_USAGE_DEFAULT, "TerrainLight"), "lights_set", "lights_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "lights", PROPERTY_HINT_NONE, "23/20:TerrainLight", 0, "TerrainLight"), "lights_set", "lights_get");
+
+	ClassDB::bind_method(D_METHOD("owned_lights_get"), &TerrainChunk::owned_lights_get);
+	ClassDB::bind_method(D_METHOD("owned_lights_set", "chunks"), &TerrainChunk::owned_lights_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "owned_lights", PROPERTY_HINT_NONE, "23/20:TerrainLight", PROPERTY_USAGE_DEFAULT, "TerrainLight"), "owned_lights_set", "owned_lights_get");
 
 	ClassDB::bind_method(D_METHOD("_on_light_moved"), &TerrainChunk::_on_light_moved);
 
