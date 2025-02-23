@@ -125,6 +125,7 @@ protected:
 	bool process_prop_textures(Ref<PropData> prop);
 #endif
 
+	virtual void _notification(int p_what);
 	static void _bind_methods();
 
 	RBMap<int, Ref<TerrainMaterialCachePCM>> _material_cache;
@@ -143,6 +144,12 @@ protected:
 	Mutex _material_cache_mutex;
 	Mutex _liquid_material_cache_mutex;
 	Mutex _prop_material_cache_mutex;
+
+	// To fix potential deadlock on quit
+	// (Materials can't be duplicated after the engine started deinitializing itself)
+	// The notification that sets this should be immediate, the engine will start deinitialization later
+	// so materials that already started duplicating should be fine
+	bool _engine_quitting;
 };
 
 #endif

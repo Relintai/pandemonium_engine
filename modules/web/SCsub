@@ -30,6 +30,7 @@ sources = [
     "html/bbcode_parser.cpp",
     "html/form_validator.cpp",
     "html/html_template.cpp",
+    "html/html_template_multilang.cpp",
     "html/html_template_data.cpp",
 
     "html/libs/hoedown/autolink.c",

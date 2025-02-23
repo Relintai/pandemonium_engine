@@ -1942,8 +1942,8 @@ String OS_OSX::get_name() const {
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 101200
 class OSXTerminalLogger : public StdLogger {
 public:
-	virtual void log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type = ERR_ERROR) {
-		if (!should_log(true)) {
+	virtual void log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type = ERR_ERROR, bool p_force = false) {
+		if (!p_force && !should_log(true)) {
 			return;
 		}
 

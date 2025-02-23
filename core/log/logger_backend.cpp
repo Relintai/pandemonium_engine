@@ -31,6 +31,8 @@
 
 #include "logger_backend.h"
 
+#include "core/io/logger.h"
+#include "core/log/logger.h"
 #include "core/string/print_string.h"
 
 void LoggerBackend::log_trace(const String &str) {
@@ -45,18 +47,41 @@ void LoggerBackend::log_warning(const String &str) {
 void LoggerBackend::log_error(const String &str) {
 	call("_log_error", str);
 }
+void LoggerBackend::log_important(const String &str) {
+	call("_log_important", str);
+}
+void LoggerBackend::log_custom(const StringName &p_category, const int p_level, const String &str) {
+	call("_log_custom", p_category, p_level, str);
+}
 
 void LoggerBackend::_log_trace(const String &str) {
-	print_line(str);
+	force_print_line(str);
 }
 void LoggerBackend::_log_message(const String &str) {
-	print_line(str);
+	force_print_line(str);
 }
 void LoggerBackend::_log_warning(const String &str) {
-	print_line(str);
+	force_print_line(str);
 }
 void LoggerBackend::_log_error(const String &str) {
-	print_error(str);
+	force_print_error(str);
+}
+void LoggerBackend::_log_important(const String &str) {
+	force_print_error(str);
+}
+void LoggerBackend::_log_custom(const StringName &p_category, const int p_level, const String &str) {
+	String s;
+	s += p_category;
+	s += " : ";
+	s += String::num(p_level);
+	s += " | ";
+	s += str;
+
+	if (p_level < PLogger::LOG_LEVEL_ERROR) {
+		force_print_line(s);
+	} else {
+		force_print_error(s);
+	}
 }
 
 LoggerBackend::LoggerBackend() {
@@ -70,14 +95,23 @@ void LoggerBackend::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_log_message", PropertyInfo(Variant::STRING, "str")));
 	BIND_VMETHOD(MethodInfo("_log_warning", PropertyInfo(Variant::STRING, "str")));
 	BIND_VMETHOD(MethodInfo("_log_error", PropertyInfo(Variant::STRING, "str")));
+	BIND_VMETHOD(MethodInfo("_log_important", PropertyInfo(Variant::STRING, "str")));
+	BIND_VMETHOD(MethodInfo("_log_custom",
+												PropertyInfo(Variant::STRING_NAME, "category"),
+												PropertyInfo(Variant::INT, "level"),
+												PropertyInfo(Variant::STRING, "str")));
 
 	ClassDB::bind_method(D_METHOD("log_trace", "str"), &LoggerBackend::log_trace);
 	ClassDB::bind_method(D_METHOD("log_message", "str"), &LoggerBackend::log_message);
 	ClassDB::bind_method(D_METHOD("log_warning", "str"), &LoggerBackend::log_warning);
 	ClassDB::bind_method(D_METHOD("log_error", "str"), &LoggerBackend::log_error);
+	ClassDB::bind_method(D_METHOD("log_important", "str"), &LoggerBackend::log_important);
+	ClassDB::bind_method(D_METHOD("log_custom", "category", "level", "str"), &LoggerBackend::log_custom);
 
 	ClassDB::bind_method(D_METHOD("_log_trace", "str"), &LoggerBackend::_log_trace);
 	ClassDB::bind_method(D_METHOD("_log_message", "str"), &LoggerBackend::_log_message);
 	ClassDB::bind_method(D_METHOD("_log_warning", "str"), &LoggerBackend::_log_warning);
 	ClassDB::bind_method(D_METHOD("_log_error", "str"), &LoggerBackend::_log_error);
+	ClassDB::bind_method(D_METHOD("_log_important", "str"), &LoggerBackend::_log_important);
+	ClassDB::bind_method(D_METHOD("_log_custom", "category", "level", "str"), &LoggerBackend::log_custom);
 }

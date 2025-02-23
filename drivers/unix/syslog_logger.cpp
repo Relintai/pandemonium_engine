@@ -35,16 +35,16 @@
 #include "core/string/print_string.h"
 #include <syslog.h>
 
-void SyslogLogger::logv(const char *p_format, va_list p_list, bool p_err) {
-	if (!should_log(p_err)) {
+void SyslogLogger::logv(const char *p_format, va_list p_list, bool p_err, bool p_force) {
+	if (!p_force && !should_log(p_err)) {
 		return;
 	}
 
 	vsyslog(p_err ? LOG_ERR : LOG_INFO, p_format, p_list);
 }
 
-void SyslogLogger::print_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type) {
-	if (!should_log(true)) {
+void SyslogLogger::print_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type, bool p_force) {
+	if (!p_force && !should_log(true)) {
 		return;
 	}
 

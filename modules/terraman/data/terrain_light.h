@@ -34,20 +34,35 @@
 
 #include "core/containers/vector.h"
 #include "core/math/color.h"
-#include "core/object/reference.h"
+#include "core/object/resource.h"
 
-class TerrainLight : public Reference {
-	GDCLASS(TerrainLight, Reference);
+#include "modules/modules_enabled.gen.h"
+
+class TerrainLight : public Resource {
+	GDCLASS(TerrainLight, Resource);
 
 public:
-	int get_world_position_x() const;
-	int get_world_position_y() const;
-	int get_world_position_z() const;
-	Vector3 get_world_position();
-	void set_world_position(const int x, const int y, const int z);
+	enum OwnerType {
+		OWNER_TYPE_NONE = 0,
+#ifdef MODULE_PROPS_ENABLED
+		OWNER_TYPE_PROP,
+#endif
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+		OWNER_TYPE_VERTEX_LIGHT_3D,
+#endif
+	};
 
-	Vector3 get_position();
-	void set_position(const Vector3 &pos);
+	OwnerType get_owner_type() const;
+	void set_owner_type(const OwnerType p_value);
+
+	bool get_has_owner_chunk() const;
+	void set_has_owner_chunk(const bool p_value);
+
+	Vector2i get_owner_chunk_position() const;
+	void set_owner_chunk_position(const Vector2i &p_owner_chunk_position);
+
+	Vector3i get_world_data_position() const;
+	void set_world_data_position(const Vector3i &p_world_data_position);
 
 	real_t get_range() const;
 	void set_range(const real_t value);
@@ -70,24 +85,22 @@ public:
 	real_t get_specular() const;
 	void set_specular(const real_t value);
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &p_data);
+
 	TerrainLight();
 	~TerrainLight();
 
 private:
-#ifndef DISABLE_DEPRECATED
-	bool _set(const StringName &p_name, const Variant &p_value);
-#endif
-
 	static void _bind_methods();
 
 private:
-	int _chunk_position_x;
-	int _chunk_position_y;
-	int _chunk_position_z;
+	OwnerType _owner_type;
 
-	int _world_position_x;
-	int _world_position_y;
-	int _world_position_z;
+	bool _has_owner_chunk;
+	Vector2i _owner_chunk_position;
+
+	Vector3i _world_data_position;
 
 	real_t _range;
 	real_t _attenuation;
@@ -97,5 +110,7 @@ private:
 	bool _negative;
 	real_t _specular;
 };
+
+VARIANT_ENUM_CAST(TerrainLight::OwnerType);
 
 #endif

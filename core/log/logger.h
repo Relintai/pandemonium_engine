@@ -51,6 +51,12 @@ class String;
 #define PLOG_ERR(str) \
 	PLogger::log_error(__FUNCTION__, __FILE__, __LINE__, str);
 
+#define PLOG_IMPORTANT(str) \
+	PLogger::log_important(__FUNCTION__, __FILE__, __LINE__, str);
+
+#define PLOG_CUSTOM(category, level, str) \
+	PLogger::log_custom(category, level, __FUNCTION__, __FILE__, __LINE__, str);
+
 class PLogger : public Object {
 public:
 	enum LogLevel {
@@ -58,6 +64,7 @@ public:
 		LOG_LEVEL_MESSAGE,
 		LOG_LEVEL_WARNING,
 		LOG_LEVEL_ERROR,
+		LOG_LEVEL_IMPORTANT,
 		LOG_LEVEL_NONE,
 	};
 
@@ -81,10 +88,21 @@ public:
 	static void log_error(const char *p_function, const char *p_file, int p_line, const char *str);
 	static void log_error(const char *p_function, const char *p_file, int p_line, const String &str);
 
+	static void log_important(const String &str);
+	static void log_important(const char *str);
+	static void log_important(const char *p_function, const char *p_file, int p_line, const char *str);
+	static void log_important(const char *p_function, const char *p_file, int p_line, const String &str);
+
+	static void log_custom(const StringName &p_category, const int p_level, const String &p_str);
+	static void log_custom(const StringName &p_category, const int p_level, const char *str);
+	static void log_custom(const StringName &p_category, const int p_level, const char *p_function, const char *p_file, int p_line, const char *str);
+	static void log_custom(const StringName &p_category, const int p_level, const char *p_function, const char *p_file, int p_line, const String &str);
+
 	static void do_log_trace(const String &str);
 	static void do_log_message(const String &str);
 	static void do_log_warning(const String &str);
 	static void do_log_error(const String &str);
+	static void do_log_important(const String &str);
 
 	static LogLevel get_log_level();
 	static void set_log_level(const LogLevel p_log_level);

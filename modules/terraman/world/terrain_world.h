@@ -62,6 +62,8 @@ public:
 	enum ChannelTypeInfo {
 		CHANNEL_TYPE_INFO_TYPE = 0,
 		CHANNEL_TYPE_INFO_ISOLEVEL,
+		CHANNEL_TYPE_INFO_LIQUID_TYPE,
+		CHANNEL_TYPE_INFO_LIQUID_ISOLEVEL,
 		CHANNEL_TYPE_INFO_LIQUID_FLOW,
 	};
 
@@ -173,26 +175,35 @@ public:
 	void generation_remove_index(const int index);
 	int generation_get_size() const;
 
+	void scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform = Transform(), const Node *p_node = NULL, const bool p_original = true);
+
 #ifdef MODULE_PROPS_ENABLED
-	void prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale = true);
+	void prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale = true, const bool p_original = true);
 #endif
 
 	//Lights
 	void light_add(const Ref<TerrainLight> &light);
-	Ref<TerrainLight> light_get(const int index);
-	void light_remove(const int index);
-	int light_get_count() const;
+	void light_remove(const Ref<TerrainLight> &light);
 	void lights_clear();
 
-	Vector<Variant> lights_get();
-	void lights_set(const Vector<Variant> &chunks);
+	void world_light_added(const Ref<TerrainLight> &light);
+	void world_light_removed(const Ref<TerrainLight> &light);
+	void world_light_moved(const Ref<TerrainLight> &light);
 
 	//Helpers
 	uint8_t get_voxel_at_world_position(const Vector3 &world_position, const int channel_index);
 	void set_voxel_at_world_position(const Vector3 &world_position, const uint8_t data, const int channel_index, const bool rebuild = true);
 	Ref<TerrainChunk> get_chunk_at_world_position(const Vector3 &world_position);
 	Ref<TerrainChunk> get_or_create_chunk_at_world_position(const Vector3 &world_position);
-	void set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
+	Vector2i world_position_to_chunk_position(const Vector3 &p_world_position);
+	Vector2i world_data_position_to_chunk_position(const Vector2i &p_world_data_position);
+
+	Vector2i world_position_to_world_data_position(const Vector3 &world_position);
+	uint8_t get_voxel_at_world_data_position(const Vector2i &world_data_position, const int channel_index);
+	void set_voxel_at_world_data_position(const Vector2i &world_data_position, const uint8_t data, const int channel_index, const bool p_immediate_build = true, const bool allow_creating_chunks = true);
+	Ref<TerrainChunk> get_chunk_at_world_data_position(const Vector2i &world_data_position);
+	Ref<TerrainChunk> get_or_create_chunk_at_world_data_position(const Vector2i &world_data_position);
+	void set_voxels_at_world_data_position(const Array &p_data, const int p_channel_index, const bool p_immediate_build = false, const bool p_allow_creating_chunks = true, const bool p_invalidate_texture_caches = true);
 
 	int get_channel_index_info(const ChannelTypeInfo channel_type);
 
@@ -205,7 +216,6 @@ protected:
 	virtual void _generate_chunk(Ref<TerrainChunk> chunk);
 	virtual Ref<TerrainChunk> _create_chunk(int x, int z, Ref<TerrainChunk> p_chunk);
 	virtual int _get_channel_index_info(const ChannelTypeInfo channel_type);
-	virtual void _set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
 
 	virtual void _notification(int p_what);
 	static void _bind_methods();
@@ -272,8 +282,6 @@ private:
 	Vector<Ref<TerrainChunk>> _generating;
 	int _max_frame_chunk_build_steps;
 	int _num_frame_chunk_build_steps;
-
-	Vector<Ref<TerrainLight>> _lights;
 };
 
 _FORCE_INLINE_ bool operator==(const TerrainWorld::IntPos &a, const TerrainWorld::IntPos &b) {

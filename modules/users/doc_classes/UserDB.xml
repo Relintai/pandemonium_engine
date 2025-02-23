@@ -12,6 +12,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_all_users">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
 		<method name="get_user">
 			<return type="User" />
 			<argument index="0" name="id" type="int" />

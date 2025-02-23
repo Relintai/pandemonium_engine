@@ -559,7 +559,7 @@ MergeGroupEditorPlugin::MergeGroupEditorPlugin(EditorNode *p_node) {
 
 	button_bake = memnew(ToolButton);
 	button_bake->set_icon(editor->get_gui_base()->get_theme_icon("Bake", "EditorIcons"));
-	button_bake->set_text(TTR("Bake"));
+	//button_bake->set_text(TTR("Bake"));
 	button_bake->set_tooltip(TTR("Bake MergeGroup to Scene."));
 	button_bake->hide();
 	button_bake->connect("pressed", this, "_bake");

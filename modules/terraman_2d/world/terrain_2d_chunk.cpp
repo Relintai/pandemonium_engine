@@ -753,11 +753,11 @@ void Terrain2DChunk::clear_baked_lights() {
 }
 
 #ifdef MODULE_PROPS_2D_ENABLED
-void Terrain2DChunk::prop_add(const Transform2D &tarnsform, const Ref<Prop2DData> &prop) {
+void Terrain2DChunk::prop_add(const Transform2D &transform, const Ref<Prop2DData> &prop) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	Prop2DDataStore s;
-	s.transform = tarnsform;
+	s.transform = transform;
 	s.prop = prop;
 
 	_props.push_back(s);
@@ -767,7 +767,7 @@ Ref<Prop2DData> Terrain2DChunk::prop_get(int index) {
 
 	return _props.get(index).prop;
 }
-Transform2D Terrain2DChunk::prop_get_tarnsform(const int index) {
+Transform2D Terrain2DChunk::prop_get_transform(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Transform2D());
 
 	return _props.get(index).transform;

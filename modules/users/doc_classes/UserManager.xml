@@ -12,6 +12,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="_get_all_users" qualifiers="virtual">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
 		<method name="_get_user" qualifiers="virtual">
 			<return type="User" />
 			<argument index="0" name="id" type="int" />
@@ -50,6 +55,11 @@
 		</method>
 		<method name="create_user">
 			<return type="User" />
+			<description>
+			</description>
+		</method>
+		<method name="get_all_users">
+			<return type="Array" />
 			<description>
 			</description>
 		</method>

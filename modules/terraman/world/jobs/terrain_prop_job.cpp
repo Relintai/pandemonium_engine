@@ -143,7 +143,7 @@ void TerrainPropJob::phase_physics_process() {
 #ifdef MODULE_PROPS_ENABLED
 	for (int i = 0; i < chunk->prop_get_count(); ++i) {
 		Ref<PropData> prop = chunk->prop_get(i);
-		Transform prop_transform = chunk->prop_get_tarnsform(i);
+		Transform prop_transform = chunk->prop_get_transform(i);
 		Transform chunk_prop_local_tform = prop_transform;
 		chunk_prop_local_tform.origin = chunk->to_local(chunk_prop_local_tform.origin);
 
@@ -354,7 +354,7 @@ void TerrainPropJob::phase_setup() {
 	}
 
 	if (library->supports_caching()) {
-		if (!_chunk->prop_material_cache_key_has()) {
+		if (!_chunk->prop_material_cache_key_has() || _chunk->prop_material_cache_key_invalid_get()) {
 			library->prop_material_cache_get_key(_chunk);
 
 			if (!_chunk->prop_material_cache_key_has()) {
@@ -365,13 +365,6 @@ void TerrainPropJob::phase_setup() {
 		}
 
 		Ref<TerrainMaterialCache> cache = library->prop_material_cache_get(_chunk->prop_material_cache_key_get());
-
-		//Note: without threadpool and threading none of this can happen, as cache will get initialized the first time a thread requests it!
-		while (!cache->get_initialized()) {
-			//Means it's currently merging the atlases on a different thread.
-			//Let's just wait
-			OS::get_singleton()->delay_usec(100);
-		}
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		for (int i = 0; i < _chunk->mesh_data_resource_get_count(); ++i) {
@@ -457,18 +450,6 @@ void TerrainPropJob::phase_steps() {
 			if (count > 0) {
 				chunk->meshes_create(TerrainChunkDefault::MESH_INDEX_PROP, count);
 			}
-
-		} else {
-			//we have the meshes, just clear
-			int count = chunk->mesh_rid_get_count(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH);
-
-			for (int i = 0; i < count; ++i) {
-				mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, i);
-
-				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
-					RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-				}
-			}
 		}
 	}
 
@@ -524,6 +505,10 @@ void TerrainPropJob::step_type_normal() {
 
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
+
 	RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
@@ -554,6 +539,10 @@ void TerrainPropJob::step_type_drop_uv2() {
 
 	temp_mesh_arr[RenderingServer::ARRAY_TEX_UV2] = Variant();
 
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
+
 	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
@@ -577,6 +566,10 @@ void TerrainPropJob::step_type_merge_verts() {
 
 	Ref<TerrainChunkDefault> chunk = _chunk;
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
+
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
 
 	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
@@ -622,6 +615,10 @@ void TerrainPropJob::step_type_bake_texture() {
 
 		RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
+		if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+			RS::get_singleton()->mesh_clear(mesh_rid);
+		}
+
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 		if (lmat.is_valid()) {
@@ -648,6 +645,10 @@ void TerrainPropJob::step_type_simplify_mesh() {
 		temp_mesh_arr = fqms->get_arrays();
 
 		RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
+
+		if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+			RS::get_singleton()->mesh_clear(mesh_rid);
+		}
 
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 

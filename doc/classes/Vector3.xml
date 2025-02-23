@@ -394,22 +394,22 @@
 		<constant name="BACK" value="Vector3( 0, 0, 1 )">
 			Back unit vector. Represents the local direction of back, and the global direction of south.
 		</constant>
-		<constant name="MODEL_LEFT" value="Vector3(1, 0, 0)">
+		<constant name="MODEL_LEFT" value="Vector3( 1, 0, 0 )">
 			Unit vector pointing towards the left side of imported 3D assets.
 		</constant>
-		<constant name="MODEL_RIGHT" value="Vector3(-1, 0, 0)">
+		<constant name="MODEL_RIGHT" value="Vector3( -1, 0, 0 )">
 			Unit vector pointing towards the right side of imported 3D assets.
 		</constant>
-		<constant name="MODEL_TOP" value="Vector3(0, 1, 0)">
+		<constant name="MODEL_TOP" value="Vector3( 0, 1, 0 )">
 			Unit vector pointing towards the top side (up) of imported 3D assets.
 		</constant>
-		<constant name="MODEL_BOTTOM" value="Vector3(0, -1, 0)">
+		<constant name="MODEL_BOTTOM" value="Vector3( 0, -1, 0 )">
 			Unit vector pointing towards the bottom side (down) of imported 3D assets.
 		</constant>
-		<constant name="MODEL_FRONT" value="Vector3(0, 0, 1)">
+		<constant name="MODEL_FRONT" value="Vector3( 0, 0, 1 )">
 			Unit vector pointing towards the front side (facing forward) of imported 3D assets.
 		</constant>
-		<constant name="MODEL_REAR" value="Vector3(0, 0, -1)">
+		<constant name="MODEL_REAR" value="Vector3( 0, 0, -1 )">
 			Unit vector pointing towards the rear side (back) of imported 3D assets.
 		</constant>
 	</constants>

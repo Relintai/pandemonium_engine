@@ -105,8 +105,20 @@ bool UserManagerStatic::_is_email_taken(const String &email) {
 	return false;
 }
 
-Vector<Ref<User>> UserManagerStatic::get_all() {
+Vector<Ref<User>> UserManagerStatic::get_all_as_vector() {
 	return _users;
+}
+
+Array UserManagerStatic::_get_all_users() {
+	Array ret;
+
+	ret.resize(_users.size());
+
+	for (int i = 0; i < _users.size(); ++i) {
+		ret[i] = Variant(_users[i].get_ref_ptr());
+	}
+
+	return ret;
 }
 
 Vector<Variant> UserManagerStatic::get_users() {

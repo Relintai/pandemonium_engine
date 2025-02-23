@@ -44,6 +44,8 @@
 
 #include "modules/modules_enabled.gen.h"
 
+#include "core/object/method_bind_ext.gen.inc"
+
 #ifdef MODULE_LZ4_ENABLED
 #include "modules/lz4/lz4_compressor.h"
 #endif
@@ -71,11 +73,25 @@ void TerrainChunk::set_visible(const bool value) {
 	visibility_changed(value);
 }
 
-_FORCE_INLINE_ bool TerrainChunk::get_is_generating() const {
+bool TerrainChunk::get_is_generating() const {
 	return _is_generating;
 }
-_FORCE_INLINE_ void TerrainChunk::set_is_generating(const bool value) {
+void TerrainChunk::set_is_generating(const bool value) {
 	_is_generating = value;
+}
+
+bool TerrainChunk::get_is_immediate_build() const {
+	return _is_immediate_build;
+}
+void TerrainChunk::set_is_immediate_build(const bool value) {
+	_is_immediate_build = value;
+}
+
+bool TerrainChunk::get_is_terrain_generated() const {
+	return _is_terrain_generated;
+}
+void TerrainChunk::set_is_terrain_generated(const bool value) {
+	_is_terrain_generated = value;
 }
 
 bool TerrainChunk::is_build_aborted() const {
@@ -193,6 +209,8 @@ int TerrainChunk::material_cache_key_get() const {
 }
 void TerrainChunk::material_cache_key_set(const int value) {
 	_material_cache_key = value;
+
+	_material_cache_key_invalid = false;
 }
 
 bool TerrainChunk::material_cache_key_has() const {
@@ -202,11 +220,20 @@ void TerrainChunk::material_cache_key_has_set(const bool value) {
 	_material_cache_key_has = value;
 }
 
+bool TerrainChunk::material_cache_key_invalid_get() const {
+	return _material_cache_key_invalid;
+}
+void TerrainChunk::material_cache_key_invalid_set(const bool value) {
+	_material_cache_key_invalid = value;
+}
+
 int TerrainChunk::liquid_material_cache_key_get() const {
 	return _liquid_material_cache_key;
 }
 void TerrainChunk::liquid_material_cache_key_set(const int value) {
 	_liquid_material_cache_key = value;
+
+	_liquid_material_cache_key_invalid = false;
 }
 
 bool TerrainChunk::liquid_material_cache_key_has() const {
@@ -216,11 +243,20 @@ void TerrainChunk::liquid_material_cache_key_has_set(const bool value) {
 	_liquid_material_cache_key_has = value;
 }
 
+bool TerrainChunk::liquid_material_cache_key_invalid_get() const {
+	return _liquid_material_cache_key_invalid;
+}
+void TerrainChunk::liquid_material_cache_key_invalid_set(const bool value) {
+	_liquid_material_cache_key_invalid = value;
+}
+
 int TerrainChunk::prop_material_cache_key_get() const {
 	return _prop_material_cache_key;
 }
 void TerrainChunk::prop_material_cache_key_set(const int value) {
 	_prop_material_cache_key = value;
+
+	_prop_material_cache_key_invalid = false;
 }
 
 bool TerrainChunk::prop_material_cache_key_has() const {
@@ -228,6 +264,13 @@ bool TerrainChunk::prop_material_cache_key_has() const {
 }
 void TerrainChunk::prop_material_cache_key_has_set(const bool value) {
 	_prop_material_cache_key_has = value;
+}
+
+bool TerrainChunk::prop_material_cache_key_invalid_get() const {
+	return _prop_material_cache_key_invalid;
+}
+void TerrainChunk::prop_material_cache_key_invalid_set(const bool value) {
+	_prop_material_cache_key_invalid = value;
 }
 
 Ref<TerrainLibrary> TerrainChunk::get_library() {
@@ -313,7 +356,11 @@ void TerrainChunk::job_next() {
 	j->set_complete(false);
 
 	if (j->get_build_phase_type() == TerrainJob::BUILD_PHASE_TYPE_NORMAL) {
-		ThreadPool::get_singleton()->add_job(j);
+		if (!_is_immediate_build) {
+			ThreadPool::get_singleton()->add_job(j);
+		} else {
+			j->execute();
+		}
 	}
 }
 Ref<TerrainJob> TerrainChunk::job_get_current() {
@@ -616,6 +663,157 @@ _FORCE_INLINE_ int TerrainChunk::get_data_size() const {
 	return _data_size_x * _data_size_z;
 }
 
+//Lights
+void TerrainChunk::light_add(Ref<TerrainLight> p_light) {
+	if (!p_light.is_valid()) {
+		return;
+	}
+
+	p_light->set_has_owner_chunk(true);
+	p_light->set_owner_chunk_position(Vector2i(_position_x, _position_z));
+	p_light->connect("light_moved", this, "_on_light_moved");
+
+	_lights.push_back(p_light);
+
+	TerrainWorld *world = get_voxel_world();
+
+	if (ObjectDB::instance_validate(world)) {
+		world->world_light_added(p_light);
+	}
+}
+bool TerrainChunk::light_remove(Ref<TerrainLight> p_light) {
+	if (!p_light.is_valid()) {
+		return false;
+	}
+
+	if (_lights.erase(p_light)) {
+		p_light->set_has_owner_chunk(false);
+		p_light->disconnect("light_moved", this, "_on_light_moved");
+
+		TerrainWorld *world = get_voxel_world();
+
+		if (ObjectDB::instance_validate(world)) {
+			world->world_light_removed(p_light);
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool TerrainChunk::light_has(const Ref<TerrainLight> &p_light) {
+	return _lights.find(p_light) != -1;
+}
+
+Ref<TerrainLight> TerrainChunk::light_get_index(const int index) {
+	ERR_FAIL_INDEX_V(index, _lights.size(), Ref<TerrainLight>());
+
+	return _lights.get(index);
+}
+void TerrainChunk::light_remove_index(const int index) {
+	ERR_FAIL_INDEX(index, _lights.size());
+
+	Ref<TerrainLight> light = _lights[index];
+
+	TerrainWorld *world = get_voxel_world();
+
+	if (ObjectDB::instance_validate(world)) {
+		world->world_light_removed(light);
+	}
+}
+int TerrainChunk::light_get_count() const {
+	return _lights.size();
+}
+void TerrainChunk::lights_clear() {
+	TerrainWorld *world = get_voxel_world();
+
+	if (!ObjectDB::instance_validate(world)) {
+		world = NULL;
+	}
+
+	for (int i = 0; i < _lights.size(); ++i) {
+		Ref<TerrainLight> light = _lights[i];
+
+		if (!light.is_valid()) {
+			continue;
+		}
+
+		light->set_has_owner_chunk(false);
+
+		if (world) {
+			world->world_light_removed(light);
+		}
+	}
+
+	_lights.clear();
+}
+
+Vector<Variant> TerrainChunk::lights_get() {
+	VARIANT_ARRAY_GET(_lights);
+}
+void TerrainChunk::lights_set(const Vector<Variant> &p_lights) {
+	lights_clear();
+
+	for (int i = 0; i < p_lights.size(); ++i) {
+		Ref<TerrainLight> light = Ref<TerrainLight>(p_lights[i]);
+
+		light_add(light);
+	}
+}
+
+Vector<Variant> TerrainChunk::owned_lights_get() {
+	Vector<Variant> r;
+	for (int i = 0; i < _lights.size(); i++) {
+		Ref<TerrainLight> l = _lights[i];
+
+		if (!l.is_valid()) {
+			continue;
+		}
+
+		if (l->get_owner_type() != TerrainLight::OWNER_TYPE_NONE) {
+			continue;
+		}
+
+		r.push_back(_lights[i].get_ref_ptr());
+	}
+	return r;
+}
+void TerrainChunk::owned_lights_set(const Vector<Variant> &p_lights) {
+	for (int i = 0; i < _lights.size(); ++i) {
+		Ref<TerrainLight> l = _lights[i];
+
+		if (!l.is_valid()) {
+			continue;
+		}
+
+		if (l->get_owner_type() != TerrainLight::OWNER_TYPE_NONE) {
+			continue;
+		}
+
+		light_remove_index(i);
+		--i;
+	}
+
+	for (int i = 0; i < p_lights.size(); ++i) {
+		Ref<TerrainLight> light = Ref<TerrainLight>(p_lights[i]);
+
+		if (!light.is_valid()) {
+			continue;
+		}
+
+		light_add(light);
+	}
+}
+
+void TerrainChunk::_on_light_moved(const Ref<TerrainLight> &p_light) {
+	TerrainWorld *world = get_voxel_world();
+
+	if (ObjectDB::instance_validate(world)) {
+		world->world_light_moved(p_light);
+	}
+}
+
 //Terra Structures
 
 Ref<TerrainStructure> TerrainChunk::voxel_structure_get(const int index) const {
@@ -671,12 +869,198 @@ void TerrainChunk::voxel_structures_set(const Vector<Variant> &structures) {
 	}
 }
 
+//Scenes
+
+void TerrainChunk::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform, const Node *p_node, const bool p_original) {
+	ERR_FAIL_COND(!p_scene.is_valid());
+
+	SceneDataStore s;
+	s.original = p_original;
+	s.transform = p_transform;
+	s.scene = p_scene;
+	s.node = 0;
+
+	if (p_node) {
+		s.node = p_node->get_instance_id();
+	}
+
+	_scenes.push_back(s);
+
+	if (_is_in_tree && !p_node) {
+		scene_instance(_scenes.size() - 1);
+	}
+}
+
+Ref<PackedScene> TerrainChunk::scene_get(int index) {
+	ERR_FAIL_INDEX_V(index, _scenes.size(), Ref<PackedScene>());
+
+	return _scenes.get(index).scene;
+}
+void TerrainChunk::scene_set(const int index, const Ref<PackedScene> &p_scene) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	_scenes.write[index].scene = p_scene;
+}
+
+Transform TerrainChunk::scene_get_transform(const int index) {
+	ERR_FAIL_INDEX_V(index, _scenes.size(), Transform());
+
+	return _scenes.get(index).transform;
+}
+void TerrainChunk::scene_set_transform(const int index, const Transform &p_transform) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	_scenes.write[index].transform = p_transform;
+}
+
+bool TerrainChunk::scene_get_is_original(const int index) {
+	ERR_FAIL_INDEX_V(index, _scenes.size(), false);
+
+	return _scenes.get(index).original;
+}
+void TerrainChunk::scene_set_is_original(const int index, const bool p_original) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	_scenes.write[index].original = p_original;
+}
+
+Node *TerrainChunk::scene_get_node(const int index) {
+	ERR_FAIL_INDEX_V(index, _scenes.size(), 0);
+
+	return Object::cast_to<Node>(ObjectDB::get_instance(_scenes.get(index).node));
+}
+void TerrainChunk::scene_set_node(const int index, const Node *p_node) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	ObjectID id = 0;
+
+	if (p_node) {
+		id = p_node->get_instance_id();
+	}
+
+	_scenes.write[index].node = id;
+}
+
+int TerrainChunk::scene_get_count() const {
+	return _scenes.size();
+}
+void TerrainChunk::scene_remove(const int index, const bool p_queue_free) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	if (p_queue_free) {
+		scene_queue_free(index);
+	}
+
+	_scenes.remove(index);
+}
+void TerrainChunk::scenes_clear(const bool p_queue_free) {
+	if (p_queue_free) {
+		for (int i = 0; i < _scenes.size(); ++i) {
+			scene_queue_free(i);
+		}
+	}
+
+	_scenes.clear();
+}
+
+void TerrainChunk::scene_instance(const int index) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	if (!_is_in_tree) {
+		return;
+	}
+
+	TerrainWorld *world = get_voxel_world();
+
+	ERR_FAIL_COND(!world);
+
+	SceneDataStore &e = _scenes.write[index];
+
+	if (e.node != 0) {
+		// Ignore if already instanced. It was added manually.
+		return;
+	}
+
+	if (!e.scene.is_valid()) {
+		return;
+	}
+
+	Node *n = e.scene->instance();
+	world->add_child(n);
+	//n->set_owner(world);
+
+	Spatial *sp = Object::cast_to<Spatial>(n);
+
+	if (sp) {
+		sp->set_transform(e.transform);
+	}
+
+	e.node = n->get_instance_id();
+}
+
+void TerrainChunk::scene_queue_free(const int index) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	SceneDataStore &e = _scenes.write[index];
+
+	if (e.node != 0) {
+		Node *n = Object::cast_to<Node>(ObjectDB::get_instance(e.node));
+
+		if (n) {
+			n->queue_delete();
+		}
+
+		e.node = 0;
+	}
+}
+
+Array TerrainChunk::scenes_get() {
+	Array ret;
+
+	for (int i = 0; i < _scenes.size(); i++) {
+		Array scene_data;
+
+		scene_data.push_back(_scenes[i].original);
+		scene_data.push_back(_scenes[i].transform);
+		scene_data.push_back(_scenes[i].scene.get_ref_ptr());
+
+		ret.push_back(scene_data);
+	}
+
+	return ret;
+}
+void TerrainChunk::scenes_set(const Array &p_scenes) {
+	scenes_clear();
+
+	for (int i = 0; i < p_scenes.size(); ++i) {
+		Array scene_data = p_scenes[i];
+
+		ERR_CONTINUE(scene_data.size() != 3);
+
+		bool original = scene_data[0];
+		Transform transform = scene_data[1];
+		Ref<PackedScene> scene = Ref<PackedScene>(scene_data[2]);
+
+		scene_add(scene, transform, NULL, original);
+	}
+}
+
+//Meshing
+
 void TerrainChunk::build() {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
 	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
 	ERR_FAIL_COND(!is_in_tree());
 
 	call("_build");
+}
+
+void TerrainChunk::build_immediate() {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
+	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
+	ERR_FAIL_COND(!is_in_tree());
+
+	call("_build_immediate");
 }
 
 void TerrainChunk::_build() {
@@ -686,6 +1070,19 @@ void TerrainChunk::_build() {
 	}
 
 	_is_generating = true;
+	_is_immediate_build = false;
+
+	job_next();
+}
+
+void TerrainChunk::_build_immediate() {
+	if (get_is_generating()) {
+		_queued_generation = true;
+		return;
+	}
+
+	_is_generating = true;
+	_is_immediate_build = true;
 
 	job_next();
 }
@@ -737,25 +1134,50 @@ void TerrainChunk::clear_baked_lights() {
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void TerrainChunk::prop_add(const Transform &tarnsform, const Ref<PropData> &prop) {
+void TerrainChunk::prop_add(const Transform &transform, const Ref<PropData> &prop, const bool p_original) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	PropDataStore s;
-	s.transform = tarnsform;
+	s.original = p_original;
+	s.transform = transform;
 	s.prop = prop;
 
 	_props.push_back(s);
 }
+
 Ref<PropData> TerrainChunk::prop_get(int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Ref<PropData>());
 
 	return _props.get(index).prop;
 }
-Transform TerrainChunk::prop_get_tarnsform(const int index) {
+void TerrainChunk::prop_set(const int index, const Ref<PropData> &p_prop) {
+	ERR_FAIL_INDEX(index, _props.size());
+
+	_props.write[index].prop = p_prop;
+}
+
+Transform TerrainChunk::prop_get_transform(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Transform());
 
 	return _props.get(index).transform;
 }
+void TerrainChunk::prop_set_transform(const int index, const Transform &p_transform) {
+	ERR_FAIL_INDEX(index, _props.size());
+
+	_props.write[index].transform = p_transform;
+}
+
+bool TerrainChunk::prop_get_is_original(const int index) {
+	ERR_FAIL_INDEX_V(index, _props.size(), false);
+
+	return _props.get(index).original;
+}
+void TerrainChunk::prop_set_is_original(const int index, const bool p_original) {
+	ERR_FAIL_INDEX(index, _props.size());
+
+	_props.write[index].original = p_original;
+}
+
 int TerrainChunk::prop_get_count() const {
 	return _props.size();
 }
@@ -767,10 +1189,41 @@ void TerrainChunk::prop_remove(const int index) {
 void TerrainChunk::props_clear() {
 	_props.clear();
 }
+
+Array TerrainChunk::props_get() {
+	Array ret;
+
+	for (int i = 0; i < _props.size(); i++) {
+		Array prop_data;
+
+		prop_data.push_back(_props[i].original);
+		prop_data.push_back(_props[i].transform);
+		prop_data.push_back(_props[i].prop.get_ref_ptr());
+
+		ret.push_back(prop_data);
+	}
+
+	return ret;
+}
+void TerrainChunk::props_set(const Array &p_props) {
+	props_clear();
+
+	for (int i = 0; i < p_props.size(); ++i) {
+		Array prop_data = p_props[i];
+
+		ERR_CONTINUE(prop_data.size() != 3);
+
+		bool original = prop_data[0];
+		Transform transform = prop_data[1];
+		Ref<PropData> prop = Ref<PropData>(prop_data[2]);
+
+		prop_add(transform, prop, original);
+	}
+}
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale) {
+int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale, const bool p_original) {
 	ERR_FAIL_COND_V(!mesh.is_valid(), 0);
 
 	int index = _mesh_data_resources.size();
@@ -787,6 +1240,7 @@ int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const R
 	e.mesh = mesh;
 	e.texture = texture;
 	e.color = color;
+	e.is_original = p_original;
 
 	AABB aabb = AABB(Vector3(), get_world_size());
 	AABB mesh_aabb = e.transform.xform(mesh->get_aabb());
@@ -811,7 +1265,7 @@ int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const R
 	return index;
 }
 
-int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale) {
+int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale, const bool p_original) {
 	ERR_FAIL_COND_V(!mesh.is_valid(), 0);
 
 	int index = _mesh_data_resources.size();
@@ -828,6 +1282,7 @@ int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const
 	e.mesh = mesh;
 	e.texture = texture;
 	e.color = color;
+	e.is_original = p_original;
 
 	AABB aabb = AABB(Vector3(), get_world_size());
 	AABB mesh_aabb = e.transform.xform(mesh->get_aabb());
@@ -917,6 +1372,17 @@ void TerrainChunk::mesh_data_resource_set_is_inside(const int index, const bool 
 	_mesh_data_resources.write[index].is_inside = inside;
 }
 
+bool TerrainChunk::mesh_data_resource_get_is_original(const int index) {
+	ERR_FAIL_INDEX_V(index, _mesh_data_resources.size(), false);
+
+	return _mesh_data_resources[index].is_original;
+}
+void TerrainChunk::mesh_data_resource_set_is_original(const int index, const bool p_original) {
+	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
+
+	_mesh_data_resources.write[index].is_original = p_original;
+}
+
 int TerrainChunk::mesh_data_resource_get_count() const {
 	return _mesh_data_resources.size();
 }
@@ -927,6 +1393,44 @@ void TerrainChunk::mesh_data_resource_remove(const int index) {
 }
 void TerrainChunk::mesh_data_resource_clear() {
 	_mesh_data_resources.clear();
+}
+
+Array TerrainChunk::mesh_data_resources_get() {
+	Array ret;
+
+	for (int i = 0; i < _mesh_data_resources.size(); i++) {
+		MeshDataResourceEntry e = _mesh_data_resources[i];
+
+		Array mdr_data;
+
+		mdr_data.push_back(e.mesh.get_ref_ptr());
+		mdr_data.push_back(e.texture);
+		mdr_data.push_back(e.color);
+		mdr_data.push_back(e.transform);
+		mdr_data.push_back(e.is_original);
+
+		ret.push_back(mdr_data);
+	}
+
+	return ret;
+}
+
+void TerrainChunk::mesh_data_resources_set(const Array &p_mesh_data_resources) {
+	mesh_data_resource_clear();
+
+	for (int i = 0; i < p_mesh_data_resources.size(); ++i) {
+		Array mdr_data = p_mesh_data_resources[i];
+
+		ERR_CONTINUE(mdr_data.size() != 5);
+
+		Ref<MeshDataResource> mesh = Ref<MeshDataResource>(mdr_data[0]);
+		Ref<Texture> texture = Ref<Texture>(mdr_data[1]);
+		Color color = mdr_data[2];
+		Transform transform = mdr_data[3];
+		bool is_original = mdr_data[4];
+
+		mesh_data_resource_add(transform, mesh, texture, color, false, is_original);
+	}
 }
 
 #endif
@@ -1096,6 +1600,8 @@ TerrainChunk::TerrainChunk() {
 	_is_visible = true;
 
 	_is_generating = false;
+	_is_immediate_build = false;
+	_is_terrain_generated = false;
 	_dirty = false;
 	_state = TERRAIN_CHUNK_STATE_OK;
 
@@ -1117,12 +1623,15 @@ TerrainChunk::TerrainChunk() {
 
 	_material_cache_key = 0;
 	_material_cache_key_has = false;
+	_material_cache_key_invalid = false;
 
 	_liquid_material_cache_key = 0;
 	_liquid_material_cache_key_has = false;
+	_liquid_material_cache_key_invalid = false;
 
 	_prop_material_cache_key = 0;
 	_prop_material_cache_key_has = false;
+	_prop_material_cache_key_invalid = false;
 
 	_current_job = -1;
 
@@ -1159,6 +1668,8 @@ TerrainChunk::~TerrainChunk() {
 	_colliders.clear();
 
 	_jobs.clear();
+
+	_lights.clear();
 }
 
 void TerrainChunk::_enter_tree() {
@@ -1169,9 +1680,17 @@ void TerrainChunk::_enter_tree() {
 			j->set_chunk(Ref<TerrainChunk>(this));
 		}
 	}
+
+	for (int i = 0; i < _scenes.size(); ++i) {
+		scene_instance(i);
+	}
 }
 
 void TerrainChunk::_exit_tree() {
+	for (int i = 0; i < _scenes.size(); ++i) {
+		scene_queue_free(i);
+	}
+
 	if (_is_generating) {
 		cancel_build();
 	}
@@ -1187,6 +1706,9 @@ void TerrainChunk::_exit_tree() {
 	if (_library.is_valid() && _library->supports_caching()) {
 		if (material_cache_key_has()) {
 			_library->material_cache_unref(material_cache_key_get());
+
+			material_cache_key_set(0);
+			material_cache_key_has_set(false);
 		}
 	}
 }
@@ -1366,6 +1888,14 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_is_generating", "value"), &TerrainChunk::set_is_generating);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_generating", PROPERTY_HINT_NONE, "", 0), "set_is_generating", "get_is_generating");
 
+	ClassDB::bind_method(D_METHOD("get_is_immediate_build"), &TerrainChunk::get_is_immediate_build);
+	ClassDB::bind_method(D_METHOD("set_is_immediate_build", "value"), &TerrainChunk::set_is_immediate_build);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_immediate_build", PROPERTY_HINT_NONE, "", 0), "set_is_immediate_build", "get_is_immediate_build");
+
+	ClassDB::bind_method(D_METHOD("get_is_terrain_generated"), &TerrainChunk::get_is_terrain_generated);
+	ClassDB::bind_method(D_METHOD("set_is_terrain_generated", "value"), &TerrainChunk::set_is_terrain_generated);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_terrain_generated"), "set_is_terrain_generated", "get_is_terrain_generated");
+
 	ClassDB::bind_method(D_METHOD("is_build_aborted"), &TerrainChunk::is_build_aborted);
 
 	ClassDB::bind_method(D_METHOD("get_dirty"), &TerrainChunk::get_dirty);
@@ -1427,6 +1957,10 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("material_cache_key_has_set"), &TerrainChunk::material_cache_key_has_set);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "material_cache_key_has_set", "material_cache_key_has_get");
 
+	ClassDB::bind_method(D_METHOD("material_cache_key_invalid_get"), &TerrainChunk::material_cache_key_invalid_get);
+	ClassDB::bind_method(D_METHOD("material_cache_key_invalid_set"), &TerrainChunk::material_cache_key_invalid_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "material_cache_key_invalid", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "material_cache_key_invalid_set", "material_cache_key_invalid_get");
+
 	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_get"), &TerrainChunk::liquid_material_cache_key_get);
 	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_set"), &TerrainChunk::liquid_material_cache_key_set);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "liquid_material_cache_key", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "liquid_material_cache_key_set", "liquid_material_cache_key_get");
@@ -1435,6 +1969,10 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_has_set"), &TerrainChunk::liquid_material_cache_key_has_set);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "liquid_material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "liquid_material_cache_key_has_set", "liquid_material_cache_key_has_get");
 
+	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_invalid_get"), &TerrainChunk::liquid_material_cache_key_invalid_get);
+	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_invalid_set"), &TerrainChunk::liquid_material_cache_key_invalid_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "liquid_material_cache_key_invalid", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "liquid_material_cache_key_invalid_set", "liquid_material_cache_key_invalid_get");
+
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_get"), &TerrainChunk::prop_material_cache_key_get);
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_set"), &TerrainChunk::prop_material_cache_key_set);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "prop_material_cache_key", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "prop_material_cache_key_set", "prop_material_cache_key_get");
@@ -1442,6 +1980,10 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_has_get"), &TerrainChunk::prop_material_cache_key_has);
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_has_set"), &TerrainChunk::prop_material_cache_key_has_set);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "prop_material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "prop_material_cache_key_has_set", "prop_material_cache_key_has_get");
+
+	ClassDB::bind_method(D_METHOD("prop_material_cache_key_invalid_get"), &TerrainChunk::prop_material_cache_key_invalid_get);
+	ClassDB::bind_method(D_METHOD("prop_material_cache_key_invalid_set"), &TerrainChunk::prop_material_cache_key_invalid_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "prop_material_cache_key_invalid", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "prop_material_cache_key_invalid_set", "prop_material_cache_key_invalid_get");
 
 	ClassDB::bind_method(D_METHOD("get_library"), &TerrainChunk::get_library);
 	ClassDB::bind_method(D_METHOD("set_library", "value"), &TerrainChunk::set_library);
@@ -1495,6 +2037,27 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_data_index", "x", "z"), &TerrainChunk::get_data_index);
 	ClassDB::bind_method(D_METHOD("get_data_size"), &TerrainChunk::get_data_size);
 
+	// Lights
+	ClassDB::bind_method(D_METHOD("light_add", "light"), &TerrainChunk::light_add);
+	ClassDB::bind_method(D_METHOD("light_remove", "light"), &TerrainChunk::light_remove);
+	ClassDB::bind_method(D_METHOD("light_has", "light"), &TerrainChunk::light_has);
+
+	ClassDB::bind_method(D_METHOD("light_get_index", "index"), &TerrainChunk::light_get_index);
+	ClassDB::bind_method(D_METHOD("light_remove_index", "index"), &TerrainChunk::light_remove_index);
+	ClassDB::bind_method(D_METHOD("light_get_count"), &TerrainChunk::light_get_count);
+	ClassDB::bind_method(D_METHOD("lights_clear"), &TerrainChunk::lights_clear);
+
+	ClassDB::bind_method(D_METHOD("lights_get"), &TerrainChunk::lights_get);
+	ClassDB::bind_method(D_METHOD("lights_set", "chunks"), &TerrainChunk::lights_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "lights", PROPERTY_HINT_NONE, "23/20:TerrainLight", 0, "TerrainLight"), "lights_set", "lights_get");
+
+	ClassDB::bind_method(D_METHOD("owned_lights_get"), &TerrainChunk::owned_lights_get);
+	ClassDB::bind_method(D_METHOD("owned_lights_set", "chunks"), &TerrainChunk::owned_lights_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "owned_lights", PROPERTY_HINT_NONE, "23/20:TerrainLight", PROPERTY_USAGE_DEFAULT, "TerrainLight"), "owned_lights_set", "owned_lights_get");
+
+	ClassDB::bind_method(D_METHOD("_on_light_moved"), &TerrainChunk::_on_light_moved);
+
+	// Structures
 	ClassDB::bind_method(D_METHOD("voxel_structure_get", "index"), &TerrainChunk::voxel_structure_get);
 	ClassDB::bind_method(D_METHOD("voxel_structure_add", "structure"), &TerrainChunk::voxel_structure_add);
 	ClassDB::bind_method(D_METHOD("voxel_structure_remove", "structure"), &TerrainChunk::voxel_structure_remove);
@@ -1507,15 +2070,57 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("voxel_structures_set"), &TerrainChunk::voxel_structures_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "23/20:TerrainStructure", PROPERTY_USAGE_DEFAULT, "TerrainStructure"), "voxel_structures_set", "voxel_structures_get");
 
-	//Meshes
+	//Scenes
+
+	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &TerrainChunk::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true));
+
+	ClassDB::bind_method(D_METHOD("scene_get", "index"), &TerrainChunk::scene_get);
+	ClassDB::bind_method(D_METHOD("scene_set", "index", "scene"), &TerrainChunk::scene_set);
+
+	ClassDB::bind_method(D_METHOD("scene_get_transform", "index"), &TerrainChunk::scene_get_transform);
+	ClassDB::bind_method(D_METHOD("scene_set_transform", "index", "transform"), &TerrainChunk::scene_set_transform);
+
+	ClassDB::bind_method(D_METHOD("scene_get_is_original", "index"), &TerrainChunk::scene_get_is_original);
+	ClassDB::bind_method(D_METHOD("scene_set_is_original", "index", "original"), &TerrainChunk::scene_set_is_original);
+
+	ClassDB::bind_method(D_METHOD("scene_get_node", "index"), &TerrainChunk::scene_get_node);
+	ClassDB::bind_method(D_METHOD("scene_set_node", "index", "node"), &TerrainChunk::scene_set_node);
+
+	ClassDB::bind_method(D_METHOD("scene_get_count"), &TerrainChunk::scene_get_count);
+	ClassDB::bind_method(D_METHOD("scene_remove", "index", "queue_free"), &TerrainChunk::scene_remove, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("scenes_clear", "queue_free"), &TerrainChunk::scenes_clear, DEFVAL(true));
+
+	ClassDB::bind_method(D_METHOD("scene_instance", "index"), &TerrainChunk::scene_instance);
+	ClassDB::bind_method(D_METHOD("scene_queue_free", "index"), &TerrainChunk::scene_queue_free);
+
+	ClassDB::bind_method(D_METHOD("scenes_get"), &TerrainChunk::scenes_get);
+	ClassDB::bind_method(D_METHOD("scenes_set"), &TerrainChunk::scenes_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scenes"), "scenes_set", "scenes_get");
+
+	//Props
 
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::bind_method(D_METHOD("prop_add", "prop"), &TerrainChunk::prop_add);
+	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "original"), &TerrainChunk::prop_add, DEFVAL(true));
+
 	ClassDB::bind_method(D_METHOD("prop_get", "index"), &TerrainChunk::prop_get);
+	ClassDB::bind_method(D_METHOD("prop_set", "index", "prop"), &TerrainChunk::prop_set);
+
+	ClassDB::bind_method(D_METHOD("prop_get_transform", "index"), &TerrainChunk::prop_get_transform);
+	ClassDB::bind_method(D_METHOD("prop_set_transform", "index", "transform"), &TerrainChunk::prop_set_transform);
+
+	ClassDB::bind_method(D_METHOD("prop_get_is_original", "index"), &TerrainChunk::prop_get_is_original);
+	ClassDB::bind_method(D_METHOD("prop_set_is_original", "index", "original"), &TerrainChunk::prop_set_is_original);
+
 	ClassDB::bind_method(D_METHOD("prop_get_count"), &TerrainChunk::prop_get_count);
 	ClassDB::bind_method(D_METHOD("prop_remove", "index"), &TerrainChunk::prop_remove);
 	ClassDB::bind_method(D_METHOD("props_clear"), &TerrainChunk::props_clear);
+
+	ClassDB::bind_method(D_METHOD("props_get"), &TerrainChunk::props_get);
+	ClassDB::bind_method(D_METHOD("props_set"), &TerrainChunk::props_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props"), "props_set", "props_get");
 #endif
+
+	//Meshes
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_addv", "local_data_pos", "mesh", "texture", "color", "apply_voxel_scale"), &TerrainChunk::mesh_data_resource_addv, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true));
@@ -1539,9 +2144,16 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_get_is_inside", "index"), &TerrainChunk::mesh_data_resource_get_is_inside);
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_set_is_inside", "index", "inside"), &TerrainChunk::mesh_data_resource_set_is_inside);
 
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_get_is_original", "index"), &TerrainChunk::mesh_data_resource_get_is_original);
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_set_is_original", "index", "original"), &TerrainChunk::mesh_data_resource_set_is_original);
+
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_get_count"), &TerrainChunk::mesh_data_resource_get_count);
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_remove", "index"), &TerrainChunk::mesh_data_resource_remove);
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_clear"), &TerrainChunk::mesh_data_resource_clear);
+
+	ClassDB::bind_method(D_METHOD("mesh_data_resources_get"), &TerrainChunk::mesh_data_resources_get);
+	ClassDB::bind_method(D_METHOD("mesh_data_resources_set"), &TerrainChunk::mesh_data_resources_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "mesh_data_resources"), "mesh_data_resources_set", "mesh_data_resources_get");
 #endif
 
 	ClassDB::bind_method(D_METHOD("collider_add", "local_transform", "shape", "shape_rid", "body"), &TerrainChunk::collider_add, DEFVAL(RID()), DEFVAL(RID()));
@@ -1565,6 +2177,10 @@ void TerrainChunk::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_build"));
 	ClassDB::bind_method(D_METHOD("build"), &TerrainChunk::build);
 	ClassDB::bind_method(D_METHOD("_build"), &TerrainChunk::_build);
+
+	BIND_VMETHOD(MethodInfo("_build_immediate"));
+	ClassDB::bind_method(D_METHOD("build_immediate"), &TerrainChunk::build_immediate);
+	ClassDB::bind_method(D_METHOD("_build_immediate"), &TerrainChunk::_build_immediate);
 
 	ClassDB::bind_method(D_METHOD("get_global_transform"), &TerrainChunk::get_global_transform);
 	ClassDB::bind_method(D_METHOD("to_local", "global"), &TerrainChunk::to_local);

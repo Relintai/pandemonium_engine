@@ -45,11 +45,15 @@ public:
 	virtual void log_message(const String &str);
 	virtual void log_warning(const String &str);
 	virtual void log_error(const String &str);
+	virtual void log_important(const String &str);
+	virtual void log_custom(const StringName &p_category, const int p_level, const String &str);
 
 	virtual void _log_trace(const String &str);
 	virtual void _log_message(const String &str);
 	virtual void _log_warning(const String &str);
 	virtual void _log_error(const String &str);
+	virtual void _log_important(const String &str);
+	virtual void _log_custom(const StringName &p_category, const int p_level, const String &str);
 
 	LoggerBackend();
 	~LoggerBackend();

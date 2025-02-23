@@ -87,6 +87,13 @@ int EditorImportPlugin::get_import_order() const {
 	return get_script_instance()->call("get_import_order");
 }
 
+bool EditorImportPlugin::use_on_initial_import() const {
+	if (!(get_script_instance() && get_script_instance()->has_method("use_on_initial_import"))) {
+		return ResourceImporter::use_on_initial_import();
+	}
+	return get_script_instance()->call("use_on_initial_import");
+}
+
 void EditorImportPlugin::get_import_options(List<ResourceImporter::ImportOption> *r_options, int p_preset) const {
 	ERR_FAIL_COND(!(get_script_instance() && get_script_instance()->has_method("get_import_options")));
 	Array needed;
@@ -162,6 +169,7 @@ void EditorImportPlugin::_bind_methods() {
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo(Variant::STRING, "get_resource_type"));
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo(Variant::REAL, "get_priority"));
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo(Variant::INT, "get_import_order"));
+	ClassDB::add_virtual_method(get_class_static(), MethodInfo(Variant::BOOL, "use_on_initial_import"));
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo(Variant::BOOL, "get_option_visibility", PropertyInfo(Variant::STRING, "option"), PropertyInfo(Variant::DICTIONARY, "options")));
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo(Variant::INT, "import", PropertyInfo(Variant::STRING, "source_file"), PropertyInfo(Variant::STRING, "save_path"), PropertyInfo(Variant::DICTIONARY, "options"), PropertyInfo(Variant::ARRAY, "platform_variants"), PropertyInfo(Variant::ARRAY, "gen_files")));
 }

@@ -54,4 +54,14 @@ protected:
 	static void _bind_methods();
 };
 
+class LocaleSetupWebServerMiddleware : public WebServerMiddleware {
+	GDCLASS(LocaleSetupWebServerMiddleware, WebServerMiddleware);
+
+public:
+	virtual bool _on_before_handle_request_main(Ref<WebServerRequest> request);
+
+protected:
+	static void _bind_methods();
+};
+
 #endif

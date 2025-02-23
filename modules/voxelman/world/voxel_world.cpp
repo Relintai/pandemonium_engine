@@ -568,18 +568,18 @@ int VoxelWorld::generation_get_size() const {
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void VoxelWorld::prop_add(Transform tarnsform, const Ref<PropData> &prop, const bool apply_voxel_scael) {
+void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scael) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	if (apply_voxel_scael) {
-		tarnsform = tarnsform.scaled(Vector3(get_voxel_scale(), get_voxel_scale(), get_voxel_scale()));
+		transform = transform.scaled(Vector3(get_voxel_scale(), get_voxel_scale(), get_voxel_scale()));
 	}
 
 	Vector3 wp;
-	wp = tarnsform.xform(wp);
+	wp = transform.xform(wp);
 	Ref<VoxelChunk> chunk = get_or_create_chunk_at_world_position(wp);
 
-	chunk->prop_add(tarnsform, prop);
+	chunk->prop_add(transform, prop);
 
 	int count = prop->get_prop_count();
 	for (int i = 0; i < count; ++i) {
@@ -589,7 +589,7 @@ void VoxelWorld::prop_add(Transform tarnsform, const Ref<PropData> &prop, const 
 			continue;
 		}
 
-		Transform t = tarnsform * entry->get_transform();
+		Transform t = transform * entry->get_transform();
 
 		wp = t.xform(Vector3());
 		chunk = get_or_create_chunk_at_world_position(wp);
