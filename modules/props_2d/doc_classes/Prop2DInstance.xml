@@ -24,7 +24,7 @@
 		</method>
 		<method name="_prop_preprocess" qualifiers="virtual">
 			<return type="void" />
-			<argument index="0" name="tarnsform" type="Transform" />
+			<argument index="0" name="transform" type="Transform" />
 			<argument index="1" name="prop_data" type="Prop2DData" />
 			<description>
 			</description>
@@ -46,7 +46,7 @@
 		</method>
 		<method name="prop_preprocess">
 			<return type="void" />
-			<argument index="0" name="tarnsform" type="Transform2D" />
+			<argument index="0" name="transform" type="Transform2D" />
 			<argument index="1" name="prop" type="Prop2DData" />
 			<description>
 			</description>

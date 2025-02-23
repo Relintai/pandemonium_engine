@@ -66,8 +66,8 @@ public:
 	virtual void _build();
 	virtual void _build_finished();
 
-	void prop_preprocess(Transform2D tarnsform, const Ref<Prop2DData> &prop);
-	virtual void _prop_preprocess(Transform2D tarnsform, const Ref<Prop2DData> &prop);
+	void prop_preprocess(Transform2D transform, const Ref<Prop2DData> &prop);
+	virtual void _prop_preprocess(Transform2D transform, const Ref<Prop2DData> &prop);
 
 	Prop2DInstance();
 	~Prop2DInstance();

@@ -714,11 +714,11 @@ void VoxelChunk::clear_baked_lights() {
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void VoxelChunk::prop_add(const Transform &tarnsform, const Ref<PropData> &prop) {
+void VoxelChunk::prop_add(const Transform &transform, const Ref<PropData> &prop) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	PropDataStore s;
-	s.transform = tarnsform;
+	s.transform = transform;
 	s.prop = prop;
 
 	_props.push_back(s);
@@ -728,7 +728,7 @@ Ref<PropData> VoxelChunk::prop_get(int index) {
 
 	return _props.get(index).prop;
 }
-Transform VoxelChunk::prop_get_tarnsform(const int index) {
+Transform VoxelChunk::prop_get_transform(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Transform());
 
 	return _props.get(index).transform;

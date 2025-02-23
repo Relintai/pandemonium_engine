@@ -295,11 +295,11 @@ void Prop2DInstance::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_mask", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_mask", "get_collision_mask");
 
 	BIND_VMETHOD(MethodInfo("_prop_preprocess",
-			PropertyInfo(Variant::TRANSFORM, "tarnsform"),
+			PropertyInfo(Variant::TRANSFORM, "transform"),
 			PropertyInfo(Variant::OBJECT, "prop_data", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DData")));
 
-	ClassDB::bind_method(D_METHOD("prop_preprocess", "tarnsform", "prop"), &Prop2DInstance::prop_preprocess);
-	ClassDB::bind_method(D_METHOD("_prop_preprocess", "tarnsform", "prop"), &Prop2DInstance::_prop_preprocess);
+	ClassDB::bind_method(D_METHOD("prop_preprocess", "transform", "prop"), &Prop2DInstance::prop_preprocess);
+	ClassDB::bind_method(D_METHOD("_prop_preprocess", "transform", "prop"), &Prop2DInstance::_prop_preprocess);
 
 	//---
 	BIND_VMETHOD(MethodInfo("_init_materials"));

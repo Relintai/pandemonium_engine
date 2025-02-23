@@ -152,8 +152,24 @@ bool UserManagerFile::_is_email_taken(const String &email) {
 	return false;
 }
 
-Vector<Ref<User>> UserManagerFile::get_all() {
+Vector<Ref<User>> UserManagerFile::get_all_as_vector() {
 	return _users;
+}
+
+Array UserManagerFile::_get_all_users() {
+	Array ret;
+
+	_rw_lock.read_lock();
+
+	ret.resize(_users.size());
+
+	for (int i = 0; i < _users.size(); ++i) {
+		ret[i] = Variant(_users[i].get_ref_ptr());
+	}
+
+	_rw_lock.read_unlock();
+
+	return ret;
 }
 
 UserManagerFile::UserManagerFile() {

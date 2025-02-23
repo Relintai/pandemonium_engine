@@ -113,34 +113,12 @@ void TerrainTerrainJob::phase_library_setup() {
 	}
 
 	if (lib->supports_caching()) {
-		if (!_chunk->material_cache_key_has()) {
+		if (!_chunk->material_cache_key_has() || _chunk->material_cache_key_invalid_get()) {
 			lib->material_cache_get_key(_chunk);
-		} else {
-			Ref<TerrainMaterialCache> cache = lib->material_cache_get(_chunk->material_cache_key_get());
-
-			if (cache.is_valid()) {
-				//Note: without threadpool and threading none of this can happen, as cache will get initialized the first time a thread requests it!
-				while (!cache->get_initialized()) {
-					//Means it's currently merging the atlases on a different thread.
-					//Let's just wait
-					OS::get_singleton()->delay_usec(100);
-				}
-			}
 		}
 
-		if (!_chunk->liquid_material_cache_key_has()) {
+		if (!_chunk->liquid_material_cache_key_has() || _chunk->liquid_material_cache_key_invalid_get()) {
 			lib->liquid_material_cache_get_key(_chunk);
-		} else {
-			Ref<TerrainMaterialCache> cache = lib->liquid_material_cache_get(_chunk->liquid_material_cache_key_get());
-
-			if (cache.is_valid()) {
-				//Note: without threadpool and threading none of this can happen, as cache will get initialized the first time a thread requests it!
-				while (!cache->get_initialized()) {
-					//Means it's currently merging the atlases on a different thread.
-					//Let's just wait
-					OS::get_singleton()->delay_usec(100);
-				}
-			}
 		}
 	}
 
@@ -329,18 +307,8 @@ void TerrainTerrainJob::phase_terrain_mesh() {
 			}
 
 			//allocate
-			if (count > 0)
+			if (count > 0) {
 				chunk->meshes_create(TerrainChunkDefault::MESH_INDEX_TERRAIN, count);
-
-		} else {
-			//we have the meshes, just clear
-			int count = chunk->mesh_rid_get_count(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH);
-
-			for (int i = 0; i < count; ++i) {
-				mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, i);
-
-				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-					RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
 			}
 		}
 	}
@@ -399,12 +367,13 @@ void TerrainTerrainJob::phase_terrain_mesh() {
 				mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_LIQUID, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, 0);
 			}
 
-			if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-				RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-
 			if (should_return()) {
 				return;
 			}
+		}
+
+		if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+			RS::get_singleton()->mesh_clear(mesh_rid);
 		}
 
 		RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
@@ -470,6 +439,7 @@ void TerrainTerrainJob::_reset() {
 	ERR_FAIL_COND(!_mesher.is_valid());
 
 	_mesher->set_voxel_scale(_chunk->get_voxel_scale());
+	_mesher->set_lod_index(0);
 
 	Ref<TerrainChunkDefault> chunk = _chunk;
 	Ref<TerrainMesherDefault> md = _mesher;
@@ -490,8 +460,9 @@ void TerrainTerrainJob::_reset() {
 }
 
 void TerrainTerrainJob::_physics_process(float delta) {
-	if (_phase == 4)
+	if (_phase == 4) {
 		phase_physics_process();
+	}
 }
 
 void TerrainTerrainJob::step_type_normal() {
@@ -505,6 +476,10 @@ void TerrainTerrainJob::step_type_normal() {
 	temp_mesh_arr = _mesher->build_mesh();
 
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
+
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
 
 	RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
@@ -543,6 +518,10 @@ void TerrainTerrainJob::step_type_normal_lod() {
 
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
+
 	RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
@@ -567,6 +546,10 @@ void TerrainTerrainJob::step_type_drop_uv2() {
 
 	temp_mesh_arr[RenderingServer::ARRAY_TEX_UV2] = Variant();
 
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
+
 	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
@@ -590,6 +573,10 @@ void TerrainTerrainJob::step_type_merge_verts() {
 
 	Ref<TerrainChunkDefault> chunk = _chunk;
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
+
+	if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+		RS::get_singleton()->mesh_clear(mesh_rid);
+	}
 
 	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
@@ -635,6 +622,10 @@ void TerrainTerrainJob::step_type_bake_texture() {
 
 		RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
+		if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+			RS::get_singleton()->mesh_clear(mesh_rid);
+		}
+
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 		if (lmat.is_valid()) {
@@ -661,6 +652,10 @@ void TerrainTerrainJob::step_type_simplify_mesh() {
 		temp_mesh_arr = fqms->get_arrays();
 
 		RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
+
+		if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+			RS::get_singleton()->mesh_clear(mesh_rid);
+		}
 
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 

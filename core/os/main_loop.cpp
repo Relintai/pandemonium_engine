@@ -65,6 +65,7 @@ void MainLoop::_bind_methods() {
 	BIND_CONSTANT(NOTIFICATION_OS_IME_UPDATE);
 	BIND_CONSTANT(NOTIFICATION_APP_RESUMED);
 	BIND_CONSTANT(NOTIFICATION_APP_PAUSED);
+	BIND_CONSTANT(NOTIFICATION_QUITTING);
 
 	ADD_SIGNAL(MethodInfo("on_request_permissions_result", PropertyInfo(Variant::STRING, "permission"), PropertyInfo(Variant::BOOL, "granted")));
 };

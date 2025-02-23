@@ -235,9 +235,9 @@ public:
 	void clear_baked_lights();
 
 #ifdef MODULE_PROPS_ENABLED
-	void prop_add(const Transform &tarnsform, const Ref<PropData> &prop);
+	void prop_add(const Transform &transform, const Ref<PropData> &prop);
 	Ref<PropData> prop_get(const int index);
-	Transform prop_get_tarnsform(const int index);
+	Transform prop_get_transform(const int index);
 	int prop_get_count() const;
 	void prop_remove(const int index);
 	void props_clear();

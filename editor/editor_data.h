@@ -242,6 +242,7 @@ public:
 	Dictionary restore_edited_scene_state(EditorSelection *p_selection, EditorHistory *p_history);
 	void notify_edited_scene_changed();
 	void notify_resource_saved(const Ref<Resource> &p_resource);
+	void notify_scene_saved(const String &p_path);
 
 	bool class_equals_or_inherits(const StringName &p_class, const StringName &p_inherits) const;
 	bool script_class_is_parent(const StringName &p_class, const StringName &p_inherits) const;

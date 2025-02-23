@@ -66,7 +66,10 @@ public:
 	virtual bool _is_username_taken(const String &user_name);
 	virtual bool _is_email_taken(const String &email);
 
-	virtual Vector<Ref<User>> get_all();
+	virtual Vector<Ref<User>> get_all_as_vector();
+
+	Array get_all_users();
+	virtual Array _get_all_users();
 
 	UserManager();
 	~UserManager();

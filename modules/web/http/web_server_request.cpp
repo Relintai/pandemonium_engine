@@ -32,6 +32,7 @@
 #include "web_server_request.h"
 
 #include "core/object/object.h"
+#include "core/string/translation.h"
 #include "core/variant/variant.h"
 #include "web_server.h"
 #include "web_server_cookie.h"
@@ -171,6 +172,35 @@ bool WebServerRequest::validate_csrf_token() {
 	}
 
 	return param_token == token;
+}
+
+bool WebServerRequest::has_locale() const {
+	return _locale != StringName();
+}
+StringName WebServerRequest::get_locale() const {
+	if (_locale == StringName()) {
+		return OS::get_singleton()->get_locale();
+	}
+
+	return _locale;
+}
+void WebServerRequest::set_locale(const StringName &p_locale) {
+	_locale = p_locale;
+}
+
+void WebServerRequest::save_locale_as_cookie() {
+	Ref<WebServerCookie> cookie;
+	cookie.instance();
+
+	cookie->set_data("locale", _locale);
+
+	response_add_cookie(cookie);
+}
+void WebServerRequest::load_locale_from_cookie() {
+	_locale = get_cookie("locale");
+}
+void WebServerRequest::clear_locale_from_cookie() {
+	response_remove_cookie_simple("locale");
 }
 
 String WebServerRequest::get_cookie(const String &key) {
@@ -630,6 +660,14 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_csrf_token"), &WebServerRequest::get_csrf_token);
 	ClassDB::bind_method(D_METHOD("set_csrf_token", "value"), &WebServerRequest::set_csrf_token);
 	ClassDB::bind_method(D_METHOD("validate_csrf_token"), &WebServerRequest::validate_csrf_token);
+
+	ClassDB::bind_method(D_METHOD("has_locale"), &WebServerRequest::has_locale);
+	ClassDB::bind_method(D_METHOD("get_locale"), &WebServerRequest::get_locale);
+	ClassDB::bind_method(D_METHOD("set_locale", "locale"), &WebServerRequest::set_locale);
+
+	ClassDB::bind_method(D_METHOD("save_locale_as_cookie"), &WebServerRequest::save_locale_as_cookie);
+	ClassDB::bind_method(D_METHOD("load_locale_from_cookie"), &WebServerRequest::load_locale_from_cookie);
+	ClassDB::bind_method(D_METHOD("clear_locale_from_cookie"), &WebServerRequest::clear_locale_from_cookie);
 
 	ClassDB::bind_method(D_METHOD("get_cookie", "key"), &WebServerRequest::get_cookie);
 

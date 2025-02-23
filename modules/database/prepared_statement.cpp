@@ -40,7 +40,57 @@ void PreparedStatement::set_sql(const String &p_sql) {
 	_sql = p_sql;
 }
 
+int PreparedStatement::get_current_column_index() const {
+	return _current_column_index;
+}
+void PreparedStatement::set_current_column_index(const int p_index) {
+	_current_column_index = p_index;
+}
+
+String PreparedStatement::next_column_name() {
+	return column_name(_current_column_index++);
+}
+String PreparedStatement::next_column_decltype() {
+	return column_decltype(_current_column_index++);
+}
+PreparedStatement::Type PreparedStatement::next_column_type() {
+	return column_type(_current_column_index++);
+}
+
+String PreparedStatement::next_column_database_name() {
+	return column_database_name(_current_column_index++);
+}
+String PreparedStatement::next_column_table_name() {
+	return column_table_name(_current_column_index++);
+}
+String PreparedStatement::next_column_origin_name() {
+	return column_origin_name(_current_column_index++);
+}
+
+Vector<uint8_t> PreparedStatement::next_column_blob() {
+	return column_blob(_current_column_index++);
+}
+float PreparedStatement::next_column_float() {
+	return column_float(_current_column_index++);
+}
+double PreparedStatement::next_column_double() {
+	return column_double(_current_column_index++);
+}
+int64_t PreparedStatement::next_column_int() {
+	return column_int(_current_column_index++);
+}
+int PreparedStatement::next_column_int64() {
+	return column_int64(_current_column_index++);
+}
+String PreparedStatement::next_column_text() {
+	return column_text(_current_column_index++);
+}
+Variant PreparedStatement::next_column_value() {
+	return column_value(_current_column_index++);
+}
+
 PreparedStatement::PreparedStatement() {
+	_current_column_index = 0;
 }
 
 PreparedStatement::~PreparedStatement() {
@@ -92,6 +142,29 @@ void PreparedStatement::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("column_value", "index"), &PreparedStatement::column_value);
 
 	ClassDB::bind_method(D_METHOD("column_count"), &PreparedStatement::column_count);
+
+	ClassDB::bind_method(D_METHOD("get_last_insert_rowid"), &PreparedStatement::get_last_insert_rowid);
+
+
+	ClassDB::bind_method(D_METHOD("get_current_column_index"), &PreparedStatement::get_current_column_index);
+	ClassDB::bind_method(D_METHOD("set_current_column_index", "index"), &PreparedStatement::set_current_column_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_column_index"), "set_current_column_index", "get_current_column_index");
+
+	ClassDB::bind_method(D_METHOD("next_column_name"), &PreparedStatement::next_column_name);
+	ClassDB::bind_method(D_METHOD("next_column_decltype"), &PreparedStatement::next_column_decltype);
+	ClassDB::bind_method(D_METHOD("next_column_type"), &PreparedStatement::next_column_type);
+
+	ClassDB::bind_method(D_METHOD("next_column_database_name"), &PreparedStatement::next_column_database_name);
+	ClassDB::bind_method(D_METHOD("next_column_table_name"), &PreparedStatement::next_column_table_name);
+	ClassDB::bind_method(D_METHOD("next_column_origin_name"), &PreparedStatement::next_column_origin_name);
+
+	ClassDB::bind_method(D_METHOD("next_column_blob"), &PreparedStatement::next_column_blob);
+	ClassDB::bind_method(D_METHOD("next_column_float"), &PreparedStatement::next_column_float);
+	ClassDB::bind_method(D_METHOD("next_column_double"), &PreparedStatement::next_column_double);
+	ClassDB::bind_method(D_METHOD("next_column_int"), &PreparedStatement::next_column_int);
+	ClassDB::bind_method(D_METHOD("next_column_int64"), &PreparedStatement::next_column_int64);
+	ClassDB::bind_method(D_METHOD("next_column_text"), &PreparedStatement::next_column_text);
+	ClassDB::bind_method(D_METHOD("next_column_value"), &PreparedStatement::next_column_value);
 
 	// Control
 

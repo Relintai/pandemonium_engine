@@ -836,6 +836,7 @@ def detect_visual_c_compiler_version(tools_env):
 
 
 def find_visual_c_batch_file(env):
+    # TODO: We should investigate if we can avoid relying on SCons internals here.
     from SCons.Tool.MSCommon.vc import get_default_version, get_host_target, find_batch_file, find_vc_pdir
 
     # Syntax changed in SCons 4.4.0.
@@ -853,10 +854,11 @@ def find_visual_c_batch_file(env):
     if scons_ver < (4, 6, 0):
         return find_batch_file(env, msvc_version, host_platform, target_platform)[0]
 
-    # Scons 4.6.0+ removed passing env, so we need to get the product_dir ourselves first,
+    # SCons 4.6.0+ removed passing env, so we need to get the product_dir ourselves first,
     # then pass that as the last param instead of env as the first param as before.
-    # We should investigate if we can avoid relying on SCons internals here.
-    product_dir = find_vc_pdir(env, msvc_version)
+    # Param names need to be explicit, as they were shuffled around in SCons 4.8.0.
+    product_dir = find_vc_pdir(msvc_version=msvc_version, env=env)
+
     return find_batch_file(msvc_version, host_platform, target_platform, product_dir)[0]
 
 
@@ -1171,21 +1173,19 @@ def show_progress(env):
         "fname": str(env.Dir("#")) + "/.scons_node_count",
     }
 
-    import time, math
+    import math
 
     class cache_progress:
-        # The default is 1 GB cache and 12 hours half life
-        def __init__(self, path=None, limit=1073741824, half_life=43200):
+        # The default is 1 GB cache
+        def __init__(self, path=None, limit=pow(1024, 3)):
             self.path = path
             self.limit = limit
-            self.exponent_scale = math.log(2) / half_life
             if env["verbose"] and path != None:
                 screen.write(
                     "Current cache limit is {} (used: {})\n".format(
                         self.convert_size(limit), self.convert_size(self.get_size(path))
                     )
                 )
-            self.delete(self.file_list())
 
         def __call__(self, node, *args, **kw):
             if show_progress:
@@ -1203,12 +1203,65 @@ def show_progress(env):
                     screen.write("\r[Initial build] ")
                     screen.flush()
 
+        def convert_size(self, size_bytes):
+            if size_bytes == 0:
+                return "0 bytes"
+            size_name = ("bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+            i = int(math.floor(math.log(size_bytes, 1024)))
+            p = math.pow(1024, i)
+            s = round(size_bytes / p, 2)
+            return "%s %s" % (int(s) if i == 0 else s, size_name[i])
+
+        def get_size(self, start_path="."):
+            total_size = 0
+            for dirpath, dirnames, filenames in os.walk(start_path):
+                for f in filenames:
+                    fp = os.path.join(dirpath, f)
+                    total_size += os.path.getsize(fp)
+            return total_size
+
+    def progress_finish(target, source, env):
+        try:
+            with open(node_count_data["fname"], "w") as f:
+                f.write("%d\n" % node_count_data["count"])
+        except Exception:
+            pass
+
+    try:
+        with open(node_count_data["fname"]) as f:
+            node_count_data["max"] = int(f.readline())
+    except Exception:
+        pass
+
+    cache_directory = os.environ.get("SCONS_CACHE")
+    # Simple cache pruning, attached to SCons' progress callback. Trim the
+    # cache directory to a size not larger than cache_limit.
+    cache_limit = float(os.getenv("SCONS_CACHE_LIMIT", 1024)) * 1024 * 1024
+    progressor = cache_progress(cache_directory, cache_limit)
+    Progress(progressor, interval=node_count_data["interval"])
+
+    progress_finish_command = Command("progress_finish", [], progress_finish)
+    AlwaysBuild(progress_finish_command)
+
+
+def clean_cache(env):
+    import atexit
+    import time
+
+    class cache_clean:
+        def __init__(self, path=None, limit=pow(1024, 3)):
+            self.path = path
+            self.limit = limit
+
+        def clean(self):
+            self.delete(self.file_list())
+
         def delete(self, files):
             if len(files) == 0:
                 return
             if env["verbose"]:
                 # Utter something
-                screen.write("\rPurging %d %s from cache...\n" % (len(files), len(files) > 1 and "files" or "file"))
+                print("Purging %d %s from cache..." % (len(files), "files" if len(files) > 1 else "file"))
             [os.remove(f) for f in files]
 
         def file_list(self):
@@ -1242,46 +1295,20 @@ def show_progress(env):
             else:
                 return [x[0] for x in file_stat[mark:]]
 
-        def convert_size(self, size_bytes):
-            if size_bytes == 0:
-                return "0 bytes"
-            size_name = ("bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-            i = int(math.floor(math.log(size_bytes, 1024)))
-            p = math.pow(1024, i)
-            s = round(size_bytes / p, 2)
-            return "%s %s" % (int(s) if i == 0 else s, size_name[i])
-
-        def get_size(self, start_path="."):
-            total_size = 0
-            for dirpath, dirnames, filenames in os.walk(start_path):
-                for f in filenames:
-                    fp = os.path.join(dirpath, f)
-                    total_size += os.path.getsize(fp)
-            return total_size
-
-    def progress_finish(target, source, env):
+    def cache_finally():
+        nonlocal cleaner
         try:
-            with open(node_count_data["fname"], "w") as f:
-                f.write("%d\n" % node_count_data["count"])
-            progressor.delete(progressor.file_list())
+            cleaner.clean()
         except Exception:
             pass
-
-    try:
-        with open(node_count_data["fname"]) as f:
-            node_count_data["max"] = int(f.readline())
-    except Exception:
-        pass
 
     cache_directory = os.environ.get("SCONS_CACHE")
     # Simple cache pruning, attached to SCons' progress callback. Trim the
     # cache directory to a size not larger than cache_limit.
     cache_limit = float(os.getenv("SCONS_CACHE_LIMIT", 1024)) * 1024 * 1024
-    progressor = cache_progress(cache_directory, cache_limit)
-    Progress(progressor, interval=node_count_data["interval"])
+    cleaner = cache_clean(cache_directory, cache_limit)
 
-    progress_finish_command = Command("progress_finish", [], progress_finish)
-    AlwaysBuild(progress_finish_command)
+    atexit.register(cache_finally)
 
 
 def dump(env):

@@ -44,8 +44,10 @@ void TerrainChunkBlocky::_setup_channels() {
 }
 
 void TerrainChunkBlocky::_bind_methods() {
-	ADD_PROPERTYI(PropertyInfo(Variant::POOL_BYTE_ARRAY, "data_channel"), "channel_set_compressed", "channel_get_compressed", 0);
-	ADD_PROPERTYI(PropertyInfo(Variant::POOL_BYTE_ARRAY, "isolevel_channel"), "channel_set_compressed", "channel_get_compressed", 1);
+	ADD_PROPERTYI(PropertyInfo(Variant::POOL_BYTE_ARRAY, "data_channel"), "channel_set_compressed", "channel_get_compressed", DEFAULT_CHANNEL_TYPE);
+	ADD_PROPERTYI(PropertyInfo(Variant::POOL_BYTE_ARRAY, "isolevel_channel"), "channel_set_compressed", "channel_get_compressed", DEFAULT_CHANNEL_ISOLEVEL);
+	ADD_PROPERTYI(PropertyInfo(Variant::POOL_BYTE_ARRAY, "liquid_data_channel"), "channel_set_compressed", "channel_get_compressed", DEFAULT_CHANNEL_LIQUID_TYPE);
+	ADD_PROPERTYI(PropertyInfo(Variant::POOL_BYTE_ARRAY, "liquid_isolevel_channel"), "channel_set_compressed", "channel_get_compressed", DEFAULT_CHANNEL_LIQUID_ISOLEVEL);
 
 	//ClassDB::bind_method(D_METHOD("get_channel_compressed", "channel_index"), &TerrainChunk::get_channel_compressed);
 	//ClassDB::bind_method(D_METHOD("set_channel_compressed", "channel_index", "array"), &TerrainChunk::set_channel_compressed);

@@ -125,7 +125,7 @@
 		<method name="look_at">
 			<return type="void" />
 			<argument index="0" name="target" type="Vector3" />
-			<argument index="1" name="up" type="Vector3" default="Vector3(0, 1, 0)" />
+			<argument index="1" name="up" type="Vector3" default="Vector3( 0, 1, 0 )" />
 			<argument index="2" name="use_model_front" type="bool" default="false" />
 			<description>
 				Rotates the node so that the local forward axis (-Z, [constant Vector3.FORWARD]) points toward the [code]target[/code] position. If the [param use_model_front] options is specified, then the model is oriented in reverse, towards the model front axis (+Z, [constant Vector3.MODEL_FRONT]), which is more useful for orienting 3D models.
@@ -138,7 +138,7 @@
 			<return type="void" />
 			<argument index="0" name="position" type="Vector3" />
 			<argument index="1" name="target" type="Vector3" />
-			<argument index="2" name="up" type="Vector3" default="Vector3(0, 1, 0)" />
+			<argument index="2" name="up" type="Vector3" default="Vector3( 0, 1, 0 )" />
 			<argument index="3" name="use_model_front" type="bool" default="false" />
 			<description>
 				Moves the node to the specified [code]position[/code], and then rotates itself to point toward the [code]target[/code] as per [method look_at]. Operations take place in global space.

@@ -7,7 +7,21 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="_log_custom" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="category" type="StringName" />
+			<argument index="1" name="level" type="int" />
+			<argument index="2" name="str" type="String" />
+			<description>
+			</description>
+		</method>
 		<method name="_log_error" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_log_important" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="str" type="String" />
 			<description>
@@ -31,7 +45,21 @@
 			<description>
 			</description>
 		</method>
+		<method name="log_custom">
+			<return type="void" />
+			<argument index="0" name="category" type="StringName" />
+			<argument index="1" name="level" type="int" />
+			<argument index="2" name="str" type="String" />
+			<description>
+			</description>
+		</method>
 		<method name="log_error">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="log_important">
 			<return type="void" />
 			<argument index="0" name="str" type="String" />
 			<description>

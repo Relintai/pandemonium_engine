@@ -158,6 +158,26 @@ bool UserDB::is_email_taken(const String &email) {
 	return false;
 }
 
+Array UserDB::get_all_users() {
+	if (_user_manager) {
+		return _user_manager->get_all_users();
+	}
+
+	Array ret;
+
+	_lock.read_lock();
+
+	ret.resize(_users.size());
+
+	for (int i = 0; i < _users.size(); ++i) {
+		ret[i] = Variant(_users[i].get_ref_ptr());
+	}
+
+	_lock.read_unlock();
+
+	return ret;
+}
+
 UserManager *UserDB::get_user_manager() {
 	return _user_manager;
 }
@@ -192,6 +212,8 @@ void UserDB::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("is_username_taken", "user_name"), &UserDB::is_username_taken);
 	ClassDB::bind_method(D_METHOD("is_email_taken", "email"), &UserDB::is_email_taken);
+
+	ClassDB::bind_method(D_METHOD("get_all_users"), &UserDB::get_all_users);
 
 	ClassDB::bind_method(D_METHOD("get_user_manager"), &UserDB::get_user_manager_bind);
 }

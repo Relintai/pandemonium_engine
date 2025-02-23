@@ -100,6 +100,27 @@ public:
 
 	virtual int column_count() = 0;
 
+	virtual int get_last_insert_rowid() = 0;
+
+	int get_current_column_index() const;
+	void set_current_column_index(const int p_index);
+
+	String next_column_name();
+	String next_column_decltype();
+	Type next_column_type();
+
+	String next_column_database_name();
+	String next_column_table_name();
+	String next_column_origin_name();
+
+	Vector<uint8_t> next_column_blob();
+	float next_column_float();
+	double next_column_double();
+	int64_t next_column_int();
+	int next_column_int64();
+	String next_column_text();
+	Variant next_column_value();
+
 	// Control
 	virtual Error prepare() = 0;
 	virtual Error step() = 0;
@@ -116,6 +137,7 @@ protected:
 	static void _bind_methods();
 
 	String _sql;
+	int _current_column_index;
 };
 
 VARIANT_ENUM_CAST(PreparedStatement::Type);

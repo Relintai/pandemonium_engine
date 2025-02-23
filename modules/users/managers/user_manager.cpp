@@ -82,8 +82,26 @@ bool UserManager::_is_email_taken(const String &email) {
 	return false;
 }
 
-Vector<Ref<User>> UserManager::get_all() {
-	return Vector<Ref<User>>();
+Vector<Ref<User>> UserManager::get_all_as_vector() {
+	Vector<Ref<User>> ret;
+
+	Array res = call("_get_all");
+
+	ret.resize(res.size());
+
+	for (int i = 0; i < res.size(); ++i) {
+		ret.write[i] = Ref<User>(res.get(i));
+	}
+
+	return ret;
+}
+
+Array UserManager::get_all_users() {
+	return call("_get_all_users");
+}
+
+Array UserManager::_get_all_users() {
+	return Array();
 }
 
 UserManager::UserManager() {
@@ -110,6 +128,7 @@ void UserManager::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_is_username_taken", PropertyInfo(Variant::STRING, "user_name")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_is_email_taken", PropertyInfo(Variant::STRING, "email")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::ARRAY, "ret"), "_get_all_users"));
 
 	ClassDB::bind_method(D_METHOD("get_user", "id"), &UserManager::get_user);
 	ClassDB::bind_method(D_METHOD("get_user_name", "user_name"), &UserManager::get_user_name);
@@ -131,4 +150,7 @@ void UserManager::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_is_username_taken", "user_name"), &UserManager::_is_username_taken);
 	ClassDB::bind_method(D_METHOD("_is_email_taken", "email"), &UserManager::_is_email_taken);
+
+	ClassDB::bind_method(D_METHOD("get_all_users"), &UserManager::get_all_users);
+	ClassDB::bind_method(D_METHOD("_get_all_users"), &UserManager::_get_all_users);
 }

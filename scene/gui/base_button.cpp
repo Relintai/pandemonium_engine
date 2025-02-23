@@ -213,12 +213,16 @@ bool BaseButton::is_disabled() const {
 }
 
 void BaseButton::set_pressed(bool p_pressed) {
-	bool prev_pressed = status.pressed;
-	set_pressed_no_signal(p_pressed);
-
-	if (status.pressed == prev_pressed) {
+	if (!toggle_mode) {
 		return;
 	}
+
+	if (status.pressed == p_pressed) {
+		return;
+	}
+
+	status.pressed = p_pressed;
+
 	_change_notify("pressed");
 
 	if (p_pressed) {

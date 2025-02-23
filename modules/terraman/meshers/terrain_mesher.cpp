@@ -290,8 +290,9 @@ void TerrainMesher::build_mesh_into(RID mesh) {
 
 	RS::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 
-	if (_material.is_valid())
+	if (_material.is_valid()) {
 		RS::get_singleton()->mesh_surface_set_material(mesh, 0, _library->material_lod_get(0)->get_rid());
+	}
 }
 
 void TerrainMesher::generate_normals(bool p_flip) {
@@ -625,7 +626,8 @@ void TerrainMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &l
 		for (int i = 0; i < lights.size(); ++i) {
 			Ref<TerrainLight> light = lights.get(i);
 
-			Vector3 lightDir = light->get_world_position() - vertex;
+			Vector3 light_world_position = light->get_world_data_position();
+			Vector3 lightDir = light_world_position - vertex;
 
 			float dist2 = lightDir.dot(lightDir);
 			//inverse sqrt

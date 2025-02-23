@@ -95,7 +95,7 @@ public:
 	virtual void _build();
 	virtual void _build_finished();
 
-	void _prop_preprocess(Transform2D tarnsform, const Ref<Prop2DData> &prop);
+	void _prop_preprocess(Transform2D transform, const Ref<Prop2DData> &prop);
 
 	void collision_layer_changed();
 	void collision_mask_changed();

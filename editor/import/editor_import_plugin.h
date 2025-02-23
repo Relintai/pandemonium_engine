@@ -51,6 +51,7 @@ public:
 	virtual String get_resource_type() const;
 	virtual float get_priority() const;
 	virtual int get_import_order() const;
+	virtual bool use_on_initial_import() const;
 	virtual void get_import_options(List<ImportOption> *r_options, int p_preset) const;
 	virtual bool get_option_visibility(const String &p_option, const RBMap<StringName, Variant> &p_options) const;
 	virtual Error import(const String &p_source_file, const String &p_save_path, const RBMap<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata = nullptr);
