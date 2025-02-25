@@ -108,8 +108,6 @@ GLuint RasterizerStorageGLES2::system_fbo = 0;
 
 #elif defined(ANDROID_ENABLED) || defined(HORIZON_ENABLED)
 
-#include <dlfcn.h> // needed to load extensions
-
 #include <GLES2/gl2ext.h>
 PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC glRenderbufferStorageMultisampleEXT;
 PFNGLFRAMEBUFFERTEXTURE2DMULTISAMPLEEXTPROC glFramebufferTexture2DMultisampleEXT;
