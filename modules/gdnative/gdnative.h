@@ -1,6 +1,3 @@
-#ifndef GDNATIVE_H
-#define GDNATIVE_H
-
 /*************************************************************************/
 /*  gdnative.h                                                           */
 /*************************************************************************/
@@ -31,6 +28,9 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
+
+#ifndef GDNATIVE_H
+#define GDNATIVE_H
 
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"

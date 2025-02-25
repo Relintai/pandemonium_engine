@@ -1,6 +1,3 @@
-#ifndef GDNATIVE_GDNATIVE_H
-#define GDNATIVE_GDNATIVE_H
-
 /*************************************************************************/
 /*  gdnative.h                                                           */
 /*************************************************************************/
@@ -32,11 +29,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#ifndef GDNATIVE_GDNATIVE_H
+#define GDNATIVE_GDNATIVE_H
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if defined(_WIN32) || defined(__ANDROID__) || defined(GDNATIVE_LINUX_BSD_WEB)
+#if defined(_WIN32) || defined(__ANDROID__) || defined(GDNATIVE_LINUX_BSD_WEB) || defined(__SWITCH__)
 #define GDCALLINGCONV
 #elif defined(__APPLE__)
 #include "TargetConditionals.h"
@@ -45,7 +45,7 @@ extern "C" {
 #elif TARGET_OS_MAC
 #define GDCALLINGCONV __attribute__((sysv_abi))
 #endif
-#else // Linux/BSD/Web
+#else // !_WIN32 && !__APPLE__ && !__SWITCH__
 #if defined(__aarch64__) || defined(__arm__) || defined(__riscv)
 #define GDCALLINGCONV
 #else
