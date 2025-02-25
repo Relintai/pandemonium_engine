@@ -1,44 +1,48 @@
-name: 🎮 Switch Builds
-on: [push, pull_request]
+name: 🔄 Switch Builds
+on:
+  workflow_call:
 
-# Global Settings
+# Global Cache Settings
 env:
-  GODOT_BASE_BRANCH: 3.x
-  SCONSFLAGS: verbose=no warnings=no werror=no debug_symbols=no use_rtti=True disable_gles3=False
-
-concurrency:
-  group: ci-${{github.actor}}-${{github.head_ref || github.run_number}}-${{github.ref}}-switch
-  cancel-in-progress: true
+  GODOT_BASE_BRANCH: 3.5
+  SCONS_CACHE_LIMIT: 4096
 
 jobs:
   switch-template:
     runs-on: ubuntu-latest
     container: devkitpro/devkita64
+
     name: Template (target=release, tools=no)
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Restore Godot build cache
-        uses: ./.github/actions/godot-cache-restore
-        continue-on-error: true
+      # Upload cache on completion and check it out now
+      - name: Load .scons_cache directory
+        id: switch-template-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{github.workspace}}/.scons_cache/
+          key: ${{github.job}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
+          restore-keys: |
+            ${{github.job}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
+            ${{github.job}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}
+            ${{github.job}}-${{env.GODOT_BASE_BRANCH}}
 
-      - name: Setup python and scons
-        uses: ./.github/actions/godot-deps
+      - name: Install scons from pip
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install python3-pip
+          sudo python3 -m pip install scons
 
       - name: Compilation
-        uses: ./.github/actions/godot-build
-        with:
-          sconsflags: ${{ env.SCONSFLAGS }}
-          platform: switch
-          target: release
-          tools: false
+        env:
+          SCONS_CACHE: ${{github.workspace}}/.scons_cache/
+        run: |
+          scons -j2 verbose=yes warnings=all werror=no platform=switch target=release tools=no
 
-      - name: Save Godot build cache
-        uses: ./.github/actions/godot-cache-save
+      - uses: actions/upload-artifact@v2
         with:
-          cache-name: ${{ matrix.cache-name }}
-        continue-on-error: true
-
-      - name: Upload artifact
-        uses: ./.github/actions/upload-artifact
+          name: ${{ github.job }}
+          path: bin/*
+          retention-days: 14
