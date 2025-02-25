@@ -282,22 +282,18 @@ _FORCE_INLINE_ Error NetSocketPosix::_change_multicast_group(IP_Address p_ip, St
 		memcpy(&greq.imr_multiaddr, p_ip.get_ipv4(), 4);
 		memcpy(&greq.imr_interface, if_ip.get_ipv4(), 4);
 		ret = setsockopt(_sock, level, sock_opt, (const char *)&greq, sizeof(greq));
-	} else {
-		#if defined(VITA_ENABLED)
-		struct ipv6_mreq greq;
-		int sock_opt = p_add ? IPV6_ADD_MEMBERSHIP : IPV6_DROP_MEMBERSHIP;
-		memcpy(&greq.ipv6mr_multiaddr, p_ip.get_ipv6(), 16);
-		greq.ipv6mr_interface = if_v6id;
-		ret = setsockopt(_sock, level, sock_opt, (const char *)&greq, sizeof(greq));
 	
-	#elif defined(HORIZON_ENABLED)
-		struct ipv6_mreq greq;
-		int sock_opt = p_add ? IPV6_ADD_MEMBERSHIP : IPV6_DROP_MEMBERSHIP;
-		memcpy(&greq.ipv6mr_multiaddr, p_ip.get_ipv6(), 16);
-		greq.ipv6mr_interface = if_v6id;
-		ret = setsockopt(_sock, level, sock_opt, (const char *)&greq, sizeof(greq));
-	#endif
-	}
+	} else {
+		#ifndef VITA_ENABLED
+		#ifndef HORIZON_ENABLED
+			struct ipv6_mreq greq;
+			int sock_opt = p_add ? IPV6_ADD_MEMBERSHIP : IPV6_DROP_MEMBERSHIP;
+			memcpy(&greq.ipv6mr_multiaddr, p_ip.get_ipv6(), 16);
+			greq.ipv6mr_interface = if_v6id;
+			ret = setsockopt(_sock, level, sock_opt, (const char *)&greq, sizeof(greq));
+		#endif
+		#endif
+	}	
 	ERR_FAIL_COND_V(ret != 0, FAILED);
 
 	return OK;
