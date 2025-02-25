@@ -442,14 +442,13 @@ String DirAccessUnix::read_link(String p_file) {
 		link.parse_utf8(buf, len);
 	}
 	return link;
-#endif // !HORIZON_ENABLED
+#endif
 }
 
 Error DirAccessUnix::create_link(String p_source, String p_target) {
-#ifdef VITA_ENABLED
+#ifdef VITA_ENABLED || HORIZON_ENABLED
 	return FAILED;
 #else
-#ifndef HORIZON_ENABLED
 	if (p_target.is_rel_path())
 		p_target = get_current_dir().plus_file(p_target);
 
