@@ -4,7 +4,7 @@ on: [push, pull_request]
 # Global Cache Settings
 env:
   GODOT_BASE_BRANCH: 3.5
-  SCONS_CACHE_LIMIT: 4096
+  SCONSFLAGS: verbose=no warnings=no werror=no debug_symbols=no use_rtti=True disable_gles3=False
 
 jobs:
   switch-template:
@@ -16,32 +16,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Upload cache on completion and check it out now
-      - name: Load .scons_cache directory
-        id: switch-template-cache
-        uses: actions/cache@v2
-        with:
-          path: ${{github.workspace}}/.scons_cache/
-          key: ${{github.job}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
-          restore-keys: |
-            ${{github.job}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
-            ${{github.job}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}
-            ${{github.job}}-${{env.GODOT_BASE_BRANCH}}
+      - name: Restore Pandemonium build cache
+        uses: ./.github/actions/godot-cache-restore
+        continue-on-error: true
 
-      - name: Install scons from pip
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install python3-pip
-          sudo python3 -m pip install scons
+      - name: Setup python and scons
+        uses: ./.github/actions/godot-deps
 
       - name: Compilation
-        env:
-          SCONS_CACHE: ${{github.workspace}}/.scons_cache/
-        run: |
-          scons -j2 verbose=no warnings=no werror=no debug_symbols=no platform=switch target=release tools=no use_rtti=True disable_gles3=False
-
-      - uses: actions/upload-artifact@v2
+        uses: ./.github/actions/godot-build
         with:
-          name: ${{ github.job }}
-          path: bin/*
-          retention-days: 14
+          sconsflags: ${{ env.SCONSFLAGS }}
+          platform: switch
+          target: release
+          tools: false
+
+      - name: Save Godot build cache
+        uses: ./.github/actions/godot-cache-save
+        with:
+          cache-name: ${{ matrix.cache-name }}
+        continue-on-error: true
+        
+      - name: Upload artifact
+        uses: ./.github/actions/upload-artifact
