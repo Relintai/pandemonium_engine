@@ -20,8 +20,11 @@ jobs:
         uses: ./.github/actions/godot-cache-restore
         continue-on-error: true
 
-      - name: Setup python and scons
-        uses: ./.github/actions/godot-deps
+      - name: Install scons from pip
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install python3-pip
+          sudo python3 -m pip install scons
 
       - name: Compilation
         uses: ./.github/actions/godot-build
