@@ -446,24 +446,24 @@ String DirAccessUnix::read_link(String p_file) {
 }
 
 Error DirAccessUnix::create_link(String p_source, String p_target) {
-#ifdef VITA_ENABLED || HORIZON_ENABLED
-	return FAILED;
+#if defined(VITA_ENABLED) || defined(HORIZON_ENABLED)
+    return FAILED;
 #else
-	if (p_target.is_rel_path())
-		p_target = get_current_dir().plus_file(p_target);
+    if (p_target.is_rel_path()) {
+        p_target = get_current_dir().plus_file(p_target);
+    }
 
-	p_source = fix_path(p_source);
-	p_target = fix_path(p_target);
+    p_source = fix_path(p_source);
+    p_target = fix_path(p_target);
 
-	if (symlink(p_source.utf8().get_data(), p_target.utf8().get_data()) == 0) {
-		return OK;
-	} else
-#endif // !HORIZON_ENABLED
-	{
-		return FAILED;
-	}
+    if (symlink(p_source.utf8().get_data(), p_target.utf8().get_data()) == 0) {
+        return OK;
+    } else {
+        return FAILED;
+    }
 #endif
 }
+
 
 uint64_t DirAccessUnix::get_space_left() {
 #ifndef NO_STATVFS
