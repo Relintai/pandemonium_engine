@@ -27,12 +27,8 @@ jobs:
           sudo python3 -m pip install scons
 
       - name: Compilation
-        uses: ./.github/actions/godot-build
-        with:
-          sconsflags: ${{ env.SCONSFLAGS }}
-          platform: switch
-          target: release
-          tools: false
+        run: |
+          scons -j2 verbose=yes warnings=all werror=no platform=switch target=release tools=no
 
       - name: Save Godot build cache
         uses: ./.github/actions/godot-cache-save
