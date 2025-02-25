@@ -1,6 +1,5 @@
 name: 🔄 Switch Builds
-on:
-  workflow_call:
+on: [push, pull_request]
 
 # Global Cache Settings
 env:
@@ -15,7 +14,7 @@ jobs:
     name: Template (target=release, tools=no)
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Upload cache on completion and check it out now
       - name: Load .scons_cache directory
@@ -39,7 +38,7 @@ jobs:
         env:
           SCONS_CACHE: ${{github.workspace}}/.scons_cache/
         run: |
-          scons -j2 verbose=yes warnings=all werror=no platform=switch target=release tools=no
+          scons -j2 verbose=no warnings=no werror=no debug_symbols=no platform=switch target=release tools=no use_rtti=True disable_gles3=False
 
       - uses: actions/upload-artifact@v2
         with:
