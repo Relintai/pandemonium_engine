@@ -34,7 +34,10 @@ jobs:
             tools: false
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive  # Fetch all submodules
 
       - name: Restore Godot build cache
         uses: ./.github/actions/godot-cache-restore
