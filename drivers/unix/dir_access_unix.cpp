@@ -458,7 +458,9 @@ Error DirAccessUnix::create_link(String p_source, String p_target) {
 
     if (symlink(p_source.utf8().get_data(), p_target.utf8().get_data()) == 0) {
         return OK;
-    } else {
+    } else 
+#endif	
+	{
         return FAILED;
     }
 #endif
