@@ -447,7 +447,7 @@ String DirAccessUnix::read_link(String p_file) {
 
 Error DirAccessUnix::create_link(String p_source, String p_target) {
 #if defined(VITA_ENABLED) || defined(HORIZON_ENABLED)
-    return FAILED;
+    return FAILED;  // If Vita or Horizon, just return FAILED and do nothing else
 #else
     if (p_target.is_rel_path()) {
         p_target = get_current_dir().plus_file(p_target);
@@ -458,13 +458,12 @@ Error DirAccessUnix::create_link(String p_source, String p_target) {
 
     if (symlink(p_source.utf8().get_data(), p_target.utf8().get_data()) == 0) {
         return OK;
-    } else 
-#endif	
-	{
+    } else {
         return FAILED;
     }
 #endif
 }
+
 
 
 uint64_t DirAccessUnix::get_space_left() {
