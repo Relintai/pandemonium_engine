@@ -92,6 +92,11 @@ GLuint RasterizerStorageGLES2::system_fbo = 0;
 #ifndef GLES_OVER_GL
 #define glClearDepth glClearDepthf
 
+// enable extensions manually for android and ios
+#if defined IPHONE_ENABLED || defined ANDROID_ENABLED
+#include <dlfcn.h> // needed to load extensions
+#endif // IPHONE_ENABLED || ANDROID_ENABLED
+
 #ifdef IPHONE_ENABLED
 
 #include <dlfcn.h> // needed to load extensions
@@ -101,9 +106,7 @@ GLuint RasterizerStorageGLES2::system_fbo = 0;
 //void *glResolveMultisampleFramebufferAPPLE;
 #define glRenderbufferStorageMultisample glRenderbufferStorageMultisampleAPPLE
 
-#elif defined(ANDROID_ENABLED)
-
-#include <dlfcn.h> // needed to load extensions
+#elif defined(ANDROID_ENABLED) || defined(HORIZON_ENABLED)
 
 #include <GLES2/gl2ext.h>
 PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC glRenderbufferStorageMultisampleEXT;
@@ -6354,7 +6357,7 @@ void RasterizerStorageGLES2::initialize() {
 	// If the desktop build is using S3TC, and you export / run from the IDE for android, if the device supports
 	// S3TC it will crash trying to load these textures, as they are not exported in the APK. This is a simple way
 	// to prevent Android devices trying to load S3TC, by faking lack of hardware support.
-#if defined(ANDROID_ENABLED) || defined(IPHONE_ENABLED) || defined(VITA_ENABLED) || defined(S3TC_NOT_SUPPORTED)
+#if defined(ANDROID_ENABLED) || defined(IPHONE_ENABLED) || defined(VITA_ENABLED) || defined(S3TC_NOT_SUPPORTED) || defined(HORIZON_ENABLED)
 	config.s3tc_supported = false;
 #endif
 

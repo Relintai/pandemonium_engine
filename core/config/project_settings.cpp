@@ -399,6 +399,14 @@ Error ProjectSettings::_setup(const String &p_path, const String &p_main_pack, b
 		}
 #endif
 
+#ifdef HORIZON_ENABLED
+		if (!found) {
+			if (_load_resource_pack("romfs:/game.pck")) {
+				found = true;
+			}
+		}
+#endif // HORIZON_ENABLED
+
 		if (!found) {
 			String crl = OS::get_singleton()->get_custom_platform_resource_pack_location();
 

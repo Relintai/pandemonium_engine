@@ -1,0 +1,40 @@
+name: 🔄 Switch Builds
+on: [push, pull_request]
+
+# Global Cache Settings
+env:
+  GODOT_BASE_BRANCH: 3.5
+  SCONSFLAGS: verbose=no warnings=no werror=no debug_symbols=no use_rtti=True disable_gles3=False
+
+jobs:
+  switch-template:
+    runs-on: ubuntu-latest
+    container: devkitpro/devkita64
+
+    name: Template (target=release, tools=no)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive  # Fetch all submodules
+
+      - name: Restore Pandemonium build cache
+        uses: ./.github/actions/godot-cache-restore
+        continue-on-error: true
+
+      - name: Install scons from pip
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install python3-pip
+          sudo python3 -m pip install scons
+
+      - name: Compilation
+        run: |
+          scons -j2 verbose=yes warnings=all werror=no platform=switch target=release tools=no
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.job }}
+          path: bin/*
+          retention-days: 14
