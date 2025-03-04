@@ -36,6 +36,7 @@
 #include "core/io/multiplayer_api.h"
 #include "core/os/main_loop.h"
 #include "core/os/thread_safe.h"
+#include "scene/main/scene_tree_fti.h"
 
 class PackedScene;
 class Node;
@@ -160,6 +161,7 @@ private:
 	StretchAspect stretch_aspect;
 	Size2i stretch_min;
 	real_t stretch_scale;
+	SceneTreeFTI scene_tree_fti;
 
 	void _update_font_oversampling(float p_ratio);
 	void _update_root_rect();
@@ -467,6 +469,8 @@ public:
 
 	void client_physics_interpolation_add_spatial(SelfList<Spatial> *p_elem);
 	void client_physics_interpolation_remove_spatial(SelfList<Spatial> *p_elem);
+
+	SceneTreeFTI &get_scene_tree_fti() { return scene_tree_fti; }
 
 	static void add_idle_callback(IdleCallback p_callback);
 	SceneTree();
