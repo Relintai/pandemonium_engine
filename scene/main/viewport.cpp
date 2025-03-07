@@ -174,14 +174,14 @@ class TooltipPanel : public PanelContainer {
 	GDCLASS(TooltipPanel, PanelContainer);
 
 public:
-	TooltipPanel() {};
+	TooltipPanel() {}
 };
 
 class TooltipLabel : public Label {
 	GDCLASS(TooltipLabel, Label);
 
 public:
-	TooltipLabel() {};
+	TooltipLabel() {}
 };
 
 /////////////////////////////////////
@@ -387,7 +387,7 @@ void Viewport::_notification(int p_what) {
 				}
 			}
 
-			if (!GLOBAL_GET("physics/common/enable_pause_aware_picking")) {
+			if (!GLOBAL_GET_CACHED(bool, "physics/common/enable_pause_aware_picking")) {
 				_process_picking(false);
 			}
 		} break;

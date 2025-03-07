@@ -223,7 +223,7 @@ String _get_activity_tag(const Ref<EditorExportPreset> &p_preset) {
 			"android:resizeableActivity=\"%s\">\n",
 			bool_to_string(p_preset->get("package/exclude_from_recents")),
 			orientation,
-			bool_to_string(bool(GLOBAL_GET("display/window/size/resizable"))));
+			bool_to_string(GLOBAL_GET_CACHED(bool, "display/window/size/resizable")));
 	manifest_activity_text += "            <meta-data tools:node=\"remove\" android:name=\"com.oculus.vr.focusaware\" />\n";
 	manifest_activity_text += "        </activity>\n";
 	return manifest_activity_text;

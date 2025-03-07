@@ -652,7 +652,7 @@ bool SceneTree::iteration(float p_time) {
 	call_group_flags(GROUP_CALL_REALTIME, "_pg_process", "trigger_physics_process");
 
 	_notify_group_pause("physics_process_internal", Node::NOTIFICATION_INTERNAL_PHYSICS_PROCESS);
-	if (GLOBAL_GET("physics/common/enable_pause_aware_picking")) {
+	if (GLOBAL_GET_CACHED(bool, "physics/common/enable_pause_aware_picking")) {
 		call_group_flags(GROUP_CALL_REALTIME, "_viewports", "_process_picking", true);
 	}
 	_notify_group_pause("physics_process", Node::NOTIFICATION_PHYSICS_PROCESS);
