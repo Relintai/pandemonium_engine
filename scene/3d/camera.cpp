@@ -53,7 +53,7 @@ void Camera::_request_camera_update() {
 void Camera::fti_update_servers() {
 	if (camera.is_valid()) {
 		Transform tr = _get_adjusted_camera_transform(_get_cached_global_transform_interpolated());
-		VisualServer::get_singleton()->camera_set_transform(camera, tr);
+		RenderingServer::get_singleton()->camera_set_transform(camera, tr);
 	}
 }
 
