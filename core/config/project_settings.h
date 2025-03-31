@@ -224,23 +224,19 @@ Variant _GLOBAL_DEF_ALIAS(const String &p_var, const String &p_old_name, const V
 #define GLOBAL_DEF_ALIAS_RST(m_var, m_old_name, m_value) _GLOBAL_DEF(m_var, m_old_name, m_value, true)
 #define GLOBAL_GET(m_var) ProjectSettings::get_singleton()->get(m_var)
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// Cached versions of GLOBAL_GET.
-// Cached but uses a typed variable for storage, this can be more efficient.
-#define GLOBAL_GET_CACHED(m_type, m_setting_name) ([](const char *p_name) -> m_type {\
-static_assert(HAS_TRIVIAL_DESTRUCTOR(m_type), "GLOBAL_GET_CACHED must use a trivial type that allows static lifetime.");\
-static m_type local_var;\
-static uint32_t local_version = 0;\
-static Mutex local_mutex;\
-uint32_t new_version = ProjectSettings::get_singleton()->get_version();\
-if (local_version != new_version) {\
-	MutexLock lock(local_mutex);\
-	local_version = new_version;\
-	local_var = ProjectSettings::get_singleton()->get(p_name);\
-	return local_var;\
-}\
-MutexLock lock(local_mutex);\
-return local_var; })(m_setting_name)
+#define GLOBAL_CACHED(m_name, m_type, m_setting_name)                                                                            \
+	static m_type m_name;                                                                                                        \
+	{                                                                                                                            \
+		static_assert(HAS_TRIVIAL_DESTRUCTOR(m_type), "GLOBAL_CACHED must use a trivial type that allows static lifetime."); \
+		static uint32_t local_version = 0;                                                                                       \
+		static Mutex local_mutex;                                                                                                \
+		uint32_t new_version = ProjectSettings::get_singleton()->get_version();                                                  \
+		if (local_version != new_version) {                                                                                      \
+			local_mutex.lock();                                                                                                  \
+			local_version = new_version;                                                                                         \
+			m_name = ProjectSettings::get_singleton()->get(m_setting_name);                                                      \
+			local_mutex.unlock();                                                                                                \
+		}                                                                                                                        \
+	}
 
 #endif // PROJECT_SETTINGS_H
-

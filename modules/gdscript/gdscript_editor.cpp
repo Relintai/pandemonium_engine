@@ -2091,7 +2091,7 @@ static void _find_identifiers_in_base(const GDScriptCompletionContext &p_context
 
 				if (!_static) {
 					List<MethodInfo> methods;
-					bool is_autocompleting_getters = GLOBAL_GET_CACHED(bool, "debug/gdscript/completion/autocomplete_setters_and_getters");
+					GLOBAL_CACHED(is_autocompleting_getters, bool, "debug/gdscript/completion/autocomplete_setters_and_getters");
 					ClassDB::get_method_list(type, &methods, false, !is_autocompleting_getters);
 					for (List<MethodInfo>::Element *E = methods.front(); E; E = E->next()) {
 						if (E->get().name.begins_with("_")) {

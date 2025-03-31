@@ -276,7 +276,7 @@ void RasterizerGLES2::begin_frame(double frame_step) {
 		frame_step = 0.001;
 	}
 
-	double time_roll_over = GLOBAL_GET_CACHED(double, "rendering/limits/time/time_rollover_secs");
+	GLOBAL_CACHED(time_roll_over, double, "rendering/limits/time/time_rollover_secs");
 	time_total = Math::fmod(time_total, time_roll_over);
 
 	storage->frame.time[0] = time_total;

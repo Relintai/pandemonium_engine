@@ -387,7 +387,9 @@ void Viewport::_notification(int p_what) {
 				}
 			}
 
-			if (!GLOBAL_GET_CACHED(bool, "physics/common/enable_pause_aware_picking")) {
+			GLOBAL_CACHED(physics_enable_pause_aware_picking, bool, "physics/common/enable_pause_aware_picking")
+
+			if (!physics_enable_pause_aware_picking) {
 				_process_picking(false);
 			}
 		} break;
@@ -2914,11 +2916,15 @@ void Viewport::set_disable_input(bool p_disable) {
 	if (p_disable == disable_input) {
 		return;
 	}
-	if (p_disable && GLOBAL_GET_CACHED(bool, "gui/common/drop_mouse_on_gui_input_disabled")) {
+
+	GLOBAL_CACHED(global_drop_mouse_on_gui_input_disabled, bool, "gui/common/drop_mouse_on_gui_input_disabled")
+
+	if (p_disable && global_drop_mouse_on_gui_input_disabled) {
 		_drop_mouse_focus();
 		_drop_mouse_over();
 		_gui_cancel_tooltip();
 	}
+
 	disable_input = p_disable;
 }
 

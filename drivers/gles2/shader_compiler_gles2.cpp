@@ -1226,9 +1226,9 @@ ShaderCompilerGLES2::ShaderCompilerGLES2() {
 	//actions[RS::SHADER_SPATIAL].render_mode_defines["cull_front"] = "#define DO_SIDE_CHECK\n";
 	//actions[RS::SHADER_SPATIAL].render_mode_defines["cull_disabled"] = "#define DO_SIDE_CHECK\n";
 
-	bool force_lambert = GLOBAL_GET_CACHED(bool, "rendering/quality/shading/force_lambert_over_burley");
+	GLOBAL_CACHED(render_force_lambert_over_burley, bool, "rendering/quality/shading/force_lambert_over_burley");
 
-	if (!force_lambert) {
+	if (!render_force_lambert_over_burley) {
 		actions[RS::SHADER_SPATIAL].render_mode_defines["diffuse_burley"] = "#define DIFFUSE_BURLEY\n";
 	}
 
@@ -1236,9 +1236,9 @@ ShaderCompilerGLES2::ShaderCompilerGLES2() {
 	actions[RS::SHADER_SPATIAL].render_mode_defines["diffuse_lambert_wrap"] = "#define DIFFUSE_LAMBERT_WRAP\n";
 	actions[RS::SHADER_SPATIAL].render_mode_defines["diffuse_toon"] = "#define DIFFUSE_TOON\n";
 
-	bool force_blinn = GLOBAL_GET_CACHED(bool, "rendering/quality/shading/force_blinn_over_ggx");
+	GLOBAL_CACHED(render_force_blinn_over_ggx, bool, "rendering/quality/shading/force_blinn_over_ggx");
 
-	if (!force_blinn) {
+	if (!render_force_blinn_over_ggx) {
 		actions[RS::SHADER_SPATIAL].render_mode_defines["specular_schlick_ggx"] = "#define SPECULAR_SCHLICK_GGX\n";
 	} else {
 		actions[RS::SHADER_SPATIAL].render_mode_defines["specular_schlick_ggx"] = "#define SPECULAR_BLINN\n";

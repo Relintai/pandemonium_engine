@@ -5315,22 +5315,31 @@ void RasterizerSceneGLES3::initialize() {
 }
 
 void RasterizerSceneGLES3::iteration() {
-	shadow_filter_mode = ShadowFilterMode(GLOBAL_GET_CACHED(int32_t, "rendering/quality/shadows/filter_mode"));
+	GLOBAL_CACHED(rendering_global_filter_mode, int32_t, "rendering/quality/shadows/filter_mode");
+	GLOBAL_CACHED(rendering_global_directional_shadow_size, int32_t, "rendering/quality/directional_shadow/size");
+	GLOBAL_CACHED(rendering_global_subsurface_scattering_follow_surface, bool, "rendering/quality/subsurface_scattering/follow_surface");
+	GLOBAL_CACHED(rendering_global_subsurface_scattering_weight_samples, bool, "rendering/quality/subsurface_scattering/weight_samples");
+	GLOBAL_CACHED(rendering_global_subsurface_scattering_quality, int32_t, "rendering/quality/subsurface_scattering/quality");
+	GLOBAL_CACHED(rendering_global_subsurface_scattering_scale, float, "rendering/quality/subsurface_scattering/scale");
+	GLOBAL_CACHED(rendering_global_lightmapping_use_bicubic_sampling, bool, "rendering/quality/lightmapping/use_bicubic_sampling");
+	GLOBAL_CACHED(rendering_global_voxel_cone_tracinghigh_quality, bool, "rendering/quality/voxel_cone_tracing/high_quality");
 
-	const int directional_shadow_size_new = next_power_of_2(GLOBAL_GET_CACHED(int32_t, "rendering/quality/directional_shadow/size"));
+	shadow_filter_mode = ShadowFilterMode(rendering_global_filter_mode);
+
+	const int directional_shadow_size_new = next_power_of_2(rendering_global_directional_shadow_size);
 	if (directional_shadow_size != directional_shadow_size_new) {
 		directional_shadow_size = directional_shadow_size_new;
 		directional_shadow_create();
 	}
 
-	subsurface_scatter_follow_surface = GLOBAL_GET_CACHED(bool, "rendering/quality/subsurface_scattering/follow_surface");
-	subsurface_scatter_weight_samples = GLOBAL_GET_CACHED(bool, "rendering/quality/subsurface_scattering/weight_samples");
-	subsurface_scatter_quality = SubSurfaceScatterQuality(int(GLOBAL_GET_CACHED(int32_t, "rendering/quality/subsurface_scattering/quality")));
-	subsurface_scatter_size = GLOBAL_GET_CACHED(float, "rendering/quality/subsurface_scattering/scale");
+	subsurface_scatter_follow_surface = rendering_global_subsurface_scattering_follow_surface;
+	subsurface_scatter_weight_samples = rendering_global_subsurface_scattering_weight_samples;
+	subsurface_scatter_quality = SubSurfaceScatterQuality(int(rendering_global_subsurface_scattering_quality));
+	subsurface_scatter_size = rendering_global_subsurface_scattering_scale;
 
-	storage->config.use_lightmap_filter_bicubic = GLOBAL_GET_CACHED(bool, "rendering/quality/lightmapping/use_bicubic_sampling");
+	storage->config.use_lightmap_filter_bicubic = rendering_global_lightmapping_use_bicubic_sampling;
 	state.scene_shader.set_conditional(SceneShaderGLES3::USE_LIGHTMAP_FILTER_BICUBIC, storage->config.use_lightmap_filter_bicubic);
-	state.scene_shader.set_conditional(SceneShaderGLES3::VCT_QUALITY_HIGH, GLOBAL_GET_CACHED(bool, "rendering/quality/voxel_cone_tracing/high_quality"));
+	state.scene_shader.set_conditional(SceneShaderGLES3::VCT_QUALITY_HIGH, rendering_global_voxel_cone_tracinghigh_quality);
 }
 
 void RasterizerSceneGLES3::finalize() {

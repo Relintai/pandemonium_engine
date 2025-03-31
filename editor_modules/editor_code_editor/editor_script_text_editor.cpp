@@ -446,7 +446,9 @@ void EditorScriptTextEditor::_validate_script() {
 	warnings_panel->clear();
 
 	// Add missing connections.
-	if (GLOBAL_GET_CACHED(bool, "debug/gdscript/warnings/enable")) {
+	GLOBAL_CACHED(global_debug_warning_enable, bool, "debug/gdscript/warnings/enable")
+
+	if (global_debug_warning_enable) {
 		Node *base = get_tree()->get_edited_scene_root();
 		if (base && missing_connections.size() > 0) {
 			warnings_panel->push_table(1);

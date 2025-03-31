@@ -2538,6 +2538,8 @@ bool Main::iteration() {
 	frames++;
 	Engine::get_singleton()->_idle_frames++;
 
+	GLOBAL_CACHED(debug_settings_stdout_print_pfs, bool, "debug/settings/stdout/print_fps");
+
 	if (frame > 1000000) {
 		// Wait a few seconds before printing FPS, as FPS reporting just after the engine has started is inaccurate.
 		if (hide_print_fps_attempts == 0) {
@@ -2545,7 +2547,7 @@ bool Main::iteration() {
 				if (print_fps) {
 					print_line(vformat("Editor FPS: %d (%s mspf)", frames, rtos(1000.0 / frames).pad_decimals(2)));
 				}
-			} else if (print_fps || GLOBAL_GET_CACHED(bool, "debug/settings/stdout/print_fps")) {
+			} else if (print_fps || debug_settings_stdout_print_pfs) {
 				print_line(vformat("Project FPS: %d (%s mspf)", frames, rtos(1000.0 / frames).pad_decimals(2)));
 			}
 		} else {

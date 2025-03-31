@@ -3390,7 +3390,8 @@ void RasterizerStorageGLES3::mesh_add_surface(RID p_mesh, uint32_t p_format, RS:
 	}
 
 	//bool has_morph = p_blend_shapes.size();
-	bool use_split_stream = GLOBAL_GET_CACHED(bool, "rendering/misc/mesh_storage/split_stream") && !(p_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
+	GLOBAL_CACHED(global_storage_split_stream, bool, "rendering/misc/mesh_storage/split_stream")
+	bool use_split_stream = global_storage_split_stream && !(p_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
 
 	Surface::Attrib attribs[RS::ARRAY_MAX];
 
