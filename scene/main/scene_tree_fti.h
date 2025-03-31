@@ -36,7 +36,7 @@
 
 class Spatial;
 class Node;
-class Transform;
+struct Transform;
 
 #ifdef _3D_DISABLED
 // Stubs
