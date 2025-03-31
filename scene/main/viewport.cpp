@@ -2914,7 +2914,7 @@ void Viewport::set_disable_input(bool p_disable) {
 	if (p_disable == disable_input) {
 		return;
 	}
-	if (p_disable && GLOBAL_GET("gui/common/drop_mouse_on_gui_input_disabled")) {
+	if (p_disable && GLOBAL_GET_CACHED(bool, "gui/common/drop_mouse_on_gui_input_disabled")) {
 		_drop_mouse_focus();
 		_drop_mouse_over();
 		_gui_cancel_tooltip();
