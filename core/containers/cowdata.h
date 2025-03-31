@@ -37,6 +37,7 @@
 #include "core/error/error_macros.h"
 #include "core/os/memory.h"
 #include "core/os/safe_refcount.h"
+#include "core/typedefs.h"
 
 template <class T>
 class Vector;
@@ -161,19 +162,26 @@ public:
 		T *p = ptrw();
 		int len = size();
 		for (int i = p_index; i < len - 1; i++) {
-			p[i] = p[i + 1];
+			p[i] = MOVE_VAR(p[i + 1]);
 		};
 
 		resize(len - 1);
 	}
 
 	Error insert(int p_pos, const T &p_val) {
-		ERR_FAIL_INDEX_V(p_pos, size() + 1, ERR_INVALID_PARAMETER);
-		resize(size() + 1);
-		for (int i = (size() - 1); i > p_pos; i--) {
-			set(i, get(i - 1));
+		int new_size = size() + 1;
+
+		ERR_FAIL_INDEX_V(p_pos, new_size , ERR_INVALID_PARAMETER);
+
+		Error err = resize(new_size);
+		ERR_FAIL_COND_V(err, err);
+
+		T *p = ptrw();
+		for (int i = new_size - 1; i > p_pos; i--) {
+			p[i] = MOVE_VAR(p[i - 1]);
 		}
-		set(p_pos, p_val);
+
+		p[p_pos] = p_val;
 
 		return OK;
 	}

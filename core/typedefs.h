@@ -188,15 +188,35 @@ T *_nullptr() {
 #define CLAMP(m_a, m_min, m_max) (((m_a) < (m_min)) ? (m_min) : (((m_a) > (m_max)) ? m_max : m_a))
 #endif
 
+template<typename T>
+struct REMOVE_REFERENCE {
+	using type = T;
+};
+
+template<typename T>
+struct REMOVE_REFERENCE<T&> {
+	using type = T;
+};
+
+template<typename T>
+struct REMOVE_REFERENCE<T&&> {
+	using type = T;
+};
+
+template<typename T>
+typename REMOVE_REFERENCE<T>::type&& MOVE_VAR(T&& t) {
+	return static_cast<typename REMOVE_REFERENCE<T>::type&&>(t);
+}
+
 /** Generic swap template */
 #ifndef SWAP
 
 #define SWAP(m_x, m_y) __swap_tmpl((m_x), (m_y))
 template <class T>
 inline void __swap_tmpl(T &x, T &y) {
-	T aux = x;
-	x = y;
-	y = aux;
+	T aux = MOVE_VAR(x);
+	x = MOVE_VAR(y);
+	y = MOVE_VAR(aux);
 }
 
 #endif //swap

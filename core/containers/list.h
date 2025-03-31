@@ -35,6 +35,7 @@
 #include "core/containers/sort_array.h"
 #include "core/error/error_macros.h"
 #include "core/os/memory.h"
+#include "core/typedefs.h"
 
 /**
  * Generic Templatized Linked List Implementation.
@@ -445,6 +446,18 @@ public:
 		}
 	}
 
+	void operator=(List &&p_list) {
+		if (unlikely(this == &p_list)) {
+			return;
+		}
+
+		clear();
+
+		_data = p_list._data;
+
+		p_list._data = nullptr;
+	}
+
 	T &operator[](int p_index) {
 		CRASH_BAD_INDEX(p_index, size());
 
@@ -684,6 +697,11 @@ public:
 			push_back(it->get());
 			it = it->next();
 		}
+	}
+
+	List(List &&p_list) {
+		_data = p_list._data;
+		p_list._data = nullptr;
 	}
 
 	List() {
