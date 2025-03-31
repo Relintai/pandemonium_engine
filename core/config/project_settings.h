@@ -35,6 +35,7 @@
 #include "core/containers/rb_set.h"
 #include "core/object/object.h"
 #include "core/os/thread_safe.h"
+#include "core/typedefs.h"
 
 // Querying ProjectSettings is usually done at startup.
 // Additionally, in order to keep track of changes to ProjectSettings,
@@ -227,7 +228,7 @@ Variant _GLOBAL_DEF_ALIAS(const String &p_var, const String &p_old_name, const V
 // Cached versions of GLOBAL_GET.
 // Cached but uses a typed variable for storage, this can be more efficient.
 #define GLOBAL_GET_CACHED(m_type, m_setting_name) ([](const char *p_name) -> m_type {\
-static_assert(std::is_trivially_destructible<m_type>::value, "GLOBAL_GET_CACHED must use a trivial type that allows static lifetime.");\
+static_assert(HAS_TRIVIAL_DESTRUCTOR(m_type), "GLOBAL_GET_CACHED must use a trivial type that allows static lifetime.");\
 static m_type local_var;\
 static uint32_t local_version = 0;\
 static Mutex local_mutex;\
