@@ -224,19 +224,19 @@ Variant _GLOBAL_DEF_ALIAS(const String &p_var, const String &p_old_name, const V
 #define GLOBAL_DEF_ALIAS_RST(m_var, m_old_name, m_value) _GLOBAL_DEF(m_var, m_old_name, m_value, true)
 #define GLOBAL_GET(m_var) ProjectSettings::get_singleton()->get(m_var)
 
-#define GLOBAL_CACHED(m_name, m_type, m_setting_name)                                                                            \
-	static m_type m_name;                                                                                                        \
-	{                                                                                                                            \
-		static_assert(HAS_TRIVIAL_DESTRUCTOR(m_type), "GLOBAL_CACHED must use a trivial type that allows static lifetime."); \
-		static uint32_t local_version = 0;                                                                                       \
-		static Mutex local_mutex;                                                                                                \
-		uint32_t new_version = ProjectSettings::get_singleton()->get_version();                                                  \
-		if (local_version != new_version) {                                                                                      \
-			local_mutex.lock();                                                                                                  \
-			local_version = new_version;                                                                                         \
-			m_name = ProjectSettings::get_singleton()->get(m_setting_name);                                                      \
-			local_mutex.unlock();                                                                                                \
-		}                                                                                                                        \
+#define GLOBAL_CACHED(m_name, m_type, m_setting_name)                                                                    \
+	static_assert(HAS_TRIVIAL_DESTRUCTOR(m_type), "GLOBAL_CACHED must use a trivial type that allows static lifetime."); \
+	static m_type m_name;                                                                                                \
+	{                                                                                                                    \
+		static uint32_t local_version = 0;                                                                               \
+		static Mutex local_mutex;                                                                                        \
+		uint32_t new_version = ProjectSettings::get_singleton()->get_version();                                          \
+		if (local_version != new_version) {                                                                              \
+			local_mutex.lock();                                                                                          \
+			local_version = new_version;                                                                                 \
+			m_name = ProjectSettings::get_singleton()->get(m_setting_name);                                              \
+			local_mutex.unlock();                                                                                        \
+		}                                                                                                                \
 	}
 
 #endif // PROJECT_SETTINGS_H
