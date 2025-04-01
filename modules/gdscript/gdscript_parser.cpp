@@ -8703,13 +8703,20 @@ void GDScriptParser::_add_warning(int p_code, int p_line, const String &p_symbol
 }
 
 void GDScriptParser::_add_warning(int p_code, int p_line, const Vector<String> &p_symbols) {
-	if (GLOBAL_GET("debug/gdscript/warnings/exclude_addons").booleanize() && base_path.begins_with("res://addons/")) {
+	GLOBAL_CACHED(global_warnings_exclude_addons, bool, "debug/gdscript/warnings/exclude_addons")
+
+	if (global_warnings_exclude_addons && base_path.begins_with("res://addons/")) {
 		return;
 	}
-	if (tokenizer->is_ignoring_warnings() || !GLOBAL_GET("debug/gdscript/warnings/enable").booleanize()) {
+
+	GLOBAL_CACHED(global_warnings_enable, bool, "debug/gdscript/warnings/enable");
+
+	if (tokenizer->is_ignoring_warnings() || !global_warnings_enable) {
 		return;
 	}
+
 	String warn_name = GDScriptWarning::get_name_from_code((GDScriptWarning::Code)p_code).to_lower();
+
 	if (tokenizer->get_warning_global_skips().has(warn_name)) {
 		return;
 	}
@@ -8820,7 +8827,9 @@ Error GDScriptParser::_parse(const String &p_base_path) {
 
 	// Resolve warning ignores
 	Vector<Pair<int, String>> warning_skips = tokenizer->get_warning_skips();
-	bool warning_is_error = GLOBAL_GET("debug/gdscript/warnings/treat_warnings_as_errors").booleanize();
+	GLOBAL_CACHED(global_treat_warnings_as_errors, bool, "debug/gdscript/warnings/treat_warnings_as_errors");
+
+	bool warning_is_error = global_treat_warnings_as_errors;
 	for (List<GDScriptWarning>::Element *E = warnings.front(); E;) {
 		GDScriptWarning &w = E->get();
 		int skip_index = -1;

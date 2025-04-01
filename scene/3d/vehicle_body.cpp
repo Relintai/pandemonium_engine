@@ -47,7 +47,7 @@ public:
 
 	real_t getDiagonal() const { return m_Adiag; }
 
-	btVehicleJacobianEntry() {};
+	btVehicleJacobianEntry() {}
 	//constraint between two different rigidbodies
 	btVehicleJacobianEntry(
 			const Basis &world2A,
@@ -369,6 +369,8 @@ VehicleWheel::VehicleWheel() {
 	m_raycastInfo.m_suspensionLength = 0.0;
 
 	body = nullptr;
+
+	set_physics_interpolation_mode(PHYSICS_INTERPOLATION_MODE_OFF);
 }
 
 void VehicleBody::_update_wheel_transform(VehicleWheel &wheel, PhysicsDirectBodyState *s) {

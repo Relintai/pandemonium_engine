@@ -70,6 +70,20 @@
 
 #endif
 
+// Should never inline.
+#ifndef _NO_INLINE_
+#if defined(__GNUC__) && (__GNUC__ >= 4)
+#define _NO_INLINE_ __attribute__((noinline))
+#elif defined(__llvm__)
+#define _NO_INLINE_ __attribute__((noinline))
+#elif defined(_MSC_VER)
+#define _NO_INLINE_ __declspec(noinline)
+#else
+#define _NO_INLINE_
+#endif
+
+#endif
+
 // No discard allows the compiler to flag warnings if we don't use the return value of functions / classes
 #ifndef _NO_DISCARD_
 // c++ 17 onwards
@@ -174,15 +188,35 @@ T *_nullptr() {
 #define CLAMP(m_a, m_min, m_max) (((m_a) < (m_min)) ? (m_min) : (((m_a) > (m_max)) ? m_max : m_a))
 #endif
 
+template<typename T>
+struct REMOVE_REFERENCE {
+	using type = T;
+};
+
+template<typename T>
+struct REMOVE_REFERENCE<T&> {
+	using type = T;
+};
+
+template<typename T>
+struct REMOVE_REFERENCE<T&&> {
+	using type = T;
+};
+
+template<typename T>
+typename REMOVE_REFERENCE<T>::type&& MOVE_VAR(T&& t) {
+	return static_cast<typename REMOVE_REFERENCE<T>::type&&>(t);
+}
+
 /** Generic swap template */
 #ifndef SWAP
 
 #define SWAP(m_x, m_y) __swap_tmpl((m_x), (m_y))
 template <class T>
 inline void __swap_tmpl(T &x, T &y) {
-	T aux = x;
-	x = y;
-	y = aux;
+	T aux = MOVE_VAR(x);
+	x = MOVE_VAR(y);
+	y = MOVE_VAR(aux);
 }
 
 #endif //swap

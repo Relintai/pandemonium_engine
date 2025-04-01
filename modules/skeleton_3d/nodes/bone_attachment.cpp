@@ -187,6 +187,7 @@ String BoneAttachment::get_configuration_warning() const {
 }
 
 BoneAttachment::BoneAttachment() {
+	set_physics_interpolation_mode(PHYSICS_INTERPOLATION_MODE_OFF);
 	bound = false;
 	bone_idx = -1;
 	override_pose = false;

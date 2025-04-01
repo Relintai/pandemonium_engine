@@ -591,6 +591,13 @@ void SceneTree::set_physics_interpolation_enabled(bool p_enabled) {
 	_physics_interpolation_enabled = p_enabled;
 
 	RenderingServer::get_singleton()->set_physics_interpolation_enabled(p_enabled);
+
+	get_scene_tree_fti().set_enabled(get_root(), p_enabled);
+
+	// Perform an auto reset on the root node for convenience for the user.
+	if (root) {
+		root->reset_physics_interpolation();
+	}
 }
 
 bool SceneTree::is_physics_interpolation_enabled() const {
@@ -612,12 +619,8 @@ void SceneTree::iteration_prepare() {
 		// Make sure any pending transforms from the last tick / frame
 		// are flushed before pumping the interpolation prev and currents.
 		flush_transform_notifications();
+		get_scene_tree_fti().tick_update();
 		RenderingServer::get_singleton()->tick();
-
-		// Any objects performing client physics interpolation
-		// should be given an opportunity to keep their previous transforms
-		// up to date before each new physics tick.
-		_client_physics_interpolation.physics_process();
 	}
 }
 
@@ -626,6 +629,11 @@ void SceneTree::iteration_end() {
 	// to be flushed to the RenderingServer before finishing a physics tick.
 	if (_physics_interpolation_enabled) {
 		flush_transform_notifications();
+
+		// Any objects performing client physics interpolation
+		// should be given an opportunity to keep their previous transforms
+		// up to date.
+		_client_physics_interpolation.physics_process();
 	}
 }
 
@@ -647,7 +655,8 @@ bool SceneTree::iteration(float p_time) {
 	call_group_flags(GROUP_CALL_REALTIME, "_pg_process", "trigger_physics_process");
 
 	_notify_group_pause("physics_process_internal", Node::NOTIFICATION_INTERNAL_PHYSICS_PROCESS);
-	if (GLOBAL_GET("physics/common/enable_pause_aware_picking")) {
+	GLOBAL_CACHED(global_enable_pause_aware_picking, bool, "physics/common/enable_pause_aware_picking");
+	if (global_enable_pause_aware_picking) {
 		call_group_flags(GROUP_CALL_REALTIME, "_viewports", "_process_picking", true);
 	}
 	_notify_group_pause("physics_process", Node::NOTIFICATION_PHYSICS_PROCESS);
@@ -683,6 +692,17 @@ bool SceneTree::idle(float p_time) {
 	//print_line("ram: "+itos(OS::get_singleton()->get_static_memory_usage())+" sram: "+itos(OS::get_singleton()->get_dynamic_memory_usage()));
 	//print_line("node count: "+itos(get_node_count()));
 	//print_line("TEXTURE RAM: "+itos(RS::get_singleton()->get_render_info(RS::INFO_TEXTURE_MEM_USED)));
+
+	// First pass of scene tree fixed timestep interpolation.
+	if (get_scene_tree_fti().is_enabled()) {
+		// Special, we need to ensure RenderingServer is up to date
+		// with *all* the pending xforms *before* updating it during
+		// the FTI update.
+		// If this is not done, we can end up with a deferred `set_transform()`
+		// overwriting the interpolated xform in the server.
+		flush_transform_notifications();
+		get_scene_tree_fti().frame_update(get_root(), true);
+	}
 
 	root_lock++;
 
@@ -799,6 +819,11 @@ bool SceneTree::idle(float p_time) {
 	}
 
 #endif
+
+	// Second pass of scene tree fixed timestep interpolation.
+	// ToDo: Possibly needs another flush_transform_notifications here
+	// depending on whether there are side effects to _call_idle_callbacks().
+	get_scene_tree_fti().frame_update(get_root(), false);
 
 	RenderingServer::get_singleton()->pre_draw(true);
 

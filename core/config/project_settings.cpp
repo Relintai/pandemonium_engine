@@ -194,6 +194,7 @@ bool ProjectSettings::_set(const StringName &p_name, const Variant &p_value) {
 			for (int i = 0; i < custom_feature_array.size(); i++) {
 				custom_features.insert(custom_feature_array[i]);
 			}
+			_version++;
 			return true;
 		}
 
@@ -207,6 +208,7 @@ bool ProjectSettings::_set(const StringName &p_name, const Variant &p_value) {
 		}
 	}
 
+	_version++;
 	return true;
 }
 bool ProjectSettings::_get(const StringName &p_name, Variant &r_ret) const {

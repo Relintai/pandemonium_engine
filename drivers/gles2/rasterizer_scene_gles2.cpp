@@ -4059,9 +4059,12 @@ void RasterizerSceneGLES2::initialize() {
 }
 
 void RasterizerSceneGLES2::iteration() {
-	shadow_filter_mode = ShadowFilterMode(int(GLOBAL_GET("rendering/quality/shadows/filter_mode")));
+	GLOBAL_CACHED(rendering_quality_shadows_filter_mode, int32_t, "rendering/quality/shadows/filter_mode");
+	GLOBAL_CACHED(rendering_quality_directional_shadow_size, int32_t, "rendering/quality/directional_shadow/size");
 
-	const int directional_shadow_size_new = next_power_of_2(int(GLOBAL_GET("rendering/quality/directional_shadow/size")));
+	shadow_filter_mode = ShadowFilterMode(int(rendering_quality_shadows_filter_mode));
+
+	const int directional_shadow_size_new = next_power_of_2(rendering_quality_directional_shadow_size);
 	if (directional_shadow_size != directional_shadow_size_new) {
 		directional_shadow_size = directional_shadow_size_new;
 		directional_shadow_create();

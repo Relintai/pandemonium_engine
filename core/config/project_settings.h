@@ -35,6 +35,7 @@
 #include "core/containers/rb_set.h"
 #include "core/object/object.h"
 #include "core/os/thread_safe.h"
+#include "core/typedefs.h"
 
 // Querying ProjectSettings is usually done at startup.
 // Additionally, in order to keep track of changes to ProjectSettings,
@@ -66,6 +67,10 @@ class ProjectSettings : public Object {
 	_THREAD_SAFE_CLASS_
 
 	int _dirty_this_frame = 2;
+
+	// Starting version from 1 ensures that all callers can reset their tested version to 0,
+	// and will always detect the initial project settings as a "change".
+	uint32_t _version = 1;
 
 public:
 	typedef RBMap<String, Variant> CustomMap;
@@ -198,6 +203,10 @@ public:
 	// There is therefore the potential for a change to be missed. Persisting the counter
 	// for two frames avoids this, at the cost of a frame delay.
 	bool has_changes() const { return _dirty_this_frame == 1; }
+
+	// Testing a version allows fast cached GET_GLOBAL macros.
+	uint32_t get_version() const { return _version; }
+
 	void update();
 
 	ProjectSettings();
@@ -215,4 +224,19 @@ Variant _GLOBAL_DEF_ALIAS(const String &p_var, const String &p_old_name, const V
 #define GLOBAL_DEF_ALIAS_RST(m_var, m_old_name, m_value) _GLOBAL_DEF(m_var, m_old_name, m_value, true)
 #define GLOBAL_GET(m_var) ProjectSettings::get_singleton()->get(m_var)
 
-#endif
+#define GLOBAL_CACHED(m_name, m_type, m_setting_name)                                                                    \
+	static_assert(HAS_TRIVIAL_DESTRUCTOR(m_type), "GLOBAL_CACHED must use a trivial type that allows static lifetime."); \
+	static m_type m_name;                                                                                                \
+	{                                                                                                                    \
+		static uint32_t local_version = 0;                                                                               \
+		static Mutex local_mutex;                                                                                        \
+		uint32_t new_version = ProjectSettings::get_singleton()->get_version();                                          \
+		if (local_version != new_version) {                                                                              \
+			local_mutex.lock();                                                                                          \
+			local_version = new_version;                                                                                 \
+			m_name = ProjectSettings::get_singleton()->get(m_setting_name);                                              \
+			local_mutex.unlock();                                                                                        \
+		}                                                                                                                \
+	}
+
+#endif // PROJECT_SETTINGS_H

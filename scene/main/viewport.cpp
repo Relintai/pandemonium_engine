@@ -174,14 +174,14 @@ class TooltipPanel : public PanelContainer {
 	GDCLASS(TooltipPanel, PanelContainer);
 
 public:
-	TooltipPanel() {};
+	TooltipPanel() {}
 };
 
 class TooltipLabel : public Label {
 	GDCLASS(TooltipLabel, Label);
 
 public:
-	TooltipLabel() {};
+	TooltipLabel() {}
 };
 
 /////////////////////////////////////
@@ -387,7 +387,9 @@ void Viewport::_notification(int p_what) {
 				}
 			}
 
-			if (!GLOBAL_GET("physics/common/enable_pause_aware_picking")) {
+			GLOBAL_CACHED(physics_enable_pause_aware_picking, bool, "physics/common/enable_pause_aware_picking")
+
+			if (!physics_enable_pause_aware_picking) {
 				_process_picking(false);
 			}
 		} break;
@@ -2005,9 +2007,7 @@ void Viewport::_gui_input_event(Ref<InputEvent> p_event) {
 			}
 
 			if (gui.mouse_focus_mask == 0 && over != gui.mouse_over) {
-				if (gui.mouse_over) {
-					_gui_call_notification(gui.mouse_over, Control::NOTIFICATION_MOUSE_EXIT);
-				}
+				_drop_mouse_over();
 
 				_gui_cancel_tooltip();
 
@@ -2126,9 +2126,7 @@ void Viewport::_gui_input_event(Ref<InputEvent> p_event) {
 		}
 
 		if (over != gui.mouse_over) {
-			if (gui.mouse_over) {
-				_gui_call_notification(gui.mouse_over, Control::NOTIFICATION_MOUSE_EXIT);
-			}
+			_drop_mouse_over();
 
 			_gui_cancel_tooltip();
 
@@ -2689,6 +2687,13 @@ void Viewport::_drop_mouse_focus() {
 	}
 }
 
+void Viewport::_drop_mouse_over() {
+	if (gui.mouse_over) {
+		_gui_call_notification(gui.mouse_over, Control::NOTIFICATION_MOUSE_EXIT);
+		gui.mouse_over = nullptr;
+	}
+}
+
 void Viewport::_drop_physics_mouseover(bool p_paused_only) {
 	physics_has_last_mousepos = false;
 
@@ -2908,6 +2913,18 @@ bool Viewport::gui_has_modal_stack() const {
 }
 
 void Viewport::set_disable_input(bool p_disable) {
+	if (p_disable == disable_input) {
+		return;
+	}
+
+	GLOBAL_CACHED(global_drop_mouse_on_gui_input_disabled, bool, "gui/common/drop_mouse_on_gui_input_disabled")
+
+	if (p_disable && global_drop_mouse_on_gui_input_disabled) {
+		_drop_mouse_focus();
+		_drop_mouse_over();
+		_gui_cancel_tooltip();
+	}
+
 	disable_input = p_disable;
 }
 

@@ -870,7 +870,8 @@ uint32_t RenderingServer::mesh_surface_get_format_stride(uint32_t p_format, int 
 }
 
 void RenderingServer::mesh_surface_make_offsets_from_format(uint32_t p_format, int p_vertex_len, int p_index_len, uint32_t *r_offsets, uint32_t *r_strides) const {
-	bool use_split_stream = GLOBAL_GET("rendering/misc/mesh_storage/split_stream") && !(p_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
+	GLOBAL_CACHED(storage_split_stream, bool, "rendering/misc/mesh_storage/split_stream");
+	bool use_split_stream = storage_split_stream && !(p_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
 
 	int attributes_base_offset = 0;
 	int attributes_stride = 0;
@@ -1248,7 +1249,8 @@ bool RenderingServer::_mesh_find_format(RS::PrimitiveType p_primitive, const Arr
 }
 
 uint32_t RenderingServer::mesh_find_format_from_arrays(PrimitiveType p_primitive, const Array &p_arrays, const Array &p_blend_shapes, uint32_t p_compress_format) {
-	bool use_split_stream = GLOBAL_GET("rendering/misc/mesh_storage/split_stream") && !(p_compress_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
+	GLOBAL_CACHED(storage_split_stream, bool, "rendering/misc/mesh_storage/split_stream");
+	bool use_split_stream = storage_split_stream && !(p_compress_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
 
 	uint32_t offsets[RS::ARRAY_MAX];
 
@@ -1268,7 +1270,8 @@ uint32_t RenderingServer::mesh_find_format_from_arrays(PrimitiveType p_primitive
 }
 
 void RenderingServer::mesh_add_surface_from_arrays(RID p_mesh, PrimitiveType p_primitive, const Array &p_arrays, const Array &p_blend_shapes, uint32_t p_compress_format) {
-	bool use_split_stream = GLOBAL_GET("rendering/misc/mesh_storage/split_stream") && !(p_compress_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
+	GLOBAL_CACHED(storage_split_stream, bool, "rendering/misc/mesh_storage/split_stream");
+	bool use_split_stream = storage_split_stream && !(p_compress_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
 
 	uint32_t offsets[RS::ARRAY_MAX];
 
@@ -1338,7 +1341,8 @@ void RenderingServer::mesh_add_surface_from_arrays(RID p_mesh, PrimitiveType p_p
 }
 
 Array RenderingServer::_get_array_from_surface(uint32_t p_format, PoolVector<uint8_t> p_vertex_data, int p_vertex_len, PoolVector<uint8_t> p_index_data, int p_index_len) const {
-	bool use_split_stream = GLOBAL_GET("rendering/misc/mesh_storage/split_stream") && !(p_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
+	GLOBAL_CACHED(storage_split_stream, bool, "rendering/misc/mesh_storage/split_stream");
+	bool use_split_stream = storage_split_stream && !(p_format & RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE);
 
 	uint32_t offsets[ARRAY_MAX];
 	uint32_t strides[RS::ARRAY_MAX];
@@ -2168,8 +2172,6 @@ void RenderingServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("instance_set_scenario", "instance", "scenario"), &RenderingServer::instance_set_scenario);
 	ClassDB::bind_method(D_METHOD("instance_set_layer_mask", "instance", "mask"), &RenderingServer::instance_set_layer_mask);
 	ClassDB::bind_method(D_METHOD("instance_set_transform", "instance", "transform"), &RenderingServer::instance_set_transform);
-	ClassDB::bind_method(D_METHOD("instance_set_interpolated", "instance", "interpolated"), &RenderingServer::instance_set_interpolated);
-	ClassDB::bind_method(D_METHOD("instance_reset_physics_interpolation", "instance"), &RenderingServer::instance_reset_physics_interpolation);
 	ClassDB::bind_method(D_METHOD("instance_attach_object_instance_id", "instance", "id"), &RenderingServer::instance_attach_object_instance_id);
 	ClassDB::bind_method(D_METHOD("instance_set_blend_shape_weight", "instance", "shape", "weight"), &RenderingServer::instance_set_blend_shape_weight);
 	ClassDB::bind_method(D_METHOD("instance_set_surface_material", "instance", "surface", "material"), &RenderingServer::instance_set_surface_material);
@@ -2187,7 +2189,9 @@ void RenderingServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("instances_cull_aabb", "aabb", "scenario"), &RenderingServer::_instances_cull_aabb_bind, DEFVAL(RID()));
 	ClassDB::bind_method(D_METHOD("instances_cull_ray", "from", "to", "scenario"), &RenderingServer::_instances_cull_ray_bind, DEFVAL(RID()));
 	ClassDB::bind_method(D_METHOD("instances_cull_convex", "convex", "scenario"), &RenderingServer::_instances_cull_convex_bind, DEFVAL(RID()));
+
 #endif
+
 	ClassDB::bind_method(D_METHOD("canvas_create"), &RenderingServer::canvas_create);
 	ClassDB::bind_method(D_METHOD("canvas_set_item_mirroring", "canvas", "item", "mirroring"), &RenderingServer::canvas_set_item_mirroring);
 	ClassDB::bind_method(D_METHOD("canvas_set_modulate", "canvas", "color"), &RenderingServer::canvas_set_modulate);

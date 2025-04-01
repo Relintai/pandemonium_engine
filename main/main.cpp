@@ -1359,6 +1359,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 	Engine::get_singleton()->set_target_fps(GLOBAL_DEF("debug/settings/fps/force_fps", 0));
 	ProjectSettings::get_singleton()->set_custom_property_info("debug/settings/fps/force_fps", PropertyInfo(Variant::INT, "debug/settings/fps/force_fps", PROPERTY_HINT_RANGE, "0,1000,1"));
 	GLOBAL_DEF("physics/common/enable_pause_aware_picking", false);
+	GLOBAL_DEF("gui/common/drop_mouse_on_gui_input_disabled", false);
 
 	GLOBAL_DEF("debug/settings/stdout/print_fps", false);
 	GLOBAL_DEF("debug/settings/stdout/verbose_stdout", false);
@@ -2537,6 +2538,8 @@ bool Main::iteration() {
 	frames++;
 	Engine::get_singleton()->_idle_frames++;
 
+	GLOBAL_CACHED(debug_settings_stdout_print_pfs, bool, "debug/settings/stdout/print_fps");
+
 	if (frame > 1000000) {
 		// Wait a few seconds before printing FPS, as FPS reporting just after the engine has started is inaccurate.
 		if (hide_print_fps_attempts == 0) {
@@ -2544,7 +2547,7 @@ bool Main::iteration() {
 				if (print_fps) {
 					print_line(vformat("Editor FPS: %d (%s mspf)", frames, rtos(1000.0 / frames).pad_decimals(2)));
 				}
-			} else if (print_fps || GLOBAL_GET("debug/settings/stdout/print_fps")) {
+			} else if (print_fps || debug_settings_stdout_print_pfs) {
 				print_line(vformat("Project FPS: %d (%s mspf)", frames, rtos(1000.0 / frames).pad_decimals(2)));
 			}
 		} else {
