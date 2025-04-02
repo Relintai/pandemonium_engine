@@ -32,6 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/interpolated_property.h"
 #include "core/object/reference.h"
 #include "scene/main/spatial.h"
 
@@ -71,10 +72,12 @@ private:
 
 	ProjectionMode mode;
 
-	float fov;
-	float size;
-	Vector2 frustum_offset;
-	float near, far;
+	InterpolatedProperty<float> fov;
+	InterpolatedProperty<float> near;
+	InterpolatedProperty<float> far;
+
+	InterpolatedProperty<float> size;
+	InterpolatedProperty<Vector2> frustum_offset;
 	float v_offset;
 	float h_offset;
 	KeepAspect keep_aspect;
@@ -114,7 +117,10 @@ protected:
 	void _update_camera();
 	virtual void _request_camera_update();
 	void _update_camera_mode();
-	virtual void fti_update_servers();
+
+	virtual void fti_pump_property();
+	virtual void fti_update_servers_property();
+	virtual void fti_update_servers_xform();
 
 	void _notification(int p_what);
 	virtual void _validate_property(PropertyInfo &p_property) const;
@@ -235,9 +241,9 @@ private:
 
 protected:
 	virtual Transform _get_adjusted_camera_transform(const Transform &p_xform) const;
-	virtual void fti_pump();
+	virtual void fti_pump_xform();
+	virtual void fti_update_servers_xform();
 	virtual void _physics_interpolated_changed();
-	virtual void fti_update_servers();
 	///////////////////////////////////////////////////////
 
 	void _notification(int p_what);
