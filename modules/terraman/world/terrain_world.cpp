@@ -636,6 +636,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 	Ref<TerrainChunk> chunk = get_or_create_chunk_at_world_position(wp);
 
 	chunk->prop_add(transform, prop, p_original);
+	chunk->build();
 
 	int count = prop->get_prop_count();
 	for (int i = 0; i < count; ++i) {
@@ -724,6 +725,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 			chunk_local_tform.origin = chunk->to_local(chunk_local_tform.origin);
 
 			chunk->mesh_data_resource_add(chunk_local_tform, mdr, mesh_data->get_texture(), Color(1, 1, 1, 1), false, false);
+			chunk->build();
 
 			continue;
 		}
@@ -745,6 +747,7 @@ void TerrainWorld::light_add(const Ref<TerrainLight> &light) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
 	chunk->light_add(light);
+	chunk->build();
 }
 void TerrainWorld::light_remove(const Ref<TerrainLight> &light) {
 	if (!light.is_valid()) {
