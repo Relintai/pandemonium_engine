@@ -65,6 +65,13 @@
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
+#include "modules/props/prop_instance_merger.h"
+#include "modules/props/props/prop_data.h"
+#endif
+
 EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {
 		return EditorPlugin::AFTER_GUI_INPUT_PASS;
@@ -1112,6 +1119,21 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	baking_tools_label->set_text(TTR("Baking Tools"));
 	_baking_tools_tool_container->add_child(baking_tools_label);
 
+	Label *bake_props_label = memnew(Label);
+	bake_props_label->set_align(Label::ALIGN_CENTER);
+	bake_props_label->set_text(TTR("Props"));
+	_baking_tools_tool_container->add_child(bake_props_label);
+
+	Button *bake_props_button = memnew(Button);
+	bake_props_button->set_text(TTR("Bake Props"));
+	bake_props_button->connect("pressed", this, "_on_bake_props_button_pressed");
+	_baking_tools_tool_container->add_child(bake_props_button);
+
+	Button *un_bake_props_button = memnew(Button);
+	un_bake_props_button->set_text(TTR("Un-Bake Props"));
+	un_bake_props_button->connect("pressed", this, "_on_un_bake_props_button_pressed");
+	_baking_tools_tool_container->add_child(un_bake_props_button);
+
 	// Surface Selector Separator
 	main_container->add_child(memnew(HSeparator));
 
@@ -1384,6 +1406,113 @@ void TerrainWorldEditor::create_chunk_created_undo_point() {
 	_created_chunks.clear();
 }
 
+void TerrainWorldEditor::bake_props(const ObjectID p_world) {
+	TerrainWorld *world = ObjectDB::get_instance<TerrainWorld>(p_world);
+
+	if (!world) {
+		return;
+	}
+
+	int baked_props_count = 0;
+	int skipped_props_count = 0;
+
+	for (int i = 0; i < world->get_child_count(); ++i) {
+		PropInstanceMerger *prop_instance = Object::cast_to<PropInstanceMerger>(world->get_child(i));
+
+		if (!prop_instance) {
+			continue;
+		}
+
+		if (!prop_instance->get_script().is_null()) {
+			++skipped_props_count;
+			continue;
+		}
+
+		Ref<PropData> pd = prop_instance->get_prop_data();
+		Transform t = prop_instance->get_global_transform();
+
+		prop_instance->queue_delete();
+
+		++baked_props_count;
+
+		if (!pd.is_valid()) {
+			continue;
+		}
+
+		world->prop_add(t, pd, false);
+	}
+
+	String results = "Baked " + String::num_int64(baked_props_count) + " direct child props into TerrainWorld. ";
+	results += String::num_int64(skipped_props_count) + "were skipped (they had scripts).";
+
+	print_line(results);
+}
+void TerrainWorldEditor::un_bake_props(const ObjectID p_world) {
+	TerrainWorld *world = ObjectDB::get_instance<TerrainWorld>(p_world);
+
+	if (!world) {
+		return;
+	}
+
+	int un_baked_props_count = 0;
+
+	for (int i = 0; i < world->chunk_get_count(); ++i) {
+		Ref<TerrainChunk> chunk = world->chunk_get_index(i);
+
+		for (int j = 0; j < chunk->prop_get_count(); ++j) {
+			if (!chunk->prop_get_is_original(j)) {
+				continue;
+			}
+
+			Ref<PropData> pd = chunk->prop_get(j);
+			Transform t = chunk->prop_get_transform(j);
+
+			PropInstanceMerger *prop_instance = memnew(PropInstanceMerger);
+
+			prop_instance->set_global_transform(t);
+			prop_instance->set_prop_data(pd);
+
+			world->add_child(prop_instance);
+			prop_instance->set_owner(_editor->get_edited_scene());
+
+			++un_baked_props_count;
+		}
+
+		chunk->props_clear();
+
+		for (int j = 0; j < chunk->light_get_count(); ++j) {
+			Ref<TerrainLight> light = chunk->light_get_index(j);
+
+			if (light->get_owner_type() == TerrainLight::OWNER_TYPE_PROP) {
+				chunk->light_remove_index(j);
+				--j;
+			}
+		}
+
+		for (int j = 0; j < chunk->scene_get_count(); ++j) {
+			if (!chunk->scene_get_is_original(j)) {
+				chunk->scene_remove(j);
+				--j;
+			}
+		}
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+		for (int j = 0; j < chunk->mesh_data_resource_get_count(); ++j) {
+			if (!chunk->mesh_data_resource_get_is_original(j)) {
+				chunk->mesh_data_resource_remove(j);
+				--j;
+			}
+		}
+#endif
+
+		chunk->build();
+	}
+
+	String results = "Un-Baked " + String::num_int64(un_baked_props_count) + " direct child props into TerrainWorld.";
+
+	print_line(results);
+}
+
 void TerrainWorldEditor::create_chunk_removed_undo_point() {
 	if (!_world) {
 		return;
@@ -1627,6 +1756,31 @@ void TerrainWorldEditor::_on_chunk_remove_brush_size_slider_changed(float value)
 	}
 }
 
+void TerrainWorldEditor::_on_bake_props_button_pressed() {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID world = _world->get_instance_id();
+
+	_undo_redo->create_action(TTR("Bake Props"));
+	_undo_redo->add_do_method(this, "bake_props", world);
+	_undo_redo->add_undo_method(this, "un_bake_props", world);
+	_undo_redo->commit_action();
+}
+void TerrainWorldEditor::_on_un_bake_props_button_pressed() {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID world = _world->get_instance_id();
+
+	_undo_redo->create_action(TTR("Bake Props"));
+	_undo_redo->add_do_method(this, "un_bake_props", world);
+	_undo_redo->add_undo_method(this, "bake_props", world);
+	_undo_redo->commit_action();
+}
+
 void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_node_removed", &TerrainWorldEditor::_node_removed);
 
@@ -1655,6 +1809,12 @@ void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("undo_chunk_added_action", &TerrainWorldEditor::undo_chunk_added_action);
 	ClassDB::bind_method("do_chunk_removed_action", &TerrainWorldEditor::do_chunk_removed_action);
 	ClassDB::bind_method("undo_chunk_removed_action", &TerrainWorldEditor::undo_chunk_removed_action);
+
+	ClassDB::bind_method("_on_bake_props_button_pressed", &TerrainWorldEditor::_on_bake_props_button_pressed);
+	ClassDB::bind_method("_on_un_bake_props_button_pressed", &TerrainWorldEditor::_on_un_bake_props_button_pressed);
+
+	ClassDB::bind_method("bake_props", &TerrainWorldEditor::bake_props);
+	ClassDB::bind_method("un_bake_props", &TerrainWorldEditor::un_bake_props);
 }
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {

@@ -99,6 +99,9 @@ protected:
 	HashMap<Vector2i, Ref<TerrainChunk>> _created_chunks;
 	HashMap<Vector2i, Ref<TerrainChunk>> _removed_chunks;
 
+	void bake_props(const ObjectID p_world);
+	void un_bake_props(const ObjectID p_world);
+
 protected:
 	static void _bind_methods();
 	void _notification(int p_what);
@@ -122,6 +125,9 @@ protected:
 
 	void _on_chunk_spawn_brush_size_slider_changed(float value);
 	void _on_chunk_remove_brush_size_slider_changed(float value);
+
+	void _on_bake_props_button_pressed();
+	void _on_un_bake_props_button_pressed();
 
 private:
 	UndoRedo *_undo_redo;
