@@ -121,12 +121,14 @@ _FORCE_INLINE_ int TerrainChunk::get_position_x() const {
 }
 void TerrainChunk::set_position_x(const int value) {
 	_position_x = value;
+	emit_changed();
 }
 _FORCE_INLINE_ int TerrainChunk::get_position_z() const {
 	return _position_z;
 }
 void TerrainChunk::set_position_z(const int value) {
 	_position_z = value;
+	emit_changed();
 }
 
 _FORCE_INLINE_ Vector2 TerrainChunk::get_position() const {
@@ -155,9 +157,11 @@ _FORCE_INLINE_ int TerrainChunk::get_size_z() const {
 
 _FORCE_INLINE_ void TerrainChunk::set_size_x(const int value) {
 	_size_x = value;
+	emit_changed();
 }
 _FORCE_INLINE_ void TerrainChunk::set_size_z(const int value) {
 	_size_z = value;
+	emit_changed();
 }
 
 _FORCE_INLINE_ Vector3 TerrainChunk::get_size() const {
@@ -173,9 +177,11 @@ _FORCE_INLINE_ int TerrainChunk::get_data_size_z() const {
 
 _FORCE_INLINE_ void TerrainChunk::set_data_size_x(const int value) {
 	_data_size_x = value;
+	emit_changed();
 }
 _FORCE_INLINE_ void TerrainChunk::set_data_size_z(const int value) {
 	_data_size_z = value;
+	emit_changed();
 }
 
 _FORCE_INLINE_ float TerrainChunk::get_world_height() const {
@@ -183,11 +189,13 @@ _FORCE_INLINE_ float TerrainChunk::get_world_height() const {
 }
 void TerrainChunk::set_world_height(const float value) {
 	_world_height = value;
+	emit_changed();
 }
 
 void TerrainChunk::set_position(const int x, const int z) {
 	_position_x = x;
 	_position_z = z;
+	emit_changed();
 }
 
 _FORCE_INLINE_ int TerrainChunk::get_margin_start() const {
@@ -199,9 +207,11 @@ _FORCE_INLINE_ int TerrainChunk::get_margin_end() const {
 
 _FORCE_INLINE_ void TerrainChunk::set_margin_start(const int value) {
 	_margin_start = value;
+	emit_changed();
 }
 _FORCE_INLINE_ void TerrainChunk::set_margin_end(const int value) {
 	_margin_end = value;
+	emit_changed();
 }
 
 int TerrainChunk::material_cache_key_get() const {
@@ -405,6 +415,8 @@ void TerrainChunk::set_size(const int size_x, const int size_z, const int margin
 	_channels.clear();
 
 	channel_setup();
+
+	emit_changed();
 }
 
 bool TerrainChunk::validate_data_position(const int x, const int z) const {
@@ -436,6 +448,8 @@ void TerrainChunk::set_voxel(const uint8_t p_value, const int p_x, const int p_z
 	uint8_t *ch = channel_get_valid(p_channel_index);
 
 	ch[get_data_index(x, z)] = p_value;
+
+	emit_changed();
 }
 
 int TerrainChunk::channel_get_count() const {
@@ -468,6 +482,8 @@ void TerrainChunk::channel_set_count(const int count) {
 	for (int i = s; i < count; ++i) {
 		_channels.set(i, NULL);
 	}
+
+	emit_changed();
 }
 bool TerrainChunk::channel_is_allocated(const int channel_index) {
 	ERR_FAIL_INDEX_V(channel_index, _channels.size(), false);
@@ -494,6 +510,8 @@ void TerrainChunk::channel_allocate(const int channel_index, const uint8_t defau
 	memset(ch, default_value, size);
 
 	_channels.set(channel_index, ch);
+
+	emit_changed();
 }
 void TerrainChunk::channel_fill(const uint8_t value, const int channel_index) {
 	ERR_FAIL_INDEX(channel_index, _channels.size());
@@ -510,6 +528,8 @@ void TerrainChunk::channel_fill(const uint8_t value, const int channel_index) {
 	for (uint32_t i = 0; i < size; ++i) {
 		ch[i] = value;
 	}
+
+	emit_changed();
 }
 void TerrainChunk::channel_dealloc(const int channel_index) {
 	ERR_FAIL_INDEX(channel_index, _channels.size());
@@ -520,6 +540,8 @@ void TerrainChunk::channel_dealloc(const int channel_index) {
 		memdelete_arr(ch);
 
 		_channels.set(channel_index, NULL);
+
+		emit_changed();
 	}
 }
 
@@ -588,6 +610,8 @@ void TerrainChunk::channel_set_array(const int channel_index, const PoolByteArra
 	for (int i = 0; i < array.size(); ++i) {
 		ch[i] = array[i];
 	}
+
+	emit_changed();
 }
 
 PoolByteArray TerrainChunk::channel_get_compressed(const int channel_index) const {
@@ -649,6 +673,8 @@ void TerrainChunk::channel_set_compressed(const int channel_index, const PoolByt
 
 	LZ4Compressor::LZ4_decompress_safe(reinterpret_cast<char *>(data_arr), reinterpret_cast<char *>(ch), ds, size);
 #endif
+
+	emit_changed();
 }
 
 _FORCE_INLINE_ int TerrainChunk::get_index(const int x, const int z) const {
@@ -680,6 +706,8 @@ void TerrainChunk::light_add(Ref<TerrainLight> p_light) {
 	if (ObjectDB::instance_validate(world)) {
 		world->world_light_added(p_light);
 	}
+
+	emit_changed();
 }
 bool TerrainChunk::light_remove(Ref<TerrainLight> p_light) {
 	if (!p_light.is_valid()) {
@@ -695,6 +723,8 @@ bool TerrainChunk::light_remove(Ref<TerrainLight> p_light) {
 		if (ObjectDB::instance_validate(world)) {
 			world->world_light_removed(p_light);
 		}
+
+		emit_changed();
 
 		return true;
 	}
@@ -721,6 +751,8 @@ void TerrainChunk::light_remove_index(const int index) {
 	if (ObjectDB::instance_validate(world)) {
 		world->world_light_removed(light);
 	}
+
+	emit_changed();
 }
 int TerrainChunk::light_get_count() const {
 	return _lights.size();
@@ -747,6 +779,8 @@ void TerrainChunk::lights_clear() {
 	}
 
 	_lights.clear();
+
+	emit_changed();
 }
 
 Vector<Variant> TerrainChunk::lights_get() {
@@ -760,6 +794,8 @@ void TerrainChunk::lights_set(const Vector<Variant> &p_lights) {
 
 		light_add(light);
 	}
+
+	emit_changed();
 }
 
 Vector<Variant> TerrainChunk::owned_lights_get() {
@@ -804,6 +840,8 @@ void TerrainChunk::owned_lights_set(const Vector<Variant> &p_lights) {
 
 		light_add(light);
 	}
+
+	emit_changed();
 }
 
 void TerrainChunk::_on_light_moved(const Ref<TerrainLight> &p_light) {
@@ -839,9 +877,13 @@ void TerrainChunk::voxel_structure_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _voxel_structures.size());
 
 	_voxel_structures.remove(index);
+
+	emit_changed();
 }
 void TerrainChunk::voxel_structure_clear() {
 	_voxel_structures.clear();
+
+	emit_changed();
 }
 int TerrainChunk::voxel_structure_get_count() const {
 	return _voxel_structures.size();
@@ -867,6 +909,8 @@ void TerrainChunk::voxel_structures_set(const Vector<Variant> &structures) {
 
 		voxel_structure_add(structure);
 	}
+
+	emit_changed();
 }
 
 //Scenes
@@ -889,6 +933,8 @@ void TerrainChunk::scene_add(const Ref<PackedScene> &p_scene, const Transform &p
 	if (_is_in_tree && !p_node) {
 		scene_instance(_scenes.size() - 1);
 	}
+
+	emit_changed();
 }
 
 Ref<PackedScene> TerrainChunk::scene_get(int index) {
@@ -900,6 +946,8 @@ void TerrainChunk::scene_set(const int index, const Ref<PackedScene> &p_scene) {
 	ERR_FAIL_INDEX(index, _scenes.size());
 
 	_scenes.write[index].scene = p_scene;
+
+	emit_changed();
 }
 
 Transform TerrainChunk::scene_get_transform(const int index) {
@@ -911,6 +959,8 @@ void TerrainChunk::scene_set_transform(const int index, const Transform &p_trans
 	ERR_FAIL_INDEX(index, _scenes.size());
 
 	_scenes.write[index].transform = p_transform;
+
+	emit_changed();
 }
 
 bool TerrainChunk::scene_get_is_original(const int index) {
@@ -922,6 +972,8 @@ void TerrainChunk::scene_set_is_original(const int index, const bool p_original)
 	ERR_FAIL_INDEX(index, _scenes.size());
 
 	_scenes.write[index].original = p_original;
+
+	emit_changed();
 }
 
 Node *TerrainChunk::scene_get_node(const int index) {
@@ -939,6 +991,8 @@ void TerrainChunk::scene_set_node(const int index, const Node *p_node) {
 	}
 
 	_scenes.write[index].node = id;
+
+	emit_changed();
 }
 
 int TerrainChunk::scene_get_count() const {
@@ -952,6 +1006,8 @@ void TerrainChunk::scene_remove(const int index, const bool p_queue_free) {
 	}
 
 	_scenes.remove(index);
+
+	emit_changed();
 }
 void TerrainChunk::scenes_clear(const bool p_queue_free) {
 	if (p_queue_free) {
@@ -961,6 +1017,8 @@ void TerrainChunk::scenes_clear(const bool p_queue_free) {
 	}
 
 	_scenes.clear();
+
+	emit_changed();
 }
 
 void TerrainChunk::scene_instance(const int index) {
@@ -1143,6 +1201,8 @@ void TerrainChunk::prop_add(const Transform &transform, const Ref<PropData> &pro
 	s.prop = prop;
 
 	_props.push_back(s);
+
+	emit_changed();
 }
 
 Ref<PropData> TerrainChunk::prop_get(int index) {
@@ -1154,6 +1214,8 @@ void TerrainChunk::prop_set(const int index, const Ref<PropData> &p_prop) {
 	ERR_FAIL_INDEX(index, _props.size());
 
 	_props.write[index].prop = p_prop;
+
+	emit_changed();
 }
 
 Transform TerrainChunk::prop_get_transform(const int index) {
@@ -1165,6 +1227,8 @@ void TerrainChunk::prop_set_transform(const int index, const Transform &p_transf
 	ERR_FAIL_INDEX(index, _props.size());
 
 	_props.write[index].transform = p_transform;
+
+	emit_changed();
 }
 
 bool TerrainChunk::prop_get_is_original(const int index) {
@@ -1176,6 +1240,8 @@ void TerrainChunk::prop_set_is_original(const int index, const bool p_original) 
 	ERR_FAIL_INDEX(index, _props.size());
 
 	_props.write[index].original = p_original;
+
+	emit_changed();
 }
 
 int TerrainChunk::prop_get_count() const {
@@ -1185,9 +1251,13 @@ void TerrainChunk::prop_remove(const int index) {
 	ERR_FAIL_INDEX(index, _props.size());
 
 	_props.remove(index);
+
+	emit_changed();
 }
 void TerrainChunk::props_clear() {
 	_props.clear();
+
+	emit_changed();
 }
 
 Array TerrainChunk::props_get() {
@@ -1262,6 +1332,8 @@ int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const R
 		call("_mesh_data_resource_added", index);
 	}
 
+	emit_changed();
+
 	return index;
 }
 
@@ -1304,6 +1376,8 @@ int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const
 		call("_mesh_data_resource_added", index);
 	}
 
+	emit_changed();
+
 	return index;
 }
 
@@ -1315,6 +1389,10 @@ Ref<MeshDataResource> TerrainChunk::mesh_data_resource_get(const int index) {
 
 void TerrainChunk::mesh_data_resource_set(const int index, const Ref<MeshDataResource> &mesh) {
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
+
+	_mesh_data_resources.write[index].mesh = mesh;
+
+	emit_changed();
 }
 
 Ref<Texture> TerrainChunk::mesh_data_resource_get_texture(const int index) {
@@ -1326,6 +1404,8 @@ void TerrainChunk::mesh_data_resource_set_texture(const int index, const Ref<Tex
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].texture = texture;
+
+	emit_changed();
 }
 
 Color TerrainChunk::mesh_data_resource_get_color(const int index) {
@@ -1337,6 +1417,8 @@ void TerrainChunk::mesh_data_resource_set_color(const int index, const Color &co
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].color = color;
+
+	emit_changed();
 }
 
 Rect2 TerrainChunk::mesh_data_resource_get_uv_rect(const int index) {
@@ -1348,6 +1430,8 @@ void TerrainChunk::mesh_data_resource_set_uv_rect(const int index, const Rect2 &
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].uv_rect = uv_rect;
+
+	emit_changed();
 }
 
 Transform TerrainChunk::mesh_data_resource_get_transform(const int index) {
@@ -1359,6 +1443,8 @@ void TerrainChunk::mesh_data_resource_set_transform(const int index, const Trans
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].transform = transform;
+
+	emit_changed();
 }
 
 bool TerrainChunk::mesh_data_resource_get_is_inside(const int index) {
@@ -1370,6 +1456,8 @@ void TerrainChunk::mesh_data_resource_set_is_inside(const int index, const bool 
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].is_inside = inside;
+
+	emit_changed();
 }
 
 bool TerrainChunk::mesh_data_resource_get_is_original(const int index) {
@@ -1381,6 +1469,8 @@ void TerrainChunk::mesh_data_resource_set_is_original(const int index, const boo
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].is_original = p_original;
+
+	emit_changed();
 }
 
 int TerrainChunk::mesh_data_resource_get_count() const {
@@ -1390,9 +1480,13 @@ void TerrainChunk::mesh_data_resource_remove(const int index) {
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.remove(index);
+
+	emit_changed();
 }
 void TerrainChunk::mesh_data_resource_clear() {
 	_mesh_data_resources.clear();
+
+	emit_changed();
 }
 
 Array TerrainChunk::mesh_data_resources_get() {
@@ -1448,6 +1542,8 @@ int TerrainChunk::collider_add(const Transform &local_transform, const Ref<Shape
 
 	_colliders.push_back(e);
 
+	emit_changed();
+
 	return index;
 }
 
@@ -1460,6 +1556,8 @@ void TerrainChunk::collider_set_transform(const int index, const Transform &tran
 	ERR_FAIL_INDEX(index, _colliders.size());
 
 	_colliders.write[index].transform = transform;
+
+	emit_changed();
 }
 
 Ref<Shape> TerrainChunk::collider_get_shape(const int index) {
@@ -1472,6 +1570,8 @@ void TerrainChunk::collider_set_shape(const int index, const Ref<Shape> &shape) 
 	ERR_FAIL_INDEX(index, _colliders.size());
 
 	_colliders.write[index].shape = shape;
+
+	emit_changed();
 }
 
 RID TerrainChunk::collider_get_shape_rid(const int index) {
@@ -1483,6 +1583,8 @@ void TerrainChunk::collider_set_shape_rid(const int index, const RID &rid) {
 	ERR_FAIL_INDEX(index, _colliders.size());
 
 	_colliders.write[index].shape_rid = rid;
+
+	emit_changed();
 }
 
 RID TerrainChunk::collider_get_body(const int index) {
@@ -1494,6 +1596,8 @@ void TerrainChunk::collider_set_body(const int index, const RID &rid) {
 	ERR_FAIL_INDEX(index, _colliders.size());
 
 	_colliders.write[index].body = rid;
+
+	emit_changed();
 }
 
 int TerrainChunk::collider_get_count() const {
@@ -1503,9 +1607,13 @@ void TerrainChunk::collider_remove(const int index) {
 	ERR_FAIL_INDEX(index, _colliders.size());
 
 	_colliders.remove(index);
+
+	emit_changed();
 }
 void TerrainChunk::colliders_clear() {
 	_colliders.clear();
+
+	emit_changed();
 }
 
 void TerrainChunk::enter_tree() {
@@ -1562,6 +1670,8 @@ Transform TerrainChunk::get_transform() const {
 }
 void TerrainChunk::set_transform(const Transform &transform) {
 	_transform = transform;
+
+	emit_changed();
 }
 
 Transform TerrainChunk::get_global_transform() const {
