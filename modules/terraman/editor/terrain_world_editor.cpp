@@ -140,6 +140,10 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 						_gizmo->redraw();
 					}
 				} break;
+				case TOOL_MODE_BAKING_TOOLS: {
+					// Ignore
+					break;
+				}
 			}
 
 			return EditorPlugin::AFTER_GUI_INPUT_PASS;
@@ -213,6 +217,10 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 					_gizmo->redraw();
 				}
 			} break;
+			case TOOL_MODE_BAKING_TOOLS: {
+				// Ignore
+				break;
+			}
 		}
 
 		return EditorPlugin::AFTER_GUI_INPUT_STOP;
@@ -319,6 +327,9 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 							return EditorPlugin::AFTER_GUI_INPUT_PASS;
 						}
 					} break;
+					case TOOL_MODE_BAKING_TOOLS: {
+						break;
+					}
 				}
 
 				return EditorPlugin::AFTER_GUI_INPUT_PASS;
@@ -348,6 +359,9 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Came
 					case TOOL_MODE_CHUNK_REMOVE_BRUSH: {
 						create_chunk_removed_undo_point();
 					} break;
+					case TOOL_MODE_BAKING_TOOLS: {
+						break;
+					}
 				}
 
 				_mouse_down = false;
@@ -654,6 +668,9 @@ void TerrainWorldEditor::edit(TerrainWorld *p_world) {
 		case TOOL_MODE_CHUNK_REMOVE_BRUSH: {
 			_gizmo->size = _chunk_remove_brush_size;
 		} break;
+		case TOOL_MODE_BAKING_TOOLS: {
+			break;
+		}
 	}
 
 	if (_paint_brush_liquid_mode) {
@@ -846,6 +863,13 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_chunk_remove_brush_button->set_meta("tool_mode", TOOL_MODE_CHUNK_REMOVE_BRUSH);
 	_chunk_remove_brush_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/chunk_remove_brush", "Chunk Remove Brush", KEY_U));
 	_tool_button_container->add_child(_chunk_remove_brush_button);
+
+	_baking_tools_button = memnew(ToolButton);
+	_baking_tools_button->set_toggle_mode(true);
+	_baking_tools_button->set_button_group(_tool_button_group);
+	_baking_tools_button->set_meta("tool_mode", TOOL_MODE_BAKING_TOOLS);
+	_baking_tools_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/baking_tools", "Baking Tools", KEY_B));
+	_tool_button_container->add_child(_baking_tools_button);
 
 	main_container->add_child(memnew(HSeparator));
 
@@ -1078,6 +1102,16 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_chunk_remove_brush_size_slider->connect("value_changed", this, "_on_chunk_remove_brush_size_slider_changed");
 	_chunk_remove_brush_tool_container->add_child(_chunk_remove_brush_size_slider);
 
+	// Baking Tools
+	_baking_tools_tool_container = memnew(VBoxContainer);
+	_baking_tools_tool_container->hide();
+	main_container->add_child(_baking_tools_tool_container);
+
+	Label *baking_tools_label = memnew(Label);
+	baking_tools_label->set_align(Label::ALIGN_CENTER);
+	baking_tools_label->set_text(TTR("Baking Tools"));
+	_baking_tools_tool_container->add_child(baking_tools_label);
+
 	// Surface Selector Separator
 	main_container->add_child(memnew(HSeparator));
 
@@ -1127,6 +1161,9 @@ void TerrainWorldEditor::_notification(int p_what) {
 
 			// Chunk Remove
 			_chunk_remove_brush_button->set_icon(get_theme_icon("Clear", "EditorIcons"));
+
+			// Baking Tools
+			_baking_tools_button->set_icon(get_theme_icon("Bake", "EditorIcons"));
 		} break;
 	}
 }
@@ -1419,6 +1456,7 @@ void TerrainWorldEditor::_on_tool_button_pressed(Object *p_button) {
 			_paint_picker_tool_container->hide();
 			_chunk_spawn_brush_tool_container->hide();
 			_chunk_remove_brush_tool_container->hide();
+			_baking_tools_tool_container->hide();
 
 			break;
 		case TOOL_MODE_ISOLEVEL_BRUSH:
@@ -1430,6 +1468,7 @@ void TerrainWorldEditor::_on_tool_button_pressed(Object *p_button) {
 			_paint_picker_tool_container->hide();
 			_chunk_spawn_brush_tool_container->hide();
 			_chunk_remove_brush_tool_container->hide();
+			_baking_tools_tool_container->hide();
 
 			break;
 		case TOOL_MODE_PAINT_PICKER:
@@ -1442,6 +1481,7 @@ void TerrainWorldEditor::_on_tool_button_pressed(Object *p_button) {
 			_paint_picker_tool_container->show();
 			_chunk_spawn_brush_tool_container->hide();
 			_chunk_remove_brush_tool_container->hide();
+			_baking_tools_tool_container->hide();
 
 			if (_previous_tool_mode == TOOL_MODE_ISOLEVEL_BRUSH) {
 				_paint_picker_tool_label->set_text(TTR("Isolevel Brush"));
@@ -1462,6 +1502,7 @@ void TerrainWorldEditor::_on_tool_button_pressed(Object *p_button) {
 			_paint_picker_tool_container->hide();
 			_chunk_spawn_brush_tool_container->show();
 			_chunk_remove_brush_tool_container->hide();
+			_baking_tools_tool_container->hide();
 
 			break;
 		case TOOL_MODE_CHUNK_REMOVE_BRUSH:
@@ -1473,6 +1514,20 @@ void TerrainWorldEditor::_on_tool_button_pressed(Object *p_button) {
 			_paint_picker_tool_container->hide();
 			_chunk_spawn_brush_tool_container->hide();
 			_chunk_remove_brush_tool_container->show();
+			_baking_tools_tool_container->hide();
+
+			break;
+		case TOOL_MODE_BAKING_TOOLS:
+			_gizmo->visible = false;
+			_gizmo->redraw();
+
+			_isolevel_brush_tool_container->hide();
+			_paint_brush_tool_container->hide();
+			_surfaces_vbox_container->hide();
+			_paint_picker_tool_container->hide();
+			_chunk_spawn_brush_tool_container->hide();
+			_chunk_remove_brush_tool_container->hide();
+			_baking_tools_tool_container->show();
 
 			break;
 		default:

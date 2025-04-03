@@ -57,6 +57,7 @@ public:
 		TOOL_MODE_PAINT_PICKER,
 		TOOL_MODE_CHUNK_SPAWN_BRUSH,
 		TOOL_MODE_CHUNK_REMOVE_BRUSH,
+		TOOL_MODE_BAKING_TOOLS,
 		// TODO object manipulation tools.
 	};
 
@@ -178,6 +179,7 @@ private:
 	ToolButton *_paint_picker_button;
 	ToolButton *_chunk_spawn_brush_button;
 	ToolButton *_chunk_remove_brush_button;
+	ToolButton *_baking_tools_button;
 
 	HFlowContainer *_tool_button_container;
 	Ref<ButtonGroup> _tool_button_group;
@@ -213,6 +215,8 @@ private:
 
 	VBoxContainer *_chunk_remove_brush_tool_container;
 	HSlider *_chunk_remove_brush_size_slider;
+
+	VBoxContainer *_baking_tools_tool_container;
 };
 
 class TerrainWorldEditorPlugin : public EditorPlugin {
