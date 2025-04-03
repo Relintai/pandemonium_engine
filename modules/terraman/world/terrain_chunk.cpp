@@ -1192,10 +1192,11 @@ void TerrainChunk::clear_baked_lights() {
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void TerrainChunk::prop_add(const Transform &transform, const Ref<PropData> &prop, const bool p_original) {
+void TerrainChunk::prop_add(const Transform &transform, const Ref<PropData> &prop, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	PropDataStore s;
+	s.name = p_name;
 	s.original = p_original;
 	s.transform = transform;
 	s.prop = prop;
@@ -1240,6 +1241,19 @@ void TerrainChunk::prop_set_is_original(const int index, const bool p_original) 
 	ERR_FAIL_INDEX(index, _props.size());
 
 	_props.write[index].original = p_original;
+
+	emit_changed();
+}
+
+String TerrainChunk::prop_get_name(const int index) {
+	ERR_FAIL_INDEX_V(index, _props.size(), String());
+
+	return _props.get(index).name;
+}
+void TerrainChunk::prop_set_name(const int index, const String &p_name) {
+	ERR_FAIL_INDEX(index, _props.size());
+
+	_props.write[index].name = p_name;
 
 	emit_changed();
 }
@@ -2210,7 +2224,7 @@ void TerrainChunk::_bind_methods() {
 	//Props
 
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "original"), &TerrainChunk::prop_add, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "original", "name"), &TerrainChunk::prop_add, DEFVAL(true), DEFVAL(String()));
 
 	ClassDB::bind_method(D_METHOD("prop_get", "index"), &TerrainChunk::prop_get);
 	ClassDB::bind_method(D_METHOD("prop_set", "index", "prop"), &TerrainChunk::prop_set);
@@ -2220,6 +2234,9 @@ void TerrainChunk::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("prop_get_is_original", "index"), &TerrainChunk::prop_get_is_original);
 	ClassDB::bind_method(D_METHOD("prop_set_is_original", "index", "original"), &TerrainChunk::prop_set_is_original);
+
+	ClassDB::bind_method(D_METHOD("prop_get_name", "index"), &TerrainChunk::prop_get_name);
+	ClassDB::bind_method(D_METHOD("prop_set_name", "index", "name"), &TerrainChunk::prop_set_name);
 
 	ClassDB::bind_method(D_METHOD("prop_get_count"), &TerrainChunk::prop_get_count);
 	ClassDB::bind_method(D_METHOD("prop_remove", "index"), &TerrainChunk::prop_remove);

@@ -289,7 +289,7 @@ public:
 	void clear_baked_lights();
 
 #ifdef MODULE_PROPS_ENABLED
-	void prop_add(const Transform &transform, const Ref<PropData> &prop, const bool p_original = true);
+	void prop_add(const Transform &transform, const Ref<PropData> &prop, const bool p_original = true, const String &p_name = String());
 
 	Ref<PropData> prop_get(const int index);
 	void prop_set(const int index, const Ref<PropData> &p_prop);
@@ -299,6 +299,9 @@ public:
 
 	bool prop_get_is_original(const int index);
 	void prop_set_is_original(const int index, const bool p_original);
+
+	String prop_get_name(const int index);
+	void prop_set_name(const int index, const String &p_name);
 
 	int prop_get_count() const;
 	void prop_remove(const int index);
@@ -400,6 +403,7 @@ protected:
 
 #ifdef MODULE_PROPS_ENABLED
 	struct PropDataStore {
+		String name;
 		bool original;
 		Transform transform;
 		Ref<PropData> prop;

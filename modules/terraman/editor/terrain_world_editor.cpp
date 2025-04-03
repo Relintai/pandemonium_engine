@@ -1430,6 +1430,7 @@ void TerrainWorldEditor::bake_props(const ObjectID p_world) {
 
 		Ref<PropData> pd = prop_instance->get_prop_data();
 		Transform t = prop_instance->get_global_transform();
+		String name = prop_instance->get_name();
 
 		prop_instance->queue_delete();
 
@@ -1439,7 +1440,7 @@ void TerrainWorldEditor::bake_props(const ObjectID p_world) {
 			continue;
 		}
 
-		world->prop_add(t, pd, false);
+		world->prop_add(t, pd, false, true, name);
 	}
 
 	String results = "Baked " + String::num_int64(baked_props_count) + " direct child props into TerrainWorld. ";
@@ -1466,11 +1467,15 @@ void TerrainWorldEditor::un_bake_props(const ObjectID p_world) {
 
 			Ref<PropData> pd = chunk->prop_get(j);
 			Transform t = chunk->prop_get_transform(j);
+			String name = chunk->prop_get_name(j);
 
 			PropInstanceMerger *prop_instance = memnew(PropInstanceMerger);
 
 			prop_instance->set_global_transform(t);
 			prop_instance->set_prop_data(pd);
+			if (!name.empty()) {
+				prop_instance->set_name(name);
+			}
 
 			world->add_child(prop_instance);
 			prop_instance->set_owner(_editor->get_edited_scene());
