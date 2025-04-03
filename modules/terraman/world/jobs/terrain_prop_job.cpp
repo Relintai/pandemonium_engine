@@ -215,6 +215,18 @@ void TerrainPropJob::phase_prop() {
 
 	if (should_do()) {
 		if (chunk->mesh_data_resource_get_count() == 0) {
+			// clear mesh from previous runs
+			int mesh_count = chunk->mesh_rid_get_count(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH);
+			if (mesh_count > 0) {
+				for (int i = 0; i < mesh_count; ++i) {
+					RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, i);
+
+					if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+						RS::get_singleton()->mesh_clear(mesh_rid);
+					}
+				}
+			}
+
 			reset_stages();
 			set_complete(true); //So threadpool knows it's done
 			next_job();
@@ -277,6 +289,18 @@ void TerrainPropJob::phase_prop() {
 	}
 
 	if (get_prop_mesher()->get_vertex_count() == 0) {
+		// clear mesh from previous runs
+		int mesh_count = chunk->mesh_rid_get_count(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH);
+		if (mesh_count > 0) {
+			for (int i = 0; i < mesh_count; ++i) {
+				RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, i);
+
+				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+					RS::get_singleton()->mesh_clear(mesh_rid);
+				}
+			}
+		}
+
 		reset_stages();
 
 		set_complete(true); //So threadpool knows it's done
@@ -310,6 +334,20 @@ void TerrainPropJob::_execute_phase() {
 			|| chunk->mesh_data_resource_get_count() == 0
 #endif
 	) {
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+		// clear mesh from previous runs
+		int mesh_count = chunk->mesh_rid_get_count(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH);
+		if (mesh_count > 0) {
+			for (int i = 0; i < mesh_count; ++i) {
+				RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, i);
+
+				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+					RS::get_singleton()->mesh_clear(mesh_rid);
+				}
+			}
+		}
+#endif
+
 		set_complete(true);
 		next_job();
 		return;
@@ -398,6 +436,18 @@ void TerrainPropJob::phase_steps() {
 	}
 
 	if (_prop_mesher->get_vertex_count() == 0) {
+		// clear mesh from previous runs
+		int mesh_count = chunk->mesh_rid_get_count(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH);
+		if (mesh_count > 0) {
+			for (int i = 0; i < mesh_count; ++i) {
+				RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, i);
+
+				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
+					RS::get_singleton()->mesh_clear(mesh_rid);
+				}
+			}
+		}
+
 		reset_stages();
 		//next_phase();
 		set_complete(true); //So threadpool knows it's done
