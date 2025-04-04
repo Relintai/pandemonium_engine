@@ -121,6 +121,13 @@ void TerrainLight::set_light_mode(const LightMode value) {
 	_light_mode = value;
 }
 
+int TerrainLight::get_item_cull_mask() {
+	return _item_cull_mask;
+}
+void TerrainLight::set_item_cull_mask(const int p_item_cull_mask) {
+	_item_cull_mask = p_item_cull_mask;
+}
+
 Dictionary TerrainLight::to_dict() {
 	Dictionary data;
 
@@ -141,6 +148,8 @@ Dictionary TerrainLight::to_dict() {
 
 	data["light_mode"] = (int)_light_mode;
 
+	data["item_cull_mask"] = _item_cull_mask;
+
 	return data;
 }
 void TerrainLight::from_dict(const Dictionary &p_data) {
@@ -160,6 +169,8 @@ void TerrainLight::from_dict(const Dictionary &p_data) {
 	_specular = p_data["specular"];
 
 	_light_mode = (LightMode)((int)p_data["light_mode"]);
+
+	_item_cull_mask = p_data["item_cull_mask"];
 }
 
 TerrainLight::TerrainLight() {
@@ -172,6 +183,7 @@ TerrainLight::TerrainLight() {
 	_negative = false;
 	_specular = 0;
 	_light_mode = LIGHT_MODE_ADD;
+	_item_cull_mask = 1;
 }
 
 TerrainLight::~TerrainLight() {
@@ -234,6 +246,10 @@ void TerrainLight::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_light_mode"), &TerrainLight::get_light_mode);
 	ClassDB::bind_method(D_METHOD("set_light_mode", "value"), &TerrainLight::set_light_mode);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "light_mode", PROPERTY_HINT_ENUM, "Add,Sub,Mix"), "set_light_mode", "get_light_mode");
+
+	ClassDB::bind_method(D_METHOD("get_item_cull_mask"), &TerrainLight::get_item_cull_mask);
+	ClassDB::bind_method(D_METHOD("set_item_cull_mask", "value"), &TerrainLight::set_item_cull_mask);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "item_cull_mask", PROPERTY_HINT_LAYERS_3D_RENDER), "set_item_cull_mask", "get_item_cull_mask");
 
 	ClassDB::bind_method(D_METHOD("to_dict"), &TerrainLight::to_dict);
 	ClassDB::bind_method(D_METHOD("from_dict", "data"), &TerrainLight::from_dict);

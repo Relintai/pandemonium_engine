@@ -92,6 +92,9 @@ public:
 	LightMode get_light_mode() const;
 	void set_light_mode(const LightMode value);
 
+	int get_item_cull_mask();
+	void set_item_cull_mask(const int p_item_cull_mask);
+
 	Dictionary to_dict();
 	void from_dict(const Dictionary &p_data);
 
@@ -118,6 +121,8 @@ private:
 	real_t _specular;
 
 	LightMode _light_mode;
+
+	int _item_cull_mask;
 };
 
 VARIANT_ENUM_CAST(TerrainLight::OwnerType);
