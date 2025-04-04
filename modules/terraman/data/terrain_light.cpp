@@ -114,6 +114,13 @@ void TerrainLight::set_specular(const real_t value) {
 	_specular = value;
 }
 
+TerrainLight::LightMode TerrainLight::get_light_mode() const {
+	return _light_mode;
+}
+void TerrainLight::set_light_mode(const LightMode value) {
+	_light_mode = value;
+}
+
 Dictionary TerrainLight::to_dict() {
 	Dictionary data;
 
@@ -132,6 +139,8 @@ Dictionary TerrainLight::to_dict() {
 	data["negative"] = _negative;
 	data["specular"] = _specular;
 
+	data["light_mode"] = (int)_light_mode;
+
 	return data;
 }
 void TerrainLight::from_dict(const Dictionary &p_data) {
@@ -149,6 +158,8 @@ void TerrainLight::from_dict(const Dictionary &p_data) {
 	_indirect_energy = p_data["indirect_energy"];
 	_negative = p_data["negative"];
 	_specular = p_data["specular"];
+
+	_light_mode = (LightMode)((int)p_data["light_mode"]);
 }
 
 TerrainLight::TerrainLight() {
@@ -160,6 +171,7 @@ TerrainLight::TerrainLight() {
 	_indirect_energy = 0;
 	_negative = false;
 	_specular = 0;
+	_light_mode = LIGHT_MODE_ADD;
 }
 
 TerrainLight::~TerrainLight() {
@@ -219,6 +231,10 @@ void TerrainLight::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_specular", "value"), &TerrainLight::set_specular);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "light_specular"), "set_specular", "get_specular");
 
+	ClassDB::bind_method(D_METHOD("get_light_mode"), &TerrainLight::get_light_mode);
+	ClassDB::bind_method(D_METHOD("set_light_mode", "value"), &TerrainLight::set_light_mode);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "light_mode", PROPERTY_HINT_ENUM, "Add,Sub,Mix"), "set_light_mode", "get_light_mode");
+
 	ClassDB::bind_method(D_METHOD("to_dict"), &TerrainLight::to_dict);
 	ClassDB::bind_method(D_METHOD("from_dict", "data"), &TerrainLight::from_dict);
 
@@ -226,4 +242,8 @@ void TerrainLight::_bind_methods() {
 #ifdef MODULE_PROPS_ENABLED
 	BIND_ENUM_CONSTANT(OWNER_TYPE_PROP);
 #endif
+
+	BIND_ENUM_CONSTANT(LIGHT_MODE_ADD);
+	BIND_ENUM_CONSTANT(LIGHT_MODE_SUB);
+	BIND_ENUM_CONSTANT(LIGHT_MODE_MIX);
 }

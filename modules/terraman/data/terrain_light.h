@@ -49,6 +49,13 @@ public:
 #endif
 	};
 
+	enum LightMode {
+		LIGHT_MODE_ADD = 0,
+		LIGHT_MODE_SUB,
+		LIGHT_MODE_MIX,
+		//LIGHT_MODE_MASK
+	};
+
 	OwnerType get_owner_type() const;
 	void set_owner_type(const OwnerType p_value);
 
@@ -82,6 +89,9 @@ public:
 	real_t get_specular() const;
 	void set_specular(const real_t value);
 
+	LightMode get_light_mode() const;
+	void set_light_mode(const LightMode value);
+
 	Dictionary to_dict();
 	void from_dict(const Dictionary &p_data);
 
@@ -106,8 +116,11 @@ private:
 	real_t _indirect_energy;
 	bool _negative;
 	real_t _specular;
+
+	LightMode _light_mode;
 };
 
 VARIANT_ENUM_CAST(TerrainLight::OwnerType);
+VARIANT_ENUM_CAST(TerrainLight::LightMode);
 
 #endif
