@@ -54,6 +54,7 @@
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
+#include "modules/mesh_data_resource/mesh_data_resource.h"
 #endif
 
 #if TOOLS_ENABLED
@@ -61,8 +62,9 @@
 #include "scene/3d/camera.h"
 #endif
 
-#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-#include "modules/mesh_data_resource/mesh_data_resource.h"
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+#include "modules/vertex_lights_3d/vertex_lights_3d_server.h"
+#include "scene/resources/world_3d.h"
 #endif
 
 const String TerrainWorld::BINDING_STRING_CHANNEL_TYPE_INFO = "Type,Isolevel,Liquid,Liquid Level";
@@ -172,6 +174,23 @@ void TerrainWorld::set_voxel_scale(const float value) {
 		c->set_voxel_scale(_voxel_scale);
 	}
 }
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+bool TerrainWorld::get_use_vertex_lights_3d() const {
+	return _use_vertex_lights_3d;
+}
+void TerrainWorld::set_use_vertex_lights_3d(const bool value) {
+	_use_vertex_lights_3d = value;
+
+	if (is_inside_tree()) {
+		if (_use_vertex_lights_3d) {
+			VertexLights3DServer::get_singleton()->connect("map_changed", this, "_on_vertex_lights_3d_map_changed");
+		} else {
+			VertexLights3DServer::get_singleton()->disconnect("map_changed", this, "_on_vertex_lights_3d_map_changed");
+		}
+	}
+}
+#endif
 
 int TerrainWorld::get_chunk_spawn_range() const {
 	return _chunk_spawn_range;
@@ -1353,6 +1372,10 @@ TerrainWorld::TerrainWorld() {
 	_player = NULL;
 	_max_frame_chunk_build_steps = 0;
 	_num_frame_chunk_build_steps = 0;
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	_use_vertex_lights_3d = true;
+#endif
 }
 
 TerrainWorld ::~TerrainWorld() {
@@ -1397,6 +1420,12 @@ void TerrainWorld::_generate_chunk(Ref<TerrainChunk> chunk) {
 void TerrainWorld::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+			if (_use_vertex_lights_3d) {
+				VertexLights3DServer::get_singleton()->connect("map_changed", this, "_on_vertex_lights_3d_map_changed");
+			}
+#endif
+
 			set_player_bind(get_node_or_null(get_player_path()));
 
 			set_process_internal(true);
@@ -1504,6 +1533,12 @@ void TerrainWorld::_notification(int p_what) {
 			break;
 		}
 		case NOTIFICATION_EXIT_TREE: {
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+			if (_use_vertex_lights_3d) {
+				VertexLights3DServer::get_singleton()->disconnect("map_changed", this, "_on_vertex_lights_3d_map_changed");
+			}
+#endif
+
 			for (int i = 0; i < _chunks_vector.size(); ++i) {
 				Ref<TerrainChunk> chunk = _chunks_vector[i];
 
@@ -1533,6 +1568,26 @@ void TerrainWorld::_notification(int p_what) {
 		} break;
 	}
 }
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+void TerrainWorld::_on_vertex_lights_3d_map_changed(RID p_map) {
+	if (!_use_vertex_lights_3d) {
+		return;
+	}
+
+	if (!is_inside_world()) {
+		return;
+	}
+
+	if (get_world_3d()->get_vertex_lights_3d_map() == p_map) {
+		for (int i = 0; i < _chunks_vector.size(); ++i) {
+			Ref<TerrainChunk> chunk = _chunks_vector[i];
+
+			chunk->build();
+		}
+	}
+}
+#endif
 
 void TerrainWorld::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("chunk_mesh_generation_finished", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
@@ -1586,6 +1641,12 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_voxel_scale"), &TerrainWorld::get_voxel_scale);
 	ClassDB::bind_method(D_METHOD("set_voxel_scale", "value"), &TerrainWorld::set_voxel_scale);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale"), "set_voxel_scale", "get_voxel_scale");
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	ClassDB::bind_method(D_METHOD("get_use_vertex_lights_3d"), &TerrainWorld::get_use_vertex_lights_3d);
+	ClassDB::bind_method(D_METHOD("set_use_vertex_lights_3d", "value"), &TerrainWorld::set_use_vertex_lights_3d);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_vertex_lights_3d"), "set_use_vertex_lights_3d", "get_use_vertex_lights_3d");
+#endif
 
 	ClassDB::bind_method(D_METHOD("get_chunk_spawn_range"), &TerrainWorld::get_chunk_spawn_range);
 	ClassDB::bind_method(D_METHOD("set_chunk_spawn_range", "value"), &TerrainWorld::set_chunk_spawn_range);
@@ -1703,6 +1764,10 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_get_channel_index_info", "channel_type"), &TerrainWorld::_get_channel_index_info);
 
 	ClassDB::bind_method(D_METHOD("get_editor_camera"), &TerrainWorld::get_editor_camera);
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	ClassDB::bind_method(D_METHOD("_on_vertex_lights_3d_map_changed"), &TerrainWorld::_on_vertex_lights_3d_map_changed);
+#endif
 
 	BIND_ENUM_CONSTANT(CHANNEL_TYPE_INFO_TYPE);
 	BIND_ENUM_CONSTANT(CHANNEL_TYPE_INFO_ISOLEVEL);

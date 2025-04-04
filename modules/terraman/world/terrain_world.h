@@ -111,6 +111,11 @@ public:
 	float get_voxel_scale() const;
 	void set_voxel_scale(const float value);
 
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	bool get_use_vertex_lights_3d() const;
+	void set_use_vertex_lights_3d(const bool value);
+#endif
+
 	int get_chunk_spawn_range() const;
 	void set_chunk_spawn_range(const int value);
 
@@ -230,6 +235,10 @@ protected:
 	virtual void _notification(int p_what);
 	static void _bind_methods();
 
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	void _on_vertex_lights_3d_map_changed(RID p_map);
+#endif
+
 public:
 	struct IntPos {
 		int x;
@@ -271,6 +280,9 @@ private:
 	int _data_margin_start;
 	int _data_margin_end;
 	float _world_height;
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	bool _use_vertex_lights_3d;
+#endif
 
 	Ref<TerrainLibrary> _library;
 	Ref<TerrainLevelGenerator> _level_generator;
