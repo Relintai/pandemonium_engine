@@ -205,6 +205,10 @@ public:
 	Vector2i world_data_position_to_chunk_position(const Vector2i &p_world_data_position);
 
 	Vector2i world_position_to_world_data_position(const Vector3 &world_position);
+	Vector3i world_position_to_world_data_position_3d(const Vector3 &world_position);
+	Vector3 world_data_position_to_world_position(const Vector2i &p_position);
+	Vector3 world_data_position_to_world_position_3d(const Vector3i &p_position);
+
 	uint8_t get_voxel_at_world_data_position(const Vector2i &world_data_position, const int channel_index);
 	void set_voxel_at_world_data_position(const Vector2i &world_data_position, const uint8_t data, const int channel_index, const bool p_immediate_build = true, const bool allow_creating_chunks = true);
 	Ref<TerrainChunk> get_chunk_at_world_data_position(const Vector2i &world_data_position);

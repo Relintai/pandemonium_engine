@@ -978,6 +978,20 @@ Vector2i TerrainWorld::world_position_to_world_data_position(const Vector3 &worl
 
 	return Vector2i(pos.x, pos.z);
 }
+
+Vector3i TerrainWorld::world_position_to_world_data_position_3d(const Vector3 &world_position) {
+	Vector3 pos = world_position / get_voxel_scale();
+
+	return Vector3i(pos.x, pos.y, pos.z);
+}
+
+Vector3 TerrainWorld::world_data_position_to_world_position(const Vector2i &p_position) {
+	return Vector3(p_position.x, 0, p_position.y) * get_voxel_scale();
+}
+Vector3 TerrainWorld::world_data_position_to_world_position_3d(const Vector3i &p_position) {
+	return Vector3(p_position.x, p_position.y, p_position.z) * get_voxel_scale();
+}
+
 uint8_t TerrainWorld::get_voxel_at_world_data_position(const Vector2i &world_data_position, const int channel_index) {
 	// TODO rework this so it works directly with ints.
 
@@ -1673,6 +1687,10 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("world_data_position_to_chunk_position", "world_data_position"), &TerrainWorld::world_data_position_to_chunk_position);
 
 	ClassDB::bind_method(D_METHOD("world_position_to_world_data_position", "world_position"), &TerrainWorld::world_position_to_world_data_position);
+	ClassDB::bind_method(D_METHOD("world_position_to_world_data_position_3d", "world_position"), &TerrainWorld::world_position_to_world_data_position_3d);
+	ClassDB::bind_method(D_METHOD("world_data_position_to_world_position", "position"), &TerrainWorld::world_data_position_to_world_position);
+	ClassDB::bind_method(D_METHOD("world_data_position_to_world_position_3d", "position"), &TerrainWorld::world_data_position_to_world_position_3d);
+
 	ClassDB::bind_method(D_METHOD("get_voxel_at_world_data_position", "world_data_position", "channel_index"), &TerrainWorld::get_voxel_at_world_data_position);
 	ClassDB::bind_method(D_METHOD("set_voxel_at_world_data_position", "world_data_position", "data", "channel_index", "rebuild", "allow_creating_chunks "), &TerrainWorld::set_voxel_at_world_data_position, DEFVAL(true), DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_data_position", "world_data_position"), &TerrainWorld::get_chunk_at_world_data_position);
