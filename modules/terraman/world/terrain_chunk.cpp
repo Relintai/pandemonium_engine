@@ -1302,6 +1302,7 @@ Array TerrainChunk::props_get() {
 		prop_data.push_back(_props[i].original);
 		prop_data.push_back(_props[i].transform);
 		prop_data.push_back(_props[i].prop.get_ref_ptr());
+		prop_data.push_back(_props[i].name);
 
 		ret.push_back(prop_data);
 	}
@@ -1314,13 +1315,17 @@ void TerrainChunk::props_set(const Array &p_props) {
 	for (int i = 0; i < p_props.size(); ++i) {
 		Array prop_data = p_props[i];
 
-		ERR_CONTINUE(prop_data.size() != 3);
+		ERR_CONTINUE(prop_data.size() != 3 | prop_data.size() != 4);
 
 		bool original = prop_data[0];
 		Transform transform = prop_data[1];
 		Ref<PropData> prop = Ref<PropData>(prop_data[2]);
+		String name;
+		if (prop_data.size() > 3) {
+			name = prop_data[3];
+		}
 
-		prop_add(transform, prop, original);
+		prop_add(transform, prop, original, name);
 	}
 }
 #endif
