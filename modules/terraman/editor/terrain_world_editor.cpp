@@ -65,6 +65,8 @@
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
 
+#include "editor/editor_inspector.h"
+
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_PROPS_ENABLED
@@ -1119,6 +1121,25 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	baking_tools_label->set_text(TTR("Baking Tools"));
 	_baking_tools_tool_container->add_child(baking_tools_label);
 
+	// Baking Tools - Scenes
+	Label *bake_scenes_label = memnew(Label);
+	bake_scenes_label->set_align(Label::ALIGN_CENTER);
+	bake_scenes_label->set_text(TTR("Scenes"));
+	_baking_tools_tool_container->add_child(bake_scenes_label);
+
+	Button *bake_scenes_button = memnew(Button);
+	bake_scenes_button->set_text(TTR("Bake Scenes"));
+	bake_scenes_button->set_tooltip(TTR("Takes the current world's direct child instances scenes, adds them directly as scenes and deletes them.\nNode names will be remembered.\nIf the Editable children option is set then the scene will be skipped.\nPlease note that property overrides ar not supported, and ignored currently."));
+	bake_scenes_button->connect("pressed", this, "_on_bake_scenes_button_pressed");
+	_baking_tools_tool_container->add_child(bake_scenes_button);
+
+	Button *un_bake_scenes_button = memnew(Button);
+	un_bake_scenes_button->set_text(TTR("Un-Bake Scenes"));
+	un_bake_scenes_button->set_tooltip(TTR("Takes the scenes stored in the current world, instances them, and removes them from world."));
+	un_bake_scenes_button->connect("pressed", this, "_on_un_bake_scenes_button_pressed");
+	_baking_tools_tool_container->add_child(un_bake_scenes_button);
+
+	// Baking Tools - Props
 	Label *bake_props_label = memnew(Label);
 	bake_props_label->set_align(Label::ALIGN_CENTER);
 	bake_props_label->set_text(TTR("Props"));
@@ -1520,6 +1541,116 @@ void TerrainWorldEditor::un_bake_props(const ObjectID p_world) {
 	print_line(results);
 }
 
+void TerrainWorldEditor::bake_scenes(const ObjectID p_world) {
+	TerrainWorld *world = ObjectDB::get_instance<TerrainWorld>(p_world);
+
+	if (!world) {
+		return;
+	}
+
+	int baked_scene_count = 0;
+	int skipped_editable_scene_count = 0;
+	int skipped_scene_count = 0;
+
+	for (int i = 0; i < world->get_child_count(); ++i) {
+		Node *n = world->get_child(i);
+
+		if (n->get_filename().empty()) {
+			continue;
+		}
+
+		bool editable = EditorNode::get_singleton()->get_edited_scene()->is_editable_instance(n);
+
+		if (editable) {
+			++skipped_editable_scene_count;
+			continue;
+		}
+
+		Ref<PackedScene> scene = ResourceLoader::load(n->get_filename(), "PackedScene");
+
+		if (!scene.is_valid()) {
+			++skipped_scene_count;
+			continue;
+		}
+
+		String name = n->get_name();
+
+		Transform t;
+		Spatial *sp = Object::cast_to<Spatial>(n);
+		if (sp) {
+			t = sp->get_global_transform();
+		}
+
+		n->set_owner(NULL);
+
+		++baked_scene_count;
+
+		world->scene_add(scene, t, n, true, name);
+	}
+
+	String results = "Baked " + String::num_int64(baked_scene_count) + " direct child scenes into TerrainWorld.\n";
+	results += String::num_int64(skipped_editable_scene_count) + "were skipped because they were editable,\n";
+	results += String::num_int64(skipped_scene_count) + "were skipped due to other reasons.";
+
+	print_line(results);
+}
+void TerrainWorldEditor::un_bake_scenes(const ObjectID p_world) {
+	TerrainWorld *world = ObjectDB::get_instance<TerrainWorld>(p_world);
+
+	if (!world) {
+		return;
+	}
+
+	int un_baked_scenes_count = 0;
+
+	for (int i = 0; i < world->chunk_get_count(); ++i) {
+		Ref<TerrainChunk> chunk = world->chunk_get_index(i);
+
+		for (int j = 0; j < chunk->scene_get_count(); ++j) {
+			if (!chunk->scene_get_is_original(j)) {
+				continue;
+			}
+
+			Ref<PackedScene> pd = chunk->scene_get(j);
+			Transform t = chunk->prop_get_transform(j);
+			String name = chunk->scene_get_name(j);
+			Node *n = chunk->scene_get_node(j);
+
+			if (n) {
+				chunk->scene_remove(j, false);
+				--j;
+				n->set_owner(_editor->get_edited_scene());
+			} else {
+				chunk->scene_remove(j);
+				--j;
+
+				ERR_CONTINUE(!pd.is_valid());
+
+				n = pd->instance();
+
+				Spatial *sp = Object::cast_to<Spatial>(n);
+
+				if (sp) {
+					sp->set_global_transform(t);
+				}
+
+				if (!name.empty()) {
+					n->set_name(name);
+				}
+
+				world->add_child(n);
+				n->set_owner(_editor->get_edited_scene());
+			}
+
+			++un_baked_scenes_count;
+		}
+	}
+
+	String results = "Un-Baked " + String::num_int64(un_baked_scenes_count) + " direct child scenes from TerrainWorld.";
+
+	print_line(results);
+}
+
 void TerrainWorldEditor::create_chunk_removed_undo_point() {
 	if (!_world) {
 		return;
@@ -1788,6 +1919,31 @@ void TerrainWorldEditor::_on_un_bake_props_button_pressed() {
 	_undo_redo->commit_action();
 }
 
+void TerrainWorldEditor::_on_bake_scenes_button_pressed() {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID world = _world->get_instance_id();
+
+	_undo_redo->create_action(TTR("Bake Scenes"));
+	_undo_redo->add_do_method(this, "bake_scenes", world);
+	_undo_redo->add_undo_method(this, "un_bake_scenes", world);
+	_undo_redo->commit_action();
+}
+void TerrainWorldEditor::_on_un_bake_scenes_button_pressed() {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID world = _world->get_instance_id();
+
+	_undo_redo->create_action(TTR("Bake Scenes"));
+	_undo_redo->add_do_method(this, "un_bake_scenes", world);
+	_undo_redo->add_undo_method(this, "bake_scenes", world);
+	_undo_redo->commit_action();
+}
+
 void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_node_removed", &TerrainWorldEditor::_node_removed);
 
@@ -1822,6 +1978,12 @@ void TerrainWorldEditor::_bind_methods() {
 
 	ClassDB::bind_method("bake_props", &TerrainWorldEditor::bake_props);
 	ClassDB::bind_method("un_bake_props", &TerrainWorldEditor::un_bake_props);
+
+	ClassDB::bind_method("_on_bake_scenes_button_pressed", &TerrainWorldEditor::_on_bake_scenes_button_pressed);
+	ClassDB::bind_method("_on_un_bake_scenes_button_pressed", &TerrainWorldEditor::_on_un_bake_scenes_button_pressed);
+
+	ClassDB::bind_method("bake_scenes", &TerrainWorldEditor::bake_scenes);
+	ClassDB::bind_method("un_bake_scenes", &TerrainWorldEditor::un_bake_scenes);
 }
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {

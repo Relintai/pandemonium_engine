@@ -102,6 +102,9 @@ protected:
 	void bake_props(const ObjectID p_world);
 	void un_bake_props(const ObjectID p_world);
 
+	void bake_scenes(const ObjectID p_world);
+	void un_bake_scenes(const ObjectID p_world);
+
 protected:
 	static void _bind_methods();
 	void _notification(int p_what);
@@ -128,6 +131,9 @@ protected:
 
 	void _on_bake_props_button_pressed();
 	void _on_un_bake_props_button_pressed();
+
+	void _on_bake_scenes_button_pressed();
+	void _on_un_bake_scenes_button_pressed();
 
 private:
 	UndoRedo *_undo_redo;
