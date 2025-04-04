@@ -33,6 +33,8 @@
 
 #include "core/containers/hash_set.h"
 
+#include "core/object/method_bind_ext.gen.inc"
+
 #include "core/object/message_queue.h"
 #include "core/os/main_loop.h"
 #include "terrain_chunk.h"
@@ -57,6 +59,10 @@
 #if TOOLS_ENABLED
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
+#endif
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+#include "modules/mesh_data_resource/mesh_data_resource.h"
 #endif
 
 const String TerrainWorld::BINDING_STRING_CHANNEL_TYPE_INFO = "Type,Isolevel,Liquid,Liquid Level";
@@ -731,6 +737,30 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 		}
 #endif
 	}
+}
+#endif
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+void TerrainWorld::mesh_data_resource_add(const Ref<MeshDataResource> &p_mesh, const Transform &p_transform, const Ref<Texture> &p_texture, const Color &p_color, const bool p_original, const String &p_name) {
+	ERR_FAIL_COND(!p_mesh.is_valid());
+
+	Vector3 wp;
+	wp = p_transform.xform(wp);
+	Ref<TerrainChunk> chunk = get_or_create_chunk_at_world_position(wp);
+
+	chunk->mesh_data_resource_add(chunk->get_global_transform().affine_inverse() * p_transform, p_mesh, p_texture, p_color, false, p_original, p_name);
+	chunk->build();
+}
+
+void TerrainWorld::mesh_data_resource_add_material(const Ref<MeshDataResource> &p_mesh, const Transform &p_transform, const Ref<Texture> &p_texture, const Ref<Material> &p_material, const bool p_original, const String &p_name) {
+	ERR_FAIL_COND(!p_mesh.is_valid());
+
+	Vector3 wp;
+	wp = p_transform.xform(wp);
+	Ref<TerrainChunk> chunk = get_or_create_chunk_at_world_position(wp);
+
+	chunk->mesh_data_resource_add_material(chunk->get_global_transform().affine_inverse() * p_transform, p_mesh, p_texture, p_material, false, p_original, p_name);
+	chunk->build();
 }
 #endif
 
@@ -1623,6 +1653,11 @@ void TerrainWorld::_bind_methods() {
 
 #ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "original", "name"), &TerrainWorld::prop_add, DEFVAL(true), DEFVAL(true), DEFVAL(String()));
+#endif
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_add", "mesh", "transform", "texture", "color", "original", "name"), &TerrainWorld::mesh_data_resource_add, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(String()));
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_add_material", "mesh", "transform", "texture", "material", "original", "name"), &TerrainWorld::mesh_data_resource_add_material, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(String()));
 #endif
 
 	//Lights
