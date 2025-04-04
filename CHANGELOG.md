@@ -4,7 +4,300 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
+Nothing yet.
+
+## [4.6.0]
+
+Highlights:
+
+- Terraman got a new fully featured editor. It also got heavy improvements, including being able to work with the vertex lights 3d system.
+- Added easier locale support for the web module.
+- Usage improvements to the database module.
+- PLogger is now a separate app-side logging layer.
+- If a .csv file is dropped into a project the editor will not import it by default.
+
+Breaking changes:
+
+- Mass replaced the typo "tarnsform" to "transform".
+- Removed set_voxel_with_tool from TerrainWorld.
+
+### Core
+
+- Moved the static_assert in GLOBAL_CACHED to the top.
+- Reworked the new GLOBAL_GET_CACHED macro.
+- Use HAS_TRIVIAL_DESTRUCTOR macro instead of std::is_trivially_destructible.
+
+#### PLogger
+
+- Added log_custom method to PLogger. It's a lot more customizable than the others by design. Also small cleanups.
+- Added a new important log level to PLogger.
+- Added force printing / logging option to OS. Made PLogger use this internally.
+
+### Math
+
+- Added set_look_at helper method to Basis.
+- Transform now uses Basis::create_looking_at.
+- Added non-static looking_at and from_scale helper methods to Basis.
+- Undo unecessary breaking change to gdnative.
+- Renamed looking_at to create_looking_at, and from_scale to create_from_scale in Basis.
+
+### Scene
+
+- Added NOTIFICATION_QUITTING to MainLoop.
+- Inlined set_pressed_no_signal call into BaseButton::set_pressed().
+- Hide the Bake text of the MergeGroupEditorPlugin's icon.
+- Set use_on_initial_import() in ResourceImporterCSVTranslation to false.
+  This means that if a .csv file is dropped into a project the editor will
+  not import it by default.
+- Added use_on_initial_import() virtual method to ResourceImporter.
+  If it returns false and the resource importer would be used on a file's
+  initial import it will be imported with the "Keep File (No Import)"
+  setting.
+
+### Modules
+
+#### Terraman
+
+- Now TerrainChunks will register their lights into the VertexLights3DServer if use_vertex_lights_3d is enabled in world.
+- Make use of the VertexLights3DServer in TerrainChunkDefault::_bake_lights() if enabled.
+- Added use_vertex_lights_3d property to TerrainWorld.
+- Added VertexLight3D baking tool to TerrainWorldEditor.
+- Fix TerrainChunk::light_remove_index() not actually remoing lights.
+- Added more helper methods to TerrainWorld.
+- Added item_cull_mask property to TerrainLight.
+- Added light_mode property to TerrainLight.
+- Removed OWNER_TYPE_VERTEX_LIGHT_3D from TerrainLight.
+- Small tweaks to the info outputs in TerrainWorldEditor.
+- Fix method call in TerrainWorldEditor.
+- Added MeshDataInstance baking tool to TerrainWorldEditor.
+- Added mesh_data_resource_add() helper method to TerrainWorld.
+- Now TerrainChunks can also store a name and material for MeshDataResources.
+- Don't create prop baking tool buttons if the Props module is disabled.
+- Added a scene baking tool to TerrainWorldEditor.
+- Fix logic in TerrainChunk::scenes_set() and TerrainChunk::props_set().
+- Return and set the name with the props property in TerrainChunk.
+- Implement setting a name to scenes in TerrainChunk.
+- Added tooltips for the bake props tool's buttons in TerrainWorldEditor.
+- Now props added to TerrainWorld can also have a name. The prop bake editor tool uses it to save and restore node names.
+- Implemented Bake Props tool for TerrainWorldEditor.
+- Rebuild chunks in TerrainWorld::prop_add().
+- Make sure the prop meshes are cleared from previous runs before returning early in TerrainPropJob.
+- Call emit_changed() in TerrainChunk setters. Also a setter fix.
+- Set up baking tools page in TerrainWorldEditor.
+- Fix potential hang on exit due to deadlocks.
+- More tweaks to TerrainChunk's new scene api.
+- Added the new scene_add() method to TerrainWorld. Also store scenes from props inside chunks.
+- Tweaks and improvements to TerrainChunk's new scene api.
+- Added scene storage api to TerrainChunks.
+  Also mass replaced the typo "tarnsform" to "transform", and fixed a
+  parameter name in a TerrainChunk binding.
+- Added owned_lights property to TerrainChunk. Also changed the lights property it is now scripting only, it won't get saved.
+- Now TerrainLights inherit from Resource.
+- Added to_dict() and from_dict() methods to TerrainLight.
+- Set prop ownership to lights in TerrainWorld::prop_add().
+- Store ownership information in TerrainLights.
+- Store whether a mesh_data_resource in a TerrainChunk is original or not.
+- Renamed the new original parameter in TerrainChunk and TerrainWorld's prop api from owner to original.
+- Set prop ownership when adding them in TerrainWorld.
+- Now TerrainChunks will remember whether they own a prop or not. Also added and bound missing methods to Chunk's prop api.
+- Make sure the remaining chunks are notified of the changed world lights when adding / removing chunks.
+- Now TerrainLights are stored inside chunks (they are also automatically saved with them). Also changed TerrainLight's api to makes use of Vector3i.
+- Now props and mesh data resources are saved with the TerrainChunks.
+- Only generate chunks once.
+- Simplify chunks_set() in TerrainWorld.
+- Fix isolevel paint and paint brush tools always allowing chunk creation.
+- Add the new chunk to the generation queue instead of directly calling it's build method in TerrainWorld::chunk_add().
+- Also expose the liquid data in TerrainChunkBlocky.
+- Fix typo.
+- Implemented the spawn chunks and remove chunks tool in TerrainWorldEditor.
+- Call TerrainChunk's build() after it's added to a World manually.
+- Added a new helper method to TerrainWorld.
+- Clear the material cache data in TerrainChunk::_exit_tree().
+- Implemented the gui for the chunk spawn and chunk remove tools in TerrainWorldEditor.
+- TerrainWorldEditor variable name tweaks.
+- Implemented the paint picker tool in TerrainWorldEditor. Also improved the editor's Button signal setup.
+- Tewaks to the main tool labels in TerrainWorldEditor.
+- Implemented the paint picker tool's ui in TerrainWorldEditor.
+- Add the paint brush tool settings buttons to the proper container in TerrainWorldEditor.
+- Reordered the main tool buttons in TerrainWorldEditor.
+- Removed the add and remove single tools from TerrainWorldEditor as they are not very useful for a terrain engine.
+- Only show the surface selection when the paint brush is active in TerrainWorldEditor.
+- Added the ability to erase using the paint brush in TerrainWorldEditor.
+- Added liquid mode to the isolevel brush and paint brush tools in TerrainWorldEditor.
+- Added a new helper method to TerrainWorld.
+- Chunk remover tool initial setup in TerrainWorldEditor.
+- Make the expected tool settings shown by default in TerrainWorldEditor.
+- Spawn brush initial setup in TerrainWorldEditor.
+- Reorganized the tools in TerrainWorldEditor. Also made the Isolevel Brush the default.
+- Renamed the add and remove tools to add single and remove single voxel in TerrainWorldEditor. Also improved their gui a bit.
+- Disable allow chunk creation for the paint brush and isolevel brush tools by default in TerrainWorldEditor. A new chunk spawner tool will be added instead soon.
+- Invert the logic of the isolevel brush smoothness calculation so it works as expected.
+- Start at max isolevel brush smoothness in TerrainWorldEditor.
+- Fix isolevel brush smoothness calculation in TerrainWorldEditor.
+- Allow 0 as the isolevel brush strength and smoothness in TerrainWorldEditor.
+- Handle a missing case when setting voxels in TerrainWorld.
+- Reset the mesher's lod index in _reset() in TerrainTerrainJob. This fixes subsequent mesh generations.
+- Implemented chunk material invalidation support for TerrainLibraryMergerPCM.
+- Unlock the mutex after the rects are refreshed in the material cache in TerrainLibraryMergerPCM.
+- Optimized editing in TerrainWorldEditor.
+- Use the new immediate build mode in TerrainWorld's set_voxel_at_world_data_position().
+- Implemented an immediate build mode for TerrainChunk.
+- Clear meshes as needed in TerrainTerrainJob.
+- Clear meshes as needed in TerrainPropJob.
+- Fix crash on shutdown.
+- Udpate the gizmo size properly in TerrainWorldEditor.
+- Optimized UndoRedo usage in TerrainWorldEditor.
+- Implemented the TerrainWorldGizmo.
+- Renamed the new gizmo.
+- Initial gizmo setup for Terraman.
+- Moved the TerrainWorldEditor to a new folder. Also make sure it's only compiled in tools builds.
+- Implemented the paint brush mode in TerrainWorldEditor.
+- Implemented the isolevel brush in TerrainWorldEditor.
+- Added new helper methods to TerrainWorld.
+- Added a strength slider for the isolevel brush in TerrainWorldEditor.
+- Added a button for setting the allow chunk creation option for the isolevel brush in TerrainWorldEditor.
+- Removed set_voxel_with_tool from TerrainWorld.
+- Initial input handling refactor for TerrainWorldEditor.
+- Added the option to select the channel in TerrainWorldEditor's Isolevel Brush.
+- Gui and callback setup for the isolevel brush in TerrainWorldEditor.
+- Small tweaks and reorganization in TerrainWorldEditor.
+- TerrainWorldEditor cleanups and some initial rework for it's new functionality.
+- Tidy up the Isolevel clider of the TerrainWorldEditor.
+- Moved the control buttons of the TerrainWorldEditor to the side panel.
+- Fix variable names.
+- Fix property names.
+- Use icons for the TerrainWorldEditor's buttons.
+
+#### Web
+
+- Added new classes to the web module's config.py.
+- Added a new LocaleSetupWebServerMiddleware.
+- HTMLTemplateMultilang now also tries to use the locale helper method in WebServerRequest.
+- Implement locale helper methods to WebServerRequest.
+- Bind methods in HTMLTemplateMultilang.
+- Created a HTMLTemplateMultilang class. It can automatically select between multiple HTMLTemplates.
+
+#### Users
+
+-Added a method to get all users from the UserDB and UserManagers.
+
+#### Database
+
+- Added next_column*() helper methods to PreparedStatement.
+- Now get_cell and is_cell_null in Sqlite3QueryResult will do a bounds check via error macros.
+  This means indexing errors will not result in a crash due to vectors using CRASH_BAD_INDEX error macros.
+- Added get_stored_row_count() and get_cell_count() helper methods to QueryResult.
+- Added get_next_cell*() helper methods to QueryBuilder.
+- Added get_last_insert_rowid() method to PreparedStatement.
+
+#### Database - Sqlite
+
+- Reapply SQLITE_NO_FCHOWN Pandemonium sqlite patch. also added it as a .patch file.
+- Updated sqlite to version 3.47.0. Also added a VERSION.txt to it's folder.
+
+### GDnative
+
+- Update gdnative api.
+
+### Backports
+
 - Backported everything up to and including https://github.com/godotengine/godot/commit/31935d6d636ed463f607b3bfeadb604404ec53ca merge commit: https://github.com/godotengine/godot/commit/157f8805c215adc84ac26e14009e02b916336699
+
+#### Godot 3.x
+
+- Backported move semantics from godot 3.x. with some changes. Original commit: https://github.com/godotengine/godot/commit/d549b98c5cb4b68f38aece3171cd0aac7c63a7a7
+- Physics Interpolation - Move 3D FTI to `SceneTree`
+  Moves 3D interpolation from `VisualServer` to the client code (`SceneTree`).
+  Complete rework of 3D physics interpolation, but using the same user API.
+- Simplified `ObjectDB::get_instance()` casting
+  Reduces boiler plate by templating `get_instance()` for the cast type, while remaining backward compatible to the existing functionality.
+- Make drop_mouse_on_gui_input_disabled GLOBAL_GET cached.
+- Drop mouse focus and over when gui input is globally disabled
+  Since some porjects may be relying on the former behavior, this is opt-in via a new project setting, disabled by default, but enabled for new projects, since it's the new standard behavior (and the only one in 4.0).
+- Add GLOBAL_GET cached macros.
+  GLOBAL_GET is an expensive operation which should not be used each frame / tick.
+  This PR adds macros which do a cheaper revision check, and only call the expensive GLOBAL_GET when project settings have changed.
+- Prevent inlining error print functions.
+- Docs: BitMap: Added description for opaque_to_polygons method
+- Physics Interpolation - fix client interpolation pump
+  Client interpolation pump is moved AFTER the physics tick, after physics objects have been moved.
+  This is necessary because the `current` transform is also updated during the pump.
+- Physics Interpolation - Auto-reset on `set_physics_interpolation_mode()`
+  Fixes historical bug where auto-reset wasn't working correctly.
+  Also fixes process modes on Cameras when mode is changed.
+- Revert changes to Range::set_value #65101
+- Fix VS project generation with SCons 4.8.0+
+- mbedtls: Update to upstream version 2.28.9
+- embree: Fix invalid output operators raising errors with GCC 15
+- Enable builds with miniupnpc API 18
+  Backports https://github.com/godotengine/godot/pull/97139 without
+  bumping the embedded miniupnpc library.
+- Document radial_center_offset bounds
+- Ameliorate performance regression due to directional shadow `fade_start`
+- Hide last DirectionalLight shadow split distance property when using PSSM 3 Splits
+  The last shadow split property only has an effect when using PSSM 4 Splits.
+- Improve cache handling
+- Add `EditorPlugin::scene_saved` signal (3.x backport)
+  Matches the `EditorNode` one for parity with the exposed
+  `resource_saved` signal
+- Document Timer autostart in tool scripts
+- Don't cache emsdk
+  Due to how caches are accessed this cache is almost useless, it only
+  matters if it is from the same branch or a base branch, and is identical
+  between branches, so caching it just clutters the build cache
+- Implement glow map effect
+- Fix split_floats behavior when spaces are used as separators
+- CI: Remove now unused sources.list file
+- CI: Update Ubuntu runners to 24.04, but keep 22.04 for Linux builds
+  Pin clang-format to version 16, and black to 24.10.0.
+  Keep using Ubuntu 22.04 for Linux builds for portability.
+- certs: Sync with Mozilla bundle as of Oct 19, 2024
+  https://github.com/bagder/ca-bundle/commit/4d3fe6683f651d96be1bbef316b201e9b33b274d
+  Document matching mozilla-release changeset.
+- Fix error when non-ASCII characters in resource pack path
+- Fix `PopupMenu` margin and separation calculations
+- Fix random multithreaded crash that happens when setting the audio stream on a AudioStreamRandomPitch stream.
+- Fix Button not listing `hover_pressed` stylebox
+- Fix button click detection when `Tree` is rotated
+- Cache results for `TranslationServer.compare_locales()`
+- Backport 65910 for Godot 3
+- Do not auto add default script and country codes to the locale.
+- Document that `Input.is_action` should not be used during input-handling
+  In most cases `InputEvent.is_action*` is more appropriate during input-handling.
+- Fix physics platform behaviour regression
+  Lifetime checks for stored `RIDs` for collision objects assumed they had valid `object_ids`.
+  It turns out that some are not derived from `Object` and thus checking `ObjectDB` returns false for some valid `RIDs`.
+  To account for this we only perform lifetime checks on valid `object_ids`.
+- Improve error message when `OS.execute()` fails on Windows
+  This takes the error message from 4.x and backports it to 3.x.
+
+
+#### Godot 4
+
+
+- Make SkeletonIk3D node usable - warriormaster12 https://github.com/godotengine/godot/commit/ddf93f3f59aa5b31908792821e3dfa11ab7b8673
+- Add the ability to look-at in model-space.
+  This is a much simpler attempt to solve the same problem as #76060, but
+  without breaking any compatibility.
+  * Adds a description of what model space is in the Vector3 enums
+    (MODEL_* constants). This has the proper axes laid out for imported 3D
+    assets.
+  * Adds the option to `look_at` using model_space, which uses
+    Vector3.MODEL_FRONT as forward vector.
+  The attempt of this PR is to still break the assumption that there is a
+  single direction of forward (which is not the case in Godot)
+  and make it easier to understand where 3D models are facing, as well as
+  orienting them via look_at.
+  - reduz 
+  https://github.com/godotengine/godot/commit/5fdc1232eff45e31ee53f58e618de6c58d3f7203
+
+### Docs
+
+- Update the readme.
+- Updated the links in CONTRIBUTING.md, also small tweaks.
+- License tweaks, also fixed project information in COPYRIGHT.txt.
+- Experiment with a different changelog style.
+
 
 ## [4.5.0]
 
