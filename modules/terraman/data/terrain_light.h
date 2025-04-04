@@ -95,6 +95,11 @@ public:
 	int get_item_cull_mask();
 	void set_item_cull_mask(const int p_item_cull_mask);
 
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	RID get_vertex_lights_3d_rid() const;
+	void set_vertex_lights_3d_rid(const RID p_rid);
+#endif
+
 	Dictionary to_dict();
 	void from_dict(const Dictionary &p_data);
 
@@ -123,6 +128,10 @@ private:
 	LightMode _light_mode;
 
 	int _item_cull_mask;
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	RID _vertex_lights_3d_rid;
+#endif
 };
 
 VARIANT_ENUM_CAST(TerrainLight::OwnerType);

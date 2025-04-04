@@ -128,6 +128,15 @@ void TerrainLight::set_item_cull_mask(const int p_item_cull_mask) {
 	_item_cull_mask = p_item_cull_mask;
 }
 
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+RID TerrainLight::get_vertex_lights_3d_rid() const {
+	return _vertex_lights_3d_rid;
+}
+void TerrainLight::set_vertex_lights_3d_rid(const RID p_rid) {
+	_vertex_lights_3d_rid = p_rid;
+}
+#endif
+
 Dictionary TerrainLight::to_dict() {
 	Dictionary data;
 
@@ -253,6 +262,11 @@ void TerrainLight::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("to_dict"), &TerrainLight::to_dict);
 	ClassDB::bind_method(D_METHOD("from_dict", "data"), &TerrainLight::from_dict);
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	ClassDB::bind_method(D_METHOD("get_vertex_lights_3d_rid"), &TerrainLight::get_vertex_lights_3d_rid);
+	ClassDB::bind_method(D_METHOD("set_vertex_lights_3d_rid", "rid"), &TerrainLight::set_vertex_lights_3d_rid);
+#endif
 
 	BIND_ENUM_CONSTANT(OWNER_TYPE_NONE);
 #ifdef MODULE_PROPS_ENABLED
