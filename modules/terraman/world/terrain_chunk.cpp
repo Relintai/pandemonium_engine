@@ -915,10 +915,11 @@ void TerrainChunk::voxel_structures_set(const Vector<Variant> &structures) {
 
 //Scenes
 
-void TerrainChunk::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform, const Node *p_node, const bool p_original) {
+void TerrainChunk::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform, const Node *p_node, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND(!p_scene.is_valid());
 
 	SceneDataStore s;
+	s.name = p_name;
 	s.original = p_original;
 	s.transform = p_transform;
 	s.scene = p_scene;
@@ -972,6 +973,19 @@ void TerrainChunk::scene_set_is_original(const int index, const bool p_original)
 	ERR_FAIL_INDEX(index, _scenes.size());
 
 	_scenes.write[index].original = p_original;
+
+	emit_changed();
+}
+
+String TerrainChunk::scene_get_name(const int index) {
+	ERR_FAIL_INDEX_V(index, _scenes.size(), String());
+
+	return _scenes.get(index).name;
+}
+void TerrainChunk::scene_set_name(const int index, const String &p_name) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	_scenes.write[index].name = p_name;
 
 	emit_changed();
 }
@@ -1081,6 +1095,7 @@ Array TerrainChunk::scenes_get() {
 		scene_data.push_back(_scenes[i].original);
 		scene_data.push_back(_scenes[i].transform);
 		scene_data.push_back(_scenes[i].scene.get_ref_ptr());
+		scene_data.push_back(_scenes[i].name);
 
 		ret.push_back(scene_data);
 	}
@@ -1093,13 +1108,17 @@ void TerrainChunk::scenes_set(const Array &p_scenes) {
 	for (int i = 0; i < p_scenes.size(); ++i) {
 		Array scene_data = p_scenes[i];
 
-		ERR_CONTINUE(scene_data.size() != 3);
+		ERR_CONTINUE(scene_data.size() != 3 || scene_data.size() != 4);
 
 		bool original = scene_data[0];
 		Transform transform = scene_data[1];
 		Ref<PackedScene> scene = Ref<PackedScene>(scene_data[2]);
+		String name;
+		if (scene_data.size() > 3) {
+			name = scene_data[3];
+		}
 
-		scene_add(scene, transform, NULL, original);
+		scene_add(scene, transform, NULL, original, name);
 	}
 }
 
@@ -2196,7 +2215,7 @@ void TerrainChunk::_bind_methods() {
 
 	//Scenes
 
-	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &TerrainChunk::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original", "name"), &TerrainChunk::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true), DEFVAL(String()));
 
 	ClassDB::bind_method(D_METHOD("scene_get", "index"), &TerrainChunk::scene_get);
 	ClassDB::bind_method(D_METHOD("scene_set", "index", "scene"), &TerrainChunk::scene_set);
@@ -2206,6 +2225,9 @@ void TerrainChunk::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("scene_get_is_original", "index"), &TerrainChunk::scene_get_is_original);
 	ClassDB::bind_method(D_METHOD("scene_set_is_original", "index", "original"), &TerrainChunk::scene_set_is_original);
+
+	ClassDB::bind_method(D_METHOD("scene_get_name", "index"), &TerrainChunk::scene_get_name);
+	ClassDB::bind_method(D_METHOD("scene_set_name", "index", "name"), &TerrainChunk::scene_set_name);
 
 	ClassDB::bind_method(D_METHOD("scene_get_node", "index"), &TerrainChunk::scene_get_node);
 	ClassDB::bind_method(D_METHOD("scene_set_node", "index", "node"), &TerrainChunk::scene_set_node);

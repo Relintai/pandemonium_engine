@@ -248,7 +248,7 @@ public:
 	void voxel_structures_set(const Vector<Variant> &structures);
 
 	//Scenes
-	void scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform = Transform(), const Node *p_node = NULL, const bool p_original = true);
+	void scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform = Transform(), const Node *p_node = NULL, const bool p_original = true, const String &p_name = String());
 
 	Ref<PackedScene> scene_get(const int index);
 	void scene_set(const int index, const Ref<PackedScene> &p_scene);
@@ -258,6 +258,9 @@ public:
 
 	bool scene_get_is_original(const int index);
 	void scene_set_is_original(const int index, const bool p_original);
+
+	String scene_get_name(const int index);
+	void scene_set_name(const int index, const String &p_name);
 
 	Node *scene_get_node(const int index);
 	void scene_set_node(const int index, const Node *p_node);
@@ -395,6 +398,7 @@ protected:
 
 protected:
 	struct SceneDataStore {
+		String name;
 		bool original;
 		Transform transform;
 		Ref<PackedScene> scene;
