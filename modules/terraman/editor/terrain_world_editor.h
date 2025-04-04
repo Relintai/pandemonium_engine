@@ -83,7 +83,7 @@ protected:
 
 	// Used by UndoRedo
 	void apply_data(const Array &p_data);
-	
+
 	void do_chunk_added_action(const Array &p_data);
 	void undo_chunk_added_action(const Array &p_data);
 	void do_chunk_removed_action(const Array &p_data);
@@ -104,6 +104,9 @@ protected:
 
 	void bake_scenes(const ObjectID p_world);
 	void un_bake_scenes(const ObjectID p_world);
+
+	void bake_mdis(const ObjectID p_world);
+	void un_bake_mdis(const ObjectID p_world);
 
 protected:
 	static void _bind_methods();
@@ -134,6 +137,9 @@ protected:
 
 	void _on_bake_scenes_button_pressed();
 	void _on_un_bake_scenes_button_pressed();
+
+	void _on_bake_mdis_button_pressed();
+	void _on_un_bake_mdis_button_pressed();
 
 private:
 	UndoRedo *_undo_redo;

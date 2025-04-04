@@ -74,6 +74,10 @@
 #include "modules/props/props/prop_data.h"
 #endif
 
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+#include "modules/mesh_data_resource/nodes/mesh_data_instance.h"
+#endif
+
 EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {
 		return EditorPlugin::AFTER_GUI_INPUT_PASS;
@@ -1139,8 +1143,31 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	un_bake_scenes_button->connect("pressed", this, "_on_un_bake_scenes_button_pressed");
 	_baking_tools_tool_container->add_child(un_bake_scenes_button);
 
-#ifdef MODULE_PROPS_ENABLED
+// Baking Tools - MeshDataInstances
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+	Label *bake_mdis_label = memnew(Label);
+	bake_mdis_label->set_align(Label::ALIGN_CENTER);
+	bake_mdis_label->set_text(TTR("Mesh Data Instances"));
+	_baking_tools_tool_container->add_child(bake_mdis_label);
+
+	Button *bake_mdis_button = memnew(Button);
+	bake_mdis_button->set_text(TTR("Bake Mesh Data Instances"));
+	bake_mdis_button->set_tooltip(TTR("Takes the current world's direct child MeshDataInstances, adds them directly as props and delets them.\nThe ones that have a script attached will be skipped. Node names will be remembered."));
+	bake_mdis_button->connect("pressed", this, "_on_bake_mdis_button_pressed");
+	_baking_tools_tool_container->add_child(bake_mdis_button);
+
+	Button *un_bake_mdis_button = memnew(Button);
+	un_bake_mdis_button->set_text(TTR("Un-Bake Mesh Data Instances"));
+	un_bake_mdis_button->set_tooltip(TTR("Takes the props stored in the current world, makes MeshDataInstances from them, and removes them from world."));
+	un_bake_mdis_button->connect("pressed", this, "_on_un_bake_mdis_button_pressed");
+	_baking_tools_tool_container->add_child(un_bake_mdis_button);
+#endif
+
+	// Baking Tools - VertexLights
+	// TODO
+
 	// Baking Tools - Props
+#ifdef MODULE_PROPS_ENABLED
 	Label *bake_props_label = memnew(Label);
 	bake_props_label->set_align(Label::ALIGN_CENTER);
 	bake_props_label->set_text(TTR("Props"));
@@ -1657,6 +1684,111 @@ void TerrainWorldEditor::un_bake_scenes(const ObjectID p_world) {
 	print_line(results);
 }
 
+void TerrainWorldEditor::bake_mdis(const ObjectID p_world) {
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+	TerrainWorld *world = ObjectDB::get_instance<TerrainWorld>(p_world);
+
+	if (!world) {
+		return;
+	}
+
+	int baked_mdi_count = 0;
+	int skipped_editable_instances_count = 0;
+	int skipped_mdi_with_children_count = 0;
+	int skipped_mdi_count = 0;
+
+	for (int i = 0; i < world->get_child_count(); ++i) {
+		MeshDataInstance *mdi = Object::cast_to<MeshDataInstance>(world->get_child(i));
+
+		if (!mdi) {
+			continue;
+		}
+
+		bool editable = EditorNode::get_singleton()->get_edited_scene()->is_editable_instance(mdi);
+
+		if (editable) {
+			++skipped_editable_instances_count;
+			continue;
+		}
+
+		Ref<MeshDataResource> mdr = mdi->get_mesh_data();
+		String name = mdi->get_name();
+		Ref<Texture> texture = mdi->get_texture();
+		Transform t = mdi->get_global_transform();
+		Ref<Material> material = mdi->get_material();
+
+		mdi->queue_delete();
+
+		++baked_mdi_count;
+
+		if (mdr.is_valid()) {
+			world->mesh_data_resource_add_material(mdr, t, texture, material, true, name);
+		} else {
+			++skipped_mdi_count;
+		}
+	}
+
+	String results = "Baked " + String::num_int64(baked_mdi_count) + " direct child MeshDataInstances into TerrainWorld.\n";
+	results += String::num_int64(skipped_editable_instances_count) + "were skipped because they were editable,\n";
+	results += String::num_int64(skipped_mdi_with_children_count) + "were skipped due to it having children,\n";
+	results += String::num_int64(skipped_mdi_count) + "were skipped due to other reasons.";
+
+	print_line(results);
+#endif
+}
+void TerrainWorldEditor::un_bake_mdis(const ObjectID p_world) {
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+	TerrainWorld *world = ObjectDB::get_instance<TerrainWorld>(p_world);
+
+	if (!world) {
+		return;
+	}
+
+	int un_baked_mdis_count = 0;
+
+	for (int i = 0; i < world->chunk_get_count(); ++i) {
+		Ref<TerrainChunk> chunk = world->chunk_get_index(i);
+
+		for (int j = 0; j < chunk->mesh_data_resource_get_count(); ++j) {
+			if (!chunk->mesh_data_resource_get_is_original(j)) {
+				continue;
+			}
+
+			Ref<MeshDataResource> mdr = chunk->mesh_data_resource_get(j);
+			Transform t = chunk->mesh_data_resource_get_transform(j);
+			String name = chunk->mesh_data_resource_get_name(j);
+			Ref<Texture> texture = chunk->mesh_data_resource_get_texture(j);
+			Ref<Material> material = chunk->mesh_data_resource_get_material(j);
+
+			chunk->mesh_data_resource_remove(j);
+			--j;
+
+			ERR_CONTINUE(!mdr.is_valid());
+
+			MeshDataInstance *mdi = memnew(MeshDataInstance);
+
+			mdi->set_global_transform(chunk->get_global_transform() * t);
+			mdi->set_texture(texture);
+			mdi->set_mesh_data(mdr);
+			mdi->set_material(material);
+
+			if (!name.empty()) {
+				mdi->set_name(name);
+			}
+
+			world->add_child(mdi);
+			mdi->set_owner(_editor->get_edited_scene());
+
+			++un_baked_mdis_count;
+		}
+	}
+
+	String results = "Un-Baked " + String::num_int64(un_baked_mdis_count) + " direct child Mesh Data Instances from TerrainWorld.";
+
+	print_line(results);
+#endif
+}
+
 void TerrainWorldEditor::create_chunk_removed_undo_point() {
 	if (!_world) {
 		return;
@@ -1950,6 +2082,31 @@ void TerrainWorldEditor::_on_un_bake_scenes_button_pressed() {
 	_undo_redo->commit_action();
 }
 
+void TerrainWorldEditor::_on_bake_mdis_button_pressed() {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID world = _world->get_instance_id();
+
+	_undo_redo->create_action(TTR("Bake Mesh Data Instances"));
+	_undo_redo->add_do_method(this, "bake_mdis", world);
+	_undo_redo->add_undo_method(this, "un_bake_mdis", world);
+	_undo_redo->commit_action();
+}
+void TerrainWorldEditor::_on_un_bake_mdis_button_pressed() {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID world = _world->get_instance_id();
+
+	_undo_redo->create_action(TTR("Bake Mesh Data Instances"));
+	_undo_redo->add_do_method(this, "un_bake_mdis", world);
+	_undo_redo->add_undo_method(this, "bake_mdis", world);
+	_undo_redo->commit_action();
+}
+
 void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_node_removed", &TerrainWorldEditor::_node_removed);
 
@@ -1979,17 +2136,26 @@ void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("do_chunk_removed_action", &TerrainWorldEditor::do_chunk_removed_action);
 	ClassDB::bind_method("undo_chunk_removed_action", &TerrainWorldEditor::undo_chunk_removed_action);
 
+	// Props
 	ClassDB::bind_method("_on_bake_props_button_pressed", &TerrainWorldEditor::_on_bake_props_button_pressed);
 	ClassDB::bind_method("_on_un_bake_props_button_pressed", &TerrainWorldEditor::_on_un_bake_props_button_pressed);
 
 	ClassDB::bind_method("bake_props", &TerrainWorldEditor::bake_props);
 	ClassDB::bind_method("un_bake_props", &TerrainWorldEditor::un_bake_props);
 
+	// Scenes
 	ClassDB::bind_method("_on_bake_scenes_button_pressed", &TerrainWorldEditor::_on_bake_scenes_button_pressed);
 	ClassDB::bind_method("_on_un_bake_scenes_button_pressed", &TerrainWorldEditor::_on_un_bake_scenes_button_pressed);
 
 	ClassDB::bind_method("bake_scenes", &TerrainWorldEditor::bake_scenes);
 	ClassDB::bind_method("un_bake_scenes", &TerrainWorldEditor::un_bake_scenes);
+
+	// MDI
+	ClassDB::bind_method("_on_bake_mdis_button_pressed", &TerrainWorldEditor::_on_bake_mdis_button_pressed);
+	ClassDB::bind_method("_on_un_bake_mdis_button_pressed", &TerrainWorldEditor::_on_un_bake_mdis_button_pressed);
+
+	ClassDB::bind_method("bake_mdis", &TerrainWorldEditor::bake_mdis);
+	ClassDB::bind_method("un_bake_mdis", &TerrainWorldEditor::un_bake_mdis);
 }
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {
