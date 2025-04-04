@@ -1315,7 +1315,7 @@ void TerrainChunk::props_set(const Array &p_props) {
 	for (int i = 0; i < p_props.size(); ++i) {
 		Array prop_data = p_props[i];
 
-		ERR_CONTINUE(prop_data.size() != 3 | prop_data.size() != 4);
+		ERR_CONTINUE(prop_data.size() != 3 || prop_data.size() != 4);
 
 		bool original = prop_data[0];
 		Transform transform = prop_data[1];
