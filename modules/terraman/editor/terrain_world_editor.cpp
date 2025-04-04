@@ -1139,6 +1139,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	un_bake_scenes_button->connect("pressed", this, "_on_un_bake_scenes_button_pressed");
 	_baking_tools_tool_container->add_child(un_bake_scenes_button);
 
+#ifdef MODULE_PROPS_ENABLED
 	// Baking Tools - Props
 	Label *bake_props_label = memnew(Label);
 	bake_props_label->set_align(Label::ALIGN_CENTER);
@@ -1156,6 +1157,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	un_bake_props_button->set_tooltip(TTR("Takes the props stored in the current world, makes PropInstanceMergers from them, and removes them from world."));
 	un_bake_props_button->connect("pressed", this, "_on_un_bake_props_button_pressed");
 	_baking_tools_tool_container->add_child(un_bake_props_button);
+#endif
 
 	// Surface Selector Separator
 	main_container->add_child(memnew(HSeparator));
@@ -1430,6 +1432,7 @@ void TerrainWorldEditor::create_chunk_created_undo_point() {
 }
 
 void TerrainWorldEditor::bake_props(const ObjectID p_world) {
+#ifdef MODULE_PROPS_ENABLED
 	TerrainWorld *world = ObjectDB::get_instance<TerrainWorld>(p_world);
 
 	if (!world) {
@@ -1470,8 +1473,10 @@ void TerrainWorldEditor::bake_props(const ObjectID p_world) {
 	results += String::num_int64(skipped_props_count) + "were skipped (they had scripts).";
 
 	print_line(results);
+#endif
 }
 void TerrainWorldEditor::un_bake_props(const ObjectID p_world) {
+#ifdef MODULE_PROPS_ENABLED
 	TerrainWorld *world = ObjectDB::get_instance<TerrainWorld>(p_world);
 
 	if (!world) {
@@ -1539,6 +1544,7 @@ void TerrainWorldEditor::un_bake_props(const ObjectID p_world) {
 	String results = "Un-Baked " + String::num_int64(un_baked_props_count) + " direct child props into TerrainWorld.";
 
 	print_line(results);
+#endif
 }
 
 void TerrainWorldEditor::bake_scenes(const ObjectID p_world) {
