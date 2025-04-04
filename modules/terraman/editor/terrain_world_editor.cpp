@@ -1126,11 +1126,13 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	Button *bake_props_button = memnew(Button);
 	bake_props_button->set_text(TTR("Bake Props"));
+	bake_props_button->set_tooltip(TTR("Takes the current world's direct child PropInstanceMergers, adds them directly as props and delets them.\mnThe ones that have a script attached will be skipped. Node names will be remembered."));
 	bake_props_button->connect("pressed", this, "_on_bake_props_button_pressed");
 	_baking_tools_tool_container->add_child(bake_props_button);
 
 	Button *un_bake_props_button = memnew(Button);
 	un_bake_props_button->set_text(TTR("Un-Bake Props"));
+	un_bake_props_button->set_tooltip(TTR("Takes the props stored in the current world, makes PropInstanceMergers from them, and removes them from world."));
 	un_bake_props_button->connect("pressed", this, "_on_un_bake_props_button_pressed");
 	_baking_tools_tool_container->add_child(un_bake_props_button);
 
