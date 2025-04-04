@@ -108,6 +108,9 @@ protected:
 	void bake_mdis(const ObjectID p_world);
 	void un_bake_mdis(const ObjectID p_world);
 
+	void bake_vertex_lights(const ObjectID p_world);
+	void un_bake_vertex_lights(const ObjectID p_world);
+
 protected:
 	static void _bind_methods();
 	void _notification(int p_what);
@@ -140,6 +143,9 @@ protected:
 
 	void _on_bake_mdis_button_pressed();
 	void _on_un_bake_mdis_button_pressed();
+
+	void _on_bake_vertex_lights_button_pressed();
+	void _on_un_bake_vertex_lights_button_pressed();
 
 private:
 	UndoRedo *_undo_redo;

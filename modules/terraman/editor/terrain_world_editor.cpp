@@ -48,6 +48,7 @@
 
 #include "core/os/keyboard.h"
 
+#include "../data/terrain_light.h"
 #include "../world/terrain_chunk.h"
 
 #include "../library/terrain_library.h"
@@ -76,6 +77,10 @@
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "modules/mesh_data_resource/nodes/mesh_data_instance.h"
+#endif
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+#include "modules/vertex_lights_3d/vertex_light_3d.h"
 #endif
 
 EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
@@ -1143,7 +1148,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	un_bake_scenes_button->connect("pressed", this, "_on_un_bake_scenes_button_pressed");
 	_baking_tools_tool_container->add_child(un_bake_scenes_button);
 
-// Baking Tools - MeshDataInstances
+	// Baking Tools - MeshDataInstances
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	Label *bake_mdis_label = memnew(Label);
 	bake_mdis_label->set_align(Label::ALIGN_CENTER);
@@ -1152,7 +1157,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	Button *bake_mdis_button = memnew(Button);
 	bake_mdis_button->set_text(TTR("Bake Mesh Data Instances"));
-	bake_mdis_button->set_tooltip(TTR("Takes the current world's direct child MeshDataInstances, adds them directly as props and delets them.\nThe ones that have a script attached will be skipped. Node names will be remembered."));
+	bake_mdis_button->set_tooltip(TTR("Takes the current world's direct child MeshDataInstances, adds them directly as MeshDataInstances and deletes them.\nThe ones that have a script attached will be skipped. Node names will be remembered."));
 	bake_mdis_button->connect("pressed", this, "_on_bake_mdis_button_pressed");
 	_baking_tools_tool_container->add_child(bake_mdis_button);
 
@@ -1164,7 +1169,24 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 #endif
 
 	// Baking Tools - VertexLights
-	// TODO
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	Label *bake_vertex_lights_label = memnew(Label);
+	bake_vertex_lights_label->set_align(Label::ALIGN_CENTER);
+	bake_vertex_lights_label->set_text(TTR("Vertex Lights"));
+	_baking_tools_tool_container->add_child(bake_vertex_lights_label);
+
+	Button *bake_vertex_lights_button = memnew(Button);
+	bake_vertex_lights_button->set_text(TTR("Bake Vertex Lights"));
+	bake_vertex_lights_button->set_tooltip(TTR("Takes the current world's direct child VertexLights, adds them as lights and deletes them.\nThe ones that have a script attached will be skipped. Node names will be remembered."));
+	bake_vertex_lights_button->connect("pressed", this, "_on_bake_vertex_lights_button_pressed");
+	_baking_tools_tool_container->add_child(bake_vertex_lights_button);
+
+	Button *un_bake_vertex_lights_button = memnew(Button);
+	un_bake_vertex_lights_button->set_text(TTR("Un-Bake Vertex Lights"));
+	un_bake_vertex_lights_button->set_tooltip(TTR("Takes the owned lights stored in the current world, makes VertexLights from them, and removes them from world."));
+	un_bake_vertex_lights_button->connect("pressed", this, "_on_un_bake_vertex_lights_button_pressed");
+	_baking_tools_tool_container->add_child(un_bake_vertex_lights_button);
+#endif
 
 	// Baking Tools - Props
 #ifdef MODULE_PROPS_ENABLED
@@ -1175,7 +1197,7 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 
 	Button *bake_props_button = memnew(Button);
 	bake_props_button->set_text(TTR("Bake Props"));
-	bake_props_button->set_tooltip(TTR("Takes the current world's direct child PropInstanceMergers, adds them directly as props and delets them.\nThe ones that have a script attached will be skipped. Node names will be remembered."));
+	bake_props_button->set_tooltip(TTR("Takes the current world's direct child PropInstanceMergers, adds them directly as props and deletes them.\nThe ones that have a script attached will be skipped. Node names will be remembered."));
 	bake_props_button->connect("pressed", this, "_on_bake_props_button_pressed");
 	_baking_tools_tool_container->add_child(bake_props_button);
 
@@ -1704,6 +1726,9 @@ void TerrainWorldEditor::bake_mdis(const ObjectID p_world) {
 			continue;
 		}
 
+		// todo check if it has children
+
+		// this is not needed
 		bool editable = EditorNode::get_singleton()->get_edited_scene()->is_editable_instance(mdi);
 
 		if (editable) {
@@ -1784,6 +1809,113 @@ void TerrainWorldEditor::un_bake_mdis(const ObjectID p_world) {
 	}
 
 	String results = "Un-Baked " + String::num_int64(un_baked_mdis_count) + " direct child Mesh Data Instances from TerrainWorld.";
+
+	print_line(results);
+#endif
+}
+
+void TerrainWorldEditor::bake_vertex_lights(const ObjectID p_world) {
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	TerrainWorld *world = ObjectDB::get_instance<TerrainWorld>(p_world);
+
+	if (!world) {
+		return;
+	}
+
+	int baked_vl_count = 0;
+	int skipped_vl_disabled_count = 0;
+	int skipped_vl_having_children_count = 0;
+
+	for (int i = 0; i < world->get_child_count(); ++i) {
+		VertexLight3D *vl = Object::cast_to<VertexLight3D>(world->get_child(i));
+
+		if (!vl) {
+			continue;
+		}
+
+		if (vl->get_child_count() > 0) {
+			++skipped_vl_having_children_count;
+			continue;
+		}
+
+		if (!vl->get_is_enabled()) {
+			++skipped_vl_disabled_count;
+			continue;
+		}
+
+		Transform t = vl->get_global_transform();
+
+		Ref<TerrainLight> light;
+		light.instance();
+
+		Vector3i wdp = world->world_position_to_world_data_position_3d(t.xform(Vector3()));
+		light->set_world_data_position(wdp);
+
+		light->set_name(vl->get_name());
+		light->set_range(vl->get_range());
+		light->set_attenuation(vl->get_attenuation());
+		light->set_color(vl->get_color());
+		light->set_light_mode((TerrainLight::LightMode)((int)vl->get_mode()));
+		light->set_item_cull_mask(vl->get_item_cull_mask());
+
+		vl->queue_delete();
+
+		++baked_vl_count;
+
+		world->light_add(light);
+	}
+
+	String results = "Baked " + String::num_int64(baked_vl_count) + " direct child VertexLight3D into TerrainWorld.\n";
+	results += String::num_int64(skipped_vl_having_children_count) + " were skipped due to them having children.\n";
+	results += String::num_int64(skipped_vl_disabled_count) + " were skipped due to them not being enabled.";
+
+	print_line(results);
+#endif
+}
+void TerrainWorldEditor::un_bake_vertex_lights(const ObjectID p_world) {
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	TerrainWorld *world = ObjectDB::get_instance<TerrainWorld>(p_world);
+
+	if (!world) {
+		return;
+	}
+
+	int un_baked_vl_count = 0;
+
+	for (int i = 0; i < world->chunk_get_count(); ++i) {
+		Ref<TerrainChunk> chunk = world->chunk_get_index(i);
+
+		for (int j = 0; j < chunk->light_get_count(); ++j) {
+			Ref<TerrainLight> light = chunk->light_get_index(j);
+
+			if (light->get_owner_type() != TerrainLight::OWNER_TYPE_NONE) {
+				continue;
+			}
+
+			chunk->light_remove_index(j);
+			--j;
+
+			VertexLight3D *vl = memnew(VertexLight3D);
+
+			vl->set_name(light->get_name());
+			vl->set_range(light->get_range());
+			vl->set_attenuation(light->get_attenuation());
+			vl->set_color(light->get_color());
+			vl->set_mode((VertexLight3D::VertexLight3DMode)((int)light->get_light_mode()));
+			vl->set_item_cull_mask(light->get_item_cull_mask());
+
+			Transform t;
+			t.set_origin(world->world_data_position_to_world_position_3d(light->get_world_data_position()));
+			vl->set_transform(t);
+
+			world->add_child(vl);
+			vl->set_owner(_editor->get_edited_scene());
+
+			++un_baked_vl_count;
+		}
+	}
+
+	String results = "Un-Baked " + String::num_int64(un_baked_vl_count) + " direct child VertexLight3D Instances from TerrainWorld.";
 
 	print_line(results);
 #endif
@@ -2107,6 +2239,31 @@ void TerrainWorldEditor::_on_un_bake_mdis_button_pressed() {
 	_undo_redo->commit_action();
 }
 
+void TerrainWorldEditor::_on_bake_vertex_lights_button_pressed() {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID world = _world->get_instance_id();
+
+	_undo_redo->create_action(TTR("Bake Vertex Lights"));
+	_undo_redo->add_do_method(this, "bake_vertex_lights", world);
+	_undo_redo->add_undo_method(this, "un_bake_vertex_lights", world);
+	_undo_redo->commit_action();
+}
+void TerrainWorldEditor::_on_un_bake_vertex_lights_button_pressed() {
+	if (!_world) {
+		return;
+	}
+
+	ObjectID world = _world->get_instance_id();
+
+	_undo_redo->create_action(TTR("Bake Vertex Lights"));
+	_undo_redo->add_do_method(this, "un_bake_vertex_lights", world);
+	_undo_redo->add_undo_method(this, "bake_vertex_lights", world);
+	_undo_redo->commit_action();
+}
+
 void TerrainWorldEditor::_bind_methods() {
 	ClassDB::bind_method("_node_removed", &TerrainWorldEditor::_node_removed);
 
@@ -2156,6 +2313,13 @@ void TerrainWorldEditor::_bind_methods() {
 
 	ClassDB::bind_method("bake_mdis", &TerrainWorldEditor::bake_mdis);
 	ClassDB::bind_method("un_bake_mdis", &TerrainWorldEditor::un_bake_mdis);
+
+	// Vertex Lights
+	ClassDB::bind_method("_on_bake_vertex_lights_button_pressed", &TerrainWorldEditor::_on_bake_vertex_lights_button_pressed);
+	ClassDB::bind_method("_on_un_bake_vertex_lights_button_pressed", &TerrainWorldEditor::_on_un_bake_vertex_lights_button_pressed);
+
+	ClassDB::bind_method("bake_vertex_lights", &TerrainWorldEditor::bake_vertex_lights);
+	ClassDB::bind_method("un_bake_vertex_lights", &TerrainWorldEditor::un_bake_vertex_lights);
 }
 
 void TerrainWorldEditorPlugin::_notification(int p_what) {
