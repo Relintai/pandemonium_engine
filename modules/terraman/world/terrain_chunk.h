@@ -315,8 +315,9 @@ public:
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-	int mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true, const bool p_original = true);
-	int mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true, const bool p_original = true);
+	int mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true, const bool p_original = true, const String &p_name = String());
+	int mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true, const bool p_original = true, const String &p_name = String());
+	int mesh_data_resource_add_material(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Ref<Material> &p_material = Ref<Texture>(), const bool apply_voxel_scale = true, const bool p_original = true, const String &p_name = String());
 
 	Ref<MeshDataResource> mesh_data_resource_get(const int index);
 	void mesh_data_resource_set(const int index, const Ref<MeshDataResource> &mesh);
@@ -338,6 +339,12 @@ public:
 
 	bool mesh_data_resource_get_is_original(const int index);
 	void mesh_data_resource_set_is_original(const int index, const bool p_original);
+
+	String mesh_data_resource_get_name(const int index);
+	void mesh_data_resource_set_name(const int index, const String &p_name);
+
+	Ref<Material> mesh_data_resource_get_material(const int index);
+	void mesh_data_resource_set_material(const int index, const Ref<Material> &p_material);
 
 	int mesh_data_resource_get_count() const;
 	void mesh_data_resource_remove(const int index);
@@ -416,6 +423,7 @@ protected:
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	struct MeshDataResourceEntry {
+		String name;
 		Ref<MeshDataResource> mesh;
 		Ref<Texture> texture;
 		Color color;
@@ -423,6 +431,7 @@ protected:
 		Transform transform;
 		bool is_inside;
 		bool is_original;
+		Ref<Material> material;
 	};
 #endif
 

@@ -1331,7 +1331,7 @@ void TerrainChunk::props_set(const Array &p_props) {
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale, const bool p_original) {
+int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND_V(!mesh.is_valid(), 0);
 
 	int index = _mesh_data_resources.size();
@@ -1343,6 +1343,52 @@ int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const R
 		e.transform.origin = local_data_pos * _voxel_scale;
 	} else {
 		e.transform.origin = local_data_pos;
+	}
+
+	e.name = p_name;
+	e.mesh = mesh;
+	e.texture = texture;
+	e.color = color;
+	e.is_original = p_original;
+
+	AABB aabb = AABB(Vector3(), get_world_size());
+	AABB mesh_aabb = e.transform.xform(mesh->get_aabb());
+	e.is_inside = aabb.encloses(mesh_aabb);
+
+#ifdef MODULE_PROPS_ENABLED
+	if (get_library().is_valid() && texture.is_valid()) {
+		e.uv_rect = get_library()->get_prop_uv_rect(texture);
+	} else {
+		e.uv_rect = Rect2(0, 0, 1, 1);
+	}
+#else
+	e.uv_rect = Rect2(0, 0, 1, 1);
+#endif
+
+	_mesh_data_resources.push_back(e);
+
+	if (has_method("_mesh_data_resource_added")) {
+		call("_mesh_data_resource_added", index);
+	}
+
+	emit_changed();
+
+	return index;
+}
+
+int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale, const bool p_original, const String &p_name) {
+	ERR_FAIL_COND_V(!mesh.is_valid(), 0);
+
+	int index = _mesh_data_resources.size();
+
+	MeshDataResourceEntry e;
+
+	e.name = p_name;
+	e.transform = local_transform;
+
+	if (apply_voxel_scale) {
+		e.transform.basis = e.transform.basis.scaled(Vector3(_voxel_scale, _voxel_scale, _voxel_scale));
+		e.transform.origin = e.transform.origin * _voxel_scale;
 	}
 
 	e.mesh = mesh;
@@ -1375,13 +1421,14 @@ int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const R
 	return index;
 }
 
-int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale, const bool p_original) {
+int TerrainChunk::mesh_data_resource_add_material(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Ref<Material> &p_material, const bool apply_voxel_scale, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND_V(!mesh.is_valid(), 0);
 
 	int index = _mesh_data_resources.size();
 
 	MeshDataResourceEntry e;
 
+	e.name = p_name;
 	e.transform = local_transform;
 
 	if (apply_voxel_scale) {
@@ -1391,7 +1438,8 @@ int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const
 
 	e.mesh = mesh;
 	e.texture = texture;
-	e.color = color;
+	e.color = Color(1, 1, 1, 1);
+	e.material = p_material;
 	e.is_original = p_original;
 
 	AABB aabb = AABB(Vector3(), get_world_size());
@@ -1511,6 +1559,32 @@ void TerrainChunk::mesh_data_resource_set_is_original(const int index, const boo
 	emit_changed();
 }
 
+String TerrainChunk::mesh_data_resource_get_name(const int index) {
+	ERR_FAIL_INDEX_V(index, _mesh_data_resources.size(), String());
+
+	return _mesh_data_resources[index].name;
+}
+void TerrainChunk::mesh_data_resource_set_name(const int index, const String &p_name) {
+	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
+
+	_mesh_data_resources.write[index].name = p_name;
+
+	emit_changed();
+}
+
+Ref<Material> TerrainChunk::mesh_data_resource_get_material(const int index) {
+	ERR_FAIL_INDEX_V(index, _mesh_data_resources.size(), Ref<Material>());
+
+	return _mesh_data_resources[index].material;
+}
+void TerrainChunk::mesh_data_resource_set_material(const int index, const Ref<Material> &p_material) {
+	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
+
+	_mesh_data_resources.write[index].material = p_material;
+
+	emit_changed();
+}
+
 int TerrainChunk::mesh_data_resource_get_count() const {
 	return _mesh_data_resources.size();
 }
@@ -1540,6 +1614,8 @@ Array TerrainChunk::mesh_data_resources_get() {
 		mdr_data.push_back(e.color);
 		mdr_data.push_back(e.transform);
 		mdr_data.push_back(e.is_original);
+		mdr_data.push_back(e.name);
+		mdr_data.push_back(e.material);
 
 		ret.push_back(mdr_data);
 	}
@@ -1553,15 +1629,47 @@ void TerrainChunk::mesh_data_resources_set(const Array &p_mesh_data_resources) {
 	for (int i = 0; i < p_mesh_data_resources.size(); ++i) {
 		Array mdr_data = p_mesh_data_resources[i];
 
-		ERR_CONTINUE(mdr_data.size() != 5);
+		ERR_CONTINUE(mdr_data.size() != 5 && mdr_data.size() != 7);
 
-		Ref<MeshDataResource> mesh = Ref<MeshDataResource>(mdr_data[0]);
-		Ref<Texture> texture = Ref<Texture>(mdr_data[1]);
-		Color color = mdr_data[2];
-		Transform transform = mdr_data[3];
-		bool is_original = mdr_data[4];
+		MeshDataResourceEntry e;
 
-		mesh_data_resource_add(transform, mesh, texture, color, false, is_original);
+		e.mesh = Ref<MeshDataResource>(mdr_data[0]);
+
+		ERR_CONTINUE(e.mesh.is_null());
+
+		e.texture = Ref<Texture>(mdr_data[1]);
+		e.color = mdr_data[2];
+		e.transform = mdr_data[3];
+		e.is_original = mdr_data[4];
+		if (mdr_data.size() > 5) {
+			e.name = mdr_data[5];
+		}
+		if (mdr_data.size() > 6) {
+			e.material = mdr_data[6];
+		}
+
+		AABB aabb = AABB(Vector3(), get_world_size());
+		AABB mesh_aabb = e.transform.xform(e.mesh->get_aabb());
+		e.is_inside = aabb.encloses(mesh_aabb);
+
+#ifdef MODULE_PROPS_ENABLED
+		if (get_library().is_valid() && e.texture.is_valid()) {
+			e.uv_rect = get_library()->get_prop_uv_rect(e.texture);
+		} else {
+			e.uv_rect = Rect2(0, 0, 1, 1);
+		}
+#else
+		e.uv_rect = Rect2(0, 0, 1, 1);
+#endif
+
+		int index = _mesh_data_resources.size();
+		_mesh_data_resources.push_back(e);
+
+		if (has_method("_mesh_data_resource_added")) {
+			call("_mesh_data_resource_added", index);
+		}
+
+		emit_changed();
 	}
 }
 
@@ -2277,8 +2385,9 @@ void TerrainChunk::_bind_methods() {
 	//Meshes
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-	ClassDB::bind_method(D_METHOD("mesh_data_resource_addv", "local_data_pos", "mesh", "texture", "color", "apply_voxel_scale"), &TerrainChunk::mesh_data_resource_addv, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true));
-	ClassDB::bind_method(D_METHOD("mesh_data_resource_add", "local_transform", "mesh", "texture", "color", "apply_voxel_scale"), &TerrainChunk::mesh_data_resource_add, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_addv", "local_data_pos", "mesh", "texture", "color", "apply_voxel_scale", "original", "name"), &TerrainChunk::mesh_data_resource_addv, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(true), DEFVAL(String()));
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_add", "local_transform", "mesh", "texture", "color", "apply_voxel_scale", "original", "name"), &TerrainChunk::mesh_data_resource_add, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(true), DEFVAL(String()));
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_add_material", "local_transform", "mesh", "texture", "material", "apply_voxel_scale", "original", "name"), &TerrainChunk::mesh_data_resource_add_material, DEFVAL(Ref<Texture>()), DEFVAL(Ref<Material>()), DEFVAL(true), DEFVAL(true), DEFVAL(String()));
 
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_get", "index"), &TerrainChunk::mesh_data_resource_get);
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_set", "index", "mesh"), &TerrainChunk::mesh_data_resource_set);
@@ -2300,6 +2409,12 @@ void TerrainChunk::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_get_is_original", "index"), &TerrainChunk::mesh_data_resource_get_is_original);
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_set_is_original", "index", "original"), &TerrainChunk::mesh_data_resource_set_is_original);
+
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_get_name", "index"), &TerrainChunk::mesh_data_resource_get_name);
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_set_name", "index", "name"), &TerrainChunk::mesh_data_resource_set_name);
+
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_get_material", "index"), &TerrainChunk::mesh_data_resource_get_material);
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_set_material", "index", "material"), &TerrainChunk::mesh_data_resource_set_material);
 
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_get_count"), &TerrainChunk::mesh_data_resource_get_count);
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_remove", "index"), &TerrainChunk::mesh_data_resource_remove);
