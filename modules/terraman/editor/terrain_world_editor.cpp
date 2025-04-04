@@ -1497,7 +1497,7 @@ void TerrainWorldEditor::bake_props(const ObjectID p_world) {
 	}
 
 	String results = "Baked " + String::num_int64(baked_props_count) + " direct child props into TerrainWorld. ";
-	results += String::num_int64(skipped_props_count) + "were skipped (they had scripts).";
+	results += String::num_int64(skipped_props_count) + " were skipped (they had scripts).";
 
 	print_line(results);
 #endif
@@ -1622,8 +1622,8 @@ void TerrainWorldEditor::bake_scenes(const ObjectID p_world) {
 	}
 
 	String results = "Baked " + String::num_int64(baked_scene_count) + " direct child scenes into TerrainWorld.\n";
-	results += String::num_int64(skipped_editable_scene_count) + "were skipped because they were editable,\n";
-	results += String::num_int64(skipped_scene_count) + "were skipped due to other reasons.";
+	results += String::num_int64(skipped_editable_scene_count) + " were skipped because they were editable,\n";
+	results += String::num_int64(skipped_scene_count) + " were skipped due to other reasons.";
 
 	print_line(results);
 }
@@ -1729,9 +1729,9 @@ void TerrainWorldEditor::bake_mdis(const ObjectID p_world) {
 	}
 
 	String results = "Baked " + String::num_int64(baked_mdi_count) + " direct child MeshDataInstances into TerrainWorld.\n";
-	results += String::num_int64(skipped_editable_instances_count) + "were skipped because they were editable,\n";
-	results += String::num_int64(skipped_mdi_with_children_count) + "were skipped due to it having children,\n";
-	results += String::num_int64(skipped_mdi_count) + "were skipped due to other reasons.";
+	results += String::num_int64(skipped_editable_instances_count) + " were skipped because they were editable,\n";
+	results += String::num_int64(skipped_mdi_with_children_count) + " were skipped due to it having children,\n";
+	results += String::num_int64(skipped_mdi_count) + " were skipped due to other reasons.";
 
 	print_line(results);
 #endif
