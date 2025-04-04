@@ -1645,7 +1645,7 @@ void TerrainWorldEditor::un_bake_scenes(const ObjectID p_world) {
 			}
 
 			Ref<PackedScene> pd = chunk->scene_get(j);
-			Transform t = chunk->prop_get_transform(j);
+			Transform t = chunk->scene_get_transform(j);
 			String name = chunk->scene_get_name(j);
 			Node *n = chunk->scene_get_node(j);
 
