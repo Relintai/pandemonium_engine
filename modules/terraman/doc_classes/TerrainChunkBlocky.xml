@@ -13,6 +13,10 @@
 		</member>
 		<member name="isolevel_channel" type="PoolByteArray" setter="channel_set_compressed" getter="channel_get_compressed" default="PoolByteArray(  )">
 		</member>
+		<member name="liquid_data_channel" type="PoolByteArray" setter="channel_set_compressed" getter="channel_get_compressed" default="PoolByteArray(  )">
+		</member>
+		<member name="liquid_isolevel_channel" type="PoolByteArray" setter="channel_set_compressed" getter="channel_get_compressed" default="PoolByteArray(  )">
+		</member>
 	</members>
 	<constants>
 	</constants>

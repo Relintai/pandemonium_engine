@@ -23,6 +23,11 @@
 				Gets a bool value from the index-th cell.
 			</description>
 		</method>
+		<method name="get_cell_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_cell_double">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
@@ -56,11 +61,46 @@
 				Returns the last inserted row's id. On some database backends this needs to be requested in the query to be available.
 			</description>
 		</method>
+		<method name="get_next_cell">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_next_cell_bool">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="get_next_cell_double">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_next_cell_float">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_next_cell_int">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_stored_row_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="is_cell_null">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Is the given cell null.
+			</description>
+		</method>
+		<method name="is_next_cell_null">
+			<return type="bool" />
+			<description>
 			</description>
 		</method>
 		<method name="next_row">
@@ -70,6 +110,10 @@
 			</description>
 		</method>
 	</methods>
+	<members>
+		<member name="current_cell_index" type="int" setter="set_current_cell_index" getter="get_current_cell_index" default="0">
+		</member>
+	</members>
 	<constants>
 	</constants>
 </class>

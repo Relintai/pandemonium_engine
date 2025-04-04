@@ -276,10 +276,80 @@
 				Returns the expanded version of the original sql, if the database backend supports it.
 			</description>
 		</method>
+		<method name="get_last_insert_rowid">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_normalized_sql">
 			<return type="String" />
 			<description>
 				Returns the normalized version of the original sql, if the database backend supports it.
+			</description>
+		</method>
+		<method name="next_column_blob">
+			<return type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_database_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_decltype">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_double">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_float">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_int">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_int64">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_origin_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_table_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_text">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_type">
+			<return type="int" enum="PreparedStatement.Type" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column_value">
+			<return type="Variant" />
+			<description>
 			</description>
 		</method>
 		<method name="prepare">
@@ -303,6 +373,8 @@
 		</method>
 	</methods>
 	<members>
+		<member name="current_column_index" type="int" setter="set_current_column_index" getter="get_current_column_index">
+		</member>
 		<member name="sql" type="String" setter="set_sql" getter="get_sql">
 			The sql statement to send to the database.
 		</member>

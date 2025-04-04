@@ -208,5 +208,7 @@
 			Specific to mobile platforms.
 			[b]Note:[/b] On iOS, you only have approximately 5 seconds to finish a task started by this signal. If you go over this allotment, iOS will kill the app instead of pausing it.
 		</constant>
+		<constant name="NOTIFICATION_QUITTING" value="1016">
+		</constant>
 	</constants>
 </class>

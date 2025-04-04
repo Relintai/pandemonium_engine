@@ -23,6 +23,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="_build_immediate" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 		<method name="_channel_setup" qualifiers="virtual">
 			<return type="void" />
 			<description>
@@ -113,6 +118,11 @@
 			</description>
 		</method>
 		<method name="build">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="build_immediate">
 			<return type="void" />
 			<description>
 			</description>
@@ -417,6 +427,46 @@
 			<description>
 			</description>
 		</method>
+		<method name="light_add">
+			<return type="void" />
+			<argument index="0" name="light" type="TerrainLight" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get_index">
+			<return type="TerrainLight" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="light_has">
+			<return type="bool" />
+			<argument index="0" name="light" type="TerrainLight" />
+			<description>
+			</description>
+		</method>
+		<method name="light_remove">
+			<return type="bool" />
+			<argument index="0" name="light" type="TerrainLight" />
+			<description>
+			</description>
+		</method>
+		<method name="light_remove_index">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="lights_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 		<method name="mesh_data_resource_add">
 			<return type="int" />
 			<argument index="0" name="local_transform" type="Transform" />
@@ -424,6 +474,20 @@
 			<argument index="2" name="texture" type="Texture" default="null" />
 			<argument index="3" name="color" type="Color" default="Color( 1, 1, 1, 1 )" />
 			<argument index="4" name="apply_voxel_scale" type="bool" default="true" />
+			<argument index="5" name="original" type="bool" default="true" />
+			<argument index="6" name="name" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="mesh_data_resource_add_material">
+			<return type="int" />
+			<argument index="0" name="local_transform" type="Transform" />
+			<argument index="1" name="mesh" type="MeshDataResource" />
+			<argument index="2" name="texture" type="Texture" default="null" />
+			<argument index="3" name="material" type="Material" default="null" />
+			<argument index="4" name="apply_voxel_scale" type="bool" default="true" />
+			<argument index="5" name="original" type="bool" default="true" />
+			<argument index="6" name="name" type="String" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
@@ -434,6 +498,8 @@
 			<argument index="2" name="texture" type="Texture" default="null" />
 			<argument index="3" name="color" type="Color" default="Color( 1, 1, 1, 1 )" />
 			<argument index="4" name="apply_voxel_scale" type="bool" default="true" />
+			<argument index="5" name="original" type="bool" default="true" />
+			<argument index="6" name="name" type="String" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
@@ -461,6 +527,24 @@
 		</method>
 		<method name="mesh_data_resource_get_is_inside">
 			<return type="bool" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="mesh_data_resource_get_is_original">
+			<return type="bool" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="mesh_data_resource_get_material">
+			<return type="Material" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="mesh_data_resource_get_name">
+			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
@@ -510,6 +594,27 @@
 			<description>
 			</description>
 		</method>
+		<method name="mesh_data_resource_set_is_original">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="original" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="mesh_data_resource_set_material">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="material" type="Material" />
+			<description>
+			</description>
+		</method>
+		<method name="mesh_data_resource_set_name">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="name" type="String" />
+			<description>
+			</description>
+		</method>
 		<method name="mesh_data_resource_set_texture">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
@@ -545,8 +650,10 @@
 		</method>
 		<method name="prop_add">
 			<return type="void" />
-			<argument index="0" name="prop" type="Transform" />
-			<argument index="1" name="arg1" type="PropData" />
+			<argument index="0" name="transform" type="Transform" />
+			<argument index="1" name="prop" type="PropData" />
+			<argument index="2" name="original" type="bool" default="true" />
+			<argument index="3" name="name" type="String" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
@@ -561,14 +668,165 @@
 			<description>
 			</description>
 		</method>
+		<method name="prop_get_is_original">
+			<return type="bool" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="prop_get_name">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="prop_get_transform">
+			<return type="Transform" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="prop_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
+		<method name="prop_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="prop" type="PropData" />
+			<description>
+			</description>
+		</method>
+		<method name="prop_set_is_original">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="original" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="prop_set_name">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="prop_set_transform">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="transform" type="Transform" />
+			<description>
+			</description>
+		</method>
 		<method name="props_clear">
 			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_add">
+			<return type="void" />
+			<argument index="0" name="scene" type="PackedScene" />
+			<argument index="1" name="transform" type="Transform" default="Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )" />
+			<argument index="2" name="node" type="Node" default="null" />
+			<argument index="3" name="original" type="bool" default="true" />
+			<argument index="4" name="name" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_get">
+			<return type="PackedScene" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_get_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_get_is_original">
+			<return type="bool" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_get_name">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_get_node">
+			<return type="Node" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_get_transform">
+			<return type="Transform" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_instance">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_queue_free">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_remove">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="queue_free" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="scene" type="PackedScene" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_set_is_original">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="original" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_set_name">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_set_node">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="node" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_set_transform">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="transform" type="Transform" />
+			<description>
+			</description>
+		</method>
+		<method name="scenes_clear">
+			<return type="void" />
+			<argument index="0" name="queue_free" type="bool" default="true" />
 			<description>
 			</description>
 		</method>
@@ -704,11 +962,19 @@
 		</member>
 		<member name="is_generating" type="bool" setter="set_is_generating" getter="get_is_generating">
 		</member>
+		<member name="is_immediate_build" type="bool" setter="set_is_immediate_build" getter="get_is_immediate_build">
+		</member>
+		<member name="is_terrain_generated" type="bool" setter="set_is_terrain_generated" getter="get_is_terrain_generated" default="false">
+		</member>
 		<member name="library" type="TerrainLibrary" setter="set_library" getter="get_library">
+		</member>
+		<member name="lights" type="Array" setter="lights_set" getter="lights_get">
 		</member>
 		<member name="liquid_material_cache_key" type="int" setter="liquid_material_cache_key_set" getter="liquid_material_cache_key_get" default="0">
 		</member>
 		<member name="liquid_material_cache_key_has" type="bool" setter="liquid_material_cache_key_has_set" getter="liquid_material_cache_key_has_get" default="false">
+		</member>
+		<member name="liquid_material_cache_key_invalid" type="bool" setter="liquid_material_cache_key_invalid_set" getter="liquid_material_cache_key_invalid_get" default="false">
 		</member>
 		<member name="margin_end" type="int" setter="set_margin_end" getter="get_margin_end" default="0">
 		</member>
@@ -718,6 +984,12 @@
 		</member>
 		<member name="material_cache_key_has" type="bool" setter="material_cache_key_has_set" getter="material_cache_key_has_get" default="false">
 		</member>
+		<member name="material_cache_key_invalid" type="bool" setter="material_cache_key_invalid_set" getter="material_cache_key_invalid_get" default="false">
+		</member>
+		<member name="mesh_data_resources" type="Array" setter="mesh_data_resources_set" getter="mesh_data_resources_get" default="[  ]">
+		</member>
+		<member name="owned_lights" type="Array" setter="owned_lights_set" getter="owned_lights_get" default="[  ]">
+		</member>
 		<member name="position_x" type="int" setter="set_position_x" getter="get_position_x" default="0">
 		</member>
 		<member name="position_z" type="int" setter="set_position_z" getter="get_position_z" default="0">
@@ -725,6 +997,12 @@
 		<member name="prop_material_cache_key" type="int" setter="prop_material_cache_key_set" getter="prop_material_cache_key_get" default="0">
 		</member>
 		<member name="prop_material_cache_key_has" type="bool" setter="prop_material_cache_key_has_set" getter="prop_material_cache_key_has_get" default="false">
+		</member>
+		<member name="prop_material_cache_key_invalid" type="bool" setter="prop_material_cache_key_invalid_set" getter="prop_material_cache_key_invalid_get" default="false">
+		</member>
+		<member name="props" type="Array" setter="props_set" getter="props_get" default="[  ]">
+		</member>
+		<member name="scenes" type="Array" setter="scenes_set" getter="scenes_get" default="[  ]">
 		</member>
 		<member name="size_x" type="int" setter="set_size_x" getter="get_size_x" default="0">
 		</member>
