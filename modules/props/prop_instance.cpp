@@ -104,6 +104,13 @@ void PropInstance::collision_layer_changed() {
 void PropInstance::collision_mask_changed() {
 }
 
+AABB PropInstance::get_aabb() const {
+	return _aabb;
+}
+PoolVector<Face3> PropInstance::get_faces(uint32_t p_usage_flags) const {
+	return PoolVector<Face3>();
+}
+
 void PropInstance::init_materials() {
 	call("_init_materials");
 }
@@ -139,11 +146,17 @@ void PropInstance::_build() {
 		}
 	}
 
+	_aabb = AABB();
+	_aabb.position = get_global_translation();
+
 	if (!_prop_data.is_valid()) {
 		return;
 	}
 
 	prop_preprocess(Transform(), _prop_data);
+
+	update_gizmos();
+	_change_notify();
 }
 
 void PropInstance::_build_finished() {
@@ -201,6 +214,9 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 
 			add_child(twn);
 
+			//_aabb.merge_with(twn->get_aabb());
+			_aabb.expand_to(t.get_origin());
+
 			continue;
 		}
 
@@ -220,6 +236,8 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 
 			if (sp) {
 				sp->set_transform(t);
+
+				_aabb.expand_to(t.get_origin());
 			}
 
 			continue;
@@ -240,6 +258,8 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 			light->set_param(Light::PARAM_SPECULAR, light_data->get_light_specular());
 			light->set_transform(t);
 
+			_aabb.expand_to(t.get_origin());
+
 			continue;
 		}
 
@@ -248,6 +268,8 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 		if (static_body_data.is_valid()) {
 			Node *static_body = static_body_data->processor_get_node_for(t);
 			add_child(static_body);
+
+			_aabb.expand_to(t.get_origin());
 
 			continue;
 		}
@@ -261,6 +283,8 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 			if (!mdr.is_valid()) {
 				continue;
 			}
+
+			_aabb.merge_with(mdr->get_aabb());
 
 			MeshDataInstance *mdi = memnew(MeshDataInstance);
 			add_child(mdi);
@@ -291,6 +315,9 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 			}
 
 			mdi->set_mesh_data(mdr);
+
+			//_aabb.merge_with(mdi->get_aabb());
+			_aabb.expand_to(t.get_origin());
 
 			continue;
 		}

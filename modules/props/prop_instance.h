@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/main/spatial.h"
+#include "scene/3d/visual_instance.h"
 
 #include "scene/resources/material/material.h"
 
@@ -40,8 +40,8 @@
 
 #include "props/prop_data.h"
 
-class PropInstance : public Spatial {
-	GDCLASS(PropInstance, Spatial);
+class PropInstance : public VisualInstance {
+	GDCLASS(PropInstance, VisualInstance);
 
 public:
 	Ref<PropData> get_prop_data();
@@ -58,6 +58,9 @@ public:
 
 	virtual void collision_layer_changed();
 	virtual void collision_mask_changed();
+
+	virtual AABB get_aabb() const;
+	virtual PoolVector<Face3> get_faces(uint32_t p_usage_flags) const;
 
 	void init_materials();
 	virtual void _init_materials();
@@ -88,6 +91,8 @@ protected:
 
 	bool _build_queued;
 	bool _building;
+
+	AABB _aabb;
 };
 
 #endif

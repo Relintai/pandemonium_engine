@@ -602,6 +602,10 @@ void PropInstanceMerger::_build_finished() {
 
 	if (_build_queued) {
 		call_deferred("build");
+	} else {
+		update_gizmos();
+
+		_change_notify();
 	}
 }
 
@@ -642,6 +646,8 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 					Transform et = t * static_body_data->get_collision_shape_transform(j);
 
 					_job->add_collision_shape(collision_shape, et, true);
+
+					_aabb.expand_to(t.get_origin());
 				}
 			}
 
@@ -655,6 +661,8 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 
 			if (twd.is_valid()) {
 				_job->add_tiled_wall(tiled_wall_data, t);
+
+				_aabb.expand_to(t.get_origin());
 
 				if (tiled_wall_data->get_collision()) {
 					Ref<BoxShape> tws;
@@ -694,6 +702,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 
 			if (sp) {
 				sp->set_transform(t);
+				_aabb.expand_to(t.get_origin());
 			}
 
 			continue;
@@ -720,6 +729,8 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 
 			_job->add_light(light);
 
+			_aabb.expand_to(t.get_origin());
+
 			continue;
 		}
 
@@ -733,10 +744,14 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 				continue;
 			}
 
+			_aabb.merge_with(mdr->get_aabb());
+
 			_job->add_mesh(mesh_data, t);
 
 			for (int j = 0; j < mdr->get_collision_shape_count(); ++j) {
-				_job->add_collision_shape(mdr->get_collision_shape(j), t * mdr->get_collision_shape_offset(j));
+				Transform ct = t * mdr->get_collision_shape_offset(j);
+				_job->add_collision_shape(mdr->get_collision_shape(j), ct);
+				_aabb.expand_to(ct.get_origin());
 			}
 		}
 #endif
