@@ -130,7 +130,7 @@ void TiledWall::set_collision_mask(uint32_t p_mask) {
 }
 
 AABB TiledWall::get_aabb() const {
-	return AABB();
+	return _aabb;
 }
 
 PoolVector<Face3> TiledWall::get_faces(uint32_t p_usage_flags) const {
