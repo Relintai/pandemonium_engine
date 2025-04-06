@@ -35,12 +35,12 @@
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 
+#include "editor/spatial_editor_gizmos.h"
+
+class PropInstanceSpatialGizmoPlugin;
+
 class PropEditorPlugin : public EditorPlugin {
 	GDCLASS(PropEditorPlugin, EditorPlugin);
-	EditorNode *editor;
-
-protected:
-	static void _bind_methods();
 
 public:
 	virtual String get_name() const { return "PropEditorPlugin"; }
@@ -61,6 +61,26 @@ public:
 
 	PropEditorPlugin(EditorNode *p_node);
 	~PropEditorPlugin();
+
+protected:
+	static void _bind_methods();
+
+	EditorNode *editor;
+
+	Ref<PropInstanceSpatialGizmoPlugin> gizmo_plugin;
+};
+
+class PropInstanceSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
+	GDCLASS(PropInstanceSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
+
+public:
+	bool has_gizmo(Spatial *p_spatial);
+	String get_gizmo_name() const;
+	int get_priority() const;
+	bool can_be_hidden() const;
+	void redraw(EditorSpatialGizmo *p_gizmo);
+
+	PropInstanceSpatialGizmoPlugin();
 };
 
 #endif

@@ -69,7 +69,9 @@
 
 #include "lights/prop_light.h"
 
+#ifdef TOOLS_ENABLED
 #include "./editor/prop_editor_plugin.h"
+#endif
 
 #include "prop_mesher.h"
 

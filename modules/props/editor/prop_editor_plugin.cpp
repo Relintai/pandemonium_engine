@@ -41,6 +41,10 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/separator.h"
 
+#include "../prop_instance.h"
+
+#include "scene/resources/mesh/mesh.h"
+
 void PropEditorPlugin::convert_active_scene_to_prop_data() {
 	SceneTree *st = SceneTree::get_singleton();
 
@@ -125,6 +129,9 @@ PropEditorPlugin::PropEditorPlugin(EditorNode *p_node) {
 	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to Prop.", KEY_MASK_ALT + KEY_U));
 
 	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_MENU, bc);
+
+	gizmo_plugin.instance();
+	add_spatial_gizmo_plugin(gizmo_plugin);
 }
 
 PropEditorPlugin::~PropEditorPlugin() {
@@ -137,4 +144,99 @@ void PropEditorPlugin::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("find_room_points"), &PropEditorPlugin::find_room_points);
 
 	ClassDB::bind_method(D_METHOD("_quick_convert_button_pressed"), &PropEditorPlugin::_quick_convert_button_pressed);
+}
+
+////////
+
+PropInstanceSpatialGizmoPlugin::PropInstanceSpatialGizmoPlugin() {
+	const Color gizmo_color = EDITOR_DEF("editors/props/gizmo_colors/outline", Color(0.5, 0.5, 1));
+	create_material("outline_material", gizmo_color);
+}
+
+bool PropInstanceSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
+	return Object::cast_to<PropInstance>(p_spatial) != NULL;
+}
+
+String PropInstanceSpatialGizmoPlugin::get_gizmo_name() const {
+	return "PropInstance";
+}
+
+int PropInstanceSpatialGizmoPlugin::get_priority() const {
+	return -1;
+}
+
+bool PropInstanceSpatialGizmoPlugin::can_be_hidden() const {
+	return true;
+}
+
+void PropInstanceSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
+	PropInstance *prop = Object::cast_to<PropInstance>(p_gizmo->get_spatial_node());
+
+	p_gizmo->clear();
+
+	AABB aabb = prop->get_aabb();
+
+	if (aabb.has_no_volume()) {
+		return; //none
+	}
+
+	Ref<ArrayMesh> cm;
+	cm.instance();
+
+	//cm->set_size(aabb.size);
+
+	Array mesh_arr;
+	mesh_arr.resize(Mesh::ARRAY_MAX);
+
+	// set our bounding box
+	PoolVector<Vector3> points;
+
+	points.push_back(aabb.position);
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, 0));
+
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, 0));
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, aabb.size.z));
+
+	points.push_back(aabb.position);
+	points.push_back(aabb.position + Vector3(0, 0, aabb.size.z));
+
+	points.push_back(aabb.position + Vector3(0, 0, aabb.size.z));
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, aabb.size.z));
+
+	points.push_back(aabb.position);
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, 0));
+
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, 0));
+	points.push_back(aabb.position + Vector3(aabb.size.x, aabb.size.y, 0));
+
+	points.push_back(aabb.position + Vector3(0, 0, aabb.size.z));
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, aabb.size.z));
+
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, aabb.size.z));
+	points.push_back(aabb.position + aabb.size);
+
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, 0));
+	points.push_back(aabb.position + Vector3(aabb.size.x, aabb.size.y, 0));
+
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, 0));
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, aabb.size.z));
+
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, aabb.size.z));
+	points.push_back(aabb.position + aabb.size);
+
+	points.push_back(aabb.position + Vector3(aabb.size.x, aabb.size.y, 0));
+	points.push_back(aabb.position + aabb.size);
+
+	mesh_arr[RS::ARRAY_VERTEX] = points;
+
+	cm->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, mesh_arr);
+
+	Ref<TriangleMesh> tm = cm->generate_triangle_mesh_from_aabb();
+	if (tm.is_valid()) {
+		p_gizmo->add_collision_triangles(tm);
+	}
+
+	const Ref<Material> material = get_material("outline_material");
+
+	p_gizmo->add_mesh(cm, material);
 }
