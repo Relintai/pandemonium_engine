@@ -95,7 +95,7 @@ Vector<Vector2i> TerrainWorldChunkDataManager::_get_available_chunk_list() {
 
 // Save
 void TerrainWorldChunkDataManager::save_chunk(const Ref<TerrainChunk> &p_chunk) {
-	call("_delete_chunk_data_at", p_chunk);
+	call("_save_chunk", p_chunk);
 }
 void TerrainWorldChunkDataManager::_save_chunk(const Ref<TerrainChunk> &p_chunk) {
 }
