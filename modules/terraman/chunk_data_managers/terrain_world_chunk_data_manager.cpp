@@ -93,6 +93,25 @@ Vector<Vector2i> TerrainWorldChunkDataManager::_get_available_chunk_list() {
 	return Vector<Vector2i>();
 }
 
+// Save
+void TerrainWorldChunkDataManager::save_chunk(const Ref<TerrainChunk> &p_chunk) {
+	call("_delete_chunk_data_at", p_chunk);
+}
+void TerrainWorldChunkDataManager::_save_chunk(const Ref<TerrainChunk> &p_chunk) {
+}
+
+void TerrainWorldChunkDataManager::save_all_chunks(TerrainWorld *p_world) {
+	ERR_FAIL_COND(!p_world || !ObjectDB::instance_validate(p_world));
+
+	for (int i = 0; i < p_world->chunk_get_count(); ++i) {
+		save_chunk(p_world->chunk_get_index(i));
+	}
+}
+void TerrainWorldChunkDataManager::save_all_chunks_bind(Node *p_world) {
+	save_all_chunks(Object::cast_to<TerrainWorld>(p_world));
+}
+
+// Delete
 void TerrainWorldChunkDataManager::delete_chunk_data_at(const Vector2i &p_chunk_position) {
 	call("_delete_chunk_data_at", p_chunk_position);
 }
@@ -142,6 +161,8 @@ void TerrainWorldChunkDataManager::_bind_methods() {
 			PropertyInfo(Variant::VECTOR2I, "chunk_position")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::POOL_VECTOR2I_ARRAY, "chunks"), "_get_available_chunk_list"));
 
+	BIND_VMETHOD(MethodInfo("_save_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
+
 	BIND_VMETHOD(MethodInfo("_delete_chunk_data_at", PropertyInfo(Variant::VECTOR2I, "chunk_position")));
 	BIND_VMETHOD(MethodInfo("_delete_chunk_data", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 	BIND_VMETHOD(MethodInfo("_delete_all_chunk_data"));
@@ -158,6 +179,12 @@ void TerrainWorldChunkDataManager::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_available_chunk_list"), &TerrainWorldChunkDataManager::get_available_chunk_list);
 	ClassDB::bind_method(D_METHOD("_get_available_chunk_list"), &TerrainWorldChunkDataManager::_get_available_chunk_list);
+
+	// Save
+	ClassDB::bind_method(D_METHOD("save_chunk", "chunk"), &TerrainWorldChunkDataManager::save_chunk);
+	ClassDB::bind_method(D_METHOD("_save_chunk", "chunk"), &TerrainWorldChunkDataManager::_save_chunk);
+
+	ClassDB::bind_method(D_METHOD("save_all_chunks", "world"), &TerrainWorldChunkDataManager::save_all_chunks_bind);
 
 	// Delete
 	ClassDB::bind_method(D_METHOD("delete_chunk_data_at", "chunk_position"), &TerrainWorldChunkDataManager::delete_chunk_data_at);

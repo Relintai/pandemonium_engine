@@ -41,6 +41,7 @@ class TerrainWorldChunkDataManager : public Resource {
 	GDCLASS(TerrainWorldChunkDataManager, Resource);
 
 public:
+	// Load
 	Ref<TerrainChunk> load_chunk(const Vector2i &p_chunk_position);
 	virtual Ref<TerrainChunk> _load_chunk(const Vector2i &p_chunk_position);
 
@@ -51,6 +52,13 @@ public:
 
 	Vector<Vector2i> get_available_chunk_list();
 	virtual Vector<Vector2i> _get_available_chunk_list();
+
+	// Save
+	void save_chunk(const Ref<TerrainChunk> &p_chunk);
+	virtual void _save_chunk(const Ref<TerrainChunk> &p_chunk);
+
+	void save_all_chunks(TerrainWorld *p_world);
+	void save_all_chunks_bind(Node *p_world);
 
 	// Delete
 	void delete_chunk_data_at(const Vector2i &p_chunk_position);
