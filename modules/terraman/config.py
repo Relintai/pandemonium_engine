@@ -18,6 +18,9 @@ def get_doc_classes():
         "TerrainLevelGenerator",
         "TerrainLevelGeneratorFlat",
 
+        "TerrainWorldChunkDataManager",
+        "TerrainWorldChunkDataManagerStaticFolderResources",
+
         "TerrainSurfaceMerger",
         "TerrainSurfaceSimple",
         "TerrainSurface",

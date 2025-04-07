@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TerrainWorldChunkDataManager" inherits="Resource">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_delete_all_chunk_data" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_delete_chunk_data" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="_delete_chunk_data_at" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk_position" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_available_chunk_list" qualifiers="virtual">
+			<return type="PoolVector2iArray" />
+			<description>
+			</description>
+		</method>
+		<method name="_load_chunk" qualifiers="virtual">
+			<return type="TerrainChunk" />
+			<argument index="0" name="chunk_position" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="_on_world_chunk_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="_on_world_chunk_created" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="_on_world_chunk_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="delete_all_chunk_data">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="delete_chunk_data">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="delete_chunk_data_at">
+			<return type="void" />
+			<argument index="0" name="chunk_position" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="get_available_chunk_list">
+			<return type="PoolVector2iArray" />
+			<description>
+			</description>
+		</method>
+		<method name="load_all_chunks">
+			<return type="void" />
+			<argument index="0" name="world" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="load_chunk">
+			<return type="TerrainChunk" />
+			<argument index="0" name="chunk_position" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="load_chunks">
+			<return type="void" />
+			<argument index="0" name="world" type="Node" />
+			<argument index="1" name="chunks" type="PoolVector2iArray" />
+			<description>
+			</description>
+		</method>
+		<method name="on_world_chunk_added">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="on_world_chunk_created">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="on_world_chunk_removed">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

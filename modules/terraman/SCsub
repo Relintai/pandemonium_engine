@@ -45,6 +45,9 @@ sources = [
     "world/jobs/terrain_mesher_job_step.cpp",
     "world/jobs/terrain_light_job.cpp",
     "world/jobs/terrain_prop_job.cpp",
+
+    "chunk_data_managers/terrain_world_chunk_data_manager.cpp",
+    "chunk_data_managers/terrain_world_chunk_data_manager_static_folder_resources.cpp"
 ]
 
 if env["tools"]:

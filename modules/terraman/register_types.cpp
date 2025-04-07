@@ -81,6 +81,9 @@
 #include "world/jobs/terrain_prop_job.h"
 #include "world/jobs/terrain_terrain_job.h"
 
+#include "chunk_data_managers/terrain_world_chunk_data_manager.h"
+#include "chunk_data_managers/terrain_world_chunk_data_manager_static_folder_resources.h"
+
 void register_terraman_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 		ClassDB::register_class<TerrainMesher>();
@@ -121,6 +124,9 @@ void register_terraman_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<TerrainLevelGeneratorFlat>();
 
 		ClassDB::register_class<TerrainWorldArea>();
+
+		ClassDB::register_class<TerrainWorldChunkDataManager>();
+		ClassDB::register_class<TerrainWorldChunkDataManagerStaticFolderResources>();
 
 		ClassDB::register_class<TerrainJob>();
 		ClassDB::register_class<TerrainTerrainJob>();
