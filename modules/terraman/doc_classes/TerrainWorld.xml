@@ -89,8 +89,22 @@
 			<description>
 			</description>
 		</method>
+		<method name="chunk_get_or_load">
+			<return type="TerrainChunk" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="chunk_has" qualifiers="const">
 			<return type="bool" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_load">
+			<return type="TerrainChunk" />
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
@@ -455,6 +469,8 @@
 		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
 		</member>
 		<member name="voxel_structures" type="Array" setter="voxel_structures_set" getter="voxel_structures_get" default="[  ]">
+		</member>
+		<member name="world_chunk_data_manager" type="TerrainWorldChunkDataManager" setter="set_world_chunk_data_manager" getter="get_world_chunk_data_manager">
 		</member>
 		<member name="world_height" type="float" setter="set_world_height" getter="get_world_height" default="256.0">
 		</member>

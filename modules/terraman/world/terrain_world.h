@@ -55,6 +55,7 @@ class TerrainStructure;
 class TerrainChunk;
 class PropData;
 class MeshDataResource;
+class TerrainWorldChunkDataManager;
 
 class TerrainWorld : public Spatial {
 	GDCLASS(TerrainWorld, Spatial);
@@ -108,6 +109,9 @@ public:
 	Ref<TerrainLevelGenerator> get_level_generator() const;
 	void set_level_generator(const Ref<TerrainLevelGenerator> &level_generator);
 
+	Ref<TerrainWorldChunkDataManager> get_world_chunk_data_manager() const;
+	void set_world_chunk_data_manager(const Ref<TerrainWorldChunkDataManager> &p_data_manager);
+
 	float get_voxel_scale() const;
 	void set_voxel_scale(const float value);
 
@@ -158,6 +162,8 @@ public:
 	void chunks_clear();
 
 	Ref<TerrainChunk> chunk_get_or_create(const int x, const int z);
+	Ref<TerrainChunk> chunk_get_or_load(const int x, const int z);
+	Ref<TerrainChunk> chunk_load(const int x, const int z);
 	Ref<TerrainChunk> chunk_create(const int x, const int z);
 	void chunk_setup(Ref<TerrainChunk> chunk);
 
@@ -286,6 +292,7 @@ private:
 
 	Ref<TerrainLibrary> _library;
 	Ref<TerrainLevelGenerator> _level_generator;
+	Ref<TerrainWorldChunkDataManager> _world_chunk_data_manager;
 	float _voxel_scale;
 	int _chunk_spawn_range;
 

@@ -42,6 +42,8 @@
 
 #include "../defines.h"
 
+#include "../chunk_data_managers/terrain_world_chunk_data_manager.h"
+
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_PROPS_ENABLED
@@ -156,6 +158,13 @@ Ref<TerrainLevelGenerator> TerrainWorld::get_level_generator() const {
 }
 void TerrainWorld::set_level_generator(const Ref<TerrainLevelGenerator> &level_generator) {
 	_level_generator = level_generator;
+}
+
+Ref<TerrainWorldChunkDataManager> TerrainWorld::get_world_chunk_data_manager() const {
+	return _world_chunk_data_manager;
+}
+void TerrainWorld::set_world_chunk_data_manager(const Ref<TerrainWorldChunkDataManager> &p_data_manager) {
+	_world_chunk_data_manager = p_data_manager;
 }
 
 float TerrainWorld::get_voxel_scale() const {
@@ -324,6 +333,10 @@ void TerrainWorld::chunk_add(Ref<TerrainChunk> chunk, const int x, const int z) 
 		}
 	}
 
+	if (_world_chunk_data_manager.is_valid()) {
+		_world_chunk_data_manager->on_world_chunk_added(chunk);
+	}
+
 	if (has_method("_chunk_added")) {
 		call("_chunk_added", chunk);
 	}
@@ -381,6 +394,10 @@ Ref<TerrainChunk> TerrainWorld::chunk_remove(const int x, const int z) {
 
 	_chunks.erase(pos);
 
+	if (_world_chunk_data_manager.is_valid()) {
+		_world_chunk_data_manager->on_world_chunk_removed(chunk);
+	}
+
 	emit_signal("chunk_removed", chunk);
 
 	return chunk;
@@ -410,6 +427,10 @@ Ref<TerrainChunk> TerrainWorld::chunk_remove_index(const int index) {
 	//never remove from this here
 	//_generating.erase(chunk);
 
+	if (_world_chunk_data_manager.is_valid()) {
+		_world_chunk_data_manager->on_world_chunk_removed(chunk);
+	}
+
 	emit_signal("chunk_removed", chunk);
 
 	return chunk;
@@ -429,6 +450,10 @@ void TerrainWorld::chunks_clear() {
 		Ref<TerrainChunk> chunk = _chunks_vector.get(i);
 
 		chunk->exit_tree();
+
+		if (_world_chunk_data_manager.is_valid()) {
+			_world_chunk_data_manager->on_world_chunk_removed(chunk);
+		}
 
 		emit_signal("chunk_removed", chunk);
 	}
@@ -454,8 +479,55 @@ void TerrainWorld::chunks_clear() {
 Ref<TerrainChunk> TerrainWorld::chunk_get_or_create(int x, int z) {
 	Ref<TerrainChunk> chunk = chunk_get(x, z);
 
-	if (!chunk.is_valid()) {
-		chunk = chunk_create(x, z);
+	if (chunk.is_valid()) {
+		return chunk;
+	}
+
+	// Try to load first
+	if (_world_chunk_data_manager.is_valid()) {
+		chunk = _world_chunk_data_manager->load_chunk(Vector2i(x, z));
+
+		if (chunk.is_valid()) {
+			chunk_add(chunk, x, z);
+			return chunk;
+		}
+	}
+
+	chunk = chunk_create(x, z);
+
+	return chunk;
+}
+
+Ref<TerrainChunk> TerrainWorld::chunk_get_or_load(const int x, const int z) {
+	Ref<TerrainChunk> chunk = chunk_get(x, z);
+
+	if (chunk.is_valid()) {
+		return chunk;
+	}
+
+	// Try to load first
+	if (_world_chunk_data_manager.is_valid()) {
+		chunk = _world_chunk_data_manager->load_chunk(Vector2i(x, z));
+
+		if (chunk.is_valid()) {
+			chunk_add(chunk, x, z);
+			return chunk;
+		}
+	}
+
+	return chunk;
+}
+
+Ref<TerrainChunk> TerrainWorld::chunk_load(const int x, const int z) {
+	Ref<TerrainChunk> chunk;
+
+	if (_world_chunk_data_manager.is_valid()) {
+		chunk = _world_chunk_data_manager->load_chunk(Vector2i(x, z));
+
+		if (chunk.is_valid()) {
+			chunk_add(chunk, x, z);
+			return chunk;
+		}
 	}
 
 	return chunk;
@@ -464,6 +536,10 @@ Ref<TerrainChunk> TerrainWorld::chunk_get_or_create(int x, int z) {
 Ref<TerrainChunk> TerrainWorld::chunk_create(const int x, const int z) {
 	Ref<TerrainChunk> c;
 	c = call("_create_chunk", x, z, Ref<TerrainChunk>());
+
+	if (_world_chunk_data_manager.is_valid()) {
+		_world_chunk_data_manager->on_world_chunk_created(c);
+	}
 
 	generation_queue_add_to(c);
 
@@ -1638,6 +1714,10 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_level_generator", "level_generator"), &TerrainWorld::set_level_generator);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "level_generator", PROPERTY_HINT_RESOURCE_TYPE, "TerrainLevelGenerator"), "set_level_generator", "get_level_generator");
 
+	ClassDB::bind_method(D_METHOD("get_world_chunk_data_manager"), &TerrainWorld::get_world_chunk_data_manager);
+	ClassDB::bind_method(D_METHOD("set_world_chunk_data_manager", "level_generator"), &TerrainWorld::set_world_chunk_data_manager);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_chunk_data_manager", PROPERTY_HINT_RESOURCE_TYPE, "TerrainWorldChunkDataManager"), "set_world_chunk_data_manager", "get_world_chunk_data_manager");
+
 	ClassDB::bind_method(D_METHOD("get_voxel_scale"), &TerrainWorld::get_voxel_scale);
 	ClassDB::bind_method(D_METHOD("set_voxel_scale", "value"), &TerrainWorld::set_voxel_scale);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale"), "set_voxel_scale", "get_voxel_scale");
@@ -1714,6 +1794,8 @@ void TerrainWorld::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_generate_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 
 	ClassDB::bind_method(D_METHOD("chunk_get_or_create", "x", "z"), &TerrainWorld::chunk_get_or_create);
+	ClassDB::bind_method(D_METHOD("chunk_get_or_load", "x", "z"), &TerrainWorld::chunk_get_or_load);
+	ClassDB::bind_method(D_METHOD("chunk_load", "x", "z"), &TerrainWorld::chunk_load);
 	ClassDB::bind_method(D_METHOD("chunk_create", "x", "z"), &TerrainWorld::chunk_create);
 	ClassDB::bind_method(D_METHOD("chunk_setup", "chunk"), &TerrainWorld::chunk_setup);
 
