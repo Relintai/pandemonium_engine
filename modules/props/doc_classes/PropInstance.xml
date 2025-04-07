@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PropInstance" inherits="Spatial">
+<class name="PropInstance" inherits="VisualInstance">
 	<brief_description>
 	</brief_description>
 	<description>
