@@ -238,6 +238,7 @@ protected:
 	virtual Ref<TerrainChunk> _create_chunk(int x, int z, Ref<TerrainChunk> p_chunk);
 	virtual int _get_channel_index_info(const ChannelTypeInfo channel_type);
 
+	virtual void _validate_property(PropertyInfo &property) const;
 	virtual void _notification(int p_what);
 	static void _bind_methods();
 

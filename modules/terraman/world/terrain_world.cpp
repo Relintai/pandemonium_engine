@@ -164,7 +164,13 @@ Ref<TerrainWorldChunkDataManager> TerrainWorld::get_world_chunk_data_manager() c
 	return _world_chunk_data_manager;
 }
 void TerrainWorld::set_world_chunk_data_manager(const Ref<TerrainWorldChunkDataManager> &p_data_manager) {
+	if (_world_chunk_data_manager == p_data_manager) {
+		return;
+	}
+
 	_world_chunk_data_manager = p_data_manager;
+
+	property_list_changed_notify();
 }
 
 float TerrainWorld::get_voxel_scale() const {
@@ -1489,6 +1495,17 @@ void TerrainWorld::_generate_chunk(Ref<TerrainChunk> chunk) {
 			}
 		} else {
 			structure->write_to_chunk(chunk);
+		}
+	}
+}
+
+void TerrainWorld::_validate_property(PropertyInfo &property) const {
+	if (property.name == "chunks") {
+		if (_world_chunk_data_manager.is_valid()) {
+			// Show in editor, but don't save with the scene
+			property.usage = PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_NETWORK;
+		} else {
+			property.usage = PROPERTY_USAGE_DEFAULT;
 		}
 	}
 }
