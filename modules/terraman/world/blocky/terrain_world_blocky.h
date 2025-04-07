@@ -43,6 +43,7 @@ public:
 
 protected:
 	Ref<TerrainChunk> _create_chunk(int x, int z, Ref<TerrainChunk> p_chunk);
+	virtual void _setup_chunk(Ref<TerrainChunk> p_chunk);
 
 	static void _bind_methods();
 };

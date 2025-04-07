@@ -190,7 +190,18 @@ Ref<TerrainChunk> TerrainWorldDefault::_create_chunk(int x, int z, Ref<TerrainCh
 		chunk = Ref<TerrainChunk>(memnew(TerrainChunkDefault));
 	}
 
-	if (chunk->job_get_count() == 0) {
+	Ref<TerrainChunkDefault> vcd = chunk;
+
+	if (vcd.is_valid()) {
+		vcd->set_build_flags(_build_flags);
+		vcd->set_lod_num(_num_lods);
+	}
+
+	return TerrainWorld::_create_chunk(x, z, chunk);
+}
+
+void TerrainWorldDefault::_setup_chunk(Ref<TerrainChunk> p_chunk) {
+	if (p_chunk->job_get_count() == 0) {
 		Ref<TerrainTerrainJob> tj;
 		tj.instance();
 
@@ -224,19 +235,12 @@ Ref<TerrainChunk> TerrainWorldDefault::_create_chunk(int x, int z, Ref<TerrainCh
 		s->set_job_type(TerrainMesherJobStep::TYPE_BAKE_TEXTURE);
 		tj->add_jobs_step(s);
 
-		chunk->job_add(lj);
-		chunk->job_add(tj);
-		chunk->job_add(pj);
+		p_chunk->job_add(lj);
+		p_chunk->job_add(tj);
+		p_chunk->job_add(pj);
 	}
 
-	Ref<TerrainChunkDefault> vcd = chunk;
-
-	if (vcd.is_valid()) {
-		vcd->set_build_flags(_build_flags);
-		vcd->set_lod_num(_num_lods);
-	}
-
-	return TerrainWorld::_create_chunk(x, z, chunk);
+	TerrainWorld::_setup_chunk(p_chunk);
 }
 
 void TerrainWorldDefault::_chunk_added(Ref<TerrainChunk> chunk) {

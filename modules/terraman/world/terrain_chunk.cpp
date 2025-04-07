@@ -99,6 +99,13 @@ void TerrainChunk::set_is_terrain_generated(const bool value) {
 	_is_terrain_generated = value;
 }
 
+bool TerrainChunk::get_is_setup() const {
+	return _is_setup;
+}
+void TerrainChunk::set_is_setup(const bool value) {
+	_is_setup = value;
+}
+
 bool TerrainChunk::is_build_aborted() const {
 	return _abort_build;
 }
@@ -1917,6 +1924,7 @@ bool TerrainChunk::is_safe_to_delete() {
 }
 
 TerrainChunk::TerrainChunk() {
+	_is_setup = false;
 	_is_processing = false;
 	_is_phisics_processing = false;
 	_is_in_tree = false;
@@ -2266,6 +2274,10 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_is_terrain_generated"), &TerrainChunk::get_is_terrain_generated);
 	ClassDB::bind_method(D_METHOD("set_is_terrain_generated", "value"), &TerrainChunk::set_is_terrain_generated);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_terrain_generated"), "set_is_terrain_generated", "get_is_terrain_generated");
+
+	ClassDB::bind_method(D_METHOD("get_is_setup"), &TerrainChunk::get_is_setup);
+	ClassDB::bind_method(D_METHOD("set_is_setup", "value"), &TerrainChunk::set_is_setup);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_setup", PROPERTY_HINT_NONE, "", 0), "set_is_setup", "get_is_setup");
 
 	ClassDB::bind_method(D_METHOD("is_build_aborted"), &TerrainChunk::is_build_aborted);
 

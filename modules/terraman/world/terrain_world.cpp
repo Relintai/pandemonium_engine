@@ -349,7 +349,11 @@ void TerrainWorld::chunk_add(Ref<TerrainChunk> chunk, const int x, const int z) 
 
 	emit_signal("chunk_added", chunk);
 
-	generation_queue_add_to(chunk);
+	if (!chunk->get_is_terrain_generated()) {
+		generation_queue_add_to(chunk);
+	} else {
+		chunk->build();
+	}
 }
 bool TerrainWorld::chunk_has(const int x, const int z) const {
 	return _chunks.has(IntPos(x, z));
@@ -494,6 +498,7 @@ Ref<TerrainChunk> TerrainWorld::chunk_get_or_create(int x, int z) {
 		chunk = _world_chunk_data_manager->load_chunk(Vector2i(x, z));
 
 		if (chunk.is_valid()) {
+			chunk_setup(chunk);
 			chunk_add(chunk, x, z);
 			return chunk;
 		}
@@ -516,6 +521,7 @@ Ref<TerrainChunk> TerrainWorld::chunk_get_or_load(const int x, const int z) {
 		chunk = _world_chunk_data_manager->load_chunk(Vector2i(x, z));
 
 		if (chunk.is_valid()) {
+			chunk_setup(chunk);
 			chunk_add(chunk, x, z);
 			return chunk;
 		}
@@ -531,6 +537,7 @@ Ref<TerrainChunk> TerrainWorld::chunk_load(const int x, const int z) {
 		chunk = _world_chunk_data_manager->load_chunk(Vector2i(x, z));
 
 		if (chunk.is_valid()) {
+			chunk_setup(chunk);
 			chunk_add(chunk, x, z);
 			return chunk;
 		}
@@ -541,7 +548,10 @@ Ref<TerrainChunk> TerrainWorld::chunk_load(const int x, const int z) {
 
 Ref<TerrainChunk> TerrainWorld::chunk_create(const int x, const int z) {
 	Ref<TerrainChunk> c;
-	c = call("_create_chunk", x, z, Ref<TerrainChunk>());
+	c = call("_create_chunk", x, z, Ref<TerrainChunk>(), true);
+
+	chunk_setup(c);
+	chunk_add(c, x, z);
 
 	if (_world_chunk_data_manager.is_valid()) {
 		_world_chunk_data_manager->on_world_chunk_created(c);
@@ -552,25 +562,15 @@ Ref<TerrainChunk> TerrainWorld::chunk_create(const int x, const int z) {
 	return c;
 }
 
-void TerrainWorld::chunk_setup(Ref<TerrainChunk> chunk) {
-	ERR_FAIL_COND(!chunk.is_valid());
-
-	call("_create_chunk", chunk->get_position_x(), chunk->get_position_z(), chunk);
-}
-
 Ref<TerrainChunk> TerrainWorld::_create_chunk(const int x, const int z, Ref<TerrainChunk> chunk) {
 	if (!chunk.is_valid()) {
 		chunk.instance();
 	}
 
 	//no meshers here
-
-	ERR_FAIL_COND_V(!chunk.is_valid(), NULL);
-
-	chunk->set_name("Chunk[" + String::num(x) + "," + String::num(z) + "]");
-
 	chunk->set_voxel_world(this);
 
+	chunk->set_name("Chunk[" + String::num(x) + "," + String::num(z) + "]");
 	chunk->set_position(x, z);
 	chunk->set_world_height(_world_height);
 	chunk->set_library(_library);
@@ -582,9 +582,27 @@ Ref<TerrainChunk> TerrainWorld::_create_chunk(const int x, const int z, Ref<Terr
 		chunk->set_visible(false);
 	}
 
-	chunk_add(chunk, x, z);
-
 	return chunk;
+}
+
+void TerrainWorld::chunk_setup(Ref<TerrainChunk> chunk) {
+	ERR_FAIL_COND(!chunk.is_valid());
+
+	if (chunk->get_is_setup()) {
+		return;
+	}
+
+	call("_setup_chunk", chunk);
+
+	chunk->set_is_setup(true);
+}
+
+void TerrainWorld::_setup_chunk(Ref<TerrainChunk> p_chunk) {
+	p_chunk->set_voxel_world(this);
+
+	if (!get_active()) {
+		p_chunk->set_visible(false);
+	}
 }
 
 void TerrainWorld::chunk_generate(Ref<TerrainChunk> chunk) {
@@ -1827,8 +1845,10 @@ void TerrainWorld::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_generation_finished"));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk"), "_create_chunk", PropertyInfo(Variant::INT, "x"), PropertyInfo(Variant::INT, "z"), PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
+
 	BIND_VMETHOD(MethodInfo("_prepare_chunk_for_generation", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 	BIND_VMETHOD(MethodInfo("_generate_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
+	BIND_VMETHOD(MethodInfo("_setup_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 
 	ClassDB::bind_method(D_METHOD("chunk_get_or_create", "x", "z"), &TerrainWorld::chunk_get_or_create);
 	ClassDB::bind_method(D_METHOD("chunk_get_or_load", "x", "z"), &TerrainWorld::chunk_get_or_load);
@@ -1836,8 +1856,9 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("chunk_create", "x", "z"), &TerrainWorld::chunk_create);
 	ClassDB::bind_method(D_METHOD("chunk_setup", "chunk"), &TerrainWorld::chunk_setup);
 
-	ClassDB::bind_method(D_METHOD("_create_chunk", "x", "z", "chunk"), &TerrainWorld::_create_chunk);
+	ClassDB::bind_method(D_METHOD("_create_chunk", "x", "z", "chunk", "is_new"), &TerrainWorld::_create_chunk);
 	ClassDB::bind_method(D_METHOD("_generate_chunk", "chunk"), &TerrainWorld::_generate_chunk);
+	ClassDB::bind_method(D_METHOD("_setup_chunk", "chunk"), &TerrainWorld::_setup_chunk);
 
 	ClassDB::bind_method(D_METHOD("can_chunk_do_build_step"), &TerrainWorld::can_chunk_do_build_step);
 	ClassDB::bind_method(D_METHOD("is_position_walkable", "position"), &TerrainWorld::is_position_walkable);

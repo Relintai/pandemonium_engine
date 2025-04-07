@@ -238,6 +238,7 @@ public:
 protected:
 	virtual void _generate_chunk(Ref<TerrainChunk> chunk);
 	virtual Ref<TerrainChunk> _create_chunk(int x, int z, Ref<TerrainChunk> p_chunk);
+	virtual void _setup_chunk(Ref<TerrainChunk> p_chunk);
 	virtual int _get_channel_index_info(const ChannelTypeInfo channel_type);
 
 	void _editor_button_property_pressed(const StringName &p_property);

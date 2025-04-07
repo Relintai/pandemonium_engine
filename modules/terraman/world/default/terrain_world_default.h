@@ -64,6 +64,7 @@ protected:
 	void _notification(int p_what);
 	void _update_lods();
 	Ref<TerrainChunk> _create_chunk(int x, int z, Ref<TerrainChunk> p_chunk);
+	virtual void _setup_chunk(Ref<TerrainChunk> p_chunk);
 	virtual void _chunk_added(Ref<TerrainChunk> chunk);
 	int _get_channel_index_info(const ChannelTypeInfo channel_type);
 
