@@ -1505,6 +1505,18 @@ void TerrainWorld::_generate_chunk(Ref<TerrainChunk> chunk) {
 	}
 }
 
+void TerrainWorld::_editor_button_property_pressed(const StringName &p_property) {
+	if (p_property == "force_save_all_chunks") {
+		force_save_all_chunks();
+	}
+}
+
+void TerrainWorld::_get_property_list(List<PropertyInfo> *p_list) const {
+	if (_world_chunk_data_manager.is_valid()) {
+		p_list->push_back(PropertyInfo(Variant::NIL, "force_save_all_chunks", PROPERTY_HINT_BUTTON, "_editor_button_property_pressed:Save/EditorIcons"));
+	}
+}
+
 void TerrainWorld::_validate_property(PropertyInfo &property) const {
 	if (property.name == "chunks") {
 		if (_world_chunk_data_manager.is_valid()) {
@@ -1871,6 +1883,8 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_get_channel_index_info", "channel_type"), &TerrainWorld::_get_channel_index_info);
 
 	ClassDB::bind_method(D_METHOD("get_editor_camera"), &TerrainWorld::get_editor_camera);
+
+	ClassDB::bind_method(D_METHOD("_editor_button_property_pressed"), &TerrainWorld::_editor_button_property_pressed);
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
 	ClassDB::bind_method(D_METHOD("_on_vertex_lights_3d_map_changed"), &TerrainWorld::_on_vertex_lights_3d_map_changed);

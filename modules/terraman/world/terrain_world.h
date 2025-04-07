@@ -240,6 +240,8 @@ protected:
 	virtual Ref<TerrainChunk> _create_chunk(int x, int z, Ref<TerrainChunk> p_chunk);
 	virtual int _get_channel_index_info(const ChannelTypeInfo channel_type);
 
+	void _editor_button_property_pressed(const StringName &p_property);
+	void _get_property_list(List<PropertyInfo> *p_list) const;
 	virtual void _validate_property(PropertyInfo &property) const;
 	virtual void _notification(int p_what);
 	static void _bind_methods();
