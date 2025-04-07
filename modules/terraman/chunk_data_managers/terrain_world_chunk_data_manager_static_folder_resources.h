@@ -40,6 +40,27 @@ class TerrainWorldChunkDataManagerStaticFolderResources : public TerrainWorldChu
 	GDCLASS(TerrainWorldChunkDataManagerStaticFolderResources, TerrainWorldChunkDataManager);
 
 public:
+	String get_chunks_path() const;
+	void set_chunks_path(const String &p_chunks_path);
+
+	String get_chunk_file_path(const Vector2i &p_chunk_position) const;
+
+	// Load
+	virtual Ref<TerrainChunk> _load_chunk(const Vector2i &p_chunk_position);
+	virtual Vector<Vector2i> _get_available_chunk_list();
+
+	// Save
+	virtual void _save_chunk(const Ref<TerrainChunk> &p_chunk);
+
+	// Delete
+	virtual void _delete_chunk_data_at(const Vector2i &p_chunk_position);
+	virtual void _delete_chunk_data(const Ref<TerrainChunk> &p_chunk);
+	virtual void _delete_all_chunk_data();
+
+	// Callbacks
+	virtual void _on_world_chunk_created(const Ref<TerrainChunk> &p_chunk);
+	virtual void _on_world_chunk_removed(const Ref<TerrainChunk> &p_chunk);
+	virtual void _on_world_chunk_added(const Ref<TerrainChunk> &p_chunk);
 
 	TerrainWorldChunkDataManagerStaticFolderResources();
 	~TerrainWorldChunkDataManagerStaticFolderResources();
@@ -48,8 +69,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	int _floor_position;
-	Dictionary _channel_map;
+	String _chunks_path;
 };
 
 #endif
