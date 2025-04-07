@@ -169,6 +169,8 @@ public:
 
 	void chunk_generate(Ref<TerrainChunk> chunk);
 
+	void force_save_all_chunks();
+
 	Vector<Variant> chunks_get();
 	void chunks_set(const Vector<Variant> &chunks);
 

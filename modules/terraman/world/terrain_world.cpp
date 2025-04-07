@@ -602,6 +602,12 @@ void TerrainWorld::chunk_generate(Ref<TerrainChunk> chunk) {
 	chunk->build();
 }
 
+void TerrainWorld::force_save_all_chunks() {
+	ERR_FAIL_COND(!_world_chunk_data_manager.is_valid());
+
+	_world_chunk_data_manager->save_all_chunks(this);
+}
+
 Vector<Variant> TerrainWorld::chunks_get() {
 	VARIANT_ARRAY_GET(_chunks_vector);
 }
@@ -1787,6 +1793,8 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("chunk_get_count"), &TerrainWorld::chunk_get_count);
 
 	ClassDB::bind_method(D_METHOD("chunks_clear"), &TerrainWorld::chunks_clear);
+
+	ClassDB::bind_method(D_METHOD("force_save_all_chunks"), &TerrainWorld::force_save_all_chunks);
 
 	ClassDB::bind_method(D_METHOD("chunks_get"), &TerrainWorld::chunks_get);
 	ClassDB::bind_method(D_METHOD("chunks_set"), &TerrainWorld::chunks_set);
