@@ -548,7 +548,7 @@ Ref<TerrainChunk> TerrainWorld::chunk_load(const int x, const int z) {
 
 Ref<TerrainChunk> TerrainWorld::chunk_create(const int x, const int z) {
 	Ref<TerrainChunk> c;
-	c = call("_create_chunk", x, z, Ref<TerrainChunk>(), true);
+	c = call("_create_chunk", x, z, Ref<TerrainChunk>());
 
 	chunk_setup(c);
 	chunk_add(c, x, z);
@@ -1856,7 +1856,7 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("chunk_create", "x", "z"), &TerrainWorld::chunk_create);
 	ClassDB::bind_method(D_METHOD("chunk_setup", "chunk"), &TerrainWorld::chunk_setup);
 
-	ClassDB::bind_method(D_METHOD("_create_chunk", "x", "z", "chunk", "is_new"), &TerrainWorld::_create_chunk);
+	ClassDB::bind_method(D_METHOD("_create_chunk", "x", "z", "chunk"), &TerrainWorld::_create_chunk);
 	ClassDB::bind_method(D_METHOD("_generate_chunk", "chunk"), &TerrainWorld::_generate_chunk);
 	ClassDB::bind_method(D_METHOD("_setup_chunk", "chunk"), &TerrainWorld::_setup_chunk);
 
