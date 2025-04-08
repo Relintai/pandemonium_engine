@@ -352,7 +352,9 @@ void TerrainWorld::chunk_add(Ref<TerrainChunk> chunk, const int x, const int z) 
 	if (!chunk->get_is_terrain_generated()) {
 		generation_queue_add_to(chunk);
 	} else {
-		chunk->build();
+		if (is_inside_tree()) {
+			chunk->build();
+		}
 	}
 }
 bool TerrainWorld::chunk_has(const int x, const int z) const {
