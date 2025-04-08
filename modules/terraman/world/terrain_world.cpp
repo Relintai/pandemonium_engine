@@ -1584,6 +1584,8 @@ void TerrainWorld::_notification(int p_what) {
 		case NOTIFICATION_INTERNAL_PROCESS: {
 			_num_frame_chunk_build_steps = 0;
 
+			bool is_a_chunk_building = false;
+
 			for (int i = 0; i < _chunks_vector.size(); ++i) {
 				Ref<TerrainChunk> chunk = _chunks_vector[i];
 
@@ -1596,9 +1598,13 @@ void TerrainWorld::_notification(int p_what) {
 				if (chunk->get_is_generating()) {
 					chunk->generation_process(get_process_delta_time());
 				}
+
+				if (chunk->get_is_generating()) {
+					is_a_chunk_building = true;
+				}
 			}
 
-			if (_is_priority_generation && _generation_queue.empty() && _generating.empty()) {
+			if (_is_priority_generation && !is_a_chunk_building && _generation_queue.empty() && _generating.empty()) {
 				_is_priority_generation = false;
 
 				call("_generation_finished");
