@@ -45,7 +45,7 @@ Ref<TerrainChunk> TerrainWorldBlocky::_create_chunk(int x, int z, Ref<TerrainChu
 		chunk = Ref<TerrainChunk>(memnew(TerrainChunkBlocky));
 	}
 
-	return TerrainWorld::_create_chunk(x, z, chunk);
+	return TerrainWorldDefault::_create_chunk(x, z, chunk);
 }
 
 void TerrainWorldBlocky::_setup_chunk(Ref<TerrainChunk> p_chunk) {
@@ -118,7 +118,7 @@ void TerrainWorldBlocky::_setup_chunk(Ref<TerrainChunk> p_chunk) {
 		p_chunk->job_add(pj);
 	}
 
-	TerrainWorld::_setup_chunk(p_chunk);
+	TerrainWorldDefault::_setup_chunk(p_chunk);
 }
 
 TerrainWorldBlocky::TerrainWorldBlocky() {
