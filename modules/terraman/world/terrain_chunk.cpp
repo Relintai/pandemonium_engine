@@ -73,6 +73,10 @@ bool TerrainChunk::get_visible() const {
 	return _is_visible;
 }
 void TerrainChunk::set_visible(const bool value) {
+	if (_is_visible == value) {
+		return;
+	}
+ 
 	_is_visible = value;
 
 	visibility_changed(value);
