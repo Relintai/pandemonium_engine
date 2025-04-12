@@ -136,6 +136,13 @@ void TerrainWorld::set_max_concurrent_generations(const int value) {
 	_max_concurrent_generations = value;
 }
 
+bool TerrainWorld::get_is_priority_generation() const {
+	return _is_priority_generation;
+}
+void TerrainWorld::set_is_priority_generation(const bool value) {
+	_is_priority_generation = value;
+}
+
 Ref<TerrainLibrary> TerrainWorld::get_library() {
 	return _library;
 }
@@ -1464,7 +1471,7 @@ TerrainWorld::TerrainWorld() {
 	_active = true;
 	_editable = false;
 
-	_is_priority_generation = true;
+	_is_priority_generation = false;
 	_max_concurrent_generations = 3;
 
 	_chunk_size_x = 16;
@@ -1556,6 +1563,10 @@ void TerrainWorld::_notification(int p_what) {
 				VertexLights3DServer::get_singleton()->connect("map_changed", this, "_on_vertex_lights_3d_map_changed");
 			}
 #endif
+
+			if (_chunks_vector.size() != 0) {
+				_is_priority_generation = true;
+			}
 
 			set_player_bind(get_node_or_null(get_player_path()));
 
@@ -1765,6 +1776,10 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_max_concurrent_generations"), &TerrainWorld::get_max_concurrent_generations);
 	ClassDB::bind_method(D_METHOD("set_max_concurrent_generations", "height"), &TerrainWorld::set_max_concurrent_generations);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_concurrent_generations"), "set_max_concurrent_generations", "get_max_concurrent_generations");
+
+	ClassDB::bind_method(D_METHOD("get_is_priority_generation"), &TerrainWorld::get_is_priority_generation);
+	ClassDB::bind_method(D_METHOD("set_is_priority_generation", "height"), &TerrainWorld::set_is_priority_generation);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_priority_generation", PROPERTY_HINT_NONE, "", 0), "set_is_priority_generation", "get_is_priority_generation");
 
 	ClassDB::bind_method(D_METHOD("get_current_seed"), &TerrainWorld::get_current_seed);
 	ClassDB::bind_method(D_METHOD("set_current_seed", "value"), &TerrainWorld::set_current_seed);

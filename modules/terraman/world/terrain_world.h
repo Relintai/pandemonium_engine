@@ -103,6 +103,9 @@ public:
 	int get_max_concurrent_generations();
 	void set_max_concurrent_generations(const int value);
 
+	bool get_is_priority_generation() const;
+	void set_is_priority_generation(const bool value);
+
 	Ref<TerrainLibrary> get_library();
 	void set_library(const Ref<TerrainLibrary> &library);
 
