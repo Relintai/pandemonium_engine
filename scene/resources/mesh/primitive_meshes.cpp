@@ -1850,7 +1850,7 @@ void TextMesh::_create_mesh_array(Array &p_arr) const {
 	Vector2 max_p = Vector2(-INFINITY, -INFINITY);
 
 	Vector2 offset_pre = offset;
-	for (int i = 0; i < t.size(); i++) {
+	for (int i = 0; i < t.size() - 1; i++) {
 		CharType c = t[i];
 		CharType n = t[i + 1];
 		uint32_t utf32_char = c;
@@ -1905,7 +1905,7 @@ void TextMesh::_create_mesh_array(Array &p_arr) const {
 	int32_t p_idx = 0;
 	int32_t i_idx = 0;
 
-	for (int i = 0; i < t.size(); i++) {
+	for (int i = 0; i < t.size() - 1; i++) {
 		CharType c = t[i];
 		CharType n = t[i + 1];
 		uint32_t utf32_char = c;
