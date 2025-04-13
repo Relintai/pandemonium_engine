@@ -150,5 +150,7 @@ void WorldSpawner3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	text_mesh->set_font(EditorNode::get_singleton()->get_theme_base()->get_theme_font("main", "EditorFonts"));
 	Transform tt;
 	tt.set_origin(Vector3(0, 1.6, 0));
+	// TODO this should be configurable
+	tt.basis.rotate_local(Vector3(0, 1, 0), Math_PI);
 	p_gizmo->add_mesh(text_mesh, text_material, tt);
 }
