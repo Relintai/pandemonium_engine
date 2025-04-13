@@ -38,6 +38,7 @@
 #include "editor/spatial_editor_gizmos.h"
 
 class PropInstanceSpatialGizmoPlugin;
+class TiledWallSpatialGizmoPlugin;
 
 class PropEditorPlugin : public EditorPlugin {
 	GDCLASS(PropEditorPlugin, EditorPlugin);
@@ -67,7 +68,8 @@ protected:
 
 	EditorNode *editor;
 
-	Ref<PropInstanceSpatialGizmoPlugin> gizmo_plugin;
+	Ref<PropInstanceSpatialGizmoPlugin> prop_instance_gizmo_plugin;
+	Ref<TiledWallSpatialGizmoPlugin> tiled_wall_gizmo_plugin;
 };
 
 class PropInstanceSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
@@ -81,6 +83,19 @@ public:
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
 	PropInstanceSpatialGizmoPlugin();
+};
+
+class TiledWallSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
+	GDCLASS(TiledWallSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
+
+public:
+	bool has_gizmo(Spatial *p_spatial);
+	String get_gizmo_name() const;
+	int get_priority() const;
+	bool can_be_hidden() const;
+	void redraw(EditorSpatialGizmo *p_gizmo);
+
+	TiledWallSpatialGizmoPlugin();
 };
 
 #endif

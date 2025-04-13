@@ -41,6 +41,8 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/separator.h"
 
+#include "../tiled_wall/tiled_wall.h"
+
 #include "../prop_instance.h"
 
 #include "scene/resources/mesh/mesh.h"
@@ -130,8 +132,11 @@ PropEditorPlugin::PropEditorPlugin(EditorNode *p_node) {
 
 	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_MENU, bc);
 
-	gizmo_plugin.instance();
-	add_spatial_gizmo_plugin(gizmo_plugin);
+	prop_instance_gizmo_plugin.instance();
+	add_spatial_gizmo_plugin(prop_instance_gizmo_plugin);
+
+	tiled_wall_gizmo_plugin.instance();
+	add_spatial_gizmo_plugin(tiled_wall_gizmo_plugin);
 }
 
 PropEditorPlugin::~PropEditorPlugin() {
@@ -237,6 +242,101 @@ void PropInstanceSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	}
 
 	const Ref<Material> material = get_material("outline_material");
+
+	p_gizmo->add_mesh(cm, material);
+}
+
+////////
+
+TiledWallSpatialGizmoPlugin::TiledWallSpatialGizmoPlugin() {
+	const Color gizmo_color = EDITOR_DEF("editors/props/gizmo_colors/tiled_wall_outline", Color(0.7, 0.5, 1));
+	create_material("tiled_wall_outline_material", gizmo_color);
+}
+
+bool TiledWallSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
+	return Object::cast_to<TiledWall>(p_spatial) != NULL;
+}
+
+String TiledWallSpatialGizmoPlugin::get_gizmo_name() const {
+	return "TiledWall";
+}
+
+int TiledWallSpatialGizmoPlugin::get_priority() const {
+	return -1;
+}
+
+bool TiledWallSpatialGizmoPlugin::can_be_hidden() const {
+	return true;
+}
+
+void TiledWallSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
+	TiledWall *tw = Object::cast_to<TiledWall>(p_gizmo->get_spatial_node());
+
+	p_gizmo->clear();
+
+	AABB aabb = tw->get_aabb();
+
+	if (aabb.has_no_surface()) {
+		return; //none
+	}
+
+	Ref<ArrayMesh> cm;
+	cm.instance();
+
+	//cm->set_size(aabb.size);
+
+	Array mesh_arr;
+	mesh_arr.resize(Mesh::ARRAY_MAX);
+
+	// set our bounding box
+	PoolVector<Vector3> points;
+
+	points.push_back(aabb.position);
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, 0));
+
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, 0));
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, aabb.size.z));
+
+	points.push_back(aabb.position);
+	points.push_back(aabb.position + Vector3(0, 0, aabb.size.z));
+
+	points.push_back(aabb.position + Vector3(0, 0, aabb.size.z));
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, aabb.size.z));
+
+	points.push_back(aabb.position);
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, 0));
+
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, 0));
+	points.push_back(aabb.position + Vector3(aabb.size.x, aabb.size.y, 0));
+
+	points.push_back(aabb.position + Vector3(0, 0, aabb.size.z));
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, aabb.size.z));
+
+	points.push_back(aabb.position + Vector3(aabb.size.x, 0, aabb.size.z));
+	points.push_back(aabb.position + aabb.size);
+
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, 0));
+	points.push_back(aabb.position + Vector3(aabb.size.x, aabb.size.y, 0));
+
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, 0));
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, aabb.size.z));
+
+	points.push_back(aabb.position + Vector3(0, aabb.size.y, aabb.size.z));
+	points.push_back(aabb.position + aabb.size);
+
+	points.push_back(aabb.position + Vector3(aabb.size.x, aabb.size.y, 0));
+	points.push_back(aabb.position + aabb.size);
+
+	mesh_arr[RS::ARRAY_VERTEX] = points;
+
+	cm->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, mesh_arr);
+
+	Ref<TriangleMesh> tm = cm->generate_triangle_mesh_from_aabb();
+	if (tm.is_valid()) {
+		p_gizmo->add_collision_triangles(tm);
+	}
+
+	const Ref<Material> material = get_material("tiled_wall_outline_material");
 
 	p_gizmo->add_mesh(cm, material);
 }
