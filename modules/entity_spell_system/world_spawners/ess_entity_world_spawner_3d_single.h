@@ -34,19 +34,33 @@
 
 #include "ess_entity_world_spawner_3d.h"
 
-class EntityCreateInfo;
+class EntityData;
 
 class ESSEntityWorldSpawner3DSingle : public ESSEntityWorldSpawner3D {
 	GDCLASS(ESSEntityWorldSpawner3DSingle, ESSEntityWorldSpawner3D);
 
 public:
+	String get_entity_name() const;
+	void set_entity_name(const String &p_name);
+
+	Ref<EntityData> get_entity_data() const;
+	void set_entity_data(const Ref<EntityData> &p_data);
+
+	int get_level() const;
+	void set_level(const int p_level);
+
 	virtual void _spawn();
 
 	ESSEntityWorldSpawner3DSingle();
 	~ESSEntityWorldSpawner3DSingle();
 
 protected:
+	void _notification(int p_what);
 	static void _bind_methods();
+
+	String _entity_name;
+	Ref<EntityData> _entity_data;
+	int _level;
 };
 
 #endif
