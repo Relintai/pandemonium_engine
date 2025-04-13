@@ -116,7 +116,11 @@ sources = [
 
     "props/prop_data_entity.cpp",
 
-    "material_cache/ess_material_cache.cpp"
+    "material_cache/ess_material_cache.cpp",
+
+    "world_spawners/ess_entity_world_spawner_2d.cpp",
+    "world_spawners/ess_entity_world_spawner_3d_single.cpp",
+    "world_spawners/ess_entity_world_spawner_3d.cpp",
 ]
 
 if env["module_texture_packer_enabled"]:

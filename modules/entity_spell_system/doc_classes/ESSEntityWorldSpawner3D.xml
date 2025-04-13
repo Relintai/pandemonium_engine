@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ESSEntityWorldSpawner3D" inherits="Spatial">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_spawn" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="emit_on_entity_spawned">
+			<return type="void" />
+			<argument index="0" name="info" type="EntityCreateInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="spawn">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<signals>
+		<signal name="emit_on_entity_spawned">
+			<argument index="0" name="info" type="EntityCreateInfo" />
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>
