@@ -44,6 +44,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="_setup_chunk" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
 		<method name="can_chunk_do_build_step">
 			<return type="bool" />
 			<description>
@@ -130,6 +136,11 @@
 			</description>
 		</method>
 		<method name="chunks_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="force_save_all_chunks">
 			<return type="void" />
 			<description>
 			</description>
@@ -453,6 +464,8 @@
 		<member name="data_margin_start" type="int" setter="set_data_margin_start" getter="get_data_margin_start" default="0">
 		</member>
 		<member name="editable" type="bool" setter="set_editable" getter="get_editable" default="false">
+		</member>
+		<member name="is_priority_generation" type="bool" setter="set_is_priority_generation" getter="get_is_priority_generation">
 		</member>
 		<member name="level_generator" type="TerrainLevelGenerator" setter="set_level_generator" getter="get_level_generator">
 		</member>

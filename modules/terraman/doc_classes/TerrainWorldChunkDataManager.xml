@@ -53,6 +53,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="_save_chunk" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
 		<method name="delete_all_chunk_data">
 			<return type="void" />
 			<description>
@@ -107,6 +113,18 @@
 			</description>
 		</method>
 		<method name="on_world_chunk_removed">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="save_all_chunks">
+			<return type="void" />
+			<argument index="0" name="world" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="save_chunk">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>

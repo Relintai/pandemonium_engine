@@ -8,6 +8,10 @@
 	</tutorials>
 	<methods>
 	</methods>
+	<members>
+		<member name="chunks_path" type="String" setter="set_chunks_path" getter="get_chunks_path" default="&quot;&quot;">
+		</member>
+	</members>
 	<constants>
 	</constants>
 </class>

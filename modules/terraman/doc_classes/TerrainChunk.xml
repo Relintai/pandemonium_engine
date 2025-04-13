@@ -964,6 +964,8 @@
 		</member>
 		<member name="is_immediate_build" type="bool" setter="set_is_immediate_build" getter="get_is_immediate_build">
 		</member>
+		<member name="is_setup" type="bool" setter="set_is_setup" getter="get_is_setup">
+		</member>
 		<member name="is_terrain_generated" type="bool" setter="set_is_terrain_generated" getter="get_is_terrain_generated" default="false">
 		</member>
 		<member name="library" type="TerrainLibrary" setter="set_library" getter="get_library">
