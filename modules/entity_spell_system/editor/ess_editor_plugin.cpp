@@ -36,6 +36,7 @@
 #include "../world_spawners/ess_entity_world_spawner_3d.h"
 
 #include "scene/resources/mesh/mesh.h"
+#include "scene/resources/mesh/primitive_meshes.h"
 
 void ESSEditorPlugin::fix_ids(Variant param) {
 }
@@ -62,6 +63,7 @@ WorldSpawner3DSpatialGizmoPlugin::WorldSpawner3DSpatialGizmoPlugin() {
 	const Color gizmo_color = EDITOR_DEF("editors/props/gizmo_colors/outline", Color(0.5, 0.5, 1));
 
 	create_material("outline_material", gizmo_color);
+	create_material("text_material", gizmo_color);
 }
 
 bool WorldSpawner3DSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
@@ -81,7 +83,7 @@ bool WorldSpawner3DSpatialGizmoPlugin::can_be_hidden() const {
 }
 
 void WorldSpawner3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
-	//ESSEntityWorldSpawner3D *ws = Object::cast_to<ESSEntityWorldSpawner3D>(p_gizmo->get_spatial_node());
+	ESSEntityWorldSpawner3D *ws = Object::cast_to<ESSEntityWorldSpawner3D>(p_gizmo->get_spatial_node());
 
 	p_gizmo->clear();
 
@@ -138,4 +140,15 @@ void WorldSpawner3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	const Ref<Material> material = get_material("outline_material");
 
 	p_gizmo->add_mesh(cm, material);
+
+	const Ref<Material> text_material = get_material("text_material");
+
+	Ref<TextMesh> text_mesh;
+	text_mesh.instance();
+	text_mesh->set_depth(0.01);
+	text_mesh->set_text(ws->get_name());
+	text_mesh->set_font(EditorNode::get_singleton()->get_theme_base()->get_theme_font("main", "EditorFonts"));
+	Transform tt;
+	tt.set_origin(Vector3(0, 1.6, 0));
+	p_gizmo->add_mesh(text_mesh, text_material, tt);
 }
