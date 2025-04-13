@@ -35,12 +35,12 @@
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 
+#include "editor/spatial_editor_gizmos.h"
+
+class WorldSpawner3DSpatialGizmoPlugin;
+
 class ESSEditorPlugin : public EditorPlugin {
 	GDCLASS(ESSEditorPlugin, EditorPlugin);
-	EditorNode *editor;
-
-protected:
-	static void _bind_methods();
 
 public:
 	virtual String get_name() const { return "ESSEditorPlugin"; }
@@ -52,6 +52,26 @@ public:
 
 	ESSEditorPlugin(EditorNode *p_node);
 	~ESSEditorPlugin();
+
+protected:
+	static void _bind_methods();
+
+	EditorNode *editor;
+
+	Ref<WorldSpawner3DSpatialGizmoPlugin> gizmo_plugin;
+};
+
+class WorldSpawner3DSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
+	GDCLASS(WorldSpawner3DSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
+
+public:
+	bool has_gizmo(Spatial *p_spatial);
+	String get_gizmo_name() const;
+	int get_priority() const;
+	bool can_be_hidden() const;
+	void redraw(EditorSpatialGizmo *p_gizmo);
+
+	WorldSpawner3DSpatialGizmoPlugin();
 };
 
 #endif
