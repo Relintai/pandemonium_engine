@@ -37,7 +37,7 @@ void ESSEditorPlugin::fix_ids(Variant param) {
 ESSEditorPlugin::ESSEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
-	editor->add_tool_menu_item("ESS: make ids unique", this, "fix_ids");
+	//editor->add_tool_menu_item("ESS: make ids unique", this, "fix_ids");
 }
 
 ESSEditorPlugin::~ESSEditorPlugin() {

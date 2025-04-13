@@ -132,7 +132,9 @@
 
 #include "singletons/profile_manager.h"
 
+#ifdef TOOLS_ENABLED
 #include "editor/ess_editor_plugin.h"
+#endif
 
 #include "database/ess_resource_db.cpp"
 #include "database/ess_resource_db_folders.h"
@@ -297,9 +299,9 @@ void register_entity_spell_system_types(ModuleRegistrationLevel p_level) {
 	}
 
 #ifdef TOOLS_ENABLED
-	//if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
-	//EditorPlugins::add_by_type<ESSEditorPlugin>();
-	//}
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<ESSEditorPlugin>();
+	}
 #endif
 }
 
