@@ -2853,6 +2853,8 @@
 		</member>
 		<member name="soriginal_entity_controller" type="int" setter="original_entity_controller_sets" getter="original_entity_controller_gets" enum="EntityEnums.EntityController" default="0">
 		</member>
+		<member name="spawner_object_id" type="int" setter="sets_spawner_object_id" getter="gets_spawner_object_id">
+		</member>
 		<member name="spet_formation_index" type="int" setter="pet_sets_formation_index" getter="pet_gets_formation_index" default="0">
 		</member>
 		<member name="spet_owner" type="Entity" setter="pet_sets_owner" getter="pet_gets_owner">
