@@ -62,15 +62,15 @@ void ESSEditorPlugin::_bind_methods() {
 ////////
 
 WorldSpawner3DSpatialGizmoPlugin::WorldSpawner3DSpatialGizmoPlugin() {
-	const Color gizmo_outline_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_outline", Color(0.5, 0.5, 1));
-	const Color gizmo_text_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_text", Color(0.5, 0.5, 1));
-	const Color gizmo_area_outline_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_area_outline", Color(0.7, 0.3, 0.3));
-	const Color gizmo_area_spawn_pos_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_area_spawn_position", Color(0.9, 0.5, 0.3));
+	const Color world_spawner_outline_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_outline", Color(0.64, 0.64, 0.64));
+	const Color world_spawner_area_outline_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_area_outline", Color(0.69, 0.27, 0.27));
+	const Color world_spawner_text_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_text", Color(0.52, 0.52, 0.89));
+	const Color world_spawner_area_spawn_position_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_area_spawn_position", Color(0.68, 0.58, 0.53));
 
-	create_material("outline_material", gizmo_outline_color);
-	create_material("text_material", gizmo_text_color);
-	create_material("area_outline_material", gizmo_area_outline_color);
-	create_material("area_spawn_pos_material", gizmo_area_spawn_pos_color);
+	create_material("outline_material", world_spawner_outline_color);
+	create_material("text_material", world_spawner_text_color);
+	create_material("area_outline_material", world_spawner_area_outline_color);
+	create_material("area_spawn_pos_material", world_spawner_area_spawn_position_color);
 	create_handle_material("handles");
 }
 
@@ -145,11 +145,11 @@ void WorldSpawner3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 		p_gizmo->add_collision_triangles(tm);
 	}
 
-	const Ref<Material> material = get_material("outline_material");
+	const Ref<Material> material = get_material("outline_material", p_gizmo);
 
 	p_gizmo->add_mesh(cm, material);
 
-	const Ref<Material> text_material = get_material("text_material");
+	const Ref<Material> text_material = get_material("text_material", p_gizmo);
 
 	Ref<TextMesh> text_mesh;
 	text_mesh.instance();
@@ -168,8 +168,8 @@ void WorldSpawner3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 		return;
 	}
 
-	const Ref<Material> area_outline_material = get_material("area_outline_material");
-	Ref<Material> handles_material = get_material("handles");
+	const Ref<Material> area_outline_material = get_material("area_outline_material", p_gizmo);
+	Ref<Material> handles_material = get_material("handles", p_gizmo);
 
 	Vector<Vector3> lines;
 	Vector3 extents = aws->get_spawn_area_extents();
@@ -206,7 +206,7 @@ void WorldSpawner3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 
 	lines.clear();
 
-	const Ref<Material> area_spawn_pos_material = get_material("area_spawn_pos_material");
+	const Ref<Material> area_spawn_pos_material = get_material("area_spawn_pos_material", p_gizmo);
 
 	for (int i = 0; i < spawn_positions.size(); ++i) {
 		Vector2 p = spawn_positions[i];
