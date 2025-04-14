@@ -155,6 +155,8 @@ void ESSEntityWorldSpawner3DSingle::_notification(int p_what) {
 				if (ent) {
 					ent->sets_spawner_object_id(ObjectID());
 				}
+
+				_entity = ObjectID();
 			}
 			break;
 		case NOTIFICATION_INTERNAL_PROCESS:
