@@ -351,6 +351,14 @@ void Entity::setc_entity_type(int value) {
 	_c_entity_type = value;
 }
 
+// Owner Spawner information
+ObjectID Entity::gets_spawner_object_id() const {
+	return _spawner_object_id;
+}
+void Entity::sets_spawner_object_id(const ObjectID p_object_id) {
+	_spawner_object_id = p_object_id;
+}
+
 //Relations
 EntityEnums::EntityRelationType Entity::gets_relation_to_bind(Node *to) {
 	Entity *e = Object::cast_to<Entity>(to);
@@ -5866,6 +5874,8 @@ Entity::Entity() {
 	_s_entity_type = 0;
 	_c_entity_type = 0;
 
+	_spawner_object_id = ObjectID();
+
 	_s_immunity_flags = 0;
 
 	_s_entity_flags = 0;
@@ -7176,6 +7186,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_entity_type"), &Entity::getc_entity_type);
 	ClassDB::bind_method(D_METHOD("setc_entity_type", "value"), &Entity::sets_entity_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_type", PROPERTY_HINT_ENUM, "", 0), "setc_entity_type", "getc_entity_type");
+
+	ClassDB::bind_method(D_METHOD("gets_spawner_object_id"), &Entity::gets_spawner_object_id);
+	ClassDB::bind_method(D_METHOD("sets_spawner_object_id", "object_id"), &Entity::sets_spawner_object_id);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spawner_object_id", PROPERTY_HINT_OBJECT_ID, "", 0), "sets_spawner_object_id", "gets_spawner_object_id");
 
 	ClassDB::bind_method(D_METHOD("ai_state_gets"), &Entity::ai_state_gets);
 	ClassDB::bind_method(D_METHOD("ai_state_sets", "value"), &Entity::ai_state_sets);

@@ -278,6 +278,10 @@ public:
 	int getc_entity_type();
 	void setc_entity_type(int value);
 
+	// Owner Spawner information
+	ObjectID gets_spawner_object_id() const;
+	void sets_spawner_object_id(const ObjectID p_object_id);
+
 	//Relations
 	EntityEnums::EntityRelationType gets_relation_to_bind(Node *to);
 	EntityEnums::EntityRelationType gets_relation_to(Entity *to);
@@ -1208,6 +1212,8 @@ private:
 
 	int _s_entity_type;
 	int _c_entity_type;
+
+	ObjectID _spawner_object_id;
 
 	int _s_immunity_flags;
 
