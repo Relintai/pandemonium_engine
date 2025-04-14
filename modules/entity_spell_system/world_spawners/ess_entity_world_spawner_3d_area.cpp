@@ -43,6 +43,13 @@
 
 #include "../singletons/ess.h"
 
+Vector3 ESSEntityWorldSpawner3DArea::get_spawn_area_extents() const {
+	return _spawn_area_extents;
+}
+void ESSEntityWorldSpawner3DArea::set_spawn_area_extents(const Vector3 &p_extents) {
+	_spawn_area_extents = p_extents;
+}
+
 String ESSEntityWorldSpawner3DArea::get_entity_name() const {
 	return _entity_name;
 }
@@ -124,6 +131,7 @@ ESSEntityWorldSpawner3DArea::ESSEntityWorldSpawner3DArea() {
 	_respawn_time_min = 0;
 	_respawn_time_max = 0;
 	_respawn_timer = 0;
+	_spawn_area_extents = Vector3(2, 2, 2);
 }
 
 ESSEntityWorldSpawner3DArea::~ESSEntityWorldSpawner3DArea() {
@@ -173,6 +181,10 @@ void ESSEntityWorldSpawner3DArea::_notification(int p_what) {
 }
 
 void ESSEntityWorldSpawner3DArea::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_spawn_area_extents"), &ESSEntityWorldSpawner3DArea::get_spawn_area_extents);
+	ClassDB::bind_method(D_METHOD("set_spawn_area_extents", "value"), &ESSEntityWorldSpawner3DArea::set_spawn_area_extents);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "spawn_area_extents"), "set_spawn_area_extents", "get_spawn_area_extents");
+
 	ClassDB::bind_method(D_METHOD("get_entity_name"), &ESSEntityWorldSpawner3DArea::get_entity_name);
 	ClassDB::bind_method(D_METHOD("set_entity_name", "value"), &ESSEntityWorldSpawner3DArea::set_entity_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_name"), "set_entity_name", "get_entity_name");

@@ -71,6 +71,11 @@ public:
 	bool can_be_hidden() const;
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
+	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
+
 	WorldSpawner3DSpatialGizmoPlugin();
 };
 

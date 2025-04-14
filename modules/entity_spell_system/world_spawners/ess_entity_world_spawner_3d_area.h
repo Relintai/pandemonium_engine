@@ -40,6 +40,9 @@ class ESSEntityWorldSpawner3DArea : public ESSEntityWorldSpawner3D {
 	GDCLASS(ESSEntityWorldSpawner3DArea, ESSEntityWorldSpawner3D);
 
 public:
+	Vector3 get_spawn_area_extents() const;
+	void set_spawn_area_extents(const Vector3 &p_extents);
+
 	String get_entity_name() const;
 	void set_entity_name(const String &p_name);
 
@@ -65,6 +68,8 @@ protected:
 	static void _bind_methods();
 
 	void _on_entity_tree_exited();
+
+	Vector3 _spawn_area_extents;
 
 	String _entity_name;
 	Ref<EntityData> _entity_data;

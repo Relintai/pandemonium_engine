@@ -34,6 +34,8 @@
 #include "editor/editor_settings.h"
 
 #include "../world_spawners/ess_entity_world_spawner_3d.h"
+#include "../world_spawners/ess_entity_world_spawner_3d_area.h"
+#include "scene/3d/camera.h"
 
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/mesh/primitive_meshes.h"
@@ -60,10 +62,14 @@ void ESSEditorPlugin::_bind_methods() {
 ////////
 
 WorldSpawner3DSpatialGizmoPlugin::WorldSpawner3DSpatialGizmoPlugin() {
-	const Color gizmo_color = EDITOR_DEF("editors/props/gizmo_colors/outline", Color(0.5, 0.5, 1));
+	const Color gizmo_outline_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_outline", Color(0.5, 0.5, 1));
+	const Color gizmo_text_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_text", Color(0.5, 0.5, 1));
+	const Color gizmo_area_outline_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_area_outline", Color(0.7, 0.3, 0.3));
 
-	create_material("outline_material", gizmo_color);
-	create_material("text_material", gizmo_color);
+	create_material("outline_material", gizmo_outline_color);
+	create_material("text_material", gizmo_text_color);
+	create_material("area_outline_material", gizmo_area_outline_color);
+	create_handle_material("handles");
 }
 
 bool WorldSpawner3DSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
@@ -129,7 +135,7 @@ void WorldSpawner3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 
 	mesh_arr[RS::ARRAY_VERTEX] = points;
 
-	cm->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, mesh_arr);
+	cm->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, mesh_arr, Array(), 0);
 
 	Ref<TriangleMesh> tm = cm->generate_triangle_mesh_from_aabb();
 
@@ -153,4 +159,112 @@ void WorldSpawner3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	// TODO this should be configurable
 	tt.basis.rotate_local(Vector3(0, 1, 0), Math_PI);
 	p_gizmo->add_mesh(text_mesh, text_material, tt);
+
+	ESSEntityWorldSpawner3DArea *aws = Object::cast_to<ESSEntityWorldSpawner3DArea>(ws);
+
+	if (!aws) {
+		return;
+	}
+
+	const Ref<Material> area_outline_material = get_material("area_outline_material");
+	Ref<Material> handles_material = get_material("handles");
+
+	Vector<Vector3> lines;
+	Vector3 extents = aws->get_spawn_area_extents();
+
+	aabb.position = -extents;
+	aabb.size = aabb.position * -2;
+
+	for (int i = 0; i < 12; i++) {
+		Vector3 a, b;
+		aabb.get_edge(i, a, b);
+		lines.push_back(a);
+		lines.push_back(b);
+	}
+
+	Vector<Vector3> handles;
+
+	for (int i = 0; i < 3; i++) {
+		Vector3 ax;
+		ax[i] = extents[i];
+		handles.push_back(ax);
+	}
+
+	p_gizmo->add_lines(lines, area_outline_material);
+	p_gizmo->add_collision_segments(lines);
+	p_gizmo->add_handles(handles, handles_material);
+}
+
+String WorldSpawner3DSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
+	ESSEntityWorldSpawner3DArea *aws = Object::cast_to<ESSEntityWorldSpawner3DArea>(p_gizmo->get_spatial_node());
+
+	if (aws) {
+		return "Spawn Area";
+	}
+
+	return String();
+}
+
+Variant WorldSpawner3DSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
+	ESSEntityWorldSpawner3DArea *aws = Object::cast_to<ESSEntityWorldSpawner3DArea>(p_gizmo->get_spatial_node());
+
+	if (aws) {
+		return aws->get_spawn_area_extents();
+	}
+
+	return Variant();
+}
+void WorldSpawner3DSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
+	ESSEntityWorldSpawner3DArea *aws = Object::cast_to<ESSEntityWorldSpawner3DArea>(p_gizmo->get_spatial_node());
+
+	if (!aws) {
+		return;
+	}
+
+	Transform gt = aws->get_global_transform();
+	Transform gi = gt.affine_inverse();
+
+	Vector3 ray_from = p_camera->project_ray_origin(p_point);
+	Vector3 ray_dir = p_camera->project_ray_normal(p_point);
+
+	Vector3 sg[2] = { gi.xform(ray_from), gi.xform(ray_from + ray_dir * 4096) };
+
+	Vector3 axis;
+	axis[p_id] = 1.0;
+	Vector3 ra, rb;
+	Geometry::get_closest_points_between_segments(Vector3(), axis * 4096, sg[0], sg[1], ra, rb);
+	float d = ra[p_id];
+	if (SpatialEditor::get_singleton()->is_snap_enabled()) {
+		d = Math::stepify(d, SpatialEditor::get_singleton()->get_translate_snap());
+	}
+
+	if (d < 0.001) {
+		d = 0.001;
+	}
+
+	Vector3 spawn_area = aws->get_spawn_area_extents();
+
+	spawn_area[p_id] = d;
+
+	aws->set_spawn_area_extents(spawn_area);
+
+	aws->update_gizmos();
+}
+void WorldSpawner3DSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
+	ESSEntityWorldSpawner3DArea *aws = Object::cast_to<ESSEntityWorldSpawner3DArea>(p_gizmo->get_spatial_node());
+
+	if (!aws) {
+		return;
+	}
+
+	if (p_cancel) {
+		aws->set_spawn_area_extents(p_restore);
+		return;
+	}
+
+	UndoRedo *ur = SpatialEditor::get_singleton()->get_undo_redo();
+	ur->create_action(TTR("Change ESSEntityWorldSpawner3DArea Spawn Area"));
+	ur->add_do_method(aws, "set_spawn_area_extents", aws->get_spawn_area_extents());
+	ur->add_undo_method(aws, "set_spawn_area_extents", p_restore);
+	ur->commit_action();
 }
