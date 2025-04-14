@@ -68,6 +68,15 @@ void ESSEntityWorldSpawner3DArea::set_respawn_time_min(const float p_respawn_tim
 	_respawn_time_min = p_respawn_time;
 }
 
+int ESSEntityWorldSpawner3DArea::get_spawn_entry_count() const {
+	return _spawn_entries.size();
+}
+void ESSEntityWorldSpawner3DArea::set_spawn_entry_count(const int p_spawn_entry_count) {
+	_spawn_entries.resize(p_spawn_entry_count);
+
+	property_list_changed_notify();
+}
+
 float ESSEntityWorldSpawner3DArea::get_respawn_time_max() const {
 	return _respawn_time_max;
 }
@@ -127,9 +136,6 @@ void ESSEntityWorldSpawner3DArea::set_entity_spawn_chance(const int p_index, con
 	_spawn_entries_dirty = true;
 }
 
-int ESSEntityWorldSpawner3DArea::get_spawn_entry_count() const {
-	return _spawn_entries.size();
-}
 void ESSEntityWorldSpawner3DArea::clear_spawn_entries() {
 	_spawn_entries.clear();
 	_spawn_entries_dirty = true;
@@ -291,6 +297,7 @@ void ESSEntityWorldSpawner3DArea::_spawn_slot(const int p_index) {
 
 	Transform offset;
 	offset.translate_local(Vector3(s.position.x, 0, s.position.y));
+	offset.rotate_basis(Vector3(0, 1, 0), Math::random(0.0f, static_cast<float>(Math_TAU)));
 
 	info->set_transform(get_global_transform() * offset);
 
@@ -330,6 +337,83 @@ int ESSEntityWorldSpawner3DArea::generate_spawn_index() {
 	}
 
 	return _spawn_entries.size() - 1;
+}
+
+bool ESSEntityWorldSpawner3DArea::_set(const StringName &p_name, const Variant &p_value) {
+	String name = p_name;
+
+	if (name.begins_with("spawn_entry_")) {
+		int index = name.get_slicec('_', 2).to_int();
+
+		if (index >= _spawn_entries.size()) {
+			_spawn_entries.resize(index + 1);
+		}
+
+		StringName p = name.get_slicec('/', 1);
+
+		if (p == "entity_name") {
+			_spawn_entries.write[index].entity_name = p_value;
+
+			return true;
+		} else if (p == "entity_data") {
+			_spawn_entries.write[index].entity_data = p_value;
+
+			return true;
+		} else if (p == "level_range") {
+			_spawn_entries.write[index].level_range = p_value;
+
+			return true;
+		} else if (p == "spawn_chance") {
+			_spawn_entries.write[index].spawn_chance = p_value;
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool ESSEntityWorldSpawner3DArea::_get(const StringName &p_name, Variant &r_ret) const {
+	String name = p_name;
+
+	if (name.begins_with("spawn_entry_")) {
+		int index = name.get_slicec('_', 2).to_int();
+
+		if (index >= _spawn_entries.size()) {
+			return false;
+		}
+
+		StringName p = name.get_slicec('/', 1);
+
+		if (p == "entity_name") {
+			r_ret = _spawn_entries[index].entity_name;
+
+			return true;
+		} else if (p == "entity_data") {
+			r_ret = _spawn_entries[index].entity_data;
+
+			return true;
+		} else if (p == "level_range") {
+			r_ret = _spawn_entries[index].level_range;
+
+			return true;
+		} else if (p == "spawn_chance") {
+			r_ret = _spawn_entries[index].spawn_chance;
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void ESSEntityWorldSpawner3DArea::_get_property_list(List<PropertyInfo> *p_list) const {
+	for (int i = 0; i < _spawn_entries.size(); ++i) {
+		p_list->push_back(PropertyInfo(Variant::STRING, "spawn_entry_" + itos(i) + "/entity_name"));
+		p_list->push_back(PropertyInfo(Variant::OBJECT, "spawn_entry_" + itos(i) + "/entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData", PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::VECTOR2I, "spawn_entry_" + itos(i) + "/level_range"));
+		p_list->push_back(PropertyInfo(Variant::REAL, "spawn_entry_" + itos(i) + "/spawn_chance"));
+	}
 }
 
 void ESSEntityWorldSpawner3DArea::_notification(int p_what) {
@@ -399,6 +483,10 @@ void ESSEntityWorldSpawner3DArea::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_respawn_time_max", "respawn_time"), &ESSEntityWorldSpawner3DArea::set_respawn_time_max);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "respawn_time_max"), "set_respawn_time_max", "get_respawn_time_max");
 
+	ClassDB::bind_method(D_METHOD("get_spawn_entry_count"), &ESSEntityWorldSpawner3DArea::get_spawn_entry_count);
+	ClassDB::bind_method(D_METHOD("set_spawn_entry_count", "spawn_entry_count"), &ESSEntityWorldSpawner3DArea::set_spawn_entry_count);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spawn_entry_count"), "set_spawn_entry_count", "get_spawn_entry_count");
+
 	ClassDB::bind_method(D_METHOD("get_entity_name", "index"), &ESSEntityWorldSpawner3DArea::get_entity_name);
 	ClassDB::bind_method(D_METHOD("set_entity_name", "index", "name"), &ESSEntityWorldSpawner3DArea::set_entity_name);
 
@@ -411,7 +499,6 @@ void ESSEntityWorldSpawner3DArea::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_spawn_chance", "index"), &ESSEntityWorldSpawner3DArea::get_entity_spawn_chance);
 	ClassDB::bind_method(D_METHOD("set_entity_spawn_chance", "index", "spawn_chance"), &ESSEntityWorldSpawner3DArea::set_entity_spawn_chance);
 
-	ClassDB::bind_method(D_METHOD("get_spawn_entry_count"), &ESSEntityWorldSpawner3DArea::get_spawn_entry_count);
 	ClassDB::bind_method(D_METHOD("clear_spawn_entries"), &ESSEntityWorldSpawner3DArea::clear_spawn_entries);
 	ClassDB::bind_method(D_METHOD("add_spawn_entry", "name", "data", "level_range", "spawn_chance"), &ESSEntityWorldSpawner3DArea::add_spawn_entry);
 	ClassDB::bind_method(D_METHOD("remove_spawn_entry", "index"), &ESSEntityWorldSpawner3DArea::remove_spawn_entry);

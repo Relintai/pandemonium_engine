@@ -52,6 +52,9 @@ public:
 	float get_respawn_time_max() const;
 	void set_respawn_time_max(const float p_respawn_time);
 
+	int get_spawn_entry_count() const;
+	void set_spawn_entry_count(const int p_spawn_entry_count);
+
 	String get_entity_name(const int p_index) const;
 	void set_entity_name(const int p_index, const String &p_name);
 
@@ -64,7 +67,6 @@ public:
 	float get_entity_spawn_chance(const int p_index) const;
 	void set_entity_spawn_chance(const int p_index, const float p_spawn_chance);
 
-	int get_spawn_entry_count() const;
 	void clear_spawn_entries();
 	void add_spawn_entry(const String &p_name, const Ref<EntityData> &p_data, const Vector2i &p_level_range, const float p_spawn_chance);
 	void remove_spawn_entry(const int p_index);
@@ -78,6 +80,10 @@ public:
 	Vector<Vector2> get_spawn_positions() const;
 
 protected:
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
+
 	void _notification(int p_what);
 	static void _bind_methods();
 
