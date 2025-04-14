@@ -46,8 +46,8 @@ public:
 	Ref<EntityData> get_entity_data() const;
 	void set_entity_data(const Ref<EntityData> &p_data);
 
-	int get_level() const;
-	void set_level(const int p_level);
+	int get_entity_level() const;
+	void set_entity_level(const int p_level);
 
 	float get_respawn_time_min() const;
 	void set_respawn_time_min(const float p_respawn_time);
@@ -68,7 +68,7 @@ protected:
 
 	String _entity_name;
 	Ref<EntityData> _entity_data;
-	int _level;
+	int _entity_level;
 	float _respawn_time_min;
 	float _respawn_time_max;
 	real_t _respawn_timer;

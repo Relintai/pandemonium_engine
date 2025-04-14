@@ -57,11 +57,11 @@ void ESSEntityWorldSpawner3DSingle::set_entity_data(const Ref<EntityData> &p_dat
 	_entity_data = p_data;
 }
 
-int ESSEntityWorldSpawner3DSingle::get_level() const {
-	return _level;
+int ESSEntityWorldSpawner3DSingle::get_entity_level() const {
+	return _entity_level;
 }
-void ESSEntityWorldSpawner3DSingle::set_level(const int p_level) {
-	_level = p_level;
+void ESSEntityWorldSpawner3DSingle::set_entity_level(const int p_level) {
+	_entity_level = p_level;
 }
 
 float ESSEntityWorldSpawner3DSingle::get_respawn_time_min() const {
@@ -101,7 +101,7 @@ void ESSEntityWorldSpawner3DSingle::_spawn() {
 	}
 
 	info->set_entity_controller(EntityEnums::ENITIY_CONTROLLER_AI);
-	info->set_level(_level);
+	info->set_level(_entity_level);
 	info->set_transform(get_global_transform());
 	info->set_entity_data(_entity_data);
 	info->set_species_instance(_entity_data->get_species_instance());
@@ -119,7 +119,7 @@ void ESSEntityWorldSpawner3DSingle::_spawn() {
 }
 
 ESSEntityWorldSpawner3DSingle::ESSEntityWorldSpawner3DSingle() {
-	_level = 1;
+	_entity_level = 1;
 	_entity = ObjectID();
 	_respawn_time_min = 0;
 	_respawn_time_max = 0;
@@ -181,9 +181,9 @@ void ESSEntityWorldSpawner3DSingle::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_entity_data", "value"), &ESSEntityWorldSpawner3DSingle::set_entity_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "set_entity_data", "get_entity_data");
 
-	ClassDB::bind_method(D_METHOD("get_level"), &ESSEntityWorldSpawner3DSingle::get_level);
-	ClassDB::bind_method(D_METHOD("set_level", "value"), &ESSEntityWorldSpawner3DSingle::set_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "level"), "set_level", "get_level");
+	ClassDB::bind_method(D_METHOD("get_entity_level"), &ESSEntityWorldSpawner3DSingle::get_entity_level);
+	ClassDB::bind_method(D_METHOD("set_entity_level", "value"), &ESSEntityWorldSpawner3DSingle::set_entity_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_level"), "set_entity_level", "get_entity_level");
 
 	ClassDB::bind_method(D_METHOD("get_respawn_time_min"), &ESSEntityWorldSpawner3DSingle::get_respawn_time_min);
 	ClassDB::bind_method(D_METHOD("set_respawn_time_min", "respawn_time"), &ESSEntityWorldSpawner3DSingle::set_respawn_time_min);
