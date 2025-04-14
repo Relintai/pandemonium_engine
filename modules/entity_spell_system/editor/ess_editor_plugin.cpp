@@ -211,8 +211,8 @@ void WorldSpawner3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	for (int i = 0; i < spawn_positions.size(); ++i) {
 		Vector2 p = spawn_positions[i];
 
-		lines.push_back(Vector3(p.x, -extents.z, p.y));
-		lines.push_back(Vector3(p.x, extents.z, p.y));
+		lines.push_back(Vector3(p.x, -extents.y, p.y));
+		lines.push_back(Vector3(p.x, extents.y, p.y));
 	}
 
 	p_gizmo->add_lines(lines, area_spawn_pos_material);
