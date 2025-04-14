@@ -49,6 +49,12 @@ public:
 	int get_level() const;
 	void set_level(const int p_level);
 
+	float get_respawn_time_min() const;
+	void set_respawn_time_min(const float p_respawn_time);
+
+	float get_respawn_time_max() const;
+	void set_respawn_time_max(const float p_respawn_time);
+
 	virtual void _spawn();
 
 	ESSEntityWorldSpawner3DSingle();
@@ -58,9 +64,16 @@ protected:
 	void _notification(int p_what);
 	static void _bind_methods();
 
+	void _on_entity_tree_exited();
+
 	String _entity_name;
 	Ref<EntityData> _entity_data;
 	int _level;
+	float _respawn_time_min;
+	float _respawn_time_max;
+	real_t _respawn_timer;
+
+	ObjectID _entity;
 };
 
 #endif

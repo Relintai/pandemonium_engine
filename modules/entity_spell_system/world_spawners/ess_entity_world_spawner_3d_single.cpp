@@ -34,8 +34,10 @@
 #include "../data/species/entity_species_data.h"
 #include "../data/species/species_instance.h"
 #include "../entities/data/entity_data.h"
+#include "../entities/entity.h"
 #include "../entity_enums.h"
 #include "../utility/entity_create_info.h"
+#include "scene/main/scene_tree.h"
 
 #include "core/config/engine.h"
 
@@ -60,6 +62,20 @@ int ESSEntityWorldSpawner3DSingle::get_level() const {
 }
 void ESSEntityWorldSpawner3DSingle::set_level(const int p_level) {
 	_level = p_level;
+}
+
+float ESSEntityWorldSpawner3DSingle::get_respawn_time_min() const {
+	return _respawn_time_min;
+}
+void ESSEntityWorldSpawner3DSingle::set_respawn_time_min(const float p_respawn_time) {
+	_respawn_time_min = p_respawn_time;
+}
+
+float ESSEntityWorldSpawner3DSingle::get_respawn_time_max() const {
+	return _respawn_time_max;
+}
+void ESSEntityWorldSpawner3DSingle::set_respawn_time_max(const float p_respawn_time) {
+	_respawn_time_max = p_respawn_time;
 }
 
 void ESSEntityWorldSpawner3DSingle::_spawn() {
@@ -91,14 +107,40 @@ void ESSEntityWorldSpawner3DSingle::_spawn() {
 	info->set_species_instance(_entity_data->get_species_instance());
 	ESS::get_singleton()->request_entity_spawn(info);
 
+	Entity *created_entity = info->get_created_entity();
+
+	if (created_entity != NULL) {
+		created_entity->sets_spawner_object_id(get_instance_id());
+		_entity = created_entity->get_instance_id();
+		created_entity->connect("tree_exited", this, "_on_entity_tree_exited");
+	}
+
 	emit_on_entity_spawned(info);
 }
 
 ESSEntityWorldSpawner3DSingle::ESSEntityWorldSpawner3DSingle() {
 	_level = 1;
+	_entity = ObjectID();
+	_respawn_time_min = 0;
+	_respawn_time_max = 0;
+	_respawn_timer = 0;
 }
 
 ESSEntityWorldSpawner3DSingle::~ESSEntityWorldSpawner3DSingle() {
+}
+
+void ESSEntityWorldSpawner3DSingle::_on_entity_tree_exited() {
+	_entity = ObjectID();
+
+	if (_respawn_time_min > CMP_EPSILON) {
+		if (_respawn_time_max > CMP_EPSILON) {
+			_respawn_timer = Math::random(_respawn_time_min, _respawn_time_max);
+		} else {
+			_respawn_timer = _respawn_time_min;
+		}
+
+		set_process_internal(true);
+	}
 }
 
 void ESSEntityWorldSpawner3DSingle::_notification(int p_what) {
@@ -106,7 +148,25 @@ void ESSEntityWorldSpawner3DSingle::_notification(int p_what) {
 		case NOTIFICATION_ENTER_TREE:
 			call_deferred("spawn");
 			break;
+		case NOTIFICATION_EXIT_TREE:
+			if (_entity != ObjectID()) {
+				Entity *ent = ObjectDB::get_instance<Entity>(_entity);
 
+				if (ent) {
+					ent->sets_spawner_object_id(ObjectID());
+				}
+			}
+			break;
+		case NOTIFICATION_INTERNAL_PROCESS:
+			_respawn_timer -= get_tree()->get_idle_process_time();
+
+			if (_respawn_timer <= 0) {
+				_respawn_timer = 0;
+				set_process_internal(false);
+				call_deferred("spawn");
+			}
+
+			break;
 		default:
 			break;
 	}
@@ -124,4 +184,14 @@ void ESSEntityWorldSpawner3DSingle::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_level"), &ESSEntityWorldSpawner3DSingle::get_level);
 	ClassDB::bind_method(D_METHOD("set_level", "value"), &ESSEntityWorldSpawner3DSingle::set_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "level"), "set_level", "get_level");
+
+	ClassDB::bind_method(D_METHOD("get_respawn_time_min"), &ESSEntityWorldSpawner3DSingle::get_respawn_time_min);
+	ClassDB::bind_method(D_METHOD("set_respawn_time_min", "respawn_time"), &ESSEntityWorldSpawner3DSingle::set_respawn_time_min);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "respawn_time_min"), "set_respawn_time_min", "get_respawn_time_min");
+
+	ClassDB::bind_method(D_METHOD("get_respawn_time_max"), &ESSEntityWorldSpawner3DSingle::get_respawn_time_max);
+	ClassDB::bind_method(D_METHOD("set_respawn_time_max", "respawn_time"), &ESSEntityWorldSpawner3DSingle::set_respawn_time_max);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "respawn_time_max"), "set_respawn_time_max", "get_respawn_time_max");
+
+	ClassDB::bind_method(D_METHOD("_on_entity_tree_exited"), &ESSEntityWorldSpawner3DSingle::_on_entity_tree_exited);
 }
