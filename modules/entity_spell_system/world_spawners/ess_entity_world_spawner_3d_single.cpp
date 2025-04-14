@@ -189,11 +189,11 @@ void ESSEntityWorldSpawner3DSingle::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_respawn_time_min"), &ESSEntityWorldSpawner3DSingle::get_respawn_time_min);
 	ClassDB::bind_method(D_METHOD("set_respawn_time_min", "respawn_time"), &ESSEntityWorldSpawner3DSingle::set_respawn_time_min);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "respawn_time_min"), "set_respawn_time_min", "get_respawn_time_min");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "respawn_time_min"), "set_respawn_time_min", "get_respawn_time_min");
 
 	ClassDB::bind_method(D_METHOD("get_respawn_time_max"), &ESSEntityWorldSpawner3DSingle::get_respawn_time_max);
 	ClassDB::bind_method(D_METHOD("set_respawn_time_max", "respawn_time"), &ESSEntityWorldSpawner3DSingle::set_respawn_time_max);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "respawn_time_max"), "set_respawn_time_max", "get_respawn_time_max");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "respawn_time_max"), "set_respawn_time_max", "get_respawn_time_max");
 
 	ClassDB::bind_method(D_METHOD("_on_entity_tree_exited"), &ESSEntityWorldSpawner3DSingle::_on_entity_tree_exited);
 }
