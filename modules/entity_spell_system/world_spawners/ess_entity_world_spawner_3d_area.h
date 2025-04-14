@@ -43,14 +43,8 @@ public:
 	Vector3 get_spawn_area_extents() const;
 	void set_spawn_area_extents(const Vector3 &p_extents);
 
-	String get_entity_name() const;
-	void set_entity_name(const String &p_name);
-
-	Ref<EntityData> get_entity_data() const;
-	void set_entity_data(const Ref<EntityData> &p_data);
-
-	int get_level() const;
-	void set_level(const int p_level);
+	int get_spawn_slot_count() const;
+	void set_spawn_slot_count(const int p_spawn_slot_count);
 
 	float get_respawn_time_min() const;
 	void set_respawn_time_min(const float p_respawn_time);
@@ -58,27 +52,76 @@ public:
 	float get_respawn_time_max() const;
 	void set_respawn_time_max(const float p_respawn_time);
 
+	String get_entity_name(const int p_index) const;
+	void set_entity_name(const int p_index, const String &p_name);
+
+	Ref<EntityData> get_entity_data(const int p_index) const;
+	void set_entity_data(const int p_index, const Ref<EntityData> &p_data);
+
+	Vector2i get_entity_level_range(const int p_index) const;
+	void set_entity_level_range(const int p_index, const Vector2i &p_level_range);
+
+	float get_entity_spawn_chance(const int p_index) const;
+	void set_entity_spawn_chance(const int p_index, const float p_spawn_chance);
+
+	int get_spawn_entry_count() const;
+	void clear_spawn_entries();
+	void add_spawn_entry(const String &p_name, const Ref<EntityData> &p_data, const Vector2i &p_level_range, const float p_spawn_chance);
+	void remove_spawn_entry(const int p_index);
+
 	virtual void _spawn();
 
 	ESSEntityWorldSpawner3DArea();
 	~ESSEntityWorldSpawner3DArea();
 
+	// For the gizmo
+	Vector<Vector2> get_spawn_positions() const;
+
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
 
-	void _on_entity_tree_exited();
+	void _on_entity_tree_exited(const ObjectID p_entity_object_id);
+	void _recalculate_slots();
+	void _recalculate_valid_spawn_entries();
+	void _spawn_slot(const int p_index);
+	int generate_spawn_index();
 
 	Vector3 _spawn_area_extents;
+	int _spawn_slot_count;
 
-	String _entity_name;
-	Ref<EntityData> _entity_data;
-	int _level;
+	bool _spawn_slots_dirty;
+
 	float _respawn_time_min;
 	float _respawn_time_max;
-	real_t _respawn_timer;
 
-	ObjectID _entity;
+	struct SpawnEntry {
+		String entity_name;
+		Ref<EntityData> entity_data;
+		Vector2i level_range;
+		float spawn_chance;
+
+		SpawnEntry();
+		~SpawnEntry();
+	};
+
+	Vector<SpawnEntry> _spawn_entries;
+	Vector<SpawnEntry> _valid_spawn_entries;
+	float _spawn_entries_max_chance;
+	bool _spawn_entries_dirty;
+
+	struct SpawnSlot {
+		Vector2 position;
+		float respawn_timer;
+		ObjectID entity;
+
+		SpawnSlot() {
+			respawn_timer = 0;
+			entity = ObjectID();
+		}
+	};
+
+	Vector<SpawnSlot> _spawn_slots;
 };
 
 #endif

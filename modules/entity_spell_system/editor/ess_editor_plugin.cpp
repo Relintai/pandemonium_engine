@@ -65,10 +65,12 @@ WorldSpawner3DSpatialGizmoPlugin::WorldSpawner3DSpatialGizmoPlugin() {
 	const Color gizmo_outline_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_outline", Color(0.5, 0.5, 1));
 	const Color gizmo_text_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_text", Color(0.5, 0.5, 1));
 	const Color gizmo_area_outline_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_area_outline", Color(0.7, 0.3, 0.3));
+	const Color gizmo_area_spawn_pos_color = EDITOR_DEF("editors/ess/gizmo_colors/world_spawner_area_spawn_position", Color(0.9, 0.5, 0.3));
 
 	create_material("outline_material", gizmo_outline_color);
 	create_material("text_material", gizmo_text_color);
 	create_material("area_outline_material", gizmo_area_outline_color);
+	create_material("area_spawn_pos_material", gizmo_area_spawn_pos_color);
 	create_handle_material("handles");
 }
 
@@ -193,6 +195,28 @@ void WorldSpawner3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	p_gizmo->add_lines(lines, area_outline_material);
 	p_gizmo->add_collision_segments(lines);
 	p_gizmo->add_handles(handles, handles_material);
+
+	// Spawn positions
+
+	Vector<Vector2> spawn_positions = aws->get_spawn_positions();
+
+	if (spawn_positions.empty()) {
+		return;
+	}
+
+	lines.clear();
+
+	const Ref<Material> area_spawn_pos_material = get_material("area_spawn_pos_material");
+
+	for (int i = 0; i < spawn_positions.size(); ++i) {
+		Vector2 p = spawn_positions[i];
+
+		lines.push_back(Vector3(p.x, -extents.z, p.y));
+		lines.push_back(Vector3(p.x, extents.z, p.y));
+	}
+
+	p_gizmo->add_lines(lines, area_spawn_pos_material);
+	p_gizmo->add_collision_segments(lines);
 }
 
 String WorldSpawner3DSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
