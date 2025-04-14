@@ -234,7 +234,7 @@ void PropInstanceSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 
 	mesh_arr[RS::ARRAY_VERTEX] = points;
 
-	cm->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, mesh_arr);
+	cm->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, mesh_arr, Array(), 0);
 
 	Ref<TriangleMesh> tm = cm->generate_triangle_mesh_from_aabb();
 	if (tm.is_valid()) {
@@ -329,7 +329,7 @@ void TiledWallSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 
 	mesh_arr[RS::ARRAY_VERTEX] = points;
 
-	cm->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, mesh_arr);
+	cm->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, mesh_arr, Array(), 0);
 
 	Ref<TriangleMesh> tm = cm->generate_triangle_mesh_from_aabb();
 	if (tm.is_valid()) {
