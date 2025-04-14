@@ -89,7 +89,7 @@ void ESSEntityWorldSpawner3DSingle::_spawn() {
 	info->set_transform(get_global_transform());
 	info->set_entity_data(_entity_data);
 	info->set_species_instance(_entity_data->get_species_instance());
-	ESS::get_singleton()->request_entity_spawn_deferred(info);
+	ESS::get_singleton()->request_entity_spawn(info);
 
 	emit_on_entity_spawned(info);
 }
@@ -104,7 +104,7 @@ ESSEntityWorldSpawner3DSingle::~ESSEntityWorldSpawner3DSingle() {
 void ESSEntityWorldSpawner3DSingle::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
-			spawn();
+			call_deferred("spawn");
 			break;
 
 		default:
