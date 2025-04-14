@@ -108,6 +108,7 @@ def get_doc_classes():
 
         "ESSEntityWorldSpawner3D",
         "ESSEntityWorldSpawner3DSingle",
+        "ESSEntityWorldSpawner3DArea",
         "ESSEntityWorldSpawner2D",
     ]
 

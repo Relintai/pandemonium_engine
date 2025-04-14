@@ -120,6 +120,7 @@ sources = [
 
     "world_spawners/ess_entity_world_spawner_2d.cpp",
     "world_spawners/ess_entity_world_spawner_3d_single.cpp",
+    "world_spawners/ess_entity_world_spawner_3d_area.cpp",
     "world_spawners/ess_entity_world_spawner_3d.cpp",
 ]
 

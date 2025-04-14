@@ -155,6 +155,7 @@
 
 #include "world_spawners/ess_entity_world_spawner_2d.cpp"
 #include "world_spawners/ess_entity_world_spawner_3d_single.cpp"
+#include "world_spawners/ess_entity_world_spawner_3d_area.h"
 #include "world_spawners/ess_entity_world_spawner_3d.cpp"
 
 static ESS *entity_data_manager = NULL;
@@ -304,6 +305,7 @@ void register_entity_spell_system_types(ModuleRegistrationLevel p_level) {
 		// World Spawners
 		ClassDB::register_class<ESSEntityWorldSpawner3D>();
 		ClassDB::register_class<ESSEntityWorldSpawner3DSingle>();
+		ClassDB::register_class<ESSEntityWorldSpawner3DArea>();
 		ClassDB::register_class<ESSEntityWorldSpawner2D>();
 	}
 
