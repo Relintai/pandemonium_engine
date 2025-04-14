@@ -50,6 +50,8 @@ void ESSEntityWorldSpawner3DArea::set_spawn_area_extents(const Vector3 &p_extent
 	_spawn_area_extents = p_extents;
 
 	_spawn_slots_dirty = true;
+
+	update_gizmos();
 }
 
 int ESSEntityWorldSpawner3DArea::get_spawn_slot_count() const {
@@ -59,6 +61,8 @@ void ESSEntityWorldSpawner3DArea::set_spawn_slot_count(const int p_spawn_slot_co
 	_spawn_slot_count = p_spawn_slot_count;
 
 	_spawn_slots_dirty = true;
+
+	update_gizmos();
 }
 
 float ESSEntityWorldSpawner3DArea::get_respawn_time_min() const {
@@ -201,7 +205,11 @@ ESSEntityWorldSpawner3DArea::ESSEntityWorldSpawner3DArea() {
 ESSEntityWorldSpawner3DArea::~ESSEntityWorldSpawner3DArea() {
 }
 
-Vector<Vector2> ESSEntityWorldSpawner3DArea::get_spawn_positions() const {
+Vector<Vector2> ESSEntityWorldSpawner3DArea::get_spawn_positions() {
+	if (_spawn_slots_dirty) {
+		_recalculate_slots();
+	}
+
 	Vector<Vector2> pos;
 
 	for (int i = 0; i < _spawn_slots.size(); ++i) {

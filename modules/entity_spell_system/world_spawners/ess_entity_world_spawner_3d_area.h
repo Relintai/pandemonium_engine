@@ -77,7 +77,7 @@ public:
 	~ESSEntityWorldSpawner3DArea();
 
 	// For the gizmo
-	Vector<Vector2> get_spawn_positions() const;
+	Vector<Vector2> get_spawn_positions();
 
 protected:
 	bool _set(const StringName &p_name, const Variant &p_value);
