@@ -150,13 +150,15 @@
 #endif
 
 #ifdef MODULE_PROPS_ENABLED
+#include "modules/props/singleton/prop_utils.h"
 #include "props/prop_data_entity.h"
+#include "props/prop_data_ess_entity_world_spawner_3d_single.h"
 #endif
 
 #include "world_spawners/ess_entity_world_spawner_2d.cpp"
-#include "world_spawners/ess_entity_world_spawner_3d_single.cpp"
-#include "world_spawners/ess_entity_world_spawner_3d_area.h"
 #include "world_spawners/ess_entity_world_spawner_3d.cpp"
+#include "world_spawners/ess_entity_world_spawner_3d_area.h"
+#include "world_spawners/ess_entity_world_spawner_3d_single.cpp"
 
 static ESS *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;
@@ -175,6 +177,7 @@ void register_entity_spell_system_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 #ifdef MODULE_PROPS_ENABLED
 		ClassDB::register_class<PropDataEntity>();
+		ClassDB::register_class<PropDataESSEntityWorldSpawner3DSingle>();
 #endif
 
 		ClassDB::register_class<SpellEnums>();
@@ -307,6 +310,13 @@ void register_entity_spell_system_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<ESSEntityWorldSpawner3DSingle>();
 		ClassDB::register_class<ESSEntityWorldSpawner3DArea>();
 		ClassDB::register_class<ESSEntityWorldSpawner2D>();
+
+#ifdef MODULE_PROPS_ENABLED
+		// TODO update and register ClassDB::register_class<PropDataEntity>(); too
+
+		Ref<PropDataESSEntityWorldSpawner3DSingle> world_spawner_single_processor = Ref<PropDataESSEntityWorldSpawner3DSingle>(memnew(PropDataESSEntityWorldSpawner3DSingle));
+		PropUtils::add_processor(world_spawner_single_processor);
+#endif
 	}
 
 #ifdef TOOLS_ENABLED

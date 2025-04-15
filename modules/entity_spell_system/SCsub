@@ -114,8 +114,6 @@ sources = [
 
     "editor/ess_editor_plugin.cpp",
 
-    "props/prop_data_entity.cpp",
-
     "material_cache/ess_material_cache.cpp",
 
     "world_spawners/ess_entity_world_spawner_2d.cpp",
@@ -126,6 +124,10 @@ sources = [
 
 if env["module_texture_packer_enabled"]:
     sources.append("material_cache/ess_material_cache_pcm.cpp")
+    
+if env["module_props_enabled"]:
+    sources.append("props/prop_data_entity.cpp")
+    sources.append("props/prop_data_ess_entity_world_spawner_3d_single.cpp")
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation
