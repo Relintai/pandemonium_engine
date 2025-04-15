@@ -52,6 +52,12 @@
 #include "../../props/props/prop_data_light.h"
 #include "../../props/props/prop_data_prop.h"
 #include "../../props/props/prop_data_scene.h"
+
+#ifdef MODULE_ENTITY_SPELL_SYSTEM_ENABLED
+#include "modules/entity_spell_system/props/prop_data_ess_entity_world_spawner_3d_single.h"
+#include "modules/entity_spell_system/props/prop_data_ess_entity_world_spawner_3d_area.h"
+#endif
+
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
@@ -68,6 +74,8 @@
 #include "modules/vertex_lights_3d/vertex_lights_3d_server.h"
 #include "scene/resources/world_3d.h"
 #endif
+
+
 
 const String TerrainWorld::BINDING_STRING_CHANNEL_TYPE_INFO = "Type,Isolevel,Liquid,Liquid Level";
 
@@ -869,6 +877,27 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 
 			continue;
 		}
+#endif
+
+#ifdef MODULE_ENTITY_SPELL_SYSTEM_ENABLED
+		/*
+		TODO Chunks will need a new api for this. Props that should just create nodes using processor_get_node_for().
+		node_props / managed_props / instanced_props?
+		
+		Ref<PropDataESSEntityWorldSpawner3DSingle> world_Spawner_single_data = entry;
+
+		if (world_Spawner_single_data.is_valid()) {
+			Node *n = sc->processor_get_node_for(t);
+			add_child(n);
+			n->set_owner(this);
+
+			chunk->scene_add(sc, t, n, false);
+
+			continue;
+		}
+		
+		Ref<PropDataESSEntityWorldSpawner3DArea> world_Spawner_area_data = entry;
+		*/
 #endif
 	}
 }
