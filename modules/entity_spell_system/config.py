@@ -103,6 +103,7 @@ def get_doc_classes():
 
         "PropDataEntity",
         "PropDataESSEntityWorldSpawner3DSingle",
+        "PropDataESSEntityWorldSpawner3DArea",
 
         "ESSMaterialCache",
         "ESSMaterialCachePCM",
