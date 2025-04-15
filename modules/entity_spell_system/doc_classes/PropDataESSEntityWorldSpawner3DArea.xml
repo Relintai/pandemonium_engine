@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ESSEntityWorldSpawner3DArea" inherits="ESSEntityWorldSpawner3D">
+<class name="PropDataESSEntityWorldSpawner3DArea" inherits="PropDataEntry">
 	<brief_description>
 	</brief_description>
 	<description>
