@@ -81,17 +81,17 @@ void Camera::fti_update_servers_property() {
 			case PROJECTION_PERSPECTIVE: {
 				// If there have been changes due to interpolation, update the servers.
 				if (fov.interpolate(f) || near.interpolate(f) || far.interpolate(f)) {
-					VisualServer::get_singleton()->camera_set_perspective(camera, fov.interpolated(), near.interpolated(), far.interpolated());
+					RenderingServer::get_singleton()->camera_set_perspective(camera, fov.interpolated(), near.interpolated(), far.interpolated());
 				}
 			} break;
 			case PROJECTION_ORTHOGONAL: {
 				if (size.interpolate(f) || near.interpolate(f) || far.interpolate(f)) {
-					VisualServer::get_singleton()->camera_set_orthogonal(camera, size.interpolated(), near.interpolated(), far.interpolated());
+					RenderingServer::get_singleton()->camera_set_orthogonal(camera, size.interpolated(), near.interpolated(), far.interpolated());
 				}
 			} break;
 			case PROJECTION_FRUSTUM: {
 				if (size.interpolate(f) || frustum_offset.interpolate(f) || near.interpolate(f) || far.interpolate(f)) {
-					VisualServer::get_singleton()->camera_set_frustum(camera, size.interpolated(), frustum_offset.interpolated(), near.interpolated(), far.interpolated());
+					RenderingServer::get_singleton()->camera_set_frustum(camera, size.interpolated(), frustum_offset.interpolated(), near.interpolated(), far.interpolated());
 				}
 			} break;
 		}
