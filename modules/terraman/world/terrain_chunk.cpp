@@ -2057,8 +2057,6 @@ void TerrainChunk::_enter_tree() {
 		}
 	}
 #endif
-
-	visibility_changed(_is_visible);
 }
 
 void TerrainChunk::_exit_tree() {
