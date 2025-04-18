@@ -1723,9 +1723,7 @@ void TerrainWorld::_notification(int p_what) {
 				Ref<TerrainChunk> chunk = _chunks_vector[i];
 
 				if (chunk.is_valid()) {
-					if (chunk->get_voxel_world() == this) {
-						chunk->exit_tree();
-					}
+					chunk->exit_tree();
 				}
 			}
 			break;
