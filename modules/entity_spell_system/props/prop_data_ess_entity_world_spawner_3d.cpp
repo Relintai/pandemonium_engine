@@ -1,8 +1,5 @@
-#ifndef PROP_DATA_ESS_ENTITY_WORLD_SPAWNER_3D_SINGLE_H
-#define PROP_DATA_ESS_ENTITY_WORLD_SPAWNER_3D_SINGLE_H
-
 /*************************************************************************/
-/*  prop_data_ess_entity_world_spawner_3d_single.h                       */
+/*  prop_data_ess_entity_world_spawner_3d.cpp                            */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -34,46 +31,10 @@
 
 #include "prop_data_ess_entity_world_spawner_3d.h"
 
-class ESSEntityWorldSpawner3DSingle;
-class EntityData;
-class PropData;
+PropDataESSEntityWorldSpawner3D::PropDataESSEntityWorldSpawner3D() {
+}
+PropDataESSEntityWorldSpawner3D::~PropDataESSEntityWorldSpawner3D() {
+}
 
-class PropDataESSEntityWorldSpawner3DSingle : public PropDataESSEntityWorldSpawner3D {
-	GDCLASS(PropDataESSEntityWorldSpawner3DSingle, PropDataESSEntityWorldSpawner3D);
-
-public:
-	String get_entity_name() const;
-	void set_entity_name(const String &p_name);
-
-	Ref<EntityData> get_entity_data() const;
-	void set_entity_data(const Ref<EntityData> &p_data);
-
-	int get_entity_level() const;
-	void set_entity_level(const int p_level);
-
-	float get_respawn_time_min() const;
-	void set_respawn_time_min(const float p_respawn_time);
-
-	float get_respawn_time_max() const;
-	void set_respawn_time_max(const float p_respawn_time);
-
-	bool _processor_handles(Node *node);
-	void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
-	Node *_processor_get_node_for(const Transform &transform);
-
-	PropDataESSEntityWorldSpawner3DSingle();
-	~PropDataESSEntityWorldSpawner3DSingle();
-
-protected:
-	static void _bind_methods();
-
-private:
-	String _entity_name;
-	Ref<EntityData> _entity_data;
-	int _entity_level;
-	float _respawn_time_min;
-	float _respawn_time_max;
-	real_t _respawn_timer;
-};
-
-#endif
+void PropDataESSEntityWorldSpawner3D::_bind_methods() {
+}

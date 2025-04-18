@@ -127,6 +127,7 @@ if env["module_texture_packer_enabled"]:
     
 if env["module_props_enabled"]:
     sources.append("props/prop_data_entity.cpp")
+    sources.append("props/prop_data_ess_entity_world_spawner_3d.cpp")
     sources.append("props/prop_data_ess_entity_world_spawner_3d_single.cpp")
     sources.append("props/prop_data_ess_entity_world_spawner_3d_area.cpp")
 

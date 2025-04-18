@@ -32,14 +32,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "../../props/props/prop_data_entry.h"
+#include "prop_data_ess_entity_world_spawner_3d.h"
 
 class ESSEntityWorldSpawner3DArea;
 class EntityData;
 class PropData;
 
-class PropDataESSEntityWorldSpawner3DArea : public PropDataEntry {
-	GDCLASS(PropDataESSEntityWorldSpawner3DArea, PropDataEntry);
+class PropDataESSEntityWorldSpawner3DArea : public PropDataESSEntityWorldSpawner3D {
+	GDCLASS(PropDataESSEntityWorldSpawner3DArea, PropDataESSEntityWorldSpawner3D);
 
 public:
 	Vector3 get_spawn_area_extents() const;
