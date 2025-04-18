@@ -766,10 +766,7 @@ void TerrainChunkDefault::_visibility_changed(bool visible) {
 void TerrainChunkDefault::_exit_tree() {
 	TerrainChunk::_exit_tree();
 
-	if (!_is_generating) {
-		rids_free();
-		rids_clear();
-	}
+	visibility_changed(false);
 }
 
 void TerrainChunkDefault::_world_transform_changed() {

@@ -54,8 +54,8 @@
 #include "../../props/props/prop_data_scene.h"
 
 #ifdef MODULE_ENTITY_SPELL_SYSTEM_ENABLED
-#include "modules/entity_spell_system/props/prop_data_ess_entity_world_spawner_3d_single.h"
 #include "modules/entity_spell_system/props/prop_data_ess_entity_world_spawner_3d_area.h"
+#include "modules/entity_spell_system/props/prop_data_ess_entity_world_spawner_3d_single.h"
 #endif
 
 #endif
@@ -74,8 +74,6 @@
 #include "modules/vertex_lights_3d/vertex_lights_3d_server.h"
 #include "scene/resources/world_3d.h"
 #endif
-
-
 
 const String TerrainWorld::BINDING_STRING_CHANNEL_TYPE_INFO = "Type,Isolevel,Liquid,Liquid Level";
 
@@ -883,7 +881,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 		/*
 		TODO Chunks will need a new api for this. Props that should just create nodes using processor_get_node_for().
 		node_props / managed_props / instanced_props?
-		
+
 		Ref<PropDataESSEntityWorldSpawner3DSingle> world_Spawner_single_data = entry;
 
 		if (world_Spawner_single_data.is_valid()) {
@@ -895,7 +893,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 
 			continue;
 		}
-		
+
 		Ref<PropDataESSEntityWorldSpawner3DArea> world_Spawner_area_data = entry;
 		*/
 #endif
@@ -1610,13 +1608,15 @@ void TerrainWorld::_notification(int p_what) {
 			for (int i = 0; i < _chunks_vector.size(); ++i) {
 				Ref<TerrainChunk> chunk = _chunks_vector[i];
 
-				if (chunk.is_valid()) {
+				if (chunk.is_valid() && !chunk->get_is_setup()) {
 					chunk_setup(chunk);
 
 					chunk->set_voxel_world(this);
 					chunk->enter_tree();
 
 					chunk->build();
+				} else {
+					chunk->enter_tree();
 				}
 			}
 			break;
@@ -1725,7 +1725,6 @@ void TerrainWorld::_notification(int p_what) {
 				if (chunk.is_valid()) {
 					if (chunk->get_voxel_world() == this) {
 						chunk->exit_tree();
-						chunk->set_voxel_world(NULL);
 					}
 				}
 			}
