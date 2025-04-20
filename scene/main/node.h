@@ -114,8 +114,8 @@ private:
 		HashMap<StringName, Node *> owned_unique_nodes;
 		bool unique_name_in_owner = false;
 
+		int32_t depth;
 		int pos;
-		int depth;
 		int blocked; // safeguard that throws an error when attempting to modify the tree in a harmful way while being traversed.
 		StringName name;
 		SceneTree *tree;
@@ -304,6 +304,8 @@ protected:
 	bool _is_using_identity_transform() const {
 		return data.use_identity_transform;
 	}
+
+	int32_t _get_scene_tree_depth() const { return data.depth; }
 
 public:
 	enum {
