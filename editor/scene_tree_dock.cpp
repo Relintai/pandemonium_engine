@@ -3341,7 +3341,7 @@ void SceneTreeDock::_tree_rmb(const Vector2 &p_menu_pos) {
 				menu->add_check_item(TTR("Load As Placeholder"), TOOL_SCENE_USE_PLACEHOLDER);
 				menu->add_item(TTR("Make Local"), TOOL_SCENE_MAKE_LOCAL);
 				if (!editable && !placeholder) {
-					menu->add_item(TTR("Merge Back Local Changes"), TOOL_SCENE_MERGE_LOCAL_CHANGES_INTO_PACKEDSCENE);
+					menu->add_item(TTR("Merge Back Changes"), TOOL_SCENE_MERGE_LOCAL_CHANGES_INTO_PACKEDSCENE);
 
 					List<Node *>::Element *e = selection.front();
 
@@ -3349,7 +3349,7 @@ void SceneTreeDock::_tree_rmb(const Vector2 &p_menu_pos) {
 						Node *node = e->get();
 
 						if (Object::cast_to<Spatial>(node) || Object::cast_to<Node2D>(node)) {
-							menu->add_item(TTR("Merge Back Local Changes No Tf"), TOOL_SCENE_MERGE_LOCAL_CHANGES_INTO_PACKEDSCENE_NO_TRANSFORM);
+							menu->add_item(TTR("Merge Back Changes (No Tf)"), TOOL_SCENE_MERGE_LOCAL_CHANGES_INTO_PACKEDSCENE_NO_TRANSFORM);
 						}
 					}
 				}
