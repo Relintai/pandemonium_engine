@@ -74,6 +74,7 @@
 #include "editor/scene_tree_editor.h"
 #include "editor/script_create_dialog.h"
 #include "editor/script_editor_debugger.h"
+#include "editor_property_revert.h"
 #include "modules/modules_enabled.gen.h" // For regex.
 #include "scene/animation/animation.h"
 #include "scene/animation/animation_player.h"
@@ -1134,6 +1135,93 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 				}
 			}
 		} break;
+		case TOOL_SCENE_MERGE_LOCAL_CHANGES_INTO_PACKEDSCENE: {
+			List<Node *> selection = editor_selection->get_selected_node_list();
+			List<Node *>::Element *e = selection.front();
+			if (e) {
+				Node *node = e->get();
+				if (node) {
+					Node *root = EditorNode::get_singleton()->get_edited_scene();
+					UndoRedo *undo_redo = &editor_data->get_undo_redo();
+					if (!root) {
+						break;
+					}
+
+					ERR_FAIL_COND(node->get_filename() == String());
+
+					ERR_FAIL_COND_MSG(EditorNode::get_singleton()->is_scene_open(node->get_filename()), "Can't merge back local changes to a scene that is open!");
+
+					undo_redo->create_action(TTR("Merge local changes into PackedScene"));
+
+					List<PropertyInfo> plist;
+					node->get_property_list(&plist, true);
+
+					Error err;
+
+					// Load the original PackedScene
+					Ref<PackedScene> original_scene = ResourceLoader::load(node->get_filename(), "PackedScene", true, &err);
+
+					ERR_FAIL_COND(err != OK);
+
+					Ref<PackedScene> new_scene;
+					new_scene.instance();
+					err = new_scene->pack(node);
+
+					ERR_FAIL_COND(err != OK);
+
+					undo_redo->add_do_reference(new_scene.ptr());
+					undo_redo->add_undo_reference(original_scene.ptr());
+
+					// Swap the PackedScene on disk
+					undo_redo->add_do_method(this, "_swap_packedscene_on_disk", new_scene, node->get_filename());
+					undo_redo->add_undo_method(this, "_swap_packedscene_on_disk", original_scene, node->get_filename());
+
+					// Undo/Redo all changed properties in the tree
+					for (List<PropertyInfo>::Element *E_property = plist.front(); E_property; E_property = E_property->next()) {
+						PropertyInfo &p = E_property->get();
+
+						if (p.usage & PROPERTY_USAGE_GROUP) {
+							continue;
+						} else if (p.usage & PROPERTY_USAGE_CATEGORY) {
+							continue;
+						} else if (!(p.usage & PROPERTY_USAGE_EDITOR)) {
+							continue;
+						}
+
+						StringName property_name = p.name;
+
+						if (p.name == StringName()) {
+							continue;
+						}
+
+						if (EditorPropertyRevert::can_property_revert(node, property_name)) {
+							bool valid = false;
+
+							Variant default_value = EditorPropertyRevert::get_property_revert_value(node, property_name, &valid);
+
+							if (!valid) {
+								continue;
+							}
+
+							Variant current_value = node->get(property_name, &valid);
+
+							if (!valid) {
+								continue;
+							}
+
+							// Reset the property to default on do
+							undo_redo->add_do_property(node, property_name, default_value);
+							// Set it back to what it was on undo
+							undo_redo->add_undo_property(node, property_name, current_value);
+						}
+					}
+
+					undo_redo->add_do_method(scene_tree, "update_tree");
+					undo_redo->add_undo_method(scene_tree, "update_tree");
+					undo_redo->commit_action();
+				}
+			}
+		} break;
 		case TOOL_SCENE_CLEAR_INHERITANCE: {
 			clear_inherit_confirm->popup_centered_minsize();
 		} break;
@@ -1670,6 +1758,20 @@ bool SceneTreeDock::_check_node_path_recursive(Node *p_root_node, Variant &r_var
 	}
 
 	return false;
+}
+
+void SceneTreeDock::_swap_packedscene_on_disk(const Ref<PackedScene> &p_packed_scene, const String &p_path) {
+	ERR_FAIL_COND(!p_packed_scene.is_valid());
+	ERR_FAIL_COND(p_path.empty());
+
+	int flg = 0;
+	if (EditorSettings::get_singleton()->get("filesystem/on_save/compress_binary_resources")) {
+		flg |= ResourceSaver::FLAG_COMPRESS;
+	}
+
+	Error err = ResourceSaver::save(p_path, p_packed_scene, flg);
+
+	ERR_FAIL_COND(err != OK);
 }
 
 void SceneTreeDock::perform_node_renames(Node *p_base, RBMap<Node *, NodePath> *p_renames, RBMap<Ref<Animation>, RBSet<int>> *r_rem_anims) {
@@ -3001,6 +3103,9 @@ void SceneTreeDock::_tree_rmb(const Vector2 &p_menu_pos) {
 				menu->add_check_item(TTR("Editable Children"), TOOL_SCENE_EDITABLE_CHILDREN);
 				menu->add_check_item(TTR("Load As Placeholder"), TOOL_SCENE_USE_PLACEHOLDER);
 				menu->add_item(TTR("Make Local"), TOOL_SCENE_MAKE_LOCAL);
+				if (!editable && !placeholder) {
+					menu->add_item(TTR("Merge Back Local Changes"), TOOL_SCENE_MERGE_LOCAL_CHANGES_INTO_PACKEDSCENE);
+				}
 				menu->add_icon_item(get_theme_icon("Load", "EditorIcons"), TTR("Open in Editor"), TOOL_SCENE_OPEN);
 				menu->set_item_checked(menu->get_item_idx_from_text(TTR("Editable Children")), editable);
 				menu->set_item_checked(menu->get_item_idx_from_text(TTR("Load As Placeholder")), placeholder);
@@ -3017,7 +3122,7 @@ void SceneTreeDock::_tree_rmb(const Vector2 &p_menu_pos) {
 			break;
 		}
 	}
-	
+
 	if (all_owned) {
 		menu->add_separator();
 		Node *node = full_selection[0];
@@ -3449,6 +3554,7 @@ void SceneTreeDock::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_favorite_root_selected"), &SceneTreeDock::_favorite_root_selected);
 	ClassDB::bind_method(D_METHOD("_custom_root_selected"), &SceneTreeDock::_custom_root_selected);
 	ClassDB::bind_method(D_METHOD("_update_create_root_dialog"), &SceneTreeDock::_update_create_root_dialog);
+	ClassDB::bind_method(D_METHOD("_swap_packedscene_on_disk"), &SceneTreeDock::_swap_packedscene_on_disk);
 
 	ClassDB::bind_method(D_METHOD("instance"), &SceneTreeDock::instance);
 	ClassDB::bind_method(D_METHOD("get_tree_editor"), &SceneTreeDock::get_tree_editor);
