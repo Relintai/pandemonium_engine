@@ -42,6 +42,7 @@
 #include "core/variant/array.h"
 #include "core/variant/variant.h"
 #include "editor_inspector.h"
+#include "editor_property_revert.h"
 #include "editor_settings.h"
 #include "scene/main/node.h"
 

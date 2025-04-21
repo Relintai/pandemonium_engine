@@ -51,6 +51,7 @@
 #include "editor/editor_help.h"
 #include "editor_node.h"
 #include "editor_property_name_processor.h"
+#include "editor_property_revert.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
 #include "multi_node_edit.h"
@@ -365,27 +366,6 @@ void EditorProperty::set_read_only(bool p_read_only) {
 
 bool EditorProperty::is_read_only() const {
 	return read_only;
-}
-
-Variant EditorPropertyRevert::get_property_revert_value(Object *p_object, const StringName &p_property, bool *r_is_valid) {
-	if (p_object->has_method("property_can_revert") && p_object->call("property_can_revert", p_property)) {
-		if (r_is_valid) {
-			*r_is_valid = true;
-		}
-		return p_object->call("property_get_revert", p_property);
-	}
-
-	return PropertyUtils::get_property_default_value(p_object, p_property, r_is_valid);
-}
-
-bool EditorPropertyRevert::can_property_revert(Object *p_object, const StringName &p_property) {
-	bool is_valid_revert = false;
-	Variant revert_value = EditorPropertyRevert::get_property_revert_value(p_object, p_property, &is_valid_revert);
-	if (!is_valid_revert) {
-		return false;
-	}
-	Variant current_value = p_object->get(p_property);
-	return PropertyUtils::is_property_value_different(current_value, revert_value);
 }
 
 void EditorProperty::update_revert_and_pin_status() {

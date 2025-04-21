@@ -69,16 +69,6 @@ class PanelContainer;
 class TextureRect;
 class SpinBox;
 
-class EditorPropertyRevert {
-public:
-	static bool get_instanced_node_original_property(Node *p_node, const StringName &p_prop, Variant &value, bool p_check_class_default = true);
-	static bool is_node_property_different(Node *p_node, const Variant &p_current, const Variant &p_orig);
-	static bool is_property_value_different(const Variant &p_a, const Variant &p_b);
-	static Variant get_property_revert_value(Object *p_object, const StringName &p_property, bool *r_is_valid);
-
-	static bool can_property_revert(Object *p_object, const StringName &p_property);
-};
-
 class EditorProperty : public Container {
 	GDCLASS(EditorProperty, Container);
 
