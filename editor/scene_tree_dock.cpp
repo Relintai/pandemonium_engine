@@ -1138,89 +1138,127 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 		case TOOL_SCENE_MERGE_LOCAL_CHANGES_INTO_PACKEDSCENE: {
 			List<Node *> selection = editor_selection->get_selected_node_list();
 			List<Node *>::Element *e = selection.front();
-			if (e) {
-				Node *node = e->get();
-				if (node) {
-					Node *root = EditorNode::get_singleton()->get_edited_scene();
-					UndoRedo *undo_redo = &editor_data->get_undo_redo();
-					if (!root) {
-						break;
+			if (!e) {
+				return;
+			}
+
+			Node *node = e->get();
+
+			if (!node) {
+				return;
+			}
+
+			Node *root = EditorNode::get_singleton()->get_edited_scene();
+			UndoRedo *undo_redo = &editor_data->get_undo_redo();
+			if (!root) {
+				break;
+			}
+
+			String file_name = node->get_filename();
+
+			ERR_FAIL_COND(file_name == String());
+			ERR_FAIL_COND_MSG(EditorNode::get_singleton()->is_scene_open(file_name), "Can't merge back local changes to a scene that is open!");
+
+			Error err;
+
+			// Load the original PackedScene
+			Ref<PackedScene> scene = ResourceLoader::load(file_name, "PackedScene", true, &err);
+
+			ERR_FAIL_COND(err != OK);
+
+			Ref<PackedScene> new_scene;
+			new_scene.instance();
+			err = new_scene->pack(node);
+
+			ERR_FAIL_COND(err != OK);
+
+			// New state = Selected Node Hierarchy saved as a PackedScene, instanced with everything set to default
+			// Old State = Original PackedScene + Changed properties
+
+			Ref<SceneState> new_scene_state = new_scene->get_state();
+			Ref<SceneState> original_scene_state = scene->get_state();
+
+			undo_redo->create_action(TTR("Merge local changes into PackedScene"));
+
+			undo_redo->add_do_method(this, "_replace_packed_scene_state", scene, new_scene_state, file_name);
+			undo_redo->add_undo_method(this, "_replace_packed_scene_state", scene, original_scene_state, file_name);
+
+			// Needed here so SpatialEditor recognizes transform changes without switching tabs
+			_replace_packed_scene_state(scene, new_scene_state, file_name);
+
+			List<PropertyInfo> plist;
+			node->get_property_list(&plist, true);
+
+			for (List<PropertyInfo>::Element *E_property = plist.front(); E_property; E_property = E_property->next()) {
+				PropertyInfo &p = E_property->get();
+
+				if (p.usage & PROPERTY_USAGE_GROUP) {
+					continue;
+				} else if (p.usage & PROPERTY_USAGE_CATEGORY) {
+					continue;
+				} else if (!(p.usage & PROPERTY_USAGE_EDITOR)) {
+					continue;
+				}
+
+				StringName property_name = p.name;
+
+				if (p.name == StringName()) {
+					continue;
+				}
+
+				if (EditorPropertyRevert::can_property_revert(node, property_name)) {
+					bool valid = false;
+
+					Variant current_value = node->get(property_name, &valid);
+
+					if (!valid) {
+						continue;
 					}
-
-					ERR_FAIL_COND(node->get_filename() == String());
-
-					ERR_FAIL_COND_MSG(EditorNode::get_singleton()->is_scene_open(node->get_filename()), "Can't merge back local changes to a scene that is open!");
-
-					undo_redo->create_action(TTR("Merge local changes into PackedScene"));
-
-					List<PropertyInfo> plist;
-					node->get_property_list(&plist, true);
-
-					Error err;
-
-					// Load the original PackedScene
-					Ref<PackedScene> original_scene = ResourceLoader::load(node->get_filename(), "PackedScene", true, &err);
-
-					ERR_FAIL_COND(err != OK);
-
-					Ref<PackedScene> new_scene;
-					new_scene.instance();
-					err = new_scene->pack(node);
-
-					ERR_FAIL_COND(err != OK);
-
-					undo_redo->add_do_reference(new_scene.ptr());
-					undo_redo->add_undo_reference(original_scene.ptr());
-
-					// Swap the PackedScene on disk
-					undo_redo->add_do_method(this, "_swap_packedscene_on_disk", new_scene, node->get_filename());
-					undo_redo->add_undo_method(this, "_swap_packedscene_on_disk", original_scene, node->get_filename());
-
-					// Undo/Redo all changed properties in the tree
-					for (List<PropertyInfo>::Element *E_property = plist.front(); E_property; E_property = E_property->next()) {
-						PropertyInfo &p = E_property->get();
-
-						if (p.usage & PROPERTY_USAGE_GROUP) {
-							continue;
-						} else if (p.usage & PROPERTY_USAGE_CATEGORY) {
-							continue;
-						} else if (!(p.usage & PROPERTY_USAGE_EDITOR)) {
-							continue;
-						}
-
-						StringName property_name = p.name;
-
-						if (p.name == StringName()) {
-							continue;
-						}
-
-						if (EditorPropertyRevert::can_property_revert(node, property_name)) {
-							bool valid = false;
-
-							Variant default_value = EditorPropertyRevert::get_property_revert_value(node, property_name, &valid);
-
-							if (!valid) {
-								continue;
-							}
-
-							Variant current_value = node->get(property_name, &valid);
-
-							if (!valid) {
-								continue;
-							}
-
-							// Reset the property to default on do
-							undo_redo->add_do_property(node, property_name, default_value);
-							// Set it back to what it was on undo
-							undo_redo->add_undo_property(node, property_name, current_value);
-						}
-					}
-
-					undo_redo->add_do_method(scene_tree, "update_tree");
-					undo_redo->add_undo_method(scene_tree, "update_tree");
-					undo_redo->commit_action();
+					undo_redo->add_undo_property(node, property_name, current_value);
 				}
 			}
+
+			Node *parent = node->get_parent();
+			int pos = node->get_index();
+
+			Node *instanced_scene = scene->instance(PackedScene::GEN_EDIT_STATE_INSTANCE);
+			instanced_scene->set_filename(ProjectSettings::get_singleton()->localize_path(file_name));
+
+			undo_redo->add_do_method(parent, "remove_child", node);
+			undo_redo->add_undo_method(parent, "remove_child", instanced_scene);
+			undo_redo->add_do_method(parent, "add_child", instanced_scene);
+			undo_redo->add_undo_method(parent, "add_child", node);
+			undo_redo->add_do_method(parent, "move_child", instanced_scene, pos);
+			undo_redo->add_undo_method(parent, "move_child", node, pos);
+
+			undo_redo->add_do_method(instanced_scene, "set_owner", edited_scene);
+			undo_redo->add_undo_method(node, "set_owner", edited_scene);
+
+			undo_redo->add_do_method(editor_selection, "clear");
+			undo_redo->add_undo_method(editor_selection, "clear");
+			undo_redo->add_do_method(editor_selection, "add_node", instanced_scene);
+			undo_redo->add_undo_method(editor_selection, "add_node", node);
+			undo_redo->add_do_property(scene_tree, "set_selected", instanced_scene);
+			undo_redo->add_undo_property(scene_tree, "set_selected", node);
+
+			undo_redo->add_do_reference(instanced_scene);
+			undo_redo->add_undo_reference(node);
+
+#ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
+			String new_name = parent->validate_child_name(instanced_scene);
+			EditorScriptEditorDebugger *sed = EditorScriptEditor::get_singleton()->get_debugger();
+
+			undo_redo->add_do_method(sed, "live_debug_remove_node", NodePath(String(edited_scene->get_path_to(parent)).plus_file(new_name)));
+			undo_redo->add_do_method(sed, "live_debug_instance_node", edited_scene->get_path_to(parent), file_name, new_name);
+
+			undo_redo->add_undo_method(sed, "live_debug_remove_node", NodePath(String(edited_scene->get_path_to(parent)).plus_file(new_name)));
+			undo_redo->add_undo_method(sed, "live_debug_instance_node", edited_scene->get_path_to(parent), file_name, new_name);
+#endif
+
+			undo_redo->add_do_method(scene_tree, "update_tree");
+			undo_redo->add_undo_method(scene_tree, "update_tree");
+			undo_redo->commit_action();
+
 		} break;
 		case TOOL_SCENE_CLEAR_INHERITANCE: {
 			clear_inherit_confirm->popup_centered_minsize();
@@ -1772,6 +1810,15 @@ void SceneTreeDock::_swap_packedscene_on_disk(const Ref<PackedScene> &p_packed_s
 	Error err = ResourceSaver::save(p_path, p_packed_scene, flg);
 
 	ERR_FAIL_COND(err != OK);
+}
+
+void SceneTreeDock::_replace_packed_scene_state(Ref<PackedScene> p_packed_scene, const Ref<SceneState> &p_scene_state, const String &p_path) {
+	ERR_FAIL_COND(!p_packed_scene.is_valid());
+	ERR_FAIL_COND(!p_scene_state.is_valid());
+
+	p_packed_scene->replace_state(p_scene_state);
+
+	_swap_packedscene_on_disk(p_packed_scene, p_path);
 }
 
 void SceneTreeDock::perform_node_renames(Node *p_base, RBMap<Node *, NodePath> *p_renames, RBMap<Ref<Animation>, RBSet<int>> *r_rem_anims) {
@@ -3555,6 +3602,7 @@ void SceneTreeDock::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_custom_root_selected"), &SceneTreeDock::_custom_root_selected);
 	ClassDB::bind_method(D_METHOD("_update_create_root_dialog"), &SceneTreeDock::_update_create_root_dialog);
 	ClassDB::bind_method(D_METHOD("_swap_packedscene_on_disk"), &SceneTreeDock::_swap_packedscene_on_disk);
+	ClassDB::bind_method(D_METHOD("_replace_packed_scene_state"), &SceneTreeDock::_replace_packed_scene_state);
 
 	ClassDB::bind_method(D_METHOD("instance"), &SceneTreeDock::instance);
 	ClassDB::bind_method(D_METHOD("get_tree_editor"), &SceneTreeDock::get_tree_editor);
