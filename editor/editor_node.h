@@ -481,6 +481,7 @@ private:
 		HELP_SEARCH,
 		HELP_PANDEMONIUM_DOCS,
 		HELP_REPORT_A_BUG,
+		HELP_COPY_SYSTEM_INFO,
 		HELP_ABOUT,
 		//HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT,
 
@@ -760,6 +761,7 @@ private:
 	void _request_screenshot();
 	void _screenshot(bool p_use_utc = false);
 	void _save_screenshot(NodePath p_path);
+	String _get_system_info();
 
 	void _tool_menu_option(int p_idx);
 	void _convert_button_menu_option(int p_idx);
