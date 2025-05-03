@@ -231,7 +231,6 @@ Array UserManagerFile::_get_all_users() {
 }
 
 UserManagerFile::UserManagerFile() {
-	set_process_internal(true);
 	_save_folder_path = "user://users/";
 	_next_id = 1;
 }
