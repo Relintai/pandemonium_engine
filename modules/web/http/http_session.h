@@ -74,6 +74,15 @@ public:
 
 	HashMap<String, Variant> *get_data();
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	virtual Dictionary _to_dict();
+	virtual void _from_dict(const Dictionary &dict);
+
+	String to_json();
+	void from_json(const String &data);
+
 	HTTPSession();
 	~HTTPSession();
 

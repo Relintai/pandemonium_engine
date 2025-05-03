@@ -31,6 +31,8 @@
 
 #include "http_session.h"
 
+#include "core/io/json.h"
+
 String HTTPSession::get_session_id() {
 	return session_id;
 }
@@ -107,6 +109,80 @@ HashMap<String, Variant> *HTTPSession::get_data() {
 	return &_data;
 }
 
+Dictionary HTTPSession::to_dict() {
+	return call("_to_dict");
+}
+void HTTPSession::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary HTTPSession::_to_dict() {
+	Dictionary dict;
+
+	dict["session_id"] = session_id;
+	dict["id"] = id;
+
+	Dictionary d;
+
+	const String *k = NULL;
+
+	while ((k = _data.next(k))) {
+		const Variant &val = _data.get(*k);
+
+		// Maybe it should be allowed?
+		// Or maybe when adding stuff to the sessions the method should have a store = true bool, if false skip saving
+		if (val.get_type() == Variant::OBJECT) {
+			continue;
+		}
+
+		d[*k] = val;
+	}
+
+	dict["data"] = d;
+
+	return dict;
+}
+void HTTPSession::_from_dict(const Dictionary &dict) {
+	_data.clear();
+
+	session_id = dict["session_id"];
+	id = dict["id"];
+
+	Dictionary d = dict["data"];
+
+	const Variant *k = NULL;
+
+	while ((k = d.next(k))) {
+		Variant key = *k;
+		const Variant &val = d.get(key, Variant());
+
+		// Maybe it should be allowed?
+		// Or maybe when adding stuff to the sessions the method should have a store = true bool, if false skip saving
+		if (val.get_type() == Variant::OBJECT) {
+			continue;
+		}
+
+		_data[key] = val;
+	}
+}
+
+String HTTPSession::to_json() {
+	return JSON::print(to_dict());
+}
+void HTTPSession::from_json(const String &data) {
+	Error err;
+	String err_txt;
+	int err_line;
+	Variant v;
+	err = JSON::parse(data, v, err_txt, err_line);
+
+	ERR_FAIL_COND(err != OK);
+
+	Dictionary d = v;
+
+	from_dict(d);
+}
+
 HTTPSession::HTTPSession() {
 	id = 0;
 }
@@ -131,4 +207,14 @@ void HTTPSession::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("clear"), &HTTPSession::clear);
 	ClassDB::bind_method(D_METHOD("reset"), &HTTPSession::reset);
+
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &HTTPSession::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &HTTPSession::to_dict);
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &HTTPSession::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &HTTPSession::_to_dict);
+
+	ClassDB::bind_method(D_METHOD("to_json"), &HTTPSession::to_json);
+	ClassDB::bind_method(D_METHOD("from_json", "data"), &HTTPSession::from_json);
 }
