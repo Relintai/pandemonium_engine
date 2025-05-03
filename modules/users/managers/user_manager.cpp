@@ -49,7 +49,7 @@ void UserManager::save_user(const Ref<User> &user) {
 	call("_save_user", user);
 }
 Ref<User> UserManager::create_user() {
-	return call("_create_user");
+	return call("_create_user", Ref<User>());
 }
 bool UserManager::is_username_taken(const String &user_name) {
 	return call("_is_username_taken", user_name);
