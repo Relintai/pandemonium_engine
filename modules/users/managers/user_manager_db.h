@@ -65,7 +65,7 @@ public:
 
 	void _save_user(Ref<User> user);
 
-	Ref<User> _create_user();
+	Ref<User> _create_user(Ref<User> p_user);
 
 	bool _is_username_taken(const String &user_name);
 	bool _is_email_taken(const String &email);

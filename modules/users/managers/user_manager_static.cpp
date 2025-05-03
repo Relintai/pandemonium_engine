@@ -68,15 +68,15 @@ Ref<User> UserManagerStatic::_get_user_email(const String &user_email) {
 void UserManagerStatic::_save_user(Ref<User> user) {
 	//With this class Users are serialized via editor properties, ignore
 }
-Ref<User> UserManagerStatic::_create_user() {
-	Ref<User> u;
-	u.instance();
+Ref<User> UserManagerStatic::_create_user(Ref<User> p_user) {
+	if (!p_user.is_valid()) {
+		p_user.instance();
+	}
 
-	u->set_user_id(_users.size());
+	p_user->set_user_id(_users.size());
+	_users.push_back(p_user);
 
-	_users.push_back(u);
-
-	return u;
+	return p_user;
 }
 bool UserManagerStatic::_is_username_taken(const String &user_name) {
 	for (int i = 0; i < _users.size(); ++i) {

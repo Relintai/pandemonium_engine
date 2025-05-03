@@ -150,13 +150,15 @@ void UserManagerFile::_save_user(Ref<User> user) {
 
 	memdelete(f);
 }
-Ref<User> UserManagerFile::_create_user() {
-	Ref<User> u;
-	u.instance();
-	u->set_user_id(-1);
-	u->connect("changed", this, "_save_user", varray(u));
+Ref<User> UserManagerFile::_create_user(Ref<User> p_user) {
+	if (!p_user.is_valid()) {
+		p_user.instance();
+		p_user->set_user_id(-1);
+	}
 
-	return u;
+	p_user->connect("changed", this, "_save_user", varray(p_user));
+
+	return p_user;
 }
 bool UserManagerFile::_is_username_taken(const String &user_name) {
 	// TODO check only the lowercase version, also strip it, so User and UsEr counts as the same

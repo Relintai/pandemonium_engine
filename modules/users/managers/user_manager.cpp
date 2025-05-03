@@ -69,11 +69,12 @@ Ref<User> UserManager::_get_user_email(const String &user_email) {
 }
 void UserManager::_save_user(Ref<User> user) {
 }
-Ref<User> UserManager::_create_user() {
-	Ref<User> u;
-	u.instance();
+Ref<User> UserManager::_create_user(Ref<User> p_user) {
+	if (!p_user.is_valid()) {
+		p_user.instance();
+	}
 
-	return u;
+	return p_user;
 }
 bool UserManager::_is_username_taken(const String &user_name) {
 	return false;
@@ -124,7 +125,7 @@ void UserManager::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "User"), "_get_user_email", PropertyInfo(Variant::STRING, "user_email")));
 	BIND_VMETHOD(MethodInfo("_save_user", PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User")));
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "User"), "_create_user"));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "User"), "_create_user", PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User")));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_is_username_taken", PropertyInfo(Variant::STRING, "user_name")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_is_email_taken", PropertyInfo(Variant::STRING, "email")));
@@ -146,7 +147,7 @@ void UserManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_get_user_email", "user_email"), &UserManager::_get_user_email);
 	ClassDB::bind_method(D_METHOD("_save_user", "user"), &UserManager::_save_user);
 
-	ClassDB::bind_method(D_METHOD("_create_user"), &UserManager::_create_user);
+	ClassDB::bind_method(D_METHOD("_create_user", "user"), &UserManager::_create_user);
 
 	ClassDB::bind_method(D_METHOD("_is_username_taken", "user_name"), &UserManager::_is_username_taken);
 	ClassDB::bind_method(D_METHOD("_is_email_taken", "email"), &UserManager::_is_email_taken);

@@ -246,14 +246,15 @@ void UserManagerDB::_save_user(Ref<User> user) {
 		b->run_query();
 	}
 }
-Ref<User> UserManagerDB::_create_user() {
-	Ref<User> u;
-	u.instance();
+Ref<User> UserManagerDB::_create_user(Ref<User> p_user) {
+	if (!p_user.is_valid()) {
+		p_user.instance();
+	}
 
 	//save_user(u);
-	u->connect("changed", this, "_save_user", varray(u));
+	p_user->connect("changed", this, "_save_user", varray(p_user));
 
-	return u;
+	return p_user;
 }
 bool UserManagerDB::_is_username_taken(const String &user_name) {
 	Ref<QueryBuilder> b = get_query_builder();

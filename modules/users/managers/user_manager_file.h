@@ -54,7 +54,7 @@ public:
 
 	virtual void _save_user(Ref<User> user);
 
-	virtual Ref<User> _create_user();
+	virtual Ref<User> _create_user(Ref<User> p_user);
 
 	virtual bool _is_username_taken(const String &user_name);
 	virtual bool _is_email_taken(const String &email);
