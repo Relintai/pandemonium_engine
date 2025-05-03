@@ -122,6 +122,15 @@ Ref<User> UserManagerFile::_get_user_email(const String &user_email) {
 void UserManagerFile::_save_user(Ref<User> user) {
 	ERR_FAIL_COND(!user.is_valid());
 
+	if (!DirAccess::exists(_save_folder_path)) {
+		DirAccess *diru = DirAccess::create_for_path(_save_folder_path);
+
+		ERR_FAIL_COND(!diru);
+
+		diru->make_dir_recursive(_save_folder_path);
+		memdelete(diru);
+	}
+
 	if (user->get_user_id() == -1) {
 		_rw_lock.write_lock();
 		user->write_lock();
@@ -141,7 +150,7 @@ void UserManagerFile::_save_user(Ref<User> user) {
 	String data = user->to_json();
 	user->read_unlock();
 
-	FileAccess *f = FileAccess::open(_save_folder_path.plus_file(itos(id) + ".json"), FileAccess::READ);
+	FileAccess *f = FileAccess::open(_save_folder_path.plus_file(itos(id) + ".json"), FileAccess::WRITE);
 
 	ERR_FAIL_COND(!f);
 
@@ -298,7 +307,7 @@ void UserManagerFile::save() {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			FileAccess *f = FileAccess::open(_save_folder_path.plus_file(itos(i) + ".json"), FileAccess::READ);
+			FileAccess *f = FileAccess::open(_save_folder_path.plus_file(itos(i) + ".json"), FileAccess::WRITE);
 
 			ERR_CONTINUE(!f);
 
