@@ -59,7 +59,7 @@
 		</member>
 		<member name="target_fps" type="float" setter="set_target_fps" getter="get_target_fps" default="60.0">
 		</member>
-		<member name="thread_count" type="int" setter="set_thread_count" getter="get_thread_count" default="5">
+		<member name="thread_count" type="int" setter="set_thread_count" getter="get_thread_count" default="23">
 		</member>
 		<member name="thread_fallback_count" type="int" setter="set_thread_fallback_count" getter="get_thread_fallback_count" default="4">
 		</member>

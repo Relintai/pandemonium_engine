@@ -9,6 +9,7 @@
 	<methods>
 		<method name="_create_user" qualifiers="virtual">
 			<return type="User" />
+			<argument index="0" name="user" type="User" />
 			<description>
 			</description>
 		</method>

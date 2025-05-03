@@ -10,6 +10,17 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="_from_dict" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="_to_dict" qualifiers="virtual">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
 		<method name="add">
 			<return type="void" />
 			<argument index="0" name="key" type="String" />
@@ -19,6 +30,18 @@
 		</method>
 		<method name="clear">
 			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="from_json">
+			<return type="void" />
+			<argument index="0" name="data" type="String" />
 			<description>
 			</description>
 		</method>
@@ -42,6 +65,16 @@
 		</method>
 		<method name="reset">
 			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="to_dict">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="to_json">
+			<return type="String" />
 			<description>
 			</description>
 		</method>
