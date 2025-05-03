@@ -228,16 +228,16 @@ Dictionary User::_to_dict() {
 	return dict;
 }
 void User::_from_dict(const Dictionary &dict) {
-	_user_id = dict["user_id "];
-	_user_name = dict["user_name "];
-	_email = dict["email "];
-	_rank = dict["rank "];
-	_pre_salt = dict["pre_salt "];
-	_post_salt = dict["post_salt "];
-	_password_hash = dict["password_hash "];
-	_banned = dict["banned "];
-	_password_reset_token = dict["password_reset_token "];
-	_locked = dict["locked "];
+	_user_id = dict["user_id"];
+	_user_name = dict["user_name"];
+	_email = dict["email"];
+	_rank = dict["rank"];
+	_pre_salt = dict["pre_salt"];
+	_post_salt = dict["post_salt"];
+	_password_hash = dict["password_hash"];
+	_banned = dict["banned"];
+	_password_reset_token = dict["password_reset_token"];
+	_locked = dict["locked"];
 
 	Array marr = dict["modules"];
 
