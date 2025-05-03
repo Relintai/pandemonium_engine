@@ -77,11 +77,11 @@ public:
 	HTTPSession();
 	~HTTPSession();
 
-	String session_id;
-	int id;
-
 protected:
 	static void _bind_methods();
+
+	String session_id;
+	int id;
 
 	Mutex _mutex;
 

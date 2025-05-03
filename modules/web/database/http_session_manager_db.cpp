@@ -117,14 +117,14 @@ Ref<HTTPSession> HTTPSessionManagerDB::delete_session(const String &session_id) 
 		return s;
 	}
 
-	if (!s->id) {
+	if (!s->get_id()) {
 		return s;
 	}
 
 	Ref<QueryBuilder> b = get_query_builder();
 
-	b->del(_database_data_table_name)->where()->wpi("session_db_id", s->id)->end_command();
-	b->del(_database_table_name)->where()->wpi("id", s->id)->end_command();
+	b->del(_database_data_table_name)->where()->wpi("session_db_id", s->get_id())->end_command();
+	b->del(_database_table_name)->where()->wpi("id", s->get_id())->end_command();
 	b->run_query();
 
 	return s;
@@ -133,21 +133,21 @@ Ref<HTTPSession> HTTPSessionManagerDB::delete_session(const String &session_id) 
 void HTTPSessionManagerDB::save_session(Ref<HTTPSession> session) {
 	Ref<QueryBuilder> b = get_query_builder();
 
-	if (!session->id) {
+	if (!session->get_id()) {
 		b->insert(_database_table_name, "session_id");
 		b->values();
-		b->vals(session->session_id);
+		b->vals(session->get_session_id());
 		b->cvalues();
 		b->end_command();
 		b->select_last_insert_id();
 
-		session->id = b->run()->get_last_insert_rowid();
+		session->set_id(b->run()->get_last_insert_rowid());
 
 		b->reset();
 	}
 
-	b->del(_database_data_table_name)->where()->wpi("session_db_id", session->id)->end_command();
-	int id = session->id;
+	b->del(_database_data_table_name)->where()->wpi("session_db_id", session->get_id())->end_command();
+	int id = session->get_id();
 
 	HashMap<String, Variant> *m = session->get_data();
 
@@ -188,9 +188,9 @@ void HTTPSessionManagerDB::load_sessions() {
 
 		Ref<HTTPSession> s;
 		s.instance();
-		s->id = id;
+		s->set_id(id);
 
-		s->session_id = session_id;
+		s->set_session_id(session_id);
 
 		add_session(s);
 	}
@@ -210,7 +210,7 @@ void HTTPSessionManagerDB::load_sessions() {
 		for (int i = 0; i < _sessions_vec.size(); ++i) {
 			Ref<HTTPSession> ss = _sessions_vec[i];
 
-			if (ss.is_valid() && session_db_id == ss->id) {
+			if (ss.is_valid() && session_db_id == ss->get_id()) {
 				s = ss;
 				break;
 			}
