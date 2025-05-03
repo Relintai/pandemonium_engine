@@ -85,6 +85,7 @@ def get_doc_classes():
 	    "AliasWebPage",
 
 		"HTTPSessionManagerDB",
+		"HTTPSessionManagerFile",
     ]
 
 

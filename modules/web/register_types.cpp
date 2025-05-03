@@ -53,6 +53,8 @@
 #include "http/http_server_enums.h"
 #include "http/http_session.h"
 #include "http/http_session_manager.h"
+#include "http/http_session_manager_file.h"
+
 #include "http/web_node.h"
 #include "http/web_permission.h"
 #include "http/web_root.h"
@@ -132,7 +134,9 @@ void register_web_types(ModuleRegistrationLevel p_level) {
 
 		ClassDB::register_class<HTTPSession>();
 		ClassDB::register_class<HTTPSessionManager>();
+		ClassDB::register_class<HTTPSessionManagerFile>();
 		ClassDB::register_class<SessionSetupWebServerMiddleware>();
+		
 		ClassDB::register_class<WebNode>();
 		ClassDB::register_class<WebPermission>();
 		ClassDB::register_class<WebRoot>();

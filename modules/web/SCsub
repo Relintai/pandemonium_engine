@@ -22,6 +22,7 @@ sources = [
     "http/web_server_middleware.cpp",
     "http/web_server_request.cpp",
     "http/web_server_request_scriptable.cpp",
+    "http/http_session_manager_file.cpp",
 
     "html/html_builder_bind.cpp",
     "html/html_builder.cpp",
