@@ -85,7 +85,7 @@ bool UserManager::_is_email_taken(const String &email) {
 Vector<Ref<User>> UserManager::get_all_as_vector() {
 	Vector<Ref<User>> ret;
 
-	Array res = call("_get_all");
+	Array res = call("_get_all_users");
 
 	ret.resize(res.size());
 
