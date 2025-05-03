@@ -48,18 +48,18 @@ public:
 	String get_save_folder_path();
 	void set_save_folder_path(const String &val);
 
-	Ref<User> _get_user(const int id);
-	Ref<User> _get_user_name(const String &user);
-	Ref<User> _get_user_email(const String &user_email);
+	virtual Ref<User> _get_user(const int id);
+	virtual Ref<User> _get_user_name(const String &user);
+	virtual Ref<User> _get_user_email(const String &user_email);
 
-	void _save_user(Ref<User> user);
+	virtual void _save_user(Ref<User> user);
 
-	Ref<User> _create_user();
+	virtual Ref<User> _create_user();
 
-	bool _is_username_taken(const String &user_name);
-	bool _is_email_taken(const String &email);
+	virtual bool _is_username_taken(const String &user_name);
+	virtual bool _is_email_taken(const String &email);
 
-	Array _get_all_users();
+	virtual Array _get_all_users();
 
 	UserManagerFile();
 	~UserManagerFile();
@@ -76,9 +76,10 @@ protected:
 
 	Vector<Ref<User>> _users;
 	RWLock _rw_lock;
-	bool _save_queued;
 
 	String _save_folder_path;
+	
+	int _next_id;
 };
 
 #endif

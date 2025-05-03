@@ -32,8 +32,6 @@
 #include "user_manager_file.h"
 
 #include "core/config/engine.h"
-#include "core/io/resource_loader.h"
-#include "core/io/resource_saver.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/variant/variant.h"
@@ -48,22 +46,37 @@ void UserManagerFile::set_save_folder_path(const String &val) {
 }
 
 Ref<User> UserManagerFile::_get_user(const int id) {
+	// A hashmap could be used
+
 	_rw_lock.read_lock();
 
-	if (id < 0 || id >= _users.size()) {
+	if (id < 0) {
 		_rw_lock.read_unlock();
-
-		ERR_PRINT("INDEX ERROR");
-
+		ERR_PRINT("USER ID ERROR");
 		return Ref<User>();
 	}
 
-	Ref<User> u = _users[id];
+	for (int i = 0; i < _users.size(); ++i) {
+		Ref<User> u = _users[i];
+
+		if (u.is_valid()) {
+			if (u->get_user_id() == id) {
+				_rw_lock.read_unlock();
+
+				return u;
+			}
+		}
+	}
 
 	_rw_lock.read_unlock();
-	return u;
+
+	return Ref<User>();
 }
 Ref<User> UserManagerFile::_get_user_name(const String &user_name) {
+	// TODO check only the lowercase version, also strip it, so User and UsEr counts as the same
+	// This should also be done with all backends
+	// Also a hashmap could be used
+
 	_rw_lock.read_lock();
 
 	for (int i = 0; i < _users.size(); ++i) {
@@ -79,9 +92,14 @@ Ref<User> UserManagerFile::_get_user_name(const String &user_name) {
 	}
 
 	_rw_lock.read_unlock();
+
 	return Ref<User>();
 }
 Ref<User> UserManagerFile::_get_user_email(const String &user_email) {
+	// TODO check only the lowercase version, also strip it, so User and UsEr counts as the same
+	// This should also be done with all backends
+	// Also a hashmap could be used
+
 	_rw_lock.read_lock();
 
 	for (int i = 0; i < _users.size(); ++i) {
@@ -97,30 +115,56 @@ Ref<User> UserManagerFile::_get_user_email(const String &user_email) {
 	}
 
 	_rw_lock.read_unlock();
+
 	return Ref<User>();
 }
 
 void UserManagerFile::_save_user(Ref<User> user) {
-	_save_queued = true;
+	ERR_FAIL_COND(!user.is_valid());
+
+	if (user->get_user_id() == -1) {
+		_rw_lock.write_lock();
+		user->write_lock();
+
+		// check again, because threading
+		if (user->get_user_id() == -1) {
+			user->set_user_id(_next_id++);
+			_users.push_back(user);
+		}
+
+		user->write_unlock();
+		_rw_lock.write_unlock();
+	}
+
+	user->read_lock();
+	int id = user->get_user_id();
+	String data = user->to_json();
+	user->read_unlock();
+
+	FileAccess *f = FileAccess::open(_save_folder_path.plus_file(itos(id) + ".json"), FileAccess::READ);
+
+	ERR_FAIL_COND(!f);
+
+	f->store_string(data);
+	f->close();
+
+	memdelete(f);
 }
 Ref<User> UserManagerFile::_create_user() {
-	_rw_lock.write_lock();
-
 	Ref<User> u;
 	u.instance();
-	u->set_user_id(_users.size());
-	u->connect("changed", this, "_on_user_changed");
-
-	_users.push_back(u);
-
-	_rw_lock.write_unlock();
-
-	_save_queued = true;
+	u->set_user_id(-1);
+	u->connect("changed", this, "_save_user", varray(u));
 
 	return u;
 }
 bool UserManagerFile::_is_username_taken(const String &user_name) {
+	// TODO check only the lowercase version, also strip it, so User and UsEr counts as the same
+	// This should also be done with all backends
+	// Also a hashmap could be used
+
 	_rw_lock.read_lock();
+
 	for (int i = 0; i < _users.size(); ++i) {
 		Ref<User> u = _users[i];
 
@@ -133,10 +177,16 @@ bool UserManagerFile::_is_username_taken(const String &user_name) {
 	}
 
 	_rw_lock.read_unlock();
+
 	return false;
 }
 bool UserManagerFile::_is_email_taken(const String &email) {
+	// TODO check only the lowercase version, also strip it, so User@a.com and UsEr@A.com counts as the same
+	// This should also be done with all backends
+	// Also a hashmap could be used
+
 	_rw_lock.read_lock();
+
 	for (int i = 0; i < _users.size(); ++i) {
 		Ref<User> u = _users[i];
 
@@ -149,6 +199,7 @@ bool UserManagerFile::_is_email_taken(const String &email) {
 	}
 
 	_rw_lock.read_unlock();
+
 	return false;
 }
 
@@ -160,7 +211,7 @@ Array UserManagerFile::_get_all_users() {
 	ret.resize(_users.size());
 
 	for (int i = 0; i < _users.size(); ++i) {
-		ret[i] = Variant(_users[i].get_ref_ptr());
+		ret[i] = _users[i];
 	}
 
 	_rw_lock.read_unlock();
@@ -170,20 +221,15 @@ Array UserManagerFile::_get_all_users() {
 
 UserManagerFile::UserManagerFile() {
 	set_process_internal(true);
-	_save_folder_path = "users";
+	_save_folder_path = "user://users/";
+	_next_id = 1;
 }
 
 UserManagerFile::~UserManagerFile() {
 }
 
 void UserManagerFile::load() {
-	if (Engine::get_singleton()->is_editor_hint()) {
-		return;
-	}
-
-	String fpath = "user://" + _save_folder_path;
-
-	DirAccess *dir = DirAccess::open(fpath);
+	DirAccess *dir = DirAccess::open(_save_folder_path);
 
 	if (!dir) {
 		return;
@@ -192,82 +238,36 @@ void UserManagerFile::load() {
 	dir->list_dir_begin();
 	_rw_lock.write_lock();
 
-	String file = dir->get_next();
-
-	while (file != "") {
-		if (!dir->current_is_dir()) {
-			if (!file.ends_with(".tres")) {
-				file = dir->get_next();
-				continue;
-			}
-
-			String uids = file.get_slice(".", 0);
-
-			if (!uids.is_valid_unsigned_integer()) {
-				continue;
-			}
-
-			int id = uids.to_int();
-
-			//Overflow
-			ERR_CONTINUE(id < 0);
-
-			//TODO Users should be able to serialize themselves to json, could work similarly to Entity
-			//need to think, maybe it can be done better.
-			//Also this is not a super safe way to do this, this will definitely be changed, relatively soon
-			Ref<User> u = ResourceLoader::load(fpath.plus_file(file), "User", true);
-			//Unset script, just for good measure
-			u->set_script(RefPtr());
-
-			u->connect("changed", this, "_on_user_changed");
-
-			if (_users.size() <= id) {
-				_users.resize(id + 1);
-			}
-
-			_users.write[id] = u;
-		}
-
-		file = dir->get_next();
-	}
-
-	dir->list_dir_end();
-
-	_rw_lock.write_unlock();
-}
-
-void UserManagerFile::save() {
-	if (Engine::get_singleton()->is_editor_hint()) {
-		return;
-	}
-
-	String fpath = "user://" + _save_folder_path;
-
-	DirAccess *dir = DirAccess::open(fpath);
-
-	if (!dir) {
-		DirAccess *diru = DirAccess::open("user://");
-		diru->make_dir_recursive(fpath);
-
-		memdelete(diru);
-
-		dir = DirAccess::open(fpath);
-	}
-
-	ERR_FAIL_COND(!dir);
-
-	dir->list_dir_begin();
+	_users.clear();
+	_next_id = 1;
 
 	String file = dir->get_next();
 
 	while (file != "") {
 		if (!dir->current_is_dir()) {
-			if (!file.ends_with(".tres")) {
+			if (!file.ends_with(".json")) {
 				file = dir->get_next();
 				continue;
 			}
 
-			dir->remove(file);
+			FileAccess *f = FileAccess::open(_save_folder_path.plus_file(file), FileAccess::READ);
+
+			ERR_CONTINUE(!f);
+
+			String data = f->get_as_utf8_string();
+			f->close();
+			memdelete(f);
+
+			Ref<User> user = create_user();
+			user->from_json(data);
+
+			int id = user->get_user_id();
+
+			if (id >= _next_id) {
+				_next_id = id + 1;
+			}
+
+			_users.push_back(user);
 		}
 
 		file = dir->get_next();
@@ -277,33 +277,60 @@ void UserManagerFile::save() {
 
 	memdelete(dir);
 
+	_rw_lock.write_unlock();
+}
+
+void UserManagerFile::save() {
+	if (!DirAccess::exists(_save_folder_path)) {
+		DirAccess *diru = DirAccess::create_for_path(_save_folder_path);
+
+		ERR_FAIL_COND(!diru);
+
+		diru->make_dir_recursive(_save_folder_path);
+		memdelete(diru);
+	}
+
 	_rw_lock.read_lock();
 
 	for (int i = 0; i < _users.size(); ++i) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
+			FileAccess *f = FileAccess::open(_save_folder_path.plus_file(itos(i) + ".json"), FileAccess::READ);
+
+			ERR_CONTINUE(!f);
+
 			u->read_lock();
-			ResourceSaver::save(fpath.plus_file(itos(i) + ".tres"), u);
+			String data = u->to_json();
 			u->read_unlock();
+
+			f->store_string(data);
+			f->close();
+			memdelete(f);
 		}
 	}
 
 	_rw_lock.read_unlock();
 }
 
-void UserManagerFile::_on_user_changed() {
-	_save_queued = true;
-}
-
 void UserManagerFile::_notification(int p_what) {
-	if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
-		if (_save_queued) {
-			_save_queued = false;
+	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE: {
+			if (Engine::get_singleton()->is_editor_hint()) {
+				return;
+			}
+
+			load();
+		} break;
+		case NOTIFICATION_EXIT_TREE: {
+		} break;
+			if (Engine::get_singleton()->is_editor_hint()) {
+				return;
+			}
+
 			save();
-		}
-	} else if (p_what == NOTIFICATION_POST_ENTER_TREE) {
-		load();
+		default:
+			break;
 	}
 }
 
@@ -311,6 +338,4 @@ void UserManagerFile::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_save_folder_path"), &UserManagerFile::get_save_folder_path);
 	ClassDB::bind_method(D_METHOD("set_save_folder_path", "val"), &UserManagerFile::set_save_folder_path);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "save_folder_path"), "set_save_folder_path", "get_save_folder_path");
-
-	ClassDB::bind_method(D_METHOD("_on_user_changed"), &UserManagerFile::_on_user_changed);
 }
