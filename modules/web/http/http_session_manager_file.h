@@ -54,6 +54,7 @@ public:
 	~HTTPSessionManagerFile();
 
 protected:
+	void _notification(int p_what);
 	static void _bind_methods();
 
 	String _save_folder_path;

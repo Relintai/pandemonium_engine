@@ -163,6 +163,20 @@ HTTPSessionManagerFile::HTTPSessionManagerFile() {
 HTTPSessionManagerFile::~HTTPSessionManagerFile() {
 }
 
+void HTTPSessionManagerFile::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE: {
+			if (Engine::get_singleton()->is_editor_hint()) {
+				return;
+			}
+
+			load_sessions();
+		} break;
+		default:
+			break;
+	}
+}
+
 void HTTPSessionManagerFile::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_save_folder_path"), &HTTPSessionManagerFile::get_save_folder_path);
 	ClassDB::bind_method(D_METHOD("set_save_folder_path", "val"), &HTTPSessionManagerFile::set_save_folder_path);
