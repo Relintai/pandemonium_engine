@@ -249,7 +249,9 @@ void User::_from_dict(const Dictionary &dict) {
 		}
 
 		int index = mdict["index"];
-
+		
+		ERR_CONTINUE(index < 0 || index >= _modules.size());
+		
 		Ref<UserModule> m = _modules[index];
 
 		ERR_CONTINUE(!m.is_valid());
