@@ -213,8 +213,9 @@ UserRegisterWebPage::UserRegisterWebPage() {
 	pw->need_to_exist();
 	pw->need_to_have_lowercase_character()->need_to_have_uppercase_character();
 	pw->need_minimum_length(5);
+	pw->need_maximum_length(256);
 
-	_registration_validator->new_field("password_check", "Password check")->need_to_match("password");
+	_registration_validator->new_field("password_check", "Password check")->need_maximum_length(256)->need_to_match("password");
 
 	_registration_validator->new_field("email", "Email")->need_to_exist()->need_to_be_email();
 
