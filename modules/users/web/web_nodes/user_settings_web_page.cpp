@@ -79,7 +79,6 @@ void UserSettingsWebPage::_render_index(Ref<WebServerRequest> request) {
 				if (UserDB::get_singleton()->is_username_taken(data.uname_val)) {
 					data.error_str += "Username already taken!<br>";
 				} else {
-					// todo sanitize for html special chars!
 					user->set_user_name(data.uname_val);
 					changed = true;
 					data.uname_val = "";
@@ -90,8 +89,6 @@ void UserSettingsWebPage::_render_index(Ref<WebServerRequest> request) {
 				if (UserDB::get_singleton()->is_email_taken(data.email_val)) {
 					data.error_str += "Email already in use!<br>";
 				} else {
-					// todo sanitize for html special chars!
-					// also send email
 					user->set_email(data.email_val);
 					changed = true;
 					data.email_val = "";
