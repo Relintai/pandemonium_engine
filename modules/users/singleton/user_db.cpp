@@ -35,147 +35,47 @@
 #include "../users/user.h"
 
 Ref<User> UserDB::get_user(const int id) {
-	if (_user_manager) {
-		return _user_manager->get_user(id);
-	}
+	ERR_FAIL_COND_V(!_user_manager, Ref<User>());
 
-	ERR_FAIL_INDEX_V(id, _users.size(), Ref<User>());
-
-	_lock.read_lock();
-	Ref<User> u = _users[id];
-	_lock.read_unlock();
-
-	return u;
+	return _user_manager->get_user(id);
 }
 Ref<User> UserDB::get_user_name(const String &user_name) {
-	if (_user_manager) {
-		return _user_manager->get_user_name(user_name);
-	}
+	ERR_FAIL_COND_V(!_user_manager, Ref<User>());
 
-	_lock.read_lock();
-
-	for (int i = 0; i < _users.size(); ++i) {
-		Ref<User> u = _users[i];
-
-		if (u.is_valid()) {
-			if (u->get_user_name() == user_name) {
-				_lock.read_unlock();
-				return u;
-			}
-		}
-	}
-
-	_lock.read_unlock();
-
-	return Ref<User>();
+	return _user_manager->get_user_name(user_name);
 }
 Ref<User> UserDB::get_user_email(const String &user_email) {
-	if (_user_manager) {
-		return _user_manager->get_user_email(user_email);
-	}
+	ERR_FAIL_COND_V(!_user_manager, Ref<User>());
 
-	_lock.read_lock();
-
-	for (int i = 0; i < _users.size(); ++i) {
-		Ref<User> u = _users[i];
-
-		if (u.is_valid()) {
-			if (u->get_email() == user_email) {
-				_lock.read_unlock();
-				return u;
-			}
-		}
-	}
-
-	_lock.read_unlock();
-
-	return Ref<User>();
+	return _user_manager->get_user_email(user_email);
 }
 void UserDB::save_user(const Ref<User> &user) {
-	if (_user_manager) {
-		_user_manager->save_user(user);
-	}
+	ERR_FAIL_COND(!_user_manager);
+
+	_user_manager->save_user(user);
 }
 
 Ref<User> UserDB::create_user() {
-	if (_user_manager) {
-		return _user_manager->create_user();
-	}
+	ERR_FAIL_COND_V(!_user_manager, Ref<User>());
 
-	Ref<User> user;
-	user.instance();
-
-	_lock.write_lock();
-	user->set_user_id(_users.size());
-	_users.push_back(user);
-	_lock.write_unlock();
-
-	return user;
+	return _user_manager->create_user();
 }
 
 bool UserDB::is_username_taken(const String &user_name) {
-	if (_user_manager) {
-		return _user_manager->is_username_taken(user_name);
-	}
+	ERR_FAIL_COND_V(!_user_manager, false);
 
-	_lock.read_lock();
-
-	for (int i = 0; i < _users.size(); ++i) {
-		Ref<User> u = _users[i];
-
-		if (u.is_valid()) {
-			if (u->get_user_name() == user_name) {
-				_lock.read_unlock();
-				return true;
-			}
-		}
-	}
-
-	_lock.read_unlock();
-
-	return false;
+	return _user_manager->is_username_taken(user_name);
 }
 bool UserDB::is_email_taken(const String &email) {
-	if (_user_manager) {
-		return _user_manager->is_email_taken(email);
-	}
+	ERR_FAIL_COND_V(!_user_manager, false);
 
-	_lock.read_lock();
-
-	for (int i = 0; i < _users.size(); ++i) {
-		Ref<User> u = _users[i];
-
-		if (u.is_valid()) {
-			if (u->get_email() == email) {
-				_lock.read_unlock();
-				return true;
-			}
-		}
-	}
-
-	_lock.read_unlock();
-
-	return false;
+	return _user_manager->is_email_taken(email);
 }
 
 Array UserDB::get_all_users() {
-	if (_user_manager) {
-		return _user_manager->get_all_users();
-	}
+	ERR_FAIL_COND_V(!_user_manager, Array());
 
-	Array ret;
-
-	_lock.read_lock();
-
-	ret.resize(_users.size());
-
-	for (int i = 0; i < _users.size(); ++i) {
-		ret[i] = Variant(_users[i].get_ref_ptr());
-	}
-
-	_lock.read_unlock();
-
-	return ret;
+	return _user_manager->get_all_users();
 }
 
 UserManager *UserDB::get_user_manager() {

@@ -86,7 +86,6 @@ protected:
 
 	static UserDB *_self;
 
-	Vector<Ref<User>> _users;
 	RWLock _lock;
 };
 
