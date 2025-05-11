@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserSessionSetupWebServerMiddleware" inherits="WebServerMiddleware">
 	<brief_description>
+		A [WebServerMiddleware] that automatically looks up [User]s from a request's stored user_id, and stored it in the request's "user" meta key.
 	</brief_description>
 	<description>
+		A [WebServerMiddleware] that automatically looks up [User]s from a request's stored user_id, and stored it in the request's "user" meta key.
 	</description>
 	<tutorials>
+		<link title="Website with users using the SQLite db backend">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap, templated">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap_templated</link>
 	</tutorials>
 	<methods>
 	</methods>

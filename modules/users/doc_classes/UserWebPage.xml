@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserWebPage" inherits="WebNode">
 	<brief_description>
+		Base class for Web pages that need to handle [User]s.
 	</brief_description>
 	<description>
+		Base class for Web pages that need to handle [User]s.
+		It can automatically redirect / render / send errors based on whether a [User] opening the page is logged in or not.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,12 +14,18 @@
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				This is the handler for logged in [User]s.
+				Overriding this lets you customize the behaviour for logged in [User]s.
+				[method handle_logged_in] calls this.
 			</description>
 		</method>
 		<method name="_handle_not_logged_in" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				This is the handler for not logged in [User]s.
+				Overriding this lets you customize the behaviour for not logged in [User]s.
+				[method handle_not_logged_in] calls this.
 			</description>
 		</method>
 		<method name="_render_user_page" qualifiers="virtual">
@@ -32,37 +41,51 @@
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				This is the handler for logged in [User]s.
+				Calls [method _handle_logged_in].
 			</description>
 		</method>
 		<method name="handle_not_logged_in">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				This is the handler for not logged in [User]s.
+				Calls [method _handle_not_logged_in].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="logged_in_error_code" type="int" setter="set_logged_in_error_code" getter="get_logged_in_error_code" default="404">
+			The error code to send if the user is logged in, and in that case an error should be sent.
 		</member>
 		<member name="logged_in_redirect_url" type="String" setter="set_logged_in_redirect_url" getter="get_logged_in_redirect_url" default="&quot;&quot;">
+			The redirect url to send if the user is logged in, and in that case a redirect should be sent.
 		</member>
 		<member name="logged_in_render_type" type="int" setter="set_logged_in_render_type" getter="get_logged_in_render_type" enum="UserWebPage.RenderType" default="0">
+			The render type for logged in users.
 		</member>
 		<member name="logged_out_error_code" type="int" setter="set_logged_out_error_code" getter="get_logged_out_error_code" default="404">
+			The error code to send if the user is logged out, and in that case an error should be sent.
 		</member>
 		<member name="logged_out_redirect_url" type="String" setter="set_logged_out_redirect_url" getter="get_logged_out_redirect_url" default="&quot;&quot;">
+			The redirect url to send if the user is logged out, and in that case a redirect should be sent.
 		</member>
 		<member name="logged_out_render_type" type="int" setter="set_logged_out_render_type" getter="get_logged_out_render_type" enum="UserWebPage.RenderType" default="2">
+			The render type for logged out users.
 		</member>
 		<member name="should_render_menu" type="bool" setter="set_should_render_menu" getter="get_should_render_menu" default="true">
+			Whether the menu should be automatically rendered or not.
 		</member>
 	</members>
 	<constants>
 		<constant name="RENDER_TYPE_RENDER" value="0" enum="RenderType">
+			Render the page normally.
 		</constant>
 		<constant name="RENDER_TYPE_REDIRECT" value="1" enum="RenderType">
+			Send a redirect.
 		</constant>
 		<constant name="RENDER_TYPE_ERROR" value="2" enum="RenderType">
+			Send an error.
 		</constant>
 	</constants>
 </class>

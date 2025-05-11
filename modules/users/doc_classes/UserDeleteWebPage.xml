@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserDeleteWebPage" inherits="UserWebPage">
 	<brief_description>
+		An [UserWebPage] that lets users delete their own accounts. Not yet finished.
 	</brief_description>
 	<description>
+		An [UserWebPage] that lets users delete their own accounts. Not yet finished.
 	</description>
 	<tutorials>
 	</tutorials>

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserLogoutWebPage" inherits="UserWebPage">
 	<brief_description>
+		A web page that logs out a [User] by visiting it.
 	</brief_description>
 	<description>
+		A web page that logs out a [User] by visiting it.
+		It unsets the [User]'s session cookie.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -13,6 +16,7 @@
 			<argument index="0" name="request" type="WebServerRequest" />
 			<argument index="1" name="user" type="User" />
 			<description>
+				Emitted when a [User] gets logged out.
 			</description>
 		</signal>
 	</signals>

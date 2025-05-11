@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserRegisterWebPage" inherits="UserWebPage">
 	<brief_description>
+		A web page that let users register using a form.
 	</brief_description>
 	<description>
+		A web page that let users register using a form.
+		Rendering can be customized by creating the following method:
+		[code]func _render_user_page(request : WebServerRequest, d : Dictionary) -> void:[/code]
+		The [code]d[/code] [Dictionary] will contain the following data on a successful registration:
+		[code]d["type"] = "render_register_success";
+		d["user"] = user;[/code]
+		The [code]d[/code] [Dictionary] will contain the following data normally, or on a failed register attempt:
+		[code]d["type"] = "render_register_request_default";
+		d["error_str"] = error_str; String, html containing the problems.
+		d["uname_val"] = uname_val; The username input value.
+		d["email_val"] = email_val; The email input value.
+		d["pass_val"] = pass_val; The password input value.
+		d["pass_check_val"] = pass_check_val; The password check input value.[/code]
 	</description>
 	<tutorials>
+		<link title="Website with users using the SQLite db backend">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap, templated">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap_templated</link>
 	</tutorials>
 	<methods>
 	</methods>
@@ -19,6 +36,7 @@
 			<argument index="0" name="request" type="WebServerRequest" />
 			<argument index="1" name="user" type="User" />
 			<description>
+				Emitted when a user is sucessfully registered.
 			</description>
 		</signal>
 	</signals>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserStatsWebPage" inherits="UserWebPage">
 	<brief_description>
+		A web page that shows user stats. Not yet finished.
 	</brief_description>
 	<description>
+		A web page that shows user stats. Not yet finished.
 	</description>
 	<tutorials>
 	</tutorials>

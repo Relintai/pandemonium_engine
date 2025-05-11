@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserLoginWebPage" inherits="UserWebPage">
 	<brief_description>
+		A web page that asks for [User] credentials and logs them in by setting cookies.
 	</brief_description>
 	<description>
+		A web page that asks for [User] credentials and logs them in by setting cookies.
+		Rendering can be customized by creating the following method:
+		[code]func _render_user_page(request : WebServerRequest, d : Dictionary) -> void:[/code]
+		The [code]d[/code] [Dictionary] will contain the following data on a successful login:
+		[code]d["type"] = "render_login_success";
+		d["user"] = user;[/code]
+		The [code]d[/code] [Dictionary] will contain the following data normally, or on a failed login attempt:
+		[code]d["type"] = "render_login_request_default";
+		d["error_str"] = error_str; String, html containing the problems.
+		d["uname_val"] = uname_val; The username input value.
+		d["pass_val"] = pass_val; The password input value.[/code]
 	</description>
 	<tutorials>
+		<link title="Website with users using the SQLite db backend">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap, templated">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap_templated</link>
 	</tutorials>
 	<methods>
 	</methods>
@@ -19,6 +34,7 @@
 			<argument index="0" name="request" type="WebServerRequest" />
 			<argument index="1" name="user" type="User" />
 			<description>
+				Emitted when a [User] logged in successfully.
 			</description>
 		</signal>
 	</signals>
