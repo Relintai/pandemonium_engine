@@ -165,8 +165,6 @@ Ref<User> UserManagerFile::_create_user(Ref<User> p_user) {
 		p_user->set_user_id(-1);
 	}
 
-	p_user->connect("changed", this, "_save_user", varray(p_user));
-
 	return p_user;
 }
 bool UserManagerFile::_is_username_taken(const String &user_name) {

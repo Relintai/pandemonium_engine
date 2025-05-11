@@ -32,6 +32,7 @@
 #include "user.h"
 #include "core/io/json.h"
 #include "core/object/class_db.h"
+#include "../singleton/user_db.h"
 
 #include "user_module.h"
 
@@ -301,7 +302,7 @@ void User::from_json(const String &data) {
 }
 
 void User::save() {
-	emit_changed();
+	UserDB::get_singleton()->save_user(Ref<User>(this));
 }
 
 void User::read_lock() {
