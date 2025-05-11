@@ -105,6 +105,12 @@
 				Uses [method from_dict] internally.
 			</description>
 		</method>
+		<method name="get_email_internal" qualifiers="const">
+			<return type="String" />
+			<description>
+				Returns a cached internal simplified version of the email. Use it as keys, and lookups.
+			</description>
+		</method>
 		<method name="get_module">
 			<return type="UserModule" />
 			<argument index="0" name="index" type="int" />
@@ -129,6 +135,12 @@
 			<return type="UserManager" />
 			<description>
 				Returns the owner [UserManager]. (The one that this User was created by.)
+			</description>
+		</method>
+		<method name="get_user_name_internal" qualifiers="const">
+			<return type="String" />
+			<description>
+				Returns a cached internal simplified version of the user_name. Use it as keys, and lookups.
 			</description>
 		</method>
 		<method name="hash_password">
@@ -179,6 +191,14 @@
 			<description>
 				Sets the owner [UserManager].
 				Only use this in [method UserManager._create_user] or if you know what you are doing.
+			</description>
+		</method>
+		<method name="string_to_internal_format" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="str" type="String" />
+			<description>
+				Turns a [String] into an internal simplified lowercase format.
+				[method get_email_internal] and [method get_user_name_internal] uses the output from this.
 			</description>
 		</method>
 		<method name="to_dict">
