@@ -200,8 +200,9 @@ UserSettingsWebPage::UserSettingsWebPage() {
 	pw->ignore_if_not_exists();
 	pw->need_to_have_lowercase_character()->need_to_have_uppercase_character();
 	pw->need_minimum_length(5);
+	pw->need_maximum_length(256);
 
-	_profile_validator->new_field("password_check", "Password check")->ignore_if_other_field_not_exists("password")->need_to_match("password");
+	_profile_validator->new_field("password_check", "Password check")->ignore_if_other_field_not_exists("password")->need_maximum_length(256)->need_to_match("password");
 }
 
 UserSettingsWebPage::~UserSettingsWebPage() {
