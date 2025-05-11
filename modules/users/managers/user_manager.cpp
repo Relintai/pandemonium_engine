@@ -80,6 +80,8 @@ Ref<User> UserManager::_create_user(Ref<User> p_user) {
 	if (!p_user.is_valid()) {
 		p_user.instance();
 	}
+	
+	p_user->set_owner_user_manager(this);
 
 	return p_user;
 }

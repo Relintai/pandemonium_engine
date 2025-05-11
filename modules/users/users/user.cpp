@@ -30,9 +30,10 @@
 /*************************************************************************/
 
 #include "user.h"
+#include "../managers/user_manager.h"
+#include "../singleton/user_db.h"
 #include "core/io/json.h"
 #include "core/object/class_db.h"
-#include "../singleton/user_db.h"
 
 #include "user_module.h"
 
@@ -199,7 +200,7 @@ Dictionary User::_to_dict() {
 	// RW Lock writes are not re-entrant (read locking would work), but since concurrency is hard
 	// api consistency is important. These types of classes hould always be locked from the outside.
 	// Use read_lock() in the caller and then do all read operations that you want.
-	
+
 	Dictionary dict;
 
 	dict["user_id"] = _user_id;
@@ -240,7 +241,7 @@ void User::_from_dict(const Dictionary &dict) {
 	// RW Locks are not re-entrant, so no write_lock() here.
 	// Use write_lock() in the caller and do all write operations that you want if you need concurrency.
 	// This is the only way to properly preserve atomicity.
-	
+
 	_user_id = dict["user_id"];
 	_user_name = dict["user_name"];
 	_email = dict["email"];
@@ -276,7 +277,7 @@ void User::_from_dict(const Dictionary &dict) {
 		}
 
 		ERR_CONTINUE(!m.is_valid());
-		
+
 		// Call write lock from the outside
 		m->write_lock();
 		m->from_dict(mdict["data"]);
@@ -324,11 +325,22 @@ Error User::write_try_lock() {
 	return _rw_lock.write_try_lock();
 }
 
+UserManager *User::get_owner_user_manager() {
+	return _owner_user_manager;
+}
+void User::set_owner_user_manager(UserManager *p_user_manager) {
+	_owner_user_manager = p_user_manager;
+}
+void User::set_owner_user_manager_bind(Node *p_user_manager) {
+	set_owner_user_manager(Object::cast_to<UserManager>(p_user_manager));
+}
+
 User::User() {
 	_user_id = -1;
 	_rank = 0;
 	_banned = false;
 	_locked = false;
+	_owner_user_manager = NULL;
 }
 
 User::~User() {
@@ -422,4 +434,8 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("write_unlock"), &User::write_unlock);
 	ClassDB::bind_method(D_METHOD("read_try_lock"), &User::read_try_lock);
 	ClassDB::bind_method(D_METHOD("write_try_lock"), &User::write_try_lock);
+
+	// No property. Changing this should not really happen normally, only during more advanced uses.
+	ClassDB::bind_method(D_METHOD("get_owner_user_manager"), &User::get_owner_user_manager);
+	ClassDB::bind_method(D_METHOD("set_owner_user_manager", "user_manager"), &User::set_owner_user_manager_bind);
 }

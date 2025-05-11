@@ -38,6 +38,7 @@
 #include "core/object/resource.h"
 
 class UserModule;
+class UserManager;
 
 class User : public Resource {
 	GDCLASS(User, Resource);
@@ -108,6 +109,10 @@ public:
 	Error read_try_lock();
 	Error write_try_lock();
 
+	UserManager *get_owner_user_manager();
+	void set_owner_user_manager(UserManager *p_user_manager);
+	void set_owner_user_manager_bind(Node *p_user_manager);
+
 	User();
 	~User();
 
@@ -128,6 +133,8 @@ protected:
 	Vector<Ref<UserModule>> _modules;
 
 	RWLock _rw_lock;
+
+	UserManager *_owner_user_manager;
 };
 
 #endif

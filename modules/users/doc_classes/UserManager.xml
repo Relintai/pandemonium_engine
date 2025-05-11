@@ -27,6 +27,9 @@
 				    var um : SomeUserModule = SomeUserModule.new()
 				    um.module_name = "SomeUserModule"
 				    user.add_module(um)
+				    
+				    # Only needed if the default implementation is not called
+				    #user.set_owner_user_manager(self)
 
 				    return ._create_user(user)[/code]
 			</description>
