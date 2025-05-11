@@ -67,9 +67,6 @@ void UserRegisterWebPage::_render_index(Ref<WebServerRequest> request) {
 		data.pass_val = request->get_parameter("password");
 		data.pass_check_val = request->get_parameter("password_check");
 
-		// todo username length etc check
-		// todo pw length etc check
-
 		if (UserDB::get_singleton()->is_username_taken(data.uname_val)) {
 			data.error_str += "Username already taken!<br>";
 		}
