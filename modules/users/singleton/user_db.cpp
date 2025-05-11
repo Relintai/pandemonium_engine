@@ -82,6 +82,11 @@ UserManager *UserDB::get_user_manager() {
 	return _user_manager;
 }
 void UserDB::set_user_manager(UserManager *um) {
+	if (_user_manager && um && _user_manager != um) {
+		ERR_FAIL_MSG("There is already a global UserManager! Please make sure there is only one with it's register_as_global property set to true in the scene tree!");
+		return;
+	}
+
 	_user_manager = um;
 }
 void UserDB::unset_user_manager(UserManager *um) {
