@@ -49,9 +49,11 @@ public:
 
 	String get_user_name() const;
 	void set_user_name(const String &val);
+	String get_user_name_internal() const;
 
 	String get_email() const;
 	void set_email(const String &val);
+	String get_email_internal() const;
 
 	int get_rank() const;
 	void set_rank(const int val);
@@ -113,6 +115,11 @@ public:
 	void set_owner_user_manager(UserManager *p_user_manager);
 	void set_owner_user_manager_bind(Node *p_user_manager);
 
+	static String string_to_internal_format(const String &p_str);
+	String string_to_internal_format_bind(const String &p_str) const {
+		return string_to_internal_format(p_str);
+	}
+
 	User();
 	~User();
 
@@ -129,6 +136,9 @@ protected:
 	bool _banned;
 	String _password_reset_token;
 	bool _locked;
+
+	String _user_name_internal;
+	String _email_internal;
 
 	Vector<Ref<UserModule>> _modules;
 

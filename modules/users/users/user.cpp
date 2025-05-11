@@ -49,6 +49,11 @@ String User::get_user_name() const {
 }
 void User::set_user_name(const String &val) {
 	_user_name = val;
+
+	_user_name_internal = string_to_internal_format(_user_name);
+}
+String User::get_user_name_internal() const {
+	return _user_name_internal;
 }
 
 String User::get_email() const {
@@ -56,6 +61,11 @@ String User::get_email() const {
 }
 void User::set_email(const String &val) {
 	_email = val;
+
+	_email_internal = string_to_internal_format(_email);
+}
+String User::get_email_internal() const {
+	return _email_internal;
 }
 
 int User::get_rank() const {
@@ -350,6 +360,10 @@ void User::set_owner_user_manager_bind(Node *p_user_manager) {
 	set_owner_user_manager(Object::cast_to<UserManager>(p_user_manager));
 }
 
+String User::string_to_internal_format(const String &p_str) {
+	return p_str.strip_edges().to_lower();
+}
+
 User::User() {
 	_user_id = -1;
 	_rank = 0;
@@ -380,6 +394,9 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_email"), &User::get_email);
 	ClassDB::bind_method(D_METHOD("set_email", "val"), &User::set_email);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "email"), "set_email", "get_email");
+
+	ClassDB::bind_method(D_METHOD("get_user_name_internal"), &User::get_user_name_internal);
+	ClassDB::bind_method(D_METHOD("get_email_internal"), &User::get_email_internal);
 
 	ClassDB::bind_method(D_METHOD("get_rank"), &User::get_rank);
 	ClassDB::bind_method(D_METHOD("set_rank", "val"), &User::set_rank);
@@ -453,4 +470,6 @@ void User::_bind_methods() {
 	// No property. Changing this should not really happen normally, only during more advanced uses.
 	ClassDB::bind_method(D_METHOD("get_owner_user_manager"), &User::get_owner_user_manager);
 	ClassDB::bind_method(D_METHOD("set_owner_user_manager", "user_manager"), &User::set_owner_user_manager_bind);
+
+	ClassDB::bind_method(D_METHOD("string_to_internal_format", "str"), &User::string_to_internal_format_bind);
 }
