@@ -238,17 +238,5 @@
 		</member>
 	</members>
 	<constants>
-		<constant name="PERMISSION_CREATE" value="1" enum="Permissions">
-		</constant>
-		<constant name="PERMISSION_READ" value="2" enum="Permissions">
-		</constant>
-		<constant name="PERMISSION_UPDATE" value="4" enum="Permissions">
-		</constant>
-		<constant name="PERMISSION_DELETE" value="8" enum="Permissions">
-		</constant>
-		<constant name="PERMISSION_ALL" value="15" enum="Permissions">
-		</constant>
-		<constant name="PERMISSION_NONE" value="0" enum="Permissions">
-		</constant>
 	</constants>
 </class>

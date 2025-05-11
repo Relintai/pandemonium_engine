@@ -421,11 +421,4 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("write_unlock"), &User::write_unlock);
 	ClassDB::bind_method(D_METHOD("read_try_lock"), &User::read_try_lock);
 	ClassDB::bind_method(D_METHOD("write_try_lock"), &User::write_try_lock);
-
-	BIND_ENUM_CONSTANT(PERMISSION_CREATE);
-	BIND_ENUM_CONSTANT(PERMISSION_READ);
-	BIND_ENUM_CONSTANT(PERMISSION_UPDATE);
-	BIND_ENUM_CONSTANT(PERMISSION_DELETE);
-	BIND_ENUM_CONSTANT(PERMISSION_ALL);
-	BIND_ENUM_CONSTANT(PERMISSION_NONE);
 }

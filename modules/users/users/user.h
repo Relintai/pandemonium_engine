@@ -43,16 +43,6 @@ class User : public Resource {
 	GDCLASS(User, Resource);
 
 public:
-	enum Permissions {
-		PERMISSION_CREATE = 1 << 0,
-		PERMISSION_READ = 1 << 1,
-		PERMISSION_UPDATE = 1 << 2,
-		PERMISSION_DELETE = 1 << 3,
-
-		PERMISSION_ALL = PERMISSION_CREATE | PERMISSION_READ | PERMISSION_UPDATE | PERMISSION_DELETE,
-		PERMISSION_NONE = 0
-	};
-
 	int get_user_id() const;
 	void set_user_id(const int val);
 
@@ -139,7 +129,5 @@ protected:
 
 	RWLock _rw_lock;
 };
-
-VARIANT_ENUM_CAST(User::Permissions);
 
 #endif
