@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserManagerDB" inherits="UserManager">
 	<brief_description>
+		A UserManager implementation that uses databases to store [User]s.
 	</brief_description>
 	<description>
+		A UserManager implementation that uses databases to store [User]s.
+		Either uses the [Database] set to it's [code]database[/code] property, or it uses the default database.
+		Uses the database module, so it's only available if it's enabled during compile time.
+		The current default database cration code:
+		[code]var tb : TableBuilder = get_table_builder()
+		tb.create_table(_database_table_name)
+		tb.integer("id").auto_increment().next_row()
+		tb.varchar("username", 60).not_null().next_row()
+		tb.varchar("username_internal", 60).not_null().next_row()
+		tb.varchar("email", 100).not_null().next_row()
+		tb.varchar("email_internal", 100).not_null().next_row()
+		tb.integer("rank").not_null().next_row()
+		tb.varchar("pre_salt", 100).next_row()
+		tb.varchar("post_salt", 100).next_row()
+		tb.varchar("password_hash", 100).next_row()
+		tb.integer("banned").next_row()
+		tb.varchar("password_reset_token", 100).next_row()
+		tb.integer("locked").next_row()
+		tb.primary_key("id")
+		tb.ccreate_table()
+		tb.run_query()[/code]
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,16 +33,20 @@
 			<return type="void" />
 			<argument index="0" name="pseed" type="int" />
 			<description>
+				Override this method to create default user entries when the database gets seeded.
+				By default this does not create anything.
 			</description>
 		</method>
 		<method name="_create_table" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Create the required table(s).
 			</description>
 		</method>
 		<method name="_drop_table" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Drop the required table(s).
 			</description>
 		</method>
 		<method name="_migrate" qualifiers="virtual">
@@ -29,43 +55,55 @@
 			<argument index="1" name="should_seed" type="bool" />
 			<argument index="2" name="pseed" type="int" />
 			<description>
+				Standard migration method called by the database singleton.
 			</description>
 		</method>
 		<method name="_update_table" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="current_table_version" type="int" />
 			<description>
+				Update your tables if necessary.
+				[method _migrate] calls this when needed.
 			</description>
 		</method>
 		<method name="create_default_entries">
 			<return type="void" />
 			<argument index="0" name="pseed" type="int" />
 			<description>
+				[method _migrate] calls this when needed.
+				Calls [method _create_default_entries].
 			</description>
 		</method>
 		<method name="create_table">
 			<return type="void" />
 			<description>
+				Creates the required table(s).
+				Calls [method _create_table].
 			</description>
 		</method>
 		<method name="drop_table">
 			<return type="void" />
 			<description>
+				Drop the required table(s).
+				Calls [method _drop_table].
 			</description>
 		</method>
 		<method name="get_database_connection">
 			<return type="DatabaseConnection" />
 			<description>
+				Get a [DatabaseConnection] from the current database.
 			</description>
 		</method>
 		<method name="get_query_builder">
 			<return type="QueryBuilder" />
 			<description>
+				Get a [QueryBuilder] from the current database.
 			</description>
 		</method>
 		<method name="get_table_builder">
 			<return type="TableBuilder" />
 			<description>
+				Get a [TableBuilder] from the current database.
 			</description>
 		</method>
 		<method name="migrate">
@@ -74,19 +112,26 @@
 			<argument index="1" name="pseed" type="bool" />
 			<argument index="2" name="arg2" type="int" />
 			<description>
+				Standard migration method called by the database singleton.
+				Calls [method _migrate].
 			</description>
 		</method>
 		<method name="update_table">
 			<return type="void" />
 			<argument index="0" name="current_table_version" type="int" />
 			<description>
+				Update your tables if necessary.
+				[method _migrate] calls this when needed.
+				Calls [method _update_table].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="database" type="Database" setter="set_database" getter="get_database">
+			Lets you set a custom [Database] to be used if [DatabaseManager.ddb] isn't desired.
 		</member>
 		<member name="database_table_name" type="String" setter="set_database_table_name" getter="get_database_table_name" default="&quot;users&quot;">
+			Lets you specify a table name.
 		</member>
 	</members>
 	<constants>

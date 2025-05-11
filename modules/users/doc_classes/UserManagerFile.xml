@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserManagerFile" inherits="UserManager">
 	<brief_description>
+		A UserManager implementation that uses file to store [User]s.
 	</brief_description>
 	<description>
+		A UserManager implementation that uses file to store [User]s.
+		Uses one file per user, and stores data in the json format, so An exclusive folder is recommended that is not used by anything else.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +13,7 @@
 	</methods>
 	<members>
 		<member name="save_folder_path" type="String" setter="set_save_folder_path" getter="get_save_folder_path" default="&quot;user://users/&quot;">
+			The folder where the user data will be stored.
 		</member>
 	</members>
 	<constants>

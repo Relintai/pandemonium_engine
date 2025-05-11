@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserManagerStatic" inherits="UserManager">
 	<brief_description>
+		A UserManager implementation that stores users using it's properties inside the tree.
 	</brief_description>
 	<description>
+		A UserManager implementation that stores users using it's properties inside the tree.
+		Users can be created inside the editor using the inspector.
+		Can be used for testing, and maybe for small non-public facing applications.
+		It's data is serialized with the scene, so it will get restored on restart.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,12 +15,16 @@
 	</methods>
 	<members>
 		<member name="create_user_email" type="String" setter="set_create_user_email" getter="get_create_user_email" default="&quot;&quot;">
+			Used by the editor.
 		</member>
 		<member name="create_user_name" type="String" setter="set_create_user_name" getter="get_create_user_name" default="&quot;&quot;">
+			Used by the editor.
 		</member>
 		<member name="create_user_password" type="String" setter="set_create_user_password" getter="get_create_user_password" default="&quot;&quot;">
+			Used by the editor.
 		</member>
 		<member name="users" type="Array" setter="set_users" getter="get_users" default="[  ]">
+			The list of stored [User]s.
 		</member>
 	</members>
 	<constants>
