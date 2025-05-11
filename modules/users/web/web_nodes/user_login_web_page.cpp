@@ -56,13 +56,10 @@ void UserLoginWebPage::_render_index(Ref<WebServerRequest> request) {
 	LoginRequestData data;
 
 	if (request->get_method() == HTTPServerEnums::HTTP_METHOD_POST) {
-		// this is probably not needed
-		// it's ok for now as I need to test the validators more
 		PoolStringArray errors = _login_validator->validate(request);
 		for (int i = 0; i < errors.size(); ++i) {
 			data.error_str += errors[i] + "<br>";
 		}
-		// not needed end
 
 		data.uname_val = request->get_parameter("username");
 		data.pass_val = request->get_parameter("password");
