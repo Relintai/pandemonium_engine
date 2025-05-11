@@ -358,6 +358,9 @@ void UserManagerDB::_drop_table() {
 }
 
 void UserManagerDB::_update_table(const int p_current_table_version) {
+	//TODO
+	// Add username_internal after username
+	// Add email_internal after email
 }
 
 void UserManagerDB::_create_default_entries(const int p_seed) {
@@ -392,14 +395,10 @@ void UserManagerDB::_migrate(const bool p_clear, const bool p_should_seed, const
 		drop_table();
 		create_table();
 	} else {
-#ifdef MODULE_DATABASE_ENABLED
 		Ref<DatabaseConnection> conn = get_database_connection();
 		ERR_FAIL_COND(!conn.is_valid());
 		int ver = conn->get_table_version(_database_table_name);
 		update_table(ver);
-#else
-		update_table(0);
-#endif
 	}
 
 	if (p_should_seed) {
