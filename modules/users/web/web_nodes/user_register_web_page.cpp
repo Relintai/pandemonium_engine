@@ -38,11 +38,9 @@
 #include "modules/web/html/form_validator.h"
 #include "modules/web/html/html_builder.h"
 #include "modules/web/http/http_server_enums.h"
-#include "modules/web/http/http_session.h"
 #include "modules/web/http/http_session_manager.h"
 #include "modules/web/http/web_permission.h"
 #include "modules/web/http/web_server.h"
-#include "modules/web/http/web_server_cookie.h"
 #include "modules/web/http/web_server_request.h"
 
 String UserRegisterWebPage::get_redirect_on_success_url() {
