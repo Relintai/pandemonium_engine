@@ -218,6 +218,7 @@ Dictionary User::_to_dict() {
 
 			m->read_lock();
 			mdict["index"] = i;
+			mdict["module_name"] = m->get_module_name();
 			mdict["data"] = m->to_dict();
 			m->read_unlock();
 
@@ -246,15 +247,23 @@ void User::_from_dict(const Dictionary &dict) {
 	for (int i = 0; i < marr.size(); ++i) {
 		Dictionary mdict = marr[i];
 
-		if (!mdict.has("index") || !mdict.has("data")) {
-			continue;
+		String module_name;
+
+		if (mdict.has("module_name")) {
+			module_name = mdict["module_name"];
 		}
 
-		int index = mdict["index"];
-		
-		ERR_CONTINUE(index < 0 || index >= _modules.size());
-		
-		Ref<UserModule> m = _modules[index];
+		Ref<UserModule> m;
+
+		if (module_name.empty()) {
+			int index = mdict["index"];
+
+			ERR_CONTINUE(index < 0 || index >= _modules.size());
+
+			m = _modules[index];
+		} else {
+			m = get_module_named(module_name);
+		}
 
 		ERR_CONTINUE(!m.is_valid());
 
