@@ -44,6 +44,9 @@ class UserManager : public Node {
 	GDCLASS(UserManager, Node);
 
 public:
+	bool get_register_as_global() const;
+	void set_register_as_global(const bool p_global);
+
 	Ref<User> get_user(const int id);
 	Ref<User> get_user_name(const String &user_name);
 	Ref<User> get_user_email(const String &user_email);
@@ -78,6 +81,8 @@ protected:
 	void _notification(int p_what);
 
 	static void _bind_methods();
+	
+	bool _register_as_global;
 };
 
 #endif

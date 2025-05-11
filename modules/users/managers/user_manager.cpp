@@ -36,6 +36,13 @@
 #include "../singleton/user_db.h"
 #include "../users/user.h"
 
+bool UserManager::get_register_as_global() const {
+	return _register_as_global;
+}
+void UserManager::set_register_as_global(const bool p_global) {
+	_register_as_global = p_global;
+}
+
 Ref<User> UserManager::get_user(const int id) {
 	return call("_get_user", id);
 }
@@ -106,20 +113,32 @@ Array UserManager::_get_all_users() {
 }
 
 UserManager::UserManager() {
+	_register_as_global = true;
 }
 
 UserManager::~UserManager() {
 }
 
 void UserManager::_notification(int p_what) {
-	if (p_what == NOTIFICATION_POST_ENTER_TREE) {
-		if (!Engine::get_singleton()->is_editor_hint()) {
-			UserDB::get_singleton()->set_user_manager(this);
+	switch (p_what) {
+		case NOTIFICATION_POST_ENTER_TREE: {
+			if (_register_as_global && !Engine::get_singleton()->is_editor_hint()) {
+				UserDB::get_singleton()->set_user_manager(this);
+			}
+		}
+		case NOTIFICATION_EXIT_TREE: {
+			if (_register_as_global && !Engine::get_singleton()->is_editor_hint()) {
+				UserDB::get_singleton()->unset_user_manager(this);
+			}
 		}
 	}
 }
 
 void UserManager::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_register_as_global"), &UserManager::get_register_as_global);
+	ClassDB::bind_method(D_METHOD("set_register_as_global", "global"), &UserManager::set_register_as_global);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "register_as_global"), "set_register_as_global", "get_register_as_global");
+
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "User"), "_get_user", PropertyInfo(Variant::INT, "id")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "User"), "_get_user_name", PropertyInfo(Variant::STRING, "user_name")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "User"), "_get_user_email", PropertyInfo(Variant::STRING, "user_email")));

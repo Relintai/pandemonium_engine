@@ -84,6 +84,11 @@ UserManager *UserDB::get_user_manager() {
 void UserDB::set_user_manager(UserManager *um) {
 	_user_manager = um;
 }
+void UserDB::unset_user_manager(UserManager *um) {
+	if (_user_manager == um) {
+		_user_manager = NULL;
+	}
+}
 Node *UserDB::get_user_manager_bind() {
 	return _user_manager;
 }

@@ -71,6 +71,7 @@ public:
 
 	UserManager *get_user_manager();
 	void set_user_manager(UserManager *um);
+	void unset_user_manager(UserManager *um);
 
 	static UserDB *get_singleton();
 
