@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserManager" inherits="Node">
 	<brief_description>
+		Manages the [User]s of your application.
 	</brief_description>
 	<description>
+		Manages the [User]s of your application.
+		If register_as_global is true it will register itself when entering the tree as the global instance accessible behind [UserDB]'s api.
+		Please note that only one instance can be set as global at a time.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,96 +15,146 @@
 			<return type="User" />
 			<argument index="0" name="user" type="User" />
 			<description>
+				Creates a and sets up a [User] suitable to the application's and [UserManager] backend's needs.
+				[method create_user] calls this.
+				The [code]user[/code] parameter allows for setting up classes that inherit from [User].
+				This is the method where [UserModule]s that the application always expects to be present should be set up.
+				Example:
+				[code]func _create_user(user: User) -> User:
+				    if !user:
+				      user = InheritedUser.new()
+				
+				    var um : SomeUserModule = SomeUserModule.new()
+				    um.module_name = "SomeUserModule"
+				    user.add_module(um)
+
+				    return ._create_user(user)[/code]
 			</description>
 		</method>
 		<method name="_get_all_users" qualifiers="virtual">
 			<return type="Array" />
 			<description>
+				Returns all users.
+				[method get_all_users] calls this.
 			</description>
 		</method>
 		<method name="_get_user" qualifiers="virtual">
 			<return type="User" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Returns the [User] which have the given id or null if it doens't exists.
+				[method get_user] calls this.
 			</description>
 		</method>
 		<method name="_get_user_email" qualifiers="virtual">
 			<return type="User" />
 			<argument index="0" name="user_email" type="String" />
 			<description>
+				Returns the [User] which have the given email or null if it doens't exists.
+				[method get_user_email] calls this.
 			</description>
 		</method>
 		<method name="_get_user_name" qualifiers="virtual">
 			<return type="User" />
 			<argument index="0" name="user_name" type="String" />
 			<description>
+				Returns the [User] which have the given user_name or null if it doens't exists.
+				[method get_user_name] calls this.
 			</description>
 		</method>
 		<method name="_is_email_taken" qualifiers="virtual">
 			<return type="bool" />
 			<argument index="0" name="email" type="String" />
 			<description>
+				Returns whether an email is taken or not.
+				[method is_email_taken] calls this.
 			</description>
 		</method>
 		<method name="_is_username_taken" qualifiers="virtual">
 			<return type="bool" />
 			<argument index="0" name="user_name" type="String" />
 			<description>
+				Returns whether a user name is taken or not.
+				[method is_username_taken] calls this.
 			</description>
 		</method>
 		<method name="_save_user" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="user" type="User" />
 			<description>
+				Save the [User].
+				[method save_user] calls this.
 			</description>
 		</method>
 		<method name="create_user">
 			<return type="User" />
 			<description>
+				Create a [User].
+				Calls [method _create_user].
 			</description>
 		</method>
 		<method name="get_all_users">
 			<return type="Array" />
 			<description>
+				Returns all users.
+				Calls [method _get_all_users].
 			</description>
 		</method>
 		<method name="get_user">
 			<return type="User" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Returns the [User] which have the given id or null if it doens't exists.
+				Calls [method _get_user].
 			</description>
 		</method>
 		<method name="get_user_email">
 			<return type="User" />
 			<argument index="0" name="user_email" type="String" />
 			<description>
+				Returns the [User] which have the given email or null if it doens't exists.
+				Calls [method _get_user_email].
 			</description>
 		</method>
 		<method name="get_user_name">
 			<return type="User" />
 			<argument index="0" name="user_name" type="String" />
 			<description>
+				Returns the [User] which have the given user_name or null if it doens't exists.
+				Calls [method _get_user_name].
 			</description>
 		</method>
 		<method name="is_email_taken">
 			<return type="bool" />
 			<argument index="0" name="email" type="String" />
 			<description>
+				Returns whether an email is taken or not.
+				Calls [method _is_email_taken].
 			</description>
 		</method>
 		<method name="is_username_taken">
 			<return type="bool" />
 			<argument index="0" name="user_name" type="String" />
 			<description>
+				Returns whether a user name is taken or not.
+				Calls [method _is_username_taken].
 			</description>
 		</method>
 		<method name="save_user">
 			<return type="void" />
 			<argument index="0" name="user" type="User" />
 			<description>
+				Save the [User].
+				Calls [method _save_user].
 			</description>
 		</method>
 	</methods>
+	<members>
+		<member name="register_as_global" type="bool" setter="set_register_as_global" getter="get_register_as_global" default="true">
+			If true this UserManager will register itself when entering the tree as the global instance accessible behind [UsereDB]'s api.
+			Please note that only one instance can be set as global at a time.
+		</member>
+	</members>
 	<constants>
 	</constants>
 </class>
