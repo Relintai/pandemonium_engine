@@ -1,168 +1,240 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="User" inherits="Resource">
 	<brief_description>
+		Represents a User account in your application.
 	</brief_description>
 	<description>
+		Represents a User account in your application.
+		Can be extended using both inheritance and [UserModule]s. [UserModule]s are more dynamic compared to inheritance, but they can also be made always available. 
+		Since applications need to be able to create [User] classes from multiple places, and both their setup and their storage can get very involved, this is handled by [UserDB] and [UserManager]s. This also means means, that:
+		- Always create them using [method UserDB.create_user], to get a proper subclass with the proper [UserModule] setup that your application expects.
+		User accounts (due to their nature) might need to be used in a heavily concurent environment. The web module is a perfect example of this. Due to this, internally they have an [RWLock] and they provide an api so it can be controlled from the outside.
+		Please note that [RWLock]s are not re-entrant! This means that the same thread cannot lock it more than once! This also means that this class can't automatically close it's own lock. (Note that similar classes work the same way.)
+		In Essence:
+		- Always close locks when doing more than one operations on them at once.
+		- Always close the locks for writes.
+		- Sometimes you can get away with not read locking when doing single reads.
+		- You can ignore using locks if you don't use threading.
+		Note that When handling concurrency with these types of classes, preserving atomicity is the most important. Imagine that you are running a multithreaded web application, and 2 users try to edit the same resource at the same time. What you don't want is to end up with data that is interwoven of the two different requests. (If you don't want to lose an edit due to this, build a changelog feature for that specific class.)
 	</description>
 	<tutorials>
+		<link title="Static user setup">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_static</link>
+		<link title="Website with users using the SQLite db backend">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap, templated">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap_templated</link>
 	</tutorials>
 	<methods>
 		<method name="_check_password" qualifiers="virtual">
 			<return type="bool" />
 			<argument index="0" name="password" type="String" />
 			<description>
+				Checks whether a supplied password matches the stored one.
+				[method check_password] calls this.
+				By default it calls [method hash_password] and checks whether it matches the stored hash.
 			</description>
 		</method>
 		<method name="_create_password" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="password" type="String" />
 			<description>
+				Sets up internal data from the given password string.
+				[method create_password] calls this.
+				By default it will set up pre and post salt, and then create the final password hash using [method hash_password]. Set up everything that your [method hash_password] implementation needs in this method.
+				Note: Do not store passwords. Ever. Always use hashes, because they are directly irreversible. Unfortunately this doesn't mean they are immune to being cracked. Actually reversing them is done by trying lots of inputs until one hashes to the same value. Since this takes lots of processing power it's worth to precalculate these [code]key - hash[/code] pairs for all combinations under a certain string length threshold. So salting passwords (adding characters to them) is recommended to make them longer before generating the final hash to make these (rainbow) tables unusable. Also don't use hashes that are considered insecure for this specific use case by the standards of the time. (Don't use md5!)
 			</description>
 		</method>
 		<method name="_from_dict" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Restores internal state using the dictionary received from [method to_dict].
+				[method from_dict] calls this.
 			</description>
 		</method>
 		<method name="_hash_password" qualifiers="virtual">
 			<return type="String" />
 			<argument index="0" name="password" type="String" />
 			<description>
+				Hashes the given password.
+				[method hash_password] calls this.
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Returns the internal state as a [Dictionary].
+				[method to_dict] calls this.
 			</description>
 		</method>
 		<method name="add_module">
 			<return type="void" />
 			<argument index="0" name="module" type="UserModule" />
 			<description>
+				Adds a [UserModule].
 			</description>
 		</method>
 		<method name="check_password">
 			<return type="bool" />
 			<argument index="0" name="password" type="String" />
 			<description>
+				Checks whether the given password matches the stored hashes.
+				Calls [method _check_password].
 			</description>
 		</method>
 		<method name="create_password">
 			<return type="void" />
 			<argument index="0" name="password" type="String" />
 			<description>
+				Creates (= sets) the given string as the new password for the user.
+				Calls [method _create_password].
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Restores internal state using the dictionary received from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="from_json">
 			<return type="void" />
 			<argument index="0" name="data" type="String" />
 			<description>
+				Restores internal state from json.
+				Uses [method from_dict] internally.
 			</description>
 		</method>
 		<method name="get_module">
 			<return type="UserModule" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the stored [UserModule] at index.
 			</description>
 		</method>
 		<method name="get_module_count">
 			<return type="int" />
 			<description>
+				Returns how many [UserModule]s are stored.
 			</description>
 		</method>
 		<method name="get_module_named">
 			<return type="UserModule" />
 			<argument index="0" name="name" type="String" />
 			<description>
+				Returns the stored [UserModule] that has it's name set as the name parameter.
 			</description>
 		</method>
 		<method name="hash_password">
 			<return type="String" />
 			<argument index="0" name="password" type="String" />
 			<description>
+				Hashes the given password.
+				Calls [method _hash_password].
 			</description>
 		</method>
 		<method name="read_lock">
 			<return type="void" />
 			<description>
+				Locks the built in RWLock for read access, blocks until it is unlocked by the current owner.
+				Note: This function returns without blocking if the thread already has ownership of the rwlock.
 			</description>
 		</method>
 		<method name="read_try_lock">
 			<return type="int" enum="Error" />
 			<description>
+				Tries locking the built in RWLock for read access, but does not block. Returns OK on success, ERR_BUSY otherwise.
+				Note: This function returns OK if the thread already has ownership of the rwlock.
 			</description>
 		</method>
 		<method name="read_unlock">
 			<return type="void" />
 			<description>
+				Unlocks the built in RWLock for read access, leaving it to other threads.
+				Note: If a thread called lock() or try_lock() multiple times while already having ownership of the rwlock, it must also call unlock() the same number of times in order to unlock it correctly.
 			</description>
 		</method>
 		<method name="remove_module">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removed the [UserModule] at index.
 			</description>
 		</method>
 		<method name="save">
 			<return type="void" />
 			<description>
+				Notifies the active [UserManager] that this User needs to be saved.
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Returns the internal state as a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 		<method name="to_json">
 			<return type="String" />
 			<description>
+				Returns the internal state as json.
+				Uses [method to_dict] internally.
 			</description>
 		</method>
 		<method name="write_lock">
 			<return type="void" />
 			<description>
+				Locks the built in RWLock for write access, blocks until it is unlocked by the current owner.
+				Note: This function will deadlock if the thread already has ownership of the rwlock!
 			</description>
 		</method>
 		<method name="write_try_lock">
 			<return type="int" enum="Error" />
 			<description>
+				Tries locking the built in RWLock for write access, but does not block. Returns OK on success, ERR_BUSY otherwise.
+				Note: This function returns ERR_BUSY if the thread already has ownership of the rwlock.
 			</description>
 		</method>
 		<method name="write_unlock">
 			<return type="void" />
 			<description>
+				Unlocks the built in RWLock for write access, leaving it to other threads.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="banned" type="bool" setter="set_banned" getter="get_banned" default="false">
+			Is the user banned?
 		</member>
 		<member name="email" type="String" setter="set_email" getter="get_email" default="&quot;&quot;">
+			THe user's email?
 		</member>
 		<member name="locked" type="bool" setter="set_locked" getter="get_locked" default="false">
+			Is this user account locked?
 		</member>
 		<member name="modules" type="Array" setter="set_modules" getter="get_modules" default="[  ]">
+			All added [UserModule]s.
 		</member>
 		<member name="password_hash" type="String" setter="set_password_hash" getter="get_password_hash" default="&quot;&quot;">
+			The current password hash.
 		</member>
 		<member name="password_reset_token" type="String" setter="set_password_reset_token" getter="get_password_reset_token" default="&quot;&quot;">
+			The active password reset token.
 		</member>
 		<member name="post_salt" type="String" setter="set_post_salt" getter="get_post_salt" default="&quot;&quot;">
+			Post salt for calculating the password hash.
 		</member>
 		<member name="pre_salt" type="String" setter="set_pre_salt" getter="get_pre_salt" default="&quot;&quot;">
+			Pre salt for calculating the password hash.
 		</member>
 		<member name="rank" type="int" setter="set_rank" getter="get_rank" default="0">
+			The user's rank. Starts at 0. 0 should be the lowest rank (do not use 0 as the admin rank) to avoid accidental issues by not initializing it somewhere properly.
 		</member>
 		<member name="user_id" type="int" setter="set_user_id" getter="get_user_id" default="-1">
+			The user's id.
 		</member>
 		<member name="user_name" type="String" setter="set_user_name" getter="get_user_name" default="&quot;&quot;">
+			The user's name.
 		</member>
 	</members>
 	<constants>
