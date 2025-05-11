@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserModule" inherits="Resource">
 	<brief_description>
+		A class that can store additional data for a [User] in a more dynamic way compared to inheritance.
 	</brief_description>
 	<description>
+		A class that can store additional data for a [User] in a more dynamic way compared to inheritance.
+		User accounts (due to their nature) might need to be used in a heavily concurent environment. The web module is a perfect example of this. Due to this, internally they have an [RWLock] and they provide an api so it can be controlled from the outside.
+		Please note that [RWLock]s are not re-entrant! This means that the same thread cannot lock it more than once! This also means that this class can't automatically close it's own lock. (Note that similar classes work the same way.)
+		In Essence:
+		- Always close locks when doing more than one operations on them at once.
+		- Always close the locks for writes.
+		- Sometimes you can get away with not read locking when doing single reads.
+		- You can ignore using locks if you don't use threading.
+		Note that When handling concurrency with these types of classes, preserving atomicity is the most important. Imagine that you are running a multithreaded web application, and 2 users try to edit the same resource at the same time. What you don't want is to end up with data that is interwoven of the two different requests. (If you don't want to lose an edit due to this, build a changelog feature for that specific class.)
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,67 +21,89 @@
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Restores internal state using the dictionary received from [method to_dict].
+				[method from_dict] calls this.
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Returns the internal state as a [Dictionary].
+				[method to_dict] calls this.
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Restores internal state using the dictionary received from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="get_module_index" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the index of this class in it's owner [User].
 			</description>
 		</method>
 		<method name="get_user">
 			<return type="User" />
 			<description>
+				Returns the [User] this class belongs to.
 			</description>
 		</method>
 		<method name="read_lock">
 			<return type="void" />
 			<description>
+				Locks the built in RWLock for read access, blocks until it is unlocked by the current owner.
+				Note: This function returns without blocking if the thread already has ownership of the rwlock.
 			</description>
 		</method>
 		<method name="read_try_lock">
 			<return type="int" enum="Error" />
 			<description>
+				Tries locking the built in RWLock for read access, but does not block. Returns OK on success, ERR_BUSY otherwise.
+				Note: This function returns OK if the thread already has ownership of the rwlock.
 			</description>
 		</method>
 		<method name="read_unlock">
 			<return type="void" />
 			<description>
+				Unlocks the built in RWLock for read access, leaving it to other threads.
+				Note: If a thread called lock() or try_lock() multiple times while already having ownership of the rwlock, it must also call unlock() the same number of times in order to unlock it correctly.
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Returns the internal state as a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 		<method name="write_lock">
 			<return type="void" />
 			<description>
+				Locks the built in RWLock for write access, blocks until it is unlocked by the current owner.
+				Note: This function will deadlock if the thread already has ownership of the rwlock!
 			</description>
 		</method>
 		<method name="write_try_lock">
 			<return type="int" enum="Error" />
 			<description>
+				Tries locking the built in RWLock for write access, but does not block. Returns OK on success, ERR_BUSY otherwise.
+				Note: This function returns ERR_BUSY if the thread already has ownership of the rwlock.
 			</description>
 		</method>
 		<method name="write_unlock">
 			<return type="void" />
 			<description>
+				Unlocks the built in RWLock for write access, leaving it to other threads.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="module_name" type="String" setter="set_module_name" getter="get_module_name" default="&quot;&quot;">
+			Returns the name of this module. [User]s can return modules based on this name.
 		</member>
 	</members>
 	<constants>
