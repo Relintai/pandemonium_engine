@@ -216,8 +216,10 @@ Dictionary User::_to_dict() {
 		if (m.is_valid()) {
 			Dictionary mdict;
 
+			m->read_lock();
 			mdict["index"] = i;
 			mdict["data"] = m->to_dict();
+			m->read_unlock();
 
 			marr.push_back(mdict);
 		}
@@ -256,7 +258,9 @@ void User::_from_dict(const Dictionary &dict) {
 
 		ERR_CONTINUE(!m.is_valid());
 
+		m->write_lock();
 		m->from_dict(mdict["data"]);
+		m->write_unlock();
 	}
 }
 
