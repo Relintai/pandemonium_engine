@@ -60,15 +60,15 @@ public:
 	Ref<QueryBuilder> get_query_builder();
 
 	Ref<User> _get_user(const int id);
-	Ref<User> _get_user_name(const String &user);
-	Ref<User> _get_user_email(const String &user_email);
+	Ref<User> _get_user_name(const String &p_user_name);
+	Ref<User> _get_user_email(const String &p_user_email);
 
 	void _save_user(Ref<User> user);
 
 	Ref<User> _create_user(Ref<User> p_user);
 
-	bool _is_username_taken(const String &user_name);
-	bool _is_email_taken(const String &email);
+	bool _is_username_taken(const String &p_user_name);
+	bool _is_email_taken(const String &p_email);
 
 	Array _get_all_users();
 

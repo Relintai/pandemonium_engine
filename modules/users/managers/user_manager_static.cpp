@@ -38,12 +38,14 @@ Ref<User> UserManagerStatic::_get_user(const int id) {
 
 	return _users[id];
 }
-Ref<User> UserManagerStatic::_get_user_name(const String &user_name) {
+Ref<User> UserManagerStatic::_get_user_name(const String &p_user_name) {
+	String user_name = User::string_to_internal_format(p_user_name);
+
 	for (int i = 0; i < _users.size(); ++i) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_user_name() == user_name) {
+			if (u->get_user_name_internal() == user_name) {
 				return u;
 			}
 		}
@@ -51,12 +53,14 @@ Ref<User> UserManagerStatic::_get_user_name(const String &user_name) {
 
 	return Ref<User>();
 }
-Ref<User> UserManagerStatic::_get_user_email(const String &user_email) {
+Ref<User> UserManagerStatic::_get_user_email(const String &p_user_email) {
+	String user_email = User::string_to_internal_format(p_user_email);
+
 	for (int i = 0; i < _users.size(); ++i) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_email() == user_email) {
+			if (u->get_email_internal() == user_email) {
 				return u;
 			}
 		}
@@ -76,14 +80,16 @@ Ref<User> UserManagerStatic::_create_user(Ref<User> p_user) {
 	p_user->set_user_id(_users.size());
 	_users.push_back(p_user);
 
-	return p_user;
+	return UserManager::_create_user(p_user);
 }
-bool UserManagerStatic::_is_username_taken(const String &user_name) {
+bool UserManagerStatic::_is_username_taken(const String &p_user_name) {
+	String user_name = User::string_to_internal_format(p_user_name);
+
 	for (int i = 0; i < _users.size(); ++i) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_user_name() == user_name) {
+			if (u->get_user_name_internal() == user_name) {
 				return true;
 			}
 		}
@@ -91,12 +97,14 @@ bool UserManagerStatic::_is_username_taken(const String &user_name) {
 
 	return false;
 }
-bool UserManagerStatic::_is_email_taken(const String &email) {
+bool UserManagerStatic::_is_email_taken(const String &p_email) {
+	String email = User::string_to_internal_format(p_email);
+	
 	for (int i = 0; i < _users.size(); ++i) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_email() == email) {
+			if (u->get_email_internal() == email) {
 				return true;
 			}
 		}

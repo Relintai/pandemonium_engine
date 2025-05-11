@@ -104,6 +104,7 @@ Ref<User> UserManagerDB::_get_user(const int id) {
 
 	Ref<QueryBuilder> b = get_query_builder();
 
+	// username_internal, email_internal doesn't need to be queried
 	b->select("username, email, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
 	b->from(_database_table_name);
 
@@ -133,50 +134,18 @@ Ref<User> UserManagerDB::_get_user(const int id) {
 
 	return user;
 }
-Ref<User> UserManagerDB::_get_user_name(const String &user_name) {
-	if (user_name.empty()) {
+Ref<User> UserManagerDB::_get_user_name(const String &p_user_name) {
+	if (p_user_name.empty()) {
 		return Ref<User>();
 	}
+
+	String user_name = User::string_to_internal_format(p_user_name);
 
 	Ref<QueryBuilder> b = get_query_builder();
 
-	b->select("id, email, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
+	b->select("id, username, email, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
 	b->from(_database_table_name);
-	b->where()->wps("username", user_name);
-	b->end_command();
-
-	Ref<QueryResult> r = b->run();
-
-	if (!r->next_row()) {
-		return Ref<User>();
-	}
-
-	Ref<User> user;
-	user = create_user();
-
-	user->set_user_id(r->get_cell_int(0));
-	user->set_user_name(user_name);
-	user->set_email(r->get_cell(1));
-	user->set_rank(r->get_cell_int(2));
-	user->set_pre_salt(r->get_cell(3));
-	user->set_post_salt(r->get_cell(4));
-	user->set_password_hash(r->get_cell(5));
-	user->set_banned(r->get_cell_bool(6));
-	user->set_password_reset_token(r->get_cell(7));
-	user->set_locked(r->get_cell_bool(8));
-
-	return user;
-}
-Ref<User> UserManagerDB::_get_user_email(const String &user_email) {
-	if (user_email.empty()) {
-		return Ref<User>();
-	}
-
-	Ref<QueryBuilder> b = get_query_builder();
-
-	b->select("id, username, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
-	b->from(_database_table_name);
-	b->where()->wps("email", user_email);
+	b->where()->wps("username_internal", user_name);
 	b->end_command();
 
 	Ref<QueryResult> r = b->run();
@@ -190,14 +159,50 @@ Ref<User> UserManagerDB::_get_user_email(const String &user_email) {
 
 	user->set_user_id(r->get_cell_int(0));
 	user->set_user_name(r->get_cell(1));
-	user->set_email(user_email);
-	user->set_rank(r->get_cell_int(2));
-	user->set_pre_salt(r->get_cell(3));
-	user->set_post_salt(r->get_cell(4));
-	user->set_password_hash(r->get_cell(5));
-	user->set_banned(r->get_cell_bool(6));
-	user->set_password_reset_token(r->get_cell(7));
-	user->set_locked(r->get_cell_bool(8));
+	user->set_email(r->get_cell(2));
+	user->set_rank(r->get_cell_int(3));
+	user->set_pre_salt(r->get_cell(4));
+	user->set_post_salt(r->get_cell(5));
+	user->set_password_hash(r->get_cell(6));
+	user->set_banned(r->get_cell_bool(7));
+	user->set_password_reset_token(r->get_cell(8));
+	user->set_locked(r->get_cell_bool(9));
+
+	return user;
+}
+Ref<User> UserManagerDB::_get_user_email(const String &p_user_email) {
+	if (p_user_email.empty()) {
+		return Ref<User>();
+	}
+
+	String user_email = User::string_to_internal_format(p_user_email);
+
+	Ref<QueryBuilder> b = get_query_builder();
+
+	b->select("id, username, email, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
+	b->from(_database_table_name);
+	b->where()->wps("email_internal", user_email);
+	b->end_command();
+
+	Ref<QueryResult> r = b->run();
+
+	if (!r->next_row()) {
+		return Ref<User>();
+	}
+
+	Ref<User> user;
+	user = create_user();
+
+	user->set_user_id(r->get_cell_int(0));
+	user->set_user_name(r->get_cell(1));
+	user->set_email(r->get_cell(2));
+	user->set_rank(r->get_cell_int(3));
+	user->set_pre_salt(r->get_cell(4));
+	user->set_post_salt(r->get_cell(5));
+	user->set_password_hash(r->get_cell(6));
+	user->set_banned(r->get_cell_bool(7));
+	user->set_password_reset_token(r->get_cell(8));
+	user->set_locked(r->get_cell_bool(9));
 
 	return user;
 }
@@ -206,11 +211,13 @@ void UserManagerDB::_save_user(Ref<User> user) {
 	Ref<QueryBuilder> b = get_query_builder();
 
 	if (user->get_user_id() == -1) {
-		b->insert(_database_table_name, "username, email, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
+		b->insert(_database_table_name, "username, username_internal, email, email_internal, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
 
 		b->values();
 		b->vals(user->get_user_name());
+		b->vals(user->get_user_name_internal());
 		b->vals(user->get_email());
+		b->vals(user->get_email_internal());
 		b->vali(user->get_rank());
 		b->vals(user->get_pre_salt());
 		b->vals(user->get_post_salt());
@@ -230,7 +237,9 @@ void UserManagerDB::_save_user(Ref<User> user) {
 		b->update(_database_table_name);
 		b->sets();
 		b->setps("username", user->get_user_name());
+		b->setps("username_internal", user->get_user_name_internal());
 		b->setps("email", user->get_email());
+		b->setps("email_internal", user->get_email_internal());
 		b->setpi("rank", user->get_rank());
 		b->setps("pre_salt", user->get_pre_salt());
 		b->setps("post_salt", user->get_post_salt());
@@ -251,21 +260,25 @@ Ref<User> UserManagerDB::_create_user(Ref<User> p_user) {
 		p_user.instance();
 	}
 
-	return p_user;
+	return UserManager::_create_user(p_user);
 }
-bool UserManagerDB::_is_username_taken(const String &user_name) {
+bool UserManagerDB::_is_username_taken(const String &p_user_name) {
 	Ref<QueryBuilder> b = get_query_builder();
 
-	b->select("id")->from(_database_table_name)->where("username")->like(user_name)->end_command();
+	String user_name = User::string_to_internal_format(p_user_name);
+
+	b->select("id")->from(_database_table_name)->where("username_internal")->like(user_name)->end_command();
 
 	Ref<QueryResult> r = b->run();
 
 	return r->next_row();
 }
-bool UserManagerDB::_is_email_taken(const String &email) {
+bool UserManagerDB::_is_email_taken(const String &p_email) {
 	Ref<QueryBuilder> b = get_query_builder();
 
-	b->select("id")->from(_database_table_name)->where("username")->like(email)->end_command();
+	String email = User::string_to_internal_format(p_email);
+
+	b->select("id")->from(_database_table_name)->where("email_internal")->like(email)->end_command();
 
 	Ref<QueryResult> r = b->run();
 
@@ -323,7 +336,9 @@ void UserManagerDB::_create_table() {
 	tb->create_table(_database_table_name);
 	tb->integer("id")->auto_increment()->next_row();
 	tb->varchar("username", 60)->not_null()->next_row();
+	tb->varchar("username_internal", 60)->not_null()->next_row();
 	tb->varchar("email", 100)->not_null()->next_row();
+	tb->varchar("email_internal", 100)->not_null()->next_row();
 	tb->integer("rank")->not_null()->next_row();
 	tb->varchar("pre_salt", 100)->next_row();
 	tb->varchar("post_salt", 100)->next_row();

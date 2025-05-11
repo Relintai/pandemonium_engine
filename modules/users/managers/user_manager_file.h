@@ -49,15 +49,15 @@ public:
 	void set_save_folder_path(const String &val);
 
 	virtual Ref<User> _get_user(const int id);
-	virtual Ref<User> _get_user_name(const String &user);
-	virtual Ref<User> _get_user_email(const String &user_email);
+	virtual Ref<User> _get_user_name(const String &p_user_name);
+	virtual Ref<User> _get_user_email(const String &p_user_email);
 
-	virtual void _save_user(Ref<User> user);
+	virtual void _save_user(Ref<User> p_user);
 
 	virtual Ref<User> _create_user(Ref<User> p_user);
 
-	virtual bool _is_username_taken(const String &user_name);
-	virtual bool _is_email_taken(const String &email);
+	virtual bool _is_username_taken(const String &p_user_name);
+	virtual bool _is_email_taken(const String &p_email);
 
 	virtual Array _get_all_users();
 

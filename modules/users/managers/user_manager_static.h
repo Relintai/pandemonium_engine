@@ -46,7 +46,7 @@ class UserManagerStatic : public UserManager {
 
 public:
 	Ref<User> _get_user(const int id);
-	Ref<User> _get_user_name(const String &user);
+	Ref<User> _get_user_name(const String &p_user_name);
 	Ref<User> _get_user_email(const String &user_email);
 
 	void _save_user(Ref<User> user);

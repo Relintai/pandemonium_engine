@@ -72,10 +72,10 @@ Ref<User> UserManagerFile::_get_user(const int id) {
 
 	return Ref<User>();
 }
-Ref<User> UserManagerFile::_get_user_name(const String &user_name) {
-	// TODO check only the lowercase version, also strip it, so User and UsEr counts as the same
-	// This should also be done with all backends
-	// Also a hashmap could be used
+Ref<User> UserManagerFile::_get_user_name(const String &p_user_name) {
+	// A hashmap could be used
+
+	String user_name = User::string_to_internal_format(p_user_name);
 
 	_rw_lock.read_lock();
 
@@ -83,7 +83,7 @@ Ref<User> UserManagerFile::_get_user_name(const String &user_name) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_user_name() == user_name) {
+			if (u->get_user_name_internal() == user_name) {
 				_rw_lock.read_unlock();
 
 				return u;
@@ -95,10 +95,10 @@ Ref<User> UserManagerFile::_get_user_name(const String &user_name) {
 
 	return Ref<User>();
 }
-Ref<User> UserManagerFile::_get_user_email(const String &user_email) {
-	// TODO check only the lowercase version, also strip it, so User and UsEr counts as the same
-	// This should also be done with all backends
-	// Also a hashmap could be used
+Ref<User> UserManagerFile::_get_user_email(const String &p_user_email) {
+	// A hashmap could be used
+
+	String user_email = User::string_to_internal_format(p_user_email);
 
 	_rw_lock.read_lock();
 
@@ -106,7 +106,7 @@ Ref<User> UserManagerFile::_get_user_email(const String &user_email) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_email() == user_email) {
+			if (u->get_email_internal() == user_email) {
 				_rw_lock.read_unlock();
 
 				return u;
@@ -119,8 +119,8 @@ Ref<User> UserManagerFile::_get_user_email(const String &user_email) {
 	return Ref<User>();
 }
 
-void UserManagerFile::_save_user(Ref<User> user) {
-	ERR_FAIL_COND(!user.is_valid());
+void UserManagerFile::_save_user(Ref<User> p_user) {
+	ERR_FAIL_COND(!p_user.is_valid());
 
 	if (!DirAccess::exists(_save_folder_path)) {
 		DirAccess *diru = DirAccess::create_for_path(_save_folder_path);
@@ -131,24 +131,24 @@ void UserManagerFile::_save_user(Ref<User> user) {
 		memdelete(diru);
 	}
 
-	if (user->get_user_id() == -1) {
+	if (p_user->get_user_id() == -1) {
 		_rw_lock.write_lock();
-		user->write_lock();
+		p_user->write_lock();
 
 		// check again, because threading
-		if (user->get_user_id() == -1) {
-			user->set_user_id(_next_id++);
-			_users.push_back(user);
+		if (p_user->get_user_id() == -1) {
+			p_user->set_user_id(_next_id++);
+			_users.push_back(p_user);
 		}
 
-		user->write_unlock();
+		p_user->write_unlock();
 		_rw_lock.write_unlock();
 	}
 
-	user->read_lock();
-	int id = user->get_user_id();
-	String data = user->to_json();
-	user->read_unlock();
+	p_user->read_lock();
+	int id = p_user->get_user_id();
+	String data = p_user->to_json();
+	p_user->read_unlock();
 
 	FileAccess *f = FileAccess::open(_save_folder_path.plus_file(itos(id) + ".json"), FileAccess::WRITE);
 
@@ -165,12 +165,12 @@ Ref<User> UserManagerFile::_create_user(Ref<User> p_user) {
 		p_user->set_user_id(-1);
 	}
 
-	return p_user;
+	return UserManager::_create_user(p_user);
 }
-bool UserManagerFile::_is_username_taken(const String &user_name) {
-	// TODO check only the lowercase version, also strip it, so User and UsEr counts as the same
-	// This should also be done with all backends
-	// Also a hashmap could be used
+bool UserManagerFile::_is_username_taken(const String &p_user_name) {
+	// A hashmap could be used
+
+	String user_name = User::string_to_internal_format(p_user_name);
 
 	_rw_lock.read_lock();
 
@@ -178,7 +178,7 @@ bool UserManagerFile::_is_username_taken(const String &user_name) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_user_name() == user_name) {
+			if (u->get_user_name_internal() == user_name) {
 				_rw_lock.read_unlock();
 				return true;
 			}
@@ -189,10 +189,10 @@ bool UserManagerFile::_is_username_taken(const String &user_name) {
 
 	return false;
 }
-bool UserManagerFile::_is_email_taken(const String &email) {
-	// TODO check only the lowercase version, also strip it, so User@a.com and UsEr@A.com counts as the same
-	// This should also be done with all backends
-	// Also a hashmap could be used
+bool UserManagerFile::_is_email_taken(const String &p_email) {
+	// A hashmap could be used
+
+	String email = User::string_to_internal_format(p_email);
 
 	_rw_lock.read_lock();
 
@@ -200,7 +200,7 @@ bool UserManagerFile::_is_email_taken(const String &email) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_email() == email) {
+			if (u->get_email_internal() == email) {
 				_rw_lock.read_unlock();
 				return true;
 			}
