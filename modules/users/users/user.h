@@ -115,6 +115,8 @@ public:
 	void read_unlock();
 	void write_lock();
 	void write_unlock();
+	Error read_try_lock();
+	Error write_try_lock();
 
 	User();
 	~User();

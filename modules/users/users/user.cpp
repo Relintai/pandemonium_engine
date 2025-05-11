@@ -316,6 +316,12 @@ void User::write_lock() {
 void User::write_unlock() {
 	_rw_lock.write_unlock();
 }
+Error User::read_try_lock() {
+	return _rw_lock.read_try_lock();
+}
+Error User::write_try_lock() {
+	return _rw_lock.write_try_lock();
+}
 
 User::User() {
 	_user_id = -1;
@@ -413,6 +419,8 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("read_unlock"), &User::read_unlock);
 	ClassDB::bind_method(D_METHOD("write_lock"), &User::write_lock);
 	ClassDB::bind_method(D_METHOD("write_unlock"), &User::write_unlock);
+	ClassDB::bind_method(D_METHOD("read_try_lock"), &User::read_try_lock);
+	ClassDB::bind_method(D_METHOD("write_try_lock"), &User::write_try_lock);
 
 	BIND_ENUM_CONSTANT(PERMISSION_CREATE);
 	BIND_ENUM_CONSTANT(PERMISSION_READ);
