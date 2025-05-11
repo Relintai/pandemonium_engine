@@ -303,7 +303,17 @@ void User::from_json(const String &data) {
 }
 
 void User::save() {
-	UserDB::get_singleton()->save_user(Ref<User>(this));
+	if (_owner_user_manager == ObjectID()) {
+		// Fallback, owner was not set. Maybe should just complain instead?
+		UserDB::get_singleton()->save_user(Ref<User>(this));
+		return;
+	}
+
+	UserManager *owner_user_manager = ObjectDB::get_instance<UserManager>(_owner_user_manager);
+
+	ERR_FAIL_COND(!owner_user_manager);
+
+	owner_user_manager->save_user(Ref<User>(this));
 }
 
 void User::read_lock() {
