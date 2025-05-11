@@ -326,10 +326,15 @@ Error User::write_try_lock() {
 }
 
 UserManager *User::get_owner_user_manager() {
-	return _owner_user_manager;
+	return ObjectDB::get_instance<UserManager>(_owner_user_manager);
 }
 void User::set_owner_user_manager(UserManager *p_user_manager) {
-	_owner_user_manager = p_user_manager;
+	if (!p_user_manager) {
+		_owner_user_manager = ObjectID();
+		return;
+	}
+
+	_owner_user_manager = p_user_manager->get_instance_id();
 }
 void User::set_owner_user_manager_bind(Node *p_user_manager) {
 	set_owner_user_manager(Object::cast_to<UserManager>(p_user_manager));
@@ -340,7 +345,7 @@ User::User() {
 	_rank = 0;
 	_banned = false;
 	_locked = false;
-	_owner_user_manager = NULL;
+	_owner_user_manager = ObjectID();
 }
 
 User::~User() {

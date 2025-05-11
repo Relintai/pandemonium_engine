@@ -134,7 +134,7 @@ protected:
 
 	RWLock _rw_lock;
 
-	UserManager *_owner_user_manager;
+	ObjectID _owner_user_manager;
 };
 
 #endif
