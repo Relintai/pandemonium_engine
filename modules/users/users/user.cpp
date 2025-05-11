@@ -195,6 +195,10 @@ void User::from_dict(const Dictionary &dict) {
 }
 
 Dictionary User::_to_dict() {
+	// RW Locks are not re-entrant (read_locking would likely work), but since concurrency is hard
+	// api consistency is important. These types of classes hould always be locked from the outside.
+	// Use read_lock() in the caller and do all read operations that you want.
+	
 	Dictionary dict;
 
 	dict["user_id"] = _user_id;
@@ -216,6 +220,7 @@ Dictionary User::_to_dict() {
 		if (m.is_valid()) {
 			Dictionary mdict;
 
+			// Call read lock from the outside
 			m->read_lock();
 			mdict["index"] = i;
 			mdict["module_name"] = m->get_module_name();
@@ -231,6 +236,10 @@ Dictionary User::_to_dict() {
 	return dict;
 }
 void User::_from_dict(const Dictionary &dict) {
+	// RW Locks are not re-entrant, so no write_lock() here.
+	// Use write_lock() in the caller and do all write operations that you want if you need concurrency.
+	// This is the only way to properly preserve atomicity.
+	
 	_user_id = dict["user_id"];
 	_user_name = dict["user_name"];
 	_email = dict["email"];
@@ -266,7 +275,8 @@ void User::_from_dict(const Dictionary &dict) {
 		}
 
 		ERR_CONTINUE(!m.is_valid());
-
+		
+		// Call write lock from the outside
 		m->write_lock();
 		m->from_dict(mdict["data"]);
 		m->write_unlock();
