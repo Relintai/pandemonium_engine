@@ -385,7 +385,7 @@
 		<member name="debug/gdscript/warnings/incompatible_ternary" type="bool" setter="" getter="" default="true">
 			If [code]true[/code], enables warnings when a ternary operator may emit values with incompatible types.
 		</member>
-		<member name="debug/gdscript/warnings/integer_division" type="bool" setter="" getter="" default="true">
+		<member name="debug/gdscript/warnings/integer_division" type="bool" setter="" getter="" default="false">
 			If [code]true[/code], enables warnings when dividing an integer by another integer (the decimal part will be discarded).
 		</member>
 		<member name="debug/gdscript/warnings/narrowing_conversion" type="bool" setter="" getter="" default="true">
@@ -436,7 +436,7 @@
 		<member name="debug/gdscript/warnings/unused_class_variable" type="bool" setter="" getter="" default="false">
 			If [code]true[/code], enables warnings when a member variable is unused.
 		</member>
-		<member name="debug/gdscript/warnings/unused_signal" type="bool" setter="" getter="" default="true">
+		<member name="debug/gdscript/warnings/unused_signal" type="bool" setter="" getter="" default="false">
 			If [code]true[/code], enables warnings when a signal is unused.
 		</member>
 		<member name="debug/gdscript/warnings/unused_variable" type="bool" setter="" getter="" default="true">

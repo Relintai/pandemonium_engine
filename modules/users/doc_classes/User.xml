@@ -94,6 +94,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="read_try_lock">
+			<return type="int" enum="Error" />
+			<description>
+			</description>
+		</method>
 		<method name="read_unlock">
 			<return type="void" />
 			<description>
@@ -122,6 +127,11 @@
 		</method>
 		<method name="write_lock">
 			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="write_try_lock">
+			<return type="int" enum="Error" />
 			<description>
 			</description>
 		</method>
