@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UserDB" inherits="Object">
 	<brief_description>
+		Singleton that gives easy access to the active [UserManager].
 	</brief_description>
 	<description>
+		Singleton that gives easy access to the active [UserManager].
+		A [UserManager] can register itself as the active manager. If this happens all methods in this class will call the respective method in that [UserManager].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,52 +13,61 @@
 		<method name="create_user">
 			<return type="User" />
 			<description>
+				Create a [User] using the active [UserManager].
 			</description>
 		</method>
 		<method name="get_all_users">
 			<return type="Array" />
 			<description>
+				Returns all [User]s.
 			</description>
 		</method>
 		<method name="get_user">
 			<return type="User" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Returns the [User] which have the given id or null if it doens't exists.
 			</description>
 		</method>
 		<method name="get_user_email">
 			<return type="User" />
 			<argument index="0" name="user_email" type="String" />
 			<description>
+				Returns the [User] which have the given email or null if it doens't exists.
 			</description>
 		</method>
 		<method name="get_user_manager">
 			<return type="Node" />
 			<description>
+				Returns the active [UserManager].
 			</description>
 		</method>
 		<method name="get_user_name">
 			<return type="User" />
 			<argument index="0" name="user_name" type="String" />
 			<description>
+				Returns the [User] which have the given user_name or null if it doens't exists.
 			</description>
 		</method>
 		<method name="is_email_taken">
 			<return type="bool" />
 			<argument index="0" name="email" type="String" />
 			<description>
+				Returns whether an email is taken or not.
 			</description>
 		</method>
 		<method name="is_username_taken">
 			<return type="bool" />
 			<argument index="0" name="user_name" type="String" />
 			<description>
+				Returns whether a user name is taken or not.
 			</description>
 		</method>
 		<method name="save_user">
 			<return type="void" />
 			<argument index="0" name="user" type="User" />
 			<description>
+				Save the [User] using the active [UserManager].
 			</description>
 		</method>
 	</methods>
