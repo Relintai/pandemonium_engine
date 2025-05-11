@@ -20,14 +20,14 @@
 				The [code]user[/code] parameter allows for setting up classes that inherit from [User].
 				This is the method where [UserModule]s that the application always expects to be present should be set up.
 				Example:
-				[code]func _create_user(user: User) -> User:
+				[code]func _create_user(user: User) -&gt; User:
 				    if !user:
 				      user = InheritedUser.new()
-				
+
 				    var um : SomeUserModule = SomeUserModule.new()
 				    um.module_name = "SomeUserModule"
 				    user.add_module(um)
-				    
+
 				    # Only needed if the default implementation is not called
 				    #user.set_owner_user_manager(self)
 

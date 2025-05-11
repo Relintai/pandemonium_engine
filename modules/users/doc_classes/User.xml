@@ -125,6 +125,12 @@
 				Returns the stored [UserModule] that has it's name set as the name parameter.
 			</description>
 		</method>
+		<method name="get_owner_user_manager">
+			<return type="UserManager" />
+			<description>
+				Returns the owner [UserManager]. (The one that this User was created by.)
+			</description>
+		</method>
 		<method name="hash_password">
 			<return type="String" />
 			<argument index="0" name="password" type="String" />
@@ -165,6 +171,14 @@
 			<return type="void" />
 			<description>
 				Notifies the active [UserManager] that this User needs to be saved.
+			</description>
+		</method>
+		<method name="set_owner_user_manager">
+			<return type="void" />
+			<argument index="0" name="user_manager" type="Node" />
+			<description>
+				Sets the owner [UserManager].
+				Only use this in [method UserManager._create_user] or if you know what you are doing.
 			</description>
 		</method>
 		<method name="to_dict">
