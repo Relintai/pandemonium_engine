@@ -180,6 +180,7 @@ UserLoginWebPage::UserLoginWebPage() {
 	pw->need_to_exist();
 	pw->need_to_have_lowercase_character()->need_to_have_uppercase_character();
 	pw->need_minimum_length(5);
+	pw->need_maximum_length(256);
 
 	_logged_out_render_type = RENDER_TYPE_RENDER;
 	_logged_in_render_type = RENDER_TYPE_ERROR;
