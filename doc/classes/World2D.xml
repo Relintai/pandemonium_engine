@@ -7,7 +7,7 @@
 		Class that has everything pertaining to a 2D world. A physics space, a visual scenario, a navigation map and a sound space. 2D nodes register their resources into the current 2D world.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/physics/ray-casting.md</link>
+		<link>$DOCS_URL/03_usage/10_physics/05_ray_casting.md</link>
 	</tutorials>
 	<methods>
 	</methods>

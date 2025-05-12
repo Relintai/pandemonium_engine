@@ -29,7 +29,7 @@
 		[b]Note:[/b] Mipmap generation can fail with some graphics drivers (especially on Android), resulting in black textures. In these cases, consider either calling [method Image.generate_mipmaps], or creating an [ImageTexture] without [constant Texture.FLAG_MIPMAPS].
 	</description>
 	<tutorials>
-		<link title="Importing images">$DOCS_URL/tutorials/assets_pipeline/importing_images.md</link>
+		<link title="Importing images">$DOCS_URL/03_usage/21_assets_pipeline/02_importing_images.md</link>
 	</tutorials>
 	<methods>
 		<method name="create">

@@ -9,13 +9,8 @@
 		To force an update earlier on, call [method update_internals].
 	</description>
 	<tutorials>
-		<link title="Using Tilemaps">$DOCS_URL/04_modules/tile_maps/01_using_tilemaps.md</link>
-		<link title="2D Platformer Demo">$DOCS_URL/07_demo_projects/2d/platformer</link>
-		<link title="2D Isometric Demo">$DOCS_URL/07_demo_projects/2d/isometric</link>
-		<link title="2D Hexagonal Demo">$DOCS_URL/07_demo_projects/2d/hexagonal_map</link>
-		<link title="2D Navigation Astar Demo">$DOCS_URL/07_demo_projects/2d/navigation_astar</link>
-		<link title="2D Role Playing Game Demo">$DOCS_URL/07_demo_projects/2d/role_playing_game</link>
-		<link title="2D Kinematic Character Demo">$DOCS_URL/07_demo_projects/2d/kinematic_character</link>
+		<link title="Using Tilemaps">$DOCS_URL/04_modules/layered_tile_maps/02_using_tilemaps.md</link>
+		<link title="Layered Tile Map Demo Index">$DOCS_URL/07_demo_projects/2d/layered_tile_maps</link>
 	</tutorials>
 	<methods>
 		<method name="_tile_data_runtime_update" qualifiers="virtual">

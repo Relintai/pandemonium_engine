@@ -8,7 +8,7 @@
 		Stores multi-touch press/release information. Supports touch press, touch release and [member index] for multi-touch count and order.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/inputs/inputevent.md</link>
+		<link>$DOCS_URL/03_usage/06_inputs/01_inputevent.md</link>
 	</tutorials>
 	<methods>
 	</methods>

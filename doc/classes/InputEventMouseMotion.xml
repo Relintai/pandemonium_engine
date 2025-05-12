@@ -9,7 +9,7 @@
 		[b]Note:[/b] If you use InputEventMouseMotion to draw lines, consider implementing [url=https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm]Bresenham's line algorithm[/url] as well to avoid visible gaps in lines if the user is moving the mouse quickly.
 	</description>
 	<tutorials>
-		<link title="Mouse and input coordinates">$DOCS_URL/tutorials/inputs/mouse_and_input_coordinates.md</link>
+		<link title="Mouse and input coordinates">$DOCS_URL/03_usage/06_inputs/03_mouse_and_input_coordinates.md</link>
 		<link title="3D Voxel Demo">$DOCS_URL/07_demo_projects/3d/voxel</link>
 	</tutorials>
 	<methods>

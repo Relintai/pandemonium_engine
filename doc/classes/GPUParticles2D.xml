@@ -12,9 +12,9 @@
 		[b]Note:[/b] Unlike [CPUParticles2D], [GPUParticles2D] currently ignore the texture region defined in [AtlasTexture]s.
 	</description>
 	<tutorials>
-		<link title="Particle systems (2D)">$DOCS_URL/tutorials/2d/particle_systems_2d.html</link>
-		<link title="2D GPUParticles Demo">https://godotengine.org/asset-library/asset/118</link>
-		<link title="2D Dodge The Creeps Demo (uses GPUGPUParticles2D for the trail behind the player)">https://godotengine.org/asset-library/asset/515</link>
+		<link title="Particle systems (2D)">$DOCS_URL/03_usage/02_2d/03_particle_systems_2d.md</link>
+		<link title="2D GPUParticles Demo">$DOCS_URL/07_demo_projects/2d/particles</link>
+		<link title="2D Dodge The Creeps Demo (uses GPUGPUParticles2D for the trail behind the player)">$DOCS_URL/07_demo_projects/2d/dodge_the_creeps</link>
 	</tutorials>
 	<methods>
 		<method name="capture_rect" qualifiers="const">

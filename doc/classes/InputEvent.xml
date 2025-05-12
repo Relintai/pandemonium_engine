@@ -7,7 +7,7 @@
 		Base class of all sort of input event. See [method Node._input].
 	</description>
 	<tutorials>
-		<link title="InputEvent">$DOCS_URL/tutorials/inputs/inputevent.md</link>
+		<link title="InputEvent">$DOCS_URL/03_usage/06_inputs/01_inputevent.md</link>
 		<link title="Viewport and canvas transforms">$DOCS_URL/03_usage/02_2d/02_2d_transforms.md</link>
 		<link title="2D Dodge The Creeps Demo">$DOCS_URL/07_demo_projects/2d/dodge_the_creeps</link>
 		<link title="3D Voxel Demo">$DOCS_URL/07_demo_projects/3d/voxel</link>
