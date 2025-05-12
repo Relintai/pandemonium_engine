@@ -10,7 +10,7 @@
 	</description>
 	<tutorials>
 		<link title="Introduction to 3D">$DOCS_URL/tutorials/3d/introduction_to_3d.md</link>
-		<link title="All 3D Demos">https://github.com/Relintai/pandemonium_demo_projects/tree/master/3d</link>
+		<link title="All 3D Demos">$DOCS_URL/07_demo_projects/3d</link>
 	</tutorials>
 	<methods>
 		<method name="add_gizmo">

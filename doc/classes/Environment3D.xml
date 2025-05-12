@@ -16,7 +16,7 @@
 		Note that [member ProjectSettings.rendering/quality/intended_usage/framebuffer_allocation] has a mobile platform override to use "3D Without Effects" by default. It improves the performance on mobile devices, but at the same time affects the screen display on mobile devices.
 	</description>
 	<tutorials>
-		<link title="Environment3D and post-processing">$DOCS_URL/tutorials/3d/environment_and_post_processing.md</link>
+		<link title="Environment3D and post-processing">$DOCS_URL/03_usage/03_3d/09_environment_and_post_processing.md</link>
 		<link title="Light transport in game engines">$DOCS_URL/tutorials/3d/high_dynamic_range.md</link>
 		<link title="3D Material Testers Demo">$DOCS_URL/07_demo_projects/3d/material_testers</link>
 		<link title="2D HDR Demo">$DOCS_URL/07_demo_projects/2d/hdr</link>

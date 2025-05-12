@@ -18,10 +18,10 @@
 		Note that When handling concurrency with these types of classes, preserving atomicity is the most important. Imagine that you are running a multithreaded web application, and 2 users try to edit the same resource at the same time. What you don't want is to end up with data that is interwoven of the two different requests. (If you don't want to lose an edit due to this, build a changelog feature for that specific class.)
 	</description>
 	<tutorials>
-		<link title="Static user setup">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_static</link>
-		<link title="Website with users using the SQLite db backend">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite</link>
-		<link title="Website with users using the SQLite db backend, with bootstrap">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap</link>
-		<link title="Website with users using the SQLite db backend, with bootstrap, templated">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap_templated</link>
+		<link title="Static user setup">$DOCS_URL/07_demo_projects/web/users_static</link>
+		<link title="Website with users using the SQLite db backend">$DOCS_URL/07_demo_projects/web/users_sqlite</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap">$DOCS_URL/07_demo_projects/web/users_sqlite_bootstrap</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap, templated">$DOCS_URL/07_demo_projects/web/users_sqlite_bootstrap_templated</link>
 	</tutorials>
 	<methods>
 		<method name="_check_password" qualifiers="virtual">

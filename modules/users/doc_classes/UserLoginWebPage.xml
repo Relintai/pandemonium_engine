@@ -17,9 +17,9 @@
 		d["pass_val"] = pass_val; The password input value.[/code]
 	</description>
 	<tutorials>
-		<link title="Website with users using the SQLite db backend">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite</link>
-		<link title="Website with users using the SQLite db backend, with bootstrap">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap</link>
-		<link title="Website with users using the SQLite db backend, with bootstrap, templated">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap_templated</link>
+		<link title="Website with users using the SQLite db backend">$DOCS_URL/07_demo_projects/web/users_sqlite</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap">$DOCS_URL/07_demo_projects/web/users_sqlite_bootstrap</link>
+		<link title="Website with users using the SQLite db backend, with bootstrap, templated">$DOCS_URL/07_demo_projects/web/users_sqlite_bootstrap_templated</link>
 	</tutorials>
 	<methods>
 	</methods>

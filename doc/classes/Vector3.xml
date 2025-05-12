@@ -8,12 +8,12 @@
 		[b]Note:[/b] In a boolean context, a Vector3 will evaluate to [code]false[/code] if it's equal to [code]Vector3(0, 0, 0)[/code]. Otherwise, a Vector3 will always evaluate to [code]true[/code].
 	</description>
 	<tutorials>
-		<link title="Math tutorial index">$DOCS_URL/tutorials/math/index.md</link>
-		<link title="Vector math">$DOCS_URL/tutorials/math/vector_math.md</link>
-		<link title="Advanced vector math">$DOCS_URL/tutorials/math/vectors_advanced.md</link>
+		<link title="Math tutorial index">$DOCS_URL/03_usage/01_math</link>
+		<link title="Vector math">$DOCS_URL/03_usage/01_math/01_vector_math.md</link>
+		<link title="Advanced vector math">$DOCS_URL/03_usage/01_math/06_vectors_advanced.md</link>
 		<link title="3Blue1Brown Essence of Linear Algebra">https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab</link>
 		<link title="Matrix Transform Demo">$DOCS_URL/07_demo_projects/misc/matrix_transform</link>
-		<link title="All 3D Demos">https://github.com/Relintai/pandemonium_demo_projects/tree/master/3d</link>
+		<link title="All 3D Demos">$DOCS_URL/07_demo_projects/3d</link>
 	</tutorials>
 	<methods>
 		<method name="Vector3">

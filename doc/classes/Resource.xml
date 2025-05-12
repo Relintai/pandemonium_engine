@@ -10,8 +10,8 @@
 		[b]Note:[/b] In C#, resources will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free resources that are no longer in use. This means that unused resources will linger on for a while before being removed.
 	</description>
 	<tutorials>
-		<link title="Resources">$DOCS_URL/tutorials/scripting/resources.md</link>
-		<link title="When and how to avoid using nodes for everything">$DOCS_URL/tutorials/best_practices/node_alternatives.md</link>
+		<link title="Resources">$DOCS_URL/03_usage/15_scripting/12_resources.md</link>
+		<link title="When and how to avoid using nodes for everything">$DOCS_URL/03_usage/22_best_practices/06_node_alternatives.md</link>
 	</tutorials>
 	<methods>
 		<method name="_setup_local_to_scene" qualifiers="virtual">

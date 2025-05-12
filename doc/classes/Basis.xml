@@ -10,7 +10,7 @@
 		For more information, read the "Matrices and transforms" documentation article.
 	</description>
 	<tutorials>
-		<link title="Math tutorial index">$DOCS_URL/tutorials/math/index.md</link>
+		<link title="Math tutorial index">$DOCS_URL/03_usage/01_math</link>
 		<link title="Matrices and transforms">$DOCS_URL/tutorials/math/matrices_and_transforms.md</link>
 		<link title="Using 3D transforms">$DOCS_URL/tutorials/3d/using_transforms.md</link>
 		<link title="Matrix Transform Demo">$DOCS_URL/07_demo_projects/misc/matrix_transform</link>

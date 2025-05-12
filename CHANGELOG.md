@@ -623,7 +623,7 @@ Highlights:
 - Fixed, set up exporter and export templates for the FRT and FRT SDL platforms (it's for `SBC`s).
 - Fixed IOS export template .
 - Now WebServerSimple can also use temporary files for uploads.
-- Added a simple HTML Templating solution. See the HTMLTemplate and HTMLTemplateData classes and [this demo](https://github.com/Relintai/pandemonium_demo_projects/tree/master/web/users_sqlite_bootstrap_templated).
+- Added a simple HTML Templating solution. See the HTMLTemplate and HTMLTemplateData classes and [this demo]($DOCS_URL/07_demo_projects/web/users_sqlite_bootstrap_templated).
 - Build containers and release setup rework.
 - ... and many more 
 

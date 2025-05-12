@@ -14,13 +14,13 @@
 	</description>
 	<tutorials>
 		<link title="Viewport and canvas transforms">$DOCS_URL/03_usage/02_2d/02_2d_transforms.md</link>
-		<link title="Viewports tutorial index">$DOCS_URL/tutorials/rendering/index.md</link>
-		<link title="GUI in 3D Demo">https://godotengine.org/asset-library/asset/127</link>
-		<link title="3D in 2D Demo">https://godotengine.org/asset-library/asset/128</link>
-		<link title="2D in 3D Demo">https://godotengine.org/asset-library/asset/129</link>
-		<link title="Screen Capture Demo">https://godotengine.org/asset-library/asset/130</link>
-		<link title="Dynamic Split Screen Demo">https://godotengine.org/asset-library/asset/541</link>
-		<link title="3D Viewport Scaling Demo">https://godotengine.org/asset-library/asset/586</link>
+		<link title="Viewports tutorial index">$DOCS_URL/07_demo_projects/viewport</link>
+		<link title="GUI in 3D Demo">$DOCS_URL/07_demo_projects/viewport/gui_in_3d</link>
+		<link title="3D in 2D Demo">$DOCS_URL/07_demo_projects/viewport/3d_in_2d</link>
+		<link title="2D in 3D Demo">$DOCS_URL/07_demo_projects/viewport/2d_in_3d</link>
+		<link title="Screen Capture Demo">$DOCS_URL/07_demo_projects/viewport/screen_capture</link>
+		<link title="Dynamic Split Screen Demo">$DOCS_URL/07_demo_projects/viewport/dynamic_split_screen</link>
+		<link title="3D Viewport Scaling Demo">$DOCS_URL/07_demo_projects/viewport/3d_scaling</link>
 	</tutorials>
 	<methods>
 		<method name="canvas_parent_mark_dirty">

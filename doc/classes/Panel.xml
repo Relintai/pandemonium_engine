@@ -9,7 +9,7 @@
 	<tutorials>
 		<link title="2D Role Playing Game Demo">$DOCS_URL/07_demo_projects/2d/role_playing_game</link>
 		<link title="2D Finite State Machine Demo">https://godotengine.org/asset-library/asset/516</link>
-		<link title="3D Inverse Kinematics Demo">https://godotengine.org/asset-library/asset/523</link>
+		<link title="3D Inverse Kinematics Demo">$DOCS_URL/07_demo_projects/3d/ik</link>
 	</tutorials>
 	<methods>
 	</methods>
