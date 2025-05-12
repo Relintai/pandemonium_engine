@@ -9,8 +9,8 @@
 	</description>
 	<tutorials>
 		<link title="Math tutorial index">$DOCS_URL/03_usage/01_math</link>
-		<link title="Matrices and transforms">$DOCS_URL/tutorials/math/matrices_and_transforms.md</link>
-		<link title="Using 3D transforms">$DOCS_URL/tutorials/3d/using_transforms.md</link>
+		<link title="Matrices and transforms">$DOCS_URL/03_usage/01_math/04_matrices_and_transforms.md</link>
+		<link title="Using 3D transforms">$DOCS_URL/03_usage/03_3d/02_using_transforms.md</link>
 		<link title="Matrix Transform Demo">$DOCS_URL/07_demo_projects/misc/matrix_transform</link>
 		<link title="3D Platformer Demo">$DOCS_URL/07_demo_projects/3d/platformer</link>
 		<link title="2.5D Demo">$DOCS_URL/07_demo_projects/misc/2.5d</link>

@@ -12,7 +12,7 @@
 		[/codeblock]
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/animation/animation_tree.md</link>
+		<link>$DOCS_URL/03_usage/05_animation/04_animation_tree.md</link>
 	</tutorials>
 	<methods>
 		<method name="add_node">

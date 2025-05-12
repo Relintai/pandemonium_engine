@@ -25,7 +25,7 @@
 		[b]Note:[/b] Files are automatically closed only if the process exits "normally" (such as by clicking the window manager's close button or pressing [b]Alt + F4[/b]). If you stop the project execution by pressing [b]F8[/b] while the project is running, the file won't be closed as the game process will be killed. You can work around this by calling [method flush] at regular intervals.
 	</description>
 	<tutorials>
-		<link title="File system">$DOCS_URL/tutorials/scripting/filesystem.md</link>
+		<link title="File system">$DOCS_URL/03_usage/15_scripting/11_filesystem.md</link>
 		<link title="3D Voxel Demo">$DOCS_URL/07_demo_projects/3d/voxel</link>
 	</tutorials>
 	<methods>

@@ -9,7 +9,7 @@
 		[b]Note:[/b] Due to how lightmaps work, most properties only have a visible effect once lightmaps are baked again.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/3d/baked_lightmaps.html</link>
+		<link>$DOCS_URL/03_usage/03_3d/08_baked_lightmaps.md</link>
 	</tutorials>
 	<methods>
 		<method name="bake">

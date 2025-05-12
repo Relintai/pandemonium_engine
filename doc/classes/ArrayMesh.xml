@@ -26,7 +26,7 @@
 		[b]Note:[/b] Godot uses clockwise [url=https://learnopengl.com/Advanced-OpenGL/Face-culling]winding order[/url] for front faces of triangle primitive modes.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/3d/procedural_geometry/arraymesh.md</link>
+		<link>$DOCS_URL/03_usage/03_3d/procedural_geometry/02_arraymesh.md</link>
 	</tutorials>
 	<methods>
 		<method name="add_blend_shape">

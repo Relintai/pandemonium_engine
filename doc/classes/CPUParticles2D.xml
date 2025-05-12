@@ -9,7 +9,7 @@
 		[b]Note:[/b] Unlike [Particles2D], the visibility rect is generated on-the-fly and doesn't need to be configured by the user.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/2d/particle_systems_2d.md</link>
+		<link>$DOCS_URL/03_usage/02_2d/03_particle_systems_2d.md</link>
 	</tutorials>
 	<methods>
 		<method name="convert_from_particles">
