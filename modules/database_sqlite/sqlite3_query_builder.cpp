@@ -172,13 +172,6 @@ QueryBuilder *SQLite3QueryBuilder::vals(const String &param) {
 
 	return this;
 }
-QueryBuilder *SQLite3QueryBuilder::vals(const char *param) {
-	query_result += "'";
-	query_result += escape(String(param));
-	query_result += "', ";
-
-	return this;
-}
 
 QueryBuilder *SQLite3QueryBuilder::vali(const int param) {
 	query_result += itos(param);
@@ -260,10 +253,10 @@ QueryBuilder *SQLite3QueryBuilder::nsetp(const String &col, const String &param)
 
 	return this;
 }
-QueryBuilder *SQLite3QueryBuilder::setps(const String &col, const char *param) {
+QueryBuilder *SQLite3QueryBuilder::setps(const String &col, const String &param) {
 	query_result += col;
 	query_result += "='";
-	query_result += escape(String(param));
+	query_result += escape(param);
 	query_result += "', ";
 
 	return this;
@@ -336,10 +329,10 @@ QueryBuilder *SQLite3QueryBuilder::nwp(const String &col, const String &param) {
 
 	return this;
 }
-QueryBuilder *SQLite3QueryBuilder::wps(const String &col, const char *param) {
+QueryBuilder *SQLite3QueryBuilder::wps(const String &col, const String &param) {
 	query_result += col;
 	query_result += "='";
-	query_result += escape(String(param));
+	query_result += escape(param);
 	query_result += "' ";
 
 	return this;

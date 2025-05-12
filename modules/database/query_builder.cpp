@@ -109,9 +109,6 @@ QueryBuilder *QueryBuilder::val() {
 QueryBuilder *QueryBuilder::vals(const String &param) {
 	return nval(escape(param));
 }
-QueryBuilder *QueryBuilder::vals(const char *param) {
-	return this;
-}
 QueryBuilder *QueryBuilder::vali(const int param) {
 	return this;
 }
@@ -147,9 +144,6 @@ QueryBuilder *QueryBuilder::cset() {
 QueryBuilder *QueryBuilder::setps(const String &col, const String &param) {
 	return nsetp(col, escape(param));
 }
-QueryBuilder *QueryBuilder::setps(const String &col, const char *param) {
-	return this;
-}
 QueryBuilder *QueryBuilder::setpi(const String &col, const int param) {
 	return this;
 }
@@ -174,9 +168,6 @@ QueryBuilder *QueryBuilder::setphr(const String &col, const String &p_raw_id) {
 
 QueryBuilder *QueryBuilder::wps(const String &col, const String &param) {
 	return nwp(col, escape(param));
-}
-QueryBuilder *QueryBuilder::wps(const String &col, const char *param) {
-	return this;
 }
 QueryBuilder *QueryBuilder::wpi(const String &col, const int param) {
 	return this;

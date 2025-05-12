@@ -74,7 +74,6 @@ public:
 	virtual QueryBuilder *values(const String &params_str = "");
 	virtual QueryBuilder *val();
 	virtual QueryBuilder *vals(const String &param);
-	virtual QueryBuilder *vals(const char *param);
 	virtual QueryBuilder *vali(const int param);
 	virtual QueryBuilder *valb(const bool param);
 	virtual QueryBuilder *valf(const float param);
@@ -90,7 +89,6 @@ public:
 	virtual QueryBuilder *cset();
 
 	virtual QueryBuilder *setps(const String &col, const String &param);
-	virtual QueryBuilder *setps(const String &col, const char *param);
 	virtual QueryBuilder *setpi(const String &col, const int param);
 	virtual QueryBuilder *setpb(const String &col, const bool param);
 	virtual QueryBuilder *setpf(const String &col, const float param);
@@ -101,7 +99,6 @@ public:
 
 	// Where param helpers
 	virtual QueryBuilder *wps(const String &col, const String &param);
-	virtual QueryBuilder *wps(const String &col, const char *param);
 	virtual QueryBuilder *wpi(const String &col, const int param);
 	virtual QueryBuilder *wpb(const String &col, const bool param);
 	virtual QueryBuilder *wph(const String &col);

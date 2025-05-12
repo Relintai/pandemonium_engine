@@ -39,7 +39,6 @@ public:
 	QueryBuilder *nval(const String &param);
 
 	QueryBuilder *vals(const String &param);
-	QueryBuilder *vals(const char *param);
 	QueryBuilder *vali(const int param);
 	QueryBuilder *valb(const bool param);
 	QueryBuilder *valf(const float param);
@@ -55,7 +54,7 @@ public:
 
 	QueryBuilder *nsetp(const String &col, const String &param);
 
-	QueryBuilder *setps(const String &col, const char *param);
+	QueryBuilder *setps(const String &col, const String &param);
 	QueryBuilder *setpi(const String &col, const int param);
 	QueryBuilder *setpb(const String &col, const bool param);
 	QueryBuilder *setpf(const String &col, const float param);
@@ -66,7 +65,7 @@ public:
 
 	QueryBuilder *nwp(const String &col, const String &param);
 
-	QueryBuilder *wps(const String &col, const char *param);
+	QueryBuilder *wps(const String &col, const String &param);
 	QueryBuilder *wpi(const String &col, const int param);
 	QueryBuilder *wpb(const String &col, const bool param);
 	virtual QueryBuilder *wph(const String &col);
