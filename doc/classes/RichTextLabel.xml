@@ -14,7 +14,7 @@
 	<tutorials>
 		<link title="BBCode in RichTextLabel">$DOCS_URL/tutorials/ui/bbcode_in_richtextlabel.md</link>
 		<link title="GUI Rich Text/BBcode Demo">https://godotengine.org/asset-library/asset/132</link>
-		<link title="OS Test Demo">https://godotengine.org/asset-library/asset/677</link>
+		<link title="OS Test Demo">$DOCS_URL/07_demo_projects/misc/os_test</link>
 	</tutorials>
 	<methods>
 		<method name="add_image">

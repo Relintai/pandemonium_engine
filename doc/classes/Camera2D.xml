@@ -10,8 +10,8 @@
 	</description>
 	<tutorials>
 		<link title="2D Platformer Demo">$DOCS_URL/07_demo_projects/2d/platformer</link>
-		<link title="2D Isometric Demo">https://godotengine.org/asset-library/asset/112</link>
-		<link title="2D HDR Demo">https://godotengine.org/asset-library/asset/110</link>
+		<link title="2D Isometric Demo">$DOCS_URL/07_demo_projects/2d/isometric</link>
+		<link title="2D HDR Demo">$DOCS_URL/07_demo_projects/2d/hdr</link>
 	</tutorials>
 	<methods>
 		<method name="align">

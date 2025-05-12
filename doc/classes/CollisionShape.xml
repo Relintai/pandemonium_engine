@@ -9,8 +9,8 @@
 		[b]Warning:[/b] A non-uniformly scaled CollisionShape3D node will probably not function as expected. Please make sure to keep its scale uniform (i.e. the same on all axes), and change the size of its [member shape] resource instead.
 	</description>
 	<tutorials>
-		<link title="Physics introduction">$DOCS_URL/tutorials/physics/physics_introduction.md</link>
-		<link title="3D Kinematic Character Demo">https://godotengine.org/asset-library/asset/126</link>
+		<link title="Physics introduction">$DOCS_URL/03_usage/10_physics/01_physics_introduction.md</link>
+		<link title="3D Kinematic Character Demo">$DOCS_URL/07_demo_projects/3d/kinematic_character</link>
 		<link title="3D Platformer Demo">$DOCS_URL/07_demo_projects/3d/platformer</link>
 	</tutorials>
 	<methods>

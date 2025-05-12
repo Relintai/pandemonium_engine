@@ -85,8 +85,8 @@
 	</description>
 	<tutorials>
 		<link title="GDScript basics: Dictionary">$DOCS_URL/tutorials/scripting/gdscript/gdscript_basics.html#dictionary</link>
-		<link title="3D Voxel Demo">https://godotengine.org/asset-library/asset/676</link>
-		<link title="OS Test Demo">https://godotengine.org/asset-library/asset/677</link>
+		<link title="3D Voxel Demo">$DOCS_URL/07_demo_projects/3d/voxel</link>
+		<link title="OS Test Demo">$DOCS_URL/07_demo_projects/misc/os_test</link>
 	</tutorials>
 	<methods>
 		<method name="clear">

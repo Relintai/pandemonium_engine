@@ -12,7 +12,7 @@
 	</description>
 	<tutorials>
 		<link title="Ray-casting">$DOCS_URL/tutorials/physics/ray-casting.md</link>
-		<link title="3D Voxel Demo">https://godotengine.org/asset-library/asset/676</link>
+		<link title="3D Voxel Demo">$DOCS_URL/07_demo_projects/3d/voxel</link>
 	</tutorials>
 	<methods>
 		<method name="add_exception">

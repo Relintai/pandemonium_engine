@@ -9,7 +9,7 @@
 		See also [BaseButton] which contains common properties and methods associated with this node.
 	</description>
 	<tutorials>
-		<link title="3D Voxel Demo">https://godotengine.org/asset-library/asset/676</link>
+		<link title="3D Voxel Demo">$DOCS_URL/07_demo_projects/3d/voxel</link>
 	</tutorials>
 	<methods>
 	</methods>

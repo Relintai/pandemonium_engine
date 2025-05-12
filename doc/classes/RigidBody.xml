@@ -12,9 +12,9 @@
 		[b]Warning:[/b] With a non-uniform scale this node will probably not function as expected. Please make sure to keep its scale uniform (i.e. the same on all axes), and change the size(s) of its collision shape(s) instead.
 	</description>
 	<tutorials>
-		<link title="Physics introduction">$DOCS_URL/tutorials/physics/physics_introduction.md</link>
+		<link title="Physics introduction">$DOCS_URL/03_usage/10_physics/01_physics_introduction.md</link>
 		<link title="3D Truck Town Demo">https://godotengine.org/asset-library/asset/524</link>
-		<link title="3D Physics Tests Demo">https://godotengine.org/asset-library/asset/675</link>
+		<link title="3D Physics Tests Demo">$DOCS_URL/07_demo_projects/3d/physics_tests</link>
 	</tutorials>
 	<methods>
 		<method name="_integrate_forces" qualifiers="virtual">

@@ -7,8 +7,8 @@
 		Cylinder shape for collisions.
 	</description>
 	<tutorials>
-		<link title="3D Physics Tests Demo">https://godotengine.org/asset-library/asset/675</link>
-		<link title="3D Voxel Demo">https://godotengine.org/asset-library/asset/676</link>
+		<link title="3D Physics Tests Demo">$DOCS_URL/07_demo_projects/3d/physics_tests</link>
+		<link title="3D Voxel Demo">$DOCS_URL/07_demo_projects/3d/voxel</link>
 	</tutorials>
 	<methods>
 	</methods>

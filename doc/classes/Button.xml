@@ -22,7 +22,7 @@
 	</description>
 	<tutorials>
 		<link title="2D Dodge The Creeps Demo">$DOCS_URL/07_demo_projects/2d/dodge_the_creeps</link>
-		<link title="OS Test Demo">https://godotengine.org/asset-library/asset/677</link>
+		<link title="OS Test Demo">$DOCS_URL/07_demo_projects/misc/os_test</link>
 	</tutorials>
 	<methods>
 	</methods>

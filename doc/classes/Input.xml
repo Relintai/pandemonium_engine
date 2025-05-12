@@ -9,7 +9,7 @@
 	<tutorials>
 		<link title="Inputs tutorial index">$DOCS_URL/tutorials/inputs/index.md</link>
 		<link title="2D Dodge The Creeps Demo">$DOCS_URL/07_demo_projects/2d/dodge_the_creeps</link>
-		<link title="3D Voxel Demo">https://godotengine.org/asset-library/asset/676</link>
+		<link title="3D Voxel Demo">$DOCS_URL/07_demo_projects/3d/voxel</link>
 	</tutorials>
 	<methods>
 		<method name="action_press">

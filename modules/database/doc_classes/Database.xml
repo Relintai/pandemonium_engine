@@ -10,9 +10,7 @@
 		Currently only an sqlite backend is available, however communication with other systems (like MySQL, or PostgreSQL) can be implemented without too much hassle using engine modules.
 	</description>
 	<tutorials>
-		<link title="Simple Database Demo Project">https://github.com/Relintai/pandemonium_demo_projects/tree/master/database/database_simple</link>
-		<link title="Prepared Statement Database Demo Project">https://github.com/Relintai/pandemonium_demo_projects/tree/master/database/prepared_statements</link>
-		<link title="Web Demo Projects">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web</link>
+		<link title="Database Demo Projects">$DOCS_URL/07_demo_projects/database</link>
 	</tutorials>
 	<methods>
 		<method name="get_backend_name" qualifiers="const">

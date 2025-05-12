@@ -10,7 +10,7 @@
 	</description>
 	<tutorials>
 		<link title="GUI containers">$DOCS_URL/03_usage/04_ui/02_gui_containers.md</link>
-		<link title="OS Test Demo">https://godotengine.org/asset-library/asset/677</link>
+		<link title="OS Test Demo">$DOCS_URL/07_demo_projects/misc/os_test</link>
 	</tutorials>
 	<methods>
 	</methods>

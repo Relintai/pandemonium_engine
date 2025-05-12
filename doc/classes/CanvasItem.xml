@@ -12,8 +12,8 @@
 		[b]Note:[/b] Unless otherwise specified, all methods that have angle parameters must have angles specified as [i]radians[/i]. To convert degrees to radians, use [method @GDScript.deg2rad].
 	</description>
 	<tutorials>
-		<link title="Viewport and canvas transforms">$DOCS_URL/tutorials/2d/2d_transforms.md</link>
-		<link title="Custom drawing in 2D">$DOCS_URL/tutorials/2d/custom_drawing_in_2d.md</link>
+		<link title="Viewport and canvas transforms">$DOCS_URL/03_usage/02_2d/02_2d_transforms.md</link>
+		<link title="Custom drawing in 2D">$DOCS_URL/03_usage/02_2d/07_custom_drawing_in_2d.md</link>
 		<link title="Audio Spectrum Demo">$DOCS_URL/07_demo_projects/audio/spectrum</link>
 	</tutorials>
 	<methods>

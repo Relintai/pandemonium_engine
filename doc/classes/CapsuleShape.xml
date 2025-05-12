@@ -7,7 +7,7 @@
 		Capsule shape for collisions.
 	</description>
 	<tutorials>
-		<link title="3D Physics Tests Demo">https://godotengine.org/asset-library/asset/675</link>
+		<link title="3D Physics Tests Demo">$DOCS_URL/07_demo_projects/3d/physics_tests</link>
 	</tutorials>
 	<methods>
 	</methods>
