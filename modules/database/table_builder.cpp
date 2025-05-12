@@ -180,7 +180,7 @@ void TableBuilder::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("rename_to", "table_name"), &TableBuilder::_rename_to_bind);
 
-	ClassDB::bind_method(D_METHOD("rename_column", "column_name", "new_column_name"), &TableBuilder::_rename_column_to_bind);
+	ClassDB::bind_method(D_METHOD("rename_column_to", "column_name", "new_column_name"), &TableBuilder::_rename_column_to_bind);
 	ClassDB::bind_method(D_METHOD("add_column"), &TableBuilder::_add_column_bind);
 	ClassDB::bind_method(D_METHOD("drop_column", "column_name"), &TableBuilder::_drop_column_bind);
 
