@@ -212,7 +212,9 @@ void UserManagerDB::_save_user(Ref<User> user) {
 
 	if (user->get_user_id() == -1) {
 		b->insert(_database_table_name, "username, username_internal, email, email_internal, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
-
+		
+		user->write_lock();
+		
 		b->values();
 		b->vals(user->get_user_name());
 		b->vals(user->get_user_name_internal());
@@ -233,9 +235,14 @@ void UserManagerDB::_save_user(Ref<User> user) {
 		Ref<QueryResult> r = b->run();
 
 		user->set_user_id(r->get_last_insert_rowid());
+		
+		user->write_unlock();
 	} else {
 		b->update(_database_table_name);
 		b->sets();
+		
+		user->read_lock();
+		
 		b->setps("username", user->get_user_name());
 		b->setps("username_internal", user->get_user_name_internal());
 		b->setps("email", user->get_email());
@@ -249,6 +256,8 @@ void UserManagerDB::_save_user(Ref<User> user) {
 		b->setpb("locked", user->get_locked());
 		b->cset();
 		b->where()->wpi("id", user->get_user_id());
+		
+		user->read_unlock();
 
 		// b->print();
 

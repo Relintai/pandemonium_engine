@@ -65,6 +65,8 @@ void UserSettingsWebPage::_render_index(Ref<WebServerRequest> request) {
 		}
 
 		if (errors.size() == 0) {
+			user->write_lock();
+			
 			if (data.uname_val == user->get_user_name()) {
 				data.uname_val = "";
 			}
@@ -72,6 +74,7 @@ void UserSettingsWebPage::_render_index(Ref<WebServerRequest> request) {
 			if (data.email_val == user->get_email()) {
 				data.email_val = "";
 			}
+			
 
 			if (data.uname_val != "") {
 				if (UserDB::get_singleton()->is_username_taken(data.uname_val)) {
@@ -102,6 +105,8 @@ void UserSettingsWebPage::_render_index(Ref<WebServerRequest> request) {
 					changed = true;
 				}
 			}
+			
+			user->write_unlock();
 
 			if (changed) {
 				user->save();
