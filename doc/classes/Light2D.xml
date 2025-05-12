@@ -8,7 +8,7 @@
 		[b]Note:[/b] Light2D can also be used as a mask.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/2d/2d_lights_and_shadows.md</link>
+		<link>$DOCS_URL/03_usage/02_2d/05_2d_lights_and_shadows.md</link>
 	</tutorials>
 	<methods>
 	</methods>

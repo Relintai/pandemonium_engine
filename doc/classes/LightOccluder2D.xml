@@ -7,7 +7,7 @@
 		Occludes light cast by a Light2D, casting shadows. The LightOccluder2D must be provided with an [OccluderPolygon2D] in order for the shadow to be computed.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/2d/2d_lights_and_shadows.md</link>
+		<link>$DOCS_URL/03_usage/02_2d/05_2d_lights_and_shadows.md</link>
 	</tutorials>
 	<methods>
 	</methods>

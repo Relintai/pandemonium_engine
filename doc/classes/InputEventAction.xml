@@ -7,7 +7,7 @@
 		Contains a generic action which can be targeted from several types of inputs. Actions can be created from the [b]Input Map[/b] tab in the [b]Project &gt; Project Settings[/b] menu. See [method Node._input].
 	</description>
 	<tutorials>
-		<link title="InputEvent: Actions">$DOCS_URL/tutorials/inputs/inputevent.html#actions</link>
+		<link title="InputEvent: Actions">$DOCS_URL/03_usage/06_inputs/01_inputevent.md#actions</link>
 		<link title="2D Dodge The Creeps Demo">$DOCS_URL/07_demo_projects/2d/dodge_the_creeps</link>
 		<link title="3D Voxel Demo">$DOCS_URL/07_demo_projects/3d/voxel</link>
 	</tutorials>

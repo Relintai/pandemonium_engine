@@ -7,7 +7,7 @@
 		Base class for all 3D shape resources. Nodes that inherit from this can be used as shapes for a [PhysicsBody] or [Area] objects.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/physics/physics_introduction.md</link>
+		<link>$DOCS_URL/03_usage/10_physics/01_physics_introduction.md</link>
 	</tutorials>
 	<methods>
 		<method name="get_debug_mesh">

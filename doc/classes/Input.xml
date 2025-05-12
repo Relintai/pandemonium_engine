@@ -7,7 +7,7 @@
 		A singleton that deals with inputs. This includes key presses, mouse buttons and movement, joypads, and input actions. Actions and their events can be set in the [b]Input Map[/b] tab in the [b]Project &gt; Project Settings[/b], or with the [InputMap] class.
 	</description>
 	<tutorials>
-		<link title="Inputs tutorial index">$DOCS_URL/tutorials/inputs/index.md</link>
+		<link title="Inputs tutorial index">$DOCS_URL/03_usage/06_inputs</link>
 		<link title="2D Dodge The Creeps Demo">$DOCS_URL/07_demo_projects/2d/dodge_the_creeps</link>
 		<link title="3D Voxel Demo">$DOCS_URL/07_demo_projects/3d/voxel</link>
 	</tutorials>
