@@ -8,7 +8,7 @@
 		[b]Note:[/b] There are many known bugs in [SoftBody]. Therefore, it's not recommended to use them for things that can affect gameplay (such as a player character made entirely out of soft bodies).
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/physics/soft_body.md</link>
+		<link>$DOCS_URL/03_usage/10_physics/08_soft_body.md</link>
 	</tutorials>
 	<methods>
 		<method name="add_collision_exception_with">

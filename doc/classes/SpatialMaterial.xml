@@ -7,7 +7,7 @@
 		This provides a default material with a wide variety of rendering features and properties without the need to write shader code. See the tutorial below for details.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/3d/spatial_material.md</link>
+		<link>$DOCS_URL/03_usage/03_3d/04_spatial_material.md</link>
 	</tutorials>
 	<methods>
 		<method name="get_feature" qualifiers="const">

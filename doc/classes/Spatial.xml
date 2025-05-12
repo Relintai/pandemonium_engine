@@ -9,7 +9,7 @@
 		[b]Note:[/b] Unless otherwise specified, all methods that have angle parameters must have angles specified as [i]radians[/i]. To convert degrees to radians, use [method @GDScript.deg2rad].
 	</description>
 	<tutorials>
-		<link title="Introduction to 3D">$DOCS_URL/tutorials/3d/introduction_to_3d.md</link>
+		<link title="Introduction to 3D">$DOCS_URL/03_usage/03_3d/01_introduction_to_3d.md</link>
 		<link title="All 3D Demos">$DOCS_URL/07_demo_projects/3d</link>
 	</tutorials>
 	<methods>

@@ -7,8 +7,8 @@
 		Translations are resources that can be loaded and unloaded on demand. They map a string to another string.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/i18n/internationalizing_games.md</link>
-		<link>$DOCS_URL/tutorials/i18n/locales.md</link>
+		<link>$DOCS_URL/03_usage/12_i18n/01_internationalizing_games.md</link>
+		<link>$DOCS_URL/03_usage/12_i18n/03_locales.md</link>
 	</tutorials>
 	<methods>
 		<method name="_get_message" qualifiers="virtual">
