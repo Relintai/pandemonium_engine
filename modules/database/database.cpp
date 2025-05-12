@@ -43,6 +43,10 @@ void Database::set_connection_string(const String &val) {
 	_connection_string = val;
 }
 
+StringName Database::get_backend_name() const {
+	return StringName();
+}
+
 Ref<DatabaseConnection> Database::get_connection() {
 	return _allocate_connection();
 }
@@ -67,6 +71,8 @@ void Database::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_connection_string"), &Database::get_connection_string);
 	ClassDB::bind_method(D_METHOD("set_connection_string", "value"), &Database::set_connection_string);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "connection_string"), "set_connection_string", "get_connection_string");
+
+	ClassDB::bind_method(D_METHOD("get_backend_name"), &Database::get_backend_name);
 
 	ClassDB::bind_method(D_METHOD("get_connection"), &Database::get_connection);
 }

@@ -7,6 +7,8 @@ class SQLite3Database : public DatabaseSingleThreaded {
 	GDCLASS(SQLite3Database, DatabaseSingleThreaded);
 
 public:
+	virtual StringName get_backend_name() const;
+
 	SQLite3Database();
 	~SQLite3Database();
 

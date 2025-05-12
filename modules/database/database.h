@@ -45,6 +45,8 @@ public:
 	String get_connection_string();
 	void set_connection_string(const String &val);
 
+	virtual StringName get_backend_name() const;
+
 	virtual Ref<DatabaseConnection> get_connection();
 
 	Database();

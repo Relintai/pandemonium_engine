@@ -2,6 +2,10 @@
 
 #include "sqlite3_connection.h"
 
+StringName SQLite3Database::get_backend_name() const {
+	return "SQLite3";
+}
+
 Ref<DatabaseConnection> SQLite3Database::_allocate_connection() {
 	Ref<SQLite3DatabaseConnection> dbc;
 	dbc.instance();
