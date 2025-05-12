@@ -6,7 +6,8 @@
 	<description>
 		Represents a prepared statement for use with a [Database].
 		Prepared statements are compiled and parametrized sql statements which can be used repeatedly.
-		[PreparedStatement]s are an alternative to [QueryBuilder].
+		[PreparedStatement]s are an alternative to [QueryBuilder]. [QueryBuilder] is better for simple queries as it makes them database backend agnostic.
+		If multiple database backend support is desired [method Database.get_backend_name] can help in deciding what sql to use.
 		Prepared statements comes with a lot of added security, as SQL injection attacks doesn't work with them (as long as you use their parameters). However note that [QueryBuilder] will escape string parameters which expect to have user input in the for you too, so if you use [QueryBuilder] yuo should also be safe.
 		Performance can differ compared to normal queries, but it seems like it depends on a lot of factors, so you will have to banchmark it yourself for heavy queries. It can be faster or slower.
 		A prepared statement looks similar:

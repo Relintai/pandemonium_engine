@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="QueryBuilder" inherits="Reference">
 	<brief_description>
-		A class that helps you with building and running database backend specific sql safely.
+		A class that helps you with building and running database backend agnostic sql safely.
 	</brief_description>
 	<description>
-		A class that helps you with building and running database backend specific sql safely.
+		A class that helps you with building and running database backend agnostic sql safely.
+		Recommended for relative simple queries. For more advanced use cases [PreparedStatement]s are better.
 		Methods by default use escape on their parameters that can normally contain user input. For performance reasons other variants that don't do this also exist. These are prefixed with 'n'. For example [method select] vs [method nselect]. Don't use these with raw user input, as it will make your application vulnerable to sql injection attacks.
 		It contains helper methods that lets you run the finished query directly See [method run] and [method run_query].
 		You should not allocate this directly, instead get it from you active database connection, like:
