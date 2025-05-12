@@ -15,6 +15,29 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="add_column">
+			<return type="TableBuilder" />
+			<description>
+				Adds an [code]ADD COLUMN[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "ADD COLUMN "
+				[/codeblock]
+			</description>
+		</method>
+		<method name="alter_table">
+			<return type="TableBuilder" />
+			<argument index="0" name="table_name" type="String" />
+			<description>
+				Adds an [code]ALTER TABLE[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "ALTER TABLE ";
+				result += p_table_name;
+				result += " ";
+				[/codeblock]
+			</description>
+		</method>
 		<method name="auto_increment">
 			<return type="TableBuilder" />
 			<description>
@@ -47,7 +70,7 @@
 		</method>
 		<method name="create_table">
 			<return type="TableBuilder" />
-			<argument index="0" name="value" type="String" />
+			<argument index="0" name="table_name" type="String" />
 			<description>
 				Adds a [code]CREATE TABLE[/code] statement.
 				Equivalent to:
@@ -78,6 +101,19 @@
 				[/codeblock]
 			</description>
 		</method>
+		<method name="drop_column">
+			<return type="TableBuilder" />
+			<argument index="0" name="column_name" type="String" />
+			<description>
+				Adds a [code]DROP COLUMN[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "DROP COLUMN ";
+				result += p_column_name;
+				result += " ";
+				[/codeblock]
+			</description>
+		</method>
 		<method name="drop_table">
 			<return type="TableBuilder" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
@@ -97,6 +133,16 @@
 				Equivalent to:
 				[codeblock]
 				result += "DROP TABLE IF EXISTS "
+				[/codeblock]
+			</description>
+		</method>
+		<method name="end_command">
+			<return type="TableBuilder" />
+			<description>
+				Adds an end command statement.
+				Equivalent to:
+				[codeblock]
+				result += ";";
 				[/codeblock]
 			</description>
 		</method>
@@ -199,6 +245,35 @@
 			<argument index="1" name="name" type="String" />
 			<description>
 				result += "REFERENCES " + table + " (" + name + ") ";
+			</description>
+		</method>
+		<method name="rename_column_to">
+			<return type="TableBuilder" />
+			<argument index="0" name="column_name" type="String" />
+			<argument index="1" name="new_column_name" type="String" />
+			<description>
+				Adds a [code]RENAME COLUMN[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "RENAME COLUMN ";
+				result += p_column_name;
+				result += " TO ";
+				result += p_new_column_name;
+				result += " ";
+				[/codeblock]
+			</description>
+		</method>
+		<method name="rename_to">
+			<return type="TableBuilder" />
+			<argument index="0" name="table_name" type="String" />
+			<description>
+				Adds a [code]RENAME TO[/code] statement.
+				Equivalent to:
+				[codeblock]
+				result += "RENAME TO ";
+				result += p_table_name;
+				result += " ";
+				[/codeblock]
 			</description>
 		</method>
 		<method name="reset">
