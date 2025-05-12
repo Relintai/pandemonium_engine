@@ -31,6 +31,8 @@
 
 #include "user_manager_db.h"
 
+#include "core/containers/local_vector.h"
+
 #include "../users/user.h"
 
 #include "../../database/database.h"
@@ -39,6 +41,8 @@
 #include "../../database/query_builder.h"
 #include "../../database/query_result.h"
 #include "../../database/table_builder.h"
+
+#include "core/log/logger.h"
 
 String UserManagerDB::get_database_table_name() {
 	return _database_table_name;
@@ -212,9 +216,9 @@ void UserManagerDB::_save_user(Ref<User> user) {
 
 	if (user->get_user_id() == -1) {
 		b->insert(_database_table_name, "username, username_internal, email, email_internal, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
-		
+
 		user->write_lock();
-		
+
 		b->values();
 		b->vals(user->get_user_name());
 		b->vals(user->get_user_name_internal());
@@ -235,14 +239,14 @@ void UserManagerDB::_save_user(Ref<User> user) {
 		Ref<QueryResult> r = b->run();
 
 		user->set_user_id(r->get_last_insert_rowid());
-		
+
 		user->write_unlock();
 	} else {
 		b->update(_database_table_name);
 		b->sets();
-		
+
 		user->read_lock();
-		
+
 		b->setps("username", user->get_user_name());
 		b->setps("username_internal", user->get_user_name_internal());
 		b->setps("email", user->get_email());
@@ -256,7 +260,7 @@ void UserManagerDB::_save_user(Ref<User> user) {
 		b->setpb("locked", user->get_locked());
 		b->cset();
 		b->where()->wpi("id", user->get_user_id());
-		
+
 		user->read_unlock();
 
 		// b->print();
@@ -359,17 +363,84 @@ void UserManagerDB::_create_table() {
 	tb->ccreate_table();
 	tb->run_query();
 	// tb->print();
+
+	get_database_connection()->set_table_version(_database_table_name, 1);
 }
 void UserManagerDB::_drop_table() {
 	Ref<TableBuilder> tb = get_table_builder();
 
 	tb->drop_table_if_exists(_database_table_name)->run_query();
+	
+	get_database_connection()->set_table_version(_database_table_name, -1);
 }
 
 void UserManagerDB::_update_table(const int p_current_table_version) {
-	//TODO
-	// Add username_internal after username
-	// Add email_internal after email
+	if (p_current_table_version <= 0) {
+		// Added username_internal after username
+		// Added email_internal after email
+
+		Ref<TableBuilder> tb = get_table_builder();
+
+		tb->alter_table(_database_table_name);
+		tb->add_column();
+		tb->varchar("username_internal", 60)->not_null();
+		tb->end_command();
+
+		tb->alter_table(_database_table_name);
+		tb->add_column();
+		tb->varchar("email_internal", 100)->not_null();
+		tb->end_command();
+
+		tb->run_query();
+
+		// Now update users
+		Ref<QueryBuilder> b = get_query_builder();
+
+		b->select("id,username,email");
+		b->from(_database_table_name);
+		b->end_command();
+		// b->print();
+
+		Ref<QueryResult> r = b->run();
+
+		struct UserData {
+			int id;
+			String username;
+			String email;
+		};
+
+		LocalVector<UserData> user_data;
+
+		while (r->next_row()) {
+			UserData u;
+
+			u.id = r->get_next_cell_int();
+			u.username = r->get_next_cell();
+			u.email = r->get_next_cell();
+
+			user_data.push_back(u);
+		}
+
+		for (uint32_t i = 0; i < user_data.size(); ++i) {
+			UserData u = user_data[i];
+
+			b->reset();
+
+			b->update(_database_table_name);
+			b->sets();
+
+			b->setps("username_internal", User::string_to_internal_format(u.username));
+			b->setps("email_internal", User::string_to_internal_format(u.email));
+			b->cset();
+			b->where()->wpi("id", u.id);
+
+			b->run_query();
+		}
+
+		get_database_connection()->set_table_version(_database_table_name, 1);
+
+		PLOG_IMPORTANT("Updated user tables to version 1!");
+	}
 }
 
 void UserManagerDB::_create_default_entries(const int p_seed) {
