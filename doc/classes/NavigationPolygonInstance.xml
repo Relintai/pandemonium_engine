@@ -13,7 +13,7 @@
 		The pathfinding cost of traveling distances inside this region can be controlled with the [member travel_cost] multiplier.
 	</description>
 	<tutorials>
-		<link title="Using NavigationRegions">$DOCS_URL/tutorials/navigation/navigation_using_navigationregions.md</link>
+		<link title="Using NavigationRegions">$DOCS_URL/03_usage/11_navigation/05_navigation_using_navigationregions.md</link>
 	</tutorials>
 	<methods>
 		<method name="bake_navigation_polygon">

@@ -7,7 +7,7 @@
 		Mesh is a type of [Resource] that contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
 	</description>
 	<tutorials>
-		<link title="3D Material Testers Demo">https://godotengine.org/asset-library/asset/123</link>
+		<link title="3D Material Testers Demo">$DOCS_URL/07_demo_projects/3d/material_testers</link>
 		<link title="3D Kinematic Character Demo">$DOCS_URL/07_demo_projects/3d/kinematic_character</link>
 		<link title="3D Platformer Demo">$DOCS_URL/07_demo_projects/3d/platformer</link>
 	</tutorials>

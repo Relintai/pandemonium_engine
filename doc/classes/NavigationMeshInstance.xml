@@ -13,7 +13,7 @@
 		Bakes the [NavigationMesh]. If [code]on_thread[/code] is set to [code]true[/code] (default), the baking is done on a separate thread. Baking on separate thread is useful because navigation baking is not a cheap operation. When it is completed, it automatically sets the new [NavigationMesh]. Please note that baking on separate thread may be very slow if geometry is parsed from meshes as async access to each mesh involves heavy synchronization. Also, please note that baking on a separate thread is automatically disabled on operating systems that cannot use threads (such as HTML5 with threads disabled).
 	</description>
 	<tutorials>
-		<link title="Using NavigationRegions">$DOCS_URL/tutorials/navigation/navigation_using_navigationregions.md</link>
+		<link title="Using NavigationRegions">$DOCS_URL/03_usage/11_navigation/05_navigation_using_navigationregions.md</link>
 	</tutorials>
 	<methods>
 		<method name="bake_navigation_mesh">

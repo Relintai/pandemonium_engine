@@ -7,7 +7,7 @@
 		Provides navigation and pathfinding within a collection of [NavigationMesh]es. By default, these will be automatically collected from child [NavigationMeshInstance] nodes. In addition to basic pathfinding, this class also assists with aligning navigation agents with the meshes they are navigating on.
 	</description>
 	<tutorials>
-		<link title="3D Navmesh Demo">https://github.com/Relintai/pandemonium_demo_projects/tree/master/3d/navmesh</link>
+		<link title="3D Navmesh Demo">$DOCS_URL/07_demo_projects/3d/navmesh</link>
 	</tutorials>
 	<methods>
 		<method name="get_closest_point" qualifiers="const">

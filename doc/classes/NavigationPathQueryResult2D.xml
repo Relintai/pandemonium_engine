@@ -7,7 +7,7 @@
 		This class stores the result of a 2D navigation path query from the [NavigationServer2D].
 	</description>
 	<tutorials>
-		<link title="Using NavigationPathQueryObjects">$DOCS_URL/tutorials/navigation/navigation_using_navigationpathqueryobjects.md</link>
+		<link title="Using NavigationPathQueryObjects">$DOCS_URL/03_usage/11_navigation/08_navigation_using_navigationpathqueryobjects.md</link>
 	</tutorials>
 	<methods>
 		<method name="reset">

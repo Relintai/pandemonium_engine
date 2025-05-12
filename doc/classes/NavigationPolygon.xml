@@ -27,8 +27,8 @@
 		[/codeblock]
 	</description>
 	<tutorials>
-		<link title="2D Navigation Demo">https://github.com/Relintai/pandemonium_demo_projects/tree/master/2d/navigation</link>
-		<link title="Using NavigationMeshes">$DOCS_URL/tutorials/navigation/navigation_using_navigationmeshes.md</link>
+		<link title="2D Navigation Demo">$DOCS_URL/07_demo_projects/2d/navigation</link>
+		<link title="Using NavigationMeshes">$DOCS_URL/03_usage/11_navigation/06_navigation_using_navigationmeshes.md</link>
 	</tutorials>
 	<methods>
 		<method name="add_outline">

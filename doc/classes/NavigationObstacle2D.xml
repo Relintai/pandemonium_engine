@@ -10,7 +10,7 @@
 		Obstacles using vertices can warp to a new position but should not moved every frame as each move requires a rebuild of the avoidance map.
 	</description>
 	<tutorials>
-		<link title="Using NavigationObstacles">$DOCS_URL/tutorials/navigation/navigation_using_navigationobstacles.md</link>
+		<link title="Using NavigationObstacles">$DOCS_URL/03_usage/11_navigation/10_navigation_using_navigationobstacles.md</link>
 	</tutorials>
 	<methods>
 		<method name="get_avoidance_layer_value" qualifiers="const">

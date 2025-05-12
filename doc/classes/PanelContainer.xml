@@ -8,7 +8,7 @@
 	</description>
 	<tutorials>
 		<link title="GUI containers">$DOCS_URL/03_usage/04_ui/02_gui_containers.md</link>
-		<link title="2D Role Playing Game Demo">https://godotengine.org/asset-library/asset/520</link>
+		<link title="2D Role Playing Game Demo">$DOCS_URL/07_demo_projects/2d/role_playing_game</link>
 	</tutorials>
 	<methods>
 	</methods>

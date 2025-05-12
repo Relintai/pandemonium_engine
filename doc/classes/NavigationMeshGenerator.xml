@@ -9,7 +9,7 @@
 		To work around the runtime framerate issues, the source geometry can be parsed to a [NavigationMeshSourceGeometryData2D] or a [NavigationMeshSourceGeometryData3D] resource. This resource can later be (re)used at runtime to bake multiple navigation meshes with different parameters in background threads without touching the scene tree again (assuming the nodes that contribute source geometry have not changed).
 	</description>
 	<tutorials>
-		<link title="Using NavigationMeshes">$DOCS_URL/tutorials/navigation/navigation_using_navigationmeshes.md</link>
+		<link title="Using NavigationMeshes">$DOCS_URL/03_usage/11_navigation/06_navigation_using_navigationmeshes.md</link>
 	</tutorials>
 	<methods>
 		<method name="bake_2d_from_source_geometry_data">

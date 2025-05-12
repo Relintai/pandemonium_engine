@@ -38,7 +38,7 @@
 		[/codeblock]
 	</description>
 	<tutorials>
-		<link title="2D Role Playing Game Demo">https://godotengine.org/asset-library/asset/520</link>
+		<link title="2D Role Playing Game Demo">$DOCS_URL/07_demo_projects/2d/role_playing_game</link>
 	</tutorials>
 	<methods>
 		<method name="can_instance" qualifiers="const">

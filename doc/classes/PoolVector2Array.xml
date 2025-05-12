@@ -21,7 +21,7 @@
 		[/codeblock]
 	</description>
 	<tutorials>
-		<link title="2D Navigation Astar Demo">https://godotengine.org/asset-library/asset/519</link>
+		<link title="2D Navigation Astar Demo">$DOCS_URL/07_demo_projects/2d/navigation_astar</link>
 	</tutorials>
 	<methods>
 		<method name="PoolVector2Array">

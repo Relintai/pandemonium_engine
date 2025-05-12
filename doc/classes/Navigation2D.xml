@@ -7,7 +7,7 @@
 		Navigation2D provides navigation and pathfinding within a 2D area, specified as a collection of [NavigationPolygon] resources. By default, these are automatically collected from child [NavigationPolygonInstance] nodes.
 	</description>
 	<tutorials>
-		<link title="2D Navigation Demo">https://github.com/Relintai/pandemonium_demo_projects/tree/master/2d/navigation</link>
+		<link title="2D Navigation Demo">$DOCS_URL/07_demo_projects/2d/navigation</link>
 	</tutorials>
 	<methods>
 		<method name="get_closest_point" qualifiers="const">

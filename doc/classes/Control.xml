@@ -14,10 +14,10 @@
 		[b]Note:[/b] Theme items are [i]not[/i] [Object] properties. This means you can't access their values using [method Object.get] and [method Object.set]. Instead, use [method get_theme_color], [method get_theme_constant], [method get_theme_font], [method get_theme_icon], [method get_theme_stylebox], and the [code]add_*_override[/code] methods provided by this class.
 	</description>
 	<tutorials>
-		<link title="GUI tutorial index">$DOCS_URL/tutorials/ui/index.md</link>
+		<link title="GUI tutorial index">$DOCS_URL/03_usage/04_ui</link>
 		<link title="Custom drawing in 2D">$DOCS_URL/03_usage/02_2d/07_custom_drawing_in_2d.md</link>
-		<link title="Control node gallery">$DOCS_URL/tutorials/ui/control_node_gallery.md</link>
-		<link title="All GUI Demos">https://github.com/Relintai/pandemonium_demo_projects/tree/master/gui</link>
+		<link title="Control node gallery">$DOCS_URL/03_usage/04_ui/05_control_node_gallery.md</link>
+		<link title="All GUI Demos">$DOCS_URL/07_demo_projects/gui</link>
 	</tutorials>
 	<methods>
 		<method name="_get_minimum_size" qualifiers="virtual">

@@ -7,7 +7,7 @@
 		Light is the [i]abstract[/i] base class for light nodes. As it can't be instanced, it shouldn't be used directly. Other types of light nodes inherit from it. Light contains the common variables and parameters used for lighting.
 	</description>
 	<tutorials>
-		<link title="3D lights and shadows">$DOCS_URL/tutorials/3d/lights_and_shadows.md</link>
+		<link title="3D lights and shadows">$DOCS_URL/03_usage/03_3d/05_lights_and_shadows.md</link>
 	</tutorials>
 	<methods>
 		<method name="get_param" qualifiers="const">

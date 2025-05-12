@@ -24,7 +24,7 @@
 		[b]Note:[/b] In the editor, [NodePath] properties are automatically updated when moving, renaming or deleting a node in the scene tree, but they are never updated at runtime.
 	</description>
 	<tutorials>
-		<link title="2D Role Playing Game Demo">https://godotengine.org/asset-library/asset/520</link>
+		<link title="2D Role Playing Game Demo">$DOCS_URL/07_demo_projects/2d/role_playing_game</link>
 	</tutorials>
 	<methods>
 		<method name="NodePath">

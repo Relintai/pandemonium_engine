@@ -13,7 +13,7 @@
 		To use [EditorInspectorPlugin], register it using the [method EditorPlugin.add_inspector_plugin] method first.
 	</description>
 	<tutorials>
-		<link title="Inspector plugins">$DOCS_URL/tutorials/plugins/editor/inspector_plugins.md</link>
+		<link title="Inspector plugins">$DOCS_URL/03_usage/19_plugins/editor/06_inspector_plugins.md</link>
 	</tutorials>
 	<methods>
 		<method name="add_custom_control">
