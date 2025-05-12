@@ -6,7 +6,7 @@
 	<description>
 		A web page that let users register using a form.
 		Rendering can be customized by creating the following method:
-		[code]func _render_user_page(request : WebServerRequest, d : Dictionary) -> void:[/code]
+		[code]func _render_user_page(request : WebServerRequest, d : Dictionary) -&gt; void:[/code]
 		The [code]d[/code] [Dictionary] will contain the following data on a successful registration:
 		[code]d["type"] = "render_register_success";
 		d["user"] = user;[/code]

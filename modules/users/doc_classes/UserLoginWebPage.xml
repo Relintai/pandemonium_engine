@@ -6,7 +6,7 @@
 	<description>
 		A web page that asks for [User] credentials and logs them in by setting cookies.
 		Rendering can be customized by creating the following method:
-		[code]func _render_user_page(request : WebServerRequest, d : Dictionary) -> void:[/code]
+		[code]func _render_user_page(request : WebServerRequest, d : Dictionary) -&gt; void:[/code]
 		The [code]d[/code] [Dictionary] will contain the following data on a successful login:
 		[code]d["type"] = "render_login_success";
 		d["user"] = user;[/code]

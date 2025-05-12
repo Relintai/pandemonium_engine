@@ -6,7 +6,7 @@
 	<description>
 		A web page that lets [User]s edit their own data / settings.
 		Rendering can be customized by creating the following method:
-		[code]func _render_user_page(request : WebServerRequest, d : Dictionary) -> void:[/code]
+		[code]func _render_user_page(request : WebServerRequest, d : Dictionary) -&gt; void:[/code]
 		The [code]d[/code] [Dictionary] will contain the following data:
 		[code]d["user"] = user;
 		d["error_str"] = error_str; String, html containing the problems.
