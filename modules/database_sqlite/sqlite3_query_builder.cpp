@@ -1,7 +1,6 @@
 #include "sqlite3_query_builder.h"
 
 #include "sqlite3_connection.h"
-#include "sqlite3_database.h"
 #include "sqlite3_prepared_statement.h"
 #include "sqlite3_query_result.h"
 
