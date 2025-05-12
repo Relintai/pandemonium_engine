@@ -15,6 +15,12 @@
 		<link title="Web Demo Projects">https://github.com/Relintai/pandemonium_demo_projects/tree/master/web</link>
 	</tutorials>
 	<methods>
+		<method name="get_backend_name" qualifiers="const">
+			<return type="StringName" />
+			<description>
+				Returns the database backend's name.
+			</description>
+		</method>
 		<method name="get_connection">
 			<return type="DatabaseConnection" />
 			<description>
