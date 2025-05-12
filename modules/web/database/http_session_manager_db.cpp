@@ -283,14 +283,10 @@ void HTTPSessionManagerDB::_migrate(const bool p_clear, const bool p_should_seed
 		drop_table();
 		create_table();
 	} else {
-#ifdef MODULE_DATABASE_ENABLED
 		Ref<DatabaseConnection> conn = get_database_connection();
 		ERR_FAIL_COND(!conn.is_valid());
 		int ver = conn->get_table_version(_database_table_name);
 		update_table(ver);
-#else
-		update_table(0);
-#endif
 	}
 
 	if (p_should_seed) {
