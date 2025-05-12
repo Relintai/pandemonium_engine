@@ -5,7 +5,9 @@
 #include "sqlite3_connection.h"
 
 TableBuilder *SQLite3TableBuilder::create_table(const String &name) {
-	result += "CREATE TABLE " + name + " ( ";
+	result += "CREATE TABLE ";
+	result += name;
+	result += " ( ";
 
 	return this;
 }
@@ -49,7 +51,8 @@ TableBuilder *SQLite3TableBuilder::drop_column(const String &p_column_name) {
 }
 
 TableBuilder *SQLite3TableBuilder::integer(const String &name, const int length) {
-	result += name + " INTEGER ";
+	result += name;
+	result += " INTEGER ";
 
 	if (length != -1) {
 		result += "(";
@@ -61,7 +64,8 @@ TableBuilder *SQLite3TableBuilder::integer(const String &name, const int length)
 }
 
 TableBuilder *SQLite3TableBuilder::tiny_integer(const String &name, const int length) {
-	result += name + " INTEGER(";
+	result += name;
+	result += " INTEGER(";
 
 	if (length == -1) {
 		result += "4";
@@ -75,7 +79,8 @@ TableBuilder *SQLite3TableBuilder::tiny_integer(const String &name, const int le
 }
 
 TableBuilder *SQLite3TableBuilder::small_integer(const String &name, const int length) {
-	result += name + " INTEGER(";
+	result += name;
+	result += " INTEGER(";
 
 	if (length == -1) {
 		result += "6";
@@ -89,25 +94,29 @@ TableBuilder *SQLite3TableBuilder::small_integer(const String &name, const int l
 }
 
 TableBuilder *SQLite3TableBuilder::real_float(const String &name, const int size, const int d) {
-	result += name + " FLOAT ";
+	result += name;
+	result += " FLOAT ";
 
 	return this;
 }
 
 TableBuilder *SQLite3TableBuilder::real_double(const String &name, const int size, const int d) {
-	result += name + " DOUBLE ";
+	result += name;
+	result += " DOUBLE ";
 
 	return this;
 }
 
 TableBuilder *SQLite3TableBuilder::date(const String &name) {
-	result += name + " DATE ";
+	result += name;
+	result += " DATE ";
 
 	return this;
 }
 
 TableBuilder *SQLite3TableBuilder::varchar(const String &name, const int length) {
-	result += name + " VARCHAR ";
+	result += name;
+	result += " VARCHAR ";
 
 	if (length != -1) {
 		result += "(";
@@ -119,7 +128,8 @@ TableBuilder *SQLite3TableBuilder::varchar(const String &name, const int length)
 }
 
 TableBuilder *SQLite3TableBuilder::text(const String &name) {
-	result += name + " TEXT ";
+	result += name;
+	result += " TEXT ";
 
 	return this;
 }
@@ -151,7 +161,9 @@ TableBuilder *SQLite3TableBuilder::auto_increment() {
 }
 
 TableBuilder *SQLite3TableBuilder::primary_key(const String &name) {
-	result += "PRIMARY KEY (" + name + ") ";
+	result += "PRIMARY KEY (";
+	result += name;
+	result += ") ";
 
 	return this;
 }
@@ -185,12 +197,16 @@ TableBuilder *SQLite3TableBuilder::drop_table_if_exists() {
 	return this;
 }
 TableBuilder *SQLite3TableBuilder::drop_table(const String &name) {
-	result += "DROP TABLE " + name + ";";
+	result += "DROP TABLE ";
+	result += name;
+	result += ";";
 
 	return this;
 }
 TableBuilder *SQLite3TableBuilder::drop_table_if_exists(const String &name) {
-	result += "DROP TABLE IF EXISTS " + name + ";";
+	result += "DROP TABLE IF EXISTS ";
+	result += name;
+	result += ";";
 
 	return this;
 }
@@ -201,12 +217,18 @@ TableBuilder *SQLite3TableBuilder::cdrop_table() {
 }
 
 TableBuilder *SQLite3TableBuilder::foreign_key(const String &name) {
-	result += "FOREIGN KEY (" + name + ") ";
+	result += "FOREIGN KEY (";
+	result += name;
+	result += ") ";
 
 	return this;
 }
 TableBuilder *SQLite3TableBuilder::references(const String &table, const String &name) {
-	result += "REFERENCES " + table + " (" + name + ") ";
+	result += "REFERENCES ";
+	result += table;
+	result += " (";
+	result += name;
+	result += ") ";
 
 	return this;
 }
