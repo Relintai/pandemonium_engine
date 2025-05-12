@@ -8,9 +8,9 @@
 		This is useful to optimize the rendering of a high amount of instances of a given mesh (for example trees in a forest or grass strands).
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/performance/vertex_animation/animating_thousands_of_fish.md</link>
-		<link>$DOCS_URL/tutorials/3d/using_multi_mesh_instance.md</link>
-		<link>$DOCS_URL/tutorials/performance/using_multimesh.md</link>
+		<link>$DOCS_URL/03_usage/17_performance/vertex_animation/01_animating_thousands_of_fish.md</link>
+		<link>$DOCS_URL/03_usage/03_3d/11_using_multi_mesh_instance.md</link>
+		<link>$DOCS_URL/03_usage/17_performance/05_using_multimesh.md</link>
 	</tutorials>
 	<methods>
 	</methods>
