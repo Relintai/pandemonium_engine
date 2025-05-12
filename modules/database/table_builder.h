@@ -47,6 +47,13 @@ public:
 	void set_result(const String &val);
 
 	virtual TableBuilder *create_table(const String &name);
+	virtual TableBuilder *alter_table(const String &p_table_name);
+
+	virtual TableBuilder *rename_to(const String &p_table_name);
+
+	virtual TableBuilder *rename_column_to(const String &p_column_name, const String &p_new_column_name);
+	virtual TableBuilder *add_column();
+	virtual TableBuilder *drop_column(const String &p_column_name);
 
 	virtual TableBuilder *integer(const String &name, const int length = -1);
 	virtual TableBuilder *tiny_integer(const String &name, const int length = -1);
@@ -75,6 +82,8 @@ public:
 	virtual TableBuilder *foreign_key(const String &name);
 	virtual TableBuilder *references(const String &table, const String &name);
 
+	virtual TableBuilder *end_command();
+
 	virtual Ref<QueryResult> run();
 	virtual void run_query();
 
@@ -89,6 +98,13 @@ protected:
 	static void _bind_methods();
 
 	Ref<TableBuilder> _create_table_bind(const String &name);
+	Ref<TableBuilder> _alter_table_bind(const String &p_table_name);
+
+	Ref<TableBuilder> _rename_to_bind(const String &p_table_name);
+
+	Ref<TableBuilder> _rename_column_to_bind(const String &p_column_name, const String &p_new_column_name);
+	Ref<TableBuilder> _add_column_bind();
+	Ref<TableBuilder> _drop_column_bind(const String &p_column_name);
 
 	Ref<TableBuilder> _integer_bind(const String &name, const int length = -1);
 	Ref<TableBuilder> _tiny_integer_bind(const String &name, const int length = -1);
@@ -115,6 +131,8 @@ protected:
 
 	Ref<TableBuilder> _foreign_key_bind(const String &name);
 	Ref<TableBuilder> _references_bind(const String &table, const String &name);
+
+	Ref<TableBuilder> _end_command_bind();
 
 	StringBuilder result;
 };

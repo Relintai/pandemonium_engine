@@ -12,6 +12,13 @@ class SQLite3TableBuilder : public TableBuilder {
 
 public:
 	TableBuilder *create_table(const String &name);
+	TableBuilder *alter_table(const String &p_table_name);
+
+	TableBuilder *rename_to(const String &p_table_name);
+
+	TableBuilder *rename_column_to(const String &p_column_name, const String &p_new_column_name);
+	TableBuilder *add_column();
+	TableBuilder *drop_column(const String &p_column_name);
 
 	TableBuilder *integer(const String &name, const int length = -1);
 	TableBuilder *tiny_integer(const String &name, const int length = -1);
@@ -41,6 +48,8 @@ public:
 
 	TableBuilder *foreign_key(const String &name);
 	TableBuilder *references(const String &table, const String &name);
+
+	TableBuilder *end_command();
 
 	Ref<QueryResult> run();
 	void run_query();

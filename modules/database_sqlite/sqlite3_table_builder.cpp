@@ -10,6 +10,44 @@ TableBuilder *SQLite3TableBuilder::create_table(const String &name) {
 	return this;
 }
 
+TableBuilder *SQLite3TableBuilder::alter_table(const String &p_table_name) {
+	result += "ALTER TABLE ";
+	result += p_table_name;
+	result += " ";
+
+	return this;
+}
+
+TableBuilder *SQLite3TableBuilder::rename_to(const String &p_table_name) {
+	result += "RENAME TO ";
+	result += p_table_name;
+	result += " ";
+
+	return this;
+}
+
+TableBuilder *SQLite3TableBuilder::rename_column_to(const String &p_column_name, const String &p_new_column_name) {
+	result += "RENAME COLUMN ";
+	result += p_column_name;
+	result += " TO ";
+	result += p_new_column_name;
+	result += " ";
+
+	return this;
+}
+TableBuilder *SQLite3TableBuilder::add_column() {
+	result += "ADD COLUMN ";
+
+	return this;
+}
+TableBuilder *SQLite3TableBuilder::drop_column(const String &p_column_name) {
+	result += "DROP COLUMN ";
+	result += p_column_name;
+	result += " ";
+
+	return this;
+}
+
 TableBuilder *SQLite3TableBuilder::integer(const String &name, const int length) {
 	result += name + " INTEGER ";
 
@@ -169,6 +207,12 @@ TableBuilder *SQLite3TableBuilder::foreign_key(const String &name) {
 }
 TableBuilder *SQLite3TableBuilder::references(const String &table, const String &name) {
 	result += "REFERENCES " + table + " (" + name + ") ";
+
+	return this;
+}
+
+TableBuilder *SQLite3TableBuilder::end_command() {
+	result += ";";
 
 	return this;
 }
