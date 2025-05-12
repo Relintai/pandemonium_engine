@@ -73,16 +73,11 @@ Ref<Database> DatabaseConnection::get_owner() {
 int DatabaseConnection::get_table_version(const String &table) {
 	ensure_version_table_exists();
 
-	//get_query_builder()
-	//TODO
-
 	return 0;
 }
 void DatabaseConnection::set_table_version(const String &table, const int version) {
-	//TODO
 }
 void DatabaseConnection::ensure_version_table_exists() {
-	//TODO
 }
 
 void DatabaseConnection::set_owner(Database *owner) {

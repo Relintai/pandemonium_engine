@@ -106,6 +106,98 @@ void SQLite3DatabaseConnection::escape_to(const String &str, String *to) {
 	}
 }
 
+int SQLite3DatabaseConnection::get_table_version(const String &table) {
+	ensure_version_table_exists();
+	
+	Ref<QueryBuilder> qb = get_query_builder();
+
+	qb->select("version");
+	qb->from("table_versions");
+	qb->where();
+	qb->wps("table_name", table);
+	qb->end_command();
+	Ref<QueryResult> res = qb->run();
+
+	if (!res->next_row()) {
+		return 0;
+	}
+
+	return res->get_next_cell_int();
+}
+void SQLite3DatabaseConnection::set_table_version(const String &table, const int version) {
+	ensure_version_table_exists();
+	
+	Ref<QueryBuilder> qb = get_query_builder();
+
+	qb->select("id");
+	qb->from("table_versions");
+	qb->where();
+	qb->wps("table_name", table);
+	qb->end_command();
+	Ref<QueryResult> res = qb->run();
+	
+	qb->reset();
+
+	if (!res->next_row()) {
+		if (version == -1) {
+			return;
+		}
+	
+		qb->insert("table_versions", "table_name,version");
+		qb->values();
+		qb->vals(table);
+		qb->vali(version);
+		qb->cvalues();
+		qb->end_command();
+		qb->run_query();
+	} else {
+		int id = res->get_next_cell_int();
+		
+		if (version != -1) {
+			qb->update("table_versions");
+			qb->sets();
+			qb->setpi("version", version);
+			qb->cset();
+			qb->where()->wpi("id", id);
+			qb->run_query();
+		} else {
+			qb->del("table_versions");
+			qb->where()->wpi("id", id);
+			qb->run_query();
+		}
+	}
+}
+void SQLite3DatabaseConnection::ensure_version_table_exists() {
+	// https://www.sqlite.org/fileformat2.html#storage_of_the_sql_database_schema
+	Ref<QueryBuilder> qb = get_query_builder();
+
+	qb->select("count(*)");
+	qb->from("sqlite_master");
+	qb->where();
+	qb->wps("type", "table");
+	qb->land();
+	qb->wps("name", "table_versions");
+	qb->end_command();
+	Ref<QueryResult> res = qb->run();
+
+	ERR_FAIL_COND(!res->next_row());
+
+	int c = res->get_next_cell_int();
+	
+	if (c == 0) {
+		Ref<TableBuilder> tb = get_table_builder();
+
+		tb->create_table("table_versions");
+		tb->integer("id")->auto_increment()->next_row();
+		tb->varchar("table_name", 256)->not_null()->next_row();
+		tb->integer("version")->next_row();
+		tb->primary_key("id");
+		tb->ccreate_table();
+		tb->run_query();
+		// tb->print();
+	}
+}
+
 SQLite3DatabaseConnection::SQLite3DatabaseConnection() {
 	conn = nullptr;
 }
