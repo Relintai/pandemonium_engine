@@ -7,7 +7,7 @@
 		Vertical split container. See [SplitContainer]. This goes from top to bottom.
 	</description>
 	<tutorials>
-		<link title="GUI containers">$DOCS_URL/tutorials/ui/gui_containers.md</link>
+		<link title="GUI containers">$DOCS_URL/03_usage/04_ui/02_gui_containers.md</link>
 	</tutorials>
 	<methods>
 	</methods>

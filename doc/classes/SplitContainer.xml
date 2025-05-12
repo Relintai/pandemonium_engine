@@ -7,7 +7,7 @@
 		Container for splitting two [Control]s vertically or horizontally, with a grabber that allows adjusting the split offset or ratio.
 	</description>
 	<tutorials>
-		<link title="GUI containers">$DOCS_URL/tutorials/ui/gui_containers.md</link>
+		<link title="GUI containers">$DOCS_URL/03_usage/04_ui/02_gui_containers.md</link>
 	</tutorials>
 	<methods>
 		<method name="clamp_split_offset">

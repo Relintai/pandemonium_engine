@@ -9,9 +9,9 @@
 	</description>
 	<tutorials>
 		<link title="Physics introduction">$DOCS_URL/tutorials/physics/physics_introduction.md</link>
-		<link title="2D Dodge The Creeps Demo">https://godotengine.org/asset-library/asset/515</link>
-		<link title="2D Pong Demo">https://godotengine.org/asset-library/asset/121</link>
-		<link title="2D Kinematic Character Demo">https://godotengine.org/asset-library/asset/113</link>
+		<link title="2D Dodge The Creeps Demo">$DOCS_URL/07_demo_projects/2d/dodge_the_creeps</link>
+		<link title="2D Pong Demo">$DOCS_URL/07_demo_projects/2d/pong</link>
+		<link title="2D Kinematic Character Demo">$DOCS_URL/07_demo_projects/2d/kinematic_character</link>
 	</tutorials>
 	<methods>
 	</methods>

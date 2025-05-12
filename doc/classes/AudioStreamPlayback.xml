@@ -7,7 +7,7 @@
 		Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStreamOGGVorbis] for usage.
 	</description>
 	<tutorials>
-		<link title="Audio Generator Demo">https://godotengine.org/asset-library/asset/526</link>
+		<link title="Audio Generator Demo">$DOCS_URL/07_demo_projects/audio/generator</link>
 	</tutorials>
 	<methods>
 	</methods>

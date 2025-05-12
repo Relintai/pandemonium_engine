@@ -13,7 +13,6 @@
 	</description>
 	<tutorials>
 		<link title="GI probes">$DOCS_URL/tutorials/3d/gi_probes.html</link>
-		<link title="Third Person Shooter Demo">https://godotengine.org/asset-library/asset/678</link>
 	</tutorials>
 	<methods>
 		<method name="bake">

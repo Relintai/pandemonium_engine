@@ -7,7 +7,7 @@
 		Horizontal or vertical box container depending on it's [member mode] setting. See [BoxContainer].
 	</description>
 	<tutorials>
-		<link title="GUI containers">$DOCS_URL/tutorials/ui/gui_containers.md</link>
+		<link title="GUI containers">$DOCS_URL/03_usage/04_ui/02_gui_containers.md</link>
 	</tutorials>
 	<methods>
 	</methods>

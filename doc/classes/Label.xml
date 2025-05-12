@@ -9,7 +9,7 @@
 		[b]Note:[/b] Unicode characters after [code]0xffff[/code] (such as most emoji) are [i]not[/i] supported on Windows. They will display as unknown characters instead. This will be resolved in Godot 4.0.
 	</description>
 	<tutorials>
-		<link title="2D Dodge The Creeps Demo">https://godotengine.org/asset-library/asset/515</link>
+		<link title="2D Dodge The Creeps Demo">$DOCS_URL/07_demo_projects/2d/dodge_the_creeps</link>
 	</tutorials>
 	<methods>
 		<method name="get_line_count" qualifiers="const">

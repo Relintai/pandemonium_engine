@@ -9,7 +9,6 @@
 	</description>
 	<tutorials>
 		<link title="3D lights and shadows">$DOCS_URL/tutorials/3d/lights_and_shadows.md</link>
-		<link title="Third Person Shooter Demo">https://godotengine.org/asset-library/asset/678</link>
 	</tutorials>
 	<methods>
 	</methods>

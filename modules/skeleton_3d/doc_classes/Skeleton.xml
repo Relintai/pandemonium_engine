@@ -10,7 +10,6 @@
 	</description>
 	<tutorials>
 		<link title="3D Inverse Kinematics Demo">https://godotengine.org/asset-library/asset/523</link>
-		<link title="Third Person Shooter Demo">https://godotengine.org/asset-library/asset/678</link>
 	</tutorials>
 	<methods>
 		<method name="add_bone">

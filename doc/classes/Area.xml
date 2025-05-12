@@ -10,8 +10,8 @@
 		[b]Warning:[/b] With a non-uniform scale this node will probably not function as expected. Please make sure to keep its scale uniform (i.e. the same on all axes), and change the size(s) of its collision shape(s) instead.
 	</description>
 	<tutorials>
-		<link title="3D Platformer Demo">https://godotengine.org/asset-library/asset/125</link>
-		<link title="GUI in 3D Demo">https://godotengine.org/asset-library/asset/127</link>
+		<link title="3D Platformer Demo">$DOCS_URL/07_demo_projects/3d/platformer</link>
+		<link title="GUI in 3D Demo">$DOCS_URL/07_demo_projects/viewport/gui_in_3d</link>
 	</tutorials>
 	<methods>
 		<method name="get_overlapping_areas" qualifiers="const">
