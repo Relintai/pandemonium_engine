@@ -84,6 +84,7 @@
 			<argument index="1" name="version" type="int" />
 			<description>
 				Sets the current table version.
+				Setting [code]version[/code] to -1 will remove the given table's row from the database.
 			</description>
 		</method>
 	</methods>
