@@ -67,8 +67,8 @@
 		[/codeblock]
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/networking/http_request_class.md</link>
-		<link>$DOCS_URL/tutorials/networking/ssl_certificates.md</link>
+		<link>$DOCS_URL/03_usage/08_networking/02_http_request_class.md</link>
+		<link>$DOCS_URL/03_usage/08_networking/04_ssl_certificates.md</link>
 	</tutorials>
 	<methods>
 		<method name="cancel_request">

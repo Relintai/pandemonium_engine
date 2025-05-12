@@ -12,7 +12,7 @@
 		[b]Note:[/b] Due to a renderer limitation, emissive [ShaderMaterial]s cannot emit light when used in a [GIProbe]. Only emissive [SpatialMaterial]s can emit light in a [GIProbe].
 	</description>
 	<tutorials>
-		<link title="GI probes">$DOCS_URL/tutorials/3d/gi_probes.html</link>
+		<link title="GI probes">$DOCS_URL/03_usage/03_3d/07_gi_probes.md</link>
 	</tutorials>
 	<methods>
 		<method name="bake">

@@ -11,7 +11,7 @@
 		[b]Note:[/b] After working on a GPUParticles node, remember to update its [member visibility_aabb] by selecting it, clicking the [b]GPUParticles[/b] menu at the top of the 3D editor viewport then choose [b]Generate Visibility AABB[/b]. Otherwise, particles may suddenly disappear depending on the camera position and angle.
 	</description>
 	<tutorials>
-		<link title="Controlling thousands of fish with GPUParticles">$DOCS_URL/tutorials/performance/vertex_animation/controlling_thousands_of_fish.html</link>
+		<link title="Controlling thousands of fish with GPUParticles">$DOCS_URL/03_usage/17_performance/vertex_animation/02_controlling_thousands_of_fish.md</link>
 	</tutorials>
 	<methods>
 		<method name="capture_aabb" qualifiers="const">

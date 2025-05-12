@@ -49,7 +49,7 @@
 		To use [EditorImportPlugin], register it using the [method EditorPlugin.add_import_plugin] method first.
 	</description>
 	<tutorials>
-		<link>$DOCS_URL/tutorials/plugins/editor/import_plugins.md</link>
+		<link>$DOCS_URL/03_usage/19_plugins/editor/04_import_plugins.md</link>
 	</tutorials>
 	<methods>
 		<method name="get_import_options" qualifiers="virtual">
