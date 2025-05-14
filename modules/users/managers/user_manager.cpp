@@ -80,7 +80,7 @@ Ref<User> UserManager::_create_user(Ref<User> p_user) {
 	if (!p_user.is_valid()) {
 		p_user.instance();
 	}
-	
+
 	p_user->set_owner_user_manager(this);
 
 	return p_user;
@@ -127,12 +127,14 @@ void UserManager::_notification(int p_what) {
 			if (_register_as_global && !Engine::get_singleton()->is_editor_hint()) {
 				UserDB::get_singleton()->set_user_manager(this);
 			}
-		}
+		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			if (_register_as_global && !Engine::get_singleton()->is_editor_hint()) {
 				UserDB::get_singleton()->unset_user_manager(this);
 			}
-		}
+		} break;
+		default:
+			break;
 	}
 }
 
