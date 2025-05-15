@@ -253,8 +253,9 @@ void User::_from_dict(const Dictionary &dict) {
 	// This is the only way to properly preserve atomicity.
 
 	_user_id = dict["user_id"];
-	_user_name = dict["user_name"];
-	_email = dict["email"];
+	// Use setters here these set other cached state too
+	set_user_name(dict["user_name"]);
+	set_email(dict["email"]);
 	_rank = dict["rank"];
 	_pre_salt = dict["pre_salt"];
 	_post_salt = dict["post_salt"];
