@@ -4,6 +4,8 @@
 		Stores the data for an actionbar button. ProfileManager uses it.
 	</brief_description>
 	<description>
+		Stores the data for an actionbar button.
+		ProfileManager uses it.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,48 +13,60 @@
 		<method name="emit_change">
 			<return type="void" />
 			<description>
+				Emit the changed signal.
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
 			</description>
 		</method>
 		<method name="get_owner">
 			<return type="ActionBarEntry" />
 			<description>
+				Get the owner [ActionBarEntry].
 			</description>
 		</method>
 		<method name="to_dict" qualifiers="const">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="action_bar_id" type="int" setter="set_action_bar_id" getter="get_action_bar_id" default="0">
+			Returns the action bar id.
 		</member>
 		<member name="item_path" type="StringName" setter="set_item_path" getter="get_item_path" default="@&quot;&quot;">
+			Returns the stored item's path.
 		</member>
 		<member name="slot_id" type="int" setter="set_slot_id" getter="get_slot_id" default="0">
+			Returns this button's slot id.
 		</member>
 		<member name="type" type="int" setter="set_type" getter="get_type" enum="ActionBarButtonEntry.ActionBarButtonEntryType" default="0">
+			Returns this button's type.
 		</member>
 	</members>
 	<signals>
 		<signal name="changed">
 			<argument index="0" name="action_bar_button_entry" type="ActionBarButtonEntry" />
 			<description>
+				Emitted when the actionbar button changes.
 			</description>
 		</signal>
 	</signals>
 	<constants>
 		<constant name="ACTION_BAR_BUTTON_ENTRY_TYPE_NONE" value="0" enum="ActionBarButtonEntryType">
+			Empty button.
 		</constant>
 		<constant name="ACTION_BAR_BUTTON_ENTRY_TYPE_SPELL" value="1" enum="ActionBarButtonEntryType">
+			Spell button.
 		</constant>
 		<constant name="ACTION_BAR_BUTTON_ENTRY_TYPE_ITEM" value="2" enum="ActionBarButtonEntryType">
+			Item button.
 		</constant>
 	</constants>
 </class>
