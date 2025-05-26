@@ -4,81 +4,107 @@
 		The ESS singleton.
 	</brief_description>
 	<description>
-		Gives easy access to entity and spell related data, providing easy lookups.
+		Gives access to entity and spell related data, providing easy lookups.
 		Make sure that you add everything both server and clientside before use, because the system uses ids (get_id()) for server clinet communications. This also means that ids should be unique per resources for every ESS-related resources.
-		For example you shouldn't register 2 spells with id 1 (you will get an error), but you can register a [Spell] with id1 and an [Aura] with an id 1.
+		For example you shouldn't register 2 spells with id 1 (you will get an error).
+		Even if you don't use multiplayer, the systen uses ids, so you have to register all spells that you want to use.
+		[ESSResourceDB] and it's derived classes can help with collecting spells and managins spell ids.
 		Also grants access easy to ESS-related project settings.
 	</description>
 	<tutorials>
+		<link title="Broken Seals">https://github.com/Relintai/broken_seals</link>
+		<link title="Broken Seals Roguelike">https://github.com/Relintai/broken_seals_roguelike</link>
+		<link title="Broken Seals 2D">https://github.com/Relintai/broken_seals_2d</link>
+		<link title="Broken Seals 2DS">https://github.com/Relintai/broken_seals_2ds</link>
 	</tutorials>
 	<methods>
 		<method name="can_character_level_up">
 			<return type="bool" />
 			<argument index="0" name="current_level" type="int" />
 			<description>
+					Did a character reach max level?
 			</description>
 		</method>
 		<method name="can_class_level_up">
 			<return type="bool" />
 			<argument index="0" name="current_level" type="int" />
 			<description>
+					Did a class reach max level? If your project is using separate class levels.
 			</description>
 		</method>
 		<method name="ensure_materials_loaded">
 			<return type="void" />
 			<description>
+				Ensures that the materials specified in the ess/material_cache/material_paths Project Setting are loaded.
 			</description>
 		</method>
 		<method name="equip_slot_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of equip slots.
+				Equip Slots can be edited via the "ess/enums/equip_slots" project setting.
 			</description>
 		</method>
 		<method name="equip_slot_get_id" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns the id of the given equip slot.
+				Equip Slots can be edited via the "ess/enums/equip_slots" project setting.
 			</description>
 		</method>
 		<method name="equip_slot_get_name" qualifiers="const">
 			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Returns the name of the equip slot from it's id.
+				Equip Slots can be edited via the "ess/enums/equip_slots" project setting.
 			</description>
 		</method>
 		<method name="equip_slot_get_property_id" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Gets the generated property id for a given equip slot.
+				Equip Slots can be edited via the "ess/enums/equip_slots" project setting.
 			</description>
 		</method>
 		<method name="equip_slot_get_property_name" qualifiers="const">
 			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Gets the generated property name for a given equip slot.
+				Properties are lowercase with spaces replaced to underscores. So the "Left Hand" equip slot becomes "left_hand". These are used by resources.
+				Equip Slots can be edited via the "ess/enums/equip_slots" project setting.
 			</description>
 		</method>
 		<method name="equip_slot_is_property" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns whether the given name is an equip slot property.
+				Properties are lowercase with spaces replaced to underscores. So the "Left Hand" equip slot becomes "left_hand". These are used by resources.
+				Equip Slots can be edited via the "ess/enums/equip_slots" project setting.
 			</description>
 		</method>
 		<method name="get_character_xp">
 			<return type="int" />
 			<argument index="0" name="current_level" type="int" />
 			<description>
+				Get the required xp for the next level.
 			</description>
 		</method>
 		<method name="get_class_xp">
 			<return type="int" />
 			<argument index="0" name="current_level" type="int" />
 			<description>
+				Get the required xp for the next class level.
 			</description>
 		</method>
 		<method name="load_all">
 			<return type="void" />
 			<description>
+				Load every resource set in the project settings.
 			</description>
 		</method>
 		<method name="load_resource">
@@ -86,46 +112,54 @@
 			<argument index="0" name="path" type="String" />
 			<argument index="1" name="type_hint" type="String" default="&quot;&quot;" />
 			<description>
+				Load a resource used by the ESS singleton.
 			</description>
 		</method>
 		<method name="load_resource_db">
 			<return type="void" />
 			<description>
+				Load an [ESSResourceDB].
 			</description>
 		</method>
 		<method name="material_add">
 			<return type="void" />
 			<argument index="0" name="value" type="Material" />
 			<description>
+				Adds a material to be used by the [ESSMaterialCache]s.
 			</description>
 		</method>
 		<method name="material_cache_get">
 			<return type="ESSMaterialCache" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Returns the given material cache.
 			</description>
 		</method>
 		<method name="material_cache_unref">
 			<return type="void" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Unreferences the given material cache.
 			</description>
 		</method>
 		<method name="material_get">
 			<return type="Material" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the requested material to be used by the [ESSMaterialCache]s.
 			</description>
 		</method>
 		<method name="material_get_num" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the material count of the materials that is used by the [ESSMaterialCache]s.
 			</description>
 		</method>
 		<method name="material_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes a material that is used by the [ESSMaterialCache]s.
 			</description>
 		</method>
 		<method name="material_set">
@@ -133,28 +167,35 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="Material" />
 			<description>
+				Sets a material that is used by the [ESSMaterialCache]s.
 			</description>
 		</method>
 		<method name="materials_clear">
 			<return type="void" />
 			<description>
+				Clears all material that is used by the [ESSMaterialCache]s.
 			</description>
 		</method>
 		<method name="materials_load">
 			<return type="void" />
 			<description>
+				Loads all material that is used by the [ESSMaterialCache]s from the "ess/material_cache/material_paths" project settings.
 			</description>
 		</method>
 		<method name="request_entity_spawn">
 			<return type="void" />
 			<argument index="0" name="info" type="EntityCreateInfo" />
 			<description>
+				Request spawning an [Entity].
+				The resulting [Entity] will be available in the info's created_entity property.
 			</description>
 		</method>
 		<method name="request_entity_spawn_deferred">
 			<return type="void" />
 			<argument index="0" name="info" type="EntityCreateInfo" />
 			<description>
+				Request spawning an [Entity], but deferred.
+				The resulting [Entity] will be available in the info's created_entity property, but only after the entity got actually spawned.
 			</description>
 		</method>
 		<method name="set_character_xp">
@@ -162,6 +203,7 @@
 			<argument index="0" name="current_level" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Sets the xp required for the given level.
 			</description>
 		</method>
 		<method name="set_class_xp">
@@ -169,132 +211,215 @@
 			<argument index="0" name="current_level" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Sets the xp required for the given class level.
 			</description>
 		</method>
 		<method name="skeletons_bone_attachment_index_get" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the bone attachment names stored at index in the "ess/enums/skeletons_bone_attachment_points" project setting.
 			</description>
 		</method>
 		<method name="skeletons_bone_attachments_count">
 			<return type="int" />
 			<description>
+				Returns the entry count in the "ess/enums/skeletons_bone_attachment_points" project setting.
 			</description>
 		</method>
 		<method name="skeletons_bones_count">
 			<return type="int" />
 			<description>
+				Returns the entry count in the "ess/enums/skeletons_bones" project setting.
 			</description>
 		</method>
 		<method name="skeletons_bones_index_get" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the bone names stored at index in the "ess/enums/skeletons_bones" project setting.
 			</description>
 		</method>
 		<method name="stat_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the stat count based on the parsed "ess/enums/stats" project setting. (Comma separated.)
 			</description>
 		</method>
 		<method name="stat_get_id" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns a stat's assigned id using it's name.
+				Stats are set using the "ess/enums/stats" project setting.
 			</description>
 		</method>
 		<method name="stat_get_name" qualifiers="const">
 			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Returns a stat's name using it's assigned id.
+				Stats are set using the "ess/enums/stats" project setting.
 			</description>
 		</method>
 		<method name="stat_get_property_id" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Returns a stat's assigned property id using it's id.
+				Stats are set using the "ess/enums/stats" project setting.
 			</description>
 		</method>
 		<method name="stat_get_property_name" qualifiers="const">
 			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Returns a stat's assigned property name using it's id.
+				Stats are set using the "ess/enums/stats" project setting.
 			</description>
 		</method>
 		<method name="stat_is_property" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
+				Checks whether the given [StringName] contains a stat's assigned property name.
+				Stats are set using the "ess/enums/stats" project setting.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="allow_class_recipe_learning" type="bool" setter="set_allow_class_recipe_learning" getter="get_allow_class_recipe_learning" default="false">
+			Whether to allow class recipe learning.
 		</member>
 		<member name="allow_class_spell_learning" type="bool" setter="set_allow_class_spell_learning" getter="get_allow_class_spell_learning" default="false">
+			Whether to allow class spell learning.
 		</member>
-		<member name="auto_learn_spells" type="int" setter="set_auto_learn_spells" getter="get_auto_learn_spells" default="1">
+		<member name="auto_learn_spells" type="bool" setter="set_auto_learn_spells" getter="get_auto_learn_spells" default="true">
+			Whether entities auto learn spells on level up or not.
 		</member>
 		<member name="automatic_load" type="bool" setter="set_automatic_load" getter="get_automatic_load" default="false">
+			Whether to automatically load every set resource on startup from the project settings.
 		</member>
 		<member name="background_color" type="Color" setter="set_background_color" getter="get_background_color" default="Color( 0, 0, 0, 1 )">
+			Sets the background for the [TexturePacker] when using an [ESSMaterialCache] that uses it.
+			Only available if the texture packer module is enabled when compiling the engine (default).
 		</member>
 		<member name="character_xp_data" type="PoolIntArray" setter="set_character_xp_data" getter="get_character_xp_data" default="PoolIntArray(  )">
+			Returns the xp required for all levels.
+			Can be customized using the "ess/xp/character_xps" project setting.
 		</member>
 		<member name="class_xp_data" type="PoolIntArray" setter="set_class_xp_data" getter="get_class_xp_data" default="PoolIntArray(  )">
+			Returns the xp required for all class levels.
+			Can be customized using the "ess/xp/class_xps" project setting.
 		</member>
 		<member name="default_ess_material_cache_class" type="StringName" setter="set_default_ess_material_cache_class" getter="get_default_ess_material_cache_class" default="@&quot;ESSMaterialCachePCM&quot;">
+			The default material cache class. The system will allocate this when creating an [ESSMaterialCache].
+			Can be customized using the "ess/material_cache/default_ess_material_cache_class" project setting.
 		</member>
 		<member name="entity_resource_base_world_speed" type="float" setter="entity_resource_set_base_world_speed" getter="entity_resource_get_base_world_speed" default="100.0">
+			The default speed for all entities.
 		</member>
 		<member name="entity_spawner" type="ESSEntitySpawner" setter="set_entity_spawner" getter="get_entity_spawner">
+			The active [ESSEntitySpawner].
 		</member>
 		<member name="entity_types" type="String" setter="entity_types_set" getter="entity_types_get" default="&quot;None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object&quot;">
+			The available entity types.
+			Can be customized using the "ess/enums/entity_types" project setting.
 		</member>
 		<member name="equip_slot_string" type="String" setter="equip_slot_set_string" getter="equip_slot_get_string" default="&quot;Head,Neck,Shoulder,Chest,Gloves,Belt,Legs,Feet,Ring_1,Ring_2,Trinket_1,Trinket_2,Main_Hand,Off_Hand,None&quot;">
+			The available equip slots as a comma separated string.
+			Can be customized using the "ess/enums/equip_slots" project setting.
 		</member>
 		<member name="equip_slots" type="PoolStringArray" setter="equip_slots_set" getter="equip_slots_get" default="PoolStringArray( &quot;Head&quot;, &quot;Neck&quot;, &quot;Shoulder&quot;, &quot;Chest&quot;, &quot;Gloves&quot;, &quot;Belt&quot;, &quot;Legs&quot;, &quot;Feet&quot;, &quot;Ring_1&quot;, &quot;Ring_2&quot;, &quot;Trinket_1&quot;, &quot;Trinket_2&quot;, &quot;Main_Hand&quot;, &quot;Off_Hand&quot; )">
+			The available equip slots. The [member equip_slot_string] gets parsed into this.
+			Can be customized using the "ess/enums/equip_slots" project setting.
 		</member>
 		<member name="keep_original_atlases" type="bool" setter="set_keep_original_atlases" getter="get_keep_original_atlases" default="false">
+			Sets the keep_original_atlases options for the [TexturePacker] when using an [ESSMaterialCache] that uses it.
+			Only available if the texture packer module is enabled when compiling the engine (default).
 		</member>
 		<member name="main_stat_count" type="int" setter="stat_set_main_stat_count" getter="stat_get_main_stat_count" default="5">
+			How many main stats there are. The first this many entries in the [member stats] property are the main stats.
+			In the stat system only secondary stats can have dependencies to main stats. Main stats have to be stand alone. This greatly simplifies stat handling code, as this way no circular dependencies can exist by accident.
+			Can be customized using the "ess/enums/stats" project setting.
 		</member>
 		<member name="margin" type="int" setter="set_margin" getter="get_margin" default="0">
+			Sets the margin property of the [TexturePacker] when using an [ESSMaterialCache] that uses it.
+			Only available if the texture packer module is enabled when compiling the engine (default).
 		</member>
 		<member name="material_paths" type="PoolStringArray" setter="material_paths_set" getter="material_paths_get" default="PoolStringArray(  )">
+			Path for the materials used by the material cache system.
+			Can be customized using the "ess/material_cache/material_paths" project setting.
 		</member>
 		<member name="materials" type="Array" setter="materials_set" getter="materials_get" default="[  ]">
+			THe actual loaded materials used by the material cache system.
+			The materials in [member material_paths] gets loaded into this.
+			Can be customized using the "ess/material_cache/material_paths" project setting.
 		</member>
 		<member name="max_atlas_size" type="int" setter="set_max_atlas_size" getter="get_max_atlas_size" default="1024">
+			Sets the max_atlas_size property of the [TexturePacker] when using an [ESSMaterialCache] that uses it.
+			Only available if the texture packer module is enabled when compiling the engine (default).
 		</member>
 		<member name="max_character_level" type="int" setter="" getter="get_max_character_level" default="0">
+			The maximum character level.
+			Calculated automatically from the "ess/xp/character_xps" project settings.
 		</member>
 		<member name="max_class_level" type="int" setter="" getter="get_max_class_level" default="0">
+			The maximum class level.
+			Calculated automatically from the "ess/xp/class_xps" project settings.
 		</member>
 		<member name="model_visual_groups" type="String" setter="model_visual_groups_set" getter="model_visual_groups_get" default="&quot;None,Bodypart,Alt Bodypart,Attachment&quot;">
+			All [ModelVisual] groups as a comma separated string.
+			Can be customized using the "ess/enums/model_visual_groups" project setting.
 		</member>
 		<member name="resource_db" type="ESSResourceDB" setter="set_resource_db" getter="get_resource_db">
+			The active [ESSResourceDB].
+			The system uses this for id lookups for [Spell], [CraftRecipe], [EntityResource], etc.
 		</member>
 		<member name="resource_db_path" type="String" setter="set_resource_db_path" getter="get_resource_db_path" default="&quot;&quot;">
+			The path for the default [ESSResourceDB] that should be automatically loaded.
+			This will only get loaded on startup if the "ess/data/automatic_load" project setting is true.
+			Can be customized using the "ess/data/ess_resource_db_path" project setting.
 		</member>
 		<member name="scale_spells_by_default" type="bool" setter="set_scale_spells_by_default" getter="get_scale_spells_by_default" default="false">
+			Whether to scale spells automatically to level using a formula or not.
+			Can be customized using the "ess/spells/scale_spells_by_default" project setting.
 		</member>
 		<member name="skeletons_bone_attachment_points" type="PoolStringArray" setter="skeletons_bone_attachment_points_set" getter="skeletons_bone_attachment_points_get" default="PoolStringArray(  )">
+			Bone attachment points for creatures. Comma separated list.
+			It's indexes should match the [member entity_types] property.
+			Used by [CharacterSkeleton3D] and [CharacterSkeleton2D] amongst other things.
+			Can be customized using the "ess/enums/skeletons_bone_attachment_points" project setting.
 		</member>
 		<member name="skeletons_bones" type="PoolStringArray" setter="skeletons_bones_set" getter="skeletons_bones_get" default="PoolStringArray(  )">
+			Skeleton bone names for creatures. Comma separated list.
+			It's indexes should match the [member entity_types] property.
+			Can be customized using the "ess/enums/skeletons_bones" project setting.
 		</member>
 		<member name="stat_string" type="String" setter="stat_set_string" getter="stat_get_string" default="&quot;Agility,Strength,Stamina,Intellect,Spirit,Health,Speed,Global Cooldown,Haste&quot;">
+			Stat names. Comma separated list.
+			Can be customized using the "ess/enums/stats" project setting.
 		</member>
 		<member name="stats" type="PoolStringArray" setter="stats_set" getter="stats_get" default="PoolStringArray( &quot;Agility&quot;, &quot;Strength&quot;, &quot;Stamina&quot;, &quot;Intellect&quot;, &quot;Spirit&quot;, &quot;Health&quot;, &quot;Speed&quot;, &quot;Global Cooldown&quot;, &quot;Haste&quot; )">
+			Stats. The [member stat_string] property gets parsed into this.
+			Can be customized using the "ess/enums/stats" project setting.
 		</member>
 		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="5">
+			Sets the background for the [TexturePacker] when using an [ESSMaterialCache] that uses it.
+			Only available if the texture packer module is enabled when compiling the engine (default).
+			Can be customized using the "ess/material_cache/texture_flags" project setting.
 		</member>
 		<member name="texture_layers" type="String" setter="texture_layers_set" getter="texture_layers_get" default="&quot;None,Skin,Underwear,Shirt,Clothes Base,Clothes 1,Clothes 2,Clothes 3,Clothes 4,Clothes 5,Belt,Tabard,Overlay&quot;">
+			Texture layers for the characters used by clothes by [ModelVisual]s.
+			Can be customized using the "ess/enums/texture_layers" project setting.
 		</member>
 		<member name="use_class_xp" type="bool" setter="set_use_class_xp" getter="get_use_class_xp" default="false">
+			Whether to use class xp.
+			Can be customized using the "ess/level/use_class_xp" project setting.
 		</member>
 		<member name="use_spell_points" type="bool" setter="set_use_spell_points" getter="get_use_spell_points" default="false">
+			Whether to use spell points.
+			Can be customized using the "ess/spells/use_spell_points" project setting.
 		</member>
 	</members>
 	<constants>
