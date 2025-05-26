@@ -4,6 +4,8 @@
 		Stores the data for an actionbar. Also see [ProfileManager].
 	</brief_description>
 	<description>
+		Stores the data for an actionbar.
+		Also see [ProfileManager].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,53 +13,64 @@
 		<method name="emit_change">
 			<return type="void" />
 			<description>
+				Emit the changed signal.
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
 			</description>
 		</method>
 		<method name="get_action_bar_entry_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of available [ActionBarButtonEntry]-s.
 			</description>
 		</method>
 		<method name="get_button">
 			<return type="ActionBarButtonEntry" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the [ActionBarButtonEntry] at index or null.
 			</description>
 		</method>
 		<method name="get_button_for_slotid">
 			<return type="ActionBarButtonEntry" />
 			<argument index="0" name="slot_id" type="int" />
 			<description>
+				Return (or create) the [ActionBarButtonEntry] for the given slot id.
 			</description>
 		</method>
 		<method name="get_owner">
 			<return type="ActionBarProfile" />
 			<description>
+				Get the owner [ActionBarProfile].
 			</description>
 		</method>
 		<method name="to_dict" qualifiers="const">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="action_bar_id" type="int" setter="set_action_bar_id" getter="get_action_bar_id" default="0">
+			THe id of this actionbar.
 		</member>
 		<member name="size" type="float" setter="set_size" getter="get_size" default="45.0">
+			The size of the buttons on this actionbar.
 		</member>
 		<member name="slot_num" type="int" setter="set_slot_num" getter="get_slot_num" default="12">
+			The number of slots on this actionbar.
 		</member>
 	</members>
 	<signals>
 		<signal name="changed">
 			<description>
+				Emitted when the actionbar changes.
 			</description>
 		</signal>
 	</signals>
