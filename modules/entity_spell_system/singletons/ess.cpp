@@ -87,10 +87,10 @@ void ESS::set_allow_class_recipe_learning(const bool value) {
 	_allow_class_recipe_learning = value;
 }
 
-int ESS::get_auto_learn_spells() const {
+bool ESS::get_auto_learn_spells() const {
 	return _auto_learn_spells;
 }
-void ESS::set_auto_learn_spells(const int value) {
+void ESS::set_auto_learn_spells(const bool value) {
 	_auto_learn_spells = value;
 }
 
@@ -718,7 +718,7 @@ void ESS::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_auto_learn_spells"), &ESS::get_auto_learn_spells);
 	ClassDB::bind_method(D_METHOD("set_auto_learn_spells", "value"), &ESS::set_auto_learn_spells);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "auto_learn_spells"), "set_auto_learn_spells", "get_auto_learn_spells");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "auto_learn_spells"), "set_auto_learn_spells", "get_auto_learn_spells");
 
 	ClassDB::bind_method(D_METHOD("get_resource_db"), &ESS::get_resource_db);
 	ClassDB::bind_method(D_METHOD("set_resource_db"), &ESS::set_resource_db);

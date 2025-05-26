@@ -75,8 +75,8 @@ public:
 	bool get_allow_class_recipe_learning() const;
 	void set_allow_class_recipe_learning(const bool value);
 
-	int get_auto_learn_spells() const;
-	void set_auto_learn_spells(const int value);
+	bool get_auto_learn_spells() const;
+	void set_auto_learn_spells(const bool value);
 
 	Ref<ESSResourceDB> get_resource_db();
 	void set_resource_db(const Ref<ESSResourceDB> &resource_db);
