@@ -4,6 +4,8 @@
 		Stores all actionbar-related data for a class. Also see [ProfileManager].
 	</brief_description>
 	<description>
+		Stores all actionbar-related data for a class.
+		Also see [ProfileManager].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,70 +14,83 @@
 			<return type="void" />
 			<argument index="0" name="actionbar" type="ActionBarEntry" />
 			<description>
+				Add an [ActionBarEntry] to this profile.
 			</description>
 		</method>
 		<method name="clear_action_bars">
 			<return type="void" />
 			<description>
+				Clear all actionbars.
 			</description>
 		</method>
 		<method name="emit_change">
 			<return type="void" />
 			<description>
+				Emit the changed signal.
 			</description>
 		</method>
 		<method name="from_actionbar_profile">
 			<return type="void" />
 			<argument index="0" name="other" type="ActionBarProfile" />
 			<description>
+				Transfer all data from the given [ActionBarProfile] to this instance.
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
 			</description>
 		</method>
 		<method name="get_action_bar">
 			<return type="ActionBarEntry" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the [ActionBarEntry] found at index.
 			</description>
 		</method>
 		<method name="get_action_bar_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return the stored action bar count.
 			</description>
 		</method>
 		<method name="get_owner">
 			<return type="ClassProfile" />
 			<description>
+				Get the owner [ClassProfile].
 			</description>
 		</method>
 		<method name="load_defaults">
 			<return type="void" />
 			<description>
+				Load the defaults.
 			</description>
 		</method>
 		<method name="remove_action_bar">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes the [ActionBarEntry] found at index.
 			</description>
 		</method>
 		<method name="to_dict" qualifiers="const">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="action_bar_profile_name" type="String" setter="set_action_bar_profile_name" getter="get_action_bar_profile_name" default="&quot;&quot;">
+			The action bar's profile name.
 		</member>
 	</members>
 	<signals>
 		<signal name="changed">
 			<description>
+				Emitted when the actionbar changes.
 			</description>
 		</signal>
 	</signals>
