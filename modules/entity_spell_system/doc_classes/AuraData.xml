@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="AuraData" inherits="Resource">
 	<brief_description>
-		Stores an [Aura]'s runtime data on an [Entity].
+		Stores an aura's runtime data on an [Entity].
 	</brief_description>
 	<description>
+		Stores an aura's runtime data on an [Entity].
+		These are [Spell]s that were applied as an aura.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,91 +14,122 @@
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Called by [method from_dict].
 			</description>
 		</method>
 		<method name="_from_send_array" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="arr" type="Array" />
 			<description>
+				Load data from an [Array] obtained from [method to_send_array].
+				Used to send data through the network with the engine's built in networking capabilities.
+				Called by [method to_send_array].
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Called by [method to_dict].
 			</description>
 		</method>
 		<method name="_to_send_array" qualifiers="virtual">
 			<return type="Array" />
 			<description>
+				Serialize all data to an [Array] that can be sent through the network using the engine's built in networking capabilities.
+				Called by [method to_send_array].
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="from_send_array">
 			<return type="void" />
 			<argument index="0" name="arr" type="Array" />
 			<description>
+				Load data from an [Array] obtained from [method to_send_array].
+				Used to send data through the network with the engine's built in networking capabilities.
+				Calls [method _from_send_array].
 			</description>
 		</method>
 		<method name="refresh">
 			<return type="void" />
 			<argument index="0" name="remaining" type="float" />
 			<description>
-			</description>
-		</method>
-		<method name="set_remaining_absorb">
-			<return type="void" />
-			<argument index="0" name="value" type="int" />
-			<description>
+				Refresh the remaining duration to the given value. Also resets ticks, and damage already taken counter.
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 		<method name="to_send_array">
 			<return type="Array" />
 			<description>
+				Serialize all data to an [Array] that can be sent through the network using the engine's built in networking capabilities.
+				Calls [method _to_send_array].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="aura" type="Spell" setter="set_aura" getter="get_aura">
+			The [Spell] that is attached as an aura.
 		</member>
 		<member name="aura_id" type="int" setter="set_aura_id" getter="get_aura_id" default="0">
+			The [Spell]'s id that is attached as an aura.
 		</member>
 		<member name="caster" type="Entity" setter="caster_set" getter="caster_get">
+			The aura's caster.
 		</member>
 		<member name="caster_path" type="NodePath" setter="caster_set_path" getter="caster_get_path" default="NodePath(&quot;&quot;)">
+			The aura's caster's path in the SceneTree.
 		</member>
 		<member name="damage" type="int" setter="damage_set" getter="damage_get" default="0">
+			The aura's damage per tick.
 		</member>
 		<member name="damage_count" type="int" setter="damage_set_count" getter="damage_get_count" default="0">
+			Total damage count.
 		</member>
 		<member name="damage_taken" type="int" setter="damage_set_taken" getter="damage_get_taken" default="0">
+			Damage dealt.
 		</member>
 		<member name="heal" type="int" setter="heal_set" getter="heal_get" default="0">
+			The aura's heal per tick.
 		</member>
 		<member name="is_timed" type="bool" setter="set_is_timed" getter="get_is_timed" default="false">
+			Does the aura have a duration?
 		</member>
 		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
+			The owner of this aura. The entity that this aura is on.
 		</member>
-		<member name="remaining_absorb" type="int" setter="heal_set" getter="get_remaining_absorb" default="0">
+		<member name="remaining_absorb" type="int" setter="set_remaining_absorb" getter="get_remaining_absorb" default="0">
+			The remaining absorb of this aura.
 		</member>
 		<member name="remaining_time" type="float" setter="set_remaining_time" getter="get_remaining_time" default="0.0">
+			The remaining time of this aura.
 		</member>
 		<member name="slow" type="float" setter="set_slow" getter="get_slow" default="0.0">
+			How many percents this aura slows down the [Entity] that this aura is on.
 		</member>
 		<member name="tick" type="float" setter="set_tick" getter="get_tick" default="0.0">
+			The interval when the damage / heal / other effect of this aura happens.
 		</member>
 		<member name="time_since_last_tick" type="float" setter="set_time_since_last_tick" getter="get_time_since_last_tick" default="0.0">
+			The time elapsed since last tick.
 		</member>
 		<member name="unhandled_ticks" type="int" setter="set_unhandled_ticks" getter="get_unhandled_ticks" default="0">
+			The number of unhandled ticks.
+			If the delta time is too high for the aura's tickrate all the ticks will be accumulated into this variable.
+			Whether this is because the tickrate is very low, or the delta time is very high that doesn't matter.
 		</member>
 	</members>
 	<constants>
