@@ -22,14 +22,14 @@
 			<return type="bool" />
 			<argument index="0" name="current_level" type="int" />
 			<description>
-					Did a character reach max level?
+				Did a character reach max level?
 			</description>
 		</method>
 		<method name="can_class_level_up">
 			<return type="bool" />
 			<argument index="0" name="current_level" type="int" />
 			<description>
-					Did a class reach max level? If your project is using separate class levels.
+				Did a class reach max level? If your project is using separate class levels.
 			</description>
 		</method>
 		<method name="ensure_materials_loaded">
