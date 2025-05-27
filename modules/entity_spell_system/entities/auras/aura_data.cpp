@@ -447,7 +447,7 @@ void AuraData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_remaining_absorb"), &AuraData::get_remaining_absorb);
 	ClassDB::bind_method(D_METHOD("set_remaining_absorb", "value"), &AuraData::set_remaining_absorb);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "remaining_absorb"), "heal_set", "get_remaining_absorb");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "remaining_absorb"), "set_remaining_absorb", "get_remaining_absorb");
 
 	ClassDB::bind_method(D_METHOD("get_slow"), &AuraData::get_slow);
 	ClassDB::bind_method(D_METHOD("set_slow", "value"), &AuraData::set_slow);
