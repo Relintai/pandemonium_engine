@@ -4,6 +4,7 @@
 		Stores [Entity] inventory.
 	</brief_description>
 	<description>
+		Stores [Entity] inventory.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,6 +13,9 @@
 			<return type="bool" />
 			<argument index="0" name="item" type="ItemInstance" />
 			<description>
+				Add an item to the bag, to the first available space.
+				Return true on success and false on failure.
+				Called by [method add_item].
 			</description>
 		</method>
 		<method name="_add_item_at" qualifiers="virtual">
@@ -20,12 +24,16 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="signal" type="bool" />
 			<description>
+				Add an item to the bag at the specified position.
+				Called by [method add_item_at].
 			</description>
 		</method>
 		<method name="_can_add_item" qualifiers="virtual">
 			<return type="bool" />
 			<argument index="0" name="item" type="ItemInstance" />
 			<description>
+				Checks whether the specified item can be added to this [Bag].
+				Called by [method can_add_item].
 			</description>
 		</method>
 		<method name="_change_item_equip" qualifiers="virtual">
@@ -33,33 +41,46 @@
 			<argument index="0" name="slot_id" type="int" />
 			<argument index="1" name="item" type="ItemInstance" />
 			<description>
+				Change the item in the specified slot to the supplied one if this needs to be due to equipping an item.
+				Emits the [signal change_item_equip] signal.
+				Called by [method change_item_equip].
 			</description>
 		</method>
 		<method name="_from_dict" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Called by [method from_dict].
 			</description>
 		</method>
 		<method name="_get_item" qualifiers="virtual">
 			<return type="ItemInstance" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the item at the given index or null.
+				Called by [method get_item].
 			</description>
 		</method>
 		<method name="_get_item_count" qualifiers="virtual">
 			<return type="int" />
 			<description>
+				Returns how many items are in this bag.
+				Called by [method get_item_count].
 			</description>
 		</method>
 		<method name="_get_size" qualifiers="virtual">
 			<return type="int" />
 			<description>
+				Returns the size of the bag.
+				Called by [method get_size].
 			</description>
 		</method>
 		<method name="_get_valid_item_count" qualifiers="virtual">
 			<return type="int" />
 			<description>
+				Returns how many actual items are in the bag.
+				Called by [method get_valid_item_count].
 			</description>
 		</method>
 		<method name="_has_item" qualifiers="virtual">
@@ -67,22 +88,30 @@
 			<argument index="0" name="item" type="ItemTemplate" />
 			<argument index="1" name="count" type="int" />
 			<description>
+				Checks whether the given item is in the bag.
+				Called by [method has_item].
 			</description>
 		</method>
 		<method name="_is_full" qualifiers="virtual">
 			<return type="bool" />
 			<description>
+				Is tha bag full?
+				Called by [method is_full].
 			</description>
 		</method>
 		<method name="_is_overburdened" qualifiers="virtual">
 			<return type="bool" />
 			<description>
+				Is tha bag overburdened?
+				Called by [method is_overburdened].
 			</description>
 		</method>
 		<method name="_remove_item" qualifiers="virtual">
 			<return type="ItemInstance" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove the item at the specified index.
+				Called by [method remove_item].
 			</description>
 		</method>
 		<method name="_remove_items" qualifiers="virtual">
@@ -90,12 +119,16 @@
 			<argument index="0" name="item" type="ItemTemplate" />
 			<argument index="1" name="count" type="int" />
 			<description>
+				Remove X (count) from the specified item. Tkaes stacks into account.
+				Called by [method remove_items].
 			</description>
 		</method>
 		<method name="_set_size" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="size" type="int" />
 			<description>
+				Sets the size of the bag.
+				Called by [method set_size].
 			</description>
 		</method>
 		<method name="_swap_items" qualifiers="virtual">
@@ -103,17 +136,24 @@
 			<argument index="0" name="item1_index" type="int" />
 			<argument index="1" name="item2_index" type="int" />
 			<description>
+				Swap the 2 items specified.
+				Called by [method swap_items].
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Called by [method to_dict].
 			</description>
 		</method>
 		<method name="add_item">
 			<return type="bool" />
 			<argument index="0" name="item" type="ItemInstance" />
 			<description>
+				Add an item to the bag, to the first available space.
+				Return true on success and false on failure.
+				Calls [method _add_item].
 			</description>
 		</method>
 		<method name="add_item_at">
@@ -122,12 +162,16 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="signal" type="bool" default="true" />
 			<description>
+				Add an item to the bag at the specified position.
+				Calls [method _add_item_at].
 			</description>
 		</method>
 		<method name="can_add_item">
 			<return type="bool" />
 			<argument index="0" name="item" type="ItemInstance" />
 			<description>
+				Checks whether the specified item can be added to this [Bag].
+				Calls [method _can_add_item].
 			</description>
 		</method>
 		<method name="change_item_equip">
@@ -135,23 +179,32 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="item" type="ItemInstance" />
 			<description>
+				Change the item in the specified slot to the supplied one if this needs to be due to equipping an item.
+				Emits the [signal change_item_equip] signal.
+				Call [method _change_item_equip].
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="get_item">
 			<return type="ItemInstance" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the item at the given index or null.
+				Calls [method _get_item].
 			</description>
 		</method>
 		<method name="get_item_count">
 			<return type="int" />
 			<description>
+				Returns how many items are in this bag.
+				Call [method _get_item_count].
 			</description>
 		</method>
 		<method name="has_item">
@@ -159,22 +212,30 @@
 			<argument index="0" name="item" type="ItemTemplate" />
 			<argument index="1" name="count" type="int" />
 			<description>
+				Checks whether the given item is in the bag.
+				Calls [method _has_item].
 			</description>
 		</method>
 		<method name="is_full">
 			<return type="bool" />
 			<description>
+				Is tha bag full?
+				Calls [method _is_full].
 			</description>
 		</method>
 		<method name="is_overburdened">
 			<return type="bool" />
 			<description>
+				Is tha bag overburdened?
+				Calls [method _is_overburdened].
 			</description>
 		</method>
 		<method name="remove_item">
 			<return type="ItemInstance" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove the item at the specified index.
+				Calls [method _remove_item].
 			</description>
 		</method>
 		<method name="remove_items">
@@ -182,6 +243,8 @@
 			<argument index="0" name="item" type="ItemTemplate" />
 			<argument index="1" name="count" type="int" />
 			<description>
+				Remove X (count) from the specified item. Tkaes stacks into account.
+				Calls [method _remove_items].
 			</description>
 		</method>
 		<method name="swap_items">
@@ -189,18 +252,24 @@
 			<argument index="0" name="item1_index" type="int" />
 			<argument index="1" name="item2_index" type="int" />
 			<description>
+				Swap the 2 items specified.
+				Calls [method _swap_items].
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="allowed_item_types" type="int" setter="set_allowed_item_types" getter="get_allowed_item_types" default="16777215">
+			Allowed item types mask.
 		</member>
 		<member name="size" type="int" setter="set_size" getter="get_size" default="0">
+			Size of the bag.
 		</member>
 	</members>
 	<signals>
@@ -209,6 +278,7 @@
 			<argument index="1" name="slot_id" type="int" />
 			<argument index="2" name="item" type="ItemInstance" />
 			<description>
+				Emitted when an item was replaced due to equipping.
 			</description>
 		</signal>
 		<signal name="item_added">
@@ -216,6 +286,7 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="slot_id" type="int" />
 			<description>
+				Emitted when an item is added.
 			</description>
 		</signal>
 		<signal name="item_count_changed">
@@ -223,6 +294,7 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="slot_id" type="int" />
 			<description>
+				Emitted when an item's count changes.
 			</description>
 		</signal>
 		<signal name="item_removed">
@@ -230,6 +302,7 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="slot_id" type="int" />
 			<description>
+				Emitted when an item is removed.
 			</description>
 		</signal>
 		<signal name="item_swapped">
@@ -237,21 +310,25 @@
 			<argument index="1" name="slot_id_1" type="int" />
 			<argument index="2" name="slot_id_2" type="int" />
 			<description>
+				Emitted when two items are swapped.
 			</description>
 		</signal>
 		<signal name="overburden_removed">
 			<argument index="0" name="bag" type="Bag" />
 			<description>
+				Emitted when the bag is no longed overburdened.
 			</description>
 		</signal>
 		<signal name="overburdened">
 			<argument index="0" name="bag" type="Bag" />
 			<description>
+				Emitted when this bag gets overburdened.
 			</description>
 		</signal>
 		<signal name="size_changed">
 			<argument index="0" name="bag" type="Bag" />
 			<description>
+				Emitted when the bag's size changes.
 			</description>
 		</signal>
 	</signals>
