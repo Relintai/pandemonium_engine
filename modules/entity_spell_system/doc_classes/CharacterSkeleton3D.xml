@@ -2,12 +2,17 @@
 <class name="CharacterSkeleton3D" inherits="Spatial">
 	<brief_description>
 		3d implementation for [CharacterSkeleton].
-
-		Note: Most of the logic implementation for this is still in gdscript. It will be ported.
 	</brief_description>
 	<description>
+		3d implementation for [CharacterSkeleton].
+		CharacterSkeletons handle the looks of your characters.
+		It can store ModelVisuals, and ModelVisualEntries.
+		It support attach points. For example a character's hand. It adds properties based on the selected entity_type. These are based on the values from ProjectSettings/ESS/Enums/skeletons_bone_attachment_points.
+		If you want to merge meshes this is where you can implement it.
 	</description>
 	<tutorials>
+		<link title="Complex 3d skeleton scene">https://github.com/Relintai/broken_seals/blob/master/game/models/entities/human/models/armature_huf.tscn</link>
+		<link title="Complex 3d skeleton script">https://github.com/Relintai/broken_seals/blob/master/game/player/CharacterSkeletonGD.gd</link>
 	</tutorials>
 	<methods>
 		<method name="_build_model" qualifiers="virtual">
