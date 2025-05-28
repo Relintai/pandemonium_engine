@@ -7204,8 +7204,8 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cseed", PROPERTY_HINT_NONE, "", 0), "setc_seed", "getc_seed");
 
 	//Interaction type
-	BIND_VMETHOD(MethodInfo("_gets_relation_to", PropertyInfo(Variant::OBJECT, "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	BIND_VMETHOD(MethodInfo("_getc_relation_to", PropertyInfo(Variant::OBJECT, "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "relation", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_RELATION_TYPE), "_gets_relation_to", PropertyInfo(Variant::OBJECT, "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "relation", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_RELATION_TYPE), "_getc_relation_to", PropertyInfo(Variant::OBJECT, "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	ClassDB::bind_method(D_METHOD("gets_relation_to", "to"), &Entity::gets_relation_to_bind);
 	ClassDB::bind_method(D_METHOD("_gets_relation_to", "to"), &Entity::_gets_relation_to);
