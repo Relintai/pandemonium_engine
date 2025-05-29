@@ -5,6 +5,7 @@
 	</brief_description>
 	<description>
 		Represents an [Entity] inside the world. Entities can be players, mobs, chests, or any kind of interactable things.
+		Entity supports networking. It considers the server to be authoritative. This means that the server does everything, and it tells the client what to do to prevent cheating. Also clients only has access to data that thye actually need. When multiplayer is active lots of function calls use rpcs, when it's not active calls become direct. Running a server in a client while playing is also supported.
 		Functions starting, or having an 's' in them (like cooldown_adds, or equip_applys_item etc) are only called, or meant to be called by serverside code. Functions with a 'c' in them (like cooldown_addc, equip_deapplyc_item etc) are only called, or meant to be called from clientside code. Functions that have a virtual variant starting with an underscore, should be called, they will call the virtual version. They will check if the virtual properly exists, also usually they check if the parameters are valid, so you don't have to do it every time in gdscript.
 		To spawn them your [member ESS.entity_spawner] directly, or a [ESSEntityWorldSpawner2D] or [ESSEntityWorldSpawner3D] implementation.
 		Note that in order for [member ESS.entity_spawner] to be set, you need to create and instance your own [ESSEntitySpawner] implementation.
@@ -66,7 +67,7 @@
 	</description>
 	<tutorials>
 	</tutorials>
-	<methods> 
+	<methods>
 		<method name="_body_changed" qualifiers="virtual">
 			<return type="void" />
 			<description>
@@ -1414,185 +1415,218 @@
 			<return type="void" />
 			<argument index="0" name="window_id" type="int" />
 			<description>
+				Open the window with the given id on the client side.
 			</description>
 		</method>
 		<method name="craft_addc_recipe">
 			<return type="void" />
 			<argument index="0" name="craft_recipe" type="CraftRecipe" />
 			<description>
+				Add craft recipe.
 			</description>
 		</method>
 		<method name="craft_addc_recipe_id">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Add craft recipe given it's id.
 			</description>
 		</method>
 		<method name="craft_adds_recipe">
 			<return type="void" />
 			<argument index="0" name="craft_recipe" type="CraftRecipe" />
 			<description>
+				Add craft recipe.
 			</description>
 		</method>
 		<method name="craft_adds_recipe_id">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Add craft recipe given it's id.
 			</description>
 		</method>
 		<method name="craft_crequest">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Request craft from the server.
 			</description>
 		</method>
 		<method name="craft_getc_recipe">
 			<return type="CraftRecipe" />
 			<argument index="0" name="craft_recipe" type="int" />
 			<description>
+				Return a known craft recipe at index.
 			</description>
 		</method>
 		<method name="craft_getc_recipe_count">
 			<return type="int" />
 			<description>
+				Return the number of craft recipes known.
 			</description>
 		</method>
 		<method name="craft_gets_recipe">
 			<return type="CraftRecipe" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return a known craft recipe at index.
 			</description>
 		</method>
 		<method name="craft_gets_recipe_count">
 			<return type="int" />
 			<description>
+				Return the number of craft recipes known.
 			</description>
 		</method>
 		<method name="craft_gets_recipe_id">
 			<return type="CraftRecipe" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Return a known craft recipe given it's id.
 			</description>
 		</method>
 		<method name="craft_hasc_recipe">
 			<return type="bool" />
 			<argument index="0" name="craft_recipe" type="CraftRecipe" />
 			<description>
+				Return whether a craft recipe is already known.
 			</description>
 		</method>
 		<method name="craft_hasc_recipe_id">
 			<return type="bool" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Return whether a craft recipe is already known given it's id.
 			</description>
 		</method>
 		<method name="craft_hass_recipe">
 			<return type="bool" />
 			<argument index="0" name="craft_recipe" type="CraftRecipe" />
 			<description>
+				Return whether a craft recipe is already known.
 			</description>
 		</method>
 		<method name="craft_hass_recipe_id">
 			<return type="bool" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Return whether a craft recipe is already known given it's id.
 			</description>
 		</method>
 		<method name="craft_removec_recipe">
 			<return type="void" />
 			<argument index="0" name="craft_recipe" type="CraftRecipe" />
 			<description>
+				Remove craft recipe.
 			</description>
 		</method>
 		<method name="craft_removec_recipe_id">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Remove craft recipe given it's id.
 			</description>
 		</method>
 		<method name="craft_removes_recipe">
 			<return type="void" />
 			<argument index="0" name="craft_recipe" type="CraftRecipe" />
 			<description>
+				Remove craft recipe.
 			</description>
 		</method>
 		<method name="craft_removes_recipe_id">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Remove craft recipe given it's id.
 			</description>
 		</method>
 		<method name="crafts">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Craft the given recipe.
 			</description>
 		</method>
 		<method name="crequest_interact">
 			<return type="void" />
 			<description>
+				Request interaction with the target from the server.
 			</description>
 		</method>
 		<method name="data_addc">
 			<return type="void" />
 			<argument index="0" name="data" type="EntityDataContainer" />
 			<description>
+				Add additional data to be stored alongside this entity.
 			</description>
 		</method>
 		<method name="data_adds">
 			<return type="void" />
 			<argument index="0" name="data" type="EntityDataContainer" />
 			<description>
+				Add additional data to be stored alongside this entity.
 			</description>
 		</method>
 		<method name="data_getc">
 			<return type="EntityDataContainer" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get additional data stored alongside this entity.
 			</description>
 		</method>
 		<method name="data_getc_count">
 			<return type="int" />
 			<description>
+				Get additional data count that is stored alongside this entity.
 			</description>
 		</method>
 		<method name="data_gets">
 			<return type="EntityDataContainer" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get additional data stored alongside this entity.
 			</description>
 		</method>
 		<method name="data_gets_count">
 			<return type="int" />
 			<description>
+				Get additional data count that is stored alongside this entity.
 			</description>
 		</method>
 		<method name="data_removec">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove additional data stored alongside this entity.
 			</description>
 		</method>
 		<method name="data_removes">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove additional data stored alongside this entity.
 			</description>
 		</method>
 		<method name="diec">
 			<return type="void" />
 			<description>
+				Die.
 			</description>
 		</method>
 		<method name="dies">
 			<return type="void" />
 			<description>
+				Die.
 			</description>
 		</method>
 		<method name="equip_applys_item">
 			<return type="void" />
 			<argument index="0" name="item" type="ItemInstance" />
 			<description>
+				Item got equipped. Apply it server side. Could mean applying it's stats, etc.
+				Calls [method _equip_applys_item].
 			</description>
 		</method>
 		<method name="equip_can_equip_item">
@@ -1600,6 +1634,8 @@
 			<argument index="0" name="equip_slot" type="int" />
 			<argument index="1" name="item" type="ItemInstance" />
 			<description>
+				Check whether the given item can be equipped.
+				Calls [method _equip_can_equip_item].
 			</description>
 		</method>
 		<method name="equip_cfail">
@@ -1607,6 +1643,7 @@
 			<argument index="0" name="equip_slot" type="int" />
 			<argument index="1" name="bag_slot" type="int" />
 			<description>
+				Item equipping failed.
 			</description>
 		</method>
 		<method name="equip_con_fail">
@@ -1616,6 +1653,8 @@
 			<argument index="2" name="old_item" type="ItemInstance" />
 			<argument index="3" name="bag_slot" type="int" />
 			<description>
+				Item equipping failed.
+				Calls [method _equip_cfail].
 			</description>
 		</method>
 		<method name="equip_con_success">
@@ -1625,6 +1664,8 @@
 			<argument index="2" name="old_item" type="ItemInstance" />
 			<argument index="3" name="bag_slot" type="int" />
 			<description>
+				Item equipping succeeded.
+				Calls [method _equip_con_success].
 			</description>
 		</method>
 		<method name="equip_crequest">
@@ -1632,6 +1673,7 @@
 			<argument index="0" name="equip_slot" type="int" />
 			<argument index="1" name="bag_slot" type="int" />
 			<description>
+				Request equipping an item from the server.
 			</description>
 		</method>
 		<method name="equip_csuccess">
@@ -1639,30 +1681,37 @@
 			<argument index="0" name="equip_slot" type="int" />
 			<argument index="1" name="bag_slot" type="int" />
 			<description>
+				Item equipping succeeded.
 			</description>
 		</method>
 		<method name="equip_deapplyc_item">
 			<return type="void" />
 			<argument index="0" name="item" type="ItemInstance" />
 			<description>
+				Item got de-equipped. Deapply it client side. Could mean changing textures, etc.
+				Calls [method _equip_deapplyc_item].
 			</description>
 		</method>
 		<method name="equip_deapplys_item">
 			<return type="void" />
 			<argument index="0" name="item" type="ItemInstance" />
 			<description>
+				Item got de-equipped. Deapply it server side. Could mean deapplying it's stats, etc.
+				Calls [method _equip_deapplys_item].
 			</description>
 		</method>
 		<method name="equip_getc_slot">
 			<return type="ItemInstance" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get the equipped item from the given slot.
 			</description>
 		</method>
 		<method name="equip_gets_slot">
 			<return type="ItemInstance" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get the equipped item from the given slot.
 			</description>
 		</method>
 		<method name="equip_should_deny">
@@ -1670,6 +1719,8 @@
 			<argument index="0" name="equip_slot" type="int" />
 			<argument index="1" name="item" type="ItemInstance" />
 			<description>
+				Equipping can be denied if necessary with this.
+				Calls [method _equip_should_deny].
 			</description>
 		</method>
 		<method name="equip_son_fail">
@@ -1679,6 +1730,8 @@
 			<argument index="2" name="old_item" type="ItemInstance" />
 			<argument index="3" name="bag_slot" type="int" />
 			<description>
+				Item equipping failed.
+				Calls [method _equip_son_fail].
 			</description>
 		</method>
 		<method name="equip_son_success">
@@ -1688,6 +1741,8 @@
 			<argument index="2" name="old_item" type="ItemInstance" />
 			<argument index="3" name="bag_slot" type="int" />
 			<description>
+				Item equipping succeeded.
+				Calls [method _equip_son_success].
 			</description>
 		</method>
 		<method name="equips">
@@ -1695,12 +1750,15 @@
 			<argument index="0" name="equip_slot" type="int" />
 			<argument index="1" name="bag_slot" type="int" />
 			<description>
+				Try equipping the item at bag slot and equip slot.
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="gcd_hasc" qualifiers="const">
