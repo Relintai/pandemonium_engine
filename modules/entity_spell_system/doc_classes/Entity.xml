@@ -507,7 +507,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellDamageInfo" />
 			<description>
-				Dmaage notification.
+				Damage notification.
 			</description>
 		</method>
 		<method name="_notification_sdeath" qualifiers="virtual">
@@ -1764,97 +1764,121 @@
 		<method name="gcd_hasc" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Returns whether the entity has a global cooldown.
 			</description>
 		</method>
 		<method name="gcd_hass" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Returns whether the entity has a global cooldown.
 			</description>
 		</method>
 		<method name="gcd_startc">
 			<return type="void" />
 			<argument index="0" name="value" type="float" />
 			<description>
+				Starts global cooldown.
 			</description>
 		</method>
 		<method name="gcd_starts">
 			<return type="void" />
 			<argument index="0" name="value" type="float" />
 			<description>
+				Starts global cooldown.
 			</description>
 		</method>
 		<method name="get_action_bar_profile">
 			<return type="ActionBarProfile" />
 			<description>
+				Return the active action bar profile.
 			</description>
 		</method>
 		<method name="get_maunal_process" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Should processing auras, spells, cast etc. happen automatically?
+				Turn based combat can be implemented by setting this to false.
 			</description>
 		</method>
 		<method name="get_transform_2d" qualifiers="const">
 			<return type="Transform2D" />
 			<argument index="0" name="only_stored" type="bool" default="false" />
 			<description>
+				Return the stored Transform 2D for the body.
 			</description>
 		</method>
 		<method name="get_transform_3d" qualifiers="const">
 			<return type="Transform" />
 			<argument index="0" name="only_stored" type="bool" default="false" />
 			<description>
+				Return the stored Transform for the body.
 			</description>
 		</method>
 		<method name="getc_health">
 			<return type="EntityResource" />
 			<description>
+				Return the Entity's health resource.
+				By default it is [EntityResourceHealth], can be customized in [method _initialize].
 			</description>
 		</method>
 		<method name="getc_is_controlled">
 			<return type="bool" />
 			<description>
+				Is the entity controlled by this client?
 			</description>
 		</method>
 		<method name="getc_relation_to">
 			<return type="int" enum="EntityEnums.EntityRelationType" />
 			<argument index="0" name="to" type="Node" />
 			<description>
+				Return how this Entity relates to the given Entity.
 			</description>
 		</method>
 		<method name="getc_speed">
 			<return type="EntityResource" />
 			<description>
+				Return the Entity's health resource.
+				By default it is [EntityResourceSpeed], can be customized in [method _initialize].
 			</description>
 		</method>
 		<method name="gets_health">
 			<return type="EntityResource" />
 			<description>
+				Return the Entity's health resource.
+				By default it is [EntityResourceHealth], can be customized in [method _initialize].
 			</description>
 		</method>
 		<method name="gets_relation_to">
 			<return type="int" enum="EntityEnums.EntityRelationType" />
 			<argument index="0" name="to" type="Node" />
 			<description>
+				Return how this Entity relates to the given Entity.
 			</description>
 		</method>
 		<method name="gets_speed">
 			<return type="EntityResource" />
 			<description>
+				Return the Entity's health resource.
+				By default it is [EntityResourceSpeed], can be customized in [method _initialize].
 			</description>
 		</method>
 		<method name="is_deserialized">
 			<return type="bool" />
 			<description>
+				Will be true if the entity was loaded, and not freshly created.
+				Needed for proper initialization.
 			</description>
 		</method>
 		<method name="isc_target_in_interact_range">
 			<return type="bool" />
 			<description>
+				Is the target in range?
 			</description>
 		</method>
 		<method name="iss_target_in_interact_range">
 			<return type="bool" />
 			<description>
+				Is the target in range?
 			</description>
 		</method>
 		<method name="item_addc">
@@ -1862,6 +1886,7 @@
 			<argument index="0" name="slot_id" type="int" />
 			<argument index="1" name="item" type="ItemInstance" />
 			<description>
+				Add item.
 			</description>
 		</method>
 		<method name="item_addc_rpc">
@@ -1869,6 +1894,7 @@
 			<argument index="0" name="slot_id" type="int" />
 			<argument index="1" name="item_data" type="String" />
 			<description>
+				RPC call for sending an added item's data to the client.
 			</description>
 		</method>
 		<method name="item_cchange_count">
@@ -1876,12 +1902,14 @@
 			<argument index="0" name="slot_id" type="int" />
 			<argument index="1" name="new_count" type="int" />
 			<description>
+				Change count of an item.
 			</description>
 		</method>
 		<method name="item_cdeny_remove">
 			<return type="void" />
 			<argument index="0" name="slot_id" type="int" />
 			<description>
+				Does nothing at the moment.
 			</description>
 		</method>
 		<method name="item_cdeny_swap">
@@ -1889,12 +1917,14 @@
 			<argument index="0" name="slot_id_1" type="int" />
 			<argument index="1" name="slot_id_2" type="int" />
 			<description>
+				Does nothing at the moment.
 			</description>
 		</method>
 		<method name="item_crequest_remove">
 			<return type="void" />
 			<argument index="0" name="slot_id" type="int" />
 			<description>
+				Request removing an item from the server.
 			</description>
 		</method>
 		<method name="item_crequest_swap">
@@ -1902,30 +1932,35 @@
 			<argument index="0" name="slot_id_1" type="int" />
 			<argument index="1" name="slot_id_2" type="int" />
 			<description>
+				Request swapping an item from the server.
 			</description>
 		</method>
 		<method name="item_crequest_use">
 			<return type="void" />
 			<argument index="0" name="item_id" type="int" />
 			<description>
+				Request using an item from the server.
 			</description>
 		</method>
 		<method name="item_removec">
 			<return type="void" />
 			<argument index="0" name="slot_id" type="int" />
 			<description>
+				Remove the item from the given slot.
 			</description>
 		</method>
 		<method name="item_removes">
 			<return type="void" />
 			<argument index="0" name="slot_id" type="int" />
 			<description>
+				Remove the item from the given slot.
 			</description>
 		</method>
 		<method name="item_uses">
 			<return type="void" />
 			<argument index="0" name="item_id" type="int" />
 			<description>
+				Use item.
 			</description>
 		</method>
 		<method name="items_swapc">
@@ -1933,6 +1968,7 @@
 			<argument index="0" name="slot_id_1" type="int" />
 			<argument index="1" name="slot_id_2" type="int" />
 			<description>
+				Swap items.
 			</description>
 		</method>
 		<method name="items_swaps">
@@ -1940,41 +1976,48 @@
 			<argument index="0" name="slot_id_1" type="int" />
 			<argument index="1" name="slot_id_2" type="int" />
 			<description>
+				Swap items.
 			</description>
 		</method>
 		<method name="levelupc">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Level up.
 			</description>
 		</method>
 		<method name="levelups">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Level up.
 			</description>
 		</method>
 		<method name="loot_crequest">
 			<return type="void" />
 			<argument index="0" name="arg0" type="int" />
 			<description>
+				Request looting the target from the server.
 			</description>
 		</method>
 		<method name="lootc">
 			<return type="void" />
 			<argument index="0" name="arg0" type="int" />
 			<description>
+				Loot the target corpse.
 			</description>
 		</method>
 		<method name="loots">
 			<return type="void" />
 			<argument index="0" name="arg0" type="int" />
 			<description>
+				Loot the target corpse.
 			</description>
 		</method>
 		<method name="moved">
 			<return type="void" />
 			<description>
+				Call when the entity's body moved.
 			</description>
 		</method>
 		<method name="notification_caura">
@@ -1982,6 +2025,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="data" type="AuraData" />
 			<description>
+				Aura notification.
 			</description>
 		</method>
 		<method name="notification_ccast">
@@ -1989,6 +2033,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Cast notification.
 			</description>
 		</method>
 		<method name="notification_ccategory_cooldown_added">
@@ -1996,6 +2041,7 @@
 			<argument index="0" name="category_cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) added notification.
 			</description>
 		</method>
 		<method name="notification_ccategory_cooldown_removed">
@@ -2003,6 +2049,7 @@
 			<argument index="0" name="category_cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) removed notification.
 			</description>
 		</method>
 		<method name="notification_ccooldown_added">
@@ -2010,6 +2057,7 @@
 			<argument index="0" name="cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
 			<description>
+				Cooldown added notification.
 			</description>
 		</method>
 		<method name="notification_ccooldown_removed">
@@ -2017,6 +2065,7 @@
 			<argument index="0" name="cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
 			<description>
+				Cooldown removed notification.
 			</description>
 		</method>
 		<method name="notification_cdamage">
@@ -2024,33 +2073,39 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellDamageInfo" />
 			<description>
+				Damage notification.
 			</description>
 		</method>
 		<method name="notification_cdeath">
 			<return type="void" />
 			<description>
+				Death notification.
 			</description>
 		</method>
 		<method name="notification_centity_resource_added">
 			<return type="void" />
 			<argument index="0" name="resource" type="EntityResource" />
 			<description>
+				[EntityResource] added notification.
 			</description>
 		</method>
 		<method name="notification_centity_resource_removed">
 			<return type="void" />
 			<argument index="0" name="resource" type="EntityResource" />
 			<description>
+				[EntityResource] removed notification.
 			</description>
 		</method>
 		<method name="notification_cgcd_finished">
 			<return type="void" />
 			<description>
+				Global cooldown finished notification.
 			</description>
 		</method>
 		<method name="notification_cgcd_started">
 			<return type="void" />
 			<description>
+				Global cooldown started notification.
 			</description>
 		</method>
 		<method name="notification_cheal">
@@ -2058,22 +2113,26 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellHealInfo" />
 			<description>
+				Heal notification.
 			</description>
 		</method>
 		<method name="notification_clevel_up">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Levelup notification.
 			</description>
 		</method>
 		<method name="notification_cmouse_enter">
 			<return type="void" />
 			<description>
+				Body mouse enter notification.
 			</description>
 		</method>
 		<method name="notification_cmouse_exit">
 			<return type="void" />
 			<description>
+				Body mouse exit notification.
 			</description>
 		</method>
 		<method name="notification_cstat_changed">
@@ -2081,22 +2140,26 @@
 			<argument index="0" name="stat" type="int" />
 			<argument index="1" name="arg1" type="float" />
 			<description>
+				Stat changed notification.
 			</description>
 		</method>
 		<method name="notification_ctargeted">
 			<return type="void" />
 			<description>
+				[Entity] targeted notification.
 			</description>
 		</method>
 		<method name="notification_cuntargeted">
 			<return type="void" />
 			<description>
+				[Entity] untargeted notification.
 			</description>
 		</method>
 		<method name="notification_cxp_gained">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				XP gained notification.
 			</description>
 		</method>
 		<method name="notification_item_sadded">
@@ -2105,6 +2168,7 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="slot_id" type="int" />
 			<description>
+				Item added notification.
 			</description>
 		</method>
 		<method name="notification_item_sremoved">
@@ -2113,6 +2177,7 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="slot_id" type="int" />
 			<description>
+				Item removed notification.
 			</description>
 		</method>
 		<method name="notification_item_sscount_changed">
@@ -2121,6 +2186,7 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="slot_id" type="int" />
 			<description>
+				Item count changed notification.
 			</description>
 		</method>
 		<method name="notification_items_sswapped">
@@ -2129,6 +2195,7 @@
 			<argument index="1" name="slot_id_1" type="int" />
 			<argument index="2" name="slot_id_2" type="int" />
 			<description>
+				Item swapped notification.
 			</description>
 		</method>
 		<method name="notification_saura">
@@ -2136,6 +2203,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="data" type="AuraData" />
 			<description>
+				Aura notification.
 			</description>
 		</method>
 		<method name="notification_scast">
@@ -2143,6 +2211,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Cast notification.
 			</description>
 		</method>
 		<method name="notification_scategory_cooldown_added">
@@ -2150,6 +2219,7 @@
 			<argument index="0" name="category_cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) added notification.
 			</description>
 		</method>
 		<method name="notification_scategory_cooldown_removed">
@@ -2157,6 +2227,7 @@
 			<argument index="0" name="category_cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) removed notification.
 			</description>
 		</method>
 		<method name="notification_scooldown_added">
@@ -2164,6 +2235,7 @@
 			<argument index="0" name="cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
 			<description>
+				Cooldown added notification.
 			</description>
 		</method>
 		<method name="notification_scooldown_removed">
@@ -2171,6 +2243,7 @@
 			<argument index="0" name="cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
 			<description>
+				Cooldown removed notification.
 			</description>
 		</method>
 		<method name="notification_sdamage">
@@ -2178,33 +2251,39 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellDamageInfo" />
 			<description>
+				Damage notification.
 			</description>
 		</method>
 		<method name="notification_sdeath">
 			<return type="void" />
 			<description>
+				Death notification.
 			</description>
 		</method>
 		<method name="notification_sentity_resource_added">
 			<return type="void" />
 			<argument index="0" name="resource" type="EntityResource" />
 			<description>
+				[EntityResource] added notification.
 			</description>
 		</method>
 		<method name="notification_sentity_resource_removed">
 			<return type="void" />
 			<argument index="0" name="resource" type="EntityResource" />
 			<description>
+				[EntityResource] removed notification.
 			</description>
 		</method>
 		<method name="notification_sgcd_finished">
 			<return type="void" />
 			<description>
+				Global cooldown finished notification.
 			</description>
 		</method>
 		<method name="notification_sgcd_started">
 			<return type="void" />
 			<description>
+				Global cooldown started notification.
 			</description>
 		</method>
 		<method name="notification_sheal">
@@ -2212,24 +2291,28 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellHealInfo" />
 			<description>
+				Heal notification.
 			</description>
 		</method>
 		<method name="notification_slevel_up">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Level up notification.
 			</description>
 		</method>
 		<method name="notification_soverburden_removed">
 			<return type="void" />
 			<argument index="0" name="bag" type="Bag" />
 			<description>
+				Received when the given bag is overburdened.
 			</description>
 		</method>
 		<method name="notification_soverburdened">
 			<return type="void" />
 			<argument index="0" name="bag" type="Bag" />
 			<description>
+				Received when the given bag's overburden removed.
 			</description>
 		</method>
 		<method name="notification_sstat_changed">
@@ -2237,12 +2320,14 @@
 			<argument index="0" name="stat" type="int" />
 			<argument index="1" name="arg1" type="float" />
 			<description>
+				Stat changed notification.
 			</description>
 		</method>
 		<method name="notification_sxp_gained">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				XP gained notification.
 			</description>
 		</method>
 		<method name="notification_target_item_sadded">
@@ -2251,6 +2336,7 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="slot_id" type="int" />
 			<description>
+				Item added to target bag notification.
 			</description>
 		</method>
 		<method name="notification_target_item_sremoved">
@@ -2259,6 +2345,7 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="slot_id" type="int" />
 			<description>
+				Item removed from target bag notification.
 			</description>
 		</method>
 		<method name="notification_target_item_sscount_changed">
@@ -2267,6 +2354,7 @@
 			<argument index="1" name="item" type="ItemInstance" />
 			<argument index="2" name="slot_id" type="int" />
 			<description>
+				Item count changed in target bag notification.
 			</description>
 		</method>
 		<method name="notification_target_items_sswapped">
@@ -2275,76 +2363,89 @@
 			<argument index="1" name="slot_id_1" type="int" />
 			<argument index="2" name="slot_id_2" type="int" />
 			<description>
+				Items swapped in target bag notification.
 			</description>
 		</method>
 		<method name="pet_addc">
 			<return type="void" />
 			<argument index="0" name="entity" type="Node" />
 			<description>
+				Add pet.
 			</description>
 		</method>
 		<method name="pet_addc_path">
 			<return type="void" />
 			<argument index="0" name="arg0" type="NodePath" />
 			<description>
+				Add pet as [NodePath].
 			</description>
 		</method>
 		<method name="pet_adds">
 			<return type="void" />
 			<argument index="0" name="entity" type="Node" />
 			<description>
+				Add pet.
 			</description>
 		</method>
 		<method name="pet_getc">
 			<return type="Entity" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get pet at index.
 			</description>
 		</method>
 		<method name="pet_getc_count">
 			<return type="int" />
 			<description>
+				Return how many pets this entity has.
 			</description>
 		</method>
 		<method name="pet_gets">
 			<return type="Entity" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get pet at index.
 			</description>
 		</method>
 		<method name="pet_gets_count">
 			<return type="int" />
 			<description>
+				Return how many pets this entity has.
 			</description>
 		</method>
 		<method name="pet_removec">
 			<return type="void" />
 			<argument index="0" name="entity" type="Node" />
 			<description>
+				Remove pet.
 			</description>
 		</method>
 		<method name="pet_removec_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove pet at index.
 			</description>
 		</method>
 		<method name="pet_removes">
 			<return type="void" />
 			<argument index="0" name="entity" type="Node" />
 			<description>
+				Remove pet.
 			</description>
 		</method>
 		<method name="pet_removes_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove pet at index.
 			</description>
 		</method>
 		<method name="register_for_physics_process">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Register SpellCastInfo so it gets physics process notification.
 			</description>
 		</method>
 		<method name="resource_addc">
@@ -2352,6 +2453,7 @@
 			<argument index="0" name="palyer_resource" type="int" />
 			<argument index="1" name="arg1" type="EntityResource" />
 			<description>
+				Add [EntityResource].
 			</description>
 		</method>
 		<method name="resource_addc_rpc">
@@ -2359,22 +2461,26 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="data" type="String" />
 			<description>
+				RPC call for sending an added entity resource data to the client.
 			</description>
 		</method>
 		<method name="resource_adds">
 			<return type="void" />
 			<argument index="0" name="palyer_resource" type="EntityResource" />
 			<description>
+				Add [EntityResource].
 			</description>
 		</method>
 		<method name="resource_clearc">
 			<return type="void" />
 			<description>
+				Clear [EntityResource]s.
 			</description>
 		</method>
 		<method name="resource_clears">
 			<return type="void" />
 			<description>
+				Clear [EntityResource]s.
 			</description>
 		</method>
 		<method name="resource_creceive_curr_max">
@@ -2383,6 +2489,7 @@
 			<argument index="1" name="current" type="int" />
 			<argument index="2" name="max" type="int" />
 			<description>
+				Receive [EntityResource] update.
 			</description>
 		</method>
 		<method name="resource_creceive_current">
@@ -2390,6 +2497,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="current" type="int" />
 			<description>
+				Receive [EntityResource] update.
 			</description>
 		</method>
 		<method name="resource_creceive_data">
@@ -2397,52 +2505,63 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="data" type="String" />
 			<description>
+				Receive [EntityResource] update.
 			</description>
 		</method>
 		<method name="resource_getc_count">
 			<return type="int" />
 			<description>
+				Return [EntityResource] count.
+				Includes health, and speed resources aswell.
 			</description>
 		</method>
 		<method name="resource_getc_id">
 			<return type="EntityResource" />
 			<argument index="0" name="type" type="int" />
 			<description>
+				Return [EntityResource].
 			</description>
 		</method>
 		<method name="resource_getc_index">
 			<return type="EntityResource" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return [EntityResource].
 			</description>
 		</method>
 		<method name="resource_gets_count">
 			<return type="int" />
 			<description>
+				Return [EntityResource] count.
+				Includes health, and speed resources aswell.
 			</description>
 		</method>
 		<method name="resource_gets_id">
 			<return type="EntityResource" />
 			<argument index="0" name="type" type="int" />
 			<description>
+				Return [EntityResource].
 			</description>
 		</method>
 		<method name="resource_gets_index">
 			<return type="EntityResource" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return [EntityResource].
 			</description>
 		</method>
 		<method name="resource_removec">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove [EntityResource].
 			</description>
 		</method>
 		<method name="resource_removes">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove [EntityResource].
 			</description>
 		</method>
 		<method name="resource_sends_curr_max">
@@ -2451,6 +2570,7 @@
 			<argument index="1" name="current" type="int" />
 			<argument index="2" name="max" type="int" />
 			<description>
+				Receive [EntityResource] update.
 			</description>
 		</method>
 		<method name="resource_sends_current">
@@ -2465,36 +2585,43 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="data" type="String" />
 			<description>
+				Receive [EntityResource] update.
 			</description>
 		</method>
 		<method name="sapply_passives_damage_deal">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Apply passive modifiers before dealing damage.
 			</description>
 		</method>
 		<method name="sapply_passives_damage_receive">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Apply passive modifiers before receiving damage.
 			</description>
 		</method>
 		<method name="sdeal_damage_to">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Deal damage to target found in [SpellDamageInfo].
 			</description>
 		</method>
 		<method name="sdeal_heal_to">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellHealInfo" />
 			<description>
+				Deal heal to target found in [SpellDamageInfo].
 			</description>
 		</method>
 		<method name="set_maunal_process">
 			<return type="void" />
 			<argument index="0" name="value" type="bool" />
 			<description>
+				Should processing auras, spells, cast etc. happen automatically?
+				Turn based combat can be implemented by setting this to false.
 			</description>
 		</method>
 		<method name="set_transform_2d">
@@ -2502,6 +2629,7 @@
 			<argument index="0" name="transform" type="Transform2D" />
 			<argument index="1" name="only_stored" type="bool" default="false" />
 			<description>
+				Sets the stored Transform 2D for the body.
 			</description>
 		</method>
 		<method name="set_transform_3d">
@@ -2509,28 +2637,33 @@
 			<argument index="0" name="transform" type="Transform" />
 			<argument index="1" name="only_stored" type="bool" default="false" />
 			<description>
+				Sets the stored Transform 3D for the body.
 			</description>
 		</method>
 		<method name="setup">
 			<return type="void" />
 			<argument index="0" name="info" type="EntityCreateInfo" />
 			<description>
+				Setup entity.
 			</description>
 		</method>
 		<method name="setup_actionbars">
 			<return type="void" />
 			<description>
+				Setup actionbars.
 			</description>
 		</method>
 		<method name="sinteract">
 			<return type="void" />
 			<description>
+				Interact with target.
 			</description>
 		</method>
 		<method name="skill_addc">
 			<return type="void" />
 			<argument index="0" name="skill" type="EntitySkill" />
 			<description>
+				Add [EntitySkill].
 			</description>
 		</method>
 		<method name="skill_addc_id">
@@ -2539,12 +2672,14 @@
 			<argument index="1" name="value" type="int" />
 			<argument index="2" name="max_value" type="int" />
 			<description>
+				Add [EntitySkill].
 			</description>
 		</method>
 		<method name="skill_adds">
 			<return type="void" />
 			<argument index="0" name="skill" type="EntitySkill" />
 			<description>
+				Add [EntitySkill].
 			</description>
 		</method>
 		<method name="skill_changec">
@@ -2552,6 +2687,7 @@
 			<argument index="0" name="skill_id" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Change [EntitySkill] values.
 			</description>
 		</method>
 		<method name="skill_changec_max">
@@ -2559,76 +2695,89 @@
 			<argument index="0" name="skill_id" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Change [EntitySkill] values.
 			</description>
 		</method>
 		<method name="skill_getc">
 			<return type="EntitySkill" />
 			<argument index="0" name="skill" type="int" />
 			<description>
+				Return [EntitySkill].
 			</description>
 		</method>
 		<method name="skill_getc_count">
 			<return type="int" />
 			<description>
+				Return skill count.
 			</description>
 		</method>
 		<method name="skill_gets">
 			<return type="EntitySkill" />
 			<argument index="0" name="skill" type="int" />
 			<description>
+				Return [EntitySkill].
 			</description>
 		</method>
 		<method name="skill_gets_count">
 			<return type="int" />
 			<description>
+				Return skill count.
 			</description>
 		</method>
 		<method name="skill_hasc">
 			<return type="bool" />
 			<argument index="0" name="skill" type="EntitySkill" />
 			<description>
+				Check whethet this entity has the given skill.
 			</description>
 		</method>
 		<method name="skill_hasc_id">
 			<return type="bool" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Check whethet this entity has the given skill.
 			</description>
 		</method>
 		<method name="skill_hass">
 			<return type="bool" />
 			<argument index="0" name="skill" type="EntitySkill" />
 			<description>
+				Check whethet this entity has the given skill.
 			</description>
 		</method>
 		<method name="skill_hass_id">
 			<return type="bool" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Check whethet this entity has the given skill.
 			</description>
 		</method>
 		<method name="skill_removec">
 			<return type="void" />
 			<argument index="0" name="skill" type="EntitySkill" />
 			<description>
+				Remove [EntitySkill]/
 			</description>
 		</method>
 		<method name="skill_removec_id">
 			<return type="void" />
 			<argument index="0" name="skill_id" type="int" />
 			<description>
+				Remove [EntitySkill]/
 			</description>
 		</method>
 		<method name="skill_removes">
 			<return type="void" />
 			<argument index="0" name="skill" type="EntitySkill" />
 			<description>
+				Remove [EntitySkill]/
 			</description>
 		</method>
 		<method name="spell_addc">
 			<return type="void" />
 			<argument index="0" name="spell" type="Spell" />
 			<description>
+				Add [Spell].
 			</description>
 		</method>
 		<method name="spell_addc_rpc">
