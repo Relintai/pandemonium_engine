@@ -4,6 +4,7 @@
 		Contains all data for a given [Entity]. Think of this as all the data for a mob, or a player.
 	</brief_description>
 	<description>
+		Contains all data for a given [Entity]. Think of this as all the data for a mob, or a player.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,77 +13,105 @@
 			<return type="bool" />
 			<argument index="0" name="entity" type="Entity" />
 			<description>
+				Check whether the given entity can interact with it's target.
 			</description>
 		</method>
 		<method name="_generate_name" qualifiers="virtual">
 			<return type="String" />
 			<description>
+				Generate name for an entity.
 			</description>
 		</method>
 		<method name="_get_ai_instance" qualifiers="virtual">
 			<return type="EntityAI" />
 			<description>
+				Return a new [EntityAI] instance suitable for this entity data.
+				The default implementation:
+				1. Try: If [member ai] is set, it's duplicated and returned.
+				2. Then Try: If [member entity_class_data] is set it's [method EntityClassData.get_ai_instance] is called and it's result returned.
+				3. Finally: An [EntityAI] is instance and returned.
 			</description>
 		</method>
 		<method name="_sinteract" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="entity" type="Entity" />
 			<description>
+				Interact with the given entity's target.
 			</description>
 		</method>
 		<method name="cans_interact">
 			<return type="bool" />
 			<argument index="0" name="entity" type="Node" />
 			<description>
+				Check whether the given entity can interact with it's target.
 			</description>
 		</method>
 		<method name="generate_name">
 			<return type="String" />
 			<description>
+				Generate name for an entity.
 			</description>
 		</method>
 		<method name="get_ai_instance">
 			<return type="EntityAI" />
 			<description>
+				Return a new [EntityAI] instance suitable for this entity data.
 			</description>
 		</method>
 		<method name="sinteract">
 			<return type="void" />
 			<argument index="0" name="entity" type="Node" />
 			<description>
+				Interact with the given entity's target.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="ai" type="EntityAI" setter="set_ai" getter="get_ai">
+			Suitable [EntityAI] implementation for the [EntityData].
+			The default [method _get_ai_instance] implementation duplicates this if set.
 		</member>
 		<member name="bag_size" type="int" setter="set_bag_size" getter="get_bag_size" default="0">
+			THe default bag size.
 		</member>
 		<member name="entity_class_data" type="EntityClassData" setter="set_entity_class_data" getter="get_entity_class_data">
+			The entity's class.
 		</member>
 		<member name="entity_flags" type="int" setter="set_entity_flags" getter="get_entity_flags" default="0">
+			Entity flags.
 		</member>
 		<member name="entity_interaction_type" type="int" setter="set_entity_interaction_type" getter="get_entity_interaction_type" enum="EntityEnums.EntityInteractionType" default="0">
+			Interaction type.
 		</member>
 		<member name="entity_species_data" type="EntitySpeciesData" setter="set_entity_species_data" getter="get_entity_species_data">
+			Species data.
 		</member>
 		<member name="equipment_data" type="EquipmentData" setter="set_equipment_data" getter="get_equipment_data">
+			Equipment data.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			The EntityData's id.
 		</member>
 		<member name="immunity_flags" type="int" setter="set_immunity_flags" getter="get_immunity_flags" default="0">
+			Immunity flags.
 		</member>
 		<member name="is_playable" type="bool" setter="set_is_playable" getter="get_is_playable" default="false">
+			Is this Entity playable?
 		</member>
 		<member name="loot_db" type="LootDataBase" setter="set_loot_db" getter="get_loot_db">
+			Loot data.
 		</member>
 		<member name="money" type="int" setter="set_money" getter="get_money" default="0">
+			Money.
 		</member>
 		<member name="species_instance" type="SpeciesInstance" setter="set_species_instance" getter="get_species_instance">
+			The entity's [SpeciesInstance].
 		</member>
 		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
+			Description.
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+			Name.
 		</member>
 	</members>
 	<constants>
