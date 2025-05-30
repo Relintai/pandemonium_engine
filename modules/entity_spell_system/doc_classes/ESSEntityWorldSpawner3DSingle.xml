@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ESSEntityWorldSpawner3DSingle" inherits="ESSEntityWorldSpawner3D">
 	<brief_description>
+		Spawns and manages a single [Entity].
 	</brief_description>
 	<description>
+		Spawns and manages a single [Entity].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,14 +12,19 @@
 	</methods>
 	<members>
 		<member name="entity_data" type="EntityData" setter="set_entity_data" getter="get_entity_data">
+			The entity's data.
 		</member>
 		<member name="entity_level" type="int" setter="set_entity_level" getter="get_entity_level" default="1">
+			The entity's level.
 		</member>
 		<member name="entity_name" type="String" setter="set_entity_name" getter="get_entity_name" default="&quot;&quot;">
+			THe entity's name.
 		</member>
 		<member name="respawn_time_max" type="float" setter="set_respawn_time_max" getter="get_respawn_time_max" default="0.0">
+			Respawn time max.
 		</member>
 		<member name="respawn_time_min" type="float" setter="set_respawn_time_min" getter="get_respawn_time_min" default="0.0">
+			Respawn time min.
 		</member>
 	</members>
 	<constants>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ESSEntityWorldSpawner2D" inherits="Node2D">
 	<brief_description>
+		Base class that spawns and manages it's spawned entities in world.
 	</brief_description>
 	<description>
+		base class that spawns and manages it's spawned entities in world.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,24 +12,28 @@
 		<method name="_spawn" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Spawn logic.
 			</description>
 		</method>
 		<method name="emit_on_entity_spawned">
 			<return type="void" />
 			<argument index="0" name="info" type="EntityCreateInfo" />
 			<description>
+				Emit the on_entity_spawned signal.
 			</description>
 		</method>
 		<method name="spawn">
 			<return type="void" />
 			<description>
+				Spawn entities.
 			</description>
 		</method>
 	</methods>
 	<signals>
-		<signal name="emit_on_entity_spawned">
+		<signal name="on_entity_spawned">
 			<argument index="0" name="info" type="EntityCreateInfo" />
 			<description>
+				Emitted when an entity is spawned.
 			</description>
 		</signal>
 	</signals>
