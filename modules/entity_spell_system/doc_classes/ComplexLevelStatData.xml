@@ -4,6 +4,7 @@
 		Per level stat information for an [Entity].
 	</brief_description>
 	<description>
+		Per level stat information for an [Entity].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -13,6 +14,7 @@
 			<argument index="0" name="main_stat" type="int" />
 			<argument index="1" name="level" type="int" />
 			<description>
+				Returns stat for level.
 			</description>
 		</method>
 		<method name="set_stat_for_level">
@@ -21,6 +23,7 @@
 			<argument index="1" name="level" type="int" />
 			<argument index="2" name="value" type="int" />
 			<description>
+				Set stat for level.
 			</description>
 		</method>
 	</methods>
