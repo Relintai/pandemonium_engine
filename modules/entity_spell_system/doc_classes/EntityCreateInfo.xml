@@ -4,6 +4,7 @@
 		Helper class used for [Entity] creation, and setup.
 	</brief_description>
 	<description>
+		Helper class used for [Entity] creation, and setup.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,59 +13,84 @@
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Called by [method from_dict].
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Called by [method to_dict].
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="class_id" type="int" setter="set_class_id" getter="get_class_id" default="0">
+			Class id.
 		</member>
 		<member name="created_entity" type="Entity" setter="set_created_entity" getter="get_created_entity">
+			The resulting [Entity].
 		</member>
 		<member name="entity_controller" type="int" setter="set_entity_controller" getter="get_entity_controller" enum="EntityEnums.EntityController" default="0">
+			THe entity's controller.
 		</member>
 		<member name="entity_data" type="EntityData" setter="set_entity_data" getter="get_entity_data">
+			The entity's data.
 		</member>
 		<member name="entity_player_type" type="int" setter="set_entity_player_type" getter="get_entity_player_type" default="0">
+			The entity's player type.
 		</member>
 		<member name="guid" type="int" setter="set_guid" getter="get_guid" default="0">
+			The entity's guid.
 		</member>
 		<member name="level" type="int" setter="set_level" getter="get_level" default="0">
+			The entity's level.
 		</member>
 		<member name="network_owner" type="int" setter="set_network_owner" getter="get_network_owner" default="0">
+			The entity's network owner.
 		</member>
 		<member name="networked" type="bool" setter="set_networked" getter="get_networked" default="false">
+			It the entity going to be networked?
 		</member>
 		<member name="node_name" type="String" setter="set_node_name" getter="get_node_name" default="&quot;&quot;">
+			The entity's Node name.
 		</member>
 		<member name="parent_path" type="NodePath" setter="set_parent_path" getter="get_parent_path" default="NodePath(&quot;&quot;)">
+			The entity's parent path.
 		</member>
 		<member name="player_name" type="String" setter="set_entity_name" getter="get_entity_name" default="&quot;&quot;">
+			The entity's player name.
 		</member>
 		<member name="serialized_data" type="Dictionary" setter="set_serialized_data" getter="get_serialized_data" default="{}">
+			Previous serialized data.
 		</member>
 		<member name="species_instance" type="SpeciesInstance" setter="set_species_instance" getter="get_species_instance">
+			Species instance.
 		</member>
 		<member name="transform" type="Transform" setter="set_transform" getter="get_transform" default="Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )">
+			3D Transform.
 		</member>
 		<member name="transform2d" type="Transform2D" setter="set_transform2d" getter="get_transform2d" default="Transform2D( 1, 0, 0, 1, 0, 0 )">
+			2D Transform.
 		</member>
 		<member name="xp" type="int" setter="set_xp" getter="get_xp" default="0">
+			The entity's xp.
 		</member>
 	</members>
 	<constants>
