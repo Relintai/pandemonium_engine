@@ -4,6 +4,7 @@
 		Base [Spell] class. Contains data, and callbacks for spell scripts. Inherit from this to create spells with different functionality.
 	</brief_description>
 	<description>
+		Base [Spell] class. Contains data, and callbacks for spell scripts. Inherit from this to create spells with different functionality.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -13,6 +14,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="AuraApplyInfo" />
 			<description>
+				Calculate initial damage when this spell is applied as aura.
 			</description>
 		</method>
 		<method name="_aura_calculate_initial_heal" qualifiers="virtual">
@@ -20,6 +22,7 @@
 			<argument index="0" name="aura_data" type="AuraData" />
 			<argument index="1" name="info" type="AuraApplyInfo" />
 			<description>
+				Calculate initial heal when this spell is applied as aura.
 			</description>
 		</method>
 		<method name="_aura_get_description" qualifiers="virtual">
@@ -27,66 +30,82 @@
 			<argument index="0" name="class_level" type="int" />
 			<argument index="1" name="character_level" type="int" />
 			<description>
+				Return description with substituted values.
+				The default implementation will:
+				1. Get the translated string for the description if [member aura_text_translation_key] is set using the [member aura_text_translation_key] + "_DESC" key.
+				2. Replace %%property_name with the value that get(property_name) returns.
+				3. Replace %#property_name with the value that get(property_name) returns * class_level / max_class_level.
+				4. Replace %$property_name with the value that get(property_name) returns * character_level / max_character_level.
 			</description>
 		</method>
 		<method name="_aura_removes_dispell" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="AuraData" />
 			<description>
+				Remove aura, it was dispelled.
 			</description>
 		</method>
 		<method name="_aura_removes_expired" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="AuraData" />
 			<description>
+				Remove aura, it was expired.
 			</description>
 		</method>
 		<method name="_aura_sadd" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
+				Add aura.
 			</description>
 		</method>
 		<method name="_aura_sapply" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="AuraApplyInfo" />
 			<description>
+				Apply aura.
 			</description>
 		</method>
 		<method name="_aura_sapply_passives_damage_deal" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Apply passive modifiers before dealing damage.
 			</description>
 		</method>
 		<method name="_aura_sapply_passives_damage_receive" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Apply passive modifiers before receiving damage.
 			</description>
 		</method>
 		<method name="_aura_sapply_passives_heal_deal" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellDamageInfo" />
 			<description>
+				Apply passive modifiers before dealing heal.
 			</description>
 		</method>
 		<method name="_aura_sapply_passives_heal_receive" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellDamageInfo" />
 			<description>
+				Apply passive modifiers before receiving heal.
 			</description>
 		</method>
 		<method name="_aura_sdeapply" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="AuraData" />
 			<description>
+				Deapply aura.
 			</description>
 		</method>
 		<method name="_aura_sremove" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
+				Remove aura.
 			</description>
 		</method>
 		<method name="_aura_supdate" qualifiers="virtual">
@@ -94,60 +113,70 @@
 			<argument index="0" name="info" type="AuraData" />
 			<argument index="1" name="delta" type="float" />
 			<description>
+				Update aura.
 			</description>
 		</method>
 		<method name="_calculate_initial_damage" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Calculate initial damage.
 			</description>
 		</method>
 		<method name="_calculate_initial_heal" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellHealInfo" />
 			<description>
+				Calculate initial heal.
 			</description>
 		</method>
 		<method name="_cast_finishs" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Cast finished.
 			</description>
 		</method>
 		<method name="_cast_interrupts" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Cast interrupted.
 			</description>
 		</method>
 		<method name="_cast_starts" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Cast started.
 			</description>
 		</method>
 		<method name="_cast_starts_triggered" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Cast started with a trigger.
 			</description>
 		</method>
 		<method name="_con_aura_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Aura added.
 			</description>
 		</method>
 		<method name="_con_aura_refresh" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Aura refresh.
 			</description>
 		</method>
 		<method name="_con_aura_removed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Aura removed.
 			</description>
 		</method>
 		<method name="_con_cast_failed" qualifiers="virtual">
@@ -155,6 +184,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Cast failed.
 			</description>
 		</method>
 		<method name="_con_cast_finished" qualifiers="virtual">
@@ -162,6 +192,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Cast finished.
 			</description>
 		</method>
 		<method name="_con_cast_started" qualifiers="virtual">
@@ -169,6 +200,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Cast started.
 			</description>
 		</method>
 		<method name="_con_cast_state_changed" qualifiers="virtual">
@@ -176,6 +208,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Cast state changed.
 			</description>
 		</method>
 		<method name="_con_damage_dealt" qualifiers="virtual">
@@ -183,6 +216,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="SpellDamageInfo" />
 			<description>
+				Damage was dealt.
 			</description>
 		</method>
 		<method name="_con_dealt_damage" qualifiers="virtual">
@@ -190,6 +224,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="SpellDamageInfo" />
 			<description>
+				Damage was dealt.
 			</description>
 		</method>
 		<method name="_con_dealt_heal" qualifiers="virtual">
@@ -197,6 +232,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="SpellHealInfo" />
 			<description>
+				Heal was dealt.
 			</description>
 		</method>
 		<method name="_con_heal_dealt" qualifiers="virtual">
@@ -204,6 +240,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="SpellHealInfo" />
 			<description>
+				Heal was dealt.
 			</description>
 		</method>
 		<method name="_con_spell_cast_success" qualifiers="virtual">
@@ -211,6 +248,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Spell cast success.
 			</description>
 		</method>
 		<method name="_equip_con_fail" qualifiers="virtual">
@@ -221,6 +259,7 @@
 			<argument index="3" name="old_item" type="ItemInstance" />
 			<argument index="4" name="bag_slot" type="int" />
 			<description>
+				Equipping failed.
 			</description>
 		</method>
 		<method name="_equip_con_success" qualifiers="virtual">
@@ -231,6 +270,7 @@
 			<argument index="3" name="old_item" type="ItemInstance" />
 			<argument index="4" name="bag_slot" type="int" />
 			<description>
+				Equipping succeeded.
 			</description>
 		</method>
 		<method name="_equip_should_deny" qualifiers="virtual">
@@ -239,6 +279,7 @@
 			<argument index="1" name="equip_slot" type="int" />
 			<argument index="2" name="item" type="ItemInstance" />
 			<description>
+				Whether to deny equiping an item.
 			</description>
 		</method>
 		<method name="_equip_son_fail" qualifiers="virtual">
@@ -249,6 +290,7 @@
 			<argument index="3" name="old_item" type="ItemInstance" />
 			<argument index="4" name="bag_slot" type="int" />
 			<description>
+				Equip failed.
 			</description>
 		</method>
 		<method name="_equip_son_success" qualifiers="virtual">
@@ -259,6 +301,7 @@
 			<argument index="3" name="old_item" type="ItemInstance" />
 			<argument index="4" name="bag_slot" type="int" />
 			<description>
+				Equip succeeded.
 			</description>
 		</method>
 		<method name="_get_description" qualifiers="virtual">
@@ -266,6 +309,12 @@
 			<argument index="0" name="class_level" type="int" />
 			<argument index="1" name="character_level" type="int" />
 			<description>
+				Return description with substituted values.
+				The default implementation will:
+				1. Get the translated string for the description if [member text_translation_key] is set using the [member text_translation_key] + "_DESC" key.
+				2. Replace %%property_name with the value that get(property_name) returns.
+				3. Replace %#property_name with the value that get(property_name) returns * class_level / max_class_level.
+				4. Replace %$property_name with the value that get(property_name) returns * character_level / max_character_level.
 			</description>
 		</method>
 		<method name="_handle_aura_damage" qualifiers="virtual">
@@ -273,6 +322,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="SpellDamageInfo" />
 			<description>
+				Handle aura damage.
 			</description>
 		</method>
 		<method name="_handle_aura_heal" qualifiers="virtual">
@@ -280,30 +330,35 @@
 			<argument index="0" name="aura_data" type="AuraData" />
 			<argument index="1" name="spell_heal_info" type="SpellHealInfo" />
 			<description>
+				Handle aura heal.
 			</description>
 		</method>
 		<method name="_handle_effect" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Handle effect.
 			</description>
 		</method>
 		<method name="_handle_projectile" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Handle projectile.
 			</description>
 		</method>
 		<method name="_handle_spell_damage" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Handle spell damage.
 			</description>
 		</method>
 		<method name="_handle_spell_heal" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellHealInfo" />
 			<description>
+				Handle spell heal.
 			</description>
 		</method>
 		<method name="_notification_aura_ccast" qualifiers="virtual">
@@ -312,6 +367,7 @@
 			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="info" type="SpellCastInfo" />
 			<description>
+				Aura cast notification.
 			</description>
 		</method>
 		<method name="_notification_aura_scast" qualifiers="virtual">
@@ -320,6 +376,7 @@
 			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="info" type="SpellCastInfo" />
 			<description>
+				Aura cast notification.
 			</description>
 		</method>
 		<method name="_notification_caura" qualifiers="virtual">
@@ -327,6 +384,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="aura_data" type="AuraData" />
 			<description>
+				Aura notification.
 			</description>
 		</method>
 		<method name="_notification_ccast" qualifiers="virtual">
@@ -334,6 +392,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Cast notification.
 			</description>
 		</method>
 		<method name="_notification_ccategory_cooldown_added" qualifiers="virtual">
@@ -342,6 +401,7 @@
 			<argument index="1" name="id" type="int" />
 			<argument index="2" name="value" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) added notification.
 			</description>
 		</method>
 		<method name="_notification_ccategory_cooldown_removed" qualifiers="virtual">
@@ -350,6 +410,7 @@
 			<argument index="1" name="id" type="int" />
 			<argument index="2" name="value" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) removed notification.
 			</description>
 		</method>
 		<method name="_notification_ccooldown_added" qualifiers="virtual">
@@ -358,6 +419,7 @@
 			<argument index="1" name="id" type="int" />
 			<argument index="2" name="value" type="float" />
 			<description>
+				Cooldown added notification.
 			</description>
 		</method>
 		<method name="_notification_ccooldown_removed" qualifiers="virtual">
@@ -366,6 +428,7 @@
 			<argument index="1" name="id" type="int" />
 			<argument index="2" name="value" type="float" />
 			<description>
+				Cooldown removed notification.
 			</description>
 		</method>
 		<method name="_notification_cdamage" qualifiers="virtual">
@@ -374,12 +437,14 @@
 			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="data" type="SpellDamageInfo" />
 			<description>
+				Damage notification.
 			</description>
 		</method>
 		<method name="_notification_cdeath" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Death notification.
 			</description>
 		</method>
 		<method name="_notification_centity_resource_added" qualifiers="virtual">
@@ -387,6 +452,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				[EntityResource] added notification.
 			</description>
 		</method>
 		<method name="_notification_centity_resource_removed" qualifiers="virtual">
@@ -394,12 +460,14 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				[EntityResource] removed notification.
 			</description>
 		</method>
 		<method name="_notification_cgcd_finished" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Global cooldown finished notification.
 			</description>
 		</method>
 		<method name="_notification_cgcd_started" qualifiers="virtual">
@@ -407,6 +475,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="gcd" type="float" />
 			<description>
+				Global cooldown started notification.
 			</description>
 		</method>
 		<method name="_notification_cheal" qualifiers="virtual">
@@ -415,6 +484,7 @@
 			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="data" type="SpellHealInfo" />
 			<description>
+				Heal notification.
 			</description>
 		</method>
 		<method name="_notification_clevel_up" qualifiers="virtual">
@@ -422,6 +492,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Level up notification.
 			</description>
 		</method>
 		<method name="_notification_cxp_gained" qualifiers="virtual">
@@ -429,6 +500,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				XP gained notification.
 			</description>
 		</method>
 		<method name="_notification_saura" qualifiers="virtual">
@@ -436,6 +508,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="aura_data" type="AuraData" />
 			<description>
+				Aura notification.
 			</description>
 		</method>
 		<method name="_notification_scast" qualifiers="virtual">
@@ -443,6 +516,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Cast notification.
 			</description>
 		</method>
 		<method name="_notification_scategory_cooldown_added" qualifiers="virtual">
@@ -451,6 +525,7 @@
 			<argument index="1" name="id" type="int" />
 			<argument index="2" name="value" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) added notification.
 			</description>
 		</method>
 		<method name="_notification_scategory_cooldown_removed" qualifiers="virtual">
@@ -459,6 +534,7 @@
 			<argument index="1" name="id" type="int" />
 			<argument index="2" name="value" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) removed notification.
 			</description>
 		</method>
 		<method name="_notification_scooldown_added" qualifiers="virtual">
@@ -467,6 +543,7 @@
 			<argument index="1" name="id" type="int" />
 			<argument index="2" name="value" type="float" />
 			<description>
+				Cooldown added notification.
 			</description>
 		</method>
 		<method name="_notification_scooldown_removed" qualifiers="virtual">
@@ -475,6 +552,7 @@
 			<argument index="1" name="id" type="int" />
 			<argument index="2" name="value" type="float" />
 			<description>
+				Cooldown removed notification.
 			</description>
 		</method>
 		<method name="_notification_sdamage" qualifiers="virtual">
@@ -483,12 +561,14 @@
 			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="data" type="SpellDamageInfo" />
 			<description>
+				Damage notification.
 			</description>
 		</method>
 		<method name="_notification_sdeath" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Death notification.
 			</description>
 		</method>
 		<method name="_notification_sentity_resource_added" qualifiers="virtual">
@@ -496,6 +576,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				[EntityResource] added notification.
 			</description>
 		</method>
 		<method name="_notification_sentity_resource_removed" qualifiers="virtual">
@@ -503,12 +584,14 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				[EntityResource] removed notification.
 			</description>
 		</method>
 		<method name="_notification_sgcd_finished" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Global cooldown finished notification.
 			</description>
 		</method>
 		<method name="_notification_sgcd_started" qualifiers="virtual">
@@ -516,6 +599,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="gcd" type="float" />
 			<description>
+				Global cooldown started notification.
 			</description>
 		</method>
 		<method name="_notification_sheal" qualifiers="virtual">
@@ -524,6 +608,7 @@
 			<argument index="1" name="aura_data" type="AuraData" />
 			<argument index="2" name="data" type="SpellHealInfo" />
 			<description>
+				Heal notification.
 			</description>
 		</method>
 		<method name="_notification_slevel_up" qualifiers="virtual">
@@ -531,6 +616,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Level up notification.
 			</description>
 		</method>
 		<method name="_notification_sxp_gained" qualifiers="virtual">
@@ -538,6 +624,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				XP gained notification.
 			</description>
 		</method>
 		<method name="_setup_aura_data" qualifiers="virtual">
@@ -545,18 +632,21 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="AuraApplyInfo" />
 			<description>
+				Setup [AuraData].
 			</description>
 		</method>
 		<method name="_son_cast_damage_received" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Damage received while casting.
 			</description>
 		</method>
 		<method name="_son_cast_player_moved" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Entity moved while casting.
 			</description>
 		</method>
 		<method name="_son_physics_process" qualifiers="virtual">
@@ -564,36 +654,42 @@
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<argument index="1" name="delta" type="float" />
 			<description>
+				Physics process while casting.
 			</description>
 		</method>
 		<method name="_son_physics_process_aura" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Aura physics process callback.
 			</description>
 		</method>
 		<method name="_son_remove" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Aure removed.
 			</description>
 		</method>
 		<method name="_son_remove_dispell" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Aura removed via dispell.
 			</description>
 		</method>
 		<method name="_son_remove_expired" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Aura removed, expired.
 			</description>
 		</method>
 		<method name="_son_spell_hit" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Spell hit.
 			</description>
 		</method>
 		<method name="aura_calculate_initial_damage">
@@ -601,6 +697,7 @@
 			<argument index="0" name="aura_data" type="AuraData" />
 			<argument index="1" name="info" type="AuraApplyInfo" />
 			<description>
+				Calculate initial damage as aura.
 			</description>
 		</method>
 		<method name="aura_calculate_initial_heal">
@@ -608,6 +705,7 @@
 			<argument index="0" name="aura_data" type="AuraData" />
 			<argument index="1" name="info" type="AuraApplyInfo" />
 			<description>
+				Calculate initial heal as aura.
 			</description>
 		</method>
 		<method name="aura_damage_set">
@@ -616,6 +714,7 @@
 			<argument index="1" name="max" type="int" />
 			<argument index="2" name="can_crit" type="bool" />
 			<description>
+				Set damage min, max, can_crit.
 			</description>
 		</method>
 		<method name="aura_get_description">
@@ -623,11 +722,18 @@
 			<argument index="0" name="class_level" type="int" />
 			<argument index="1" name="character_level" type="int" />
 			<description>
+				Return description with substituted values.
+				The default implementation will:
+				1. Get the translated string for the description if [member aura_text_translation_key] is set using the [member aura_text_translation_key] + "_DESC" key.
+				2. Replace %%property_name with the value that get(property_name) returns.
+				3. Replace %#property_name with the value that get(property_name) returns * class_level / max_class_level.
+				4. Replace %$property_name with the value that get(property_name) returns * character_level / max_character_level.
 			</description>
 		</method>
 		<method name="aura_get_name_translated" qualifiers="const">
 			<return type="String" />
 			<description>
+				Return translated aura name.
 			</description>
 		</method>
 		<method name="aura_heal_set">
@@ -636,95 +742,111 @@
 			<argument index="1" name="max" type="int" />
 			<argument index="2" name="can_crit" type="bool" />
 			<description>
+				Set heal min, max, can_crit.
 			</description>
 		</method>
 		<method name="aura_is_talent" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Is this aura talent?
 			</description>
 		</method>
 		<method name="aura_removes_dispell">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
+				Remove aura, dispelled.
 			</description>
 		</method>
 		<method name="aura_removes_expired">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
+				Remove aura, expired.
 			</description>
 		</method>
 		<method name="aura_sadd">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
+				Add as aura.
 			</description>
 		</method>
 		<method name="aura_sapply">
 			<return type="void" />
 			<argument index="0" name="info" type="AuraApplyInfo" />
 			<description>
+				Apply aura.
 			</description>
 		</method>
 		<method name="aura_sapply_passives_damage_deal">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Apply passive modifiers before dealing damage.
 			</description>
 		</method>
 		<method name="aura_sapply_passives_damage_receive">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Apply passive modifiers before receiving damage.
 			</description>
 		</method>
 		<method name="aura_sapply_passives_heal_deal">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellHealInfo" />
 			<description>
+				Apply passive modifiers before dealing heal.
 			</description>
 		</method>
 		<method name="aura_sapply_passives_heal_receive">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellHealInfo" />
 			<description>
+				Apply passive modifiers before receiving heal.
 			</description>
 		</method>
 		<method name="aura_sdeapply">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
+				Deapply aura.
 			</description>
 		</method>
 		<method name="aura_sremove">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
+				Remove aura.
 			</description>
 		</method>
 		<method name="aura_stat_attribute_get_base_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get stat attribute base modifier at index.
 			</description>
 		</method>
 		<method name="aura_stat_attribute_get_bonus_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get stat attribute bonus modifier at index.
 			</description>
 		</method>
 		<method name="aura_stat_attribute_get_percent_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get stat attribute percent modifier at index.
 			</description>
 		</method>
 		<method name="aura_stat_attribute_get_stat" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get stat attribute stat modifier at index.
 			</description>
 		</method>
 		<method name="aura_stat_attribute_set_base_mod">
@@ -732,6 +854,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set stat attribute base modifier at index.
 			</description>
 		</method>
 		<method name="aura_stat_attribute_set_bonus_mod">
@@ -739,6 +862,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set stat attribute bonus modifier at index.
 			</description>
 		</method>
 		<method name="aura_stat_attribute_set_percent_mod">
@@ -746,6 +870,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set stat attribute percent modifier at index.
 			</description>
 		</method>
 		<method name="aura_stat_attribute_set_stat">
@@ -753,6 +878,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Set stat attribute stat at index.
 			</description>
 		</method>
 		<method name="aura_supdate">
@@ -760,36 +886,42 @@
 			<argument index="0" name="aura" type="AuraData" />
 			<argument index="1" name="delta" type="float" />
 			<description>
+				Udpate aura.
 			</description>
 		</method>
 		<method name="aura_trigger_get_notification_data" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get trigger notification data.
 			</description>
 		</method>
 		<method name="aura_trigger_get_notification_type" qualifiers="const">
 			<return type="int" enum="SpellEnums.TriggerNotificationType" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get trigger notification type.
 			</description>
 		</method>
 		<method name="aura_trigger_get_spell" qualifiers="const">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get trigger spell.
 			</description>
 		</method>
 		<method name="aura_trigger_get_trigger_type" qualifiers="const">
 			<return type="int" enum="SpellEnums.TriggerType" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get trigger type.
 			</description>
 		</method>
 		<method name="aura_trigger_get_trigger_type_data" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get trigger type data.
 			</description>
 		</method>
 		<method name="aura_trigger_set_notification_data">
@@ -797,6 +929,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Set trigger notification data.
 			</description>
 		</method>
 		<method name="aura_trigger_set_notification_type">
@@ -804,6 +937,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" enum="SpellEnums.TriggerNotificationType" />
 			<description>
+				Set trigger notification type.
 			</description>
 		</method>
 		<method name="aura_trigger_set_spell">
@@ -811,6 +945,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="Spell" />
 			<description>
+				Set trigger spell.
 			</description>
 		</method>
 		<method name="aura_trigger_set_trigger_type">
@@ -818,6 +953,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" enum="SpellEnums.TriggerType" />
 			<description>
+				Set trigger type.
 			</description>
 		</method>
 		<method name="aura_trigger_set_trigger_type_data">
@@ -825,42 +961,49 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set trigger type data.
 			</description>
 		</method>
 		<method name="calculate_initial_damage">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Calculate initial damage.
 			</description>
 		</method>
 		<method name="calculate_initial_heal">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellHealInfo" />
 			<description>
+				Calculate initial heal.
 			</description>
 		</method>
 		<method name="cast_finishs">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Finish cast.
 			</description>
 		</method>
 		<method name="cast_interrupts">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Interrupt cast.
 			</description>
 		</method>
 		<method name="cast_starts">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Start cast.
 			</description>
 		</method>
 		<method name="cast_starts_triggered">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Start triggered cast.
 			</description>
 		</method>
 		<method name="equip_con_fail">
@@ -871,6 +1014,7 @@
 			<argument index="3" name="old_item" type="ItemInstance" />
 			<argument index="4" name="bag_slot" type="int" />
 			<description>
+				Equipping failed.
 			</description>
 		</method>
 		<method name="equip_con_success">
@@ -881,6 +1025,7 @@
 			<argument index="3" name="old_item" type="ItemInstance" />
 			<argument index="4" name="bag_slot" type="int" />
 			<description>
+				Equipping succeeded.
 			</description>
 		</method>
 		<method name="equip_should_deny">
@@ -889,6 +1034,7 @@
 			<argument index="1" name="equip_slot" type="int" />
 			<argument index="2" name="item" type="ItemInstance" />
 			<description>
+				Whether to deny equiping an item.
 			</description>
 		</method>
 		<method name="equip_son_fail">
@@ -899,6 +1045,7 @@
 			<argument index="3" name="old_item" type="ItemInstance" />
 			<argument index="4" name="bag_slot" type="int" />
 			<description>
+				Equip failed.
 			</description>
 		</method>
 		<method name="equip_son_success">
@@ -909,6 +1056,7 @@
 			<argument index="3" name="old_item" type="ItemInstance" />
 			<argument index="4" name="bag_slot" type="int" />
 			<description>
+				Equip succeeded.
 			</description>
 		</method>
 		<method name="get_description">
@@ -916,11 +1064,18 @@
 			<argument index="0" name="class_level" type="int" />
 			<argument index="1" name="character_level" type="int" />
 			<description>
+				Return description with substituted values.
+				The default implementation will:
+				1. Get the translated string for the description if [member text_translation_key] is set using the [member text_translation_key] + "_DESC" key.
+				2. Replace %%property_name with the value that get(property_name) returns.
+				3. Replace %#property_name with the value that get(property_name) returns * class_level / max_class_level.
+				4. Replace %$property_name with the value that get(property_name) returns * character_level / max_character_level.
 			</description>
 		</method>
 		<method name="get_name_translated" qualifiers="const">
 			<return type="String" />
 			<description>
+				Return translated name.
 			</description>
 		</method>
 		<method name="handle_aura_damage">
@@ -928,6 +1083,7 @@
 			<argument index="0" name="aura_data" type="AuraData" />
 			<argument index="1" name="data" type="SpellDamageInfo" />
 			<description>
+				Handle aura damage.
 			</description>
 		</method>
 		<method name="handle_aura_heal">
@@ -935,47 +1091,55 @@
 			<argument index="0" name="aura_data" type="AuraData" />
 			<argument index="1" name="data" type="SpellHealInfo" />
 			<description>
+				Handle aura heal.
 			</description>
 		</method>
 		<method name="handle_cooldown">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Handle cooldown.
 			</description>
 		</method>
 		<method name="handle_effect">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Handle effect.
 			</description>
 		</method>
 		<method name="handle_gcd">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Handle global cooldown.
 			</description>
 		</method>
 		<method name="handle_projectile">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Handle projectile.
 			</description>
 		</method>
 		<method name="handle_spell_damage">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
+				Handle spell damage.
 			</description>
 		</method>
 		<method name="handle_spell_heal">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellHealInfo" />
 			<description>
+				Handle spell heal.
 			</description>
 		</method>
 		<method name="is_aura" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Should this spell get applied as aura?
 			</description>
 		</method>
 		<method name="notification_aura_ccast">
@@ -984,6 +1148,7 @@
 			<argument index="1" name="aura" type="AuraData" />
 			<argument index="2" name="info" type="SpellCastInfo" />
 			<description>
+				Aura cast notification.
 			</description>
 		</method>
 		<method name="notification_aura_scast">
@@ -992,6 +1157,7 @@
 			<argument index="1" name="aura" type="AuraData" />
 			<argument index="2" name="info" type="SpellCastInfo" />
 			<description>
+				Aura cast notification.
 			</description>
 		</method>
 		<method name="notification_caura">
@@ -999,6 +1165,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="data" type="AuraData" />
 			<description>
+				Aura notification.
 			</description>
 		</method>
 		<method name="notification_ccast">
@@ -1006,6 +1173,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Cast notification.
 			</description>
 		</method>
 		<method name="notification_ccategory_cooldown_added">
@@ -1014,6 +1182,7 @@
 			<argument index="1" name="info" type="int" />
 			<argument index="2" name="arg2" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) added notification.
 			</description>
 		</method>
 		<method name="notification_ccategory_cooldown_removed">
@@ -1022,6 +1191,7 @@
 			<argument index="1" name="info" type="int" />
 			<argument index="2" name="arg2" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) removed notification.
 			</description>
 		</method>
 		<method name="notification_ccooldown_added">
@@ -1030,6 +1200,7 @@
 			<argument index="1" name="info" type="int" />
 			<argument index="2" name="arg2" type="float" />
 			<description>
+				Cooldown added notification.
 			</description>
 		</method>
 		<method name="notification_ccooldown_removed">
@@ -1038,6 +1209,7 @@
 			<argument index="1" name="info" type="int" />
 			<argument index="2" name="arg2" type="float" />
 			<description>
+				Cooldown removed notification.
 			</description>
 		</method>
 		<method name="notification_cdamage">
@@ -1046,12 +1218,14 @@
 			<argument index="1" name="aura" type="AuraData" />
 			<argument index="2" name="info" type="SpellDamageInfo" />
 			<description>
+				Damage notification.
 			</description>
 		</method>
 		<method name="notification_cdeath">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Death notification.
 			</description>
 		</method>
 		<method name="notification_centity_resource_added">
@@ -1059,6 +1233,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="EntityResource" />
 			<description>
+				[EntityResource] added notification.
 			</description>
 		</method>
 		<method name="notification_centity_resource_removed">
@@ -1066,12 +1241,14 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="EntityResource" />
 			<description>
+				[EntityResource] removed notification.
 			</description>
 		</method>
 		<method name="notification_cgcd_finished">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Global cooldown finished notification.
 			</description>
 		</method>
 		<method name="notification_cgcd_started">
@@ -1079,6 +1256,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="float" />
 			<description>
+				Global cooldown started notification.
 			</description>
 		</method>
 		<method name="notification_cheal">
@@ -1087,6 +1265,7 @@
 			<argument index="1" name="aura" type="AuraData" />
 			<argument index="2" name="info" type="SpellHealInfo" />
 			<description>
+				Heal notification.
 			</description>
 		</method>
 		<method name="notification_clevel_up">
@@ -1094,6 +1273,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Level up notification.
 			</description>
 		</method>
 		<method name="notification_cxp_gained">
@@ -1101,6 +1281,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				XP gained notification.
 			</description>
 		</method>
 		<method name="notification_saura">
@@ -1108,6 +1289,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="data" type="AuraData" />
 			<description>
+				Aura notification.
 			</description>
 		</method>
 		<method name="notification_scast">
@@ -1115,6 +1297,7 @@
 			<argument index="0" name="what" type="int" />
 			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
+				Cast notification.
 			</description>
 		</method>
 		<method name="notification_scategory_cooldown_added">
@@ -1123,6 +1306,7 @@
 			<argument index="1" name="category_cooldown" type="int" />
 			<argument index="2" name="arg2" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) added notification.
 			</description>
 		</method>
 		<method name="notification_scategory_cooldown_removed">
@@ -1131,6 +1315,7 @@
 			<argument index="1" name="category_cooldown" type="int" />
 			<argument index="2" name="arg2" type="float" />
 			<description>
+				Category cooldown (= spell school lockout) removed notification.
 			</description>
 		</method>
 		<method name="notification_scooldown_added">
@@ -1139,6 +1324,7 @@
 			<argument index="1" name="cooldown" type="int" />
 			<argument index="2" name="arg2" type="float" />
 			<description>
+				Cooldown added notification.
 			</description>
 		</method>
 		<method name="notification_scooldown_removed">
@@ -1147,6 +1333,7 @@
 			<argument index="1" name="cooldown" type="int" />
 			<argument index="2" name="arg2" type="float" />
 			<description>
+				Cooldown removed notification.
 			</description>
 		</method>
 		<method name="notification_sdamage">
@@ -1155,12 +1342,14 @@
 			<argument index="1" name="aura" type="AuraData" />
 			<argument index="2" name="info" type="SpellDamageInfo" />
 			<description>
+				Damage notification.
 			</description>
 		</method>
 		<method name="notification_sdeath">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Death notification.
 			</description>
 		</method>
 		<method name="notification_sentity_resource_added">
@@ -1168,6 +1357,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="EntityResource" />
 			<description>
+				[EntityResource] added notification.
 			</description>
 		</method>
 		<method name="notification_sentity_resource_removed">
@@ -1175,12 +1365,14 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="EntityResource" />
 			<description>
+				[EntityResource] removed notification.
 			</description>
 		</method>
 		<method name="notification_sgcd_finished">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Global cooldown finished notification.
 			</description>
 		</method>
 		<method name="notification_sgcd_started">
@@ -1188,6 +1380,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="gcd" type="float" />
 			<description>
+				Global cooldown started notification.
 			</description>
 		</method>
 		<method name="notification_sheal">
@@ -1196,6 +1389,7 @@
 			<argument index="1" name="aura" type="AuraData" />
 			<argument index="2" name="info" type="SpellHealInfo" />
 			<description>
+				Heal notification.
 			</description>
 		</method>
 		<method name="notification_slevel_up">
@@ -1203,6 +1397,7 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Level up notification.
 			</description>
 		</method>
 		<method name="notification_sxp_gained">
@@ -1210,17 +1405,20 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				XP gained notification.
 			</description>
 		</method>
 		<method name="on_learn_cast_spells_num_get" qualifiers="const">
 			<return type="int" />
 			<description>
+				Get the number of spells that will be cast when this spell is learned.
 			</description>
 		</method>
 		<method name="on_learn_cast_spells_num_set">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Set the number of spells that will be cast when this spell is learned.
 			</description>
 		</method>
 		<method name="setup_aura_data">
@@ -1228,18 +1426,21 @@
 			<argument index="0" name="data" type="AuraData" />
 			<argument index="1" name="info" type="AuraApplyInfo" />
 			<description>
+				Setup [AuraData].
 			</description>
 		</method>
 		<method name="son_cast_damage_received">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Damage received while casting.
 			</description>
 		</method>
 		<method name="son_cast_player_moved">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Entity moved while casting.
 			</description>
 		</method>
 		<method name="son_physics_process">
@@ -1247,42 +1448,49 @@
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<argument index="1" name="delta" type="float" />
 			<description>
+				Physics process while casting.
 			</description>
 		</method>
 		<method name="son_physics_process_aura">
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
+				Aura physics process callback.
 			</description>
 		</method>
 		<method name="son_remove">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
+				Aure removed.
 			</description>
 		</method>
 		<method name="son_remove_dispell">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
+				Aura removed via dispell.
 			</description>
 		</method>
 		<method name="son_remove_expired">
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
+				Aura removed, expired.
 			</description>
 		</method>
 		<method name="son_spell_hit">
 			<return type="void" />
 			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
+				Spell hit.
 			</description>
 		</method>
 		<method name="spell_cast_on_caster_get">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get a spell that will be cast on the caster.
 			</description>
 		</method>
 		<method name="spell_cast_on_caster_set">
@@ -1290,12 +1498,14 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="spell" type="Spell" />
 			<description>
+				Set a spell that will be cast on the caster.
 			</description>
 		</method>
 		<method name="spell_cast_on_learn_get">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get the number of spells that will be cast when learning this spell.
 			</description>
 		</method>
 		<method name="spell_cast_on_learn_set">
@@ -1303,12 +1513,14 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="spell" type="Spell" />
 			<description>
+				Set the number of spells that will be cast when learning this spell.
 			</description>
 		</method>
 		<method name="spell_cast_on_target_get">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get a spell that will be cast on the target.
 			</description>
 		</method>
 		<method name="spell_cast_on_target_set">
@@ -1316,275 +1528,413 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="spell" type="Spell" />
 			<description>
+				Set a spell that will be cast on the target.
 			</description>
 		</method>
 		<method name="spells_cast_on_caster_num_get" qualifiers="const">
 			<return type="int" />
 			<description>
+				Get the number of spells that will be cast on the caster.
 			</description>
 		</method>
 		<method name="spells_cast_on_caster_num_set">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Set the number of spells that will be cast on the caster.
 			</description>
 		</method>
 		<method name="spells_cast_on_target_num_get" qualifiers="const">
 			<return type="int" />
 			<description>
+				Get the number of spells that will be cast on the target.
 			</description>
 		</method>
 		<method name="spells_cast_on_target_num_set">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Set the number of spells that will be cast on the target.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="aoe" type="bool" setter="set_is_aoe" getter="get_is_aoe" default="false">
+			Is this spell an aoe?
 		</member>
 		<member name="aoe_box_extents" type="Vector3" setter="set_aoe_box_extents" getter="get_aoe_box_extents" default="Vector3( 0, 0, 0 )">
+			AoE extents.
 		</member>
 		<member name="aoe_colliderType" type="int" setter="set_aoe_collider_type" getter="get_aoe_collider_type" enum="SpellEnums.ColliderType" default="0">
+			AoE Collider Type.
 		</member>
 		<member name="aoe_radius" type="float" setter="set_aoe_radius" getter="get_aoe_radius" default="0.0">
+			AoE Radius.
 		</member>
 		<member name="aoe_targetType" type="int" setter="set_aoe_target_type" getter="get_aoe_target_type" enum="Spell.SpellAOETargetType" default="0">
+			AoE Target type.
 		</member>
 		<member name="aura_ability_scale_data_id" type="int" setter="aura_set_ability_scale_data_id" getter="aura_get_ability_scale_data_id" default="1">
+			Aura ability scale data id.
 		</member>
 		<member name="aura_absorb_damage_type" type="int" setter="aura_absorb_damage_set_type" getter="aura_absorb_damage_get_type" default="0">
+			Aura absorb damage type.
 		</member>
 		<member name="aura_absorb_enabled" type="bool" setter="aura_absorb_set_enabled" getter="aura_absorb_get_enabled" default="false">
+			Aura absorb enabled.
 		</member>
 		<member name="aura_absorb_max" type="int" setter="aura_absorb_set_max" getter="aura_absorb_get_max" default="0">
+			Max aura absorb.
 		</member>
 		<member name="aura_absorb_min" type="int" setter="aura_absorb_set_min" getter="aura_absorb_get_min" default="0">
+			Min aura absorb.
 		</member>
 		<member name="aura_absorb_scaling_curve" type="Curve" setter="aura_absorb_set_scaling_curve" getter="aura_absorb_get_scaling_curve">
+			Aura absorb scaling curve.
 		</member>
 		<member name="aura_damage_can_crit" type="bool" setter="aura_damage_set_can_crit" getter="aura_damage_get_can_crit" default="false">
+			Can the aura damage crit?
 		</member>
 		<member name="aura_damage_enabled" type="bool" setter="aura_damage_set_enabled" getter="aura_damage_get_enabled" default="false">
+			Is aura damage enabled?
 		</member>
 		<member name="aura_damage_max" type="int" setter="aura_damage_set_max" getter="aura_damage_get_max" default="0">
+			Max aura damage.
 		</member>
 		<member name="aura_damage_min" type="int" setter="aura_damage_set_min" getter="aura_damage_get_min" default="0">
+			Min aura damage.
 		</member>
 		<member name="aura_damage_scaling_curve" type="Curve" setter="aura_damage_set_scaling_curve" getter="aura_damage_get_scaling_curve">
+			Aura damage scaling curve.
 		</member>
 		<member name="aura_damage_type" type="int" setter="aura_damage_set_type" getter="aura_damage_get_type" default="0">
+			Aura damage type.
 		</member>
 		<member name="aura_debuff" type="bool" setter="aura_set_is_debuff" getter="aura_get_is_debuff" default="false">
+			Is this aura a debuff?
 		</member>
 		<member name="aura_diminishing_return_category" type="int" setter="aura_diminishing_return_category_set" getter="aura_diminishing_return_category_get" default="0">
+			Diminishing return category.
 		</member>
 		<member name="aura_diminishing_return_enabled" type="bool" setter="aura_diminishing_return_enabled_set" getter="aura_diminishing_return_enabled_get" default="false">
+			Are diminishing returns enabled?
 		</member>
 		<member name="aura_dispell_aura_types" type="int" setter="aura_dispell_set_aura_types" getter="aura_dispell_get_aura_types" default="0">
+			WHat type of auras this spell dispells.
 		</member>
 		<member name="aura_dispell_count_max" type="int" setter="aura_dispell_set_count_max" getter="aura_dispell_get_count_max" default="0">
+			Max dispell count.
 		</member>
 		<member name="aura_dispell_count_min" type="int" setter="aura_dispell_set_count_min" getter="aura_dispell_get_count_min" default="0">
+			Min dispell count.
 		</member>
 		<member name="aura_dispell_enabled" type="bool" setter="aura_dispell_set_enabled" getter="aura_dispell_get_enabled" default="false">
+			Is dispelling enabled?
 		</member>
 		<member name="aura_group" type="AuraGroup" setter="aura_set_aura_group" getter="aura_get_aura_group">
+			Aura group.
 		</member>
 		<member name="aura_heal_can_crit" type="bool" setter="aura_heal_set_can_crit" getter="aura_heal_get_can_crit" default="false">
+			Can the aura heal crit?
 		</member>
 		<member name="aura_heal_enabled" type="bool" setter="aura_heal_set_enabled" getter="aura_heal_get_enabled" default="false">
+			Is aura heal enabled?
 		</member>
 		<member name="aura_heal_max" type="int" setter="aura_heal_set_max" getter="aura_heal_get_max" default="0">
+			Max aura heal.
 		</member>
 		<member name="aura_heal_min" type="int" setter="aura_heal_set_min" getter="aura_heal_get_min" default="0">
+			Min aura heal.
 		</member>
 		<member name="aura_heal_scaling_curve" type="Curve" setter="aura_heal_set_scaling_curve" getter="aura_heal_get_scaling_curve">
+			Aura heal scaling curve.
 		</member>
 		<member name="aura_hide" type="bool" setter="aura_set_hide" getter="aura_get_hide" default="false">
+			Is this aura hidden?
 		</member>
 		<member name="aura_permanent" type="bool" setter="aura_set_permanent" getter="aura_get_permanent" default="false">
+			Is this aura permanent?
 		</member>
 		<member name="aura_resource_cost" type="EntityResourceCostData" setter="aura_set_resource_cost" getter="aura_get_resource_cost">
+			Aura resource cost.
 		</member>
 		<member name="aura_resource_give" type="EntityResourceCostData" setter="aura_set_resource_give" getter="aura_get_resource_give">
+			Aura resource give.
 		</member>
 		<member name="aura_scale_with_level" type="bool" setter="aura_set_scale_with_level" getter="aura_get_scale_with_level" default="false">
+			Should this aura scale with level?
 		</member>
 		<member name="aura_stat_attribute_count" type="int" setter="aura_stat_attribute_set_count" getter="aura_stat_attribute_get_count" default="0">
+			Aura stat attribute count.
 		</member>
 		<member name="aura_states_add" type="int" setter="aura_set_add_states" getter="aura_get_add_states" default="0">
+			Add aura states.
 		</member>
 		<member name="aura_states_remove_effects" type="int" setter="aura_set_remove_effects_with_states" getter="aura_get_remove_effects_with_states" default="0">
+			Remove aura state effects.
 		</member>
 		<member name="aura_states_supress" type="int" setter="aura_set_supress_states" getter="aura_get_supress_states" default="0">
+			Supress aura state effects.
 		</member>
 		<member name="aura_talent_required_spell" type="Spell" setter="aura_set_talent_required_spell" getter="aura_get_talent_required_spell">
+			If this is a talent it's required spell.
 		</member>
 		<member name="aura_talent_required_talent" type="Spell" setter="aura_set_talent_required_talent" getter="aura_get_talent_required_talent">
+			If this is a talent it's required talent.
 		</member>
 		<member name="aura_teaches_spell" type="Spell" setter="aura_set_teaches_spell" getter="aura_get_teaches_spell">
+			Spell that this aura teaches.
 		</member>
 		<member name="aura_text_description" type="String" setter="aura_set_text_description" getter="aura_get_text_description" default="&quot;&quot;">
+			Aura description.
+			The default [method aura_get_description] implementation will:
+			1. Get the translated string for the description if [member aura_text_translation_key] is set using the [member aura_text_translation_key] + "_DESC" key.
+			2. Replace %%property_name with the value that get(property_name) returns.
+			3. Replace %#property_name with the value that get(property_name) returns * class_level / max_class_level.
+			4. Replace %$property_name with the value that get(property_name) returns * character_level / max_character_level.
 		</member>
 		<member name="aura_text_translation_key" type="String" setter="aura_set_text_translation_key" getter="aura_get_text_translation_key" default="&quot;&quot;">
+			Translation key.
+			The description key is this + "_DESC".
 		</member>
 		<member name="aura_tick" type="float" setter="aura_set_tick" getter="aura_get_tick" default="0.0">
+			Aura ticks.
 		</member>
 		<member name="aura_time" type="float" setter="aura_set_time" getter="aura_get_time" default="0.0">
+			Aura time.
 		</member>
 		<member name="aura_trigger_count" type="int" setter="aura_trigger_set_count" getter="aura_trigger_get_count" default="0">
+			Aura trigger count.
 		</member>
 		<member name="aura_type" type="int" setter="aura_set_aura_type" getter="aura_get_aura_type" enum="SpellEnums.AuraType" default="0">
+			Aura type.
 		</member>
 		<member name="aura_visual_spell_effects" type="SpellEffectVisual" setter="aura_set_visual_spell_effects" getter="aura_get_visual_spell_effects">
+			Aura visual effect.
 		</member>
 		<member name="cast_can_move_while_casting" type="bool" setter="set_can_move_while_casting" getter="get_can_move_while_casting" default="false">
+			Can this spell be casted while moving?
 		</member>
 		<member name="cast_cast_time" type="float" setter="cast_time_set" getter="cast_time_get" default="0.0">
+			Spell cast time.
 		</member>
 		<member name="cast_enabled" type="bool" setter="cast_time_set_enabled" getter="cast_time_get_enabled" default="false">
+			Is spell casting enabled?
 		</member>
 		<member name="cooldown_cooldown" type="float" setter="set_cooldown" getter="get_cooldown" default="0.0">
+			Cooldown.
 		</member>
 		<member name="cooldown_global_cooldown_enabled" type="bool" setter="set_global_cooldown_enabled" getter="get_global_cooldown_enabled" default="true">
+			Is global cooldown enabled?
 		</member>
 		<member name="cost_item" type="ItemTemplate" setter="set_item_cost" getter="get_item_cost">
+			Item cost.
 		</member>
 		<member name="cost_required_item" type="ItemTemplate" setter="set_required_item" getter="get_required_item">
+			Required item.
 		</member>
 		<member name="damage_enabled" type="bool" setter="damage_set_enabled" getter="damage_get_enabled" default="false">
+			Is spell damage enabled?
 		</member>
 		<member name="damage_max" type="int" setter="damage_set_max" getter="damage_get_max" default="0">
+			Max damage.
 		</member>
 		<member name="damage_min" type="int" setter="damage_set_min" getter="damage_get_min" default="0">
+			Min damage.
 		</member>
 		<member name="damage_scale_coeff" type="float" setter="damage_set_scale_coeff" getter="damage_get_scale_coeff" default="0.0">
+			Damage scaling coefficient.
 		</member>
 		<member name="damage_scale_stat" type="int" setter="damage_set_scale_stat" getter="damage_get_scale_stat" default="0">
+			Damage scaling stat.
 		</member>
 		<member name="damage_type" type="int" setter="damage_set_type" getter="damage_get_type" default="0">
+			Damage type.
 		</member>
 		<member name="dispell_aura_types" type="int" setter="dispell_set_aura_types" getter="dispell_get_aura_types" default="0">
+			Dispell aura types.
 		</member>
 		<member name="dispell_count_max" type="int" setter="dispell_set_count_max" getter="dispell_get_count_max" default="0">
+			Max dispell count.
 		</member>
 		<member name="dispell_count_min" type="int" setter="dispell_set_count_min" getter="dispell_get_count_min" default="0">
+			Min dispell count.
 		</member>
 		<member name="dispell_enabled" type="bool" setter="dispell_set_enabled" getter="dispell_get_enabled" default="false">
+			Is dispelling enabled?
 		</member>
 		<member name="heal_enabled" type="bool" setter="heal_set_enabled" getter="heal_get_enabled" default="false">
+			Is spell heal enabled?
 		</member>
 		<member name="heal_max" type="int" setter="heal_set_max" getter="heal_get_max" default="0">
+			Max heal.
 		</member>
 		<member name="heal_min" type="int" setter="heal_set_min" getter="heal_get_min" default="0">
+			Min heal.
 		</member>
 		<member name="heal_scale_coeff" type="float" setter="heal_set_scale_coeff" getter="heal_get_scale_coeff" default="0.0">
+			Heal scaling coefficient.
 		</member>
 		<member name="heal_scale_stat" type="int" setter="heal_set_scale_stat" getter="heal_get_scale_stat" default="0">
+			Heal scaling stat.
 		</member>
 		<member name="hide_from_actionbar" type="bool" setter="set_hide_from_actionbar" getter="get_hide_from_actionbar" default="false">
+			Hide this spell from the actonbar? Can be used if actionbars are automatically show spells.
 		</member>
 		<member name="icon" type="Texture" setter="set_icon" getter="get_icon">
+			Icon.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="1">
+			Id.
 		</member>
 		<member name="interrupt_enabled" type="bool" setter="set_interrupt_enabled" getter="get_interrupt_enabled" default="false">
+			Is interrupt enabled?
 		</member>
 		<member name="interrupt_time" type="float" setter="set_interrupt_time" getter="get_interrupt_time" default="0.0">
+			Interrupt for this much time.
 		</member>
 		<member name="is_local_spell" type="bool" setter="set_is_local_spell" getter="get_is_local_spell" default="false">
+			Is this a local spell? Local spells only run on clients. Can be used for utility spells, like next / previous target, emotes, etc.
 		</member>
 		<member name="level" type="int" setter="set_level" getter="get_level" default="1">
+			Spell level.
 		</member>
 		<member name="needs_target" type="bool" setter="set_needs_target" getter="get_needs_target" default="false">
+			Does this spell needs a target?
 		</member>
 		<member name="projectile_scene" type="PackedScene" setter="projectile_set_scene" getter="projectile_get_scene">
+			Projectile scene.
 		</member>
 		<member name="projectile_speed" type="float" setter="projectile_set_speed" getter="projectile_get_speed" default="0.0">
+			Projectile speed.
 		</member>
 		<member name="projectile_time" type="float" setter="projectile_set_time" getter="projectile_get_time" default="0.0">
+			Projectile time.
 		</member>
 		<member name="projectile_use_speed" type="bool" setter="projectile_set_use_speed" getter="projectile_get_use_speed" default="false">
+			Does the Projectile scene use speed?
 		</member>
 		<member name="projectile_use_time" type="bool" setter="projectile_set_use_time" getter="projectile_get_use_time" default="false">
+			Does the projectile scene use time?
 		</member>
 		<member name="range_enabled" type="bool" setter="range_set_enabled" getter="range_get_enabled" default="false">
+			Is range enabled?
 		</member>
 		<member name="range_range" type="float" setter="range_set" getter="range_get" default="0.0">
+			Range.
 		</member>
 		<member name="rank" type="int" setter="set_rank" getter="get_rank" default="0">
+			Spell rank.
 		</member>
 		<member name="resource_cost" type="EntityResourceCostData" setter="set_resource_cost" getter="get_resource_cost">
+			Resource cost.
 		</member>
 		<member name="resource_give" type="EntityResourceCostData" setter="set_resource_give" getter="get_resource_give">
+			Resource give.
 		</member>
 		<member name="scale_with_level" type="bool" setter="set_scale_with_level" getter="get_scale_with_level" default="false">
+			Scal spell with level?
 		</member>
 		<member name="spell_category" type="int" setter="set_spell_category" getter="get_spell_category" enum="SpellEnums.SpellCategory" default="0">
+			Spell category.
 		</member>
 		<member name="spell_cooldown_mainpulation_data_count" type="int" setter="set_spell_cooldown_mainpulation_data_count" getter="get_spell_cooldown_mainpulation_data_count" default="0">
+			[SpellCooldownManipulationData] count.
 		</member>
 		<member name="spell_type" type="int" setter="spell_type_set" getter="spell_type_get" default="0">
+			Spell type.
 		</member>
 		<member name="spells_cast_on_caster" type="Array" setter="spells_cast_on_caster_set" getter="spells_cast_on_caster_get" default="[  ]">
+			Spells that will be cast on caster.
 		</member>
 		<member name="spells_cast_on_learn" type="Array" setter="spells_cast_on_learn_set" getter="spells_cast_on_learn_get" default="[  ]">
+			Spells that will be cast when learning this spell.
 		</member>
 		<member name="spells_cast_on_target" type="Array" setter="spells_cast_on_target_set" getter="spells_cast_on_target_get" default="[  ]">
+			Spells that will be cast on target.
 		</member>
 		<member name="target_relation_type" type="int" setter="set_target_relation_type" getter="get_target_relation_type" enum="Spell.TargetRelationType" default="2">
+			Target relation type.
 		</member>
 		<member name="target_type" type="int" setter="set_target_type" getter="get_target_type" enum="Spell.SpellTargetType" default="1">
+			Target type.
 		</member>
 		<member name="teaches_craft_recipe" type="CraftRecipe" setter="set_teaches_craft_recipe" getter="get_teaches_craft_recipe">
+			[CraftRecipe] that this spell teaches.
 		</member>
 		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
+			Description.
+			The default [method aura_get_description] implementation will:
+			1. Get the translated string for the description if [member aura_text_translation_key] is set using the [member aura_text_translation_key] + "_DESC" key.
+			2. Replace %%property_name with the value that get(property_name) returns.
+			3. Replace %#property_name with the value that get(property_name) returns * class_level / max_class_level.
+			4. Replace %$property_name with the value that get(property_name) returns * character_level / max_character_level.
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+			Spell name.
 		</member>
 		<member name="text_translation_key" type="String" setter="set_text_translation_key" getter="get_text_translation_key" default="&quot;&quot;">
+			Translation key.
+			The description key is this + "_DESC".
 		</member>
 		<member name="training_cost" type="int" setter="set_training_cost" getter="get_training_cost" default="0">
+			Training cost.
 		</member>
 		<member name="training_required_skill" type="EntitySkillData" setter="set_training_required_skill" getter="get_training_required_skill">
+			Required skill for training.
 		</member>
 		<member name="training_required_skill_level" type="int" setter="set_training_required_skill_level" getter="get_training_required_skill_level" default="0">
+			Required skill level for training.
 		</member>
 		<member name="training_required_spell" type="Spell" setter="set_training_required_spell" getter="get_training_required_spell">
+			Required spell for training.
 		</member>
 		<member name="visual_spell_effects" type="SpellEffectVisual" setter="set_visual_spell_effects" getter="get_visual_spell_effects">
+			Spell visual effects.
 		</member>
 	</members>
 	<constants>
 		<constant name="TARGET_SELF" value="1" enum="TargetRelationType">
+			Target self.
 		</constant>
 		<constant name="TARGET_ENEMY" value="2" enum="TargetRelationType">
+			Target enemy.
 		</constant>
 		<constant name="TARGET_FRIENDLY" value="4" enum="TargetRelationType">
+			Target friendly.
 		</constant>
 		<constant name="SPELL_TARGET_TYPE_SELF" value="0" enum="SpellTargetType">
+			Self target spell.
 		</constant>
 		<constant name="SPELL_TARGET_TYPE_TARGET" value="1" enum="SpellTargetType">
+			Spell cast on target.
 		</constant>
 		<constant name="SPELL_TARGET_TYPE_AROUND" value="2" enum="SpellTargetType">
+			Spell cast arount caster.
 		</constant>
 		<constant name="SPELL_TARGET_TYPE_FRONT" value="3" enum="SpellTargetType">
+			Spell cast in front of caster.
 		</constant>
 		<constant name="SPELL_TARGET_TYPE_AROUND_TARGET" value="4" enum="SpellTargetType">
+			Spell cast arount target.
 		</constant>
 		<constant name="SPELL_AOE_TARGET_TYPE_CASTER" value="0" enum="SpellAOETargetType">
+			AoE around caster.
 		</constant>
 		<constant name="SPELL_AOE_TARGET_TYPE_TARGET" value="1" enum="SpellAOETargetType">
+			AoE around target.
 		</constant>
 		<constant name="SPELL_AOE_TARGET_TYPE_GOUND_TARGET_SELECTION" value="2" enum="SpellAOETargetType">
+			Aoe ground selection.
 		</constant>
 		<constant name="SPELL_AOE_TARGET_TYPE_RANDOM" value="3" enum="SpellAOETargetType">
+			Aor random target.
 		</constant>
 		<constant name="MAX_AURA_STATS" value="5">
+			Aura stat modifier count limit.
 		</constant>
 		<constant name="MAX_TRIGGER_DATA" value="5">
+			Trigger count limit.
 		</constant>
 	</constants>
 </class>
