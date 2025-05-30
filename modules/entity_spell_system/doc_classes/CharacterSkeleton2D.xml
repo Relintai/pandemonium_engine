@@ -18,18 +18,21 @@
 		<method name="_build_model" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Build the final model.
 			</description>
 		</method>
 		<method name="_common_attach_point_index_get" qualifiers="virtual">
-			<return type="void" />
+			<return type="int" />
 			<argument index="0" name="point" type="int" />
 			<description>
+				Return the attach point index index for the given common attach point.
 			</description>
 		</method>
 		<method name="add_model_visual">
 			<return type="void" />
 			<argument index="0" name="vis" type="ModelVisual" />
 			<description>
+				Add model visual.
 			</description>
 		</method>
 		<method name="add_model_visual_entry">
@@ -37,23 +40,27 @@
 			<argument index="0" name="vis" type="ModelVisual" />
 			<argument index="1" name="ive" type="ModelVisualEntry" />
 			<description>
+				Add model visual entry.
 			</description>
 		</method>
 		<method name="attach_point_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Attach point count.
 			</description>
 		</method>
 		<method name="attach_point_node_get">
 			<return type="Node" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns attach point node.
 			</description>
 		</method>
 		<method name="attach_point_path_get" qualifiers="const">
 			<return type="NodePath" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns attach point path.
 			</description>
 		</method>
 		<method name="attach_point_path_set">
@@ -61,6 +68,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="path" type="NodePath" />
 			<description>
+				Sets attach point path.
 			</description>
 		</method>
 		<method name="bake_mesh_array_uv" qualifiers="const">
@@ -69,16 +77,19 @@
 			<argument index="1" name="tex" type="Texture" />
 			<argument index="2" name="mul_color" type="float" default="0.7" />
 			<description>
+				Bakes texture colors as vertex colors.
 			</description>
 		</method>
 		<method name="build_model">
 			<return type="void" />
 			<description>
+				Build model.
 			</description>
 		</method>
 		<method name="clear_model_visuals">
 			<return type="void" />
 			<description>
+				Clear model visuals.
 			</description>
 		</method>
 		<method name="common_attach_point_add">
@@ -86,6 +97,7 @@
 			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints" />
 			<argument index="1" name="scene" type="PackedScene" />
 			<description>
+				Add and instance scene to common attach point.
 			</description>
 		</method>
 		<method name="common_attach_point_add_timed">
@@ -94,18 +106,22 @@
 			<argument index="1" name="scene" type="PackedScene" />
 			<argument index="2" name="time" type="float" />
 			<description>
+				Add and instance scene to common attach point with a timer.
+				Will be deleted when timer ends.
 			</description>
 		</method>
 		<method name="common_attach_point_index_get">
 			<return type="int" />
 			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints" />
 			<description>
+				Return the attach point index index for the given common attach point.
 			</description>
 		</method>
 		<method name="common_attach_point_node_get">
 			<return type="Node" />
 			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints" />
 			<description>
+				Returns common attach point node.
 			</description>
 		</method>
 		<method name="common_attach_point_remove">
@@ -113,16 +129,19 @@
 			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints" />
 			<argument index="1" name="scene" type="PackedScene" />
 			<description>
+				Removed scene from common attach point node.
 			</description>
 		</method>
 		<method name="get_animation_player">
 			<return type="AnimationPlayer" />
 			<description>
+				Returns [AnimationPlayer].
 			</description>
 		</method>
 		<method name="get_animation_tree">
 			<return type="AnimationTree" />
 			<description>
+				Returns [AnimationTree].
 			</description>
 		</method>
 		<method name="get_model_entry">
@@ -130,35 +149,41 @@
 			<argument index="0" name="bone_index" type="int" />
 			<argument index="1" name="index" type="int" />
 			<description>
+				Returns model entry.
 			</description>
 		</method>
 		<method name="get_model_entry_count">
 			<return type="int" />
 			<argument index="0" name="bone_index" type="int" />
 			<description>
+				Returns model enrty count.
 			</description>
 		</method>
 		<method name="get_model_visual">
 			<return type="ModelVisual" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns model visual.
 			</description>
 		</method>
 		<method name="get_model_visual_count">
 			<return type="int" />
 			<description>
+				Returns model visual count.
 			</description>
 		</method>
 		<method name="merge_mesh_array" qualifiers="const">
 			<return type="Array" />
 			<argument index="0" name="arr" type="Array" />
 			<description>
+				Merge mesh array.
 			</description>
 		</method>
 		<method name="remove_model_visual">
 			<return type="void" />
 			<argument index="0" name="vis" type="ModelVisual" />
 			<description>
+				Remove model visual.
 			</description>
 		</method>
 		<method name="remove_model_visual_entry">
@@ -166,35 +191,44 @@
 			<argument index="0" name="vis" type="ModelVisual" />
 			<argument index="1" name="ive" type="ModelVisualEntry" />
 			<description>
+				Remove model visual entry.
 			</description>
 		</method>
 		<method name="remove_model_visual_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove model visual index.
 			</description>
 		</method>
 		<method name="sort_layers">
 			<return type="void" />
 			<description>
+				Sort layers.
 			</description>
 		</method>
 		<method name="update_nodes">
 			<return type="void" />
 			<description>
+				Update nodes.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="animation_player_path" type="NodePath" setter="set_animation_player_path" getter="get_animation_player_path" default="NodePath(&quot;&quot;)">
+			Path to the [AnimationPlayer].
 		</member>
 		<member name="animation_tree_path" type="NodePath" setter="set_animation_tree_path" getter="get_animation_tree_path" default="NodePath(&quot;&quot;)">
+			Path to the [AnimationTree].
 		</member>
 		<member name="entity_type" type="int" setter="set_entity_type" getter="get_entity_type" default="0">
+			Entity type.
 		</member>
 		<member name="model_dirty" type="bool" setter="set_model_dirty" getter="get_model_dirty" default="false">
+			Is the model dirty?
 		</member>
 		<member name="model_index" type="int" setter="set_model_index" getter="get_model_index" default="0">
+			Model index.
 		</member>
 		<member name="sort_enabled" type="bool" setter="set_sort_enabled" getter="is_sort_enabled" overrides="Node2D" default="false" />
 	</members>
