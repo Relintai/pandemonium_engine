@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ESSEntitySpawner" inherits="Node">
 	<brief_description>
+		Class that deals with spawning entities.
 	</brief_description>
 	<description>
+		Class that deals with spawning entities.
+		It will automatically register itself as [member ESS.entity_spawner].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,18 +14,21 @@
 			<return type="void" />
 			<argument index="0" name="info" type="EntityCreateInfo" />
 			<description>
+				Spawns the requested entity.
 			</description>
 		</method>
 		<method name="request_entity_spawn">
 			<return type="void" />
 			<argument index="0" name="info" type="EntityCreateInfo" />
 			<description>
+				Request spawning an entity.
 			</description>
 		</method>
 		<method name="request_entity_spawn_deferred">
 			<return type="void" />
 			<argument index="0" name="info" type="EntityCreateInfo" />
 			<description>
+				Request spawning an entity deferred.
 			</description>
 		</method>
 	</methods>
@@ -30,6 +36,7 @@
 		<signal name="on_entity_spawn">
 			<argument index="0" name="info" type="EntityCreateInfo" />
 			<description>
+				Emitted when an [Entity] is spawned.
 			</description>
 		</signal>
 	</signals>
