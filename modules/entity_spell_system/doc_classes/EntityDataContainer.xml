@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EntityDataContainer" inherits="Resource">
 	<brief_description>
+		Helper class used to store additional information for entities.
 	</brief_description>
 	<description>
+		Helper class used to store additional information for entities.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,22 +13,30 @@
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Called by [method from_dict].
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Called by [method to_dict].
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 	</methods>
