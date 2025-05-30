@@ -12,14 +12,19 @@
 	</methods>
 	<members>
 		<member name="default_value" type="int" setter="set_default_value" getter="get_default_value" default="0">
+			The skill's default value.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			The skill's id.
 		</member>
 		<member name="max_value" type="int" setter="set_max_value" getter="get_max_value" default="0">
+			The skill's max value.
 		</member>
 		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
+			The skill's description.
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+			The skill's name.
 		</member>
 	</members>
 	<constants>

@@ -13,51 +13,67 @@
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Called by [method from_dict].
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Called by [method to_dict].
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="current" type="int" setter="set_current" getter="get_current" default="0">
+			Current skill value.
 		</member>
 		<member name="disabled" type="bool" setter="set_disabled" getter="get_disabled" default="false">
+			Is this skill diabled?
 		</member>
 		<member name="max" type="int" setter="set_max" getter="get_max" default="0">
+			Max skill value.
 		</member>
 		<member name="skill" type="EntitySkillData" setter="set_skill" getter="get_skill">
+			The associated skill.
 		</member>
 		<member name="skill_id" type="int" setter="set_skill_id" getter="get_skill_id" default="0">
+			The associated skill's id.
 		</member>
 	</members>
 	<signals>
 		<signal name="current_changed">
 			<argument index="0" name="skill" type="EntitySkill" />
 			<description>
+				Emitted when the current value changes.
 			</description>
 		</signal>
 		<signal name="max_changed">
 			<argument index="0" name="skill" type="EntitySkill" />
 			<description>
+				Emitted when the max value changes.
 			</description>
 		</signal>
 		<signal name="skill_changed">
 			<argument index="0" name="skill" type="EntitySkill" />
 			<description>
+				Emitted when the associated skill changes.
 			</description>
 		</signal>
 	</signals>
