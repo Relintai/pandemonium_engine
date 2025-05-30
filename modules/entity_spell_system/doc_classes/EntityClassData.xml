@@ -4,6 +4,7 @@
 		Contains all of information for an [Entity]'s class. (Ingame class)
 	</brief_description>
 	<description>
+		Contains all of information for an [Entity]'s class. (Ingame class)
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,94 +12,111 @@
 		<method name="_get_ai_instance" qualifiers="virtual">
 			<return type="EntityAI" />
 			<description>
+				Returns a new [EntityAI], setup properly for this class.
 			</description>
 		</method>
 		<method name="_setup_resources" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="entity" type="Entity" />
 			<description>
+				Sets up resources for the given Entity.
 			</description>
 		</method>
 		<method name="get_ai">
 			<return type="EntityAI" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns a generic (non-instanced) [EntityAI].
 			</description>
 		</method>
 		<method name="get_ai_instance">
 			<return type="EntityAI" />
 			<description>
+				Returns a new [EntityAI], setup properly for this class.
 			</description>
 		</method>
 		<method name="get_aura">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the aura at index.
 			</description>
 		</method>
 		<method name="get_craft_recipe">
 			<return type="CraftRecipe" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the craft recipe at index.
 			</description>
 		</method>
 		<method name="get_entity_resource" qualifiers="const">
 			<return type="EntityResource" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the entity resource at index.
 			</description>
 		</method>
 		<method name="get_num_ais">
 			<return type="int" />
 			<description>
+				Returns the count of [EntityAI]s.
 			</description>
 		</method>
 		<method name="get_num_auras">
 			<return type="int" />
 			<description>
+				Returns the count of auras.
 			</description>
 		</method>
 		<method name="get_num_craft_recipes" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the count of [CraftRecipe]s.
 			</description>
 		</method>
 		<method name="get_num_entity_resources">
 			<return type="int" />
 			<description>
+				Returns the count of [EntityResource]s.
 			</description>
 		</method>
 		<method name="get_num_specs">
 			<return type="int" />
 			<description>
+				Returns the count of [CharacterSpec]s.
 			</description>
 		</method>
 		<method name="get_num_spells">
 			<return type="int" />
 			<description>
+				Returns the count of [Spell]s.
 			</description>
 		</method>
 		<method name="get_num_start_spells">
 			<return type="int" />
 			<description>
+				Returns the count of [Spell] that this class should start with.
 			</description>
 		</method>
 		<method name="get_spec" qualifiers="const">
 			<return type="CharacterSpec" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the [CharacterSpec] at index.
 			</description>
 		</method>
 		<method name="get_spell">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the [Spell] at index.
 			</description>
 		</method>
 		<method name="get_start_spell">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the start [Spell] at index.
 			</description>
 		</method>
 		<method name="set_ai">
@@ -106,6 +124,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="action" type="EntityAI" />
 			<description>
+				Sets the [EntityAI] at index.
 			</description>
 		</method>
 		<method name="set_aura">
@@ -113,6 +132,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="aura" type="Spell" />
 			<description>
+				Sets the aura at index.
 			</description>
 		</method>
 		<method name="set_craft_recipe">
@@ -120,6 +140,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="recipe" type="CraftRecipe" />
 			<description>
+				Sets the [CraftRecipe] at index.
 			</description>
 		</method>
 		<method name="set_entity_resource">
@@ -127,42 +148,49 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="entity_resource" type="EntityResource" />
 			<description>
+				Sets the [EntityResource] at index.
 			</description>
 		</method>
 		<method name="set_num_ais">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Sets the number of [EntityAI]s.
 			</description>
 		</method>
 		<method name="set_num_auras">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Sets the number of auras.
 			</description>
 		</method>
 		<method name="set_num_entity_resources">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Sets the number of [EntityResource]s.
 			</description>
 		</method>
 		<method name="set_num_specs">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Sets the number of [EntitySpec]s.
 			</description>
 		</method>
 		<method name="set_num_spells">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Sets the number of [Spell]s.
 			</description>
 		</method>
 		<method name="set_num_start_spells">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Sets the number of start [Spell]s.
 			</description>
 		</method>
 		<method name="set_spec">
@@ -170,6 +198,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="spec" type="CharacterSpec" />
 			<description>
+				Sets the [CharacterSpec] at index.
 			</description>
 		</method>
 		<method name="set_spell">
@@ -177,6 +206,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="spell" type="Spell" />
 			<description>
+				Sets the [Spell] at index.
 			</description>
 		</method>
 		<method name="set_start_spell">
@@ -184,43 +214,61 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="spell" type="Spell" />
 			<description>
+				Sets the start [Spell] at index.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="ais" type="Array" setter="set_ais" getter="get_ais" default="[  ]">
+			The available [EntityAI] implemnentatins for this class.
 		</member>
 		<member name="auras" type="Array" setter="set_auras" getter="get_auras" default="[  ]">
+			The available auras this class.
 		</member>
 		<member name="craft_recipes" type="Array" setter="set_craft_recipes" getter="get_craft_recipes" default="[  ]">
+			The available [CraftRecipe]s this class.
 		</member>
 		<member name="entity_resources" type="Array" setter="set_entity_resources" getter="get_entity_resources" default="[  ]">
+			The available [EntityResource]s this class.
 		</member>
 		<member name="icon" type="Texture" setter="set_icon" getter="get_icon">
+			The icon of this class.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			The id of this class.
 		</member>
 		<member name="item_container_data" type="ItemContainerData" setter="set_item_container_data" getter="get_item_container_data">
+			The start items of this class.
 		</member>
 		<member name="playstyle_type" type="int" setter="set_playstyle_type" getter="get_playstyle_type" enum="EntityEnums.EntityClassPlaystyleType" default="0">
+			The playstyle type of this class.
 		</member>
 		<member name="specs" type="Array" setter="set_specs" getter="get_specs" default="[  ]">
+			The [CharacterSpec]s of this class.
 		</member>
 		<member name="spell_points_per_level" type="int" setter="set_spell_points_per_level" getter="get_spell_points_per_level" default="1">
+			How many spell points this class gets per level. (If spell points are enabled.)
 		</member>
 		<member name="spell_train_data" type="VendorItemData" setter="set_spell_train_data" getter="get_spell_train_data">
+			If this is a trainer, the spells that this vendor trains.
 		</member>
 		<member name="spells" type="Array" setter="set_spells" getter="get_spells" default="[  ]">
+			The available [Spell]s for this class.
 		</member>
 		<member name="start_spells" type="Array" setter="set_start_spells" getter="get_start_spells" default="[  ]">
+			The start [Spell]s for this class.
 		</member>
 		<member name="stat_data" type="StatData" setter="set_stat_data" getter="get_stat_data">
+			The stats for this class.
 		</member>
 		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
+			Description for this class.
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+			Name for this class.
 		</member>
 		<member name="vendor_item_data" type="VendorItemData" setter="set_vendor_item_data" getter="get_vendor_item_data">
+			If this is a vendor, the items that this vendor sells.
 		</member>
 	</members>
 	<constants>
