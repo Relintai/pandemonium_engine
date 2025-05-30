@@ -4,6 +4,7 @@
 		Stores equipment information.
 	</brief_description>
 	<description>
+		Stores equipment information.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,6 +13,7 @@
 			<return type="ItemTemplate" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the item in slot.
 			</description>
 		</method>
 		<method name="set_slot">
@@ -19,6 +21,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="entry" type="ItemTemplate" />
 			<description>
+				Sets the item in slot.
 			</description>
 		</method>
 	</methods>
