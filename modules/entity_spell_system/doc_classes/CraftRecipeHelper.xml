@@ -4,6 +4,7 @@
 		Contains one item entry for [CraftRecipes]s
 	</brief_description>
 	<description>
+		Contains one item entry for [CraftRecipes]s
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,8 +12,10 @@
 	</methods>
 	<members>
 		<member name="count" type="int" setter="set_count" getter="get_count" default="0">
+			Item count.
 		</member>
 		<member name="item" type="ItemTemplate" setter="set_item" getter="get_item">
+			Item.
 		</member>
 	</members>
 	<constants>

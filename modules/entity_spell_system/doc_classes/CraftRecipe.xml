@@ -4,6 +4,7 @@
 		Recipe data for the crafting system.
 	</brief_description>
 	<description>
+		Recipe data for the crafting system.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,12 +13,14 @@
 			<return type="CraftRecipeHelper" />
 			<argument index="0" name="arg0" type="int" />
 			<description>
+				Return required material at index.
 			</description>
 		</method>
 		<method name="get_required_tool">
 			<return type="CraftRecipeHelper" />
 			<argument index="0" name="arg0" type="int" />
 			<description>
+				Return required tool at index.
 			</description>
 		</method>
 		<method name="set_required_material">
@@ -25,6 +28,7 @@
 			<argument index="0" name="mat" type="int" />
 			<argument index="1" name="arg1" type="CraftRecipeHelper" />
 			<description>
+				Set required material at index.
 			</description>
 		</method>
 		<method name="set_required_tool">
@@ -32,45 +36,63 @@
 			<argument index="0" name="value" type="int" />
 			<argument index="1" name="arg1" type="CraftRecipeHelper" />
 			<description>
+				Set required tool at index.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="category" type="int" setter="set_category" getter="get_category" enum="CraftRecipe.CraftCategories" default="0">
+			Category.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			Recipe id.
 		</member>
 		<member name="item" type="CraftRecipeHelper" setter="set_item" getter="get_item">
+			Creafted item.
 		</member>
 		<member name="required_materials_count" type="int" setter="set_required_materials_count" getter="get_required_materials_count" default="0">
+			Required materials count.
 		</member>
 		<member name="required_tools_count" type="int" setter="set_required_tools_count" getter="get_required_tools_count" default="0">
+			Required tools count.
 		</member>
 		<member name="sub_category" type="int" setter="set_sub_category" getter="get_sub_category" enum="CraftRecipe.CraftSubCategories" default="0">
+			Sub category.
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+			Recipe name.
 		</member>
 	</members>
 	<constants>
 		<constant name="MAX_REQUIRED_TOOLS" value="6">
+			Required tools count limit.
 		</constant>
 		<constant name="MAX_REQUIRED_MATERIALS" value="6">
+			Required materials count limit.
 		</constant>
 		<constant name="CRAFT_CATEGORY_NONE" value="0" enum="CraftCategories">
+			Uncategorized.
 		</constant>
 		<constant name="CRAFT_CATEGORY_ALCHEMY" value="1" enum="CraftCategories">
+			Alchemy.
 		</constant>
 		<constant name="CRAFT_CATEGORY_SMITHING" value="2" enum="CraftCategories">
+			Smithing.
 		</constant>
 		<constant name="CRAFT_CATEGORY_TAILORING" value="3" enum="CraftCategories">
+			Tailoring.
 		</constant>
 		<constant name="CRAFT_CATEGORY_ENCHANTING" value="4" enum="CraftCategories">
+			Enchanting.
 		</constant>
 		<constant name="CRAFT_CATEGORY_ENGINEERING" value="5" enum="CraftCategories">
+			Engineering.
 		</constant>
 		<constant name="CRAFT_SUB_CATEGORY_NONE" value="0" enum="CraftSubCategories">
+			Uncategorized.
 		</constant>
 		<constant name="CRAFT_SUB_CATEGORY_POTIONS" value="1" enum="CraftSubCategories">
+			Potions.
 		</constant>
 	</constants>
 </class>
