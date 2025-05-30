@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EntitySpeciesData" inherits="Resource">
 	<brief_description>
-		Contains visual data for a species.
+		Contains data for a species.
 	</brief_description>
 	<description>
+		Contains data for a species.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,81 +13,95 @@
 			<return type="String" />
 			<argument index="0" name="seed" type="int" />
 			<description>
+				Generate a name for this species.
 			</description>
 		</method>
 		<method name="add_aura">
 			<return type="void" />
 			<argument index="0" name="aura" type="Spell" />
 			<description>
+				Add an aura.
 			</description>
 		</method>
 		<method name="add_model_data">
 			<return type="void" />
 			<argument index="0" name="model_data" type="SpeciesModelData" />
 			<description>
+				Add model data.
 			</description>
 		</method>
 		<method name="add_spell">
 			<return type="void" />
 			<argument index="0" name="spell" type="Spell" />
 			<description>
+				Add spell.
 			</description>
 		</method>
 		<method name="generate_name">
 			<return type="String" />
 			<argument index="0" name="arg0" type="int" />
 			<description>
+				Generate a name for this species.
 			</description>
 		</method>
 		<method name="get_aura" qualifiers="const">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the aura at index.
 			</description>
 		</method>
 		<method name="get_aura_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the aura count.
 			</description>
 		</method>
 		<method name="get_model_data" qualifiers="const">
 			<return type="SpeciesModelData" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the model data at index.
 			</description>
 		</method>
 		<method name="get_model_data_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the model data count.
 			</description>
 		</method>
 		<method name="get_spell" qualifiers="const">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the spell at index.
 			</description>
 		</method>
 		<method name="get_spell_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the spell count.
 			</description>
 		</method>
 		<method name="remove_aura">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove aura.
 			</description>
 		</method>
 		<method name="remove_model_data">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove model data.
 			</description>
 		</method>
 		<method name="remove_spell">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove spell.
 			</description>
 		</method>
 		<method name="set_aura">
@@ -94,6 +109,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="data" type="Spell" />
 			<description>
+				Replace aura at index.
 			</description>
 		</method>
 		<method name="set_model_data">
@@ -101,6 +117,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="data" type="SpeciesModelData" />
 			<description>
+				Replace model data at index.
 			</description>
 		</method>
 		<method name="set_spell">
@@ -108,23 +125,31 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="data" type="Spell" />
 			<description>
+				Replace spell at index.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="auras" type="Array" setter="set_auras" getter="get_auras" default="[  ]">
+			The auras for this species.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			The id of this species.
 		</member>
 		<member name="model_datas" type="Array" setter="set_model_datas" getter="get_model_datas" default="[  ]">
+			The model datas for this species.
 		</member>
 		<member name="spells" type="Array" setter="set_spells" getter="get_spells" default="[  ]">
+			The spells for this species.
 		</member>
 		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
+			Species description.
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+			Species name.
 		</member>
 		<member name="type" type="int" setter="set_type" getter="get_type" default="0">
+			Species type. A value from the "ess/enums/entity_types" project setting.
 		</member>
 	</members>
 	<constants>
