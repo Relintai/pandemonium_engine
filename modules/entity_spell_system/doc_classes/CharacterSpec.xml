@@ -4,6 +4,7 @@
 		Contains data for a character's specialization.
 	</brief_description>
 	<description>
+		Contains data for a character's specialization.
 		Specialization in ESS means talents, and talent tabs.
 	</description>
 	<tutorials>
@@ -13,6 +14,7 @@
 			<return type="int" />
 			<argument index="0" name="row" type="int" />
 			<description>
+				Returns the number of columns in the specified row.
 			</description>
 		</method>
 		<method name="get_num_ranks" qualifiers="const">
@@ -20,6 +22,7 @@
 			<argument index="0" name="row" type="int" />
 			<argument index="1" name="culomn" type="int" />
 			<description>
+				Returns the number of ranks.
 			</description>
 		</method>
 		<method name="get_talent">
@@ -28,23 +31,27 @@
 			<argument index="1" name="culomn" type="int" />
 			<argument index="2" name="rank" type="int" />
 			<description>
+				Returns talent.
 			</description>
 		</method>
 		<method name="get_talent_with_id">
 			<return type="Spell" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Find talent with the given id.
 			</description>
 		</method>
 		<method name="get_talents">
 			<return type="Array" />
 			<description>
+				Return all talents.
 			</description>
 		</method>
 		<method name="has_talent_with_id">
 			<return type="bool" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Returns whether this spec has the given talent.
 			</description>
 		</method>
 		<method name="set_num_columns">
@@ -52,6 +59,7 @@
 			<argument index="0" name="row" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Sets the number of columns in the specified row.
 			</description>
 		</method>
 		<method name="set_num_ranks">
@@ -60,6 +68,7 @@
 			<argument index="1" name="culomn" type="int" />
 			<argument index="2" name="value" type="int" />
 			<description>
+				Sets the number of ranks.
 			</description>
 		</method>
 		<method name="set_talent">
@@ -69,15 +78,19 @@
 			<argument index="2" name="rank" type="int" />
 			<argument index="3" name="arg3" type="Spell" />
 			<description>
+				Set talent.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			Spec id.
 		</member>
 		<member name="num_rows" type="int" setter="set_num_rows" getter="get_num_rows" default="0">
+			Number of rows.
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+			Spec name.
 		</member>
 	</members>
 	<constants>
