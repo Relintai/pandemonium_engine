@@ -4,6 +4,7 @@
 		Contains a resource cost. Resource in this context is things like mana.
 	</brief_description>
 	<description>
+		Contains a resource cost. Resource in this context is things like mana.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,6 +12,7 @@
 	</methods>
 	<members>
 		<member name="cost" type="int" setter="set_cost" getter="get_cost" default="0">
+			The cost.
 		</member>
 	</members>
 	<constants>

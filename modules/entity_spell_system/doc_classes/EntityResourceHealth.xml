@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EntityResourceHealth" inherits="EntityResource">
 	<brief_description>
+		Health resource.
 	</brief_description>
 	<description>
+		Health resource.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +12,7 @@
 		<method name="refresh">
 			<return type="void" />
 			<description>
+				Refresh internal state.
 			</description>
 		</method>
 	</methods>

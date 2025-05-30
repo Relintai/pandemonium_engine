@@ -4,6 +4,7 @@
 		An instance of an entity resource. Resource in this context is things like mana.
 	</brief_description>
 	<description>
+		An instance of an entity resource. Resource in this context is things like mana.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,28 +13,34 @@
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Called by [method from_dict].
 			</description>
 		</method>
 		<method name="_gets_update_string" qualifiers="virtual">
 			<return type="String" />
 			<description>
+				Return a string that can be used to update this resource on clients.
 			</description>
 		</method>
 		<method name="_mods_changed" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Called when the modifiers changed.
 			</description>
 		</method>
 		<method name="_non_stacking_mod_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="value" type="float" />
 			<description>
+				Called when a non-stacking modifier is added.
 			</description>
 		</method>
 		<method name="_non_stacking_mod_removed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="value" type="float" />
 			<description>
+				Called when a non-stacking modifier is removed.
 			</description>
 		</method>
 		<method name="_notification_cstat_changed" qualifiers="virtual">
@@ -41,6 +48,7 @@
 			<argument index="0" name="statid" type="int" />
 			<argument index="1" name="current" type="float" />
 			<description>
+				Called when a stat changes.
 			</description>
 		</method>
 		<method name="_notification_sstat_changed" qualifiers="virtual">
@@ -48,12 +56,14 @@
 			<argument index="0" name="statid" type="int" />
 			<argument index="1" name="current" type="float" />
 			<description>
+				Called when a stat changes.
 			</description>
 		</method>
 		<method name="_onc_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="entity" type="Entity" />
 			<description>
+				Called when an Entity gets this resource.
 			</description>
 		</method>
 		<method name="_onc_target_changed" qualifiers="virtual">
@@ -61,12 +71,14 @@
 			<argument index="0" name="entity" type="Entity" />
 			<argument index="1" name="old_target" type="Entity" />
 			<description>
+				Called when the owner entity's target changes.
 			</description>
 		</method>
 		<method name="_ons_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="entity" type="Entity" />
 			<description>
+				Called when an Entity gets this resource.
 			</description>
 		</method>
 		<method name="_ons_target_changed" qualifiers="virtual">
@@ -74,139 +86,172 @@
 			<argument index="0" name="entity" type="Entity" />
 			<argument index="1" name="old_target" type="Entity" />
 			<description>
+				Called when the owner entity's target changes.
 			</description>
 		</method>
 		<method name="_process_client" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Update internal state.
 			</description>
 		</method>
 		<method name="_process_server" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Update internal state.
 			</description>
 		</method>
 		<method name="_receivec_update_string" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="str" type="String" />
 			<description>
+				Receive an update string created with [method gets_update_string].
 			</description>
 		</method>
 		<method name="_stacking_mod_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="value" type="float" />
 			<description>
+				Called when a stacking modifier was added.
 			</description>
 		</method>
 		<method name="_stacking_mod_removed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="value" type="float" />
 			<description>
+				Called when a stacking modifier was removed.
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Called by [method to_dict].
 			</description>
 		</method>
 		<method name="add_non_stacking_mod">
 			<return type="void" />
 			<argument index="0" name="value" type="float" />
 			<description>
+				Add a non-stacking modifier.
 			</description>
 		</method>
 		<method name="add_stacking_mod">
 			<return type="void" />
 			<argument index="0" name="value" type="float" />
 			<description>
+				Add a stacking modifier.
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="get_current_negative_non_stacking_mod_value" qualifiers="const">
 			<return type="float" />
 			<description>
+				Returns the current negative non-stacking modifier value.
 			</description>
 		</method>
 		<method name="get_current_positive_non_stacking_mod_value" qualifiers="const">
 			<return type="float" />
 			<description>
+				Returns the current positive non-stacking modifier value.
 			</description>
 		</method>
 		<method name="get_current_stacking_mod_value" qualifiers="const">
 			<return type="float" />
 			<description>
+				Returns the current stacking modifier value.
 			</description>
 		</method>
 		<method name="mods_changed">
 			<return type="void" />
 			<description>
+				Called when modifiers change.
 			</description>
 		</method>
 		<method name="process_client">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Update internal state.
 			</description>
 		</method>
 		<method name="process_server">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Update internal state.
 			</description>
 		</method>
 		<method name="refresh_current_non_stacking_mod_values">
 			<return type="void" />
 			<description>
+				Refreshes the current non-stacking modifier values.
 			</description>
 		</method>
 		<method name="refresh_current_stacking_mod_value">
 			<return type="void" />
 			<description>
+				Refreshes the current stacking modifier values.
 			</description>
 		</method>
 		<method name="remove_non_stacking_mod">
 			<return type="void" />
 			<argument index="0" name="value" type="float" />
 			<description>
+				Remove a non-stacking modifier.
 			</description>
 		</method>
 		<method name="remove_stacking_mod">
 			<return type="void" />
 			<argument index="0" name="value" type="float" />
 			<description>
+				Remove a stacking modifier.
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="current_value" type="int" setter="set_current_value" getter="get_current_value" default="0">
+			The current resource value.
 		</member>
 		<member name="dirty" type="bool" setter="set_dirty" getter="get_dirty">
+			Does this resource need update?
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			The resource's id.
 		</member>
 		<member name="max_value" type="int" setter="set_max_value" getter="get_max_value" default="0">
+			The max resource value.
 		</member>
 		<member name="non_stacking_mods" type="PoolRealArray" setter="set_non_stacking_mods" getter="get_non_stacking_mods" default="PoolRealArray(  )">
+			All non-stacking modifiers.
 		</member>
 		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
+			The owner [Entity].
 		</member>
 		<member name="should_process" type="bool" setter="set_should_process" getter="get_should_process">
+			Whether this resource needs update.
 		</member>
 		<member name="stacking_mods" type="PoolRealArray" setter="set_stacking_mods" getter="get_stacking_mods" default="PoolRealArray(  )">
+			All stacking modifiers.
 		</member>
 		<member name="text_name" type="String" setter="set_text_name" getter="get_text_name" default="&quot;&quot;">
+			The name of this resource.
 		</member>
 	</members>
 	<constants>

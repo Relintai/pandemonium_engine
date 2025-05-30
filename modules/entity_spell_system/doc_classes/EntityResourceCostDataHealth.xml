@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EntityResourceCostDataHealth" inherits="EntityResourceCostData">
 	<brief_description>
+		Contains a health resource cost.
 	</brief_description>
 	<description>
+		Contains a health resource cost.
 	</description>
 	<tutorials>
 	</tutorials>

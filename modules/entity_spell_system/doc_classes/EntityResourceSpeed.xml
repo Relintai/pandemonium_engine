@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EntityResourceSpeed" inherits="EntityResource">
 	<brief_description>
+		Speed resource.
 	</brief_description>
 	<description>
+		Speed resource.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +12,7 @@
 		<method name="refresh">
 			<return type="void" />
 			<description>
+				Refresh internal state.
 			</description>
 		</method>
 	</methods>
