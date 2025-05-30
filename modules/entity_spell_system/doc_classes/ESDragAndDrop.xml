@@ -4,6 +4,7 @@
 		Drag and drop helper class for the actionbars, and inventory.
 	</brief_description>
 	<description>
+		Drag and drop helper class for the actionbars, and inventory.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,22 +12,30 @@
 	</methods>
 	<members>
 		<member name="item_path" type="StringName" setter="set_item_path" getter="get_item_path" default="@&quot;&quot;">
+			Item path.
 		</member>
 		<member name="origin" type="Node" setter="set_origin" getter="get_origin">
+			The origin node.
 		</member>
 		<member name="type" type="int" setter="set_type" getter="get_type" enum="ESDragAndDrop.ESDragAndDropType" default="0">
+			Type.
 		</member>
 	</members>
 	<constants>
 		<constant name="ES_DRAG_AND_DROP_TYPE_NONE" value="0" enum="ESDragAndDropType">
+			No type.
 		</constant>
 		<constant name="ES_DRAG_AND_DROP_TYPE_SPELL" value="1" enum="ESDragAndDropType">
+			Spell drag and drop.
 		</constant>
 		<constant name="ES_DRAG_AND_DROP_TYPE_ITEM" value="2" enum="ESDragAndDropType">
+			Item drag and drop.
 		</constant>
 		<constant name="ES_DRAG_AND_DROP_TYPE_INVENTORY_ITEM" value="3" enum="ESDragAndDropType">
+			Inventory item drag and drop.
 		</constant>
 		<constant name="ES_DRAG_AND_DROP_TYPE_EQUIPPED_ITEM" value="4" enum="ESDragAndDropType">
+			Equipped item drag and drop.
 		</constant>
 	</constants>
 </class>
