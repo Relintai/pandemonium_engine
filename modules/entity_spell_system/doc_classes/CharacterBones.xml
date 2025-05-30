@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="CharacterBones" inherits="Node2D">
 	<brief_description>
+		Not yet used.
 	</brief_description>
 	<description>
+		Not yet used.
 	</description>
 	<tutorials>
 	</tutorials>
