@@ -711,7 +711,7 @@ void CharacterSkeleton3D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("attach_point_count"), &CharacterSkeleton3D::attach_point_count);
 
-	BIND_VMETHOD(MethodInfo("_common_attach_point_index_get", PropertyInfo(Variant::INT, "point", PROPERTY_HINT_NONE, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS)));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "index"), "_common_attach_point_index_get", PropertyInfo(Variant::INT, "point", PROPERTY_HINT_NONE, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS)));
 
 	ClassDB::bind_method(D_METHOD("common_attach_point_node_get", "point"), &CharacterSkeleton3D::common_attach_point_node_get);
 	ClassDB::bind_method(D_METHOD("common_attach_point_add", "point", "scene"), &CharacterSkeleton3D::common_attach_point_add);
