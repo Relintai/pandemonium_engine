@@ -51,7 +51,7 @@ ESSEntityWorldSpawner2D::~ESSEntityWorldSpawner2D() {
 
 void ESSEntityWorldSpawner2D::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_spawn"));
-	ADD_SIGNAL(MethodInfo("emit_on_entity_spawned", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
+	ADD_SIGNAL(MethodInfo("on_entity_spawned", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
 
 	ClassDB::bind_method(D_METHOD("spawn"), &ESSEntityWorldSpawner2D::spawn);
 	ClassDB::bind_method(D_METHOD("_spawn"), &ESSEntityWorldSpawner2D::_spawn);
