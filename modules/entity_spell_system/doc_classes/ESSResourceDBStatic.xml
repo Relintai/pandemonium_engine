@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ESSResourceDBStatic" inherits="ESSResourceDB">
 	<brief_description>
+		Resource database for the entity spell system with static in-editor properties.
 	</brief_description>
 	<description>
+		Resource database for the entity spell system with static in-editor properties.
+		It aslo supports resource id remapping.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,20 +13,28 @@
 	</methods>
 	<members>
 		<member name="craft_recipes" type="Array" setter="set_craft_recipes" getter="get_craft_recipes" default="[  ]">
+			Craft recipes.
 		</member>
 		<member name="entity_datas" type="Array" setter="set_entity_datas" getter="get_entity_datas" default="[  ]">
+			Entity satas.
 		</member>
 		<member name="entity_resources" type="Array" setter="set_entity_resources" getter="get_entity_resources" default="[  ]">
+			Entity resource.
 		</member>
 		<member name="entity_skills" type="Array" setter="set_entity_skills" getter="get_entity_skills" default="[  ]">
+			Entity skills.
 		</member>
 		<member name="entity_species_datas" type="Array" setter="set_entity_species_datas" getter="get_entity_species_datas" default="[  ]">
+			Entity species data.
 		</member>
 		<member name="item_templates" type="Array" setter="set_item_templates" getter="get_item_templates" default="[  ]">
+			Item templates.
 		</member>
 		<member name="remap_ids" type="bool" setter="set_remap_ids" getter="get_remap_ids" default="false">
+			WHether to remap ids to make them unique.
 		</member>
 		<member name="spells" type="Array" setter="set_spells" getter="get_spells" default="[  ]">
+			Spells.
 		</member>
 	</members>
 	<constants>

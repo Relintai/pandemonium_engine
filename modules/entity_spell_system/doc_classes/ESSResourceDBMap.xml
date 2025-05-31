@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ESSResourceDBMap" inherits="ESSResourceDB">
 	<brief_description>
+		Simple resource database for the entity spell system that stores internal data in HashMaps.
 	</brief_description>
 	<description>
+		Simple resource database for the entity spell system that stores internal data in HashMaps.
 	</description>
 	<tutorials>
 	</tutorials>

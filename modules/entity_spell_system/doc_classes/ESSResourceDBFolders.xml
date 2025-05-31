@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ESSResourceDBFolders" inherits="ESSResourceDBMap">
 	<brief_description>
+		Resource database for the entity spell system that automatically loads all resources from the given folders.
 	</brief_description>
 	<description>
+		Resource database for the entity spell system that automatically loads all resources from the given folders.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,22 +13,26 @@
 			<return type="void" />
 			<argument index="0" name="resource" type="Resource" />
 			<description>
+				Add the given resource. Determines type and adds it to the proper array.
 			</description>
 		</method>
 		<method name="load_all">
 			<return type="void" />
 			<description>
+				Loads all folders.
 			</description>
 		</method>
 		<method name="load_folder">
 			<return type="void" />
 			<argument index="0" name="folder" type="String" />
 			<description>
+				Load the given folder.
 			</description>
 		</method>
 		<method name="load_folders">
 			<return type="void" />
 			<description>
+				Loads all folders.
 			</description>
 		</method>
 		<method name="load_resource">
@@ -34,13 +40,16 @@
 			<argument index="0" name="path" type="String" />
 			<argument index="1" name="type_hint" type="String" default="&quot;&quot;" />
 			<description>
+				Load resource.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="automatic_load" type="bool" setter="set_automatic_load" getter="get_automatic_load" default="false">
+			Should all folders get automatically loaded?
 		</member>
 		<member name="folders" type="PoolStringArray" setter="set_folders" getter="get_folders" default="PoolStringArray(  )">
+			Folders to load.
 		</member>
 	</members>
 	<constants>
