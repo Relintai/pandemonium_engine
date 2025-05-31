@@ -11,246 +11,367 @@
 	</methods>
 	<constants>
 		<constant name="ENTITY_PLAYER_TYPE_NONE" value="0" enum="EntityPlayerType">
+			No player type.
 		</constant>
 		<constant name="ENTITY_PLAYER_TYPE_PLAYER" value="1" enum="EntityPlayerType">
+			Player.
 		</constant>
 		<constant name="ENTITY_PLAYER_TYPE_NETWORKED" value="2" enum="EntityPlayerType">
+			Networked.
 		</constant>
 		<constant name="ENTITY_PLAYER_TYPE_AI" value="3" enum="EntityPlayerType">
+			AI.
 		</constant>
 		<constant name="ENTITY_PLAYER_TYPE_DISPLAY" value="4" enum="EntityPlayerType">
+			Display for menus.
 		</constant>
 		<constant name="ENITIY_CONTROLLER_NONE" value="0" enum="EntityController">
+			No controller.
 		</constant>
 		<constant name="ENITIY_CONTROLLER_PLAYER" value="1" enum="EntityController">
+			Player controlled.
 		</constant>
 		<constant name="ENITIY_CONTROLLER_AI" value="2" enum="EntityController">
+			AI controlled.
 		</constant>
 		<constant name="ENITIY_FLAGS_NONE" value="0" enum="EntityFlags">
+			No flags.
 		</constant>
 		<constant name="ENTITY_FLAGS_UNTARGETALBE" value="1" enum="EntityFlags">
+			Untargetable.
 		</constant>
 		<constant name="ENTITY_FLAGS_HIDDEN" value="2" enum="EntityFlags">
+			Hidden.
 		</constant>
-		<constant name="ENTITY_FLAGS_INTERACTABLE" value="4" enum="EntityFlags">
+		<constant name="ENTITY_FLAGS_INTERACTABLE" value="4" enum="EntityFlags">]
+			Interactable.
 		</constant>
 		<constant name="ENTITY_FLAGS_HOSTILE" value="8" enum="EntityFlags">
+			Hostile.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_NONE" value="0" enum="EntityStateTypeFlags">
+			No flag.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_STUN" value="1" enum="EntityStateTypeFlags">
+			Stun.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_ROOT" value="2" enum="EntityStateTypeFlags">
+			Root. (Unable to move.)
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_FROZEN" value="4" enum="EntityStateTypeFlags">
+			Frozen.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_SILENCED" value="8" enum="EntityStateTypeFlags">
+			Silenced.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_DISORIENTED" value="16" enum="EntityStateTypeFlags">
+			Disoriented.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_FEARED" value="32" enum="EntityStateTypeFlags">
+			Feared.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_BURNING" value="64" enum="EntityStateTypeFlags">
+			Burning.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_COLD" value="128" enum="EntityStateTypeFlags">
+			Cold.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_CURSED" value="256" enum="EntityStateTypeFlags">
+			Cursed.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_FLAG_PACIFIED" value="512" enum="EntityStateTypeFlags">
+			Pacified.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_NONE" value="0" enum="EntityStateTypeIndexes">
+			None state type.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_STUN" value="1" enum="EntityStateTypeIndexes">
+			Stun state type index.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_ROOT" value="2" enum="EntityStateTypeIndexes">
+			Root state type index.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_FROZEN" value="3" enum="EntityStateTypeIndexes">
+			Frozen state type index.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_SILENCED" value="4" enum="EntityStateTypeIndexes">
+			Silenced state type index.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_DISORIENTED" value="5" enum="EntityStateTypeIndexes">
+			Disoriented state type index.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_FEARED" value="6" enum="EntityStateTypeIndexes">
+			Feared state type index.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_BURNING" value="7" enum="EntityStateTypeIndexes">
+			Burning state type index.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_COLD" value="8" enum="EntityStateTypeIndexes">
+			Cold state type index.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_CURSED" value="9" enum="EntityStateTypeIndexes">
+			Cursed state type index.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_PACIFIED" value="10" enum="EntityStateTypeIndexes">
+			Pacified state type index.
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_MAX" value="11" enum="EntityStateTypeIndexes">
+			Max state type index.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_ROOT" value="0" enum="CommonCharacterSkeletonPoints">
+			Root common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_PELVIS" value="1" enum="CommonCharacterSkeletonPoints">
+			Pelvis common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_SPINE" value="2" enum="CommonCharacterSkeletonPoints">
+			Spine common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_SPINE_1" value="3" enum="CommonCharacterSkeletonPoints">
+			Spine 1 common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_SPINE_2" value="4" enum="CommonCharacterSkeletonPoints">
+			Spine 2 common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_NECK" value="5" enum="CommonCharacterSkeletonPoints">
+			Neck common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_HEAD" value="6" enum="CommonCharacterSkeletonPoints">
+			Head common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_TORSO" value="7" enum="CommonCharacterSkeletonPoints">
+			Torso common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_RIGHT_HIP" value="8" enum="CommonCharacterSkeletonPoints">
+			Right hip common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_LEFT_HIP" value="9" enum="CommonCharacterSkeletonPoints">
+			Left hip common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_BACK" value="10" enum="CommonCharacterSkeletonPoints">
+			Back common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_LEFT_HAND" value="11" enum="CommonCharacterSkeletonPoints">
+			Left hand common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_RIGHT_HAND" value="12" enum="CommonCharacterSkeletonPoints">
+			Right hand common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_WEAPON_LEFT" value="13" enum="CommonCharacterSkeletonPoints">
+			Weapin left common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_WEAPON_RIGHT" value="14" enum="CommonCharacterSkeletonPoints">
+			Weapon rigth common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_WEAPON_LEFT_BACK" value="15" enum="CommonCharacterSkeletonPoints">
+			Weapon left back common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_WEAPON_RIGHT_BACK" value="16" enum="CommonCharacterSkeletonPoints">
+			Weapon right back common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_WEAPON_LEFT_SHIELD" value="17" enum="CommonCharacterSkeletonPoints">
+			Weapon left shield common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_WEAPON_RIGHT_SHIELD" value="18" enum="CommonCharacterSkeletonPoints">
+			Weapon right shield common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINTS_MAX" value="19">
+			Max common skeleton points.
 		</constant>
 		<constant name="AI_STATE_OFF" value="0" enum="AIStates">
+			AI state off.
 		</constant>
 		<constant name="AI_STATE_REST" value="1" enum="AIStates">
+			AI state rest.
 		</constant>
 		<constant name="AI_STATE_PATROL" value="2" enum="AIStates">
+			AI state patrol.
 		</constant>
 		<constant name="AI_STATE_FOLLOW_PATH" value="3" enum="AIStates">
+			AI state follow path.
 		</constant>
 		<constant name="AI_STATE_REGENERATE" value="4" enum="AIStates">
+			AI state regenerate.
 		</constant>
 		<constant name="AI_STATE_ATTACK" value="5" enum="AIStates">
+			AI state attack.
 		</constant>
 		<constant name="AI_STATE_PET_FOLLOW" value="7" enum="AIStates">
+			AI state pet follow.
 		</constant>
 		<constant name="AI_STATE_PET_STOP" value="8" enum="AIStates">
+			AI state pet stop.
 		</constant>
 		<constant name="AI_STATE_PET_ATTACK" value="9" enum="AIStates">
+			AI state pet attack.
 		</constant>
 		<constant name="AI_STATE_MAX" value="10">
+			AI state max.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_NONE" value="0" enum="EntityImmunityFlags">
+			No immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_STUN" value="1" enum="EntityImmunityFlags">
+			Stun immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_ROOT" value="2" enum="EntityImmunityFlags">
+			Root immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_FREEZE" value="4" enum="EntityImmunityFlags">
+			Freeze immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_SILENCE" value="8" enum="EntityImmunityFlags">
+			Silence immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_DISORIENT" value="16" enum="EntityImmunityFlags">
+			Disorient immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_FEAR" value="32" enum="EntityImmunityFlags">
+			Fear immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_BURNING" value="64" enum="EntityImmunityFlags">
+			Burning immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_COLD" value="128" enum="EntityImmunityFlags">
+			Cold immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_PACIFY" value="256" enum="EntityImmunityFlags">
+			Pacify immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_MAGIC" value="512" enum="EntityImmunityFlags">
+			Magic immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_POISON" value="1024" enum="EntityImmunityFlags">
+			Poison immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_PHYSICAL" value="2048" enum="EntityImmunityFlags">
+			Physical immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_CURSE" value="4096" enum="EntityImmunityFlags">
+			Curse immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_BLEED" value="8192" enum="EntityImmunityFlags">
+			Bleed immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_MELEE" value="16384" enum="EntityImmunityFlags">
+			Melee immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_HOLY" value="32768" enum="EntityImmunityFlags">
+			Holy immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_SHADOW" value="65536" enum="EntityImmunityFlags">
+			Shadown immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_NATURE" value="131072" enum="EntityImmunityFlags">
+			Nature immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_FIRE" value="262144" enum="EntityImmunityFlags">
+			Fire immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_FROST" value="524288" enum="EntityImmunityFlags">
+			Frost immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_LIGHTNING" value="1048576" enum="EntityImmunityFlags">
+			Lightning immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_CHAOS" value="2097152" enum="EntityImmunityFlags">
+			Chaos immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_SLOW" value="4194304" enum="EntityImmunityFlags">
+			Slow immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_CRIT" value="8388608" enum="EntityImmunityFlags">
+			Crit immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_AOE" value="16777216" enum="EntityImmunityFlags">
+			AoE immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_DAMAGE" value="33554432" enum="EntityImmunityFlags">
+			Damage immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_FALL_DAMAGE" value="67108864" enum="EntityImmunityFlags">
+			Fall damage immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_PROJECTILE" value="134217728" enum="EntityImmunityFlags">
+			Projectile immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_DEBUFF" value="268435456" enum="EntityImmunityFlags">
+			Debuff immunity flag.
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_ATTACKS" value="536870912" enum="EntityImmunityFlags">
+			Attack immunity flag.
 		</constant>
 		<constant name="ENTITY_RELATION_TYPE_NEUTRAL" value="0" enum="EntityRelationType">
+			Neutral relation type.
 		</constant>
 		<constant name="ENTITY_RELATION_TYPE_FRIENDLY" value="1" enum="EntityRelationType">
+			Friendly relation type.
 		</constant>
 		<constant name="ENTITY_RELATION_TYPE_HOSTILE" value="2" enum="EntityRelationType">
+			Hostile relation type.
 		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_NORMAL" value="0" enum="EntityInteractionType">
+			Normal interaction type.
 		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_SPEAK" value="1" enum="EntityInteractionType">
+			Speak interaction type.
 		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_LOOT" value="2" enum="EntityInteractionType">
+			Loot interaction type.
 		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_TRAIN" value="4" enum="EntityInteractionType">
+			Train interaction type.
 		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_VENDOR" value="5" enum="EntityInteractionType">
+			Vendor interaction type.
 		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_USE" value="3" enum="EntityInteractionType">
+			Use interaction type.
 		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_NONE" value="6" enum="EntityInteractionType">
+			No interaction type.
 		</constant>
 		<constant name="ENTITY_CLASS_PLAYSTYLE_TYPE_MELEE" value="0" enum="EntityClassPlaystyleType">
+			Melee playstyle type.
 		</constant>
 		<constant name="ENTITY_CLASS_PLAYSTYLE_TYPE_SPELL" value="1" enum="EntityClassPlaystyleType">
+			Spell playstyle type.
 		</constant>
 		<constant name="ENTITY_CLASS_PLAYSTYLE_TYPE_HYBRID" value="2" enum="EntityClassPlaystyleType">
+			Hybrid playstyle type.
 		</constant>
 		<constant name="ENTITY_CLASS_PLAYSTYLE_TYPE_NONE" value="3" enum="EntityClassPlaystyleType">
+			No playstyle type.
 		</constant>
 		<constant name="ENTITY_WINDOW_LOOT" value="0" enum="EntityWindows">
+			Loot window.
 		</constant>
 		<constant name="ENTITY_WINDOW_CONTAINER" value="1" enum="EntityWindows">
+			Container window.
 		</constant>
 		<constant name="ENTITY_WINDOW_VENDOR" value="2" enum="EntityWindows">
+			Vendor window.
 		</constant>
 		<constant name="ENTITY_WINDOW_TRAINER" value="3" enum="EntityWindows">
+			Trainer window.
 		</constant>
 		<constant name="ENTITY_RESOURCE_INDEX_HEALTH" value="0" enum="EntityResourceIndices">
+			Health resource index.
 		</constant>
 		<constant name="ENTITY_RESOURCE_INDEX_SPEED" value="1" enum="EntityResourceIndices">
+			Speed resource index.
 		</constant>
 		<constant name="ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN" value="2" enum="EntityResourceIndices">
+			Custom resource index begin number.
 		</constant>
 		<constant name="BASE_XP" value="50">
+			Base xp.
 		</constant>
 		<constant name="ENTITY_INTERACT_RANGE" value="4">
+			Entity interact range.
 		</constant>
 		<constant name="ENTITY_INTERACT_RANGE_SQUARED" value="16">
+			Entity interact range squared.
 		</constant>
 	</constants>
 </class>
