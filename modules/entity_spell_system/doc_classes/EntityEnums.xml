@@ -43,7 +43,7 @@
 		<constant name="ENTITY_FLAGS_HIDDEN" value="2" enum="EntityFlags">
 			Hidden.
 		</constant>
-		<constant name="ENTITY_FLAGS_INTERACTABLE" value="4" enum="EntityFlags">]
+		<constant name="ENTITY_FLAGS_INTERACTABLE" value="4" enum="EntityFlags">
 			Interactable.
 		</constant>
 		<constant name="ENTITY_FLAGS_HOSTILE" value="8" enum="EntityFlags">
