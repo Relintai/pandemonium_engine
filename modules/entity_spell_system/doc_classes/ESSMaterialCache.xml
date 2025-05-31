@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ESSMaterialCache" inherits="Resource">
 	<brief_description>
+		Material cache for entities.
 	</brief_description>
 	<description>
+		Material cache for entities.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,50 +13,59 @@
 			<return type="void" />
 			<argument index="0" name="texture" type="Texture" />
 			<description>
+				Setup albedo texture.
 			</description>
 		</method>
 		<method name="dec_ref_count">
 			<return type="void" />
 			<description>
+				Decrease reference count.
 			</description>
 		</method>
 		<method name="inc_ref_count">
 			<return type="void" />
 			<description>
+				Increase reference count.
 			</description>
 		</method>
 		<method name="initial_setup_default">
 			<return type="void" />
 			<description>
+				Initial setup default implementation.
 			</description>
 		</method>
 		<method name="material_add">
 			<return type="void" />
 			<argument index="0" name="value" type="Material" />
 			<description>
+				Add material.
 			</description>
 		</method>
 		<method name="material_get">
 			<return type="Material" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get material.
 			</description>
 		</method>
 		<method name="material_get_num" qualifiers="const">
 			<return type="int" />
 			<description>
+				Get material count.
 			</description>
 		</method>
 		<method name="material_lod_get">
 			<return type="Material" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get material for lod level.
 			</description>
 		</method>
 		<method name="material_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove material.
 			</description>
 		</method>
 		<method name="material_set">
@@ -62,110 +73,131 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="Material" />
 			<description>
+				Set material at index.
 			</description>
 		</method>
 		<method name="materials_clear">
 			<return type="void" />
 			<description>
+				Clear materials.
 			</description>
 		</method>
 		<method name="mutex_lock">
 			<return type="void" />
 			<description>
+				Lock mutex.
 			</description>
 		</method>
 		<method name="mutex_locked">
 			<return type="bool" />
 			<description>
+				Is the mutex locked?
 			</description>
 		</method>
 		<method name="mutex_unlock">
 			<return type="void" />
 			<description>
+				Unlock mutex.
 			</description>
 		</method>
 		<method name="prop_add_textures">
 			<return type="void" />
 			<argument index="0" name="prop" type="PropData" />
 			<description>
+				Add textures from the given [PropData].
 			</description>
 		</method>
 		<method name="prop_remove_textures">
 			<return type="void" />
 			<argument index="0" name="prop" type="PropData" />
 			<description>
+				Remove textures from the given [PropData].
 			</description>
 		</method>
 		<method name="refresh_rects">
 			<return type="void" />
 			<description>
+				Refresh texture rects.
 			</description>
 		</method>
 		<method name="setup_material_albedo">
 			<return type="void" />
 			<argument index="0" name="texture" type="Texture" />
 			<description>
+				Setup albedo texture.
 			</description>
 		</method>
 		<method name="texture_add">
 			<return type="void" />
 			<argument index="0" name="texture" type="Texture" />
 			<description>
+				Add texture.
 			</description>
 		</method>
 		<method name="texture_count">
 			<return type="int" />
 			<description>
+				Return the texture count.
 			</description>
 		</method>
 		<method name="texture_get">
 			<return type="Texture" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return texutre.
 			</description>
 		</method>
 		<method name="texture_get_atlas">
 			<return type="AtlasTexture" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the atlas texture for the given texture index.
 			</description>
 		</method>
 		<method name="texture_get_atlas_tex">
 			<return type="AtlasTexture" />
 			<argument index="0" name="index" type="Texture" />
 			<description>
+				Return the atlas texture for the given texture.
 			</description>
 		</method>
 		<method name="texture_get_uv_rect">
 			<return type="Rect2" />
 			<argument index="0" name="texture" type="Texture" />
 			<description>
+				Returns the uv coordinates as a [Rect2] for the given texture.
 			</description>
 		</method>
 		<method name="texture_remove">
 			<return type="void" />
 			<argument index="0" name="texture" type="Texture" />
 			<description>
+				Remove texture.
 			</description>
 		</method>
 		<method name="texture_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove texture at index.
 			</description>
 		</method>
 		<method name="textures_clear">
 			<return type="void" />
 			<description>
+				Clear textures.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="initialized" type="bool" setter="set_initialized" getter="get_initialized" default="false">
+			Is the material cache initialized?
 		</member>
 		<member name="mat_ref_count" type="int" setter="set_ref_count" getter="get_ref_count" default="0">
+			The current reference count.
 		</member>
 		<member name="materials" type="Array" setter="materials_set" getter="materials_get" default="[  ]">
+			The materials.
 		</member>
 	</members>
 	<constants>
