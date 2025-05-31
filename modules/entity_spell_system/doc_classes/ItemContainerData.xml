@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ItemContainerData" inherits="Resource">
 	<brief_description>
+		Stored item data for use with [EntityData] and [EntityClassData].
 	</brief_description>
 	<description>
+		Stored item data for use with [EntityData] and [EntityClassData].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,11 +13,13 @@
 			<return type="ItemContainerDataEntry" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return entry at index.
 			</description>
 		</method>
 		<method name="get_num_container_datas">
 			<return type="int" />
 			<description>
+				Return entry count.
 			</description>
 		</method>
 		<method name="set_container_data">
@@ -23,17 +27,20 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="container_data" type="ItemContainerDataEntry" />
 			<description>
+				Set entry at index.
 			</description>
 		</method>
 		<method name="set_num_container_datas">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Set entry count.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="container_datas" type="Array" setter="set_container_datas" getter="get_container_datas" default="[  ]">
+			All entries.
 		</member>
 	</members>
 	<constants>

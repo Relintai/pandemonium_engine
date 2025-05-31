@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ItemContainerDataEntry" inherits="Resource">
 	<brief_description>
+		Entry for [ItemContainerData].
 	</brief_description>
 	<description>
+		Entry for [ItemContainerData].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,8 +12,10 @@
 	</methods>
 	<members>
 		<member name="item" type="ItemTemplate" setter="set_item" getter="get_item">
+			The item.
 		</member>
 		<member name="item_count" type="int" setter="set_item_count" getter="get_item_count" default="0">
+			Item count.
 		</member>
 	</members>
 	<constants>
