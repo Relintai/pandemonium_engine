@@ -4,6 +4,7 @@
 		Contains lots of general-use enums for items.
 	</brief_description>
 	<description>
+		Contains lots of general-use enums for items.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,102 +12,151 @@
 	</methods>
 	<constants>
 		<constant name="ITEM_RARITY_NONE" value="0" enum="ItemRarity">
+			Unknown item rarity.
 		</constant>
 		<constant name="ITEM_RARITY_COMMON" value="1" enum="ItemRarity">
+			Common item rarity.
 		</constant>
 		<constant name="ITEM_RARITY_UNCOMMON" value="2" enum="ItemRarity">
+			Uncommon item rarity.
 		</constant>
 		<constant name="ITEM_RARITY_SUPERIOR" value="3" enum="ItemRarity">
+			Superior item rarity.
 		</constant>
 		<constant name="ITEM_RARITY_HEROIC" value="4" enum="ItemRarity">
+			Heroic item rarity.
 		</constant>
 		<constant name="ITEM_RARITY_MYTHIC" value="5" enum="ItemRarity">
+			Mythic item rarity.
 		</constant>
 		<constant name="ITEM_RARITY_ARTIFACT" value="6" enum="ItemRarity">
+			Artifact item rarity.
 		</constant>
 		<constant name="ITEM_RARITY_FLAG_NONE" value="0" enum="ItemRarityFlag">
+			Unknown item rarity flag.
 		</constant>
 		<constant name="ITEM_RARITY_FLAG_COMMON" value="1" enum="ItemRarityFlag">
+			Common item rarity flag.
 		</constant>
 		<constant name="ITEM_RARITY_FLAG_UNCOMMON" value="2" enum="ItemRarityFlag">
+			Uncommon item rarity flag.
 		</constant>
 		<constant name="ITEM_RARITY_FLAG_SUPERIOR" value="4" enum="ItemRarityFlag">
+			Superior item rarity flag.
 		</constant>
 		<constant name="ITEM_RARITY_FLAG_HEROIC" value="8" enum="ItemRarityFlag">
+			Heroic item rarity flag.
 		</constant>
 		<constant name="ITEM_RARITY_FLAG_MYTHIC" value="16" enum="ItemRarityFlag">
+			Mythic item rarity flag.
 		</constant>
 		<constant name="ITEM_RARITY_FLAG_ARTIFACT" value="32" enum="ItemRarityFlag">
+			Artifact item rarity flag.
 		</constant>
 		<constant name="ITEM_TYPE_NONE" value="0" enum="ItemType">
+			Unknown item type.
 		</constant>
 		<constant name="ITEM_TYPE_EQUIPMENT" value="1" enum="ItemType">
+			Equipment item type.
 		</constant>
 		<constant name="ITEM_TYPE_POTION" value="2" enum="ItemType">
+			Potion item type.
 		</constant>
 		<constant name="ITEM_TYPE_HERB" value="4" enum="ItemType">
+			Herb item type.
 		</constant>
 		<constant name="ITEM_TYPE_ORE" value="8" enum="ItemType">
+			Ore item type.
 		</constant>
 		<constant name="ITEM_TYPE_GEMSTONE" value="16" enum="ItemType">
+			Gemstone item type.
 		</constant>
 		<constant name="ITEM_TYPE_FOOD" value="32" enum="ItemType">
+			Food item type.
 		</constant>
 		<constant name="ITEM_TYPE_ALCHEMY" value="64" enum="ItemType">
+			Alchemy item type.
 		</constant>
 		<constant name="ITEM_TYPE_ENGINEERING" value="128" enum="ItemType">
+			Engineering item type.
 		</constant>
 		<constant name="ITEM_TYPE_ENCHANTING" value="256" enum="ItemType">
+			Enchanting item type.
 		</constant>
 		<constant name="ITEM_TYPE_TAILORING" value="512" enum="ItemType">
+			Tailoring item type.
 		</constant>
 		<constant name="ITEM_TYPE_RECIPE" value="1024" enum="ItemType">
+			Recipe item type.
 		</constant>
 		<constant name="ITEM_TYPE_CURRENCY" value="2048" enum="ItemType">
+			Currency item type.
 		</constant>
 		<constant name="ITEM_TYPE_BAG" value="4096" enum="ItemType">
+			Bag item type.
 		</constant>
 		<constant name="ITEM_SUB_TYPE_NONE" value="0" enum="ItemSubtype">
+			Unknown item sub type.
 		</constant>
 		<constant name="ITEM_SUB_TYPE_SWORD" value="1" enum="ItemSubtype">
+			Sword item sub type.
 		</constant>
 		<constant name="ITEM_SUB_TYPE_AXE" value="2" enum="ItemSubtype">
+			Axe item sub type.
 		</constant>
 		<constant name="ITEM_SUB_TYPE_MACE" value="3" enum="ItemSubtype">
+			Mace item sub type.
 		</constant>
 		<constant name="ITEM_SUB_TYPE_DAGGER" value="4" enum="ItemSubtype">
+			Dagger item sub type.
 		</constant>
 		<constant name="ITEM_SUB_TYPE_BOW" value="5" enum="ItemSubtype">
+			Bow item sub type.
 		</constant>
 		<constant name="ITEM_SUB_TYPE_CROSSBOW" value="6" enum="ItemSubtype">
+			Crossbow item sub type.
 		</constant>
 		<constant name="ITEM_SUB_TYPE_GUN" value="7" enum="ItemSubtype">
+			Gun item sub type.
 		</constant>
 		<constant name="ITEM_SUB_TYPE_WAND" value="8" enum="ItemSubtype">
+			Wand item sub type.
 		</constant>
 		<constant name="ITEM_SUB_TYPE_QUEST_ITEM" value="9" enum="ItemSubtype">
+			Quest item item sub type.
 		</constant>
 		<constant name="ITEM_SUB_SUB_TYPE_NONE" value="0" enum="ItemSubSubtype">
+			Unknown item sub sub type.
 		</constant>
 		<constant name="ITEM_SUB_SUB_TYPE_TWO_HAND" value="1" enum="ItemSubSubtype">
+			Two hand item sub sub type.
 		</constant>
 		<constant name="ITEM_SUB_SUB_TYPE_ONE_HAND" value="2" enum="ItemSubSubtype">
+			One hand item sub sub type.
 		</constant>
 		<constant name="ITEM_SUB_SUB_TYPE_LEFT_HAND" value="3" enum="ItemSubSubtype">
+			Left hand item sub sub type.
 		</constant>
 		<constant name="ITEM_SUB_SUB_TYPE_RIGHT_HAND" value="4" enum="ItemSubSubtype">
+			Right hand item sub sub type.
 		</constant>
 		<constant name="ARMOR_TYPE_NONE" value="0" enum="ArmorType">
+			Unknown armor type.
 		</constant>
 		<constant name="ARMOR_TYPE_CLOTH" value="1" enum="ArmorType">
+			Cloth armor type.
 		</constant>
 		<constant name="ARMOR_TYPE_LEATHER" value="2" enum="ArmorType">
+			Leather armor type.
 		</constant>
 		<constant name="ARMOR_TYPE_MAIL" value="3" enum="ArmorType">
+			Mail armor type.
 		</constant>
 		<constant name="ARMOR_TYPE_PLATE" value="4" enum="ArmorType">
+			Plate armor type.
 		</constant>
 		<constant name="ARMOR_TYPE_MAX" value="5" enum="ArmorType">
+			Max armor types.
 		</constant>
 	</constants>
 </class>
