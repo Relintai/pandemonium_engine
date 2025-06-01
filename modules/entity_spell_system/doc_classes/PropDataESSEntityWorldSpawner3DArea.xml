@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="PropDataESSEntityWorldSpawner3DArea" inherits="PropDataESSEntityWorldSpawner3D">
 	<brief_description>
+		Holds PropData for 3d area world spawners.
 	</brief_description>
 	<description>
+		Holds PropData for 3d area world spawners.
+		Only available if the props module is enabled when compiling the engine (default).
 	</description>
 	<tutorials>
 	</tutorials>
@@ -14,41 +17,48 @@
 			<argument index="2" name="level_range" type="Vector2i" />
 			<argument index="3" name="spawn_chance" type="float" />
 			<description>
+				Add a spawn entry.
 			</description>
 		</method>
 		<method name="clear_spawn_entries">
 			<return type="void" />
 			<description>
+				Clear spawn entries.
 			</description>
 		</method>
 		<method name="get_entity_data" qualifiers="const">
 			<return type="EntityData" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return entity data at index.
 			</description>
 		</method>
 		<method name="get_entity_level_range" qualifiers="const">
 			<return type="Vector2i" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return level range at index.
 			</description>
 		</method>
 		<method name="get_entity_name" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return entity name at index.
 			</description>
 		</method>
 		<method name="get_entity_spawn_chance" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return entity spawn chance at index.
 			</description>
 		</method>
 		<method name="remove_spawn_entry">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove a spawn entry.
 			</description>
 		</method>
 		<method name="set_entity_data">
@@ -56,6 +66,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="data" type="EntityData" />
 			<description>
+				Set entity data at index.
 			</description>
 		</method>
 		<method name="set_entity_level_range">
@@ -63,6 +74,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="level_range" type="Vector2i" />
 			<description>
+				Set level range at index.
 			</description>
 		</method>
 		<method name="set_entity_name">
@@ -70,6 +82,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="name" type="String" />
 			<description>
+				Set entity name at index.
 			</description>
 		</method>
 		<method name="set_entity_spawn_chance">
@@ -77,19 +90,25 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="spawn_chance" type="float" />
 			<description>
+				Set entity spawn chance at index.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="respawn_time_max" type="float" setter="set_respawn_time_max" getter="get_respawn_time_max" default="0.0">
+			Respawn time max.
 		</member>
 		<member name="respawn_time_min" type="float" setter="set_respawn_time_min" getter="get_respawn_time_min" default="0.0">
+			Respawn time min.
 		</member>
 		<member name="spawn_area_extents" type="Vector3" setter="set_spawn_area_extents" getter="get_spawn_area_extents" default="Vector3( 2, 2, 2 )">
+			Spawn area extents.
 		</member>
 		<member name="spawn_entry_count" type="int" setter="set_spawn_entry_count" getter="get_spawn_entry_count" default="0">
+			Spawn entry count.
 		</member>
 		<member name="spawn_slot_count" type="int" setter="set_spawn_slot_count" getter="get_spawn_slot_count" default="0">
+			Spawn slot count. This many entities are active at most.
 		</member>
 	</members>
 	<constants>

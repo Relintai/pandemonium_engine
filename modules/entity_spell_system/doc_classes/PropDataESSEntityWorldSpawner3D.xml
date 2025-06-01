@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="PropDataESSEntityWorldSpawner3D" inherits="PropDataEntry">
 	<brief_description>
+		Base propdata to inherit from for 3d world spawners.
 	</brief_description>
 	<description>
+		Base propdata to inherit from for 3d world spawners.
+		Only available if the props module is enabled when compiling the engine (default).
 	</description>
 	<tutorials>
 	</tutorials>
