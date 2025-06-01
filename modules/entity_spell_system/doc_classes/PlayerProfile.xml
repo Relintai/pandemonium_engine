@@ -4,6 +4,7 @@
 		Stores the data for a player. Also see [ProfileManager].
 	</brief_description>
 	<description>
+		Stores the data for a player. Also see [ProfileManager].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,72 +13,87 @@
 			<return type="void" />
 			<argument index="0" name="profile" type="ClassProfile" />
 			<description>
+				Add class profile.
 			</description>
 		</method>
 		<method name="clear_class_profiles">
 			<return type="void" />
 			<description>
+				CLear class profiles.
 			</description>
 		</method>
 		<method name="emit_change">
 			<return type="void" />
 			<description>
+				Emit changed event.
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
 			</description>
 		</method>
 		<method name="get_class_profile">
 			<return type="ClassProfile" />
 			<argument index="0" name="class_id" type="StringName" />
 			<description>
+				Returns class profile.
 			</description>
 		</method>
 		<method name="get_class_profile_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns class profile count.
 			</description>
 		</method>
 		<method name="get_class_profile_index">
 			<return type="ClassProfile" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns class profile at index.
 			</description>
 		</method>
 		<method name="load_defaults">
 			<return type="void" />
 			<description>
+				Load defaults.
 			</description>
 		</method>
 		<method name="remove_class_profile">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove class profile.
 			</description>
 		</method>
 		<method name="to_dict" qualifiers="const">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="custom_data" type="Dictionary" setter="set_custom_data" getter="get_custom_data" default="{}">
+			Custom data.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			Prfile id.
 		</member>
 		<member name="last_used_character" type="int" setter="set_last_used_character" getter="get_last_used_character" default="0">
+			Last used character.
 		</member>
 		<member name="profile_name" type="String" setter="set_profile_name" getter="get_profile_name" default="&quot;default.profile&quot;">
+			Profile name.
 		</member>
 	</members>
 	<signals>
 		<signal name="changed">
 			<argument index="0" name="profile" type="PlayerProfile" />
 			<description>
+				Emitted when this profile changes.
 			</description>
 		</signal>
 	</signals>

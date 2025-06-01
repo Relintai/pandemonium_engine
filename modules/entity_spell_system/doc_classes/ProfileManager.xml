@@ -5,6 +5,8 @@
 		Should be added as an autoload, or at least is should be in the scene before spawning entities.
 	</brief_description>
 	<description>
+		Stores, saves, loads per class profile data.
+		Should be added as an autoload, or at least is should be in the scene before spawning entities.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,106 +14,127 @@
 		<method name="_load" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Load profiles.
 			</description>
 		</method>
 		<method name="_save" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Save profiles.
 			</description>
 		</method>
 		<method name="adds_player_profile">
 			<return type="void" />
 			<argument index="0" name="profile" type="PlayerProfile" />
 			<description>
+				Add player profile.
 			</description>
 		</method>
 		<method name="clears_player_profiles">
 			<return type="void" />
 			<description>
+				Clear player profiles.
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
 			</description>
 		</method>
 		<method name="getc_player_profile">
 			<return type="PlayerProfile" />
 			<description>
+				Get player profile.
 			</description>
 		</method>
 		<method name="gets_player_profile_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Get player profile count.
 			</description>
 		</method>
 		<method name="gets_player_profile_index">
 			<return type="PlayerProfile" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get player profile at index.
 			</description>
 		</method>
 		<method name="load">
 			<return type="void" />
 			<description>
+				Load saved profiles.
 			</description>
 		</method>
 		<method name="load_defaults">
 			<return type="void" />
 			<description>
+				Load defaults.
 			</description>
 		</method>
 		<method name="load_profile">
 			<return type="void" />
 			<argument index="0" name="name" type="String" />
 			<description>
+				Load profile.
 			</description>
 		</method>
 		<method name="on_keybinds_changed">
 			<return type="void" />
 			<argument index="0" name="class_path" type="StringName" />
 			<description>
+				Called when keybinds changed.
 			</description>
 		</method>
 		<method name="removes_player_profile">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove player profile.
 			</description>
 		</method>
 		<method name="save">
 			<return type="void" />
 			<description>
+				Save profiles.
 			</description>
 		</method>
 		<method name="save_profile">
 			<return type="void" />
 			<argument index="0" name="name" type="String" />
 			<description>
+				Save the given profile.
 			</description>
 		</method>
 		<method name="to_dict" qualifiers="const">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="automatic_load" type="bool" setter="set_automatic_load" getter="get_automatic_load" default="false">
+			WHether to load profiles automatically.
 		</member>
 		<member name="automatic_save" type="bool" setter="set_automatic_save" getter="get_automatic_save" default="false">
+			WHether to save profiles automatically.
 		</member>
 		<member name="save_file" type="String" setter="set_save_file" getter="get_save_file" default="&quot;user://profile.save&quot;">
+			Save filename.
 		</member>
 	</members>
 	<signals>
 		<signal name="changed">
 			<description>
+				Emitted when a profile changes.
 			</description>
 		</signal>
 		<signal name="keybinds_changed">
 			<description>
+				Wmitted when a keybind changes.
 			</description>
 		</signal>
 	</signals>
