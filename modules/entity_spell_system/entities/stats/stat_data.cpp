@@ -110,6 +110,7 @@ StatData::StatData() {
 	_mod_stat_count = 0;
 
 	for (int i = 0; i < MAX_MOD_STATS; ++i) {
+		_mod_stats[i].target_stat_id = 0;
 		_mod_stats[i].stat_id = 0;
 		_mod_stats[i].multiplier = 0;
 	}
