@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="StatData" inherits="Resource">
 	<brief_description>
-		Contains a [Stat]'s data.
+		Contains an entity's stat data.
 	</brief_description>
 	<description>
+		Contains an entity's stat data.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,29 +13,35 @@
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns a stat's base value.
 			</description>
 		</method>
 		<method name="get_mod_stat_id">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return a stat modifier's source stat id.
 			</description>
 		</method>
 		<method name="get_mod_stat_multiplier">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return a stat modifier's multiplier.
 			</description>
 		</method>
 		<method name="get_target_stat_id">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return a stat modifier's target stat id.
+				This will only work secondary stats. Primary stats can't depend on other stats. (No circular dependencies.)
 			</description>
 		</method>
 		<method name="has_mod_stats">
 			<return type="bool" />
 			<description>
+				Has stat modifier?
 			</description>
 		</method>
 		<method name="set_base">
@@ -42,6 +49,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="entry" type="float" />
 			<description>
+				Set a stat's base value.
 			</description>
 		</method>
 		<method name="set_mod_stat_id">
@@ -49,6 +57,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Set a stat modifier's source stat id.
 			</description>
 		</method>
 		<method name="set_mod_stat_multiplier">
@@ -56,6 +65,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set a stat modifier's multiplier.
 			</description>
 		</method>
 		<method name="set_target_stat_id">
@@ -63,13 +73,17 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Set a stat modifier's target stat id.
+				This will only work secondary stats. Primary stats can't depend on other stats. (No circular dependencies.)
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="level_stat_data" type="LevelStatData" setter="set_level_stat_data" getter="get_level_stat_data">
+			Level stat data.
 		</member>
 		<member name="mod_stat_count" type="int" setter="set_mod_stat_count" getter="get_mod_stat_count" default="0">
+			Stat modifier count.
 		</member>
 	</members>
 	<constants>
