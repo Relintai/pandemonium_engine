@@ -4,6 +4,7 @@
 		Contains damage information. It is passed around in callbacks, so things can modify values. (absorbs, immunities etc.)
 	</brief_description>
 	<description>
+		Contains damage information. It is passed around in callbacks, so things can modify values. (absorbs, immunities etc.)
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,41 +12,57 @@
 		<method name="reset">
 			<return type="void" />
 			<description>
+				Reset.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="amount_absorbed" type="int" setter="amount_absorbed_set" getter="amount_absorbed_get" default="0">
+			Amount absorbed.
 		</member>
 		<member name="aura_source" type="Spell" setter="aura_source_set" getter="aura_source_get">
+			Aura source.
 		</member>
 		<member name="crit" type="bool" setter="crit_set" getter="crit_get" default="false">
+			Crit.
 		</member>
 		<member name="damage" type="int" setter="damage_set" getter="damage_get" default="0">
+			Damage.
 		</member>
 		<member name="damage_type" type="int" setter="damage_type_set" getter="damage_type_get" default="0">
+			Damage type.
 		</member>
 		<member name="dealer" type="Entity" setter="dealer_set" getter="dealer_get">
+			Damage dealer.
 		</member>
 		<member name="immune" type="bool" setter="set_immune" getter="get_immune" default="false">
+			Immune?
 		</member>
 		<member name="receiver" type="Entity" setter="receiver_set" getter="receiver_get">
+			Damage receiver.
 		</member>
 		<member name="source" type="Reference" setter="source_set" getter="source_get">
+			Damage source.
 		</member>
 		<member name="source_id" type="int" setter="source_set_id" getter="source_get_id" default="0">
+			Damage source id.
 		</member>
 		<member name="source_type" type="int" setter="source_set_type" getter="source_get_type" default="0">
+			Damage source type.
 		</member>
 		<member name="spell_source" type="Spell" setter="spell_source_set" getter="spell_source_get">
+			Spell source.
 		</member>
 	</members>
 	<constants>
 		<constant name="DAMAGE_SOURCE_UNKNOWN" value="0">
+			Unknown damage source.
 		</constant>
 		<constant name="DAMAGE_SOURCE_SPELL" value="1">
+			Spell damage source.
 		</constant>
 		<constant name="DAMAGE_SOURCE_AURA" value="2">
+			Aura damage source.
 		</constant>
 	</constants>
 </class>
