@@ -4,6 +4,7 @@
 		Contains an item's visual information.
 	</brief_description>
 	<description>
+		Contains an item's visual information.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,23 +13,27 @@
 			<return type="void" />
 			<argument index="0" name="visual_entry" type="ModelVisualEntry" />
 			<description>
+				Add visual entry.
 			</description>
 		</method>
 		<method name="get_visual_entry" qualifiers="const">
 			<return type="ModelVisualEntry" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns visual entry.
 			</description>
 		</method>
 		<method name="get_visual_entry_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns visual entry count.
 			</description>
 		</method>
 		<method name="remove_visual_entry">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove visual entry.
 			</description>
 		</method>
 		<method name="set_visual_entry">
@@ -36,13 +41,16 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="data" type="ModelVisualEntry" />
 			<description>
+				Set visual entry.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="layer" type="int" setter="set_layer" getter="get_layer" default="0">
+			Visual entry layer.
 		</member>
 		<member name="visual_entries" type="Array" setter="set_visual_entries" getter="get_visual_entries" default="[  ]">
+			Visual entries.
 		</member>
 	</members>
 	<constants>
