@@ -345,7 +345,7 @@
 			<return type="void" />
 			<argument index="0" name="resource" type="EntityResource" />
 			<description>
-				Called when the controlled [Entity] receives a resource added notification.
+				Called when the controlled [Entity] receives a resource added notification.
 			</description>
 		</method>
 		<method name="notification_sentity_resource_removed">
