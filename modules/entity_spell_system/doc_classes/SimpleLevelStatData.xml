@@ -4,6 +4,7 @@
 		Simple per-level [Stat] information for entities.
 	</brief_description>
 	<description>
+		Simple per-level [Stat] information for entities.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,6 +13,7 @@
 			<return type="int" />
 			<argument index="0" name="arg0" type="int" />
 			<description>
+				Returns the stat given per level.
 			</description>
 		</method>
 		<method name="set_stat_per_level">
@@ -19,6 +21,7 @@
 			<argument index="0" name="value" type="int" />
 			<argument index="1" name="arg1" type="int" />
 			<description>
+				Sets the stat given per level.
 			</description>
 		</method>
 	</methods>
