@@ -4,6 +4,7 @@
 		Stores model information for [EntitySpeciesData].
 	</brief_description>
 	<description>
+		Stores model information for [EntitySpeciesData].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -13,6 +14,7 @@
 			<argument index="0" name="slot_index" type="int" />
 			<argument index="1" name="color_customizable_slot" type="Color" />
 			<description>
+				Add a color to the given color customizable slot.
 			</description>
 		</method>
 		<method name="add_customizable_slot_entry">
@@ -20,23 +22,27 @@
 			<argument index="0" name="slot_index" type="int" />
 			<argument index="1" name="customizable_slot" type="ModelVisualEntry" />
 			<description>
+				Add a customizable slot entry.
 			</description>
 		</method>
 		<method name="add_visual">
 			<return type="void" />
 			<argument index="0" name="visual" type="ModelVisualEntry" />
 			<description>
+				Add model visual.
 			</description>
 		</method>
 		<method name="get_color_customizable_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return customizable color count.
 			</description>
 		</method>
 		<method name="get_color_customizable_slot_bone_slot_mask" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="slot_index" type="int" />
 			<description>
+				Returns the bone slot mask to the given color customizable slot.
 			</description>
 		</method>
 		<method name="get_color_customizable_slot_color" qualifiers="const">
@@ -44,35 +50,41 @@
 			<argument index="0" name="slot_index" type="int" />
 			<argument index="1" name="index" type="int" />
 			<description>
+				Returns the color to the given color customizable slot.
 			</description>
 		</method>
 		<method name="get_color_customizable_slot_colors" qualifiers="const">
 			<return type="PoolColorArray" />
 			<argument index="0" name="slot_index" type="int" />
 			<description>
+				Returns all colors to the given color customizable slot.
 			</description>
 		</method>
 		<method name="get_color_customizable_slot_count" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="slot_index" type="int" />
 			<description>
+				Returns the color customizable slot count.
 			</description>
 		</method>
 		<method name="get_color_customizable_slot_texture_layer" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="slot_index" type="int" />
 			<description>
+				Returns the texture layer to the given color customizable slot.
 			</description>
 		</method>
 		<method name="get_customizable_slot_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return customizable slot count.
 			</description>
 		</method>
 		<method name="get_customizable_slot_entries" qualifiers="const">
 			<return type="Array" />
 			<argument index="0" name="slot_index" type="int" />
 			<description>
+				Returns all customizable slot entries.
 			</description>
 		</method>
 		<method name="get_customizable_slot_entry" qualifiers="const">
@@ -80,28 +92,33 @@
 			<argument index="0" name="slot_index" type="int" />
 			<argument index="1" name="index" type="int" />
 			<description>
+				Returns the customizable slot entry at index.
 			</description>
 		</method>
 		<method name="get_customizable_slot_entry_count" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="slot_index" type="int" />
 			<description>
+				Returns the customizable slot entry count.
 			</description>
 		</method>
 		<method name="get_visual" qualifiers="const">
 			<return type="ModelVisualEntry" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get visual entry at index.
 			</description>
 		</method>
 		<method name="get_visual_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Get model visual count.
 			</description>
 		</method>
 		<method name="get_visuals">
 			<return type="Array" />
 			<description>
+				Get all model visuals.
 			</description>
 		</method>
 		<method name="remove_color_customizable_slot_color">
@@ -109,6 +126,7 @@
 			<argument index="0" name="slot_index" type="int" />
 			<argument index="1" name="index" type="int" />
 			<description>
+				Remove color customnizable slot color.
 			</description>
 		</method>
 		<method name="remove_customizable_slot_entry">
@@ -116,12 +134,14 @@
 			<argument index="0" name="slot_index" type="int" />
 			<argument index="1" name="index" type="int" />
 			<description>
+				Remove customizable slot entry.
 			</description>
 		</method>
 		<method name="remove_visual">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove model visual.
 			</description>
 		</method>
 		<method name="set_color_customizable_slot_bone_slot_mask">
@@ -129,6 +149,7 @@
 			<argument index="0" name="slot_index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Set the bone slot mask for the given color customizable slot.
 			</description>
 		</method>
 		<method name="set_color_customizable_slot_color">
@@ -137,6 +158,7 @@
 			<argument index="1" name="index" type="int" />
 			<argument index="2" name="data" type="Color" />
 			<description>
+				Set the color for the given color customizable slot.
 			</description>
 		</method>
 		<method name="set_color_customizable_slot_colors">
@@ -144,6 +166,7 @@
 			<argument index="0" name="slot_index" type="int" />
 			<argument index="1" name="colors" type="PoolColorArray" />
 			<description>
+				Set all colors for the given color customizable slot.
 			</description>
 		</method>
 		<method name="set_color_customizable_slot_texture_layer">
@@ -151,6 +174,7 @@
 			<argument index="0" name="slot_index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Set the texture layer for the given color customizable slot.
 			</description>
 		</method>
 		<method name="set_customizable_slot_entries">
@@ -158,6 +182,7 @@
 			<argument index="0" name="slot_index" type="int" />
 			<argument index="1" name="customizable_slots" type="Array" />
 			<description>
+				Set all model visual entries for the given customizable slot.
 			</description>
 		</method>
 		<method name="set_customizable_slot_entry">
@@ -166,6 +191,7 @@
 			<argument index="1" name="index" type="int" />
 			<argument index="2" name="data" type="ModelVisualEntry" />
 			<description>
+				Set the model visual entry for the given customizable slot.
 			</description>
 		</method>
 		<method name="set_visual">
@@ -173,27 +199,35 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="data" type="ModelVisualEntry" />
 			<description>
+				Set model visual.
 			</description>
 		</method>
 		<method name="set_visuals">
 			<return type="void" />
 			<argument index="0" name="visuals" type="Array" />
 			<description>
+				Set model visuals.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="body" type="PackedScene" setter="set_body" getter="get_body">
+			Body scene.
 		</member>
 		<member name="bone_structure" type="int" setter="set_bone_structure" getter="get_bone_structure" default="0">
+			Return the bone structure.
 		</member>
 		<member name="customizable_color_slots_string" type="String" setter="set_customizable_color_slots_string" getter="get_customizable_color_slots_string" default="&quot;&quot;">
+			Return the enum string for customizable color slots.
 		</member>
 		<member name="customizable_slots_string" type="String" setter="set_customizable_slots_string" getter="get_customizable_slots_string" default="&quot;&quot;">
+			Return the enum string for customizable slots.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			Id.
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+			Name.
 		</member>
 	</members>
 	<constants>
