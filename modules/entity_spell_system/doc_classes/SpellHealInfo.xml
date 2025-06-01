@@ -4,6 +4,7 @@
 		Contains heal information. It is passed around in callbacks, so things can modify values. (absorbs, immunities etc.)
 	</brief_description>
 	<description>
+		Contains heal information. It is passed around in callbacks, so things can modify values. (absorbs, immunities etc.)
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,41 +12,57 @@
 		<method name="reset">
 			<return type="void" />
 			<description>
+				Reset.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="amount_absorbed" type="int" setter="amount_absorbed_set" getter="amount_absorbed_get" default="0">
+			Amount absorbed.
 		</member>
 		<member name="aura_source" type="Spell" setter="aura_source_set" getter="aura_source_get">
+			Aura source.
 		</member>
 		<member name="crit" type="bool" setter="crit_set" getter="crit_get" default="false">
+			Crit.
 		</member>
 		<member name="dealer" type="Entity" setter="dealer_set" getter="dealer_get">
+			Heal ealer.
 		</member>
 		<member name="heal" type="int" setter="heal_set" getter="heal_get" default="0">
+			Heal.
 		</member>
 		<member name="heal_type" type="int" setter="heal_type_set" getter="heal_type_get" default="0">
+			Heal type.
 		</member>
 		<member name="immune" type="bool" setter="set_immune" getter="get_immune" default="false">
+			Immune?
 		</member>
 		<member name="receiver" type="Entity" setter="receiver_set" getter="receiver_get">
+			Heal receiver.
 		</member>
 		<member name="source" type="Reference" setter="source_set" getter="source_get">
+			Heal source.
 		</member>
 		<member name="source_id" type="int" setter="source_set_id" getter="source_get_id" default="0">
+			Source id.
 		</member>
 		<member name="source_type" type="int" setter="source_set_type" getter="source_get_type" default="0">
+			Source type.
 		</member>
 		<member name="spell_source" type="Spell" setter="spell_source_set" getter="spell_source_get">
+			Spell source.
 		</member>
 	</members>
 	<constants>
 		<constant name="HEAL_SOURCE_UNKNOWN" value="0">
+			Unknown heal source.
 		</constant>
 		<constant name="HEAL_SOURCE_SPELL" value="1">
+			Spell heal source.
 		</constant>
 		<constant name="HEAL_SOURCE_AURA" value="2">
+			Aura heal source.
 		</constant>
 	</constants>
 </class>
