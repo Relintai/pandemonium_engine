@@ -4,6 +4,7 @@
 		Base class for storing loot information for entities.
 	</brief_description>
 	<description>
+		Base class for storing loot information for entities.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,35 +12,41 @@
 		<method name="_get_loot" qualifiers="virtual">
 			<return type="Array" />
 			<description>
+				Generate loot.
 			</description>
 		</method>
 		<method name="get_item" qualifiers="const">
 			<return type="ItemTemplate" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns item.
 			</description>
 		</method>
 		<method name="get_item_chance" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return item chance.
 			</description>
 		</method>
 		<method name="get_loot">
 			<return type="Array" />
 			<description>
+				Generate loot.
 			</description>
 		</method>
 		<method name="get_loot_db" qualifiers="const">
 			<return type="LootDataBase" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return loot database.
 			</description>
 		</method>
 		<method name="get_loot_db_chance" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return loot database chance.
 			</description>
 		</method>
 		<method name="set_item">
@@ -47,6 +54,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="ItemTemplate" />
 			<description>
+				Set item.
 			</description>
 		</method>
 		<method name="set_item_chance">
@@ -54,6 +62,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set item chance.
 			</description>
 		</method>
 		<method name="set_loot_db">
@@ -61,6 +70,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="LootDataBase" />
 			<description>
+				Set loot database.
 			</description>
 		</method>
 		<method name="set_loot_db_chance">
@@ -68,13 +78,16 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set loot database chance.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="items_size" type="int" setter="set_items_size" getter="get_items_size" default="0">
+			Item count.
 		</member>
 		<member name="loot_db_size" type="int" setter="set_loot_db_size" getter="get_loot_db_size" default="0">
+			Loot db count.
 		</member>
 	</members>
 	<constants>
