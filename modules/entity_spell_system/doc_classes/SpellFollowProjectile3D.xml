@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="SpellFollowProjectile3D" inherits="Spatial">
 	<brief_description>
+		Projectile that follows a target until impact.
 	</brief_description>
 	<description>
+		Projectile that follows a target until impact.
 	</description>
 	<tutorials>
 	</tutorials>
