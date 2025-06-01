@@ -241,7 +241,7 @@ ItemInstance::~ItemInstance() {
 
 void ItemInstance::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("stack_size_changed", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
-	ADD_SIGNAL(MethodInfo("stack_charges_changed", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	ADD_SIGNAL(MethodInfo("charges_changed", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 
 	ClassDB::bind_method(D_METHOD("get_item_template"), &ItemInstance::get_item_template);
 	ClassDB::bind_method(D_METHOD("set_item_template", "value"), &ItemInstance::set_item_template);
