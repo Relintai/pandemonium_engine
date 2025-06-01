@@ -4,6 +4,7 @@
 		Base class for storing spell visual information, like particle effects.
 	</brief_description>
 	<description>
+		Base class for storing spell visual information, like particle effects.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,6 +12,7 @@
 	</methods>
 	<members>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+			Name.
 		</member>
 	</members>
 	<constants>
