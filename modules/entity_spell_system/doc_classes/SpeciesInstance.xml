@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="SpeciesInstance" inherits="Resource">
 	<brief_description>
+		Instanced data for an [EntitySpeciesData].
 	</brief_description>
 	<description>
+		Instanced data for an [EntitySpeciesData].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,39 +13,54 @@
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Called by [method from_dict].
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Called by [method to_dict].
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="hair_color_index" type="int" setter="set_hair_color_index" getter="get_hair_color_index" default="0">
+			Hair color index for the owner entity.
 		</member>
 		<member name="hair_style_index" type="int" setter="set_hair_style_index" getter="get_hair_style_index" default="0">
+			Hair style index for the owner entity.
 		</member>
 		<member name="head_index" type="int" setter="set_head_index" getter="get_head_index" default="0">
+			Head model index for the owner entity.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			Id.
 		</member>
 		<member name="skin_color_index" type="int" setter="set_skin_color_index" getter="get_skin_color_index" default="0">
+			Skin color index for the owner entity.
 		</member>
 		<member name="species" type="EntitySpeciesData" setter="set_species" getter="get_species">
+			Species data.
 		</member>
 		<member name="species_id" type="int" setter="set_species_id" getter="get_species_id" default="0">
+			Species data id.
 		</member>
 	</members>
 	<constants>
