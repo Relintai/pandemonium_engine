@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="PropDataEntity" inherits="PropDataEntry">
 	<brief_description>
+		PropData that holds an Entity. Not yet finished.
 	</brief_description>
 	<description>
+		PropData that holds an Entity. Not yet finished.
+		Only available if the props module is enabled when compiling the engine (default).
 	</description>
 	<tutorials>
 	</tutorials>
