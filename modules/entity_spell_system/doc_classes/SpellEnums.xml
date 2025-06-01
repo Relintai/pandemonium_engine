@@ -4,6 +4,7 @@
 		Contains lots of general-use enums for spells.
 	</brief_description>
 	<description>
+		Contains lots of general-use enums for spells.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,184 +12,274 @@
 	</methods>
 	<constants>
 		<constant name="DAMAGE_TYPE_NONE" value="0" enum="DamageType">
+			Unknown damage type.
 		</constant>
 		<constant name="DAMAGE_TYPE_MELEE" value="1" enum="DamageType">
+			damage type.
 		</constant>
 		<constant name="DAMAGE_TYPE_HOLY" value="2" enum="DamageType">
+			damage type.
 		</constant>
 		<constant name="DAMAGE_TYPE_SHADOW" value="4" enum="DamageType">
+			damage type.
 		</constant>
 		<constant name="DAMAGE_TYPE_NATURE" value="8" enum="DamageType">
+			damage type.
 		</constant>
 		<constant name="DAMAGE_TYPE_FIRE" value="16" enum="DamageType">
+			damage type.
 		</constant>
 		<constant name="DAMAGE_TYPE_FROST" value="32" enum="DamageType">
+			damage type.
 		</constant>
 		<constant name="DAMAGE_TYPE_LIGHTNING" value="64" enum="DamageType">
+			damage type.
 		</constant>
 		<constant name="DAMAGE_TYPE_CHAOS" value="128" enum="DamageType">
+			damage type.
 		</constant>
 		<constant name="SPELL_CATEGORY_NORMAL" value="0" enum="SpellCategory">
+			Normal spell category.
 		</constant>
 		<constant name="SPELL_CATEGORY_ALCHEMY" value="1" enum="SpellCategory">
+			spell category.
 		</constant>
 		<constant name="SPELL_CATEGORY_COOKING" value="2" enum="SpellCategory">
+			spell category.
 		</constant>
 		<constant name="SPELL_CATEGORY_ENGINEERING" value="3" enum="SpellCategory">
+			spell category.
 		</constant>
 		<constant name="SPELL_CATEGORY_CRAFTING" value="4" enum="SpellCategory">
+			spell category.
 		</constant>
 		<constant name="SPELL_CATEGORY_HIDDEN" value="5" enum="SpellCategory">
+			spell category.
 		</constant>
 		<constant name="SPELL_CATEGORY_DEVELOPMENT" value="6" enum="SpellCategory">
+			spell category.
 		</constant>
 		<constant name="SPELL_TYPE_NONE" value="0" enum="SpellType">
+			Unknown spell type.
 		</constant>
 		<constant name="SPELL_TYPE_MELEE" value="1" enum="SpellType">
+			Melee spell type.
 		</constant>
 		<constant name="SPELL_TYPE_HOLY" value="2" enum="SpellType">
+			Holy spell type.
 		</constant>
 		<constant name="SPELL_TYPE_SHADOW" value="4" enum="SpellType">
+			Shadow spell type.
 		</constant>
 		<constant name="SPELL_TYPE_NATURE" value="8" enum="SpellType">
+			Nature spell type.
 		</constant>
 		<constant name="SPELL_TYPE_FIRE" value="16" enum="SpellType">
+			Fire spell type.
 		</constant>
 		<constant name="SPELL_TYPE_FROST" value="32" enum="SpellType">
+			Frost spell type.
 		</constant>
 		<constant name="SPELL_TYPE_LIGHTNING" value="64" enum="SpellType">
+			Lightning spell type.
 		</constant>
 		<constant name="SPELL_TYPE_CHAOS" value="128" enum="SpellType">
+			Chaos spell type.
 		</constant>
 		<constant name="AURA_TYPE_NONE" value="0" enum="AuraType">
+			Unknown aura type.
 		</constant>
 		<constant name="AURA_TYPE_MAGIC" value="1" enum="AuraType">
+			Magic aura type.
 		</constant>
 		<constant name="AURA_TYPE_POISON" value="2" enum="AuraType">
+			Poison aura type.
 		</constant>
 		<constant name="AURA_TYPE_PHYSICAL" value="4" enum="AuraType">
+			Physical aura type.
 		</constant>
 		<constant name="AURA_TYPE_CURSE" value="8" enum="AuraType">
+			Curse aura type.
 		</constant>
 		<constant name="AURA_TYPE_BLEED" value="16" enum="AuraType">
+			Bleed aura type.
 		</constant>
 		<constant name="AURA_TYPE_TALENT" value="32" enum="AuraType">
+			Talent aura type.
 		</constant>
 		<constant name="AURA_TYPE_SKILL" value="64" enum="AuraType">
+			Skill aura type.
 		</constant>
 		<constant name="COLLIDER_TYPE_NONE" value="0" enum="ColliderType">
+			No collider type.
 		</constant>
 		<constant name="COLLIDER_TYPE_SPHERE" value="1" enum="ColliderType">
+			Sphere collider.
 		</constant>
 		<constant name="COLLIDER_TYPE_BOX" value="2" enum="ColliderType">
+			Box collider.
 		</constant>
 		<constant name="TARGET_TYPE_NONE" value="0" enum="TargetType">
+			No target type.
 		</constant>
 		<constant name="TARGET_TYPE_NODE" value="1" enum="TargetType">
+			Node target type.
 		</constant>
 		<constant name="TARGET_TYPE_BONE_ID" value="2" enum="TargetType">
+			Bone id target type.
 		</constant>
 		<constant name="TARGET_TYPE_COORDS" value="3" enum="TargetType">
+			Coordinates target type.
 		</constant>
 		<constant name="TRIGGER_TYPE_NONE" value="0" enum="TriggerType">
+			No trigger type.
 		</constant>
 		<constant name="TRIGGER_TYPE_PERCENT" value="1" enum="TriggerType">
+			Percent trigger type.
 		</constant>
 		<constant name="TRIGGER_TYPE_PPM" value="2" enum="TriggerType">
+			Proc per minute trigger type.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_AURA" value="0" enum="TriggerNotificationType">
+			Aura trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_DAMAGE" value="1" enum="TriggerNotificationType">
+			Damage trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_HEAL" value="2" enum="TriggerNotificationType">
+			Heal trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_CAST" value="3" enum="TriggerNotificationType">
+			Cast trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_DEATH" value="4" enum="TriggerNotificationType">
+			Death trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_COOLDOWN_ADDED" value="5" enum="TriggerNotificationType">
+			Cooldown added trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_COOLDOWN_REMOVED" value="6" enum="TriggerNotificationType">
+			Cooldown removed trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_CATEGORY_COOLDOWN_ADDED" value="7" enum="TriggerNotificationType">
+			Category cooldown added trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_CATEGORY_COOLDOWN_REMOVED" value="8" enum="TriggerNotificationType">
+			Category cooldown removed trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_GCD_STARTED" value="9" enum="TriggerNotificationType">
+			Global cooldown started trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_GCD_FINISHED" value="10" enum="TriggerNotificationType">
+			Global cooldown finished trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_XP_GAINED" value="11" enum="TriggerNotificationType">
+			Xp gained trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_CLASS_LEVELUP" value="12" enum="TriggerNotificationType">
+			Class levelup trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_CHARACTER_LEVELUP" value="13" enum="TriggerNotificationType">
+			Character levelup trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_ENTITY_RESOURCE_ADDED" value="14" enum="TriggerNotificationType">
+			Entity resource added trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_ENTITY_RESOURCE_REMOVED" value="15" enum="TriggerNotificationType">
+			Entity resource removed trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_AURA_CUSTOM" value="16" enum="TriggerNotificationType">
+			Aura custom trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_DAMAGE_CUSTOM" value="17" enum="TriggerNotificationType">
+			Damage custom trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_HEAL_CUSTOM" value="18" enum="TriggerNotificationType">
+			Heal custom trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_CAST_CUSTOM" value="19" enum="TriggerNotificationType">
+			Cast custom trigger notification.
 		</constant>
 		<constant name="TRIGGER_NOTIFICATION_TYPE_CUSTOM" value="20" enum="TriggerNotificationType">
+			Custom trigger notification.
 		</constant>
 		<constant name="NOTIFICATION_AURA_BEFORE_APPLIED" value="0">
+			Aura before applied notification.
 		</constant>
 		<constant name="NOTIFICATION_AURA_AFTER_APPLIED" value="1">
+			Aura after applied notification.
 		</constant>
 		<constant name="NOTIFICATION_AURA_APPLIED" value="2">
+			Aura applied notification.
 		</constant>
 		<constant name="NOTIFICATION_AURA_ADDED" value="3">
+			Aura added notification.
 		</constant>
 		<constant name="NOTIFICATION_AURA_REMOVED" value="4">
+			Aura removed notification.
 		</constant>
 		<constant name="NOTIFICATION_AURA_REFRESHED" value="5">
+			Aura refreshed notification.
 		</constant>
 		<constant name="NOTIFICATION_DAMAGE_BEFORE_HIT" value="0">
+			Damage before hit notification.
 		</constant>
 		<constant name="NOTIFICATION_DAMAGE_HIT" value="1">
+			Damage hit notification.
 		</constant>
 		<constant name="NOTIFICATION_DAMAGE_BEFORE_DAMAGE" value="2">
+			Damage before damage notification.
 		</constant>
 		<constant name="NOTIFICATION_DAMAGE_RECEIVE" value="3">
+			Damage receive notification.
 		</constant>
 		<constant name="NOTIFICATION_DAMAGE_DEALT_DAMAGE" value="4">
+			Damage dealt damage notification.
 		</constant>
 		<constant name="NOTIFICATION_DAMAGE_DAMAGE_DEALT" value="5">
+			Damage dealt notification.
 		</constant>
 		<constant name="NOTIFICATION_HEAL_BEFORE_HIT" value="0">
+			Heal before hit notification.
 		</constant>
 		<constant name="NOTIFICATION_HEAL_BEFORE_HEAL" value="1">
+			Heal before heal notification.
 		</constant>
 		<constant name="NOTIFICATION_HEAL_RECEIVE" value="2">
+			Heal receive notification.
 		</constant>
 		<constant name="NOTIFICATION_HEAL_DEALT_HEAL" value="3">
+			Heal dealth heal notification.
 		</constant>
 		<constant name="NOTIFICATION_HEAL_HEAL_DEALT" value="4">
+			Heal heal deal notification.
 		</constant>
 		<constant name="NOTIFICATION_CAST_BEFORE" value="0">
+			Before cast notification.
 		</constant>
 		<constant name="NOTIFICATION_CAST_BEFORE_CAST_TARGET" value="1">
+			Before cast target notification.
 		</constant>
 		<constant name="NOTIFICATION_CAST_FINISHED_TARGET" value="2">
+			Cast finished target notification.
 		</constant>
 		<constant name="NOTIFICATION_CAST_FINISHED" value="3">
+			Cast finished notification.
 		</constant>
 		<constant name="NOTIFICATION_CAST_STARTED" value="4">
+			Cast started notification.
 		</constant>
 		<constant name="NOTIFICATION_CAST_FAILED" value="5">
+			Cast failed notification.
 		</constant>
 		<constant name="NOTIFICATION_CAST_SUCCESS" value="6">
+			Cast success notification.
 		</constant>
 		<constant name="NOTIFICATION_CAST_INTERRUPTED" value="7">
+			Cast interrupted notification.
 		</constant>
 		<constant name="NOTIFICATION_CAST_DELAYED" value="8">
+			Cast delayed notification.
 		</constant>
 	</constants>
 </class>
