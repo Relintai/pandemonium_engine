@@ -4,6 +4,7 @@
 		Contains item information.
 	</brief_description>
 	<description>
+		Contains item information.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,70 +12,83 @@
 		<method name="_create_item_instance" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Create an item instance.
 			</description>
 		</method>
 		<method name="_get_description" qualifiers="virtual">
 			<return type="String" />
 			<description>
+				Retutrns the description for an item.
 			</description>
 		</method>
 		<method name="create_item_instance">
 			<return type="ItemInstance" />
 			<description>
+				Create an item instance.
 			</description>
 		</method>
 		<method name="get_animator_weapon_type">
 			<return type="int" />
 			<description>
+				Return animator weapon type.
 			</description>
 		</method>
 		<method name="get_aura">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns aura.
 			</description>
 		</method>
 		<method name="get_description">
 			<return type="String" />
 			<description>
+				Retutrns the description for an item.
 			</description>
 		</method>
 		<method name="get_grants_spell">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns granted spell.
 			</description>
 		</method>
 		<method name="get_num_auras" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of auras.
 			</description>
 		</method>
 		<method name="get_num_grants_spells" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of granted spells.
 			</description>
 		</method>
 		<method name="get_num_required_skills" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of required skills.
 			</description>
 		</method>
 		<method name="get_num_teaches_spells" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of spells that this item teaches.
 			</description>
 		</method>
 		<method name="get_required_skill">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the required skill.
 			</description>
 		</method>
 		<method name="get_teaches_spell">
 			<return type="Spell" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the given spell that this item teaches.
 			</description>
 		</method>
 		<method name="set_aura">
@@ -82,6 +96,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="aura" type="Spell" />
 			<description>
+				Set aura.
 			</description>
 		</method>
 		<method name="set_grants_spell">
@@ -89,24 +104,28 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="spell" type="Spell" />
 			<description>
+				Set grants spell.
 			</description>
 		</method>
 		<method name="set_num_auras">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Set aura num.
 			</description>
 		</method>
 		<method name="set_num_grants_spells">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Sets the number of granted spells.
 			</description>
 		</method>
 		<method name="set_num_teaches_spells">
 			<return type="void" />
 			<argument index="0" name="value" type="int" />
 			<description>
+				Sets the number of spells that this item teaches.
 			</description>
 		</method>
 		<method name="set_required_skill">
@@ -114,6 +133,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="aura" type="Spell" />
 			<description>
+				Set required skill.
 			</description>
 		</method>
 		<method name="set_teaches_spell">
@@ -121,54 +141,63 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="spell" type="Spell" />
 			<description>
+				Set teaches spell.
 			</description>
 		</method>
 		<method name="stat_modifier_get_max_base_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat modifier max base mod.
 			</description>
 		</method>
 		<method name="stat_modifier_get_max_bonus_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat modifier max bonus mod.
 			</description>
 		</method>
 		<method name="stat_modifier_get_max_percent_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat modifier max percent mod.
 			</description>
 		</method>
 		<method name="stat_modifier_get_min_base_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat modifier min base mod.
 			</description>
 		</method>
 		<method name="stat_modifier_get_min_bonus_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat modifier min bonus mod.
 			</description>
 		</method>
 		<method name="stat_modifier_get_min_percent_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat modifier min percent mod.
 			</description>
 		</method>
 		<method name="stat_modifier_get_scaling_factor" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat modifier scaling factor.
 			</description>
 		</method>
 		<method name="stat_modifier_get_stat_id" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat modifier stat id.
 			</description>
 		</method>
 		<method name="stat_modifier_set_max_base_mod">
@@ -176,6 +205,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Sets stat modifier max base mod.
 			</description>
 		</method>
 		<method name="stat_modifier_set_max_bonus_mod">
@@ -183,6 +213,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Sets stat modifier max bonus mod.
 			</description>
 		</method>
 		<method name="stat_modifier_set_max_percent_mod">
@@ -190,6 +221,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Sets stat modifier max bonus mod.
 			</description>
 		</method>
 		<method name="stat_modifier_set_min_base_mod">
@@ -197,6 +229,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Sets stat modifier min bonus mod.
 			</description>
 		</method>
 		<method name="stat_modifier_set_min_bonus_mod">
@@ -204,6 +237,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Sets stat modifier min bonus mod.
 			</description>
 		</method>
 		<method name="stat_modifier_set_min_percent_mod">
@@ -211,6 +245,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Sets stat modifier min percent mod.
 			</description>
 		</method>
 		<method name="stat_modifier_set_scaling_factor">
@@ -218,6 +253,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Sets stat modifier scaling factor.
 			</description>
 		</method>
 		<method name="stat_modifier_set_stat_id">
@@ -225,63 +261,90 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Sets stat modifier stat id.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="armor_type" type="int" setter="set_armor_type" getter="get_armor_type" enum="ItemEnums.ArmorType" default="0">
+			Return armor type.
 		</member>
 		<member name="auras" type="Array" setter="set_auras" getter="get_auras" default="[  ]">
+			Return auras.
 		</member>
 		<member name="bag_size" type="int" setter="set_bag_size" getter="get_bag_size" default="0">
+			Returns bag size.
 		</member>
 		<member name="charges" type="int" setter="set_charges" getter="get_charges" default="-1">
+			Return charges.
 		</member>
 		<member name="consumed" type="bool" setter="set_consumed" getter="get_consumed" default="false">
+			Is this item a consumable?
 		</member>
 		<member name="equip_slot" type="int" setter="set_equip_slot" getter="get_equip_slot" default="14">
+			Equip slot.
 		</member>
 		<member name="grants_spells" type="Array" setter="set_grants_spells" getter="get_grants_spells" default="[  ]">
+			Grant spells.
 		</member>
 		<member name="icon" type="Texture" setter="set_icon" getter="get_icon">
+			Icon.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			Id.
 		</member>
 		<member name="item_sub_sub_type" type="int" setter="set_item_sub_sub_type" getter="get_item_sub_sub_type" enum="ItemEnums.ItemSubSubtype" default="0">
+			Sun sub type.
 		</member>
 		<member name="item_sub_type" type="int" setter="set_item_sub_type" getter="get_item_sub_type" enum="ItemEnums.ItemSubtype" default="0">
+			Sub type.
 		</member>
 		<member name="item_type" type="int" setter="set_item_type" getter="get_item_type" enum="ItemEnums.ItemType" default="0">
+			Item type/
 		</member>
 		<member name="model_visual" type="ModelVisual" setter="set_model_visual" getter="get_model_visual">
+			Model visual.
 		</member>
 		<member name="price" type="int" setter="set_price" getter="get_price" default="0">
+			Price.
 		</member>
 		<member name="rarity" type="int" setter="set_rarity" getter="get_rarity" enum="ItemEnums.ItemRarity" default="0">
+			Rarity.
 		</member>
 		<member name="required_skills" type="Array" setter="set_required_skills" getter="get_required_skills" default="[  ]">
+			Required skills.
 		</member>
 		<member name="scale_x" type="float" setter="set_scale_x" getter="get_scale_x" default="0.0">
+			Scale x.
 		</member>
 		<member name="scale_y" type="float" setter="set_scale_y" getter="get_scale_y" default="0.0">
+			Scale y.
 		</member>
 		<member name="scale_z" type="float" setter="set_scale_z" getter="get_scale_z" default="0.0">
+			Scale z.
 		</member>
 		<member name="stack_size" type="int" setter="set_stack_size" getter="get_stack_size" default="1">
+			Stack size.
 		</member>
 		<member name="stat_modifier_count" type="int" setter="stat_modifier_set_count" getter="stat_modifier_get_count" default="0">
+			Stat modifier count.
 		</member>
 		<member name="teaches_spells" type="Array" setter="set_teaches_spells" getter="get_teaches_spells" default="[  ]">
+			Teaches spells.
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+			Item name.
 		</member>
 		<member name="text_translation_key" type="String" setter="set_text_translation_key" getter="get_text_translation_key" default="&quot;&quot;">
+			Translation key.
 		</member>
 		<member name="use_spell" type="Spell" setter="set_use_spell" getter="get_use_spell">
+			Use spell.
 		</member>
 	</members>
 	<constants>
 		<constant name="MAX_ITEM_STAT_MOD" value="6">
+			Stat modifier limit.
 		</constant>
 	</constants>
 </class>

@@ -4,6 +4,7 @@
 		Runtime information for an item.
 	</brief_description>
 	<description>
+		Runtime information for an item.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,16 +13,21 @@
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Called by [method from_dict].
 			</description>
 		</method>
 		<method name="_get_description" qualifiers="virtual">
 			<return type="String" />
 			<description>
+				Returns the description for an item.
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Called by [method to_dict].
 			</description>
 		</method>
 		<method name="add_item_stat_modifier">
@@ -31,57 +37,68 @@
 			<argument index="2" name="bonus_mod" type="int" />
 			<argument index="3" name="percent_mod" type="int" />
 			<description>
+				Add a stat modifier.
 			</description>
 		</method>
 		<method name="clear_item_stat_modifiers">
 			<return type="void" />
 			<description>
+				Clear stat modifiers.
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="get_description">
 			<return type="String" />
 			<description>
+				Retutrns the description for an item.
 			</description>
 		</method>
 		<method name="remove_item_stat_modifier">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove a stat modifier.
 			</description>
 		</method>
 		<method name="stat_modifier_get_base_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat base modifier.
 			</description>
 		</method>
 		<method name="stat_modifier_get_bonus_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat bonus modifier.
 			</description>
 		</method>
 		<method name="stat_modifier_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns stat modifier count.
 			</description>
 		</method>
 		<method name="stat_modifier_get_percent_mod" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat percent modifier.
 			</description>
 		</method>
 		<method name="stat_modifier_get_stat_id" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns stat id.
 			</description>
 		</method>
 		<method name="stat_modifier_set_base_mod">
@@ -89,6 +106,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set stat base modifier.
 			</description>
 		</method>
 		<method name="stat_modifier_set_bonus_mod">
@@ -96,6 +114,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set stat bonus modifier.
 			</description>
 		</method>
 		<method name="stat_modifier_set_percent_mod">
@@ -103,6 +122,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set stat percent modifier.
 			</description>
 		</method>
 		<method name="stat_modifier_set_stat_id">
@@ -110,33 +130,42 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Set stat id.
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="charges" type="int" setter="set_charges" getter="get_charges" default="-1">
+			Item charges.
 		</member>
 		<member name="item_template" type="ItemTemplate" setter="set_item_template" getter="get_item_template">
+			Item template.
 		</member>
 		<member name="stack_size" type="int" setter="set_stack_size" getter="get_stack_size" default="1">
+			Current stack size.
 		</member>
 		<member name="stat_modifiers" type="Array" setter="stat_modifiers_set" getter="stat_modifiers_get" default="[  ]">
+			Stat modifiers.
 		</member>
 	</members>
 	<signals>
-		<signal name="stack_charges_changed">
+		<signal name="charges_changed">
 			<argument index="0" name="item" type="ItemInstance" />
 			<description>
+				Emitted when the charges changes.
 			</description>
 		</signal>
 		<signal name="stack_size_changed">
 			<argument index="0" name="item" type="ItemInstance" />
 			<description>
+				Emitted when the stack or charges changes.
 			</description>
 		</signal>
 	</signals>
