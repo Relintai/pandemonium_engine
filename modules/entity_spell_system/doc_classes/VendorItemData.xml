@@ -4,6 +4,7 @@
 		Contains vendor item data for an [Entity]/[EntityData].
 	</brief_description>
 	<description>
+		Contains vendor item data for an [Entity]/[EntityData].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,12 +12,14 @@
 		<method name="get_num_vendor_datas">
 			<return type="int" />
 			<description>
+				Return the number of vendor item data entries.
 			</description>
 		</method>
 		<method name="get_vendor_data">
 			<return type="VendorItemDataEntry" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return vendor item data entry.
 			</description>
 		</method>
 		<method name="set_vendor_data">
@@ -24,11 +27,13 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="vendor_data" type="VendorItemDataEntry" />
 			<description>
+				Set vendor item data entry.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="vendor_datas" type="Array" setter="set_vendor_datas" getter="get_vendor_datas" default="[  ]">
+			All vendor item data entries.
 		</member>
 	</members>
 	<constants>
