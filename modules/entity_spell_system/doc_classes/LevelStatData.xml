@@ -4,6 +4,7 @@
 		Base class for storing level stat information for entities.
 	</brief_description>
 	<description>
+		Base class for storing level stat information for entities.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -14,6 +15,7 @@
 			<argument index="1" name="old_level" type="int" />
 			<argument index="2" name="new_level" type="int" />
 			<description>
+				Returns the stat defference for the given levels.
 			</description>
 		</method>
 		<method name="get_stat_diff">
@@ -22,6 +24,7 @@
 			<argument index="1" name="old_level" type="int" />
 			<argument index="2" name="new_level" type="int" />
 			<description>
+				Returns the stat defference for the given levels.
 			</description>
 		</method>
 	</methods>
