@@ -4,6 +4,7 @@
 		Runtime model item entry helper for skeletons. Used by [CharacterSkeleton3D] for example.
 	</brief_description>
 	<description>
+		Runtime model item entry helper for skeletons. Used by [CharacterSkeleton3D] for example.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,12 +12,16 @@
 	</methods>
 	<members>
 		<member name="color" type="Color" setter="set_color" getter="get_color" default="Color( 1, 1, 1, 1 )">
+			Modulate color.
 		</member>
 		<member name="count" type="int" setter="set_count" getter="get_count" default="1">
+			Cout.
 		</member>
 		<member name="entry" type="ModelVisualEntry" setter="set_entry" getter="get_entry">
+			Model Visual Entry.
 		</member>
 		<member name="priority" type="int" setter="set_priority" getter="get_priority" default="0">
+			Proirity.
 		</member>
 	</members>
 	<constants>
