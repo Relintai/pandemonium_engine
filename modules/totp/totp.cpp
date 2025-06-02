@@ -68,7 +68,11 @@ String TOTP::get_secret_string() const {
 	return _secret_string;
 }
 void TOTP::set_secret_string(const String &p_secret) {
-	_secret_string = p_secret;
+	String normalized = p_secret.strip_edges().to_upper().replace(" ", "");
+
+	ERR_FAIL_COND(!is_valid_base32(normalized));
+
+	_secret_string = normalized;
 }
 
 String TOTP::generate_secret(const uint8_t p_length_bytes) {
@@ -80,8 +84,7 @@ String TOTP::generate_secret(const uint8_t p_length_bytes) {
 
 	PoolByteArray data = crypto->generate_random_bytes(p_length_bytes);
 
-	// TODO this is wrong, needs base32
-	String ret = CryptoCore::b64_encode_str(data.read().ptr(), data.size());
+	String ret = raw_to_base32(data);
 	ERR_FAIL_COND_V(ret == "", ret);
 	return ret;
 }
@@ -116,8 +119,7 @@ TOTP::TOTPResultData TOTP::calculate_hotp(const uint64_t p_counter) {
 		return d;
 	}
 
-	// TODO this is wrong, needs base32
-	PoolVector<uint8_t> secret_key_raw = _Marshalls::get_singleton()->base64_to_raw(_secret_string);
+	PoolVector<uint8_t> secret_key_raw = base32_to_raw(_secret_string);
 
 	// RFC 4226 recommends the value to be 160 bits (= 20 bytes) (it must be at least 128 bits (= 16 bytes))
 	if (secret_key_raw.size() < 16) {
@@ -274,6 +276,112 @@ int TOTP::dynamic_truncation(const PoolByteArray &p_hmac_result) const {
 	return token;
 }
 
+String TOTP::raw_to_base32(const PoolVector<uint8_t> &p_data) {
+	if (p_data.size() == 0) {
+		return String();
+	}
+
+	const char b32_alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+
+	int data_size = p_data.size();
+
+	uint64_t output_length = (data_size * 8 + 4) / 5;
+	PoolVector<uint8_t>::Read r = p_data.read();
+
+	String res;
+	res.set_length(output_length);
+
+	for (int i = 0, j = 0; i < data_size; i += 5) {
+		uint64_t data_slice = 0;
+
+		for (int k = 0; k < 5; ++k) {
+			int indx = i + k;
+
+			data_slice = (data_slice << 8) | (indx < data_size ? r[indx] : 0);
+		}
+
+		for (int s = 35; s >= 0; s -= 5) {
+			res[j++] = b32_alphabet[(data_slice >> s) & 0x1F];
+		}
+	}
+
+	return res;
+}
+
+PoolVector<uint8_t> TOTP::base32_to_raw(const String &p_str) {
+	PoolVector<uint8_t> buf;
+
+	if (p_str.length() == 0) {
+		return buf;
+	}
+
+	ERR_FAIL_COND_V(!is_valid_base32(p_str), buf);
+
+	const char b32_alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+
+	int strlen = p_str.length();
+	CharString cstr = p_str.ascii();
+	const char *cd = cstr.get_data();
+
+	int arr_next_index = 0;
+	{
+		buf.resize(Math::ceil(strlen / 1.6) + 0.001);
+		PoolVector<uint8_t>::Write w = buf.write();
+
+		uint8_t mask = 0;
+		uint8_t current_byte = 0;
+		int remaining_bits = 8;
+		for (int i = 0; i < strlen; ++i) {
+			char c = cd[i];
+			int char_alphabet_index = -1;
+
+			for (uint8_t j = 0; j < sizeof(b32_alphabet); ++j) {
+				if (c == b32_alphabet[j]) {
+					char_alphabet_index = j;
+					break;
+				}
+			}
+
+			if (remaining_bits > 5) {
+				mask = (uint8_t)char_alphabet_index << (remaining_bits - 5);
+				current_byte |= mask;
+				remaining_bits -= 5;
+			} else {
+				mask = (uint8_t)char_alphabet_index >> (5 - remaining_bits);
+				current_byte |= mask;
+				w[arr_next_index++] = current_byte;
+				current_byte = (uint8_t)(char_alphabet_index << (3 + remaining_bits));
+				remaining_bits += 3;
+			}
+		}
+	}
+	buf.resize(arr_next_index);
+
+	return buf;
+};
+
+bool TOTP::is_valid_base32(const String &p_str) {
+	if (p_str.empty()) {
+		return false;
+	}
+
+	CharString cstr = p_str.ascii();
+
+	int strlen = cstr.length();
+	const char *cd = cstr.get_data();
+
+	for (int i = 0; i < strlen; ++i) {
+		char c = cd[i];
+
+		// Base 32 alphabet: ABCDEFGHIJKLMNOPQRSTUVWXYZ234567=
+		if (!((c >= 'A' && c <= 'Z') || (c >= '2' && c <= '7') || c == '=')) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 TOTP::TOTP() {
 	_algorithm = TOTP_ALGORITHM_SHA1;
 	_digit_count = 6;
@@ -316,6 +424,10 @@ void TOTP::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("calculate_totp_time_point", "unix_time"), &TOTP::calculate_totp_time_point);
 
 	ClassDB::bind_method(D_METHOD("reset_to_defaults"), &TOTP::reset_to_defaults);
+
+	ClassDB::bind_method(D_METHOD("raw_to_base32", "data"), &TOTP::raw_to_base32);
+	ClassDB::bind_method(D_METHOD("base32_to_raw", "str"), &TOTP::base32_to_raw);
+	ClassDB::bind_method(D_METHOD("is_valid_base32", "str"), &TOTP::is_valid_base32);
 
 	BIND_ENUM_CONSTANT(TOTP_RESULT_OK);
 	BIND_ENUM_CONSTANT(TOTP_RESULT_VALIDATION_FAIL);

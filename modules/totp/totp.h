@@ -110,6 +110,10 @@ public:
 
 	int dynamic_truncation(const PoolByteArray &p_hmac_result) const;
 
+	String raw_to_base32(const PoolVector<uint8_t> &p_data);
+	PoolVector<uint8_t> base32_to_raw(const String &p_str);
+	bool is_valid_base32(const String &p_str);
+
 	TOTP();
 	~TOTP();
 
