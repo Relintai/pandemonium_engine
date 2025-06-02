@@ -31,12 +31,301 @@
 
 #include "totp.h"
 
+#include "core/bind/core_bind.h"
+#include "core/crypto/crypto.h"
+#include "core/crypto/crypto_core.h"
+#include "core/error/error_macros.h"
+#include "core/io/marshalls.h"
+#include "core/os/os.h"
+#include "core/typedefs.h"
+
+TOTP::TOTPAlgorithm TOTP::get_algorithm() const {
+	return _algorithm;
+}
+void TOTP::set_algorithm(const TOTPAlgorithm p_algorithm) {
+	_algorithm = p_algorithm;
+}
+
+uint8_t TOTP::get_digit_count() const {
+	return _digit_count;
+}
+void TOTP::set_digit_count(const uint8_t p_digits) {
+	ERR_FAIL_COND(p_digits < 6 || p_digits > 10);
+
+	_digit_count = p_digits;
+}
+
+uint8_t TOTP::get_period() const {
+	return _period;
+}
+void TOTP::set_period(const uint8_t p_period) {
+	ERR_FAIL_COND(p_period > 120);
+
+	_period = p_period;
+}
+
+String TOTP::get_secret_string() const {
+	return _secret_string;
+}
+void TOTP::set_secret_string(const String &p_secret) {
+	_secret_string = p_secret;
+}
+
+String TOTP::generate_secret(const uint8_t p_length_bytes) {
+	ERR_FAIL_COND_V_MSG(p_length_bytes < 16, String(), "RFC 4226: The length of the shared secret must be at least 128 bits = 16 bytes).");
+
+	Ref<Crypto> crypto = Ref<Crypto>(Crypto::create());
+
+	ERR_FAIL_COND_V(!crypto.is_valid(), String());
+
+	PoolByteArray data = crypto->generate_random_bytes(p_length_bytes);
+
+	// TODO this is wrong, needs base32
+	String ret = CryptoCore::b64_encode_str(data.read().ptr(), data.size());
+	ERR_FAIL_COND_V(ret == "", ret);
+	return ret;
+}
+void TOTP::create_secret(const uint8_t p_length_bytes) {
+	ERR_FAIL_COND_MSG(p_length_bytes < 16, "RFC 4226: The length of the shared secret must be at least 128 bits = 16 bytes).");
+
+	_secret_string = generate_secret(p_length_bytes);
+}
+
+String TOTP::get_uri() {
+	//TODO
+	return String();
+}
+
+TOTP::TOTPResultData TOTP::calculate_totp() {
+	return calculate_totp_at(OS::get_singleton()->get_unix_time());
+}
+TOTP::TOTPResultData TOTP::calculate_totp_at(const uint64_t p_unix_time) {
+	uint64_t counter = p_unix_time / _period;
+
+	TOTPResultData d = calculate_hotp(counter);
+
+	d.time_point = _period - p_unix_time % _period;
+
+	return d;
+}
+TOTP::TOTPResultData TOTP::calculate_hotp(const uint64_t p_counter) {
+	TOTPResultData d;
+
+	if (_secret_string.length() == 0) {
+		d.result = TOTP_RESULT_ERROR_SECRET_NOT_SET;
+		return d;
+	}
+
+	// TODO this is wrong, needs base32
+	PoolVector<uint8_t> secret_key_raw = _Marshalls::get_singleton()->base64_to_raw(_secret_string);
+
+	// RFC 4226 recommends the value to be 160 bits (= 20 bytes) (it must be at least 128 bits (= 16 bytes))
+	if (secret_key_raw.size() < 16) {
+		d.result = TOTP_RESULT_ERROR_SECRET_TOO_SHORT;
+		return d;
+	}
+
+	Ref<Crypto> crypto = Ref<Crypto>(Crypto::create());
+
+	if (!crypto.is_valid()) {
+		d.result = TOTP_RESULT_ERROR_NO_MBEDTLS;
+		return d;
+	}
+
+	// RFC 4226: The Key (K), the Counter (C), and Data values are hashed high-order byte first.
+	uint64_t counter = p_counter;
+#ifndef BIG_ENDIAN_ENABLED
+	counter = BSWAP64(counter);
+#endif
+
+	// RFC 4226: Step 1: Generate an HMAC-SHA-1 value Let HS = HMAC-SHA-1(K,C) is a 20-byte string
+
+	PoolByteArray c_msg;
+	c_msg.resize(sizeof(uint64_t));
+	encode_uint64(counter, c_msg.write().ptr());
+
+	HashingContext::HashType hash_type;
+
+	switch (_algorithm) {
+		case TOTP_ALGORITHM_SHA1:
+			hash_type = HashingContext::HASH_SHA1;
+			break;
+		case TOTP_ALGORITHM_SHA256:
+			hash_type = HashingContext::HASH_SHA256;
+			break;
+		default:
+			d.result = TOTP_RESULT_ERROR_UNKNOWN;
+			return d;
+	}
+
+	PoolByteArray result = crypto->hmac_digest(hash_type, secret_key_raw, c_msg);
+
+	// RFC 4226:
+	// Step 2: Generate a 4-byte string (Dynamic Truncation)
+	// Step 3: Compute an HOTP value
+	d.totp = dynamic_truncation(result);
+	return d;
+}
+
+TOTP::TOTPResult TOTP::validate_totp(const String &p_input) {
+	return validate_totp_at(OS::get_singleton()->get_unix_time(), p_input);
+}
+TOTP::TOTPResult TOTP::validate_totp_at(const uint64_t p_unix_time, const String &p_input) {
+	uint64_t counter = p_unix_time / _period;
+
+	return validate_hotp(counter, p_input);
+}
+TOTP::TOTPResult TOTP::validate_hotp(const uint64_t p_counter, const String &p_input) {
+	if (p_input.length() == 0 || !p_input.is_valid_unsigned_integer()) {
+		return TOTP_RESULT_VALIDATION_FAIL;
+	}
+
+	TOTPResultData d = calculate_hotp(p_counter);
+
+	if (d.result != TOTP_RESULT_OK) {
+		return d.result;
+	}
+
+	// validate input
+	int input_int = p_input.to_int();
+
+	if (d.totp == input_int) {
+		return TOTP_RESULT_OK;
+	} else {
+		return TOTP_RESULT_VALIDATION_FAIL;
+	}
+}
+
+Array TOTP::calculate_totp_bind() {
+	Array ret;
+
+	TOTPResultData d = calculate_totp();
+
+	ret.push_back(d.result);
+	ret.push_back(d.totp);
+	ret.push_back(d.time_point);
+
+	return ret;
+}
+Array TOTP::calculate_totp_at_bind(const uint64_t p_unix_time) {
+	Array ret;
+
+	TOTPResultData d = calculate_totp_at(p_unix_time);
+
+	ret.push_back(d.result);
+	ret.push_back(d.totp);
+	ret.push_back(d.time_point);
+
+	return ret;
+}
+Array TOTP::calculate_hotp_bind(const uint64_t p_counter) {
+	Array ret;
+
+	TOTPResultData d = calculate_hotp(p_counter);
+
+	ret.push_back(d.result);
+	ret.push_back(d.totp);
+	ret.push_back(d.time_point);
+
+	return ret;
+}
+
+uint64_t TOTP::calculate_totp_time_point(const uint64_t p_unix_time) {
+	return _period - p_unix_time % _period;
+}
+
+void TOTP::reset_to_defaults() {
+	_algorithm = TOTP_ALGORITHM_SHA1;
+	_digit_count = 6;
+	_period = 30;
+}
+
+int TOTP::dynamic_truncation(const PoolByteArray &p_hmac_result) const {
+	// RFC 4226:
+	// The Truncate function performs Step 2 and Step 3, i.e., the dynamic
+	// truncation and then the reduction modulo 10^Digit. The purpose of
+	// the dynamic offset truncation technique is to extract a 4-byte
+	// dynamic binary code from a 160-bit (20-byte) HMAC-SHA-1 result.
+
+	int hmac_result_size = p_hmac_result.size();
+
+	ERR_FAIL_COND_V(p_hmac_result.size() == 0, 0);
+
+	PoolByteArray::Read r = p_hmac_result.read();
+
+	// Let OffsetBits be the low-order 4 bits of String[19]
+	// Offset = StToNum(OffsetBits) // 0 <= OffSet <= 15
+	int offset = r[hmac_result_size - 1] & 0x0F;
+
+	ERR_FAIL_INDEX_V(offset + 3, hmac_result_size, 0);
+
+	// Let P = String[OffSet]...String[OffSet+3]
+	// Return the Last 31 bits of P
+	uint64_t bin_code = (r[offset] & 0x7f) << 24 | (r[offset + 1] & 0xff) << 16 | (r[offset + 2] & 0xff) << 8 | (r[offset + 3] & 0xff);
+
+	// Step 3: Compute an HOTP value
+	uint64_t d = 1;
+	for (int i = 0; i < _digit_count; ++i) {
+		d *= 10;
+	}
+
+	int token = static_cast<int>(bin_code % d);
+
+	return token;
+}
+
 TOTP::TOTP() {
+	_algorithm = TOTP_ALGORITHM_SHA1;
+	_digit_count = 6;
+	_period = 30;
 }
 
 TOTP::~TOTP() {
 }
 
 void TOTP::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("compress_data", "data"), &TOTP::compress_data);
+	ClassDB::bind_method(D_METHOD("get_algorithm"), &TOTP::get_algorithm);
+	ClassDB::bind_method(D_METHOD("set_algorithm", "algorithm"), &TOTP::set_algorithm);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "algorithm", PROPERTY_HINT_ENUM, "SHA1,SHA256,SHA512"), "set_algorithm", "get_algorithm");
+
+	ClassDB::bind_method(D_METHOD("get_digit_count"), &TOTP::get_digit_count);
+	ClassDB::bind_method(D_METHOD("set_digit_count", "digits"), &TOTP::set_digit_count);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "digit_count"), "set_digit_count", "get_digit_count");
+
+	ClassDB::bind_method(D_METHOD("get_period"), &TOTP::get_period);
+	ClassDB::bind_method(D_METHOD("set_period", "period"), &TOTP::set_period);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "period"), "set_period", "get_period");
+
+	ClassDB::bind_method(D_METHOD("get_secret_string"), &TOTP::get_secret_string);
+	ClassDB::bind_method(D_METHOD("set_secret_string", "secret"), &TOTP::set_secret_string);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "secret_string"), "set_secret_string", "get_secret_string");
+
+	ClassDB::bind_method(D_METHOD("generate_secret", "length_bytes"), &TOTP::generate_secret, DEFVAL(20));
+	ClassDB::bind_method(D_METHOD("create_secret", "length_bytes"), &TOTP::create_secret, DEFVAL(20));
+
+	ClassDB::bind_method(D_METHOD("get_uri"), &TOTP::get_uri);
+
+	ClassDB::bind_method(D_METHOD("calculate_totp"), &TOTP::calculate_totp_bind);
+	ClassDB::bind_method(D_METHOD("calculate_totp_at", "unix_time"), &TOTP::calculate_totp_at_bind);
+	ClassDB::bind_method(D_METHOD("calculate_hotp", "counter"), &TOTP::calculate_hotp_bind);
+
+	ClassDB::bind_method(D_METHOD("validate_totp", "input"), &TOTP::validate_totp);
+	ClassDB::bind_method(D_METHOD("validate_totp_at", "unix_time", "input"), &TOTP::validate_totp_at);
+	ClassDB::bind_method(D_METHOD("validate_hotp", "counter", "input"), &TOTP::validate_hotp);
+
+	ClassDB::bind_method(D_METHOD("calculate_totp_time_point", "unix_time"), &TOTP::calculate_totp_time_point);
+
+	ClassDB::bind_method(D_METHOD("reset_to_defaults"), &TOTP::reset_to_defaults);
+
+	BIND_ENUM_CONSTANT(TOTP_RESULT_OK);
+	BIND_ENUM_CONSTANT(TOTP_RESULT_VALIDATION_FAIL);
+	BIND_ENUM_CONSTANT(TOTP_RESULT_ERROR_SECRET_BAD_ENCODING);
+	BIND_ENUM_CONSTANT(TOTP_RESULT_ERROR_SECRET_TOO_SHORT);
+	BIND_ENUM_CONSTANT(TOTP_RESULT_ERROR_SECRET_NOT_SET);
+	BIND_ENUM_CONSTANT(TOTP_RESULT_ERROR_NO_MBEDTLS);
+	BIND_ENUM_CONSTANT(TOTP_RESULT_ERROR_UNKNOWN);
+
+	BIND_ENUM_CONSTANT(TOTP_ALGORITHM_SHA1);
+	BIND_ENUM_CONSTANT(TOTP_ALGORITHM_SHA256);
+	//BIND_ENUM_CONSTANT(TOTP_ALGORITHM_SHA512);
 }
