@@ -79,16 +79,16 @@ public:
 	String generate_secret(const uint8_t p_length_bytes = 20);
 	void create_secret(const uint8_t p_length_bytes = 20);
 
-	String get_uri();
+	String get_otpauth_uri();
 
 	struct TOTPResultData {
 		TOTPResult result;
 		int totp;
-		uint64_t time_point;
+		uint64_t time_period;
 
 		TOTPResultData() {
 			result = TOTP_RESULT_OK;
-			time_point = 0;
+			time_period = 0;
 		}
 	};
 
@@ -104,7 +104,7 @@ public:
 	Array calculate_totp_at_bind(const uint64_t p_unix_time);
 	Array calculate_hotp_bind(const uint64_t p_counter);
 
-	uint64_t calculate_totp_time_point(const uint64_t p_unix_time);
+	uint64_t calculate_totp_time_period(const uint64_t p_unix_time);
 
 	void reset_to_defaults();
 

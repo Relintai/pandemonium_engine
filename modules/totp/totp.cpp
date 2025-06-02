@@ -94,7 +94,7 @@ void TOTP::create_secret(const uint8_t p_length_bytes) {
 	_secret_string = generate_secret(p_length_bytes);
 }
 
-String TOTP::get_uri() {
+String TOTP::get_otpauth_uri() {
 	//TODO
 	return String();
 }
@@ -107,7 +107,7 @@ TOTP::TOTPResultData TOTP::calculate_totp_at(const uint64_t p_unix_time) {
 
 	TOTPResultData d = calculate_hotp(counter);
 
-	d.time_point = _period - p_unix_time % _period;
+	d.time_period = _period - p_unix_time % _period;
 
 	return d;
 }
@@ -205,7 +205,7 @@ Array TOTP::calculate_totp_bind() {
 
 	ret.push_back(d.result);
 	ret.push_back(d.totp);
-	ret.push_back(d.time_point);
+	ret.push_back(d.time_period);
 
 	return ret;
 }
@@ -216,7 +216,7 @@ Array TOTP::calculate_totp_at_bind(const uint64_t p_unix_time) {
 
 	ret.push_back(d.result);
 	ret.push_back(d.totp);
-	ret.push_back(d.time_point);
+	ret.push_back(d.time_period);
 
 	return ret;
 }
@@ -227,12 +227,12 @@ Array TOTP::calculate_hotp_bind(const uint64_t p_counter) {
 
 	ret.push_back(d.result);
 	ret.push_back(d.totp);
-	ret.push_back(d.time_point);
+	ret.push_back(d.time_period);
 
 	return ret;
 }
 
-uint64_t TOTP::calculate_totp_time_point(const uint64_t p_unix_time) {
+uint64_t TOTP::calculate_totp_time_period(const uint64_t p_unix_time) {
 	return _period - p_unix_time % _period;
 }
 
@@ -411,7 +411,7 @@ void TOTP::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("generate_secret", "length_bytes"), &TOTP::generate_secret, DEFVAL(20));
 	ClassDB::bind_method(D_METHOD("create_secret", "length_bytes"), &TOTP::create_secret, DEFVAL(20));
 
-	ClassDB::bind_method(D_METHOD("get_uri"), &TOTP::get_uri);
+	ClassDB::bind_method(D_METHOD("get_otpauth_uri"), &TOTP::get_otpauth_uri);
 
 	ClassDB::bind_method(D_METHOD("calculate_totp"), &TOTP::calculate_totp_bind);
 	ClassDB::bind_method(D_METHOD("calculate_totp_at", "unix_time"), &TOTP::calculate_totp_at_bind);
@@ -421,7 +421,7 @@ void TOTP::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("validate_totp_at", "unix_time", "input"), &TOTP::validate_totp_at);
 	ClassDB::bind_method(D_METHOD("validate_hotp", "counter", "input"), &TOTP::validate_hotp);
 
-	ClassDB::bind_method(D_METHOD("calculate_totp_time_point", "unix_time"), &TOTP::calculate_totp_time_point);
+	ClassDB::bind_method(D_METHOD("calculate_totp_time_period", "unix_time"), &TOTP::calculate_totp_time_period);
 
 	ClassDB::bind_method(D_METHOD("reset_to_defaults"), &TOTP::reset_to_defaults);
 

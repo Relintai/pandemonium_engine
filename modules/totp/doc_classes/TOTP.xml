@@ -51,7 +51,7 @@
 				[2]: Time period.[/code]
 			</description>
 		</method>
-		<method name="calculate_totp_time_point">
+		<method name="calculate_totp_time_period">
 			<return type="int" />
 			<argument index="0" name="unix_time" type="int" />
 			<description>
@@ -74,7 +74,7 @@
 				RFC 4226 recommends the value to be 160 bits long (= 20 bytes) (it must be at least 128 bits long (= 16 bytes)).
 			</description>
 		</method>
-		<method name="get_uri">
+		<method name="get_otpauth_uri">
 			<return type="String" />
 			<description>
 			</description>
