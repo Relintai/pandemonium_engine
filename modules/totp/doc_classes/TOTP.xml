@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TOTP" inherits="Reference">
+	<brief_description>
+		Timed One TIme Password generator.
+	</brief_description>
+	<description>
+		Timed One TIme Password generator.
+		Can be used for implementing 2 factor authentication. RFC 4226 and RFC 6238.
+		Works with password managers like KeepAssXC. However note that apparently there are authenticator apps for mobile devices that does not support non-default settings. So if you expect users to use their own password managers the default values are recommended. FOr reference tese are: digits = 6, period = 30, algorithm = TOTP_ALGORITHM_SHA1.
+		Note that the SHA512 based algorithm is not yet implemented.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="base32_to_raw">
+			<return type="PoolByteArray" />
+			<argument index="0" name="str" type="String" />
+			<description>
+				Decode base32.
+			</description>
+		</method>
+		<method name="calculate_hotp">
+			<return type="Array" />
+			<argument index="0" name="counter" type="int" />
+			<description>
+				Calculate HOTP value.
+				The returned array contains:
+				[code][0]: Value from TOTPResult Enum.
+				[1]: HOTP value.
+				[2]: Time period (always 0 in this case).[/code]
+			</description>
+		</method>
+		<method name="calculate_totp">
+			<return type="Array" />
+			<description>
+				Calculate TOTP value at present time.
+				The returned array contains:
+				[code][0]: Value from TOTPResult Enum.
+				[1]: HOTP value.
+				[2]: Time period.[/code]
+			</description>
+		</method>
+		<method name="calculate_totp_at">
+			<return type="Array" />
+			<argument index="0" name="unix_time" type="int" />
+			<description>
+				Calculate TOTP value at the given time.
+				The returned array contains:
+				[code][0]: Value from TOTPResult Enum.
+				[1]: HOTP value.
+				[2]: Time period.[/code]
+			</description>
+		</method>
+		<method name="calculate_totp_time_point">
+			<return type="int" />
+			<argument index="0" name="unix_time" type="int" />
+			<description>
+				Calculates time point for the given unix time.
+			</description>
+		</method>
+		<method name="create_secret">
+			<return type="void" />
+			<argument index="0" name="length_bytes" type="int" default="20" />
+			<description>
+				Generates and sets a base32 encoded secret key of the given length.
+				RFC 4226 recommends the value to be 160 bits long (= 20 bytes) (it must be at least 128 bits long (= 16 bytes)).
+			</description>
+		</method>
+		<method name="generate_secret">
+			<return type="String" />
+			<argument index="0" name="length_bytes" type="int" default="20" />
+			<description>
+				Generate a base32 encoded secret key of the given length.
+				RFC 4226 recommends the value to be 160 bits long (= 20 bytes) (it must be at least 128 bits long (= 16 bytes)).
+			</description>
+		</method>
+		<method name="get_uri">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="is_valid_base32">
+			<return type="bool" />
+			<argument index="0" name="str" type="String" />
+			<description>
+				CHecks if the given string is valid base32.
+			</description>
+		</method>
+		<method name="raw_to_base32">
+			<return type="String" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<description>
+				Encodes data as a base32 string.
+			</description>
+		</method>
+		<method name="reset_to_defaults">
+			<return type="void" />
+			<description>
+				Reset everything to the default.
+			</description>
+		</method>
+		<method name="validate_hotp">
+			<return type="int" enum="TOTP.TOTPResult" />
+			<argument index="0" name="counter" type="int" />
+			<argument index="1" name="input" type="String" />
+			<description>
+				Validates HOTP input.
+			</description>
+		</method>
+		<method name="validate_totp">
+			<return type="int" enum="TOTP.TOTPResult" />
+			<argument index="0" name="input" type="String" />
+			<description>
+				Validates totp input.
+			</description>
+		</method>
+		<method name="validate_totp_at">
+			<return type="int" enum="TOTP.TOTPResult" />
+			<argument index="0" name="unix_time" type="int" />
+			<argument index="1" name="input" type="String" />
+			<description>
+				Validates totp input at the given time.
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="algorithm" type="int" setter="set_algorithm" getter="get_algorithm" enum="TOTP.TOTPAlgorithm" default="0">
+			Hash algorithm.
+		</member>
+		<member name="digit_count" type="int" setter="set_digit_count" getter="get_digit_count" default="6">
+			Digit count that the user will need to type in. Have to be between 6 and 10.
+			RFC 4226: The value displayed on the token MUST be easily read and entered by the user: This requires the HOTP value to be of reasonable length. The HOTP value must be at least a 6-digit value.
+			Implementations MUST extract a 6-digit code at a minimum and possibly 7 and 8-digit code. Depending on security requirements, Digit = 7 or more SHOULD be considered in order to extract a longer HOTP value.
+		</member>
+		<member name="period" type="int" setter="set_period" getter="get_period" default="30">
+			The tokens will be usable for this many seconds.
+		</member>
+		<member name="secret_string" type="String" setter="set_secret_string" getter="get_secret_string" default="&quot;&quot;">
+			The secret base32 encoded string.
+			RFC 4226 recommends the value to be 160 bits long (= 20 bytes) (it must be at least 128 bits long (= 16 bytes)).
+		</member>
+	</members>
+	<constants>
+		<constant name="TOTP_RESULT_OK" value="0" enum="TOTPResult">
+			Validation ok.
+		</constant>
+		<constant name="TOTP_RESULT_VALIDATION_FAIL" value="1" enum="TOTPResult">
+			Validation fail. The user entered the wrong code.
+		</constant>
+		<constant name="TOTP_RESULT_ERROR_SECRET_BAD_ENCODING" value="2" enum="TOTPResult">
+			The secret is not a proper base32 encoded string.
+		</constant>
+		<constant name="TOTP_RESULT_ERROR_SECRET_TOO_SHORT" value="3" enum="TOTPResult">
+			The secret is too short.
+		</constant>
+		<constant name="TOTP_RESULT_ERROR_SECRET_NOT_SET" value="4" enum="TOTPResult">
+			The secret is empty.
+		</constant>
+		<constant name="TOTP_RESULT_ERROR_NO_MBEDTLS" value="5" enum="TOTPResult">
+			The engine was compiled without the mbedtls module.
+		</constant>
+		<constant name="TOTP_RESULT_ERROR_UNKNOWN" value="6" enum="TOTPResult">
+			Generic error.
+		</constant>
+		<constant name="TOTP_ALGORITHM_SHA1" value="0" enum="TOTPAlgorithm">
+			SHA1 TOTP algorithm.
+		</constant>
+		<constant name="TOTP_ALGORITHM_SHA256" value="1" enum="TOTPAlgorithm">
+			SHA256 TOTP algorithm.
+		</constant>
+	</constants>
+</class>
