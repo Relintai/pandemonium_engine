@@ -79,7 +79,7 @@ public:
 	String generate_secret(const uint8_t p_length_bytes = 20);
 	void create_secret(const uint8_t p_length_bytes = 20);
 
-	String get_otpauth_uri();
+	String get_otpauth_uri(const String &p_issuer, const String &p_label, const String &p_image_url = String(), const bool is_totp = true, const int p_hotp_counter = 0);
 
 	struct TOTPResultData {
 		TOTPResult result;

@@ -94,9 +94,42 @@ void TOTP::create_secret(const uint8_t p_length_bytes) {
 	_secret_string = generate_secret(p_length_bytes);
 }
 
-String TOTP::get_otpauth_uri() {
-	//TODO
-	return String();
+String TOTP::get_otpauth_uri(const String &p_issuer, const String &p_label, const String &p_image_url, const bool is_totp, const int p_hotp_counter) {
+	String uri;
+
+	if (is_totp) {
+		uri = "otpauth://totp/";
+	} else {
+		uri = "otpauth://hotp/";
+	}
+
+	uri += p_issuer.uri_encode();
+	uri += "%3A"; // ":" uri encoded
+	uri += p_label.uri_encode();
+	uri += "?secret=" + _secret_string.uri_encode();
+	uri += "&issuer=" + p_issuer.uri_encode();
+
+	if (_period != 30) {
+		uri += "&period=" + String::num_int64(_period);
+	}
+
+	if (_digit_count != 6) {
+		uri += "&digits=" + String::num_int64(_digit_count);
+	}
+
+	if (_algorithm == TOTP_ALGORITHM_SHA256) {
+		uri += "&algorithm=SHA256";
+	}
+
+	if (!p_image_url.empty()) {
+		uri += "&image=" + p_image_url.uri_encode();
+	}
+
+	if (!is_totp) {
+		uri += "&counter=" + String::num_int64(p_hotp_counter);
+	}
+
+	return uri;
 }
 
 TOTP::TOTPResultData TOTP::calculate_totp() {
@@ -411,7 +444,7 @@ void TOTP::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("generate_secret", "length_bytes"), &TOTP::generate_secret, DEFVAL(20));
 	ClassDB::bind_method(D_METHOD("create_secret", "length_bytes"), &TOTP::create_secret, DEFVAL(20));
 
-	ClassDB::bind_method(D_METHOD("get_otpauth_uri"), &TOTP::get_otpauth_uri);
+	ClassDB::bind_method(D_METHOD("get_otpauth_uri", "issuer", "label", "image_url", "is_totp", "hotp_counter"), &TOTP::get_otpauth_uri, DEFVAL(String()), DEFVAL(true), DEFVAL(0));
 
 	ClassDB::bind_method(D_METHOD("calculate_totp"), &TOTP::calculate_totp_bind);
 	ClassDB::bind_method(D_METHOD("calculate_totp_at", "unix_time"), &TOTP::calculate_totp_at_bind);

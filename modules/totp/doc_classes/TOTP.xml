@@ -76,7 +76,15 @@
 		</method>
 		<method name="get_otpauth_uri">
 			<return type="String" />
+			<argument index="0" name="issuer" type="String" />
+			<argument index="1" name="label" type="String" />
+			<argument index="2" name="image_url" type="String" default="&quot;&quot;" />
+			<argument index="3" name="is_totp" type="bool" default="true" />
+			<argument index="4" name="hotp_counter" type="int" default="0" />
 			<description>
+				Generates an otpauth uri.
+				Can be used to provide a qr code for totp setup.
+				The hotp counter parameter is only used if is_totp is false.
 			</description>
 		</method>
 		<method name="is_valid_base32">
