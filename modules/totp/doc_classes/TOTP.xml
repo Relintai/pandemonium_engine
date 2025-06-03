@@ -66,6 +66,20 @@
 				RFC 4226 recommends the value to be 160 bits long (= 20 bytes) (it must be at least 128 bits long (= 16 bytes)).
 			</description>
 		</method>
+		<method name="from_dict">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+				Restores internal state using the dictionary received from [method to_dict].
+			</description>
+		</method>
+		<method name="from_json">
+			<return type="void" />
+			<argument index="0" name="data" type="String" />
+			<description>
+				Restores internal state from json.
+			</description>
+		</method>
 		<method name="generate_secret">
 			<return type="String" />
 			<argument index="0" name="length_bytes" type="int" default="20" />
@@ -105,6 +119,18 @@
 			<return type="void" />
 			<description>
 				Reset everything to the default.
+			</description>
+		</method>
+		<method name="to_dict">
+			<return type="Dictionary" />
+			<description>
+				Returns the internal state as a [Dictionary].
+			</description>
+		</method>
+		<method name="to_json">
+			<return type="String" />
+			<description>
+				Returns the internal state as json.
 			</description>
 		</method>
 		<method name="validate_hotp">

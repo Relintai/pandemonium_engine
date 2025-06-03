@@ -114,6 +114,12 @@ public:
 	PoolVector<uint8_t> base32_to_raw(const String &p_str);
 	bool is_valid_base32(const String &p_str);
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	String to_json();
+	void from_json(const String &data);
+
 	TOTP();
 	~TOTP();
 

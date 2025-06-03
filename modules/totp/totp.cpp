@@ -35,6 +35,7 @@
 #include "core/crypto/crypto.h"
 #include "core/crypto/crypto_core.h"
 #include "core/error/error_macros.h"
+#include "core/io/json.h"
 #include "core/io/marshalls.h"
 #include "core/os/os.h"
 #include "core/typedefs.h"
@@ -415,6 +416,40 @@ bool TOTP::is_valid_base32(const String &p_str) {
 	return true;
 }
 
+Dictionary TOTP::to_dict() {
+	Dictionary dict;
+
+	dict["_algorithm"] = _algorithm;
+	dict["_digit_count"] = _digit_count;
+	dict["_period"] = _period;
+	dict["_secret_string"] = _secret_string;
+
+	return dict;
+}
+void TOTP::from_dict(const Dictionary &dict) {
+	_algorithm = (TOTPAlgorithm)(int)dict["_algorithm"];
+	_digit_count = dict["_digit_count"];
+	_period = dict["_period"];
+	_secret_string = dict["_secret_string"];
+}
+
+String TOTP::to_json() {
+	return JSON::print(to_dict());
+}
+void TOTP::from_json(const String &data) {
+	Error err;
+	String err_txt;
+	int err_line;
+	Variant v;
+	err = JSON::parse(data, v, err_txt, err_line);
+
+	ERR_FAIL_COND(err != OK);
+
+	Dictionary d = v;
+
+	from_dict(d);
+}
+
 TOTP::TOTP() {
 	_algorithm = TOTP_ALGORITHM_SHA1;
 	_digit_count = 6;
@@ -461,6 +496,12 @@ void TOTP::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("raw_to_base32", "data"), &TOTP::raw_to_base32);
 	ClassDB::bind_method(D_METHOD("base32_to_raw", "str"), &TOTP::base32_to_raw);
 	ClassDB::bind_method(D_METHOD("is_valid_base32", "str"), &TOTP::is_valid_base32);
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &TOTP::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &TOTP::to_dict);
+
+	ClassDB::bind_method(D_METHOD("to_json"), &TOTP::to_json);
+	ClassDB::bind_method(D_METHOD("from_json", "data"), &TOTP::from_json);
 
 	BIND_ENUM_CONSTANT(TOTP_RESULT_OK);
 	BIND_ENUM_CONSTANT(TOTP_RESULT_VALIDATION_FAIL);
