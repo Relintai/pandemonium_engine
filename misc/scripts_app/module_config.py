@@ -105,6 +105,7 @@ slim_args = ''
 #slim_args += 'module_tinyexr_enabled=no '
 #slim_args += 'module_jsonrpc_enabled=no '
 #slim_args += 'module_layered_tile_map_enabled=no '
+#slim_args += 'module_totp_enabled=no '
 
 #slim_args += 'disable_advanced_gui=yes '
 #slim_args += 'disable_3d=yes '
