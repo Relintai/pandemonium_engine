@@ -69,6 +69,9 @@ public:
 	bool has_cached_body(const StringName &p_key);
 	String get_cached_body(const StringName &p_key);
 	void set_cached_body(const StringName &p_key, const String &p_body);
+	void remove_cached_body(const StringName &p_key);
+	List<StringName> get_cached_keys();
+	Array get_cached_keys_bind();
 
 	void clear();
 	void clear_expired();

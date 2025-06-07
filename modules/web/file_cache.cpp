@@ -329,6 +329,33 @@ void FileCache::set_cached_body(const StringName &p_key, const String &p_body) {
 	_body_lock.write_unlock();
 }
 
+void FileCache::remove_cached_body(const StringName &p_key) {
+	_body_lock.write_lock();
+	_cache_map.erase(p_key);
+	_body_lock.write_unlock();
+}
+List<StringName> FileCache::get_cached_keys() {
+	List<StringName> keys;
+	_body_lock.read_lock();
+	_cache_map.get_key_list(&keys);
+	_body_lock.read_unlock();
+	return keys;
+}
+Array FileCache::get_cached_keys_bind() {
+	List<StringName> keys;
+	_body_lock.read_lock();
+	_cache_map.get_key_list(&keys);
+	_body_lock.read_unlock();
+
+	Array arr;
+
+	for (List<StringName>::Element *E = keys.front(); E; E = E->next()) {
+		arr.push_back(E->get());
+	}
+
+	return arr;
+}
+
 void FileCache::clear() {
 	_body_lock.write_lock();
 	_cache_map.clear();
@@ -391,6 +418,8 @@ void FileCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("has_cached_body", "key"), &FileCache::has_cached_body);
 	ClassDB::bind_method(D_METHOD("get_cached_body", "key"), &FileCache::get_cached_body);
 	ClassDB::bind_method(D_METHOD("set_cached_body", "key", "body"), &FileCache::set_cached_body);
+	ClassDB::bind_method(D_METHOD("remove_cached_body", "key"), &FileCache::remove_cached_body);
+	ClassDB::bind_method(D_METHOD("get_cached_keys"), &FileCache::get_cached_keys_bind);
 
 	ClassDB::bind_method(D_METHOD("clear"), &FileCache::clear);
 	ClassDB::bind_method(D_METHOD("clear_expired"), &FileCache::clear_expired);
