@@ -167,14 +167,16 @@ String FileCache::wwwroot_get_simplified_abs_path(const String &file_path) {
 
 bool FileCache::has_cached_body(const StringName &p_path) {
 	_body_lock.read_lock();
-	CacheEntry *e = cache_map[p_path];
+	CacheEntry **eptr = _cache_map.getptr(p_path);
 	_body_lock.read_unlock();
 
-	if (!e) {
+	if (!eptr) {
 		return false;
 	}
 
 	if (_cache_invalidation_time > 0) {
+		CacheEntry *e = *eptr;
+
 		uint64_t current_timestamp = OS::get_singleton()->get_unix_time();
 		uint64_t diff = current_timestamp - e->timestamp;
 
@@ -188,12 +190,14 @@ bool FileCache::has_cached_body(const StringName &p_path) {
 
 String FileCache::get_cached_body(const StringName &p_path) {
 	_body_lock.read_lock();
-	CacheEntry *e = cache_map[p_path];
+	CacheEntry **eptr = _cache_map.getptr(p_path);
 	_body_lock.read_unlock();
 
-	if (!e) {
+	if (!eptr) {
 		return "";
 	}
+
+	CacheEntry *e = *eptr;
 
 	if (_cache_invalidation_time > 0) {
 		uint64_t current_timestamp = OS::get_singleton()->get_unix_time();
@@ -210,11 +214,14 @@ String FileCache::get_cached_body(const StringName &p_path) {
 void FileCache::set_cached_body(const StringName &p_path, const String &body) {
 	_body_lock.write_lock();
 
-	CacheEntry *e = cache_map[p_path];
+	CacheEntry **eptr = _cache_map.getptr(p_path);
+	CacheEntry *e = NULL;
 
-	if (!e) {
+	if (!eptr) {
 		e = memnew(CacheEntry());
-		cache_map[p_path] = e;
+		_cache_map[p_path] = e;
+	} else {
+		e = *eptr;
 	}
 
 	uint64_t current_timestamp = OS::get_singleton()->get_unix_time();
@@ -228,7 +235,7 @@ void FileCache::set_cached_body(const StringName &p_path, const String &body) {
 void FileCache::clear() {
 	_body_lock.write_lock();
 
-	for (RBMap<StringName, CacheEntry *>::Element *E = cache_map.front(); E; E++) {
+	for (HashMap<StringName, CacheEntry *>::Element *E = _cache_map.front(); E; E++) {
 		CacheEntry *ce = E->get();
 
 		if (ce) {
@@ -236,7 +243,7 @@ void FileCache::clear() {
 		}
 	}
 
-	cache_map.clear();
+	_cache_map.clear();
 
 	_body_lock.write_unlock();
 }

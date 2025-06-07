@@ -33,7 +33,7 @@
 /*************************************************************************/
 
 #include "core/containers/hash_map.h"
-#include "core/containers/rb_map.h"
+#include "core/containers/hash_map.h"
 #include "core/containers/vector.h"
 #include "core/os/os.h"
 #include "core/os/rw_lock.h"
@@ -89,7 +89,7 @@ protected:
 	};
 
 	RWLock _body_lock;
-	RBMap<StringName, CacheEntry *> cache_map;
+	HashMap<StringName, CacheEntry *> _cache_map;
 };
 
 #endif
