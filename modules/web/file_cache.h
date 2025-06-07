@@ -59,6 +59,11 @@ public:
 	bool wwwroot_has_file(const String &file_path);
 	String wwwroot_get_file_abspath(const String &file_path);
 
+	bool wwwroot_has_folder(const String &p_url_folder_path);
+	String wwwroot_get_folder_abspath(const String &p_url_folder_path);
+
+	bool wwwroot_path_exists(const String &p_url_path);
+
 	String wwwroot_get_simplified_abs_path(const String &file_path);
 
 	bool has_cached_body(const StringName &p_path);

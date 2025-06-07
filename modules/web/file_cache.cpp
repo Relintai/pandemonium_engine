@@ -152,6 +152,95 @@ String FileCache::wwwroot_get_file_abspath(const String &file_path) {
 	return absp;
 }
 
+bool FileCache::wwwroot_has_folder(const String &p_url_folder_path) {
+	if (p_url_folder_path.empty()) {
+		return false;
+	}
+
+	String fp = _wwwroot_abs + p_url_folder_path;
+
+	fp = fp.simplify_path();
+
+	// Don't allow going outside wwwroot
+	if (!fp.begins_with(_wwwroot_abs)) {
+		return false;
+	}
+
+	if (!DirAccess::exists(fp)) {
+		return false;
+	}
+
+	if (fp.begins_with("res://")) {
+		return true;
+	}
+
+	String absp = DirAccess::get_filesystem_abspath_for(fp);
+
+	//likely a directory walking attempt. e.g. ../../../../../etc/passwd
+	if (!absp.begins_with(_wwwroot_abs)) {
+		return false;
+	}
+
+	return true;
+}
+String FileCache::wwwroot_get_folder_abspath(const String &p_url_folder_path) {
+	if (p_url_folder_path.empty()) {
+		return String();
+	}
+
+	String fp = _wwwroot_abs + p_url_folder_path;
+
+	fp = fp.simplify_path();
+
+	// Don't allow going outside wwwroot
+	if (!fp.begins_with(_wwwroot_abs)) {
+		return String();
+	}
+
+	if (!DirAccess::exists(fp)) {
+		return String();
+	}
+
+	if (fp.begins_with("res://")) {
+		return fp;
+	}
+
+	String absp = DirAccess::get_filesystem_abspath_for(fp);
+
+	//likely a directory walking attempt. e.g. ../../../../../etc/passwd
+	if (!absp.begins_with(_wwwroot_abs)) {
+		return String();
+	}
+
+	return String();
+}
+
+bool FileCache::wwwroot_path_exists(const String &p_url_path) {
+	if (p_url_path.empty()) {
+		return false;
+	}
+
+	String fp = _wwwroot_abs + p_url_path;
+
+	fp = fp.simplify_path();
+
+	// Don't allow going outside wwwroot
+	if (!fp.begins_with(_wwwroot_abs)) {
+		return false;
+	}
+
+	DirAccess *da = DirAccess::create_for_path(fp);
+
+	if (!da) {
+		return false;
+	}
+
+	bool exists = da->dir_exists(fp) || da->file_exists(fp);
+	memdelete(da);
+
+	return exists;
+}
+
 String FileCache::wwwroot_get_simplified_abs_path(const String &file_path) {
 	String fp = _wwwroot_abs + file_path;
 
@@ -293,6 +382,11 @@ void FileCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("wwwroot_has_file", "file_path"), &FileCache::wwwroot_has_file);
 	ClassDB::bind_method(D_METHOD("wwwroot_get_file_abspath", "file_path"), &FileCache::wwwroot_get_file_abspath);
+
+	ClassDB::bind_method(D_METHOD("wwwroot_has_folder", "url_folder_path"), &FileCache::wwwroot_has_folder);
+	ClassDB::bind_method(D_METHOD("wwwroot_get_folder_abspath", "url_folder_path"), &FileCache::wwwroot_get_folder_abspath);
+
+	ClassDB::bind_method(D_METHOD("wwwroot_path_exists", "url_path"), &FileCache::wwwroot_path_exists);
 
 	ClassDB::bind_method(D_METHOD("wwwroot_get_simplified_abs_path", "file_path"), &FileCache::wwwroot_get_simplified_abs_path);
 
