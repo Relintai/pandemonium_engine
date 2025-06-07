@@ -66,9 +66,9 @@ public:
 
 	String wwwroot_get_simplified_abs_path(const String &p_url_path);
 
-	bool has_cached_body(const StringName &p_path);
-	String get_cached_body(const StringName &p_path);
-	void set_cached_body(const StringName &p_path, const String &p_body);
+	bool has_cached_body(const StringName &p_key);
+	String get_cached_body(const StringName &p_key);
+	void set_cached_body(const StringName &p_key, const String &p_body);
 
 	void clear();
 	void clear_expired();

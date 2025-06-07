@@ -252,9 +252,9 @@ String FileCache::wwwroot_get_simplified_abs_path(const String &p_url_path) {
 	return fp;
 }
 
-bool FileCache::has_cached_body(const StringName &p_path) {
+bool FileCache::has_cached_body(const StringName &p_key) {
 	_body_lock.read_lock();
-	CacheEntry *eptr = _cache_map.getptr(p_path);
+	CacheEntry *eptr = _cache_map.getptr(p_key);
 
 	if (!eptr) {
 		_body_lock.read_unlock();
@@ -278,9 +278,9 @@ bool FileCache::has_cached_body(const StringName &p_path) {
 	return true;
 }
 
-String FileCache::get_cached_body(const StringName &p_path) {
+String FileCache::get_cached_body(const StringName &p_key) {
 	_body_lock.read_lock();
-	CacheEntry *eptr = _cache_map.getptr(p_path);
+	CacheEntry *eptr = _cache_map.getptr(p_key);
 
 	if (!eptr) {
 		_body_lock.read_unlock();
@@ -298,12 +298,12 @@ String FileCache::get_cached_body(const StringName &p_path) {
 			_body_lock.write_lock();
 
 			// Could have changed, need to check again
-			const CacheEntry &ce = _cache_map[p_path];
+			const CacheEntry &ce = _cache_map[p_key];
 
 			diff = current_timestamp - ce.timestamp;
 
 			if (diff > _cache_invalidation_time) {
-				_cache_map.erase(p_path);
+				_cache_map.erase(p_key);
 				_body_lock.write_unlock();
 
 				return String();
@@ -317,14 +317,14 @@ String FileCache::get_cached_body(const StringName &p_path) {
 	return e.body;
 }
 
-void FileCache::set_cached_body(const StringName &p_path, const String &body) {
+void FileCache::set_cached_body(const StringName &p_key, const String &p_body) {
 	_body_lock.write_lock();
 
 	CacheEntry e;
 	e.timestamp = OS::get_singleton()->get_unix_time();
-	e.body = body;
+	e.body = p_body;
 
-	_cache_map[p_path] = e;
+	_cache_map[p_key] = e;
 
 	_body_lock.write_unlock();
 }
@@ -388,9 +388,9 @@ void FileCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("wwwroot_get_simplified_abs_path", "url_path"), &FileCache::wwwroot_get_simplified_abs_path);
 
-	ClassDB::bind_method(D_METHOD("has_cached_body", "path"), &FileCache::has_cached_body);
-	ClassDB::bind_method(D_METHOD("get_cached_body", "path"), &FileCache::get_cached_body);
-	ClassDB::bind_method(D_METHOD("set_cached_body", "path", "body"), &FileCache::set_cached_body);
+	ClassDB::bind_method(D_METHOD("has_cached_body", "key"), &FileCache::has_cached_body);
+	ClassDB::bind_method(D_METHOD("get_cached_body", "key"), &FileCache::get_cached_body);
+	ClassDB::bind_method(D_METHOD("set_cached_body", "key", "body"), &FileCache::set_cached_body);
 
 	ClassDB::bind_method(D_METHOD("clear"), &FileCache::clear);
 	ClassDB::bind_method(D_METHOD("clear_expired"), &FileCache::clear_expired);
