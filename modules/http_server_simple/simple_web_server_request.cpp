@@ -180,6 +180,9 @@ Error SimpleWebServerRequest::move_file(const int index, const String &p_dest_fi
 
 		f->store_buffer(rptr, e.data.size());
 
+		f->close();
+		memdelete(f);
+
 		return OK;
 	}
 
