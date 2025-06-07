@@ -90,7 +90,7 @@ protected:
 	};
 
 	RWLock _body_lock;
-	HashMap<StringName, CacheEntry *> _cache_map;
+	HashMap<StringName, CacheEntry> _cache_map;
 };
 
 #endif
