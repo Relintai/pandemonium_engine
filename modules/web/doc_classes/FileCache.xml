@@ -20,7 +20,7 @@
 		</method>
 		<method name="get_cached_body">
 			<return type="String" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 				Get a previously stored page's or file's body.
 			</description>
@@ -33,14 +33,14 @@
 		</method>
 		<method name="has_cached_body">
 			<return type="bool" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 				Check whether a page's or file's body is available.
 			</description>
 		</method>
 		<method name="set_cached_body">
 			<return type="void" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<argument index="1" name="body" type="String" />
 			<description>
 				Store a page's or file's body.
