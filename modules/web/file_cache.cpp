@@ -194,17 +194,26 @@ String FileCache::get_cached_body(const StringName &p_path) {
 	_body_lock.read_unlock();
 
 	if (!eptr) {
-		return "";
+		return String();
 	}
 
 	CacheEntry *e = *eptr;
+
+	if (!e) {
+		return String();
+	}
 
 	if (_cache_invalidation_time > 0) {
 		uint64_t current_timestamp = OS::get_singleton()->get_unix_time();
 		uint64_t diff = current_timestamp - e->timestamp;
 
 		if (diff > _cache_invalidation_time) {
-			return "";
+			_body_lock.write_lock();
+			_cache_map.erase(p_path);
+			_body_lock.write_unlock();
+			memdelete(e);
+
+			return String();
 		}
 	}
 
