@@ -210,7 +210,7 @@ String FileCache::wwwroot_get_folder_abspath(const String &p_url_folder_path) {
 		return String();
 	}
 
-	return String();
+	return absp;
 }
 
 bool FileCache::wwwroot_path_exists(const String &p_url_path) {
