@@ -27,17 +27,14 @@ number of platforms, including the major desktop platforms (Linux, macOS,
 Windows), mobile platforms (Android, iOS), as well as Web-based platforms
 (HTML5) and [consoles](https://github.com/Relintai/pandemonium_engine_docs/blob/master/03_usage/13_platform/01_consoles.md).
 
-## Free, open source and community-driven
+## Free, open source
 
 Pandemonium is completely free and open source under the very permissive 
 [MIT license](https://github.com/Relintai/pandemonium_engine/blob/master/LICENSE.txt).
 No strings attached, no royalties, nothing. The users' games are theirs, down
 to the last line of engine code.
 
-Pandemonium's development is fully independent and
-community-driven, empowering users to help shape their engine to match their
-expectations. It is supported by the [Software Freedom Conservancy](https://sfconservancy.org/)
-not-for-profit.
+Pandemonium's development is fully independent.
 
 ### Godot
 
@@ -57,6 +54,12 @@ So in early 2022 I decided that I'll fork godot 3.x, and backport anything that 
 need for my games / projects. While here I also used the opportunity to modularize the engine more, 
 and fix issues I had with it. I also added my engine modules to it by default, and
 ended up writing lots of custom things.
+
+Keep in mind, that I'm not really an engine dev. Which probably sounds completely bonkers from someone who develops and maintains his own
+godot fork almost non-stop. What I mean is that this engine is being developed to be used by my other projects. This brings some downsides,
+as this project cannot openly accept anything that anyone wants (like other engines). Fortunately this has never been an issue,
+as I don't really try to get people to use this engine, but if this ever becomes a problem I'll create an official "community edition"
+fork, that is much more open to outside influences.
 
 ## Getting the engine
 
