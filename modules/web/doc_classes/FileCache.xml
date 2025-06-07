@@ -18,11 +18,17 @@
 				Clear all internal caches.
 			</description>
 		</method>
+		<method name="clear_expired">
+			<return type="void" />
+			<description>
+				Clear all expired internal caches.
+			</description>
+		</method>
 		<method name="get_cached_body">
 			<return type="String" />
 			<argument index="0" name="path" type="StringName" />
 			<description>
-				Get a previously stored page's or file's body.
+				Get a previously stored page's or file's body or an empty string, if the cache wasn't set or expired.
 			</description>
 		</method>
 		<method name="get_wwwroot_abs">
@@ -55,6 +61,15 @@
 				Note: file path should be the url you want to access the file with, including lead slash. e.g. http://127.0.0.1/a/b/d.jpg -&gt; /a/b/d.jpg
 			</description>
 		</method>
+		<method name="wwwroot_get_folder_abspath">
+			<return type="String" />
+			<argument index="0" name="url_folder_path" type="String" />
+			<description>
+				Returns the absolute path to a folder if it exists in the given [member wwwroot]. If it doesn't exists returns an empty [String].
+				Guards against directory traversal.
+				Note: folder path should be the url you want to access the folder with, including lead slash. e.g. http://127.0.0.1/a/b/d -&gt; /a/b/d
+			</description>
+		</method>
 		<method name="wwwroot_get_simplified_abs_path">
 			<return type="String" />
 			<argument index="0" name="file_path" type="String" />
@@ -71,6 +86,24 @@
 				Check whether a file exists in the given [member wwwroot].
 				Guards against directory traversal.
 				Note: file path should be the url you want to access the file with, including lead slash. e.g. http://127.0.0.1/a/b/d.jpg -&gt; /a/b/d.jpg
+			</description>
+		</method>
+		<method name="wwwroot_has_folder">
+			<return type="bool" />
+			<argument index="0" name="url_folder_path" type="String" />
+			<description>
+				Check whether a folder exists in the given [member wwwroot].
+				Guards against directory traversal.
+				Note: folder path should be the url you want to access the folder with, including lead slash. e.g. http://127.0.0.1/a/b/d -&gt; /a/b/d
+			</description>
+		</method>
+		<method name="wwwroot_path_exists">
+			<return type="bool" />
+			<argument index="0" name="url_path" type="String" />
+			<description>
+				Check whether a folder or file exists in the given [member wwwroot].
+				Guards against directory traversal.
+				Note: path should be the url you want to access the resource with, including lead slash. e.g. http://127.0.0.1/a/b/d -&gt; /a/b/d
 			</description>
 		</method>
 	</methods>
