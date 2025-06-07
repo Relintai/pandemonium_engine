@@ -165,9 +165,9 @@ String FileCache::wwwroot_get_simplified_abs_path(const String &file_path) {
 	return fp;
 }
 
-bool FileCache::has_cached_body(const String &path) {
+bool FileCache::has_cached_body(const StringName &p_path) {
 	_body_lock.read_lock();
-	CacheEntry *e = cache_map[path];
+	CacheEntry *e = cache_map[p_path];
 	_body_lock.read_unlock();
 
 	if (!e) {
@@ -186,9 +186,9 @@ bool FileCache::has_cached_body(const String &path) {
 	return true;
 }
 
-String FileCache::get_cached_body(const String &path) {
+String FileCache::get_cached_body(const StringName &p_path) {
 	_body_lock.read_lock();
-	CacheEntry *e = cache_map[path];
+	CacheEntry *e = cache_map[p_path];
 	_body_lock.read_unlock();
 
 	if (!e) {
@@ -207,14 +207,14 @@ String FileCache::get_cached_body(const String &path) {
 	return e->body;
 }
 
-void FileCache::set_cached_body(const String &path, const String &body) {
+void FileCache::set_cached_body(const StringName &p_path, const String &body) {
 	_body_lock.write_lock();
 
-	CacheEntry *e = cache_map[path];
+	CacheEntry *e = cache_map[p_path];
 
 	if (!e) {
 		e = memnew(CacheEntry());
-		cache_map[path] = e;
+		cache_map[p_path] = e;
 	}
 
 	uint64_t current_timestamp = OS::get_singleton()->get_unix_time();
@@ -228,7 +228,7 @@ void FileCache::set_cached_body(const String &path, const String &body) {
 void FileCache::clear() {
 	_body_lock.write_lock();
 
-	for (RBMap<String, CacheEntry *>::Element *E = cache_map.front(); E; E++) {
+	for (RBMap<StringName, CacheEntry *>::Element *E = cache_map.front(); E; E++) {
 		CacheEntry *ce = E->get();
 
 		if (ce) {

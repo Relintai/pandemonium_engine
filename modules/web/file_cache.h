@@ -38,6 +38,7 @@
 #include "core/os/os.h"
 #include "core/os/rw_lock.h"
 #include "core/string/ustring.h"
+#include "core/string/string_name.h"
 
 #include "core/object/reference.h"
 
@@ -60,9 +61,9 @@ public:
 
 	String wwwroot_get_simplified_abs_path(const String &file_path);
 
-	bool has_cached_body(const String &path);
-	String get_cached_body(const String &path);
-	void set_cached_body(const String &path, const String &body);
+	bool has_cached_body(const StringName &p_path);
+	String get_cached_body(const StringName &p_path);
+	void set_cached_body(const StringName &p_path, const String &p_body);
 
 	void clear();
 
@@ -88,7 +89,7 @@ protected:
 	};
 
 	RWLock _body_lock;
-	RBMap<String, CacheEntry *> cache_map;
+	RBMap<StringName, CacheEntry *> cache_map;
 };
 
 #endif
