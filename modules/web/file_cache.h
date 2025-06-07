@@ -66,6 +66,7 @@ public:
 	void set_cached_body(const StringName &p_path, const String &p_body);
 
 	void clear();
+	void clear_expired();
 
 	FileCache();
 	~FileCache();

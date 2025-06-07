@@ -248,6 +248,37 @@ void FileCache::clear() {
 	_body_lock.write_unlock();
 }
 
+void FileCache::clear_expired() {
+	if (_cache_invalidation_time == 0) {
+		return;
+	}
+
+	uint64_t current_timestamp = OS::get_singleton()->get_unix_time();
+
+	_body_lock.write_lock();
+
+	List<StringName> keys;
+	_cache_map.get_key_list(&keys);
+
+	for (List<StringName>::Element *E = keys.front(); E; E++) {
+		CacheEntry *ce = _cache_map[E->get()];
+
+		if (!ce) {
+			_cache_map.erase(E->get());
+			continue;
+		}
+
+		uint64_t diff = current_timestamp - ce->timestamp;
+
+		if (diff > _cache_invalidation_time) {
+			memdelete(ce);
+			_cache_map.erase(E->get());
+		}
+	}
+
+	_body_lock.write_unlock();
+}
+
 FileCache::FileCache() {
 	_cache_invalidation_time = 0;
 }
@@ -289,4 +320,5 @@ void FileCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_cached_body", "path", "body"), &FileCache::set_cached_body);
 
 	ClassDB::bind_method(D_METHOD("clear"), &FileCache::clear);
+	ClassDB::bind_method(D_METHOD("clear_expired"), &FileCache::clear_expired);
 }
