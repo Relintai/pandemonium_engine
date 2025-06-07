@@ -165,34 +165,7 @@ String FileCache::wwwroot_get_simplified_abs_path(const String &file_path) {
 	return fp;
 }
 
-bool FileCache::get_cached_body(const String &path, String *body) {
-	//TODO ERROR MACRO body == null
-
-	_body_lock.read_lock();
-	CacheEntry *e = cache_map[path];
-	_body_lock.read_unlock();
-
-	if (!e) {
-		return false;
-	}
-
-	if (cache_invalidation_time > 0) {
-		uint64_t current_timestamp = OS::get_singleton()->get_unix_time();
-		uint64_t diff = current_timestamp - e->timestamp;
-
-		if (diff > cache_invalidation_time) {
-			return false;
-		}
-	}
-
-	body->operator+=(e->body);
-
-	return true;
-}
-
 bool FileCache::has_cached_body(const String &path) {
-	//TODO ERROR MACRO body == null
-
 	_body_lock.read_lock();
 	CacheEntry *e = cache_map[path];
 	_body_lock.read_unlock();
@@ -213,9 +186,7 @@ bool FileCache::has_cached_body(const String &path) {
 	return true;
 }
 
-String FileCache::get_cached_body_bind(const String &path) {
-	//TODO ERROR MACRO body == null
-
+String FileCache::get_cached_body(const String &path) {
 	_body_lock.read_lock();
 	CacheEntry *e = cache_map[path];
 	_body_lock.read_unlock();
@@ -293,8 +264,8 @@ void FileCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("wwwroot_get_simplified_abs_path", "file_path"), &FileCache::wwwroot_get_simplified_abs_path);
 
-	ClassDB::bind_method(D_METHOD("get_cached_body", "path"), &FileCache::get_cached_body_bind);
 	ClassDB::bind_method(D_METHOD("has_cached_body", "path"), &FileCache::has_cached_body);
+	ClassDB::bind_method(D_METHOD("get_cached_body", "path"), &FileCache::get_cached_body);
 	ClassDB::bind_method(D_METHOD("set_cached_body", "path", "body"), &FileCache::set_cached_body);
 
 	ClassDB::bind_method(D_METHOD("clear"), &FileCache::clear);

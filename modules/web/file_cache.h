@@ -60,9 +60,8 @@ public:
 
 	String wwwroot_get_simplified_abs_path(const String &file_path);
 
-	bool get_cached_body(const String &path, String *body);
 	bool has_cached_body(const String &path);
-	String get_cached_body_bind(const String &path);
+	String get_cached_body(const String &path);
 	void set_cached_body(const String &path, const String &body);
 
 	void clear();
