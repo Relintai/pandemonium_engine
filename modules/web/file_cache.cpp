@@ -60,12 +60,12 @@ void FileCache::set_cache_invalidation_time(const uint64_t val) {
 	_cache_invalidation_time = val;
 }
 
-bool FileCache::wwwroot_has_file(const String &file_path) {
-	if (file_path.empty() || file_path == "/") {
+bool FileCache::wwwroot_has_file(const String &p_file_url_path) {
+	if (p_file_url_path.empty() || p_file_url_path == "/") {
 		return false;
 	}
 
-	String fp = _wwwroot_abs + file_path;
+	String fp = _wwwroot_abs + p_file_url_path;
 
 	fp = fp.simplify_path();
 
@@ -105,12 +105,12 @@ bool FileCache::wwwroot_has_file(const String &file_path) {
 	return true;
 }
 
-String FileCache::wwwroot_get_file_abspath(const String &file_path) {
-	if (file_path.empty() || file_path == "/") {
+String FileCache::wwwroot_get_file_abspath(const String &p_file_url_path) {
+	if (p_file_url_path.empty() || p_file_url_path == "/") {
 		return String();
 	}
 
-	String fp = _wwwroot_abs + file_path;
+	String fp = _wwwroot_abs + p_file_url_path;
 
 	fp = fp.simplify_path();
 
@@ -239,8 +239,8 @@ bool FileCache::wwwroot_path_exists(const String &p_url_path) {
 	return exists;
 }
 
-String FileCache::wwwroot_get_simplified_abs_path(const String &file_path) {
-	String fp = _wwwroot_abs + file_path;
+String FileCache::wwwroot_get_simplified_abs_path(const String &p_url_path) {
+	String fp = _wwwroot_abs + p_url_path;
 
 	fp = fp.simplify_path();
 
@@ -378,15 +378,15 @@ void FileCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_cache_invalidation_time", "val"), &FileCache::set_cache_invalidation_time);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cache_invalidation_time"), "set_cache_invalidation_time", "get_cache_invalidation_time");
 
-	ClassDB::bind_method(D_METHOD("wwwroot_has_file", "file_path"), &FileCache::wwwroot_has_file);
-	ClassDB::bind_method(D_METHOD("wwwroot_get_file_abspath", "file_path"), &FileCache::wwwroot_get_file_abspath);
+	ClassDB::bind_method(D_METHOD("wwwroot_has_file", "file_url_path"), &FileCache::wwwroot_has_file);
+	ClassDB::bind_method(D_METHOD("wwwroot_get_file_abspath", "file_url_path"), &FileCache::wwwroot_get_file_abspath);
 
 	ClassDB::bind_method(D_METHOD("wwwroot_has_folder", "url_folder_path"), &FileCache::wwwroot_has_folder);
 	ClassDB::bind_method(D_METHOD("wwwroot_get_folder_abspath", "url_folder_path"), &FileCache::wwwroot_get_folder_abspath);
 
 	ClassDB::bind_method(D_METHOD("wwwroot_path_exists", "url_path"), &FileCache::wwwroot_path_exists);
 
-	ClassDB::bind_method(D_METHOD("wwwroot_get_simplified_abs_path", "file_path"), &FileCache::wwwroot_get_simplified_abs_path);
+	ClassDB::bind_method(D_METHOD("wwwroot_get_simplified_abs_path", "url_path"), &FileCache::wwwroot_get_simplified_abs_path);
 
 	ClassDB::bind_method(D_METHOD("has_cached_body", "path"), &FileCache::has_cached_body);
 	ClassDB::bind_method(D_METHOD("get_cached_body", "path"), &FileCache::get_cached_body);

@@ -56,15 +56,15 @@ public:
 
 	//Note: file path should be the url you want to access the file with, including lead slash
 	//e.g. http://127.0.0.1/a/b/d.jpg -> /a/b/d.jpg
-	bool wwwroot_has_file(const String &file_path);
-	String wwwroot_get_file_abspath(const String &file_path);
+	bool wwwroot_has_file(const String &p_file_url_path);
+	String wwwroot_get_file_abspath(const String &p_file_url_path);
 
 	bool wwwroot_has_folder(const String &p_url_folder_path);
 	String wwwroot_get_folder_abspath(const String &p_url_folder_path);
 
 	bool wwwroot_path_exists(const String &p_url_path);
 
-	String wwwroot_get_simplified_abs_path(const String &file_path);
+	String wwwroot_get_simplified_abs_path(const String &p_url_path);
 
 	bool has_cached_body(const StringName &p_path);
 	String get_cached_body(const StringName &p_path);

@@ -54,7 +54,7 @@
 		</method>
 		<method name="wwwroot_get_file_abspath">
 			<return type="String" />
-			<argument index="0" name="file_path" type="String" />
+			<argument index="0" name="file_url_path" type="String" />
 			<description>
 				Returns the absolute path to a file if it exists in the given [member wwwroot]. If it doesn't exists returns an empty [String].
 				Guards against directory traversal.
@@ -72,7 +72,7 @@
 		</method>
 		<method name="wwwroot_get_simplified_abs_path">
 			<return type="String" />
-			<argument index="0" name="file_path" type="String" />
+			<argument index="0" name="url_path" type="String" />
 			<description>
 				Returns the absolute path to a file in the given [member wwwroot]. Does not checks if the file exists or not. Returns an empty [String] on error.
 				Guards against directory traversal.
@@ -81,7 +81,7 @@
 		</method>
 		<method name="wwwroot_has_file">
 			<return type="bool" />
-			<argument index="0" name="file_path" type="String" />
+			<argument index="0" name="file_url_path" type="String" />
 			<description>
 				Check whether a file exists in the given [member wwwroot].
 				Guards against directory traversal.
