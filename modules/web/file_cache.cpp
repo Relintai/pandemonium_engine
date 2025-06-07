@@ -253,6 +253,19 @@ FileCache::FileCache() {
 }
 
 FileCache::~FileCache() {
+	_body_lock.write_lock();
+
+	for (HashMap<StringName, CacheEntry *>::Element *E = _cache_map.front(); E; E++) {
+		CacheEntry *ce = E->get();
+
+		if (ce) {
+			memdelete(ce);
+		}
+	}
+
+	_cache_map.clear();
+
+	_body_lock.write_unlock();
 }
 
 void FileCache::_bind_methods() {
