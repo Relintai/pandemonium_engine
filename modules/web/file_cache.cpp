@@ -31,11 +31,9 @@
 
 #include "file_cache.h"
 
-#include "core/config/project_settings.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/string/print_string.h"
 
 String FileCache::get_wwwroot() {
 	return _wwwroot_orig;
