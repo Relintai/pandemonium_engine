@@ -69,14 +69,14 @@ public:
 	FileCache();
 	~FileCache();
 
-	uint64_t cache_invalidation_time;
-
 protected:
 	static void _bind_methods();
 
 	String _wwwroot_orig;
 	String _wwwroot;
 	String _wwwroot_abs;
+
+	uint64_t _cache_invalidation_time;
 
 	struct CacheEntry {
 		uint64_t timestamp;

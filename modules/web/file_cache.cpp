@@ -56,10 +56,10 @@ String FileCache::get_wwwroot_abs() {
 }
 
 int FileCache::get_cache_invalidation_time() {
-	return static_cast<int>(cache_invalidation_time);
+	return static_cast<int>(_cache_invalidation_time);
 }
 void FileCache::set_cache_invalidation_time(const int &val) {
-	cache_invalidation_time = static_cast<uint64_t>(val);
+	_cache_invalidation_time = static_cast<uint64_t>(val);
 }
 
 bool FileCache::wwwroot_has_file(const String &file_path) {
@@ -174,11 +174,11 @@ bool FileCache::has_cached_body(const String &path) {
 		return false;
 	}
 
-	if (cache_invalidation_time > 0) {
+	if (_cache_invalidation_time > 0) {
 		uint64_t current_timestamp = OS::get_singleton()->get_unix_time();
 		uint64_t diff = current_timestamp - e->timestamp;
 
-		if (diff > cache_invalidation_time) {
+		if (diff > _cache_invalidation_time) {
 			return false;
 		}
 	}
@@ -195,11 +195,11 @@ String FileCache::get_cached_body(const String &path) {
 		return "";
 	}
 
-	if (cache_invalidation_time > 0) {
+	if (_cache_invalidation_time > 0) {
 		uint64_t current_timestamp = OS::get_singleton()->get_unix_time();
 		uint64_t diff = current_timestamp - e->timestamp;
 
-		if (diff > cache_invalidation_time) {
+		if (diff > _cache_invalidation_time) {
 			return "";
 		}
 	}
@@ -242,7 +242,7 @@ void FileCache::clear() {
 }
 
 FileCache::FileCache() {
-	cache_invalidation_time = 0;
+	_cache_invalidation_time = 0;
 }
 
 FileCache::~FileCache() {
@@ -257,7 +257,7 @@ void FileCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_cache_invalidation_time"), &FileCache::get_cache_invalidation_time);
 	ClassDB::bind_method(D_METHOD("set_cache_invalidation_time", "val"), &FileCache::set_cache_invalidation_time);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cache_invalidation_time"), "set_cache_invalidation_time", "get_cache_invalidation_time");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "_cache_invalidation_time"), "set_cache_invalidation_time", "get_cache_invalidation_time");
 
 	ClassDB::bind_method(D_METHOD("wwwroot_has_file", "file_path"), &FileCache::wwwroot_has_file);
 	ClassDB::bind_method(D_METHOD("wwwroot_get_file_abspath", "file_path"), &FileCache::wwwroot_get_file_abspath);
