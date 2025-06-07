@@ -257,7 +257,7 @@ void FileCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_cache_invalidation_time"), &FileCache::get_cache_invalidation_time);
 	ClassDB::bind_method(D_METHOD("set_cache_invalidation_time", "val"), &FileCache::set_cache_invalidation_time);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "_cache_invalidation_time"), "set_cache_invalidation_time", "get_cache_invalidation_time");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cache_invalidation_time"), "set_cache_invalidation_time", "get_cache_invalidation_time");
 
 	ClassDB::bind_method(D_METHOD("wwwroot_has_file", "file_path"), &FileCache::wwwroot_has_file);
 	ClassDB::bind_method(D_METHOD("wwwroot_get_file_abspath", "file_path"), &FileCache::wwwroot_get_file_abspath);
