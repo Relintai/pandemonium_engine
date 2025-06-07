@@ -50,8 +50,8 @@ public:
 
 	String get_wwwroot_abs();
 
-	int get_cache_invalidation_time();
-	void set_cache_invalidation_time(const int &val);
+	uint64_t get_cache_invalidation_time();
+	void set_cache_invalidation_time(const uint64_t val);
 
 	//Note: file path should be the url you want to access the file with, including lead slash
 	//e.g. http://127.0.0.1/a/b/d.jpg -> /a/b/d.jpg

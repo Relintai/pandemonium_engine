@@ -55,11 +55,11 @@ String FileCache::get_wwwroot_abs() {
 	return _wwwroot_abs;
 }
 
-int FileCache::get_cache_invalidation_time() {
-	return static_cast<int>(_cache_invalidation_time);
+uint64_t FileCache::get_cache_invalidation_time() {
+	return _cache_invalidation_time;
 }
-void FileCache::set_cache_invalidation_time(const int &val) {
-	_cache_invalidation_time = static_cast<uint64_t>(val);
+void FileCache::set_cache_invalidation_time(const uint64_t val) {
+	_cache_invalidation_time = val;
 }
 
 bool FileCache::wwwroot_has_file(const String &file_path) {
