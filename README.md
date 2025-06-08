@@ -61,6 +61,10 @@ as this project cannot openly accept anything that anyone wants (like other engi
 as I don't really try to get people to use this engine, but if this ever becomes a problem I'll create an official "community edition"
 fork, that is much more open to outside influences.
 
+This being said, the engine actually tries to be modular as much as possible, while being also easily extendible, and as simple to understand
+and use as possible with a wide selection of platforms. All this without constraints that make building apps with the
+required complexities of today harder than they need to be.
+
 ## Getting the engine
 
 ### Binary downloads
