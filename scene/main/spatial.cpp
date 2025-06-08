@@ -158,6 +158,7 @@ void Spatial::_notification(int p_what) {
 			} else {
 				data.C = nullptr;
 			}
+			_update_visible_in_tree();
 
 			if (data.toplevel && !Engine::get_singleton()->is_editor_hint()) {
 				if (data.parent) {
@@ -217,6 +218,8 @@ void Spatial::_notification(int p_what) {
 			data.parent = nullptr;
 			data.C = nullptr;
 			data.toplevel_active = false;
+
+			_update_visible_in_tree();
 			_disable_client_physics_interpolation();
 		} break;
 		case NOTIFICATION_ENTER_WORLD: {
@@ -863,6 +866,36 @@ Ref<World3D> Spatial::get_world_3d() const {
 	return get_world()->find_world_3d();
 }
 
+void Spatial::_update_visible_in_tree() {
+	Spatial *parent = get_parent_spatial();
+
+	bool propagate_visible = parent ? parent->data.visible_in_tree : true;
+
+	// Only propagate visible when entering tree if we are visible.
+	propagate_visible &= is_visible();
+
+	_propagate_visible_in_tree(propagate_visible);
+}
+
+void Spatial::_propagate_visible_in_tree(bool p_visible_in_tree) {
+	// If any node is invisible, the propagation changes to invisible below.
+	p_visible_in_tree &= is_visible();
+
+	// No change.
+	if (data.visible_in_tree == p_visible_in_tree) {
+		return;
+	}
+
+	data.visible_in_tree = p_visible_in_tree;
+
+	for (int32_t n = 0; n < get_child_count(); n++) {
+		Spatial *s = Object::cast_to<Spatial>(get_child(n));
+		if (s) {
+			s->_propagate_visible_in_tree(p_visible_in_tree);
+		}
+	}
+}
+
 void Spatial::_propagate_visibility_changed() {
 	notification(NOTIFICATION_VISIBILITY_CHANGED);
 	emit_signal(SceneStringNames::get_singleton()->visibility_changed);
@@ -924,6 +957,10 @@ void Spatial::show() {
 		return;
 	}
 
+	bool parent_visible = get_parent_spatial() ? get_parent_spatial()->data.visible_in_tree : true;
+	if (parent_visible) {
+		_propagate_visible_in_tree(true);
+	}
 	_propagate_visibility_changed();
 }
 
@@ -938,10 +975,14 @@ void Spatial::hide() {
 		return;
 	}
 
+	bool parent_visible = get_parent_spatial() ? get_parent_spatial()->data.visible_in_tree : true;
+	if (parent_visible) {
+		_propagate_visible_in_tree(false);
+	}
 	_propagate_visibility_changed();
 }
 
-bool Spatial::is_visible_in_tree() const {
+bool Spatial::_is_visible_in_tree_reference() const {
 	const Spatial *s = this;
 
 	while (s) {
@@ -1252,6 +1293,7 @@ Spatial::Spatial() :
 	data.scale = Vector3(1, 1, 1);
 	data.inside_world = false;
 	data.visible = true;
+	data.visible_in_tree = true;
 	data.disable_scale = false;
 	data.vi_visible = true;
 	data.merging_allowed = true;
