@@ -328,10 +328,14 @@ String TOTP::raw_to_base32(const PoolVector<uint8_t> &p_data) {
 	for (int i = 0, j = 0; i < data_size; i += 5) {
 		uint64_t data_slice = 0;
 
-		for (int k = 0; k < 5; ++k) {
-			int indx = i + k;
+		int kmax = i + 5;
 
-			data_slice = (data_slice << 8) | (indx < data_size ? r[indx] : 0);
+		if (kmax > data_size) {
+			kmax = data_size;
+		}
+
+		for (int k = i; k < kmax; ++k) {
+			data_slice = (data_slice << 8) | r[k];
 		}
 
 		for (int s = 35; s >= 0; s -= 5) {
@@ -351,7 +355,17 @@ PoolVector<uint8_t> TOTP::base32_to_raw(const String &p_str) {
 
 	ERR_FAIL_COND_V(!is_valid_base32(p_str), buf);
 
-	const char b32_alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+	//                             0  ...                    26   31
+	//const char b32_alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+	// "A-(65) BCDEFGHIJKLMNOPQRSTUVWXYZ-(90) 2-(50) 34567-(55)";
+	// Substract 50 from every char, then lookup:
+	// This shouldn't have any issues due to the is_valid_base32 check above.
+	const uint8_t reverse_b32_alphabet[] = {
+		26, 27, 28, 29, 30, 31, // 234567
+		255, 255, 255, 255, 255, 255, 255, 255, 255, // ASCII entries between 7 and A. This has the padding = character!
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, // ABCDEFGHIJKLMNO
+		15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, // PQRSTUVWXYZ
+	};
 
 	int strlen = p_str.length();
 	CharString cstr = p_str.ascii();
@@ -362,30 +376,24 @@ PoolVector<uint8_t> TOTP::base32_to_raw(const String &p_str) {
 		buf.resize(Math::ceil(strlen / 1.6) + 0.001);
 		PoolVector<uint8_t>::Write w = buf.write();
 
-		uint8_t mask = 0;
 		uint8_t current_byte = 0;
 		int remaining_bits = 8;
 		for (int i = 0; i < strlen; ++i) {
-			char c = cd[i];
-			int char_alphabet_index = -1;
+			uint8_t char_alphabet_index = reverse_b32_alphabet[static_cast<uint8_t>(cd[i]) - static_cast<uint8_t>(50)];
 
-			for (uint8_t j = 0; j < sizeof(b32_alphabet); ++j) {
-				if (c == b32_alphabet[j]) {
-					char_alphabet_index = j;
-					break;
-				}
+			if (char_alphabet_index == 255) {
+				// Padding character hit, because input is valid base32 at this point.
+				break;
 			}
 
 			if (remaining_bits > 5) {
-				mask = (uint8_t)char_alphabet_index << (remaining_bits - 5);
-				current_byte |= mask;
 				remaining_bits -= 5;
+				current_byte |= char_alphabet_index << remaining_bits;
 			} else {
-				mask = (uint8_t)char_alphabet_index >> (5 - remaining_bits);
-				current_byte |= mask;
+				current_byte |= char_alphabet_index >> (5 - remaining_bits);
 				w[arr_next_index++] = current_byte;
-				current_byte = (uint8_t)(char_alphabet_index << (3 + remaining_bits));
 				remaining_bits += 3;
+				current_byte = char_alphabet_index << remaining_bits;
 			}
 		}
 	}
