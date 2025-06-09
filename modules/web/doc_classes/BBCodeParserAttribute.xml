@@ -14,43 +14,52 @@
 			<return type="bool" />
 			<argument index="0" name="data" type="String" />
 			<description>
+				Returns whether the given string is fount in the stored data.
 			</description>
 		</method>
 		<method name="convert_to_string" qualifiers="const">
 			<return type="String" />
 			<description>
+				Convert the parsed tree to a scring.
 			</description>
 		</method>
 		<method name="match_all_data">
 			<return type="bool" />
 			<argument index="0" name="data" type="PoolStringArray" />
 			<description>
+				Match all given strings agains the stored data.
 			</description>
 		</method>
 		<method name="match_attrib">
 			<return type="bool" />
 			<argument index="0" name="attrib" type="String" />
 			<description>
+				Match against the stored attribute.
 			</description>
 		</method>
 		<method name="match_data">
 			<return type="bool" />
 			<argument index="0" name="data" type="String" />
 			<description>
+				Match against the stored data.
 			</description>
 		</method>
 		<method name="print" qualifiers="const">
 			<return type="void" />
 			<description>
+				Print the parsed tree.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="attribute" type="String" setter="set_attribute" getter="get_attribute" default="&quot;&quot;">
+			Return the stored attribute.
 		</member>
 		<member name="data" type="String" setter="set_data" getter="get_data" default="&quot;&quot;">
+			Return the sotred data.
 		</member>
 		<member name="single" type="bool" setter="set_single" getter="get_single" default="false">
+			Is this a sinlge attribute? Does not have parameters (with =).
 		</member>
 	</members>
 	<constants>
