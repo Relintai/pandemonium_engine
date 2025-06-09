@@ -14,22 +14,26 @@
 		<method name="convert_to_string" qualifiers="const">
 			<return type="String" />
 			<description>
+				Convert the parsed tree to a scring.
 			</description>
 		</method>
 		<method name="get_root">
 			<return type="BBCodeParserTag" />
 			<description>
+				Returns the root tag.
 			</description>
 		</method>
 		<method name="parse">
 			<return type="void" />
 			<argument index="0" name="data" type="String" />
 			<description>
+				Parse the given string.
 			</description>
 		</method>
 		<method name="print" qualifiers="const">
 			<return type="void" />
 			<description>
+				Print the parsed tree.
 			</description>
 		</method>
 	</methods>
