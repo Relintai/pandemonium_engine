@@ -98,6 +98,7 @@ bool Reference::unreference() {
 }
 
 Reference::Reference() {
+	_define_ancestry(AncestralClass::REFERENCE);
 	refcount.init();
 	refcount_init.init();
 }

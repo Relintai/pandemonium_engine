@@ -104,6 +104,7 @@ void PhysicsBody::_bind_methods() {
 
 PhysicsBody::PhysicsBody(PhysicsServer::BodyMode p_mode) :
 		CollisionObject(RID_PRIME(PhysicsServer::get_singleton()->body_create(p_mode)), false) {
+	_define_ancestry(AncestralClass::PHYSICS_BODY);
 }
 
 PhysicsBody::~PhysicsBody() {

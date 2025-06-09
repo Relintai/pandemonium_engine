@@ -163,7 +163,9 @@ public:
 
 	virtual bool is_placeholder_fallback_enabled() const { return false; }
 
-	Script() {}
+	Script() {
+		_define_ancestry(AncestralClass::SCRIPT);
+	}
 };
 
 class ScriptInstance {
