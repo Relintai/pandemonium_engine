@@ -9,7 +9,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="not_alpha_numeric_error" type="String" setter="set_not_alpha_numeric_error" getter="get_not_alpha_numeric_error" default="&quot; needs to only contain chaarcters of numbers.&quot;">
+		<member name="not_alpha_numeric_error" type="String" setter="set_not_alpha_numeric_error" getter="get_not_alpha_numeric_error" default="&quot;%s needs to only contain chaarcters of numbers.&quot;">
 		</member>
 	</members>
 	<constants>

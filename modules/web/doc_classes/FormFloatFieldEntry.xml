@@ -9,7 +9,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="not_float_error" type="String" setter="set_not_float_error" getter="get_not_float_error" default="&quot; needs to be an floating point number.&quot;">
+		<member name="not_float_error" type="String" setter="set_not_float_error" getter="get_not_float_error" default="&quot;% needs to be an floating point number.&quot;">
 		</member>
 	</members>
 	<constants>

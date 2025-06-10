@@ -9,9 +9,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="does_not_have_min_length_errorf" type="String" setter="set_does_not_have_min_length_errorf" getter="get_does_not_have_min_length_errorf" default="&quot; needs at least &quot;">
-		</member>
-		<member name="does_not_have_min_length_errors" type="String" setter="set_does_not_have_min_length_errors" getter="get_does_not_have_min_length_errors" default="&quot; characters!&quot;">
+		<member name="does_not_have_min_length_error" type="String" setter="set_does_not_have_min_length_error" getter="get_does_not_have_min_length_error" default="&quot;%s needs at least %d characters!&quot;">
 		</member>
 		<member name="min_length" type="int" setter="set_min_length" getter="get_min_length" default="5">
 		</member>

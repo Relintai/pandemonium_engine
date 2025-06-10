@@ -9,7 +9,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="does_not_match_error" type="String" setter="set_does_not_match_error" getter="get_does_not_match_error" default="&quot; does not match &quot;">
+		<member name="does_not_match_error" type="String" setter="set_does_not_match_error" getter="get_does_not_match_error" default="&quot;%s does not match %s.&quot;">
 		</member>
 		<member name="other_field" type="String" setter="set_other_field" getter="get_other_field" default="&quot;&quot;">
 		</member>

@@ -206,11 +206,8 @@ public:
 	int get_min_length();
 	void set_min_length(const int &val);
 
-	String get_does_not_have_min_length_errorf();
-	void set_does_not_have_min_length_errorf(const String &val);
-
-	String get_does_not_have_min_length_errors();
-	void set_does_not_have_min_length_errors(const String &val);
+	String get_does_not_have_min_length_error();
+	void set_does_not_have_min_length_error(const String &val);
 
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
@@ -222,8 +219,7 @@ protected:
 
 	int _min_length;
 
-	String _does_not_have_min_length_errorf;
-	String _does_not_have_min_length_errors;
+	String _does_not_have_min_length_error;
 };
 
 class FormMaximumLengthFieldEntry : public FormFieldEntry {
@@ -233,11 +229,8 @@ public:
 	int get_max_length();
 	void set_max_length(const int &val);
 
-	String get_does_not_have_max_length_errorf();
-	void set_does_not_have_max_length_errorf(const String &val);
-
-	String get_does_not_have_max_length_errors();
-	void set_does_not_have_max_length_errors(const String &val);
+	String get_does_not_have_max_length_error();
+	void set_does_not_have_max_length_error(const String &val);
 
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
@@ -249,8 +242,7 @@ protected:
 
 	int _max_length;
 
-	String _does_not_have_max_length_errorf;
-	String _does_not_have_max_length_errors;
+	String _does_not_have_max_length_error;
 };
 
 class FormEmailFieldEntry : public FormFieldEntry {

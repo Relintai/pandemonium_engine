@@ -9,7 +9,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="email_format_error" type="String" setter="set_email_format_error" getter="get_email_format_error" default="&quot; is invalid!&quot;">
+		<member name="email_format_error" type="String" setter="set_email_format_error" getter="get_email_format_error" default="&quot;%s is invalid!&quot;">
 		</member>
 	</members>
 	<constants>

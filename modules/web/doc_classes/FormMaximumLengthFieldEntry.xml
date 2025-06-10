@@ -9,9 +9,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="does_not_have_max_length_errorf" type="String" setter="set_does_not_have_max_length_errorf" getter="get_does_not_have_max_length_errorf" default="&quot; needs at most &quot;">
-		</member>
-		<member name="does_not_have_max_length_errors" type="String" setter="set_does_not_have_max_length_errors" getter="get_does_not_have_max_length_errors" default="&quot; characters!&quot;">
+		<member name="does_not_have_max_length_error" type="String" setter="set_does_not_have_max_length_error" getter="get_does_not_have_max_length_error" default="&quot;%s needs at most %d characters!&quot;">
 		</member>
 		<member name="max_length" type="int" setter="set_max_length" getter="get_max_length" default="10">
 		</member>

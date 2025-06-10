@@ -9,7 +9,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="does_not_have_other_error" type="String" setter="set_does_not_have_other_error" getter="get_does_not_have_other_error" default="&quot; needs at least one other character!&quot;">
+		<member name="does_not_have_other_error" type="String" setter="set_does_not_have_other_error" getter="get_does_not_have_other_error" default="&quot;%s needs at least one other character!&quot;">
 		</member>
 	</members>
 	<constants>

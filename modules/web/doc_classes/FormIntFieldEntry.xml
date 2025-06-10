@@ -9,7 +9,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="not_int_error" type="String" setter="set_not_int_error" getter="get_not_int_error" default="&quot; needs to be an integer.&quot;">
+		<member name="not_int_error" type="String" setter="set_not_int_error" getter="get_not_int_error" default="&quot;%s needs to be an integer.&quot;">
 		</member>
 	</members>
 	<constants>

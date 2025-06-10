@@ -9,7 +9,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="not_exists_error" type="String" setter="set_not_exists_error" getter="get_not_exists_error" default="&quot; field need to exists!&quot;">
+		<member name="not_exists_error" type="String" setter="set_not_exists_error" getter="get_not_exists_error" default="&quot;%s field need to exists!&quot;">
 		</member>
 	</members>
 	<constants>
