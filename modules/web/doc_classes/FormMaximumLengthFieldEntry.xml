@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="FormMaximumLengthFieldEntry" inherits="FormFieldEntry">
 	<brief_description>
+		Checks if the given html form field's value is shorter than the given length.
 	</brief_description>
 	<description>
+		Used by [FormField]s to implement html form validation capabilities.
+		Checks if the given html form field's value is shorter than the given length.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,8 +13,10 @@
 	</methods>
 	<members>
 		<member name="does_not_have_max_length_error" type="String" setter="set_does_not_have_max_length_error" getter="get_does_not_have_max_length_error" default="&quot;%s needs at most %d characters!&quot;">
+			Error string.
 		</member>
 		<member name="max_length" type="int" setter="set_max_length" getter="get_max_length" default="10">
+			Max length.
 		</member>
 	</members>
 	<constants>

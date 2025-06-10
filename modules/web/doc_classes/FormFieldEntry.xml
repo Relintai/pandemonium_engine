@@ -15,6 +15,9 @@
 			<argument index="1" name="field" type="FormField" />
 			<argument index="2" name="data" type="String" />
 			<description>
+				Run validation for the given request. Returns the errors in a human readable form.
+				If the returned [PoolStringArray] is empty, the validation succeeded.
+				Called by [method validate].
 			</description>
 		</method>
 		<method name="validate">
@@ -23,6 +26,9 @@
 			<argument index="1" name="field" type="FormField" />
 			<argument index="2" name="data" type="String" />
 			<description>
+				Run validation for the given request. Returns the errors in a human readable form.
+				If the returned [PoolStringArray] is empty, the validation succeeded.
+				Calls [method _validate].
 			</description>
 		</method>
 	</methods>

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="FormAlphaFieldEntry" inherits="FormFieldEntry">
 	<brief_description>
+		Checks if the given html form field's value has an alpha character.
 	</brief_description>
 	<description>
+		Used by [FormField]s to implement html form validation capabilities.
+		Checks if the given html form field's value has an alpha character.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +13,7 @@
 	</methods>
 	<members>
 		<member name="not_alpha_error" type="String" setter="set_not_alpha_error" getter="get_not_alpha_error" default="&quot;%s needs to only contain characters.&quot;">
+			Error string.
 		</member>
 	</members>
 	<constants>

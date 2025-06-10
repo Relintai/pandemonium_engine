@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="FormFloatFieldEntry" inherits="FormFieldEntry">
 	<brief_description>
+		Checks if the given html form field's value is a float.
 	</brief_description>
 	<description>
+		Used by [FormField]s to implement html form validation capabilities.
+		Checks if the given html form field's value is a float.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +13,7 @@
 	</methods>
 	<members>
 		<member name="not_float_error" type="String" setter="set_not_float_error" getter="get_not_float_error" default="&quot;% needs to be an floating point number.&quot;">
+			Error string.
 		</member>
 	</members>
 	<constants>
