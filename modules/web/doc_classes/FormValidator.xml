@@ -26,31 +26,38 @@
 	</tutorials>
 	<methods>
 		<method name="_validate" qualifiers="virtual">
-			<return type="void" />
+			<return type="PoolStringArray" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Run validation for the given request. Returns the errors in a human readable form.
+				If the returned [PoolStringArray] is empty, the validation succeeded.
+				Called by [method validate].
 			</description>
 		</method>
 		<method name="add_field">
 			<return type="void" />
 			<argument index="0" name="field" type="FormField" />
 			<description>
+				Add a field.
 			</description>
 		</method>
 		<method name="clear_fields">
 			<return type="void" />
 			<description>
+				Clear all fields.
 			</description>
 		</method>
 		<method name="get_field">
 			<return type="FormField" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return field at index.
 			</description>
 		</method>
 		<method name="get_field_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return field count.
 			</description>
 		</method>
 		<method name="new_field">
@@ -58,23 +65,31 @@
 			<argument index="0" name="name" type="String" />
 			<argument index="1" name="human_name" type="String" />
 			<description>
+				Create a new field.
+				The name parameter should mnatch the name attribute in the html shell.
+				The human readable name will be used in the error messages (if any).
 			</description>
 		</method>
 		<method name="remove_field">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove field at index.
 			</description>
 		</method>
 		<method name="validate">
 			<return type="PoolStringArray" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Run validation for the given request. Returns the errors in a human readable form.
+				If the returned [PoolStringArray] is empty, the validation succeeded.
+				Calls [method _validate].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="fields" type="Array" setter="set_fields" getter="get_fields" default="[  ]">
+			All form fields.
 		</member>
 	</members>
 	<constants>
