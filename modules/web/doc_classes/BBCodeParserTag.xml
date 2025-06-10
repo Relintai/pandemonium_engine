@@ -14,40 +14,47 @@
 			<return type="void" />
 			<argument index="0" name="tag" type="BBCodeParserAttribute" />
 			<description>
+				Add a child attribute.
 			</description>
 		</method>
 		<method name="add_child_tag">
 			<return type="void" />
 			<argument index="0" name="tag" type="BBCodeParserTag" />
 			<description>
+				Add a child tag.
 			</description>
 		</method>
 		<method name="clear_child_attributes">
 			<return type="void" />
 			<description>
+				Remove all child attributes.
 			</description>
 		</method>
 		<method name="clear_child_tags">
 			<return type="void" />
 			<description>
+				Remove all child tags.
 			</description>
 		</method>
 		<method name="convert_to_string" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="level" type="int" default="0" />
 			<description>
+				Convert the parsed tree to a scring.
 			</description>
 		</method>
 		<method name="get_attribute">
 			<return type="BBCodeParserAttribute" />
 			<argument index="0" name="attrib" type="String" />
 			<description>
+				Return attribute.
 			</description>
 		</method>
 		<method name="get_attribute_value">
 			<return type="String" />
 			<argument index="0" name="attrib" type="String" />
 			<description>
+				Return attribute value.
 			</description>
 		</method>
 		<method name="get_attributec">
@@ -55,34 +62,40 @@
 			<argument index="0" name="attrib" type="String" />
 			<argument index="1" name="contains_val" type="String" />
 			<description>
+				Return attribute that contains the given string.
 			</description>
 		</method>
 		<method name="get_child_attribute">
 			<return type="BBCodeParserAttribute" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return child attribute at index.
 			</description>
 		</method>
 		<method name="get_child_attribute_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return child attribute count.
 			</description>
 		</method>
 		<method name="get_child_tag">
 			<return type="BBCodeParserTag" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return child tag at index.
 			</description>
 		</method>
 		<method name="get_child_tag_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return child tag count.
 			</description>
 		</method>
 		<method name="get_first">
 			<return type="BBCodeParserTag" />
 			<argument index="0" name="t" type="String" />
 			<description>
+				Returns the first [BBCodeParserTag] where [member tag] equals the given string.
 			</description>
 		</method>
 		<method name="get_firstc">
@@ -91,12 +104,14 @@
 			<argument index="1" name="attrib" type="String" />
 			<argument index="2" name="val" type="String" />
 			<description>
+				Returns the first [BBCodeParserTag] where [member tag] equals the given string and it has the given attribute with the given value.
 			</description>
 		</method>
 		<method name="has_attribute">
 			<return type="bool" />
 			<argument index="0" name="attrib" type="String" />
 			<description>
+				Checks whether this tag has the given attribute.
 			</description>
 		</method>
 		<method name="has_attributec">
@@ -104,59 +119,75 @@
 			<argument index="0" name="attrib" type="String" />
 			<argument index="1" name="contains_val" type="String" />
 			<description>
+				Checks whether this tag has the given attribute containing the given valoue.
 			</description>
 		</method>
 		<method name="parse_args">
 			<return type="void" />
 			<argument index="0" name="args" type="String" />
 			<description>
+				Parse the given arguments string.
 			</description>
 		</method>
 		<method name="print" qualifiers="const">
 			<return type="void" />
 			<description>
+				Print the parsed tree.
 			</description>
 		</method>
 		<method name="process">
 			<return type="void" />
 			<description>
+				Processed data contained in [member data]. Used by [method parse].
 			</description>
 		</method>
 		<method name="remote_child_attribute">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes child attribute at index.
 			</description>
 		</method>
 		<method name="remote_child_tag">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes child tag at index.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="attributes" type="Array" setter="set_attributes" getter="get_attributes" default="[  ]">
+			All attributes.
 		</member>
 		<member name="child_tags" type="Array" setter="set_child_tags" getter="get_child_tags" default="[  ]">
+			All child tags.
 		</member>
 		<member name="data" type="String" setter="set_data" getter="get_data" default="&quot;&quot;">
+			The raw data.
 		</member>
 		<member name="tag" type="String" setter="set_tag" getter="get_tag" default="&quot;&quot;">
+			The stored tag.
 		</member>
 		<member name="type" type="int" setter="set_type" getter="get_type" default="0">
+			The tag's type.
 		</member>
 	</members>
 	<constants>
 		<constant name="BBCODE_PARSER_TAG_TYPE_NONE" value="0" enum="BBCodeParserTagType">
+			Unknows type.
 		</constant>
 		<constant name="BBCODE_PARSER_TAG_TYPE_OPENING_TAG" value="1" enum="BBCodeParserTagType">
+			Opening tag.
 		</constant>
 		<constant name="BBCODE_PARSER_TAG_TYPE_CLOSING_TAG" value="2" enum="BBCodeParserTagType">
+			Closing tag.
 		</constant>
 		<constant name="BBCODE_PARSER_TAG_TYPE_SELF_CLOSING_TAG" value="3" enum="BBCodeParserTagType">
+			Self closing tag.
 		</constant>
 		<constant name="BBCODE_PARSER_TAG_TYPE_CONTENT" value="4" enum="BBCodeParserTagType">
+			Content.
 		</constant>
 	</constants>
 </class>
