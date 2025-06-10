@@ -1076,7 +1076,7 @@ HTMLTag *HTMLBuilder::colgroup() {
 HTMLTag *HTMLBuilder::data() {
 	write_tag();
 
-	return _tag.start("cite");
+	return _tag.start("data");
 }
 
 HTMLTag *HTMLBuilder::datalist() {
