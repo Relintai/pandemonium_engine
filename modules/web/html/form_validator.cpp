@@ -52,7 +52,7 @@ FormFieldEntry::~FormFieldEntry() {
 }
 
 void FormFieldEntry::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_validate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::OBJECT, "field", PROPERTY_HINT_RESOURCE_TYPE, "FormField"), PropertyInfo(Variant::STRING, "data")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::POOL_STRING_ARRAY, "ret"), "_validate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::OBJECT, "field", PROPERTY_HINT_RESOURCE_TYPE, "FormField"), PropertyInfo(Variant::STRING, "data")));
 	ClassDB::bind_method(D_METHOD("validate", "request", "field", "data"), &FormFieldEntry::validate);
 	ClassDB::bind_method(D_METHOD("_validate", "request", "field", "data"), &FormFieldEntry::_validate);
 }
@@ -844,7 +844,7 @@ void FormField::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("ignore_if_not_exists"), &FormField::ignore_if_not_exists);
 	ClassDB::bind_method(D_METHOD("ignore_if_other_field_not_exists", "other"), &FormField::ignore_if_other_field_not_exists);
 
-	BIND_VMETHOD(MethodInfo("_validate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::POOL_STRING_ARRAY, "ret"), "_validate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
 	ClassDB::bind_method(D_METHOD("validate", "request"), &FormField::validate);
 	ClassDB::bind_method(D_METHOD("_validate", "request"), &FormField::_validate);
 }
@@ -938,7 +938,7 @@ void FormValidator::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_fields", "array"), &FormValidator::set_fields);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "fields", PROPERTY_HINT_NONE, "23/20:FormField", PROPERTY_USAGE_DEFAULT, "FormField"), "set_fields", "get_fields");
 
-	BIND_VMETHOD(MethodInfo("_validate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::POOL_STRING_ARRAY, "ret"), "_validate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
 	ClassDB::bind_method(D_METHOD("validate", "request"), &FormValidator::validate);
 	ClassDB::bind_method(D_METHOD("_validate", "request"), &FormValidator::_validate);
 }
