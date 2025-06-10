@@ -24,6 +24,7 @@
 		<method name="get_file_cache" qualifiers="const">
 			<return type="FileCache" />
 			<description>
+				Returns the internal [FileCache].
 			</description>
 		</method>
 		<method name="load">
