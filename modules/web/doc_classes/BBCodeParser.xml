@@ -14,7 +14,7 @@
 		<method name="convert_to_string" qualifiers="const">
 			<return type="String" />
 			<description>
-				Convert the parsed tree to a scring.
+				Convert the parsed tree to a string.
 			</description>
 		</method>
 		<method name="get_root">
