@@ -10,7 +10,7 @@
 	</tutorials>
 	<methods>
 		<method name="_validate" qualifiers="virtual">
-			<return type="void" />
+			<return type="PoolStringArray" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<argument index="1" name="field" type="FormField" />
 			<argument index="2" name="data" type="String" />

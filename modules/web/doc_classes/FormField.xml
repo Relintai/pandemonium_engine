@@ -12,132 +12,163 @@
 	</tutorials>
 	<methods>
 		<method name="_validate" qualifiers="virtual">
-			<return type="void" />
+			<return type="PoolStringArray" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Run validation for the given request. Returns the errors in a human readable form.
+				If the returned [PoolStringArray] is empty, the validation succeeded.
+				Called by [method validate].
 			</description>
 		</method>
 		<method name="add_entry">
 			<return type="void" />
 			<argument index="0" name="field" type="FormFieldEntry" />
 			<description>
+				Add entry.
 			</description>
 		</method>
 		<method name="clear_entries">
 			<return type="void" />
 			<description>
+				Clear entries.
 			</description>
 		</method>
 		<method name="get_entry">
 			<return type="FormFieldEntry" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return entry at index.
 			</description>
 		</method>
 		<method name="get_entry_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns entry count.
 			</description>
 		</method>
 		<method name="ignore_if_not_exists">
 			<return type="FormField" />
 			<description>
+				Ignore this form field if it's not set in the request.
 			</description>
 		</method>
 		<method name="ignore_if_other_field_not_exists">
 			<return type="FormField" />
 			<argument index="0" name="other" type="String" />
 			<description>
+				Ignore this form field if the given field is not set in the request.
 			</description>
 		</method>
 		<method name="need_maximum_length">
 			<return type="FormField" />
 			<argument index="0" name="max_length" type="int" />
 			<description>
+				Shorthand to create, add, and setup a [FormMaximumLengthFieldEntry].
 			</description>
 		</method>
 		<method name="need_minimum_length">
 			<return type="FormField" />
 			<argument index="0" name="min_length" type="int" />
 			<description>
+				Shorthand to create, add, and setup a [FormMinimumLengthFieldEntry].
 			</description>
 		</method>
 		<method name="need_to_be_alpha">
 			<return type="FormField" />
 			<description>
+				Shorthand to create, add, and setup a [FormAlphaFieldEntry].
 			</description>
 		</method>
 		<method name="need_to_be_alpha_numeric">
 			<return type="FormField" />
 			<description>
+				Shorthand to create, add, and setup a [FormAlphaNumericFieldEntry].
 			</description>
 		</method>
 		<method name="need_to_be_email">
 			<return type="FormField" />
 			<description>
+				Shorthand to create, add, and setup a [FormEmailFieldEntry].
 			</description>
 		</method>
 		<method name="need_to_be_float">
 			<return type="FormField" />
 			<description>
+				Shorthand to create, add, and setup a [FormFloatFieldEntry].
 			</description>
 		</method>
 		<method name="need_to_be_int">
 			<return type="FormField" />
 			<description>
+				Shorthand to create, add, and setup a [FormIntFieldEntry].
 			</description>
 		</method>
 		<method name="need_to_exist">
 			<return type="FormField" />
 			<description>
+				Shorthand to create, add, and setup a [FormExistsFieldEntry].
 			</description>
 		</method>
 		<method name="need_to_have_lowercase_character">
 			<return type="FormField" />
 			<description>
+				Shorthand to create, add, and setup a [FormNeedsLowercaseCharacterFieldEntry].
 			</description>
 		</method>
 		<method name="need_to_have_other_character">
 			<return type="FormField" />
 			<description>
+				Shorthand to create, add, and setup a [FormNeedsOtherCharacterFieldEntry].
 			</description>
 		</method>
 		<method name="need_to_have_uppercase_character">
 			<return type="FormField" />
 			<description>
+				Shorthand to create, add, and setup a [FormNeedsUppercaseCharacterFieldEntry].
 			</description>
 		</method>
 		<method name="need_to_match">
 			<return type="FormField" />
 			<argument index="0" name="other" type="String" />
 			<description>
+				Shorthand to create, add, and setup a [FormNeedToMatchOtherFieldEntry].
 			</description>
 		</method>
 		<method name="remove_entry">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove entry at index.
 			</description>
 		</method>
 		<method name="validate">
 			<return type="PoolStringArray" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Run validation for the given request. Returns the errors in a human readable form.
+				If the returned [PoolStringArray] is empty, the validation succeeded.
+				Calls [method _validate].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="entries" type="Array" setter="set_entries" getter="get_entries" default="[  ]">
+			All entries.
 		</member>
 		<member name="field_name" type="String" setter="set_field_name" getter="get_field_name" default="&quot;&quot;">
+			The field name.
 		</member>
 		<member name="human_name" type="String" setter="set_human_name" getter="get_human_name" default="&quot;&quot;">
+			The human readable name for the errors.
 		</member>
 		<member name="ignore_if_other_field_not_exist_field" type="String" setter="set_ignore_if_other_field_not_exist_field" getter="get_ignore_if_other_field_not_exist_field" default="&quot;&quot;">
+			Ignore this field if the given field does not exists in the request.
 		</member>
 		<member name="is_ignore_if_not_exists" type="bool" setter="set_ignore_if_not_exists" getter="get_ignore_if_not_exists" default="false">
+			Is ignore if not exists set?
 		</member>
 		<member name="is_ignore_if_other_field_not_exists" type="bool" setter="set_ignore_if_other_field_not_exists" getter="get_ignore_if_other_field_not_exists" default="false">
+			Is ignore if other field not exists set?
 		</member>
 	</members>
 	<constants>
