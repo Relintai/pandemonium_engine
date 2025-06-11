@@ -3644,7 +3644,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::we(const String &val) {
 Ref<_HTMLBuilder> _HTMLBuilder::write_tag() {
 	if (_tag->has_data()) {
 		_tag->close();
-		result += _tag->result;
+		result += _tag->get_result();
 		_tag->reset();
 	}
 

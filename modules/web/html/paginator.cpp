@@ -235,7 +235,7 @@ String HTMLPaginator::_render_indexed(Ref<HTMLPaginator> target, const int page_
 
 	b.cul();
 
-	return b.result;
+	return b.get_result();
 }
 
 String HTMLPaginator::render_links(Ref<HTMLPaginator> target, const int page_index) {
@@ -327,7 +327,7 @@ String HTMLPaginator::_render_links(Ref<HTMLPaginator> target, const int page_in
 
 	b.cul();
 
-	return b.result;
+	return b.get_result();
 }
 
 String HTMLPaginator::get_pagination_old(const String &base_url, const int max, const int current_index, const int max_visible_links) {
@@ -405,7 +405,7 @@ String HTMLPaginator::get_pagination_old(const String &base_url, const int max, 
 
 	b.cul();
 
-	return b.result;
+	return b.get_result();
 }
 
 String HTMLPaginator::get_pagination_links_old(const String &base_url, const Vector<String> &links, const int current_index, const int max_visible_links) {
@@ -485,7 +485,7 @@ String HTMLPaginator::get_pagination_links_old(const String &base_url, const Vec
 
 	b.cul();
 
-	return b.result;
+	return b.get_result();
 }
 
 HTMLPaginator::HTMLPaginator() {

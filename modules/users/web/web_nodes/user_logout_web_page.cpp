@@ -67,7 +67,7 @@ void UserLogoutWebPage::_render_index(Ref<WebServerRequest> request) {
 	} else {
 		HTMLBuilder b;
 		b.w("Logout successful!");
-		request->body += b.result;
+		request->body += b.get_result();
 
 		request->compile_and_send_body();
 	}

@@ -33,6 +33,13 @@
 
 #include "../http/web_server_request.h"
 
+String HTMLTag::get_result() {
+	return result;
+}
+void HTMLTag::set_result(const String &str) {
+	result = str;
+}
+
 HTMLTag *HTMLTag::str(const String &str) {
 	result += " " + str;
 
@@ -900,6 +907,15 @@ bool HTMLTag::has_data() {
 HTMLTag::HTMLTag() {
 	simple = true;
 	owner = nullptr;
+}
+
+
+
+String HTMLBuilder::get_result() {
+	return result;
+}
+void HTMLBuilder::set_result(const String &str) {
+	result = str;
 }
 
 HTMLBuilder *HTMLBuilder::comment(const String &val) {
@@ -3476,7 +3492,7 @@ HTMLBuilder *HTMLBuilder::we(const String &val) {
 HTMLBuilder *HTMLBuilder::write_tag() {
 	if (_tag.has_data()) {
 		_tag.close();
-		result += _tag.result;
+		result += _tag.get_result();
 		_tag.reset();
 	}
 

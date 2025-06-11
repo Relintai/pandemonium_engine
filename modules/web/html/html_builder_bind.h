@@ -231,10 +231,11 @@ public:
 
 	_HTMLBuilder *owner;
 	bool simple;
-	String result;
 
 protected:
 	static void _bind_methods();
+
+	String result;
 };
 
 class _HTMLBuilder : public Reference {
@@ -564,12 +565,11 @@ public:
 	_HTMLBuilder();
 	virtual ~_HTMLBuilder();
 
-	String result;
-
 protected:
 	static void _bind_methods();
 
 	Ref<_HTMLTag> _tag;
+	String result;
 };
 
 #endif

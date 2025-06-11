@@ -166,10 +166,10 @@ void BrowsableFolderServeWebPage::render_dir_page(const String &dir_uri, const V
 	}
 	b.cdiv();
 
-	_folder_indexes[dir_uri] = b.result;
+	_folder_indexes[dir_uri] = b.get_result();
 
 	if (dir_uri == "/") {
-		_index = b.result;
+		_index = b.get_result();
 	}
 }
 

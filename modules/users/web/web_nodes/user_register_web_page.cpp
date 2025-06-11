@@ -133,7 +133,7 @@ void UserRegisterWebPage::render_register_success(Ref<WebServerRequest> request)
 	}
 	b.cdiv();
 
-	request->body += b.result;
+	request->body += b.get_result();
 
 	request->compile_and_send_body();
 }
@@ -192,7 +192,7 @@ void UserRegisterWebPage::render_register_request_default(Ref<WebServerRequest> 
 	}
 	b.cdiv();
 
-	request->body += b.result;
+	request->body += b.get_result();
 
 	request->compile_and_send_body();
 }

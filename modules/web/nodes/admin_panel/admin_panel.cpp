@@ -125,7 +125,7 @@ void AdminPanel::render_admin_panel_list(Request *request) {
 
 	render_footer(request);
 
-	request->body += b.result;
+	request->body += b.get_result();
 	request->compile_and_send_body();
 }
 

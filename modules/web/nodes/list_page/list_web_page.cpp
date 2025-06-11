@@ -226,7 +226,7 @@ String ListWebPage::render_page(const int page_index, const int page_count, cons
 	b.w(HTMLPaginator::get_pagination_old(get_full_uri(), page_count, page_index, max_visible_navigation_links));
 	b.cdiv();
 
-	return b.result;
+	return b.get_result();
 }
 
 String ListWebPage::render_entry(const String &list_entry) {
@@ -236,7 +236,7 @@ String ListWebPage::render_entry(const String &list_entry) {
 	b.div(empty_div_class)->w(list_entry)->cdiv();
 	b.cdiv();
 
-	return b.result;
+	return b.get_result();
 }
 
 void ListWebPage::render_no_entries_response() {
@@ -244,7 +244,7 @@ void ListWebPage::render_no_entries_response() {
 
 	b.div(empty_div_class)->w(placeholder_text)->cdiv();
 
-	_no_entries_response = b.result;
+	_no_entries_response = b.get_result();
 }
 
 void ListWebPage::_notification(const int what) {

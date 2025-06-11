@@ -111,7 +111,7 @@ void PagedArticlesWebPage::generate_index_page() {
 
 	b.cdiv();
 
-	_index_page = b.result;
+	_index_page = b.get_result();
 }
 
 void PagedArticlesWebPage::_notification(int what) {
