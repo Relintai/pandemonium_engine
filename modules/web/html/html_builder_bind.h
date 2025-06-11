@@ -33,6 +33,7 @@
 /*************************************************************************/
 
 #include "core/object/object.h"
+#include "core/string/string_builder.h"
 #include "core/string/ustring.h"
 
 #include "core/object/reference.h"
@@ -235,7 +236,7 @@ public:
 protected:
 	static void _bind_methods();
 
-	String result;
+	StringBuilder result;
 };
 
 class _HTMLBuilder : public Reference {
@@ -569,7 +570,7 @@ protected:
 	static void _bind_methods();
 
 	Ref<_HTMLTag> _tag;
-	String result;
+	StringBuilder result;
 };
 
 #endif

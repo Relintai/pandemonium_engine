@@ -48,11 +48,13 @@ String _HTMLTag::get_result() {
 	return result;
 }
 void _HTMLTag::set_result(const String &str) {
-	result = str;
+	result.clear();
+	result += str;
 }
 
 Ref<_HTMLTag> _HTMLTag::str(const String &str) {
-	result += " " + str;
+	result += " ";
+	result += str;
 
 	return Ref<_HTMLTag>(this);
 }
@@ -884,7 +886,11 @@ Ref<_HTMLTag> _HTMLTag::inputmode_url() {
 }
 
 Ref<_HTMLTag> _HTMLTag::attrib(const String &attr, const String &val) {
-	result += " " + attr + "=\"" + val + "\"";
+	result += " ";
+	result += attr;
+	result += "=\"";
+	result += val;
+	result += "\"";
 
 	return Ref<_HTMLTag>(this);
 }
@@ -892,7 +898,9 @@ Ref<_HTMLTag> _HTMLTag::attrib(const String &attr, const String &val) {
 Ref<_HTMLTag> _HTMLTag::start(const String &p_tag, const bool p_simple) {
 	simple = p_simple;
 
-	result = "<" + p_tag;
+	result.clear();
+	result += "<";
+	result += p_tag;
 
 	return Ref<_HTMLTag>(this);
 }
@@ -1131,13 +1139,16 @@ String _HTMLBuilder::get_result() {
 	return result;
 }
 void _HTMLBuilder::set_result(const String &str) {
-	result = str;
+	result.clear();
+	result += str;
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::comment(const String &val) {
 	write_tag();
 
-	result += "<!--" + val + "-->";
+	result += "<!-- ";
+	result += val;
+	result += " -->";
 
 	return Ref<_HTMLBuilder>(this);
 }
