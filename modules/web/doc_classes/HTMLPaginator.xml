@@ -17,6 +17,8 @@
 			<argument index="0" name="target" type="HTMLPaginator" />
 			<argument index="1" name="page_index" type="int" />
 			<description>
+				Renders an index based pagination.
+				Called by [method render_indexed].
 			</description>
 		</method>
 		<method name="_render_links" qualifiers="virtual">
@@ -24,28 +26,35 @@
 			<argument index="0" name="target" type="HTMLPaginator" />
 			<argument index="1" name="page_index" type="int" />
 			<description>
+				Renders a link based pagination.
+				Called by [method render_links].
 			</description>
 		</method>
 		<method name="get_current">
 			<return type="String" />
 			<description>
+				Render the pagination with the current settings.
 			</description>
 		</method>
 		<method name="get_pagination_for_indx">
 			<return type="String" />
 			<argument index="0" name="page_index" type="int" />
 			<description>
+				Get pagination for the given page index (0 based).
 			</description>
 		</method>
 		<method name="get_pagination_for_num">
 			<return type="String" />
 			<argument index="0" name="page_num" type="int" />
 			<description>
+				Get pagination for the given page number (1 based).
 			</description>
 		</method>
 		<method name="next">
 			<return type="String" />
 			<description>
+				Continue enumerating the paginator. Useful when all pages need to be pre-generated and cached.
+				Returns the full result for the current page.
 			</description>
 		</method>
 		<method name="render_indexed">
@@ -53,6 +62,8 @@
 			<argument index="0" name="target" type="HTMLPaginator" />
 			<argument index="1" name="page_index" type="int" />
 			<description>
+				Renders an index based pagination.
+				Calls [method _render_indexed].
 			</description>
 		</method>
 		<method name="render_links">
@@ -60,40 +71,59 @@
 			<argument index="0" name="target" type="HTMLPaginator" />
 			<argument index="1" name="page_index" type="int" />
 			<description>
+				Renders a link based pagination.
+				Calls [method _render_links].
 			</description>
 		</method>
 		<method name="start">
 			<return type="void" />
 			<description>
+				Start enumerating the paginator. Useful when all pages need to be pre-generated and cached.
+				Use [method next] to get the results.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="base_url" type="String" setter="set_base_url" getter="get_base_url" default="&quot;&quot;">
+			The url to generate the paginations for. The page numbers will get appended to this link as is.
 		</member>
 		<member name="class_disabled_li" type="String" setter="set_class_disabled_li" getter="get_class_disabled_li" default="&quot;disabled&quot;">
+			HTML class of the li element to use when a link is disabled for the default renderer.
 		</member>
 		<member name="class_enabled_li" type="String" setter="set_class_enabled_li" getter="get_class_enabled_li" default="&quot;&quot;">
+			HTML class of the li element to use when a link is enabled for the default renderer.
 		</member>
 		<member name="class_main_ul" type="String" setter="set_class_main_ul" getter="get_class_main_ul" default="&quot;pagination&quot;">
+			HTML class of the main ul element to use when a link is enabled for the default renderer.
 		</member>
 		<member name="hide_if_one_page" type="bool" setter="set_hide_if_one_page" getter="get_hide_if_one_page" default="false">
+			Don't emit anything if there is only one page available.
 		</member>
 		<member name="item_count" type="int" setter="set_item_count" getter="get_item_count" default="0">
+			The item count. Setting this will cause the paginator to calculate how many pages are needed.
 		</member>
 		<member name="links" type="PoolStringArray" setter="set_links" getter="get_links" default="PoolStringArray(  )">
+			Array of links to use. Only used if [member use_links_array] is true.
 		</member>
 		<member name="max_visible_links" type="int" setter="set_max_visible_links" getter="get_max_visible_links" default="10">
+			THe maximum number of links (page lings) that will show up.
 		</member>
 		<member name="page_count" type="int" setter="set_page_count" getter="get_page_count" default="0">
+			The available page count.
 		</member>
 		<member name="renderer" type="HTMLPaginator" setter="set_renderer" getter="get_renderer">
+			Set an another HTMLPaginator to use to render this one's content.
+			Simplifies site-wide theme customization and also per session renders.
 		</member>
 		<member name="text_next_link" type="String" setter="set_text_next_link" getter="get_text_next_link" default="&quot;next&quot;">
+			The text of the next link.
 		</member>
 		<member name="text_prev_link" type="String" setter="set_text_prev_link" getter="get_text_prev_link" default="&quot;previous&quot;">
+			The text of the prev link.
 		</member>
 		<member name="use_links_array" type="bool" setter="set_use_links_array" getter="get_use_links_array" default="false">
+			Use the links array, instead of generating page urls by adding the page number to the base_url.
+			Page 0 - index 0, Page 1 - index 1, ...
 		</member>
 	</members>
 	<constants>
