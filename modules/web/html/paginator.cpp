@@ -130,7 +130,7 @@ void HTMLPaginator::set_renderer(const Ref<HTMLPaginator> &val) {
 }
 
 void HTMLPaginator::start() {
-	_current_page_index = 0;
+	_current_page_index = -1;
 }
 String HTMLPaginator::next() {
 	++_current_page_index;
