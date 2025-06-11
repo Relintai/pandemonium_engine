@@ -219,6 +219,9 @@ static void return_doc_from_retinfo(DocData::MethodDoc &p_method, const Property
 		p_method.return_type = "int";
 	} else if (p_retinfo.class_name != StringName()) {
 		p_method.return_type = p_retinfo.class_name;
+		if (p_method.return_type.begins_with("_")) { //proxy class
+			p_method.return_type = p_method.return_type.substr(1, p_method.return_type.length());
+		}
 	} else if (p_retinfo.hint == PROPERTY_HINT_RESOURCE_TYPE) {
 		p_method.return_type = p_retinfo.hint_string;
 	} else if (p_retinfo.type == Variant::NIL && p_retinfo.usage & PROPERTY_USAGE_NIL_IS_VARIANT) {
@@ -241,6 +244,9 @@ static void argument_doc_from_arginfo(DocData::ArgumentDoc &p_argument, const Pr
 		p_argument.type = "int";
 	} else if (p_arginfo.class_name != StringName()) {
 		p_argument.type = p_arginfo.class_name;
+		if (p_argument.type.begins_with("_")) { //proxy class
+			p_argument.type = p_argument.type.substr(1, p_argument.type.length());
+		}
 	} else if (p_arginfo.hint == PROPERTY_HINT_RESOURCE_TYPE) {
 		p_argument.type = p_arginfo.hint_string;
 	} else if (p_arginfo.type == Variant::NIL) {
@@ -409,6 +415,9 @@ void DocData::generate(bool p_basic_types) {
 						prop.type = "int";
 					} else if (retinfo.class_name != StringName()) {
 						prop.type = retinfo.class_name;
+						if (prop.type.begins_with("_")) { //proxy class
+							prop.type = prop.type.substr(1, prop.type.length());
+						}
 					} else if (retinfo.hint == PROPERTY_HINT_RESOURCE_TYPE) {
 						prop.type = retinfo.hint_string;
 					} else if (retinfo.type == Variant::NIL && retinfo.usage & PROPERTY_USAGE_NIL_IS_VARIANT) {
