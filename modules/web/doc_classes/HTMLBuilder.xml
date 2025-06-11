@@ -24,7 +24,7 @@
 	</tutorials>
 	<methods>
 		<method name="a">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="href" type="String" default="&quot;&quot;" />
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
@@ -33,941 +33,941 @@
 			</description>
 		</method>
 		<method name="abbr">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML abbr tag.
 			</description>
 		</method>
 		<method name="acronym">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML acronym tag.
 			</description>
 		</method>
 		<method name="address">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML address tag.
 			</description>
 		</method>
 		<method name="applet">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML applet tag.
 			</description>
 		</method>
 		<method name="area">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML area tag.
 			</description>
 		</method>
 		<method name="article">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML article tag.
 			</description>
 		</method>
 		<method name="aside">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML aside tag.
 			</description>
 		</method>
 		<method name="audio">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML audio tag.
 			</description>
 		</method>
 		<method name="b">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML b tag.
 			</description>
 		</method>
 		<method name="basefont">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML basefont tag.
 			</description>
 		</method>
 		<method name="bdi">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML bdi tag.
 			</description>
 		</method>
 		<method name="bdo">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML bdo tag.
 			</description>
 		</method>
 		<method name="big">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML big tag.
 			</description>
 		</method>
 		<method name="blockquote">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML blockquote tag.
 			</description>
 		</method>
 		<method name="body">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML body tag.
 			</description>
 		</method>
 		<method name="br">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML br tag.
 			</description>
 		</method>
 		<method name="button">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML button tag.
 			</description>
 		</method>
 		<method name="c_ol">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML ol tag.
 			</description>
 		</method>
 		<method name="ca">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML a tag.
 			</description>
 		</method>
 		<method name="cabbr">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML abbr tag.
 			</description>
 		</method>
 		<method name="cacronym">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML acronym tag.
 			</description>
 		</method>
 		<method name="caddress">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML address tag.
 			</description>
 		</method>
 		<method name="canvas">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML canvas tag.
 			</description>
 		</method>
 		<method name="capplet">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML applet tag.
 			</description>
 		</method>
 		<method name="caption">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML caption tag.
 			</description>
 		</method>
 		<method name="carea">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML area tag.
 			</description>
 		</method>
 		<method name="carticle">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML article tag.
 			</description>
 		</method>
 		<method name="caside">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML aside tag.
 			</description>
 		</method>
 		<method name="caudio">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML audio tag.
 			</description>
 		</method>
 		<method name="cb">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML b tag.
 			</description>
 		</method>
 		<method name="cbasefont">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML basefont tag.
 			</description>
 		</method>
 		<method name="cbdi">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML bdi tag.
 			</description>
 		</method>
 		<method name="cbdo">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML bdo tag.
 			</description>
 		</method>
 		<method name="cbig">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML big tag.
 			</description>
 		</method>
 		<method name="cblockquote">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML blockquote tag.
 			</description>
 		</method>
 		<method name="cbody">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML body tag.
 			</description>
 		</method>
 		<method name="cbutton">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML button tag.
 			</description>
 		</method>
 		<method name="ccanvas">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML canvas tag.
 			</description>
 		</method>
 		<method name="ccaption">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML caption tag.
 			</description>
 		</method>
 		<method name="ccenter">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML center tag.
 			</description>
 		</method>
 		<method name="ccite">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML cite tag.
 			</description>
 		</method>
 		<method name="ccode">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML code tag.
 			</description>
 		</method>
 		<method name="ccol">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML col tag.
 			</description>
 		</method>
 		<method name="ccolgroup">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML colgorup tag.
 			</description>
 		</method>
 		<method name="cdata">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML data tag.
 			</description>
 		</method>
 		<method name="cdatalist">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML datalist tag.
 			</description>
 		</method>
 		<method name="cdd">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML dd tag.
 			</description>
 		</method>
 		<method name="cdel">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML del tag.
 			</description>
 		</method>
 		<method name="cdetails">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML details tag.
 			</description>
 		</method>
 		<method name="cdfn">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML dfn tag.
 			</description>
 		</method>
 		<method name="cdialog">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML dialog tag.
 			</description>
 		</method>
 		<method name="cdir">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML dir tag.
 			</description>
 		</method>
 		<method name="cdiv">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML div tag.
 			</description>
 		</method>
 		<method name="cdl">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML col tag.
 			</description>
 		</method>
 		<method name="cdt">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML cdt tag.
 			</description>
 		</method>
 		<method name="cembed">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML embed tag.
 			</description>
 		</method>
 		<method name="center">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML center tag.
 			</description>
 		</method>
 		<method name="cfieldset">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML fieldset tag.
 			</description>
 		</method>
 		<method name="cfigcaption">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML figcaption tag.
 			</description>
 		</method>
 		<method name="cfigure">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML figure tag.
 			</description>
 		</method>
 		<method name="cfont">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML font tag.
 			</description>
 		</method>
 		<method name="cfooter">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML footer tag.
 			</description>
 		</method>
 		<method name="cform">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML form tag.
 			</description>
 		</method>
 		<method name="cframe">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML frame tag.
 			</description>
 		</method>
 		<method name="cframeset">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML frameset tag.
 			</description>
 		</method>
 		<method name="ch1">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML h1 tag.
 			</description>
 		</method>
 		<method name="ch2">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML h2 tag.
 			</description>
 		</method>
 		<method name="ch3">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML h3 tag.
 			</description>
 		</method>
 		<method name="ch4">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML h4 tag.
 			</description>
 		</method>
 		<method name="ch5">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML h5 tag.
 			</description>
 		</method>
 		<method name="ch6">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML h6 tag.
 			</description>
 		</method>
 		<method name="chead">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML head tag.
 			</description>
 		</method>
 		<method name="cheader">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML header tag.
 			</description>
 		</method>
 		<method name="chr">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML hr tag.
 			</description>
 		</method>
 		<method name="chtml">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML html tag.
 			</description>
 		</method>
 		<method name="ci">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML i tag.
 			</description>
 		</method>
 		<method name="ciframe">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML iframe tag.
 			</description>
 		</method>
 		<method name="cimg">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML img tag.
 			</description>
 		</method>
 		<method name="cinput">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML input tag.
 			</description>
 		</method>
 		<method name="cins">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML ins tag.
 			</description>
 		</method>
 		<method name="cite">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML cite tag.
 			</description>
 		</method>
 		<method name="ckbd">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML kbd tag.
 			</description>
 		</method>
 		<method name="clabel">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML label tag.
 			</description>
 		</method>
 		<method name="clegend">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML legend tag.
 			</description>
 		</method>
 		<method name="cli">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML li tag.
 			</description>
 		</method>
 		<method name="clink">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML link tag.
 			</description>
 		</method>
 		<method name="cmain">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML main tag.
 			</description>
 		</method>
 		<method name="cmap">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML map tag.
 			</description>
 		</method>
 		<method name="cmark">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML mark tag.
 			</description>
 		</method>
 		<method name="cmeta">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML meta tag.
 			</description>
 		</method>
 		<method name="cmeter">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML meter tag.
 			</description>
 		</method>
 		<method name="cnav">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML nav tag.
 			</description>
 		</method>
 		<method name="cnoframes">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML noframes tag.
 			</description>
 		</method>
 		<method name="cnoscript">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML noscript tag.
 			</description>
 		</method>
 		<method name="cobjectt">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML object tag.
 			</description>
 		</method>
 		<method name="code">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML code tag.
 			</description>
 		</method>
 		<method name="col">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML col tag.
 			</description>
 		</method>
 		<method name="colgroup">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="comment">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="val" type="String" />
 			<description>
 				HTML comment.
 			</description>
 		</method>
 		<method name="coptgroup">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="coption">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="coutput">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cp">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cparam">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cpicture">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cpre">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cprogress">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cq">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="crp">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="crt">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cruby">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cs">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="csamp">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cscript">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="csection">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cselect">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="csmall">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="csource">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cspan">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="csrf_token">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="token" type="String" />
 			<description>
 				HTML csrf token hidden input.
 			</description>
 		</method>
 		<method name="csrf_tokenr">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
 				HTML csrf token hidden input.
 			</description>
 		</method>
 		<method name="cstrike">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cstrong">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cstyle">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="csub">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="csummary">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="csup">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="csvg">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctable">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctag">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="tag" type="String" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctbody">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctd">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctemplateh">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctextarea">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctfoot">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cth">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cthead">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctime">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctitle">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctr">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctrack">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="ctt">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cu">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cul">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cvar">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cvideo">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="cwbr">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Closing HTML tag.
 			</description>
 		</method>
 		<method name="data">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML data tag.
 			</description>
 		</method>
 		<method name="datalist">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML datalist tag.
 			</description>
 		</method>
 		<method name="dd">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML dd tag.
 			</description>
 		</method>
 		<method name="del">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML del tag.
 			</description>
 		</method>
 		<method name="details">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML details tag.
 			</description>
 		</method>
 		<method name="dfn">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML dfn tag.
 			</description>
 		</method>
 		<method name="dialog">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML dialog tag.
 			</description>
 		</method>
 		<method name="dir">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML dir tag.
 			</description>
 		</method>
 		<method name="div">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="1" name="id" type="String" default="&quot;&quot;" />
 			<description>
@@ -975,32 +975,32 @@
 			</description>
 		</method>
 		<method name="dl">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML dl tag.
 			</description>
 		</method>
 		<method name="doctype">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" default="&quot;&quot;" />
 			<description>
 				HTML doctype tag.
 			</description>
 		</method>
 		<method name="dt">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML dt tag.
 			</description>
 		</method>
 		<method name="em">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML em tag.
 			</description>
 		</method>
 		<method name="embed">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML embed tag.
 			</description>
@@ -1012,7 +1012,7 @@
 			</description>
 		</method>
 		<method name="fa">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="href" type="String" />
 			<argument index="1" name="body" type="String" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1022,7 +1022,7 @@
 			</description>
 		</method>
 		<method name="fdiv">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="body" type="String" />
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
@@ -1031,25 +1031,25 @@
 			</description>
 		</method>
 		<method name="fieldset">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML fieldset tag.
 			</description>
 		</method>
 		<method name="figcaption">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML figcaption tag.
 			</description>
 		</method>
 		<method name="figure">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML figure tag.
 			</description>
 		</method>
 		<method name="flabel">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="pfor" type="String" />
 			<argument index="1" name="plabel" type="String" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1059,19 +1059,19 @@
 			</description>
 		</method>
 		<method name="font">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML font tag.
 			</description>
 		</method>
 		<method name="footer">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML footer tag.
 			</description>
 		</method>
 		<method name="foption">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="value" type="String" />
 			<argument index="1" name="body" type="String" />
 			<argument index="2" name="selected" type="bool" default="false" />
@@ -1080,13 +1080,13 @@
 			</description>
 		</method>
 		<method name="form">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML form tag.
 			</description>
 		</method>
 		<method name="form_get">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="action" type="String" default="&quot;&quot;" />
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
@@ -1095,7 +1095,7 @@
 			</description>
 		</method>
 		<method name="form_post">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="action" type="String" default="&quot;&quot;" />
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
@@ -1104,7 +1104,7 @@
 			</description>
 		</method>
 		<method name="form_postr">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="action" type="String" />
 			<argument index="1" name="request" type="WebServerRequest" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1114,19 +1114,19 @@
 			</description>
 		</method>
 		<method name="frame">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML frame tag.
 			</description>
 		</method>
 		<method name="frameset">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML frameset tag.
 			</description>
 		</method>
 		<method name="ftextarea">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="name" type="String" />
 			<argument index="1" name="body" type="String" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1136,91 +1136,91 @@
 			</description>
 		</method>
 		<method name="h1">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML h1 tag.
 			</description>
 		</method>
 		<method name="h2">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML h2 tag.
 			</description>
 		</method>
 		<method name="h3">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML h3 tag.
 			</description>
 		</method>
 		<method name="h4">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML h4 tag.
 			</description>
 		</method>
 		<method name="h5">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML h5 tag.
 			</description>
 		</method>
 		<method name="h6">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML h6 tag.
 			</description>
 		</method>
 		<method name="head">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML head tag.
 			</description>
 		</method>
 		<method name="header">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML header tag.
 			</description>
 		</method>
 		<method name="hr">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML hr tag.
 			</description>
 		</method>
 		<method name="html">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML html tag.
 			</description>
 		</method>
 		<method name="i">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML i tag.
 			</description>
 		</method>
 		<method name="iframe">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML iframe tag.
 			</description>
 		</method>
 		<method name="img">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML img tag.
 			</description>
 		</method>
 		<method name="input">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML input tag.
 			</description>
 		</method>
 		<method name="input_button">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1230,7 +1230,7 @@
 			</description>
 		</method>
 		<method name="input_checkbox">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="checked" type="bool" default="false" />
@@ -1241,7 +1241,7 @@
 			</description>
 		</method>
 		<method name="input_color">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1251,7 +1251,7 @@
 			</description>
 		</method>
 		<method name="input_date">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1264,7 +1264,7 @@
 			</description>
 		</method>
 		<method name="input_datetime_local">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1277,7 +1277,7 @@
 			</description>
 		</method>
 		<method name="input_email">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="placeholder " type="String" default="&quot;&quot;" />
@@ -1288,7 +1288,7 @@
 			</description>
 		</method>
 		<method name="input_file">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="accept " type="String" default="&quot;&quot;" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1298,7 +1298,7 @@
 			</description>
 		</method>
 		<method name="input_hidden">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<description>
@@ -1306,7 +1306,7 @@
 			</description>
 		</method>
 		<method name="input_image">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="src" type="String" default="&quot;&quot;" />
 			<argument index="2" name="alt" type="String" default="&quot;&quot;" />
@@ -1319,7 +1319,7 @@
 			</description>
 		</method>
 		<method name="input_month">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
@@ -1328,7 +1328,7 @@
 			</description>
 		</method>
 		<method name="input_number">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="vmin" type="String" default="&quot;&quot;" />
 			<argument index="2" name="vmax" type="String" default="&quot;&quot;" />
@@ -1339,7 +1339,7 @@
 			</description>
 		</method>
 		<method name="input_password">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="placeholder" type="String" default="&quot;&quot;" />
@@ -1353,7 +1353,7 @@
 			</description>
 		</method>
 		<method name="input_radio">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1363,7 +1363,7 @@
 			</description>
 		</method>
 		<method name="input_range">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="vmin" type="String" default="&quot;&quot;" />
@@ -1376,7 +1376,7 @@
 			</description>
 		</method>
 		<method name="input_reset">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
@@ -1386,7 +1386,7 @@
 			</description>
 		</method>
 		<method name="input_search">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="placeholder " type="String" default="&quot;&quot;" />
@@ -1401,7 +1401,7 @@
 			</description>
 		</method>
 		<method name="input_submit">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="value" type="String" default="&quot;&quot;" />
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
@@ -1410,7 +1410,7 @@
 			</description>
 		</method>
 		<method name="input_tel">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="placeholder" type="String" default="&quot;&quot;" />
@@ -1425,7 +1425,7 @@
 			</description>
 		</method>
 		<method name="input_text">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="placeholder" type="String" default="&quot;&quot;" />
@@ -1439,7 +1439,7 @@
 			</description>
 		</method>
 		<method name="input_time">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
@@ -1451,7 +1451,7 @@
 			</description>
 		</method>
 		<method name="input_url">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<argument index="2" name="placeholder " type="String" default="&quot;&quot;" />
@@ -1465,7 +1465,7 @@
 			</description>
 		</method>
 		<method name="input_week">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
@@ -1476,200 +1476,200 @@
 			</description>
 		</method>
 		<method name="ins">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML ins tag.
 			</description>
 		</method>
 		<method name="kbd">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML kbd tag.
 			</description>
 		</method>
 		<method name="label">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML label tag.
 			</description>
 		</method>
 		<method name="legend">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML legend tag.
 			</description>
 		</method>
 		<method name="li">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML li tag.
 			</description>
 		</method>
 		<method name="link">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML link tag.
 			</description>
 		</method>
 		<method name="main">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML main tag.
 			</description>
 		</method>
 		<method name="map">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML map tag.
 			</description>
 		</method>
 		<method name="mark">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML mark tag.
 			</description>
 		</method>
 		<method name="meta">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML meta tag.
 			</description>
 		</method>
 		<method name="meter">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML meter tag.
 			</description>
 		</method>
 		<method name="nav">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML nav tag.
 			</description>
 		</method>
 		<method name="noframes">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML noframes tag.
 			</description>
 		</method>
 		<method name="noscript">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML noscript tag.
 			</description>
 		</method>
 		<method name="objectt">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML object tag.
 			</description>
 		</method>
 		<method name="ol">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML ol tag.
 			</description>
 		</method>
 		<method name="optgroup">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML optgroup tag.
 			</description>
 		</method>
 		<method name="option">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" default="&quot;&quot;" />
 			<description>
 				HTML option tag.
 			</description>
 		</method>
 		<method name="output">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML output tag.
 			</description>
 		</method>
 		<method name="p">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML p tag.
 			</description>
 		</method>
 		<method name="param">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML param tag.
 			</description>
 		</method>
 		<method name="picture">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML picture tag.
 			</description>
 		</method>
 		<method name="pre">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML pre tag.
 			</description>
 		</method>
 		<method name="progress">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML progress tag.
 			</description>
 		</method>
 		<method name="q">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML q tag.
 			</description>
 		</method>
 		<method name="rp">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML rp tag.
 			</description>
 		</method>
 		<method name="rt">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML rt tag.
 			</description>
 		</method>
 		<method name="ruby">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML ruby tag.
 			</description>
 		</method>
 		<method name="s">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML s tag.
 			</description>
 		</method>
 		<method name="samp">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML samp tag.
 			</description>
 		</method>
 		<method name="script">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML script tag.
 			</description>
 		</method>
 		<method name="section">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML section tag.
 			</description>
 		</method>
 		<method name="select">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
@@ -1678,73 +1678,73 @@
 			</description>
 		</method>
 		<method name="small">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML small tag.
 			</description>
 		</method>
 		<method name="source">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML source tag.
 			</description>
 		</method>
 		<method name="span">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML span tag.
 			</description>
 		</method>
 		<method name="strike">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML strike tag.
 			</description>
 		</method>
 		<method name="strong">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML strong tag.
 			</description>
 		</method>
 		<method name="style">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML style tag.
 			</description>
 		</method>
 		<method name="sub">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML sub tag.
 			</description>
 		</method>
 		<method name="summary">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML summary tag.
 			</description>
 		</method>
 		<method name="sup">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML sup tag.
 			</description>
 		</method>
 		<method name="svg">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML svg tag.
 			</description>
 		</method>
 		<method name="table">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML table tag.
 			</description>
 		</method>
 		<method name="tag">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="tag" type="String" />
 			<argument index="1" name="simple" type="bool" default="false" />
 			<description>
@@ -1752,25 +1752,25 @@
 			</description>
 		</method>
 		<method name="tbody">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML tbody tag.
 			</description>
 		</method>
 		<method name="td">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML td tag.
 			</description>
 		</method>
 		<method name="templateh">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML template tag.
 			</description>
 		</method>
 		<method name="textarea">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
@@ -1779,113 +1779,113 @@
 			</description>
 		</method>
 		<method name="tfoot">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML tfoot tag.
 			</description>
 		</method>
 		<method name="th">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML th tag.
 			</description>
 		</method>
 		<method name="thead">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML thead tag.
 			</description>
 		</method>
 		<method name="time">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML time tag.
 			</description>
 		</method>
 		<method name="title">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML title tag.
 			</description>
 		</method>
 		<method name="tra">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML tra tag.
 			</description>
 		</method>
 		<method name="track">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML track tag.
 			</description>
 		</method>
 		<method name="tt">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML tt tag.
 			</description>
 		</method>
 		<method name="u">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML u tag.
 			</description>
 		</method>
 		<method name="ul">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML ul tag.
 			</description>
 		</method>
 		<method name="var">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML var tag.
 			</description>
 		</method>
 		<method name="video">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				HTML video tag.
 			</description>
 		</method>
 		<method name="w">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="val" type="String" />
 			<description>
 				Append string to the result.
 			</description>
 		</method>
 		<method name="wbn">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="val" type="bool" />
 			<description>
 				Append bool as a number to the result.
 			</description>
 		</method>
 		<method name="wbr">
-			<return type="_HTMLTag" />
+			<return type="HTMLTag" />
 			<description>
 				Append br tag to the result.
 			</description>
 		</method>
 		<method name="wbs">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="val" type="bool" />
 			<description>
 				Append bool as text to the result.
 			</description>
 		</method>
 		<method name="we">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="val" type="String" />
 			<description>
 				HTML escape, then append string to the result.
 			</description>
 		</method>
 		<method name="wi">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="val" type="int" />
 			<argument index="1" name="base" type="int" default="10" />
 			<argument index="2" name="capitalize_hex" type="bool" default="false" />
@@ -1894,7 +1894,7 @@
 			</description>
 		</method>
 		<method name="wn">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="val" type="float" />
 			<argument index="1" name="decimals " type="int" default="-1" />
 			<description>
@@ -1902,14 +1902,14 @@
 			</description>
 		</method>
 		<method name="wns">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="val" type="float" />
 			<description>
 				Append number as scientific to the result.
 			</description>
 		</method>
 		<method name="wr">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="val" type="float" />
 			<argument index="1" name="trailing " type="bool" default="true" />
 			<description>
@@ -1917,13 +1917,13 @@
 			</description>
 		</method>
 		<method name="write_tag">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<description>
 				Finish writing the currently open tag.
 			</description>
 		</method>
 		<method name="wui">
-			<return type="_HTMLBuilder" />
+			<return type="HTMLBuilder" />
 			<argument index="0" name="val" type="int" />
 			<argument index="1" name="base" type="int" default="10" />
 			<argument index="2" name="capitalize_hex" type="bool" default="false" />
