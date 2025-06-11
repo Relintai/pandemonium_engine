@@ -37,11 +37,14 @@ String HTMLTag::get_result() {
 	return result;
 }
 void HTMLTag::set_result(const String &str) {
-	result = str;
+	result.clear();
+
+	result += str;
 }
 
 HTMLTag *HTMLTag::str(const String &str) {
-	result += " " + str;
+	result += " ";
+	result += str;
 
 	return this;
 }
@@ -867,7 +870,11 @@ HTMLTag *HTMLTag::inputmode_url() {
 }
 
 HTMLTag *HTMLTag::attrib(const String &attr, const String &val) {
-	result += " " + attr + "=\"" + val + "\"";
+	result += " ";
+	result += attr;
+	result += "=\"";
+	result += val;
+	result += "\"";
 
 	return this;
 }
@@ -875,7 +882,10 @@ HTMLTag *HTMLTag::attrib(const String &attr, const String &val) {
 HTMLTag *HTMLTag::start(const String &p_tag, const bool p_simple) {
 	simple = p_simple;
 
-	result = "<" + p_tag;
+	result.clear();
+
+	result += "<";
+	result += p_tag;
 
 	return this;
 }
@@ -909,19 +919,21 @@ HTMLTag::HTMLTag() {
 	owner = nullptr;
 }
 
-
-
 String HTMLBuilder::get_result() {
 	return result;
 }
 void HTMLBuilder::set_result(const String &str) {
-	result = str;
+	result.clear();
+
+	result += str;
 }
 
 HTMLBuilder *HTMLBuilder::comment(const String &val) {
 	write_tag();
 
-	result += "<!--" + val + "-->";
+	result += "<!-- ";
+	result += val;
+	result += " -->";
 
 	return this;
 }
@@ -935,7 +947,9 @@ HTMLTag *HTMLBuilder::doctype() {
 HTMLBuilder *HTMLBuilder::doctype(const String &val) {
 	write_tag();
 
-	result += "<!DOCTYPE " + val + ">";
+	result += "<!DOCTYPE ";
+	result += val;
+	result += ">";
 
 	return this;
 }
@@ -1668,11 +1682,11 @@ HTMLBuilder *HTMLBuilder::a(const String &href, const String &cls, const String 
 
 	t->href(href);
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		t->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		t->id(id);
 	}
 

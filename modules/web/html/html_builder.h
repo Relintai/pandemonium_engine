@@ -33,6 +33,7 @@
 /*************************************************************************/
 
 #include "core/string/ustring.h"
+#include "core/string/string_builder.h"
 
 #include "core/object/reference.h"
 
@@ -229,7 +230,7 @@ public:
 	HTMLBuilder *owner;
 
 protected:
-	String result;
+	StringBuilder result;
 };
 
 class HTMLBuilder {
@@ -596,7 +597,7 @@ public:
 protected:
 	HTMLTag _tag;
 
-	String result;
+	StringBuilder result;
 };
 
 #endif
