@@ -3431,8 +3431,7 @@ HTMLBuilder *HTMLBuilder::wns(const double val) {
 HTMLBuilder *HTMLBuilder::wr(const double val, const bool p_trailing) {
 	write_tag();
 
-	//TODO
-	//result += String::num_real(val, p_trailing);
+	result += String::num(val, p_trailing);
 
 	return this;
 }
