@@ -920,6 +920,8 @@ HTMLTag::HTMLTag() {
 }
 
 String HTMLBuilder::get_result() {
+	write_tag();
+
 	return result;
 }
 void HTMLBuilder::set_result(const String &str) {

@@ -1136,6 +1136,7 @@ void _HTMLTag::_bind_methods() {
 }
 
 String _HTMLBuilder::get_result() {
+	write_tag();
 	return result;
 }
 void _HTMLBuilder::set_result(const String &str) {
