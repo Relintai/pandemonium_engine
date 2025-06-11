@@ -76,7 +76,7 @@ Ref<_HTMLTag> _HTMLTag::cls(const String &val) {
 }
 
 Ref<_HTMLTag> _HTMLTag::clsse(const String &val) {
-	if (val == "") {
+	if (val.empty()) {
 		return Ref<_HTMLTag>(this);
 	}
 
@@ -1153,15 +1153,15 @@ Ref<_HTMLTag> _HTMLBuilder::a(const String &href, const String &cls, const Strin
 
 	_tag->start("a");
 
-	if (href != "") {
+	if (!href.empty()) {
 		_tag->href(href);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -1373,11 +1373,11 @@ Ref<_HTMLTag> _HTMLBuilder::div(const String &cls, const String &id) {
 
 	_tag->start("div");
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -1653,7 +1653,7 @@ Ref<_HTMLTag> _HTMLBuilder::option(const String &value) {
 
 	_tag->start("option");
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
@@ -1756,15 +1756,15 @@ Ref<_HTMLTag> _HTMLBuilder::select(const String &name, const String &cls, const 
 
 	_tag->start("select");
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -1860,15 +1860,15 @@ Ref<_HTMLTag> _HTMLBuilder::textarea(const String &name, const String &cls, cons
 
 	_tag->start("textarea");
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -2810,11 +2810,11 @@ Ref<_HTMLTag> _HTMLBuilder::form_get(const String &action, const String &cls, co
 
 	_tag->fora(action);
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -2828,11 +2828,11 @@ Ref<_HTMLTag> _HTMLBuilder::form_post(const String &action, const String &cls, c
 
 	_tag->action(action);
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -2851,11 +2851,11 @@ Ref<_HTMLBuilder> _HTMLBuilder::flabel(const String &pfor, const String &plabel,
 
 	t->fora(pfor);
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		t->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		t->id(id);
 	}
 
@@ -2871,19 +2871,19 @@ Ref<_HTMLTag> _HTMLBuilder::input_button(const String &name, const String &value
 
 	_tag->start("input")->itbutton();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -2895,19 +2895,19 @@ Ref<_HTMLTag> _HTMLBuilder::input_checkbox(const String &name, const String &val
 
 	_tag->start("input")->itcheckbox();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -2921,19 +2921,19 @@ Ref<_HTMLTag> _HTMLBuilder::input_color(const String &name, const String &value,
 
 	_tag->start("input")->itcolor();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -2945,31 +2945,31 @@ Ref<_HTMLTag> _HTMLBuilder::input_date(const String &name, const String &value, 
 
 	_tag->start("input")->itdate();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
-	if (date_min != "") {
+	if (!date_min.empty()) {
 		_tag->min(date_min);
 	}
 
-	if (date_max != "") {
+	if (!date_max.empty()) {
 		_tag->max(date_max);
 	}
 
-	if (date_step != "") {
+	if (!date_step.empty()) {
 		_tag->step(date_step);
 	}
 
@@ -2981,31 +2981,31 @@ Ref<_HTMLTag> _HTMLBuilder::input_datetime_local(const String &name, const Strin
 
 	_tag->start("input")->itdatetime_local();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
-	if (date_min != "") {
+	if (!date_min.empty()) {
 		_tag->min(date_min);
 	}
 
-	if (date_max != "") {
+	if (!date_max.empty()) {
 		_tag->max(date_max);
 	}
 
-	if (date_step != "") {
+	if (!date_step.empty()) {
 		_tag->step(date_step);
 	}
 
@@ -3017,23 +3017,23 @@ Ref<_HTMLTag> _HTMLBuilder::input_email(const String &name, const String &value,
 
 	_tag->start("input")->itemail();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
-	if (placeholder != "") {
+	if (!placeholder.empty()) {
 		_tag->placeholder(placeholder);
 	}
 
@@ -3045,19 +3045,19 @@ Ref<_HTMLTag> _HTMLBuilder::input_file(const String &name, const String &accept,
 
 	_tag->start("input")->itfile();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (accept != "") {
+	if (!accept.empty()) {
 		_tag->accept(accept);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -3069,23 +3069,23 @@ Ref<_HTMLTag> _HTMLBuilder::input_image(const String &name, const String &src, c
 
 	_tag->start("input")->itimage();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (src != "") {
+	if (!src.empty()) {
 		_tag->src(src);
 	}
 
-	if (alt != "") {
+	if (!alt.empty()) {
 		_tag->alt(alt);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -3105,15 +3105,15 @@ Ref<_HTMLTag> _HTMLBuilder::input_month(const String &name, const String &cls, c
 
 	_tag->start("input")->itmonth();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -3125,23 +3125,23 @@ Ref<_HTMLTag> _HTMLBuilder::input_number(const String &name, const String &vmin,
 
 	_tag->start("input")->itnumber();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (vmin != "") {
+	if (!vmin.empty()) {
 		_tag->min(vmin);
 	}
 
-	if (vmax != "") {
+	if (!vmax.empty()) {
 		_tag->max(vmax);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -3153,35 +3153,35 @@ Ref<_HTMLTag> _HTMLBuilder::input_password(const String &name, const String &val
 
 	_tag->start("input")->itpassword();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (placeholder != "") {
+	if (!placeholder.empty()) {
 		_tag->placeholder(placeholder);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
-	if (minlength != "") {
+	if (!minlength.empty()) {
 		_tag->minlengths(minlength);
 	}
 
-	if (maxlength != "") {
+	if (!maxlength.empty()) {
 		_tag->maxlengths(maxlength);
 	}
 
-	if (size != "") {
+	if (!size.empty()) {
 		_tag->sizes(size);
 	}
 
@@ -3193,19 +3193,19 @@ Ref<_HTMLTag> _HTMLBuilder::input_radio(const String &name, const String &value,
 
 	_tag->start("input")->itradio();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -3217,31 +3217,31 @@ Ref<_HTMLTag> _HTMLBuilder::input_range(const String &name, const String &value,
 
 	_tag->start("input")->itrange();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (vmin != "") {
+	if (!vmin.empty()) {
 		_tag->min(vmin);
 	}
 
-	if (vmax != "") {
+	if (!vmax.empty()) {
 		_tag->max(vmax);
 	}
 
-	if (vstep != "") {
+	if (!vstep.empty()) {
 		_tag->step(vstep);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -3253,19 +3253,19 @@ Ref<_HTMLTag> _HTMLBuilder::input_reset(const String &name, const String &value,
 
 	_tag->start("input")->itreset();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -3277,39 +3277,39 @@ Ref<_HTMLTag> _HTMLBuilder::input_search(const String &name, const String &value
 
 	_tag->start("input")->itsearch();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (placeholder != "") {
+	if (!placeholder.empty()) {
 		_tag->placeholder(placeholder);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
-	if (minlength != "") {
+	if (!minlength.empty()) {
 		_tag->minlengths(minlength);
 	}
 
-	if (maxlength != "") {
+	if (!maxlength.empty()) {
 		_tag->maxlengths(maxlength);
 	}
 
-	if (size != "") {
+	if (!size.empty()) {
 		_tag->sizes(size);
 	}
 
-	if (pattern != "") {
+	if (!pattern.empty()) {
 		_tag->pattern(pattern);
 	}
 
@@ -3321,15 +3321,15 @@ Ref<_HTMLTag> _HTMLBuilder::input_submit(const String &value, const String &cls,
 
 	_tag->start("input")->itsubmit();
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
@@ -3341,39 +3341,39 @@ Ref<_HTMLTag> _HTMLBuilder::input_tel(const String &name, const String &value, c
 
 	_tag->start("input")->ittel();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (placeholder != "") {
+	if (!placeholder.empty()) {
 		_tag->placeholder(placeholder);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
-	if (minlength != "") {
+	if (!minlength.empty()) {
 		_tag->minlengths(minlength);
 	}
 
-	if (maxlength != "") {
+	if (!maxlength.empty()) {
 		_tag->maxlengths(maxlength);
 	}
 
-	if (size != "") {
+	if (!size.empty()) {
 		_tag->sizes(size);
 	}
 
-	if (pattern != "") {
+	if (!pattern.empty()) {
 		_tag->pattern(pattern);
 	}
 
@@ -3385,35 +3385,35 @@ Ref<_HTMLTag> _HTMLBuilder::input_text(const String &name, const String &value, 
 
 	_tag->start("input")->ittext();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (placeholder != "") {
+	if (!placeholder.empty()) {
 		_tag->placeholder(placeholder);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
-	if (minlength != "") {
+	if (!minlength.empty()) {
 		_tag->minlengths(minlength);
 	}
 
-	if (maxlength != "") {
+	if (!maxlength.empty()) {
 		_tag->maxlengths(maxlength);
 	}
 
-	if (size != "") {
+	if (!size.empty()) {
 		_tag->sizes(size);
 	}
 
@@ -3425,27 +3425,27 @@ Ref<_HTMLTag> _HTMLBuilder::input_time(const String &name, const String &cls, co
 
 	_tag->start("input")->ittime();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
-	if (vmin != "") {
+	if (!vmin.empty()) {
 		_tag->min(vmin);
 	}
 
-	if (vmax != "") {
+	if (!vmax.empty()) {
 		_tag->max(vmax);
 	}
 
-	if (vstep != "") {
+	if (!vstep.empty()) {
 		_tag->step(vstep);
 	}
 
@@ -3457,35 +3457,35 @@ Ref<_HTMLTag> _HTMLBuilder::input_url(const String &name, const String &value, c
 
 	_tag->start("input")->iturl();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
-	if (placeholder != "") {
+	if (!placeholder.empty()) {
 		_tag->placeholder(placeholder);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
-	if (minlength != "") {
+	if (!minlength.empty()) {
 		_tag->minlengths(minlength);
 	}
 
-	if (maxlength != "") {
+	if (!maxlength.empty()) {
 		_tag->maxlengths(maxlength);
 	}
 
-	if (size != "") {
+	if (!size.empty()) {
 		_tag->sizes(size);
 	}
 
@@ -3496,23 +3496,23 @@ Ref<_HTMLTag> _HTMLBuilder::input_week(const String &name, const String &cls, co
 	write_tag();
 	return _tag->start("input")->itweek();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (cls != "") {
+	if (!cls.empty()) {
 		_tag->cls(cls);
 	}
 
-	if (id != "") {
+	if (!id.empty()) {
 		_tag->id(id);
 	}
 
-	if (vmin != "") {
+	if (!vmin.empty()) {
 		_tag->min(vmin);
 	}
 
-	if (vmax != "") {
+	if (!vmax.empty()) {
 		_tag->max(vmax);
 	}
 
@@ -3524,11 +3524,11 @@ Ref<_HTMLTag> _HTMLBuilder::input_hidden(const String &name, const String &value
 
 	_tag->start("input")->ithidden();
 
-	if (name != "") {
+	if (!name.empty()) {
 		_tag->name(name);
 	}
 
-	if (value != "") {
+	if (!value.empty()) {
 		_tag->value(value);
 	}
 
@@ -3536,7 +3536,7 @@ Ref<_HTMLTag> _HTMLBuilder::input_hidden(const String &name, const String &value
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csrf_token(const String &token) {
-	if (token == "") {
+	if (token.empty()) {
 		// don't waste html characters if it's an empty string anyway
 		return Ref<_HTMLBuilder>(this);
 	}
