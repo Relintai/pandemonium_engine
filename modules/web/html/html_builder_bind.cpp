@@ -3606,8 +3606,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::wns(const double val) {
 Ref<_HTMLBuilder> _HTMLBuilder::wr(const double val, const bool p_trailing) {
 	write_tag();
 
-	//TODO
-	//result += String::num_real(val, p_trailing);
+	result += String::num(val, p_trailing);
 
 	return Ref<_HTMLBuilder>(this);
 }
@@ -3629,26 +3628,22 @@ Ref<_HTMLBuilder> _HTMLBuilder::wui(const uint64_t val, const int base, const bo
 Ref<_HTMLBuilder> _HTMLBuilder::wbn(const bool val) {
 	write_tag();
 
-	//TODO
-	//result += String::bool_num(val);
+	result += String::bool_num(val);
 
 	return Ref<_HTMLBuilder>(this);
 }
 Ref<_HTMLBuilder> _HTMLBuilder::wbs(const bool val) {
 	write_tag();
 
-	//TODO
-	//result += String::bool_str(val);
+	result += String::bool_str(val);
 
 	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::we(const String &val) {
-	print_error("_HTMLBuilder::write_excaped NYI!");
-
 	write_tag();
 
-	result += val;
+	result += val.http_escape();
 
 	return Ref<_HTMLBuilder>(this);
 }
