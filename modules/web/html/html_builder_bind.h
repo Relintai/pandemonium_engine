@@ -562,6 +562,7 @@ public:
 	Ref<_HTMLBuilder> we(const String &val);
 
 	Ref<_HTMLBuilder> write_tag();
+	void write_tag_internal();
 
 	_HTMLBuilder();
 	virtual ~_HTMLBuilder();

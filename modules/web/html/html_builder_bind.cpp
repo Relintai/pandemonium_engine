@@ -931,6 +931,7 @@ bool _HTMLTag::has_data() {
 
 _HTMLTag::_HTMLTag() {
 	simple = true;
+	owner = NULL;
 }
 
 void _HTMLTag::_bind_methods() {
@@ -1136,7 +1137,8 @@ void _HTMLTag::_bind_methods() {
 }
 
 String _HTMLBuilder::get_result() {
-	write_tag();
+	write_tag_internal();
+
 	return result;
 }
 void _HTMLBuilder::set_result(const String &str) {
@@ -3656,6 +3658,14 @@ Ref<_HTMLBuilder> _HTMLBuilder::write_tag() {
 	}
 
 	return Ref<_HTMLBuilder>(this);
+}
+
+void _HTMLBuilder::write_tag_internal() {
+	if (_tag->has_data()) {
+		_tag->close();
+		result += _tag->get_result();
+		_tag->reset();
+	}
 }
 
 _HTMLBuilder::_HTMLBuilder() {
