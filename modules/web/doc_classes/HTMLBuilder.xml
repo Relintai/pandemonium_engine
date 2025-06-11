@@ -933,31 +933,37 @@
 		<method name="dd">
 			<return type="_HTMLTag" />
 			<description>
+				HTML dd tag.
 			</description>
 		</method>
 		<method name="del">
 			<return type="_HTMLTag" />
 			<description>
+				HTML del tag.
 			</description>
 		</method>
 		<method name="details">
 			<return type="_HTMLTag" />
 			<description>
+				HTML details tag.
 			</description>
 		</method>
 		<method name="dfn">
 			<return type="_HTMLTag" />
 			<description>
+				HTML dfn tag.
 			</description>
 		</method>
 		<method name="dialog">
 			<return type="_HTMLTag" />
 			<description>
+				HTML dialog tag.
 			</description>
 		</method>
 		<method name="dir">
 			<return type="_HTMLTag" />
 			<description>
+				HTML dir tag.
 			</description>
 		</method>
 		<method name="div">
@@ -965,37 +971,44 @@
 			<argument index="0" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="1" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				HTML div tag.
 			</description>
 		</method>
 		<method name="dl">
 			<return type="_HTMLTag" />
 			<description>
+				HTML dl tag.
 			</description>
 		</method>
 		<method name="doctype">
 			<return type="_HTMLTag" />
 			<argument index="0" name="val" type="String" default="&quot;&quot;" />
 			<description>
+				HTML doctype tag.
 			</description>
 		</method>
 		<method name="dt">
 			<return type="_HTMLTag" />
 			<description>
+				HTML dt tag.
 			</description>
 		</method>
 		<method name="em">
 			<return type="_HTMLTag" />
 			<description>
+				HTML em tag.
 			</description>
 		</method>
 		<method name="embed">
 			<return type="_HTMLTag" />
 			<description>
+				HTML embed tag.
 			</description>
 		</method>
 		<method name="f">
 			<return type="void" />
 			<description>
+				Finish the current tag.
 			</description>
 		</method>
 		<method name="fa">
@@ -1005,6 +1018,7 @@
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="3" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a fully formed HTML a tag with it's closing tag.
 			</description>
 		</method>
 		<method name="fdiv">
@@ -1013,21 +1027,25 @@
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a fully formed HTML div tag with it's closing tag.
 			</description>
 		</method>
 		<method name="fieldset">
 			<return type="_HTMLTag" />
 			<description>
+				HTML fieldset tag.
 			</description>
 		</method>
 		<method name="figcaption">
 			<return type="_HTMLTag" />
 			<description>
+				HTML figcaption tag.
 			</description>
 		</method>
 		<method name="figure">
 			<return type="_HTMLTag" />
 			<description>
+				HTML figure tag.
 			</description>
 		</method>
 		<method name="flabel">
@@ -1037,16 +1055,19 @@
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="3" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a fully formed HTML label tag with it's closing tag.
 			</description>
 		</method>
 		<method name="font">
 			<return type="_HTMLTag" />
 			<description>
+				HTML font tag.
 			</description>
 		</method>
 		<method name="footer">
 			<return type="_HTMLTag" />
 			<description>
+				HTML footer tag.
 			</description>
 		</method>
 		<method name="foption">
@@ -1055,11 +1076,13 @@
 			<argument index="1" name="body" type="String" />
 			<argument index="2" name="selected" type="bool" default="false" />
 			<description>
+				Helper method to generate a fully formed HTML option tag with it's closing tag.
 			</description>
 		</method>
 		<method name="form">
 			<return type="_HTMLTag" />
 			<description>
+				HTML form tag.
 			</description>
 		</method>
 		<method name="form_get">
@@ -1068,6 +1091,7 @@
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a form with method type get.
 			</description>
 		</method>
 		<method name="form_post">
@@ -1076,6 +1100,7 @@
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a form with method type post.
 			</description>
 		</method>
 		<method name="form_postr">
@@ -1085,16 +1110,19 @@
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="3" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a form with method type post. WIll also add the csrf token as a hidden input from the given request.
 			</description>
 		</method>
 		<method name="frame">
 			<return type="_HTMLTag" />
 			<description>
+				HTML frame tag.
 			</description>
 		</method>
 		<method name="frameset">
 			<return type="_HTMLTag" />
 			<description>
+				HTML frameset tag.
 			</description>
 		</method>
 		<method name="ftextarea">
@@ -1104,76 +1132,91 @@
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="3" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a fully formed HTML textarea tag with it's closing tag.
 			</description>
 		</method>
 		<method name="h1">
 			<return type="_HTMLTag" />
 			<description>
+				HTML h1 tag.
 			</description>
 		</method>
 		<method name="h2">
 			<return type="_HTMLTag" />
 			<description>
+				HTML h2 tag.
 			</description>
 		</method>
 		<method name="h3">
 			<return type="_HTMLTag" />
 			<description>
+				HTML h3 tag.
 			</description>
 		</method>
 		<method name="h4">
 			<return type="_HTMLTag" />
 			<description>
+				HTML h4 tag.
 			</description>
 		</method>
 		<method name="h5">
 			<return type="_HTMLTag" />
 			<description>
+				HTML h5 tag.
 			</description>
 		</method>
 		<method name="h6">
 			<return type="_HTMLTag" />
 			<description>
+				HTML h6 tag.
 			</description>
 		</method>
 		<method name="head">
 			<return type="_HTMLTag" />
 			<description>
+				HTML head tag.
 			</description>
 		</method>
 		<method name="header">
 			<return type="_HTMLTag" />
 			<description>
+				HTML header tag.
 			</description>
 		</method>
 		<method name="hr">
 			<return type="_HTMLTag" />
 			<description>
+				HTML hr tag.
 			</description>
 		</method>
 		<method name="html">
 			<return type="_HTMLTag" />
 			<description>
+				HTML html tag.
 			</description>
 		</method>
 		<method name="i">
 			<return type="_HTMLTag" />
 			<description>
+				HTML i tag.
 			</description>
 		</method>
 		<method name="iframe">
 			<return type="_HTMLTag" />
 			<description>
+				HTML iframe tag.
 			</description>
 		</method>
 		<method name="img">
 			<return type="_HTMLTag" />
 			<description>
+				HTML img tag.
 			</description>
 		</method>
 		<method name="input">
 			<return type="_HTMLTag" />
 			<description>
+				HTML input tag.
 			</description>
 		</method>
 		<method name="input_button">
@@ -1183,6 +1226,7 @@
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="3" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a button input for a form.
 			</description>
 		</method>
 		<method name="input_checkbox">
@@ -1193,6 +1237,7 @@
 			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="4" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a checkbox input for a form.
 			</description>
 		</method>
 		<method name="input_color">
@@ -1202,6 +1247,7 @@
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="3" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a color input for a form.
 			</description>
 		</method>
 		<method name="input_date">
@@ -1214,6 +1260,7 @@
 			<argument index="5" name="date_max" type="String" default="&quot;&quot;" />
 			<argument index="6" name="date_step" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a date input for a form.
 			</description>
 		</method>
 		<method name="input_datetime_local">
@@ -1226,6 +1273,7 @@
 			<argument index="5" name="date_max" type="String" default="&quot;&quot;" />
 			<argument index="6" name="date_step" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a local datetime input for a form.
 			</description>
 		</method>
 		<method name="input_email">
@@ -1236,6 +1284,7 @@
 			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="4" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate an email input for a form.
 			</description>
 		</method>
 		<method name="input_file">
@@ -1245,6 +1294,7 @@
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="3" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a file input for a form.
 			</description>
 		</method>
 		<method name="input_hidden">
@@ -1252,6 +1302,7 @@
 			<argument index="0" name="name" type="String" default="&quot;&quot;" />
 			<argument index="1" name="value" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a hidden input for a form.
 			</description>
 		</method>
 		<method name="input_image">
@@ -1264,6 +1315,7 @@
 			<argument index="5" name="width" type="int" default="0" />
 			<argument index="6" name="height" type="int" default="0" />
 			<description>
+				Helper method to generate an image input for a form.
 			</description>
 		</method>
 		<method name="input_month">
@@ -1272,6 +1324,7 @@
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a month input for a form.
 			</description>
 		</method>
 		<method name="input_number">
@@ -1282,6 +1335,7 @@
 			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="4" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a number input for a form.
 			</description>
 		</method>
 		<method name="input_password">
@@ -1295,6 +1349,7 @@
 			<argument index="6" name="maxlength" type="String" default="&quot;&quot;" />
 			<argument index="7" name="size" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a password input for a form.
 			</description>
 		</method>
 		<method name="input_radio">
@@ -1304,6 +1359,7 @@
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="3" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a radio input for a form.
 			</description>
 		</method>
 		<method name="input_range">
@@ -1316,6 +1372,7 @@
 			<argument index="5" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="6" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a range input for a form.
 			</description>
 		</method>
 		<method name="input_reset">
@@ -1325,6 +1382,7 @@
 			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="3" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a reset input for a form.
 			</description>
 		</method>
 		<method name="input_search">
@@ -1339,6 +1397,7 @@
 			<argument index="7" name="size" type="String" default="&quot;&quot;" />
 			<argument index="8" name="arg8" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a search input for a form.
 			</description>
 		</method>
 		<method name="input_submit">
@@ -1347,6 +1406,7 @@
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a submit input for a form.
 			</description>
 		</method>
 		<method name="input_tel">
@@ -1361,6 +1421,7 @@
 			<argument index="7" name="size" type="String" default="&quot;&quot;" />
 			<argument index="8" name="arg8" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a tel input for a form.
 			</description>
 		</method>
 		<method name="input_text">
@@ -1374,6 +1435,7 @@
 			<argument index="6" name="maxlength" type="String" default="&quot;&quot;" />
 			<argument index="7" name="size" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a text input for a form.
 			</description>
 		</method>
 		<method name="input_time">
@@ -1385,6 +1447,7 @@
 			<argument index="4" name="vmax" type="String" default="&quot;&quot;" />
 			<argument index="5" name="vstep" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a time input for a form.
 			</description>
 		</method>
 		<method name="input_url">
@@ -1398,6 +1461,7 @@
 			<argument index="6" name="maxlength" type="String" default="&quot;&quot;" />
 			<argument index="7" name="size" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate an url input for a form.
 			</description>
 		</method>
 		<method name="input_week">
@@ -1408,167 +1472,200 @@
 			<argument index="3" name="vmin" type="String" default="&quot;&quot;" />
 			<argument index="4" name="vmax" type="String" default="&quot;&quot;" />
 			<description>
+				Helper method to generate a week input for a form.
 			</description>
 		</method>
 		<method name="ins">
 			<return type="_HTMLTag" />
 			<description>
+				HTML ins tag.
 			</description>
 		</method>
 		<method name="kbd">
 			<return type="_HTMLTag" />
 			<description>
+				HTML kbd tag.
 			</description>
 		</method>
 		<method name="label">
 			<return type="_HTMLTag" />
 			<description>
+				HTML label tag.
 			</description>
 		</method>
 		<method name="legend">
 			<return type="_HTMLTag" />
 			<description>
+				HTML legend tag.
 			</description>
 		</method>
 		<method name="li">
 			<return type="_HTMLTag" />
 			<description>
+				HTML li tag.
 			</description>
 		</method>
 		<method name="link">
 			<return type="_HTMLTag" />
 			<description>
+				HTML link tag.
 			</description>
 		</method>
 		<method name="main">
 			<return type="_HTMLTag" />
 			<description>
+				HTML main tag.
 			</description>
 		</method>
 		<method name="map">
 			<return type="_HTMLTag" />
 			<description>
+				HTML map tag.
 			</description>
 		</method>
 		<method name="mark">
 			<return type="_HTMLTag" />
 			<description>
+				HTML mark tag.
 			</description>
 		</method>
 		<method name="meta">
 			<return type="_HTMLTag" />
 			<description>
+				HTML meta tag.
 			</description>
 		</method>
 		<method name="meter">
 			<return type="_HTMLTag" />
 			<description>
+				HTML meter tag.
 			</description>
 		</method>
 		<method name="nav">
 			<return type="_HTMLTag" />
 			<description>
+				HTML nav tag.
 			</description>
 		</method>
 		<method name="noframes">
 			<return type="_HTMLTag" />
 			<description>
+				HTML noframes tag.
 			</description>
 		</method>
 		<method name="noscript">
 			<return type="_HTMLTag" />
 			<description>
+				HTML noscript tag.
 			</description>
 		</method>
 		<method name="objectt">
 			<return type="_HTMLTag" />
 			<description>
+				HTML object tag.
 			</description>
 		</method>
 		<method name="ol">
 			<return type="_HTMLTag" />
 			<description>
+				HTML ol tag.
 			</description>
 		</method>
 		<method name="optgroup">
 			<return type="_HTMLTag" />
 			<description>
+				HTML optgroup tag.
 			</description>
 		</method>
 		<method name="option">
 			<return type="_HTMLTag" />
 			<argument index="0" name="val" type="String" default="&quot;&quot;" />
 			<description>
+				HTML option tag.
 			</description>
 		</method>
 		<method name="output">
 			<return type="_HTMLTag" />
 			<description>
+				HTML output tag.
 			</description>
 		</method>
 		<method name="p">
 			<return type="_HTMLTag" />
 			<description>
+				HTML p tag.
 			</description>
 		</method>
 		<method name="param">
 			<return type="_HTMLTag" />
 			<description>
+				HTML param tag.
 			</description>
 		</method>
 		<method name="picture">
 			<return type="_HTMLTag" />
 			<description>
+				HTML picture tag.
 			</description>
 		</method>
 		<method name="pre">
 			<return type="_HTMLTag" />
 			<description>
+				HTML pre tag.
 			</description>
 		</method>
 		<method name="progress">
 			<return type="_HTMLTag" />
 			<description>
+				HTML progress tag.
 			</description>
 		</method>
 		<method name="q">
 			<return type="_HTMLTag" />
 			<description>
+				HTML q tag.
 			</description>
 		</method>
 		<method name="rp">
 			<return type="_HTMLTag" />
 			<description>
+				HTML rp tag.
 			</description>
 		</method>
 		<method name="rt">
 			<return type="_HTMLTag" />
 			<description>
+				HTML rt tag.
 			</description>
 		</method>
 		<method name="ruby">
 			<return type="_HTMLTag" />
 			<description>
+				HTML ruby tag.
 			</description>
 		</method>
 		<method name="s">
 			<return type="_HTMLTag" />
 			<description>
+				HTML s tag.
 			</description>
 		</method>
 		<method name="samp">
 			<return type="_HTMLTag" />
 			<description>
+				HTML samp tag.
 			</description>
 		</method>
 		<method name="script">
 			<return type="_HTMLTag" />
 			<description>
+				HTML script tag.
 			</description>
 		</method>
 		<method name="section">
 			<return type="_HTMLTag" />
 			<description>
+				HTML section tag.
 			</description>
 		</method>
 		<method name="select">
@@ -1577,61 +1674,73 @@
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				HTML select tag.
 			</description>
 		</method>
 		<method name="small">
 			<return type="_HTMLTag" />
 			<description>
+				HTML small tag.
 			</description>
 		</method>
 		<method name="source">
 			<return type="_HTMLTag" />
 			<description>
+				HTML source tag.
 			</description>
 		</method>
 		<method name="span">
 			<return type="_HTMLTag" />
 			<description>
+				HTML span tag.
 			</description>
 		</method>
 		<method name="strike">
 			<return type="_HTMLTag" />
 			<description>
+				HTML strike tag.
 			</description>
 		</method>
 		<method name="strong">
 			<return type="_HTMLTag" />
 			<description>
+				HTML strong tag.
 			</description>
 		</method>
 		<method name="style">
 			<return type="_HTMLTag" />
 			<description>
+				HTML style tag.
 			</description>
 		</method>
 		<method name="sub">
 			<return type="_HTMLTag" />
 			<description>
+				HTML sub tag.
 			</description>
 		</method>
 		<method name="summary">
 			<return type="_HTMLTag" />
 			<description>
+				HTML summary tag.
 			</description>
 		</method>
 		<method name="sup">
 			<return type="_HTMLTag" />
 			<description>
+				HTML sup tag.
 			</description>
 		</method>
 		<method name="svg">
 			<return type="_HTMLTag" />
 			<description>
+				HTML svg tag.
 			</description>
 		</method>
 		<method name="table">
 			<return type="_HTMLTag" />
 			<description>
+				HTML table tag.
 			</description>
 		</method>
 		<method name="tag">
@@ -1639,21 +1748,25 @@
 			<argument index="0" name="tag" type="String" />
 			<argument index="1" name="simple" type="bool" default="false" />
 			<description>
+				Create any (or custom) HTML tag. Simple means self closing.
 			</description>
 		</method>
 		<method name="tbody">
 			<return type="_HTMLTag" />
 			<description>
+				HTML tbody tag.
 			</description>
 		</method>
 		<method name="td">
 			<return type="_HTMLTag" />
 			<description>
+				HTML td tag.
 			</description>
 		</method>
 		<method name="templateh">
 			<return type="_HTMLTag" />
 			<description>
+				HTML template tag.
 			</description>
 		</method>
 		<method name="textarea">
@@ -1662,95 +1775,113 @@
 			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
 			<argument index="2" name="id" type="String" default="&quot;&quot;" />
 			<description>
+				HTML textarea tag.
 			</description>
 		</method>
 		<method name="tfoot">
 			<return type="_HTMLTag" />
 			<description>
+				HTML tfoot tag.
 			</description>
 		</method>
 		<method name="th">
 			<return type="_HTMLTag" />
 			<description>
+				HTML th tag.
 			</description>
 		</method>
 		<method name="thead">
 			<return type="_HTMLTag" />
 			<description>
+				HTML thead tag.
 			</description>
 		</method>
 		<method name="time">
 			<return type="_HTMLTag" />
 			<description>
+				HTML time tag.
 			</description>
 		</method>
 		<method name="title">
 			<return type="_HTMLTag" />
 			<description>
+				HTML title tag.
 			</description>
 		</method>
 		<method name="tra">
 			<return type="_HTMLTag" />
 			<description>
+				HTML tra tag.
 			</description>
 		</method>
 		<method name="track">
 			<return type="_HTMLTag" />
 			<description>
+				HTML track tag.
 			</description>
 		</method>
 		<method name="tt">
 			<return type="_HTMLTag" />
 			<description>
+				HTML tt tag.
 			</description>
 		</method>
 		<method name="u">
 			<return type="_HTMLTag" />
 			<description>
+				HTML u tag.
 			</description>
 		</method>
 		<method name="ul">
 			<return type="_HTMLTag" />
 			<description>
+				HTML ul tag.
 			</description>
 		</method>
 		<method name="var">
 			<return type="_HTMLTag" />
 			<description>
+				HTML var tag.
 			</description>
 		</method>
 		<method name="video">
 			<return type="_HTMLTag" />
 			<description>
+				HTML video tag.
 			</description>
 		</method>
 		<method name="w">
 			<return type="_HTMLBuilder" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				Append string to the result.
 			</description>
 		</method>
 		<method name="wbn">
 			<return type="_HTMLBuilder" />
 			<argument index="0" name="val" type="bool" />
 			<description>
+				Append bool as a number to the result.
 			</description>
 		</method>
 		<method name="wbr">
 			<return type="_HTMLTag" />
 			<description>
+				Append br tag to the result.
 			</description>
 		</method>
 		<method name="wbs">
 			<return type="_HTMLBuilder" />
 			<argument index="0" name="val" type="bool" />
 			<description>
+				Append bool as text to the result.
 			</description>
 		</method>
 		<method name="we">
 			<return type="_HTMLBuilder" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML escape, then append string to the result.
 			</description>
 		</method>
 		<method name="wi">
@@ -1759,6 +1890,7 @@
 			<argument index="1" name="base" type="int" default="10" />
 			<argument index="2" name="capitalize_hex" type="bool" default="false" />
 			<description>
+				Append integer to the result.
 			</description>
 		</method>
 		<method name="wn">
@@ -1766,12 +1898,14 @@
 			<argument index="0" name="val" type="float" />
 			<argument index="1" name="decimals " type="int" default="-1" />
 			<description>
+				Append number to the result.
 			</description>
 		</method>
 		<method name="wns">
 			<return type="_HTMLBuilder" />
 			<argument index="0" name="val" type="float" />
 			<description>
+				Append number as scientific to the result.
 			</description>
 		</method>
 		<method name="wr">
@@ -1779,11 +1913,13 @@
 			<argument index="0" name="val" type="float" />
 			<argument index="1" name="trailing " type="bool" default="true" />
 			<description>
+				Append number to the result.
 			</description>
 		</method>
 		<method name="write_tag">
 			<return type="_HTMLBuilder" />
 			<description>
+				Finish writing the currently open tag.
 			</description>
 		</method>
 		<method name="wui">
@@ -1792,11 +1928,13 @@
 			<argument index="1" name="base" type="int" default="10" />
 			<argument index="2" name="capitalize_hex" type="bool" default="false" />
 			<description>
+				Append unsigned integer to the result.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="result" type="String" setter="set_result" getter="get_result" default="&quot;&quot;">
+			The result.
 		</member>
 	</members>
 	<constants>
