@@ -14,43 +14,52 @@
 			<return type="bool" />
 			<argument index="0" name="data" type="String" />
 			<description>
+				Returns whether the data contains the given string.
 			</description>
 		</method>
 		<method name="convert_to_string" qualifiers="const">
 			<return type="String" />
 			<description>
+				The HTML attribute can be turned back into well formatted HTML using this method.
 			</description>
 		</method>
 		<method name="match_all_data">
 			<return type="bool" />
 			<argument index="0" name="data" type="PoolStringArray" />
 			<description>
+				Not implemented.
 			</description>
 		</method>
 		<method name="match_attrib">
 			<return type="bool" />
 			<argument index="0" name="attrib" type="String" />
 			<description>
+				It the attribute name equals the given string?
 			</description>
 		</method>
 		<method name="match_data">
 			<return type="bool" />
 			<argument index="0" name="data" type="String" />
 			<description>
+				It the data contained equals the given string?
 			</description>
 		</method>
 		<method name="print" qualifiers="const">
 			<return type="void" />
 			<description>
+				Equivalent to [code]print(convert_to_string())[/code].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="attribute" type="String" setter="set_attribute" getter="get_attribute" default="&quot;&quot;">
+			The attribute's name.
 		</member>
 		<member name="data" type="String" setter="set_data" getter="get_data" default="&quot;&quot;">
+			The tag's data.
 		</member>
 		<member name="single" type="bool" setter="set_single" getter="get_single" default="false">
+			Is this an attribute vithout a value?
 		</member>
 	</members>
 	<constants>
