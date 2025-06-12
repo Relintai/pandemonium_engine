@@ -164,7 +164,7 @@
 			Returns all child tags.
 		</member>
 		<member name="data" type="String" setter="set_data" getter="get_data" default="&quot;&quot;">
-			The tag;s data.
+			The tag's data.
 		</member>
 		<member name="tag" type="String" setter="set_tag" getter="get_tag" default="&quot;&quot;">
 			The tag's name.
