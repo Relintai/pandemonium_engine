@@ -27,11 +27,13 @@
 		<method name="_generate_summary" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				generates a summary page containing all article links. This is used as the index if summary.md is unavailable.
 			</description>
 		</method>
 		<method name="_load" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Manually loads everything.
 			</description>
 		</method>
 		<method name="generate_summary">
@@ -50,12 +52,14 @@
 			<return type="String" />
 			<argument index="0" name="url" type="String" />
 			<description>
+				Returns page for the given url.
 			</description>
 		</method>
 		<method name="page_remove">
 			<return type="void" />
 			<argument index="0" name="url" type="String" />
 			<description>
+				Remove page for the given url.
 			</description>
 		</method>
 		<method name="page_set">
@@ -63,6 +67,7 @@
 			<argument index="0" name="url" type="String" />
 			<argument index="1" name="data" type="String" />
 			<description>
+				Sets page for the given url.
 			</description>
 		</method>
 	</methods>
@@ -71,8 +76,10 @@
 			The folder containing the articles.
 		</member>
 		<member name="max_pagination_links" type="int" setter="set_max_pagination_links" getter="get_max_pagination_links" default="10">
+			Max visible pagination links.
 		</member>
 		<member name="pages" type="Dictionary" setter="set_pages" getter="get_pages">
+			All pages.
 		</member>
 		<member name="serve_folder" type="String" setter="set_serve_folder" getter="get_serve_folder" default="&quot;files&quot;">
 			The folder that should be served. It could contain images, css, etc. These files are accessible under [code]...articles_url/files/[/code].
@@ -81,6 +88,7 @@
 			Whether this folder is relative or not to the articles_folder.
 		</member>
 		<member name="summary" type="String" setter="set_summary" getter="get_summary">
+			Summary page.
 		</member>
 	</members>
 	<constants>
