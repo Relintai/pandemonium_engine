@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="WebServerRequestScriptable" inherits="WebServerRequest">
 	<brief_description>
+		A scriptable web server request implementation for custom web server implementations.
 	</brief_description>
 	<description>
+		A scriptable web server request implementation for custom web server implementations.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,117 +12,142 @@
 		<method name="_compile_and_send_body" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Calls [code]compile_body()[/code], and then [code]send()[/code].
 			</description>
 		</method>
 		<method name="_compile_body" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Takes the head, body and footer properties, and merges them into the [code]compiled_body[/code] property. It adds an html5 type declaration, then the opening [code]html[/code] tag, then the contents of the [code]head[/code] property to the [code]head[/code] section of the response, and then the contents of the [code]body[/code] then footer property into the [code]body[/code] section of the response, then it closes the main [code]html[/code] tag.
+				Note: You can override the default doctype declaration by setting the [code]"compiled_body_doctype_override"[/code] meta, the [code]html[/code] tag by setting the [code]"compiled_body_html_tag_override"[/code] meta, and the [code]body[/code] tag by setting the [code]"compiled_body_body_tag_override"[/code] meta using [code]set_meta()[/code].
 			</description>
 		</method>
 		<method name="_get_cookie" qualifiers="virtual">
 			<return type="String" />
 			<argument index="0" name="key" type="String" />
 			<description>
+				Returns the value of the cookie [code]key[/code].
 			</description>
 		</method>
 		<method name="_get_file_count" qualifiers="virtual">
 			<return type="int" />
 			<description>
+				Returns how many files were in the http request. Note that only multipart forms can contain files.
 			</description>
 		</method>
 		<method name="_get_file_data" qualifiers="virtual">
 			<return type="PoolByteArray" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the file as a PoolByteArray.
 			</description>
 		</method>
 		<method name="_get_file_data_str" qualifiers="virtual">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the file as a String.
 			</description>
 		</method>
 		<method name="_get_file_file_name" qualifiers="virtual">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the file's name that was present in the form itself.
 			</description>
 		</method>
 		<method name="_get_file_key" qualifiers="virtual">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Same as get_file_file_name at the moment.
 			</description>
 		</method>
 		<method name="_get_file_length" qualifiers="virtual">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the file's length.
 			</description>
 		</method>
 		<method name="_get_get_parameter" qualifiers="virtual">
 			<return type="String" />
 			<argument index="0" name="key" type="String" />
 			<description>
+				Returns a get request parameter.
 			</description>
 		</method>
 		<method name="_get_get_parameter_keys" qualifiers="virtual">
 			<return type="PoolStringArray" />
 			<description>
+				Returns all get request parameter keys.
 			</description>
 		</method>
 		<method name="_get_header_parameter" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="key" type="String" />
 			<description>
+				Returns a HTTP header parameter.
 			</description>
 		</method>
 		<method name="_get_header_parameter_keys" qualifiers="virtual">
 			<return type="PoolStringArray" />
 			<description>
+				Returns all HTTP header parameter keys.
 			</description>
 		</method>
 		<method name="_get_host" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Returns the host which was present in the request header.
 			</description>
 		</method>
 		<method name="_get_method" qualifiers="virtual">
 			<return type="int" />
 			<description>
+				Returns the request's method.
 			</description>
 		</method>
 		<method name="_get_parameter" qualifiers="virtual">
 			<return type="String" />
 			<argument index="0" name="key" type="String" />
 			<description>
+				Returns the value that was set in the request header for the given key, or an empty String.
+				Returns both get and post request keys. Use this only if this flexibility is needed for a particular request. For example an advanced search page is a good candidate for using this.
+				Blindly using this can make your application vulnerable to cross site request forgery type attacks depending on what you are doing.
+				The alternatives are: [method get_get_parameter] (only returns get request parameters) or [method get_post_parameter] (only returns post request parameters).
 			</description>
 		</method>
 		<method name="_get_parameter_keys" qualifiers="virtual">
 			<return type="PoolStringArray" />
 			<description>
+				Returns all request parameter keys (both post and get).
 			</description>
 		</method>
 		<method name="_get_path_full" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Returns the full path of the request. For example if you have [code]http://127.0.0.1/a/b/c[/code], this will return [code]a/b/c[/code].
 			</description>
 		</method>
 		<method name="_get_post_parameter" qualifiers="virtual">
 			<return type="String" />
 			<argument index="0" name="key" type="String" />
 			<description>
+				Returns a post request parameter.
 			</description>
 		</method>
 		<method name="_get_post_parameter_keys" qualifiers="virtual">
 			<return type="PoolStringArray" />
 			<description>
+				Returns all post request parameter keys.
 			</description>
 		</method>
 		<method name="_is_file_moved" qualifiers="virtual">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns whether a file contained in the request has been moved or not.
 			</description>
 		</method>
 		<method name="_move_file" qualifiers="virtual">
@@ -129,28 +156,33 @@
 			<argument index="1" name="dest_file" type="String" />
 			<argument index="2" name="force" type="bool" />
 			<description>
+				moves a file contained in the request to the specified destination. If the destionation file exists it will not be overwritten unless force is true.
 			</description>
 		</method>
 		<method name="_parser_get_path" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Returns the full http path. Mostly intended for internal use. [code]setup_url_stack()[/code] uses this.
 			</description>
 		</method>
 		<method name="_send" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Sends the contents of the compiled_body property as a response.
 			</description>
 		</method>
 		<method name="_send_error" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="error_code" type="int" />
 			<description>
+				Sends an error. The default implementation calls the [WebServer]'s root [WebNode]'s [code]handle_error_send_request()[/code] method.
 			</description>
 		</method>
 		<method name="_send_file" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="p_file_path" type="String" />
 			<description>
+				Sends the file at the given path.
 			</description>
 		</method>
 		<method name="_send_redirect" qualifiers="virtual">
@@ -158,6 +190,7 @@
 			<argument index="0" name="location" type="String" />
 			<argument index="1" name="status_code" type="int" />
 			<description>
+				Sends a redirect http header.
 			</description>
 		</method>
 		<method name="_set_get_parameter" qualifiers="virtual">
@@ -165,6 +198,7 @@
 			<argument index="0" name="key" type="String" />
 			<argument index="1" name="value" type="String" />
 			<description>
+				Set a get request parameter.
 			</description>
 		</method>
 		<method name="_set_header_parameter" qualifiers="virtual">
@@ -172,6 +206,7 @@
 			<argument index="0" name="key" type="String" />
 			<argument index="1" name="value" type="String" />
 			<description>
+				Set a HTTP Header parameter.
 			</description>
 		</method>
 		<method name="_set_post_parameter" qualifiers="virtual">
@@ -179,11 +214,13 @@
 			<argument index="0" name="key" type="String" />
 			<argument index="1" name="value" type="String" />
 			<description>
+				Set a post request parameter.
 			</description>
 		</method>
 		<method name="_update" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Update the request.
 			</description>
 		</method>
 	</methods>
