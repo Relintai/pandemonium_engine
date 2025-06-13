@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="LocaleSetupWebServerMiddleware" inherits="WebServerMiddleware">
 	<brief_description>
+		Activates the locale stored in a cookie for a given [WebServerRequest].
 	</brief_description>
 	<description>
+		Activates the locale stored in a cookie for a given [WebServerRequest].
+		Equivalent to calling [method WebServerRequest.load_locale_from_cookie] from a central place.
 	</description>
 	<tutorials>
 	</tutorials>
