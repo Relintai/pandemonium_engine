@@ -12,16 +12,19 @@
 		<method name="get_expiry_date">
 			<return type="Dictionary" />
 			<description>
+				Returns the expiry date as a [Dictionary] similar to [Time]'s.
 			</description>
 		</method>
 		<method name="get_expiry_date_unix_time">
 			<return type="int" />
 			<description>
+				Returns the expiry date as a unix timestamp.
 			</description>
 		</method>
 		<method name="get_response_header_string">
 			<return type="String" />
 			<description>
+				Returns the string thart should be added to a HTTP response header.
 			</description>
 		</method>
 		<method name="set_data">
@@ -29,6 +32,7 @@
 			<argument index="0" name="key" type="String" />
 			<argument index="1" name="value" type="String" />
 			<description>
+				Sets the stored data key-value pair.
 			</description>
 		</method>
 		<method name="set_expiry_date">
@@ -36,53 +40,71 @@
 			<argument index="0" name="date" type="Dictionary" />
 			<argument index="1" name="time" type="Dictionary" />
 			<description>
+				Set expiry date as two separate dictionaries.
 			</description>
 		</method>
 		<method name="set_expiry_date_dt">
 			<return type="void" />
 			<argument index="0" name="date_time" type="Dictionary" />
 			<description>
+				 Sets the expiry date as a [Dictionary] similar to [Time]'s.
 			</description>
 		</method>
 		<method name="set_expiry_date_unix_time">
 			<return type="void" />
 			<argument index="0" name="unix_time" type="int" />
 			<description>
+				Sets the expiry date as a unix timestamp.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="delete" type="bool" setter="set_delete" getter="get_delete" default="false">
+			Should the cookie be deleted on the client?
 		</member>
 		<member name="domain" type="String" setter="set_domain" getter="get_domain" default="&quot;&quot;">
+			The cookie's domain.
 		</member>
 		<member name="http_only" type="bool" setter="set_http_only" getter="get_http_only" default="true">
+			Is this cookie http only?
 		</member>
 		<member name="key" type="String" setter="set_key" getter="get_key" default="&quot;&quot;">
+			The cookie's key.
 		</member>
 		<member name="max_age" type="int" setter="set_max_age" getter="get_max_age" default="0">
+			The cookie's max age.
 		</member>
 		<member name="path" type="String" setter="set_path" getter="get_path" default="&quot;&quot;">
+			The cookie's path.
 		</member>
 		<member name="same_site" type="int" setter="set_same_site" getter="get_same_site" enum="WebServerCookie.SameSiteValues" default="0">
+			THe cookie's same site policy.
 		</member>
 		<member name="secure" type="bool" setter="set_secure" getter="get_secure" default="false">
+			Is this cookie secure?
 		</member>
 		<member name="use_expiry_date" type="bool" setter="set_use_expiry_date" getter="get_use_expiry_date" default="false">
+			Use expiry date?
 		</member>
 		<member name="use_max_age" type="bool" setter="set_use_max_age" getter="get_use_max_age" default="false">
+			Use max age?
 		</member>
 		<member name="value" type="String" setter="set_value" getter="get_value" default="&quot;&quot;">
+			The cookie's value.
 		</member>
 	</members>
 	<constants>
 		<constant name="SAME_SITE_UNSET" value="0" enum="SameSiteValues">
+			Unset previous same site setting on the client.
 		</constant>
 		<constant name="SAME_SITE_NONE" value="1" enum="SameSiteValues">
+			No same site setting.
 		</constant>
 		<constant name="SAME_SITE_LAX" value="2" enum="SameSiteValues">
+			Lax same site setting.
 		</constant>
 		<constant name="SAME_SITE_STRICT" value="3" enum="SameSiteValues">
+			Strict same site setting.
 		</constant>
 	</constants>
 </class>
