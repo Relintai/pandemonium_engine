@@ -20,18 +20,21 @@
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML accept attribute.
 			</description>
 		</method>
 		<method name="action">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML action attribute.
 			</description>
 		</method>
 		<method name="alt">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML alt attribute.
 			</description>
 		</method>
 		<method name="attrib">
@@ -39,758 +42,910 @@
 			<argument index="0" name="attr" type="String" />
 			<argument index="1" name="val" type="String" />
 			<description>
+				Write a custom HTML attribute.
 			</description>
 		</method>
 		<method name="autocomplete">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML autocomplete attribute.
 			</description>
 		</method>
 		<method name="autocomplete_address_level_1">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete address level 1 attribute.
 			</description>
 		</method>
 		<method name="autocomplete_address_level_2">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete address level 2 attribute.
 			</description>
 		</method>
 		<method name="autocomplete_address_level_3">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete address level 3 attribute.
 			</description>
 		</method>
 		<method name="autocomplete_address_level_4">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete address level 4 attribute.
 			</description>
 		</method>
 		<method name="autocomplete_address_line1">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete address line 1 attribute.
 			</description>
 		</method>
 		<method name="autocomplete_address_line2">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete address line 2 attribute.
 			</description>
 		</method>
 		<method name="autocomplete_address_line3">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete address line 3 attribute.
 			</description>
 		</method>
 		<method name="autocomplete_bday">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete bday attribute.
 			</description>
 		</method>
 		<method name="autocomplete_bday_day">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete bday-day attribute.
 			</description>
 		</method>
 		<method name="autocomplete_bday_month">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete bday-month attribute.
 			</description>
 		</method>
 		<method name="autocomplete_bday_year">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete bday-year attribute.
 			</description>
 		</method>
 		<method name="autocomplete_cc_additional_name">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete cc additional name attribute.
 			</description>
 		</method>
 		<method name="autocomplete_cc_csc">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete cc csc attribute.
 			</description>
 		</method>
 		<method name="autocomplete_cc_exp">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete cc exp attribute.
 			</description>
 		</method>
 		<method name="autocomplete_cc_exp_month">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete cc exp month attribute.
 			</description>
 		</method>
 		<method name="autocomplete_cc_exp_year">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete cc exp year attribute.
 			</description>
 		</method>
 		<method name="autocomplete_cc_family_name">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete cc family name attribute.
 			</description>
 		</method>
 		<method name="autocomplete_cc_given_name">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete cc given name attribute.
 			</description>
 		</method>
 		<method name="autocomplete_cc_name">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete cc name attribute.
 			</description>
 		</method>
 		<method name="autocomplete_cc_number">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete cc number attribute.
 			</description>
 		</method>
 		<method name="autocomplete_cc_type">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete cc type attribute.
 			</description>
 		</method>
 		<method name="autocomplete_country">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete country attribute.
 			</description>
 		</method>
 		<method name="autocomplete_country_name">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete country name attribute.
 			</description>
 		</method>
 		<method name="autocomplete_current_password">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete current password attribute.
 			</description>
 		</method>
 		<method name="autocomplete_email">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete email attribute.
 			</description>
 		</method>
 		<method name="autocomplete_impp">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete impp attribute.
 			</description>
 		</method>
 		<method name="autocomplete_language">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete language attribute.
 			</description>
 		</method>
 		<method name="autocomplete_name">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete name attribute.
 			</description>
 		</method>
 		<method name="autocomplete_name_additional_name">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete name additional name attribute.
 			</description>
 		</method>
 		<method name="autocomplete_name_family_name">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete name family name attribute.
 			</description>
 		</method>
 		<method name="autocomplete_name_given_name">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete name given name attribute.
 			</description>
 		</method>
 		<method name="autocomplete_name_honorific_prefix">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete name honorific prefix attribute.
 			</description>
 		</method>
 		<method name="autocomplete_name_honorific_suffix">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete name honorific suffix attribute.
 			</description>
 		</method>
 		<method name="autocomplete_name_nickname">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete name nickname attribute.
 			</description>
 		</method>
 		<method name="autocomplete_new_password">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete new password attribute.
 			</description>
 		</method>
 		<method name="autocomplete_off">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete off attribute.
 			</description>
 		</method>
 		<method name="autocomplete_on">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete on attribute.
 			</description>
 		</method>
 		<method name="autocomplete_one_time_code">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete one time code attribute.
 			</description>
 		</method>
 		<method name="autocomplete_organization">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete organization attribute.
 			</description>
 		</method>
 		<method name="autocomplete_organization_title">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete organization title attribute.
 			</description>
 		</method>
 		<method name="autocomplete_photo">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete photo attribute.
 			</description>
 		</method>
 		<method name="autocomplete_postal_code">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete postal code attribute.
 			</description>
 		</method>
 		<method name="autocomplete_sex">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete sex attribute.
 			</description>
 		</method>
 		<method name="autocomplete_street_address">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete street address attribute.
 			</description>
 		</method>
 		<method name="autocomplete_tel">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete tel attribute.
 			</description>
 		</method>
 		<method name="autocomplete_tel_area_code">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete tel area code attribute.
 			</description>
 		</method>
 		<method name="autocomplete_tel_country_code">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete tel country code attribute.
 			</description>
 		</method>
 		<method name="autocomplete_tel_extension">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete tel extension attribute.
 			</description>
 		</method>
 		<method name="autocomplete_tel_local">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete tel local attribute.
 			</description>
 		</method>
 		<method name="autocomplete_tel_national">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete tel national attribute.
 			</description>
 		</method>
 		<method name="autocomplete_transaction_amount">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete transaction amount attribute.
 			</description>
 		</method>
 		<method name="autocomplete_transaction_currency">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete transaction currency attribute.
 			</description>
 		</method>
 		<method name="autocomplete_url">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete url attribute.
 			</description>
 		</method>
 		<method name="autocomplete_username">
 			<return type="HTMLTag" />
 			<description>
+				HTML autocomplete username attribute.
 			</description>
 		</method>
 		<method name="autofocus">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="bool" default="true" />
 			<description>
+				HTML autofocus attribute.
+				If val is false nothing will be output.
 			</description>
 		</method>
 		<method name="charset">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML charset attribute.
 			</description>
 		</method>
 		<method name="charset_utf_8">
 			<return type="HTMLTag" />
 			<description>
+				HTML utf-8 charset attribute.
 			</description>
 		</method>
 		<method name="checked">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="bool" default="true" />
 			<description>
+				HTML checked attribute.
+				If val is false nothing will be output.
 			</description>
 		</method>
 		<method name="close">
 			<return type="HTMLTag" />
 			<description>
+				HTML close attribute.
 			</description>
 		</method>
 		<method name="cls">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML class attribute.
 			</description>
 		</method>
 		<method name="clsse">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML class attribute.
+				If val is empty nothing will be output.
 			</description>
 		</method>
 		<method name="cols">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML cols attribute.
 			</description>
 		</method>
 		<method name="content">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML content attribute.
 			</description>
 		</method>
 		<method name="disabled">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="bool" default="true" />
 			<description>
+				HTML disabled attribute.
+				If val is false nothing will be output.
 			</description>
 		</method>
 		<method name="enctype">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML enctype attribute.
 			</description>
 		</method>
 		<method name="enctype_multipart_form_data">
 			<return type="HTMLTag" />
 			<description>
+				HTML enctype multipart form data attribute.
 			</description>
 		</method>
 		<method name="f">
 			<return type="HTMLBuilder" />
 			<description>
+				Go back to the owner [HTMLBuilder]. Used for chaining commands.
 			</description>
 		</method>
 		<method name="fora">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML for attribute.
 			</description>
 		</method>
 		<method name="has_data">
 			<return type="bool" />
 			<description>
+				Returns whether this tag has any written data.
 			</description>
 		</method>
 		<method name="height">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="int" />
 			<description>
+				HTML height attribute.
 			</description>
 		</method>
 		<method name="heights">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML height attribute.
 			</description>
 		</method>
 		<method name="href">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML href attribute.
 			</description>
 		</method>
 		<method name="id">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML id attribute.
 			</description>
 		</method>
 		<method name="inputmode">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML inputmode attribute.
 			</description>
 		</method>
 		<method name="inputmode_decimal">
 			<return type="HTMLTag" />
 			<description>
+				HTML inputmode decimal attribute.
 			</description>
 		</method>
 		<method name="inputmode_email">
 			<return type="HTMLTag" />
 			<description>
+				HTML inputmode email attribute.
 			</description>
 		</method>
 		<method name="inputmode_none">
 			<return type="HTMLTag" />
 			<description>
+				HTML inputmode none attribute.
 			</description>
 		</method>
 		<method name="inputmode_numeric">
 			<return type="HTMLTag" />
 			<description>
+				HTML inputmode numeric attribute.
 			</description>
 		</method>
 		<method name="inputmode_search">
 			<return type="HTMLTag" />
 			<description>
+				HTML inputmode search attribute.
 			</description>
 		</method>
 		<method name="inputmode_tel">
 			<return type="HTMLTag" />
 			<description>
+				HTML inputmode tel attribute.
 			</description>
 		</method>
 		<method name="inputmode_text">
 			<return type="HTMLTag" />
 			<description>
+				HTML inputmode text attribute.
 			</description>
 		</method>
 		<method name="inputmode_url">
 			<return type="HTMLTag" />
 			<description>
+				HTML inputmode url attribute.
 			</description>
 		</method>
 		<method name="itbutton">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type button attribute.
 			</description>
 		</method>
 		<method name="itcheckbox">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type checkbox attribute.
 			</description>
 		</method>
 		<method name="itcolor">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type color attribute.
 			</description>
 		</method>
 		<method name="itdate">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type date attribute.
 			</description>
 		</method>
 		<method name="itdatetime_local">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type datetime local attribute.
 			</description>
 		</method>
 		<method name="itemail">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type mail attribute.
 			</description>
 		</method>
 		<method name="itfile">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type file attribute.
 			</description>
 		</method>
 		<method name="ithidden">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type hidden attribute.
 			</description>
 		</method>
 		<method name="itimage">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type image attribute.
 			</description>
 		</method>
 		<method name="itmonth">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type month attribute.
 			</description>
 		</method>
 		<method name="itnumber">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type number attribute.
 			</description>
 		</method>
 		<method name="itpassword">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type password attribute.
 			</description>
 		</method>
 		<method name="itradio">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type radio attribute.
 			</description>
 		</method>
 		<method name="itrange">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type range attribute.
 			</description>
 		</method>
 		<method name="itreset">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type reset attribute.
 			</description>
 		</method>
 		<method name="itsearch">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type search attribute.
 			</description>
 		</method>
 		<method name="itsubmit">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type submit attribute.
 			</description>
 		</method>
 		<method name="ittel">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type tel attribute.
 			</description>
 		</method>
 		<method name="ittext">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type text attribute.
 			</description>
 		</method>
 		<method name="ittime">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type time attribute.
 			</description>
 		</method>
 		<method name="iturl">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type url attribute.
 			</description>
 		</method>
 		<method name="itweek">
 			<return type="HTMLTag" />
 			<description>
+				HTML input type week attribute.
 			</description>
 		</method>
 		<method name="list">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML list attribute.
 			</description>
 		</method>
 		<method name="max">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML max attribute.
 			</description>
 		</method>
 		<method name="maxlength">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="int" />
 			<description>
+				HTML maxlength attribute.
 			</description>
 		</method>
 		<method name="maxlengths">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML maxlength attribute.
 			</description>
 		</method>
 		<method name="method">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML method attribute.
 			</description>
 		</method>
 		<method name="method_get">
 			<return type="HTMLTag" />
 			<description>
+				HTML method get attribute.
 			</description>
 		</method>
 		<method name="method_post">
 			<return type="HTMLTag" />
 			<description>
+				HTML method post attribute.
 			</description>
 		</method>
 		<method name="min">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML min attribute.
 			</description>
 		</method>
 		<method name="minlength">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="int" />
 			<description>
+				HTML minlength attribute.
 			</description>
 		</method>
 		<method name="minlengths">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML minlength attribute.
 			</description>
 		</method>
 		<method name="multiple">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="bool" default="true" />
 			<description>
+				HTML multiple attribute.
+				If val is false nothing will be output.
 			</description>
 		</method>
 		<method name="name">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML name attribute.
 			</description>
 		</method>
 		<method name="onclick">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML onclick attribute.
 			</description>
 		</method>
 		<method name="pattern">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML pattern attribute.
 			</description>
 		</method>
 		<method name="placeholder">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML placeholder attribute.
 			</description>
 		</method>
 		<method name="rel">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML rel attribute.
 			</description>
 		</method>
 		<method name="rel_alternate">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel alternate attribute.
 			</description>
 		</method>
 		<method name="rel_author">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel author attribute.
 			</description>
 		</method>
 		<method name="rel_bookmark">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel bookmark attribute.
 			</description>
 		</method>
 		<method name="rel_external">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel external attribute.
 			</description>
 		</method>
 		<method name="rel_help">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel help attribute.
 			</description>
 		</method>
 		<method name="rel_license">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel license attribute.
 			</description>
 		</method>
 		<method name="rel_next">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel next attribute.
 			</description>
 		</method>
 		<method name="rel_nofollow">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel nofollow attribute.
 			</description>
 		</method>
 		<method name="rel_noopener">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel noopener attribute.
 			</description>
 		</method>
 		<method name="rel_noreferrer">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel noreferrer attribute.
 			</description>
 		</method>
 		<method name="rel_prev">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel prev attribute.
 			</description>
 		</method>
 		<method name="rel_search">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel search attribute.
 			</description>
 		</method>
 		<method name="rel_stylesheet">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel stylesheet attribute.
 			</description>
 		</method>
 		<method name="rel_tag">
 			<return type="HTMLTag" />
 			<description>
+				HTML rel tag attribute.
 			</description>
 		</method>
 		<method name="required">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="bool" default="true" />
 			<description>
+				HTML required attribute.
+				If val is false nothing will be output.
 			</description>
 		</method>
 		<method name="reset">
 			<return type="HTMLTag" />
 			<description>
+				Reset tag.
 			</description>
 		</method>
 		<method name="rows">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML rows attribute.
 			</description>
 		</method>
 		<method name="selected">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="bool" default="true" />
 			<description>
+				HTML selected attribute.
+				If val is false nothing will be output.
 			</description>
 		</method>
 		<method name="size">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="int" />
 			<description>
+				HTML size attribute.
 			</description>
 		</method>
 		<method name="sizes">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML size attribute.
 			</description>
 		</method>
 		<method name="spellcheck">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="bool" default="true" />
 			<description>
+				HTML spellcheck attribute.
+				If val is false nothing will be output.
 			</description>
 		</method>
 		<method name="src">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML src attribute.
 			</description>
 		</method>
 		<method name="start">
@@ -798,60 +953,71 @@
 			<argument index="0" name="new_tag" type="String" />
 			<argument index="1" name="simple" type="bool" default="false" />
 			<description>
+				Start writing a new tag.
 			</description>
 		</method>
 		<method name="step">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML step attribute.
 			</description>
 		</method>
 		<method name="step_any">
 			<return type="HTMLTag" />
 			<description>
+				HTML step any attribute.
 			</description>
 		</method>
 		<method name="str">
 			<return type="HTMLTag" />
 			<argument index="0" name="srt" type="String" />
 			<description>
+				Write any string to tag.
 			</description>
 		</method>
 		<method name="style">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML style attribute.
 			</description>
 		</method>
 		<method name="type">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML type attribute.
 			</description>
 		</method>
 		<method name="value">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML value attribute.
 			</description>
 		</method>
 		<method name="width">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="int" />
 			<description>
+				HTML width attribute.
 			</description>
 		</method>
 		<method name="widths">
 			<return type="HTMLTag" />
 			<argument index="0" name="val" type="String" />
 			<description>
+				HTML width attribute.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="result" type="String" setter="set_result" getter="get_result" default="&quot;&quot;">
+			The result.
 		</member>
 		<member name="simple" type="bool" setter="set_simple" getter="get_simple" default="true">
+			Is the tag self closing?
 		</member>
 	</members>
 	<constants>
