@@ -14,11 +14,15 @@
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Called by [method from_dict].
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Called by [method to_dict].
 			</description>
 		</method>
 		<method name="add">
@@ -26,63 +30,77 @@
 			<argument index="0" name="key" type="String" />
 			<argument index="1" name="value" type="Variant" />
 			<description>
+				Add a key-value pair.
 			</description>
 		</method>
 		<method name="clear">
 			<return type="void" />
 			<description>
+				Clear all stored key-value pairs.
 			</description>
 		</method>
 		<method name="from_dict">
 			<return type="void" />
 			<argument index="0" name="dict" type="Dictionary" />
 			<description>
+				Load data from a [Dictionary] obtained from [method to_dict].
+				Calls [method _from_dict].
 			</description>
 		</method>
 		<method name="from_json">
 			<return type="void" />
 			<argument index="0" name="data" type="String" />
 			<description>
+				Restores internal state from json.
 			</description>
 		</method>
 		<method name="get_value">
 			<return type="Variant" />
 			<argument index="0" name="key" type="String" />
 			<description>
+				Return a stored value for the given key.
 			</description>
 		</method>
 		<method name="has">
 			<return type="bool" />
 			<argument index="0" name="key" type="String" />
 			<description>
+				Returns whether a key is set.
 			</description>
 		</method>
 		<method name="remove">
 			<return type="void" />
 			<argument index="0" name="key" type="String" />
 			<description>
+				Remove key.
 			</description>
 		</method>
 		<method name="reset">
 			<return type="void" />
 			<description>
+				Reset session.
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Serialize all data to a [Dictionary].
+				Calls [method _to_dict].
 			</description>
 		</method>
 		<method name="to_json">
 			<return type="String" />
 			<description>
+				Returns the internal state as json.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+			The session's id.
 		</member>
 		<member name="session_id" type="String" setter="set_session_id" getter="get_session_id" default="&quot;&quot;">
+			The session's string id.
 		</member>
 	</members>
 	<constants>
