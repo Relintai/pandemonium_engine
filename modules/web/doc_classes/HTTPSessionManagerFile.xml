@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTTPSessionManagerFile" inherits="HTTPSessionManager">
 	<brief_description>
+		File based [HTTPSessionManager].
 	</brief_description>
 	<description>
+		File based [HTTPSessionManager].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +12,7 @@
 	</methods>
 	<members>
 		<member name="save_folder_path" type="String" setter="set_save_folder_path" getter="get_save_folder_path" default="&quot;user://sessions/&quot;">
+			The folder where the saved data is stored.
 		</member>
 	</members>
 	<constants>

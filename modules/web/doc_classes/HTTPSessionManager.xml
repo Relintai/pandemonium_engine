@@ -17,51 +17,60 @@
 			<return type="void" />
 			<argument index="0" name="session" type="HTTPSession" />
 			<description>
+				Add a session.
 			</description>
 		</method>
 		<method name="clear">
 			<return type="void" />
 			<description>
+				Clear all sessions.
 			</description>
 		</method>
 		<method name="create_session">
 			<return type="HTTPSession" />
 			<description>
+				Create a session.
 			</description>
 		</method>
 		<method name="delete_session">
 			<return type="HTTPSession" />
 			<argument index="0" name="session_id" type="String" />
 			<description>
+				Delete session.
 			</description>
 		</method>
 		<method name="generate_session_id">
 			<return type="String" />
 			<argument index="0" name="base" type="String" default="&quot;&quot;" />
 			<description>
+				Generate string session id.
 			</description>
 		</method>
 		<method name="get_session">
 			<return type="HTTPSession" />
 			<argument index="0" name="session_id" type="String" />
 			<description>
+				Get session.
 			</description>
 		</method>
 		<method name="load_sessions">
 			<return type="void" />
 			<description>
+				Load all sessions.
 			</description>
 		</method>
 		<method name="remove_session">
 			<return type="void" />
 			<argument index="0" name="session" type="HTTPSession" />
 			<description>
+				Remove session.
 			</description>
 		</method>
 		<method name="save_session">
 			<return type="void" />
 			<argument index="0" name="session" type="HTTPSession" />
 			<description>
+				Save session.
 			</description>
 		</method>
 	</methods>

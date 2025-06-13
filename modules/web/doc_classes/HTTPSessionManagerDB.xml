@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTTPSessionManagerDB" inherits="HTTPSessionManager">
 	<brief_description>
+		Database based [HTTPSessionManager].
 	</brief_description>
 	<description>
+		Database based [HTTPSessionManager].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,16 +13,22 @@
 			<return type="void" />
 			<argument index="0" name="pseed" type="int" />
 			<description>
+				Creates default entries on migration.
+				Called by [method create_default_entries].
 			</description>
 		</method>
 		<method name="_create_table" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Creates the necessary table structure.
+				Called by [method create_table].
 			</description>
 		</method>
 		<method name="_drop_table" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Deletes all tables.
+				Called by [method drop_table].
 			</description>
 		</method>
 		<method name="_migrate" qualifiers="virtual">
@@ -29,43 +37,56 @@
 			<argument index="1" name="should_seed" type="bool" />
 			<argument index="2" name="pseed" type="int" />
 			<description>
+				Migrate.
+				Called by [method migrate].
 			</description>
 		</method>
 		<method name="_update_table" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="current_table_version" type="int" />
 			<description>
+				Update tables.
+				Called by [method update_table].
 			</description>
 		</method>
 		<method name="create_default_entries">
 			<return type="void" />
 			<argument index="0" name="pseed" type="int" />
 			<description>
+				Creates default entries on migration.
+				Calls [method _create_default_entries].
 			</description>
 		</method>
 		<method name="create_table">
 			<return type="void" />
 			<description>
+				Creates the necessary table structure.
+				Calls [method _create_table].
 			</description>
 		</method>
 		<method name="drop_table">
 			<return type="void" />
 			<description>
+				Deletes all tables.
+				Calls [method _drop_table].
 			</description>
 		</method>
 		<method name="get_database_connection">
 			<return type="DatabaseConnection" />
 			<description>
+				Returns a [DatabaseConnection].
 			</description>
 		</method>
 		<method name="get_query_builder">
 			<return type="QueryBuilder" />
 			<description>
+				Returns a [QueryBuilder].
 			</description>
 		</method>
 		<method name="get_table_builder">
 			<return type="TableBuilder" />
 			<description>
+				Returns a [TableBuilder].
 			</description>
 		</method>
 		<method name="migrate">
@@ -74,21 +95,28 @@
 			<argument index="1" name="pseed" type="bool" />
 			<argument index="2" name="arg2" type="int" />
 			<description>
+				Migrate.
+				Calls [method _migrate].
 			</description>
 		</method>
 		<method name="update_table">
 			<return type="void" />
 			<argument index="0" name="current_table_version" type="int" />
 			<description>
+				Update tables.
+				Calls [method _update_table].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="database" type="Database" setter="set_database" getter="get_database">
+			Set a [Database] object to use. If null, the default database will be used.
 		</member>
 		<member name="database_data_table_name" type="String" setter="set_database_data_table_name" getter="get_database_data_table_name" default="&quot;http_session_data&quot;">
+			The key-value pair data table name to use.
 		</member>
 		<member name="database_table_name" type="String" setter="set_database_table_name" getter="get_database_table_name" default="&quot;http_sessions&quot;">
+			The table name to use.
 		</member>
 	</members>
 	<constants>
