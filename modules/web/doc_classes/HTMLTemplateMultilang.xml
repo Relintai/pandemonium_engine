@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTMLTemplateMultilang" inherits="HTMLTemplate">
 	<brief_description>
+		A [HTMLTemplate] that automatically selects between other [HTMLTemplates] based on the current [WebServerRequest]'s locale.
 	</brief_description>
 	<description>
+		A [HTMLTemplate] that automatically selects between other [HTMLTemplates] based on the current [WebServerRequest]'s locale.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,18 +12,21 @@
 		<method name="get_locales" qualifiers="const">
 			<return type="Dictionary" />
 			<description>
+				Returns all locales.
 			</description>
 		</method>
 		<method name="get_template_for_locale">
 			<return type="HTMLTemplate" />
 			<argument index="0" name="locale" type="StringName" />
 			<description>
+				Return a template for the given locale.
 			</description>
 		</method>
 		<method name="set_locales">
 			<return type="void" />
 			<argument index="0" name="locales" type="Dictionary" />
 			<description>
+				Sets all locales.
 			</description>
 		</method>
 		<method name="set_template_for_locale">
@@ -29,6 +34,7 @@
 			<argument index="0" name="locale" type="StringName" />
 			<argument index="1" name="template" type="HTMLTemplate" />
 			<description>
+				Set the template for the given locale.
 			</description>
 		</method>
 	</methods>
