@@ -56,16 +56,22 @@
 	</methods>
 	<constants>
 		<constant name="WEB_PERMISSION_VIEW" value="1" enum="WebPermissions">
+			View permission.
 		</constant>
 		<constant name="WEB_PERMISSION_CREATE" value="2" enum="WebPermissions">
+			Create permission.
 		</constant>
 		<constant name="WEB_PERMISSION_EDIT" value="4" enum="WebPermissions">
+			Edit permission.
 		</constant>
 		<constant name="WEB_PERMISSION_DELETE" value="8" enum="WebPermissions">
+			Delete permission.
 		</constant>
 		<constant name="WEB_PERMISSION_ALL" value="15" enum="WebPermissions">
+			All permissions.
 		</constant>
 		<constant name="WEB_PERMISSION_NONE" value="0" enum="WebPermissions">
+			No permission.
 		</constant>
 	</constants>
 </class>
