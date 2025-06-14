@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="LZ4Compressor" inherits="Reference">
 	<brief_description>
+		A class that can compress and decompress data as lz4.
 	</brief_description>
 	<description>
+		A class that can compress and decompress data as lz4.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,12 +13,14 @@
 			<return type="PoolByteArray" />
 			<argument index="0" name="data" type="PoolByteArray" />
 			<description>
+				Compress the given data using lz4.
 			</description>
 		</method>
 		<method name="decompress_data" qualifiers="const">
 			<return type="PoolByteArray" />
 			<argument index="0" name="data" type="PoolByteArray" />
 			<description>
+				Decompress the given data using lz4.
 			</description>
 		</method>
 	</methods>
