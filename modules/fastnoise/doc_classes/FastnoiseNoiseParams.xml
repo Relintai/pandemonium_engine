@@ -42,7 +42,7 @@
 		<member name="frequency" type="float" setter="set_frequency" getter="get_frequency" default="0.01">
 			Frequency.
 		</member>
-		<member name="" type="float" setter="set_gradient_perturbation_amplitude" getter="get_gradient_perturbation_amplitude" default="1.0">
+		<member name="gradient_perturbation_amplitude" type="float" setter="set_gradient_perturbation_amplitude" getter="get_gradient_perturbation_amplitude" default="1.0">
 			Gradient perturbation amplitude.
 		</member>
 		<member name="interpolation" type="int" setter="set_interpolation" getter="get_interpolation" enum="FastNoise.Interpolation" default="2">

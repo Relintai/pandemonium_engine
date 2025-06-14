@@ -47,7 +47,7 @@
 			<return type="void" />
 			<argument index="0" name="date_time" type="Dictionary" />
 			<description>
-				 Sets the expiry date as a [Dictionary] similar to [Time]'s.
+				Sets the expiry date as a [Dictionary] similar to [Time]'s.
 			</description>
 		</method>
 		<method name="set_expiry_date_unix_time">
