@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="FastnoiseNoiseParams" inherits="Resource">
 	<brief_description>
+		A resource that can store set of parameters for a [FastNoise] class.
 	</brief_description>
 	<description>
+		A resource that can store set of parameters for a [FastNoise] class.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,33 +13,46 @@
 			<return type="void" />
 			<argument index="0" name="noise" type="FastNoise" />
 			<description>
+				Set the given noise's parameters to the ones sored in this instance.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="cellular_distance_function" type="int" setter="set_cellular_distance_function" getter="get_cellular_distance_function" enum="FastNoise.CellularDistanceFunction" default="0">
+			Cellular distance function.
 		</member>
 		<member name="cellular_jitter" type="float" setter="set_cellular_jitter" getter="get_cellular_jitter" default="0.45">
+			Cellular jitter.
 		</member>
 		<member name="cellular_return_type" type="int" setter="set_cellular_return_type" getter="get_cellular_return_type" enum="FastNoise.CellularReturnType" default="0">
+			Cellular return type.
 		</member>
 		<member name="fractal_gain" type="float" setter="set_fractal_gain" getter="get_fractal_gain" default="0.5">
+			Fractal gain.
 		</member>
 		<member name="fractal_lacunarity" type="float" setter="set_fractal_lacunarity" getter="get_fractal_lacunarity" default="2.0">
+			Fractal lacrunarity.
 		</member>
 		<member name="fractal_octaves" type="int" setter="set_fractal_octaves" getter="get_fractal_octaves" default="3">
+			Fractal octaves.
 		</member>
 		<member name="fractal_type" type="int" setter="set_fractal_type" getter="get_fractal_type" enum="FastNoise.FractalType" default="0">
+			Fractal type.
 		</member>
 		<member name="frequency" type="float" setter="set_frequency" getter="get_frequency" default="0.01">
+			Frequency.
 		</member>
-		<member name="gradient_perturbation_amplitude" type="float" setter="set_gradient_perturbation_amplitude" getter="get_gradient_perturbation_amplitude" default="1.0">
+		<member name="" type="float" setter="set_gradient_perturbation_amplitude" getter="get_gradient_perturbation_amplitude" default="1.0">
+			Gradient perturbation amplitude.
 		</member>
 		<member name="interpolation" type="int" setter="set_interpolation" getter="get_interpolation" enum="FastNoise.Interpolation" default="2">
+			Interpolation.
 		</member>
 		<member name="noise_type" type="int" setter="set_noise_type" getter="get_noise_type" enum="FastNoise.Type" default="4">
+			Noise type.
 		</member>
 		<member name="seed" type="int" setter="set_seed" getter="get_seed" default="1337">
+			Seed.
 		</member>
 	</members>
 	<constants>
