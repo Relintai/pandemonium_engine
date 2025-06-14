@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="SQLite3Database" inherits="DatabaseSingleThreaded">
 	<brief_description>
+		SQLite database backend implementation.
 	</brief_description>
 	<description>
+		SQLite database backend implementation.
+		The database filename can be provided using the connection string.
 	</description>
 	<tutorials>
+		<link title="Database Demo Projects">$DOCS_URL/07_demo_projects/database</link>
+		<link title="SQLite Docs">https://sqlite.org/docs.html</link>
 	</tutorials>
 	<methods>
 	</methods>
