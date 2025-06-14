@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="FastNoise" inherits="Reference">
 	<brief_description>
+		A class that can generate different noises.
 	</brief_description>
 	<description>
+		A class that can generate different noises.
+		USes the fastnoise library.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,61 +13,73 @@
 		<method name="get_cellular_distance_2_indices" qualifiers="const">
 			<return type="PoolIntArray" />
 			<description>
+				Returns the current cellular distance 2 indices.
 			</description>
 		</method>
 		<method name="get_cellular_distance_function" qualifiers="const">
 			<return type="int" enum="FastNoise.CellularDistanceFunction" />
 			<description>
+				Returns the current cellular distance function.
 			</description>
 		</method>
 		<method name="get_cellular_jitter" qualifiers="const">
 			<return type="float" />
 			<description>
+				Returns the current cellular jitter.
 			</description>
 		</method>
 		<method name="get_cellular_noise_lookup" qualifiers="const">
 			<return type="FastNoise" />
 			<description>
+				Returns the current cellular noise lookup.
 			</description>
 		</method>
 		<method name="get_cellular_return_type" qualifiers="const">
 			<return type="int" enum="FastNoise.CellularReturnType" />
 			<description>
+				Returns the current cellular return type.
 			</description>
 		</method>
 		<method name="get_fractal_gain" qualifiers="const">
 			<return type="float" />
 			<description>
+				Returns the current fractal gain.
 			</description>
 		</method>
 		<method name="get_fractal_lacunarity" qualifiers="const">
 			<return type="float" />
 			<description>
+				Returns the current fractal lacunarity.
 			</description>
 		</method>
 		<method name="get_fractal_octaves" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the current fractal octaves.
 			</description>
 		</method>
 		<method name="get_fractal_type" qualifiers="const">
 			<return type="int" enum="FastNoise.FractalType" />
 			<description>
+				Returns the current fractal type.
 			</description>
 		</method>
 		<method name="get_frequency" qualifiers="const">
 			<return type="float" />
 			<description>
+				Returns the current frequency.
 			</description>
 		</method>
 		<method name="get_gradient_perturbation_amplitude" qualifiers="const">
 			<return type="float" />
 			<description>
+				Returns the current gradient perturbation amplitude.
 			</description>
 		</method>
 		<method name="get_interpolation" qualifiers="const">
 			<return type="int" enum="FastNoise.Interpolation" />
 			<description>
+				Returns the current interpolation.
 			</description>
 		</method>
 		<method name="get_noise_2d">
@@ -72,12 +87,14 @@
 			<argument index="0" name="x" type="float" />
 			<argument index="1" name="y" type="float" />
 			<description>
+				Return noise at 2d position.
 			</description>
 		</method>
 		<method name="get_noise_2dv">
 			<return type="float" />
 			<argument index="0" name="pos" type="Vector2" />
 			<description>
+				Return noise at 2d position.
 			</description>
 		</method>
 		<method name="get_noise_3d">
@@ -86,22 +103,26 @@
 			<argument index="1" name="y" type="float" />
 			<argument index="2" name="z" type="float" />
 			<description>
+				Return noise at 3d position.
 			</description>
 		</method>
 		<method name="get_noise_3dv">
 			<return type="float" />
 			<argument index="0" name="pos" type="Vector3" />
 			<description>
+				Return noise at 3d position.
 			</description>
 		</method>
 		<method name="get_noise_type" qualifiers="const">
 			<return type="int" enum="FastNoise.Type" />
 			<description>
+				Returns the current noise type.
 			</description>
 		</method>
 		<method name="get_seed" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the current seed.
 			</description>
 		</method>
 		<method name="get_simplex_4d">
@@ -111,6 +132,7 @@
 			<argument index="2" name="z" type="float" />
 			<argument index="3" name="w" type="float" />
 			<description>
+				Return simplex noise at 4d position.
 			</description>
 		</method>
 		<method name="get_white_noise_4d">
@@ -120,6 +142,7 @@
 			<argument index="2" name="z" type="float" />
 			<argument index="3" name="w" type="float" />
 			<description>
+				Return white noise at 4d position.
 			</description>
 		</method>
 		<method name="set_cellular_distance_2_indices">
@@ -127,141 +150,182 @@
 			<argument index="0" name="i0" type="int" />
 			<argument index="1" name="i1" type="int" />
 			<description>
+				Sets the current cellular distance 2 indices.
 			</description>
 		</method>
 		<method name="set_cellular_distance_function">
 			<return type="void" />
 			<argument index="0" name="func" type="int" enum="FastNoise.CellularDistanceFunction" />
 			<description>
+				Sets the current cellular distance function.
 			</description>
 		</method>
 		<method name="set_cellular_jitter">
 			<return type="void" />
 			<argument index="0" name="jitter" type="float" />
 			<description>
+				Sets the current cellular jitter.
 			</description>
 		</method>
 		<method name="set_cellular_noise_lookup">
 			<return type="void" />
 			<argument index="0" name="other_noise" type="FastNoise" />
 			<description>
+				Sets the current cellular noise lookup.
 			</description>
 		</method>
 		<method name="set_cellular_return_type">
 			<return type="void" />
 			<argument index="0" name="ret" type="int" enum="FastNoise.CellularReturnType" />
 			<description>
+				Sets the current cellular return type.
 			</description>
 		</method>
 		<method name="set_fractal_gain">
 			<return type="void" />
 			<argument index="0" name="gain" type="float" />
 			<description>
+				Sets the current fractal gain.
 			</description>
 		</method>
 		<method name="set_fractal_lacunarity">
 			<return type="void" />
 			<argument index="0" name="lacunarity" type="float" />
 			<description>
+				Sets the current fractal lacunarity.
 			</description>
 		</method>
 		<method name="set_fractal_octaves">
 			<return type="void" />
 			<argument index="0" name="octave_count" type="int" />
 			<description>
+				Sets the current fractal octaves.
 			</description>
 		</method>
 		<method name="set_fractal_type">
 			<return type="void" />
 			<argument index="0" name="type" type="int" enum="FastNoise.FractalType" />
 			<description>
+				Sets the current fractal type.
 			</description>
 		</method>
 		<method name="set_frequency">
 			<return type="void" />
 			<argument index="0" name="freq" type="float" />
 			<description>
+				Sets the current frequency.
 			</description>
 		</method>
 		<method name="set_gradient_perturbation_amplitude">
 			<return type="void" />
 			<argument index="0" name="amp" type="float" />
 			<description>
+				Sets the current gradient perturbation amplitude.
 			</description>
 		</method>
 		<method name="set_interpolation">
 			<return type="void" />
 			<argument index="0" name="interp" type="int" enum="FastNoise.Interpolation" />
 			<description>
+				Sets the current interpolation.
 			</description>
 		</method>
 		<method name="set_noise_type">
 			<return type="void" />
 			<argument index="0" name="type" type="int" enum="FastNoise.Type" />
 			<description>
+				Sets the current noise type.
 			</description>
 		</method>
 		<method name="set_seed">
 			<return type="void" />
 			<argument index="0" name="seed" type="int" />
 			<description>
+				Sets the current seed.
 			</description>
 		</method>
 	</methods>
 	<constants>
 		<constant name="TYPE_VALUE" value="0" enum="Type">
+			Value noise.
 		</constant>
 		<constant name="TYPE_VALUE_FRACTAL" value="1" enum="Type">
+			Value fractal noise.
 		</constant>
 		<constant name="TYPE_PERLIN" value="2" enum="Type">
+			Perlin noise.
 		</constant>
 		<constant name="TYPE_PERLIN_FRACTAL" value="3" enum="Type">
+			Perlin fractal noise.
 		</constant>
 		<constant name="TYPE_SIMPLEX" value="4" enum="Type">
+			Simplex noise.
 		</constant>
 		<constant name="TYPE_SIMPLEX_FRACTAL" value="5" enum="Type">
+			Simplex fractal noise.
 		</constant>
 		<constant name="TYPE_CELLULAR" value="6" enum="Type">
+			Cellular noise.
 		</constant>
 		<constant name="TYPE_WHITE_NOISE" value="7" enum="Type">
+			White noise.
 		</constant>
 		<constant name="TYPE_CUBIC" value="8" enum="Type">
+			Cubic noise.
 		</constant>
 		<constant name="TYPE_CUBIC_FRACTAL" value="9" enum="Type">
+			Cubic fractal noise.
 		</constant>
 		<constant name="INTERP_LINEAR" value="0" enum="Interpolation">
+			Linear interpolation.
 		</constant>
 		<constant name="INTERP_QUINTIC" value="2" enum="Interpolation">
+			Quintic interpolation.
 		</constant>
 		<constant name="INTERP_HERMITE" value="1" enum="Interpolation">
+			Hermite interpolation.
 		</constant>
 		<constant name="FRACTAL_FBM" value="0" enum="FractalType">
+			FBM fractal.
 		</constant>
 		<constant name="FRACTAL_BILLOW" value="1" enum="FractalType">
+			Billin fractal.
 		</constant>
 		<constant name="FRACTAL_RIGID_MULTI" value="2" enum="FractalType">
+			Rigid multi fractal.
 		</constant>
 		<constant name="DISTANCE_EUCLIDEAN" value="0" enum="CellularDistanceFunction">
+			Euclidean distance.
 		</constant>
 		<constant name="DISTANCE_MANHATTAN" value="1" enum="CellularDistanceFunction">
+			Manhattan distance.
 		</constant>
 		<constant name="DISTANCE_NATURAL" value="2" enum="CellularDistanceFunction">
+			Natural distance.
 		</constant>
 		<constant name="RETURN_CELL_VALUE" value="0" enum="CellularReturnType">
+			Return cell value.
 		</constant>
 		<constant name="RETURN_NOISE_LOOKUP" value="1" enum="CellularReturnType">
+			Return noise lookup.
 		</constant>
 		<constant name="RETURN_DISTANCE" value="2" enum="CellularReturnType">
+			Return distance.
 		</constant>
 		<constant name="RETURN_DISTANCE_2" value="3" enum="CellularReturnType">
+			Return distance 2.
 		</constant>
 		<constant name="RETURN_DISTANCE_2_ADD" value="4" enum="CellularReturnType">
+			Return distance 2 add.
 		</constant>
 		<constant name="RETURN_DISTANCE_2_SUB" value="5" enum="CellularReturnType">
+			Return distance 2 sub.
 		</constant>
 		<constant name="RETURN_DISTANCE_2_MUL" value="6" enum="CellularReturnType">
+			Return distance 2 mul.
 		</constant>
 		<constant name="RETURN_DISTANCE_2_DIV" value="7" enum="CellularReturnType">
+			Return distance 2 div.
 		</constant>
 	</constants>
 </class>
