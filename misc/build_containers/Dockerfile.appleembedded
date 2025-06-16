@@ -1,6 +1,10 @@
 ARG img_version
 FROM pandemonium-osx:${img_version}
 
+COPY files/* /root/files/
+COPY files/appleembedded/* /root/files/appleembedded/
+COPY files/patches/* /root/files/patches/
+
 RUN dnf -y install --setopt=install_weak_deps=False \
       automake autoconf gcc gcc-c++ gcc-objc gcc-objc++ cmake libicu-devel libtool libxml2-devel openssl-devel perl python yasm
 
