@@ -35,6 +35,7 @@
 #include "core/containers/rb_set.h"
 #include "core/object/object.h"
 #include "core/os/thread_safe.h"
+#include "core/os/spin_lock.h"
 #include "core/typedefs.h"
 
 // Querying ProjectSettings is usually done at startup.
@@ -229,7 +230,7 @@ Variant _GLOBAL_DEF_ALIAS(const String &p_var, const String &p_old_name, const V
 	static m_type m_name;                                                                                                \
 	{                                                                                                                    \
 		static uint32_t local_version = 0;                                                                               \
-		static Mutex local_mutex;                                                                                        \
+		static SpinLock local_mutex;                                                                                        \
 		uint32_t new_version = ProjectSettings::get_singleton()->get_version();                                          \
 		if (local_version != new_version) {                                                                              \
 			local_mutex.lock();                                                                                          \
