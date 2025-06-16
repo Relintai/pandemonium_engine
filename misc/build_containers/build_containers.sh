@@ -34,7 +34,7 @@ if [ ! -e "${files_root}"/MacOSX${OSX_SDK}.sdk.tar.xz ] || [ ! -e "${files_root}
 fi
 
 $docker_build -t pandemonium-osx:${img_version} -f Dockerfile.osx . 2>&1 | tee logs/osx.log
-$docker_build -t pandemonium-ios:${img_version} -f Dockerfile.ios . 2>&1 | tee logs/ios.log
+$docker_build -t pandemonium-appleembedded:${img_version} -f Dockerfile.appleembedded . 2>&1 | tee logs/ios.log
 
 docker build -t pandemonium-frt-base:${img_version} -f Dockerfile.frt_base . 2>&1 | tee logs/frt_base.log
 $docker_build -t pandemonium-frt-arm32:${img_version} -f Dockerfile.frt_arm32 . 2>&1 | tee logs/frt_arm32.log
