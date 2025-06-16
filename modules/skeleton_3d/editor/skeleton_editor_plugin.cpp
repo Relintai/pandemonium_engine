@@ -1607,12 +1607,12 @@ void SkeletonGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 				case 0: { // Wire shape.
 					surface_tool->add_color(current_bone_color);
 					bones[0] = current_bone_idx;
-					surface_tool->add_bones(bones);
-					surface_tool->add_weights(weights);
+					surface_tool->add_bones(Vector<int>(bones));
+					surface_tool->add_weights(Vector<float>(weights));
 					surface_tool->add_vertex(v0);
 					bones[0] = child_bone_idx;
-					surface_tool->add_bones(bones);
-					surface_tool->add_weights(weights);
+					surface_tool->add_bones(Vector<int>(bones));
+					surface_tool->add_weights(Vector<float>(weights));
 					surface_tool->add_vertex(v1);
 				} break;
 
@@ -1638,19 +1638,18 @@ void SkeletonGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 							point += axis * dist * 0.1;
 
 							bones[0] = current_bone_idx;
-							surface_tool->add_bones(bones);
-							surface_tool->add_weights(weights);
+							surface_tool->add_bones(Vector<int>(bones));
+							surface_tool->add_weights(Vector<float>(weights));
 							surface_tool->add_vertex(v0);
-							surface_tool->add_bones(bones);
-							surface_tool->add_weights(weights);
+							surface_tool->add_bones(Vector<int>(bones));
 							surface_tool->add_vertex(point);
 
-							surface_tool->add_bones(bones);
-							surface_tool->add_weights(weights);
+							surface_tool->add_bones(Vector<int>(bones));
+							surface_tool->add_weights(Vector<float>(weights));
 							surface_tool->add_vertex(point);
 							bones[0] = child_bone_idx;
-							surface_tool->add_bones(bones);
-							surface_tool->add_weights(weights);
+							surface_tool->add_bones(Vector<int>(bones));
+							surface_tool->add_weights(Vector<float>(weights));
 							surface_tool->add_vertex(v1);
 							points[point_idx++] = point;
 						}
@@ -1659,11 +1658,11 @@ void SkeletonGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 					SWAP(points[1], points[2]);
 					bones[0] = current_bone_idx;
 					for (int j = 0; j < 6; j++) {
-						surface_tool->add_bones(bones);
-						surface_tool->add_weights(weights);
+						surface_tool->add_bones(Vector<int>(bones));
+						surface_tool->add_weights(Vector<float>(weights));
 						surface_tool->add_vertex(points[j]);
-						surface_tool->add_bones(bones);
-						surface_tool->add_weights(weights);
+						surface_tool->add_bones(Vector<int>(bones));
+						surface_tool->add_weights(Vector<float>(weights));
 						surface_tool->add_vertex(points[(j + 1) % 6]);
 					}
 				} break;
@@ -1673,11 +1672,11 @@ void SkeletonGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 			for (int j = 0; j < 3; j++) {
 				bones[0] = current_bone_idx;
 				surface_tool->add_color(axis_colors[j]);
-				surface_tool->add_bones(bones);
-				surface_tool->add_weights(weights);
+				surface_tool->add_bones(Vector<int>(bones));
+				surface_tool->add_weights(Vector<float>(weights));
 				surface_tool->add_vertex(v0);
-				surface_tool->add_bones(bones);
-				surface_tool->add_weights(weights);
+				surface_tool->add_bones(Vector<int>(bones));
+				surface_tool->add_weights(Vector<float>(weights));
 				surface_tool->add_vertex(v0 + (skeleton->get_bone_global_rest(current_bone_idx).basis.inverse())[j].normalized() * dist * bone_axis_length);
 
 				if (j == closest) {
@@ -1690,11 +1689,11 @@ void SkeletonGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 				for (int j = 0; j < 3; j++) {
 					bones[0] = child_bone_idx;
 					surface_tool->add_color(axis_colors[j]);
-					surface_tool->add_bones(bones);
-					surface_tool->add_weights(weights);
+					surface_tool->add_bones(Vector<int>(bones));
+					surface_tool->add_weights(Vector<float>(weights));
 					surface_tool->add_vertex(v1);
-					surface_tool->add_bones(bones);
-					surface_tool->add_weights(weights);
+					surface_tool->add_bones(Vector<int>(bones));
+					surface_tool->add_weights(Vector<float>(weights));
 					surface_tool->add_vertex(v1 + (skeleton->get_bone_global_rest(child_bone_idx).basis.inverse())[j].normalized() * dist * bone_axis_length);
 
 					if (j == closest) {
