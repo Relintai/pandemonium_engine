@@ -32,7 +32,6 @@
 #include "texture_progress.h"
 
 #include "core/config/engine.h"
-#include "math.h"
 
 void TextureProgress::set_under_texture(const Ref<Texture> &p_texture) {
 	under = p_texture;
@@ -579,7 +578,7 @@ int TextureProgress::get_fill_mode() {
 }
 
 void TextureProgress::set_radial_initial_angle(float p_angle) {
-	ERR_FAIL_COND_MSG(!isfinite(p_angle), "Angle is non-finite.");
+	ERR_FAIL_COND_MSG(Math::is_inf(p_angle), "Angle is non-finite.");
 
 	if (p_angle < 0.0 || p_angle > 360.0) {
 		p_angle = Math::fposmod(p_angle, 360.0f);
