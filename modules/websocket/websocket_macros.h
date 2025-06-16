@@ -64,6 +64,7 @@ protected:
 	CNAME *(*CNAME::_create)() = NULL;
 
 #define GDCIIMPL(IMPNAME, CNAME)           \
+	GDSOFTCLASS(IMPNAME, CNAME)            \
 public:                                    \
 	static CNAME *_create() {              \
 		return memnew(IMPNAME);            \
