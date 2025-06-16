@@ -37,6 +37,7 @@
 #include "core/os/os.h"
 #include "scene/main/spatial.h"
 #include "scene/3d/visual_instance.h"
+#include "core/config/project_settings.h"
 
 #ifdef GODOT_SCENE_TREE_FTI_VERIFY
 #include "scene_tree_fti_tests.h"
