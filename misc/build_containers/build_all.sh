@@ -56,7 +56,7 @@ docker run ${custom_envvars} \
 docker run ${custom_envvars} \
         -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
         -v ${project_root}:/root/project \
-        -w /root/project pandemonium-ios:${img_version} \
+        -w /root/project pandemonium-appleembedded:${img_version} \
         bash /root/engine_build_scripts/ios.sh "$@" 2>&1 | tee logs/ios.log
 
 

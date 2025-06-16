@@ -1,25 +1,26 @@
 ARG img_version
 FROM pandemonium-fedora:${img_version}
 
-ENV OSX_SDK=14.2
+ENV OSX_SDK=15.5
 
 COPY files/* /root/files/
 
 RUN dnf -y install --setopt=install_weak_deps=False \
-      automake autoconf bzip2-devel cmake gcc gcc-c++ libdispatch libicu-devel libtool \
+      automake autoconf bzip2-devel cmake gawk gcc gcc-c++ libdispatch libicu-devel libtool \
       libxml2-devel openssl-devel uuid-devel yasm && \
     git clone --progress https://github.com/tpoechtrager/osxcross && \
     cd /root/osxcross && \
-    git checkout ff8d100f3f026b4ffbe4ce96d8aac4ce06f1278b && \
-    curl -LO https://github.com/tpoechtrager/osxcross/pull/415.patch && \
-    git apply 415.patch && \
+    git checkout 310196974007fc916f9be1877731b716a4854f72 && \
+		# Patch to fix visionOS support.
+    # See: https://github.com/llvm/llvm-project/issues/142502
+    patch -p1 < /root/files/patches/osxcross-fix-visionos.patch && \
     ln -s /root/files/MacOSX${OSX_SDK}.sdk.tar.xz /root/osxcross/tarballs && \
     export UNATTENDED=1 && \
     export SDK_VERSION=${OSX_SDK} && \
     # Custom build Apple Clang to ensure compatibility.
     # Find the equivalent LLVM version for the SDK from:
     # https://en.wikipedia.org/wiki/Xcode#Toolchain_versions
-    CLANG_VERSION=16.0.0 ENABLE_CLANG_INSTALL=1 INSTALLPREFIX=/usr ./build_apple_clang.sh && \
+    CLANG_VERSION=19.1.4 ENABLE_CLANG_INSTALL=1 INSTALLPREFIX=/usr ./build_apple_clang.sh && \
     ./build.sh && \
     ./build_compiler_rt.sh && \
     rm -rf /root/osxcross/build && rm -rf /root/files
