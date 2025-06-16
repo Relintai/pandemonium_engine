@@ -2975,7 +2975,7 @@ String EditorNode::_get_system_info() {
 	String screen = itos(OS::get_singleton()->get_screen_count());
 	screen += (OS::get_singleton()->get_screen_count() > 1) ? String(" monitors") : String(" monitor");
 	String video_driver = OS::get_singleton()->get_video_driver_name(OS::get_singleton()->get_current_video_driver());
-	String video_adapter = VisualServer::get_singleton()->get_video_adapter_name();
+	String video_adapter = RenderingServer::get_singleton()->get_video_adapter_name();
 
 	String processor = OS::get_singleton()->get_processor_name();
 	processor += vformat(" (%s threads)", OS::get_singleton()->get_processor_count());
