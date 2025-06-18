@@ -132,7 +132,6 @@ private:
 
 		bool merging_allowed : 1;
 
-		int children_lock;
 		Spatial *parent;
 
 		// An unordered vector of `Spatial` children only.
