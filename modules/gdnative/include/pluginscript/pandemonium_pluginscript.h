@@ -97,7 +97,6 @@ typedef struct {
 	//  hint_string: <string>
 	//  usage: <int:pandemonium_property_usage_flags>
 	//  default_value: <variant>
-	//  rset_mode: <int:pandemonium_method_rpc_mode>
 	// }
 	pandemonium_array properties;
 } pandemonium_pluginscript_script_manifest;

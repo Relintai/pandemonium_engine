@@ -54,7 +54,6 @@ struct NativeScriptDesc {
 	struct Method {
 		pandemonium_instance_method method;
 		MethodInfo info;
-		int rpc_mode;
 		String documentation;
 	};
 	struct Property {
@@ -62,7 +61,6 @@ struct NativeScriptDesc {
 		pandemonium_property_get_func getter;
 		PropertyInfo info;
 		Variant default_value;
-		int rset_mode;
 		String documentation;
 	};
 

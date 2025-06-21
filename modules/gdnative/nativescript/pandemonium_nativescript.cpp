@@ -106,7 +106,6 @@ void GDAPI pandemonium_nativescript_register_method(void *p_gdnative_handle, con
 
 	NativeScriptDesc::Method method;
 	method.method = p_method;
-	method.rpc_mode = p_attr.rpc_type;
 	method.info = MethodInfo(p_function_name);
 
 	E->get().methods.insert(p_function_name, method);
@@ -121,7 +120,6 @@ void GDAPI pandemonium_nativescript_register_property(void *p_gdnative_handle, c
 	NativeScriptDesc::Property property;
 	property.default_value = *(Variant *)&p_attr->default_value;
 	property.getter = p_get_func;
-	property.rset_mode = p_attr->rset_type;
 	property.setter = p_set_func;
 	property.info = PropertyInfo((Variant::Type)p_attr->type,
 			p_path,

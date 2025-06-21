@@ -60,8 +60,6 @@ private:
 	RBMap<StringName, PropertyInfo> _properties_info;
 	RBMap<StringName, MethodInfo> _signals_info;
 	RBMap<StringName, MethodInfo> _methods_info;
-	RBMap<StringName, MultiplayerAPI::RPCMode> _variables_rset_mode;
-	RBMap<StringName, MultiplayerAPI::RPCMode> _methods_rpc_mode;
 
 	RBSet<Object *> _instances;
 	//exported members

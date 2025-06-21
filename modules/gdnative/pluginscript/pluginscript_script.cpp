@@ -324,13 +324,6 @@ Error PluginScript::reload(bool p_keep_state) {
 		Dictionary v = (*methods)[i];
 		MethodInfo mi = MethodInfo::from_dict(v);
 		_methods_info[mi.name] = mi;
-		// rpc_mode is passed as an optional field and is not part of MethodInfo
-		Variant var = v["rpc_mode"];
-		if (var == Variant()) {
-			_methods_rpc_mode[mi.name] = MultiplayerAPI::RPC_MODE_DISABLED;
-		} else {
-			_methods_rpc_mode[mi.name] = MultiplayerAPI::RPCMode(int(var));
-		}
 	}
 	Array *signals = (Array *)&manifest.signals;
 	for (int i = 0; i < signals->size(); ++i) {
@@ -344,13 +337,6 @@ Error PluginScript::reload(bool p_keep_state) {
 		PropertyInfo pi = PropertyInfo::from_dict(v);
 		_properties_info[pi.name] = pi;
 		_properties_default_values[pi.name] = v["default_value"];
-		// rset_mode is passed as an optional field and is not part of PropertyInfo
-		Variant var = v["rset_mode"];
-		if (var == Variant()) {
-			_methods_rpc_mode[pi.name] = MultiplayerAPI::RPC_MODE_DISABLED;
-		} else {
-			_methods_rpc_mode[pi.name] = MultiplayerAPI::RPCMode(int(var));
-		}
 	}
 
 	FREE_SCRIPT_MANIFEST(manifest);
