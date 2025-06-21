@@ -782,7 +782,7 @@
 			<argument index="0" name="id" type="int" />
 			<argument index="1" name="recursive" type="bool" default="true" />
 			<description>
-				Sets the node's network master to the peer with the given peer ID. The network master is the peer that has authority over the node on the network. Useful in conjunction with the [code]master[/code] and [code]puppet[/code] keywords. Inherited from the parent node by default, which ultimately defaults to peer ID 1 (the server). If [code]recursive[/code], the given peer is recursively set as the master for all children of this node.
+				Sets the node's network master to the peer with the given peer ID. The network master is the peer that has authority over the node on the network. Inherited from the parent node by default, which ultimately defaults to peer ID 1 (the server). If [code]recursive[/code], the given peer is recursively set as the master for all children of this node.
 			</description>
 		</method>
 		<method name="set_physics_process">
