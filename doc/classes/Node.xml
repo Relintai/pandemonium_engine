@@ -658,7 +658,8 @@
 			<return type="Variant" />
 			<argument index="0" name="method" type="StringName" />
 			<description>
-				Sends a remote procedure call request for the given [code]method[/code] to peers on the network (and locally), optionally sending all additional arguments as arguments to the method called by the RPC. The call request will only be received by nodes with the same [NodePath], including the exact same node name. Behaviour depends on the RPC configuration for the given method, see [method rpc_config]. Methods are not exposed to RPCs by default. See also [method rset] and [method rset_config] for properties. Returns [code]null[/code].
+				Sends a remote procedure call request for the given [code]method[/code] to peers on the network (and locally), optionally sending all additional arguments as arguments to the method called by the RPC. 
+				The call request will only be received by nodes with the same [NodePath], including the exact same node name. Behaviour depends on the RPC configuration for the given method, see [method rpc_config]. Methods are not exposed to RPCs by default. Returns [code]null[/code].
 				[b]Note:[/b] You can only safely use RPCs on clients after you received the [code]connected_to_server[/code] signal from the [SceneTree]. You also need to keep track of the connection state, either by the [SceneTree] signals like [code]server_disconnected[/code] or by checking [code]SceneTree.network_peer.get_connection_status() == CONNECTION_CONNECTED[/code].
 			</description>
 		</method>
@@ -667,7 +668,7 @@
 			<argument index="0" name="method" type="StringName" />
 			<argument index="1" name="mode" type="int" enum="MultiplayerAPI.RPCMode" />
 			<description>
-				Changes the RPC mode for the given [code]method[/code] to the given [code]mode[/code]. See [enum MultiplayerAPI.RPCMode]. An alternative is annotating methods and properties with the corresponding keywords ([code]remote[/code], [code]master[/code], [code]puppet[/code], [code]remotesync[/code], [code]mastersync[/code], [code]puppetsync[/code]). By default, methods are not exposed to networking (and RPCs). See also [method rset] and [method rset_config] for properties.
+				Changes the RPC mode for the given [code]method[/code] to the given [code]mode[/code]. See [enum MultiplayerAPI.RPCMode]. By default, methods are not exposed to networking (and RPCs).
 			</description>
 		</method>
 		<method name="rpc_id" qualifiers="vararg">
