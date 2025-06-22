@@ -15,6 +15,7 @@ custom_envvars=''
 #export OFFICIAL=1;./build_all.sh
 
 if [[ ! -z "${OFFICIAL}" ]]; then
+	echo "OFFICIAL BUILD SET"
   custom_envvars='-e BUILD_NAME=official'
 fi
 
