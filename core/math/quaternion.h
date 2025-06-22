@@ -205,7 +205,7 @@ struct _NO_DISCARD_CLASS_ Quaternion {
 		return *this;
 	}
 
-	Quaternion(const Vector3 &v0, const Vector3 &v1) {
+	Quaternion(const Vector3 &p_v0, const Vector3 &p_v1) {
 		set_shortest_arc(p_v0, p_v1);
 	}
 
