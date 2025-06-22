@@ -8,10 +8,28 @@ Nothing yet.
 
 ## [4.7.0]
 
-BReaking changes:
+Highlights:
 
+- Added a new "Merge Back Changes" and "Merge Back Local Changes" tool when right clicking instanced scenes in the editor.
+  When working with instanced scenes, these can be used to save changes back to the original scene file.
+  The "Merge Back Local Changes" tool skips saving transforms.
+- Created a new TOTP module. TOTP stands for Timed One Time Password.
+- Full and improved docs for the entire fastnoise module.
+- Full and improved docs for the entire lz4 module.
+- Full and improved docs for the entire web module.
+- Full and improved docs for the entire database and database_sqlite modules.
+- Full and improved docs for the entire entity_spell_system module.
+- Full and improved docs for the entire user module.
+- Updated all links in the in-editor docs.
+- Heavy iprovementst `FileCache`.
+- Heavy iprovements to the `users` module.
+- Added an editor gizmo plugin for TiledWalls and PropInstances so they can be selected in the spatial editor directly.
+- TerrainWorld now has built-in support for loading and saving TerrainWorld chunks dynamically to and from disk.
+- Added spawners (with editor and prop support) for the entity spell system: ESSEntityWorldSpawner3D, ESSEntityWorldSpawner3DSingle, ESSEntityWorldSpawner2D, ESSEntityWorldSpawner3DArea.
 
--Split  _create_chunk() to _create_chunk() and _setup_chunk() in TerrainWorld.
+Breaking changes:
+
+- Split  _create_chunk() to _create_chunk() and _setup_chunk() in TerrainWorld.
   Unfortunately this is a breaking change. (Very slight though.)
   Now _create_chunk() should be used to initialize serialized properties
   in chunks. The new _setup_chunk() virtual should be used to initialize
@@ -22,118 +40,9 @@ BReaking changes:
   without any updates necessary. This change is only needed when loading
   of chunks is desired.
 
-### Core
+c++ only:
 
-
--Use SpinLock in GLOBAL_CACHED.
-Inspired by
-https://github.com/godotengine/godot/commit/187e14b8ac7e5508e87355bdb8d3d7a856f54e0b
-
--Update copyright information in main.
-
-
-### Various
-
--Remove community stuff from the readme, as it's not really relevant. Also mention a solution in case this becomes an issue (but it likely won't be).
--Removed TODO.md. Not needed anymore.
--Removed notable_godot_commits_not_included.md. Not needed.
-
-
-### Editor
-
--The "Access as Unique Name" tool option in SceneTreeDock now always have a separator.
--Move EditorPropertyRevert to it's own file.
--Added a new Merge Back Local Changes too when right clicking instanced scenes in the editor.
--Better implementation for the new "Merge Back Local Changes" tool.
--New alternate version of the "Merge Back Local Changes" tool which keeps transforms intact.
--Renamed the "Merge Back Local Changes" tool in the SceneTreeDock popup menu to "Merge Back Changes".
-
--Update links in the docs.
-
--Handle proxy classes properly in arguments and return values in EidotrDocs.
-
--Remove stray rset and rpc mode variables from gdnative.
--Removed stray rset_mode and multiplayer keywords from the docs.
--Removed more stray old multiplayer keywords from the docs.
-
-### Scenes
-
--Fix crash in TextMesh.
-
-### Modules
-
-#### database and database_sqlite
-
--Implemented table version support for SQLite3DatabaseConnection.
--Removed unused include.
--Removed unnecessary overloads from QueryBuilder.
--Removed unused include.
--Removed unnecessary #if.
--Added alter table helper methods to TableBuilder.
--Docs for the new TableBuilder methods.
--Split concatenations into multiple lines in SQLite3TableBuilder, since now TableBuilders use a StringBuilder this saves a little bit on concatenating strings.
--Added recommandations to PreparedStatement and QueryBuilder's docs.
-
--Added Database::get_backend_name() virtual method.
--Document set_table_version() being able to remove entries.
-
-#### gdscript
-
--Disabled integer division and unused signal warnings by default in gdscript.
-
-#### web
-
--Hode session_id and id in HTTPSession.
--Added serialization helper methods to HTTPSession.
--Added a new HTTPSessionManagerFile class.
--Automatically load sessions when HTTPSessionManagerFile enters tree.
--Removed unnecessary c++ only method from FileCache.
--Made cache_invalidation_time member protected in FileCache.
--Use uint64_t directly in FileCache's cache_invalidation_time getters and setters.
--Fix cache_invalidation_time property name in FileCache.
-
--Use StringNames in FileCache caching functions.
-
--Use HashMap in FileCache instead of an RBMap.
--Do proper cleanup in FileCache destructor.
--Added clear_expired() helper method to FileCache.
--Tweaks to caches in FileCache.
--Don't use dynamically allocated CacheEntries in FileCache.
-  - This simplifies the code a lot, also makes it harder to have
-    threading-related issues.
-  - Also fix potential race condition.
--Added new helper methods for folders into FileCache.
--Removed unused imports from FileCache.
--Tweak some of the variable names in FileCache.
--Renamed the path parameter for the cache methods in FileCache. It's much more useful thinking about them as keys instead of paths.
--Added more caching helper methods to FileCache.
--Actually return the absolute path in FileCache::wwwroot_get_folder_abspath().
--Close the file and don't leak memory in SimpleWebServerRequest::move_file() when in-memory uploads are used.
-
-- Full and improved docs fot the entire module.
-
--Fix _validate() method's virtual bind for FormFieldEntry, FormField, and FormValidator.
--Reworked FormFieldEntries to use format strings.
--Fix data tag in HTMLBuilder.
--Implement HTMLBuilder::wr().
--Made the result variable in HTMLBuilder protected. It now has a getter.
--Use StringBuilder in HTMLBuilder in the background.
--Use empty() instead of checking against "" in HTMLBuilder.
--Use empty() instead of checking against "" in HTMLBuilder's bind class.
--Use StringBuilder in HTMLBuilder's binder class in the background.
--Finish the last tag for convenience before returning the result in HTMLBuilder.
--Fix unfinished methods in HTMLBuiler's binder class.
-
--Don't mess with the base_url by adding a slash at the end if it's missing in HTMLPaginator.
-This way usage logic should be simpler. It will also work with old style
-GET request parameters.
-
--Fix HTMLPaginator::start() and next() skipping the first page.
-
-#### users
-
--Fix calling the wrong method in UserManager.
--Now get_all_as_vector() in UserManager is not virtual anymore. Also removed other implementations.
+- Now get_all_as_vector() in UserManager is not virtual anymore. Also removed other implementations.
   - This had to be done as get_all_as_vector() cannot be customized by
     scripts, and if an inherited UserManager needs to set up UserModules
     this will cause issues later down the line.
@@ -142,77 +51,167 @@ GET request parameters.
     backends (and likely others too), so this solution seems to be the best
     currently.
 
--Improved UserManagerFile's internals.
+### Core
+
+- Use SpinLock in GLOBAL_CACHED. Inspired by https://github.com/godotengine/godot/commit/187e14b8ac7e5508e87355bdb8d3d7a856f54e0b
+- Update copyright information in main.
+
+### Editor
+
+- The "Access as Unique Name" tool option in SceneTreeDock now always have a separator.
+- Move EditorPropertyRevert to it's own file.
+- Added a new Merge Back Local Changes too when right clicking instanced scenes in the editor.
+- Better implementation for the new "Merge Back Local Changes" tool.
+- New alternate version of the "Merge Back Local Changes" tool which keeps transforms intact.
+- Renamed the "Merge Back Local Changes" tool in the SceneTreeDock popup menu to "Merge Back Changes".
+- Update links in the docs.
+- Handle proxy classes properly in arguments and return values in EidtorDocs.
+- Remove stray rset and rpc mode variables from gdnative.
+- Removed stray rset_mode and multiplayer keywords from the docs.
+- Removed more stray old multiplayer keywords from the docs.
+
+### Scenes
+
+- Fix crash in TextMesh.
+
+### Modules
+
+#### database and database_sqlite
+
+- Implemented table version support for SQLite3DatabaseConnection.
+- Removed unused include.
+- Removed unnecessary overloads from QueryBuilder.
+- Removed unused include.
+- Removed unnecessary #if.
+- Added alter table helper methods to TableBuilder.
+- Split concatenations into multiple lines in SQLite3TableBuilder, since now TableBuilders use a StringBuilder this saves a little bit on concatenating strings.
+- Added recommandations to PreparedStatement and QueryBuilder's docs.
+- Added Database::get_backend_name() virtual method.
+- Document set_table_version() being able to remove entries.
+- Full and improved docs for the entire module.
+
+#### gdscript
+
+- Disabled integer division and unused signal warnings by default in gdscript.
+
+#### web
+
+- Hode session_id and id in HTTPSession.
+- Added serialization helper methods to HTTPSession.
+- Added a new HTTPSessionManagerFile class.
+- Automatically load sessions when HTTPSessionManagerFile enters tree.
+- Removed unnecessary c++ only method from FileCache.
+- Made cache_invalidation_time member protected in FileCache.
+- Use uint64_t directly in FileCache's cache_invalidation_time getters and setters.
+- Fix cache_invalidation_time property name in FileCache.
+- Use StringNames in FileCache caching functions.
+- Use HashMap in FileCache instead of an RBMap.
+- Do proper cleanup in FileCache destructor.
+- Added clear_expired() helper method to FileCache.
+- Tweaks to caches in FileCache.
+- Don't use dynamically allocated CacheEntries in FileCache.
+  - This simplifies the code a lot, also makes it harder to have
+    threading-related issues.
+  - Also fix potential race condition.
+- Added new helper methods for folders into FileCache.
+- Removed unused imports from FileCache.
+- Tweak some of the variable names in FileCache.
+- Renamed the path parameter for the cache methods in FileCache. It's much more useful thinking about them as keys instead of paths.
+- Added more caching helper methods to FileCache.
+- Actually return the absolute path in FileCache::wwwroot_get_folder_abspath().
+- Close the file and don't leak memory in SimpleWebServerRequest::move_file() when in-memory uploads are used.
+- Fix _validate() method's virtual bind for FormFieldEntry, FormField, and FormValidator.
+- Reworked FormFieldEntries to use format strings.
+- Fix data tag in HTMLBuilder.
+- Implement HTMLBuilder::wr().
+- Made the result variable in HTMLBuilder protected. It now has a getter.
+- Use StringBuilder in HTMLBuilder in the background.
+- Use empty() instead of checking against "" in HTMLBuilder.
+- Use empty() instead of checking against "" in HTMLBuilder's bind class.
+- Use StringBuilder in HTMLBuilder's binder class in the background.
+- Finish the last tag for convenience before returning the result in HTMLBuilder.
+- Fix unfinished methods in HTMLBuiler's binder class.
+- Don't mess with the base_url by adding a slash at the end if it's missing in HTMLPaginator.
+  This way usage logic should be simpler. It will also work with old style
+  GET request parameters.
+- Fix HTMLPaginator::start() and next() skipping the first page.
+- Full and improved docs for the entire module.
+
+#### users
+
+- Fix calling the wrong method in UserManager.
+- Now get_all_as_vector() in UserManager is not virtual anymore. Also removed other implementations.
+  - This had to be done as get_all_as_vector() cannot be customized by
+    scripts, and if an inherited UserManager needs to set up UserModules
+    this will cause issues later down the line.
+  - Other solutions like a user_setup() method could also work, but then
+    that would cause more individual (non-optimizable) lookups to db-based
+    backends (and likely others too), so this solution seems to be the best
+    currently.
+- Improved UserManagerFile's internals.
 - Now UserManager::_create_user() has a User as a parameter.
   This shoukld make it easier to customize user creation. Similar idea to
   how TerrainWorld's _create_chunk() works.
--Fix calling the new _create_user() method in UserManager.
--Fix saving files in UserManagerFile.
--Fix User::_from_dict() using wrong dictionary keys.
--Disable internal process for UserManagerFile. It's not needed anymore.
-
--Guard against bad indexes in User::_from_dict().
--Write and read lock modules in User::_to_dict() and User::_from_dict().
--Use module names instead of indexes if they are available in User::_from_dict() and User::_to_dict().
--Added some comments to User.
--Added read_try_lock and write_try_lock to User and UserModule.
--Docs for the User class.
--Removed unused enum from User. Note that WebPermission had the same enum if needed.
--Always just defer call to the active UserManager or error in UserDB.
+- Fix calling the new _create_user() method in UserManager.
+- Fix saving files in UserManagerFile.
+- Fix User::_from_dict() using wrong dictionary keys.
+- Disable internal process for UserManagerFile. It's not needed anymore.
+- Guard against bad indexes in User::_from_dict().
+- Write and read lock modules in User::_to_dict() and User::_from_dict().
+- Use module names instead of indexes if they are available in User::_from_dict() and User::_to_dict().
+- Added some comments to User.
+- Added read_try_lock and write_try_lock to User and UserModule.
+- Docs for the User class.
+- Removed unused enum from User. Note that WebPermission had the same enum if needed.
+- Always just defer call to the active UserManager or error in UserDB.
   - Having an optional separate User list in UserDB when there is no
     UserManager can lead to subtle bugs, so it got removed.
   - It also had other limitations, like it was not possible to setup Users
     properly, which could also lead to subtle bugs.
--Don't use the changed signal to get a User to save itself.
--Docs for UserDB.
--Now UserManagers have a register_as_global property. A manager will only try to set itself as the global manager if it's set to true (default).
--Print an error if more than one UserManagers are trying to become the global instance.
--Docs for UserManager.
--Store the owner UserManager in User.
--Store the owner UserManager in User as an ObjectID.
--Use the owner UserManager when saving Users.
--Added internal user name and email support for Users.
--Updated the UserManagers to use the new internal name and email. Also made sure to call the base _create_user in all UserManagers.
+- Don't use the changed signal to get a User to save itself.
+- Now UserManagers have a register_as_global property. A manager will only try to set itself as the global manager if it's set to true (default).
+- Print an error if more than one UserManagers are trying to become the global instance.
+- Docs for UserManager.
+- Store the owner UserManager in User.
+- Store the owner UserManager in User as an ObjectID.
+- Use the owner UserManager when saving Users.
+- Added internal user name and email support for Users.
+- Updated the UserManagers to use the new internal name and email. Also made sure to call the base _create_user in all UserManagers.
   - Internal name and email is used for lookups, so capitalization automatically won't matter.
--Docs for the UserManager implementations.
--Docs for UserModule.
--Docs for the UserWebPages.
-
--Set maximum password length in UserRegisterWebPage just for good measure (256).
--Also set a maximum password length of 256 in UserLoginWebPage.
--Remove unneeded comments in UserLoginWebPage.
--Set maximum password length of 256 in UserSettingsWebPage aswell.
--Remove unneeded comments in UserSettingsWebPage.
--Include cleanups in UserWebPages.
--Added missing user locks.
-
--Fix missing tag in UserPasswordResetWebPage's docs.
--UserManagerDB now can update it's tables to the newer format.
-
--Fix UserManager::_notification() switch fallthroughs.
--Fix User::_from_dict() not setting internal name and email.
+- Set maximum password length in UserRegisterWebPage just for good measure (256).
+- Also set a maximum password length of 256 in UserLoginWebPage.
+- Remove unneeded comments in UserLoginWebPage.
+- Set maximum password length of 256 in UserSettingsWebPage aswell.
+- Remove unneeded comments in UserSettingsWebPage.
+- Include cleanups in UserWebPages.
+- Added missing user locks.
+- Fix missing tag in UserPasswordResetWebPage's docs.
+- UserManagerDB now can update it's tables to the newer format.
+- Fix UserManager::_notification() switch fallthroughs.
+- Fix User::_from_dict() not setting internal name and email.
+- Full and improved docs for the entire module.
 
 #### tiled_wall
 
--Return the actual AABB in TiledWall::get_aabb().
--Added an editor gizmo plugin for TiledWalls so they can be selected in the spatial editor directly.
+- Return the actual AABB in TiledWall::get_aabb().
+- Added an editor gizmo plugin for TiledWalls so they can be selected in the spatial editor directly.
 
 #### props
 
--Now PropInstance inherits from VisualInstance. Set up it's AABB calculation.
--Added a simple gizmo for PropInstances. This makes PropInstances selectable with the mouse in the Spatial editor.
--Don't use octahedral compression in the prop module's gizmos.
+- Now PropInstance inherits from VisualInstance. Set up it's AABB calculation.
+- Added a simple gizmo for PropInstances. This makes PropInstances selectable with the mouse in the Spatial editor.
+- Don't use octahedral compression in the prop module's gizmos.
 
 #### terraman
 
--Added TerrainWorldChunkDataManager class to support loading and saving TerrainWorld chunks dynamically to and from disk.
--Now TerrainWorld uses TerrainWorldChunkDataManagers if they are available.
--Now TerrainWorld won't save it's chunks into scenes in the editor anymore if a TerrainWorldChunkDataManager is set.
--Added chunk saving api to TerrainWorldChunkDataManager.
--Added force_save_all_chunks() method to TerrainWorld.
--Added a force save all chunks button to TerrainWorld's inspector if a TerrainWorldChunkDataManager is set.
--Implement TerrainWorldChunkDataManagerStaticFolderResources.
--Split _create_chunk() to _create_chunk() and _setup_chunk() in TerrainWorld.
+- Added TerrainWorldChunkDataManager class to support loading and saving TerrainWorld chunks dynamically to and from disk.
+- Now TerrainWorld uses TerrainWorldChunkDataManagers if they are available.
+- Now TerrainWorld won't save it's chunks into scenes in the editor anymore if a TerrainWorldChunkDataManager is set.
+- Added chunk saving api to TerrainWorldChunkDataManager.
+- Added force_save_all_chunks() method to TerrainWorld.
+- Added a force save all chunks button to TerrainWorld's inspector if a TerrainWorldChunkDataManager is set.
+- Implement TerrainWorldChunkDataManagerStaticFolderResources.
+- Split _create_chunk() to _create_chunk() and _setup_chunk() in TerrainWorld.
   Unfortunately this is a breaking change. (Very slight though.)
   Now _create_chunk() should be used to initialize serialized properties
   in chunks. The new _setup_chunk() virtual should be used to initialize
@@ -222,192 +221,128 @@ GET request parameters.
   Note that when using procedural generation, the old way should just work
   without any updates necessary. This change is only needed when loading
   of chunks is desired.
--Fix error message on startup.
--Call TerrainWorldDefault's _create_chunk() and _setup_chunk() in TerrainWorldBlocky.
--Call chunk's enter_tree and set voxel world on entering the tree in TerrainWorld.
--Only build the chunk in TerrainWorld::chunk_add() if the world is in the tree.
--Fix visibility toggling in TerrainChunkDefault even if lods are disabled.
--Also check whether chunks are building when doing a priority generation.
--Bind is_priority_generation bool in TerrainWorld. Also set it to false in the constructor, but set it to true when eneteeing tree if the world already has chunks loaded.
--Don't destroy and re-generate meshes in TerrainChunk's _enter and _exit_tree, just hide / show them. This makes scene tab swithing with TerrainWorlds in the editor a lot simpler.
--TerrainChunkDefault lod change code cleanups and improvements. Also set scenario on entering and exiting the tree.
+- Fix error message on startup.
+- Call TerrainWorldDefault's _create_chunk() and _setup_chunk() in TerrainWorldBlocky.
+- Call chunk's enter_tree and set voxel world on entering the tree in TerrainWorld.
+- Only build the chunk in TerrainWorld::chunk_add() if the world is in the tree.
+- Fix visibility toggling in TerrainChunkDefault even if lods are disabled.
+- Also check whether chunks are building when doing a priority generation.
+- Bind is_priority_generation bool in TerrainWorld. Also set it to false in the constructor, but set it to true when eneteeing tree if the world already has chunks loaded.
+- Don't destroy and re-generate meshes in TerrainChunk's _enter and _exit_tree, just hide / show them. This makes scene tab swithing with TerrainWorlds in the editor a lot simpler.
+- TerrainChunkDefault lod change code cleanups and improvements. Also set scenario on entering and exiting the tree.
 
 #### entity_spell_system
 
--Re/enabled the entity_spell_system's editor plugin, and disabled it's tool menu item.
--Added 3 new helper classes for the entity spell system. ESSEntityWorldSpawner3D, ESSEntityWorldSpawner3DSingle, ESSEntityWorldSpawner2D.
--Added a Spatial Gizmo plugin for ESSEntityWorldSpawner3D.
--Write the spawner's name to the world in the WorldSpawner3DSpatialGizmoPlugin.
--Implemented ESSEntityWorldSpawner3DSingle.
--Rotate the text by 180 degrees in WorldSpawner3DSpatialGizmoPlugin.
--Call spawn as deferred in ESSEntityWorldSpawner3DSingle instead of requesting a deferred entity spawn.
--Now Entities can store their spawner's ObjectID.
--Implemented respawn support for ESSEntityWorldSpawner3DSingle.
--Added ESSEntityWorldSpawner3DArea class.
--Added spawn_area_extents property to ESSEntityWorldSpawner3DArea and implemented an editor gizmo for it.
--Renamed the level property to entity_level in ESSEntityWorldSpawner3DSingle.
--Zero out the entity's ObjectID in ESSEntityWorldSpawner3DSingle when exiting tree.
--Fix the type of the respawn time properties in ESSEntityWorldSpawner3DSingle.
--ESSEntityWorldSpawner3DArea initial implementation.
--Implemented spawn entry editing to ESSEntityWorldSpawner3DArea.
--Fix drawing the spawn slots in ESSEntityWorldSpawner3DArea's gizmo.
--Fix the spawn position line height in WorldSpawner3DSpatialGizmoPlugin.
--Fix drawing line colors in WorldSpawner3DSpatialGizmoPlugin. Also better colors.
--Added prop support for ESSEntityWorldSpawner3DSingle.
--Added prop support for PropDataESSEntityWorldSpawner3DArea.
--Added PropDataESSEntityWorldSpawner3D class. Made PropDataESSEntityWorldSpawner3DArea and PropDataESSEntityWorldSpawner3DSingle inherit from it.
--Fix the type of the auto_learn_spells property in the ESS singleton.
-
+- Re/enabled the entity_spell_system's editor plugin, and disabled it's tool menu item.
+- Added 3 new helper classes for the entity spell system. ESSEntityWorldSpawner3D, ESSEntityWorldSpawner3DSingle, ESSEntityWorldSpawner2D.
+- Added a Spatial Gizmo plugin for ESSEntityWorldSpawner3D.
+- Write the spawner's name to the world in the WorldSpawner3DSpatialGizmoPlugin.
+- Implemented ESSEntityWorldSpawner3DSingle.
+- Rotate the text by 180 degrees in WorldSpawner3DSpatialGizmoPlugin.
+- Call spawn as deferred in ESSEntityWorldSpawner3DSingle instead of requesting a deferred entity spawn.
+- Now Entities can store their spawner's ObjectID.
+- Implemented respawn support for ESSEntityWorldSpawner3DSingle.
+- Added ESSEntityWorldSpawner3DArea class.
+- Added spawn_area_extents property to ESSEntityWorldSpawner3DArea and implemented an editor gizmo for it.
+- Renamed the level property to entity_level in ESSEntityWorldSpawner3DSingle.
+- Zero out the entity's ObjectID in ESSEntityWorldSpawner3DSingle when exiting tree.
+- Fix the type of the respawn time properties in ESSEntityWorldSpawner3DSingle.
+- ESSEntityWorldSpawner3DArea initial implementation.
+- Implemented spawn entry editing to ESSEntityWorldSpawner3DArea.
+- Fix drawing the spawn slots in ESSEntityWorldSpawner3DArea's gizmo.
+- Fix the spawn position line height in WorldSpawner3DSpatialGizmoPlugin.
+- Fix drawing line colors in WorldSpawner3DSpatialGizmoPlugin. Also better colors.
+- Added prop support for ESSEntityWorldSpawner3DSingle.
+- Added prop support for PropDataESSEntityWorldSpawner3DArea.
+- Added PropDataESSEntityWorldSpawner3D class. Made PropDataESSEntityWorldSpawner3DArea and PropDataESSEntityWorldSpawner3DSingle inherit from it.
+- Fix the type of the auto_learn_spells property in the ESS singleton.
+- Fix remaining_absorb's setter in AuraData.
+- Fix _gets_relation_to() and _getc_relation_to() virtual method bind in Entity.
+- Fix virtual method bind in CharacterSkeleton2D and CharacterSkeleton3D.
+- Fix signal name bind in ESSEntityWorldSpawner2D and ESSEntityWorldSpawner3D.
+- Fix name for the charges_changed signal in ItemInstance.
+- Zero out target_stat_id in StatData.
 - Full and improved docs fot the entire module.
-
--Fix remaining_absorb's setter in AuraData.
--Fix _gets_relation_to() and _getc_relation_to() virtual method bind in Entity.
-
--Fix virtual method bind in CharacterSkeleton2D and CharacterSkeleton3D.
-
--Fix signal name bind in ESSEntityWorldSpawner2D and ESSEntityWorldSpawner3D.
-
--Fix name for the charges_changed signal in ItemInstance.
-
-
--Zero out target_stat_id in StatData.
 
 #### totp
 
--Created a new TOTP module.
+- Created a new TOTP module. TOTP stands for Timed One Time Password.
 
 #### fastnoise
 
-- Full and improved docs fot the entire module.
+- Full and improved docs for the entire module.
 
 #### lz4
 
-- Full and improved docs fot the entire module.
+- Full and improved docs for the entire module.
 
-### Build
+### Other
 
--Updated build containers from upstream godot.
+- Updated build containers from upstream godot.
+- Remove community stuff from the readme, as it's not really relevant. Also mention a solution in case this becomes an issue (but it likely won't be).
+- Removed TODO.md. Not needed anymore.
+- Removed notable_godot_commits_not_included.md. Not needed.
 
 ### Backports
 
-- Backported everything up to and including https://github.com/godotengine/godot/commit/312d13b8973b3cfcddd0ee2cfc95ba94f9084c10 merge commit: https://github.com/godotengine/godot/commit/a24e93af4bb069a8d030259723c5de6d97243b50
+- Backported everything up to and including https://github.com/godotengine/godot/commit/312d13b8973b3cfcddd0ee2cfc95ba94f9084c10 merge
+  commit: https://github.com/godotengine/godot/commit/a24e93af4bb069a8d030259723c5de6d97243b50
 
 #### Godot 3.x
 
--Backported parts of be6f971f4ff from godot 3.x.
+- Backported parts of be6f971f4ff from godot 3.x.
   Use the in-built casting instead of dynamic_cast on all platforms
   The in-built casting appears significantly faster than `dynamic_cast`.
   - lawnjelly, Ivorforce
   https://github.com/godotengine/godot/commit/be6f971f4ff7b3647ac576ddc5813d462fe6fec9
--Physics Interpolation - Fix `CPUParticles` to work with `SceneTreeFTI`
-
--Physics Interpolation - Reduce unnecessary `VisualServer` updates
-With the new `SceneTreeFTI`, most xforms are updated to the server externally by the FTI system, so it is no longer necessary to update the server on each `NOTIFICATION_TRANSFORM_CHANGED`.
-
--Physics Interpolation - Add InterpolatedProperty
-And add some basic interpolated properties to Camera.
-
-
--Physics Interpolation - Fix non-interpolated resting xforms
-Ensure servers are updated for non-interpolated Spatials, either during the scene tree update or a final pass.
-Ensure properties and xforms are given a final server update in the final resting positions after removal from tick lists.
-Fixes dirty local xform bug.
-
--Physics Interpolation - Fix `disable_scale` bug in 3D
-
--FTI - Fix 3D auto-resets
-* Ensure NOTIFICATION_RESET_PHYSICS_INTERPOLATION is sent to derived classes
-* Add deferred auto-resets for all `Spatials` on entering the tree
-
--Add an editor option to copy system info to clipboard
-
--FTI - Add custom interpolation for wheels
-
--FTI - Fix `SceneTreeFTI` behaviour on exit tree
-
-
-
--Make selected tile in TileSet more visible through red outline
--Track external changes in the custom fonts set by BBCode / `push_font`.
--Improve set_radial_initial_angle by removing loops
-
--Fix mouse_over not dropped when mouse leaves window
-
--Cancel tooltips when mouse leaves window
-This is a backport of 807431c49a6b33ecc88f8d4ebcb3b2f359591b1c.
-
--Improve Class display in Create dialog
-
--Fix double TOOLS_ENABLED checks from NO_EDITOR_SPLASH.
-
-
--Expose some helper methods on Viewport
-Expose gui_release_focus and gui_get_focus_owner to Viewport
-Expose a method to get hovered Control in Viewport
-
-Co-Authored-By: Gilles Roudiere <gilles.roudiere@gmail.com>
-Co-Authored-By: Claire Blackshaw <evilkimau@gmail.com>
-
--FTI - Optimize `SceneTree` traversal
-
-
--Fix unzSeekCurrentFile not resetting total_out_64.
-
-
-
--`SceneTreeFTI` - fix identity_xform flag getting out of sync
-This could cause incorrect rendered xform for one frame.
-
--Show TextureProgress radial cross only when editing the scene
-
-
-
--`SceneTreeFTI` - Fix `force_update` flag for invisible nodes
-
-
-
-
-
--FTI - `global_transform_interpolated()` on demand for invisible nodes
-
-
--Pre-calculate `is_visible_in_tree()`
-
-
--FTI - Reduce `VisualInstance` xform notifications
-
--certs: Sync with upstream as of Apr 8 2025
-(cherry picked from commit f5eaf2a57687ee45a9484b53c9397b071b28ffbf)
-
-
--mbedTLS: Update to version 2.28.10
-(cherry picked from commit cdb875257a08bc3ae632b78c050293276aefe905)
-
-
--Initialize pa_buffer_attr.maxlength to -1
-(cherry picked from commit b5622e9f780503a4b24300541bac070772721f5e)
-
-
--Disable Nahimic code injection.
-(cherry picked from commit 8bb3e5360ed21ae89d53cdc3fb1c0dbc756262bb)
-
-
--Fix Xbox Controller on Android
-(cherry picked from commit cf00265386b98da3f24f5c3de22358fbf2e1a46b)
-
-
--Remove implicit conversion from `LocalVector` to `Vector`
-
--Remove implicit conversion from `LocalVector` to `PoolVector`
-
-
-
--`Spatial` and `CanvasItem` children change to `LocalVector`
-
--Allow constructing Quat from two Vector3s
--Move set_shortest_arc to it's proper place.
-
-
+- Physics Interpolation - Fix `CPUParticles` to work with `SceneTreeFTI`
+- Physics Interpolation - Reduce unnecessary `VisualServer` updates
+  With the new `SceneTreeFTI`, most xforms are updated to the server externally by the FTI system, so it is no longer necessary to update the server on each `NOTIFICATION_TRANSFORM_CHANGED`.
+- Physics Interpolation - Add InterpolatedProperty
+  And add some basic interpolated properties to Camera.
+- Physics Interpolation - Fix non-interpolated resting xforms
+  Ensure servers are updated for non-interpolated Spatials, either during the scene tree update or a final pass.
+  Ensure properties and xforms are given a final server update in the final resting positions after removal from tick lists.
+  Fixes dirty local xform bug.
+- Physics Interpolation - Fix `disable_scale` bug in 3D
+- FTI - Fix 3D auto-resets
+  * Ensure NOTIFICATION_RESET_PHYSICS_INTERPOLATION is sent to derived classes
+  * Add deferred auto-resets for all `Spatials` on entering the tree
+- Add an editor option to copy system info to clipboard
+- FTI - Add custom interpolation for wheels
+- FTI - Fix `SceneTreeFTI` behaviour on exit tree
+- Make selected tile in TileSet more visible through red outline
+- Track external changes in the custom fonts set by BBCode / `push_font`.
+- Improve set_radial_initial_angle by removing loops
+- Fix mouse_over not dropped when mouse leaves window
+- Cancel tooltips when mouse leaves window
+  This is a backport of 807431c49a6b33ecc88f8d4ebcb3b2f359591b1c.
+- Improve Class display in Create dialog
+- Fix double TOOLS_ENABLED checks from NO_EDITOR_SPLASH.
+- Expose some helper methods on Viewport
+  Expose gui_release_focus and gui_get_focus_owner to Viewport
+  Expose a method to get hovered Control in Viewport
+  Co-Authored-By: Gilles Roudiere <gilles.roudiere@gmail.com>
+  Co-Authored-By: Claire Blackshaw <evilkimau@gmail.com>
+- FTI - Optimize `SceneTree` traversal
+- Fix unzSeekCurrentFile not resetting total_out_64.
+- `SceneTreeFTI` - fix identity_xform flag getting out of sync
+  This could cause incorrect rendered xform for one frame.
+- Show TextureProgress radial cross only when editing the scene
+- `SceneTreeFTI` - Fix `force_update` flag for invisible nodes
+- FTI - `global_transform_interpolated()` on demand for invisible nodes
+- Pre-calculate `is_visible_in_tree()`
+- FTI - Reduce `VisualInstance` xform notifications
+- certs: Sync with upstream as of Apr 8 2025 (cherry picked from commit f5eaf2a57687ee45a9484b53c9397b071b28ffbf)
+- mbedTLS: Update to version 2.28.10 (cherry picked from commit cdb875257a08bc3ae632b78c050293276aefe905)
+- Initialize pa_buffer_attr.maxlength to -1 (cherry picked from commit b5622e9f780503a4b24300541bac070772721f5e)
+- Disable Nahimic code injection. (cherry picked from commit 8bb3e5360ed21ae89d53cdc3fb1c0dbc756262bb)
+- Fix Xbox Controller on Android (cherry picked from commit cf00265386b98da3f24f5c3de22358fbf2e1a46b)
+- Remove implicit conversion from `LocalVector` to `Vector`
+- Remove implicit conversion from `LocalVector` to `PoolVector`
+- `Spatial` and `CanvasItem` children change to `LocalVector`
+- Allow constructing Quat from two Vector3s
+- Move set_shortest_arc to it's proper place.
 
 ## [4.6.0]
 
