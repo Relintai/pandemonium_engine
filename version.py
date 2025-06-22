@@ -3,8 +3,9 @@ name = "Pandemonium Engine"
 major = 4
 minor = 7
 patch = 0
-status = "development"
+status = "stable"
 module_config = ""
 year = 2025
 website = "https://github.com/Relintai/pandemonium_engine"
-docs = "master"
+docs = "4.7"
+
