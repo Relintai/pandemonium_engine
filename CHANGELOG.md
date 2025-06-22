@@ -285,8 +285,8 @@ c++ only:
 
 ### Backports
 
-- Backported everything up to and including https://github.com/godotengine/godot/commit/312d13b8973b3cfcddd0ee2cfc95ba94f9084c10 merge
-  commit: https://github.com/godotengine/godot/commit/a24e93af4bb069a8d030259723c5de6d97243b50
+- Backported everything up to and including https://github.com/godotengine/godot/commit/e430053b16fd6edd8ddc00801e8ea4981bff12de
+  merge commit: https://github.com/godotengine/godot/commit/84f761ba54d540f17c7623506318334ce602eb68
 
 #### Godot 3.x
 
@@ -343,6 +343,10 @@ c++ only:
 - `Spatial` and `CanvasItem` children change to `LocalVector`
 - Allow constructing Quat from two Vector3s
 - Move set_shortest_arc to it's proper place.
+- ResourceImporterWAV: Detect if data chunk size is larger than the actual size
+- Provide quick access to `Object` ancestry
+- Remove `_is_vi_visible()`. Can be replaced by `is_visible_in_tree()`.
+
 
 ## [4.6.0]
 
