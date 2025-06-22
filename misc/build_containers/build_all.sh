@@ -12,7 +12,9 @@ mkdir -p logs
 
 custom_envvars=''
 
-if [[ -z "${OFFICIAL}" ]]; then
+#export OFFICIAL=1;./build_all.sh
+
+if [[ ! -z "${OFFICIAL}" ]]; then
   custom_envvars='-e BUILD_NAME=official'
 fi
 
