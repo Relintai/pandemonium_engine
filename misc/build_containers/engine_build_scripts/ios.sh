@@ -4,12 +4,13 @@ set -e
 export IOS_SDK="18.5"
 export IOS_LIPO="/root/ioscross/arm64/bin/arm-apple-darwin11-lipo"
 #export OPTIONS="platform=iphone production=yes use_lto=none"
-export IOS_DEVICE="IOS_SDK_PATH=/root/SDKs/iPhoneOS${IOS_SDK}.sdk"
-export IOS_SIMULATOR="IOS_SDK_PATH=/root/SDKs/iPhoneSimulator${IOS_SDK}.sdk simulator=yes"
-export APPLE_TARGET_ARM64="APPLE_TOOLCHAIN_PATH=/root/ioscross/arm64 apple_target_triple=arm-apple-darwin11-"
-export APPLE_TARGET_X86_64="APPLE_TOOLCHAIN_PATH=/root/ioscross/x86_64 apple_target_triple=x86_64-apple-darwin11-"
+export IOS_DEVICE="IPHONESDK=/root/SDKs/iPhoneOS${IOS_SDK}.sdk"
+export IOS_SIMULATOR="IPHONESDK=/root/SDKs/iPhoneSimulator${IOS_SDK}.sdk simulator=yes"
+export APPLE_TARGET_ARM64="IPHONEPATH=/root/ioscross/arm64 ios_triple=arm-apple-darwin11-"
+export APPLE_TARGET_X86_64="IPHONEPATH=/root/ioscross/x86_64 ios_triple=x86_64-apple-darwin11-"
 
 export OPTIONS="platform=iphone"
+export TERM=xterm
 
 # arm64 device
 scons $OPTIONS arch=arm64 ios_simulator=no tools=no target=release_debug $IOS_DEVICE $APPLE_TARGET_ARM64 "$@"
