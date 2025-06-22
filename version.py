@@ -8,4 +8,3 @@ module_config = ""
 year = 2025
 website = "https://github.com/Relintai/pandemonium_engine"
 docs = "4.7"
-
