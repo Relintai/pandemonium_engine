@@ -101,7 +101,6 @@ void VisualInstance::_notification(int p_what) {
 			*/
 			ERR_FAIL_COND(get_world_3d().is_null());
 			RenderingServer::get_singleton()->instance_set_scenario(instance, get_world_3d()->get_scenario());
-			_update_visibility();
 			_update_server_visibility_and_xform(true);
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
