@@ -45,8 +45,10 @@ const PandemoniumIME = {
 
 		ime_active: function (active) {
 			function focus_timer() {
-				PandemoniumIME.active = true;
-				PandemoniumIME.ime.focus();
+				if (PandemoniumIME.ime) {
+					PandemoniumIME.active = true;
+					PandemoniumIME.ime.focus();
+				}
 			}
 
 			if (PandemoniumIME.ime) {
