@@ -1944,7 +1944,6 @@ Object::Object() {
 	_can_translate = true;
 	_is_queued_for_deletion = false;
 	_emitting = false;
-	_ancestry = 0;
 	memset(_script_instance_bindings, 0, sizeof(void *) * MAX_SCRIPT_INSTANCE_BINDINGS);
 	script_instance = nullptr;
 	_rc.store(nullptr, std::memory_order_release);

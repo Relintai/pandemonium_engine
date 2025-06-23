@@ -481,8 +481,6 @@ void CollisionObject2D::_bind_methods() {
 }
 
 CollisionObject2D::CollisionObject2D(RID p_rid, bool p_area) {
-	_define_ancestry(AncestralClass::COLLISION_OBJECT_2D);
-
 	rid = p_rid;
 	area = p_area;
 	pickable = true;
@@ -498,7 +496,6 @@ CollisionObject2D::CollisionObject2D(RID p_rid, bool p_area) {
 }
 
 CollisionObject2D::CollisionObject2D() {
-	_define_ancestry(AncestralClass::COLLISION_OBJECT_2D);
 	//owner=
 
 	set_notify_transform(true);

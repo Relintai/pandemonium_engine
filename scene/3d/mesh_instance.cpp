@@ -953,7 +953,6 @@ void MeshInstance::_bind_methods() {
 }
 
 MeshInstance::MeshInstance() {
-	_define_ancestry(AncestralClass::MESH_INSTANCE);
 #ifdef MODULE_SKELETON_3D_ENABLED
 	skeleton_path = NodePath("..");
 	software_skinning = nullptr;

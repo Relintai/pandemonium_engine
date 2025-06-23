@@ -203,11 +203,8 @@ RID VisualInstance::get_base() const {
 }
 
 VisualInstance::VisualInstance() {
-	_define_ancestry(AncestralClass::VISUAL_INSTANCE);
-
 	instance = RID_PRIME(RenderingServer::get_singleton()->instance_create());
 	RenderingServer::get_singleton()->instance_attach_object_instance_id(instance, get_instance_id());
-
 	layers = 1;
 	sorting_offset = 0.0f;
 	sorting_use_aabb_center = true;
@@ -356,8 +353,6 @@ void GeometryInstance::_bind_methods() {
 }
 
 GeometryInstance::GeometryInstance() {
-	_define_ancestry(AncestralClass::GEOMETRY_INSTANCE);
-
 	for (int i = 0; i < FLAG_MAX; i++) {
 		flags[i] = false;
 	}
