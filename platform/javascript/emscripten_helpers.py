@@ -51,18 +51,15 @@ def create_template_zip(env, js, wasm, extra):
         zip_dir.File(binary_name + ".audio.worklet.js"),
     ]
 
-    service_worker = "#misc/dist/html/service-worker.js"
-
     # GDNative/Threads specific
     if env["gdnative_enabled"]:
         in_files.append(extra.pop())  # Runtime
         out_files.append(zip_dir.File(binary_name + ".side.wasm"))
-    #if env["threads_enabled"]:
-        #in_files.append(extra.pop())  # Worker
-        #out_files.append(zip_dir.File(binary_name + ".worker.js"))
-        #in_files.append(service_worker) # Worker
-        #out_files.append("#bin/pandemonium${PROGSUFFIX}.worker.js")
+    if env["threads_enabled"]:
+        in_files.append(extra.pop())  # Worker
+        out_files.append(zip_dir.File(binary_name + ".worker.js"))
 
+    service_worker = "#misc/dist/html/service-worker.js"
     if env["tools"]:
         # HTML
         html = "#misc/dist/html/editor.html"
@@ -106,7 +103,7 @@ def create_template_zip(env, js, wasm, extra):
         in_files.append("#misc/dist/html/full-size.html")
         out_files.append(zip_dir.File(binary_name + ".html"))
         in_files.append(service_worker)
-        out_files.append(zip_dir.File("#bin/pandemonium${PROGSUFFIX}.service.worker.js"))
+        out_files.append(zip_dir.File(binary_name + ".service.worker.js"))
         in_files.append("#misc/dist/html/offline-export.html")
         out_files.append(zip_dir.File("pandemonium.offline.html"))
 
