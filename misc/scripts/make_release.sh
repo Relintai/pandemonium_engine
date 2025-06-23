@@ -149,7 +149,7 @@ cp bin/pandemonium_server.x11.opt.tools.arm64 release/temp/pandemonium_v${versio
 # JS
 
 cp bin/pandemonium.javascript.opt.tools.threads.zip release/temp/pandemonium_v${version_snake_cased}_stable_javascript.zip
-cp bin/pandemonium.javascript.opt.tools.gdnative.threads.zip release/temp/pandemonium_v${version_snake_cased}_stable_javascript_gdnative.zip
+#cp bin/pandemonium.javascript.opt.tools.gdnative.threads.zip release/temp/pandemonium_v${version_snake_cased}_stable_javascript_gdnative.zip
 
 # Android
 
