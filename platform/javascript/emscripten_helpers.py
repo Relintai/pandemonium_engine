@@ -57,11 +57,11 @@ def create_template_zip(env, js, wasm, extra):
     if env["gdnative_enabled"]:
         in_files.append(extra.pop())  # Runtime
         out_files.append(zip_dir.File(binary_name + ".side.wasm"))
-    if env["threads_enabled"]:
+    #if env["threads_enabled"]:
         #in_files.append(extra.pop())  # Worker
         #out_files.append(zip_dir.File(binary_name + ".worker.js"))
-        in_files.append(service_worker) # Worker
-        out_files.append("#bin/pandemonium${PROGSUFFIX}.worker.js")
+        #in_files.append(service_worker) # Worker
+        #out_files.append("#bin/pandemonium${PROGSUFFIX}.worker.js")
 
     if env["tools"]:
         # HTML
