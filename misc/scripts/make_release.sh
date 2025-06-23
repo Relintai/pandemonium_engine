@@ -82,10 +82,12 @@ cp bin/pandemonium_http_server.x11.opt.debug.arm64 release/temp/templates_server
 cp bin/pandemonium.javascript.opt.zip release/temp/templates/webassembly_release.zip
 cp bin/pandemonium.javascript.opt.threads.zip release/temp/templates/webassembly_threads_release.zip
 cp bin/pandemonium.javascript.opt.gdnative.zip release/temp/templates/webassembly_gdnative_release.zip
+cp bin/pandemonium.javascript.opt.gdnative.threads.zip release/temp/templates/webassembly_gdnative_threads_release.zip
 
 cp bin/pandemonium.javascript.opt.debug.zip release/temp/templates/webassembly_debug.zip
 cp bin/pandemonium.javascript.opt.debug.threads.zip release/temp/templates/webassembly_threads_debug.zip
 cp bin/pandemonium.javascript.opt.debug.gdnative.zip release/temp/templates/webassembly_gdnative_debug.zip
+cp bin/pandemonium.javascript.opt.debug.gdnative.threads.zip release/temp/templates/webassembly_gdnative_threads_debug.zip
 
 # Android
 cp bin/android_source.zip release/temp/templates/android_source.zip
@@ -147,6 +149,7 @@ cp bin/pandemonium_server.x11.opt.tools.arm64 release/temp/pandemonium_v${versio
 # JS
 
 cp bin/pandemonium.javascript.opt.tools.threads.zip release/temp/pandemonium_v${version_snake_cased}_stable_javascript.zip
+cp bin/pandemonium.javascript.opt.tools.gdnative.threads.zip release/temp/pandemonium_v${version_snake_cased}_stable_javascript_gdnative.zip
 
 # Android
 
@@ -247,3 +250,4 @@ cp ./temp/pandemonium_v${version_snake_cased}_stable_javascript.zip pandemonium_
 mv pandemonium_v${version_snake_cased}_stable_export_templates.zip pandemonium_v${version_snake_cased}_stable_export_templates.tpz
 mv pandemonium_v${version_snake_cased}_stable_export_templates_server.zip pandemonium_v${version_snake_cased}_stable_export_templates_server.tpz
 mv pandemonium_v${version_snake_cased}_stable_export_templates_sbc.zip pandemonium_v${version_snake_cased}_stable_export_templates_sbc.tpz
+
