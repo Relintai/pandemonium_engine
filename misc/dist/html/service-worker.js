@@ -8,9 +8,9 @@ const CACHE_PREFIX = "@PANDEMONIUM_NAME@-sw-cache-";
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
 const OFFLINE_URL = "@PANDEMONIUM_OFFLINE_PAGE@";
 // Files that will be cached on load.
-const CACHED_FILES = @PANDEMONIUM_CACHE @;
+const CACHED_FILES = @PANDEMONIUM_CACHE@;
 // Files that we might not want the user to preload, and will only be cached on first load.
-const CACHABLE_FILES = @PANDEMONIUM_OPT_CACHE @;
+const CACHABLE_FILES = @PANDEMONIUM_OPT_CACHE@;
 const FULL_CACHE = CACHED_FILES.concat(CACHABLE_FILES);
 
 self.addEventListener("install", (event) => {
