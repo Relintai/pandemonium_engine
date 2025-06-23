@@ -288,7 +288,10 @@ void AudioDriverManager::_set_driver(int p_driver) {
 }
 
 void AudioDriverManager::initialize(int p_driver) {
+	// Emscripten (or the browsers?) doesn't seem to like restarting audio server threads after project load (javascript editor)
+#ifndef __EMSCRIPTEN__
 	bool mute_driver = GLOBAL_DEF("audio/muting/mute_driver", false);
+#endif
 
 	GLOBAL_DEF_RST("audio/enable_audio_input", false);
 	GLOBAL_DEF_RST("audio/mix_rate", DEFAULT_MIX_RATE);
