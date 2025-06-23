@@ -38,7 +38,7 @@
 
 #include <functiondiscoverykeys.h>
 
-#ifndef PKEY_Device_FriendlyNameGodot
+#ifndef PKEY_Device_FriendlyNamePandemonium
 
 #undef DEFINE_PROPERTYKEY
 /* clang-format off */
@@ -46,7 +46,7 @@
 	const PROPERTYKEY id = { { a, b, c, { d, e, f, g, h, i, j, k, } }, l };
 /* clang-format on */
 
-DEFINE_PROPERTYKEY(PKEY_Device_FriendlyNameGodot, 0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 14);
+DEFINE_PROPERTYKEY(PKEY_Device_FriendlyNamePandemonium, 0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 14);
 #endif
 
 const CLSID CLSID_MMDeviceEnumerator = __uuidof(MMDeviceEnumerator);
@@ -179,7 +179,7 @@ Error AudioDriverWASAPI::audio_device_init(AudioDeviceWASAPI *p_device, bool p_c
 			PROPVARIANT propvar;
 			PropVariantInit(&propvar);
 
-			hr = props->GetValue(PKEY_Device_FriendlyNameGodot, &propvar);
+			hr = props->GetValue(PKEY_Device_FriendlyNamePandemonium, &propvar);
 			ERR_BREAK(hr != S_OK);
 
 			if (p_device->device_name == String(propvar.pwszVal)) {
@@ -450,7 +450,7 @@ Array AudioDriverWASAPI::audio_device_get_list(bool p_capture) {
 		PROPVARIANT propvar;
 		PropVariantInit(&propvar);
 
-		hr = props->GetValue(PKEY_Device_FriendlyNameGodot, &propvar);
+		hr = props->GetValue(PKEY_Device_FriendlyNamePandemonium, &propvar);
 		ERR_BREAK(hr != S_OK);
 
 		list.push_back(String(propvar.pwszVal));
