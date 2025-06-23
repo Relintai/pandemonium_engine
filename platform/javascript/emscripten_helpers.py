@@ -70,7 +70,7 @@ def create_template_zip(env, js, wasm, extra):
             "pandemonium.tools.html",
             "offline.html",
             "pandemonium.tools.js",
-            "pandemonium.tools.worker.js",
+            "service.worker.js",
             "pandemonium.tools.audio.worklet.js",
             "logo.svg",
             "favicon.png",
