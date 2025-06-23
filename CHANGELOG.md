@@ -70,6 +70,7 @@ c++ only:
 - Remove stray rset and rpc mode variables from gdnative.
 - Removed stray rset_mode and multiplayer keywords from the docs.
 - Removed more stray old multiplayer keywords from the docs.
+- Fix the web editor hanging when switching to the editor. Likely fixes export templates too.
 
 ### Scenes
 
@@ -345,9 +346,10 @@ c++ only:
 - Allow constructing Quat from two Vector3s
 - Move set_shortest_arc to it's proper place.
 - ResourceImporterWAV: Detect if data chunk size is larger than the actual size
-- Provide quick access to `Object` ancestry
 - Remove `_is_vi_visible()`. Can be replaced by `is_visible_in_tree()`.
 - Add GDNative+Threads build.
+- Add workaround for emscripten >= 3.1.47 LTO build.
+- Rename PKEY_Device_FriendlyName to avoid duplicate symbols with newer MinGW SDKs.
 
 ## [4.6.0]
 
