@@ -70,7 +70,7 @@ def create_template_zip(env, js, wasm, extra):
             "pandemonium.tools.html",
             "offline.html",
             "pandemonium.tools.js",
-            "service.worker.js",
+            "pandemonium.tools.worker.js",
             "pandemonium.tools.audio.worklet.js",
             "logo.svg",
             "favicon.png",
@@ -106,7 +106,7 @@ def create_template_zip(env, js, wasm, extra):
         in_files.append("#misc/dist/html/full-size.html")
         out_files.append(zip_dir.File(binary_name + ".html"))
         in_files.append(service_worker)
-        out_files.append(zip_dir.File(binary_name + ".service.worker.js"))
+        out_files.append(zip_dir.File("#bin/pandemonium${PROGSUFFIX}.service.worker.js"))
         in_files.append("#misc/dist/html/offline-export.html")
         out_files.append(zip_dir.File("pandemonium.offline.html"))
 
