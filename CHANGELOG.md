@@ -26,6 +26,7 @@ Highlights:
 - Added an editor gizmo plugin for TiledWalls and PropInstances so they can be selected in the spatial editor directly.
 - TerrainWorld now has built-in support for loading and saving TerrainWorld chunks dynamically to and from disk.
 - Added spawners (with editor and prop support) for the entity spell system: ESSEntityWorldSpawner3D, ESSEntityWorldSpawner3DSingle, ESSEntityWorldSpawner2D, ESSEntityWorldSpawner3DArea.
+- Added GDNative + Threads build to the release.
 
 Breaking changes:
 
@@ -346,7 +347,7 @@ c++ only:
 - ResourceImporterWAV: Detect if data chunk size is larger than the actual size
 - Provide quick access to `Object` ancestry
 - Remove `_is_vi_visible()`. Can be replaced by `is_visible_in_tree()`.
-
+- Add GDNative+Threads build.
 
 ## [4.6.0]
 
