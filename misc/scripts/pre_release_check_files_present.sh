@@ -64,6 +64,9 @@ files=(
   "pandemonium.javascript.opt.gdnative.zip"
   "pandemonium.javascript.opt.debug.gdnative.zip"
 
+  "pandemonium.javascript.opt.gdnative.threads.zip"
+  "pandemonium.javascript.opt.debug.gdnative.threads.zip"
+
   "pandemonium.javascript.opt.tools.threads.zip"
 
   # Android
