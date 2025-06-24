@@ -284,7 +284,7 @@ c++ only:
 - Remove community stuff from the readme, as it's not really relevant. Also mention a solution in case this becomes an issue (but it likely won't be).
 - Removed TODO.md. Not needed anymore.
 - Removed notable_godot_commits_not_included.md. Not needed.
-- Enabled lto for all javascript in-container builds.
+- Enabled lto for most javascript in-container builds.
 
 ### Backports
 
