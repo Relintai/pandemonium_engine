@@ -100,7 +100,7 @@ also improvements to the engine as a whole.
 Currently the codebase is mostly c++03 with some c++11, and c++14 (std threading) sprinkled in.
 
 I'm not sure whether it's just me getting old, or maybe it's just timing (I started with 
-Libgdx + java 7, then went to Unity + dotnet mono 2.0). I like this sipmlicity. It makes
+Libgdx + java 7, then went to Unity + dotnet mono 2.0, then Godot 3.1). I like this sipmlicity. It makes
 the codebase a lot easier to work with. It also simplifies the tooling required, which
 could come in handy in the future.
 
