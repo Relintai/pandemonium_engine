@@ -165,4 +165,11 @@ It's project setup should also be simplified.
 
 Also GDNative should probably have an api that can register classes without creating resources in the project.
 
+### Website
+
+Setting up a separate vps for the website would be nice, instead of the current domain redirect.
+It should also mirror the engine specific repositories and the release zip-s.
+
+It should also look at least acceptable.
+
 
