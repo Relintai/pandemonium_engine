@@ -80,16 +80,14 @@ for compilation instructions for every supported platform.
 ## Documentation and demos
 
 The documentation is available [[Here]](https://github.com/Relintai/pandemonium_engine_docs).
+It includes all official pandemonium demos.
 
 The class docs are accessible from the editor.
 
-You can also look at the official pandemonium demos in their own [GitHub repository](https://github.com/Relintai/pandemonium_demo_projects).
-
 You can also look at the official 3.x Godot documentation, it will work mostly (sometimes with trivial modifications). 
-It is hosted on [ReadTheDocs](https://docs.godotengine.org), and is maintained by the 
-Godot community in its own [GitHub repository](https://github.com/godotengine/godot-docs).
 
 It's also worth looking at official godot 3.x resources, like this [awesome Godot list](https://github.com/godotengine/awesome-godot),
 and there are also a number of other [godot learning resources](https://docs.godotengine.org/en/latest/community/tutorials.html)
 provided by the community, such as text and video tutorials, demos, etc.
+
 
