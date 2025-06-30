@@ -31,6 +31,8 @@
 
 #include "html_template.h"
 
+#include "core/string/string_builder.h"
+
 #include "core/containers/local_vector.h"
 
 #include "../http/web_server_request.h"
@@ -249,7 +251,7 @@ String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_meth
 			++arg_start;
 		}
 
-		String ret;
+		StringBuilder ret;
 
 		for (int i = arg_start; i < s; ++i) {
 			switch (p_method) {
@@ -270,7 +272,7 @@ String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_meth
 			}
 		}
 
-		return ret;
+		return ret.as_string();
 	} else {
 		int arg_start = 1;
 
@@ -610,13 +612,14 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 	// {{ qprb(var) }} // Same as prb, but only prints when it's first argument evaluates to true
 	// {{ qvf("%d %d", var1, var2) }} // Same as vf, but only prints when it's first argument evaluates to true
 
-	String result;
 
 	int text_length = p_text.length();
 
 	if (text_length == 0) {
-		return result;
+		return String();
 	}
+
+	StringBuilder result;
 
 	int i = 0;
 	int last_section_start = 0;
@@ -823,11 +826,11 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 		if (in_string) {
 			String c;
 			c += current_string_type;
-			ERR_FAIL_V_MSG(String(), "Error in template! Unterminated string of type " + c + " encountered. Generated html so far:\n\n" + result);
+			ERR_FAIL_V_MSG(String(), "Error in template! Unterminated string of type " + c + " encountered. Generated html so far:\n\n" + result.as_string());
 		}
 
 		if (current_state == RENDER_TEMPLATE_STATE_EXPRESSION || current_state == RENDER_TEMPLATE_STATE_EXPRESSION_END_NEXT) {
-			ERR_FAIL_V_MSG(String(), "Error in template! Unterminated expression encountered. Generated html so far:\n\n" + result);
+			ERR_FAIL_V_MSG(String(), "Error in template! Unterminated expression encountered. Generated html so far:\n\n" + result.as_string());
 		}
 
 		// if current_state is RENDER_TEMPLATE_STATE_EXPRESSION_POTENTIAL_START, that is actually fine. Template just ends in {
@@ -840,7 +843,7 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 		result += p_text.substr_index(last_section_start, text_length);
 	}
 
-	return result;
+	return result.as_string();
 }
 
 String HTMLTemplate::get_and_render_template(const StringName &p_name, const Dictionary &p_data) {
