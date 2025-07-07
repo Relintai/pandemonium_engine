@@ -38,7 +38,6 @@
 #include "core/object/reference.h"
 #include "core/os/file_access.h"
 
-#include <mbedtls/config.h>
 #include <mbedtls/ctr_drbg.h>
 #include <mbedtls/debug.h>
 #include <mbedtls/entropy.h>
