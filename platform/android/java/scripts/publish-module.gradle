@@ -33,6 +33,7 @@ afterEvaluate {
                             name = 'Péter Magyar'
                             email = 'relintai@protonmail.com'
                         }
+                        // Add all other devs here...
                     }
 
                     // Version control info - if you're using GitHub, follow the
