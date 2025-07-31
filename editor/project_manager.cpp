@@ -899,16 +899,15 @@ public:
 		rasterizer_container->add_child(rvb);
 
 		// Enable GLES3 by default as it's the default value for the project setting.
-#ifndef SERVER_ENABLED
-
 #ifndef GLES3_DISABLED
+
+#ifndef SERVER_ENABLED
 		bool gles3_viable = RasterizerGLES3::is_viable() == OK;
-#else
-		bool gles3_viable = false;
-#endif
 #else
 		// Whatever, project manager isn't even used in headless builds.
 		bool gles3_viable = false;
+#endif
+
 #endif
 
 		Button *rs_button = memnew(CheckBox);
