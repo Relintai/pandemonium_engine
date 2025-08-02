@@ -1221,7 +1221,7 @@ String InputEventAction::as_text() const {
 	const List<Ref<InputEvent>> *action_list = InputMap::get_singleton()->get_action_list(action);
 
 	if (!action_list) {
-		return TTR("None");
+		return RTR("None");
 	}
 
 	StringBuilder action_string;
