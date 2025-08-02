@@ -34,6 +34,7 @@
 #include "core/input/input_map.h"
 #include "core/input/shortcut.h"
 #include "core/os/keyboard.h"
+#include "core/string/string_builder.h"
 
 const int InputEvent::DEVICE_ID_TOUCH_MOUSE = -1;
 const int InputEvent::DEVICE_ID_INTERNAL = -2;
@@ -1212,7 +1213,37 @@ bool InputEventAction::action_match(const Ref<InputEvent> &p_event, bool p_exact
 }
 
 String InputEventAction::as_text() const {
-	return "InputEventAction : action=" + action + ", pressed=(" + (is_pressed() ? "true" : "false");
+	if (!InputMap::get_singleton()->has_action(action)) {
+		return "InputEventAction : action=" + action + ", pressed=(" + (is_pressed() ? "true" : "false");
+	}
+
+	const List<Ref<InputEvent>> *action_list = InputMap::get_singleton()->get_action_list(action);
+
+	if (!action_list) {
+		return TTR("None");
+	}
+
+	StringBuilder action_string;
+
+	for (const List<Ref<InputEvent>>::Element *E = action_list->front(); E; E = E->next()) {
+		Ref<InputEvent> action = E->get();
+
+		if (!action.is_valid()) {
+			continue;
+		}
+
+		if (action.ptr() == this) {
+			continue;
+		}
+
+		if (action_string.num_strings_appended() > 0) {
+			action_string += "\n";
+		}
+
+		action_string += action->as_text();
+	}
+
+	return action_string.as_string();
 }
 
 void InputEventAction::_bind_methods() {
