@@ -1238,7 +1238,7 @@ String InputEventAction::as_text() const {
 		}
 
 		if (action_string.num_strings_appended() > 0) {
-			action_string += "\n";
+			action_string += ", ";
 		}
 
 		action_string += action->as_text();
