@@ -289,7 +289,8 @@ String InputEventKey::as_text() const {
 	String kc;
 
 	if (scancode == 0) {
-		kc = keycode_get_string(physical_scancode) + " (" + RTR("Physical") + ")";
+		//kc = keycode_get_string(physical_scancode) + " (" + RTR("Physical") + ")";
+		kc = keycode_get_string(physical_scancode);
 	} else {
 		kc = keycode_get_string(scancode);
 	}
