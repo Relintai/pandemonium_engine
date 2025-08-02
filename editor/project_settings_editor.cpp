@@ -291,11 +291,11 @@ void ProjectSettingsEditor::_action_edited() {
 
 		add_at = action_prop;
 	} else if (input_editor->get_selected_column() == 1) {
-		String name = "input/" + ti->get_text(0);
-		Dictionary old_action = ProjectSettings::get_singleton()->get(name);
-		Dictionary new_action = old_action.duplicate();
-
 		if (ti->get_cell_mode(1) == TreeItem::CELL_MODE_RANGE) {
+			String name = "input/" + ti->get_text(0);
+			Dictionary old_action = ProjectSettings::get_singleton()->get(name);
+			Dictionary new_action = old_action.duplicate();
+
 			new_action["deadzone"] = ti->get_range(1);
 
 			undo_redo->create_action(TTR("Change Action deadzone"));
@@ -305,11 +305,14 @@ void ProjectSettingsEditor::_action_edited() {
 			undo_redo->add_undo_method(this, "_settings_changed");
 			undo_redo->commit_action();
 		} else if (ti->get_cell_mode(1) == TreeItem::CELL_MODE_CHECK) {
+			String name = "input/" + String(ti->get_meta("action_name"));
+			Dictionary old_action = ProjectSettings::get_singleton()->get(name);
+			Dictionary new_action = old_action.duplicate();
+
 			// Edit action event
-			String action_prop = "input/" + ti->get_parent()->get_text(0);
 
 			int idx = ti->get_metadata(0);
-			Dictionary old_val = ProjectSettings::get_singleton()->get(action_prop);
+			Dictionary old_val = ProjectSettings::get_singleton()->get(name);
 			Dictionary action = old_val.duplicate();
 
 			Array events = action["events"].duplicate();
@@ -868,6 +871,7 @@ void ProjectSettingsEditor::_update_actions() {
 				action2->set_text(1, TTR("Exact"));
 				action2->set_checked(1, k->is_action_match_force_exact());
 				action2->set_editable(1, true);
+				action2->set_meta("action_name", name);
 			}
 
 			Ref<InputEventJoypadButton> jb = event;
