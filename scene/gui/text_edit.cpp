@@ -3060,7 +3060,7 @@ void TextEdit::_gui_input(const Ref<InputEvent> &p_gui_input) {
 									continue;
 							}
 
-							if (indent_char_found && is_line_comment(i)) {
+							if (indent_char_found && is_line_comment(cursor.line)) {
 								should_indent = true;
 								break;
 							} else if (indent_char_found && !_is_whitespace(c)) {
