@@ -2529,7 +2529,7 @@ void register_variant_methods() {
 	ADDFUNC0R(STRING, INT, String, to_int64, varray());
 	ADDFUNC0R(STRING, INT, String, to_uint, varray());
 	ADDFUNC0R(STRING, INT, String, to_uint64, varray());
-	ADDFUNC0R(STRING, INT, String, to_bool, varray());
+	ADDFUNC0R(STRING, BOOL, String, to_bool, varray());
 
 	ADDFUNC1R(STRING, INT, String, hex_to_int, BOOL, "with_prefix", varray(true));
 	ADDFUNC1R(STRING, INT, String, bin_to_int, BOOL, "with_prefix", varray(true));
