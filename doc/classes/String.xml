@@ -56,18 +56,21 @@
 			<return type="String" />
 			<argument index="0" name="from" type="Vector4i" />
 			<description>
+				Constructs a new String from the given [Vector4i].
 			</description>
 		</method>
 		<method name="String">
 			<return type="String" />
 			<argument index="0" name="from" type="Vector4" />
 			<description>
+				Constructs a new String from the given [Vector4].
 			</description>
 		</method>
 		<method name="String">
 			<return type="String" />
 			<argument index="0" name="from" type="Vector3i" />
 			<description>
+				Constructs a new String from the given [Vector3i].
 			</description>
 		</method>
 		<method name="String">
@@ -81,6 +84,7 @@
 			<return type="String" />
 			<argument index="0" name="from" type="Vector2i" />
 			<description>
+				Constructs a new String from the given [Vector2i].
 			</description>
 		</method>
 		<method name="String">
@@ -94,6 +98,7 @@
 			<return type="String" />
 			<argument index="0" name="from" type="Rect2i" />
 			<description>
+				Constructs a new String from the given [Rect2i].
 			</description>
 		</method>
 		<method name="String">
@@ -135,18 +140,21 @@
 			<return type="String" />
 			<argument index="0" name="from" type="PoolVector4iArray" />
 			<description>
+				Constructs a new String from the given [PoolVector4iArray].
 			</description>
 		</method>
 		<method name="String">
 			<return type="String" />
 			<argument index="0" name="from" type="PoolVector4Array" />
 			<description>
+				Constructs a new String from the given [PoolVector4Array].
 			</description>
 		</method>
 		<method name="String">
 			<return type="String" />
 			<argument index="0" name="from" type="PoolVector3iArray" />
 			<description>
+				Constructs a new String from the given [PoolVector3iArray].
 			</description>
 		</method>
 		<method name="String">
@@ -160,6 +168,7 @@
 			<return type="String" />
 			<argument index="0" name="from" type="PoolVector2iArray" />
 			<description>
+				Constructs a new String from the given [PoolVector2iArray].
 			</description>
 		</method>
 		<method name="String">
@@ -243,6 +252,7 @@
 			<return type="String" />
 			<argument index="0" name="from" type="Projection" />
 			<description>
+				Constructs a new String from the given [Projection].
 			</description>
 		</method>
 		<method name="append_path">
