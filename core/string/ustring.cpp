@@ -5566,6 +5566,32 @@ int String::to_int() const {
 	return integer * sign;
 }
 
+int64_t String::to_int64() const {
+	if (length() == 0) {
+		return 0;
+	}
+
+	int to = (find(".") >= 0) ? find(".") : length();
+
+	int64_t integer = 0;
+	int64_t sign = 1;
+
+	for (int i = 0; i < to; i++) {
+		CharType c = operator[](i);
+		if (c >= '0' && c <= '9') {
+			bool overflow = (integer > INT64_MAX / 10) || (integer == INT64_MAX / 10 && ((sign == 1 && c > '7') || (sign == -1 && c > '8')));
+			ERR_FAIL_COND_V_MSG(overflow, sign == 1 ? INT64_MAX : INT64_MIN, "Cannot represent " + *this + " as a 64-bit signed integer, since the value is " + (sign == 1 ? "too large." : "too small."));
+			integer *= 10;
+			integer += c - '0';
+
+		} else if (integer == 0 && c == '-') {
+			sign = -sign;
+		}
+	}
+
+	return integer * sign;
+}
+
 bool String::to_bool() const {
 	if (length() == 0) {
 		return false;
@@ -5620,32 +5646,6 @@ uint64_t String::to_uint64() const {
 	}
 
 	return integer;
-}
-
-int64_t String::to_int64() const {
-	if (length() == 0) {
-		return 0;
-	}
-
-	int to = (find(".") >= 0) ? find(".") : length();
-
-	int64_t integer = 0;
-	int64_t sign = 1;
-
-	for (int i = 0; i < to; i++) {
-		CharType c = operator[](i);
-		if (c >= '0' && c <= '9') {
-			bool overflow = (integer > INT64_MAX / 10) || (integer == INT64_MAX / 10 && ((sign == 1 && c > '7') || (sign == -1 && c > '8')));
-			ERR_FAIL_COND_V_MSG(overflow, sign == 1 ? INT64_MAX : INT64_MIN, "Cannot represent " + *this + " as a 64-bit signed integer, since the value is " + (sign == 1 ? "too large." : "too small."));
-			integer *= 10;
-			integer += c - '0';
-
-		} else if (integer == 0 && c == '-') {
-			sign = -sign;
-		}
-	}
-
-	return integer * sign;
 }
 
 int64_t String::to_int(const char *p_str, int p_len) {

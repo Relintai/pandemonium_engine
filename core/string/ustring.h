@@ -370,6 +370,7 @@ public:
 	double to_double() const;
 	float to_float() const;
 	int to_int() const;
+	int64_t to_int64() const;
 	bool to_bool() const;
 	uint32_t to_uint() const;
 	uint64_t to_uint64() const;
@@ -385,7 +386,6 @@ public:
 	int hex_to_int(bool p_with_prefix = true) const;
 	int64_t hex_to_int64(bool p_with_prefix = true) const;
 	int64_t bin_to_int64(bool p_with_prefix = true) const;
-	int64_t to_int64() const;
 
 	static int64_t to_int(const char *p_str, int p_len = -1);
 	static int64_t to_int(const wchar_t *p_str, int p_len = -1);
