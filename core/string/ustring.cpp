@@ -5579,11 +5579,25 @@ bool String::to_bool() const {
 }
 
 uint32_t String::to_uint() const {
-	if (is_numeric()) {
-		return static_cast<uint32_t>(to_int());
+	if (length() == 0) {
+		return 0;
 	}
 
-	return 0;
+	int to = (find(".") >= 0) ? find(".") : length();
+
+	uint32_t integer = 0;
+
+	for (int i = 0; i < to; i++) {
+		CharType c = operator[](i);
+		if (c >= '0' && c <= '9') {
+			bool overflow = (integer > UINT32_MAX / 10);
+			ERR_FAIL_COND_V_MSG(overflow, UINT32_MAX, "Cannot represent " + *this + " as a 32-bit unsigned integer, since the value is too large.");
+			integer *= 10;
+			integer += c - '0';
+		}
+	}
+
+	return integer;
 }
 
 int64_t String::to_int64() const {
