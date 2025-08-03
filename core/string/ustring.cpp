@@ -54,7 +54,7 @@
 #endif
 
 #define PRINT_UNICODE_ERRORS 0
-#define PRINT_NUMERIC_CONVERSION_ERRORS 1
+#define PRINT_NUMERIC_CONVERSION_ERRORS 0
 
 #if defined(MINGW_ENABLED) || defined(_MSC_VER)
 #define snprintf _snprintf_s
