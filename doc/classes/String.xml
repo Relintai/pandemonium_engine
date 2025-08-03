@@ -1123,8 +1123,16 @@
 			</description>
 		</method>
 		<method name="to_bool">
-			<return type="int" />
+			<return type="bool" />
 			<description>
+				Converts the string's contents to bool. Will handle numeric values and the string containing "true" or "false" aswell.
+				[codeblock]
+				print("true".to_bool()) # true
+				print("1".to_bool()) # true
+				print("234".to_bool()) # true
+				print("0".to_bool()) # false
+				print("false".to_bool()) # false
+				[/codeblock]
 			</description>
 		</method>
 		<method name="to_double">
