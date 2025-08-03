@@ -250,14 +250,15 @@ double GDAPI pandemonium_string_to_double(const pandemonium_string *p_self);
 float GDAPI pandemonium_string_to_float(const pandemonium_string *p_self);
 pandemonium_real GDAPI pandemonium_string_to_real(const pandemonium_string *p_self);
 pandemonium_int GDAPI pandemonium_string_to_int(const pandemonium_string *p_self);
-pandemonium_bool GDAPI pandemonium_string_to_bool(const pandemonium_string *p_self);
+int64_t GDAPI pandemonium_string_to_int64(const pandemonium_string *p_self);
 uint32_t GDAPI pandemonium_string_to_uint(const pandemonium_string *p_self);
+uint64_t GDAPI pandemonium_string_to_uint64(const pandemonium_string *p_self);
+pandemonium_bool GDAPI pandemonium_string_to_bool(const pandemonium_string *p_self);
 
 pandemonium_int GDAPI pandemonium_string_hex_to_int(const pandemonium_string *p_self);
 pandemonium_int GDAPI pandemonium_string_hex_to_int_without_prefix(const pandemonium_string *p_self);
 int64_t GDAPI pandemonium_string_hex_to_int64(const pandemonium_string *p_self);
 int64_t GDAPI pandemonium_string_hex_to_int64_with_prefix(const pandemonium_string *p_self);
-int64_t GDAPI pandemonium_string_to_int64(const pandemonium_string *p_self);
 
 pandemonium_int GDAPI pandemonium_string_char_to_int(const char *p_what);
 pandemonium_int GDAPI pandemonium_string_char_to_int_with_len(const char *p_what, pandemonium_int p_len);

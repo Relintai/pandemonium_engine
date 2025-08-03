@@ -785,15 +785,29 @@ pandemonium_int GDAPI pandemonium_string_to_int(const pandemonium_string *p_self
 	return self->to_int();
 }
 
-pandemonium_bool GDAPI pandemonium_string_to_bool(const pandemonium_string *p_self) {
+int64_t GDAPI pandemonium_string_to_int64(const pandemonium_string *p_self) {
 	const String *self = (const String *)p_self;
-	return self->to_bool();
+
+	return self->to_int64();
 }
+
 uint32_t GDAPI pandemonium_string_to_uint(const pandemonium_string *p_self) {
 	uint32_t dest;
 	const String *self = (const String *)p_self;
 	*((uint32_t *)&dest) = self->to_uint();
 	return dest;
+}
+
+uint64_t GDAPI pandemonium_string_to_uint64(const pandemonium_string *p_self) {
+	uint64_t dest;
+	const String *self = (const String *)p_self;
+	*((uint64_t *)&dest) = self->to_uint64();
+	return dest;
+}
+
+pandemonium_bool GDAPI pandemonium_string_to_bool(const pandemonium_string *p_self) {
+	const String *self = (const String *)p_self;
+	return self->to_bool();
 }
 
 pandemonium_string GDAPI pandemonium_string_capitalize(const pandemonium_string *p_self) {
@@ -859,12 +873,6 @@ int64_t GDAPI pandemonium_string_hex_to_int64_with_prefix(const pandemonium_stri
 	const String *self = (const String *)p_self;
 
 	return self->hex_to_int64();
-}
-
-int64_t GDAPI pandemonium_string_to_int64(const pandemonium_string *p_self) {
-	const String *self = (const String *)p_self;
-
-	return self->to_int64();
 }
 
 float GDAPI pandemonium_string_char_to_float(const char *p_what) {

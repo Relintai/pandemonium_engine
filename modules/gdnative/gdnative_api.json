@@ -5507,8 +5507,8 @@
                 ]
             },
             {
-                "name": "pandemonium_string_to_bool",
-                "return_type": "pandemonium_bool",
+                "name": "pandemonium_string_to_int64",
+                "return_type": "int64_t",
                 "arguments": [
                     ["const pandemonium_string *", "p_self"]
                 ]
@@ -5516,6 +5516,20 @@
             {
                 "name": "pandemonium_string_to_uint",
                 "return_type": "uint32_t",
+                "arguments": [
+                    ["const pandemonium_string *", "p_self"]
+                ]
+            },
+            {
+                "name": "pandemonium_string_to_uint64",
+                "return_type": "uint64_t",
+                "arguments": [
+                    ["const pandemonium_string *", "p_self"]
+                ]
+            },
+            {
+                "name": "pandemonium_string_to_bool",
+                "return_type": "pandemonium_bool",
                 "arguments": [
                     ["const pandemonium_string *", "p_self"]
                 ]
@@ -5543,13 +5557,6 @@
             },
             {
                 "name": "pandemonium_string_hex_to_int64_with_prefix",
-                "return_type": "int64_t",
-                "arguments": [
-                    ["const pandemonium_string *", "p_self"]
-                ]
-            },
-            {
-                "name": "pandemonium_string_to_int64",
                 "return_type": "int64_t",
                 "arguments": [
                     ["const pandemonium_string *", "p_self"]
