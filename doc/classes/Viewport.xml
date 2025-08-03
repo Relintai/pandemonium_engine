@@ -116,10 +116,12 @@
 				Alternative to [constant Node.NOTIFICATION_DRAG_BEGIN] and [constant Node.NOTIFICATION_DRAG_END] when you prefer polling the value.
 			</description>
 		</method>
-		<method name="gui_set_root_order_dirty">
+		<method name="gui_release_focus">
 			<return type="void" />
 			<description>
-		<method name="gui_release_focus">
+			</description>
+		</method>
+		<method name="gui_set_root_order_dirty">
 			<return type="void" />
 			<description>
 				Removes the focus from the currently focused [Control] within this viewport. If no [Control] has the focus, does nothing.

@@ -1152,6 +1152,11 @@
 				[/codeblock]
 			</description>
 		</method>
+		<method name="to_int64">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="to_lower">
 			<return type="String" />
 			<description>
@@ -1171,6 +1176,11 @@
 			</description>
 		</method>
 		<method name="to_uint">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="to_uint64">
 			<return type="int" />
 			<description>
 			</description>
