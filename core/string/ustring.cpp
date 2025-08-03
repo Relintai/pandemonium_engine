@@ -5774,6 +5774,118 @@ int64_t String::to_int(const CharType *p_str, int p_len, bool p_clamp) {
 	return sign * integer;
 }
 
+uint64_t String::to_uint(const char *p_str, int p_len) {
+	int to = 0;
+	if (p_len >= 0) {
+		to = p_len;
+	} else {
+		while (p_str[to] != 0 && p_str[to] != '.') {
+			to++;
+		}
+	}
+
+	uint64_t integer = 0;
+
+	for (int i = 0; i < to; i++) {
+		char c = p_str[i];
+		if (is_digit(c)) {
+			bool overflow = (integer > UINT64_MAX / 10);
+			ERR_FAIL_COND_V_MSG(overflow, UINT64_MAX, "Cannot represent " + String(p_str).substr(0, to) + " as a 64-bit unsigned integer, since the value is too large.");
+			integer *= 10;
+			integer += c - '0';
+		} else if (c != ' ') {
+			break;
+		}
+	}
+
+	return integer;
+}
+
+uint64_t String::to_uint(const wchar_t *p_str, int p_len) {
+	int to = 0;
+	if (p_len >= 0) {
+		to = p_len;
+	} else {
+		while (p_str[to] != 0 && p_str[to] != '.') {
+			to++;
+		}
+	}
+
+	uint64_t integer = 0;
+
+	for (int i = 0; i < to; i++) {
+		wchar_t c = p_str[i];
+		if (is_digit(c)) {
+			bool overflow = (integer > UINT64_MAX / 10);
+			ERR_FAIL_COND_V_MSG(overflow, UINT64_MAX, "Cannot represent " + String(p_str).substr(0, to) + " as a 64-bit unsigned integer, since the value is too large.");
+			integer *= 10;
+			integer += c - '0';
+		} else if (c != ' ') {
+			break;
+		}
+	}
+
+	return integer;
+}
+
+uint64_t String::to_uint(const CharType *p_str, int p_len, bool p_clamp) {
+	if (p_len == 0 || !p_str[0]) {
+		return 0;
+	}
+	///@todo make more exact so saving and loading does not lose precision
+
+	uint64_t integer = 0;
+	int reading = READING_SIGN;
+
+	const CharType *str = p_str;
+	const CharType *limit = &p_str[p_len];
+
+	while (*str && reading != READING_DONE && str != limit) {
+		CharType c = *(str++);
+		switch (reading) {
+			case READING_SIGN: {
+				if (is_digit(c)) {
+					reading = READING_INT;
+					// let it fallthrough
+				} else if (c == '-') {
+					// Underflow
+					ERR_FAIL_V_MSG(0, "Cannot represent number as a 64-bit unsigned integer, since the value is too small.");
+					//return 0;
+				} else if (c == '+') {
+					reading = READING_INT;
+					break;
+				} else {
+					break;
+				}
+				FALLTHROUGH;
+			}
+			case READING_INT: {
+				if (is_digit(c)) {
+					if (integer > UINT64_MAX / 10) {
+						String number("");
+						str = p_str;
+						while (*str && str != limit) {
+							number += *(str++);
+						}
+						if (p_clamp) {
+							return UINT64_MAX;
+						} else {
+							ERR_FAIL_V_MSG(UINT64_MAX, "Cannot represent " + number + " as a 64-bit signed integer, since the value is too large.");
+						}
+					}
+					integer *= 10;
+					integer += c - '0';
+				} else {
+					reading = READING_DONE;
+				}
+
+			} break;
+		}
+	}
+
+	return integer;
+}
+
 double String::to_float(const char *p_str) {
 	return built_in_strtod<char>(p_str);
 }
