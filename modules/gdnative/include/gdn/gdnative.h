@@ -138,10 +138,13 @@ typedef int pandemonium_int;
 
 /////// real
 
-// TODO add real_t -> float/double support!
-// If the engine is built with doubles as real_t this won't work, as the structs won't line up!
+// Define REAL_T_IS_DOUBLE when building on the app side if your engine is built with REAL_T_IS_DOUBLE defined (default is false).
 
+#ifdef REAL_T_IS_DOUBLE
+typedef double pandemonium_real;
+#else
 typedef float pandemonium_real;
+#endif
 
 /////// Object (forward declared)
 typedef void pandemonium_object;
