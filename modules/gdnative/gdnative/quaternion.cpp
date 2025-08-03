@@ -305,6 +305,13 @@ pandemonium_string GDAPI pandemonium_quaternion_as_string(const pandemonium_quat
 	return ret;
 }
 
+pandemonium_bool GDAPI pandemonium_quaternion_set_shortest_arc(pandemonium_quaternion *p_self, const pandemonium_vector3 *p_from, const pandemonium_vector3 *p_to) {
+	Quaternion *self = (Quaternion *)p_self;
+	const Vector3 *from = (const Vector3 *)p_from;
+	const Vector3 *to = (const Vector3 *)p_to;
+	return self->set_shortest_arc(*from, *to);
+}
+
 void GDAPI pandemonium_quaternion_set(pandemonium_quaternion *p_self, pandemonium_real p_x, pandemonium_real p_y, pandemonium_real p_z, pandemonium_real p_w) {
 	Quaternion *self = (Quaternion *)p_self;
 	self->set(p_x, p_y, p_z, p_w);

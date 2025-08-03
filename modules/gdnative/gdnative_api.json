@@ -3986,6 +3986,15 @@
                 ]
             },
             {
+                "name": "pandemonium_quaternion_set_shortest_arc",
+                "return_type": "bool",
+                "arguments": [
+                    ["pandemonium_quaternion *", "p_self"],
+                    ["const pandemonium_vector3 *", "p_from"],
+                    ["const pandemonium_vector3 *", "p_to"]
+                ]
+            },
+            {
                 "name": "pandemonium_quaternion_set",
                 "return_type": "void",
                 "arguments": [

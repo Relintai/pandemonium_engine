@@ -126,7 +126,6 @@ struct _NO_DISCARD_CLASS_ Quaternion {
 
 	operator String() const;
 
-	// Note this is on in gdnative api, only the constructor that calls this.
 	bool set_shortest_arc(const Vector3 &p_from, const Vector3 &p_to) {
 #ifdef MATH_CHECKS
 		ERR_FAIL_COND_V_MSG(p_from.is_zero_approx() || p_to.is_zero_approx(), false, "The vectors must not be zero.");
