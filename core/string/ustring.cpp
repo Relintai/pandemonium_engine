@@ -5592,18 +5592,6 @@ int64_t String::to_int64() const {
 	return integer * sign;
 }
 
-bool String::to_bool() const {
-	if (length() == 0) {
-		return false;
-	}
-
-	if (is_numeric()) {
-		return to_int() != 0;
-	}
-
-	return to_lower() == "true";
-}
-
 uint32_t String::to_uint() const {
 	if (length() == 0) {
 		return 0;
@@ -5646,6 +5634,18 @@ uint64_t String::to_uint64() const {
 	}
 
 	return integer;
+}
+
+bool String::to_bool() const {
+	if (length() == 0) {
+		return false;
+	}
+
+	if (is_numeric()) {
+		return to_int() != 0;
+	}
+
+	return to_lower() == "true";
 }
 
 int64_t String::to_int(const char *p_str, int p_len) {

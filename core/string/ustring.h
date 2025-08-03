@@ -369,12 +369,6 @@ public:
 
 	double to_double() const;
 	float to_float() const;
-	int to_int() const;
-	int64_t to_int64() const;
-	bool to_bool() const;
-	uint32_t to_uint() const;
-	uint64_t to_uint64() const;
-
 	_FORCE_INLINE_ real_t to_real() const {
 #ifdef REAL_T_IS_DOUBLE
 		return to_double();
@@ -382,6 +376,15 @@ public:
 		return to_float();
 #endif
 	}
+
+	int to_int() const;
+	int64_t to_int64() const;
+
+	uint32_t to_uint() const;
+	uint64_t to_uint64() const;
+
+	bool to_bool() const;
+
 
 	int hex_to_int(bool p_with_prefix = true) const;
 	int64_t hex_to_int64(bool p_with_prefix = true) const;
