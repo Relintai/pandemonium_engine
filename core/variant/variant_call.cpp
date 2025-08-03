@@ -344,8 +344,10 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(String, to_float);
 	VCALL_LOCALMEM0R(String, to_real);
 	VCALL_LOCALMEM0R(String, to_int);
-	VCALL_LOCALMEM0R(String, to_bool);
+	VCALL_LOCALMEM0R(String, to_int64);
 	VCALL_LOCALMEM0R(String, to_uint);
+	VCALL_LOCALMEM0R(String, to_uint64);
+	VCALL_LOCALMEM0R(String, to_bool);
 	VCALL_LOCALMEM0R(String, hex_to_int);
 	VCALL_LOCALMEM0RI(String, bin_to_int, bin_to_int64);
 	VCALL_LOCALMEM0R(String, capitalize);
@@ -2524,8 +2526,10 @@ void register_variant_methods() {
 	ADDFUNC0R(STRING, REAL, String, to_float, varray());
 	ADDFUNC0R(STRING, REAL, String, to_real, varray());
 	ADDFUNC0R(STRING, INT, String, to_int, varray());
-	ADDFUNC0R(STRING, INT, String, to_bool, varray());
+	ADDFUNC0R(STRING, INT, String, to_int64, varray());
 	ADDFUNC0R(STRING, INT, String, to_uint, varray());
+	ADDFUNC0R(STRING, INT, String, to_uint64, varray());
+	ADDFUNC0R(STRING, INT, String, to_bool, varray());
 
 	ADDFUNC1R(STRING, INT, String, hex_to_int, BOOL, "with_prefix", varray(true));
 	ADDFUNC1R(STRING, INT, String, bin_to_int, BOOL, "with_prefix", varray(true));
