@@ -5600,6 +5600,28 @@ uint32_t String::to_uint() const {
 	return integer;
 }
 
+uint64_t String::to_uint64() const {
+	if (length() == 0) {
+		return 0;
+	}
+
+	int to = (find(".") >= 0) ? find(".") : length();
+
+	uint64_t integer = 0;
+
+	for (int i = 0; i < to; i++) {
+		CharType c = operator[](i);
+		if (c >= '0' && c <= '9') {
+			bool overflow = (integer > UINT64_MAX / 10);
+			ERR_FAIL_COND_V_MSG(overflow, UINT64_MAX, "Cannot represent " + *this + " as a 64-bit unsigned integer, since the value is too large.");
+			integer *= 10;
+			integer += c - '0';
+		}
+	}
+
+	return integer;
+}
+
 int64_t String::to_int64() const {
 	if (length() == 0) {
 		return 0;

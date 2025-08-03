@@ -372,6 +372,7 @@ public:
 	int to_int() const;
 	bool to_bool() const;
 	uint32_t to_uint() const;
+	uint64_t to_uint64() const;
 
 	_FORCE_INLINE_ real_t to_real() const {
 #ifdef REAL_T_IS_DOUBLE
