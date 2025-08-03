@@ -54,6 +54,7 @@
 #endif
 
 #define PRINT_UNICODE_ERRORS 0
+#define PRINT_NUMERIC_CONVERSION_ERRORS 1
 
 #if defined(MINGW_ENABLED) || defined(_MSC_VER)
 #define snprintf _snprintf_s
@@ -5192,7 +5193,19 @@ String::String(const StrRange &p_range) {
 
 int String::hex_to_int(bool p_with_prefix) const {
 	int len = length();
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 	ERR_FAIL_COND_V_MSG(p_with_prefix ? len < 3 : len == 0, 0, String("Invalid hexadecimal notation length in string ") + (p_with_prefix ? "with" : "without") + " prefix \"" + *this + "\".");
+#else
+	if (p_with_prefix) {
+		if (unlikely(len < 3)) {
+			return 0;
+		}
+	} else {
+		if (unlikely(len == 0)) {
+			return 0;
+		}
+	}
+#endif
 
 	const CharType *s = ptr();
 
@@ -5203,7 +5216,13 @@ int String::hex_to_int(bool p_with_prefix) const {
 	}
 
 	if (p_with_prefix) {
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 		ERR_FAIL_COND_V_MSG(s[0] != '0' || LOWERCASE(s[1]) != 'x', 0, "Invalid hexadecimal notation prefix in string \"" + *this + "\".");
+#else
+		if (unlikely(s[0] != '0' || LOWERCASE(s[1]) != 'x')) {
+			return 0;
+		}
+#endif
 		s += 2;
 	}
 
@@ -5217,11 +5236,21 @@ int String::hex_to_int(bool p_with_prefix) const {
 		} else if (c >= 'a' && c <= 'f') {
 			n = (c - 'a') + 10;
 		} else {
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_V_MSG(0, "Invalid hexadecimal notation character \"" + chr(*s) + "\" in string \"" + *this + "\".");
+#else
+			return 0;
+#endif
 		}
 		// Check for overflow/underflow, with special case to ensure INT32_MIN does not result in error
 		bool overflow = ((hex > INT32_MAX / 16) && (sign == 1 || (sign == -1 && hex != (INT32_MAX >> 4) + 1))) || (sign == -1 && hex == (INT32_MAX >> 4) + 1 && c > '0');
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 		ERR_FAIL_COND_V_MSG(overflow, sign == 1 ? INT32_MAX : INT32_MIN, "Cannot represent " + *this + " as a 32-bit signed integer, since the value is " + (sign == 1 ? "too large." : "too small."));
+#else
+		if (unlikely(overflow)) {
+			return sign == 1 ? INT32_MAX : INT32_MIN;
+		}
+#endif
 		hex *= 16;
 		hex += n;
 		s++;
@@ -5232,7 +5261,19 @@ int String::hex_to_int(bool p_with_prefix) const {
 
 int64_t String::hex_to_int64(bool p_with_prefix) const {
 	int len = length();
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 	ERR_FAIL_COND_V_MSG(p_with_prefix ? len < 3 : len == 0, 0, String("Invalid hexadecimal notation length in string ") + (p_with_prefix ? "with" : "without") + " prefix \"" + *this + "\".");
+#else
+	if (p_with_prefix) {
+		if (unlikely(len < 3)) {
+			return 0;
+		}
+	} else {
+		if (unlikely(len == 0)) {
+			return 0;
+		}
+	}
+#endif
 
 	const CharType *s = ptr();
 
@@ -5243,7 +5284,13 @@ int64_t String::hex_to_int64(bool p_with_prefix) const {
 	}
 
 	if (p_with_prefix) {
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 		ERR_FAIL_COND_V_MSG(s[0] != '0' || LOWERCASE(s[1]) != 'x', 0, "Invalid hexadecimal notation prefix in string \"" + *this + "\".");
+#else
+		if (unlikely(s[0] != '0' || LOWERCASE(s[1]) != 'x')) {
+			return 0;
+		}
+#endif
 		s += 2;
 	}
 
@@ -5257,10 +5304,20 @@ int64_t String::hex_to_int64(bool p_with_prefix) const {
 		} else if (c >= 'a' && c <= 'f') {
 			n = (c - 'a') + 10;
 		} else {
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_V_MSG(0, "Invalid hexadecimal notation character \"" + chr(*s) + "\" in string \"" + *this + "\".");
+#else
+			return 0;
+#endif
 		}
 		bool overflow = ((hex > INT64_MAX / 16) && (sign == 1 || (sign == -1 && hex != (INT64_MAX >> 4) + 1))) || (sign == -1 && hex == (INT64_MAX >> 4) + 1 && c > '0');
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 		ERR_FAIL_COND_V_MSG(overflow, sign == 1 ? INT64_MAX : INT64_MIN, "Cannot represent " + *this + " as a 64-bit signed integer, since the value is " + (sign == 1 ? "too large." : "too small."));
+#else
+		if (unlikely(overflow)) {
+			return sign == 1 ? INT64_MAX : INT64_MIN;
+		}
+#endif
 		hex *= 16;
 		hex += n;
 		s++;
@@ -5271,7 +5328,19 @@ int64_t String::hex_to_int64(bool p_with_prefix) const {
 
 int64_t String::bin_to_int64(bool p_with_prefix) const {
 	int len = length();
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 	ERR_FAIL_COND_V_MSG(p_with_prefix ? len < 3 : len == 0, 0, String("Invalid binary notation length in string ") + (p_with_prefix ? "with" : "without") + " prefix \"" + *this + "\".");
+#else
+	if (p_with_prefix) {
+		if (unlikely(len < 3)) {
+			return 0;
+		}
+	} else {
+		if (unlikely(len == 0)) {
+			return 0;
+		}
+	}
+#endif
 
 	const CharType *s = ptr();
 
@@ -5282,7 +5351,13 @@ int64_t String::bin_to_int64(bool p_with_prefix) const {
 	}
 
 	if (p_with_prefix) {
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 		ERR_FAIL_COND_V_MSG(s[0] != '0' || LOWERCASE(s[1]) != 'b', 0, "Invalid binary notation prefix in string \"" + *this + "\".");
+#else
+		if (unlikely(s[0] != '0' || LOWERCASE(s[1]) != 'b')) {
+			return 0;
+		}
+#endif
 		s += 2;
 	}
 
@@ -5294,11 +5369,21 @@ int64_t String::bin_to_int64(bool p_with_prefix) const {
 		if (c == '0' || c == '1') {
 			n = c - '0';
 		} else {
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_V_MSG(0, "Invalid binary notation character \"" + chr(*s) + "\" in string \"" + *this + "\".");
+#else
+			return 0;
+#endif
 		}
 		// Check for overflow/underflow, with special case to ensure INT64_MIN does not result in error
 		bool overflow = ((binary > INT64_MAX / 2) && (sign == 1 || (sign == -1 && binary != (INT64_MAX >> 1) + 1))) || (sign == -1 && binary == (INT64_MAX >> 1) + 1 && c > '0');
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 		ERR_FAIL_COND_V_MSG(overflow, sign == 1 ? INT64_MAX : INT64_MIN, "Cannot represent " + *this + " as a 64-bit signed integer, since the value is " + (sign == 1 ? "too large." : "too small."));
+#else
+		if (unlikely(overflow)) {
+			return sign == 1 ? INT64_MAX : INT64_MIN;
+		}
+#endif
 		binary *= 2;
 		binary += n;
 		s++;
@@ -5499,7 +5584,9 @@ static double built_in_strtod(
 
 	if (exp > maxExponent) {
 		exp = maxExponent;
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 		WARN_PRINT("Exponent too high");
+#endif
 	}
 	dblExp = 1.0;
 	for (d = powersOf10; exp != 0; exp >>= 1, ++d) {
@@ -5554,7 +5641,13 @@ int String::to_int() const {
 		CharType c = operator[](i);
 		if (c >= '0' && c <= '9') {
 			bool overflow = (integer > INT32_MAX / 10) || (integer == INT32_MAX / 10 && ((sign == 1 && c > '7') || (sign == -1 && c > '8')));
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_COND_V_MSG(overflow, sign == 1 ? INT32_MAX : INT32_MIN, "Cannot represent " + *this + " as a 32-bit signed integer, since the value is " + (sign == 1 ? "too large." : "too small."));
+#else
+			if (unlikely(overflow)) {
+				return sign == 1 ? INT32_MAX : INT32_MIN;
+			}
+#endif
 			integer *= 10;
 			integer += c - '0';
 
@@ -5580,7 +5673,13 @@ int64_t String::to_int64() const {
 		CharType c = operator[](i);
 		if (c >= '0' && c <= '9') {
 			bool overflow = (integer > INT64_MAX / 10) || (integer == INT64_MAX / 10 && ((sign == 1 && c > '7') || (sign == -1 && c > '8')));
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_COND_V_MSG(overflow, sign == 1 ? INT64_MAX : INT64_MIN, "Cannot represent " + *this + " as a 64-bit signed integer, since the value is " + (sign == 1 ? "too large." : "too small."));
+#else
+			if (unlikely(overflow)) {
+				return sign == 1 ? INT64_MAX : INT64_MIN;
+			}
+#endif
 			integer *= 10;
 			integer += c - '0';
 
@@ -5605,7 +5704,13 @@ uint32_t String::to_uint() const {
 		CharType c = operator[](i);
 		if (c >= '0' && c <= '9') {
 			bool overflow = (integer > UINT32_MAX / 10);
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_COND_V_MSG(overflow, UINT32_MAX, "Cannot represent " + *this + " as a 32-bit unsigned integer, since the value is too large.");
+#else
+			if (unlikely(overflow)) {
+				return UINT32_MAX;
+			}
+#endif
 			integer *= 10;
 			integer += c - '0';
 		}
@@ -5627,7 +5732,13 @@ uint64_t String::to_uint64() const {
 		CharType c = operator[](i);
 		if (c >= '0' && c <= '9') {
 			bool overflow = (integer > UINT64_MAX / 10);
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_COND_V_MSG(overflow, UINT64_MAX, "Cannot represent " + *this + " as a 64-bit unsigned integer, since the value is too large.");
+#else
+			if (unlikely(overflow)) {
+				return UINT64_MAX;
+			}
+#endif
 			integer *= 10;
 			integer += c - '0';
 		}
@@ -5665,7 +5776,13 @@ int64_t String::to_int(const char *p_str, int p_len) {
 		char c = p_str[i];
 		if (is_digit(c)) {
 			bool overflow = (integer > INT64_MAX / 10) || (integer == INT64_MAX / 10 && ((sign == 1 && c > '7') || (sign == -1 && c > '8')));
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_COND_V_MSG(overflow, sign == 1 ? INT64_MAX : INT64_MIN, "Cannot represent " + String(p_str).substr(0, to) + " as a 64-bit signed integer, since the value is " + (sign == 1 ? "too large." : "too small."));
+#else
+			if (unlikely(overflow)) {
+				return sign == 1 ? INT64_MAX : INT64_MIN;
+			}
+#endif
 			integer *= 10;
 			integer += c - '0';
 
@@ -5696,7 +5813,13 @@ int64_t String::to_int(const wchar_t *p_str, int p_len) {
 		wchar_t c = p_str[i];
 		if (is_digit(c)) {
 			bool overflow = (integer > INT64_MAX / 10) || (integer == INT64_MAX / 10 && ((sign == 1 && c > '7') || (sign == -1 && c > '8')));
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_COND_V_MSG(overflow, sign == 1 ? INT64_MAX : INT64_MIN, "Cannot represent " + String(p_str).substr(0, to) + " as a 64-bit signed integer, since the value is " + (sign == 1 ? "too large." : "too small."));
+#else
+			if (unlikely(overflow)) {
+				return sign == 1 ? INT64_MAX : INT64_MIN;
+			}
+#endif
 			integer *= 10;
 			integer += c - '0';
 
@@ -5758,7 +5881,11 @@ int64_t String::to_int(const CharType *p_str, int p_len, bool p_clamp) {
 								return INT64_MIN;
 							}
 						} else {
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 							ERR_FAIL_V_MSG(sign == 1 ? INT64_MAX : INT64_MIN, "Cannot represent " + number + " as a 64-bit signed integer, since the value is " + (sign == 1 ? "too large." : "too small."));
+#else
+							return sign == 1 ? INT64_MAX : INT64_MIN;
+#endif
 						}
 					}
 					integer *= 10;
@@ -5790,7 +5917,13 @@ uint64_t String::to_uint(const char *p_str, int p_len) {
 		char c = p_str[i];
 		if (is_digit(c)) {
 			bool overflow = (integer > UINT64_MAX / 10);
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_COND_V_MSG(overflow, UINT64_MAX, "Cannot represent " + String(p_str).substr(0, to) + " as a 64-bit unsigned integer, since the value is too large.");
+#else
+			if (unlikely(overflow)) {
+				return UINT64_MAX;
+			}
+#endif
 			integer *= 10;
 			integer += c - '0';
 		} else if (c != ' ') {
@@ -5817,7 +5950,13 @@ uint64_t String::to_uint(const wchar_t *p_str, int p_len) {
 		wchar_t c = p_str[i];
 		if (is_digit(c)) {
 			bool overflow = (integer > UINT64_MAX / 10);
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 			ERR_FAIL_COND_V_MSG(overflow, UINT64_MAX, "Cannot represent " + String(p_str).substr(0, to) + " as a 64-bit unsigned integer, since the value is too large.");
+#else
+			if (unlikely(overflow)) {
+				return UINT64_MAX;
+			}
+#endif
 			integer *= 10;
 			integer += c - '0';
 		} else if (c != ' ') {
@@ -5849,7 +5988,11 @@ uint64_t String::to_uint(const CharType *p_str, int p_len, bool p_clamp) {
 					// let it fallthrough
 				} else if (c == '-') {
 					// Underflow
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 					ERR_FAIL_V_MSG(0, "Cannot represent number as a 64-bit unsigned integer, since the value is too small.");
+#else
+					return 0;
+#endif
 					//return 0;
 				} else if (c == '+') {
 					reading = READING_INT;
@@ -5870,7 +6013,11 @@ uint64_t String::to_uint(const CharType *p_str, int p_len, bool p_clamp) {
 						if (p_clamp) {
 							return UINT64_MAX;
 						} else {
+#ifdef PRINT_NUMERIC_CONVERSION_ERRORS
 							ERR_FAIL_V_MSG(UINT64_MAX, "Cannot represent " + number + " as a 64-bit signed integer, since the value is too large.");
+#else
+							return UINT64_MAX;
+#endif
 						}
 					}
 					integer *= 10;
