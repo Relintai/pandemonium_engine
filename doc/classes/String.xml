@@ -1173,6 +1173,13 @@
 		<method name="to_int64">
 			<return type="int" />
 			<description>
+				Converts a string containing an integer number into a 64bit [code]int[/code]. The method will remove any non-number character and stop if it encounters a [code].[/code].
+				Compared to [method to_int] this method will interpret an int up to 64 bits. The type is the same for scripting languages, as Variant can handle 64 bit ints internally.
+				[codeblock]
+				print("123".to_int()) # 123
+				print("a1b2c3".to_int()) # 123
+				print("1.2.3".to_int()) # 1
+				[/codeblock]
 			</description>
 		</method>
 		<method name="to_lower">
@@ -1196,11 +1203,25 @@
 		<method name="to_uint">
 			<return type="int" />
 			<description>
+				Converts a string containing an integer number into an [code]int[/code]. The method will remove any non-number character and stop if it encounters a [code].[/code].
+				The type is the same for scripting languages, as Variant can handle 64 bit unsigned ints internally.
+				[codeblock]
+				print("123".to_int()) # 123
+				print("a1b2c3".to_int()) # 123
+				print("1.2.3".to_int()) # 1
+				[/codeblock]
 			</description>
 		</method>
 		<method name="to_uint64">
 			<return type="int" />
 			<description>
+				Converts a string containing an unsigned integer number into a 64bit [code]int[/code]. The method will remove any non-number character and stop if it encounters a [code].[/code].
+				Compared to [method to_uint] this method will interpret an int up to 64 bits. The type is the same for scripting languages, as Variant can handle 64 unsigned ints internally.
+				[codeblock]
+				print("123".to_int()) # 123
+				print("a1b2c3".to_int()) # 123
+				print("1.2.3".to_int()) # 1
+				[/codeblock]
 			</description>
 		</method>
 		<method name="to_upper">
