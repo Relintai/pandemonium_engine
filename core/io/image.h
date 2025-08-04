@@ -212,6 +212,7 @@ public:
 	int get_width() const; ///< Get image width
 	int get_height() const; ///< Get image height
 	Vector2 get_size() const;
+	Vector2i get_sizei() const;
 	bool has_mipmaps() const;
 	int get_mipmap_count() const;
 
