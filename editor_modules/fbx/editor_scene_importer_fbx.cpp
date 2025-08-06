@@ -49,7 +49,7 @@
 #include "scene/resources/material/spatial_material.h"
 
 #include "modules/skeleton_3d/nodes/bone_attachment.h"
-
+EulerToQuaternionernion
 #include "fbx_parser/FBXDocument.h"
 #include "fbx_parser/FBXImportSettings.h"
 #include "fbx_parser/FBXMeshGeometry.h"
@@ -562,7 +562,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		// this means that the nodes from maya kLocators will be preserved as bones
 		// in the same rig without having to match this across skeletons and merge by detection
 		// we can just merge and undo any parent transforms
-		for (Map<uint64_t, Ref<FBXBone>>::Element *bone_element = state.fbx_bone_map.front(); bone_element; bone_element = bone_element->next()) {
+		for (RBMap<uint64_t, Ref<FBXBone>>::Element *bone_element = state.fbx_bone_map.front(); bone_element; bone_element = bone_element->next()) {
 			Ref<FBXBone> bone = bone_element->value();
 			Ref<FBXSkeleton> fbx_skeleton_inst;
 
@@ -604,7 +604,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		}
 
 		// setup skeleton instances if required :)
-		for (Map<uint64_t, Ref<FBXSkeleton>>::Element *skeleton_node = state.skeleton_map.front(); skeleton_node; skeleton_node = skeleton_node->next()) {
+		for (RBMap<uint64_t, Ref<FBXSkeleton>>::Element *skeleton_node = state.skeleton_map.front(); skeleton_node; skeleton_node = skeleton_node->next()) {
 			Ref<FBXSkeleton> &skeleton = skeleton_node->value();
 			skeleton->init_skeleton(state);
 
@@ -612,7 +612,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		}
 
 		// This list is not populated
-		for (Map<uint64_t, Ref<FBXNode>>::Element *skin_mesh = state.MeshNodes.front(); skin_mesh; skin_mesh = skin_mesh->next()) {
+		for (RBMap<uint64_t, Ref<FBXNode>>::Element *skin_mesh = state.MeshNodes.front(); skin_mesh; skin_mesh = skin_mesh->next()) {
 		}
 	}
 
@@ -694,7 +694,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		}
 	}
 
-	for (Map<uint64_t, Ref<FBXMeshData>>::Element *mesh_data = state.renderer_mesh_data.front(); mesh_data; mesh_data = mesh_data->next()) {
+	for (RBMap<uint64_t, Ref<FBXMeshData>>::Element *mesh_data = state.renderer_mesh_data.front(); mesh_data; mesh_data = mesh_data->next()) {
 		const uint64_t mesh_id = mesh_data->key();
 		Ref<FBXMeshData> mesh = mesh_data->value();
 
@@ -760,7 +760,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	}
 
 	// mesh data iteration for populating skeleton mapping
-	for (Map<uint64_t, Ref<FBXMeshData>>::Element *mesh_data = state.renderer_mesh_data.front(); mesh_data; mesh_data = mesh_data->next()) {
+	for (RBMap<uint64_t, Ref<FBXMeshData>>::Element *mesh_data = state.renderer_mesh_data.front(); mesh_data; mesh_data = mesh_data->next()) {
 		Ref<FBXMeshData> mesh = mesh_data->value();
 		const uint64_t mesh_id = mesh_data->key();
 		MeshInstance *mesh_instance = mesh->godot_mesh_instance;
@@ -855,7 +855,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 				// it also lets us know if the FBX specification massively changes the animation system, in theory such a change would make this show
 				// an fbx specification error, so best keep it in
 				// the overhead is tiny.
-				Map<uint64_t, const FBXDocParser::AnimationCurve *> CheckForDuplication;
+				RBMap<uint64_t, const FBXDocParser::AnimationCurve *> CheckForDuplication;
 
 				const std::vector<const FBXDocParser::AnimationLayer *> &layers = stack->Layers();
 				print_verbose("FBX Animation layers: " + itos(layers.size()));
@@ -869,7 +869,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 					// target id, [ track name, [time index, vector] ]
 					// new map needs to be [ track name, keyframe_data ]
-					Map<uint64_t, Map<StringName, FBXTrack>> AnimCurveNodes;
+					RBMap<uint64_t, RBMap<StringName, FBXTrack>> AnimCurveNodes;
 
 					// struct AnimTrack {
 					// 	// Animation track can be
@@ -999,7 +999,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 					// target id, [ track name, [time index, vector] ]
 					//std::map<uint64_t, std::map<StringName, FBXTrack > > AnimCurveNodes;
-					for (Map<uint64_t, Map<StringName, FBXTrack>>::Element *track = AnimCurveNodes.front(); track; track = track->next()) {
+					for (RBMap<uint64_t, RBMap<StringName, FBXTrack>>::Element *track = AnimCurveNodes.front(); track; track = track->next()) {
 						// 5 tracks
 						// current track index
 						// track count is 5
@@ -1068,7 +1068,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 						const FBXDocParser::Model *model = target_node->fbx_model;
 						const FBXDocParser::PropertyTable *props = model->Props();
 
-						Map<StringName, FBXTrack> &track_data = track->value();
+						RBMap<StringName, FBXTrack> &track_data = track->value();
 						FBXTrack &translation_keys = track_data[StringName("T")];
 						FBXTrack &rotation_keys = track_data[StringName("R")];
 						FBXTrack &scale_keys = track_data[StringName("S")];
@@ -1255,14 +1255,14 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	state.fbx_target_map.clear();
 	state.fbx_node_list.clear();
 
-	for (Map<uint64_t, Ref<FBXBone>>::Element *element = state.fbx_bone_map.front(); element; element = element->next()) {
+	for (RBMap<uint64_t, Ref<FBXBone>>::Element *element = state.fbx_bone_map.front(); element; element = element->next()) {
 		Ref<FBXBone> bone = element->value();
 		bone->parent_bone.unref();
 		bone->node.unref();
 		bone->fbx_skeleton.unref();
 	}
 
-	for (Map<uint64_t, Ref<FBXSkeleton>>::Element *element = state.skeleton_map.front(); element; element = element->next()) {
+	for (RBMap<uint64_t, Ref<FBXSkeleton>>::Element *element = state.skeleton_map.front(); element; element = element->next()) {
 		Ref<FBXSkeleton> skel = element->value();
 		skel->fbx_node.unref();
 		skel->skeleton_bones.clear();
