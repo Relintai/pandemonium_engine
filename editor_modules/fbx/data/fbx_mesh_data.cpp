@@ -404,7 +404,7 @@ MeshInstance *FBXMeshData::create_fbx_mesh(const ImportState &state, const FBXDo
 }
 
 void FBXMeshData::sanitize_vertex_weights(const ImportState &state) {
-	const int max_vertex_influence_count = VS::ARRAY_WEIGHTS_SIZE;
+	const int max_vertex_influence_count = RS::ARRAY_WEIGHTS_SIZE;
 	RBMap<int, int> skeleton_to_skin_bind_id;
 	// TODO: error's need added
 	const FBXDocParser::Skin *fbx_skin = mesh_geometry->DeformerSkin();
@@ -803,7 +803,7 @@ void FBXMeshData::add_vertex(
 
 		// the bug is that the bone idx is wrong because it is not ref'ing the skin.
 
-		if (bones.size() > VS::ARRAY_WEIGHTS_SIZE) {
+		if (bones.size() > RS::ARRAY_WEIGHTS_SIZE) {
 			print_error("[weight overflow detected]");
 		}
 
