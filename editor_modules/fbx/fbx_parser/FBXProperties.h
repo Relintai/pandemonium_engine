@@ -88,6 +88,14 @@ namespace FBXDocParser {
 // Forward declarations
 class Element;
 
+#define FBXPROPERTY(m_class, m_inherits)                                                   \
+public:                                                                                    \
+	virtual bool is_class_ptr(void *p_ptr) const {                                         \
+		return (p_ptr == get_class_ptr_static()) ? true : m_inherits::is_class_ptr(p_ptr); \
+	}                                                                                      \
+                                                                                           \
+private:
+
 /** Represents a dynamic property. Type info added by deriving classes,
  *  see #TypedProperty.
  Example:
@@ -103,14 +111,32 @@ public:
 	virtual ~Property();
 
 public:
+	static void *get_class_ptr_static() {
+		static int ptr;
+		return &ptr;
+	}
+
+	virtual bool is_class_ptr(void *p_ptr) const {
+		return get_class_ptr_static() == p_ptr;
+	}
+
 	template <typename T>
 	const T *As() const {
+#ifndef NO_SAFE_CAST
 		return dynamic_cast<const T *>(this);
+#else
+		if (is_class_ptr(T::get_class_ptr_static()))
+			return static_cast<const T *>(this);
+		else
+			return NULL;
+#endif
 	}
 };
 
 template <typename T>
 class TypedProperty : public Property {
+	FBXPROPERTY(TypedProperty, Property);
+
 public:
 	explicit TypedProperty(const T &value) :
 			value(value) {
