@@ -1,5 +1,6 @@
 #ifndef TTS_OSX_H
 #define TTS_OSX_H
+
 /*************************************************************************/
 /*  tts_osx.h                                                            */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"

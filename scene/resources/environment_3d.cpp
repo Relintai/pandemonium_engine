@@ -1325,4 +1325,3 @@ Environment3D::Environment3D() :
 Environment3D::~Environment3D() {
 	RS::get_singleton()->free(environment);
 }
-

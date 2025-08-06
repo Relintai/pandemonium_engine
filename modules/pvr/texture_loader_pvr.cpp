@@ -574,7 +574,7 @@ static void decompress_pvrtc(PVRTCBlock *p_comp_img, const int p_2bit, const int
 					p_2bit, x, y,
 					BSig);
 
-			get_modulation_value(x, y, p_2bit, (const int(*)[16])p_modulation, (const int(*)[16])p_modulation_modes,
+			get_modulation_value(x, y, p_2bit, (const int (*)[16])p_modulation, (const int (*)[16])p_modulation_modes,
 					&Mod, &DoPT);
 
 			for (i = 0; i < 4; i++) {

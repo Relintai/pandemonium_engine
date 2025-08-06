@@ -97,9 +97,9 @@ void LoggerBackend::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_log_error", PropertyInfo(Variant::STRING, "str")));
 	BIND_VMETHOD(MethodInfo("_log_important", PropertyInfo(Variant::STRING, "str")));
 	BIND_VMETHOD(MethodInfo("_log_custom",
-												PropertyInfo(Variant::STRING_NAME, "category"),
-												PropertyInfo(Variant::INT, "level"),
-												PropertyInfo(Variant::STRING, "str")));
+			PropertyInfo(Variant::STRING_NAME, "category"),
+			PropertyInfo(Variant::INT, "level"),
+			PropertyInfo(Variant::STRING, "str")));
 
 	ClassDB::bind_method(D_METHOD("log_trace", "str"), &LoggerBackend::log_trace);
 	ClassDB::bind_method(D_METHOD("log_message", "str"), &LoggerBackend::log_message);

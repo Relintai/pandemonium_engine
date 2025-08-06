@@ -355,9 +355,9 @@ void XMLParser::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_node_offset"), &XMLParser::get_node_offset);
 	ClassDB::bind_method(D_METHOD("get_attribute_count"), &XMLParser::get_attribute_count);
 	ClassDB::bind_method(D_METHOD("get_attribute_name", "idx"), &XMLParser::get_attribute_name);
-	ClassDB::bind_method(D_METHOD("get_attribute_value", "idx"), (String(XMLParser::*)(int) const) & XMLParser::get_attribute_value);
+	ClassDB::bind_method(D_METHOD("get_attribute_value", "idx"), (String (XMLParser::*)(int) const) & XMLParser::get_attribute_value);
 	ClassDB::bind_method(D_METHOD("has_attribute", "name"), &XMLParser::has_attribute);
-	ClassDB::bind_method(D_METHOD("get_named_attribute_value", "name"), (String(XMLParser::*)(const String &) const) & XMLParser::get_attribute_value);
+	ClassDB::bind_method(D_METHOD("get_named_attribute_value", "name"), (String (XMLParser::*)(const String &) const) & XMLParser::get_attribute_value);
 	ClassDB::bind_method(D_METHOD("get_named_attribute_value_safe", "name"), &XMLParser::get_attribute_value_safe);
 	ClassDB::bind_method(D_METHOD("is_empty"), &XMLParser::is_empty);
 	ClassDB::bind_method(D_METHOD("get_current_line"), &XMLParser::get_current_line);

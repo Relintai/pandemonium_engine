@@ -77,14 +77,14 @@ Node *SceneState::instance(GenEditState p_edit_state) const {
 	// nodes where instancing failed (because something is missing)
 	List<Node *> stray_instances;
 
-#define NODE_FROM_ID(p_name, p_id)                   \
-	Node *p_name;                                    \
-	if (p_id & FLAG_ID_IS_PATH) {                    \
-		NodePath np = node_paths[p_id & FLAG_MASK];  \
-		p_name = ret_nodes[0]->get_node_or_null(np); \
-	} else {                                         \
-		ERR_FAIL_INDEX_V(p_id &FLAG_MASK, nc, NULL); \
-		p_name = ret_nodes[p_id & FLAG_MASK];        \
+#define NODE_FROM_ID(p_name, p_id)                    \
+	Node *p_name;                                     \
+	if (p_id & FLAG_ID_IS_PATH) {                     \
+		NodePath np = node_paths[p_id & FLAG_MASK];   \
+		p_name = ret_nodes[0]->get_node_or_null(np);  \
+	} else {                                          \
+		ERR_FAIL_INDEX_V(p_id & FLAG_MASK, nc, NULL); \
+		p_name = ret_nodes[p_id & FLAG_MASK];         \
 	}
 
 	int nc = nodes.size();

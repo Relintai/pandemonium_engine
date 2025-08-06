@@ -1,5 +1,6 @@
 #ifndef TTS_IOS_H
 #define TTS_IOS_H
+
 /*************************************************************************/
 /*  tts_ios.h                                                            */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #if __has_include(<AVFAudio/AVSpeechSynthesis.h>)
 #import <AVFAudio/AVSpeechSynthesis.h>

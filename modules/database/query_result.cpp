@@ -81,7 +81,7 @@ int QueryResult::get_cell_count() {
 }
 
 int QueryResult::get_current_cell_index() const {
-	return  _current_cell_index;
+	return _current_cell_index;
 }
 void QueryResult::set_current_cell_index(const int p_index) {
 	_current_cell_index = p_index;

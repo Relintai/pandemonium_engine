@@ -145,7 +145,6 @@ void PreparedStatement::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_last_insert_rowid"), &PreparedStatement::get_last_insert_rowid);
 
-
 	ClassDB::bind_method(D_METHOD("get_current_column_index"), &PreparedStatement::get_current_column_index);
 	ClassDB::bind_method(D_METHOD("set_current_column_index", "index"), &PreparedStatement::set_current_column_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_column_index"), "set_current_column_index", "get_current_column_index");

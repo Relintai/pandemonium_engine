@@ -254,114 +254,114 @@ bool Variant::booleanize() const {
 		_RETURN(p_a._data.m_type);                              \
 	};
 
-#define DEFAULT_OP_NUM_VEC(m_prefix, m_op_name, m_name, m_op, m_type)                           \
-	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                    \
-		if (p_b.type == INT)                                                                    \
-			_RETURN(p_a._data.m_type m_op p_b._data._int);                                      \
-		if (p_b.type == REAL)                                                                   \
-			_RETURN(p_a._data.m_type m_op p_b._data._real);                                     \
-		if (p_b.type == VECTOR2)                                                                \
-			_RETURN(p_a._data.m_type m_op *reinterpret_cast<const Vector2 *>(p_b._data._mem));  \
-		if (p_b.type == VECTOR2I)                                                               \
-			_RETURN(p_a._data.m_type m_op *reinterpret_cast<const Vector2i *>(p_b._data._mem)); \
-		if (p_b.type == VECTOR3)                                                                \
-			_RETURN(p_a._data.m_type m_op *reinterpret_cast<const Vector3 *>(p_b._data._mem));  \
-		if (p_b.type == VECTOR3I)                                                               \
-			_RETURN(p_a._data.m_type m_op *reinterpret_cast<const Vector3i *>(p_b._data._mem)); \
-		if (p_b.type == VECTOR4)                                                                \
-			_RETURN(p_a._data.m_type m_op *reinterpret_cast<const Vector4 *>(p_b._data._mem));  \
-		if (p_b.type == VECTOR4I)                                                               \
-			_RETURN(p_a._data.m_type m_op *reinterpret_cast<const Vector4i *>(p_b._data._mem)); \
-                                                                                                \
-		_RETURN_FAIL                                                                            \
+#define DEFAULT_OP_NUM_VEC(m_prefix, m_op_name, m_name, m_op, m_type)                            \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                     \
+		if (p_b.type == INT)                                                                     \
+			_RETURN(p_a._data.m_type m_op p_b._data._int);                                       \
+		if (p_b.type == REAL)                                                                    \
+			_RETURN(p_a._data.m_type m_op p_b._data._real);                                      \
+		if (p_b.type == VECTOR2)                                                                 \
+			_RETURN(p_a._data.m_type m_op * reinterpret_cast<const Vector2 *>(p_b._data._mem));  \
+		if (p_b.type == VECTOR2I)                                                                \
+			_RETURN(p_a._data.m_type m_op * reinterpret_cast<const Vector2i *>(p_b._data._mem)); \
+		if (p_b.type == VECTOR3)                                                                 \
+			_RETURN(p_a._data.m_type m_op * reinterpret_cast<const Vector3 *>(p_b._data._mem));  \
+		if (p_b.type == VECTOR3I)                                                                \
+			_RETURN(p_a._data.m_type m_op * reinterpret_cast<const Vector3i *>(p_b._data._mem)); \
+		if (p_b.type == VECTOR4)                                                                 \
+			_RETURN(p_a._data.m_type m_op * reinterpret_cast<const Vector4 *>(p_b._data._mem));  \
+		if (p_b.type == VECTOR4I)                                                                \
+			_RETURN(p_a._data.m_type m_op * reinterpret_cast<const Vector4i *>(p_b._data._mem)); \
+                                                                                                 \
+		_RETURN_FAIL                                                                             \
 	};
 
-#define DEFAULT_OP_STR_REV(m_prefix, m_op_name, m_name, m_op, m_type)                                                              \
-	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                       \
-		if (p_b.type == STRING)                                                                                                    \
-			_RETURN(*reinterpret_cast<const m_type *>(p_b._data._mem) m_op *reinterpret_cast<const String *>(p_a._data._mem));     \
-		if (p_b.type == STRING_NAME)                                                                                               \
-			_RETURN(*reinterpret_cast<const m_type *>(p_b._data._mem) m_op *reinterpret_cast<const StringName *>(p_a._data._mem)); \
-		if (p_b.type == NODE_PATH)                                                                                                 \
-			_RETURN(*reinterpret_cast<const m_type *>(p_b._data._mem) m_op *reinterpret_cast<const NodePath *>(p_a._data._mem));   \
-                                                                                                                                   \
-		_RETURN_FAIL                                                                                                               \
+#define DEFAULT_OP_STR_REV(m_prefix, m_op_name, m_name, m_op, m_type)                                                               \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                        \
+		if (p_b.type == STRING)                                                                                                     \
+			_RETURN(*reinterpret_cast<const m_type *>(p_b._data._mem) m_op * reinterpret_cast<const String *>(p_a._data._mem));     \
+		if (p_b.type == STRING_NAME)                                                                                                \
+			_RETURN(*reinterpret_cast<const m_type *>(p_b._data._mem) m_op * reinterpret_cast<const StringName *>(p_a._data._mem)); \
+		if (p_b.type == NODE_PATH)                                                                                                  \
+			_RETURN(*reinterpret_cast<const m_type *>(p_b._data._mem) m_op * reinterpret_cast<const NodePath *>(p_a._data._mem));   \
+                                                                                                                                    \
+		_RETURN_FAIL                                                                                                                \
 	};
 
-#define DEFAULT_OP_STR(m_prefix, m_op_name, m_name, m_op, m_type)                                                                  \
-	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                       \
-		if (p_b.type == STRING)                                                                                                    \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const String *>(p_b._data._mem));     \
-		if (p_b.type == STRING_NAME)                                                                                               \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const StringName *>(p_b._data._mem)); \
-		if (p_b.type == NODE_PATH)                                                                                                 \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const NodePath *>(p_b._data._mem));   \
-                                                                                                                                   \
-		_RETURN_FAIL                                                                                                               \
+#define DEFAULT_OP_STR(m_prefix, m_op_name, m_name, m_op, m_type)                                                                   \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                        \
+		if (p_b.type == STRING)                                                                                                     \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const String *>(p_b._data._mem));     \
+		if (p_b.type == STRING_NAME)                                                                                                \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const StringName *>(p_b._data._mem)); \
+		if (p_b.type == NODE_PATH)                                                                                                  \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const NodePath *>(p_b._data._mem));   \
+                                                                                                                                    \
+		_RETURN_FAIL                                                                                                                \
 	};
 
-#define DEFAULT_OP_STR_NULL(m_prefix, m_op_name, m_name, m_op, m_type)                                                             \
-	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                       \
-		if (p_b.type == STRING)                                                                                                    \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const String *>(p_b._data._mem));     \
-		if (p_b.type == STRING_NAME)                                                                                               \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const StringName *>(p_b._data._mem)); \
-		if (p_b.type == NODE_PATH)                                                                                                 \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const NodePath *>(p_b._data._mem));   \
-		if (p_b.type == NIL)                                                                                                       \
-			_RETURN(!(p_b.type m_op NIL));                                                                                         \
-                                                                                                                                   \
-		_RETURN_FAIL                                                                                                               \
+#define DEFAULT_OP_STR_NULL(m_prefix, m_op_name, m_name, m_op, m_type)                                                              \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                        \
+		if (p_b.type == STRING)                                                                                                     \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const String *>(p_b._data._mem));     \
+		if (p_b.type == STRING_NAME)                                                                                                \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const StringName *>(p_b._data._mem)); \
+		if (p_b.type == NODE_PATH)                                                                                                  \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const NodePath *>(p_b._data._mem));   \
+		if (p_b.type == NIL)                                                                                                        \
+			_RETURN(!(p_b.type m_op NIL));                                                                                          \
+                                                                                                                                    \
+		_RETURN_FAIL                                                                                                                \
 	};
 
-#define DEFAULT_OP_STR_NULL_NP(m_prefix, m_op_name, m_name, m_op, m_type)                                                        \
-	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                     \
-		if (p_b.type == STRING)                                                                                                  \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const String *>(p_b._data._mem));   \
-		if (p_b.type == NODE_PATH)                                                                                               \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const NodePath *>(p_b._data._mem)); \
-		if (p_b.type == NIL)                                                                                                     \
-			_RETURN(!(p_b.type m_op NIL));                                                                                       \
-                                                                                                                                 \
-		_RETURN_FAIL                                                                                                             \
+#define DEFAULT_OP_STR_NULL_NP(m_prefix, m_op_name, m_name, m_op, m_type)                                                         \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                      \
+		if (p_b.type == STRING)                                                                                                   \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const String *>(p_b._data._mem));   \
+		if (p_b.type == NODE_PATH)                                                                                                \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const NodePath *>(p_b._data._mem)); \
+		if (p_b.type == NIL)                                                                                                      \
+			_RETURN(!(p_b.type m_op NIL));                                                                                        \
+                                                                                                                                  \
+		_RETURN_FAIL                                                                                                              \
 	};
 
-#define DEFAULT_OP_STR_NULL_SN(m_prefix, m_op_name, m_name, m_op, m_type)                                                          \
-	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                       \
-		if (p_b.type == STRING)                                                                                                    \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const String *>(p_b._data._mem));     \
-		if (p_b.type == STRING_NAME)                                                                                               \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const StringName *>(p_b._data._mem)); \
-		if (p_b.type == NIL)                                                                                                       \
-			_RETURN(!(p_b.type m_op NIL));                                                                                         \
-                                                                                                                                   \
-		_RETURN_FAIL                                                                                                               \
+#define DEFAULT_OP_STR_NULL_SN(m_prefix, m_op_name, m_name, m_op, m_type)                                                           \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                        \
+		if (p_b.type == STRING)                                                                                                     \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const String *>(p_b._data._mem));     \
+		if (p_b.type == STRING_NAME)                                                                                                \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const StringName *>(p_b._data._mem)); \
+		if (p_b.type == NIL)                                                                                                        \
+			_RETURN(!(p_b.type m_op NIL));                                                                                          \
+                                                                                                                                    \
+		_RETURN_FAIL                                                                                                                \
 	};
 
-#define DEFAULT_OP_LOCALMEM_REV(m_prefix, m_op_name, m_name, m_op, m_type)                                                     \
-	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                   \
-		if (p_b.type == m_name)                                                                                                \
-			_RETURN(*reinterpret_cast<const m_type *>(p_b._data._mem) m_op *reinterpret_cast<const m_type *>(p_a._data._mem)); \
-                                                                                                                               \
-		_RETURN_FAIL                                                                                                           \
+#define DEFAULT_OP_LOCALMEM_REV(m_prefix, m_op_name, m_name, m_op, m_type)                                                      \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                    \
+		if (p_b.type == m_name)                                                                                                 \
+			_RETURN(*reinterpret_cast<const m_type *>(p_b._data._mem) m_op * reinterpret_cast<const m_type *>(p_a._data._mem)); \
+                                                                                                                                \
+		_RETURN_FAIL                                                                                                            \
 	};
 
-#define DEFAULT_OP_LOCALMEM(m_prefix, m_op_name, m_name, m_op, m_type)                                                         \
-	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                   \
-		if (p_b.type == m_name)                                                                                                \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const m_type *>(p_b._data._mem)); \
-                                                                                                                               \
-		_RETURN_FAIL                                                                                                           \
+#define DEFAULT_OP_LOCALMEM(m_prefix, m_op_name, m_name, m_op, m_type)                                                          \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                    \
+		if (p_b.type == m_name)                                                                                                 \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const m_type *>(p_b._data._mem)); \
+                                                                                                                                \
+		_RETURN_FAIL                                                                                                            \
 	};
 
-#define DEFAULT_OP_LOCALMEM_NULL(m_prefix, m_op_name, m_name, m_op, m_type)                                                    \
-	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                   \
-		if (p_b.type == m_name)                                                                                                \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const m_type *>(p_b._data._mem)); \
-		if (p_b.type == NIL)                                                                                                   \
-			_RETURN(!(p_b.type m_op NIL));                                                                                     \
-                                                                                                                               \
-		_RETURN_FAIL                                                                                                           \
+#define DEFAULT_OP_LOCALMEM_NULL(m_prefix, m_op_name, m_name, m_op, m_type)                                                     \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                    \
+		if (p_b.type == m_name)                                                                                                 \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const m_type *>(p_b._data._mem)); \
+		if (p_b.type == NIL)                                                                                                    \
+			_RETURN(!(p_b.type m_op NIL));                                                                                      \
+                                                                                                                                \
+		_RETURN_FAIL                                                                                                            \
 	};
 
 #define DEFAULT_OP_LOCALMEM_NEG(m_prefix, m_op_name, m_name, m_type) \
@@ -374,16 +374,16 @@ bool Variant::booleanize() const {
 		_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem));  \
 	}
 
-#define DEFAULT_OP_LOCALMEM_NUM(m_prefix, m_op_name, m_name, m_op, m_type)                                                     \
-	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                   \
-		if (p_b.type == m_name)                                                                                                \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op *reinterpret_cast<const m_type *>(p_b._data._mem)); \
-		if (p_b.type == INT)                                                                                                   \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op p_b._data._int);                                    \
-		if (p_b.type == REAL)                                                                                                  \
-			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op p_b._data._real);                                   \
-                                                                                                                               \
-		_RETURN_FAIL                                                                                                           \
+#define DEFAULT_OP_LOCALMEM_NUM(m_prefix, m_op_name, m_name, m_op, m_type)                                                      \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                    \
+		if (p_b.type == m_name)                                                                                                 \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const m_type *>(p_b._data._mem)); \
+		if (p_b.type == INT)                                                                                                    \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op p_b._data._int);                                     \
+		if (p_b.type == REAL)                                                                                                   \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op p_b._data._real);                                    \
+                                                                                                                                \
+		_RETURN_FAIL                                                                                                            \
 	}
 
 #define DEFAULT_OP_PTR(m_op, m_name, m_sub)                \
@@ -397,7 +397,7 @@ bool Variant::booleanize() const {
 #define DEFAULT_OP_PTRREF(m_prefix, m_op_name, m_name, m_op, m_sub) \
 	CASE_TYPE(m_prefix, m_op_name, m_name) {                        \
 		if (p_b.type == m_name)                                     \
-			_RETURN(*p_a._data.m_sub m_op *p_b._data.m_sub);        \
+			_RETURN(*p_a._data.m_sub m_op * p_b._data.m_sub);       \
                                                                     \
 		_RETURN_FAIL                                                \
 	}
@@ -405,7 +405,7 @@ bool Variant::booleanize() const {
 #define DEFAULT_OP_PTRREF_NULL(m_prefix, m_op_name, m_name, m_op, m_sub) \
 	CASE_TYPE(m_prefix, m_op_name, m_name) {                             \
 		if (p_b.type == m_name)                                          \
-			_RETURN(*p_a._data.m_sub m_op *p_b._data.m_sub);             \
+			_RETURN(*p_a._data.m_sub m_op * p_b._data.m_sub);            \
 		if (p_b.type == NIL)                                             \
 			_RETURN(!(p_b.type m_op NIL));                               \
                                                                          \

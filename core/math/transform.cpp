@@ -89,7 +89,7 @@ void Transform::set_look_at(const Vector3 &p_eye, const Vector3 &p_target, const
 
 Transform Transform::looking_at(const Vector3 &p_target, const Vector3 &p_up, bool p_use_model_front) const {
 	Transform t = *this;
-	t.set_look_at(origin, p_target, p_up,p_use_model_front);
+	t.set_look_at(origin, p_target, p_up, p_use_model_front);
 	return t;
 }
 

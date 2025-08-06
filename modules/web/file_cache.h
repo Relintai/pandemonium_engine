@@ -33,12 +33,11 @@
 /*************************************************************************/
 
 #include "core/containers/hash_map.h"
-#include "core/containers/hash_map.h"
 #include "core/containers/vector.h"
 #include "core/os/os.h"
 #include "core/os/rw_lock.h"
-#include "core/string/ustring.h"
 #include "core/string/string_name.h"
+#include "core/string/ustring.h"
 
 #include "core/object/reference.h"
 

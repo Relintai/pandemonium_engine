@@ -153,8 +153,8 @@
 #include "modules/props/singleton/prop_utils.h"
 #include "props/prop_data_entity.h"
 #include "props/prop_data_ess_entity_world_spawner_3d.h"
-#include "props/prop_data_ess_entity_world_spawner_3d_single.h"
 #include "props/prop_data_ess_entity_world_spawner_3d_area.h"
+#include "props/prop_data_ess_entity_world_spawner_3d_single.h"
 #endif
 
 #include "world_spawners/ess_entity_world_spawner_2d.cpp"
@@ -320,7 +320,7 @@ void register_entity_spell_system_types(ModuleRegistrationLevel p_level) {
 
 		Ref<PropDataESSEntityWorldSpawner3DSingle> world_spawner_single_processor = Ref<PropDataESSEntityWorldSpawner3DSingle>(memnew(PropDataESSEntityWorldSpawner3DSingle));
 		PropUtils::add_processor(world_spawner_single_processor);
-		
+
 		Ref<PropDataESSEntityWorldSpawner3DArea> world_spawner_area_processor = Ref<PropDataESSEntityWorldSpawner3DArea>(memnew(PropDataESSEntityWorldSpawner3DArea));
 		PropUtils::add_processor(world_spawner_area_processor);
 #endif

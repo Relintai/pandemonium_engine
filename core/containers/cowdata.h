@@ -171,7 +171,7 @@ public:
 	Error insert(int p_pos, const T &p_val) {
 		int new_size = size() + 1;
 
-		ERR_FAIL_INDEX_V(p_pos, new_size , ERR_INVALID_PARAMETER);
+		ERR_FAIL_INDEX_V(p_pos, new_size, ERR_INVALID_PARAMETER);
 
 		Error err = resize(new_size);
 		ERR_FAIL_COND_V(err, err);

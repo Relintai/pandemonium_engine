@@ -370,7 +370,7 @@ void UserManagerDB::_drop_table() {
 	Ref<TableBuilder> tb = get_table_builder();
 
 	tb->drop_table_if_exists(_database_table_name)->run_query();
-	
+
 	get_database_connection()->set_table_version(_database_table_name, -1);
 }
 

@@ -47,7 +47,7 @@ class JavaClass : public Reference {
 	GDCLASS(JavaClass, Reference);
 
 #ifdef ANDROID_ENABLED
-	enum ArgumentType{
+	enum ArgumentType {
 
 		ARG_TYPE_VOID,
 		ARG_TYPE_BOOLEAN,

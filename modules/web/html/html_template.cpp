@@ -612,7 +612,6 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 	// {{ qprb(var) }} // Same as prb, but only prints when it's first argument evaluates to true
 	// {{ qvf("%d %d", var1, var2) }} // Same as vf, but only prints when it's first argument evaluates to true
 
-
 	int text_length = p_text.length();
 
 	if (text_length == 0) {

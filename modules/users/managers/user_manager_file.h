@@ -78,7 +78,7 @@ protected:
 	RWLock _rw_lock;
 
 	String _save_folder_path;
-	
+
 	int _next_id;
 };
 

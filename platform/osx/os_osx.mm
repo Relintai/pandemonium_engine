@@ -1717,8 +1717,10 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 
 	// Fail if a robustness strategy was requested
 
-#define ADD_ATTR(x) \
-	{ attributes[attributeCount++] = x; }
+#define ADD_ATTR(x)                       \
+	{                                     \
+		attributes[attributeCount++] = x; \
+	}
 #define ADD_ATTR2(x, y) \
 	{                   \
 		ADD_ATTR(x);    \
@@ -1809,7 +1811,7 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	if (p_desired.fullscreen)
 		zoomed = true;
 
-		/*** END OSX INITIALIZATION ***/
+	/*** END OSX INITIALIZATION ***/
 
 #ifndef GLES3_DISABLED
 	bool gles3 = true;

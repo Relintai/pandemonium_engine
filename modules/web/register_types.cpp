@@ -40,8 +40,8 @@
 #include "html/html_builder_bind.h"
 #include "html/html_parser.h"
 #include "html/html_template.h"
-#include "html/html_template_multilang.h"
 #include "html/html_template_data.h"
+#include "html/html_template_multilang.h"
 #include "html/markdown_renderer.h"
 #include "html/paginator.h"
 
@@ -136,7 +136,7 @@ void register_web_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<HTTPSessionManager>();
 		ClassDB::register_class<HTTPSessionManagerFile>();
 		ClassDB::register_class<SessionSetupWebServerMiddleware>();
-		
+
 		ClassDB::register_class<WebNode>();
 		ClassDB::register_class<WebPermission>();
 		ClassDB::register_class<WebRoot>();

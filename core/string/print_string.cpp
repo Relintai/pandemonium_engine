@@ -139,4 +139,3 @@ void force_print_error(String p_string) {
 
 	_global_unlock();
 }
-

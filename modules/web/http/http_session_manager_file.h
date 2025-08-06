@@ -32,8 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/string/ustring.h"
 #include "core/object/reference.h"
+#include "core/string/ustring.h"
 #include "http_session_manager.h"
 
 class HTTPSession;
@@ -58,7 +58,7 @@ protected:
 	static void _bind_methods();
 
 	String _save_folder_path;
-	
+
 	int _next_id;
 };
 

@@ -1,5 +1,6 @@
 #ifndef TTS_LINUX_H
 #define TTS_LINUX_H
+
 /*************************************************************************/
 /*  tts_linux.h                                                          */
 /*************************************************************************/
@@ -30,9 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-
-
 
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"

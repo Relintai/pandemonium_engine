@@ -367,7 +367,6 @@ void PLogger::log_custom(const StringName &p_category, const int p_level, const 
 }
 void PLogger::log_custom(const StringName &p_category, const int p_level, const char *p_function, const char *p_file, int p_line, const char *str) {
 	if (_backend.is_valid()) {
-
 		String s;
 		s += p_file;
 		s += "::";
@@ -406,7 +405,6 @@ void PLogger::log_custom(const StringName &p_category, const int p_level, const 
 }
 void PLogger::log_custom(const StringName &p_category, const int p_level, const char *p_function, const char *p_file, int p_line, const String &str) {
 	if (_backend.is_valid()) {
-
 		String s;
 		s += p_file;
 		s += "::";

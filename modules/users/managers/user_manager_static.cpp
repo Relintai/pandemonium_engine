@@ -99,7 +99,7 @@ bool UserManagerStatic::_is_username_taken(const String &p_user_name) {
 }
 bool UserManagerStatic::_is_email_taken(const String &p_email) {
 	String email = User::string_to_internal_format(p_email);
-	
+
 	for (int i = 0; i < _users.size(); ++i) {
 		Ref<User> u = _users[i];
 

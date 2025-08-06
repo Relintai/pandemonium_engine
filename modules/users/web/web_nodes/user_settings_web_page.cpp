@@ -75,7 +75,6 @@ void UserSettingsWebPage::_render_index(Ref<WebServerRequest> request) {
 				data.email_val = "";
 			}
 
-
 			if (data.uname_val != "") {
 				if (UserDB::get_singleton()->is_username_taken(data.uname_val)) {
 					data.error_str += "Username already taken!<br>";
