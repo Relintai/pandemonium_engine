@@ -183,7 +183,7 @@ Transform PivotTransform::ComputeGlobalTransform(Vector3 p_translation, Quaterni
 
 	Transform local_rotation_m, parent_global_rotation_m;
 	Quaternion parent_global_rotation = parent_global_xform.basis.get_rotation_quaternion();
-	parent_global_rotation_m.basis.set_quat(parent_global_rotation);
+	parent_global_rotation_m.basis.set_quaternion(parent_global_rotation);
 	local_rotation_m = Rpre * R * Rpost;
 
 	//Basis parent_global_rotation = Basis(parent_global_xform.get_basis().get_rotation_quaternion().normalized());
@@ -248,7 +248,7 @@ void PivotTransform::ComputePivotTransform() {
 
 	Transform local_rotation_m, parent_global_rotation_m;
 	Quaternion parent_global_rotation = parent_global_xform.basis.get_rotation_quaternion();
-	parent_global_rotation_m.basis.set_quat(parent_global_rotation);
+	parent_global_rotation_m.basis.set_quaternion(parent_global_rotation);
 	local_rotation_m = Rpre * R * Rpost;
 
 	//Basis parent_global_rotation = Basis(parent_global_xform.get_basis().get_rotation_quaternion().normalized());
