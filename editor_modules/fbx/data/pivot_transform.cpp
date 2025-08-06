@@ -42,12 +42,12 @@ void PivotTransform::ReadTransformChain() {
 	bool ok = false;
 	raw_pre_rotation = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "PreRotation", ok));
 	if (ok) {
-		pre_rotation = ImportUtils::EulerToQuaternionernion(rot, ImportUtils::deg2rad(raw_pre_rotation));
+		pre_rotation = ImportUtils::EulerToQuaternion(rot, ImportUtils::deg2rad(raw_pre_rotation));
 		print_verbose("valid pre_rotation: " + raw_pre_rotation + " euler conversion: " + (pre_rotation.get_euler() * (180 / Math_PI)));
 	}
 	raw_post_rotation = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "PostRotation", ok));
 	if (ok) {
-		post_rotation = ImportUtils::EulerToQuaternionernion(FBXDocParser::Model::RotOrder_EulerXYZ, ImportUtils::deg2rad(raw_post_rotation));
+		post_rotation = ImportUtils::EulerToQuaternion(FBXDocParser::Model::RotOrder_EulerXYZ, ImportUtils::deg2rad(raw_post_rotation));
 		print_verbose("valid post_rotation: " + raw_post_rotation + " euler conversion: " + (pre_rotation.get_euler() * (180 / Math_PI)));
 	}
 	const Vector3 &RotationPivot = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "RotationPivot", ok));
@@ -72,7 +72,7 @@ void PivotTransform::ReadTransformChain() {
 	}
 	raw_rotation = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "Lcl Rotation", ok));
 	if (ok) {
-		rotation = ImportUtils::EulerToQuaternionernion(rot, ImportUtils::deg2rad(raw_rotation));
+		rotation = ImportUtils::EulerToQuaternion(rot, ImportUtils::deg2rad(raw_rotation));
 	}
 	const Vector3 &Scaling = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "Lcl Scaling", ok));
 	if (ok) {
@@ -87,7 +87,7 @@ void PivotTransform::ReadTransformChain() {
 
 	const Vector3 &GeometricRotation = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "GeometricRotation", ok));
 	if (ok) {
-		geometric_rotation = ImportUtils::EulerToQuaternionernion(rot, ImportUtils::deg2rad(GeometricRotation));
+		geometric_rotation = ImportUtils::EulerToQuaternion(rot, ImportUtils::deg2rad(GeometricRotation));
 	} else {
 		geometric_rotation = Quaternion();
 	}
