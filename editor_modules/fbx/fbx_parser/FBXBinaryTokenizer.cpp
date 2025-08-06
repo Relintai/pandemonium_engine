@@ -78,7 +78,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ByteSwapper.h"
 #include "FBXTokenizer.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 #include <stdint.h>
 

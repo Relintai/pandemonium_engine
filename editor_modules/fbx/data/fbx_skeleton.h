@@ -36,12 +36,12 @@
 #include "fbx_node.h"
 #include "model_abstraction.h"
 
-#include "core/reference.h"
-#include "scene/3d/skeleton.h"
+#include "core/object/reference.h"
 
 struct FBXNode;
 struct ImportState;
 struct FBXBone;
+class Skeleton;
 
 struct FBXSkeleton : Reference {
 	Ref<FBXNode> fbx_node = Ref<FBXNode>();

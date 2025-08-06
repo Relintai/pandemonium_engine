@@ -36,7 +36,7 @@
 #include "model_abstraction.h"
 #include "pivot_transform.h"
 
-#include "fbx_parser/FBXDocument.h"
+#include "../fbx_parser/FBXDocument.h"
 
 class Spatial;
 struct PivotTransform;

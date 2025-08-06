@@ -32,7 +32,7 @@
 #include "fbx_material.h"
 #include "scene/resources/material.h"
 #include "scene/resources/texture.h"
-#include "tools/validation_tools.h"
+#include "../tools/validation_tools.h"
 
 String FBXMaterial::get_material_name() const {
 	return material_name;

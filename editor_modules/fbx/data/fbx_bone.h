@@ -35,7 +35,7 @@
 #include "fbx_node.h"
 #include "import_state.h"
 
-#include "fbx_parser/FBXDocument.h"
+#include "../fbx_parser/FBXDocument.h"
 
 struct PivotTransform;
 

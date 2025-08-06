@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "modules/fbx/fbx_parser/FBXDocument.h"
+#include "../fbx_parser/FBXDocument.h"
 
 struct ModelAbstraction {
 	mutable const FBXDocParser::Model *fbx_model = nullptr;

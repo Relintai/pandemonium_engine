@@ -32,10 +32,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "tools/import_utils.h"
+#include "../tools/import_utils.h"
 
-#include "core/reference.h"
-#include "core/ustring.h"
+#include "core/object/reference.h"
+#include "core/string/ustring.h"
 
 struct FBXMaterial : public Reference {
 	String material_name = String();

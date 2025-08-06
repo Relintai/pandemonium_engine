@@ -33,8 +33,8 @@
 
 #ifdef TOOLS_ENABLED
 
-#include "core/print_string.h"
-#include "core/ustring.h"
+#include "core/string/print_string.h"
+#include "core/string/ustring.h"
 
 ValidationTracker::Entries *ValidationTracker::entries_singleton = memnew(ValidationTracker::Entries);
 

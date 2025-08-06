@@ -31,9 +31,9 @@
 
 #include "fbx_mesh_data.h"
 
-#include "core/local_vector.h"
-#include "scene/resources/mesh.h"
-#include "scene/resources/surface_tool.h"
+#include "core/containers/local_vector.h"
+#include "scene/resources/mesh/mesh.h"
+#include "scene/resources/mesh/surface_tool.h"
 
 #include "thirdparty/misc/triangulator.h"
 

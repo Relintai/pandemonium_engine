@@ -34,17 +34,17 @@
 
 #ifdef TOOLS_ENABLED
 
-#include "core/local_vector.h"
-#include "core/map.h"
-#include "core/ustring.h"
-#include <core/io/json.h>
-#include <core/os/file_access.h>
-#include <scene/3d/path.h>
+#include "core/containers/local_vector.h"
+#include "core/containers/rb_map.h"
+#include "core/string/ustring.h"
+#include "core/io/json.h"
+#include "core/os/file_access.h"
+#include "scene/3d/path.h"
 
 class ValidationTracker {
 protected:
 	struct Entries {
-		Map<String, LocalVector<String>> validation_entries = Map<String, LocalVector<String>>();
+		RBMap<String, LocalVector<String>> validation_entries = RBMap<String, LocalVector<String>>();
 
 		// for printing our CSV to dump validation problems of files
 		// later we can make some agnostic tooling for this but this is fine for the time being.
@@ -56,7 +56,7 @@ protected:
 			String csv_header = "file_path, error message, extra data\n";
 			massive_log_file += csv_header;
 
-			for (Map<String, LocalVector<String>>::Element *element = validation_entries.front(); element; element = element->next()) {
+			for (RBMap<String, LocalVector<String>>::Element *element = validation_entries.front(); element; element = element->next()) {
 				for (unsigned int x = 0; x < element->value().size(); x++) {
 					const String &line_entry = element->key() + ", " + element->value()[x].c_escape() + "\n";
 					massive_log_file += line_entry;

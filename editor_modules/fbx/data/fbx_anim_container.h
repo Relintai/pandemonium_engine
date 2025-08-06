@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 // Generic keyframes 99.99 percent of files will be vector3, except if quat interp is used, or visibility tracks
 // FBXTrack is used in a map in the implementation in fbx/editor_scene_importer_fbx.cpp

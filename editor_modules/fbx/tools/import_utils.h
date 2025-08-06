@@ -34,8 +34,8 @@
 
 #include "core/io/image_loader.h"
 
-#include "data/import_state.h"
-#include "fbx_parser/FBXDocument.h"
+#include "../data/import_state.h"
+#include "../fbx_parser/FBXDocument.h"
 
 #include <string>
 

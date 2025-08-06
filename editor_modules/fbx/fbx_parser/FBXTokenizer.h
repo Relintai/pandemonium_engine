@@ -78,7 +78,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "FBXParseTools.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include <iostream>
 #include <memory>
 #include <string>

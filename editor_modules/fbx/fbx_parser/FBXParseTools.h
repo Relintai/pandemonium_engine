@@ -32,8 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/error_macros.h"
-#include "core/ustring.h"
+#include "core/error/error_macros.h"
+#include "core/string/ustring.h"
 
 #include <stdint.h>
 #include <algorithm>

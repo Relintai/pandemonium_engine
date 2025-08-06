@@ -32,14 +32,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "scene/3d/mesh_instance.h"
-#include "scene/resources/surface_tool.h"
+#include "scene/resources/mesh/surface_tool.h"
 
 #include "fbx_bone.h"
-#include "fbx_parser/FBXMeshGeometry.h"
+#include "../fbx_parser/FBXMeshGeometry.h"
 #include "import_state.h"
-#include "tools/import_utils.h"
+#include "../tools/import_utils.h"
 
 struct FBXNode;
 struct FBXMeshData;
