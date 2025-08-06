@@ -11,8 +11,16 @@ env_fbx.Prepend(CPPPATH=["#modules/fbx/"])
 if env["builtin_zlib"]:
     env_fbx.Prepend(CPPPATH=["#thirdparty/zlib/"])
 
-# Godot source files
+if not env.msvc:
+    env_fbx["CXXFLAGS"].remove("-fno-rtti")
+    env_fbx.Append(CXXFLAGS=["-frtti"])
+else:
+    env_fbx["CXXFLAGS"].remove("/GR-")
+    env_fbx.Append(CXXFLAGS=["/GR"])
+
+# Source files
 env_fbx.add_source_files(env.modules_sources, "tools/*.cpp")
 env_fbx.add_source_files(env.modules_sources, "data/*.cpp")
 env_fbx.add_source_files(env.modules_sources, "fbx_parser/*.cpp")
 env_fbx.add_source_files(env.modules_sources, "*.cpp")
+
