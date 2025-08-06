@@ -85,7 +85,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "core/math/math_defs.h"
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 using namespace FBXDocParser;
 namespace {
