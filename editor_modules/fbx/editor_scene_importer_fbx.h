@@ -46,11 +46,11 @@
 #include "editor/import/resource_importer_scene.h"
 #include "editor/project_settings_editor.h"
 #include "scene/3d/mesh_instance.h"
-#include "scene/3d/skeleton.h"
-#include "scene/3d/spatial.h"
 #include "scene/animation/animation_player.h"
-#include "scene/resources/animation.h"
-#include "scene/resources/surface_tool.h"
+#include "scene/animation/animation.h"
+#include "scene/resources/mesh/surface_tool.h"
+
+#include "modules/skeleton_3d/nodes/skeleton.h"
 
 #include "fbx_parser/FBXDocument.h"
 #include "fbx_parser/FBXImportSettings.h"

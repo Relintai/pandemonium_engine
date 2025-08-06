@@ -41,13 +41,14 @@
 #include "editor/editor_log.h"
 #include "editor/editor_node.h"
 #include "editor/import/resource_importer_scene.h"
-#include "scene/3d/bone_attachment.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/main/node.h"
 #include "scene/resources/material/material.h"
 #include "scene/resources/material/spatial_material.h"
+
+#include "modules/skeleton_3d/nodes/bone_attachment.h"
 
 #include "fbx_parser/FBXDocument.h"
 #include "fbx_parser/FBXImportSettings.h"
