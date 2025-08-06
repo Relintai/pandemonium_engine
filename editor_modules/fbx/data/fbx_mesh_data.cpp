@@ -34,6 +34,7 @@
 #include "core/containers/local_vector.h"
 #include "scene/resources/mesh/mesh.h"
 #include "scene/resources/mesh/surface_tool.h"
+#include "core/containers/ordered_hash_map.h"
 
 #include "thirdparty/misc/triangulator.h"
 
