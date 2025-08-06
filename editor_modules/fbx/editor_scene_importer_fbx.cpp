@@ -48,6 +48,8 @@
 #include "scene/resources/material/material.h"
 #include "scene/resources/material/spatial_material.h"
 
+#include "core/config/project_settings.h"
+
 #include "modules/skeleton_3d/nodes/bone_attachment.h"
 
 #include "fbx_parser/FBXDocument.h"
@@ -60,8 +62,10 @@
 #include <string>
 
 void EditorSceneImporterFBX::get_extensions(List<String> *r_extensions) const {
+	GLOBAL_CACHED(use_fbx, bool, "filesystem/import/fbx/use_fbx")
+
 	// register FBX as the one and only format for FBX importing
-	if (GLOBAL_GET_CACHED(bool, "filesystem/import/fbx/use_fbx")) {
+	if (use_fbx) {
 		r_extensions->push_back("fbx");
 	}
 }
