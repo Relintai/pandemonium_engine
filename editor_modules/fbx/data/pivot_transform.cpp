@@ -42,12 +42,12 @@ void PivotTransform::ReadTransformChain() {
 	bool ok = false;
 	raw_pre_rotation = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "PreRotation", ok));
 	if (ok) {
-		pre_rotation = ImportUtils::EulerToQuaternion(rot, ImportUtils::deg2rad(raw_pre_rotation));
+		pre_rotation = ImportUtils::EulerToQuaternionernion(rot, ImportUtils::deg2rad(raw_pre_rotation));
 		print_verbose("valid pre_rotation: " + raw_pre_rotation + " euler conversion: " + (pre_rotation.get_euler() * (180 / Math_PI)));
 	}
 	raw_post_rotation = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "PostRotation", ok));
 	if (ok) {
-		post_rotation = ImportUtils::EulerToQuaternion(FBXDocParser::Model::RotOrder_EulerXYZ, ImportUtils::deg2rad(raw_post_rotation));
+		post_rotation = ImportUtils::EulerToQuaternionernion(FBXDocParser::Model::RotOrder_EulerXYZ, ImportUtils::deg2rad(raw_post_rotation));
 		print_verbose("valid post_rotation: " + raw_post_rotation + " euler conversion: " + (pre_rotation.get_euler() * (180 / Math_PI)));
 	}
 	const Vector3 &RotationPivot = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "RotationPivot", ok));
@@ -72,7 +72,7 @@ void PivotTransform::ReadTransformChain() {
 	}
 	raw_rotation = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "Lcl Rotation", ok));
 	if (ok) {
-		rotation = ImportUtils::EulerToQuaternion(rot, ImportUtils::deg2rad(raw_rotation));
+		rotation = ImportUtils::EulerToQuaternionernion(rot, ImportUtils::deg2rad(raw_rotation));
 	}
 	const Vector3 &Scaling = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "Lcl Scaling", ok));
 	if (ok) {
@@ -87,9 +87,9 @@ void PivotTransform::ReadTransformChain() {
 
 	const Vector3 &GeometricRotation = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "GeometricRotation", ok));
 	if (ok) {
-		geometric_rotation = ImportUtils::EulerToQuaternion(rot, ImportUtils::deg2rad(GeometricRotation));
+		geometric_rotation = ImportUtils::EulerToQuaternionernion(rot, ImportUtils::deg2rad(GeometricRotation));
 	} else {
-		geometric_rotation = Quat();
+		geometric_rotation = Quaternion();
 	}
 
 	const Vector3 &GeometricTranslation = ImportUtils::safe_import_vector3(FBXDocParser::PropertyGet<Vector3>(props, "GeometricTranslation", ok));
@@ -99,7 +99,7 @@ void PivotTransform::ReadTransformChain() {
 		geometric_translation = Vector3(0, 0, 0);
 	}
 
-	if (geometric_rotation != Quat()) {
+	if (geometric_rotation != Quaternion()) {
 		print_error("geometric rotation is unsupported!");
 		//CRASH_COND(true);
 	}
@@ -115,7 +115,7 @@ void PivotTransform::ReadTransformChain() {
 	}
 }
 
-Transform PivotTransform::ComputeLocalTransform(Vector3 p_translation, Quat p_rotation, Vector3 p_scaling) const {
+Transform PivotTransform::ComputeLocalTransform(Vector3 p_translation, Quaternion p_rotation, Vector3 p_scaling) const {
 	Transform T, Roff, Rp, Soff, Sp, S;
 
 	// Here I assume this is the operation which needs done.
@@ -141,18 +141,18 @@ Transform PivotTransform::ComputeLocalTransform(Vector3 p_translation, Quat p_ro
 Transform PivotTransform::ComputeGlobalTransform(Transform t) const {
 	Vector3 pos = t.origin;
 	Vector3 scale = t.basis.get_scale();
-	Quat rot = t.basis.get_rotation_quat();
+	Quaternion rot = t.basis.get_rotation_quat();
 	return ComputeGlobalTransform(pos, rot, scale);
 }
 
 Transform PivotTransform::ComputeLocalTransform(Transform t) const {
 	Vector3 pos = t.origin;
 	Vector3 scale = t.basis.get_scale();
-	Quat rot = t.basis.get_rotation_quat();
+	Quaternion rot = t.basis.get_rotation_quat();
 	return ComputeLocalTransform(pos, rot, scale);
 }
 
-Transform PivotTransform::ComputeGlobalTransform(Vector3 p_translation, Quat p_rotation, Vector3 p_scaling) const {
+Transform PivotTransform::ComputeGlobalTransform(Vector3 p_translation, Quaternion p_rotation, Vector3 p_scaling) const {
 	Transform T, Roff, Rp, Soff, Sp, S;
 
 	// Here I assume this is the operation which needs done.
@@ -182,7 +182,7 @@ Transform PivotTransform::ComputeGlobalTransform(Vector3 p_translation, Quat p_r
 	}
 
 	Transform local_rotation_m, parent_global_rotation_m;
-	Quat parent_global_rotation = parent_global_xform.basis.get_rotation_quat();
+	Quaternion parent_global_rotation = parent_global_xform.basis.get_rotation_quat();
 	parent_global_rotation_m.basis.set_quat(parent_global_rotation);
 	local_rotation_m = Rpre * R * Rpost;
 
@@ -247,7 +247,7 @@ void PivotTransform::ComputePivotTransform() {
 	}
 
 	Transform local_rotation_m, parent_global_rotation_m;
-	Quat parent_global_rotation = parent_global_xform.basis.get_rotation_quat();
+	Quaternion parent_global_rotation = parent_global_xform.basis.get_rotation_quat();
 	parent_global_rotation_m.basis.set_quat(parent_global_rotation);
 	local_rotation_m = Rpre * R * Rpost;
 

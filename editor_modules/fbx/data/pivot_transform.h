@@ -59,10 +59,10 @@ enum TransformationComp {
 struct PivotTransform : Reference, ModelAbstraction {
 	// at the end we want to keep geometric_ everything, post and pre rotation
 	// these are used during animation data processing / keyframe ingestion the rest can be simplified down / out.
-	Quat pre_rotation = Quat();
-	Quat post_rotation = Quat();
-	Quat rotation = Quat();
-	Quat geometric_rotation = Quat();
+	Quaternion pre_rotation = Quaternion();
+	Quaternion post_rotation = Quaternion();
+	Quaternion rotation = Quaternion();
+	Quaternion geometric_rotation = Quaternion();
 	Vector3 rotation_pivot = Vector3();
 	Vector3 rotation_offset = Vector3();
 	Vector3 scaling_offset = Vector3(1.0, 1.0, 1.0);
@@ -88,8 +88,8 @@ struct PivotTransform : Reference, ModelAbstraction {
 
 	Transform ComputeGlobalTransform(Transform t) const;
 	Transform ComputeLocalTransform(Transform t) const;
-	Transform ComputeGlobalTransform(Vector3 p_translation, Quat p_rotation, Vector3 p_scaling) const;
-	Transform ComputeLocalTransform(Vector3 p_translation, Quat p_rotation, Vector3 p_scaling) const;
+	Transform ComputeGlobalTransform(Vector3 p_translation, Quaternion p_rotation, Vector3 p_scaling) const;
+	Transform ComputeLocalTransform(Vector3 p_translation, Quaternion p_rotation, Vector3 p_scaling) const;
 
 	/* Extract into xforms and calculate once */
 	void ComputePivotTransform();
