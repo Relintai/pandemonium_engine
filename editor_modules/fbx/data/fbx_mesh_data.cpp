@@ -404,7 +404,7 @@ MeshInstance *FBXMeshData::create_fbx_mesh(const ImportState &state, const FBXDo
 
 void FBXMeshData::sanitize_vertex_weights(const ImportState &state) {
 	const int max_vertex_influence_count = VS::ARRAY_WEIGHTS_SIZE;
-	Map<int, int> skeleton_to_skin_bind_id;
+	RBMap<int, int> skeleton_to_skin_bind_id;
 	// TODO: error's need added
 	const FBXDocParser::Skin *fbx_skin = mesh_geometry->DeformerSkin();
 
