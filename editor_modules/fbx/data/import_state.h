@@ -58,6 +58,7 @@
 #include "../fbx_parser/FBXUtil.h"
 
 #include "modules/skeleton_3d/nodes/skeleton.h"
+#include "modules/skeleton_3d/resources/skin.h"
 
 struct FBXBone;
 struct FBXMeshData;
