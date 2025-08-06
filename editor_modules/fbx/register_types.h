@@ -32,7 +32,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_fbx_types();
-void unregister_fbx_types();
+#include "modules/register_module_types.h"
+
+void register_fbx_types(ModuleRegistrationLevel p_level);
+void unregister_fbx_types(ModuleRegistrationLevel p_level);
 
 #endif // FBX_REGISTER_TYPES_H

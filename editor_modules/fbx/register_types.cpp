@@ -42,18 +42,20 @@ static void _editor_init() {
 }
 #endif
 
-void register_fbx_types() {
+void register_fbx_types(ModuleRegistrationLevel p_level) {
 #ifdef TOOLS_ENABLED
-	ClassDB::APIType prev_api = ClassDB::get_current_api();
-	ClassDB::set_current_api(ClassDB::API_EDITOR);
+	if (p_level == MODULE_REGISTRATION_LEVEL_EDITOR) {
+		ClassDB::APIType prev_api = ClassDB::get_current_api();
+		ClassDB::set_current_api(ClassDB::API_EDITOR);
 
-	ClassDB::register_class<EditorSceneImporterFBX>();
+		ClassDB::register_class<EditorSceneImporterFBX>();
 
-	ClassDB::set_current_api(prev_api);
+		ClassDB::set_current_api(prev_api);
 
-	EditorNode::add_init_callback(_editor_init);
+		EditorNode::add_init_callback(_editor_init);
+	}
 #endif
 }
 
-void unregister_fbx_types() {
+void unregister_fbx_types(ModuleRegistrationLevel p_level) {
 }
