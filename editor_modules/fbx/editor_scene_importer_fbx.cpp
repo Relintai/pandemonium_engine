@@ -1010,7 +1010,9 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 						// track count is 5.
 						// next track id is 5.
 						const uint64_t target_id = track->key();
-						int track_idx = animation->add_track(Animation::TYPE_TRANSFORM);
+						int position_idx = animation->add_track(Animation::TYPE_POSITION_3D);
+						int rotation_idx = animation->add_track(Animation::TYPE_ROTATION_3D);
+						int scale_idx = animation->add_track(Animation::TYPE_SCALE_3D);
 
 						// animation->track_set_path(track_idx, node_path);
 						// animation->track_set_path(track_idx, node_path);
@@ -1044,7 +1046,9 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 								bone_path += ":" + fbx_skeleton->skeleton->get_bone_name(bone->godot_bone_id);
 								print_verbose("[doc] track bone path: " + bone_path);
 								NodePath path = bone_path;
-								animation->track_set_path(track_idx, path);
+								animation->track_set_path(position_idx, path);
+								animation->track_set_path(rotation_idx, path);
+								animation->track_set_path(scale_idx, path);
 							}
 						} else if (state.fbx_target_map.has(target_id)) {
 							//print_verbose("[doc] we have a valid target for a node animation");
@@ -1052,7 +1056,9 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 							if (target_node.is_valid() && target_node->godot_node != nullptr) {
 								String node_path = state.root->get_path_to(target_node->godot_node);
 								NodePath path = node_path;
-								animation->track_set_path(track_idx, path);
+								animation->track_set_path(position_idx, path);
+								animation->track_set_path(rotation_idx, path);
+								animation->track_set_path(scale_idx, path);
 								//print_verbose("[doc] node animation path: " + node_path);
 							}
 						} else {
@@ -1220,7 +1226,9 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 								pos = t.origin;
 							}
 
-							animation->transform_track_insert_key(track_idx, time, pos, rot, scale);
+							animation->position_track_insert_key(position_idx, time, pos);
+							animation->rotation_track_insert_key(rotation_idx, time, rot);
+							animation->scale_track_insert_key(scale_idx, time, scale);
 
 							if (last) {
 								break;
