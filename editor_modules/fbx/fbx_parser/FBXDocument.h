@@ -78,6 +78,48 @@ class Cluster;
 typedef Object *ObjectPtr;
 #define new_Object new Object
 
+#define FBXCLASS(m_class, m_inherits)                                                      \
+public:                                                                                    \
+	virtual bool is_class_ptr(void *p_ptr) const {                                         \
+		return (p_ptr == get_class_ptr_static()) ? true : m_inherits::is_class_ptr(p_ptr); \
+	}                                                                                      \
+                                                                                           \
+private:
+
+/** Base class for in-memory (DOM) representations of FBX objects */
+class Object {
+public:
+	Object(uint64_t id, const ElementPtr element, const std::string &name);
+
+	virtual ~Object();
+
+	static void *get_class_ptr_static() {
+		static int ptr;
+		return &ptr;
+	}
+
+	virtual bool is_class_ptr(void *p_ptr) const {
+		return get_class_ptr_static() == p_ptr;
+	}
+
+	ElementPtr SourceElement() const {
+		return element;
+	}
+
+	const std::string &Name() const {
+		return name;
+	}
+
+	uint64_t ID() const {
+		return id;
+	}
+
+protected:
+	const ElementPtr element;
+	const std::string name;
+	const uint64_t id = 0;
+};
+
 /** Represents a delay-parsed FBX objects. Many objects in the scene
  *  are not needed by assimp, so it makes no sense to parse them
  *  upfront. */
@@ -94,7 +136,16 @@ public:
 	template <typename T>
 	const T *Get() {
 		ObjectPtr ob = LoadObject();
+#ifndef NO_SAFE_CAST
 		return dynamic_cast<const T *>(ob);
+#else
+		if (!ob)
+			return NULL;
+		if (ob->is_class_ptr(T::get_class_ptr_static()))
+			return static_cast<T *>(ob);
+		else
+			return NULL;
+#endif
 	}
 
 	uint64_t ID() const {
@@ -131,34 +182,11 @@ private:
 	unsigned int flags = 0;
 };
 
-/** Base class for in-memory (DOM) representations of FBX objects */
-class Object {
-public:
-	Object(uint64_t id, const ElementPtr element, const std::string &name);
-
-	virtual ~Object();
-
-	ElementPtr SourceElement() const {
-		return element;
-	}
-
-	const std::string &Name() const {
-		return name;
-	}
-
-	uint64_t ID() const {
-		return id;
-	}
-
-protected:
-	const ElementPtr element;
-	const std::string name;
-	const uint64_t id = 0;
-};
-
 /** DOM class for generic FBX NoteAttribute blocks. NoteAttribute's just hold a property table,
  *  fixed members are added by deriving classes. */
 class NodeAttribute : public Object {
+	FBXCLASS(NodeAttribute, Object);
+
 public:
 	NodeAttribute(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -174,6 +202,8 @@ private:
 
 /** DOM base class for FBX camera settings attached to a node */
 class CameraSwitcher : public NodeAttribute {
+	FBXCLASS(CameraSwitcher, NodeAttribute);
+
 public:
 	CameraSwitcher(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -216,6 +246,8 @@ private:
 
 class FbxPoseNode;
 class FbxPose : public Object {
+	FBXCLASS(FbxPose, Object);
+
 public:
 	FbxPose(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -264,6 +296,8 @@ private:
 
 /** DOM base class for FBX cameras attached to a node */
 class Camera : public NodeAttribute {
+	FBXCLASS(Camera, NodeAttribute);
+
 public:
 	Camera(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -290,6 +324,8 @@ public:
 
 /** DOM base class for FBX null markers attached to a node */
 class Null : public NodeAttribute {
+	FBXCLASS(Null, NodeAttribute);
+
 public:
 	Null(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 	virtual ~Null();
@@ -297,6 +333,8 @@ public:
 
 /** DOM base class for FBX limb node markers attached to a node */
 class LimbNode : public NodeAttribute {
+	FBXCLASS(LimbNode, NodeAttribute);
+
 public:
 	LimbNode(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 	virtual ~LimbNode();
@@ -304,6 +342,8 @@ public:
 
 /** DOM base class for FBX lights attached to a node */
 class Light : public NodeAttribute {
+	FBXCLASS(Light, NodeAttribute);
+
 public:
 	Light(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 	virtual ~Light();
@@ -367,6 +407,8 @@ typedef Model *ModelPtr;
 
 /** DOM base class for FBX models (even though its semantics are more "node" than "model" */
 class Model : public Object {
+	FBXCLASS(Model, Object);
+
 public:
 	enum RotOrder {
 		RotOrder_EulerXYZ = 0,
@@ -504,6 +546,8 @@ private:
 };
 
 class ModelLimbNode : public Model {
+	FBXCLASS(ModelLimbNode, Model);
+
 public:
 	ModelLimbNode(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -512,6 +556,8 @@ public:
 
 /** DOM class for generic FBX textures */
 class Texture : public Object {
+	FBXCLASS(Texture, Object);
+
 public:
 	Texture(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -571,6 +617,8 @@ private:
 
 /** DOM class for layered FBX textures */
 class LayeredTexture : public Object {
+	FBXCLASS(LayeredTexture, Object);
+
 public:
 	LayeredTexture(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 	virtual ~LayeredTexture();
@@ -637,6 +685,8 @@ typedef std::map<std::string, const LayeredTexture *> LayeredTextureMap;
 
 /** DOM class for generic FBX videos */
 class Video : public Object {
+	FBXCLASS(Video, Object);
+
 public:
 	Video(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -697,6 +747,8 @@ private:
 
 /** DOM class for generic FBX materials */
 class Material : public Object {
+	FBXCLASS(Material, Object);
+
 public:
 	Material(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -737,6 +789,8 @@ typedef std::vector<float> KeyValueList;
 
 /** Represents a FBX animation curve (i.e. a 1-dimensional set of keyframes and values therefore) */
 class AnimationCurve : public Object {
+	FBXCLASS(AnimationCurve, Object);
+
 public:
 	AnimationCurve(uint64_t id, const ElementPtr element, const std::string &name, const Document &doc);
 	virtual ~AnimationCurve();
@@ -784,6 +838,8 @@ typedef std::weak_ptr<AnimationCurveNode> AnimationCurveNodeWeakPtr;
 
 /** Represents a FBX animation curve (i.e. a mapping from single animation curves to nodes) */
 class AnimationCurveNode : public Object {
+	FBXCLASS(AnimationCurveNode, Object);
+
 public:
 	/* the optional white list specifies a list of property names for which the caller
 	wants animations for. If the curve node does not match one of these, std::range_error
@@ -807,11 +863,29 @@ public:
 	}
 
 	Model *TargetAsModel() const {
+#ifndef NO_SAFE_CAST
 		return dynamic_cast<Model *>(target);
+#else
+		if (!target)
+			return NULL;
+		if (target->is_class_ptr(Model::get_class_ptr_static()))
+			return static_cast<Model *>(target);
+		else
+			return NULL;
+#endif
 	}
 
 	NodeAttribute *TargetAsNodeAttribute() const {
+#ifndef NO_SAFE_CAST
 		return dynamic_cast<NodeAttribute *>(target);
+#else
+		if (!target)
+			return NULL;
+		if (target->is_class_ptr(NodeAttribute::get_class_ptr_static()))
+			return static_cast<NodeAttribute *>(target);
+		else
+			return NULL;
+#endif
 	}
 
 	/** Property of Target() that is being animated*/
@@ -835,6 +909,8 @@ typedef std::vector<const AnimationLayer *> AnimationLayerList;
 
 /** Represents a FBX animation layer (i.e. a list of node animations) */
 class AnimationLayer : public Object {
+	FBXCLASS(AnimationLayer, Object);
+
 public:
 	AnimationLayer(uint64_t id, const ElementPtr element, const std::string &name, const Document &doc);
 	virtual ~AnimationLayer();
@@ -856,6 +932,8 @@ private:
 
 /** Represents a FBX animation stack (i.e. a list of animation layers) */
 class AnimationStack : public Object {
+	FBXCLASS(AnimationStack, Object);
+
 public:
 	AnimationStack(uint64_t id, const ElementPtr element, const std::string &name, const Document &doc);
 	virtual ~AnimationStack();
@@ -880,6 +958,8 @@ private:
 
 /** DOM class for deformers */
 class Deformer : public Object {
+	FBXCLASS(Deformer, Object);
+
 public:
 	Deformer(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 	virtual ~Deformer();
@@ -895,6 +975,8 @@ private:
 
 /** Constraints are from Maya they can help us with BoneAttachments :) **/
 class Constraint : public Object {
+	FBXCLASS(Constraint, Object);
+
 public:
 	Constraint(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 	virtual ~Constraint();
@@ -908,6 +990,8 @@ typedef std::vector<unsigned int> WeightIndexArray;
 
 /** DOM class for BlendShapeChannel deformers */
 class BlendShapeChannel : public Deformer {
+	FBXCLASS(BlendShapeChannel, Deformer);
+
 public:
 	BlendShapeChannel(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -933,6 +1017,8 @@ private:
 
 /** DOM class for BlendShape deformers */
 class BlendShape : public Deformer {
+	FBXCLASS(BlendShape, Deformer);
+
 public:
 	BlendShape(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -948,6 +1034,8 @@ private:
 
 /** DOM class for skin deformer clusters (aka sub-deformers) */
 class Cluster : public Deformer {
+	FBXCLASS(Cluster, Deformer);
+
 public:
 	Cluster(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
@@ -1014,6 +1102,8 @@ private:
 
 /** DOM class for skin deformers */
 class Skin : public Deformer {
+	FBXCLASS(Skin, Deformer);
+
 public:
 	Skin(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name);
 
