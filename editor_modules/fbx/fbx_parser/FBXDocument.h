@@ -142,7 +142,7 @@ public:
 		if (!ob)
 			return NULL;
 		if (ob->is_class_ptr(T::get_class_ptr_static()))
-			return static_cast<T *>(ob);
+			return static_cast<const T *>(ob);
 		else
 			return NULL;
 #endif
