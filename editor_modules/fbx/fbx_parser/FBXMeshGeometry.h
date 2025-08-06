@@ -73,10 +73,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
+#include "core/containers/vector.h"
 #include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "core/containers/vector.h"
 
 #include "FBXDocument.h"
 #include "FBXParser.h"
@@ -92,6 +92,8 @@ namespace FBXDocParser {
  * DOM base class for all kinds of FBX geometry
  */
 class Geometry : public Object {
+	FBXCLASS(Geometry, Object);
+
 public:
 	Geometry(uint64_t id, const ElementPtr element, const std::string &name, const Document &doc);
 	virtual ~Geometry();
@@ -131,6 +133,8 @@ typedef std::vector<int> MatIndexArray;
 /// 	* ByEdge There will be one mapping coordinate for each unique edge in the mesh. This is meant to be used with smoothing layer elements. (Mapping is referencing the edge id)
 /// 	* AllSame There can be only one mapping coordinate for the whole surface.
 class MeshGeometry : public Geometry {
+	FBXCLASS(MeshGeometry, Geometry);
+
 public:
 	enum class MapType {
 		none = 0, // No mapping type. Stored as "None".
@@ -215,6 +219,8 @@ private:
  * DOM class for FBX geometry of type "Shape"
  */
 class ShapeGeometry : public Geometry {
+	FBXCLASS(ShapeGeometry, Geometry);
+
 public:
 	/** The class constructor */
 	ShapeGeometry(uint64_t id, const ElementPtr element, const std::string &name, const Document &doc);
@@ -241,6 +247,8 @@ private:
  *  DOM class for FBX geometry of type "Line"
  */
 class LineGeometry : public Geometry {
+	FBXCLASS(LineGeometry, Geometry);
+
 public:
 	/** The class constructor */
 	LineGeometry(uint64_t id, const ElementPtr element, const std::string &name, const Document &doc);
