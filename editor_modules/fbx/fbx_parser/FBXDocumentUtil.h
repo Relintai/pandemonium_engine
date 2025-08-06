@@ -135,7 +135,8 @@ const T *ProcessSimpleConnection(const Connection &con,
 	// Cast Object to AnimationPlayer for example using safe functions, which return nullptr etc
 	Object *ob = con.SourceObject();
 	ERR_FAIL_COND_V_MSG(!ob, nullptr, "Failed to load object from SourceObject ptr");
-	return dynamic_cast<const T *>(ob);
+	//return dynamic_cast<const T *>(ob);
+	return Object::As<T>(ob);
 }
 
 } // namespace Util

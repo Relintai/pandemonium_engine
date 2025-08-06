@@ -175,7 +175,7 @@ const AnimationMap &AnimationCurveNode::Curves() const {
 			// So the advantage of having this STL boilerplate is that it's dead simple once you get it.
 			// The other advantage is casting is guaranteed to be safe and nullptr will be returned in the last step if it fails.
 			Object *ob = con->SourceObject();
-			AnimationCurve *anim_curve = dynamic_cast<AnimationCurve *>(ob);
+			AnimationCurve *anim_curve = Object::As<AnimationCurve>(ob);
 			ERR_CONTINUE_MSG(!anim_curve, "Failed to convert animation curve from object");
 
 			curves.insert(std::make_pair(con->PropertyName(), anim_curve));
@@ -221,7 +221,7 @@ const AnimationCurveNodeList AnimationLayer::Nodes(const char *const *target_pro
 			continue;
 		}
 
-		const AnimationCurveNode *anim = dynamic_cast<AnimationCurveNode *>(ob);
+		const AnimationCurveNode *anim = Object::As<AnimationCurveNode>(ob);
 		if (!anim) {
 			DOMWarning("source object for ->AnimationLayer link is not an AnimationCurveNode", element);
 			continue;
@@ -270,7 +270,7 @@ AnimationStack::AnimationStack(uint64_t id, const ElementPtr element, const std:
 			continue;
 		}
 
-		const AnimationLayer *anim = dynamic_cast<const AnimationLayer *>(ob);
+		const AnimationLayer *anim = Object::As<const AnimationLayer>(ob);
 
 		if (!anim) {
 			DOMWarning("source object for ->AnimationStack link is not an AnimationLayer", element);

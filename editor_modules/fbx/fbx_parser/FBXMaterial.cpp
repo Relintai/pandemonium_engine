@@ -135,9 +135,9 @@ Material::Material(uint64_t id, const ElementPtr element, const Document &doc, c
 			continue;
 		}
 
-		const Texture *tex = dynamic_cast<const Texture *>(ob);
+		const Texture *tex = Object::As<const Texture>(ob);
 		if (!tex) {
-			LayeredTexture *layeredTexture = dynamic_cast<LayeredTexture *>(ob);
+			LayeredTexture *layeredTexture = Object::As<LayeredTexture>(ob);
 
 			if (!layeredTexture) {
 				DOMWarning("source object for texture link is not a texture or layered texture, ignoring", element);
@@ -240,13 +240,13 @@ Texture::Texture(uint64_t id, const ElementPtr element, const Document &doc, con
 	if (doc.Settings().readTextures) {
 		const std::vector<const Connection *> &conns = doc.GetConnectionsByDestinationSequenced(ID());
 		for (const Connection *con : conns) {
-			const Object *const ob = con->SourceObject();
+			Object *ob = con->SourceObject();
 			if (!ob) {
 				DOMWarning("failed to read source object for texture link, ignoring", element);
 				continue;
 			}
 
-			const Video *const video = dynamic_cast<const Video *>(ob);
+			Video *video = Object::As<Video>(ob);
 			if (video) {
 				media = video;
 			}
@@ -284,13 +284,13 @@ void LayeredTexture::fillTexture(const Document &doc) {
 	for (size_t i = 0; i < conns.size(); ++i) {
 		const Connection *con = conns.at(i);
 
-		const Object *const ob = con->SourceObject();
+		Object *ob = con->SourceObject();
 		if (!ob) {
 			DOMWarning("failed to read source object for texture link, ignoring", element);
 			continue;
 		}
 
-		const Texture *const tex = dynamic_cast<const Texture *>(ob);
+		const Texture *tex = Object::As<Texture>(ob);
 
 		textures.push_back(tex);
 	}

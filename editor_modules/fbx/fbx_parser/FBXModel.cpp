@@ -135,25 +135,25 @@ void Model::ResolveLinks(const ElementPtr element, const Document &doc) {
 			continue;
 		}
 
-		const Object *const ob = con->SourceObject();
+		Object *ob = con->SourceObject();
 		if (!ob) {
 			//DOMWarning("failed to read source object for incoming Model link, ignoring",&element);
 			continue;
 		}
 
-		const Material *const mat = dynamic_cast<const Material *>(ob);
+		const Material *mat = Object::As<Material>(ob);
 		if (mat) {
 			materials.push_back(mat);
 			continue;
 		}
 
-		const Geometry *const geo = dynamic_cast<const Geometry *>(ob);
+		const Geometry *geo = Object::As<Geometry>(ob);
 		if (geo) {
 			geometry.push_back(geo);
 			continue;
 		}
 
-		const NodeAttribute *const att = dynamic_cast<const NodeAttribute *>(ob);
+		const NodeAttribute *att = Object::As<NodeAttribute>(ob);
 		if (att) {
 			attributes.push_back(att);
 			continue;
@@ -168,7 +168,7 @@ void Model::ResolveLinks(const ElementPtr element, const Document &doc) {
 bool Model::IsNull() const {
 	const std::vector<const NodeAttribute *> &attrs = GetAttributes();
 	for (const NodeAttribute *att : attrs) {
-		const Null *null_tag = dynamic_cast<const Null *>(att);
+		Null *null_tag = Object::As<Null>(const_cast<NodeAttribute*>(att));
 		if (null_tag) {
 			return true;
 		}

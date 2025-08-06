@@ -30,10 +30,10 @@
 /*************************************************************************/
 
 #include "fbx_material.h"
+#include "../tools/validation_tools.h"
 #include "scene/resources/material/material.h"
 #include "scene/resources/material/spatial_material.h"
 #include "scene/resources/texture.h"
-#include "../tools/validation_tools.h"
 
 String FBXMaterial::get_material_name() const {
 	return material_name;
@@ -243,9 +243,11 @@ FBXMaterial::MaterialInfo FBXMaterial::extract_material_info(const FBXDocParser:
 template <class T>
 T extract_from_prop(FBXDocParser::PropertyPtr prop, const T &p_default, const std::string &p_name, const String &p_type) {
 	ERR_FAIL_COND_V_MSG(prop == nullptr, p_default, "invalid property passed to extractor");
-	const FBXDocParser::TypedProperty<T> *val = dynamic_cast<const FBXDocParser::TypedProperty<T> *>(prop);
+	//const FBXDocParser::TypedProperty<T> *val = dynamic_cast<const FBXDocParser::TypedProperty<T> *>(prop);
+	const FBXDocParser::TypedProperty<T> *val = prop->As<const FBXDocParser::TypedProperty<T>>();
 
-	ERR_FAIL_COND_V_MSG(val == nullptr, p_default, "The FBX is corrupted, the property `" + String(p_name.c_str()) + "` is a `" + String(typeid(*prop).name()) + "` but should be a " + p_type);
+	//ERR_FAIL_COND_V_MSG(val == nullptr, p_default, "The FBX is corrupted, the property `" + String(p_name.c_str()) + "` is a `" + String(typeid(*prop).name()) + "` but should be a " + p_type);
+	ERR_FAIL_COND_V_MSG(val == nullptr, p_default, "The FBX is corrupted, the property `" + String(p_name.c_str()) + "`'s type is not " + p_type);
 	// Make sure to not lost any eventual opacity.
 	return val->Value();
 }
@@ -317,8 +319,11 @@ Ref<SpatialMaterial> FBXMaterial::import_material(ImportState &state) {
 			spatial_material.instance();
 		}
 
-		const FBXDocParser::TypedProperty<real_t> *real_value = dynamic_cast<const FBXDocParser::TypedProperty<real_t> *>(prop);
-		const FBXDocParser::TypedProperty<Vector3> *vector_value = dynamic_cast<const FBXDocParser::TypedProperty<Vector3> *>(prop);
+		//const FBXDocParser::TypedProperty<real_t> *real_value = dynamic_cast<const FBXDocParser::TypedProperty<real_t> *>(prop);
+		//const FBXDocParser::TypedProperty<Vector3> *vector_value = dynamic_cast<const FBXDocParser::TypedProperty<Vector3> *>(prop);
+
+		const FBXDocParser::TypedProperty<real_t> *real_value = prop->As<const FBXDocParser::TypedProperty<real_t>>();
+		const FBXDocParser::TypedProperty<Vector3> *vector_value = prop->As<const FBXDocParser::TypedProperty<Vector3>>();
 
 		if (!real_value && !vector_value) {
 			//WARN_PRINT("unsupported datatype in property: " + String(name.c_str()));

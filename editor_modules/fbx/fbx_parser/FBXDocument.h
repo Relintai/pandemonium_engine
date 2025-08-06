@@ -114,6 +114,34 @@ public:
 		return id;
 	}
 
+	template <typename T>
+	static T *As(Object *p_object) {
+#ifndef NO_SAFE_CAST
+		return dynamic_cast<T *>(p_object);
+#else
+		if (!p_object)
+			return NULL;
+		if (p_object->is_class_ptr(T::get_class_ptr_static()))
+			return static_cast<T *>(p_object);
+		else
+			return NULL;
+#endif
+	}
+
+	template <typename T>
+	static const T *As(const Object *p_object) {
+#ifndef NO_SAFE_CAST
+		return dynamic_cast<const T *>(p_object);
+#else
+		if (!p_object)
+			return NULL;
+		if (p_object->is_class_ptr(T::get_class_ptr_static()))
+			return static_cast<const T *>(p_object);
+		else
+			return NULL;
+#endif
+	}
+
 protected:
 	const ElementPtr element;
 	const std::string name;

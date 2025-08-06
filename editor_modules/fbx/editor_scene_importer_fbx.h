@@ -38,16 +38,16 @@
 #include "tools/import_utils.h"
 
 #include "core/bind/core_bind.h"
-#include "core/variant/dictionary.h"
-#include "core/io/resource_importer.h"
 #include "core/containers/local_vector.h"
-#include "core/string/ustring.h"
 #include "core/containers/vector.h"
+#include "core/io/resource_importer.h"
+#include "core/string/ustring.h"
+#include "core/variant/dictionary.h"
 #include "editor/import/resource_importer_scene.h"
 #include "editor/project_settings_editor.h"
 #include "scene/3d/mesh_instance.h"
-#include "scene/animation/animation_player.h"
 #include "scene/animation/animation.h"
+#include "scene/animation/animation_player.h"
 #include "scene/resources/mesh/surface_tool.h"
 
 #include "modules/skeleton_3d/nodes/skeleton.h"
@@ -90,7 +90,7 @@ private:
 			const FBXDocParser::Object *dest_object = con->DestinationObject();
 			if (source_object && dest_object != nullptr) {
 				//print_verbose("[doc] connection name: " + String(source_object->Name().c_str()) + ", dest: " + String(dest_object->Name().c_str()));
-				const T *temp = dynamic_cast<const T *>(reverse_lookup ? source_object : dest_object);
+				const T *temp = FBXDocParser::Object::As<T>(reverse_lookup ? source_object : dest_object);
 				if (temp) {
 					return_obj = temp;
 				}

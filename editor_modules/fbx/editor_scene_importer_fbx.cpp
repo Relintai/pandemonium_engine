@@ -152,14 +152,14 @@ Node *EditorSceneImporterFBX::import_scene(const String &p_path, uint32_t p_flag
 			const FBXDocParser::PropertyPtr app_version = import_props->Get("Original|ApplicationVersion");
 			//
 			if (app_name) {
-				const FBXDocParser::TypedProperty<std::string> *app_name_string = dynamic_cast<const FBXDocParser::TypedProperty<std::string> *>(app_name);
+				const FBXDocParser::TypedProperty<std::string> *app_name_string = app_name->As<FBXDocParser::TypedProperty<std::string>>();
 				if (app_name_string) {
 					print_verbose("FBX App Name: " + String(app_name_string->Value().c_str()));
 				}
 			}
 
 			if (app_vendor) {
-				const FBXDocParser::TypedProperty<std::string> *app_vendor_string = dynamic_cast<const FBXDocParser::TypedProperty<std::string> *>(app_vendor);
+				const FBXDocParser::TypedProperty<std::string> *app_vendor_string = app_vendor->As<FBXDocParser::TypedProperty<std::string>>();
 				if (app_vendor_string) {
 					print_verbose("FBX App Vendor: " + String(app_vendor_string->Value().c_str()));
 					is_blender_fbx = app_vendor_string->Value().find("Blender") != std::string::npos;
@@ -167,7 +167,7 @@ Node *EditorSceneImporterFBX::import_scene(const String &p_path, uint32_t p_flag
 			}
 
 			if (app_version) {
-				const FBXDocParser::TypedProperty<std::string> *app_version_string = dynamic_cast<const FBXDocParser::TypedProperty<std::string> *>(app_version);
+				const FBXDocParser::TypedProperty<std::string> *app_version_string = app_version->As<FBXDocParser::TypedProperty<std::string>>();
 				if (app_version_string) {
 					print_verbose("FBX App Version: " + String(app_version_string->Value().c_str()));
 				}
@@ -433,7 +433,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 			// do something
 			print_verbose("src: " + itos(con->src));
 			FBXDocParser::Object *ob = con->DestinationObject();
-			mesh = dynamic_cast<FBXDocParser::MeshGeometry *>(ob);
+			mesh = FBXDocParser::Object::As<FBXDocParser::MeshGeometry>(ob);
 
 			if (mesh) {
 				mesh_id = mesh->ID();
@@ -641,7 +641,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 						continue;
 					}
 
-					const FBXDocParser::MeshGeometry *mesh_geometry = dynamic_cast<const FBXDocParser::MeshGeometry *>(mesh);
+					const FBXDocParser::MeshGeometry *mesh_geometry = FBXDocParser::Object::As<const FBXDocParser::MeshGeometry>(mesh);
 					if (mesh_geometry) {
 						uint64_t mesh_id = mesh_geometry->ID();
 
@@ -662,7 +662,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 						}
 					}
 
-					const FBXDocParser::ShapeGeometry *shape_geometry = dynamic_cast<const FBXDocParser::ShapeGeometry *>(mesh);
+					const FBXDocParser::ShapeGeometry *shape_geometry = FBXDocParser::Object::As<const FBXDocParser::ShapeGeometry>(mesh);
 					if (shape_geometry != nullptr) {
 						print_verbose("[doc] valid shape geometry converted");
 					}
@@ -1316,7 +1316,7 @@ void EditorSceneImporterFBX::BuildDocumentBones(Ref<FBXBone> p_parent_bone,
 
 		// FBX Model::Cube, Model::Bone001, etc elements
 		// This detects if we can cast the object into this model structure.
-		const FBXDocParser::Model *const model = dynamic_cast<const FBXDocParser::Model *>(object);
+		const FBXDocParser::Model *const model = FBXDocParser::Object::As<const FBXDocParser::Model>(object);
 
 		// declare our bone element reference (invalid, unless we create a bone in this step)
 		// this lets us pass valid armature information into children objects and this is why we moved this up here
@@ -1325,7 +1325,7 @@ void EditorSceneImporterFBX::BuildDocumentBones(Ref<FBXBone> p_parent_bone,
 
 		if (model != nullptr) {
 			// model marked with limb node / casted.
-			const FBXDocParser::ModelLimbNode *const limb_node = dynamic_cast<const FBXDocParser::ModelLimbNode *>(model);
+			const FBXDocParser::ModelLimbNode *const limb_node = FBXDocParser::Object::As<const FBXDocParser::ModelLimbNode>(model);
 			if (limb_node != nullptr) {
 				// Write bone into bone list for FBX
 
@@ -1406,7 +1406,7 @@ void EditorSceneImporterFBX::BuildDocumentNodes(
 
 		// FBX Model::Cube, Model::Bone001, etc elements
 		// This detects if we can cast the object into this model structure.
-		const FBXDocParser::Model *const model = dynamic_cast<const FBXDocParser::Model *>(source_object);
+		const FBXDocParser::Model *const model = FBXDocParser::Object::As<const FBXDocParser::Model>(source_object);
 		// model is the current node
 		if (nullptr != model) {
 			uint64_t current_node_id = model->ID();
