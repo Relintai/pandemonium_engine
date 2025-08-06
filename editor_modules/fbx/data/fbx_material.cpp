@@ -30,7 +30,7 @@
 /*************************************************************************/
 
 #include "fbx_material.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
 #include "scene/resources/texture.h"
 #include "../tools/validation_tools.h"
 
