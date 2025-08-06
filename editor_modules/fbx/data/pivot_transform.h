@@ -1,3 +1,5 @@
+#ifndef PIVOT_TRANSFORM_H
+#define PIVOT_TRANSFORM_H
 /**************************************************************************/
 /*  pivot_transform.h                                                     */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef PIVOT_TRANSFORM_H
-#define PIVOT_TRANSFORM_H
+
+
 
 #include "core/math/transform.h"
 #include "core/reference.h"

@@ -1,3 +1,5 @@
+#ifndef FBXIMPORTSETTINGS_H
+#define FBXIMPORTSETTINGS_H
 /**************************************************************************/
 /*  FBXImportSettings.h                                                   */
 /**************************************************************************/
@@ -73,8 +75,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  @brief FBX importer runtime configuration
  */
 
-#ifndef FBXIMPORTSETTINGS_H
-#define FBXIMPORTSETTINGS_H
+
+
 
 namespace FBXDocParser {
 

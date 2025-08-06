@@ -1,3 +1,5 @@
+#ifndef MODEL_ABSTRACTION_H
+#define MODEL_ABSTRACTION_H
 /**************************************************************************/
 /*  model_abstraction.h                                                   */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef MODEL_ABSTRACTION_H
-#define MODEL_ABSTRACTION_H
+
+
 
 #include "modules/fbx/fbx_parser/FBXDocument.h"
 

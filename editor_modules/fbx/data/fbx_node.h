@@ -1,3 +1,5 @@
+#ifndef FBX_NODE_H
+#define FBX_NODE_H
 /**************************************************************************/
 /*  fbx_node.h                                                            */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef FBX_NODE_H
-#define FBX_NODE_H
+
+
 
 #include "fbx_skeleton.h"
 #include "model_abstraction.h"

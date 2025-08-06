@@ -1,3 +1,5 @@
+#ifndef TTS_OSX_H
+#define TTS_OSX_H
 /*************************************************************************/
 /*  tts_osx.h                                                            */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TTS_OSX_H
-#define TTS_OSX_H
+
+
 
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"

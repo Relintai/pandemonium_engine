@@ -1,3 +1,5 @@
+#ifndef VALIDATION_TOOLS_H
+#define VALIDATION_TOOLS_H
 /**************************************************************************/
 /*  validation_tools.h                                                    */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef VALIDATION_TOOLS_H
-#define VALIDATION_TOOLS_H
+
+
 
 #ifdef TOOLS_ENABLED
 

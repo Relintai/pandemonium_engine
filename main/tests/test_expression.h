@@ -1,3 +1,5 @@
+#ifndef TEST_EXPRESSION_H
+#define TEST_EXPRESSION_H
 /**************************************************************************/
 /*  test_expression.h                                                     */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef TEST_EXPRESSION_H
-#define TEST_EXPRESSION_H
+
+
 
 #include "core/os/main_loop.h"
 

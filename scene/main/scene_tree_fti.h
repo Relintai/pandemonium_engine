@@ -1,3 +1,5 @@
+#ifndef SCENE_TREE_FTI_H
+#define SCENE_TREE_FTI_H
 /**************************************************************************/
 /*  scene_tree_fti.h                                                      */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef SCENE_TREE_FTI_H
-#define SCENE_TREE_FTI_H
+
+
 
 #include "core/containers/local_vector.h"
 #include "core/os/mutex.h"

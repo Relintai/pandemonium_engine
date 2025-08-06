@@ -1,3 +1,5 @@
+#ifndef FBX_REGISTER_TYPES_H
+#define FBX_REGISTER_TYPES_H
 /**************************************************************************/
 /*  register_types.h                                                      */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef FBX_REGISTER_TYPES_H
-#define FBX_REGISTER_TYPES_H
+
+
 
 void register_fbx_types();
 void unregister_fbx_types();

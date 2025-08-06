@@ -1,3 +1,5 @@
+#ifndef GLES3_DISABLED
+#define GLES3_INCLUDE_H <ES3/gl.h>
 /*************************************************************************/
 /*  platform_config.h                                                    */
 /*************************************************************************/
@@ -32,8 +34,8 @@
 #include <alloca.h>
 
 #define GLES2_INCLUDE_H <ES2/gl.h>
-#ifndef GLES3_DISABLED
-#define GLES3_INCLUDE_H <ES3/gl.h>
+
+
 #endif
 
 #define PTHREAD_RENAME_SELF

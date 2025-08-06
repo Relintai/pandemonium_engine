@@ -1,3 +1,5 @@
+#ifndef SCENE_TREE_FTI_TESTS_H
+#define SCENE_TREE_FTI_TESTS_H
 /**************************************************************************/
 /*  scene_tree_fti_tests.h                                                */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef SCENE_TREE_FTI_TESTS_H
-#define SCENE_TREE_FTI_TESTS_H
+
+
 
 class Spatial;
 class Node;

@@ -1,3 +1,5 @@
+#ifndef FBXPROPERTIES_H
+#define FBXPROPERTIES_H
 /**************************************************************************/
 /*  FBXProperties.h                                                       */
 /**************************************************************************/
@@ -73,8 +75,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  @brief FBX dynamic properties
  */
 
-#ifndef FBXPROPERTIES_H
-#define FBXPROPERTIES_H
+
+
 
 #include "FBXParser.h"
 #include <map>

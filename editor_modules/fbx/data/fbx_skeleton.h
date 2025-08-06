@@ -1,3 +1,5 @@
+#ifndef FBX_SKELETON_H
+#define FBX_SKELETON_H
 /**************************************************************************/
 /*  fbx_skeleton.h                                                        */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef FBX_SKELETON_H
-#define FBX_SKELETON_H
+
+
 
 #include "fbx_bone.h"
 #include "fbx_node.h"

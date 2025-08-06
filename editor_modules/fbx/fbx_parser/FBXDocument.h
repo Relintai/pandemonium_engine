@@ -1,3 +1,5 @@
+#ifndef FBXDOCUMENT_H
+#define FBXDOCUMENT_H
 /**************************************************************************/
 /*  FBXDocument.h                                                         */
 /**************************************************************************/
@@ -32,8 +34,8 @@
  *  @brief FBX DOM
  */
 
-#ifndef FBXDOCUMENT_H
-#define FBXDOCUMENT_H
+
+
 
 #include "FBXCommon.h"
 #include "FBXParser.h"

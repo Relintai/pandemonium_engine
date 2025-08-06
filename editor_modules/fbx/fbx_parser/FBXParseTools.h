@@ -1,3 +1,5 @@
+#ifndef FBXPARSETOOLS_H
+#define FBXPARSETOOLS_H
 /**************************************************************************/
 /*  FBXParseTools.h                                                       */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef FBXPARSETOOLS_H
-#define FBXPARSETOOLS_H
+
+
 
 #include "core/error_macros.h"
 #include "core/ustring.h"

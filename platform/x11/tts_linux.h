@@ -1,3 +1,5 @@
+#ifndef TTS_LINUX_H
+#define TTS_LINUX_H
 /*************************************************************************/
 /*  tts_linux.h                                                          */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TTS_LINUX_H
-#define TTS_LINUX_H
+
+
 
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"

@@ -1,3 +1,5 @@
+#ifndef FBXTOKENIZER_H
+#define FBXTOKENIZER_H
 /**************************************************************************/
 /*  FBXTokenizer.h                                                        */
 /**************************************************************************/
@@ -73,8 +75,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  @brief FBX lexer
  */
 
-#ifndef FBXTOKENIZER_H
-#define FBXTOKENIZER_H
+
+
 
 #include "FBXParseTools.h"
 #include "core/ustring.h"

@@ -1,3 +1,5 @@
+#ifndef TTS_WINDOWS_H
+#define TTS_WINDOWS_H
 /*************************************************************************/
 /*  tts_windows.h                                                        */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TTS_WINDOWS_H
-#define TTS_WINDOWS_H
+
+
 
 #include "core/containers/list.h"
 #include "core/containers/rb_map.h"

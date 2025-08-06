@@ -1,3 +1,5 @@
+#ifndef FBX_ANIM_CONTAINER_H
+#define FBX_ANIM_CONTAINER_H
 /**************************************************************************/
 /*  fbx_anim_container.h                                                  */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef FBX_ANIM_CONTAINER_H
-#define FBX_ANIM_CONTAINER_H
+
+
 
 #include "core/vector.h"
 

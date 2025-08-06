@@ -1,3 +1,5 @@
+#ifndef FBX_BONE_H
+#define FBX_BONE_H
 /**************************************************************************/
 /*  fbx_bone.h                                                            */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef FBX_BONE_H
-#define FBX_BONE_H
+
+
 
 #include "fbx_node.h"
 #include "import_state.h"

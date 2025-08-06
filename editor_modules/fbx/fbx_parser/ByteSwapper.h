@@ -1,3 +1,5 @@
+#ifndef BYTESWAPPER_H
+#define BYTESWAPPER_H
 /**************************************************************************/
 /*  ByteSwapper.h                                                         */
 /**************************************************************************/
@@ -72,8 +74,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @file Helper class to perform various byte order swappings
    (e.g. little to big endian) */
 
-#ifndef BYTESWAPPER_H
-#define BYTESWAPPER_H
+
+
 
 #include <stdint.h>
 #include <algorithm>

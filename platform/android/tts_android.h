@@ -1,3 +1,5 @@
+#ifndef TTS_ANDROID_H
+#define TTS_ANDROID_H
 /*************************************************************************/
 /*  tts_android.h                                                        */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TTS_ANDROID_H
-#define TTS_ANDROID_H
+
+
 
 #include "core/config/project_settings.h"
 #include "core/os/os.h"

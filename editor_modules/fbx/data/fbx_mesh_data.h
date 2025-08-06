@@ -1,3 +1,5 @@
+#ifndef FBX_MESH_DATA_H
+#define FBX_MESH_DATA_H
 /**************************************************************************/
 /*  fbx_mesh_data.h                                                       */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef FBX_MESH_DATA_H
-#define FBX_MESH_DATA_H
+
+
 
 #include "core/hash_map.h"
 #include "scene/3d/mesh_instance.h"

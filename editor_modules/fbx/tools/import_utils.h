@@ -1,3 +1,5 @@
+#ifndef IMPORT_UTILS_H
+#define IMPORT_UTILS_H
 /**************************************************************************/
 /*  import_utils.h                                                        */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef IMPORT_UTILS_H
-#define IMPORT_UTILS_H
+
+
 
 #include "core/io/image_loader.h"
 

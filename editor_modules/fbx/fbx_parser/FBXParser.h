@@ -1,3 +1,5 @@
+#ifndef FBXPARSER_H
+#define FBXPARSER_H
 /**************************************************************************/
 /*  FBXParser.h                                                           */
 /**************************************************************************/
@@ -73,8 +75,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  @brief FBX parsing code
  */
 
-#ifndef FBXPARSER_H
-#define FBXPARSER_H
+
+
 
 #include <stdint.h>
 #include <map>

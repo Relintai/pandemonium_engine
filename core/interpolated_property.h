@@ -1,3 +1,5 @@
+#ifndef INTERPOLATED_PROPERTY_H
+#define INTERPOLATED_PROPERTY_H
 /**************************************************************************/
 /*  interpolated_property.h                                               */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef INTERPOLATED_PROPERTY_H
-#define INTERPOLATED_PROPERTY_H
+
+
 
 struct Vector2;
 

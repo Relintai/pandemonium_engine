@@ -1,3 +1,5 @@
+#ifndef GLES3_DISABLED
+#define GLES3_INCLUDE_H "platform/javascript/pandemonium_webgl2.h"
 /*************************************************************************/
 /*  platform_config.h                                                    */
 /*************************************************************************/
@@ -31,6 +33,6 @@
 
 #include <alloca.h>
 
-#ifndef GLES3_DISABLED
-#define GLES3_INCLUDE_H "platform/javascript/pandemonium_webgl2.h"
+
+
 #endif

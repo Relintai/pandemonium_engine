@@ -1,3 +1,5 @@
+#ifndef FBXDOCUMENTUTIL_H
+#define FBXDOCUMENTUTIL_H
 /**************************************************************************/
 /*  FBXDocumentUtil.h                                                     */
 /**************************************************************************/
@@ -72,8 +74,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  @brief FBX internal utilities used by the DOM reading code
  */
 
-#ifndef FBXDOCUMENTUTIL_H
-#define FBXDOCUMENTUTIL_H
+
+
 
 #include "FBXDocument.h"
 #include <memory>

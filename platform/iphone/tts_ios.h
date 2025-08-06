@@ -1,3 +1,5 @@
+#ifndef TTS_IOS_H
+#define TTS_IOS_H
 /*************************************************************************/
 /*  tts_ios.h                                                            */
 /*************************************************************************/
@@ -29,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TTS_IOS_H
-#define TTS_IOS_H
+
+
 
 #if __has_include(<AVFAudio/AVSpeechSynthesis.h>)
 #import <AVFAudio/AVSpeechSynthesis.h>

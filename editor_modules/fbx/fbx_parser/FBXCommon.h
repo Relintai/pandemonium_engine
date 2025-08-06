@@ -1,3 +1,5 @@
+#ifndef FBXCOMMON_H
+#define FBXCOMMON_H
 /**************************************************************************/
 /*  FBXCommon.h                                                           */
 /**************************************************************************/
@@ -73,8 +75,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * Some useful constants and enums for dealing with FBX files.
  */
 
-#ifndef FBXCOMMON_H
-#define FBXCOMMON_H
+
+
 
 #include <cstdint>
 #include <string>

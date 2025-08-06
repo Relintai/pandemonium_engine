@@ -1,3 +1,5 @@
+#ifndef FBXMESHGEOMETRY_H
+#define FBXMESHGEOMETRY_H
 /**************************************************************************/
 /*  FBXMeshGeometry.h                                                     */
 /**************************************************************************/
@@ -69,8 +71,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
-#ifndef FBXMESHGEOMETRY_H
-#define FBXMESHGEOMETRY_H
+
+
 
 #include "core/color.h"
 #include "core/math/vector2.h"

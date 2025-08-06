@@ -1,3 +1,5 @@
+#ifndef IMPORT_STATE_H
+#define IMPORT_STATE_H
 /**************************************************************************/
 /*  import_state.h                                                        */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef IMPORT_STATE_H
-#define IMPORT_STATE_H
+
+
 
 #include "fbx_mesh_data.h"
 #include "tools/import_utils.h"

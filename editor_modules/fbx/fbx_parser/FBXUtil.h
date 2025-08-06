@@ -1,3 +1,5 @@
+#ifndef FBXUTIL_H
+#define FBXUTIL_H
 /**************************************************************************/
 /*  FBXUtil.h                                                             */
 /**************************************************************************/
@@ -73,8 +75,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  @brief FBX utility functions for internal use
  */
 
-#ifndef FBXUTIL_H
-#define FBXUTIL_H
+
+
 
 #include "FBXTokenizer.h"
 #include <stdint.h>

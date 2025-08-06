@@ -1,3 +1,5 @@
+#ifndef FBX_MATERIAL_H
+#define FBX_MATERIAL_H
 /**************************************************************************/
 /*  fbx_material.h                                                        */
 /**************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef FBX_MATERIAL_H
-#define FBX_MATERIAL_H
+
+
 
 #include "tools/import_utils.h"
 
