@@ -46,7 +46,8 @@
 #include "scene/3d/light.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/main/node.h"
-#include "scene/resources/material.h"
+#include "scene/resources/material/material.h"
+#include "scene/resources/material/spatial_material.h"
 
 #include "fbx_parser/FBXDocument.h"
 #include "fbx_parser/FBXImportSettings.h"
@@ -531,7 +532,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 			material.instance();
 			material->set_imported_material(mat);
 
-			Ref<Material3D> godot_material = material->import_material(state);
+			Ref<SpatialMaterial> godot_material = material->import_material(state);
 
 			state.cached_materials.insert(material_id, godot_material);
 		}

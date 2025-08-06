@@ -47,6 +47,7 @@
 #include "scene/main/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation.h"
+#include "scene/resources/material/spatial_material.h"
 #include "scene/resources/mesh/surface_tool.h"
 
 #include "../fbx_parser/FBXDocument.h"
@@ -69,7 +70,7 @@ struct ImportState {
 	bool is_blender_fbx = false;
 
 	RBMap<StringName, Ref<Texture>> cached_image_searches;
-	RBMap<uint64_t, Ref<Material3D>> cached_materials;
+	RBMap<uint64_t, Ref<SpatialMaterial>> cached_materials;
 
 	String path = String();
 	Spatial *root_owner = nullptr;
