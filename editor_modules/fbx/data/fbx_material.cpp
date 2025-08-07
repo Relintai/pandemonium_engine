@@ -530,7 +530,7 @@ Ref<SpatialMaterial> FBXMaterial::import_material(ImportState &state) {
 					ERR_CONTINUE_MSG(image.is_valid() == false, "FBX Embedded WEBP image load fail.");
 
 					// } else if (extension == "DDS") {
-					// 	// In this moment is not possible to extract a DDS from a buffer, TODO consider add it to godot. See `textureloader_dds.cpp::load().
+					// 	// In this moment is not possible to extract a DDS from a buffer, TODO consider add it to pandemonium. See `textureloader_dds.cpp::load().
 					// 	// The stored file is a DDS.
 				} else {
 					ERR_CONTINUE_MSG(true, "The embedded image with extension: " + extension + " is not yet supported. Open an issue please.");

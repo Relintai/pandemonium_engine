@@ -42,7 +42,7 @@ Vector3 ImportUtils::rad2deg(const Vector3 &p_rotation) {
 Basis ImportUtils::EulerToBasis(FBXDocParser::Model::RotOrder mode, const Vector3 &p_rotation) {
 	Basis ret;
 
-	// FBX is using intrinsic euler, we can convert intrinsic to extrinsic (the one used in godot
+	// FBX is using intrinsic euler, we can convert intrinsic to extrinsic (the one used in pandemonium
 	// by simply invert its order: https://www.cs.utexas.edu/~theshark/courses/cs354/lectures/cs354-14.pdf
 	switch (mode) {
 		case FBXDocParser::Model::RotOrder_EulerXYZ:
@@ -86,7 +86,7 @@ Quaternion ImportUtils::EulerToQuaternion(FBXDocParser::Model::RotOrder mode, co
 }
 
 Vector3 ImportUtils::BasisToEuler(FBXDocParser::Model::RotOrder mode, const Basis &p_rotation) {
-	// FBX is using intrinsic euler, we can convert intrinsic to extrinsic (the one used in godot
+	// FBX is using intrinsic euler, we can convert intrinsic to extrinsic (the one used in pandemonium
 	// by simply invert its order: https://www.cs.utexas.edu/~theshark/courses/cs354/lectures/cs354-14.pdf
 	switch (mode) {
 		case FBXDocParser::Model::RotOrder_EulerXYZ:

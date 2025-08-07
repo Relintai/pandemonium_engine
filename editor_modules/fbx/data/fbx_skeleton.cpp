@@ -46,12 +46,12 @@ void FBXSkeleton::init_skeleton(const ImportState &state) {
 		if (fbx_node.is_valid()) {
 			// cache skeleton attachment for later during node creation
 			// can't be done until after node hierarchy is built
-			if (fbx_node->godot_node != state.root) {
+			if (fbx_node->pandemonium_node != state.root) {
 				fbx_node->skeleton_node = Ref<FBXSkeleton>(this);
 				print_verbose("cached armature skeleton attachment for node " + fbx_node->node_name);
 			} else {
 				// root node must never be a skeleton to prevent cyclic skeletons from being allowed (skeleton in a skeleton)
-				fbx_node->godot_node->add_child(skeleton);
+				fbx_node->pandemonium_node->add_child(skeleton);
 				skeleton->set_owner(state.root_owner);
 				skeleton->set_name("Skeleton");
 				print_verbose("created armature skeleton for root");
@@ -91,7 +91,7 @@ void FBXSkeleton::init_skeleton(const ImportState &state) {
 		Ref<FBXBone> bone = skeleton_bones[x];
 		if (bone.is_valid()) {
 			skeleton->add_bone(bone->bone_name);
-			bone->godot_bone_id = bone_count;
+			bone->pandemonium_bone_id = bone_count;
 			bone->fbx_skeleton = Ref<FBXSkeleton>(this);
 			bone_map.insert(bone_count, bone);
 			print_verbose("added bone " + itos(bone->bone_id) + " " + bone->bone_name);
@@ -106,7 +106,7 @@ void FBXSkeleton::init_skeleton(const ImportState &state) {
 		int bone_index = bone_element->key();
 		print_verbose("working on bone: " + itos(bone_index) + " bone name:" + bone->bone_name);
 
-		skeleton->set_bone_rest(bone->godot_bone_id, get_unscaled_transform(bone->node->pivot_transform->LocalTransform, state.scale));
+		skeleton->set_bone_rest(bone->pandemonium_bone_id, get_unscaled_transform(bone->node->pivot_transform->LocalTransform, state.scale));
 
 		// lookup parent ID
 		if (bone->valid_parent && state.fbx_bone_map.has(bone->parent_bone_id)) {
@@ -118,7 +118,7 @@ void FBXSkeleton::init_skeleton(const ImportState &state) {
 				print_error("invalid bone parent: " + parent_bone->bone_name);
 			}
 		} else {
-			if (bone->godot_bone_id != -1) {
+			if (bone->pandemonium_bone_id != -1) {
 				skeleton->set_bone_parent(bone_index, -1); // no parent for this bone
 			}
 		}

@@ -191,7 +191,7 @@ Node *EditorSceneImporterFBX::import_scene(const String &p_path, uint32_t p_flag
 			return spatial;
 
 		} else {
-			ERR_PRINT(vformat("Cannot import FBX file: %s. It uses file format %d which is unsupported by Godot. Please re-export it or convert it to a newer format.", p_path, doc.FBXVersion()));
+			ERR_PRINT(vformat("Cannot import FBX file: %s. It uses file format %d which is unsupported by Pandemonium. Please re-export it or convert it to a newer format.", p_path, doc.FBXVersion()));
 		}
 	}
 
@@ -373,7 +373,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	state.root->set_owner(scene_root);
 
 	state.fbx_root_node.instance();
-	state.fbx_root_node->godot_node = state.root;
+	state.fbx_root_node->pandemonium_node = state.root;
 
 	// Size relative to cm.
 	const real_t fbx_unit_scale = p_document->GlobalSettingsPtr()->UnitScaleFactor();
@@ -396,7 +396,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	root_node->pivot_transform = pivot_transform;
 	root_node->node_name = "root node";
 	root_node->current_node_id = 0;
-	root_node->godot_node = state.root;
+	root_node->pandemonium_node = state.root;
 
 	// cache this node onto the fbx_target map.
 	state.fbx_target_map.insert(0, root_node);
@@ -537,9 +537,9 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 			material.instance();
 			material->set_imported_material(mat);
 
-			Ref<SpatialMaterial> godot_material = material->import_material(state);
+			Ref<SpatialMaterial> pandemonium_material = material->import_material(state);
 
-			state.cached_materials.insert(material_id, godot_material);
+			state.cached_materials.insert(material_id, pandemonium_material);
 		}
 	}
 
@@ -620,7 +620,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		}
 	}
 
-	// build godot node tree
+	// build pandemonium node tree
 	if (state.fbx_node_list.size() > 0) {
 		for (List<Ref<FBXNode>>::Element *node_element = state.fbx_node_list.front();
 				node_element;
@@ -673,27 +673,27 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 			if (node_skeleton.is_valid()) {
 				Skeleton *skel = node_skeleton->skeleton;
-				fbx_node->godot_node = skel;
+				fbx_node->pandemonium_node = skel;
 			} else if (mesh_node == nullptr) {
-				fbx_node->godot_node = memnew(Spatial);
+				fbx_node->pandemonium_node = memnew(Spatial);
 			} else {
-				fbx_node->godot_node = mesh_node;
+				fbx_node->pandemonium_node = mesh_node;
 			}
 
-			fbx_node->godot_node->set_name(fbx_node->node_name);
+			fbx_node->pandemonium_node->set_name(fbx_node->node_name);
 
 			// assign parent if valid
 			if (fbx_node->fbx_parent.is_valid()) {
-				fbx_node->fbx_parent->godot_node->add_child(fbx_node->godot_node);
-				fbx_node->godot_node->set_owner(state.root_owner);
+				fbx_node->fbx_parent->pandemonium_node->add_child(fbx_node->pandemonium_node);
+				fbx_node->pandemonium_node->set_owner(state.root_owner);
 			}
 
 			// Node Transform debug, set local xform data.
-			fbx_node->godot_node->set_transform(get_unscaled_transform(fbx_node->pivot_transform->LocalTransform, state.scale));
+			fbx_node->pandemonium_node->set_transform(get_unscaled_transform(fbx_node->pivot_transform->LocalTransform, state.scale));
 
 			// populate our mesh node reference
 			if (mesh_node != nullptr && mesh_data_precached.is_valid()) {
-				mesh_data_precached->godot_mesh_instance = mesh_node;
+				mesh_data_precached->pandemonium_mesh_instance = mesh_node;
 			}
 		}
 	}
@@ -767,7 +767,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	for (RBMap<uint64_t, Ref<FBXMeshData>>::Element *mesh_data = state.renderer_mesh_data.front(); mesh_data; mesh_data = mesh_data->next()) {
 		Ref<FBXMeshData> mesh = mesh_data->value();
 		const uint64_t mesh_id = mesh_data->key();
-		MeshInstance *mesh_instance = mesh->godot_mesh_instance;
+		MeshInstance *mesh_instance = mesh->pandemonium_mesh_instance;
 		const int mesh_weights = mesh->max_weight_count;
 		Ref<FBXSkeleton> skeleton;
 		const bool valid_armature = mesh->valid_armature_id;
@@ -868,7 +868,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 					print_verbose("Layer: " + ImportUtils::FBXNodeToName(layer->Name()) + ", " + " AnimCurveNode count " + itos(node_list.size()));
 
 					// first thing to do here is that i need to first get the animcurvenode to a Vector3
-					// we now need to put this into the track information for godot.
+					// we now need to put this into the track information for pandemonium.
 					// to do this we need to know which track is what?
 
 					// target id, [ track name, [time index, vector] ]
@@ -927,7 +927,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 						// T, R, S is what we expect, although other tracks are possible
 						// like for example visibility tracks.
 
-						// We are not ordered here, we don't care about ordering, this happens automagically by godot when we insert with the
+						// We are not ordered here, we don't care about ordering, this happens automagically by pandemonium when we insert with the
 						// key time :), so order is unimportant because the insertion will happen at a time index
 						// good to know: we do not need a list of these in another format :)
 						//Map<String, Vector<const Assimp::FBX::AnimationCurve *> > unordered_track;
@@ -962,7 +962,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 						// extra const required by C++11 colon/Range operator
 						// note: do not use C++17 syntax here for dicts.
-						// this is banned in Godot.
+						// this is banned in Pandemonium
 						for (const std::pair<const std::string, const FBXDocParser::AnimationCurve *> &kvp : curves) {
 							const String curve_element = ImportUtils::FBXNodeToName(kvp.first);
 							const FBXDocParser::AnimationCurve *curve = kvp.second;
@@ -970,7 +970,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 							uint64_t curve_id = curve->ID();
 
 							if (CheckForDuplication.has(curve_id)) {
-								print_error("(FBX spec changed?) We found a duplicate curve being used for an alternative node - report to godot issue tracker");
+								print_error("(FBX spec changed?) We found a duplicate curve being used for an alternative node - report to pandemonium issue tracker");
 							} else {
 								CheckForDuplication.insert(curve_id, curve);
 							}
@@ -1043,7 +1043,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 							if (bone->fbx_skeleton.is_valid() && bone.is_valid()) {
 								Ref<FBXSkeleton> fbx_skeleton = bone->fbx_skeleton;
 								String bone_path = state.root->get_path_to(fbx_skeleton->skeleton);
-								bone_path += ":" + fbx_skeleton->skeleton->get_bone_name(bone->godot_bone_id);
+								bone_path += ":" + fbx_skeleton->skeleton->get_bone_name(bone->pandemonium_bone_id);
 								print_verbose("[doc] track bone path: " + bone_path);
 								NodePath path = bone_path;
 								animation->track_set_path(position_idx, path);
@@ -1053,8 +1053,8 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 						} else if (state.fbx_target_map.has(target_id)) {
 							//print_verbose("[doc] we have a valid target for a node animation");
 							Ref<FBXNode> target_node = state.fbx_target_map[target_id];
-							if (target_node.is_valid() && target_node->godot_node != nullptr) {
-								String node_path = state.root->get_path_to(target_node->godot_node);
+							if (target_node.is_valid() && target_node->pandemonium_node != nullptr) {
+								String node_path = state.root->get_path_to(target_node->pandemonium_node);
 								NodePath path = node_path;
 								animation->track_set_path(position_idx, path);
 								animation->track_set_path(rotation_idx, path);
@@ -1175,7 +1175,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 						int skeleton_bone = -1;
 						if (state.fbx_bone_map.has(target_id)) {
 							if (bone.is_valid() && bone->fbx_skeleton.is_valid()) {
-								skeleton_bone = bone->godot_bone_id;
+								skeleton_bone = bone->pandemonium_bone_id;
 								if (skeleton_bone >= 0) {
 									bone_rest = bone->fbx_skeleton->skeleton->get_bone_rest(skeleton_bone);
 									valid_rest = true;

@@ -90,7 +90,7 @@ struct FBXMeshData : Reference {
 	int max_weight_count = 0;
 	uint64_t armature_id = 0;
 	bool valid_armature_id = false;
-	MeshInstance *godot_mesh_instance = nullptr;
+	MeshInstance *pandemonium_mesh_instance = nullptr;
 
 private:
 	void sanitize_vertex_weights(const ImportState &state);
