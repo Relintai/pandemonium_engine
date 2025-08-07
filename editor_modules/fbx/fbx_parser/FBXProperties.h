@@ -88,10 +88,13 @@ namespace FBXDocParser {
 // Forward declarations
 class Element;
 
-#define FBXPROPERTY(m_class, m_inherits)                                                   \
+#define FBXPROPERTY(m_class, m_inherits, m_template)                                                   \
 public:                                                                                    \
 	virtual bool is_class_ptr(void *p_ptr) const {                                         \
 		return (p_ptr == get_class_ptr_static()) ? true : m_inherits::is_class_ptr(p_ptr); \
+	}                                                                                      \
+	virtual std::string get_class() const {                                                \
+		return (#m_class " " #m_template);                                                                 \
 	}                                                                                      \
                                                                                            \
 private:
@@ -120,6 +123,10 @@ public:
 		return get_class_ptr_static() == p_ptr;
 	}
 
+	virtual std::string get_class() const {
+		return "Property";
+	}
+
 	template <typename T>
 	const T *As() const {
 #ifndef NO_SAFE_CAST
@@ -135,7 +142,7 @@ public:
 
 template <typename T>
 class TypedProperty : public Property {
-	FBXPROPERTY(TypedProperty, Property);
+	FBXPROPERTY(TypedProperty, Property, T);
 
 public:
 	explicit TypedProperty(const T &value) :
