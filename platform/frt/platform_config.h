@@ -38,4 +38,7 @@
 #endif
 
 #define GLES2_INCLUDE_H "gles2_egl.h"
+
+#ifndef GLES3_DISABLED
 #define GLES3_INCLUDE_H "dl/gles3.gen.h"
+#endif
