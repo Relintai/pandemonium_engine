@@ -80,6 +80,11 @@ typedef Object *ObjectPtr;
 
 #define FBXCLASS(m_class, m_inherits)                                                      \
 public:                                                                                    \
+	static void *get_class_ptr_static() {                                                  \
+		static int ptr;                                                                    \
+		return &ptr;                                                                       \
+	}                                                                                      \
+                                                                                           \
 	virtual bool is_class_ptr(void *p_ptr) const {                                         \
 		return (p_ptr == get_class_ptr_static()) ? true : m_inherits::is_class_ptr(p_ptr); \
 	}                                                                                      \
