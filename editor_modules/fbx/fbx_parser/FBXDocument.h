@@ -84,6 +84,10 @@ public:                                                                         
 		return (p_ptr == get_class_ptr_static()) ? true : m_inherits::is_class_ptr(p_ptr); \
 	}                                                                                      \
                                                                                            \
+	virtual std::string get_class() const {                                                \
+		return (#m_class);                                                                 \
+	}                                                                                      \
+                                                                                           \
 private:
 
 /** Base class for in-memory (DOM) representations of FBX objects */
@@ -100,6 +104,10 @@ public:
 
 	virtual bool is_class_ptr(void *p_ptr) const {
 		return get_class_ptr_static() == p_ptr;
+	}
+
+	virtual std::string get_class() const {
+		return "Object";
 	}
 
 	ElementPtr SourceElement() const {
