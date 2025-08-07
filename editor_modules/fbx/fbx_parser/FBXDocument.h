@@ -902,12 +902,7 @@ public:
 #ifndef NO_SAFE_CAST
 		return dynamic_cast<Model *>(target);
 #else
-		if (!target)
-			return NULL;
-		if (target->is_class_ptr(Model::get_class_ptr_static()))
-			return static_cast<Model *>(target);
-		else
-			return NULL;
+		return Object::As<Model>(target);
 #endif
 	}
 
@@ -915,12 +910,7 @@ public:
 #ifndef NO_SAFE_CAST
 		return dynamic_cast<NodeAttribute *>(target);
 #else
-		if (!target)
-			return NULL;
-		if (target->is_class_ptr(NodeAttribute::get_class_ptr_static()))
-			return static_cast<NodeAttribute *>(target);
-		else
-			return NULL;
+		return Object::As<NodeAttribute>(target);
 #endif
 	}
 
