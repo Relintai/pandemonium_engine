@@ -362,6 +362,8 @@ MeshInstance *FBXMeshData::create_fbx_mesh(const ImportState &state, const FBXDo
 	// Phase 6. Compose the mesh and return it.
 	Ref<ArrayMesh> mesh;
 	mesh.instance();
+	// The Editor Importer uses this to name external meshes
+	mesh->set_name(String(model->Name().c_str()));
 
 	// Add blend shape info.
 	for (const String *morph_name = morphs.next(nullptr); morph_name != nullptr; morph_name = morphs.next(morph_name)) {
