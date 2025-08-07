@@ -246,8 +246,8 @@ T extract_from_prop(FBXDocParser::PropertyPtr prop, const T &p_default, const st
 	//const FBXDocParser::TypedProperty<T> *val = dynamic_cast<const FBXDocParser::TypedProperty<T> *>(prop);
 	const FBXDocParser::TypedProperty<T> *val = prop->As<const FBXDocParser::TypedProperty<T>>();
 
-	//ERR_FAIL_COND_V_MSG(val == nullptr, p_default, "The FBX is corrupted, the property `" + String(p_name.c_str()) + "` is a `" + String(typeid(*prop).name()) + "` but should be a " + p_type);
-	ERR_FAIL_COND_V_MSG(val == nullptr, p_default, "The FBX is corrupted, the property `" + String(p_name.c_str()) + "`'s type is not " + p_type);
+	ERR_FAIL_COND_V_MSG(val == nullptr, p_default, "The FBX is corrupted, the property `" + String(p_name.c_str()) + "` is a `" + String(prop->get_class().c_str()) + "` but should be a " + p_type);
+	//ERR_FAIL_COND_V_MSG(val == nullptr, p_default, "The FBX is corrupted, the property `" + String(p_name.c_str()) + "`'s type is not " + p_type);
 	// Make sure to not lost any eventual opacity.
 	return val->Value();
 }
