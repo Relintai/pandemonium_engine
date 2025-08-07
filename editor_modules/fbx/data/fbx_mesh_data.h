@@ -62,6 +62,9 @@ struct VertexData {
 
 // Caches mesh information and instantiates meshes for you using helper functions.
 struct FBXMeshData : Reference {
+	GDCLASS(FBXMeshData, Reference);
+
+public:
 	struct MorphVertexData {
 		// TODO we have only these??
 		/// Each element is a vertex. Not supposed to be void.
