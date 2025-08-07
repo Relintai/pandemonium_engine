@@ -118,6 +118,7 @@ slim_args = ''
 #slim_args += 'module_denoise_enabled=no ' # GLES3 lihgtmapper
 #slim_args += 'module_lightmapper_cpu_enabled=no ' # GLES3 lihgtmapper 
 #slim_args += 'module_raycast_enabled=no ' # GLES3 lihgtmapper 
+#slim_args += 'module_fbx_enabled=no '
 
 #slim_args += 'disable_advanced_gui=yes ' # Cannot be used with the tools (editor) build
 #slim_args += 'disable_3d=yes ' # Cannot be used with the tools (editor) build
