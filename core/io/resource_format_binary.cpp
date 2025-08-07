@@ -2029,7 +2029,7 @@ Error ResourceFormatSaverBinaryInstance::save(const String &p_path, const RES &p
 
 	for (List<RES>::Element *E = saved_resources.front(); E; E = E->next()) {
 		RES r = E->get();
-		if (!r->is_built_in()) {
+		if (r->is_built_in()) {
 			if (r->get_subindex() != 0) {
 				if (used_indices.has(r->get_subindex())) {
 					r->set_subindex(0); //repeated
@@ -2042,7 +2042,7 @@ Error ResourceFormatSaverBinaryInstance::save(const String &p_path, const RES &p
 
 	for (List<RES>::Element *E = saved_resources.front(); E; E = E->next()) {
 		RES r = E->get();
-		if (!r->is_built_in()) {
+		if (r->is_built_in()) {
 			if (r->get_subindex() == 0) {
 				int new_subindex = 1;
 				if (used_indices.size()) {
