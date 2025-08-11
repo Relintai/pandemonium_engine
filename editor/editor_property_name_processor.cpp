@@ -142,7 +142,6 @@ EditorPropertyNameProcessor::EditorPropertyNameProcessor() {
 	capitalize_string_remaps["Websocket"] = "WebSocket";
 	capitalize_string_remaps["Xr"] = "XR";
 	capitalize_string_remaps["osslsigncode"] = "osslsigncode";
-	capitalize_string_remaps["rcedit"] = "rcedit";
 	capitalize_string_remaps["rcodesign"] = "rcodesign";
 	capitalize_string_remaps["signtool"] = "signtool";
 	capitalize_string_remaps["uri"] = "URI";
