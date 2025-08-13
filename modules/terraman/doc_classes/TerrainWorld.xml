@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainWorld" inherits="Spatial">
 	<brief_description>
+		Base class for the terrain system which stores and manages [TerrainChunk]s.
 	</brief_description>
 	<description>
+		Base class for the terrain system.
+		Stores and manages [TerrainChunk]s and other data, also contains necessary and useful virtual methods.
+		Should be inherited from.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,6 +15,7 @@
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Called when a chunk was added.
 			</description>
 		</method>
 		<method name="_create_chunk" qualifiers="virtual">
@@ -19,40 +24,58 @@
 			<argument index="1" name="z" type="int" />
 			<argument index="2" name="chunk" type="TerrainChunk" />
 			<description>
+				Called when a chunk needs to be created.
+				In this method all necessary serialized properties should be setup for the chunk to function.
+				For non-serialized properties use [method _setup_chunk].
+				When loading chunks from disk, only [method _setup_chunk] will be called, this one won't.
+				Note the [TerrainChunk] parameter. The first reaced implementation should create the appropiate [TerrainChunk] implementation, then it can call base implementation to do their own initialization on the new instance. Tipically in code this would look like:
+				[code]func _create_chunk(x : int, z : int, chunk : TerrainChunk) -> TerrainChunk:
+				  if (!chunk):
+				    chunk = MyTerrainChunk.new()
+
+				  return ._create_chunk(x, z, chunk)[/code]
 			</description>
 		</method>
 		<method name="_generate_chunk" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Called when a chunk needs to be generated.
 			</description>
 		</method>
 		<method name="_generation_finished" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Called when [member is_priority_generation] is true and all generating chunks finished.
 			</description>
 		</method>
 		<method name="_get_channel_index_info" qualifiers="virtual">
 			<return type="int" />
 			<argument index="0" name="channel_type" type="int" />
 			<description>
+				The editor tools ask the world for chunk channel information using this method.
 			</description>
 		</method>
 		<method name="_prepare_chunk_for_generation" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				This method will get called for chunks before generation so they can be prepared if needed.
+				For example channel allocations can happen here.
 			</description>
 		</method>
 		<method name="_setup_chunk" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Set up a chunk. Non-serialized properties should be initialized in this method, like [TerrainJob] and [TerrainMesher] setup.
+				[method chunk_setup] call this.
 			</description>
 		</method>
 		<method name="can_chunk_do_build_step">
 			<return type="bool" />
 			<description>
+				Returns whether a chunk can do it's next build step in the current frame. See [member max_frame_chunk_build_steps].
 			</description>
 		</method>
 		<method name="chunk_add">
@@ -61,6 +84,7 @@
 			<argument index="1" name="x" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Add a chunk at chunk position x, z.
 			</description>
 		</method>
 		<method name="chunk_create">
@@ -68,6 +92,7 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Create a chunk at chunk position x, z.
 			</description>
 		</method>
 		<method name="chunk_get">
@@ -75,17 +100,20 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Return the chunk at chunk position x, z or null if it doesn't exists.
 			</description>
 		</method>
 		<method name="chunk_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the chunk count.
 			</description>
 		</method>
 		<method name="chunk_get_index">
 			<return type="TerrainChunk" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the chunk at at index.
 			</description>
 		</method>
 		<method name="chunk_get_or_create">
@@ -511,14 +539,19 @@
 	</signals>
 	<constants>
 		<constant name="CHANNEL_TYPE_INFO_TYPE" value="0" enum="ChannelTypeInfo">
+			Which chunk channel contains type information.
 		</constant>
 		<constant name="CHANNEL_TYPE_INFO_ISOLEVEL" value="1" enum="ChannelTypeInfo">
+			Which chunk channel contains isolevel information.
 		</constant>
 		<constant name="CHANNEL_TYPE_INFO_LIQUID_TYPE" value="2" enum="ChannelTypeInfo">
+			Which chunk channel contains liquid type information.
 		</constant>
 		<constant name="CHANNEL_TYPE_INFO_LIQUID_ISOLEVEL" value="3" enum="ChannelTypeInfo">
+			Which chunk channel contains liquid isolevel information.
 		</constant>
 		<constant name="CHANNEL_TYPE_INFO_LIQUID_FLOW" value="4" enum="ChannelTypeInfo">
+			Which chunk channel contains liquid flow information.
 		</constant>
 		<constant name="NOTIFICATION_ACTIVE_STATE_CHANGED" value="9000">
 		</constant>
