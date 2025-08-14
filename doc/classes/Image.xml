@@ -242,6 +242,12 @@
 				Returns the image's size (width and height).
 			</description>
 		</method>
+		<method name="get_sizei" qualifiers="const">
+			<return type="Vector2i" />
+			<description>
+				Returns the image's size (width and height).
+			</description>
+		</method>
 		<method name="get_used_rect" qualifiers="const">
 			<return type="Rect2" />
 			<description>
