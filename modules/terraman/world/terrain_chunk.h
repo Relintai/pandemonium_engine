@@ -323,9 +323,9 @@ public:
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-	int mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true, const bool p_original = true, const String &p_name = String());
-	int mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true, const bool p_original = true, const String &p_name = String());
-	int mesh_data_resource_add_material(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Ref<Material> &p_material = Ref<Texture>(), const bool apply_voxel_scale = true, const bool p_original = true, const String &p_name = String());
+	int mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_terrain_scale = true, const bool p_original = true, const String &p_name = String());
+	int mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_terrain_scale = true, const bool p_original = true, const String &p_name = String());
+	int mesh_data_resource_add_material(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Ref<Material> &p_material = Ref<Texture>(), const bool apply_terrain_scale = true, const bool p_original = true, const String &p_name = String());
 
 	Ref<MeshDataResource> mesh_data_resource_get(const int index);
 	void mesh_data_resource_set(const int index, const Ref<MeshDataResource> &mesh);

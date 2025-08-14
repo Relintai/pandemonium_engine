@@ -1423,14 +1423,14 @@ void TerrainChunk::props_set(const Array &p_props) {
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale, const bool p_original, const String &p_name) {
+int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_terrain_scale, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND_V(!mesh.is_valid(), 0);
 
 	int index = _mesh_data_resources.size();
 
 	MeshDataResourceEntry e;
 
-	if (apply_voxel_scale) {
+	if (apply_terrain_scale) {
 		e.transform = Transform(Basis().scaled(Vector3(_terrain_scale, _terrain_scale, _terrain_scale)));
 		e.transform.origin = local_data_pos * _terrain_scale;
 	} else {
@@ -1468,7 +1468,7 @@ int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const R
 	return index;
 }
 
-int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale, const bool p_original, const String &p_name) {
+int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_terrain_scale, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND_V(!mesh.is_valid(), 0);
 
 	int index = _mesh_data_resources.size();
@@ -1478,7 +1478,7 @@ int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const
 	e.name = p_name;
 	e.transform = local_transform;
 
-	if (apply_voxel_scale) {
+	if (apply_terrain_scale) {
 		e.transform.basis = e.transform.basis.scaled(Vector3(_terrain_scale, _terrain_scale, _terrain_scale));
 		e.transform.origin = e.transform.origin * _terrain_scale;
 	}
@@ -1513,7 +1513,7 @@ int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const
 	return index;
 }
 
-int TerrainChunk::mesh_data_resource_add_material(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Ref<Material> &p_material, const bool apply_voxel_scale, const bool p_original, const String &p_name) {
+int TerrainChunk::mesh_data_resource_add_material(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Ref<Material> &p_material, const bool apply_terrain_scale, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND_V(!mesh.is_valid(), 0);
 
 	int index = _mesh_data_resources.size();
@@ -1523,7 +1523,7 @@ int TerrainChunk::mesh_data_resource_add_material(const Transform &local_transfo
 	e.name = p_name;
 	e.transform = local_transform;
 
-	if (apply_voxel_scale) {
+	if (apply_terrain_scale) {
 		e.transform.basis = e.transform.basis.scaled(Vector3(_terrain_scale, _terrain_scale, _terrain_scale));
 		e.transform.origin = e.transform.origin * _terrain_scale;
 	}
@@ -2535,9 +2535,9 @@ void TerrainChunk::_bind_methods() {
 	//Meshes
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-	ClassDB::bind_method(D_METHOD("mesh_data_resource_addv", "local_data_pos", "mesh", "texture", "color", "apply_voxel_scale", "original", "name"), &TerrainChunk::mesh_data_resource_addv, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(true), DEFVAL(String()));
-	ClassDB::bind_method(D_METHOD("mesh_data_resource_add", "local_transform", "mesh", "texture", "color", "apply_voxel_scale", "original", "name"), &TerrainChunk::mesh_data_resource_add, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(true), DEFVAL(String()));
-	ClassDB::bind_method(D_METHOD("mesh_data_resource_add_material", "local_transform", "mesh", "texture", "material", "apply_voxel_scale", "original", "name"), &TerrainChunk::mesh_data_resource_add_material, DEFVAL(Ref<Texture>()), DEFVAL(Ref<Material>()), DEFVAL(true), DEFVAL(true), DEFVAL(String()));
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_addv", "local_data_pos", "mesh", "texture", "color", "apply_terrain_scale", "original", "name"), &TerrainChunk::mesh_data_resource_addv, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(true), DEFVAL(String()));
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_add", "local_transform", "mesh", "texture", "color", "apply_terrain_scale", "original", "name"), &TerrainChunk::mesh_data_resource_add, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(true), DEFVAL(String()));
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_add_material", "local_transform", "mesh", "texture", "material", "apply_terrain_scale", "original", "name"), &TerrainChunk::mesh_data_resource_add_material, DEFVAL(Ref<Texture>()), DEFVAL(Ref<Material>()), DEFVAL(true), DEFVAL(true), DEFVAL(String()));
 
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_get", "index"), &TerrainChunk::mesh_data_resource_get);
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_set", "index", "mesh"), &TerrainChunk::mesh_data_resource_set);
