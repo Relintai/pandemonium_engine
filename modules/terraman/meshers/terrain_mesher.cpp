@@ -158,12 +158,25 @@ void TerrainMesher::set_base_light_value(float value) {
 	_base_light_value = value;
 }
 
+float TerrainMesher::get_terrain_scale() const {
+	return _terrain_scale;
+}
+void TerrainMesher::set_terrain_scale(const float terrain_scale) {
+	_terrain_scale = terrain_scale;
+}
+
+#ifndef DISABLE_DEPRECATED
 float TerrainMesher::get_voxel_scale() const {
-	return _voxel_scale;
+	WARN_DEPRECATED_MSG("Method is deprecated. Please use get_terrain_scale() instead. They are functionally identical.");
+
+	return _terrain_scale;
 }
-void TerrainMesher::set_voxel_scale(const float voxel_scale) {
-	_voxel_scale = voxel_scale;
+void TerrainMesher::set_voxel_scale(const float terrain_scale) {
+	WARN_DEPRECATED_MSG("Method is deprecated. Please use set_terrain_scale() instead. They are functionally identical.");
+
+	_terrain_scale = terrain_scale;
 }
+#endif
 
 Rect2 TerrainMesher::get_uv_margin() const {
 	return _uv_margin;
@@ -914,7 +927,7 @@ TerrainMesher::TerrainMesher(const Ref<TerrainLibrary> &library) {
 	_library = library;
 
 	_mesher_index = 0;
-	_voxel_scale = 1;
+	_terrain_scale = 1;
 	_ao_strength = 0.25;
 	_base_light_value = 0.5;
 	_uv_margin = Rect2(0, 0, 1, 1);
@@ -928,7 +941,7 @@ TerrainMesher::TerrainMesher(const Ref<TerrainLibrary> &library) {
 
 TerrainMesher::TerrainMesher() {
 	_mesher_index = 0;
-	_voxel_scale = 1;
+	_terrain_scale = 1;
 	_ao_strength = 0.25;
 	_base_light_value = 0.5;
 	_uv_margin = Rect2(0, 0, 1, 1);
@@ -983,9 +996,15 @@ void TerrainMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_material", "value"), &TerrainMesher::set_material);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "Material"), "set_material", "get_material");
 
+	ClassDB::bind_method(D_METHOD("get_terrain_scale"), &TerrainMesher::get_terrain_scale);
+	ClassDB::bind_method(D_METHOD("set_terrain_scale", "value"), &TerrainMesher::set_terrain_scale);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "terrain_scale"), "set_terrain_scale", "get_terrain_scale");
+
+#ifndef DISABLE_DEPRECATED
 	ClassDB::bind_method(D_METHOD("get_voxel_scale"), &TerrainMesher::get_voxel_scale);
 	ClassDB::bind_method(D_METHOD("set_voxel_scale", "value"), &TerrainMesher::set_voxel_scale);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale"), "set_voxel_scale", "get_voxel_scale");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale", PROPERTY_HINT_NONE, "", 0), "set_voxel_scale", "get_voxel_scale");
+#endif
 
 	ClassDB::bind_method(D_METHOD("get_ao_strength"), &TerrainMesher::get_ao_strength);
 	ClassDB::bind_method(D_METHOD("set_ao_strength", "value"), &TerrainMesher::set_ao_strength);

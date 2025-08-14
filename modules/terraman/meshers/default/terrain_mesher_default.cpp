@@ -72,8 +72,8 @@ void TerrainMesherDefault::_bake_colors(Ref<TerrainChunk> chunk) {
 		Vertex vertex = _vertices[i];
 		Vector3 vert = vertex.vertex;
 
-		unsigned int x = (unsigned int)(vert.x / _voxel_scale);
-		unsigned int z = (unsigned int)(vert.z / _voxel_scale);
+		unsigned int x = (unsigned int)(vert.x / _terrain_scale);
+		unsigned int z = (unsigned int)(vert.z / _terrain_scale);
 
 		if (chunk->validate_data_position(x, z)) {
 			int indx = chunk->get_data_index(x, z);
@@ -138,9 +138,9 @@ void TerrainMesherDefault::_bake_liquid_colors(Ref<TerrainChunk> chunk) {
 			continue;
 		}
 
-		unsigned int x = (unsigned int)(vert.x / _voxel_scale);
-		//unsigned int y = (unsigned int)(vert.y / _voxel_scale);
-		unsigned int z = (unsigned int)(vert.z / _voxel_scale);
+		unsigned int x = (unsigned int)(vert.x / _terrain_scale);
+		//unsigned int y = (unsigned int)(vert.y / _terrain_scale);
+		unsigned int z = (unsigned int)(vert.z / _terrain_scale);
 
 		if (chunk->validate_data_position(x, z)) {
 			int indx = chunk->get_data_index(x, z);

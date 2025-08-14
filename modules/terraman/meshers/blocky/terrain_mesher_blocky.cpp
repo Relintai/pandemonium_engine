@@ -67,7 +67,7 @@ void TerrainMesherBlocky::add_chunk_normal(Ref<TerrainChunkDefault> chunk) {
 	int z_size = chunk->get_size_z();
 	float world_height = chunk->get_world_height();
 
-	float voxel_scale = get_voxel_scale();
+	float terrain_scale = get_terrain_scale();
 
 	uint8_t *channel_type = chunk->channel_get(_channel_index_type);
 
@@ -195,10 +195,10 @@ void TerrainMesherBlocky::add_chunk_normal(Ref<TerrainChunkDefault> chunk) {
 			};
 
 			Vector3 verts[] = {
-				Vector3(x + 1, isolevels[0] / 255.0 * world_height, z) * voxel_scale,
-				Vector3(x, isolevels[1] / 255.0 * world_height, z) * voxel_scale,
-				Vector3(x, isolevels[2] / 255.0 * world_height, z + 1) * voxel_scale,
-				Vector3(x + 1, isolevels[3] / 255.0 * world_height, z + 1) * voxel_scale
+				Vector3(x + 1, isolevels[0] / 255.0 * world_height, z) * terrain_scale,
+				Vector3(x, isolevels[1] / 255.0 * world_height, z) * terrain_scale,
+				Vector3(x, isolevels[2] / 255.0 * world_height, z + 1) * terrain_scale,
+				Vector3(x + 1, isolevels[3] / 255.0 * world_height, z + 1) * terrain_scale
 			};
 
 			Vector3 normals[] = {
@@ -236,7 +236,7 @@ void TerrainMesherBlocky::add_chunk_lod(Ref<TerrainChunkDefault> chunk) {
 	int z_size = chunk->get_size_z();
 	float world_height = chunk->get_world_height();
 
-	float voxel_scale = get_voxel_scale();
+	float terrain_scale = get_terrain_scale();
 
 	uint8_t *channel_type = chunk->channel_get(_channel_index_type);
 
@@ -368,10 +368,10 @@ void TerrainMesherBlocky::add_chunk_lod(Ref<TerrainChunkDefault> chunk) {
 			};
 
 			Vector3 verts[] = {
-				Vector3(x + lod_skip, isolevels[0] / 255.0 * world_height, z) * voxel_scale,
-				Vector3(x, isolevels[1] / 255.0 * world_height, z) * voxel_scale,
-				Vector3(x, isolevels[2] / 255.0 * world_height, z + lod_skip) * voxel_scale,
-				Vector3(x + lod_skip, isolevels[3] / 255.0 * world_height, z + lod_skip) * voxel_scale
+				Vector3(x + lod_skip, isolevels[0] / 255.0 * world_height, z) * terrain_scale,
+				Vector3(x, isolevels[1] / 255.0 * world_height, z) * terrain_scale,
+				Vector3(x, isolevels[2] / 255.0 * world_height, z + lod_skip) * terrain_scale,
+				Vector3(x + lod_skip, isolevels[3] / 255.0 * world_height, z + lod_skip) * terrain_scale
 			};
 
 			Vector3 normals[] = {
@@ -403,7 +403,7 @@ void TerrainMesherBlocky::create_margin_zmin(Ref<TerrainChunkDefault> chunk) {
 	int x_data_size = chunk->get_data_size_x();
 	float world_height = chunk->get_world_height();
 
-	float voxel_scale = get_voxel_scale();
+	float terrain_scale = get_terrain_scale();
 
 	uint8_t *channel_type = chunk->channel_get(_channel_index_type);
 
@@ -549,10 +549,10 @@ void TerrainMesherBlocky::create_margin_zmin(Ref<TerrainChunkDefault> chunk) {
 		float vi1 = Math::lerp(isolevels[2], isolevels[3], xp1_interp);
 
 		Vector3 verts[] = {
-			Vector3(x + 1, isolevels[0] / 255.0 * world_height, z) * voxel_scale,
-			Vector3(x, isolevels[1] / 255.0 * world_height, z) * voxel_scale,
-			Vector3(x, vi0 / 255.0 * world_height, lastz) * voxel_scale,
-			Vector3(x + 1, vi1 / 255.0 * world_height, lastz) * voxel_scale
+			Vector3(x + 1, isolevels[0] / 255.0 * world_height, z) * terrain_scale,
+			Vector3(x, isolevels[1] / 255.0 * world_height, z) * terrain_scale,
+			Vector3(x, vi0 / 255.0 * world_height, lastz) * terrain_scale,
+			Vector3(x + 1, vi1 / 255.0 * world_height, lastz) * terrain_scale
 		};
 
 		Vector3 normals[] = {
@@ -583,7 +583,7 @@ void TerrainMesherBlocky::create_margin_zmax(Ref<TerrainChunkDefault> chunk) {
 	int x_data_size = chunk->get_data_size_x();
 	float world_height = chunk->get_world_height();
 
-	float voxel_scale = get_voxel_scale();
+	float terrain_scale = get_terrain_scale();
 
 	uint8_t *channel_type = chunk->channel_get(_channel_index_type);
 
@@ -727,10 +727,10 @@ void TerrainMesherBlocky::create_margin_zmax(Ref<TerrainChunkDefault> chunk) {
 		float vi1 = Math::lerp(isolevels[1], isolevels[0], xp1_interp);
 
 		Vector3 verts[] = {
-			Vector3(x + 1, vi1 / 255.0 * world_height, z) * voxel_scale,
-			Vector3(x, vi0 / 255.0 * world_height, z) * voxel_scale,
-			Vector3(x, isolevels[2] / 255.0 * world_height, z + 1) * voxel_scale,
-			Vector3(x + 1, isolevels[3] / 255.0 * world_height, z + 1) * voxel_scale
+			Vector3(x + 1, vi1 / 255.0 * world_height, z) * terrain_scale,
+			Vector3(x, vi0 / 255.0 * world_height, z) * terrain_scale,
+			Vector3(x, isolevels[2] / 255.0 * world_height, z + 1) * terrain_scale,
+			Vector3(x + 1, isolevels[3] / 255.0 * world_height, z + 1) * terrain_scale
 		};
 
 		Vector3 normals[] = {
@@ -761,7 +761,7 @@ void TerrainMesherBlocky::create_margin_xmin(Ref<TerrainChunkDefault> chunk) {
 	int z_data_size = chunk->get_data_size_x();
 	float world_height = chunk->get_world_height();
 
-	float voxel_scale = get_voxel_scale();
+	float terrain_scale = get_terrain_scale();
 
 	uint8_t *channel_type = chunk->channel_get(_channel_index_type);
 
@@ -905,10 +905,10 @@ void TerrainMesherBlocky::create_margin_xmin(Ref<TerrainChunkDefault> chunk) {
 		float vi1 = Math::lerp(isolevels[0], isolevels[3], zp1_interp);
 
 		Vector3 verts[] = {
-			Vector3(lastx, vi0 / 255.0 * world_height, z) * voxel_scale,
-			Vector3(x, isolevels[1] / 255.0 * world_height, z) * voxel_scale,
-			Vector3(x, isolevels[2] / 255.0 * world_height, z + 1) * voxel_scale,
-			Vector3(lastx, vi1 / 255.0 * world_height, z + 1) * voxel_scale
+			Vector3(lastx, vi0 / 255.0 * world_height, z) * terrain_scale,
+			Vector3(x, isolevels[1] / 255.0 * world_height, z) * terrain_scale,
+			Vector3(x, isolevels[2] / 255.0 * world_height, z + 1) * terrain_scale,
+			Vector3(lastx, vi1 / 255.0 * world_height, z + 1) * terrain_scale
 		};
 
 		Vector3 normals[] = {
@@ -939,7 +939,7 @@ void TerrainMesherBlocky::create_margin_xmax(Ref<TerrainChunkDefault> chunk) {
 	int z_data_size = chunk->get_data_size_x();
 	float world_height = chunk->get_world_height();
 
-	float voxel_scale = get_voxel_scale();
+	float terrain_scale = get_terrain_scale();
 
 	uint8_t *channel_type = chunk->channel_get(_channel_index_type);
 
@@ -1081,10 +1081,10 @@ void TerrainMesherBlocky::create_margin_xmax(Ref<TerrainChunkDefault> chunk) {
 		float vi1 = Math::lerp(isolevels[1], isolevels[2], zp1_interp);
 
 		Vector3 verts[] = {
-			Vector3(x + 1, isolevels[0] / 255.0 * world_height, z) * voxel_scale,
-			Vector3(x, vi0 / 255.0 * world_height, z) * voxel_scale,
-			Vector3(x, vi1 / 255.0 * world_height, z + 1) * voxel_scale,
-			Vector3(x + 1, isolevels[3] / 255.0 * world_height, z + 1) * voxel_scale
+			Vector3(x + 1, isolevels[0] / 255.0 * world_height, z) * terrain_scale,
+			Vector3(x, vi0 / 255.0 * world_height, z) * terrain_scale,
+			Vector3(x, vi1 / 255.0 * world_height, z + 1) * terrain_scale,
+			Vector3(x + 1, isolevels[3] / 255.0 * world_height, z + 1) * terrain_scale
 		};
 
 		Vector3 normals[] = {
@@ -1120,7 +1120,7 @@ void TerrainMesherBlocky::create_face(Ref<TerrainChunkDefault> chunk, int dataxm
 
 	float world_height = chunk->get_world_height();
 
-	float voxel_scale = get_voxel_scale();
+	float terrain_scale = get_terrain_scale();
 
 	uint8_t *channel_type = chunk->channel_get(_channel_index_type);
 
@@ -1244,10 +1244,10 @@ void TerrainMesherBlocky::create_face(Ref<TerrainChunkDefault> chunk, int dataxm
 	};
 
 	Vector3 verts[] = {
-		Vector3(dataxmax, isolevels[0] / 255.0 * world_height, datazmin) * voxel_scale,
-		Vector3(dataxmin, isolevels[1] / 255.0 * world_height, datazmin) * voxel_scale,
-		Vector3(dataxmin, isolevels[2] / 255.0 * world_height, datazmax) * voxel_scale,
-		Vector3(dataxmax, isolevels[3] / 255.0 * world_height, datazmax) * voxel_scale
+		Vector3(dataxmax, isolevels[0] / 255.0 * world_height, datazmin) * terrain_scale,
+		Vector3(dataxmin, isolevels[1] / 255.0 * world_height, datazmin) * terrain_scale,
+		Vector3(dataxmin, isolevels[2] / 255.0 * world_height, datazmax) * terrain_scale,
+		Vector3(dataxmax, isolevels[3] / 255.0 * world_height, datazmax) * terrain_scale
 	};
 
 	Vector3 normals[] = {

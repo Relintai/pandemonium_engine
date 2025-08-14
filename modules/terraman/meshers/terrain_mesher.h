@@ -126,8 +126,13 @@ public:
 	float get_base_light_value() const;
 	void set_base_light_value(const float value);
 
+	float get_terrain_scale() const;
+	void set_terrain_scale(const float terrain_scale);
+
+#ifndef DISABLE_DEPRECATED
 	float get_voxel_scale() const;
 	void set_voxel_scale(const float voxel_scale);
+#endif
 
 	Rect2 get_uv_margin() const;
 	void set_uv_margin(const Rect2 margin);
@@ -230,7 +235,7 @@ protected:
 	Ref<TerrainLibrary> _library;
 	Ref<Material> _material;
 
-	float _voxel_scale;
+	float _terrain_scale;
 
 	float _ao_strength;
 	float _base_light_value;
