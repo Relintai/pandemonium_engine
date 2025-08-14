@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainWorldChunkDataManager" inherits="Resource">
 	<brief_description>
+		A class that can be used by [TerrainWorld] to dynamically save and load chunks.
 	</brief_description>
 	<description>
+		A class that can be used by [TerrainWorld] to dynamically save and load chunks.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,87 +12,102 @@
 		<method name="_delete_all_chunk_data" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Deletes all chunk data.
 			</description>
 		</method>
 		<method name="_delete_chunk_data" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Delete a chunk's data.
 			</description>
 		</method>
 		<method name="_delete_chunk_data_at" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk_position" type="Vector2i" />
 			<description>
+				Delete a chunk's data given it's chunk position.
 			</description>
 		</method>
 		<method name="_get_available_chunk_list" qualifiers="virtual">
 			<return type="PoolVector2iArray" />
 			<description>
+				Returns all available chunk positions.
 			</description>
 		</method>
 		<method name="_load_chunk" qualifiers="virtual">
 			<return type="TerrainChunk" />
 			<argument index="0" name="chunk_position" type="Vector2i" />
 			<description>
+				Load and return the chunk at the given position. Returns null if the chunk doesn't exists.
 			</description>
 		</method>
 		<method name="_on_world_chunk_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Called by world if a a chunk is added.
 			</description>
 		</method>
 		<method name="_on_world_chunk_created" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Called by world if a a chunk is created.
 			</description>
 		</method>
 		<method name="_on_world_chunk_removed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Called by world if a a chunk is removed.
 			</description>
 		</method>
 		<method name="_save_chunk" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Save the given chunk.
 			</description>
 		</method>
 		<method name="delete_all_chunk_data">
 			<return type="void" />
 			<description>
+				Deletes all chunk data.
 			</description>
 		</method>
 		<method name="delete_chunk_data">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Delete a chunk's data.
 			</description>
 		</method>
 		<method name="delete_chunk_data_at">
 			<return type="void" />
 			<argument index="0" name="chunk_position" type="Vector2i" />
 			<description>
+				Delete a chunk's data given it's chunk position.
 			</description>
 		</method>
 		<method name="get_available_chunk_list">
 			<return type="PoolVector2iArray" />
 			<description>
+				Returns all available chunk positions.
 			</description>
 		</method>
 		<method name="load_all_chunks">
 			<return type="void" />
 			<argument index="0" name="world" type="Node" />
 			<description>
+				Load all chunks.
 			</description>
 		</method>
 		<method name="load_chunk">
 			<return type="TerrainChunk" />
 			<argument index="0" name="chunk_position" type="Vector2i" />
 			<description>
+				Load and return the chunk at the given position. Returns null if the chunk doesn't exists.
 			</description>
 		</method>
 		<method name="load_chunks">
@@ -98,36 +115,42 @@
 			<argument index="0" name="world" type="Node" />
 			<argument index="1" name="chunks" type="PoolVector2iArray" />
 			<description>
+				Load all the given chunks.
 			</description>
 		</method>
 		<method name="on_world_chunk_added">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Called by world if a a chunk is added.
 			</description>
 		</method>
 		<method name="on_world_chunk_created">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Called by world if a a chunk is created.
 			</description>
 		</method>
 		<method name="on_world_chunk_removed">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Called by world if a a chunk is removed.
 			</description>
 		</method>
 		<method name="save_all_chunks">
 			<return type="void" />
 			<argument index="0" name="world" type="Node" />
 			<description>
+				Save all chunks.
 			</description>
 		</method>
 		<method name="save_chunk">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Save the given chunk.
 			</description>
 		</method>
 	</methods>
