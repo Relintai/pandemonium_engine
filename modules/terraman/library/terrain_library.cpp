@@ -65,7 +65,7 @@ Ref<Material> TerrainLibrary::material_get(const int index) {
 }
 
 Ref<Material> TerrainLibrary::material_lod_get(const int index) {
-	ERR_FAIL_COND_V_MSG(_materials.size() == 0, Ref<Material>(), "Error! You should to add at least one material to TerrainLibrary! (By default it will use up to 5. See VoxelWorldDefault::_create_chunk().)");
+	ERR_FAIL_COND_V_MSG(_materials.size() == 0, Ref<Material>(), "Error! You should to add at least one material to TerrainLibrary! (By default it will use up to 5. See TerrainWorldDefault::_create_chunk().)");
 
 	if (index < 0) {
 		return _materials[0];
@@ -145,7 +145,7 @@ Ref<Material> TerrainLibrary::liquid_material_get(const int index) {
 }
 
 Ref<Material> TerrainLibrary::liquid_material_lod_get(const int index) {
-	ERR_FAIL_COND_V_MSG(_liquid_materials.size() == 0, Ref<Material>(), "Error! You should to add at least one liquid to TerrainLibrary! (By default it will use up to 5. See VoxelWorldDefault::_create_chunk().)");
+	ERR_FAIL_COND_V_MSG(_liquid_materials.size() == 0, Ref<Material>(), "Error! You should to add at least one liquid to TerrainLibrary! (By default it will use up to 5. See TerrainWorldDefault::_create_chunk().)");
 
 	if (index < 0) {
 		return _liquid_materials[0];
@@ -225,7 +225,7 @@ Ref<Material> TerrainLibrary::prop_material_get(const int index) {
 }
 
 Ref<Material> TerrainLibrary::prop_material_lod_get(const int index) {
-	ERR_FAIL_COND_V_MSG(_prop_materials.size() == 0, Ref<Material>(), "Error! You should to add at least one prop material to TerrainLibrary! (By default it will use up to 5. See VoxelWorldDefault::_create_chunk().)");
+	ERR_FAIL_COND_V_MSG(_prop_materials.size() == 0, Ref<Material>(), "Error! You should to add at least one prop material to TerrainLibrary! (By default it will use up to 5. See TerrainWorldDefault::_create_chunk().)");
 
 	if (index < 0) {
 		return _prop_materials[0];
