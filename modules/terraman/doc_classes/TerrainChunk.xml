@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainChunk" inherits="Resource">
 	<brief_description>
+		A chunk of a [TerrainWorld].
 	</brief_description>
 	<description>
+		A chunk of a [TerrainWorld].
+		Since initialization logic is usually complex, [TerrainWorld]s should create and set these up using [method TerrainWorld.create_chunk].
+		Should be inherited from.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,125 +15,154 @@
 			<return type="void" />
 			<argument index="0" name="light" type="TerrainLight" />
 			<description>
+				Bake a single [TerrainLight] into channels containing color.
+				Override to customize behaviour.
 			</description>
 		</method>
 		<method name="_bake_lights" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Bake [TerrainLight]s into channels containing color.
+				Override to customize behaviour.
 			</description>
 		</method>
 		<method name="_build" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Build meshes and other data from channel information on an another thread.
+				Uses [ThreadPool] with [TewrrainJob]s.
 			</description>
 		</method>
 		<method name="_build_immediate" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Build meshes and other data from channel information immediately on the current thread.
+				Uses [TewrrainJob]s.
 			</description>
 		</method>
 		<method name="_channel_setup" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Setup the default channel layout.
 			</description>
 		</method>
 		<method name="_clear_baked_lights" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Clear channels that contain baked light color data.
 			</description>
 		</method>
 		<method name="_enter_tree" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Called when entering tree. Also called when it's added to world (and it's in the tree).
 			</description>
 		</method>
 		<method name="_exit_tree" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Called when exiting tree. Also called when it's removed from world (and it's in the tree).
 			</description>
 		</method>
 		<method name="_finalize_build" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Bookkeeping logic after the build has been done.
 			</description>
 		</method>
 		<method name="_generation_physics_process" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called when the chunk is generating during physics process.
 			</description>
 		</method>
 		<method name="_generation_process" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called when the chunk is generating during process.
 			</description>
 		</method>
 		<method name="_mesh_data_resource_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Called when a [MeshdataResource] was added.
 			</description>
 		</method>
 		<method name="_physics_process" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called on physics process if physics processing is set to true. See [method set_physics_process], [method get_physics_process].
 			</description>
 		</method>
 		<method name="_process" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called on process if processing is set to true. See [method set_process], [method get_process].
 			</description>
 		</method>
 		<method name="_visibility_changed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="visible" type="bool" />
 			<description>
+				Called when the current chunk's visibility changed.
 			</description>
 		</method>
 		<method name="_world_light_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="light" type="TerrainLight" />
 			<description>
+				Called when a world light was added.
 			</description>
 		</method>
 		<method name="_world_light_removed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="light" type="TerrainLight" />
 			<description>
+				Called when a world light was removed.
 			</description>
 		</method>
 		<method name="_world_transform_changed" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Called when the world's transform changed.
 			</description>
 		</method>
 		<method name="bake_light">
 			<return type="void" />
 			<argument index="0" name="light" type="TerrainLight" />
 			<description>
+				Bake a single [TerrainLight] into channels containing color.
 			</description>
 		</method>
 		<method name="bake_lights">
 			<return type="void" />
 			<description>
+				Bake [TerrainLight]s into channels containing color.
 			</description>
 		</method>
 		<method name="build">
 			<return type="void" />
 			<description>
+				Build meshes and other data from channel information on an another thread.
+				Uses [ThreadPool] with [TewrrainJob]s.
 			</description>
 		</method>
 		<method name="build_immediate">
 			<return type="void" />
 			<description>
+				Build meshes and other data from channel information immediately on the current thread.
+				Uses [TewrrainJob]s.
 			</description>
 		</method>
 		<method name="cancel_build">
 			<return type="void" />
 			<description>
+				Cancel the current build.
 			</description>
 		</method>
 		<method name="channel_allocate">
@@ -137,12 +170,14 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="default_value" type="int" />
 			<description>
+				Allocate the given channel. Fills it with the given default valkue.
 			</description>
 		</method>
 		<method name="channel_dealloc">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Deallocate the given channel.
 			</description>
 		</method>
 		<method name="channel_ensure_allocated">
@@ -150,6 +185,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="default_value" type="int" />
 			<description>
+				Ensure that the given channel is allocated. Fills it with the given default valkue it it weren't.
 			</description>
 		</method>
 		<method name="channel_fill">
@@ -157,24 +193,29 @@
 			<argument index="0" name="value" type="int" />
 			<argument index="1" name="index" type="int" />
 			<description>
+				Fill the given channel with the given value.
 			</description>
 		</method>
 		<method name="channel_get_array" qualifiers="const">
 			<return type="PoolByteArray" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the given channel as a [PoolByteArray].
 			</description>
 		</method>
 		<method name="channel_get_compressed" qualifiers="const">
 			<return type="PoolByteArray" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the given channel as an lz4 compressed [PoolByteArray].
+				Only works if the lz4 module is enabled.
 			</description>
 		</method>
 		<method name="channel_is_allocated">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns whether a channel is allocated.
 			</description>
 		</method>
 		<method name="channel_set_array">
@@ -182,6 +223,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="array" type="PoolByteArray" />
 			<description>
+				Sets the given channel from a [PoolByteArray].
 			</description>
 		</method>
 		<method name="channel_set_compressed">
@@ -189,16 +231,20 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="array" type="PoolByteArray" />
 			<description>
+				Sets the given channel from an lz4 compressed [PoolByteArray].
+				Only works if the lz4 module is enabled.
 			</description>
 		</method>
 		<method name="channel_setup">
 			<return type="void" />
 			<description>
+				Setup the default channel layout.
 			</description>
 		</method>
 		<method name="clear_baked_lights">
 			<return type="void" />
 			<description>
+				Clear channels that contain baked light color data.
 			</description>
 		</method>
 		<method name="collider_add">
@@ -208,41 +254,48 @@
 			<argument index="2" name="shape_rid" type="RID" />
 			<argument index="3" name="body" type="RID" />
 			<description>
+				Add a collider.
 			</description>
 		</method>
 		<method name="collider_get_body">
 			<return type="RID" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the given collider's body.
 			</description>
 		</method>
 		<method name="collider_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the collider count.
 			</description>
 		</method>
 		<method name="collider_get_shape">
 			<return type="Shape" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the shape for the given collider.
 			</description>
 		</method>
 		<method name="collider_get_shape_rid">
 			<return type="RID" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the shape's RID for the given collider.
 			</description>
 		</method>
 		<method name="collider_get_transform">
 			<return type="Transform" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the given collider's transform.
 			</description>
 		</method>
 		<method name="collider_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes the given collider's transform.
 			</description>
 		</method>
 		<method name="collider_set_body">
@@ -250,6 +303,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="rid" type="RID" />
 			<description>
+				Set a body for the given collider.
 			</description>
 		</method>
 		<method name="collider_set_shape">
@@ -257,6 +311,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="shape" type="Shape" />
 			<description>
+				Set a shape for the given collider.
 			</description>
 		</method>
 		<method name="collider_set_shape_rid">
@@ -264,6 +319,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="rid" type="RID" />
 			<description>
+				Set a shape RID for the given collider.
 			</description>
 		</method>
 		<method name="collider_set_transform">
@@ -271,38 +327,45 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="transform" type="Transform" />
 			<description>
+				Set the transform for the given collider.
 			</description>
 		</method>
 		<method name="colliders_clear">
 			<return type="void" />
 			<description>
+				Clear colliders.
 			</description>
 		</method>
 		<method name="enter_tree">
 			<return type="void" />
 			<description>
+				Called when entering tree. Also called when it's added to world (and it's in the tree).
 			</description>
 		</method>
 		<method name="exit_tree">
 			<return type="void" />
 			<description>
+				Called when exiting tree. Also called when it's removed from world (and it's in the tree).
 			</description>
 		</method>
 		<method name="finalize_build">
 			<return type="void" />
 			<description>
+				Bookkeeping logic after the build has been done.
 			</description>
 		</method>
 		<method name="generation_physics_process">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called when the chunk is generating during physics process.
 			</description>
 		</method>
 		<method name="generation_process">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called when the chunk is generating during process.
 			</description>
 		</method>
 		<method name="get_data" qualifiers="const">
@@ -311,6 +374,7 @@
 			<argument index="1" name="z" type="int" />
 			<argument index="2" name="index" type="int" />
 			<description>
+				Return the data from the given channel at the specified position.
 			</description>
 		</method>
 		<method name="get_data_index" qualifiers="const">
@@ -318,16 +382,19 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Return the data's direct index at the specified position.
 			</description>
 		</method>
 		<method name="get_data_size" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return's the data's size.
 			</description>
 		</method>
 		<method name="get_global_transform" qualifiers="const">
 			<return type="Transform" />
 			<description>
+				Returns the global transform.
 			</description>
 		</method>
 		<method name="get_index" qualifiers="const">
@@ -335,6 +402,7 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Return the direct index at the specified position.
 			</description>
 		</method>
 		<method name="get_physics_process" qualifiers="const">
