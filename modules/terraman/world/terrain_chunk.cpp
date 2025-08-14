@@ -2487,12 +2487,10 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_data", "x", "z", "index"), &TerrainChunk::get_data);
 	ClassDB::bind_method(D_METHOD("set_data", "value", "x", "z", "index"), &TerrainChunk::set_data);
 
-	/*
 #ifndef DISABLE_DEPRECATED
 	ClassDB::bind_method(D_METHOD("get_voxel", "x", "z", "index"), &TerrainChunk::get_voxel);
 	ClassDB::bind_method(D_METHOD("set_voxel", "value", "x", "z", "index"), &TerrainChunk::set_voxel);
-	#endif
-*/
+#endif
 
 	ClassDB::bind_method(D_METHOD("channel_get_count"), &TerrainChunk::channel_get_count);
 	ClassDB::bind_method(D_METHOD("channel_set_count", "count"), &TerrainChunk::channel_set_count);
