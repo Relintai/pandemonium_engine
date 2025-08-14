@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainWorldBlocky" inherits="TerrainWorldDefault">
 	<brief_description>
+		A terrain world implementation that generates simple non-smoothed meshes.
 	</brief_description>
 	<description>
+		A terrain world implementation that generates simple non-smoothed meshes.
 	</description>
 	<tutorials>
 	</tutorials>
