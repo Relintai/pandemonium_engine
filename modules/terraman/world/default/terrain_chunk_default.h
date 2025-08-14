@@ -162,10 +162,10 @@ public:
 	void debug_mesh_add_vertices_to(const PoolVector3Array &arr);
 	void debug_mesh_send();
 
-	void draw_cross_voxels(Vector3 pos);
-	void draw_cross_voxels_fill(Vector3 pos, float fill);
-	void draw_debug_voxels(int max, Color color = Color(1, 1, 1));
-	void draw_debug_voxel_lights();
+	void draw_debug_cross_datas(Vector3 pos);
+	void draw_debug_cross_datas_fill(Vector3 pos, float fill);
+	void draw_debug_datas(int max, Color color = Color(1, 1, 1));
+	void draw_debug_terrain_lights();
 	void draw_debug_mdr_colliders();
 
 	//free

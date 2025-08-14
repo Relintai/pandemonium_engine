@@ -650,7 +650,7 @@ void TerrainChunkDefault::debug_mesh_send() {
 	debug_mesh_array_clear();
 }
 
-void TerrainChunkDefault::draw_cross_voxels(Vector3 pos) {
+void TerrainChunkDefault::draw_debug_cross_datas(Vector3 pos) {
 	pos *= _terrain_scale;
 
 	int size = _debug_mesh_array.size();
@@ -666,7 +666,7 @@ void TerrainChunkDefault::draw_cross_voxels(Vector3 pos) {
 	_debug_mesh_array.set(size + 5, pos + Vector3(0.2, 0, 0));
 }
 
-void TerrainChunkDefault::draw_cross_voxels_fill(Vector3 pos, float fill) {
+void TerrainChunkDefault::draw_debug_cross_datas_fill(Vector3 pos, float fill) {
 	pos *= _terrain_scale;
 
 	int size = _debug_mesh_array.size();
@@ -682,7 +682,7 @@ void TerrainChunkDefault::draw_cross_voxels_fill(Vector3 pos, float fill) {
 	_debug_mesh_array.set(size + 5, pos + Vector3(0.2 * fill, 0, 0));
 }
 
-void TerrainChunkDefault::draw_debug_voxels(int max, Color color) {
+void TerrainChunkDefault::draw_debug_datas(int max, Color color) {
 	if (!debug_mesh_has()) {
 		debug_mesh_allocate();
 	}
@@ -704,7 +704,7 @@ void TerrainChunkDefault::draw_debug_voxels(int max, Color color) {
 				continue;
 			}
 
-			draw_cross_voxels_fill(Vector3(x, get_data(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL), z), get_data(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL) / 255.0 * get_terrain_scale() * 2.0);
+			draw_debug_cross_datas_fill(Vector3(x, get_data(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL), z), get_data(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL) / 255.0 * get_terrain_scale() * 2.0);
 
 			++a;
 
@@ -717,7 +717,7 @@ void TerrainChunkDefault::draw_debug_voxels(int max, Color color) {
 	debug_mesh_send();
 }
 
-void TerrainChunkDefault::draw_debug_voxel_lights() {
+void TerrainChunkDefault::draw_debug_terrain_lights() {
 	if (!debug_mesh_has()) {
 		debug_mesh_allocate();
 	}
@@ -734,7 +734,7 @@ void TerrainChunkDefault::draw_debug_voxel_lights() {
 		int pos_x = light_pos.x - (_size_x * _position_x);
 		int pos_z = light_pos.z - (_size_z * _position_z);
 
-		draw_cross_voxels_fill(Vector3(pos_x, 0, pos_z), 1.0);
+		draw_debug_cross_datas_fill(Vector3(pos_x, 0, pos_z), 1.0);
 	}
 
 	debug_mesh_send();
@@ -1146,11 +1146,11 @@ void TerrainChunkDefault::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("debug_mesh_add_vertices_to", "arr"), &TerrainChunkDefault::debug_mesh_add_vertices_to);
 	ClassDB::bind_method(D_METHOD("debug_mesh_send"), &TerrainChunkDefault::debug_mesh_send);
 
-	ClassDB::bind_method(D_METHOD("draw_cross_voxels", "max"), &TerrainChunkDefault::draw_cross_voxels);
-	ClassDB::bind_method(D_METHOD("draw_cross_voxels_fill", "max", "fill"), &TerrainChunkDefault::draw_cross_voxels_fill);
-	ClassDB::bind_method(D_METHOD("draw_debug_voxels", "max", "color"), &TerrainChunkDefault::draw_debug_voxels, DEFVAL(Color(1, 1, 1)));
+	ClassDB::bind_method(D_METHOD("draw_debug_cross_datas", "max"), &TerrainChunkDefault::draw_debug_cross_datas);
+	ClassDB::bind_method(D_METHOD("draw_debug_cross_datas_fill", "max", "fill"), &TerrainChunkDefault::draw_debug_cross_datas_fill);
+	ClassDB::bind_method(D_METHOD("draw_debug_datas", "max", "color"), &TerrainChunkDefault::draw_debug_datas, DEFVAL(Color(1, 1, 1)));
 
-	ClassDB::bind_method(D_METHOD("draw_debug_voxel_lights"), &TerrainChunkDefault::draw_debug_voxel_lights);
+	ClassDB::bind_method(D_METHOD("draw_debug_terrain_lights"), &TerrainChunkDefault::draw_debug_terrain_lights);
 	ClassDB::bind_method(D_METHOD("draw_debug_mdr_colliders"), &TerrainChunkDefault::draw_debug_mdr_colliders);
 
 	//Free
