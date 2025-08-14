@@ -121,6 +121,7 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Return the chunk at chunk position x, z or creates one if it doesn't exists.
 			</description>
 		</method>
 		<method name="chunk_get_or_load">
@@ -128,6 +129,7 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Return the chunk at chunk position x, z or loads one if it doesn't exists. Returns null if one can't be loaded.
 			</description>
 		</method>
 		<method name="chunk_has" qualifiers="const">
@@ -135,6 +137,7 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Return whether the chunk at chunk position x, z exists or not.
 			</description>
 		</method>
 		<method name="chunk_load">
@@ -142,6 +145,7 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Loads the chunk at chunk position x, z.
 			</description>
 		</method>
 		<method name="chunk_remove">
@@ -149,62 +153,74 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Removes the chunk at chunk position x, z.
 			</description>
 		</method>
 		<method name="chunk_remove_index">
 			<return type="TerrainChunk" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes the chunk at the given index.
 			</description>
 		</method>
 		<method name="chunk_setup">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Calls [method _chunk_setup] if [member TerrainChunk.is_setup] is false.
+				[method _chunk_setup] is where a chunk should be setup. Non-serialized properties should be initialized in this method, like [TerrainJob] and [TerrainMesher] setup.
 			</description>
 		</method>
 		<method name="chunks_clear">
 			<return type="void" />
 			<description>
+				Clear all chunks.
 			</description>
 		</method>
 		<method name="force_save_all_chunks">
 			<return type="void" />
 			<description>
+				Save all chunks.
 			</description>
 		</method>
 		<method name="generation_add_to">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Add chunk to the generation list.
 			</description>
 		</method>
 		<method name="generation_get_index">
 			<return type="TerrainChunk" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the chunk at the given index in the generation list.
 			</description>
 		</method>
 		<method name="generation_get_size" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the generation list's size.
 			</description>
 		</method>
 		<method name="generation_queue_add_to">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Add chunk to the generation queue.
 			</description>
 		</method>
 		<method name="generation_queue_get_index">
 			<return type="TerrainChunk" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the chunk at the given index in the generation queue.
 			</description>
 		</method>
 		<method name="generation_queue_get_size" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the generation queue's size.
 			</description>
 		</method>
 		<method name="generation_queue_remove_index">
@@ -217,41 +233,49 @@
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes the chunk at the given index from the generation queue.
 			</description>
 		</method>
 		<method name="get_channel_index_info">
 			<return type="int" />
 			<argument index="0" name="channel_type" type="int" enum="TerrainWorld.ChannelTypeInfo" />
 			<description>
+				The editor tools ask the world for chunk channel information using this method.
+				Calls [member _get_channel_index_info].
 			</description>
 		</method>
 		<method name="get_chunk_at_world_data_position">
 			<return type="TerrainChunk" />
 			<argument index="0" name="world_data_position" type="Vector2i" />
 			<description>
+				Returns the chunk at the given world data position or null if it doesn't exists.
 			</description>
 		</method>
 		<method name="get_chunk_at_world_position">
 			<return type="TerrainChunk" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
+				Returns the chunk at the given world position or null if it doesn't exists.
 			</description>
 		</method>
 		<method name="get_editor_camera">
 			<return type="Spatial" />
 			<description>
+				Returns the editor camera or null if it's not the editor.
 			</description>
 		</method>
 		<method name="get_or_create_chunk_at_world_data_position">
 			<return type="TerrainChunk" />
 			<argument index="0" name="world_data_position" type="Vector2i" />
 			<description>
+				Returns the chunk at the given world data position will create one if it doesn't exists.
 			</description>
 		</method>
 		<method name="get_or_create_chunk_at_world_position">
 			<return type="TerrainChunk" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
+				Returns the chunk at the given world position will create one if it doesn't exists.
 			</description>
 		</method>
 		<method name="get_voxel_at_world_data_position">
@@ -259,6 +283,7 @@
 			<argument index="0" name="world_data_position" type="Vector2i" />
 			<argument index="1" name="channel_index" type="int" />
 			<description>
+				Returns the value in the channel at the given world data position.
 			</description>
 		</method>
 		<method name="get_voxel_at_world_position">
@@ -266,29 +291,34 @@
 			<argument index="0" name="world_position" type="Vector3" />
 			<argument index="1" name="channel_index" type="int" />
 			<description>
+				Returns the value in the channel at the given world position.
 			</description>
 		</method>
 		<method name="is_position_walkable">
 			<return type="bool" />
 			<argument index="0" name="position" type="Vector3" />
 			<description>
+				Returns whether a world position is walkable (is a chunk loaded there) or not.
 			</description>
 		</method>
 		<method name="light_add">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainLight" />
 			<description>
+				Add a light.
 			</description>
 		</method>
 		<method name="light_remove">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainLight" />
 			<description>
+				Remove a light.
 			</description>
 		</method>
 		<method name="lights_clear">
 			<return type="void" />
 			<description>
+				Clear all lights.
 			</description>
 		</method>
 		<method name="mesh_data_resource_add">
@@ -300,6 +330,7 @@
 			<argument index="4" name="original" type="bool" default="true" />
 			<argument index="5" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Add a [MeshDataResource].
 			</description>
 		</method>
 		<method name="mesh_data_resource_add_material">
@@ -311,12 +342,14 @@
 			<argument index="4" name="original" type="bool" default="true" />
 			<argument index="5" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Add a [MeshDataResource] with a material.
 			</description>
 		</method>
 		<method name="on_chunk_mesh_generation_finished">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Called when a chunk finished it's mesh generation.
 			</description>
 		</method>
 		<method name="prop_add">
@@ -327,6 +360,7 @@
 			<argument index="3" name="original" type="bool" default="true" />
 			<argument index="4" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Add prop.
 			</description>
 		</method>
 		<method name="scene_add">
@@ -337,6 +371,7 @@
 			<argument index="3" name="original" type="bool" default="true" />
 			<argument index="4" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Add scene.
 			</description>
 		</method>
 		<method name="set_voxel_at_world_data_position">
@@ -345,8 +380,9 @@
 			<argument index="1" name="data" type="int" />
 			<argument index="2" name="channel_index" type="int" />
 			<argument index="3" name="rebuild" type="bool" default="true" />
-			<argument index="4" name="allow_creating_chunks " type="bool" default="true" />
+			<argument index="4" name="allow_creating_chunks" type="bool" default="true" />
 			<description>
+				Set voxel data at the given world data position.
 			</description>
 		</method>
 		<method name="set_voxel_at_world_position">
@@ -356,6 +392,7 @@
 			<argument index="2" name="channel_index" type="int" />
 			<argument index="3" name="rebuild" type="bool" default="true" />
 			<description>
+				Set voxel data at the given world position.
 			</description>
 		</method>
 		<method name="set_voxels_at_world_data_position">
@@ -366,12 +403,15 @@
 			<argument index="3" name="allow_creating_chunks" type="bool" default="true" />
 			<argument index="4" name="invalidate_texture_caches" type="bool" default="true" />
 			<description>
+				Set multiple voxel data at the given world data position.
+				The data array should contain: Vector2i world data position 0, uint8 data 0, Vector2i world data position 1, uint8 data 1, ...
 			</description>
 		</method>
 		<method name="voxel_structure_add">
 			<return type="void" />
 			<argument index="0" name="structure" type="TerrainStructure" />
 			<description>
+				Add a terrain structure.
 			</description>
 		</method>
 		<method name="voxel_structure_add_at_position">
@@ -379,161 +419,204 @@
 			<argument index="0" name="structure" type="TerrainStructure" />
 			<argument index="1" name="world_position" type="Vector3" />
 			<description>
+				Add a terrain structure at the given world position.
 			</description>
 		</method>
 		<method name="voxel_structure_get" qualifiers="const">
 			<return type="TerrainStructure" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the terrain structure at index.
 			</description>
 		</method>
 		<method name="voxel_structure_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return the terrain structure count.
 			</description>
 		</method>
 		<method name="voxel_structure_remove">
 			<return type="void" />
 			<argument index="0" name="structure" type="TerrainStructure" />
 			<description>
+				Remove the given terrain structure.
 			</description>
 		</method>
 		<method name="voxel_structure_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove the terrain structure at index.
 			</description>
 		</method>
 		<method name="voxel_structures_clear">
 			<return type="void" />
 			<description>
+				Clear terrain structures.
 			</description>
 		</method>
 		<method name="world_area_add">
 			<return type="void" />
 			<argument index="0" name="area" type="TerrainWorldArea" />
 			<description>
+				Add world area.
 			</description>
 		</method>
 		<method name="world_area_get" qualifiers="const">
 			<return type="TerrainWorldArea" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns world area at index.
 			</description>
 		</method>
 		<method name="world_area_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns world area count.
 			</description>
 		</method>
 		<method name="world_area_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove world area.
 			</description>
 		</method>
 		<method name="world_areas_clear">
 			<return type="void" />
 			<description>
+				Clear world areas.
 			</description>
 		</method>
 		<method name="world_data_position_to_chunk_position">
 			<return type="Vector2i" />
 			<argument index="0" name="world_data_position" type="Vector2i" />
 			<description>
+				Converts world data position to chunk position.
 			</description>
 		</method>
 		<method name="world_data_position_to_world_position">
 			<return type="Vector3" />
 			<argument index="0" name="position" type="Vector2i" />
 			<description>
+				Converts world data position to world position.
 			</description>
 		</method>
 		<method name="world_data_position_to_world_position_3d">
 			<return type="Vector3" />
 			<argument index="0" name="position" type="Vector3i" />
 			<description>
+				Converts 3d world data position to world position.
 			</description>
 		</method>
 		<method name="world_position_to_chunk_position">
 			<return type="Vector2i" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
+				Converts world position to chunk position.
 			</description>
 		</method>
 		<method name="world_position_to_world_data_position">
 			<return type="Vector2i" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
+				Converts world position to world data position.
 			</description>
 		</method>
 		<method name="world_position_to_world_data_position_3d">
 			<return type="Vector3i" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
+				Converts world position to 3d world data position.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="active" type="bool" setter="set_active" getter="get_active" default="true">
+			Is the world active?
 		</member>
 		<member name="chunk_size_x" type="int" setter="set_chunk_size_x" getter="get_chunk_size_x" default="16">
+			Chunk size on the x axis.
 		</member>
 		<member name="chunk_size_z" type="int" setter="set_chunk_size_z" getter="get_chunk_size_z" default="16">
+			Chunk size on the z axis.
 		</member>
 		<member name="chunk_spawn_range" type="int" setter="set_chunk_spawn_range" getter="get_chunk_spawn_range" default="4">
+			Chunk spawn range.
 		</member>
 		<member name="chunks" type="Array" setter="chunks_set" getter="chunks_get" default="[  ]">
+			All loaded chunks.
 		</member>
 		<member name="current_seed" type="int" setter="set_current_seed" getter="get_current_seed" default="0">
+			The world seed.
 		</member>
 		<member name="data_margin_end" type="int" setter="set_data_margin_end" getter="get_data_margin_end" default="0">
+			Data margin end for the chunks.
 		</member>
 		<member name="data_margin_start" type="int" setter="set_data_margin_start" getter="get_data_margin_start" default="0">
+			Data margin start for the chunks.
 		</member>
 		<member name="editable" type="bool" setter="set_editable" getter="get_editable" default="false">
+			Is this world editable?
+			If this is true the editor plugin will show up and allow editing this world.
 		</member>
 		<member name="is_priority_generation" type="bool" setter="set_is_priority_generation" getter="get_is_priority_generation">
+			Is the current set of generation a priority generation?
+			Priority generation should be used for the initial mesh and terrain generation like during loading screens.
 		</member>
 		<member name="level_generator" type="TerrainLevelGenerator" setter="set_level_generator" getter="get_level_generator">
+			THe active level generator.
 		</member>
 		<member name="library" type="TerrainLibrary" setter="set_library" getter="get_library">
+			The active terrain library.
 		</member>
 		<member name="max_concurrent_generations" type="int" setter="set_max_concurrent_generations" getter="get_max_concurrent_generations" default="3">
+			Maximum allowed concurrent generations.
 		</member>
 		<member name="player" type="Spatial" setter="set_player" getter="get_player">
+			The player's body. If set, the world will load and make chunks visible around it.
 		</member>
 		<member name="player_path" type="NodePath" setter="set_player_path" getter="get_player_path" default="NodePath(&quot;&quot;)">
+			The player's body's path. If set, the world will get and set it to [member player].
 		</member>
 		<member name="use_vertex_lights_3d" type="bool" setter="set_use_vertex_lights_3d" getter="get_use_vertex_lights_3d" default="true">
+			Whether to use the [VertexLights3D] system.
 		</member>
 		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
+			The terrain scale.
 		</member>
 		<member name="voxel_structures" type="Array" setter="voxel_structures_set" getter="voxel_structures_get" default="[  ]">
+			Terrain structures.
 		</member>
 		<member name="world_chunk_data_manager" type="TerrainWorldChunkDataManager" setter="set_world_chunk_data_manager" getter="get_world_chunk_data_manager">
+			The active world chunk data manager. These can save and load chunks.
 		</member>
 		<member name="world_height" type="float" setter="set_world_height" getter="get_world_height" default="256.0">
+			The world's height in 3d space.
 		</member>
 	</members>
 	<signals>
 		<signal name="chunk_added">
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Emitted when a chunk is added.
 			</description>
 		</signal>
 		<signal name="chunk_mesh_generation_finished">
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Emitted when a chunk's mesh generation is finished.
 			</description>
 		</signal>
 		<signal name="chunk_removed">
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Emitted when a chunk is removed.
 			</description>
 		</signal>
 		<signal name="generation_finished">
 			<description>
+				Emitted when a priority generation finishes.
 			</description>
 		</signal>
 	</signals>
@@ -554,6 +637,7 @@
 			Which chunk channel contains liquid flow information.
 		</constant>
 		<constant name="NOTIFICATION_ACTIVE_STATE_CHANGED" value="9000">
+			Emitted when the world's [member active] state changes.
 		</constant>
 	</constants>
 </class>
