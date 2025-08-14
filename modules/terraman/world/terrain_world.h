@@ -218,8 +218,8 @@ public:
 	void world_light_moved(const Ref<TerrainLight> &light);
 
 	//Helpers
-	uint8_t get_voxel_at_world_position(const Vector3 &world_position, const int channel_index);
-	void set_voxel_at_world_position(const Vector3 &world_position, const uint8_t data, const int channel_index, const bool rebuild = true);
+	uint8_t get_data_at_world_position(const Vector3 &world_position, const int channel_index);
+	void set_data_at_world_position(const Vector3 &world_position, const uint8_t data, const int channel_index, const bool rebuild = true);
 	Ref<TerrainChunk> get_chunk_at_world_position(const Vector3 &world_position);
 	Ref<TerrainChunk> get_or_create_chunk_at_world_position(const Vector3 &world_position);
 	Vector2i world_position_to_chunk_position(const Vector3 &p_world_position);
@@ -230,11 +230,19 @@ public:
 	Vector3 world_data_position_to_world_position(const Vector2i &p_position);
 	Vector3 world_data_position_to_world_position_3d(const Vector3i &p_position);
 
-	uint8_t get_voxel_at_world_data_position(const Vector2i &world_data_position, const int channel_index);
-	void set_voxel_at_world_data_position(const Vector2i &world_data_position, const uint8_t data, const int channel_index, const bool p_immediate_build = true, const bool allow_creating_chunks = true);
+	uint8_t get_data_at_world_data_position(const Vector2i &world_data_position, const int channel_index);
+	void set_data_at_world_data_position(const Vector2i &world_data_position, const uint8_t data, const int channel_index, const bool p_immediate_build = true, const bool allow_creating_chunks = true);
 	Ref<TerrainChunk> get_chunk_at_world_data_position(const Vector2i &world_data_position);
 	Ref<TerrainChunk> get_or_create_chunk_at_world_data_position(const Vector2i &world_data_position);
+	void set_datas_at_world_data_position(const Array &p_data, const int p_channel_index, const bool p_immediate_build = false, const bool p_allow_creating_chunks = true, const bool p_invalidate_texture_caches = true);
+
+#ifndef DISABLE_DEPRECATED
+	uint8_t get_voxel_at_world_position(const Vector3 &world_position, const int channel_index);
+	void set_voxel_at_world_position(const Vector3 &world_position, const uint8_t data, const int channel_index, const bool rebuild = true);
+	uint8_t get_voxel_at_world_data_position(const Vector2i &world_data_position, const int channel_index);
+	void set_voxel_at_world_data_position(const Vector2i &world_data_position, const uint8_t data, const int channel_index, const bool p_immediate_build = true, const bool allow_creating_chunks = true);
 	void set_voxels_at_world_data_position(const Array &p_data, const int p_channel_index, const bool p_immediate_build = false, const bool p_allow_creating_chunks = true, const bool p_invalidate_texture_caches = true);
+#endif
 
 	int get_channel_index_info(const ChannelTypeInfo channel_type);
 

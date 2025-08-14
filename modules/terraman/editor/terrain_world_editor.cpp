@@ -456,7 +456,7 @@ void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
 
 			Vector2i vwp = wdp + Vector2i(x, y);
 
-			uint8_t orig_val = _world->get_voxel_at_world_data_position(vwp, _isolevel_brush_channel);
+			uint8_t orig_val = _world->get_data_at_world_data_position(vwp, _isolevel_brush_channel);
 			int pil = orig_val;
 
 			Vector2 tv = Vector2(ilbh - ABS(x), ilbh - ABS(y));
@@ -493,7 +493,7 @@ void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
 		}
 	}
 
-	_world->set_voxels_at_world_data_position(draw_data, _isolevel_brush_channel, true, _isolevel_brush_allow_create_chunks, false);
+	_world->set_datas_at_world_data_position(draw_data, _isolevel_brush_channel, true, _isolevel_brush_allow_create_chunks, false);
 }
 
 void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
@@ -526,7 +526,7 @@ void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
 
 			Vector2i vwp = wdp + Vector2i(x, y);
 
-			uint8_t orig_val = _world->get_voxel_at_world_data_position(vwp, _paint_brush_channel);
+			uint8_t orig_val = _world->get_data_at_world_data_position(vwp, _paint_brush_channel);
 
 			draw_data.push_back(vwp);
 			draw_data.push_back(new_val);
@@ -539,7 +539,7 @@ void TerrainWorldEditor::paint_brush_draw(const Vector3 &p_world_position) {
 		}
 	}
 
-	_world->set_voxels_at_world_data_position(draw_data, _paint_brush_channel, true, _paint_brush_allow_create_chunks, true);
+	_world->set_datas_at_world_data_position(draw_data, _paint_brush_channel, true, _paint_brush_allow_create_chunks, true);
 }
 
 void TerrainWorldEditor::paint_pick(const Vector3 &p_world_position) {
@@ -548,13 +548,13 @@ void TerrainWorldEditor::paint_pick(const Vector3 &p_world_position) {
 	uint8_t val = 0;
 
 	if (_previous_tool_mode == TOOL_MODE_ISOLEVEL_BRUSH) {
-		val = _world->get_voxel_at_world_data_position(wdp, _isolevel_brush_channel);
+		val = _world->get_data_at_world_data_position(wdp, _isolevel_brush_channel);
 
 		_isolevel_brush_strength_slider->set_value((float)val / 255.0);
 		_isolevel_brush_type_set_button->set_pressed(true);
 		_isolevel_brush_button->set_pressed(true);
 	} else {
-		val = _world->get_voxel_at_world_data_position(wdp, _paint_brush_channel);
+		val = _world->get_data_at_world_data_position(wdp, _paint_brush_channel);
 
 		int index = (int)val - 1;
 
@@ -1304,7 +1304,7 @@ void TerrainWorldEditor::apply_data(const Array &p_data) {
 	bool allow_create_chunks = p_data[2];
 	Array data = p_data[3];
 
-	_world->set_voxels_at_world_data_position(data, channel, true, allow_create_chunks);
+	_world->set_datas_at_world_data_position(data, channel, true, allow_create_chunks);
 }
 
 void TerrainWorldEditor::do_chunk_added_action(const Array &p_data) {
