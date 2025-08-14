@@ -146,16 +146,16 @@ public:
 	int world_area_get_count() const;
 
 	//Terra Structures
-	Ref<TerrainStructure> voxel_structure_get(const int index) const;
-	void voxel_structure_add(const Ref<TerrainStructure> &structure);
-	void voxel_structure_remove(const Ref<TerrainStructure> &structure);
-	void voxel_structure_remove_index(const int index);
-	void voxel_structures_clear();
-	int voxel_structure_get_count() const;
-	void voxel_structure_add_at_position(Ref<TerrainStructure> structure, const Vector3 &world_position);
+	Ref<TerrainStructure> terrain_structure_get(const int index) const;
+	void terrain_structure_add(const Ref<TerrainStructure> &structure);
+	void terrain_structure_remove(const Ref<TerrainStructure> &structure);
+	void terrain_structure_remove_index(const int index);
+	void terrain_structures_clear();
+	int terrain_structure_get_count() const;
+	void terrain_structure_add_at_position(Ref<TerrainStructure> structure, const Vector3 &world_position);
 
-	Vector<Variant> voxel_structures_get();
-	void voxel_structures_set(const Vector<Variant> &structures);
+	Vector<Variant> terrain_structures_get();
+	void terrain_structures_set(const Vector<Variant> &structures);
 
 	//Chunks
 	void chunk_add(Ref<TerrainChunk> chunk, const int x, const int z);
@@ -316,7 +316,7 @@ private:
 
 	Vector<Ref<TerrainWorldArea>> _world_areas;
 
-	Vector<Ref<TerrainStructure>> _voxel_structures;
+	Vector<Ref<TerrainStructure>> _terrain_structures;
 
 	NodePath _player_path;
 	Spatial *_player;

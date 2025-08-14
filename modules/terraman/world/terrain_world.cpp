@@ -280,56 +280,56 @@ int TerrainWorld::world_area_get_count() const {
 
 //Terra Structures
 
-Ref<TerrainStructure> TerrainWorld::voxel_structure_get(const int index) const {
-	ERR_FAIL_INDEX_V(index, _voxel_structures.size(), Ref<TerrainStructure>());
+Ref<TerrainStructure> TerrainWorld::terrain_structure_get(const int index) const {
+	ERR_FAIL_INDEX_V(index, _terrain_structures.size(), Ref<TerrainStructure>());
 
-	return _voxel_structures.get(index);
+	return _terrain_structures.get(index);
 }
-void TerrainWorld::voxel_structure_add(const Ref<TerrainStructure> &structure) {
-	_voxel_structures.push_back(structure);
+void TerrainWorld::terrain_structure_add(const Ref<TerrainStructure> &structure) {
+	_terrain_structures.push_back(structure);
 }
-void TerrainWorld::voxel_structure_remove(const Ref<TerrainStructure> &structure) {
+void TerrainWorld::terrain_structure_remove(const Ref<TerrainStructure> &structure) {
 	if (!structure.is_valid()) {
 		return;
 	}
 
-	int index = _voxel_structures.find(structure);
+	int index = _terrain_structures.find(structure);
 
 	if (index != -1) {
-		_voxel_structures.remove(index);
+		_terrain_structures.remove(index);
 	}
 }
-void TerrainWorld::voxel_structure_remove_index(const int index) {
-	ERR_FAIL_INDEX(index, _voxel_structures.size());
+void TerrainWorld::terrain_structure_remove_index(const int index) {
+	ERR_FAIL_INDEX(index, _terrain_structures.size());
 
-	_voxel_structures.remove(index);
+	_terrain_structures.remove(index);
 }
-void TerrainWorld::voxel_structures_clear() {
-	_voxel_structures.clear();
+void TerrainWorld::terrain_structures_clear() {
+	_terrain_structures.clear();
 }
-int TerrainWorld::voxel_structure_get_count() const {
-	return _voxel_structures.size();
+int TerrainWorld::terrain_structure_get_count() const {
+	return _terrain_structures.size();
 }
-void TerrainWorld::voxel_structure_add_at_position(Ref<TerrainStructure> structure, const Vector3 &world_position) {
+void TerrainWorld::terrain_structure_add_at_position(Ref<TerrainStructure> structure, const Vector3 &world_position) {
 	ERR_FAIL_COND(!structure.is_valid());
 
 	structure->set_position_x(static_cast<int>(world_position.x / _terrain_scale));
 	structure->set_position_y(static_cast<int>(world_position.y / _terrain_scale));
 	structure->set_position_z(static_cast<int>(world_position.z / _terrain_scale));
 
-	voxel_structure_add(structure);
+	terrain_structure_add(structure);
 }
 
-Vector<Variant> TerrainWorld::voxel_structures_get() {
-	VARIANT_ARRAY_GET(_voxel_structures);
+Vector<Variant> TerrainWorld::terrain_structures_get() {
+	VARIANT_ARRAY_GET(_terrain_structures);
 }
-void TerrainWorld::voxel_structures_set(const Vector<Variant> &structures) {
-	voxel_structures_clear();
+void TerrainWorld::terrain_structures_set(const Vector<Variant> &structures) {
+	terrain_structures_clear();
 
 	for (int i = 0; i < structures.size(); ++i) {
 		Ref<TerrainLight> structure = Ref<TerrainLight>(structures[i]);
 
-		voxel_structure_add(structure);
+		terrain_structure_add(structure);
 	}
 }
 
@@ -1537,7 +1537,7 @@ TerrainWorld ::~TerrainWorld() {
 	_chunks.clear();
 	_chunks_vector.clear();
 	_world_areas.clear();
-	_voxel_structures.clear();
+	_terrain_structures.clear();
 
 	_library.unref();
 	_level_generator.unref();
@@ -1555,8 +1555,8 @@ void TerrainWorld::_generate_chunk(Ref<TerrainChunk> chunk) {
 		_level_generator->generate_chunk(chunk);
 	}
 
-	for (int i = 0; i < _voxel_structures.size(); ++i) {
-		Ref<TerrainStructure> structure = _voxel_structures.get(i);
+	for (int i = 0; i < _terrain_structures.size(); ++i) {
+		Ref<TerrainStructure> structure = _terrain_structures.get(i);
 
 		if (!structure.is_valid()) {
 			continue;
@@ -1870,17 +1870,17 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("world_areas_clear"), &TerrainWorld::world_areas_clear);
 	ClassDB::bind_method(D_METHOD("world_area_get_count"), &TerrainWorld::world_area_get_count);
 
-	ClassDB::bind_method(D_METHOD("voxel_structure_get", "index"), &TerrainWorld::voxel_structure_get);
-	ClassDB::bind_method(D_METHOD("voxel_structure_add", "structure"), &TerrainWorld::voxel_structure_add);
-	ClassDB::bind_method(D_METHOD("voxel_structure_remove", "structure"), &TerrainWorld::voxel_structure_remove);
-	ClassDB::bind_method(D_METHOD("voxel_structure_remove_index", "index"), &TerrainWorld::voxel_structure_remove_index);
-	ClassDB::bind_method(D_METHOD("voxel_structures_clear"), &TerrainWorld::voxel_structures_clear);
-	ClassDB::bind_method(D_METHOD("voxel_structure_get_count"), &TerrainWorld::voxel_structure_get_count);
-	ClassDB::bind_method(D_METHOD("voxel_structure_add_at_position", "structure", "world_position"), &TerrainWorld::voxel_structure_add_at_position);
+	ClassDB::bind_method(D_METHOD("terrain_structure_get", "index"), &TerrainWorld::terrain_structure_get);
+	ClassDB::bind_method(D_METHOD("terrain_structure_add", "structure"), &TerrainWorld::terrain_structure_add);
+	ClassDB::bind_method(D_METHOD("terrain_structure_remove", "structure"), &TerrainWorld::terrain_structure_remove);
+	ClassDB::bind_method(D_METHOD("terrain_structure_remove_index", "index"), &TerrainWorld::terrain_structure_remove_index);
+	ClassDB::bind_method(D_METHOD("terrain_structures_clear"), &TerrainWorld::terrain_structures_clear);
+	ClassDB::bind_method(D_METHOD("terrain_structure_get_count"), &TerrainWorld::terrain_structure_get_count);
+	ClassDB::bind_method(D_METHOD("terrain_structure_add_at_position", "structure", "world_position"), &TerrainWorld::terrain_structure_add_at_position);
 
-	ClassDB::bind_method(D_METHOD("voxel_structures_get"), &TerrainWorld::voxel_structures_get);
-	ClassDB::bind_method(D_METHOD("voxel_structures_set"), &TerrainWorld::voxel_structures_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "23/20:TerrainStructure", PROPERTY_USAGE_DEFAULT, "TerrainStructure"), "voxel_structures_set", "voxel_structures_get");
+	ClassDB::bind_method(D_METHOD("terrain_structures_get"), &TerrainWorld::terrain_structures_get);
+	ClassDB::bind_method(D_METHOD("terrain_structures_set"), &TerrainWorld::terrain_structures_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terrain_structures", PROPERTY_HINT_NONE, "23/20:TerrainStructure", PROPERTY_USAGE_DEFAULT, "TerrainStructure"), "terrain_structures_set", "terrain_structures_get");
 
 	BIND_VMETHOD(MethodInfo("_chunk_added", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 

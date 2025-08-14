@@ -407,14 +407,14 @@
 				The data array should contain: Vector2i world data position 0, uint8 data 0, Vector2i world data position 1, uint8 data 1, ...
 			</description>
 		</method>
-		<method name="voxel_structure_add">
+		<method name="terrain_structure_add">
 			<return type="void" />
 			<argument index="0" name="structure" type="TerrainStructure" />
 			<description>
 				Add a terrain structure.
 			</description>
 		</method>
-		<method name="voxel_structure_add_at_position">
+		<method name="terrain_structure_add_at_position">
 			<return type="void" />
 			<argument index="0" name="structure" type="TerrainStructure" />
 			<argument index="1" name="world_position" type="Vector3" />
@@ -422,34 +422,34 @@
 				Add a terrain structure at the given world position.
 			</description>
 		</method>
-		<method name="voxel_structure_get" qualifiers="const">
+		<method name="terrain_structure_get" qualifiers="const">
 			<return type="TerrainStructure" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Return the terrain structure at index.
 			</description>
 		</method>
-		<method name="voxel_structure_get_count" qualifiers="const">
+		<method name="terrain_structure_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
 				Return the terrain structure count.
 			</description>
 		</method>
-		<method name="voxel_structure_remove">
+		<method name="terrain_structure_remove">
 			<return type="void" />
 			<argument index="0" name="structure" type="TerrainStructure" />
 			<description>
 				Remove the given terrain structure.
 			</description>
 		</method>
-		<method name="voxel_structure_remove_index">
+		<method name="terrain_structure_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Remove the terrain structure at index.
 			</description>
 		</method>
-		<method name="voxel_structures_clear">
+		<method name="terrain_structures_clear">
 			<return type="void" />
 			<description>
 				Clear terrain structures.
@@ -585,7 +585,7 @@
 		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
 			The terrain scale.
 		</member>
-		<member name="voxel_structures" type="Array" setter="voxel_structures_set" getter="voxel_structures_get" default="[  ]">
+		<member name="terrain_structures" type="Array" setter="terrain_structures_set" getter="terrain_structures_get" default="[  ]">
 			Terrain structures.
 		</member>
 		<member name="world_chunk_data_manager" type="TerrainWorldChunkDataManager" setter="set_world_chunk_data_manager" getter="get_world_chunk_data_manager">
