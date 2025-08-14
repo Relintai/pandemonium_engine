@@ -635,6 +635,7 @@
 			The player's body's path. If set, the world will get and set it to [member player].
 		</member>
 		<member name="terrain_scale" type="float" setter="set_terrain_scale" getter="get_terrain_scale" default="1.0">
+			The terrain scale.
 		</member>
 		<member name="terrain_structures" type="Array" setter="terrain_structures_set" getter="terrain_structures_get" default="[  ]">
 			Terrain structures.
