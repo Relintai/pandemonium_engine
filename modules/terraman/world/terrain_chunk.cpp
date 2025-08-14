@@ -946,60 +946,60 @@ void TerrainChunk::_on_light_moved(const Ref<TerrainLight> &p_light) {
 
 //Terra Structures
 
-Ref<TerrainStructure> TerrainChunk::voxel_structure_get(const int index) const {
-	ERR_FAIL_INDEX_V(index, _voxel_structures.size(), Ref<TerrainStructure>());
+Ref<TerrainStructure> TerrainChunk::terrain_structure_get(const int index) const {
+	ERR_FAIL_INDEX_V(index, _terrain_structures.size(), Ref<TerrainStructure>());
 
-	return _voxel_structures.get(index);
+	return _terrain_structures.get(index);
 }
-void TerrainChunk::voxel_structure_add(const Ref<TerrainStructure> &structure) {
-	_voxel_structures.push_back(structure);
+void TerrainChunk::terrain_structure_add(const Ref<TerrainStructure> &structure) {
+	_terrain_structures.push_back(structure);
 }
-void TerrainChunk::voxel_structure_remove(const Ref<TerrainStructure> &structure) {
+void TerrainChunk::terrain_structure_remove(const Ref<TerrainStructure> &structure) {
 	if (!structure.is_valid()) {
 		return;
 	}
 
-	int index = _voxel_structures.find(structure);
+	int index = _terrain_structures.find(structure);
 
 	if (index != -1) {
-		_voxel_structures.remove(index);
+		_terrain_structures.remove(index);
 	}
 }
-void TerrainChunk::voxel_structure_remove_index(const int index) {
-	ERR_FAIL_INDEX(index, _voxel_structures.size());
+void TerrainChunk::terrain_structure_remove_index(const int index) {
+	ERR_FAIL_INDEX(index, _terrain_structures.size());
 
-	_voxel_structures.remove(index);
-
-	emit_changed();
-}
-void TerrainChunk::voxel_structure_clear() {
-	_voxel_structures.clear();
+	_terrain_structures.remove(index);
 
 	emit_changed();
 }
-int TerrainChunk::voxel_structure_get_count() const {
-	return _voxel_structures.size();
+void TerrainChunk::terrain_structure_clear() {
+	_terrain_structures.clear();
+
+	emit_changed();
 }
-void TerrainChunk::voxel_structure_add_at_position(Ref<TerrainStructure> structure, const Vector3 &world_position) {
+int TerrainChunk::terrain_structure_get_count() const {
+	return _terrain_structures.size();
+}
+void TerrainChunk::terrain_structure_add_at_position(Ref<TerrainStructure> structure, const Vector3 &world_position) {
 	ERR_FAIL_COND(!structure.is_valid());
 
 	structure->set_position_x(static_cast<int>(world_position.x / _terrain_scale));
 	structure->set_position_y(static_cast<int>(world_position.y / _terrain_scale));
 	structure->set_position_z(static_cast<int>(world_position.z / _terrain_scale));
 
-	voxel_structure_add(structure);
+	terrain_structure_add(structure);
 }
 
-Vector<Variant> TerrainChunk::voxel_structures_get() {
-	VARIANT_ARRAY_GET(_voxel_structures);
+Vector<Variant> TerrainChunk::terrain_structures_get() {
+	VARIANT_ARRAY_GET(_terrain_structures);
 }
-void TerrainChunk::voxel_structures_set(const Vector<Variant> &structures) {
-	voxel_structure_clear();
+void TerrainChunk::terrain_structures_set(const Vector<Variant> &structures) {
+	terrain_structure_clear();
 
 	for (int i = 0; i < structures.size(); ++i) {
 		Ref<TerrainLight> structure = Ref<TerrainLight>(structures[i]);
 
-		voxel_structure_add(structure);
+		terrain_structure_add(structure);
 	}
 
 	emit_changed();
@@ -2464,17 +2464,17 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_light_moved"), &TerrainChunk::_on_light_moved);
 
 	// Structures
-	ClassDB::bind_method(D_METHOD("voxel_structure_get", "index"), &TerrainChunk::voxel_structure_get);
-	ClassDB::bind_method(D_METHOD("voxel_structure_add", "structure"), &TerrainChunk::voxel_structure_add);
-	ClassDB::bind_method(D_METHOD("voxel_structure_remove", "structure"), &TerrainChunk::voxel_structure_remove);
-	ClassDB::bind_method(D_METHOD("voxel_structure_remove_index", "index"), &TerrainChunk::voxel_structure_remove_index);
-	ClassDB::bind_method(D_METHOD("voxel_structure_clear"), &TerrainChunk::voxel_structure_clear);
-	ClassDB::bind_method(D_METHOD("voxel_structure_get_count"), &TerrainChunk::voxel_structure_get_count);
-	ClassDB::bind_method(D_METHOD("voxel_structure_add_at_position", "structure", "world_position"), &TerrainChunk::voxel_structure_add_at_position);
+	ClassDB::bind_method(D_METHOD("terrain_structure_get", "index"), &TerrainChunk::terrain_structure_get);
+	ClassDB::bind_method(D_METHOD("terrain_structure_add", "structure"), &TerrainChunk::terrain_structure_add);
+	ClassDB::bind_method(D_METHOD("terrain_structure_remove", "structure"), &TerrainChunk::terrain_structure_remove);
+	ClassDB::bind_method(D_METHOD("terrain_structure_remove_index", "index"), &TerrainChunk::terrain_structure_remove_index);
+	ClassDB::bind_method(D_METHOD("terrain_structure_clear"), &TerrainChunk::terrain_structure_clear);
+	ClassDB::bind_method(D_METHOD("terrain_structure_get_count"), &TerrainChunk::terrain_structure_get_count);
+	ClassDB::bind_method(D_METHOD("terrain_structure_add_at_position", "structure", "world_position"), &TerrainChunk::terrain_structure_add_at_position);
 
-	ClassDB::bind_method(D_METHOD("voxel_structures_get"), &TerrainChunk::voxel_structures_get);
-	ClassDB::bind_method(D_METHOD("voxel_structures_set"), &TerrainChunk::voxel_structures_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "23/20:TerrainStructure", PROPERTY_USAGE_DEFAULT, "TerrainStructure"), "voxel_structures_set", "voxel_structures_get");
+	ClassDB::bind_method(D_METHOD("terrain_structures_get"), &TerrainChunk::terrain_structures_get);
+	ClassDB::bind_method(D_METHOD("terrain_structures_set"), &TerrainChunk::terrain_structures_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terrain_structures", PROPERTY_HINT_NONE, "23/20:TerrainStructure", PROPERTY_USAGE_DEFAULT, "TerrainStructure"), "terrain_structures_set", "terrain_structures_get");
 
 	//Scenes
 

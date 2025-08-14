@@ -244,16 +244,16 @@ public:
 	void _on_light_moved(const Ref<TerrainLight> &p_light);
 
 	//Terra Structures
-	Ref<TerrainStructure> voxel_structure_get(const int index) const;
-	void voxel_structure_add(const Ref<TerrainStructure> &structure);
-	void voxel_structure_remove(const Ref<TerrainStructure> &structure);
-	void voxel_structure_remove_index(const int index);
-	void voxel_structure_clear();
-	int voxel_structure_get_count() const;
-	void voxel_structure_add_at_position(Ref<TerrainStructure> structure, const Vector3 &world_position);
+	Ref<TerrainStructure> terrain_structure_get(const int index) const;
+	void terrain_structure_add(const Ref<TerrainStructure> &structure);
+	void terrain_structure_remove(const Ref<TerrainStructure> &structure);
+	void terrain_structure_remove_index(const int index);
+	void terrain_structure_clear();
+	int terrain_structure_get_count() const;
+	void terrain_structure_add_at_position(Ref<TerrainStructure> structure, const Vector3 &world_position);
 
-	Vector<Variant> voxel_structures_get();
-	void voxel_structures_set(const Vector<Variant> &structures);
+	Vector<Variant> terrain_structures_get();
+	void terrain_structures_set(const Vector<Variant> &structures);
 
 	//Scenes
 	void scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform = Transform(), const Node *p_node = NULL, const bool p_original = true, const String &p_name = String());
@@ -512,7 +512,7 @@ protected:
 
 	Vector<Ref<TerrainLight>> _lights;
 
-	Vector<Ref<TerrainStructure>> _voxel_structures;
+	Vector<Ref<TerrainStructure>> _terrain_structures;
 
 	Vector<SceneDataStore> _scenes;
 
