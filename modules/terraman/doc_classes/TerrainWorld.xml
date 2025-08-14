@@ -227,13 +227,14 @@
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes the chunk at the given index from the generation queue.
 			</description>
 		</method>
 		<method name="generation_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
-				Removes the chunk at the given index from the generation queue.
+				Removes the chunk at the given index from the generation list.
 			</description>
 		</method>
 		<method name="get_channel_index_info">
@@ -263,6 +264,7 @@
 			<argument index="0" name="world_data_position" type="Vector2i" />
 			<argument index="1" name="channel_index" type="int" />
 			<description>
+				Returns the value in the channel at the given world data position.
 			</description>
 		</method>
 		<method name="get_data_at_world_position">
@@ -270,6 +272,7 @@
 			<argument index="0" name="world_position" type="Vector3" />
 			<argument index="1" name="channel_index" type="int" />
 			<description>
+				Returns the value in the channel at the given world position.
 			</description>
 		</method>
 		<method name="get_editor_camera">
@@ -298,6 +301,7 @@
 			<argument index="1" name="channel_index" type="int" />
 			<description>
 				Returns the value in the channel at the given world data position.
+				Deprecated. Please use [method get_data_at_world_data_position] instead.
 			</description>
 		</method>
 		<method name="get_voxel_at_world_position">
@@ -306,6 +310,7 @@
 			<argument index="1" name="channel_index" type="int" />
 			<description>
 				Returns the value in the channel at the given world position.
+				Deprecated. Please use [method get_data_at_world_position] instead.
 			</description>
 		</method>
 		<method name="is_position_walkable">
@@ -396,6 +401,7 @@
 			<argument index="3" name="rebuild" type="bool" default="true" />
 			<argument index="4" name="allow_creating_chunks" type="bool" default="true" />
 			<description>
+				Set voxel data at the given world data position.
 			</description>
 		</method>
 		<method name="set_data_at_world_position">
@@ -405,6 +411,7 @@
 			<argument index="2" name="channel_index" type="int" />
 			<argument index="3" name="rebuild" type="bool" default="true" />
 			<description>
+				Set voxel data at the given world position.
 			</description>
 		</method>
 		<method name="set_datas_at_world_data_position">
@@ -415,6 +422,8 @@
 			<argument index="3" name="allow_creating_chunks" type="bool" default="true" />
 			<argument index="4" name="invalidate_texture_caches" type="bool" default="true" />
 			<description>
+				Set multiple voxel data at the given world data position.
+				The data array should contain: Vector2i world data position 0, uint8 data 0, Vector2i world data position 1, uint8 data 1, ...
 			</description>
 		</method>
 		<method name="set_voxel_at_world_data_position">
@@ -426,6 +435,7 @@
 			<argument index="4" name="allow_creating_chunks" type="bool" default="true" />
 			<description>
 				Set voxel data at the given world data position.
+				Deprecated. Please use [method set_data_at_world_data_position] instead.
 			</description>
 		</method>
 		<method name="set_voxel_at_world_position">
@@ -436,6 +446,7 @@
 			<argument index="3" name="rebuild" type="bool" default="true" />
 			<description>
 				Set voxel data at the given world position.
+				Deprecated. Please use [method set_data_at_world_position] instead.
 			</description>
 		</method>
 		<method name="set_voxels_at_world_data_position">
@@ -448,6 +459,7 @@
 			<description>
 				Set multiple voxel data at the given world data position.
 				The data array should contain: Vector2i world data position 0, uint8 data 0, Vector2i world data position 1, uint8 data 1, ...
+				Deprecated. Please use [method set_datas_at_world_data_position] instead.
 			</description>
 		</method>
 		<method name="terrain_structure_add">
