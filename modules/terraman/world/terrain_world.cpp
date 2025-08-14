@@ -1945,7 +1945,7 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("world_data_position_to_world_position_3d", "position"), &TerrainWorld::world_data_position_to_world_position_3d);
 
 	ClassDB::bind_method(D_METHOD("get_voxel_at_world_data_position", "world_data_position", "channel_index"), &TerrainWorld::get_voxel_at_world_data_position);
-	ClassDB::bind_method(D_METHOD("set_voxel_at_world_data_position", "world_data_position", "data", "channel_index", "rebuild", "allow_creating_chunks "), &TerrainWorld::set_voxel_at_world_data_position, DEFVAL(true), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("set_voxel_at_world_data_position", "world_data_position", "data", "channel_index", "rebuild", "allow_creating_chunks"), &TerrainWorld::set_voxel_at_world_data_position, DEFVAL(true), DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_data_position", "world_data_position"), &TerrainWorld::get_chunk_at_world_data_position);
 	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_data_position", "world_data_position"), &TerrainWorld::get_or_create_chunk_at_world_data_position);
 	ClassDB::bind_method(D_METHOD("set_voxels_at_world_data_position", "data", "channel_index", "immediate_build", "allow_creating_chunks", "invalidate_texture_caches"), &TerrainWorld::set_voxels_at_world_data_position, DEFVAL(false), DEFVAL(true), DEFVAL(true));
