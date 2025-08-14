@@ -7,29 +7,26 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="get_voxel_isolevel" qualifiers="const">
+		<method name="get_data_isolevel" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="x" type="int" />
-			<argument index="1" name="y" type="int" />
-			<argument index="2" name="z" type="int" />
+			<argument index="1" name="z" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="get_voxel_type" qualifiers="const">
+		<method name="get_data_type" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="x" type="int" />
-			<argument index="1" name="y" type="int" />
-			<argument index="2" name="z" type="int" />
+			<argument index="1" name="z" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="set_voxel">
+		<method name="set_data">
 			<return type="void" />
 			<argument index="0" name="x" type="int" />
-			<argument index="1" name="y" type="int" />
-			<argument index="2" name="z" type="int" />
-			<argument index="3" name="type" type="int" />
-			<argument index="4" name="isolevel" type="int" />
+			<argument index="1" name="z" type="int" />
+			<argument index="2" name="type" type="int" />
+			<argument index="3" name="isolevel" type="int" />
 			<description>
 			</description>
 		</method>

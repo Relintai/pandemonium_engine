@@ -301,11 +301,13 @@
 		</member>
 		<member name="mesher_index" type="int" setter="set_mesher_index" getter="get_mesher_index" default="0">
 		</member>
+		<member name="terrain_scale" type="float" setter="set_terrain_scale" getter="get_terrain_scale" default="1.0">
+		</member>
 		<member name="texture_scale" type="int" setter="set_texture_scale" getter="get_texture_scale" default="1">
 		</member>
 		<member name="uv_margin" type="Rect2" setter="set_uv_margin" getter="get_uv_margin" default="Rect2( 0, 0, 1, 1 )">
 		</member>
-		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
+		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale">
 		</member>
 	</members>
 	<constants>

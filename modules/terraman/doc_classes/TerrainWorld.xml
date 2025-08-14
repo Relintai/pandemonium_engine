@@ -29,7 +29,7 @@
 				For non-serialized properties use [method _setup_chunk].
 				When loading chunks from disk, only [method _setup_chunk] will be called, this one won't.
 				Note the [TerrainChunk] parameter. The first reaced implementation should create the appropiate [TerrainChunk] implementation, then it can call base implementation to do their own initialization on the new instance. Tipically in code this would look like:
-				[code]func _create_chunk(x : int, z : int, chunk : TerrainChunk) -> TerrainChunk:
+				[code]func _create_chunk(x : int, z : int, chunk : TerrainChunk) -&gt; TerrainChunk:
 				  if (!chunk):
 				    chunk = MyTerrainChunk.new()
 
@@ -258,6 +258,20 @@
 				Returns the chunk at the given world position or null if it doesn't exists.
 			</description>
 		</method>
+		<method name="get_data_at_world_data_position">
+			<return type="int" />
+			<argument index="0" name="world_data_position" type="Vector2i" />
+			<argument index="1" name="channel_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_data_at_world_position">
+			<return type="int" />
+			<argument index="0" name="world_position" type="Vector3" />
+			<argument index="1" name="channel_index" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_editor_camera">
 			<return type="Spatial" />
 			<description>
@@ -372,6 +386,35 @@
 			<argument index="4" name="name" type="String" default="&quot;&quot;" />
 			<description>
 				Add scene.
+			</description>
+		</method>
+		<method name="set_data_at_world_data_position">
+			<return type="void" />
+			<argument index="0" name="world_data_position" type="Vector2i" />
+			<argument index="1" name="data" type="int" />
+			<argument index="2" name="channel_index" type="int" />
+			<argument index="3" name="rebuild" type="bool" default="true" />
+			<argument index="4" name="allow_creating_chunks" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="set_data_at_world_position">
+			<return type="void" />
+			<argument index="0" name="world_position" type="Vector3" />
+			<argument index="1" name="data" type="int" />
+			<argument index="2" name="channel_index" type="int" />
+			<argument index="3" name="rebuild" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="set_datas_at_world_data_position">
+			<return type="void" />
+			<argument index="0" name="data" type="Array" />
+			<argument index="1" name="channel_index" type="int" />
+			<argument index="2" name="immediate_build" type="bool" default="false" />
+			<argument index="3" name="allow_creating_chunks" type="bool" default="true" />
+			<argument index="4" name="invalidate_texture_caches" type="bool" default="true" />
+			<description>
 			</description>
 		</method>
 		<method name="set_voxel_at_world_data_position">
@@ -579,14 +622,16 @@
 		<member name="player_path" type="NodePath" setter="set_player_path" getter="get_player_path" default="NodePath(&quot;&quot;)">
 			The player's body's path. If set, the world will get and set it to [member player].
 		</member>
-		<member name="use_vertex_lights_3d" type="bool" setter="set_use_vertex_lights_3d" getter="get_use_vertex_lights_3d" default="true">
-			Whether to use the [VertexLights3D] system.
-		</member>
-		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
-			The terrain scale.
+		<member name="terrain_scale" type="float" setter="set_terrain_scale" getter="get_terrain_scale" default="1.0">
 		</member>
 		<member name="terrain_structures" type="Array" setter="terrain_structures_set" getter="terrain_structures_get" default="[  ]">
 			Terrain structures.
+		</member>
+		<member name="use_vertex_lights_3d" type="bool" setter="set_use_vertex_lights_3d" getter="get_use_vertex_lights_3d" default="true">
+			Whether to use the [VertexLights3D] system.
+		</member>
+		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale">
+			The terrain scale.
 		</member>
 		<member name="world_chunk_data_manager" type="TerrainWorldChunkDataManager" setter="set_world_chunk_data_manager" getter="get_world_chunk_data_manager">
 			The active world chunk data manager. These can save and load chunks.

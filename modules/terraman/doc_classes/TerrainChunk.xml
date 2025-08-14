@@ -305,6 +305,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_data" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<argument index="2" name="index" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_data_index" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="x" type="int" />
@@ -473,7 +481,7 @@
 			<argument index="1" name="mesh" type="MeshDataResource" />
 			<argument index="2" name="texture" type="Texture" default="null" />
 			<argument index="3" name="color" type="Color" default="Color( 1, 1, 1, 1 )" />
-			<argument index="4" name="apply_voxel_scale" type="bool" default="true" />
+			<argument index="4" name="apply_terrain_scale" type="bool" default="true" />
 			<argument index="5" name="original" type="bool" default="true" />
 			<argument index="6" name="name" type="String" default="&quot;&quot;" />
 			<description>
@@ -485,7 +493,7 @@
 			<argument index="1" name="mesh" type="MeshDataResource" />
 			<argument index="2" name="texture" type="Texture" default="null" />
 			<argument index="3" name="material" type="Material" default="null" />
-			<argument index="4" name="apply_voxel_scale" type="bool" default="true" />
+			<argument index="4" name="apply_terrain_scale" type="bool" default="true" />
 			<argument index="5" name="original" type="bool" default="true" />
 			<argument index="6" name="name" type="String" default="&quot;&quot;" />
 			<description>
@@ -497,7 +505,7 @@
 			<argument index="1" name="mesh" type="MeshDataResource" />
 			<argument index="2" name="texture" type="Texture" default="null" />
 			<argument index="3" name="color" type="Color" default="Color( 1, 1, 1, 1 )" />
-			<argument index="4" name="apply_voxel_scale" type="bool" default="true" />
+			<argument index="4" name="apply_terrain_scale" type="bool" default="true" />
 			<argument index="5" name="original" type="bool" default="true" />
 			<argument index="6" name="name" type="String" default="&quot;&quot;" />
 			<description>
@@ -830,6 +838,15 @@
 			<description>
 			</description>
 		</method>
+		<method name="set_data">
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
+			<argument index="1" name="x" type="int" />
+			<argument index="2" name="z" type="int" />
+			<argument index="3" name="index" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="set_physics_process">
 			<return type="void" />
 			<argument index="0" name="value" type="bool" />
@@ -867,6 +884,47 @@
 			<description>
 			</description>
 		</method>
+		<method name="terrain_structure_add">
+			<return type="void" />
+			<argument index="0" name="structure" type="TerrainStructure" />
+			<description>
+			</description>
+		</method>
+		<method name="terrain_structure_add_at_position">
+			<return type="void" />
+			<argument index="0" name="structure" type="TerrainStructure" />
+			<argument index="1" name="world_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="terrain_structure_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="terrain_structure_get" qualifiers="const">
+			<return type="TerrainStructure" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="terrain_structure_get_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="terrain_structure_remove">
+			<return type="void" />
+			<argument index="0" name="structure" type="TerrainStructure" />
+			<description>
+			</description>
+		</method>
+		<method name="terrain_structure_remove_index">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="to_global" qualifiers="const">
 			<return type="Vector3" />
 			<argument index="0" name="local" type="Vector3" />
@@ -889,47 +947,6 @@
 		<method name="visibility_changed">
 			<return type="void" />
 			<argument index="0" name="visible" type="bool" />
-			<description>
-			</description>
-		</method>
-		<method name="voxel_structure_add">
-			<return type="void" />
-			<argument index="0" name="structure" type="TerrainStructure" />
-			<description>
-			</description>
-		</method>
-		<method name="voxel_structure_add_at_position">
-			<return type="void" />
-			<argument index="0" name="structure" type="TerrainStructure" />
-			<argument index="1" name="world_position" type="Vector3" />
-			<description>
-			</description>
-		</method>
-		<method name="voxel_structure_clear">
-			<return type="void" />
-			<description>
-			</description>
-		</method>
-		<method name="voxel_structure_get" qualifiers="const">
-			<return type="TerrainStructure" />
-			<argument index="0" name="index" type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="voxel_structure_get_count" qualifiers="const">
-			<return type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="voxel_structure_remove">
-			<return type="void" />
-			<argument index="0" name="structure" type="TerrainStructure" />
-			<description>
-			</description>
-		</method>
-		<method name="voxel_structure_remove_index">
-			<return type="void" />
-			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
@@ -1012,13 +1029,17 @@
 		</member>
 		<member name="state" type="int" setter="set_state" getter="get_state">
 		</member>
+		<member name="terrain_scale" type="float" setter="set_terrain_scale" getter="get_terrain_scale" default="1.0">
+		</member>
+		<member name="terrain_structures" type="Array" setter="terrain_structures_set" getter="terrain_structures_get" default="[  ]">
+		</member>
+		<member name="terrain_world" type="TerrainWorld" setter="set_terrain_world" getter="get_terrain_world">
+		</member>
 		<member name="transform" type="Transform" setter="set_transform" getter="get_transform" default="Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )">
 		</member>
 		<member name="visible" type="bool" setter="set_visible" getter="get_visible" default="true">
 		</member>
-		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
-		</member>
-		<member name="voxel_structures" type="Array" setter="voxel_structures_set" getter="voxel_structures_get" default="[  ]">
+		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale">
 		</member>
 		<member name="voxel_world" type="TerrainWorld" setter="set_voxel_world" getter="get_voxel_world">
 		</member>

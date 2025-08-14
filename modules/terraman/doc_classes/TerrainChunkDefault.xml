@@ -55,16 +55,23 @@
 			<description>
 			</description>
 		</method>
-		<method name="draw_cross_voxels">
+		<method name="draw_debug_cross_datas">
 			<return type="void" />
 			<argument index="0" name="max" type="Vector3" />
 			<description>
 			</description>
 		</method>
-		<method name="draw_cross_voxels_fill">
+		<method name="draw_debug_cross_datas_fill">
 			<return type="void" />
 			<argument index="0" name="max" type="Vector3" />
 			<argument index="1" name="fill" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="draw_debug_datas">
+			<return type="void" />
+			<argument index="0" name="max" type="int" />
+			<argument index="1" name="color" type="Color" default="Color( 1, 1, 1, 1 )" />
 			<description>
 			</description>
 		</method>
@@ -73,15 +80,8 @@
 			<description>
 			</description>
 		</method>
-		<method name="draw_debug_voxel_lights">
+		<method name="draw_debug_terrain_lights">
 			<return type="void" />
-			<description>
-			</description>
-		</method>
-		<method name="draw_debug_voxels">
-			<return type="void" />
-			<argument index="0" name="max" type="int" />
-			<argument index="1" name="color" type="Color" default="Color( 1, 1, 1, 1 )" />
 			<description>
 			</description>
 		</method>
