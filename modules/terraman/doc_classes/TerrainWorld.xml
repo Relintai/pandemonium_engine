@@ -356,7 +356,7 @@
 			<return type="void" />
 			<argument index="0" name="transform" type="Transform" />
 			<argument index="1" name="prop" type="PropData" />
-			<argument index="2" name="apply_voxel_scale" type="bool" default="true" />
+			<argument index="2" name="apply_terrain_scale" type="bool" default="true" />
 			<argument index="3" name="original" type="bool" default="true" />
 			<argument index="4" name="name" type="String" default="&quot;&quot;" />
 			<description>

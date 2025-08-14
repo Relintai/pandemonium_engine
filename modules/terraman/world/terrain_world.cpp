@@ -783,10 +783,10 @@ void TerrainWorld::scene_add(const Ref<PackedScene> &p_scene, const Transform &p
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale, const bool p_original, const String &p_name) {
+void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_terrain_scale, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND(!prop.is_valid());
 
-	if (apply_voxel_scale) {
+	if (apply_terrain_scale) {
 		transform = transform.scaled(Vector3(get_terrain_scale(), get_terrain_scale(), get_terrain_scale()));
 	}
 
@@ -1938,7 +1938,7 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original", "name"), &TerrainWorld::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true), DEFVAL(String()));
 
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "original", "name"), &TerrainWorld::prop_add, DEFVAL(true), DEFVAL(true), DEFVAL(String()));
+	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_terrain_scale", "original", "name"), &TerrainWorld::prop_add, DEFVAL(true), DEFVAL(true), DEFVAL(String()));
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
