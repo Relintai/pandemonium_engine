@@ -212,7 +212,7 @@ void TerrainWorld::set_terrain_scale(const float value) {
 			continue;
 		}
 
-		c->set_voxel_scale(_terrain_scale);
+		c->set_terrain_scale(_terrain_scale);
 	}
 }
 
@@ -602,7 +602,7 @@ Ref<TerrainChunk> TerrainWorld::_create_chunk(const int x, const int z, Ref<Terr
 	chunk->set_position(x, z);
 	chunk->set_world_height(_world_height);
 	chunk->set_library(_library);
-	chunk->set_voxel_scale(_terrain_scale);
+	chunk->set_terrain_scale(_terrain_scale);
 	chunk->set_size(_chunk_size_x, _chunk_size_z, _data_margin_start, _data_margin_end);
 	//chunk->set_translation(Vector3(x * _chunk_size_x * _terrain_scale, y * _chunk_size_y * _terrain_scale, z * _chunk_size_z * _terrain_scale));
 

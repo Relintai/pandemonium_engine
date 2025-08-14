@@ -651,7 +651,7 @@ void TerrainChunkDefault::debug_mesh_send() {
 }
 
 void TerrainChunkDefault::draw_cross_voxels(Vector3 pos) {
-	pos *= _voxel_scale;
+	pos *= _terrain_scale;
 
 	int size = _debug_mesh_array.size();
 	_debug_mesh_array.resize(_debug_mesh_array.size() + 6);
@@ -667,7 +667,7 @@ void TerrainChunkDefault::draw_cross_voxels(Vector3 pos) {
 }
 
 void TerrainChunkDefault::draw_cross_voxels_fill(Vector3 pos, float fill) {
-	pos *= _voxel_scale;
+	pos *= _terrain_scale;
 
 	int size = _debug_mesh_array.size();
 	_debug_mesh_array.resize(_debug_mesh_array.size() + 6);
@@ -704,7 +704,7 @@ void TerrainChunkDefault::draw_debug_voxels(int max, Color color) {
 				continue;
 			}
 
-			draw_cross_voxels_fill(Vector3(x, get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL), z), get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL) / 255.0 * get_voxel_scale() * 2.0);
+			draw_cross_voxels_fill(Vector3(x, get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL), z), get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL) / 255.0 * get_terrain_scale() * 2.0);
 
 			++a;
 
@@ -930,7 +930,7 @@ void TerrainChunkDefault::_bake_lights() {
 
 				Vector3 current_world_position = world->world_data_position_to_world_position(world_data_pos);
 
-				current_world_position.y = (float)channel_isolevel[index] / 255.0 * _world_height * _voxel_scale;
+				current_world_position.y = (float)channel_isolevel[index] / 255.0 * _world_height * _terrain_scale;
 
 				Color color = vls->sample_light_value(map, current_world_position);
 

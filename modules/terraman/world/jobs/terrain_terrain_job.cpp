@@ -438,7 +438,7 @@ void TerrainTerrainJob::_reset() {
 
 	ERR_FAIL_COND(!_mesher.is_valid());
 
-	_mesher->set_voxel_scale(_chunk->get_voxel_scale());
+	_mesher->set_voxel_scale(_chunk->get_terrain_scale());
 	_mesher->set_lod_index(0);
 
 	Ref<TerrainChunkDefault> chunk = _chunk;
@@ -449,7 +449,7 @@ void TerrainTerrainJob::_reset() {
 	}
 
 	if (_liquid_mesher.is_valid()) {
-		_liquid_mesher->set_voxel_scale(_chunk->get_voxel_scale());
+		_liquid_mesher->set_voxel_scale(_chunk->get_terrain_scale());
 
 		md = _liquid_mesher;
 

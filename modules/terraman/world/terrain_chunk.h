@@ -170,8 +170,13 @@ public:
 	Ref<TerrainLibrary> get_library();
 	void set_library(const Ref<TerrainLibrary> &value);
 
+#ifndef DISABLE_DEPRECATED
 	float get_voxel_scale() const;
 	void set_voxel_scale(const float value);
+#endif
+
+	float get_terrain_scale() const;
+	void set_terrain_scale(const float value);
 
 	TerrainWorld *get_voxel_world() const;
 	void set_voxel_world(TerrainWorld *world);
@@ -498,7 +503,7 @@ protected:
 
 	Vector<uint8_t *> _channels;
 
-	float _voxel_scale;
+	float _terrain_scale;
 
 	int _current_job;
 	Vector<Ref<TerrainJob>> _jobs;

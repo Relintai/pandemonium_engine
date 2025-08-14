@@ -151,11 +151,11 @@ _FORCE_INLINE_ Vector2 TerrainChunk::get_position() const {
 	return Vector2(_position_x, _position_z);
 }
 _FORCE_INLINE_ Vector2 TerrainChunk::get_world_position() const {
-	return Vector2(_position_x * _size_x * _voxel_scale, _position_z * _size_z * _voxel_scale);
+	return Vector2(_position_x * _size_x * _terrain_scale, _position_z * _size_z * _terrain_scale);
 }
 
 _FORCE_INLINE_ Vector3 TerrainChunk::get_world_size() const {
-	return Vector3(_size_x * _voxel_scale, _world_height * _voxel_scale, _size_z * _voxel_scale);
+	return Vector3(_size_x * _terrain_scale, _world_height * _terrain_scale, _size_z * _terrain_scale);
 }
 
 _FORCE_INLINE_ AABB TerrainChunk::get_world_aabb() const {
@@ -306,11 +306,24 @@ void TerrainChunk::set_library(const Ref<TerrainLibrary> &value) {
 	_library = value;
 }
 
+#ifndef DISABLE_DEPRECATED
 float TerrainChunk::get_voxel_scale() const {
-	return _voxel_scale;
+	WARN_DEPRECATED_MSG("Method is deprecated. Please use get_terrain_scale() instead. They are functionally identical.");
+
+	return _terrain_scale;
 }
 void TerrainChunk::set_voxel_scale(const float value) {
-	_voxel_scale = value;
+	WARN_DEPRECATED_MSG("Method is deprecated. Please use set_terrain_scale() instead. They are functionally identical.");
+
+	_terrain_scale = value;
+}
+#endif
+
+float TerrainChunk::get_terrain_scale() const {
+	return _terrain_scale;
+}
+void TerrainChunk::set_terrain_scale(const float value) {
+	_terrain_scale = value;
 }
 
 TerrainWorld *TerrainChunk::get_voxel_world() const {
@@ -734,7 +747,7 @@ void TerrainChunk::light_add(Ref<TerrainLight> p_light) {
 				VertexLights3DServer::get_singleton()->light_set_mode(vertex_light_rid, (VertexLights3DServer::VertexLight3DMode)(int)p_light->get_light_mode());
 				VertexLights3DServer::get_singleton()->light_set_range(vertex_light_rid, p_light->get_range());
 				VertexLights3DServer::get_singleton()->light_set_map(vertex_light_rid, world->get_world_3d()->get_vertex_lights_3d_map());
-				VertexLights3DServer::get_singleton()->light_set_position(vertex_light_rid, p_light->get_world_data_position() * get_voxel_scale());
+				VertexLights3DServer::get_singleton()->light_set_position(vertex_light_rid, p_light->get_world_data_position() * get_terrain_scale());
 			}
 		}
 	}
@@ -920,7 +933,7 @@ void TerrainChunk::_on_light_moved(const Ref<TerrainLight> &p_light) {
 			RID vertex_light_rid = p_light->get_vertex_lights_3d_rid();
 
 			if (vertex_light_rid != RID()) {
-				VertexLights3DServer::get_singleton()->light_set_position(vertex_light_rid, p_light->get_world_data_position() * get_voxel_scale());
+				VertexLights3DServer::get_singleton()->light_set_position(vertex_light_rid, p_light->get_world_data_position() * get_terrain_scale());
 			}
 		}
 	}
@@ -970,9 +983,9 @@ int TerrainChunk::voxel_structure_get_count() const {
 void TerrainChunk::voxel_structure_add_at_position(Ref<TerrainStructure> structure, const Vector3 &world_position) {
 	ERR_FAIL_COND(!structure.is_valid());
 
-	structure->set_position_x(static_cast<int>(world_position.x / _voxel_scale));
-	structure->set_position_y(static_cast<int>(world_position.y / _voxel_scale));
-	structure->set_position_z(static_cast<int>(world_position.z / _voxel_scale));
+	structure->set_position_x(static_cast<int>(world_position.x / _terrain_scale));
+	structure->set_position_y(static_cast<int>(world_position.y / _terrain_scale));
+	structure->set_position_z(static_cast<int>(world_position.z / _terrain_scale));
 
 	voxel_structure_add(structure);
 }
@@ -1418,8 +1431,8 @@ int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const R
 	MeshDataResourceEntry e;
 
 	if (apply_voxel_scale) {
-		e.transform = Transform(Basis().scaled(Vector3(_voxel_scale, _voxel_scale, _voxel_scale)));
-		e.transform.origin = local_data_pos * _voxel_scale;
+		e.transform = Transform(Basis().scaled(Vector3(_terrain_scale, _terrain_scale, _terrain_scale)));
+		e.transform.origin = local_data_pos * _terrain_scale;
 	} else {
 		e.transform.origin = local_data_pos;
 	}
@@ -1466,8 +1479,8 @@ int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const
 	e.transform = local_transform;
 
 	if (apply_voxel_scale) {
-		e.transform.basis = e.transform.basis.scaled(Vector3(_voxel_scale, _voxel_scale, _voxel_scale));
-		e.transform.origin = e.transform.origin * _voxel_scale;
+		e.transform.basis = e.transform.basis.scaled(Vector3(_terrain_scale, _terrain_scale, _terrain_scale));
+		e.transform.origin = e.transform.origin * _terrain_scale;
 	}
 
 	e.mesh = mesh;
@@ -1511,8 +1524,8 @@ int TerrainChunk::mesh_data_resource_add_material(const Transform &local_transfo
 	e.transform = local_transform;
 
 	if (apply_voxel_scale) {
-		e.transform.basis = e.transform.basis.scaled(Vector3(_voxel_scale, _voxel_scale, _voxel_scale));
-		e.transform.origin = e.transform.origin * _voxel_scale;
+		e.transform.basis = e.transform.basis.scaled(Vector3(_terrain_scale, _terrain_scale, _terrain_scale));
+		e.transform.origin = e.transform.origin * _terrain_scale;
 	}
 
 	e.mesh = mesh;
@@ -1941,7 +1954,7 @@ TerrainChunk::TerrainChunk() {
 	_dirty = false;
 	_state = TERRAIN_CHUNK_STATE_OK;
 
-	_voxel_scale = 1;
+	_terrain_scale = 1;
 
 	_voxel_world = NULL;
 
@@ -2049,7 +2062,7 @@ void TerrainChunk::_enter_tree() {
 					VertexLights3DServer::get_singleton()->light_set_item_cull_mask(vertex_light_rid, light->get_item_cull_mask());
 					VertexLights3DServer::get_singleton()->light_set_mode(vertex_light_rid, (VertexLights3DServer::VertexLight3DMode)(int)light->get_light_mode());
 					VertexLights3DServer::get_singleton()->light_set_range(vertex_light_rid, light->get_range());
-					VertexLights3DServer::get_singleton()->light_set_position(vertex_light_rid, light->get_world_data_position() * get_voxel_scale());
+					VertexLights3DServer::get_singleton()->light_set_position(vertex_light_rid, light->get_world_data_position() * get_terrain_scale());
 				}
 
 				VertexLights3DServer::get_singleton()->light_set_map(vertex_light_rid, world->get_world_3d()->get_vertex_lights_3d_map());
@@ -2158,7 +2171,7 @@ void TerrainChunk::_world_transform_changed() {
 		wt = _voxel_world->get_transform();
 	}
 
-	set_transform(wt * Transform(Basis(), Vector3(_position_x * static_cast<int>(_size_x) * _voxel_scale, 0, _position_z * static_cast<int>(_size_z) * _voxel_scale)));
+	set_transform(wt * Transform(Basis(), Vector3(_position_x * static_cast<int>(_size_x) * _terrain_scale, 0, _position_z * static_cast<int>(_size_z) * _terrain_scale)));
 }
 
 /*
@@ -2376,9 +2389,15 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_library", "value"), &TerrainChunk::set_library);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "library", PROPERTY_HINT_RESOURCE_TYPE, "TerrainLibrary"), "set_library", "get_library");
 
+#ifndef DISABLE_DEPRECATED
 	ClassDB::bind_method(D_METHOD("get_voxel_scale"), &TerrainChunk::get_voxel_scale);
 	ClassDB::bind_method(D_METHOD("set_voxel_scale", "value"), &TerrainChunk::set_voxel_scale);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale"), "set_voxel_scale", "get_voxel_scale");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale", PROPERTY_HINT_NONE, "", 0), "set_voxel_scale", "get_voxel_scale");
+#endif
+
+	ClassDB::bind_method(D_METHOD("get_terrain_scale"), &TerrainChunk::get_terrain_scale);
+	ClassDB::bind_method(D_METHOD("set_terrain_scale", "value"), &TerrainChunk::set_terrain_scale);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "terrain_scale"), "set_terrain_scale", "get_voxel_scale");
 
 	ClassDB::bind_method(D_METHOD("job_get", "index"), &TerrainChunk::job_get);
 	ClassDB::bind_method(D_METHOD("job_set", "index", "job"), &TerrainChunk::job_set);
