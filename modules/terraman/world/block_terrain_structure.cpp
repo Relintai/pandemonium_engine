@@ -45,26 +45,26 @@ void BlockTerrainStructure::set_channel_isolevel(const int value) {
 	_channel_isolevel = value;
 }
 
-int BlockTerrainStructure::get_voxel_type(int p_x, int p_y, int p_z) const {
+int BlockTerrainStructure::get_data_type(int p_x, int p_z) const {
 	DataEntry p;
 
 	for (int i = 0; i < _data.size(); ++i) {
 		p = _data[i];
 
-		if (p.x == p_x && p.y == p_y && p.z == p_z) {
+		if (p.x == p_x && p.z == p_z) {
 			return p.data_type;
 		}
 	}
 
 	return 0;
 }
-int BlockTerrainStructure::get_voxel_isolevel(int p_x, int p_y, int p_z) const {
+int BlockTerrainStructure::get_data_isolevel(int p_x, int p_z) const {
 	DataEntry p;
 
 	for (int i = 0; i < _data.size(); ++i) {
 		p = _data[i];
 
-		if (p.x == p_x && p.y == p_y && p.z == p_z) {
+		if (p.x == p_x && p.z == p_z) {
 			return p.data_isolevel;
 		}
 	}
@@ -72,10 +72,9 @@ int BlockTerrainStructure::get_voxel_isolevel(int p_x, int p_y, int p_z) const {
 	return 0;
 }
 
-void BlockTerrainStructure::set_voxel(int p_x, int p_y, int p_z, int p_type, int p_isolevel) {
+void BlockTerrainStructure::set_data(int p_x, int p_z, int p_type, int p_isolevel) {
 	DataEntry p;
 	p.x = p_x;
-	p.y = p_y;
 	p.z = p_z;
 	p.data_type = p_type;
 	p.data_isolevel = p_isolevel;
@@ -109,10 +108,10 @@ void BlockTerrainStructure::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_channel_isolevel", "value"), &BlockTerrainStructure::set_channel_isolevel);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "channel_isolevel"), "set_channel_isolevel", "get_channel_isolevel");
 
-	ClassDB::bind_method(D_METHOD("get_voxel_type", "x", "y", "z"), &BlockTerrainStructure::get_voxel_type);
-	ClassDB::bind_method(D_METHOD("get_voxel_isolevel", "x", "y", "z"), &BlockTerrainStructure::get_voxel_isolevel);
+	ClassDB::bind_method(D_METHOD("get_data_type", "x", "z"), &BlockTerrainStructure::get_data_type);
+	ClassDB::bind_method(D_METHOD("get_data_isolevel", "x", "z"), &BlockTerrainStructure::get_data_isolevel);
 
-	ClassDB::bind_method(D_METHOD("set_voxel", "x", "y", "z", "type", "isolevel"), &BlockTerrainStructure::set_voxel);
+	ClassDB::bind_method(D_METHOD("set_data", "x", "z", "type", "isolevel"), &BlockTerrainStructure::set_data);
 
 	ClassDB::bind_method(D_METHOD("_write_to_chunk", "chunk"), &BlockTerrainStructure::_write_to_chunk);
 }
