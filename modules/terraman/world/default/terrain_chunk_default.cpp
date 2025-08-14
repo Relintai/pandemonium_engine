@@ -160,8 +160,8 @@ void TerrainChunkDefault::set_current_lod_level(const int value) {
 void TerrainChunkDefault::emit_build_finished() {
 	emit_signal("mesh_generation_finished", this);
 
-	if (_voxel_world != NULL) {
-		_voxel_world->on_chunk_mesh_generation_finished(this);
+	if (_terrain_world != NULL) {
+		_terrain_world->on_chunk_mesh_generation_finished(this);
 	}
 }
 
@@ -344,7 +344,7 @@ void TerrainChunkDefault::rids_free() {
 }
 
 void TerrainChunkDefault::meshes_create(const int mesh_index, const int mesh_count) {
-	ERR_FAIL_COND(_voxel_world == NULL);
+	ERR_FAIL_COND(_terrain_world == NULL);
 	ERR_FAIL_COND(!get_library().is_valid());
 
 	if (!_rids.has(mesh_index))
@@ -361,8 +361,8 @@ void TerrainChunkDefault::meshes_create(const int mesh_index, const int mesh_cou
 	for (int i = 0; i < mesh_count; ++i) {
 		RID mesh_instance_rid = RS::get_singleton()->instance_create();
 
-		if (get_voxel_world()->get_world_3d().is_valid())
-			RS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_voxel_world()->get_world_3d()->get_scenario());
+		if (get_terrain_world()->get_world_3d().is_valid())
+			RS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_terrain_world()->get_world_3d()->get_scenario());
 
 		RID mesh_rid = RS::get_singleton()->mesh_create();
 
@@ -418,9 +418,9 @@ void TerrainChunkDefault::meshes_free(const int mesh_index) {
 }
 
 void TerrainChunkDefault::colliders_create(const int mesh_index, const int layer_mask) {
-	ERR_FAIL_COND(_voxel_world == NULL);
+	ERR_FAIL_COND(_terrain_world == NULL);
 	ERR_FAIL_COND(PhysicsServer::get_singleton()->is_flushing_queries());
-	//ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
+	//ERR_FAIL_COND(!get_terrain_world()->is_inside_tree());
 
 	if (!_rids.has(mesh_index))
 		_rids[mesh_index] = Dictionary();
@@ -440,8 +440,8 @@ void TerrainChunkDefault::colliders_create(const int mesh_index, const int layer
 
 	PhysicsServer::get_singleton()->body_set_state(body_rid, PhysicsServer::BODY_STATE_TRANSFORM, get_transform());
 
-	if (get_voxel_world()->is_inside_tree() && get_voxel_world()->is_inside_world()) {
-		Ref<World3D> world = get_voxel_world()->get_world_3d();
+	if (get_terrain_world()->is_inside_tree() && get_terrain_world()->is_inside_world()) {
+		Ref<World3D> world = get_terrain_world()->get_world_3d();
 
 		if (world.is_valid() && world->get_space() != RID())
 			PhysicsServer::get_singleton()->body_set_space(body_rid, world->get_space());
@@ -453,7 +453,7 @@ void TerrainChunkDefault::colliders_create(const int mesh_index, const int layer
 	_rids[mesh_index] = m;
 }
 void TerrainChunkDefault::colliders_create_area(const int mesh_index, const int layer_mask) {
-	ERR_FAIL_COND(_voxel_world == NULL);
+	ERR_FAIL_COND(_terrain_world == NULL);
 	ERR_FAIL_COND(PhysicsServer::get_singleton()->is_flushing_queries());
 
 	if (!_rids.has(mesh_index))
@@ -467,7 +467,7 @@ void TerrainChunkDefault::colliders_create_area(const int mesh_index, const int 
 	RID shape_rid = PhysicsServer::get_singleton()->shape_create(PhysicsServer::SHAPE_CONCAVE_POLYGON);
 	RID area_rid = PhysicsServer::get_singleton()->area_create();
 
-	PhysicsServer::get_singleton()->area_attach_object_instance_id(area_rid, _voxel_world->get_instance_id());
+	PhysicsServer::get_singleton()->area_attach_object_instance_id(area_rid, _terrain_world->get_instance_id());
 	PhysicsServer::get_singleton()->area_set_param(area_rid, PhysicsServer::AREA_PARAM_GRAVITY, 9.8);
 	PhysicsServer::get_singleton()->area_set_param(area_rid, PhysicsServer::AREA_PARAM_GRAVITY_VECTOR, Vector3(0, -1, 0));
 
@@ -478,8 +478,8 @@ void TerrainChunkDefault::colliders_create_area(const int mesh_index, const int 
 	PhysicsServer::get_singleton()->area_set_collision_layer(area_rid, layer_mask);
 	PhysicsServer::get_singleton()->area_set_collision_mask(area_rid, layer_mask);
 
-	if (get_voxel_world()->is_inside_tree() && get_voxel_world()->is_inside_world()) {
-		Ref<World3D> world = get_voxel_world()->get_world_3d();
+	if (get_terrain_world()->is_inside_tree() && get_terrain_world()->is_inside_world()) {
+		Ref<World3D> world = get_terrain_world()->get_world_3d();
 
 		if (world.is_valid() && world->get_space() != RID())
 			PhysicsServer::get_singleton()->area_set_space(area_rid, world->get_space());
@@ -592,8 +592,8 @@ void TerrainChunkDefault::debug_mesh_allocate() {
 	if (_debug_mesh_instance == RID()) {
 		_debug_mesh_instance = RenderingServer::get_singleton()->instance_create();
 
-		if (get_voxel_world() && get_voxel_world()->get_world_3d().is_valid()) {
-			RS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_voxel_world()->get_world_3d()->get_scenario());
+		if (get_terrain_world() && get_terrain_world()->get_world_3d().is_valid()) {
+			RS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_terrain_world()->get_world_3d()->get_scenario());
 		}
 
 		RS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
@@ -820,7 +820,7 @@ void TerrainChunkDefault::_visibility_changed(bool visible) {
 void TerrainChunkDefault::_enter_tree() {
 	TerrainChunk::_enter_tree();
 
-	RID scenario = get_voxel_world()->get_world_3d()->get_scenario();
+	RID scenario = get_terrain_world()->get_world_3d()->get_scenario();
 
 	int lod_num = mesh_rid_get_count(MESH_INDEX_TERRAIN, MESH_TYPE_INDEX_MESH_INSTANCE);
 
@@ -898,7 +898,7 @@ void TerrainChunkDefault::_bake_lights() {
 	clear_baked_lights();
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
-	TerrainWorld *world = get_voxel_world();
+	TerrainWorld *world = get_terrain_world();
 
 	if (world && world->get_use_vertex_lights_3d()) {
 		VertexLights3DServer *vls = VertexLights3DServer::get_singleton();

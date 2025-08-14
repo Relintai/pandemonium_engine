@@ -335,13 +335,13 @@ void TerrainWorld::terrain_structures_set(const Vector<Variant> &structures) {
 
 void TerrainWorld::chunk_add(Ref<TerrainChunk> chunk, const int x, const int z) {
 	ERR_FAIL_COND(!chunk.is_valid());
-	ERR_FAIL_COND_MSG(chunk->get_voxel_world() != NULL && chunk->get_voxel_world() != this, "Chunk is already owned by an another world!");
+	ERR_FAIL_COND_MSG(chunk->get_terrain_world() != NULL && chunk->get_terrain_world() != this, "Chunk is already owned by an another world!");
 
 	IntPos pos(x, z);
 
 	//ERR_FAIL_COND(_chunks.has(pos));
 
-	chunk->set_voxel_world(this);
+	chunk->set_terrain_world(this);
 	chunk->set_position(x, z);
 	chunk->world_transform_changed();
 
@@ -596,7 +596,7 @@ Ref<TerrainChunk> TerrainWorld::_create_chunk(const int x, const int z, Ref<Terr
 	}
 
 	//no meshers here
-	chunk->set_voxel_world(this);
+	chunk->set_terrain_world(this);
 
 	chunk->set_name("Chunk[" + String::num(x) + "," + String::num(z) + "]");
 	chunk->set_position(x, z);
@@ -626,7 +626,7 @@ void TerrainWorld::chunk_setup(Ref<TerrainChunk> chunk) {
 }
 
 void TerrainWorld::_setup_chunk(Ref<TerrainChunk> p_chunk) {
-	p_chunk->set_voxel_world(this);
+	p_chunk->set_terrain_world(this);
 
 	if (!get_active()) {
 		p_chunk->set_visible(false);
@@ -2032,7 +2032,7 @@ void TerrainWorld::_notification(int p_what) {
 				if (chunk.is_valid() && !chunk->get_is_setup()) {
 					chunk_setup(chunk);
 
-					chunk->set_voxel_world(this);
+					chunk->set_terrain_world(this);
 					chunk->enter_tree();
 
 					chunk->build();

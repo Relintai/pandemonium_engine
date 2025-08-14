@@ -66,7 +66,7 @@ void TerrainLightJob::phase_light() {
 	}
 
 	if (gr && should_do()) {
-		generate_random_ao(chunk->get_voxel_world()->get_current_seed());
+		generate_random_ao(chunk->get_terrain_world()->get_current_seed());
 
 		if (should_return()) {
 			return;

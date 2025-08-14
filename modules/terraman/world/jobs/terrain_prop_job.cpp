@@ -125,8 +125,8 @@ void TerrainPropJob::phase_physics_process() {
 			PhysicsServer::get_singleton()->body_set_collision_layer(body, 1);
 			PhysicsServer::get_singleton()->body_set_collision_mask(body, 1);
 
-			if (chunk->get_voxel_world()->is_inside_tree() && chunk->get_voxel_world()->is_inside_world()) {
-				Ref<World3D> world = chunk->get_voxel_world()->get_world_3d();
+			if (chunk->get_terrain_world()->is_inside_tree() && chunk->get_terrain_world()->is_inside_world()) {
+				Ref<World3D> world = chunk->get_terrain_world()->get_world_3d();
 
 				if (world.is_valid() && world->get_space() != RID()) {
 					PhysicsServer::get_singleton()->body_set_space(body, world->get_space());
@@ -177,8 +177,8 @@ void TerrainPropJob::phase_physics_process() {
 				PhysicsServer::get_singleton()->body_set_collision_layer(body, 1);
 				PhysicsServer::get_singleton()->body_set_collision_mask(body, 1);
 
-				if (chunk->get_voxel_world()->is_inside_tree() && chunk->get_voxel_world()->is_inside_world()) {
-					Ref<World3D> world = chunk->get_voxel_world()->get_world_3d();
+				if (chunk->get_terrain_world()->is_inside_tree() && chunk->get_terrain_world()->is_inside_world()) {
+					Ref<World3D> world = chunk->get_terrain_world()->get_world_3d();
 
 					if (world.is_valid() && world->get_space() != RID()) {
 						PhysicsServer::get_singleton()->body_set_space(body, world->get_space());
@@ -256,7 +256,7 @@ void TerrainPropJob::phase_prop() {
 
 	if (should_do()) {
 		if ((chunk->get_build_flags() & TerrainChunkDefault::BUILD_FLAG_USE_LIGHTING) != 0) {
-			TerrainWorldDefault *world = Object::cast_to<TerrainWorldDefault>(chunk->get_voxel_world());
+			TerrainWorldDefault *world = Object::cast_to<TerrainWorldDefault>(chunk->get_terrain_world());
 
 			if (world) {
 				for (int i = 0; i < chunk->mesh_data_resource_get_count(); ++i) {

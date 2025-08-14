@@ -178,9 +178,15 @@ public:
 	float get_terrain_scale() const;
 	void set_terrain_scale(const float value);
 
+	TerrainWorld *get_terrain_world() const;
+	void set_terrain_world(TerrainWorld *world);
+	void set_terrain_world_bind(Node *world);
+
+#ifndef DISABLE_DEPRECATED
 	TerrainWorld *get_voxel_world() const;
 	void set_voxel_world(TerrainWorld *world);
 	void set_voxel_world_bind(Node *world);
+#endif
 
 	//Jobs
 	Ref<TerrainJob> job_get(const int index) const;
@@ -473,7 +479,7 @@ protected:
 
 	bool _is_in_tree;
 
-	TerrainWorld *_voxel_world;
+	TerrainWorld *_terrain_world;
 
 	int _position_x;
 	int _position_z;

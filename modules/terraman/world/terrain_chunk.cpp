@@ -326,20 +326,43 @@ void TerrainChunk::set_terrain_scale(const float value) {
 	_terrain_scale = value;
 }
 
-TerrainWorld *TerrainChunk::get_voxel_world() const {
-	return _voxel_world;
+TerrainWorld *TerrainChunk::get_terrain_world() const {
+	return _terrain_world;
 }
-void TerrainChunk::set_voxel_world(TerrainWorld *world) {
-	_voxel_world = world;
+void TerrainChunk::set_terrain_world(TerrainWorld *world) {
+	_terrain_world = world;
 }
-void TerrainChunk::set_voxel_world_bind(Node *world) {
+void TerrainChunk::set_terrain_world_bind(Node *world) {
 	if (world == NULL) {
-		_voxel_world = NULL;
+		_terrain_world = NULL;
 		return;
 	}
 
-	_voxel_world = Object::cast_to<TerrainWorld>(world);
+	_terrain_world = Object::cast_to<TerrainWorld>(world);
 }
+
+#ifndef DISABLE_DEPRECATED
+TerrainWorld *TerrainChunk::get_voxel_world() const {
+	WARN_DEPRECATED_MSG("Method get_voxel_world is deprecated please use get_terrain_world instead. They are functionally identical.");
+
+	return _terrain_world;
+}
+void TerrainChunk::set_voxel_world(TerrainWorld *world) {
+	WARN_DEPRECATED_MSG("Method set_voxel_world is deprecated please use set_terrain_world instead. They are functionally identical.");
+
+	_terrain_world = world;
+}
+void TerrainChunk::set_voxel_world_bind(Node *world) {
+	WARN_DEPRECATED_MSG("Method set_voxel_world is deprecated please use set_terrain_world instead. They are functionally identical.");
+
+	if (world == NULL) {
+		_terrain_world = NULL;
+		return;
+	}
+
+	_terrain_world = Object::cast_to<TerrainWorld>(world);
+}
+#endif
 
 Ref<TerrainJob> TerrainChunk::job_get(int index) const {
 	ERR_FAIL_INDEX_V(index, _jobs.size(), Ref<TerrainJob>());
@@ -730,7 +753,7 @@ void TerrainChunk::light_add(Ref<TerrainLight> p_light) {
 
 	_lights.push_back(p_light);
 
-	TerrainWorld *world = get_voxel_world();
+	TerrainWorld *world = get_terrain_world();
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
 	if (world) {
@@ -768,7 +791,7 @@ bool TerrainChunk::light_remove(Ref<TerrainLight> p_light) {
 		p_light->set_has_owner_chunk(false);
 		p_light->disconnect("light_moved", this, "_on_light_moved");
 
-		TerrainWorld *world = get_voxel_world();
+		TerrainWorld *world = get_terrain_world();
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
 		if (world) {
@@ -813,7 +836,7 @@ void TerrainChunk::light_remove_index(const int index) {
 	light->set_has_owner_chunk(false);
 	light->disconnect("light_moved", this, "_on_light_moved");
 
-	TerrainWorld *world = get_voxel_world();
+	TerrainWorld *world = get_terrain_world();
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
 	if (world) {
@@ -838,7 +861,7 @@ int TerrainChunk::light_get_count() const {
 	return _lights.size();
 }
 void TerrainChunk::lights_clear() {
-	TerrainWorld *world = get_voxel_world();
+	TerrainWorld *world = get_terrain_world();
 
 	if (!ObjectDB::instance_validate(world)) {
 		world = NULL;
@@ -925,7 +948,7 @@ void TerrainChunk::owned_lights_set(const Vector<Variant> &p_lights) {
 }
 
 void TerrainChunk::_on_light_moved(const Ref<TerrainLight> &p_light) {
-	TerrainWorld *world = get_voxel_world();
+	TerrainWorld *world = get_terrain_world();
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
 	if (world) {
@@ -1134,7 +1157,7 @@ void TerrainChunk::scene_instance(const int index) {
 		return;
 	}
 
-	TerrainWorld *world = get_voxel_world();
+	TerrainWorld *world = get_terrain_world();
 
 	ERR_FAIL_COND(!world);
 
@@ -1217,16 +1240,16 @@ void TerrainChunk::scenes_set(const Array &p_scenes) {
 //Meshing
 
 void TerrainChunk::build() {
-	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
-	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
+	ERR_FAIL_COND(!ObjectDB::instance_validate(get_terrain_world()));
+	ERR_FAIL_COND(!get_terrain_world()->is_inside_tree());
 	ERR_FAIL_COND(!is_in_tree());
 
 	call("_build");
 }
 
 void TerrainChunk::build_immediate() {
-	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
-	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
+	ERR_FAIL_COND(!ObjectDB::instance_validate(get_terrain_world()));
+	ERR_FAIL_COND(!get_terrain_world()->is_inside_tree());
 	ERR_FAIL_COND(!is_in_tree());
 
 	call("_build_immediate");
@@ -1913,9 +1936,9 @@ void TerrainChunk::set_transform(const Transform &transform) {
 }
 
 Transform TerrainChunk::get_global_transform() const {
-	ERR_FAIL_COND_V(!get_voxel_world(), Transform());
+	ERR_FAIL_COND_V(!get_terrain_world(), Transform());
 
-	return get_voxel_world()->get_global_transform() * _transform;
+	return get_terrain_world()->get_global_transform() * _transform;
 }
 
 Vector3 TerrainChunk::to_local(Vector3 p_global) const {
@@ -1956,7 +1979,7 @@ TerrainChunk::TerrainChunk() {
 
 	_terrain_scale = 1;
 
-	_voxel_world = NULL;
+	_terrain_world = NULL;
 
 	_position_x = 0;
 	_position_z = 0;
@@ -2044,7 +2067,7 @@ void TerrainChunk::_enter_tree() {
 	}
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
-	TerrainWorld *world = get_voxel_world();
+	TerrainWorld *world = get_terrain_world();
 
 	if (world) {
 		if (world->get_use_vertex_lights_3d()) {
@@ -2090,7 +2113,7 @@ void TerrainChunk::_exit_tree() {
 	}
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
-	TerrainWorld *world = get_voxel_world();
+	TerrainWorld *world = get_terrain_world();
 
 	if (world) {
 		if (world->get_use_vertex_lights_3d()) {
@@ -2125,7 +2148,7 @@ void TerrainChunk::_generation_process(const float delta) {
 	ERR_FAIL_COND(!job.is_valid());
 
 	if (job->get_build_phase_type() == TerrainJob::BUILD_PHASE_TYPE_PROCESS) {
-		if (!_voxel_world->can_chunk_do_build_step()) {
+		if (!_terrain_world->can_chunk_do_build_step()) {
 			return;
 		}
 
@@ -2152,7 +2175,7 @@ void TerrainChunk::_generation_physics_process(const float delta) {
 	ERR_FAIL_COND(!job.is_valid());
 
 	if (job->get_build_phase_type() == TerrainJob::BUILD_PHASE_TYPE_PHYSICS_PROCESS) {
-		if (!_voxel_world->can_chunk_do_build_step()) {
+		if (!_terrain_world->can_chunk_do_build_step()) {
 			return;
 		}
 
@@ -2167,8 +2190,8 @@ void TerrainChunk::_generation_physics_process(const float delta) {
 void TerrainChunk::_world_transform_changed() {
 	Transform wt;
 
-	if (_voxel_world != NULL) {
-		wt = _voxel_world->get_transform();
+	if (_terrain_world != NULL) {
+		wt = _terrain_world->get_transform();
 	}
 
 	set_transform(wt * Transform(Basis(), Vector3(_position_x * static_cast<int>(_size_x) * _terrain_scale, 0, _position_z * static_cast<int>(_size_z) * _terrain_scale)));
@@ -2409,9 +2432,15 @@ void TerrainChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("job_next"), &TerrainChunk::job_next);
 	ClassDB::bind_method(D_METHOD("job_get_current"), &TerrainChunk::job_get_current);
 
+	ClassDB::bind_method(D_METHOD("get_terrain_world"), &TerrainChunk::get_terrain_world);
+	ClassDB::bind_method(D_METHOD("set_terrain_world", "world"), &TerrainChunk::set_terrain_world_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "terrain_world", PROPERTY_HINT_RESOURCE_TYPE, "TerrainWorld", 0), "set_terrain_world", "get_terrain_world");
+
+#ifndef DISABLE_DEPRECATED
 	ClassDB::bind_method(D_METHOD("get_voxel_world"), &TerrainChunk::get_voxel_world);
 	ClassDB::bind_method(D_METHOD("set_voxel_world", "world"), &TerrainChunk::set_voxel_world_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "voxel_world", PROPERTY_HINT_RESOURCE_TYPE, "TerrainWorld", 0), "set_voxel_world", "get_voxel_world");
+#endif
 
 	//Terra Data
 	ClassDB::bind_method(D_METHOD("channel_setup"), &TerrainChunk::channel_setup);
