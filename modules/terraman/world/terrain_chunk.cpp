@@ -2455,7 +2455,7 @@ void TerrainChunk::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_terrain_scale"), &TerrainChunk::get_terrain_scale);
 	ClassDB::bind_method(D_METHOD("set_terrain_scale", "value"), &TerrainChunk::set_terrain_scale);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "terrain_scale"), "set_terrain_scale", "get_voxel_scale");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "terrain_scale"), "set_terrain_scale", "get_terrain_scale");
 
 	ClassDB::bind_method(D_METHOD("job_get", "index"), &TerrainChunk::job_get);
 	ClassDB::bind_method(D_METHOD("job_set", "index", "job"), &TerrainChunk::job_set);
