@@ -131,12 +131,12 @@ void TerrainJob::generate_ao() {
 
 	for (int z = margin_start - 1; z < size_z - 1; ++z) {
 		for (int x = margin_start - 1; x < size_x - 1; ++x) {
-			int current = _chunk->get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
+			int current = _chunk->get_data(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
 
-			int sum = _chunk->get_voxel(x + 1, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
-			sum += _chunk->get_voxel(x - 1, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
-			sum += _chunk->get_voxel(x, z + 1, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
-			sum += _chunk->get_voxel(x, z - 1, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
+			int sum = _chunk->get_data(x + 1, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
+			sum += _chunk->get_data(x - 1, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
+			sum += _chunk->get_data(x, z + 1, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
+			sum += _chunk->get_data(x, z - 1, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
 
 			sum /= 6;
 
@@ -145,7 +145,7 @@ void TerrainJob::generate_ao() {
 			if (sum < 0)
 				sum = 0;
 
-			_chunk->set_voxel(sum, x, z, TerrainChunkDefault::DEFAULT_CHANNEL_AO);
+			_chunk->set_data(sum, x, z, TerrainChunkDefault::DEFAULT_CHANNEL_AO);
 		}
 	}
 }
@@ -182,7 +182,7 @@ void TerrainJob::generate_random_ao(int seed, int octaves, int period, float per
 			if (val < 0)
 				val = -val;
 
-			_chunk->set_voxel(int(val * 255.0), x, z, TerrainChunkDefault::DEFAULT_CHANNEL_RANDOM_AO);
+			_chunk->set_data(int(val * 255.0), x, z, TerrainChunkDefault::DEFAULT_CHANNEL_RANDOM_AO);
 		}
 	}
 }

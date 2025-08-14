@@ -475,7 +475,39 @@ bool TerrainChunk::validate_data_position(const int x, const int z) const {
 	return x < _data_size_x && z < _data_size_z;
 }
 
+uint8_t TerrainChunk::get_data(const int p_x, const int p_z, const int p_channel_index) const {
+	int x = p_x + _margin_start;
+	int z = p_z + _margin_start;
+
+	ERR_FAIL_INDEX_V(p_channel_index, _channels.size(), 0);
+	ERR_FAIL_COND_V_MSG(!validate_data_position(x, z), 0, "Error, index out of range! " + String::num(x) + " " + String::num(z));
+
+	uint8_t *ch = _channels.get(p_channel_index);
+
+	if (!ch) {
+		return 0;
+	}
+
+	return ch[get_data_index(x, z)];
+}
+void TerrainChunk::set_data(const uint8_t p_value, const int p_x, const int p_z, const int p_channel_index) {
+	int x = p_x + _margin_start;
+	int z = p_z + _margin_start;
+
+	ERR_FAIL_INDEX(p_channel_index, _channels.size());
+	ERR_FAIL_COND_MSG(!validate_data_position(x, z), "Error, index out of range! " + String::num(x) + " " + String::num(z));
+
+	uint8_t *ch = channel_get_valid(p_channel_index);
+
+	ch[get_data_index(x, z)] = p_value;
+
+	emit_changed();
+}
+
+#ifndef DISABLE_DEPRECATED
 uint8_t TerrainChunk::get_voxel(const int p_x, const int p_z, const int p_channel_index) const {
+	WARN_DEPRECATED_MSG("Method get_voxel is deprecated please use get_data instead. They are functionally identical.");
+
 	int x = p_x + _margin_start;
 	int z = p_z + _margin_start;
 
@@ -491,6 +523,8 @@ uint8_t TerrainChunk::get_voxel(const int p_x, const int p_z, const int p_channe
 	return ch[get_data_index(x, z)];
 }
 void TerrainChunk::set_voxel(const uint8_t p_value, const int p_x, const int p_z, const int p_channel_index) {
+	WARN_DEPRECATED_MSG("Method set_voxel is deprecated please use data instead. They are functionally identical.");
+
 	int x = p_x + _margin_start;
 	int z = p_z + _margin_start;
 
@@ -503,6 +537,7 @@ void TerrainChunk::set_voxel(const uint8_t p_value, const int p_x, const int p_z
 
 	emit_changed();
 }
+#endif
 
 int TerrainChunk::channel_get_count() const {
 	return _channels.size();
@@ -2449,8 +2484,15 @@ void TerrainChunk::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("validate_data_position", "x", "z"), &TerrainChunk::validate_data_position);
 
+	ClassDB::bind_method(D_METHOD("get_data", "x", "z", "index"), &TerrainChunk::get_data);
+	ClassDB::bind_method(D_METHOD("set_data", "value", "x", "z", "index"), &TerrainChunk::set_data);
+
+	/*
+#ifndef DISABLE_DEPRECATED
 	ClassDB::bind_method(D_METHOD("get_voxel", "x", "z", "index"), &TerrainChunk::get_voxel);
 	ClassDB::bind_method(D_METHOD("set_voxel", "value", "x", "z", "index"), &TerrainChunk::set_voxel);
+	#endif
+*/
 
 	ClassDB::bind_method(D_METHOD("channel_get_count"), &TerrainChunk::channel_get_count);
 	ClassDB::bind_method(D_METHOD("channel_set_count", "count"), &TerrainChunk::channel_set_count);

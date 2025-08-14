@@ -121,12 +121,12 @@ PoolColorArray TerrainWorldDefault::get_vertex_colors(const Transform &transform
 
 		if (chunk.is_valid()) {
 			Color light = Color(
-					chunk->get_voxel(bx, bz, TerrainChunkDefault::DEFAULT_CHANNEL_LIGHT_COLOR_R) / 255.0,
-					chunk->get_voxel(bx, bz, TerrainChunkDefault::DEFAULT_CHANNEL_LIGHT_COLOR_G) / 255.0,
-					chunk->get_voxel(bx, bz, TerrainChunkDefault::DEFAULT_CHANNEL_LIGHT_COLOR_B) / 255.0);
+					chunk->get_data(bx, bz, TerrainChunkDefault::DEFAULT_CHANNEL_LIGHT_COLOR_R) / 255.0,
+					chunk->get_data(bx, bz, TerrainChunkDefault::DEFAULT_CHANNEL_LIGHT_COLOR_G) / 255.0,
+					chunk->get_data(bx, bz, TerrainChunkDefault::DEFAULT_CHANNEL_LIGHT_COLOR_B) / 255.0);
 
-			float ao = (chunk->get_voxel(bx, bz, TerrainChunkDefault::DEFAULT_CHANNEL_AO) / 255.0) * ao_strength;
-			float rao = chunk->get_voxel(bx, bz, TerrainChunkDefault::DEFAULT_CHANNEL_RANDOM_AO) / 255.0;
+			float ao = (chunk->get_data(bx, bz, TerrainChunkDefault::DEFAULT_CHANNEL_AO) / 255.0) * ao_strength;
+			float rao = chunk->get_data(bx, bz, TerrainChunkDefault::DEFAULT_CHANNEL_RANDOM_AO) / 255.0;
 
 			ao += rao;
 

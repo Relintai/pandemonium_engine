@@ -206,8 +206,13 @@ public:
 
 	bool validate_data_position(const int x, const int z) const;
 
+	uint8_t get_data(const int p_x, const int p_z, const int p_index) const;
+	void set_data(const uint8_t p_value, const int p_x, const int p_z, const int p_index);
+
+#ifndef DISABLE_DEPRECATED
 	uint8_t get_voxel(const int p_x, const int p_z, const int p_index) const;
 	void set_voxel(const uint8_t p_value, const int p_x, const int p_z, const int p_index);
+#endif
 
 	int channel_get_count() const;
 	void channel_set_count(const int count);

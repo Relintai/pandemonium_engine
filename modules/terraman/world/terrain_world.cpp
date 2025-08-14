@@ -1023,7 +1023,7 @@ uint8_t TerrainWorld::get_data_at_world_position(const Vector3 &world_position, 
 	Ref<TerrainChunk> chunk = chunk_get(x, z);
 
 	if (chunk.is_valid()) {
-		return chunk->get_voxel(bx, bz, channel_index);
+		return chunk->get_data(bx, bz, channel_index);
 	}
 
 	return 0;
@@ -1050,7 +1050,7 @@ void TerrainWorld::set_data_at_world_position(const Vector3 &world_position, con
 	if (get_data_margin_end() > 0) {
 		if (bx == 0) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, z);
-			chunk->set_voxel(data, get_chunk_size_x(), bz, channel_index);
+			chunk->set_data(data, get_chunk_size_x(), bz, channel_index);
 
 			if (rebuild) {
 				chunk->build();
@@ -1059,7 +1059,7 @@ void TerrainWorld::set_data_at_world_position(const Vector3 &world_position, con
 
 		if (bz == 0) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x, z - 1);
-			chunk->set_voxel(data, bx, get_chunk_size_z(), channel_index);
+			chunk->set_data(data, bx, get_chunk_size_z(), channel_index);
 
 			if (rebuild) {
 				chunk->build();
@@ -1068,7 +1068,7 @@ void TerrainWorld::set_data_at_world_position(const Vector3 &world_position, con
 
 		if (bx == 0 && bz == 0) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, z - 1);
-			chunk->set_voxel(data, get_chunk_size_x(), get_chunk_size_z(), channel_index);
+			chunk->set_data(data, get_chunk_size_x(), get_chunk_size_z(), channel_index);
 
 			if (rebuild) {
 				chunk->build();
@@ -1079,7 +1079,7 @@ void TerrainWorld::set_data_at_world_position(const Vector3 &world_position, con
 	if (get_data_margin_start() > 0) {
 		if (bx == get_chunk_size_x() - 1) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x + 1, z);
-			chunk->set_voxel(data, -1, bz, channel_index);
+			chunk->set_data(data, -1, bz, channel_index);
 
 			if (rebuild) {
 				chunk->build();
@@ -1088,7 +1088,7 @@ void TerrainWorld::set_data_at_world_position(const Vector3 &world_position, con
 
 		if (bz == get_chunk_size_z() - 1) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x, z + 1);
-			chunk->set_voxel(data, bx, -1, channel_index);
+			chunk->set_data(data, bx, -1, channel_index);
 
 			if (rebuild) {
 				chunk->build();
@@ -1097,7 +1097,7 @@ void TerrainWorld::set_data_at_world_position(const Vector3 &world_position, con
 	}
 
 	Ref<TerrainChunk> chunk = chunk_get_or_create(x, z);
-	chunk->set_voxel(data, bx, bz, channel_index);
+	chunk->set_data(data, bx, bz, channel_index);
 
 	if (rebuild) {
 		chunk->build();
@@ -1189,7 +1189,7 @@ uint8_t TerrainWorld::get_data_at_world_data_position(const Vector2i &world_data
 	Ref<TerrainChunk> chunk = chunk_get(x, z);
 
 	if (chunk.is_valid()) {
-		return chunk->get_voxel(bx, bz, channel_index);
+		return chunk->get_data(bx, bz, channel_index);
 	}
 
 	return 0;
@@ -1225,7 +1225,7 @@ void TerrainWorld::set_data_at_world_data_position(const Vector2i &world_data_po
 			}
 
 			if (chunk.is_valid()) {
-				chunk->set_voxel(data, get_chunk_size_x(), bz, channel_index);
+				chunk->set_data(data, get_chunk_size_x(), bz, channel_index);
 
 				if (p_immediate_build) {
 					chunk->build_immediate();
@@ -1243,7 +1243,7 @@ void TerrainWorld::set_data_at_world_data_position(const Vector2i &world_data_po
 			}
 
 			if (chunk.is_valid()) {
-				chunk->set_voxel(data, bx, get_chunk_size_z(), channel_index);
+				chunk->set_data(data, bx, get_chunk_size_z(), channel_index);
 
 				if (p_immediate_build) {
 					chunk->build_immediate();
@@ -1261,7 +1261,7 @@ void TerrainWorld::set_data_at_world_data_position(const Vector2i &world_data_po
 			}
 
 			if (chunk.is_valid()) {
-				chunk->set_voxel(data, get_chunk_size_x(), get_chunk_size_z(), channel_index);
+				chunk->set_data(data, get_chunk_size_x(), get_chunk_size_z(), channel_index);
 
 				if (p_immediate_build) {
 					chunk->build_immediate();
@@ -1281,7 +1281,7 @@ void TerrainWorld::set_data_at_world_data_position(const Vector2i &world_data_po
 			}
 
 			if (chunk.is_valid()) {
-				chunk->set_voxel(data, -1, bz, channel_index);
+				chunk->set_data(data, -1, bz, channel_index);
 
 				if (p_immediate_build) {
 					chunk->build_immediate();
@@ -1299,7 +1299,7 @@ void TerrainWorld::set_data_at_world_data_position(const Vector2i &world_data_po
 			}
 
 			if (chunk.is_valid()) {
-				chunk->set_voxel(data, bx, -1, channel_index);
+				chunk->set_data(data, bx, -1, channel_index);
 
 				if (p_immediate_build) {
 					chunk->build_immediate();
@@ -1317,7 +1317,7 @@ void TerrainWorld::set_data_at_world_data_position(const Vector2i &world_data_po
 	}
 
 	if (chunk.is_valid()) {
-		chunk->set_voxel(data, bx, bz, channel_index);
+		chunk->set_data(data, bx, bz, channel_index);
 
 		if (p_immediate_build) {
 			chunk->build_immediate();
@@ -1388,7 +1388,7 @@ void TerrainWorld::set_datas_at_world_data_position(const Array &p_data, const i
 				}
 
 				if (chunk.is_valid()) {
-					chunk->set_voxel(value, get_chunk_size_x(), bz, p_channel_index);
+					chunk->set_data(value, get_chunk_size_x(), bz, p_channel_index);
 
 					chunks_to_rebuild.insert(chunk);
 				}
@@ -1402,7 +1402,7 @@ void TerrainWorld::set_datas_at_world_data_position(const Array &p_data, const i
 				}
 
 				if (chunk.is_valid()) {
-					chunk->set_voxel(value, bx, get_chunk_size_z(), p_channel_index);
+					chunk->set_data(value, bx, get_chunk_size_z(), p_channel_index);
 
 					chunks_to_rebuild.insert(chunk);
 				}
@@ -1416,7 +1416,7 @@ void TerrainWorld::set_datas_at_world_data_position(const Array &p_data, const i
 				}
 
 				if (chunk.is_valid()) {
-					chunk->set_voxel(value, get_chunk_size_x(), get_chunk_size_z(), p_channel_index);
+					chunk->set_data(value, get_chunk_size_x(), get_chunk_size_z(), p_channel_index);
 
 					chunks_to_rebuild.insert(chunk);
 				}
@@ -1432,7 +1432,7 @@ void TerrainWorld::set_datas_at_world_data_position(const Array &p_data, const i
 				}
 
 				if (chunk.is_valid()) {
-					chunk->set_voxel(value, -1, bz, p_channel_index);
+					chunk->set_data(value, -1, bz, p_channel_index);
 
 					chunks_to_rebuild.insert(chunk);
 				}
@@ -1446,7 +1446,7 @@ void TerrainWorld::set_datas_at_world_data_position(const Array &p_data, const i
 				}
 
 				if (chunk.is_valid()) {
-					chunk->set_voxel(value, bx, -1, p_channel_index);
+					chunk->set_data(value, bx, -1, p_channel_index);
 
 					chunks_to_rebuild.insert(chunk);
 				}
@@ -1460,7 +1460,7 @@ void TerrainWorld::set_datas_at_world_data_position(const Array &p_data, const i
 		}
 
 		if (chunk.is_valid()) {
-			chunk->set_voxel(value, bx, bz, p_channel_index);
+			chunk->set_data(value, bx, bz, p_channel_index);
 
 			chunks_to_rebuild.insert(chunk);
 		}
@@ -1506,7 +1506,7 @@ uint8_t TerrainWorld::get_voxel_at_world_position(const Vector3 &world_position,
 	Ref<TerrainChunk> chunk = chunk_get(x, z);
 
 	if (chunk.is_valid()) {
-		return chunk->get_voxel(bx, bz, channel_index);
+		return chunk->get_data(bx, bz, channel_index);
 	}
 
 	return 0;
@@ -1535,7 +1535,7 @@ void TerrainWorld::set_voxel_at_world_position(const Vector3 &world_position, co
 	if (get_data_margin_end() > 0) {
 		if (bx == 0) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, z);
-			chunk->set_voxel(data, get_chunk_size_x(), bz, channel_index);
+			chunk->set_data(data, get_chunk_size_x(), bz, channel_index);
 
 			if (rebuild) {
 				chunk->build();
@@ -1544,7 +1544,7 @@ void TerrainWorld::set_voxel_at_world_position(const Vector3 &world_position, co
 
 		if (bz == 0) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x, z - 1);
-			chunk->set_voxel(data, bx, get_chunk_size_z(), channel_index);
+			chunk->set_data(data, bx, get_chunk_size_z(), channel_index);
 
 			if (rebuild) {
 				chunk->build();
@@ -1553,7 +1553,7 @@ void TerrainWorld::set_voxel_at_world_position(const Vector3 &world_position, co
 
 		if (bx == 0 && bz == 0) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, z - 1);
-			chunk->set_voxel(data, get_chunk_size_x(), get_chunk_size_z(), channel_index);
+			chunk->set_data(data, get_chunk_size_x(), get_chunk_size_z(), channel_index);
 
 			if (rebuild) {
 				chunk->build();
@@ -1564,7 +1564,7 @@ void TerrainWorld::set_voxel_at_world_position(const Vector3 &world_position, co
 	if (get_data_margin_start() > 0) {
 		if (bx == get_chunk_size_x() - 1) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x + 1, z);
-			chunk->set_voxel(data, -1, bz, channel_index);
+			chunk->set_data(data, -1, bz, channel_index);
 
 			if (rebuild) {
 				chunk->build();
@@ -1573,7 +1573,7 @@ void TerrainWorld::set_voxel_at_world_position(const Vector3 &world_position, co
 
 		if (bz == get_chunk_size_z() - 1) {
 			Ref<TerrainChunk> chunk = chunk_get_or_create(x, z + 1);
-			chunk->set_voxel(data, bx, -1, channel_index);
+			chunk->set_data(data, bx, -1, channel_index);
 
 			if (rebuild) {
 				chunk->build();
@@ -1582,7 +1582,7 @@ void TerrainWorld::set_voxel_at_world_position(const Vector3 &world_position, co
 	}
 
 	Ref<TerrainChunk> chunk = chunk_get_or_create(x, z);
-	chunk->set_voxel(data, bx, bz, channel_index);
+	chunk->set_data(data, bx, bz, channel_index);
 
 	if (rebuild) {
 		chunk->build();
@@ -1614,7 +1614,7 @@ uint8_t TerrainWorld::get_voxel_at_world_data_position(const Vector2i &world_dat
 	Ref<TerrainChunk> chunk = chunk_get(x, z);
 
 	if (chunk.is_valid()) {
-		return chunk->get_voxel(bx, bz, channel_index);
+		return chunk->get_data(bx, bz, channel_index);
 	}
 
 	return 0;
@@ -1652,7 +1652,7 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 			}
 
 			if (chunk.is_valid()) {
-				chunk->set_voxel(data, get_chunk_size_x(), bz, channel_index);
+				chunk->set_data(data, get_chunk_size_x(), bz, channel_index);
 
 				if (p_immediate_build) {
 					chunk->build_immediate();
@@ -1670,7 +1670,7 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 			}
 
 			if (chunk.is_valid()) {
-				chunk->set_voxel(data, bx, get_chunk_size_z(), channel_index);
+				chunk->set_data(data, bx, get_chunk_size_z(), channel_index);
 
 				if (p_immediate_build) {
 					chunk->build_immediate();
@@ -1688,7 +1688,7 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 			}
 
 			if (chunk.is_valid()) {
-				chunk->set_voxel(data, get_chunk_size_x(), get_chunk_size_z(), channel_index);
+				chunk->set_data(data, get_chunk_size_x(), get_chunk_size_z(), channel_index);
 
 				if (p_immediate_build) {
 					chunk->build_immediate();
@@ -1708,7 +1708,7 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 			}
 
 			if (chunk.is_valid()) {
-				chunk->set_voxel(data, -1, bz, channel_index);
+				chunk->set_data(data, -1, bz, channel_index);
 
 				if (p_immediate_build) {
 					chunk->build_immediate();
@@ -1726,7 +1726,7 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 			}
 
 			if (chunk.is_valid()) {
-				chunk->set_voxel(data, bx, -1, channel_index);
+				chunk->set_data(data, bx, -1, channel_index);
 
 				if (p_immediate_build) {
 					chunk->build_immediate();
@@ -1744,7 +1744,7 @@ void TerrainWorld::set_voxel_at_world_data_position(const Vector2i &world_data_p
 	}
 
 	if (chunk.is_valid()) {
-		chunk->set_voxel(data, bx, bz, channel_index);
+		chunk->set_data(data, bx, bz, channel_index);
 
 		if (p_immediate_build) {
 			chunk->build_immediate();
@@ -1795,7 +1795,7 @@ void TerrainWorld::set_voxels_at_world_data_position(const Array &p_data, const 
 				}
 
 				if (chunk.is_valid()) {
-					chunk->set_voxel(value, get_chunk_size_x(), bz, p_channel_index);
+					chunk->set_data(value, get_chunk_size_x(), bz, p_channel_index);
 
 					chunks_to_rebuild.insert(chunk);
 				}
@@ -1809,7 +1809,7 @@ void TerrainWorld::set_voxels_at_world_data_position(const Array &p_data, const 
 				}
 
 				if (chunk.is_valid()) {
-					chunk->set_voxel(value, bx, get_chunk_size_z(), p_channel_index);
+					chunk->set_data(value, bx, get_chunk_size_z(), p_channel_index);
 
 					chunks_to_rebuild.insert(chunk);
 				}
@@ -1823,7 +1823,7 @@ void TerrainWorld::set_voxels_at_world_data_position(const Array &p_data, const 
 				}
 
 				if (chunk.is_valid()) {
-					chunk->set_voxel(value, get_chunk_size_x(), get_chunk_size_z(), p_channel_index);
+					chunk->set_data(value, get_chunk_size_x(), get_chunk_size_z(), p_channel_index);
 
 					chunks_to_rebuild.insert(chunk);
 				}
@@ -1839,7 +1839,7 @@ void TerrainWorld::set_voxels_at_world_data_position(const Array &p_data, const 
 				}
 
 				if (chunk.is_valid()) {
-					chunk->set_voxel(value, -1, bz, p_channel_index);
+					chunk->set_data(value, -1, bz, p_channel_index);
 
 					chunks_to_rebuild.insert(chunk);
 				}
@@ -1853,7 +1853,7 @@ void TerrainWorld::set_voxels_at_world_data_position(const Array &p_data, const 
 				}
 
 				if (chunk.is_valid()) {
-					chunk->set_voxel(value, bx, -1, p_channel_index);
+					chunk->set_data(value, bx, -1, p_channel_index);
 
 					chunks_to_rebuild.insert(chunk);
 				}
@@ -1867,7 +1867,7 @@ void TerrainWorld::set_voxels_at_world_data_position(const Array &p_data, const 
 		}
 
 		if (chunk.is_valid()) {
-			chunk->set_voxel(value, bx, bz, p_channel_index);
+			chunk->set_data(value, bx, bz, p_channel_index);
 
 			chunks_to_rebuild.insert(chunk);
 		}

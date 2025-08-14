@@ -698,13 +698,13 @@ void TerrainChunkDefault::draw_debug_voxels(int max, Color color) {
 
 	for (int z = 0; z < sz; ++z) {
 		for (int x = 0; x < sx; ++x) {
-			int type = get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_TYPE);
+			int type = get_data(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_TYPE);
 
 			if (type == 0) {
 				continue;
 			}
 
-			draw_cross_voxels_fill(Vector3(x, get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL), z), get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL) / 255.0 * get_terrain_scale() * 2.0);
+			draw_cross_voxels_fill(Vector3(x, get_data(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL), z), get_data(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL) / 255.0 * get_terrain_scale() * 2.0);
 
 			++a;
 
