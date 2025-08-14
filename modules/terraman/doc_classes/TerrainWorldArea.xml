@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainWorldArea" inherits="Reference">
 	<brief_description>
+		Can be used to mark areas in TerrainWorlds.
 	</brief_description>
 	<description>
+		Can be used to mark areas in TerrainWorlds.
+		Unfinished, but custom world implementations can make use of it.
 	</description>
 	<tutorials>
 	</tutorials>
