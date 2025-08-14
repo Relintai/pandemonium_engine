@@ -100,7 +100,7 @@ PoolColorArray TerrainWorldDefault::get_vertex_colors(const Transform &transform
 	for (int i = 0; i < vertices.size(); ++i) {
 		Vector3 v = transform.xform(vertices[i]);
 
-		Vector3 pos = v / get_voxel_scale();
+		Vector3 pos = v / get_terrain_scale();
 
 		//Note: floor is needed to handle negative numbers proiberly
 		int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
@@ -161,8 +161,8 @@ void TerrainWorldDefault::_update_lods() {
 
 	Vector3 ppos = get_player()->get_transform().origin;
 
-	int ppx = int(ppos.x / get_chunk_size_x() / get_voxel_scale());
-	int ppz = int(ppos.z / get_chunk_size_z() / get_voxel_scale());
+	int ppx = int(ppos.x / get_chunk_size_x() / get_terrain_scale());
+	int ppz = int(ppos.z / get_chunk_size_z() / get_terrain_scale());
 
 	for (int i = 0; i < chunk_get_count(); ++i) {
 		Ref<TerrainChunkDefault> c = chunk_get_index(i);

@@ -115,8 +115,13 @@ public:
 	Ref<TerrainWorldChunkDataManager> get_world_chunk_data_manager() const;
 	void set_world_chunk_data_manager(const Ref<TerrainWorldChunkDataManager> &p_data_manager);
 
+#ifndef DISABLE_DEPRECATED
 	float get_voxel_scale() const;
 	void set_voxel_scale(const float value);
+#endif
+
+	float get_terrain_scale() const;
+	void set_terrain_scale(const float value);
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
 	bool get_use_vertex_lights_3d() const;
@@ -246,6 +251,7 @@ protected:
 
 	void _editor_button_property_pressed(const StringName &p_property);
 	void _get_property_list(List<PropertyInfo> *p_list) const;
+
 	virtual void _validate_property(PropertyInfo &property) const;
 	virtual void _notification(int p_what);
 	static void _bind_methods();
@@ -302,7 +308,7 @@ private:
 	Ref<TerrainLibrary> _library;
 	Ref<TerrainLevelGenerator> _level_generator;
 	Ref<TerrainWorldChunkDataManager> _world_chunk_data_manager;
-	float _voxel_scale;
+	float _terrain_scale;
 	int _chunk_spawn_range;
 
 	HashMap<IntPos, Ref<TerrainChunk>, IntPosHasher> _chunks;

@@ -89,7 +89,7 @@ void TerrainWorldGizmo::refresh_lines(TerrainWorld *world) {
 	_lines.clear();
 	_points.clear();
 
-	float voxel_scale = world->get_voxel_scale();
+	float voxel_scale = world->get_terrain_scale();
 	Vector3 vsv = Vector3(voxel_scale, voxel_scale, voxel_scale);
 
 	for (int i = 0; i < 10; ++i) {

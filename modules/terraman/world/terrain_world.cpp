@@ -186,11 +186,24 @@ void TerrainWorld::set_world_chunk_data_manager(const Ref<TerrainWorldChunkDataM
 	property_list_changed_notify();
 }
 
+#ifndef DISABLE_DEPRECATED
 float TerrainWorld::get_voxel_scale() const {
-	return _voxel_scale;
+	WARN_DEPRECATED_MSG("Method is deprecated. Please use get_terrain_scale() instead. They are functionally identical.");
+
+	return _terrain_scale;
 }
 void TerrainWorld::set_voxel_scale(const float value) {
-	_voxel_scale = value;
+	WARN_DEPRECATED_MSG("Method is deprecated. Please use set_terrain_scale() instead. They are functionally identical.");
+
+	set_terrain_scale(value);
+}
+#endif
+
+float TerrainWorld::get_terrain_scale() const {
+	return _terrain_scale;
+}
+void TerrainWorld::set_terrain_scale(const float value) {
+	_terrain_scale = value;
 
 	for (int i = 0; i < chunk_get_count(); ++i) {
 		Ref<TerrainChunk> c = chunk_get_index(i);
@@ -199,7 +212,7 @@ void TerrainWorld::set_voxel_scale(const float value) {
 			continue;
 		}
 
-		c->set_voxel_scale(_voxel_scale);
+		c->set_voxel_scale(_terrain_scale);
 	}
 }
 
@@ -300,9 +313,9 @@ int TerrainWorld::voxel_structure_get_count() const {
 void TerrainWorld::voxel_structure_add_at_position(Ref<TerrainStructure> structure, const Vector3 &world_position) {
 	ERR_FAIL_COND(!structure.is_valid());
 
-	structure->set_position_x(static_cast<int>(world_position.x / _voxel_scale));
-	structure->set_position_y(static_cast<int>(world_position.y / _voxel_scale));
-	structure->set_position_z(static_cast<int>(world_position.z / _voxel_scale));
+	structure->set_position_x(static_cast<int>(world_position.x / _terrain_scale));
+	structure->set_position_y(static_cast<int>(world_position.y / _terrain_scale));
+	structure->set_position_z(static_cast<int>(world_position.z / _terrain_scale));
 
 	voxel_structure_add(structure);
 }
@@ -589,9 +602,9 @@ Ref<TerrainChunk> TerrainWorld::_create_chunk(const int x, const int z, Ref<Terr
 	chunk->set_position(x, z);
 	chunk->set_world_height(_world_height);
 	chunk->set_library(_library);
-	chunk->set_voxel_scale(_voxel_scale);
+	chunk->set_voxel_scale(_terrain_scale);
 	chunk->set_size(_chunk_size_x, _chunk_size_z, _data_margin_start, _data_margin_end);
-	//chunk->set_translation(Vector3(x * _chunk_size_x * _voxel_scale, y * _chunk_size_y * _voxel_scale, z * _chunk_size_z * _voxel_scale));
+	//chunk->set_translation(Vector3(x * _chunk_size_x * _terrain_scale, y * _chunk_size_y * _terrain_scale, z * _chunk_size_z * _terrain_scale));
 
 	if (!get_active()) {
 		chunk->set_visible(false);
@@ -703,8 +716,8 @@ bool TerrainWorld::can_chunk_do_build_step() {
 }
 
 bool TerrainWorld::is_position_walkable(const Vector3 &p_pos) {
-	int x = static_cast<int>(Math::floor(p_pos.x / (_chunk_size_x * _voxel_scale)));
-	int z = static_cast<int>(Math::floor(p_pos.z / (_chunk_size_z * _voxel_scale)));
+	int x = static_cast<int>(Math::floor(p_pos.x / (_chunk_size_x * _terrain_scale)));
+	int z = static_cast<int>(Math::floor(p_pos.z / (_chunk_size_z * _terrain_scale)));
 
 	Ref<TerrainChunk> c = chunk_get(x, z);
 
@@ -774,7 +787,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 	ERR_FAIL_COND(!prop.is_valid());
 
 	if (apply_voxel_scale) {
-		transform = transform.scaled(Vector3(get_voxel_scale(), get_voxel_scale(), get_voxel_scale()));
+		transform = transform.scaled(Vector3(get_terrain_scale(), get_terrain_scale(), get_terrain_scale()));
 	}
 
 	Vector3 wp;
@@ -841,7 +854,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 			Ref<TerrainLight> light;
 			light.instance();
 
-			light->set_world_data_position(Vector3i(wp.x / get_voxel_scale(), wp.y / get_voxel_scale(), wp.z / get_voxel_scale()));
+			light->set_world_data_position(Vector3i(wp.x / get_terrain_scale(), wp.y / get_terrain_scale(), wp.z / get_terrain_scale()));
 			light->set_range(light_data->get_light_range());
 			light->set_attenuation(light_data->get_light_attenuation());
 			light->set_color(light_data->get_light_color());
@@ -990,7 +1003,7 @@ void TerrainWorld::world_light_moved(const Ref<TerrainLight> &light) {
 }
 
 uint8_t TerrainWorld::get_voxel_at_world_position(const Vector3 &world_position, const int channel_index) {
-	Vector3 pos = world_position / get_voxel_scale();
+	Vector3 pos = world_position / get_terrain_scale();
 
 	//Note: floor is needed to handle negative numbers properly
 	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
@@ -1017,7 +1030,7 @@ uint8_t TerrainWorld::get_voxel_at_world_position(const Vector3 &world_position,
 }
 
 void TerrainWorld::set_voxel_at_world_position(const Vector3 &world_position, const uint8_t data, const int channel_index, const bool rebuild) {
-	Vector3 pos = world_position / get_voxel_scale();
+	Vector3 pos = world_position / get_terrain_scale();
 
 	//Note: floor is needed to handle negative numbers properly
 	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
@@ -1092,7 +1105,7 @@ void TerrainWorld::set_voxel_at_world_position(const Vector3 &world_position, co
 }
 
 Ref<TerrainChunk> TerrainWorld::get_chunk_at_world_position(const Vector3 &world_position) {
-	Vector3 pos = world_position / get_voxel_scale();
+	Vector3 pos = world_position / get_terrain_scale();
 
 	//Note: floor is needed to handle negative numbers proiberly
 	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
@@ -1101,7 +1114,7 @@ Ref<TerrainChunk> TerrainWorld::get_chunk_at_world_position(const Vector3 &world
 	return chunk_get(x, z);
 }
 Ref<TerrainChunk> TerrainWorld::get_or_create_chunk_at_world_position(const Vector3 &world_position) {
-	Vector3 pos = world_position / get_voxel_scale();
+	Vector3 pos = world_position / get_terrain_scale();
 
 	//Note: floor is needed to handle negative numbers proiberly
 	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
@@ -1113,7 +1126,7 @@ Ref<TerrainChunk> TerrainWorld::get_or_create_chunk_at_world_position(const Vect
 Vector2i TerrainWorld::world_position_to_chunk_position(const Vector3 &p_world_position) {
 	// TODO rework this so it works directly with ints.
 
-	Vector3 pos = p_world_position / get_voxel_scale();
+	Vector3 pos = p_world_position / get_terrain_scale();
 
 	//Note: floor is needed to handle negative numbers properly
 	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
@@ -1135,22 +1148,22 @@ Vector2i TerrainWorld::world_data_position_to_chunk_position(const Vector2i &p_w
 }
 
 Vector2i TerrainWorld::world_position_to_world_data_position(const Vector3 &world_position) {
-	Vector3 pos = world_position / get_voxel_scale();
+	Vector3 pos = world_position / get_terrain_scale();
 
 	return Vector2i(pos.x, pos.z);
 }
 
 Vector3i TerrainWorld::world_position_to_world_data_position_3d(const Vector3 &world_position) {
-	Vector3 pos = world_position / get_voxel_scale();
+	Vector3 pos = world_position / get_terrain_scale();
 
 	return Vector3i(pos.x, pos.y, pos.z);
 }
 
 Vector3 TerrainWorld::world_data_position_to_world_position(const Vector2i &p_position) {
-	return Vector3(p_position.x, 0, p_position.y) * get_voxel_scale();
+	return Vector3(p_position.x, 0, p_position.y) * get_terrain_scale();
 }
 Vector3 TerrainWorld::world_data_position_to_world_position_3d(const Vector3i &p_position) {
-	return Vector3(p_position.x, p_position.y, p_position.z) * get_voxel_scale();
+	return Vector3(p_position.x, p_position.y, p_position.z) * get_terrain_scale();
 }
 
 uint8_t TerrainWorld::get_voxel_at_world_data_position(const Vector2i &world_data_position, const int channel_index) {
@@ -1508,7 +1521,7 @@ TerrainWorld::TerrainWorld() {
 	_data_margin_end = 0;
 	_world_height = 256;
 
-	_voxel_scale = 1;
+	_terrain_scale = 1;
 	_chunk_spawn_range = 4;
 
 	_player = NULL;
@@ -1823,9 +1836,15 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_world_chunk_data_manager", "level_generator"), &TerrainWorld::set_world_chunk_data_manager);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_chunk_data_manager", PROPERTY_HINT_RESOURCE_TYPE, "TerrainWorldChunkDataManager"), "set_world_chunk_data_manager", "get_world_chunk_data_manager");
 
+	ClassDB::bind_method(D_METHOD("get_terrain_scale"), &TerrainWorld::get_terrain_scale);
+	ClassDB::bind_method(D_METHOD("set_terrain_scale", "value"), &TerrainWorld::set_terrain_scale);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "terrain_scale"), "set_terrain_scale", "get_terrain_scale");
+
+#ifndef DISABLE_DEPRECATED
 	ClassDB::bind_method(D_METHOD("get_voxel_scale"), &TerrainWorld::get_voxel_scale);
 	ClassDB::bind_method(D_METHOD("set_voxel_scale", "value"), &TerrainWorld::set_voxel_scale);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale"), "set_voxel_scale", "get_voxel_scale");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale", PROPERTY_HINT_NONE, "", 0), "set_voxel_scale", "get_voxel_scale");
+#endif
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
 	ClassDB::bind_method(D_METHOD("get_use_vertex_lights_3d"), &TerrainWorld::get_use_vertex_lights_3d);
