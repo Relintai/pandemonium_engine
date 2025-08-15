@@ -408,16 +408,19 @@
 		<method name="get_physics_process" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Is physics processing enabled?
 			</description>
 		</method>
 		<method name="get_position" qualifiers="const">
 			<return type="Vector2" />
 			<description>
+				Return chunk position.
 			</description>
 		</method>
 		<method name="get_process" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Is processing enabled?
 			</description>
 		</method>
 		<method name="get_voxel" qualifiers="const">
@@ -426,74 +429,88 @@
 			<argument index="1" name="z" type="int" />
 			<argument index="2" name="index" type="int" />
 			<description>
+				Deprecated. Please use [method get_data] instead.
 			</description>
 		</method>
 		<method name="get_world_aabb" qualifiers="const">
 			<return type="AABB" />
 			<description>
+				Returns the chunk's world AABB.
 			</description>
 		</method>
 		<method name="get_world_position" qualifiers="const">
 			<return type="Vector2" />
 			<description>
+				Returns the chunk's world position.
 			</description>
 		</method>
 		<method name="get_world_size" qualifiers="const">
 			<return type="Vector3" />
 			<description>
+				Returns the chunk's world size.
 			</description>
 		</method>
 		<method name="is_build_aborted" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Is the build aborted?
 			</description>
 		</method>
 		<method name="is_in_tree" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Is the chunk in tree?
 			</description>
 		</method>
 		<method name="is_safe_to_delete">
 			<return type="bool" />
 			<description>
+				Is the chunk safe to delete?
 			</description>
 		</method>
 		<method name="job_add">
 			<return type="void" />
 			<argument index="0" name="job" type="TerrainJob" />
 			<description>
+				Add job.
 			</description>
 		</method>
 		<method name="job_get" qualifiers="const">
 			<return type="TerrainJob" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return job at index.
 			</description>
 		</method>
 		<method name="job_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns job count.
 			</description>
 		</method>
 		<method name="job_get_current">
 			<return type="TerrainJob" />
 			<description>
+				Returns the current job or null.
 			</description>
 		</method>
 		<method name="job_get_current_index">
 			<return type="int" />
 			<description>
+				Returns the current job index.
 			</description>
 		</method>
 		<method name="job_next">
 			<return type="void" />
 			<description>
+				Go to the next job.
 			</description>
 		</method>
 		<method name="job_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove job at index.
 			</description>
 		</method>
 		<method name="job_set">
@@ -501,46 +518,54 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="job" type="TerrainJob" />
 			<description>
+				Set job at index.
 			</description>
 		</method>
 		<method name="light_add">
 			<return type="void" />
 			<argument index="0" name="light" type="TerrainLight" />
 			<description>
+				Add light.
 			</description>
 		</method>
 		<method name="light_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns light count.
 			</description>
 		</method>
 		<method name="light_get_index">
 			<return type="TerrainLight" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns light at index.
 			</description>
 		</method>
 		<method name="light_has">
 			<return type="bool" />
 			<argument index="0" name="light" type="TerrainLight" />
 			<description>
+				Chech if chunk has the given light.
 			</description>
 		</method>
 		<method name="light_remove">
 			<return type="bool" />
 			<argument index="0" name="light" type="TerrainLight" />
 			<description>
+				Removes the given light.
 			</description>
 		</method>
 		<method name="light_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes light at index.
 			</description>
 		</method>
 		<method name="lights_clear">
 			<return type="void" />
 			<description>
+				Clears lights.
 			</description>
 		</method>
 		<method name="mesh_data_resource_add">
@@ -553,6 +578,7 @@
 			<argument index="5" name="original" type="bool" default="true" />
 			<argument index="6" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Adds a [MeshDataResource].
 			</description>
 		</method>
 		<method name="mesh_data_resource_add_material">
@@ -565,6 +591,7 @@
 			<argument index="5" name="original" type="bool" default="true" />
 			<argument index="6" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Adds a [MeshDataResource] with a material.
 			</description>
 		</method>
 		<method name="mesh_data_resource_addv">
@@ -577,76 +604,89 @@
 			<argument index="5" name="original" type="bool" default="true" />
 			<argument index="6" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Adds a [MeshDataResource] using it's position.
 			</description>
 		</method>
 		<method name="mesh_data_resource_clear">
 			<return type="void" />
 			<description>
+				Clears [MeshDataResource]s.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get">
 			<return type="MeshDataResource" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource] at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_color">
 			<return type="Color" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource]'s color at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns [MeshDataResource] count.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_is_inside">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns whether [MeshDataResource] at index is inside this chunk.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_is_original">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns whether [MeshDataResource] is original (owned by this chunk).
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_material">
 			<return type="Material" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource]'s material at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource]'s name at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_texture">
 			<return type="Texture" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource]'s texture at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_transform">
 			<return type="Transform" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource]'s transform at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_uv_rect">
 			<return type="Rect2" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource]'s uv_rect at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes [MeshDataResource] at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set">
@@ -654,6 +694,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="mesh" type="MeshDataResource" />
 			<description>
+				Sets [MeshDataResource] at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_color">
@@ -661,6 +702,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="color" type="Color" />
 			<description>
+				Set [MeshDataResource]'s color at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_is_inside">
@@ -668,6 +710,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="inside" type="bool" />
 			<description>
+				Set whether [MeshDataResource] at index is inside this chunk.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_is_original">
@@ -675,6 +718,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="original" type="bool" />
 			<description>
+				Set whether [MeshDataResource] is original (owned by this chunk).
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_material">
@@ -682,6 +726,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="material" type="Material" />
 			<description>
+				Set [MeshDataResource]'s material at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_name">
@@ -689,6 +734,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="name" type="String" />
 			<description>
+				Set [MeshDataResource]'s name at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_texture">
@@ -696,6 +742,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="texture" type="Texture" />
 			<description>
+				Set [MeshDataResource]'s texture at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_transform">
@@ -703,6 +750,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="transform" type="Transform" />
 			<description>
+				Set [MeshDataResource]'s transform at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_uv_rect">
@@ -710,18 +758,21 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="uv_rect" type="Rect2" />
 			<description>
+				Set [MeshDataResource]'s uv_rect at index.
 			</description>
 		</method>
 		<method name="physics_process">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called to handle physics process.
 			</description>
 		</method>
 		<method name="process">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called to handle process.
 			</description>
 		</method>
 		<method name="prop_add">
@@ -731,41 +782,48 @@
 			<argument index="2" name="original" type="bool" default="true" />
 			<argument index="3" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Add a prop.
 			</description>
 		</method>
 		<method name="prop_get">
 			<return type="PropData" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns prop at index.
 			</description>
 		</method>
 		<method name="prop_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns prop count.
 			</description>
 		</method>
 		<method name="prop_get_is_original">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns if a prop is original (this chunk owns it).
 			</description>
 		</method>
 		<method name="prop_get_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns prop name.
 			</description>
 		</method>
 		<method name="prop_get_transform">
 			<return type="Transform" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns prop transform.
 			</description>
 		</method>
 		<method name="prop_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove prop.
 			</description>
 		</method>
 		<method name="prop_set">
@@ -773,6 +831,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="prop" type="PropData" />
 			<description>
+				Set prop.
 			</description>
 		</method>
 		<method name="prop_set_is_original">
@@ -780,6 +839,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="original" type="bool" />
 			<description>
+				Set prop original status.
 			</description>
 		</method>
 		<method name="prop_set_name">
@@ -787,6 +847,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="name" type="String" />
 			<description>
+				Set prop name.
 			</description>
 		</method>
 		<method name="prop_set_transform">
@@ -794,11 +855,13 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="transform" type="Transform" />
 			<description>
+				Set prop transform.
 			</description>
 		</method>
 		<method name="props_clear">
 			<return type="void" />
 			<description>
+				Clean props.
 			</description>
 		</method>
 		<method name="scene_add">
@@ -809,53 +872,62 @@
 			<argument index="3" name="original" type="bool" default="true" />
 			<argument index="4" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Add scene.
 			</description>
 		</method>
 		<method name="scene_get">
 			<return type="PackedScene" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns scene at index.
 			</description>
 		</method>
 		<method name="scene_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns scene count.
 			</description>
 		</method>
 		<method name="scene_get_is_original">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns if a scene is original (this chunk owns it).
 			</description>
 		</method>
 		<method name="scene_get_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns scene name.
 			</description>
 		</method>
 		<method name="scene_get_node">
 			<return type="Node" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns a scene's root not it it's instanced, null otherwise.
 			</description>
 		</method>
 		<method name="scene_get_transform">
 			<return type="Transform" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns scene transform.
 			</description>
 		</method>
 		<method name="scene_instance">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Instance scene at index.
 			</description>
 		</method>
 		<method name="scene_queue_free">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Queue free scene at index.
 			</description>
 		</method>
 		<method name="scene_remove">
@@ -863,6 +935,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="queue_free" type="bool" default="true" />
 			<description>
+				Remove scene.
 			</description>
 		</method>
 		<method name="scene_set">
@@ -870,6 +943,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="scene" type="PackedScene" />
 			<description>
+				Set scene.
 			</description>
 		</method>
 		<method name="scene_set_is_original">
@@ -877,6 +951,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="original" type="bool" />
 			<description>
+				Set scene original status.
 			</description>
 		</method>
 		<method name="scene_set_name">
@@ -884,6 +959,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="name" type="String" />
 			<description>
+				Set scene name.
 			</description>
 		</method>
 		<method name="scene_set_node">
@@ -891,6 +967,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="node" type="Node" />
 			<description>
+				Set scene's instanced Node.
 			</description>
 		</method>
 		<method name="scene_set_transform">
@@ -898,12 +975,14 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="transform" type="Transform" />
 			<description>
+				Set scene's transform.
 			</description>
 		</method>
 		<method name="scenes_clear">
 			<return type="void" />
 			<argument index="0" name="queue_free" type="bool" default="true" />
 			<description>
+				Clear all scenes.
 			</description>
 		</method>
 		<method name="set_data">
@@ -913,12 +992,14 @@
 			<argument index="2" name="z" type="int" />
 			<argument index="3" name="index" type="int" />
 			<description>
+				Set data to the given channel.
 			</description>
 		</method>
 		<method name="set_physics_process">
 			<return type="void" />
 			<argument index="0" name="value" type="bool" />
 			<description>
+				Enable or disable physics process callbacks.
 			</description>
 		</method>
 		<method name="set_position">
@@ -926,12 +1007,14 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Set chunk position.
 			</description>
 		</method>
 		<method name="set_process">
 			<return type="void" />
 			<argument index="0" name="value" type="bool" />
 			<description>
+				Enable or disable process callbacks.
 			</description>
 		</method>
 		<method name="set_size">
@@ -941,6 +1024,7 @@
 			<argument index="2" name="margin_start" type="int" default="0" />
 			<argument index="3" name="margin_end" type="int" default="0" />
 			<description>
+				Set chunk's size.
 			</description>
 		</method>
 		<method name="set_voxel">
@@ -950,12 +1034,14 @@
 			<argument index="2" name="z" type="int" />
 			<argument index="3" name="index" type="int" />
 			<description>
+				Deprecated. Use [method set_data] instead.
 			</description>
 		</method>
 		<method name="terrain_structure_add">
 			<return type="void" />
 			<argument index="0" name="structure" type="TerrainStructure" />
 			<description>
+				Add terrain structure.
 			</description>
 		</method>
 		<method name="terrain_structure_add_at_position">
@@ -963,46 +1049,54 @@
 			<argument index="0" name="structure" type="TerrainStructure" />
 			<argument index="1" name="world_position" type="Vector3" />
 			<description>
+				Add terrain structure at the given index.
 			</description>
 		</method>
 		<method name="terrain_structure_clear">
 			<return type="void" />
 			<description>
+				Clear terrain structures.
 			</description>
 		</method>
 		<method name="terrain_structure_get" qualifiers="const">
 			<return type="TerrainStructure" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns terrain structure at index.
 			</description>
 		</method>
 		<method name="terrain_structure_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns terrain structure count.
 			</description>
 		</method>
 		<method name="terrain_structure_remove">
 			<return type="void" />
 			<argument index="0" name="structure" type="TerrainStructure" />
 			<description>
+				Removes terrain structure.
 			</description>
 		</method>
 		<method name="terrain_structure_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes terrain structure at the given index.
 			</description>
 		</method>
 		<method name="to_global" qualifiers="const">
 			<return type="Vector3" />
 			<argument index="0" name="local" type="Vector3" />
 			<description>
+				Convert the given local position to global position.
 			</description>
 		</method>
 		<method name="to_local" qualifiers="const">
 			<return type="Vector3" />
 			<argument index="0" name="global" type="Vector3" />
 			<description>
+				Convert the given global position to local position.
 			</description>
 		</method>
 		<method name="validate_data_position" qualifiers="const">
@@ -1010,114 +1104,163 @@
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="z" type="int" />
 			<description>
+				Validates whether the ginven indexes are valid.
 			</description>
 		</method>
 		<method name="visibility_changed">
 			<return type="void" />
 			<argument index="0" name="visible" type="bool" />
 			<description>
+				Called when this chunk's visibility changes.
 			</description>
 		</method>
 		<method name="world_light_added">
 			<return type="void" />
 			<argument index="0" name="light" type="TerrainLight" />
 			<description>
+				Called when a world light is added.
 			</description>
 		</method>
 		<method name="world_light_removed">
 			<return type="void" />
 			<argument index="0" name="light" type="TerrainLight" />
 			<description>
+				Called when a world light is removed.
 			</description>
 		</method>
 		<method name="world_transform_changed">
 			<return type="void" />
 			<description>
+				Called when the world transform changes.
 			</description>
 		</method>
 	</methods>
 	<members>
-		<member name="channel_count" type="int" setter="channel_set_count" getter="channel_get_count" default="0">
+		<member name="channel_count" addedtype="int" setter="channel_set_count" getter="channel_get_count" default="0">
+			The channel count.
 		</member>
 		<member name="data_size_x" type="int" setter="set_data_size_x" getter="get_data_size_x" default="0">
+			The full actual x data size, counting margins.
 		</member>
 		<member name="data_size_z" type="int" setter="set_data_size_z" getter="get_data_size_z" default="0">
+			The full actual z data size, counting margins.
 		</member>
 		<member name="dirty" type="bool" setter="set_dirty" getter="get_dirty">
+			Is this chunk needs it's meshes regenerated?
 		</member>
 		<member name="is_generating" type="bool" setter="set_is_generating" getter="get_is_generating">
+			Is chunk generating?
 		</member>
 		<member name="is_immediate_build" type="bool" setter="set_is_immediate_build" getter="get_is_immediate_build">
+			Is thu current build immediate?
 		</member>
 		<member name="is_setup" type="bool" setter="set_is_setup" getter="get_is_setup">
+			Was chis chunk set up already?
 		</member>
 		<member name="is_terrain_generated" type="bool" setter="set_is_terrain_generated" getter="get_is_terrain_generated" default="false">
+			Is the terrain generated?
 		</member>
 		<member name="library" type="TerrainLibrary" setter="set_library" getter="get_library">
+			The active library.
 		</member>
 		<member name="lights" type="Array" setter="lights_set" getter="lights_get">
+			All stored lights.
 		</member>
 		<member name="liquid_material_cache_key" type="int" setter="liquid_material_cache_key_set" getter="liquid_material_cache_key_get" default="0">
+			Liquid material cache key if exists.
 		</member>
 		<member name="liquid_material_cache_key_has" type="bool" setter="liquid_material_cache_key_has_set" getter="liquid_material_cache_key_has_get" default="false">
+			Has a liquid material cache key?
 		</member>
 		<member name="liquid_material_cache_key_invalid" type="bool" setter="liquid_material_cache_key_invalid_set" getter="liquid_material_cache_key_invalid_get" default="false">
+			Is the liquid material cache key invalid?
+			Needed as previous material cache keys need to get dereferenced.
 		</member>
 		<member name="margin_end" type="int" setter="set_margin_end" getter="get_margin_end" default="0">
+			Margin at the end of the internal data arrays.
+			If this is one, the chunk can be indexed up to (size() - 1) + 1 on both axes. This allows to store data that actually belongs to other chunks, so they don't have to be loaded. This is used for mesh generation. Some algorithms might need more.
 		</member>
 		<member name="margin_start" type="int" setter="set_margin_start" getter="get_margin_start" default="0">
+			Margin at the start of the internal data arrays.
+			If this is one, the chunk can be indexed from -1 on both axes. This allows to store data that actually belongs to other chunks, so they don't have to be loaded. This is used for mesh generation. Some algorithms might need more.
 		</member>
 		<member name="material_cache_key" type="int" setter="material_cache_key_set" getter="material_cache_key_get" default="0">
+			Material cache key if exists.
 		</member>
 		<member name="material_cache_key_has" type="bool" setter="material_cache_key_has_set" getter="material_cache_key_has_get" default="false">
+			Has a material cache key?
 		</member>
 		<member name="material_cache_key_invalid" type="bool" setter="material_cache_key_invalid_set" getter="material_cache_key_invalid_get" default="false">
+			Is the material cache key invalid?
+			Needed as previous material cache keys need to get dereferenced.
 		</member>
 		<member name="mesh_data_resources" type="Array" setter="mesh_data_resources_set" getter="mesh_data_resources_get" default="[  ]">
+			All stored mesh data resources.
 		</member>
 		<member name="owned_lights" type="Array" setter="owned_lights_set" getter="owned_lights_get" default="[  ]">
+			All owned lights.
 		</member>
 		<member name="position_x" type="int" setter="set_position_x" getter="get_position_x" default="0">
+			Chunk x position.
 		</member>
 		<member name="position_z" type="int" setter="set_position_z" getter="get_position_z" default="0">
+			Chunk z position.
 		</member>
 		<member name="prop_material_cache_key" type="int" setter="prop_material_cache_key_set" getter="prop_material_cache_key_get" default="0">
+			Prop material cache key if exists.
 		</member>
 		<member name="prop_material_cache_key_has" type="bool" setter="prop_material_cache_key_has_set" getter="prop_material_cache_key_has_get" default="false">
+			Has a prop material cache key?
 		</member>
 		<member name="prop_material_cache_key_invalid" type="bool" setter="prop_material_cache_key_invalid_set" getter="prop_material_cache_key_invalid_get" default="false">
+			Is the prop material cache key invalid?
+			Needed as previous material cache keys need to get dereferenced.
 		</member>
 		<member name="props" type="Array" setter="props_set" getter="props_get" default="[  ]">
+			All props.
 		</member>
 		<member name="scenes" type="Array" setter="scenes_set" getter="scenes_get" default="[  ]">
+			All stored scenes.
 		</member>
 		<member name="size_x" type="int" setter="set_size_x" getter="get_size_x" default="0">
+			The chunk's size on the x axis.
 		</member>
 		<member name="size_z" type="int" setter="set_size_z" getter="get_size_z" default="0">
+			The chunk's size on the z axis.
 		</member>
 		<member name="state" type="int" setter="set_state" getter="get_state">
+			Temporary chunk state. Currently unused. Not saved.
 		</member>
 		<member name="terrain_scale" type="float" setter="set_terrain_scale" getter="get_terrain_scale" default="1.0">
+			THe terrain scale.
 		</member>
 		<member name="terrain_structures" type="Array" setter="terrain_structures_set" getter="terrain_structures_get" default="[  ]">
+			All terrain structures.
 		</member>
 		<member name="terrain_world" type="TerrainWorld" setter="set_terrain_world" getter="get_terrain_world">
+			The owner world.
 		</member>
 		<member name="transform" type="Transform" setter="set_transform" getter="get_transform" default="Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )">
+			The chunk's transform.
 		</member>
 		<member name="visible" type="bool" setter="set_visible" getter="get_visible" default="true">
+			Is this chunk visible?
 		</member>
 		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale">
+			Deprecated. Use [member terrain_scale] instead.
 		</member>
 		<member name="voxel_world" type="TerrainWorld" setter="set_voxel_world" getter="get_voxel_world">
+			Deprecated. Use [member terrain_world] instead.
 		</member>
 		<member name="world_height" type="float" setter="set_world_height" getter="get_world_height" default="256.0">
+			The world height in world space.
 		</member>
 	</members>
 	<signals>
 		<signal name="mesh_generation_finished">
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Emitted when mesh generation finishes.
 			</description>
 		</signal>
 	</signals>
