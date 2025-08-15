@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainLevelGenerator" inherits="Resource">
 	<brief_description>
+		A class that is used by [TerrainWorld] to generate new chunks.
 	</brief_description>
 	<description>
+		A class that is used by [TerrainWorld] to generate new chunks.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,12 +13,14 @@
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Generate chunk.
 			</description>
 		</method>
 		<method name="generate_chunk">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Generate chunk.
 			</description>
 		</method>
 	</methods>
