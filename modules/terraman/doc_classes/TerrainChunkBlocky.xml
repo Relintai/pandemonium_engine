@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainChunkBlocky" inherits="TerrainChunkDefault">
 	<brief_description>
+		TerrainChunk used by [VoxelWorldBlocky].
 	</brief_description>
 	<description>
+		TerrainChunk used by [VoxelWorldBlocky].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,12 +12,16 @@
 	</methods>
 	<members>
 		<member name="data_channel" type="PoolByteArray" setter="channel_set_compressed" getter="channel_get_compressed" default="PoolByteArray(  )">
+			Bound compressed channel for automatic serialization.
 		</member>
 		<member name="isolevel_channel" type="PoolByteArray" setter="channel_set_compressed" getter="channel_get_compressed" default="PoolByteArray(  )">
+			Bound compressed channel for automatic serialization.
 		</member>
 		<member name="liquid_data_channel" type="PoolByteArray" setter="channel_set_compressed" getter="channel_get_compressed" default="PoolByteArray(  )">
+			Bound compressed channel for automatic serialization.
 		</member>
 		<member name="liquid_isolevel_channel" type="PoolByteArray" setter="channel_set_compressed" getter="channel_get_compressed" default="PoolByteArray(  )">
+			Bound compressed channel for automatic serialization.
 		</member>
 	</members>
 	<constants>
