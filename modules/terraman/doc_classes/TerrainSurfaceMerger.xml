@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainSurfaceMerger" inherits="TerrainSurface">
 	<brief_description>
+		Terrain surface used by [TerrainLibraryMerger].
 	</brief_description>
 	<description>
+		Terrain surface used by [TerrainLibraryMerger].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,12 +13,14 @@
 			<return type="AtlasTexture" />
 			<argument index="0" name="side" type="int" enum="TerrainSurface.TerrainSurfaceSides" />
 			<description>
+				Returns region.
 			</description>
 		</method>
 		<method name="get_texture">
 			<return type="Texture" />
 			<argument index="0" name="side" type="int" enum="TerrainSurface.TerrainSurfaceSides" />
 			<description>
+				Returns texture.
 			</description>
 		</method>
 		<method name="set_region">
@@ -24,6 +28,7 @@
 			<argument index="0" name="side" type="int" enum="TerrainSurface.TerrainSurfaceSides" />
 			<argument index="1" name="texture" type="AtlasTexture" />
 			<description>
+				Set region.
 			</description>
 		</method>
 		<method name="set_texture">
@@ -31,21 +36,28 @@
 			<argument index="0" name="side" type="int" enum="TerrainSurface.TerrainSurfaceSides" />
 			<argument index="1" name="texture" type="Texture" />
 			<description>
+				Set texture.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="region_bottom" type="AtlasTexture" setter="set_region" getter="get_region">
+			Bottom region.
 		</member>
 		<member name="region_side" type="AtlasTexture" setter="set_region" getter="get_region">
+			Side region.
 		</member>
 		<member name="region_top" type="AtlasTexture" setter="set_region" getter="get_region">
+			Top region.
 		</member>
 		<member name="texture_bottom" type="Texture" setter="set_texture" getter="get_texture">
+			Bottom region.
 		</member>
 		<member name="texture_side" type="Texture" setter="set_texture" getter="get_texture">
+			Side texture.
 		</member>
 		<member name="texture_top" type="Texture" setter="set_texture" getter="get_texture">
+			Top texture.
 		</member>
 	</members>
 	<constants>
