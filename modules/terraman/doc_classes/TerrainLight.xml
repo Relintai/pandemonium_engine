@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainLight" inherits="Resource">
 	<brief_description>
+		Light used by [TerrainWorld] for baking vertex lights.
 	</brief_description>
 	<description>
+		Light used by [TerrainWorld] for baking vertex lights.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,70 +13,93 @@
 			<return type="void" />
 			<argument index="0" name="data" type="Dictionary" />
 			<description>
+				Restore state from a Dictionary received from [method to_dict].
 			</description>
 		</method>
 		<method name="get_vertex_lights_3d_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
+				If this light is registered to the vertex lights 3d system, it's rid will be stored here.
 			</description>
 		</method>
 		<method name="set_vertex_lights_3d_rid">
 			<return type="void" />
 			<argument index="0" name="rid" type="RID" />
 			<description>
+				Set the vertex lights 3d system's RID.
 			</description>
 		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
+				Save stat to a dictionary.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="has_owner_chunk" type="bool" setter="set_has_owner_chunk" getter="get_has_owner_chunk" default="false">
+			Has owner chunk.
 		</member>
 		<member name="item_cull_mask" type="int" setter="set_item_cull_mask" getter="get_item_cull_mask" default="1">
+			The light's cull mask.
 		</member>
 		<member name="light_attenuation" type="float" setter="set_attenuation" getter="get_attenuation" default="0.0">
+			The light's attenuation.
 		</member>
 		<member name="light_color" type="Color" setter="set_color" getter="get_color" default="Color( 0, 0, 0, 1 )">
+			The light's color.
 		</member>
 		<member name="light_energy" type="float" setter="set_energy" getter="get_energy" default="0.0">
+			The light's energy.
 		</member>
 		<member name="light_indirect_energy" type="float" setter="set_indirect_energy" getter="get_indirect_energy" default="0.0">
+			The light's indirect energy.
 		</member>
 		<member name="light_mode" type="int" setter="set_light_mode" getter="get_light_mode" enum="TerrainLight.LightMode" default="0">
+			The light's mode.
 		</member>
 		<member name="light_negative" type="bool" setter="set_negative" getter="get_negative" default="false">
+			Is the light negative?
 		</member>
 		<member name="light_range" type="float" setter="set_range" getter="get_range" default="0.0">
+			The light's range.
 		</member>
 		<member name="light_specular" type="float" setter="set_specular" getter="get_specular" default="0.0">
+			The light's specular.
 		</member>
 		<member name="owner_chunk_position" type="Vector2i" setter="set_owner_chunk_position" getter="get_owner_chunk_position" default="Vector2i( 0, 0 )">
+			The owner chunk's position.
 		</member>
 		<member name="owner_type" type="int" setter="set_owner_type" getter="get_owner_type" enum="TerrainLight.OwnerType" default="0">
+			Owner type.
 		</member>
 		<member name="world_data_position" type="Vector3i" setter="set_world_data_position" getter="get_world_data_position" default="Vector3i( 0, 0, 0 )">
+			Position in world data space.
 		</member>
 	</members>
 	<signals>
 		<signal name="light_moved">
 			<argument index="0" name="light" type="TerrainLight" />
 			<description>
+				Emitted when this light moved.
 			</description>
 		</signal>
 	</signals>
 	<constants>
 		<constant name="OWNER_TYPE_NONE" value="0" enum="OwnerType">
+			Owner type none.
 		</constant>
 		<constant name="OWNER_TYPE_PROP" value="1" enum="OwnerType">
+			Owner type prop.
 		</constant>
 		<constant name="LIGHT_MODE_ADD" value="0" enum="LightMode">
+			Light mode add.
 		</constant>
 		<constant name="LIGHT_MODE_SUB" value="1" enum="LightMode">
+			Light mode sub.
 		</constant>
 		<constant name="LIGHT_MODE_MIX" value="2" enum="LightMode">
+			Light mode mix.
 		</constant>
 	</constants>
 </class>
