@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainMesherJobStep" inherits="Reference">
 	<brief_description>
+		A sub step for [TerrainTerrainJob].
 	</brief_description>
 	<description>
+		A sub step for [TerrainTerrainJob].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,32 +12,45 @@
 	</methods>
 	<members>
 		<member name="fqms" type="FastQuadraticMeshSimplifier" setter="set_fqms" getter="get_fqms">
+			[FastQuadraticMeshSimplifier] instance to be used. Only available if the fqms engine module is enabled.
 		</member>
 		<member name="job_type" type="int" setter="set_job_type" getter="get_job_type" enum="TerrainMesherJobStep.TerrainMesherJobStepType" default="0">
+			The job's type.
 		</member>
 		<member name="lod_index" type="int" setter="set_lod_index" getter="get_lod_index" default="0">
+			The job's lod index.
 		</member>
 		<member name="simplification_agressiveness" type="float" setter="set_simplification_agressiveness" getter="get_simplification_agressiveness" default="7.0">
+			The simplification agressiveness.
 		</member>
 		<member name="simplification_step_ratio" type="float" setter="set_simplification_step_ratio" getter="get_simplification_step_ratio" default="0.8">
+			The simplification step ratio.
 		</member>
 		<member name="simplification_steps" type="int" setter="set_simplification_steps" getter="get_simplification_steps" default="2">
+			The simplification steps.
 		</member>
 	</members>
 	<constants>
 		<constant name="TYPE_NORMAL" value="0" enum="TerrainMesherJobStepType">
+			Type normal.
 		</constant>
 		<constant name="TYPE_NORMAL_LOD" value="1" enum="TerrainMesherJobStepType">
+			Type normal lod.
 		</constant>
 		<constant name="TYPE_DROP_UV2" value="2" enum="TerrainMesherJobStepType">
+			Type drop uv2.
 		</constant>
 		<constant name="TYPE_MERGE_VERTS" value="3" enum="TerrainMesherJobStepType">
+			Type merge verts.
 		</constant>
 		<constant name="TYPE_BAKE_TEXTURE" value="4" enum="TerrainMesherJobStepType">
+			Type bake texture.
 		</constant>
 		<constant name="TYPE_SIMPLIFY_MESH" value="5" enum="TerrainMesherJobStepType">
+			Type simplify mesh.
 		</constant>
 		<constant name="TYPE_OTHER" value="6" enum="TerrainMesherJobStepType">
+			Type other.
 		</constant>
 	</constants>
 </class>
