@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainLightJob" inherits="TerrainJob">
 	<brief_description>
+		Terrain job for baking lights into vertex color.
 	</brief_description>
 	<description>
+		Terrain job for baking lights into vertex color.
 	</description>
 	<tutorials>
 	</tutorials>
