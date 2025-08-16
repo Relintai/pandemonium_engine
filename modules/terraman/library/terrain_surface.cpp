@@ -103,7 +103,10 @@ void TerrainSurface::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &TerrainSurface::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "voxel_name"), "set_name", "get_name");
+#ifndef DISABLE_DEPRECATED
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "voxel_name", PROPERTY_HINT_NONE, "", 0), "set_name", "get_name");
+#endif
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "surface_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_rect", "side"), &TerrainSurface::get_rect);
 	ClassDB::bind_method(D_METHOD("set_rect", "side", "rect"), &TerrainSurface::set_rect);
