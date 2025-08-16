@@ -1,62 +1,73 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainTerrainJob" inherits="TerrainJob">
 	<brief_description>
+		A terrain job that can be used to create terrain meshes. Used by [TerrainWorld].
 	</brief_description>
 	<description>
+		A terrain job that can be used to create terrain meshes. Used by [TerrainWorld].
 	</description>
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="add_jobs_step">
+		<method name="add_job_step">
 			<return type="void" />
 			<argument index="0" name="mesher" type="TerrainMesherJobStep" />
 			<description>
+				Add a job step.
 			</description>
 		</method>
-		<method name="get_jobs_step" qualifiers="const">
+		<method name="get_job_step" qualifiers="const">
 			<return type="TerrainMesherJobStep" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns job step.
 			</description>
 		</method>
-		<method name="get_jobs_step_count" qualifiers="const">
+		<method name="get_job_step_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns job step count.
 			</description>
 		</method>
 		<method name="get_liquid_mesher" qualifiers="const">
 			<return type="TerrainMesher" />
 			<description>
+				Returns liquid mesher.
 			</description>
 		</method>
 		<method name="get_mesher" qualifiers="const">
 			<return type="TerrainMesher" />
 			<description>
+				Returns mesher.
 			</description>
 		</method>
-		<method name="remove_jobs_step">
+		<method name="remove_job_step">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes a job step.
 			</description>
 		</method>
-		<method name="set_jobs_step">
+		<method name="set_job_step">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="mesher" type="TerrainMesherJobStep" />
 			<description>
+				Sets a job step.
 			</description>
 		</method>
 		<method name="set_liquid_mesher">
 			<return type="void" />
 			<argument index="0" name="mesher" type="TerrainMesher" />
 			<description>
+				Set liquid mesher.
 			</description>
 		</method>
 		<method name="set_mesher">
 			<return type="void" />
 			<argument index="0" name="mesher" type="TerrainMesher" />
 			<description>
+				Set mesher.
 			</description>
 		</method>
 	</methods>
