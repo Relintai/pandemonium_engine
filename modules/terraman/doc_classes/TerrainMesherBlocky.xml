@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainMesherBlocky" inherits="TerrainMesherDefault">
 	<brief_description>
+		Terrain mesher for [TerrainWorldBlocky].
 	</brief_description>
 	<description>
+		Terrain mesher for [TerrainWorldBlocky].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +12,7 @@
 	</methods>
 	<members>
 		<member name="always_add_colors" type="bool" setter="set_always_add_colors" getter="get_always_add_colors" default="false">
+			Should colors always get added?
 		</member>
 	</members>
 	<constants>
