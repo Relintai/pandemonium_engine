@@ -45,11 +45,11 @@ public:
 	Ref<TerrainMesher> get_prop_mesher() const;
 	void set_prop_mesher(const Ref<TerrainMesher> &mesher);
 
-	Ref<TerrainMesherJobStep> get_jobs_step(const int index) const;
-	void set_jobs_step(const int index, const Ref<TerrainMesherJobStep> &step);
-	void remove_jobs_step(const int index);
-	void add_jobs_step(const Ref<TerrainMesherJobStep> &step);
-	int get_jobs_step_count() const;
+	Ref<TerrainMesherJobStep> get_job_step(const int index) const;
+	void set_job_step(const int index, const Ref<TerrainMesherJobStep> &step);
+	void remove_job_step(const int index);
+	void add_job_step(const Ref<TerrainMesherJobStep> &step);
+	int get_job_step_count() const;
 
 	void phase_physics_process();
 	void phase_prop();

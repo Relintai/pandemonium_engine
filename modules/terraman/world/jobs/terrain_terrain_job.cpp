@@ -63,25 +63,25 @@ void TerrainTerrainJob::set_liquid_mesher(const Ref<TerrainMesher> &mesher) {
 	_liquid_mesher = mesher;
 }
 
-Ref<TerrainMesherJobStep> TerrainTerrainJob::get_jobs_step(int index) const {
+Ref<TerrainMesherJobStep> TerrainTerrainJob::get_job_step(int index) const {
 	ERR_FAIL_INDEX_V(index, _job_steps.size(), Ref<TerrainMesherJobStep>());
 
 	return _job_steps.get(index);
 }
-void TerrainTerrainJob::set_jobs_step(int index, const Ref<TerrainMesherJobStep> &step) {
+void TerrainTerrainJob::set_job_step(int index, const Ref<TerrainMesherJobStep> &step) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.set(index, step);
 }
-void TerrainTerrainJob::remove_jobs_step(const int index) {
+void TerrainTerrainJob::remove_job_step(const int index) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.remove(index);
 }
-void TerrainTerrainJob::add_jobs_step(const Ref<TerrainMesherJobStep> &step) {
+void TerrainTerrainJob::add_job_step(const Ref<TerrainMesherJobStep> &step) {
 	_job_steps.push_back(step);
 }
-int TerrainTerrainJob::get_jobs_step_count() const {
+int TerrainTerrainJob::get_job_step_count() const {
 	return _job_steps.size();
 }
 
@@ -694,11 +694,11 @@ void TerrainTerrainJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_liquid_mesher"), &TerrainTerrainJob::get_liquid_mesher);
 	ClassDB::bind_method(D_METHOD("set_liquid_mesher", "mesher"), &TerrainTerrainJob::set_liquid_mesher);
 
-	ClassDB::bind_method(D_METHOD("get_jobs_step", "index"), &TerrainTerrainJob::get_jobs_step);
-	ClassDB::bind_method(D_METHOD("set_jobs_step", "index", "mesher"), &TerrainTerrainJob::set_jobs_step);
-	ClassDB::bind_method(D_METHOD("remove_jobs_step", "index"), &TerrainTerrainJob::remove_jobs_step);
-	ClassDB::bind_method(D_METHOD("add_jobs_step", "mesher"), &TerrainTerrainJob::add_jobs_step);
-	ClassDB::bind_method(D_METHOD("get_jobs_step_count"), &TerrainTerrainJob::get_jobs_step_count);
+	ClassDB::bind_method(D_METHOD("get_job_step", "index"), &TerrainTerrainJob::get_job_step);
+	ClassDB::bind_method(D_METHOD("set_job_step", "index", "mesher"), &TerrainTerrainJob::set_job_step);
+	ClassDB::bind_method(D_METHOD("remove_job_step", "index"), &TerrainTerrainJob::remove_job_step);
+	ClassDB::bind_method(D_METHOD("add_job_step", "mesher"), &TerrainTerrainJob::add_job_step);
+	ClassDB::bind_method(D_METHOD("get_job_step_count"), &TerrainTerrainJob::get_job_step_count);
 
 	ClassDB::bind_method(D_METHOD("_physics_process", "delta"), &TerrainTerrainJob::_physics_process);
 }

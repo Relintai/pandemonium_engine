@@ -59,25 +59,25 @@ void TerrainWorldBlocky::_setup_chunk(Ref<TerrainChunk> p_chunk) {
 		Ref<TerrainMesherJobStep> s;
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_NORMAL);
-		tj->add_jobs_step(s);
+		tj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_NORMAL_LOD);
 		s->set_lod_index(1);
-		tj->add_jobs_step(s);
+		tj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_NORMAL_LOD);
 		s->set_lod_index(2);
-		tj->add_jobs_step(s);
+		tj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_MERGE_VERTS);
-		tj->add_jobs_step(s);
+		tj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_BAKE_TEXTURE);
-		tj->add_jobs_step(s);
+		tj->add_job_step(s);
 
 		tj->set_mesher(Ref<TerrainMesher>(memnew(TerrainMesherBlocky())));
 
@@ -93,15 +93,15 @@ void TerrainWorldBlocky::_setup_chunk(Ref<TerrainChunk> p_chunk) {
 
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_NORMAL);
-		pj->add_jobs_step(s);
+		pj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_MERGE_VERTS);
-		pj->add_jobs_step(s);
+		pj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_BAKE_TEXTURE);
-		pj->add_jobs_step(s);
+		pj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_SIMPLIFY_MESH);
@@ -111,7 +111,7 @@ void TerrainWorldBlocky::_setup_chunk(Ref<TerrainChunk> p_chunk) {
 		s->set_fqms(fqms);
 		s->set_simplification_steps(2);
 #endif
-		pj->add_jobs_step(s);
+		pj->add_job_step(s);
 
 		p_chunk->job_add(lj);
 		p_chunk->job_add(tj);

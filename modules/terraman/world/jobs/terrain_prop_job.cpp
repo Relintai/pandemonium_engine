@@ -68,25 +68,25 @@ void TerrainPropJob::set_prop_mesher(const Ref<TerrainMesher> &mesher) {
 	_prop_mesher = mesher;
 }
 
-Ref<TerrainMesherJobStep> TerrainPropJob::get_jobs_step(int index) const {
+Ref<TerrainMesherJobStep> TerrainPropJob::get_job_step(int index) const {
 	ERR_FAIL_INDEX_V(index, _job_steps.size(), Ref<TerrainMesherJobStep>());
 
 	return _job_steps.get(index);
 }
-void TerrainPropJob::set_jobs_step(int index, const Ref<TerrainMesherJobStep> &step) {
+void TerrainPropJob::set_job_step(int index, const Ref<TerrainMesherJobStep> &step) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.set(index, step);
 }
-void TerrainPropJob::remove_jobs_step(const int index) {
+void TerrainPropJob::remove_job_step(const int index) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.remove(index);
 }
-void TerrainPropJob::add_jobs_step(const Ref<TerrainMesherJobStep> &step) {
+void TerrainPropJob::add_job_step(const Ref<TerrainMesherJobStep> &step) {
 	_job_steps.push_back(step);
 }
-int TerrainPropJob::get_jobs_step_count() const {
+int TerrainPropJob::get_job_step_count() const {
 	return _job_steps.size();
 }
 
@@ -735,11 +735,11 @@ void TerrainPropJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_prop_mesher", "mesher"), &TerrainPropJob::set_prop_mesher);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "prop_mesher", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMesher", 0), "set_prop_mesher", "get_prop_mesher");
 
-	ClassDB::bind_method(D_METHOD("get_jobs_step", "index"), &TerrainPropJob::get_jobs_step);
-	ClassDB::bind_method(D_METHOD("set_jobs_step", "index", "mesher"), &TerrainPropJob::set_jobs_step);
-	ClassDB::bind_method(D_METHOD("remove_jobs_step", "index"), &TerrainPropJob::remove_jobs_step);
-	ClassDB::bind_method(D_METHOD("add_jobs_step", "mesher"), &TerrainPropJob::add_jobs_step);
-	ClassDB::bind_method(D_METHOD("get_jobs_step_count"), &TerrainPropJob::get_jobs_step_count);
+	ClassDB::bind_method(D_METHOD("get_job_step", "index"), &TerrainPropJob::get_job_step);
+	ClassDB::bind_method(D_METHOD("set_job_step", "index", "mesher"), &TerrainPropJob::set_job_step);
+	ClassDB::bind_method(D_METHOD("remove_job_step", "index"), &TerrainPropJob::remove_job_step);
+	ClassDB::bind_method(D_METHOD("add_job_step", "mesher"), &TerrainPropJob::add_job_step);
+	ClassDB::bind_method(D_METHOD("get_job_step_count"), &TerrainPropJob::get_job_step_count);
 
 	ClassDB::bind_method(D_METHOD("_physics_process", "delta"), &TerrainPropJob::_physics_process);
 }
