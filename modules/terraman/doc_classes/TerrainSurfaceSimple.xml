@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainSurfaceSimple" inherits="TerrainSurface">
 	<brief_description>
+		Terrain surface used by [TerrainLibrarySimple].
 	</brief_description>
 	<description>
+		Terrain surface used by [TerrainLibrarySimple].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,12 +13,14 @@
 			<return type="int" />
 			<argument index="0" name="side" type="int" enum="TerrainSurface.TerrainSurfaceSides" />
 			<description>
+				Returns atlas x.
 			</description>
 		</method>
 		<method name="get_atlas_y" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="side" type="int" enum="TerrainSurface.TerrainSurfaceSides" />
 			<description>
+				Returns atlas y.
 			</description>
 		</method>
 		<method name="set_atlas_x">
@@ -24,6 +28,7 @@
 			<argument index="0" name="side" type="int" enum="TerrainSurface.TerrainSurfaceSides" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Set atlas x.
 			</description>
 		</method>
 		<method name="set_atlas_y">
@@ -31,21 +36,28 @@
 			<argument index="0" name="side" type="int" enum="TerrainSurface.TerrainSurfaceSides" />
 			<argument index="1" name="value" type="int" />
 			<description>
+				Set atlas y.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="bottom_atlas_x" type="int" setter="set_atlas_x" getter="get_atlas_x" default="0">
+			Bottom atlas x.
 		</member>
 		<member name="bottom_atlas_y" type="int" setter="set_atlas_y" getter="get_atlas_y" default="0">
+			Bottom atlas y.
 		</member>
 		<member name="side_atlas_x" type="int" setter="set_atlas_x" getter="get_atlas_x" default="0">
+			Side atlas x.
 		</member>
 		<member name="side_atlas_y" type="int" setter="set_atlas_y" getter="get_atlas_y" default="0">
+			Side atlas y.
 		</member>
 		<member name="top_atlas_x" type="int" setter="set_atlas_x" getter="get_atlas_x" default="0">
+			Top atlas x.
 		</member>
 		<member name="top_atlas_y" type="int" setter="set_atlas_y" getter="get_atlas_y" default="0">
+			Top atlas y.
 		</member>
 	</members>
 	<constants>
