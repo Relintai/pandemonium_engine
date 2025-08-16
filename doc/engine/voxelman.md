@@ -160,7 +160,7 @@ This is done by `setup_chunk(shunk)` in `VoxelWorld`.
 
             var s : VoxelMesherJobStep = VoxelMesherJobStep.new()
             s.job_type = VoxelMesherJobStep.TYPE_NORMAL
-            tj.add_jobs_step(s)
+            tj.add_job_step(s)
 
             tj.add_mesher(VoxelMesherBlocky.new())
             tj.add_liquid_mesher(VoxelMesherLiquidBlocky.new())

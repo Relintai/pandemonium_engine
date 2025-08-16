@@ -72,25 +72,25 @@ void PropInstancePropJob::set_material_cache(const Ref<PropMaterialCache> &cache
 	_material_cache = cache;
 }
 
-Ref<PropMesherJobStep> PropInstancePropJob::get_jobs_step(int index) const {
+Ref<PropMesherJobStep> PropInstancePropJob::get_job_step(int index) const {
 	ERR_FAIL_INDEX_V(index, _job_steps.size(), Ref<PropMesherJobStep>());
 
 	return _job_steps.get(index);
 }
-void PropInstancePropJob::set_jobs_step(int index, const Ref<PropMesherJobStep> &step) {
+void PropInstancePropJob::set_job_step(int index, const Ref<PropMesherJobStep> &step) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.set(index, step);
 }
-void PropInstancePropJob::remove_jobs_step(const int index) {
+void PropInstancePropJob::remove_job_step(const int index) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.remove(index);
 }
-void PropInstancePropJob::add_jobs_step(const Ref<PropMesherJobStep> &step) {
+void PropInstancePropJob::add_job_step(const Ref<PropMesherJobStep> &step) {
 	_job_steps.push_back(step);
 }
-int PropInstancePropJob::get_jobs_step_count() const {
+int PropInstancePropJob::get_job_step_count() const {
 	return _job_steps.size();
 }
 
@@ -748,11 +748,11 @@ void PropInstancePropJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_material_cache", "packer"), &PropInstancePropJob::set_material_cache);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material_cache", PROPERTY_HINT_RESOURCE_TYPE, "PropMaterialCache", 0), "set_material_cache", "get_material_cache");
 
-	ClassDB::bind_method(D_METHOD("get_jobs_step", "index"), &PropInstancePropJob::get_jobs_step);
-	ClassDB::bind_method(D_METHOD("set_jobs_step", "index", "mesher"), &PropInstancePropJob::set_jobs_step);
-	ClassDB::bind_method(D_METHOD("remove_jobs_step", "index"), &PropInstancePropJob::remove_jobs_step);
-	ClassDB::bind_method(D_METHOD("add_jobs_step", "mesher"), &PropInstancePropJob::add_jobs_step);
-	ClassDB::bind_method(D_METHOD("get_jobs_step_count"), &PropInstancePropJob::get_jobs_step_count);
+	ClassDB::bind_method(D_METHOD("get_job_step", "index"), &PropInstancePropJob::get_job_step);
+	ClassDB::bind_method(D_METHOD("set_job_step", "index", "mesher"), &PropInstancePropJob::set_job_step);
+	ClassDB::bind_method(D_METHOD("remove_job_step", "index"), &PropInstancePropJob::remove_job_step);
+	ClassDB::bind_method(D_METHOD("add_job_step", "mesher"), &PropInstancePropJob::add_job_step);
+	ClassDB::bind_method(D_METHOD("get_job_step_count"), &PropInstancePropJob::get_job_step_count);
 
 	ClassDB::bind_method(D_METHOD("get_prop_mesher"), &PropInstancePropJob::get_prop_mesher);
 	ClassDB::bind_method(D_METHOD("set_prop_mesher", "mesher"), &PropInstancePropJob::set_prop_mesher);

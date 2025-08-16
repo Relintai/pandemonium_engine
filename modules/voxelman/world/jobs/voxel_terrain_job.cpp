@@ -93,25 +93,25 @@ int VoxelTerrainJob::get_liquid_mesher_count() const {
 	return _liquid_meshers.size();
 }
 
-Ref<VoxelMesherJobStep> VoxelTerrainJob::get_jobs_step(int index) const {
+Ref<VoxelMesherJobStep> VoxelTerrainJob::get_job_step(int index) const {
 	ERR_FAIL_INDEX_V(index, _job_steps.size(), Ref<VoxelMesherJobStep>());
 
 	return _job_steps.get(index);
 }
-void VoxelTerrainJob::set_jobs_step(int index, const Ref<VoxelMesherJobStep> &step) {
+void VoxelTerrainJob::set_job_step(int index, const Ref<VoxelMesherJobStep> &step) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.set(index, step);
 }
-void VoxelTerrainJob::remove_jobs_step(const int index) {
+void VoxelTerrainJob::remove_job_step(const int index) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.remove(index);
 }
-void VoxelTerrainJob::add_jobs_step(const Ref<VoxelMesherJobStep> &step) {
+void VoxelTerrainJob::add_job_step(const Ref<VoxelMesherJobStep> &step) {
 	_job_steps.push_back(step);
 }
-int VoxelTerrainJob::get_jobs_step_count() const {
+int VoxelTerrainJob::get_job_step_count() const {
 	return _job_steps.size();
 }
 
@@ -912,11 +912,11 @@ void VoxelTerrainJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_liquid_mesher", "mesher"), &VoxelTerrainJob::add_liquid_mesher);
 	ClassDB::bind_method(D_METHOD("get_liquid_mesher_count"), &VoxelTerrainJob::get_liquid_mesher_count);
 
-	ClassDB::bind_method(D_METHOD("get_jobs_step", "index"), &VoxelTerrainJob::get_jobs_step);
-	ClassDB::bind_method(D_METHOD("set_jobs_step", "index", "mesher"), &VoxelTerrainJob::set_jobs_step);
-	ClassDB::bind_method(D_METHOD("remove_jobs_step", "index"), &VoxelTerrainJob::remove_jobs_step);
-	ClassDB::bind_method(D_METHOD("add_jobs_step", "mesher"), &VoxelTerrainJob::add_jobs_step);
-	ClassDB::bind_method(D_METHOD("get_jobs_step_count"), &VoxelTerrainJob::get_jobs_step_count);
+	ClassDB::bind_method(D_METHOD("get_job_step", "index"), &VoxelTerrainJob::get_job_step);
+	ClassDB::bind_method(D_METHOD("set_job_step", "index", "mesher"), &VoxelTerrainJob::set_job_step);
+	ClassDB::bind_method(D_METHOD("remove_job_step", "index"), &VoxelTerrainJob::remove_job_step);
+	ClassDB::bind_method(D_METHOD("add_job_step", "mesher"), &VoxelTerrainJob::add_job_step);
+	ClassDB::bind_method(D_METHOD("get_job_step_count"), &VoxelTerrainJob::get_job_step_count);
 
 	ClassDB::bind_method(D_METHOD("_physics_process", "delta"), &VoxelTerrainJob::_physics_process);
 }

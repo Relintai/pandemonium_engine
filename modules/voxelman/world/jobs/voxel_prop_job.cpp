@@ -69,25 +69,25 @@ void VoxelPropJob::set_prop_mesher(const Ref<VoxelMesher> &mesher) {
 	_prop_mesher = mesher;
 }
 
-Ref<VoxelMesherJobStep> VoxelPropJob::get_jobs_step(int index) const {
+Ref<VoxelMesherJobStep> VoxelPropJob::get_job_step(int index) const {
 	ERR_FAIL_INDEX_V(index, _job_steps.size(), Ref<VoxelMesherJobStep>());
 
 	return _job_steps.get(index);
 }
-void VoxelPropJob::set_jobs_step(int index, const Ref<VoxelMesherJobStep> &step) {
+void VoxelPropJob::set_job_step(int index, const Ref<VoxelMesherJobStep> &step) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.set(index, step);
 }
-void VoxelPropJob::remove_jobs_step(const int index) {
+void VoxelPropJob::remove_job_step(const int index) {
 	ERR_FAIL_INDEX(index, _job_steps.size());
 
 	_job_steps.remove(index);
 }
-void VoxelPropJob::add_jobs_step(const Ref<VoxelMesherJobStep> &step) {
+void VoxelPropJob::add_job_step(const Ref<VoxelMesherJobStep> &step) {
 	_job_steps.push_back(step);
 }
-int VoxelPropJob::get_jobs_step_count() const {
+int VoxelPropJob::get_job_step_count() const {
 	return _job_steps.size();
 }
 
@@ -685,11 +685,11 @@ void VoxelPropJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_prop_mesher", "mesher"), &VoxelPropJob::set_prop_mesher);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "prop_mesher", PROPERTY_HINT_RESOURCE_TYPE, "VoxelMesher", 0), "set_prop_mesher", "get_prop_mesher");
 
-	ClassDB::bind_method(D_METHOD("get_jobs_step", "index"), &VoxelPropJob::get_jobs_step);
-	ClassDB::bind_method(D_METHOD("set_jobs_step", "index", "mesher"), &VoxelPropJob::set_jobs_step);
-	ClassDB::bind_method(D_METHOD("remove_jobs_step", "index"), &VoxelPropJob::remove_jobs_step);
-	ClassDB::bind_method(D_METHOD("add_jobs_step", "mesher"), &VoxelPropJob::add_jobs_step);
-	ClassDB::bind_method(D_METHOD("get_jobs_step_count"), &VoxelPropJob::get_jobs_step_count);
+	ClassDB::bind_method(D_METHOD("get_job_step", "index"), &VoxelPropJob::get_job_step);
+	ClassDB::bind_method(D_METHOD("set_job_step", "index", "mesher"), &VoxelPropJob::set_job_step);
+	ClassDB::bind_method(D_METHOD("remove_job_step", "index"), &VoxelPropJob::remove_job_step);
+	ClassDB::bind_method(D_METHOD("add_job_step", "mesher"), &VoxelPropJob::add_job_step);
+	ClassDB::bind_method(D_METHOD("get_job_step_count"), &VoxelPropJob::get_job_step_count);
 
 	ClassDB::bind_method(D_METHOD("_physics_process", "delta"), &VoxelPropJob::_physics_process);
 }

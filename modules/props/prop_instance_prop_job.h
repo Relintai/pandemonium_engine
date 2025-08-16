@@ -56,11 +56,11 @@ public:
 	Ref<PropMaterialCache> get_material_cache();
 	void set_material_cache(const Ref<PropMaterialCache> &cache);
 
-	Ref<PropMesherJobStep> get_jobs_step(const int index) const;
-	void set_jobs_step(const int index, const Ref<PropMesherJobStep> &step);
-	void remove_jobs_step(const int index);
-	void add_jobs_step(const Ref<PropMesherJobStep> &step);
-	int get_jobs_step_count() const;
+	Ref<PropMesherJobStep> get_job_step(const int index) const;
+	void set_job_step(const int index, const Ref<PropMesherJobStep> &step);
+	void remove_job_step(const int index);
+	void add_job_step(const Ref<PropMesherJobStep> &step);
+	int get_job_step_count() const;
 
 	void add_collision_shape(const Ref<Shape> &shape, const Transform &transform, const bool owns_shape = false);
 	void clear_collision_shapes();

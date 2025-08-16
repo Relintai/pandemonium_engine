@@ -153,7 +153,7 @@ This is done by `setup_chunk(shunk)` in `TerraWorld`.
 
             var s : TerraMesherJobStep = TerraMesherJobStep.new()
             s.job_type = TerraMesherJobStep.TYPE_NORMAL
-            tj.add_jobs_step(s)
+            tj.add_job_step(s)
 
             tj.add_mesher(TerraMesherBlocky.new())
             tj.add_liquid_mesher(TerraMesherLiquidBlocky.new())

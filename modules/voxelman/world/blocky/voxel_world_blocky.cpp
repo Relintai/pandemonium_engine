@@ -59,19 +59,19 @@ Ref<VoxelChunk> VoxelWorldBlocky::_create_chunk(int x, int y, int z, Ref<VoxelCh
 		Ref<VoxelMesherJobStep> s;
 		s.instance();
 		s->set_job_type(VoxelMesherJobStep::TYPE_NORMAL);
-		tj->add_jobs_step(s);
+		tj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(VoxelMesherJobStep::TYPE_DROP_UV2);
-		tj->add_jobs_step(s);
+		tj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(VoxelMesherJobStep::TYPE_MERGE_VERTS);
-		tj->add_jobs_step(s);
+		tj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(VoxelMesherJobStep::TYPE_BAKE_TEXTURE);
-		tj->add_jobs_step(s);
+		tj->add_job_step(s);
 
 #ifdef MODULE_MESH_UTILS_ENABLED
 		s.instance();
@@ -82,7 +82,7 @@ Ref<VoxelChunk> VoxelWorldBlocky::_create_chunk(int x, int y, int z, Ref<VoxelCh
 		s->set_simplification_step_ratio(0.8);
 		s->set_simplification_agressiveness(7);
 		s->set_simplification_steps(1);
-		tj->add_jobs_step(s);
+		tj->add_job_step(s);
 #endif
 
 		tj->add_mesher(Ref<VoxelMesher>(memnew(VoxelMesherBlocky())));
@@ -94,15 +94,15 @@ Ref<VoxelChunk> VoxelWorldBlocky::_create_chunk(int x, int y, int z, Ref<VoxelCh
 
 		s.instance();
 		s->set_job_type(VoxelMesherJobStep::TYPE_NORMAL);
-		pj->add_jobs_step(s);
+		pj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(VoxelMesherJobStep::TYPE_MERGE_VERTS);
-		pj->add_jobs_step(s);
+		pj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(VoxelMesherJobStep::TYPE_BAKE_TEXTURE);
-		pj->add_jobs_step(s);
+		pj->add_job_step(s);
 
 		s.instance();
 		s->set_job_type(VoxelMesherJobStep::TYPE_SIMPLIFY_MESH);
@@ -111,7 +111,7 @@ Ref<VoxelChunk> VoxelWorldBlocky::_create_chunk(int x, int y, int z, Ref<VoxelCh
 		s->set_fqms(fqms);
 		s->set_simplification_steps(2);
 #endif
-		pj->add_jobs_step(s);
+		pj->add_job_step(s);
 
 		chunk->job_add(lj);
 		chunk->job_add(tj);

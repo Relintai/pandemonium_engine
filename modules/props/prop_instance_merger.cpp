@@ -785,15 +785,15 @@ void PropInstanceMerger::_create_job() {
 
 	js.instance();
 	js->set_job_type(PropMesherJobStep::TYPE_NORMAL);
-	_job->add_jobs_step(js);
+	_job->add_job_step(js);
 
 	js.instance();
 	js->set_job_type(PropMesherJobStep::TYPE_MERGE_VERTS);
-	_job->add_jobs_step(js);
+	_job->add_job_step(js);
 
 	js.instance();
 	js->set_job_type(PropMesherJobStep::TYPE_BAKE_TEXTURE);
-	_job->add_jobs_step(js);
+	_job->add_job_step(js);
 }
 
 PropInstanceMerger::PropInstanceMerger() {

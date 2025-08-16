@@ -45,11 +45,11 @@ public:
 	Ref<VoxelMesher> get_prop_mesher() const;
 	void set_prop_mesher(const Ref<VoxelMesher> &mesher);
 
-	Ref<VoxelMesherJobStep> get_jobs_step(const int index) const;
-	void set_jobs_step(const int index, const Ref<VoxelMesherJobStep> &step);
-	void remove_jobs_step(const int index);
-	void add_jobs_step(const Ref<VoxelMesherJobStep> &step);
-	int get_jobs_step_count() const;
+	Ref<VoxelMesherJobStep> get_job_step(const int index) const;
+	void set_job_step(const int index, const Ref<VoxelMesherJobStep> &step);
+	void remove_job_step(const int index);
+	void add_job_step(const Ref<VoxelMesherJobStep> &step);
+	int get_job_step_count() const;
 
 	void phase_physics_process();
 	void phase_prop();

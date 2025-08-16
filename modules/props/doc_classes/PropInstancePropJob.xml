@@ -7,7 +7,7 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="add_jobs_step">
+		<method name="add_job_step">
 			<return type="void" />
 			<argument index="0" name="mesher" type="PropMesherJobStep" />
 			<description>
@@ -24,24 +24,24 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_jobs_step" qualifiers="const">
+		<method name="get_job_step" qualifiers="const">
 			<return type="PropMesherJobStep" />
 			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="get_jobs_step_count" qualifiers="const">
+		<method name="get_job_step_count" qualifiers="const">
 			<return type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="remove_jobs_step">
+		<method name="remove_job_step">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="set_jobs_step">
+		<method name="set_job_step">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="mesher" type="PropMesherJobStep" />
