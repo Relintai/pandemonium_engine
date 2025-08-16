@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainLibrary" inherits="Resource">
 	<brief_description>
+		Holds texture, material and other data for [TerrainWorld].
 	</brief_description>
 	<description>
+		Holds texture, material and other data for [TerrainWorld].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,54 +13,63 @@
 			<return type="TerrainMaterialCache" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Returns the liquid material cache for the given key or null.
 			</description>
 		</method>
 		<method name="_liquid_material_cache_get_key" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Create or set the liquid material cache key for the given chunk.
 			</description>
 		</method>
 		<method name="_liquid_material_cache_unref" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Unreferences the liquid material cache for the given key.
 			</description>
 		</method>
 		<method name="_material_cache_get" qualifiers="virtual">
 			<return type="TerrainMaterialCache" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Returns the material cache for the given key or null.
 			</description>
 		</method>
 		<method name="_material_cache_get_key" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Create or set the material cache key for the given chunk.
 			</description>
 		</method>
 		<method name="_material_cache_unref" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Unreferences the material cache for the given key.
 			</description>
 		</method>
 		<method name="_prop_material_cache_get" qualifiers="virtual">
 			<return type="TerrainMaterialCache" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Returns the prop material cache for the given key or null.
 			</description>
 		</method>
 		<method name="_prop_material_cache_get_key" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Create or set the prop material cache key for the given chunk.
 			</description>
 		</method>
 		<method name="_prop_material_cache_unref" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Unreferences the prop material cache for the given key.
 			</description>
 		</method>
 		<method name="_setup_material_albedo" qualifiers="virtual">
@@ -66,58 +77,68 @@
 			<argument index="0" name="material_index" type="int" />
 			<argument index="1" name="texture" type="Texture" />
 			<description>
+				Setup albedo for the given material.
 			</description>
 		</method>
 		<method name="_supports_caching" qualifiers="virtual">
 			<return type="bool" />
 			<description>
+				Is this library supports caching?
 			</description>
 		</method>
 		<method name="liquid_material_add">
 			<return type="void" />
 			<argument index="0" name="value" type="Material" />
 			<description>
+				Add liquid material.
 			</description>
 		</method>
 		<method name="liquid_material_cache_get">
 			<return type="TerrainMaterialCache" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Returns the liquid material cache for the given key or null.
 			</description>
 		</method>
 		<method name="liquid_material_cache_get_key">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Create or set the liquid material cache key for the given chunk.
 			</description>
 		</method>
 		<method name="liquid_material_cache_unref">
 			<return type="void" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Unreferences the liquid material cache for the given key.
 			</description>
 		</method>
 		<method name="liquid_material_get">
 			<return type="Material" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns liquid material.
 			</description>
 		</method>
 		<method name="liquid_material_get_num" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of liquid materials.
 			</description>
 		</method>
 		<method name="liquid_material_lod_get">
 			<return type="Material" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns a liquid material for the given lod level.
 			</description>
 		</method>
 		<method name="liquid_material_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove liquid material.
 			</description>
 		</method>
 		<method name="liquid_material_set">
@@ -125,58 +146,68 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="Material" />
 			<description>
+				Set liquid material.
 			</description>
 		</method>
 		<method name="liquid_materials_clear">
 			<return type="void" />
 			<description>
+				Clear liquid materials.
 			</description>
 		</method>
 		<method name="material_add">
 			<return type="void" />
 			<argument index="0" name="value" type="Material" />
 			<description>
+				Add material.
 			</description>
 		</method>
 		<method name="material_cache_get">
 			<return type="TerrainMaterialCache" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Returns the material cache for the given key or null.
 			</description>
 		</method>
 		<method name="material_cache_get_key">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Create or set the material cache key for the given chunk.
 			</description>
 		</method>
 		<method name="material_cache_unref">
 			<return type="void" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Unreferences the material cache for the given key.
 			</description>
 		</method>
 		<method name="material_get">
 			<return type="Material" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns material.
 			</description>
 		</method>
 		<method name="material_get_num" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of material.
 			</description>
 		</method>
 		<method name="material_lod_get">
 			<return type="Material" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns a material for the given lod.
 			</description>
 		</method>
 		<method name="material_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove material.
 			</description>
 		</method>
 		<method name="material_set">
@@ -184,81 +215,95 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="Material" />
 			<description>
+				Set material.
 			</description>
 		</method>
 		<method name="materials_clear">
 			<return type="void" />
 			<description>
+				Clear materials.
 			</description>
 		</method>
 		<method name="prop_add">
 			<return type="void" />
 			<argument index="0" name="value" type="PropData" />
 			<description>
+				Add prop.
 			</description>
 		</method>
 		<method name="prop_get">
 			<return type="PropData" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Returns prop.
 			</description>
 		</method>
 		<method name="prop_get_num" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of props.
 			</description>
 		</method>
 		<method name="prop_has" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="prop" type="PropData" />
 			<description>
+				Checks if prop is already added.
 			</description>
 		</method>
 		<method name="prop_material_add">
 			<return type="void" />
 			<argument index="0" name="value" type="Material" />
 			<description>
+				Add prop material.
 			</description>
 		</method>
 		<method name="prop_material_cache_get">
 			<return type="TerrainMaterialCache" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Returns the prop material cache for the given key or null.
 			</description>
 		</method>
 		<method name="prop_material_cache_get_key">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Create or set the prop material cache key for the given chunk.
 			</description>
 		</method>
 		<method name="prop_material_cache_unref">
 			<return type="void" />
 			<argument index="0" name="key" type="int" />
 			<description>
+				Unreferences the prop material cache for the given key.
 			</description>
 		</method>
 		<method name="prop_material_get">
 			<return type="Material" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns prop material.
 			</description>
 		</method>
 		<method name="prop_material_get_num" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of prop materials.
 			</description>
 		</method>
 		<method name="prop_material_lod_get">
 			<return type="Material" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Get prop material for the given lod level.
 			</description>
 		</method>
 		<method name="prop_material_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove prop material.
 			</description>
 		</method>
 		<method name="prop_material_set">
@@ -266,17 +311,20 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="Material" />
 			<description>
+				Set prop material.
 			</description>
 		</method>
 		<method name="prop_materials_clear">
 			<return type="void" />
 			<description>
+				Clear prop materials.
 			</description>
 		</method>
 		<method name="prop_remove">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<description>
+				Remove prop.
 			</description>
 		</method>
 		<method name="prop_set">
@@ -284,39 +332,46 @@
 			<argument index="0" name="id" type="int" />
 			<argument index="1" name="surface" type="PropData" />
 			<description>
+				Set prop.
 			</description>
 		</method>
 		<method name="props_clear">
 			<return type="void" />
 			<description>
+				Clear props.
 			</description>
 		</method>
 		<method name="refresh_rects">
 			<return type="void" />
 			<description>
+				Refresh rects.
 			</description>
 		</method>
 		<method name="scene_add">
 			<return type="void" />
 			<argument index="0" name="value" type="PackedScene" />
 			<description>
+				Add scene.
 			</description>
 		</method>
 		<method name="scene_get">
 			<return type="PackedScene" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns scene.
 			</description>
 		</method>
 		<method name="scene_get_num" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the number of scenes.
 			</description>
 		</method>
 		<method name="scene_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove scene.
 			</description>
 		</method>
 		<method name="scene_set">
@@ -324,11 +379,13 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="PackedScene" />
 			<description>
+				Set scene.
 			</description>
 		</method>
 		<method name="scenes_clear">
 			<return type="void" />
 			<description>
+				Clear scenes.
 			</description>
 		</method>
 		<method name="setup_material_albedo">
@@ -336,34 +393,40 @@
 			<argument index="0" name="material_index" type="int" />
 			<argument index="1" name="texture" type="Texture" />
 			<description>
+				Setup albedo for the given material.
 			</description>
 		</method>
 		<method name="supports_caching">
 			<return type="bool" />
 			<description>
+				Is this library supports caching?
 			</description>
 		</method>
 		<method name="terra_surface_add">
 			<return type="void" />
 			<argument index="0" name="value" type="TerrainSurface" />
 			<description>
+				Add terrain surface.
 			</description>
 		</method>
 		<method name="terra_surface_get">
 			<return type="TerrainSurface" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns terrain surface.
 			</description>
 		</method>
 		<method name="terra_surface_get_num" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns terrain surface count.
 			</description>
 		</method>
 		<method name="terra_surface_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes terrain surface.
 			</description>
 		</method>
 		<method name="terra_surface_set">
@@ -371,30 +434,39 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="surface" type="TerrainSurface" />
 			<description>
+				Set terrain surface.
 			</description>
 		</method>
 		<method name="terra_surfaces_clear">
 			<return type="void" />
 			<description>
+				Clear terrain surfaces.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="initialized" type="bool" setter="set_initialized" getter="get_initialized">
+			Is the librayr initialized?
 		</member>
 		<member name="liquid_materials" type="Array" setter="liquid_materials_set" getter="liquid_materials_get" default="[  ]">
+			Liquid materials.
 		</member>
 		<member name="materials" type="Array" setter="materials_set" getter="materials_get" default="[  ]">
+			Materials.
 		</member>
 		<member name="prop_materials" type="Array" setter="prop_materials_set" getter="prop_materials_get" default="[  ]">
+			Prop materials.
 		</member>
 	</members>
 	<constants>
 		<constant name="MATERIAL_INDEX_TERRAIN" value="0">
+			Material index terrain.
 		</constant>
 		<constant name="MATERIAL_INDEX_LIQUID" value="1">
+			Material index liquid.
 		</constant>
 		<constant name="MATERIAL_INDEX_PROP" value="2">
+			Material index prop.
 		</constant>
 	</constants>
 </class>
