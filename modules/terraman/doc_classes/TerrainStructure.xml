@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TerrainStructure" inherits="Resource">
 	<brief_description>
+		A structure that can be baked into a terrain when using procedural generation.
 	</brief_description>
 	<description>
+		A structure that can be baked into a terrain when using procedural generation.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,6 +13,7 @@
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Write data to chunk.
 			</description>
 		</method>
 		<method name="set_position">
@@ -19,25 +22,32 @@
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Set position.
 			</description>
 		</method>
 		<method name="write_to_chunk">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
+				Write data to chunk.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="chunk_aabb" type="AABB" setter="set_chunk_aabb" getter="get_chunk_aabb" default="AABB( 0, 0, 0, 0, 0, 0 )">
+			Chunk AABB.
 		</member>
 		<member name="position_x" type="int" setter="set_position_x" getter="get_position_x" default="0">
+			Position x.
 		</member>
 		<member name="position_y" type="int" setter="set_position_y" getter="get_position_y" default="0">
+			position y.
 		</member>
 		<member name="position_z" type="int" setter="set_position_z" getter="get_position_z" default="0">
+			Position z.
 		</member>
 		<member name="use_aabb" type="bool" setter="set_use_aabb" getter="get_use_aabb" default="true">
+			Use AABB.
 		</member>
 	</members>
 	<constants>
