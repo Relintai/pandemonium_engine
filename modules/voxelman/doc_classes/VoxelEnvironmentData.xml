@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelEnvironmentData" inherits="Resource">
 	<brief_description>
+		A class that can store different environment settings.
 	</brief_description>
 	<description>
+		A class that can store different environment settings.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -13,24 +15,28 @@
 			<argument index="1" name="primary_light" type="DirectionalLight" />
 			<argument index="2" name="secondary_light" type="DirectionalLight" />
 			<description>
+				Apply the stored the environment.
 			</description>
 		</method>
 		<method name="get_color">
 			<return type="Color" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return light color.
 			</description>
 		</method>
 		<method name="get_energy">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns light energy.
 			</description>
 		</method>
 		<method name="get_indirect_energy">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns light indirect energy.
 			</description>
 		</method>
 		<method name="set_color">
@@ -38,6 +44,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="Color" />
 			<description>
+				Set light color.
 			</description>
 		</method>
 		<method name="set_energy">
@@ -45,6 +52,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				Set light energy.
 			</description>
 		</method>
 		<method name="set_indirect_energy">
@@ -52,6 +60,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
+				set light indirect energy.
 			</description>
 		</method>
 		<method name="setup">
@@ -60,27 +69,36 @@
 			<argument index="1" name="primary_light" type="Node" />
 			<argument index="2" name="secondary_light" type="Node" />
 			<description>
+				Apply the stored the environment.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="environment" type="Environment3D" setter="set_environment" getter="get_environment">
+			Environment3D.
 		</member>
 		<member name="primary_light_color" type="Color" setter="set_color" getter="get_color" default="Color( 1, 1, 1, 1 )">
+			Primary light color.
 		</member>
 		<member name="primary_light_energy" type="float" setter="set_energy" getter="get_energy" default="1.0">
+			Primary light energy.
 		</member>
 		<member name="primary_light_indirect_energy" type="float" setter="set_indirect_energy" getter="get_indirect_energy" default="1.0">
+			Primary light indirect energy.
 		</member>
 		<member name="secondary_light_color" type="Color" setter="set_color" getter="get_color" default="Color( 1, 1, 1, 1 )">
+			Secondary light color.
 		</member>
 		<member name="secondary_light_energy" type="float" setter="set_energy" getter="get_energy" default="1.0">
+			Secondary light energy.
 		</member>
 		<member name="secondary_light_indirect_energy" type="float" setter="set_indirect_energy" getter="get_indirect_energy" default="1.0">
+			Secondary light indirect energy.
 		</member>
 	</members>
 	<constants>
 		<constant name="LIGHT_COUNT" value="2">
+			Light count.
 		</constant>
 	</constants>
 </class>
