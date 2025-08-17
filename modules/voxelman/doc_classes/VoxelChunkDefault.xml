@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelChunkDefault" inherits="VoxelChunk">
 	<brief_description>
+		Voxel chunk implementation for [VoxelWorldDefault].
 	</brief_description>
 	<description>
+		Voxel chunk implementation for [VoxelWorldDefault].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +12,7 @@
 		<method name="clear_rids">
 			<return type="void" />
 			<description>
+				Clears all stored [RID]s.
 			</description>
 		</method>
 		<method name="create_colliders">
@@ -17,48 +20,57 @@
 			<argument index="0" name="mesh_index" type="int" />
 			<argument index="1" name="layer_mask" type="int" default="1" />
 			<description>
+				Create colliders for the given meshes.
 			</description>
 		</method>
 		<method name="debug_mesh_add_vertices_to">
 			<return type="void" />
 			<argument index="0" name="arr" type="PoolVector3Array" />
 			<description>
+				Add vertices to the debug mesh.
 			</description>
 		</method>
 		<method name="debug_mesh_allocate">
 			<return type="void" />
 			<description>
+				Allocate the debug mesh.
 			</description>
 		</method>
 		<method name="debug_mesh_array_clear">
 			<return type="void" />
 			<description>
+				Clear debug mesh arrays.
 			</description>
 		</method>
 		<method name="debug_mesh_clear">
 			<return type="void" />
 			<description>
+				Clear debug mesh.
 			</description>
 		</method>
 		<method name="debug_mesh_free">
 			<return type="void" />
 			<description>
+				Free debug mesh.
 			</description>
 		</method>
 		<method name="debug_mesh_has">
 			<return type="bool" />
 			<description>
+				Is the debug mesh allocated?
 			</description>
 		</method>
 		<method name="debug_mesh_send">
 			<return type="void" />
 			<description>
+				Upload the debug mesh arrays to the gpu.
 			</description>
 		</method>
 		<method name="draw_cross_voxels">
 			<return type="void" />
 			<argument index="0" name="max" type="Vector3" />
 			<description>
+				Draw a debug cross to the debug mesh array at the given position.
 			</description>
 		</method>
 		<method name="draw_cross_voxels_fill">
@@ -66,16 +78,19 @@
 			<argument index="0" name="max" type="Vector3" />
 			<argument index="1" name="fill" type="float" />
 			<description>
+				Draw a debug cross to the debug mesh array with the given fill at the given position.
 			</description>
 		</method>
 		<method name="draw_debug_mdr_colliders">
 			<return type="void" />
 			<description>
+				Draw debug mdr colliders to the debug mesh array.
 			</description>
 		</method>
 		<method name="draw_debug_voxel_lights">
 			<return type="void" />
 			<description>
+				Draw debug terrain lights to the debug mesh array.
 			</description>
 		</method>
 		<method name="draw_debug_voxels">
@@ -83,44 +98,52 @@
 			<argument index="0" name="max" type="int" />
 			<argument index="1" name="color" type="Color" default="Color( 1, 1, 1, 1 )" />
 			<description>
+				Draw debug crosses to the debug mesh array using the DEFAULT_CHANNEL_TYPE channel as positions and the DEFAULT_CHANNEL_ISOLEVEL channel as fill up to max.
 			</description>
 		</method>
 		<method name="emit_build_finished">
 			<return type="void" />
 			<description>
+				Emit the build finished signal.
 			</description>
 		</method>
 		<method name="free_chunk">
 			<return type="void" />
 			<description>
+				Free all resources.
 			</description>
 		</method>
 		<method name="free_colliders">
 			<return type="void" />
 			<argument index="0" name="mesh_index" type="int" />
 			<description>
+				Free all colliders at index.
 			</description>
 		</method>
 		<method name="free_index">
 			<return type="void" />
 			<argument index="0" name="mesh_index" type="int" />
 			<description>
+				Free meshes at index.
 			</description>
 		</method>
 		<method name="get_light">
 			<return type="VoxelLight" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the light at index.
 			</description>
 		</method>
 		<method name="get_light_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns light count.
 			</description>
 		</method>
 		<method name="get_mesh_rids">
 			<return type="Dictionary" />
 			<description>
+				Returns all mesh rids in a dictionary.
 			</description>
 		</method>
 		<method name="mesh_rid_get">
@@ -128,6 +151,7 @@
 			<argument index="0" name="mesh_index" type="int" />
 			<argument index="1" name="mesh_type_index" type="int" />
 			<description>
+				Returns the mesh rid at index.
 			</description>
 		</method>
 		<method name="mesh_rid_get_count">
@@ -135,6 +159,7 @@
 			<argument index="0" name="mesh_index" type="int" />
 			<argument index="1" name="mesh_type_index" type="int" />
 			<description>
+				Returns the mesh rid count at index.
 			</description>
 		</method>
 		<method name="mesh_rid_get_index">
@@ -143,6 +168,7 @@
 			<argument index="1" name="mesh_type_index" type="int" />
 			<argument index="2" name="index" type="int" />
 			<description>
+				Returns the mesh rid at index.
 			</description>
 		</method>
 		<method name="mesh_rid_set">
@@ -151,6 +177,7 @@
 			<argument index="1" name="mesh_type_index" type="int" />
 			<argument index="2" name="value" type="RID" />
 			<description>
+				Set the mesh rid at index.
 			</description>
 		</method>
 		<method name="mesh_rid_set_index">
@@ -160,6 +187,7 @@
 			<argument index="2" name="index" type="int" />
 			<argument index="3" name="value" type="RID" />
 			<description>
+				Set the mesh rid at index.
 			</description>
 		</method>
 		<method name="mesh_rids_clear">
@@ -167,6 +195,7 @@
 			<argument index="0" name="mesh_index" type="int" />
 			<argument index="1" name="mesh_type_index" type="int" />
 			<description>
+				Clear all mesh rids.
 			</description>
 		</method>
 		<method name="meshes_create">
@@ -174,12 +203,14 @@
 			<argument index="0" name="mesh_index" type="int" />
 			<argument index="1" name="mesh_count" type="int" />
 			<description>
+				Create meshes.
 			</description>
 		</method>
 		<method name="meshes_free">
 			<return type="void" />
 			<argument index="0" name="mesh_index" type="int" />
 			<description>
+				Free meshes.
 			</description>
 		</method>
 		<method name="meshes_get">
@@ -187,6 +218,7 @@
 			<argument index="0" name="mesh_index" type="int" />
 			<argument index="1" name="mesh_type_index" type="int" />
 			<description>
+				Returns meshes.
 			</description>
 		</method>
 		<method name="meshes_has">
@@ -194,6 +226,7 @@
 			<argument index="0" name="mesh_index" type="int" />
 			<argument index="1" name="mesh_type_index" type="int" />
 			<description>
+				Returns whether there are meshes at the given index.
 			</description>
 		</method>
 		<method name="meshes_set">
@@ -202,86 +235,121 @@
 			<argument index="1" name="mesh_type_index" type="int" />
 			<argument index="2" name="meshes" type="Array" />
 			<description>
+				Set meshes.
 			</description>
 		</method>
 		<method name="rids_free">
 			<return type="void" />
 			<description>
+				Free rids.
 			</description>
 		</method>
 		<method name="set_mesh_rids">
 			<return type="void" />
 			<argument index="0" name="rids" type="Dictionary" />
 			<description>
+				Set mesh rids.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="build_flags" type="int" setter="set_build_flags" getter="get_build_flags">
+			Build flags.
 		</member>
 		<member name="current_lod_level" type="int" setter="set_current_lod_level" getter="get_current_lod_level" default="0">
+			Current lod level.
 		</member>
 		<member name="lights_dirty" type="bool" setter="set_lights_dirty" getter="get_lights_dirty">
+			Are the baked lights dirty?
 		</member>
 		<member name="lod_num" type="int" setter="set_lod_num" getter="get_lod_num">
+			Number of available lods.
 		</member>
 	</members>
 	<constants>
 		<constant name="DEFAULT_CHANNEL_TYPE" value="0" enum="DefaultChannels">
+			The default type channel.
 		</constant>
 		<constant name="DEFAULT_CHANNEL_ISOLEVEL" value="1" enum="DefaultChannels">
+			The default isolevel channel.
 		</constant>
 		<constant name="DEFAULT_CHANNEL_ALT_TYPE" value="2" enum="DefaultChannels">
+			The default liquid type channel.
 		</constant>
 		<constant name="DEFAULT_CHANNEL_ALT_ISOLEVEL" value="3" enum="DefaultChannels">
+			The default liquid isolevel channel.
 		</constant>
 		<constant name="DEFAULT_CHANNEL_LIGHT_COLOR_R" value="4" enum="DefaultChannels">
+			The default light red channel.
 		</constant>
 		<constant name="DEFAULT_CHANNEL_LIGHT_COLOR_G" value="5" enum="DefaultChannels">
+			The default light green channel.
 		</constant>
 		<constant name="DEFAULT_CHANNEL_LIGHT_COLOR_B" value="6" enum="DefaultChannels">
+			The default light blue channel.
 		</constant>
 		<constant name="DEFAULT_CHANNEL_AO" value="7" enum="DefaultChannels">
+			The default ao channel.
 		</constant>
 		<constant name="DEFAULT_CHANNEL_RANDOM_AO" value="8" enum="DefaultChannels">
+			The default random ao channel.
 		</constant>
 		<constant name="DEFAULT_CHANNEL_LIQUID_FLOW" value="9" enum="DefaultChannels">
+			The default liquid flow channel.
 		</constant>
 		<constant name="MAX_DEFAULT_CHANNELS" value="10" enum="DefaultChannels">
+			The max default channels.
 		</constant>
 		<constant name="MESH_INDEX_TERRAIN" value="0">
+			Mesh terrain index.
 		</constant>
 		<constant name="MESH_INDEX_PROP" value="1">
+			Mesh prop index.
 		</constant>
 		<constant name="MESH_INDEX_LIQUID" value="2">
+			Mesh Liquid index.
 		</constant>
 		<constant name="MESH_INDEX_CLUTTER" value="3">
+			Mesh clutter index.
 		</constant>
 		<constant name="MESH_TYPE_INDEX_MESH" value="0">
+			Mesh type index mesh.
 		</constant>
 		<constant name="MESH_TYPE_INDEX_MESH_INSTANCE" value="1">
+			Mesh type index mesh instance.
 		</constant>
 		<constant name="MESH_TYPE_INDEX_SHAPE" value="2">
+			Mesh type index shape.
 		</constant>
 		<constant name="MESH_TYPE_INDEX_BODY" value="3">
+			Mesh type index body.
 		</constant>
 		<constant name="BUILD_FLAG_USE_ISOLEVEL" value="1" enum="BuildFlags">
+			Build flag use isolevel.
 		</constant>
 		<constant name="BUILD_FLAG_USE_LIGHTING" value="2" enum="BuildFlags">
+			Build flag use lighting.
 		</constant>
 		<constant name="BUILD_FLAG_USE_AO" value="4" enum="BuildFlags">
+			Build flag use ao.
 		</constant>
 		<constant name="BUILD_FLAG_USE_RAO" value="8" enum="BuildFlags">
+			Build flag use rao.
 		</constant>
 		<constant name="BUILD_FLAG_GENERATE_AO" value="16" enum="BuildFlags">
+			Build flag generate ao.
 		</constant>
 		<constant name="BUILD_FLAG_AUTO_GENERATE_RAO" value="32" enum="BuildFlags">
+			Build flag auto generate rao.
 		</constant>
 		<constant name="BUILD_FLAG_BAKE_LIGHTS" value="64" enum="BuildFlags">
+			Build flag bake lights.
 		</constant>
 		<constant name="BUILD_FLAG_CREATE_COLLIDER" value="128" enum="BuildFlags">
+			Build flag create collider.
 		</constant>
 		<constant name="BUILD_FLAG_CREATE_LODS" value="256" enum="BuildFlags">
+			Build flag create lods.
 		</constant>
 	</constants>
 </class>
