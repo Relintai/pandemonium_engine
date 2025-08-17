@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelMaterialCachePCM" inherits="VoxelMaterialCache">
 	<brief_description>
+		Material cache with texture merging capabilities.
 	</brief_description>
 	<description>
+		Material cache with texture merging capabilities.
+		Only available if the texture packer module is enabled when compiling the engine (default).
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,14 +13,19 @@
 	</methods>
 	<members>
 		<member name="background_color" type="Color" setter="set_background_color" getter="get_background_color" default="Color( 0, 0, 0, 1 )">
+			The background color for the internal [TexturePacker].
 		</member>
 		<member name="keep_original_atlases" type="bool" setter="set_keep_original_atlases" getter="get_keep_original_atlases" default="false">
+			Keep original atlases option for the internal [TexturePacker].
 		</member>
 		<member name="margin" type="int" setter="set_margin" getter="get_margin" default="0">
+			Margin option for the internal [TexturePacker].
 		</member>
 		<member name="max_atlas_size" type="int" setter="set_max_atlas_size" getter="get_max_atlas_size" default="1024">
+			Max atlas size option for the internal [TexturePacker].
 		</member>
 		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="5">
+			Texture flags option for the internal [TexturePacker].
 		</member>
 	</members>
 	<constants>
