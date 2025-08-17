@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelLevelGeneratorFlat" inherits="VoxelLevelGenerator">
 	<brief_description>
+		Level generator that creates a flat plane.
 	</brief_description>
 	<description>
+		Level generator that creates a flat plane.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,8 +12,10 @@
 	</methods>
 	<members>
 		<member name="channel_map" type="Dictionary" setter="set_channel_map" getter="get_channel_map" default="{}">
+			Key: channel id, Value: fill with value.
 		</member>
 		<member name="floor_position" type="int" setter="set_floor_position" getter="get_floor_position" default="0">
+			Floor position.
 		</member>
 	</members>
 	<constants>
