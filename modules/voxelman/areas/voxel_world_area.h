@@ -1,8 +1,8 @@
-#ifndef WORLD_AREA_H
-#define WORLD_AREA_H
+#ifndef VOXEL_WORLD_AREA_H
+#define VOXEL_WORLD_AREA_H
 
 /*************************************************************************/
-/*  world_area.h                                                         */
+/*  voxel_world_area.h                                                   */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -38,8 +38,8 @@
 #include "core/math/aabb.h"
 #include "scene/resources/texture.h"
 
-class WorldArea : public Reference {
-	GDCLASS(WorldArea, Reference);
+class VoxelWorldArea : public Reference {
+	GDCLASS(VoxelWorldArea, Reference);
 
 public:
 	AABB get_aabb() const;
@@ -57,8 +57,8 @@ public:
 	int get_level() const;
 	void set_level(const int value);
 
-	WorldArea();
-	~WorldArea();
+	VoxelWorldArea();
+	~VoxelWorldArea();
 
 private:
 	static void _bind_methods();

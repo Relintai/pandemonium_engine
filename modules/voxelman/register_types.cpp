@@ -68,7 +68,7 @@
 #include "level_generator/voxel_level_generator.h"
 #include "level_generator/voxel_level_generator_flat.h"
 
-#include "areas/world_area.h"
+#include "areas/voxel_world_area.h"
 
 #include "world/voxel_world_editor.h"
 
@@ -144,7 +144,7 @@ void register_voxelman_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<VoxelLevelGenerator>();
 		ClassDB::register_class<VoxelLevelGeneratorFlat>();
 
-		ClassDB::register_class<WorldArea>();
+		ClassDB::register_class<VoxelWorldArea>();
 
 		ClassDB::register_class<VoxelJob>();
 		ClassDB::register_class<VoxelTerrainJob>();

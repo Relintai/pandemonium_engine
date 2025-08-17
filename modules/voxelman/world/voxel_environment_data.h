@@ -2,7 +2,7 @@
 #define VOXEL_ENVIRONMENT_DATA_H
 
 /*************************************************************************/
-/*  environment_data.h                                                   */
+/*  voxel_environment_data.h                                             */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */

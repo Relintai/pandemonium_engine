@@ -10,7 +10,7 @@ def configure(env):
 
 def get_doc_classes():
     return [
-        "WorldArea",
+        "VoxelWorldArea",
 
         "VoxelLight",
         "VoxelLightNode",
