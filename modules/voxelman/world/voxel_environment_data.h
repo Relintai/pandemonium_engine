@@ -1,5 +1,5 @@
-#ifndef ENVIRONMENT_DATA_H
-#define ENVIRONMENT_DATA_H
+#ifndef VOXEL_ENVIRONMENT_DATA_H
+#define VOXEL_ENVIRONMENT_DATA_H
 
 /*************************************************************************/
 /*  environment_data.h                                                   */
@@ -46,8 +46,8 @@
 
 class Environment;
 
-class EnvironmentData : public Resource {
-	GDCLASS(EnvironmentData, Resource);
+class VoxelEnvironmentData : public Resource {
+	GDCLASS(VoxelEnvironmentData, Resource);
 
 public:
 	Ref<Environment3D> get_environment();
@@ -63,8 +63,8 @@ public:
 	void setup(WorldEnvironment3D *world_environment, DirectionalLight *primary_light, DirectionalLight *secondary_light);
 	void setup_bind(Node *world_environment, Node *primary_light, Node *secondary_light);
 
-	EnvironmentData();
-	~EnvironmentData();
+	VoxelEnvironmentData();
+	~VoxelEnvironmentData();
 
 public:
 	enum {

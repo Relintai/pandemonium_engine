@@ -33,7 +33,7 @@ sources = [
     "world/voxel_chunk.cpp",
     "world/voxel_structure.cpp",
     "world/block_voxel_structure.cpp",
-    "world/environment_data.cpp",
+    "world/voxel_environment_data.cpp",
 
     "world/blocky/voxel_chunk_blocky.cpp",
     "world/blocky/voxel_world_blocky.cpp",

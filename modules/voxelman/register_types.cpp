@@ -54,7 +54,7 @@
 #include "meshers/marching_cubes/voxel_mesher_marching_cubes.h"
 
 #include "world/block_voxel_structure.h"
-#include "world/environment_data.h"
+#include "world/voxel_environment_data.h"
 #include "world/voxel_chunk.h"
 #include "world/voxel_structure.h"
 #include "world/voxel_world.h"
@@ -122,7 +122,7 @@ void register_voxelman_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<VoxelChunk>();
 		ClassDB::register_class<VoxelStructure>();
 		ClassDB::register_class<BlockVoxelStructure>();
-		ClassDB::register_class<EnvironmentData>();
+		ClassDB::register_class<VoxelEnvironmentData>();
 
 		ClassDB::register_class<VoxelChunkDefault>();
 		ClassDB::register_class<VoxelWorldDefault>();
