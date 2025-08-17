@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelChunkBlocky" inherits="VoxelChunkDefault">
 	<brief_description>
+		Voxel chunk implementation for [VoxelWorldBlocky].
 	</brief_description>
 	<description>
+		Voxel chunk implementation for [VoxelWorldBlocky].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +12,7 @@
 	</methods>
 	<members>
 		<member name="data_channel" type="PoolByteArray" setter="channel_set_compressed" getter="channel_get_compressed" default="PoolByteArray(  )">
+			The data channel.
 		</member>
 	</members>
 	<constants>
