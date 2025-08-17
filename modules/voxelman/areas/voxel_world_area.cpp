@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "world_area.h"
+#include "voxel_world_area.h"
 
 AABB VoxelWorldArea::get_aabb() const {
 	return _aabb;

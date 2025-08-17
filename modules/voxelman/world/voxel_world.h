@@ -39,7 +39,7 @@
 
 #include "scene/main/spatial.h"
 
-#include "../areas/world_area.h"
+#include "../areas/voxel_world_area.h"
 #include "../level_generator/voxel_level_generator.h"
 #include "../library/voxel_library.h"
 
@@ -118,8 +118,8 @@ public:
 	void set_player_bind(Node *player);
 
 	//World Areas
-	Ref<WorldArea> world_area_get(const int index) const;
-	void world_area_add(const Ref<WorldArea> &area);
+	Ref<VoxelWorldArea> world_area_get(const int index) const;
+	void world_area_add(const Ref<VoxelWorldArea> &area);
 	void world_area_remove(const int index);
 	void world_areas_clear();
 	int world_area_get_count() const;
@@ -260,7 +260,7 @@ private:
 	HashMap<IntPos, Ref<VoxelChunk>, IntPosHasher> _chunks;
 	Vector<Ref<VoxelChunk>> _chunks_vector;
 
-	Vector<Ref<WorldArea>> _world_areas;
+	Vector<Ref<VoxelWorldArea>> _world_areas;
 
 	Vector<Ref<VoxelStructure>> _voxel_structures;
 

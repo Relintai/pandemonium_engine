@@ -198,12 +198,12 @@ void VoxelWorld::set_player_bind(Node *player) {
 	set_player(Object::cast_to<Spatial>(player));
 }
 
-Ref<WorldArea> VoxelWorld::world_area_get(const int index) const {
-	ERR_FAIL_INDEX_V(index, _world_areas.size(), Ref<WorldArea>());
+Ref<VoxelWorldArea> VoxelWorld::world_area_get(const int index) const {
+	ERR_FAIL_INDEX_V(index, _world_areas.size(), Ref<VoxelWorldArea>());
 
 	return _world_areas.get(index);
 }
-void VoxelWorld::world_area_add(const Ref<WorldArea> &area) {
+void VoxelWorld::world_area_add(const Ref<VoxelWorldArea> &area) {
 	_world_areas.push_back(area);
 }
 void VoxelWorld::world_area_remove(const int index) {
