@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelJob" inherits="ThreadPoolJob">
 	<brief_description>
+		Base job for the voxel engine.
 	</brief_description>
 	<description>
+		Base job for the voxel engine.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,38 +12,45 @@
 		<method name="_execute_phase" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Execute the current phase.
 			</description>
 		</method>
 		<method name="_physics_process" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called on physics process if [member build_phase_type] is set to BUILD_PHASE_TYPE_PHYSICS_PROCESS.
 			</description>
 		</method>
 		<method name="_process" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called on physics process if [member build_phase_type] is set to BUILD_PHASE_TYPE_PROCESS.
 			</description>
 		</method>
 		<method name="_reset" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Reset internal state.
 			</description>
 		</method>
 		<method name="chunk_exit_tree">
 			<return type="void" />
 			<description>
+				Called when the owner chunk exits tree.
 			</description>
 		</method>
 		<method name="execute_phase">
 			<return type="void" />
 			<description>
+				Execute the current phase.
 			</description>
 		</method>
 		<method name="generate_ao">
 			<return type="void" />
 			<description>
+				Generate ao.
 			</description>
 		</method>
 		<method name="generate_random_ao">
@@ -52,62 +61,75 @@
 			<argument index="3" name="persistence" type="float" default="0.3" />
 			<argument index="4" name="scale_factor" type="float" default="0.6" />
 			<description>
+				Generate random ao.
 			</description>
 		</method>
 		<method name="get_build_done">
 			<return type="bool" />
 			<description>
+				Is the build done?
 			</description>
 		</method>
 		<method name="get_phase">
 			<return type="int" />
 			<description>
+				Returns current phase.
 			</description>
 		</method>
 		<method name="next_job">
 			<return type="void" />
 			<description>
+				Go to the next job.
 			</description>
 		</method>
 		<method name="next_phase">
 			<return type="void" />
 			<description>
+				Go to newxt phase.
 			</description>
 		</method>
 		<method name="reset">
 			<return type="void" />
 			<description>
+				Reset internal state.
 			</description>
 		</method>
 		<method name="set_build_done">
 			<return type="void" />
 			<argument index="0" name="val" type="bool" />
 			<description>
+				Set build done state.
 			</description>
 		</method>
 		<method name="set_chunk">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Set owner chunk.
 			</description>
 		</method>
 		<method name="set_phase">
 			<return type="void" />
 			<argument index="0" name="phase" type="int" />
 			<description>
+				Set current phase.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="build_phase_type" type="int" setter="set_build_phase_type" getter="get_build_phase_type" enum="VoxelJob.ActiveBuildPhaseType" default="0">
+			Build phase type.
 		</member>
 	</members>
 	<constants>
 		<constant name="BUILD_PHASE_TYPE_NORMAL" value="0" enum="ActiveBuildPhaseType">
+			Normal build phase type.
 		</constant>
 		<constant name="BUILD_PHASE_TYPE_PROCESS" value="1" enum="ActiveBuildPhaseType">
+			Process build phase type.
 		</constant>
 		<constant name="BUILD_PHASE_TYPE_PHYSICS_PROCESS" value="2" enum="ActiveBuildPhaseType">
+			Physics process build phase type.
 		</constant>
 	</constants>
 </class>
