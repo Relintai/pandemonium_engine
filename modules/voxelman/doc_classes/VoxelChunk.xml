@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelChunk" inherits="Resource">
 	<brief_description>
+		A chunk of a [VoxelWorld].
 	</brief_description>
 	<description>
+		A chunk of a [VoxelWorld].
+		Since initialization logic is usually complex, [VoxelWorld]s should create and set these up using [method VoxelWorld.create_chunk].
+		Should be inherited from.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,110 +15,134 @@
 			<return type="void" />
 			<argument index="0" name="light" type="VoxelLight" />
 			<description>
+				Bake a single [VoxelLight] into channels containing color.
+				Override to customize behaviour.
 			</description>
 		</method>
 		<method name="_bake_lights" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Bake [VoxelLight]s into channels containing color.
+				Override to customize behaviour.
 			</description>
 		</method>
 		<method name="_build" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Build meshes and other data from channel information on an another thread.
+				Uses [ThreadPool] with [TewrrainJob]s.
 			</description>
 		</method>
 		<method name="_channel_setup" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Setup the default channel layout.
 			</description>
 		</method>
 		<method name="_clear_baked_lights" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Clear channels that contain baked light color data.
 			</description>
 		</method>
 		<method name="_enter_tree" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Called when entering tree. Also called when it's added to world (and it's in the tree).
 			</description>
 		</method>
 		<method name="_exit_tree" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Called when exiting tree. Also called when it's removed from world (and it's in the tree).
 			</description>
 		</method>
 		<method name="_finalize_build" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Bookkeeping logic after the build has been done.
 			</description>
 		</method>
 		<method name="_generation_physics_process" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called when the chunk is generating during physics process.
 			</description>
 		</method>
 		<method name="_generation_process" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called when the chunk is generating during process.
 			</description>
 		</method>
 		<method name="_mesh_data_resource_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Called when a [MeshdataResource] was added.
 			</description>
 		</method>
 		<method name="_physics_process" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called on physics process if physics processing is set to true. See [method set_physics_process], [method get_physics_process].
 			</description>
 		</method>
 		<method name="_process" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called on process if processing is set to true. See [method set_process], [method get_process].
 			</description>
 		</method>
 		<method name="_visibility_changed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="visible" type="bool" />
 			<description>
+				Called when the current chunk's visibility changed.
 			</description>
 		</method>
 		<method name="_world_light_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="light" type="VoxelLight" />
 			<description>
+				Called when a world light was added.
 			</description>
 		</method>
 		<method name="_world_light_removed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="light" type="VoxelLight" />
 			<description>
+				Called when a world light was removed.
 			</description>
 		</method>
 		<method name="_world_transform_changed" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Called when the world's transform changed.
 			</description>
 		</method>
 		<method name="bake_light">
 			<return type="void" />
 			<argument index="0" name="light" type="VoxelLight" />
 			<description>
+				Bake a single [VoxelLight] into channels containing color.
 			</description>
 		</method>
 		<method name="bake_lights">
 			<return type="void" />
 			<description>
+				Bake [VoxelLight]s into channels containing color.
 			</description>
 		</method>
 		<method name="build">
 			<return type="void" />
 			<description>
+				Build meshes and other data from channel information on an another thread.
+				Uses [ThreadPool] with [TewrrainJob]s.
 			</description>
 		</method>
 		<method name="channel_allocate">
@@ -122,12 +150,14 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="default_value" type="int" />
 			<description>
+				Allocate the given channel. Fills it with the given default valkue.
 			</description>
 		</method>
 		<method name="channel_dealloc">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Deallocate the given channel.
 			</description>
 		</method>
 		<method name="channel_ensure_allocated">
@@ -135,6 +165,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="default_value" type="int" />
 			<description>
+				Ensure that the given channel is allocated. Fills it with the given default valkue it it weren't.
 			</description>
 		</method>
 		<method name="channel_fill">
@@ -142,24 +173,29 @@
 			<argument index="0" name="value" type="int" />
 			<argument index="1" name="index" type="int" />
 			<description>
+				Fill the given channel with the given value.
 			</description>
 		</method>
 		<method name="channel_get_array" qualifiers="const">
 			<return type="PoolByteArray" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the given channel as a [PoolByteArray].
 			</description>
 		</method>
 		<method name="channel_get_compressed" qualifiers="const">
 			<return type="PoolByteArray" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the given channel as an lz4 compressed [PoolByteArray].
+				Only works if the lz4 module is enabled.
 			</description>
 		</method>
 		<method name="channel_is_allocated">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns whether a channel is allocated.
 			</description>
 		</method>
 		<method name="channel_set_array">
@@ -167,6 +203,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="array" type="PoolByteArray" />
 			<description>
+				Sets the given channel from a [PoolByteArray].
 			</description>
 		</method>
 		<method name="channel_set_compressed">
@@ -174,16 +211,20 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="array" type="PoolByteArray" />
 			<description>
+				Sets the given channel from an lz4 compressed [PoolByteArray].
+				Only works if the lz4 module is enabled.
 			</description>
 		</method>
 		<method name="channel_setup">
 			<return type="void" />
 			<description>
+				Setup the default channel layout.
 			</description>
 		</method>
 		<method name="clear_baked_lights">
 			<return type="void" />
 			<description>
+				Clear channels that contain baked light color data.
 			</description>
 		</method>
 		<method name="collider_add">
@@ -193,41 +234,48 @@
 			<argument index="2" name="shape_rid" type="RID" />
 			<argument index="3" name="body" type="RID" />
 			<description>
+				Add a collider.
 			</description>
 		</method>
 		<method name="collider_get_body">
 			<return type="RID" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the given collider's body.
 			</description>
 		</method>
 		<method name="collider_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the collider count.
 			</description>
 		</method>
 		<method name="collider_get_shape">
 			<return type="Shape" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the shape for the given collider.
 			</description>
 		</method>
 		<method name="collider_get_shape_rid">
 			<return type="RID" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the shape's RID for the given collider.
 			</description>
 		</method>
 		<method name="collider_get_transform">
 			<return type="Transform" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the given collider's transform.
 			</description>
 		</method>
 		<method name="collider_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes the given collider's transform.
 			</description>
 		</method>
 		<method name="collider_set_body">
@@ -235,6 +283,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="rid" type="RID" />
 			<description>
+				Set a body for the given collider.
 			</description>
 		</method>
 		<method name="collider_set_shape">
@@ -242,6 +291,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="shape" type="Shape" />
 			<description>
+				Set a shape for the given collider.
 			</description>
 		</method>
 		<method name="collider_set_shape_rid">
@@ -249,6 +299,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="rid" type="RID" />
 			<description>
+				Set a shape RID for the given collider.
 			</description>
 		</method>
 		<method name="collider_set_transform">
@@ -256,38 +307,45 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="transform" type="Transform" />
 			<description>
+				Set the transform for the given collider.
 			</description>
 		</method>
 		<method name="colliders_clear">
 			<return type="void" />
 			<description>
+				Clear colliders.
 			</description>
 		</method>
 		<method name="enter_tree">
 			<return type="void" />
 			<description>
+				Called when entering tree. Also called when it's added to world (and it's in the tree).
 			</description>
 		</method>
 		<method name="exit_tree">
 			<return type="void" />
 			<description>
+				Called when exiting tree. Also called when it's removed from world (and it's in the tree).
 			</description>
 		</method>
 		<method name="finalize_build">
 			<return type="void" />
 			<description>
+				Bookkeeping logic after the build has been done.
 			</description>
 		</method>
 		<method name="generation_physics_process">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called when the chunk is generating during physics process.
 			</description>
 		</method>
 		<method name="generation_process">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called when the chunk is generating during process.
 			</description>
 		</method>
 		<method name="get_data_index" qualifiers="const">
@@ -296,16 +354,19 @@
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Return the data's direct index at the specified position.
 			</description>
 		</method>
 		<method name="get_data_size" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return's the data's size.
 			</description>
 		</method>
 		<method name="get_global_transform" qualifiers="const">
 			<return type="Transform" />
 			<description>
+				Returns the global transform.
 			</description>
 		</method>
 		<method name="get_index" qualifiers="const">
@@ -314,21 +375,25 @@
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Return the direct index at the specified position.
 			</description>
 		</method>
 		<method name="get_physics_process" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Is physics processing enabled?
 			</description>
 		</method>
 		<method name="get_position" qualifiers="const">
 			<return type="Vector3" />
 			<description>
+				Return chunk position.
 			</description>
 		</method>
 		<method name="get_process" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Is processing enabled?
 			</description>
 		</method>
 		<method name="get_voxel" qualifiers="const">
@@ -338,64 +403,76 @@
 			<argument index="2" name="z" type="int" />
 			<argument index="3" name="index" type="int" />
 			<description>
+				Return the data from the given channel at the specified position.
 			</description>
 		</method>
 		<method name="get_world_aabb" qualifiers="const">
 			<return type="AABB" />
 			<description>
+				Returns the chunk's world AABB.
 			</description>
 		</method>
 		<method name="get_world_position" qualifiers="const">
 			<return type="Vector3" />
 			<description>
+				Returns the chunk's world position.
 			</description>
 		</method>
 		<method name="get_world_size" qualifiers="const">
 			<return type="Vector3" />
 			<description>
+				Returns the chunk's world size.
 			</description>
 		</method>
 		<method name="is_in_tree" qualifiers="const">
 			<return type="bool" />
 			<description>
+				Is the chunk in tree?
 			</description>
 		</method>
 		<method name="job_add">
 			<return type="void" />
 			<argument index="0" name="job" type="VoxelJob" />
 			<description>
+				Add job.
 			</description>
 		</method>
 		<method name="job_get" qualifiers="const">
 			<return type="VoxelJob" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return job at index.
 			</description>
 		</method>
 		<method name="job_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns job count.
 			</description>
 		</method>
 		<method name="job_get_current">
 			<return type="VoxelJob" />
 			<description>
+				Returns the current job or null.
 			</description>
 		</method>
 		<method name="job_get_current_index">
 			<return type="int" />
 			<description>
+				Returns the current job index.
 			</description>
 		</method>
 		<method name="job_next">
 			<return type="void" />
 			<description>
+				Go to the next job.
 			</description>
 		</method>
 		<method name="job_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove job at index.
 			</description>
 		</method>
 		<method name="job_set">
@@ -403,6 +480,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="job" type="VoxelJob" />
 			<description>
+				Set job at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_add">
@@ -413,6 +491,7 @@
 			<argument index="3" name="color" type="Color" default="Color( 1, 1, 1, 1 )" />
 			<argument index="4" name="apply_voxel_scale" type="bool" default="true" />
 			<description>
+				Adds a [MeshDataResource].
 			</description>
 		</method>
 		<method name="mesh_data_resource_addv">
@@ -423,58 +502,68 @@
 			<argument index="3" name="color" type="Color" default="Color( 1, 1, 1, 1 )" />
 			<argument index="4" name="apply_voxel_scale" type="bool" default="true" />
 			<description>
+				Adds a [MeshDataResource] using it's position.
 			</description>
 		</method>
 		<method name="mesh_data_resource_clear">
 			<return type="void" />
 			<description>
+				Clears [MeshDataResource]s.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get">
 			<return type="MeshDataResource" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource] at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_color">
 			<return type="Color" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource]'s color at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns [MeshDataResource] count.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_is_inside">
 			<return type="bool" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns whether [MeshDataResource] at index is inside this chunk.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_texture">
 			<return type="Texture" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource]'s texture at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_transform">
 			<return type="Transform" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource]'s transform at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_get_uv_rect">
 			<return type="Rect2" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns [MeshDataResource]'s uv_rect at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes [MeshDataResource] at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set">
@@ -482,6 +571,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="mesh" type="MeshDataResource" />
 			<description>
+				Sets [MeshDataResource] at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_color">
@@ -489,6 +579,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="color" type="Color" />
 			<description>
+				Set [MeshDataResource]'s color at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_is_inside">
@@ -496,6 +587,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="inside" type="bool" />
 			<description>
+				Set whether [MeshDataResource] at index is inside this chunk.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_texture">
@@ -503,6 +595,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="texture" type="Texture" />
 			<description>
+				Set [MeshDataResource]'s texture at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_transform">
@@ -510,6 +603,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="transform" type="Transform" />
 			<description>
+				Set [MeshDataResource]'s transform at index.
 			</description>
 		</method>
 		<method name="mesh_data_resource_set_uv_rect">
@@ -517,18 +611,21 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="uv_rect" type="Rect2" />
 			<description>
+				Set [MeshDataResource]'s uv_rect at index.
 			</description>
 		</method>
 		<method name="physics_process">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called to handle physics process.
 			</description>
 		</method>
 		<method name="process">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
 			<description>
+				Called to handle process.
 			</description>
 		</method>
 		<method name="prop_add">
@@ -536,34 +633,40 @@
 			<argument index="0" name="prop" type="Transform" />
 			<argument index="1" name="arg1" type="PropData" />
 			<description>
+				Add a prop.
 			</description>
 		</method>
 		<method name="prop_get">
 			<return type="PropData" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns prop at index.
 			</description>
 		</method>
 		<method name="prop_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns prop count.
 			</description>
 		</method>
 		<method name="prop_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove prop.
 			</description>
 		</method>
 		<method name="props_clear">
 			<return type="void" />
 			<description>
+				Clean props.
 			</description>
 		</method>
 		<method name="set_physics_process">
 			<return type="void" />
 			<argument index="0" name="value" type="bool" />
 			<description>
+				Enable or disable physics process callbacks.
 			</description>
 		</method>
 		<method name="set_position">
@@ -572,12 +675,14 @@
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Set chunk position.
 			</description>
 		</method>
 		<method name="set_process">
 			<return type="void" />
 			<argument index="0" name="value" type="bool" />
 			<description>
+				Enable or disable process callbacks.
 			</description>
 		</method>
 		<method name="set_size">
@@ -588,6 +693,7 @@
 			<argument index="3" name="margin_start" type="int" default="0" />
 			<argument index="4" name="margin_end" type="int" default="0" />
 			<description>
+				Set chunk's size.
 			</description>
 		</method>
 		<method name="set_voxel">
@@ -598,18 +704,21 @@
 			<argument index="3" name="z" type="int" />
 			<argument index="4" name="index" type="int" />
 			<description>
+				Set data to the given channel.
 			</description>
 		</method>
 		<method name="to_global" qualifiers="const">
 			<return type="Vector3" />
 			<argument index="0" name="local" type="Vector3" />
 			<description>
+				Convert the given local position to global position.
 			</description>
 		</method>
 		<method name="to_local" qualifiers="const">
 			<return type="Vector3" />
 			<argument index="0" name="global" type="Vector3" />
 			<description>
+				Convert the given global position to local position.
 			</description>
 		</method>
 		<method name="validate_data_position" qualifiers="const">
@@ -618,18 +727,21 @@
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Validates whether the ginven indexes are valid.
 			</description>
 		</method>
 		<method name="visibility_changed">
 			<return type="void" />
 			<argument index="0" name="visible" type="bool" />
 			<description>
+				Called when this chunk's visibility changes.
 			</description>
 		</method>
 		<method name="voxel_structure_add">
 			<return type="void" />
 			<argument index="0" name="structure" type="VoxelStructure" />
 			<description>
+				Add voxel structure.
 			</description>
 		</method>
 		<method name="voxel_structure_add_at_position">
@@ -637,116 +749,156 @@
 			<argument index="0" name="structure" type="VoxelStructure" />
 			<argument index="1" name="world_position" type="Vector3" />
 			<description>
+				Add voxel structure at the given index.
 			</description>
 		</method>
 		<method name="voxel_structure_clear">
 			<return type="void" />
 			<description>
+				Clear voxel structures.
 			</description>
 		</method>
 		<method name="voxel_structure_get" qualifiers="const">
 			<return type="VoxelStructure" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns voxel structure at index.
 			</description>
 		</method>
 		<method name="voxel_structure_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns voxel structure count.
 			</description>
 		</method>
 		<method name="voxel_structure_remove">
 			<return type="void" />
 			<argument index="0" name="structure" type="VoxelStructure" />
 			<description>
+				Removes voxel structure.
 			</description>
 		</method>
 		<method name="voxel_structure_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes voxel structure at the given index.
 			</description>
 		</method>
 		<method name="world_light_added">
 			<return type="void" />
 			<argument index="0" name="light" type="VoxelLight" />
 			<description>
+				Called when a world light is added.
 			</description>
 		</method>
 		<method name="world_light_removed">
 			<return type="void" />
 			<argument index="0" name="light" type="VoxelLight" />
 			<description>
+				Called when a world light is removed.
 			</description>
 		</method>
 		<method name="world_transform_changed">
 			<return type="void" />
 			<description>
+				Called when the world transform changes.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="channel_count" type="int" setter="channel_set_count" getter="channel_get_count" default="0">
+			The channel count.
 		</member>
 		<member name="data_size_x" type="int" setter="set_data_size_x" getter="get_data_size_x" default="0">
+			The full actual x data size, counting margins.
 		</member>
 		<member name="data_size_y" type="int" setter="set_data_size_y" getter="get_data_size_y" default="0">
+			The full actual y data size, counting margins.
 		</member>
 		<member name="data_size_z" type="int" setter="set_data_size_z" getter="get_data_size_z" default="0">
+			The full actual z data size, counting margins.
 		</member>
 		<member name="dirty" type="bool" setter="set_dirty" getter="get_dirty">
+			Is this chunk needs it's meshes regenerated?
 		</member>
 		<member name="is_build_threaded" type="bool" setter="set_is_build_threaded" getter="get_is_build_threaded">
+			Is the build threaded?
 		</member>
 		<member name="is_generating" type="bool" setter="set_is_generating" getter="get_is_generating">
+			Is chunk generating?
 		</member>
 		<member name="library" type="VoxelLibrary" setter="set_library" getter="get_library">
+			The active library.
 		</member>
 		<member name="liquid_material_cache_key" type="int" setter="liquid_material_cache_key_set" getter="liquid_material_cache_key_get" default="0">
+			Liquid material cache key if exists.
 		</member>
 		<member name="liquid_material_cache_key_has" type="bool" setter="liquid_material_cache_key_has_set" getter="liquid_material_cache_key_has_get" default="false">
+			Has a liquid material cache key?
 		</member>
 		<member name="margin_end" type="int" setter="set_margin_end" getter="get_margin_end" default="0">
+			Margin at the end of the internal data arrays.
+			If this is one, the chunk can be indexed up to (size() - 1) + 1 on both axes. This allows to store data that actually belongs to other chunks, so they don't have to be loaded. This is used for mesh generation. Some algorithms might need more.
 		</member>
 		<member name="margin_start" type="int" setter="set_margin_start" getter="get_margin_start" default="0">
+			Margin at the start of the internal data arrays.
+			If this is one, the chunk can be indexed from -1 on both axes. This allows to store data that actually belongs to other chunks, so they don't have to be loaded. This is used for mesh generation. Some algorithms might need more.
 		</member>
 		<member name="material_cache_key" type="int" setter="material_cache_key_set" getter="material_cache_key_get" default="0">
+			Material cache key if exists.
 		</member>
 		<member name="material_cache_key_has" type="bool" setter="material_cache_key_has_set" getter="material_cache_key_has_get" default="false">
+			Has a material cache key?
 		</member>
 		<member name="position_x" type="int" setter="set_position_x" getter="get_position_x" default="0">
+			Chunk x position.
 		</member>
 		<member name="position_y" type="int" setter="set_position_y" getter="get_position_y" default="0">
+			Chunk y position.
 		</member>
 		<member name="position_z" type="int" setter="set_position_z" getter="get_position_z" default="0">
+			Chunk z position.
 		</member>
 		<member name="prop_material_cache_key" type="int" setter="prop_material_cache_key_set" getter="prop_material_cache_key_get" default="0">
+			Prop material cache key if exists.
 		</member>
 		<member name="prop_material_cache_key_has" type="bool" setter="prop_material_cache_key_has_set" getter="prop_material_cache_key_has_get" default="false">
+			Has a prop material cache key?
 		</member>
 		<member name="size_x" type="int" setter="set_size_x" getter="get_size_x" default="0">
+			The chunk's size on the x axis.
 		</member>
 		<member name="size_y" type="int" setter="set_size_y" getter="get_size_y" default="0">
+			The chunk's size on the y axis.
 		</member>
 		<member name="size_z" type="int" setter="set_size_z" getter="get_size_z" default="0">
+			The chunk's size on the z axis.
 		</member>
 		<member name="state" type="int" setter="set_state" getter="get_state">
+			Temporary chunk state. Currently unused. Not saved.
 		</member>
 		<member name="transform" type="Transform" setter="set_transform" getter="get_transform" default="Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )">
+			The chunk's transform.
 		</member>
 		<member name="visible" type="bool" setter="set_visible" getter="get_visible" default="true">
+			Is this chunk visible?
 		</member>
 		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
+			The voxel scale.
 		</member>
 		<member name="voxel_structures" type="Array" setter="voxel_structures_set" getter="voxel_structures_get" default="[  ]">
+			All voxel structures.
 		</member>
 		<member name="voxel_world" type="VoxelWorld" setter="set_voxel_world" getter="get_voxel_world">
+			The owner world.
 		</member>
 	</members>
 	<signals>
 		<signal name="mesh_generation_finished">
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Emitted when mesh generation finishes.
 			</description>
 		</signal>
 	</signals>
