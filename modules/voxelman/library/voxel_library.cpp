@@ -381,7 +381,7 @@ void VoxelLibrary::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_setup_material_albedo", PropertyInfo(Variant::INT, "material_index"), PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture")));
 
 	BIND_VMETHOD(MethodInfo("_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_material_cache_get", PropertyInfo(Variant::INT, "key")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "VoxelMaterialCache"), "_material_cache_get", PropertyInfo(Variant::INT, "key")));
 	BIND_VMETHOD(MethodInfo("_material_cache_unref", PropertyInfo(Variant::INT, "key")));
 
 	ClassDB::bind_method(D_METHOD("material_get", "index"), &VoxelLibrary::material_get);
@@ -405,7 +405,7 @@ void VoxelLibrary::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "23/20:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
 	BIND_VMETHOD(MethodInfo("_liquid_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_liquid_material_cache_get", PropertyInfo(Variant::INT, "key")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "VoxelMaterialCache"), "_liquid_material_cache_get", PropertyInfo(Variant::INT, "key")));
 	BIND_VMETHOD(MethodInfo("_liquid_material_cache_unref", PropertyInfo(Variant::INT, "key")));
 
 	ClassDB::bind_method(D_METHOD("liquid_material_get", "index"), &VoxelLibrary::liquid_material_get);
@@ -429,7 +429,7 @@ void VoxelLibrary::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "liquid_materials", PROPERTY_HINT_NONE, "23/20:Material", PROPERTY_USAGE_DEFAULT, "Material"), "liquid_materials_set", "liquid_materials_get");
 
 	BIND_VMETHOD(MethodInfo("_prop_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_prop_material_cache_get", PropertyInfo(Variant::INT, "key")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "VoxelMaterialCache"), "_prop_material_cache_get", PropertyInfo(Variant::INT, "key")));
 	BIND_VMETHOD(MethodInfo("_prop_material_cache_unref", PropertyInfo(Variant::INT, "key")));
 
 	ClassDB::bind_method(D_METHOD("prop_material_get", "index"), &VoxelLibrary::prop_material_get);
