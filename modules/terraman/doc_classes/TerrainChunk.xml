@@ -1136,7 +1136,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="channel_count" addedtype="int" setter="channel_set_count" getter="channel_get_count" default="0">
+		<member name="channel_count" type="int" setter="channel_set_count" getter="channel_get_count" default="0">
 			The channel count.
 		</member>
 		<member name="data_size_x" type="int" setter="set_data_size_x" getter="get_data_size_x" default="0">
