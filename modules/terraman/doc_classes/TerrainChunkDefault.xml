@@ -299,10 +299,10 @@
 			The max default channels.
 		</constant>
 		<constant name="MESH_INDEX_TERRAIN" value="0">
-			MEsh terrain index.
+			Mesh terrain index.
 		</constant>
 		<constant name="MESH_INDEX_PROP" value="1">
-			MEsh prop index.
+			Mesh prop index.
 		</constant>
 		<constant name="MESH_INDEX_LIQUID" value="2">
 			Mesh Liquid index.
