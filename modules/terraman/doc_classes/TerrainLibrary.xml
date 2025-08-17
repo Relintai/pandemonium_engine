@@ -446,7 +446,7 @@
 	</methods>
 	<members>
 		<member name="initialized" type="bool" setter="set_initialized" getter="get_initialized">
-			Is the librayr initialized?
+			Is the library initialized?
 		</member>
 		<member name="liquid_materials" type="Array" setter="liquid_materials_set" getter="liquid_materials_get" default="[  ]">
 			Liquid materials.
