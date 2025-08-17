@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelMesher" inherits="Reference">
 	<brief_description>
+		Mesher for [VoxelWorld]s.
 	</brief_description>
 	<description>
+		Mesher for [VoxelWorld]s.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,42 +13,49 @@
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Generate mesh for chunk.
 			</description>
 		</method>
 		<method name="_add_mesher" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="mesher" type="VoxelMesher" />
 			<description>
+				Add meshes from other mesher.
 			</description>
 		</method>
 		<method name="_bake_colors" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Bake colors.
 			</description>
 		</method>
 		<method name="_bake_liquid_colors" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Bake liquid colors.
 			</description>
 		</method>
 		<method name="add_chunk">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Generate mesh for chunk.
 			</description>
 		</method>
 		<method name="add_color">
 			<return type="void" />
 			<argument index="0" name="color" type="Color" />
 			<description>
+				Add color.
 			</description>
 		</method>
 		<method name="add_indices">
 			<return type="void" />
 			<argument index="0" name="indice" type="int" />
 			<description>
+				Add indices.
 			</description>
 		</method>
 		<method name="add_mesh_data_resource">
@@ -57,6 +66,7 @@
 			<argument index="3" name="scale" type="Vector3" default="Vector3( 1, 1, 1 )" />
 			<argument index="4" name="uv_rect" type="Rect2" default="Rect2( 0, 0, 1, 1 )" />
 			<description>
+				Add mesh data resource.
 			</description>
 		</method>
 		<method name="add_mesh_data_resource_transform">
@@ -65,6 +75,7 @@
 			<argument index="1" name="transform" type="Transform" />
 			<argument index="2" name="uv_rect" type="Rect2" default="Rect2( 0, 0, 1, 1 )" />
 			<description>
+				Add mesh data resource with a transform.
 			</description>
 		</method>
 		<method name="add_mesh_data_resource_transform_colored">
@@ -74,236 +85,285 @@
 			<argument index="2" name="colors" type="PoolColorArray" />
 			<argument index="3" name="uv_rect" type="Rect2" default="Rect2( 0, 0, 1, 1 )" />
 			<description>
+				Add mesh data resource with a transform and colors.
 			</description>
 		</method>
 		<method name="add_mesher">
 			<return type="void" />
 			<argument index="0" name="mesher" type="VoxelMesher" />
 			<description>
+				Add mesher.
 			</description>
 		</method>
 		<method name="add_normal">
 			<return type="void" />
 			<argument index="0" name="normal" type="Vector3" />
 			<description>
+				Add normal.
 			</description>
 		</method>
 		<method name="add_uv">
 			<return type="void" />
 			<argument index="0" name="uv" type="Vector2" />
 			<description>
+				Add uv.
 			</description>
 		</method>
 		<method name="add_uv2">
 			<return type="void" />
 			<argument index="0" name="uv" type="Vector2" />
 			<description>
+				Add uv2.
 			</description>
 		</method>
 		<method name="add_vertex">
 			<return type="void" />
 			<argument index="0" name="vertex" type="Vector3" />
 			<description>
+				Add vertex.
 			</description>
 		</method>
 		<method name="bake_colors">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Bake colors.
 			</description>
 		</method>
 		<method name="bake_liquid_colors">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Bake liquid colors.
 			</description>
 		</method>
 		<method name="build_collider" qualifiers="const">
 			<return type="PoolVector3Array" />
 			<description>
+				Build colliders.
 			</description>
 		</method>
 		<method name="build_mesh">
 			<return type="Array" />
 			<description>
+				Build mesh.
 			</description>
 		</method>
 		<method name="build_mesh_into">
 			<return type="void" />
 			<argument index="0" name="mesh_rid" type="RID" />
 			<description>
+				Build mesh into.
 			</description>
 		</method>
 		<method name="generate_normals">
 			<return type="void" />
 			<argument index="0" name="flip" type="bool" default="false" />
 			<description>
+				Generate normals.
 			</description>
 		</method>
 		<method name="get_color" qualifiers="const">
 			<return type="Color" />
 			<argument index="0" name="idx" type="int" />
 			<description>
+				Return color.
 			</description>
 		</method>
 		<method name="get_colors" qualifiers="const">
 			<return type="PoolColorArray" />
 			<description>
+				Returns colors.
 			</description>
 		</method>
 		<method name="get_index" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="idx" type="int" />
 			<description>
+				Returns index.
 			</description>
 		</method>
 		<method name="get_indices" qualifiers="const">
 			<return type="PoolIntArray" />
 			<description>
+				Returns indices.
 			</description>
 		</method>
 		<method name="get_indices_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns indices count.
 			</description>
 		</method>
 		<method name="get_normal" qualifiers="const">
 			<return type="Vector3" />
 			<argument index="0" name="idx" type="int" />
 			<description>
+				Returns normal.
 			</description>
 		</method>
 		<method name="get_normals" qualifiers="const">
 			<return type="PoolVector3Array" />
 			<description>
+				Returns normals.
 			</description>
 		</method>
 		<method name="get_uv" qualifiers="const">
 			<return type="Vector2" />
 			<argument index="0" name="idx" type="int" />
 			<description>
+				Returns uv.
 			</description>
 		</method>
 		<method name="get_uv2" qualifiers="const">
 			<return type="Vector2" />
 			<argument index="0" name="idx" type="int" />
 			<description>
+				Returns uv2.
 			</description>
 		</method>
 		<method name="get_uv2s" qualifiers="const">
 			<return type="PoolVector2Array" />
 			<description>
+				Returns uv2s.
 			</description>
 		</method>
 		<method name="get_uvs" qualifiers="const">
 			<return type="PoolVector2Array" />
 			<description>
+				Returns uvs.
 			</description>
 		</method>
 		<method name="get_vertex" qualifiers="const">
 			<return type="Vector3" />
 			<argument index="0" name="idx" type="int" />
 			<description>
+				Returns vertex.
 			</description>
 		</method>
 		<method name="get_vertex_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns vertex count.
 			</description>
 		</method>
 		<method name="get_vertices" qualifiers="const">
 			<return type="PoolVector3Array" />
 			<description>
+				Returns vertices.
 			</description>
 		</method>
 		<method name="remove_doubles">
 			<return type="void" />
 			<description>
+				Remove doubles.
 			</description>
 		</method>
 		<method name="remove_doubles_hashed">
 			<return type="void" />
 			<description>
+				Remove doubles using hashes.
 			</description>
 		</method>
 		<method name="remove_index">
 			<return type="void" />
 			<argument index="0" name="idx" type="int" />
 			<description>
+				Remove index.
 			</description>
 		</method>
 		<method name="remove_vertex">
 			<return type="void" />
 			<argument index="0" name="idx" type="int" />
 			<description>
+				Remove vertex.
 			</description>
 		</method>
 		<method name="reset">
 			<return type="void" />
 			<description>
+				Reset.
 			</description>
 		</method>
 		<method name="set_colors">
 			<return type="void" />
 			<argument index="0" name="values" type="PoolColorArray" />
 			<description>
+				Set colors.
 			</description>
 		</method>
 		<method name="set_indices">
 			<return type="void" />
 			<argument index="0" name="values" type="PoolIntArray" />
 			<description>
+				Set indices.
 			</description>
 		</method>
 		<method name="set_normals">
 			<return type="void" />
 			<argument index="0" name="values" type="PoolVector3Array" />
 			<description>
+				Set normals.
 			</description>
 		</method>
 		<method name="set_uv2s">
 			<return type="void" />
 			<argument index="0" name="values" type="PoolVector2Array" />
 			<description>
+				Set uv2s.
 			</description>
 		</method>
 		<method name="set_uvs">
 			<return type="void" />
 			<argument index="0" name="values" type="PoolVector2Array" />
 			<description>
+				Set uvs.
 			</description>
 		</method>
 		<method name="set_vertices">
 			<return type="void" />
 			<argument index="0" name="values" type="PoolVector3Array" />
 			<description>
+				Set vertices.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="ao_strength" type="float" setter="set_ao_strength" getter="get_ao_strength" default="0.25">
+			AO Strength.
 		</member>
 		<member name="base_light_value" type="float" setter="set_base_light_value" getter="get_base_light_value" default="0.5">
+			Base light value.
 		</member>
 		<member name="channel_index_isolevel" type="int" setter="set_channel_index_isolevel" getter="get_channel_index_isolevel" default="0">
+			Isolevel channel index.
 		</member>
 		<member name="channel_index_type" type="int" setter="set_channel_index_type" getter="get_channel_index_type" default="0">
+			Type channel index.
 		</member>
 		<member name="format" type="int" setter="set_format" getter="get_format" default="0">
+			Format.
 		</member>
 		<member name="library" type="VoxelLibrary" setter="set_library" getter="get_library">
+			Library.
 		</member>
 		<member name="lod_index" type="int" setter="set_lod_index" getter="get_lod_index" default="0">
+			Lod index.
 		</member>
 		<member name="material" type="Material" setter="set_material" getter="get_material">
+			Material.
 		</member>
 		<member name="mesher_index" type="int" setter="set_mesher_index" getter="get_mesher_index" default="0">
+			Mesher index.
 		</member>
 		<member name="texture_scale" type="int" setter="set_texture_scale" getter="get_texture_scale" default="1">
+			Texture scale.
 		</member>
 		<member name="uv_margin" type="Rect2" setter="set_uv_margin" getter="get_uv_margin" default="Rect2( 0, 0, 1, 1 )">
+			UV margin.
 		</member>
 		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
+			Voxel scale.
 		</member>
 	</members>
 	<constants>
