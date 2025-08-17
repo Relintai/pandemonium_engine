@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelLibrarySimple" inherits="VoxelLibrary">
 	<brief_description>
+		Simple voxel library with support for texture atlases.
 	</brief_description>
 	<description>
+		Simple voxel library with support for texture atlases.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,10 +12,13 @@
 	</methods>
 	<members>
 		<member name="atlas_columns" type="int" setter="set_atlas_columns" getter="get_atlas_columns" default="8">
+			How many columns are in the given material's texture.
 		</member>
 		<member name="atlas_rows" type="int" setter="set_atlas_rows" getter="get_atlas_rows" default="8">
+			How many rows are in the given material's texture.
 		</member>
 		<member name="voxel_surfaces" type="Array" setter="set_voxel_surfaces" getter="get_voxel_surfaces" default="[  ]">
+			Surfaces.
 		</member>
 	</members>
 	<constants>
