@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelLightJob" inherits="VoxelJob">
 	<brief_description>
+		Voxel job for baking lights into vertex color.
 	</brief_description>
 	<description>
+		Voxel job for baking lights into vertex color.
 	</description>
 	<tutorials>
 	</tutorials>
