@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="MarchingCubesCellData" inherits="Reference">
 	<brief_description>
+		A class that contains data for the marching cube algorithm.
 	</brief_description>
 	<description>
+		A class that contains data for the marching cube algorithm.
+		The data is from the transvoxel algorithm's tables (http://transvoxel.org/), although it was modified to support uv maping.
+		Used by [VoxelWorldMarchinCubes].
+		Bindings are unfinished.
 	</description>
 	<tutorials>
 	</tutorials>
