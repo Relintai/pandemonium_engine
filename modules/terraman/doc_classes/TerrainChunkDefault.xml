@@ -235,8 +235,8 @@
 			<argument index="0" name="mesh_index" type="int" />
 			<argument index="1" name="mesh_type_index" type="int" />
 			<argument index="2" name="meshes" type="Array" />
-				Set meshes.
 			<description>
+				Set meshes.
 			</description>
 		</method>
 		<method name="rids_free">
