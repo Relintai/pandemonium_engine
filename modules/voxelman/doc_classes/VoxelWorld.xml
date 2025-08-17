@@ -329,12 +329,12 @@
 		</method>
 		<method name="world_area_add">
 			<return type="void" />
-			<argument index="0" name="area" type="WorldArea" />
+			<argument index="0" name="area" type="VoxelWorldArea" />
 			<description>
 			</description>
 		</method>
 		<method name="world_area_get" qualifiers="const">
-			<return type="WorldArea" />
+			<return type="VoxelWorldArea" />
 			<argument index="0" name="index" type="int" />
 			<description>
 			</description>

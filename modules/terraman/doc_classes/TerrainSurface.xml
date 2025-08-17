@@ -57,7 +57,7 @@
 		<member name="surface_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
 			Surface name.
 		</member>
-		<member name="voxel_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		<member name="voxel_name" type="String" setter="set_name" getter="get_name">
 			Deprecated. Use [member surface_name] instead.
 		</member>
 	</members>
