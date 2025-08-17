@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelChunkCubic" inherits="VoxelChunkDefault">
 	<brief_description>
+		Voxel chunk implementation for [VoxelWorldCubic].
 	</brief_description>
 	<description>
+		Voxel chunk implementation for [VoxelWorldCubic].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,8 +12,10 @@
 	</methods>
 	<members>
 		<member name="data_channel" type="PoolByteArray" setter="channel_set_compressed" getter="channel_get_compressed" default="PoolByteArray(  )">
+			The data channel.
 		</member>
 		<member name="isolevel_channel" type="PoolByteArray" setter="channel_set_compressed" getter="channel_get_compressed" default="PoolByteArray(  )">
+			Isolevel channel.
 		</member>
 	</members>
 	<constants>
