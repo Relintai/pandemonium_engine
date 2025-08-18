@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelMesherDefault" inherits="VoxelMesher">
 	<brief_description>
+		Voxel mesher for [VoxelWorldDefault].
 	</brief_description>
 	<description>
+		Voxel mesher for [VoxelWorldDefault].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +12,7 @@
 	</methods>
 	<members>
 		<member name="build_flags" type="int" setter="set_build_flags" getter="get_build_flags" default="384">
+			Build flags.
 		</member>
 		<member name="format" type="int" setter="set_format" getter="get_format" overrides="VoxelMesher" default="18" />
 	</members>
