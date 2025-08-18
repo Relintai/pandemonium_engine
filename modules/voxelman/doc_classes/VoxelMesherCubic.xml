@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelMesherCubic" inherits="VoxelMesherDefault">
 	<brief_description>
+		Voxel mesher for [VoxelWorldCubic].
 	</brief_description>
 	<description>
+		Voxel mesher for [VoxelWorldCubic].
 	</description>
 	<tutorials>
 	</tutorials>
