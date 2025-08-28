@@ -960,14 +960,15 @@ void Spatial::show() {
 
 	data.visible = true;
 
-	if (!is_inside_tree()) {
-		return;
-	}
-
 	bool parent_visible = get_parent_spatial() ? get_parent_spatial()->data.visible_in_tree : true;
 	if (parent_visible) {
 		_propagate_visible_in_tree(true);
 	}
+
+	if (!is_inside_tree()) {
+		return;
+	}
+
 	_propagate_visibility_changed();
 }
 
@@ -978,14 +979,15 @@ void Spatial::hide() {
 
 	data.visible = false;
 
-	if (!is_inside_tree()) {
-		return;
-	}
-
 	bool parent_visible = get_parent_spatial() ? get_parent_spatial()->data.visible_in_tree : true;
 	if (parent_visible) {
 		_propagate_visible_in_tree(false);
 	}
+
+	if (!is_inside_tree()) {
+		return;
+	}
+
 	_propagate_visibility_changed();
 }
 
