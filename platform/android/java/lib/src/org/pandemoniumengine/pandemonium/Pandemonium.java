@@ -161,6 +161,10 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		return mCurrentIntent;
 	}
 
+	public boolean isImmersive() {
+		return use_immersive;
+	}
+
 	private void setState(int newState) {
 		if (mState != newState) {
 			mState = newState;
