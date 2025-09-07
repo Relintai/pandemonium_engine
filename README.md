@@ -172,4 +172,16 @@ It should also mirror the engine specific repositories and the release zip-s.
 
 It should also look at least acceptable.
 
+### Multi window support
+
+Add multi window support for the engine.
+
+Should oly add very little code and practically zero complexity.
+
+The issue is popups. Inheriting them from a Window (Viewport) class is incredibly inefficient,
+and custom handling for them will be extremely messy. A good solution for this is going to be needed.
+
+Currently my best idea is to have 2 sets of popups, and the user can decide whether to have multi window support
+or not by using the proper ones. Still trying to figure out a way to make this simpler.
+
 
