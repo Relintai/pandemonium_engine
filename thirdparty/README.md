@@ -536,7 +536,7 @@ File extracted from upstream release tarball:
 ## zlib
 
 - Upstream: https://www.zlib.net
-- Version: 1.3 (2023)
+- Version: 1.3.1 (2024)
 - License: zlib
 
 Files extracted from upstream source:
