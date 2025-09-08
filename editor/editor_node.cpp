@@ -478,7 +478,10 @@ void EditorNode::_notification(int p_what) {
 
 			editor_selection->update();
 
-			scene_root->set_size_override(true, Size2(ProjectSettings::get_singleton()->get("display/window/size/width"), ProjectSettings::get_singleton()->get("display/window/size/height")));
+			GLOBAL_CACHED(display_window_size_width, int, "display/window/size/width");
+			GLOBAL_CACHED(display_window_size_height, int, "display/window/size/height");
+
+			scene_root->set_size_override(true, Size2(display_window_size_width, display_window_size_height));
 
 			ResourceImporterTexture::get_singleton()->update_imports();
 		} break;
@@ -553,12 +556,14 @@ void EditorNode::_notification(int p_what) {
 
 		case MainLoop::NOTIFICATION_WM_FOCUS_OUT: {
 			// Save on focus loss before applying the FPS limit to avoid slowing down the saving process.
-			if (EDITOR_GET("interface/editor/save_on_focus_loss")) {
+			EDITOR_GET_CACHED(save_on_focus_loss, bool, "interface/editor/save_on_focus_loss")
+			if (save_on_focus_loss) {
 				_menu_option_confirm(FILE_SAVE_SCENE, false);
 			}
 
 			// Set a low FPS cap to decrease CPU/GPU usage while the editor is unfocused.
-			OS::get_singleton()->set_low_processor_usage_mode_sleep_usec(int(EDITOR_GET("interface/editor/unfocused_low_processor_mode_sleep_usec")));
+			EDITOR_GET_CACHED(unfocused_low_processor_mode_sleep_usec, int, "interface/editor/unfocused_low_processor_mode_sleep_usec")
+			OS::get_singleton()->set_low_processor_usage_mode_sleep_usec(unfocused_low_processor_mode_sleep_usec);
 		} break;
 
 		case MainLoop::NOTIFICATION_WM_ABOUT: {
@@ -2654,7 +2659,9 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 			play_custom_scene_button->set_icon(gui_base->get_theme_icon("PlayCustom", "EditorIcons"));
 			stop_button->set_disabled(true);
 
-			if (bool(EDITOR_GET("run/output/always_close_output_on_stop"))) {
+			EDITOR_GET_CACHED(run_output_always_close_output_on_stop, bool, "run/output/always_close_output_on_stop");
+
+			if (run_output_always_close_output_on_stop) {
 				for (int i = 0; i < bottom_panel_items.size(); i++) {
 					if (bottom_panel_items[i].control == log) {
 						_bottom_panel_switch(false, i);
@@ -2678,10 +2685,12 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 
 		} break;
 		case RUN_PLAY_NATIVE: {
-			bool autosave = EDITOR_GET("run/auto_save/save_before_running");
+			EDITOR_GET_CACHED(autosave, bool, "run/auto_save/save_before_running");
+
 			if (autosave) {
 				_menu_option_confirm(FILE_SAVE_ALL_SCENES, false);
 			}
+
 			if (run_native->is_deploy_debug_remote_enabled()) {
 				_menu_option_confirm(RUN_STOP, true);
 
@@ -5075,9 +5084,12 @@ void EditorNode::_scene_tab_closed(int p_tab, int option) {
 }
 
 void EditorNode::_scene_tab_hover(int p_tab) {
-	if (!bool(EDITOR_GET("interface/scene_tabs/show_thumbnail_on_hover"))) {
+	EDITOR_GET_CACHED(show_thumbnail_on_hover, bool, "interface/scene_tabs/show_thumbnail_on_hover");
+
+	if (!show_thumbnail_on_hover) {
 		return;
 	}
+
 	int current_tab = scene_tabs->get_current_tab();
 
 	if (p_tab == current_tab || p_tab < 0) {

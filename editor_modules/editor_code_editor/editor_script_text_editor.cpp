@@ -1381,7 +1381,7 @@ void EditorScriptTextEditor::drop_data_fw(const Point2 &p_point, const Variant &
 	}
 
 	if (d.has("type") && (String(d["type"]) == "files" || String(d["type"]) == "files_and_dirs")) {
-		const String quote_style = EDITOR_DEF("text_editor/completion/use_single_quotes", false) ? "'" : "\"";
+		const String quote_style = EditorSettingsQuick::get_text_editor_completion_use_single_quotes() ? "'" : "\"";
 		Array files = d["files"];
 
 		String text_to_drop;

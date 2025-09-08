@@ -507,7 +507,7 @@ struct GDScriptCompletionIdentifier {
 };
 
 static void _get_directory_contents(EditorFileSystemDirectory *p_dir, RBMap<String, ScriptCodeCompletionOption> &r_list, String p_ends_with = "") {
-	const String quote_style = EDITOR_DEF("text_editor/completion/use_single_quotes", false) ? "'" : "\"";
+	const String quote_style = EditorSettingsQuick::get_text_editor_completion_use_single_quotes() ? "'" : "\"";
 
 	for (int i = 0; i < p_dir->get_file_count(); i++) {
 		ScriptCodeCompletionOption option(p_dir->get_file_path(i), ScriptCodeCompletionOption::KIND_FILE_PATH);
@@ -2256,7 +2256,7 @@ static void _find_call_arguments(const GDScriptCompletionContext &p_context, con
 	Variant base = p_base.value;
 	GDScriptParser::DataType base_type = p_base.type;
 
-	const String quote_style = EDITOR_DEF("text_editor/completion/use_single_quotes", false) ? "'" : "\"";
+	const String quote_style = EditorSettingsQuick::get_text_editor_completion_use_single_quotes() ? "'" : "\"";
 
 #define IS_METHOD_SIGNAL(m_method) (m_method == "connect" || m_method == "disconnect" || m_method == "is_connected" || m_method == "emit_signal")
 
@@ -2425,7 +2425,7 @@ static void _find_call_arguments(const GDScriptCompletionContext &p_context, con
 }
 
 static void _find_call_arguments(GDScriptCompletionContext &p_context, const GDScriptParser::Node *p_node, int p_argidx, RBMap<String, ScriptCodeCompletionOption> &r_result, bool &r_forced, String &r_arghint) {
-	const String quote_style = EDITOR_DEF("text_editor/completion/use_single_quotes", false) ? "'" : "\"";
+	const String quote_style = EditorSettingsQuick::get_text_editor_completion_use_single_quotes() ? "'" : "\"";
 
 	if (!p_node || p_node->type != GDScriptParser::Node::TYPE_OPERATOR) {
 		return;
@@ -2553,7 +2553,7 @@ static void _find_call_arguments(GDScriptCompletionContext &p_context, const GDS
 }
 
 Error GDScriptLanguage::complete_code(const String &p_code, const String &p_path, Object *p_owner, List<ScriptCodeCompletionOption> *r_options, bool &r_forced, String &r_call_hint) {
-	const String quote_style = EDITOR_DEF("text_editor/completion/use_single_quotes", false) ? "'" : "\"";
+	const String quote_style = EditorSettingsQuick::get_text_editor_completion_use_single_quotes() ? "'" : "\"";
 
 	GDScriptParser parser;
 

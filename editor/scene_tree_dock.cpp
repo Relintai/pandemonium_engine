@@ -1778,7 +1778,8 @@ void SceneTreeDock::_notification(int p_what) {
 			filter->set_clear_button_enabled(true);
 		} break;
 		case NOTIFICATION_PROCESS: {
-			bool show_create_root = bool(EDITOR_GET("interface/editors/show_scene_tree_root_selection")) && get_tree()->get_edited_scene_root() == nullptr;
+			EDITOR_GET_CACHED(show_scene_tree_root_selection, bool, "interface/editors/show_scene_tree_root_selection");
+			bool show_create_root = show_scene_tree_root_selection && get_tree()->get_edited_scene_root() == nullptr;
 
 			if (show_create_root != create_root_dialog->is_visible_in_tree() && !remote_tree->is_visible()) {
 				if (show_create_root) {
@@ -3528,11 +3529,13 @@ void SceneTreeDock::attach_script_to_selected(bool p_extend) {
 	String inherits = selected->get_class();
 
 	if (p_extend && existing.is_valid()) {
+		EDITOR_GET_CACHED(derive_script_globals_by_name, bool, "interface/editors/derive_script_globals_by_name");
+
 		for (int i = 0; i < ScriptServer::get_language_count(); i++) {
 			ScriptLanguage *l = ScriptServer::get_language(i);
 			if (l->get_type() == existing->get_class()) {
 				String name = ScriptServer::get_global_class_name(existing->get_path());
-				if (ScriptServer::is_global_class(name) && EDITOR_GET("interface/editors/derive_script_globals_by_name").operator bool()) {
+				if (ScriptServer::is_global_class(name) && derive_script_globals_by_name) {
 					inherits = name;
 				} else if (l->can_inherit_from_file()) {
 					inherits = "\"" + existing->get_path() + "\"";
@@ -3605,7 +3608,9 @@ void SceneTreeDock::_remote_tree_selected() {
 }
 
 void SceneTreeDock::_local_tree_selected() {
-	if (!bool(EDITOR_GET("interface/editors/show_scene_tree_root_selection")) || get_tree()->get_edited_scene_root() != nullptr) {
+	EDITOR_GET_CACHED(show_scene_tree_root_selection, bool, "interface/editors/show_scene_tree_root_selection");
+
+	if (!show_scene_tree_root_selection || get_tree()->get_edited_scene_root() != nullptr) {
 		scene_tree->show();
 	}
 	if (remote_tree) {

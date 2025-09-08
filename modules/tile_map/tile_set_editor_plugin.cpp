@@ -1625,7 +1625,7 @@ void TileSetEditor::_on_workspace_input(const Ref<InputEvent> &p_ie) {
 						shape_anchor.y *= (size.y + spacing);
 					}
 
-					const real_t grab_threshold = EDITOR_GET("editors/poly_editor/point_grab_radius");
+					EDITOR_GET_CACHED(grab_threshold, real_t, "editors/poly_editor/point_grab_radius");
 					shape_anchor += current_tile_region.position;
 					if (tools[TOOL_SELECT]->is_pressed()) {
 						if (current_shape.size() > 0) {

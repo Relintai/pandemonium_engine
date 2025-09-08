@@ -43,6 +43,7 @@
 #include "core/io/config_file.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
+#include "core/os/spin_lock.h"
 #include "core/os/thread_safe.h"
 #include "core/string/string_name.h"
 #include "core/string/translation.h"
@@ -53,11 +54,34 @@ class EditorPlugin;
 class Dictionary;
 class InputEvent;
 
+// Fast access to frequently used settings.
+
+class EditorSettingsQuick {
+	struct Data {
+		bool text_editor_completion_use_single_quotes;
+
+		Data() {
+			text_editor_completion_use_single_quotes = false;
+		}
+	};
+
+	static Data data;
+
+public:
+	static bool get_text_editor_completion_use_single_quotes() { return data.text_editor_completion_use_single_quotes; }
+
+	static void refresh();
+};
+
 class EditorSettings : public Resource {
 	GDCLASS(EditorSettings, Resource);
 
 private:
 	_THREAD_SAFE_CLASS_
+
+	// Starting version from 1 ensures that all callers can reset their tested version to 0,
+	// and will always detect the initial editor settings as a "change".
+	uint32_t _version = 1;
 
 public:
 	struct Plugin {
@@ -208,6 +232,9 @@ public:
 	Ref<ShortCut> get_shortcut(const String &p_name) const;
 	void get_shortcut_list(List<String> *r_shortcuts);
 
+	// Testing a version allows fast cached EDITOR_GET macros.
+	uint32_t get_version() const { return _version; }
+
 	void notify_changes();
 
 	EditorSettings();
@@ -222,6 +249,21 @@ Variant _EDITOR_DEF(const String &p_setting, const Variant &p_default, bool p_re
 
 #define EDITOR_GET(m_var) _EDITOR_GET(m_var)
 Variant _EDITOR_GET(const String &p_setting);
+
+#define EDITOR_GET_CACHED(m_name, m_type, m_setting_name)                                                                    \
+	static_assert(HAS_TRIVIAL_DESTRUCTOR(m_type), "EDITOR_GET_CACHED must use a trivial type that allows static lifetime."); \
+	static m_type m_name;                                                                                                    \
+	{                                                                                                                        \
+		static uint32_t local_version = 0;                                                                                   \
+		static SpinLock local_mutex;                                                                                         \
+		uint32_t new_version = EditorSettings::get_singleton()->get_version();                                               \
+		if (local_version != new_version) {                                                                                  \
+			local_mutex.lock();                                                                                              \
+			local_version = new_version;                                                                                     \
+			m_name = _EDITOR_GET(m_setting_name);                                                                            \
+			local_mutex.unlock();                                                                                            \
+		}                                                                                                                    \
+	}
 
 #define ED_IS_SHORTCUT(p_name, p_ev) (EditorSettings::get_singleton()->is_shortcut(p_name, p_ev))
 Ref<ShortCut> ED_SHORTCUT(const String &p_path, const String &p_name, uint32_t p_keycode = 0);

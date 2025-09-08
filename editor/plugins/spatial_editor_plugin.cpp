@@ -352,6 +352,12 @@ void SpatialEditorViewport::_update_camera(float p_interp_delta) {
 	Cursor old_camera_cursor = camera_cursor;
 	camera_cursor = cursor;
 
+	EDITOR_GET_CACHED(orbit_inertia, float, "editors/3d/navigation_feel/orbit_inertia");
+
+	if (orbit_inertia == 0) {
+		orbit_inertia = 0.000001;
+	}
+
 	if (p_interp_delta > 0) {
 		//-------
 		// Perform smoothing
@@ -359,17 +365,11 @@ void SpatialEditorViewport::_update_camera(float p_interp_delta) {
 		if (is_freelook_active()) {
 			// Higher inertia should increase "lag" (lerp with factor between 0 and 1)
 			// Inertia of zero should produce instant movement (lerp with factor of 1) in this case it returns a really high value and gets clamped to 1.
-			const real_t inertia = EDITOR_GET("editors/3d/freelook/freelook_inertia");
+			EDITOR_GET_CACHED(inertia, real_t, "editors/3d/freelook/freelook_inertia");
 			real_t factor = (1.0 / inertia) * p_interp_delta;
 
 			// We interpolate a different point here, because in freelook mode the focus point (cursor.pos) orbits around eye_pos
 			camera_cursor.eye_pos = old_camera_cursor.eye_pos.linear_interpolate(cursor.eye_pos, CLAMP(factor, 0, 1));
-
-			float orbit_inertia = EDITOR_GET("editors/3d/navigation_feel/orbit_inertia");
-
-			if (orbit_inertia == 0) {
-				orbit_inertia = 0.000001;
-			}
 
 			camera_cursor.x_rot = Math::lerp(old_camera_cursor.x_rot, cursor.x_rot, MIN(1.f, p_interp_delta * (1 / orbit_inertia)));
 			camera_cursor.y_rot = Math::lerp(old_camera_cursor.y_rot, cursor.y_rot, MIN(1.f, p_interp_delta * (1 / orbit_inertia)));
@@ -385,13 +385,8 @@ void SpatialEditorViewport::_update_camera(float p_interp_delta) {
 			camera_cursor.pos = camera_cursor.eye_pos + forward * camera_cursor.distance;
 
 		} else {
-			float orbit_inertia = EDITOR_GET("editors/3d/navigation_feel/orbit_inertia");
-			const float translation_inertia = EDITOR_GET("editors/3d/navigation_feel/translation_inertia");
-			const float zoom_inertia = EDITOR_GET("editors/3d/navigation_feel/zoom_inertia");
-
-			if (orbit_inertia == 0) {
-				orbit_inertia = 0.000001;
-			}
+			EDITOR_GET_CACHED(translation_inertia, float, "editors/3d/navigation_feel/translation_inertia");
+			EDITOR_GET_CACHED(zoom_inertia, float, "editors/3d/navigation_feel/zoom_inertia");
 
 			camera_cursor.x_rot = Math::lerp(old_camera_cursor.x_rot, cursor.x_rot, MIN(1.f, p_interp_delta * (1 / orbit_inertia)));
 			camera_cursor.y_rot = Math::lerp(old_camera_cursor.y_rot, cursor.y_rot, MIN(1.f, p_interp_delta * (1 / orbit_inertia)));
@@ -1891,7 +1886,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 
 				Vector3 ray_pos = _get_ray_pos(m->get_position());
 				Vector3 ray = _get_ray(m->get_position());
-				double snap = EDITOR_GET("interface/inspector/default_float_step");
+				EDITOR_GET_CACHED(snap, double, "interface/inspector/default_float_step");
 				int snap_step_decimals = Math::range_step_decimals(snap);
 
 				switch (_edit.mode) {

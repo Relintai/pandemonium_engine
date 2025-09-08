@@ -50,7 +50,10 @@ String EditorPropertyNameProcessor::_capitalize_name(const String &p_name) const
 
 String EditorPropertyNameProcessor::process_name(const String &p_name) const {
 	const String capitalized_string = _capitalize_name(p_name);
-	if (EDITOR_GET("interface/editor/translate_properties")) {
+
+	EDITOR_GET_CACHED(translate_properties, bool, "interface/editor/translate_properties");
+
+	if (translate_properties) {
 		return TTRGET(capitalized_string);
 	}
 	return capitalized_string;
@@ -58,9 +61,13 @@ String EditorPropertyNameProcessor::process_name(const String &p_name) const {
 
 String EditorPropertyNameProcessor::make_tooltip_for_name(const String &p_name) const {
 	const String capitalized_string = _capitalize_name(p_name);
-	if (EDITOR_GET("interface/editor/translate_properties")) {
+
+	EDITOR_GET_CACHED(translate_properties, bool, "interface/editor/translate_properties")
+
+	if (translate_properties) {
 		return capitalized_string;
 	}
+
 	return TTRGET(capitalized_string);
 }
 
