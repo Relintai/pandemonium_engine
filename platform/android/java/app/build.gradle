@@ -101,7 +101,7 @@ android {
         jvmTarget = versions.javaVersion
     }
 
-    assetPacks = [":assetPackInstallTime"]
+    assetPacks = [":assetPacks:installTime"]
 
     namespace = 'com.pandemonium.game'
 

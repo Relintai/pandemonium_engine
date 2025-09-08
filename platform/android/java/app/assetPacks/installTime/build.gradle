@@ -3,7 +3,7 @@ plugins {
 }
 
 assetPack {
-    packName = "assetPackInstallTime" // Directory name for the asset pack
+    packName = "installTime" // Directory name for the asset pack
     dynamicDelivery {
         deliveryType = "install-time" // Delivery mode
     }
