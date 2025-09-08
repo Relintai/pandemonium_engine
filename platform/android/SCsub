@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import sys
+
 Import("env")
 
 android_files = [
@@ -38,17 +40,47 @@ lib = env_android.add_shared_library("#bin/libpandemonium", [android_objects], S
 # Needed to force rebuilding the platform files when the thirdparty code is updated.
 env.Depends(lib, thirdparty_obj)
 
-lib_arch_dir = ""
+def get_min_sdk_version(platform):
+    return int(platform.split("-")[1])
+
+android_platform_abi_name = ""
+
 if env["android_arch"] == "armv7":
-    lib_arch_dir = "armeabi-v7a"
+    android_platform_abi_name = "armeabi-v7a"
 elif env["android_arch"] == "arm64v8":
-    lib_arch_dir = "arm64-v8a"
+    android_platform_abi_name = "arm64-v8a"
 elif env["android_arch"] == "x86":
-    lib_arch_dir = "x86"
+    android_platform_abi_name = "x86"
 elif env["android_arch"] == "x86_64":
-    lib_arch_dir = "x86_64"
+    android_platform_abi_name = "x86_64"
 else:
-    print("WARN: Architecture not suitable for embedding into APK; keeping .so at \\bin")
+    print("WARN: Unknown android platform abi name!")
+
+lib_arch_dir = ""
+
+# in NDK27 there is also a riscv platofrm (riscv64-linux-android). TODO
+if get_min_sdk_version(env["ndk_platform"]) >= 25:
+    if env["android_arch"] == "armv7":
+        lib_arch_dir = "arm-linux-androideabi"
+    elif env["android_arch"] == "arm64v8":
+        lib_arch_dir = "aarch64-linux-android"
+    elif env["android_arch"] == "x86":
+        lib_arch_dir = "i686-linux-android"
+    elif env["android_arch"] == "x86_64":
+        lib_arch_dir = "x86_64-linux-android"
+    else:
+        print("WARN: Architecture not suitable for embedding into APK; keeping .so at \\bin")
+else:
+    if env["android_arch"] == "armv7":
+        lib_arch_dir = "armeabi-v7a"
+    elif env["android_arch"] == "arm64v8":
+        lib_arch_dir = "arm64-v8a"
+    elif env["android_arch"] == "x86":
+        lib_arch_dir = "x86"
+    elif env["android_arch"] == "x86_64":
+        lib_arch_dir = "x86_64"
+    else:
+        print("WARN: Architecture not suitable for embedding into APK; keeping .so at \\bin")
 
 if lib_arch_dir != "":
     if env["target"] == "release":
@@ -63,12 +95,36 @@ if lib_arch_dir != "":
     if env["tools"]:
         lib_tools_dir = "tools/"
 
-    out_dir = "#platform/android/java/lib/libs/" + lib_tools_dir + lib_type_dir + "/" + lib_arch_dir
+    out_dir = "#platform/android/java/lib/libs/" + lib_tools_dir + lib_type_dir + "/" + android_platform_abi_name 
     env_android.Command(
         out_dir + "/libpandemonium_android.so", "#bin/libpandemonium" + env["SHLIBSUFFIX"], Move("$TARGET", "$SOURCE")
     )
 
-    stl_lib_path = (
-        str(env["ANDROID_NDK_ROOT"]) + "/sources/cxx-stl/llvm-libc++/libs/" + lib_arch_dir + "/libc++_shared.so"
-    )
+    stl_lib_path = ""
+
+    # NDK25 changed where the libraries are stored.
+    # They also dropped 32 bit windows support. (Likely earlier)
+    if get_min_sdk_version(env["ndk_platform"]) >= 25:
+        host_subpath = ""
+
+        if sys.platform.startswith("linux"):
+            host_subpath = "linux-x86_64"
+        elif sys.platform.startswith("darwin"):
+            host_subpath = "darwin-x86_64"
+        elif sys.platform.startswith("win"):
+            host_subpath = "windows-x86_64"
+
+        if host_subpath == "":
+            print("Warning: Host architecture is not suitable to building for android! Toolchain does no exists.")
+
+        stl_lib_path = (
+            str(env["ANDROID_NDK_ROOT"]) + "/toolchains/llvm/prebuilt/" + host_subpath + "/sysroot/usr/lib/" + lib_arch_dir + "/libc++_shared.so"
+        )
+
+    else:
+        stl_lib_path = (
+            str(env["ANDROID_NDK_ROOT"]) + "/sources/cxx-stl/llvm-libc++/libs/" + lib_arch_dir + "/libc++_shared.so"
+        )
+
     env_android.Command(out_dir + "/libc++_shared.so", stl_lib_path, Copy("$TARGET", "$SOURCE"))
+

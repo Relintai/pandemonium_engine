@@ -17,7 +17,7 @@ def get_opts():
 
     return [
         ("ANDROID_SDK_ROOT", "Path to the Android SDK", get_env_android_sdk_root()),
-        ("ndk_platform", 'Target platform (android-<api>, e.g. "android-19")', "android-19"),
+        ("ndk_platform", 'Target platform (android-<api>, e.g. "android-35")', "android-35"),
         EnumVariable("android_arch", "Target architecture", "armv7", ("armv7", "arm64v8", "x86", "x86_64")),
         BoolVariable("android_neon", "Enable NEON support (armv7 only)", True),
     ]
@@ -34,7 +34,7 @@ def get_android_ndk_root(env):
 
 # This is kept in sync with the value in 'platform/android/java/app/config.gradle'.
 def get_ndk_version():
-    return "23.2.8568313"
+    return "28.1.13356709"
 
 def get_flags():
     return [

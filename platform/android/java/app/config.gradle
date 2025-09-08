@@ -1,14 +1,26 @@
 ext.versions = [
-    androidGradlePlugin: '8.2.0',
-    compileSdk         : 34,
-    minSdk             : 19, // Also update 'platform/android/export/export_plugin.cpp#DEFAULT_MIN_SDK_VERSION'
-    targetSdk          : 34, // Also update 'platform/android/export/export_plugin.cpp#DEFAULT_TARGET_SDK_VERSION'
-    buildTools         : '34.0.0',
-    kotlinVersion      : '1.9.20',
-    fragmentVersion    : '1.6.2',
+    androidGradlePlugin: '8.6.1',
+    // Even though the sdk tool happliy installs sdk 36, the ndks seems to be missing opengl .so-s for it.
+    compileSdk         : 35,
+    // Platform version 19 is unsupported by this NDK. Please change minSdk to at least 21 to avoid undefined behavior. ...
+    // https://github.com/android/ndk/wiki/Changelog-r25
+    // Support for KitKat (APIs 19 and 20) is planned to be removed in the next NDK release. The minimum OS supported by the NDK for r26 will be Lollipop (API level 21). See Issue 1751 for details.
+    // https://github.com/android/ndk/issues/1751
+    // NDK r26 (2023 LTS, so not until next summer) will not support minSdkVersions below 21 (Lollipop).
+    // Unfortunately new ndks need to be used for 16kb page sizes,
+    minSdk             : 21, // Also update 'platform/android/export/export_plugin.cpp#DEFAULT_MIN_SDK_VERSION'
+    //minSdk             : 19, // Also update 'platform/android/export/export_plugin.cpp#DEFAULT_MIN_SDK_VERSION'
+    targetSdk          : 35, // Also update 'platform/android/export/export_plugin.cpp#DEFAULT_TARGET_SDK_VERSION'
+    buildTools         : '35.0.0',
+    kotlinVersion      : '2.1.20',
+    fragmentVersion    : '1.8.6',
     nexusPublishVersion: '1.3.0',
     javaVersion        : JavaVersion.VERSION_17,
-    ndkVersion         : '23.2.8568313' // Also update 'platform/android/detect.py#get_ndk_version' when this is updated.
+    // https://github.com/android/ndk/wiki/Changelog-r28
+    // The 16 KiB page size compatibility option that was added in r27 is now on by default. If necessary, you can still opt-out (see below).
+    // https://developer.android.com/guide/practices/page-sizes
+    // Starting November 1st, 2025, all new apps and updates to existing apps submitted to Google Play and targeting Android 15+ devices must support 16 KB page sizes on 64-bit devices.
+    ndkVersion         : '28.1.13356709' // Also update 'platform/android/detect.py#get_ndk_version' when this is updated.
 ]
 
 ext.getExportPackageName = { ->
