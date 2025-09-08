@@ -597,6 +597,12 @@ void EditorNode::_notification(int p_what) {
 			settings_menu->add_theme_style_override("hover", gui_base->get_theme_stylebox("MenuHover", "EditorStyles"));
 			help_menu->add_theme_style_override("hover", gui_base->get_theme_stylebox("MenuHover", "EditorStyles"));
 
+			file_menu->add_theme_style_override("hover_pressed", gui_base->get_theme_stylebox("MenuHover", "EditorStyles"));
+			project_menu->add_theme_style_override("hover_pressed", gui_base->get_theme_stylebox("MenuHover", "EditorStyles"));
+			debug_menu->add_theme_style_override("hover_pressed", gui_base->get_theme_stylebox("MenuHover", "EditorStyles"));
+			settings_menu->add_theme_style_override("hover_pressed", gui_base->get_theme_stylebox("MenuHover", "EditorStyles"));
+			help_menu->add_theme_style_override("hover_pressed", gui_base->get_theme_stylebox("MenuHover", "EditorStyles"));
+
 			if (EDITOR_GET("interface/scene_tabs/resize_if_many_tabs")) {
 				scene_tabs->set_min_width(int(EDITOR_GET("interface/scene_tabs/minimum_width")) * EDSCALE);
 			} else {

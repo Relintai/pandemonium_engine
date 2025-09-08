@@ -1160,6 +1160,7 @@ void LayeredTileSetAtlasSourceEditor::_update_atlas_view() {
 			button->add_theme_style_override("hover", memnew(StyleBoxEmpty));
 			button->add_theme_style_override("focus", memnew(StyleBoxEmpty));
 			button->add_theme_style_override("pressed", memnew(StyleBoxEmpty));
+			button->add_theme_style_override("hover_pressed", memnew(StyleBoxEmpty));
 			button->add_theme_style_override("disabled", memnew(StyleBoxEmpty));
 			button->add_theme_font_override("font", memnew(BitmapFont));
 			button->connect("pressed", tile_set_atlas_source, "create_alternative_tile", varray(tile_id, LayeredTileSetSource::INVALID_TILE_ALTERNATIVE));

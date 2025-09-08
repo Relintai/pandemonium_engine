@@ -668,18 +668,21 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 	theme->set_stylebox("normal", "MenuButton", style_menu);
 	theme->set_stylebox("hover", "MenuButton", style_menu);
 	theme->set_stylebox("pressed", "MenuButton", style_menu);
+	theme->set_stylebox("hover_pressed", "MenuButton", style_menu);
 	theme->set_stylebox("focus", "MenuButton", style_menu);
 	theme->set_stylebox("disabled", "MenuButton", style_menu);
 
 	theme->set_stylebox("normal", "PopupMenu", style_menu);
 	theme->set_stylebox("hover", "PopupMenu", style_menu_hover_bg);
 	theme->set_stylebox("pressed", "PopupMenu", style_menu);
+	theme->set_stylebox("hover_pressed", "PopupMenu", style_menu);
 	theme->set_stylebox("focus", "PopupMenu", style_menu);
 	theme->set_stylebox("disabled", "PopupMenu", style_menu);
 
 	theme->set_stylebox("normal", "ToolButton", style_menu);
 	theme->set_stylebox("hover", "ToolButton", style_menu);
 	theme->set_stylebox("pressed", "ToolButton", style_menu);
+	theme->set_stylebox("hover_pressed", "ToolButton", style_menu);
 	theme->set_stylebox("focus", "ToolButton", style_menu);
 	theme->set_stylebox("disabled", "ToolButton", style_menu);
 
@@ -697,6 +700,7 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 	theme->set_stylebox("normal", "Button", style_widget);
 	theme->set_stylebox("hover", "Button", style_widget_hover);
 	theme->set_stylebox("pressed", "Button", style_widget_pressed);
+	theme->set_stylebox("hover_pressed", "Button", style_widget_pressed);
 	theme->set_stylebox("focus", "Button", style_widget_focus);
 	theme->set_stylebox("disabled", "Button", style_widget_disabled);
 
@@ -713,6 +717,7 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 	theme->set_stylebox("normal", "OptionButton", style_widget);
 	theme->set_stylebox("hover", "OptionButton", style_widget_hover);
 	theme->set_stylebox("pressed", "OptionButton", style_widget_pressed);
+	theme->set_stylebox("hover_pressed", "OptionButton", style_widget_pressed);
 	theme->set_stylebox("focus", "OptionButton", style_widget_focus);
 	theme->set_stylebox("disabled", "OptionButton", style_widget_disabled);
 
@@ -730,6 +735,7 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 	// CheckButton
 	theme->set_stylebox("normal", "CheckButton", style_menu);
 	theme->set_stylebox("pressed", "CheckButton", style_menu);
+	theme->set_stylebox("hover_pressed", "CheckButton", style_menu);
 	theme->set_stylebox("disabled", "CheckButton", style_menu);
 	theme->set_stylebox("hover", "CheckButton", style_menu);
 
@@ -757,6 +763,7 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 
 	theme->set_stylebox("normal", "CheckBox", sb_checkbox);
 	theme->set_stylebox("pressed", "CheckBox", sb_checkbox);
+	theme->set_stylebox("hover_pressed", "CheckBox", sb_checkbox);
 	theme->set_stylebox("disabled", "CheckBox", sb_checkbox);
 	theme->set_stylebox("hover", "CheckBox", sb_checkbox);
 	theme->set_icon("checked", "CheckBox", theme->get_icon("GuiChecked", "EditorIcons"));
