@@ -541,7 +541,6 @@ public:
 	bool can_process() const;
 	bool can_process_notification(int p_what) const;
 
-	void set_physics_interpolated(bool p_interpolated);
 	_FORCE_INLINE_ bool is_physics_interpolated() const {
 		return data.physics_interpolated;
 	}
