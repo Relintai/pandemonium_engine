@@ -132,6 +132,14 @@ public:
 		}
 	}
 
+	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
+		return value.compare_exchange_weak(p_expected, p_desired, std::memory_order_acq_rel);
+	}
+
+	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
+		return value.compare_exchange_strong(p_expected, p_desired, std::memory_order_acq_rel);
+	}
+
 	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = static_cast<T>(0)) {
 		set(p_value);
 	}
@@ -255,6 +263,24 @@ public:
 			return 0;
 		} else {
 			return ++value;
+		}
+	}
+
+	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
+		if (value == p_expected) {
+			value = p_desired;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
+		if (value == p_expected) {
+			value = p_desired;
+			return true;
+		} else {
+			return false;
 		}
 	}
 
