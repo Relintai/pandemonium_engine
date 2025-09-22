@@ -23,11 +23,11 @@ Nothing yet.
 
 - Deprecate voxel_scale getter and setter in TerrainVorld. Added equivalent terrain_scale getter and setter.
 - Depreacte helper methods with voxel in their name in TerrainWorld. Added equivalent new ones for their replacement.
-  voxel -> data
+  - voxel -> data
 - Deprecated voxel_scale getter and setter in TerrainChunk. Added terrain_Scale replacement.
 - Deprecated voxel_world getter and setter in TerrainChunk. Added terrain_world getter and setter instead.
 - Deprecated get_voxel and set_voxel in TerrainChunk. Added get_data and set_data instead.
-- Deprecated voxel_Scale getter and setter in TerrainMesher. Added terrain_scale instead.
+- Deprecated voxel_scale getter and setter in TerrainMesher. Added terrain_scale instead.
 - Deprecated voxel_name property in TerrainSurface. Added surface_name instead.
 
 ### Breaking Changes
@@ -35,8 +35,8 @@ Nothing yet.
 #### Terraman
 
 - Renamed voxel_structure* getters and setters to terrain_structure*.
-  It's a straight rename because I'm pretty sure there weren't in use by
-  anyone ever.
+  - It's a straight rename because I'm pretty sure there weren't in use by
+    anyone ever.
 - Rename apply_voxel_scale parameters to apply_terrain_scale in TerrainChunk.
 - Renamed voxel_structure* getters and setters to terrain_structure* in TerrainChunk.
 - Cleanups to BlockTerrainStructure's api.
@@ -49,11 +49,11 @@ Nothing yet.
 #### Terraman, Voxelman, Terraman2D
 
 - Fix typo in TerrainPropJob and TerrainTerrainJob's method names.
-  get_jobs_step -> get_job_step
-  set_jobs_step -> set_job_step
-  remove_jobs_step -> remove_job_step
-  add_jobs_step -> add_job_step
-  get_jobs_step_count -> get_job_step_count
+  - get_jobs_step -> get_job_step
+  - set_jobs_step -> set_job_step
+  - remove_jobs_step -> remove_job_step
+  - add_jobs_step -> add_job_step
+  - get_jobs_step_count -> get_job_step_count
 - Fix the same typos engine wide.
 
 #### Voxelman
@@ -94,9 +94,9 @@ Nothing yet.
 #### Image
 
 - Added get_sizei() helper method to Image.
-  Normally it would probably be better to change the type of get_size() to
-  Vector2i, but a lot of calculations are using the fact that they get
-  Vector2s (real-s), so this seems to be the best solution.
+  - Normally it would probably be better to change the type of get_size() to
+    Vector2i, but a lot of calculations are using the fact that they get
+    Vector2s (real-s), so this seems to be the best solution.
 - Doc for the new get_sizei method in Image.
 
 #### OS
@@ -150,11 +150,11 @@ Nothing yet.
 - Full docs for the module.
 - Deprecate voxel_scale getter and setter in TerrainVorld. Added equivalent terrain_scale getter and setter.
 - Renamed voxel_structure* getters and setters to terrain_structure*.
-  It's a straight rename because I'm pretty sure there weren't in use by
-  anyone ever.
+  - It's a straight rename because I'm pretty sure there weren't in use by
+    anyone ever.
 - Rename apply_voxel_scale parameter to apply_terrain_scale in TerrainWorld's prop_add() method.
 - Depreacte helper methods with voxel in their name in TerrainWorld. Added equivalent new ones for their replacement.
-  voxel -> data
+  - voxel -> data
 - Deprecated voxel_scale getter and setter in TerrainChunk. Added terrain_Scale replacement.
 - Rename apply_voxel_scale parameters to apply_terrain_scale in TerrainChunk.
 - Renamed voxel_structure* getters and setters to terrain_structure* in TerrainChunk.
@@ -162,7 +162,7 @@ Nothing yet.
 - Deprecated get_voxel and set_voxel in TerrainChunk. Added get_data and set_data instead.
 - Fix getter bind.
 - Cleanups to BlockTerrainStructure's api.
-- Deprecated voxel_Scale getter and setter in TerrainMesher. Added terrain_scale instead.
+- Deprecated voxel_scale getter and setter in TerrainMesher. Added terrain_scale instead.
 - Renamed some of the debug draw helper methods in TerrainChunkDefault.
   - draw_cross_voxels -> draw_debug_cross_datas
   - draw_cross_voxels_fill -> draw_debug_cross_datas_fill
@@ -173,11 +173,11 @@ Nothing yet.
 - Added description for the terrain_scale property in TerrainWorld's docs.
 - Deprecated voxel_name property in TerrainSurface. Added surface_name instead.
 - Fix typo in TerrainPropJob and TerrainTerrainJob's method names.
-  get_jobs_step -> get_job_step
-  set_jobs_step -> set_job_step
-  remove_jobs_step -> remove_job_step
-  add_jobs_step -> add_job_step
-  get_jobs_step_count -> get_job_step_count
+  - get_jobs_step -> get_job_step
+  - set_jobs_step -> set_job_step
+  - remove_jobs_step -> remove_job_step
+  - add_jobs_step -> add_job_step
+  - get_jobs_step_count -> get_job_step_count
 - Fix the same typo engine wide.
 
 #### Voxelman
@@ -199,17 +199,17 @@ Nothing yet.
 
 - Updated android version numbers.
   - Starting August 31 2025: New apps and app updates must target Android
-  15 (API level 35) or higher to be submitted to Google Play;
-  https://developer.android.com/google/play/requirements/target-sdk
+    15 (API level 35) or higher to be submitted to Google Play;
+    https://developer.android.com/google/play/requirements/target-sdk
   - Starting November 1st, 2025, all new apps and updates to existing apps
-  submitted to Google Play and targeting Android 15+ devices must support
-  16 KB page sizes. AGP was updated to the minimum required version to be
-  able to do this.
-  (https://developer.android.com/guide/practices/page-sizes#update-packaging)
+    submitted to Google Play and targeting Android 15+ devices must support
+    16 KB page sizes. AGP was updated to the minimum required version to be
+    able to do this.
+    (https://developer.android.com/guide/practices/page-sizes#update-packaging)
   - Unfortunately the minimum sdk version had to be bumped from 19 to 21,
-  there isn't seem to be a simple way to keep being on minimum api level
-  19. The simplest way would probably be to add an old android platform,
-  but for now more thinking is needed.
+    there isn't seem to be a simple way to keep being on minimum api level
+    19. The simplest way would probably be to add an old android platform,
+    but for now more thinking is needed.
 - Fix gradle warning.
   Configuring project ':assetPacks' without an existing directory is
   deprecated. The configured projectDirectory
