@@ -17,7 +17,7 @@ Nothing yet.
 - Api cleanups and full docs for the Terraman module.
 - Cleanups and work on docs for the Voxelman module.
 
-### Depreracions
+### Deprecations
 
 #### Terraman
 
