@@ -4,8 +4,218 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
+Nothing yet.
+
+## [4.8.0]
+
+### Core
+
+#### Input
+
+- Improved text conversion for InputEventAction-s. Adding them as shortcuts will make a nicer tooltip now.
+- Don't write "(Physical)" after the keycodes in InputEventKey, even it they are physical. This improves how tooltips look for users.
+- Use RTR instead of TTR in InputEventAction::as_text().
+- Use , instead of a newline as a separator in InputEventAction::as_text().
+
+#### String
+
+- Fix String::to_uint() to be able to parse to full uint length.
+- Added String::to_uint64() helper method.
+- Move int64_t to_int64() const; helper method in the files.
+- Move things around more.
+- Added static to_uint helper methods to String.
+- Added a PRINT_NUMERIC_CONVERSION_ERRORS define into String and wrapped all numerical conversion warning / error prints into it.
+- Set the new PRINT_NUMERIC_CONVERSION_ERRORS define to 0 by default.
+- Bind new methods in String.
+- Fix doc description in the wrong place.
+- Improvements to String's docs.
+- Fix to_bool()'s bind in String.
+- Docs for to_bool() in String.
+- Docs for the new methods in String.
+
+#### Image
+
+- Added get_sizei() helper method to Image.
+  Normally it would probably be better to change the type of get_size() to
+  Vector2i, but a lot of calculations are using the fact that they get
+  Vector2s (real-s), so this seems to be the best solution.
+- Doc for the new get_sizei method in Image.
+
+#### OS
+
+- Added compare exchange weak and strong to SafeNumeric.
+
+#### Loaders
+
+- Fix ResourceFormatBinary being unable to load internal resources properly.
+
+### Scene
+
+- Fix occasional errors printed in TextEdit. Will likely improve general indent handling.
+- Removed leftover unimplemented method from Node.
+
+### Servers
+
+#### RenderingServer
+
+- Fix unused variable warning if gles3 is disabled.
+
+### Editor
+
+- Fix Exact checkbox in the ProjectSettingsEditor's input tab.
+- Respect the scene name casting setting even with the Save Branch as Scene option.
+- Added message for the error in _EDITOR_GET() if the setting doesn't exists.
+- Added the missing hover_pressed style box overrides for the editor.
+
+### Modules
+
+#### Web
+
+- Use StringBuilder in HTMLTemplate where applicable.
+
+#### GDNative
+
+- Added the new methods in String to the gdnative api.
+- Added Quaternion::set_shortest_arc() to the gdnative api.
+- Added the REAL_T_IS_DOUBLE define to the gdnative headers.
+
+#### FBX
+
+- Added back the fbx module from godot, made it work.
+- Added the skeleton_3d module as a hard dependency for the fbx module.
+- Set up copyright.txt for the fbx module.
+- Added custom rtti implementation so it can be compiled with disabled rtti.
+- Set name for meshes in FBXMeshData::create_fbx_mesh(), as the editor uses this name when saving them as external.
+
+#### Terraman
+
+- Full docs for the module.
+- Deprecate voxel_scale getter and setter in TerrainVorld. Added equivalent terrain_scale getter and setter.
+- Renamed voxel_structure* getters and setters to terrain_structure*.
+  It's a straight rename because I'm pretty sure there weren't in use by
+  anyone ever.
+- Rename apply_voxel_scale parameter to apply_terrain_scale in TerrainWorld's prop_add() method.
+- Depreacte helper methods with voxel in their name in TerrainWorld. Added equivalent new ones for their replacement.
+  voxel -> data
+- Deprecated voxel_scale getter and setter in TerrainChunk. Added terrain_Scale replacement.
+- Rename apply_voxel_scale parameters to apply_terrain_scale in TerrainChunk.
+- Renamed voxel_structure* getters and setters to terrain_structure* in TerrainChunk.
+- Deprecated voxel_world getter and setter in TerrainChunk. Added terrain_world getter and setter instead.
+- Deprecated get_voxel and set_voxel in TerrainChunk. Added get_data and set_data instead.
+- Fix getter bind.
+- Cleanups to BlockTerrainStructure's api.
+- Deprecated voxel_Scale getter and setter in TerrainMesher. Added terrain_scale instead.
+- Renamed some of the debug draw helper methods in TerrainChunkDefault.
+  - draw_cross_voxels -> draw_debug_cross_datas
+  - draw_cross_voxels_fill -> draw_debug_cross_datas_fill
+  - draw_debug_voxels -> draw_debug_datas
+  - draw_debug_voxel_lights -> draw_debug_terrain_lights
+- Replace the word Voxel from error messages in TerrainLibrary.
+- Added dperecation notes and also small fixes to TerrainWorld's class docs.
+- Added description for the terrain_scale property in TerrainWorld's docs.
+- Deprecated voxel_name property in TerrainSurface. Added surface_name instead.
+- Fix typo in TerrainPropJob and TerrainTerrainJob's method names.
+  get_jobs_step -> get_job_step
+  set_jobs_step -> set_job_step
+  remove_jobs_step -> remove_job_step
+  add_jobs_step -> add_job_step
+  get_jobs_step_count -> get_job_step_count
+- Fix the same typo engine wide.
+
+#### Voxelman
+
+- Rename some files in the voxelman module.
+- Renamed EnvironmentData to VoxelEnvironmentData.
+- Renamed WorldArea to VoxelWorldArea.
+- Add COPYRIGHT.txt for voxelman.
+- Work on the docs.
+- Fix virtual method bind return type in VoxelLibrary.
+
+
+### Third Party
+
+- Updated zlib to 1.3.1.
+
+
+### Platforms
+
+#### Android
+
+- Updated android version numbers.
+  - Starting August 31 2025: New apps and app updates must target Android
+  15 (API level 35) or higher to be submitted to Google Play;
+  https://developer.android.com/google/play/requirements/target-sdk
+  - Starting November 1st, 2025, all new apps and updates to existing apps
+  submitted to Google Play and targeting Android 15+ devices must support
+  16 KB page sizes. AGP was updated to the minimum required version to be
+  able to do this.
+  (https://developer.android.com/guide/practices/page-sizes#update-packaging)
+  - Unfortunately the minimum sdk version had to be bumped from 19 to 21,
+  there isn't seem to be a simple way to keep being on minimum api level
+  19. The simplest way would probably be to add an old android platform,
+  but for now more thinking is needed.
+- Fix gradle warning.
+  Configuring project ':assetPacks' without an existing directory is
+  deprecated. The configured projectDirectory
+  '.../android/java/assetPacks' does not exist, can't be written to or is
+  not a directory. This behavior has been deprecated. This will fail with
+  an error in Gradle 9.0. Make sure the project directory exists and can
+  be written. Consult the upgrading guide for further information:
+  https://docs.gradle.org/8.11.1/userguide/upgrading_version_8.html#deprecated_missing_project_directory
+- Added 16kb padding to .so files when packing them to apks in android.
+  Original idea is from godot 3.x, which is a backport from godot 4.x
+  https://github.com/godotengine/godot/commit/3c645995ca8335d925e2e5deac5044af7f5af657
+  I'm not sure whether this is needed or not, as I don't have new android
+  hardware.
+  Also the original code was very suspect so I reimplemented it
+  differently.
+
+### Other 
+
+- Cleanups to the Documentation and demos section in the readme.
+- Added some long term plans to the readme.
+- Update the sample app side module config, so it has all modules. Also added some comments to it.
+- Update android versions in the build container.
+- Disable werror for the android workflows, as the slCreateEngine() method got deprecated.
+
+### Backports
+
 - Backported everything up to and including https://github.com/godotengine/godot/commit/62e7304ffe38897084fd68ca4e95436826fd92cb
   merge commit: https://github.com/godotengine/godot/commit/5aed565de548f7133da93576482fa437f99bdf18
+
+#### Godot3
+
+- `FTI` - Change `SceneTree` global setting to static
+  Also fixup `FTI` configuration warnings so that they only output when the project is using `FTI`.
+- Revert "FTI - Reduce `VisualInstance` xform notifications"
+  This reverts commit 24922e13a480a4a2e710f81d9aae707b1ca27df0.
+- FTI - Clear all when enabling / disabling `SceneTreeFTI`
+- FTI - Add reset of setting `toplevel`
+- FTI - Fix `MultiMesh` stable behaviour
+- `LODManager` - Auto-deactivate when no LODs
+- FTI - Add `multimesh_instances_reset_physics_interpolation()`
+- Fix inability to assign script after clearing
+  Co-authored-by: ocean (they/them) <anvilfolk@gmail.com>
+- Fix order of operations for macOS template check
+  Backport for 3.x from PR: #84990
+  Co-authored-by: brno32 <drozdster@gmail.com>
+- Fix Line breaking may not work correctly when using color tags with specific font
+- Fix `is_visible_in_tree` regression for out of tree
+- Add MOUSE_MODE_CONFINED_HIDDEN to MouseMode enum
+- Backport nonexclusive fullscreen mode.
+- Backported the new EDITOR_GET_CACHED macro from godot 3.x but modified, similarly to the EDITOR_CACHED macro.
+  Original commit:
+  Add EditorSettings EDITOR_GET_CACHED
+  - lawnjelly
+  https://github.com/godotengine/godot/commit/0718852d2c4febb99388635dcae1e81c006b38ad
+
+#### Godot 4
+
+- Backported from godot4: [Android] Store native libraries uncompressed in APK.
+  - raulsntos
+  https://github.com/godotengine/godot/commit/64643471574b546505543c67ba2de8f2d370de95
+
+
 
 ## [4.7.0]
 
