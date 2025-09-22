@@ -58,12 +58,8 @@ Nothing yet.
 
 #### Voxelman
 
-- Rename some files in the voxelman module.
 - Renamed EnvironmentData to VoxelEnvironmentData.
 - Renamed WorldArea to VoxelWorldArea.
-- Add COPYRIGHT.txt for voxelman.
-- Work on the docs.
-- Fix virtual method bind return type in VoxelLibrary.
 
 
 ### Core
