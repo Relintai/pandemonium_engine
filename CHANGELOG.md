@@ -8,6 +8,64 @@ Nothing yet.
 
 ## [4.8.0]
 
+### Highlights
+
+- Improvements to InputEvents for tooltips.
+- Improvements to String.
+- Fix ResourceFormatBinary being unable to load internal resources properly.
+- Added back the fbx module from godot, made it work.
+- Api cleanups and full docs for the Terraman module.
+- Cleanups and work on docs for the Voxelman module.
+
+### Depreracions
+
+#### Terraman
+
+- Deprecate voxel_scale getter and setter in TerrainVorld. Added equivalent terrain_scale getter and setter.
+- Depreacte helper methods with voxel in their name in TerrainWorld. Added equivalent new ones for their replacement.
+  voxel -> data
+- Deprecated voxel_scale getter and setter in TerrainChunk. Added terrain_Scale replacement.
+- Deprecated voxel_world getter and setter in TerrainChunk. Added terrain_world getter and setter instead.
+- Deprecated get_voxel and set_voxel in TerrainChunk. Added get_data and set_data instead.
+- Deprecated voxel_Scale getter and setter in TerrainMesher. Added terrain_scale instead.
+- Deprecated voxel_name property in TerrainSurface. Added surface_name instead.
+
+### Breaking Changes
+
+#### Terraman
+
+- Renamed voxel_structure* getters and setters to terrain_structure*.
+  It's a straight rename because I'm pretty sure there weren't in use by
+  anyone ever.
+- Rename apply_voxel_scale parameters to apply_terrain_scale in TerrainChunk.
+- Renamed voxel_structure* getters and setters to terrain_structure* in TerrainChunk.
+- Cleanups to BlockTerrainStructure's api.
+- Renamed some of the debug draw helper methods in TerrainChunkDefault.
+  - draw_cross_voxels -> draw_debug_cross_datas
+  - draw_cross_voxels_fill -> draw_debug_cross_datas_fill
+  - draw_debug_voxels -> draw_debug_datas
+  - draw_debug_voxel_lights -> draw_debug_terrain_lights
+
+#### Terraman, Voxelman, Terraman2D
+
+- Fix typo in TerrainPropJob and TerrainTerrainJob's method names.
+  get_jobs_step -> get_job_step
+  set_jobs_step -> set_job_step
+  remove_jobs_step -> remove_job_step
+  add_jobs_step -> add_job_step
+  get_jobs_step_count -> get_job_step_count
+- Fix the same typos engine wide.
+
+#### Voxelman
+
+- Rename some files in the voxelman module.
+- Renamed EnvironmentData to VoxelEnvironmentData.
+- Renamed WorldArea to VoxelWorldArea.
+- Add COPYRIGHT.txt for voxelman.
+- Work on the docs.
+- Fix virtual method bind return type in VoxelLibrary.
+
+
 ### Core
 
 #### Input
@@ -131,11 +189,9 @@ Nothing yet.
 - Work on the docs.
 - Fix virtual method bind return type in VoxelLibrary.
 
-
 ### Third Party
 
 - Updated zlib to 1.3.1.
-
 
 ### Platforms
 
