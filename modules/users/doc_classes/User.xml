@@ -215,12 +215,6 @@
 				Calls [method _to_dict].
 			</description>
 		</method>
-		<method name="to_json">
-			<return type="String" />
-			<description>
-				Deprecated. Please use [method as_json].
-			</description>
-		</method>
 		<method name="write_lock">
 			<return type="void" />
 			<description>

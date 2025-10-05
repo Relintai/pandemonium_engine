@@ -296,13 +296,6 @@ void User::_from_dict(const Dictionary &dict) {
 	}
 }
 
-#ifndef DISABLE_DEPRECATED
-String User::to_json() {
-	WARN_DEPRECATED_MSG("Method is deprecated. Please use as_json(). They are functionally identical.");
-	return as_json();
-}
-#endif
-
 String User::as_json() {
 	return JSON::print(to_dict());
 }
@@ -462,10 +455,6 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("to_dict"), &User::to_dict);
 	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &User::_from_dict);
 	ClassDB::bind_method(D_METHOD("_to_dict"), &User::_to_dict);
-
-#ifndef DISABLE_DEPRECATED
-	ClassDB::bind_method(D_METHOD("to_json"), &User::to_json);
-#endif
 
 	ClassDB::bind_method(D_METHOD("as_json"), &User::as_json);
 	ClassDB::bind_method(D_METHOD("from_json", "data"), &User::from_json);

@@ -133,12 +133,6 @@
 				Returns the internal state as a [Dictionary].
 			</description>
 		</method>
-		<method name="to_json">
-			<return type="String" />
-			<description>
-				Deprecated. Please use [method as_json].
-			</description>
-		</method>
 		<method name="validate_hotp">
 			<return type="int" enum="TOTP.TOTPResult" />
 			<argument index="0" name="counter" type="int" />

@@ -441,13 +441,6 @@ void TOTP::from_dict(const Dictionary &dict) {
 	_secret_string = dict["_secret_string"];
 }
 
-#ifndef DISABLE_DEPRECATED
-String TOTP::to_json() {
-	WARN_DEPRECATED_MSG("Method is deprecated. Please use as_json(). They are functionally identical.");
-	return as_json();
-}
-#endif
-
 String TOTP::as_json() {
 	return JSON::print(to_dict());
 }
@@ -514,10 +507,6 @@ void TOTP::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &TOTP::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &TOTP::to_dict);
-
-#ifndef DISABLE_DEPRECATED
-	ClassDB::bind_method(D_METHOD("to_json"), &TOTP::to_json);
-#endif
 
 	ClassDB::bind_method(D_METHOD("as_json"), &TOTP::as_json);
 	ClassDB::bind_method(D_METHOD("from_json", "data"), &TOTP::from_json);
