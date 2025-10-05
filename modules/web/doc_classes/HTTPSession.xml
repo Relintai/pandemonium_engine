@@ -33,6 +33,12 @@
 				Add a key-value pair.
 			</description>
 		</method>
+		<method name="as_json">
+			<return type="String" />
+			<description>
+				Returns the internal state as json.
+			</description>
+		</method>
 		<method name="clear">
 			<return type="void" />
 			<description>
@@ -91,7 +97,7 @@
 		<method name="to_json">
 			<return type="String" />
 			<description>
-				Returns the internal state as json.
+				Deprecated. Please use [method as_json].
 			</description>
 		</method>
 	</methods>

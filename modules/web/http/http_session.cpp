@@ -166,7 +166,14 @@ void HTTPSession::_from_dict(const Dictionary &dict) {
 	}
 }
 
+#ifndef DISABLE_DEPRECATED
 String HTTPSession::to_json() {
+	WARN_DEPRECATED_MSG("Method is deprecated. Please use as_json(). They are functionally identical.");
+	return as_json();
+}
+#endif
+
+String HTTPSession::as_json() {
 	return JSON::print(to_dict());
 }
 void HTTPSession::from_json(const String &data) {
@@ -215,6 +222,10 @@ void HTTPSession::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &HTTPSession::_from_dict);
 	ClassDB::bind_method(D_METHOD("_to_dict"), &HTTPSession::_to_dict);
 
+#ifndef DISABLE_DEPRECATED
 	ClassDB::bind_method(D_METHOD("to_json"), &HTTPSession::to_json);
+#endif
+
+	ClassDB::bind_method(D_METHOD("as_json"), &HTTPSession::as_json);
 	ClassDB::bind_method(D_METHOD("from_json", "data"), &HTTPSession::from_json);
 }

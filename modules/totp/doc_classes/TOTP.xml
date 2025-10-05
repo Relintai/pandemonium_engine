@@ -12,6 +12,12 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="as_json">
+			<return type="String" />
+			<description>
+				Returns the internal state as json.
+			</description>
+		</method>
 		<method name="base32_to_raw">
 			<return type="PoolByteArray" />
 			<argument index="0" name="str" type="String" />
@@ -130,7 +136,7 @@
 		<method name="to_json">
 			<return type="String" />
 			<description>
-				Returns the internal state as json.
+				Deprecated. Please use [method as_json].
 			</description>
 		</method>
 		<method name="validate_hotp">

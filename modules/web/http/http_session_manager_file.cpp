@@ -95,7 +95,7 @@ void HTTPSessionManagerFile::save_session(Ref<HTTPSession> session) {
 	}
 
 	String file = _save_folder_path.plus_file(itos(id) + ".json");
-	String data = session->to_json();
+	String data = session->as_json();
 
 	FileAccess *f = FileAccess::open(file, FileAccess::WRITE);
 

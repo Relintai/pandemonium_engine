@@ -73,6 +73,13 @@
 				Adds a [UserModule].
 			</description>
 		</method>
+		<method name="as_json">
+			<return type="String" />
+			<description>
+				Returns the internal state as json.
+				Uses [method to_dict] internally.
+			</description>
+		</method>
 		<method name="check_password">
 			<return type="bool" />
 			<argument index="0" name="password" type="String" />
@@ -211,8 +218,7 @@
 		<method name="to_json">
 			<return type="String" />
 			<description>
-				Returns the internal state as json.
-				Uses [method to_dict] internally.
+				Deprecated. Please use [method as_json].
 			</description>
 		</method>
 		<method name="write_lock">

@@ -117,7 +117,12 @@ public:
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
 
+	// 4.9.0
+#ifndef DISABLE_DEPRECATED
 	String to_json();
+#endif
+
+	String as_json();
 	void from_json(const String &data);
 
 	TOTP();

@@ -147,7 +147,7 @@ void UserManagerFile::_save_user(Ref<User> p_user) {
 
 	p_user->read_lock();
 	int id = p_user->get_user_id();
-	String data = p_user->to_json();
+	String data = p_user->as_json();
 	p_user->read_unlock();
 
 	FileAccess *f = FileAccess::open(_save_folder_path.plus_file(itos(id) + ".json"), FileAccess::WRITE);
@@ -309,7 +309,7 @@ void UserManagerFile::save() {
 			ERR_CONTINUE(!f);
 
 			u->read_lock();
-			String data = u->to_json();
+			String data = u->as_json();
 			u->read_unlock();
 
 			f->store_string(data);
