@@ -68,6 +68,8 @@
 #include "core/math/triangle_mesh.h"
 #include "core/object/class_db.h"
 #include "core/object/func_ref.h"
+#include "core/object/rw_reference.h"
+#include "core/object/rw_resource.h"
 #include "core/object/undo_redo.h"
 #include "core/os/main_loop.h"
 #include "core/os/time.h"
@@ -144,6 +146,10 @@ void register_core_types() {
 	ClassDB::register_class<Reference>();
 	ClassDB::register_class<WeakRef>();
 	ClassDB::register_class<Resource>();
+
+	ClassDB::register_class<RWReference>();
+	ClassDB::register_class<RWResource>();
+
 	ClassDB::register_class<Image>();
 
 	ClassDB::register_virtual_class<InputEvent>();
