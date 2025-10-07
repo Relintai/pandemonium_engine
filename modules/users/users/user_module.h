@@ -32,15 +32,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/os/rw_lock.h"
 #include "core/string/ustring.h"
 
-#include "core/object/resource.h"
+#include "core/object/rw_resource.h"
 
 class User;
 
-class UserModule : public Resource {
-	GDCLASS(UserModule, Resource);
+class UserModule : public RWResource {
+	GDCLASS(UserModule, RWResource);
 
 public:
 	int get_module_index() const;
@@ -58,13 +57,6 @@ public:
 	virtual Dictionary _to_dict();
 	virtual void _from_dict(const Dictionary &dict);
 
-	void read_lock();
-	void read_unlock();
-	void write_lock();
-	void write_unlock();
-	Error read_try_lock();
-	Error write_try_lock();
-
 	UserModule();
 	~UserModule();
 
@@ -75,8 +67,6 @@ protected:
 	String _module_name;
 
 	User *_user;
-
-	RWLock _rw_lock;
 };
 
 #endif

@@ -32,16 +32,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/os/rw_lock.h"
 #include "core/string/ustring.h"
 
-#include "core/object/resource.h"
+#include "core/object/rw_resource.h"
 
 class UserModule;
 class UserManager;
 
-class User : public Resource {
-	GDCLASS(User, Resource);
+class User : public RWResource {
+	GDCLASS(User, RWResource);
 
 public:
 	int get_user_id() const;
@@ -104,13 +103,6 @@ public:
 
 	void save();
 
-	void read_lock();
-	void read_unlock();
-	void write_lock();
-	void write_unlock();
-	Error read_try_lock();
-	Error write_try_lock();
-
 	UserManager *get_owner_user_manager();
 	void set_owner_user_manager(UserManager *p_user_manager);
 	void set_owner_user_manager_bind(Node *p_user_manager);
@@ -141,8 +133,6 @@ protected:
 	String _email_internal;
 
 	Vector<Ref<UserModule>> _modules;
-
-	RWLock _rw_lock;
 
 	ObjectID _owner_user_manager;
 };

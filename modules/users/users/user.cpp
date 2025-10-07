@@ -327,25 +327,6 @@ void User::save() {
 	owner_user_manager->save_user(Ref<User>(this));
 }
 
-void User::read_lock() {
-	_rw_lock.read_lock();
-}
-void User::read_unlock() {
-	_rw_lock.read_unlock();
-}
-void User::write_lock() {
-	_rw_lock.write_lock();
-}
-void User::write_unlock() {
-	_rw_lock.write_unlock();
-}
-Error User::read_try_lock() {
-	return _rw_lock.read_try_lock();
-}
-Error User::write_try_lock() {
-	return _rw_lock.write_try_lock();
-}
-
 UserManager *User::get_owner_user_manager() {
 	return ObjectDB::get_instance<UserManager>(_owner_user_manager);
 }
@@ -460,13 +441,6 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("from_json", "data"), &User::from_json);
 
 	ClassDB::bind_method(D_METHOD("save"), &User::save);
-
-	ClassDB::bind_method(D_METHOD("read_lock"), &User::read_lock);
-	ClassDB::bind_method(D_METHOD("read_unlock"), &User::read_unlock);
-	ClassDB::bind_method(D_METHOD("write_lock"), &User::write_lock);
-	ClassDB::bind_method(D_METHOD("write_unlock"), &User::write_unlock);
-	ClassDB::bind_method(D_METHOD("read_try_lock"), &User::read_try_lock);
-	ClassDB::bind_method(D_METHOD("write_try_lock"), &User::write_try_lock);
 
 	// No property. Changing this should not really happen normally, only during more advanced uses.
 	ClassDB::bind_method(D_METHOD("get_owner_user_manager"), &User::get_owner_user_manager);

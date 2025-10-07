@@ -74,25 +74,6 @@ void UserModule::_from_dict(const Dictionary &dict) {
 	_module_name = dict["module_name"];
 }
 
-void UserModule::read_lock() {
-	_rw_lock.read_lock();
-}
-void UserModule::read_unlock() {
-	_rw_lock.read_unlock();
-}
-void UserModule::write_lock() {
-	_rw_lock.write_lock();
-}
-void UserModule::write_unlock() {
-	_rw_lock.write_unlock();
-}
-Error UserModule::read_try_lock() {
-	return _rw_lock.read_try_lock();
-}
-Error UserModule::write_try_lock() {
-	return _rw_lock.write_try_lock();
-}
-
 UserModule::UserModule() {
 	_module_index = -1;
 	_user = nullptr;
@@ -116,11 +97,4 @@ void UserModule::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("to_dict"), &UserModule::to_dict);
 	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &UserModule::_from_dict);
 	ClassDB::bind_method(D_METHOD("_to_dict"), &UserModule::_to_dict);
-
-	ClassDB::bind_method(D_METHOD("read_lock"), &UserModule::read_lock);
-	ClassDB::bind_method(D_METHOD("read_unlock"), &UserModule::read_unlock);
-	ClassDB::bind_method(D_METHOD("write_lock"), &UserModule::write_lock);
-	ClassDB::bind_method(D_METHOD("write_unlock"), &UserModule::write_unlock);
-	ClassDB::bind_method(D_METHOD("read_try_lock"), &UserModule::read_try_lock);
-	ClassDB::bind_method(D_METHOD("write_try_lock"), &UserModule::write_try_lock);
 }

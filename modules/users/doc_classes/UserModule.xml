@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="UserModule" inherits="Resource">
+<class name="UserModule" inherits="RWResource">
 	<brief_description>
 		A class that can store additional data for a [User] in a more dynamic way compared to inheritance.
 	</brief_description>
@@ -52,52 +52,11 @@
 				Returns the [User] this class belongs to.
 			</description>
 		</method>
-		<method name="read_lock">
-			<return type="void" />
-			<description>
-				Locks the built in RWLock for read access, blocks until it is unlocked by the current owner.
-				Note: This function returns without blocking if the thread already has ownership of the rwlock.
-			</description>
-		</method>
-		<method name="read_try_lock">
-			<return type="int" enum="Error" />
-			<description>
-				Tries locking the built in RWLock for read access, but does not block. Returns OK on success, ERR_BUSY otherwise.
-				Note: This function returns OK if the thread already has ownership of the rwlock.
-			</description>
-		</method>
-		<method name="read_unlock">
-			<return type="void" />
-			<description>
-				Unlocks the built in RWLock for read access, leaving it to other threads.
-				Note: If a thread called lock() or try_lock() multiple times while already having ownership of the rwlock, it must also call unlock() the same number of times in order to unlock it correctly.
-			</description>
-		</method>
 		<method name="to_dict">
 			<return type="Dictionary" />
 			<description>
 				Returns the internal state as a [Dictionary].
 				Calls [method _to_dict].
-			</description>
-		</method>
-		<method name="write_lock">
-			<return type="void" />
-			<description>
-				Locks the built in RWLock for write access, blocks until it is unlocked by the current owner.
-				Note: This function will deadlock if the thread already has ownership of the rwlock!
-			</description>
-		</method>
-		<method name="write_try_lock">
-			<return type="int" enum="Error" />
-			<description>
-				Tries locking the built in RWLock for write access, but does not block. Returns OK on success, ERR_BUSY otherwise.
-				Note: This function returns ERR_BUSY if the thread already has ownership of the rwlock.
-			</description>
-		</method>
-		<method name="write_unlock">
-			<return type="void" />
-			<description>
-				Unlocks the built in RWLock for write access, leaving it to other threads.
 			</description>
 		</method>
 	</methods>
