@@ -4363,15 +4363,15 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 		if (p_instance->base_type == VS::INSTANCE_MESH) {
 			//remove materials no longer used and un-own them
 
-			int new_mat_count = VSG::storage->mesh_get_surface_count(p_instance->base);
+			int new_mat_count = RSG::storage->mesh_get_surface_count(p_instance->base);
 			for (int i = p_instance->materials.size() - 1; i >= new_mat_count; i--) {
 				if (p_instance->materials[i].is_valid()) {
-					VSG::storage->material_remove_instance_owner(p_instance->materials[i], p_instance);
+					RSG::storage->material_remove_instance_owner(p_instance->materials[i], p_instance);
 				}
 			}
 			p_instance->materials.resize(new_mat_count);
 
-			int new_blend_shape_count = VSG::storage->mesh_get_blend_shape_count(p_instance->base);
+			int new_blend_shape_count = RSG::storage->mesh_get_blend_shape_count(p_instance->base);
 			if (new_blend_shape_count != p_instance->blend_values.size()) {
 				p_instance->blend_values.resize(new_blend_shape_count);
 				for (int i = 0; i < new_blend_shape_count; i++) {
@@ -4389,8 +4389,8 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 			if (p_instance->cast_shadows == VS::SHADOW_CASTING_SETTING_OFF) {
 				can_cast_shadows = false;
 			} else if (p_instance->material_override.is_valid()) {
-				can_cast_shadows = VSG::storage->material_casts_shadows(p_instance->material_override);
-				is_animated = VSG::storage->material_is_animated(p_instance->material_override);
+				can_cast_shadows = RSG::storage->material_casts_shadows(p_instance->material_override);
+				is_animated = RSG::storage->material_is_animated(p_instance->material_override);
 			} else {
 				if (p_instance->base_type == VS::INSTANCE_MESH) {
 					RID mesh = p_instance->base;
@@ -4399,16 +4399,16 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 						bool cast_shadows = false;
 
 						for (int i = 0; i < p_instance->materials.size(); i++) {
-							RID mat = p_instance->materials[i].is_valid() ? p_instance->materials[i] : VSG::storage->mesh_surface_get_material(mesh, i);
+							RID mat = p_instance->materials[i].is_valid() ? p_instance->materials[i] : RSG::storage->mesh_surface_get_material(mesh, i);
 
 							if (!mat.is_valid()) {
 								cast_shadows = true;
 							} else {
-								if (VSG::storage->material_casts_shadows(mat)) {
+								if (RSG::storage->material_casts_shadows(mat)) {
 									cast_shadows = true;
 								}
 
-								if (VSG::storage->material_is_animated(mat)) {
+								if (RSG::storage->material_is_animated(mat)) {
 									is_animated = true;
 								}
 							}
@@ -4420,22 +4420,22 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 					}
 
 				} else if (p_instance->base_type == VS::INSTANCE_MULTIMESH) {
-					RID mesh = VSG::storage->multimesh_get_mesh(p_instance->base);
+					RID mesh = RSG::storage->multimesh_get_mesh(p_instance->base);
 					if (mesh.is_valid()) {
 						bool cast_shadows = false;
 
-						int sc = VSG::storage->mesh_get_surface_count(mesh);
+						int sc = RSG::storage->mesh_get_surface_count(mesh);
 						for (int i = 0; i < sc; i++) {
-							RID mat = VSG::storage->mesh_surface_get_material(mesh, i);
+							RID mat = RSG::storage->mesh_surface_get_material(mesh, i);
 
 							if (!mat.is_valid()) {
 								cast_shadows = true;
 
 							} else {
-								if (VSG::storage->material_casts_shadows(mat)) {
+								if (RSG::storage->material_casts_shadows(mat)) {
 									cast_shadows = true;
 								}
-								if (VSG::storage->material_is_animated(mat)) {
+								if (RSG::storage->material_is_animated(mat)) {
 									is_animated = true;
 								}
 							}
@@ -4446,36 +4446,36 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 						}
 					}
 				} else if (p_instance->base_type == VS::INSTANCE_IMMEDIATE) {
-					RID mat = VSG::storage->immediate_get_material(p_instance->base);
+					RID mat = RSG::storage->immediate_get_material(p_instance->base);
 
-					can_cast_shadows = !mat.is_valid() || VSG::storage->material_casts_shadows(mat);
+					can_cast_shadows = !mat.is_valid() || RSG::storage->material_casts_shadows(mat);
 
-					if (mat.is_valid() && VSG::storage->material_is_animated(mat)) {
+					if (mat.is_valid() && RSG::storage->material_is_animated(mat)) {
 						is_animated = true;
 					}
 				} else if (p_instance->base_type == VS::INSTANCE_PARTICLES) {
 					bool cast_shadows = false;
 
-					int dp = VSG::storage->particles_get_draw_passes(p_instance->base);
+					int dp = RSG::storage->particles_get_draw_passes(p_instance->base);
 
 					for (int i = 0; i < dp; i++) {
-						RID mesh = VSG::storage->particles_get_draw_pass_mesh(p_instance->base, i);
+						RID mesh = RSG::storage->particles_get_draw_pass_mesh(p_instance->base, i);
 						if (!mesh.is_valid()) {
 							continue;
 						}
 
-						int sc = VSG::storage->mesh_get_surface_count(mesh);
+						int sc = RSG::storage->mesh_get_surface_count(mesh);
 						for (int j = 0; j < sc; j++) {
-							RID mat = VSG::storage->mesh_surface_get_material(mesh, j);
+							RID mat = RSG::storage->mesh_surface_get_material(mesh, j);
 
 							if (!mat.is_valid()) {
 								cast_shadows = true;
 							} else {
-								if (VSG::storage->material_casts_shadows(mat)) {
+								if (RSG::storage->material_casts_shadows(mat)) {
 									cast_shadows = true;
 								}
 
-								if (VSG::storage->material_is_animated(mat)) {
+								if (RSG::storage->material_is_animated(mat)) {
 									is_animated = true;
 								}
 							}
@@ -4489,8 +4489,8 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 			}
 
 			if (p_instance->material_overlay.is_valid()) {
-				can_cast_shadows = can_cast_shadows || VSG::storage->material_casts_shadows(p_instance->material_overlay);
-				is_animated = is_animated || VSG::storage->material_is_animated(p_instance->material_overlay);
+				can_cast_shadows = can_cast_shadows || RSG::storage->material_casts_shadows(p_instance->material_overlay);
+				is_animated = is_animated || RSG::storage->material_is_animated(p_instance->material_overlay);
 			}
 
 			if (can_cast_shadows != geom->can_cast_shadows) {
@@ -4516,7 +4516,7 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 }
 
 void RenderingServerScene::update_dirty_instances() {
-	VSG::storage->update_dirty_resources();
+	RSG::storage->update_dirty_resources();
 
 	// this is just to get access to scenario so we can update the spatial partitioning scheme
 	Scenario *scenario = nullptr;

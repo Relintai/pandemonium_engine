@@ -2526,7 +2526,7 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 		}
 
 		// Setup blob shadows
-		bool blob_shadows = VSG::scene->are_blob_shadows_active() && !material->shader->spatial.unshaded && !material->shader->spatial.no_blob_shadows && !depth_prepass;
+		bool blob_shadows = RSG::scene->are_blob_shadows_active() && !material->shader->spatial.unshaded && !material->shader->spatial.no_blob_shadows && !depth_prepass;
 		//blob_shadows = false;
 		if (blob_shadows) {
 			RenderingServerScene::Instance *instance = (RenderingServerScene::Instance *)(e->instance);
@@ -2684,8 +2684,8 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 			float capsule_data_casters[capsule_data_units] = {};
 			float capsule_data_lights[blob_data_units] = {};
 
-			uint32_t num_blob_casters = VSG::scene->blob_shadows_fill_background_uniforms(*instance_aabb, blob_data_casters, blob_data_lights, max_casters);
-			uint32_t num_capsule_casters = VSG::scene->capsule_shadows_fill_background_uniforms(*instance_aabb, capsule_data_casters, capsule_data_lights, max_casters);
+			uint32_t num_blob_casters = RSG::scene->blob_shadows_fill_background_uniforms(*instance_aabb, blob_data_casters, blob_data_lights, max_casters);
+			uint32_t num_capsule_casters = RSG::scene->capsule_shadows_fill_background_uniforms(*instance_aabb, capsule_data_casters, capsule_data_lights, max_casters);
 
 			if (num_blob_casters || num_capsule_casters) {
 				if (num_blob_casters) {
@@ -2699,7 +2699,7 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 				}
 
 				glUniform2i(state.scene_shader.get_uniform_location(SceneShaderGLES2::SPHERE_CAPSULE_NUM_CASTERS), num_blob_casters, num_capsule_casters);
-				glUniform2f(state.scene_shader.get_uniform_location(SceneShaderGLES2::BLOB_RANGE_AND_GAMMA), VSG::scene->blob_shadows_get_range(), VSG::scene->blob_shadows_get_gamma());
+				glUniform2f(state.scene_shader.get_uniform_location(SceneShaderGLES2::BLOB_RANGE_AND_GAMMA), RSG::scene->blob_shadows_get_range(), RSG::scene->blob_shadows_get_gamma());
 			} else {
 				glUniform2i(state.scene_shader.get_uniform_location(SceneShaderGLES2::SPHERE_CAPSULE_NUM_CASTERS), 0, 0);
 			}

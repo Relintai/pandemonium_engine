@@ -2019,7 +2019,7 @@ void RasterizerSceneGLES3::_render_list(RenderList::Element **p_elements, int p_
 
 	const AABB *instance_aabb = nullptr;
 
-	bool allow_blob_shadows = VSG::scene->are_blob_shadows_active() && !p_shadow;
+	bool allow_blob_shadows = RSG::scene->are_blob_shadows_active() && !p_shadow;
 
 	for (int i = 0; i < p_element_count; i++) {
 		RenderList::Element *e = p_elements[i];
@@ -2241,13 +2241,13 @@ void RasterizerSceneGLES3::_render_list(RenderList::Element **p_elements, int p_
 			float capsule_data_casters[capsule_data_units] = {};
 			float capsule_data_lights[blob_data_units] = {};
 
-			uint32_t num_sphere_casters = VSG::scene->blob_shadows_fill_background_uniforms(*instance_aabb, blob_data_casters, blob_data_lights, max_casters);
-			uint32_t num_capsule_casters = VSG::scene->capsule_shadows_fill_background_uniforms(*instance_aabb, capsule_data_casters, capsule_data_lights, max_casters);
+			uint32_t num_sphere_casters = RSG::scene->blob_shadows_fill_background_uniforms(*instance_aabb, blob_data_casters, blob_data_lights, max_casters);
+			uint32_t num_capsule_casters = RSG::scene->capsule_shadows_fill_background_uniforms(*instance_aabb, capsule_data_casters, capsule_data_lights, max_casters);
 
 			if (num_sphere_casters || num_capsule_casters) {
 				glUniform2i(state.scene_shader.get_uniform_location(SceneShaderGLES3::SPHERE_CAPSULE_NUM_CASTERS), num_sphere_casters, num_capsule_casters);
-				float gamma = VSG::scene->blob_shadows_get_gamma() * 2.2f;
-				glUniform2f(state.scene_shader.get_uniform_location(SceneShaderGLES3::BLOB_RANGE_AND_GAMMA), VSG::scene->blob_shadows_get_range(), gamma);
+				float gamma = RSG::scene->blob_shadows_get_gamma() * 2.2f;
+				glUniform2f(state.scene_shader.get_uniform_location(SceneShaderGLES3::BLOB_RANGE_AND_GAMMA), RSG::scene->blob_shadows_get_range(), gamma);
 
 				if (num_sphere_casters) {
 					glUniform4fv(state.scene_shader.get_uniform_location(SceneShaderGLES3::SPHERE_DATA_CASTERS), num_sphere_casters, (const GLfloat *)blob_data_casters);
