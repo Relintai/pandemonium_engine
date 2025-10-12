@@ -433,6 +433,10 @@ Light::Light(RenderingServer::LightType p_type) {
 
 	RS::get_singleton()->instance_set_base(get_instance(), light);
 
+	reverse_cull = false;
+	bake_mode = BAKE_INDIRECT;
+	editor_only = false;
+
 	set_color(Color(1, 1, 1, 1));
 	set_shadow(false);
 	set_negative(false);
