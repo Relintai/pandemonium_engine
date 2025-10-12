@@ -1181,10 +1181,10 @@ void RenderingServerScene::blob_light_set_type(RID p_blob_light, RenderingServer
 	RenderingServerBlobShadows::Light &blight = _blob_shadows.get_light(blob_light->handle);
 
 	switch (p_type) {
-		case VS::LIGHT_DIRECTIONAL: {
+		case RS::LIGHT_DIRECTIONAL: {
 			blight.type = RenderingServerBlobShadows::DIRECTIONAL;
 		} break;
-		case VS::LIGHT_SPOT: {
+		case RS::LIGHT_SPOT: {
 			blight.type = RenderingServerBlobShadows::SPOT;
 		} break;
 		default: {
@@ -4360,7 +4360,7 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 	}
 
 	if (p_instance->update_materials) {
-		if (p_instance->base_type == VS::INSTANCE_MESH) {
+		if (p_instance->base_type == RS::INSTANCE_MESH) {
 			//remove materials no longer used and un-own them
 
 			int new_mat_count = RSG::storage->mesh_get_surface_count(p_instance->base);
@@ -4380,19 +4380,19 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 			}
 		}
 
-		if ((1 << p_instance->base_type) & VS::INSTANCE_GEOMETRY_MASK) {
+		if ((1 << p_instance->base_type) & RS::INSTANCE_GEOMETRY_MASK) {
 			InstanceGeometryData *geom = static_cast<InstanceGeometryData *>(p_instance->base_data);
 
 			bool can_cast_shadows = true;
 			bool is_animated = false;
 
-			if (p_instance->cast_shadows == VS::SHADOW_CASTING_SETTING_OFF) {
+			if (p_instance->cast_shadows == RS::SHADOW_CASTING_SETTING_OFF) {
 				can_cast_shadows = false;
 			} else if (p_instance->material_override.is_valid()) {
 				can_cast_shadows = RSG::storage->material_casts_shadows(p_instance->material_override);
 				is_animated = RSG::storage->material_is_animated(p_instance->material_override);
 			} else {
-				if (p_instance->base_type == VS::INSTANCE_MESH) {
+				if (p_instance->base_type == RS::INSTANCE_MESH) {
 					RID mesh = p_instance->base;
 
 					if (mesh.is_valid()) {
@@ -4419,7 +4419,7 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 						}
 					}
 
-				} else if (p_instance->base_type == VS::INSTANCE_MULTIMESH) {
+				} else if (p_instance->base_type == RS::INSTANCE_MULTIMESH) {
 					RID mesh = RSG::storage->multimesh_get_mesh(p_instance->base);
 					if (mesh.is_valid()) {
 						bool cast_shadows = false;
@@ -4445,7 +4445,7 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 							can_cast_shadows = false;
 						}
 					}
-				} else if (p_instance->base_type == VS::INSTANCE_IMMEDIATE) {
+				} else if (p_instance->base_type == RS::INSTANCE_IMMEDIATE) {
 					RID mat = RSG::storage->immediate_get_material(p_instance->base);
 
 					can_cast_shadows = !mat.is_valid() || RSG::storage->material_casts_shadows(mat);
@@ -4453,7 +4453,7 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 					if (mat.is_valid() && RSG::storage->material_is_animated(mat)) {
 						is_animated = true;
 					}
-				} else if (p_instance->base_type == VS::INSTANCE_PARTICLES) {
+				} else if (p_instance->base_type == RS::INSTANCE_PARTICLES) {
 					bool cast_shadows = false;
 
 					int dp = RSG::storage->particles_get_draw_passes(p_instance->base);

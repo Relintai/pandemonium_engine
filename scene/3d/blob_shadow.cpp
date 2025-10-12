@@ -31,6 +31,7 @@
 #include "blob_shadow.h"
 
 #include "servers/rendering/rendering_server_blob_shadows.h"
+#include "servers/rendering_server.h"
 
 void BlobShadow::_physics_interpolated_changed() {
 	set_notify_transform(!is_physics_interpolated_and_enabled());
@@ -134,7 +135,7 @@ void BlobShadow::set_radius(int p_index, real_t p_radius) {
 	}
 	data.radius[p_index] = p_radius;
 	_update_server(true);
-	update_gizmo();
+	update_gizmos();
 	_change_notify("radius");
 	_change_notify("offset_radius");
 }
@@ -150,7 +151,7 @@ void BlobShadow::set_offset(const Vector3 &p_offset) {
 	}
 	data.offset = p_offset;
 	_update_server(true);
-	update_gizmo();
+	update_gizmos();
 }
 
 void BlobShadow::set_shadow_type(BlobShadowType p_type) {
@@ -160,7 +161,7 @@ void BlobShadow::set_shadow_type(BlobShadowType p_type) {
 
 	data.type = p_type;
 	_refresh_visibility(is_inside_tree());
-	update_gizmo();
+	update_gizmos();
 	_change_notify();
 }
 

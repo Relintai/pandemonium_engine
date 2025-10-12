@@ -32,6 +32,7 @@
 
 #include "scene/3d/camera.h"
 #include "servers/rendering/rendering_server_blob_shadows.h"
+#include "scene/main/viewport.h"
 
 void BlobFocus::_bind_methods() {
 }

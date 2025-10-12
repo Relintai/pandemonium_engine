@@ -30,9 +30,9 @@
 
 #include "rendering_server_blob_shadows.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/math/plane.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 #include <string.h>
 

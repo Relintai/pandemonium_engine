@@ -58,10 +58,10 @@ void Light::set_param(Param p_param, float p_value) {
 	if (blob_light.is_valid()) {
 		switch (p_param) {
 			case PARAM_SPOT_ANGLE: {
-				VS::get_singleton()->blob_light_set_light_param(blob_light, VS::LightParam(p_param), p_value);
+				RS::get_singleton()->blob_light_set_light_param(blob_light, RS::LightParam(p_param), p_value);
 			} break;
 			case PARAM_ENERGY: {
-				VS::get_singleton()->blob_light_set_light_param(blob_light, VS::LightParam(p_param), p_value);
+				RS::get_singleton()->blob_light_set_light_param(blob_light, RS::LightParam(p_param), p_value);
 			} break;
 			case PARAM_RANGE: {
 				if (get_blob_shadow_param(BLOB_SHADOW_PARAM_RANGE_MAX) == 0) {
@@ -182,8 +182,8 @@ void Light::set_blob_shadow(bool p_enable) {
 			for (int n = 0; n < BLOB_SHADOW_PARAM_MAX; n++) {
 				_update_blob_shadow_param((BlobShadowParam)n);
 			}
-			RenderingServer::get_singleton()->blob_light_set_light_param(blob_light, VS::LIGHT_PARAM_SPOT_ANGLE, get_param(PARAM_SPOT_ANGLE));
-			RenderingServer::get_singleton()->blob_light_set_light_param(blob_light, VS::LIGHT_PARAM_ENERGY, get_param(PARAM_ENERGY));
+			RenderingServer::get_singleton()->blob_light_set_light_param(blob_light, RS::LIGHT_PARAM_SPOT_ANGLE, get_param(PARAM_SPOT_ANGLE));
+			RenderingServer::get_singleton()->blob_light_set_light_param(blob_light, RS::LIGHT_PARAM_ENERGY, get_param(PARAM_ENERGY));
 
 			// Only set initial position if in the tree, else it will be updated when entering the tree.
 			if (is_inside_tree()) {
@@ -214,7 +214,7 @@ void Light::_update_blob_shadow_param(BlobShadowParam p_param) {
 				}
 			}
 		}
-		VS::get_singleton()->blob_light_set_param(blob_light, VS::LightBlobShadowParam(p_param), value);
+		RS::get_singleton()->blob_light_set_param(blob_light, RS::LightBlobShadowParam(p_param), value);
 	}
 }
 
