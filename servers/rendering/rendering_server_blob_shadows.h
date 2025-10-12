@@ -31,11 +31,11 @@
 #ifndef VISUAL_SERVER_BLOB_SHADOWS_H
 #define VISUAL_SERVER_BLOB_SHADOWS_H
 
-#include "core/fixed_array.h"
+#include "core/containers/fixed_array.h"
 #include "core/math/bvh.h"
-#include "core/math/camera_matrix.h"
+#include "core/math/projection.h"
 #include "core/math/vector3.h"
-#include "core/pooled_list.h"
+#include "core/containers/pooled_list.h"
 
 class RenderingServerBlobShadows {
 	enum {
@@ -298,7 +298,7 @@ public:
 	uint32_t fill_background_uniforms_blobs(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters);
 	uint32_t fill_background_uniforms_capsules(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters);
 
-	void render_set_focus_handle(uint32_t p_focus_handle, const Vector3 &p_pos, const Transform &p_cam_transform, const CameraMatrix &p_cam_matrix);
+	void render_set_focus_handle(uint32_t p_focus_handle, const Vector3 &p_pos, const Transform &p_cam_transform, const Projection &p_cam_matrix);
 	void update();
 
 private:

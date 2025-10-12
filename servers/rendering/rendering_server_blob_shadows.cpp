@@ -648,7 +648,7 @@ void RenderingServerBlobShadows::find_best_light(bool p_blobs_or_capsules, Focus
 	}
 }
 
-void RenderingServerBlobShadows::render_set_focus_handle(uint32_t p_focus_handle, const Vector3 &p_pos, const Transform &p_cam_transform, const CameraMatrix &p_cam_matrix) {
+void RenderingServerBlobShadows::render_set_focus_handle(uint32_t p_focus_handle, const Vector3 &p_pos, const Transform &p_cam_transform, const Projection &p_cam_matrix) {
 	data.render_focus_handle = p_focus_handle;
 
 	// Get the camera frustum planes in world space.
