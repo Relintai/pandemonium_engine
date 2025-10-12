@@ -10,7 +10,7 @@ uniform highp int ubershader_flags;
 #define SHADER_IS_SRGB false
 
 /*
-from VisualServer:
+from RenderingServer:
 
 ARRAY_VERTEX=0,
 ARRAY_NORMAL=1,

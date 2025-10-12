@@ -31,7 +31,7 @@
 #include "blob_focus.h"
 
 #include "scene/3d/camera.h"
-#include "servers/visual/visual_server_blob_shadows.h"
+#include "servers/rendering/redering_server_blob_shadows.h"
 
 void BlobFocus::_bind_methods() {
 }
@@ -51,7 +51,7 @@ void BlobFocus::fti_update_servers_xform() {
 
 				if (!new_pos.is_equal_approx(_prev_pos)) {
 					RID rid = camera->get_camera();
-					VisualServer::get_singleton()->camera_set_blob_focus_position(rid, new_pos);
+					RenderingServer::get_singleton()->camera_set_blob_focus_position(rid, new_pos);
 					_prev_pos = new_pos;
 				}
 			}
@@ -70,7 +70,7 @@ void BlobFocus::_notification(int p_what) {
 					Camera *camera = viewport->get_camera();
 					if (camera) {
 						RID rid = camera->get_camera();
-						VisualServer::get_singleton()->camera_set_blob_focus_position(rid, get_global_transform_interpolated().origin);
+						RenderingServer::get_singleton()->camera_set_blob_focus_position(rid, get_global_transform_interpolated().origin);
 					}
 				}
 			}
@@ -82,7 +82,7 @@ void BlobFocus::_notification(int p_what) {
 					Camera *camera = viewport->get_camera();
 					if (camera) {
 						RID rid = camera->get_camera();
-						VisualServer::get_singleton()->camera_set_blob_focus_position(rid, get_global_transform().origin);
+						RenderingServer::get_singleton()->camera_set_blob_focus_position(rid, get_global_transform().origin);
 					}
 				}
 			}

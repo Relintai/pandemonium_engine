@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-// Use for constants etc that need not be included as often as VisualServer.h
+// Use for constants etc that need not be included as often as RenderingServer.h
 // to reduce dependencies and prevent slow compilation.
 
 // This is a "cheap" include, and can be used from scene side code as well as servers.
@@ -44,9 +44,9 @@
 // performance, and are only necessary to use for debugging.
 #ifdef DEV_ENABLED
 
-// Uncomment this define to store canvas item names in VisualServerCanvas.
+// Uncomment this define to store canvas item names in RenderingServerCanvas.
 // This is relatively expensive, but is invaluable for debugging the canvas scene tree
-// especially using _print_tree() in VisualServerCanvas.
+// especially using _print_tree() in RenderingServerCanvas.
 // #define RENDERING_SERVER_CANVAS_DEBUG_ITEM_NAMES
 
 // Uncomment this define to verify local bounds of canvas items,

@@ -90,7 +90,7 @@ private:
 	bool outside;
 	int old_x, old_y;
 	Point2i center;
-	VisualServer *visual_server;
+	RenderingServer *visual_server;
 	int pressrc;
 
 	ContextEGL_UWP *gl_context;

@@ -2529,7 +2529,7 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 		bool blob_shadows = VSG::scene->are_blob_shadows_active() && !material->shader->spatial.unshaded && !material->shader->spatial.no_blob_shadows && !depth_prepass;
 		//blob_shadows = false;
 		if (blob_shadows) {
-			VisualServerScene::Instance *instance = (VisualServerScene::Instance *)(e->instance);
+			RenderingServerScene::Instance *instance = (RenderingServerScene::Instance *)(e->instance);
 			instance_aabb = &instance->transformed_aabb;
 		}
 		state.scene_shader.set_conditional(SceneShaderGLES2::USE_BLOB_SHADOWS, blob_shadows);

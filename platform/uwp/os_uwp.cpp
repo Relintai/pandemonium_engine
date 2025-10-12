@@ -276,10 +276,10 @@ Error OS_UWP::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 
 	set_video_mode(vm);
 
-	visual_server = memnew(VisualServerRaster);
+	visual_server = memnew(RenderingServerRaster);
 	// FIXME: Reimplement threaded rendering
 	if (get_render_thread_mode() != RENDER_THREAD_UNSAFE) {
-		visual_server = memnew(VisualServerWrapMT(visual_server, false));
+		vsual_server = memnew(RenderingServerWrapMT(visual_server, false));
 	}
 
 	visual_server->init();

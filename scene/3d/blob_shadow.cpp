@@ -42,7 +42,7 @@ void BlobShadow::_update_server(bool p_force_update) {
 		Vector3 pos = get_global_transform_interpolated().origin;
 		if (!pos.is_equal_approx(data.prev_pos) || p_force_update) {
 			data.prev_pos = pos;
-			VisualServer::get_singleton()->blob_shadow_update(data.blob, pos, data.radius[0]);
+			RenderingServer::get_singleton()->blob_shadow_update(data.blob, pos, data.radius[0]);
 		}
 	} else if (data.capsule.is_valid()) {
 		Transform tr = get_global_transform_interpolated();
@@ -50,7 +50,7 @@ void BlobShadow::_update_server(bool p_force_update) {
 			data.prev_xform = tr;
 			Vector3 pos = tr.origin;
 			Vector3 pos_b = tr.xform(data.offset);
-			VisualServer::get_singleton()->capsule_shadow_update(data.capsule, pos, data.radius[0], pos_b, data.radius[1]);
+			RenderingServer::get_singleton()->capsule_shadow_update(data.capsule, pos, data.radius[0], pos_b, data.radius[1]);
 		}
 	}
 }
@@ -103,22 +103,22 @@ void BlobShadow::_refresh_visibility(bool p_in_tree) {
 
 	if (sphere_present) {
 		if (!data.blob.is_valid()) {
-			data.blob = RID_PRIME(VisualServer::get_singleton()->blob_shadow_create());
+			data.blob = RID_PRIME(RenderingServer::get_singleton()->blob_shadow_create());
 		}
 	} else {
 		if (data.blob.is_valid()) {
-			VisualServer::get_singleton()->free(data.blob);
+			RenderingServer::get_singleton()->free(data.blob);
 			data.blob = RID();
 		}
 	}
 
 	if (capsule_present) {
 		if (!data.capsule.is_valid()) {
-			data.capsule = RID_PRIME(VisualServer::get_singleton()->capsule_shadow_create());
+			data.capsule = RID_PRIME(RenderingServer::get_singleton()->capsule_shadow_create());
 		}
 	} else {
 		if (data.capsule.is_valid()) {
-			VisualServer::get_singleton()->free(data.capsule);
+			RenderingServer::get_singleton()->free(data.capsule);
 			data.capsule = RID();
 		}
 	}

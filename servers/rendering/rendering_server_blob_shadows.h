@@ -37,7 +37,7 @@
 #include "core/math/vector3.h"
 #include "core/pooled_list.h"
 
-class VisualServerBlobShadows {
+class RenderingServerBlobShadows {
 	enum {
 		MAX_CASTERS = 128, // blobs and capsules
 	};
@@ -375,7 +375,7 @@ private:
 	} data;
 
 public:
-	VisualServerBlobShadows();
+	RenderingServerBlobShadows();
 };
 
 #endif // VISUAL_SERVER_BLOB_SHADOWS_H

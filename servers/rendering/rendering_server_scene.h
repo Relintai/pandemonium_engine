@@ -755,9 +755,9 @@ public:
 
 	virtual RID blob_light_create();
 	virtual void blob_light_update(RID p_blob_light, const Transform &p_global_transform);
-	virtual void blob_light_set_param(RID p_blob_light, VisualServer::LightBlobShadowParam p_param, real_t p_value);
-	virtual void blob_light_set_light_param(RID p_blob_light, VisualServer::LightParam p_param, real_t p_value);
-	virtual void blob_light_set_type(RID p_blob_light, VisualServer::LightType p_type);
+	virtual void blob_light_set_param(RID p_blob_light, RenderingServer::LightBlobShadowParam p_param, real_t p_value);
+	virtual void blob_light_set_light_param(RID p_blob_light, RenderingServer::LightParam p_param, real_t p_value);
+	virtual void blob_light_set_type(RID p_blob_light, RenderingServer::LightType p_type);
 	virtual void blob_light_set_visible(RID p_blob_light, bool p_visible);
 
 	uint32_t blob_shadows_fill_background_uniforms(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters);
@@ -986,7 +986,7 @@ private:
 	bool _use_bvh;
 	RenderingServerCallbacks *_rendering_server_callbacks;
 	PortalResources _portal_resources;
-	VisualServerBlobShadows _blob_shadows;
+	RenderingServerBlobShadows _blob_shadows;
 
 public:
 	RenderingServerScene();

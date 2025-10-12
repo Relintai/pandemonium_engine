@@ -597,9 +597,9 @@ public:
 
 	BIND0R(RID, blob_light_create)
 	BIND2(blob_light_update, RID, const Transform &)
-	BIND3(blob_light_set_param, RID, VisualServer::LightBlobShadowParam, real_t)
-	BIND3(blob_light_set_light_param, RID, VisualServer::LightParam, real_t)
-	BIND2(blob_light_set_type, RID, VisualServer::LightType)
+	BIND3(blob_light_set_param, RID, RenderingServer::LightBlobShadowParam, real_t)
+	BIND3(blob_light_set_light_param, RID, RenderingServer::LightParam, real_t)
+	BIND2(blob_light_set_type, RID, RenderingServer::LightType)
 	BIND2(blob_light_set_visible, RID, bool)
 
 	/* PORTALS */

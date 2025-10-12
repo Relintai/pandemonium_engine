@@ -38,14 +38,14 @@
 
 // #define GODOT_BLOB_SHADOWS_TEST_DIRECTION_INTERPOLATION
 
-bool VisualServerBlobShadows::_active_project_setting = true;
-bool VisualServerBlobShadows::_active_blobs_present = false;
-bool VisualServerBlobShadows::_active = true;
+bool RenderingServerBlobShadows::_active_project_setting = true;
+bool RenderingServerBlobShadows::_active_blobs_present = false;
+bool RenderingServerBlobShadows::_active = true;
 
-void VisualServerBlobShadows::update() {
+void RenderingServerBlobShadows::update() {
 	if (ProjectSettings::get_singleton()->has_changes()) {
 		// Only change these via project setting in the editor.
-		// In game use VisualServer API as it is more efficient and won't cause stalls.
+		// In game use RenderingServer API as it is more efficient and won't cause stalls.
 		if (Engine::get_singleton()->is_editor_hint()) {
 			data.range = GLOBAL_GET("rendering/quality/blob_shadows/range");
 			data.gamma = GLOBAL_GET("rendering/quality/blob_shadows/gamma");
@@ -60,7 +60,7 @@ void VisualServerBlobShadows::update() {
 	}
 }
 
-VisualServerBlobShadows::Light *VisualServerBlobShadows::request_light(uint32_t &r_handle) {
+RenderingServerBlobShadows::Light *RenderingServerBlobShadows::request_light(uint32_t &r_handle) {
 	Light *light = data.lights.request(r_handle);
 	light->clear();
 
@@ -78,7 +78,7 @@ VisualServerBlobShadows::Light *VisualServerBlobShadows::request_light(uint32_t 
 	return light;
 }
 
-void VisualServerBlobShadows::delete_light(uint32_t p_handle) {
+void RenderingServerBlobShadows::delete_light(uint32_t p_handle) {
 	const Light &light = get_light(p_handle);
 
 	data.bvh.erase(light.bvh_handle);
@@ -90,24 +90,24 @@ void VisualServerBlobShadows::delete_light(uint32_t p_handle) {
 	_refresh_active();
 }
 
-void VisualServerBlobShadows::set_light_visible(uint32_t p_handle, bool p_visible) {
+void RenderingServerBlobShadows::set_light_visible(uint32_t p_handle, bool p_visible) {
 	Light &light = get_light(p_handle);
 	light.visible = p_visible;
 	make_light_dirty(light);
 	_refresh_active();
 }
 
-void VisualServerBlobShadows::make_light_dirty(Light &p_light) {
+void RenderingServerBlobShadows::make_light_dirty(Light &p_light) {
 	// Just immediate update for now.
 	AABB &aabb = p_light.aabb;
 	aabb.size = Vector3();
 
 	switch (p_light.type) {
-		case VisualServerBlobShadows::OMNI: {
+		case RenderingServerBlobShadows::OMNI: {
 			aabb.position = p_light.pos;
 			aabb.grow_by(p_light.range_max);
 		} break;
-		case VisualServerBlobShadows::SPOT: {
+		case RenderingServerBlobShadows::SPOT: {
 			if (p_light.direction.length_squared() < 0.001f) {
 				return;
 			}
@@ -136,7 +136,7 @@ void VisualServerBlobShadows::make_light_dirty(Light &p_light) {
 			aabb.position += p_light.pos;
 #endif
 		} break;
-		case VisualServerBlobShadows::DIRECTIONAL: {
+		case RenderingServerBlobShadows::DIRECTIONAL: {
 			const real_t cfmax = FLT_MAX / 4.0;
 			Vector3 corn_a = Vector3(-cfmax, p_light.pos.y, -cfmax);
 			Vector3 corn_b = Vector3(cfmax, p_light.pos.y - p_light.range_max, cfmax);
@@ -148,7 +148,7 @@ void VisualServerBlobShadows::make_light_dirty(Light &p_light) {
 	data.bvh.move(p_light.bvh_handle, aabb);
 }
 
-VisualServerBlobShadows::Blob *VisualServerBlobShadows::request_blob(uint32_t &r_handle) {
+RenderingServerBlobShadows::Blob *RenderingServerBlobShadows::request_blob(uint32_t &r_handle) {
 	Blob *caster = data.blobs.request(r_handle);
 	caster->clear();
 	caster->ref_count = 1;
@@ -168,7 +168,7 @@ VisualServerBlobShadows::Blob *VisualServerBlobShadows::request_blob(uint32_t &r
 	return caster;
 }
 
-void VisualServerBlobShadows::delete_blob(uint32_t p_handle) {
+void RenderingServerBlobShadows::delete_blob(uint32_t p_handle) {
 	const Caster &caster = get_blob(p_handle);
 
 	data.bvh.erase(caster.bvh_handle);
@@ -182,7 +182,7 @@ void VisualServerBlobShadows::delete_blob(uint32_t p_handle) {
 	_refresh_active();
 }
 
-void VisualServerBlobShadows::make_blob_dirty(Blob &p_caster) {
+void RenderingServerBlobShadows::make_blob_dirty(Blob &p_caster) {
 	// Just immediate update for now.
 	AABB &aabb = p_caster.aabb;
 	aabb.position = p_caster.pos;
@@ -192,7 +192,7 @@ void VisualServerBlobShadows::make_blob_dirty(Blob &p_caster) {
 	data.bvh.move(p_caster.bvh_handle, aabb);
 }
 
-VisualServerBlobShadows::Capsule *VisualServerBlobShadows::request_capsule(uint32_t &r_handle) {
+RenderingServerBlobShadows::Capsule *RenderingServerBlobShadows::request_capsule(uint32_t &r_handle) {
 	Capsule *caster = data.capsules.request(r_handle);
 	caster->clear();
 	caster->ref_count = 1;
@@ -212,7 +212,7 @@ VisualServerBlobShadows::Capsule *VisualServerBlobShadows::request_capsule(uint3
 	return caster;
 }
 
-void VisualServerBlobShadows::delete_capsule(uint32_t p_handle) {
+void RenderingServerBlobShadows::delete_capsule(uint32_t p_handle) {
 	const Capsule &caster = get_capsule(p_handle);
 
 	data.bvh.erase(caster.bvh_handle);
@@ -226,7 +226,7 @@ void VisualServerBlobShadows::delete_capsule(uint32_t p_handle) {
 	_refresh_active();
 }
 
-void VisualServerBlobShadows::make_capsule_dirty(Capsule &p_caster) {
+void RenderingServerBlobShadows::make_capsule_dirty(Capsule &p_caster) {
 	// Just immediate update for now.
 	AABB &aabb = p_caster.aabb;
 	aabb.position = p_caster.pos;
@@ -241,26 +241,26 @@ void VisualServerBlobShadows::make_capsule_dirty(Capsule &p_caster) {
 	data.bvh.move(p_caster.bvh_handle, aabb);
 }
 
-int VisualServerBlobShadows::qsort_cmp_func(const void *a, const void *b) {
+int RenderingServerBlobShadows::qsort_cmp_func(const void *a, const void *b) {
 	const SortFocusCaster *pa = (const SortFocusCaster *)a;
 	const SortFocusCaster *pb = (const SortFocusCaster *)b;
 
 	return (pa->distance > pb->distance);
 }
 
-VisualServerBlobShadows::Focus *VisualServerBlobShadows::request_focus(uint32_t &r_handle) {
+RenderingServerBlobShadows::Focus *RenderingServerBlobShadows::request_focus(uint32_t &r_handle) {
 	Focus *focus = data.foci.request(r_handle);
 	focus->clear();
 	r_handle++;
 	return focus;
 }
 
-void VisualServerBlobShadows::delete_focus(uint32_t p_handle) {
+void RenderingServerBlobShadows::delete_focus(uint32_t p_handle) {
 	data.foci.free(--p_handle);
 }
 
 template <class T, bool BLOBS_OR_CAPSULES>
-void VisualServerBlobShadows::update_focus_blobs_or_capsules(const Focus &p_focus, FocusInfo &r_focus_info, const TrackedPooledList<T> &p_blobs, uint32_t p_max_casters) {
+void RenderingServerBlobShadows::update_focus_blobs_or_capsules(const Focus &p_focus, FocusInfo &r_focus_info, const TrackedPooledList<T> &p_blobs, uint32_t p_max_casters) {
 	// This is incredibly naive going through each caster, calculating offsets and sorting.
 	// It should work fine up to 1000 or so casters, but can probably be optimized to use BVH
 	// or quick reject.
@@ -374,12 +374,12 @@ void VisualServerBlobShadows::update_focus_blobs_or_capsules(const Focus &p_focu
 	}
 }
 
-void VisualServerBlobShadows::update_focus(Focus &r_focus) {
+void RenderingServerBlobShadows::update_focus(Focus &r_focus) {
 	update_focus_blobs_or_capsules<Blob, true>(r_focus, r_focus.blobs, data.blobs, data.blob_max_casters);
 	update_focus_blobs_or_capsules<Capsule, false>(r_focus, r_focus.capsules, data.capsules, data.capsule_max_casters);
 }
 
-void VisualServerBlobShadows::update_focus_caster(bool p_blobs_or_capsules, FocusInfo &r_focus_info, const SortFocusCaster &p_sort_focus_caster) {
+void RenderingServerBlobShadows::update_focus_caster(bool p_blobs_or_capsules, FocusInfo &r_focus_info, const SortFocusCaster &p_sort_focus_caster) {
 	FocusInfo &fi = r_focus_info;
 
 	// Does the focus caster exist already?
@@ -475,7 +475,7 @@ void test_direction_interpolation() {
 }
 #endif
 
-void VisualServerBlobShadows::find_best_light(bool p_blobs_or_capsules, FocusCaster &r_focus_caster) {
+void RenderingServerBlobShadows::find_best_light(bool p_blobs_or_capsules, FocusCaster &r_focus_caster) {
 #ifdef GODOT_BLOB_SHADOWS_TEST_DIRECTION_INTERPOLATION
 	test_direction_interpolation();
 #endif
@@ -648,7 +648,7 @@ void VisualServerBlobShadows::find_best_light(bool p_blobs_or_capsules, FocusCas
 	}
 }
 
-void VisualServerBlobShadows::render_set_focus_handle(uint32_t p_focus_handle, const Vector3 &p_pos, const Transform &p_cam_transform, const CameraMatrix &p_cam_matrix) {
+void RenderingServerBlobShadows::render_set_focus_handle(uint32_t p_focus_handle, const Vector3 &p_pos, const Transform &p_cam_transform, const CameraMatrix &p_cam_matrix) {
 	data.render_focus_handle = p_focus_handle;
 
 	// Get the camera frustum planes in world space.
@@ -692,7 +692,7 @@ void VisualServerBlobShadows::render_set_focus_handle(uint32_t p_focus_handle, c
 	}
 }
 
-uint32_t VisualServerBlobShadows::fill_background_uniforms_blobs(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters) {
+uint32_t RenderingServerBlobShadows::fill_background_uniforms_blobs(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters) {
 	DEV_ASSERT(data.render_focus_handle);
 
 	uint32_t count = 0;
@@ -760,7 +760,7 @@ uint32_t VisualServerBlobShadows::fill_background_uniforms_blobs(const AABB &p_a
 	return count;
 }
 
-uint32_t VisualServerBlobShadows::fill_background_uniforms_capsules(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters) {
+uint32_t RenderingServerBlobShadows::fill_background_uniforms_capsules(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters) {
 	DEV_ASSERT(data.render_focus_handle);
 
 	uint32_t count = 0;
@@ -832,11 +832,11 @@ uint32_t VisualServerBlobShadows::fill_background_uniforms_capsules(const AABB &
 	return count;
 }
 
-void *VisualServerBlobShadows::_instance_pair(void *p_self, SpatialPartitionID, void *p_A, int, SpatialPartitionID, void *p_B, int) {
+void *RenderingServerBlobShadows::_instance_pair(void *p_self, SpatialPartitionID, void *p_A, int, SpatialPartitionID, void *p_B, int) {
 	uint32_t handle_a = (uint32_t)(uint64_t)p_A;
 	uint32_t handle_b = (uint32_t)(uint64_t)p_B;
 
-	VisualServerBlobShadows *self = static_cast<VisualServerBlobShadows *>(p_self);
+	RenderingServerBlobShadows *self = static_cast<RenderingServerBlobShadows *>(p_self);
 
 	Instance &a = self->data.instances[handle_a];
 	Instance &b = self->data.instances[handle_b];
@@ -846,17 +846,17 @@ void *VisualServerBlobShadows::_instance_pair(void *p_self, SpatialPartitionID, 
 
 	Caster *caster = nullptr;
 
-	if (a.type == VisualServerBlobShadows::IT_LIGHT) {
-		DEV_ASSERT((b.type == VisualServerBlobShadows::IT_BLOB) || (b.type == VisualServerBlobShadows::IT_CAPSULE));
+	if (a.type == RenderingServerBlobShadows::IT_LIGHT) {
+		DEV_ASSERT((b.type == RenderingServerBlobShadows::IT_BLOB) || (b.type == RenderingServerBlobShadows::IT_CAPSULE));
 		light_handle = a.handle;
 		caster_handle = b.handle;
-		caster = b.type == VisualServerBlobShadows::IT_BLOB ? (Caster *)&self->data.blobs[caster_handle] : (Caster *)&self->data.capsules[caster_handle];
+		caster = b.type == RenderingServerBlobShadows::IT_BLOB ? (Caster *)&self->data.blobs[caster_handle] : (Caster *)&self->data.capsules[caster_handle];
 	} else {
-		DEV_ASSERT((a.type == VisualServerBlobShadows::IT_BLOB) || (a.type == VisualServerBlobShadows::IT_CAPSULE));
-		DEV_ASSERT(b.type == VisualServerBlobShadows::IT_LIGHT);
+		DEV_ASSERT((a.type == RenderingServerBlobShadows::IT_BLOB) || (a.type == RenderingServerBlobShadows::IT_CAPSULE));
+		DEV_ASSERT(b.type == RenderingServerBlobShadows::IT_LIGHT);
 		light_handle = b.handle;
 		caster_handle = a.handle;
-		caster = a.type == VisualServerBlobShadows::IT_BLOB ? (Caster *)&self->data.blobs[caster_handle] : (Caster *)&self->data.capsules[caster_handle];
+		caster = a.type == RenderingServerBlobShadows::IT_BLOB ? (Caster *)&self->data.blobs[caster_handle] : (Caster *)&self->data.capsules[caster_handle];
 	}
 
 	DEV_ASSERT(caster->linked_lights);
@@ -866,11 +866,11 @@ void *VisualServerBlobShadows::_instance_pair(void *p_self, SpatialPartitionID, 
 	return nullptr;
 }
 
-void VisualServerBlobShadows::_instance_unpair(void *p_self, SpatialPartitionID, void *p_A, int, SpatialPartitionID, void *p_B, int, void *udata) {
+void RenderingServerBlobShadows::_instance_unpair(void *p_self, SpatialPartitionID, void *p_A, int, SpatialPartitionID, void *p_B, int, void *udata) {
 	uint32_t handle_a = (uint32_t)(uint64_t)p_A;
 	uint32_t handle_b = (uint32_t)(uint64_t)p_B;
 
-	VisualServerBlobShadows *self = static_cast<VisualServerBlobShadows *>(p_self);
+	RenderingServerBlobShadows *self = static_cast<RenderingServerBlobShadows *>(p_self);
 
 	Instance &a = self->data.instances[handle_a];
 	Instance &b = self->data.instances[handle_b];
@@ -880,17 +880,17 @@ void VisualServerBlobShadows::_instance_unpair(void *p_self, SpatialPartitionID,
 
 	Caster *caster = nullptr;
 
-	if (a.type == VisualServerBlobShadows::IT_LIGHT) {
-		DEV_ASSERT((b.type == VisualServerBlobShadows::IT_BLOB) || (b.type == VisualServerBlobShadows::IT_CAPSULE));
+	if (a.type == RenderingServerBlobShadows::IT_LIGHT) {
+		DEV_ASSERT((b.type == RenderingServerBlobShadows::IT_BLOB) || (b.type == RenderingServerBlobShadows::IT_CAPSULE));
 		light_handle = a.handle;
 		caster_handle = b.handle;
-		caster = b.type == VisualServerBlobShadows::IT_BLOB ? (Caster *)&self->data.blobs[caster_handle] : (Caster *)&self->data.capsules[caster_handle];
+		caster = b.type == RenderingServerBlobShadows::IT_BLOB ? (Caster *)&self->data.blobs[caster_handle] : (Caster *)&self->data.capsules[caster_handle];
 	} else {
-		DEV_ASSERT((a.type == VisualServerBlobShadows::IT_BLOB) || (a.type == VisualServerBlobShadows::IT_CAPSULE));
-		DEV_ASSERT(b.type == VisualServerBlobShadows::IT_LIGHT);
+		DEV_ASSERT((a.type == RenderingServerBlobShadows::IT_BLOB) || (a.type == RenderingServerBlobShadows::IT_CAPSULE));
+		DEV_ASSERT(b.type == RenderingServerBlobShadows::IT_LIGHT);
 		light_handle = b.handle;
 		caster_handle = a.handle;
-		caster = a.type == VisualServerBlobShadows::IT_BLOB ? (Caster *)&self->data.blobs[caster_handle] : (Caster *)&self->data.capsules[caster_handle];
+		caster = a.type == RenderingServerBlobShadows::IT_BLOB ? (Caster *)&self->data.blobs[caster_handle] : (Caster *)&self->data.capsules[caster_handle];
 	}
 
 	DEV_ASSERT(caster->linked_lights);
@@ -899,12 +899,12 @@ void VisualServerBlobShadows::_instance_unpair(void *p_self, SpatialPartitionID,
 	caster->linked_lights->remove_unordered(found);
 }
 
-void VisualServerBlobShadows::_refresh_active() {
+void RenderingServerBlobShadows::_refresh_active() {
 	_active_blobs_present = (data.blobs.active_size() || data.capsules.active_size()) && data.lights.active_size();
 	_active = _active_project_setting && _active_blobs_present;
 }
 
-VisualServerBlobShadows::VisualServerBlobShadows() {
+RenderingServerBlobShadows::RenderingServerBlobShadows() {
 	data.bvh.set_pair_callback(_instance_pair, this);
 	data.bvh.set_unpair_callback(_instance_unpair, this);
 

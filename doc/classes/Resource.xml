@@ -62,7 +62,7 @@
 		<method name="get_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
-				Returns the [RID] of this resource (or an empty RID). Many resources (such as [Texture], [Shape], and so on) are high-level abstractions of resources stored in a specialized server ([VisualServer], [PhysicsServer], etc.), so this function will return the original [RID].
+				Returns the [RID] of this resource (or an empty RID). Many resources (such as [Texture], [Shape], and so on) are high-level abstractions of resources stored in a specialized server ([RenderingServer], [PhysicsServer], etc.), so this function will return the original [RID].
 			</description>
 		</method>
 		<method name="setup_local_to_scene">

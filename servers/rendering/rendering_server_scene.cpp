@@ -1089,7 +1089,7 @@ bool RenderingServerScene::_instance_get_transformed_aabb(RID p_instance, AABB &
 	return true;
 }
 
-RID VisualServerScene::blob_light_create() {
+RID RenderingServerScene::blob_light_create() {
 	BlobLight *blob_light = memnew(BlobLight);
 	ERR_FAIL_NULL_V(blob_light, RID());
 	RID blob_light_rid = blob_light_owner.make_rid(blob_light);
@@ -1098,11 +1098,11 @@ RID VisualServerScene::blob_light_create() {
 	return blob_light_rid;
 }
 
-void VisualServerScene::blob_light_update(RID p_blob_light, const Transform &p_global_transform) {
+void RenderingServerScene::blob_light_update(RID p_blob_light, const Transform &p_global_transform) {
 	BlobLight *blob_light = blob_light_owner.getornull(p_blob_light);
 	ERR_FAIL_NULL(blob_light);
 	ERR_FAIL_COND(blob_light->handle == 0);
-	VisualServerBlobShadows::Light &blight = _blob_shadows.get_light(blob_light->handle);
+	RenderingServerBlobShadows::Light &blight = _blob_shadows.get_light(blob_light->handle);
 
 	blight.pos = p_global_transform.origin;
 	blight.direction = -p_global_transform.basis.get_axis(2);
@@ -1111,20 +1111,20 @@ void VisualServerScene::blob_light_update(RID p_blob_light, const Transform &p_g
 	_blob_shadows.make_light_dirty(blight);
 }
 
-void VisualServerScene::blob_light_set_light_param(RID p_blob_light, VisualServer::LightParam p_param, real_t p_value) {
+void RenderingServerScene::blob_light_set_light_param(RID p_blob_light, RenderingServer::LightParam p_param, real_t p_value) {
 	// This is our opportunity to intercept some of the more usual light parameters,
 	// if we can use them for blob shadows.
 	BlobLight *blob_light = blob_light_owner.getornull(p_blob_light);
 	ERR_FAIL_NULL(blob_light);
 	ERR_FAIL_COND(!blob_light->handle);
 
-	VisualServerBlobShadows::Light &blight = _blob_shadows.get_light(blob_light->handle);
+	RenderingServerBlobShadows::Light &blight = _blob_shadows.get_light(blob_light->handle);
 
 	switch (p_param) {
-		case VisualServer::LIGHT_PARAM_SPOT_ANGLE: {
+		case RenderingServer::LIGHT_PARAM_SPOT_ANGLE: {
 			blight.set_spot_degrees(p_value);
 		} break;
-		case VisualServer::LIGHT_PARAM_ENERGY: {
+		case RenderingServer::LIGHT_PARAM_ENERGY: {
 			blight.energy = p_value;
 			blight.calculate_energy_intensity();
 		} break;
@@ -1135,21 +1135,21 @@ void VisualServerScene::blob_light_set_light_param(RID p_blob_light, VisualServe
 	_blob_shadows.make_light_dirty(blight);
 }
 
-void VisualServerScene::blob_light_set_param(RID p_blob_light, VisualServer::LightBlobShadowParam p_param, real_t p_value) {
+void RenderingServerScene::blob_light_set_param(RID p_blob_light, RenderingServer::LightBlobShadowParam p_param, real_t p_value) {
 	BlobLight *blob_light = blob_light_owner.getornull(p_blob_light);
 	ERR_FAIL_NULL(blob_light);
 	ERR_FAIL_COND(!blob_light->handle);
 
-	VisualServerBlobShadows::Light &blight = _blob_shadows.get_light(blob_light->handle);
+	RenderingServerBlobShadows::Light &blight = _blob_shadows.get_light(blob_light->handle);
 
 	switch (p_param) {
-		case VisualServer::LIGHT_BLOB_SHADOW_PARAM_RANGE_HARDNESS: {
+		case RenderingServer::LIGHT_BLOB_SHADOW_PARAM_RANGE_HARDNESS: {
 			blob_light->range_hardness = p_value;
 		} break;
-		case VisualServer::LIGHT_BLOB_SHADOW_PARAM_RANGE_MAX: {
+		case RenderingServer::LIGHT_BLOB_SHADOW_PARAM_RANGE_MAX: {
 			blob_light->range_max = p_value;
 		} break;
-		case VisualServer::LIGHT_BLOB_SHADOW_PARAM_INTENSITY: {
+		case RenderingServer::LIGHT_BLOB_SHADOW_PARAM_INTENSITY: {
 			blight.intensity = p_value;
 			blight.calculate_energy_intensity();
 		} break;
@@ -1167,33 +1167,33 @@ void VisualServerScene::blob_light_set_param(RID p_blob_light, VisualServer::Lig
 	_blob_shadows.make_light_dirty(blight);
 }
 
-void VisualServerScene::blob_light_set_visible(RID p_blob_light, bool p_visible) {
+void RenderingServerScene::blob_light_set_visible(RID p_blob_light, bool p_visible) {
 	BlobLight *blob_light = blob_light_owner.getornull(p_blob_light);
 	ERR_FAIL_NULL(blob_light);
 	ERR_FAIL_COND(blob_light->handle == 0);
 	_blob_shadows.set_light_visible(blob_light->handle, p_visible);
 }
 
-void VisualServerScene::blob_light_set_type(RID p_blob_light, VisualServer::LightType p_type) {
+void RenderingServerScene::blob_light_set_type(RID p_blob_light, RenderingServer::LightType p_type) {
 	BlobLight *blob_light = blob_light_owner.getornull(p_blob_light);
 	ERR_FAIL_NULL(blob_light);
 	ERR_FAIL_COND(blob_light->handle == 0);
-	VisualServerBlobShadows::Light &blight = _blob_shadows.get_light(blob_light->handle);
+	RenderingServerBlobShadows::Light &blight = _blob_shadows.get_light(blob_light->handle);
 
 	switch (p_type) {
 		case VS::LIGHT_DIRECTIONAL: {
-			blight.type = VisualServerBlobShadows::DIRECTIONAL;
+			blight.type = RenderingServerBlobShadows::DIRECTIONAL;
 		} break;
 		case VS::LIGHT_SPOT: {
-			blight.type = VisualServerBlobShadows::SPOT;
+			blight.type = RenderingServerBlobShadows::SPOT;
 		} break;
 		default: {
-			blight.type = VisualServerBlobShadows::OMNI;
+			blight.type = RenderingServerBlobShadows::OMNI;
 		} break;
 	}
 }
 
-RID VisualServerScene::blob_shadow_create() {
+RID RenderingServerScene::blob_shadow_create() {
 	BlobShadow *blob = memnew(BlobShadow);
 	ERR_FAIL_NULL_V(blob, RID());
 	RID blob_rid = blob_shadow_owner.make_rid(blob);
@@ -1202,11 +1202,11 @@ RID VisualServerScene::blob_shadow_create() {
 	return blob_rid;
 }
 
-void VisualServerScene::blob_shadow_update(RID p_blob, const Vector3 &p_occluder_pos, real_t p_occluder_radius) {
+void RenderingServerScene::blob_shadow_update(RID p_blob, const Vector3 &p_occluder_pos, real_t p_occluder_radius) {
 	BlobShadow *blob = blob_shadow_owner.getornull(p_blob);
 	ERR_FAIL_NULL(blob);
 	ERR_FAIL_COND(blob->handle == 0);
-	VisualServerBlobShadows::Blob &caster = _blob_shadows.get_blob(blob->handle);
+	RenderingServerBlobShadows::Blob &caster = _blob_shadows.get_blob(blob->handle);
 
 	// Shader expects radius squared, cheaper to do on CPU than in fragment shader.
 	caster.pos = p_occluder_pos;
@@ -1215,7 +1215,7 @@ void VisualServerScene::blob_shadow_update(RID p_blob, const Vector3 &p_occluder
 	_blob_shadows.make_blob_dirty(caster);
 }
 
-RID VisualServerScene::capsule_shadow_create() {
+RID RenderingServerScene::capsule_shadow_create() {
 	CapsuleShadow *capsule = memnew(CapsuleShadow);
 	ERR_FAIL_NULL_V(capsule, RID());
 	RID capsule_rid = capsule_shadow_owner.make_rid(capsule);
@@ -1224,11 +1224,11 @@ RID VisualServerScene::capsule_shadow_create() {
 	return capsule_rid;
 }
 
-void VisualServerScene::capsule_shadow_update(RID p_blob, const Vector3 &p_occluder_a_pos, real_t p_occluder_a_radius, const Vector3 &p_occluder_b_pos, real_t p_occluder_b_radius) {
+void RenderingServerScene::capsule_shadow_update(RID p_blob, const Vector3 &p_occluder_a_pos, real_t p_occluder_a_radius, const Vector3 &p_occluder_b_pos, real_t p_occluder_b_radius) {
 	CapsuleShadow *capsule = capsule_shadow_owner.getornull(p_blob);
 	ERR_FAIL_NULL(capsule);
 	ERR_FAIL_COND(capsule->handle == 0);
-	VisualServerBlobShadows::Capsule &caster = _blob_shadows.get_capsule(capsule->handle);
+	RenderingServerBlobShadows::Capsule &caster = _blob_shadows.get_capsule(capsule->handle);
 
 	// Shader expects radius squared, cheaper to do on CPU than in fragment shader.
 	caster.pos = p_occluder_a_pos;
@@ -4346,15 +4346,15 @@ void RenderingServerScene::render_probes() {
 	}
 }
 
-uint32_t VisualServerScene::blob_shadows_fill_background_uniforms(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters) {
+uint32_t RenderingServerScene::blob_shadows_fill_background_uniforms(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters) {
 	return _blob_shadows.fill_background_uniforms_blobs(p_aabb, r_casters, r_lights, p_max_casters);
 }
 
-uint32_t VisualServerScene::capsule_shadows_fill_background_uniforms(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters) {
+uint32_t RenderingServerScene::capsule_shadows_fill_background_uniforms(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters) {
 	return _blob_shadows.fill_background_uniforms_capsules(p_aabb, r_casters, r_lights, p_max_casters);
 }
 
-void VisualServerScene::_update_dirty_instance(Instance *p_instance) {
+void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 	if (p_instance->update_aabb) {
 		_update_instance_aabb(p_instance);
 	}
@@ -4515,7 +4515,7 @@ void VisualServerScene::_update_dirty_instance(Instance *p_instance) {
 	p_instance->update_materials = false;
 }
 
-void VisualServerScene::update_dirty_instances() {
+void RenderingServerScene::update_dirty_instances() {
 	VSG::storage->update_dirty_resources();
 
 	// this is just to get access to scenario so we can update the spatial partitioning scheme

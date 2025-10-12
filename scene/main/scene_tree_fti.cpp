@@ -578,7 +578,7 @@ void SceneTreeFTI::_update_dirty_spatials(Node *p_node, uint32_t p_current_half_
 			s->data.global_transform_interpolated.basis.orthonormalize();
 		}
 
-		// Upload to VisualServer the interpolated global xform.
+		// Upload to RenderingServer the interpolated global xform.
 		s->fti_update_servers_xform();
 
 		// Ensure branches are only processed once on each traversal.

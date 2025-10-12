@@ -912,9 +912,9 @@ public:
 
 	virtual RID blob_light_create() = 0;
 	virtual void blob_light_update(RID p_blob_light, const Transform &p_global_transform) = 0;
-	virtual void blob_light_set_param(RID p_blob_light, VisualServer::LightBlobShadowParam p_param, real_t p_value) = 0;
-	virtual void blob_light_set_light_param(RID p_blob_light, VisualServer::LightParam p_param, real_t p_value) = 0;
-	virtual void blob_light_set_type(RID p_blob_light, VisualServer::LightType p_type) = 0;
+	virtual void blob_light_set_param(RID p_blob_light, RenderingServer::LightBlobShadowParam p_param, real_t p_value) = 0;
+	virtual void blob_light_set_light_param(RID p_blob_light, RenderingServer::LightParam p_param, real_t p_value) = 0;
+	virtual void blob_light_set_type(RID p_blob_light, RenderingServer::LightType p_type) = 0;
 	virtual void blob_light_set_visible(RID p_blob_light, bool p_visible) = 0;
 
 	/* PORTALS API */

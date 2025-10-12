@@ -506,9 +506,9 @@ public:
 
 	FUNCRID(blob_light)
 	FUNC2(blob_light_update, RID, const Transform &)
-	FUNC3(blob_light_set_param, RID, VisualServer::LightBlobShadowParam, real_t)
-	FUNC3(blob_light_set_light_param, RID, VisualServer::LightParam, real_t)
-	FUNC2(blob_light_set_type, RID, VisualServer::LightType)
+	FUNC3(blob_light_set_param, RID, RenderingServer::LightBlobShadowParam, real_t)
+	FUNC3(blob_light_set_light_param, RID, RenderingServer::LightParam, real_t)
+	FUNC2(blob_light_set_type, RID, RenderingServer::LightType)
 	FUNC2(blob_light_set_visible, RID, bool)
 
 	/* PORTALS API */

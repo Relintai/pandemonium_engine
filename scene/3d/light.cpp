@@ -174,25 +174,25 @@ void Light::set_blob_shadow(bool p_enable) {
 	set_notify_transform(p_enable);
 	if (p_enable) {
 		if (!blob_light.is_valid()) {
-			blob_light = RID_PRIME(VisualServer::get_singleton()->blob_light_create());
+			blob_light = RID_PRIME(RenderingServer::get_singleton()->blob_light_create());
 
 			// Must refresh all parameters when recreating.
-			VisualServer::get_singleton()->blob_light_set_type(blob_light, get_light_type());
-			VisualServer::get_singleton()->blob_light_set_visible(blob_light, is_visible_in_tree());
+			RenderingServer::get_singleton()->blob_light_set_type(blob_light, get_light_type());
+			RenderingServer::get_singleton()->blob_light_set_visible(blob_light, is_visible_in_tree());
 			for (int n = 0; n < BLOB_SHADOW_PARAM_MAX; n++) {
 				_update_blob_shadow_param((BlobShadowParam)n);
 			}
-			VisualServer::get_singleton()->blob_light_set_light_param(blob_light, VS::LIGHT_PARAM_SPOT_ANGLE, get_param(PARAM_SPOT_ANGLE));
-			VisualServer::get_singleton()->blob_light_set_light_param(blob_light, VS::LIGHT_PARAM_ENERGY, get_param(PARAM_ENERGY));
+			RenderingServer::get_singleton()->blob_light_set_light_param(blob_light, VS::LIGHT_PARAM_SPOT_ANGLE, get_param(PARAM_SPOT_ANGLE));
+			RenderingServer::get_singleton()->blob_light_set_light_param(blob_light, VS::LIGHT_PARAM_ENERGY, get_param(PARAM_ENERGY));
 
 			// Only set initial position if in the tree, else it will be updated when entering the tree.
 			if (is_inside_tree()) {
-				VisualServer::get_singleton()->blob_light_update(blob_light, get_global_transform());
+				RenderingServer::get_singleton()->blob_light_update(blob_light, get_global_transform());
 			}
 		}
 	} else {
 		if (blob_light.is_valid()) {
-			VisualServer::get_singleton()->free(blob_light);
+			RenderingServer::get_singleton()->free(blob_light);
 			blob_light = RID();
 		}
 	}
@@ -205,7 +205,7 @@ void Light::_update_blob_shadow_param(BlobShadowParam p_param) {
 		// Special case for range, if set to zero, we override with the light range.
 		if (p_param == BLOB_SHADOW_PARAM_RANGE_MAX) {
 			if (value == 0) {
-				if (type != VisualServer::LIGHT_DIRECTIONAL) {
+				if (type != RenderingServer::LIGHT_DIRECTIONAL) {
 					value = get_param(PARAM_RANGE);
 				} else {
 					// Directional lights are hard coded with near infinite range
@@ -280,7 +280,7 @@ void Light::_update_visibility() {
 
 void Light::fti_update_servers_xform() {
 	if (blob_light.is_valid() && is_visible_in_tree()) {
-		VisualServer::get_singleton()->blob_light_update(blob_light, _get_cached_global_transform_interpolated());
+		RenderingServer::get_singleton()->blob_light_update(blob_light, _get_cached_global_transform_interpolated());
 	}
 
 	VisualInstance::fti_update_servers_xform();
@@ -297,7 +297,7 @@ void Light::_notification(int p_what) {
 
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			if (blob_light.is_valid() && is_visible_in_tree() && !is_physics_interpolated_and_enabled()) {
-				VisualServer::get_singleton()->blob_light_update(blob_light, get_global_transform());
+				RenderingServer::get_singleton()->blob_light_update(blob_light, get_global_transform());
 			}
 		} break;
 		default:
@@ -477,7 +477,7 @@ Light::~Light() {
 	}
 
 	if (blob_light.is_valid()) {
-		VisualServer::get_singleton()->free(blob_light);
+		RenderingServer::get_singleton()->free(blob_light);
 	}
 }
 /////////////////////////////////////////

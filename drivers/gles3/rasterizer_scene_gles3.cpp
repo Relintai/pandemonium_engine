@@ -2037,7 +2037,7 @@ void RasterizerSceneGLES3::_render_list(RenderList::Element **p_elements, int p_
 		bool use_opaque_prepass_temp = e->sort_key & RenderList::SORT_KEY_OPAQUE_PRE_PASS;
 		bool blob_shadows = allow_blob_shadows && !material->shader->spatial.unshaded && !material->shader->spatial.no_blob_shadows && !use_opaque_prepass_temp;
 		if (blob_shadows) {
-			VisualServerScene::Instance *instance = (VisualServerScene::Instance *)(e->instance);
+			RenderingServerScene::Instance *instance = (RenderingServerScene::Instance *)(e->instance);
 			instance_aabb = &instance->transformed_aabb;
 		}
 		state.scene_shader.set_conditional(SceneShaderGLES3::USE_BLOB_SHADOWS, blob_shadows);
