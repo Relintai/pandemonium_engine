@@ -29,8 +29,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISUAL_SERVER_BLOB_SHADOWS_H
-#define VISUAL_SERVER_BLOB_SHADOWS_H
+#ifndef RENDERING_SERVER_BLOB_SHADOWS_H
+#define RENDERING_SERVER_BLOB_SHADOWS_H
 
 #include "core/containers/fixed_array.h"
 #include "core/math/bvh.h"
