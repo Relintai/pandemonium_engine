@@ -32,7 +32,7 @@
 #import "pandemonium_app_delegate.h"
 
 #import "app_delegate.h"
-#import "godot_scene_delegate.h"
+#import "pandemonium_scene_delegate.h"
 
 @interface PandemoniumApplicalitionDelegate ()
 
