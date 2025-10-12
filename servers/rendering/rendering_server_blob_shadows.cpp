@@ -37,7 +37,7 @@
 
 #include <string.h>
 
-// #define GODOT_BLOB_SHADOWS_TEST_DIRECTION_INTERPOLATION
+// #define PANDEMONIM_BLOB_SHADOWS_TEST_DIRECTION_INTERPOLATION
 
 bool RenderingServerBlobShadows::_active_project_setting = true;
 bool RenderingServerBlobShadows::_active_blobs_present = false;
@@ -412,7 +412,7 @@ void RenderingServerBlobShadows::update_focus_caster(bool p_blobs_or_capsules, F
 	fc.last_update_frame = data.update_frame;
 }
 
-#ifdef GODOT_BLOB_SHADOWS_TEST_DIRECTION_INTERPOLATION
+#ifdef PANDEMONIM_BLOB_SHADOWS_TEST_DIRECTION_INTERPOLATION
 Vector3 choose_random_dir() {
 	Vector3 d = Vector3(Math::randf(), Math::randf(), Math::randf());
 	d *= 2.0f;
@@ -477,7 +477,7 @@ void test_direction_interpolation() {
 #endif
 
 void RenderingServerBlobShadows::find_best_light(bool p_blobs_or_capsules, FocusCaster &r_focus_caster) {
-#ifdef GODOT_BLOB_SHADOWS_TEST_DIRECTION_INTERPOLATION
+#ifdef PANDEMONIM_BLOB_SHADOWS_TEST_DIRECTION_INTERPOLATION
 	test_direction_interpolation();
 #endif
 	Caster *caster = nullptr;
